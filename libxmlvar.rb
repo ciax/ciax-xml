@@ -1,30 +1,26 @@
 #!/usr/bin/ruby
-# included in String
-module XmlText
-  def initialize(str = '')
-    @var=Hash.new
-    super(str)
-  end
-  def calCc(e)
+# included in Hash
+class XmlVar < Hash
+  def calCc(e,code)
     a=e.attributes
     chk=0
     case a['method']
     when 'len'
-      chk=self.length
+      chk=code.length
     when 'bcc'
-      self.each_byte do |c|
+      code.each_byte do |c|
         chk ^= c 
       end
     else
       raise "No such CC method #{a['method']}"
     end
     fmt=a['format'] || '%c'
-    @var[a['var']]=fmt % chk
+    self[a['var']]=fmt % chk
     self
   end
   def getText(e)
     ref=e.attributes['ref']
-    ref ? @var[ref] : e.text
+    ref ? self[ref] : e.text
   end
   def trText(e,code)
     a=e.attributes
@@ -34,16 +30,16 @@ module XmlText
     a['format'] ? a['format'] % code : code
   end
   def getStr(e)
-    clear
+    str=String.new
     e.elements.each do |d|
       case d.name
       when 'data'
         data=getText(d)
-        self << trText(d,data)
+        str << trText(d,data)
       else
-        self << @var[d.name]
+        str << self[d.name]
       end
     end
-    self
+    str
   end
 end

@@ -1,18 +1,6 @@
 #!/usr/bin/ruby
-require "libxmldb"
-require "libxmlvar"
-class CtrlDev
-  def initialize
-    @var=XmlVar.new
-  end
-  def setdev(dev)
-    begin
-      @doc=XmlDb.new('ddb',dev)
-    rescue
-      puts $!
-      exit 1
-    end
-  end
+require "libdev"
+class DevCtrl < Dev
   def setcmd(cmd)
     begin
       @doc.top_node_xpath('//cmdframe').select_id(cmd)

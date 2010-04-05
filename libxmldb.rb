@@ -2,6 +2,7 @@
 require "rexml/document"
 include REXML
 class XmlDb
+  attr_reader :type
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"

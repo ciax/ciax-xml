@@ -22,24 +22,4 @@ class XmlVar < Hash
     ref=e.attributes['ref']
     ref ? self[ref] : e.text
   end
-  def trText(e,code)
-    a=e.attributes
-    code=eval "#{code}#{a['mask']}" if a['mask']
-    code=[code].pack(a['pack']) if a['pack']
-    code=code.unpack(a['unpack']).first if a['unpack']
-    a['format'] ? a['format'] % code : code
-  end
-  def getStr(e)
-    str=String.new
-    e.elements.each do |d|
-      case d.name
-      when 'data'
-        data=getText(d)
-        str << trText(d,data)
-      else
-        str << self[d.name]
-      end
-    end
-    str
-  end
 end

@@ -5,6 +5,7 @@ module XmlTxt
     code=eval "#{code}#{a['mask']}" if a['mask']
     code=[code].pack(a['pack']) if a['pack']
     code=code.unpack(a['unpack']).first if a['unpack']
-    a['format'] ? a['format'] % code : code
+    code=a['format'] ? a['format'] % code : code
+    code.to_s
   end
 end

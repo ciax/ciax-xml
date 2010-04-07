@@ -7,6 +7,10 @@ class DevCtrl < Dev
       case d.name
       when 'data'
         str << trText(d,@var.getText(d))
+      when 'ccrange'
+        str << @var.ccstr
+      when 'select'
+        str << getStr(@doc.sel)
       else
         str << @var[d.name]
       end
@@ -22,7 +26,6 @@ class DevCtrl < Dev
     end
     @doc.node?('//ccrange') do |e|
       @var.calCc(e,getStr(e))
-      @doc.substitute(e,'//ccrange')
     end
   end
   def sndfrm

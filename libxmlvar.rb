@@ -1,14 +1,20 @@
 #!/usr/bin/ruby
 # included in Hash
 class XmlVar < Hash
-  def calCc(e,code)
+  attr_reader :ccstr,:ref
+  def initialize(hash=nil)
+    @ccstr=String.new
+    @ref=String.new
+    super(hash)
+  end
+  def calCc(e,str)
     a=e.attributes
     chk=0
     case a['method']
     when 'len'
-      chk=code.length
+      chk=str.length
     when 'bcc'
-      code.each_byte do |c|
+      str.each_byte do |c|
         chk ^= c 
       end
     else
@@ -16,10 +22,14 @@ class XmlVar < Hash
     end
     fmt=a['format'] || '%c'
     self[a['var']]=fmt % chk
-    self
+    @ccstr=str
   end
   def getText(e)
-    ref=e.attributes['ref']
-    ref ? self[ref] : e.text
+    return e.text unless r=e.attributes['ref']
+    if self[r]
+      return self[r]
+    else
+      raise "No reference for [#{r}]"
+    end
   end
 end

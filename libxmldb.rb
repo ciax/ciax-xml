@@ -1,8 +1,10 @@
 #!/usr/bin/ruby
 require "rexml/document"
+require "benchmark"
+
 include REXML
 class XmlDb
-  attr_reader :type
+  attr_reader :type,:sel
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
@@ -18,14 +20,6 @@ class XmlDb
     @tn="/"
     @type=type
   end
-  def substitute(node,xpath)
-    xpath=@tn+xpath
-    node.elements.each do |e|
-      @doc.insert_before(xpath,e)
-    end
-    @doc.delete_element(xpath)
-    self
-  end
   def top_node_xpath(xpath)
     @tn=xpath
     self
@@ -36,18 +30,19 @@ class XmlDb
   def select_id(id)
     xpath='//select'
     begin
-      sel=@doc.elements[@tn+"//[@id='#{id}']"] || raise
+      @sel=@doc.elements[@tn+"//[@id='#{id}']"] || raise
     rescue
       listId(@tn+xpath)
       raise("No such a command")
     end
-    substitute(sel,xpath)
     self
   end
   def node?(xpath)
     e=@doc.elements[@tn+xpath]
     yield e if e 
   end
+  
+
   def show
     puts @doc.elements[@tn]
   end

@@ -7,16 +7,14 @@ class DevStat < Dev
     @field={'device'=>dev}
     @vq=Hash.new
   end
-  def cutFrame
-    len=a['length'].to_i
+  def cutFrame(len)
     warn "Too short (#{@frame.size-len})" if @frame.size < len
     return @frame.slice!(0,len)
   end
   def verify(code)
     str=trText(code)
     pass=String.new
-    each do |d| #Match each case
-      a=d.a
+    each do |d,a| #Match each case
       begin
         text=d.getText(@var)
       rescue
@@ -35,7 +33,7 @@ class DevStat < Dev
         when 'error'
           raise a['msg'] + "[ (#{str}) for (#{pass}) ]"
         end
-#        @doc=selOpt('//rspframe',a['option']) if a['option']
+        select_id(a['option']) if a['option']
         return
       end
     end
@@ -44,18 +42,19 @@ class DevStat < Dev
 
   def putStr
     str=String.new
-    each do |c|
+    each do |c,a|
+      len=a['length'].to_i
       case c.name
       when 'ccrange'
         ccstr=c.putStr
         @var.update(c.calCc(ccstr))
         str << ccstr
       when 'verify'
-        str << ele=c.cutFrame
+        str << ele=c.cutFrame(len)
         c.verify(ele)
       when 'assign'
-        str << ele=c.cutFrame
-        fld=c.a['field']
+        str << ele=c.cutFrame(len)
+        fld=a['field']
         data=c.trText(ele)
         @field[fld]=data
         warn "Assign #{fld} [#{data}]" if ENV['VER']

@@ -56,9 +56,6 @@ class XmlDb
   def name
     @doc.name
   end
-  def text
-    @doc.text
-  end
 
   def trText(code)
     a=@doc.attributes
@@ -76,24 +73,6 @@ class XmlDb
     else
       raise "No reference for [#{r}]"
     end
-  end
-
-  def calCc(str)
-    a=@doc.attributes
-    chk=0
-    case a['method']
-    when 'len'
-      chk=str.length
-    when 'bcc'
-      str.each_byte do |c|
-        chk ^= c 
-      end
-    else
-      raise "No such CC method #{a['method']}"
-    end
-    fmt=a['format'] || '%c'
-    val=(fmt % chk).to_s
-    { "#{a['var']}" => val}
   end
 
   # Error Handling

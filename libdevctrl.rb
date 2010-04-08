@@ -4,7 +4,7 @@ TopNode='//cmdframe'
 class DevCtrl < Dev
   def getStr(e)
     str=String.new
-    e.elements.each do |d|
+    e.each do |d|
       case d.name
       when 'data'
         str << trText(d,@var.getText(d))
@@ -22,6 +22,6 @@ class DevCtrl < Dev
     @doc.node?('//ccrange') do |e|
       @var.calCc(e,getStr(e))
     end
-    getStr(@doc.top_node)
+    getStr(@doc)
   end
 end

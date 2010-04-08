@@ -4,6 +4,7 @@ include REXML
 #TopNode required
 class XmlDb
   attr_reader :type,:sel
+  attr_accessor :cn
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
@@ -17,13 +18,18 @@ class XmlDb
       raise("No such a file")
     end
     @type=type
+    @cn=@doc.elements[TopNode]
   end
-  def top_node
-    @doc.elements[TopNode]
+  def e_clone(e)
+    d=clone
+    d.cn=e
+    d
   end
+
   def select_id(id)
     begin
-      @sel=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
+      e=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
+      @sel=e_clone(e)
     rescue
       listId(TopNode+'//select')
       raise("No such a command")
@@ -32,8 +38,24 @@ class XmlDb
   end
   def node?(xpath)
     e=@doc.elements[TopNode+xpath]
-    yield e if e 
+    return unless e
+    yield e_clone(e)
   end
+  def each
+    @cn.elements.each do |e|
+      yield e_clone(e)
+    end
+  end
+  def name
+    @cn.name
+  end
+  def text
+    @cn.text
+  end
+  def attr
+    @cn.attributes
+  end
+
   def show
     puts @doc.elements[TopNode]
   end

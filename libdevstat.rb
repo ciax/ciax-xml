@@ -6,16 +6,16 @@ class DevStat < Dev
     super(dev)
     @field={'device'=>@doc.type}
   end
-  def cutRsp(e)
-    len=e.attributes['length'].to_i
-    warn "Too short (#{@res.size-len})" if @res.size < len
-    return @res.slice!(0,len)
+  def cutFrame(e)
+    len=e.attr['length'].to_i
+    warn "Too short (#{@frame.size-len})" if @frame.size < len
+    return @frame.slice!(0,len)
   end
   def verify(e,code)
     str=trText(e,code)
     pass=String.new
-    e.elements.each do |d| #Match each case
-      a=d.attributes
+    e.each do |d| #Match each case
+      a=d.attr
       begin
         text=@var.getText(d)
       rescue
@@ -43,18 +43,18 @@ class DevStat < Dev
 
   def putStr(e)
     str=String.new
-    e.elements.each do |c|
-      a=c.attributes
+    e.each do |c|
+      a=c.attr
       case c.name
       when 'ccrange'
         str << @var.calCc(c,putStr(c))
       when 'select'
         str << putStr(@doc.sel)
       when 'verify'
-        str << ele=cutRsp(c)
+        str << ele=cutFrame(c)
         verify(c,ele)
       when 'assign'
-        str << ele=cutRsp(c)
+        str << ele=cutFrame(c)
         fld=a['field']
         data=trText(c,ele)
         @field[fld]=data
@@ -64,9 +64,9 @@ class DevStat < Dev
     return str
   end
   def rspfrm
-    @res=yield
+    @frame=yield
     @vq=Hash.new
-    putStr(@doc.top_node)
+    putStr(@doc)
     @vq.each do |e,ele|
       verify(e,ele)
     end

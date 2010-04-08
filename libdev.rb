@@ -13,4 +13,12 @@ class Dev
       exit 1
     end
   end
+  def setcmd(cmd)
+    begin
+      @doc.select_id(cmd)
+    rescue
+      puts $!
+      exit 1
+    end
+  end
 end

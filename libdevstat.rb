@@ -1,12 +1,16 @@
 #!/usr/bin/ruby
 require "libdev"
+TopNode='//rspframe'
 class DevStat < Dev
+  def initialize(dev)
+    super(dev)
+    @field={'device'=>@doc.type}
+  end
   def cutRsp(e)
     len=e.attributes['length'].to_i
     warn "Too short (#{@res.size-len})" if @res.size < len
     return @res.slice!(0,len)
   end
-
   def verify(e,code)
     str=trText(e,code)
     pass=String.new
@@ -59,19 +63,8 @@ class DevStat < Dev
     end
     return str
   end
-  def setcmd(cmd)
-    begin
-      @doc.top_node_xpath('//rspframe').select_id(cmd)
-    rescue
-      puts $!
-      exit 1
-    end
-    @field={'device'=>@doc.type}
-  end
-  def getrsp
-    @res=yield
-  end
   def rspfrm
+    @res=yield
     @vq=Hash.new
     putStr(@doc.top_node)
     @vq.each do |e,ele|

@@ -1,8 +1,7 @@
 #!/usr/bin/ruby
 require "rexml/document"
-require "benchmark"
-
 include REXML
+#TopNode required
 class XmlDb
   attr_reader :type,:sel
   def initialize(db = nil ,type = nil)
@@ -17,34 +16,26 @@ class XmlDb
       end
       raise("No such a file")
     end
-    @tn="/"
     @type=type
   end
-  def top_node_xpath(xpath)
-    @tn=xpath
-    self
-  end
   def top_node
-    @doc.elements[@tn]
+    @doc.elements[TopNode]
   end
   def select_id(id)
-    xpath='//select'
     begin
-      @sel=@doc.elements[@tn+"//[@id='#{id}']"] || raise
+      @sel=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
     rescue
-      listId(@tn+xpath)
+      listId(TopNode+'//select')
       raise("No such a command")
     end
     self
   end
   def node?(xpath)
-    e=@doc.elements[@tn+xpath]
+    e=@doc.elements[TopNode+xpath]
     yield e if e 
   end
-  
-
   def show
-    puts @doc.elements[@tn]
+    puts @doc.elements[TopNode]
   end
   # Error Handling
   def listId(xpath)

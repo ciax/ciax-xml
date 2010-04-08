@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libdev"
+TopNode='//cmdframe'
 class DevCtrl < Dev
   def getStr(e)
     str=String.new
@@ -17,18 +18,10 @@ class DevCtrl < Dev
     end
     str
   end
-  def setcmd(cmd)
-    begin
-      @doc.top_node_xpath('//cmdframe').select_id(cmd)
-    rescue
-      puts $!
-      exit 1
-    end
+  def sndfrm
     @doc.node?('//ccrange') do |e|
       @var.calCc(e,getStr(e))
     end
-  end
-  def sndfrm
     getStr(@doc.top_node)
   end
 end

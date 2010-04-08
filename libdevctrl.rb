@@ -7,7 +7,7 @@ class DevCtrl < Dev
     e.each do |d|
       case d.name
       when 'data'
-        str << trText(d,@var.getText(d))
+        str << d.trText(@var.getText(d))
       when 'ccrange'
         str << @var.ccstr
       when 'select'

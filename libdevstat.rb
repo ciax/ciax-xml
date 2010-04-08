@@ -12,7 +12,7 @@ class DevStat < Dev
     return @frame.slice!(0,len)
   end
   def verify(e,code)
-    str=trText(e,code)
+    str=e.trText(code)
     pass=String.new
     e.each do |d| #Match each case
       a=d.attr
@@ -56,7 +56,7 @@ class DevStat < Dev
       when 'assign'
         str << ele=cutFrame(c)
         fld=a['field']
-        data=trText(c,ele)
+        data=c.trText(ele)
         @field[fld]=data
         warn "Assign #{fld} [#{data}]" if ENV['VER']
       end
@@ -72,5 +72,4 @@ class DevStat < Dev
     end
     return @field
   end
-
 end

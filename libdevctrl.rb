@@ -10,8 +10,6 @@ class DevCtrl < Dev
         str << d.trText(d.getText(@var))
       when 'ccrange'
         str << @ccstr
-      when 'select'
-        str << getStr(@doc.sel)
       else
         str << @var[d.name]
       end

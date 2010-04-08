@@ -3,60 +3,69 @@ require "rexml/document"
 include REXML
 #TopNode required
 class XmlDb
-  attr_reader :type,:sel
-  attr_accessor :cn,:a
+  attr_writer :sel
+  attr_accessor :doc,:a
   def initialize(db = nil ,type = nil)
-    if db.class == Element
-      @cn=db
-      @a=db.attributes
-    else
-      pre="#{ENV['XMLPATH']}/#{db}"
-      path="#{pre}-#{type}.xml"
-      begin
-        @doc=Document.new(open(path)).root
-      rescue
-        Dir.glob("#{pre}-*.xml").each do |p|
-          @doc=Document.new(open(p)).root
-          listId('/*')
-        end
-        raise("No such a file")
+    pre="#{ENV['XMLPATH']}/#{db}"
+    path="#{pre}-#{type}.xml"
+    begin
+      @doc=Document.new(open(path)).elements[TopNode]
+    rescue
+      Dir.glob("#{pre}-*.xml").each do |p|
+        @doc=Document.new(open(p)).root
+        listId('/*')
       end
-      @type=type
-      @cn=@doc.elements[TopNode]
-      @a=@cn.attributes
+      raise("No such a file")
     end
+    @sel=nil
+    @a=@doc.attributes
   end
-
+  def selfcp(e)
+    d=clone
+    d.doc=e
+    d.a=e.attributes
+    d.sel=@sel
+    d
+  end
+  
   def select_id(id)
     begin
-      e=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
-      @sel=XmlDb.new(e)
+      @sel=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
     rescue
       listId(TopNode+'//select')
       raise("No such a command")
     end
     self
   end
+
   def node?(xpath)
     e=@doc.elements[TopNode+xpath]
     return unless e
-    yield XmlDb.new(e)
+    yield selfcp(e)
     self
   end
+
   def each
-    @cn.elements.each do |e|
-      yield XmlDb.new(e)
+    @doc.elements.each do |e|
+      if e.name == 'select' and @sel
+        @sel.elements.each do |s|
+          yield selfcp(s)
+        end
+      else
+        yield selfcp(e)
+      end
     end
     self
   end
+
   def name
-    @cn.name
+    @doc.name
   end
   def text
-    @cn.text
+    @doc.text
   end
   def attr
-    @cn.attributes
+    @doc.attributes
   end
 
   def trText(code)
@@ -68,7 +77,7 @@ class XmlDb
   end
 
   def getText(var)
-    return @cn.text unless r=@a['ref']
+    return @doc.text unless r=@a['ref']
     if var[r]
       return var[r]
     else
@@ -93,9 +102,6 @@ class XmlDb
     { "#{a['var']}" => val}
   end
 
-  def show
-    puts @doc.elements[TopNode]
-  end
   # Error Handling
   def listId(xpath)
     @doc.elements.each(xpath+'/[@id]') do |d|

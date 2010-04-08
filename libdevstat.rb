@@ -4,7 +4,7 @@ TopNode='//rspframe'
 class DevStat < Dev
   def initialize(dev,cmd)
     super(dev,cmd)
-    @field={'device'=>@doc.type}
+    @field={'device'=>dev}
   end
   def cutFrame(e)
     len=e.a['length'].to_i
@@ -50,8 +50,6 @@ class DevStat < Dev
         ccstr=putStr(c)
         @var.update(c.calCc(ccstr))
         str << ccstr
-      when 'select'
-        str << putStr(@doc.sel)
       when 'verify'
         str << ele=cutFrame(c)
         verify(c,ele)

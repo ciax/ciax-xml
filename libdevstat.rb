@@ -2,8 +2,8 @@
 require "libdev"
 TopNode='//rspframe'
 class DevStat < Dev
-  def initialize(dev)
-    super(dev)
+  def initialize(dev,cmd)
+    super(dev,cmd)
     @field={'device'=>@doc.type}
   end
   def cutFrame(e)

@@ -7,9 +7,9 @@ class DevCtrl < Dev
     e.each do |d|
       case d.name
       when 'data'
-        str << d.trText(@var.getText(d))
+        str << d.trText(d.getText(@var))
       when 'ccrange'
-        str << @var.ccstr
+        str << @ccstr
       when 'select'
         str << getStr(@doc.sel)
       else
@@ -20,7 +20,8 @@ class DevCtrl < Dev
   end
   def sndfrm
     @doc.node?('//ccrange') do |e|
-      @var.calCc(e,getStr(e))
+      @ccstr=getStr(e)
+      @var.update(e.calCc(@ccstr))
     end
     getStr(@doc)
   end

@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libxmlvar"
 class Dev
   def initialize(dev,cmd)
-    @var=XmlVar.new
+    @var=Hash.new
     begin
-      @doc=XmlDb.new('ddb',dev)
-      @doc.select_id(cmd)
+      @doc=XmlDb.new('ddb',dev).select_id(cmd)
     rescue
       puts $!
       exit 1

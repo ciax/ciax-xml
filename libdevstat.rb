@@ -7,7 +7,7 @@ class DevStat < Dev
     @field={'device'=>@doc.type}
   end
   def cutFrame(e)
-    len=e.attr['length'].to_i
+    len=e.a['length'].to_i
     warn "Too short (#{@frame.size-len})" if @frame.size < len
     return @frame.slice!(0,len)
   end
@@ -15,9 +15,9 @@ class DevStat < Dev
     str=e.trText(code)
     pass=String.new
     e.each do |d| #Match each case
-      a=d.attr
+      a=d.a
       begin
-        text=@var.getText(d)
+        text=d.getText(@var)
       rescue
         warn $! if ENV['VER']
         raise $! if @vq[e]
@@ -44,10 +44,12 @@ class DevStat < Dev
   def putStr(e)
     str=String.new
     e.each do |c|
-      a=c.attr
+      a=c.a
       case c.name
       when 'ccrange'
-        str << @var.calCc(c,putStr(c))
+        ccstr=putStr(c)
+        @var.update(c.calCc(ccstr))
+        str << ccstr
       when 'select'
         str << putStr(@doc.sel)
       when 'verify'

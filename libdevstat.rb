@@ -5,23 +5,24 @@ class DevStat < Dev
   def initialize(dev,cmd)
     super(dev,cmd)
     @field={'device'=>dev}
+    @vq=Hash.new
   end
-  def cutFrame(e)
-    len=e.a['length'].to_i
+  def cutFrame
+    len=a['length'].to_i
     warn "Too short (#{@frame.size-len})" if @frame.size < len
     return @frame.slice!(0,len)
   end
-  def verify(e,code)
-    str=e.trText(code)
+  def verify(code)
+    str=trText(code)
     pass=String.new
-    e.each do |d| #Match each case
+    each do |d| #Match each case
       a=d.a
       begin
         text=d.getText(@var)
       rescue
         warn $! if ENV['VER']
-        raise $! if @vq[e]
-        @vq[e]=code
+        raise $! if @vq[self]
+        @vq[self]=code
         return
       end
       pass=text if a['type'] == 'pass'
@@ -41,21 +42,20 @@ class DevStat < Dev
     raise "No error desctiption for #{e.attributes['label']}"
   end
 
-  def putStr(e)
+  def putStr
     str=String.new
-    e.each do |c|
-      a=c.a
+    each do |c|
       case c.name
       when 'ccrange'
-        ccstr=putStr(c)
+        ccstr=c.putStr
         @var.update(c.calCc(ccstr))
         str << ccstr
       when 'verify'
-        str << ele=cutFrame(c)
-        verify(c,ele)
+        str << ele=c.cutFrame
+        c.verify(ele)
       when 'assign'
-        str << ele=cutFrame(c)
-        fld=a['field']
+        str << ele=c.cutFrame
+        fld=c.a['field']
         data=c.trText(ele)
         @field[fld]=data
         warn "Assign #{fld} [#{data}]" if ENV['VER']
@@ -65,10 +65,9 @@ class DevStat < Dev
   end
   def rspfrm
     @frame=yield
-    @vq=Hash.new
-    putStr(@doc)
+    putStr
     @vq.each do |e,ele|
-      verify(e,ele)
+      e.verify(ele)
     end
     return @field
   end

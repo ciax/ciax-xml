@@ -2,9 +2,9 @@
 require "libdev"
 TopNode='//cmdframe'
 class DevCtrl < Dev
-  def getStr(e)
+  def getStr
     str=String.new
-    e.each do |d|
+    each do |d|
       case d.name
       when 'data'
         str << d.trText(d.getText(@var))
@@ -17,10 +17,10 @@ class DevCtrl < Dev
     str
   end
   def sndfrm
-    @doc.node?('//ccrange') do |e|
-      @ccstr=getStr(e)
+    node?('//ccrange') do |e|
+      @ccstr=e.getStr
       @var.update(e.calCc(@ccstr))
     end
-    getStr(@doc)
+    getStr
   end
 end

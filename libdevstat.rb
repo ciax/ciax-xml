@@ -24,6 +24,7 @@ class DevStat < Dev
   end
 
   def verify_str(raw)
+    @prefix="Verify:"
     str=tr_text(raw)
     pass=String.new
     each do |e| #Match each case
@@ -39,11 +40,11 @@ class DevStat < Dev
       if  text == str or text == nil
         case e['type']
         when 'pass'
-          warn e['msg'] if ENV['VER']
+          e.msg("[#{str}]")
         when 'warn'
-          warn e['msg'] + "[ (#{str}) for (#{pass}) ]"
+          e.msg("[ (#{str}) for (#{pass}) ]")
         when 'error'
-          raise e['msg'] + "[ (#{str}) for (#{pass}) ]"
+          e.err("[ (#{str}) for (#{pass}) ]")
         end
         select_id(e['option']) if e['option']
         return
@@ -53,9 +54,10 @@ class DevStat < Dev
   end
 
   def assign_str(raw)
+    @prefix="Assign:"
     fld=@doc.attributes['field']
-    str=tr_text(raw)
-    warn "Assign #{fld} [#{str}]" if ENV['VER']
+    str=tr_text(raw) 
+    msg("[#{fld}] <- [#{str}]")
     {fld => str}
   end
 

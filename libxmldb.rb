@@ -18,6 +18,8 @@ class XmlDb
       end
       raise("No such a file")
     end
+    @title="#{db}/#{type}".upcase
+    @prefix=''
   end
 
   public
@@ -81,12 +83,27 @@ class XmlDb
     var[r] || raise("No reference for [#{r}]")
   end
 
+  def msg(text='')
+    warn mkmsg(text) if ENV['VER']
+  end
+
+  def err(text='')
+    raise mkmsg(text)
+  end
+
   private
   def copy_self(e)
     d=clone
     d.doc=e
     d
   end
+
+  def mkmsg(text)
+    msg=@doc.attributes['msg']
+    msg = msg ? "#{msg} " : ''
+    "#{@title}:#{@prefix}#{msg}#{text}".dump
+  end
+
   # Error Handling
   def list_id(xpath)
     @doc.elements.each(xpath+'/[@id]') do |d|

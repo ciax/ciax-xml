@@ -27,7 +27,8 @@ class Dev < XmlDb
     end
     fmt=a['format'] || '%c'
     val=(fmt % chk).to_s
-    warn "CC: format=#{fmt},val=#{val}" if ENV['VER']
+    @prefix="CheckCode:"
+    msg "Method[#{a['method']}],Format=[#{fmt}],Val=[#{val}]"
     {a['var'] => val}
   end
 end

@@ -40,14 +40,19 @@ class XmlDb
     self
   end
 
+  def [](key)
+    a=@doc.attributes[key] || return
+    a.to_s
+  end
+
   def each
     @doc.elements.each do |e|
       if e.name == 'select' and @sel
         @sel.elements.each do |s|
-          yield selfcp(s),s.attributes
+          yield selfcp(s)
         end
       else
-        yield selfcp(e),e.attributes
+        yield selfcp(e)
       end
     end
     self
@@ -58,11 +63,18 @@ class XmlDb
   end
 
   def trText(code)
-    a=@doc.attributes
-    code=eval "#{code}#{@a['mask']}" if a['mask']
-    code=[code].pack(a['pack']) if a['pack']
-    code=code.unpack(a['unpack']).first if a['unpack']
-    code=a['format'] ? a['format'] % code : code
+    @doc.attributes.each_attribute do |a|
+      case a.expanded_name
+      when 'mask'
+        code=eval "#{code}#{a.value}"
+      when 'pack'
+        code=[code].pack(a.value)
+      when 'unpack'
+        code=code.unpack(a.value).first
+      when 'format'
+        code=a.value % code
+      end
+    end
     code.to_s
   end
 

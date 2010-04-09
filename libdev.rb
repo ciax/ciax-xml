@@ -27,6 +27,7 @@ class Dev < XmlDb
     end
     fmt=a['format'] || '%c'
     val=(fmt % chk).to_s
-    { "#{a['var']}" => val}
+    warn "CC: format=#{fmt},val=#{val}" if ENV['VER']
+    {a['var'] => val}
   end
 end

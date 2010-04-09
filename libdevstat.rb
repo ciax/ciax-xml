@@ -7,66 +7,73 @@ class DevStat < Dev
     @field={'device'=>dev}
     @vq=Hash.new
   end
-  def cutFrame(len)
+
+  def cutoutFrame(len)
     warn "Too short (#{@frame.size-len})" if @frame.size < len
     return @frame.slice!(0,len)
   end
-  def verify(code)
-    str=trText(code)
+
+  def verifyStr(raw)
+    str=trText(raw)
     pass=String.new
-    each do |d,a| #Match each case
+    each do |d| #Match each case
       begin
         text=d.getText(@var)
       rescue
-        warn $! if ENV['VER']
         raise $! if @vq[self]
-        @vq[self]=code
+        warn "#{$!} and code [#{str}] into queue" if ENV['VER']
+        @vq[self]=raw
         return
       end
-      pass=text if a['type'] == 'pass'
+      pass=text if d['type'] == 'pass'
       if  text == str or text == nil
-        case a['type']
+        case d['type']
         when 'pass'
-          warn a['msg'] if ENV['VER']
+          warn d['msg'] if ENV['VER']
         when 'warn'
-          warn a['msg'] + "[ (#{str}) for (#{pass}) ]"
+          warn d['msg'] + "[ (#{str}) for (#{pass}) ]"
         when 'error'
-          raise a['msg'] + "[ (#{str}) for (#{pass}) ]"
+          raise d['msg'] + "[ (#{str}) for (#{pass}) ]"
         end
-        select_id(a['option']) if a['option']
+        select_id(d['option']) if d['option']
         return
       end
     end
-    raise "No error desctiption for #{e.attributes['label']}"
+    raise "No error desctiption for #{d['label']}"
+  end
+
+  def assignStr(raw)
+    fld=@doc.attributes['field']
+    str=trText(raw)
+    warn "Assign #{fld} [#{str}]" if ENV['VER']
+    {fld => str}
   end
 
   def putStr
     str=String.new
-    each do |c,a|
-      len=a['length'].to_i
+    each do |c|
+      len=c['length'].to_i
       case c.name
       when 'ccrange'
         ccstr=c.putStr
         @var.update(c.calCc(ccstr))
         str << ccstr
       when 'verify'
-        str << ele=c.cutFrame(len)
-        c.verify(ele)
+        str << ele=c.cutoutFrame(len)
+        c.verifyStr(ele)
       when 'assign'
-        str << ele=c.cutFrame(len)
-        fld=a['field']
-        data=c.trText(ele)
-        @field[fld]=data
-        warn "Assign #{fld} [#{data}]" if ENV['VER']
+        str << ele=c.cutoutFrame(len)
+        @field.update(c.assignStr(ele))
       end
     end
     return str
   end
+
   def rspfrm
     @frame=yield
     putStr
     @vq.each do |e,ele|
-      e.verify(ele)
+      e.verifyStr(ele)
     end
     return @field
   end

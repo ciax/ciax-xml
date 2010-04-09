@@ -72,7 +72,7 @@ class XmlDb
     @doc.name
   end
 
-  def trText(code)
+  def tr_text(code)
     @doc.attributes.each_attribute do |a|
       case a.expanded_name
       when 'mask'
@@ -88,7 +88,7 @@ class XmlDb
     code.to_s
   end
 
-  def getText(var)
+  def get_text(var)
     return @doc.text unless r=@doc.attributes['ref']
     if var[r]
       return var[r]
@@ -98,3 +98,5 @@ class XmlDb
   end
 
 end
+
+

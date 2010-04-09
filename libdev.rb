@@ -12,7 +12,7 @@ class Dev < XmlDb
     end
   end
 
-  def calCc(str)
+  def calc_cc(str)
     a=@doc.attributes
     chk=0
     case a['method']
@@ -31,3 +31,4 @@ class Dev < XmlDb
     {a['var'] => val}
   end
 end
+

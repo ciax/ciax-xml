@@ -8,17 +8,17 @@ class DevStat < Dev
     @vq=Hash.new
   end
 
-  def cutoutFrame(len)
+  def cut_frame(len)
     warn "Too short (#{@frame.size-len})" if @frame.size < len
     return @frame.slice!(0,len)
   end
 
-  def verifyStr(raw)
-    str=trText(raw)
+  def verify_str(raw)
+    str=tr_text(raw)
     pass=String.new
     each do |d| #Match each case
       begin
-        text=d.getText(@var)
+        text=d.get_text(@var)
       rescue
         raise $! if @vq[self]
         warn "#{$!} and code [#{str}] into queue" if ENV['VER']
@@ -42,28 +42,28 @@ class DevStat < Dev
     raise "No error desctiption for #{d['label']}"
   end
 
-  def assignStr(raw)
+  def assign_str(raw)
     fld=@doc.attributes['field']
-    str=trText(raw)
+    str=tr_text(raw)
     warn "Assign #{fld} [#{str}]" if ENV['VER']
     {fld => str}
   end
 
-  def putStr
+  def get_field
     str=String.new
     each do |c|
       len=c['length'].to_i
       case c.name
       when 'ccrange'
-        ccstr=c.putStr
-        @var.update(c.calCc(ccstr))
+        ccstr=c.get_field
+        @var.update(c.calc_cc(ccstr))
         str << ccstr
       when 'verify'
-        str << ele=c.cutoutFrame(len)
-        c.verifyStr(ele)
+        str << ele=c.cut_frame(len)
+        c.verify_str(ele)
       when 'assign'
-        str << ele=c.cutoutFrame(len)
-        @field.update(c.assignStr(ele))
+        str << ele=c.cut_frame(len)
+        @field.update(c.assign_str(ele))
       end
     end
     return str
@@ -71,10 +71,17 @@ class DevStat < Dev
 
   def rspfrm
     @frame=yield
-    putStr
+    get_field
     @vq.each do |e,ele|
-      e.verifyStr(ele)
+      e.verify_str(ele)
     end
     return @field
   end
 end
+
+
+
+
+
+
+

@@ -22,6 +22,7 @@ class XmlDb
     @prefix=''
   end
 
+  # Public Method
   public
   def select_id(id)
     begin
@@ -91,6 +92,7 @@ class XmlDb
     raise mkmsg(text)
   end
 
+  # Private Method
   private
   def copy_self(e)
     d=clone

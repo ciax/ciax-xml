@@ -8,7 +8,7 @@ class DevStat < Dev
     @verify_later=Hash.new
   end
 
-  def rspfrm
+  def devstat
     @frame=yield
     get_field
     @verify_later.each do |e,ele|
@@ -81,3 +81,4 @@ class DevStat < Dev
   end
 
 end
+

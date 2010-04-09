@@ -2,6 +2,15 @@
 require "libdev"
 TopNode='//cmdframe'
 class DevCtrl < Dev
+  def sndfrm
+    node?('//ccrange') do |e|
+      @ccstr=e.get_string
+      @var.update(e.calc_cc(@ccstr))
+    end
+    get_string
+  end
+
+  protected
   def get_string
     str=String.new
     each do |d|
@@ -15,13 +24,6 @@ class DevCtrl < Dev
       end
     end
     str
-  end
-  def sndfrm
-    node?('//ccrange') do |e|
-      @ccstr=e.get_string
-      @var.update(e.calc_cc(@ccstr))
-    end
-    get_string
   end
 end
 

@@ -5,7 +5,8 @@ include REXML
 class XmlDb
   protected
   attr_writer :doc
-  private
+
+
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
@@ -17,18 +18,6 @@ class XmlDb
         list_id('/*')
       end
       raise("No such a file")
-    end
-  end
-  def selfcp(e)
-    d=clone
-    d.doc=e
-    d
-  end
-  # Error Handling
-  def list_id(xpath)
-    @doc.elements.each(xpath+'/[@id]') do |d|
-      a=d.attributes
-      warn "#{a['id']}\t:#{a['label']}"
     end
   end
 
@@ -46,7 +35,7 @@ class XmlDb
   def node?(xpath)
     e=@doc.elements[TopNode+xpath]
     return unless e
-    yield selfcp(e)
+    yield copy_self(e)
     self
   end
 
@@ -59,10 +48,10 @@ class XmlDb
     @doc.elements.each do |e|
       if e.name == 'select' and @sel
         @sel.elements.each do |s|
-          yield selfcp(s)
+          yield copy_self(s)
         end
       else
-        yield selfcp(e)
+        yield copy_self(e)
       end
     end
     self
@@ -97,6 +86,18 @@ class XmlDb
     end
   end
 
+  private
+  def copy_self(e)
+    d=clone
+    d.doc=e
+    d
+  end
+  # Error Handling
+  def list_id(xpath)
+    @doc.elements.each(xpath+'/[@id]') do |d|
+      a=d.attributes
+      warn "#{a['id']}\t:#{a['label']}"
+    end
+  end
+
 end
-
-

@@ -8,6 +8,16 @@ class DevStat < Dev
     @vq=Hash.new
   end
 
+  def rspfrm
+    @frame=yield
+    get_field
+    @vq.each do |e,ele|
+      e.verify_str(ele)
+    end
+    return @field
+  end
+
+  protected
   def cut_frame(len)
     warn "Too short (#{@frame.size-len})" if @frame.size < len
     return @frame.slice!(0,len)
@@ -69,14 +79,6 @@ class DevStat < Dev
     return str
   end
 
-  def rspfrm
-    @frame=yield
-    get_field
-    @vq.each do |e,ele|
-      e.verify_str(ele)
-    end
-    return @field
-  end
 end
 
 

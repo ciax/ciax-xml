@@ -5,13 +5,13 @@ class DevStat < Dev
   def initialize(dev,cmd)
     super(dev,cmd)
     @field={'device'=>dev}
-    @vq=Hash.new
+    @vqueue=Hash.new
   end
 
   def rspfrm
     @frame=yield
     get_field
-    @vq.each do |e,ele|
+    @vqueue.each do |e,ele|
       e.verify_str(ele)
     end
     return @field
@@ -26,30 +26,30 @@ class DevStat < Dev
   def verify_str(raw)
     str=tr_text(raw)
     pass=String.new
-    each do |d| #Match each case
+    each do |e| #Match each case
       begin
-        text=d.get_text(@var)
+        text=e.get_text(@var)
       rescue
-        raise $! if @vq[self]
+        raise $! if @vqueue[self]
         warn "#{$!} and code [#{str}] into queue" if ENV['VER']
-        @vq[self]=raw
+        @vqueue[self]=raw
         return
       end
-      pass=text if d['type'] == 'pass'
+      pass=text if e['type'] == 'pass'
       if  text == str or text == nil
-        case d['type']
+        case e['type']
         when 'pass'
-          warn d['msg'] if ENV['VER']
+          warn e['msg'] if ENV['VER']
         when 'warn'
-          warn d['msg'] + "[ (#{str}) for (#{pass}) ]"
+          warn e['msg'] + "[ (#{str}) for (#{pass}) ]"
         when 'error'
-          raise d['msg'] + "[ (#{str}) for (#{pass}) ]"
+          raise e['msg'] + "[ (#{str}) for (#{pass}) ]"
         end
-        select_id(d['option']) if d['option']
+        select_id(e['option']) if e['option']
         return
       end
     end
-    raise "No error desctiption for #{d['label']}"
+    raise "No error desctiption for #{e['label']}"
   end
 
   def assign_str(raw)
@@ -61,19 +61,18 @@ class DevStat < Dev
 
   def get_field
     str=String.new
-    each do |c|
-      len=c['length'].to_i
-      case c.name
+    each do |e|
+      len=e['length'].to_i
+      case e.name
       when 'ccrange'
-        ccstr=c.get_field
-        @var.update(c.calc_cc(ccstr))
-        str << ccstr
+        str << ccstr=e.get_field
+        @var.update(e.calc_cc(ccstr))
       when 'verify'
-        str << ele=c.cut_frame(len)
-        c.verify_str(ele)
+        str << ele=e.cut_frame(len)
+        e.verify_str(ele)
       when 'assign'
-        str << ele=c.cut_frame(len)
-        @field.update(c.assign_str(ele))
+        str << ele=e.cut_frame(len)
+        @field.update(e.assign_str(ele))
       end
     end
     return str

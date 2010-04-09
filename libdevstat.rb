@@ -5,13 +5,13 @@ class DevStat < Dev
   def initialize(dev,cmd)
     super(dev,cmd)
     @field={'device'=>dev}
-    @vqueue=Hash.new
+    @verify_later=Hash.new
   end
 
   def rspfrm
     @frame=yield
     get_field
-    @vqueue.each do |e,ele|
+    @verify_later.each do |e,ele|
       e.verify_str(ele)
     end
     return @field
@@ -30,9 +30,9 @@ class DevStat < Dev
       begin
         text=e.get_text(@var)
       rescue
-        raise $! if @vqueue[self]
+        raise $! if @verify_later[self]
         warn "#{$!} and code [#{str}] into queue" if ENV['VER']
-        @vqueue[self]=raw
+        @verify_later[self]=raw
         return
       end
       pass=text if e['type'] == 'pass'
@@ -79,10 +79,3 @@ class DevStat < Dev
   end
 
 end
-
-
-
-
-
-
-

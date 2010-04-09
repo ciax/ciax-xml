@@ -6,7 +6,6 @@ class XmlDb
   protected
   attr_writer :doc
 
-
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
@@ -79,11 +78,7 @@ class XmlDb
 
   def get_text(var)
     return @doc.text unless r=@doc.attributes['ref']
-    if var[r]
-      return var[r]
-    else
-      raise "No reference for [#{r}]"
-    end
+    var[r] || raise("No reference for [#{r}]")
   end
 
   private

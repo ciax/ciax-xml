@@ -3,7 +3,9 @@ require "rexml/document"
 include REXML
 #TopNode required
 class XmlDb
+  protected
   attr_writer :doc
+  private
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
@@ -12,7 +14,7 @@ class XmlDb
     rescue
       Dir.glob("#{pre}-*.xml").each do |p|
         @doc=Document.new(open(p)).root
-        listId('/*')
+        list_id('/*')
       end
       raise("No such a file")
     end
@@ -22,12 +24,20 @@ class XmlDb
     d.doc=e
     d
   end
-  
+  # Error Handling
+  def list_id(xpath)
+    @doc.elements.each(xpath+'/[@id]') do |d|
+      a=d.attributes
+      warn "#{a['id']}\t:#{a['label']}"
+    end
+  end
+
+  public
   def select_id(id)
     begin
       @sel=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
     rescue
-      listId(TopNode+'//select')
+      list_id(TopNode+'//select')
       raise("No such a command")
     end
     self
@@ -87,11 +97,4 @@ class XmlDb
     end
   end
 
-  # Error Handling
-  def listId(xpath)
-    @doc.elements.each(xpath+'/[@id]') do |d|
-      a=d.attributes
-      warn "#{a['id']}\t:#{a['label']}"
-    end
-  end
 end

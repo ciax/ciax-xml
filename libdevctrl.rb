@@ -16,7 +16,7 @@ class DevCtrl < Dev
     each do |d|
       case d.name
       when 'data'
-        str << d.tr_text(d.get_text(@var))
+        str << d.tr_text(d.get_text)
       when 'ccrange'
         str << @ccstr
       else

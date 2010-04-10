@@ -26,18 +26,9 @@ class DevStat < Dev
   def verify_str(raw)
     @prefix="Verify:"
     str=tr_text(raw)
-    pass=String.new
-    each do |e| #Match each case
-      begin
-        text=e.get_text(@var)
-      rescue
-        raise $! if @verify_later[self]
-        warn "#{$!} and code [#{str}] into queue" if ENV['VER']
-        @verify_later[self]=raw
-        return
-      end
-      pass=text if e['type'] == 'pass'
-      if  text == str or text == nil
+    begin
+      pass=text_with_attr('type','pass')
+      node_with_text(str) do |e| #Match each case
         case e['type']
         when 'pass'
           e.msg("[#{str}]")
@@ -49,8 +40,13 @@ class DevStat < Dev
         select_id(e['option']) if e['option']
         return
       end
+    rescue
+      raise $! if @verify_later[self]
+      msg "#{$!} and code [#{str}] into queue"
+      @verify_later[self]=raw
+      return
     end
-    raise "No error desctiption for #{e['label']}"
+    raise "No error desctiption for #{self['label']}"
   end
 
   def assign_str(raw)
@@ -81,4 +77,3 @@ class DevStat < Dev
   end
 
 end
-

@@ -2,7 +2,6 @@
 require "libxmldb"
 class Dev < XmlDb
   def initialize(dev,cmd)
-    @var=Hash.new
     begin
       super('ddb',dev)
       select_id(cmd)
@@ -32,4 +31,3 @@ class Dev < XmlDb
     {a['var'] => val}
   end
 end
-

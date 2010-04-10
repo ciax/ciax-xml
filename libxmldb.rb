@@ -20,6 +20,7 @@ class XmlDb
     end
     @title="#{db}/#{type}".upcase
     @prefix=''
+    @var=Hash.new
   end
 
   # Public Method
@@ -34,6 +35,11 @@ class XmlDb
     self
   end
 
+  def [](key)
+    a=@doc.attributes[key] || return
+    a.to_s
+  end
+
   def node?(xpath)
     e=@doc.elements[TopNode+xpath]
     return unless e
@@ -41,9 +47,17 @@ class XmlDb
     self
   end
 
-  def [](key)
-    a=@doc.attributes[key] || return
-    a.to_s
+  def node_with_text(text)
+    @doc.elements.each do |e|
+      d=copy_self(e)
+      yield d if d.get_text == text
+    end
+  end
+
+  def text_with_attr(key,val)
+    @doc.each_element_with_attribute(key,val) do |e|
+      return copy_self(e).get_text
+    end
   end
 
   def each
@@ -63,6 +77,10 @@ class XmlDb
     @doc.name
   end
 
+  def attributes
+    @doc.attributes
+  end
+
   def tr_text(code)
     @doc.attributes.each_attribute do |a|
       case a.expanded_name
@@ -79,9 +97,9 @@ class XmlDb
     code.to_s
   end
 
-  def get_text(var)
+  def get_text
     return @doc.text unless r=@doc.attributes['ref']
-    var[r] || raise("No reference for [#{r}]")
+    @var[r] || raise("No reference for [#{r}]")
   end
 
   def msg(text='')

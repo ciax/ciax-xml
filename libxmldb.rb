@@ -54,6 +54,13 @@ class XmlDb
     end
   end
 
+  def node_with_name(name)
+    @doc.elements.each do |e|
+      next unless e.name == name
+      yield copy_self(e)
+    end
+  end
+
   def text_with_attr(key,val)
     @doc.each_element_with_attribute(key,val) do |e|
       return copy_self(e).get_text
@@ -77,21 +84,25 @@ class XmlDb
     @doc.name
   end
 
-  def attributes
-    @doc.attributes
+  def attr_to_hash
+    h=Hash.new
+    @doc.attributes.each do |key,val|
+      h[key]=val
+    end
+    h
   end
-
+  
   def tr_text(code)
-    @doc.attributes.each_attribute do |a|
-      case a.expanded_name
+    @doc.attributes.each do |key,val|
+      case key
       when 'mask'
-        code=eval "#{code}#{a.value}"
+        code=eval "#{code}#{val}"
       when 'pack'
-        code=[code].pack(a.value)
+        code=[code.to_i].pack(val)
       when 'unpack'
-        code=code.unpack(a.value).first
+        code=code.unpack(val).first
       when 'format'
-        code=a.value % code
+        code=val % code
       end
     end
     code.to_s

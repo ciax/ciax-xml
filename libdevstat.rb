@@ -31,18 +31,18 @@ class DevStat < Dev
       node_with_text(str) do |e| #Match each case
         case e['type']
         when 'pass'
-          e.msg("[#{str}]")
+          @v.msg(e['msg']+"[#{str}]")
         when 'warn'
-          e.msg("[ (#{str}) for (#{pass}) ]")
+          @v.msg(e['msg']+"[ (#{str}) for (#{pass}) ]")
         when 'error'
-          e.err("[ (#{str}) for (#{pass}) ]")
+          @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
         end
         select_id(e['option']) if e['option']
         return
       end
     rescue
       raise $! if @verify_later[self]
-      msg "#{$!} and code [#{str}] into queue"
+      @v.msg "#{$!} and code [#{str}] into queue"
       @verify_later[self]=raw
       return
     end
@@ -50,10 +50,9 @@ class DevStat < Dev
   end
 
   def assign_str(raw)
-    @prefix="Assign:"
     fld=@doc.attributes['field']
     str=tr_text(raw) 
-    msg("[#{fld}] <- [#{str}]")
+    @v.msg("[#{fld}] <- [#{str}]")
     {fld => str}
   end
 

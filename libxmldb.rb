@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "rexml/document"
 include REXML
+require "libverbose"
 #TopNode required
 class XmlDb
   protected
@@ -18,8 +19,7 @@ class XmlDb
       end
       raise("No such a file")
     end
-    @title="#{db}/#{type}".upcase
-    @prefix=''
+    @v=Verbose.new("#{db}/#{type}".upcase)
     @var=Hash.new
   end
 
@@ -118,26 +118,12 @@ class XmlDb
     @doc.name
   end
 
-  def msg(text='')
-    warn mkmsg(text) if ENV['VER']
-  end
-
-  def err(text='')
-    raise mkmsg(text)
-  end
-
   # Private Method
   private
   def copy_self(e)
     d=clone
     d.doc=e
     d
-  end
-
-  def mkmsg(text)
-    msg=@doc.attributes['msg']
-    msg = msg ? "#{msg} " : ''
-    "#{@title}:#{@prefix}#{msg}#{text}".dump
   end
 
   # Error Handling

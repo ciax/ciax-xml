@@ -26,8 +26,7 @@ class Dev < XmlDb
     end
     fmt=a['format'] || '%c'
     val=(fmt % chk).to_s
-    @prefix="ChkCode:"
-    msg "[#{a['method']}/#{a['format']}] -> [#{val}]"
+    @v.msg "[#{a['method']}/#{a['format']}] -> [#{val}]"
     {a['var'] => val}
   end
 end

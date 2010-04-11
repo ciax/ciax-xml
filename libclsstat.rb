@@ -38,7 +38,7 @@ class ClsStat < Cls
         val=d.get_fieldset
         set['val']=val
       end
-      msg "=[#{val}]"
+      @v.msg("#{c['msg']}=[#{val}]")
       c.node_with_name('symbol') do |d|
         case d['type']
         when 'range'

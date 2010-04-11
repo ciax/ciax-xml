@@ -10,15 +10,16 @@ class ClsStat < Cls
       when 'binary'
         str << (f.to_i >> e['bit'].to_i & 1).to_s
       when 'float'
-        x = e['factor'] || "1"
-        c = e['offset'] || "0"
-        fmt = e['format'] || "%f"
-        val=(x.to_f * f.to_f + c.to_f).to_s
-        str << fmt % val
+        e.attr?('decimal') do |n|
+          n=n.to_i
+          f=f[0..-n-1]+'.'+f[-n..-1]
+        end
+        str << e.tr_text(f)
       when 'int'
-        val=e.tr_text(f)
-        fmt = e['format'] || "%d"
-        str << fmt % val.to_s
+        e.attr?('signed') do 
+          f=[f.to_i].pack('S').unpack('s').first
+        end
+        str << e.tr_text(f)
       else
         str << f
       end
@@ -67,6 +68,3 @@ class ClsStat < Cls
     return @res
   end
 end
-
-
-

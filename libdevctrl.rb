@@ -26,9 +26,3 @@ class DevCtrl < Dev
     str
   end
 end
-
-
-
-
-
-

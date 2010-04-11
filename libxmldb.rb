@@ -80,6 +80,11 @@ class XmlDb
     self
   end
 
+  def attr?(key)
+    val=@doc.attributes[key]
+    yield val if val
+  end
+
   def attr_to_hash
     h=Hash.new
     @doc.attributes.each do |key,val|

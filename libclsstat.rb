@@ -42,7 +42,7 @@ class ClsStat < Cls
         case d['type']
         when 'range'
           d.each do |e|
-            min,max=e.get_text.split(':')
+            min,max=e.text.split(':')
             next if max.to_f < val.to_f
             next if min.to_f > val.to_f
             set.update(e.attr_to_hash)
@@ -67,5 +67,6 @@ class ClsStat < Cls
     return @res
   end
 end
+
 
 

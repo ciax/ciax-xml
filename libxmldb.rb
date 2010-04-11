@@ -50,7 +50,7 @@ class XmlDb
   def node_with_text(text)
     @doc.elements.each do |e|
       d=copy_self(e)
-      yield d if d.get_text == text
+      yield d if d.text == text
     end
   end
 
@@ -63,7 +63,7 @@ class XmlDb
 
   def text_with_attr(key,val)
     @doc.each_element_with_attribute(key,val) do |e|
-      return copy_self(e).get_text
+      return copy_self(e).text
     end
   end
 
@@ -80,10 +80,6 @@ class XmlDb
     self
   end
 
-  def name
-    @doc.name
-  end
-
   def attr_to_hash
     h=Hash.new
     @doc.attributes.each do |key,val|
@@ -98,7 +94,7 @@ class XmlDb
       when 'mask'
         code=eval "#{code}#{val}"
       when 'pack'
-        code=[code.to_i].pack(val)
+        code=[code].pack(val)
       when 'unpack'
         code=code.unpack(val).first
       when 'format'
@@ -108,9 +104,13 @@ class XmlDb
     code.to_s
   end
 
-  def get_text
+  def text
     return @doc.text unless r=@doc.attributes['ref']
     @var[r] || raise("No reference for [#{r}]")
+  end
+
+  def name
+    @doc.name
   end
 
   def msg(text='')
@@ -144,3 +144,4 @@ class XmlDb
   end
 
 end
+

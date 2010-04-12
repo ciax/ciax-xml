@@ -26,7 +26,7 @@ class DevStat < Dev
   def verify_str(raw)
     str=tr_text(raw)
     begin
-      pass=text_with_attr('type','pass')
+      pass=node_with_attr('type','pass').text
       node_with_text(str) do |e| #Match each case
         case e['type']
         when 'pass'

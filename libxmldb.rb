@@ -40,13 +40,6 @@ class XmlDb
     a.to_s
   end
 
-#  def node?(xpath)
-#    e=@doc.elements[TopNode+xpath]
-#    return unless e
-#    yield copy_self(e)
-#    self
-#  end
-
   def node_with_text(text)
     @doc.elements.each do |e|
       d=copy_self(e)
@@ -55,27 +48,20 @@ class XmlDb
   end
 
   def node_with_name(name)
-    @doc.elements.each do |e|
-      next unless e.name == name
+    @doc.elements.each("./#{name}") do |e|
       yield copy_self(e)
     end
   end
 
-  def text_with_attr(key,val)
+  def node_with_attr(key,val)
     @doc.each_element_with_attribute(key,val) do |e|
-      return copy_self(e).text
+      return copy_self(e)
     end
   end
 
   def each
     @doc.elements.each do |e|
-      if e.name == 'select' and @sel
-        @sel.elements.each do |s|
-          yield copy_self(s)
-        end
-      else
-        yield copy_self(e)
-      end
+      yield copy_self(e)
     end
     self
   end

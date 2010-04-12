@@ -18,7 +18,8 @@ class DevStat < Dev
   end
 
   protected
-  def cut_frame(len)
+  def cut_frame
+    len=@doc.attributes['length'].to_i
     warn "Too short (#{@@frame.size-len})" if @@frame.size < len
     return @@frame.slice!(0,len)
   end
@@ -37,38 +38,38 @@ class DevStat < Dev
           @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
         end
         select_id(e['option']) if e['option']
-        return
+        return raw
       end
     rescue
       raise $! if @verify_later[self]
       @v.msg "#{$!} and code [#{str}] into queue"
       @verify_later[self]=raw
-      return
+      return raw
     end
     raise "No error desctiption for #{self['label']}"
   end
 
-  def assign_str(raw)
-    str=decode(raw) 
-    fld=@doc.attributes['field']
-    @v.msg("[#{fld}] <- [#{str}]")
-    {fld => str}
+  def assign_str
+    raw=cut_frame
+    attr?('field') do |fld|
+      str=decode(raw) 
+      @v.msg("[#{fld}] <- [#{str}]")
+      @@field[fld]=str
+    end
+    raw
   end
 
   def get_field
     str=String.new
     each do |e|
-      len=e['length'].to_i
       case e.name
       when 'ccrange'
         str << ccstr=e.get_field
         @var.update(e.calc_cc(ccstr))
       when 'verify'
-        str << ele=e.cut_frame(len)
-        e.verify_str(ele)
+        str << e.verify_str(e.cut_frame)
       when 'assign'
-        str << ele=e.cut_frame(len)
-        @@field.update(e.assign_str(ele))
+        str << e.assign_str
       end
     end
     return str

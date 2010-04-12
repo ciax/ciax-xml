@@ -21,9 +21,7 @@ class Dev < XmlDb
     when 'len'
       chk=str.length
     when 'bcc'
-      str.each_byte do |c|
-        chk ^= c 
-      end
+      str.each_byte {|c| chk ^= c } 
     else
       raise "No such CC method #{a['method']}"
     end

@@ -16,7 +16,7 @@ class DevCtrl < Dev
     each do |d|
       case d.name
       when 'data'
-        str << d.tr_text(d.text)
+        str << d.text
       when 'ccrange'
         str << @ccstr
       else
@@ -24,5 +24,20 @@ class DevCtrl < Dev
       end
     end
     str
+  end
+  
+  def text
+    code=super
+    @doc.attributes.each do |key,val|
+      case key
+      when 'mask'
+        code=eval "#{code}#{val}"
+      when 'pack'
+        code=[code].pack(val)
+      when 'format'
+        code=val % code
+      end
+    end
+    code.to_s
   end
 end

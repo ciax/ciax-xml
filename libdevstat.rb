@@ -4,27 +4,27 @@ TopNode='//rspframe'
 class DevStat < Dev
   def initialize(dev,cmd)
     super(dev,cmd)
-    @field={'device'=>dev}
+    @@field={'device'=>dev}
     @verify_later=Hash.new
   end
 
   def devstat
-    @frame=yield
+    @@frame=yield
     get_field
     @verify_later.each do |e,ele|
       e.verify_str(ele)
     end
-    return @field
+    return @@field
   end
 
   protected
   def cut_frame(len)
-    warn "Too short (#{@frame.size-len})" if @frame.size < len
-    return @frame.slice!(0,len)
+    warn "Too short (#{@@frame.size-len})" if @@frame.size < len
+    return @@frame.slice!(0,len)
   end
 
   def verify_str(raw)
-    str=tr_text(raw)
+    str=decode(raw)
     begin
       pass=node_with_attr('type','pass').text
       node_with_text(str) do |e| #Match each case
@@ -49,8 +49,8 @@ class DevStat < Dev
   end
 
   def assign_str(raw)
+    str=decode(raw) 
     fld=@doc.attributes['field']
-    str=tr_text(raw) 
     @v.msg("[#{fld}] <- [#{str}]")
     {fld => str}
   end
@@ -68,10 +68,18 @@ class DevStat < Dev
         e.verify_str(ele)
       when 'assign'
         str << ele=e.cut_frame(len)
-        @field.update(e.assign_str(ele))
+        @@field.update(e.assign_str(ele))
       end
     end
     return str
   end
 
+  private
+  def decode(code)
+    attr?('unpack') do |val|
+      code=code.unpack(val).first
+    end
+    code.to_s
+  end
+  
 end

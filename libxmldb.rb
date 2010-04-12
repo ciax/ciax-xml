@@ -25,15 +25,6 @@ class XmlDb
 
   # Public Method
   public
-  def select_id(id)
-    begin
-      @sel=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
-    rescue
-      list_id(TopNode+'//select')
-      raise("No such a command")
-    end
-    self
-  end
 
   def [](key)
     a=@doc.attributes[key] || return
@@ -79,15 +70,9 @@ class XmlDb
     h
   end
   
-  def tr_text(code)
+  def translate(code)
     @doc.attributes.each do |key,val|
       case key
-      when 'mask'
-        code=eval "#{code}#{val}"
-      when 'pack'
-        code=[code].pack(val)
-      when 'unpack'
-        code=code.unpack(val).first
       when 'format'
         code=val % code
       end
@@ -121,4 +106,3 @@ class XmlDb
   end
 
 end
-

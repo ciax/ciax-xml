@@ -2,6 +2,15 @@
 require "libcls"
 TopNode='//status'
 class ClsStat < Cls
+  public
+  def clsstat(fields)
+    @var=fields
+    @res=Hash.new
+    putText
+    return @res
+  end
+
+  protected
   def get_fieldset
     str=String.new
     each do |e| #element(split and concat)
@@ -14,12 +23,12 @@ class ClsStat < Cls
           n=n.to_i
           f=f[0..-n-1]+'.'+f[-n..-1]
         end
-        str << e.tr_text(f)
+        str << e.translate(f)
       when 'int'
         e.attr?('signed') do 
           f=[f.to_i].pack('S').unpack('s').first
         end
-        str << e.tr_text(f)
+        str << e.translate(f)
       else
         str << f
       end
@@ -60,11 +69,5 @@ class ClsStat < Cls
       @res[px + c['id']]=set
     end
   end
-  
-  def clsstat(fields)
-    @var=fields
-    @res=Hash.new
-    putText
-    return @res
-  end
+
 end

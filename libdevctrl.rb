@@ -3,7 +3,7 @@ require "libdev"
 TopNode='//cmdframe'
 class DevCtrl < Dev
   def devcmd
-    node?('//ccrange') do |e|
+    node_with_name('ccrange') do |e|
       @ccstr=e.get_string
       @var.update(e.calc_cc(@ccstr))
     end

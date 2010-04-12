@@ -24,7 +24,6 @@ class DevStat < Dev
   end
 
   def verify_str(raw)
-    @prefix="Verify:"
     str=tr_text(raw)
     begin
       pass=text_with_attr('type','pass')

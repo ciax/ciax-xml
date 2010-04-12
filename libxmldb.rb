@@ -40,12 +40,12 @@ class XmlDb
     a.to_s
   end
 
-  def node?(xpath)
-    e=@doc.elements[TopNode+xpath]
-    return unless e
-    yield copy_self(e)
-    self
-  end
+#  def node?(xpath)
+#    e=@doc.elements[TopNode+xpath]
+#    return unless e
+#    yield copy_self(e)
+#    self
+#  end
 
   def node_with_text(text)
     @doc.elements.each do |e|

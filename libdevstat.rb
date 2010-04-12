@@ -64,8 +64,7 @@ class DevStat < Dev
     each do |e|
       case e.name
       when 'ccrange'
-        str << ccstr=e.get_field
-        e.calc_cc(ccstr)
+        e.calc_cc(e.get_field)
       when 'verify'
         str << e.verify_str(e.cut_frame)
       when 'assign'

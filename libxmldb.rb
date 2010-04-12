@@ -20,7 +20,7 @@ class XmlDb
       raise("No such a file")
     end
     @v=Verbose.new("#{db}/#{type}".upcase)
-    @var=Hash.new
+    @@var=Hash.new
   end
 
   # Public Method
@@ -82,7 +82,7 @@ class XmlDb
 
   def text
     return @doc.text unless r=@doc.attributes['ref']
-    @var[r] || raise("No reference for [#{r}]")
+    @@var[r] || raise("No reference for [#{r}]")
   end
 
   def name

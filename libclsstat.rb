@@ -4,7 +4,7 @@ TopNode='//status'
 class ClsStat < Cls
   public
   def clsstat(fields)
-    @var=fields
+    @@var=fields
     @res=Hash.new
     putText
     return @res
@@ -14,7 +14,7 @@ class ClsStat < Cls
   def get_fieldset
     str=String.new
     each do |e| #element(split and concat)
-      f=@var[e['ref']] || return
+      f=@@var[e['ref']] || return
       case e.name
       when 'binary'
         str << (f.to_i >> e['bit'].to_i & 1).to_s

@@ -28,7 +28,7 @@ class Dev < XmlDb
     fmt=a['format'] || '%c'
     val=(fmt % chk).to_s
     @v.msg "[#{a['method']}/#{a['format']}] -> [#{val}]"
-    {a['var'] => val}
+    @@var[a['var']]=val
   end
 
   def select_id(id)

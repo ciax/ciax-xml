@@ -5,7 +5,7 @@ class DevCtrl < Dev
   def devcmd
     node_with_name('ccrange') do |e|
       @ccstr=e.get_string
-      @var.update(e.calc_cc(@ccstr))
+      e.calc_cc(@ccstr)
     end
     get_string
   end
@@ -20,7 +20,7 @@ class DevCtrl < Dev
       when 'ccrange'
         str << @ccstr
       else
-        str << @var[d.name]
+        str << @@var[d.name]
       end
     end
     str

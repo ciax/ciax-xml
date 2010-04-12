@@ -65,7 +65,7 @@ class DevStat < Dev
       case e.name
       when 'ccrange'
         str << ccstr=e.get_field
-        @var.update(e.calc_cc(ccstr))
+        e.calc_cc(ccstr)
       when 'verify'
         str << e.verify_str(e.cut_frame)
       when 'assign'

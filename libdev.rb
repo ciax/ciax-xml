@@ -27,7 +27,7 @@ class Dev < XmlDb
     end
     val=format(chk)
     @v.msg "[#{a['method']}/#{a['format']}] -> [#{val}]"
-    @@var[a['var']]=val
+    @var[a['var']]=val
   end
 
   def select_id(id)

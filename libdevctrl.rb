@@ -20,7 +20,7 @@ class DevCtrl < Dev
       when 'ccrange'
         str << @ccstr
       else
-        str << @@var[d.name]
+        str << @var[d.name]
       end
     end
     str

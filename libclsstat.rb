@@ -4,17 +4,17 @@ TopNode='//status'
 class ClsStat < Cls
   public
   def clsstat(fields)
-    @@var=fields
-    @res=Hash.new
+    @field=fields
+    @stat=Hash.new
     putText
-    return @res
+    return @stat
   end
 
   protected
   def get_fieldset
     str=String.new
     each do |e| #element(split and concat)
-      f=@@var[e['ref']] || return
+      f=@field[e['ref']] || return
       case e.name
       when 'binary'
         str << (f.to_i >> e['bit'].to_i & 1).to_s
@@ -41,13 +41,12 @@ class ClsStat < Cls
     each do |c| # var
       set=Hash.new
       set.update(c.attr_to_hash)
-      @prefix="VER:#{set['id']}"
       val=String.new
       c.node_with_name('fields') do |d|
         val=d.get_fieldset
         set['val']=val
-        @v.msg("#{d['msg']}=[#{val}]")
       end
+      @v.msg("#{c['id']}=[#{val}]")
       c.node_with_name('symbol') do |d|
         case d['type']
         when 'range'
@@ -64,9 +63,8 @@ class ClsStat < Cls
           end
         end
       end
-      px=(@n) ? "#{@n}:" : ''
       set.delete('id')
-      @res[px + c['id']]=set
+      @stat[c['id']]=set
     end
   end
 

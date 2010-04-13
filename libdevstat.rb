@@ -4,24 +4,24 @@ TopNode='//rspframe'
 class DevStat < Dev
   def initialize(dev,cmd)
     super(dev,cmd)
-    @@field={'device'=>dev}
+    @field={'device'=>dev}
     @verify_later=Hash.new
   end
 
   def devstat
-    @@frame=yield
+    @frame=yield
     get_field
     @verify_later.each do |e,ele|
       e.verify_str(ele)
     end
-    return @@field
+    return @field
   end
 
   protected
   def cut_frame
     len=@doc.attributes['length'].to_i
-    warn "Too short (#{@@frame.size-len})" if @@frame.size < len
-    return @@frame.slice!(0,len)
+    warn "Too short (#{@frame.size-len})" if @frame.size < len
+    return @frame.slice!(0,len)
   end
 
   def verify_str(raw)
@@ -54,7 +54,7 @@ class DevStat < Dev
     attr?('field') do |fld|
       str=decode(raw) 
       @v.msg("[#{fld}] <- [#{str}]")
-      @@field[fld]=str
+      @field[fld]=str
     end
     raw
   end

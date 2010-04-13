@@ -12,7 +12,7 @@ class DevStat < Dev
     @frame=yield
     get_field
     @verify_later.each do |e,ele|
-      e.verify_str(ele)
+      e.verify(ele)
     end
     return @field
   end
@@ -24,7 +24,7 @@ class DevStat < Dev
     return @frame.slice!(0,len)
   end
 
-  def verify_str(raw)
+  def verify(raw)
     str=decode(raw)
     begin
       pass=node_with_attr('type','pass').text
@@ -49,7 +49,7 @@ class DevStat < Dev
     raise "No error desctiption for #{self['label']}"
   end
 
-  def assign_str
+  def assign
     raw=cut_frame
     attr?('field') do |fld|
       str=decode(raw) 
@@ -64,11 +64,11 @@ class DevStat < Dev
     each do |e|
       case e.name
       when 'ccrange'
-        e.calc_cc(e.get_field)
+        e.checkcode(e.get_field)
       when 'verify'
-        str << e.verify_str(e.cut_frame)
+        str << e.verify(e.cut_frame)
       when 'assign'
-        str << e.assign_str
+        str << e.assign
       end
     end
     return str
@@ -83,3 +83,5 @@ class DevStat < Dev
   end
   
 end
+
+

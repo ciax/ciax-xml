@@ -14,20 +14,20 @@ class Dev < XmlDb
   # Public Method
   public
 
-  def calc_cc(str)
-    a=@doc.attributes
+  def checkcode(str)
+    method=self['method']
     chk=0
-    case a['method']
+    case method
     when 'len'
       chk=str.length
     when 'bcc'
       str.each_byte {|c| chk ^= c } 
     else
-      raise "No such CC method #{a['method']}"
+      raise "No such CC method #{method}"
     end
     val=format(chk)
-    @v.msg "[#{a['method']}/#{a['format']}] -> [#{val}]"
-    @var[a['var']]=val
+    @v.msg "[#{method.upcase}] -> [#{val}]"
+    @var[self['var']]=val
   end
 
   def select_id(id)
@@ -54,3 +54,4 @@ class Dev < XmlDb
   end
 
 end
+

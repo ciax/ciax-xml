@@ -6,7 +6,7 @@ class ClsStat < Cls
   def clsstat(fields)
     @field=fields
     @stat=Hash.new
-    putText
+    get_stat
     return @stat
   end
 
@@ -36,7 +36,7 @@ class ClsStat < Cls
     return str
   end
 
-  def putText
+  def get_stat
     str=String.new
     each do |c| # var
       set=Hash.new
@@ -69,3 +69,4 @@ class ClsStat < Cls
   end
 
 end
+

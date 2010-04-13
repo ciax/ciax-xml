@@ -17,7 +17,7 @@ class XmlDb
         @doc=Document.new(open(p)).root
         list_id('/*')
       end
-      raise("No such a file")
+      raise("No such a db")
     end
     @v=Verbose.new("#{db}/#{type}".upcase)
     @var=Hash.new
@@ -79,7 +79,7 @@ class XmlDb
 
   def text
     return @doc.text unless r=@doc.attributes['ref']
-    @var[r] || raise("No reference for [#{r}]")
+    @var[r] || raise(IndexError,"No reference for [#{r}]")
   end
 
   def name

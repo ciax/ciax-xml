@@ -40,7 +40,7 @@ class DevStat < Dev
         select_id(e['option']) if e['option']
         return raw
       end
-    rescue
+    rescue IndexError
       raise $! if @verify_later[self]
       @v.msg "#{$!} and code [#{str}] into queue"
       @verify_later[self]=raw

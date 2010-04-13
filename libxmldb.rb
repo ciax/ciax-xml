@@ -70,12 +70,9 @@ class XmlDb
     h
   end
   
-  def translate(code)
-    @doc.attributes.each do |key,val|
-      case key
-      when 'format'
-        code=val % code
-      end
+  def format(code)
+    attr?('format') do |fmt|
+      code=fmt % code
     end
     code.to_s
   end

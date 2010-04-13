@@ -18,7 +18,7 @@ class Verbose
   # Private Method
   private
   def mkmsg(text)
-    caller=caller(2).first[/`(.+?)[_']/,1].upcase
+    caller=caller(2).first[/([\w]+?)[_']/,1].upcase
     "#{@title}:#{caller}:#{text}".dump
   end
 end

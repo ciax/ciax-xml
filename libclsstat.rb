@@ -23,12 +23,12 @@ class ClsStat < Cls
           n=n.to_i
           f=f[0..-n-1]+'.'+f[-n..-1]
         end
-        str << e.translate(f)
+        str << e.format(f)
       when 'int'
         e.attr?('signed') do 
           f=[f.to_i].pack('S').unpack('s').first
         end
-        str << e.translate(f)
+        str << e.format(f)
       else
         str << f
       end
@@ -46,8 +46,8 @@ class ClsStat < Cls
       c.node_with_name('fields') do |d|
         val=d.get_fieldset
         set['val']=val
+        @v.msg("#{d['msg']}=[#{val}]")
       end
-      @v.msg("#{c['msg']}=[#{val}]")
       c.node_with_name('symbol') do |d|
         case d['type']
         when 'range'

@@ -25,8 +25,7 @@ class Dev < XmlDb
     else
       raise "No such CC method #{a['method']}"
     end
-    fmt=a['format'] || '%c'
-    val=(fmt % chk).to_s
+    val=format(chk)
     @v.msg "[#{a['method']}/#{a['format']}] -> [#{val}]"
     @@var[a['var']]=val
   end

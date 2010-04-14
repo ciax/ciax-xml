@@ -16,14 +16,14 @@ class ObjStat < Obj
   def get_stat
     each_node do |c| # var
       a=c.attr_to_hash
-      ref=a['ref']
-      a.delete('ref')
+      ref=a.delete('ref')
       set=@cstat[ref] || raise(IndexError,"No reference for #{a['ref']}") 
-      id=a['id'] ? a.delete('id') : ref
+      id=a.delete('id') || ref
+      a['label']+=' '+set['label'] if a['label']
       val=a['val']
       set.update(a)
       c.symbol(val,set)
-      @ostat[id]=set
+      @ostat["#{@type}:#{id}"]=set
     end
   end
 

@@ -19,6 +19,7 @@ class XmlDb
       end
       raise("No such a db")
     end
+    @type=type
     @v=Verbose.new("#{db}/#{type}".upcase)
     @var=Hash.new
   end

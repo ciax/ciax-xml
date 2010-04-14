@@ -9,6 +9,10 @@ class DevCtrl < Dev
     end
     get_string
   end
+  
+  def get_field(field)
+    @var.update(field)
+  end
 
   protected
   def get_string
@@ -16,7 +20,7 @@ class DevCtrl < Dev
     each do |d|
       case d.name
       when 'data'
-        str << d.text
+        str << d.encode(d.text)
       when 'ccrange'
         str << @ccstr
       else
@@ -26,19 +30,30 @@ class DevCtrl < Dev
     str
   end
   
-  def text
-    code=super
+  def encode(str)
+    attr?('operator') do |ope|
+      x=str.to_i
+      y=@doc.text.hex
+      case ope
+        when 'and'
+        str=x & y
+        when 'or'
+        str=x | y
+      end
+        @v.msg "(#{x} #{ope} #{y})=#{str}"
+    end
     @doc.attributes.each do |key,val|
       case key
-      when 'mask'
-        code=eval "#{code}#{val}"
       when 'pack'
-        code=[code].pack(val)
+        code=[str].pack(val)
+        hex='%#x' % code.unpack('s*').first
+        @v.msg "pack(#{val}) [#{str}] -> [#{hex}]"
+        str=code
       when 'format'
-        code=val % code
+        str=val % str
       end
     end
-    code.to_s
+    str
   end
-end
 
+end

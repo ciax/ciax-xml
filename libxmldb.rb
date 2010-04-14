@@ -50,7 +50,7 @@ class XmlDb
     end
   end
 
-  def each
+  def each_node
     @doc.elements.each do |e|
       yield copy_self(e)
     end
@@ -62,6 +62,12 @@ class XmlDb
     yield val if val
   end
 
+  def each_attr
+    @doc.attributes.each do |key,val|
+      yield key,val
+    end
+  end
+
   def attr_to_hash
     h=Hash.new
     @doc.attributes.each do |key,val|
@@ -69,7 +75,7 @@ class XmlDb
     end
     h
   end
-  
+
   def format(code)
     attr?('format') do |fmt|
       code=fmt % code

@@ -12,7 +12,7 @@ class ObjStat < Obj
 
   protected
   def get_stat
-    each do |c| # var
+    each_node do |c| # var
       a=c.attr_to_hash
       set=@cstat[a['ref']] || raise(IndexError,"No reference for #{a['ref']}") 
       a.delete('ref')
@@ -23,7 +23,7 @@ class ObjStat < Obj
       c.node_with_name('symbol') do |d|
         case d['type']
         when 'range'
-          d.each do |e|
+          d.each_node do |e|
             min,max=e.text.split(':')
             next if max.to_f < val.to_f
             next if min.to_f > val.to_f

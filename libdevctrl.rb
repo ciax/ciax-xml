@@ -17,7 +17,8 @@ class DevCtrl < Dev
   protected
   def get_string
     str=String.new
-    each do |d|
+    each_node do |d|
+      @v.msg "Node:#{d.name}"
       case d.name
       when 'data'
         str << d.encode(d.text)

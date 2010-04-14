@@ -40,7 +40,7 @@ class Dev < XmlDb
     self
   end
 
-  def each
+  def each_node
     super do |e|
       if e.name == 'select'
         raise "ID not selected" unless @sel

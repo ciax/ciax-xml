@@ -13,7 +13,7 @@ class ClsStat < Cls
   protected
   def get_fieldset
     str=String.new
-    each do |e| #element(split and concat)
+    each_node do |e| #element(split and concat)
       f=@field[e['ref']] || return
       case e.name
       when 'binary'
@@ -38,7 +38,7 @@ class ClsStat < Cls
 
   def get_stat
     str=String.new
-    each do |c| # var
+    each_node do |c| # var
       set=Hash.new
       set.update(c.attr_to_hash)
       val=String.new
@@ -50,7 +50,7 @@ class ClsStat < Cls
       c.node_with_name('symbol') do |d|
         case d['type']
         when 'range'
-          d.each do |e|
+          d.each_node do |e|
             min,max=e.text.split(':')
             next if max.to_f < val.to_f
             next if min.to_f > val.to_f

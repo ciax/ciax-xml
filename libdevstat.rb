@@ -61,7 +61,7 @@ class DevStat < Dev
 
   def get_field
     str=String.new
-    each do |e|
+    each_node do |e|
       case e.name
       when 'ccrange'
         e.checkcode(e.get_field)

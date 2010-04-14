@@ -6,5 +6,4 @@ input=~/.var/${cls}.mar
 [ -e $input ] || _die "no input file"
 output=~/.var/${obj}.mar
 objstat $obj < $input > $output &&
-#mar $output
- stv $output
+[ "$VER" ] && mar $output || stv $output

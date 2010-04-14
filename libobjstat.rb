@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
 require "libobj"
+require "libstat"
 TopNode='//status'
 class ObjStat < Obj
+  include Stat
   public
   def objstat(cstat)
     @cstat=cstat
@@ -14,28 +16,13 @@ class ObjStat < Obj
   def get_stat
     each_node do |c| # var
       a=c.attr_to_hash
-      set=@cstat[a['ref']] || raise(IndexError,"No reference for #{a['ref']}") 
+      ref=a['ref']
       a.delete('ref')
-      id=a['id']
-      a.delete('id')
+      set=@cstat[ref] || raise(IndexError,"No reference for #{a['ref']}") 
+      id=a['id'] ? a.delete('id') : ref
       val=a['val']
       set.update(a)
-      c.node_with_name('symbol') do |d|
-        case d['type']
-        when 'range'
-          d.each_node do |e|
-            min,max=e.text.split(':')
-            next if max.to_f < val.to_f
-            next if min.to_f > val.to_f
-            set.update(e.attr_to_hash)
-            break
-          end
-        else
-          d.node_with_text(val) do |e|
-            set.update(e.attr_to_hash)
-          end
-        end
-      end
+      c.symbol(val,set)
       @ostat[id]=set
     end
   end

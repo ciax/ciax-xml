@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
 require "libcls"
+require "libstat"
 TopNode='//status'
 class ClsStat < Cls
+  include Stat
   public
   def clsstat(fields)
     @field=fields
@@ -47,22 +49,7 @@ class ClsStat < Cls
         set['val']=val
       end
       @v.msg("#{c['id']}=[#{val}]")
-      c.node_with_name('symbol') do |d|
-        case d['type']
-        when 'range'
-          d.each_node do |e|
-            min,max=e.text.split(':')
-            next if max.to_f < val.to_f
-            next if min.to_f > val.to_f
-            set.update(e.attr_to_hash)
-            break
-          end
-        else
-          d.node_with_text(val) do |e|
-            set.update(e.attr_to_hash)
-          end
-        end
-      end
+      c.symbol(val,set)
       set.delete('id')
       @stat[c['id']]=set
     end

@@ -46,7 +46,7 @@ class DevCtrl < Dev
       case key
       when 'pack'
         code=[str].pack(val)
-        hex='%#x' % code.unpack('s*').first
+        hex=code.unpack('C*').map!{|c| '%02x' % c}.join
         @v.msg "pack(#{val}) [#{str}] -> [#{hex}]"
         str=code
       when 'format'

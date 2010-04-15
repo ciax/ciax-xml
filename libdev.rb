@@ -1,14 +1,8 @@
 #!/usr/bin/ruby
 require "libxmldb"
 class Dev < XmlDb
-  def initialize(dev,cmd)
-    begin
-      super('ddb',dev)
-      select_id(cmd)
-    rescue
-      puts $!
-      exit 1
-    end
+  def initialize(dev)
+    super('ddb',dev)
   end
 
   # Public Method
@@ -30,7 +24,7 @@ class Dev < XmlDb
     @var[self['var']]=val
   end
 
-  def select_id(id)
+  def set_cmd(id)
     begin
       @sel=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
     rescue
@@ -54,4 +48,5 @@ class Dev < XmlDb
   end
 
 end
+
 

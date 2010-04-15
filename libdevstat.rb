@@ -2,8 +2,8 @@
 require "libdev"
 TopNode='//rspframe'
 class DevStat < Dev
-  def initialize(dev,cmd)
-    super(dev,cmd)
+  def initialize(dev)
+    super(dev)
     @field={'device'=>dev}
     @verify_later=Hash.new
   end
@@ -37,7 +37,7 @@ class DevStat < Dev
         when 'error'
           @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
         end
-        select_id(e['option']) if e['option']
+        set_cmd(e['option']) if e['option']
         return raw
       end
     rescue IndexError
@@ -83,5 +83,6 @@ class DevStat < Dev
   end
   
 end
+
 
 

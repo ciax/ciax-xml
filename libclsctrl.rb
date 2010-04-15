@@ -11,7 +11,7 @@ class ClsCtrl < Cls
       list_id(TopNode)
       raise("No such a command")
     end
-    node_with_name('commands') {|e| @cmd=e}
+    node_with_name('commandset') {|e| @cmd=e}
     node_with_name('interlock') {|e| @ilk=e}
   end
  
@@ -21,42 +21,70 @@ class ClsCtrl < Cls
 
   def clsctrl
     pre_check
-    get_cmdset
-#    post_check
+    exec_cmdset
+    post_check
   end
 
   protected
-  def get_cmdset
-    @cmd.each_node do |e|
-      puts e['ref']
-      e.each_node do |d|
-        puts d.name
+  def issue_cmd(cmd)
+    puts "CommandExec[#{cmd}]"
+  end
+
+  def wait_until(timeout,wait_for,update)
+    start=Time.now
+    while Time.now - start < timeout
+      update.each do |cmd|
+        issue_cmd(cmd)
+        wait_for.each do |key,val|
+          return if @var[key] == val
+        end
       end
+      sleep 1
+    end
+  end
+
+  def exec_cmdset
+    @cmd.each_node do |e|
+      timeout=e['timeout'] ? e['timeout'] : 5
+      update=Array.new
+      wait_for=Array.new
+      e.each_node do |d|
+        case d.name
+        when 'update'
+          update << d['ref']
+        when 'until'
+          wait_for << {d['var'] => d['value']}
+        end
+      end
+      issue_cmd(e['ref'])
+      wait_until(timeout,wait_for,update)
     end 
   end
 
   def pre_check
     return unless @ilk
-    suf=1;done=0
-    @ilk.node_with_name('sufficient') do |d|
-      done=1
-      begin
-        d.chk_condition
-      rescue
-        suf=0
-      end
-    end
-    return 1 if suf == 1 and done == 1
-    @ilk.node_with_name('required') do |d|
-      d.chk_condition
-    end
+    sufficient? && return
+    required? || raise("Interlock Error")
   end
 
   def post_check
     return unless @ilk
+    sufficient?(1) || raise("Command incomplete")
+  end
+  
+  def sufficient?(ret=nil)
     @ilk.node_with_name('sufficient') do |d|
-      d.chk_condition
+      d.chk_condition || return
+      ret=1
     end
+    return ret
+  end
+  
+  def required?
+    @ilk.node_with_name('requied') do |d|
+      d.chk_condition || return
+    end
+    return 1
   end
 
   def proceed?(cmd)
@@ -75,10 +103,9 @@ class ClsCtrl < Cls
     vname=self['var']
     stat=@var[vname] || raise(IndexError,"No reference for #{vname}")
     expect=self['value']
-    actual=@var[vname]['val'] || raise(IndexError,"No status")
-    msg="#{self.name}: #{vname} = #{actual} (expected:#{expect})"
-    @v.msg(msg)
-    raise(msg) if expect != actual
+    actual=stat['val'] || raise(IndexError,"No status")
+    @v.msg "#{self.name}: #{vname} = #{actual} (expected:#{expect})"
+    (expect == actual)
   end
 
 end

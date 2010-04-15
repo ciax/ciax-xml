@@ -12,8 +12,9 @@ rescue
 end
 begin
   puts e.devctrl
+  exit
 rescue IndexError
   field=Marshal.load(gets(nil))
   e.set_field(field)
-  puts e.devctrl
 end
+puts e.devctrl

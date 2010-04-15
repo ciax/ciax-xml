@@ -9,13 +9,4 @@ class Cls < XmlDb
       exit 1
     end
   end
-
-  def session(cmd)
-    begin
-      select_id(cmd)
-    rescue
-      puts $!
-      exit 1
-    end
-  end
 end

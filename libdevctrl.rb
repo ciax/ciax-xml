@@ -2,7 +2,7 @@
 require "libdev"
 TopNode='//cmdframe'
 class DevCtrl < Dev
-  def devcmd
+  def devctrl
     node_with_name('ccrange') do |e|
       @ccstr=e.get_string
       e.checkcode(@ccstr)
@@ -10,7 +10,7 @@ class DevCtrl < Dev
     get_string
   end
   
-  def get_field(field)
+  def set_field(field)
     @var.update(field)
   end
 

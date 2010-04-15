@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require "libdevctrl"
 
-warn "Usage: devcmd [dev] [cmd]" if ARGV.size < 1
+warn "Usage: devctrl [dev] [cmd]" if ARGV.size < 1
 
 e=DevCtrl.new(ARGV.shift,ARGV.shift)
 begin
-  puts e.devcmd
+  puts e.devctrl
 rescue IndexError
   field=Marshal.load(gets(nil))
-  e.get_field(field)
-  puts e.devcmd
+  e.set_field(field)
+  puts e.devctrl
 end

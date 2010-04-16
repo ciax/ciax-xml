@@ -27,22 +27,24 @@ class Dev < XmlDb
   end
 
   def checkcode(str)
-    method=self['method']
     chk=0
-    case method
-    when 'len'
-      chk=str.length
-    when 'bcc'
-      str.each_byte {|c| chk ^= c } 
-    else
-      raise "No such CC method #{method}"
+    attr_with_key('method') do |method|
+      case method
+      when 'len'
+        chk=str.length
+      when 'bcc'
+        str.each_byte {|c| chk ^= c } 
+      else
+        raise "No such CC method #{method}"
+      end
+      val=format(chk)
+      @v.msg "[#{method.upcase}] -> [#{val}]"
+      set_var!({self['var'] => val})
+      return self
     end
-    val=format(chk)
-    @v.msg "[#{method.upcase}] -> [#{val}]"
-    @var[self['var']]=val
+    raise "No method"
   end
 
 end
-
 
 

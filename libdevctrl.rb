@@ -4,6 +4,7 @@ TopNode='//cmdframe'
 class DevCtrl < Dev
   def devctrl
     node_with_name('ccrange') do |e|
+      @v.msg("Entering CC range",1)
       @ccstr=e.get_string
       e.checkcode(@ccstr)
     end
@@ -14,7 +15,6 @@ class DevCtrl < Dev
   def get_string
     str=String.new
     each_node do |d|
-      @v.msg "Node:#{d.name}"
       case d.name
       when 'data'
         str << d.encode(d.text)
@@ -23,6 +23,7 @@ class DevCtrl < Dev
       else
         str << @var[d.name]
       end
+      @v.msg "[#{str.dump}]"
     end
     str
   end
@@ -37,20 +38,15 @@ class DevCtrl < Dev
         when 'or'
         str=x | y
       end
-        @v.msg "(#{x} #{ope} #{y})=#{str}"
+      @v.msg "(#{x} #{ope} #{y})=#{str}"
     end
-    @doc.attributes.each do |key,val|
-      case key
-      when 'pack'
-        code=[str].pack(val)
-        hex=code.unpack('C*').map!{|c| '%02x' % c}.join
-        @v.msg "pack(#{val}) [#{str}] -> [#{hex}]"
-        str=code
-      when 'format'
-        str=val % str
-      end
+    attr_with_key('pack') do |val|
+      code=[str].pack(val)
+      hex=code.unpack('C*').map!{|c| '%02x' % c}.join
+      @v.msg "pack(#{val}) [#{str}] -> [#{hex}]"
+      str=code
     end
-    str
+    format(str)
   end
 
 end

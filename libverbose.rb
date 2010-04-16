@@ -8,7 +8,8 @@ class Verbose
   # Public Method
   public
   def msg(text='',level=0)
-    warn mkmsg(text) if ENV['VER'].to_i > level
+    return unless ENV['VER']
+    warn mkmsg(text) if ENV['VER'].to_i >= level
   end
 
   def err(text='')

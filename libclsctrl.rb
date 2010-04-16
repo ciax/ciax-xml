@@ -23,16 +23,17 @@ class ClsCtrl < Cls
 
   def wait_until
     node_with_name('until') do |e|
-      timeout=self['timeout'] ? self['timeout'] : 5
-      start=Time.now
-      while Time.now - start < timeout.to_i
-        e.each_node do |d|
-          d.issue_cmd
+      timeout=(self['timeout'] || 5).to_i
+      issue=Thread.new(e) do |e|
+        loop do
+          e.each_node do |d|
+            d.issue_cmd
+          end
+          break if e.chk_condition
+          sleep 1
         end
-        return if e.chk_condition
-        sleep 1
       end
-      warn "Timeout"
+      issue.join(timeout) || warn("Timeout")
     end
   end
 

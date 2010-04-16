@@ -23,7 +23,10 @@ end
 
 begin
   e.clsctrl
-rescue
+rescue RuntimeError
   puts $!
+  exit 1
+rescue
+  p $!
   exit 1
 end

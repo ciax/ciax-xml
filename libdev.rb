@@ -8,27 +8,11 @@ class Dev < XmlDb
   # Public Method
   public
 
-  def checkcode(str)
-    method=self['method']
-    chk=0
-    case method
-    when 'len'
-      chk=str.length
-    when 'bcc'
-      str.each_byte {|c| chk ^= c } 
-    else
-      raise "No such CC method #{method}"
-    end
-    val=format(chk)
-    @v.msg "[#{method.upcase}] -> [#{val}]"
-    @var[self['var']]=val
-  end
-
   def set_cmd(id)
     begin
       @sel=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
     rescue
-      list_id(TopNode+'//select')
+      list_id(TopNode+'//[@id]/..')
       raise("No such a command")
     end
     self
@@ -45,6 +29,22 @@ class Dev < XmlDb
         yield e
       end
     end
+  end
+
+  def checkcode(str)
+    method=self['method']
+    chk=0
+    case method
+    when 'len'
+      chk=str.length
+    when 'bcc'
+      str.each_byte {|c| chk ^= c } 
+    else
+      raise "No such CC method #{method}"
+    end
+    val=format(chk)
+    @v.msg "[#{method.upcase}] -> [#{val}]"
+    @var[self['var']]=val
   end
 
 end

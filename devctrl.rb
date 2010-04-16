@@ -15,6 +15,6 @@ begin
   exit
 rescue IndexError
   field=Marshal.load(gets(nil))
-  e.set_field(field)
+  e.set_var(field)
 end
 puts e.devctrl

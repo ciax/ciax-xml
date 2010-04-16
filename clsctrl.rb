@@ -11,18 +11,18 @@ rescue RuntimeError
   exit 1
 end
 begin
-  puts e.clsctrl
+  e.clsctrl
   exit
 rescue IndexError
   stat=Marshal.load(gets(nil))
-  e.set_stat(stat)
+  e.set_var(stat)
 rescue RuntimeError
   puts $!
   exit 1
 end
 
 begin
-  puts e.clsctrl
+  e.clsctrl
 rescue
   puts $!
   exit 1

@@ -27,35 +27,14 @@ class XmlDb
   # Public Method
   public
 
+  def set_var(hash)
+    @var.update(hash)
+  end
+
+  # Access Attributes
   def [](key)
     a=@doc.attributes[key] || return
     a.to_s
-  end
-
-  def node_with_text(text)
-    @doc.elements.each do |e|
-      d=copy_self(e)
-      yield d if d.text == text
-    end
-  end
-
-  def node_with_name(name)
-    @doc.elements.each("./#{name}") do |e|
-      yield copy_self(e)
-    end
-  end
-
-  def node_with_attr(key,val)
-    @doc.each_element_with_attribute(key,val) do |e|
-      return copy_self(e)
-    end
-  end
-
-  def each_node
-    @doc.elements.each do |e|
-      yield copy_self(e)
-    end
-    self
   end
 
   def attr?(key)
@@ -77,6 +56,34 @@ class XmlDb
     h
   end
 
+  #Access Node
+  def each_node
+    @doc.elements.each do |e|
+      yield copy_self(e)
+    end
+    self
+  end
+
+  def node_with_text(text)
+    @doc.elements.each do |e|
+      d=copy_self(e)
+      yield d if d.text == text
+    end
+  end
+
+  def node_with_name(name)
+    @doc.elements.each("./#{name}") do |e|
+      yield copy_self(e)
+    end
+  end
+
+  def node_with_attr(key,val)
+    @doc.each_element_with_attribute(key,val) do |e|
+      return copy_self(e)
+    end
+  end
+
+  # Text Convert
   def format(code)
     attr?('format') do |fmt|
       code=fmt % code

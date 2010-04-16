@@ -15,12 +15,8 @@ class ClsCtrl < Cls
     node_with_name('interlock') {|e| @ilk=e}
   end
  
-  def set_stat(stat)
-    @var.update(stat)
-  end
-
   def clsctrl
-    pre_check
+    return 1 if pre_check
     exec_cmdset
     post_check
   end
@@ -38,7 +34,7 @@ class ClsCtrl < Cls
         e.each_node do |d|
           d.issue_cmd
         end
-        e.chk_condition && return
+        return if e.chk_condition
         sleep 1
       end
       warn "Timeout"
@@ -64,8 +60,11 @@ class ClsCtrl < Cls
 
   def pre_check
     return unless @ilk
-    sufficient? && return
-    required? || raise("Interlock Error")
+    if sufficient?
+      @v.msg "Command already done -> Skip"
+      return 1
+    end
+    raise("Interlock Error") unless required?
   end
 
   def post_check

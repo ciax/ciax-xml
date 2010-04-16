@@ -10,10 +10,6 @@ class DevCtrl < Dev
     get_string
   end
   
-  def set_field(field)
-    @var.update(field)
-  end
-
   protected
   def get_string
     str=String.new

@@ -26,6 +26,14 @@ class XmlDb
 
   # Public Method
   public
+  def set_cmd(id)
+    begin
+      @doc.elements[TopNode+"//[@id='#{id}']"] || raise
+    rescue
+      list_id(TopNode+'/')
+      raise("No such a command")
+    end
+  end
 
   def set_var(hash)
     @var.update(hash)

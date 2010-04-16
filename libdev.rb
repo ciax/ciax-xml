@@ -9,12 +9,7 @@ class Dev < XmlDb
   public
 
   def set_cmd(id)
-    begin
-      @sel=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
-    rescue
-      list_id(TopNode+'//[@id]/..')
-      raise("No such a command")
-    end
+    @sel=super(id)
     self
   end
 

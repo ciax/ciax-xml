@@ -3,11 +3,12 @@ require "libobjctrl"
 
 warn "Usage: objctrl [obj] [cmd]" if ARGV.size < 1
 
-e=ObjCtrl.new(ARGV.shift)
+
 begin
-  e.set_cmd(ARGV.shift)
+  e=ObjCtrl.new(ARGV.shift).node_with_id(ARGV.shift)
 rescue RuntimeError
   puts $!
   exit 1
 end
 e.objctrl
+

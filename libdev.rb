@@ -7,9 +7,8 @@ class Dev < XmlDb
 
   # Public Method
   public
-
-  def set_cmd(id)
-    @sel=super(id)
+  def node_with_id!(id)
+    @sel=node_with_id(id).doc
     self
   end
 
@@ -17,6 +16,7 @@ class Dev < XmlDb
     super do |e|
       if e.name == 'select'
         raise "ID not selected" unless @sel
+        @v.msg("Enterning Select",1)
         @sel.elements.each do |s|
           yield copy_self(s)
         end
@@ -43,5 +43,6 @@ class Dev < XmlDb
   end
 
 end
+
 
 

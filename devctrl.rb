@@ -5,7 +5,7 @@ warn "Usage: devctrl [dev] [cmd]" if ARGV.size < 1
 
 begin
   e=DevCtrl.new(ARGV.shift)
-  e.set_cmd(ARGV.shift)
+  e.node_with_id!(ARGV.shift)
 rescue
   puts $!
   exit 1
@@ -15,6 +15,8 @@ begin
   exit
 rescue IndexError
   field=Marshal.load(gets(nil))
-  e.set_var(field)
+  e.set_var!(field)
 end
 puts e.devctrl
+
+

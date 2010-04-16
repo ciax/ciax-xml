@@ -15,7 +15,7 @@ class ObjStat < Obj
   protected
   def get_stat
     each_node do |c| # var
-      a=c.attr_to_hash
+      a=c.add_attr
       ref=a.delete('ref') || raise(IndexError,"No refernce")
       set=@cstat[ref] || raise(IndexError,"No reference for #{a['ref']}") 
       id=a.delete('id') || ref
@@ -28,4 +28,5 @@ class ObjStat < Obj
   end
 
 end
+
 

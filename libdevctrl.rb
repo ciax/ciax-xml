@@ -28,7 +28,7 @@ class DevCtrl < Dev
   end
   
   def encode(str)
-    attr?('operator') do |ope|
+    attr_with_key('operator') do |ope|
       x=str.to_i
       y=@doc.text.hex
       case ope

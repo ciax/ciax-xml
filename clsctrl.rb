@@ -3,9 +3,9 @@ require "libclsctrl"
 
 warn "Usage: clsctrl [cls] [cmd]" if ARGV.size < 1
 
-e=ClsCtrl.new(ARGV.shift)
+
 begin
-  e.set_cmd(ARGV.shift)
+  e=ClsCtrl.new(ARGV.shift).node_with_id(ARGV.shift)
 rescue RuntimeError
   puts $!
   exit 1
@@ -15,7 +15,7 @@ begin
   exit
 rescue IndexError
   stat=Marshal.load(gets(nil))
-  e.set_var(stat)
+  e.set_var!(stat)
 rescue RuntimeError
   puts $!
   exit 1
@@ -30,3 +30,5 @@ rescue
   p $!
   exit 1
 end
+
+

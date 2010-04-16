@@ -9,15 +9,16 @@ module Stat
           min,max=e.text.split(':')
           next if max.to_f < val.to_f
           next if min.to_f > val.to_f
-          set.update(e.attr_to_hash)
+          e.add_attr(set)
           break
         end
       else
         d.node_with_text(val) do |e|
-          set.update(e.attr_to_hash)
+          e.add_attr(set)
         end
       end
     end
   end
 
 end
+

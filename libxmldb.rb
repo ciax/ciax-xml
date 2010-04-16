@@ -5,7 +5,7 @@ require "libverbose"
 #TopNode required
 class XmlDb
   protected
-  attr_writer :doc
+  attr_accessor :doc
 
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
@@ -26,16 +26,17 @@ class XmlDb
 
   # Public Method
   public
-  def set_cmd(id)
+  def node_with_id(id)
     begin
-      @doc.elements[TopNode+"//[@id='#{id}']"] || raise
+      e=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
     rescue
       list_id(TopNode+'/')
       raise("No such a command")
     end
+    copy_self(e)
   end
 
-  def set_var(hash)
+  def set_var!(hash)
     @var.update(hash)
   end
 
@@ -45,7 +46,7 @@ class XmlDb
     a.to_s
   end
 
-  def attr?(key)
+  def attr_with_key(key)
     val=@doc.attributes[key]
     yield val if val
   end
@@ -56,8 +57,8 @@ class XmlDb
     end
   end
 
-  def attr_to_hash
-    h=Hash.new
+  def add_attr(hash=nil)
+    h=hash || Hash.new
     @doc.attributes.each do |key,val|
       h[key]=val
     end
@@ -93,14 +94,18 @@ class XmlDb
 
   # Text Convert
   def format(code)
-    attr?('format') do |fmt|
-      code=fmt % code
+    attr_with_key('format') do |fmt|
+      str=fmt % code
+      @v.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",1)
+      code=str
     end
     code.to_s
   end
 
   def text
+    @v.msg("Getting text[#{@doc.text}]",1)
     return @doc.text unless r=@doc.attributes['ref']
+    @v.msg("Getting text from ref [#{r}]",1)
     @var[r] || raise(IndexError,"No reference for [#{r}]")
   end
 

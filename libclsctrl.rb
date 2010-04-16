@@ -4,13 +4,9 @@ TopNode='//controls'
 class ClsCtrl < Cls
 
   public
-  def set_cmd(id)
-    @doc=super(id)
+  def clsctrl
     node_with_name('commandset') {|e| @cmd=e}
     node_with_name('interlock') {|e| @ilk=e}
-  end
- 
-  def clsctrl
     return 1 if pre_check
     exec_cmdset
     post_check

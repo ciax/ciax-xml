@@ -21,13 +21,13 @@ class ClsStat < Cls
       when 'binary'
         str << (f.to_i >> e['bit'].to_i & 1).to_s
       when 'float'
-        e.attr?('decimal') do |n|
+        e.attr_with_key('decimal') do |n|
           n=n.to_i
           f=f[0..-n-1]+'.'+f[-n..-1]
         end
         str << e.format(f)
       when 'int'
-        e.attr?('signed') do 
+        e.attr_with_key('signed') do 
           f=[f.to_i].pack('S').unpack('s').first
         end
         str << e.format(f)
@@ -42,7 +42,7 @@ class ClsStat < Cls
     str=String.new
     each_node do |c| # var
       set=Hash.new
-      set.update(c.attr_to_hash)
+      c.add_attr(set)
       val=String.new
       c.node_with_name('fields') do |d|
         val=d.get_fieldset
@@ -56,4 +56,5 @@ class ClsStat < Cls
   end
 
 end
+
 

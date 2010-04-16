@@ -37,7 +37,7 @@ class DevStat < Dev
         when 'error'
           @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
         end
-        set_cmd(e['option']) if e['option']
+        node_with_id!(e['option']) if e['option']
         return raw
       end
     rescue IndexError
@@ -51,7 +51,7 @@ class DevStat < Dev
 
   def assign
     raw=cut_frame
-    attr?('field') do |fld|
+    attr_with_key('field') do |fld|
       str=decode(raw) 
       @v.msg("[#{fld}] <- [#{str}]")
       @field[fld]=str
@@ -76,13 +76,10 @@ class DevStat < Dev
 
   private
   def decode(code)
-    attr?('unpack') do |val|
+    attr_with_key('unpack') do |val|
       code=code.unpack(val).first
     end
     code.to_s
   end
   
 end
-
-
-

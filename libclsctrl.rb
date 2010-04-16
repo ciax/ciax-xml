@@ -26,38 +26,39 @@ class ClsCtrl < Cls
   end
 
   protected
-  def issue_cmd(cmd)
-    puts "CommandExec[#{cmd}]"
+  def issue_cmd
+    warn "CommandExec[#{self['ref']}]"
   end
 
-  def wait_until(timeout,wait_for,update)
-    start=Time.now
-    while Time.now - start < timeout
-      update.each do |cmd|
-        issue_cmd(cmd)
-        wait_for.each do |key,val|
-          return if @var[key] == val
+  def wait_until
+    node_with_name('until') do |e|
+      timeout=self['timeout'] ? self['timeout'] : 5
+      start=Time.now
+      while Time.now - start < timeout.to_i
+        e.each_node do |d|
+          d.issue_cmd
         end
+        e.chk_condition && return
+        sleep 1
       end
-      sleep 1
+      warn "Timeout"
     end
   end
 
+  def chk_condition
+    vname=self['var']
+    stat=@var[vname] || raise(IndexError,"No reference for #{vname}")
+    expect=self['value']
+    actual=stat['val'] || raise(IndexError,"No status")
+    @v.msg "#{self.name}: #{vname} = #{actual} for #{expect}"
+    (expect == actual)
+  end
+
+  private
   def exec_cmdset
     @cmd.each_node do |e|
-      timeout=e['timeout'] ? e['timeout'] : 5
-      update=Array.new
-      wait_for=Array.new
-      e.each_node do |d|
-        case d.name
-        when 'update'
-          update << d['ref']
-        when 'until'
-          wait_for << {d['var'] => d['value']}
-        end
-      end
-      issue_cmd(e['ref'])
-      wait_until(timeout,wait_for,update)
+      e.issue_cmd
+      e.wait_until
     end 
   end
 
@@ -85,27 +86,6 @@ class ClsCtrl < Cls
       d.chk_condition || return
     end
     return 1
-  end
-
-  def proceed?(cmd)
-    e=@doc.elements["commands//[@ref='#{cmd}']/until"]
-    return 1 unless e
-    a=e.attributes
-    vname=a['var']
-    stat=@var[vname] || raise(IndexError,"No reference for #{vname}")
-    expect=a['value']
-    actual=@var[vname]['val'] || raise(IndexError,"No status")
-    @v.msg "waiting: #{vname} = #{expect} (actual:#{actual})"
-    return 1 if expect == actual 
-  end
-
-  def chk_condition
-    vname=self['var']
-    stat=@var[vname] || raise(IndexError,"No reference for #{vname}")
-    expect=self['value']
-    actual=stat['val'] || raise(IndexError,"No status")
-    @v.msg "#{self.name}: #{vname} = #{actual} (expected:#{expect})"
-    (expect == actual)
   end
 
 end

@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libdev"
-TopNode='//rspframe'
 class DevStat < Dev
   def initialize(dev)
     super(dev)

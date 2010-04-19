@@ -4,7 +4,7 @@ require "libdevstat"
 warn "Usage: devstat [dev] [cmd] < file" if ARGV.size < 1
 
 begin
-  e=DevStat.new(ARGV.shift)
+  e=DevStat.new(ARGV.shift).set_context_node('//rspframe')
   e.node_with_id!(ARGV.shift)
 rescue
   puts $!

@@ -4,7 +4,7 @@ require "libdevctrl"
 warn "Usage: devctrl [dev] [cmd]" if ARGV.size < 1
 
 begin
-  e=DevCtrl.new(ARGV.shift)
+  e=DevCtrl.new(ARGV.shift).set_context_node('//cmdframe')
   e.node_with_id!(ARGV.shift)
 rescue
   puts $!

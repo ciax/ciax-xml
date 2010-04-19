@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libobj"
 require "libstat"
-TopNode='//status'
 class ObjStat < Obj
   include Stat
   public

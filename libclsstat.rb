@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libcls"
 require "libstat"
-TopNode='//status'
 class ClsStat < Cls
   include Stat
   public

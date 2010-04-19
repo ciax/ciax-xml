@@ -2,7 +2,6 @@
 require "rexml/document"
 include REXML
 require "libverbose"
-#TopNode required
 class XmlDb
   protected
   attr_accessor :doc
@@ -11,7 +10,7 @@ class XmlDb
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
     begin
-      @doc=Document.new(open(path)).elements[TopNode]
+      @doc=Document.new(open(path)).root
     rescue
       Dir.glob("#{pre}-*.xml").each do |p|
         @doc=Document.new(open(p)).root
@@ -26,11 +25,21 @@ class XmlDb
 
   # Public Method
   public
+  def set_context_node(xpath)
+    begin
+      e=@doc.elements[xpath]
+    rescue
+      p $!
+      raise("No such Xpath")
+    end
+    copy_self(e)
+  end
+
   def node_with_id(id)
     begin
-      e=@doc.elements[TopNode+"//[@id='#{id}']"] || raise
+      e=@doc.elements[".//[@id='#{id}']"] || raise
     rescue
-      list_id(TopNode+'/')
+      list_id('./')
       raise("No such a command")
     end
     copy_self(e)

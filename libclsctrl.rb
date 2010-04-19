@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libcls"
-TopNode='//controls'
 class ClsCtrl < Cls
 
   public

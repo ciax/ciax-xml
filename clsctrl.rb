@@ -5,7 +5,7 @@ warn "Usage: clsctrl [cls] [cmd]" if ARGV.size < 1
 
 
 begin
-  e=ClsCtrl.new(ARGV.shift).node_with_id(ARGV.shift)
+  e=ClsCtrl.new(ARGV.shift).set_context_node('//controls').node_with_id(ARGV.shift)
 rescue RuntimeError
   puts $!
   exit 1

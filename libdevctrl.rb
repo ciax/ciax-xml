@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libdev"
-TopNode='//cmdframe'
 class DevCtrl < Dev
   def devctrl
     node_with_name('ccrange') do |e|

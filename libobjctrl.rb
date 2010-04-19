@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libobj"
-TopNode='//controls'
 class ObjCtrl < Obj
   public
 

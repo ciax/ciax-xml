@@ -1,9 +1,11 @@
 #!/usr/bin/ruby
 require "libobjstat"
+require "libxmldoc"
 
 warn "Usage: obstat [object] < cstat" if ARGV.size < 1
 begin
-  odb=ObjStat.new(ARGV.shift).set_context_node('//status')
+  doc=XmlDoc.new('odb',ARGV.shift)
+  odb=ObjStat.new(doc)
   cstat=Marshal.load(gets(nil))
   var=odb.objstat(cstat)
 rescue RuntimeError

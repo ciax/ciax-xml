@@ -1,8 +1,11 @@
 #!/usr/bin/ruby
-require "libobj"
-class ObjCtrl < Obj
-  public
+require "libxmldb"
+class ObjCtrl < XmlDb
+  def initialize(doc)
+    super(doc,'//controls')
+  end
 
+  public
   def objctrl
     warn "CommandExec[#{self['ref']}]"
   end

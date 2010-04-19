@@ -1,10 +1,12 @@
 #!/usr/bin/ruby
 require "libdevctrl"
+require "libxmldoc"
 
 warn "Usage: devctrl [dev] [cmd]" if ARGV.size < 1
 
 begin
-  e=DevCtrl.new(ARGV.shift).set_context_node('//cmdframe')
+  doc=XmlDoc.new('ddb',ARGV.shift)
+  e=DevCtrl.new(doc)
   e.node_with_id!(ARGV.shift)
 rescue
   puts $!

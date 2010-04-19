@@ -1,10 +1,12 @@
 #!/usr/bin/ruby
 require "libdevstat"
+require "libxmldoc"
 
 warn "Usage: devstat [dev] [cmd] < file" if ARGV.size < 1
 
 begin
-  e=DevStat.new(ARGV.shift).set_context_node('//rspframe')
+  doc=XmlDoc.new('ddb',ARGV.shift)
+  e=DevStat.new(doc)
   e.node_with_id!(ARGV.shift)
 rescue
   puts $!

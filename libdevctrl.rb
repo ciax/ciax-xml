@@ -1,6 +1,10 @@
 #!/usr/bin/ruby
 require "libdev"
 class DevCtrl < Dev
+  def initialize(doc)
+    super(doc,'//cmdframe')
+  end
+
   def devctrl
     node_with_name('ccrange') do |e|
       @v.msg("Entering CC range",1)

@@ -1,6 +1,9 @@
 #!/usr/bin/ruby
-require "libcls"
-class ClsCtrl < Cls
+require "libxmldb"
+class ClsCtrl < XmlDb
+  def initialize(doc)
+    super(doc,'//controls')
+  end
 
   public
   def clsctrl

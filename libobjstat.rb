@@ -1,8 +1,12 @@
 #!/usr/bin/ruby
-require "libobj"
+require "libxmldb"
 require "libstat"
-class ObjStat < Obj
+class ObjStat < XmlDb
   include Stat
+  def initialize(doc)
+    super(doc,'//status')
+  end
+
   public
   def objstat(cstat)
     @cstat=cstat

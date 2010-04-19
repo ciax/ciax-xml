@@ -1,8 +1,12 @@
 #!/usr/bin/ruby
-require "libcls"
+require "libxmldb"
 require "libstat"
-class ClsStat < Cls
+class ClsStat < XmlDb
   include Stat
+  def initialize(doc)
+    super(doc,'//status')
+  end
+
   public
   def clsstat(fields)
     @field=fields

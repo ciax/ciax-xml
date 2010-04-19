@@ -1,10 +1,6 @@
 #!/usr/bin/ruby
 require "libxmldb"
 class Dev < XmlDb
-  def initialize(dev)
-    super('ddb',dev)
-  end
-
   # Public Method
   public
   def node_with_id!(id)

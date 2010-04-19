@@ -1,11 +1,13 @@
 #!/usr/bin/ruby
 require "libobjctrl"
+require "libxmldoc"
 
 warn "Usage: objctrl [obj] [cmd]" if ARGV.size < 1
 
 
 begin
-  e=ObjCtrl.new(ARGV.shift).set_context_node('//controls').node_with_id(ARGV.shift)
+  doc=XmlDoc.new('odb',ARGV.shift)
+  e=ObjCtrl.new(doc).node_with_id(ARGV.shift)
 rescue RuntimeError
   puts $!
   exit 1

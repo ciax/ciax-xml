@@ -1,11 +1,13 @@
 #!/usr/bin/ruby
 require "libclsctrl"
+require "libxmldoc"
 
 warn "Usage: clsctrl [cls] [cmd]" if ARGV.size < 1
 
 
 begin
-  e=ClsCtrl.new(ARGV.shift).set_context_node('//controls').node_with_id(ARGV.shift)
+  doc=XmlDoc.new('cdb',ARGV.shift)
+  e=ClsCtrl.new(doc).node_with_id(ARGV.shift)
 rescue RuntimeError
   puts $!
   exit 1

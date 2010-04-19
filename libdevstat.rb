@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 require "libdev"
 class DevStat < Dev
-  def initialize(dev)
-    super(dev)
-    @field={'device'=>dev}
+  def initialize(doc)
+    super(doc,'//rspframe')
+    @field={'device'=>@property['id']}
     @verify_later=Hash.new
   end
 

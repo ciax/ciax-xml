@@ -4,6 +4,7 @@ require "libdevstat"
 require "libxmldoc"
 require "libstatio"
 include StatIo
+IoCmd="exio"
 
 warn "Usage: devsrv [dev]" if ARGV.size < 1
 
@@ -20,14 +21,27 @@ end
 while(cmd=gets.chomp)
   begin
     dc.node_with_id!(cmd)
-    p dc.devctrl
-    ds.node_with_id!(cmd)
+    ecmd=dc.devctrl
   rescue
     puts $!
     next
+  end
+  begin 
+    ds.node_with_id!(cmd)
+  rescue
+    open("|#{IoCmd} #{dev} #{cmd}",'w') do |f|
+      f.puts cmd
+    end
+    puts $!
+    next
   else
-    stat=ds.devstat(read_frame(dev,cmd))
-    dc.set_var!(stat)
-    p stat
+    open("|#{IoCmd} #{dev} #{cmd}",'r+') do |f|
+      f.puts cmd
+      estat=f.gets(nil)
+p estat
+      stat=ds.devstat(estat)
+      dc.set_var!(stat)
+      p stat
+    end
   end
 end

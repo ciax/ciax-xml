@@ -15,6 +15,11 @@ class DevStat < Dev
     end
     return @field
   end
+  
+  def node_with_id!(id)
+    super(id) rescue raise("Send Only")
+    self
+  end
 
   protected
   def cut_frame

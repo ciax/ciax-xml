@@ -13,4 +13,3 @@ rescue
   exit 1
 end
 print Marshal.dump e.devstat{gets(nil)}
-

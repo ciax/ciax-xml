@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libdev"
+require "libctrl"
 class DevCtrl < Dev
   def initialize(doc)
     super(doc,'//cmdframe')
@@ -14,6 +15,16 @@ class DevCtrl < Dev
     get_string
   end
   
+  def node_with_id!(id)
+    begin
+      super(id)
+    rescue
+      list_id('./')
+      raise("No such a command")
+    end
+    self
+  end
+
   protected
   def get_string
     str=String.new

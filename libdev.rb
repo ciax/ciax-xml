@@ -4,7 +4,7 @@ class Dev < XmlDb
   # Public Method
   public
   def node_with_id!(id)
-    @sel=node_with_id(id).doc
+    @sel=@doc.elements[".//[@id='#{id}']"] || raise
     self
   end
 
@@ -42,5 +42,3 @@ class Dev < XmlDb
   end
 
 end
-
-

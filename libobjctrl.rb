@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 require "libxmldb"
+require "libctrl"
 class ObjCtrl < XmlDb
+  include Ctrl
   def initialize(doc)
     super(doc,'//controls')
   end

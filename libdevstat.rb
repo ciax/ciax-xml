@@ -7,8 +7,8 @@ class DevStat < Dev
     @verify_later=Hash.new
   end
 
-  def devstat
-    @frame=yield
+  def devstat(str)
+    @frame=str
     get_field
     @verify_later.each do |e,ele|
       e.verify(ele)

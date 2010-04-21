@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cx="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="cdb">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:class" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="class">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:controls" minOccurs="1" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cx:status" minOccurs="1" maxOccurs="1" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="device" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <!--controls-->
+  <xsd:element name="controls">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:session" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="session">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:commandset" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="cx:interlock" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="commandset">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:command" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="interlock">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:sufficient" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="cx:required" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="command">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:argv" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="cx:set" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="cx:until" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attribute name="timeout" type="xsd:int" />
+      <xsd:attribute name="abort" type="xsd:string" />
+      <xsd:attribute name="label" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="set" type="cx:ConditionType"></xsd:element>
+  <xsd:element name="argv">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="src" type="xsd:string" use="optional" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="until">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:update" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:attribute name="var" type="xsd:string" use="required"></xsd:attribute>
+      <xsd:attribute name="value" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="update">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="ref" type="xsd:string" use="required" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="sufficient" type="cx:ConditionType" />
+  <xsd:element name="required" type="cx:ConditionType" />
+  <xsd:complexType name="ConditionType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="var" type="xsd:string" use="required" />
+        <xsd:attribute name="value" type="xsd:string" use="required" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!--status-->
+  <xsd:element name="status">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:var" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:attribute name="channels" type="xsd:int" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="var">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:fields" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="cx:symbol" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" />
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ENUM"></xsd:enumeration>
+            <xsd:enumeration value="FLOAT" />
+            <xsd:enumeration value="INT" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="fields">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="cx:string" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="cx:binary" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="cx:float" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="cx:int" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="label" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="binary">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attribute name="bit" type="xsd:int" use="required" />
+      <xsd:attribute name="unpack" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="float">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attribute name="decimal" type="xsd:integer" />
+      <xsd:attribute name="format" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="int">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attribute name="signed" type="xsd:boolean" />
+      <xsd:attribute name="format" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="string">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="symbol">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:enum" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="range" />
+            <xsd:enumeration value="enum" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="enum">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="msg" type="xsd:string" />
+          <xsd:attribute name="hl">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="normal" />
+                <xsd:enumeration value="warn" />
+                <xsd:enumeration value="alarm" />
+                <xsd:enumeration value="hide" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

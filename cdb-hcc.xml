@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd">
+  <class id="hcc" device="bbe" label="Helium Compressor Control">
+    <controls>
+      <session id="upd" label="Update Status">
+        <commandset>
+          <command ref="getstat" />
+        </commandset>
+      </session>
+      <session id="on_01" label="[CH0 and CH1] ON">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="s01"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="0sw" value="1"></sufficient>
+          <sufficient var="1sw" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="off_01" label="[CH0 and CH1] OFF">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="r01"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="0sw" value="0"></sufficient>
+          <sufficient var="1sw" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="on_0" label="[CH0] ON">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="s0"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="0sw" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="off_0" label="[CH0] OFF">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="r0"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="0sw" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="on_1" label="CH1 ON">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="s1"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="1sw" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="off_1" label="CH1 OFF">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="r1"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="1sw" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="on_21" label="CH2 and CH1 ON">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="s21"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="2sw" value="1"></sufficient>
+          <sufficient var="1sw" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="off_23" label="CH2 and CH3 OFF">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="r23"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="2sw" value="0"></sufficient>
+          <sufficient var="3sw" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="on_2" label="CH2 ON">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="s2"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="2sw" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="off_2" label="CH2 OFF">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="r2"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="2sw" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="on_3" label="CH3 ON">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="s3"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="3sw" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="off_3" label="CH3 OFF">
+        <commandset>
+          <command ref="getstat" />
+          <command ref="r3"></command>
+        </commandset>
+        <interlock>
+          <sufficient var="3sw" value="0"></sufficient>
+        </interlock>
+      </session>
+    </controls>
+    <status>
+      <var id="0sw" label="[CH0] HC Switch" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="0" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="0dr" label="[CH0] HC Drive" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="1" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="0tm" label="[CH0] HC TMP Alarm" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="2" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
+        </symbol>
+      </var>
+      <var id="0pr" label="[CH0] HC PRS Alarm" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="3" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
+        </symbol>
+      </var>
+      <var id="1sw" label="[CH1] HC Switch" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="4" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="1dr" label="[CH1] HC Drive" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="5" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="1tm" label="[CH1] HC TMP Alarm" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="6" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
+        </symbol>
+      </var>
+      <var id="1pr" label="[CH1] HC PRS Alarm" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="7" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
+        </symbol>
+      </var>
+      <var id="2sw" label="[CH2] HC Switch" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="8" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="2dr" label="[CH2] HC Drive" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="9" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="2tm" label="[CH2] HC TMP Alarm" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="10" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
+        </symbol>
+      </var>
+      <var id="2pr" label="[CH2] HC PRS Alarm" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="11" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
+        </symbol>
+      </var>
+      <var id="3sw" label="[CH3] HC Switch" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="12" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="3dr" label="[CH3] HC Drive" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="13" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="3tm" label="[CH3] HC TMP Alarm" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="14" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
+        </symbol>
+      </var>
+      <var id="3pr" label="[CH3] HC PRS Alarm" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="15" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
+        </symbol>
+      </var>
+    </status>
+  </class>
+</cdb>

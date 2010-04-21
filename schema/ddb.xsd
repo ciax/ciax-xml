@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml" xmlns:cx="http://ciax.sum.naoj.org/ciax-xml">
+  <!--Device database-->
+  <xsd:element name="ddb">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:device" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="device">
+    <xsd:complexType>
+      <xsd:sequence>
+        <!--Protocol for RS232C-->
+        <xsd:element ref="cx:serial" minOccurs="0" maxOccurs="1" />
+        <!--Protocol for Network-->
+        <xsd:element ref="cx:network" minOccurs="0" maxOccurs="1" />
+        <!--Command frame-->
+        <xsd:element ref="cx:cmdframe" minOccurs="0" maxOccurs="1" />
+        <!--Response frame-->
+        <xsd:element ref="cx:rspframe" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="reference" type="xsd:anyURI" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="serial">
+    <xsd:complexType>
+      <xsd:attribute name="speed">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:double">
+            <xsd:enumeration value="300" />
+            <xsd:enumeration value="600" />
+            <xsd:enumeration value="1200" />
+            <xsd:enumeration value="2400" />
+            <xsd:enumeration value="4800" />
+            <xsd:enumeration value="9600" />
+            <xsd:enumeration value="19200" />
+            <xsd:enumeration value="38400" />
+            <xsd:enumeration value="56000" />
+            <xsd:enumeration value="57600" />
+            <xsd:enumeration value="115200" />
+            <xsd:enumeration value="230400" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="databit">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="7" />
+            <xsd:maxInclusive value="8" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="parity">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="NONE" />
+            <xsd:enumeration value="EVEN" />
+            <xsd:enumeration value="ODD" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="stopbit">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="1" />
+            <xsd:maxInclusive value="2" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="flowctl">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="NONE" />
+            <xsd:enumeration value="XONXOFF" />
+            <xsd:enumeration value="CTSRTS" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="network">
+    <xsd:complexType>
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="tcp" />
+            <xsd:enumeration value="udp" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="host" type="xsd:string" />
+      <xsd:attribute name="port" type="xsd:int" />
+    </xsd:complexType>
+  </xsd:element>
+  <!--Data types-->
+  <xsd:element name="data">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="label" type="xsd:string" />
+          <xsd:attribute name="format" type="xsd:string" />
+          <xsd:attribute name="pack" type="xsd:string" />
+          <xsd:attribute name="ref" type="xsd:string" />
+          <xsd:attribute name="operator">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="and" />
+                <xsd:enumeration value="or" />
+                <xsd:enumeration value="xor" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ccrange">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cx:select" />
+        <xsd:element ref="cx:data" />
+        <xsd:element ref="cx:verify" />
+        <xsd:element ref="cx:assign" />
+      </xsd:choice>
+      <xsd:attribute name="var" type="xsd:string" use="required"></xsd:attribute>
+      <xsd:attribute name="method">
+        <!--Check Code Method-->
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="bcc" />
+            <xsd:enumeration value="sum" />
+            <xsd:enumeration value="len" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="format" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="select">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:option" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="option">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:element ref="cx:data" />
+        </xsd:choice>
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:element ref="cx:verify" />
+          <xsd:element ref="cx:assign" />
+        </xsd:choice>
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="stat" />
+            <xsd:enumeration value="action" />
+            <xsd:enumeration value="config" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <!--Command frame-->
+  <xsd:element name="cmdframe">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cx:data" />
+        <xsd:element ref="cx:select" />
+        <xsd:element ref="cx:ccrange" />
+      </xsd:choice>
+      <xsd:attribute name="wait" type="xsd:int"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <!--Response frame-->
+  <xsd:element name="rspframe">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cx:verify" />
+        <xsd:element ref="cx:assign" />
+        <xsd:element ref="cx:ccrange" />
+        <xsd:element ref="cx:select" />
+      </xsd:choice>
+      <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="assign">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="label" type="xsd:string" />
+          <xsd:attribute name="length" type="xsd:int" use="required" />
+          <xsd:attribute name="field" type="xsd:string" use="required" />
+          <xsd:attribute name="unpack" type="xsd:string" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="verify">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cx:case"></xsd:element>
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="length" type="xsd:int" use="required" />
+      <xsd:attribute name="unpack" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="case">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="type" use="required">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="pass" />
+                <xsd:enumeration value="warn" />
+                <xsd:enumeration value="error" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+          <xsd:attribute name="option" type="xsd:string"></xsd:attribute>
+          <xsd:attribute name="msg" type="xsd:string"></xsd:attribute>
+          <xsd:attribute name="ref" type="xsd:string" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

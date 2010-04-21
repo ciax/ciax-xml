@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="cco" label="OPT Helium Compressor Control" class="hcc">
+    <network type="tcp" host="ltc-o" port="4002"></network>
+    <controls>
+      <alias id="upd" label="Update Status" ref="upd" />
+      <alias id="caon" label="CAS BOTH HC ON" ref="on_01" />
+      <alias id="caoff" label="CAS BOTH HC OFF" ref="off_01" />
+      <alias id="c1on" label="CAS1(S2) ON" ref="on_1" />
+      <alias id="c1off" label="CAS1(S2) OFF" ref="off_1" />
+      <alias id="c2on" label="CAS2(S1) ON" ref="on_0"></alias>
+      <alias id="c2off" label="CAS2(S1) OFF" ref="off_0"></alias>
+      <alias id="cmon" label="CAS MOIRCS/MAIN ON" ref="on_0" />
+      <alias id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="off_0" />
+      <alias id="ccon" label="CAS MOIRCS/CR ON" ref="on_1"></alias>
+      <alias id="ccoff" label="CAS MOIRCS/CR OFF" ref="off_1"></alias>
+      <alias id="maon" label="MOIRCS BOTH ON" ref="on_34"></alias>
+      <alias id="maoff" label="MOIRCS BOTH OFF" ref="off_34"></alias>
+      <alias id="m1on" label="MOIRCS MAIN(S9) ON" ref="on_4"></alias>
+      <alias id="m1off" label="MOIRCS MAIN(S9) OFF" ref="off_4"></alias>
+      <alias id="m2on" label="MOIRCS CR(S8) ON" ref="on_3"></alias>
+      <alias id="m2off" label="MOIRCS CR(S8) OFF" ref="off_3"></alias>
+    </controls>
+    <status>
+      <var id="s6:sw" label="CIAO(S6)" ref="0sw"></var>
+      <var id="s6:dr" ref="0dr" label="CIAO(S6)"></var>
+      <var id="s6:tm" ref="0tm" label="CIAO(S6)"></var>
+      <var id="s6:pr" ref="0pr" label="CIAO(S6)"></var>
+      <var id="s4:sw" ref="1sw" label="COMICS/IMG(S4)"></var>
+      <var id="s4:dr" ref="1dr" label="COMICS/IMG(S4)"></var>
+      <var id="s4:tm" ref="1tm" label="COMICS/IMG(S4)"></var>
+      <var id="s6:pr" ref="1pr" label="COMICS/IMG(S4)"></var>
+      <var id="s5:sw" ref="2sw" label="COMICS/SPC(S5)"></var>
+      <var id="s5:dr" ref="2dr" label="COMICS/SPC(S5)"></var>
+      <var id="s5:tm" ref="2tm" label="COMICS/SPC(S5)"></var>
+      <var id="s5:pr" ref="2pr" label="COMICS/SPC(S5)"></var>
+    </status>
+  </object>
+</odb>

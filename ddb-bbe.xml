@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
+  <device id="bbe" label="BB Electric">
+    <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+    <cmdframe>
+      <data label="Prefix">!0</data>
+      <select>
+        <option id="getstat" type="stat" label="Get Status">
+          <data>RD</data>
+        </option>
+        <option id="defio" type="config" label="DEFINE IN/OUT">
+          <data>SD</data>
+          <data label="msb" pack="H*">1111</data>
+        </option>
+        <option id="s0" type="action" label="Set Bit0">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="or">0x01</data>
+        </option>
+        <option id="r0" type="action" label="Reset Bit0">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="and">0xfffe</data>
+        </option>
+        <option id="s1" type="action" label="Set Bit4">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="or">0x10</data>
+        </option>
+        <option id="r1" type="action" label="Reset Bit4">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="and">0xffef</data>
+        </option>
+        <option id="s2" type="action" label="Set Bit8">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="or">0x100</data>
+        </option>
+        <option id="r2" type="action" label="Reset Bit8">
+          <data>SO</data>
+          <data ref="stat" pack="n">&amp;0xfeff</data>
+        </option>
+        <option id="s3" type="action" label="Set Bit12">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="or">0x1000</data>
+        </option>
+        <option id="r3" type="action" label="Reset Bit12">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="and">0xefff</data>
+        </option>
+        <option id="s01" type="action" label="Set Bit0 and 4">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="or">0x0011</data>
+        </option>
+        <option id="r01" type="action" label="Reset Bit0 and 4">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="and">0xffee</data>
+        </option>
+        <option id="s12" type="action" label="Set Bit4 and 8">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="or">0x0110</data>
+        </option>
+        <option id="r12" type="action" label="Reset Bit4 and 8">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="and">0xfeef</data>
+        </option>
+        <option id="s23" type="action" label="Set Bit8 and 12">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="or">0x1100</data>
+        </option>
+        <option id="r23" type="action" label="Reset Bit8 and 12">
+          <data>SO</data>
+          <data ref="stat" pack="n" operator="and">0xeeff</data>
+        </option>
+      </select>
+    </cmdframe>
+    <rspframe wait="0.3">
+      <select>
+        <option id="getstat">
+          <!--Big endian-->
+          <assign field="stat" length="2" unpack="n" />
+        </option>
+      </select>
+    </rspframe>
+  </device>
+</ddb>

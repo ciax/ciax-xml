@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
+  <device id="k3n" label="OMRON K3NR">
+    <serial speed="9600" databit="7" parity="EVEN" stopbit="2" flowctl="NONE" />
+    <cmdframe>
+      <data label="Prefix" pack="H*">02</data>
+      <ccrange method="bcc" format="%c" var="cc">
+        <select>
+          <option id="getstat" type="stat" label="Get Status">
+            <data label="Node No.">00</data>
+            <data label="Sub Address">00</data>
+            <data label="SID">0</data>
+            <data label="MRC">01</data>
+            <data label="SRC">01</data>
+            <data label="Variable type">C0</data>
+            <data label="Start Address">0000</data>
+            <data label="Void">00</data>
+            <data label="Number of element">0001</data>
+          </option>
+        </select>
+        <data label="Suffix" pack="H*">03</data>
+      </ccrange>
+      <data ref="cc" />
+    </cmdframe>
+    <rspframe wait="1">
+      <verify label="Prefix" length="1" unpack="H*">
+        <case type="pass" msg="Prefix OK">02</case>
+        <case msg="Prefix mismatch" type="error"></case>
+      </verify>
+      <ccrange method="bcc" format="%c" var="cc">
+        <verify label="Node" length="4">
+          <case type="pass" msg="Node OK">0000</case>
+          <case msg="Node mismatch" type="warn"></case>
+        </verify>
+        <verify label="Exit Code" length="2">
+          <case type="pass" msg="ExitCode OK">00</case>
+          <case type="error" msg="CMD Error">0F</case>
+          <case type="error" msg="Parity Error">10</case>
+          <case type="error" msg="Fleming Error">11</case>
+          <case type="error" msg="Over Run Error">12</case>
+          <case type="error" msg="BCC Error">13</case>
+          <case type="error" msg="Format Error">14</case>
+          <case type="error" msg="Sub Address Error">16</case>
+          <case type="error" msg="Frame Length Error">18</case>
+          <case msg="ExitCode Error" type="error"></case>
+        </verify>
+        <select>
+          <option id="getstat">
+            <verify label="MRC SRC" length="4">
+              <case type="pass" msg="Header OK">0101</case>
+              <case msg="Header mismatch" type="error"></case>
+            </verify>
+            <verify label="Response Code" length="4">
+              <case type="pass" msg="Response Code OK">0000</case>
+              <case type="error" msg="Cmd Length Over">1001</case>
+              <case type="error" msg="Cmd Length Short">1002</case>
+              <case type="error" msg="Parameter Error">1100</case>
+              <case type="error" msg="Area Error">1101</case>
+              <case type="error" msg="Start Address Error">1103</case>
+              <case type="error" msg="Action Error">2203</case>
+              <case msg="ResponseCode Error" type="error"></case>
+            </verify>
+            <assign label="Status" length="8" field="stat" />
+          </option>
+        </select>
+        <verify label="Prefix" length="1" unpack="H*">
+          <case type="pass" msg="Suffix OK">03</case>
+          <case msg="Suffix mismatch" type="error"></case>
+        </verify>
+      </ccrange>
+      <verify label="Check Code" length="1">
+        <case type="pass" ref="cc" msg="BCC OK" />
+        <case type="error" msg="BCC mismatch"></case>
+      </verify>
+    </rspframe>
+  </device>
+</ddb>

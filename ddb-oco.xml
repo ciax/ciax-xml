@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
+  <device id="oco" label="OMEGA Current Output(D4251)" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf">
+    <serial speed="300" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+    <cmdframe>
+      <data label="Prefix">$</data>
+      <select>
+        <option id="getstat" type="stat" label="Get Status">
+          <data>1RD</data>
+        </option>
+        <option id="i" type="action" label="Set Current by argv (XX.XX)">
+          <data>1AO+000</data>
+          <data format="%05.2f" ref="argv" />
+        </option>
+      </select>
+      <data label="Suffix" pack="H*">0D</data>
+    </cmdframe>
+    <rspframe wait="1">
+      <verify length="1">
+        <case msg="Prefix OK" type="pass">*</case>
+        <case msg="Prefix mismatch" type="error"></case>
+      </verify>
+      <select>
+        <option id="getstat">
+          <assign field="crnt" length="9" />
+        </option>
+      </select>
+    </rspframe>
+  </device>
+</ddb>

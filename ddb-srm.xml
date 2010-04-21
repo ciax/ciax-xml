@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
+  <device id="srm" label="OMRON SRM1">
+    <serial speed="9600" databit="7" parity="EVEN" stopbit="1" flowctl="NONE" />
+    <cmdframe>
+      <ccrange method="bcc" format="%02X" var="cc">
+        <data label="Prefix">@</data>
+        <data label="Device No.">00</data>
+        <select>
+          <option id="getstat" type="stat" label="Get Status">
+            <data label="Header Code">RR</data>
+            <data label="Start Channel">0000</data>
+            <data label="length">0001</data>
+          </option>
+          <option id="fset" type="action" label="Multiple Forced Set">
+            <data label="Header Code">FK</data>
+            <data label="Operand">CIO </data>
+            <data label="Channel">0000</data>
+            <data ref="argv" format="%016d"></data>
+          </option>
+          <option id="x0on" type="action" label="Bit 0 ON">
+            <data>FKCIO 00000000000000000005</data>
+          </option>
+          <option id="x0off" type="action" label="Bit 0 OFF">
+            <data>FKCIO 00000000000000000004</data>
+          </option>
+          <option id="x1on" type="action" label="Bit 1 ON">
+            <data>FKCIO 00000000000000000050</data>
+          </option>
+          <option id="x1off" type="action" label="Bit 1 OFF">
+            <data>FKCIO 00000000000000000040</data>
+          </option>
+          <option id="x2on" type="action" label="Bit 2 ON">
+            <data>00FKCIO 00000000000000000500</data>
+          </option>
+          <option id="x2off" type="action" label="Bit 2 OFF">
+            <data>00FKCIO 00000000000000000400</data>
+          </option>
+          <option id="x3on" type="action" label="Bit 3 ON">
+            <data>FKCIO 00000000000000005000</data>
+          </option>
+          <option id="x3off" type="action" label="Bit 3 OFF">
+            <data>FKCIO 00000000000000004000</data>
+          </option>
+          <option id="x4on" type="action" label="Bit 4 ON">
+            <data>FKCIO 00000000000000050000</data>
+          </option>
+          <option id="x4off" type="action" label="Bit 4 OFF">
+            <data>FKCIO 00000000000000040000</data>
+          </option>
+          <option id="x5on" type="action" label="Bit 5 ON">
+            <data>FKCIO 00000000000000500000</data>
+          </option>
+          <option id="x5off" type="action" label="Bit 5 OFF">
+            <data>FKCIO 00000000000000400000</data>
+          </option>
+          <option id="x6on" type="action" label="Bit 6 ON">
+            <data>FKCIO 00000000000000000005</data>
+          </option>
+          <option id="x6off" type="action" label="Bit 6 OFF">
+            <data>00FKCIO 00000000000004000000</data>
+          </option>
+        </select>
+      </ccrange>
+      <data ref="cc" />
+      <data label="Suffix">*</data>
+      <data label="Delimiter" pack="H*">0D</data>
+    </cmdframe>
+    <rspframe wait="0">
+      <ccrange method="bcc" format="%02X" var="cc">
+        <verify length="1">
+          <case type="pass" msg="Prefix OK">@</case>
+          <case msg="Prefix mismatch" type="error"></case>
+        </verify>
+        <select>
+          <option id="getstat">
+            <verify length="4">
+              <case type="pass" msg="Command Code OK">00RR</case>
+              <case msg="Command Code mismatch" type="error"></case>
+            </verify>
+            <verify length="2">
+              <case type="pass" msg="Response Code OK">00</case>
+              <case type="error" msg="Response Code mismatch"></case>
+            </verify>
+            <!--Big endian-->
+            <assign field="c1d3" length="1" />
+            <assign field="c1d2" length="1" />
+            <assign field="c1d1" length="1" />
+            <assign field="c1d0" length="1" />
+          </option>
+          <option id="default">
+            <verify length="4">
+              <case type="pass" msg="Command Code OK">00FK</case>
+              <case msg="Command Code mismatch" type="error"></case>
+            </verify>
+            <assign field="rc" length="2" />
+          </option>
+        </select>
+      </ccrange>
+    </rspframe>
+  </device>
+</ddb>

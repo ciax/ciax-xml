@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd">
+  <class id="det" device="srm" label="CsEtr Controller">
+    <controls>
+      <session id="upd" label="Update Status">
+        <commandset>
+          <command ref="getstat" />
+        </commandset>
+      </session>
+      <session id="c3on" label="CIAX3 POWER ON">
+        <commandset>
+          <command ref="fset" label="x0on">
+            <argv>5</argv>
+          </command>
+        </commandset>
+        <interlock>
+          <sufficient var="c3p" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="c3off" label="CIAX3 POWER OFF">
+        <commandset>
+          <command ref="x0off" />
+        </commandset>
+        <interlock>
+          <sufficient var="c3p" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="emon" label="CIAX3 EMERGENCY ON">
+        <commandset>
+          <command ref="x1on" />
+        </commandset>
+        <interlock>
+          <sufficient var="c3e" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="emoff" label="CIAX3 EMERGENCY OFF">
+        <commandset>
+          <command ref="x1off" />
+        </commandset>
+        <interlock>
+          <sufficient var="c3e" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="ccdon" label="CS CCD ON">
+        <commandset>
+          <command ref="x2on" />
+        </commandset>
+        <interlock>
+          <sufficient var="ccd" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="ccdoff" label="CS CCD OFF">
+        <commandset>
+          <command ref="x2off" />
+        </commandset>
+        <interlock>
+          <sufficient var="ccd" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="lanon" label="CS LAN ON">
+        <commandset>
+          <command ref="x3on" />
+        </commandset>
+        <interlock>
+          <sufficient var="lan" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="lanoff" label="CS LAN OFF">
+        <commandset>
+          <command ref="x3off" />
+        </commandset>
+        <interlock>
+          <sufficient var="lan" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="ipwon" label="CS IPW ON">
+        <commandset>
+          <command ref="x4on" />
+        </commandset>
+        <interlock>
+          <sufficient var="ipw" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="ipwoff" label="CS IPW OFF">
+        <commandset>
+          <command ref="x4off" />
+        </commandset>
+        <interlock>
+          <sufficient var="ipw" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="ston" label="STOW PIN ON">
+        <commandset>
+          <command ref="x5on" />
+        </commandset>
+        <interlock>
+          <sufficient var="c1x5" value="1"></sufficient>
+        </interlock>
+      </session>
+      <session id="stoff" label="STOW PIN OFF">
+        <commandset>
+          <command ref="x5off" />
+        </commandset>
+        <interlock>
+          <sufficient var="c1x5" value="0"></sufficient>
+        </interlock>
+      </session>
+      <session id="ccdtmr" label="CS CCD TIMER">
+        <commandset>
+          <command ref="x2on" timeout="300" abort="x2off"></command>
+          <command ref="x2off" />
+        </commandset>
+      </session>
+    </controls>
+    <status>
+      <var id="cod" type="ENUM" label="Response Code">
+        <fields>
+          <string ref="rc" />
+        </fields>
+      </var>
+      <var id="iid" type="ENUM" label="CAS INST ID">
+        <fields>
+          <string ref="c1d2" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="NONE">0</enum>
+          <enum hl="normal" msg="CIAX3">1</enum>
+          <enum hl="normal" msg="COMICS">2</enum>
+          <enum hl="normal" msg="CIAO">3</enum>
+          <enum hl="normal" msg="FOCAS">4</enum>
+          <enum hl="normal" msg="IRCS">5</enum>
+          <enum hl="normal" msg="N/A">6</enum>
+          <enum hl="normal" msg="MOIRCS">7</enum>
+          <enum hl="normal" msg="MP-CS1">8</enum>
+          <enum hl="normal" msg="MP-CS2">9</enum>
+        </symbol>
+      </var>
+      <var id="stp" type="ENUM" label="STOW PIN">
+        <fields>
+          <binary ref="c1d1" bit="1" />
+        </fields>
+        <symbol>
+          <enum hl="normal" msg="ON">1</enum>
+          <enum hl="alarm" msg="OFF">0</enum>
+        </symbol>
+      </var>
+      <var id="ipw" type="ENUM" label="CAS IPW">
+        <fields>
+          <binary ref="c1d1" bit="0" />
+        </fields>
+        <symbol>
+          <enum hl="normal" msg="ON">1</enum>
+          <enum hl="alarm" msg="OFF">0</enum>
+        </symbol>
+      </var>
+      <var id="c3p" type="ENUM" label="CIAX3 PW">
+        <fields>
+          <binary ref="c1d0" bit="0" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OFF">0</enum>
+          <enum hl="hide" msg="ON">1</enum>
+        </symbol>
+      </var>
+      <var id="c3e" type="ENUM" label="CIAX3 EMG">
+        <fields>
+          <binary ref="c1d0" bit="1" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OFF">0</enum>
+          <enum hl="alarm" msg="ON">1</enum>
+        </symbol>
+      </var>
+      <var id="ccd" type="ENUM" label="CAS CCD PW">
+        <fields>
+          <binary ref="c1d0" bit="2" />
+        </fields>
+        <symbol>
+          <enum hl="alarm" msg="ON">1</enum>
+        </symbol>
+      </var>
+      <var id="lan" type="ENUM" label="CAS LAN PW">
+        <fields>
+          <binary ref="c1d0" bit="3" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OFF">0</enum>
+          <enum hl="alarm" msg="ON">1</enum>
+        </symbol>
+      </var>
+    </status>
+  </class>
+</cdb>

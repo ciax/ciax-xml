@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd">
+  <class id="cfl" label="Compressor Coolant Flow (l/min)" device="k3n">
+    <controls>
+      <session id="upd" label="Update Status">
+        <commandset>
+          <command ref="getstat" />
+        </commandset>
+      </session>
+    </controls>
+    <status>
+      <var id="flow" label="[HC] Coolant Flow(l/min)" type="FLOAT">
+        <fields>
+          <float decimal="2" format="%4.2f" ref="stat" />
+        </fields>
+        <symbol type="range">
+          <enum hl="alarm" msg="L">0:2.99</enum>
+          <enum hl="normal" msg="M">3:5.99</enum>
+          <enum hl="alarm" msg="H">6:9.99</enum>
+        </symbol>
+      </var>
+    </status>
+  </class>
+</cdb>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
+  <device id="olp" label="OMEGA LN2 Pressure Sensor">
+    <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+    <cmdframe>
+      <data label="Prefix">*</data>
+      <select>
+        <option id="getstat" type="stat" label="Get Status">
+          <data>00P1</data>
+        </option>
+      </select>
+      <data label="Suffix" pack="H*">0D</data>
+    </cmdframe>
+    <rspframe wait="1">
+      <verify length="1">
+        <case msg="Prefix OK" type="pass">*</case>
+        <case msg="Prefix mismatch" type="error"></case>
+      </verify>
+      <select>
+        <option id="stat">
+          <assign field="pres" length="6" />
+        </option>
+      </select>
+      <verify length="1" unpack="H*">
+        <case msg="Suffix OK" type="pass">0D</case>
+        <case msg="Suffix mismatch" type="error"></case>
+      </verify>
+    </rspframe>
+  </device>
+</ddb>

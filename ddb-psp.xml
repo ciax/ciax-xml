@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
+  <device id="psp" label="Power Supply PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf">
+    <serial speed="2400" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+    <cmdframe>
+      <select>
+        <option id="getstat" type="stat" label="Get Status">
+          <data>L</data>
+        </option>
+        <option id="setvl" type="config" label="Set Voltage Limit">
+          <data>SU </data>
+          <data label="Voltage Value (Integer)" format="%d" ref="argv" />
+        </option>
+        <option id="setal" type="config" label="Set Current Limit">
+          <data>SI </data>
+          <data format="%d" ref="argv" />
+        </option>
+        <option id="setpl" type="config" label="Set Power Limit">
+          <data>SP </data>
+          <data format="%d" ref="argv" />
+        </option>
+        <option id="pon" type="action" label="OUTPUT ON">
+          <data>KOE</data>
+        </option>
+        <option id="poff" type="action" label="OUTPUT OFF">
+          <data>KOD</data>
+        </option>
+        <option id="setv" type="config" label="Set Voltage">
+          <data>SV </data>
+          <data format="%d" ref="argv" />
+        </option>
+      </select>
+      <data label="Suffix" pack="H*">0D</data>
+    </cmdframe>
+    <rspframe wait="0.3">
+      <select>
+        <option id="getstat">
+          <verify length="1">
+            <case msg="Format OK" type="pass">V</case>
+            <case msg="Format mismatch" type="error"></case>
+          </verify>
+          <assign field="v" length="5" />
+          <verify length="1">
+            <case msg="Format OK" type="pass">A</case>
+            <case msg="Format mismatch" type="error"></case>
+          </verify>
+          <assign length="5" field="a" />
+          <verify length="1">
+            <case msg="Format OK" type="pass">W</case>
+            <case msg="Format mismatch" type="error"></case>
+          </verify>
+          <assign length="5" field="w" />
+          <verify length="1">
+            <case msg="Format OK" type="pass">U</case>
+            <case msg="Format mismatch" type="error"></case>
+          </verify>
+          <assign length="2" field="u" />
+          <verify length="1">
+            <case msg="Format OK" type="pass">I</case>
+            <case msg="Format mismatch" type="error"></case>
+          </verify>
+          <assign length="4" field="i" />
+          <verify length="1">
+            <case msg="Format OK" type="pass">P</case>
+            <case msg="Format mismatch" type="error"></case>
+          </verify>
+          <assign length="3" field="p" />
+          <verify length="1">
+            <case msg="Format OK" type="pass">F</case>
+            <case msg="Format mismatch" type="error"></case>
+          </verify>
+          <assign length="1" field="f1" />
+          <assign length="1" field="f2" />
+          <assign length="1" field="f3" />
+          <assign length="1" field="f4" />
+          <assign length="1" field="f5" />
+          <assign length="1" field="f6" />
+        </option>
+      </select>
+    </rspframe>
+  </device>
+</ddb>

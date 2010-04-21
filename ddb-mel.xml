@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
+  <device id="mel" label="MELSEC Q Series">
+    <network type="udp" host="melq" port="5000" />
+    <cmdframe>
+      <data label="SubHeader: Prefix" pack="H*">5400</data>
+      <data label="SubHeader: Serial Number" pack="A*">XX</data>
+      <data label="SubHeader: Fixed Number" pack="H*">0000</data>
+      <data label="Q Header: Network Number" pack="H*">00</data>
+      <data label="Q Header: PC Number" pack="H*">FF</data>
+      <data label="Q Header: Request Unit I/O Number" pack="H*">FF03</data>
+      <data label="Q Header: Request Unit Station Number" pack="H*">00</data>
+      <data label="Q Header: Send Data Length MSB" ref="cc" />
+      <data label="Q Header: Send Data Length LSB" pack="H*">00</data>
+      <ccrange var="cc" method="len" format="%c">
+        <data label="Q Header: CPU Watch Timer" pack="H*">0100</data>
+        <select>
+          <option id="chken" label="Check Enable Flag" type="stat">
+            <data label="Read region" pack="H*">01040000</data>
+            <data label="Start Address" pack="H*">002000</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">0100</data>
+          </option>
+          <option id="getstat" label="Get all status" type="stat">
+            <data label="Read region" pack="H*">01040000</data>
+            <data label="Start Address" pack="H*">000000</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">3400</data>
+          </option>
+          <option id="run1" label="Set Run to Tag 1" type="config">
+            <data label="Write region" pack="H*">01140000</data>
+            <data label="Start Address" pack="H*">010100</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">0100</data>
+            <data label="Data" pack="H*">0100</data>
+          </option>
+          <option id="run" label="Running Start Trigger" type="action">
+            <data label="Write region" pack="H*">01140000</data>
+            <data label="Start Address" pack="H*">020100</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">0100</data>
+            <data label="Data" pack="H*">0100</data>
+          </option>
+          <option id="jak" label="Jacking Start Trigger" type="action">
+            <data label="Write region" pack="H*">01140000</data>
+            <data label="Start Address" pack="H*">020100</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">0100</data>
+            <data label="Data" pack="H*">0001</data>
+          </option>
+          <option id="stop" label="Stop Trigger" type="action">
+            <data label="Write region" pack="H*">01140000</data>
+            <data label="Start Address" pack="H*">000100</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">0100</data>
+            <data label="Data" pack="H*">0100</data>
+          </option>
+          <option id="emstop" label="Emergency Stop Trigger" type="action">
+            <data label="Write region" pack="H*">01140000</data>
+            <data label="Start Address" pack="H*">000100</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">0100</data>
+            <data label="Data" pack="H*">0200</data>
+          </option>
+          <option id="clear" label="Clear Action Flags" type="config">
+            <data label="Write region" pack="H*">01140000</data>
+            <data label="Start Address" pack="H*">000100</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">0400</data>
+            <data label="Data" pack="H*">0000000000000000</data>
+          </option>
+        </select>
+      </ccrange>
+    </cmdframe>
+    <rspframe wait="0">
+      <verify label="SubHeader" length="6" unpack="H*">
+        <case type="pass" msg="SubHeader OK">d40058580000</case>
+        <case type="error" msg="SubHeader mismatch"></case>
+      </verify>
+      <verify label="QHeader" length="5" unpack="H*">
+        <case type="pass" msg="QHeader OK">00ffff0300</case>
+        <case type="error" msg="QHeader mismatch"></case>
+      </verify>
+      <verify label="Response Data Length" length="2" unpack="v">
+        <case type="pass" msg="DataLength OK" ref="len"></case>
+        <case type="warn" msg="DataLength mismatch"></case>
+      </verify>
+      <ccrange var="len" method="len" format="%d">
+        <verify label="Exit Code" length="2" unpack="H*">
+          <case type="pass" msg="ExitCode OK">0000</case>
+          <case msg="RW Region Error" type="warn" option="errframe">0200</case>
+          <case msg="CMD Code Error" type="warn" option="errframe">5000</case>
+          <case msg="Devide Num Error" type="warn" option="errframe">5600</case>
+          <case msg="Communication Error" type="warn" option="errframe">5B00</case>
+          <case msg="CPU Watch timeout Error" type="warn" option="errframe">6000</case>
+          <case type="warn" msg="ExitCode Error" option="errframe"></case>
+        </verify>
+        <select>
+          <option id="chken">
+            <assign length="2" field="cre" unpack="v" />
+          </option>
+          <option id="getstat">
+            <assign length="2" field="x00" unpack="v" />
+            <assign length="2" field="x01" unpack="v" />
+            <assign length="2" field="x02" unpack="v" />
+            <assign length="2" field="x03" unpack="v" />
+            <assign length="2" field="x04" unpack="v" />
+            <assign length="2" field="x05" unpack="v" />
+            <assign length="2" field="x06" unpack="v" />
+            <assign length="2" field="x07" unpack="v" />
+            <assign length="2" field="x08" unpack="v" />
+            <assign length="2" field="x09" unpack="v" />
+            <assign length="2" field="x0a" unpack="v" />
+            <assign length="2" field="x0b" unpack="v" />
+            <assign length="2" field="x0c" unpack="v" />
+            <assign length="2" field="x0d" unpack="v" />
+            <assign length="2" field="x0e" unpack="v" />
+            <assign length="2" field="x0f" unpack="v" />
+            <assign length="2" field="x10" unpack="v" />
+            <assign length="2" field="x11" unpack="v" />
+            <assign length="2" field="x12" unpack="v" />
+            <assign length="2" field="x13" unpack="v" />
+            <assign length="2" field="x14" unpack="v" />
+            <assign length="2" field="x15" unpack="v" />
+            <assign length="2" field="x16" unpack="v" />
+            <assign length="2" field="x17" unpack="v" />
+            <assign length="2" field="x18" unpack="v" />
+            <assign length="2" field="x19" unpack="v" />
+            <assign length="2" field="x1a" unpack="v" />
+            <assign length="2" field="x1b" unpack="v" />
+            <assign length="2" field="x1c" unpack="v" />
+            <assign length="2" field="x1d" unpack="v" />
+            <assign length="2" field="x1e" unpack="v" />
+            <assign length="2" field="x1f" unpack="v" />
+            <assign length="2" field="x20" unpack="v" />
+            <assign length="2" field="x21" unpack="v" />
+            <assign length="2" field="x22" unpack="v" />
+            <assign length="2" field="x23" unpack="v" />
+            <assign length="2" field="x24" unpack="v" />
+            <assign length="2" field="x25" unpack="v" />
+            <assign length="2" field="x26" unpack="v" />
+            <assign length="2" field="x27" unpack="v" />
+            <assign length="2" field="x28" unpack="v" />
+            <assign length="2" field="x29" unpack="v" />
+            <assign length="2" field="x2a" unpack="v" />
+            <assign length="2" field="x2b" unpack="v" />
+            <assign length="2" field="x2c" unpack="v" />
+            <assign length="2" field="x2d" unpack="v" />
+            <assign length="2" field="x2e" unpack="v" />
+            <assign length="2" field="x2f" unpack="v" />
+            <assign length="2" field="x30" unpack="v" />
+            <assign length="2" field="x31" unpack="v" />
+            <assign length="2" field="x32" unpack="v" />
+            <assign length="2" field="x33" unpack="v" />
+          </option>
+          <option id="errframe">
+            <assign length="1" field="err_net" />
+            <assign length="1" field="err_pc" />
+            <assign length="2" field="err_uio" />
+            <assign length="1" field="err_uch" />
+            <assign length="2" field="err_cmd" />
+            <assign length="2" field="err_subcmd" />
+            <assign length="9" field="errframe" />
+          </option>
+        </select>
+      </ccrange>
+    </rspframe>
+  </device>
+</ddb>

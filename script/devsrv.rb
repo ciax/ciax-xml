@@ -22,7 +22,6 @@ while(line=gets.chomp)
   cmd,par=line.split(' ')
   begin
     dc.node_with_id!(cmd)
-    ecmd=dc.devctrl(par)
   rescue
     puts $!
     next
@@ -31,13 +30,17 @@ while(line=gets.chomp)
     ds.node_with_id!(cmd)
   rescue
     open("|#{IoCmd} #{dev} #{cmd}",'w') do |f|
-      f.puts ecmd
+      dc.devctrl(par) do |ecmd|
+        f.puts ecmd
+      end
     end
     puts $!
     next
   else
     open("|#{IoCmd} #{dev} #{cmd}",'r+') do |f|
-      f.puts ecmd
+      dc.devctrl(par) do |ecmd|
+        f.puts ecmd
+      end
       estat=f.gets(nil)
       stat=ds.devstat(estat)
       dc.set_var!(stat)

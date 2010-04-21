@@ -4,7 +4,7 @@
     <serial speed="9600" databit="7" parity="EVEN" stopbit="2" flowctl="NONE" />
     <cmdframe>
       <data label="Prefix" pack="H*">02</data>
-      <ccrange method="bcc" format="%c" var="cc">
+      <ccrange method="bcc" format="%c">
         <select>
           <option id="getstat" type="stat" label="Get Status">
             <data label="Node No.">00</data>
@@ -27,7 +27,7 @@
         <case type="pass" msg="Prefix OK">02</case>
         <case msg="Prefix mismatch" type="error"></case>
       </verify>
-      <ccrange method="bcc" format="%c" var="cc">
+      <ccrange method="bcc" format="%c">
         <verify label="Node" length="4">
           <case type="pass" msg="Node OK">0000</case>
           <case msg="Node mismatch" type="warn"></case>

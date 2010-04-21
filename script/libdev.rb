@@ -35,7 +35,7 @@ class Dev < XmlDb
       end
       val=format(chk)
       @v.msg "[#{method.upcase}] -> [#{val}]"
-      set_var!({self['var'] => val})
+      set_var!({'cc' => val})
       return self
     end
     raise "No method"

@@ -3,7 +3,7 @@
   <device id="srm" label="OMRON SRM1">
     <serial speed="9600" databit="7" parity="EVEN" stopbit="1" flowctl="NONE" />
     <cmdframe>
-      <ccrange method="bcc" format="%02X" var="cc">
+      <ccrange method="bcc" format="%02X">
         <data label="Prefix">@</data>
         <data label="Device No.">00</data>
         <select>
@@ -67,7 +67,7 @@
       <data label="Delimiter" pack="H*">0D</data>
     </cmdframe>
     <rspframe wait="0">
-      <ccrange method="bcc" format="%02X" var="cc">
+      <ccrange method="bcc" format="%02X">
         <verify length="1">
           <case type="pass" msg="Prefix OK">@</case>
           <case msg="Prefix mismatch" type="error"></case>

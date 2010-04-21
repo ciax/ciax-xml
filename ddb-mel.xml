@@ -12,7 +12,7 @@
       <data label="Q Header: Request Unit Station Number" pack="H*">00</data>
       <data label="Q Header: Send Data Length MSB" ref="cc" />
       <data label="Q Header: Send Data Length LSB" pack="H*">00</data>
-      <ccrange var="cc" method="len" format="%c">
+      <ccrange method="len" format="%c">
         <data label="Q Header: CPU Watch Timer" pack="H*">0100</data>
         <select>
           <option id="chken" label="Check Enable Flag" type="stat">
@@ -27,40 +27,33 @@
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">3400</data>
           </option>
-          <option id="run1" label="Set Run to Tag 1" type="config">
+          <option id="set_tag" label="Set Tag to Run" type="config">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">010100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*">0100</data>
+            <data label="Data" pack="H*" ref="par"></data>
           </option>
-          <option id="run" label="Running Start Trigger" type="action">
+          <option id="set_level" label="Set level to Jak" type="config">
+            <data label="Write region" pack="H*">01140000</data>
+            <data label="Start Address" pack="H*">030100</data>
+            <data label="Device Code" pack="H*">B4</data>
+            <data label="Data Length" pack="H*">0100</data>
+            <data label="Data" pack="H*" ref="par"></data>
+          </option>
+          <option id="start" label="Start Trigger" type="action">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">020100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*">0100</data>
-          </option>
-          <option id="jak" label="Jacking Start Trigger" type="action">
-            <data label="Write region" pack="H*">01140000</data>
-            <data label="Start Address" pack="H*">020100</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*">0001</data>
+            <data label="Data" pack="H*" ref="par"></data>
           </option>
           <option id="stop" label="Stop Trigger" type="action">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">000100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*">0100</data>
-          </option>
-          <option id="emstop" label="Emergency Stop Trigger" type="action">
-            <data label="Write region" pack="H*">01140000</data>
-            <data label="Start Address" pack="H*">000100</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*">0200</data>
+            <data label="Data" pack="H*" ref="par"></data>
           </option>
           <option id="clear" label="Clear Action Flags" type="config">
             <data label="Write region" pack="H*">01140000</data>
@@ -82,10 +75,10 @@
         <case type="error" msg="QHeader mismatch"></case>
       </verify>
       <verify label="Response Data Length" length="2" unpack="v">
-        <case type="pass" msg="DataLength OK" ref="len"></case>
+        <case type="pass" msg="DataLength OK" ref="cc"></case>
         <case type="warn" msg="DataLength mismatch"></case>
       </verify>
-      <ccrange var="len" method="len" format="%d">
+      <ccrange method="len" format="%d">
         <verify label="Exit Code" length="2" unpack="H*">
           <case type="pass" msg="ExitCode OK">0000</case>
           <case msg="RW Region Error" type="warn" option="errframe">0200</case>
@@ -162,6 +155,11 @@
             <assign length="2" field="err_subcmd" />
             <assign length="9" field="errframe" />
           </option>
+          <option id="set_tag"></option>
+          <option id="set_level" />
+          <option id="start" />
+          <option id="stop" />
+          <option id="clear" />
         </select>
       </ccrange>
     </rspframe>

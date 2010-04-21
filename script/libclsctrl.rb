@@ -9,6 +9,7 @@ class ClsCtrl < XmlDb
 
   public
   def clsctrl
+    @devcmd=Proc.new
     node_with_name('commandset') {|e| @cmd=e}
     node_with_name('interlock') {|e| @ilk=e}
     return 1 if pre_check
@@ -19,6 +20,7 @@ class ClsCtrl < XmlDb
   protected
   def issue_cmd
     warn "CommandExec[#{self['ref']}]"
+    @devcmd.call(self['ref'])
   end
 
   def wait_until

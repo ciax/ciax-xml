@@ -18,6 +18,7 @@ class XmlDb
 
   # Public Method
   public
+  attr_reader :property
   def node_with_id(id)
     begin
       e=@doc.elements[".//[@id='#{id}']"] || raise

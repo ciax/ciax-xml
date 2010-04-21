@@ -1,36 +1,28 @@
 #!/usr/bin/ruby
+require "libdevctrl"
 require "libclsctrl"
 require "libxmldoc"
+require "libstatio"
+include StatIo
 
 warn "Usage: clsctrl [cls] [cmd]" if ARGV.size < 1
 
-
 begin
-  doc=XmlDoc.new('cdb',ARGV.shift)
-  e=ClsCtrl.new(doc).node_with_id(ARGV.shift)
+  docc=XmlDoc.new('cdb',ARGV.shift)
+  c=ClsCtrl.new(docc).node_with_id(ARGV.shift)
+  docd=XmlDoc.new('ddb',c.property['device'])
+  d=DevCtrl.new(docd)
 rescue RuntimeError
   puts $!
   exit 1
 end
+c.set_var!(read_stat(c.property['id']))
 begin
-  e.clsctrl
-  exit
-rescue IndexError
-  stat=Marshal.load(gets(nil))
-  e.set_var!(stat)
+  c.clsctrl do |cmd|
+    d.node_with_id!(cmd)
+    p d.devctrl
+  end
 rescue RuntimeError
   puts $!
   exit 1
 end
-
-begin
-  e.clsctrl
-rescue RuntimeError
-  puts $!
-  exit 1
-rescue
-  p $!
-  exit 1
-end
-
-

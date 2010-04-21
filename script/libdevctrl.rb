@@ -13,7 +13,7 @@ class DevCtrl < Dev
       @ccstr=e.get_string
       e.checkcode(@ccstr)
     end
-    get_string
+    yield get_string
   end
   
   def node_with_id!(id)

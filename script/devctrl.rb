@@ -13,7 +13,9 @@ rescue
   exit 1
 end
 begin
-  puts e.devctrl(ARGV.shift)
+  e.devctrl(ARGV.shift) do |cmd|
+    puts cmd
+  end
   exit
 rescue IndexError
   puts $!

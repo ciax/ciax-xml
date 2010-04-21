@@ -20,7 +20,9 @@ c.set_var!(read_stat(c.property['id']))
 begin
   c.clsctrl do |cmd|
     d.node_with_id!(cmd)
-    p d.devctrl
+    d.devctrl do |dcmd|
+      p dcmd
+    end
   end
 rescue RuntimeError
   puts $!

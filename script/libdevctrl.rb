@@ -56,7 +56,11 @@ class DevCtrl < Dev
       @v.msg "(#{x} #{ope} #{y})=#{str}"
     end
     attr_with_key('pack') do |val|
-      code=[str].pack(val)
+      if /[aAbBhHpPuUwWzZ]/=~val
+        code=[str].pack(val)
+      else
+        code=[str.to_i].pack(val)
+      end
       hex=code.unpack('C*').map!{|c| '%02x' % c}.join
       @v.msg "pack(#{val}) [#{str}] -> [#{hex}]"
       str=code

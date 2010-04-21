@@ -12,6 +12,10 @@
           <data>SD</data>
           <data label="msb" pack="H*">1111</data>
         </option>
+        <option id="output" type="action" label="OUTPUT">
+          <data>SO</data>
+          <data ref="par" pack="n"></data>
+        </option>
         <option id="s0" type="action" label="Set Bit0">
           <data>SO</data>
           <data ref="stat" pack="n" operator="or">0x01</data>

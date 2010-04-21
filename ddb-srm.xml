@@ -16,7 +16,7 @@
             <data label="Header Code">FK</data>
             <data label="Operand">CIO </data>
             <data label="Channel">0000</data>
-            <data ref="argv" format="%016d"></data>
+            <data ref="par" format="%016d"></data>
           </option>
           <option id="x0on" type="action" label="Bit 0 ON">
             <data>FKCIO 00000000000000000005</data>
@@ -88,15 +88,26 @@
             <assign field="c1d1" length="1" />
             <assign field="c1d0" length="1" />
           </option>
-          <option id="default">
+          <option id="fset">
             <verify length="4">
               <case type="pass" msg="Command Code OK">00FK</case>
               <case msg="Command Code mismatch" type="error"></case>
             </verify>
-            <assign field="rc" length="2" />
+            <verify length="2">
+              <case type="pass" msg="Exit Code OK">00</case>
+              <case msg="Exit Code NG" type="error"></case>
+            </verify>
           </option>
         </select>
       </ccrange>
+      <verify length="2">
+        <case type="pass" msg="Prefix OK" ref="cc"></case>
+        <case msg="CC mismatch" type="error"></case>
+      </verify>
+      <verify length="1">
+        <case type="pass" msg="Terminater OK">*</case>
+        <case msg="Terminater mismatch" type="error"></case>
+      </verify>
     </rspframe>
   </device>
 </ddb>

@@ -6,7 +6,8 @@ class DevCtrl < Dev
     super(doc,'//cmdframe')
   end
 
-  def devctrl
+  def devctrl(par=nil)
+    @var['par']=par
     node_with_name('ccrange') do |e|
       @v.msg("Entering CC range",1)
       @ccstr=e.get_string

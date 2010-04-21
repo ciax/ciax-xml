@@ -18,10 +18,11 @@ rescue RuntimeError
   exit 1
 end
 
-while(cmd=gets.chomp)
+while(line=gets.chomp)
+  cmd,par=line.split(' ')
   begin
     dc.node_with_id!(cmd)
-    ecmd=dc.devctrl
+    ecmd=dc.devctrl(par)
   rescue
     puts $!
     next
@@ -30,15 +31,14 @@ while(cmd=gets.chomp)
     ds.node_with_id!(cmd)
   rescue
     open("|#{IoCmd} #{dev} #{cmd}",'w') do |f|
-      f.puts cmd
+      f.puts ecmd
     end
     puts $!
     next
   else
     open("|#{IoCmd} #{dev} #{cmd}",'r+') do |f|
-      f.puts cmd
+      f.puts ecmd
       estat=f.gets(nil)
-p estat
       stat=ds.devstat(estat)
       dc.set_var!(stat)
       p stat

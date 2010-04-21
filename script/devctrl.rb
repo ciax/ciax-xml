@@ -2,7 +2,7 @@
 require "libdevctrl"
 require "libxmldoc"
 
-warn "Usage: devctrl [dev] [cmd]" if ARGV.size < 1
+warn "Usage: devctrl [dev] [cmd] (par)" if ARGV.size < 1
 
 begin
   doc=XmlDoc.new('ddb',ARGV.shift)
@@ -13,12 +13,10 @@ rescue
   exit 1
 end
 begin
-  puts e.devctrl
+  puts e.devctrl(ARGV.shift)
   exit
 rescue IndexError
-  field=Marshal.load(gets(nil))
-  e.set_var!(field)
+  puts $!
 end
-puts e.devctrl
 
 

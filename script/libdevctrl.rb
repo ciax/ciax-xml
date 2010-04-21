@@ -44,25 +44,18 @@ class DevCtrl < Dev
   end
   
   def encode(str)
-    attr_with_key('operator') do |ope|
-      x=str.to_i
-      y=@doc.text.hex
-      case ope
-        when 'and'
-        str=x & y
-        when 'or'
-        str=x | y
+    attr_with_key('type') do |type|
+      case type
+      when 'int'
+        str=str.to_i
+      when 'float'
+        str=str.to_f
       end
-      @v.msg "(#{x} #{ope} #{y})=#{str}"
     end
-    attr_with_key('pack') do |val|
-      if /[aAbBhHpPuUwWzZ]/=~val
-        code=[str].pack(val)
-      else
-        code=[str.to_i].pack(val)
-      end
+    attr_with_key('pack') do |pack|
+      code=[str].pack(pack)
       hex=code.unpack('C*').map!{|c| '%02x' % c}.join
-      @v.msg "pack(#{val}) [#{str}] -> [#{hex}]"
+      @v.msg "pack(#{pack}) [#{str}] -> [#{hex}]"
       str=code
     end
     format(str)

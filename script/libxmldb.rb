@@ -29,8 +29,15 @@ class XmlDb
     copy_self(e)
   end
 
-  def set_var!(hash)
-    @var.update(hash)
+  def set_var!(hash,namespace=nil)
+    if namespace
+      hash.each do |key,val|
+        @var["#{namespace}:#{key}"]=val
+      end
+    else
+      @var.update(hash)
+    end
+    self
   end
 
   # Access Attributes

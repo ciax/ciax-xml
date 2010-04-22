@@ -6,7 +6,7 @@ dev=$(lookup $cls dev) || _usage_key
 input=~/.var/${dev}.mar
 [ -e $input ] || _die "no input file"
 output=~/.var/${cls}.mar
-clsctrl $cls $cmd < $output
+clsctrl $cls $cmd
 [ "$cmd" = upd ] || exit
 clsstat $cls < $input > $output || exit
 [ "$VER" ] && mar $output || stv $output

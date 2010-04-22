@@ -9,10 +9,10 @@ class ClsStat < XmlDb
 
   public
   def clsstat(fields)
+    set_var!(fields,'field')
     @field=fields
-    @stat=Hash.new
     get_stat
-    return @stat
+    return @var
   end
 
   protected
@@ -54,10 +54,8 @@ class ClsStat < XmlDb
       @v.msg("#{c['id']}=[#{val}]")
       c.symbol(val,set)
       set.delete('id')
-      @stat[c['id']]=set
+      @var[c['id']]=set
     end
   end
 
 end
-
-

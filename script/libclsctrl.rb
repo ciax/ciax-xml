@@ -21,8 +21,9 @@ class ClsCtrl < XmlDb
   def issue_cmd
     cmd=Array.new
     each_node do |e|
-      cmd << operate(e.text)
+      cmd << e.operate(e.text)
     end
+    @v.msg "Exec(DDB):[#{cmd}]"
     warn "CommandExec[#{cmd}]"
     @devcmd.call(cmd)
   end
@@ -50,6 +51,21 @@ class ClsCtrl < XmlDb
     (expect == actual)
   end
 
+  def operate(str)
+    attr_with_key('operator') do |ope|
+      x=str.to_i
+      y=@doc.text.hex
+      case ope
+        when 'and'
+        str=x & y
+        when 'or'
+        str=x | y
+      end
+      @v.msg "(#{x} #{ope} #{y})=#{str}"
+    end
+    str
+  end
+
   private
   def exec_cmdset
     @cmd.each_node do |e|
@@ -66,6 +82,7 @@ class ClsCtrl < XmlDb
     return unless @ilk
     if sufficient?
       @v.msg "Command already done -> Skip"
+      warn "Skip"
       return 1
     end
     raise("Interlock Error") unless required?
@@ -89,21 +106,6 @@ class ClsCtrl < XmlDb
       d.chk_condition || return
     end
     return 1
-  end
-
-  def operate(str)
-    attr_with_key('operator') do |ope|
-      x=str.to_i
-      y=@doc.text.hex
-      case ope
-        when 'and'
-        str=x & y
-        when 'or'
-        str=x | y
-      end
-      @v.msg "(#{x} #{ope} #{y})=#{str}"
-    end
-    str
   end
 
 end

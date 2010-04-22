@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libdevexe"
+require "libdevctrl"
 require "libstatio"
 include StatIo
 IoCmd="exio"
@@ -10,7 +10,7 @@ end
 warn "Usage: devsrv [dev]" if ARGV.size < 1
 
 dev=ARGV.shift
-ddb=DevExe.new(dev)
+ddb=DevCtrl.new(dev)
 
 while(line=gets.chomp)
   cmd,par=line.split(' ')

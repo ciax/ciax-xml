@@ -10,7 +10,7 @@ end
 warn "Usage: devsrv [dev]" if ARGV.size < 1
 
 dev=ARGV.shift
-ddb=DevCtrl.new(dev)
+ddb=DevCmd.new(dev)
 
 while(line=gets.chomp)
   cmd,par=line.split(' ')
@@ -25,4 +25,5 @@ while(line=gets.chomp)
     end
   end
 end
+
 

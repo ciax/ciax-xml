@@ -4,7 +4,7 @@ require "libdevstat"
 require "libxmldoc"
 require "libstatio"
 
-class DevCmd
+class Dev
   def initialize(dev)
     begin
       ddb=XmlDoc.new('ddb',dev)

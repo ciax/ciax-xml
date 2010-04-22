@@ -17,13 +17,35 @@ class DevExe
   end
 
   def devcom(cmd,par=nil)
-    @dc.node_with_id!(cmd)
-    @ds.node_with_id!(cmd)
-    stat=nil
-    @dc.devctrl(par) do |ecmd|
-      stat=ds.devstat(yield ecmd)
-      dc.set_var!(stat)
+    begin
+      @dc.node_with_id!(cmd)
+    rescue
+      puts $!
+      return
     end
-    stat
+    begin
+      @ds.node_with_id!(cmd)
+    rescue
+      session(par) do |ecmd|
+        yield ecmd
+      end
+    else
+      session(par) do |ecmd|
+        stat=@ds.devstat(yield ecmd)
+        @dc.set_var!(stat)
+        return stat
+      end
+    end
+  end
+  
+  private
+  def session(par)
+    begin
+      @dc.devctrl(par) do |ecmd|
+        yield ecmd
+      end
+    rescue
+      puts $!
+    end
   end
 end

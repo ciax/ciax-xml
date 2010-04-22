@@ -5,7 +5,9 @@ require "libxmldoc"
 require "libstatio"
 
 class Dev
+  attr_reader :stat
   def initialize(dev)
+    @stat=Hash.new
     begin
       ddb=XmlDoc.new('ddb',dev)
       @dc=DevCmd.new(ddb)
@@ -31,13 +33,11 @@ class Dev
       end
     else
       session(par) do |ecmd|
-        stat=@ds.devstat(yield ecmd)
-        @dc.set_var!(stat)
-        return stat
+        @stat=@ds.devstat(yield ecmd)
       end
     end
   end
-  
+
   private
   def session(par)
     begin

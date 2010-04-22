@@ -6,7 +6,8 @@ cls=$(lookup $obj cls) || _usage_key
 input=~/.var/${cls}.mar
 [ -e $input ] || _die "no input file"
 output=~/.var/${obj}.mar
-objctrl $obj $cmd || exit
+objcmd $obj $cmd || exit
 [ "$cmd" = upd ] || exit
 objstat $obj < $input > $output || exit
 [ "$VER" ] && mar $output || stv $output
+

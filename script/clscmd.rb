@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require "libdevctrl"
-require "libclsctrl"
+require "libdevcmd"
+require "libclscmd"
 require "libxmldoc"
 require "libstatio"
 include StatIo
 
-warn "Usage: clsctrl [cls] [cmd]" if ARGV.size < 1
+warn "Usage: clscmd [cls] [cmd]" if ARGV.size < 1
 
 begin
   docc=XmlDoc.new('cdb',ARGV.shift)
@@ -18,9 +18,9 @@ rescue RuntimeError
 end
 c.set_var!(read_stat(c.property['id']))
 begin
-  c.clsctrl do |cmd,par|
+  c.clscmd do |cmd,par|
     d.node_with_id!(cmd)
-    d.devctrl(par) do |dcmd|
+    d.devcmd(par) do |dcmd|
       p dcmd
     end
   end
@@ -28,3 +28,6 @@ rescue RuntimeError
   puts $!
   exit 1
 end
+
+
+

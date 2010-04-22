@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libobjctrl"
+require "libobjcmd"
 require "libxmldoc"
 
-warn "Usage: objctrl [obj] [cmd]" if ARGV.size < 1
+warn "Usage: objcmd [obj] [cmd]" if ARGV.size < 1
 
 
 begin
@@ -12,5 +12,6 @@ rescue RuntimeError
   puts $!
   exit 1
 end
-e.objctrl
+e.objcmd
+
 

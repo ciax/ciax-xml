@@ -8,7 +8,7 @@ class ClsCtrl < XmlDb
   end
 
   public
-  def clsctrl
+  def clscmd
     @devcmd=Proc.new
     node_with_name('commandset') {|e| @cmd=e}
     node_with_name('interlock') {|e| @ilk=e}
@@ -109,4 +109,5 @@ class ClsCtrl < XmlDb
   end
 
 end
+
 

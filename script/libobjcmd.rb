@@ -8,7 +8,8 @@ class ObjCtrl < XmlDb
   end
 
   public
-  def objctrl
+  def objcmd
     warn "CommandExec[#{self['ref']}]"
   end
 end
+

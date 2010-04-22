@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libdevctrl"
+require "libdevcmd"
 require "libdevstat"
 require "libxmldoc"
 require "libstatio"
@@ -41,7 +41,7 @@ class DevExe
   private
   def session(par)
     begin
-      @dc.devctrl(par) do |ecmd|
+      @dc.devcmd(par) do |ecmd|
         yield ecmd
       end
     rescue
@@ -49,3 +49,5 @@ class DevExe
     end
   end
 end
+
+

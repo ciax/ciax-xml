@@ -18,9 +18,9 @@ rescue RuntimeError
 end
 c.set_var!(read_stat(c.property['id']))
 begin
-  c.clsctrl do |cmd|
+  c.clsctrl do |cmd,par|
     d.node_with_id!(cmd)
-    d.devctrl do |dcmd|
+    d.devctrl(par) do |dcmd|
       p dcmd
     end
   end

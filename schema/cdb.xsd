@@ -38,9 +38,10 @@
   </xsd:element>
   <xsd:element name="commandset">
     <xsd:complexType>
-      <xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cx:command" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:sequence>
+        <xsd:element ref="cx:wait_until" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="interlock">
@@ -54,42 +55,50 @@
   <xsd:element name="command">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:argv" minOccurs="0" maxOccurs="unbounded" />
-        <xsd:element ref="cx:set" minOccurs="0" maxOccurs="unbounded" />
-        <xsd:element ref="cx:until" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="cx:text" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="ref" type="xsd:string" use="required" />
-      <xsd:attribute name="timeout" type="xsd:int" />
+      <xsd:attribute name="ref" type="xsd:string" />
       <xsd:attribute name="abort" type="xsd:string" />
       <xsd:attribute name="label" type="xsd:string" use="optional" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="set" type="cx:ConditionType"></xsd:element>
-  <xsd:element name="argv">
+  <xsd:element name="text">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attribute name="src" type="xsd:string" use="optional" />
+          <xsd:attribute name="label" type="xsd:string" />
+          <xsd:attribute name="format" type="xsd:string" />
+          <xsd:attribute name="ref" type="xsd:string" />
+          <xsd:attribute name="type">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="int" />
+                <xsd:enumeration value="float" />
+                <xsd:enumeration value="string" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+          <xsd:attribute name="operator">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="and" />
+                <xsd:enumeration value="or" />
+                <xsd:enumeration value="xor" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="until">
+  <xsd:element name="wait_until">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:update" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="cx:command" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="var" type="xsd:string" use="required"></xsd:attribute>
-      <xsd:attribute name="value" type="xsd:string" use="required" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="update">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="ref" type="xsd:string" use="required" />
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:attribute name="var" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="value" type="xsd:string" />
+      <xsd:attribute name="timeout" type="xsd:int" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="sufficient" type="cx:ConditionType" />

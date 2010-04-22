@@ -4,13 +4,16 @@
     <controls>
       <session id="upd" label="Update Status">
         <commandset>
-          <command ref="getstat" />
+          <command>
+            <text>getstat</text>
+          </command>
         </commandset>
       </session>
       <session id="c3on" label="CIAX3 POWER ON">
         <commandset>
-          <command ref="fset" label="x0on">
-            <argv>5</argv>
+          <command label="bit0 on">
+            <text>fset</text>
+            <text>5</text>
           </command>
         </commandset>
         <interlock>
@@ -19,7 +22,10 @@
       </session>
       <session id="c3off" label="CIAX3 POWER OFF">
         <commandset>
-          <command ref="x0off" />
+          <command label="Bit 0 OFF">
+            <text>fset</text>
+            <text>4</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="c3p" value="0"></sufficient>
@@ -27,7 +33,10 @@
       </session>
       <session id="emon" label="CIAX3 EMERGENCY ON">
         <commandset>
-          <command ref="x1on" />
+          <command label="Bit 1 ON">
+            <text>fset</text>
+            <text>50</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="c3e" value="1"></sufficient>
@@ -35,7 +44,10 @@
       </session>
       <session id="emoff" label="CIAX3 EMERGENCY OFF">
         <commandset>
-          <command ref="x1off" />
+          <command label="Bit 1 OFF">
+            <text>fset</text>
+            <text>40</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="c3e" value="0"></sufficient>
@@ -43,7 +55,10 @@
       </session>
       <session id="ccdon" label="CS CCD ON">
         <commandset>
-          <command ref="x2on" />
+          <command label="Bit 2 ON">
+            <text>fset</text>
+            <text>500</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="ccd" value="1"></sufficient>
@@ -51,7 +66,10 @@
       </session>
       <session id="ccdoff" label="CS CCD OFF">
         <commandset>
-          <command ref="x2off" />
+          <command label="Bit 2 OFF">
+            <text>fset</text>
+            <text>400</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="ccd" value="0"></sufficient>
@@ -59,7 +77,10 @@
       </session>
       <session id="lanon" label="CS LAN ON">
         <commandset>
-          <command ref="x3on" />
+          <command label="Bit 3 ON">
+            <text>fset</text>
+            <text>5000</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="lan" value="1"></sufficient>
@@ -67,7 +88,10 @@
       </session>
       <session id="lanoff" label="CS LAN OFF">
         <commandset>
-          <command ref="x3off" />
+          <command label="Bit 3 OFF">
+            <text>fset</text>
+            <text>4000</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="lan" value="0"></sufficient>
@@ -75,7 +99,10 @@
       </session>
       <session id="ipwon" label="CS IPW ON">
         <commandset>
-          <command ref="x4on" />
+          <command label="Bit 4 ON">
+            <text>fset</text>
+            <text>50000</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="ipw" value="1"></sufficient>
@@ -83,7 +110,10 @@
       </session>
       <session id="ipwoff" label="CS IPW OFF">
         <commandset>
-          <command ref="x4off" />
+          <command label="Bit 4 OFF">
+            <text>fset</text>
+            <text>40000</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="ipw" value="0"></sufficient>
@@ -91,7 +121,10 @@
       </session>
       <session id="ston" label="STOW PIN ON">
         <commandset>
-          <command ref="x5on" />
+          <command label="Bit 5 ON">
+            <text>fset</text>
+            <text>500000</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="c1x5" value="1"></sufficient>
@@ -99,7 +132,10 @@
       </session>
       <session id="stoff" label="STOW PIN OFF">
         <commandset>
-          <command ref="x5off" />
+          <command label="Bit 5 OFF">
+            <text>fset</text>
+            <text>400000</text>
+          </command>
         </commandset>
         <interlock>
           <sufficient var="c1x5" value="0"></sufficient>
@@ -107,8 +143,9 @@
       </session>
       <session id="ccdtmr" label="CS CCD TIMER">
         <commandset>
-          <command ref="x2on" timeout="300" abort="x2off"></command>
-          <command ref="x2off" />
+          <command ref="cddon"></command>
+          <wait_until timeout="300"></wait_until>
+          <command ref="ccdoff" />
         </commandset>
       </session>
     </controls>

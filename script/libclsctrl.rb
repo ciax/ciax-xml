@@ -19,24 +19,26 @@ class ClsCtrl < XmlDb
 
   protected
   def issue_cmd
-    warn "CommandExec[#{self['ref']}]"
-    @devcmd.call(self['ref'])
+    cmd=Array.new
+    each_node do |e|
+      cmd << operate(e.text)
+    end
+    warn "CommandExec[#{cmd}]"
+    @devcmd.call(cmd)
   end
 
   def wait_until
-    node_with_name('until') do |e|
-      timeout=(self['timeout'] || 5).to_i
-      issue=Thread.new(e) do |e|
-        loop do
-          e.each_node do |d|
-            d.issue_cmd
-          end
-          break if e.chk_condition
-          sleep 1
+    timeout=(self['timeout'] || 5).to_i
+    issue=Thread.new do
+      loop do
+        each_node do |d|
+          d.issue_cmd
         end
+        break if chk_condition
+        sleep 1
       end
-      issue.join(timeout) || warn("Timeout")
     end
+    issue.join(timeout) || warn("Timeout")
   end
 
   def chk_condition
@@ -51,8 +53,12 @@ class ClsCtrl < XmlDb
   private
   def exec_cmdset
     @cmd.each_node do |e|
-      e.issue_cmd
-      e.wait_until
+      case e.name
+      when 'command'
+        e.issue_cmd
+      when 'wait_until'
+        e.wait_until
+      end
     end 
   end
 
@@ -83,6 +89,21 @@ class ClsCtrl < XmlDb
       d.chk_condition || return
     end
     return 1
+  end
+
+  def operate(str)
+    attr_with_key('operator') do |ope|
+      x=str.to_i
+      y=@doc.text.hex
+      case ope
+        when 'and'
+        str=x & y
+        when 'or'
+        str=x | y
+      end
+      @v.msg "(#{x} #{ope} #{y})=#{str}"
+    end
+    str
   end
 
 end

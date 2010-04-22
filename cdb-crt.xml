@@ -4,23 +4,37 @@
     <controls>
       <session id="upd" label="Regular status update">
         <commandset>
-          <command ref="getstat" />
-          <command ref="chken" />
+          <command>
+            <text>getstat</text>
+          </command>
+          <command>
+            <text>chken</text>
+          </command>
         </commandset>
       </session>
       <session id="runf" label="Run to Tag 1">
         <commandset>
-          <command ref="runf" />
-          <command ref="run">
-            <until var="run" value="1">
-              <update ref="getstat"></update>
-            </until>
+          <command label="Set Tag to Forward">
+            <text>set_tag</text>
+            <text>6200</text>
           </command>
-          <command ref="cla" timeout="40" abort="stop">
-            <until var="run" value="0">
-              <update ref="getstat"></update>
-            </until>
+          <command label="Running Start">
+            <text>start</text>
+            <text>0100</text>
           </command>
+          <wait_until var="run" value="1" timeout="1">
+            <command>
+              <text>getstat</text>
+            </command>
+          </wait_until>
+          <command abort="stop" label="Clear Triggers">
+            <text>clear</text>
+          </command>
+          <wait_until var="run" value="0" timeout="40">
+            <command>
+              <text>getstat</text>
+            </command>
+          </wait_until>
         </commandset>
         <interlock>
           <required var="rdy" value="1"></required>
@@ -28,17 +42,27 @@
       </session>
       <session id="run1" label="Run to Tag 1">
         <commandset>
-          <command ref="run1" />
-          <command ref="run">
-            <until var="run" value="1">
-              <update ref="getstat"></update>
-            </until>
+          <command label="Set Tag to Forward">
+            <text>set_tag</text>
+            <text>0100</text>
           </command>
-          <command ref="clear" timeout="100" abort="stop">
-            <until var="run" value="0">
-              <update ref="getstat"></update>
-            </until>
+          <command label="Running Start">
+            <text>start</text>
+            <text>0100</text>
           </command>
+          <wait_until var="run" value="1" timeout="1">
+            <command>
+              <text>getstat</text>
+            </command>
+          </wait_until>
+          <command abort="stop" label="Clear Triggers">
+            <text>clear</text>
+          </command>
+          <wait_until var="run" value="0" timeout="100">
+            <command>
+              <text>getstat</text>
+            </command>
+          </wait_until>
         </commandset>
         <interlock>
           <sufficient var="cpos" value="1"></sufficient>
@@ -47,26 +71,58 @@
       </session>
       <session id="jak1" label="Jack UP Level 1">
         <commandset>
-          <command ref="jak1" />
-          <command ref="jak">
-            <until var="jak" value="1">
-              <update ref="getstat"></update>
-            </until>
+          <command label="Set Level 1">
+            <text>set_level</text>
+            <text>0200</text>
           </command>
-          <command ref="clear" timeout="100" abort="stop">
-            <until var="jak" value="0">
-              <update ref="getstat"></update>
-            </until>
+          <command label="Jacking Start">
+            <text>start</text>
+            <text>0001</text>
           </command>
+          <wait_until var="jak" value="1" timeout="1">
+            <command>
+              <text>getstat</text>
+            </command>
+          </wait_until>
+          <command abort="stop" label="Clear Triggers">
+            <text>clear</text>
+          </command>
+          <wait_until var="jak" value="0" timeout="30">
+            <command>
+              <text>getstat</text>
+            </command>
+          </wait_until>
         </commandset>
         <interlock>
           <sufficient var="jpos" value="1"></sufficient>
           <required var="rdy" value="1"></required>
         </interlock>
       </session>
+      <session id="pause" label="Pause">
+        <commandset>
+          <command>
+            <text>stop</text>
+          </command>
+          <command>
+            <text>0100</text>
+          </command>
+        </commandset>
+      </session>
+      <session id="emstop" label="Emergency Stop">
+        <commandset>
+          <command>
+            <text>stop</text>
+          </command>
+          <command>
+            <text>0200</text>
+          </command>
+        </commandset>
+      </session>
       <session id="resume" label="Resume from Pause">
         <commandset>
-          <command ref="clear" />
+          <command>
+            <text>clear</text>
+          </command>
         </commandset>
       </session>
     </controls>

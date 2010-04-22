@@ -23,8 +23,8 @@ class ClsCmd < XmlDb
     each_node do |e|
       cmd << e.operate(e.text)
     end
-    @v.msg "Exec(DDB):[#{cmd}]"
-    warn "CommandExec[#{cmd}]"
+    @v.msg "Exec(DDB):[#{cmd.join(' ')}]"
+    warn "CommandExec[#{cmd.join(' ')}]"
     @devcmd.call(cmd)
   end
 

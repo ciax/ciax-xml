@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libstat"
+require "libmodstat"
 class ObjStat < XmlDb
   include Stat
   def initialize(doc)
@@ -31,5 +31,6 @@ class ObjStat < XmlDb
   end
 
 end
+
 
 

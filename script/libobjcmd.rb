@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libctrl"
+require "libmodcmd"
 class ObjCmd < XmlDb
   include Ctrl
   def initialize(doc)
@@ -12,5 +12,6 @@ class ObjCmd < XmlDb
     warn "CommandExec[#{self['ref']}]"
   end
 end
+
 
 

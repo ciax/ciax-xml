@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libctrl"
+require "libmodcmd"
 class ClsCmd < XmlDb
   include Ctrl
   def initialize(doc)
@@ -109,6 +109,7 @@ class ClsCmd < XmlDb
   end
 
 end
+
 
 
 

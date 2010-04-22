@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libdev"
-require "libctrl"
+require "libmodcmd"
 class DevCmd < Dev
   def initialize(doc)
     super(doc,'//cmdframe')
@@ -62,5 +62,6 @@ class DevCmd < Dev
   end
 
 end
+
 
 

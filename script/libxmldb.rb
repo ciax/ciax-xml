@@ -19,15 +19,6 @@ class XmlDb
   # Public Method
   public
   attr_reader :property
-  def node_with_id(id)
-    begin
-      e=@doc.elements[".//[@id='#{id}']"] || raise
-    rescue
-      list_id('./')
-      raise("No such a command")
-    end
-    copy_self(e)
-  end
 
   def set_var!(hash,namespace=nil)
     if namespace

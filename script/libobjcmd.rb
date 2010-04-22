@@ -2,7 +2,7 @@
 require "libxmldb"
 require "libmodcmd"
 class ObjCmd < XmlDb
-  include Ctrl
+  include ModCmd
   def initialize(doc)
     super(doc,'//controls')
   end
@@ -12,6 +12,7 @@ class ObjCmd < XmlDb
     warn "CommandExec[#{self['ref']}]"
   end
 end
+
 
 
 

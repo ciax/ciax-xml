@@ -2,7 +2,7 @@
 require "libxmldb"
 require "libmodcmd"
 class ClsCmd < XmlDb
-  include Ctrl
+  include ModCmd
   def initialize(doc)
     super(doc,'//controls')
   end
@@ -109,6 +109,7 @@ class ClsCmd < XmlDb
   end
 
 end
+
 
 
 

@@ -14,3 +14,4 @@ rescue RuntimeError
   exit 1
 end
 print Marshal.dump(stat)
+

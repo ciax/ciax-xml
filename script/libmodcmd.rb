@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-module Ctrl
+module ModCmd
 
   def node_with_id(id)
     begin
@@ -12,3 +12,4 @@ module Ctrl
   end
 
 end
+

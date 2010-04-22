@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-module Stat
+module ModStat
   
   def symbol(val,set)
     node_with_name('symbol') do |d|
@@ -21,4 +21,5 @@ module Stat
   end
 
 end
+
 

@@ -2,7 +2,7 @@
 require "libxmldb"
 require "libmodstat"
 class ObjStat < XmlDb
-  include Stat
+  include ModStat
   def initialize(doc)
     super(doc,'//status')
   end
@@ -31,6 +31,7 @@ class ObjStat < XmlDb
   end
 
 end
+
 
 
 

@@ -6,8 +6,9 @@ require "libstatio"
 
 class Dev
   attr_reader :stat
-  def initialize(dev)
+  def initialize(dev,iocmd)
     @stat=Hash.new
+    @iocmd=iocmd
     begin
       ddb=XmlDoc.new('ddb',dev)
       @dc=DevCmd.new(ddb)
@@ -28,13 +29,9 @@ class Dev
     begin
       @ds.node_with_id!(cmd)
     rescue
-      session(par) do |ecmd|
-        yield ecmd
-      end
+      session(par)
     else
-      session(par) do |ecmd|
-        @stat=@ds.devstat(yield ecmd)
-      end
+      @stat=@ds.devstat(session(par))
     end
   end
 
@@ -42,16 +39,13 @@ class Dev
   def session(par)
     begin
       @dc.devcmd(par) do |ecmd|
-        yield ecmd
+        open("|"+@iocmd,'r+') do |f|
+          f.puts ecmd
+          f.gets(nil)
+        end
       end
     rescue
       puts $!
     end
   end
 end
-
-
-
-
-
-

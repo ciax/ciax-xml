@@ -9,20 +9,24 @@ warn "Usage: devsrv [dev]" if ARGV.size < 1
 dev=ARGV.shift
 ddb=Dev.new(dev)
 
-while(line=gets.chomp)
-  if line ==''
-    p ddb.stat
-    next
-  end
-  cmd,par=line.split(' ')
-  ddb.devcom(cmd,par) do |ecmd|
-    begin
-      open("|#{IoCmd} #{dev} #{cmd}",'r+') do |f|
-        f.puts ecmd
-        f.gets(nil)
+loop do 
+  line=gets.chomp
+  case line
+  when /^q/
+    break
+  when /[\w]+/
+    cmd,par=line.split(' ')
+    ddb.devcom(cmd,par) do |ecmd|
+      begin
+        open("|#{IoCmd} #{dev} #{cmd}",'r+') do |f|
+          f.puts ecmd
+          f.gets(nil)
+        end
+      rescue
+        puts $!
       end
-    rescue
-      puts $!
     end
+  else
+    p ddb.stat
   end
 end

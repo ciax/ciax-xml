@@ -8,7 +8,8 @@ class ClsCmd < XmlDb
   end
 
   public
-  def clscmd
+  def clscmd(par=nil)
+    @var['par']=par
     @devcmd=Proc.new
     node_with_name('commandset') {|e| @cmd=e}
     node_with_name('interlock') {|e| @ilk=e}

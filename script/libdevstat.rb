@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
-require "libdev"
-class DevStat < Dev
+require "libmoddev"
+require "libxmldb"
+class DevStat < XmlDb
+  include ModDev
   def initialize(doc)
     super(doc,'//rspframe')
     @field={'device'=>@property['id']}

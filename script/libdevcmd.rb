@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
-require "libdev"
-require "libmodcmd"
-class DevCmd < Dev
+require "libmoddev"
+require "libxmldb"
+class DevCmd < XmlDb
+  include ModDev
   def initialize(doc)
     super(doc,'//cmdframe')
   end

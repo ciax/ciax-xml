@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libxmldb"
 require "libctrl"
-class ObjCtrl < XmlDb
+class ObjCmd < XmlDb
   include Ctrl
   def initialize(doc)
     super(doc,'//controls')
@@ -12,4 +12,5 @@ class ObjCtrl < XmlDb
     warn "CommandExec[#{self['ref']}]"
   end
 end
+
 

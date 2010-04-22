@@ -9,9 +9,9 @@ warn "Usage: clscmd [cls] [cmd]" if ARGV.size < 1
 
 begin
   docc=XmlDoc.new('cdb',ARGV.shift)
-  c=ClsCtrl.new(docc).node_with_id(ARGV.shift)
+  c=ClsCmd.new(docc).node_with_id(ARGV.shift)
   docd=XmlDoc.new('ddb',c.property['device'])
-  d=DevCtrl.new(docd)
+  d=DevCmd.new(docd)
 rescue RuntimeError
   puts $!
   exit 1
@@ -28,6 +28,8 @@ rescue RuntimeError
   puts $!
   exit 1
 end
+
+
 
 
 

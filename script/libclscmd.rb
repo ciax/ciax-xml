@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libxmldb"
 require "libctrl"
-class ClsCtrl < XmlDb
+class ClsCmd < XmlDb
   include Ctrl
   def initialize(doc)
     super(doc,'//controls')
@@ -109,5 +109,6 @@ class ClsCtrl < XmlDb
   end
 
 end
+
 
 

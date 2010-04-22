@@ -6,7 +6,7 @@ warn "Usage: devcmd [dev] [cmd] (par)" if ARGV.size < 1
 
 begin
   doc=XmlDoc.new('ddb',ARGV.shift)
-  e=DevCtrl.new(doc)
+  e=DevCmd.new(doc)
   e.node_with_id!(ARGV.shift)
 rescue
   puts $!
@@ -20,6 +20,7 @@ begin
 rescue IndexError
   puts $!
 end
+
 
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libdev"
 require "libctrl"
-class DevCtrl < Dev
+class DevCmd < Dev
   def initialize(doc)
     super(doc,'//cmdframe')
   end
@@ -62,4 +62,5 @@ class DevCtrl < Dev
   end
 
 end
+
 

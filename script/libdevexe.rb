@@ -8,7 +8,7 @@ class DevExe
   def initialize(dev)
     begin
       ddb=XmlDoc.new('ddb',dev)
-      @dc=DevCtrl.new(ddb)
+      @dc=DevCmd.new(ddb)
       @ds=DevStat.new(ddb)
     rescue RuntimeError
       puts $!
@@ -49,5 +49,6 @@ class DevExe
     end
   end
 end
+
 
 

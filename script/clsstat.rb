@@ -1,17 +1,20 @@
 #!/usr/bin/ruby
 require "libclsstat"
 require "libxmldoc"
+require "libstatio"
+include StatIo
 
 warn "Usage: clsstat [class] < devstat" if ARGV.size < 1
 
 begin
   doc=XmlDoc.new('cdb',ARGV.shift)
-  e=ClsStat.new(doc)
-  field=Marshal.load(gets(nil))
-  stat=e.clsstat(field)
+  cdb=ClsStat.new(doc)
+  field=read_stat(cdb.property['device'])
+  stat=cdb.clsstat(field)
 rescue RuntimeError
   puts $!
   exit 1
 end
-print Marshal.dump(stat)
+write_stat(cdb.property['id'],stat)
+
 

@@ -3,7 +3,7 @@ module StatIo
   VarDir="#{ENV['HOME']}/.var"
   
   def write_stat(type,stat)
-    open(VarDir+"/#{type}.mar",w) do |f|
+    open(VarDir+"/#{type}.mar",'w') do |f|
       f << Marshal.dump(stat)
     end
   end

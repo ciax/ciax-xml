@@ -9,11 +9,11 @@ module StatIo
   end
   
   def read_stat(type)
-    Marshal.load(IO.readlines(VarDir+"/#{type}.mar",nil).first)
+    Marshal.load(IO.read(VarDir+"/#{type}.mar"))
   end
   
   def read_frame(type,cmd)
-    IO.readlines(VarDir+"/#{type}_#{cmd}.bin",nil).first
+    IO.read(VarDir+"/#{type}_#{cmd}.bin")
   end 
 
 end

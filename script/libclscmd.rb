@@ -5,6 +5,7 @@ class ClsCmd < XmlDb
   include ModCmd
   def initialize(doc)
     super(doc,'//controls')
+    @stat=Hash.new
   end
 
   public
@@ -16,6 +17,10 @@ class ClsCmd < XmlDb
     return 1 if pre_check
     exec_cmdset
     post_check
+  end
+
+  def set_stat!(stat)
+    @stat.update(stat)
   end
 
   protected
@@ -45,7 +50,7 @@ class ClsCmd < XmlDb
 
   def chk_condition
     vname=self['var']
-    stat=@var[vname] || raise(IndexError,"No reference for #{vname}")
+    stat=@stat[vname] || raise(IndexError,"No reference for #{vname}")
     expect=self['value']
     actual=stat['val'] || raise(IndexError,"No status")
     @v.msg "#{self.name}: #{vname} = #{actual} for #{expect}"

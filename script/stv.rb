@@ -18,7 +18,6 @@ def prt(stat,c)
 end
 
 Marshal.load(gets(nil)).sort.each do |id,stat|
-warn id
   case stat['hl']
   when 'alarm'
     prt(stat,'1')

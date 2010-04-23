@@ -5,6 +5,7 @@ class ClsStat < XmlDb
   include ModStat
   def initialize(doc)
     super(doc,'//status')
+    @stat=Hash.new
   end
 
   public
@@ -12,7 +13,7 @@ class ClsStat < XmlDb
     set_var!(fields,'field')
     @field=fields
     get_stat
-    return @var
+    return @stat
   end
 
   protected
@@ -54,10 +55,8 @@ class ClsStat < XmlDb
       @v.msg("#{c['id']}=[#{val}]")
       c.symbol(val,set)
       set.delete('id')
-      @var[c['id']]=set
+      @stat[c['id']]=set
     end
   end
 
 end
-
-

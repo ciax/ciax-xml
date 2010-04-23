@@ -16,7 +16,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="or">0x01</text>
+            <text ref="stat" operator="or">0x01</text>
           </command>
         </commandset>
         <interlock>
@@ -30,7 +30,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="and">0xfffe</text>
+            <text ref="stat" operator="and">0xfffe</text>
           </command>
         </commandset>
         <interlock>
@@ -44,7 +44,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="or">0x10</text>
+            <text ref="stat" operator="or">0x10</text>
           </command>
         </commandset>
         <interlock>
@@ -58,7 +58,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="and">0xffef</text>
+            <text ref="stat" operator="and">0xffef</text>
           </command>
         </commandset>
         <interlock>
@@ -72,7 +72,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="or">0x100</text>
+            <text ref="stat" operator="or">0x100</text>
           </command>
         </commandset>
         <interlock>
@@ -86,7 +86,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="and">0xfeff</text>
+            <text ref="stat" operator="and">0xfeff</text>
           </command>
         </commandset>
         <interlock>
@@ -100,7 +100,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="or">0x1000</text>
+            <text ref="stat" operator="or">0x1000</text>
           </command>
         </commandset>
         <interlock>
@@ -114,7 +114,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="and">0xefff</text>
+            <text ref="stat" operator="and">0xefff</text>
           </command>
         </commandset>
         <interlock>
@@ -128,7 +128,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="or">0x0011</text>
+            <text ref="stat" operator="or">0x0011</text>
           </command>
         </commandset>
         <interlock>
@@ -143,7 +143,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="and">0xffee</text>
+            <text ref="stat" operator="and">0xffee</text>
           </command>
         </commandset>
         <interlock>
@@ -158,7 +158,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="or">0x0110</text>
+            <text ref="stat" operator="or">0x0110</text>
           </command>
         </commandset>
         <interlock>
@@ -173,7 +173,7 @@
           </command>
           <command>
             <text>output</text>
-            <text ref="field:stat" operator="and">0xeeff</text>
+            <text ref="stat" operator="and">0xeeff</text>
           </command>
         </commandset>
         <interlock>

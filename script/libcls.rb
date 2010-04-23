@@ -18,7 +18,7 @@ class Cls
     end
     @property=@cc.property
     @stat=read_stat(cls)
-    @cc.set_var!(@stat)
+    @cc.set_stat!(@stat)
   end
 
   def clscom(cmd,par=nil)

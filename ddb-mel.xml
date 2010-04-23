@@ -155,11 +155,7 @@
             <assign length="2" field="err_subcmd" />
             <assign length="9" field="errframe" />
           </option>
-          <option id="set_tag"></option>
-          <option id="set_level" />
-          <option id="start" />
-          <option id="stop" />
-          <option id="clear" />
+          <option id="default"></option>
         </select>
       </ccrange>
     </rspframe>

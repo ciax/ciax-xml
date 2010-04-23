@@ -19,7 +19,7 @@ class DevStat < XmlDb
   end
   
   def node_with_id!(id)
-    super(id) rescue raise("Send Only")
+    super(id) rescue super('default') rescue raise("Send Only")
     self
   end
 

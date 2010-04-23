@@ -51,14 +51,14 @@
         </option>
         <option id="ma" type="action" label="Move Absolute Position">
           <data>ma=</data>
-          <data format="%3.1" ref="argv" />
+          <data format="%3.1" ref="par" />
         </option>
         <option id="set0" type="config" label="Set 0 ABS Counter">
           <data>abspos=0</data>
         </option>
         <option id="setp" type="config" label="Set Pulse Number">
           <data>p=</data>
-          <data format="%5.2" ref="argv" />
+          <data format="%5.2" ref="par" />
         </option>
       </select>
       <data pack="H*">0D</data>

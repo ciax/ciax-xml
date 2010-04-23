@@ -19,6 +19,7 @@ class XmlDb
   # Public Method
   public
   attr_reader :property
+  attr_accessor :v
 
   def set_var!(hash,namespace=nil)
     if namespace

@@ -8,16 +8,20 @@ class Dev
   attr_reader :stat
   def initialize(dev,iocmd)
     @stat=Hash.new
-    @iocmd=iocmd
     begin
+      @f=open("|"+iocmd,'r+')
       ddb=XmlDoc.new('ddb',dev)
       @dc=DevCmd.new(ddb)
       @ds=DevStat.new(ddb)
     rescue RuntimeError
       puts $!
       exit 1
+    ensure
+      at_exit { @f.close }
     end
   end
+
+  
 
   def devcom(cmd,par=nil)
     begin
@@ -39,13 +43,14 @@ class Dev
   def session(par)
     begin
       @dc.devcmd(par) do |ecmd|
-        open("|"+@iocmd,'r+') do |f|
-          f.puts ecmd
-          f.gets(nil)
-        end
+        @dc.v.msg "Send #{ecmd.dump}"
+        @f.puts ecmd
+        stat=@f.gets(nil)
+        @dc.v.msg "Recv #{stat.dump}" 
       end
     rescue
       puts $!
     end
+    stat
   end
 end

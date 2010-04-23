@@ -12,5 +12,5 @@ echo " [nc $NP$host:$port]" >&2
 if [ "$dmy" ] ; then
     cat $file
 else
-    nc -o ~/.var/$obj.dmp -w 1 $NP$host $port| tee $file
+    nc -q 0 -o ~/.var/$obj.dmp -w 1 $NP$host $port| tee $file
 fi 

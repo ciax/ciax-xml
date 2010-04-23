@@ -3,10 +3,11 @@ require "libdev"
 require "libstatio"
 include StatIo
 
-warn "Usage: devsrv [dev]" if ARGV.size < 1
+warn "Usage: devsrv [dev] (iocmd)" if ARGV.size < 1
 
 dev=ARGV.shift
-ddb=Dev.new(dev,"exio #{dev}")
+iocmd=ARGV.shift || "exio #{dev}"
+ddb=Dev.new(dev,iocmd)
 
 loop do 
   line=gets.chomp

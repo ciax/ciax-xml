@@ -110,8 +110,3 @@ class ClsCmd < XmlDb
   end
 
 end
-
-
-
-
-

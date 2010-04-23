@@ -9,13 +9,16 @@ def prt(stat,c)
   print ':'
   if stat['type'] == 'ENUM'
     color(c,stat['msg'])
-  else
+  elsif stat['msg']
     color(c,stat['val']+'('+stat['msg']+')')
+  else
+    color(c,stat['val'])
   end
   puts ']'
 end
 
 Marshal.load(gets(nil)).sort.each do |id,stat|
+warn id
   case stat['hl']
   when 'alarm'
     prt(stat,'1')
@@ -25,5 +28,7 @@ Marshal.load(gets(nil)).sort.each do |id,stat|
     prt(stat,'2')
   when 'hide'
     prt(stat,'2') if ENV['VER']
+  else
+    prt(stat,'2')
   end
 end

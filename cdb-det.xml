@@ -141,13 +141,6 @@
           <sufficient var="c1x5" value="0"></sufficient>
         </interlock>
       </session>
-      <session id="ccdtmr" label="CS CCD TIMER">
-        <commandset>
-          <command ref="cddon"></command>
-          <wait_until timeout="300"></wait_until>
-          <command ref="ccdoff" />
-        </commandset>
-      </session>
     </controls>
     <status>
       <var id="cod" type="ENUM" label="Response Code">

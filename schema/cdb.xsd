@@ -57,7 +57,6 @@
       <xsd:sequence>
         <xsd:element ref="cx:text" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="ref" type="xsd:string" />
       <xsd:attribute name="abort" type="xsd:string" />
       <xsd:attribute name="label" type="xsd:string" use="optional" />
     </xsd:complexType>

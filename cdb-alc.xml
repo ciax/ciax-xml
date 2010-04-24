@@ -4,13 +4,16 @@
     <controls>
       <session id="upd" label="Update Status">
         <commandset>
-          <command ref="getstat"></command>
+          <command>
+            <text>getstat</text>
+          </command>
         </commandset>
       </session>
       <session id="i" label="Set Current by argvam(i:XX.XX)">
         <commandset>
-          <command ref="i">
-            <argv src="option" />
+          <command>
+            <text>i</text>
+            <text ref="par" />
           </command>
         </commandset>
       </session>

@@ -4,7 +4,9 @@
     <controls>
       <session id="upd" label="Update Status">
         <commandset>
-          <command ref="getstat" />
+          <command>
+            <text>getstat</text>
+          </command>
         </commandset>
       </session>
     </controls>

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libdev"
-require "libstatio"
-include StatIo
+require "libmodio"
+include Io
 
 warn "Usage: devsrv [dev] (iocmd)" if ARGV.size < 1
 
@@ -21,3 +21,5 @@ loop do
     p ddb.stat
   end
 end
+
+

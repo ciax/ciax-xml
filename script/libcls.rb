@@ -2,8 +2,8 @@
 require "libclscmd"
 require "libclsstat"
 require "libxmldoc"
-require "libstatio"
-include StatIo
+require "libmodio"
+include Io
 
 class Cls
   attr_reader :stat,:property
@@ -35,3 +35,5 @@ class Cls
     end
   end
 end
+
+

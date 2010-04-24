@@ -2,7 +2,7 @@
 require "libdevcmd"
 require "libdevstat"
 require "libxmldoc"
-require "libstatio"
+require "libmodio"
 
 class Dev
   attr_reader :stat
@@ -54,3 +54,4 @@ class Dev
     stat
   end
 end
+

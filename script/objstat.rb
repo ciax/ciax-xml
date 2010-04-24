@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libobjstat"
 require "libxmldoc"
-require "libstatio"
-include StatIo
+require "libmodio"
+include Io
 
 warn "Usage: obstat [object] < cstat" if ARGV.size < 1
 begin
@@ -14,3 +14,5 @@ rescue RuntimeError
   exit 1
 end
 write_stat(odb.property['id'],ostat)
+
+

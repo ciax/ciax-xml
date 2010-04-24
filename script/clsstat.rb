@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libclsstat"
 require "libxmldoc"
-require "libstatio"
-include StatIo
+require "libmodio"
+include Io
 
 warn "Usage: clsstat [class] < devstat" if ARGV.size < 1
 
@@ -16,5 +16,7 @@ rescue RuntimeError
   exit 1
 end
 write_stat(cdb.property['id'],stat)
+
+
 
 

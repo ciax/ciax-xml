@@ -8,6 +8,6 @@ input=~/.var/${dev}.mar
 output=~/.var/${cls}.mar
 clscmd $cls $cmd
 [ "$cmd" = upd ] || exit
-clsstat $cls < $input > $output || exit
+clsstat $cls || exit
 [ "$VER" ] && mar $output || stv $output
 

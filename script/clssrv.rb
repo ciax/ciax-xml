@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libcls"
 require "libdev"
-require "libstatio"
-include StatIo
+require "libmodio"
+include Io
 
 warn "Usage: clssrv [cls]" if ARGV.size < 1
 
@@ -29,3 +29,5 @@ loop do
     p cdb.stat
   end
 end
+
+

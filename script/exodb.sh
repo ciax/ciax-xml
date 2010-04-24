@@ -8,6 +8,6 @@ input=~/.var/${cls}.mar
 output=~/.var/${obj}.mar
 objcmd $obj $cmd || exit
 [ "$cmd" = upd ] || exit
-objstat $obj < $input > $output || exit
+objstat $obj || exit
 [ "$VER" ] && mar $output || stv $output
 

@@ -7,7 +7,7 @@ class XmlDb
 
   def initialize(doc,xpath)
     @property=doc.root.elements.first.attributes
-    $title="#{doc.root.name}/#{@property['id']}".upcase
+    set_title("#{doc.root.name}/#{@property['id']}")
     @var=Hash.new
     begin
       @doc=doc.elements[xpath]

@@ -3,6 +3,11 @@ module Verbose
 
   # Public Method
   public
+  def set_title(title)
+    $title=title.upcase
+    $stime=Time.now
+  end
+
   def msg(text='',level=0)
     return unless ENV['VER']
     warn mkmsg(text) if ENV['VER'].to_i >= level
@@ -16,6 +21,7 @@ module Verbose
   private
   def mkmsg(text)
     caller=caller(2).first[/([\w]+?)'/,1].upcase
-    "#{$title}:#{caller}:#{text}".dump
+    pass=sprintf("%5.4f",Time.now-$stime)
+    "[#{pass}] #{$title}:#{caller}:#{text}".dump
   end
 end

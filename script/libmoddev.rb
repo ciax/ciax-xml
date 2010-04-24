@@ -11,7 +11,7 @@ module ModDev
     super do |e|
       if e.name == 'select'
         raise "ID not selected" unless @sel
-        @v.msg("Enterning Select",1)
+        msg("Enterning Select",1)
         @sel.elements.each do |s|
           yield copy_self(s)
         end
@@ -33,7 +33,7 @@ module ModDev
         raise "No such CC method #{method}"
       end
       val=format(chk)
-      @v.msg "[#{method.upcase}] -> [#{val}]"
+      msg "[#{method.upcase}] -> [#{val}]"
       set_var!({'cc' => val})
       return self
     end

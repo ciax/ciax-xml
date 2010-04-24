@@ -37,18 +37,18 @@ class DevStat < XmlDb
       node_with_text(str) do |e| #Match each case
         case e['type']
         when 'pass'
-          @v.msg(e['msg']+"[#{str}]")
+          msg(e['msg']+"[#{str}]")
         when 'warn'
-          @v.msg(e['msg']+"[ (#{str}) for (#{pass}) ]")
+          msg(e['msg']+"[ (#{str}) for (#{pass}) ]")
         when 'error'
-          @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
+          err(e['msg']+"[ (#{str}) for (#{pass}) ]")
         end
         node_with_id!(e['option']) if e['option']
         return raw
       end
     rescue IndexError
       raise $! if @verify_later[self]
-      @v.msg "#{$!} and code [#{str}] into queue"
+      msg "#{$!} and code [#{str}] into queue"
       @verify_later[self]=raw
       return raw
     end
@@ -59,7 +59,7 @@ class DevStat < XmlDb
     raw=cut_frame
     attr_with_key('field') do |fld|
       str=decode(raw) 
-      @v.msg("[#{fld}] <- [#{str}]")
+      msg("[#{fld}] <- [#{str}]")
       @field[fld]=str
     end
     raw

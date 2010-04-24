@@ -1,9 +1,5 @@
 #!/usr/bin/ruby
-class Verbose
-
-  def initialize(title=nil)
-    @title=title.upcase
-  end
+module Verbose
 
   # Public Method
   public
@@ -20,6 +16,6 @@ class Verbose
   private
   def mkmsg(text)
     caller=caller(2).first[/([\w]+?)'/,1].upcase
-    "#{@title}:#{caller}:#{text}".dump
+    "#{$title}:#{caller}:#{text}".dump
   end
 end

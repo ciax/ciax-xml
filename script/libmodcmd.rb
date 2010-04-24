@@ -2,7 +2,7 @@
 module ModCmd
 
   def node_with_id(id)
-    @v.msg "Select [#{id}]"
+    msg "Select [#{id}]"
     begin
       e=@doc.elements[".//[@id='#{id}']"] || raise
     rescue

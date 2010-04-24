@@ -29,7 +29,7 @@ class ClsCmd < XmlDb
     each_node do |e|
       cmd << e.operate(e.text)
     end
-    @v.msg "Exec(DDB):[#{cmd.join(' ')}]"
+    msg "Exec(DDB):[#{cmd.join(' ')}]"
     warn "CommandExec[#{cmd.join(' ')}]"
     @devcmd.call(cmd)
   end
@@ -53,7 +53,7 @@ class ClsCmd < XmlDb
     stat=@stat[vname] || raise(IndexError,"No reference for #{vname}")
     expect=self['value']
     actual=stat['val'] || raise(IndexError,"No status")
-    @v.msg "#{self.name}: #{vname} = #{actual} for #{expect}"
+    msg "#{self.name}: #{vname} = #{actual} for #{expect}"
     (expect == actual)
   end
 
@@ -67,7 +67,7 @@ class ClsCmd < XmlDb
         when 'or'
         str=x | y
       end
-      @v.msg "(#{x} #{ope} #{y})=#{str}"
+      msg "(#{x} #{ope} #{y})=#{str}"
     end
     str
   end
@@ -87,7 +87,7 @@ class ClsCmd < XmlDb
   def pre_check
     return unless @ilk
     if sufficient?
-      @v.msg "Command already done -> Skip"
+      msg "Command already done -> Skip"
       warn "Skip"
       return 1
     end

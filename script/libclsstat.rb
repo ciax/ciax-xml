@@ -52,7 +52,7 @@ class ClsStat < XmlDb
         val=d.get_fieldset
         set['val']=val
       end
-      @v.msg("#{c['id']}=[#{val}]")
+      msg("#{c['id']}=[#{val}]")
       c.symbol(val,set)
       set.delete('id')
       @stat[c['id']]=set

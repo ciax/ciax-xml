@@ -10,7 +10,7 @@ class DevCmd < XmlDb
   def devcmd(par=nil)
     @var['par']=par
     node_with_name('ccrange') do |e|
-      @v.msg("Entering CC range",1)
+      msg("Entering CC range",1)
       @ccstr=e.get_string
       e.checkcode(@ccstr)
     end
@@ -39,7 +39,7 @@ class DevCmd < XmlDb
       else
         str << @var[d.name]
       end
-      @v.msg "[#{str.dump}]"
+      msg "[#{str.dump}]"
     end
     str
   end
@@ -56,7 +56,7 @@ class DevCmd < XmlDb
     attr_with_key('pack') do |pack|
       code=[str].pack(pack)
       hex=code.unpack('C*').map!{|c| '%02x' % c}.join
-      @v.msg "pack(#{pack}) [#{str}] -> [#{hex}]"
+      msg "pack(#{pack}) [#{str}] -> [#{hex}]"
       str=code
     end
     format(str)

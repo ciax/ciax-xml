@@ -1,12 +1,13 @@
 #!/usr/bin/ruby
 require "libverbose"
 class XmlDb
+  include Verbose
   protected
   attr_accessor :doc
 
   def initialize(doc,xpath)
     @property=doc.root.elements.first.attributes
-    @v=Verbose.new("#{doc.root.name}/#{@property['id']}".upcase)
+    $title="#{doc.root.name}/#{@property['id']}".upcase
     @var=Hash.new
     begin
       @doc=doc.elements[xpath]
@@ -88,16 +89,16 @@ class XmlDb
   def format(code)
     attr_with_key('format') do |fmt|
       str=fmt % code
-      @v.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",1)
+      msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",1)
       code=str
     end
     code.to_s
   end
 
   def text
-    @v.msg("Getting text[#{@doc.text}]",1)
+    msg("Getting text[#{@doc.text}]",1)
     return @doc.text unless r=@doc.attributes['ref']
-    @v.msg("Getting text from ref [#{r}]",1)
+    msg("Getting text from ref [#{r}]",1)
     @var[r] || raise(IndexError,"No reference for [#{r}]")
   end
 

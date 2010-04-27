@@ -4,12 +4,13 @@ require "libdev"
 require "libmodio"
 include Io
 
-warn "Usage: clssrv [cls]" if ARGV.size < 1
+warn "Usage: clssrv [cls] (iocmd)" if ARGV.size < 1
 
 cls=ARGV.shift
 cdb=Cls.new(cls)
 dev=cdb.property['device']
-ddb=Dev.new(dev,"exio #{dev}")
+iocmd=ARGV.shift || "exio #{dev}"
+ddb=Dev.new(dev,iocmd)
 
 loop do 
   line=gets.chomp
@@ -29,5 +30,3 @@ loop do
     p cdb.stat
   end
 end
-
-

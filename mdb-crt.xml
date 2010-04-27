@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<mdb>
+  <group id="crt" class="crt" label="Cart Macro">
+    <macro id="runf" label="Run to Tag 1">
+      <interlock type="required" var="cpos" reg="0"></interlock>
+      <interlock type="required" var="rdy" reg="1" />
+      <command>set_fwd</command>
+      <command>run</command>
+      <interlock type="wait_for" var="run" value="1" timeout="1">
+        <command>getstat</command>
+      </interlock>
+      <command>clear</command>
+      <interlock type="wait_for" var="run" reg="0" timeout="40">
+        <command>getstat</command>
+      </interlock>
+      <interlock type="required" var="cpos" reg="^0" />
+    </macro>
+    <macro id="run1" label="Run to Tag 1">
+      <sufficient var="cpos" value="1" />
+      <required var="rdy" value="1" />
+      <command>
+        <text>set_tag1</text>
+      </command>
+      <command>
+        <text>run</text>
+      </command>
+      <wait_until var="run" value="1" timeout="1">
+        <command>
+          <text>getstat</text>
+        </command>
+      </wait_until>
+      <command abort="stop" label="Clear Triggers">
+        <text>clear</text>
+      </command>
+      <wait_until var="run" value="0" timeout="100">
+        <command>
+          <text>getstat</text>
+        </command>
+      </wait_until>
+    </macro>
+    <macro id="jak1" label="Jack UP Level 1">
+      <commandset>
+        <command label="Set Level 1">
+          <text>set_level</text>
+          <text>0200</text>
+        </command>
+        <command label="Jacking Start">
+          <text>start</text>
+          <text>0001</text>
+        </command>
+        <wait_until var="jak" value="1" timeout="1">
+          <command>
+            <text>getstat</text>
+          </command>
+        </wait_until>
+        <command abort="stop" label="Clear Triggers">
+          <text>clear</text>
+        </command>
+        <wait_until var="jak" value="0" timeout="30">
+          <command>
+            <text>getstat</text>
+          </command>
+        </wait_until>
+      </commandset>
+      <interlock>
+        <sufficient var="jpos" value="1" />
+        <required var="rdy" value="1" />
+      </interlock>
+    </macro>
+    <macro id="pause" label="Pause">
+      <commandset>
+        <command>
+          <text>stop</text>
+        </command>
+        <command>
+          <text>0100</text>
+        </command>
+      </commandset>
+    </macro>
+    <macro id="emstop" label="Emergency Stop">
+      <commandset>
+        <command>
+          <text>stop</text>
+        </command>
+        <command>
+          <text>0200</text>
+        </command>
+      </commandset>
+    </macro>
+    <macro id="resume" label="Resume from Pause">
+      <commandset>
+        <command>
+          <text>clear</text>
+        </command>
+      </commandset>
+    </macro>
+  </group>
+</mdb>

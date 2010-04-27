@@ -9,7 +9,7 @@ class Dev
   def initialize(dev,iocmd)
     @stat=Hash.new
     begin
-      @f=open("|"+iocmd,'r+')
+      @f=IO.popen(iocmd,'r+')
       ddb=XmlDoc.new('ddb',dev)
       @dc=DevCmd.new(ddb)
       @ds=DevStat.new(ddb)
@@ -20,8 +20,6 @@ class Dev
       at_exit { @f.close }
     end
   end
-
-  
 
   def devcom(cmd,par=nil)
     begin
@@ -41,12 +39,13 @@ class Dev
 
   private
   def session(par)
+    stat=String.new
     begin
       @dc.devcmd(par) do |ecmd|
         @dc.v.msg "Send #{ecmd.dump}"
-        @f.puts ecmd
-        stat=@f.gets(nil)
-        @dc.v.msg "Recv #{stat.dump}" 
+        @f.syswrite(ecmd)
+        stat=@f.sysread(1024)
+        @dc.v.msg "Recv #{stat.dump}"
       end
     rescue
       puts $!
@@ -54,4 +53,3 @@ class Dev
     stat
   end
 end
-

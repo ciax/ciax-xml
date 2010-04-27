@@ -2,8 +2,8 @@
 require "libclscmd"
 require "libclsstat"
 require "libxmldoc"
-require "libmodio"
-include ModIo
+require "libmodfile"
+include ModFile
 
 class Cls
   attr_reader :stat,:property
@@ -35,6 +35,8 @@ class Cls
     end
   end
 end
+
+
 
 
 

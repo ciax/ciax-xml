@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libclscmd"
 require "libxmldoc"
-require "libmodio"
-include ModIo
+require "libmodfile"
+include ModFile
 
 warn "Usage: clscmd [cls] [cmd]" if ARGV.size < 1
 
@@ -16,6 +16,8 @@ rescue RuntimeError
   puts $!
   exit 1
 end
+
+
 
 
 

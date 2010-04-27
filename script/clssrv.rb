@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libcls"
 require "libdev"
-require "libmodio"
-include ModIo
+require "libmodfile"
+include ModFile
 
 warn "Usage: clssrv [cls] (iocmd)" if ARGV.size < 1
 
@@ -30,4 +30,6 @@ loop do
     p cdb.stat
   end
 end
+
+
 

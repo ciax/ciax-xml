@@ -2,7 +2,7 @@
 require "libdevcmd"
 require "libdevstat"
 require "libxmldoc"
-require "libmodio"
+require "libmodfile"
 require "libio"
 
 class Dev
@@ -48,3 +48,4 @@ class Dev
     stat
   end
 end
+

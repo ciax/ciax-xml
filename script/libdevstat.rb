@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libmoddev"
 require "libxmldb"
-require "libmodio"
+require "libmodfile"
 
 class DevStat < XmlDb
   include ModDev
-  include ModIo
+  include ModFile
 
   attr_reader :field
   def initialize(doc)
@@ -103,3 +103,5 @@ class DevStat < XmlDb
   end
   
 end
+
+

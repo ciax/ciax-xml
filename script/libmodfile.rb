@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libverbose"
 
-module ModIo
+module ModFile
   include Verbose
   VarDir="#{ENV['HOME']}/.var"
   
@@ -34,6 +34,7 @@ module ModIo
   end 
 
 end
+
 
 
 

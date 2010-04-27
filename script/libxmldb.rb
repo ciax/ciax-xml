@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmodver"
 class XmlDb
-  include Verbose
+  include ModVer
   protected
   attr_accessor :doc
 
@@ -123,3 +123,5 @@ class XmlDb
   end
 
 end
+
+

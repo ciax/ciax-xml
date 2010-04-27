@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmodver"
 
 class Io
-  include Verbose
+  include ModVer
   def initialize(iocmd)
     @f=IO.popen(iocmd,'r+')
     at_exit {
@@ -23,3 +23,5 @@ class Io
     stat
   end
 end
+
+

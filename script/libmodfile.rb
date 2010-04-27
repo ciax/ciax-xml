@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmodver"
 module ModFile
-  include Verbose
+  include ModVer
   VarDir="#{ENV['HOME']}/.var"
   
   def save_stat(type,stat)
@@ -33,6 +33,8 @@ module ModFile
   end 
 
 end
+
+
 
 
 

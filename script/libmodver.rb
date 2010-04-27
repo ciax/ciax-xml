@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-module Verbose
+module ModVer
 
   # Public Method
   public
@@ -25,3 +25,4 @@ module Verbose
     "[#{pass}] #{$title}:#{caller}:#{text}".dump
   end
 end
+

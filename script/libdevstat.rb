@@ -1,11 +1,21 @@
 #!/usr/bin/ruby
 require "libmoddev"
 require "libxmldb"
+require "libmodio"
+
 class DevStat < XmlDb
   include ModDev
+  include ModIo
+
+  attr_reader :field
   def initialize(doc)
     super(doc,'//rspframe')
-    @field={'device'=>@property['id']}
+    @dev=@property['id']
+    begin
+      @field=load_stat(@dev)
+    rescue
+      @field={'device'=>@dev}
+    end
     @verify_later=Hash.new
   end
 
@@ -15,13 +25,16 @@ class DevStat < XmlDb
     @verify_later.each do |e,ele|
       e.verify(ele)
     end
+    save_stat(@dev,@field)
     return @field
   end
   
   def node_with_id!(id)
     return unless id
-    super(id) || super('default') || raise("Send Only")
-    self
+    return self if super(id)
+    return self if super('default')
+    msg("Send Only")
+    nil
   end
 
   protected

@@ -17,7 +17,7 @@ class Cls
       exit 1
     end
     @property=@cc.property
-    @stat=read_stat(cls)
+    @stat=load_stat(cls)
     @cc.set_stat!(@stat)
   end
 
@@ -35,6 +35,7 @@ class Cls
     end
   end
 end
+
 
 
 

@@ -5,28 +5,36 @@ module ModIo
   include Verbose
   VarDir="#{ENV['HOME']}/.var"
   
-  def write_stat(type,stat)
+  def save_stat(type,stat)
     open(VarDir+"/#{type}.mar",'w') do |f|
-      msg "Status Writing for [#{type}]"
+      msg "Status Saving for [#{type}]"
       f << Marshal.dump(stat)
     end
   end
   
-  def read_stat(type)
-    msg("Status Reading for [#{type}]")
-    Marshal.load(IO.read(VarDir+"/#{type}.mar"))
+  def load_stat(type)
+    msg("Status Loading for [#{type}]")
+    stat=Marshal.load(IO.read(VarDir+"/#{type}.mar"))
+    msg(stat.inspect,1)
+    stat
   end
   
-  def write_frame(type,cmd,frame)
+  def save_frame(type,cmd,frame)
     open(VarDir+"/#{type}_#{cmd}.bin",'w') do |f|
-      msg "Frame Writing for [#{type}/#{cmd}]"
+      msg "Frame Saving for [#{type}/#{cmd}]"
       f << frame
     end
   end
 
-  def read_frame(type,cmd)
-    msg "Raw Status Reading for [#{type}/#{cmd}]"
-    IO.read(VarDir+"/#{type}_#{cmd}.bin")
+  def load_frame(type,cmd)
+    msg "Raw Status Loading for [#{type}/#{cmd}]"
+    frame=IO.read(VarDir+"/#{type}_#{cmd}.bin")
+    msg(frame.dump,1)
+    frame
   end 
 
 end
+
+
+
+

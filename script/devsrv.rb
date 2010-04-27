@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
 require "libdev"
-require "libmodio"
-include ModIo
 
 warn "Usage: devsrv [dev] (iocmd)" if ARGV.size < 1
 
-dev=ARGV.shift
-iocmd=ARGV.shift || "exio #{dev}"
+dev=ARGV.shift || 'bbe'
+iocmd=ARGV.shift || "nc ltc-i 4003"
 ddb=Dev.new(dev,iocmd)
 
 loop do 

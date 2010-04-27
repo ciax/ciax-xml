@@ -8,12 +8,14 @@ warn "Usage: obstat [object] < cstat" if ARGV.size < 1
 begin
   doc=XmlDoc.new('odb',ARGV.shift)
   odb=ObjStat.new(doc)
-  cstat=read_stat(odb.property['class'])
+  cstat=load_stat(odb.property['class'])
   ostat=odb.objstat(cstat)
 rescue RuntimeError
   exit 1
 end
-write_stat(odb.property['id'],ostat)
+save_stat(odb.property['id'],ostat)
+
+
 
 
 

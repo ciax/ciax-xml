@@ -5,20 +5,20 @@ require "libxmldoc"
 require "libmodio"
 
 class Dev
+  include Verbose
   attr_reader :stat
   def initialize(dev,iocmd)
-    @stat=Hash.new
     begin
-      @f=IO.popen(iocmd,'r+')
       ddb=XmlDoc.new('ddb',dev)
       @dc=DevCmd.new(ddb)
       @ds=DevStat.new(ddb)
     rescue RuntimeError
       puts $!
       exit 1
-    ensure
-      at_exit { @f.close }
     end
+    @stat=@ds.field
+    @f=IO.popen(iocmd,'r+')
+    at_exit { @f.close }
   end
 
   def devcom(cmd,par=nil)
@@ -28,12 +28,10 @@ class Dev
       puts $!
       return
     end
-    begin
-      @ds.node_with_id!(cmd)
-    rescue
-      session(par)
-    else
+    if @ds.node_with_id!(cmd)
       @stat=@ds.devstat(session(par))
+    else
+      session(par)
     end
   end
 
@@ -42,10 +40,10 @@ class Dev
     stat=String.new
     begin
       @dc.devcmd(par) do |ecmd|
-        @dc.v.msg "Send #{ecmd.dump}"
+        msg "Send #{ecmd.dump}"
         @f.syswrite(ecmd)
         stat=@f.sysread(1024)
-        @dc.v.msg "Recv #{stat.dump}"
+        msg "Recv #{stat.dump}"
       end
     rescue
       puts $!

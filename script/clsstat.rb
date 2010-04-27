@@ -9,13 +9,15 @@ warn "Usage: clsstat [class] < devstat" if ARGV.size < 1
 begin
   doc=XmlDoc.new('cdb',ARGV.shift)
   cdb=ClsStat.new(doc)
-  field=read_stat(cdb.property['device'])
+  field=load_stat(cdb.property['device'])
   stat=cdb.clsstat(field)
 rescue RuntimeError
   puts $!
   exit 1
 end
-write_stat(cdb.property['id'],stat)
+save_stat(cdb.property['id'],stat)
+
+
 
 
 

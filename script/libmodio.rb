@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libverbose"
 
-module Io
+module ModIo
   include Verbose
   VarDir="#{ENV['HOME']}/.var"
   
@@ -17,12 +17,16 @@ module Io
     Marshal.load(IO.read(VarDir+"/#{type}.mar"))
   end
   
+  def write_frame(type,cmd,frame)
+    open(VarDir+"/#{type}_#{cmd}.bin",'w') do |f|
+      msg "Frame Writing for [#{type}/#{cmd}]"
+      f << frame
+    end
+  end
+
   def read_frame(type,cmd)
     msg "Raw Status Reading for [#{type}/#{cmd}]"
     IO.read(VarDir+"/#{type}_#{cmd}.bin")
   end 
 
 end
-
-
-

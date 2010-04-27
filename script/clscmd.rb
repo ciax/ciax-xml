@@ -2,7 +2,7 @@
 require "libclscmd"
 require "libxmldoc"
 require "libmodio"
-include Io
+include ModIo
 
 warn "Usage: clscmd [cls] [cmd]" if ARGV.size < 1
 
@@ -16,5 +16,6 @@ rescue RuntimeError
   puts $!
   exit 1
 end
+
 
 

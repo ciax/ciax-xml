@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libverbose"
 
-module Io
+module ModIo
   include Verbose
   VarDir="#{ENV['HOME']}/.var"
   
@@ -23,6 +23,7 @@ module Io
   end 
 
 end
+
 
 
 

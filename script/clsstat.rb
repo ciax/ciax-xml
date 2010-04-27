@@ -2,7 +2,7 @@
 require "libclsstat"
 require "libxmldoc"
 require "libmodio"
-include Io
+include ModIo
 
 warn "Usage: clsstat [class] < devstat" if ARGV.size < 1
 
@@ -16,6 +16,7 @@ rescue RuntimeError
   exit 1
 end
 write_stat(cdb.property['id'],stat)
+
 
 
 

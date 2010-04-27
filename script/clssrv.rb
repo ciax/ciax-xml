@@ -2,7 +2,7 @@
 require "libcls"
 require "libdev"
 require "libmodio"
-include Io
+include ModIo
 
 warn "Usage: clssrv [cls] (iocmd)" if ARGV.size < 1
 
@@ -30,3 +30,4 @@ loop do
     p cdb.stat
   end
 end
+

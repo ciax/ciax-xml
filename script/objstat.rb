@@ -2,7 +2,7 @@
 require "libobjstat"
 require "libxmldoc"
 require "libmodio"
-include Io
+include ModIo
 
 warn "Usage: obstat [object] < cstat" if ARGV.size < 1
 begin
@@ -14,5 +14,6 @@ rescue RuntimeError
   exit 1
 end
 write_stat(odb.property['id'],ostat)
+
 
 

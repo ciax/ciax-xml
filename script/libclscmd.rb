@@ -21,6 +21,7 @@ class ClsCmd < XmlDb
 
   def set_stat!(stat)
     @stat.update(stat)
+    msg "Status Reading"
   end
 
   protected
@@ -36,6 +37,7 @@ class ClsCmd < XmlDb
 
   def wait_until
     timeout=(self['timeout'] || 5).to_i
+    msg "Waiting"
     issue=Thread.new do
       loop do
         each_node do |d|
@@ -86,6 +88,7 @@ class ClsCmd < XmlDb
 
   def pre_check
     return unless @ilk
+    msg "Checking"
     if sufficient?
       msg "Command already done -> Skip"
       warn "Skip"
@@ -96,6 +99,7 @@ class ClsCmd < XmlDb
 
   def post_check
     return unless @ilk
+    msg "Checking"
     sufficient?(1) || raise("Command incomplete")
   end
   

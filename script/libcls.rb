@@ -31,7 +31,7 @@ class Cls
     c.clscmd(par) do |ccmd|
       dstat=yield ccmd
       warn dstat.inspect
-#      @stat=@cs.clsstat(dstat) if dstat
+      @stat=@cs.clsstat(dstat) if dstat
     end
   end
 end

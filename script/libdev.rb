@@ -17,8 +17,11 @@ class Dev
       puts $!
       exit 1
     end
-    @stat=@ds.field
     @f=Io.new(iocmd)
+  end
+  
+  def stat
+    @ds.field
   end
 
   def devcom(cmd,par=nil)
@@ -29,12 +32,12 @@ class Dev
       return
     end
     if @ds.node_with_id!(cmd)
-      @stat=@ds.devstat(session(par))
+      @ds.devstat(session(par))
     else
       session(par)
     end
   end
-
+  
   private
   def session(par)
     stat=String.new

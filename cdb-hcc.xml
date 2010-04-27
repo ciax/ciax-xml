@@ -197,8 +197,8 @@
           <binary ref="stat" bit="1" />
         </fields>
         <symbol>
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="warn" msg="OFF">1</enum>
+          <enum msg="ON" hl="normal">0</enum>
         </symbol>
       </var>
       <var id="0tm" label="[CH0] HC TMP Alarm" type="ENUM">
@@ -206,8 +206,8 @@
           <binary ref="stat" bit="2" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
       <var id="0pr" label="[CH0] HC PRS Alarm" type="ENUM">
@@ -215,8 +215,8 @@
           <binary ref="stat" bit="3" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
       <var id="1sw" label="[CH1] HC Switch" type="ENUM">
@@ -233,8 +233,8 @@
           <binary ref="stat" bit="5" />
         </fields>
         <symbol>
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="warn" msg="OFF">1</enum>
+          <enum msg="ON" hl="normal">0</enum>
         </symbol>
       </var>
       <var id="1tm" label="[CH1] HC TMP Alarm" type="ENUM">
@@ -242,8 +242,8 @@
           <binary ref="stat" bit="6" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
       <var id="1pr" label="[CH1] HC PRS Alarm" type="ENUM">
@@ -251,8 +251,8 @@
           <binary ref="stat" bit="7" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
       <var id="2sw" label="[CH2] HC Switch" type="ENUM">
@@ -269,8 +269,8 @@
           <binary ref="stat" bit="9" />
         </fields>
         <symbol>
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="warn" msg="OFF">1</enum>
+          <enum msg="ON" hl="normal">0</enum>
         </symbol>
       </var>
       <var id="2tm" label="[CH2] HC TMP Alarm" type="ENUM">
@@ -278,8 +278,8 @@
           <binary ref="stat" bit="10" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
       <var id="2pr" label="[CH2] HC PRS Alarm" type="ENUM">
@@ -287,8 +287,8 @@
           <binary ref="stat" bit="11" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
       <var id="3sw" label="[CH3] HC Switch" type="ENUM">
@@ -305,8 +305,8 @@
           <binary ref="stat" bit="13" />
         </fields>
         <symbol>
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="warn" msg="OFF">1</enum>
+          <enum msg="ON" hl="normal">0</enum>
         </symbol>
       </var>
       <var id="3tm" label="[CH3] HC TMP Alarm" type="ENUM">
@@ -314,8 +314,8 @@
           <binary ref="stat" bit="14" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
       <var id="3pr" label="[CH3] HC PRS Alarm" type="ENUM">
@@ -323,8 +323,8 @@
           <binary ref="stat" bit="15" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
     </status>

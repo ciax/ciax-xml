@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmodver"
 
-class Io
+class CmdIo
   include ModVer
   def initialize(iocmd)
     @f=IO.popen(iocmd,'r+')
@@ -23,5 +23,6 @@ class Io
     stat
   end
 end
+
 
 

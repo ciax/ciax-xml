@@ -3,7 +3,7 @@ require "libdevcmd"
 require "libdevstat"
 require "libxmldoc"
 require "libmodfile"
-require "libio"
+require "libcmdio"
 
 class Dev
   attr_reader :stat
@@ -16,7 +16,7 @@ class Dev
       puts $!
       exit 1
     end
-    @f=Io.new(iocmd)
+    @f=CmdIo.new(iocmd)
   end
   
   def stat
@@ -39,3 +39,5 @@ class Dev
   end
 
 end
+
+

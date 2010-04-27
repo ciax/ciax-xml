@@ -3,6 +3,7 @@ require "libdevcmd"
 require "libdevstat"
 require "libxmldoc"
 require "libmodio"
+require "libio"
 
 class Dev
   include Verbose
@@ -17,8 +18,7 @@ class Dev
       exit 1
     end
     @stat=@ds.field
-    @f=IO.popen(iocmd,'r+')
-    at_exit { @f.close }
+    @f=Io.new(iocmd)
   end
 
   def devcom(cmd,par=nil)
@@ -40,10 +40,7 @@ class Dev
     stat=String.new
     begin
       @dc.devcmd(par) do |ecmd|
-        msg "Send #{ecmd.dump}"
-        @f.syswrite(ecmd)
-        stat=@f.sysread(1024)
-        msg "Recv #{stat.dump}"
+        stat=@f.session(ecmd)
       end
     rescue
       puts $!

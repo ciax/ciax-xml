@@ -30,23 +30,12 @@ class Dev
       puts $!
       return
     end
-    if @ds.node_with_id!(cmd)
-      @ds.devstat(session(par))
-    else
-      session(par)
-    end
-  end
-  
-  private
-  def session(par)
-    stat=String.new
-    begin
-      @dc.devcmd(par) do |ecmd|
-        stat=@f.session(ecmd)
+    @dc.devcmd(par) do |ecmd|
+      stat=@f.session(ecmd)
+      if @ds.node_with_id!(cmd)
+        @ds.devstat(stat)
       end
-    rescue
-      puts $!
     end
-    stat
   end
+
 end

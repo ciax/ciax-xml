@@ -1,13 +1,14 @@
 #!/usr/bin/ruby
 require "libcls"
 require "libdev"
-
+require "libmodview"
+include ModView
 warn "Usage: clssrv [cls] (iocmd)" if ARGV.size < 1
 
-cls=ARGV.shift
+cls=ARGV.shift || 'hcc'
 cdb=Cls.new(cls)
 dev=cdb.property['device']
-iocmd=ARGV.shift || "exio #{dev}"
+iocmd=ARGV.shift || "nc ltc-i 4003"
 ddb=Dev.new(dev,iocmd)
 
 loop do 
@@ -25,6 +26,6 @@ loop do
       warn $!
     end
   else
-    p cdb.stat
+    view(cdb.stat)
   end
 end

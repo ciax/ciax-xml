@@ -3,6 +3,7 @@ require "libxmldb"
 require "libmodstat"
 class ClsStat < XmlDb
   include ModStat
+  attr_reader :stat
 
   def clsstat(fields)
     set_var!(fields,'field')

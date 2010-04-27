@@ -20,6 +20,7 @@ class DevStat < XmlDb
   end
 
   def devstat(str)
+    err "No String" unless str
     @frame=str
     get_field
     @verify_later.each do |e,ele|
@@ -30,10 +31,11 @@ class DevStat < XmlDb
   end
   
   def node_with_id!(id)
-    return unless id
-    return self if super(id)
-    return self if super('default')
-    msg("Send Only")
+    if id
+      return self if super(id)
+      return self if super('default')
+      msg("Send Only")
+    end
     nil
   end
 
@@ -45,6 +47,7 @@ class DevStat < XmlDb
   end
 
   def verify(raw)
+    err "No input file" unless raw
     str=decode(raw)
     begin
       pass=node_with_attr('type','pass').text
@@ -61,12 +64,12 @@ class DevStat < XmlDb
         return raw
       end
     rescue IndexError
-      raise $! if @verify_later[self]
+      err $! if @verify_later[self]
       msg "#{$!} and code [#{str}] into queue"
       @verify_later[self]=raw
       return raw
     end
-    raise "No error desctiption for #{self['label']}"
+    err "No error desctiption for #{self['label']}"
   end
 
   def assign

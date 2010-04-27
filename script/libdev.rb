@@ -6,7 +6,6 @@ require "libmodfile"
 require "libio"
 
 class Dev
-  include Verbose
   attr_reader :stat
   def initialize(dev,iocmd)
     begin
@@ -51,4 +50,3 @@ class Dev
     stat
   end
 end
-

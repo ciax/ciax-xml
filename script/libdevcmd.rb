@@ -20,7 +20,7 @@ class DevCmd < XmlDb
   def node_with_id!(id)
     unless super(id)
       list_id('./')
-      raise("No such a command")
+      raise ("No such a command")
     end
     self
   end

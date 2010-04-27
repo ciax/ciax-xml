@@ -14,10 +14,4 @@ rescue RuntimeError
   exit 1
 end
 save_stat(odb.property['id'],ostat)
-
-
-
-
-
-
-
+print Marshal.dump ostat

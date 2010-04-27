@@ -2,8 +2,6 @@
 require "libclscmd"
 require "libclsstat"
 require "libxmldoc"
-require "libmodfile"
-include ModFile
 
 class Cls
   attr_reader :stat,:property
@@ -17,8 +15,11 @@ class Cls
       exit 1
     end
     @property=@cc.property
-    @stat=load_stat(cls)
-    @cc.set_stat!(@stat)
+    @cc.set_stat!(self.stat)
+  end
+  
+  def stat
+    @cs.stat
   end
 
   def clscom(cmd,par=nil)
@@ -31,13 +32,7 @@ class Cls
     c.clscmd(par) do |ccmd|
       dstat=yield ccmd
       warn dstat.inspect
-      @stat=@cs.clsstat(dstat) if dstat
+      @cs.clsstat(dstat) if dstat
     end
   end
 end
-
-
-
-
-
-

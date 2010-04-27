@@ -13,7 +13,7 @@ class XmlDb
       @doc=doc.elements[xpath]
     rescue
       p $!
-      raise("No such Xpath")
+      err("No such Xpath")
     end
   end
 

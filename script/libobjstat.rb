@@ -3,16 +3,12 @@ require "libxmldb"
 require "libmodstat"
 class ObjStat < XmlDb
   include ModStat
-  def initialize(doc)
-    super(doc,'//status')
-  end
 
   public
   def objstat(cstat)
     @cstat=cstat
-    @ostat=Hash.new
     get_stat
-    return @ostat
+    return @stat
   end
 
   protected
@@ -26,7 +22,7 @@ class ObjStat < XmlDb
       val=a['val']
       set.update(a)
       c.symbol(val,set)
-      @ostat["#{@type}:#{id}"]=set
+      @stat["#{@type}:#{id}"]=set
     end
   end
 

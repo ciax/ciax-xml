@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "rexml/document"
 include REXML
-require "libverbose"
 class XmlDoc < Document
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
@@ -13,7 +12,7 @@ class XmlDoc < Document
         super(open(p))
         list_id('/*')
       end
-      raise("No such a db")
+      raise ("No such a db")
     end
   end
 

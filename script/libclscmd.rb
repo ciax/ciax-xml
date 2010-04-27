@@ -94,13 +94,13 @@ class ClsCmd < XmlDb
       warn "Skip"
       return 1
     end
-    raise("Interlock Error") unless required?
+    err("Interlock Error") unless required?
   end
 
   def post_check
     return unless @ilk
     msg "Checking"
-    sufficient?(1) || raise("Command incomplete")
+    sufficient?(1) || err("Command incomplete")
   end
   
   def sufficient?(ret=nil)

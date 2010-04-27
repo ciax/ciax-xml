@@ -1,5 +1,11 @@
 #!/usr/bin/ruby
+require "libmodfile"
 module ModStat
+  include ModFile
+  def initialize(doc)
+    super(doc,'//status')
+    @stat=load_stat(@property['id'])
+  end
   
   def symbol(val,set)
     node_with_name('symbol') do |d|

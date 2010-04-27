@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libverbose"
-
 module ModFile
   include Verbose
   VarDir="#{ENV['HOME']}/.var"

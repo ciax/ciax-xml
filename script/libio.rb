@@ -8,7 +8,9 @@ class Io
     at_exit {
       Process.kill('TERM',@f.pid)
       @f.close
+      msg "END"
     }
+    set_title(iocmd)
   end
 
   def session(cmd)

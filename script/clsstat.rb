@@ -16,12 +16,6 @@ rescue RuntimeError
   exit 1
 end
 save_stat(cdb.property['id'],stat)
-
-
-
-
-
-
-
+print Marshal.dump stat
 
 

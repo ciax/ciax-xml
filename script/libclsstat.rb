@@ -3,12 +3,7 @@ require "libxmldb"
 require "libmodstat"
 class ClsStat < XmlDb
   include ModStat
-  def initialize(doc)
-    super(doc,'//status')
-    @stat=Hash.new
-  end
 
-  public
   def clsstat(fields)
     set_var!(fields,'field')
     @field=fields

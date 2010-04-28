@@ -9,7 +9,7 @@ class CmdIo
     at_exit {
       Process.kill(:TERM,@f.pid)
       @f.close
-      msg "END"
+      warn "END"
     }
     Signal.trap(:CHLD,"EXIT")
   end

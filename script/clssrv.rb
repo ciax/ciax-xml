@@ -8,7 +8,7 @@ warn "Usage: clssrv [cls] (iocmd)" if ARGV.size < 1
 cls=ARGV.shift || 'hcc'
 cdb=Cls.new(cls)
 dev=cdb.property['device']
-iocmd=ARGV.shift || "nc ltc-o 4003"
+iocmd=ARGV.shift || "nc ltc-i 4003"
 ddb=Dev.new(dev,iocmd)
 
 loop do 

@@ -20,7 +20,7 @@ module ModVer
   # Private Method
   private
   def mkmsg(text)
-    caller=caller(2).first[/([\w]+?)'/,1].upcase
+    caller=caller(2).first[/([\w]+?)'/,1]
     pass=sprintf("%5.4f",Time.now-@@stime)
     "[#{pass}] #{@title}:#{caller}:#{text}".dump
   end

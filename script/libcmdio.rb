@@ -4,15 +4,17 @@ require "libmodver"
 class CmdIo
   include ModVer
   def initialize(iocmd)
+    set_title(iocmd)
     @f=IO.popen(iocmd,'r+')
     at_exit {
-      Process.kill('TERM',@f.pid)
+      Process.kill(:TERM,@f.pid)
       @f.close
       msg "END"
     }
-    set_title(iocmd)
+    Signal.trap(:CHLD,"EXIT")
+#    raise "[#{iocmd}] Open Failed" unless $?.to_i >0 
   end
-
+  
   def session(cmd)
     stat=String.new
     msg "Send #{cmd.dump}"

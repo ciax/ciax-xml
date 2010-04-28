@@ -9,8 +9,7 @@ begin
   doc=XmlDoc.new('odb',ARGV.shift)
   e=ObjCmd.new(doc).node_with_id(ARGV.shift)
 rescue RuntimeError
-  puts $!
-  exit 1
+  abort $!.to_s
 end
 e.objcmd
 

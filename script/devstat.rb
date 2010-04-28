@@ -9,8 +9,7 @@ begin
   e=DevStat.new(doc)
   e.node_with_id!(ARGV.shift)
 rescue
-  puts $!
-  exit 1
+  abort $!.to_s
 end
 print Marshal.dump e.devstat(gets(nil))
 

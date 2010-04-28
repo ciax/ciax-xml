@@ -9,16 +9,14 @@ begin
   e=DevCmd.new(doc)
   e.node_with_id!(ARGV.shift)
 rescue
-  puts $!
-  exit 1
+  abort $!.to_s
 end
 begin
   e.devcmd(ARGV.shift) do |cmd|
     puts cmd
   end
-  exit
 rescue IndexError
-  puts $!
+  abort $!.to_s
 end
 
 

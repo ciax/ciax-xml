@@ -12,7 +12,6 @@ class CmdIo
       msg "END"
     }
     Signal.trap(:CHLD,"EXIT")
-#    raise "[#{iocmd}] Open Failed" unless $?.to_i >0 
   end
   
   def session(cmd)

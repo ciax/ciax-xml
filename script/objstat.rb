@@ -11,7 +11,7 @@ begin
   cstat=load_stat(odb.property['class'])
   ostat=odb.objstat(cstat)
 rescue RuntimeError
-  exit 1
+  abort $!.to_s
 end
 save_stat(odb.property['id'],ostat)
 print Marshal.dump ostat

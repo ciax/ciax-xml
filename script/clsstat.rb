@@ -12,8 +12,7 @@ begin
   field=load_stat(cdb.property['device'])
   stat=cdb.clsstat(field)
 rescue RuntimeError
-  puts $!
-  exit 1
+  abort $!.to_s
 end
 save_stat(cdb.property['id'],stat)
 print Marshal.dump stat

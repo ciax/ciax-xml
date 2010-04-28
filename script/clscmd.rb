@@ -12,8 +12,7 @@ begin
   c.set_var!(load_stat(c.property['device']))
   c.clscmd {}
 rescue RuntimeError
-  puts $!
-  exit 1
+  abort $!.to_s
 end
 
 

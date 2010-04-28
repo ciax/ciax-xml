@@ -11,8 +11,7 @@ class Cls
       @cc=ClsCmd.new(cdb)
       @cs=ClsStat.new(cdb)
     rescue RuntimeError
-      puts $!
-      exit 1
+      abort $!.to_s
     end
     @property=@cc.property
     @cc.set_stat!(self.stat)

@@ -13,8 +13,7 @@ class Dev
       @dc=DevCmd.new(ddb)
       @ds=DevStat.new(ddb)
     rescue RuntimeError
-      puts $!
-      exit 1
+      abort $!.to_s
     end
     @f=CmdIo.new(iocmd)
   end

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <mdb>
-  <group id="crt" class="crt" label="Cart Macro">
-    <macro id="runf" label="Run to Tag 1">
-      <interlock type="required" var="cpos" reg="0"></interlock>
-      <interlock type="required" var="rdy" reg="1" />
+  <macro_group id="crt" class="crt" label="Cart Macro">
+    <macro id="runf" label="Run Forward to Tag">
+      <interlock id="ontag" label="On Tag?" type="break" combination="and">
+        <item ref="cpos" field="val">^0</item>
+      </interlock>
+      <interlock type="required">
+        <check ref="rdy">1</check>
+      </interlock>
       <command>set_fwd</command>
       <command>run</command>
       <interlock type="wait_for" var="run" value="1" timeout="1">
@@ -94,5 +98,5 @@
         </command>
       </commandset>
     </macro>
-  </group>
+  </macro_group>
 </mdb>

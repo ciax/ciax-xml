@@ -15,10 +15,12 @@
         <fields>
           <float decimal="2" format="%4.2f" ref="stat" />
         </fields>
-        <symbol type="range">
-          <enum hl="alarm" msg="L">0:2.99</enum>
-          <enum hl="normal" msg="M">3:5.99</enum>
-          <enum hl="alarm" msg="H">6:9.99</enum>
+        <symbol type="min_base">
+          <range hl="alarm" msg="HH">6</range>
+          <range hl="warn" msg="H">5</range>
+          <range hl="normal" msg="M">4</range>
+          <range hl="warn" msg="L">3</range>
+          <range hl="alarm" msg="LL">0</range>
         </symbol>
       </var>
     </status>

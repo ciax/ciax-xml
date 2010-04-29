@@ -257,27 +257,32 @@
         <fields>
           <int ref="x07" signed="true" />
         </fields>
-        <symbol type="range">
-          <enum hl="alarm" msg="LOW">0:10</enum>
-          <enum hl="normal" msg="OK">11:30</enum>
+        <symbol type="max_base">
+          <range hl="alarm" msg="LOW">10</range>
+          <range hl="normal" msg="OK">30</range>
+          <range hl="alarm" msg="HIGH">99</range>
         </symbol>
       </var>
       <var id="mdal" type="INT" label="Left Motor D/A">
         <fields>
           <int ref="x08" signed="true" />
         </fields>
-        <symbol type="range">
-          <enum hl="alarm" msg="LOW">0:10</enum>
-          <enum hl="normal" msg="OK">11:30</enum>
+        <symbol type="max_base">
+          <range hl="alarm" msg="LOW">10</range>
+          <range hl="normal" msg="OK">30</range>
+          <range hl="alarm" msg="HIGH">99</range>
         </symbol>
       </var>
       <var id="bvl" type="FLOAT" label="Battery Voltage">
         <fields>
           <float ref="x16" decimal="2" format="%2.2f" />
         </fields>
-        <symbol type="range">
-          <enum hl="alarm" msg="LOW">0:10</enum>
-          <enum hl="normal" msg="OK">11:30</enum>
+        <symbol type="max_base">
+          <range hl="alarm" msg="LOW">20</range>
+          <range hl="warn" msg="LESS">22</range>
+          <range hl="normal" msg="OK">26</range>
+          <range hl="warn" msg="FULL">28</range>
+          <range hl="alarm" msg="HIGH">99</range>
         </symbol>
       </var>
       <var id="ist" type="ENUM" label="Instrument">

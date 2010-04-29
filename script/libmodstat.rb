@@ -10,11 +10,21 @@ module ModStat
   def symbol(val,set)
     node_with_name('symbol') do |d|
       case d['type']
-      when 'range'
+      when 'min_base'
+        msg "Compare by Minimum Base for [#{val}]"
         d.each_node do |e|
-          min,max=e.text.split(':')
-          next if max.to_f < val.to_f
-          next if min.to_f > val.to_f
+          base=e.text
+          msg("Greater than [#{base}]?",1)
+          next if base.to_f > val.to_f
+          e.add_attr(set)
+          break
+        end
+      when 'max_base'
+        msg "Compare by Maximum Base for [#{val}]"
+        d.each_node do |e|
+          base=e.text
+          msg("Less than [#{base}]?",1)
+          next if base.to_f < val.to_f
           e.add_attr(set)
           break
         end
@@ -27,5 +37,3 @@ module ModStat
   end
 
 end
-
-

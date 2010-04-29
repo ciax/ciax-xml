@@ -1,46 +1,53 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<mdb>
+<mdb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/mdb.xsd">
   <macro_group id="crt" class="crt" label="Cart Macro">
     <macro id="runf" label="Run Forward to Tag">
-      <interlock id="ontag" label="On Tag?" type="break" combination="and">
+      <break label="On Tag?">
         <item ref="cpos" field="val">^0</item>
-      </interlock>
-      <interlock type="required">
-        <check ref="rdy">1</check>
-      </interlock>
-      <command>set_fwd</command>
-      <command>run</command>
-      <interlock type="wait_for" var="run" value="1" timeout="1">
-        <command>getstat</command>
-      </interlock>
-      <command>clear</command>
-      <interlock type="wait_for" var="run" reg="0" timeout="40">
-        <command>getstat</command>
-      </interlock>
-      <interlock type="required" var="cpos" reg="^0" />
+      </break>
+      <check>
+        <item ref="rdy" field="val">1</item>
+      </check>
+      <session>set_fwd</session>
+      <session>run_start</session>
+      <wait timeout="1" update="upd_all">
+        <break combination="and">
+          <item ref="run" field="val">1</item>
+        </break>
+      </wait>
+      <session>clear</session>
+      <wait timeout="40" abort="pause" update="upd_all">
+        <break>
+          <item ref="run" field="val">0</item>
+        </break>
+      </wait>
+      <check>
+        <item ref="cpos" field="val">^0</item>
+      </check>
     </macro>
-    <macro id="run1" label="Run to Tag 1">
-      <sufficient var="cpos" value="1" />
-      <required var="rdy" value="1" />
-      <command>
-        <text>set_tag1</text>
-      </command>
-      <command>
-        <text>run</text>
-      </command>
-      <wait_until var="run" value="1" timeout="1">
-        <command>
-          <text>getstat</text>
-        </command>
-      </wait_until>
-      <command abort="stop" label="Clear Triggers">
-        <text>clear</text>
-      </command>
-      <wait_until var="run" value="0" timeout="100">
-        <command>
-          <text>getstat</text>
-        </command>
-      </wait_until>
+    <macro id="runto" label="Run to Tag 1">
+      <break label="On Tag1 ?">
+        <item ref="cpos" field="val">1</item>
+      </break>
+      <check>
+        <item ref="rdy" field="val">1</item>
+      </check>
+      <session>set_tag</session>
+      <session>run_start</session>
+      <wait timeout="1" update="upd_all">
+        <break combination="and">
+          <item ref="run" field="val">1</item>
+        </break>
+      </wait>
+      <session>clear</session>
+      <wait timeout="40" abort="pause" update="upd_all">
+        <break>
+          <item ref="run" field="val">0</item>
+        </break>
+      </wait>
+      <check label="On Tag1 ?">
+        <item ref="cpos" field="val">1</item>
+      </check>
     </macro>
     <macro id="jak1" label="Jack UP Level 1">
       <commandset>

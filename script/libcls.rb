@@ -14,7 +14,6 @@ class Cls
       abort $!.to_s
     end
     @property=@cc.property
-    @cc.set_stat!(self.stat)
   end
   
   def stat

@@ -2,7 +2,7 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd">
   <class id="crt" device="mel" label="Cart PLC">
     <controls>
-      <session id="upd_all" label="Regular status update">
+      <session id="upd" label="Regular status update">
         <command>
           <text>getstat</text>
         </command>

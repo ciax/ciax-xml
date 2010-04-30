@@ -5,9 +5,9 @@
       <break label="On Tag?">
         <item stat="cpos" field="val">^0</item>
       </break>
-      <check label="Ready?">
+      <pass label="Ready?">
         <item stat="rdy" field="val">1</item>
-      </check>
+      </pass>
       <session>set_fwd</session>
       <session>start_run</session>
       <wait timeout="1" update="upd_all">
@@ -21,17 +21,17 @@
           <item stat="run" field="val">0</item>
         </break>
       </wait>
-      <check>
+      <pass>
         <item stat="cpos" field="val">^0</item>
-      </check>
+      </pass>
     </macro>
     <macro id="run1" label="Run to Tag 1">
       <break label="On Tag1 ?">
         <item stat="cpos" field="val">1</item>
       </break>
-      <check label="Ready?">
+      <pass label="Ready?">
         <item stat="rdy" field="val">1</item>
-      </check>
+      </pass>
       <session>set_tag1</session>
       <session>start_run</session>
       <wait label="Start Run?" timeout="1" update="upd_all">
@@ -45,17 +45,17 @@
           <item stat="running" field="val">0</item>
         </break>
       </wait>
-      <check label="On Tag1 ?">
+      <pass label="On Tag1 ?">
         <item stat="cpos" field="val">1</item>
-      </check>
+      </pass>
     </macro>
     <macro id="jak1" label="Jack UP Level 1">
       <break label="On Level 1?">
         <item stat="jpos" field="val">1</item>
       </break>
-      <check label="Ready?">
+      <pass label="Ready?">
         <item stat="rdy" field="val">1</item>
-      </check>
+      </pass>
       <session>set_jak1</session>
       <session>start_jak</session>
       <wait label="Start Jak?" timeout="1" update="upd_all">
@@ -69,17 +69,17 @@
           <item stat="jaking" field="val">0</item>
         </break>
       </wait>
-      <check label="On Level 1?">
+      <pass label="On Level 1?">
         <item stat="jpos" field="val">1</item>
-      </check>
+      </pass>
     </macro>
     <macro id="runto" label="Run to Tag" argc="1">
       <break label="On Tag?">
         <item stat="cpos" field="val" ref="par"></item>
       </break>
-      <check label="Ready?">
+      <pass label="Ready?">
         <item stat="rdy" field="val">1</item>
-      </check>
+      </pass>
       <session>set_tag1</session>
       <session>start_run</session>
       <wait label="Start Run?" timeout="1" update="upd_all">
@@ -93,9 +93,9 @@
           <item stat="running" field="val">0</item>
         </break>
       </wait>
-      <check label="On Tag1 ?">
+      <pass label="On Tag1 ?">
         <item stat="cpos" field="val">1</item>
-      </check>
+      </pass>
     </macro>
   </macro_group>
 </mdb>

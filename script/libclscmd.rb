@@ -5,61 +5,30 @@ class ClsCmd < XmlDb
   include ModCmd
   def initialize(doc)
     super(doc,'//controls')
-    @stat=Hash.new
   end
 
   public
   def clscmd(par=nil)
     @var['par']=par
     @devcmd=Proc.new
-    node_with_name('commandset') {|e| @cmd=e}
-    node_with_name('interlock') {|e| @ilk=e}
-    return 1 if pre_check
-    exec_cmdset
-    post_check
-  end
-
-  def set_stat!(stat)
-    @stat.update(stat)
-    msg "Status Reading"
+    each_node do |e|
+      e.issue_cmd
+    end 
   end
 
   protected
   def issue_cmd
     cmd=Array.new
     each_node do |e|
-      cmd << e.operate(e.text)
+      cmd << e.operate
     end
     msg "Exec(DDB):[#{cmd.join(' ')}]"
     warn "CommandExec[#{cmd.join(' ')}]"
     @devcmd.call(cmd)
   end
 
-  def wait_until
-    timeout=(self['timeout'] || 5).to_i
-    msg "Waiting"
-    issue=Thread.new do
-      loop do
-        each_node do |d|
-          d.issue_cmd
-        end
-        break if chk_condition
-        sleep 1
-      end
-    end
-    issue.join(timeout) || warn("Timeout")
-  end
-
-  def chk_condition
-    vname=self['var']
-    stat=@stat[vname] || raise(IndexError,"No reference for #{vname}")
-    expect=self['value']
-    actual=stat['val'] || raise(IndexError,"No status")
-    msg "#{self.name}: #{vname} = #{actual} for #{expect}"
-    (expect == actual)
-  end
-
-  def operate(str)
+  def operate
+    str=self.text
     attr_with_key('operator') do |ope|
       x=str.to_i
       y=@doc.text.hex
@@ -72,50 +41,6 @@ class ClsCmd < XmlDb
       msg "(#{x} #{ope} #{y})=#{str}"
     end
     str
-  end
-
-  private
-  def exec_cmdset
-    @cmd.each_node do |e|
-      case e.name
-      when 'command'
-        e.issue_cmd
-      when 'wait_until'
-        e.wait_until
-      end
-    end 
-  end
-
-  def pre_check
-    return unless @ilk
-    msg "Checking"
-    if sufficient?
-      msg "Command already done -> Skip"
-      warn "Skip"
-      return 1
-    end
-    err("Interlock Error") unless required?
-  end
-
-  def post_check
-    return unless @ilk
-    msg "Checking"
-    sufficient?(1) || err("Command incomplete")
-  end
-  
-  def sufficient?(ret=nil)
-    @ilk.node_with_name('sufficient') do |d|
-      d.chk_condition || return
-      ret=1
-    end
-    return ret
-  end
-  
-  def required?
-    @ilk.node_with_name('requied') do |d|
-      d.chk_condition || return
-    end
-    return 1
   end
 
 end

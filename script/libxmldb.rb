@@ -8,7 +8,7 @@ class XmlDb
   def initialize(doc,xpath)
     @property=doc.root.elements.first.attributes
     set_title("#{doc.root.name}/#{@property['id']}")
-    @var=Hash.new
+    @var=Hash.new # Use for par,cc
     begin
       @doc=doc.elements[xpath]
     rescue
@@ -20,7 +20,6 @@ class XmlDb
   # Public Method
   public
   attr_reader :property
-  attr_accessor :v
 
   def set_var!(hash,namespace=nil)
     if namespace
@@ -85,6 +84,20 @@ class XmlDb
     end
   end
 
+  def child_node # Node pick up for macro
+    copy_self(@doc.elements[1])
+  end
+
+  def next_node! # Node pick up for macro
+    @doc=@doc.next_element
+    self
+  end
+
+  def elem_with_id(id) # Interface
+    @doc.elements[".//[@id='#{id}']"]
+  end
+
+
   # Text Convert
   def format(code)
     attr_with_key('format') do |fmt|
@@ -96,16 +109,27 @@ class XmlDb
   end
 
   def text
+    attr_with_key('ref') do |r|
+      msg("Getting text from ref [#{r}]",1)
+      return @var[r] || raise(IndexError,"No reference for [#{r}]")
+    end
     msg("Getting text[#{@doc.text}]",1)
-    return @doc.text unless r=@doc.attributes['ref']
-    msg("Getting text from ref [#{r}]",1)
-    @var[r] || raise(IndexError,"No reference for [#{r}]")
+    return @doc.text
+  end
+
+  def text_convert
+    attr_with_key('ref') do |r|
+      msg("Getting ref[#{@var[r]}] and text[#{@doc.text}]",1)
+      yield @var[r],@doc.text
+    end
+    msg("Getting text[#{@doc.text}]",1)
+    return @doc.text
   end
 
   def name
     @doc.name
   end
-
+  
   # Private Method
   private
   def copy_self(e)
@@ -123,5 +147,4 @@ class XmlDb
   end
 
 end
-
 

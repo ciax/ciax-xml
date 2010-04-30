@@ -28,19 +28,21 @@ class ClsCmd < XmlDb
   end
 
   def operate
-    str=self.text
-    attr_with_key('operator') do |ope|
-      x=str.to_i
-      y=@doc.text.hex
-      case ope
+    text_convert do |r,t|
+      attr_with_key('operator') do |ope|
+        x=r.to_i
+        y=t.hex
+        case ope
         when 'and'
-        str=x & y
+          str= x & y
         when 'or'
-        str=x | y
+          str= x | y
+        end
+        msg "(#{x} #{ope} #{y})=#{str}"
+        return str
       end
-      msg "(#{x} #{ope} #{y})=#{str}"
+      r || t
     end
-    str
   end
 
 end

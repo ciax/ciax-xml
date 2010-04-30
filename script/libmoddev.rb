@@ -3,7 +3,7 @@ module ModDev
   # Public Method
   public
   def node_with_id!(id)
-    @sel=@doc.elements[".//[@id='#{id}']"] || return
+    @sel=elem_with_id(id) || return
   end
 
   def each_node

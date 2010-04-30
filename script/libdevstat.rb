@@ -41,9 +41,11 @@ class DevStat < XmlDb
 
   protected
   def cut_frame
-    len=@doc.attributes['length'].to_i
-    warn "Too short (#{@frame.size-len})" if @frame.size < len
-    return @frame.slice!(0,len)
+    attr_with_key('length') do |l|
+      len=l.to_i
+      warn "Too short (#{@frame.size-len})" if @frame.size < len
+      return @frame.slice!(0,len)
+    end
   end
 
   def verify(raw)

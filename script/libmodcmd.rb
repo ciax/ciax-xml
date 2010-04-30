@@ -3,7 +3,7 @@ module ModCmd
 
   def node_with_id(id)
     msg "Select [#{id}]"
-    if e=@doc.elements[".//[@id='#{id}']"]
+    if e=elem_with_id(id)
       return copy_self(e)
     else
       list_id('./')

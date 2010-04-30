@@ -3,107 +3,99 @@
   <macro_group id="crt" class="crt" label="Cart Macro">
     <macro id="runf" label="Run Forward to Tag">
       <break label="On Tag?">
-        <item ref="cpos" field="val">^0</item>
+        <item stat="cpos" field="val">^0</item>
       </break>
-      <check>
-        <item ref="rdy" field="val">1</item>
+      <check label="Ready?">
+        <item stat="rdy" field="val">1</item>
       </check>
       <session>set_fwd</session>
-      <session>run_start</session>
+      <session>start_run</session>
       <wait timeout="1" update="upd_all">
-        <break combination="and">
-          <item ref="run" field="val">1</item>
+        <break>
+          <item stat="run" field="val">1</item>
         </break>
       </wait>
-      <session>clear</session>
+      <session>clear_trg</session>
       <wait timeout="40" abort="pause" update="upd_all">
         <break>
-          <item ref="run" field="val">0</item>
+          <item stat="run" field="val">0</item>
         </break>
       </wait>
       <check>
-        <item ref="cpos" field="val">^0</item>
+        <item stat="cpos" field="val">^0</item>
       </check>
     </macro>
-    <macro id="runto" label="Run to Tag 1">
+    <macro id="run1" label="Run to Tag 1">
       <break label="On Tag1 ?">
-        <item ref="cpos" field="val">1</item>
+        <item stat="cpos" field="val">1</item>
       </break>
-      <check>
-        <item ref="rdy" field="val">1</item>
+      <check label="Ready?">
+        <item stat="rdy" field="val">1</item>
       </check>
-      <session>set_tag</session>
-      <session>run_start</session>
-      <wait timeout="1" update="upd_all">
-        <break combination="and">
-          <item ref="run" field="val">1</item>
+      <session>set_tag1</session>
+      <session>start_run</session>
+      <wait label="Start Run?" timeout="1" update="upd_all">
+        <break>
+          <item stat="run_start" field="val">1</item>
         </break>
       </wait>
-      <session>clear</session>
-      <wait timeout="40" abort="pause" update="upd_all">
+      <session>clear_trg</session>
+      <wait label="Running" timeout="40" abort="pause" update="upd_all">
         <break>
-          <item ref="run" field="val">0</item>
+          <item stat="running" field="val">0</item>
         </break>
       </wait>
       <check label="On Tag1 ?">
-        <item ref="cpos" field="val">1</item>
+        <item stat="cpos" field="val">1</item>
       </check>
     </macro>
     <macro id="jak1" label="Jack UP Level 1">
-      <commandset>
-        <command label="Set Level 1">
-          <text>set_level</text>
-          <text>0200</text>
-        </command>
-        <command label="Jacking Start">
-          <text>start</text>
-          <text>0001</text>
-        </command>
-        <wait_until var="jak" value="1" timeout="1">
-          <command>
-            <text>getstat</text>
-          </command>
-        </wait_until>
-        <command abort="stop" label="Clear Triggers">
-          <text>clear</text>
-        </command>
-        <wait_until var="jak" value="0" timeout="30">
-          <command>
-            <text>getstat</text>
-          </command>
-        </wait_until>
-      </commandset>
-      <interlock>
-        <sufficient var="jpos" value="1" />
-        <required var="rdy" value="1" />
-      </interlock>
+      <break label="On Level 1?">
+        <item stat="jpos" field="val">1</item>
+      </break>
+      <check label="Ready?">
+        <item stat="rdy" field="val">1</item>
+      </check>
+      <session>set_jak1</session>
+      <session>start_jak</session>
+      <wait label="Start Jak?" timeout="1" update="upd_all">
+        <break>
+          <item stat="jak_start" field="val">1</item>
+        </break>
+      </wait>
+      <session>clear_trg</session>
+      <wait label="Jacking" timeout="40" abort="pause" update="upd_all">
+        <break>
+          <item stat="jaking" field="val">0</item>
+        </break>
+      </wait>
+      <check label="On Level 1?">
+        <item stat="jpos" field="val">1</item>
+      </check>
     </macro>
-    <macro id="pause" label="Pause">
-      <commandset>
-        <command>
-          <text>stop</text>
-        </command>
-        <command>
-          <text>0100</text>
-        </command>
-      </commandset>
-    </macro>
-    <macro id="emstop" label="Emergency Stop">
-      <commandset>
-        <command>
-          <text>stop</text>
-        </command>
-        <command>
-          <text>0200</text>
-        </command>
-      </commandset>
-    </macro>
-    <macro id="resume" label="Resume from Pause">
-      <commandset>
-        <command>
-          <text>clear</text>
-        </command>
-      </commandset>
+    <macro id="runto" label="Run to Tag" argc="1">
+      <break label="On Tag?">
+        <item stat="cpos" field="val" ref="par"></item>
+      </break>
+      <check label="Ready?">
+        <item stat="rdy" field="val">1</item>
+      </check>
+      <session>set_tag1</session>
+      <session>start_run</session>
+      <wait label="Start Run?" timeout="1" update="upd_all">
+        <break>
+          <item stat="run_start" field="val">1</item>
+        </break>
+      </wait>
+      <session>clear_trg</session>
+      <wait label="Running" timeout="40" abort="pause" update="upd_all">
+        <break>
+          <item stat="running" field="val">0</item>
+        </break>
+      </wait>
+      <check label="On Tag1 ?">
+        <item stat="cpos" field="val">1</item>
+      </check>
     </macro>
   </macro_group>
 </mdb>

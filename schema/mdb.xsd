@@ -3,7 +3,7 @@
   <xsd:element name="mdb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:macro_group" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="cx:macro_group" minOccurs="1" maxOccurs="unbounded"></xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -21,12 +21,24 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cx:break" minOccurs="0" maxOccurs="unbounded" />
-        <xsd:element ref="cx:check" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="cx:pass" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="cx:session" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="cx:wait" minOccurs="0" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" use="optional" />
+      <xsd:attribute name="argc" type="xsd:int" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="wait">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:break" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+      <xsd:attribute name="label" type="xsd:string" use="optional" />
+      <xsd:attribute name="timeout" type="xsd:string" use="optional" />
+      <xsd:attribute name="abort" type="xsd:string" />
+      <xsd:attribute name="update" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:complexType name="condition">
@@ -43,11 +55,14 @@
       </xsd:simpleType>
     </xsd:attribute>
   </xsd:complexType>
+  <xsd:element name="break" type="cx:condition"></xsd:element>
+  <xsd:element name="pass" type="cx:condition"></xsd:element>
+  <xsd:element name="session" type="xsd:string"></xsd:element>
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attribute name="ref" type="xsd:string" />
+          <xsd:attribute name="stat" type="xsd:string" />
           <xsd:attribute name="field">
             <xsd:simpleType>
               <xsd:restriction base="xsd:string">
@@ -56,22 +71,9 @@
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:attribute>
+          <xsd:attribute name="ref" type="xsd:string" />
         </xsd:extension>
       </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="break" type="cx:condition"></xsd:element>
-  <xsd:element name="check" type="cx:condition"></xsd:element>
-  <xsd:element name="session" type="xsd:string"></xsd:element>
-  <xsd:element name="wait">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cx:break" minOccurs="0" maxOccurs="1" />
-      </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:string" use="optional" />
-      <xsd:attribute name="timeout" type="xsd:string" use="optional" />
-      <xsd:attribute name="abort" type="xsd:string" />
-      <xsd:attribute name="update" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

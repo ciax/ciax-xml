@@ -3,19 +3,15 @@
   <class id="alc" label="APS LN2 Flow Controller" device="oco">
     <controls>
       <session id="upd" label="Update Status">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-        </commandset>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="i" label="Set Current by argvam(i:XX.XX)">
-        <commandset>
-          <command>
-            <text>i</text>
-            <text ref="par" />
-          </command>
-        </commandset>
+        <command>
+          <text>i</text>
+          <text ref="par" />
+        </command>
       </session>
     </controls>
     <status>

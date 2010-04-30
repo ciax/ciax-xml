@@ -3,11 +3,9 @@
   <class id="cfl" label="Compressor Coolant Flow (l/min)" device="k3n">
     <controls>
       <session id="upd" label="Update Status">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-        </commandset>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
     </controls>
     <status>

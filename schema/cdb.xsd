@@ -29,27 +29,10 @@
   <xsd:element name="session">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:commandset" minOccurs="1" maxOccurs="1" />
-        <xsd:element ref="cx:interlock" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="cx:command" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" use="optional" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="commandset">
-    <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="cx:command" minOccurs="0" maxOccurs="unbounded" />
-        <xsd:element ref="cx:wait_until" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="interlock">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cx:sufficient" minOccurs="0" maxOccurs="unbounded" />
-        <xsd:element ref="cx:required" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="command">
@@ -57,7 +40,6 @@
       <xsd:sequence>
         <xsd:element ref="cx:text" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="abort" type="xsd:string" />
       <xsd:attribute name="label" type="xsd:string" use="optional" />
     </xsd:complexType>
   </xsd:element>
@@ -90,26 +72,6 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="wait_until">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cx:command" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:sequence>
-      <xsd:attribute name="var" type="xsd:string"></xsd:attribute>
-      <xsd:attribute name="value" type="xsd:string" />
-      <xsd:attribute name="timeout" type="xsd:int" use="required"></xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="sufficient" type="cx:ConditionType" />
-  <xsd:element name="required" type="cx:ConditionType" />
-  <xsd:complexType name="ConditionType">
-    <xsd:simpleContent>
-      <xsd:extension base="xsd:string">
-        <xsd:attribute name="var" type="xsd:string" use="required" />
-        <xsd:attribute name="value" type="xsd:string" use="required" />
-      </xsd:extension>
-    </xsd:simpleContent>
-  </xsd:complexType>
   <!--status-->
   <xsd:element name="status">
     <xsd:complexType>

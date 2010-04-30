@@ -3,183 +3,117 @@
   <class id="hcc" device="bbe" label="Helium Compressor Control">
     <controls>
       <session id="upd" label="Update Status">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-        </commandset>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="on_0" label="[CH0] ON">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="or">0x01</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="0sw" value="1"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x01</text>
+        </command>
       </session>
       <session id="off_0" label="[CH0] OFF">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="and">0xfffe</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="0sw" value="0"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xfffe</text>
+        </command>
       </session>
       <session id="on_1" label="CH1 ON">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="or">0x10</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="1sw" value="1"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x10</text>
+        </command>
       </session>
       <session id="off_1" label="CH1 OFF">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="and">0xffef</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="1sw" value="0"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xffef</text>
+        </command>
       </session>
       <session id="on_2" label="CH2 ON">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="or">0x100</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="2sw" value="1"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x100</text>
+        </command>
       </session>
       <session id="off_2" label="CH2 OFF">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="and">0xfeff</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="2sw" value="0"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xfeff</text>
+        </command>
       </session>
       <session id="on_3" label="CH3 ON">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="or">0x1000</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="3sw" value="1"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x1000</text>
+        </command>
       </session>
       <session id="off_3" label="CH3 OFF">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="and">0xefff</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="3sw" value="0"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xefff</text>
+        </command>
       </session>
       <session id="on_01" label="[CH0 and CH1] ON">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="or">0x0011</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="0sw" value="1"></sufficient>
-          <sufficient var="1sw" value="1"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x0011</text>
+        </command>
       </session>
       <session id="off_01" label="[CH0 and CH1] OFF">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="and">0xffee</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="0sw" value="0"></sufficient>
-          <sufficient var="1sw" value="0"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xffee</text>
+        </command>
       </session>
       <session id="on_21" label="CH2 and CH1 ON">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="or">0x0110</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="2sw" value="1"></sufficient>
-          <sufficient var="1sw" value="1"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x0110</text>
+        </command>
       </session>
       <session id="off_23" label="CH2 and CH3 OFF">
-        <commandset>
-          <command>
-            <text>getstat</text>
-          </command>
-          <command>
-            <text>output</text>
-            <text ref="stat" operator="and">0xeeff</text>
-          </command>
-        </commandset>
-        <interlock>
-          <sufficient var="2sw" value="0"></sufficient>
-          <sufficient var="3sw" value="0"></sufficient>
-        </interlock>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xeeff</text>
+        </command>
       </session>
     </controls>
     <status>

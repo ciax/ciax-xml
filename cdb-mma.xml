@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml cdb.xsd">
-  <controls id="mma" channel="1">
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/cdb.xsd">
+  <class id="mma">
     <session id="set0">
       <label>Set 0 Counter</label>
       <commands>
@@ -111,5 +111,5 @@
         <required field="in3" value="1"></required>
       </interlock>
     </session>
-  </controls>
+  </class>
 </cdb>

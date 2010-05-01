@@ -15,9 +15,3 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
-
-
-
-
-
-

@@ -8,9 +8,16 @@
       <pass label="Ready?">
         <item stat="rdy" field="val">1</item>
       </pass>
-      <session>set_fwd</session>
-      <session>start_run</session>
-      <wait timeout="1" update="upd_all">
+      <session>
+        <text xmlns="">set_fwd</text>
+      </session>
+      <session>
+        <text xmlns="">start_run</text>
+      </session>
+      <wait timeout="1">
+        <session xmlns="">
+          <element>upd</element>
+        </session>
         <break>
           <item stat="run" field="val">1</item>
         </break>

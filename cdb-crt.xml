@@ -33,7 +33,7 @@
           <text>6200</text>
         </command>
       </session>
-      <session id="run1" label="Run to Tag 1">
+      <session id="set_run1" label="Run to Tag 1">
         <command>
           <text>set_tag</text>
           <text>0100</text>
@@ -41,7 +41,7 @@
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
         <command>
-          <text>set_level</text>
+          <text>set_pos</text>
           <text>0200</text>
         </command>
       </session>

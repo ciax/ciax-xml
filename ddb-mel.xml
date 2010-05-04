@@ -27,28 +27,28 @@
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">3400</data>
           </option>
-          <option id="set_tag" label="Set Tag to Run" type="config">
+          <option id="set_tag" label="Set Tag to Run [HH00]" type="config">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">010100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
             <data label="Data" pack="H*" ref="par"></data>
           </option>
-          <option id="set_level" label="Set level to Jak" type="config">
+          <option id="set_pos" label="Set Pos to Jack [HH00]" type="config">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">030100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
             <data label="Data" pack="H*" ref="par"></data>
           </option>
-          <option id="start" label="Start Trigger" type="action">
+          <option id="start" label="Start Trigger [HHHH]" type="action">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">020100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
             <data label="Data" pack="H*" ref="par"></data>
           </option>
-          <option id="stop" label="Stop Trigger" type="action">
+          <option id="stop" label="Stop Trigger [HHHH]" type="action">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">000100</data>
             <data label="Device Code" pack="H*">B4</data>

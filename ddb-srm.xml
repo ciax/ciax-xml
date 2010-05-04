@@ -12,7 +12,7 @@
             <data label="Start Channel">0000</data>
             <data label="length">0001</data>
           </option>
-          <option id="fset" type="action" label="Multiple Forced Set (par)">
+          <option id="fset" type="action" label="Multiple Forced Set [D*16]">
             <data label="Header Code">FK</data>
             <data label="Operand">CIO </data>
             <data label="Channel">0000</data>

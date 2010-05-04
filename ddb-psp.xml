@@ -9,15 +9,15 @@
         </option>
         <option id="setvl" type="config" label="Set Voltage Limit">
           <data>SU </data>
-          <data label="Voltage Value (Integer)" format="%d" ref="argv" />
+          <data label="Voltage Value [DD]" format="%02d" ref="par" />
         </option>
-        <option id="setal" type="config" label="Set Current Limit">
+        <option id="setal" type="config" label="Set Current Limit [D.DD]">
           <data>SI </data>
-          <data format="%d" ref="argv" />
+          <data format="%.2f" ref="par" />
         </option>
-        <option id="setpl" type="config" label="Set Power Limit">
+        <option id="setpl" type="config" label="Set Power Limit [DDD]">
           <data>SP </data>
-          <data format="%d" ref="argv" />
+          <data format="%03d" ref="par" />
         </option>
         <option id="pon" type="action" label="OUTPUT ON">
           <data>KOE</data>
@@ -25,9 +25,9 @@
         <option id="poff" type="action" label="OUTPUT OFF">
           <data>KOD</data>
         </option>
-        <option id="setv" type="config" label="Set Voltage">
+        <option id="setv" type="config" label="Set Voltage [DD.DD]">
           <data>SV </data>
-          <data format="%d" ref="argv" />
+          <data format="%05.2f" ref="par" />
         </option>
       </select>
       <data label="Suffix" pack="H*">0D</data>

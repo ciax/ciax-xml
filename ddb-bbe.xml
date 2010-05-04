@@ -12,7 +12,7 @@
           <data>SD</data>
           <data label="msb" pack="H*">1111</data>
         </option>
-        <option id="output" type="action" label="OUTPUT">
+        <option id="output" type="action" label="OUTPUT [HHHH]">
           <data>SO</data>
           <data ref="par" type="int" pack="n"></data>
         </option>

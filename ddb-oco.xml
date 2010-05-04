@@ -8,9 +8,9 @@
         <option id="getstat" type="stat" label="Get Status">
           <data>1RD</data>
         </option>
-        <option id="i" type="action" label="Set Current by argv (XX.XX)">
+        <option id="i" type="action" label="Set Current by argv [DD.DD]">
           <data>1AO+000</data>
-          <data format="%05.2f" ref="argv" />
+          <data format="%05.2f" ref="par" />
         </option>
       </select>
       <data label="Suffix" pack="H*">0D</data>

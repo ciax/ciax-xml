@@ -9,24 +9,29 @@
         <item stat="rdy" field="val">1</item>
       </pass>
       <session>
-        <text xmlns="">set_fwd</text>
+        <text>set_fwd</text>
       </session>
       <session>
-        <text xmlns="">start_run</text>
+        <text>start_run</text>
       </session>
       <wait timeout="1">
-        <session xmlns="">
-          <element>upd</element>
-        </session>
         <break>
           <item stat="run" field="val">1</item>
         </break>
+        <session>
+          <text>upd</text>
+        </session>
       </wait>
-      <session>clear_trg</session>
-      <wait timeout="40" abort="pause" update="upd_all">
+      <session>
+        <text>clear_trg</text>
+      </session>
+      <wait timeout="40" abort="pause">
         <break>
           <item stat="run" field="val">0</item>
         </break>
+        <session>
+          <text>upd</text>
+        </session>
       </wait>
       <pass>
         <item stat="cpos" field="val">^0</item>
@@ -39,18 +44,30 @@
       <pass label="Ready?">
         <item stat="rdy" field="val">1</item>
       </pass>
-      <session>set_tag1</session>
-      <session>start_run</session>
-      <wait label="Start Run?" timeout="1" update="upd_all">
+      <session>
+        <text>set_tag1</text>
+      </session>
+      <session>
+        <text>start_run</text>
+      </session>
+      <wait label="Start Run?" timeout="1">
         <break>
           <item stat="run_start" field="val">1</item>
         </break>
+        <session>
+          <text>upd</text>
+        </session>
       </wait>
-      <session>clear_trg</session>
-      <wait label="Running" timeout="40" abort="pause" update="upd_all">
+      <session>
+        <text>clear_trg</text>
+      </session>
+      <wait label="Running" timeout="40" abort="pause">
         <break>
           <item stat="running" field="val">0</item>
         </break>
+        <session>
+          <text>upd</text>
+        </session>
       </wait>
       <pass label="On Tag1 ?">
         <item stat="cpos" field="val">1</item>
@@ -63,18 +80,30 @@
       <pass label="Ready?">
         <item stat="rdy" field="val">1</item>
       </pass>
-      <session>set_jak1</session>
-      <session>start_jak</session>
-      <wait label="Start Jak?" timeout="1" update="upd_all">
+      <session>
+        <text>set_jak1</text>
+      </session>
+      <session>
+        <text>start_jak</text>
+      </session>
+      <wait label="Start Jak?" timeout="1">
         <break>
           <item stat="jak_start" field="val">1</item>
         </break>
+        <session>
+          <text>upd</text>
+        </session>
       </wait>
-      <session>clear_trg</session>
-      <wait label="Jacking" timeout="40" abort="pause" update="upd_all">
+      <session>
+        <text>clear_trg</text>
+      </session>
+      <wait label="Jacking" timeout="40" abort="pause">
         <break>
           <item stat="jaking" field="val">0</item>
         </break>
+        <session>
+          <text>upd</text>
+        </session>
       </wait>
       <pass label="On Level 1?">
         <item stat="jpos" field="val">1</item>
@@ -87,18 +116,30 @@
       <pass label="Ready?">
         <item stat="rdy" field="val">1</item>
       </pass>
-      <session>set_tag1</session>
-      <session>start_run</session>
-      <wait label="Start Run?" timeout="1" update="upd_all">
+      <session>
+        <text>set_tag1</text>
+      </session>
+      <session>
+        <text>start_run</text>
+      </session>
+      <wait label="Start Run?" timeout="1">
         <break>
           <item stat="run_start" field="val">1</item>
         </break>
+        <session>
+          <text>upd</text>
+        </session>
       </wait>
-      <session>clear_trg</session>
-      <wait label="Running" timeout="40" abort="pause" update="upd_all">
+      <session>
+        <text>clear_trg</text>
+      </session>
+      <wait label="Running" timeout="40" abort="pause">
         <break>
           <item stat="running" field="val">0</item>
         </break>
+        <session>
+          <text>upd</text>
+        </session>
       </wait>
       <pass label="On Tag1 ?">
         <item stat="cpos" field="val">1</item>

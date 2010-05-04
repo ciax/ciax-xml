@@ -4,7 +4,7 @@ require "libmodver"
 class CmdIo
   include ModVer
   def initialize(iocmd)
-    set_title(iocmd)
+    @title=iocmd.upcase
     @f=IO.popen(iocmd,'r+')
     at_exit {
       Process.kill(:TERM,@f.pid)

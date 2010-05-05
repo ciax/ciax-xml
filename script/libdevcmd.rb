@@ -8,7 +8,7 @@ class DevCmd < XmlDb
   end
 
   def devcmd(par=nil)
-    @var['par']=par
+    @var={'par'=>par}
     node_with_name('ccrange') do |e|
       msg("Entering CC range",1)
       @ccstr=e.get_string

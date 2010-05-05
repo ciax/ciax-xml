@@ -94,7 +94,6 @@ class XmlDb
   end
 
   def elem_with_id(id) # Interface
-    @var.clear
     @doc.elements[".//[@id='#{id}']"]
   end
 

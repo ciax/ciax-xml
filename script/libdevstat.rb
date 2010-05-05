@@ -21,17 +21,18 @@ class DevStat < XmlDb
 
   def devstat(str)
     err "No String" unless str
+    @var.clear
     @frame=str
     get_field
     @verify_later.each do |e,ele|
       e.verify(ele)
     end
+    @verify_later.clear
     save_stat(@dev,@field)
     return @field
   end
   
   def node_with_id!(id)
-    @verify_later.clear
     if id
       return self if super(id)
       return self if super('default')
@@ -67,13 +68,11 @@ class DevStat < XmlDb
         return raw
       end
     rescue IndexError
-      msg @verify_later.inspect
       err $! if @verify_later[self]
       msg "#{$!} and code [#{str}] into queue"
       @verify_later[self]=raw
       return raw
     end
-
     err "No error desctiption for #{self['label']}"
   end
 

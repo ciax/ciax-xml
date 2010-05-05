@@ -4,7 +4,11 @@ module ModStat
   include ModFile
   def initialize(doc)
     super(doc,'//status')
-    @stat=load_stat(@property['id'])
+    begin
+      @stat=load_stat(@property['id'])
+    rescue
+      warn $!
+    end
   end
   
   def symbol(val,set)

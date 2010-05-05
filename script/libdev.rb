@@ -2,7 +2,6 @@
 require "libdevcmd"
 require "libdevstat"
 require "libxmldoc"
-require "libmodfile"
 require "libcmdio"
 
 class Dev
@@ -38,5 +37,3 @@ class Dev
   end
 
 end
-
-

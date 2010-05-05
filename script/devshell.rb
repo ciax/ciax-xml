@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
 require "libdev"
-
+require "libmodfile"
+include ModFile
 warn "Usage: devsrv [dev] (iocmd)" if ARGV.size < 1
+
 
 dev=ARGV.shift || 'bbe'
 iocmd=ARGV.shift || "nc ltc-i 4003"
@@ -14,7 +16,7 @@ loop do
     break
   when /[\w]+/
     cmd,par=line.split(' ')
-    ddb.devcom(cmd,par)
+    save_stat(dev,ddb.devcom(cmd,par))
   else
     p ddb.stat
   end

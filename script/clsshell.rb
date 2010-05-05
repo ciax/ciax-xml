@@ -20,7 +20,7 @@ loop do
     cmd,par=line.split(' ')
     begin
       cdb.clscom(cmd,par) do |c,p|
-        ddb.devcom(c,p)
+        save_stat(dev,ddb.devcom(c,p))
         ddb.stat
       end
     rescue

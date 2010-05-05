@@ -31,6 +31,7 @@ class DevStat < XmlDb
   end
   
   def node_with_id!(id)
+    @verify_later.clear
     if id
       return self if super(id)
       return self if super('default')
@@ -66,11 +67,13 @@ class DevStat < XmlDb
         return raw
       end
     rescue IndexError
+      msg @verify_later.inspect
       err $! if @verify_later[self]
       msg "#{$!} and code [#{str}] into queue"
       @verify_later[self]=raw
       return raw
     end
+
     err "No error desctiption for #{self['label']}"
   end
 

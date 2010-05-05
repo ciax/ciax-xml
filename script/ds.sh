@@ -3,6 +3,8 @@
 obj="$1"
 iskey $obj || _usage_key
 iocmd=`lookup "$obj" iocmd` || _die "No entry in iocmd field"
-file=~/.var/$obj.bin
+cls=`lookup "$obj" cls`
+setdb cx_class
+dev=`lookup "$cls" dev`
 echo " [$iocmd]" >&2 
-$iocmd | tee $file
+devshell $dev "$iocmd"

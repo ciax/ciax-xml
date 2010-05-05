@@ -4,6 +4,7 @@ require "libmodver"
 class CmdIo
   include ModVer
   def initialize(iocmd)
+    abort "No IO command" unless iocmd
     @title=iocmd.upcase
     @f=IO.popen(iocmd,'r+')
     at_exit {

@@ -2,11 +2,11 @@
 require "libdev"
 require "libmodfile"
 include ModFile
-warn "Usage: devsrv [dev] (iocmd)" if ARGV.size < 1
 
+warn "Usage: devsrv [dev] [iocmd]" if ARGV.size < 2
 
-dev=ARGV.shift || 'bbe'
-iocmd=ARGV.shift || "nc ltc-i 4003"
+dev=ARGV.shift
+iocmd=ARGV.shift
 ddb=Dev.new(dev,iocmd)
 
 loop do 

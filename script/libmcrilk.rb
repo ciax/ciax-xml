@@ -40,7 +40,7 @@ class McrIlk < XmlDb
   end
 
   def mcrproceed
-p self
+#p self
     case @state
     when 'ready'
       return 1
@@ -60,6 +60,7 @@ p self
     @process=self.name
     case @process
     when 'break'
+      return 1
       if chk_condition
         puts "Skip/Break"
         @state='ready'
@@ -67,8 +68,12 @@ p self
         return 1
       end
     when 'pass'
-      chk_condition || raise("Interlock Error")
-      puts "Pass"
+      if chk_condition
+        puts "Pass"
+      else
+        @state='ready'
+        raise("Interlock Error")
+      end
     when 'session'     
       issue_cmd
       @state='issue'
@@ -87,7 +92,6 @@ p self
     end
     msg "Exec(CDB):[#{cmd.join(' ')}]"
     warn "SessionExec[#{cmd.join(' ')}]"
-    @devcmd.call(cmd)
   end
 
   def wait_until
@@ -106,6 +110,7 @@ p self
   end
 
   def chk_condition
+return 1
     case self['combination']
     when 'or'
       each_node do |e|

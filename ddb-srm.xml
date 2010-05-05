@@ -7,6 +7,9 @@
         <data label="Prefix">@</data>
         <data label="Device No.">00</data>
         <select>
+          <option id="getmodel" type="stat" label="Get Model Code">
+            <data label="Header Code">MM</data>
+          </option>
           <option id="getstat" type="stat" label="Get Status">
             <data label="Header Code">RR</data>
             <data label="Start Channel">0000</data>
@@ -31,6 +34,18 @@
           <case msg="Prefix mismatch" type="error"></case>
         </verify>
         <select>
+          <option id="getmodel">
+            <verify length="4">
+              <case type="pass" msg="Command Code OK">00MM</case>
+              <case msg="Command Code mismatch" type="error"></case>
+            </verify>
+            <verify length="2">
+              <case type="pass" msg="Response Code OK">00</case>
+              <case type="error" msg="Response Code mismatch"></case>
+            </verify>
+            <!--Big endian-->
+            <assign field="model" length="2" />
+          </option>
           <option id="getstat">
             <verify length="4">
               <case type="pass" msg="Command Code OK">00RR</case>

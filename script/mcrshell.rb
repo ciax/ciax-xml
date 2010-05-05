@@ -24,5 +24,9 @@ loop do
   else
     view(cr.stat)
   end
-  cr.mcrproceed if cr
+  begin
+    cr.mcrproceed if cr
+  rescue
+    puts $!
+  end
 end

@@ -12,7 +12,7 @@ class DevStat < XmlDb
     super(doc,'//rspframe')
     @dev=@property['id']
     begin
-      @field=load_stat(@dev)
+      @field=load_stat(@dev) || raise
     rescue
       @field={'device'=>@dev}
     end

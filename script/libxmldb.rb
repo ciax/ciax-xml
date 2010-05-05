@@ -102,7 +102,7 @@ class XmlDb
   def format(code)
     attr_with_key('format') do |fmt|
       str=fmt % code
-      msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",1)
+      msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",2)
       code=str
     end
     code.to_s
@@ -110,19 +110,19 @@ class XmlDb
 
   def text
     attr_with_key('ref') do |r|
-      msg("Getting text from ref [#{r}]",1)
+      msg("Getting text from ref [#{r}]",2)
       return @var[r] || raise(IndexError,"No reference for [#{r}]")
     end
-    msg("Getting text[#{@doc.text}]",1)
+    msg("Getting text[#{@doc.text}]",2)
     return @doc.text
   end
 
   def text_convert
     attr_with_key('ref') do |r|
-      msg("Getting ref[#{@var[r]}] and text[#{@doc.text}]",1)
+      msg("Getting ref[#{@var[r]}] and text[#{@doc.text}]",2)
       yield @var[r],@doc.text
     end
-    msg("Getting text[#{@doc.text}]",1)
+    msg("Getting text[#{@doc.text}]",2)
     return @doc.text
   end
 
@@ -147,4 +147,3 @@ class XmlDb
   end
 
 end
-

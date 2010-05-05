@@ -80,7 +80,7 @@ class DevStat < XmlDb
     raw=cut_frame
     attr_with_key('field') do |fld|
       str=decode(raw) 
-      msg("[#{fld}] <- [#{str}]")
+      msg("[#{fld}] <- [#{str}]",1)
       @field[fld]=str
     end
     raw
@@ -110,5 +110,3 @@ class DevStat < XmlDb
   end
   
 end
-
-

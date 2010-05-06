@@ -1,13 +1,23 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libmodcmd"
 class ClsCmd < XmlDb
-  include ModCmd
   def initialize(doc)
     super(doc,'//controls')
   end
 
-  public
+  def node_with_id(id)
+    msg "Select [#{id}]"
+    unless e=elem_with_id(id)
+      list_id('./')
+      raise ("No such a command")
+    end
+    db=copy_self(e)
+    db.attr_with_key('ref') { |ref|
+      return db.node_with_id(ref)
+    }
+    return db
+  end
+
   def clscmd(par=nil)
     @var['par']=par
     @devcmd=Proc.new
@@ -46,3 +56,6 @@ class ClsCmd < XmlDb
   end
 
 end
+
+
+

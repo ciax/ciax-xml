@@ -1,46 +1,269 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cci" label="IR Helium Compressor Control" class="hcc">
+  <object id="cci" label="IR Helium Compressor Control" device="bbe">
     <network type="tcp" host="ltc-i" port="4002"></network>
     <controls>
-      <alias id="upd" label="Update Status" ref="upd" />
-      <alias id="caon" label="CAS BOTH HC ON" ref="on_01" />
-      <alias id="caoff" label="CAS BOTH HC OFF" ref="off_01" />
-      <alias id="c1on" label="CAS1(S2) ON" ref="on_1" />
-      <alias id="c1off" label="CAS1(S2) OFF" ref="off_1" />
-      <alias id="c2on" label="CAS2(S1) ON" ref="on_0"></alias>
-      <alias id="c2off" label="CAS2(S1) OFF" ref="off_0"></alias>
-      <alias id="cmon" label="CAS MOIRCS/MAIN ON" ref="on_0" />
-      <alias id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="off_0" />
-      <alias id="ccon" label="CAS MOIRCS/CR ON" ref="on_1"></alias>
-      <alias id="ccoff" label="CAS MOIRCS/CR OFF" ref="off_1"></alias>
-      <alias id="maon" label="MOIRCS BOTH ON" ref="on_34"></alias>
-      <alias id="maoff" label="MOIRCS BOTH OFF" ref="off_34"></alias>
-      <alias id="m1on" label="MOIRCS MAIN(S9) ON" ref="on_4"></alias>
-      <alias id="m1off" label="MOIRCS MAIN(S9) OFF" ref="off_4"></alias>
-      <alias id="m2on" label="MOIRCS CR(S8) ON" ref="on_3"></alias>
-      <alias id="m2off" label="MOIRCS CR(S8) OFF" ref="off_3"></alias>
+      <session id="upd" label="Update Status">
+        <command>
+          <text>getstat</text>
+        </command>
+      </session>
+      <session id="c2on" label="CAS2(S1) ON">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x01</text>
+        </command>
+      </session>
+      <session id="c2off" label="CAS2(S1) OFF">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xfffe</text>
+        </command>
+      </session>
+      <session id="c1on" label="CAS1(S2) ON">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x10</text>
+        </command>
+      </session>
+      <session id="c1off" label="CAS1(S2) OFF">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xffef</text>
+        </command>
+      </session>
+      <session id="m2on" label="MOIRCS CR(S8) ON">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x100</text>
+        </command>
+      </session>
+      <session id="m2off" label="MOIRCS CR(S8) OFF">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xfeff</text>
+        </command>
+      </session>
+      <session id="m1on" label="MOIRCS MAIN(S9) ON">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x1000</text>
+        </command>
+      </session>
+      <session id="m1off" label="MOIRCS MAIN(S9) OFF">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xefff</text>
+        </command>
+      </session>
+      <session id="cmon" label="CAS MOIRCS/MAIN ON" ref="c2on"></session>
+      <session id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="c2off"></session>
+      <session id="ccon" label="CAS MOIRCS/CR ON" ref="c1on" />
+      <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="c1off" />
+      <session id="caon" label="CAS BOTH HC ON">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x0011</text>
+        </command>
+      </session>
+      <session id="caoff" label="CAS BOTH HC OFF">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xffee</text>
+        </command>
+      </session>
+      <session id="maon" label="MOIRCS BOTH ON">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="or">0x1100</text>
+        </command>
+      </session>
+      <session id="maoff" label="MOIRCS BOTH OFF">
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>output</text>
+          <text ref="stat" operator="and">0xeeff</text>
+        </command>
+      </session>
     </controls>
     <status>
-      <var id="s1:sw" ref="0sw" label="CAS2(S1)(CIAO)"></var>
-      <var id="s1:dr" ref="0dr" label="CAS2(S1)(CIAO)"></var>
-      <var id="s1:tm" ref="0tm" label="CAS2(S1)(CIAO)"></var>
-      <var id="s1:pr" ref="0pr" label="CAS2(S1)(CIAO)"></var>
-      <var id="s2:sw" ref="1sw" label="CAS1(S2)(MOIRCS/MAIN)"></var>
-      <var id="s2:dr" ref="1dr" label="CAS1(S2)(MOIRCS/MAIN)"></var>
-      <var id="s2:tm" ref="1tm" label="CAS1(S2)(MOIRCS/MAIN)"></var>
-      <var id="s2:pr" ref="1pr" label="CAS1(S2)(MOIRCS/MAIN)"></var>
-      <var id="s8:sw" ref="2sw" label="MOIRCS/CR(S8)"></var>
-      <var id="s8:dr" ref="2dr" label="MOIRCS/CR(S8)"></var>
-      <var id="s8:tm" ref="2tm" label="MOIRCS/CR(S8)"></var>
-      <var id="s8:pr" ref="2pr" label="MOIRCS/CR(S8)"></var>
-      <var id="s9:sw" ref="3sw" label="MOIRCS/MAIN(S9)"></var>
-      <var id="s9:dr" ref="3dr" label="MOIRCS/MAIN(S9)"></var>
-      <var id="s9:tm" ref="3tm" label="MOIRCS/MAIN(S9)"></var>
-      <var id="s9:pr" ref="3pr" label="MOIRCS/MAIN(S9)">
+      <var id="s1:sw" label="CAS2(S1)(CIAO)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="0" />
+        </fields>
         <symbol>
-          <enum hl="ver0" msg="OKOKOK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="s1:dr" label="CAS2(S1)(CIAO)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="1" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">1</enum>
+          <enum msg="ON" hl="normal">0</enum>
+        </symbol>
+      </var>
+      <var id="s1:tm" label="CAS2(S1)(CIAO)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="2" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
+        </symbol>
+      </var>
+      <var id="s1:pr" label="CAS2(S1)(CIAO)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="3" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
+        </symbol>
+      </var>
+      <var id="s2:sw" label="CAS1(S2)(MOIRCS/MAIN)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="4" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="s2:dr" label="CAS1(S2)(MOIRCS/MAIN)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="5" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">1</enum>
+          <enum msg="ON" hl="normal">0</enum>
+        </symbol>
+      </var>
+      <var id="s2:tm" label="CAS1(S2)(MOIRCS/MAIN)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="6" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
+        </symbol>
+      </var>
+      <var id="s2:pr" label="CAS1(S2)(MOIRCS/MAIN)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="7" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
+        </symbol>
+      </var>
+      <var id="s8:sw" label="MOIRCS/CR(S8)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="8" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="s8:dr" label="MOIRCS/CR(S8)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="9" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">1</enum>
+          <enum msg="ON" hl="normal">0</enum>
+        </symbol>
+      </var>
+      <var id="s8:tm" label="MOIRCS/CR(S8)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="10" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
+        </symbol>
+      </var>
+      <var id="s8:pr" label="MOIRCS/CR(S8)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="11" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
+        </symbol>
+      </var>
+      <var id="s9:sw" label="MOIRCS/MAIN(S9)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="12" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
+        </symbol>
+      </var>
+      <var id="s9:dr" label="MOIRCS/MAIN(S9)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="13" />
+        </fields>
+        <symbol>
+          <enum hl="warn" msg="OFF">1</enum>
+          <enum msg="ON" hl="normal">0</enum>
+        </symbol>
+      </var>
+      <var id="s9:tm" label="MOIRCS/MAIN(S9)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="14" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
+        </symbol>
+      </var>
+      <var id="s9:pr" label="MOIRCS/MAIN(S9)" type="ENUM">
+        <fields>
+          <binary ref="stat" bit="15" />
+        </fields>
+        <symbol>
+          <enum hl="hide" msg="OK">1</enum>
+          <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
     </status>

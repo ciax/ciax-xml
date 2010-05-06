@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cf8" label="S8 Helium Compressor Coolant Flow" class="cfl">
+  <object id="cf8" label="S8 Helium Compressor Coolant Flow" device="k3n">
     <network type="tcp" host="ltt-i" port="4014"></network>
+    <controls>
+      <session id="upd" label="Update Status">
+        <command>
+          <text>getstat</text>
+        </command>
+      </session>
+    </controls>
     <status>
-      <var id="flow" label="MOIRCS/CR(S8)" ref="flow"></var>
+      <var id="flow" label="MOIRCS/CR(S8) Coolant Flow(l/min)" type="FLOAT">
+        <fields>
+          <float decimal="2" format="%4.2f" ref="stat" />
+        </fields>
+        <symbol type="min_base">
+          <range hl="alarm" msg="HH">6</range>
+          <range hl="warn" msg="H">5</range>
+          <range hl="normal" msg="M">4</range>
+          <range hl="warn" msg="L">3</range>
+          <range hl="alarm" msg="LL">0</range>
+        </symbol>
+      </var>
     </status>
   </object>
 </odb>

@@ -10,6 +10,7 @@ iocmd=ARGV.shift
 ddb=Dev.new(dev,iocmd)
 
 loop do 
+  print "#{dev}>"
   line=gets.chomp
   case line
   when /^q/

@@ -5,9 +5,10 @@ module ModStat
   def initialize(doc)
     super(doc,'//status')
     begin
-      @stat=load_stat(@property['id'])
+      @stat=load_stat(@property['id']) || raise
     rescue
       warn $!
+      @stat=Hash.new
     end
   end
   

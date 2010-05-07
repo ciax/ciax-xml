@@ -4,18 +4,20 @@ require "libxmldoc"
 require "libmodfile"
 include ModFile
 
-warn "Usage: objstat [class] < devstat" if ARGV.size < 1
+warn "Usage: objstat [object] < devstat" if ARGV.size < 1
 
 begin
-  doc=XmlDoc.new('cdb',ARGV.shift)
-  cdb=ClsStat.new(doc)
-  field=load_stat(cdb.property['device'])
-  stat=cdb.objstat(field)
+  doc=XmlDoc.new('odb',ARGV.shift)
+  odb=ObjStat.new(doc)
+  field=load_stat(odb.property['device'])
+  stat=odb.objstat(field)
 rescue RuntimeError
   abort $!.to_s
 end
-save_stat(cdb.property['id'],stat)
+save_stat(odb.property['id'],stat)
 print Marshal.dump stat
+
+
 
 
 

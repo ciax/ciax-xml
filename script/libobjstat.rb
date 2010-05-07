@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libxmldb"
 require "libmodfile"
-class ClsStat < XmlDb
+class ObjStat < XmlDb
   include ModFile
   def initialize(doc)
     super(doc,'//status')
@@ -95,4 +95,5 @@ class ClsStat < XmlDb
   end
 
 end
+
 

@@ -3,13 +3,13 @@ require "libobjcmd"
 require "libobjstat"
 require "libxmldoc"
 
-class Cls
+class Obj
   attr_reader :stat,:property
-  def initialize(cls)
+  def initialize(obj)
     begin
-      cdb=XmlDoc.new('cdb',cls)
-      @cc=ClsCmd.new(cdb)
-      @cs=ClsStat.new(cdb)
+      doc=XmlDoc.new('odb',obj)
+      @cc=ObjCmd.new(doc)
+      @cs=ObjStat.new(doc)
     rescue RuntimeError
       abort $!.to_s
     end
@@ -20,7 +20,7 @@ class Cls
     @cs.stat
   end
 
-  def clscom(cmd,par=nil)
+  def objcom(cmd,par=nil)
     begin
       c=@cc.node_with_id(cmd)
     rescue
@@ -34,5 +34,8 @@ class Cls
     end
   end
 end
+
+
+
 
 

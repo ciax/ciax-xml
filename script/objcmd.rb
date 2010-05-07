@@ -4,14 +4,16 @@ require "libxmldoc"
 require "libmodfile"
 include ModFile
 
-warn "Usage: objcmd [cls] [cmd]" if ARGV.size < 1
+warn "Usage: objcmd [obj] [cmd]" if ARGV.size < 1
 
 begin
-  docc=XmlDoc.new('cdb',ARGV.shift)
-  c=ClsCmd.new(docc).node_with_id(ARGV.shift)
+  doc=XmlDoc.new('odb',ARGV.shift)
+  c=ObjCmd.new(doc).node_with_id(ARGV.shift)
   c.set_var!(load_stat(c.property['device']))
   c.objcmd {}
 rescue RuntimeError
   abort $!.to_s
 end
+
+
 

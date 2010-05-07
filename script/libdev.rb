@@ -8,9 +8,9 @@ class Dev
   attr_reader :stat
   def initialize(dev,iocmd)
     begin
-      ddb=XmlDoc.new('ddb',dev)
-      @dc=DevCmd.new(ddb)
-      @ds=DevStat.new(ddb)
+      doc=XmlDoc.new('ddb',dev)
+      @dc=DevCmd.new(doc)
+      @ds=DevStat.new(doc)
     rescue RuntimeError
       abort $!.to_s
     end

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libxmldb"
-class ClsCmd < XmlDb
+class ObjCmd < XmlDb
   def initialize(doc)
     super(doc,'//controls')
   end
@@ -51,6 +51,7 @@ class ClsCmd < XmlDb
   end
 
 end
+
 
 
 

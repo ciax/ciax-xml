@@ -3,7 +3,7 @@ require "libdev"
 require "libmodfile"
 include ModFile
 
-warn "Usage: devsrv [dev] [iocmd]" if ARGV.size < 2
+warn "Usage: devshell [dev] [iocmd]" if ARGV.size < 2
 
 dev=ARGV.shift
 iocmd=ARGV.shift

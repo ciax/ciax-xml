@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cci" label="IR Helium Compressor Control" device="bbe">
-    <network type="tcp" host="ltc-i" port="4002"></network>
+  <object id="cco" label="OPT Helium Compressor Control" device="bbe">
+    <network type="tcp" host="ltc-o" port="4002"></network>
     <controls>
       <session id="upd" label="Update Status">
         <command>
           <text>getstat</text>
         </command>
       </session>
-      <session id="c2on" label="CAS2(S1) ON">
+      <session id="f2on" label="CIAO(S6) ON">
         <command>
           <text>getstat</text>
         </command>
@@ -17,7 +17,7 @@
           <text ref="stat" operator="or">0x01</text>
         </command>
       </session>
-      <session id="c2off" label="CAS2(S1) OFF">
+      <session id="f2off" label="CIAO(S6) OFF">
         <command>
           <text>getstat</text>
         </command>
@@ -26,25 +26,7 @@
           <text ref="stat" operator="and">0xfffe</text>
         </command>
       </session>
-      <session id="c1on" label="CAS1(S2) ON">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x10</text>
-        </command>
-      </session>
-      <session id="c1off" label="CAS1(S2) OFF">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xffef</text>
-        </command>
-      </session>
-      <session id="m2on" label="MOIRCS CR(S8) ON">
+      <session id="m1on" label="COMICS IMG(S4) ON">
         <command>
           <text>getstat</text>
         </command>
@@ -53,7 +35,7 @@
           <text ref="stat" operator="or">0x100</text>
         </command>
       </session>
-      <session id="m2off" label="MOIRCS CR(S8) OFF">
+      <session id="m1off" label="COMICS IMG(S4) OFF">
         <command>
           <text>getstat</text>
         </command>
@@ -62,7 +44,7 @@
           <text ref="stat" operator="and">0xfeff</text>
         </command>
       </session>
-      <session id="m1on" label="MOIRCS MAIN(S9) ON">
+      <session id="m2on" label="COMICS SPEC(S5) ON">
         <command>
           <text>getstat</text>
         </command>
@@ -71,7 +53,7 @@
           <text ref="stat" operator="or">0x1000</text>
         </command>
       </session>
-      <session id="m1off" label="MOIRCS MAIN(S9) OFF">
+      <session id="m2off" label="COMICS SPEC(S5) OFF">
         <command>
           <text>getstat</text>
         </command>
@@ -80,29 +62,7 @@
           <text ref="stat" operator="and">0xefff</text>
         </command>
       </session>
-      <session id="cmon" label="CAS MOIRCS/MAIN ON" ref="c2on"></session>
-      <session id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="c2off"></session>
-      <session id="ccon" label="CAS MOIRCS/CR ON" ref="c1on" />
-      <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="c1off" />
-      <session id="caon" label="CAS BOTH HC ON">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x0011</text>
-        </command>
-      </session>
-      <session id="caoff" label="CAS BOTH HC OFF">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xffee</text>
-        </command>
-      </session>
-      <session id="maon" label="MOIRCS BOTH ON">
+      <session id="maon" label="COMICS BOTH ON">
         <command>
           <text>getstat</text>
         </command>
@@ -111,7 +71,7 @@
           <text ref="stat" operator="or">0x1100</text>
         </command>
       </session>
-      <session id="maoff" label="MOIRCS BOTH OFF">
+      <session id="maoff" label="COMICS BOTH OFF">
         <command>
           <text>getstat</text>
         </command>

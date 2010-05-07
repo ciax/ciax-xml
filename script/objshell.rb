@@ -5,16 +5,16 @@ require "libmodview"
 require "libmodfile"
 include ModView
 include ModFile
-warn "Usage: clssrv [cls] (iocmd)" if ARGV.size < 2
+warn "Usage: objshell [obj] (iocmd)" if ARGV.size < 2
 
-cls=ARGV.shift
-cdb=Cls.new(cls)
-dev=cdb.property['device']
+obj=ARGV.shift
+odb=Obj.new(obj)
+dev=odb.property['device']
 iocmd=ARGV.shift
 ddb=Dev.new(dev,iocmd)
 
 loop do 
-  print "#{cls}>"
+  print "#{obj}>"
   line=gets.chomp
   case line
   when /^q/
@@ -22,15 +22,18 @@ loop do
   when /[\w]+/
     cmd,par=line.split(' ')
     begin
-      cdb.clscom(cmd,par) do |c,p|
+      odb.objcom(cmd,par) do |c,p|
         save_stat(dev,ddb.devcom(c,p))
         ddb.stat
       end
-      save_stat(cls,cdb.stat)
+      save_stat(obj,odb.stat)
     rescue
       warn $!
     end
   else
-    view(cdb.stat)
+    view(odb.stat)
   end
 end
+
+
+

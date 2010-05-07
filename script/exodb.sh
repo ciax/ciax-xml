@@ -4,7 +4,9 @@ cls=${1:-crt}
 cmd=${2:-upd}
 dev=$(lookup $cls dev) || _usage_key
 output=~/.var/${cls}.mar
-clscmd $cls $cmd
+objcmd $cls $cmd
 [ "$cmd" = upd ] || exit
-clsstat $cls | { [ "$VER" ] && mar || stv; }
+objstat $cls | { [ "$VER" ] && mar || stv; }
+
+
 

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libclscmd"
-require "libclsstat"
+require "libobjcmd"
+require "libobjstat"
 require "libxmldoc"
 
 class Cls
@@ -27,10 +27,12 @@ class Cls
       puts $!
       return
     end
-    c.clscmd(par) do |ccmd|
+    c.objcmd(par) do |ccmd|
       dstat=yield ccmd
       @cc.set_var!(dstat)
-      @cs.clsstat(dstat) if dstat
+      @cs.objstat(dstat) if dstat
     end
   end
 end
+
+

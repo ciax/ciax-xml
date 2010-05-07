@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libcls"
+require "libobj"
 require "libdev"
 require "libmodview"
 require "libmodfile"

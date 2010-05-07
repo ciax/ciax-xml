@@ -13,7 +13,7 @@ class ClsCmd < XmlDb
     return db
   end
 
-  def clscmd(par=nil)
+  def objcmd(par=nil)
     @var['par']=par
     @devcmd=Proc.new
     each_node do |e|
@@ -51,6 +51,7 @@ class ClsCmd < XmlDb
   end
 
 end
+
 
 
 

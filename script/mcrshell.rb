@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libxmldoc"
 require "libmcrilk"
-#require "libcls"
+#require "libobj"
 #require "libdev"
 require "libmodview"
 include ModView

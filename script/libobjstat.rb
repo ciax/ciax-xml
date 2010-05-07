@@ -15,7 +15,7 @@ class ClsStat < XmlDb
 
   attr_reader :stat,:field
 
-  def clsstat(fields)
+  def objstat(fields)
     set_var!(fields,'field')
     @field=fields
     get_stat
@@ -95,3 +95,4 @@ class ClsStat < XmlDb
   end
 
 end
+

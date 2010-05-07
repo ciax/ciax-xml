@@ -6,12 +6,7 @@ class ClsCmd < XmlDb
   end
 
   def node_with_id(id)
-    msg "Select [#{id}]"
-    unless e=elem_with_id(id)
-      list_id('./')
-      raise ("No such a command")
-    end
-    db=copy_self(e)
+    db=super(id)
     db.attr_with_key('ref') { |ref|
       return db.node_with_id(ref)
     }

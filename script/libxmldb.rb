@@ -97,6 +97,14 @@ class XmlDb
     @doc.elements[".//[@id='#{id}']"]
   end
 
+  def node_with_id(id)
+    msg "Select [#{id}]"
+    unless e=elem_with_id(id)
+      list_id('./')
+      raise ("No such a command")
+    end
+    copy_self(e)
+  end
 
   # Text Convert
   def format(code)

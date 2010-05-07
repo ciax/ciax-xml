@@ -1,11 +1,9 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libmodcmd"
 require "libmodfile"
 include ModFile
 
 class McrIlk < XmlDb
-  include ModCmd
   attr_accessor :mcr,:state,:process,:stat
 
   def initialize(doc)

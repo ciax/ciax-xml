@@ -3,14 +3,14 @@ require "libmodver"
 class XmlDb
   include ModVer
   protected
-  attr_accessor :doc
+  attr_accessor :cn # Context Node
 
   def initialize(doc,xpath)
     @property=doc.root.elements.first.attributes
     @title="#{doc.root.name}/#{@property['id']}".upcase
     @var=Hash.new # Use for par,cc
     begin
-      @doc=doc.elements[xpath]
+      @cn=doc.elements[xpath]
     rescue
       p $!
       err("No such Xpath")
@@ -34,24 +34,24 @@ class XmlDb
 
   # Access Attributes
   def [](key)
-    a=@doc.attributes[key] || return
+    a=@cn.attributes[key] || return
     a.to_s
   end
 
   def attr_with_key(key)
-    val=@doc.attributes[key]
+    val=@cn.attributes[key]
     yield val if val
   end
 
   def each_attr
-    @doc.attributes.each do |key,val|
+    @cn.attributes.each do |key,val|
       yield key,val
     end
   end
 
   def add_attr(hash=nil)
     h=hash || Hash.new
-    @doc.attributes.each do |key,val|
+    @cn.attributes.each do |key,val|
       h[key]=val
     end
     h
@@ -59,42 +59,42 @@ class XmlDb
 
   #Access Node
   def each_node
-    @doc.elements.each do |e|
+    @cn.elements.each do |e|
       yield copy_self(e)
     end
     self
   end
 
   def node_with_text(text)
-    @doc.elements.each do |e|
+    @cn.elements.each do |e|
       d=copy_self(e)
       yield d if d.text == text
     end
   end
 
   def node_with_name(name)
-    @doc.elements.each("./#{name}") do |e|
+    @cn.elements.each("./#{name}") do |e|
       yield copy_self(e)
     end
   end
 
   def node_with_attr(key,val)
-    @doc.each_element_with_attribute(key,val) do |e|
+    @cn.each_element_with_attribute(key,val) do |e|
       return copy_self(e)
     end
   end
 
   def child_node # Node pick up for macro
-    copy_self(@doc.elements[1])
+    copy_self(@cn.elements[1])
   end
 
   def next_node! # Node pick up for macro
-    @doc=@doc.next_element
+    @cn=@cn.next_element
     self
   end
 
   def elem_with_id(id) # Interface
-    @doc.elements[".//[@id='#{id}']"]
+    @cn.elements[".//[@id='#{id}']"]
   end
 
   def node_with_id(id)
@@ -121,34 +121,34 @@ class XmlDb
       msg("Getting text from ref [#{r}]",2)
       return @var[r] || raise(IndexError,"No reference for [#{r}]")
     end
-    msg("Getting text[#{@doc.text}]",2)
-    return @doc.text
+    msg("Getting text[#{@cn.text}]",2)
+    return @cn.text
   end
 
   def text_convert
     attr_with_key('ref') do |r|
-      msg("Getting ref[#{@var[r]}] and text[#{@doc.text}]",2)
-      yield @var[r],@doc.text
+      msg("Getting ref[#{@var[r]}] and text[#{@cn.text}]",2)
+      yield @var[r],@cn.text
     end
-    msg("Getting text[#{@doc.text}]",2)
-    return @doc.text
+    msg("Getting text[#{@cn.text}]",2)
+    return @cn.text
   end
 
   def name
-    @doc.name
+    @cn.name
   end
   
   # Private Method
   private
   def copy_self(e)
     d=clone
-    d.doc=e
+    d.cn=e
     d
   end
 
   # Error Handling
   def list_id(xpath)
-    @doc.elements.each(xpath+'/[@id]') do |d|
+    @cn.elements.each(xpath+'/[@id]') do |d|
       a=d.attributes
       warn "#{a['id']}\t:#{a['label']}"
     end

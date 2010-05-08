@@ -8,7 +8,7 @@ class ObjCmd < XmlDb
   def node_with_id(id)
     db=super(id)
     db.attr_with_key('ref') { |ref|
-      return db.node_with_id(ref)
+      return super(ref)
     }
     return db
   end

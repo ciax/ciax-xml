@@ -1,20 +1,20 @@
 #!/usr/bin/ruby
 require "libmoddev"
 require "libxmldb"
-require "libmodfile"
+require "libvarfile"
 
 class DevStat < XmlDb
   include ModDev
-  include ModFile
 
   attr_reader :field
   def initialize(doc)
     super(doc,'//rspframe')
-    @dev=@property['id']
+    dev=@property['id']
+    @f=VarFile.new(dev)
     begin
-      @field=load_stat(@dev) || raise
+      @field=@f.load_stat(dev)
     rescue
-      @field={'device'=>@dev}
+      @field={'device'=>dev}
     end
     @verify_later=Hash.new
   end
@@ -28,7 +28,7 @@ class DevStat < XmlDb
       e.verify(ele)
     end
     @verify_later.clear
-    save_stat(@dev,@field)
+    @f.save_stat(@field)
     return @field
   end
   

@@ -1,12 +1,13 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libmodfile"
+require "libvarfile"
+
 class ObjStat < XmlDb
-  include ModFile
   def initialize(doc)
     super(doc,'//status')
+    @f=VarFile.new(@property['id'])
     begin
-      @stat=load_stat(@property['id']) || raise
+      @stat=@f.load_stat
     rescue
       warn $!
       @stat=Hash.new
@@ -18,7 +19,8 @@ class ObjStat < XmlDb
   def objstat(fields)
     set_var!(fields,'field')
     @field=fields
-    get_stat
+    @stat.update(get_stat)
+    @f.save_stat(@stat)
     return @stat
   end
 
@@ -49,7 +51,7 @@ class ObjStat < XmlDb
   end
 
   def get_stat
-    str=String.new
+    stat=Hash.new
     each_node do |c| # var
       set=Hash.new
       c.add_attr(set)
@@ -62,8 +64,8 @@ class ObjStat < XmlDb
       c.symbol(val,set)
       set.delete('id')
       id="#{@property['id']}:#{c['id']}"
-      @stat[id]=set
     end
+    stat
   end
 
   def symbol(val,set)
@@ -96,5 +98,3 @@ class ObjStat < XmlDb
   end
 
 end
-
-

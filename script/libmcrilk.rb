@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libmodfile"
-include ModFile
+require "libvarfile"
 
 class McrIlk < XmlDb
   attr_accessor :mcr,:state,:process,:stat
@@ -11,7 +10,7 @@ class McrIlk < XmlDb
     @state='ready'
     @process=''
     @mcr=''
-    @stat=load_stat(@property['id'])
+    @stat=VarFile.new(@property['id']).load_stat
   end
 
   public

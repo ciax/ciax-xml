@@ -2,9 +2,8 @@
 require "libobj"
 require "libdev"
 require "libmodview"
-require "libmodfile"
 include ModView
-include ModFile
+
 warn "Usage: objshell [obj] (iocmd)" if ARGV.size < 2
 
 obj=ARGV.shift
@@ -23,10 +22,9 @@ loop do
     cmd,par=line.split(' ')
     begin
       odb.objcom(cmd,par) do |c,p|
-        save_stat(dev,ddb.devcom(c,p))
+        ddb.devcom(c,p)
         ddb.stat
       end
-      save_stat(obj,odb.stat)
     rescue
       warn $!
     end
@@ -34,6 +32,3 @@ loop do
     view(odb.stat)
   end
 end
-
-
-

@@ -28,11 +28,10 @@ class Dev
       puts $!
       return
     end
-    @dc.devcmd(par) do |ecmd|
-      stat=@f.session(ecmd)
-      if @ds.node_with_id!(cmd)
-        @ds.devstat(stat)
-      end
+    raw=@dc.devcmd(par)
+    stat=@f.session(raw)
+    if @ds.node_with_id!(cmd)
+      @ds.devstat(stat)
     end
   end
 

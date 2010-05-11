@@ -14,7 +14,7 @@ class DevCmd < XmlDb
       @ccstr=e.get_string
       e.checkcode(@ccstr)
     end
-    yield get_string
+    get_string
   end
   
   def node_with_id!(id)

@@ -12,7 +12,7 @@ class DevStat < XmlDb
     dev=@property['id']
     @f=VarFile.new(dev)
     begin
-      @field=@f.load_stat(dev)
+      @field=@f.load_stat
     rescue
       @field={'device'=>dev}
     end

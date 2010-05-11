@@ -24,5 +24,18 @@ class IoCmd
     @v.msg "Recv #{stat.dump}"
     stat
   end
+
+  def snd(str)
+    @v.msg "Send #{str.dump}"
+    @f.syswrite(str)
+    str
+  end
+
+  def rcv
+    select([@f],nil,nil,0.2) || return
+    str=@f.sysread(1024)
+    @v.msg "Recv #{str.dump}"
+    str
+  end
 end
 

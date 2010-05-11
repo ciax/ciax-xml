@@ -29,7 +29,7 @@ class McrIlk < XmlDb
 
   def set_stat!(stat)
     @stat.update(stat)
-    msg "Status Reading"
+    @v.msg "Status Reading"
   end
 
   def prompt
@@ -49,7 +49,7 @@ class McrIlk < XmlDb
       @wait.checking
       return 1
     end
-    msg "Next Step"
+    @v.msg "Next Step"
     next_node! || @state='ready'
   end
 
@@ -87,13 +87,13 @@ class McrIlk < XmlDb
     each_node do |e|
       cmd << e.text
     end
-    msg "Exec(CDB):[#{cmd.join(' ')}]"
+    @v.msg "Exec(CDB):[#{cmd.join(' ')}]"
     warn "SessionExec[#{cmd.join(' ')}]"
   end
 
   def wait_until
     timeout=(self['timeout'] || 5).to_i
-    msg "Waiting"
+    @v.msg "Waiting"
     issue=Thread.new do
       loop do
         each_node do |d|
@@ -127,7 +127,7 @@ return 1
     field=self['field'] || 'val'
     actual=stat[field] || raise(IndexError,"No status")
     regexp=self.text || raise(IndexError,"No expression")
-    msg "#{self.name}: #{id} = #{actual} for #{regexp}"
+    @v.msg "#{self.name}: #{id} = #{actual} for #{regexp}"
     (/#{regexp}/ =~ actual)
   end
 

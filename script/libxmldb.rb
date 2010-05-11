@@ -1,19 +1,18 @@
 #!/usr/bin/ruby
-require "libmodver"
+require "libverbose"
 class XmlDb
-  include ModVer
   protected
   attr_accessor :cn # Context Node
 
   def initialize(doc,xpath)
     @property=doc.root.elements.first.attributes
-    @title="#{doc.root.name}/#{@property['id']}".upcase
+    @v=Verbose.new("#{doc.root.name}/#{@property['id']}".upcase)
     @var=Hash.new # Use for par,cc
     begin
       @cn=doc.elements[xpath]
     rescue
       p $!
-      err("No such Xpath")
+      @v.err("No such Xpath")
     end
   end
 
@@ -98,7 +97,7 @@ class XmlDb
   end
 
   def node_with_id(id)
-    msg "Select [#{id}]"
+    @v.msg "Select [#{id}]"
     unless e=elem_with_id(id)
       list_id('./')
       raise ("No such a command")
@@ -110,7 +109,7 @@ class XmlDb
   def format(code)
     attr_with_key('format') do |fmt|
       str=fmt % code
-      msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",2)
+      @v.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",2)
       code=str
     end
     code.to_s
@@ -118,19 +117,19 @@ class XmlDb
 
   def text
     attr_with_key('ref') do |r|
-      msg("Getting text from ref [#{r}]",2)
+      @v.msg("Getting text from ref [#{r}]",2)
       return @var[r] || raise(IndexError,"No reference for [#{r}]")
     end
-    msg("Getting text[#{@cn.text}]",2)
+    @v.msg("Getting text[#{@cn.text}]",2)
     return @cn.text
   end
 
   def text_convert
     attr_with_key('ref') do |r|
-      msg("Getting ref[#{@var[r]}] and text[#{@cn.text}]",2)
+      @v.msg("Getting ref[#{@var[r]}] and text[#{@cn.text}]",2)
       yield @var[r],@cn.text
     end
-    msg("Getting text[#{@cn.text}]",2)
+    @v.msg("Getting text[#{@cn.text}]",2)
     return @cn.text
   end
 

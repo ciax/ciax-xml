@@ -1,6 +1,9 @@
 #!/usr/bin/ruby
-module ModVer
-  @@stime=Time.now
+class Verbose
+  Start_time=Time.now
+  def initialize(title)
+    @title=title
+  end
 
   # Public Method
   def msg(text='',level=0)
@@ -16,8 +19,7 @@ module ModVer
   private
   def mkmsg(text)
     caller=caller(2).first[/([\w]+?)'/,1]
-    pass=sprintf("%5.4f",Time.now-@@stime)
-    @title||='FILE'
+    pass=sprintf("%5.4f",Time.now-Start_time)
     "[#{pass}] #{@title}:#{caller}:#{text}".dump
   end
 end

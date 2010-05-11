@@ -20,7 +20,7 @@ class DevStat < XmlDb
   end
 
   def devstat(str)
-    err "No String" unless str
+    @v.err "No String" unless str
     @var.clear
     @frame=str
     get_field
@@ -36,7 +36,7 @@ class DevStat < XmlDb
     if id
       return self if super(id)
       return self if super('default')
-      msg("Send Only")
+      @v.msg("Send Only")
     end
     nil
   end
@@ -51,36 +51,36 @@ class DevStat < XmlDb
   end
 
   def verify(raw)
-    err "No input file" unless raw
+    @v.err "No input file" unless raw
     str=decode(raw)
     begin
       pass=node_with_attr('type','pass').text
       node_with_text(str) do |e| #Match each case
         case e['type']
         when 'pass'
-          msg(e['msg']+"[#{str}]")
+          @v.msg(e['msg']+"[#{str}]")
         when 'warn'
-          msg(e['msg']+"[ (#{str}) for (#{pass}) ]")
+          @v.msg(e['msg']+"[ (#{str}) for (#{pass}) ]")
         when 'error'
-          err(e['msg']+"[ (#{str}) for (#{pass}) ]")
+          @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
         end
         node_with_id!(e['option']) if e['option']
         return raw
       end
     rescue IndexError
-      err $! if @verify_later[self]
-      msg "#{$!} and code [#{str}] into queue"
+      @v.err $! if @verify_later[self]
+      @v.msg "#{$!} and code [#{str}] into queue"
       @verify_later[self]=raw
       return raw
     end
-    err "No error desctiption for #{self['label']}"
+    @v.err "No error desctiption for #{self['label']}"
   end
 
   def assign
     raw=cut_frame
     attr_with_key('field') do |fld|
       str=decode(raw) 
-      msg("[#{fld}] <- [#{str}]",1)
+      @v.msg("[#{fld}] <- [#{str}]",1)
       @field[fld]=str
     end
     raw

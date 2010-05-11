@@ -9,8 +9,8 @@ module ModDev
   def each_node
     super do |e|
       if e.name == 'select'
-        err "ID not selected" unless @sel
-        msg("Enterning Select",1)
+        @v.err "ID not selected" unless @sel
+        @v.msg("Enterning Select",1)
         @sel.elements.each do |s|
           yield copy_self(s)
         end
@@ -29,14 +29,14 @@ module ModDev
       when 'bcc'
         str.each_byte {|c| chk ^= c } 
       else
-        err "No such CC method #{method}"
+        @v.err "No such CC method #{method}"
       end
       val=format(chk)
-      msg "[#{method.upcase}] -> [#{val}]"
+      @v.msg "[#{method.upcase}] -> [#{val}]"
       set_var!({'cc' => val})
       return self
     end
-    err "No method"
+    @v.err "No method"
   end
 
 end

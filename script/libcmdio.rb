@@ -19,12 +19,9 @@ class CmdIo
     stat=String.new
     msg "Send #{cmd.dump}"
     @f.syswrite(cmd)
-    select([@f],nil,nil,0.1) || return
+    select([@f],nil,nil,0.2) || return
     stat=@f.sysread(1024)
     msg "Recv #{stat.dump}"
     stat
   end
 end
-
-
-

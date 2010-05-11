@@ -3,6 +3,7 @@ module ModDev
   # Public Method
   public
   def node_with_id!(id)
+    @id=id
     @sel=elem_with_id(id) || return
   end
 

@@ -13,6 +13,7 @@ class VarFile
       @v.msg "Status Saving for [#{@type}]"
       f << Marshal.dump(stat)
     end
+    stat
   end
   
   def load_stat
@@ -28,6 +29,7 @@ class VarFile
       @v.msg "Frame Saving for [#{@type}/#{cmd}]"
       f << frame
     end
+    frame
   end
 
   def load_frame(cmd)

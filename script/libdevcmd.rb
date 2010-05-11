@@ -1,10 +1,13 @@
 #!/usr/bin/ruby
-require "libmoddev"
 require "libxmldb"
+require "libmoddev"
+require "libvarfile"
+
 class DevCmd < XmlDb
   include ModDev
   def initialize(doc)
     super(doc,'//cmdframe')
+    @f=VarFile.new(@property['id'])
   end
 
   def devcmd(par=nil)
@@ -14,7 +17,10 @@ class DevCmd < XmlDb
       @ccstr=e.get_string
       e.checkcode(@ccstr)
     end
-    get_string
+    bin=get_string
+    name="cmd_#{@id}"
+    name+="_#{par}" if par
+    @f.save_frame(name,bin)
   end
   
   def node_with_id!(id)
@@ -22,6 +28,7 @@ class DevCmd < XmlDb
       list_id('./')
       raise ("No such a command")
     end
+    @id=id
     self
   end
 

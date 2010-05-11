@@ -21,7 +21,6 @@ class ObjStat < XmlDb
     @field=fields
     @stat.update(get_stat)
     @f.save_stat(@stat)
-    return @stat
   end
 
   protected

@@ -28,8 +28,8 @@ class DevStat < XmlDb
       e.verify(ele)
     end
     @verify_later.clear
+    @f.save_frame("stat_#{@id}",str)
     @f.save_stat(@field)
-    return @field
   end
   
   def node_with_id!(id)

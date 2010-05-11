@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
-module ModDev
+require "libxmldb"
+
+class XmlDev < XmlDb
   # Public Method
   public
   def node_with_id!(id)

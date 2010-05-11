@@ -1,10 +1,8 @@
 #!/usr/bin/ruby
-require "libmoddev"
-require "libxmldb"
+require "libxmldev"
 require "libvarfile"
 
-class DevStat < XmlDb
-  include ModDev
+class DevStat < XmlDev
 
   attr_reader :field
   def initialize(doc)

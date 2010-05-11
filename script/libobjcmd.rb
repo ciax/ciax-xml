@@ -51,8 +51,3 @@ class ObjCmd < XmlDb
   end
 
 end
-
-
-
-
-

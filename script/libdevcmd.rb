@@ -1,10 +1,8 @@
 #!/usr/bin/ruby
-require "libxmldb"
-require "libmoddev"
+require "libxmldev"
 require "libvarfile"
 
-class DevCmd < XmlDb
-  include ModDev
+class DevCmd < XmlDev
   def initialize(doc)
     super(doc,'//cmdframe')
     @f=VarFile.new(@property['id'])

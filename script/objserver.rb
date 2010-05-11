@@ -8,7 +8,7 @@ warn "Usage: objserver [obj] [port] [iocmd]" if ARGV.size < 2
 obj=ARGV.shift
 @odb=Obj.new(obj)
 port=ARGV.shift
-srv=IoCmd.new("socat - udp-l:#{port},reuseaddr,fork")
+srv=IoCmd.new("socat - udp-l:#{port},reuseaddr,fork",1)
 @ddb=Dev.new(@odb.property['device'],ARGV.shift)
 
 line='upd'
@@ -20,17 +20,17 @@ def session(line)
       @ddb.devcom(c,p)
     end
   rescue
-    $!
+    $!.to_s+"\n"
+  else
+    "Accept\n"
   end
-  nil
 end
 
 
 loop do 
   if line=srv.rcv
-    resp=session(line) || "#{obj}>"
-    srv.snd(resp)
+    srv.snd(session(line)+"#{obj}>")
   else
-    warn session('upd')
+    session('upd')
   end
 end

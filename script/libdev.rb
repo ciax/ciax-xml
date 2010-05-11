@@ -19,17 +19,11 @@ class Dev
   end
   
   def devcom(cmd,par=nil)
-    begin
-      @dc.node_with_id!(cmd)
-    rescue
-      puts $!
-      return
-    end
+    @dc.node_with_id!(cmd)
     rawcmd=@dc.devcmd(par)
     rawrsp=@f.session(rawcmd)
-    if @ds.node_with_id!(cmd)
-      @stat=@ds.devstat(rawrsp)
-    end
+    @ds.node_with_id!(cmd)
+    @stat=@ds.devstat(rawrsp)
   end
 
 end

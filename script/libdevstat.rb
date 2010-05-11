@@ -31,12 +31,17 @@ class DevStat < XmlDev
   end
   
   def node_with_id!(id)
-    if id
-      return self if super(id)
-      return self if super('default')
-      @v.msg("Send Only")
+    raise "No id" unless id
+    begin
+      super(id)
+    rescue
+      begin
+        super('default')
+      rescue
+        raise "Send Only"
+      end
     end
-    nil
+    self
   end
 
   protected

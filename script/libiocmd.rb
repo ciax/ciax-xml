@@ -33,7 +33,7 @@ class IoCmd
   end
 
   def rcv
-    select([@f],nil,nil,0.2) || return
+    select([@f],nil,nil,@to) || return
     str=@f.sysread(1024)
     @v.msg "Recv #{str.dump}"
     str

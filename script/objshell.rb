@@ -23,7 +23,6 @@ loop do
     begin
       odb.objcom(cmd,par) do |c,p|
         ddb.devcom(c,p)
-        ddb.stat
       end
     rescue
       warn $!

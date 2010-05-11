@@ -22,11 +22,12 @@ class DevCmd < XmlDev
   end
   
   def node_with_id!(id)
-    unless super(id)
+    begin
+      super(id)
+    rescue
       list_id('./')
       raise ("No such a command")
     end
-    @id=id
     self
   end
 

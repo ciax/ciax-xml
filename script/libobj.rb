@@ -21,12 +21,7 @@ class Obj
   end
 
   def objcom(cmd,par=nil)
-    begin
-      c=@cc.node_with_id(cmd)
-    rescue
-      puts $!
-      return
-    end
+    c=@cc.node_with_id(cmd)
     c.objcmd(par) do |ccmd|
       dstat=yield ccmd
       @cc.set_var!(dstat)

@@ -15,7 +15,11 @@ loop do
     break
   when /[\w]+/
     cmd,par=line.split(' ')
-    ddb.devcom(cmd,par)
+    begin
+      ddb.devcom(cmd,par)
+    rescue
+      puts $!
+    end
   else
     p ddb.stat
   end

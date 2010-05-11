@@ -93,12 +93,14 @@ class XmlDb
   end
 
   def elem_with_id(id) # Interface
-    @cn.elements[".//[@id='#{id}']"]
+    @cn.elements[".//[@id='#{id}']"] || raise("No such an id")
   end
 
   def node_with_id(id)
     @v.msg "Select [#{id}]"
-    unless e=elem_with_id(id)
+    begin
+      e=elem_with_id(id)
+    rescue
       list_id('./')
       raise ("No such a command")
     end

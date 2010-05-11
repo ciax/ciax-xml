@@ -5,8 +5,9 @@ class XmlDev < XmlDb
   # Public Method
   public
   def node_with_id!(id)
+    @sel=elem_with_id(id)
     @id=id
-    @sel=elem_with_id(id) || return
+    self
   end
 
   def each_node

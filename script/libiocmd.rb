@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libverbose"
 
-class CmdIo
+class IoCmd
 
   def initialize(iocmd)
     abort "No IO command" unless iocmd
@@ -25,3 +25,4 @@ class CmdIo
     stat
   end
 end
+

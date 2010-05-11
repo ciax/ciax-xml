@@ -2,7 +2,7 @@
 require "libdevcmd"
 require "libdevstat"
 require "libxmldoc"
-require "libcmdio"
+require "libiocmd"
 
 class Dev
   attr_reader :stat
@@ -14,7 +14,7 @@ class Dev
     rescue RuntimeError
       abort $!.to_s
     end
-    @f=CmdIo.new(iocmd)
+    @f=IoCmd.new(iocmd)
   end
   
   def stat
@@ -36,3 +36,5 @@ class Dev
   end
 
 end
+
+

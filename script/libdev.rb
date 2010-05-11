@@ -15,12 +15,9 @@ class Dev
       abort $!.to_s
     end
     @f=IoCmd.new(iocmd)
+    @stat=@ds.field
   end
   
-  def stat
-    @ds.field
-  end
-
   def devcom(cmd,par=nil)
     begin
       @dc.node_with_id!(cmd)
@@ -28,13 +25,11 @@ class Dev
       puts $!
       return
     end
-    raw=@dc.devcmd(par)
-    stat=@f.session(raw)
+    rawcmd=@dc.devcmd(par)
+    rawrsp=@f.session(rawcmd)
     if @ds.node_with_id!(cmd)
-      @ds.devstat(stat)
+      @stat=@ds.devstat(rawrsp)
     end
   end
 
 end
-
-

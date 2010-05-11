@@ -61,7 +61,8 @@ class ObjStat < XmlDb
       msg("#{c['id']}=[#{val}]")
       c.symbol(val,set)
       set.delete('id')
-      @stat[c['id']]=set
+      id="#{@property['id']}:#{c['id']}"
+      @stat[id]=set
     end
   end
 

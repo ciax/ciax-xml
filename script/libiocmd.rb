@@ -3,8 +3,9 @@ require "libverbose"
 
 class IoCmd
 
-  def initialize(iocmd)
+  def initialize(iocmd,timeout=0.2)
     abort "No IO command" unless iocmd
+    @to=timeout
     @v=Verbose.new(iocmd.upcase)
     @f=IO.popen(iocmd,'r+')
     at_exit {
@@ -19,7 +20,7 @@ class IoCmd
     stat=String.new
     @v.msg "Send #{cmd.dump}"
     @f.syswrite(cmd)
-    select([@f],nil,nil,0.2) || return
+    select([@f],nil,nil,@to) || return
     stat=@f.sysread(1024)
     @v.msg "Recv #{stat.dump}"
     stat

@@ -18,9 +18,15 @@ class Verbose
   # Private Method
   private
   def mkmsg(text)
-    caller=caller(2).first[/([\w]+?)'/,1]
+    begin
+      raise
+    rescue
+      stack=$@.length
+    end
+    caller=caller(2).first
+    method=caller[/([\w]+?)'/,1]
+    file=caller[/\/([\w]+?)\.rb/,1]
     pass=sprintf("%5.4f",Time.now-Start_time)
-    "[#{pass}] #{@title}:#{caller}:#{text}".dump
+    "[#{pass}] #{@title}:#{stack}:#{file}:#{method}:#{text}".dump
   end
 end
-

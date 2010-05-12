@@ -36,7 +36,7 @@ class XmlDev < XmlDb
         @v.err "No such CC method #{method}"
       end
       val=format(chk)
-      @v.msg "[#{method.upcase}] -> [#{val}]"
+      @v.msg("[#{method.upcase}] -> [#{val}]",1)
       set_var!({'cc' => val})
       return self
     end

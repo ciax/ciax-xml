@@ -6,7 +6,8 @@ class XmlDb
 
   def initialize(doc,xpath)
     @property=doc.root.elements.first.attributes
-    @v=Verbose.new("#{doc.root.name}/#{@property['id']}".upcase)
+    @title="#{doc.root.name}/#{@property['id']}".upcase
+    @v=Verbose.new(@title)
     @var=Hash.new # Use for par,cc
     begin
       @cn=doc.elements[xpath]
@@ -97,7 +98,7 @@ class XmlDb
   end
 
   def node_with_id(id)
-    @v.msg "Select [#{id}]"
+    @v.msg("Select [#{id}]",2)
     begin
       e=elem_with_id(id)
     rescue

@@ -61,9 +61,9 @@ class DevStat < XmlDev
       node_with_text(str) do |e| #Match each case
         case e['type']
         when 'pass'
-          @v.msg(e['msg']+"[#{str}]")
+          @v.msg(e['msg']+"[#{str}]",1)
         when 'warn'
-          @v.msg(e['msg']+"[ (#{str}) for (#{pass}) ]")
+          @v.msg(e['msg']+"[ (#{str}) for (#{pass}) ]",1)
         when 'error'
           @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
         end
@@ -72,7 +72,7 @@ class DevStat < XmlDev
       end
     rescue IndexError
       @v.err $! if @verify_later[self]
-      @v.msg "#{$!} and code [#{str}] into queue"
+      @v.msg("#{$!} and code [#{str}] into queue",1)
       @verify_later[self]=raw
       return raw
     end

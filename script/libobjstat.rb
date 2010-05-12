@@ -59,7 +59,7 @@ class ObjStat < XmlDb
         val=d.get_fieldset
         set['val']=val
       end
-      @v.msg("#{c['id']}=[#{val}]")
+      @v.msg("#{c['id']}=[#{val}]",1)
       c.symbol(val,set)
       set.delete('id')
       id="#{@property['id']}:#{c['id']}"
@@ -71,7 +71,7 @@ class ObjStat < XmlDb
     node_with_name('symbol') do |d|
       case d['type']
       when 'min_base'
-        @v.msg "Compare by Minimum Base for [#{val}]"
+        @v.msg("Compare by Minimum Base for [#{val}]",1)
         d.each_node do |e|
           base=e.text
           @v.msg("Greater than [#{base}]?",1)
@@ -80,7 +80,7 @@ class ObjStat < XmlDb
           break
         end
       when 'max_base'
-        @v.msg "Compare by Maximum Base for [#{val}]"
+        @v.msg("Compare by Maximum Base for [#{val}]",1)
         d.each_node do |e|
           base=e.text
           @v.msg("Less than [#{base}]?",1)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cf6" label="S6 Helium Compressor Coolant Flow" device="k3n">
-    <network type="tcp" host="ltt-o" port="4003"></network>
+    <network client="nc ltt-o 4003" server="socat - udp-l:45606,reuseaddr,fork"></network>
     <controls>
       <session id="upd" label="Update Status">
         <command>

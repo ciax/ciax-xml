@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cfa" label="S10 Helium Compressor Coolant Flow" device="k3n">
-    <network type="tcp" host="ltt-i" port="4015"></network>
+    <network client="nc ltt-i 4015" server="socat - udp-l:45610,reuseaddr,fork"></network>
     <controls>
       <session id="upd" label="Update Status">
         <command>

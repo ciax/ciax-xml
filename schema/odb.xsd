@@ -21,16 +21,8 @@
   </xsd:element>
   <xsd:element name="network">
     <xsd:complexType>
-      <xsd:attribute name="type">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="tcp" />
-            <xsd:enumeration value="udp" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
-      <xsd:attribute name="host" type="xsd:string" />
-      <xsd:attribute name="port" type="xsd:int" />
+      <xsd:attribute name="client" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="server" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--controls-->

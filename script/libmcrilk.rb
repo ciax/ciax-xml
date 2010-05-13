@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libvarfile"
+require "libiofile"
 
 class McrIlk < XmlDb
   attr_accessor :mcr,:state,:process,:stat
@@ -10,7 +10,7 @@ class McrIlk < XmlDb
     @state='ready'
     @process=''
     @mcr=''
-    @stat=VarFile.new(@property['id']).load_stat
+    @stat=IoFile.new(@property['id']).load_stat
   end
 
   public
@@ -132,3 +132,5 @@ return 1
   end
 
 end
+
+

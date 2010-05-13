@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libxmldev"
-require "libvarfile"
+require "libiofile"
 
 class DevCmd < XmlDev
   def initialize(doc)
     super(doc,'//cmdframe')
-    @f=VarFile.new(@property['id'])
+    @f=IoFile.new(@property['id'])
   end
 
   def devcmd(par=nil)
@@ -67,6 +67,8 @@ class DevCmd < XmlDev
   end
 
 end
+
+
 
 
 

@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libxmldb"
-require "libvarfile"
+require "libiofile"
 
 class ObjStat < XmlDb
   def initialize(doc)
     super(doc,'//status')
-    @f=VarFile.new(@property['id'])
+    @f=IoFile.new(@property['id'])
     begin
       @stat=@f.load_stat
     rescue
@@ -99,3 +99,5 @@ class ObjStat < XmlDb
   end
 
 end
+
+

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "json"
 require "libverbose"
-class VarFile
+class IoFile
   include JSON
   VarDir="#{ENV['HOME']}/.var"
 
@@ -43,3 +43,4 @@ class VarFile
   end 
 
 end
+

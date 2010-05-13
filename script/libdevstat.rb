@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libxmldev"
-require "libvarfile"
+require "libiofile"
 
 class DevStat < XmlDev
 
@@ -8,7 +8,7 @@ class DevStat < XmlDev
   def initialize(doc)
     super(doc,'//rspframe')
     dev=@property['id']
-    @f=VarFile.new(dev)
+    @f=IoFile.new(dev)
     begin
       @field=@f.load_stat
     rescue
@@ -114,3 +114,5 @@ class DevStat < XmlDev
   end
   
 end
+
+

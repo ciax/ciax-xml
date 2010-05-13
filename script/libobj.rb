@@ -14,19 +14,17 @@ class Obj
       abort $!.to_s
     end
     @property=@oc.property
-  end
-  
-  def stat
-    @os.stat
+    @stat=@os.stat
   end
 
   def objcom(line)
     cmd,par=line.split(' ')
     c=@oc.node_with_id(cmd)
     c.objcmd(par) do |ccmd|
-      dstat=yield ccmd
-      @oc.set_var!(dstat)
-      @os.objstat(dstat) if dstat
+      if dstat=yield ccmd
+        @oc.set_var!(dstat)
+        @stat=@os.objstat(dstat)
+      end
     end
   end
 end

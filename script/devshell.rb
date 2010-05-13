@@ -14,9 +14,8 @@ loop do
   when /^q/
     break
   when /[\w]+/
-    cmd,par=line.split(' ')
     begin
-      ddb.devcom(cmd,par)
+      ddb.devcom(line)
     rescue
       puts $!
     end

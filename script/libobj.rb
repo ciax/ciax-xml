@@ -8,24 +8,25 @@ class Obj
   def initialize(obj)
     begin
       doc=XmlDoc.new('odb',obj)
-      @cc=ObjCmd.new(doc)
-      @cs=ObjStat.new(doc)
+      @oc=ObjCmd.new(doc)
+      @os=ObjStat.new(doc)
     rescue RuntimeError
       abort $!.to_s
     end
-    @property=@cc.property
+    @property=@oc.property
   end
   
   def stat
-    @cs.stat
+    @os.stat
   end
 
-  def objcom(cmd,par=nil)
-    c=@cc.node_with_id(cmd)
+  def objcom(line)
+    cmd,par=line.split(' ')
+    c=@oc.node_with_id(cmd)
     c.objcmd(par) do |ccmd|
       dstat=yield ccmd
-      @cc.set_var!(dstat)
-      @cs.objstat(dstat) if dstat
+      @oc.set_var!(dstat)
+      @os.objstat(dstat) if dstat
     end
   end
 end

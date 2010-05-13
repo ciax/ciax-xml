@@ -27,9 +27,10 @@ class ObjCmd < XmlDb
     each_node do |e|
       cmd << e.operate
     end
-    @v.msg("Exec(DDB):[#{cmd.join(' ')}]",1)
-    warn "CommandExec[#{cmd.join(' ')}]"
-    @devcmd.call(cmd)
+    line=cmd.join(' ')
+    @v.msg("Exec(DDB):[#{line}]",1)
+    warn "CommandExec[#{line}]"
+    @devcmd.call(line)
   end
 
   def operate

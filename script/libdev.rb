@@ -18,7 +18,8 @@ class Dev
     @stat=@ds.field
   end
   
-  def devcom(cmd,par=nil)
+  def devcom(line)
+    cmd,par=line.split(' ')
     @dc.node_with_id!(cmd)
     rawcmd=@dc.devcmd(par)
     rawrsp=@f.session(rawcmd)

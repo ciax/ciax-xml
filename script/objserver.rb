@@ -14,10 +14,9 @@ srv=IoCmd.new("socat - udp-l:#{port},reuseaddr,fork",1)
 line='upd'
 
 def session(line)
-  cmd,par=line.split(' ')
   begin
-    @odb.objcom(cmd,par) do |c,p|
-      @ddb.devcom(c,p)
+    @odb.objcom(line) do |l|
+      @ddb.devcom(l)
     end
   rescue
     $!.to_s+"\n"

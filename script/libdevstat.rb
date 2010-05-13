@@ -27,6 +27,7 @@ class DevStat < XmlDev
       e.verify(ele)
     end
     @verify_later.clear
+    @field['time']=Time.now.to_f
     @f.save_stat(@field)
   end
   

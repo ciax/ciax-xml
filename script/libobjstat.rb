@@ -10,7 +10,7 @@ class ObjStat < XmlDb
       @stat=@f.load_stat
     rescue
       warn $!
-      @stat=Hash.new
+      @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
     end
   end
 
@@ -20,6 +20,7 @@ class ObjStat < XmlDb
     set_var!(fields,'field')
     @field=fields
     @stat.update(get_stat)
+    @stat['time']['val']=Time.at(@field['time'])
     @f.save_stat(@stat)
   end
 
@@ -63,6 +64,7 @@ class ObjStat < XmlDb
       c.symbol(val,set)
       set.delete('id')
       id="#{@property['id']}:#{c['id']}"
+      stat[id]=set
     end
     stat
   end

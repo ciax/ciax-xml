@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
+require "json"
 require "libverbose"
 class VarFile
+  include JSON
   VarDir="#{ENV['HOME']}/.var"
 
   def initialize(type)
@@ -9,16 +11,16 @@ class VarFile
   end
   
   def save_stat(stat)
-    open(VarDir+"/#{@type}.mar",'w') do |f|
+    open(VarDir+"/#{@type}.json",'w') do |f|
       @v.msg "Status Saving for [#{@type}]"
-      f << Marshal.dump(stat)
+      f << JSON.dump(stat)
     end
     stat
   end
   
   def load_stat
     @v.msg("Status Loading for [#{@type}]")
-    stat=Marshal.load(IO.read(VarDir+"/#{@type}.mar"))
+    stat=JSON.load(IO.read(VarDir+"/#{@type}.json"))
     raise "No status in File" unless stat
     @v.msg(stat.inspect,1)
     stat

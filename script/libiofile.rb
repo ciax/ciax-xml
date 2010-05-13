@@ -4,6 +4,7 @@ require "libverbose"
 class IoFile
   include JSON
   VarDir="#{ENV['HOME']}/.var"
+  JsonDir="/var/www/json"
 
   def initialize(type)
     @type=type
@@ -11,16 +12,32 @@ class IoFile
   end
   
   def save_stat(stat)
-    open(VarDir+"/#{@type}.json",'w') do |f|
+    open(VarDir+"/#{@type}.mar",'w') do |f|
       @v.msg "Status Saving for [#{@type}]"
-      f << JSON.dump(stat)
+      f << Marshal.dump(stat)
     end
     stat
   end
   
   def load_stat
     @v.msg("Status Loading for [#{@type}]")
-    stat=JSON.load(IO.read(VarDir+"/#{@type}.json"))
+    stat=Marshal.load(IO.read(VarDir+"/#{@type}.mar"))
+    raise "No status in File" unless stat
+    @v.msg(stat.inspect,1)
+    stat
+  end
+  
+  def save_json(stat)
+    open(JsonDir+"/#{@type}.json",'w') do |f|
+      @v.msg "Status Saving for [#{@type}]"
+      f << JSON.dump(stat)
+    end
+    stat
+  end
+  
+  def load_json
+    @v.msg("Status Loading for [#{@type}]")
+    stat=JSON.load(IO.read(JsonDir+"/#{@type}.json"))
     raise "No status in File" unless stat
     @v.msg(stat.inspect,1)
     stat

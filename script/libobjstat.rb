@@ -7,7 +7,7 @@ class ObjStat < XmlDb
     super(doc,'//status')
     @f=IoFile.new(@property['id'])
     begin
-      @stat=@f.load_stat
+      @stat=@f.load_json
     rescue
       warn $!
       @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
@@ -21,7 +21,7 @@ class ObjStat < XmlDb
     @field=fields
     @stat.update(get_stat)
     @stat['time']['val']=Time.at(@field['time'].to_f)
-    @f.save_stat(@stat)
+    @f.save_json(@stat)
   end
 
   protected
@@ -99,5 +99,3 @@ class ObjStat < XmlDb
   end
 
 end
-
-

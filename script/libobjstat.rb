@@ -20,7 +20,7 @@ class ObjStat < XmlDb
     set_var!(fields,'field')
     @field=fields
     @stat.update(get_stat)
-    @stat['time']['val']=Time.at(@field['time'])
+    @stat['time']['val']=Time.at(@field['time'].to_f)
     @f.save_stat(@stat)
   end
 

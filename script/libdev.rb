@@ -22,7 +22,8 @@ class Dev
     cmd,par=line.split(' ')
     @dc.node_with_id!(cmd)
     rawcmd=@dc.devcmd(par)
-    rawrsp=@f.session(rawcmd)
+    @f.snd(rawcmd)
+    rawrsp=@f.rcv
     @ds.node_with_id!(cmd)
     @stat=@ds.devstat(rawrsp)
   end

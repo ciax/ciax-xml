@@ -16,16 +16,6 @@ class IoCmd
     Signal.trap(:CHLD,"EXIT")
   end
   
-  def session(cmd)
-    stat=String.new
-    @v.msg "Send #{cmd.dump}"
-    @f.syswrite(cmd)
-    select([@f],nil,nil,@to) || return
-    stat=@f.sysread(1024)
-    @v.msg "Recv #{stat.dump}"
-    stat
-  end
-
   def snd(str)
     @v.msg "Send #{str.dump}"
     @f.syswrite(str)
@@ -39,4 +29,3 @@ class IoCmd
     str
   end
 end
-

@@ -7,7 +7,7 @@ require "libiofile"
 
 class Dev
   attr_reader :stat
-  def initialize(dev,iocmd,id=nil)
+  def initialize(dev,iocmd,obj=nil)
     begin
       doc=XmlDoc.new('ddb',dev)
       @dc=DevCmd.new(doc)
@@ -15,9 +15,8 @@ class Dev
     rescue RuntimeError
       abort $!.to_s
     end
-    @id=id
     @ic=IoCmd.new(iocmd)
-    @if=IoFile.new(dev)
+    @if=IoFile.new(obj||dev)
     @stat=@ds.field
   end
   
@@ -28,7 +27,7 @@ class Dev
     @if.save_frame(['snd',cmd,par].compact.join('_'),rawcmd)
     @ic.snd(rawcmd)
     rawrsp=@ic.rcv
-    @if.save_frame(['rcv',cmd,@id].compact.join('_'),rawrsp)
+    @if.save_frame("rcv_#{cmd}",rawrsp)
     @ds.node_with_id!(cmd)
     @stat=@ds.devstat(rawrsp)
   end

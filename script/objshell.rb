@@ -4,12 +4,12 @@ require "libdev"
 require "libmodview"
 include ModView
 
-warn "Usage: objshell [obj] (iocmd)" if ARGV.size < 2
+warn "Usage: objshell [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
 odb=Obj.new(obj)
 dev=odb.property['device']
-iocmd=ARGV.shift
+iocmd=odb.property['client']
 ddb=Dev.new(dev,iocmd)
 
 loop do 

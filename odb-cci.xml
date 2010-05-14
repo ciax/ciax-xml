@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cci" label="IR Helium Compressor Control" device="bbe">
-    <network client="nc ltc-i 4002" server="socat - udp-l:25105,reuseaddr,fork" />
+  <object id="cci" label="IR Helium Compressor Control" device="bbe" client="nc ltc-i 4002" server="socat - udp-l:25105,reuseaddr,fork">
     <controls>
       <session id="upd" label="Update Status">
         <command>

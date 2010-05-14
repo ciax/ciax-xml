@@ -21,15 +21,10 @@ class Obj
     cmd,par=line.split(' ')
     c=@oc.node_with_id(cmd)
     c.objcmd(par) do |ccmd|
-      if dstat=yield ccmd
+      if dstat=yield(ccmd)
         @oc.set_var!(dstat)
         @stat=@os.objstat(dstat)
       end
     end
   end
 end
-
-
-
-
-

@@ -3,15 +3,16 @@ require "libobj"
 require "libdev"
 require "libiocmd"
 
-warn "Usage: objserver [obj] [port] [iocmd]" if ARGV.size < 2
+warn "Usage: objserver [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
 @odb=Obj.new(obj)
-port=ARGV.shift
-srv=IoCmd.new("socat - udp-l:#{port},reuseaddr,fork",1)
-@ddb=Dev.new(@odb.property['device'],ARGV.shift)
-
-line='upd'
+dev=@odb.property['device']
+client=@odb.property['client']
+server=@odb.property['server']
+srv=IoCmd.new(server,1)
+@ddb=Dev.new(dev,client)
+warn server
 
 def session(line)
   begin

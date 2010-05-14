@@ -21,7 +21,6 @@ class DevStat < XmlDev
     @v.err "No String" unless str
     @var.clear
     @frame=str
-    @f.save_frame("stat_#{@id}",str)
     get_field
     @verify_later.each do |e,ele|
       e.verify(ele)

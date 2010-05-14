@@ -10,7 +10,7 @@ obj=ARGV.shift
 odb=Obj.new(obj)
 dev=odb.property['device']
 iocmd=odb.property['client']
-ddb=Dev.new(dev,iocmd)
+ddb=Dev.new(dev,iocmd,obj)
 
 loop do 
   print "#{obj}>"

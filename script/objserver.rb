@@ -11,7 +11,7 @@ dev=@odb.property['device']
 client=@odb.property['client']
 server=@odb.property['server']
 srv=IoCmd.new(server,1)
-@ddb=Dev.new(dev,client)
+@ddb=Dev.new(dev,client,obj)
 warn server
 
 def session(line)

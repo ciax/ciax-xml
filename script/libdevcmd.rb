@@ -1,11 +1,9 @@
 #!/usr/bin/ruby
 require "libxmldev"
-require "libiofile"
 
 class DevCmd < XmlDev
   def initialize(doc)
     super(doc,'//cmdframe')
-    @f=IoFile.new(@property['id'])
   end
 
   def devcmd(par=nil)
@@ -15,10 +13,7 @@ class DevCmd < XmlDev
       @ccstr=e.get_string
       e.checkcode(@ccstr)
     end
-    bin=get_string
-    name="cmd_#{@id}"
-    name+="_#{par}" if par
-    @f.save_frame(name,bin)
+    get_string
   end
   
   def node_with_id!(id)
@@ -67,8 +62,3 @@ class DevCmd < XmlDev
   end
 
 end
-
-
-
-
-

@@ -31,7 +31,7 @@ class Dev
     time=Time.now
     @ds.setcmd(cmd)
     @if.log_frame(@ds.cmd_id,rspframe,time)
-    @stat=@ds.devstat(rspframe)
+    @stat=@ds.devstat(rspframe,time)
   end
 
 end

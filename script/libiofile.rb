@@ -60,10 +60,12 @@ class IoFile
     frame
   end 
   
-  def log_frame(cmd,frame)
+  def log_frame(cmd,frame,time=Time.now)
+    time="%.3f" % time.to_f
+    save_frame(cmd,frame)
     open(VarDir+"/#{@logfile}.log",'a') {|f|
       @v.msg "Frame Logging for [#{@type}_#{cmd}]"
-      f << Time.now.to_f.to_s+' '+cmd+' '+frame.dump+"\n"
+      f << time+' '+cmd+' '+frame.dump+"\n"
     }
     frame
   end

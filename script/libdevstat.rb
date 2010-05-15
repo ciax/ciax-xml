@@ -32,14 +32,14 @@ class DevStat < XmlDev
     self
   end
 
-  def devstat(str)
+  def devstat(str,time=Time.now)
     @v.err "No String" unless str
     @var.clear
     @frame=str
     get_field
     @verify_later.each {|e,s| e.verify(s)}
     @verify_later.clear
-    @field['time']=Time.now.to_f.to_s
+    @field['time']="%.3f" % time.to_f
     @f.save_stat(@field)
   end
 

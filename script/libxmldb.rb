@@ -5,9 +5,8 @@ class XmlDb
   attr_accessor :cn # Context Node
 
   def initialize(doc,xpath)
-    @property=doc.root.elements.first.attributes
-    @title="#{doc.root.name}/#{@property['id']}".upcase
-    @v=Verbose.new(@title)
+    title="#{doc.root.name}/#{doc.property['id']}".upcase
+    @v=Verbose.new(title)
     @var=Hash.new # Use for par,cc
     begin
       @cn=doc.elements[xpath]
@@ -19,8 +18,6 @@ class XmlDb
 
   # Public Method
   public
-  attr_reader :property
-
   def set_var!(hash,namespace=nil)
     if namespace
       hash.each do |key,val|

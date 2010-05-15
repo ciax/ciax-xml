@@ -8,7 +8,7 @@ warn "Usage: objstat [object] < devstat" if ARGV.size < 1
 begin
   doc=XmlDoc.new('odb',ARGV.shift)
   odb=ObjStat.new(doc)
-  field=IoFile.new(odb.property['device']).load_stat
+  field=IoFile.new(doc.property['device']).load_stat
   stat=odb.objstat(field)
 rescue RuntimeError
   abort $!.to_s

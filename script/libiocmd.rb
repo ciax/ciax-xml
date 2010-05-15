@@ -11,7 +11,6 @@ class IoCmd
     at_exit {
       Process.kill(:TERM,@f.pid)
       @f.close
-      warn "END"
     }
     Signal.trap(:CHLD,"EXIT")
   end

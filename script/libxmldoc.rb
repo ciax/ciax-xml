@@ -2,6 +2,7 @@
 require "rexml/document"
 include REXML
 class XmlDoc < Document
+  attr_accessor :property
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
@@ -14,6 +15,7 @@ class XmlDoc < Document
       end
       raise ("No such a db")
     end
+    @property=root.elements.first.attributes
   end
 
   # Error Handling

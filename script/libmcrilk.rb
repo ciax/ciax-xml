@@ -10,7 +10,7 @@ class McrIlk < XmlDb
     @state='ready'
     @process=''
     @mcr=''
-    @stat=IoFile.new(@property['id']).load_stat
+    @stat=IoFile.new(doc.property['id']).load_json
   end
 
   public

@@ -7,7 +7,7 @@ class DevStat < XmlDev
   attr_reader :field
   def initialize(doc)
     super(doc,'//rspframe')
-    dev=@property['id']
+    dev=doc.property['id']
     @f=IoFile.new(dev)
     begin
       @field=@f.load_stat

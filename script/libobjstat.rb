@@ -5,7 +5,8 @@ require "libiofile"
 class ObjStat < XmlDb
   def initialize(doc)
     super(doc,'//status')
-    @f=IoFile.new(@property['id'])
+    @obj=doc.property['id']
+    @f=IoFile.new(@obj)
     begin
       @stat=@f.load_json
     rescue
@@ -63,7 +64,7 @@ class ObjStat < XmlDb
       @v.msg("#{c['id']}=[#{val}]",1)
       c.symbol(val,set)
       set.delete('id')
-      id="#{@property['id']}:#{c['id']}"
+      id="#{@obj}:#{c['id']}"
       stat[id]=set
     end
     stat

@@ -13,7 +13,7 @@ class Obj
     rescue RuntimeError
       abort $!.to_s
     end
-    @property=@oc.property
+    @property=doc.property
     @stat=@os.stat
   end
 

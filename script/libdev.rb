@@ -22,13 +22,13 @@ class Dev
   
   def devcom(line)
     cmd,par=line.split(' ')
-    @dc.node_with_id!(cmd)
+    @dc.setcmd(cmd)
     rawcmd=@dc.devcmd(par)
     @if.save_frame(['snd',cmd,par].compact.join('_'),rawcmd)
     @ic.snd(rawcmd)
     rawrsp=@ic.rcv
     @if.save_frame("rcv_#{cmd}",rawrsp)
-    @ds.node_with_id!(cmd)
+    @ds.setcmd(cmd)
     @stat=@ds.devstat(rawrsp)
   end
 

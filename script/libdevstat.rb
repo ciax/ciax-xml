@@ -28,7 +28,7 @@ class DevStat < XmlDev
     @f.save_stat(@field)
   end
   
-  def node_with_id!(id)
+  def setcmd(id)
     raise "No id" unless id
     begin
       super(id)
@@ -66,7 +66,7 @@ class DevStat < XmlDev
         when 'error'
           @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
         end
-        node_with_id!(e['option']) if e['option']
+        setcmd(e['option']) if e['option']
         return raw
       }
     rescue IndexError

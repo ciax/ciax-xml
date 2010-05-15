@@ -7,7 +7,7 @@ warn "Usage: devcmd [dev] [cmd] (par)" if ARGV.size < 1
 begin
   doc=XmlDoc.new('ddb',ARGV.shift)
   e=DevCmd.new(doc)
-  e.node_with_id!(ARGV.shift)
+  e.setcmd(ARGV.shift)
 rescue
   abort $!.to_s
 end

@@ -23,7 +23,7 @@ class DevCmd < XmlDev
     get_string
   end
   
-  def node_with_id!(id)
+  def setcmd(id)
     begin
       super(id)
     rescue

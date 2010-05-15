@@ -7,7 +7,7 @@ warn "Usage: devstat [dev] [cmd] < file" if ARGV.size < 1
 begin
   doc=XmlDoc.new('ddb',ARGV.shift)
   e=DevStat.new(doc)
-  e.node_with_id!(ARGV.shift)
+  e.setcmd(ARGV.shift)
 rescue
   abort $!.to_s
 end

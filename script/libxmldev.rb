@@ -4,9 +4,9 @@ require "libxmldb"
 class XmlDev < XmlDb
   # Public Method
   public
-  def node_with_id!(id)
-    @sel=elem_with_id(id)
-    @property['cmd']=id
+  def setcmd(cmd)
+    @sel=elem_with_id(cmd)
+    @property['cmd']=cmd
     self
   end
 

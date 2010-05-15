@@ -12,7 +12,7 @@ dev=odb.property['device']
 iocmd=odb.property['client']
 ddb=Dev.new(dev,iocmd,obj)
 
-loop do 
+loop {
   print "#{obj}>"
   line=gets.chomp
   case line
@@ -20,13 +20,11 @@ loop do
     break
   when /[\w]+/
     begin
-      odb.objcom(line) do |l|
-        ddb.devcom(l)
-      end
+      odb.objcom(line) {|l| ddb.devcom(l)}
     rescue
       warn $!
     end
   else
     view(odb.stat)
   end
-end
+}

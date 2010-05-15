@@ -23,9 +23,7 @@ class XmlDb
 
   def set_var!(hash,namespace=nil)
     if namespace
-      hash.each do |key,val|
-        @var["#{namespace}:#{key}"]=val
-      end
+      hash.each {|k,v| @var["#{namespace}:#{k}"]=v}
     else
       @var.update(hash)
     end
@@ -44,44 +42,34 @@ class XmlDb
   end
 
   def each_attr
-    @cn.attributes.each do |key,val|
-      yield key,val
-    end
+    @cn.attributes.each {|k,v| yield k,v}
   end
 
   def add_attr(hash=nil)
     h=hash || Hash.new
-    @cn.attributes.each do |key,val|
-      h[key]=val
-    end
+    @cn.attributes.each {|k,v| h[k]=v}
     h
   end
 
   #Access Node
   def each_node
-    @cn.elements.each do |e|
-      yield copy_self(e)
-    end
+    @cn.elements.each {|e| yield copy_self(e)}
     self
   end
 
   def node_with_text(text)
-    @cn.elements.each do |e|
+    @cn.elements.each {|e|
       d=copy_self(e)
       yield d if d.text == text
-    end
+    }
   end
 
   def node_with_name(name)
-    @cn.elements.each("./#{name}") do |e|
-      yield copy_self(e)
-    end
+    @cn.elements.each("./#{name}") {|e| yield copy_self(e)}
   end
 
   def node_with_attr(key,val)
-    @cn.each_element_with_attribute(key,val) do |e|
-      return copy_self(e)
-    end
+    @cn.each_element_with_attribute(key,val) {|e| return copy_self(e)}
   end
 
   def child_node # Node pick up for macro
@@ -110,28 +98,28 @@ class XmlDb
 
   # Text Convert
   def format(code)
-    attr_with_key('format') do |fmt|
+    attr_with_key('format') {|fmt|
       str=fmt % code
       @v.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",2)
       code=str
-    end
+    }
     code.to_s
   end
 
   def text
-    attr_with_key('ref') do |r|
+    attr_with_key('ref') {|r|
       @v.msg("Getting text from ref [#{r}]",2)
       return @var[r] || raise(IndexError,"No reference for [#{r}]")
-    end
+    }
     @v.msg("Getting text[#{@cn.text}]",2)
     return @cn.text
   end
 
   def text_convert
-    attr_with_key('ref') do |r|
+    attr_with_key('ref') {|r|
       @v.msg("Getting ref[#{@var[r]}] and text[#{@cn.text}]",2)
       yield @var[r],@cn.text
-    end
+    }
     @v.msg("Getting text[#{@cn.text}]",2)
     return @cn.text
   end
@@ -150,10 +138,10 @@ class XmlDb
 
   # Error Handling
   def list_id(xpath)
-    @cn.elements.each(xpath+'/[@id]') do |d|
+    @cn.elements.each(xpath+'/[@id]') {|d|
       a=d.attributes
       warn "#{a['id']}\t:#{a['label']}"
-    end
+    }
   end
 
 end

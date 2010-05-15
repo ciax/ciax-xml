@@ -10,10 +10,10 @@ class XmlDoc < Document
     begin
       super(open(path))
     rescue
-      Dir.glob("#{pre}-*.xml").each do |p|
+      Dir.glob("#{pre}-*.xml").each {|p|
         super(open(p))
         list_id('/*')
-      end
+      }
       raise ("No such a db")
     end
     @property=root.elements.first.attributes
@@ -21,10 +21,10 @@ class XmlDoc < Document
 
   # Error Handling
   def list_id(xpath)
-    elements.each(xpath+'/[@id]') do |d|
+    elements.each(xpath+'/[@id]') {|d|
       a=d.attributes
       warn "#{a['id']}\t:#{a['label']}"
-    end
+    }
   end
 
 end

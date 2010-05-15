@@ -16,9 +16,7 @@ warn server
 
 def session(line)
   begin
-    @odb.objcom(line) do |l|
-      @ddb.devcom(l)
-    end
+    @odb.objcom(line) {|l| @ddb.devcom(l)}
   rescue
     $!.to_s+"\n"
   else
@@ -27,10 +25,10 @@ def session(line)
 end
 
 
-loop do 
+loop{
   if line=srv.rcv
     srv.snd(session(line)+"#{obj}>")
   else
     session('upd')
   end
-end
+}

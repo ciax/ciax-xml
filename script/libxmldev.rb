@@ -11,22 +11,20 @@ class XmlDev < XmlDb
   end
 
   def each_node
-    super do |e|
+    super {|e|
       if e.name == 'select'
         @v.err "ID not selected" unless @sel
         @v.msg("Enterning Select",1)
-        @sel.elements.each do |s|
-          yield copy_self(s)
-        end
+        @sel.elements.each {|s| yield copy_self(s) }
       else
         yield e
       end
-    end
+    }
   end
 
   def checkcode(str)
     chk=0
-    attr_with_key('method') do |method|
+    attr_with_key('method') {|method|
       case method
       when 'len'
         chk=str.length
@@ -39,7 +37,7 @@ class XmlDev < XmlDb
       @v.msg("[#{method.upcase}] -> [#{val}]",1)
       set_var!({'cc' => val})
       return self
-    end
+    }
     @v.err "No method"
   end
 

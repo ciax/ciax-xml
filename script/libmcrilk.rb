@@ -84,9 +84,7 @@ class McrIlk < XmlDb
   protected
   def issue_cmd
     cmd=Array.new
-    each_node do |e|
-      cmd << e.text
-    end
+    each_node {|e| cmd << e.text}
     @v.msg "Exec(CDB):[#{cmd.join(' ')}]"
     warn "SessionExec[#{cmd.join(' ')}]"
   end
@@ -94,15 +92,13 @@ class McrIlk < XmlDb
   def wait_until
     timeout=(self['timeout'] || 5).to_i
     @v.msg "Waiting"
-    issue=Thread.new do
-      loop do
-        each_node do |d|
-          d.issue_cmd
-        end
+    issue=Thread.new {
+      loop {
+        each_node {|d| d.issue_cmd}
         break if chk_condition
         sleep 1
-      end
-    end
+      }
+    }
     issue.join(timeout) || warn("Timeout")
   end
 
@@ -110,13 +106,9 @@ class McrIlk < XmlDb
 return 1
     case self['combination']
     when 'or'
-      each_node do |e|
-        e.chk_item || return
-      end
+      each_node {|e| e.chk_item || return}
     else
-      each_node do |e|
-        e.chk_item && return
-      end
+      each_node {|e| e.chk_item && return}
     end
     return 1
   end
@@ -132,5 +124,3 @@ return 1
   end
 
 end
-
-

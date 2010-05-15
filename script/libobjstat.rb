@@ -28,75 +28,73 @@ class ObjStat < XmlDb
   protected
   def get_fieldset
     str=String.new
-    each_node do |e| #element(split and concat)
+    each_node {|e| #element(split and concat)
       f=@field[e['ref']] || return
       case e.name
       when 'binary'
         str << (f.to_i >> e['bit'].to_i & 1).to_s
       when 'float'
-        e.attr_with_key('decimal') do |n|
+        e.attr_with_key('decimal') {|n|
           n=n.to_i
           f=f[0..-n-1]+'.'+f[-n..-1]
-        end
+        }
         str << e.format(f)
       when 'int'
-        e.attr_with_key('signed') do 
+        e.attr_with_key('signed') {
           f=[f.to_i].pack('S').unpack('s').first
-        end
+        }
         str << e.format(f)
       else
         str << f
       end
-    end
+    }
     return str
   end
 
   def get_stat
     stat=Hash.new
-    each_node do |c| # var
+    each_node {|c| # var
       set=Hash.new
       c.add_attr(set)
       val=String.new
-      c.node_with_name('fields') do |d|
+      c.node_with_name('fields') {|d|
         val=d.get_fieldset
         set['val']=val
-      end
+      }
       @v.msg("#{c['id']}=[#{val}]",1)
       c.symbol(val,set)
       set.delete('id')
       id="#{@obj}:#{c['id']}"
       stat[id]=set
-    end
+    }
     stat
   end
 
   def symbol(val,set)
-    node_with_name('symbol') do |d|
+    node_with_name('symbol') {|d|
       case d['type']
       when 'min_base'
         @v.msg("Compare by Minimum Base for [#{val}]",1)
-        d.each_node do |e|
+        d.each_node {|e|
           base=e.text
           @v.msg("Greater than [#{base}]?",1)
           next if base.to_f > val.to_f
           e.add_attr(set)
           break
-        end
+        }
       when 'max_base'
         @v.msg("Compare by Maximum Base for [#{val}]",1)
-        d.each_node do |e|
+        d.each_node {|e|
           base=e.text
           @v.msg("Less than [#{base}]?",1)
           next if base.to_f < val.to_f
           e.add_attr(set)
           break
-        end
+        }
       else
-        d.node_with_text(val) do |e|
-          e.add_attr(set)
-        end
+        d.node_with_text(val) {|e| e.add_attr(set)}
       end
-    end
+    }
   end
 
 end

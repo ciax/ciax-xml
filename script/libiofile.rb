@@ -12,10 +12,10 @@ class IoFile
   end
   
   def save_stat(stat)
-    open(VarDir+"/#{@type}.mar",'w') do |f|
+    open(VarDir+"/#{@type}.mar",'w') {|f|
       @v.msg "Status Saving for [#{@type}]"
       f << Marshal.dump(stat)
-    end
+    }
     stat
   end
   
@@ -28,10 +28,10 @@ class IoFile
   end
   
   def save_json(stat)
-    open(JsonDir+"/#{@type}.json",'w') do |f|
+    open(JsonDir+"/#{@type}.json",'w') {|f|
       @v.msg "Status Saving for [#{@type}]"
       f << JSON.dump(stat)
-    end
+    }
     stat
   end
   
@@ -44,10 +44,10 @@ class IoFile
   end
   
   def save_frame(cmd,frame)
-    open(VarDir+"/#{@type}_#{cmd}.bin",'w') do |f|
+    open(VarDir+"/#{@type}_#{cmd}.bin",'w') {|f|
       @v.msg "Frame Saving for [#{@type}/#{cmd}]"
       f << frame
-    end
+    }
     frame
   end
 

@@ -15,11 +15,11 @@ class DevCmd < XmlDev
     else
       @property.delete('par')
     end
-    node_with_name('ccrange') do |e|
+    node_with_name('ccrange') {|e|
       @v.msg("Entering CC range",1)
       @ccstr=e.get_string
       e.checkcode(@ccstr)
-    end
+    }
     get_string
   end
   
@@ -36,7 +36,7 @@ class DevCmd < XmlDev
   protected
   def get_string
     str=String.new
-    each_node do |d|
+    each_node {|d|
       case d.name
       when 'data'
         str << d.encode(d.text)
@@ -46,25 +46,25 @@ class DevCmd < XmlDev
         str << @var[d.name]
       end
       @v.msg("[#{str.dump}]",1)
-    end
+    }
     str
   end
   
   def encode(str)
-    attr_with_key('type') do |type|
+    attr_with_key('type') {|type|
       case type
       when 'int'
         str=str.to_i
       when 'float'
         str=str.to_f
       end
-    end
-    attr_with_key('pack') do |pack|
+    }
+    attr_with_key('pack') {|pack|
       code=[str].pack(pack)
       hex=code.unpack('C*').map!{|c| '%02x' % c}.join
       @v.msg("pack(#{pack}) [#{str}] -> [#{hex}]",1)
       str=code
-    end
+    }
     format(str)
   end
 

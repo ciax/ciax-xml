@@ -1,4 +1,2 @@
 #!/usr/bin/ruby
-Marshal.load(gets(nil)).sort.each do |e|
-  p e
-end
+Marshal.load(gets(nil)).sort.each { |e| p e }

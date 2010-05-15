@@ -7,7 +7,7 @@ dev=ARGV.shift
 iocmd=ARGV.shift
 ddb=Dev.new(dev,iocmd)
 
-loop do 
+loop{
   print "#{dev}>"
   line=gets.chomp
   case line
@@ -22,7 +22,7 @@ loop do
   else
     p ddb.stat
   end
-end
+}
 
 
 

@@ -11,7 +11,7 @@ obj=ARGV.shift || 'crt'
 doc=XmlDoc.new('mdb',obj)
 mdb=McrIlk.new(doc)
 cr=mdb
-loop do 
+loop{
   cr.prompt
   line=gets.chomp
   case line
@@ -29,4 +29,4 @@ loop do
   rescue
     puts $!
   end
-end
+}

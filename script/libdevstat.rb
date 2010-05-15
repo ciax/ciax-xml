@@ -22,9 +22,7 @@ class DevStat < XmlDev
     @var.clear
     @frame=str
     get_field
-    @verify_later.each do |e,ele|
-      e.verify(ele)
-    end
+    @verify_later.each {|e,s| e.verify(s)}
     @verify_later.clear
     @field['time']=Time.now.to_f.to_s
     @f.save_stat(@field)
@@ -47,11 +45,11 @@ class DevStat < XmlDev
 
   protected
   def cut_frame
-    attr_with_key('length') do |l|
+    attr_with_key('length') {|l|
       len=l.to_i
       warn "Too short (#{@frame.size-len})" if @frame.size < len
       return @frame.slice!(0,len)
-    end
+    }
   end
 
   def verify(raw)
@@ -59,7 +57,7 @@ class DevStat < XmlDev
     str=decode(raw)
     begin
       pass=node_with_attr('type','pass').text
-      node_with_text(str) do |e| #Match each case
+      node_with_text(str) {|e| #Match each case
         case e['type']
         when 'pass'
           @v.msg(e['msg']+"[#{str}]",1)
@@ -70,7 +68,7 @@ class DevStat < XmlDev
         end
         node_with_id!(e['option']) if e['option']
         return raw
-      end
+      }
     rescue IndexError
       @v.err $! if @verify_later[self]
       @v.msg("#{$!} and code [#{str}] into queue",1)
@@ -82,17 +80,17 @@ class DevStat < XmlDev
 
   def assign
     raw=cut_frame
-    attr_with_key('field') do |fld|
+    attr_with_key('field') {|fld|
       str=decode(raw) 
       @v.msg("[#{fld}] <- [#{str}]",1)
       @field[fld]=str
-    end
+    }
     raw
   end
 
   def get_field
     str=String.new
-    each_node do |e|
+    each_node {|e|
       case e.name
       when 'ccrange'
         e.checkcode(e.get_field)
@@ -101,18 +99,16 @@ class DevStat < XmlDev
       when 'assign'
         str << e.assign
       end
-    end
+    }
     return str
   end
 
   private
   def decode(code)
-    attr_with_key('unpack') do |val|
+    attr_with_key('unpack') {|val|
       code=code.unpack(val).first
-    end
+    }
     code.to_s
   end
   
 end
-
-

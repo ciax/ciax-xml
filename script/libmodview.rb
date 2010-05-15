@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 module ModView
   def view(stat)
-    stat.each do |id,item|
+    stat.each {|id,item|
       case item['hl']
       when 'alarm'
         prt(item,'1')
@@ -14,7 +14,7 @@ module ModView
       else
         prt(item,'2')
       end
-    end
+    }
   end
 
   private

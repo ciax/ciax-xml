@@ -20,11 +20,11 @@ class Obj
   def objcom(line)
     cmd,par=line.split(' ')
     c=@oc.node_with_id(cmd)
-    c.objcmd(par) do |ccmd|
+    c.objcmd(par) {|ccmd|
       if dstat=yield(ccmd)
         @oc.set_var!(dstat)
         @stat=@os.objstat(dstat)
       end
-    end
+    }
   end
 end

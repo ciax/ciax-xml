@@ -10,7 +10,11 @@ class DevCmd < XmlDev
 
   def devcmd(par=nil)
     @var={'par'=>par}
-    @property['par']=par if par
+    if par
+      @property['par']=par
+    else
+      @property.delete('par')
+    end
     node_with_name('ccrange') do |e|
       @v.msg("Entering CC range",1)
       @ccstr=e.get_string

@@ -2,12 +2,15 @@
 require "libxmldev"
 
 class DevCmd < XmlDev
+  attr_reader :property
+
   def initialize(doc)
     super(doc,'//cmdframe')
   end
 
   def devcmd(par=nil)
     @var={'par'=>par}
+    @property['par']=par if par
     node_with_name('ccrange') do |e|
       @v.msg("Entering CC range",1)
       @ccstr=e.get_string

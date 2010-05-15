@@ -2,7 +2,8 @@
 require "rexml/document"
 include REXML
 class XmlDoc < Document
-  attr_accessor :property
+  attr_reader :property
+
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"

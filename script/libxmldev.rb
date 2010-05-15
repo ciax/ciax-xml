@@ -6,7 +6,7 @@ class XmlDev < XmlDb
   public
   def node_with_id!(id)
     @sel=elem_with_id(id)
-    @id=id
+    @property['cmd']=id
     self
   end
 

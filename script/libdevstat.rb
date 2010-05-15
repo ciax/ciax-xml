@@ -38,6 +38,7 @@ class DevStat < XmlDev
       begin
         super('default')
       rescue
+        @property.delete('cmd')
         raise "Send Only"
       end
     end

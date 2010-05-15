@@ -17,17 +17,6 @@ class DevStat < XmlDev
     @verify_later=Hash.new
   end
 
-  def devstat(str)
-    @v.err "No String" unless str
-    @var.clear
-    @frame=str
-    get_field
-    @verify_later.each {|e,s| e.verify(s)}
-    @verify_later.clear
-    @field['time']=Time.now.to_f.to_s
-    @f.save_stat(@field)
-  end
-  
   def setcmd(id)
     raise "No id" unless id
     begin
@@ -41,6 +30,21 @@ class DevStat < XmlDev
       end
     end
     self
+  end
+
+  def devstat(str)
+    @v.err "No String" unless str
+    @var.clear
+    @frame=str
+    get_field
+    @verify_later.each {|e,s| e.verify(s)}
+    @verify_later.clear
+    @field['time']=Time.now.to_f.to_s
+    @f.save_stat(@field)
+  end
+
+  def file_id
+    super('rcv')
   end
 
   protected

@@ -45,14 +45,14 @@ class IoFile
   
   def save_frame(cmd,frame)
     open(VarDir+"/#{@type}_#{cmd}.bin",'w') {|f|
-      @v.msg "Frame Saving for [#{@type}/#{cmd}]"
+      @v.msg "Frame Saving for [#{@type}_#{cmd}]"
       f << frame
     }
     frame
   end
 
   def load_frame(cmd)
-    @v.msg "Raw Status Loading for [#{@type}/#{cmd}]"
+    @v.msg "Raw Status Loading for [#{@type}_#{cmd}]"
     frame=IO.read(VarDir+"/#{@type}_#{cmd}.bin")
     raise "No frame in File" unless frame
     @v.msg(frame.dump,1)

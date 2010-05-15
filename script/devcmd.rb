@@ -12,7 +12,8 @@ rescue
   abort $!.to_s
 end
 begin
-  puts e.devcmd(ARGV.shift)
+  e.setpar(ARGV.shift)
+  puts e.devcmd
 rescue IndexError
   abort $!.to_s
 end

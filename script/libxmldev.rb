@@ -10,6 +10,10 @@ class XmlDev < XmlDb
     self
   end
 
+  def file_id(str)
+    [str,@property['cmd'],@property['par']].compact.join('_')
+  end
+
   def each_node
     super {|e|
       if e.name == 'select'

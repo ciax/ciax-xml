@@ -43,7 +43,7 @@ class DevStat < XmlDev
     @f.save_stat(@field)
   end
 
-  def file_id
+  def cmd_id
     super('rcv')
   end
 
@@ -116,3 +116,4 @@ class DevStat < XmlDev
   end
   
 end
+

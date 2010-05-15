@@ -9,6 +9,7 @@ class IoFile
   def initialize(type)
     @type=type
     @v=Verbose.new('FILE')
+    @logfile=@type+Time.now.strftime("%y%m%d")
   end
   
   def save_stat(stat)
@@ -58,5 +59,13 @@ class IoFile
     @v.msg(frame.dump,1)
     frame
   end 
+  
+  def log_frame(cmd,frame)
+    open(VarDir+"/#{@logfile}.log",'a') {|f|
+      @v.msg "Frame Logging for [#{@type}_#{cmd}]"
+      f << Time.now.to_f.to_s+' '+cmd+' '+frame.dump+"\n"
+    }
+    frame
+  end
 
 end

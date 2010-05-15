@@ -10,7 +10,7 @@ class XmlDev < XmlDb
     self
   end
 
-  def file_id(str)
+  def cmd_id(str)
     [str,@property['cmd'],@property['par']].compact.join('_')
   end
 

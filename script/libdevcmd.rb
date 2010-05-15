@@ -36,7 +36,7 @@ class DevCmd < XmlDev
     get_string
   end
 
-  def file_id
+  def cmd_id
     super('snd')
   end
 
@@ -76,3 +76,4 @@ class DevCmd < XmlDev
   end
 
 end
+

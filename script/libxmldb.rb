@@ -31,24 +31,14 @@ class XmlDb
   end
 
   # Access Attributes
-  def [](key)
-    a=@cn.attributes[key] || return
-    a.to_s
-  end
-
-  def attr_with_key(key)
-    val=@cn.attributes[key]
-    yield val if val
-  end
-
-  def each_attr
-    @cn.attributes.each {|k,v| yield k,v}
-  end
-
   def add_attr(hash=nil)
     h=hash || Hash.new
     @cn.attributes.each {|k,v| h[k]=v}
     h
+  end
+
+  def attr
+    @cn.attributes
   end
 
   #Access Node
@@ -98,28 +88,28 @@ class XmlDb
 
   # Text Convert
   def format(code)
-    attr_with_key('format') {|fmt|
+    if fmt=@cn.attributes['format'] 
       str=fmt % code
       @v.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",2)
       code=str
-    }
+    end
     code.to_s
   end
 
   def text
-    attr_with_key('ref') {|r|
+    if r=@cn.attributes['ref']
       @v.msg("Getting text from ref [#{r}]",2)
       return @var[r] || raise(IndexError,"No reference for [#{r}]")
-    }
+    end
     @v.msg("Getting text[#{@cn.text}]",2)
     return @cn.text
   end
 
   def text_convert
-    attr_with_key('ref') {|r|
+    if r=@cn.attributes['ref']
       @v.msg("Getting ref[#{@var[r]}] and text[#{@cn.text}]",2)
       yield @var[r],@cn.text
-    }
+    end
     @v.msg("Getting text[#{@cn.text}]",2)
     return @cn.text
   end

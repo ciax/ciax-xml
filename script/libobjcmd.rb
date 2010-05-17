@@ -7,7 +7,9 @@ class ObjCmd < XmlDb
 
   def node_with_id(id)
     db=super(id)
-    db.attr_with_key('ref') {|ref| return super(ref)}
+    if ref=db.attr['ref']
+      return super(ref)
+    end
     return db
   end
 
@@ -29,7 +31,7 @@ class ObjCmd < XmlDb
 
   def operate
     text_convert {|r,t|
-      attr_with_key('operator') {|ope|
+      if ope=attr['operator']
         x=r.to_i
         y=t.hex
         case ope
@@ -40,7 +42,7 @@ class ObjCmd < XmlDb
         end
         @v.msg("(#{x} #{ope} #{y})=#{str}",1)
         return str
-      }
+      end
       r || t
     }
   end

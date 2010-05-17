@@ -29,20 +29,20 @@ class ObjStat < XmlDb
   def get_fieldset
     str=String.new
     each_node {|e| #element(split and concat)
-      f=@field[e['ref']] || return
+      f=@field[e.attr['ref']] || return
       case e.name
       when 'binary'
-        str << (f.to_i >> e['bit'].to_i & 1).to_s
+        str << (f.to_i >> e.attr['bit'].to_i & 1).to_s
       when 'float'
-        e.attr_with_key('decimal') {|n|
+        if n=e.attr['decimal']
           n=n.to_i
           f=f[0..-n-1]+'.'+f[-n..-1]
-        }
+        end
         str << e.format(f)
       when 'int'
-        e.attr_with_key('signed') {
+        if e.attr['signed']
           f=[f.to_i].pack('S').unpack('s').first
-        }
+        end
         str << e.format(f)
       else
         str << f
@@ -61,10 +61,10 @@ class ObjStat < XmlDb
         val=d.get_fieldset
         set['val']=val
       }
-      @v.msg("#{c['id']}=[#{val}]",1)
+      @v.msg("#{c.attr['id']}=[#{val}]",1)
       c.symbol(val,set)
       set.delete('id')
-      id="#{@obj}:#{c['id']}"
+      id="#{@obj}:#{c.attr['id']}"
       stat[id]=set
     }
     stat
@@ -72,7 +72,7 @@ class ObjStat < XmlDb
 
   def symbol(val,set)
     node_with_name('symbol') {|d|
-      case d['type']
+      case d.attr['type']
       when 'min_base'
         @v.msg("Compare by Minimum Base for [#{val}]",1)
         d.each_node {|e|

@@ -1,8 +1,9 @@
 #!/bin/bash
-dev=${1:-k3n} cmd=${2:-getstat}
-par=$3
-input="$HOME/.var/${dev}_rcv_getstat.bin"
-{
-devcmd $dev $cmd $par || exit
-devstat $dev getstat < $input | mar
-} | visi
+for dev in mel srm k3n bbe; do
+    input="$HOME/.var/${dev}_rcv_getstat.bin"
+    echo "#[$dev]#"
+    {
+	devcmd $dev getstat || exit
+	devstat $dev getstat < $input | mar
+    } | visi
+done

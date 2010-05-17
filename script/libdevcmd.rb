@@ -58,20 +58,20 @@ class DevCmd < XmlDev
   end
   
   def encode(str)
-    attr_with_key('type') {|type|
+    if type=attr['type']
       case type
       when 'int'
         str=str.to_i
       when 'float'
         str=str.to_f
       end
-    }
-    attr_with_key('pack') {|pack|
+    end
+    if pack=attr['pack']
       code=[str].pack(pack)
       hex=code.unpack('C*').map!{|c| '%02x' % c}.join
       @v.msg("pack(#{pack}) [#{str}] -> [#{hex}]",1)
       str=code
-    }
+    end
     format(str)
   end
 

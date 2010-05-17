@@ -28,7 +28,7 @@ class XmlDev < XmlDb
 
   def checkcode(str)
     chk=0
-    attr_with_key('method') {|method|
+    if method=attr['method']
       case method
       when 'len'
         chk=str.length
@@ -41,7 +41,7 @@ class XmlDev < XmlDb
       @v.msg("[#{method.upcase}] -> [#{val}]",1)
       set_var!({'cc' => val})
       return self
-    }
+    end
     @v.err "No method"
   end
 

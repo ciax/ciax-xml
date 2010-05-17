@@ -49,11 +49,11 @@ class DevStat < XmlDev
 
   protected
   def cut_frame
-    attr_with_key('length') {|l|
+    if l=attr['length']
       len=l.to_i
       warn "Too short (#{@frame.size-len})" if @frame.size < len
       return @frame.slice!(0,len)
-    }
+    end
   end
 
   def verify(raw)
@@ -62,15 +62,15 @@ class DevStat < XmlDev
     begin
       pass=node_with_attr('type','pass').text
       node_with_text(str) {|e| #Match each case
-        case e['type']
+        case e.attr['type']
         when 'pass'
-          @v.msg(e['msg']+"[#{str}]",1)
+          @v.msg(e.attr['msg']+"[#{str}]",1)
         when 'warn'
-          @v.msg(e['msg']+"[ (#{str}) for (#{pass}) ]",1)
+          @v.msg(e.attr['msg']+"[ (#{str}) for (#{pass}) ]",1)
         when 'error'
-          @v.err(e['msg']+"[ (#{str}) for (#{pass}) ]")
+          @v.err(e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
         end
-        setcmd(e['option']) if e['option']
+        setcmd(e.attr['option']) if e.attr['option']
         return raw
       }
     rescue IndexError
@@ -84,11 +84,11 @@ class DevStat < XmlDev
 
   def assign
     raw=cut_frame
-    attr_with_key('field') {|fld|
+    if fld=attr['field']
       str=decode(raw) 
       @v.msg("[#{fld}] <- [#{str}]",1)
       @field[fld]=str
-    }
+    end
     raw
   end
 
@@ -109,9 +109,9 @@ class DevStat < XmlDev
 
   private
   def decode(code)
-    attr_with_key('unpack') {|val|
-      code=code.unpack(val).first
-    }
+    if upk=attr['unpack']
+      code=code.unpack(upk).first
+    end
     code.to_s
   end
   

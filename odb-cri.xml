@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cci" label="IR Helium Compressor Control" device="bbe" client="nc ltc-i 4002" server="socat - udp-l:25105,reuseaddr,fork">
+  <object id="cri" label="IR Compressor Room Reserve" device="bbe" client="nc ltc-i 4003" server="socat - udp-l:25107,reuseaddr,fork">
     <controls>
       <session id="upd" label="Update Status">
         <command>
           <text>getstat</text>
         </command>
       </session>
-      <session id="c2on" label="CAS2(S1) ON">
+      <session id="x0on" label="X0 ON">
         <command>
           <text>getstat</text>
         </command>
@@ -19,7 +19,7 @@
           <text>getstat</text>
         </command>
       </session>
-      <session id="c2off" label="CAS2(S1) OFF">
+      <session id="x0off" label="X0 OFF">
         <command>
           <text>getstat</text>
         </command>
@@ -31,7 +31,7 @@
           <text>getstat</text>
         </command>
       </session>
-      <session id="c1on" label="CAS1(S2) ON">
+      <session id="x1on" label="X1 ON">
         <command>
           <text>getstat</text>
         </command>
@@ -43,7 +43,7 @@
           <text>getstat</text>
         </command>
       </session>
-      <session id="c1off" label="CAS1(S2) OFF">
+      <session id="x1off" label="X1 OFF">
         <command>
           <text>getstat</text>
         </command>
@@ -55,7 +55,7 @@
           <text>getstat</text>
         </command>
       </session>
-      <session id="m2on" label="MOIRCS CR(S8) ON">
+      <session id="x2on" label="X2 ON">
         <command>
           <text>getstat</text>
         </command>
@@ -67,7 +67,7 @@
           <text>getstat</text>
         </command>
       </session>
-      <session id="m2off" label="MOIRCS CR(S8) OFF">
+      <session id="x2off" label="X2 OFF">
         <command>
           <text>getstat</text>
         </command>
@@ -79,7 +79,7 @@
           <text>getstat</text>
         </command>
       </session>
-      <session id="m1on" label="MOIRCS MAIN(S9) ON">
+      <session id="x3on" label="X3 ON">
         <command>
           <text>getstat</text>
         </command>
@@ -91,7 +91,7 @@
           <text>getstat</text>
         </command>
       </session>
-      <session id="m1off" label="MOIRCS MAIN(S9) OFF">
+      <session id="x3off" label="X3 OFF">
         <command>
           <text>getstat</text>
         </command>
@@ -103,61 +103,9 @@
           <text>getstat</text>
         </command>
       </session>
-      <session id="cmon" label="CAS MOIRCS/MAIN ON" ref="c2on"></session>
-      <session id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="c2off"></session>
-      <session id="ccon" label="CAS MOIRCS/CR ON" ref="c1on" />
-      <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="c1off" />
-      <session id="caon" label="CAS BOTH HC ON">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x0011</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
-      </session>
-      <session id="caoff" label="CAS BOTH HC OFF">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xffee</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
-      </session>
-      <session id="maon" label="MOIRCS BOTH ON">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x1100</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
-      </session>
-      <session id="maoff" label="MOIRCS BOTH OFF">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xeeff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
-      </session>
     </controls>
     <status>
-      <var id="s1:sw" label="CAS2(S1)(CIAO) SWITCH" type="ENUM">
+      <var id="x0:sw" label="X0 SWITCH" type="ENUM">
         <fields>
           <binary ref="stat" bit="0" />
         </fields>
@@ -166,7 +114,7 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s1:dr" label="CAS2(S1)(CIAO) DRIVE" type="ENUM">
+      <var id="x0:dr" label="X0 DRIVE" type="ENUM">
         <fields>
           <binary ref="stat" bit="1" />
         </fields>
@@ -175,25 +123,25 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s1:tm" label="CAS2(S1)(CIAO) TEMP" type="ENUM">
+      <var id="x0:tm" label="X0 TEMP" type="ENUM">
         <fields>
           <binary ref="stat" bit="2" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s1:pr" label="CAS2(S1)(CIAO) PRESSURE" type="ENUM">
+      <var id="x0:pr" label="X0 PRESSURE" type="ENUM">
         <fields>
           <binary ref="stat" bit="3" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s2:sw" label="CAS1(S2)(MOIRCS/MAIN) SWITCH" type="ENUM">
+      <var id="x1:sw" label="X1 SWITCH" type="ENUM">
         <fields>
           <binary ref="stat" bit="4" />
         </fields>
@@ -202,7 +150,7 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s2:dr" label="CAS1(S2)(MOIRCS/MAIN) DRIVE" type="ENUM">
+      <var id="x1:dr" label="X1 DRIVE" type="ENUM">
         <fields>
           <binary ref="stat" bit="5" />
         </fields>
@@ -211,25 +159,25 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s2:tm" label="CAS1(S2)(MOIRCS/MAIN) TEMP" type="ENUM">
+      <var id="x1:tm" label="X1 TEMP" type="ENUM">
         <fields>
           <binary ref="stat" bit="6" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s2:pr" label="CAS1(S2)(MOIRCS/MAIN) PRESSURE" type="ENUM">
+      <var id="x1:pr" label="X1 PRESSURE" type="ENUM">
         <fields>
           <binary ref="stat" bit="7" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s8:sw" label="MOIRCS/CR(S8) SWITCH" type="ENUM">
+      <var id="x2:sw" label="X2 SWITCH" type="ENUM">
         <fields>
           <binary ref="stat" bit="8" />
         </fields>
@@ -238,7 +186,7 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s8:dr" label="MOIRCS/CR(S8) DRIVE" type="ENUM">
+      <var id="x2:dr" label="X2 DRIVE" type="ENUM">
         <fields>
           <binary ref="stat" bit="9" />
         </fields>
@@ -247,25 +195,25 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s8:tm" label="MOIRCS/CR(S8) TEMP" type="ENUM">
+      <var id="x2:tm" label="X2 TEMP" type="ENUM">
         <fields>
           <binary ref="stat" bit="10" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s8:pr" label="MOIRCS/CR(S8) PRESSURE" type="ENUM">
+      <var id="x2:pr" label="X2 PRESSURE" type="ENUM">
         <fields>
           <binary ref="stat" bit="11" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s9:sw" label="MOIRCS/MAIN(S9) SWITCH" type="ENUM">
+      <var id="x3:sw" label="X3 SWITCH" type="ENUM">
         <fields>
           <binary ref="stat" bit="12" />
         </fields>
@@ -274,7 +222,7 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s9:dr" label="MOIRCS/MAIN(S9) DRIVE" type="ENUM">
+      <var id="x3:dr" label="X3 DRIVE" type="ENUM">
         <fields>
           <binary ref="stat" bit="13" />
         </fields>
@@ -283,22 +231,22 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s9:tm" label="MOIRCS/MAIN(S9) TEMP" type="ENUM">
+      <var id="x3:tm" label="X3 TEMP" type="ENUM">
         <fields>
           <binary ref="stat" bit="14" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s9:pr" label="MOIRCS/MAIN(S9) PRESSURE" type="ENUM">
+      <var id="x3:pr" label="X3 PRESSURE" type="ENUM">
         <fields>
           <binary ref="stat" bit="15" />
         </fields>
         <symbol>
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
+          <enum hl="warn" msg="OFF">0</enum>
+          <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
     </status>

@@ -15,6 +15,9 @@
           <text>output</text>
           <text ref="stat" operator="or">0x01</text>
         </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="f2off" label="CIAO(S6) OFF">
         <command>
@@ -23,6 +26,9 @@
         <command>
           <text>output</text>
           <text ref="stat" operator="and">0xfffe</text>
+        </command>
+        <command>
+          <text>getstat</text>
         </command>
       </session>
       <session id="m1on" label="COMICS IMG(S4) ON">
@@ -33,6 +39,9 @@
           <text>output</text>
           <text ref="stat" operator="or">0x100</text>
         </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="m1off" label="COMICS IMG(S4) OFF">
         <command>
@@ -41,6 +50,9 @@
         <command>
           <text>output</text>
           <text ref="stat" operator="and">0xfeff</text>
+        </command>
+        <command>
+          <text>getstat</text>
         </command>
       </session>
       <session id="m2on" label="COMICS SPEC(S5) ON">
@@ -51,6 +63,9 @@
           <text>output</text>
           <text ref="stat" operator="or">0x1000</text>
         </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="m2off" label="COMICS SPEC(S5) OFF">
         <command>
@@ -59,6 +74,9 @@
         <command>
           <text>output</text>
           <text ref="stat" operator="and">0xefff</text>
+        </command>
+        <command>
+          <text>getstat</text>
         </command>
       </session>
       <session id="maon" label="COMICS BOTH ON">
@@ -69,6 +87,9 @@
           <text>output</text>
           <text ref="stat" operator="or">0x1100</text>
         </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="maoff" label="COMICS BOTH OFF">
         <command>
@@ -78,10 +99,13 @@
           <text>output</text>
           <text ref="stat" operator="and">0xeeff</text>
         </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
     </controls>
     <status>
-      <var id="s1:sw" label="CAS2(S1)(CIAO)" type="ENUM">
+      <var id="s6:sw" label="CIAO(S6) SWITCH" type="ENUM">
         <fields>
           <binary ref="stat" bit="0" />
         </fields>
@@ -90,7 +114,7 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s1:dr" label="CAS2(S1)(CIAO)" type="ENUM">
+      <var id="s6:dr" label="CIAO(S6) DRIVE" type="ENUM">
         <fields>
           <binary ref="stat" bit="1" />
         </fields>
@@ -99,7 +123,7 @@
           <enum msg="ON" hl="normal">0</enum>
         </symbol>
       </var>
-      <var id="s1:tm" label="CAS2(S1)(CIAO)" type="ENUM">
+      <var id="s6:tm" label="CIAO(S6) TEMP" type="ENUM">
         <fields>
           <binary ref="stat" bit="2" />
         </fields>
@@ -108,7 +132,7 @@
           <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
-      <var id="s1:pr" label="CAS2(S1)(CIAO)" type="ENUM">
+      <var id="s6:pr" label="CIAO(S6) PRESSURE" type="ENUM">
         <fields>
           <binary ref="stat" bit="3" />
         </fields>
@@ -117,7 +141,7 @@
           <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
-      <var id="s2:sw" label="CAS1(S2)(MOIRCS/MAIN)" type="ENUM">
+      <var id="s4:sw" label="COMICS IMG(S4) SWITCH" type="ENUM">
         <fields>
           <binary ref="stat" bit="4" />
         </fields>
@@ -126,7 +150,7 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s2:dr" label="CAS1(S2)(MOIRCS/MAIN)" type="ENUM">
+      <var id="s4:dr" label="COMICS IMG(S4) DRIVE" type="ENUM">
         <fields>
           <binary ref="stat" bit="5" />
         </fields>
@@ -135,7 +159,7 @@
           <enum msg="ON" hl="normal">0</enum>
         </symbol>
       </var>
-      <var id="s2:tm" label="CAS1(S2)(MOIRCS/MAIN)" type="ENUM">
+      <var id="s4:tm" label="COMICS IMG(S4) TEMP" type="ENUM">
         <fields>
           <binary ref="stat" bit="6" />
         </fields>
@@ -144,7 +168,7 @@
           <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
-      <var id="s2:pr" label="CAS1(S2)(MOIRCS/MAIN)" type="ENUM">
+      <var id="s4:pr" label="COMICS IMG(S4) PRESSURE" type="ENUM">
         <fields>
           <binary ref="stat" bit="7" />
         </fields>
@@ -153,7 +177,7 @@
           <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
-      <var id="s8:sw" label="MOIRCS/CR(S8)" type="ENUM">
+      <var id="s5:sw" label="COMICS SPEC(S5) SWITCH" type="ENUM">
         <fields>
           <binary ref="stat" bit="8" />
         </fields>
@@ -162,7 +186,7 @@
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s8:dr" label="MOIRCS/CR(S8)" type="ENUM">
+      <var id="s5:dr" label="COMICS SPEC(S5) DRIVE" type="ENUM">
         <fields>
           <binary ref="stat" bit="9" />
         </fields>
@@ -171,7 +195,7 @@
           <enum msg="ON" hl="normal">0</enum>
         </symbol>
       </var>
-      <var id="s8:tm" label="MOIRCS/CR(S8)" type="ENUM">
+      <var id="s5:tm" label="COMICS SPEC(S5) TEMP" type="ENUM">
         <fields>
           <binary ref="stat" bit="10" />
         </fields>
@@ -180,45 +204,9 @@
           <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
-      <var id="s8:pr" label="MOIRCS/CR(S8)" type="ENUM">
+      <var id="s5:pr" label="COMICS SPEC(S5) PRESSURE" type="ENUM">
         <fields>
           <binary ref="stat" bit="11" />
-        </fields>
-        <symbol>
-          <enum hl="hide" msg="OK">1</enum>
-          <enum msg="ALARM" hl="alarm">0</enum>
-        </symbol>
-      </var>
-      <var id="s9:sw" label="MOIRCS/MAIN(S9)" type="ENUM">
-        <fields>
-          <binary ref="stat" bit="12" />
-        </fields>
-        <symbol>
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
-      </var>
-      <var id="s9:dr" label="MOIRCS/MAIN(S9)" type="ENUM">
-        <fields>
-          <binary ref="stat" bit="13" />
-        </fields>
-        <symbol>
-          <enum hl="warn" msg="OFF">1</enum>
-          <enum msg="ON" hl="normal">0</enum>
-        </symbol>
-      </var>
-      <var id="s9:tm" label="MOIRCS/MAIN(S9)" type="ENUM">
-        <fields>
-          <binary ref="stat" bit="14" />
-        </fields>
-        <symbol>
-          <enum hl="hide" msg="OK">1</enum>
-          <enum msg="ALARM" hl="alarm">0</enum>
-        </symbol>
-      </var>
-      <var id="s9:pr" label="MOIRCS/MAIN(S9)" type="ENUM">
-        <fields>
-          <binary ref="stat" bit="15" />
         </fields>
         <symbol>
           <enum hl="hide" msg="OK">1</enum>

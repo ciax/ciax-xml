@@ -16,7 +16,12 @@ warn server
 
 def session(line)
   begin
-    @odb.objcom(line) {|l| @ddb.devcom(l)}
+    @odb.objcom(line) {|l|
+      begin
+        @ddb.devcom(l)
+      rescue
+      end
+    }
   rescue
     $!.to_s+"\n"
   else

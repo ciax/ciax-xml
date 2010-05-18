@@ -27,12 +27,11 @@ class Dev
     cmdframe=@dc.devcmd
     @if.log_frame(@dc.cmd_id,cmdframe)
     @ic.snd(cmdframe)
+    @ds.setcmd(cmd)
     rspframe=@ic.rcv
     time=Time.now
-    @ds.setcmd(cmd)
     @if.log_frame(@ds.cmd_id,rspframe,time)
     @stat=@ds.devstat(rspframe,time)
   end
 
 end
-

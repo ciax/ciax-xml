@@ -20,7 +20,13 @@ loop {
     break
   when /[\w]+/
     begin
-      odb.objcom(line) {|l| ddb.devcom(l)}
+      odb.objcom(line) {|l|
+        begin
+          ddb.devcom(l)
+        rescue
+          warn $!
+        end
+      }
     rescue
       warn $!
     end

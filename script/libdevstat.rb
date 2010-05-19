@@ -14,7 +14,6 @@ class DevStat < XmlDev
     rescue
       @field={'device'=>dev}
     end
-    @cc=Hash.new
   end
 
   def setcmd(id)
@@ -57,12 +56,11 @@ class DevStat < XmlDev
 
   def check_cc
     return unless @cc
-    if @cc[:given] === @cc[:calc]
-      @v.msg("VerifyCC:OK [#{@cc[:given]}]")
+    if @cc === @var['cc']
+      @v.msg("Verify:CC OK [#{@cc}]")
     else
-      @v.msg("VerifyCC:Mismatch [#{@cc[:given]}] != [#{@cc[:calc]}]")
+      @v.msg("Verify:CC Mismatch [#{@cc}] != [#{@var['cc']}]")
     end
-    @cc.clear
   end
 
   def verify(raw)
@@ -101,8 +99,8 @@ class DevStat < XmlDev
       when 'ccrange'
         e.ccrange
       when 'checkcode'
-        @cc[:given]=e.decode(e.cut_frame)
-        @v.msg("StoreCC: [#{@cc[:given]}]")
+        @cc=e.decode(e.cut_frame)
+        @v.msg("StoreCC: [#{@cc}]")
       when 'verify'
         e.verify(e.cut_frame)
       when 'assign'
@@ -122,7 +120,7 @@ class DevStat < XmlDev
         str << e.assign
       end
     }
-    @cc[:calc]=checkcode(str)
+    checkcode(str)
   end
 
   def decode(code)

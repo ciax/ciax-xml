@@ -116,5 +116,3 @@ class DevStat < XmlDev
   end
   
 end
-
-

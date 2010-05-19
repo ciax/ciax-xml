@@ -159,6 +159,3 @@ module ObjStat
   end
 
 end
-
-
-

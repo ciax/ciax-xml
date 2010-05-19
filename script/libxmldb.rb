@@ -31,12 +31,6 @@ class XmlDb
   end
 
   # Access Attributes
-  def add_attr(hash=nil)
-    h=hash || Hash.new
-    @cn.attributes.each {|k,v| h[k]=v}
-    h
-  end
-
   def attr
     @cn.attributes
   end
@@ -59,7 +53,7 @@ class XmlDb
   end
 
   def node_with_attr(key,val)
-    @cn.each_element_with_attribute(key,val) {|e| return copy_self(e)}
+    copy_self(@cn.elements["./[@#{key}='#{val}']"])
   end
 
   def child_node # Node pick up for macro

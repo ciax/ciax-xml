@@ -14,7 +14,7 @@ class DevStat < XmlDev
     rescue
       @field={'device'=>dev}
     end
-    @verify_later=Hash.new
+    @cc=Hash.new
   end
 
   def setcmd(id)
@@ -37,8 +37,7 @@ class DevStat < XmlDev
     @var.clear
     @frame=str
     get_field
-    @verify_later.each {|e,s| e.verify(s)}
-    @verify_later.clear
+    check_cc
     @field['time']="%.3f" % time.to_f
     @f.save_stat(@field)
   end
@@ -56,29 +55,32 @@ class DevStat < XmlDev
     end
   end
 
+  def check_cc
+    return unless @cc
+    if @cc[:given] === @cc[:calc]
+      @v.msg("VerifyCC:OK [#{@cc[:given]}]")
+    else
+      @v.msg("VerifyCC:Mismatch [#{@cc[:given]}] != [#{@cc[:calc]}]")
+    end
+    @cc.clear
+  end
+
   def verify(raw)
     @v.err "'Verify:No input file" unless raw
     str=decode(raw)
-    begin
-      pass=node_with_attr('type','pass').text
-      node_with_text(str) {|e| #Match each case
-        case e.attr['type']
-        when 'pass'
-          @v.msg('Verify:'+e.attr['msg']+"[#{str}]")
-        when 'warn'
-          @v.msg('Verify:'+e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
-        when 'error'
-          @v.err('Verify:'+e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
-        end
-        setcmd(e.attr['option']) if e.attr['option']
-        return raw
-      }
-    rescue IndexError
-      @v.err $! if @verify_later[self]
-      @v.msg("Verify:#{$!} and code [#{str}] into queue")
-      @verify_later[self]=raw
+    pass=node_with_attr('type','pass').text
+    node_with_text(str) {|e| #Match each case
+      case e.attr['type']
+      when 'pass'
+        @v.msg('Verify:'+e.attr['msg']+"[#{str}]")
+      when 'warn'
+        @v.msg('Verify:'+e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
+      when 'error'
+        @v.err('Verify:'+e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
+      end
+      setcmd(e.attr['option']) if e.attr['option']
       return raw
-    end
+    }
     @v.err "Verify:No error desctiption for #{self['label']}"
   end
 
@@ -97,17 +99,32 @@ class DevStat < XmlDev
     each_node {|e|
       case e.name
       when 'ccrange'
-        e.checkcode(e.get_field)
+        e.ccrange
+      when 'checkcode'
+        @cc[:given]=e.decode(e.cut_frame)
+        @v.msg("StoreCC: [#{@cc[:given]}]")
+      when 'verify'
+        e.verify(e.cut_frame)
+      when 'assign'
+        e.assign
+      end
+    }
+    return str
+  end
+
+  def ccrange
+    str=String.new
+    each_node {|e|
+      case e.name
       when 'verify'
         str << e.verify(e.cut_frame)
       when 'assign'
         str << e.assign
       end
     }
-    return str
+    @cc[:calc]=checkcode(str)
   end
 
-  private
   def decode(code)
     if upk=attr['unpack']
       code=code.unpack(upk).first

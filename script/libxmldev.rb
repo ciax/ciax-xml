@@ -40,7 +40,7 @@ class XmlDev < XmlDb
       val=format(chk)
       @v.msg("Check Code [#{method.upcase}] -> [#{val}]")
       set_var!({'cc' => val})
-      return self
+      return val
     end
     @v.err "No method"
   end

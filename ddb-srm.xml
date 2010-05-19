@@ -73,10 +73,7 @@
           </option>
         </select>
       </ccrange>
-      <verify length="2">
-        <case type="pass" msg="Prefix OK" ref="cc"></case>
-        <case msg="CC mismatch" type="error"></case>
-      </verify>
+      <checkcode length="2"></checkcode>
       <verify length="1">
         <case type="pass" msg="Terminater OK">*</case>
         <case msg="Terminater mismatch" type="error"></case>

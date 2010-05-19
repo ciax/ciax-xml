@@ -74,10 +74,7 @@
         <case type="pass" msg="QHeader OK">00ffff0300</case>
         <case type="error" msg="QHeader mismatch"></case>
       </verify>
-      <verify label="Response Data Length" length="2" unpack="v">
-        <case type="pass" msg="DataLength OK" ref="cc"></case>
-        <case type="warn" msg="DataLength mismatch"></case>
-      </verify>
+      <checkcode label="Response Data Length" length="2" unpack="v"></checkcode>
       <ccrange method="len" format="%d">
         <verify label="Exit Code" length="2" unpack="H*">
           <case type="pass" msg="ExitCode OK">0000</case>

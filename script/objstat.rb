@@ -1,15 +1,13 @@
 #!/usr/bin/ruby
-require "libobjstat"
-require "libxmldoc"
+require "libobj2"
 require "libiofile"
 
 warn "Usage: objstat [object] < devstat" if ARGV.size < 1
 
 begin
-  doc=XmlDoc.new('odb',ARGV.shift)
-  odb=ObjStat.new(doc)
-  field=IoFile.new(doc.property['device']).load_stat
-  stat=odb.objstat(field)
+  odb=Obj.new(ARGV.shift)
+  field=IoFile.new(odb.property['device']).load_stat
+  stat=odb.get_stat(field)
 rescue RuntimeError
   abort $!.to_s
 end

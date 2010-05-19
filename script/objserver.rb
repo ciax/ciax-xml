@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobj"
+require "libobj2"
 require "libdev"
 require "libiocmd"
 

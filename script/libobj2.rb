@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libxmldoc"
-require "libxmldb"
 require "libverbose"
 
 class Obj
@@ -41,7 +40,6 @@ class Obj
     }
   end
   
-  protected
   def get_stat(dstat)
     return unless dstat
     @field.update(dstat)
@@ -49,12 +47,10 @@ class Obj
       var.extend ObjStat
       id="#{@obj}:#{var.attributes['id']}"
       set=Hash.new
-      var.attributes.each{|k,v| set[k]=v}
+      var.attributes.each{|k,v| set[k]=v unless k =='id' }
       val=var.get_val(@field)
-      set['val']=val
       $ver.msg("GetStat:#{id}=[#{val}]")
       var.get_symbol(val,set)
-      set.delete('id')
       @stat[id]=set
     }
     @stat['time']['val']=Time.at(@field['time'].to_f)
@@ -123,11 +119,12 @@ module ObjStat
   end
 
   def get_symbol(val,set)
-    enum=elements['./symbol'] || return
-    case enum.attributes['type']
+    set['val']=val
+    symbol=elements['./symbol'] || return
+    case symbol.attributes['type']
     when 'min_base'
       $ver.msg("Symbol:Compare by Minimum Base for [#{val}]")
-      enum.each_element {|range|
+      symbol.each_element {|range|
         base=range.text
         $ver.msg("Symbol:Greater than [#{base}]?")
         next if base.to_f > val.to_f
@@ -136,7 +133,7 @@ module ObjStat
       }
     when 'max_base'
       $ver.msg("Symbol:Compare by Maximum Base for [#{val}]")
-      enum.each_element {|range|
+      symbol.each_element {|range|
         base=range.text
         $ver.msg("Symbol:Less than [#{base}]?")
         next if base.to_f < val.to_f
@@ -144,8 +141,9 @@ module ObjStat
         break
       }
     else
-      enum.each_element_with_text(val) {|e|
-        e.attributes.each{|k,v| set[k]=v}
+      symbol.each_element {|enum|
+        next if enum.text && enum.text != val 
+        enum.attributes.each{|k,v| set[k]=v}
       }
     end
   end

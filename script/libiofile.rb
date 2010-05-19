@@ -24,23 +24,23 @@ class IoFile
     @v.msg("Status Loading for [#{@type}]")
     stat=Marshal.load(IO.read(VarDir+"/#{@type}.mar"))
     raise "No status in File" unless stat
-    @v.msg(stat.inspect,1)
+    @v.msg(stat.inspect)
     stat
   end
   
   def save_json(stat)
     open(JsonDir+"/#{@type}.json",'w') {|f|
-      @v.msg "Status Saving for [#{@type}]"
+      @v.msg "JSON Status Saving for [#{@type}]"
       f << JSON.dump(stat)
     }
     stat
   end
   
   def load_json
-    @v.msg("Status Loading for [#{@type}]")
+    @v.msg("JSON Status Loading for [#{@type}]")
     stat=JSON.load(IO.read(JsonDir+"/#{@type}.json"))
     raise "No status in File" unless stat
-    @v.msg(stat.inspect,1)
+    @v.msg(stat.inspect)
     stat
   end
   
@@ -56,7 +56,7 @@ class IoFile
     @v.msg "Raw Status Loading for [#{@type}_#{cmd}]"
     frame=IO.read(VarDir+"/#{@type}_#{cmd}.bin")
     raise "No frame in File" unless frame
-    @v.msg(frame.dump,1)
+    @v.msg(frame.dump)
     frame
   end 
   
@@ -71,3 +71,4 @@ class IoFile
   end
 
 end
+

@@ -57,36 +57,36 @@ class DevStat < XmlDev
   end
 
   def verify(raw)
-    @v.err "No input file" unless raw
+    @v.err "'Verify:No input file" unless raw
     str=decode(raw)
     begin
       pass=node_with_attr('type','pass').text
       node_with_text(str) {|e| #Match each case
         case e.attr['type']
         when 'pass'
-          @v.msg(e.attr['msg']+"[#{str}]",1)
+          @v.msg('Verify:'+e.attr['msg']+"[#{str}]")
         when 'warn'
-          @v.msg(e.attr['msg']+"[ (#{str}) for (#{pass}) ]",1)
+          @v.msg('Verify:'+e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
         when 'error'
-          @v.err(e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
+          @v.err('Verify:'+e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
         end
         setcmd(e.attr['option']) if e.attr['option']
         return raw
       }
     rescue IndexError
       @v.err $! if @verify_later[self]
-      @v.msg("#{$!} and code [#{str}] into queue",1)
+      @v.msg("Verify:#{$!} and code [#{str}] into queue")
       @verify_later[self]=raw
       return raw
     end
-    @v.err "No error desctiption for #{self['label']}"
+    @v.err "Verify:No error desctiption for #{self['label']}"
   end
 
   def assign
     raw=cut_frame
     if fld=attr['field']
       str=decode(raw) 
-      @v.msg("[#{fld}] <- [#{str}]",1)
+      @v.msg("Assign: [#{fld}] <- [#{str}]")
       @field[fld]=str
     end
     raw
@@ -116,4 +116,5 @@ class DevStat < XmlDev
   end
   
 end
+
 

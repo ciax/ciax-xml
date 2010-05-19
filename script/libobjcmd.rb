@@ -24,7 +24,7 @@ class ObjCmd < XmlDb
     cmd=Array.new
     each_node {|e| cmd << e.operate}
     line=cmd.join(' ')
-    @v.msg("Exec(DDB):[#{line}]",1)
+    @v.msg("Exec(DDB):[#{line}]")
     warn "CommandExec[#{line}]"
     @devcmd.call(line)
   end
@@ -40,7 +40,7 @@ class ObjCmd < XmlDb
         when 'or'
           str= x | y
         end
-        @v.msg("(#{x} #{ope} #{y})=#{str}",1)
+        @v.msg("Operate:(#{x} #{ope} #{y})=#{str}")
         return str
       end
       r || t
@@ -48,3 +48,4 @@ class ObjCmd < XmlDb
   end
 
 end
+

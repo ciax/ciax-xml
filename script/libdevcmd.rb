@@ -29,7 +29,7 @@ class DevCmd < XmlDev
 
   def devcmd
     node_with_name('ccrange') {|e|
-      @v.msg("Entering CC range",1)
+      @v.msg("Entering CC range")
       @ccstr=e.get_string
       e.checkcode(@ccstr)
     }
@@ -52,7 +52,7 @@ class DevCmd < XmlDev
       else
         str << @var[d.name]
       end
-      @v.msg("[#{str.dump}]",1)
+      @v.msg("GetCmdString: [#{str.dump}]")
     }
     str
   end
@@ -69,11 +69,10 @@ class DevCmd < XmlDev
     if pack=attr['pack']
       code=[str].pack(pack)
       hex=code.unpack('C*').map!{|c| '%02x' % c}.join
-      @v.msg("pack(#{pack}) [#{str}] -> [#{hex}]",1)
+      @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{hex}]")
       str=code
     end
     format(str)
   end
 
 end
-

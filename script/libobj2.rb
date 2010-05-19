@@ -4,14 +4,27 @@ require "libxmldb"
 require "libverbose"
 
 
-class Element
+module ObjCmd
   #Cmd methods
   public
   def get_cmd(field)
     devcmd=Array.new
     each_element{|text|
       if ref=text.attributes['ref']
-        devcmd << text.operate(field[ref])
+        if ope=attributes['operator']
+          x=field[ref].to_i
+          y=text.hex
+          case ope
+          when 'and'
+            str= x & y
+          when 'or'
+            str= x | y
+          end
+          $ver.msg("(#{x} #{ope} #{y})=#{str}")
+          devcmd << str
+        else
+          devcmd << field[ref]
+        end
       else
         devcmd << text.text
       end
@@ -21,20 +34,11 @@ class Element
 
   protected
   def operate(str)
-    if ope=attributes['operator']
-      x=str.to_i
-      y=text.hex
-      case ope
-      when 'and'
-        str= x & y
-      when 'or'
-        str= x | y
-      end
-      $ver.msg("(#{x} #{ope} #{y})=#{str}",1)
-    end
     str
   end
+end
 
+module ObjStat
   #Stat Methods
   public
   def get_val(field)
@@ -42,7 +46,7 @@ class Element
     elements['./fields'].each_element {|e| #element(split and concat)
       ref=e.attributes['ref'] || return
       data=field[ref] || return
-      $ver.msg("#{e.name.capitalize} Field (#{ref})",1)
+      $ver.msg("#{e.name.capitalize} Field (#{ref})")
       case e.name
       when 'binary'
         val << (data.to_i >> e.attributes['bit'].to_i & 1).to_s
@@ -68,19 +72,19 @@ class Element
     enum=elements['./symbol'] || return
     case enum.attributes['type']
     when 'min_base'
-      $ver.msg("Compare by Minimum Base for [#{val}]",1)
+      $ver.msg("Compare by Minimum Base for [#{val}]")
       enum.each_element {|range|
         base=range.text
-        $ver.msg("Greater than [#{base}]?",1)
+        $ver.msg("Greater than [#{base}]?")
         next if base.to_f > val.to_f
         range.attributes.each{|k,v| set[k]=v}
         break
       }
     when 'max_base'
-      $ver.msg("Compare by Maximum Base for [#{val}]",1)
+      $ver.msg("Compare by Maximum Base for [#{val}]")
       enum.each_element {|range|
         base=range.text
-        $ver.msg("Less than [#{base}]?",1)
+        $ver.msg("Less than [#{base}]?")
         next if base.to_f < val.to_f
         range.attributes.each{|k,v| set[k]=v}
         break
@@ -96,7 +100,7 @@ class Element
   def format(code)
     if fmt=attributes['format']
       str=fmt % code
-      $ver.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",2)
+      $ver.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]")
       code=str
     end
     code.to_s
@@ -134,8 +138,9 @@ class Obj
     session=@doc.control_id(cmd)
     warn session.attributes['label']
     session.each_element {|command|
+      command.extend ObjCmd
       line=command.get_cmd(@field)
-      $ver.msg("Exec(DDB):[#{line}]",1)
+      $ver.msg("Exec(DDB):[#{line}]")
       warn "CommandExec[#{line}]"
       get_stat(yield(line))
     }
@@ -147,12 +152,13 @@ class Obj
     return unless dstat
     @field.update(dstat)
     @doc.elements['//status'].each_element {|var| # var
+      var.extend ObjStat
       id="#{@obj}:#{var.attributes['id']}"
       set=Hash.new
       var.attributes.each{|k,v| set[k]=v}
       val=var.get_val(@field)
       set['val']=val
-      $ver.msg("#{id}=[#{val}]",1)
+      $ver.msg("#{id}=[#{val}]")
       var.get_symbol(val,set)
       set.delete('id')
       @stat[id]=set
@@ -161,3 +167,5 @@ class Obj
     @f.save_json(@stat)
   end
 end
+
+

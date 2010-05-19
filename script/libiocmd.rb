@@ -6,7 +6,7 @@ class IoCmd
   def initialize(iocmd,timeout=0.2)
     abort "No IO command" unless iocmd
     @to=timeout
-    @v=Verbose.new(iocmd.upcase)
+    @v=Verbose.new('IOCMD:'+iocmd)
     @f=IO.popen(iocmd,'r+')
     at_exit {
       Process.kill(:TERM,@f.pid)

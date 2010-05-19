@@ -76,7 +76,7 @@ class XmlDb
   end
 
   def node_with_id(id)
-    @v.msg("Select [#{id}]",2)
+    @v.msg("Select Node with [#{id}]")
     begin
       e=elem_with_id(id)
     rescue
@@ -90,7 +90,7 @@ class XmlDb
   def format(code)
     if fmt=@cn.attributes['format'] 
       str=fmt % code
-      @v.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]",2)
+      @v.msg("Format code by (#{fmt}) [#{code}] -> [#{str}]")
       code=str
     end
     code.to_s
@@ -98,19 +98,19 @@ class XmlDb
 
   def text
     if r=@cn.attributes['ref']
-      @v.msg("Getting text from ref [#{r}]",2)
+      @v.msg("Getting text from ref [#{r}]")
       return @var[r] || raise(IndexError,"No reference for [#{r}]")
     end
-    @v.msg("Getting text[#{@cn.text}]",2)
+    @v.msg("Getting text [#{@cn.text}]")
     return @cn.text
   end
 
   def text_convert
     if r=@cn.attributes['ref']
-      @v.msg("Getting ref[#{@var[r]}] and text[#{@cn.text}]",2)
+      @v.msg("Getting ref [#{@var[r]}] and text [#{@cn.text}]")
       yield @var[r],@cn.text
     end
-    @v.msg("Getting text[#{@cn.text}]",2)
+    @v.msg("Getting text [#{@cn.text}]")
     return @cn.text
   end
 

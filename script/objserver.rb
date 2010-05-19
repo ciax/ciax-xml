@@ -37,3 +37,4 @@ loop{
     session('upd')
   end
 }
+

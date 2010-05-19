@@ -18,7 +18,7 @@ class XmlDev < XmlDb
     super {|e|
       if e.name == 'select'
         @v.err "ID not selected" unless @sel
-        @v.msg("Enterning Select",1)
+        @v.msg("Enterning Select Node")
         @sel.elements.each {|s| yield copy_self(s) }
       else
         yield e
@@ -38,7 +38,7 @@ class XmlDev < XmlDb
         @v.err "No such CC method #{method}"
       end
       val=format(chk)
-      @v.msg("[#{method.upcase}] -> [#{val}]",1)
+      @v.msg("Check Code [#{method.upcase}] -> [#{val}]")
       set_var!({'cc' => val})
       return self
     end

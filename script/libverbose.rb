@@ -6,9 +6,11 @@ class Verbose
   end
 
   # Public Method
-  def msg(text='',level=0)
+  def msg(text='')
     return unless ENV['VER']
-    warn mkmsg(text) if ENV['VER'].to_i >= level
+    if ENV['VER'].split(':').any? {|s| (@title+'all').include?(s) }
+      warn mkmsg(text)
+    end
   end
 
   def err(text='')
@@ -18,8 +20,7 @@ class Verbose
   # Private Method
   private
   def mkmsg(text)
-    method=caller(2).first[/([\w]+?)'/,1]
     pass=sprintf("%5.4f",Time.now-Start_time)
-    "[#{pass}] #{@title}:#{method}:#{text}".dump
+    "[#{pass}] #{@title}:#{text}".dump
   end
 end

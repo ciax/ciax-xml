@@ -18,24 +18,6 @@ class XmlDoc < Document
     end
     @property=root.elements.first.attributes
   end
-
-  def control_id(id)
-    if e=elements["//controls//[@id='#{id}']"]
-      if ref=e.attributes['ref']
-        return control_id(ref)
-      end
-      return e
-    else
-      list_id("//controls/")
-      raise "No such ID"
-    end
-  end
-
-  def status_id(id)
-    elements["//status//[@id='#{id}']"] ||
-      status_id('default') || raise("Send Only")
-  end
-
   # Error Handling
   def list_id(xpath)
     elements.each(xpath+'/[@id]') {|d|

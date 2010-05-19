@@ -6,12 +6,11 @@ class Obj
   attr_reader :stat,:field,:property
 
   def initialize(obj)
-    begin
-      @doc=XmlDoc.new('odb',obj)
-      @obj=@doc.property['id']
-    rescue RuntimeError
-      abort $!.to_s
-    end
+    @doc=XmlDoc.new('odb',obj)
+    @obj=@doc.property['id']
+  rescue RuntimeError
+    abort $!.to_s
+  else
     @f=IoFile.new(@obj)
     begin
       @stat=@f.load_json
@@ -29,7 +28,7 @@ class Obj
   def objcom(line)
     cmd,par=line.split(' ')
     @var['par']=par
-    session=@doc.control_id(cmd)
+    session=control_id(cmd)
     warn session.attributes['label']
     session.each_element {|command|
       command.extend ObjCmd
@@ -56,6 +55,20 @@ class Obj
     @stat['time']['val']=Time.at(@field['time'].to_f)
     @f.save_json(@stat)
   end
+
+  protected
+  def control_id(id)
+    if e=@doc.elements["//controls//[@id='#{id}']"]
+      if ref=e.attributes['ref']
+        return control_id(ref)
+      end
+      return e
+    else
+      @doc.list_id("//controls/")
+      raise "No such ID"
+    end
+  end
+
 end
 
 module ObjCmd
@@ -149,6 +162,10 @@ module ObjStat
   end
 
   private
+  def add(h)
+    attributes.each{|k,v| h[k]=v}
+  end
+
   def format(code)
     if fmt=attributes['format']
       str=fmt % code

@@ -9,7 +9,7 @@ begin
   e=DevCmd.new(doc)
   e.setcmd(ARGV.shift)
 rescue
-  abort $!.to_s
+  abort($!.to_s+$@.to_s)
 end
 begin
   e.setpar(ARGV.shift)

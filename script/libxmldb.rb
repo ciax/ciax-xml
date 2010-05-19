@@ -4,22 +4,18 @@ class XmlDb
   protected
   attr_accessor :cn # Context Node
 
-  def initialize(doc,xpath)
-    id=doc.property['id']
-    @v=Verbose.new("#{doc.root.name}/#{id}".upcase)
+  def initialize(element,title='XMLDB')
     @var=Hash.new # Use for par,cc
-    @property={'id'=>id}
-    begin
-      @cn=doc.elements[xpath]
-    rescue
-      p $!
-      @v.err("No such Xpath")
-    end
+    @v=Verbose.new(title)
+    @cn=element
   end
 
   # Public Method
   public
-  attr_reader :property
+  def set_xpath!(xpath)
+    @cn=@cn.elements[xpath] || @v.err("No such Xpath")
+    self
+  end
 
   def set_var!(hash,namespace=nil)
     if namespace

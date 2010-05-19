@@ -2,6 +2,13 @@
 require "libxmldb"
 
 class XmlDev < XmlDb
+  attr_reader :property
+  def initialize(doc,xpath)
+    super(doc,"#{doc.root.name}/#{doc.property['id']}".upcase)
+    set_xpath!(xpath)
+    @property={'id'=>doc.property['id']}
+  end
+
   # Public Method
   public
   def setcmd(cmd)

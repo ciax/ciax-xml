@@ -3,7 +3,7 @@
   <object id="cf2" label="S2 Helium Compressor Coolant Flow" device="k3n" client="nc ltt-i 4001" server="socat - udp-l:45602,reuseaddr,fork">
     <controls>
       <session id="upd" label="Update Status">
-        <command text="getstat"/>
+        <command text="getstat" />
       </session>
     </controls>
     <status>
@@ -11,12 +11,12 @@
         <fields>
           <float decimal="2" format="%4.2f" ref="stat" />
         </fields>
-        <symbol type="min_base">
-          <range hl="alarm" msg="HH">6</range>
-          <range hl="warn" msg="H">5</range>
-          <range hl="normal" msg="M">4</range>
-          <range hl="warn" msg="L">3</range>
-          <range hl="alarm" msg="LL">0</range>
+        <symbol type="range">
+          <range hl="alarm" msg="HH" min="6"></range>
+          <range hl="warn" msg="H" min="5"></range>
+          <range hl="normal" msg="M" min="4"></range>
+          <range hl="warn" msg="L" min="3"></range>
+          <range hl="alarm" msg="LL"></range>
         </symbol>
       </var>
     </status>

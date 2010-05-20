@@ -146,8 +146,7 @@
             <xsd:simpleType>
               <xsd:restriction base="xsd:string">
                 <xsd:enumeration value="enum" />
-                <xsd:enumeration value="max_base" />
-                <xsd:enumeration value="min_base" />
+                <xsd:enumeration value="range" />
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:attribute>
@@ -170,27 +169,26 @@
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:attribute>
+          <xsd:attribute name="text" type="xsd:string" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="range">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:float">
-          <xsd:attribute name="msg" type="xsd:string" />
-          <xsd:attribute name="hl">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="normal" />
-                <xsd:enumeration value="warn" />
-                <xsd:enumeration value="alarm" />
-                <xsd:enumeration value="hide" />
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:attribute name="msg" type="xsd:string" />
+      <xsd:attribute name="hl">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="normal" />
+            <xsd:enumeration value="warn" />
+            <xsd:enumeration value="alarm" />
+            <xsd:enumeration value="hide" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="max" type="xsd:float" />
+      <xsd:attribute name="min" type="xsd:float" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

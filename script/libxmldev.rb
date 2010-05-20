@@ -44,12 +44,12 @@ class XmlDev < XmlDb
       else
         @v.err "No such CC method #{method}"
       end
-      val=format(chk)
-      @v.msg("Check Code [#{method.upcase}] -> [#{val}]")
-      set_var!({'cc' => val})
-      return val
+      chk=chk.to_s
+      @v.msg("Calc:CC [#{method.upcase}] -> [#{chk}]")
+      set_var!({'cc' => chk})
+      return chk
     end
-    @v.err "No method"
+    @v.err "CC No method"
   end
 
 end

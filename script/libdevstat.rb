@@ -46,35 +46,25 @@ class DevStat < XmlDev
   end
 
   protected
-  def cut_frame
-    if l=attr['length']
-      len=l.to_i
-      warn "Too short (#{@frame.size-len})" if @frame.size < len
-      return @frame.slice!(0,len)
-    end
-  end
-
-  def check_cc
-    return unless @cc
-    if @cc === @var['cc']
-      @v.msg("Verify:CC OK [#{@cc}]")
-    else
-      @v.msg("Verify:CC Mismatch [#{@cc}] != [#{@var['cc']}]")
-    end
-  end
-
-  def verify(raw)
+  def verify
+    raw=cut_frame
     @v.err "'Verify:No input file" unless raw
     str=decode(raw)
+    if attr['checkcode']
+      @var[:ccr]=str
+      @v.msg("Store:CC [#{str}]")
+      return raw
+    end
     pass=node_with_attr('type','pass').text
     node_with_text(str) {|e| #Match each case
+      msg='Verify:'+e.attr['msg']+" [#{str}]"
       case e.attr['type']
       when 'pass'
-        @v.msg('Verify:'+e.attr['msg']+"[#{str}]")
+        @v.msg(msg)
       when 'warn'
-        @v.msg('Verify:'+e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
+        @v.wrn(msg+" for [#{pass}]")
       when 'error'
-        @v.err('Verify:'+e.attr['msg']+"[ (#{str}) for (#{pass}) ]")
+        @v.err(msg+" for [#{pass}]")
       end
       setcmd(e.attr['option']) if e.attr['option']
       return raw
@@ -92,40 +82,55 @@ class DevStat < XmlDev
     raw
   end
 
+  private
   def get_field
-    str=String.new
     each_node {|e|
       case e.name
       when 'ccrange'
-        e.ccrange
-      when 'checkcode'
-        @cc=e.decode(e.cut_frame)
-        @v.msg("StoreCC: [#{@cc}]")
+        str=String.new
+        e.each_node {|f|
+          case f.name
+          when 'verify'
+            str << f.verify
+          when 'assign'
+            str << f.assign
+          end
+        }
+        e.checkcode(str)
       when 'verify'
-        e.verify(e.cut_frame)
+        e.verify
       when 'assign'
         e.assign
       end
     }
-    return str
   end
 
-  def ccrange
-    str=String.new
-    each_node {|e|
-      case e.name
-      when 'verify'
-        str << e.verify(e.cut_frame)
-      when 'assign'
-        str << e.assign
-      end
-    }
-    checkcode(str)
+  def check_cc
+    return unless @var[:ccr]
+    if @var[:ccr] === @var['cc']
+      @v.msg("Verify:CC OK [#{@var[:ccr]}]")
+    else
+      @v.msg("Verify:CC Mismatch [#{@var[:ccr]}] != [#{@var['cc']}]")
+    end
+  end
+
+  def cut_frame
+    if l=attr['length']
+      len=l.to_i
+      warn "Too short (#{@frame.size-len})" if @frame.size < len
+      return @frame.slice!(0,len)
+    end
   end
 
   def decode(code)
     if upk=attr['unpack']
-      code=code.unpack(upk).first
+      if upk == 'hex'
+        str=code.hex
+      else
+        str=code.unpack(upk).first
+      end
+      @v.msg("Decode:unpack(#{upk}) [#{code}] -> [#{str}]")
+      code=str
     end
     code.to_s
   end

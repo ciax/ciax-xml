@@ -10,9 +10,9 @@
       <data label="Q Header: PC Number" pack="H*">FF</data>
       <data label="Q Header: Request Unit I/O Number" pack="H*">FF03</data>
       <data label="Q Header: Request Unit Station Number" pack="H*">00</data>
-      <data label="Q Header: Send Data Length MSB" ref="cc" />
+      <data label="Q Header: Send Data Length MSB" ref="cc" type="int" pack="C" />
       <data label="Q Header: Send Data Length LSB" pack="H*">00</data>
-      <ccrange method="len" format="%c">
+      <ccrange method="len">
         <data label="Q Header: CPU Watch Timer" pack="H*">0100</data>
         <select>
           <option id="chken" label="Check Enable Flag" type="stat">
@@ -74,8 +74,8 @@
         <case type="pass" msg="QHeader OK">00ffff0300</case>
         <case type="error" msg="QHeader mismatch"></case>
       </verify>
-      <checkcode label="Response Data Length" length="2" unpack="v"></checkcode>
-      <ccrange method="len" format="%d">
+      <verify label="Response Data Length" length="2" unpack="v" checkcode="true" />
+      <ccrange method="len">
         <verify label="Exit Code" length="2" unpack="H*">
           <case type="pass" msg="ExitCode OK">0000</case>
           <case msg="RW Region Error" type="warn" option="errframe">0200</case>

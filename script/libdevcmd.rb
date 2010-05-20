@@ -46,7 +46,7 @@ class DevCmd < XmlDev
     each_node {|d|
       case d.name
       when 'data'
-        str << d.encode(d.text)
+        str << encode(d)
       when 'ccrange'
         str << @ccstr
       else
@@ -57,8 +57,9 @@ class DevCmd < XmlDev
     str
   end
   
-  def encode(str)
-    if type=attr['type']
+  def encode(e)
+    str=e.text
+    if type=e.attr['type']
       case type
       when 'int'
         str=str.to_i
@@ -66,13 +67,12 @@ class DevCmd < XmlDev
         str=str.to_f
       end
     end
-    if pack=attr['pack']
+    if pack=e.attr['pack']
       code=[str].pack(pack)
-      hex=code.unpack('C*').map!{|c| '%02x' % c}.join
-      @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{hex}]")
+      @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
       str=code
     end
-    format(str)
+    e.format(str)
   end
 
 end

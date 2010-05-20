@@ -8,9 +8,15 @@ class Verbose
   # Public Method
   def msg(text='')
     return unless ENV['VER']
-    if ENV['VER'].split(':').any? {|s| (@title+'all').include?(s) }
-      warn mkmsg(text)
+    m=mkmsg(text)
+    if ENV['VER'].split(':').any? {|s|
+        (m+'all').upcase.include?(s.upcase) }
+      warn m
     end
+  end
+
+  def wrn(text='')
+    warn mkmsg(text)
   end
 
   def err(text='')

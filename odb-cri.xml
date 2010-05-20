@@ -3,105 +3,63 @@
   <object id="cri" label="IR Compressor Room Reserve" device="bbe" client="nc ltc-i 4003" server="socat - udp-l:25107,reuseaddr,fork">
     <controls>
       <session id="upd" label="Update Status">
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
       <session id="x0on" label="X0 ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat"></command>
+        <command text="output">
+          <par function="$stat | 0x01"></par>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x01</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
       <session id="x0off" label="X0 OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat"></command>
+        <command text="output">
+          <par function="$stat &amp; 0xfffe"></par>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xfffe</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
       <session id="x1on" label="X1 ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat"></command>
+        <command text="output">
+          <par function="$stat | 0x10"></par>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x10</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
       <session id="x1off" label="X1 OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat"></command>
+        <command text="output">
+          <par function="$stat &amp; 0xffef"></par>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xffef</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
       <session id="x2on" label="X2 ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat"></command>
+        <command text="output">
+          <par function="$stat | 0x100"></par>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x100</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
       <session id="x2off" label="X2 OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat"></command>
+        <command text="output">
+          <par function="$stat &amp; 0xfeff"></par>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xfeff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
       <session id="x3on" label="X3 ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat"></command>
+        <command text="output">
+          <par function="$stat | 0x1000"></par>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x1000</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
       <session id="x3off" label="X3 OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat"></command>
+        <command text="output">
+          <par function="$stat &amp; 0xefff"></par>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xefff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"></command>
       </session>
     </controls>
     <status>

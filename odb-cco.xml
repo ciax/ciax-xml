@@ -3,105 +3,63 @@
   <object id="cco" label="OPT Helium Compressor Control" device="bbe" client="nc ltc-o 4002" server="socat - udp-l:25106,reuseaddr,fork">
     <controls>
       <session id="upd" label="Update Status">
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="f2on" label="CIAO(S6) ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x01" />
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x01</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="f2off" label="CIAO(S6) OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xfffe" />
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xfffe</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="m1on" label="COMICS IMG(S4) ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x100" />
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x100</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="m1off" label="COMICS IMG(S4) OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xfeff" />
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xfeff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="m2on" label="COMICS SPEC(S5) ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x1000" />
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x1000</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="m2off" label="COMICS SPEC(S5) OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xefff" />
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xefff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="maon" label="COMICS BOTH ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x1100" />
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x1100</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="maoff" label="COMICS BOTH OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xeeff" />
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xeeff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
     </controls>
     <status>

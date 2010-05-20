@@ -3,157 +3,95 @@
   <object id="cci" label="IR Helium Compressor Control" device="bbe" client="nc ltc-i 4002" server="socat - udp-l:25105,reuseaddr,fork">
     <controls>
       <session id="upd" label="Update Status">
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="c2on" label="CAS2(S1) ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x01"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x01</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="c2off" label="CAS2(S1) OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xfffe"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xfffe</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="c1on" label="CAS1(S2) ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x10"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x10</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="c1off" label="CAS1(S2) OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xffef"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xffef</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="m2on" label="MOIRCS CR(S8) ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x100"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x100</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="m2off" label="MOIRCS CR(S8) OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xfeff"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xfeff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="m1on" label="MOIRCS MAIN(S9) ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x1000"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x1000</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="m1off" label="MOIRCS MAIN(S9) OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xefff"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xefff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="cmon" label="CAS MOIRCS/MAIN ON" ref="c2on"></session>
       <session id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="c2off"></session>
       <session id="ccon" label="CAS MOIRCS/CR ON" ref="c1on" />
       <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="c1off" />
       <session id="caon" label="CAS BOTH HC ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x0011"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x0011</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="caoff" label="CAS BOTH HC OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xffee"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xffee</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="maon" label="MOIRCS BOTH ON">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat | 0x1100"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="or">0x1100</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
       <session id="maoff" label="MOIRCS BOTH OFF">
-        <command>
-          <text>getstat</text>
+        <command text="getstat" />
+        <command text="output">
+          <par function="$stat &amp; 0xeeff"/>
         </command>
-        <command>
-          <text>output</text>
-          <text ref="stat" operator="and">0xeeff</text>
-        </command>
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat" />
       </session>
     </controls>
     <status>

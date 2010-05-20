@@ -3,64 +3,49 @@
   <object id="crt" device="mel" label="Cart PLC" client="nc -u cart3 5000" server="socat - udp-l:25101,reuseaddr,fork">
     <controls>
       <session id="upd" label="Regular status update">
-        <command>
-          <text>getstat</text>
-        </command>
-        <command>
-          <text>chken</text>
-        </command>
+        <command text="getstat" />
+        <command text="chken" />
       </session>
       <session id="start_run" label="Running Start">
-        <command>
-          <text>start</text>
-          <text>0100</text>
+        <command text="start">
+          <par text="0100" />
         </command>
       </session>
       <session id="start_jak" label="Jacking Start">
-        <command>
-          <text>start</text>
-          <text>0001</text>
+        <command text="start">
+          <par text="0001" />
         </command>
       </session>
       <session id="clear_trg" label="Jacking Start">
-        <command>
-          <text>clear</text>
-        </command>
+        <command text="clear" />
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
-        <command>
-          <text>set_tag</text>
-          <text>6200</text>
+        <command text="set_tag">
+          <par text="6200" />
         </command>
       </session>
       <session id="set_run1" label="Run to Tag 1">
-        <command>
-          <text>set_tag</text>
-          <text>0100</text>
+        <command text="set_tag">
+          <par text="0100" />
         </command>
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
-        <command>
-          <text>set_pos</text>
-          <text>0200</text>
+        <command text="set_pos">
+          <par text="0200" />
         </command>
       </session>
       <session id="pause" label="Pause">
-        <command>
-          <text>stop</text>
-          <text>0100</text>
+        <command text="stop">
+          <par text="0100" />
         </command>
       </session>
       <session id="emstop" label="Emergency Stop">
-        <command>
-          <text>stop</text>
-          <text>0200</text>
+        <command text="stop">
+          <par text="0200" />
         </command>
       </session>
       <session id="resume" label="Resume from Pause">
-        <command>
-          <text>clear</text>
-        </command>
+        <command text="clear" />
       </session>
     </controls>
     <status>

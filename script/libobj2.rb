@@ -74,26 +74,15 @@ module ObjCmd
   #Cmd methods
   public
   def get_cmd(field)
-    devcmd=Array.new
-    each_element{|txt|
-      if ref=txt.attributes['ref']
-        if ope=txt.attributes['operator']
-          x=field[ref].to_i
-          y=txt.text.hex
-          case ope
-          when 'and'
-            str= x & y
-          when 'or'
-            str= x | y
-          end
-          $ver.msg("Operate:(#{x} #{ope} #{y})=#{str}")
-          devcmd << str
-        else
-          devcmd << field[ref]
-        end
+    devcmd=[attributes['text']]
+    each_element{|par|
+      if func=par.attributes['function']
+        str=eval(func.gsub(/\$([\w]+)/) { field[$1] })
+        $ver.msg("Function:(#{func})=#{str}")
       else
-        devcmd << txt.text
+        str=par.attributes['text']
       end
+      devcmd << str
     }
     devcmd.join(' ')
   end

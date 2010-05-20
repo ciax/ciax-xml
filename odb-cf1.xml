@@ -3,9 +3,7 @@
   <object id="cf1" label="S1 Helium Compressor Coolant Flow" device="k3n" client="nc ltt-i 4003" server="socat - udp-l:45601,reuseaddr,fork">
     <controls>
       <session id="upd" label="Update Status">
-        <command>
-          <text>getstat</text>
-        </command>
+        <command text="getstat"/>
       </session>
     </controls>
     <status>

@@ -19,7 +19,6 @@ class Obj
       @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
     end
     $ver=Verbose.new("#{@doc.root.name}/#{@obj}".upcase)
-    @var=Hash.new
     @field=Hash.new
     @property=@doc.property
   end
@@ -27,7 +26,7 @@ class Obj
   public
   def objcom(line)
     cmd,par=line.split(' ')
-    @var['par']=par
+    @field['par']=par
     session=control_id(cmd)
     warn session.attributes['label']
     session.each_element {|command|

@@ -131,6 +131,7 @@
         <xsd:element ref="cx:data" />
         <xsd:element ref="cx:verify" />
         <xsd:element ref="cx:assign" />
+        <xsd:element ref="cx:status" />
       </xsd:choice>
       <xsd:attribute name="method">
         <!--Check Code Method-->
@@ -160,6 +161,7 @@
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="cx:verify" />
           <xsd:element ref="cx:assign" />
+          <xsd:element ref="cx:status" />
         </xsd:choice>
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:string" use="required" />
@@ -190,7 +192,8 @@
   <xsd:element name="rspframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:verify" />
+        <xsd:element ref="cx:verify"></xsd:element>
+        <xsd:element ref="cx:status" />
         <xsd:element ref="cx:assign" />
         <xsd:element ref="cx:ccrange" />
         <xsd:element ref="cx:select" />
@@ -200,17 +203,25 @@
   </xsd:element>
   <xsd:element name="assign">
     <xsd:complexType>
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="length" type="xsd:int" use="required" />
+      <xsd:attribute name="unpack" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="field" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="verify">
+    <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
           <xsd:attribute name="label" type="xsd:string" />
           <xsd:attribute name="length" type="xsd:int" use="required" />
-          <xsd:attribute name="field" type="xsd:string" use="required" />
           <xsd:attribute name="unpack" type="xsd:string" />
+          <xsd:attribute name="checkcode" type="xsd:boolean" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="verify">
+  <xsd:element name="status">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="cx:case"></xsd:element>
@@ -218,8 +229,6 @@
       <xsd:attribute name="label" type="xsd:string" />
       <xsd:attribute name="length" type="xsd:int" use="required" />
       <xsd:attribute name="unpack" type="xsd:string"></xsd:attribute>
-      <xsd:attribute name="format" type="xsd:string" />
-      <xsd:attribute name="checkcode" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="case">

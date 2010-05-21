@@ -46,16 +46,10 @@ class DevStat < XmlDev
   end
 
   protected
-  def verify
+  def status
     raw=cut_frame
-    label="Verify:#{attr['label']} "
-    @v.err label+":No input file" unless raw
+    label="Status:#{attr['label']} "
     str=decode(raw)
-    if attr['checkcode']
-      @var[:ccr]=str
-      @v.msg(label+"Stored [#{str}]")
-      return raw
-    end
     pass=node_with_attr('type','pass').text
     node_with_text(str) {|e| #Match each case
       msg=label+e.attr['msg']+" [#{str}]"
@@ -71,6 +65,23 @@ class DevStat < XmlDev
       return raw
     }
     @v.err(label+":No error desctiption")
+  end
+
+  def verify
+    raw=cut_frame
+    label="Verify:#{attr['label']} "
+    str=decode(raw)
+    if attr['checkcode']
+      @var[:ccr]=str
+      @v.msg(label+"Stored [#{str}]")
+      return raw
+    end
+    if text == str
+      @v.msg(label+"OK [#{str}]")
+      return raw
+    else
+      @v.err(label+"Mismatch [#{str}]")
+    end
   end
 
   def assign
@@ -93,6 +104,8 @@ class DevStat < XmlDev
           case f.name
           when 'verify'
             str << f.verify
+          when 'status'
+            str << f.status
           when 'assign'
             str << f.assign
           end
@@ -118,7 +131,7 @@ class DevStat < XmlDev
   def cut_frame
     if l=attr['length']
       len=l.to_i
-      warn "Too short (#{@frame.size-len})" if @frame.size < len
+      @v.err("Too short (#{@frame.size-len})") if @frame.size < len
       return @frame.slice!(0,len)
     end
   end

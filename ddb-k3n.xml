@@ -23,16 +23,10 @@
       <data type="int" ref="cc" pack="C" />
     </cmdframe>
     <rspframe wait="1">
-      <verify label="Prefix" length="1" unpack="H*">
-        <case type="pass" msg="OK">02</case>
-        <case msg="Mismatch" type="error"></case>
-      </verify>
+      <verify label="Prefix" length="1" unpack="H*">02</verify>
       <ccrange method="bcc">
-        <verify label="Node" length="4">
-          <case type="pass" msg="OK">0000</case>
-          <case msg="Mismatch" type="error"></case>
-        </verify>
-        <verify label="ExitCode" length="2">
+        <verify label="Node" length="4">0000</verify>
+        <status label="ExitCode" length="2">
           <case type="pass" msg="OK">00</case>
           <case type="error" msg="CMD Error">0F</case>
           <case type="error" msg="Parity Error">10</case>
@@ -43,15 +37,12 @@
           <case type="error" msg="Sub Address Error">16</case>
           <case type="error" msg="Frame Length Error">18</case>
           <case msg="ExitCode Error" type="error"></case>
-        </verify>
+        </status>
         <select>
           <option id="getstat">
-            <verify label="MRC SRC" length="4">
-              <case type="pass" msg="OK">0101</case>
-              <case msg="Mismatch" type="error"></case>
-            </verify>
-            <verify label="Response Code" length="4">
-              <case type="pass" msg="Response Code OK">0000</case>
+            <verify label="MRC SRC" length="4">0101</verify>
+            <status label="Response Code" length="4">
+              <case type="pass" msg="OK">0000</case>
               <case type="error" msg="Cmd Length Over">1001</case>
               <case type="error" msg="Cmd Length Short">1002</case>
               <case type="error" msg="Parameter Error">1100</case>
@@ -59,14 +50,11 @@
               <case type="error" msg="Start Address Error">1103</case>
               <case type="error" msg="Action Error">2203</case>
               <case msg="ResponseCode Error" type="error"></case>
-            </verify>
+            </status>
             <assign label="Status" length="8" field="stat" />
           </option>
         </select>
-        <verify label="Suffix" length="1" unpack="H*">
-          <case type="pass" msg="OK">03</case>
-          <case msg="Mismatch" type="error"></case>
-        </verify>
+        <verify label="Suffix" length="1" unpack="H*">03</verify>
       </ccrange>
       <verify label="CheckCode" length="1" checkcode="true" unpack="C" />
     </rspframe>

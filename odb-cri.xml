@@ -8,56 +8,56 @@
       <session id="x0on" label="X0 ON">
         <command text="getstat"></command>
         <command text="output">
-          <par function="$stat | 0x01"></par>
+          <par type="formula">$stat | 0x01</par>
         </command>
         <command text="getstat"></command>
       </session>
       <session id="x0off" label="X0 OFF">
         <command text="getstat"></command>
         <command text="output">
-          <par function="$stat &amp; 0xfffe"></par>
+          <par type="formula">$stat &amp; 0xfffe</par>
         </command>
         <command text="getstat"></command>
       </session>
       <session id="x1on" label="X1 ON">
         <command text="getstat"></command>
         <command text="output">
-          <par function="$stat | 0x10"></par>
+          <par type="formula">$stat | 0x10</par>
         </command>
         <command text="getstat"></command>
       </session>
       <session id="x1off" label="X1 OFF">
         <command text="getstat"></command>
         <command text="output">
-          <par function="$stat &amp; 0xffef"></par>
+          <par type="formula">$stat &amp; 0xffef</par>
         </command>
         <command text="getstat"></command>
       </session>
       <session id="x2on" label="X2 ON">
         <command text="getstat"></command>
         <command text="output">
-          <par function="$stat | 0x100"></par>
+          <par type="formula">$stat | 0x100</par>
         </command>
         <command text="getstat"></command>
       </session>
       <session id="x2off" label="X2 OFF">
         <command text="getstat"></command>
         <command text="output">
-          <par function="$stat &amp; 0xfeff"></par>
+          <par type="formula">$stat &amp; 0xfeff</par>
         </command>
         <command text="getstat"></command>
       </session>
       <session id="x3on" label="X3 ON">
         <command text="getstat"></command>
         <command text="output">
-          <par function="$stat | 0x1000"></par>
+          <par type="formula">$stat | 0x1000</par>
         </command>
         <command text="getstat"></command>
       </session>
       <session id="x3off" label="X3 OFF">
         <command text="getstat"></command>
         <command text="output">
-          <par function="$stat &amp; 0xefff"></par>
+          <par type="formula">$stat &amp; 0xefff</par>
         </command>
         <command text="getstat"></command>
       </session>

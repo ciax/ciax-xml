@@ -8,56 +8,56 @@
       <session id="c2on" label="CAS2(S1) ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x01"/>
+          <par type="formula">$stat | 0x01</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="c2off" label="CAS2(S1) OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xfffe"/>
+          <par type="formula">$stat &amp; 0xfffe</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="c1on" label="CAS1(S2) ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x10"/>
+          <par type="formula">$stat | 0x10</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="c1off" label="CAS1(S2) OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xffef"/>
+          <par type="formula">$stat &amp; 0xffef</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="m2on" label="MOIRCS CR(S8) ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x100"/>
+          <par type="formula">$stat | 0x100</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="m2off" label="MOIRCS CR(S8) OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xfeff"/>
+          <par type="formula">$stat &amp; 0xfeff</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="m1on" label="MOIRCS MAIN(S9) ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x1000"/>
+          <par type="formula">$stat | 0x1000</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="m1off" label="MOIRCS MAIN(S9) OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xefff"/>
+          <par type="formula">$stat &amp; 0xefff</par>
         </command>
         <command text="getstat" />
       </session>
@@ -68,28 +68,28 @@
       <session id="caon" label="CAS BOTH HC ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x0011"/>
+          <par type="formula">$stat | 0x0011</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="caoff" label="CAS BOTH HC OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xffee"/>
+          <par type="formula">$stat &amp; 0xffee</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="maon" label="MOIRCS BOTH ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x1100"/>
+          <par type="formula">$stat | 0x1100</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="maoff" label="MOIRCS BOTH OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xeeff"/>
+          <par type="formula">$stat &amp; 0xeeff</par>
         </command>
         <command text="getstat" />
       </session>

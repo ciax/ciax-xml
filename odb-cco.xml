@@ -8,56 +8,56 @@
       <session id="f2on" label="CIAO(S6) ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x01" />
+          <par type="formula">$stat | 0x01</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="f2off" label="CIAO(S6) OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xfffe" />
+          <par type="formula">$stat &amp; 0xfffe</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="m1on" label="COMICS IMG(S4) ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x100" />
+          <par type="formula">$stat | 0x100</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="m1off" label="COMICS IMG(S4) OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xfeff" />
+          <par type="formula">$stat &amp; 0xfeff</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="m2on" label="COMICS SPEC(S5) ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x1000" />
+          <par type="formula">$stat | 0x1000</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="m2off" label="COMICS SPEC(S5) OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xefff" />
+          <par type="formula">$stat &amp; 0xefff</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="maon" label="COMICS BOTH ON">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat | 0x1100" />
+          <par type="formula">$stat | 0x1100</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="maoff" label="COMICS BOTH OFF">
         <command text="getstat" />
         <command text="output">
-          <par function="$stat &amp; 0xeeff" />
+          <par type="formula">$stat &amp; 0xeeff</par>
         </command>
         <command text="getstat" />
       </session>

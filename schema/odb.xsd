@@ -52,18 +52,14 @@
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
           <xsd:attribute name="label" type="xsd:string" />
-          <xsd:attribute name="format" type="xsd:string" />
-          <xsd:attribute name="type">
+          <xsd:attribute name="type" use="required">
             <xsd:simpleType>
               <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="int" />
-                <xsd:enumeration value="float" />
-                <xsd:enumeration value="string" />
+                <xsd:enumeration value="formula" />
+                <xsd:enumeration value="text" />
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:attribute>
-          <xsd:attribute name="function" type="xsd:string"></xsd:attribute>
-          <xsd:attribute name="text" type="xsd:string" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

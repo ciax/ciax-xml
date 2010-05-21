@@ -75,11 +75,11 @@ module ObjCmd
   def get_cmd(field)
     devcmd=[attributes['text']]
     each_element{|par|
-      if func=par.attributes['function']
+      str=par.text
+      if par.attributes['type'] == 'formula'
+        func=par.text
         str=eval(func.gsub(/\$([\w]+)/) { field[$1] })
         $ver.msg("Function:(#{func})=#{str}")
-      else
-        str=par.attributes['text']
       end
       devcmd << str
     }

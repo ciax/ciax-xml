@@ -29,7 +29,6 @@ loop {
       }
     rescue
       warn $!
-      warn $@
     end
   else
     view(odb.stat)

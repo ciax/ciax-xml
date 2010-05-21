@@ -48,23 +48,24 @@ class DevStat < XmlDev
   protected
   def status
     raw=cut_frame
-    label="Status:#{attr['label']} "
+    label="Status:#{attr['label']}:"
     str=decode(raw)
-    pass=node_with_attr('type','pass').text
-    node_with_text(str) {|e| #Match each case
+    each_node {|e| #Match each case
+      next if e.text && e.text != str
       msg=label+e.attr['msg']+" [#{str}]"
       case e.attr['type']
       when 'pass'
         @v.msg(msg)
       when 'warn'
-        @v.wrn(msg+" for [#{pass}]")
+        @v.wrn(msg)
       when 'error'
-        @v.err(msg+" for [#{pass}]")
+        @v.err(msg)
       end
       setcmd(e.attr['option']) if e.attr['option']
       return raw
     }
-    @v.err(label+":No error desctiption")
+    @v.wrn(label+":Unknown code [#{str}]")
+    raw
   end
 
   def store_cc

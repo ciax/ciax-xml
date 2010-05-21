@@ -179,41 +179,37 @@
         <fields>
           <int ref="x07" signed="true" />
         </fields>
-        <symbol type="range">
-          <range hl="alarm" msg="LOW" max="10"></range>
-          <range hl="normal" msg="OK" max="30"></range>
-          <range hl="alarm" msg="HIGH"></range>
+        <symbol hl="alarm" msg="HIGH">
+          <range_max hl="alarm" msg="LOW">10</range_max>
+          <range_max hl="normal" msg="OK">30</range_max>
         </symbol>
       </var>
       <var id="mdal" type="INT" label="Left Motor D/A">
         <fields>
           <int ref="x08" signed="true" />
         </fields>
-        <symbol type="range">
-          <range hl="alarm" msg="LOW" max="10"></range>
-          <range hl="normal" msg="OK" max="30"></range>
-          <range hl="alarm" msg="HIGH"></range>
+        <symbol hl="alarm" msg="HIGH">
+          <range_max hl="alarm" msg="LOW">10</range_max>
+          <range_max hl="normal" msg="OK">30</range_max>
         </symbol>
       </var>
       <var id="bvl" type="FLOAT" label="Battery Voltage">
         <fields>
           <float ref="x16" decimal="2" format="%2.2f" />
         </fields>
-        <symbol type="range">
-          <range hl="alarm" msg="LOW" max="20"></range>
-          <range hl="warn" msg="LESS" max="22"></range>
-          <range hl="normal" msg="OK" max="26"></range>
-          <range hl="warn" msg="FULL" max="28"></range>
-          <range hl="alarm" msg="HIGH"></range>
+        <symbol hl="alarm" msg="HIGH">
+          <range_max hl="alarm" msg="LOW">20</range_max>
+          <range_max hl="warn" msg="LESS">22</range_max>
+          <range_max hl="normal" msg="OK">26</range_max>
+          <range_max hl="warn" msg="FULL">28</range_max>
         </symbol>
       </var>
       <var id="ist" type="ENUM" label="Instrument">
         <fields>
           <int ref="x17" />
         </fields>
-        <symbol type="enum">
+        <symbol hl="warn" msg="N/A">
           <enum hl="normal" msg="MOIRCS">2</enum>
-          <enum hl="warn" msg="N/A"></enum>
         </symbol>
       </var>
       <var id="cpos" type="INT" label="Current Position">
@@ -230,9 +226,8 @@
         <fields>
           <int ref="x1b" />
         </fields>
-        <symbol type="enum">
+        <symbol hl="warn" msg="N/A">
           <enum hl="normal" msg="D">0</enum>
-          <enum hl="warn" msg="N/A"></enum>
           <enum hl="normal" msg="1(L)">1</enum>
           <enum hl="normal" msg="2(M)">2</enum>
           <enum hl="normal" msg="3(H)">3</enum>

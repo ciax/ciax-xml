@@ -121,45 +121,31 @@ module ObjStat
     set={'val'=>val}
     add(self,set,'id')
     return(set) unless symbol=elements['./symbol']
-    case symbol.attributes['type']
-    when 'range'
-      symbol.each_element {|range|
-        msg=range.attributes['msg']
-        if min=range.attributes['min']
-          if min.to_f > val.to_f
-            $ver.msg("Symbol:Greater than [#{min}](#{msg})?")
-            next 
-          else
-            add(range,set,'min')
-            break
-          end
-        elsif max=range.attributes['max']
-          if max.to_f < val.to_f
-            $ver.msg("Symbol:Less than [#{max}](#{msg})?")
-            next 
-          else
-            add(range,set,'max')
-            break
-          end
-        else
-          $ver.msg("Symbol:Else (#{msg})?")
-          add(range,set)
-          break
+    add(symbol,set)
+    symbol.each_element {|range|
+      msg=range.attributes['msg']
+      txt=range.text
+      case range.name
+      when 'range_min'
+        if txt.to_f > val.to_f
+          $ver.msg("Symbol:Greater than [#{txt}](#{msg})?")
+          next 
         end
-      }
-    else
-      symbol.each_element {|enum|
-        if enum.text && enum.text != val 
-          msg=enum.attributes['msg']
+      when 'range_max'
+        if txt.to_f < val.to_f
+          $ver.msg("Symbol:Less than [#{txt}](#{msg})?")
+          next 
+        end
+      when 'enum'
+        if txt != val
           $ver.msg("Symbol:Matches (#{msg})?")
           next 
-        else
-          add(enum,set)
-          break
         end
-      }
-    end
-    $ver.msg("Symbol:Matches [#{set['msg']}] for [#{set['val']}]")
+      end
+      add(range,set)
+      break
+    }
+    $ver.msg("Symbol:[#{set['msg']}] for [#{set['val']}]")
     set
   end
 

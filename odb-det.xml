@@ -3,66 +3,66 @@
   <object id="det" device="srm" label="CsEtr Controller" client="nc ltc-c 4001" server="socat - udp-l:25104,reuseaddr,fork">
     <controls>
       <session id="upd" label="Update Status">
-        <command text="getstat"/>
+        <command text="getstat" />
       </session>
       <session id="c3on" label="CIAX3 POWER ON">
         <command label="bit0 on" text="fset">
-          <par text="5"/>
+          <par type="text">5</par>
         </command>
       </session>
       <session id="c3off" label="CIAX3 POWER OFF">
         <command label="Bit 0 OFF" text="fset">
-          <par text="4"/>
+          <par type="text">4</par>
         </command>
       </session>
       <session id="emon" label="CIAX3 EMERGENCY ON">
         <command label="Bit 1 ON" text="fset">
-          <par text="50"/>
+          <par type="text">50</par>
         </command>
       </session>
       <session id="emoff" label="CIAX3 EMERGENCY OFF">
         <command label="Bit 1 OFF" text="fset">
-          <par text="40"/>
+          <par type="text">40</par>
         </command>
       </session>
       <session id="ccdon" label="CS CCD ON">
         <command label="Bit 2 ON" text="fset">
-          <par text="500"/>
+          <par type="text">500</par>
         </command>
       </session>
       <session id="ccdoff" label="CS CCD OFF">
         <command label="Bit 2 OFF" text="fset">
-          <par text="400"/>
+          <par type="text">400</par>
         </command>
       </session>
       <session id="lanon" label="CS LAN ON">
         <command label="Bit 3 ON" text="fset">
-          <par text="5000"/>
+          <par type="text">5000</par>
         </command>
       </session>
       <session id="lanoff" label="CS LAN OFF">
         <command label="Bit 3 OFF" text="fset">
-          <par text="4000"/>
+          <par type="text">4000</par>
         </command>
       </session>
       <session id="ipwon" label="CS IPW ON">
         <command label="Bit 4 ON" text="fset">
-          <par text="50000"/>
+          <par type="text">50000</par>
         </command>
       </session>
       <session id="ipwoff" label="CS IPW OFF">
         <command label="Bit 4 OFF" text="fset">
-          <par text="40000"/>
+          <par type="text">40000</par>
         </command>
       </session>
       <session id="ston" label="STOW PIN ON">
         <command label="Bit 5 ON" text="fset">
-          <par text="500000"/>
+          <par type="text">500000</par>
         </command>
       </session>
       <session id="stoff" label="STOW PIN OFF">
         <command label="Bit 5 OFF" text="fset">
-          <par text="400000"/>
+          <par type="text">400000</par>
         </command>
       </session>
     </controls>

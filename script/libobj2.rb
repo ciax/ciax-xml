@@ -44,11 +44,9 @@ class Obj
     @doc.elements['//status'].each_element {|var| # var
       var.extend ObjStat
       id="#{@obj}:#{var.attributes['id']}"
-      set=Hash.new
       val=var.get_val(@field)
-      var.get_symbol(val,set)
       $ver.msg("GetStat:#{id}=[#{val}]")
-      @stat[id]=set
+      @stat[id]=var.get_symbol(val)
     }
     @stat['time']['val']=Time.at(@field['time'].to_f)
     @f.save_json(@stat)
@@ -119,10 +117,10 @@ module ObjStat
     val
   end
 
-  def get_symbol(val,set)
-    set['val']=val
+  def get_symbol(val)
+    set={'val'=>val}
     add(self,set,'id')
-    symbol=elements['./symbol'] || return
+    return(set) unless symbol=elements['./symbol']
     case symbol.attributes['type']
     when 'range'
       symbol.each_element {|range|
@@ -162,6 +160,7 @@ module ObjStat
       }
     end
     $ver.msg("Symbol:Matches [#{set['msg']}] for [#{set['val']}]")
+    set
   end
 
   private

@@ -56,7 +56,7 @@
         </select>
         <verify label="Suffix" length="1" unpack="H*">03</verify>
       </ccrange>
-      <verify label="CheckCode" length="1" checkcode="true" unpack="C" />
+      <checkcode label="BCC" length="1" unpack="C" />
     </rspframe>
   </device>
 </ddb>

@@ -36,7 +36,7 @@ class DevStat < XmlDev
     @var.clear
     @frame=str
     get_field
-    check_cc
+    verify_cc
     @field['time']="%.3f" % time.to_f
     @f.save_stat(@field)
   end
@@ -67,15 +67,19 @@ class DevStat < XmlDev
     @v.err(label+":No error desctiption")
   end
 
+  def store_cc
+    raw=cut_frame
+    label="CheckCode:#{attr['label']} "
+    str=decode(raw)
+    @var[:ccr]=str
+    @var[:cclabel]=label
+    @v.msg(label+"Stored [#{str}]")
+  end
+
   def verify
     raw=cut_frame
     label="Verify:#{attr['label']} "
     str=decode(raw)
-    if attr['checkcode']
-      @var[:ccr]=str
-      @v.msg(label+"Stored [#{str}]")
-      return raw
-    end
     if text == str
       @v.msg(label+"OK [#{str}]")
       return raw
@@ -111,20 +115,24 @@ class DevStat < XmlDev
           end
         }
         e.checkcode(str)
+      when 'checkcode'
+        e.store_cc
       when 'verify'
         e.verify
+      when 'status'
+        e.status
       when 'assign'
         e.assign
       end
     }
   end
 
-  def check_cc
+  def verify_cc
     return unless @var[:ccr]
     if @var[:ccr] === @var['cc']
-      @v.msg("Verify:CheckCode OK [#{@var[:ccr]}]")
+      @v.msg(@var[:cclabel]+"OK [#{@var[:ccr]}]")
     else
-      @v.msg("Verify:CheckCode Mismatch [#{@var[:ccr]}] != [#{@var['cc']}]")
+      @v.msg(@var[:cclabel]+"Mismatch [#{@var[:ccr]}] != [#{@var['cc']}]")
     end
   end
 

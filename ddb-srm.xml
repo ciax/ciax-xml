@@ -52,7 +52,7 @@
           </option>
         </select>
       </ccrange>
-      <verify label="CheckCode" length="2" unpack="hex" checkcode="true" />
+      <checkcode label="BCC" length="2" unpack="hex" />
       <verify label="Terminater" length="1">*</verify>
     </rspframe>
   </device>

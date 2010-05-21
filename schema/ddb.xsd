@@ -197,6 +197,7 @@
         <xsd:element ref="cx:assign" />
         <xsd:element ref="cx:ccrange" />
         <xsd:element ref="cx:select" />
+        <xsd:element ref="cx:checkcode" />
       </xsd:choice>
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
     </xsd:complexType>
@@ -216,9 +217,15 @@
           <xsd:attribute name="label" type="xsd:string" />
           <xsd:attribute name="length" type="xsd:int" use="required" />
           <xsd:attribute name="unpack" type="xsd:string" />
-          <xsd:attribute name="checkcode" type="xsd:boolean" />
         </xsd:extension>
       </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="checkcode">
+    <xsd:complexType>
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="length" type="xsd:int" use="required" />
+      <xsd:attribute name="unpack" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="status">

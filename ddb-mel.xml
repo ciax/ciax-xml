@@ -68,7 +68,7 @@
     <rspframe wait="0">
       <verify label="SubHeader" length="6" unpack="H*">d40058580000</verify>
       <verify label="QHeader" length="5" unpack="H*">00ffff0300</verify>
-      <verify label="Response Data Length" length="2" unpack="v" checkcode="true" />
+      <checkcode label="Response Data Length" length="2" unpack="v" />
       <ccrange method="len">
         <status label="ExitCode" length="2" unpack="H*">
           <case type="pass" msg="OK">0000</case>

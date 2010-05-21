@@ -139,17 +139,6 @@
             <xsd:element ref="cx:range_max" minOccurs="1" maxOccurs="unbounded"></xsd:element>
             <xsd:element ref="cx:range_min" minOccurs="1" maxOccurs="unbounded" />
           </xsd:choice>
-          <xsd:attribute name="msg" type="xsd:string" />
-          <xsd:attribute name="hl">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="normal" />
-                <xsd:enumeration value="warn" />
-                <xsd:enumeration value="alarm" />
-                <xsd:enumeration value="hide" />
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>

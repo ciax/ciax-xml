@@ -127,17 +127,17 @@ module ObjStat
       txt=range.text
       case range.name
       when 'range_min'
-        if txt.to_f > val.to_f
+        if txt != '-INF' && txt.to_f > val.to_f
           $ver.msg("Symbol:Greater than [#{txt}](#{msg})?")
           next 
         end
       when 'range_max'
-        if txt.to_f < val.to_f
+        if txt != 'INF' && txt.to_f < val.to_f
           $ver.msg("Symbol:Less than [#{txt}](#{msg})?")
           next 
         end
       when 'enum'
-        if txt != val
+        if txt && txt != val
           $ver.msg("Symbol:Matches (#{msg})?")
           next 
         end

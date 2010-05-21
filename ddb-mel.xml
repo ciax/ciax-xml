@@ -10,7 +10,7 @@
       <data label="Q Header: PC Number" pack="H*">FF</data>
       <data label="Q Header: Request Unit I/O Number" pack="H*">FF03</data>
       <data label="Q Header: Request Unit Station Number" pack="H*">00</data>
-      <data label="Q Header: Send Data Length MSB" ref="cc" type="int" pack="C" />
+      <cc_cmd label="Q Header: Send Data Length MSB" type="int" pack="C" />
       <data label="Q Header: Send Data Length LSB" pack="H*">00</data>
       <ccrange method="len">
         <data label="Q Header: CPU Watch Timer" pack="H*">0100</data>
@@ -32,28 +32,28 @@
             <data label="Start Address" pack="H*">010100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*" ref="par"></data>
+            <par label="Data" pack="H*" />
           </option>
           <option id="set_pos" label="Set Pos to Jack [HH00]" type="config">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">030100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*" ref="par"></data>
+            <par label="Data" pack="H*" />
           </option>
           <option id="start" label="Start Trigger [HHHH]" type="action">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">020100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*" ref="par"></data>
+            <par label="Data" pack="H*" />
           </option>
           <option id="stop" label="Stop Trigger [HHHH]" type="action">
             <data label="Write region" pack="H*">01140000</data>
             <data label="Start Address" pack="H*">000100</data>
             <data label="Device Code" pack="H*">B4</data>
             <data label="Data Length" pack="H*">0100</data>
-            <data label="Data" pack="H*" ref="par"></data>
+            <par label="Data" pack="H*" />
           </option>
           <option id="clear" label="Clear Action Flags" type="config">
             <data label="Write region" pack="H*">01140000</data>
@@ -68,7 +68,7 @@
     <rspframe wait="0">
       <verify label="SubHeader" length="6" unpack="H*">d40058580000</verify>
       <verify label="QHeader" length="5" unpack="H*">00ffff0300</verify>
-      <checkcode label="Response Data Length" length="2" unpack="v" />
+      <cc_rsp label="Response Data Length" length="2" unpack="v" />
       <ccrange method="len">
         <status label="ExitCode" length="2" unpack="H*">
           <case type="pass" msg="OK">0000</case>

@@ -46,7 +46,7 @@ class XmlDev < XmlDb
       end
       chk=chk.to_s
       @v.msg("Calc:CC [#{method.upcase}] -> [#{chk}]")
-      set_var!({'cc' => chk})
+      set_var!({:ccc => chk})
       return chk
     end
     @v.err "CC No method"

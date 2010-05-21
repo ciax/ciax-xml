@@ -19,11 +19,11 @@
             <data label="Header Code">FK</data>
             <data label="Operand">CIO </data>
             <data label="Channel">0000</data>
-            <data ref="par" format="%016d"></data>
+            <par format="%016d" />
           </option>
         </select>
       </ccrange>
-      <data ref="cc" format="%02X" />
+      <cc_cmd format="%02X" />
       <data label="Suffix">*</data>
       <data label="Delimiter" pack="H*">0D</data>
     </cmdframe>
@@ -52,7 +52,7 @@
           </option>
         </select>
       </ccrange>
-      <checkcode label="BCC" length="2" unpack="hex" />
+      <cc_rsp label="BCC" length="2" unpack="hex" />
       <verify label="Terminater" length="1">*</verify>
     </rspframe>
   </device>

@@ -19,7 +19,7 @@ class DevCmd < XmlDev
   end
 
   def setpar(par=nil)
-    @var={'par'=>par}
+    @var={:par=>par}
     if par
       @property['par']=par
     else
@@ -46,7 +46,11 @@ class DevCmd < XmlDev
     each_node {|d|
       case d.name
       when 'data'
-        str << encode(d)
+        str << encode(d,d.text)
+      when 'cc_cmd'
+        str << encode(d,@var[:ccc])
+      when 'par'
+        str << encode(d,@var[:par])
       when 'ccrange'
         str << @ccstr
       else
@@ -57,8 +61,7 @@ class DevCmd < XmlDev
     str
   end
   
-  def encode(e)
-    str=e.text
+  def encode(e,str)
     if type=e.attr['type']
       case type
       when 'int'

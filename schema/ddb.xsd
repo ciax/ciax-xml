@@ -95,43 +95,13 @@
       <xsd:attribute name="port" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>
-  <!--Data types-->
-  <xsd:element name="data">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="label" type="xsd:string" />
-          <xsd:attribute name="format" type="xsd:string" />
-          <xsd:attribute name="pack" type="xsd:string" />
-          <xsd:attribute name="ref">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="cc" />
-                <xsd:enumeration value="par" />
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
-          <xsd:attribute name="type">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="int" />
-                <xsd:enumeration value="float" />
-                <xsd:enumeration value="string" />
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
+  <!--Shared frame-->
   <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="cx:select" />
-        <xsd:element ref="cx:data" />
-        <xsd:element ref="cx:verify" />
-        <xsd:element ref="cx:assign" />
-        <xsd:element ref="cx:status" />
+        <xsd:group ref="cx:cmd_elem" />
+        <xsd:group ref="cx:rsp_elem" />
       </xsd:choice>
       <xsd:attribute name="method">
         <!--Check Code Method-->
@@ -155,14 +125,8 @@
   <xsd:element name="option">
     <xsd:complexType>
       <xsd:choice>
-        <xsd:choice minOccurs="0" maxOccurs="unbounded">
-          <xsd:element ref="cx:data" />
-        </xsd:choice>
-        <xsd:choice minOccurs="0" maxOccurs="unbounded">
-          <xsd:element ref="cx:verify" />
-          <xsd:element ref="cx:assign" />
-          <xsd:element ref="cx:status" />
-        </xsd:choice>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:cmd_elem" />
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:rsp_elem"></xsd:group>
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" />
@@ -181,51 +145,95 @@
   <xsd:element name="cmdframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:data" />
+        <xsd:group ref="cx:cmd_elem" />
         <xsd:element ref="cx:select" />
         <xsd:element ref="cx:ccrange" />
+        <xsd:element ref="cx:cc_cmd" />
       </xsd:choice>
       <xsd:attribute name="wait" type="xsd:int"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:attributeGroup name="cmd_attr">
+    <xsd:attribute name="label" type="xsd:string" />
+    <xsd:attribute name="format" type="xsd:string" />
+    <xsd:attribute name="pack" type="xsd:string" />
+    <xsd:attribute name="type">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="int" />
+          <xsd:enumeration value="float" />
+          <xsd:enumeration value="string" />
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:attributeGroup>
+  <xsd:group name="cmd_elem">
+    <xsd:choice>
+      <xsd:element ref="cx:data" />
+      <xsd:element ref="cx:par"></xsd:element>
+    </xsd:choice>
+  </xsd:group>
+  <xsd:element name="data">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="cx:cmd_attr" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="par">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="cx:cmd_attr" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="cc_cmd">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="cx:cmd_attr" />
     </xsd:complexType>
   </xsd:element>
   <!--Response frame-->
   <xsd:element name="rspframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:verify"></xsd:element>
-        <xsd:element ref="cx:status" />
-        <xsd:element ref="cx:assign" />
-        <xsd:element ref="cx:ccrange" />
+        <xsd:group ref="cx:rsp_elem" />
         <xsd:element ref="cx:select" />
-        <xsd:element ref="cx:checkcode" />
+        <xsd:element ref="cx:ccrange" />
+        <xsd:element ref="cx:cc_rsp"></xsd:element>
       </xsd:choice>
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="assign">
+  <xsd:attributeGroup name="rsp_attr">
+    <xsd:attribute name="length" type="xsd:int" use="required" />
+    <xsd:attribute name="label" type="xsd:string" />
+    <xsd:attribute name="unpack" type="xsd:string"></xsd:attribute>
+  </xsd:attributeGroup>
+  <xsd:group name="rsp_elem">
+    <xsd:choice>
+      <xsd:element ref="cx:verify"></xsd:element>
+      <xsd:element ref="cx:assign" />
+      <xsd:element ref="cx:status" />
+    </xsd:choice>
+  </xsd:group>
+  <xsd:element name="cc_rsp">
     <xsd:complexType>
-      <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="length" type="xsd:int" use="required" />
-      <xsd:attribute name="unpack" type="xsd:string"></xsd:attribute>
-      <xsd:attribute name="field" type="xsd:string" use="required" />
+      <xsd:attributeGroup ref="cx:rsp_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="verify">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attribute name="label" type="xsd:string" />
-          <xsd:attribute name="length" type="xsd:int" use="required" />
-          <xsd:attribute name="unpack" type="xsd:string" />
+          <xsd:attributeGroup ref="cx:rsp_attr" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="checkcode">
+  <xsd:element name="assign">
     <xsd:complexType>
-      <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="length" type="xsd:int" use="required" />
-      <xsd:attribute name="unpack" type="xsd:string" />
+      <xsd:attributeGroup ref="cx:rsp_attr" />
+      <xsd:attribute name="field" type="xsd:string" use="required" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="status">
@@ -233,9 +241,7 @@
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="cx:case"></xsd:element>
       </xsd:choice>
-      <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="length" type="xsd:int" use="required" />
-      <xsd:attribute name="unpack" type="xsd:string"></xsd:attribute>
+      <xsd:attributeGroup ref="cx:rsp_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="case">

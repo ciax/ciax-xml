@@ -14,7 +14,7 @@
         </option>
         <option id="output" type="action" label="OUTPUT [HHHH]">
           <data>SO</data>
-          <data ref="par" type="int" pack="n"></data>
+          <par type="int" pack="n" />
         </option>
       </select>
     </cmdframe>

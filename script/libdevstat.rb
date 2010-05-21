@@ -116,7 +116,7 @@ class DevStat < XmlDev
           end
         }
         e.checkcode(str)
-      when 'checkcode'
+      when 'cc_rsp'
         e.store_cc
       when 'verify'
         e.verify
@@ -130,10 +130,10 @@ class DevStat < XmlDev
 
   def verify_cc
     return unless @var[:ccr]
-    if @var[:ccr] === @var['cc']
+    if @var[:ccr] === @var[:ccc]
       @v.msg(@var[:cclabel]+"OK [#{@var[:ccr]}]")
     else
-      @v.msg(@var[:cclabel]+"Mismatch [#{@var[:ccr]}] != [#{@var['cc']}]")
+      @v.msg(@var[:cclabel]+"Mismatch [#{@var[:ccr]}] != [#{@var[:ccc]}]")
     end
   end
 

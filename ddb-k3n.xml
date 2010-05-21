@@ -20,7 +20,7 @@
         </select>
         <data label="Suffix" pack="H*">03</data>
       </ccrange>
-      <data type="int" ref="cc" pack="C" />
+      <cc_cmd type="int" pack="C" />
     </cmdframe>
     <rspframe wait="1">
       <verify label="Prefix" length="1" unpack="H*">02</verify>
@@ -56,7 +56,7 @@
         </select>
         <verify label="Suffix" length="1" unpack="H*">03</verify>
       </ccrange>
-      <checkcode label="BCC" length="1" unpack="C" />
+      <cc_rsp label="BCC" length="1" unpack="C" />
     </rspframe>
   </device>
 </ddb>

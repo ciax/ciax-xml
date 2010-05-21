@@ -12,10 +12,3 @@ rescue RuntimeError
   abort $!.to_s
 end
 print Marshal.dump stat
-
-
-
-
-
-
-

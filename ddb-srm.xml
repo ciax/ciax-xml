@@ -29,31 +29,31 @@
     </cmdframe>
     <rspframe wait="0">
       <ccrange method="bcc">
-        <verify length="1">
-          <case type="pass" msg="Prefix OK">@</case>
-          <case msg="Prefix mismatch" type="error"></case>
+        <verify label="Prefix" length="1">
+          <case type="pass" msg="OK">@</case>
+          <case msg="Mismatch" type="error"></case>
         </verify>
         <select>
           <option id="getmodel">
-            <verify length="4">
-              <case type="pass" msg="Command Code OK">00MM</case>
-              <case msg="Command Code mismatch" type="error"></case>
+            <verify label="Command Code" length="4">
+              <case msg="OK" type="pass">00MM</case>
+              <case msg="Mismatch" type="error"></case>
             </verify>
-            <verify length="2">
-              <case type="pass" msg="Response Code OK">00</case>
-              <case type="error" msg="Response Code mismatch"></case>
+            <verify label="Response Code" length="2">
+              <case msg="OK" type="pass">00</case>
+              <case msg="Mismatch" type="error"></case>
             </verify>
             <!--Big endian-->
             <assign field="model" length="2" />
           </option>
           <option id="getstat">
-            <verify length="4">
-              <case type="pass" msg="Command Code OK">00RR</case>
-              <case msg="Command Code mismatch" type="error"></case>
+            <verify label="Command Code" length="4">
+              <case msg="OK" type="pass">00RR</case>
+              <case msg="Mismatch" type="error"></case>
             </verify>
-            <verify length="2">
-              <case type="pass" msg="Response Code OK">00</case>
-              <case type="error" msg="Response Code mismatch"></case>
+            <verify label="Response Code" length="2">
+              <case msg="OK" type="pass">00</case>
+              <case msg="Mismatch" type="error"></case>
             </verify>
             <!--Big endian-->
             <assign field="c1d3" length="1" />
@@ -62,21 +62,21 @@
             <assign field="c1d0" length="1" />
           </option>
           <option id="fset">
-            <verify length="4">
-              <case type="pass" msg="Command Code OK">00FK</case>
-              <case msg="Command Code mismatch" type="error"></case>
+            <verify length="4" label="Command Code">
+              <case msg="OK" type="pass">00FK</case>
+              <case msg="Mismatch" type="error"></case>
             </verify>
-            <verify length="2">
-              <case type="pass" msg="Exit Code OK">00</case>
-              <case msg="Exit Code NG" type="error"></case>
+            <verify label="Exit Code" length="2">
+              <case msg="OK" type="pass">00</case>
+              <case msg="NG" type="error"></case>
             </verify>
           </option>
         </select>
       </ccrange>
-      <verify length="2" unpack="hex" checkcode="true" />
-      <verify length="1">
-        <case type="pass" msg="Terminater OK">*</case>
-        <case msg="Terminater mismatch" type="error"></case>
+      <verify label="CheckCode" length="2" unpack="hex" checkcode="true" />
+      <verify label="Terminater" length="1">
+        <case msg="OK" type="pass">*</case>
+        <case msg="Mismatch" type="error"></case>
       </verify>
     </rspframe>
   </device>

@@ -67,17 +67,17 @@
     </cmdframe>
     <rspframe wait="0">
       <verify label="SubHeader" length="6" unpack="H*">
-        <case type="pass" msg="SubHeader OK">d40058580000</case>
-        <case type="error" msg="SubHeader mismatch"></case>
+        <case type="pass" msg="OK">d40058580000</case>
+        <case msg="Mismatch" type="error"></case>
       </verify>
       <verify label="QHeader" length="5" unpack="H*">
-        <case type="pass" msg="QHeader OK">00ffff0300</case>
-        <case type="error" msg="QHeader mismatch"></case>
+        <case msg="OK" type="pass">00ffff0300</case>
+        <case msg="Mismatch" type="error"></case>
       </verify>
       <verify label="Response Data Length" length="2" unpack="v" checkcode="true" />
       <ccrange method="len">
-        <verify label="Exit Code" length="2" unpack="H*">
-          <case type="pass" msg="ExitCode OK">0000</case>
+        <verify label="ExitCode" length="2" unpack="H*">
+          <case type="pass" msg="OK">0000</case>
           <case msg="RW Region Error" type="warn" option="errframe">0200</case>
           <case msg="CMD Code Error" type="warn" option="errframe">5000</case>
           <case msg="Devide Num Error" type="warn" option="errframe">5600</case>

@@ -67,11 +67,6 @@
       </session>
     </controls>
     <status>
-      <var id="cod" type="ENUM" label="Response Code">
-        <fields>
-          <string ref="rc" />
-        </fields>
-      </var>
       <var id="iid" type="ENUM" label="CAS INST ID">
         <fields>
           <string ref="c1d2" />
@@ -131,6 +126,7 @@
         </fields>
         <symbol>
           <enum hl="alarm" msg="ON">1</enum>
+          <enum hl="normal" msg="OFF">0</enum>
         </symbol>
       </var>
       <var id="lan" type="ENUM" label="CAS LAN PW">

@@ -48,16 +48,17 @@ class DevStat < XmlDev
   protected
   def verify
     raw=cut_frame
-    @v.err "'Verify:No input file" unless raw
+    label="Verify:#{attr['label']} "
+    @v.err label+":No input file" unless raw
     str=decode(raw)
     if attr['checkcode']
       @var[:ccr]=str
-      @v.msg("Store:CC [#{str}]")
+      @v.msg(label+"Stored [#{str}]")
       return raw
     end
     pass=node_with_attr('type','pass').text
     node_with_text(str) {|e| #Match each case
-      msg='Verify:'+e.attr['msg']+" [#{str}]"
+      msg=label+e.attr['msg']+" [#{str}]"
       case e.attr['type']
       when 'pass'
         @v.msg(msg)
@@ -69,7 +70,7 @@ class DevStat < XmlDev
       setcmd(e.attr['option']) if e.attr['option']
       return raw
     }
-    @v.err "Verify:No error desctiption for #{self['label']}"
+    @v.err(label+":No error desctiption")
   end
 
   def assign
@@ -108,9 +109,9 @@ class DevStat < XmlDev
   def check_cc
     return unless @var[:ccr]
     if @var[:ccr] === @var['cc']
-      @v.msg("Verify:CC OK [#{@var[:ccr]}]")
+      @v.msg("Verify:CheckCode OK [#{@var[:ccr]}]")
     else
-      @v.msg("Verify:CC Mismatch [#{@var[:ccr]}] != [#{@var['cc']}]")
+      @v.msg("Verify:CheckCode Mismatch [#{@var[:ccr]}] != [#{@var['cc']}]")
     end
   end
 

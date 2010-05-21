@@ -24,16 +24,16 @@
     </cmdframe>
     <rspframe wait="1">
       <verify label="Prefix" length="1" unpack="H*">
-        <case type="pass" msg="Prefix OK">02</case>
-        <case msg="Prefix mismatch" type="error"></case>
+        <case type="pass" msg="OK">02</case>
+        <case msg="Mismatch" type="error"></case>
       </verify>
       <ccrange method="bcc">
         <verify label="Node" length="4">
-          <case type="pass" msg="Node OK">0000</case>
-          <case msg="Node mismatch" type="warn"></case>
+          <case type="pass" msg="OK">0000</case>
+          <case msg="Mismatch" type="error"></case>
         </verify>
-        <verify label="Exit Code" length="2">
-          <case type="pass" msg="ExitCode OK">00</case>
+        <verify label="ExitCode" length="2">
+          <case type="pass" msg="OK">00</case>
           <case type="error" msg="CMD Error">0F</case>
           <case type="error" msg="Parity Error">10</case>
           <case type="error" msg="Fleming Error">11</case>
@@ -47,8 +47,8 @@
         <select>
           <option id="getstat">
             <verify label="MRC SRC" length="4">
-              <case type="pass" msg="Header OK">0101</case>
-              <case msg="Header mismatch" type="error"></case>
+              <case type="pass" msg="OK">0101</case>
+              <case msg="Mismatch" type="error"></case>
             </verify>
             <verify label="Response Code" length="4">
               <case type="pass" msg="Response Code OK">0000</case>
@@ -63,12 +63,12 @@
             <assign label="Status" length="8" field="stat" />
           </option>
         </select>
-        <verify label="Prefix" length="1" unpack="H*">
-          <case type="pass" msg="Suffix OK">03</case>
-          <case msg="Suffix mismatch" type="error"></case>
+        <verify label="Suffix" length="1" unpack="H*">
+          <case type="pass" msg="OK">03</case>
+          <case msg="Mismatch" type="error"></case>
         </verify>
       </ccrange>
-      <verify label="Check Code" length="1" checkcode="true" unpack="C" />
+      <verify label="CheckCode" length="1" checkcode="true" unpack="C" />
     </rspframe>
   </device>
 </ddb>

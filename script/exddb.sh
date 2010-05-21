@@ -1,6 +1,5 @@
 #!/bin/bash
-list="$*"
-for dev in ${list:-mel srm k3n bbe}; do
+for dev in ${1:-mel srm k3n bbe}; do
     input="$HOME/.var/${dev}_rcv_getstat.bin"
     echo "#[$dev]#"
     {

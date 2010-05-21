@@ -91,11 +91,11 @@ class DevStat < XmlDev
 
   def assign
     raw=cut_frame
-    if fld=attr['field']
-      str=decode(raw) 
-      @v.msg("Assign: [#{fld}] <- [#{str}]")
-      @field[fld]=str
-    end
+    fld=attr['field']
+    label="Assign:#{attr['label']} "
+    str=decode(raw) 
+    @v.msg(label+"[#{fld}] <- [#{str}]")
+    @field[fld]=str
     raw
   end
 

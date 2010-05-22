@@ -4,7 +4,7 @@ require "libverbose"
 class IoFile
   include JSON
   VarDir="#{ENV['HOME']}/.var"
-  JsonDir="/var/www/json"
+  JsonDir=VarDir+"/json"
 
   def initialize(type)
     @type=type

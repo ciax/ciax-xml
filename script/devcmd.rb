@@ -14,7 +14,7 @@ end
 begin
   e.setpar(ARGV.shift)
   puts e.devcmd
-rescue IndexError
+rescue IndexError,RuntimeError
   abort $!.to_s
 end
 

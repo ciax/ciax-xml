@@ -19,7 +19,7 @@
             <data label="Header Code">FK</data>
             <data label="Operand">CIO </data>
             <data label="Channel">0000</data>
-            <par format="%016d" />
+            <par type="int" format="%016d" valid="[0-9]+" />
           </option>
         </select>
       </ccrange>

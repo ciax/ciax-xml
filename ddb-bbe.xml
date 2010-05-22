@@ -12,9 +12,9 @@
           <data>SD</data>
           <data label="msb" pack="H*">1111</data>
         </option>
-        <option id="output" type="action" label="OUTPUT [HHHH]">
+        <option id="output" type="action" label="OUTPUT [DDDDD]">
           <data>SO</data>
-          <par type="int" pack="n" />
+          <par type="int" pack="n" valid="[0-9]+" />
         </option>
       </select>
     </cmdframe>

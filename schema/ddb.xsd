@@ -185,6 +185,7 @@
   <xsd:element name="par">
     <xsd:complexType>
       <xsd:attributeGroup ref="cx:cmd_attr" />
+      <xsd:attribute name="valid" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="cc_cmd">

@@ -24,12 +24,14 @@ class DevCmd < XmlDev
   end    
 
   def devcmd
+    cid=cmd_id
+    return @var[cid] if @var[cid]
     each_node('./ccrange') {|e|
       @v.msg("Entering CC range")
       @ccstr=e.get_string
       e.checkcode(@ccstr)
     }
-    get_string
+    @var[cid]=get_string
   end
 
   def cmd_id
@@ -46,7 +48,7 @@ class DevCmd < XmlDev
       when 'cc_cmd'
         str << d.encode(@var[:ccc])
       when 'par'
-        str << d.encode(@var[:par])
+        str << d.validation(@var[:par])
       when 'ccrange'
         str << @ccstr
       else
@@ -56,7 +58,15 @@ class DevCmd < XmlDev
     }
     str
   end
-  
+
+  def validation(str)
+    if v=attr['valid']
+      raise "No parameter" unless str
+      raise "Parameter invalid" unless /^#{v}$/ =~ str
+    end
+    encode(str)
+  end
+
   def encode(str)
     if type=attr['type']
       case type

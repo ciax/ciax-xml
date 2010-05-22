@@ -9,13 +9,8 @@ class DevCmd < XmlDev
   end
 
   def setcmd(id)
-    @sel=@doc.select_id(id,'//cmdframe/')
-#    begin
-#      super(id)
-#    rescue
-#      @doc.list_id('//cmdframe/')
-#      raise ("No such a command")
-#    end
+    @sel=@doc.select_id('//cmdframe/',id)
+    @property['cmd']=id
     self
   end
 

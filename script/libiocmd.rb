@@ -3,7 +3,7 @@ require "libverbose"
 
 class IoCmd
 
-  def initialize(iocmd,timeout=0.2)
+  def initialize(iocmd,timeout=1)
     abort "No IO command" unless iocmd
     @to=timeout
     @v=Verbose.new('IOCMD:'+iocmd)

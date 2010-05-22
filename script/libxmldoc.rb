@@ -19,16 +19,15 @@ class XmlDoc < Document
     @property=root.elements.first.attributes
   end
 
-  def select_id(id,xpath,default=nil)
+  def select_id(xpath,id,default=nil)
     if e=elements[xpath+"/[@id='#{id}']"]
       return e 
     elsif default
       return e if e=elements[xpath+"/[@id='#{default}']"]
-      raise "Send Only"
     else
       list_id(xpath)
-      raise "No such ID"
     end
+    raise "No such ID"
   end
 
   # Error Handling

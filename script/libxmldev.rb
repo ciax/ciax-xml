@@ -12,12 +12,6 @@ class XmlDev < XmlDb
 
   # Public Method
   public
-  def setcmd(cmd)
-    @sel=@cn.elements[".//[@id='#{cmd}']"] || raise("No such command")
-    @property['cmd']=cmd
-    self
-  end
-
   def cmd_id(str)
     [str,@property['cmd'],@property['par']].compact.join('_')
   end

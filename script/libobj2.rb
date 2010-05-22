@@ -54,15 +54,11 @@ class Obj
 
   protected
   def control_id(id)
-    if e=@doc.elements["//controls//[@id='#{id}']"]
-      if ref=e.attributes['ref']
-        return control_id(ref)
-      end
-      return e
-    else
-      @doc.list_id("//controls/")
-      raise "No such ID"
+    e=@doc.select_id('//controls/',id)
+    if ref=e.attributes['ref']
+      return control_id(ref)
     end
+    return e
   end
 
 end

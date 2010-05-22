@@ -4,15 +4,16 @@ require "libxmldb"
 class XmlDev < XmlDb
   attr_reader :property
   def initialize(doc,xpath)
-    super(doc,"#{doc.root.name}/#{doc.property['id']}".upcase)
-    set_xpath!(xpath)
-    @property={'id'=>doc.property['id']}
+    id=doc.property['id']
+    super(doc,xpath,"#{doc.root.name}/#{id}".upcase)
+    @property={'id'=>id}
+    @var=Hash.new
   end
 
   # Public Method
   public
   def setcmd(cmd)
-    @sel=elem_with_id(cmd)
+    @sel=@cn.elements[".//[@id='#{cmd}']"] || raise("No such command")
     @property['cmd']=cmd
     self
   end
@@ -21,12 +22,12 @@ class XmlDev < XmlDb
     [str,@property['cmd'],@property['par']].compact.join('_')
   end
 
-  def each_node
-    super {|e|
+  def each_node(xpath=nil)
+    super(xpath) {|e|
       if e.name == 'select'
         @v.err "ID not selected" unless @sel
         @v.msg("Enterning Select Node")
-        @sel.elements.each {|s| yield copy_self(s) }
+        @sel.each_element {|s| yield copy_self(s) }
       else
         yield e
       end
@@ -46,7 +47,7 @@ class XmlDev < XmlDb
       end
       chk=chk.to_s
       @v.msg("Calc:CC [#{method.upcase}] -> [#{chk}]")
-      set_var!({:ccc => chk})
+      @var[:ccc] = chk
       return chk
     end
     @v.err "CC No method"

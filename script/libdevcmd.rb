@@ -12,7 +12,7 @@ class DevCmd < XmlDev
     begin
       super(id)
     rescue
-      list_id('./')
+      @doc.list_id('//cmdframe/')
       raise ("No such a command")
     end
     self
@@ -28,7 +28,7 @@ class DevCmd < XmlDev
   end    
 
   def devcmd
-    node_with_name('ccrange') {|e|
+    each_node('./ccrange') {|e|
       @v.msg("Entering CC range")
       @ccstr=e.get_string
       e.checkcode(@ccstr)
@@ -46,11 +46,11 @@ class DevCmd < XmlDev
     each_node {|d|
       case d.name
       when 'data'
-        str << encode(d,d.text)
+        str << d.encode(d.text)
       when 'cc_cmd'
-        str << encode(d,@var[:ccc])
+        str << d.encode(@var[:ccc])
       when 'par'
-        str << encode(d,@var[:par])
+        str << d.encode(@var[:par])
       when 'ccrange'
         str << @ccstr
       else
@@ -61,8 +61,8 @@ class DevCmd < XmlDev
     str
   end
   
-  def encode(e,str)
-    if type=e.attr['type']
+  def encode(str)
+    if type=attr['type']
       case type
       when 'int'
         str=str.to_i
@@ -70,12 +70,12 @@ class DevCmd < XmlDev
         str=str.to_f
       end
     end
-    if pack=e.attr['pack']
+    if pack=attr['pack']
       code=[str].pack(pack)
       @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
       str=code
     end
-    e.format(str)
+    format(str)
   end
 
 end

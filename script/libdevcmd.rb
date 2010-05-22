@@ -15,7 +15,7 @@ class DevCmd < XmlDev
   end
 
   def setpar(par=nil)
-    @var={:par=>par}
+    @var[:par]=par
     if par
       @property['par']=par
     else
@@ -25,7 +25,10 @@ class DevCmd < XmlDev
 
   def devcmd
     cid=cmd_id
-    return @var[cid] if @var[cid]
+    if cache=@var[cid]
+      @v.msg("Command cache found")
+      return cache
+    end 
     each_node('./ccrange') {|e|
       @v.msg("Entering CC range")
       @ccstr=e.get_string

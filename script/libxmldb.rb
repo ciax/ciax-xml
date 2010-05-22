@@ -32,31 +32,13 @@ class XmlDb
   end
 
   def elements(xpath='.')
-    copy_self(@cn.elements[xpath])
-  end
-
-  def child_node # Node pick up for macro
-    copy_self(@cn.elements[1])
+    e=@cn.elements[xpath] || raise("No XPath")
+    copy_self(e)
   end
 
   def next_node! # Node pick up for macro
     @cn=@cn.next_element
     self
-  end
-
-  def elem_with_id(id) # Interface
-    @cn.elements[".//[@id='#{id}']"] || raise("No such an id")
-  end
-
-  def node_with_id(id)
-    @v.msg("Select Node with [#{id}]")
-    begin
-      e=elem_with_id(id)
-    rescue
-      list_id('./')
-      raise ("No such a command")
-    end
-    copy_self(e)
   end
 
   # Text Convert

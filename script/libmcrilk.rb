@@ -16,13 +16,14 @@ class McrIlk < XmlDb
   public
   def setmcr(id)
     begin
-      e=node_with_id(id).child_node
+      e=elements("//macro[@id='#{id}']/*[1]")
       p "SETID #{id}"
       e.mcr=id
       e.state='check'
       return e
     rescue
-      puts $!
+      @doc.list_id('./')
+      puts ("No such command")
       clone
     end
   end

@@ -199,29 +199,26 @@
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="cx:rsp_elem" />
         <xsd:element ref="cx:select" />
+        <xsd:element ref="cx:cc_rsp" />
         <xsd:element ref="cx:ccrange" />
-        <xsd:element ref="cx:cc_rsp"></xsd:element>
       </xsd:choice>
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:attributeGroup name="rsp_attr">
-    <xsd:attribute name="length" type="xsd:int" use="required" />
-    <xsd:attribute name="label" type="xsd:string" />
-    <xsd:attribute name="unpack" type="xsd:string"></xsd:attribute>
-  </xsd:attributeGroup>
   <xsd:group name="rsp_elem">
     <xsd:choice>
       <xsd:element ref="cx:verify"></xsd:element>
       <xsd:element ref="cx:assign" />
-      <xsd:element ref="cx:status" />
+      <xsd:element ref="cx:rspcode" />
+      <xsd:element ref="cx:repeat_assign"></xsd:element>
     </xsd:choice>
   </xsd:group>
-  <xsd:element name="cc_rsp">
-    <xsd:complexType>
-      <xsd:attributeGroup ref="cx:rsp_attr" />
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:attributeGroup name="rsp_attr">
+    <xsd:attribute name="label" type="xsd:string" />
+    <xsd:attribute name="delimiter" type="xsd:string"></xsd:attribute>
+    <xsd:attribute name="length" type="xsd:int" />
+    <xsd:attribute name="unpack" type="xsd:string" />
+  </xsd:attributeGroup>
   <xsd:element name="verify">
     <xsd:complexType>
       <xsd:simpleContent>
@@ -233,15 +230,34 @@
   </xsd:element>
   <xsd:element name="assign">
     <xsd:complexType>
-      <xsd:attributeGroup ref="cx:rsp_attr" />
-      <xsd:attribute name="field" type="xsd:string" use="required" />
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="cx:rsp_attr" />
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="status">
+  <xsd:element name="repeat_assign">
     <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:case"></xsd:element>
-      </xsd:choice>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="cx:rsp_attr" />
+          <xsd:attribute name="min" type="xsd:int"></xsd:attribute>
+          <xsd:attribute name="max" type="xsd:int" use="required"></xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="cc_rsp">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="cx:rsp_attr" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="rspcode">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="cx:case"></xsd:element>
+      </xsd:sequence>
       <xsd:attributeGroup ref="cx:rsp_attr" />
     </xsd:complexType>
   </xsd:element>

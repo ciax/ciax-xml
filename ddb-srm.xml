@@ -1,59 +1,59 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
-  <device id="srm" label="OMRON SRM1">
-    <serial speed="9600" databit="7" parity="EVEN" stopbit="1" flowctl="NONE" />
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='srm' label='OMRON SRM1'>
+    <serial databit='7' flowctl='NONE' parity='EVEN' speed='9600' stopbit='1'/>
     <cmdframe>
-      <ccrange method="bcc">
-        <data label="Prefix">@</data>
-        <data label="Device No.">00</data>
+      <ccrange method='bcc'>
+        <data label='Prefix'>@</data>
+        <data label='Device No.'>00</data>
         <select>
-          <option id="getmodel" type="stat" label="Get Model Code">
-            <data label="Header Code">MM</data>
+          <option id='getmodel' label='Get Model Code' type='stat'>
+            <data label='Header Code'>MM</data>
           </option>
-          <option id="getstat" type="stat" label="Get Status">
-            <data label="Header Code">RR</data>
-            <data label="Start Channel">0000</data>
-            <data label="length">0001</data>
+          <option id='getstat' label='Get Status' type='stat'>
+            <data label='Header Code'>RR</data>
+            <data label='Start Channel'>0000</data>
+            <data label='length'>0001</data>
           </option>
-          <option id="fset" type="action" label="Multiple Forced Set [D*16]">
-            <data label="Header Code">FK</data>
-            <data label="Operand">CIO </data>
-            <data label="Channel">0000</data>
-            <par type="int" format="%016d" valid="[0-9]+" />
+          <option id='fset' label='Multiple Forced Set [D*16]' type='action'>
+            <data label='Header Code'>FK</data>
+            <data label='Operand'>CIO </data>
+            <data label='Channel'>0000</data>
+            <par format='%016d' type='int' valid='[0-9]+'/>
           </option>
         </select>
       </ccrange>
-      <cc_cmd format="%02X" />
-      <data label="Suffix">*</data>
-      <data label="Delimiter" pack="H*">0D</data>
+      <cc_cmd format='%02X'/>
+      <data label='Suffix'>*</data>
+      <data label='Delimiter' pack='H*'>0D</data>
     </cmdframe>
-    <rspframe wait="0">
-      <ccrange method="bcc">
-        <verify label="Prefix" length="1">@</verify>
+    <rspframe wait='0'>
+      <ccrange method='bcc'>
+        <verify label='Prefix' length='1'>@</verify>
         <select>
-          <option id="getmodel">
-            <verify label="Command Code" length="4">00MM</verify>
-            <verify label="Response Code" length="2">00</verify>
+          <option id='getmodel'>
+            <verify label='Command Code' length='4'>00MM</verify>
+            <verify label='Response Code' length='2'>00</verify>
             <!--Big endian-->
-            <assign label="Model Number" field="model" length="2" />
+            <assign label='Model Number' length='2'/>
           </option>
-          <option id="getstat">
-            <verify label="Command Code" length="4">00RR</verify>
-            <verify label="Response Code" length="2">00</verify>
+          <option id='getstat'>
+            <verify label='Command Code' length='4'>00RR</verify>
+            <verify label='Response Code' length='2'>00</verify>
             <!--Big endian-->
-            <assign label="CH1 bit12-15" field="c1d3" length="1" />
-            <assign label="CH1 bit8-11" field="c1d2" length="1" />
-            <assign label="CH1 bit4-7" field="c1d1" length="1" />
-            <assign label="CH1 bit0-3" field="c1d0" length="1" />
+            <assign label='CH1 bit12-15' length='1'/>
+            <assign label='CH1 bit8-11' length='1'>c1d2</assign>
+            <assign label='CH1 bit4-7' length='1'>c1d1</assign>
+            <assign label='CH1 bit0-3' length='1'>c1d0</assign>
           </option>
-          <option id="fset">
-            <verify length="4" label="Command Code">00FK</verify>
-            <verify label="Exit Code" length="2">00</verify>
+          <option id='fset'>
+            <verify label='Command Code' length='4'>00FK</verify>
+            <verify label='Exit Code' length='2'>00</verify>
           </option>
         </select>
       </ccrange>
-      <cc_rsp label="BCC" length="2" unpack="hex" />
-      <verify label="Terminater" length="1">*</verify>
+      <cc_rsp label='BCC' length='2' unpack='hex'/>
+      <verify label='Terminater' length='1'>*</verify>
     </rspframe>
   </device>
 </ddb>

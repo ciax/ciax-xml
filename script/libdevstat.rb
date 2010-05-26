@@ -43,8 +43,8 @@ class DevStat < XmlDev
   end
 
   protected
-  def status
-    raw=cut_frame
+  def rspcode(ary=nil)
+    raw=cut_frame(ary)
     label="Status:#{attr['label']}:"
     str=decode(raw)
     each_node {|e| #Match each case
@@ -66,65 +66,75 @@ class DevStat < XmlDev
   end
 
   def store_cc
-    raw=cut_frame
+    str=cut_frame(nil)
     label="CheckCode:#{attr['label']} "
-    str=decode(raw)
     @var[:ccr]=str
     @var[:cclabel]=label
     @v.msg(label+"Stored [#{str}]")
   end
-
-  def verify
-    raw=cut_frame
+  
+  def verify(ary=nil)
+    str=cut_frame(ary)
     label="Verify:#{attr['label']} "
-    str=decode(raw)
     if text == str
       @v.msg(label+"OK [#{str}]")
-      return raw
+      return str
     else
-      @v.err(label+"Mismatch [#{str}]")
+      @v.err(label+"Mismatch [#{str}] != [#{text}]")
     end
   end
-
-  def assign
-    raw=cut_frame
-    fld=attr['field']
+  
+  def assign(fld,ary=nil)
+    str=cut_frame(ary)
     label="Assign:#{attr['label']} "
-    str=decode(raw) 
     @v.msg(label+"[#{fld}] <- [#{str}]")
     @field[fld]=str
-    raw
   end
 
+  def repeat_assign(ary=nil)
+    min=attr['min']||0
+    max=attr['max']
+    fmt=text
+    @v.msg("Repeat Assign:[#{min} .. #{max}] for [#{fmt}]")
+    (min.to_i .. max.to_i).each {|n|
+      fld=fmt % n
+      assign(fld,ary)
+    }
+  end
+  
   private
   def get_field
     each_node {|e|
       case e.name
       when 'ccrange'
-        str=String.new
+        ary=Array.new
         e.each_node {|f|
           case f.name
           when 'verify'
-            str << f.verify
-          when 'status'
-            str << f.status
+            f.verify(ary)
+          when 'rspcode'
+            f.rspcode(ary)
           when 'assign'
-            str << f.assign
+            f.assign(f.text,ary)
+          when 'repeat_assign'
+            f.repeat_assign(ary)
           end
         }
-        e.checkcode(str)
+        e.checkcode(ary.join(''))
       when 'cc_rsp'
         e.store_cc
       when 'verify'
         e.verify
-      when 'status'
-        e.status
+      when 'rspcode'
+        e.rspcode
       when 'assign'
-        e.assign
+        e.assign(e.text)
+      when 'repeat_assign'
+        e.repeat_assign
       end
     }
   end
-
+  
   def verify_cc
     return unless @var[:ccr]
     if @var[:ccr] === @var[:ccc]
@@ -133,15 +143,20 @@ class DevStat < XmlDev
       @v.msg(@var[:cclabel]+"Mismatch [#{@var[:ccr]}] != [#{@var[:ccc]}]")
     end
   end
-
-  def cut_frame
+  
+  def cut_frame(ary)
     if l=attr['length']
       len=l.to_i
       @v.err("Too short (#{@frame.size-len})") if @frame.size < len
-      return @frame.slice!(0,len)
+      raw=@frame.slice!(0,len)
+      ary << raw if ary
+      return decode(raw)
+    elsif d=attr['delimiter']
+      @frame.slice!(/$.+#{d}/)
     end
   end
-
+  
+  protected
   def decode(code)
     if upk=attr['unpack']
       if upk == 'hex'

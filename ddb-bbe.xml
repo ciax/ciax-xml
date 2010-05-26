@@ -22,7 +22,7 @@
       <select>
         <option id="getstat">
           <!--Big endian-->
-          <assign field="stat" length="2" unpack="n" />
+          <assign length="2" unpack="n">stat</assign>
         </option>
       </select>
     </rspframe>

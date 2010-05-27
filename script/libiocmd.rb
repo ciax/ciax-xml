@@ -3,12 +3,12 @@ require "libverbose"
 require "libiofile"
 
 class IoCmd
-  Timeout=1
-  def initialize(iocmd,id=nil)
+  def initialize(iocmd,id=nil,timeout=1)
     abort "No IO command" unless iocmd
-    @if=IoFile.new(id) if id
+    @iof=IoFile.new(id) if id
     @v=Verbose.new('IOCMD:'+iocmd)
     @f=IO.popen(iocmd,'r+')
+    @to=timeout
     at_exit {
       Process.kill(:TERM,@f.pid)
       @f.close
@@ -17,21 +17,21 @@ class IoCmd
   end
 
   def time
-    @if.time
+    @iof.time
   end
   
   def snd(str,id=nil)
-    @if.log_frame(str,id) if @if
+    @iof.log_frame(str,id) if @iof
     @f.syswrite(str)
     @v.msg "Send #{str.dump}"
     str
   end
 
   def rcv(id=nil)
-    select([@f],nil,nil,Timeout) || return
+    select([@f],nil,nil,@to) || return
     str=@f.sysread(1024)
     @v.msg "Recv #{str.dump}"
-    @if.log_frame(str,id) if @if
+    @iof.log_frame(str,id) if @iof
     str
   end
 end

@@ -68,7 +68,7 @@ class IoFile
     @time=Time.now
     name=[@type,id].compact.join('_')
     line=["%.3f" % @time.to_f,id,frame.dump].compact.join(' ')
-    save_frame(frame,id)
+    save_frame(frame,id) if id
     open(VarDir+"/#{@logfile}.log",'a') {|f|
       @v.msg "Frame Logging for [#{name}]"
       f << line+"\n"

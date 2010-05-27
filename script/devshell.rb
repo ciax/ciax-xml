@@ -18,6 +18,7 @@ loop{
       ddb.devcom(line)
     rescue
       puts $!
+      puts $@
     end
   else
     p ddb.stat

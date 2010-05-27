@@ -10,7 +10,7 @@ obj=ARGV.shift
 dev=@odb.property['device']
 client=@odb.property['client']
 server=@odb.property['server']
-srv=IoCmd.new(server,1)
+srv=IoCmd.new(server,"#{obj}_server")
 @ddb=Dev.new(dev,client,obj)
 warn server
 

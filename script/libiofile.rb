@@ -5,11 +5,13 @@ class IoFile
   include JSON
   VarDir="#{ENV['HOME']}/.var"
   JsonDir=VarDir+"/json"
+  attr_reader :time
 
   def initialize(type)
     @type=type
+    @time=Time.now
     @v=Verbose.new('FILE')
-    @logfile=@type+Time.now.strftime("%y%m%d")
+    @logfile=@type+Time.now.year.to_s
   end
   
   def save_stat(stat)
@@ -44,31 +46,34 @@ class IoFile
     stat
   end
   
-  def save_frame(cmd,frame)
-    open(VarDir+"/#{@type}_#{cmd}.bin",'w') {|f|
-      @v.msg "Frame Saving for [#{@type}_#{cmd}]"
+  def save_frame(frame,id=nil)
+    name=[@type,id].compact.join('_')
+    open(VarDir+"/#{name}.bin",'w') {|f|
+      @v.msg "Frame Saving for [#{name}]"
       f << frame
     }
     frame
   end
 
-  def load_frame(cmd)
-    @v.msg "Raw Status Loading for [#{@type}_#{cmd}]"
-    frame=IO.read(VarDir+"/#{@type}_#{cmd}.bin")
+  def load_frame(id=nil)
+    name=[@type,id].compact.join('_')
+    @v.msg "Raw Status Loading for [#{name}]"
+    frame=IO.read(VarDir+"/#{name}.bin")
     raise "No frame in File" unless frame
     @v.msg(frame.dump)
     frame
   end 
   
-  def log_frame(cmd,frame,time=Time.now)
-    time="%.3f" % time.to_f
-    save_frame(cmd,frame)
+  def log_frame(frame,id=nil)
+    @time=Time.now
+    name=[@type,id].compact.join('_')
+    line=["%.3f" % @time.to_f,id,frame.dump].compact.join(' ')
+    save_frame(frame,id)
     open(VarDir+"/#{@logfile}.log",'a') {|f|
-      @v.msg "Frame Logging for [#{@type}_#{cmd}]"
-      f << time+' '+cmd+' '+frame.dump+"\n"
+      @v.msg "Frame Logging for [#{name}]"
+      f << line+"\n"
     }
     frame
   end
 
 end
-

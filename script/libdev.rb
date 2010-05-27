@@ -15,8 +15,7 @@ class Dev
     rescue RuntimeError
       abort $!.to_s
     end
-    @ic=IoCmd.new(iocmd)
-    @if=IoFile.new(obj||dev)
+    @ic=IoCmd.new(iocmd,obj||dev)
     @stat=@ds.field
   end
   
@@ -24,14 +23,9 @@ class Dev
     cmd,par=line.split(' ')
     @dc.setcmd(cmd)
     @dc.setpar(par)
-    cmdframe=@dc.devcmd
-    @if.log_frame(@dc.cmd_id,cmdframe)
-    @ic.snd(cmdframe)
+    @ic.snd(@dc.devcmd,@dc.cmd_id)
     @ds.setcmd(cmd)
-    rspframe=@ic.rcv
-    time=Time.now
-    @if.log_frame(@ds.cmd_id,rspframe,time)
-    @stat=@ds.devstat(rspframe,time)
+    @stat=@ds.devstat(@ic.rcv(@ds.cmd_id),@ic.time)
   end
 
 end

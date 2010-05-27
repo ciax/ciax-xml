@@ -141,6 +141,14 @@
       </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
+  <xsd:simpleType name="pack">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="chr" />
+      <xsd:enumeration value="hex" />
+      <xsd:enumeration value="bew" />
+      <xsd:enumeration value="lew"></xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
   <!--Command frame-->
   <xsd:element name="cmdframe">
     <xsd:complexType>
@@ -156,16 +164,7 @@
   <xsd:attributeGroup name="cmd_attr">
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="format" type="xsd:string" />
-    <xsd:attribute name="pack" type="xsd:string" />
-    <xsd:attribute name="type">
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="int" />
-          <xsd:enumeration value="float" />
-          <xsd:enumeration value="string" />
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:attribute>
+    <xsd:attribute name="pack" type="cx:pack"></xsd:attribute>
   </xsd:attributeGroup>
   <xsd:group name="cmd_elem">
     <xsd:choice>
@@ -217,7 +216,8 @@
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="delimiter" type="xsd:string"></xsd:attribute>
     <xsd:attribute name="length" type="xsd:int" />
-    <xsd:attribute name="unpack" type="xsd:string" />
+    <xsd:attribute name="unpack" type="cx:pack"></xsd:attribute>
+    <xsd:attribute name="format" type="xsd:string" />
   </xsd:attributeGroup>
   <xsd:element name="verify">
     <xsd:complexType>

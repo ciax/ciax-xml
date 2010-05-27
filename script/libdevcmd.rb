@@ -71,20 +71,20 @@ class DevCmd < XmlDev
   end
 
   def encode(str)
-    if type=attr['type']
-      case type
-      when 'int'
-        str=str.to_i
-      when 'float'
-        str=str.to_f
-      end
+    case pack=attr['pack']
+    when 'chr'  
+      code=[str.to_i].pack('C')
+    when 'hex'
+      code=[str].pack('H*')
+    when 'bew'
+      code=[str.to_i].pack('n')
+    when 'lew'
+      code=[str.to_i].pack('v')
+    else
+      return format(str)
     end
-    if pack=attr['pack']
-      code=[str].pack(pack)
-      @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
-      str=code
-    end
-    format(str)
+    @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
+    format(code)
   end
 
 end

@@ -44,7 +44,7 @@ class XmlDb
   # Text Convert
   def format(code)
     if fmt=@cn.attributes['format'] 
-      str=fmt % code
+      str=fmt % code.to_i
       @v.msg("Format code by (#{fmt}) [#{code}] -> [#{str}]")
       code=str
     end

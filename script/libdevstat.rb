@@ -44,9 +44,8 @@ class DevStat < XmlDev
 
   protected
   def rspcode(ary=nil)
-    raw=cut_frame(ary)
-    label="Status:#{attr['label']}:"
-    str=decode(raw)
+    str=cut_frame(ary)
+    label="ResponseCode:#{attr['label']}:"
     each_node {|e| #Match each case
       next if e.text && e.text != str
       msg=label+e.attr['msg']+" [#{str}]"
@@ -59,10 +58,9 @@ class DevStat < XmlDev
         @v.err(msg)
       end
       setcmd(e.attr['option']) if e.attr['option']
-      return raw
+      return
     }
     @v.wrn(label+":Unknown code [#{str}]")
-    raw
   end
 
   def store_cc
@@ -87,6 +85,7 @@ class DevStat < XmlDev
   def assign(fld,ary=nil)
     str=cut_frame(ary)
     label="Assign:#{attr['label']} "
+    @v.err(label+'No field name') unless fld
     @v.msg(label+"[#{fld}] <- [#{str}]")
     @field[fld]=str
   end
@@ -158,16 +157,20 @@ class DevStat < XmlDev
   
   protected
   def decode(code)
-    if upk=attr['unpack']
-      if upk == 'hex'
-        str=code.hex
-      else
-        str=code.unpack(upk).first
-      end
-      @v.msg("Decode:unpack(#{upk}) [#{code}] -> [#{str}]")
-      code=str
+    case upk=attr['unpack']
+    when 'hex'
+      str=code.unpack('H*').first
+    when 'chr'
+      str=code.unpack('C').first
+    when 'bew'
+      str=code.unpack('n').first
+    when 'lew'
+      str=code.unpack('v').first
+    else
+      return format(code)
     end
-    code.to_s
+    @v.msg("Decode:decode(#{upk}) [#{code}] -> [#{str}]")
+    format(str)
   end
   
 end

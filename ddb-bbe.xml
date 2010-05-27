@@ -10,11 +10,11 @@
         </option>
         <option id="defio" type="config" label="DEFINE IN/OUT">
           <data>SD</data>
-          <data label="msb" pack="H*">1111</data>
+          <data label="msb" pack="hex">1111</data>
         </option>
         <option id="output" type="action" label="OUTPUT [DDDDD]">
           <data>SO</data>
-          <par type="int" pack="n" valid="[0-9]+" />
+          <par pack="bew" valid="[0-9]+" />
         </option>
       </select>
     </cmdframe>
@@ -22,7 +22,7 @@
       <select>
         <option id="getstat">
           <!--Big endian-->
-          <assign length="2" unpack="n">stat</assign>
+          <assign length="2" unpack="bew">stat</assign>
         </option>
       </select>
     </rspframe>

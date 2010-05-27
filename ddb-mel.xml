@@ -3,88 +3,88 @@
   <device id="mel" label="MELSEC Q Series">
     <network type="udp" host="melq" port="5000" />
     <cmdframe>
-      <data label="SubHeader: Prefix" pack="H*">5400</data>
-      <data label="SubHeader: Serial Number" pack="A*">XX</data>
-      <data label="SubHeader: Fixed Number" pack="H*">0000</data>
-      <data label="Q Header: Network Number" pack="H*">00</data>
-      <data label="Q Header: PC Number" pack="H*">FF</data>
-      <data label="Q Header: Request Unit I/O Number" pack="H*">FF03</data>
-      <data label="Q Header: Request Unit Station Number" pack="H*">00</data>
-      <cc_cmd label="Q Header: Send Data Length MSB" type="int" pack="C" />
-      <data label="Q Header: Send Data Length LSB" pack="H*">00</data>
+      <data label="SubHeader: Prefix" pack="hex">5400</data>
+      <data label="SubHeader: Serial Number">XX</data>
+      <data label="SubHeader: Fixed Number" pack="hex">0000</data>
+      <data label="Q Header: Network Number" pack="hex">00</data>
+      <data label="Q Header: PC Number" pack="hex">FF</data>
+      <data label="Q Header: Request Unit I/O Number" pack="hex">FF03</data>
+      <data label="Q Header: Request Unit Station Number" pack="hex">00</data>
+      <cc_cmd label="Q Header: Send Data Length MSB" pack="chr" />
+      <data label="Q Header: Send Data Length LSB" pack="hex">00</data>
       <ccrange method="len">
-        <data label="Q Header: CPU Watch Timer" pack="H*">0100</data>
+        <data label="Q Header: CPU Watch Timer" pack="hex">0100</data>
         <select>
           <option id="chken" label="Check Enable Flag" type="stat">
-            <data label="Read region" pack="H*">01040000</data>
-            <data label="Start Address" pack="H*">002000</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">0100</data>
+            <data label="Read region" pack="hex">01040000</data>
+            <data label="Start Address" pack="hex">002000</data>
+            <data label="Device Code" pack="hex">B4</data>
+            <data label="Data Length" pack="hex">0100</data>
           </option>
           <option id="getstat" label="Get all status" type="stat">
-            <data label="Read region" pack="H*">01040000</data>
-            <data label="Start Address" pack="H*">000000</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">3400</data>
+            <data label="Read region" pack="hex">01040000</data>
+            <data label="Start Address" pack="hex">000000</data>
+            <data label="Device Code" pack="hex">B4</data>
+            <data label="Data Length" pack="hex">3400</data>
           </option>
           <option id="set_tag" label="Set Tag to Run [HH00]" type="config">
-            <data label="Write region" pack="H*">01140000</data>
-            <data label="Start Address" pack="H*">010100</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">0100</data>
-            <par label="Data" pack="H*" valid="[0-9A-Fa-f]{1,4}" />
+            <data label="Write region" pack="hex">01140000</data>
+            <data label="Start Address" pack="hex">010100</data>
+            <data label="Device Code" pack="hex">B4</data>
+            <data label="Data Length" pack="hex">0100</data>
+            <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
           </option>
           <option id="set_pos" label="Set Pos to Jack [HH00]" type="config">
-            <data label="Write region" pack="H*">01140000</data>
-            <data label="Start Address" pack="H*">030100</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">0100</data>
-            <par label="Data" pack="H*" valid="[0-9A-Fa-f]{1,4}" />
+            <data label="Write region" pack="hex">01140000</data>
+            <data label="Start Address" pack="hex">030100</data>
+            <data label="Device Code" pack="hex">B4</data>
+            <data label="Data Length" pack="hex">0100</data>
+            <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
           </option>
           <option id="start" label="Start Trigger [HHHH]" type="action">
-            <data label="Write region" pack="H*">01140000</data>
-            <data label="Start Address" pack="H*">020100</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">0100</data>
-            <par label="Data" pack="H*" valid="[0-9A-Fa-f]{1,4}" />
+            <data label="Write region" pack="hex">01140000</data>
+            <data label="Start Address" pack="hex">020100</data>
+            <data label="Device Code" pack="hex">B4</data>
+            <data label="Data Length" pack="hex">0100</data>
+            <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
           </option>
           <option id="stop" label="Stop Trigger [HHHH]" type="action">
-            <data label="Write region" pack="H*">01140000</data>
-            <data label="Start Address" pack="H*">000100</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">0100</data>
-            <par label="Data" pack="H*" valid="[0-9A-Fa-f]{1,4}" />
+            <data label="Write region" pack="hex">01140000</data>
+            <data label="Start Address" pack="hex">000100</data>
+            <data label="Device Code" pack="hex">B4</data>
+            <data label="Data Length" pack="hex">0100</data>
+            <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
           </option>
           <option id="clear" label="Clear Action Flags" type="config">
-            <data label="Write region" pack="H*">01140000</data>
-            <data label="Start Address" pack="H*">000100</data>
-            <data label="Device Code" pack="H*">B4</data>
-            <data label="Data Length" pack="H*">0400</data>
-            <data label="Data" pack="H*">0000000000000000</data>
+            <data label="Write region" pack="hex">01140000</data>
+            <data label="Start Address" pack="hex">000100</data>
+            <data label="Device Code" pack="hex">B4</data>
+            <data label="Data Length" pack="hex">0400</data>
+            <data label="Data" pack="hex">0000000000000000</data>
           </option>
         </select>
       </ccrange>
     </cmdframe>
     <rspframe wait="0">
-      <verify label="SubHeader" length="6" unpack="H*">d40058580000</verify>
-      <verify label="QHeader" length="5" unpack="H*">00ffff0300</verify>
-      <cc_rsp label="Response Data Length" length="2" unpack="v"></cc_rsp>
+      <verify label="SubHeader" length="6" unpack="hex">d40058580000</verify>
+      <verify label="QHeader" length="5" unpack="hex">00ffff0300</verify>
+      <cc_rsp label="Response Data Length" length="2" unpack="lew"></cc_rsp>
       <ccrange method="len">
-        <rspcode label="ExitCode" length="2" unpack="H*">
+        <rspcode label="ExitCode" length="2" unpack="hex">
           <case type="pass" msg="OK">0000</case>
           <case msg="RW Region Error" type="warn" option="errframe">0200</case>
           <case msg="CMD Code Error" type="warn" option="errframe">5000</case>
           <case msg="Devide Num Error" type="warn" option="errframe">5600</case>
           <case msg="Communication Error" type="warn" option="errframe">5B00</case>
           <case msg="CPU Watch timeout Error" type="warn" option="errframe">6000</case>
-          <case type="warn" msg="ExitCode Error" option="errframe"></case>
+          <case type="warn" msg="Unknown" option="errframe"></case>
         </rspcode>
         <select>
           <option id="chken">
-            <assign length="2" unpack="v">cre</assign>
+            <assign length="2" unpack="lew">cre</assign>
           </option>
           <option id="getstat">
-            <repeat_assign length="2" unpack="v" max="51">x%02x</repeat_assign>
+            <repeat_assign length="2" unpack="lew" max="51">x%02x</repeat_assign>
           </option>
           <option id="errframe">
             <assign length="1">err_net</assign>

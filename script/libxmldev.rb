@@ -39,9 +39,8 @@ class XmlDev < XmlDb
       else
         @v.err "No such CC method #{method}"
       end
-      chk=chk.to_s
       @v.msg("Calc:CC [#{method.upcase}] -> [#{chk}]")
-      @var[:ccc] = chk
+      @var[:ccc] = chk.to_s
       return chk
     end
     @v.err "CC No method"

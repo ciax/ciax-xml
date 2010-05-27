@@ -3,7 +3,7 @@
   <device id="k3n" label="OMRON K3NR">
     <serial speed="9600" databit="7" parity="EVEN" stopbit="2" flowctl="NONE" />
     <cmdframe>
-      <data label="Prefix" pack="H*">02</data>
+      <data label="Prefix" pack="hex">02</data>
       <ccrange method="bcc">
         <select>
           <option id="getstat" type="stat" label="Get Status">
@@ -18,12 +18,12 @@
             <data label="Number of element">0001</data>
           </option>
         </select>
-        <data label="Suffix" pack="H*">03</data>
+        <data label="Suffix" pack="hex">03</data>
       </ccrange>
-      <cc_cmd type="int" pack="C" />
+      <cc_cmd pack="chr" />
     </cmdframe>
     <rspframe wait="1">
-      <verify label="Prefix" length="1" unpack="H*">02</verify>
+      <verify label="Prefix" length="1" unpack="hex">02</verify>
       <ccrange method="bcc">
         <verify label="Node" length="4">0000</verify>
         <rspcode label="ExitCode" length="2">
@@ -36,7 +36,7 @@
           <case type="error" msg="Format Error">14</case>
           <case type="error" msg="Sub Address Error">16</case>
           <case type="error" msg="Frame Length Error">18</case>
-          <case msg="ExitCode Error" type="error"></case>
+          <case msg="Unknown" type="error"></case>
         </rspcode>
         <select>
           <option id="getstat">
@@ -54,9 +54,9 @@
             <assign label="Status" length="8">stat</assign>
           </option>
         </select>
-        <verify label="Suffix" length="1" unpack="H*">03</verify>
+        <verify label="Suffix" length="1" unpack="hex">03</verify>
       </ccrange>
-      <cc_rsp label="BCC" length="1" unpack="C" />
+      <cc_rsp label="BCC" length="1" unpack="chr" />
     </rspframe>
   </device>
 </ddb>

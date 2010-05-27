@@ -2,22 +2,39 @@
 <ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
   <device id="k3n" label="OMRON K3NR">
     <serial speed="9600" databit="7" parity="EVEN" stopbit="2" flowctl="NONE" />
+    <session>
+      <option id="getstat" type="stat" label="Get Status">
+        <send>
+          <data label="Node No.">00</data>
+          <data label="Sub Address">00</data>
+          <data label="SID">0</data>
+          <data label="MRC">01</data>
+          <data label="SRC">01</data>
+          <data label="Variable type">C0</data>
+          <data label="Start Address">0000</data>
+          <data label="Void">00</data>
+          <data label="Number of element">0001</data>
+        </send>
+        <recv>
+          <verify label="MRC SRC" length="4">0101</verify>
+          <rspcode label="Response Code" length="4">
+            <case type="pass" msg="OK">0000</case>
+            <case type="error" msg="Cmd Length Over">1001</case>
+            <case type="error" msg="Cmd Length Short">1002</case>
+            <case type="error" msg="Parameter Error">1100</case>
+            <case type="error" msg="Area Error">1101</case>
+            <case type="error" msg="Start Address Error">1103</case>
+            <case type="error" msg="Action Error">2203</case>
+            <case msg="ResponseCode Error" type="error"></case>
+          </rspcode>
+          <assign label="Status" length="8">stat</assign>
+        </recv>
+      </option>
+    </session>
     <cmdframe>
       <data label="Prefix" pack="hex">02</data>
       <ccrange method="bcc">
-        <select>
-          <option id="getstat" type="stat" label="Get Status">
-            <data label="Node No.">00</data>
-            <data label="Sub Address">00</data>
-            <data label="SID">0</data>
-            <data label="MRC">01</data>
-            <data label="SRC">01</data>
-            <data label="Variable type">C0</data>
-            <data label="Start Address">0000</data>
-            <data label="Void">00</data>
-            <data label="Number of element">0001</data>
-          </option>
-        </select>
+        <select></select>
         <data label="Suffix" pack="hex">03</data>
       </ccrange>
       <cc_cmd pack="chr" />
@@ -38,22 +55,7 @@
           <case type="error" msg="Frame Length Error">18</case>
           <case msg="Unknown" type="error"></case>
         </rspcode>
-        <select>
-          <option id="getstat">
-            <verify label="MRC SRC" length="4">0101</verify>
-            <rspcode label="Response Code" length="4">
-              <case type="pass" msg="OK">0000</case>
-              <case type="error" msg="Cmd Length Over">1001</case>
-              <case type="error" msg="Cmd Length Short">1002</case>
-              <case type="error" msg="Parameter Error">1100</case>
-              <case type="error" msg="Area Error">1101</case>
-              <case type="error" msg="Start Address Error">1103</case>
-              <case type="error" msg="Action Error">2203</case>
-              <case msg="ResponseCode Error" type="error"></case>
-            </rspcode>
-            <assign label="Status" length="8">stat</assign>
-          </option>
-        </select>
+        <select></select>
         <verify label="Suffix" length="1" unpack="hex">03</verify>
       </ccrange>
       <cc_rsp label="BCC" length="1" unpack="chr" />

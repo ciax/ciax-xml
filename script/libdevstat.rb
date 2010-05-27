@@ -17,15 +17,7 @@ class DevStat < XmlDev
   end
 
   def setcmd(id)
-    raise "No id" unless id
-    begin
-      @sel=@doc.select_id('//rspframe/',id,'default')
-      @property['cmd']=id
-    rescue
-      @property.delete('cmd')
-      raise "Send Only"
-    end
-    self
+    super(id,'recv')
   end
 
   def devstat(str,time=Time.now)

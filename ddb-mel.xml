@@ -1,7 +1,91 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
   <device id="mel" label="MELSEC Q Series">
-    <network type="udp" host="melq" port="5000" />
+    <session>
+      <option id="chken" label="Check Enable Flag" type="stat">
+        <send>
+          <data label="Read region" pack="hex">01040000</data>
+          <data label="Start Address" pack="hex">002000</data>
+          <data label="Device Code" pack="hex">B4</data>
+          <data label="Data Length" pack="hex">0100</data>
+        </send>
+        <recv>
+          <assign length="2" unpack="lew">cre</assign>
+        </recv>
+      </option>
+      <option id="getstat" label="Get all status" type="stat">
+        <send>
+          <data label="Read region" pack="hex">01040000</data>
+          <data label="Start Address" pack="hex">000000</data>
+          <data label="Device Code" pack="hex">B4</data>
+          <data label="Data Length" pack="hex">3400</data>
+        </send>
+        <recv>
+          <repeat_assign length="2" unpack="lew" max="51">x%02x</repeat_assign>
+        </recv>
+      </option>
+      <option id="set_tag" label="Set Tag to Run [HH00]" type="config">
+        <send>
+          <data label="Write region" pack="hex">01140000</data>
+          <data label="Start Address" pack="hex">010100</data>
+          <data label="Device Code" pack="hex">B4</data>
+          <data label="Data Length" pack="hex">0100</data>
+          <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
+        </send>
+        <recv label="command resp" />
+      </option>
+      <option id="set_pos" label="Set Pos to Jack [HH00]" type="config">
+        <send>
+          <data label="Write region" pack="hex">01140000</data>
+          <data label="Start Address" pack="hex">030100</data>
+          <data label="Device Code" pack="hex">B4</data>
+          <data label="Data Length" pack="hex">0100</data>
+          <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
+        </send>
+        <recv label="command resp" />
+      </option>
+      <option id="start" label="Start Trigger [HHHH]" type="action">
+        <send>
+          <data label="Write region" pack="hex">01140000</data>
+          <data label="Start Address" pack="hex">020100</data>
+          <data label="Device Code" pack="hex">B4</data>
+          <data label="Data Length" pack="hex">0100</data>
+          <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
+        </send>
+        <recv label="command resp" />
+      </option>
+      <option id="stop" label="Stop Trigger [HHHH]" type="action">
+        <send>
+          <data label="Write region" pack="hex">01140000</data>
+          <data label="Start Address" pack="hex">000100</data>
+          <data label="Device Code" pack="hex">B4</data>
+          <data label="Data Length" pack="hex">0100</data>
+          <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
+        </send>
+        <recv label="command resp" />
+      </option>
+      <option id="clear" label="Clear Action Flags" type="config">
+        <send>
+          <data label="Write region" pack="hex">01140000</data>
+          <data label="Start Address" pack="hex">000100</data>
+          <data label="Device Code" pack="hex">B4</data>
+          <data label="Data Length" pack="hex">0400</data>
+          <data label="Data" pack="hex">0000000000000000</data>
+        </send>
+        <recv label="command resp" />
+      </option>
+      <option id="errframe">
+        <recv>
+          <assign length="1">err_net</assign>
+          <assign length="1">err_pc</assign>
+          <assign length="2">err_uio</assign>
+          <assign length="1">err_uch</assign>
+          <assign length="2">err_cmd</assign>
+          <assign length="2">err_subcmd</assign>
+          <assign length="9">errframe</assign>
+        </recv>
+      </option>
+    </session>
     <cmdframe>
       <data label="SubHeader: Prefix" pack="hex">5400</data>
       <data label="SubHeader: Serial Number">XX</data>
@@ -14,55 +98,7 @@
       <data label="Q Header: Send Data Length LSB" pack="hex">00</data>
       <ccrange method="len">
         <data label="Q Header: CPU Watch Timer" pack="hex">0100</data>
-        <select>
-          <option id="chken" label="Check Enable Flag" type="stat">
-            <data label="Read region" pack="hex">01040000</data>
-            <data label="Start Address" pack="hex">002000</data>
-            <data label="Device Code" pack="hex">B4</data>
-            <data label="Data Length" pack="hex">0100</data>
-          </option>
-          <option id="getstat" label="Get all status" type="stat">
-            <data label="Read region" pack="hex">01040000</data>
-            <data label="Start Address" pack="hex">000000</data>
-            <data label="Device Code" pack="hex">B4</data>
-            <data label="Data Length" pack="hex">3400</data>
-          </option>
-          <option id="set_tag" label="Set Tag to Run [HH00]" type="config">
-            <data label="Write region" pack="hex">01140000</data>
-            <data label="Start Address" pack="hex">010100</data>
-            <data label="Device Code" pack="hex">B4</data>
-            <data label="Data Length" pack="hex">0100</data>
-            <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
-          </option>
-          <option id="set_pos" label="Set Pos to Jack [HH00]" type="config">
-            <data label="Write region" pack="hex">01140000</data>
-            <data label="Start Address" pack="hex">030100</data>
-            <data label="Device Code" pack="hex">B4</data>
-            <data label="Data Length" pack="hex">0100</data>
-            <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
-          </option>
-          <option id="start" label="Start Trigger [HHHH]" type="action">
-            <data label="Write region" pack="hex">01140000</data>
-            <data label="Start Address" pack="hex">020100</data>
-            <data label="Device Code" pack="hex">B4</data>
-            <data label="Data Length" pack="hex">0100</data>
-            <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
-          </option>
-          <option id="stop" label="Stop Trigger [HHHH]" type="action">
-            <data label="Write region" pack="hex">01140000</data>
-            <data label="Start Address" pack="hex">000100</data>
-            <data label="Device Code" pack="hex">B4</data>
-            <data label="Data Length" pack="hex">0100</data>
-            <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
-          </option>
-          <option id="clear" label="Clear Action Flags" type="config">
-            <data label="Write region" pack="hex">01140000</data>
-            <data label="Start Address" pack="hex">000100</data>
-            <data label="Device Code" pack="hex">B4</data>
-            <data label="Data Length" pack="hex">0400</data>
-            <data label="Data" pack="hex">0000000000000000</data>
-          </option>
-        </select>
+        <select></select>
       </ccrange>
     </cmdframe>
     <rspframe wait="0">
@@ -79,24 +115,7 @@
           <case msg="CPU Watch timeout Error" type="warn" option="errframe">6000</case>
           <case type="warn" msg="Unknown" option="errframe"></case>
         </rspcode>
-        <select>
-          <option id="chken">
-            <assign length="2" unpack="lew">cre</assign>
-          </option>
-          <option id="getstat">
-            <repeat_assign length="2" unpack="lew" max="51">x%02x</repeat_assign>
-          </option>
-          <option id="errframe">
-            <assign length="1">err_net</assign>
-            <assign length="1">err_pc</assign>
-            <assign length="2">err_uio</assign>
-            <assign length="1">err_uch</assign>
-            <assign length="2">err_cmd</assign>
-            <assign length="2">err_subcmd</assign>
-            <assign length="9">errframe</assign>
-          </option>
-          <option id="default"></option>
-        </select>
+        <select></select>
       </ccrange>
     </rspframe>
   </device>

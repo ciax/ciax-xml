@@ -2,26 +2,51 @@
 <ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <device id="srm" label="OMRON SRM1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
+    <session>
+      <option id="getmodel" label="Get Model Code" type="stat">
+        <send>
+          <data label="Header Code">MM</data>
+        </send>
+        <recv>
+          <verify label="Command Code" length="4">00MM</verify>
+          <verify label="Response Code" length="2">00</verify>
+          <assign label="Model Number" length="2">model</assign>
+        </recv>
+      </option>
+      <option id="getstat" label="Get Status" type="stat">
+        <send>
+          <data label="Header Code">RR</data>
+          <data label="Start Channel">0000</data>
+          <data label="length">0001</data>
+        </send>
+        <recv>
+          <verify label="Command Code" length="4">00RR</verify>
+          <verify label="Response Code" length="2">00</verify>
+          <!--Big endian-->
+          <assign label="CH1 bit12-15" length="1">c1d3</assign>
+          <assign label="CH1 bit8-11" length="1">c1d2</assign>
+          <assign label="CH1 bit4-7" length="1">c1d1</assign>
+          <assign label="CH1 bit0-3" length="1">c1d0</assign>
+        </recv>
+      </option>
+      <option id="fset" label="Multiple Forced Set [D*16]" type="action">
+        <send>
+          <data label="Header Code">FK</data>
+          <data label="Operand">CIO </data>
+          <data label="Channel">0000</data>
+          <par format="%016d" valid="[0-9]+" />
+        </send>
+        <recv>
+          <verify label="Command Code" length="4">00FK</verify>
+          <verify label="Exit Code" length="2">00</verify>
+        </recv>
+      </option>
+    </session>
     <cmdframe>
       <ccrange method="bcc">
         <data label="Prefix">@</data>
         <data label="Device No.">00</data>
-        <select>
-          <option id="getmodel" label="Get Model Code" type="stat">
-            <data label="Header Code">MM</data>
-          </option>
-          <option id="getstat" label="Get Status" type="stat">
-            <data label="Header Code">RR</data>
-            <data label="Start Channel">0000</data>
-            <data label="length">0001</data>
-          </option>
-          <option id="fset" label="Multiple Forced Set [D*16]" type="action">
-            <data label="Header Code">FK</data>
-            <data label="Operand">CIO </data>
-            <data label="Channel">0000</data>
-            <par format="%016d" valid="[0-9]+" />
-          </option>
-        </select>
+        <select></select>
       </ccrange>
       <cc_cmd format="%02X" />
       <data label="Suffix">*</data>
@@ -30,27 +55,7 @@
     <rspframe wait="0">
       <ccrange method="bcc">
         <verify label="Prefix" length="1">@</verify>
-        <select>
-          <option id="getmodel">
-            <verify label="Command Code" length="4">00MM</verify>
-            <verify label="Response Code" length="2">00</verify>
-            <!--Big endian-->
-            <assign label="Model Number" length="2">model</assign>
-          </option>
-          <option id="getstat">
-            <verify label="Command Code" length="4">00RR</verify>
-            <verify label="Response Code" length="2">00</verify>
-            <!--Big endian-->
-            <assign label="CH1 bit12-15" length="1">c1d3</assign>
-            <assign label="CH1 bit8-11" length="1">c1d2</assign>
-            <assign label="CH1 bit4-7" length="1">c1d1</assign>
-            <assign label="CH1 bit0-3" length="1">c1d0</assign>
-          </option>
-          <option id="fset">
-            <verify label="Command Code" length="4">00FK</verify>
-            <verify label="Exit Code" length="2">00</verify>
-          </option>
-        </select>
+        <select></select>
       </ccrange>
       <cc_rsp label="BCC" length="2" format="%02X" />
       <verify label="Terminater" length="1">*</verify>

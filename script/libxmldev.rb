@@ -12,6 +12,12 @@ class XmlDev < XmlDb
 
   # Public Method
   public
+  def setcmd(id,chld)
+    @sel=@doc.select_id('//session/',id).elements[chld] || raise("No [#{chld}]")
+    @property['cmd']=id
+    self
+  end
+
   def cmd_id(str)
     [str,@property['cmd'],@property['par']].compact.join('_')
   end
@@ -19,7 +25,7 @@ class XmlDev < XmlDb
   def each_node(xpath=nil)
     super(xpath) {|e|
       if e.name == 'select'
-        @v.err "ID not selected" unless @sel
+        @v.msg "Read Only" unless @sel
         @v.msg("Enterning Select Node")
         @sel.each_element {|s| yield copy_self(s) }
       else

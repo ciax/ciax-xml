@@ -9,9 +9,7 @@ class DevCmd < XmlDev
   end
 
   def setcmd(id)
-    @sel=@doc.select_id('//cmdframe/',id)
-    @property['cmd']=id
-    self
+    super(id,'send')
   end
 
   def setpar(par=nil)

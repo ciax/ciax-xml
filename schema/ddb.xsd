@@ -13,8 +13,8 @@
       <xsd:sequence>
         <!--Protocol for RS232C-->
         <xsd:element ref="cx:serial" minOccurs="0" maxOccurs="1" />
-        <!--Protocol for Network-->
-        <xsd:element ref="cx:network" minOccurs="0" maxOccurs="1" />
+        <!--Select sessions-->
+        <xsd:element ref="cx:session" minOccurs="0" maxOccurs="1" />
         <!--Command frame-->
         <xsd:element ref="cx:cmdframe" minOccurs="0" maxOccurs="1" />
         <!--Response frame-->
@@ -81,20 +81,6 @@
       </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="network">
-    <xsd:complexType>
-      <xsd:attribute name="type">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="tcp" />
-            <xsd:enumeration value="udp" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
-      <xsd:attribute name="host" type="xsd:string" />
-      <xsd:attribute name="port" type="xsd:int" />
-    </xsd:complexType>
-  </xsd:element>
   <!--Shared frame-->
   <xsd:element name="ccrange">
     <xsd:complexType>
@@ -115,18 +101,21 @@
       </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="select">
+  <xsd:element name="session">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="cx:option" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="select">
+    <xsd:complexType></xsd:complexType>
+  </xsd:element>
   <xsd:element name="option">
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:cmd_elem" />
-        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:rsp_elem"></xsd:group>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cx:send" />
+        <xsd:element ref="cx:recv" />
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" />
@@ -139,6 +128,22 @@
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="send">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:cmd_elem" />
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="recv">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:rsp_elem"></xsd:group>
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:simpleType name="pack">

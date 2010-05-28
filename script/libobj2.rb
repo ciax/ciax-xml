@@ -30,8 +30,7 @@ class Obj
     session=control_id(cmd)
     warn session.attributes['label']
     session.each_element {|command|
-      command.extend ObjCmd
-      line=command.get_cmd(@field)
+      line=get_cmd(command,@field)
       $ver.msg("Exec(DDB):[#{line}]")
       warn "CommandExec[#{line}]"
       get_stat(yield(line))
@@ -42,17 +41,16 @@ class Obj
     return unless dstat
     @field.update(dstat)
     @doc.elements['//status'].each_element {|var| # var
-      var.extend ObjStat
       id="#{@obj}:#{var.attributes['id']}"
-      val=var.get_val(@field)
+      val=get_val(var,@field)
       $ver.msg("GetStat:#{id}=[#{val}]")
-      @stat[id]=var.get_symbol(val)
+      @stat[id]=get_symbol(var,val)
     }
     @stat['time']['val']=Time.at(@field['time'].to_f)
     @f.save_json(@stat)
   end
 
-  protected
+  private
   def control_id(id)
     e=@doc.select_id('//controls/',id)
     if ref=e.attributes['ref']
@@ -61,14 +59,10 @@ class Obj
     return e
   end
 
-end
-
-module ObjCmd
-  #Cmd methods
-  public
-  def get_cmd(field)
-    devcmd=[attributes['text']]
-    each_element{|par|
+  #Cmd Method
+  def get_cmd(e,field)
+    devcmd=[e.attributes['text']]
+    e.each_element{|par|
       str=par.text
       if par.attributes['type'] == 'formula'
         func=par.text
@@ -80,32 +74,27 @@ module ObjCmd
     devcmd.join(' ')
   end
 
-end
-
-module ObjStat
   #Stat Methods
-  public
-  def get_val(field)
+  def get_val(e,field)
     val=String.new
-    elements['./fields'].each_element {|e| #element(split and concat)
-      e.extend ObjStat
-      ref=e.attributes['ref'] || return
+    e.elements['./fields'].each_element {|f| #element(split and concat)
+      ref=f.attributes['ref'] || return
       data=field[ref] || return
-      $ver.msg("Convert:#{e.name.capitalize} Field (#{ref})")
-      case e.name
+      $ver.msg("Convert:#{f.name.capitalize} Field (#{ref})")
+      case f.name
       when 'binary'
-        val << (data.to_i >> e.attributes['bit'].to_i & 1).to_s
+        val << (data.to_i >> f.attributes['bit'].to_i & 1).to_s
       when 'float'
-        if n=e.attributes['decimal']
+        if n=f.attributes['decimal']
           n=n.to_i
           data=data[0..-n-1]+'.'+data[-n..-1]
         end
-        val << format(e,data)
+        val << format(f,data)
       when 'int'
-        if e.attributes['signed']
+        if f.attributes['signed']
           data=[data.to_i].pack('S').unpack('s').first
         end
-        val << format(e,data)
+        val << format(f,data)
       else
         val << data
       end
@@ -113,10 +102,10 @@ module ObjStat
     val
   end
 
-  def get_symbol(val)
+  def get_symbol(e,val)
     set={'val'=>val}
-    add(self,set,'id')
-    return(set) unless symbol=elements['./symbol']
+    add(e,set,'id')
+    return(set) unless symbol=e.elements['./symbol']
     add(symbol,set)
     symbol.each_element {|range|
       msg=range.attributes['msg']
@@ -145,7 +134,7 @@ module ObjStat
     set
   end
 
-  private
+  # Common method
   def add(e,h,exclude=nil)
     e.attributes.each{|k,v| h[k]=v if k != exclude }
   end

@@ -50,6 +50,10 @@ print        sndstr=cmdframe
     @v.err("RSP:No String") unless frame
     @frame=frame
     getstat(@doc.elements['//rspframe'])
+    if @stat['cc']
+      @v.err('RSP:CC Mismatch') unless @stat['cc'] === @var[:ccc]
+      @stat.delete('cc')
+    end
   end
 
   def getstat(e)
@@ -58,13 +62,24 @@ print        sndstr=cmdframe
       case c.name
       when 'ccrange'
         @v.msg("RSP:Entering Ceck Code Node")
-        @var[:ccc] = checkcode(e,getstat(e))
+        @var[:ccc] = checkcode(c,getstat(c))
       when 'select'
         @v.msg("RSP:Entering Selected Node")
         str << getstat(@sel)
-      else
+      when 'assign'
+        @v.msg("RSP:Assign:#{c.attributes['label']}")
+        str << @stat[c.text]=cut_frame(c)
+      when 'verify'
+        @v.msg("RSP:Verify:#{c.attributes['label']}")
         str << s=cut_frame(c)
-        
+        @v.err("RSP:Verify Mismatch") if c.text != s
+      when 'repeat_assign'
+        min=c.attributes['min']||0
+        max=e.attributes['max']
+        @v.msg("RSP:Repeat Assign:#{c.attributes['label']}")
+        (min.to_i .. max.to_i).each { |n|
+          str << @stat[c.text % n]=cut_frame(c)
+        }
       end
     }
     str

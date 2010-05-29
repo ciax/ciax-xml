@@ -19,7 +19,7 @@ class XmlDev < XmlDb
   end
 
   def cmd_id(str)
-    [str,@property['cmd'],@property['par']].compact.join('_')
+    [str,@property['cmd'],@property['par']]
   end
 
   def each_node(xpath=nil)

@@ -36,9 +36,9 @@ class Dev
       case io.name
       when 'send'
 print        sndstr=cmdframe
-#        @ic.snd(sndstr,['snd',cmd,par].compact.join('_'))
+#        @ic.snd(sndstr,['snd',cmd,par])
       when 'recv'
-#        rcvstr=@ic.rcv(['rcv',cmd].compact.join('_'))
+#        rcvstr=@ic.rcv(['rcv',cmd])
 #        @stat['time']="%.3f" % @ic.time.to_f
 #        rspframe(rcvstr)
       end

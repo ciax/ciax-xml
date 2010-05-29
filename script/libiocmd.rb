@@ -19,7 +19,7 @@ class IoCmd
   def time
     @iof.time
   end
-  
+
   def snd(str,id=nil)
     @iof.log_frame(str,id) if @iof
     @f.syswrite(str)

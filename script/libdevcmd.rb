@@ -19,7 +19,7 @@ class DevCmd < XmlDev
     else
       @property.delete('par')
     end
-  end    
+  end
 
   def devcmd
     cid=cmd_id

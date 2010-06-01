@@ -192,8 +192,7 @@ class Dev
 
   def encode(e,str)
     if pack=Pack[e.attributes['pack']]
-      str=str.to_i if pack != 'H*'
-      code=[str].pack(pack)
+      code=[str.to_i(0)].pack(pack)
       @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
       str=code
     end

@@ -50,7 +50,7 @@
       </ccrange>
       <cc_cmd format="%02X" />
       <data label="Suffix">*</data>
-      <data label="Delimiter" pack="hex">0D</data>
+      <data label="Delimiter" pack="chr">0xd</data>
     </cmdframe>
     <rspframe wait="0">
       <ccrange method="bcc">

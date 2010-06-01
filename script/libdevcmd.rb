@@ -71,13 +71,13 @@ class DevCmd < XmlDev
   def encode(str)
     case pack=attr['pack']
     when 'chr'  
-      code=[str.to_i].pack('C')
+      code=[str.to_i(0)].pack('C')
     when 'hex'
       code=[str].pack('H*')
     when 'bew'
-      code=[str.to_i].pack('n')
+      code=[str.to_i(0)].pack('n')
     when 'lew'
-      code=[str.to_i].pack('v')
+      code=[str.to_i(0)].pack('v')
     else
       return format(str)
     end

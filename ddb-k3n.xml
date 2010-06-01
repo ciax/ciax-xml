@@ -32,10 +32,10 @@
       </option>
     </session>
     <cmdframe>
-      <data label="Prefix" pack="hex">02</data>
+      <data label="Prefix" pack="chr">2</data>
       <ccrange method="bcc">
         <select></select>
-        <data label="Suffix" pack="hex">03</data>
+        <data label="Suffix" pack="chr">3</data>
       </ccrange>
       <cc_cmd pack="chr" />
     </cmdframe>

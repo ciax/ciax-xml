@@ -4,10 +4,11 @@
     <session>
       <option id="chken" label="Check Enable Flag" type="stat">
         <send>
-          <data label="Read region" pack="hex">01040000</data>
-          <data label="Start Address" pack="hex">002000</data>
-          <data label="Device Code" pack="hex">B4</data>
-          <data label="Data Length" pack="hex">0100</data>
+          <data label="Read region command" pack="lew">0x401</data>
+          <data label="Read region subcommand" pack="lew">0</data>
+          <data label="Start Address" pack="lew">0x20</data>
+          <data label="Device Code" pack="lew">0xB400</data>
+          <data label="Data Length" pack="lew">1</data>
         </send>
         <recv>
           <assign length="2" unpack="lew">cre</assign>
@@ -15,10 +16,11 @@
       </option>
       <option id="getstat" label="Get all status" type="stat">
         <send>
-          <data label="Read region" pack="hex">01040000</data>
-          <data label="Start Address" pack="hex">000000</data>
-          <data label="Device Code" pack="hex">B4</data>
-          <data label="Data Length" pack="hex">3400</data>
+          <data label="Read region command" pack="lew">0x401</data>
+          <data label="Read region subcommand" pack="lew">0</data>
+          <data label="Start Address" pack="lew">0</data>
+          <data label="Device Code" pack="lew">0xB400</data>
+          <data label="Data Length" pack="lew">34</data>
         </send>
         <recv>
           <repeat_assign length="2" unpack="lew" max="51">x%02x</repeat_assign>
@@ -26,51 +28,59 @@
       </option>
       <option id="set_tag" label="Set Tag to Run [HH00]" type="config">
         <send>
-          <data label="Write region" pack="hex">01140000</data>
-          <data label="Start Address" pack="hex">010100</data>
-          <data label="Device Code" pack="hex">B4</data>
-          <data label="Data Length" pack="hex">0100</data>
-          <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
+          <data label="Write region command" pack="lew">0x1401</data>
+          <data label="Write region subcommand" pack="lew">0</data>
+          <data label="Start Address" pack="lew">0x101</data>
+          <data label="Device Code" pack="lew">0xB400</data>
+          <data label="Data Length" pack="lew">1</data>
+          <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
         </send>
         <recv label="command resp" />
       </option>
       <option id="set_pos" label="Set Pos to Jack [HH00]" type="config">
         <send>
-          <data label="Write region" pack="hex">01140000</data>
-          <data label="Start Address" pack="hex">030100</data>
-          <data label="Device Code" pack="hex">B4</data>
-          <data label="Data Length" pack="hex">0100</data>
-          <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
+          <data label="Write region command" pack="lew">0x1401</data>
+          <data label="Write region subcommand" pack="lew">0</data>
+          <data label="Start Address" pack="lew">0x103</data>
+          <data label="Device Code" pack="lew">0xB400</data>
+          <data label="Data Length" pack="lew">1</data>
+          <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
         </send>
         <recv label="command resp" />
       </option>
       <option id="start" label="Start Trigger [HHHH]" type="action">
         <send>
-          <data label="Write region" pack="hex">01140000</data>
-          <data label="Start Address" pack="hex">020100</data>
-          <data label="Device Code" pack="hex">B4</data>
-          <data label="Data Length" pack="hex">0100</data>
-          <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
+          <data label="Write region command" pack="lew">0x1401</data>
+          <data label="Write region subcommand" pack="lew">0</data>
+          <data label="Start Address" pack="lew">0x102</data>
+          <data label="Device Code" pack="lew">0xB400</data>
+          <data label="Data Length" pack="lew">1</data>
+          <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
         </send>
         <recv label="command resp" />
       </option>
       <option id="stop" label="Stop Trigger [HHHH]" type="action">
         <send>
-          <data label="Write region" pack="hex">01140000</data>
-          <data label="Start Address" pack="hex">000100</data>
-          <data label="Device Code" pack="hex">B4</data>
-          <data label="Data Length" pack="hex">0100</data>
-          <par label="Data" pack="hex" valid="[0-9A-Fa-f]{1,4}" />
+          <data label="Write region command" pack="lew">0x1401</data>
+          <data label="Write region subcommand" pack="lew">0</data>
+          <data label="Start Address" pack="lew">0x100</data>
+          <data label="Device Code" pack="lew">0xB400</data>
+          <data label="Data Length" pack="lew">1</data>
+          <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
         </send>
         <recv label="command resp" />
       </option>
       <option id="clear" label="Clear Action Flags" type="config">
         <send>
-          <data label="Write region" pack="hex">01140000</data>
-          <data label="Start Address" pack="hex">000100</data>
-          <data label="Device Code" pack="hex">B4</data>
-          <data label="Data Length" pack="hex">0400</data>
-          <data label="Data" pack="hex">0000000000000000</data>
+          <data label="Write region command" pack="lew">0x1401</data>
+          <data label="Write region subcommand" pack="lew">0</data>
+          <data label="Start Address" pack="lew">0x100</data>
+          <data label="Device Code" pack="lew">0xB400</data>
+          <data label="Data Length" pack="lew">4</data>
+          <data label="Data" pack="lew">0</data>
+          <data label="Data" pack="lew">0</data>
+          <data label="Data" pack="lew">0</data>
+          <data label="Data" pack="lew">0</data>
         </send>
         <recv label="command resp" />
       </option>
@@ -87,32 +97,37 @@
       </option>
     </session>
     <cmdframe>
-      <data label="SubHeader: Prefix" pack="hex">5400</data>
+      <data label="SubHeader: Prefix" pack="lew">0x54</data>
       <data label="SubHeader: Serial Number">XX</data>
-      <data label="SubHeader: Fixed Number" pack="hex">0000</data>
-      <data label="Q Header: Network Number" pack="hex">00</data>
-      <data label="Q Header: PC Number" pack="hex">FF</data>
-      <data label="Q Header: Request Unit I/O Number" pack="hex">FF03</data>
-      <data label="Q Header: Request Unit Station Number" pack="hex">00</data>
+      <data label="SubHeader: Fixed Number" pack="lew">0</data>
+      <data label="Q Header: Network Number" pack="chr">0</data>
+      <data label="Q Header: PC Number" pack="chr">0xFF</data>
+      <data label="Q Header: Request Unit I/O Number" pack="lew">0x3FF</data>
+      <data label="Q Header: Request Unit Station Number" pack="chr">0</data>
       <cc_cmd label="Q Header: Send Data Length MSB" pack="chr" />
-      <data label="Q Header: Send Data Length LSB" pack="hex">00</data>
+      <data label="Q Header: Send Data Length LSB" pack="chr">0</data>
       <ccrange method="len">
-        <data label="Q Header: CPU Watch Timer" pack="hex">0100</data>
+        <data label="Q Header: CPU Watch Timer" pack="lew">1</data>
         <select></select>
       </ccrange>
     </cmdframe>
     <rspframe wait="0">
-      <verify label="SubHeader" length="6" unpack="hex">d40058580000</verify>
-      <verify label="QHeader" length="5" unpack="hex">00ffff0300</verify>
+      <verify label="SubHeader: Prefix" length="2" unpack="lew" format="%04X">0054</verify>
+      <verify label="SubHeader: Serial Number" length="2">XX</verify>
+      <verify label="SubHeader: Fixed Number" length="2" unpack="lew">0</verify>
+      <verify label="Q Header: Network Number" unpack="chr">0</verify>
+      <verify label="Q Header: PC Number" unpack="chr" format="%02X">FF</verify>
+      <verify label="Q Header: Request Unit I/O Number" unpack="lew" format="%04X">03FF</verify>
+      <verify label="Q Header: Request Unit Station Number" unpack="chr">0</verify>
       <cc_rsp label="Response Data Length" length="2" unpack="lew"></cc_rsp>
       <ccrange method="len">
-        <rspcode label="ExitCode" length="2" unpack="hex">
+        <rspcode label="ExitCode" length="2" unpack="lew" format="%04X">
           <case type="pass" msg="OK">0000</case>
-          <case msg="RW Region Error" type="warn" option="errframe">0200</case>
-          <case msg="CMD Code Error" type="warn" option="errframe">5000</case>
-          <case msg="Devide Num Error" type="warn" option="errframe">5600</case>
-          <case msg="Communication Error" type="warn" option="errframe">5B00</case>
-          <case msg="CPU Watch timeout Error" type="warn" option="errframe">6000</case>
+          <case msg="RW Region Error" type="warn" option="errframe">0002</case>
+          <case msg="CMD Code Error" type="warn" option="errframe">0050</case>
+          <case msg="Devide Num Error" type="warn" option="errframe">0056</case>
+          <case msg="Communication Error" type="warn" option="errframe">005B</case>
+          <case msg="CPU Watch timeout Error" type="warn" option="errframe">0060</case>
           <case type="warn" msg="Unknown" option="errframe"></case>
         </rspcode>
         <select></select>

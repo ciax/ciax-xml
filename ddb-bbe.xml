@@ -14,13 +14,13 @@
       <option id="defio" label="DEFINE IN/OUT" type="config">
         <send>
           <data>SD</data>
-          <data label="msb" pack="hex">1111</data>
+          <data label="msb" pack="bew">0x1111</data>
         </send>
       </option>
       <option id="output" label="OUTPUT [DDDDD]" type="action">
         <send>
           <data>SO</data>
-          <par pack="bew" valid="[0-9]+" />
+          <par pack="bew" valid="0x[0-9a-fA-F]{1,4}" />
         </send>
       </option>
     </session>

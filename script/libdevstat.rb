@@ -144,14 +144,14 @@ class DevStat < XmlDev
       return decode(raw)
     elsif d=attr['delimiter']
       @frame.slice!(/$.+#{d}/)
+    else
+      @v.err("No frame length or delimiter")
     end
   end
   
   protected
   def decode(code)
     case upk=attr['unpack']
-    when 'hex'
-      str=code.unpack('H*').first
     when 'chr'
       str=code.unpack('C').first
     when 'bew'
@@ -161,7 +161,7 @@ class DevStat < XmlDev
     else
       return format(code)
     end
-    @v.msg("Decode:decode(#{upk}) [#{code}] -> [#{str}]")
+    @v.msg("Decode:unpack(#{upk}) [#{code}] -> [#{str}]")
     format(str)
   end
   

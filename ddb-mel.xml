@@ -112,13 +112,13 @@
       </ccrange>
     </cmdframe>
     <rspframe wait="0">
-      <verify label="SubHeader: Prefix" length="2" unpack="lew" format="%04X">0054</verify>
+      <verify label="SubHeader: Prefix" length="2" unpack="lew" format="%04X">00D4</verify>
       <verify label="SubHeader: Serial Number" length="2">XX</verify>
-      <verify label="SubHeader: Fixed Number" length="2" unpack="lew">0</verify>
-      <verify label="Q Header: Network Number" unpack="chr">0</verify>
-      <verify label="Q Header: PC Number" unpack="chr" format="%02X">FF</verify>
-      <verify label="Q Header: Request Unit I/O Number" unpack="lew" format="%04X">03FF</verify>
-      <verify label="Q Header: Request Unit Station Number" unpack="chr">0</verify>
+      <verify label="SubHeader: Fixed Number" length="2" unpack="lew" format="%04X">0000</verify>
+      <verify label="Q Header: Network Number" unpack="chr" format="%02X" length="1">00</verify>
+      <verify label="Q Header: PC Number" unpack="chr" format="%02X" length="1">FF</verify>
+      <verify label="Q Header: Request Unit I/O Number" unpack="lew" format="%04X" length="2">03FF</verify>
+      <verify label="Q Header: Request Unit Station Number" unpack="chr" format="%02X" length="1">00</verify>
       <cc_rsp label="Response Data Length" length="2" unpack="lew"></cc_rsp>
       <ccrange method="len">
         <rspcode label="ExitCode" length="2" unpack="lew" format="%04X">

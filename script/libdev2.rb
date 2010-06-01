@@ -31,7 +31,6 @@ class Dev
     session=@doc.select_id('//session',cmd)
     setpar(par)
     warn session.attributes['label']
-    i=0
     session.each_element {|io|
       @sel=io
       case io.name
@@ -44,7 +43,7 @@ class Dev
 #        @stat['time']="%.3f" % @ic.time.to_f
         rspframe(rcvstr)
       end
-      i+=1
+      i=(i||0)+1
     }
     @stat
   end
@@ -125,6 +124,8 @@ class Dev
       @frame.slice!(0,len)
     elsif d=e.attributes['delimiter']
       @frame.slice!(/$.+#{d}/)
+    else
+      @v.err("No frame length or delimiter")
     end
   end
 

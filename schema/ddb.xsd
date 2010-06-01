@@ -150,6 +150,7 @@
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="chr" />
       <xsd:enumeration value="hex" />
+      <xsd:enumeration value="hexstr" />
       <xsd:enumeration value="bew" />
       <xsd:enumeration value="lew"></xsd:enumeration>
     </xsd:restriction>

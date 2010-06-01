@@ -40,7 +40,7 @@
       <cc_cmd pack="chr" />
     </cmdframe>
     <rspframe wait="1">
-      <verify label="Prefix" length="1" unpack="hex">02</verify>
+      <verify label="Prefix" length="1" unpack="chr">2</verify>
       <ccrange method="bcc">
         <verify label="Node" length="4">0000</verify>
         <rspcode label="ExitCode" length="2">
@@ -56,7 +56,7 @@
           <case msg="Unknown" type="error"></case>
         </rspcode>
         <select></select>
-        <verify label="Suffix" length="1" unpack="hex">03</verify>
+        <verify label="Suffix" length="1" unpack="chr">3</verify>
       </ccrange>
       <cc_rsp label="BCC" length="1" unpack="chr" />
     </rspframe>

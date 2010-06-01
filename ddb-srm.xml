@@ -57,7 +57,7 @@
         <verify label="Prefix" length="1">@</verify>
         <select></select>
       </ccrange>
-      <cc_rsp label="BCC" length="2" format="%02X" />
+      <cc_rsp label="BCC" length="2" unpack="hexstr" />
       <verify label="Terminater" length="1">*</verify>
     </rspframe>
   </device>

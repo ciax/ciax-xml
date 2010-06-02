@@ -66,6 +66,7 @@ class Dev
   def getstat(e)
     frame=String.new
     e.each_element { |c|
+      a=c.attributes
       case c.name
       when 'ccrange'
         @v.msg("RSP:Entering Ceck Code Node")
@@ -73,29 +74,21 @@ class Dev
       when 'select'
         @v.msg("RSP:Entering Selected Node")
         frame << getstat(@sel)
+      when 'cc_rsp'
+        frame << assign(c,'cc')
+      when 'assign'
+        frame << assign(c,c.text)
+      when 'repeat_assign'
+        (a['min'].to_i .. a['max'].to_i).each {|n|
+          frame << assign(c,c.text % n)
+        }
       when 'verify'
-        @v.msg("RSP:Verify:#{c.attributes['label']}[#{c.text}]")
+        @v.msg("RSP:Verify:#{a['label']}[#{c.text}]")
         frame << s=cut_frame(c)
         @v.err("RSP:Verify Mismatch") if c.text != decode(c,s)
-      when 'cc_rsp'
-        @v.msg("RSP:Store:#{c.attributes['label']}")
-        frame << s=cut_frame(c)
-        @stat['cc']=decode(c,s)
-      when 'assign'
-        @v.msg("RSP:Assign:#{c.attributes['label']}")
-        frame << s=cut_frame(c)
-        @stat[c.text]=decode(c,s)
-      when 'repeat_assign'
-        min=c.attributes['min']||0
-        max=c.attributes['max']
-        (min.to_i .. max.to_i).each { |n|
-          @v.msg("RSP:Repeat Assign:#{c.attributes['label']}(#{n})]")
-          frame << s=cut_frame(c)
-          @stat[c.text % n]=decode(c,s)
-        }
       when 'rspcode'
         frame << s=cut_frame(c)
-        label="ResponseCode:#{c.attributes['label']}:"
+        label="ResponseCode:#{a['label']}:"
         str=decode(c,s)
         c.each_element {|g| #Match each case
           next if g.text && g.text != str
@@ -115,6 +108,13 @@ class Dev
       end
     }
     frame
+  end
+
+  def assign(e,key)
+    @v.msg("RSP:Assign:#{e.attributes['label']}")
+    code=cut_frame(e)
+    @stat[key]=decode(e,code)
+    code
   end
 
   def cut_frame(e)

@@ -9,4 +9,4 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
-print Marshal.dump c.getstat(gets(nil))
+print Marshal.dump c.getfield(gets(nil))

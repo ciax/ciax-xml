@@ -21,7 +21,7 @@ loop{
       puts $!
     end
   else
-    p ddb.stat
+    p ddb.field
   end
 }
 

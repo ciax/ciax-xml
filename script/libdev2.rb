@@ -59,15 +59,15 @@ module Response
     @v.err("RSP:No Selection") unless @sel=sel
     @v.err("RSP:No String") unless @frame=frame
     setframe(@doc.elements['//rspframe'])
-    if @stat['cc']
-      if @stat['cc'] === @var[:cc]
+    if @field['cc']
+      if @field['cc'] === @var[:cc]
         @v.msg("RSP:Verify:CC OK")
       else
-        @v.err("RSP:Verifu:CC Mismatch[#{@stat['cc']}]!=[#{@var[:cc]}]") 
+        @v.err("RSP:Verifu:CC Mismatch[#{@field['cc']}]!=[#{@var[:cc]}]") 
       end
-      @stat.delete('cc')
+      @field.delete('cc')
     end
-    @stat
+    @field
   end
 
   def setframe(e)
@@ -119,7 +119,7 @@ module Response
   def assign(e,key)
     @v.msg("RSP:Assign:#{e.attributes['label']}[#{key}]")
     code=cut_frame(e)
-    @stat[key]=decode(e,code)
+    @field[key]=decode(e,code)
     code
   end
 
@@ -186,10 +186,10 @@ class Dev
     else
       @f=IoFile.new(id)
       begin
-        @stat=@f.load_stat
+        @field=@f.load_stat
       rescue
         warn $!
-        @stat={'device'=>dev}
+        @field={'device'=>dev}
       end
       @v=Verbose.new("#{@doc.root.name}/#{id}".upcase)
       @property=@doc.property
@@ -209,13 +209,13 @@ class Dev
     cmdframe(@session.elements['send'])
   end
 
-  def getstat(frame)
+  def getfield(frame)
     rspframe(@session.elements['recv'],frame)
   end
 end
 
 class DevCom < Dev
-  attr_reader :stat
+  attr_reader :field
   def initialize(dev,iocmd,obj=nil)
     super(dev,obj)
     @ic=IoCmd.new(iocmd,obj||dev)
@@ -230,12 +230,12 @@ class DevCom < Dev
         @ic.snd(sndstr,['snd',i,@var[:cmd],@var['par']])
       when 'recv'
         rcvstr=@ic.rcv(['rcv',i,@var[:cmd]])
-        @stat['time']="%.3f" % @ic.time.to_f
+        @field['time']="%.3f" % @ic.time.to_f
         rspframe(io,rcvstr)
       end
       i=(i||0)+1
     }
-    @stat
+    @field
   end
 
 end

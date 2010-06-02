@@ -200,12 +200,13 @@ class Dev
   def setcmd(line)
     cmd,par=line.split(' ')
     @session=@doc.select_id('//session',cmd)
+    @var[:cmd]=cmd
     setpar(par)
     warn @session.attributes['label']
   end
 
   def getcmd
-    print cmdframe(@session.elements['send'])
+    cmdframe(@session.elements['send'])
   end
 
   def getstat(frame)
@@ -213,29 +214,11 @@ class Dev
   end
 end
 
-class DevCom
-  include Command
-  include Response
+class DevCom < Dev
   attr_reader :stat
   def initialize(dev,iocmd,obj=nil)
-    id=obj||dev
-    begin
-      @doc=XmlDoc.new('ddb',dev)
-    rescue RuntimeError
-      abort $!.to_s
-    else
-      @f=IoFile.new(id)
-      @ic=IoCmd.new(iocmd,id)
-      begin
-        @stat=@f.load_stat
-      rescue
-        warn $!
-        @stat={'device'=>dev}
-      end
-      @v=Verbose.new("#{@doc.root.name}/#{id}".upcase)
-      @property=@doc.property
-      @var=Hash.new
-   end
+    super(dev,obj)
+    @ic=IoCmd.new(iocmd,obj||dev)
   end
 
   def devcom
@@ -243,11 +226,10 @@ class DevCom
     @session.each_element {|io|
       case io.name
       when 'send'
-        print sndstr=cmdframe(io)
-        @ic.snd(sndstr,['snd',i,cmd,par])
+        sndstr=cmdframe(io)
+        @ic.snd(sndstr,['snd',i,@var[:cmd],@var['par']])
       when 'recv'
-        rcvstr=gets(nil)
-        rcvstr=@ic.rcv(['rcv',i,cmd])
+        rcvstr=@ic.rcv(['rcv',i,@var[:cmd]])
         @stat['time']="%.3f" % @ic.time.to_f
         rspframe(io,rcvstr)
       end

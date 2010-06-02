@@ -4,4 +4,4 @@ obj="$1"
 setfld $obj || _usage_key
 [ "$iocmd" ] || _die "No entry in iocmd field"
 echo " [$iocmd]" >&2 
-devshell $dev "$iocmd"
+devshell2 $dev "$iocmd"

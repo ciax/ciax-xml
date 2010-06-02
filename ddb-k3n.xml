@@ -58,7 +58,7 @@
         <select></select>
         <verify label="Suffix" length="1" unpack="chr">3</verify>
       </ccrange>
-      <cc_rsp label="BCC" length="1" unpack="chr" />
+      <assign label="BCC" length="1" unpack="chr">cc</assign>
     </rspframe>
   </device>
 </ddb>

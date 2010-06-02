@@ -203,7 +203,6 @@
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="cx:rsp_elem" />
         <xsd:element ref="cx:select" />
-        <xsd:element ref="cx:cc_rsp" />
         <xsd:element ref="cx:ccrange" />
       </xsd:choice>
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
@@ -251,11 +250,6 @@
           <xsd:attribute name="max" type="xsd:int" use="required"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="cc_rsp">
-    <xsd:complexType>
-      <xsd:attributeGroup ref="cx:rsp_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="rspcode">

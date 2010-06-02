@@ -55,14 +55,6 @@ class DevStat < XmlDev
     @v.wrn(label+":Unknown code [#{str}]")
   end
 
-  def store_cc
-    str=cut_frame(nil)
-    label="CheckCode:#{attr['label']} "
-    @var[:ccr]=str
-    @var[:cclabel]=label
-    @v.msg(label+"Stored [#{str}]")
-  end
-  
   def verify(ary=nil)
     str=cut_frame(ary)
     label="Verify:#{attr['label']} "
@@ -112,8 +104,6 @@ class DevStat < XmlDev
           end
         }
         e.checkcode(ary.join(''))
-      when 'cc_rsp'
-        e.store_cc
       when 'verify'
         e.verify
       when 'rspcode'
@@ -127,12 +117,13 @@ class DevStat < XmlDev
   end
   
   def verify_cc
-    return unless @var[:ccr]
-    if @var[:ccr] === @var[:ccc]
-      @v.msg(@var[:cclabel]+"OK [#{@var[:ccr]}]")
+    return unless @field['cc']
+    if @field['cc'] === @var[:ccc]
+      @v.msg("CheckCode OK [#{@field['cc']}]")
     else
-      @v.msg(@var[:cclabel]+"Mismatch [#{@var[:ccr]}] != [#{@var[:ccc]}]")
+      @v.msg("CheckCode Mismatch [#{@field['cc']}] != [#{@var[:ccc]}]")
     end
+    @field.delete('cc')
   end
   
   def cut_frame(ary)

@@ -111,7 +111,7 @@ class Dev
   end
 
   def assign(e,key)
-    @v.msg("RSP:Assign:#{e.attributes['label']}")
+    @v.msg("RSP:Assign:#{e.attributes['label']}[#{key}]")
     code=cut_frame(e)
     @stat[key]=decode(e,code)
     code

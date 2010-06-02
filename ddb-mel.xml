@@ -23,7 +23,7 @@
           <data label="Data Length" pack="lew">34</data>
         </send>
         <recv>
-          <repeat_assign length="2" unpack="lew" max="51">x%02x</repeat_assign>
+          <repeat_assign length="2" unpack="lew" max="51" label="Repeated">x%02x</repeat_assign>
         </recv>
       </option>
       <option id="set_tag" label="Set Tag to Run [HH00]" type="config">
@@ -119,7 +119,7 @@
       <verify label="Q Header: PC Number" unpack="chr" format="%02X" length="1">FF</verify>
       <verify label="Q Header: Request Unit I/O Number" unpack="lew" format="%04X" length="2">03FF</verify>
       <verify label="Q Header: Request Unit Station Number" unpack="chr" format="%02X" length="1">00</verify>
-      <cc_rsp label="Response Data Length" length="2" unpack="lew"></cc_rsp>
+      <assign label="Response Data Length" length="2" unpack="lew">cc</assign>
       <ccrange method="len">
         <rspcode label="ExitCode" length="2" unpack="lew" format="%04X">
           <case type="pass" msg="OK">0000</case>

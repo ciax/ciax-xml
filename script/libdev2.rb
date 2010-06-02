@@ -3,56 +3,62 @@ require "libxmldoc"
 require "libiocmd"
 require "libiofile"
 
-class Dev
-  attr_reader :stat
-  def initialize(dev,iocmd,obj=nil)
-    id=obj||dev
-    begin
-      @doc=XmlDoc.new('ddb',dev)
-    rescue RuntimeError
-      abort $!.to_s
-    else
-      @f=IoFile.new(id)
-      #      @ic=IoCmd.new(iocmd,id)
-      begin
-        @stat=@f.load_stat
-      rescue
-        warn $!
-        @stat={'device'=>dev}
+# Common Method
+module Common
+  def checkcode(e,frame)
+    chk=0
+    if method=e.attributes['method']
+      case method
+      when 'len'
+        chk=frame.length
+      when 'bcc'
+        frame.each_byte {|c| chk ^= c }
+      else
+        @v.err "No such CC method #{method}"
       end
-      @v=Verbose.new("#{@doc.root.name}/#{id}".upcase)
-      @property=@doc.property
-      @var=Hash.new
-   end
+      @v.msg("Calc:CC [#{method.upcase}] -> [#{chk}]")
+      return chk.to_s
+    end
+    @v.err "CC No method"
   end
 
-  def devcom(line)
-    cmd,par=line.split(' ')
-    session=@doc.select_id('//session',cmd)
-    setpar(par)
-    warn session.attributes['label']
-    session.each_element {|io|
-      @sel=io
-      case io.name
-      when 'send'
-        print sndstr=cmdframe
-#        @ic.snd(sndstr,['snd',i,cmd,par])
-      when 'recv'
-        rcvstr=gets(nil)
-#        rcvstr=@ic.rcv(['rcv',i,cmd])
-#        @stat['time']="%.3f" % @ic.time.to_f
-        rspframe(rcvstr)
-      end
-      i=(i||0)+1
-    }
-    @stat
+  Pack={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
+
+  def decode(e,code)
+    if upk=Pack[e.attributes['unpack']]
+      str=(upk == 'hex') ? code.hex : code.unpack(upk).first
+      @v.msg("Decode:unpack(#{upk}) [#{code}] -> [#{str}]")
+      code=str
+    end
+    return format(e,code)
   end
 
-  # Rsp Methods
-  def rspframe(frame)
-    @v.err("RSP:No String") unless frame
-    @frame=frame
-    getstat(@doc.elements['//rspframe'])
+  def encode(e,str)
+    if pack=Pack[e.attributes['pack']]
+      code=[str.to_i(0)].pack(pack)
+      @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
+      str=code
+    end
+    format(e,str)
+  end
+
+  def format(e,code)
+    if fmt=e.attributes['format']
+      str=fmt % code
+      @v.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]")
+      code=str
+    end
+    code.to_s
+  end
+end
+
+# Rsp Methods
+module Response
+  include Common
+  def rspframe(sel,frame)
+    @v.err("RSP:No Selection") unless @sel=sel
+    @v.err("RSP:No String") unless @frame=frame
+    setframe(@doc.elements['//rspframe'])
     if @stat['cc']
       if @stat['cc'] === @var[:cc]
         @v.msg("RSP:Verify:CC OK")
@@ -61,19 +67,20 @@ class Dev
       end
       @stat.delete('cc')
     end
+    @stat
   end
 
-  def getstat(e)
+  def setframe(e)
     frame=String.new
     e.each_element { |c|
       a=c.attributes
       case c.name
       when 'ccrange'
         @v.msg("RSP:Entering Ceck Code Node")
-        @var[:cc] = checkcode(c,getstat(c))
+        @var[:cc] = checkcode(c,setframe(c))
       when 'select'
         @v.msg("RSP:Entering Selected Node")
-        frame << getstat(@sel)
+        frame << setframe(@sel)
       when 'assign'
         frame << assign(c,c.text)
       when 'repeat_assign'
@@ -127,13 +134,17 @@ class Dev
       @v.err("No frame length or delimiter")
     end
   end
+end
 
-  # Cmd Methods
+# Cmd Methods
+module Command
+  include Common
   def setpar(par)
     @var['par']=par
   end
 
-  def cmdframe
+  def cmdframe(sel)
+    @v.err("CMD:No Selection") unless @sel=sel
     cfn=@doc.elements['//cmdframe']
     if ccn=cfn.elements['.//ccrange']
       @v.msg("CMD:Getting Ceck Code Range")
@@ -160,52 +171,89 @@ class Dev
     }
     frame
   end
+end
 
-  # Common Method
-  def checkcode(e,frame)
-    chk=0
-    if method=e.attributes['method']
-      case method
-      when 'len'
-        chk=frame.length
-      when 'bcc'
-        frame.each_byte {|c| chk ^= c }
-      else
-        @v.err "No such CC method #{method}"
+# Main
+class Dev
+  include Command
+  include Response
+  def initialize(dev,obj=nil)
+    id=obj||dev
+    begin
+      @doc=XmlDoc.new('ddb',dev)
+    rescue RuntimeError
+      abort $!.to_s
+    else
+      @f=IoFile.new(id)
+      begin
+        @stat=@f.load_stat
+      rescue
+        warn $!
+        @stat={'device'=>dev}
       end
-      @v.msg("Calc:CC [#{ method.upcase}] -> [#{chk}]")
-      return chk.to_s
-    end
-    @v.err "CC No method"
+      @v=Verbose.new("#{@doc.root.name}/#{id}".upcase)
+      @property=@doc.property
+      @var=Hash.new
+   end
   end
 
-  Pack={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
-
-  def decode(e,code)
-    if upk=Pack[e.attributes['unpack']]
-      str=(upk == 'hex') ? code.hex : code.unpack(upk).first
-      @v.msg("Decode:unpack(#{upk}) [#{code}] -> [#{str}]")
-      code=str
-    end
-    return format(e,code)
+  def setcmd(line)
+    cmd,par=line.split(' ')
+    @session=@doc.select_id('//session',cmd)
+    setpar(par)
+    warn @session.attributes['label']
   end
 
-  def encode(e,str)
-    if pack=Pack[e.attributes['pack']]
-      code=[str.to_i(0)].pack(pack)
-      @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
-      str=code
-    end
-    format(e,str)
+  def getcmd
+    print cmdframe(@session.elements['send'])
   end
 
-  def format(e,code)
-    if fmt=e.attributes['format']
-      str=fmt % code
-      @v.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]")
-      code=str
-    end
-    code.to_s
+  def getstat(frame)
+    rspframe(@session.elements['recv'],frame)
+  end
+end
+
+class DevCom
+  include Command
+  include Response
+  attr_reader :stat
+  def initialize(dev,iocmd,obj=nil)
+    id=obj||dev
+    begin
+      @doc=XmlDoc.new('ddb',dev)
+    rescue RuntimeError
+      abort $!.to_s
+    else
+      @f=IoFile.new(id)
+      @ic=IoCmd.new(iocmd,id)
+      begin
+        @stat=@f.load_stat
+      rescue
+        warn $!
+        @stat={'device'=>dev}
+      end
+      @v=Verbose.new("#{@doc.root.name}/#{id}".upcase)
+      @property=@doc.property
+      @var=Hash.new
+   end
+  end
+
+  def devcom
+    i=nil
+    @session.each_element {|io|
+      case io.name
+      when 'send'
+        print sndstr=cmdframe(io)
+        @ic.snd(sndstr,['snd',i,cmd,par])
+      when 'recv'
+        rcvstr=gets(nil)
+        rcvstr=@ic.rcv(['rcv',i,cmd])
+        @stat['time']="%.3f" % @ic.time.to_f
+        rspframe(io,rcvstr)
+      end
+      i=(i||0)+1
+    }
+    @stat
   end
 
 end

@@ -74,8 +74,6 @@ class Dev
       when 'select'
         @v.msg("RSP:Entering Selected Node")
         frame << getstat(@sel)
-      when 'cc_rsp'
-        frame << assign(c,'cc')
       when 'assign'
         frame << assign(c,c.text)
       when 'repeat_assign'
@@ -91,9 +89,10 @@ class Dev
         label="ResponseCode:#{a['label']}:"
         str=decode(c,s)
         c.each_element {|g| #Match each case
+          a=g.attributes
           next if g.text && g.text != str
-          msg=label+g.attributes['msg']+" [#{str}]"
-          case g.attributes['type']
+          msg=label+a['msg']+" [#{str}]"
+          case a['type']
           when 'pass'
             @v.msg(msg)
           when 'warn'
@@ -101,7 +100,7 @@ class Dev
           when 'error'
             @v.err(msg)
           end
-          @sel=@doc.select_id('//session/recv',a) if a=e.attributes['option']
+          @sel=@doc.select_id('//session/recv',opt) if opt=a['option']
           break
         }
 #        @v.wrn(label+":Unknown code [#{str}]")
@@ -180,7 +179,7 @@ class Dev
     @v.err "CC No method"
   end
 
-  Pack={'hexstr'=>'hex','hex'=>'H*','chr'=>'C','bew'=>'n','lew'=>'v'}
+  Pack={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
 
   def decode(e,code)
     if upk=Pack[e.attributes['unpack']]
@@ -188,7 +187,7 @@ class Dev
       @v.msg("Decode:unpack(#{upk}) [#{code}] -> [#{str}]")
       code=str
     end
-    format(e,code)
+    return format(e,code)
   end
 
   def encode(e,str)

@@ -2,6 +2,7 @@
 require "libxmldoc"
 require "libiocmd"
 require "libiofile"
+require "libnumrange"
 
 # Common Method
 module Common
@@ -50,7 +51,8 @@ module Common
     when 'regexp'
       @v.err("Parameter invalid(#{e.text})") if /^#{e.text}$/ !~ str
     when 'range'
-      @v.err("Parameter out of range(#{e.text})") if ! range(e.text).include?(s2i(str))
+      r=NumRange.new(e.text)
+      @v.err("Parameter out of range(#{e.text})") if ! r.include?(str)
     end
     str
   end
@@ -64,15 +66,6 @@ module Common
     code.to_s
   end
 
-  def range(str)
-    min,max=str.split(':').map!{|s| s2i(s) }
-    Range.new(min,max)
-  end
-
-  def s2i(str)
-    @v.err("Parameter is not Number") if /^([0-9]+|0[Xx][0-9a-fA-F]+)$/ !~ str
-    str.to_i(0)
-  end
 end
 
 # Rsp Methods

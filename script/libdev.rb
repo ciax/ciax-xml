@@ -99,7 +99,7 @@ module Response
         @v.err("RSP:Verify Mismatch") if c.text != decode(c,s)
       when 'rspcode'
         frame << s=cut_frame(c)
-        label="ResponseCode:#{a['label']}:"
+        label="RSP:ResponseCode:#{a['label']}:"
         str=decode(c,s)
         c.each_element {|g| #Match each case
           a=g.attributes
@@ -114,9 +114,8 @@ module Response
             @v.err(msg)
           end
           @sel=@doc.select_id('//session/recv',opt) if opt=a['option']
-          break
-        }
-#        @v.wrn(label+":Unknown code [#{str}]")
+          break 1
+        } || @v.wrn(label+":Unknown code [#{str}]")
       end
     }
     frame
@@ -138,7 +137,7 @@ module Response
     elsif d=a['delimiter']
       @frame.slice!(/$.+#{d}/)
     else
-      @v.err("No frame length or delimiter")
+      @v.err("RSP:No frame length or delimiter")
     end
   end
 end

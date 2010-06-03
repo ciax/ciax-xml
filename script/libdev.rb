@@ -204,7 +204,7 @@ class Dev
   def setcmd(cmd)
     @session=@doc.select_id('//session',cmd)
     @var[:cmd]=cmd
-    warn @session.attributes['label']
+    @v.msg('Select:'+@session.attributes['label'])
   end
 
   def getcmd
@@ -212,7 +212,7 @@ class Dev
   end
 
   def getfield(frame)
-    rspframe(@session.elements['recv'],frame)
+    @f.save_stat(rspframe(@session.elements['recv'],frame))
   end
 end
 
@@ -224,17 +224,17 @@ class DevCom < Dev
   end
 
   def devcom
-    i=0
+    snd='snd0'
+    rcv='rcv0'
     @session.each_element {|io|
       case io.name
       when 'send'
         sndstr=cmdframe(io)
-        @ic.snd(sndstr,['snd',i,@var[:cmd],@var['par']])
+        @ic.snd(sndstr,[snd.succ!,@var[:cmd],@var['par']])
       when 'recv'
-        rcvstr=@ic.rcv(['rcv',i,@var[:cmd]])
+        rcvstr=@ic.rcv([rcv.succ!,@var[:cmd]])
         @field['time']="%.3f" % @ic.time.to_f
-        rspframe(io,rcvstr)
-        i+=1
+        @f.save_stat(rspframe(io,rcvstr))
       end
     }
     @field

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libdev2"
+require "libdev"
 
 warn "Usage: devshell [dev] [iocmd]" if ARGV.size < 2
 

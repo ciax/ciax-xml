@@ -8,12 +8,12 @@
       </session>
       <session id="start_run" label="Running Start">
         <command text="start">
-          <par type="text">0100</par>
+          <par type="text">1</par>
         </command>
       </session>
       <session id="start_jak" label="Jacking Start">
         <command text="start">
-          <par type="text">0001</par>
+          <par type="text">0x100</par>
         </command>
       </session>
       <session id="clear_trg" label="Jacking Start">
@@ -21,27 +21,27 @@
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
         <command text="set_tag">
-          <par type="text">6200</par>
+          <par type="text">98</par>
         </command>
       </session>
       <session id="set_run1" label="Run to Tag 1">
         <command text="set_tag">
-          <par type="text">0100</par>
+          <par type="text">1</par>
         </command>
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
         <command text="set_pos">
-          <par type="text">0200</par>
+          <par type="text">2</par>
         </command>
       </session>
       <session id="pause" label="Pause">
         <command text="stop">
-          <par type="text">0100</par>
+          <par type="text">1</par>
         </command>
       </session>
       <session id="emstop" label="Emergency Stop">
         <command text="stop">
-          <par type="text">0200</par>
+          <par type="text">2</par>
         </command>
       </session>
       <session id="resume" label="Resume from Pause">

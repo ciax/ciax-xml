@@ -23,7 +23,7 @@ class XmlDoc < Document
     if e=elements["//selection/[@id='#{id}']"]
       return e
     else
-      list_id(xpath)
+      list_id("//selection")
     end
     raise "No such ID"
   end

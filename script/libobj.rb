@@ -80,20 +80,21 @@ class Obj
   def get_val(e,field)
     val=String.new
     e.elements['./fields'].each_element {|f| #element(split and concat)
-      ref=f.attributes['ref'] || return
+      a=f.attributes
+      ref=a['ref'] || return
       data=field[ref] || return
       $ver.msg("Convert:#{f.name.capitalize} Field (#{ref})")
       case f.name
       when 'binary'
-        val << (data.to_i >> f.attributes['bit'].to_i & 1).to_s
+        val << (data.to_i >> a['bit'].to_i & 1).to_s
       when 'float'
-        if n=f.attributes['decimal']
+        if n=a['decimal']
           n=n.to_i
           data=data[0..-n-1]+'.'+data[-n..-1]
         end
         val << format(f,data)
       when 'int'
-        if f.attributes['signed']
+        if a['signed']
           data=[data.to_i].pack('S').unpack('s').first
         end
         val << format(f,data)

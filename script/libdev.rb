@@ -82,9 +82,11 @@ module Response
       when 'ccrange'
         @v.msg("RSP:Entering Ceck Code Node")
         @var[:cc] = checkcode(c,setframe(c))
-      when 'select'
+        @v.msg("RSP:Exitting Ceck Code Node")
+      when 'selected'
         @v.msg("RSP:Entering Selected Node")
         frame << setframe(@sel)
+        @v.msg("RSP:Exitting Selected Node")
       when 'assign'
         frame << assign(c,c.text)
       when 'repeat_assign'
@@ -92,7 +94,7 @@ module Response
           frame << assign(c,c.text % n)
         }
       when 'verify'
-        @v.msg("RSP:Verify:#{a['label']}[#{c.text}]")
+        @v.msg("RSP:Verify:#{a['label']} [#{c.text}]")
         frame << s=cut_frame(c)
         @v.err("RSP:Verify Mismatch") if c.text != decode(c,s)
       when 'rspcode'
@@ -121,18 +123,19 @@ module Response
   end
 
   def assign(e,key)
-    @v.msg("RSP:Assign:#{e.attributes['label']}[#{key}]")
     code=cut_frame(e)
     @field[key]=decode(e,code)
+    @v.msg("RSP:Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]")
     code
   end
 
   def cut_frame(e)
-    if l=e.attributes['length']
+    a=e.attributes
+    if l=a['length']
       len=l.to_i
       @v.err("RSP:Too short (#{@frame.size-len})") if @frame.size < len
       @frame.slice!(0,len)
-    elsif d=e.attributes['delimiter']
+    elsif d=a['delimiter']
       @frame.slice!(/$.+#{d}/)
     else
       @v.err("No frame length or delimiter")
@@ -151,9 +154,10 @@ module Command
     @v.err("CMD:No Selection") unless @sel=sel
     cfn=@doc.elements['//cmdframe']
     if ccn=cfn.elements['.//ccrange']
-      @v.msg("CMD:Getting Ceck Code Range")
+      @v.msg("CMD:Entering Ceck Code Range")
       @var['ccrange']=getframe(ccn)
       @var['cc_cmd']=checkcode(ccn,@var['ccrange'])
+      @v.msg("CMD:Exitting Ceck Code Range")
     end
     getframe(cfn)
   end
@@ -162,16 +166,17 @@ module Command
     frame=String.new
     e.each_element { |c|
       case c.name
-      when 'select'
+      when 'selected'
         @v.msg("CMD:Entering Selected Node")
         frame << getframe(@sel)
         @v.msg("CMD:Exitting Selected Node")
       when 'data'
         frame << encode(c,c.text)
+        @v.msg("CMD:GetFrame:#{c.attributes['label']}[#{c.text}]")
       else
         frame << encode(c,@var[c.name])
+        @v.msg("CMD:GetFrame:#{c.attributes['label']}(#{c.name})[#{@var[c.name]}]")
       end
-      @v.msg("CMD:GetFrame:#{c.attributes['label']}(#{c.name})[#{frame}]")
     }
     frame
   end
@@ -202,7 +207,7 @@ class Dev
   end
 
   def setcmd(cmd)
-    @session=@doc.select_id('//session',cmd)
+    @session=@doc.select_id('//selection',cmd)
     @var[:cmd]=cmd
     @v.msg('Select:'+@session.attributes['label'])
   end

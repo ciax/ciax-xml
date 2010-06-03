@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
   <device id="mel" label="MELSEC Q Series">
-    <session>
-      <option id="chken" label="Check Enable Flag" type="stat">
+    <selection>
+      <session id="chken" label="Check Enable Flag" type="stat">
         <send>
           <data label="Read region command" pack="lew">0x401</data>
           <data label="Read region subcommand" pack="lew">0</data>
@@ -13,20 +13,20 @@
         <recv>
           <assign length="2" unpack="lew">cre</assign>
         </recv>
-      </option>
-      <option id="getstat" label="Get all status" type="stat">
+      </session>
+      <session id="getstat" label="Get all status" type="stat">
         <send>
           <data label="Read region command" pack="lew">0x401</data>
           <data label="Read region subcommand" pack="lew">0</data>
           <data label="Start Address" pack="lew">0</data>
           <data label="Device Code" pack="lew">0xB400</data>
-          <data label="Data Length" pack="lew">34</data>
+          <data label="Data Length" pack="lew">52</data>
         </send>
         <recv>
           <repeat_assign length="2" unpack="lew" max="51" label="Repeated">x%02x</repeat_assign>
         </recv>
-      </option>
-      <option id="set_tag" label="Set Tag to Run [HH00]" type="config">
+      </session>
+      <session id="set_tag" label="Set Tag to Run [HH00]" type="config">
         <send>
           <data label="Write region command" pack="lew">0x1401</data>
           <data label="Write region subcommand" pack="lew">0</data>
@@ -36,8 +36,8 @@
           <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
         </send>
         <recv label="command resp" />
-      </option>
-      <option id="set_pos" label="Set Pos to Jack [HH00]" type="config">
+      </session>
+      <session id="set_pos" label="Set Pos to Jack [HH00]" type="config">
         <send>
           <data label="Write region command" pack="lew">0x1401</data>
           <data label="Write region subcommand" pack="lew">0</data>
@@ -47,8 +47,8 @@
           <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
         </send>
         <recv label="command resp" />
-      </option>
-      <option id="start" label="Start Trigger [HHHH]" type="action">
+      </session>
+      <session id="start" label="Start Trigger [HHHH]" type="action">
         <send>
           <data label="Write region command" pack="lew">0x1401</data>
           <data label="Write region subcommand" pack="lew">0</data>
@@ -58,8 +58,8 @@
           <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
         </send>
         <recv label="command resp" />
-      </option>
-      <option id="stop" label="Stop Trigger [HHHH]" type="action">
+      </session>
+      <session id="stop" label="Stop Trigger [HHHH]" type="action">
         <send>
           <data label="Write region command" pack="lew">0x1401</data>
           <data label="Write region subcommand" pack="lew">0</data>
@@ -69,8 +69,8 @@
           <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
         </send>
         <recv label="command resp" />
-      </option>
-      <option id="clear" label="Clear Action Flags" type="config">
+      </session>
+      <session id="clear" label="Clear Action Flags" type="config">
         <send>
           <data label="Write region command" pack="lew">0x1401</data>
           <data label="Write region subcommand" pack="lew">0</data>
@@ -83,8 +83,8 @@
           <data label="Data" pack="lew">0</data>
         </send>
         <recv label="command resp" />
-      </option>
-      <option id="errframe">
+      </session>
+      <session id="errframe">
         <recv>
           <assign length="1">err_net</assign>
           <assign length="1">err_pc</assign>
@@ -94,8 +94,8 @@
           <assign length="2">err_subcmd</assign>
           <assign length="9">errframe</assign>
         </recv>
-      </option>
-    </session>
+      </session>
+    </selection>
     <cmdframe>
       <data label="SubHeader: Prefix" pack="lew">0x54</data>
       <data label="SubHeader: Serial Number">XX</data>
@@ -108,7 +108,7 @@
       <data label="Q Header: Send Data Length LSB" pack="chr">0</data>
       <ccrange method="len">
         <data label="Q Header: CPU Watch Timer" pack="lew">1</data>
-        <select></select>
+        <selected />
       </ccrange>
     </cmdframe>
     <rspframe wait="0">
@@ -130,7 +130,7 @@
           <case msg="CPU Watch timeout Error" type="warn" option="errframe">0060</case>
           <case type="warn" msg="Unknown" option="errframe"></case>
         </rspcode>
-        <select></select>
+        <selected />
       </ccrange>
     </rspframe>
   </device>

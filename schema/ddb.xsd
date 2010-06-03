@@ -14,7 +14,7 @@
         <!--Protocol for RS232C-->
         <xsd:element ref="cx:serial" minOccurs="0" maxOccurs="1" />
         <!--Select sessions-->
-        <xsd:element ref="cx:session" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="cx:selection" minOccurs="0" maxOccurs="1" />
         <!--Command frame-->
         <xsd:element ref="cx:cmdframe" minOccurs="0" maxOccurs="1" />
         <!--Response frame-->
@@ -85,7 +85,7 @@
   <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:select" />
+        <xsd:element ref="cx:selected" />
         <xsd:group ref="cx:cmd_elem" />
         <xsd:group ref="cx:rsp_elem" />
       </xsd:choice>
@@ -101,17 +101,17 @@
       </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="session">
+  <xsd:element name="selection">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:option" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="cx:session" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="select">
+  <xsd:element name="selected">
     <xsd:complexType></xsd:complexType>
   </xsd:element>
-  <xsd:element name="option">
+  <xsd:element name="session">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="cx:send" />
@@ -159,7 +159,7 @@
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="cx:cmd_elem" />
-        <xsd:element ref="cx:select" />
+        <xsd:element ref="cx:selected" />
         <xsd:element ref="cx:ccrange" />
         <xsd:element ref="cx:cc_cmd" />
       </xsd:choice>
@@ -202,7 +202,7 @@
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="cx:rsp_elem" />
-        <xsd:element ref="cx:select" />
+        <xsd:element ref="cx:selected" />
         <xsd:element ref="cx:ccrange" />
       </xsd:choice>
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>

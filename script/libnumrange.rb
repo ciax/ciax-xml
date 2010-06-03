@@ -36,13 +36,15 @@ class NumRange
   end
 
   private
+  # Accepts int,float,hexstr
   def s2i(str)
     return str if str === Numeric
-    abort ("Not Number [#{str}]") if /^(-?[0-9\.]+|0[Xx][0-9a-fA-F]+)$/ !~ str
-    if /[Xx]/ !~ str
+    if /^0[Xx][0-9a-fA-F]+$/ =~ str
+      str.to_i(0)
+    elsif /^-?[0-9]+(\.[0-9]+)?$/ =~ str
       str.to_f
     else
-      str.to_i(0)
+      abort ("Not Number [#{str}]")
     end
   end
 end

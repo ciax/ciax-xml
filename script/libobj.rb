@@ -30,10 +30,10 @@ class Obj
     session=control_id(cmd)
     warn session.attributes['label']
     session.each_element {|command|
-      line=get_cmd(command,@field)
-      $ver.msg("Exec(DDB):[#{line}]")
-      warn "CommandExec[#{line}]"
-      get_stat(yield(line))
+      cmdary=get_cmd(command,@field)
+      $ver.msg("Exec(DDB):#{cmdary}")
+      warn "CommandExec#{cmdary}"
+      get_stat(yield(cmdary))
     }
   end
   
@@ -61,17 +61,19 @@ class Obj
 
   #Cmd Method
   def get_cmd(e,field)
-    devcmd=[e.attributes['text']]
+    cmdary=[e.attributes['text']]
     e.each_element{|par|
       str=par.text
       if par.attributes['type'] == 'formula'
         func=par.text
-        str=eval(func.gsub(/\$([\w]+)/) { field[$1] })
+        conv=func.gsub(/\$([\w]+)/) { field[$1] }
+        $ver.msg("Function:(#{func})->(#{conv})")
+        str=eval(func.gsub(/\$([\w]+)/) { field[$1] }).to_s
         $ver.msg("Function:(#{func})=#{str}")
       end
-      devcmd << str
+      cmdary << str
     }
-    devcmd.join(' ')
+    cmdary
   end
 
   #Stat Methods

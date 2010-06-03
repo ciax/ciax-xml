@@ -224,7 +224,7 @@ class DevCom < Dev
   end
 
   def devcom
-    i=nil
+    i=0
     @session.each_element {|io|
       case io.name
       when 'send'
@@ -234,8 +234,8 @@ class DevCom < Dev
         rcvstr=@ic.rcv(['rcv',i,@var[:cmd]])
         @field['time']="%.3f" % @ic.time.to_f
         rspframe(io,rcvstr)
+        i+=1
       end
-      i=(i||0)+1
     }
     @field
   end

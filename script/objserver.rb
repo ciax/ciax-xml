@@ -11,14 +11,16 @@ dev=@odb.property['device']
 client=@odb.property['client']
 server=@odb.property['server']
 srv=IoCmd.new(server,"server_#{obj}",5)
-@ddb=Dev.new(dev,client,obj)
+@ddb=DevCom.new(dev,client,obj)
 warn server
 
 def session(line)
   begin
-    @odb.objcom(line) {|l|
+    @odb.objcom(line) {|c,p|
       begin
-        @ddb.devcom(l)
+        @ddb.setpar(p)
+        @ddb.setcmd(c)
+        @ddb.devcom
       rescue
       end
     }

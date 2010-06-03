@@ -10,7 +10,7 @@ obj=ARGV.shift
 odb=Obj.new(obj)
 dev=odb.property['device']
 iocmd=odb.property['client']
-ddb=Dev.new(dev,iocmd,obj)
+ddb=DevCom.new(dev,iocmd,obj)
 
 loop {
   print "#{obj}>"
@@ -20,9 +20,11 @@ loop {
     break
   when /[\w]+/
     begin
-      odb.objcom(line) {|l|
+      odb.objcom(line) {|c,p|
         begin
-          ddb.devcom(l)
+          ddb.setpar(p)
+          ddb.setcmd(c)
+          ddb.devcom
         rescue
           warn $!
         end

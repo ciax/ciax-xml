@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobj2"
+require "libobj"
 require "libiofile"
 
 warn "Usage: objstat [object] < devstat" if ARGV.size < 1
@@ -12,3 +12,4 @@ rescue RuntimeError
   abort $!.to_s
 end
 print Marshal.dump stat
+

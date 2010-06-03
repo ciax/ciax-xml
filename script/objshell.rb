@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobj2"
+require "libobj"
 require "libdev"
 require "libmodview"
 include ModView
@@ -34,3 +34,4 @@ loop {
     view(odb.stat)
   end
 }
+

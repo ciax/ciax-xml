@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobj2"
+require "libobj"
 require "libiofile"
 
 warn "Usage: objcmd [obj] [cmd]" if ARGV.size < 1
@@ -11,3 +11,4 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
+

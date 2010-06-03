@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobj2"
+require "libobj"
 require "libdev"
 require "libiocmd"
 
@@ -37,3 +37,4 @@ loop{
     session('upd')
   end
 }
+

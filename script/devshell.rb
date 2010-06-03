@@ -25,6 +25,3 @@ loop{
     p ddb.field
   end
 }
-
-
-

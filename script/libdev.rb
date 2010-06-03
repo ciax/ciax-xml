@@ -65,7 +65,7 @@ class Response
     @doc=doc
     dev=@doc.property['id']
     @v=Verbose.new("#{@doc.root.name}/#{dev}/rsp".upcase)
-    @var=Hash.new
+    @cc=nil
     @f=IoFile.new(id)
     begin
       @field=@f.load_stat
@@ -80,10 +80,10 @@ class Response
     @v.err("No String") unless @frame=frame
     setframe(@doc.elements['//rspframe'])
     if @field['cc']
-      if @field['cc'] === @var[:cc]
+      if @field['cc'] === @cc
         @v.msg("Verify:CC OK")
       else
-        @v.err("Verifu:CC Mismatch[#{@field['cc']}]!=[#{@var[:cc]}]") 
+        @v.err("Verifu:CC Mismatch[#{@field['cc']}]!=[#{@cc}]") 
       end
       @field.delete('cc')
     end
@@ -97,7 +97,7 @@ class Response
       case c.name
       when 'ccrange'
         @v.msg("Entering Ceck Code Node")
-        @var[:cc] = checkcode(c,setframe(c))
+        @cc = checkcode(c,setframe(c))
         @v.msg("Exitting Ceck Code Node")
       when 'selected'
         @v.msg("Entering Selected Node")
@@ -159,14 +159,12 @@ class Response
 end
 
 # Cmd Methods
-class Command
+class Command < Hash
   include Common
-  attr_accessor :var
 
   def initialize(doc)
     @doc=doc
     @v=Verbose.new("#{@doc.root.name}/#{@doc.property['id']}/cmd".upcase)
-    @var=Hash.new
   end
 
   def cmdframe(sel)
@@ -174,8 +172,8 @@ class Command
     cfn=@doc.elements['//cmdframe']
     if ccn=cfn.elements['.//ccrange']
       @v.msg("Entering Ceck Code Range")
-      @var['ccrange']=getframe(ccn)
-      @var['cc_cmd']=checkcode(ccn,@var['ccrange'])
+      self['ccrange']=getframe(ccn)
+      self['cc_cmd']=checkcode(ccn,self['ccrange'])
       @v.msg("Exitting Ceck Code Range")
     end
     getframe(cfn)
@@ -194,8 +192,8 @@ class Command
         frame << encode(c,c.text)
         @v.msg("GetFrame:#{label}[#{c.text}]")
       else
-        frame << encode(c,@var[c.name])
-        @v.msg("GetFrame:#{label}(#{c.name})[#{@var[c.name]}]")
+        frame << encode(c,self[c.name])
+        @v.msg("GetFrame:#{label}(#{c.name})[#{self[c.name]}]")
       end
     }
     frame
@@ -223,7 +221,7 @@ class Dev
   end
 
   def setpar(par)
-    @cmd.var['par']=par
+    @cmd['par']=par
   end
 
   def getcmd
@@ -250,7 +248,7 @@ class DevCom < Dev
       case io.name
       when 'send'
         sndstr=@cmd.cmdframe(io)
-        @ic.snd(sndstr,[snd.succ!,cid,@cmd.var['par']])
+        @ic.snd(sndstr,[snd.succ!,cid,@cmd['par']])
       when 'recv'
         rcvstr=@ic.rcv([rcv.succ!,cid])
         @rsp.field['time']="%.3f" % @ic.time.to_f

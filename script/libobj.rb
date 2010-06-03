@@ -30,7 +30,7 @@ class Obj
     session=select_cmd(cmd)
     warn session.attributes['label']
     session.each_element {|command|
-      cmdary=get_cmd(command,@field)
+      cmdary=get_cmd(command)
       $ver.msg("Exec(DDB):#{cmdary}")
       warn "CommandExec#{cmdary}"
       get_stat(yield(cmdary))
@@ -42,7 +42,7 @@ class Obj
     @field.update(dstat)
     @doc.elements['//status'].each_element {|var| # var
       id="#{@obj}:#{var.attributes['id']}"
-      val=get_val(var,@field)
+      val=get_val(var)
       $ver.msg("GetStat:#{id}=[#{val}]")
       @stat[id]=get_symbol(var,val)
     }
@@ -60,15 +60,14 @@ class Obj
   end
 
   #Cmd Method
-  def get_cmd(e,field)
+  def get_cmd(e)
     cmdary=[e.attributes['text']]
     e.each_element{|par|
       str=par.text
       if par.attributes['type'] == 'formula'
         func=par.text
-        conv=func.gsub(/\$([\w]+)/) { field[$1] }
-        $ver.msg("Function:(#{func})->(#{conv})")
-        str=eval(func.gsub(/\$([\w]+)/) { field[$1] }).to_s
+        conv=func.gsub(/\$([\w]+)/) { @field[$1] }
+        str=eval(conv).to_s
         $ver.msg("Function:(#{func})=#{str}")
       end
       cmdary << str
@@ -77,12 +76,12 @@ class Obj
   end
 
   #Stat Methods
-  def get_val(e,field)
+  def get_val(e)
     val=String.new
     e.elements['./fields'].each_element {|f| #element(split and concat)
       a=f.attributes
       ref=a['ref'] || return
-      data=field[ref] || return
+      data=@field[ref] || return
       $ver.msg("Convert:#{f.name.capitalize} Field (#{ref})")
       case f.name
       when 'binary'

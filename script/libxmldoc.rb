@@ -32,7 +32,7 @@ class XmlDoc < Document
   def list_id(xpath)
     elements.each(xpath+'/[@id]') {|d|
       a=d.attributes
-      warn "#{a['id']}\t:#{a['label']}"
+      warn "#{a['id']}\t:#{a['label']}" if a['label']
     }
   end
 

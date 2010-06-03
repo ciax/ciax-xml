@@ -257,8 +257,7 @@
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
           <xsd:attributeGroup ref="cx:rsp_attr" />
-          <xsd:attribute name="min" type="xsd:int"></xsd:attribute>
-          <xsd:attribute name="max" type="xsd:int" use="required"></xsd:attribute>
+          <xsd:attribute name="range" type="xsd:string" use="required"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

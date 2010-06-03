@@ -23,7 +23,7 @@
           <data label="Data Length" pack="lew">52</data>
         </send>
         <recv>
-          <repeat_assign length="2" unpack="lew" max="51" label="Repeated">x%02x</repeat_assign>
+          <repeat_assign length="2" unpack="lew" range="0:51" label="Repeated">x%02x</repeat_assign>
         </recv>
       </session>
       <session id="set_tag" label="Set Tag to Run (1-12)" type="config">

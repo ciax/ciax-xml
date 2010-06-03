@@ -125,7 +125,7 @@ class Response
       when 'assign'
         frame << assign(c,c.text)
       when 'repeat_assign'
-        (a['min'].to_i .. a['max'].to_i).each {|n|
+        range(a['range']).each {|n|
           frame << assign(c,c.text % n)
         }
       when 'verify'

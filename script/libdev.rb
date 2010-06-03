@@ -57,8 +57,23 @@ module Common
 end
 
 # Rsp Methods
-module Response
+class Response
   include Common
+  attr_accessor :field
+
+  def initialize(doc,dev,id)
+    @doc=doc
+    @v=Verbose.new("#{@doc.root.name}/#{id}/rsp:".upcase)
+    @var=Hash.new
+    @f=IoFile.new(id)
+    begin
+      @field=@f.load_stat
+    rescue
+      warn $!
+      @field={'device'=>dev}
+    end
+  end
+
   def rspframe(sel,frame)
     @v.err("RSP:No Selection") unless @sel=sel
     @v.err("RSP:No String") unless @frame=frame
@@ -71,7 +86,7 @@ module Response
       end
       @field.delete('cc')
     end
-    @field
+    @f.save_stat(@field)
   end
 
   def setframe(e)
@@ -184,7 +199,6 @@ end
 # Main
 class Dev
   include Command
-  include Response
   def initialize(dev,obj=nil)
     id=obj||dev
     begin
@@ -192,16 +206,10 @@ class Dev
     rescue RuntimeError
       abort $!.to_s
     else
-      @f=IoFile.new(id)
-      begin
-        @field=@f.load_stat
-      rescue
-        warn $!
-        @field={'device'=>dev}
-      end
       @v=Verbose.new("#{@doc.root.name}/#{id}".upcase)
       @property=@doc.property
       @var=Hash.new
+      @rsp=Response.new(@doc,dev,id)
    end
   end
 
@@ -216,7 +224,7 @@ class Dev
   end
 
   def getfield(frame)
-    @f.save_stat(rspframe(@session.elements['recv'],frame))
+    @rsp.rspframe(@session.elements['recv'],frame)
   end
 end
 
@@ -237,11 +245,11 @@ class DevCom < Dev
         @ic.snd(sndstr,[snd.succ!,@var[:cmd],@var['par']])
       when 'recv'
         rcvstr=@ic.rcv([rcv.succ!,@var[:cmd]])
-        @field['time']="%.3f" % @ic.time.to_f
-        @f.save_stat(rspframe(io,rcvstr))
+        @rsp.field['time']="%.3f" % @ic.time.to_f
+        @rsp.rspframe(io,rcvstr)
       end
     }
-    @field
+    @rsp.field
   end
 
 end

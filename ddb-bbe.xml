@@ -20,7 +20,7 @@
       <option id="output" label="OUTPUT [DDDDD]" type="action">
         <send>
           <data>SO</data>
-          <par pack="bew" valid="0x[0-9a-fA-F]{1,4}" />
+          <par pack="bew" valid="[0-9]{1,6}" />
         </send>
       </option>
     </session>

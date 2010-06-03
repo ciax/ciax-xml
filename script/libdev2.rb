@@ -34,7 +34,11 @@ module Common
   end
 
   def encode(e,str)
-    if pack=Pack[e.attributes['pack']]
+    a=e.attributes
+    if v=a['valid']
+      @v.err("Parameter invalid(#{v})") if /^#{v}$/ !~ str
+    end
+    if pack=Pack[a['pack']]
       code=[str.to_i(0)].pack(pack)
       @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
       str=code
@@ -167,7 +171,7 @@ module Command
       else
         frame << encode(c,@var[c.name])
       end
-      @v.msg("CMD:GetFrame:#{c.attributes['label']} [#{frame}]")
+      @v.msg("CMD:GetFrame:#{c.attributes['label']}(#{c.name})[#{frame}]")
     }
     frame
   end
@@ -197,11 +201,9 @@ class Dev
    end
   end
 
-  def setcmd(line)
-    cmd,par=line.split(' ')
+  def setcmd(cmd)
     @session=@doc.select_id('//session',cmd)
     @var[:cmd]=cmd
-    setpar(par)
     warn @session.attributes['label']
   end
 

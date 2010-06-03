@@ -61,9 +61,10 @@ class Response
   include Common
   attr_accessor :field
 
-  def initialize(doc,dev,id)
+  def initialize(doc,id)
     @doc=doc
-    @v=Verbose.new("#{@doc.root.name}/#{id}/rsp:".upcase)
+    dev=@doc.property['id']
+    @v=Verbose.new("#{@doc.root.name}/#{dev}/rsp".upcase)
     @var=Hash.new
     @f=IoFile.new(id)
     begin
@@ -75,14 +76,14 @@ class Response
   end
 
   def rspframe(sel,frame)
-    @v.err("RSP:No Selection") unless @sel=sel
-    @v.err("RSP:No String") unless @frame=frame
+    @v.err("No Selection") unless @sel=sel
+    @v.err("No String") unless @frame=frame
     setframe(@doc.elements['//rspframe'])
     if @field['cc']
       if @field['cc'] === @var[:cc]
-        @v.msg("RSP:Verify:CC OK")
+        @v.msg("Verify:CC OK")
       else
-        @v.err("RSP:Verifu:CC Mismatch[#{@field['cc']}]!=[#{@var[:cc]}]") 
+        @v.err("Verifu:CC Mismatch[#{@field['cc']}]!=[#{@var[:cc]}]") 
       end
       @field.delete('cc')
     end
@@ -95,13 +96,13 @@ class Response
       a=c.attributes
       case c.name
       when 'ccrange'
-        @v.msg("RSP:Entering Ceck Code Node")
+        @v.msg("Entering Ceck Code Node")
         @var[:cc] = checkcode(c,setframe(c))
-        @v.msg("RSP:Exitting Ceck Code Node")
+        @v.msg("Exitting Ceck Code Node")
       when 'selected'
-        @v.msg("RSP:Entering Selected Node")
+        @v.msg("Entering Selected Node")
         frame << setframe(@sel)
-        @v.msg("RSP:Exitting Selected Node")
+        @v.msg("Exitting Selected Node")
       when 'assign'
         frame << assign(c,c.text)
       when 'repeat_assign'
@@ -109,12 +110,12 @@ class Response
           frame << assign(c,c.text % n)
         }
       when 'verify'
-        @v.msg("RSP:Verify:#{a['label']} [#{c.text}]")
+        @v.msg("Verify:#{a['label']} [#{c.text}]")
         frame << s=cut_frame(c)
-        @v.err("RSP:Verify Mismatch") if c.text != decode(c,s)
+        @v.err("Verify Mismatch") if c.text != decode(c,s)
       when 'rspcode'
         frame << s=cut_frame(c)
-        label="RSP:ResponseCode:#{a['label']}:"
+        label="ResponseCode:#{a['label']}:"
         str=decode(c,s)
         c.each_element {|g| #Match each case
           a=g.attributes
@@ -139,7 +140,7 @@ class Response
   def assign(e,key)
     code=cut_frame(e)
     @field[key]=decode(e,code)
-    @v.msg("RSP:Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]")
+    @v.msg("Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]")
     code
   end
 
@@ -147,31 +148,35 @@ class Response
     a=e.attributes
     if l=a['length']
       len=l.to_i
-      @v.err("RSP:Too short (#{@frame.size-len})") if @frame.size < len
+      @v.err("Too short (#{@frame.size-len})") if @frame.size < len
       @frame.slice!(0,len)
     elsif d=a['delimiter']
       @frame.slice!(/$.+#{d}/)
     else
-      @v.err("RSP:No frame length or delimiter")
+      @v.err("No frame length or delimiter")
     end
   end
 end
 
 # Cmd Methods
-module Command
+class Command
   include Common
-  def setpar(par)
-    @var['par']=par
+  attr_accessor :var
+
+  def initialize(doc)
+    @doc=doc
+    @v=Verbose.new("#{@doc.root.name}/#{@doc.property['id']}/cmd".upcase)
+    @var=Hash.new
   end
 
   def cmdframe(sel)
-    @v.err("CMD:No Selection") unless @sel=sel
+    @v.err("No Selection") unless @sel=sel
     cfn=@doc.elements['//cmdframe']
     if ccn=cfn.elements['.//ccrange']
-      @v.msg("CMD:Entering Ceck Code Range")
+      @v.msg("Entering Ceck Code Range")
       @var['ccrange']=getframe(ccn)
       @var['cc_cmd']=checkcode(ccn,@var['ccrange'])
-      @v.msg("CMD:Exitting Ceck Code Range")
+      @v.msg("Exitting Ceck Code Range")
     end
     getframe(cfn)
   end
@@ -179,17 +184,18 @@ module Command
   def getframe(e)
     frame=String.new
     e.each_element { |c|
+      label=c.attributes['label']
       case c.name
       when 'selected'
-        @v.msg("CMD:Entering Selected Node")
+        @v.msg("Entering Selected Node")
         frame << getframe(@sel)
-        @v.msg("CMD:Exitting Selected Node")
+        @v.msg("Exitting Selected Node")
       when 'data'
         frame << encode(c,c.text)
-        @v.msg("CMD:GetFrame:#{c.attributes['label']}[#{c.text}]")
+        @v.msg("GetFrame:#{label}[#{c.text}]")
       else
         frame << encode(c,@var[c.name])
-        @v.msg("CMD:GetFrame:#{c.attributes['label']}(#{c.name})[#{@var[c.name]}]")
+        @v.msg("GetFrame:#{label}(#{c.name})[#{@var[c.name]}]")
       end
     }
     frame
@@ -198,7 +204,6 @@ end
 
 # Main
 class Dev
-  include Command
   def initialize(dev,obj=nil)
     id=obj||dev
     begin
@@ -207,20 +212,22 @@ class Dev
       abort $!.to_s
     else
       @v=Verbose.new("#{@doc.root.name}/#{id}".upcase)
-      @property=@doc.property
-      @var=Hash.new
-      @rsp=Response.new(@doc,dev,id)
+      @rsp=Response.new(@doc,id)
+      @cmd=Command.new(@doc)
    end
   end
 
   def setcmd(cmd)
     @session=@doc.select_id(cmd)
-    @var[:cmd]=cmd
     @v.msg('Select:'+@session.attributes['label'])
   end
 
+  def setpar(par)
+    @cmd.var['par']=par
+  end
+
   def getcmd
-    cmdframe(@session.elements['send'])
+    @cmd.cmdframe(@session.elements['send'])
   end
 
   def getfield(frame)
@@ -238,13 +245,14 @@ class DevCom < Dev
   def devcom
     snd='snd0'
     rcv='rcv0'
+    cid=@session.attributes['id']
     @session.each_element {|io|
       case io.name
       when 'send'
-        sndstr=cmdframe(io)
-        @ic.snd(sndstr,[snd.succ!,@var[:cmd],@var['par']])
+        sndstr=@cmd.cmdframe(io)
+        @ic.snd(sndstr,[snd.succ!,cid,@cmd.var['par']])
       when 'recv'
-        rcvstr=@ic.rcv([rcv.succ!,@var[:cmd]])
+        rcvstr=@ic.rcv([rcv.succ!,cid])
         @rsp.field['time']="%.3f" % @ic.time.to_f
         @rsp.rspframe(io,rcvstr)
       end

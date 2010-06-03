@@ -188,8 +188,19 @@
   </xsd:element>
   <xsd:element name="par">
     <xsd:complexType>
-      <xsd:attributeGroup ref="cx:cmd_attr" />
-      <xsd:attribute name="valid" type="xsd:string" />
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="cx:cmd_attr" />
+          <xsd:attribute name="validate">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="regexp" />
+                <xsd:enumeration value="range" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="cc_cmd">

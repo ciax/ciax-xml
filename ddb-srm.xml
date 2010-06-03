@@ -34,7 +34,7 @@
           <data label="Header Code">FK</data>
           <data label="Operand">CIO </data>
           <data label="Channel">0000</data>
-          <par format="%016d" valid="[0-9]+" />
+          <par format="%016d" validate="regexp">[45][045]+</par>
         </send>
         <recv>
           <verify label="Command Code" length="4">00FK</verify>

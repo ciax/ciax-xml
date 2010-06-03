@@ -34,16 +34,25 @@ module Common
   end
 
   def encode(e,str)
-    a=e.attributes
-    if v=a['valid']
-      @v.err("Parameter invalid(#{v})") if /^#{v}$/ !~ str
-    end
-    if pack=Pack[a['pack']]
+    if pack=Pack[e.attributes['pack']]
       code=[str.to_i(0)].pack(pack)
       @v.msg("Encode:pack(#{pack}) [#{str}] -> [#{code}]")
       str=code
     end
     format(e,str)
+  end
+
+
+  def validate(e,str)
+    @v.err("No Parameter") unless str
+    @v.msg("Validate String [#{str}]")
+    case e.attributes['validate']
+    when 'regexp'
+      @v.err("Parameter invalid(#{e.text})") if /^#{e.text}$/ !~ str
+    when 'range'
+      @v.err("Parameter out of range(#{e.text})") if ! range(e.text).include?(s2i(str))
+    end
+    str
   end
 
   def format(e,code)
@@ -53,6 +62,16 @@ module Common
       code=str
     end
     code.to_s
+  end
+
+  def range(str)
+    min,max=str.split(':').map!{|s| s2i(s) }
+    Range.new(min,max)
+  end
+
+  def s2i(str)
+    @v.err("Parameter is not Number") if /^([0-9]+|0[Xx][0-9a-fA-F]+)$/ !~ str
+    str.to_i(0)
   end
 end
 
@@ -192,8 +211,9 @@ class Command < Hash
         frame << encode(c,c.text)
         @v.msg("GetFrame:#{label}[#{c.text}]")
       else
-        frame << encode(c,self[c.name])
-        @v.msg("GetFrame:#{label}(#{c.name})[#{self[c.name]}]")
+        str=validate(c,self[c.name])
+        frame << encode(c,str)
+        @v.msg("GetFrame:#{label}(#{c.name})[#{str}]")
       end
     }
     frame

@@ -20,7 +20,7 @@
       <session id="output" label="OUTPUT [DDDDD]" type="action">
         <send>
           <data>SO</data>
-          <par pack="bew" valid="[0-9]{1,6}" />
+          <par pack="bew" validate="range">0:65535</par>
         </send>
       </session>
     </selection>

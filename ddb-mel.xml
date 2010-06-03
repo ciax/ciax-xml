@@ -26,25 +26,25 @@
           <repeat_assign length="2" unpack="lew" max="51" label="Repeated">x%02x</repeat_assign>
         </recv>
       </session>
-      <session id="set_tag" label="Set Tag to Run [HH00]" type="config">
+      <session id="set_tag" label="Set Tag to Run (1-12)" type="config">
         <send>
           <data label="Write region command" pack="lew">0x1401</data>
           <data label="Write region subcommand" pack="lew">0</data>
           <data label="Start Address" pack="lew">0x101</data>
           <data label="Device Code" pack="lew">0xB400</data>
           <data label="Data Length" pack="lew">1</data>
-          <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
+          <par label="Data" pack="lew" validate="range">1:12</par>
         </send>
         <recv label="command resp" />
       </session>
-      <session id="set_pos" label="Set Pos to Jack [HH00]" type="config">
+      <session id="set_pos" label="Set Pos to Jack (1-4)" type="config">
         <send>
           <data label="Write region command" pack="lew">0x1401</data>
           <data label="Write region subcommand" pack="lew">0</data>
           <data label="Start Address" pack="lew">0x103</data>
           <data label="Device Code" pack="lew">0xB400</data>
           <data label="Data Length" pack="lew">1</data>
-          <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
+          <par label="Data" pack="lew" validate="range">1:4</par>
         </send>
         <recv label="command resp" />
       </session>
@@ -55,7 +55,7 @@
           <data label="Start Address" pack="lew">0x102</data>
           <data label="Device Code" pack="lew">0xB400</data>
           <data label="Data Length" pack="lew">1</data>
-          <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
+          <par label="Data" pack="lew" validate="range">0:65535</par>
         </send>
         <recv label="command resp" />
       </session>
@@ -66,7 +66,7 @@
           <data label="Start Address" pack="lew">0x100</data>
           <data label="Device Code" pack="lew">0xB400</data>
           <data label="Data Length" pack="lew">1</data>
-          <par label="Data" pack="lew" valid="0x[0-9A-Fa-f]{1,4}" />
+          <par label="Data" pack="lew" validate="range">0:65535</par>
         </send>
         <recv label="command resp" />
       </session>

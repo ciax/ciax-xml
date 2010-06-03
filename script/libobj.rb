@@ -27,7 +27,7 @@ class Obj
   def objcom(line)
     cmd,par=line.split(' ')
     @field['par']=par
-    session=control_id(cmd)
+    session=select_cmd(cmd)
     warn session.attributes['label']
     session.each_element {|command|
       cmdary=get_cmd(command,@field)
@@ -51,10 +51,10 @@ class Obj
   end
 
   private
-  def control_id(id)
-    e=@doc.select_id('//controls/',id)
+  def select_cmd(id)
+    e=@doc.select_id(id)
     if ref=e.attributes['ref']
-      return control_id(ref)
+      return select_cmd(ref)
     end
     return e
   end

@@ -19,8 +19,8 @@ class XmlDoc < Document
     @property=root.elements.first.attributes
   end
 
-  def select_id(xpath,id)
-    if e=elements[xpath+"/[@id='#{id}']"]
+  def select_id(id)
+    if e=elements["//selection/[@id='#{id}']"]
       return e
     else
       list_id(xpath)

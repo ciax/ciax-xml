@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cf8" label="S8 Helium Compressor Coolant Flow" device="k3n" client="nc ltt-i 4014" server="socat - udp-l:45608,reuseaddr,fork">
-    <controls>
+    <selection>
       <session id="upd" label="Update Status">
         <command text="getstat" />
       </session>
-    </controls>
+    </selection>
     <status>
       <var id="flow" label="MOIRCS/CR(S8) Coolant Flow(l/min)" type="FLOAT">
         <fields>

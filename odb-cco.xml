@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cco" label="OPT Helium Compressor Control" device="bbe" client="nc ltc-o 4002" server="socat - udp-l:25106,reuseaddr,fork">
-    <controls>
+    <selection>
       <session id="upd" label="Update Status">
         <command text="getstat" />
       </session>
@@ -61,7 +61,7 @@
         </command>
         <command text="getstat" />
       </session>
-    </controls>
+    </selection>
     <status>
       <var id="s6:sw" label="CIAO(S6) SWITCH" type="ENUM">
         <fields>

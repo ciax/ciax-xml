@@ -207,7 +207,7 @@ class Dev
   end
 
   def setcmd(cmd)
-    @session=@doc.select_id('//selection',cmd)
+    @session=@doc.select_id(cmd)
     @var[:cmd]=cmd
     @v.msg('Select:'+@session.attributes['label'])
   end

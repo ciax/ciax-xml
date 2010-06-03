@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cri" label="IR Compressor Room Reserve" device="bbe" client="nc ltc-i 4003" server="socat - udp-l:25107,reuseaddr,fork">
-    <controls>
+    <selection>
       <session id="upd" label="Update Status">
         <command text="getstat"></command>
       </session>
@@ -61,7 +61,7 @@
         </command>
         <command text="getstat"></command>
       </session>
-    </controls>
+    </selection>
     <status>
       <var id="x0:sw" label="X0 SWITCH" type="ENUM">
         <fields>

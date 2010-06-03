@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="det" device="srm" label="CsEtr Controller" client="nc ltc-c 4001" server="socat - udp-l:25104,reuseaddr,fork">
-    <controls>
+    <selection>
       <session id="upd" label="Update Status">
         <command text="getstat" />
       </session>
@@ -65,7 +65,7 @@
           <par type="text">400000</par>
         </command>
       </session>
-    </controls>
+    </selection>
     <status>
       <var id="iid" type="ENUM" label="CAS INST ID">
         <fields>

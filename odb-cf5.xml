@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cf5" label="S5 Helium Compressor Coolant Flow" device="k3n" client="nc ltt-o 4002" server="socat - udp-l:45605,reuseaddr,fork">
-    <controls>
+    <selection>
       <session id="upd" label="Update Status">
         <command text="getstat" />
       </session>
-    </controls>
+    </selection>
     <status>
       <var id="flow" label="COMICS/SPECT(S5) Coolant Flow(l/min)" type="FLOAT">
         <fields>

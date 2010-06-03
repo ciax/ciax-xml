@@ -14,7 +14,7 @@
   <xsd:element name="object">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:controls" minOccurs="1" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cx:selection" minOccurs="1" maxOccurs="1"></xsd:element>
         <xsd:element ref="cx:status" minOccurs="1" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
@@ -23,8 +23,8 @@
       <xsd:attribute name="server" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
-  <!--controls-->
-  <xsd:element name="controls">
+  <!--command select-->
+  <xsd:element name="selection">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="cx:session" minOccurs="1" maxOccurs="unbounded" />

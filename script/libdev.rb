@@ -119,7 +119,7 @@ class Response
       when 'assign'
         frame << assign(c,c.text)
       when 'repeat_assign'
-        range(a['range']).each {|n|
+        Range.new(*a['range'].split(':')).each {|n|
           frame << assign(c,c.text % n)
         }
       when 'verify'

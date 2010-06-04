@@ -24,7 +24,7 @@ class Obj
       warn $!
       @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
     end
-    $ver=Verbose.new("#{@doc.root.name}/#{@obj}".upcase)
+    @v=Verbose.new("#{@doc.root.name}/#{@obj}".upcase)
     @field=Hash.new
     @property=@doc.property
   end
@@ -37,7 +37,7 @@ class Obj
     warn session.attributes['label']
     session.each_element {|command|
       cmdary=get_cmd(command)
-      $ver.msg("Exec(DDB):#{cmdary}")
+      @v.msg("Exec(DDB):#{cmdary}")
       warn "CommandExec#{cmdary}"
       get_stat(yield(cmdary))
     }
@@ -46,7 +46,7 @@ class Obj
   def get_stat(dstat)
     return unless dstat
     @field.update(dstat)
-    @doc.elements['//status'].each_element {|var| # var
+    @doc.elements['//status'].each_element {|var|
       a=var.attributes
       id="#{@obj}:#{a['id']}"
       @stat[id]={'label'=>a['label'],'type'=>a['type'] }
@@ -57,7 +57,7 @@ class Obj
         case e.name
         when 'fields'
           val=get_val(e)
-          $ver.msg("GetStat:#{id}=[#{val}]")
+          @v.msg("STAT:GetStat:#{id}=[#{val}]")
           @stat[id]['val']=val
         when 'symbol'
           get_symbol(e,@stat[id])
@@ -86,7 +86,7 @@ class Obj
         func=par.text
         conv=func.gsub(/\$([\w]+)/) { @field[$1] }
         str=eval(conv).to_s
-        $ver.msg("Function:(#{func})=#{str}")
+        @v.msg("CMD:Function:(#{func})=#{str}")
       end
       cmdary << str
     }
@@ -100,7 +100,7 @@ class Obj
       a=f.attributes
       ref=a['ref'] || return
       data=@field[ref].clone || return
-      $ver.msg("Convert:#{f.name.capitalize} Field (#{ref}) [#{data}]")
+      @v.msg("STAT:Convert:#{f.name.capitalize} Field (#{ref}) [#{data}]")
       case f.name
       when 'binary'
         val << (data.to_i >> a['bit'].to_i & 1).to_s
@@ -128,19 +128,19 @@ class Obj
       case range.name
       when 'range'
         if NumRange.new(txt) != set['val']
-          $ver.msg("Symbol:Within [#{txt}](#{msg})?")
+          @v.msg("STAT:Symbol:Within [#{txt}](#{msg})?")
           next
         end
       when 'enum'
         if txt && txt != set['val']
-          $ver.msg("Symbol:Matches (#{msg})?")
+          @v.msg("STAT:Symbol:Matches (#{msg})?")
           next 
         end
       end
       add(range,set)
       break 1
-    } || $ver.err("No Symbol selection")
-    $ver.msg("Symbol:[#{set['msg']}] for [#{set['val']}]")
+    } || @v.err("STAT:No Symbol selection")
+    @v.msg("STAT:Symbol:[#{set['msg']}] for [#{set['val']}]")
     set
   end
 
@@ -153,7 +153,7 @@ class Obj
   def format(e,code)
     if fmt=e.attributes['format']
       str=fmt % code
-      $ver.msg("Formatted code(#{fmt}) [#{code}] -> [#{str}]")
+      @v.msg("STAT:Formatted code(#{fmt}) [#{code}] -> [#{str}]")
       code=str
     end
     code.to_s

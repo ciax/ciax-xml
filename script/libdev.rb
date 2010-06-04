@@ -52,7 +52,7 @@ module Common
       @v.err("Parameter invalid(#{e.text})") if /^#{e.text}$/ !~ str
     when 'range'
       e.text.split(',').any? { |s|
-        NumRange.new(s).include?(str)
+        NumRange.new(s) == str
       } || @v.err("Parameter out of range(#{e.text})")
     end
     str
@@ -93,7 +93,7 @@ class Response
     @v.err("No String") unless @frame=frame
     setframe(@doc.elements['//rspframe'])
     if @field['cc']
-      if @field['cc'] === @cc
+      if @field['cc'] == @cc
         @v.msg("Verify:CC OK")
       else
         @v.err("Verifu:CC Mismatch[#{@field['cc']}]!=[#{@cc}]") 

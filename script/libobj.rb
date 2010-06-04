@@ -99,8 +99,8 @@ class Obj
     e.each_element {|f| #element(split and concat)
       a=f.attributes
       ref=a['ref'] || return
-      data=@field[ref] || return
-      $ver.msg("Convert:#{f.name.capitalize} Field (#{ref})")
+      data=@field[ref].clone || return
+      $ver.msg("Convert:#{f.name.capitalize} Field (#{ref}) [#{data}]")
       case f.name
       when 'binary'
         val << (data.to_i >> a['bit'].to_i & 1).to_s
@@ -127,7 +127,7 @@ class Obj
       txt=range.text
       case range.name
       when 'range'
-        if ! NumRange.new(txt).include?(set['val'])
+        if NumRange.new(txt) != set['val']
           $ver.msg("Symbol:Within [#{txt}](#{msg})?")
           next
         end

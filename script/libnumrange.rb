@@ -1,39 +1,37 @@
 #!/usr/bin/ruby
 class NumRange
-  # Range format "X","X:Y","X<:Y","X:<Y","X<:<:Y"
+  include Comparable
+  # Range format "X","X:Y","X<:Y","X:<Y","X<:",":Y"
   def initialize(str)
-    @range=Hash.new
     if /:/ =~ str
       min,max=str.split(':')
-      if /<$/ =~ min
-        @range[:gt]=s2i($`)
-      elsif min !=''
-        @range[:ge]=s2i(min)
+      if min != ''
+        @min_ex=1 if min.sub!(/<$/,'')
+        @min=s2i(min)
       end
-      if /^</ =~ max
-        @range[:lt]=s2i($')
-      elsif max
-        @range[:le]=s2i(max)
+      if max
+        @max_ex=1 if max.sub!(/^</,'')
+        @max=s2i(max)
       end
     else
-      @range[:eq]=s2i(str)
+      @eq=s2i(str)
     end
   end
 
-  def include?(str)
+  def <=>(str)
     num=s2i(str)
-    return false if @range[:eq] && @range[:eq] != num
-    return false if @range[:gt] && @range[:gt] >= num
-    return false if @range[:ge] && @range[:ge] > num
-    return false if @range[:lt] && @range[:lt] <= num
-    return false if @range[:le] && @range[:le] < num
-    return true
+    return @eq <=> num if @eq
+    return 1 if @min_ex && @min >= num
+    return 1 if @min && @min > num
+    return -1 if @max_ex && @max <= num
+    return -1 if @max && @max < num
+    return 0
   end
 
   private
   # Accepts int,float,hexstr
   def s2i(str)
-    return str if str === Numeric
+    return str if str.kind_of? Numeric
     if /^0[Xx][0-9a-fA-F]+$/ =~ str
       str.to_i(0)
     elsif /^-?[0-9]+(\.[0-9]+)?$/ =~ str

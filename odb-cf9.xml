@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cf9" label="S9 Helium Compressor Coolant Flow" device="k3n" client="nc ltt-i 4011" server="socat - udp-l:45609,reuseaddr,fork">
+  <object id="cf9" label="S9 Helium Compressor Coolant Flow" device="k3n" client="nc ltt-i 4011" server="socat - udp-l:45609,reuseaddr,fork" ref="cf1">
     <selection>
-      <session id="upd" label="Update Status">
-        <command text="getstat" />
-      </session>
+      <session id="upd" label="Update Status" ref="upd"></session>
     </selection>
     <status>
-      <var id="flow" label="MOIRCS/MAIN(S9) Coolant Flow(l/min)" type="FLOAT">
-        <fields>
-          <float decimal="2" format="%4.2f" ref="stat" />
-        </fields>
-        <symbol>
-          <range hl="alarm" msg="HH">6:</range>
-          <range hl="warn" msg="H">5:&lt;6</range>
-          <range hl="normal" msg="M">4:&lt;5</range>
-          <range hl="warn" msg="L">3:&lt;4</range>
-          <range hl="alarm" msg="LL">:&lt;3</range>
-        </symbol>
-      </var>
+      <var id="flow" label="MOIRCS/MAIN(S9) Coolant Flow(l/min)" type="FLOAT" ref="flow"></var>
     </status>
   </object>
 </odb>

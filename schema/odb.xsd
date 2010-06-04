@@ -9,7 +9,8 @@
   </xsd:element>
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="id" type="xsd:string" use="required" />
-    <xsd:attribute name="label" type="xsd:string" use="optional" />
+    <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+    <xsd:attribute name="ref" type="xsd:string" use="optional" />
   </xsd:attributeGroup>
   <xsd:element name="object">
     <xsd:complexType>
@@ -37,7 +38,6 @@
         <xsd:element ref="cx:command" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="ref" type="xsd:string" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="command">
@@ -72,17 +72,16 @@
       <xsd:sequence>
         <xsd:element ref="cx:var" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="channels" type="xsd:int" />
+      <xsd:attribute name="ref" type="xsd:string" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="var">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:fields" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="cx:fields" minOccurs="0" maxOccurs="1" />
         <xsd:element ref="cx:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:string" />
-      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="type">
         <xsd:simpleType>
           <xsd:restriction base="xsd:string">

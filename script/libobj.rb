@@ -5,9 +5,14 @@ require "libnumrange"
 
 class Obj
   attr_reader :stat,:field,:property
-
+  
   def initialize(obj)
     @doc=XmlDoc.new('odb',obj)
+    if ref=@doc.property['ref']
+      @ref=XmlDoc.new('odb',ref) 
+    else
+      @ref=@doc
+    end
     @obj=@doc.property['id']
   rescue RuntimeError
     abort $!.to_s
@@ -42,20 +47,32 @@ class Obj
     return unless dstat
     @field.update(dstat)
     @doc.elements['//status'].each_element {|var| # var
-      id="#{@obj}:#{var.attributes['id']}"
-      val=get_val(var)
-      $ver.msg("GetStat:#{id}=[#{val}]")
-      @stat[id]=get_symbol(var,val)
+      a=var.attributes
+      id="#{@obj}:#{a['id']}"
+      @stat[id]={'label'=>a['label'],'type'=>a['type'] }
+      if ref=a['ref']
+        var=@ref.elements["//status/[@id='#{ref}']"]
+      end
+      var.each_element {|e|
+        case e.name
+        when 'fields'
+          val=get_val(e)
+          $ver.msg("GetStat:#{id}=[#{val}]")
+          @stat[id]['val']=val
+        when 'symbol'
+          get_symbol(e,@stat[id])
+        end
+      }
     }
     @stat['time']['val']=Time.at(@field['time'].to_f)
     @f.save_json(@stat)
   end
-
+  
   private
   def select_cmd(id)
     e=@doc.select_id(id)
     if ref=e.attributes['ref']
-      return select_cmd(ref)
+      return @ref.select_id(ref)
     end
     return e
   end
@@ -79,7 +96,7 @@ class Obj
   #Stat Methods
   def get_val(e)
     val=String.new
-    e.elements['./fields'].each_element {|f| #element(split and concat)
+    e.each_element {|f| #element(split and concat)
       a=f.attributes
       ref=a['ref'] || return
       data=@field[ref] || return
@@ -105,22 +122,18 @@ class Obj
     val
   end
 
-  def get_symbol(e,val)
-    set={'val'=>val}
-    add(e,set,'id')
-    return(set) unless symbol=e.elements['./symbol']
-    add(symbol,set)
-    symbol.each_element {|range|
+  def get_symbol(e,set)
+    e.each_element {|range|
       msg=range.attributes['msg']
       txt=range.text
       case range.name
       when 'range'
-        if ! NumRange.new(txt).include?(val)
+        if ! NumRange.new(txt).include?(set['val'])
           $ver.msg("Symbol:Within [#{txt}](#{msg})?")
           next
         end
       when 'enum'
-        if txt && txt != val
+        if txt && txt != set['val']
           $ver.msg("Symbol:Matches (#{msg})?")
           next 
         end
@@ -134,6 +147,7 @@ class Obj
 
   # Common method
   def add(e,h,exclude=nil)
+    h=Hash.new unless h
     e.attributes.each{|k,v| h[k]=v if k != exclude }
   end
 

@@ -5,7 +5,7 @@
       <session id="upd" label="Update Status" ref="upd"></session>
     </selection>
     <status>
-      <var id="flow" label="FMOS-K(S10) Coolant Flow(l/min)" type="FLOAT" ref="flow"></var>
+      <var id="flow" label="FMOS-K(S10) Coolant Flow(l/min)" ref="flow"></var>
     </status>
   </object>
 </odb>

@@ -49,157 +49,157 @@
       </session>
     </selection>
     <status>
-      <var id="rdy" type="ENUM" label="READY">
+      <var id="rdy" label="READY">
         <fields>
           <binary bit="0" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="normal" msg="ON">1</enum>
           <enum hl="warn" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="pse" type="ENUM" label="PAUSE">
+      <var id="pse" label="PAUSE">
         <fields>
           <binary bit="1" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="alarm" msg="ON">1</enum>
           <enum hl="hide" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="emg" type="ENUM" label="ENERGENCY">
+      <var id="emg" label="ENERGENCY">
         <fields>
           <binary bit="2" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="alarm" msg="ON">1</enum>
           <enum hl="hide" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="stp" type="ENUM" label="STOP">
+      <var id="stp" label="STOP">
         <fields>
           <binary bit="3" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="alarm" msg="ON">1</enum>
           <enum hl="hide" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="run" type="ENUM" label="RUNNING">
+      <var id="run" label="RUNNING">
         <fields>
           <binary bit="4" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="RUN">1</enum>
           <enum hl="normal" msg="NO">0</enum>
         </symbol>
       </var>
-      <var id="jak" type="ENUM" label="JACKING">
+      <var id="jak" label="JACKING">
         <fields>
           <binary bit="5" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="JAK">1</enum>
           <enum hl="normal" msg="NO">0</enum>
         </symbol>
       </var>
-      <var id="con" type="ENUM" label="CHARGING">
+      <var id="con" label="CHARGING">
         <fields>
           <binary bit="6" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="normal" msg="ON">1</enum>
           <enum hl="alarm" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="flt" type="ENUM" label="Fault">
+      <var id="flt" label="Fault">
         <fields>
           <binary bit="7" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="alarm" msg="ON">1</enum>
           <enum hl="hide" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="msr" type="ENUM" label="Right Motor Servo ON">
+      <var id="msr" label="Right Motor Servo ON">
         <fields>
           <binary bit="8" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="ON">1</enum>
           <enum hl="normal" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="msl" type="ENUM" label="Left Motor Servo ON">
+      <var id="msl" label="Left Motor Servo ON">
         <fields>
           <binary bit="9" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="ON">1</enum>
           <enum hl="normal" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="jd1" type="ENUM" label="Jack Motor1 Servo ON">
+      <var id="jd1" label="Jack Motor1 Servo ON">
         <fields>
           <binary bit="10" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="ON">1</enum>
           <enum hl="normal" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="jd2" type="ENUM" label="Jack Motor2 Servo ON">
+      <var id="jd2" label="Jack Motor2 Servo ON">
         <fields>
           <binary bit="11" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="ON">1</enum>
           <enum hl="normal" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="jd3" type="ENUM" label="Jack Motor3 Servo ON">
+      <var id="jd3" label="Jack Motor3 Servo ON">
         <fields>
           <binary bit="12" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="ON">1</enum>
           <enum hl="normal" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="jd4" type="ENUM" label="Jack Motor4 Servo ON">
+      <var id="jd4" label="Jack Motor4 Servo ON">
         <fields>
           <binary bit="13" ref="x00" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="ON">1</enum>
           <enum hl="normal" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="mdar" type="INT" label="Rignt Motor D/A">
+      <var id="mdar" label="Rignt Motor D/A">
         <fields>
           <int ref="x07" signed="true" />
         </fields>
-        <symbol>
+        <symbol type="INT">
           <range hl="alarm" msg="LOW">:10</range>
           <range hl="normal" msg="OK">10&lt;:30</range>
           <range hl="alarm" msg="HIGH">30&lt;:</range>
         </symbol>
       </var>
-      <var id="mdal" type="INT" label="Left Motor D/A">
+      <var id="mdal" label="Left Motor D/A">
         <fields>
           <int ref="x08" signed="true" />
         </fields>
-        <symbol>
+        <symbol type="INT">
           <range hl="alarm" msg="LOW">:10</range>
           <range hl="normal" msg="OK">10&lt;:30</range>
           <range hl="alarm" msg="HIGH">30&lt;:</range>
         </symbol>
       </var>
-      <var id="bvl" type="FLOAT" label="Battery Voltage">
+      <var id="bvl" label="Battery Voltage">
         <fields>
           <float ref="x16" decimal="2" format="%2.2f" />
         </fields>
-        <symbol>
+        <symbol type="FLOAT">
           <range hl="alarm" msg="LOW">:20</range>
           <range hl="warn" msg="LESS">20&lt;:22</range>
           <range hl="normal" msg="OK">22&lt;:26</range>
@@ -207,30 +207,32 @@
           <range hl="alarm" msg="HIGH">28&lt;:</range>
         </symbol>
       </var>
-      <var id="ist" type="ENUM" label="Instrument">
+      <var id="ist" label="Instrument">
         <fields>
           <int ref="x17" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="normal" msg="MOIRCS">2</enum>
           <enum hl="warn" msg="N/A"></enum>
         </symbol>
       </var>
-      <var id="cpos" type="INT" label="Current Position">
+      <var id="cpos" label="Current Position">
         <fields>
           <int ref="x19" />
         </fields>
+        <symbol type="INT" />
       </var>
-      <var id="dpos" type="INT" label="Destination Position">
+      <var id="dpos" label="Destination Position">
         <fields>
           <int ref="x1a" />
         </fields>
+        <symbol type="INT" />
       </var>
-      <var id="jpos" type="ENUM" label="Jack Position">
+      <var id="jpos" label="Jack Position">
         <fields>
           <int ref="x1b" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="normal" msg="D">0</enum>
           <enum hl="normal" msg="1(L)">1</enum>
           <enum hl="normal" msg="2(M)">2</enum>

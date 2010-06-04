@@ -5,7 +5,7 @@
       <session id="upd" label="Update Status" ref="upd"></session>
     </selection>
     <status>
-      <var id="flow" label="CS-1(S2) Coolant Flow(l/min)" type="FLOAT" ref="flow"></var>
+      <var id="flow" label="CS-1(S2) Coolant Flow(l/min)" ref="flow"></var>
     </status>
   </object>
 </odb>

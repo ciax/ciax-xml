@@ -82,15 +82,6 @@
         <xsd:element ref="cx:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="type">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="ENUM"></xsd:enumeration>
-            <xsd:enumeration value="FLOAT" />
-            <xsd:enumeration value="INT" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="fields">
@@ -101,8 +92,6 @@
         <xsd:element ref="cx:float" minOccurs="1" maxOccurs="unbounded" />
         <xsd:element ref="cx:int" minOccurs="1" maxOccurs="unbounded" />
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:string"></xsd:attribute>
-      <xsd:attribute name="label" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in field-->
@@ -137,10 +126,19 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:restriction base="xsd:anyType">
-          <xsd:choice>
+          <xsd:choice minOccurs="0">
             <xsd:element ref="cx:enum" minOccurs="1" maxOccurs="unbounded" />
             <xsd:element ref="cx:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
           </xsd:choice>
+          <xsd:attribute name="type">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="ENUM"></xsd:enumeration>
+                <xsd:enumeration value="FLOAT" />
+                <xsd:enumeration value="INT" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>

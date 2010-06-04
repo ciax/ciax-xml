@@ -49,7 +49,7 @@ class Obj
     @doc.elements['//status'].each_element {|var|
       a=var.attributes
       id="#{@obj}:#{a['id']}"
-      @stat[id]={'label'=>a['label'],'type'=>a['type'] }
+      @stat[id]={'label'=>a['label'] }
       if ref=a['ref']
         var=@ref.elements["//status/[@id='#{ref}']"]
       end
@@ -122,6 +122,7 @@ class Obj
   end
 
   def get_symbol(e,set)
+    add(e,set)
     e.each_element {|range|
       msg=range.attributes['msg']
       txt=range.text

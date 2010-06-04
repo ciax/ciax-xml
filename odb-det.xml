@@ -67,11 +67,11 @@
       </session>
     </selection>
     <status>
-      <var id="iid" type="ENUM" label="CAS INST ID">
+      <var id="iid" label="CAS INST ID">
         <fields>
           <string ref="c1d2" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="NONE">0</enum>
           <enum hl="normal" msg="CIAX3">1</enum>
           <enum hl="normal" msg="COMICS">2</enum>
@@ -84,56 +84,56 @@
           <enum hl="normal" msg="MP-CS2">9</enum>
         </symbol>
       </var>
-      <var id="stp" type="ENUM" label="STOW PIN">
+      <var id="stp" label="STOW PIN">
         <fields>
           <binary ref="c1d1" bit="1" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="normal" msg="ON">1</enum>
           <enum hl="alarm" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="ipw" type="ENUM" label="CAS IPW">
+      <var id="ipw" label="CAS IPW">
         <fields>
           <binary ref="c1d1" bit="0" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="normal" msg="ON">1</enum>
           <enum hl="alarm" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="c3p" type="ENUM" label="CIAX3 PW">
+      <var id="c3p" label="CIAX3 PW">
         <fields>
           <binary ref="c1d0" bit="0" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OFF">0</enum>
           <enum hl="hide" msg="ON">1</enum>
         </symbol>
       </var>
-      <var id="c3e" type="ENUM" label="CIAX3 EMG">
+      <var id="c3e" label="CIAX3 EMG">
         <fields>
           <binary ref="c1d0" bit="1" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OFF">0</enum>
           <enum hl="alarm" msg="ON">1</enum>
         </symbol>
       </var>
-      <var id="ccd" type="ENUM" label="CAS CCD PW">
+      <var id="ccd" label="CAS CCD PW">
         <fields>
           <binary ref="c1d0" bit="2" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="alarm" msg="ON">1</enum>
           <enum hl="normal" msg="OFF">0</enum>
         </symbol>
       </var>
-      <var id="lan" type="ENUM" label="CAS LAN PW">
+      <var id="lan" label="CAS LAN PW">
         <fields>
           <binary ref="c1d0" bit="3" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OFF">0</enum>
           <enum hl="alarm" msg="ON">1</enum>
         </symbol>

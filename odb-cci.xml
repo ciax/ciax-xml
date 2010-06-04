@@ -95,146 +95,146 @@
       </session>
     </selection>
     <status>
-      <var id="s1:sw" label="CAS2(S1)(CIAO) SWITCH" type="ENUM">
+      <var id="s1:sw" label="CAS2(S1)(CIAO) SWITCH">
         <fields>
           <binary ref="stat" bit="0" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="OFF">0</enum>
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s1:dr" label="CAS2(S1)(CIAO) DRIVE" type="ENUM">
+      <var id="s1:dr" label="CAS2(S1)(CIAO) DRIVE">
         <fields>
           <binary ref="stat" bit="1" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="OFF">0</enum>
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s1:tm" label="CAS2(S1)(CIAO) TEMP" type="ENUM">
+      <var id="s1:tm" label="CAS2(S1)(CIAO) TEMP">
         <fields>
           <binary ref="stat" bit="2" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OK">0</enum>
           <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
-      <var id="s1:pr" label="CAS2(S1)(CIAO) PRESSURE" type="ENUM">
+      <var id="s1:pr" label="CAS2(S1)(CIAO) PRESSURE">
         <fields>
           <binary ref="stat" bit="3" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OK">0</enum>
           <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
-      <var id="s2:sw" label="CAS1(S2)(MOIRCS/MAIN) SWITCH" type="ENUM">
+      <var id="s2:sw" label="CAS1(S2)(MOIRCS/MAIN) SWITCH">
         <fields>
           <binary ref="stat" bit="4" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="OFF">0</enum>
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s2:dr" label="CAS1(S2)(MOIRCS/MAIN) DRIVE" type="ENUM">
+      <var id="s2:dr" label="CAS1(S2)(MOIRCS/MAIN) DRIVE">
         <fields>
           <binary ref="stat" bit="5" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="OFF">0</enum>
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s2:tm" label="CAS1(S2)(MOIRCS/MAIN) TEMP" type="ENUM">
+      <var id="s2:tm" label="CAS1(S2)(MOIRCS/MAIN) TEMP">
         <fields>
           <binary ref="stat" bit="6" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OK">0</enum>
           <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
-      <var id="s2:pr" label="CAS1(S2)(MOIRCS/MAIN) PRESSURE" type="ENUM">
+      <var id="s2:pr" label="CAS1(S2)(MOIRCS/MAIN) PRESSURE">
         <fields>
           <binary ref="stat" bit="7" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OK">0</enum>
           <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
-      <var id="s8:sw" label="MOIRCS/CR(S8) SWITCH" type="ENUM">
+      <var id="s8:sw" label="MOIRCS/CR(S8) SWITCH">
         <fields>
           <binary ref="stat" bit="8" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="OFF">0</enum>
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s8:dr" label="MOIRCS/CR(S8) DRIVE" type="ENUM">
+      <var id="s8:dr" label="MOIRCS/CR(S8) DRIVE">
         <fields>
           <binary ref="stat" bit="9" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="OFF">0</enum>
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s8:tm" label="MOIRCS/CR(S8) TEMP" type="ENUM">
+      <var id="s8:tm" label="MOIRCS/CR(S8) TEMP">
         <fields>
           <binary ref="stat" bit="10" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OK">0</enum>
           <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
-      <var id="s8:pr" label="MOIRCS/CR(S8) PRESSURE" type="ENUM">
+      <var id="s8:pr" label="MOIRCS/CR(S8) PRESSURE">
         <fields>
           <binary ref="stat" bit="11" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OK">0</enum>
           <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
-      <var id="s9:sw" label="MOIRCS/MAIN(S9) SWITCH" type="ENUM">
+      <var id="s9:sw" label="MOIRCS/MAIN(S9) SWITCH">
         <fields>
           <binary ref="stat" bit="12" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="OFF">0</enum>
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s9:dr" label="MOIRCS/MAIN(S9) DRIVE" type="ENUM">
+      <var id="s9:dr" label="MOIRCS/MAIN(S9) DRIVE">
         <fields>
           <binary ref="stat" bit="13" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="warn" msg="OFF">0</enum>
           <enum msg="ON" hl="normal">1</enum>
         </symbol>
       </var>
-      <var id="s9:tm" label="MOIRCS/MAIN(S9) TEMP" type="ENUM">
+      <var id="s9:tm" label="MOIRCS/MAIN(S9) TEMP">
         <fields>
           <binary ref="stat" bit="14" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OK">0</enum>
           <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
-      <var id="s9:pr" label="MOIRCS/MAIN(S9) PRESSURE" type="ENUM">
+      <var id="s9:pr" label="MOIRCS/MAIN(S9) PRESSURE">
         <fields>
           <binary ref="stat" bit="15" />
         </fields>
-        <symbol>
+        <symbol type="ENUM">
           <enum hl="hide" msg="OK">0</enum>
           <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>

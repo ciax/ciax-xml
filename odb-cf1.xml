@@ -7,11 +7,11 @@
       </session>
     </selection>
     <status>
-      <var id="flow" label="CS-2(S1) Coolant Flow(l/min)" type="FLOAT">
+      <var id="flow" label="CS-2(S1) Coolant Flow(l/min)">
         <fields>
           <float decimal="2" format="%4.2f" ref="stat" />
         </fields>
-        <symbol>
+        <symbol type="FLOAT">
           <range hl="alarm" msg="HH">6:</range>
           <range hl="warn" msg="H">5:&lt;6</range>
           <range hl="normal" msg="M">4:&lt;5</range>

@@ -180,9 +180,9 @@
           <int ref="x07" signed="true" />
         </fields>
         <symbol>
-          <range_max hl="alarm" msg="LOW">10</range_max>
-          <range_max hl="normal" msg="OK">30</range_max>
-          <range_max hl="alarm" msg="HIGH">INF</range_max>
+          <range hl="alarm" msg="LOW">:10</range>
+          <range hl="normal" msg="OK">10&lt;:30</range>
+          <range hl="alarm" msg="HIGH">30&lt;:</range>
         </symbol>
       </var>
       <var id="mdal" type="INT" label="Left Motor D/A">
@@ -190,9 +190,9 @@
           <int ref="x08" signed="true" />
         </fields>
         <symbol>
-          <range_max hl="alarm" msg="LOW">10</range_max>
-          <range_max hl="normal" msg="OK">30</range_max>
-          <range_max hl="alarm" msg="HIGH">INF</range_max>
+          <range hl="alarm" msg="LOW">:10</range>
+          <range hl="normal" msg="OK">10&lt;:30</range>
+          <range hl="alarm" msg="HIGH">30&lt;:</range>
         </symbol>
       </var>
       <var id="bvl" type="FLOAT" label="Battery Voltage">
@@ -200,11 +200,11 @@
           <float ref="x16" decimal="2" format="%2.2f" />
         </fields>
         <symbol>
-          <range_max hl="alarm" msg="LOW">20</range_max>
-          <range_max hl="warn" msg="LESS">22</range_max>
-          <range_max hl="normal" msg="OK">26</range_max>
-          <range_max hl="warn" msg="FULL">28</range_max>
-          <range_max hl="alarm" msg="HIGH">INF</range_max>
+          <range hl="alarm" msg="LOW">:20</range>
+          <range hl="warn" msg="LESS">20&lt;:22</range>
+          <range hl="normal" msg="OK">22&lt;:26</range>
+          <range hl="warn" msg="FULL">26&lt;:28</range>
+          <range hl="alarm" msg="HIGH">28&lt;:</range>
         </symbol>
       </var>
       <var id="ist" type="ENUM" label="Instrument">

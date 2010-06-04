@@ -12,11 +12,11 @@
           <float decimal="2" format="%4.2f" ref="stat" />
         </fields>
         <symbol>
-          <range_min hl="alarm" msg="HH">6</range_min>
-          <range_min hl="warn" msg="H">5</range_min>
-          <range_min hl="normal" msg="M">4</range_min>
-          <range_min hl="warn" msg="L">3</range_min>
-          <range_min hl="alarm" msg="LL">-INF</range_min>
+          <range hl="alarm" msg="HH">6:</range>
+          <range hl="warn" msg="H">5:&lt;6</range>
+          <range hl="normal" msg="M">4:&lt;5</range>
+          <range hl="warn" msg="L">3:&lt;4</range>
+          <range hl="alarm" msg="LL">:&lt;3</range>
         </symbol>
       </var>
     </status>

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libxmldoc"
 require "libverbose"
+require "libnumrange"
 
 class Obj
   attr_reader :stat,:field,:property
@@ -113,15 +114,10 @@ class Obj
       msg=range.attributes['msg']
       txt=range.text
       case range.name
-      when 'range_min'
-        if txt != '-INF' && txt.to_f > val.to_f
-          $ver.msg("Symbol:Greater than [#{txt}](#{msg})?")
-          next 
-        end
-      when 'range_max'
-        if txt != 'INF' && txt.to_f < val.to_f
-          $ver.msg("Symbol:Less than [#{txt}](#{msg})?")
-          next 
+      when 'range'
+        if ! NumRange.new(txt).include?(val)
+          $ver.msg("Symbol:Within [#{txt}](#{msg})?")
+          next
         end
       when 'enum'
         if txt && txt != val
@@ -130,8 +126,8 @@ class Obj
         end
       end
       add(range,set)
-      break
-    }
+      break 1
+    } || $ver.err("No Symbol selection")
     $ver.msg("Symbol:[#{set['msg']}] for [#{set['val']}]")
     set
   end

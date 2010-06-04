@@ -5,7 +5,7 @@ warn "Usage: devstat [dev] [cmd] < file" if ARGV.size < 1
 
 begin
   c=Dev.new(ARGV.shift)
-  c.setcmd(ARGV.shift||'getstat')
+  c.setcmd(ARGV.shift)
 rescue RuntimeError
   abort $!.to_s
 end

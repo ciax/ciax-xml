@@ -140,8 +140,7 @@
         <xsd:restriction base="xsd:anyType">
           <xsd:choice>
             <xsd:element ref="cx:enum" minOccurs="1" maxOccurs="unbounded" />
-            <xsd:element ref="cx:range_max" minOccurs="1" maxOccurs="unbounded"></xsd:element>
-            <xsd:element ref="cx:range_min" minOccurs="1" maxOccurs="unbounded" />
+            <xsd:element ref="cx:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -169,19 +168,10 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="range_max">
+  <xsd:element name="range">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="xsd:float">
-          <xsd:attributeGroup ref="cx:symbol_attr" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="range_min">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:float">
+        <xsd:extension base="xsd:string">
           <xsd:attributeGroup ref="cx:symbol_attr" />
         </xsd:extension>
       </xsd:simpleContent>

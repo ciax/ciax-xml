@@ -51,8 +51,9 @@ module Common
     when 'regexp'
       @v.err("Parameter invalid(#{e.text})") if /^#{e.text}$/ !~ str
     when 'range'
-      r=NumRange.new(e.text)
-      @v.err("Parameter out of range(#{e.text})") if ! r.include?(str)
+      e.text.split(',').any? { |s|
+        NumRange.new(s).include?(str)
+      } || @v.err("Parameter out of range(#{e.text})")
     end
     str
   end

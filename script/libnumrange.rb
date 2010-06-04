@@ -1,38 +1,29 @@
 #!/usr/bin/ruby
 class NumRange
-  # String format "R1,R2,R3.."
-  # R? format "X","X:Y","X<:Y","X:<Y","X<:<:Y"
-  def initialize(string)
-    @range=Array.new
-    string.split(',').each {|str|
-      r=Hash.new
-      min,max=str.split(':')
-      if min.sub!(/<$/,'')
-        r[:gt]=s2i(min)
-      else
-        r[:ge]=s2i(min)
-      end
-      max=min unless max
-      if max.sub!(/^</,'')
-        r[:lt]=s2i(max)
-      else
-        r[:le]=s2i(max)
-      end
-      @range << r
-    } 
+  # Range format "X","X:Y","X<:Y","X:<Y","X<:<:Y"
+  def initialize(str)
+    @range=Hash.new
+    min,max=str.split(':')
+    if min.sub!(/<$/,'')
+      @range[:gt]=s2i(min)
+    else
+      @range[:ge]=s2i(min)
+    end
+    max=min unless max
+    if max.sub!(/^</,'')
+      @range[:lt]=s2i(max)
+    else
+      @range[:le]=s2i(max)
+    end
   end
 
   def include?(str)
     num=s2i(str)
-    @range.each { |r|
-      return true if r[:match] == num
-      next if r[:gt] && r[:gt] >= num
-      next if r[:ge] && r[:ge] > num
-      next if r[:lt] && r[:lt] <= num
-      next if r[:le] && r[:le] < num
-      return true
-    }
-    return false
+    return false if @range[:gt] && @range[:gt] >= num
+    return false if @range[:ge] && @range[:ge] > num
+    return false if @range[:lt] && @range[:lt] <= num
+    return false if @range[:le] && @range[:le] < num
+    return true
   end
 
   private

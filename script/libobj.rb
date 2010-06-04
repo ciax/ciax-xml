@@ -106,8 +106,7 @@ class Obj
         val << (data.to_i >> a['bit'].to_i & 1).to_s
       when 'float'
         if n=a['decimal']
-          n=n.to_i
-          data=data[0..-n-1]+'.'+data[-n..-1]
+          data.insert(-1-n.to_i,'.')
         end
         val << format(f,data)
       when 'int'

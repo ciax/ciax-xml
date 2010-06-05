@@ -1,70 +1,19 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cci" label="IR Helium Compressor Control" device="bbe" client="nc ltc-i 4002" server="socat - udp-l:25105,reuseaddr,fork">
+  <object id="cci" label="IR Helium Compressor Control" device="bbe" client="nc ltc-i 4002" server="socat - udp-l:25105,reuseaddr,fork" ref="cri">
     <selection>
-      <session id="upd" label="Update Status">
-        <command text="getstat" />
-      </session>
-      <session id="c2on" label="CAS2(S1) ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat | 0x01</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="c2off" label="CAS2(S1) OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat &amp; 0xfffe</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="c1on" label="CAS1(S2) ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat | 0x10</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="c1off" label="CAS1(S2) OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat &amp; 0xffef</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="m2on" label="MOIRCS CR(S8) ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat | 0x100</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="m2off" label="MOIRCS CR(S8) OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat &amp; 0xfeff</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="m1on" label="MOIRCS MAIN(S9) ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat | 0x1000</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="m1off" label="MOIRCS MAIN(S9) OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat &amp; 0xefff</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="cmon" label="CAS MOIRCS/MAIN ON" ref="c2on"></session>
-      <session id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="c2off"></session>
-      <session id="ccon" label="CAS MOIRCS/CR ON" ref="c1on" />
-      <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="c1off" />
+      <session id="c2on" label="CAS2(S1) ON" ref="x0on"></session>
+      <session id="c2off" label="CAS2(S1) OFF" ref="x0off"></session>
+      <session id="c1on" label="CAS1(S2) ON" ref="x1on"></session>
+      <session id="c1off" label="CAS1(S2) OFF" ref="x1off"></session>
+      <session id="m2on" label="MOIRCS CR(S8) ON" ref="x2on"></session>
+      <session id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off"></session>
+      <session id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on"></session>
+      <session id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off"></session>
+      <session id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on"></session>
+      <session id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off"></session>
+      <session id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
+      <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
       <session id="caon" label="CAS BOTH HC ON">
         <command text="getstat" />
         <command text="output">

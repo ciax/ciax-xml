@@ -19,13 +19,17 @@ class XmlDoc < Document
     @property=root.elements.first.attributes
   end
 
-  def select_id(id)
-    if e=elements["//selection/[@id='#{id}']"]
+  def select_list(id)
+    if e=select_id(id)
       return e
     else
       list_id("//selection")
     end
     raise "No such ID"
+  end
+
+  def select_id(id)
+    elements["//selection/[@id='#{id}']"]
   end
 
   # Error Handling

@@ -70,9 +70,9 @@ class Obj
   
   private
   def select_cmd(id)
-    e=@doc.select_id(id)
+    e=@doc.select_id(id) || @ref.select_list(id)
     if ref=e.attributes['ref']
-      return @ref.select_id(ref)
+      return(@doc.select_id(ref)||@ref.select_list(ref))
     end
     return e
   end

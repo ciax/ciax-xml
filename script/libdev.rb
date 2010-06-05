@@ -251,6 +251,16 @@ class DevCom < Dev
   def initialize(dev,iocmd,obj=nil)
     super(dev,obj)
     @ic=IoCmd.new(iocmd,obj||dev)
+    @cmdcache=Hash.new
+  end
+
+  def cmdcache(io,skey)
+    if cmd=@cmdcache[skey]
+      @v.msg("Cmd cache found")
+      cmd
+    else
+      @cmdcache[skey]=@cmd.cmdframe(io)
+    end
   end
 
   def devcom
@@ -260,12 +270,15 @@ class DevCom < Dev
     @session.each_element {|io|
       case io.name
       when 'send'
-        sndstr=@cmd.cmdframe(io)
-        @ic.snd(sndstr,[snd.succ!,cid,@cmd['par']])
+        sid=[snd,cid,@cmd['par']]
+        sndstr=cmdcache(io,sid.join(':'))
+        @ic.snd(sndstr,sid)
+        snd.succ!
       when 'recv'
-        rcvstr=@ic.rcv([rcv.succ!,cid])
+        rcvstr=@ic.rcv([rcv,cid])
         @rsp.field['time']="%.3f" % @ic.time.to_f
         @rsp.rspframe(io,rcvstr)
+        rcv.succ!
       end
     }
     @rsp.field

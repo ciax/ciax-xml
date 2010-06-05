@@ -31,15 +31,7 @@
       <var id="s4:sw" label="COMICS IMG(S4) SWITCH" ref="x2:sw"></var>
       <var id="s4:dr" label="COMICS IMG(S4) DRIVE" ref="x2:dr"></var>
       <var id="s4:tm" label="COMICS IMG(S4) TEMP" ref="x2:tm"></var>
-      <var id="s4:pr" label="COMICS IMG(S4) PRESSURE" ref="x2:pr">
-        <fields>
-          <binary ref="stat" bit="7" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">1</enum>
-          <enum msg="ALARM" hl="alarm">0</enum>
-        </symbol>
-      </var>
+      <var id="s4:pr" label="COMICS IMG(S4) PRESSURE" ref="x2:pr"></var>
       <var id="s5:sw" label="COMICS SPEC(S5) SWITCH" ref="x3:sw"></var>
       <var id="s5:dr" label="COMICS SPEC(S5) DRIVE" ref="x3:dr"></var>
       <var id="s5:tm" label="COMICS SPEC(S5) TEMP" ref="x3:tm"></var>

@@ -2,8 +2,10 @@
 require "libxmldoc"
 require "libverbose"
 require "libnumrange"
+require "libmodxml"
 
 class Obj
+  include ModXml
   attr_reader :stat,:field,:property
   
   def initialize(obj)
@@ -149,17 +151,6 @@ class Obj
     } || @v.err("STAT:No Symbol selection")
     @v.msg("STAT:Symbol:[#{set['msg']}] for [#{set['val']}]")
     set
-  end
-
-  # Common method
-
-  def format(e,code)
-    if fmt=e.attributes['format']
-      str=fmt % code
-      @v.msg("STAT:Formatted code(#{fmt}) [#{code}] -> [#{str}]")
-      code=str
-    end
-    code.to_s
   end
 
 end

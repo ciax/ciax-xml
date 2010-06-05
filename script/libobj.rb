@@ -127,9 +127,10 @@ class Obj
   end
 
   def get_symbol(e,set)
-    add(e,set)
+    set['type']=e.attributes['type']
     e.each_element {|range|
-      msg=range.attributes['msg']
+      a=range.attributes
+      msg=a['msg']
       txt=range.text
       case range.name
       when 'range'
@@ -143,7 +144,7 @@ class Obj
           next 
         end
       end
-      add(range,set)
+      a.each{|k,v| set[k]=v }
       break true
     } || @v.err("STAT:No Symbol selection")
     @v.msg("STAT:Symbol:[#{set['msg']}] for [#{set['val']}]")
@@ -151,10 +152,6 @@ class Obj
   end
 
   # Common method
-  def add(e,h,exclude=nil)
-    h=Hash.new unless h
-    e.attributes.each{|k,v| h[k]=v if k != exclude }
-  end
 
   def format(e,code)
     if fmt=e.attributes['format']

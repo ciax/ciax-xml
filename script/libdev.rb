@@ -43,7 +43,6 @@ module Common
     format(e,str)
   end
 
-
   def validate(e,str)
     @v.err("No Parameter") unless str
     @v.msg("Validate String [#{str}]")
@@ -143,7 +142,7 @@ class Response
             @v.err(msg)
           end
           @sel=@doc.select_id(opt) if opt=a['option']
-          break 1
+          break true
         } || @v.wrn(label+":Unknown code [#{str}]")
       end
     }
@@ -230,7 +229,7 @@ class Dev
   end
 
   def setcmd(cmd)
-    @session=@doc.select_list(cmd)
+    @session=@doc.select_id(cmd) || @doc.list_id
     @v.msg('Select:'+@session.attributes['label'])
   end
 

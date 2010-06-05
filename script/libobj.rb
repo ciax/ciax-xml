@@ -34,7 +34,6 @@ class Obj
     cmd,par=line.split(' ')
     @field['par']=par
     session=select_cmd(cmd)
-    warn session.attributes['label']
     session.each_element {|command|
       cmdary=get_cmd(command)
       @v.msg("Exec(DDB):#{cmdary}")
@@ -70,9 +69,13 @@ class Obj
   
   private
   def select_cmd(id)
-    e=@doc.select_id(id) || @ref.select_list(id)
+    unless e=@doc.select_id(id) || @ref.select_id(id)
+      @doc.list_id || @ref.list_id
+      raise "No ID"
+    end
+    warn e.attributes['label']
     if ref=e.attributes['ref']
-      return(@doc.select_id(ref)||@ref.select_list(ref))
+      return(@doc.select_id(ref)||@ref.select_id(ref))
     end
     return e
   end
@@ -139,7 +142,7 @@ class Obj
         end
       end
       add(range,set)
-      break 1
+      break true
     } || @v.err("STAT:No Symbol selection")
     @v.msg("STAT:Symbol:[#{set['msg']}] for [#{set['val']}]")
     set

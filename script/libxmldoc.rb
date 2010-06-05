@@ -10,34 +10,28 @@ class XmlDoc < Document
     begin
       super(open(path))
     rescue
+      @xpath='/*'
       Dir.glob("#{pre}-*.xml").each {|p|
         super(open(p))
-        list_id('/*')
+        list_id rescue true
       }
       raise ("No such a db")
     end
     @property=root.elements.first.attributes
-  end
-
-  def select_list(id)
-    if e=select_id(id)
-      return e
-    else
-      list_id("//selection")
-    end
-    raise "No such ID"
+    @xpath="//selection"
   end
 
   def select_id(id)
-    elements["//selection/[@id='#{id}']"]
+    elements[@xpath+"/[@id='#{id}']"]
   end
 
   # Error Handling
-  def list_id(xpath)
-    elements.each(xpath+'/[@id]') {|d|
+  def list_id
+    elements.each(@xpath+'/[@id]') {|d|
       a=d.attributes
       warn "#{a['id']}\t:#{a['label']}" if a['label']
-    }
+      true
+    } && raise("No such ID")
   end
 
 end

@@ -67,77 +67,57 @@
       </session>
     </selection>
     <status>
-      <var id="iid" label="CAS INST ID">
-        <fields>
-          <string ref="c1d2" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="NONE">0</enum>
-          <enum hl="normal" msg="CIAX3">1</enum>
-          <enum hl="normal" msg="COMICS">2</enum>
-          <enum hl="normal" msg="CIAO">3</enum>
-          <enum hl="normal" msg="FOCAS">4</enum>
-          <enum hl="normal" msg="IRCS">5</enum>
-          <enum hl="normal" msg="N/A">6</enum>
-          <enum hl="normal" msg="MOIRCS">7</enum>
-          <enum hl="normal" msg="MP-CS1">8</enum>
-          <enum hl="normal" msg="MP-CS2">9</enum>
-        </symbol>
+      <var id="iid" label="CAS INST ID" symbol="inst">
+        <string ref="c1d2" />
       </var>
-      <var id="stp" label="STOW PIN">
-        <fields>
-          <binary ref="c1d1" bit="1" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="normal" msg="ON">1</enum>
-          <enum hl="alarm" msg="OFF">0</enum>
-        </symbol>
+      <var id="stp" label="STOW PIN" symbol="non">
+        <binary ref="c1d1" bit="1" />
       </var>
-      <var id="ipw" label="CAS IPW">
-        <fields>
-          <binary ref="c1d1" bit="0" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="normal" msg="ON">1</enum>
-          <enum hl="alarm" msg="OFF">0</enum>
-        </symbol>
+      <var id="ipw" label="CAS IPW" symbol="non">
+        <binary ref="c1d1" bit="0" />
       </var>
-      <var id="c3p" label="CIAX3 PW">
-        <fields>
-          <binary ref="c1d0" bit="0" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OFF">0</enum>
-          <enum hl="hide" msg="ON">1</enum>
-        </symbol>
+      <var id="c3p" label="CIAX3 PW" symbol="hide">
+        <binary ref="c1d0" bit="0" />
       </var>
-      <var id="c3e" label="CIAX3 EMG">
-        <fields>
-          <binary ref="c1d0" bit="1" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OFF">0</enum>
-          <enum hl="alarm" msg="ON">1</enum>
-        </symbol>
+      <var id="c3e" label="CIAX3 EMG" symbol="alarm">
+        <binary ref="c1d0" bit="1" />
       </var>
-      <var id="ccd" label="CAS CCD PW">
-        <fields>
-          <binary ref="c1d0" bit="2" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="alarm" msg="ON">1</enum>
-          <enum hl="normal" msg="OFF">0</enum>
-        </symbol>
+      <var id="ccd" label="CAS CCD PW" symbol="noff">
+        <binary ref="c1d0" bit="2" />
       </var>
-      <var id="lan" label="CAS LAN PW">
-        <fields>
-          <binary ref="c1d0" bit="3" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OFF">0</enum>
-          <enum hl="alarm" msg="ON">1</enum>
-        </symbol>
+      <var id="lan" label="CAS LAN PW" symbol="alarm">
+        <binary ref="c1d0" bit="3" />
       </var>
     </status>
+    <symbols>
+      <symbol type="ENUM" id="inst">
+        <enum hl="warn" msg="NONE">0</enum>
+        <enum hl="normal" msg="CIAX3">1</enum>
+        <enum hl="normal" msg="COMICS">2</enum>
+        <enum hl="normal" msg="CIAO">3</enum>
+        <enum hl="normal" msg="FOCAS">4</enum>
+        <enum hl="normal" msg="IRCS">5</enum>
+        <enum hl="normal" msg="N/A">6</enum>
+        <enum hl="normal" msg="MOIRCS">7</enum>
+        <enum hl="normal" msg="MP-CS1">8</enum>
+        <enum hl="normal" msg="MP-CS2">9</enum>
+      </symbol>
+      <symbol type="ENUM" id="non">
+        <enum hl="normal" msg="ON">1</enum>
+        <enum hl="alarm" msg="OFF">0</enum>
+      </symbol>
+      <symbol type="ENUM" id="noff">
+        <enum hl="alarm" msg="ON">1</enum>
+        <enum hl="normal" msg="OFF">0</enum>
+      </symbol>
+      <symbol type="ENUM" id="hide">
+        <enum hl="hide" msg="OFF">0</enum>
+        <enum hl="hide" msg="ON">1</enum>
+      </symbol>
+      <symbol type="ENUM" id="alarm">
+        <enum hl="hide" msg="OFF">0</enum>
+        <enum hl="alarm" msg="ON">1</enum>
+      </symbol>
+    </symbols>
   </object>
 </odb>

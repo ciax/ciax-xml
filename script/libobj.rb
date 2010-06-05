@@ -53,17 +53,15 @@ class Obj
       @stat[id]={'label'=>a['label'] }
       if ref=a['ref']
         var=@ref.select_id("//status",ref)||@ref.list_id
+        a=var.attributes
       end
-      var.each_element {|e|
-        case e.name
-        when 'fields'
-          val=get_val(e)
-          @v.msg("STAT:GetStat:#{id}=[#{val}]")
-          @stat[id]['val']=val
-        when 'symbol'
-          get_symbol(e,@stat[id])
-        end
-      }
+      val=get_val(var)
+      @v.msg("STAT:GetStat:#{id}=[#{val}]")
+      @stat[id]['val']=val
+      if sid=a['symbol']
+        e=var.elements["//symbols/[@id='#{sid}']"]
+        get_symbol(e,@stat[id])
+      end
     }
     @stat['time']['val']=Time.at(@field['time'].to_f)
     @f.save_json(@stat)

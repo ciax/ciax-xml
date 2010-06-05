@@ -63,150 +63,64 @@
       </session>
     </selection>
     <status>
-      <var id="x0:sw" label="X0 SWITCH">
-        <fields>
-          <binary ref="stat" bit="0" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
+      <var id="x0:sw" label="X0 SWITCH" symbol="switch">
+        <binary ref="stat" bit="0" />
       </var>
-      <var id="x0:dr" label="X0 DRIVE">
-        <fields>
-          <binary ref="stat" bit="1" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
+      <var id="x0:dr" label="X0 DRIVE" symbol="switch">
+        <binary ref="stat" bit="1" />
       </var>
-      <var id="x0:tm" label="X0 TEMP">
-        <fields>
-          <binary ref="stat" bit="2" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
-        </symbol>
+      <var id="x0:tm" label="X0 TEMP" symbol="alarm">
+        <binary ref="stat" bit="2" />
       </var>
-      <var id="x0:pr" label="X0 PRESSURE">
-        <fields>
-          <binary ref="stat" bit="3" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
-        </symbol>
+      <var id="x0:pr" label="X0 PRESSURE" symbol="alarm">
+        <binary ref="stat" bit="3" />
       </var>
-      <var id="x1:sw" label="X1 SWITCH">
-        <fields>
-          <binary ref="stat" bit="4" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
+      <var id="x1:sw" label="X1 SWITCH" symbol="switch">
+        <binary ref="stat" bit="4" />
       </var>
-      <var id="x1:dr" label="X1 DRIVE">
-        <fields>
-          <binary ref="stat" bit="5" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
+      <var id="x1:dr" label="X1 DRIVE" symbol="switch">
+        <binary ref="stat" bit="5" />
       </var>
-      <var id="x1:tm" label="X1 TEMP">
-        <fields>
-          <binary ref="stat" bit="6" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
-        </symbol>
+      <var id="x1:tm" label="X1 TEMP" symbol="alarm">
+        <binary ref="stat" bit="6" />
       </var>
-      <var id="x1:pr" label="X1 PRESSURE">
-        <fields>
-          <binary ref="stat" bit="7" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
-        </symbol>
+      <var id="x1:pr" label="X1 PRESSURE" symbol="alarm">
+        <binary ref="stat" bit="7" />
       </var>
-      <var id="x2:sw" label="X2 SWITCH">
-        <fields>
-          <binary ref="stat" bit="8" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
+      <var id="x2:sw" label="X2 SWITCH" symbol="switch">
+        <binary ref="stat" bit="8" />
       </var>
-      <var id="x2:dr" label="X2 DRIVE">
-        <fields>
-          <binary ref="stat" bit="9" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
+      <var id="x2:dr" label="X2 DRIVE" symbol="switch">
+        <binary ref="stat" bit="9" />
       </var>
-      <var id="x2:tm" label="X2 TEMP">
-        <fields>
-          <binary ref="stat" bit="10" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
-        </symbol>
+      <var id="x2:tm" label="X2 TEMP" symbol="alarm">
+        <binary ref="stat" bit="10" />
       </var>
-      <var id="x2:pr" label="X2 PRESSURE">
-        <fields>
-          <binary ref="stat" bit="11" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
-        </symbol>
+      <var id="x2:pr" label="X2 PRESSURE" symbol="alarm">
+        <binary ref="stat" bit="11" />
       </var>
-      <var id="x3:sw" label="X3 SWITCH">
-        <fields>
-          <binary ref="stat" bit="12" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
+      <var id="x3:sw" label="X3 SWITCH" symbol="switch">
+        <binary ref="stat" bit="12" />
       </var>
-      <var id="x3:dr" label="X3 DRIVE">
-        <fields>
-          <binary ref="stat" bit="13" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
+      <var id="x3:dr" label="X3 DRIVE" symbol="switch">
+        <binary ref="stat" bit="13" />
       </var>
-      <var id="x3:tm" label="X3 TEMP">
-        <fields>
-          <binary ref="stat" bit="14" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
-        </symbol>
+      <var id="x3:tm" label="X3 TEMP" symbol="alarm">
+        <binary ref="stat" bit="14" />
       </var>
-      <var id="x3:pr" label="X3 PRESSURE">
-        <fields>
-          <binary ref="stat" bit="15" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">0</enum>
-          <enum msg="ALARM" hl="alarm">1</enum>
-        </symbol>
+      <var id="x3:pr" label="X3 PRESSURE" symbol="alarm">
+        <binary ref="stat" bit="15" />
       </var>
     </status>
+    <symbols>
+      <symbol id="switch" type="ENUM">
+        <enum hl="warn" msg="OFF">0</enum>
+        <enum msg="ON" hl="normal">1</enum>
+      </symbol>
+      <symbol id="alarm" type="ENUM">
+        <enum hl="hide" msg="OK">0</enum>
+        <enum msg="ALARM" hl="alarm">1</enum>
+      </symbol>
+    </symbols>
   </object>
 </odb>

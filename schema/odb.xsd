@@ -17,6 +17,7 @@
       <xsd:sequence>
         <xsd:element ref="cx:selection" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cx:status" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="cx:symbols" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="device" type="xsd:string" use="required" />
@@ -77,21 +78,14 @@
   </xsd:element>
   <xsd:element name="var">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cx:fields" minOccurs="0" maxOccurs="1" />
-        <xsd:element ref="cx:symbol" minOccurs="0" maxOccurs="1" />
-      </xsd:sequence>
-      <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="fields">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:element ref="cx:string" minOccurs="1" maxOccurs="unbounded" />
-        <xsd:element ref="cx:binary" minOccurs="1" maxOccurs="unbounded" />
-        <xsd:element ref="cx:float" minOccurs="1" maxOccurs="unbounded" />
-        <xsd:element ref="cx:int" minOccurs="1" maxOccurs="unbounded" />
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cx:string" />
+        <xsd:element ref="cx:binary" />
+        <xsd:element ref="cx:float" />
+        <xsd:element ref="cx:int" />
       </xsd:choice>
+      <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
+      <xsd:attribute name="symbol" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in field-->
@@ -122,6 +116,13 @@
     </xsd:complexType>
   </xsd:element>
   <!--symbol-->
+  <xsd:element name="symbols">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:symbol" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="symbol">
     <xsd:complexType>
       <xsd:complexContent>
@@ -130,6 +131,7 @@
             <xsd:element ref="cx:enum" minOccurs="1" maxOccurs="unbounded" />
             <xsd:element ref="cx:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
           </xsd:choice>
+          <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
           <xsd:attribute name="type">
             <xsd:simpleType>
               <xsd:restriction base="xsd:string">

@@ -24,70 +24,14 @@
       </session>
     </selection>
     <status>
-      <var id="s6:sw" label="CIAO(S6) SWITCH">
-        <fields>
-          <binary ref="stat" bit="0" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
-      </var>
-      <var id="s6:dr" label="CIAO(S6) DRIVE">
-        <fields>
-          <binary ref="stat" bit="1" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">1</enum>
-          <enum msg="ON" hl="normal">0</enum>
-        </symbol>
-      </var>
-      <var id="s6:tm" label="CIAO(S6) TEMP">
-        <fields>
-          <binary ref="stat" bit="2" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">1</enum>
-          <enum msg="ALARM" hl="alarm">0</enum>
-        </symbol>
-      </var>
-      <var id="s6:pr" label="CIAO(S6) PRESSURE">
-        <fields>
-          <binary ref="stat" bit="3" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">1</enum>
-          <enum msg="ALARM" hl="alarm">0</enum>
-        </symbol>
-      </var>
-      <var id="s4:sw" label="COMICS IMG(S4) SWITCH">
-        <fields>
-          <binary ref="stat" bit="4" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
-      </var>
-      <var id="s4:dr" label="COMICS IMG(S4) DRIVE">
-        <fields>
-          <binary ref="stat" bit="5" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">1</enum>
-          <enum msg="ON" hl="normal">0</enum>
-        </symbol>
-      </var>
-      <var id="s4:tm" label="COMICS IMG(S4) TEMP">
-        <fields>
-          <binary ref="stat" bit="6" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">1</enum>
-          <enum msg="ALARM" hl="alarm">0</enum>
-        </symbol>
-      </var>
-      <var id="s4:pr" label="COMICS IMG(S4) PRESSURE">
+      <var id="s6:sw" label="CIAO(S6) SWITCH" ref="x0:sw"></var>
+      <var id="s6:dr" label="CIAO(S6) DRIVE" ref="x0:dr"></var>
+      <var id="s6:tm" label="CIAO(S6) TEMP" ref="x0:tm"></var>
+      <var id="s6:pr" label="CIAO(S6) PRESSURE" ref="x0:pr"></var>
+      <var id="s4:sw" label="COMICS IMG(S4) SWITCH" ref="x2:sw"></var>
+      <var id="s4:dr" label="COMICS IMG(S4) DRIVE" ref="x2:dr"></var>
+      <var id="s4:tm" label="COMICS IMG(S4) TEMP" ref="x2:tm"></var>
+      <var id="s4:pr" label="COMICS IMG(S4) PRESSURE" ref="x2:pr">
         <fields>
           <binary ref="stat" bit="7" />
         </fields>
@@ -96,42 +40,10 @@
           <enum msg="ALARM" hl="alarm">0</enum>
         </symbol>
       </var>
-      <var id="s5:sw" label="COMICS SPEC(S5) SWITCH">
-        <fields>
-          <binary ref="stat" bit="8" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
-        </symbol>
-      </var>
-      <var id="s5:dr" label="COMICS SPEC(S5) DRIVE">
-        <fields>
-          <binary ref="stat" bit="9" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">1</enum>
-          <enum msg="ON" hl="normal">0</enum>
-        </symbol>
-      </var>
-      <var id="s5:tm" label="COMICS SPEC(S5) TEMP">
-        <fields>
-          <binary ref="stat" bit="10" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">1</enum>
-          <enum msg="ALARM" hl="alarm">0</enum>
-        </symbol>
-      </var>
-      <var id="s5:pr" label="COMICS SPEC(S5) PRESSURE">
-        <fields>
-          <binary ref="stat" bit="11" />
-        </fields>
-        <symbol type="ENUM">
-          <enum hl="hide" msg="OK">1</enum>
-          <enum msg="ALARM" hl="alarm">0</enum>
-        </symbol>
-      </var>
+      <var id="s5:sw" label="COMICS SPEC(S5) SWITCH" ref="x3:sw"></var>
+      <var id="s5:dr" label="COMICS SPEC(S5) DRIVE" ref="x3:dr"></var>
+      <var id="s5:tm" label="COMICS SPEC(S5) TEMP" ref="x3:tm"></var>
+      <var id="s5:pr" label="COMICS SPEC(S5) PRESSURE" ref="x3:pr"></var>
     </status>
   </object>
 </odb>

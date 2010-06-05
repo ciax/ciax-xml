@@ -18,10 +18,10 @@ class XmlDoc < Document
       raise ("No such a db")
     end
     @property=root.elements.first.attributes
-    @xpath="//selection"
   end
 
-  def select_id(id)
+  def select_id(xpath,id)
+    @xpath=xpath
     elements[@xpath+"/[@id='#{id}']"]
   end
 

@@ -33,7 +33,7 @@ class Obj
   def objcom(line)
     cmd,par=line.split(' ')
     @field['par']=par
-    session=select_cmd(cmd)
+    session=select_session(cmd)
     session.each_element {|command|
       cmdary=get_cmd(command)
       @v.msg("Exec(DDB):#{cmdary}")
@@ -50,7 +50,7 @@ class Obj
       id="#{@obj}:#{a['id']}"
       @stat[id]={'label'=>a['label'] }
       if ref=a['ref']
-        var=@ref.elements["//status/[@id='#{ref}']"]
+        var=@ref.select_id("//status",ref)||@ref.list_id
       end
       var.each_element {|e|
         case e.name
@@ -68,14 +68,16 @@ class Obj
   end
   
   private
-  def select_cmd(id)
-    unless e=@doc.select_id(id) || @ref.select_id(id)
+  def select_session(id)
+    xpath='//selection'
+    unless e=@doc.select_id(xpath,id) || @ref.select_id(xpath,id)
       @doc.list_id || @ref.list_id
       raise "No ID"
     end
-    warn e.attributes['label']
-    if ref=e.attributes['ref']
-      return(@ref.select_id(ref)||@ref.list_id)
+    a=e.attributes
+    warn a['label']
+    if ref=a['ref']
+      return(@ref.select_id(xpath,ref)||@ref.list_id)
     end
     return e
   end

@@ -86,8 +86,8 @@
           <binary ref="stat" bit="2" />
         </fields>
         <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
       <var id="x0:pr" label="X0 PRESSURE">
@@ -95,8 +95,8 @@
           <binary ref="stat" bit="3" />
         </fields>
         <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
       <var id="x1:sw" label="X1 SWITCH">
@@ -122,8 +122,8 @@
           <binary ref="stat" bit="6" />
         </fields>
         <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
       <var id="x1:pr" label="X1 PRESSURE">
@@ -131,8 +131,8 @@
           <binary ref="stat" bit="7" />
         </fields>
         <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
       <var id="x2:sw" label="X2 SWITCH">
@@ -158,8 +158,8 @@
           <binary ref="stat" bit="10" />
         </fields>
         <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
       <var id="x2:pr" label="X2 PRESSURE">
@@ -167,8 +167,8 @@
           <binary ref="stat" bit="11" />
         </fields>
         <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
       <var id="x3:sw" label="X3 SWITCH">
@@ -194,8 +194,8 @@
           <binary ref="stat" bit="14" />
         </fields>
         <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
       <var id="x3:pr" label="X3 PRESSURE">
@@ -203,8 +203,8 @@
           <binary ref="stat" bit="15" />
         </fields>
         <symbol type="ENUM">
-          <enum hl="warn" msg="OFF">0</enum>
-          <enum msg="ON" hl="normal">1</enum>
+          <enum hl="hide" msg="OK">0</enum>
+          <enum msg="ALARM" hl="alarm">1</enum>
         </symbol>
       </var>
     </status>

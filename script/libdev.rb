@@ -141,7 +141,7 @@ class Response
           when 'error'
             @v.err(msg)
           end
-          @sel=@doc.select_id(opt) if opt=a['option']
+          @sel=@doc.select_id('//selection',opt) if opt=a['option']
           break true
         } || @v.wrn(label+":Unknown code [#{str}]")
       end
@@ -229,7 +229,7 @@ class Dev
   end
 
   def setcmd(cmd)
-    @session=@doc.select_id(cmd) || @doc.list_id
+    @session=@doc.select_id('//selection',cmd) || @doc.list_id
     @v.msg('Select:'+@session.attributes['label'])
   end
 

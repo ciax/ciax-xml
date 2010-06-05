@@ -1,52 +1,13 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cco" label="OPT Helium Compressor Control" device="bbe" client="nc ltc-o 4002" server="socat - udp-l:25106,reuseaddr,fork">
+  <object id="cco" label="OPT Helium Compressor Control" device="bbe" client="nc ltc-o 4002" server="socat - udp-l:25106,reuseaddr,fork" ref="cri">
     <selection>
-      <session id="upd" label="Update Status">
-        <command text="getstat" />
-      </session>
-      <session id="f2on" label="CIAO(S6) ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat | 0x01</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="f2off" label="CIAO(S6) OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat &amp; 0xfffe</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="m1on" label="COMICS IMG(S4) ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat | 0x100</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="m1off" label="COMICS IMG(S4) OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat &amp; 0xfeff</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="m2on" label="COMICS SPEC(S5) ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat | 0x1000</par>
-        </command>
-        <command text="getstat" />
-      </session>
-      <session id="m2off" label="COMICS SPEC(S5) OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">$stat &amp; 0xefff</par>
-        </command>
-        <command text="getstat" />
-      </session>
+      <session id="f2on" label="CIAO(S6) ON" ref="x0on"></session>
+      <session id="f2off" label="CIAO(S6) OFF" ref="x0off"></session>
+      <session id="m1on" label="COMICS IMG(S4) ON" ref="x2on"></session>
+      <session id="m1off" label="COMICS IMG(S4) OFF" ref="x2off"></session>
+      <session id="m2on" label="COMICS SPEC(S5) ON" ref="x3on"></session>
+      <session id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off"></session>
       <session id="maon" label="COMICS BOTH ON">
         <command text="getstat" />
         <command text="output">

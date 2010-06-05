@@ -75,7 +75,7 @@ class Obj
     end
     warn e.attributes['label']
     if ref=e.attributes['ref']
-      return(@doc.select_id(ref)||@ref.select_id(ref))
+      return(@ref.select_id(ref)||@ref.list_id)
     end
     return e
   end

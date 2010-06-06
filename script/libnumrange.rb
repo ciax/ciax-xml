@@ -37,7 +37,7 @@ class NumRange
     elsif /^-?[0-9]+(\.[0-9]+)?$/ =~ str
       str.to_f
     else
-      abort ("Not Number [#{str}]")
+      abort("Not Number [#{str}]")
     end
   end
 end

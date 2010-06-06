@@ -2,6 +2,7 @@
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cco" label="OPT Helium Compressor Control" device="bbe" client="nc ltc-o 4002" server="socat - udp-l:25106,reuseaddr,fork" ref="cri">
     <selection>
+      <session id="upd" label="Update Status" ref="upd"></session>
       <session id="f2on" label="CIAO(S6) ON" ref="x0on"></session>
       <session id="f2off" label="CIAO(S6) OFF" ref="x0off"></session>
       <session id="m1on" label="COMICS IMG(S4) ON" ref="x2on"></session>

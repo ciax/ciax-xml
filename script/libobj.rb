@@ -38,8 +38,8 @@ class Obj
     session=select_session(cmd)
     session.each_element {|command|
       cmdary=get_cmd(command)
-      @v.msg("Exec(DDB):#{cmdary}")
-      warn "CommandExec#{cmdary}"
+      @v.msg("Exec(DDB):#{cmdary.inspect}")
+      warn "CommandExec#{cmdary.inspect}"
       get_stat(yield(cmdary))
     }
   end
@@ -47,20 +47,24 @@ class Obj
   def get_stat(dstat)
     return unless dstat
     @field.update(dstat)
-    @doc.elements['//status'].each_element {|var|
+    xpath='//status'
+    rvar=@ref.elements[xpath]
+    rsym=@ref.elements['//symbols']
+    @doc.elements[xpath].each_element {|var|
       a=var.attributes
       id="#{@obj}:#{a['id']}"
       @stat[id]={'label'=>a['label'] }
       if ref=a['ref']
-        var=@ref.select_id("//status",ref)||@ref.list_id
+        rvar.each_element_with_attribute('id',ref){|e| var=e } || list_id(rvar)
         a=var.attributes
       end
       val=get_val(var)
       @v.msg("STAT:GetStat:#{id}=[#{val}]")
       @stat[id]['val']=val
       if sid=a['symbol']
-        e=var.elements["//symbols/[@id='#{sid}']"]
-        get_symbol(e,@stat[id])
+        rsym.each_element_with_attribute('id',sid){ |e|
+          get_symbol(e,@stat[id])
+        }
       end
     }
     @stat['time']['val']=Time.at(@field['time'].to_f)
@@ -70,16 +74,19 @@ class Obj
   private
   def select_session(id)
     xpath='//selection'
-    unless e=@doc.select_id(xpath,id) || @ref.select_id(xpath,id)
-      @doc.list_id || @ref.list_id
-      raise "No ID"
-    end
-    a=e.attributes
-    warn a['label']
-    if ref=a['ref']
-      return(@ref.select_id(xpath,ref)||@ref.list_id)
-    end
-    return e
+    dsel=@doc.elements[xpath]
+    rsel=@ref.elements[xpath]
+    sel=dsel || rsel
+    sel.each_element_with_attribute('id',id) {|e|
+      a=e.attributes
+      warn a['label']
+      if ref=a['ref']
+        rsel.each_element_with_attribute('id',ref){|d| return d }
+        list_id(rsel)
+      end
+      return e
+    }
+    list_id(sel)
   end
 
   #Cmd Method

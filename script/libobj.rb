@@ -9,13 +9,18 @@ class Obj
   attr_reader :stat,:field,:property
   
   def initialize(obj)
-    @doc=XmlDoc.new('odb',obj)
-    if ref=@doc.property['ref']
-      @ref=XmlDoc.new('odb',ref) 
-    else
-      @ref=@doc
+    doc=XmlDoc.new('odb',obj)
+    @odb=Hash.new
+    doc.root.elements.first.each_element { |e| @odb[e.name]=e }
+    if robj=doc.property['ref']
+      ref=XmlDoc.new('odb',robj)
+      @rdb=Hash.new
+      ref.root.elements.first.each_element {|e|
+        @rdb[e.name]=e
+        @odb[e.name]=e unless @odb[e.name]
+      }
     end
-    @obj=@doc.property['id']
+    @obj=doc.property['id']
   rescue RuntimeError
     abort $!.to_s
   else
@@ -26,9 +31,9 @@ class Obj
       warn $!
       @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
     end
-    @v=Verbose.new("#{@doc.root.name}/#{@obj}".upcase)
+    @v=Verbose.new("#{doc.root.name}/#{@obj}".upcase)
     @field=Hash.new
-    @property=@doc.property
+    @property=doc.property
   end
   
   public
@@ -47,25 +52,8 @@ class Obj
   def get_stat(dstat)
     return unless dstat
     @field.update(dstat)
-    xpath='//status'
-    rvar=@ref.elements[xpath]
-    rsym=@ref.elements['//symbols']
-    @doc.elements[xpath].each_element {|var|
-      a=var.attributes
-      id="#{@obj}:#{a['id']}"
-      @stat[id]={'label'=>a['label'] }
-      if ref=a['ref']
-        rvar.each_element_with_attribute('id',ref){|e| var=e } || list_id(rvar)
-        a=var.attributes
-      end
-      val=get_val(var)
-      @v.msg("STAT:GetStat:#{id}=[#{val}]")
-      @stat[id]['val']=val
-      if sid=a['symbol']
-        rsym.each_element_with_attribute('id',sid){ |e|
-          get_symbol(e,@stat[id])
-        }
-      end
+    @odb['status'].each_element {|var|
+      get_var(var)  
     }
     @stat['time']['val']=Time.at(@field['time'].to_f)
     @f.save_json(@stat)
@@ -73,15 +61,11 @@ class Obj
   
   private
   def select_session(id)
-    xpath='//selection'
-    dsel=@doc.elements[xpath]
-    rsel=@ref.elements[xpath]
-    sel=dsel || rsel
-    sel.each_element_with_attribute('id',id) {|e|
+    @odb['selection'].each_element_with_attribute('id',id) {|e|
       a=e.attributes
       warn a['label']
       if ref=a['ref']
-        rsel.each_element_with_attribute('id',ref){|d| return d }
+        @rdb['selection'].each_element_with_attribute('id',ref){|d| return d }
         list_id(rsel)
       end
       return e
@@ -106,6 +90,25 @@ class Obj
   end
 
   #Stat Methods
+  def get_var(var)
+    a=var.attributes
+    id="#{@obj}:#{a['id']}"
+    @stat[id]={'label'=>a['label'] }
+    if ref=a['ref']
+      @rdb['status'].each_element_with_attribute('id',ref){|e| var=e } ||
+        list_id(@rdb['status'])
+      a=var.attributes
+    end
+    val=get_val(var)
+    @stat[id]['val']=val
+    @v.msg("STAT:GetStatus:#{id}=[#{val}]")
+    if sid=a['symbol']
+      @odb['symbols'].each_element_with_attribute('id',sid){ |e|
+        get_symbol(e,@stat[id])
+      }
+    end
+  end
+
   def get_val(e)
     val=String.new
     e.each_element {|f| #element(split and concat)

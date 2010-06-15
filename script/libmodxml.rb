@@ -61,12 +61,4 @@ module ModXml
     code.to_s
   end
 
-  def list_id(e)
-    e.each_element {|d|
-      a=d.attributes
-      warn "#{a['id']}\t:#{a['label']}" if a['label']
-      true
-    } && raise("No such ID")
-  end
-
 end

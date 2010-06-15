@@ -10,8 +10,8 @@ class XmlDoc < Hash
       doc=Document.new(open(path))
     rescue
       Dir.glob("#{pre}-*.xml").each {|p|
-        doc=Document.new(open(p))
-        list_id(doc.root) rescue true
+        self[:root]=Document.new(open(p)).root
+        list_id(:root) rescue true
       }
       raise ("No such a db")
     end
@@ -20,8 +20,8 @@ class XmlDoc < Hash
   end
 
   # Error Handling
-  def list_id(top)
-    top.each_element {|e|
+  def list_id(name)
+    self[name].each_element {|e|
       a=e.attributes
       warn "#{a['id']}\t:#{a['label']}" if a['label']
       true

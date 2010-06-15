@@ -60,11 +60,11 @@ class Obj
       warn a['label']
       if ref=a['ref']
         @rdb['selection'].each_element_with_attribute('id',ref){|d| return d }
-        list_id(@rdb['selection'])
+        @rdb.list_id('selection')
       end
       return e
     }
-    list_id(@odb['selection'])
+    @odb.list_id('selection')
   end
 
   #Cmd Method
@@ -90,7 +90,7 @@ class Obj
     @stat[id]={'label'=>a['label'] }
     if ref=a['ref']
       @rdb['status'].each_element_with_attribute('id',ref){|e| var=e } ||
-        list_id(@rdb['status'])
+        @rdb.list_id('status')
       a=var.attributes
     end
     val=get_val(var,@field)

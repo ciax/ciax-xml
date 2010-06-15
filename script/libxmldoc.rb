@@ -19,6 +19,11 @@ class XmlDoc < Hash
     self['property']=doc.root.elements.first.attributes
   end
 
+  def select_id(id)
+    self['selection'].each_element_with_attribute('id',id){|e| return e }
+    list_id('selection')
+  end
+
   # Error Handling
   def list_id(name)
     self[name].each_element {|e|

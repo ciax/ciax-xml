@@ -55,16 +55,14 @@ class Obj
   
   private
   def select_session(id)
-    @odb['selection'].each_element_with_attribute('id',id) {|e|
-      a=e.attributes
-      warn a['label']
-      if ref=a['ref']
-        @rdb['selection'].each_element_with_attribute('id',ref){|d| return d }
-        @rdb.list_id('selection')
-      end
+    e=@odb.select_id(id)
+    a=e.attributes
+    warn a['label']
+    if ref=a['ref']
+      return @rdb.select_id(ref)
+    else
       return e
-    }
-    @odb.list_id('selection')
+    end
   end
 
   #Cmd Method

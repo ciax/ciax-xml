@@ -77,8 +77,7 @@ class Response
           when 'error'
             @v.err(msg)
           end
-          @sel=@ddb['selection'].each_elements_with_attribute('id',opt) { |e|
-            @sel=e } if opt=a['option']
+          @sel=@ddb.select_id(opt) if opt=a['option']
           break true
         } || @v.wrn(label+":Unknown code [#{str}]")
       end
@@ -165,12 +164,8 @@ class Dev
   end
 
   def setcmd(cmd)
-    @ddb['selection'].each_element_with_attribute('id',cmd){|e|
-      @session=e
-      @v.msg('Select:'+@session.attributes['label'])
-      return
-    }
-    @ddb.list_id('selection')
+    @session=@ddb.select_id(cmd)
+    @v.msg('Select:'+@session.attributes['label'])
   end
 
   def setpar(par)

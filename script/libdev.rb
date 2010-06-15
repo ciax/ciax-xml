@@ -6,7 +6,7 @@ require "libnumrange"
 require "libmodxml"
 
 # Rsp Methods
-class Response
+class Response < Hash
   include ModXml
   attr_accessor :field
 
@@ -16,10 +16,10 @@ class Response
     @cc=nil
     @f=IoFile.new(id)
     begin
-      @field=@f.load_stat
+      update(@f.load_stat)
     rescue
       warn $!
-      @field={'device'=>dev}
+      self['device']=dev
     end
   end
 
@@ -27,15 +27,15 @@ class Response
     @v.err("No Selection") unless @sel=sel
     @v.err("No String") unless @frame=frame
     setframe(@ddb['rspframe'])
-    if @field['cc']
-      if @field['cc'] == @cc
+    if self['cc']
+      if self['cc'] == @cc
         @v.msg("Verify:CC OK")
       else
-        @v.err("Verifu:CC Mismatch[#{@field['cc']}]!=[#{@cc}]") 
+        @v.err("Verifu:CC Mismatch[#{self['cc']}]!=[#{@cc}]") 
       end
-      @field.delete('cc')
+      delete('cc')
     end
-    @f.save_stat(@field)
+    @f.save_stat(Hash.new.update(self))
   end
 
   def setframe(e)
@@ -87,8 +87,8 @@ class Response
 
   def assign(e,key)
     code=cut_frame(e)
-    @field[key]=decode(e,code)
-    @v.msg("Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]")
+    self[key]=decode(e,code)
+    @v.msg("Assign:#{e.attributes['label']}[#{key}]<-[#{self[key]}]")
     code
   end
 
@@ -150,6 +150,8 @@ end
 
 # Main
 class Dev
+  attr_reader :field
+
   def initialize(dev,obj=nil)
     id=obj||dev
     begin
@@ -158,7 +160,7 @@ class Dev
       abort $!.to_s
     else
       @v=Verbose.new("ddb/#{id}".upcase)
-      @rsp=Response.new(@ddb,dev,id)
+      @field=Response.new(@ddb,dev,id)
       @cmd=Command.new(@ddb,dev)
    end
   end
@@ -177,7 +179,7 @@ class Dev
   end
 
   def getfield(frame)
-    @rsp.rspframe(@session.elements['recv'],frame)
+    @field.rspframe(@session.elements['recv'],frame)
   end
 
 end
@@ -211,16 +213,12 @@ class DevCom < Dev
         snd.succ!
       when 'recv'
         rcvstr=@ic.rcv([rcv,cid])
-        @rsp.field['time']="%.3f" % @ic.time.to_f
-        @rsp.rspframe(io,rcvstr)
+        @field['time']="%.3f" % @ic.time.to_f
+        @field.rspframe(io,rcvstr)
         rcv.succ!
       end
     }
-    @rsp.field
-  end
-
-  def field
-    @rsp.field
+    @field
   end
 
 end

@@ -20,20 +20,20 @@ class Obj
         @odb[e.name]=e unless @odb[e.name]
       }
     end
-    @obj=doc.property['id']
   rescue RuntimeError
     abort $!.to_s
   else
-    @f=IoFile.new(@obj)
+    @f=IoFile.new(obj)
     begin
       @stat=@f.load_json
     rescue
       warn $!
       @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
     end
-    @v=Verbose.new("#{doc.root.name}/#{@obj}".upcase)
+    @v=Verbose.new("#{doc.root.name}/#{obj}".upcase)
     @field=Hash.new
     @property=doc.property
+    @obj=obj
   end
   
   public

@@ -1,34 +1,28 @@
 #!/usr/bin/ruby
 require "rexml/document"
 include REXML
-class XmlDoc < Document
-  attr_reader :property
+class XmlDoc < Hash
 
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
     begin
-      super(open(path))
+      doc=Document.new(open(path))
     rescue
-      @xpath='/*'
       Dir.glob("#{pre}-*.xml").each {|p|
-        super(open(p))
-        list_id rescue true
+        doc=Document.new(open(p))
+        list_id(doc.root) rescue true
       }
       raise ("No such a db")
     end
-    @property=root.elements.first.attributes
-  end
-
-  def select_id(xpath,id)
-    @xpath=xpath
-    elements[@xpath+"/[@id='#{id}']"]
+    doc.root.elements.first.each_element {|e| self[e.name]=e }
+    self['property']=doc.root.elements.first.attributes
   end
 
   # Error Handling
-  def list_id
-    elements.each(@xpath+'/[@id]') {|d|
-      a=d.attributes
+  def list_id(top)
+    top.each_element {|e|
+      a=e.attributes
       warn "#{a['id']}\t:#{a['label']}" if a['label']
       true
     } && raise("No such ID")

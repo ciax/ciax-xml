@@ -9,16 +9,10 @@ class Obj
   attr_reader :stat,:field,:property
   
   def initialize(obj)
-    doc=XmlDoc.new('odb',obj)
-    @odb=Hash.new
-    doc.root.elements.first.each_element { |e| @odb[e.name]=e }
-    if robj=doc.property['ref']
-      ref=XmlDoc.new('odb',robj)
-      @rdb=Hash.new
-      ref.root.elements.first.each_element {|e|
-        @rdb[e.name]=e
-        @odb[e.name]=e unless @odb[e.name]
-      }
+    @odb=XmlDoc.new('odb',obj)
+    if robj=@odb['property']['ref']
+      @rdb=XmlDoc.new('odb',robj)
+      @odb.update(@rdb) {|k,o,r| o||r }
     end
   rescue RuntimeError
     abort $!.to_s
@@ -30,9 +24,9 @@ class Obj
       warn $!
       @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
     end
-    @v=Verbose.new("#{doc.root.name}/#{obj}".upcase)
+    @v=Verbose.new("odb/#{obj}".upcase)
     @field=Hash.new
-    @property=doc.property
+    @property=@odb['property']
     @obj=obj
   end
   
@@ -66,11 +60,11 @@ class Obj
       warn a['label']
       if ref=a['ref']
         @rdb['selection'].each_element_with_attribute('id',ref){|d| return d }
-        list_id(rsel)
+        list_id(@rdb['selection'])
       end
       return e
     }
-    list_id(sel)
+    list_id(@odb['selection'])
   end
 
   #Cmd Method

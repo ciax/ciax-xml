@@ -99,7 +99,7 @@ class Obj
         list_id(@rdb['status'])
       a=var.attributes
     end
-    val=get_val(var)
+    val=get_val(var,@field)
     @stat[id]['val']=val
     @v.msg("STAT:GetStatus:#{id}=[#{val}]")
     if sid=a['symbol']
@@ -109,26 +109,26 @@ class Obj
     end
   end
 
-  def get_val(e)
+  def get_val(e,field)
     val=String.new
-    e.each_element {|f| #element(split and concat)
-      a=f.attributes
+    e.each_element {|dtype| #element(split and concat)
+      a=dtype.attributes
       ref=a['ref'] || return
-      data=@field[ref].clone || return
-      @v.msg("STAT:Convert:#{f.name.capitalize} Field (#{ref}) [#{data}]")
-      case f.name
+      data=field[ref].clone || return
+      @v.msg("STAT:Convert:#{dtype.name.capitalize} Field (#{ref}) [#{data}]")
+      case dtype.name
       when 'binary'
         val << (data.to_i >> a['bit'].to_i & 1).to_s
       when 'float'
         if n=a['decimal']
           data.insert(-1-n.to_i,'.')
         end
-        val << format(f,data)
+        val << format(dtype,data)
       when 'int'
         if a['signed']
           data=[data.to_i].pack('S').unpack('s').first
         end
-        val << format(f,data)
+        val << format(dtype,data)
       else
         val << data
       end

@@ -10,10 +10,9 @@ class Response
   include ModXml
   attr_accessor :field
 
-  def initialize(doc,id)
-    @doc=doc
-    dev=@doc.property['id']
-    @v=Verbose.new("#{@doc.root.name}/#{dev}/rsp".upcase)
+  def initialize(ddb,dev,id)
+    @ddb=ddb
+    @v=Verbose.new("ddb/#{dev}/rsp".upcase)
     @cc=nil
     @f=IoFile.new(id)
     begin
@@ -27,7 +26,7 @@ class Response
   def rspframe(sel,frame)
     @v.err("No Selection") unless @sel=sel
     @v.err("No String") unless @frame=frame
-    setframe(@doc.elements['//rspframe'])
+    setframe(@ddb['rspframe'])
     if @field['cc']
       if @field['cc'] == @cc
         @v.msg("Verify:CC OK")
@@ -78,7 +77,8 @@ class Response
           when 'error'
             @v.err(msg)
           end
-          @sel=@doc.select_id('//selection',opt) if opt=a['option']
+          @sel=@ddb['selection'].each_elements_with_attribute('id',opt) { |e|
+            @sel=e } if opt=a['option']
           break true
         } || @v.wrn(label+":Unknown code [#{str}]")
       end
@@ -111,21 +111,20 @@ end
 class Command < Hash
   include ModXml
 
-  def initialize(doc)
-    @doc=doc
-    @v=Verbose.new("#{@doc.root.name}/#{@doc.property['id']}/cmd".upcase)
+  def initialize(ddb,dev)
+    @ddb=ddb
+    @v=Verbose.new("ddb/#{dev}/cmd".upcase)
   end
 
   def cmdframe(sel)
     @v.err("No Selection") unless @sel=sel
-    cfn=@doc.elements['//cmdframe']
-    if ccn=cfn.elements['.//ccrange']
+    if ccn=@ddb['cmdframe'].elements['.//ccrange']
       @v.msg("Entering Ceck Code Range")
       self['ccrange']=getframe(ccn)
       self['cc_cmd']=checkcode(ccn,self['ccrange'])
       @v.msg("Exitting Ceck Code Range")
     end
-    getframe(cfn)
+    getframe(@ddb['cmdframe'])
   end
 
   def getframe(e)
@@ -155,19 +154,23 @@ class Dev
   def initialize(dev,obj=nil)
     id=obj||dev
     begin
-      @doc=XmlDoc.new('ddb',dev)
+      @ddb=XmlDoc.new('ddb',dev)
     rescue RuntimeError
       abort $!.to_s
     else
-      @v=Verbose.new("#{@doc.root.name}/#{id}".upcase)
-      @rsp=Response.new(@doc,id)
-      @cmd=Command.new(@doc)
+      @v=Verbose.new("ddb/#{id}".upcase)
+      @rsp=Response.new(@ddb,dev,id)
+      @cmd=Command.new(@ddb,dev)
    end
   end
 
   def setcmd(cmd)
-    @session=@doc.select_id('//selection',cmd) || @doc.list_id
-    @v.msg('Select:'+@session.attributes['label'])
+    @ddb['selection'].each_element_with_attribute('id',cmd){|e|
+      @session=e
+      @v.msg('Select:'+@session.attributes['label'])
+      return
+    }
+    @ddb.list_id('selection')
   end
 
   def setpar(par)

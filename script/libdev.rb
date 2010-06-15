@@ -179,10 +179,10 @@ class Dev
   def getfield(frame)
     @rsp.rspframe(@session.elements['recv'],frame)
   end
+
 end
 
 class DevCom < Dev
-  attr_reader :field
   def initialize(dev,iocmd,obj=nil)
     super(dev,obj)
     @ic=IoCmd.new(iocmd,obj||dev)
@@ -216,6 +216,10 @@ class DevCom < Dev
         rcv.succ!
       end
     }
+    @rsp.field
+  end
+
+  def field
     @rsp.field
   end
 

@@ -174,8 +174,8 @@ class Dev
     @cmd['par']=par
   end
 
-  def getcmd
-    @cmd.cmdframe(@session.elements['send'])
+  def getcmd(index=0)
+    @cmd.cmdframe(@session.elements[index.to_i+1,'send'])
   end
 
   def getfield(frame)

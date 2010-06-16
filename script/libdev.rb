@@ -6,7 +6,7 @@ require "libnumrange"
 require "libmodxml"
 
 # Rsp Methods
-class Response < Hash
+class RspFrame < Hash
   include ModXml
   attr_accessor :field
 
@@ -107,7 +107,7 @@ class Response < Hash
 end
 
 # Cmd Methods
-class Command < Hash
+class CmdFrame < Hash
   include ModXml
 
   def initialize(ddb,dev)
@@ -160,8 +160,8 @@ class Dev
       abort $!.to_s
     else
       @v=Verbose.new("ddb/#{id}".upcase)
-      @field=Response.new(@ddb,dev,id)
-      @cmd=Command.new(@ddb,dev)
+      @field=RspFrame.new(@ddb,dev,id)
+      @cmd=CmdFrame.new(@ddb,dev)
    end
   end
 

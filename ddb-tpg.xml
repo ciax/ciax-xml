@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
+  <device id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf">
+    <selection>
+      <session id="getstat" label="Get all status" type="stat">
+        <send>
+          <data label="Measurment data gauges 1&amp;2">PRX</data>
+          <data label="Suffix" pack="chr">13</data>
+        </send>
+        <recv>
+          <verify length="1" unpack="chr">6</verify>
+        </recv>
+        <send>
+          <data label="ENQ" pack="chr">5</data>
+        </send>
+        <recv>
+          <rspcode delimiter=",">
+            <case msg="Measurment data okay" type="pass">0</case>
+            <case msg="Underrange" type="warn">1</case>
+            <case msg="Overrange" type="warn">2</case>
+            <case msg="Sensor error" type="warn">3</case>
+            <case msg="Sensor off" type="warn">4</case>
+            <case msg="No sensor" type="warn">5</case>
+            <case msg="Identification error" type="warn">6</case>
+          </rspcode>
+          <assign delimiter=",">ch1</assign>
+          <rspcode delimiter=",">
+            <case msg="Measurment data okay" type="pass">0</case>
+            <case msg="Underrange" type="warn">1</case>
+            <case msg="Overrange" type="warn">2</case>
+            <case msg="Sensor error" type="warn">3</case>
+            <case msg="Sensor off" type="warn">4</case>
+            <case msg="No sensor" type="warn">5</case>
+            <case msg="Identification error" type="warn">6</case>
+          </rspcode>
+          <assign delimiter=",">ch2</assign>
+        </recv>
+      </session>
+    </selection>
+    <cmdframe>
+      <selected />
+    </cmdframe>
+    <rspframe wait="0">
+      <selected />
+      <verify label="Suffix" length="2" unpack="bew" format="%04X">0D0A</verify>
+    </rspframe>
+  </device>
+</ddb>

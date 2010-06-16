@@ -10,16 +10,16 @@ class RspFrame < Hash
   include ModXml
   attr_accessor :field
 
-  def initialize(ddb,dev,id)
+  def initialize(ddb,id)
     @ddb=ddb
-    @v=Verbose.new("ddb/#{dev}/rsp".upcase)
+    @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @cc=nil
     @f=IoFile.new(id)
     begin
       update(@f.load_stat)
     rescue
       warn $!
-      self['device']=dev
+      self['device']=@ddb['id']
     end
   end
 
@@ -110,9 +110,9 @@ end
 class CmdFrame < Hash
   include ModXml
 
-  def initialize(ddb,dev)
+  def initialize(ddb)
     @ddb=ddb
-    @v=Verbose.new("ddb/#{dev}/cmd".upcase)
+    @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
   end
 
   def cmdframe(sel)
@@ -160,8 +160,8 @@ class Dev
       abort $!.to_s
     else
       @v=Verbose.new("ddb/#{id}".upcase)
-      @field=RspFrame.new(@ddb,dev,id)
-      @cmd=CmdFrame.new(@ddb,dev)
+      @field=RspFrame.new(@ddb,id)
+      @cmd=CmdFrame.new(@ddb)
    end
   end
 

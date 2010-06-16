@@ -7,9 +7,9 @@ warn "Usage: objserver [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
 @odb=Obj.new(obj)
-dev=@odb.property['device']
-client=@odb.property['client']
-server=@odb.property['server']
+dev=@odb.odb['device']
+client=@odb.odb['client']
+server=@odb.odb['server']
 srv=IoCmd.new(server,"server_#{obj}",5)
 @ddb=DevCom.new(dev,client,obj)
 warn server

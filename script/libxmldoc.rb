@@ -7,7 +7,7 @@ class XmlDoc < Hash
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
     begin
-      doc=Document.new(open(path))
+      doc=Document.new(open(path)).root.elements.first
     rescue
       Dir.glob("#{pre}-*.xml").each {|p|
         self[:root]=Document.new(open(p)).root
@@ -15,8 +15,8 @@ class XmlDoc < Hash
       }
       raise ("No such a db")
     end
-    doc.root.elements.first.each_element {|e| self[e.name]=e }
-    self['property']=doc.root.elements.first.attributes
+    doc.each_element {|e| self[e.name]=e }
+    doc.attributes.each{|k,v| self[k]=v }
   end
 
   def select_id(id)

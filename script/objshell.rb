@@ -8,8 +8,8 @@ warn "Usage: objshell [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
 odb=Obj.new(obj)
-dev=odb.property['device']
-iocmd=odb.property['client']
+dev=odb.odb['device']
+iocmd=odb.odb['client']
 ddb=DevCom.new(dev,iocmd,obj)
 
 loop {

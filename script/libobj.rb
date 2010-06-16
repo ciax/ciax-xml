@@ -6,11 +6,11 @@ require "libmodxml"
 
 class Obj
   include ModXml
-  attr_reader :stat,:field,:property
+  attr_reader :stat,:field,:odb
   
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
-    if robj=@odb['property']['ref']
+    if robj=@odb['ref']
       @rdb=XmlDoc.new('odb',robj)
       @odb.update(@rdb) {|k,o,r| o||r }
     end
@@ -26,7 +26,6 @@ class Obj
     end
     @v=Verbose.new("odb/#{obj}".upcase)
     @field=Hash.new
-    @property=@odb['property']
     @obj=obj
   end
   

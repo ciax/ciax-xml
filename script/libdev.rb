@@ -117,7 +117,7 @@ class CmdFrame < Hash
 
   def cmdframe(sel)
     @v.err("No Selection") unless @sel=sel
-    if ccn=@ddb['cmdframe'].elements['.//ccrange']
+    if ccn=@ddb['cmdframe'].elements['ccrange']
       @v.msg("Entering Ceck Code Range")
       self['ccrange']=getframe(ccn)
       self['cc_cmd']=checkcode(ccn,self['ccrange'])

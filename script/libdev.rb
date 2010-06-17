@@ -177,12 +177,16 @@ class Dev
     @cmd['par']=par
   end
 
-  def getcmd(index=0)
-    @cmd.cmdframe(@session.elements[index.to_i+1,'send'])
+  def getcmd(index=nil)
+    i=index.to_i
+    i=1 if i == 0
+    @cmd.cmdframe(@session.elements[i,'send'])
   end
 
-  def getfield(frame,index=0)
-    @field.rspframe(@session.elements[index.to_i+1,'recv'],frame)
+  def getfield(frame,index=nil)
+    i=index.to_i
+    i=@session.elements.size/2 if i == 0
+    @field.rspframe(@session.elements[i,'recv'],frame)
   end
 
 end

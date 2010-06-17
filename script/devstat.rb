@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libdev"
 
-warn "Usage: devstat [dev] [cmd] (index)< file" if ARGV.size < 1
+warn "Usage: devstat [dev] [cmd]< file" if ARGV.size < 1
 
 begin
   c=Dev.new(ARGV.shift)
@@ -9,5 +9,4 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
-index=ARGV.shift
-print Marshal.dump c.getfield(gets(nil),index)
+print Marshal.dump c.getfield(gets(nil))

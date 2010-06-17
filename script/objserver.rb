@@ -23,7 +23,7 @@ Thread.new {
         begin
           @ddb.setpar(p)
           @ddb.setcmd(c)
-          @ddb.devcom
+          @stat=@ddb.devcom
         rescue
         end
       }
@@ -37,7 +37,12 @@ Thread.new {
 
 loop{
   if line=srv.rcv
-    @q.push(line)
+    line.chomp!
+    if line == ''
+      srv.snd(@stat.to_s+"\n")
+    else
+      @q.push(line)
+    end
     srv.snd("#{obj}>")
   else
     @q.push('upd')

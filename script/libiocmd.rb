@@ -3,12 +3,12 @@ require "libverbose"
 require "libiofile"
 
 class IoCmd
-  def initialize(iocmd,id=nil,wait=0)
+  def initialize(iocmd,id=nil,wait=0,timeout=1)
     abort "No IO command" unless iocmd
     @iof=IoFile.new(id) if id
     @v=Verbose.new('IOCMD:'+iocmd)
     @f=IO.popen(iocmd,'r+')
-    @timeout=1
+    @timeout=timeout
     @wait=wait.to_f
     at_exit {
       Process.kill(:TERM,@f.pid)

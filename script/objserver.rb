@@ -2,41 +2,44 @@
 require "libobj"
 require "libdev"
 require "libiocmd"
+require "thread"
 
 warn "Usage: objserver [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
 @odb=Obj.new(obj)
-dev=@odb.odb['device']
-client=@odb.odb['client']
 server=@odb.odb['server']
-srv=IoCmd.new(server,"server_#{obj}",5)
-@ddb=DevCom.new(dev,client,obj)
+srv=IoCmd.new(server,"server_#{obj}",0,10)
 warn server
+@q=Queue.new
 
-def session(line)
-  begin
-    @odb.objcom(line) {|c,p|
-      begin
-        @ddb.setpar(p)
-        @ddb.setcmd(c)
-        @ddb.devcom
-      rescue
-      end
-    }
-  rescue
-    $!.to_s+"\n"
-  else
-    "Accept\n"
-  end
-end
-
+Thread.new {
+  dev=@odb.odb['device']
+  client=@odb.odb['client']
+  @ddb=DevCom.new(dev,client,obj)
+  loop {
+    begin
+      @odb.objcom(@q.pop) {|c,p|
+        begin
+          @ddb.setpar(p)
+          @ddb.setcmd(c)
+          @ddb.devcom
+        rescue
+        end
+      }
+    rescue
+      $!.to_s+"\n"
+    else
+      "Accept\n"
+    end
+  }
+}
 
 loop{
   if line=srv.rcv
-    srv.snd(session(line)+"#{obj}>")
+    @q.push(line)
+    srv.snd("#{obj}>")
   else
-    session('upd')
+    @q.push('upd')
   end
 }
-

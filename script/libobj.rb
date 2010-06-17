@@ -4,9 +4,9 @@ require "libverbose"
 require "libnumrange"
 require "libmodxml"
 
-class Obj
+class Obj < Hash
   include ModXml
-  attr_reader :stat,:field,:odb
+  attr_reader :stat,:field
   
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
@@ -26,6 +26,7 @@ class Obj
     end
     @v=Verbose.new("odb/#{obj}".upcase)
     @field=Hash.new
+    update(@odb)
     @obj=obj
   end
   

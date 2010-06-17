@@ -8,10 +8,14 @@ warn "Usage: objserver [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
 @odb=Obj.new(obj)
-server=@odb.odb['server']
+
+
+
+server=@odb['server']
 srv=IoCmd.new(server,"server_#{obj}",0,nil)
-dev=@odb.odb['device']
-client=@odb.odb['client']
+
+dev=@odb['device']
+client=@odb['client']
 @ddb=DevCom.new(dev,client,obj)
 warn server
 @q=Queue.new

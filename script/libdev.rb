@@ -97,9 +97,12 @@ class RspFrame < Hash
     if l=a['length']
       len=l.to_i
       @v.err("Too short (#{@frame.size-len})") if @frame.size < len
+      @v.msg("CutFrame:size=[#{len}]")
       @frame.slice!(0,len)
     elsif d=a['delimiter']
-      @frame.slice!(/$.+#{d}/)
+      str=@frame.slice!(/.+?#{d}/).chop
+      @v.msg("CutFrame:[#{str}] by [#{d}]")
+      str
     else
       @v.err("No frame length or delimiter")
     end
@@ -178,8 +181,8 @@ class Dev
     @cmd.cmdframe(@session.elements[index.to_i+1,'send'])
   end
 
-  def getfield(frame)
-    @field.rspframe(@session.elements['recv'],frame)
+  def getfield(frame,index=0)
+    @field.rspframe(@session.elements[index.to_i+1,'recv'],frame)
   end
 
 end

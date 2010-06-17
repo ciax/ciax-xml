@@ -9,6 +9,7 @@
         </send>
         <recv>
           <verify length="1" unpack="chr">6</verify>
+          <verify label="Suffix" length="1" unpack="chr">13</verify>
         </recv>
         <send>
           <data label="ENQ" pack="chr">5</data>
@@ -33,7 +34,7 @@
             <case msg="No sensor" type="warn">5</case>
             <case msg="Identification error" type="warn">6</case>
           </rspcode>
-          <assign delimiter=",">ch2</assign>
+          <assign delimiter="\r">ch2</assign>
         </recv>
       </session>
     </selection>
@@ -42,7 +43,7 @@
     </cmdframe>
     <rspframe wait="0">
       <selected />
-      <verify label="Suffix" length="2" unpack="bew" format="%04X">0D0A</verify>
+      <verify label="Suffix" length="1" unpack="chr">10</verify>
     </rspframe>
   </device>
 </ddb>

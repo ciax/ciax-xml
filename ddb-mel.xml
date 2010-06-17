@@ -111,7 +111,7 @@
         <selected />
       </ccrange>
     </cmdframe>
-    <rspframe wait="0">
+    <rspframe>
       <verify label="SubHeader: Prefix" length="2" unpack="lew" format="%04X">00D4</verify>
       <verify label="SubHeader: Serial Number" length="2">XX</verify>
       <verify label="SubHeader: Fixed Number" length="2" unpack="lew" format="%04X">0000</verify>

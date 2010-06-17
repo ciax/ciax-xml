@@ -23,6 +23,7 @@
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" />
       <xsd:attribute name="reference" type="xsd:anyURI" />
+      <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="serial">
@@ -163,7 +164,6 @@
         <xsd:element ref="cx:ccrange" />
         <xsd:element ref="cx:cc_cmd" />
       </xsd:choice>
-      <xsd:attribute name="wait" type="xsd:int"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="cmd_attr">
@@ -216,7 +216,6 @@
         <xsd:element ref="cx:selected" />
         <xsd:element ref="cx:ccrange" />
       </xsd:choice>
-      <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:group name="rsp_elem">

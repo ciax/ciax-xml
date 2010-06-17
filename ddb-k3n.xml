@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
-  <device id="k3n" label="OMRON K3NR">
+  <device id="k3n" label="OMRON K3NR" wait="1">
     <serial speed="9600" databit="7" parity="EVEN" stopbit="2" flowctl="NONE" />
     <selection>
       <session id="getstat" type="stat" label="Get Status">
@@ -39,7 +39,7 @@
       </ccrange>
       <cc_cmd pack="chr" />
     </cmdframe>
-    <rspframe wait="1">
+    <rspframe>
       <verify label="Prefix" length="1" unpack="chr">2</verify>
       <ccrange method="bcc">
         <verify label="Node" length="4">0000</verify>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
-  <device id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf">
+  <device id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
     <selection>
       <session id="getstat" label="Get all status" type="stat">
         <send>
@@ -41,7 +41,7 @@
     <cmdframe>
       <selected />
     </cmdframe>
-    <rspframe wait="0">
+    <rspframe>
       <selected />
       <verify label="Suffix" length="1" unpack="chr">10</verify>
     </rspframe>

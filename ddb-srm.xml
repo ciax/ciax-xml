@@ -52,7 +52,7 @@
       <data label="Suffix">*</data>
       <data label="Delimiter" pack="chr">0xd</data>
     </cmdframe>
-    <rspframe wait="0">
+    <rspframe>
       <ccrange method="bcc">
         <verify label="Prefix" length="1">@</verify>
         <selected />

@@ -3,7 +3,7 @@ require "libverbose"
 require "libiofile"
 
 class IoCmd
-  def initialize(iocmd,id=nil,wait=0,timeout=1)
+  def initialize(iocmd,id=nil,wait=0,timeout=nil)
     abort "No IO command" unless iocmd
     @iof=IoFile.new(id) if id
     @v=Verbose.new('IOCMD:'+iocmd)
@@ -15,6 +15,7 @@ class IoCmd
       @f.close
     }
     Signal.trap(:CHLD,"EXIT")
+    @v.wrn("Initialize")
   end
 
   def time

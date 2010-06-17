@@ -194,7 +194,7 @@ end
 class DevCom < Dev
   def initialize(dev,iocmd,obj=nil)
     super(dev,obj)
-    @ic=IoCmd.new(iocmd,obj||dev,@ddb['wait'])
+    @ic=IoCmd.new(iocmd,obj||dev,@ddb['wait'],1)
     @cmdcache=Hash.new
   end
 

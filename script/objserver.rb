@@ -5,11 +5,8 @@ require "libiocmd"
 warn "Usage: objserver [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
-
 odb=ObjSrv.new(obj)
-server=odb['server']
-srv=IoCmd.new(server,"server_#{obj}",0,nil)
-warn server
+srv=IoCmd.new(odb['server'],"server_#{obj}")
 odb.auto_update
 
 while line=srv.rcv

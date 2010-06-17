@@ -9,11 +9,11 @@ class XmlDoc < Hash
     begin
       doc=Document.new(open(path)).root.elements.first
     rescue
+      list=Array.new
       Dir.glob("#{pre}-*.xml").each {|p|
-        self[:root]=Document.new(open(p)).root
-        list_id(:root) rescue true
+        list << Document.new(open(p)).root.elements.first
       }
-      raise ("No such a db")
+      mklist(list)
     end
     doc.each_element {|e| self[e.name]=e }
     doc.attributes.each{|k,v| self[k]=v }
@@ -26,11 +26,19 @@ class XmlDoc < Hash
 
   # Error Handling
   def list_id(name)
-    self[name].each_element {|e|
+    list=Array.new
+    self[name].each_element { |e| list << e }
+    mklist(list)
+  end
+
+  private
+  def mklist(ary)
+    list=Array.new
+    ary.each { |e|
       a=e.attributes
-      warn "#{a['id']}\t:#{a['label']}" if a['label']
-      true
-    } && raise("No such ID")
+      list << "#{a['id']}\t:#{a['label']}" if a['label']
+    }
+    raise(list.push("No such ID").join("\n")) if list.size > 0
   end
 
 end

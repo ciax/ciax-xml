@@ -38,7 +38,6 @@ class Obj < Hash
     session.each_element {|command|
       cmdary=get_cmd(command)
       @v.msg("Exec(DDB):#{cmdary.inspect}")
-      warn "CommandExec#{cmdary.inspect}"
       get_stat(yield(cmdary))
     }
   end

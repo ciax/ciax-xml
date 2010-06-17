@@ -1,16 +1,12 @@
 #!/usr/bin/ruby
-require "libobj"
-require "libdev"
+require "libobjsrv"
 require "libmodview"
 include ModView
 
 warn "Usage: objshell [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
-odb=Obj.new(obj)
-dev=odb['device']
-iocmd=odb['client']
-ddb=DevCom.new(dev,iocmd,obj)
+odb=ObjSrv.new(obj)
 
 loop {
   print "#{obj}>"
@@ -19,19 +15,7 @@ loop {
   when /^q/
     break
   when /[\w]+/
-    begin
-      odb.objcom(line) {|c,p|
-        begin
-          ddb.setpar(p)
-          ddb.setcmd(c)
-          ddb.devcom
-        rescue
-          warn $!
-        end
-      }
-    rescue
-      warn $!
-    end
+    puts odb.session(line)
   else
     view(odb.stat)
   end

@@ -38,6 +38,7 @@ class RspFrame < Hash
     @f.save_stat(Hash.new.update(self))
   end
 
+  private
   def setframe(e)
     frame=String.new
     e.each_element { |c|
@@ -129,6 +130,7 @@ class CmdFrame < Hash
     getframe(@ddb['cmdframe'])
   end
 
+  private
   def getframe(e)
     frame=String.new
     e.each_element { |c|
@@ -169,24 +171,29 @@ class Dev
   end
 
   def setcmd(cmd)
-    @session=@ddb.select_id(cmd)
-    @v.msg('Select:'+@session.attributes['label'])
+    session=@ddb.select_id(cmd)
+    @v.msg('Select:'+session.attributes['label'])
+    @send=session.elements['send']
+    @recv=session.elements['recv']
   end
 
   def setpar(par)
     @cmd['par']=par
   end
 
-  def getcmd(index=nil)
-    i=index.to_i
-    i=1 if i == 0
-    @cmd.cmdframe(@session.elements[i,'send'])
+  def getcmd
+    cid=[@ddb[:cid],@cmd['par']]
+    if cmd=@cmd[cid]
+      @v.msg("Cmd cache found")
+      cmd
+    else
+      @cmd[cid]=@cmd.cmdframe(@send)
+    end
   end
 
-  def getfield(frame,index=nil)
-    i=index.to_i
-    i=@session.elements.size/2 if i == 0
-    @field.rspframe(@session.elements[i,'recv'],frame)
+  def getfield(frame,time=Time.now)
+    @field['time']="%.3f" % time.to_f
+    @field.rspframe(@recv,frame)
   end
 
 end
@@ -195,36 +202,17 @@ class DevCom < Dev
   def initialize(dev,iocmd,obj=nil)
     super(dev,obj)
     @ic=IoCmd.new(iocmd,obj||dev,@ddb['wait'],1)
-    @cmdcache=Hash.new
-  end
-
-  def cmdcache(io,skey)
-    if cmd=@cmdcache[skey]
-      @v.msg("Cmd cache found")
-      cmd
-    else
-      @cmdcache[skey]=@cmd.cmdframe(io)
-    end
   end
 
   def devcom
-    snd='snd0'
-    rcv='rcv0'
-    cid=@session.attributes['id']
-    @session.each_element {|io|
-      case io.name
-      when 'send'
-        sid=[snd,cid,@cmd['par']]
-        sndstr=cmdcache(io,sid.join(':'))
-        @ic.snd(sndstr,sid)
-        snd.succ!
-      when 'recv'
-        rcvstr=@ic.rcv([rcv,cid])
-        @field['time']="%.3f" % @ic.time.to_f
-        @field.rspframe(io,rcvstr)
-        rcv.succ!
-      end
-    }
+    if @send
+      sndstr=getcmd
+      @ic.snd(sndstr,['snd',@ddb[:cid],@cmd['par']])
+    end
+    if @recv
+      rcvstr=@ic.rcv(['rcv',@ddb[:cid]])
+      getfield(rcvstr,@ic.time)
+    end
     @field
   end
 

@@ -20,6 +20,7 @@ class XmlDoc < Hash
   end
 
   def select_id(id)
+    self[:cid]=id
     self['selection'].each_element_with_attribute('id',id){|e| return e }
     list_id('selection')
   end

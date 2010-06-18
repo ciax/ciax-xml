@@ -171,17 +171,13 @@ class Dev
    end
   end
 
-  def setcmd(cmd)
+  def setcmd(cmd,par=nil)
     session=@ddb.select_id(cmd)
     @v.msg('Select:'+session.attributes['label'])
     @send=session.elements['send']
     @recv=session.elements['recv']
-    @cid=[cmd]
-  end
-
-  def setpar(par)
     @cmd['par']=par
-    @cid[1]=par
+    @cid=[cmd,par]
   end
 
   def getcmd
@@ -209,8 +205,8 @@ class DevCom < Dev
   end
 
   def devcom
-    @ic.snd(getcmd,['snd',@ddb[:cid],@cmd['par']])
-    getfield(@ic.time){ @ic.rcv(['rcv',@ddb[:cid]]) }
+    @ic.snd(getcmd,['snd']+@cid)
+    getfield(@ic.time){ @ic.rcv(['rcv']+@cid) }
     @field
   end
 

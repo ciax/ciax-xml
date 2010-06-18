@@ -15,8 +15,7 @@ loop{
     break
   when /[\w]+/
     begin
-      ddb.setcmd(cmd)
-      ddb.setpar(par)
+      ddb.setcmd(cmd,par)
       ddb.devcom
     rescue
       puts $!

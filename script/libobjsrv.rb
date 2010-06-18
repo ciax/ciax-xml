@@ -10,10 +10,9 @@ class ObjSrv < Obj
     @q=Queue.new
     Thread.new {
       loop {
-        c,p=@q.pop
+        c,p=@q.shift
         begin
-          @ddb.setpar(p)
-          @ddb.setcmd(c)
+          @ddb.setcmd(c,p)
           @ddb.devcom
         rescue
           warn $!

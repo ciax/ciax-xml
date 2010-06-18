@@ -167,6 +167,7 @@ class Dev
       @v=Verbose.new("ddb/#{id}".upcase)
       @field=RspFrame.new(@ddb,id)
       @cmd=CmdFrame.new(@ddb)
+      @cid=Array.new
    end
   end
 
@@ -175,25 +176,28 @@ class Dev
     @v.msg('Select:'+session.attributes['label'])
     @send=session.elements['send']
     @recv=session.elements['recv']
+    @cid=[cmd]
   end
 
   def setpar(par)
     @cmd['par']=par
+    @cid[1]=par
   end
 
   def getcmd
-    cid=[@ddb[:cid],@cmd['par']]
-    if cmd=@cmd[cid]
+    return unless @send
+    if cmd=@cmd[@cid]
       @v.msg("Cmd cache found")
       cmd
     else
-      @cmd[cid]=@cmd.cmdframe(@send)
+      @cmd[@cid]=@cmd.cmdframe(@send)
     end
   end
 
-  def getfield(frame,time=Time.now)
+  def getfield(time=Time.now)
+    return unless @recv
     @field['time']="%.3f" % time.to_f
-    @field.rspframe(@recv,frame)
+    @field.rspframe(@recv,yield)
   end
 
 end
@@ -205,14 +209,8 @@ class DevCom < Dev
   end
 
   def devcom
-    if @send
-      sndstr=getcmd
-      @ic.snd(sndstr,['snd',@ddb[:cid],@cmd['par']])
-    end
-    if @recv
-      rcvstr=@ic.rcv(['rcv',@ddb[:cid]])
-      getfield(rcvstr,@ic.time)
-    end
+    @ic.snd(getcmd,['snd',@ddb[:cid],@cmd['par']])
+    getfield(@ic.time){ @ic.rcv(['rcv',@ddb[:cid]]) }
     @field
   end
 

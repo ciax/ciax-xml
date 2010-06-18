@@ -23,6 +23,7 @@ class IoCmd
   end
 
   def snd(str,id=nil)
+    return unless str
     @iof.log_frame(str,id) if @iof
     @f.syswrite(str)
     @v.msg "Send #{str.dump}"

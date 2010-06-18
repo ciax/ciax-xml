@@ -2,7 +2,7 @@
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
   <device id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
     <selection>
-      <session id="getstat" label="Get all status" type="stat">
+      <session id="reqstat" label="Request status" type="stat">
         <send>
           <data label="Measurment data gauges 1&amp;2">PRX</data>
           <data label="Suffix" pack="chr">13</data>
@@ -11,6 +11,8 @@
           <verify length="1" unpack="chr">6</verify>
           <verify label="Suffix" length="1" unpack="chr">13</verify>
         </recv>
+      </session>
+      <session id="getstat" label="Get status" type="stat">
         <send>
           <data label="ENQ" pack="chr">5</data>
         </send>

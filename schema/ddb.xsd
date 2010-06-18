@@ -112,12 +112,21 @@
   <xsd:element name="selected">
     <xsd:complexType></xsd:complexType>
   </xsd:element>
+  <xsd:simpleType name="pack">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="chr" />
+      <xsd:enumeration value="hexstr" />
+      <xsd:enumeration value="bew" />
+      <xsd:enumeration value="lew"></xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!--Session frame-->
   <xsd:element name="session">
     <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:send" />
-        <xsd:element ref="cx:recv" />
-      </xsd:choice>
+      <xsd:sequence>
+        <xsd:element minOccurs="1" maxOccurs="1" ref="cx:send" />
+        <xsd:element minOccurs="0" maxOccurs="1" ref="cx:recv" />
+      </xsd:sequence>
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" />
       <xsd:attribute name="type">
@@ -147,14 +156,6 @@
       <xsd:attribute name="label" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:simpleType name="pack">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="chr" />
-      <xsd:enumeration value="hexstr" />
-      <xsd:enumeration value="bew" />
-      <xsd:enumeration value="lew"></xsd:enumeration>
-    </xsd:restriction>
-  </xsd:simpleType>
   <!--Command frame-->
   <xsd:element name="cmdframe">
     <xsd:complexType>

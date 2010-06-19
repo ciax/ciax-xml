@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="mt3" label="MOIRCS Pressure Pump" device="tpg" client="nc celaeno 4011" server="socat - udp-l:45711,reuseaddr,fork">
+    <selection>
+      <session id="upd" label="Update Status">
+        <command text="reqstat" />
+        <command text="getstat" />
+      </session>
+    </selection>
+    <status>
+      <var id="st1" label="Turbo Pump Stat" symbol="stat">
+        <string ref="st1" />
+      </var>
+      <var id="ch1" label="Turbo Pump (Torr)">
+        <float format="%4.2e" ref="ch1" />
+      </var>
+      <var id="st2" label="Scroll Pump Stat" symbol="stat">
+        <string ref="st1" />
+      </var>
+      <var id="ch2" label="Scroll Pump (Torr)">
+        <float format="%4.2e" ref="ch1" />
+      </var>
+    </status>
+    <symbols>
+      <symbol id="stat" type="ENUM">
+        <enum msg="Measurment data okay" hl="hide">0</enum>
+        <enum msg="Underrange" hl="warn">1</enum>
+        <enum msg="Overrange" hl="warn">2</enum>
+        <enum msg="Sensor error" hl="warn">3</enum>
+        <enum msg="Sensor off" hl="warn">4</enum>
+        <enum msg="No sensor" hl="warn">5</enum>
+        <enum msg="Identification error" hl="warn">6</enum>
+      </symbol>
+    </symbols>
+  </object>
+</odb>

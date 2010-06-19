@@ -11,7 +11,7 @@ class IoFile
     @type=type
     @time=Time.now
     @v=Verbose.new('FILE')
-    @logfile=@type+Time.now.year.to_s
+    @logfile=@type+'_'+Time.now.year.to_s
   end
 
   def save_stat(stat)
@@ -68,7 +68,6 @@ class IoFile
     @time=Time.now
     name=id.compact.join(':')
     line=["%.3f" % @time.to_f,name,frame.dump].compact.join(' ')
-#    save_frame(frame,id) if id
     open(VarDir+"/#{@logfile}.log",'a') {|f|
       @v.msg "Frame Logging for [#{name}]"
       f << line+"\n"

@@ -1,10 +1,9 @@
 #!/bin/bash
 var="$HOME/.var"
 for dev in ${1:-mel srm k3n bbe tpg}; do
-    input="$var/${dev}_rcv1_getstat.bin"
-#    rm "$var/$dev.mar"
+    input="$var/${dev}_2010.log"
     echo "#[$dev]#"
     devcmd $dev getstat || exit 1
     echo
-    devstat $dev getstat< $input|mar
+    tail -1 $input|ruby -F"\t" -na -e'eval("print #{$F[2]}")' | devstat $dev getstat|mar
 done  | visi

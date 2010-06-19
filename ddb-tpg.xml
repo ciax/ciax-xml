@@ -17,25 +17,9 @@
           <data label="ENQ" pack="chr">5</data>
         </send>
         <recv>
-          <rspcode delimiter=",">
-            <case msg="Measurment data okay" type="pass">0</case>
-            <case msg="Underrange" type="warn">1</case>
-            <case msg="Overrange" type="warn">2</case>
-            <case msg="Sensor error" type="warn">3</case>
-            <case msg="Sensor off" type="warn">4</case>
-            <case msg="No sensor" type="warn">5</case>
-            <case msg="Identification error" type="warn">6</case>
-          </rspcode>
+          <assign delimiter=",">st1</assign>
           <assign delimiter=",">ch1</assign>
-          <rspcode delimiter=",">
-            <case msg="Measurment data okay" type="pass">0</case>
-            <case msg="Underrange" type="warn">1</case>
-            <case msg="Overrange" type="warn">2</case>
-            <case msg="Sensor error" type="warn">3</case>
-            <case msg="Sensor off" type="warn">4</case>
-            <case msg="No sensor" type="warn">5</case>
-            <case msg="Identification error" type="warn">6</case>
-          </rspcode>
+          <assign delimiter=",">st2</assign>
           <assign delimiter="\r">ch2</assign>
         </recv>
       </session>

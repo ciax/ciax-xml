@@ -115,24 +115,24 @@
     </status>
     <symbols>
       <symbol type="ENUM" id="non">
-        <enum hl="normal" msg="ON">1</enum>
-        <enum hl="warn" msg="OFF">0</enum>
+        <case hl="normal" msg="ON">1</case>
+        <case hl="warn" msg="OFF">0</case>
       </symbol>
       <symbol type="ENUM" id="noff">
-        <enum hl="warn" msg="ON">1</enum>
-        <enum hl="normal" msg="OFF">0</enum>
+        <case hl="warn" msg="ON">1</case>
+        <case hl="normal" msg="OFF">0</case>
       </symbol>
       <symbol type="ENUM" id="alarm">
-        <enum hl="alarm" msg="ON">1</enum>
-        <enum hl="hide" msg="OFF">0</enum>
+        <case hl="alarm" msg="ON">1</case>
+        <case hl="hide" msg="OFF">0</case>
       </symbol>
       <symbol type="ENUM" id="run">
-        <enum hl="warn" msg="RUN">1</enum>
-        <enum hl="normal" msg="NO">0</enum>
+        <case hl="warn" msg="RUN">1</case>
+        <case hl="normal" msg="NO">0</case>
       </symbol>
       <symbol type="ENUM" id="jak">
-        <enum hl="warn" msg="JAK">1</enum>
-        <enum hl="normal" msg="NO">0</enum>
+        <case hl="warn" msg="JAK">1</case>
+        <case hl="normal" msg="NO">0</case>
       </symbol>
       <symbol type="INT" id="motor">
         <range hl="alarm" msg="LOW">:10</range>
@@ -147,17 +147,17 @@
         <range hl="alarm" msg="HIGH">28&lt;:</range>
       </symbol>
       <symbol type="ENUM" id="inst">
-        <enum hl="normal" msg="MOIRCS">2</enum>
-        <enum hl="warn" msg="N/A"></enum>
+        <case hl="normal" msg="MOIRCS">2</case>
+        <case hl="warn" msg="N/A"></case>
       </symbol>
       <symbol type="INT" id="int" />
       <symbol type="ENUM" id="jpos">
-        <enum hl="normal" msg="D">0</enum>
-        <enum hl="normal" msg="1(L)">1</enum>
-        <enum hl="normal" msg="2(M)">2</enum>
-        <enum hl="normal" msg="3(H)">3</enum>
-        <enum hl="normal" msg="CHG">4</enum>
-        <enum hl="warn" msg="N/A"></enum>
+        <case hl="normal" msg="D">0</case>
+        <case hl="normal" msg="1(L)">1</case>
+        <case hl="normal" msg="2(M)">2</case>
+        <case hl="normal" msg="3(H)">3</case>
+        <case hl="normal" msg="CHG">4</case>
+        <case hl="warn" msg="N/A"></case>
       </symbol>
     </symbols>
   </object>

@@ -23,13 +23,13 @@
     </status>
     <symbols>
       <symbol id="stat" type="ENUM">
-        <enum msg="Measurment data okay" hl="hide">0</enum>
-        <enum msg="Underrange" hl="warn">1</enum>
-        <enum msg="Overrange" hl="warn">2</enum>
-        <enum msg="Sensor error" hl="warn">3</enum>
-        <enum msg="Sensor off" hl="warn">4</enum>
-        <enum msg="No sensor" hl="warn">5</enum>
-        <enum msg="Identification error" hl="warn">6</enum>
+        <case msg="Measurment data okay" hl="hide">0</case>
+        <case msg="Underrange" hl="warn">1</case>
+        <case msg="Overrange" hl="warn">2</case>
+        <case msg="Sensor error" hl="warn">3</case>
+        <case msg="Sensor off" hl="warn">4</case>
+        <case msg="No sensor" hl="warn">5</case>
+        <case msg="Identification error" hl="warn">6</case>
       </symbol>
     </symbols>
   </object>

@@ -128,7 +128,7 @@
       <xsd:complexContent>
         <xsd:restriction base="xsd:anyType">
           <xsd:choice minOccurs="0">
-            <xsd:element ref="cx:enum" minOccurs="1" maxOccurs="unbounded" />
+            <xsd:element ref="cx:case" minOccurs="1" maxOccurs="unbounded" />
             <xsd:element ref="cx:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
           </xsd:choice>
           <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
@@ -158,7 +158,7 @@
       </xsd:simpleType>
     </xsd:attribute>
   </xsd:attributeGroup>
-  <xsd:element name="enum">
+  <xsd:element name="case">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">

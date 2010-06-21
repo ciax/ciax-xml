@@ -140,7 +140,7 @@ class Obj < Hash
           @v.msg("STAT:Symbol:Within [#{txt}](#{msg})?")
           next
         end
-      when 'enum'
+      when 'case'
         if txt && txt != set['val']
           @v.msg("STAT:Symbol:Matches (#{msg})?")
           next 

@@ -114,12 +114,12 @@
     </status>
     <symbols>
       <symbol id="switch" type="ENUM">
-        <enum hl="warn" msg="OFF">0</enum>
-        <enum msg="ON" hl="normal">1</enum>
+        <case hl="warn" msg="OFF">0</case>
+        <case msg="ON" hl="normal">1</case>
       </symbol>
       <symbol id="alarm" type="ENUM">
-        <enum hl="hide" msg="OK">0</enum>
-        <enum msg="ALARM" hl="alarm">1</enum>
+        <case hl="hide" msg="OK">0</case>
+        <case msg="ALARM" hl="alarm">1</case>
       </symbol>
     </symbols>
   </object>

@@ -91,32 +91,32 @@
     </status>
     <symbols>
       <symbol type="ENUM" id="inst">
-        <enum hl="warn" msg="NONE">0</enum>
-        <enum hl="normal" msg="CIAX3">1</enum>
-        <enum hl="normal" msg="COMICS">2</enum>
-        <enum hl="normal" msg="CIAO">3</enum>
-        <enum hl="normal" msg="FOCAS">4</enum>
-        <enum hl="normal" msg="IRCS">5</enum>
-        <enum hl="normal" msg="N/A">6</enum>
-        <enum hl="normal" msg="MOIRCS">7</enum>
-        <enum hl="normal" msg="MP-CS1">8</enum>
-        <enum hl="normal" msg="MP-CS2">9</enum>
+        <case hl="warn" msg="NONE">0</case>
+        <case hl="normal" msg="CIAX3">1</case>
+        <case hl="normal" msg="COMICS">2</case>
+        <case hl="normal" msg="CIAO">3</case>
+        <case hl="normal" msg="FOCAS">4</case>
+        <case hl="normal" msg="IRCS">5</case>
+        <case hl="normal" msg="N/A">6</case>
+        <case hl="normal" msg="MOIRCS">7</case>
+        <case hl="normal" msg="MP-CS1">8</case>
+        <case hl="normal" msg="MP-CS2">9</case>
       </symbol>
       <symbol type="ENUM" id="non">
-        <enum hl="normal" msg="ON">1</enum>
-        <enum hl="alarm" msg="OFF">0</enum>
+        <case hl="normal" msg="ON">1</case>
+        <case hl="alarm" msg="OFF">0</case>
       </symbol>
       <symbol type="ENUM" id="noff">
-        <enum hl="alarm" msg="ON">1</enum>
-        <enum hl="normal" msg="OFF">0</enum>
+        <case hl="alarm" msg="ON">1</case>
+        <case hl="normal" msg="OFF">0</case>
       </symbol>
       <symbol type="ENUM" id="hide">
-        <enum hl="hide" msg="OFF">0</enum>
-        <enum hl="hide" msg="ON">1</enum>
+        <case hl="hide" msg="OFF">0</case>
+        <case hl="hide" msg="ON">1</case>
       </symbol>
       <symbol type="ENUM" id="alarm">
-        <enum hl="hide" msg="OFF">0</enum>
-        <enum hl="alarm" msg="ON">1</enum>
+        <case hl="hide" msg="OFF">0</case>
+        <case hl="alarm" msg="ON">1</case>
       </symbol>
     </symbols>
   </object>

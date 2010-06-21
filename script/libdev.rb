@@ -8,12 +8,12 @@ require "libmodxml"
 # Rsp Methods
 class RspFrame < Hash
   include ModXml
-  attr_accessor :field
+  attr_accessor :var
 
   def initialize(ddb,id)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
-    @cc=nil
+    @var=Hash.new
     @f=IoFile.new(id)
     begin
       update(@f.load_stat)
@@ -28,10 +28,10 @@ class RspFrame < Hash
     @v.err("No String") unless @frame=frame
     setframe(@ddb['rspframe'])
     if self['cc']
-      if self['cc'] == @cc
+      if self['cc'] == @var[:cc]
         @v.msg("Verify:CC OK")
       else
-        @v.err("Verifu:CC Mismatch[#{self['cc']}]!=[#{@cc}]") 
+        @v.err("Verifu:CC Mismatch[#{self['cc']}]!=[#{@var[:cc]}]") 
       end
       delete('cc')
     end
@@ -46,7 +46,7 @@ class RspFrame < Hash
       case c.name
       when 'ccrange'
         @v.msg("Entering Ceck Code Node")
-        @cc = checkcode(c,setframe(c))
+        @var[:cc] = checkcode(c,setframe(c))
         @v.msg("Exitting Ceck Code Node")
       when 'selected'
         @v.msg("Entering Selected Node")
@@ -88,6 +88,7 @@ class RspFrame < Hash
 
   def assign(e,key)
     code=cut_frame(e)
+    key=convert(key,@var)
     self[key]=decode(e,code)
     @v.msg("Assign:#{e.attributes['label']}[#{key}]<-[#{self[key]}]")
     code
@@ -181,6 +182,7 @@ class Dev
     @send=session.elements['send']
     @recv=session.elements['recv']
     @cmd['par']=par
+    @field.var['par']=par
     @cid=[cmd,par]
   end
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
+  <device id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" wait="0.1">
+    <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+    <selection>
+      <session id="getstat" label="Get status" type="stat">
+        <send>
+          <data>ST</data>
+        </send>
+        <recv>
+          <assign length="3">stat</assign>
+        </recv>
+      </session>
+      <session id="chkrun" label="Check Run" type="stat">
+        <send>
+          <data>X=H</data>
+        </send>
+        <recv>
+          <assign length="1">run</assign>
+        </recv>
+      </session>
+      <session id="getp" label="Get pulse (1-6)" type="stat">
+        <send>
+          <par validate="range">1:6</par>
+          <data>P21R</data>
+        </send>
+        <recv>
+          <assign regexp="[0-9]+">p${par}</assign>
+        </recv>
+      </session>
+    </selection>
+    <cmdframe>
+      <data label="Prefix" pack="chr">2</data>
+      <selected />
+      <data label="Suffix" pack="chr">3</data>
+      <data pack="chr">13</data>
+      <data pack="chr">10</data>
+    </cmdframe>
+    <rspframe>
+      <verify label="Prefix" length="1" unpack="chr">2</verify>
+      <verify label="ACK" length="1" unpack="chr">6</verify>
+      <selected />
+      <verify label="Suffix" length="1" unpack="chr">3</verify>
+    </rspframe>
+  </device>
+</ddb>

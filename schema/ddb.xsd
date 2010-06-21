@@ -231,6 +231,7 @@
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="delimiter" type="xsd:string"></xsd:attribute>
     <xsd:attribute name="length" type="xsd:int" />
+    <xsd:attribute name="regexp" type="xsd:string"></xsd:attribute>
     <xsd:attribute name="unpack" type="cx:pack"></xsd:attribute>
     <xsd:attribute name="format" type="xsd:string" />
   </xsd:attributeGroup>

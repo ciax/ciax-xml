@@ -102,7 +102,11 @@ class RspFrame < Hash
       @frame.slice!(0,len)
     elsif d=a['delimiter']
       str=@frame.slice!(/.+?#{d}/).chop
-      @v.msg("CutFrame:[#{str}] by [#{d}]")
+      @v.msg("CutFrame:[#{str}] by delimiter [#{d}]")
+      str
+    elsif d=a['regexp']
+      str=@frame.slice!(/#{d}/)
+      @v.msg("CutFrame:[#{str}] by regexp [#{d}]")
       str
     else
       @v.err("No frame length or delimiter")

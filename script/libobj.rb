@@ -104,10 +104,10 @@ class Obj < Hash
     val=String.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      ref=a['ref'] || return
-      fld=field[ref] || return
+      fld=a['field'] || return
+      fld=field[fld] || return
       data=fld.clone
-      @v.msg("STAT:Convert:#{dtype.name.capitalize} Field (#{ref}) [#{data}]")
+      @v.msg("STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]")
       case dtype.name
       when 'binary'
         val << (data.to_i >> a['bit'].to_i & 1).to_s

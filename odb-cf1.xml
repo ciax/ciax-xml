@@ -8,7 +8,7 @@
     </selection>
     <status>
       <var id="flow" label="CS-2(S1) Coolant Flow(l/min)" symbol="flow">
-        <float decimal="2" format="%4.2f" ref="stat" />
+        <float decimal="2" format="%4.2f" field="stat" />
       </var>
     </status>
     <symbols>

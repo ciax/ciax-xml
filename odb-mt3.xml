@@ -9,16 +9,16 @@
     </selection>
     <status>
       <var id="st1" label="Turbo Pump Stat" symbol="stat">
-        <string ref="st1" />
+        <string field="st1" />
       </var>
       <var id="ch1" label="Turbo Pump (Torr)">
-        <float format="%4.2e" ref="ch1" />
+        <float format="%4.2e" field="ch1" />
       </var>
       <var id="st2" label="Scroll Pump Stat" symbol="stat">
-        <string ref="st1" />
+        <string field="st1" />
       </var>
       <var id="ch2" label="Scroll Pump (Torr)">
-        <float format="%4.2e" ref="ch1" />
+        <float format="%4.2e" field="ch1" />
       </var>
     </status>
     <symbols>

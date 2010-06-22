@@ -64,52 +64,52 @@
     </selection>
     <status>
       <var id="x0:sw" label="X0 SWITCH" symbol="switch">
-        <binary ref="stat" bit="0" />
+        <binary field="stat" bit="0" />
       </var>
       <var id="x0:dr" label="X0 DRIVE" symbol="switch">
-        <binary ref="stat" bit="1" />
+        <binary field="stat" bit="1" />
       </var>
       <var id="x0:tm" label="X0 TEMP" symbol="alarm">
-        <binary ref="stat" bit="2" />
+        <binary field="stat" bit="2" />
       </var>
       <var id="x0:pr" label="X0 PRESSURE" symbol="alarm">
-        <binary ref="stat" bit="3" />
+        <binary field="stat" bit="3" />
       </var>
       <var id="x1:sw" label="X1 SWITCH" symbol="switch">
-        <binary ref="stat" bit="4" />
+        <binary field="stat" bit="4" />
       </var>
       <var id="x1:dr" label="X1 DRIVE" symbol="switch">
-        <binary ref="stat" bit="5" />
+        <binary field="stat" bit="5" />
       </var>
       <var id="x1:tm" label="X1 TEMP" symbol="alarm">
-        <binary ref="stat" bit="6" />
+        <binary field="stat" bit="6" />
       </var>
       <var id="x1:pr" label="X1 PRESSURE" symbol="alarm">
-        <binary ref="stat" bit="7" />
+        <binary field="stat" bit="7" />
       </var>
       <var id="x2:sw" label="X2 SWITCH" symbol="switch">
-        <binary ref="stat" bit="8" />
+        <binary field="stat" bit="8" />
       </var>
       <var id="x2:dr" label="X2 DRIVE" symbol="switch">
-        <binary ref="stat" bit="9" />
+        <binary field="stat" bit="9" />
       </var>
       <var id="x2:tm" label="X2 TEMP" symbol="alarm">
-        <binary ref="stat" bit="10" />
+        <binary field="stat" bit="10" />
       </var>
       <var id="x2:pr" label="X2 PRESSURE" symbol="alarm">
-        <binary ref="stat" bit="11" />
+        <binary field="stat" bit="11" />
       </var>
       <var id="x3:sw" label="X3 SWITCH" symbol="switch">
-        <binary ref="stat" bit="12" />
+        <binary field="stat" bit="12" />
       </var>
       <var id="x3:dr" label="X3 DRIVE" symbol="switch">
-        <binary ref="stat" bit="13" />
+        <binary field="stat" bit="13" />
       </var>
       <var id="x3:tm" label="X3 TEMP" symbol="alarm">
-        <binary ref="stat" bit="14" />
+        <binary field="stat" bit="14" />
       </var>
       <var id="x3:pr" label="X3 PRESSURE" symbol="alarm">
-        <binary ref="stat" bit="15" />
+        <binary field="stat" bit="15" />
       </var>
     </status>
     <symbols>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="mix" label="MOIRCS Turret" device="ixe" client="nc celaeno 4007" server="socat - udp-l:45707,reuseaddr,fork">
+    <selection>
+      <session id="upd" label="Update Status">
+        <command text="getstat" />
+        <command text="chkr">
+          <par type="text">1</par>
+        </command>
+        <command text="getp">
+          <par type="text">1</par>
+        </command>
+      </session>
+    </selection>
+    <status>
+      <var id="rdy" label="Comm Ready" symbol="ready">
+        <binary field="stat" bit="0" />
+      </var>
+      <var id="srq" label="SRQ" symbol="no">
+        <binary field="stat" bit="1" />
+      </var>
+      <var id="trm" label="Terminal Mode" symbol="no">
+        <binary field="stat" bit="2" />
+      </var>
+      <var id="pme" label="Program Error" symbol="alarm">
+        <binary field="stat" bit="3" />
+      </var>
+      <var id="pse" label="Power Stage Error" symbol="alarm">
+        <binary field="stat" bit="4" />
+      </var>
+      <var id="oes" label="ONE EM Stop" symbol="stop">
+        <binary field="stat" bit="5" />
+      </var>
+      <var id="ees" label="EXT EM Stop" symbol="stop">
+        <binary field="stat" bit="6" />
+      </var>
+      <var id="cmd" label="Computer Mode" symbol="no">
+        <binary field="stat" bit="7" />
+      </var>
+      <var id="r1" label="Running 1">
+        <string field="r1" />
+      </var>
+      <var id="p1" label="Pulse 1">
+        <int field="p1" />
+      </var>
+    </status>
+    <symbols>
+      <symbol id="stat" type="ENUM">
+        <case msg="Measurment data okay" hl="hide">0</case>
+        <case msg="Underrange" hl="warn">1</case>
+        <case msg="Overrange" hl="warn">2</case>
+        <case msg="Sensor error" hl="warn">3</case>
+        <case msg="Sensor off" hl="warn">4</case>
+        <case msg="No sensor" hl="warn">5</case>
+        <case msg="Identification error" hl="warn">6</case>
+      </symbol>
+    </symbols>
+  </object>
+</odb>

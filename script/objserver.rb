@@ -7,7 +7,7 @@ warn "Usage: objserver [obj]" if ARGV.size < 1
 obj=ARGV.shift
 odb=ObjSrv.new(obj)
 srv=IoCmd.new(odb['server'],"server_#{obj}")
-odb.auto_update
+odb.auto_update('upd',10)
 
 while line=srv.rcv
   line.chomp!

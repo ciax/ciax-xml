@@ -15,7 +15,7 @@ loop {
   when /^q/
     break
   when /[\w]+/
-    puts odb.session(line)
+    puts odb.dispatch(line)
   else
     view(odb.stat)
   end

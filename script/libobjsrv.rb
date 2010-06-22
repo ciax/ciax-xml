@@ -7,6 +7,7 @@ class ObjSrv < Obj
   def initialize(obj)
     super
     @ddb=DevCom.new(self['device'],self['client'],obj)
+    @auto=nil
     @q=Queue.new
     Thread.new {
       loop {
@@ -21,6 +22,25 @@ class ObjSrv < Obj
     }
   end
 
+  def dispatch(line)
+    objcom(line) {|c,p|
+      @q.push([c,p])
+      @ddb.field
+    }
+  rescue
+    list=$!.to_s+"\n"
+    cmd,par=line.split(' ')
+    case cmd
+    when 'auto'
+      auto_update(par)
+    else
+      list+"auto\t:Auto command (cmd)"
+    end
+  else
+    "Accept\n"
+  end
+
+
   def session(line)
     begin
       objcom(line) {|c,p|
@@ -34,13 +54,18 @@ class ObjSrv < Obj
     end
   end
 
-  def auto_update
-    Thread.new {
-      loop{
-        session('upd')
-        sleep 10
+  def auto_update(cmd,int=10)
+    case cmd
+    when 'stop'
+      @auto.kill
+    else
+      @auto=Thread.new {
+        loop{
+          session(cmd)
+          sleep int
+        }
       }
-    }
+    end
   end
 
 end

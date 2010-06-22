@@ -39,7 +39,7 @@ class XmlDoc < Hash
       a=e.attributes
       list << "#{a['id']}\t:#{a['label']}" if a['label']
     }
-    raise(list.push("No such ID").join("\n")) if list.size > 0
+    raise(list.join("\n")) if list.size > 0
   end
 
 end

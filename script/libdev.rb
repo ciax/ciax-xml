@@ -8,34 +8,34 @@ require "libmodxml"
 # Rsp Methods
 class RspFrame < Hash
   include ModXml
-  attr_accessor :var
+  attr_reader :field
 
   def initialize(ddb,id)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
-    @var=Hash.new
     @f=IoFile.new(id)
     begin
-      update(@f.load_stat)
+      @field=@f.load_stat
     rescue
       warn $!
-      self['device']=@ddb['id']
+      @field={'device'=>@ddb['id'] }
     end
   end
 
-  def rspframe(sel,frame)
-    @v.err("No Selection") unless @sel=sel
+  def rspframe(sel,frame,time=Time.now)
+    @v.err("No Selection") unless self[:sel]=sel
     @v.err("No String") unless @frame=frame
+    @field['time']="%.3f" % time.to_f
     setframe(@ddb['rspframe'])
     if self['cc']
-      if self['cc'] == @var[:cc]
+      if self['cc'] == self[:cc]
         @v.msg("Verify:CC OK")
       else
-        @v.err("Verifu:CC Mismatch[#{self['cc']}]!=[#{@var[:cc]}]") 
+        @v.err("Verifu:CC Mismatch[#{self['cc']}]!=[#{self[:cc]}]") 
       end
       delete('cc')
     end
-    @f.save_stat(Hash.new.update(self))
+    @f.save_stat(@field)
   end
 
   private
@@ -46,11 +46,11 @@ class RspFrame < Hash
       case c.name
       when 'ccrange'
         @v.msg("Entering Ceck Code Node")
-        @var[:cc] = checkcode(c,setframe(c))
+        self[:cc] = checkcode(c,setframe(c))
         @v.msg("Exitting Ceck Code Node")
       when 'selected'
         @v.msg("Entering Selected Node")
-        frame << setframe(@sel)
+        frame << setframe(self[:sel])
         @v.msg("Exitting Selected Node")
       when 'assign'
         frame << assign(c,c.text)
@@ -78,7 +78,7 @@ class RspFrame < Hash
           when 'error'
             @v.err(msg)
           end
-          @sel=@ddb.select_id(opt) if opt=a['option']
+          self[:sel]=@ddb.select_id(opt) if opt=a['option']
           break true
         } || @v.wrn(label+":Unknown code [#{str}]")
       end
@@ -89,7 +89,7 @@ class RspFrame < Hash
   def assign(e,key)
     code=cut_frame(e)
     key=convert(key,@var)
-    self[key]=decode(e,code)
+    @field[key]=decode(e,code)
     @v.msg("Assign:#{e.attributes['label']}[#{key}]<-[#{self[key]}]")
     code
   end
@@ -125,7 +125,7 @@ class CmdFrame < Hash
   end
 
   def cmdframe(sel)
-    @v.err("No Selection") unless @sel=sel
+    @v.err("No Selection") unless self[:sel]=sel
     if ccn=@ddb['cmdframe'].elements['ccrange']
       @v.msg("Entering Ceck Code Range")
       self['ccrange']=getframe(ccn)
@@ -143,7 +143,7 @@ class CmdFrame < Hash
       case c.name
       when 'selected'
         @v.msg("Entering Selected Node")
-        frame << getframe(@sel)
+        frame << getframe(self[:sel])
         @v.msg("Exitting Selected Node")
       when 'data'
         frame << encode(c,c.text)
@@ -160,7 +160,6 @@ end
 
 # Main
 class Dev
-  attr_reader :field
 
   def initialize(dev,obj=nil)
     id=obj||dev
@@ -170,9 +169,10 @@ class Dev
       abort $!.to_s
     else
       @v=Verbose.new("ddb/#{id}".upcase)
-      @field=RspFrame.new(@ddb,id)
+      @rsp=RspFrame.new(@ddb,id)
       @cmd=CmdFrame.new(@ddb)
       @cid=Array.new
+      @cmdcache=Hash.new
    end
   end
 
@@ -182,24 +182,27 @@ class Dev
     @send=session.elements['send']
     @recv=session.elements['recv']
     @cmd['par']=par
-    @field.var['par']=par
+    @rsp['par']=par
     @cid=[cmd,par]
   end
 
   def getcmd
     return unless @send
-    if cmd=@cmd[@cid]
+    if cmd=@cmdcache[@cid]
       @v.msg("Cmd cache found")
       cmd
     else
-      @cmd[@cid]=@cmd.cmdframe(@send)
+      @cmdcache[@cid]=@cmd.cmdframe(@send)
     end
   end
 
-  def getfield(time=Time.now)
+  def setrsp(time=Time.now)
     return unless @recv
-    @field['time']="%.3f" % time.to_f
-    @field.rspframe(@recv,yield)
+    @rsp.rspframe(@recv,yield,time)
+  end
+
+  def field
+    @rsp.field
   end
 
 end
@@ -212,8 +215,8 @@ class DevCom < Dev
 
   def devcom
     @ic.snd(getcmd,['snd']+@cid)
-    getfield(@ic.time){ @ic.rcv(['rcv']+@cid) }
-    @field
+    setrsp(@ic.time){ @ic.rcv(['rcv']+@cid) }
   end
 
 end
+

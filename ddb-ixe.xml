@@ -11,12 +11,13 @@
           <assign length="3">stat</assign>
         </recv>
       </session>
-      <session id="chkrun" label="Check Run" type="stat">
+      <session id="chkr" label="Check Run (1-6)" type="stat">
         <send>
-          <data>X=H</data>
+          <par validate="range">1:6</par>
+          <data>=H</data>
         </send>
         <recv>
-          <assign length="1">run</assign>
+          <assign length="1">r${par}</assign>
         </recv>
       </session>
       <session id="getp" label="Get pulse (1-6)" type="stat">

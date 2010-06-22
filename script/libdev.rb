@@ -88,9 +88,9 @@ class RspFrame < Hash
 
   def assign(e,key)
     code=cut_frame(e)
-    key=substitute(key,@var)
+    key=substitute(key,self)
     @field[key]=decode(e,code)
-    @v.msg("Assign:#{e.attributes['label']}[#{key}]<-[#{self[key]}]")
+    @v.msg("Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]")
     code
   end
 

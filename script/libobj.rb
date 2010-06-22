@@ -68,12 +68,10 @@ class Obj < Hash
   def get_cmd(e)
     cmdary=[e.attributes['text']]
     e.each_element{|par|
-      str=par.text
+      str=substitute(par.text,@field)
       if par.attributes['type'] == 'formula'
-        func=par.text
-        conv=convert(func,@field)
-        str=eval(conv).to_s
-        @v.msg("CMD:Function:(#{func})=#{str}")
+        str=eval(str).to_s
+        @v.msg("CMD:Evaluated [#{str}]")
       end
       cmdary << str
     }
@@ -107,7 +105,7 @@ class Obj < Hash
       fld=a['field'] || return
       fld=field[fld] || return
       data=fld.clone
-      @v.msg("STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]")
+#      @v.msg("STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]")
       case dtype.name
       when 'binary'
         val << (data.to_i >> a['bit'].to_i & 1).to_s
@@ -137,12 +135,12 @@ class Obj < Hash
       case range.name
       when 'range'
         if NumRange.new(txt) != set['val']
-          @v.msg("STAT:Symbol:Within [#{txt}](#{msg})?")
+#          @v.msg("STAT:Symbol:Within [#{txt}](#{msg})?")
           next
         end
       when 'case'
         if txt && txt != set['val']
-          @v.msg("STAT:Symbol:Matches (#{msg})?")
+#          @v.msg("STAT:Symbol:Matches (#{msg})?")
           next 
         end
       end

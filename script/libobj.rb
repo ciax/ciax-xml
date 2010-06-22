@@ -71,7 +71,7 @@ class Obj < Hash
       str=par.text
       if par.attributes['type'] == 'formula'
         func=par.text
-        conv=func.gsub(/\$([\w]+)/) { @field[$1] }
+        conv=convert(func,@field)
         str=eval(conv).to_s
         @v.msg("CMD:Function:(#{func})=#{str}")
       end

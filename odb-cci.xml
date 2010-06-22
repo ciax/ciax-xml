@@ -18,28 +18,28 @@
       <session id="caon" label="CAS BOTH HC ON">
         <command text="getstat" />
         <command text="output">
-          <par type="formula">$stat | 0x0011</par>
+          <par type="formula">${stat} | 0x0011</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="caoff" label="CAS BOTH HC OFF">
         <command text="getstat" />
         <command text="output">
-          <par type="formula">$stat &amp; 0xffee</par>
+          <par type="formula">${stat} &amp; 0xffee</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="maon" label="MOIRCS BOTH ON">
         <command text="getstat" />
         <command text="output">
-          <par type="formula">$stat | 0x1100</par>
+          <par type="formula">${stat} | 0x1100</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="maoff" label="MOIRCS BOTH OFF">
         <command text="getstat" />
         <command text="output">
-          <par type="formula">$stat &amp; 0xeeff</par>
+          <par type="formula">${stat} &amp; 0xeeff</par>
         </command>
         <command text="getstat" />
       </session>

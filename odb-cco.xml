@@ -12,14 +12,14 @@
       <session id="maon" label="COMICS BOTH ON">
         <command text="getstat" />
         <command text="output">
-          <par type="formula">$stat | 0x1100</par>
+          <par type="formula">${stat} | 0x1100</par>
         </command>
         <command text="getstat" />
       </session>
       <session id="maoff" label="COMICS BOTH OFF">
         <command text="getstat" />
         <command text="output">
-          <par type="formula">$stat &amp; 0xeeff</par>
+          <par type="formula">${stat} &amp; 0xeeff</par>
         </command>
         <command text="getstat" />
       </session>

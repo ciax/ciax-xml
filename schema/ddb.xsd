@@ -124,7 +124,7 @@
   <xsd:element name="session">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element minOccurs="1" maxOccurs="1" ref="cx:send" />
+        <xsd:element minOccurs="0" maxOccurs="1" ref="cx:send" />
         <xsd:element minOccurs="0" maxOccurs="1" ref="cx:recv" />
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:string" use="required" />

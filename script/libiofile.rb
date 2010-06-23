@@ -66,7 +66,7 @@ class IoFile
 
   def log_frame(frame,id=nil)
     @time=Time.now
-    name=id.compact.join(':')
+    name=id.compact.join(':') if id
     line=["%.3f" % @time.to_f,name,frame.dump].compact.join("\t")
     open(VarDir+"/#{@logfile}.log",'a') {|f|
       @v.msg "Frame Logging for [#{name}]"

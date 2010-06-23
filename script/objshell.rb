@@ -14,10 +14,10 @@ loop {
   case line
   when /^q/
     break
-  when /[\w]+/
-    puts odb.dispatch(line)
+  when '','stat'
+    odb.dispatch('stat') { |s| view(s) }
   else
-    view(odb.stat)
+    puts odb.dispatch(line)
   end
 }
 

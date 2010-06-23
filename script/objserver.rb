@@ -6,16 +6,13 @@ warn "Usage: objserver [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
 odb=ObjSrv.new(obj)
-srv=IoCmd.new(odb['server'],"server_#{obj}")
-odb.auto_update('upd',10)
+srv=IoCmd.new(odb.server,"server_#{obj}")
+odb.dispatch('auto upd 10')
 
-while line=srv.rcv
+while line=srv.rcv(['rcv'])
   line.chomp!
-  case line
-  when /[\w]+/
-    srv.snd(odb.session(line))
-  else
-    srv.snd(odb.stat.inspect+"\n")
-  end
-  srv.snd("#{obj}>")
+  line='stat' if line==''
+  resp=odb.dispatch(line){|s| s.inspect+"\n" }
+  srv.snd(resp,['snd'])
+  srv.snd("#{obj}>",['snd'])
 end

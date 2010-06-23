@@ -56,7 +56,7 @@ class Obj < Hash
   def select_session(id)
     e=@odb.select_id(id)
     a=e.attributes
-    warn a['label']
+    @v.msg("Command(DDB):#{a['label']}")
     if ref=a['ref']
       return @rdb.select_id(ref)
     else

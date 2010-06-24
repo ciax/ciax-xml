@@ -38,7 +38,7 @@ class Obj < Hash
     session.each_element {|command|
       cmdary=get_cmd(command)
       @v.msg("Exec(DDB):#{cmdary.inspect}")
-      get_stat(yield(cmdary))
+      yield(cmdary)
     }
   end
   
@@ -56,7 +56,7 @@ class Obj < Hash
   def select_session(id)
     e=@odb.select_id(id)
     a=e.attributes
-    @v.msg("Command(DDB):#{a['label']}")
+    @v.msg("Exec(DDB):#{a['label']}")
     if ref=a['ref']
       return @rdb.select_id(ref)
     else

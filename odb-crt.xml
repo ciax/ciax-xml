@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="crt" label="Cart PLC" device="mel" client="nc -u cart3 5000" server="socat - udp-l:25101,reuseaddr,fork">
+  <object id="crt" label="Cart PLC" device="mel" client="socat - udp:cart3:5000" server="socat - udp-l:25101,reuseaddr,fork">
     <selection>
       <session id="upd" label="Regular status update">
         <command text="getstat" />

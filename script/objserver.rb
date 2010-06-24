@@ -11,8 +11,6 @@ odb.dispatch('auto upd 10')
 
 while line=srv.rcv(['rcv'])
   line.chomp!
-  line='stat' if line==''
   resp=odb.dispatch(line){|s| s.inspect+"\n" }
   srv.snd(resp,['snd'])
-  srv.snd("#{obj}>",['snd'])
 end

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="mt1" label="MOIRCS Pressure Main" device="tpg" client=\"socat - tcp:celaeno:4009" server="socat - udp-l:45709,reuseaddr,fork" ref="mt3">
+  <object id="mt1" label="MOIRCS Pressure Main" device="tpg" client="socat - tcp:celaeno:4009" server="socat - udp-l:45709,reuseaddr,fork" ref="mt3">
     <status>
       <var id="st1" label="Main Dewar Stat" ref="st1"></var>
       <var id="ch1" label="Main Dewar (Torr)" ref="ch1"></var>
     </status>
   </object>
 </odb>
+
 

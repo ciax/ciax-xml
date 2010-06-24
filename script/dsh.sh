@@ -2,6 +2,6 @@
 . ~/se/lib/libdb.sh cx_object
 obj="$1"
 setfld $obj || _usage_key
-[ "$iocmd" ] || _die "No entry in iocmd field"
-echo " [$iocmd]" >&2
-devshell $dev "$iocmd"
+[ "$iodst" ] || _die "No entry in iodst field"
+echo " [$iodst]" >&2
+devshell $dev "socat - $iodst"

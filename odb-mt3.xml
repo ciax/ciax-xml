@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="mt3" label="MOIRCS Pressure Pump" device="tpg" client=\"socat - tcp:celaeno:4011" server="socat - udp-l:45711,reuseaddr,fork">
+  <object id="mt3" label="MOIRCS Pressure Pump" device="tpg" client="socat - tcp:celaeno:4011" server="socat - udp-l:45711,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
         <command text="reqstat" />
@@ -34,4 +34,5 @@
     </symbols>
   </object>
 </odb>
+
 

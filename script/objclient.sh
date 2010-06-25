@@ -3,4 +3,4 @@
 obj="$1"
 setfld $obj || _usage_key
 echo "Connect to $host:$port" >&2 
-nc -u $host $port
+socat READLINE udp:$host:$port

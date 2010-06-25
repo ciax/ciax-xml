@@ -15,7 +15,7 @@ class IoCmd
       @f.close
     }
     Signal.trap(:CHLD,"EXIT")
-    @v.wrn("Init")
+    @v.msg("Init")
   end
 
   def time

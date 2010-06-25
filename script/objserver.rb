@@ -9,8 +9,10 @@ odb=ObjSrv.new(obj)
 srv=IoCmd.new(odb.server,"server_#{obj}")
 odb.dispatch('auto upd 10')
 
-while line=srv.rcv(['rcv'])
+loop{ 
+  srv.snd(odb.prompt,['snd'])
+  line=srv.rcv(['rcv'])
   line.chomp!
   resp=odb.dispatch(line){|s| s.inspect+"\n" }
   srv.snd(resp,['snd'])
-end
+}

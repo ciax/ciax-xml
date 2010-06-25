@@ -11,9 +11,9 @@ class ObjSrv
     @obj=obj
     @env={'cmd'=>'upd','int'=>'10'}
     @q=Queue.new
-    @auto=Thread.new{}
     @issue=nil
     @errmsg=Array.new
+    @auto=Thread.new{}
     Thread.new {
       ddb=DevCom.new(@odb['device'],@odb['client'],obj)
       loop {
@@ -30,34 +30,40 @@ class ObjSrv
         end
       }
     }
+    sleep 0.01
   end
   
   def server
     @odb['server']
   end
 
+  def prompt
+    prom="#{@obj}"
+    prom << '&' if @auto.alive?
+    prom << '*' if @issue
+    prom << ">"
+  end
+
   def dispatch(line)
-    unless resp=@errmsg.shift
-      resp=''
-      cmd=line.split(' ')
-      case cmd.shift
-      when 'stat'
-        resp=yield @odb.stat
-      when 'auto'
-        resp=auto_upd(cmd.shift)
-      else
-        begin
-          resp=session(line)
-        rescue
-          resp=$!.to_s+"\n"
-          resp << "auto\t:Auto Update (start|stop|cmd=|int=)\n"
-          resp << "stat\t:Show Status\n"
-        end
+    resp=@errmsg.shift
+    return resp if resp
+    cmd=line.split(' ')
+    case cmd.shift
+    when ''
+      ''
+    when 'stat'
+      yield @odb.stat
+    when 'auto'
+      auto_upd(cmd.shift)
+    else
+      begin
+        session(line)
+      rescue
+        resp=$!.to_s+"\n"
+        resp << "auto\t:Auto Update (start|stop|cmd=|int=)\n"
+        resp << "stat\t:Show Status\n"
       end
     end
-    resp << '&' if @auto.alive?
-    resp << '*' if @issue
-    resp << "#{@obj}>"
   end
   
   private
@@ -72,9 +78,9 @@ class ObjSrv
   def auto_upd(cmd)
     case cmd
     when 'stop'
-      @auto.kill
+      @auto.kill if @auto
     when 'start'
-      @auto.kill
+      @auto.kill if @auto
       @auto=Thread.new {
         begin
           loop{

@@ -13,8 +13,9 @@ loop {
   case line
   when /^q/
     break
-  else
-    print odb.dispatch(line) { |s| s.inspect+"\n" }
+  when ''
+    line='stat'
   end
+  print odb.dispatch(line) { |s| view(s) }
 }
 

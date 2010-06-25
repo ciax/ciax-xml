@@ -62,8 +62,8 @@ module ModXml
   end
 
   def substitute(str,hash)
-    return str if /\${[\w]+}/ !~ str
-    conv=str.gsub(/\${([\w]+)}/) { hash[$1] }
+    return str if /\$\{[\w]+\}/ !~ str
+    conv=str.gsub(/\$\{([\w]+)\}/) { hash[$1] }
     @v.msg("Substitute [#{str}] to [#{conv}]")
     conv
   end

@@ -41,21 +41,16 @@ class ObjSrv
       resp=''
       cmd=line.split(' ')
       case cmd.shift
-      when nil,'stat'
+      when 'stat'
         resp=yield @odb.stat
-      when 'env'
-        @env.each {|k,v| resp << "#{k}=#{v}\n" }
       when 'auto'
         resp=auto_upd(cmd.shift)
-      when /=/
-        @env[$`]=$'
       else
         begin
           resp=session(line)
         rescue
           resp=$!.to_s+"\n"
-          resp << "env\t:List Env Var\n"
-          resp << "auto\t:Auto [start|stop]\n"
+          resp << "auto\t:Auto Update (start|stop|cmd=|int=)\n"
           resp << "stat\t:Show Status\n"
         end
       end
@@ -67,6 +62,7 @@ class ObjSrv
   
   private
   def session(line)
+    return '' if line == ''
     @odb.objcom(line) {|c,p|
       @q.push([c,p])
     }
@@ -75,6 +71,8 @@ class ObjSrv
 
   def auto_upd(cmd)
     case cmd
+    when 'stop'
+      @auto.kill
     when 'start'
       @auto.kill
       @auto=Thread.new {
@@ -87,13 +85,12 @@ class ObjSrv
           @errmsg << $!.to_s+"\n"
         end
       }
-      "Auto Update [#{@env['cmd']}] every #{@env['int']}s\n"
-    when 'stop'
-      @auto.kill
-      "Auto Update Stop\n"
-    else
-      "auto\t:Auto [start|stop] (#{@auto.status})\n"
+    when /(cmd|int)=/
+      @env[$1]=$'
     end
+    str="Auto Update:"
+    str << "Not " unless @auto.alive?
+    str << "Running\ncmd=[#{@env['cmd']}] int=[#{@env['int']}]\n"
   end
 
 end

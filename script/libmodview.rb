@@ -22,7 +22,7 @@ module ModView
       line=[]
     }
     a << line.join(' ') if line.size > 0
-    a.join("\n")
+    a.join("\n")+"\n"
   end
 
   private

@@ -63,49 +63,49 @@
       </session>
     </selection>
     <status>
-      <var id="x0:sw" label="X0 SWITCH" symbol="switch">
+      <var id="x0:sw" label="X0 SWITCH" symbol="switch" trail="true">
         <binary field="stat" bit="0" />
       </var>
       <var id="x0:dr" label="X0 DRIVE" symbol="switch">
         <binary field="stat" bit="1" />
       </var>
-      <var id="x0:tm" label="X0 TEMP" symbol="alarm">
+      <var id="x0:tm" label="X0 TEMP" symbol="alarm" trail="true">
         <binary field="stat" bit="2" />
       </var>
       <var id="x0:pr" label="X0 PRESSURE" symbol="alarm">
         <binary field="stat" bit="3" />
       </var>
-      <var id="x1:sw" label="X1 SWITCH" symbol="switch">
+      <var id="x1:sw" label="X1 SWITCH" symbol="switch" trail="true">
         <binary field="stat" bit="4" />
       </var>
       <var id="x1:dr" label="X1 DRIVE" symbol="switch">
         <binary field="stat" bit="5" />
       </var>
-      <var id="x1:tm" label="X1 TEMP" symbol="alarm">
+      <var id="x1:tm" label="X1 TEMP" symbol="alarm" trail="true">
         <binary field="stat" bit="6" />
       </var>
       <var id="x1:pr" label="X1 PRESSURE" symbol="alarm">
         <binary field="stat" bit="7" />
       </var>
-      <var id="x2:sw" label="X2 SWITCH" symbol="switch">
+      <var id="x2:sw" label="X2 SWITCH" symbol="switch" trail="true">
         <binary field="stat" bit="8" />
       </var>
       <var id="x2:dr" label="X2 DRIVE" symbol="switch">
         <binary field="stat" bit="9" />
       </var>
-      <var id="x2:tm" label="X2 TEMP" symbol="alarm">
+      <var id="x2:tm" label="X2 TEMP" symbol="alarm" trail="true">
         <binary field="stat" bit="10" />
       </var>
       <var id="x2:pr" label="X2 PRESSURE" symbol="alarm">
         <binary field="stat" bit="11" />
       </var>
-      <var id="x3:sw" label="X3 SWITCH" symbol="switch">
+      <var id="x3:sw" label="X3 SWITCH" symbol="switch" trail="true">
         <binary field="stat" bit="12" />
       </var>
       <var id="x3:dr" label="X3 DRIVE" symbol="switch">
         <binary field="stat" bit="13" />
       </var>
-      <var id="x3:tm" label="X3 TEMP" symbol="alarm">
+      <var id="x3:tm" label="X3 TEMP" symbol="alarm" trail="true">
         <binary field="stat" bit="14" />
       </var>
       <var id="x3:pr" label="X3 PRESSURE" symbol="alarm">
@@ -124,6 +124,3 @@
     </symbols>
   </object>
 </odb>
-
-
-

@@ -67,26 +67,26 @@
       </session>
     </selection>
     <status>
-      <var id="iid" label="CAS INST ID" symbol="inst">
+      <var id="iid" label="CAS INST ID" symbol="inst" trail="true">
         <string field="c1d2" />
-      </var>
-      <var id="stp" label="STOW PIN" symbol="non">
-        <binary field="c1d1" bit="1" />
       </var>
       <var id="ipw" label="CAS IPW" symbol="non">
         <binary field="c1d1" bit="0" />
       </var>
-      <var id="c3p" label="CIAX3 PW" symbol="hide">
-        <binary field="c1d0" bit="0" />
+      <var id="stp" label="STOW PIN" symbol="non" trail="true">
+        <binary field="c1d1" bit="1" />
       </var>
-      <var id="c3e" label="CIAX3 EMG" symbol="alarm">
-        <binary field="c1d0" bit="1" />
-      </var>
-      <var id="ccd" label="CAS CCD PW" symbol="noff">
+      <var id="ccd" label="CAS CCD PW" symbol="noff" trail="true">
         <binary field="c1d0" bit="2" />
       </var>
       <var id="lan" label="CAS LAN PW" symbol="alarm">
         <binary field="c1d0" bit="3" />
+      </var>
+      <var id="c3p" label="CIAX3 PW" symbol="hide" trail="true">
+        <binary field="c1d0" bit="0" />
+      </var>
+      <var id="c3e" label="CIAX3 EMG" symbol="alarm">
+        <binary field="c1d0" bit="1" />
       </var>
     </status>
     <symbols>
@@ -121,6 +121,3 @@
     </symbols>
   </object>
 </odb>
-
-
-

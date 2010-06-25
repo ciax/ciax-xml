@@ -1,22 +1,28 @@
 #!/usr/bin/ruby
 module ModView
   def view(stat)
-    str=''
+    a=[]
+    line=[]
     stat.each {|id,item|
       case item['hl']
       when 'alarm'
-        str << prt(item,'1')
+        line << prt(item,'1')
       when 'warn'
-        str << prt(item,'3')
+        line << prt(item,'3')
       when 'normal'
-        str << prt(item,'2')
+        line << prt(item,'2')
       when 'hide'
-        str << prt(item,'2') if ENV['VER']
+        line << prt(item,'2') if ENV['VER']
       else
-        str << prt(item,'2')
+        line << prt(item,'2')
       end
+      next if item['trail']
+      next unless line.size > 0
+      a << line.join(' ')
+      line=[]
     }
-    str
+    a << line.join(' ') if line.size > 0
+    a.join("\n")
   end
 
   private
@@ -35,7 +41,10 @@ module ModView
     else
       str << color(c,item['val'])
     end
-    str << "]\n"
+    str << "]"
   end
 
+  def concat(ary)
+    line=ary.compact.join(" ")
+  end
 end

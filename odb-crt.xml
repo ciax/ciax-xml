@@ -49,61 +49,61 @@
       </session>
     </selection>
     <status>
-      <var id="rdy" label="READY" symbol="non">
+      <var id="rdy" label="READY" symbol="non" trail="true">
         <binary bit="0" field="x00" />
       </var>
-      <var id="pse" label="PAUSE" symbol="alarm">
+      <var id="pse" label="PAUSE" symbol="alarm" trail="true">
         <binary bit="1" field="x00" />
       </var>
-      <var id="emg" label="ENERGENCY" symbol="alarm">
+      <var id="emg" label="ENERGENCY" symbol="alarm" trail="true">
         <binary bit="2" field="x00" />
       </var>
       <var id="stp" label="STOP" symbol="alarm">
         <binary bit="3" field="x00" />
       </var>
-      <var id="run" label="RUNNING" symbol="run">
+      <var id="run" label="RUNNING" symbol="run" trail="true">
         <binary bit="4" field="x00" />
       </var>
-      <var id="jak" label="JACKING" symbol="jak">
+      <var id="jak" label="JACKING" symbol="jak" trail="true">
         <binary bit="5" field="x00" />
       </var>
-      <var id="con" label="CHARGING" symbol="non">
+      <var id="con" label="CHARGING" symbol="non" trail="true">
         <binary bit="6" field="x00" />
       </var>
       <var id="flt" label="Fault" symbol="alarm">
         <binary bit="7" field="x00" />
       </var>
-      <var id="msr" label="Right Motor Servo ON" symbol="noff">
+      <var id="msr" label="Right Motor Servo ON" symbol="noff" trail="true">
         <binary bit="8" field="x00" />
       </var>
       <var id="msl" label="Left Motor Servo ON" symbol="noff">
         <binary bit="9" field="x00" />
       </var>
-      <var id="jd1" label="Jack Motor1 Servo ON" symbol="noff">
+      <var id="jd1" label="Jack Motor1 Servo ON" symbol="noff" trail="true">
         <binary bit="10" field="x00" />
       </var>
       <var id="jd2" label="Jack Motor2 Servo ON" symbol="noff">
         <binary bit="11" field="x00" />
       </var>
-      <var id="jd3" label="Jack Motor3 Servo ON" symbol="noff">
+      <var id="jd3" label="Jack Motor3 Servo ON" symbol="noff" trail="true">
         <binary bit="12" field="x00" />
       </var>
       <var id="jd4" label="Jack Motor4 Servo ON" symbol="noff">
         <binary bit="13" field="x00" />
       </var>
-      <var id="mdar" label="Rignt Motor D/A" symbol="motor">
+      <var id="mdar" label="Rignt Motor D/A" symbol="motor" trail="true">
         <int field="x07" signed="true" />
       </var>
       <var id="mdal" label="Left Motor D/A" symbol="motor">
         <int field="x08" signed="true" />
       </var>
-      <var id="bvl" label="Battery Voltage" symbol="battery">
+      <var id="bvl" label="Battery Voltage" symbol="battery" trail="true">
         <float field="x16" decimal="2" format="%2.2f" />
       </var>
       <var id="ist" label="Instrument" symbol="inst">
         <int field="x17" />
       </var>
-      <var id="cpos" label="Current Position" symbol="int">
+      <var id="cpos" label="Current Position" symbol="int" trail="true">
         <int field="x19" />
       </var>
       <var id="dpos" label="Destination Position" symbol="int">

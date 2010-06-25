@@ -48,7 +48,7 @@ class Obj < Hash
     @odb['status'].each_element {|var|
       get_var(var)  
     }
-    @stat['time']['val']=Time.at(@field['time'].to_f)
+    @stat['time']['val']=Time.at(@field['time'].to_f).to_s
     @f.save_json(@stat)
   end
   
@@ -88,6 +88,7 @@ class Obj < Hash
         @rdb.list_id('status')
       a=var.attributes
     end
+    @stat[id]['trail']=a['trail']
     val=get_val(var,@field)
     @stat[id]['val']=val
     @v.msg("STAT:GetStatus:#{id}=[#{val}]")

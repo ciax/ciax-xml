@@ -86,6 +86,7 @@
       </xsd:choice>
       <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="symbol" type="xsd:string" />
+      <xsd:attribute name="trail" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in field-->

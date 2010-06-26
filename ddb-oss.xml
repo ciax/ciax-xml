@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
+  <device id="oss" label="OSS Command line">
+    <selection>
+      <session id="getstat" label="Get all status" type="stat">
+        <send>
+          <data label="Status Command">OSSC_screenPrint -R</data>
+          <data label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</data>
+          <data label="Stow pin Status"> CXWS.TSCV.STOW_1</data>
+          <data label="Shutter Status"> CXWS.TSCV.SHUTTER</data>
+          <data label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</data>
+          <data label="EL Angle(deg)"> CXWS.TSCS.EL</data>
+          <data label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</data>
+          <data label="CAS Instrument"> CXWS.TSCV.OBE_INR</data>
+        </send>
+        <recv>
+          <assign label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n">rtype</assign>
+          <assign label="Stow pin Status" delimiter="\n">stow_1</assign>
+          <assign label="Shutter Status" delimiter="\n">shutter</assign>
+          <assign label="AZ/EL Drive Status" delimiter="\n">teldrive</assign>
+          <assign label="EL Angle(deg)" delimiter="\n">el</assign>
+          <assign label="CIAX-MLP3 Comm Error" delimiter="\n">mlp3</assign>
+          <assign label="CAS Instrument" delimiter="\n">inst</assign>
+        </recv>
+      </session>
+      <session id="jakstat" label="Jack Bolt Status" type="stat">
+        <send>
+          <data label="Status Command">OSSC_screenPrint -R</data>
+          <data label="Bolt Power"> CXWS.TSCV.POWER_V1</data>
+          <data label="InR 0deg Sensor"> CXWS.TSCV.0_SENSOR</data>
+          <data label="Bolt Position"> CXWS.TSCV.POWER_V2</data>
+          <data label="Zsensor Position"> CXWS.TSCL.Z_SENSOR</data>
+        </send>
+        <recv>
+          <assign label="Jack Bolt Power" delimiter="\n">jpw</assign>
+          <assign label="InR 0deg Sensor" delimiter="\n">jpin</assign>
+          <assign label="Bolt Position" delimiter="\n">jpos</assign>
+          <assign label="Zsensor Position" delimiter="\n">zpos</assign>
+        </recv>
+      </session>
+      <session id="inrstat" label="Cas InR Status" type="stat">
+        <send>
+          <data label="Status Command">OSSC_screenPrint -R</data>
+          <data label="InR Drive ON/OFF"> TSCV.InsRotRotation</data>
+          <data label="InR Angle(deg)"> CXWS.TSCS.INSROT</data>
+        </send>
+        <recv>
+          <assign label="InR Drive ON/OFF" delimiter="\n">idrv</assign>
+          <assign label="InR Angle(deg)" delimiter="\n">ideg</assign>
+        </recv>
+      </session>
+      <session id="logstat" label="Login Status" type="stat">
+        <send>
+          <data label="Status Command">OSSC_screenPrint -R</data>
+          <data label="LOGIN 0"> TSCV.TSC.LOGIN0</data>
+          <data label="LOGIN 1"> TSCV.TSC.LOGIN1</data>
+          <data label="LOGIN 2"> TSCV.TSC.LOGIN2</data>
+          <data label="LOGIN 3"> TSCV.TSC.LOGIN3</data>
+        </send>
+        <recv>
+          <assign label="LOGIN 0" delimiter="\n">login0</assign>
+          <assign label="LOGIN 1" delimiter="\n">login1</assign>
+          <assign label="LOGIN 2" delimiter="\n">login2</assign>
+          <assign label="LOGIN 3" delimiter="\n">login3</assign>
+        </recv>
+      </session>
+      <session id="reqstat" label="Status Request via TCP" type="config">
+        <send>
+          <data label="Execute Command">OSST_ciaxTSCcommand</data>
+          <data label="Timeout"> 20</data>
+          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data label="Command Code">1A1011</data>
+          <data label="Command Suffix">"';echo $?</data>
+        </send>
+        <recv>
+          <assign label="Exit Code" delimiter="\n">exit</assign>
+        </recv>
+      </session>
+      <session id="login" label="TSC Login" type="config">
+        <send>
+          <data label="Execute Command">OSST_ciaxTSCcommand</data>
+          <data label="Timeout"> 20</data>
+          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data label="Command Code">1A1901</data>
+          <data label="Login ID">ciax%%%%%%%%%%%%%%%%</data>
+          <data label="Login Pass"> CIAX%%%%%%%%%%%%</data>
+          <data label="Dummy Code"> dummyunit dummyMenu dummyMessage</data>
+          <data label="Command Suffix">"';echo $?</data>
+        </send>
+        <recv>
+          <assign label="Exit Code" delimiter="\n">exit</assign>
+        </recv>
+      </session>
+      <session id="logout" label="TSC Logout" type="config">
+        <send>
+          <data label="Execute Command">OSST_ciaxTSCcommand</data>
+          <data label="Timeout"> 20</data>
+          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data label="Command Code">1A1902</data>
+          <data label="Command Suffix">"';echo $?</data>
+        </send>
+        <recv>
+          <assign label="Exit Code" delimiter="\n">exit</assign>
+        </recv>
+      </session>
+      <session id="exmode" label="TSC Only Mode(CIAX Mode)" type="config">
+        <send>
+          <data label="Execute Command">OSST_ciaxTSCcommand</data>
+          <data label="Timeout"> 20</data>
+          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data label="Command Code">1A1008TSCONLY</data>
+          <data label="Command Suffix">"';echo $?</data>
+        </send>
+        <recv>
+          <assign label="Exit Code" delimiter="\n">exit</assign>
+        </recv>
+      </session>
+      <session id="primode" label="TSC Primaly Mode" type="config">
+        <send>
+          <data label="Execute Command">OSST_ciaxTSCcommand</data>
+          <data label="Timeout"> 20</data>
+          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data label="Command Code">1A1008TSCPRI%</data>
+          <data label="Command Suffix">"';echo $?</data>
+        </send>
+        <recv>
+          <assign label="Exit Code" delimiter="\n">exit</assign>
+        </recv>
+      </session>
+      <session id="setinst" label="Set Instrument ID [1-12]" type="config">
+        <send>
+          <data label="Execute Command">OSST_ciaxTSCcommand</data>
+          <data label="Timeout"> 20</data>
+          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data label="Command Code">13200700</data>
+          <par label="Inst ID" format="%02d" validate="range">1:12</par>
+          <data label="Command Suffix">"';echo $?</data>
+        </send>
+        <recv>
+          <assign label="Exit Code" delimiter="\n">exit</assign>
+        </recv>
+      </session>
+    </selection>
+    <cmdframe>
+      <selected />
+      <data label="Suffix" pack="chr">10</data>
+    </cmdframe>
+    <rspframe>
+      <selected />
+    </rspframe>
+  </device>
+</ddb>

@@ -11,7 +11,6 @@
           <data label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</data>
           <data label="EL Angle(deg)"> CXWS.TSCS.EL</data>
           <data label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</data>
-          <data label="CAS Instrument"> CXWS.TSCV.OBE_INR</data>
         </send>
         <recv>
           <assign label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n">rtype</assign>
@@ -20,6 +19,14 @@
           <assign label="AZ/EL Drive Status" delimiter="\n">teldrive</assign>
           <assign label="EL Angle(deg)" delimiter="\n">el</assign>
           <assign label="CIAX-MLP3 Comm Error" delimiter="\n">mlp3</assign>
+        </recv>
+      </session>
+      <session id="iststat" label="Get Instrument ID" type="stat">
+        <send>
+          <data label="Status Command">OSSC_screenPrint -R</data>
+          <data label="CAS Instrument"> CXWS.TSCV.OBE_INR</data>
+        </send>
+        <recv>
           <assign label="CAS Instrument" delimiter="\n">inst</assign>
         </recv>
       </session>
@@ -69,7 +76,7 @@
           <data label="Get Status File">cat run.txt</data>
         </send>
         <recv>
-          <assign label="Running?" delimiter="\n">run</assign>
+          <assign label="Running?" delimiter="\n">exit</assign>
         </recv>
       </session>
       <session id="reqstat" label="Status Request via TCP" type="config">
@@ -162,6 +169,14 @@
           <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
           <par label="Command COde"></par>
           <data label="Command Suffix">"'</data>
+          <data label="Status Output">;echo $? &gt; run.txt) &amp;</data>
+        </send>
+      </session>
+      <session id="sleep" label="Sleep [sec]" type="action">
+        <send>
+          <data label="Command Start">(echo 'run' &gt; run.txt;</data>
+          <data label="Execute Command">sleep </data>
+          <par label="Sec" validate="range">1:30</par>
           <data label="Status Output">;echo $? &gt; run.txt) &amp;</data>
         </send>
       </session>

@@ -76,19 +76,19 @@
       <var id="msr" label="Right Motor Servo" symbol="normal" trail="true">
         <binary bit="8" field="x00" inv="true" />
       </var>
-      <var id="msl" label="Left Motor Servo ON" symbol="normal">
+      <var id="msl" label="Left Motor Servo" symbol="normal">
         <binary bit="9" field="x00" inv="true" />
       </var>
-      <var id="jd1" label="Jack Motor1 Servo ON" symbol="normal" trail="true">
+      <var id="jd1" label="Jack Motor1 Servo" symbol="normal" trail="true">
         <binary bit="10" field="x00" inv="true" />
       </var>
-      <var id="jd2" label="Jack Motor2 Servo ON" symbol="normal">
+      <var id="jd2" label="Jack Motor2 Servo" symbol="normal">
         <binary bit="11" field="x00" inv="true" />
       </var>
-      <var id="jd3" label="Jack Motor3 Servo ON" symbol="normal" trail="true">
+      <var id="jd3" label="Jack Motor3 Servo" symbol="normal" trail="true">
         <binary bit="12" field="x00" inv="true" />
       </var>
-      <var id="jd4" label="Jack Motor4 Servo ON" symbol="normal">
+      <var id="jd4" label="Jack Motor4 Servo" symbol="normal">
         <binary bit="13" field="x00" inv="true" />
       </var>
       <var id="mdar" label="Rignt Motor D/A" symbol="motor" trail="true">

@@ -69,10 +69,10 @@
       <var id="x0:dr" label="X0 DRIVE" symbol="off-warn">
         <binary field="stat" bit="1" />
       </var>
-      <var id="x0:tm" label="X0 TEMP" symbol="alarm" trail="true">
+      <var id="x0:tm" label="X0 TEMP ALARM" symbol="alarm" trail="true">
         <binary field="stat" bit="2" />
       </var>
-      <var id="x0:pr" label="X0 PRESSURE" symbol="alarm">
+      <var id="x0:pr" label="X0 PRESSURE ALARM" symbol="alarm">
         <binary field="stat" bit="3" />
       </var>
       <var id="x1:sw" label="X1 SWITCH" symbol="off-warn" trail="true">
@@ -81,10 +81,10 @@
       <var id="x1:dr" label="X1 DRIVE" symbol="off-warn">
         <binary field="stat" bit="5" />
       </var>
-      <var id="x1:tm" label="X1 TEMP" symbol="alarm" trail="true">
+      <var id="x1:tm" label="X1 TEMP ALARM" symbol="alarm" trail="true">
         <binary field="stat" bit="6" />
       </var>
-      <var id="x1:pr" label="X1 PRESSURE" symbol="alarm">
+      <var id="x1:pr" label="X1 PRESSURE ALARM" symbol="alarm">
         <binary field="stat" bit="7" />
       </var>
       <var id="x2:sw" label="X2 SWITCH" symbol="off-warn" trail="true">
@@ -93,10 +93,10 @@
       <var id="x2:dr" label="X2 DRIVE" symbol="off-warn">
         <binary field="stat" bit="9" />
       </var>
-      <var id="x2:tm" label="X2 TEMP" symbol="alarm" trail="true">
+      <var id="x2:tm" label="X2 TEMP ALARM" symbol="alarm" trail="true">
         <binary field="stat" bit="10" />
       </var>
-      <var id="x2:pr" label="X2 PRESSURE" symbol="alarm">
+      <var id="x2:pr" label="X2 PRESSURE ALARM" symbol="alarm">
         <binary field="stat" bit="11" />
       </var>
       <var id="x3:sw" label="X3 SWITCH" symbol="off-warn" trail="true">
@@ -105,10 +105,10 @@
       <var id="x3:dr" label="X3 DRIVE" symbol="off-warn">
         <binary field="stat" bit="13" />
       </var>
-      <var id="x3:tm" label="X3 TEMP" symbol="alarm" trail="true">
+      <var id="x3:tm" label="X3 TEMP ALARM" symbol="alarm" trail="true">
         <binary field="stat" bit="14" />
       </var>
-      <var id="x3:pr" label="X3 PRESSURE" symbol="alarm">
+      <var id="x3:pr" label="X3 PRESSURE ALARM" symbol="alarm">
         <binary field="stat" bit="15" />
       </var>
     </status>

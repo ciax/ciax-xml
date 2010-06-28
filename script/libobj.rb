@@ -149,7 +149,6 @@ class Obj < Hash
       when 'alarm'
         if st['msg'] == 'ON'
           st['hl'] = 'alarm'
-          st['msg'] = 'ALARM'
         else
           st['hl'] = 'hide'
         end

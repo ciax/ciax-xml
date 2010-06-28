@@ -82,21 +82,25 @@ class Obj < Hash
   def get_var(var)
     a=var.attributes
     id="#{@obj}:#{a['id']}"
-    @stat[id]={'label'=>a['label'] }
+    st={'label'=>a['label'] }
     if ref=a['ref']
       @rdb['status'].each_element_with_attribute('id',ref){|e| var=e } ||
         @rdb.list_id('status')
       a=var.attributes
     end
-    @stat[id]['trail']=a['trail']
+    st['trail']=a['trail']
     val=get_val(var,@field)
-    @stat[id]['val']=val
+    st['val']=val
     @v.msg("STAT:GetStatus:#{id}=[#{val}]")
     if sid=a['symbol']
-      @odb['symbols'].each_element_with_attribute('id',sid){ |e|
-        get_symbol(e,@stat[id])
-      }
+      std_symbol(sid,st)
+      if @odb['symbols']
+        @odb['symbols'].each_element_with_attribute('id',sid){ |e|
+          local_symbol(e,st)
+        }
+      end
     end
+    @stat[id]=st
   end
 
   def get_val(e,field)
@@ -109,7 +113,9 @@ class Obj < Hash
 #      @v.msg("STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]")
       case dtype.name
       when 'binary'
-        val << (data.to_i >> a['bit'].to_i & 1).to_s
+        bit=(data.to_i >> a['bit'].to_i & 1)
+        bit = -(bit-1) if a['inv']
+       val << bit.to_s
       when 'float'
         if n=a['decimal']
           data.insert(-1-n.to_i,'.')
@@ -127,13 +133,38 @@ class Obj < Hash
     val
   end
 
-  def get_symbol(e,set)
+  # Built-in Symbol (normal,hide,on-warn,off-warn,alarm)
+  def std_symbol(sid,st)
+    if /^(normal|on-warn|off-warn|alarm|hide)$/ === sid
+      st['type']='ENUM'
+      st['hl']='normal'
+      st['msg']=(st['val']=='1') ? 'ON' : 'OFF'
+      case sid
+      when 'hide'
+        st['hl']='hide'
+      when 'on-warn'
+        st['hl']='warn' if st['msg'] == 'ON'
+      when 'off-warn'
+        st['hl']='warn' if st['msg'] == 'OFF'
+      when 'alarm'
+        if st['msg'] == 'ON'
+          st['hl'] = 'alarm'
+          st['msg'] = 'ALARM'
+        else
+          st['hl'] = 'hide'
+        end
+      end
+      st
+    end
+  end
+
+  def local_symbol(e,set)
     set['type']=e.attributes['type']
-    e.each_element {|range|
-      a=range.attributes
+    e.each_element {|enum|
+      a=enum.attributes
       msg=a['msg']
-      txt=range.text
-      case range.name
+      txt=enum.text
+      case enum.name
       when 'range'
         if NumRange.new(txt) != set['val']
 #          @v.msg("STAT:Symbol:Within [#{txt}](#{msg})?")

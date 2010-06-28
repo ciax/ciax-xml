@@ -49,47 +49,47 @@
       </session>
     </selection>
     <status>
-      <var id="rdy" label="READY" symbol="non" trail="true">
+      <var id="rdy" label="READY" symbol="normal" trail="true">
         <binary bit="0" field="x00" />
       </var>
-      <var id="pse" label="PAUSE" symbol="alarm" trail="true">
+      <var id="pse" label="PAUSE" symbol="on-warn" trail="true">
         <binary bit="1" field="x00" />
       </var>
       <var id="emg" label="ENERGENCY" symbol="alarm" trail="true">
         <binary bit="2" field="x00" />
       </var>
-      <var id="stp" label="STOP" symbol="alarm">
+      <var id="stp" label="STOP" symbol="on-warn">
         <binary bit="3" field="x00" />
       </var>
-      <var id="run" label="RUNNING" symbol="run" trail="true">
+      <var id="run" label="RUNNING" symbol="normal" trail="true">
         <binary bit="4" field="x00" />
       </var>
-      <var id="jak" label="JACKING" symbol="jak" trail="true">
+      <var id="jak" label="JACKING" symbol="normal" trail="true">
         <binary bit="5" field="x00" />
       </var>
-      <var id="con" label="CHARGING" symbol="non" trail="true">
+      <var id="con" label="CHARGING" symbol="normal" trail="true">
         <binary bit="6" field="x00" />
       </var>
       <var id="flt" label="Fault" symbol="alarm">
         <binary bit="7" field="x00" />
       </var>
-      <var id="msr" label="Right Motor Servo ON" symbol="noff" trail="true">
-        <binary bit="8" field="x00" />
+      <var id="msr" label="Right Motor Servo" symbol="normal" trail="true">
+        <binary bit="8" field="x00" inv="true" />
       </var>
-      <var id="msl" label="Left Motor Servo ON" symbol="noff">
-        <binary bit="9" field="x00" />
+      <var id="msl" label="Left Motor Servo ON" symbol="normal">
+        <binary bit="9" field="x00" inv="true" />
       </var>
-      <var id="jd1" label="Jack Motor1 Servo ON" symbol="noff" trail="true">
-        <binary bit="10" field="x00" />
+      <var id="jd1" label="Jack Motor1 Servo ON" symbol="normal" trail="true">
+        <binary bit="10" field="x00" inv="true" />
       </var>
-      <var id="jd2" label="Jack Motor2 Servo ON" symbol="noff">
-        <binary bit="11" field="x00" />
+      <var id="jd2" label="Jack Motor2 Servo ON" symbol="normal">
+        <binary bit="11" field="x00" inv="true" />
       </var>
-      <var id="jd3" label="Jack Motor3 Servo ON" symbol="noff" trail="true">
-        <binary bit="12" field="x00" />
+      <var id="jd3" label="Jack Motor3 Servo ON" symbol="normal" trail="true">
+        <binary bit="12" field="x00" inv="true" />
       </var>
-      <var id="jd4" label="Jack Motor4 Servo ON" symbol="noff">
-        <binary bit="13" field="x00" />
+      <var id="jd4" label="Jack Motor4 Servo ON" symbol="normal">
+        <binary bit="13" field="x00" inv="true" />
       </var>
       <var id="mdar" label="Rignt Motor D/A" symbol="motor" trail="true">
         <int field="x07" signed="true" />
@@ -103,10 +103,10 @@
       <var id="ist" label="Instrument" symbol="inst">
         <int field="x17" />
       </var>
-      <var id="cpos" label="Current Position" symbol="int" trail="true">
+      <var id="cpos" label="Current Position" trail="true">
         <int field="x19" />
       </var>
-      <var id="dpos" label="Destination Position" symbol="int">
+      <var id="dpos" label="Destination Position">
         <int field="x1a" />
       </var>
       <var id="jpos" label="Jack Position" symbol="jpos">
@@ -114,26 +114,6 @@
       </var>
     </status>
     <symbols>
-      <symbol type="ENUM" id="non">
-        <case hl="normal" msg="ON">1</case>
-        <case hl="warn" msg="OFF">0</case>
-      </symbol>
-      <symbol type="ENUM" id="noff">
-        <case hl="warn" msg="ON">1</case>
-        <case hl="normal" msg="OFF">0</case>
-      </symbol>
-      <symbol type="ENUM" id="alarm">
-        <case hl="alarm" msg="ON">1</case>
-        <case hl="hide" msg="OFF">0</case>
-      </symbol>
-      <symbol type="ENUM" id="run">
-        <case hl="warn" msg="RUN">1</case>
-        <case hl="normal" msg="NO">0</case>
-      </symbol>
-      <symbol type="ENUM" id="jak">
-        <case hl="warn" msg="JAK">1</case>
-        <case hl="normal" msg="NO">0</case>
-      </symbol>
       <symbol type="INT" id="motor">
         <range hl="alarm" msg="LOW">:10</range>
         <range hl="normal" msg="OK">10&lt;:30</range>
@@ -150,7 +130,6 @@
         <case hl="normal" msg="MOIRCS">2</case>
         <case hl="warn" msg="N/A"></case>
       </symbol>
-      <symbol type="INT" id="int" />
       <symbol type="ENUM" id="jpos">
         <case hl="normal" msg="D">0</case>
         <case hl="normal" msg="1(L)">1</case>

@@ -70,16 +70,16 @@
       <var id="iid" label="CAS INST ID" symbol="inst" trail="true">
         <string field="c1d2" />
       </var>
-      <var id="ipw" label="CAS IPW" symbol="non">
+      <var id="ipw" label="CAS IPW" symbol="off-warn">
         <binary field="c1d1" bit="0" />
       </var>
-      <var id="stp" label="STOW PIN" symbol="non" trail="true">
+      <var id="stp" label="STOW PIN" symbol="on-warn" trail="true">
         <binary field="c1d1" bit="1" />
       </var>
-      <var id="ccd" label="CAS CCD PW" symbol="noff" trail="true">
+      <var id="ccd" label="CAS CCD PW" symbol="on-warn" trail="true">
         <binary field="c1d0" bit="2" />
       </var>
-      <var id="lan" label="CAS LAN PW" symbol="alarm">
+      <var id="lan" label="CAS LAN PW" symbol="hide">
         <binary field="c1d0" bit="3" />
       </var>
       <var id="c3p" label="CIAX3 PW" symbol="hide" trail="true">
@@ -101,22 +101,6 @@
         <case hl="normal" msg="MOIRCS">7</case>
         <case hl="normal" msg="MP-CS1">8</case>
         <case hl="normal" msg="MP-CS2">9</case>
-      </symbol>
-      <symbol type="ENUM" id="non">
-        <case hl="normal" msg="ON">1</case>
-        <case hl="alarm" msg="OFF">0</case>
-      </symbol>
-      <symbol type="ENUM" id="noff">
-        <case hl="alarm" msg="ON">1</case>
-        <case hl="normal" msg="OFF">0</case>
-      </symbol>
-      <symbol type="ENUM" id="hide">
-        <case hl="hide" msg="OFF">0</case>
-        <case hl="hide" msg="ON">1</case>
-      </symbol>
-      <symbol type="ENUM" id="alarm">
-        <case hl="hide" msg="OFF">0</case>
-        <case hl="alarm" msg="ON">1</case>
       </symbol>
     </symbols>
   </object>

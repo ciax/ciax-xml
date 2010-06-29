@@ -126,6 +126,7 @@ class CmdFrame < Hash
 
   def cmdframe(sel)
     @v.err("No Selection") unless self[:sel]=sel
+    @delim=@ddb['cmdframe'].attributes['delimiter']
     if ccn=@ddb['cmdframe'].elements['ccrange']
       @v.msg("Entering Ceck Code Range")
       self['ccrange']=getframe(ccn)
@@ -137,7 +138,7 @@ class CmdFrame < Hash
 
   private
   def getframe(e)
-    frame=String.new
+    frame=Array.new
     e.each_element { |c|
       label=c.attributes['label']
       case c.name
@@ -159,7 +160,7 @@ class CmdFrame < Hash
         @v.msg("GetFrame:#{label}(#{c.name})[#{self[c.name]}]")
       end
     }
-    frame
+    frame.join(@delim)
   end
 end
 

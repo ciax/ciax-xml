@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="dts" device="oss" label="TSC Control" client="socat - tcp:cxws:9999" server="socat - udp-l:25105,reuseaddr,fork">
+    <selection>
+      <session id="upd" label="Update Status">
+        <command text="getstat"></command>
+        <command text="iststat"></command>
+        <command text="jakstat"></command>
+        <command text="inrstat"></command>
+        <command text="logstat"></command>
+        <command text="exitcode"></command>
+      </session>
+      <session id="request" label="Status Request">
+        <command text="request"></command>
+      </session>
+    </selection>
+    <status>
+      <var id="exit" label="Exit Code" trail="true">
+        <int field="exit" />
+      </var>
+    </status>
+    <symbols>
+      <symbol type="ENUM" id="inst">
+        <case hl="warn" msg="NONE">0</case>
+        <case hl="normal" msg="CIAX3">1</case>
+        <case hl="normal" msg="COMICS">2</case>
+        <case hl="normal" msg="CIAO">3</case>
+        <case hl="normal" msg="FOCAS">4</case>
+        <case hl="normal" msg="IRCS">5</case>
+        <case hl="normal" msg="N/A">6</case>
+        <case hl="normal" msg="MOIRCS">7</case>
+        <case hl="normal" msg="MP-CS1">8</case>
+        <case hl="normal" msg="MP-CS2">9</case>
+      </symbol>
+    </symbols>
+  </object>
+</odb>

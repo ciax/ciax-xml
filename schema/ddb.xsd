@@ -165,7 +165,6 @@
         <xsd:element ref="cx:ccrange" />
         <xsd:element ref="cx:cc_cmd" />
       </xsd:choice>
-      <xsd:attribute name="delimiter" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="cmd_attr">
@@ -201,6 +200,7 @@
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:attribute>
+          <xsd:attribute name="delimiter" type="xsd:string" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

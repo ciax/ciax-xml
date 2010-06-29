@@ -46,7 +46,7 @@ class Obj < Hash
     return unless dstat
     @field.update(dstat)
     @odb['status'].each_element {|var|
-      get_var(var)  
+      get_var(var)
     }
     @stat['time']['val']=Time.at(@field['time'].to_f).to_s
     @f.save_json(@stat)
@@ -114,7 +114,7 @@ class Obj < Hash
       case dtype.name
       when 'binary'
         bit=(data.to_i >> a['bit'].to_i & 1)
-        bit = -(bit-1) if a['inv']
+        bit = -(bit-1) if /true|1/ === a['inv']
        val << bit.to_s
       when 'float'
         if n=a['decimal']
@@ -122,7 +122,7 @@ class Obj < Hash
         end
         val << format(dtype,data)
       when 'int'
-        if a['signed']
+        if /true|1/ === a['signed']
           data=[data.to_i].pack('S').unpack('s').first
         end
         val << format(dtype,data)

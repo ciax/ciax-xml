@@ -17,10 +17,10 @@ class ObjSrv
     Thread.new {
       ddb=DevCom.new(@odb['device'],@odb['client'],obj)
       loop {
-        c,p=@q.shift
+        cmdary=@q.shift
         @issue=true
         begin
-          ddb.setcmd(c,p)
+          ddb.setcmd(cmdary)
           ddb.devcom
           @odb.get_stat(ddb.field)
         rescue
@@ -47,14 +47,14 @@ class ObjSrv
   def dispatch(line)
     resp=@errmsg.shift
     return resp if resp
-    cmd=line.split(' ')
-    case cmd.shift
+    cmdary=line.split(' ')
+    case cmdary.shift
     when ''
       ''
     when 'stat'
       yield @odb.stat
     when 'auto'
-      auto_upd(cmd.shift)
+      auto_upd(cmdary.shift)
     else
       begin
         session(line)
@@ -69,8 +69,8 @@ class ObjSrv
   private
   def session(line)
     return '' if line == ''
-    @odb.objcom(line) {|c,p|
-      @q.push([c,p])
+    @odb.objcom(line) {|cmdary|
+      @q.push(cmdary)
     }
     "Accepted\n"
   end

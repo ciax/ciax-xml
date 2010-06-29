@@ -2,7 +2,7 @@
 require "libobj"
 require "libiofile"
 
-warn "Usage: objstat [object] < devstat" if ARGV.size < 1
+warn "Usage: objstat [object]" if ARGV.size < 1
 
 begin
   odb=Obj.new(ARGV.shift)

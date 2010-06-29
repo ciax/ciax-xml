@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libdev"
 
-warn "Usage: devstat [dev] [cmd]< file" if ARGV.size < 1
+warn "Usage: devstat [dev] [cmd] (par)< file" if ARGV.size < 1
 
 begin
   c=Dev.new(ARGV.shift)
-  c.setcmd(ARGV.shift)
+  c.setcmd(ARGV)
 rescue RuntimeError
   abort $!.to_s
 end

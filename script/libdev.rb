@@ -148,10 +148,15 @@ class CmdFrame < Hash
       when 'data'
         frame << encode(c,c.text)
         @v.msg("GetFrame:#{label}[#{c.text}]")
+      when 'par'
+        self[:par].each {|par|
+          str=validate(c,par)
+          frame << encode(c,str)
+          @v.msg("GetFrame:#{label}(parameter)[#{str}]")
+        }
       else
-        str=validate(c,self[c.name])
-        frame << encode(c,str)
-        @v.msg("GetFrame:#{label}(#{c.name})[#{str}]")
+        frame << encode(c,self[c.name])
+        @v.msg("GetFrame:#{label}(#{c.name})[#{self[c.name]}]")
       end
     }
     frame
@@ -176,14 +181,14 @@ class Dev
    end
   end
 
-  def setcmd(cmd,par=nil)
-    session=@ddb.select_id(cmd)
+  def setcmd(cmdary)
+    @cid=cmdary
+    session=@ddb.select_id(cmdary.shift)
     @v.msg('Select:'+session.attributes['label'])
     @send=session.elements['send']
     @recv=session.elements['recv']
-    @cmd['par']=par
-    @rsp['par']=par
-    @cid=[cmd,par]
+    @cmd[:par]=cmdary
+#    @rsp['par']=cmdary
   end
 
   def getcmd

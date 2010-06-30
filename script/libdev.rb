@@ -22,9 +22,9 @@ class RspFrame < Hash
     end
   end
 
-  def rspframe(sel,frame,time=Time.now)
+  def rspframe(sel,time=Time.now)
     @v.err(self[:sel]=sel){"No Selection"}
-    @v.err(@frame=frame){"No String"}
+    @v.err(@frame=yield){"No String"}
     @field['time']="%.3f" % time.to_f
     setframe(@ddb['rspframe'])
     if self['cc']
@@ -202,7 +202,7 @@ class Dev
 
   def setrsp(time=Time.now)
     return unless @recv
-    @rsp.rspframe(@recv,yield,time)
+    @rsp.rspframe(@recv,time){yield}
   end
 
   def field

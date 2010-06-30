@@ -9,13 +9,13 @@ ddb=DevCom.new(dev,iocmd)
 
 loop{
   print "#{dev}>"
-  line=gets.chomp.split(' ')
-  case line[0]
+  cary=gets.chomp.split(' ')
+  case cary[0]
   when /^q/
     break
   when /[\w]+/
     begin
-      ddb.setcmd(line)
+      ddb.setcmd(cary)
       ddb.devcom
     rescue
       puts $!

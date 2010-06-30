@@ -7,7 +7,7 @@ class XmlDb
   def initialize(doc,xpath,title='XMLDB')
     @v=Verbose.new(title)
     @doc=doc
-    @cn=doc.elements[xpath] || @v.err("No such Xpath")
+    @cn=doc.elements[xpath] || @v.err{"No such Xpath"}
   end
 
   # Public Method
@@ -45,7 +45,7 @@ class XmlDb
   def format(code)
     if fmt=@cn.attributes['format'] 
       str=fmt % code.to_i
-      @v.msg("Format code by (#{fmt}) [#{code}] -> [#{str}]")
+      @v.msg{"Format code by (#{fmt}) [#{code}] -> [#{str}]"}
       code=str
     end
     code.to_s

@@ -6,21 +6,21 @@ class Verbose
   end
 
   # Public Method
-  def msg(text='')
+  def msg
     return unless ENV['VER']
-    m=mkmsg(text)
+    msg=mkmsg(yield)
     if ENV['VER'].split(':').any? {|s|
-        (m+'all').upcase.include?(s.upcase) }
-      warn m
+        (msg+'all').upcase.include?(s.upcase) }
+      warn msg
     end
   end
 
-  def wrn(text='')
-    warn mkmsg(text)
+  def wrn
+    warn mkmsg(yield)
   end
 
-  def err(text='')
-    raise mkmsg(text)
+  def err
+    raise mkmsg(yield)
   end
 
   # Private Method

@@ -15,7 +15,7 @@ class IoCmd
       @f.close
     }
     Signal.trap(:CHLD,"EXIT")
-    @v.msg("Init")
+    @v.msg{"Init"}
   end
 
   def time
@@ -26,7 +26,7 @@ class IoCmd
     return unless str
     @iof.log_frame(str,id) if @iof
     @f.syswrite(str)
-    @v.msg "Send #{str.dump}"
+    @v.msg{"Send #{str.dump}"}
     sleep @wait
     str
   end
@@ -34,7 +34,7 @@ class IoCmd
   def rcv(id=nil)
     select([@f],nil,nil,@timeout) || return
     str=@f.sysread(1024)
-    @v.msg "Recv #{str.dump}"
+    @v.msg{"Recv #{str.dump}"}
     @iof.log_frame(str,id) if @iof
     sleep @wait
     str

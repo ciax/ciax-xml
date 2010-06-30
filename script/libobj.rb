@@ -7,7 +7,7 @@ require "libmodxml"
 class Obj < Hash
   include ModXml
   attr_reader :stat,:field
-  
+
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
     if robj=@odb['ref']
@@ -37,7 +37,7 @@ class Obj < Hash
     session=select_session(cmd)
     session.each_element {|command|
       cmdary=get_cmd(command)
-      @v.msg("Exec(DDB):#{cmdary.inspect}")
+      @v.msg{"Exec(DDB):#{cmdary.inspect}"}
       yield(cmdary)
     }
   end
@@ -56,7 +56,7 @@ class Obj < Hash
   def select_session(id)
     e=@odb.select_id(id)
     a=e.attributes
-    @v.msg("Exec(DDB):#{a['label']}")
+    @v.msg{"Exec(DDB):#{a['label']}"}
     if ref=a['ref']
       return @rdb.select_id(ref)
     else
@@ -71,7 +71,7 @@ class Obj < Hash
       str=substitute(txt.text,@field)
       if txt.name == 'eval'
         str=eval(str).to_s
-        @v.msg("CMD:Evaluated [#{str}]")
+        @v.msg{"CMD:Evaluated [#{str}]"}
       end
       cmdary << str
     }
@@ -91,7 +91,7 @@ class Obj < Hash
     st['trail']=a['trail']
     val=get_val(var,@field)
     st['val']=val
-    @v.msg("STAT:GetStatus:#{id}=[#{val}]")
+    @v.msg{"STAT:GetStatus:#{id}=[#{val}]"}
     if sid=a['symbol']
       std_symbol(sid,st)
       if @odb['symbols']
@@ -110,7 +110,7 @@ class Obj < Hash
       fld=a['field'] || return
       fld=field[fld] || return
       data=fld.clone
-#      @v.msg("STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]")
+      # @v.msg{"STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]"}
       case dtype.name
       when 'binary'
         bit=(data.to_i >> a['bit'].to_i & 1)
@@ -166,19 +166,19 @@ class Obj < Hash
       case enum.name
       when 'range'
         if NumRange.new(txt) != set['val']
-#          @v.msg("STAT:Symbol:Within [#{txt}](#{msg})?")
+          # @v.msg{"STAT:Symbol:Within [#{txt}](#{msg})?"}
           next
         end
       when 'case'
         if txt && txt != set['val']
-#          @v.msg("STAT:Symbol:Matches (#{msg})?")
+          # @v.msg{"STAT:Symbol:Matches (#{msg})?"}
           next 
         end
       end
       a.each{|k,v| set[k]=v }
       break true
-    } || @v.err("STAT:No Symbol selection")
-    @v.msg("STAT:Symbol:[#{set['msg']}] for [#{set['val']}]")
+    } || @v.err{"STAT:No Symbol selection"}
+    @v.msg{"STAT:Symbol:[#{set['msg']}] for [#{set['val']}]"}
     set
   end
 

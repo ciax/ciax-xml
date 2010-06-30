@@ -23,15 +23,15 @@ class RspFrame < Hash
   end
 
   def rspframe(sel,frame,time=Time.now)
-    @v.err("No Selection") unless self[:sel]=sel
-    @v.err("No String") unless @frame=frame
+    @v.err{"No Selection"} unless self[:sel]=sel
+    @v.err{"No String"} unless @frame=frame
     @field['time']="%.3f" % time.to_f
     setframe(@ddb['rspframe'])
     if self['cc']
       if self['cc'] == self[:cc]
-        @v.msg("Verify:CC OK")
+        @v.msg{"Verify:CC OK"}
       else
-        @v.err("Verifu:CC Mismatch[#{self['cc']}]!=[#{self[:cc]}]") 
+        @v.err{"Verifu:CC Mismatch[#{self['cc']}]!=[#{self[:cc]}]"}
       end
       delete('cc')
     end
@@ -45,13 +45,13 @@ class RspFrame < Hash
       a=c.attributes
       case c.name
       when 'ccrange'
-        @v.msg("Entering Ceck Code Node")
+        @v.msg{"Entering Ceck Code Node"}
         self[:cc] = checkcode(c,setframe(c))
-        @v.msg("Exitting Ceck Code Node")
+        @v.msg{"Exitting Ceck Code Node"}
       when 'selected'
-        @v.msg("Entering Selected Node")
+        @v.msg{"Entering Selected Node"}
         frame << setframe(self[:sel])
-        @v.msg("Exitting Selected Node")
+        @v.msg{"Exitting Selected Node"}
       when 'assign'
         frame << assign(c,c.text)
       when 'repeat_assign'
@@ -59,9 +59,9 @@ class RspFrame < Hash
           frame << assign(c,c.text % n)
         }
       when 'verify'
-        @v.msg("Verify:#{a['label']} [#{c.text}]")
+        @v.msg{"Verify:#{a['label']} [#{c.text}]"}
         frame << s=cut_frame(c)
-        @v.err("Verify Mismatch") if c.text != decode(c,s)
+        @v.err{"Verify Mismatch"} if c.text != decode(c,s)
       when 'rspcode'
         frame << s=cut_frame(c)
         label="ResponseCode:#{a['label']}:"
@@ -72,15 +72,15 @@ class RspFrame < Hash
           msg=label+a['msg']+" [#{str}]"
           case a['type']
           when 'pass'
-            @v.msg(msg)
+            @v.msg{msg}
           when 'warn'
-            @v.wrn(msg)
+            @v.wrn{msg}
           when 'error'
-            @v.err(msg)
+            @v.err{msg}
           end
           self[:sel]=@ddb.select_id(opt) if opt=a['option']
           break true
-        } || @v.wrn(label+":Unknown code [#{str}]")
+        } || @v.wrn{label+":Unknown code [#{str}]"}
       end
     }
     frame
@@ -90,7 +90,7 @@ class RspFrame < Hash
     code=cut_frame(e)
     key=substitute(key,self)
     @field[key]=decode(e,code)
-    @v.msg("Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]")
+    @v.msg{"Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]"}
     code
   end
 
@@ -98,19 +98,19 @@ class RspFrame < Hash
     a=e.attributes
     if l=a['length']
       len=l.to_i
-      @v.err("Too short (#{@frame.size-len})") if @frame.size < len
-      @v.msg("CutFrame:size=[#{len}]")
+      @v.err{"Too short (#{@frame.size-len})"} if @frame.size < len
+      @v.msg{"CutFrame:size=[#{len}]"}
       @frame.slice!(0,len)
     elsif d=a['delimiter']
       str=@frame.slice!(/.+?#{d}/).chop
-      @v.msg("CutFrame:[#{str}] by delimiter [#{d}]")
+      @v.msg{"CutFrame:[#{str}] by delimiter [#{d}]"}
       str
     elsif d=a['regexp']
       str=@frame.slice!(/#{d}/)
-      @v.msg("CutFrame:[#{str}] by regexp [#{d}]")
+      @v.msg{"CutFrame:[#{str}] by regexp [#{d}]"}
       str
     else
-      @v.err("No frame length or delimiter")
+      @v.err{"No frame length or delimiter"}
     end
   end
 end
@@ -125,12 +125,12 @@ class CmdFrame < Hash
   end
 
   def cmdframe(sel)
-    @v.err("No Selection") unless self[:sel]=sel
+    @v.err{"No Selection"} unless self[:sel]=sel
     if ccn=@ddb['cmdframe'].elements['ccrange']
-      @v.msg("Entering Ceck Code Range")
+      @v.msg{"Entering Ceck Code Range"}
       self['ccrange']=getframe(ccn)
       self['cc_cmd']=checkcode(ccn,self['ccrange'])
-      @v.msg("Exitting Ceck Code Range")
+      @v.msg{"Exitting Ceck Code Range"}
     end
     getframe(@ddb['cmdframe'])
   end
@@ -142,21 +142,21 @@ class CmdFrame < Hash
       label=c.attributes['label']
       case c.name
       when 'selected'
-        @v.msg("Entering Selected Node")
+        @v.msg{"Entering Selected Node"}
         frame << getframe(self[:sel])
-        @v.msg("Exitting Selected Node")
+        @v.msg{"Exitting Selected Node"}
       when 'data'
         frame << encode(c,c.text)
-        @v.msg("GetFrame:#{label}[#{c.text}]")
+        @v.msg{"GetFrame:#{label}[#{c.text}]"}
       when 'par'
         self[:par].each {|par|
           str=validate(c,par)
-          @v.msg("GetFrame:#{label}(parameter)[#{str}]")
+          @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
           frame << encode(c,str)
         }
       else
         frame << encode(c,self[c.name])
-        @v.msg("GetFrame:#{label}(#{c.name})[#{self[c.name]}]")
+        @v.msg{"GetFrame:#{label}(#{c.name})[#{self[c.name]}]"}
       end
     }
     frame.join(e.attributes['delimiter'])
@@ -184,7 +184,7 @@ class Dev
   def setcmd(cmdary)
     @cid=cmdary.clone
     session=@ddb.select_id(cmdary.shift)
-    @v.msg('Select:'+session.attributes['label'])
+    @v.msg{'Select:'+session.attributes['label']}
     @send=session.elements['send']
     @recv=session.elements['recv']
     @cmd[:par]=cmdary
@@ -195,7 +195,7 @@ class Dev
     return unless @send
     cid=@cid.join(':')
     if cmd=@cmdcache[cid]
-      @v.msg("Cmd cache found [#{cid}]")
+      @v.msg{"Cmd cache found [#{cid}]"}
       cmd
     else
       @cmdcache[cid]=@cmd.cmdframe(@send)

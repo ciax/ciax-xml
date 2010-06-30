@@ -16,40 +16,40 @@ class IoFile
 
   def save_stat(stat)
     open(VarDir+"/#{@type}.mar",'w') {|f|
-      @v.msg "Status Saving for [#{@type}]"
+      @v.msg{"Status Saving for [#{@type}]"}
       f << Marshal.dump(stat)
     }
     stat
   end
 
   def load_stat
-    @v.msg("Status Loading for [#{@type}]")
+    @v.msg{"Status Loading for [#{@type}]"}
     stat=Marshal.load(IO.read(VarDir+"/#{@type}.mar"))
     raise "No status in File" unless stat
-    @v.msg(stat.inspect)
+    @v.msg{stat.inspect}
     stat
   end
 
   def save_json(stat)
     open(JsonDir+"/#{@type}.json",'w') {|f|
-      @v.msg "JSON Status Saving for [#{@type}]"
+      @v.msg{"JSON Status Saving for [#{@type}]"}
       f << JSON.dump(stat)
     }
     stat
   end
 
   def load_json
-    @v.msg("JSON Status Loading for [#{@type}]")
+    @v.msg{"JSON Status Loading for [#{@type}]"}
     stat=JSON.load(IO.read(JsonDir+"/#{@type}.json"))
     raise "No status in File" unless stat
-    @v.msg(stat.inspect)
+    @v.msg{stat.inspect}
     stat
   end
 
   def save_frame(frame,id=nil)
     name=[@type,id].flatten.compact.join('_')
     open(VarDir+"/#{name}.bin",'w') {|f|
-      @v.msg "Frame Saving for [#{name}]"
+      @v.msg{"Frame Saving for [#{name}]"}
       f << frame
     }
     frame
@@ -57,10 +57,10 @@ class IoFile
 
   def load_frame(id=nil)
     name=[@type,id].flatten.compact.join('_')
-    @v.msg "Raw Status Loading for [#{name}]"
+    @v.msg{"Raw Status Loading for [#{name}]"}
     frame=IO.read(VarDir+"/#{name}.bin")
     raise "No frame in File" unless frame
-    @v.msg(frame.dump)
+    @v.msg{frame.dump}
     frame
   end 
 
@@ -69,7 +69,7 @@ class IoFile
     name=id.compact.join(':') if id
     line=["%.3f" % @time.to_f,name,frame.dump].compact.join("\t")
     open(VarDir+"/#{@logfile}.log",'a') {|f|
-      @v.msg "Frame Logging for [#{name}]"
+      @v.msg{"Frame Logging for [#{name}]"}
       f << line+"\n"
     }
     frame

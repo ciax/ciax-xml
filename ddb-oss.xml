@@ -71,12 +71,12 @@
           <assign label="LOGIN 3" delimiter="\n">login3</assign>
         </recv>
       </session>
-      <session id="exitcode" label="Exit Code" type="stat">
+      <session id="getexit" label="Exit Code" type="stat">
         <send>
-          <data label="Get Status File">cat exit.txt</data>
+          <data>osscmd</data>
         </send>
         <recv>
-          <assign label="Exit Code" delimiter="\n">exit</assign>
+          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
         </recv>
       </session>
       <session id="login" label="TSC Login" xmlns="http://ciax.sum.naoj.org/ciax-xml">
@@ -87,6 +87,9 @@
           <data label="Login Pass">CIAX%%%%%%%%%%%%</data>
           <data label="Dummy Code">dummyunit dummyMenu dummyMessage</data>
         </send>
+        <recv>
+          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+        </recv>
       </session>
       <session id="setinst" label="Set Instrument ID [1-12]" type="config">
         <send>
@@ -95,21 +98,21 @@
           <par label="Inst ID" format="%02d" validate="range">1:12</par>
         </send>
         <recv>
-          <assign label="Exit Code" delimiter="\n">exit</assign>
+          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
         </recv>
       </session>
       <session id="osscmd" label="Execute Command [code]" type="action">
         <send>
-          <data>osscmd</data>
-          <par label="Command Code" delimiter=" "></par>
+          <data>osscmd </data>
+          <par label="Command Code"></par>
         </send>
         <recv>
-          <assign label="Exit Code" delimiter="\n">exit</assign>
+          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
         </recv>
       </session>
     </selection>
     <cmdframe>
-      <selected />
+      <selected delimiter=" " />
       <data label="Suffix" pack="chr">10</data>
     </cmdframe>
     <rspframe>

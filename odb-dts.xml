@@ -19,7 +19,7 @@
           <text>logstat</text>
         </command>
         <command>
-          <text>exitcode</text>
+          <text>getexit</text>
         </command>
       </session>
       <session id="request" label="Start TCP Status Request">
@@ -28,7 +28,7 @@
           <text>1A1011</text>
         </command>
       </session>
-      <session id="login" label="Login">
+      <session id="init" label="Initialize">
         <command label="TSC Login">
           <text>login</text>
         </command>
@@ -37,11 +37,22 @@
           <text>1A1008TSCONLY</text>
         </command>
       </session>
-      <session id="logout" label="Logout">
+      <session id="shutdown" label="Shutdown">
         <command label="TSC Primaly Mode">
           <text>osscmd</text>
           <text>1A1008TSCPRI%</text>
         </command>
+        <command label="TSC Logout">
+          <text>osscmd</text>
+          <text>1A1902</text>
+        </command>
+      </session>
+      <session id="login" label="Login">
+        <command label="TSC Login">
+          <text>login</text>
+        </command>
+      </session>
+      <session id="logout" label="Logout">
         <command label="TSC Logout">
           <text>osscmd</text>
           <text>1A1902</text>

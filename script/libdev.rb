@@ -149,21 +149,17 @@ class CmdFrame < Hash
         frame << encode(c,c.text)
         @v.msg("GetFrame:#{label}[#{c.text}]")
       when 'par'
-        delim=self[:par].attributes['delimiter']||''
-        pary=Array.new
         self[:par].each {|par|
           str=validate(c,par)
-          pary << encode(c,str)
+          @v.msg("GetFrame:#{label}(parameter)[#{str}]")
+          frame << encode(c,str)
         }
-        pstr=pary.join(delim)
-        @v.msg("GetFrame:#{label}(parameter)[#{pstr}]")
-        frame << pstr
       else
         frame << encode(c,self[c.name])
         @v.msg("GetFrame:#{label}(#{c.name})[#{self[c.name]}]")
       end
     }
-    frame.join(@delim)
+    frame.join(e.attributes['delimiter'])
   end
 end
 
@@ -186,7 +182,7 @@ class Dev
   end
 
   def setcmd(cmdary)
-    @cid=cmdary
+    @cid=cmdary.clone
     session=@ddb.select_id(cmdary.shift)
     @v.msg('Select:'+session.attributes['label'])
     @send=session.elements['send']
@@ -197,11 +193,12 @@ class Dev
 
   def getcmd
     return unless @send
-    if cmd=@cmdcache[@cid]
-      @v.msg("Cmd cache found")
+    cid=@cid.join(':')
+    if cmd=@cmdcache[cid]
+      @v.msg("Cmd cache found [#{cid}]")
       cmd
     else
-      @cmdcache[@cid]=@cmd.cmdframe(@send)
+      @cmdcache[cid]=@cmd.cmdframe(@send)
     end
   end
 

@@ -165,15 +165,12 @@ class Obj < Hash
       txt=enum.text
       case enum.name
       when 'range'
-        if NumRange.new(txt) != set['val']
-          # @v.msg{"STAT:Symbol:Within [#{txt}](#{msg})?"}
-          next
-        end
+        next if NumRange.new(txt) != set['val']
+        # @v.msg{"STAT:Symbol:Within([#{txt}] =~ [#{set['val']}])"}
       when 'case'
-        if txt && txt != set['val']
-          # @v.msg{"STAT:Symbol:Matches (#{msg})?"}
-          next 
-        end
+        # No text is default
+        next if txt &&  /#{txt}/ !~ set['val']
+        # @v.msg{"STAT:Symbol:Matches(/#{txt}/ =~ [#{set['val']}])"}
       end
       a.each{|k,v| set[k]=v }
       break true

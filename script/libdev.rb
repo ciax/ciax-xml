@@ -135,7 +135,7 @@ class CmdFrame < Hash
 
   private
   def getframe(e)
-    frame=Array.new
+    frame=''
     e.each_element { |c|
       label=c.attributes['label']
       case c.name
@@ -147,17 +147,16 @@ class CmdFrame < Hash
         frame << encode(c,c.text)
         @v.msg{"GetFrame:#{label}[#{c.text}]"}
       when 'par'
-        self[:par].each {|par|
-          str=validate(c,par)
-          @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
-          frame << encode(c,str)
-        }
+        @v.err(self[:par]){"No Parameter"}
+        str=validate(c,self[:par])
+        @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
+        frame << encode(c,str)
       else
         frame << encode(c,self[c.name])
         @v.msg{"GetFrame:#{label}(#{c.name})[#{self[c.name]}]"}
       end
     }
-    frame.join(e.attributes['delimiter'])
+    frame
   end
 end
 
@@ -185,7 +184,7 @@ class Dev
     @v.msg{'Select:'+session.attributes['label']}
     @send=session.elements['send']
     @recv=session.elements['recv']
-    @cmd[:par]=cmdary
+    @cmd[:par]=cmdary.shift
 #    @rsp['par']=cmdary
   end
 
@@ -223,4 +222,3 @@ class DevCom < Dev
   end
 
 end
-

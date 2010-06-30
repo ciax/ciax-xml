@@ -43,7 +43,7 @@
   </xsd:element>
   <xsd:element name="command">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+      <xsd:choice minOccurs="1" maxOccurs="2">
         <xsd:element ref="cx:text" />
         <xsd:element ref="cx:eval" />
       </xsd:choice>

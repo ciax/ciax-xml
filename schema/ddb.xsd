@@ -110,9 +110,7 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="selected">
-    <xsd:complexType>
-      <xsd:attribute name="delimiter" type="xsd:string" />
-    </xsd:complexType>
+    <xsd:complexType></xsd:complexType>
   </xsd:element>
   <xsd:simpleType name="pack">
     <xsd:restriction base="xsd:string">

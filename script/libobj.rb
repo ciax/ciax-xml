@@ -120,12 +120,12 @@ class Obj < Hash
         if n=a['decimal']
           data.insert(-1-n.to_i,'.')
         end
-        val << format(dtype,data)
+        val << format(dtype,data.to_f)
       when 'int'
         if /true|1/ === a['signed']
           data=[data.to_i].pack('S').unpack('s').first
         end
-        val << format(dtype,data)
+        val << format(dtype,data.to_i)
       else
         val << data
       end

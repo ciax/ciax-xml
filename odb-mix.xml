@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="mix" label="MOIRCS Turret" device="ixe" client="socat - tcp:celaeno:4007" server="socat - udp-l:45707,reuseaddr,fork">
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:celaeno:4007" device="ixe" id="mix" label="MOIRCS Turret" server="socat - udp-l:45707,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <command text="getstat" />
-        <command text="chkr">
-          <par type="text">1</par>
+        <command>
+          <text>getstat</text>
         </command>
-        <command text="getp">
-          <par type="text">1</par>
+        <command>
+          <text>chkr</text>
+          <text>1</text>
+        </command>
+        <command>
+          <text>getp</text>
+          <text>1</text>
         </command>
       </session>
     </selection>
     <status>
       <var id="rdy" label="Comm Ready" symbol="ready">
-        <binary field="stat" bit="0" />
+        <binary bit="0" field="stat" />
       </var>
       <var id="srq" label="SRQ" symbol="no">
-        <binary field="stat" bit="1" />
+        <binary bit="1" field="stat" />
       </var>
       <var id="trm" label="Terminal Mode" symbol="no">
-        <binary field="stat" bit="2" />
+        <binary bit="2" field="stat" />
       </var>
       <var id="pme" label="Program Error" symbol="alarm">
-        <binary field="stat" bit="3" />
+        <binary bit="3" field="stat" />
       </var>
       <var id="pse" label="Power Stage Error" symbol="alarm">
-        <binary field="stat" bit="4" />
+        <binary bit="4" field="stat" />
       </var>
       <var id="oes" label="ONE EM Stop" symbol="stop">
-        <binary field="stat" bit="5" />
+        <binary bit="5" field="stat" />
       </var>
       <var id="ees" label="EXT EM Stop" symbol="stop">
-        <binary field="stat" bit="6" />
+        <binary bit="6" field="stat" />
       </var>
       <var id="cmd" label="Computer Mode" symbol="no">
-        <binary field="stat" bit="7" />
+        <binary bit="7" field="stat" />
       </var>
       <var id="r1" label="Running 1">
         <string field="r1" />
@@ -46,13 +50,13 @@
     </status>
     <symbols>
       <symbol id="stat" type="ENUM">
-        <case msg="Measurment data okay" hl="hide">0</case>
-        <case msg="Underrange" hl="warn">1</case>
-        <case msg="Overrange" hl="warn">2</case>
-        <case msg="Sensor error" hl="warn">3</case>
-        <case msg="Sensor off" hl="warn">4</case>
-        <case msg="No sensor" hl="warn">5</case>
-        <case msg="Identification error" hl="warn">6</case>
+        <case hl="hide" msg="Measurment data okay">0</case>
+        <case hl="warn" msg="Underrange">1</case>
+        <case hl="warn" msg="Overrange">2</case>
+        <case hl="warn" msg="Sensor error">3</case>
+        <case hl="warn" msg="Sensor off">4</case>
+        <case hl="warn" msg="No sensor">5</case>
+        <case hl="warn" msg="Identification error">6</case>
       </symbol>
     </symbols>
   </object>

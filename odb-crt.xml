@@ -1,51 +1,66 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<odb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="crt" label="Cart PLC" device="mel" client="socat - udp:cart3:5000" server="socat - udp-l:25101,reuseaddr,fork">
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - udp:cart3:5000" device="mel" id="crt" label="Cart PLC" server="socat - udp-l:25101,reuseaddr,fork">
     <selection>
       <session id="upd" label="Regular status update">
-        <command text="getstat" />
-        <command text="chken" />
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>chken</text>
+        </command>
       </session>
       <session id="start_run" label="Running Start">
-        <command text="start">
-          <par type="text">1</par>
+        <command>
+          <text>start</text>
+          <text>1</text>
         </command>
       </session>
       <session id="start_jak" label="Jacking Start">
-        <command text="start">
-          <par type="text">0x100</par>
+        <command>
+          <text>start</text>
+          <text>0x100</text>
         </command>
       </session>
       <session id="clear_trg" label="Jacking Start">
-        <command text="clear" />
+        <command>
+          <text>clear</text>
+        </command>
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
-        <command text="set_tag">
-          <par type="text">98</par>
+        <command>
+          <text>set_tag</text>
+          <text>98</text>
         </command>
       </session>
       <session id="set_run1" label="Run to Tag 1">
-        <command text="set_tag">
-          <par type="text">1</par>
+        <command>
+          <text>set_tag</text>
+          <text>1</text>
         </command>
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
-        <command text="set_pos">
-          <par type="text">2</par>
+        <command>
+          <text>set_pos</text>
+          <text>2</text>
         </command>
       </session>
       <session id="pause" label="Pause">
-        <command text="stop">
-          <par type="text">1</par>
+        <command>
+          <text>stop</text>
+          <text>1</text>
         </command>
       </session>
       <session id="emstop" label="Emergency Stop">
-        <command text="stop">
-          <par type="text">2</par>
+        <command>
+          <text>stop</text>
+          <text>2</text>
         </command>
       </session>
       <session id="resume" label="Resume from Pause">
-        <command text="clear" />
+        <command>
+          <text>clear</text>
+        </command>
       </session>
     </selection>
     <status>
@@ -98,7 +113,7 @@
         <int field="x08" signed="true" />
       </var>
       <var id="bvl" label="Battery Voltage" symbol="battery" trail="true">
-        <float field="x16" decimal="2" format="%2.2f" />
+        <float decimal="2" field="x16" format="%2.2f" />
       </var>
       <var id="ist" label="Instrument" symbol="inst">
         <int field="x17" />
@@ -114,29 +129,29 @@
       </var>
     </status>
     <symbols>
-      <symbol type="INT" id="motor">
+      <symbol id="motor" type="INT">
         <range hl="alarm" msg="LOW">:10</range>
         <range hl="normal" msg="OK">10&lt;:30</range>
         <range hl="alarm" msg="HIGH">30&lt;:</range>
       </symbol>
-      <symbol type="FLOAT" id="battery">
+      <symbol id="battery" type="FLOAT">
         <range hl="alarm" msg="LOW">:20</range>
         <range hl="warn" msg="LESS">20&lt;:22</range>
         <range hl="normal" msg="OK">22&lt;:26</range>
         <range hl="warn" msg="FULL">26&lt;:28</range>
         <range hl="alarm" msg="HIGH">28&lt;:</range>
       </symbol>
-      <symbol type="ENUM" id="inst">
+      <symbol id="inst" type="ENUM">
         <case hl="normal" msg="MOIRCS">2</case>
-        <case hl="warn" msg="N/A"></case>
+        <case hl="warn" msg="N/A" />
       </symbol>
-      <symbol type="ENUM" id="jpos">
+      <symbol id="jpos" type="ENUM">
         <case hl="normal" msg="D">0</case>
         <case hl="normal" msg="1(L)">1</case>
         <case hl="normal" msg="2(M)">2</case>
         <case hl="normal" msg="3(H)">3</case>
         <case hl="normal" msg="CHG">4</case>
-        <case hl="warn" msg="N/A"></case>
+        <case hl="warn" msg="N/A" />
       </symbol>
     </symbols>
   </object>

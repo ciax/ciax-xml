@@ -43,30 +43,15 @@
   </xsd:element>
   <xsd:element name="command">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cx:par" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cx:text" />
+        <xsd:element ref="cx:eval" />
+      </xsd:choice>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
-      <xsd:attribute name="text" type="xsd:string" use="required" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="par">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="label" type="xsd:string" />
-          <xsd:attribute name="type" use="required">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="formula" />
-                <xsd:enumeration value="text" />
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:element name="text" type="xsd:string"></xsd:element>
+  <xsd:element name="eval" type="xsd:string"></xsd:element>
   <!--status-->
   <xsd:element name="status">
     <xsd:complexType>

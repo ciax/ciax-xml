@@ -1,17 +1,51 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<odb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="dts" device="oss" label="TSC Control" client="socat - tcp:cxws:9999" server="socat - udp-l:25105,reuseaddr,fork">
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:cxws:9999" device="oss" id="dts" label="TSC Control" server="socat - udp-l:25105,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <command text="getstat"></command>
-        <command text="iststat"></command>
-        <command text="jakstat"></command>
-        <command text="inrstat"></command>
-        <command text="logstat"></command>
-        <command text="exitcode"></command>
+        <command>
+          <text>getstat</text>
+        </command>
+        <command>
+          <text>iststat</text>
+        </command>
+        <command>
+          <text>jakstat</text>
+        </command>
+        <command>
+          <text>inrstat</text>
+        </command>
+        <command>
+          <text>logstat</text>
+        </command>
+        <command>
+          <text>exitcode</text>
+        </command>
       </session>
-      <session id="request" label="Status Request">
-        <command text="request"></command>
+      <session id="request" label="Start TCP Status Request">
+        <command>
+          <text>osscmd</text>
+          <text>1A1011</text>
+        </command>
+      </session>
+      <session id="login" label="Login">
+        <command label="TSC Login">
+          <text>login</text>
+        </command>
+        <command label="TSC Only Mode(CIAX Mode)">
+          <text>osscmd</text>
+          <text>1A1008TSCONLY</text>
+        </command>
+      </session>
+      <session id="logout" label="Logout">
+        <command label="TSC Primaly Mode">
+          <text>osscmd</text>
+          <text>1A1008TSCPRI%</text>
+        </command>
+        <command label="TSC Logout">
+          <text>osscmd</text>
+          <text>1A1902</text>
+        </command>
       </session>
     </selection>
     <status>
@@ -20,7 +54,7 @@
       </var>
     </status>
     <symbols>
-      <symbol type="ENUM" id="inst">
+      <symbol id="inst" type="ENUM">
         <case hl="warn" msg="NONE">0</case>
         <case hl="normal" msg="CIAX3">1</case>
         <case hl="normal" msg="COMICS">2</case>

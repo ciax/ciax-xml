@@ -1,66 +1,86 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<odb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cci" label="IR Helium Compressor Control" device="bbe" client="socat - tcp:ltc-i:4002" server="socat - udp-l:25105,reuseaddr,fork" ref="cri">
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:ltc-i:4002" device="bbe" id="cci" label="IR Helium Compressor Control" ref="cri" server="socat - udp-l:25105,reuseaddr,fork">
     <selection>
-      <session id="upd" label="Update Status" ref="upd"></session>
-      <session id="c2on" label="CAS2(S1) ON" ref="x0on"></session>
-      <session id="c2off" label="CAS2(S1) OFF" ref="x0off"></session>
-      <session id="c1on" label="CAS1(S2) ON" ref="x1on"></session>
-      <session id="c1off" label="CAS1(S2) OFF" ref="x1off"></session>
-      <session id="m2on" label="MOIRCS CR(S8) ON" ref="x2on"></session>
-      <session id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off"></session>
-      <session id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on"></session>
-      <session id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off"></session>
-      <session id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on"></session>
-      <session id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off"></session>
+      <session id="upd" label="Update Status" ref="upd" />
+      <session id="c2on" label="CAS2(S1) ON" ref="x0on" />
+      <session id="c2off" label="CAS2(S1) OFF" ref="x0off" />
+      <session id="c1on" label="CAS1(S2) ON" ref="x1on" />
+      <session id="c1off" label="CAS1(S2) OFF" ref="x1off" />
+      <session id="m2on" label="MOIRCS CR(S8) ON" ref="x2on" />
+      <session id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off" />
+      <session id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on" />
+      <session id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off" />
+      <session id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on" />
+      <session id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
       <session id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
       <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
       <session id="caon" label="CAS BOTH HC ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">${stat} | 0x0011</par>
+        <command>
+          <text>getstat</text>
         </command>
-        <command text="getstat" />
+        <command>
+          <text>output</text>
+          <eval>${stat} | 0x0011</eval>
+        </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="caoff" label="CAS BOTH HC OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">${stat} &amp; 0xffee</par>
+        <command>
+          <text>getstat</text>
         </command>
-        <command text="getstat" />
+        <command>
+          <text>output</text>
+          <eval>${stat} &amp; 0xffee</eval>
+        </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="maon" label="MOIRCS BOTH ON">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">${stat} | 0x1100</par>
+        <command>
+          <text>getstat</text>
         </command>
-        <command text="getstat" />
+        <command>
+          <text>output</text>
+          <eval>${stat} | 0x1100</eval>
+        </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
       <session id="maoff" label="MOIRCS BOTH OFF">
-        <command text="getstat" />
-        <command text="output">
-          <par type="formula">${stat} &amp; 0xeeff</par>
+        <command>
+          <text>getstat</text>
         </command>
-        <command text="getstat" />
+        <command>
+          <text>output</text>
+          <eval>${stat} &amp; 0xeeff</eval>
+        </command>
+        <command>
+          <text>getstat</text>
+        </command>
       </session>
     </selection>
     <status>
-      <var id="s1:sw" label="CAS2(S1)(CIAO) SWITCH" ref="x0:sw"></var>
-      <var id="s1:dr" label="CAS2(S1)(CIAO) DRIVE" ref="x0:dr"></var>
-      <var id="s1:tm" label="CAS2(S1)(CIAO) TEMP" ref="x0:tm"></var>
-      <var id="s1:pr" label="CAS2(S1)(CIAO) PRESSURE" ref="x0:pr"></var>
-      <var id="s2:sw" label="CAS1(S2)(MOIRCS/MAIN) SWITCH" ref="x1:sw"></var>
-      <var id="s2:dr" label="CAS1(S2)(MOIRCS/MAIN) DRIVE" ref="x1:dr"></var>
-      <var id="s2:tm" label="CAS1(S2)(MOIRCS/MAIN) TEMP" ref="x1:tm"></var>
-      <var id="s2:pr" label="CAS1(S2)(MOIRCS/MAIN) PRESSURE" ref="x1:pr"></var>
-      <var id="s8:sw" label="MOIRCS/CR(S8) SWITCH" ref="x2:sw"></var>
-      <var id="s8:dr" label="MOIRCS/CR(S8) DRIVE" ref="x2:dr"></var>
-      <var id="s8:tm" label="MOIRCS/CR(S8) TEMP" ref="x2:tm"></var>
-      <var id="s8:pr" label="MOIRCS/CR(S8) PRESSURE" ref="x2:pr"></var>
-      <var id="s9:sw" label="MOIRCS/MAIN(S9) SWITCH" ref="x3:sw"></var>
-      <var id="s9:dr" label="MOIRCS/MAIN(S9) DRIVE" ref="x3:dr"></var>
-      <var id="s9:tm" label="MOIRCS/MAIN(S9) TEMP" ref="x3:tm"></var>
-      <var id="s9:pr" label="MOIRCS/MAIN(S9) PRESSURE" ref="x3:pr"></var>
+      <var id="s1:sw" label="CAS2(S1)(CIAO) SWITCH" ref="x0:sw" />
+      <var id="s1:dr" label="CAS2(S1)(CIAO) DRIVE" ref="x0:dr" />
+      <var id="s1:tm" label="CAS2(S1)(CIAO) TEMP" ref="x0:tm" />
+      <var id="s1:pr" label="CAS2(S1)(CIAO) PRESSURE" ref="x0:pr" />
+      <var id="s2:sw" label="CAS1(S2)(MOIRCS/MAIN) SWITCH" ref="x1:sw" />
+      <var id="s2:dr" label="CAS1(S2)(MOIRCS/MAIN) DRIVE" ref="x1:dr" />
+      <var id="s2:tm" label="CAS1(S2)(MOIRCS/MAIN) TEMP" ref="x1:tm" />
+      <var id="s2:pr" label="CAS1(S2)(MOIRCS/MAIN) PRESSURE" ref="x1:pr" />
+      <var id="s8:sw" label="MOIRCS/CR(S8) SWITCH" ref="x2:sw" />
+      <var id="s8:dr" label="MOIRCS/CR(S8) DRIVE" ref="x2:dr" />
+      <var id="s8:tm" label="MOIRCS/CR(S8) TEMP" ref="x2:tm" />
+      <var id="s8:pr" label="MOIRCS/CR(S8) PRESSURE" ref="x2:pr" />
+      <var id="s9:sw" label="MOIRCS/MAIN(S9) SWITCH" ref="x3:sw" />
+      <var id="s9:dr" label="MOIRCS/MAIN(S9) DRIVE" ref="x3:dr" />
+      <var id="s9:tm" label="MOIRCS/MAIN(S9) TEMP" ref="x3:tm" />
+      <var id="s9:pr" label="MOIRCS/MAIN(S9) PRESSURE" ref="x3:pr" />
     </status>
   </object>
 </odb>

@@ -71,51 +71,9 @@
           <assign label="LOGIN 3" delimiter="\n">login3</assign>
         </recv>
       </session>
-      <session id="runstat" label="Running Status" type="stat">
+      <session id="exitcode" label="Exit Code" type="stat">
         <send>
-          <data label="Get Status File">cat run.txt</data>
-        </send>
-        <recv>
-          <assign label="Running?" delimiter="\n">exit</assign>
-        </recv>
-      </session>
-      <session id="reqstat" label="Status Request via TCP" type="config">
-        <send>
-          <data label="Execute Command">OSST_ciaxTSCcommand</data>
-          <data label="Timeout"> 20</data>
-          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
-          <data label="Command Code">1A1011</data>
-          <data label="Command Suffix">"'</data>
-          <data label="Status Output">;echo $?</data>
-        </send>
-        <recv>
-          <assign label="Exit Code" delimiter="\n">exit</assign>
-        </recv>
-      </session>
-      <session id="login" label="TSC Login" type="config">
-        <send>
-          <data label="Execute Command">OSST_ciaxTSCcommand</data>
-          <data label="Timeout"> 20</data>
-          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
-          <data label="Command Code">1A1901</data>
-          <data label="Login ID">ciax%%%%%%%%%%%%%%%%</data>
-          <data label="Login Pass"> CIAX%%%%%%%%%%%%</data>
-          <data label="Dummy Code"> dummyunit dummyMenu dummyMessage</data>
-          <data label="Command Suffix">"'</data>
-          <data label="Status Output">;echo $?</data>
-        </send>
-        <recv>
-          <assign label="Exit Code" delimiter="\n">exit</assign>
-        </recv>
-      </session>
-      <session id="logout" label="TSC Logout" type="config">
-        <send>
-          <data label="Execute Command">OSST_ciaxTSCcommand</data>
-          <data label="Timeout"> 20</data>
-          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
-          <data label="Command Code">1A1902</data>
-          <data label="Command Suffix">"'</data>
-          <data label="Status Output">;echo $?</data>
+          <data label="Get Status File">cat exit.txt</data>
         </send>
         <recv>
           <assign label="Exit Code" delimiter="\n">exit</assign>
@@ -161,24 +119,17 @@
           <assign label="Exit Code" delimiter="\n">exit</assign>
         </recv>
       </session>
-      <session id="ltc" label="Long Term Command [code]" type="action">
+      <session id="osscmd" label="Execute Command [code]" type="action">
         <send>
-          <data label="Command Start">(echo 'run' &gt; run.txt;</data>
           <data label="Execute Command">OSST_ciaxTSCcommand</data>
           <data label="Timeout"> 120</data>
           <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
-          <par label="Command COde"></par>
+          <par label="Command Code"></par>
           <data label="Command Suffix">"'</data>
-          <data label="Status Output">;echo $? &gt; run.txt) &amp;</data>
         </send>
-      </session>
-      <session id="sleep" label="Sleep [sec]" type="action">
-        <send>
-          <data label="Command Start">(echo 'run' &gt; run.txt;</data>
-          <data label="Execute Command">sleep </data>
-          <par label="Sec" validate="range">1:30</par>
-          <data label="Status Output">;echo $? &gt; run.txt) &amp;</data>
-        </send>
+        <recv>
+          <assign label="Exit Code" delimiter="\n">exit</assign>
+        </recv>
       </session>
     </selection>
     <cmdframe>

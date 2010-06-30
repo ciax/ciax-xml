@@ -67,9 +67,9 @@ class Obj < Hash
   #Cmd Method
   def get_cmd(e)
     cmdary=[e.attributes['text']]
-    e.each_element{|par|
-      str=substitute(par.text,@field)
-      if par.attributes['type'] == 'formula'
+    e.each_element{|txt|
+      str=substitute(txt.text,@field)
+      if txt.name == 'eval'
         str=eval(str).to_s
         @v.msg("CMD:Evaluated [#{str}]")
       end

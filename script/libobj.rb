@@ -66,7 +66,7 @@ class Obj < Hash
 
   #Cmd Method
   def get_cmd(e)
-    cmdary=[e.attributes['text']]
+    cmdary=Array.new
     e.each_element{|txt|
       str=substitute(txt.text,@field)
       if txt.name == 'eval'

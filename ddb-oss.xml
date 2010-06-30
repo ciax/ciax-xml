@@ -79,41 +79,20 @@
           <assign label="Exit Code" delimiter="\n">exit</assign>
         </recv>
       </session>
-      <session id="exmode" label="TSC Only Mode(CIAX Mode)" type="config">
+      <session id="login" label="TSC Login" xmlns="http://ciax.sum.naoj.org/ciax-xml">
         <send>
-          <data label="Execute Command">OSST_ciaxTSCcommand</data>
-          <data label="Timeout"> 20</data>
-          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
-          <data label="Command Code">1A1008TSCONLY</data>
-          <data label="Command Suffix">"'</data>
-          <data label="Status Output">;echo $?</data>
+          <data>osscmd</data>
+          <data label="Command Code">1A1901</data>
+          <data label="Login ID">ciax%%%%%%%%%%%%%%%%</data>
+          <data label="Login Pass">CIAX%%%%%%%%%%%%</data>
+          <data label="Dummy Code">dummyunit dummyMenu dummyMessage</data>
         </send>
-        <recv>
-          <assign label="Exit Code" delimiter="\n">exit</assign>
-        </recv>
-      </session>
-      <session id="primode" label="TSC Primaly Mode" type="config">
-        <send>
-          <data label="Execute Command">OSST_ciaxTSCcommand</data>
-          <data label="Timeout"> 20</data>
-          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
-          <data label="Command Code">1A1008TSCPRI%</data>
-          <data label="Command Suffix">"'</data>
-          <data label="Status Output">;echo $?</data>
-        </send>
-        <recv>
-          <assign label="Exit Code" delimiter="\n">exit</assign>
-        </recv>
       </session>
       <session id="setinst" label="Set Instrument ID [1-12]" type="config">
         <send>
-          <data label="Execute Command">OSST_ciaxTSCcommand</data>
-          <data label="Timeout"> 20</data>
-          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data>osscmd</data>
           <data label="Command Code">13200700</data>
           <par label="Inst ID" format="%02d" validate="range">1:12</par>
-          <data label="Command Suffix">"'</data>
-          <data label="Status Output">;echo $?</data>
         </send>
         <recv>
           <assign label="Exit Code" delimiter="\n">exit</assign>
@@ -121,11 +100,8 @@
       </session>
       <session id="osscmd" label="Execute Command [code]" type="action">
         <send>
-          <data label="Execute Command">OSST_ciaxTSCcommand</data>
-          <data label="Timeout"> 120</data>
-          <data label="Command Prefix"> 'EXEC TSC NATIVE CMD="cccccc</data>
-          <par label="Command Code"></par>
-          <data label="Command Suffix">"'</data>
+          <data>osscmd</data>
+          <par label="Command Code" delimiter=" "></par>
         </send>
         <recv>
           <assign label="Exit Code" delimiter="\n">exit</assign>

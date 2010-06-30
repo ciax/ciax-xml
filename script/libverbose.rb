@@ -19,8 +19,8 @@ class Verbose
     warn mkmsg(yield)
   end
 
-  def err
-    raise mkmsg(yield)
+  def err(cond=nil)
+    raise mkmsg(yield) unless cond
   end
 
   # Private Method

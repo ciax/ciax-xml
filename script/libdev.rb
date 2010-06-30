@@ -23,16 +23,14 @@ class RspFrame < Hash
   end
 
   def rspframe(sel,frame,time=Time.now)
-    @v.err{"No Selection"} unless self[:sel]=sel
-    @v.err{"No String"} unless @frame=frame
+    @v.err(self[:sel]=sel){"No Selection"}
+    @v.err(@frame=frame){"No String"}
     @field['time']="%.3f" % time.to_f
     setframe(@ddb['rspframe'])
     if self['cc']
-      if self['cc'] == self[:cc]
-        @v.msg{"Verify:CC OK"}
-      else
-        @v.err{"Verifu:CC Mismatch[#{self['cc']}]!=[#{self[:cc]}]"}
-      end
+      @v.err(self['cc'] == self[:cc]){
+        "Verifu:CC Mismatch[#{self['cc']}]!=[#{self[:cc]}]"}
+      @v.msg{"Verify:CC OK"}
       delete('cc')
     end
     @f.save_stat(@field)
@@ -61,7 +59,7 @@ class RspFrame < Hash
       when 'verify'
         @v.msg{"Verify:#{a['label']} [#{c.text}]"}
         frame << s=cut_frame(c)
-        @v.err{"Verify Mismatch"} if c.text != decode(c,s)
+        @v.err(c.text == decode(c,s)){"Verify Mismatch"}
       when 'rspcode'
         frame << s=cut_frame(c)
         label="ResponseCode:#{a['label']}:"
@@ -98,7 +96,7 @@ class RspFrame < Hash
     a=e.attributes
     if l=a['length']
       len=l.to_i
-      @v.err{"Too short (#{@frame.size-len})"} if @frame.size < len
+      @v.err(@frame.size >= len){"Too short (#{@frame.size-len})"}
       @v.msg{"CutFrame:size=[#{len}]"}
       @frame.slice!(0,len)
     elsif d=a['delimiter']
@@ -125,7 +123,7 @@ class CmdFrame < Hash
   end
 
   def cmdframe(sel)
-    @v.err{"No Selection"} unless self[:sel]=sel
+    @v.err(self[:sel]=sel){"No Selection"}
     if ccn=@ddb['cmdframe'].elements['ccrange']
       @v.msg{"Entering Ceck Code Range"}
       self['ccrange']=getframe(ccn)

@@ -7,7 +7,7 @@ class XmlDb
   def initialize(doc,xpath,title='XMLDB')
     @v=Verbose.new(title)
     @doc=doc
-    @cn=doc.elements[xpath] || @v.err{"No such Xpath"}
+    @v.err(@cn=doc.elements[xpath]){"No such Xpath"}
   end
 
   # Public Method

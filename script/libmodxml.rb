@@ -39,11 +39,11 @@ module ModXml
   end
 
   def validate(e,str)
-    @v.err{"No Parameter"} unless str
+    @v.err(str){"No Parameter"}
     @v.msg{"Validate String [#{str}]"}
     case e.attributes['validate']
     when 'regexp'
-      @v.err{"Parameter invalid(#{e.text})"} if /^#{e.text}$/ !~ str
+      @v.err(/^#{e.text}$/ === str){"Parameter invalid(#{e.text})"}
     when 'range'
       e.text.split(',').any? { |s|
         NumRange.new(s) == str

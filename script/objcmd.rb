@@ -6,7 +6,7 @@ warn "Usage: objcmd [obj] [cmd]" if ARGV.size < 1
 
 begin
   odb=Obj.new(ARGV.shift)
-  field=IoFile.new(odb['device']).load_stat
+  field=IoFile.new('field_'+odb['device']).load_stat
   odb.get_stat(field)
   ENV['VER']='exec'
   odb.objcom(ARGV.shift||''){}

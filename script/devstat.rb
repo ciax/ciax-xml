@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libdev"
 
-warn "Usage: devstat [dev] [cmd] (par)< file" if ARGV.size < 1
+warn "Usage: devstat [dev] [cmd] (par)< logfile" if ARGV.size < 1
 
 begin
   c=Dev.new(ARGV.shift)
@@ -9,5 +9,8 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
-print Marshal.dump c.setrsp{ gets(nil) }
+ary=gets.split("\t")
+time=Time.at(ary.shift.to_f)
+abort("CID mismatch") if 'rcv:'+c.cid !=  ary.shift
+print Marshal.dump c.setrsp(time){ eval(ary.shift) }
 

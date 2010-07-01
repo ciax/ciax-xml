@@ -5,5 +5,5 @@ for dev in ${1:-mel srm k3n bbe tpg}; do
     echo "#[$dev]#"
     devcmd $dev getstat || exit 1
     echo
-    tail -1 $input|ruby -F"\t" -na -e 'print eval($F[2])' | devstat $dev getstat|mar
+    tail -1 $input| devstat $dev getstat|mar
 done  | visi

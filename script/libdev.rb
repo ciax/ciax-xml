@@ -176,6 +176,7 @@ end
 
 # Main
 class Dev
+  attr_reader :cid,:field
 
   def initialize(dev,obj=nil)
     id=obj||dev
@@ -189,6 +190,7 @@ class Dev
       @cmd=CmdFrame.new(@ddb)
       @cid=String.new
       @cmdcache=Hash.new
+      @field=@rsp.field
    end
   end
 
@@ -215,10 +217,6 @@ class Dev
   def setrsp(time=Time.now)
     return unless @recv
     @rsp.rspframe(@recv,time){yield}
-  end
-
-  def field
-    @rsp.field
   end
 
 end

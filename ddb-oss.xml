@@ -16,7 +16,7 @@
         </send>
         <recv>
           <assign label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n">rsel</assign>
-          <assign label="Stow pin Status" delimiter="\n">stow_1</assign>
+          <assign label="Stow pin Status" delimiter="\n" unpack="hexstr">stow_1</assign>
           <assign label="Shutter Status" delimiter="\n">shutter</assign>
           <assign label="AZ/EL Drive Status" delimiter="\n">teldrive</assign>
           <assign label="EL Angle(deg)" delimiter="\n">el</assign>

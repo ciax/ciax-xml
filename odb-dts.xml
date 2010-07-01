@@ -104,6 +104,12 @@
         <binary field="bstat" bit="4" />
         <binary field="bstat" bit="5" />
       </var>
+      <var id="stw" label="EL STOW" symbol="off-warn" trail="true">
+        <binary field="stow_1" bit="2" />
+      </var>
+      <var id="stp" label="EL 90 STOW" symbol="off-warn">
+        <binary field="stow_1" bit="0" />
+      </var>
     </status>
     <symbols>
       <symbol id="inst" type="ENUM">

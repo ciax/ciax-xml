@@ -2,12 +2,11 @@
 require "libobj"
 require "libiofile"
 
-warn "Usage: objstat [object]" if ARGV.size < 1
+abort "Usage: objstat [object] < field_file" if ARGV.size < 1
 
 begin
   odb=Obj.new(ARGV.shift)
-  field=IoFile.new('field_'+odb['device']).load_stat
-  stat=odb.get_stat(field)
+  stat=odb.get_stat(Marshal.load(gets(nil)))
 rescue RuntimeError
   abort $!.to_s
 end

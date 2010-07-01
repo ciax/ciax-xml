@@ -22,31 +22,6 @@
           <text>getexit</text>
         </command>
       </session>
-      <session id="request" label="Start TCP Status Request">
-        <command>
-          <text>osscmd</text>
-          <text>1A1011</text>
-        </command>
-      </session>
-      <session id="init" label="Initialize">
-        <command label="TSC Login">
-          <text>login</text>
-        </command>
-        <command label="TSC Only Mode(CIAX Mode)">
-          <text>osscmd</text>
-          <text>1A1008TSCONLY</text>
-        </command>
-      </session>
-      <session id="shutdown" label="Shutdown">
-        <command label="TSC Primaly Mode">
-          <text>osscmd</text>
-          <text>1A1008TSCPRI%</text>
-        </command>
-        <command label="TSC Logout">
-          <text>osscmd</text>
-          <text>1A1902</text>
-        </command>
-      </session>
       <session id="login" label="Login">
         <command label="TSC Login">
           <text>login</text>
@@ -54,14 +29,55 @@
       </session>
       <session id="logout" label="Logout">
         <command label="TSC Logout">
-          <text>osscmd</text>
-          <text>1A1902</text>
+          <text>logout</text>
+        </command>
+      </session>
+      <session id="request" label="Start TCP Status Request">
+        <command>
+          <text>config</text>
+          <text>1A1011</text>
+        </command>
+      </session>
+      <session id="startup" label="Start Up CIAX operation">
+        <command label="TSC Login">
+          <text>login</text>
+        </command>
+        <command label="TSC Only Mode(CIAX Mode)">
+          <text>config</text>
+          <text>1A1008TSCONLY</text>
+        </command>
+      </session>
+      <session id="shutdown" label="Shutdown CIAX operation">
+        <command label="TSC Primaly Mode">
+          <text>config</text>
+          <text>1A1008TSCPRI%</text>
+        </command>
+        <command label="TSC Logout">
+          <text>logout</text>
+        </command>
+      </session>
+      <session id="setinst" label="Set Dummy Inst ID">
+        <command>
+          <text>setinst</text>
+          <text>0</text>
         </command>
       </session>
     </selection>
     <status>
       <var id="exit" label="Exit Code" trail="true">
         <int field="exit" />
+      </var>
+      <var id="rts" label="ROT SEL" trail="true" symbol="rsel">
+        <int field="rtype" />
+      </var>
+      <var id="iid" label="CAS INST ID" trail="true" symbol="inst">
+        <int field="iid" />
+      </var>
+      <var id="login" label="Login Status" trail="true" symbol="login">
+        <string field="login0" />
+        <string field="login1" />
+        <string field="login2" />
+        <string field="login3" />
       </var>
     </status>
     <symbols>
@@ -76,6 +92,19 @@
         <case hl="normal" msg="MOIRCS">7</case>
         <case hl="normal" msg="MP-CS1">8</case>
         <case hl="normal" msg="MP-CS2">9</case>
+      </symbol>
+      <symbol id="rsel" type="ENUM">
+        <case hl="warn" msg="PFO">01</case>
+        <case hl="warn" msg="PFI">02</case>
+        <case hl="normal" msg="CAS">04</case>
+        <case hl="warn" msg="NSO">08</case>
+        <case hl="warn" msg="NSI">10</case>
+        <case hl="alarm" msg="N/A"></case>
+      </symbol>
+      <symbol id="login" type="ENUM">
+        <case hl="normal" msg="LOGIN">CXWS</case>
+        <case hl="alarm" msg="OSS Login">OSS</case>
+        <case hl="warn" msg="LOGOUT"></case>
       </symbol>
     </symbols>
   </object>

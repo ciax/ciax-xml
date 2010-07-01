@@ -13,7 +13,7 @@
           <data label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</data>
         </send>
         <recv>
-          <assign label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n">rtype</assign>
+          <assign label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n">rsel</assign>
           <assign label="Stow pin Status" delimiter="\n">stow_1</assign>
           <assign label="Shutter Status" delimiter="\n">shutter</assign>
           <assign label="AZ/EL Drive Status" delimiter="\n">teldrive</assign>
@@ -27,7 +27,7 @@
           <data label="CAS Instrument"> CXWS.TSCV.OBE_INR</data>
         </send>
         <recv>
-          <assign label="CAS Instrument" delimiter="\n">inst</assign>
+          <assign label="CAS Instrument" delimiter="\n">iid</assign>
         </recv>
       </session>
       <session id="jakstat" label="Jack Bolt Status" type="stat">
@@ -73,37 +73,59 @@
       </session>
       <session id="getexit" label="Exit Code" type="stat">
         <send>
-          <data>osscmd</data>
+          <data>cat $HOME/.var/exit.txt</data>
         </send>
         <recv>
           <assign label="Exit Code" regexp="[0-9]+">exit</assign>
         </recv>
       </session>
-      <session id="login" label="TSC Login" xmlns="http://ciax.sum.naoj.org/ciax-xml">
+      <session id="login" label="TSC Login">
         <send>
-          <data>osscmd</data>
-          <data label="Command Code">1A1901</data>
-          <data label="Login ID">ciax%%%%%%%%%%%%%%%%</data>
-          <data label="Login Pass">CIAX%%%%%%%%%%%%</data>
-          <data label="Dummy Code">dummyunit dummyMenu dummyMessage</data>
+          <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data>1A1901 </data>
+          <data>ciax%%%%%%%%%%%%%%%% </data>
+          <data>CIAX%%%%%%%%%%%% </data>
+          <data>dummyunit dummyMenu dummyMessage</data>
+          <data>"';echo $?|tee $HOME/.var/exit.txt</data>
         </send>
         <recv>
           <assign label="Exit Code" regexp="[0-9]+">exit</assign>
         </recv>
       </session>
-      <session id="setinst" label="Set Instrument ID [1-12]" type="config">
+      <session id="logout" label="TSC Logout">
         <send>
-          <data>osscmd</data>
-          <data label="Command Code">13200700</data>
+          <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data>1A1902</data>
+          <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+        </send>
+        <recv>
+          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+        </recv>
+      </session>
+      <session id="setinst" label="Set Instrument ID [0-12]" type="config">
+        <send>
+          <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
+          <data>13200700</data>
           <par label="Inst ID" format="%02d" validate="range">1:12</par>
+          <data>"';echo $?|tee $HOME/.var/exit.txt</data>
         </send>
         <recv>
           <assign label="Exit Code" regexp="[0-9]+">exit</assign>
         </recv>
       </session>
-      <session id="osscmd" label="Execute Command [code]" type="action">
+      <session id="config" label="Execute Config Command [code]">
         <send>
-          <data>osscmd </data>
+          <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
+          <par label="Command Code"></par>
+          <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+        </send>
+        <recv>
+          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+        </recv>
+      </session>
+      <session id="ossact" label="Execute Action Command [code]" type="action">
+        <send>
+          <data>ossact</data>
           <par label="Command Code"></par>
         </send>
         <recv>
@@ -112,7 +134,7 @@
       </session>
     </selection>
     <cmdframe>
-      <selected delimiter=" " />
+      <selected />
       <data label="Suffix" pack="chr">10</data>
     </cmdframe>
     <rspframe>

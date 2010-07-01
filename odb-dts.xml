@@ -73,11 +73,24 @@
       <var id="iid" label="CAS INST ID" trail="true" symbol="inst">
         <int field="iid" />
       </var>
-      <var id="login" label="Login Status" trail="true" symbol="login">
+      <var id="login" label="Login Status" symbol="login">
         <string field="login0" />
         <string field="login1" />
         <string field="login2" />
         <string field="login3" />
+      </var>
+      <var id="rpw" label="ROT DRIVE" trail="true" symbol="rpw">
+        <int field="rpw" />
+      </var>
+      <var id="jpw" label="JAK DRIVE" trail="true" symbol="normal">
+        <binary field="bstat" bit="7" />
+      </var>
+      <var id="nfb" label="BOLT NFB TRIP" trail="true" symbol="alarm">
+        <binary field="bstat" bit="6" />
+      </var>
+      <var id="rps" label="ROT POS SENSOR" symbol="rps">
+        <binary field="bstat" bit="4" />
+        <binary field="bstat" bit="5" />
       </var>
     </status>
     <symbols>
@@ -94,17 +107,27 @@
         <case hl="normal" msg="MP-CS2">9</case>
       </symbol>
       <symbol id="rsel" type="ENUM">
-        <case hl="warn" msg="PFO">01</case>
-        <case hl="warn" msg="PFI">02</case>
-        <case hl="normal" msg="CAS">04</case>
-        <case hl="warn" msg="NSO">08</case>
+        <case hl="warn" msg="PFO">1</case>
+        <case hl="warn" msg="PFI">2</case>
+        <case hl="normal" msg="CAS">4</case>
+        <case hl="warn" msg="NSO">8</case>
         <case hl="warn" msg="NSI">10</case>
         <case hl="alarm" msg="N/A"></case>
       </symbol>
       <symbol id="login" type="ENUM">
-        <case hl="normal" msg="LOGIN">CXWS</case>
         <case hl="alarm" msg="OSS Login">OSS</case>
+        <case hl="normal" msg="LOGIN">CXWS</case>
         <case hl="warn" msg="LOGOUT"></case>
+      </symbol>
+      <symbol id="rpw" type="ENUM">
+        <case hl="warn" msg="ON">1</case>
+        <case hl="normal" msg="OFF">2</case>
+      </symbol>
+      <symbol id="rps" type="ENUM">
+        <case hl="normal" msg="OFF">11</case>
+        <case hl="normal" msg="0DEG">10</case>
+        <case hl="normal" msg="-4DEG">01</case>
+        <case hl="alarm" msg="N/A"></case>
       </symbol>
     </symbols>
   </object>

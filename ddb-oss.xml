@@ -11,6 +11,8 @@
           <data label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</data>
           <data label="EL Angle(deg)"> CXWS.TSCS.EL</data>
           <data label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</data>
+          <data label="InR Drive ON/OFF"> TSCV.InsRotRotation</data>
+          <data label="BOLT Status"> CXWS.TSCV.0_SENSOR</data>
         </send>
         <recv>
           <assign label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n">rsel</assign>
@@ -19,6 +21,8 @@
           <assign label="AZ/EL Drive Status" delimiter="\n">teldrive</assign>
           <assign label="EL Angle(deg)" delimiter="\n">el</assign>
           <assign label="CIAX-MLP3 Comm Error" delimiter="\n">mlp3</assign>
+          <assign label="InR Drive ON/OFF" delimiter="\n">rpw</assign>
+          <assign label="BOLT System Status" delimiter="\n" unpack="hexstr">bstat</assign>
         </recv>
       </session>
       <session id="iststat" label="Get Instrument ID" type="stat">
@@ -33,27 +37,30 @@
       <session id="jakstat" label="Jack Bolt Status" type="stat">
         <send>
           <data label="Status Command">OSSC_screenPrint -R</data>
-          <data label="Bolt Power"> CXWS.TSCV.POWER_V1</data>
-          <data label="InR 0deg Sensor"> CXWS.TSCV.0_SENSOR</data>
-          <data label="Bolt Position"> CXWS.TSCV.POWER_V2</data>
-          <data label="Zsensor Position"> CXWS.TSCL.Z_SENSOR</data>
+          <data label="Bolt Each Status"> CXWS.TSCV.POWER_V1</data>
+          <data label="Bolt Each Position"> CXWS.TSCV.POWER_V2</data>
+          <data label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</data>
         </send>
         <recv>
-          <assign label="Jack Bolt Power" delimiter="\n">jpw</assign>
-          <assign label="InR 0deg Sensor" delimiter="\n">jpin</assign>
-          <assign label="Bolt Position" delimiter="\n">jpos</assign>
-          <assign label="Zsensor Position" delimiter="\n">zpos</assign>
+          <assign label="BOLT SUM ALM(POWER_V1)" length="2">bsa</assign>
+          <assign label="ALL BOLT STAT(POWER_V1)" length="2">cjb</assign>
+          <repeat_assign label="Each Bolt Status(POWER_V1)" range="1:16" length="1">bl%02d</repeat_assign>
+          <repeat_assign label="Each Bolt Alarm(POWER_V1)" range="1:16" length="1">be%02d</repeat_assign>
+          <assign label="MLP3-BOLT COMM(POWER_V1)" length="2">mba</assign>
+          <assign label="BOLT CONTROL SOURCE(POWER_V1)" length="2">bcl</assign>
+          <assign label="Jack Home(POWER_V1)" delimiter="\n">cjh</assign>
+          <repeat_assign label="Bolt Position(POWER_V2)" range="1:16" length="12">jk%02d</repeat_assign>
+          <verify unpack="chr" length="1">10</verify>
+          <repeat_assign label="Zsensor Position" range="1:4" length="12">zp%d</repeat_assign>
         </recv>
       </session>
       <session id="inrstat" label="Cas InR Status" type="stat">
         <send>
           <data label="Status Command">OSSC_screenPrint -R</data>
-          <data label="InR Drive ON/OFF"> TSCV.InsRotRotation</data>
           <data label="InR Angle(deg)"> CXWS.TSCS.INSROT</data>
         </send>
         <recv>
-          <assign label="InR Drive ON/OFF" delimiter="\n">idrv</assign>
-          <assign label="InR Angle(deg)" delimiter="\n">ideg</assign>
+          <assign label="InR Angle(deg)" delimiter="\n">iang</assign>
         </recv>
       </session>
       <session id="logstat" label="Login Status" type="stat">

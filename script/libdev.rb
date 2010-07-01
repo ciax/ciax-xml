@@ -8,24 +8,16 @@ require "libmodxml"
 # Rsp Methods
 class RspFrame < Hash
   include ModXml
-  attr_reader :field
 
-  def initialize(ddb,id)
+  def initialize(ddb)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
-    @fd=IoFile.new("field_#{id}")
-    begin
-      @field=@fd.load_stat
-    rescue
-      warn $!
-      @field={'device'=>@ddb['id'] }
-    end
   end
 
-  def rspframe(sel,time=Time.now)
+  def rspframe(sel)
     @v.err(self[:sel]=sel){"No Selection"}
     @v.err(@frame=yield){"No String"}
-    @field['time']="%.3f" % time.to_f
+    @field=Hash.new
     setframe(@ddb['rspframe'])
     if self['cc']
       @v.err(self['cc'] == self[:cc]){
@@ -33,7 +25,7 @@ class RspFrame < Hash
       @v.msg{"Verify:CC OK"}
       delete('cc')
     end
-    @fd.save_stat(@field)
+    @field
   end
 
   private
@@ -179,19 +171,23 @@ class Dev
   attr_reader :cid,:field
 
   def initialize(dev,obj=nil)
+    @ddb=XmlDoc.new('ddb',dev)
+  rescue RuntimeError
+    abort $!.to_s
+  else
     id=obj||dev
+    @v=Verbose.new("ddb/#{id}".upcase)
+    @rsp=RspFrame.new(@ddb)
+    @cmd=CmdFrame.new(@ddb)
+    @cid=String.new
+    @cmdcache=Hash.new
+    @fd=IoFile.new("field_#{id}")
     begin
-      @ddb=XmlDoc.new('ddb',dev)
-    rescue RuntimeError
-      abort $!.to_s
-    else
-      @v=Verbose.new("ddb/#{id}".upcase)
-      @rsp=RspFrame.new(@ddb,id)
-      @cmd=CmdFrame.new(@ddb)
-      @cid=String.new
-      @cmdcache=Hash.new
-      @field=@rsp.field
-   end
+      @field=@fd.load_stat
+    rescue
+      warn $!
+      @field={'device'=>@ddb['id'] }
+    end
   end
 
   def setcmd(cmdary)
@@ -201,7 +197,6 @@ class Dev
     @send=session.elements['send']
     @recv=session.elements['recv']
     @cmd[:par]=cmdary.shift
-#    @rsp['par']=cmdary
   end
 
   def getcmd
@@ -216,7 +211,9 @@ class Dev
 
   def setrsp(time=Time.now)
     return unless @recv
-    @rsp.rspframe(@recv,time){yield}
+    @field.update(@rsp.rspframe(@recv){yield})
+    @field['time']="%.3f" % time.to_f
+    @fd.save_stat(@field)
   end
 
 end
@@ -230,7 +227,8 @@ class DevCom < Dev
 
   def devcom
     @ic.snd(getcmd,'snd:'+@cid)
-    setrsp(@ic.time){ @ic.rcv('rcv:'+@cid) }
+    frame=@ic.rcv('rcv:'+@cid)
+    setrsp(@ic.time){ frame }
   end
 
 end

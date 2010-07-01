@@ -44,14 +44,24 @@
         <recv>
           <assign label="BOLT SUM ALM(POWER_V1)" length="2">bsa</assign>
           <assign label="ALL BOLT STAT(POWER_V1)" length="2">cjb</assign>
-          <repeat_assign label="Each Bolt Status(POWER_V1)" range="1:16" length="1">bl%02d</repeat_assign>
-          <repeat_assign label="Each Bolt Alarm(POWER_V1)" range="1:16" length="1">be%02d</repeat_assign>
+          <repeat label="Each Bolt Status(POWER_V1)" range="1:16">
+            <assign length="1">bl%02d</assign>
+          </repeat>
+          <repeat label="Each Bolt Alarm(POWER_V1)" range="1:16">
+            <assign length="1">be%02d</assign>
+          </repeat>
           <assign label="MLP3-BOLT COMM(POWER_V1)" length="2">mba</assign>
           <assign label="BOLT CONTROL SOURCE(POWER_V1)" length="2">bcl</assign>
           <assign label="Jack Home(POWER_V1)" delimiter="\n">cjh</assign>
-          <repeat_assign label="Bolt Position(POWER_V2)" range="1:16" length="12">jk%02d</repeat_assign>
+          <repeat label="Bolt Position(POWER_V2)" range="1:16">
+            <assign length="6">jk%02d</assign>
+            <verify length="6" />
+          </repeat>
           <verify unpack="chr" length="1">10</verify>
-          <repeat_assign label="Zsensor Position" range="1:4" length="12">zp%d</repeat_assign>
+          <repeat label="Zsensor Position" range="1:4">
+            <assign length="4">zp%d</assign>
+            <verify length="8" />
+          </repeat>
         </recv>
       </session>
       <session id="inrstat" label="Cas InR Status" type="stat">

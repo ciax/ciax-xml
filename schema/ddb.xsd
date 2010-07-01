@@ -224,7 +224,7 @@
       <xsd:element ref="cx:verify"></xsd:element>
       <xsd:element ref="cx:assign" />
       <xsd:element ref="cx:rspcode" />
-      <xsd:element ref="cx:repeat_assign"></xsd:element>
+      <xsd:element ref="cx:repeat"></xsd:element>
     </xsd:choice>
   </xsd:group>
   <xsd:attributeGroup name="rsp_attr">
@@ -253,14 +253,14 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="repeat_assign">
+  <xsd:element name="repeat">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="cx:rsp_attr" />
-          <xsd:attribute name="range" type="xsd:string" use="required"></xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cx:verify"></xsd:element>
+        <xsd:element ref="cx:assign" />
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="range" type="xsd:string" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="rspcode">

@@ -52,14 +52,19 @@ class RspFrame < Hash
         @v.msg{"Exitting Selected Node"}
       when 'assign'
         frame << assign(c,c.text)
-      when 'repeat_assign'
+      when 'repeat'
         Range.new(*a['range'].split(':')).each {|n|
-          frame << assign(c,c.text % n)
+          c.each_element {|d|
+            case d.name
+            when 'assign'
+              frame << assign(d,d.text % n)
+            when 'verify'
+              frame << verify(d)
+            end
+          }
         }
       when 'verify'
-        @v.msg{"Verify:#{a['label']} [#{c.text}]"}
-        frame << s=cut_frame(c)
-        @v.err(c.text == decode(c,s)){"Verify Mismatch"}
+        frame << verify(c)
       when 'rspcode'
         frame << s=cut_frame(c)
         label="ResponseCode:#{a['label']}:"
@@ -82,6 +87,15 @@ class RspFrame < Hash
       end
     }
     frame
+  end
+
+  def verify(e)
+    str=cut_frame(e)
+    if e.text
+      @v.msg{"Verify:#{e.attributes['label']} [#{e.text}]"}
+      @v.err(e.text == decode(e,str)){"Verify Mismatch"}
+    end
+    str
   end
 
   def assign(e,key)

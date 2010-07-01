@@ -47,7 +47,7 @@ class IoFile
   end
 
   def save_frame(frame,id=nil)
-    name=[@type,id].flatten.compact.join('_')
+    name=id ? @type+'_'+id.tr(':','_') : @type
     open(VarDir+"/#{name}.bin",'w') {|f|
       @v.msg{"Frame Saving for [#{name}]"}
       f << frame
@@ -56,7 +56,7 @@ class IoFile
   end
 
   def load_frame(id=nil)
-    name=[@type,id].flatten.compact.join('_')
+    name=id ? @type+'_'+id.tr(':','_') : @type
     @v.msg{"Raw Status Loading for [#{name}]"}
     frame=IO.read(VarDir+"/#{name}.bin")
     raise "No frame in File" unless frame
@@ -66,10 +66,9 @@ class IoFile
 
   def log_frame(frame,id=nil)
     @time=Time.now
-    name=id.compact.join(':') if id
-    line=["%.3f" % @time.to_f,name,frame.dump].compact.join("\t")
+    line=["%.3f" % @time.to_f,id,frame.dump].compact.join("\t")
     open(VarDir+"/#{@logfile}.log",'a') {|f|
-      @v.msg{"Frame Logging for [#{name}]"}
+      @v.msg{"Frame Logging for [#{id}]"}
       f << line+"\n"
     }
     frame

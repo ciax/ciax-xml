@@ -13,9 +13,9 @@ class RspFrame < Hash
   def initialize(ddb,id)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
-    @f=IoFile.new(id)
+    @fd=IoFile.new("field_#{id}")
     begin
-      @field=@f.load_stat
+      @field=@fd.load_stat
     rescue
       warn $!
       @field={'device'=>@ddb['id'] }
@@ -33,7 +33,7 @@ class RspFrame < Hash
       @v.msg{"Verify:CC OK"}
       delete('cc')
     end
-    @f.save_stat(@field)
+    @fd.save_stat(@field)
   end
 
   private
@@ -187,13 +187,13 @@ class Dev
       @v=Verbose.new("ddb/#{id}".upcase)
       @rsp=RspFrame.new(@ddb,id)
       @cmd=CmdFrame.new(@ddb)
-      @cid=Array.new
+      @cid=String.new
       @cmdcache=Hash.new
    end
   end
 
   def setcmd(cmdary)
-    @cid=cmdary.clone
+    @cid=cmdary.compact.join(':')
     session=@ddb.select_id(cmdary.shift)
     @v.msg{'Select:'+session.attributes['label']}
     @send=session.elements['send']
@@ -204,12 +204,11 @@ class Dev
 
   def getcmd
     return unless @send
-    cid=@cid.join(':')
-    if cmd=@cmdcache[cid]
-      @v.msg{"Cmd cache found [#{cid}]"}
+    if cmd=@cmdcache[@cid]
+      @v.msg{"Cmd cache found [#{@cid}]"}
       cmd
     else
-      @cmdcache[cid]=@cmd.cmdframe(@send)
+      @cmdcache[@cid]=@cmd.cmdframe(@send)
     end
   end
 
@@ -227,12 +226,13 @@ end
 class DevCom < Dev
   def initialize(dev,iocmd,obj=nil)
     super(dev,obj)
-    @ic=IoCmd.new(iocmd,obj||dev,@ddb['wait'],1)
+    id=obj||dev
+    @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
   end
 
   def devcom
-    @ic.snd(getcmd,['snd']+@cid)
-    setrsp(@ic.time){ @ic.rcv(['rcv']+@cid) }
+    @ic.snd(getcmd,'snd:'+@cid)
+    setrsp(@ic.time){ @ic.rcv('rcv:'+@cid) }
   end
 
 end

@@ -59,8 +59,9 @@
           </repeat>
           <verify unpack="chr" length="1">10</verify>
           <repeat label="Zsensor Position" range="1:4">
+            <verify length="2"></verify>
             <assign length="4">zp%d</assign>
-            <verify length="8" />
+            <verify length="6" />
           </repeat>
         </recv>
       </session>

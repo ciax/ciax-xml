@@ -56,10 +56,22 @@
           <text>logout</text>
         </command>
       </session>
-      <session id="setinst" label="Set Dummy Inst ID">
+      <session id="moircs" label="Set IID MOIRCS">
         <command>
           <text>setinst</text>
-          <text>0</text>
+          <text>12</text>
+        </command>
+      </session>
+      <session id="focas" label="Set IID FOCAS">
+        <command>
+          <text>setinst</text>
+          <text>5</text>
+        </command>
+      </session>
+      <session id="comics" label="Set IID COMICS">
+        <command>
+          <text>setinst</text>
+          <text>7</text>
         </command>
       </session>
     </selection>
@@ -68,7 +80,7 @@
         <int field="exit" />
       </var>
       <var id="rts" label="ROT SEL" trail="true" symbol="rsel">
-        <int field="rtype" />
+        <int field="rsel" />
       </var>
       <var id="iid" label="CAS INST ID" trail="true" symbol="inst">
         <int field="iid" />
@@ -96,15 +108,14 @@
     <symbols>
       <symbol id="inst" type="ENUM">
         <case hl="warn" msg="NONE">0</case>
-        <case hl="normal" msg="CIAX3">1</case>
-        <case hl="normal" msg="COMICS">2</case>
+        <case hl="normal" msg="IRCS">1</case>
         <case hl="normal" msg="CIAO">3</case>
-        <case hl="normal" msg="FOCAS">4</case>
-        <case hl="normal" msg="IRCS">5</case>
-        <case hl="normal" msg="N/A">6</case>
-        <case hl="normal" msg="MOIRCS">7</case>
-        <case hl="normal" msg="MP-CS1">8</case>
-        <case hl="normal" msg="MP-CS2">9</case>
+        <case hl="normal" msg="FOCAS">5</case>
+        <case hl="normal" msg="COMICS">7</case>
+        <case hl="normal" msg="K3D">10</case>
+        <case hl="normal" msg="MOIRCS">12</case>
+        <case hl="normal" msg="CIAX3">13</case>
+        <case hl="normal" msg="N/A"></case>
       </symbol>
       <symbol id="rsel" type="ENUM">
         <case hl="warn" msg="PFO">1</case>

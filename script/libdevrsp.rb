@@ -15,11 +15,10 @@ class DevRsp < Hash
     @v.err(self[:sel]=sel){"No Selection"}
     @v.err(@frame=yield){"No String"}
     setframe(@ddb['rspframe'])
-    if self['cc']
-      @v.err(self['cc'] == self[:cc]){
-        "Verifu:CC Mismatch[#{self['cc']}]!=[#{self[:cc]}]"}
+    if cc=@field.delete('cc')
+      @v.err(cc == self[:cc]){
+        "Verifu:CC Mismatch[#{cc}]!=[#{self[:cc]}]"}
       @v.msg{"Verify:CC OK"}
-      delete('cc')
     end
     @field
   end

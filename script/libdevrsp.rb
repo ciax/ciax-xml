@@ -8,12 +8,12 @@ class DevRsp < Hash
   def initialize(ddb)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
+    @field=Hash.new
   end
 
   def rspframe(sel)
     @v.err(self[:sel]=sel){"No Selection"}
     @v.err(@frame=yield){"No String"}
-    @field=Hash.new
     setframe(@ddb['rspframe'])
     if self['cc']
       @v.err(self['cc'] == self[:cc]){
@@ -38,21 +38,21 @@ class DevRsp < Hash
         @v.msg{"Entering Selected Node"}
         frame << setframe(self[:sel])
         @v.msg{"Exitting Selected Node"}
+      when 'verify'
+        frame << verify(c)
       when 'assign'
-        frame << assign(c,c.text)
+        frame << assign(c)
       when 'repeat'
         Range.new(*a['range'].split(':')).each {|n|
           c.each_element {|d|
             case d.name
             when 'assign'
-              frame << assign(d,d.text % n)
+              frame << assign(d,n)
             when 'verify'
               frame << verify(d)
             end
           }
         }
-      when 'verify'
-        frame << verify(c)
       when 'rspcode'
         frame << s=cut_frame(c)
         label="ResponseCode:#{a['label']}:"
@@ -86,12 +86,13 @@ class DevRsp < Hash
     str
   end
 
-  def assign(e,key)
-    code=cut_frame(e)
-    key=substitute(key,self)
-    @field[key]=decode(e,code)
+  def assign(e,num=nil)
+    str=cut_frame(e)
+    key=substitute(e.text,self)
+    key=key % num if num
+    @field[key]=decode(e,str)
     @v.msg{"Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]"}
-    code
+    str
   end
 
   def cut_frame(e)
@@ -99,18 +100,17 @@ class DevRsp < Hash
     if l=a['length']
       len=l.to_i
       @v.err(@frame.size >= len){"Too short (#{@frame.size-len})"}
-      @v.msg{"CutFrame:size=[#{len}]"}
-      @frame.slice!(0,len)
+      str=@frame.slice!(0,len)
+      @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
     elsif d=a['delimiter']
       str=@frame.slice!(/.+?#{d}/).chop
-      @v.msg{"CutFrame:[#{str}] by delimiter [#{d}]"}
-      str
+      @v.msg{"CutFrame:[#{str}] by delimiter=[#{d}]"}
     elsif d=a['regexp']
       str=@frame.slice!(/#{d}/)
-      @v.msg{"CutFrame:[#{str}] by regexp [#{d}]"}
-      str
+      @v.msg{"CutFrame:[#{str}] by regexp=[#{d}]"}
     else
       @v.err{"No frame length or delimiter"}
     end
+    str
   end
 end

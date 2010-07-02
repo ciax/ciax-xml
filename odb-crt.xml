@@ -64,6 +64,9 @@
       </session>
     </selection>
     <status>
+      <var id="ecode" label="EXIT CODE" symbol="ecode" trail="true">
+        <int field="ecode" />
+      </var>
       <var id="rdy" label="READY" symbol="normal" trail="true">
         <binary bit="0" field="x00" />
       </var>
@@ -129,6 +132,15 @@
       </var>
     </status>
     <symbols>
+      <symbol id="ecode" label="ExitCode" type="ENUM">
+        <case hl="hide" msg="OK">0000</case>
+        <case msg="RW Region Error" hl="alarm">0002</case>
+        <case msg="CMD Code Error" hl="alarm">0050</case>
+        <case msg="Devide Num Error" hl="alarm">0056</case>
+        <case msg="Communication Error" hl="alarm">005B</case>
+        <case msg="CPU Watch timeout Error" hl="alarm">0060</case>
+        <case hl="alarm" msg="Unknown"></case>
+      </symbol>
       <symbol id="motor" type="INT">
         <range hl="alarm" msg="LOW">:10</range>
         <range hl="normal" msg="OK">10&lt;:30</range>

@@ -123,15 +123,7 @@
       <verify label="Q Header: Request Unit Station Number" unpack="chr" format="%02X" length="1">00</verify>
       <assign label="Response Data Length" length="2" unpack="lew">cc</assign>
       <ccrange method="len">
-        <rspcode label="ExitCode" length="2" unpack="lew" format="%04X">
-          <case type="pass" msg="OK">0000</case>
-          <case msg="RW Region Error" type="warn" option="errframe">0002</case>
-          <case msg="CMD Code Error" type="warn" option="errframe">0050</case>
-          <case msg="Devide Num Error" type="warn" option="errframe">0056</case>
-          <case msg="Communication Error" type="warn" option="errframe">005B</case>
-          <case msg="CPU Watch timeout Error" type="warn" option="errframe">0060</case>
-          <case type="warn" msg="Unknown" option="errframe"></case>
-        </rspcode>
+        <rspcode length="2" unpack="lew" format="%04X" assign="ecode" else_sel="errframe">0000</rspcode>
         <selected />
       </ccrange>
     </rspframe>

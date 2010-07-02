@@ -41,6 +41,8 @@ class DevRsp < Hash
         frame << verify(c)
       when 'assign'
         frame << assign(c)
+      when 'rspcode'
+        frame << rspcode(c)
       when 'repeat'
         Range.new(*a['range'].split(':')).each {|n|
           c.each_element {|d|
@@ -52,25 +54,6 @@ class DevRsp < Hash
             end
           }
         }
-      when 'rspcode'
-        frame << s=cut_frame(c)
-        label="ResponseCode:#{a['label']}:"
-        str=decode(c,s)
-        c.each_element {|g| #Match each case
-          a=g.attributes
-          next if g.text && g.text != str
-          msg=label+a['msg']+" [#{str}]"
-          case a['type']
-          when 'pass'
-            @v.msg{msg}
-          when 'warn'
-            @v.wrn{msg}
-          when 'error'
-            @v.err{msg}
-          end
-          self[:sel]=@ddb.select_id(opt) if opt=a['option']
-          break true
-        } || @v.wrn{label+":Unknown code [#{str}]"}
       end
     }
     frame
@@ -94,6 +77,23 @@ class DevRsp < Hash
     str
   end
 
+  def rspcode(e)
+    str=cut_frame(e)
+    a=e.attributes
+    key=a['assign']
+    field=decode(e,str)
+    @field[key]=field
+    @v.msg{"ResponseCode:#{a['label']}:[#{key}]<-[#{field}]"}
+    unless e.text == field
+      @v.wrn{"Bad Response Code"}
+      if opt=a['else_sel']
+        @v.wrn{"Select other session:[#{opt}]" }
+        self[:sel]=@ddb.select_id(opt)
+      end
+    end
+    str
+  end
+  
   def cut_frame(e)
     a=e.attributes
     if l=a['length']

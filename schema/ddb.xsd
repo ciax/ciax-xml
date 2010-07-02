@@ -265,10 +265,13 @@
   </xsd:element>
   <xsd:element name="rspcode">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="cx:case"></xsd:element>
-      </xsd:sequence>
-      <xsd:attributeGroup ref="cx:rsp_attr" />
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="cx:rsp_attr" />
+          <xsd:attribute name="assign" type="xsd:string" />
+          <xsd:attribute name="else_sel" type="xsd:string" />
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="case">

@@ -217,6 +217,7 @@
         <xsd:element ref="cx:selected" />
         <xsd:element ref="cx:ccrange" />
       </xsd:choice>
+      <xsd:attribute name="terminator" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:group name="rsp_elem">

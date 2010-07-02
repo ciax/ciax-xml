@@ -14,6 +14,10 @@ class DevRsp < Hash
   def rspframe(sel)
     @v.err(self[:sel]=sel){"No Selection"}
     @v.err(@frame=yield){"No String"}
+    if tm=@ddb['rspframe'].attributes['terminator']
+      @frame.chomp!(eval('"'+tm+'"'))
+      @v.msg{"Cut terminator[#{@frame}] by [#{tm}]" }
+    end
     setframe(@ddb['rspframe'])
     if cc=@field.delete('cc')
       @v.err(cc == self[:cc]){
@@ -54,6 +58,12 @@ class DevRsp < Hash
             end
           }
         }
+      when 'split_assign'
+        fary=@frame.split(a['delimiter'])
+        c.each_element { |f| # field
+          @field[f.text]=fary.shift
+        }
+        @frame=fary.join(a['delimiter'])
       end
     }
     frame

@@ -9,7 +9,6 @@
         </send>
         <recv>
           <verify length="1" unpack="chr">6</verify>
-          <verify label="Suffix" length="1" unpack="chr">13</verify>
         </recv>
       </session>
       <session id="getstat" label="Get status" type="stat">
@@ -20,16 +19,15 @@
           <assign delimiter=",">st1</assign>
           <assign delimiter=",">ch1</assign>
           <assign delimiter=",">st2</assign>
-          <assign delimiter="\r">ch2</assign>
+          <assign regexp=".+">ch2</assign>
         </recv>
       </session>
     </selection>
     <cmdframe>
       <selected />
     </cmdframe>
-    <rspframe>
+    <rspframe terminator="\r\n">
       <selected />
-      <verify label="Suffix" length="1" unpack="chr">10</verify>
     </rspframe>
   </device>
 </ddb>

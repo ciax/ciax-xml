@@ -30,6 +30,7 @@ module ModXml
   end
 
   def encode(e,str)
+    str=eval('"'+str+'"')
     if pack=Pack[e.attributes['pack']]
       code=[str.to_i(0)].pack(pack)
       @v.msg{"Encode:pack(#{pack}) [#{str}] -> [#{code}]"}

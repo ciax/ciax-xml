@@ -14,30 +14,3 @@
           <data>*Z02</data>
         </option>
       </select>
-      <data pack="H*">0D</data>
-    </cmdframe>
-    <rspframe wait="1">
-      <select>
-        <option id="getstat">
-          <verify length="3">
-            <case msg="Prefix OK" type="pass">X01</case>
-            <case msg="Prefix mismatch" type="error"></case>
-          </verify>
-          <assign field="pres" length="5" />
-        </option>
-        <option id="setd">
-          <verify length="3">
-            <case msg="Command OK" type="pass">W1F</case>
-            <case msg="Command mismatch" type="error"></case>
-          </verify>
-        </option>
-        <option id="init">
-          <verify length="3">
-            <case msg="Command OK" type="pass">Z02</case>
-            <case msg="Command mismatch" type="error"></case>
-          </verify>
-        </option>
-      </select>
-    </rspframe>
-  </device>
-</ddb>

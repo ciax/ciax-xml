@@ -18,23 +18,28 @@ module ModXml
     @v.err{"CC No method"}
   end
 
-  Pack={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
+  Codec={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
 
   def decode(e,code)
-    if upk=Pack[e.attributes['unpack']]
+    cdc=e.attributes['decode']
+    if upk=Codec[cdc]
       str=(upk == 'hex') ? code.hex : code.unpack(upk).first
-      @v.msg{"Decode:unpack(#{upk}) [#{code}] -> [#{str}]"}
+      @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{str}]"}
       code=str
+    else
+      code=eval('"'+code+'"')
     end
     return format(e,code)
   end
 
   def encode(e,str)
-    str=eval('"'+str+'"')
-    if pack=Pack[e.attributes['pack']]
-      code=[str.to_i(0)].pack(pack)
-      @v.msg{"Encode:pack(#{pack}) [#{str}] -> [#{code}]"}
+    cdc=e.attributes['encode']
+    if pck=Codec[cdc]
+      code=[str.to_i(0)].pack(pck)
+      @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
       str=code
+    else
+      str=eval('"'+str+'"')
     end
     format(e,str)
   end
@@ -69,4 +74,7 @@ module ModXml
     conv
   end
 
+  def text(e)
+    eval('"'+e.text+'"') if e.text
+  end
 end

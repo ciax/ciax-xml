@@ -112,7 +112,7 @@
   <xsd:element name="selected">
     <xsd:complexType></xsd:complexType>
   </xsd:element>
-  <xsd:simpleType name="pack">
+  <xsd:simpleType name="codec">
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="chr" />
       <xsd:enumeration value="hexstr" />
@@ -170,7 +170,7 @@
   <xsd:attributeGroup name="cmd_attr">
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="format" type="xsd:string" />
-    <xsd:attribute name="pack" type="cx:pack"></xsd:attribute>
+    <xsd:attribute name="encode" type="cx:codec"></xsd:attribute>
   </xsd:attributeGroup>
   <xsd:group name="cmd_elem">
     <xsd:choice>
@@ -232,12 +232,12 @@
   <xsd:attributeGroup name="rsp_flf">
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="length" type="xsd:int" use="required" />
-    <xsd:attribute name="unpack" type="cx:pack"></xsd:attribute>
+    <xsd:attribute name="decode" type="cx:codec"></xsd:attribute>
     <xsd:attribute name="format" type="xsd:string" />
   </xsd:attributeGroup>
   <xsd:attributeGroup name="rsp_vlf">
     <xsd:attribute name="label" type="xsd:string" />
-    <xsd:attribute name="unpack" type="cx:pack"></xsd:attribute>
+    <xsd:attribute name="decode" type="cx:codec"></xsd:attribute>
     <xsd:attribute name="format" type="xsd:string" />
   </xsd:attributeGroup>
   <xsd:element name="verify">

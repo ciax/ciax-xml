@@ -123,7 +123,8 @@ class Obj < Hash
         val << format(dtype,data.to_f)
       when 'int'
         if /true|1/ === a['signed']
-          data=[data.to_i].pack('S').unpack('s').first
+          data=data.to_i
+          data= data > 0x7fff ? data - 0x10000 : data
         end
         val << format(dtype,data.to_i)
       else

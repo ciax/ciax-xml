@@ -8,19 +8,19 @@
           <data>RD</data>
         </send>
         <recv>
-          <assign length="2" unpack="bew">stat</assign>
+          <assign length="2" decode="bew">stat</assign>
         </recv>
       </session>
       <session id="defio" label="DEFINE IN/OUT" type="config">
         <send>
           <data>SD</data>
-          <data label="msb" pack="bew">0x1111</data>
+          <data label="msb" encode="bew">0x1111</data>
         </send>
       </session>
       <session id="output" label="OUTPUT [DDDDD]" type="action">
         <send>
           <data>SO</data>
-          <par pack="bew" validate="range">0:65535</par>
+          <par encode="bew" validate="range">0:65535</par>
         </send>
       </session>
     </selection>
@@ -33,3 +33,4 @@
     </rspframe>
   </device>
 </ddb>
+

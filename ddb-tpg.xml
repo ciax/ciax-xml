@@ -5,15 +5,15 @@
       <session id="reqstat" label="Request status" type="stat">
         <send>
           <data label="Measurment data gauges 1&amp;2">PRX</data>
-          <data label="Suffix" pack="chr">13</data>
+          <data label="Suffix" encode="chr">13</data>
         </send>
         <recv>
-          <verify length="1" unpack="chr">6</verify>
+          <verify length="1" decode="chr">6</verify>
         </recv>
       </session>
       <session id="getstat" label="Get status" type="stat">
         <send>
-          <data label="ENQ" pack="chr">5</data>
+          <data label="ENQ" encode="chr">5</data>
         </send>
         <recv>
           <split delimiter=",">
@@ -33,3 +33,4 @@
     </rspframe>
   </device>
 </ddb>
+

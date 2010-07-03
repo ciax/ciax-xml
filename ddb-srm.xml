@@ -50,15 +50,16 @@
       </ccrange>
       <cc_cmd format="%02X" />
       <data label="Suffix">*</data>
-      <data label="Delimiter" pack="chr">0xd</data>
+      <data label="Delimiter" encode="chr">0xd</data>
     </cmdframe>
     <rspframe>
       <ccrange method="bcc">
         <verify label="Prefix" length="1">@</verify>
         <selected />
       </ccrange>
-      <assign label="BCC" length="2" unpack="hexstr">cc</assign>
+      <assign label="BCC" length="2" decode="hexstr">cc</assign>
       <verify label="Terminater" length="1">*</verify>
     </rspframe>
   </device>
 </ddb>
+

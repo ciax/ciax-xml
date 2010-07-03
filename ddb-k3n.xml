@@ -23,22 +23,23 @@
       </session>
     </selection>
     <cmdframe>
-      <data label="Prefix" pack="chr">2</data>
+      <data label="Prefix" encode="chr">2</data>
       <ccrange method="bcc">
         <selected />
-        <data label="Suffix" pack="chr">3</data>
+        <data label="Suffix" encode="chr">3</data>
       </ccrange>
-      <cc_cmd pack="chr" />
+      <cc_cmd encode="chr" />
     </cmdframe>
     <rspframe>
-      <verify label="Prefix" length="1" unpack="chr">2</verify>
+      <verify label="Prefix" length="1" decode="chr">2</verify>
       <ccrange method="bcc">
         <verify label="Node" length="4">0000</verify>
         <assign label="Exit Code" length="2">ecode</assign>
         <selected />
-        <verify label="Suffix" length="1" unpack="chr">3</verify>
+        <verify label="Suffix" length="1" decode="chr">3</verify>
       </ccrange>
-      <assign label="BCC" length="1" unpack="chr">cc</assign>
+      <assign label="BCC" length="1" decode="chr">cc</assign>
     </rspframe>
   </device>
 </ddb>
+

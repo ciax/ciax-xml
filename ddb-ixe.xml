@@ -31,17 +31,18 @@
       </session>
     </selection>
     <cmdframe>
-      <data label="Prefix" pack="chr">2</data>
+      <data label="Prefix" encode="chr">2</data>
       <selected />
-      <data label="Suffix" pack="chr">3</data>
-      <data pack="chr">13</data>
-      <data pack="chr">10</data>
+      <data label="Suffix" encode="chr">3</data>
+      <data encode="chr">13</data>
+      <data encode="chr">10</data>
     </cmdframe>
     <rspframe>
-      <verify label="Prefix" length="1" unpack="chr">2</verify>
-      <verify label="ACK" length="1" unpack="chr">6</verify>
+      <verify label="Prefix" length="1" decode="chr">2</verify>
+      <verify label="ACK" length="1" decode="chr">6</verify>
       <selected />
-      <verify label="Suffix" length="1" unpack="chr">3</verify>
+      <verify label="Suffix" length="1" decode="chr">3</verify>
     </rspframe>
   </device>
 </ddb>
+

@@ -17,13 +17,13 @@
         <recv>
           <split delimiter="\n">
             <field label="InR Select(NsOpt/NsIR/Cas)">rsel</field>
-            <field label="Stow pin Status" unpack="hexstr">stow_1</field>
+            <field label="Stow pin Status" decode="hexstr">stow_1</field>
             <field label="Shutter Status">shutter</field>
             <field label="AZ/EL Drive Status">teldrive</field>
             <field label="EL Angle(deg)">el</field>
             <field label="CIAX-MLP3 Comm Error">mlp3</field>
             <field label="InR Drive ON/OFF">rpw</field>
-            <field label="BOLT System Status" unpack="hexstr">bstat</field>
+            <field label="BOLT System Status" decode="hexstr">bstat</field>
           </split>
         </recv>
       </session>
@@ -57,12 +57,12 @@
           <assign label="MLP3-BOLT COMM(POWER_V1)" length="2">mba</assign>
           <assign label="BOLT CONTROL SOURCE(POWER_V1)" length="2">bcl</assign>
           <assign label="Jack Home(POWER_V1)" length="4">cjh</assign>
-          <verify unpack="chr" length="1">10</verify>
+          <verify length="1">\n</verify>
           <repeat label="Bolt Position(POWER_V2)" range="1:16">
             <assign length="6">jk%02d</assign>
             <verify length="6" />
           </repeat>
-          <verify unpack="chr" length="1">10</verify>
+          <verify decode="chr" length="1">10</verify>
           <repeat label="Zsensor Position" range="1:4">
             <verify length="2"></verify>
             <assign length="4">zp%d</assign>
@@ -174,7 +174,7 @@
     </selection>
     <cmdframe>
       <selected />
-      <data label="Suffix" pack="chr">10</data>
+      <data label="Suffix" encode="chr">10</data>
     </cmdframe>
     <rspframe>
       <selected />

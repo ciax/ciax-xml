@@ -13,18 +13,3 @@
           <data format="%05.2f" ref="par" />
         </option>
       </select>
-      <data label="Suffix" pack="H*">0D</data>
-    </cmdframe>
-    <rspframe wait="1">
-      <verify length="1">
-        <case msg="Prefix OK" type="pass">*</case>
-        <case msg="Prefix mismatch" type="error"></case>
-      </verify>
-      <select>
-        <option id="getstat">
-          <assign field="crnt" length="9" />
-        </option>
-      </select>
-    </rspframe>
-  </device>
-</ddb>

@@ -226,13 +226,17 @@
       <xsd:element ref="cx:assign" />
       <xsd:element ref="cx:rspcode" />
       <xsd:element ref="cx:repeat"></xsd:element>
+      <xsd:element ref="cx:split"></xsd:element>
     </xsd:choice>
   </xsd:group>
-  <xsd:attributeGroup name="rsp_attr">
+  <xsd:attributeGroup name="rsp_flf">
     <xsd:attribute name="label" type="xsd:string" />
-    <xsd:attribute name="delimiter" type="xsd:string"></xsd:attribute>
-    <xsd:attribute name="length" type="xsd:int" />
-    <xsd:attribute name="regexp" type="xsd:string"></xsd:attribute>
+    <xsd:attribute name="length" type="xsd:int" use="required" />
+    <xsd:attribute name="unpack" type="cx:pack"></xsd:attribute>
+    <xsd:attribute name="format" type="xsd:string" />
+  </xsd:attributeGroup>
+  <xsd:attributeGroup name="rsp_vlf">
+    <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="unpack" type="cx:pack"></xsd:attribute>
     <xsd:attribute name="format" type="xsd:string" />
   </xsd:attributeGroup>
@@ -240,7 +244,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="cx:rsp_attr" />
+          <xsd:attributeGroup ref="cx:rsp_flf" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -249,7 +253,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="cx:rsp_attr" />
+          <xsd:attributeGroup ref="cx:rsp_flf" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -268,28 +272,26 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="cx:rsp_attr" />
+          <xsd:attributeGroup ref="cx:rsp_flf" />
           <xsd:attribute name="assign" type="xsd:string" />
           <xsd:attribute name="else_sel" type="xsd:string" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="case">
+  <xsd:element name="split">
+    <xsd:complexType>
+      <xsd:choice maxOccurs="unbounded">
+        <xsd:element ref="cx:field" />
+      </xsd:choice>
+      <xsd:attribute name="delimiter" type="xsd:string" use="required"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="field">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attribute name="type" use="required">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="pass" />
-                <xsd:enumeration value="warn" />
-                <xsd:enumeration value="error" />
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
-          <xsd:attribute name="option" type="xsd:string"></xsd:attribute>
-          <xsd:attribute name="msg" type="xsd:string"></xsd:attribute>
+          <xsd:attributeGroup ref="cx:rsp_vlf" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

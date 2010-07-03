@@ -16,7 +16,7 @@ class DevRsp < Hash
     @v.err(@frame=yield){"No String"}
     if tm=@ddb['rspframe'].attributes['terminator']
       @frame.chomp!(eval('"'+tm+'"'))
-      @v.msg{"Cut terminator[#{@frame}] by [#{tm}]" }
+      @v.msg{"Remove terminator:[#{@frame}]" }
     end
     setframe(@ddb['rspframe'])
     if cc=@field.delete('cc')
@@ -58,12 +58,15 @@ class DevRsp < Hash
             end
           }
         }
-      when 'split_assign'
-        fary=@frame.split(a['delimiter'])
+      when 'split'
+        dlm=eval('"'+a['delimiter']+'"')
+        fary=@frame.split(dlm)
+        @v.msg{"Split:[#{@frame}] by [#{a['delimiter']}]"}
         c.each_element { |f| # field
           @field[f.text]=fary.shift
+          @v.msg{"Assign:[#{f.text}]<-[#{@field[f.text]}]"}
         }
-        @frame=fary.join(a['delimiter'])
+        @frame=fary.join(dlm)
       end
     }
     frame
@@ -111,14 +114,8 @@ class DevRsp < Hash
       @v.err(@frame.size >= len){"Too short (#{@frame.size-len})"}
       str=@frame.slice!(0,len)
       @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-    elsif d=a['delimiter']
-      str=@frame.slice!(/.+?#{d}/).chop
-      @v.msg{"CutFrame:[#{str}] by delimiter=[#{d}]"}
-    elsif d=a['regexp']
-      str=@frame.slice!(/#{d}/)
-      @v.msg{"CutFrame:[#{str}] by regexp=[#{d}]"}
     else
-      @v.err{"No frame length or delimiter"}
+      @v.err{"No frame length"}
     end
     str
   end

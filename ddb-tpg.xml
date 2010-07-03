@@ -16,10 +16,12 @@
           <data label="ENQ" pack="chr">5</data>
         </send>
         <recv>
-          <assign delimiter=",">st1</assign>
-          <assign delimiter=",">ch1</assign>
-          <assign delimiter=",">st2</assign>
-          <assign regexp=".+">ch2</assign>
+          <split delimiter=",">
+            <field>st1</field>
+            <field>ch1</field>
+            <field>st2</field>
+            <field>ch2</field>
+          </split>
         </recv>
       </session>
     </selection>

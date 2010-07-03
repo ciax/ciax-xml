@@ -15,14 +15,16 @@
           <data label="BOLT Status"> CXWS.TSCV.0_SENSOR</data>
         </send>
         <recv>
-          <assign label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n">rsel</assign>
-          <assign label="Stow pin Status" delimiter="\n" unpack="hexstr">stow_1</assign>
-          <assign label="Shutter Status" delimiter="\n">shutter</assign>
-          <assign label="AZ/EL Drive Status" delimiter="\n">teldrive</assign>
-          <assign label="EL Angle(deg)" delimiter="\n">el</assign>
-          <assign label="CIAX-MLP3 Comm Error" delimiter="\n">mlp3</assign>
-          <assign label="InR Drive ON/OFF" delimiter="\n">rpw</assign>
-          <assign label="BOLT System Status" delimiter="\n" unpack="hexstr">bstat</assign>
+          <split delimiter="\n">
+            <field label="InR Select(NsOpt/NsIR/Cas)">rsel</field>
+            <field label="Stow pin Status" unpack="hexstr">stow_1</field>
+            <field label="Shutter Status">shutter</field>
+            <field label="AZ/EL Drive Status">teldrive</field>
+            <field label="EL Angle(deg)">el</field>
+            <field label="CIAX-MLP3 Comm Error">mlp3</field>
+            <field label="InR Drive ON/OFF">rpw</field>
+            <field label="BOLT System Status" unpack="hexstr">bstat</field>
+          </split>
         </recv>
       </session>
       <session id="iststat" label="Get Instrument ID" type="stat">
@@ -31,7 +33,9 @@
           <data label="CAS Instrument"> CXWS.TSCV.OBE_INR</data>
         </send>
         <recv>
-          <assign label="CAS Instrument" delimiter="\n">iid</assign>
+          <split delimiter="\n">
+            <field label="CAS Instrument">iid</field>
+          </split>
         </recv>
       </session>
       <session id="jakstat" label="Jack Bolt Status" type="stat">
@@ -52,7 +56,8 @@
           </repeat>
           <assign label="MLP3-BOLT COMM(POWER_V1)" length="2">mba</assign>
           <assign label="BOLT CONTROL SOURCE(POWER_V1)" length="2">bcl</assign>
-          <assign label="Jack Home(POWER_V1)" delimiter="\n">cjh</assign>
+          <assign label="Jack Home(POWER_V1)" length="4">cjh</assign>
+          <verify unpack="chr" length="1">10</verify>
           <repeat label="Bolt Position(POWER_V2)" range="1:16">
             <assign length="6">jk%02d</assign>
             <verify length="6" />
@@ -71,7 +76,9 @@
           <data label="InR Angle(deg)"> CXWS.TSCS.INSROT</data>
         </send>
         <recv>
-          <assign label="InR Angle(deg)" delimiter="\n">iang</assign>
+          <split delimiter="\n">
+            <field label="InR Angle(deg)">iang</field>
+          </split>
         </recv>
       </session>
       <session id="logstat" label="Login Status" type="stat">
@@ -83,10 +90,12 @@
           <data label="LOGIN 3"> TSCV.TSC.LOGIN3</data>
         </send>
         <recv>
-          <assign label="LOGIN 0" delimiter="\n">login0</assign>
-          <assign label="LOGIN 1" delimiter="\n">login1</assign>
-          <assign label="LOGIN 2" delimiter="\n">login2</assign>
-          <assign label="LOGIN 3" delimiter="\n">login3</assign>
+          <split delimiter="\n">
+            <field label="LOGIN 0">login0</field>
+            <field label="LOGIN 1">login1</field>
+            <field label="LOGIN 2">login2</field>
+            <field label="LOGIN 3">login3</field>
+          </split>
         </recv>
       </session>
       <session id="getexit" label="Exit Code" type="stat">
@@ -94,7 +103,9 @@
           <data>cat $HOME/.var/exit.txt</data>
         </send>
         <recv>
-          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+          <split delimiter="\n">
+            <field label="Exit Code">exit</field>
+          </split>
         </recv>
       </session>
       <session id="login" label="TSC Login">
@@ -107,7 +118,9 @@
           <data>"';echo $?|tee $HOME/.var/exit.txt</data>
         </send>
         <recv>
-          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+          <split delimiter="\n">
+            <field label="Exit Code">exit</field>
+          </split>
         </recv>
       </session>
       <session id="logout" label="TSC Logout">
@@ -117,7 +130,9 @@
           <data>"';echo $?|tee $HOME/.var/exit.txt</data>
         </send>
         <recv>
-          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+          <split delimiter="\n">
+            <field label="Exit Code">exit</field>
+          </split>
         </recv>
       </session>
       <session id="setinst" label="Set Instrument ID [0-12]" type="config">
@@ -128,7 +143,9 @@
           <data>"';echo $?|tee $HOME/.var/exit.txt</data>
         </send>
         <recv>
-          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+          <split delimiter="\n">
+            <field label="Exit Code">exit</field>
+          </split>
         </recv>
       </session>
       <session id="config" label="Execute Config Command [code]">
@@ -138,7 +155,9 @@
           <data>"';echo $?|tee $HOME/.var/exit.txt</data>
         </send>
         <recv>
-          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+          <split delimiter="\n">
+            <field label="Exit Code">exit</field>
+          </split>
         </recv>
       </session>
       <session id="ossact" label="Execute Action Command [code]" type="action">
@@ -147,7 +166,9 @@
           <par label="Command Code"></par>
         </send>
         <recv>
-          <assign label="Exit Code" regexp="[0-9]+">exit</assign>
+          <split delimiter="\n">
+            <field label="Exit Code">exit</field>
+          </split>
         </recv>
       </session>
     </selection>

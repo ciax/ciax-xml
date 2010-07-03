@@ -14,8 +14,8 @@ class DevRsp < Hash
   def rspframe(sel)
     @v.err(self[:sel]=sel){"No Selection"}
     @v.err(@frame=yield){"No String"}
-    if tm=@ddb['rspframe'].attributes['terminator']
-      @frame.chomp!(eval('"'+tm+'"'))
+    if tm=attr(@ddb['rspframe'],'terminator')
+      @frame.chomp!(tm)
       @v.msg{"Remove terminator:[#{@frame}]" }
     end
     setframe(@ddb['rspframe'])
@@ -74,9 +74,9 @@ class DevRsp < Hash
 
   def verify(e)
     str=cut_frame(e)
-    if e.text
-      @v.msg{"Verify:#{e.attributes['label']} [#{e.text}]"}
-      @v.err(e.text == decode(e,str)){"Verify Mismatch"}
+    if txt=text(e)
+      @v.msg{"Verify:#{e.attributes['label']} [#{txt}]"}
+      @v.err(txt == decode(e,str)){"Verify Mismatch"}
     end
     str
   end

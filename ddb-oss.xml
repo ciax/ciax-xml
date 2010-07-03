@@ -174,7 +174,7 @@
     </selection>
     <cmdframe>
       <selected />
-      <data label="Suffix" encode="chr">10</data>
+      <data label="Suffix">\n</data>
     </cmdframe>
     <rspframe>
       <selected />

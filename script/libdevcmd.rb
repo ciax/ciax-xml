@@ -32,7 +32,7 @@ class DevCmd < Hash
         frame << getframe(self[:sel])
         @v.msg{"Exitting Selected Node"}
       when 'data'
-        frame << encode(c,c.text)
+        frame << encode(c,text(c))
         @v.msg{"GetFrame:#{label}[#{c.text}]"}
       when 'par'
         @v.err(self[:par]){"No Parameter"}

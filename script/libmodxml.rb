@@ -26,8 +26,6 @@ module ModXml
       str=(upk == 'hex') ? code.hex : code.unpack(upk).first
       @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{str}]"}
       code=str
-    else
-      code=eval('"'+code+'"')
     end
     return format(e,code)
   end
@@ -38,8 +36,6 @@ module ModXml
       code=[str.to_i(0)].pack(pck)
       @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
       str=code
-    else
-      str=eval('"'+str+'"')
     end
     format(e,str)
   end
@@ -74,7 +70,11 @@ module ModXml
     conv
   end
 
-  def text(e)
+  def text(e) # convert escape char (i.e. "\n"..)
     eval('"'+e.text+'"') if e.text
+  end
+
+  def attr(e,attr) # convert escape char (i.e. "\n"..)
+    eval('"'+e.attributes[attr]+'"') if e.attributes[attr]
   end
 end

@@ -1,9 +1,10 @@
 #!/bin/bash
 var="$HOME/.var"
+cmd="getstat"
 for dev in ${1:-mel srm k3n bbe tpg}; do
     input="$var/device_${dev}_2010.log"
     echo "#[$dev]#"
-    devcmd $dev getstat || exit 1
+    devcmd $dev $cmd || exit 1
     echo
-    tail -1 $input| devstat $dev getstat|mar
+    grep "rcv:$cmd" $input|tail -1| devstat $dev getstat|mar
 done  | visi

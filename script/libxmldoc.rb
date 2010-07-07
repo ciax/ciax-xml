@@ -6,15 +6,15 @@ class XmlDoc < Hash
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
-    begin
-      doc=Document.new(open(path)).root.elements.first
-    rescue
-      list=Array.new
-      Dir.glob("#{pre}-*.xml").each {|p|
-        list << Document.new(open(p)).root.elements.first
-      }
-      mklist(list)
-    end
+    f=open(path)
+  rescue
+    list=Array.new
+    Dir.glob("#{pre}-*.xml").each {|p|
+      list << getdoc(open(p))
+    }
+    mklist(list)
+  else
+    doc=getdoc(f)
     doc.each_element {|e| self[e.name]=e }
     doc.attributes.each{|k,v| self[k]=v }
   end
@@ -33,6 +33,10 @@ class XmlDoc < Hash
   end
 
   private
+  def getdoc(f)
+    Document.new(f).root.elements.first
+  end
+
   def mklist(ary)
     list=Array.new
     ary.each { |e|

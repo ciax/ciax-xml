@@ -19,10 +19,10 @@ class XmlDoc < Hash
     doc.attributes.each{|k,v| self[k]=v }
   end
 
-  def select_id(id)
+  def select_id(xpath,id)
     self[:cid]=id
-    self['selection'].each_element_with_attribute('id',id){|e| return e }
-    list_id('selection')
+    self[xpath].each_element_with_attribute('id',id){|e| return e }
+    list_id(xpath)
   end
 
   # Error Handling

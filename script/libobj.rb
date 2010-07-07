@@ -55,11 +55,11 @@ class Obj < Hash
   
   private
   def select_session(id)
-    e=@odb.select_id(id)
+    e=@odb.select_id('selection',id)
     a=e.attributes
     @v.msg{"Exec(DDB):#{a['label']}"}
     if ref=a['ref']
-      return @rdb.select_id(ref)
+      return @rdb.select_id('selection',ref)
     else
       return e
     end

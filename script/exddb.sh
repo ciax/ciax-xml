@@ -1,6 +1,6 @@
 #!/bin/bash
 var="$HOME/.var"
-dev="${1:-mel srm k3n bbe tpg}"
+dev="${1:-mel oss srm k3n bbe tpg lk8 mix}"
 cmd="${2:-getstat}"
 for d in $dev; do
     input="$var/device_${d}_2010.log"

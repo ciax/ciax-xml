@@ -8,7 +8,10 @@
           <data label="Suffix" encode="chr">13</data>
         </send>
         <recv>
-          <verify length="1" decode="chr">6</verify>
+          <field decode="chr">
+            <length>1</length>
+            <verify>6</verify>
+          </field>
         </recv>
       </session>
       <session id="getstat" label="Get status" type="stat">
@@ -16,12 +19,22 @@
           <data label="ENQ" encode="chr">5</data>
         </send>
         <recv>
-          <split delimiter=",">
-            <field>st1</field>
-            <field>ch1</field>
-            <field>st2</field>
-            <field>ch2</field>
-          </split>
+          <field>
+            <regexp>\w+</regexp>
+            <assign>st1</assign>
+          </field>
+          <field>
+            <regexp>[\w\.+-]+</regexp>
+            <assign>ch1</assign>
+          </field>
+          <field>
+            <regexp>\w+</regexp>
+            <assign>st2</assign>
+          </field>
+          <field>
+            <regexp>[\w\.+-]+</regexp>
+            <assign>ch2</assign>
+          </field>
         </recv>
       </session>
     </selection>
@@ -33,4 +46,3 @@
     </rspframe>
   </device>
 </ddb>
-

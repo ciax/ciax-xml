@@ -8,9 +8,18 @@
           <data label="Header Code">MM</data>
         </send>
         <recv>
-          <verify label="Command Code" length="4">00MM</verify>
-          <verify label="Response Code" length="2">00</verify>
-          <assign label="Model Number" length="2">model</assign>
+          <field label="Command Code">
+            <length>4</length>
+            <verify>00MM</verify>
+          </field>
+          <field label="Response Code">
+            <length>2</length>
+            <verify>00</verify>
+          </field>
+          <field label="Model Number">
+            <length>2</length>
+            <assign>model</assign>
+          </field>
         </recv>
       </session>
       <session id="getstat" label="Get Status" type="stat">
@@ -20,13 +29,31 @@
           <data label="length">0001</data>
         </send>
         <recv>
-          <verify label="Command Code" length="4">00RR</verify>
-          <verify label="Response Code" length="2">00</verify>
+          <field label="Command Code">
+            <length>4</length>
+            <verify>00RR</verify>
+          </field>
+          <field label="Response Code">
+            <length>2</length>
+            <verify>00</verify>
+          </field>
           <!--Big endian-->
-          <assign label="CH1 bit12-15" length="1">c1d3</assign>
-          <assign label="CH1 bit8-11" length="1">c1d2</assign>
-          <assign label="CH1 bit4-7" length="1">c1d1</assign>
-          <assign label="CH1 bit0-3" length="1">c1d0</assign>
+          <field label="CH1 bit12-15">
+            <length>1</length>
+            <assign>c1d3</assign>
+          </field>
+          <field label="CH1 bit8-11">
+            <length>1</length>
+            <assign>c1d2</assign>
+          </field>
+          <field label="CH1 bit4-7">
+            <length>1</length>
+            <assign>c1d1</assign>
+          </field>
+          <field label="CH1 bit0-3">
+            <length>1</length>
+            <assign>c1d0</assign>
+          </field>
         </recv>
       </session>
       <session id="fset" label="Multiple Forced Set [D*16]" type="action">
@@ -37,8 +64,14 @@
           <par format="%016d" validate="regexp">[45][045]+</par>
         </send>
         <recv>
-          <verify label="Command Code" length="4">00FK</verify>
-          <verify label="Exit Code" length="2">00</verify>
+          <field label="Command Code">
+            <length>4</length>
+            <verify>00FK</verify>
+          </field>
+          <field label="Exit Code">
+            <length>2</length>
+            <verify>00</verify>
+          </field>
         </recv>
       </session>
     </selection>
@@ -54,12 +87,20 @@
     </cmdframe>
     <rspframe>
       <ccrange method="bcc">
-        <verify label="Prefix" length="1">@</verify>
+        <field label="Prefix">
+          <length>1</length>
+          <verify>@</verify>
+        </field>
         <selected />
       </ccrange>
-      <assign label="BCC" length="2" decode="hexstr">cc</assign>
-      <verify label="Terminater" length="1">*</verify>
+      <field label="BCC" decode="hexstr">
+        <length>2</length>
+        <assign>cc</assign>
+      </field>
+      <field label="Terminater">
+        <length>1</length>
+        <verify>*</verify>
+      </field>
     </rspframe>
   </device>
 </ddb>
-

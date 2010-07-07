@@ -11,7 +11,10 @@
           <data label="Data Length" encode="lew">1</data>
         </send>
         <recv>
-          <assign length="2" decode="lew">cre</assign>
+          <field decode="lew">
+            <length>2</length>
+            <assign>cre</assign>
+          </field>
         </recv>
       </session>
       <session id="getstat" label="Get all status" type="stat">
@@ -24,7 +27,10 @@
         </send>
         <recv>
           <repeat range="0:51" label="Repeated">
-            <assign decode="lew" length="2">x%02x</assign>
+            <field decode="lew">
+              <length>2</length>
+              <assign>x%02x</assign>
+            </field>
           </repeat>
         </recv>
       </session>
@@ -86,17 +92,6 @@
         </send>
         <recv label="command resp" />
       </session>
-      <session id="errframe">
-        <recv>
-          <assign length="1">err_net</assign>
-          <assign length="1">err_pc</assign>
-          <assign length="2">err_uio</assign>
-          <assign length="1">err_uch</assign>
-          <assign length="2">err_cmd</assign>
-          <assign length="2">err_subcmd</assign>
-          <assign length="9">errframe</assign>
-        </recv>
-      </session>
     </selection>
     <cmdframe>
       <data label="SubHeader: Prefix" encode="lew">0x54</data>
@@ -114,19 +109,46 @@
       </ccrange>
     </cmdframe>
     <rspframe>
-      <verify label="SubHeader: Prefix" length="2" decode="lew" format="%04X">00D4</verify>
-      <verify label="SubHeader: Serial Number" length="2">XX</verify>
-      <verify label="SubHeader: Fixed Number" length="2" decode="lew" format="%04X">0000</verify>
-      <verify label="Q Header: Network Number" decode="chr" format="%02X" length="1">00</verify>
-      <verify label="Q Header: PC Number" decode="chr" format="%02X" length="1">FF</verify>
-      <verify label="Q Header: Request Unit I/O Number" decode="lew" format="%04X" length="2">03FF</verify>
-      <verify label="Q Header: Request Unit Station Number" decode="chr" format="%02X" length="1">00</verify>
-      <assign label="Response Data Length" length="2" decode="lew">cc</assign>
+      <field label="SubHeader: Prefix" decode="lew" format="%04X">
+        <length>2</length>
+        <verify>00D4</verify>
+      </field>
+      <field label="SubHeader: Serial Number">
+        <length>2</length>
+        <verify>XX</verify>
+      </field>
+      <field label="SubHeader: Fixed Number" decode="lew" format="%04X">
+        <length>2</length>
+        <verify>0000</verify>
+      </field>
+      <field label="Q Header: Network Number" decode="chr" format="%02X">
+        <length>1</length>
+        <verify>00</verify>
+      </field>
+      <field label="Q Header: PC Number" decode="chr" format="%02X">
+        <length>1</length>
+        <verify>FF</verify>
+      </field>
+      <field label="Q Header: Request Unit I/O Number" decode="lew" format="%04X">
+        <length>2</length>
+        <verify>03FF</verify>
+      </field>
+      <field label="Q Header: Request Unit Station Number" decode="chr" format="%02X">
+        <length>1</length>
+        <verify>00</verify>
+      </field>
+      <field label="Response Data Length" decode="lew">
+        <length>2</length>
+        <assign>cc</assign>
+      </field>
       <ccrange method="len">
-        <rspcode length="2" decode="lew" format="%04X" assign="ecode" else_sel="errframe">0000</rspcode>
+        <field decode="lew" format="%04X">
+          <length>2</length>
+          <assign>ecode</assign>
+          <verify>0000</verify>
+        </field>
         <selected />
       </ccrange>
     </rspframe>
   </device>
 </ddb>
-

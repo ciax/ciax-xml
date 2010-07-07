@@ -8,7 +8,10 @@
           <data>RD</data>
         </send>
         <recv>
-          <assign length="2" decode="bew">stat</assign>
+          <field decode="bew">
+            <length>2</length>
+            <assign>stat</assign>
+          </field>
         </recv>
       </session>
       <session id="defio" label="DEFINE IN/OUT" type="config">
@@ -33,4 +36,3 @@
     </rspframe>
   </device>
 </ddb>
-

@@ -16,9 +16,18 @@
           <data label="Number of element">0001</data>
         </send>
         <recv>
-          <verify label="MRC SRC" length="4">0101</verify>
-          <assign label="Response Code" length="4">rcode</assign>
-          <assign label="Status" length="8">stat</assign>
+          <field label="MRC SRC">
+            <length>4</length>
+            <verify>0101</verify>
+          </field>
+          <field label="Response Code">
+            <length>4</length>
+            <assign>rcode</assign>
+          </field>
+          <field label="Status">
+            <length>8</length>
+            <assign>stat</assign>
+          </field>
         </recv>
       </session>
     </selection>
@@ -31,15 +40,29 @@
       <cc_cmd encode="chr" />
     </cmdframe>
     <rspframe>
-      <verify label="Prefix" length="1" decode="chr">2</verify>
+      <field label="Prefix" decode="chr">
+        <length>1</length>
+        <verify>2</verify>
+      </field>
       <ccrange method="bcc">
-        <verify label="Node" length="4">0000</verify>
-        <assign label="Exit Code" length="2">ecode</assign>
+        <field label="Node">
+          <length>4</length>
+          <verify>0000</verify>
+        </field>
+        <field label="Exit Code">
+          <length>2</length>
+          <assign>ecode</assign>
+        </field>
         <selected />
-        <verify label="Suffix" length="1" decode="chr">3</verify>
+        <field label="Suffix" decode="chr">
+          <length>1</length>
+          <verify>3</verify>
+        </field>
       </ccrange>
-      <assign label="BCC" length="1" decode="chr">cc</assign>
+      <field label="BCC" decode="chr">
+        <length>1</length>
+        <assign>cc</assign>
+      </field>
     </rspframe>
   </device>
 </ddb>
-

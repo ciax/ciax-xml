@@ -15,16 +15,12 @@
           <data>krdg? d4;</data>
         </send>
         <recv>
-          <split delimiter=";">
-            <field>ch1</field>
-            <field>ch2</field>
-            <field>ch3</field>
-            <field>ch4</field>
-            <field>ch5</field>
-            <field>ch6</field>
-            <field>ch7</field>
-            <field>ch8</field>
-          </split>
+          <repeat range="1:8">
+            <field>
+              <regexp>[\w\.+-]+</regexp>
+              <assign>ch%d</assign>
+            </field>
+          </repeat>
         </recv>
       </session>
       <session id="htrstat" type="stat" label="Heater Power (%)">
@@ -32,9 +28,10 @@
           <data>HTR?</data>
         </send>
         <recv>
-          <split delimiter=";">
-            <field>htr</field>
-          </split>
+          <field>
+            <regexp>[\w\.+-]+</regexp>
+            <assign>htr</assign>
+          </field>
         </recv>
       </session>
       <session id="spstat" type="stat" label="Set Point (K)">
@@ -42,9 +39,10 @@
           <data>ese?</data>
         </send>
         <recv>
-          <split delimiter=";">
-            <field>sp</field>
-          </split>
+          <field>
+            <regexp>[\w\.+-]+</regexp>
+            <assign>sp</assign>
+          </field>
         </recv>
       </session>
     </selection>

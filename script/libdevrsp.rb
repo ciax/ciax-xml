@@ -41,82 +41,49 @@ class DevRsp < Hash
         @v.msg{"Entering Selected Node"}
         frame << setframe(self[:sel])
         @v.msg{"Exitting Selected Node"}
-      when 'verify'
-        frame << verify(c)
-      when 'assign'
-        frame << assign(c)
-      when 'rspcode'
-        frame << rspcode(c)
+      when 'field'
+        frame << field(c)
       when 'repeat'
         Range.new(*a['range'].split(':')).each {|n|
           c.each_element {|d|
-            case d.name
-            when 'assign'
-              frame << assign(d,n)
-            when 'verify'
-              frame << verify(d)
-            end
+            frame << field(d,n)
           }
         }
-      when 'split'
-        dlm=eval('"'+a['delimiter']+'"')
-        fary=@frame.split(dlm)
-        @v.msg{"Split:[#{@frame}] by [#{a['delimiter']}]"}
-        c.each_element { |f| # field
-          @field[f.text]=fary.shift
-          @v.msg{"Assign:[#{f.text}]<-[#{@field[f.text]}]"}
-        }
-        @frame=fary.join(dlm)
       end
     }
     frame
   end
 
-  def verify(e)
-    str=cut_frame(e)
-    if txt=text(e)
-      @v.msg{"Verify:#{e.attributes['label']} [#{txt}]"}
-      @v.err(txt == decode(e,str)){"Verify Mismatch"}
-    end
-    str
-  end
 
-  def assign(e,num=nil)
-    str=cut_frame(e)
-    key=substitute(e.text,self)
-    key=key % num if num
-    @field[key]=decode(e,str)
-    @v.msg{"Assign:#{e.attributes['label']}[#{key}]<-[#{@field[key]}]"}
-    str
-  end
-
-  def rspcode(e)
-    str=cut_frame(e)
-    a=e.attributes
-    key=a['assign']
-    field=decode(e,str)
-    @field[key]=field
-    @v.msg{"ResponseCode:#{a['label']}:[#{key}]<-[#{field}]"}
-    unless e.text == field
-      @v.wrn{"Bad Response Code"}
-      if opt=a['else_sel']
-        @v.wrn{"Select other session:[#{opt}]" }
-        self[:sel]=@ddb.select_id(opt)
+  def field(e,num=nil)
+    str=''
+    field=''
+    @v.msg{"Field:#{e.attributes['label']}"}
+    e.each_element {|d|
+      case d.name
+      when 'length'
+        len=d.text.to_i
+        @v.err(@frame.size >= len){"Too short (#{@frame.size-len})"}
+        str=@frame.slice!(0,len)
+        @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
+        field=decode(e,str)
+      when 'regexp'
+        str=@frame.slice!(/#{d.text}/)
+        @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
+        field=decode(e,str)
+      when 'assign'
+        key=substitute(d.text,self)
+        key=key % num if num
+        @field[key]=field
+        @v.msg{"Assign:[#{key}]<-[#{@field[key]}]"}
+      when 'verify'
+        if txt=text(d)
+          @v.msg{"Verify:[#{txt}]"}
+          @v.err(txt == field){"Verify Mismatch[#{field}]!=[#{txt}]"}
+        end
       end
-    end
+    }
     str
   end
-  
-  def cut_frame(e)
-    a=e.attributes
-    if l=a['length']
-      len=l.to_i
-      @v.err(@frame.size >= len){"Too short (#{@frame.size-len})"}
-      str=@frame.slice!(0,len)
-      @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-    else
-      @v.err{"No frame length"}
-    end
-    str
-  end
+
 end

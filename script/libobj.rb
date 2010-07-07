@@ -3,6 +3,7 @@ require "libxmldoc"
 require "libverbose"
 require "libnumrange"
 require "libmodxml"
+require "libiofile"
 
 class Obj < Hash
   include ModXml

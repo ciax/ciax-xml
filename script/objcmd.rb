@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
 require "libobj"
-require "libiofile"
 
 warn "Usage: objcmd [obj] [cmd]" if ARGV.size < 1
 
+obj=ARGV.shift
+cmd=ARGV.shift||''
 begin
-  odb=Obj.new(ARGV.shift)
-  field=IoFile.new('field_'+odb['device']).load_stat
-  odb.get_stat(field)
+  odb=Obj.new(obj)
+  odb.get_stat(Marshal.load(gets(nil)))
   ENV['VER']='exec'
-  odb.objcom(ARGV.shift||''){}
+  odb.objcom(cmd){}
 rescue RuntimeError
   abort $!.to_s
 end

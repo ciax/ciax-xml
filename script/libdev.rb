@@ -33,7 +33,8 @@ class Dev
     @cid=cmdary.compact.join(':')
     @send=@ddb.select_id('cmdselect',cmdary.shift)
     @v.msg{'Select:'+@send.attributes['label']}
-    @recv=@ddb.select_id('rspselect',@send.attributes['response'])
+    res=@send.attributes['response']
+    @recv= res ? @ddb.select_id('rspselect',res) : nil
     @cmd[:par]=cmdary.shift
   end
 

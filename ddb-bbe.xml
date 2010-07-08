@@ -3,7 +3,7 @@
   <device id="bbe" label="BB Electric" wait="0.3">
     <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
     <cmdselect>
-      <command id="getstat" label="Get Status" type="stat">
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
         <data>RD</data>
       </command>
       <command id="defio" label="DEFINE IN/OUT" type="config">

@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libdev"
+require "readline"
 
 warn "Usage: devshell [dev] [iocmd]" if ARGV.size < 2
 
@@ -8,8 +9,7 @@ iocmd=ARGV.shift
 ddb=DevCom.new(dev,iocmd)
 
 loop{
-  print "#{dev}>"
-  cary=gets.chomp.split(' ')
+  cary=Readline.readline("#{dev}>",true).chomp.split(' ')
   case cary[0]
   when /^q/
     break

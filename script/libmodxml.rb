@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # XML Common Method
+require 'libnumrange'
 module ModXml
   def checkcode(e,frame)
     chk=0

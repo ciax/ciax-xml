@@ -2,54 +2,50 @@
 <ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
   <device id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
     <serial speed="9600" databit="7" parity="NONE" stopbit="1" flowctl="NONE" />
-    <selection>
-      <session id="getstat" type="stat" label="Get Status">
-        <send>
-          <data>krdg? c1;</data>
-          <data>krdg? c2;</data>
-          <data>krdg? c3;</data>
-          <data>krdg? c4;</data>
-          <data>krdg? d1;</data>
-          <data>krdg? d2;</data>
-          <data>krdg? d3;</data>
-          <data>krdg? d4;</data>
-        </send>
-        <recv>
-          <repeat range="1:8">
-            <field>
-              <regexp>[\w\.+-]+</regexp>
-              <assign>ch%d</assign>
-            </field>
-          </repeat>
-        </recv>
-      </session>
-      <session id="htrstat" type="stat" label="Heater Power (%)">
-        <send>
-          <data>HTR?</data>
-        </send>
-        <recv>
-          <field>
-            <regexp>[\w\.+-]+</regexp>
-            <assign>htr</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="spstat" type="stat" label="Set Point (K)">
-        <send>
-          <data>ese?</data>
-        </send>
-        <recv>
-          <field>
-            <regexp>[\w\.+-]+</regexp>
-            <assign>sp</assign>
-          </field>
-        </recv>
-      </session>
-    </selection>
+    <cmdselect>
+      <command id="getstat" type="stat" label="Get Status" response="getstat">
+        <data>krdg? c1;</data>
+        <data>krdg? c2;</data>
+        <data>krdg? c3;</data>
+        <data>krdg? c4;</data>
+        <data>krdg? d1;</data>
+        <data>krdg? d2;</data>
+        <data>krdg? d3;</data>
+        <data>krdg? d4;</data>
+      </command>
+      <command id="htrstat" type="stat" label="Heater Power (%)" response="htrstat">
+        <data>HTR?</data>
+      </command>
+      <command id="spstat" type="stat" label="Set Point (K)" response="spstat">
+        <data>ese?</data>
+      </command>
+    </cmdselect>
     <cmdframe>
       <selected />
       <data label="Suffix">\r\n</data>
     </cmdframe>
+    <rspselect>
+      <response id="getstat">
+        <repeat range="1:8">
+          <field>
+            <regexp>[\w\.+-]+</regexp>
+            <assign>ch%d</assign>
+          </field>
+        </repeat>
+      </response>
+      <response id="htrstat">
+        <field>
+          <regexp>[\w\.+-]+</regexp>
+          <assign>htr</assign>
+        </field>
+      </response>
+      <response id="spstat">
+        <field>
+          <regexp>[\w\.+-]+</regexp>
+          <assign>sp</assign>
+        </field>
+      </response>
+    </rspselect>
     <rspframe terminator="\r\n">
       <selected />
     </rspframe>

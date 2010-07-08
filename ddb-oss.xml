@@ -1,260 +1,210 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
   <device id="oss" label="OSS Command line">
-    <selection>
-      <session id="getstat" label="Get all status" type="stat">
-        <send>
-          <data label="Status Command">OSSC_screenPrint -R</data>
-          <data label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</data>
-          <data label="Stow pin Status"> CXWS.TSCV.STOW_1</data>
-          <data label="Shutter Status"> CXWS.TSCV.SHUTTER</data>
-          <data label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</data>
-          <data label="EL Angle(deg)"> CXWS.TSCS.EL</data>
-          <data label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</data>
-          <data label="InR Drive ON/OFF"> TSCV.InsRotRotation</data>
-          <data label="BOLT Status"> CXWS.TSCV.0_SENSOR</data>
-        </send>
-        <recv>
-          <field label="InR Select(NsOpt/NsIR/Cas)">
-            <regexp>.+</regexp>
-            <assign>rsel</assign>
-          </field>
-          <field label="Stow pin Status" decode="hexstr">
-            <regexp>.+</regexp>
-            <assign>stow_1</assign>
-          </field>
-          <field label="Shutter Status">
-            <regexp>.+</regexp>
-            <assign>shutter</assign>
-          </field>
-          <field label="AZ/EL Drive Status">
-            <regexp>.+</regexp>
-            <assign>teldrive</assign>
-          </field>
-          <field label="EL Angle(deg)">
-            <regexp>.+</regexp>
-            <assign>el</assign>
-          </field>
-          <field label="CIAX-MLP3 Comm Error">
-            <regexp>.+</regexp>
-            <assign>mlp3</assign>
-          </field>
-          <field label="InR Drive ON/OFF">
-            <regexp>.+</regexp>
-            <assign>rpw</assign>
-          </field>
-          <field label="BOLT System Status" decode="hexstr">
-            <regexp>.+</regexp>
-            <assign>bstat</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="iststat" label="Get Instrument ID" type="stat">
-        <send>
-          <data label="Status Command">OSSC_screenPrint -R</data>
-          <data label="CAS Instrument"> CXWS.TSCV.OBE_INR</data>
-        </send>
-        <recv>
-          <field label="CAS Instrument">
-            <regexp>.+</regexp>
-            <assign>iid</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="jakstat" label="Jack Bolt Status" type="stat">
-        <send>
-          <data label="Status Command">OSSC_screenPrint -R</data>
-          <data label="Bolt Each Status"> CXWS.TSCV.POWER_V1</data>
-          <data label="Bolt Each Position"> CXWS.TSCV.POWER_V2</data>
-          <data label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</data>
-        </send>
-        <recv>
-          <field label="BOLT SUM ALM(POWER_V1)">
-            <length>2</length>
-            <assign>bsa</assign>
-          </field>
-          <field label="ALL BOLT STAT(POWER_V1)">
-            <length>2</length>
-            <assign>cjb</assign>
-          </field>
-          <repeat label="Each Bolt Status(POWER_V1)" range="1:16">
-            <field>
-              <length>1</length>
-              <assign>bl%02d</assign>
-            </field>
-          </repeat>
-          <repeat label="Each Bolt Alarm(POWER_V1)" range="1:16">
-            <field>
-              <length>1</length>
-              <assign>be%02d</assign>
-            </field>
-          </repeat>
-          <field label="MLP3-BOLT COMM(POWER_V1)">
-            <length>2</length>
-            <assign>mba</assign>
-          </field>
-          <field label="BOLT CONTROL SOURCE(POWER_V1)">
-            <length>2</length>
-            <assign>bcl</assign>
-          </field>
-          <field label="Jack Home(POWER_V1)">
-            <length>4</length>
-            <assign>cjh</assign>
-          </field>
-          <field>
-            <length>1</length>
-            <verify>\n</verify>
-          </field>
-          <repeat label="Bolt Position(POWER_V2)" range="1:16">
-            <field>
-              <length>6</length>
-              <assign>jk%02d</assign>
-            </field>
-            <field>
-              <length>6</length>
-            </field>
-          </repeat>
-          <field>
-            <length>1</length>
-            <verify>\n</verify>
-          </field>
-          <repeat label="Zsensor Position" range="1:4">
-            <field>
-              <length>2</length>
-            </field>
-            <field>
-              <length>4</length>
-              <assign>zp%d</assign>
-            </field>
-            <field>
-              <length>6</length>
-            </field>
-          </repeat>
-        </recv>
-      </session>
-      <session id="inrstat" label="Cas InR Status" type="stat">
-        <send>
-          <data label="Status Command">OSSC_screenPrint -R</data>
-          <data label="InR Angle(deg)"> CXWS.TSCS.INSROT</data>
-        </send>
-        <recv>
-          <field label="InR Angle(deg)">
-            <regexp>.+</regexp>
-            <assign>iang</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="logstat" label="Login Status" type="stat">
-        <send>
-          <data label="Status Command">OSSC_screenPrint -R</data>
-          <data label="LOGIN 0"> TSCV.TSC.LOGIN0</data>
-          <data label="LOGIN 1"> TSCV.TSC.LOGIN1</data>
-          <data label="LOGIN 2"> TSCV.TSC.LOGIN2</data>
-          <data label="LOGIN 3"> TSCV.TSC.LOGIN3</data>
-        </send>
-        <recv>
-          <field label="LOGIN 0">
-            <regexp>.+</regexp>
-            <assign>login0</assign>
-          </field>
-          <field label="LOGIN 1">
-            <regexp>.+</regexp>
-            <assign>login1</assign>
-          </field>
-          <field label="LOGIN 2">
-            <regexp>.+</regexp>
-            <assign>login2</assign>
-          </field>
-          <field label="LOGIN 3">
-            <regexp>.+</regexp>
-            <assign>login3</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="getexit" label="Exit Code" type="stat">
-        <send>
-          <data>cat $HOME/.var/exit.txt</data>
-        </send>
-        <recv>
-          <field label="Exit Code">
-            <regexp>.+</regexp>
-            <assign>exit</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="login" label="TSC Login">
-        <send>
-          <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-          <data>1A1901 </data>
-          <data>ciax%%%%%%%%%%%%%%%% </data>
-          <data>CIAX%%%%%%%%%%%% </data>
-          <data>dummyunit dummyMenu dummyMessage</data>
-          <data>"';echo $?|tee $HOME/.var/exit.txt</data>
-        </send>
-        <recv>
-          <field label="Exit Code">
-            <regexp>.+</regexp>
-            <assign>exit</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="logout" label="TSC Logout">
-        <send>
-          <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-          <data>1A1902</data>
-          <data>"';echo $?|tee $HOME/.var/exit.txt</data>
-        </send>
-        <recv>
-          <field label="Exit Code">
-            <regexp>.+</regexp>
-            <assign>exit</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="setinst" label="Set Instrument ID [0-12]" type="config">
-        <send>
-          <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-          <data>13200700</data>
-          <par label="Inst ID" format="%02d" validate="range">1:12</par>
-          <data>"';echo $?|tee $HOME/.var/exit.txt</data>
-        </send>
-        <recv>
-          <field label="Exit Code">
-            <regexp>.+</regexp>
-            <assign>exit</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="config" label="Execute Config Command [code]">
-        <send>
-          <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-          <par label="Command Code"></par>
-          <data>"';echo $?|tee $HOME/.var/exit.txt</data>
-        </send>
-        <recv>
-          <field label="Exit Code">
-            <regexp>.+</regexp>
-            <assign>exit</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="ossact" label="Execute Action Command [code]" type="action">
-        <send>
-          <data>ossact</data>
-          <par label="Command Code"></par>
-        </send>
-        <recv>
-          <field label="Exit Code">
-            <regexp>.+</regexp>
-            <assign>exit</assign>
-          </field>
-        </recv>
-      </session>
-    </selection>
+    <cmdselect>
+      <command id="getstat" label="Get all status" response="getstat" type="stat">
+        <data label="Status Command">OSSC_screenPrint -R</data>
+        <data label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</data>
+        <data label="Stow pin Status"> CXWS.TSCV.STOW_1</data>
+        <data label="Shutter Status"> CXWS.TSCV.SHUTTER</data>
+        <data label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</data>
+        <data label="EL Angle(deg)"> CXWS.TSCS.EL</data>
+        <data label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</data>
+        <data label="InR Drive ON/OFF"> TSCV.InsRotRotation</data>
+        <data label="BOLT Status"> CXWS.TSCV.0_SENSOR</data>
+      </command>
+      <command id="iststat" label="Get Instrument ID" response="iststat" type="stat">
+        <data label="Status Command">OSSC_screenPrint -R</data>
+        <data label="CAS Instrument"> CXWS.TSCV.OBE_INR</data>
+      </command>
+      <command id="jakstat" label="Jack Bolt Status" response="jakstat" type="stat">
+        <data label="Status Command">OSSC_screenPrint -R</data>
+        <data label="Bolt Each Status"> CXWS.TSCV.POWER_V1</data>
+        <data label="Bolt Each Position"> CXWS.TSCV.POWER_V2</data>
+        <data label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</data>
+      </command>
+      <command id="inrstat" label="Cas InR Status" response="inrstat" type="stat">
+        <data label="Status Command">OSSC_screenPrint -R</data>
+        <data label="InR Angle(deg)"> CXWS.TSCS.INSROT</data>
+      </command>
+      <command id="logstat" label="Login Status" response="logstat" type="stat">
+        <data label="Status Command">OSSC_screenPrint -R</data>
+        <data label="LOGIN 0"> TSCV.TSC.LOGIN0</data>
+        <data label="LOGIN 1"> TSCV.TSC.LOGIN1</data>
+        <data label="LOGIN 2"> TSCV.TSC.LOGIN2</data>
+        <data label="LOGIN 3"> TSCV.TSC.LOGIN3</data>
+      </command>
+      <command id="getexit" label="Exit Code" type="stat" response="exit">
+        <data>cat $HOME/.var/exit.txt</data>
+      </command>
+      <command id="login" label="TSC Login" response="exit">
+        <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
+        <data>1A1901 </data>
+        <data>ciax%%%%%%%%%%%%%%%% </data>
+        <data>CIAX%%%%%%%%%%%% </data>
+        <data>dummyunit dummyMenu dummyMessage</data>
+        <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+      </command>
+      <command id="logout" label="TSC Logout" response="exit">
+        <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
+        <data>1A1902</data>
+        <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+      </command>
+      <command id="setinst" label="Set Instrument ID [0-12]" type="config" response="exit">
+        <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
+        <data>13200700</data>
+        <par label="Inst ID" format="%02d" validate="range">1:12</par>
+        <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+      </command>
+      <command id="config" label="Execute Config Command [code]" response="exit">
+        <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
+        <par label="Command Code"></par>
+        <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+      </command>
+      <command id="ossact" label="Execute Action Command [code]" type="action" response="exit">
+        <data>ossact</data>
+        <par label="Command Code"></par>
+      </command>
+    </cmdselect>
     <cmdframe>
       <selected />
       <data label="Suffix">\n</data>
     </cmdframe>
+    <rspselect>
+      <response id="getstat">
+        <field label="InR Select(NsOpt/NsIR/Cas)">
+          <regexp>.+</regexp>
+          <assign>rsel</assign>
+        </field>
+        <field label="Stow pin Status" decode="hexstr">
+          <regexp>.+</regexp>
+          <assign>stow_1</assign>
+        </field>
+        <field label="Shutter Status">
+          <regexp>.+</regexp>
+          <assign>shutter</assign>
+        </field>
+        <field label="AZ/EL Drive Status">
+          <regexp>.+</regexp>
+          <assign>teldrive</assign>
+        </field>
+        <field label="EL Angle(deg)">
+          <regexp>.+</regexp>
+          <assign>el</assign>
+        </field>
+        <field label="CIAX-MLP3 Comm Error">
+          <regexp>.+</regexp>
+          <assign>mlp3</assign>
+        </field>
+        <field label="InR Drive ON/OFF">
+          <regexp>.+</regexp>
+          <assign>rpw</assign>
+        </field>
+        <field label="BOLT System Status" decode="hexstr">
+          <regexp>.+</regexp>
+          <assign>bstat</assign>
+        </field>
+      </response>
+      <response id="iststat">
+        <field label="CAS Instrument">
+          <regexp>.+</regexp>
+          <assign>iid</assign>
+        </field>
+      </response>
+      <response id="jakstat">
+        <field label="BOLT SUM ALM(POWER_V1)">
+          <length>2</length>
+          <assign>bsa</assign>
+        </field>
+        <field label="ALL BOLT STAT(POWER_V1)">
+          <length>2</length>
+          <assign>cjb</assign>
+        </field>
+        <repeat label="Each Bolt Status(POWER_V1)" range="1:16">
+          <field>
+            <length>1</length>
+            <assign>bl%02d</assign>
+          </field>
+        </repeat>
+        <repeat label="Each Bolt Alarm(POWER_V1)" range="1:16">
+          <field>
+            <length>1</length>
+            <assign>be%02d</assign>
+          </field>
+        </repeat>
+        <field label="MLP3-BOLT COMM(POWER_V1)">
+          <length>2</length>
+          <assign>mba</assign>
+        </field>
+        <field label="BOLT CONTROL SOURCE(POWER_V1)">
+          <length>2</length>
+          <assign>bcl</assign>
+        </field>
+        <field label="Jack Home(POWER_V1)">
+          <length>4</length>
+          <assign>cjh</assign>
+        </field>
+        <field>
+          <length>1</length>
+          <verify>\n</verify>
+        </field>
+        <repeat label="Bolt Position(POWER_V2)" range="1:16">
+          <field>
+            <length>6</length>
+            <assign>jk%02d</assign>
+          </field>
+          <field>
+            <length>6</length>
+          </field>
+        </repeat>
+        <field>
+          <length>1</length>
+          <verify>\n</verify>
+        </field>
+        <repeat label="Zsensor Position" range="1:4">
+          <field>
+            <length>2</length>
+          </field>
+          <field>
+            <length>4</length>
+            <assign>zp%d</assign>
+          </field>
+          <field>
+            <length>6</length>
+          </field>
+        </repeat>
+      </response>
+      <response id="inrstat">
+        <field label="InR Angle(deg)">
+          <regexp>.+</regexp>
+          <assign>iang</assign>
+        </field>
+      </response>
+      <response id="logstat">
+        <field label="LOGIN 0">
+          <regexp>.+</regexp>
+          <assign>login0</assign>
+        </field>
+        <field label="LOGIN 1">
+          <regexp>.+</regexp>
+          <assign>login1</assign>
+        </field>
+        <field label="LOGIN 2">
+          <regexp>.+</regexp>
+          <assign>login2</assign>
+        </field>
+        <field label="LOGIN 3">
+          <regexp>.+</regexp>
+          <assign>login3</assign>
+        </field>
+      </response>
+      <response id="exit">
+        <field label="Exit Code">
+          <regexp>.+</regexp>
+          <assign>exit</assign>
+        </field>
+      </response>
+    </rspselect>
     <rspframe>
       <selected />
     </rspframe>

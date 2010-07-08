@@ -2,63 +2,65 @@
 <ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
   <device id="k3n" label="OMRON K3NR" wait="1">
     <serial speed="9600" databit="7" parity="EVEN" stopbit="2" flowctl="NONE" />
-    <selection>
-      <session id="getstat" type="stat" label="Get Status">
-        <send>
-          <data label="Node No.">00</data>
-          <data label="Sub Address">00</data>
-          <data label="SID">0</data>
-          <data label="MRC">01</data>
-          <data label="SRC">01</data>
-          <data label="Variable type">C0</data>
-          <data label="Start Address">0000</data>
-          <data label="Void">00</data>
-          <data label="Number of element">0001</data>
-        </send>
-        <recv>
-          <field label="MRC SRC">
-            <length>4</length>
-            <verify>0101</verify>
-          </field>
-          <field label="Response Code">
-            <length>4</length>
-            <assign>rcode</assign>
-          </field>
-          <field label="Status">
-            <length>8</length>
-            <assign>stat</assign>
-          </field>
-        </recv>
-      </session>
-    </selection>
+    <cmdselect>
+      <command id="getstat" type="stat" label="Get Status" response="getstat">
+        <data label="Node No.">00</data>
+        <data label="Sub Address">00</data>
+        <data label="SID">0</data>
+        <data label="MRC">01</data>
+        <data label="SRC">01</data>
+        <data label="Variable type">C0</data>
+        <data label="Start Address">0000</data>
+        <data label="Void">00</data>
+        <data label="Number of element">0001</data>
+      </command>
+    </cmdselect>
+    <cmdccrange method="bcc">
+      <selected />
+      <data label="Suffix" encode="chr">3</data>
+    </cmdccrange>
     <cmdframe>
       <data label="Prefix" encode="chr">2</data>
-      <ccrange method="bcc">
-        <selected />
-        <data label="Suffix" encode="chr">3</data>
-      </ccrange>
+      <ccrange></ccrange>
       <cc_cmd encode="chr" />
     </cmdframe>
+    <rspselect>
+      <response id="getstat">
+        <field label="MRC SRC">
+          <length>4</length>
+          <verify>0101</verify>
+        </field>
+        <field label="Response Code">
+          <length>4</length>
+          <assign>rcode</assign>
+        </field>
+        <field label="Status">
+          <length>8</length>
+          <assign>stat</assign>
+        </field>
+      </response>
+    </rspselect>
+    <rspccrange method="bcc">
+      <field label="Node">
+        <length>4</length>
+        <verify>0000</verify>
+      </field>
+      <field label="Exit Code">
+        <length>2</length>
+        <assign>ecode</assign>
+      </field>
+      <selected />
+      <field label="Suffix" decode="chr">
+        <length>1</length>
+        <verify>3</verify>
+      </field>
+    </rspccrange>
     <rspframe>
       <field label="Prefix" decode="chr">
         <length>1</length>
         <verify>2</verify>
       </field>
-      <ccrange method="bcc">
-        <field label="Node">
-          <length>4</length>
-          <verify>0000</verify>
-        </field>
-        <field label="Exit Code">
-          <length>2</length>
-          <assign>ecode</assign>
-        </field>
-        <selected />
-        <field label="Suffix" decode="chr">
-          <length>1</length>
-          <verify>3</verify>
-        </field>
-      </ccrange>
+      <ccrange></ccrange>
       <field label="BCC" decode="chr">
         <length>1</length>
         <assign>cc</assign>

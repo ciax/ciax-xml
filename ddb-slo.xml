@@ -1,101 +1,127 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
-  <device id="slo" label="SLOSYN SS6000i">
+  <device id="slo" label="SLOSYN SS6000i" wait="0">
     <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+    <cmdselect>
+      <command id="bs" type="stat" response="bs" label="Running Status">
+        <data>bs</data>
+      </command>
+      <command id="in1" label="Input 1 Status" response="in1" type="stat">
+        <data>in(1)</data>
+      </command>
+      <command id="in2" label="Input 2 Status" response="in2" type="stat">
+        <data>in(2)</data>
+      </command>
+      <command id="in3" label="Input 3 Status" response="in3" type="stat">
+        <data>in(3)</data>
+      </command>
+      <command id="in4" label="Input 4 Status" response="in4" type="stat">
+        <data>in(4)</data>
+      </command>
+      <command id="in5" label="Input 5 Status" response="in5" type="stat">
+        <data>in(5)</data>
+      </command>
+      <command id="err" label="Error Status" response="err" type="stat">
+        <data>err</data>
+      </command>
+      <command id="p" label="Pulse Number" response="p" type="stat">
+        <data>p</data>
+      </command>
+      <command id="reset" label="Reset" response="default" type="config">
+        <data>reset</data>
+      </command>
+      <command id="e1d" label="Event 1 Disable" response="default" type="config">
+        <data>e1=0</data>
+      </command>
+      <command id="e2d" label="Event 2 Disable" response="default" type="config">
+        <data>e2=0</data>
+      </command>
+      <command id="hl1" label="Hard Limit ON" response="default" type="config">
+        <data>hl1</data>
+      </command>
+      <command id="stop" label="Stop Running" response="default" type="action">
+        <data>stop</data>
+      </command>
+      <command id="jp" label="JOG Positive" response="default" type="action">
+        <data>j=1</data>
+      </command>
+      <command id="jn" label="JOG Negative" response="default" type="action">
+        <data>j=-1</data>
+      </command>
+      <command id="ma" label="Move Absolute Position" response="default" type="action">
+        <data>ma=</data>
+        <par format="%3.1" />
+      </command>
+      <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
+        <data>abspos=0</data>
+      </command>
+      <command id="setp" label="Set Pulse Number" response="default" type="config">
+        <data>p=</data>
+        <par format="%5.2" />
+      </command>
+    </cmdselect>
     <cmdframe>
-      <select>
-        <option id="bs" type="stat" label="Running Status">
-          <data>bs</data>
-        </option>
-        <option id="in1" type="stat" label="Input 1 Status">
-          <data>in(1)</data>
-        </option>
-        <option id="in2" type="stat" label="Input 2 Status">
-          <data>in(2)</data>
-        </option>
-        <option id="in3" type="stat" label="Input 3 Status">
-          <data>in(3)</data>
-        </option>
-        <option id="in4" type="stat" label="Input 4 Status">
-          <data>in(4)</data>
-        </option>
-        <option id="in5" type="stat" label="Input 5 Status">
-          <data>in(5)</data>
-        </option>
-        <option id="err" type="stat" label="Error Status">
-          <data>err</data>
-        </option>
-        <option id="p" type="stat" label="Pulse Number">
-          <data>p</data>
-        </option>
-        <option id="reset" type="config" label="Reset">
-          <data>reset</data>
-        </option>
-        <option id="e1d" type="config" label="Event 1 Disable">
-          <data>e1=0</data>
-        </option>
-        <option id="e2d" type="config" label="Event 2 Disable">
-          <data>e2=0</data>
-        </option>
-        <option id="hl1" type="config" label="Hard Limit ON">
-          <data>hl1</data>
-        </option>
-        <option id="stop" type="action" label="Stop Running">
-          <data>stop</data>
-        </option>
-        <option id="jp" type="action" label="JOG Positive">
-          <data>j=1</data>
-        </option>
-        <option id="jn" type="action" label="JOG Negative">
-          <data>j=-1</data>
-        </option>
-        <option id="ma" type="action" label="Move Absolute Position">
-          <data>ma=</data>
-          <data format="%3.1" ref="par" />
-        </option>
-        <option id="set0" type="config" label="Set 0 ABS Counter">
-          <data>abspos=0</data>
-        </option>
-        <option id="setp" type="config" label="Set Pulse Number">
-          <data>p=</data>
-          <data format="%5.2" ref="par" />
-        </option>
-      </select>
-      <data pack="H*">0D</data>
+      <selected />
+      <data>\r</data>
     </cmdframe>
-    <rspframe wait="0">
-      <select>
-        <option id="bs">
-          <assign field="bs" length="1" />
-        </option>
-        <option id="in1">
-          <assign field="in1" length="1" />
-        </option>
-        <option id="in2">
-          <assign field="in2" length="1" />
-        </option>
-        <option id="in3">
-          <assign field="in3" length="1" />
-        </option>
-        <option id="in4">
-          <assign field="in4" length="1" />
-        </option>
-        <option id="in5">
-          <assign field="in5" length="1" />
-        </option>
-        <option id="err">
-          <assign field="err" length="3" />
-        </option>
-        <option id="p">
-          <assign field="p" length="10" />
-        </option>
-        <option id="default">
-          <verify length="1">
-            <case type="pass" msg="Prefix OK">&gt;</case>
-            <case msg="Prefix mismatch" type="error"></case>
-          </verify>
-        </option>
-      </select>
+    <rspselect>
+      <response id="bs">
+        <field>
+          <length>1</length>
+          <assign>bs</assign>
+        </field>
+      </response>
+      <response id="in1">
+        <field>
+          <length>1</length>
+          <assign>in1</assign>
+        </field>
+      </response>
+      <response id="in2">
+        <field>
+          <length>1</length>
+          <assign>in2</assign>
+        </field>
+      </response>
+      <response id="in3">
+        <field>
+          <length>1</length>
+          <assign>in3</assign>
+        </field>
+      </response>
+      <response id="in4">
+        <field>
+          <length>1</length>
+          <assign>in4</assign>
+        </field>
+      </response>
+      <response id="in5">
+        <field>
+          <length>1</length>
+          <assign>in5</assign>
+        </field>
+      </response>
+      <response id="err">
+        <field>
+          <length>3</length>
+          <assign>err</assign>
+        </field>
+      </response>
+      <response id="p">
+        <field>
+          <length>10</length>
+          <assign>p</assign>
+        </field>
+      </response>
+      <response id="default">
+        <field>
+          <length>1</length>
+          <verify>&gt;</verify>
+        </field>
+      </response>
+    </rspselect>
+    <rspframe>
+      <selected />
     </rspframe>
   </device>
 </ddb>

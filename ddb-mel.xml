@@ -1,98 +1,69 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
   <device id="mel" label="MELSEC Q Series">
-    <selection>
-      <session id="chken" label="Check Enable Flag" type="stat">
-        <send>
-          <data label="Read region command" encode="lew">0x401</data>
-          <data label="Read region subcommand" encode="lew">0</data>
-          <data label="Start Address" encode="lew">0x20</data>
-          <data label="Device Code" encode="lew">0xB400</data>
-          <data label="Data Length" encode="lew">1</data>
-        </send>
-        <recv>
-          <field decode="lew">
-            <length>2</length>
-            <assign>cre</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="getstat" label="Get all status" type="stat">
-        <send>
-          <data label="Read region command" encode="lew">0x401</data>
-          <data label="Read region subcommand" encode="lew">0</data>
-          <data label="Start Address" encode="lew">0</data>
-          <data label="Device Code" encode="lew">0xB400</data>
-          <data label="Data Length" encode="lew">52</data>
-        </send>
-        <recv>
-          <repeat range="0:51" label="Repeated">
-            <field decode="lew">
-              <length>2</length>
-              <assign>x%02x</assign>
-            </field>
-          </repeat>
-        </recv>
-      </session>
-      <session id="set_tag" label="Set Tag to Run (1-12)" type="config">
-        <send>
-          <data label="Write region command" encode="lew">0x1401</data>
-          <data label="Write region subcommand" encode="lew">0</data>
-          <data label="Start Address" encode="lew">0x101</data>
-          <data label="Device Code" encode="lew">0xB400</data>
-          <data label="Data Length" encode="lew">1</data>
-          <par label="Data" encode="lew" validate="range">1:12,98,99</par>
-        </send>
-        <recv label="command resp" />
-      </session>
-      <session id="set_pos" label="Set Pos to Jack (1-4)" type="config">
-        <send>
-          <data label="Write region command" encode="lew">0x1401</data>
-          <data label="Write region subcommand" encode="lew">0</data>
-          <data label="Start Address" encode="lew">0x103</data>
-          <data label="Device Code" encode="lew">0xB400</data>
-          <data label="Data Length" encode="lew">1</data>
-          <par label="Data" encode="lew" validate="range">1,2,4,8,16</par>
-        </send>
-        <recv label="command resp" />
-      </session>
-      <session id="start" label="Start Trigger [HHHH]" type="action">
-        <send>
-          <data label="Write region command" encode="lew">0x1401</data>
-          <data label="Write region subcommand" encode="lew">0</data>
-          <data label="Start Address" encode="lew">0x102</data>
-          <data label="Device Code" encode="lew">0xB400</data>
-          <data label="Data Length" encode="lew">1</data>
-          <par label="Data" encode="lew" validate="range">1,0x100,0x8000</par>
-        </send>
-        <recv label="command resp" />
-      </session>
-      <session id="stop" label="Stop Trigger [HHHH]" type="action">
-        <send>
-          <data label="Write region command" encode="lew">0x1401</data>
-          <data label="Write region subcommand" encode="lew">0</data>
-          <data label="Start Address" encode="lew">0x100</data>
-          <data label="Device Code" encode="lew">0xB400</data>
-          <data label="Data Length" encode="lew">1</data>
-          <par label="Data" encode="lew" validate="range">0:65535</par>
-        </send>
-        <recv label="command resp" />
-      </session>
-      <session id="clear" label="Clear Action Flags" type="config">
-        <send>
-          <data label="Write region command" encode="lew">0x1401</data>
-          <data label="Write region subcommand" encode="lew">0</data>
-          <data label="Start Address" encode="lew">0x100</data>
-          <data label="Device Code" encode="lew">0xB400</data>
-          <data label="Data Length" encode="lew">4</data>
-          <data label="Data" encode="lew">0</data>
-          <data label="Data" encode="lew">0</data>
-          <data label="Data" encode="lew">0</data>
-          <data label="Data" encode="lew">0</data>
-        </send>
-        <recv label="command resp" />
-      </session>
-    </selection>
+    <cmdselect>
+      <command id="chken" label="Check Enable Flag" type="stat" response="chken">
+        <data label="Read region command" encode="lew">0x401</data>
+        <data label="Read region subcommand" encode="lew">0</data>
+        <data label="Start Address" encode="lew">0x20</data>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">1</data>
+      </command>
+      <command id="getstat" label="Get all status" type="stat" response="getstat">
+        <data label="Read region command" encode="lew">0x401</data>
+        <data label="Read region subcommand" encode="lew">0</data>
+        <data label="Start Address" encode="lew">0</data>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">52</data>
+      </command>
+      <command id="set_tag" label="Set Tag to Run (1-12)" type="config" response="cmdrsp">
+        <data label="Write region command" encode="lew">0x1401</data>
+        <data label="Write region subcommand" encode="lew">0</data>
+        <data label="Start Address" encode="lew">0x101</data>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">1</data>
+        <par label="Data" encode="lew" validate="range">1:12,98,99</par>
+      </command>
+      <command id="set_pos" label="Set Pos to Jack (1-4)" type="config" response="cmdrsp">
+        <data label="Write region command" encode="lew">0x1401</data>
+        <data label="Write region subcommand" encode="lew">0</data>
+        <data label="Start Address" encode="lew">0x103</data>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">1</data>
+        <par label="Data" encode="lew" validate="range">1,2,4,8,16</par>
+      </command>
+      <command id="start" label="Start Trigger [HHHH]" type="action" response="cmdrsp">
+        <data label="Write region command" encode="lew">0x1401</data>
+        <data label="Write region subcommand" encode="lew">0</data>
+        <data label="Start Address" encode="lew">0x102</data>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">1</data>
+        <par label="Data" encode="lew" validate="range">1,0x100,0x8000</par>
+      </command>
+      <command id="stop" label="Stop Trigger [HHHH]" type="action" response="cmdrsp">
+        <data label="Write region command" encode="lew">0x1401</data>
+        <data label="Write region subcommand" encode="lew">0</data>
+        <data label="Start Address" encode="lew">0x100</data>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">1</data>
+        <par label="Data" encode="lew" validate="range">0:65535</par>
+      </command>
+      <command id="clear" label="Clear Action Flags" type="config" response="cmdrsp">
+        <data label="Write region command" encode="lew">0x1401</data>
+        <data label="Write region subcommand" encode="lew">0</data>
+        <data label="Start Address" encode="lew">0x100</data>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">4</data>
+        <data label="Data" encode="lew">0</data>
+        <data label="Data" encode="lew">0</data>
+        <data label="Data" encode="lew">0</data>
+        <data label="Data" encode="lew">0</data>
+      </command>
+    </cmdselect>
+    <cmdccrange method="len">
+      <data label="Q Header: CPU Watch Timer" encode="lew">1</data>
+      <selected />
+    </cmdccrange>
     <cmdframe>
       <data label="SubHeader: Prefix" encode="lew">0x54</data>
       <data label="SubHeader: Serial Number">XX</data>
@@ -103,11 +74,33 @@
       <data label="Q Header: Request Unit Station Number" encode="chr">0</data>
       <cc_cmd label="Q Header: Send Data Length MSB" encode="chr" />
       <data label="Q Header: Send Data Length LSB" encode="chr">0</data>
-      <ccrange method="len">
-        <data label="Q Header: CPU Watch Timer" encode="lew">1</data>
-        <selected />
-      </ccrange>
+      <ccrange></ccrange>
     </cmdframe>
+    <rspselect>
+      <response id="chken">
+        <field decode="lew">
+          <length>2</length>
+          <assign>cre</assign>
+        </field>
+      </response>
+      <response id="getstat">
+        <repeat range="0:51" label="Repeated">
+          <field decode="lew">
+            <length>2</length>
+            <assign>x%02x</assign>
+          </field>
+        </repeat>
+      </response>
+      <response id="cmdrsp" label="command resp" />
+    </rspselect>
+    <rspccrange method="len">
+      <field decode="lew" format="%04X">
+        <length>2</length>
+        <assign>ecode</assign>
+        <verify>0000</verify>
+      </field>
+      <selected />
+    </rspccrange>
     <rspframe>
       <field label="SubHeader: Prefix" decode="lew" format="%04X">
         <length>2</length>
@@ -141,14 +134,7 @@
         <length>2</length>
         <assign>cc</assign>
       </field>
-      <ccrange method="len">
-        <field decode="lew" format="%04X">
-          <length>2</length>
-          <assign>ecode</assign>
-          <verify>0000</verify>
-        </field>
-        <selected />
-      </ccrange>
+      <ccrange></ccrange>
     </rspframe>
   </device>
 </ddb>

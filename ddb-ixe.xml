@@ -2,34 +2,19 @@
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
   <device id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" wait="0.1">
     <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
-    <selection>
-      <session id="getstat" label="Get status" type="stat">
-        <send>
-          <data>ST</data>
-        </send>
-        <recv>
-          <assign length="3">stat</assign>
-        </recv>
-      </session>
-      <session id="chkr" label="Check Run (1-6)" type="stat">
-        <send>
-          <par validate="range">1:6</par>
-          <data>=H</data>
-        </send>
-        <recv>
-          <assign length="1">r${par}</assign>
-        </recv>
-      </session>
-      <session id="getp" label="Get pulse (1-6)" type="stat">
-        <send>
-          <par validate="range">1:6</par>
-          <data>P21R</data>
-        </send>
-        <recv>
-          <assign regexp="[0-9]+">p${par}</assign>
-        </recv>
-      </session>
-    </selection>
+    <cmdselect>
+      <command id="getstat" label="Get status" response="getstat" type="stat">
+        <data>ST</data>
+      </command>
+      <command id="chkr" label="Check Run (1-6)" response="chkr" type="stat">
+        <par validate="range">1:6</par>
+        <data>=H</data>
+      </command>
+      <command id="getp" label="Get pulse (1-6)" response="getp" type="stat">
+        <par validate="range">1:6</par>
+        <data>P21R</data>
+      </command>
+    </cmdselect>
     <cmdframe>
       <data label="Prefix" encode="chr">2</data>
       <selected />
@@ -37,12 +22,40 @@
       <data encode="chr">13</data>
       <data encode="chr">10</data>
     </cmdframe>
+    <rspselect>
+      <response id="getstat">
+        <field>
+          <length>3</length>
+          <assign>stat</assign>
+        </field>
+      </response>
+      <response id="chkr">
+        <field>
+          <length>1</length>
+          <assign>r${par}</assign>
+        </field>
+      </response>
+      <response id="getp">
+        <field>
+          <regexp>[\d]+</regexp>
+          <assign>p${par}</assign>
+        </field>
+      </response>
+    </rspselect>
     <rspframe>
-      <verify label="Prefix" length="1" decode="chr">2</verify>
-      <verify label="ACK" length="1" decode="chr">6</verify>
+      <field label="Prefix" decode="chr">
+        <length>1</length>
+        <verify>2</verify>
+      </field>
+      <field label="ACK" decode="chr">
+        <length>1</length>
+        <verify>6</verify>
+      </field>
       <selected />
-      <verify label="Suffix" length="1" decode="chr">3</verify>
+      <field label="Suffix" decode="chr">
+        <length>1</length>
+        <verify>3</verify>
+      </field>
     </rspframe>
   </device>
 </ddb>
-

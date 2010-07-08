@@ -31,10 +31,9 @@ class Dev
 
   def setcmd(cmdary)
     @cid=cmdary.compact.join(':')
-    session=@ddb.select_id('selection',cmdary.shift)
-    @v.msg{'Select:'+session.attributes['label']}
-    @send=session.elements['send']
-    @recv=session.elements['recv']
+    @send=@ddb.select_id('cmdselect',cmdary.shift)
+    @v.msg{'Select:'+@send.attributes['label']}
+    @recv=@ddb.select_id('rspselect',@send.attributes['response'])
     @cmd[:par]=cmdary.shift
   end
 

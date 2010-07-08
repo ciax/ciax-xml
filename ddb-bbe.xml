@@ -2,35 +2,31 @@
 <ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
   <device id="bbe" label="BB Electric" wait="0.3">
     <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
-    <selection>
-      <session id="getstat" label="Get Status" type="stat">
-        <send>
-          <data>RD</data>
-        </send>
-        <recv>
-          <field decode="bew">
-            <length>2</length>
-            <assign>stat</assign>
-          </field>
-        </recv>
-      </session>
-      <session id="defio" label="DEFINE IN/OUT" type="config">
-        <send>
-          <data>SD</data>
-          <data label="msb" encode="bew">0x1111</data>
-        </send>
-      </session>
-      <session id="output" label="OUTPUT [DDDDD]" type="action">
-        <send>
-          <data>SO</data>
-          <par encode="bew" validate="range">0:65535</par>
-        </send>
-      </session>
-    </selection>
+    <cmdselect>
+      <command id="getstat" label="Get Status" type="stat">
+        <data>RD</data>
+      </command>
+      <command id="defio" label="DEFINE IN/OUT" type="config">
+        <data>SD</data>
+        <data label="msb" encode="bew">0x1111</data>
+      </command>
+      <command id="output" label="OUTPUT [DDDDD]" type="action">
+        <data>SO</data>
+        <par encode="bew" validate="range">0:65535</par>
+      </command>
+    </cmdselect>
     <cmdframe>
       <data label="Prefix">!0</data>
       <selected />
     </cmdframe>
+    <rspselect>
+      <response id="getstat">
+        <field decode="bew">
+          <length>2</length>
+          <assign>stat</assign>
+        </field>
+      </response>
+    </rspselect>
     <rspframe>
       <selected />
     </rspframe>

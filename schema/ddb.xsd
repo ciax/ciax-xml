@@ -13,11 +13,13 @@
       <xsd:sequence>
         <!--Protocol for RS232C-->
         <xsd:element ref="cx:serial" minOccurs="0" maxOccurs="1" />
-        <!--Select sessions-->
-        <xsd:element ref="cx:selection" minOccurs="0" maxOccurs="1" />
         <!--Command frame-->
+        <xsd:element ref="cx:cmdselect" minOccurs="1" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cx:cmdccrange" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cx:cmdframe" minOccurs="0" maxOccurs="1" />
         <!--Response frame-->
+        <xsd:element ref="cx:rspselect" minOccurs="1" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cx:rspccrange" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cx:rspframe" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:string" use="required" />
@@ -84,30 +86,7 @@
   </xsd:element>
   <!--Shared frame-->
   <xsd:element name="ccrange">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:selected" />
-        <xsd:group ref="cx:cmd_elem" />
-        <xsd:group ref="cx:rsp_elem" />
-      </xsd:choice>
-      <xsd:attribute name="method">
-        <!--Check Code Method-->
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="bcc" />
-            <xsd:enumeration value="sum" />
-            <xsd:enumeration value="len" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="selection">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cx:session" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
-    </xsd:complexType>
+    <xsd:complexType></xsd:complexType>
   </xsd:element>
   <xsd:element name="selected">
     <xsd:complexType></xsd:complexType>
@@ -120,53 +99,15 @@
       <xsd:enumeration value="lew"></xsd:enumeration>
     </xsd:restriction>
   </xsd:simpleType>
-  <!--Session frame-->
-  <xsd:element name="session">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element minOccurs="0" maxOccurs="1" ref="cx:send" />
-        <xsd:element minOccurs="0" maxOccurs="1" ref="cx:recv" />
-      </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:string" use="required" />
-      <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="type">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="stat" />
-            <xsd:enumeration value="action" />
-            <xsd:enumeration value="config" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="send">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:cmd_elem" />
-      </xsd:choice>
-      <xsd:attribute name="label" type="xsd:string" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="recv">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:rsp_elem"></xsd:group>
-      </xsd:choice>
-      <xsd:attribute name="label" type="xsd:string" />
-    </xsd:complexType>
-  </xsd:element>
-  <!--Command frame-->
-  <xsd:element name="cmdframe">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="cx:cmd_elem" />
-        <xsd:element ref="cx:selected" />
-        <xsd:element ref="cx:ccrange" />
-        <xsd:element ref="cx:cc_cmd" />
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:simpleType name="ccmethod">
+    <!--Check Code Method-->
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="bcc" />
+      <xsd:enumeration value="sum" />
+      <xsd:enumeration value="len" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!--Command Elements-->
   <xsd:attributeGroup name="cmd_attr">
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="format" type="xsd:string" />
@@ -204,33 +145,71 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  <!--Command Select-->
+  <xsd:element name="cmdselect">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:command" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="command">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:cmd_elem" />
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="response" type="xsd:string" />
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="stat" />
+            <xsd:enumeration value="action" />
+            <xsd:enumeration value="config" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <!--Command CC-->
+  <xsd:element name="cmdccrange">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cx:selected" />
+        <xsd:group ref="cx:cmd_elem" />
+      </xsd:choice>
+      <xsd:attribute name="method" type="cx:ccmethod"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <!--Command frame-->
+  <xsd:element name="cmdframe">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="cx:cmd_elem" />
+        <xsd:element ref="cx:selected" />
+        <xsd:element ref="cx:ccrange" />
+        <xsd:element ref="cx:cc_cmd" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="cc_cmd">
     <xsd:complexType>
       <xsd:attributeGroup ref="cx:cmd_attr" />
     </xsd:complexType>
   </xsd:element>
-  <!--Response frame-->
-  <xsd:element name="rspframe">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="cx:rsp_elem" />
-        <xsd:element ref="cx:selected" />
-        <xsd:element ref="cx:ccrange" />
-      </xsd:choice>
-      <xsd:attribute name="terminator" type="xsd:string" />
-    </xsd:complexType>
-  </xsd:element>
+  <!--Response Elements-->
+  <xsd:attributeGroup name="rsp_flf">
+    <xsd:attribute name="label" type="xsd:string" />
+    <xsd:attribute name="decode" type="cx:codec"></xsd:attribute>
+    <xsd:attribute name="format" type="xsd:string" />
+  </xsd:attributeGroup>
   <xsd:group name="rsp_elem">
     <xsd:choice>
       <xsd:element ref="cx:field"></xsd:element>
       <xsd:element ref="cx:repeat"></xsd:element>
     </xsd:choice>
   </xsd:group>
-  <xsd:attributeGroup name="rsp_flf">
-    <xsd:attribute name="label" type="xsd:string" />
-    <xsd:attribute name="decode" type="cx:codec"></xsd:attribute>
-    <xsd:attribute name="format" type="xsd:string" />
-  </xsd:attributeGroup>
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
@@ -255,6 +234,9 @@
       <xsd:attributeGroup ref="cx:rsp_flf" />
     </xsd:complexType>
   </xsd:element>
+  <!--Field Elements-->
+  <xsd:element name="length" type="xsd:int"></xsd:element>
+  <xsd:element name="regexp" type="xsd:string" />
   <xsd:element name="assign" type="xsd:string"></xsd:element>
   <xsd:element name="verify">
     <xsd:complexType>
@@ -265,6 +247,42 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="length" type="xsd:int"></xsd:element>
-  <xsd:element name="regexp" type="xsd:string" />
+  <!--Response Select-->
+  <xsd:element name="rspselect">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cx:response" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="response">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="cx:rsp_elem"></xsd:group>
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <!--Response CC-->
+  <xsd:element name="rspccrange">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cx:selected" />
+        <xsd:group ref="cx:rsp_elem" />
+      </xsd:choice>
+      <xsd:attribute name="method" type="cx:ccmethod"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <!--Response frame-->
+  <xsd:element name="rspframe">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="cx:rsp_elem" />
+        <xsd:element ref="cx:selected" />
+        <xsd:element ref="cx:ccrange" />
+      </xsd:choice>
+      <xsd:attribute name="terminator" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
 </xsd:schema>

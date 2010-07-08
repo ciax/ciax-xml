@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
-  <device id="oco" label="OMEGA Current Output(D4251)" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf">
+  <device id="oco" label="OMEGA Current Output(D4251)" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf" wait="1">
     <serial speed="300" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+    <cmdselect>
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <data>1RD</data>
+      </command>
+      <command id="i" label="Set Current by argv [DD.DD]" type="action">
+        <data>1AO+000</data>
+        <par format="%05.2f" />
+      </command>
+    </cmdselect>
     <cmdframe>
       <data label="Prefix">$</data>
-      <select>
-        <option id="getstat" type="stat" label="Get Status">
-          <data>1RD</data>
-        </option>
-        <option id="i" type="action" label="Set Current by argv [DD.DD]">
-          <data>1AO+000</data>
-          <data format="%05.2f" ref="par" />
-        </option>
-      </select>
-      <data label="Suffix" pack="H*">0D</data>
+      <selected></selected>
+      <data label="Suffix">\r</data>
     </cmdframe>
-    <rspframe wait="1">
-      <verify length="1">
-        <case msg="Prefix OK" type="pass">*</case>
-        <case msg="Prefix mismatch" type="error"></case>
-      </verify>
-      <select>
-        <option id="getstat">
-          <assign field="crnt" length="9" />
-        </option>
-      </select>
+    <rspselect>
+      <response id="getstat">
+        <field>
+          <length>9</length>
+          <assign>crnt</assign>
+        </field>
+      </response>
+    </rspselect>
+    <rspframe>
+      <field>
+        <length>1</length>
+        <verify>*</verify>
+      </field>
+      <selected />
     </rspframe>
   </device>
 </ddb>

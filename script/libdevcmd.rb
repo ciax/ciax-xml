@@ -12,7 +12,7 @@ class DevCmd < Hash
 
   def cmdframe(sel)
     @v.err(self[:sel]=sel){"No Selection"}
-    if ccn=@ddb['cmdframe'].elements['ccrange']
+    if ccn=@ddb['cmdccrange']
       @v.msg{"Entering Ceck Code Range"}
       self['ccrange']=getframe(ccn)
       self['cc_cmd']=checkcode(ccn,self['ccrange'])

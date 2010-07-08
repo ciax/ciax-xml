@@ -35,7 +35,8 @@ class DevRsp < Hash
       case c.name
       when 'ccrange'
         @v.msg{"Entering Ceck Code Node"}
-        self[:cc] = checkcode(c,setframe(c))
+        rc=@ddb['rspccrange']
+        self[:cc] = checkcode(rc,setframe(rc))
         @v.msg{"Exitting Ceck Code Node"}
       when 'selected'
         @v.msg{"Entering Selected Node"}

@@ -62,7 +62,7 @@
       <var id="pl" label="Limit (W)">
         <float field="p" format="%3.2f" />
       </var>
-      <var id="sw" label="OUTPUT ON/OFF" trail="true" symbol="on-warn">
+      <var id="sw" label="OUTPUT ON/OFF" trail="true" symbol="warn">
         <string field="f1" />
       </var>
       <var id="tmp" label="OverHeat" symbol="alarm">

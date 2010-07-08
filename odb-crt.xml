@@ -70,13 +70,13 @@
       <var id="rdy" label="READY" symbol="normal" trail="true">
         <binary bit="0" field="x00" />
       </var>
-      <var id="pse" label="PAUSE" symbol="on-warn" trail="true">
+      <var id="pse" label="PAUSE" symbol="warn" trail="true">
         <binary bit="1" field="x00" />
       </var>
       <var id="emg" label="ENERGENCY" symbol="alarm" trail="true">
         <binary bit="2" field="x00" />
       </var>
-      <var id="stp" label="STOP" symbol="on-warn">
+      <var id="stp" label="STOP" symbol="warn">
         <binary bit="3" field="x00" />
       </var>
       <var id="run" label="RUNNING" symbol="normal" trail="true">

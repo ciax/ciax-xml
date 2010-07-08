@@ -139,21 +139,17 @@ class Obj < Hash
   def std_symbol(sid,st)
     if /^(normal|on-warn|off-warn|alarm|hide)$/ === sid
       st['type']='ENUM'
-      st['hl']='normal'
       st['msg']=(st['val']=='1') ? 'ON' : 'OFF'
+      st['hl']=(sid === /hide|alarm/) ? 'hide' : 'normal'
       case sid
-      when 'hide'
-        st['hl']='hide'
-      when 'on-warn'
+      when 'warn'
         st['hl']='warn' if st['msg'] == 'ON'
       when 'off-warn'
         st['hl']='warn' if st['msg'] == 'OFF'
       when 'alarm'
-        if st['msg'] == 'ON'
-          st['hl'] = 'alarm'
-        else
-          st['hl'] = 'hide'
-        end
+        st['hl'] = 'alarm' if st['msg'] == 'ON'
+      when 'off-alarm'
+        st['hl'] = 'alarm' if st['msg'] == 'OFF'
       end
       st
     end

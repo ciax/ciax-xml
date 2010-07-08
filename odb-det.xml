@@ -87,10 +87,10 @@
       <var id="ipw" label="CAS IPW" symbol="off-warn">
         <binary bit="0" field="c1d1" />
       </var>
-      <var id="stp" label="STOW PIN" symbol="on-warn" trail="true">
+      <var id="stp" label="STOW PIN" symbol="warn" trail="true">
         <binary bit="1" field="c1d1" />
       </var>
-      <var id="ccd" label="CAS CCD PW" symbol="on-warn" trail="true">
+      <var id="ccd" label="CAS CCD PW" symbol="warn" trail="true">
         <binary bit="2" field="c1d0" />
       </var>
       <var id="lan" label="CAS LAN PW" symbol="hide">

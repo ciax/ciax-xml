@@ -113,7 +113,7 @@
         </field>
       </response>
     </rspselect>
-    <rspframe>
+    <rspframe terminator="\r\n">
       <selected />
     </rspframe>
   </device>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:merope:59999" device="psp" id="mh1" label="MOIRCS Ext Heater 1" server="socat - udp-l:24201,reuseaddr,fork">
+    <selection>
+      <session id="upd" label="Update Status">
+        <command>
+          <text>getstat</text>
+        </command>
+      </session>
+      <session id="setlmt" label="Set Limit 20V/5A/100W">
+        <command>
+          <text>setvl</text>
+          <text>20</text>
+        </command>
+        <command>
+          <text>setal</text>
+          <text>5</text>
+        </command>
+        <command>
+          <text>setpl</text>
+          <text>100</text>
+        </command>
+        <command>
+          <text>getstat</text>
+        </command>
+      </session>
+      <session id="setv" label="Set Voltage 0-50[V]">
+        <command>
+          <text>setv</text>
+          <text>${par}</text>
+        </command>
+        <command>
+          <text>getstat</text>
+        </command>
+      </session>
+      <session id="setp" label="Set Power 0-100[W]">
+        <command>
+          <text>setv</text>
+          <eval>Math.sqrt(${par}*26)</eval>
+        </command>
+        <command>
+          <text>getstat</text>
+        </command>
+      </session>
+    </selection>
+    <status>
+      <var id="vol" label="OUTPUT (V)" trail="true">
+        <float field="v" format="%3.2f" />
+      </var>
+      <var id="amp" label="OUTPUT (A)" trail="true">
+        <float field="a" format="%3.2f" />
+      </var>
+      <var id="wat" label="OUTPUT (W)">
+        <float field="w" format="%3.2f" />
+      </var>
+      <var id="vl" label="Limit (V)" trail="true">
+        <float field="u" format="%3.2f" />
+      </var>
+      <var id="il" label="Limit (A)" trail="true">
+        <float field="i" format="%3.2f" />
+      </var>
+      <var id="pl" label="Limit (W)">
+        <float field="p" format="%3.2f" />
+      </var>
+      <var id="sw" label="OUTPUT ON/OFF" trail="true" symbol="on-warn">
+        <string field="f1" />
+      </var>
+      <var id="tmp" label="OverHeat" symbol="alarm">
+        <string field="f2" />
+      </var>
+      <var id="kn1" label="Wheel Knov Fine" trail="true" symbol="normal">
+        <string field="f3" />
+      </var>
+      <var id="kn2" label="Wheel Knov Unlock" symbol="normal">
+        <string field="f4" />
+      </var>
+      <var id="rem" label="REMOTE" trail="true" symbol="normal">
+        <string field="f5" />
+      </var>
+      <var id="loc" label="Local Lock" symbol="normal">
+        <string field="f6" />
+      </var>
+    </status>
+    <symbols>
+      <symbol id="flow" type="FLOAT">
+        <range hl="alarm" msg="HH">6:</range>
+        <range hl="warn" msg="H">5:&lt;6</range>
+        <range hl="normal" msg="M">4:&lt;5</range>
+        <range hl="warn" msg="L">3:&lt;4</range>
+        <range hl="alarm" msg="LL">:&lt;3</range>
+      </symbol>
+    </symbols>
+  </object>
+</odb>

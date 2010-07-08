@@ -6,7 +6,8 @@ class Verbose
   end
 
   # Public Method
-  def msg
+  def msg(msg=nil)
+    return mkmsg(msg) if msg
     return unless ENV['VER']
     msg=mkmsg(yield)
     if ENV['VER'].split(':').any? {|s|
@@ -15,12 +16,8 @@ class Verbose
     end
   end
 
-  def wrn
-    warn mkmsg(yield)
-  end
-
-  def err(cond=nil)
-    raise mkmsg(yield) unless cond
+  def err(msg='error')
+    raise mkmsg(msg)
   end
 
   # Private Method

@@ -12,16 +12,15 @@ class DevRsp < Hash
   end
 
   def rspframe(sel)
-    @v.err(self[:sel]=sel){"No Selection"}
-    @v.err(@frame=yield){"No String"}
+    self[:sel]=sel || @v.err("No Selection")
+    @frame=yield || @v.err("No String")
     if tm=attr(@ddb['rspframe'],'terminator')
       @frame.chomp!(tm)
       @v.msg{"Remove terminator:[#{@frame}]" }
     end
     setframe(@ddb['rspframe'])
     if cc=@field.delete('cc')
-      @v.err(cc == self[:cc]){
-        "Verifu:CC Mismatch[#{cc}]!=[#{self[:cc]}]"}
+      cc == self[:cc] || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{self[:cc]}]")
       @v.msg{"Verify:CC OK"}
     end
     @field
@@ -64,7 +63,7 @@ class DevRsp < Hash
       case d.name
       when 'length'
         len=d.text.to_i
-        @v.err(@frame.size >= len){"Too short (#{@frame.size-len})"}
+        @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
         str=@frame.slice!(0,len)
         @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
         field=decode(e,str)
@@ -80,7 +79,7 @@ class DevRsp < Hash
       when 'verify'
         if txt=text(d)
           @v.msg{"Verify:[#{txt}]"}
-          @v.err(txt == field){"Verify Mismatch[#{field}]!=[#{txt}]"}
+          txt == field || @v.err("Verify Mismatch[#{field}]!=[#{txt}]")
         end
       end
     }

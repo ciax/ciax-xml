@@ -11,7 +11,7 @@ class DevCmd < Hash
   end
 
   def cmdframe(sel)
-    @v.err(self[:sel]=sel){"No Selection"}
+    self[:sel]=sel || @v.err("No Selection")
     if ccn=@ddb['cmdccrange']
       @v.msg{"Entering Ceck Code Range"}
       self['ccrange']=getframe(ccn)
@@ -35,7 +35,7 @@ class DevCmd < Hash
         frame << encode(c,text(c))
         @v.msg{"GetFrame:#{label}[#{c.text}]"}
       when 'par'
-        @v.err(self[:par]){"No Parameter"}
+        self[:par] || @v.err("No Parameter")
         str=validate(c,self[:par])
         @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
         frame << encode(c,str)

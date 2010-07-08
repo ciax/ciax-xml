@@ -11,12 +11,12 @@ module ModXml
       when 'bcc'
         frame.each_byte {|c| chk ^= c }
       else
-        @v.err{"No such CC method #{method}"}
+        @v.err("No such CC method #{method}")
       end
       @v.msg{"Calc:CC [#{method.upcase}] -> [#{chk}]"}
       return chk.to_s
     end
-    @v.err{"CC No method"}
+    @v.err("CC No method")
   end
 
   Codec={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
@@ -42,15 +42,15 @@ module ModXml
   end
 
   def validate(e,str)
-    @v.err(str){"No Parameter"}
+    str || @v.err("No Parameter")
     @v.msg{"Validate String [#{str}]"}
     case e.attributes['validate']
     when 'regexp'
-      @v.err(/^#{e.text}$/ === str){"Parameter invalid(#{e.text})"}
+      /^#{e.text}$/ === str || @v.err("Parameter invalid(#{e.text})")
     when 'range'
       e.text.split(',').any? { |s|
         NumRange.new(s) == str
-      } || @v.err{"Parameter out of range(#{e.text})"}
+      } || @v.err("Parameter out of range(#{e.text})")
     end
     str
   end

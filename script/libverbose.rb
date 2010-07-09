@@ -6,7 +6,7 @@ class Verbose
   end
 
   # Public Method
-  def msg(msg=nil)
+  def msg(msg=nil) # Parameter = show it anytime, Block = depends on $VER
     return mkmsg(msg) if msg
     return unless ENV['VER']
     msg=mkmsg(yield)

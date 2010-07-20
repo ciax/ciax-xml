@@ -8,7 +8,6 @@ class DevRsp < Hash
   def initialize(ddb)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
-    @field=Hash.new
     @var=Hash.new
   end
 
@@ -20,11 +19,11 @@ class DevRsp < Hash
       @v.msg{"Remove terminator:[#{@frame}]" }
     end
     setframe(@ddb['rspframe'])
-    if cc=@field.delete('cc')
+    if cc=delete('cc')
       cc == @var[:cc] || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@var[:cc]}]")
       @v.msg{"Verify:CC OK"}
     end
-    @field
+    self
   end
 
   def par=(par)
@@ -78,8 +77,8 @@ class DevRsp < Hash
       when 'assign'
         key=substitute(d,@var)
         key=key % num if num
-        @field[key]=field
-        @v.msg{"Assign:[#{key}]<-[#{@field[key]}]"}
+        self[key]=field
+        @v.msg{"Assign:[#{key}]<-[#{self[key]}]"}
       when 'verify'
         if txt=text(d)
           @v.msg{"Verify:[#{txt}]"}

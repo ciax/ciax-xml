@@ -9,18 +9,22 @@ class DevCmd
   def initialize(ddb)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
-    @par,@sel,@ccrange,@cc=[]
+    @var=Hash.new
   end
 
   def cmdframe(sel)
-    @sel=sel || @v.err("No Selection")
+    @var[:sel]=sel || @v.err("No Selection")
     if ccn=@ddb['cmdccrange']
       @v.msg{"Entering Ceck Code Range"}
-      @ccrange=getframe(ccn)
-      @cc=checkcode(ccn,@ccrange)
+      @var[:ccrange]=getframe(ccn)
+      @var[:cc]=checkcode(ccn,@var[:ccrange])
       @v.msg{"Exitting Ceck Code Range"}
     end
     getframe(@ddb['cmdframe'])
+  end
+
+  def par=(par)
+    @var[:par]=par
   end
 
   private
@@ -34,19 +38,19 @@ class DevCmd
         @v.msg{"GetFrame:#{label}[#{c.text}]"}
       when 'selected'
         @v.msg{"Entering Selected Node"}
-        frame << getframe(@sel)
+        frame << getframe(@var[:sel])
         @v.msg{"Exitting Selected Node"}
       when 'par'
-        @par || @v.err("No Parameter")
-        str=validate(c,@par)
+        @var[:par] || @v.err("No Parameter")
+        str=validate(c,@var[:par])
         @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
         frame << encode(c,str)
       when 'ccrange'
-        frame << @ccrange
-        @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
+        frame << @var[:ccrange]
+        @v.msg{"GetFrame:(ccrange)[#{@var[:ccrange]}]"}
       when 'cc_cmd'
-        frame << encode(c,@cc)
-        @v.msg{"GetFrame:#{label}(cc)[#{@cc}"}
+        frame << encode(c,@var[:cc])
+        @v.msg{"GetFrame:#{label}(cc)[#{@var[:cc]}"}
       end
     }
     frame

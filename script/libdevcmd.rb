@@ -2,20 +2,22 @@
 require "libmodxml"
 
 # Cmd Methods
-class DevCmd < Hash
+class DevCmd
   include ModXml
+  attr_writer :par
 
   def initialize(ddb)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
+    @par,@sel,@ccrange,@cc=[]
   end
 
   def cmdframe(sel)
-    self[:sel]=sel || @v.err("No Selection")
+    @sel=sel || @v.err("No Selection")
     if ccn=@ddb['cmdccrange']
       @v.msg{"Entering Ceck Code Range"}
-      self['ccrange']=getframe(ccn)
-      self['cc_cmd']=checkcode(ccn,self['ccrange'])
+      @ccrange=getframe(ccn)
+      @cc=checkcode(ccn,@ccrange)
       @v.msg{"Exitting Ceck Code Range"}
     end
     getframe(@ddb['cmdframe'])
@@ -27,21 +29,24 @@ class DevCmd < Hash
     e.each_element { |c|
       label=c.attributes['label']
       case c.name
-      when 'selected'
-        @v.msg{"Entering Selected Node"}
-        frame << getframe(self[:sel])
-        @v.msg{"Exitting Selected Node"}
       when 'data'
         frame << encode(c,text(c))
         @v.msg{"GetFrame:#{label}[#{c.text}]"}
+      when 'selected'
+        @v.msg{"Entering Selected Node"}
+        frame << getframe(@sel)
+        @v.msg{"Exitting Selected Node"}
       when 'par'
-        self[:par] || @v.err("No Parameter")
-        str=validate(c,self[:par])
+        @par || @v.err("No Parameter")
+        str=validate(c,@par)
         @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
         frame << encode(c,str)
-      else
-        frame << encode(c,self[c.name])
-        @v.msg{"GetFrame:#{label}(#{c.name})[#{self[c.name]}]"}
+      when 'ccrange'
+        frame << @ccrange
+        @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
+      when 'cc_cmd'
+        frame << encode(c,@cc)
+        @v.msg{"GetFrame:#{label}(cc)[#{@cc}"}
       end
     }
     frame

@@ -52,7 +52,7 @@ class ObjSrv
     when ''
       ''
     when 'stat'
-      yield @odb.stat
+      yield @odb['stat']
     when 'auto'
       auto_upd(cmdary.shift)
     else

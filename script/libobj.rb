@@ -7,7 +7,6 @@ require "libiofile"
 
 class Obj < Hash
   include ModXml
-  attr_reader :stat,:field
 
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
@@ -20,13 +19,13 @@ class Obj < Hash
   else
     @f=IoFile.new(obj)
     begin
-      @stat=@f.load_json
+      self['stat']=@f.load_json
     rescue
       warn $!
-      @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
+      self['stat']={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
     end
     @v=Verbose.new("odb/#{obj}".upcase)
-    @field=Hash.new
+    self['field']=Hash.new
     update(@odb)
     @obj=obj
   end
@@ -34,7 +33,7 @@ class Obj < Hash
   public
   def objcom(line)
     cmd,par=line.split(' ')
-    @field['par']=par
+    self['par']=par
     session=select_session(cmd)
     session.each_element {|command|
       cmdary=get_cmd(command)
@@ -45,12 +44,12 @@ class Obj < Hash
   
   def get_stat(dstat)
     return unless dstat
-    @field.update(dstat)
+    self['field'].update(dstat)
     @odb['status'].each_element {|var|
       get_var(var)
     }
-    @stat['time']['val']=Time.at(@field['time'].to_f).to_s
-    @f.save_json(@stat)
+    self['stat']['time']['val']=Time.at(self['field']['time'].to_f).to_s
+    @f.save_json(self['stat'])
   end
   
   private
@@ -69,7 +68,7 @@ class Obj < Hash
   def get_cmd(e)
     cmdary=Array.new
     e.each_element{|txt|
-      str=substitute(txt.text,@field)
+      str=substitute(txt.text,self['field'])
       if txt.name == 'eval'
         str=eval(str).to_s
         @v.msg{"CMD:Evaluated [#{str}]"}
@@ -90,7 +89,7 @@ class Obj < Hash
       a=var.attributes
     end
     st['trail']=a['trail']
-    val=get_val(var,@field)
+    val=get_val(var,self['field'])
     st['val']=val
     @v.msg{"STAT:GetStatus:#{id}=[#{val}]"}
     if sid=a['symbol']
@@ -101,7 +100,7 @@ class Obj < Hash
         }
       end
     end
-    @stat[id]=st
+    self['stat'][id]=st
   end
 
   def get_val(e,field)
@@ -137,7 +136,7 @@ class Obj < Hash
 
   # Built-in Symbol (normal,hide,on-warn,off-warn,alarm)
   def std_symbol(sid,st)
-    if /^(normal|on-warn|off-warn|alarm|hide)$/ === sid
+    if /^(normal|warn|off-warn|alarm|off-alarm|hide)$/ === sid
       st['type']='ENUM'
       st['msg']=(st['val']=='1') ? 'ON' : 'OFF'
       st['hl']=(sid === /hide|alarm/) ? 'hide' : 'normal'

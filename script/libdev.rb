@@ -35,7 +35,7 @@ class Dev
     @v.msg{'Select:'+@send.attributes['label']}
     res=@send.attributes['response']
     @recv= res ? @ddb.select_id('rspselect',res) : nil
-    @cmd.par=cmdary.shift
+    @cmd.par=@rsp.par=cmdary.shift
   end
 
   def getcmd

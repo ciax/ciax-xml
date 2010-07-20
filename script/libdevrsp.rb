@@ -9,10 +9,11 @@ class DevRsp < Hash
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @field=Hash.new
+    @var=Hash.new
   end
 
   def rspframe(sel)
-    self[:sel]=sel || @v.err("No Selection")
+    @var[:sel]=sel || @v.err("No Selection")
     @frame=yield || @v.err("No String")
     if tm=attr(@ddb['rspframe'],'terminator')
       @frame.chomp!(tm)
@@ -20,10 +21,14 @@ class DevRsp < Hash
     end
     setframe(@ddb['rspframe'])
     if cc=@field.delete('cc')
-      cc == self[:cc] || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{self[:cc]}]")
+      cc == @var[:cc] || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@var[:cc]}]")
       @v.msg{"Verify:CC OK"}
     end
     @field
+  end
+
+  def par=(par)
+    @var['par']=par
   end
 
   private
@@ -35,11 +40,11 @@ class DevRsp < Hash
       when 'ccrange'
         @v.msg{"Entering Ceck Code Node"}
         rc=@ddb['rspccrange']
-        self[:cc] = checkcode(rc,setframe(rc))
+        @var[:cc] = checkcode(rc,setframe(rc))
         @v.msg{"Exitting Ceck Code Node"}
       when 'selected'
         @v.msg{"Entering Selected Node"}
-        frame << setframe(self[:sel])
+        frame << setframe(@var[:sel])
         @v.msg{"Exitting Selected Node"}
       when 'field'
         frame << field(c)
@@ -53,7 +58,6 @@ class DevRsp < Hash
     }
     frame
   end
-
 
   def field(e,num=nil)
     str=''
@@ -72,7 +76,7 @@ class DevRsp < Hash
         @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
         field=decode(e,str)
       when 'assign'
-        key=substitute(d,self)
+        key=substitute(d,@var)
         key=key % num if num
         @field[key]=field
         @v.msg{"Assign:[#{key}]<-[#{@field[key]}]"}

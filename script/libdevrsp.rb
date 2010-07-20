@@ -72,7 +72,7 @@ class DevRsp < Hash
         @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
         field=decode(e,str)
       when 'assign'
-        key=substitute(d.text,self)
+        key=substitute(d,self)
         key=key % num if num
         @field[key]=field
         @v.msg{"Assign:[#{key}]<-[#{@field[key]}]"}

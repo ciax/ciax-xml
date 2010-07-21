@@ -76,6 +76,12 @@ module ModXml
     conv
   end
 
+  def repeat(e)
+    Range.new(*e.attributes['range'].split(':')).each { |n|
+      e.each_element { |d| yield d,n }
+    }
+  end
+
   def text(e) # convert escape char (i.e. "\n"..)
     eval('"'+e.text+'"') if e.text
   end

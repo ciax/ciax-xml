@@ -40,11 +40,9 @@ class Obj < Hash
       when 'statement'
         yield(get_cmd(c))
       when 'repeat'
-        Range.new(*c.attributes['range'].split(':')).each { |n|
+        repeat(c){ |d,n|
           self['n']=n
-          c.each_element { |d|
-            yield(get_cmd(d))
-          }
+          yield(get_cmd(d))
         }
       end
     }

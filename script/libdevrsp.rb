@@ -48,11 +48,7 @@ class DevRsp < Hash
       when 'field'
         frame << field(c)
       when 'repeat'
-        Range.new(*a['range'].split(':')).each {|n|
-          c.each_element {|d|
-            frame << field(d,n)
-          }
-        }
+        repeat(c){|d,n| frame << field(d,n) }
       end
     }
     frame

@@ -20,7 +20,7 @@
         </field>
         <field>
           <length>6</length>
-          <assign>pres</assign>
+          <assign>stat</assign>
         </field>
       </response>
     </rspselect>

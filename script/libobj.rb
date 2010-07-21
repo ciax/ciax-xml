@@ -139,7 +139,7 @@ class Obj < Hash
     if /^(normal|warn|off-warn|alarm|off-alarm|hide)$/ === sid
       st['type']='ENUM'
       st['msg']=(st['val']=='1') ? 'ON' : 'OFF'
-      st['hl']=(sid === /hide|alarm/) ? 'hide' : 'normal'
+      st['hl']=(/hide|alarm/ === sid) ? 'hide' : 'normal'
       case sid
       when 'warn'
         st['hl']='warn' if st['msg'] == 'ON'

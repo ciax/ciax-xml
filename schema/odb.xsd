@@ -35,10 +35,19 @@
   </xsd:element>
   <xsd:element name="session">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cx:command" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cx:command" />
+        <xsd:element ref="cx:repeat" />
+      </xsd:choice>
       <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cx:command" />
+      </xsd:choice>
+      <xsd:attribute name="range" type="xsd:string" use="required" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="command">

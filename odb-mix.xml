@@ -6,54 +6,16 @@
         <command>
           <text>getstat</text>
         </command>
-        <command>
-          <text>chkr</text>
-          <text>1</text>
-        </command>
-        <command>
-          <text>chkr</text>
-          <text>2</text>
-        </command>
-        <command>
-          <text>chkr</text>
-          <text>3</text>
-        </command>
-        <command>
-          <text>chkr</text>
-          <text>4</text>
-        </command>
-        <command>
-          <text>chkr</text>
-          <text>5</text>
-        </command>
-        <command>
-          <text>chkr</text>
-          <text>6</text>
-        </command>
-        <command>
-          <text>getp</text>
-          <text>1</text>
-        </command>
-        <command>
-          <text>getp</text>
-          <text>2</text>
-        </command>
-        <command>
-          <text>getp</text>
-          <text>3</text>
-        </command>
-        <command>
-          <text>getp</text>
-          <text>4</text>
-        </command>
-        <command>
-          <text>getp</text>
-          <text>5</text>
-        </command>
-        <command>
-          <text>getp</text>
-          <text>6</text>
-        </command>
+        <repeat range="1:6">
+          <command>
+            <text>chkr</text>
+            <text>${n}</text>
+          </command>
+          <command>
+            <text>getp</text>
+            <text>${n}</text>
+          </command>
+        </repeat>
       </session>
     </selection>
     <status>

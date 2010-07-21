@@ -35,10 +35,18 @@ class Obj < Hash
     cmd,par=line.split(' ')
     self['par']=par
     session=select_session(cmd)
-    session.each_element {|command|
-      cmdary=get_cmd(command)
-      @v.msg{"Exec(DDB):#{cmdary.inspect}"}
-      yield(cmdary)
+    session.each_element {|c|
+      case c.name
+      when 'command'
+        yield(get_cmd(c))
+      when 'repeat'
+        Range.new(*c.attributes['range'].split(':')).each { |n|
+          self['n']=n
+          c.each_element { |d|
+            yield(get_cmd(d))
+          }
+        }
+      end
     }
   end
   
@@ -69,12 +77,14 @@ class Obj < Hash
     cmdary=Array.new
     e.each_element{|txt|
       str=substitute(txt,self)
-      if txt.name == 'eval'
+      case txt.name
+      when 'eval'
         str=eval(str).to_s
         @v.msg{"CMD:Evaluated [#{str}]"}
       end
       cmdary << str
     }
+    @v.msg{"Exec(DDB):#{cmdary.inspect}"}
     cmdary
   end
 

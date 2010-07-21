@@ -3,64 +3,64 @@
   <object client="socat - udp:cart3:5000" device="mel" id="crt" label="Cart PLC" server="socat - udp-l:25101,reuseaddr,fork">
     <selection>
       <session id="upd" label="Regular status update">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>chken</text>
-        </command>
+        </statement>
       </session>
       <session id="start_run" label="Running Start">
-        <command>
+        <statement>
           <text>start</text>
           <text>1</text>
-        </command>
+        </statement>
       </session>
       <session id="start_jak" label="Jacking Start">
-        <command>
+        <statement>
           <text>start</text>
           <text>0x100</text>
-        </command>
+        </statement>
       </session>
       <session id="clear_trg" label="Jacking Start">
-        <command>
+        <statement>
           <text>clear</text>
-        </command>
+        </statement>
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
-        <command>
+        <statement>
           <text>set_tag</text>
           <text>98</text>
-        </command>
+        </statement>
       </session>
       <session id="set_run1" label="Run to Tag 1">
-        <command>
+        <statement>
           <text>set_tag</text>
           <text>1</text>
-        </command>
+        </statement>
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
-        <command>
+        <statement>
           <text>set_pos</text>
           <text>2</text>
-        </command>
+        </statement>
       </session>
       <session id="pause" label="Pause">
-        <command>
+        <statement>
           <text>stop</text>
           <text>1</text>
-        </command>
+        </statement>
       </session>
       <session id="emstop" label="Emergency Stop">
-        <command>
+        <statement>
           <text>stop</text>
           <text>2</text>
-        </command>
+        </statement>
       </session>
       <session id="resume" label="Resume from Pause">
-        <command>
+        <statement>
           <text>clear</text>
-        </command>
+        </statement>
       </session>
     </selection>
     <status>

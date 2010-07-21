@@ -37,7 +37,7 @@ class Obj < Hash
     session=select_session(cmd)
     session.each_element {|c|
       case c.name
-      when 'command'
+      when 'statement'
         yield(get_cmd(c))
       when 'repeat'
         Range.new(*c.attributes['range'].split(':')).each { |n|

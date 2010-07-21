@@ -3,9 +3,9 @@
   <object device="oma" id="map" label="Compressed Air Pressure at MOIRCS" client="socat - tcp:celaeno:4002" server="socat - udp-l:24102,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
+        </statement>
       </session>
     </selection>
     <status>

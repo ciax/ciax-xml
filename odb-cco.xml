@@ -10,28 +10,28 @@
       <session id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
       <session id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
       <session id="maon" label="COMICS BOTH ON">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>output</text>
           <eval>${field:stat} | 0x1100</eval>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>getstat</text>
-        </command>
+        </statement>
       </session>
       <session id="maoff" label="COMICS BOTH OFF">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>output</text>
           <eval>${field:stat} &amp; 0xeeff</eval>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>getstat</text>
-        </command>
+        </statement>
       </session>
     </selection>
     <status>

@@ -16,52 +16,52 @@
       <session id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
       <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
       <session id="caon" label="CAS BOTH HC ON">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>output</text>
           <eval>${field:stat} | 0x0011</eval>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>getstat</text>
-        </command>
+        </statement>
       </session>
       <session id="caoff" label="CAS BOTH HC OFF">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>output</text>
           <eval>${field:stat} &amp; 0xffee</eval>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>getstat</text>
-        </command>
+        </statement>
       </session>
       <session id="maon" label="MOIRCS BOTH ON">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>output</text>
           <eval>${field:stat} | 0x1100</eval>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>getstat</text>
-        </command>
+        </statement>
       </session>
       <session id="maoff" label="MOIRCS BOTH OFF">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>output</text>
           <eval>${field:stat} &amp; 0xeeff</eval>
-        </command>
-        <command>
+        </statement>
+        <statement>
           <text>getstat</text>
-        </command>
+        </statement>
       </session>
     </selection>
     <status>

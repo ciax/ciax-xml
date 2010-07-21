@@ -3,18 +3,18 @@
   <object client="socat - tcp:celaeno:4007" device="ixe" id="mix" label="MOIRCS Turret" server="socat - udp-l:45707,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <command>
+        <statement>
           <text>getstat</text>
-        </command>
+        </statement>
         <repeat range="1:6">
-          <command>
+          <statement>
             <text>chkr</text>
             <text>${n}</text>
-          </command>
-          <command>
+          </statement>
+          <statement>
             <text>getp</text>
             <text>${n}</text>
-          </command>
+          </statement>
         </repeat>
       </session>
     </selection>

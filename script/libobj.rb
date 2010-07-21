@@ -41,8 +41,7 @@ class Obj < Hash
         yield(get_cmd(c))
       when 'repeat'
         repeat(c){ |d,n|
-          self['n']=n
-          yield(get_cmd(d))
+          yield(get_cmd(d,n))
         }
       end
     }
@@ -71,14 +70,16 @@ class Obj < Hash
   end
 
   #Cmd Method
-  def get_cmd(e)
+  def get_cmd(e,num=nil)
     cmdary=Array.new
     e.each_element{|d|
       case d.name
       when 'cmd'
         cmdary << d.text
       when 'par'
-        str=eval(substitute(d,self)).to_s
+        str=substitute(d,self)
+        str=str % num if num
+        str=eval(str).to_s
         @v.msg{"CMD:Evaluated [#{str}]"}
         cmdary << str
       end

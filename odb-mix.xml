@@ -9,11 +9,11 @@
         <repeat range="1:6">
           <statement>
             <cmd>chkr</cmd>
-            <par>${n}</par>
+            <par>%d</par>
           </statement>
           <statement>
             <cmd>getp</cmd>
-            <par>${n}</par>
+            <par>%d</par>
           </statement>
         </repeat>
       </session>

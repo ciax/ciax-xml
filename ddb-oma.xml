@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ciax.sum.naoj.org/ciax-xml" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
+  <device id="oma" label="OMEGA Air Pressure Sensor(PX971)" wait="0.1">
+    <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+    <cmdselect>
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <data>00P1</data>
+      </command>
+    </cmdselect>
+    <cmdframe>
+      <data label="Prefix">*</data>
+      <selected></selected>
+      <data label="Suffix">\r</data>
+    </cmdframe>
+    <rspselect>
+      <response id="getstat">
+        <field>
+          <length>5</length>
+          <verify>01CP=</verify>
+        </field>
+        <field>
+          <length>6</length>
+          <assign>pres</assign>
+        </field>
+      </response>
+    </rspselect>
+    <rspframe>
+      <field label="Prefix">
+        <length>1</length>
+        <verify>?</verify>
+      </field>
+      <selected></selected>
+      <field>
+        <length>1</length>
+        <verify>\r</verify>
+      </field>
+    </rspframe>
+  </device>
+</ddb>

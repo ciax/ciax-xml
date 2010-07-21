@@ -17,50 +17,50 @@
       <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
       <session id="caon" label="CAS BOTH HC ON">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} | 0x0011</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} | 0x0011</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="caoff" label="CAS BOTH HC OFF">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} &amp; 0xffee</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} &amp; 0xffee</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="maon" label="MOIRCS BOTH ON">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} | 0x1100</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} | 0x1100</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="maoff" label="MOIRCS BOTH OFF">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} &amp; 0xeeff</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} &amp; 0xeeff</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
     </selection>

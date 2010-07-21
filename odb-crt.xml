@@ -4,62 +4,62 @@
     <selection>
       <session id="upd" label="Regular status update">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>chken</text>
+          <cmd>chken</cmd>
         </statement>
       </session>
       <session id="start_run" label="Running Start">
         <statement>
-          <text>start</text>
-          <text>1</text>
+          <cmd>start</cmd>
+          <par>1</par>
         </statement>
       </session>
       <session id="start_jak" label="Jacking Start">
         <statement>
-          <text>start</text>
-          <text>0x100</text>
+          <cmd>start</cmd>
+          <par>0x100</par>
         </statement>
       </session>
       <session id="clear_trg" label="Jacking Start">
         <statement>
-          <text>clear</text>
+          <cmd>clear</cmd>
         </statement>
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
         <statement>
-          <text>set_tag</text>
-          <text>98</text>
+          <cmd>set_tag</cmd>
+          <par>98</par>
         </statement>
       </session>
       <session id="set_run1" label="Run to Tag 1">
         <statement>
-          <text>set_tag</text>
-          <text>1</text>
+          <cmd>set_tag</cmd>
+          <par>1</par>
         </statement>
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
         <statement>
-          <text>set_pos</text>
-          <text>2</text>
+          <cmd>set_pos</cmd>
+          <par>2</par>
         </statement>
       </session>
       <session id="pause" label="Pause">
         <statement>
-          <text>stop</text>
-          <text>1</text>
+          <cmd>stop</cmd>
+          <par>1</par>
         </statement>
       </session>
       <session id="emstop" label="Emergency Stop">
         <statement>
-          <text>stop</text>
-          <text>2</text>
+          <cmd>stop</cmd>
+          <par>2</par>
         </statement>
       </session>
       <session id="resume" label="Resume from Pause">
         <statement>
-          <text>clear</text>
+          <cmd>clear</cmd>
         </statement>
       </session>
     </selection>

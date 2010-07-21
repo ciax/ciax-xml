@@ -4,7 +4,7 @@
     <selection>
       <session id="upd" label="Update Status">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
     </selection>

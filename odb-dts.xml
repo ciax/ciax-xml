@@ -4,74 +4,74 @@
     <selection>
       <session id="upd" label="Update Status">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>iststat</text>
+          <cmd>iststat</cmd>
         </statement>
         <statement>
-          <text>jakstat</text>
+          <cmd>jakstat</cmd>
         </statement>
         <statement>
-          <text>inrstat</text>
+          <cmd>inrstat</cmd>
         </statement>
         <statement>
-          <text>logstat</text>
+          <cmd>logstat</cmd>
         </statement>
         <statement>
-          <text>getexit</text>
+          <cmd>getexit</cmd>
         </statement>
       </session>
       <session id="login" label="Login">
         <statement label="TSC Login">
-          <text>login</text>
+          <cmd>login</cmd>
         </statement>
       </session>
       <session id="logout" label="Logout">
         <statement label="TSC Logout">
-          <text>logout</text>
+          <cmd>logout</cmd>
         </statement>
       </session>
       <session id="request" label="Start TCP Status Request">
         <statement>
-          <text>config</text>
-          <text>1A1011</text>
+          <cmd>config</cmd>
+          <par>1A1011</par>
         </statement>
       </session>
       <session id="startup" label="Start Up CIAX operation">
         <statement label="TSC Login">
-          <text>login</text>
+          <cmd>login</cmd>
         </statement>
         <statement label="TSC Only Mode(CIAX Mode)">
-          <text>config</text>
-          <text>1A1008TSCONLY</text>
+          <cmd>config</cmd>
+          <par>1A1008TSCONLY</par>
         </statement>
       </session>
       <session id="shutdown" label="Shutdown CIAX operation">
         <statement label="TSC Primaly Mode">
-          <text>config</text>
-          <text>1A1008TSCPRI%</text>
+          <cmd>config</cmd>
+          <par>1A1008TSCPRI%</par>
         </statement>
         <statement label="TSC Logout">
-          <text>logout</text>
+          <cmd>logout</cmd>
         </statement>
       </session>
       <session id="moircs" label="Set IID MOIRCS">
         <statement>
-          <text>setinst</text>
-          <text>12</text>
+          <cmd>setinst</cmd>
+          <par>12</par>
         </statement>
       </session>
       <session id="focas" label="Set IID FOCAS">
         <statement>
-          <text>setinst</text>
-          <text>5</text>
+          <cmd>setinst</cmd>
+          <par>5</par>
         </statement>
       </session>
       <session id="comics" label="Set IID COMICS">
         <statement>
-          <text>setinst</text>
-          <text>7</text>
+          <cmd>setinst</cmd>
+          <par>7</par>
         </statement>
       </session>
     </selection>

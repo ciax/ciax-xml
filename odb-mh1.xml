@@ -4,42 +4,42 @@
     <selection>
       <session id="upd" label="Update Status">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="setlmt" label="Set Limit 20V/5A/100W">
         <statement>
-          <text>setvl</text>
-          <text>20</text>
+          <cmd>setvl</cmd>
+          <par>20</par>
         </statement>
         <statement>
-          <text>setal</text>
-          <text>5</text>
+          <cmd>setal</cmd>
+          <par>5</par>
         </statement>
         <statement>
-          <text>setpl</text>
-          <text>100</text>
+          <cmd>setpl</cmd>
+          <par>100</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="setv" label="Set Voltage 0-50[V]">
         <statement>
-          <text>setv</text>
-          <text>${par}</text>
+          <cmd>setv</cmd>
+          <par>${par}</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="setp" label="Set Power 0-100[W]">
         <statement>
-          <text>setv</text>
-          <eval>Math.sqrt(${par}*26)</eval>
+          <cmd>setv</cmd>
+          <par>Math.sqrt(${par}*26)</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
     </selection>

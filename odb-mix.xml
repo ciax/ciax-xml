@@ -4,16 +4,16 @@
     <selection>
       <session id="upd" label="Update Status">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <repeat range="1:6">
           <statement>
-            <text>chkr</text>
-            <text>${n}</text>
+            <cmd>chkr</cmd>
+            <par>${n}</par>
           </statement>
           <statement>
-            <text>getp</text>
-            <text>${n}</text>
+            <cmd>getp</cmd>
+            <par>${n}</par>
           </statement>
         </repeat>
       </session>

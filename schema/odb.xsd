@@ -35,7 +35,7 @@
   </xsd:element>
   <xsd:element name="session">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="cx:statement" />
         <xsd:element ref="cx:repeat" />
       </xsd:choice>
@@ -52,15 +52,15 @@
   </xsd:element>
   <xsd:element name="statement">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="2">
-        <xsd:element ref="cx:text" />
-        <xsd:element ref="cx:eval" />
-      </xsd:choice>
+      <xsd:sequence>
+        <xsd:element minOccurs="1" maxOccurs="1" ref="cx:cmd" />
+        <xsd:element ref="cx:par" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="text" type="xsd:string"></xsd:element>
-  <xsd:element name="eval" type="xsd:string"></xsd:element>
+  <xsd:element name="cmd" type="xsd:string"></xsd:element>
+  <xsd:element name="par" type="xsd:string"></xsd:element>
   <!--status-->
   <xsd:element name="status">
     <xsd:complexType>

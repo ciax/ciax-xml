@@ -4,103 +4,103 @@
     <selection>
       <session id="upd" label="Update Status">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="x0on" label="X0 ON">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} | 0x01</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} | 0x01</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="x0off" label="X0 OFF">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} &amp; 0xfffe</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} &amp; 0xfffe</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="x1on" label="X1 ON">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} | 0x10</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} | 0x10</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="x1off" label="X1 OFF">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} &amp; 0xffef</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} &amp; 0xffef</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="x2on" label="X2 ON">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} | 0x100</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} | 0x100</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="x2off" label="X2 OFF">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} &amp; 0xfeff</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} &amp; 0xfeff</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="x3on" label="X3 ON">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} | 0x1000</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} | 0x1000</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
       <session id="x3off" label="X3 OFF">
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
         <statement>
-          <text>output</text>
-          <eval>${field:stat} &amp; 0xefff</eval>
+          <cmd>output</cmd>
+          <par>${field:stat} &amp; 0xefff</par>
         </statement>
         <statement>
-          <text>getstat</text>
+          <cmd>getstat</cmd>
         </statement>
       </session>
     </selection>

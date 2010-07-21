@@ -11,53 +11,112 @@
           <text>1</text>
         </command>
         <command>
+          <text>chkr</text>
+          <text>2</text>
+        </command>
+        <command>
+          <text>chkr</text>
+          <text>3</text>
+        </command>
+        <command>
+          <text>chkr</text>
+          <text>4</text>
+        </command>
+        <command>
+          <text>chkr</text>
+          <text>5</text>
+        </command>
+        <command>
+          <text>chkr</text>
+          <text>6</text>
+        </command>
+        <command>
           <text>getp</text>
           <text>1</text>
+        </command>
+        <command>
+          <text>getp</text>
+          <text>2</text>
+        </command>
+        <command>
+          <text>getp</text>
+          <text>3</text>
+        </command>
+        <command>
+          <text>getp</text>
+          <text>4</text>
+        </command>
+        <command>
+          <text>getp</text>
+          <text>5</text>
+        </command>
+        <command>
+          <text>getp</text>
+          <text>6</text>
         </command>
       </session>
     </selection>
     <status>
-      <var id="rdy" label="Comm Ready" symbol="ready">
+      <var id="rdy" label="Comm Ready" symbol="off-warn" trail="true">
         <binary bit="0" field="stat" />
       </var>
-      <var id="srq" label="SRQ" symbol="no">
+      <var id="srq" label="SRQ" symbol="off-warn" trail="true">
         <binary bit="1" field="stat" />
       </var>
-      <var id="trm" label="Terminal Mode" symbol="no">
-        <binary bit="2" field="stat" />
-      </var>
-      <var id="pme" label="Program Error" symbol="alarm">
+      <var id="pme" label="Program Error" symbol="alarm" trail="true">
         <binary bit="3" field="stat" />
       </var>
-      <var id="pse" label="Power Stage Error" symbol="alarm">
+      <var id="pse" label="Power Stage Error" symbol="alarm" trail="true">
         <binary bit="4" field="stat" />
       </var>
-      <var id="oes" label="ONE EM Stop" symbol="stop">
+      <var id="oes" label="ONE EM Stop" symbol="alarm" trail="true">
         <binary bit="5" field="stat" />
       </var>
-      <var id="ees" label="EXT EM Stop" symbol="stop">
+      <var id="ees" label="EXT EM Stop" symbol="alarm">
         <binary bit="6" field="stat" />
       </var>
-      <var id="cmd" label="Computer Mode" symbol="no">
+      <var id="trm" label="Terminal Mode" trail="true" symbol="off-warn">
+        <binary bit="2" field="stat" />
+      </var>
+      <var id="cmd" label="Computer Mode" symbol="off-warn">
         <binary bit="7" field="stat" />
       </var>
-      <var id="r1" label="Running 1">
+      <var id="r1" label="Running 1" trail="true" symbol="normal">
         <string field="r1" />
       </var>
       <var id="p1" label="Pulse 1">
         <int field="p1" />
       </var>
+      <var id="r2" label="Running 2" trail="true" symbol="normal">
+        <string field="r2" />
+      </var>
+      <var id="p2" label="Pulse 2">
+        <int field="p2" />
+      </var>
+      <var id="r3" label="Running 3" trail="true" symbol="normal">
+        <string field="r3" />
+      </var>
+      <var id="p3" label="Pulse 3">
+        <int field="p3" />
+      </var>
+      <var id="r4" label="Running 4" trail="true" symbol="normal">
+        <string field="r4" />
+      </var>
+      <var id="p4" label="Pulse 4">
+        <int field="p4" />
+      </var>
+      <var id="r5" label="Running 5" trail="true" symbol="normal">
+        <string field="r5" />
+      </var>
+      <var id="p5" label="Pulse 5">
+        <int field="p5" />
+      </var>
+      <var id="r6" label="Running 6" trail="true" symbol="normal">
+        <string field="r6" />
+      </var>
+      <var id="p6" label="Pulse 6">
+        <int field="p6" />
+      </var>
     </status>
-    <symbols>
-      <symbol id="stat" type="ENUM">
-        <case hl="hide" msg="Measurment data okay">0</case>
-        <case hl="warn" msg="Underrange">1</case>
-        <case hl="warn" msg="Overrange">2</case>
-        <case hl="warn" msg="Sensor error">3</case>
-        <case hl="warn" msg="Sensor off">4</case>
-        <case hl="warn" msg="No sensor">5</case>
-        <case hl="warn" msg="Identification error">6</case>
-      </symbol>
-    </symbols>
   </object>
 </odb>

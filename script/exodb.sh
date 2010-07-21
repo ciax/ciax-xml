@@ -6,5 +6,3 @@ for obj in ${1:-crt det dts cci mt3 mh1 cf1}; do
     VER=${VER:-exec} objcmd $obj upd < $file
     objstat $obj $file| { [ "$VER" ] && mar || stv; }
 done
-
-

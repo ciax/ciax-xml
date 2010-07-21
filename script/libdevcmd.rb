@@ -4,7 +4,6 @@ require "libmodxml"
 # Cmd Methods
 class DevCmd
   include ModXml
-  attr_writer :par
 
   def initialize(ddb)
     @ddb=ddb

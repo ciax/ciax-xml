@@ -68,7 +68,7 @@ class Obj < Hash
   def get_cmd(e)
     cmdary=Array.new
     e.each_element{|txt|
-      str=substitute(txt,self['field'])
+      str=substitute(txt,self)
       if txt.name == 'eval'
         str=eval(str).to_s
         @v.msg{"CMD:Evaluated [#{str}]"}
@@ -89,7 +89,7 @@ class Obj < Hash
       a=var.attributes
     end
     st['trail']=a['trail']
-    val=get_val(var,self['field'])
+    val=get_val(var)
     st['val']=val
     @v.msg{"STAT:GetStatus:#{id}=[#{val}]"}
     if sid=a['symbol']
@@ -103,12 +103,12 @@ class Obj < Hash
     self['stat'][id]=st
   end
 
-  def get_val(e,field)
+  def get_val(e)
     val=String.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
       fld=a['field'] || return
-      fld=field[fld] || return
+      fld=self['field'][fld] || return
       data=fld.clone
       # @v.msg{"STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]"}
       case dtype.name

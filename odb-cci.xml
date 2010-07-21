@@ -21,7 +21,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} | 0x0011</eval>
+          <eval>${field:stat} | 0x0011</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -33,7 +33,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} &amp; 0xffee</eval>
+          <eval>${field:stat} &amp; 0xffee</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -45,7 +45,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} | 0x1100</eval>
+          <eval>${field:stat} | 0x1100</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -57,7 +57,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} &amp; 0xeeff</eval>
+          <eval>${field:stat} &amp; 0xeeff</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -84,3 +84,5 @@
     </status>
   </object>
 </odb>
+<!--  LocalWords:  xml
+ -->

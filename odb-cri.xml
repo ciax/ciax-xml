@@ -13,7 +13,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} | 0x01</eval>
+          <eval>${field:stat} | 0x01</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -25,7 +25,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} &amp; 0xfffe</eval>
+          <eval>${field:stat} &amp; 0xfffe</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -37,7 +37,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} | 0x10</eval>
+          <eval>${field:stat} | 0x10</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -49,7 +49,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} &amp; 0xffef</eval>
+          <eval>${field:stat} &amp; 0xffef</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -61,7 +61,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} | 0x100</eval>
+          <eval>${field:stat} | 0x100</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -73,7 +73,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} &amp; 0xfeff</eval>
+          <eval>${field:stat} &amp; 0xfeff</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -85,7 +85,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} | 0x1000</eval>
+          <eval>${field:stat} | 0x1000</eval>
         </command>
         <command>
           <text>getstat</text>
@@ -97,7 +97,7 @@
         </command>
         <command>
           <text>output</text>
-          <eval>${stat} &amp; 0xefff</eval>
+          <eval>${field:stat} &amp; 0xefff</eval>
         </command>
         <command>
           <text>getstat</text>

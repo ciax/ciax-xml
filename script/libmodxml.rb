@@ -66,8 +66,12 @@ module ModXml
 
   def substitute(e,hash) # Substitute ${id} by hash[id]
     str=e.text
-    return str if /\$\{[\w]+\}/ !~ str
-    conv=str.gsub(/\$\{([\w]+)\}/) { hash[$1] }
+    return str if /\$\{[\w:]+\}/ !~ str
+    conv=str.gsub(/\$\{([\w:]+)\}/) { 
+      h=hash.clone
+      $1.split(':').each { |i| h=h[i] }
+      h
+    }
     @v.msg{"Substitute [#{str}] to [#{conv}]"}
     conv
   end

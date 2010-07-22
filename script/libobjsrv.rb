@@ -16,6 +16,7 @@ class ObjSrv
     @auto=Thread.new{}
     Thread.new {
       ddb=DevCom.new(@odb['device'],@odb['client'],obj)
+      @odb.get_stat(ddb.field)
       loop {
         cmdary=@q.shift
         @issue=true

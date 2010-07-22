@@ -4,6 +4,6 @@ for obj in ${1:-crt det dts cci mt3 mh1 cf1 mix map}; do
     echo "#### $obj ####"
     dev=$(lookup $obj dev) || _usage_key
     file=$HOME/.var/field_$obj.mar
-    VER=${VER:-exec} objcmd $obj upd < $file
+    VER=${VER:-exec} objcmd $obj ${2:-upd} < $file
     objstat $obj $file| { [ "$VER" ] && mar || stv; }
 done

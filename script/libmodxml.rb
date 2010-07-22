@@ -69,7 +69,7 @@ module ModXml
     return str if /\$\{[\w:]+\}/ !~ str
     conv=str.gsub(/\$\{([\w:]+)\}/) { 
       h=hash.clone
-      $1.split(':').each { |i| h=h[i] }
+      $1.split(':').each { |i| h=(Array === h) ? h[i.to_i] : h[i] }
       h
     }
     @v.msg{"Substitute [#{str}] to [#{conv}]"}

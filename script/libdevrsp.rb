@@ -26,8 +26,8 @@ class DevRsp < Hash
     self
   end
 
-  def par=(par)
-    @var['par']=par
+  def par=(ary)
+    @var['par']=ary
   end
 
   private

@@ -22,8 +22,8 @@ class DevCmd
     getframe(@ddb['cmdframe'])
   end
 
-  def par=(par)
-    @var[:par]=par
+  def par=(ary)
+    @var[:par]=ary
   end
 
   private
@@ -41,7 +41,7 @@ class DevCmd
         @v.msg{"Exitting Selected Node"}
       when 'par'
         @var[:par] || @v.err("No Parameter")
-        str=validate(c,@var[:par])
+        str=validate(c,@var[:par].shift)
         @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
         frame << encode(c,str)
       when 'ccrange'

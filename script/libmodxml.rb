@@ -50,7 +50,7 @@ module ModXml
     when 'range'
       e.text.split(',').any? { |s|
         NumRange.new(s) == str
-      } || @v.err("Parameter out of range(#{e.text})")
+      } || @v.err("Parameter out of range(#{e.text} <> #{str})")
     end
     str
   end
@@ -64,8 +64,9 @@ module ModXml
     code.to_s
   end
 
-  def substitute(e,hash) # Substitute ${id} by hash[id]
+  def substitute(e,hash,num=nil) # Substitute ${id} by hash[id]
     str=e.text
+    str=str % num if num
     return str if /\$\{[\w:]+\}/ !~ str
     conv=str.gsub(/\$\{([\w:]+)\}/) { 
       h=hash.clone

@@ -77,8 +77,7 @@ class Obj < Hash
       when 'cmd'
         cmdary << d.text
       when 'par'
-        str=substitute(d,self)
-        str=str % num if num
+        str=substitute(d,self,num)
         str=eval(str).to_s
         @v.msg{"CMD:Evaluated [#{str}]"}
         cmdary << str

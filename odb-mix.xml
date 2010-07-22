@@ -17,6 +17,20 @@
           </statement>
         </repeat>
       </session>
+      <session id="resume" label="Resume Pulses">
+        <repeat range="1:6">
+          <statement>
+            <cmd>setp</cmd>
+            <par>%d</par>
+            <par>${field:p%d}</par>
+          </statement>
+          <statement>
+            <cmd>getp</cmd>
+            <par>%d</par>
+            <par>${field:p%d}</par>
+          </statement>
+        </repeat>
+      </session>
     </selection>
     <status>
       <var id="rdy" label="Comm Ready" symbol="off-warn" trail="true">

@@ -107,6 +107,11 @@
       <xsd:enumeration value="len" />
     </xsd:restriction>
   </xsd:simpleType>
+  <xsd:simpleType name="range">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\d+:\d+" />
+    </xsd:restriction>
+  </xsd:simpleType>
   <!--Command Elements-->
   <xsd:attributeGroup name="cmd_attr">
     <xsd:attribute name="label" type="xsd:string" />
@@ -216,7 +221,7 @@
         <xsd:element ref="cx:field"></xsd:element>
       </xsd:choice>
       <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="range" type="xsd:string" use="required"></xsd:attribute>
+      <xsd:attribute name="range" type="cx:range" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="field">

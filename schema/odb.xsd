@@ -47,7 +47,13 @@
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cx:statement" />
       </xsd:choice>
-      <xsd:attribute name="range" type="xsd:string" use="required" />
+      <xsd:attribute name="range" use="required">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\d+:\d+" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="statement">
@@ -111,6 +117,11 @@
     </xsd:complexType>
   </xsd:element>
   <!--symbol-->
+  <xsd:simpleType name="rerange">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="(\d+&lt;?)?:(&lt;?\d+)?" />
+    </xsd:restriction>
+  </xsd:simpleType>
   <xsd:element name="symbols">
     <xsd:complexType>
       <xsd:sequence>
@@ -165,7 +176,7 @@
   <xsd:element name="range">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
+        <xsd:extension base="cx:rerange">
           <xsd:attributeGroup ref="cx:symbol_attr" />
         </xsd:extension>
       </xsd:simpleContent>

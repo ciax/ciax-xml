@@ -22,12 +22,7 @@
           <statement>
             <cmd>setp</cmd>
             <par>%d</par>
-            <par>${field:p%d}</par>
-          </statement>
-          <statement>
-            <cmd>getp</cmd>
-            <par>%d</par>
-            <par>${field:p%d}</par>
+            <par>${stat:p%d:val}</par>
           </statement>
         </repeat>
       </session>

@@ -14,6 +14,11 @@
         <par validate="range">1:6</par>
         <data>P21R</data>
       </command>
+      <command id="setp" label="Set pulse (1-6) (0-19200)" response="default" type="config">
+        <par validate="range">1:6</par>
+        <data>P21S</data>
+        <par validate="range">0:19200</par>
+      </command>
     </cmdselect>
     <cmdframe>
       <data label="Prefix" encode="chr">2</data>
@@ -32,15 +37,16 @@
       <response id="chkr">
         <field>
           <length>1</length>
-          <assign>r${par}</assign>
+          <assign>r${par:0}</assign>
         </field>
       </response>
       <response id="getp">
         <field>
           <regexp>[\d]+</regexp>
-          <assign>p${par}</assign>
+          <assign>p${par:0}</assign>
         </field>
       </response>
+      <response id="default"></response>
     </rspselect>
     <rspframe>
       <field label="Prefix" decode="chr">

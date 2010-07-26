@@ -55,15 +55,12 @@ class ObjSrv
     when 'stat'
       yield @odb['stat']
     when 'auto'
-      auto_upd(cmdary.shift)
+      auto_upd(cmdary)
     else
       begin
         session(line)
       rescue
-        resp=$!.to_s+"\n"
-        resp << "auto\t:Auto Update "
-        resp << "(start | stop | cmd=[upd(;..)] | int=[nn(sec)])\n"
-        resp << "stat\t:Show Status\n"
+        help
       end
     end
   end
@@ -77,35 +74,44 @@ class ObjSrv
     "Accepted\n"
   end
 
-  def auto_upd(cmd)
-    case cmd
-    when 'stop'
-      if @auto
-        @auto.kill
-        sleep 0.1
-      end
-    when 'start'
-      @auto.kill if @auto
-      @auto=Thread.new {
-        begin
-          loop{
-            if @q.empty?
-              @env['cmd'].split(';').each { |cmd|
-                session(cmd)
-              }
-            end
-            sleep @env['int'].to_i
-          }
-        rescue
-          @errmsg << $!.to_s+"\n"
+  def auto_upd(cmdary)
+    cmdary.each { |cmd|
+      case cmd
+      when 'stop'
+        if @auto
+          @auto.kill
+          sleep 0.1
         end
-      }
-    when /(cmd|int)=/
-      @env[$1]=$'
-    end
+      when 'start'
+        @auto.kill if @auto
+        @auto=Thread.new {
+          begin
+            loop{
+              if @q.empty?
+                @env['cmd'].split(';').each { |cmd|
+                  session(cmd)
+                }
+              end
+              sleep @env['int'].to_i
+            }
+          rescue
+            @errmsg << $!.to_s+"\n"
+          end
+        }
+      when /(cmd|int)=/
+        @env[$1]=$'
+      end
+    }
     str = "Running(cmd=[#{@env['cmd']}] int=[#{@env['int']}])\n"
     str = "Not "+str unless @auto.alive?
     str
+  end
+
+  def help
+    resp=$!.to_s+"\n"
+    resp << "auto\t:Auto Update "
+    resp << "(start | stop | cmd=[upd(;..)] | int=[nn(sec)])\n"
+    resp << "stat\t:Show Status\n"
   end
 
 end

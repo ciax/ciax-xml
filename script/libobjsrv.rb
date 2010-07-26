@@ -85,7 +85,11 @@ class ObjSrv
       @auto=Thread.new {
         begin
           loop{
-            session(@env['cmd']) if @q.empty?
+            if @q.empty?
+              @env['cmd'].split(';').each { |cmd|
+                session(cmd)
+              }
+            end
             sleep @env['int'].to_i
           }
         rescue

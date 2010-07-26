@@ -61,7 +61,7 @@ class ObjSrv
         session(line)
       rescue
         resp=$!.to_s+"\n"
-        resp << "auto\t:Auto Update (start|stop|cmd=|int=)\n"
+        resp << "auto\t:Auto Update (start|stop|cmd=xx;yy;..|int=?)\n"
         resp << "stat\t:Show Status\n"
       end
     end

@@ -61,7 +61,7 @@ class ObjSrv
         session(line)
       rescue
         resp=$!.to_s+"\n"
-        resp << "auto\t:Auto Update (start|stop|cmd=xx;yy;..|int=?)\n"
+        resp << "auto\t:Auto Update (start | stop | cmd=[upd(;..)] | int=[nn(sec)])\n"
         resp << "stat\t:Show Status\n"
       end
     end
@@ -99,9 +99,8 @@ class ObjSrv
     when /(cmd|int)=/
       @env[$1]=$'
     end
-    str="Auto Update:"
-    str << "Not " unless @auto.alive?
-    str << "Running\ncmd=[#{@env['cmd']}] int=[#{@env['int']}]\n"
+    str = "Running(cmd=[#{@env['cmd']}] int=[#{@env['int']}])\n"
+    str = "Not "+str unless @auto.alive?
   end
 
 end

@@ -1,38 +1,40 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object client='socat - tcp:celaeno:4011' device='tpg' id='mt3' label='MOIRCS Pressure Pump' server='socat - udp-l:45711,reuseaddr,fork'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:celaeno:4011" device="tpg" id="mt3" label="MOIRCS Pressure Pump" server="socat - udp-l:24111,reuseaddr,fork">
     <selection>
-      <session id='upd' label='Update Status'>
-        <statement><cmd>reqstat</cmd></statement>
-        <statement><cmd>getstat</cmd></statement>
+      <session id="upd" label="Update Status">
+        <statement>
+          <cmd>reqstat</cmd>
+        </statement>
+        <statement>
+          <cmd>getstat</cmd>
+        </statement>
       </session>
     </selection>
     <status>
-      <var id='st1' label='Turbo Pump Stat' symbol='stat'>
-        <string field='st1'/>
+      <var id="st1" label="Turbo Pump Stat" symbol="stat">
+        <string field="st1" />
       </var>
-      <var id='ch1' label='Turbo Pump (Torr)'>
-        <float field='ch1' format='%4.2e'/>
+      <var id="ch1" label="Turbo Pump (Torr)">
+        <float field="ch1" format="%4.2e" />
       </var>
-      <var id='st2' label='Scroll Pump Stat' symbol='stat'>
-        <string field='st1'/>
+      <var id="st2" label="Scroll Pump Stat" symbol="stat">
+        <string field="st1" />
       </var>
-      <var id='ch2' label='Scroll Pump (Torr)'>
-        <float field='ch1' format='%4.2e'/>
+      <var id="ch2" label="Scroll Pump (Torr)">
+        <float field="ch1" format="%4.2e" />
       </var>
     </status>
     <symbols>
-      <symbol id='stat' type='ENUM'>
-        <case hl='hide' msg='Measurment data okay'>0</case>
-        <case hl='warn' msg='Underrange'>1</case>
-        <case hl='warn' msg='Overrange'>2</case>
-        <case hl='warn' msg='Sensor error'>3</case>
-        <case hl='warn' msg='Sensor off'>4</case>
-        <case hl='warn' msg='No sensor'>5</case>
-        <case hl='warn' msg='Identification error'>6</case>
+      <symbol id="stat" type="ENUM">
+        <case hl="hide" msg="Measurment data okay">0</case>
+        <case hl="warn" msg="Underrange">1</case>
+        <case hl="warn" msg="Overrange">2</case>
+        <case hl="warn" msg="Sensor error">3</case>
+        <case hl="warn" msg="Sensor off">4</case>
+        <case hl="warn" msg="No sensor">5</case>
+        <case hl="warn" msg="Identification error">6</case>
       </symbol>
     </symbols>
   </object>
 </odb>
-
-

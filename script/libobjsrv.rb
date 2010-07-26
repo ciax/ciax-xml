@@ -4,14 +4,11 @@ require "libdev"
 require "thread"
 
 class ObjSrv
-  attr_reader :issue,:auto
 
   def initialize(obj)
     @odb=Obj.new(obj)
-    @obj=obj
-    @env={'cmd'=>'upd','int'=>'10'}
+    @env={'cmd'=>'upd','int'=>'10',:obj => obj,:issue =>''}
     @q=Queue.new
-    @issue=nil
     @errmsg=Array.new
     @auto=Thread.new{}
     Thread.new {
@@ -19,15 +16,15 @@ class ObjSrv
       @odb.get_stat(ddb.field)
       loop {
         cmdary=@q.shift
-        @issue=true
+        @env[:issue]='*'
         begin
           ddb.setcmd(cmdary)
           ddb.devcom
           @odb.get_stat(ddb.field)
         rescue
-          @errmsg << $!.to_s+"\n"
+          @errmsg << e2s
         ensure
-          @issue=nil
+          @env[:issue]=''
         end
       }
     }
@@ -39,9 +36,9 @@ class ObjSrv
   end
 
   def prompt
-    prom="#{@obj}"
-    prom << '&' if @auto.alive?
-    prom << '*' if @issue
+    prom = @auto.alive? ? '&' : ''
+    prom << @env[:obj]
+    prom << @env[:issue]
     prom << ">"
   end
 
@@ -87,15 +84,11 @@ class ObjSrv
         @auto=Thread.new {
           begin
             loop{
-              if @q.empty?
-                @env['cmd'].split(';').each { |cmd|
-                  session(cmd)
-                }
-              end
+              @env['cmd'].split(';').each {|c| session(c)} if @q.empty?
               sleep @env['int'].to_i
             }
           rescue
-            @errmsg << $!.to_s+"\n"
+            @errmsg << e2s
           end
         }
       when /(cmd|int)=/
@@ -108,10 +101,13 @@ class ObjSrv
   end
 
   def help
-    resp=$!.to_s+"\n"
+    resp=e2s
     resp << "auto\t:Auto Update "
     resp << "(start | stop | cmd=[upd(;..)] | int=[nn(sec)])\n"
     resp << "stat\t:Show Status\n"
   end
 
+  def e2s
+    $!.to_s+"\n"
+  end
 end

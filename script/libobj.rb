@@ -31,11 +31,19 @@ class Obj < Hash
   end
   
   public
-  def objcom(line)
-    cmd,par=line.split(' ')
-    self['par']=par
-    session=select_session(cmd)
-    session.each_element {|c|
+  def setcmd(line)
+    cmd,*self['par']=line.split(' ')
+    
+    @session=@odb.select_id('selection',cmd)
+    a=@session.attributes
+    @v.msg{"Exec(DDB):#{a['label']}"}
+    if ref=a['ref']
+      @session=@rdb.select_id('selection',ref)
+    end
+  end
+
+  def objcom
+    @session.each_element {|c|
       case c.name
       when 'statement'
         yield(get_cmd(c))
@@ -58,17 +66,6 @@ class Obj < Hash
   end
   
   private
-  def select_session(id)
-    e=@odb.select_id('selection',id)
-    a=e.attributes
-    @v.msg{"Exec(DDB):#{a['label']}"}
-    if ref=a['ref']
-      return @rdb.select_id('selection',ref)
-    else
-      return e
-    end
-  end
-
   #Cmd Method
   def get_cmd(e,num=nil)
     cmdary=Array.new

@@ -65,7 +65,8 @@ class ObjSrv < Hash
 
   def session(line)
     return '' if line == ''
-    @odb.objcom(line) {|cmdary|
+    @odb.setcmd(line)
+    @odb.objcom {|cmdary|
       @q.push(cmdary)
     }
     "Accepted\n"

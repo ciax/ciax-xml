@@ -9,7 +9,8 @@ begin
   odb=Obj.new(obj)
   odb.get_stat(Marshal.load(gets(nil)))
   ENV['VER']='exec'
-  odb.objcom(cmd){}
+  odb.setcmd(cmd)
+  odb.objcom{}
 rescue RuntimeError
   abort $!.to_s
 end

@@ -3,54 +3,34 @@ require "libobj"
 require "libdev"
 require "thread"
 
-class ObjSrv
+class ObjSrv < Hash
 
   def initialize(obj)
     @odb=Obj.new(obj)
-    @env={'cmd'=>'upd','int'=>'10',:obj => obj,:issue =>''}
+    update(@odb)
+    update({'cmd'=>'upd','int'=>'10',:obj => obj,:issue =>''})
     @q=Queue.new
     @errmsg=Array.new
     @auto=Thread.new{}
-    Thread.new {
-      ddb=DevCom.new(@odb['device'],@odb['client'],obj)
-      @odb.get_stat(ddb.field)
-      loop {
-        cmdary=@q.shift
-        @env[:issue]='*'
-        begin
-          ddb.setcmd(cmdary)
-          ddb.devcom
-          @odb.get_stat(ddb.field)
-        rescue
-          @errmsg << e2s
-        ensure
-          @env[:issue]=''
-        end
-      }
-    }
+    device_thread
     sleep 0.01
-  end
-  
-  def server
-    @odb['server']
   end
 
   def prompt
     prom = @auto.alive? ? '&' : ''
-    prom << @env[:obj]
-    prom << @env[:issue]
+    prom << self[:obj]
+    prom << self[:issue]
     prom << ">"
   end
 
   def dispatch(line)
     resp=@errmsg.shift
     return resp if resp
+    return '' if line.empty?
     cmdary=line.split(' ')
     case cmdary.shift
-    when ''
-      ''
     when 'stat'
-      yield @odb['stat']
+      yield self['stat']
     when 'auto'
       auto_upd(cmdary)
     else
@@ -63,6 +43,26 @@ class ObjSrv
   end
   
   private
+  def device_thread
+    Thread.new {
+      ddb=DevCom.new(self['device'],self['client'],self[:obj])
+      @odb.get_stat(ddb.field)
+      loop {
+        cmdary=@q.shift
+        self[:issue]='*'
+        begin
+          ddb.setcmd(cmdary)
+          ddb.devcom
+          @odb.get_stat(ddb.field)
+        rescue
+          @errmsg << e2s
+        ensure
+          self[:issue]=''
+        end
+      }
+    }
+  end
+
   def session(line)
     return '' if line == ''
     @odb.objcom(line) {|cmdary|
@@ -84,18 +84,18 @@ class ObjSrv
         @auto=Thread.new {
           begin
             loop{
-              @env['cmd'].split(';').each {|c| session(c)} if @q.empty?
-              sleep @env['int'].to_i
+              self['cmd'].split(';').each {|c| session(c)} if @q.empty?
+              sleep self['int'].to_i
             }
           rescue
             @errmsg << e2s
           end
         }
       when /(cmd|int)=/
-        @env[$1]=$'
+        self[$1]=$'
       end
     }
-    str = "Running(cmd=[#{@env['cmd']}] int=[#{@env['int']}])\n"
+    str = "Running(cmd=[#{self['cmd']}] int=[#{self['int']}])\n"
     str = "Not "+str unless @auto.alive?
     str
   end

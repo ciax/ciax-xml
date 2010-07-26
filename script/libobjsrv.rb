@@ -61,7 +61,8 @@ class ObjSrv
         session(line)
       rescue
         resp=$!.to_s+"\n"
-        resp << "auto\t:Auto Update (start | stop | cmd=[upd(;..)] | int=[nn(sec)])\n"
+        resp << "auto\t:Auto Update "
+        resp << "(start | stop | cmd=[upd(;..)] | int=[nn(sec)])\n"
         resp << "stat\t:Show Status\n"
       end
     end
@@ -79,7 +80,10 @@ class ObjSrv
   def auto_upd(cmd)
     case cmd
     when 'stop'
-      @auto.kill if @auto
+      if @auto
+        @auto.kill
+        sleep 0.1
+      end
     when 'start'
       @auto.kill if @auto
       @auto=Thread.new {
@@ -101,6 +105,7 @@ class ObjSrv
     end
     str = "Running(cmd=[#{@env['cmd']}] int=[#{@env['int']}])\n"
     str = "Not "+str unless @auto.alive?
+    str
   end
 
 end

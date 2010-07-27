@@ -7,8 +7,10 @@ class ObjSrv < Hash
 
   def initialize(obj)
     @odb=Obj.new(obj)
-    update(@odb)
     update({:cmd=>'upd',:int=>'10',:obj => obj,:issue =>''})
+    update(@odb)
+    @ddb=DevCom.new(@odb['device'],@odb['client'],obj)
+    @odb.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new
     @auto=Thread.new{}
@@ -30,28 +32,39 @@ class ObjSrv < Hash
     cmdary=line.split(' ')
     case cmdary.shift
     when 'stat'
-      yield self['stat']
+      yield @odb['stat']
     when 'auto'
       auto_upd(cmdary)
+    when 'save'
+      @ddb.save
+      yield @odb['stat']
+    when 'load'
+      @odb.get_stat(@ddb.load)
+      yield @odb['stat']
     else
-        session(line)
+      session(line)
     end
   rescue
     help
   end
   
   private
+  def session(line)
+    return '' if line == ''
+    @odb.setcmd(line)
+    @odb.objcom {|a| @q.push(a)}
+    "Accepted\n"
+  end
+
   def device_thread
     Thread.new {
-      ddb=DevCom.new(self['device'],self['client'],self[:obj])
-      @odb.get_stat(ddb.field)
       loop {
         cmdary=@q.shift
         self[:issue]='*'
         begin
-          ddb.setcmd(cmdary)
-          ddb.devcom
-          @odb.get_stat(ddb.field)
+          @ddb.setcmd(cmdary)
+          @ddb.devcom
+          @odb.get_stat(@ddb.field)
         rescue
           @errmsg << e2s
         ensure
@@ -59,15 +72,6 @@ class ObjSrv < Hash
         end
       }
     }
-  end
-
-  def session(line)
-    return '' if line == ''
-    @odb.setcmd(line)
-    @odb.objcom {|cmdary|
-      @q.push(cmdary)
-    }
-    "Accepted\n"
   end
 
   def auto_upd(cmds)
@@ -112,6 +116,8 @@ class ObjSrv < Hash
     resp=e2s
     resp << "auto\t:Auto Update "
     resp << "(start | stop | cmd=[upd(;..)] | int=[nn(sec)])\n"
+    resp << "save\t:Save Field\n"
+    resp << "load\t:Load Field\n"
     resp << "stat\t:Show Status\n"
   end
 

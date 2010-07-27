@@ -42,7 +42,17 @@ class ObjSrv < Hash
       @odb.get_stat(@ddb.load(cmdary.shift))
       yield @odb['stat']
     else
-      session(line) rescue help
+      begin
+        session(line)
+      rescue
+        msg=[$!.to_s]
+        msg << "== Internal Command =="
+        msg << " stat\t:Show Status"
+        msg << " auto ?\t:Auto Update (opt)"
+        msg << " save ?\t:Save Field (tag)"
+        msg << " load ?\t:Load Field (tag)"
+        raise msg.join("\n")
+      end
     end
   rescue
     e2s
@@ -107,25 +117,16 @@ class ObjSrv < Hash
         line.split(";").each{|c| @odb.setcmd(c)}
         self[:cmd]=line
       else
-        msg="== option list =="
-        msg << " start\t:Start Auto update\n"
-        msg << " stop\t:Stop Auto update\n"
-        msg << " cmd=\t:Set Commands (cmd;..)\n"
+        msg=["== option list =="]
+        msg << " start\t:Start Auto update"
+        msg << " stop\t:Stop Auto update"
+        msg << " cmd=\t:Set Commands (cmd;..)"
         msg << " int=\t:Set Interval (sec)"
-        raise msg
+        raise msg.join("\n")
       end
     }
     str << "Not " unless @auto.alive?
     str << "Running(cmd=[#{self[:cmd]}] int=[#{self[:int]}])\n"
-  end
-
-  def help
-    resp=e2s
-    resp << "== Internal Command ==\n"
-    resp << " stat\t:Show Status\n"
-    resp << " auto ?\t:Auto Update (opt)\n"
-    resp << " save ?\t:Save Field (tag)\n"
-    resp << " load ?\t:Load Field (tag)\n"
   end
 
   def e2s

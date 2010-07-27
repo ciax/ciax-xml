@@ -14,17 +14,17 @@ class IoFile
     @logfile=@type+'_'+Time.now.year.to_s
   end
 
-  def save_stat(stat)
-    open(VarDir+"/#{@type}.mar",'w') {|f|
-      @v.msg{"Status Saving for [#{@type}]"}
+  def save_stat(stat,prefix='')
+    open(VarDir+"/#{prefix}#{@type}.mar",'w') {|f|
+      @v.msg{"Status Saving for [#{prefix}#{@type}]"}
       f << Marshal.dump(stat)
     }
     stat
   end
 
-  def load_stat
-    @v.msg{"Status Loading for [#{@type}]"}
-    stat=Marshal.load(IO.read(VarDir+"/#{@type}.mar"))
+  def load_stat(prefix='')
+    @v.msg{"Status Loading for [#{prefix}#{@type}]"}
+    stat=Marshal.load(IO.read(VarDir+"/#{prefix}#{@type}.mar"))
     raise "No status in File" unless stat
     @v.msg{stat.inspect}
     stat

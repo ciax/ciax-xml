@@ -36,16 +36,16 @@ class ObjSrv < Hash
     when 'auto'
       auto_upd(cmdary)
     when 'save'
-      @ddb.save
+      @ddb.save(cmdary.shift)
       yield @odb['stat']
     when 'load'
-      @odb.get_stat(@ddb.load)
+      @odb.get_stat(@ddb.load(cmdary.shift))
       yield @odb['stat']
     else
-      session(line)
+      session(line) rescue help
     end
   rescue
-    help
+    e2s
   end
   
   private

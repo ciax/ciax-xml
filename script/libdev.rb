@@ -56,12 +56,14 @@ class Dev
     @fd.save_stat(@field)
   end
 
-  def save
-    @fd.save_stat(@field,'save_')
+  def save(tag)
+    tag=tag || 'default'
+    @fd.save_stat(@field,"_#{tag}")
   end
 
-  def load
-    @field=@fd.load_stat('save_')
+  def load(tag)
+    tag=tag || 'default'
+    @field=@fd.load_stat("_#{tag}")
   end
 
 end

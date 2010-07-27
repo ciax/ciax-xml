@@ -14,20 +14,32 @@ class IoFile
     @logfile=@type+'_'+Time.now.year.to_s
   end
 
-  def save_stat(stat,prefix='')
-    open(VarDir+"/#{prefix}#{@type}.mar",'w') {|f|
-      @v.msg{"Status Saving for [#{prefix}#{@type}]"}
+  def save_stat(stat,suffix='')
+    fname=VarDir+"/#{@type}#{suffix}.mar"
+    open(fname,'w') {|f|
+      @v.msg{"Status Saving for [#{@type}#{suffix}]"}
       f << Marshal.dump(stat)
     }
     stat
   end
 
-  def load_stat(prefix='')
-    @v.msg{"Status Loading for [#{prefix}#{@type}]"}
-    stat=Marshal.load(IO.read(VarDir+"/#{prefix}#{@type}.mar"))
+  def load_stat(suffix='')
+    @v.msg{"Status Loading for [#{@type}#{suffix}]"}
+    fname=VarDir+"/#{@type}#{suffix}.mar"
+    raise(list_stat) unless suffix == '' || FileTest.exist?(fname)
+    stat=Marshal.load(IO.read(fname))
     raise "No status in File" unless stat
     @v.msg{stat.inspect}
     stat
+  end
+
+  def list_stat
+    list=Array.new
+    Dir.glob(VarDir+"/#{@type}_*.mar"){|f|
+      /#{@type}_(.+)\.mar/ =~ f
+      list << $1
+    }
+    "load\t:("+list.join("|")+")"
   end
 
   def save_json(stat)

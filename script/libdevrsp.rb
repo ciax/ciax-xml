@@ -2,7 +2,7 @@
 require "libmodxml"
 
 # Rsp Methods
-class DevRsp < Hash
+class DevRsp
   include ModXml
 
   def initialize(ddb)
@@ -18,12 +18,13 @@ class DevRsp < Hash
       @frame.chomp!(tm)
       @v.msg{"Remove terminator:[#{@frame}]" }
     end
-    setframe(@ddb['rspframe'])
-    if cc=delete('cc')
+    fld=Hash.new
+    setframe(@ddb['rspframe'],fld)
+    if cc=fld.delete('cc')
       cc == @var[:cc] || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@var[:cc]}]")
       @v.msg{"Verify:CC OK"}
     end
-    self
+    fld
   end
 
   def par=(ary)
@@ -31,7 +32,7 @@ class DevRsp < Hash
   end
 
   private
-  def setframe(e)
+  def setframe(e,fld)
     frame=String.new
     e.each_element { |c|
       a=c.attributes
@@ -39,24 +40,24 @@ class DevRsp < Hash
       when 'ccrange'
         @v.msg{"Entering Ceck Code Node"}
         rc=@ddb['rspccrange']
-        @var[:cc] = checkcode(rc,setframe(rc))
+        @var[:cc] = checkcode(rc,setframe(rc,fld))
         @v.msg{"Exitting Ceck Code Node"}
       when 'selected'
         @v.msg{"Entering Selected Node"}
-        frame << setframe(@var[:sel])
+        frame << setframe(@var[:sel],fld)
         @v.msg{"Exitting Selected Node"}
       when 'field'
-        frame << field(c)
+        frame << field(c,fld)
       when 'repeat'
-        repeat(c){|d,n| frame << field(d,n) }
+        repeat(c){|d,n| frame << field(d,fld,n) }
       end
     }
     frame
   end
 
-  def field(e,num=nil)
+  def field(e,fld,num=nil)
     str=''
-    field=''
+    data=''
     @v.msg{"Field:#{e.attributes['label']}"}
     e.each_element {|d|
       case d.name
@@ -65,20 +66,20 @@ class DevRsp < Hash
         @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
         str=@frame.slice!(0,len)
         @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-        field=decode(e,str)
+        data=decode(e,str)
       when 'regexp'
         str=@frame.slice!(/#{d.text}/)
         @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
-        field=decode(e,str)
+        data=decode(e,str)
       when 'assign'
         key=substitute(d,@var)
         key=key % num if num
-        self[key]=field
+        fld[key]=data
         @v.msg{"Assign:[#{key}]<-[#{self[key]}]"}
       when 'verify'
         if txt=text(d)
           @v.msg{"Verify:[#{txt}]"}
-          txt == field || @v.err("Verify Mismatch[#{field}]!=[#{txt}]")
+          txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
         end
       end
     }

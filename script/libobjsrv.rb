@@ -8,7 +8,7 @@ class ObjSrv < Hash
   def initialize(obj)
     @odb=Obj.new(obj)
     update(@odb)
-    update({'cmd'=>'upd','int'=>'10',:obj => obj,:issue =>''})
+    update({:cmd=>'upd',:int=>'10',:obj => obj,:issue =>''})
     @q=Queue.new
     @errmsg=Array.new
     @auto=Thread.new{}
@@ -34,12 +34,10 @@ class ObjSrv < Hash
     when 'auto'
       auto_upd(cmdary)
     else
-      begin
         session(line)
-      rescue
-        help
-      end
     end
+  rescue
+    help
   end
   
   private
@@ -72,8 +70,9 @@ class ObjSrv < Hash
     "Accepted\n"
   end
 
-  def auto_upd(cmdary)
-    cmdary.each { |cmd|
+  def auto_upd(cmds)
+    str=''
+    cmds.each { |cmd|
       case cmd
       when 'stop'
         if @auto
@@ -85,20 +84,28 @@ class ObjSrv < Hash
         @auto=Thread.new {
           begin
             loop{
-              self['cmd'].split(';').each {|c| session(c)} if @q.empty?
-              sleep self['int'].to_i
+              self[:cmd].split(';').each {|c| session(c)} if @q.empty?
+              sleep self[:int].to_i
             }
           rescue
             @errmsg << e2s
           end
         }
-      when /(cmd|int)=/
-        self[$1]=$'
+      when /^int=/
+        num=$'
+        if num.to_i > 0
+          self[:int]=num
+        else
+          str << "Out of Range\n" 
+        end
+      when /^cmd=/
+        line=$'
+        line.split(";").each{|c| @odb.setcmd(c)}
+        self[:cmd]=line
       end
     }
-    str = "Running(cmd=[#{self['cmd']}] int=[#{self['int']}])\n"
-    str = "Not "+str unless @auto.alive?
-    str
+    str << "Not " unless @auto.alive?
+    str << "Running(cmd=[#{self[:cmd]}] int=[#{self[:int]}])\n"
   end
 
   def help

@@ -33,13 +33,13 @@ class Obj < Hash
   public
   def setcmd(line)
     cmd,*self['par']=line.split(' ')
-    
     @session=@odb.select_id('selection',cmd)
     a=@session.attributes
     @v.msg{"Exec(DDB):#{a['label']}"}
     if ref=a['ref']
       @session=@rdb.select_id('selection',ref)
     end
+    line
   end
 
   def objcom

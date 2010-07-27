@@ -15,6 +15,7 @@ class IoFile
   end
 
   def save_stat(stat,suffix='')
+    raise("Not valid charactors") unless suffix == '' || /^[\w]+$/ === suffix
     fname=VarDir+"/#{@type}#{suffix}.mar"
     open(fname,'w') {|f|
       @v.msg{"Status Saving for [#{@type}#{suffix}]"}

@@ -56,6 +56,14 @@ class Dev
     @fd.save_stat(@field)
   end
 
+  def save
+    @fd.save_stat(@field,'save_')
+  end
+
+  def load
+    @field=@fd.load_stat('save_')
+  end
+
 end
 
 class DevCom < Dev

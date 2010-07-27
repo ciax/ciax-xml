@@ -22,7 +22,16 @@
           <statement>
             <cmd>setp</cmd>
             <par>%d</par>
-            <par>${stat:p%d:val}</par>
+            <par>${field:p%d}</par>
+          </statement>
+        </repeat>
+      </session>
+      <session id="set0" label="Set 0 Pulses">
+        <repeat range="1:6">
+          <statement>
+            <cmd>setp</cmd>
+            <par>%d</par>
+            <par>0</par>
           </statement>
         </repeat>
       </session>

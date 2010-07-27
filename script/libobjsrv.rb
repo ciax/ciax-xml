@@ -106,6 +106,13 @@ class ObjSrv < Hash
         line=$'
         line.split(";").each{|c| @odb.setcmd(c)}
         self[:cmd]=line
+      else
+        msg="== option list =="
+        msg << " start\t:Start Auto update\n"
+        msg << " stop\t:Stop Auto update\n"
+        msg << " cmd=\t:Set Commands (cmd;..)\n"
+        msg << " int=\t:Set Interval (sec)"
+        raise msg
       end
     }
     str << "Not " unless @auto.alive?
@@ -114,11 +121,11 @@ class ObjSrv < Hash
 
   def help
     resp=e2s
-    resp << "auto\t:Auto Update "
-    resp << "(start | stop | cmd=[upd(;..)] | int=[nn(sec)])\n"
-    resp << "save\t:Save Field\n"
-    resp << "load\t:Load Field\n"
-    resp << "stat\t:Show Status\n"
+    resp << "== Internal Command ==\n"
+    resp << " stat\t:Show Status\n"
+    resp << " auto ?\t:Auto Update (opt)\n"
+    resp << " save ?\t:Save Field (tag)\n"
+    resp << " load ?\t:Load Field (tag)\n"
   end
 
   def e2s

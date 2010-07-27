@@ -34,12 +34,12 @@ class IoFile
   end
 
   def list_stat
-    list=Array.new
+    list=["== Tag list =="]
     Dir.glob(VarDir+"/#{@type}_*.mar"){|f|
       /#{@type}_(.+)\.mar/ =~ f
-      list << $1
+      list << " #{$1}"
     }
-    "load\t:("+list.join("|")+")"
+    list.join("\n")
   end
 
   def save_json(stat)

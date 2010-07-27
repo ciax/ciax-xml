@@ -38,10 +38,10 @@ class XmlDoc < Hash
   end
 
   def mklist(ary)
-    list=Array.new
+    list=["== Command List =="]
     ary.each { |e|
       a=e.attributes
-      list << "#{a['id']}\t:#{a['label']}" if a['label']
+      list << " #{a['id']}\t:#{a['label']}" if a['label']
     }
     raise(list.join("\n")) if list.size > 0
   end

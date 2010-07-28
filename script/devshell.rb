@@ -2,11 +2,12 @@
 require "libdev"
 require "readline"
 
-warn "Usage: devshell [dev] [iocmd]" if ARGV.size < 2
+warn "Usage: devshell [dev] [iocmd] (obj)" if ARGV.size < 2
 
 dev=ARGV.shift
 iocmd=ARGV.shift
-ddb=DevCom.new(dev,iocmd)
+obj=ARGV.shift || dev
+ddb=DevCom.new(dev,iocmd,obj)
 
 loop{
   cary=Readline.readline("#{dev}>",true).chomp.split(' ')

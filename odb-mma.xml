@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:celaeno:4003" device="slo" id="mma" label="MOIRCS Arm" server="socat - udp-l:24103,reuseaddr,fork">
+    <selection>
+      <session id="upd" label="Update Status">
+        <statement>
+          <cmd>bs</cmd>
+        </statement>
+        <statement>
+          <cmd>p</cmd>
+        </statement>
+        <statement>
+          <cmd>err</cmd>
+        </statement>
+        <repeat range="1:5">
+          <statement>
+            <cmd>in</cmd>
+            <par>%d</par>
+          </statement>
+        </repeat>
+      </session>
+      <session id="reset" label="Reset">
+        <statement>
+          <cmd>reset</cmd>
+        </statement>
+      </session>
+      <session id="defcon" label="Default Config">
+        <statement>
+          <cmd>hl</cmd>
+          <par>0</par>
+        </statement>
+        <statement>
+          <cmd>e1</cmd>
+          <par>0</par>
+        </statement>
+        <statement>
+          <cmd>e2</cmd>
+          <par>0</par>
+        </statement>
+      </session>
+      <session id="set0" label="Set 0 Pulses">
+        <statement>
+          <cmd>set0</cmd>
+        </statement>
+      </session>
+    </selection>
+    <status>
+      <var id="bs" label="Moter Moving" symbol="warn" trail="true">
+        <string field="bs" />
+      </var>
+      <var id="con" label="Contact Sensor" symbol="normal" trail="true">
+        <string field="in5" />
+      </var>
+      <var id="err" label="Error Code" symbol="err">
+        <int field="err" />
+      </var>
+      <var id="pos" label="Arm Position" symbol="pos" trail="true">
+        <string field="in1" />
+        <string field="in2" />
+        <string field="in3" />
+        <string field="in4" />
+      </var>
+      <var id="abs" label="ABS position" symbol="pulse">
+        <float field="p" />
+      </var>
+    </status>
+    <symbols>
+      <symbol id="err" type="ENUM">
+        <case hl="hide" msg="No Error">0</case>
+        <case hl="alarm" msg="Could not burn flash successfully">1</case>
+        <case hl="alarm" msg="Could not download file">2</case>
+        <case hl="alarm" msg="Not enough memory to execute user program">3</case>
+        <case hl="alarm" msg="Attempt to access a non-existent array element">4</case>
+        <case hl="alarm" msg="Unknown Error"></case>
+      </symbol>
+      <symbol id="pos" type="ENUM">
+        <case hl="normal" msg="INIT">0001</case>
+        <case hl="normal" msg="STOCK">0010</case>
+        <case hl="normal" msg="FOCUS">0100</case>
+        <case hl="normal" msg="ROT">1000</case>
+        <case hl="alarm" msg="N/A"></case>
+      </symbol>
+      <symbol id="pulse" type="FLOAT">
+        <range hl="normal" msg="INIT">0:0.5</range>
+        <range hl="normal" msg="FOCUS">12.3:13.2</range>
+        <range hl="normal" msg="ROT">122.5:123.5</range>
+        <range hl="normal" msg="WAIT">184.5:185.5</range>
+        <range hl="normal" msg="STOCK">200:201</range>
+      </symbol>
+    </symbols>
+  </object>
+</odb>

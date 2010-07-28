@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml">
-  <device id="slo" label="SLOSYN SS6000i" wait="0">
+  <device id="slo" label="SLOSYN SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" wait="0.1">
     <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
     <cmdselect>
       <command id="bs" type="stat" response="bs" label="Running Status">
         <data>bs</data>
       </command>
-      <command id="in1" label="Input 1 Status" response="in1" type="stat">
-        <data>in(1)</data>
-      </command>
-      <command id="in2" label="Input 2 Status" response="in2" type="stat">
-        <data>in(2)</data>
-      </command>
-      <command id="in3" label="Input 3 Status" response="in3" type="stat">
-        <data>in(3)</data>
-      </command>
-      <command id="in4" label="Input 4 Status" response="in4" type="stat">
-        <data>in(4)</data>
-      </command>
-      <command id="in5" label="Input 5 Status" response="in5" type="stat">
-        <data>in(5)</data>
+      <command id="in" label="Input Status (1-5)" response="in" type="stat">
+        <data>in</data>
+        <par format="(%d)" validate="range">1:5</par>
       </command>
       <command id="err" label="Error Status" response="err" type="stat">
         <data>err</data>
@@ -30,14 +19,24 @@
       <command id="reset" label="Reset" response="default" type="config">
         <data>reset</data>
       </command>
-      <command id="e1d" label="Event 1 Disable" response="default" type="config">
-        <data>e1=0</data>
+      <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
+        <data>hl</data>
+        <par validate="regexp">[01]</par>
       </command>
-      <command id="e2d" label="Event 2 Disable" response="default" type="config">
-        <data>e2=0</data>
+      <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
+        <data>e1=</data>
+        <par validate="regexp">[01]</par>
       </command>
-      <command id="hl1" label="Hard Limit ON" response="default" type="config">
-        <data>hl1</data>
+      <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
+        <data>e2=</data>
+        <par validate="regexp">[01]</par>
+      </command>
+      <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
+        <data>abspos=0</data>
+      </command>
+      <command id="setp" label="Set Pulse Number" response="default" type="config">
+        <data>p=</data>
+        <par format="%5.2" />
       </command>
       <command id="stop" label="Stop Running" response="default" type="action">
         <data>stop</data>
@@ -52,13 +51,6 @@
         <data>ma=</data>
         <par format="%3.1" />
       </command>
-      <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
-        <data>abspos=0</data>
-      </command>
-      <command id="setp" label="Set Pulse Number" response="default" type="config">
-        <data>p=</data>
-        <par format="%5.2" />
-      </command>
     </cmdselect>
     <cmdframe>
       <selected />
@@ -71,46 +63,22 @@
           <assign>bs</assign>
         </field>
       </response>
-      <response id="in1">
+      <response id="p">
         <field>
-          <length>1</length>
-          <assign>in1</assign>
-        </field>
-      </response>
-      <response id="in2">
-        <field>
-          <length>1</length>
-          <assign>in2</assign>
-        </field>
-      </response>
-      <response id="in3">
-        <field>
-          <length>1</length>
-          <assign>in3</assign>
-        </field>
-      </response>
-      <response id="in4">
-        <field>
-          <length>1</length>
-          <assign>in4</assign>
-        </field>
-      </response>
-      <response id="in5">
-        <field>
-          <length>1</length>
-          <assign>in5</assign>
+          <regexp>\d+(\.\d+)?</regexp>
+          <assign>p</assign>
         </field>
       </response>
       <response id="err">
         <field>
-          <length>3</length>
+          <regexp>[\d]+</regexp>
           <assign>err</assign>
         </field>
       </response>
-      <response id="p">
+      <response id="in">
         <field>
-          <length>10</length>
-          <assign>p</assign>
+          <length>1</length>
+          <assign>in${par:0}</assign>
         </field>
       </response>
       <response id="default">
@@ -122,6 +90,10 @@
     </rspselect>
     <rspframe>
       <selected />
+      <field>
+        <length>1</length>
+        <verify>\r</verify>
+      </field>
     </rspframe>
   </device>
 </ddb>

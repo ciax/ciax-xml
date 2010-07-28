@@ -177,7 +177,7 @@ class Obj < Hash
       end
       a.each{|k,v| set[k]=v }
       break true
-    } || @v.err("STAT:No Symbol selection")
+    } || set.update({'msg'=>'N/A','hl'=>'warn'})
     @v.msg{"STAT:Symbol:[#{set['msg']}] for [#{set['val']}]"}
     set
   end

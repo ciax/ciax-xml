@@ -20,8 +20,10 @@ class XmlDoc < Hash
   end
 
   def select_id(xpath,id)
-    self[:cid]=id
-    self[xpath].each_element_with_attribute('id',id){|e| return e }
+    if id && id != ''
+      self[:cid]=id
+      self[xpath].each_element_with_attribute('id',id){|e| return e }
+    end
     list_id(xpath)
   end
 
@@ -38,7 +40,7 @@ class XmlDoc < Hash
   end
 
   def mklist(ary)
-    list=["== Command List =="]
+    list=Array.new
     ary.each { |e|
       a=e.attributes
       list << " #{a['id']}\t:#{a['label']}" if a['label']

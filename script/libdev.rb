@@ -37,6 +37,8 @@ class Dev
     @recv= res ? @ddb.select_id('rspselect',res) : nil
     @cmd.par=cmdary.clone
     @rsp.par=cmdary
+  rescue
+    raise "== Command List ==\n#{$!}"
   end
 
   def getcmd

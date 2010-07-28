@@ -40,6 +40,8 @@ class Obj < Hash
       @session=@rdb.select_id('selection',ref)
     end
     line
+  rescue
+    raise "== Command List ==\n#{$!}"
   end
 
   def objcom

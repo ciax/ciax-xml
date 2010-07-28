@@ -119,7 +119,7 @@
   <!--symbol-->
   <xsd:simpleType name="rerange">
     <xsd:restriction base="xsd:string">
-      <xsd:pattern value="(\d+&lt;?)?:(&lt;?\d+)?" />
+      <xsd:pattern value="^(-?\d+(\.\d+)?&lt;?)?:(&lt;?-?\d+(\.\d+)?)?" />
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:element name="symbols">

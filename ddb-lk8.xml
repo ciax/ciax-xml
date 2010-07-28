@@ -17,7 +17,7 @@
         <data>HTR?</data>
       </command>
       <command id="spstat" type="stat" label="Set Point (K)" response="spstat">
-        <data>ese?</data>
+        <data>SETP? 1</data>
       </command>
     </cmdselect>
     <cmdframe>

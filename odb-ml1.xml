@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:celaeno:4005" device="lk8" id="ml1" label="MOIRCS Pressure Pump" server="socat - udp-l:24105,reuseaddr,fork">
+    <selection>
+      <session id="upd" label="Update Status">
+        <statement>
+          <cmd>getstat</cmd>
+        </statement>
+        <statement>
+          <cmd>htrstat</cmd>
+        </statement>
+        <statement>
+          <cmd>spstat</cmd>
+        </statement>
+      </session>
+    </selection>
+    <status>
+      <var id="ch1" label="MosCold2" trail="true">
+        <float field="ch1" format="%3.2f" />
+      </var>
+      <var id="ch2" label="MosCold1" trail="true">
+        <float field="ch2" format="%3.2f" />
+      </var>
+      <var id="ch3" label="Mask" trail="true">
+        <float field="ch3" format="%3.2f" />
+      </var>
+      <var id="ch4" label="Wheel">
+        <float field="ch4" format="%3.2f" />
+      </var>
+      <var id="ch5" label="D1(NONE)" trail="true">
+        <float field="ch5" format="%3.2f" />
+      </var>
+      <var id="ch6" label="D2(NONE)" trail="true">
+        <float field="ch6" format="%3.2f" />
+      </var>
+      <var id="ch7" label="ChipBox1" trail="true">
+        <float field="ch7" format="%3.2f" />
+      </var>
+      <var id="ch8" label="Det1">
+        <float field="ch8" format="%3.2f" />
+      </var>
+      <var id="sp" label="SetPoint1 (K)" trail="true">
+        <float field="sp" format="%3.2f" />
+      </var>
+      <var id="htr" label="HeaterPower1(%)">
+        <float field="htr" format="%3.2f" />
+      </var>
+    </status>
+  </object>
+</odb>

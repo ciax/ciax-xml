@@ -7,9 +7,9 @@ obj=ARGV.shift
 cmd=ARGV.shift||''
 begin
   odb=Obj.new(obj)
+  odb.setcmd(cmd)
   odb.get_stat(Marshal.load(gets(nil)))
   ENV['VER']='exec'
-  odb.setcmd(cmd)
   odb.objcom{}
 rescue RuntimeError
   abort $!.to_s

@@ -132,5 +132,6 @@ class ObjSrv < Hash
   def e2s
     msg=$!.to_s+"\n"
     msg << $@.to_s+"\n" if ENV['VER']
+    msg
   end
 end

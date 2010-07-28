@@ -75,7 +75,7 @@ class DevRsp
         key=substitute(d,@var)
         key=key % num if num
         fld[key]=data
-        @v.msg{"Assign:[#{key}]<-[#{self[key]}]"}
+        @v.msg{"Assign:[#{key}]<-[#{fld[key]}]"}
       when 'verify'
         if txt=text(d)
           @v.msg{"Verify:[#{txt}]"}

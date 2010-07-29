@@ -9,6 +9,7 @@ class DevRsp
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @var=Hash.new
+    @par=Array.new
   end
 
   def rspframe(sel)
@@ -28,7 +29,7 @@ class DevRsp
   end
 
   def par=(ary)
-    @var['par']=ary
+    @par=ary
   end
 
   private
@@ -49,13 +50,13 @@ class DevRsp
       when 'field'
         frame << field(c,fld)
       when 'repeat'
-        repeat(c){|d,n| frame << field(d,fld,n) }
+        repeat(c){|d| frame << field(d,fld) }
       end
     }
     frame
   end
 
-  def field(e,fld,num=nil)
+  def field(e,fld)
     str=''
     data=''
     @v.msg{"Field:#{e.attributes['label']}"}
@@ -72,7 +73,7 @@ class DevRsp
         @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
         data=decode(e,str)
       when 'assign'
-        key=substitute(d,@var,num)
+        key=subnum(d.text)
         fld[key]=data
         @v.msg{"Assign:[#{key}]<-[#{fld[key]}]"}
       when 'verify'

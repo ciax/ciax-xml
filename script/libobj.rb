@@ -28,11 +28,12 @@ class Obj < Hash
     self['field']=Hash.new
     update(@odb)
     @obj=obj
+    @par=Array.new
   end
   
   public
   def setcmd(line)
-    cmd,*self['par']=line.split(' ')
+    cmd,*@par=line.split(' ')
     @session=@odb.select_id('selection',cmd)
     a=@session.attributes
     @v.msg{"Exec(DDB):#{a['label']}"}
@@ -50,7 +51,7 @@ class Obj < Hash
       when 'statement'
         yield(get_cmd(c))
       when 'repeat'
-        repeat(c){|d,n| yield(get_cmd(d,n))}
+        repeat(c){|d| yield(get_cmd(d))}
       end
     }
   end
@@ -63,7 +64,7 @@ class Obj < Hash
       when 'var'
         get_var(var)
       when 'repeat'
-        repeat(var){|d,n| get_var(d,n) }
+        repeat(var){|d| get_var(d) }
       end
     }
     self['stat']['time']['val']=Time.at(self['field']['time'].to_f).to_s
@@ -72,11 +73,11 @@ class Obj < Hash
   
   private
   #Cmd Method
-  def get_cmd(e,num=nil)
+  def get_cmd(e)
     cmd=''
     argv=[]
     e.each_element{|d|
-      str=substitute(d,self,num)
+      str=substitute(subnum(d.text))
       case d.name
       when 'cmd'
         cmd=str
@@ -91,18 +92,30 @@ class Obj < Hash
     cmd
   end
 
+  def substitute(str)
+    return str unless /\$/ === str
+    h=self.clone
+    # Sub ${id} by hash[id]
+    conv=str.gsub(/\$\{([\w:]+)\}/) {
+      $1.split(':').each {|i| h=(h.is_a? Array) ? h[i.to_i] : h[i] }
+      h
+    }
+    @v.msg{"Substitute [#{str}] to [#{conv}]"}
+    conv
+  end
+
   #Stat Methods
-  def get_var(var,num=nil)
+  def get_var(var)
     a=var.attributes
-    id=subnum(a['id'],num)
-    st={'label'=> subnum(a['label'],num) }
+    id=subnum(a['id'])
+    st={'label'=> subnum(a['label']) }
     if ref=a['ref']
       @rdb['status'].each_element_with_attribute('id',ref){|e| var=e } ||
         @rdb.list_id('status')
       a=var.attributes
     end
     st['trail']=a['trail']
-    val=get_val(var,num)
+    val=get_val(var)
     st['val']=val
     @v.msg{"STAT:GetStatus:#{id}=[#{val}]"}
     if sid=a['symbol']
@@ -116,12 +129,12 @@ class Obj < Hash
     self['stat'][id]=st
   end
 
-  def get_val(e,num=nil)
+  def get_val(e)
     val=String.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=subnum(a['field'],num) || return
-      fld=subnum(self['field'][fld],num) || return
+      fld=subnum(a['field']) || return
+      fld=subnum(self['field'][fld]) || return
       data=fld.clone
       # @v.msg{"STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]"}
       case dtype.name

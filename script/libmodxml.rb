@@ -64,33 +64,22 @@ module ModXml
     code.to_s
   end
 
-  def substitute(e,hash,num=nil) 
-    str="#{e.text}"
-    return str unless /\$/ === str
-    n=0;h=hash.clone
-    # Sub $_ by num
-    str.gsub!(/\$_/,num) if num
-    # Sub $1 by hash['par'][1]
-    h['par'].each{|s| str.gsub!(/\$#{n+=1}/,s)}
-    # Sub ${id} by hash[id]
-    conv=str.gsub(/\$\{([\w:]+)\}/) {
-      $1.split(':').each { |i| h=(h.is_a? Array) ? h[i.to_i] : h[i] }
-      h
-    }
-    @v.msg{"Substitute [#{str}] to [#{conv}]"}
-    conv
-  end
-
   def repeat(e)
     fmt=e.attributes['format'] || '%d'
     Range.new(*e.attributes['range'].split(':')).each { |n|
-      e.each_element { |d| yield d,fmt % n }
+      @n=fmt % n
+      e.each_element { |d| yield d}
     }
+    @n=nil
   end
 
-  def subnum(str,num)
-    str.gsub!(/\$_/,num) if num
-    str
+  def subnum(str)
+    # Sub $_ by num
+    str=str.gsub(/\$_/,@n) if @n
+    # Sub $1 by @par[1]
+    @par.each{|s| str=str.gsub(/\$#{n=n ?n+1:1}/,s)}
+    @v.msg("Substutited to [#{str}]")
+    eval('"'+str+'"')
   end
 
   def text(e) # convert escape char (i.e. "\n"..)

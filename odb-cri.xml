@@ -12,7 +12,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} | 0x01</par>
         </statement>
         <statement>
@@ -24,7 +24,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} &amp; 0xfffe</par>
         </statement>
         <statement>
@@ -36,7 +36,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} | 0x10</par>
         </statement>
         <statement>
@@ -48,7 +48,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} &amp; 0xffef</par>
         </statement>
         <statement>
@@ -60,7 +60,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} | 0x100</par>
         </statement>
         <statement>
@@ -72,7 +72,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} &amp; 0xfeff</par>
         </statement>
         <statement>
@@ -84,7 +84,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} | 0x1000</par>
         </statement>
         <statement>
@@ -96,7 +96,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} &amp; 0xefff</par>
         </statement>
         <statement>

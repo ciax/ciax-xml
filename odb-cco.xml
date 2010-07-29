@@ -14,7 +14,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} | 0x1100</par>
         </statement>
         <statement>
@@ -26,7 +26,7 @@
           <cmd>getstat</cmd>
         </statement>
         <statement>
-          <cmd>output</cmd>
+          <cmd>output %d</cmd>
           <par>${field:stat} &amp; 0xeeff</par>
         </statement>
         <statement>

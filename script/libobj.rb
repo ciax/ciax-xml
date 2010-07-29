@@ -70,6 +70,7 @@ class Obj < Hash
   private
   #Cmd Method
   def get_cmd(e,num=nil)
+    cmd=''
     argv=[]
     e.each_element{|d|
       str=substitute(d,self,num)

@@ -50,9 +50,7 @@ class Obj < Hash
       when 'statement'
         yield(get_cmd(c))
       when 'repeat'
-        repeat(c){ |d,n|
-          yield(get_cmd(d,n))
-        }
+        repeat(c){|d,n| yield(get_cmd(d,n))}
       end
     }
   end
@@ -61,7 +59,12 @@ class Obj < Hash
     return unless dstat
     self['field'].update(dstat)
     @odb['status'].each_element {|var|
-      get_var(var)
+      case var.name
+      when 'var'
+        get_var(var)
+      when 'repeat'
+        repeat(var){|d,n| get_var(d,n) }
+      end
     }
     self['stat']['time']['val']=Time.at(self['field']['time'].to_f).to_s
     @f.save_json(self['stat'])
@@ -89,17 +92,17 @@ class Obj < Hash
   end
 
   #Stat Methods
-  def get_var(var)
+  def get_var(var,num=nil)
     a=var.attributes
-    id=a['id']
-    st={'label'=>a['label'] }
+    id=subnum(a['id'],num)
+    st={'label'=> subnum(a['label'],num) }
     if ref=a['ref']
       @rdb['status'].each_element_with_attribute('id',ref){|e| var=e } ||
         @rdb.list_id('status')
       a=var.attributes
     end
     st['trail']=a['trail']
-    val=get_val(var)
+    val=get_val(var,num)
     st['val']=val
     @v.msg{"STAT:GetStatus:#{id}=[#{val}]"}
     if sid=a['symbol']
@@ -113,12 +116,12 @@ class Obj < Hash
     self['stat'][id]=st
   end
 
-  def get_val(e)
+  def get_val(e,num=nil)
     val=String.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=a['field'] || return
-      fld=self['field'][fld] || return
+      fld=subnum(a['field'],num) || return
+      fld=subnum(self['field'][fld],num) || return
       data=fld.clone
       # @v.msg{"STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]"}
       case dtype.name

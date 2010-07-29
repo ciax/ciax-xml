@@ -88,6 +88,11 @@ module ModXml
     }
   end
 
+  def subnum(str,num)
+    str.gsub!(/\$_/,num) if num
+    str
+  end
+
   def text(e) # convert escape char (i.e. "\n"..)
     eval('"'+e.text+'"') if e.text
   end

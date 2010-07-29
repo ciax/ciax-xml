@@ -9,74 +9,62 @@
       </session>
       <session id="c3on" label="CIAX3 POWER ON">
         <statement label="Bit 0 on">
-          <cmd>fset</cmd>
-          <par>5</par>
+          <cmd>fset 5</cmd>
         </statement>
       </session>
       <session id="c3off" label="CIAX3 POWER OFF">
         <statement label="Bit 0 OFF">
-          <cmd>fset</cmd>
-          <par>4</par>
+          <cmd>fset 4</cmd>
         </statement>
       </session>
       <session id="emon" label="CIAX3 EMERGENCY ON">
         <statement label="Bit 1 ON">
-          <cmd>fset</cmd>
-          <par>50</par>
+          <cmd>fset 50</cmd>
         </statement>
       </session>
       <session id="emoff" label="CIAX3 EMERGENCY OFF">
         <statement label="Bit 1 OFF">
-          <cmd>fset</cmd>
-          <par>40</par>
+          <cmd>fset 40</cmd>
         </statement>
       </session>
       <session id="ccdon" label="CS CCD ON">
         <statement label="Bit 2 ON">
-          <cmd>fset</cmd>
-          <par>500</par>
+          <cmd>fset 500</cmd>
         </statement>
       </session>
       <session id="ccdoff" label="CS CCD OFF">
         <statement label="Bit 2 OFF">
-          <cmd>fset</cmd>
-          <par>400</par>
+          <cmd>fset 400</cmd>
         </statement>
       </session>
       <session id="lanon" label="CS LAN ON">
         <statement label="Bit 3 ON">
-          <cmd>fset</cmd>
-          <par>5000</par>
+          <cmd>fset 5000</cmd>
         </statement>
       </session>
       <session id="lanoff" label="CS LAN OFF">
         <statement label="Bit 3 OFF">
-          <cmd>fset</cmd>
-          <par>4000</par>
+          <cmd>fset 4000</cmd>
         </statement>
       </session>
       <session id="ipwon" label="CS IPW ON">
         <statement label="Bit 4 ON">
-          <cmd>fset</cmd>
-          <par>50000</par>
+          <cmd>fset 50000</cmd>
         </statement>
       </session>
       <session id="ipwoff" label="CS IPW OFF">
         <statement label="Bit 4 OFF">
-          <cmd>fset</cmd>
-          <par>40000</par>
+          <cmd>fset 40000</cmd>
         </statement>
       </session>
       <session id="ston" label="STOW PIN ON">
         <statement label="Bit 5 ON">
-          <cmd>fset</cmd>
-          <par>500000</par>
+          <cmd>fset 500000</cmd>
         </statement>
       </session>
       <session id="stoff" label="STOW PIN OFF">
         <statement label="Bit 5 OFF">
-          <cmd>fset</cmd>
-          <par>400000</par>
+          <cmd>fset 400000</cmd>
         </statement>
       </session>
     </selection>

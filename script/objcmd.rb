@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
 require "libobj"
 
-warn "Usage: objcmd [obj] [cmd]" if ARGV.size < 1
+warn "Usage: objcmd [obj] [cmd] (par)" if ARGV.size < 1
 
 obj=ARGV.shift
-cmd=ARGV.shift||''
+cmd=ARGV.join(" ")
+ARGV.clear
 begin
   odb=Obj.new(obj)
   odb.setcmd(cmd)

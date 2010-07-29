@@ -9,16 +9,13 @@
       </session>
       <session id="setlmt" label="Set Limit 20V/5A/100W">
         <statement>
-          <cmd>setvl</cmd>
-          <par>20</par>
+          <cmd>setvl 20</cmd>
         </statement>
         <statement>
-          <cmd>setal</cmd>
-          <par>5</par>
+          <cmd>setal 5</cmd>
         </statement>
         <statement>
-          <cmd>setpl</cmd>
-          <par>100</par>
+          <cmd>setpl 100</cmd>
         </statement>
         <statement>
           <cmd>getstat</cmd>
@@ -26,8 +23,7 @@
       </session>
       <session id="setv" label="Set Voltage 0-50[V]">
         <statement>
-          <cmd>setv</cmd>
-          <par>${par}</par>
+          <cmd>setv $1</cmd>
         </statement>
         <statement>
           <cmd>getstat</cmd>
@@ -35,8 +31,8 @@
       </session>
       <session id="setp" label="Set Power 0-100[W]">
         <statement>
-          <cmd>setv</cmd>
-          <par>Math.sqrt(${par}*26)</par>
+          <cmd>setv %5.2f</cmd>
+          <par>Math.sqrt($1*26)</par>
         </statement>
         <statement>
           <cmd>getstat</cmd>

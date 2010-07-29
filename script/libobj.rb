@@ -70,20 +70,21 @@ class Obj < Hash
   private
   #Cmd Method
   def get_cmd(e,num=nil)
-    cmdary=Array.new
+    argv=[]
     e.each_element{|d|
+      str=substitute(d,self,num)
       case d.name
       when 'cmd'
-        cmdary << d.text
+        cmd=str
       when 'par'
-        str=substitute(d,self,num)
-        str=eval(str).to_s
+        str=eval(str)
         @v.msg{"CMD:Evaluated [#{str}]"}
-        cmdary << str
+        argv << str
       end
     }
-    @v.msg{"Exec(DDB):#{cmdary.inspect}"}
-    cmdary.join(' ')
+    cmd = cmd % argv if argv.size > 0
+    @v.msg{"Exec(DDB):[#{cmd}]"}
+    cmd
   end
 
   #Stat Methods

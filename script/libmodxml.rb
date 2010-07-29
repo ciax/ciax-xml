@@ -64,13 +64,17 @@ module ModXml
     code.to_s
   end
 
-  def substitute(e,hash,num=nil) # Substitute ${id} by hash[id]
-    str=e.text
-    str=str % num if num
-    return str if /\$\{[\w:]+\}/ !~ str
-    conv=str.gsub(/\$\{([\w:]+)\}/) { 
-      h=hash.clone
-      $1.split(':').each { |i| h=(Array === h) ? h[i.to_i] : h[i] }
+  def substitute(e,hash,num=nil) 
+    str="#{e.text}"
+    return str unless /\$/ === str
+    n=0;h=hash.clone
+    # Sub $_ by num
+    str.gsub!(/\$_/,num.to_s) if num
+    # Sub $1 by hash['par'][1]
+    h['par'].each{|s| str.gsub!(/\$#{n+=1}/,s)}
+    # Sub ${id} by hash[id]
+    conv=str.gsub(/\$\{([\w:]+)\}/) {
+      $1.split(':').each { |i| h=(h.is_a? Array) ? h[i.to_i] : h[i] }
       h
     }
     @v.msg{"Substitute [#{str}] to [#{conv}]"}

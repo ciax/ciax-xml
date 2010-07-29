@@ -37,13 +37,13 @@
       <response id="chkr">
         <field>
           <length>1</length>
-          <assign>r${par:0}</assign>
+          <assign>r$1</assign>
         </field>
       </response>
       <response id="getp">
         <field>
           <regexp>[\d]+</regexp>
-          <assign>p${par:0}</assign>
+          <assign>p$1</assign>
         </field>
       </response>
       <response id="default"></response>

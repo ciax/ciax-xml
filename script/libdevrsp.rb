@@ -72,8 +72,7 @@ class DevRsp
         @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
         data=decode(e,str)
       when 'assign'
-        key=substitute(d,@var)
-        key=key % num if num
+        key=substitute(d,@var,num)
         fld[key]=data
         @v.msg{"Assign:[#{key}]<-[#{fld[key]}]"}
       when 'verify'

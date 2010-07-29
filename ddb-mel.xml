@@ -84,10 +84,10 @@
         </field>
       </response>
       <response id="getstat">
-        <repeat range="0:51" label="Repeated">
+        <repeat range="0:51" format="%02x">
           <field decode="lew">
             <length>2</length>
-            <assign>x%02x</assign>
+            <assign>x$_</assign>
           </field>
         </repeat>
       </response>

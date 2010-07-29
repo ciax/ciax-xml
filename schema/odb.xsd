@@ -54,6 +54,7 @@
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
+      <xsd:attribute name="format" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="statement">

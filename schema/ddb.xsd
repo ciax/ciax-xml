@@ -220,8 +220,8 @@
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cx:field"></xsd:element>
       </xsd:choice>
-      <xsd:attribute name="label" type="xsd:string" />
       <xsd:attribute name="range" type="cx:range" use="required"></xsd:attribute>
+      <xsd:attribute name="format" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="field">

@@ -69,7 +69,7 @@ module ModXml
     return str unless /\$/ === str
     n=0;h=hash.clone
     # Sub $_ by num
-    str.gsub!(/\$_/,num.to_s) if num
+    str.gsub!(/\$_/,num) if num
     # Sub $1 by hash['par'][1]
     h['par'].each{|s| str.gsub!(/\$#{n+=1}/,s)}
     # Sub ${id} by hash[id]
@@ -82,8 +82,9 @@ module ModXml
   end
 
   def repeat(e)
+    fmt=e.attributes['format'] || '%d'
     Range.new(*e.attributes['range'].split(':')).each { |n|
-      e.each_element { |d| yield d,n }
+      e.each_element { |d| yield d,fmt % n }
     }
   end
 

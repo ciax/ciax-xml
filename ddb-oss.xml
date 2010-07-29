@@ -120,16 +120,16 @@
           <length>2</length>
           <assign>cjb</assign>
         </field>
-        <repeat label="Each Bolt Status(POWER_V1)" range="1:16">
-          <field>
+        <repeat range="1:16" format="%02d">
+          <field label="Each Bolt Status(POWER_V1)">
             <length>1</length>
-            <assign>bl%02d</assign>
+            <assign>bl$_</assign>
           </field>
         </repeat>
-        <repeat label="Each Bolt Alarm(POWER_V1)" range="1:16">
-          <field>
+        <repeat range="1:16" format="%02d">
+          <field label="Each Bolt Alarm(POWER_V1)">
             <length>1</length>
-            <assign>be%02d</assign>
+            <assign>be$_</assign>
           </field>
         </repeat>
         <field label="MLP3-BOLT COMM(POWER_V1)">
@@ -148,10 +148,10 @@
           <length>1</length>
           <verify>\n</verify>
         </field>
-        <repeat label="Bolt Position(POWER_V2)" range="1:16">
-          <field>
+        <repeat range="1:16" format="%02d">
+          <field label="Bolt Position(POWER_V2)">
             <length>6</length>
-            <assign>jk%02d</assign>
+            <assign>jk$_</assign>
           </field>
           <field>
             <length>6</length>
@@ -161,13 +161,13 @@
           <length>1</length>
           <verify>\n</verify>
         </field>
-        <repeat label="Zsensor Position" range="1:4">
+        <repeat range="1:4">
           <field>
             <length>2</length>
           </field>
-          <field>
+          <field label="Zsensor Position">
             <length>4</length>
-            <assign>zp%d</assign>
+            <assign>zp$_</assign>
           </field>
           <field>
             <length>6</length>

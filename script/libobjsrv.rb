@@ -62,17 +62,17 @@ class ObjSrv < Hash
   def session(line)
     return '' if line == ''
     @odb.setcmd(line)
-    @odb.objcom {|a| @q.push(a)}
+    @odb.objcom {|cmd| @q.push(cmd)}
     "Accepted\n"
   end
 
   def device_thread
     Thread.new {
       loop {
-        cmdary=@q.shift
+        cmd=@q.shift
         self[:issue]='*'
         begin
-          @ddb.setcmd(cmdary)
+          @ddb.setcmd(cmd)
           @ddb.devcom
           @odb.get_stat(@ddb.field)
         rescue

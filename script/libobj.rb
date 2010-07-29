@@ -83,7 +83,7 @@ class Obj < Hash
       end
     }
     @v.msg{"Exec(DDB):#{cmdary.inspect}"}
-    cmdary
+    cmdary.join(' ')
   end
 
   #Stat Methods

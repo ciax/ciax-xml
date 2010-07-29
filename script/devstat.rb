@@ -5,7 +5,8 @@ warn "Usage: devstat [dev] [cmd] < logfile" if ARGV.size < 1
 
 begin
   c=Dev.new(ARGV.shift)
-  c.setcmd(ARGV)
+  c.setcmd(ARGV.join(' '))
+  ARGV.clear
 rescue RuntimeError
   abort $!.to_s
 end

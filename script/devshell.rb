@@ -10,13 +10,13 @@ obj=ARGV.shift || dev
 ddb=DevCom.new(dev,iocmd,obj)
 
 loop{
-  cary=Readline.readline("#{dev}>",true).chomp.split(' ')
+  line=Readline.readline("#{dev}>",true).chomp
   case cary[0]
   when /^q/
     break
   when /[\w]+/
     begin
-      ddb.setcmd(cary)
+      ddb.setcmd(line)
       ddb.devcom
     rescue
       puts $!

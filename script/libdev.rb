@@ -29,8 +29,9 @@ class Dev
     end
   end
 
-  def setcmd(cmdary)
-    @cid=cmdary.compact.join(':')
+  def setcmd(line)
+    cmdary=line.split(' ').compact
+    @cid=cmdary.join(':')
     @send=@ddb.select_id('cmdselect',cmdary.shift)
     @v.msg{'Select:'+@send.attributes['label']}
     res=@send.attributes['response']

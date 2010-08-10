@@ -10,9 +10,16 @@ srv=IoCmd.new(odb['server'],"server_#{obj}")
 odb.dispatch('auto start')
 
 loop{ 
-  srv.snd(odb.prompt,['snd'])
   line=srv.rcv(['rcv'])
   line.chomp!
-  resp=odb.dispatch(line){|s| s.inspect+"\n" }
+  line='stat' if line == ''
+  resp=odb.dispatch(line){|s|
+    sa=Array.new
+    s.each{|k,v|
+      sa << "#{k}=\"#{v['val']}\""
+    }
+    sa.join(",")+"\n"
+  }
   srv.snd(resp,['snd'])
+  srv.snd(odb.prompt,['snd'])
 }

@@ -25,6 +25,23 @@
       <xsd:attribute name="server" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
+  <!--Share-->
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cx:statement" />
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cx:var" />
+      </xsd:choice>
+      <xsd:attribute name="range" use="required">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\d+:\d+" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="format" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
   <!--command select-->
   <xsd:element name="selection">
     <xsd:complexType>
@@ -42,21 +59,6 @@
       <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="repeat">
-    <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="cx:statement" />
-      </xsd:choice>
-      <xsd:attribute name="range" use="required">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:pattern value="\d+:\d+" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
-      <xsd:attribute name="format" type="xsd:string" />
-    </xsd:complexType>
-  </xsd:element>
   <xsd:element name="statement">
     <xsd:complexType>
       <xsd:sequence>
@@ -71,9 +73,10 @@
   <!--status-->
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cx:var" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cx:var" />
+        <xsd:element ref="cx:repeat" />
+      </xsd:choice>
       <xsd:attribute name="ref" type="xsd:string" use="optional" />
     </xsd:complexType>
   </xsd:element>

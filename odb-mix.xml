@@ -55,42 +55,14 @@
       <var id="cmd" label="Computer Mode" symbol="off-warn">
         <binary bit="7" field="stat" />
       </var>
-      <var id="r1" label="Running 1" trail="true" symbol="normal">
-        <string field="r1" />
-      </var>
-      <var id="p1" label="Pulse 1">
-        <int field="p1" />
-      </var>
-      <var id="r2" label="Running 2" trail="true" symbol="normal">
-        <string field="r2" />
-      </var>
-      <var id="p2" label="Pulse 2">
-        <int field="p2" />
-      </var>
-      <var id="r3" label="Running 3" trail="true" symbol="normal">
-        <string field="r3" />
-      </var>
-      <var id="p3" label="Pulse 3">
-        <int field="p3" />
-      </var>
-      <var id="r4" label="Running 4" trail="true" symbol="normal">
-        <string field="r4" />
-      </var>
-      <var id="p4" label="Pulse 4">
-        <int field="p4" />
-      </var>
-      <var id="r5" label="Running 5" trail="true" symbol="normal">
-        <string field="r5" />
-      </var>
-      <var id="p5" label="Pulse 5">
-        <int field="p5" />
-      </var>
-      <var id="r6" label="Running 6" trail="true" symbol="normal">
-        <string field="r6" />
-      </var>
-      <var id="p6" label="Pulse 6">
-        <int field="p6" />
-      </var>
+      <repeat range="1:6">
+        <var id="r$_" label="Running $_" trail="true" symbol="normal">
+          <string field="r$_" />
+        </var>
+        <var id="p$_" label="Pulse $_">
+          <int field="p$_" />
+        </var>
+      </repeat>
     </status>
   </object>
 </odb>

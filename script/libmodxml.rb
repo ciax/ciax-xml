@@ -74,6 +74,7 @@ module ModXml
   end
 
   def subnum(str)
+    str || return
     # Sub $_ by num
     str=str.gsub(/\$_/,@n) if @n
     # Sub $1 by @par[1]

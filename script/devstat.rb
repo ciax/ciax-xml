@@ -4,7 +4,7 @@ require "libdev"
 warn "Usage: devstat [dev] [cmd] < logfile" if ARGV.size < 1
 
 begin
-  c=Dev.new(ARGV.shift)
+  c=Dev.new(ARGV.shift,ENV['obj'])
   c.setcmd(ARGV.join(' '))
   ARGV.clear
 rescue RuntimeError

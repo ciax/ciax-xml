@@ -78,7 +78,7 @@
       <response id="in">
         <field>
           <length>1</length>
-          <assign>in${par:0}</assign>
+          <assign>in$1</assign>
         </field>
       </response>
       <response id="default">

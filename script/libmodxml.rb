@@ -77,10 +77,20 @@ module ModXml
     str || return
     # Sub $_ by num
     str=str.gsub(/\$_/,@n) if @n
+    str=subpar(str)
+    @v.msg("Substutited to [#{str}]")
+    esc(str)
+  end
+
+  def subpar(str)
     # Sub $1 by @par[1]
     @par.each{|s| str=str.gsub(/\$#{n=n ?n+1:1}/,s)}
     @v.msg("Substutited to [#{str}]")
-    eval('"'+str+'"')
+    str
+  end
+
+  def esc(str)
+    eval('"'+str+'"') if str
   end
 
   def text(e) # convert escape char (i.e. "\n"..)

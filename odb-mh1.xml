@@ -23,7 +23,8 @@
       </session>
       <session id="setv" label="Set Voltage 0-50[V]">
         <statement>
-          <cmd>setv $1</cmd>
+          <cmd>setv %f</cmd>
+          <par>$1</par>
         </statement>
         <statement>
           <cmd>getstat</cmd>

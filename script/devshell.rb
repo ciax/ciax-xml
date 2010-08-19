@@ -11,7 +11,7 @@ ddb=DevCom.new(dev,iocmd,obj)
 
 loop{
   line=Readline.readline("#{dev}>",true).chomp
-  case cary[0]
+  case line
   when /^q/
     break
   when /[\w]+/

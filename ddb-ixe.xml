@@ -30,7 +30,7 @@
     <rspselect>
       <response id="getstat">
         <field>
-          <length>3</length>
+          <regexp>[\d]+</regexp>
           <assign>stat</assign>
         </field>
       </response>

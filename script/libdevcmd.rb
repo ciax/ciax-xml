@@ -17,13 +17,14 @@ class DevCmd
       @v.msg{"Entering Ceck Code Range"}
       @var[:ccrange]=getframe(ccn)
       @var[:cc]=checkcode(ccn,@var[:ccrange])
+      @var['cc']=[@var[:cc]]
       @v.msg{"Exitting Ceck Code Range"}
     end
     getframe(@ddb['cmdframe'])
   end
 
   def par=(ary)
-    @var[:par]=ary
+    @var['par']=ary
   end
 
   private
@@ -40,8 +41,8 @@ class DevCmd
         frame << getframe(@var[:sel])
         @v.msg{"Exitting Selected Node"}
       when 'par'
-        @var[:par] || @v.err("No Parameter")
-        str=validate(c,@var[:par].shift)
+        @var['par'] || @v.err("No Parameter")
+        str=validate(c,@var['par'].shift)
         @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
         frame << encode(c,str)
       when 'ccrange'
@@ -50,6 +51,13 @@ class DevCmd
       when 'cc_cmd'
         frame << encode(c,@var[:cc])
         @v.msg{"GetFrame:#{label}(cc)[#{@var[:cc]}"}
+      when 'ref'
+        ref=c.attributes['ref']
+        @var[ref] || @v.err("No Reference (#{ref})")
+        str=@var[ref].shift
+        c.each_element {|d| str=validate(d,str)}
+        frame << encode(c,str)
+        @v.msg{"GetFrame:#{label}(#{ref})[#{str}"}
       end
     }
     frame

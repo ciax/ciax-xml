@@ -25,16 +25,22 @@
             ddb//rspframe@terminator
             ddb//verify
 
- %?
-    description : sprintf by parameters
-    usable: odb//statement/cmd
-
 ### Explicit conversion by Attributes ###
 
  format
-    usable: ddb//repeat
-            ddb//field
-            ddb//par
-            ddb//cc_cmd
+    usable: ddb//command/par
+            ddb//cmdframe/cc_cmd
+            ddb//response/repeat
+            ddb//response/field
             odb//statement
             odb//status/float
+
+ decode
+    usable: ddb//response/field
+
+ encode
+    usable: ddb//command/data
+            ddb//command/par
+            ddb//cmdframe/cc_cmd
+ validate
+ 

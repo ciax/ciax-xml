@@ -77,12 +77,11 @@ class Obj < Hash
     cmd=''
     argv=[]
     e.each_element{|d|
-      str=substitute(subnum(d.text))
       case d.name
       when 'cmd'
-        cmd=str
+        cmd=d.text
       when 'par'
-        str=eval(str)
+        str=eval(substitute(subnum(d.text)))
         @v.msg{"CMD:Evaluated [#{str}]"}
         argv << str
       end
@@ -97,7 +96,7 @@ class Obj < Hash
     h=self.clone
     # Sub ${id} by hash[id]
     conv=str.gsub(/\$\{([\w:]+)\}/) {
-      $1.split(':').each {|i| h=(h.is_a? Array) ? h[i.to_i] : h[i] }
+      $1.split(':').each {|i| h=h[i] }
       h
     }
     @v.msg{"Substitute [#{str}] to [#{conv}]"}

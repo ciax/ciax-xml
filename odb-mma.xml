@@ -14,7 +14,8 @@
         </statement>
         <repeat range="1:5">
           <statement>
-            <cmd>in $_</cmd>
+            <cmd>in %d</cmd>
+            <par>$_</par>
           </statement>
         </repeat>
       </session>

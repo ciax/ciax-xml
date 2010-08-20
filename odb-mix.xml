@@ -8,10 +8,12 @@
         </statement>
         <repeat range="1:6">
           <statement>
-            <cmd>chkr $_</cmd>
+            <cmd>chkr %d</cmd>
+            <par>$_</par>
           </statement>
           <statement>
-            <cmd>getp $_</cmd>
+            <cmd>getp %d</cmd>
+            <par>$_</par>
           </statement>
         </repeat>
       </session>

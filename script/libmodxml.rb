@@ -73,19 +73,19 @@ module ModXml
     @n=nil
   end
 
-  def subnum(str)
+  def subnum(str) # Sub $_ by num
     str || return
-    # Sub $_ by num
     str=str.gsub(/\$_/,@n) if @n
     str=subpar(str)
     @v.msg("Substutited to [#{str}]")
     esc(str)
   end
 
-  def subpar(str)
-    # Sub $1 by @par[1]
-    @par.each{|s| str=str.gsub(/\$#{n=n ?n+1:1}/,s)}
-    @v.msg("Substutited to [#{str}]")
+  def subpar(str) # Sub $1 by @par[1]
+    if /\$[\d]/ === str
+      @par.each_with_index{|s,n| str=str.gsub(/\$#{n+1}/,s)}
+      @v.msg("Substutited to [#{str}]")
+    end
     str
   end
 
@@ -94,10 +94,10 @@ module ModXml
   end
 
   def text(e) # convert escape char (i.e. "\n"..)
-    eval('"'+e.text+'"') if e.text
+    esc(e.text)
   end
 
   def attr(e,attr) # convert escape char (i.e. "\n"..)
-    eval('"'+e.attributes[attr]+'"') if e.attributes[attr]
+    esc(e.attributes[attr])
   end
 end

@@ -2,19 +2,22 @@
 
  $_ 
     description : substitute sequence number(in repeat)
-    usable: ddb//assign
-            odb//statement/{cmd | par}
-            odb//status/var@{id | label}
-            odb//status/var/{string | int| float}@field
+    usable: ddb//response/repeat/field/assign
+            odb//session/repeat/statement/par
+            odb//status/repeat/var@id
+            odb//status/repeat/var@label
+            odb//status/repeat/var/int@field
+            odb//status/repeat/var/float@field
+            odb//status/repeat/var/string@field
 
  $1..9
     description : substitute parameters
-    usable: ddb//assign
-            odb//statement/par
+    usable: ddb//response/field/assign
+            odb//session/statement/par
 
  ${??}
     description : substitute status(field)
-    usable: odb//statement/par
+    usable: odb//session/statement/par
 
  \?
     description : convert escape characters
@@ -24,7 +27,7 @@
 
  %?
     description : sprintf by parameters
-    usable: odb/statement/cmd
+    usable: odb//statement/cmd
 
 ### Explicit conversion by Attributes ###
 

@@ -3,69 +3,69 @@
   <object client="socat - tcp:cxws:9999" device="oss" id="dts" label="TSC Control" server="socat - udp-l:25105,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement>
-          <cmd>getstat</cmd>
+        <statement
+          format="getstat">
         </statement>
-        <statement>
-          <cmd>iststat</cmd>
+        <statement
+          format="iststat">
         </statement>
-        <statement>
-          <cmd>jakstat</cmd>
+        <statement
+          format="jakstat">
         </statement>
-        <statement>
-          <cmd>inrstat</cmd>
+        <statement
+          format="inrstat">
         </statement>
-        <statement>
-          <cmd>logstat</cmd>
+        <statement
+          format="logstat">
         </statement>
-        <statement>
-          <cmd>getexit</cmd>
+        <statement
+          format="getexit">
         </statement>
       </session>
       <session id="login" label="Login">
-        <statement label="TSC Login">
-          <cmd>login</cmd>
+        <statement
+          format="login">
         </statement>
       </session>
       <session id="logout" label="Logout">
-        <statement label="TSC Logout">
-          <cmd>logout</cmd>
+        <statement
+          format="logout">
         </statement>
       </session>
       <session id="request" label="Start TCP Status Request">
-        <statement>
-          <cmd>config 1A1011</cmd>
+        <statement
+          format="config 1A1011">
         </statement>
       </session>
       <session id="startup" label="Start Up CIAX operation">
-        <statement label="TSC Login">
-          <cmd>login</cmd>
+        <statement
+          format="login">
         </statement>
-        <statement label="TSC Only Mode(CIAX Mode)">
-          <cmd>config 1A1008TSCONLY</cmd>
+        <statement label="TSC Only Mode(CIAX Mode)"
+          format="config 1A1008TSCONLY">
         </statement>
       </session>
       <session id="shutdown" label="Shutdown CIAX operation">
-        <statement label="TSC Primaly Mode">
-          <cmd>config 1A1008TSCPRI%</cmd>
+        <statement label="TSC Primaly Mode"
+          format="config 1A1008TSCPRI%">
         </statement>
-        <statement label="TSC Logout">
-          <cmd>logout</cmd>
+        <statement
+          format="logout">
         </statement>
       </session>
       <session id="moircs" label="Set IID MOIRCS">
-        <statement>
-          <cmd>setinst 12</cmd>
+        <statement
+          format="setinst 12">
         </statement>
       </session>
       <session id="focas" label="Set IID FOCAS">
-        <statement>
-          <cmd>setinst 5</cmd>
+        <statement
+          format="setinst 5">
         </statement>
       </session>
       <session id="comics" label="Set IID COMICS">
-        <statement>
-          <cmd>setinst 7</cmd>
+        <statement
+          format="setinst 7">
         </statement>
       </session>
     </selection>

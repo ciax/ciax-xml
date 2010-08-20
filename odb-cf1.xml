@@ -3,8 +3,8 @@
   <object client="socat - tcp:ltt-i:4003" device="k3n" id="cf1" label="S1 Helium Compressor Coolant Flow" server="socat - udp-l:45601,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement>
-          <cmd>getstat</cmd>
+        <statement
+          format="getstat">
         </statement>
       </session>
     </selection>

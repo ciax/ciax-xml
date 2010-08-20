@@ -77,16 +77,11 @@ class Obj < Hash
     cmd=''
     argv=[]
     e.each_element{|d|
-      case d.name
-      when 'cmd'
-        cmd=d.text
-      when 'par'
-        str=eval(substitute(subnum(d.text)))
-        @v.msg{"CMD:Evaluated [#{str}]"}
-        argv << str
-      end
+      str=eval(substitute(subnum(d.text)))
+      @v.msg{"CMD:Evaluated [#{str}]"}
+      argv << str
     }
-    cmd = cmd % argv if argv.size > 0
+    cmd = e.attributes['format'] % argv
     @v.msg{"Exec(DDB):[#{cmd}]"}
     cmd
   end

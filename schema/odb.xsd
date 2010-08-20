@@ -62,13 +62,12 @@
   <xsd:element name="statement">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element minOccurs="1" maxOccurs="1" ref="cx:cmd" />
         <xsd:element ref="cx:par" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+      <xsd:attribute name="format" type="xsd:string" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="cmd" type="xsd:string"></xsd:element>
   <xsd:element name="par" type="xsd:string"></xsd:element>
   <!--status-->
   <xsd:element name="status">

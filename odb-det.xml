@@ -3,68 +3,68 @@
   <object client="socat - tcp:ltc-c:4001" device="srm" id="det" label="CsEtr Controller" server="socat - udp-l:25104,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement>
-          <cmd>getstat</cmd>
+        <statement
+          format="getstat">
         </statement>
       </session>
       <session id="c3on" label="CIAX3 POWER ON">
-        <statement label="Bit 0 on">
-          <cmd>fset 5</cmd>
+        <statement label="Bit 0 on"
+          format="fset 5">
         </statement>
       </session>
       <session id="c3off" label="CIAX3 POWER OFF">
-        <statement label="Bit 0 OFF">
-          <cmd>fset 4</cmd>
+        <statement label="Bit 0 OFF"
+          format="fset 4">
         </statement>
       </session>
       <session id="emon" label="CIAX3 EMERGENCY ON">
-        <statement label="Bit 1 ON">
-          <cmd>fset 50</cmd>
+        <statement label="Bit 1 ON"
+          format="fset 50">
         </statement>
       </session>
       <session id="emoff" label="CIAX3 EMERGENCY OFF">
-        <statement label="Bit 1 OFF">
-          <cmd>fset 40</cmd>
+        <statement label="Bit 1 OFF"
+          format="fset 40">
         </statement>
       </session>
       <session id="ccdon" label="CS CCD ON">
-        <statement label="Bit 2 ON">
-          <cmd>fset 500</cmd>
+        <statement label="Bit 2 ON"
+          format="fset 500">
         </statement>
       </session>
       <session id="ccdoff" label="CS CCD OFF">
-        <statement label="Bit 2 OFF">
-          <cmd>fset 400</cmd>
+        <statement label="Bit 2 OFF"
+          format="fset 400">
         </statement>
       </session>
       <session id="lanon" label="CS LAN ON">
-        <statement label="Bit 3 ON">
-          <cmd>fset 5000</cmd>
+        <statement label="Bit 3 ON"
+          format="fset 5000">
         </statement>
       </session>
       <session id="lanoff" label="CS LAN OFF">
-        <statement label="Bit 3 OFF">
-          <cmd>fset 4000</cmd>
+        <statement label="Bit 3 OFF"
+          format="fset 4000">
         </statement>
       </session>
       <session id="ipwon" label="CS IPW ON">
-        <statement label="Bit 4 ON">
-          <cmd>fset 50000</cmd>
+        <statement label="Bit 4 ON"
+          format="fset 50000">
         </statement>
       </session>
       <session id="ipwoff" label="CS IPW OFF">
-        <statement label="Bit 4 OFF">
-          <cmd>fset 40000</cmd>
+        <statement label="Bit 4 OFF"
+          format="fset 40000">
         </statement>
       </session>
       <session id="ston" label="STOW PIN ON">
-        <statement label="Bit 5 ON">
-          <cmd>fset 500000</cmd>
+        <statement label="Bit 5 ON"
+          format="fset 500000">
         </statement>
       </session>
       <session id="stoff" label="STOW PIN OFF">
-        <statement label="Bit 5 OFF">
-          <cmd>fset 400000</cmd>
+        <statement label="Bit 5 OFF"
+          format="fset 400000">
         </statement>
       </session>
     </selection>

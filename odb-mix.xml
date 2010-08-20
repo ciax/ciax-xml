@@ -3,31 +3,28 @@
   <object client="socat - tcp:celaeno:4007" device="ixe" id="mix" label="MOIRCS Turret" server="socat - udp-l:24107,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
+        <statement format="getstat"></statement>
         <repeat range="1:6">
-          <statement>
-            <cmd>chkr %d</cmd>
+          <statement format="chkr %d">
             <par>$_</par>
           </statement>
-          <statement>
-            <cmd>getp %d</cmd>
+          <statement format="getp %d">
             <par>$_</par>
           </statement>
         </repeat>
       </session>
       <session id="resume" label="Resume Pulses">
         <repeat range="1:6">
-          <statement>
-            <cmd>setp $_ ${field:p$_}</cmd>
+          <statement format="setp %d %d">
+            <par>$_</par>
+            <par>${field:p$_}</par>
           </statement>
         </repeat>
       </session>
       <session id="set0" label="Set 0 Pulses">
         <repeat range="1:6">
-          <statement>
-            <cmd>setp $_ 0</cmd>
+          <statement format="setp %d 0">
+            <par>$_</par>
           </statement>
         </repeat>
       </session>

@@ -16,52 +16,32 @@
       <session id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
       <session id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
       <session id="caon" label="CAS BOTH HC ON">
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
-        <statement>
-          <cmd>output %d</cmd>
+        <statement format="getstat"></statement>
+        <statement format="output %d">
           <par>${field:stat} | 0x0011</par>
         </statement>
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
+        <statement format="getstat"></statement>
       </session>
       <session id="caoff" label="CAS BOTH HC OFF">
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
-        <statement>
-          <cmd>output %d</cmd>
+        <statement format="getstat"></statement>
+        <statement format="output %d">
           <par>${field:stat} &amp; 0xffee</par>
         </statement>
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
+        <statement format="getstat"></statement>
       </session>
       <session id="maon" label="MOIRCS BOTH ON">
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
-        <statement>
-          <cmd>output %d</cmd>
+        <statement format="getstat"></statement>
+        <statement format="output %d">
           <par>${field:stat} | 0x1100</par>
         </statement>
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
+        <statement format="getstat"></statement>
       </session>
       <session id="maoff" label="MOIRCS BOTH OFF">
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
-        <statement>
-          <cmd>output %d</cmd>
+        <statement format="getstat"></statement>
+        <statement format="output %d">
           <par>${field:stat} &amp; 0xeeff</par>
         </statement>
-        <statement>
-          <cmd>getstat</cmd>
-        </statement>
+        <statement format="getstat"></statement>
       </session>
     </selection>
     <status>

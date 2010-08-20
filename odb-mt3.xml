@@ -3,11 +3,11 @@
   <object client="socat - tcp:celaeno:4011" device="tpg" id="mt3" label="MOIRCS Pressure Pump" server="socat - udp-l:24111,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement>
-          <cmd>reqstat</cmd>
+        <statement
+          format="reqstat">
         </statement>
-        <statement>
-          <cmd>getstat</cmd>
+        <statement
+          format="getstat">
         </statement>
       </session>
     </selection>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="shift_jis"?>
-<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cx="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:odb="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:element name="odb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:object" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="odb:object" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -15,11 +15,11 @@
   <xsd:element name="object">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:selection" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="cx:status" minOccurs="1" maxOccurs="1" />
-        <xsd:element ref="cx:symbols" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="odb:selection" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="odb:status" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="odb:symbols" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
-      <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
+      <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="device" type="xsd:string" use="required" />
       <xsd:attribute name="client" type="xsd:string"></xsd:attribute>
       <xsd:attribute name="server" type="xsd:string" />
@@ -29,8 +29,8 @@
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cx:statement" />
-        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cx:var" />
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="odb:statement" />
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="odb:var" />
       </xsd:choice>
       <xsd:attribute name="range" use="required">
         <xsd:simpleType>
@@ -46,23 +46,23 @@
   <xsd:element name="selection">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:session" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="odb:session" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="session">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:statement" />
-        <xsd:element ref="cx:repeat" />
+        <xsd:element ref="odb:statement" />
+        <xsd:element ref="odb:repeat" />
       </xsd:choice>
-      <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
+      <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="statement">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:par" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="odb:par" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
       <xsd:attribute name="format" type="xsd:string" use="required"></xsd:attribute>
@@ -73,8 +73,8 @@
   <xsd:element name="status">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="cx:var" />
-        <xsd:element ref="cx:repeat" />
+        <xsd:element ref="odb:var" />
+        <xsd:element ref="odb:repeat" />
       </xsd:choice>
       <xsd:attribute name="ref" type="xsd:string" use="optional" />
     </xsd:complexType>
@@ -82,12 +82,12 @@
   <xsd:element name="var">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cx:string" />
-        <xsd:element ref="cx:binary" />
-        <xsd:element ref="cx:float" />
-        <xsd:element ref="cx:int" />
+        <xsd:element ref="odb:string" />
+        <xsd:element ref="odb:binary" />
+        <xsd:element ref="odb:float" />
+        <xsd:element ref="odb:int" />
       </xsd:choice>
-      <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
+      <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="symbol" type="xsd:string" />
       <xsd:attribute name="trail" type="xsd:boolean" />
     </xsd:complexType>
@@ -128,7 +128,7 @@
   <xsd:element name="symbols">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cx:symbol" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="odb:symbol" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -137,10 +137,10 @@
       <xsd:complexContent>
         <xsd:restriction base="xsd:anyType">
           <xsd:choice minOccurs="0">
-            <xsd:element ref="cx:case" minOccurs="1" maxOccurs="unbounded" />
-            <xsd:element ref="cx:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+            <xsd:element ref="odb:case" minOccurs="1" maxOccurs="unbounded" />
+            <xsd:element ref="odb:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
           </xsd:choice>
-          <xsd:attributeGroup ref="cx:id_attr"></xsd:attributeGroup>
+          <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
           <xsd:attribute name="type">
             <xsd:simpleType>
               <xsd:restriction base="xsd:string">
@@ -171,7 +171,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="cx:symbol_attr" />
+          <xsd:attributeGroup ref="odb:symbol_attr" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -179,8 +179,8 @@
   <xsd:element name="range">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="cx:rerange">
-          <xsd:attributeGroup ref="cx:symbol_attr" />
+        <xsd:extension base="odb:rerange">
+          <xsd:attributeGroup ref="odb:symbol_attr" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

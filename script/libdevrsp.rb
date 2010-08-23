@@ -15,9 +15,9 @@ class DevRsp
   def rspframe(sel)
     @var[:sel]=sel || @v.err("No Selection")
     @frame=yield || @v.err("No String")
-    if tm=attr(@ddb['rspframe'],'terminator')
-      @frame.chomp!(tm)
-      @v.msg{"Remove terminator:[#{@frame}]" }
+    if tm=@ddb['rspframe'].attributes['terminator']
+      @frame.chomp!(esc(tm))
+      @v.msg{"Remove terminator:[#{@frame}] by [#{tm}]" }
     end
     fld=Hash.new
     setframe(@ddb['rspframe'],fld)
@@ -77,7 +77,7 @@ class DevRsp
         fld[key]=data
         @v.msg{"Assign:[#{key}]<-[#{fld[key]}]"}
       when 'verify'
-        if txt=text(d)
+        if txt=d.text
           @v.msg{"Verify:[#{txt}]"}
           txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
         end

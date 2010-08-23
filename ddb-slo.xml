@@ -54,7 +54,7 @@
     </cmdselect>
     <cmdframe>
       <selected />
-      <data>\r</data>
+      <data encode="chr">0xd</data>
     </cmdframe>
     <rspselect>
       <response id="bs">
@@ -88,12 +88,8 @@
         </field>
       </response>
     </rspselect>
-    <rspframe>
+    <rspframe terminator="\r\n">
       <selected />
-      <field>
-        <length>1</length>
-        <verify>\r</verify>
-      </field>
     </rspframe>
   </device>
 </ddb>

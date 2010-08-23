@@ -68,7 +68,7 @@
     </cmdselect>
     <cmdframe>
       <selected />
-      <data label="Suffix">\n</data>
+      <data label="Suffix" encode="chr">0xa</data>
     </cmdframe>
     <rspselect>
       <response id="getstat">
@@ -144,9 +144,9 @@
           <length>4</length>
           <assign>cjh</assign>
         </field>
-        <field>
+        <field decode="chr">
           <length>1</length>
-          <verify>\n</verify>
+          <verify>10</verify>
         </field>
         <repeat range="1:16" format="%02d">
           <field label="Bolt Position(POWER_V2)">
@@ -157,9 +157,9 @@
             <length>6</length>
           </field>
         </repeat>
-        <field>
+        <field decode="chr">
           <length>1</length>
-          <verify>\n</verify>
+          <verify>10</verify>
         </field>
         <repeat range="1:4">
           <field>

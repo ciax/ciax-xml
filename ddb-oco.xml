@@ -14,7 +14,7 @@
     <cmdframe>
       <data label="Prefix">$</data>
       <selected></selected>
-      <data label="Suffix">\r</data>
+      <data label="Suffix" encode="chr">0xd</data>
     </cmdframe>
     <rspselect>
       <response id="getstat">

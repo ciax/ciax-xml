@@ -78,7 +78,7 @@ module ModXml
     str=str.gsub(/\$_/,@n) if @n
     str=subpar(str)
     @v.msg("Substutited to [#{str}]")
-    esc(str)
+    str
   end
 
   def subpar(str) # Sub $1 by @par[1]
@@ -89,15 +89,8 @@ module ModXml
     str
   end
 
-  def esc(str)
+  def esc(str) # convert escape char (i.e. "\n"..)
     eval('"'+str+'"') if str
   end
 
-  def text(e) # convert escape char (i.e. "\n"..)
-    esc(e.text)
-  end
-
-  def attr(e,attr) # convert escape char (i.e. "\n"..)
-    esc(e.attributes[attr])
-  end
 end

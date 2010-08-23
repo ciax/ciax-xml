@@ -23,10 +23,7 @@
 
  \?
     description : convert escape characters
-    usable: ddb//cmdselect/command/data
-            ddb//cmdframe/data
-            ddb//rspframe@terminator
-            ddb//verify
+    usable: ddb//rspframe@terminator
 
 ### Explicit conversion by Attributes ###
 

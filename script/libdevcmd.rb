@@ -34,7 +34,7 @@ class DevCmd
       label=c.attributes['label']
       case c.name
       when 'data'
-        frame << encode(c,text(c))
+        frame << encode(c,c.text)
         @v.msg{"GetFrame:#{label}[#{c.text}]"}
       when 'selected'
         @v.msg{"Entering Selected Node"}

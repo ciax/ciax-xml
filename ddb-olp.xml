@@ -10,7 +10,7 @@
     <cmdframe>
       <data label="Prefix">*</data>
       <selected></selected>
-      <data label="Suffix">\r</data>
+      <data label="Suffix" encode="chr">0xd</data>
     </cmdframe>
     <rspselect>
       <response id="getstat">
@@ -20,16 +20,12 @@
         </field>
       </response>
     </rspselect>
-    <rspframe>
+    <rspframe terminator="\r">
       <field label="Prefix">
         <length>1</length>
         <verify>*</verify>
       </field>
       <selected></selected>
-      <field>
-        <length>1</length>
-        <verify>\r</verify>
-      </field>
     </rspframe>
   </device>
 </ddb>

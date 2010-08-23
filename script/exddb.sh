@@ -7,9 +7,12 @@ for obj in $devices; do
     dev=$(lookup $obj dev) || _usage_key
     echo "#### $dev($obj) ####"
     input="$HOME/.var/device_${obj}_2010.log"
+    output="$HOME/.var/field_${obj}.mar"
+    link="$HOME/.var/field_${dev}.mar"
     cmd=$defcmd
     if [ $dev = slo ] ; then cmd=bs; fi
     str="`devcmd $dev $cmd`" || exit 1
     echo "$str" | visi
     grep "rcv:${cmd// /:}" $input|tail -1| devstat $dev $cmd|mar
+    ln -sf $output $link
 done

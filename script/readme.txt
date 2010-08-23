@@ -31,7 +31,8 @@
 ### Explicit conversion by Attributes ###
 
  format
-    usable: ddb//cmdselect/command/par
+    usable: ddb//cmdselect/command/data
+            ddb//cmdselect/command/par
             ddb//cmdframe/cc
             ddb//response/repeat
             --

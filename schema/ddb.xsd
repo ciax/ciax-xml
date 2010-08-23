@@ -116,6 +116,7 @@
   <xsd:attributeGroup name="cmd_attr">
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="encode" type="ddb:codec"></xsd:attribute>
+    <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
   </xsd:attributeGroup>
   <xsd:group name="cmd_elem">
     <xsd:choice>

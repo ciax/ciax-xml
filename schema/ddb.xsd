@@ -194,11 +194,11 @@
         <xsd:group ref="ddb:cmd_elem" />
         <xsd:element ref="ddb:selected" />
         <xsd:element ref="ddb:ccrange" />
-        <xsd:element ref="ddb:cc_cmd" />
+        <xsd:element ref="ddb:cc" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="cc_cmd">
+  <xsd:element name="cc">
     <xsd:complexType>
       <xsd:attributeGroup ref="ddb:cmd_attr" />
     </xsd:complexType>

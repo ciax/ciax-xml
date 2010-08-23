@@ -29,7 +29,7 @@
 
  format
     usable: ddb//command/par
-            ddb//cmdframe/cc_cmd
+            ddb//cmdframe/cc
             ddb//response/repeat
             ddb//response/field
             odb//statement
@@ -41,6 +41,6 @@
  encode
     usable: ddb//command/data
             ddb//command/par
-            ddb//cmdframe/cc_cmd
+            ddb//cmdframe/cc
  validate
  

@@ -48,7 +48,7 @@ class DevCmd
       when 'ccrange'
         frame << @var[:ccrange]
         @v.msg{"GetFrame:(ccrange)[#{@var[:ccrange]}]"}
-      when 'cc_cmd'
+      when 'cc'
         frame << encode(c,@var[:cc])
         @v.msg{"GetFrame:#{label}(cc)[#{@var[:cc]}"}
       when 'ref'

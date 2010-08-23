@@ -25,7 +25,7 @@
     </cmdccrange>
     <cmdframe>
       <ccrange></ccrange>
-      <cc_cmd format="%02X" />
+      <cc format="%02X" />
       <data label="Suffix">*</data>
       <data label="Delimiter" encode="chr">0xd</data>
     </cmdframe>

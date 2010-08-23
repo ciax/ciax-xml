@@ -72,7 +72,7 @@
       <data label="Q Header: PC Number" encode="chr">0xFF</data>
       <data label="Q Header: Request Unit I/O Number" encode="lew">0x3FF</data>
       <data label="Q Header: Request Unit Station Number" encode="chr">0</data>
-      <cc_cmd label="Q Header: Send Data Length MSB" encode="chr" />
+      <cc label="Q Header: Send Data Length MSB" encode="chr" />
       <data label="Q Header: Send Data Length LSB" encode="chr">0</data>
       <ccrange></ccrange>
     </cmdframe>

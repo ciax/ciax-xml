@@ -28,7 +28,7 @@ module ModXml
       @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{str}]"}
       code=str
     end
-    return format(e,code)
+    return code.to_s
   end
 
   def encode(e,str)
@@ -38,7 +38,7 @@ module ModXml
       @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
       str=code
     end
-    format(e,str)
+    str
   end
 
   def validate(e,str)

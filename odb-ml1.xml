@@ -3,15 +3,9 @@
   <object client="socat - tcp:celaeno:4005" device="lk8" id="ml1" label="MOIRCS Pressure Pump" server="socat - udp-l:24105,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="htrstat">
-        </statement>
-        <statement
-          format="spstat">
-        </statement>
+        <statement format="getstat"></statement>
+        <statement format="htrstat"></statement>
+        <statement format="spstat"></statement>
       </session>
     </selection>
     <status>

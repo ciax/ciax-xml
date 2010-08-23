@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="shift_jis"?>
-<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:odb="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:odb="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:element name="odb">
     <xsd:complexType>
       <xsd:sequence>

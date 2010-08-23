@@ -9,7 +9,7 @@ for obj in $devices; do
     input="$HOME/.var/device_${obj}_2010.log"
     cmd=$defcmd
     if [ $dev = slo ] ; then cmd=bs; fi
-    str=`devcmd $dev $cmd` || exit 1
+    str="`devcmd $dev $cmd`" || exit 1
     echo "$str" | visi
     grep "rcv:${cmd// /:}" $input|tail -1| devstat $dev $cmd|mar
 done

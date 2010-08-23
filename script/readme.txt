@@ -3,6 +3,7 @@
  $_ 
     description : substitute sequence number(in repeat)
     usable: ddb//response/repeat/field/assign
+            --
             odb//session/repeat/statement/par
             odb//status/repeat/var@id
             odb//status/repeat/var@label
@@ -13,6 +14,7 @@
  $1..9
     description : substitute parameters
     usable: ddb//response/field/assign
+            --
             odb//session/statement/par
 
  ${??}
@@ -21,26 +23,29 @@
 
  \?
     description : convert escape characters
-    usable: ddb//data
+    usable: ddb//cmdselect/command/data
+            ddb//cmdframe/data
             ddb//rspframe@terminator
             ddb//verify
 
 ### Explicit conversion by Attributes ###
 
  format
-    usable: ddb//command/par
+    usable: ddb//cmdselect/command/par
             ddb//cmdframe/cc
             ddb//response/repeat
-            ddb//response/field
+            --
             odb//statement
+            odb//status/int
             odb//status/float
 
  decode
     usable: ddb//response/field
 
  encode
-    usable: ddb//command/data
-            ddb//command/par
+    usable: ddb//cmdselect/command/data
+            ddb//cmdselect/command/par
+            ddb//cmdframe/data
             ddb//cmdframe/cc
  validate
  

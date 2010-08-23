@@ -3,42 +3,25 @@
   <object client="socat - tcp:celaeno:4003" device="slo" id="mma" label="MOIRCS Arm" server="socat - udp-l:24103,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement
-          format="bs">
-        </statement>
-        <statement
-          format="p">
-        </statement>
-        <statement
-          format="err">
-        </statement>
+        <statement format="bs"></statement>
+        <statement format="p"></statement>
+        <statement format="err"></statement>
         <repeat range="1:5">
-          <statement
-            format="in %d">
+          <statement format="in %d">
             <par>$_</par>
           </statement>
         </repeat>
       </session>
       <session id="reset" label="Reset">
-        <statement
-          format="reset">
-        </statement>
+        <statement format="reset"></statement>
       </session>
       <session id="defcon" label="Default Config">
-        <statement
-          format="hl 0">
-        </statement>
-        <statement
-          format="e1 0">
-        </statement>
-        <statement
-          format="e2 0">
-        </statement>
+        <statement format="hl 0"></statement>
+        <statement format="e1 0"></statement>
+        <statement format="e2 0"></statement>
       </session>
       <session id="set0" label="Set 0 Pulses">
-        <statement
-          format="set0">
-        </statement>
+        <statement format="set0"></statement>
       </session>
     </selection>
     <status>

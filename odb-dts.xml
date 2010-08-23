@@ -3,70 +3,38 @@
   <object client="socat - tcp:cxws:9999" device="oss" id="dts" label="TSC Control" server="socat - udp-l:25105,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="iststat">
-        </statement>
-        <statement
-          format="jakstat">
-        </statement>
-        <statement
-          format="inrstat">
-        </statement>
-        <statement
-          format="logstat">
-        </statement>
-        <statement
-          format="getexit">
-        </statement>
+        <statement format="getstat" />
+        <statement format="iststat" />
+        <statement format="jakstat" />
+        <statement format="inrstat" />
+        <statement format="logstat" />
+        <statement format="getexit" />
       </session>
       <session id="login" label="Login">
-        <statement
-          format="login">
-        </statement>
+        <statement format="login" />
       </session>
       <session id="logout" label="Logout">
-        <statement
-          format="logout">
-        </statement>
+        <statement format="logout" />
       </session>
       <session id="request" label="Start TCP Status Request">
-        <statement
-          format="config 1A1011">
-        </statement>
+        <statement format="config 1A1011" />
       </session>
       <session id="startup" label="Start Up CIAX operation">
-        <statement
-          format="login">
-        </statement>
-        <statement label="TSC Only Mode(CIAX Mode)"
-          format="config 1A1008TSCONLY">
-        </statement>
+        <statement format="login" />
+        <statement label="TSC Only Mode(CIAX Mode)" format="config 1A1008TSCONLY" />
       </session>
       <session id="shutdown" label="Shutdown CIAX operation">
-        <statement label="TSC Primaly Mode"
-          format="config 1A1008TSCPRI%">
-        </statement>
-        <statement
-          format="logout">
-        </statement>
+        <statement label="TSC Primaly Mode" format="config 1A1008TSCPRI%" />
+        <statement format="logout" />
       </session>
       <session id="moircs" label="Set IID MOIRCS">
-        <statement
-          format="setinst 12">
-        </statement>
+        <statement format="setinst 12" />
       </session>
       <session id="focas" label="Set IID FOCAS">
-        <statement
-          format="setinst 5">
-        </statement>
+        <statement format="setinst 5" />
       </session>
       <session id="comics" label="Set IID COMICS">
-        <statement
-          format="setinst 7">
-        </statement>
+        <statement format="setinst 7" />
       </session>
     </selection>
     <status>
@@ -115,7 +83,7 @@
         <case hl="normal" msg="K3D">10</case>
         <case hl="normal" msg="MOIRCS">12</case>
         <case hl="normal" msg="CIAX3">13</case>
-        <case hl="normal" msg="N/A"></case>
+        <case hl="normal" msg="N/A" />
       </symbol>
       <symbol id="rsel" type="ENUM">
         <case hl="warn" msg="PFO">1</case>
@@ -123,12 +91,12 @@
         <case hl="normal" msg="CAS">4</case>
         <case hl="warn" msg="NSO">8</case>
         <case hl="warn" msg="NSI">10</case>
-        <case hl="alarm" msg="N/A"></case>
+        <case hl="alarm" msg="N/A" />
       </symbol>
       <symbol id="login" type="ENUM">
         <case hl="alarm" msg="OSS Login">OSS</case>
         <case hl="normal" msg="LOGIN">CXWS</case>
-        <case hl="warn" msg="LOGOUT"></case>
+        <case hl="warn" msg="LOGOUT" />
       </symbol>
       <symbol id="rpw" type="ENUM">
         <case hl="warn" msg="ON">1</case>
@@ -138,7 +106,7 @@
         <case hl="normal" msg="OFF">11</case>
         <case hl="normal" msg="0DEG">10</case>
         <case hl="normal" msg="-4DEG">01</case>
-        <case hl="alarm" msg="N/A"></case>
+        <case hl="alarm" msg="N/A" />
       </symbol>
     </symbols>
   </object>

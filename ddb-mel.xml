@@ -94,41 +94,41 @@
       <response id="cmdrsp" label="command resp" />
     </rspselect>
     <rspccrange method="len">
-      <field decode="lew" format="%04X">
+      <field decode="lew">
         <length>2</length>
         <assign>ecode</assign>
-        <verify>0000</verify>
+        <verify>0</verify>
       </field>
       <selected />
     </rspccrange>
     <rspframe>
-      <field label="SubHeader: Prefix" decode="lew" format="%04X">
+      <field label="SubHeader: Prefix" decode="lew">
         <length>2</length>
-        <verify>00D4</verify>
+        <verify>212</verify>
       </field>
       <field label="SubHeader: Serial Number">
         <length>2</length>
         <verify>XX</verify>
       </field>
-      <field label="SubHeader: Fixed Number" decode="lew" format="%04X">
+      <field label="SubHeader: Fixed Number" decode="lew">
         <length>2</length>
-        <verify>0000</verify>
+        <verify>0</verify>
       </field>
-      <field label="Q Header: Network Number" decode="chr" format="%02X">
+      <field label="Q Header: Network Number" decode="chr">
         <length>1</length>
-        <verify>00</verify>
+        <verify>0</verify>
       </field>
-      <field label="Q Header: PC Number" decode="chr" format="%02X">
+      <field label="Q Header: PC Number" decode="chr">
         <length>1</length>
-        <verify>FF</verify>
+        <verify>255</verify>
       </field>
-      <field label="Q Header: Request Unit I/O Number" decode="lew" format="%04X">
+      <field label="Q Header: Request Unit I/O Number" decode="lew">
         <length>2</length>
-        <verify>03FF</verify>
+        <verify>1023</verify>
       </field>
-      <field label="Q Header: Request Unit Station Number" decode="chr" format="%02X">
+      <field label="Q Header: Request Unit Station Number" decode="chr">
         <length>1</length>
-        <verify>00</verify>
+        <verify>0</verify>
       </field>
       <field label="Response Data Length" decode="lew">
         <length>2</length>

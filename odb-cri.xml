@@ -3,105 +3,63 @@
   <object client="socat - tcp:ltc-i:4003" device="bbe" id="cri" label="IR Compressor Room Reserve" server="socat - udp-l:25107,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
       <session id="x0on" label="X0 ON">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="output %d">
+        <statement format="getstat" />
+        <statement format="output %d">
           <par>${field:stat} | 0x01</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
       <session id="x0off" label="X0 OFF">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="output %d">
+        <statement format="getstat" />
+        <statement format="output %d">
           <par>${field:stat} &amp; 0xfffe</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
       <session id="x1on" label="X1 ON">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="output %d">
+        <statement format="getstat" />
+        <statement format="output %d">
           <par>${field:stat} | 0x10</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
       <session id="x1off" label="X1 OFF">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="output %d">
+        <statement format="getstat" />
+        <statement format="output %d">
           <par>${field:stat} &amp; 0xffef</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
       <session id="x2on" label="X2 ON">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="output %d">
+        <statement format="getstat" />
+        <statement format="output %d">
           <par>${field:stat} | 0x100</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
       <session id="x2off" label="X2 OFF">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="output %d">
+        <statement format="getstat" />
+        <statement format="output %d">
           <par>${field:stat} &amp; 0xfeff</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
       <session id="x3on" label="X3 ON">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="output %d">
+        <statement format="getstat" />
+        <statement format="output %d">
           <par>${field:stat} | 0x1000</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
       <session id="x3off" label="X3 OFF">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="output %d">
+        <statement format="getstat" />
+        <statement format="output %d">
           <par>${field:stat} &amp; 0xefff</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat" />
       </session>
     </selection>
     <status>

@@ -3,62 +3,40 @@
   <object client="socat - udp:cart3:5000" device="mel" id="crt" label="Cart PLC" server="socat - udp-l:25101,reuseaddr,fork">
     <selection>
       <session id="upd" label="Regular status update">
-        <statement
-          format="getstat">
-        </statement>
-        <statement
-          format="chken">
-        </statement>
+        <statement format="getstat"></statement>
+        <statement format="chken"></statement>
       </session>
       <session id="start_run" label="Running Start">
-        <statement
-          format="start 1">
-        </statement>
+        <statement format="start 1"></statement>
       </session>
       <session id="start_jak" label="Jacking Start">
-        <statement
-          format="start 0x100">
-        </statement>
+        <statement format="start 0x100"></statement>
       </session>
       <session id="clear_trg" label="Jacking Start">
-        <statement
-          format="clear">
-        </statement>
+        <statement format="clear"></statement>
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
-        <statement
-          format="set_tag 98">
-        </statement>
+        <statement format="set_tag 98"></statement>
       </session>
       <session id="set_run1" label="Run to Tag 1">
-        <statement
-          format="set_tag 1">
-        </statement>
+        <statement format="set_tag 1"></statement>
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
-        <statement
-          format="set_pos 2">
-        </statement>
+        <statement format="set_pos 2"></statement>
       </session>
       <session id="pause" label="Pause">
-        <statement
-          format="stop 1">
-        </statement>
+        <statement format="stop 1"></statement>
       </session>
       <session id="emstop" label="Emergency Stop">
-        <statement
-          format="stop 2">
-        </statement>
+        <statement format="stop 2"></statement>
       </session>
       <session id="resume" label="Resume from Pause">
-        <statement
-          format="clear">
-        </statement>
+        <statement format="clear"></statement>
       </session>
     </selection>
     <status>
       <var id="ecode" label="EXIT CODE" symbol="ecode" trail="true">
-        <int field="ecode" />
+        <int field="ecode" format="%04X" />
       </var>
       <var id="rdy" label="READY" symbol="normal" trail="true">
         <binary bit="0" field="x00" />

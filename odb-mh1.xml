@@ -3,41 +3,25 @@
   <object client="socat - tcp:merope:59999" device="psp" id="mh1" label="MOIRCS Ext Heater 1" server="socat - udp-l:24201,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat"></statement>
       </session>
       <session id="setlmt" label="Set Limit 20V/5A/100W">
-        <statement
-          format="setvl 20">
-        </statement>
-        <statement
-          format="setal 5">
-        </statement>
-        <statement
-          format="setpl 100">
-        </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="setvl 20"></statement>
+        <statement format="setal 5"></statement>
+        <statement format="setpl 100"></statement>
+        <statement format="getstat"></statement>
       </session>
       <session id="setv" label="Set Voltage 0-50[V]">
-        <statement
-          format="setv %f">
+        <statement format="setv %f">
           <par>$1</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat"></statement>
       </session>
       <session id="setp" label="Set Power 0-100[W]">
-        <statement
-          format="setv %5.2f">
+        <statement format="setv %5.2f">
           <par>Math.sqrt($1*26)</par>
         </statement>
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat"></statement>
       </session>
     </selection>
     <status>

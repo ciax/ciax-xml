@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # XML Common Method
-require 'libnumrange'
+require 'librerange'
 module ModXml
   def checkcode(e,frame)
     chk=0
@@ -50,7 +50,7 @@ module ModXml
       when 'regexp'
         return(str) if /^#{d.text}$/ === str
       when 'rerange'
-        return(str) if NumRange.new(d.text) === str
+        return(str) if ReRange.new(d.text) === str
       end
     }
     @v.err("Parameter invalid(#{str})")

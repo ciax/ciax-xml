@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-class NumRange
+class ReRange
   include Comparable
   # Range format "X","X:Y","X<:Y","X:<Y","X<:",":Y"
   def initialize(str)

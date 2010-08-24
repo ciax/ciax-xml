@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libxmldoc"
 require "libverbose"
-require "libnumrange"
+require "librerange"
 require "libmodxml"
 require "libiofile"
 
@@ -182,7 +182,7 @@ class Obj < Hash
       txt=enum.text
       case enum.name
       when 'range'
-        next if NumRange.new(txt) != set['val']
+        next if ReRange.new(txt) != set['val']
         # @v.msg{"STAT:Symbol:Within([#{txt}] =~ [#{set['val']}])"}
       when 'case'
         # No text is default

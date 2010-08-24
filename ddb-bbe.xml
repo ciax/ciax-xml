@@ -13,7 +13,7 @@
       <command id="output" label="OUTPUT [DDDDD]" type="action">
         <data>SO</data>
         <par encode="bew">
-          <rerange>0:65535</rerange>
+          <range>0:65535</range>
         </par>
       </command>
     </cmdselect>

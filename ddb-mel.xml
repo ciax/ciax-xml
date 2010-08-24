@@ -23,9 +23,9 @@
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
         <par label="Data" encode="lew">
-          <rerange>1:12</rerange>
-          <rerange>98</rerange>
-          <rerange>99</rerange>
+          <range>1:12</range>
+          <range>98</range>
+          <range>99</range>
         </par>
       </command>
       <command id="set_pos" label="Set Pos to Jack (1-4)" type="config" response="cmdrsp">
@@ -35,11 +35,11 @@
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
         <par label="Data" encode="lew">
-          <rerange>1</rerange>
-          <rerange>2</rerange>
-          <rerange>4</rerange>
-          <rerange>8</rerange>
-          <rerange>16</rerange>
+          <range>1</range>
+          <range>2</range>
+          <range>4</range>
+          <range>8</range>
+          <range>16</range>
         </par>
       </command>
       <command id="start" label="Start Trigger [HHHH]" type="action" response="cmdrsp">
@@ -59,7 +59,7 @@
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
         <par label="Data" encode="lew">
-          <rerange>0:65535</rerange>
+          <range>0:65535</range>
         </par>
       </command>
       <command id="clear" label="Clear Action Flags" type="config" response="cmdrsp">

@@ -9,7 +9,7 @@
       <command id="in" label="Input Status (1-5)" response="in" type="stat">
         <data>in</data>
         <par format="(%d)">
-          <rerange>1:5</rerange>
+          <range>1:5</range>
         </par>
       </command>
       <command id="err" label="Error Status" response="err" type="stat">

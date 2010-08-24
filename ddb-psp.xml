@@ -9,25 +9,25 @@
       <command id="setvl" type="config" label="Set Voltage Limit [DD]">
         <data>SU </data>
         <par format="%02d">
-          <rerange>0:20</rerange>
+          <range>0:20</range>
         </par>
       </command>
       <command id="setal" type="config" label="Set Current Limit [D.DD]">
         <data>SI </data>
         <par format="%04.2f">
-          <rerange>0:&lt;10</rerange>
+          <range>0:&lt;10</range>
         </par>
       </command>
       <command id="setpl" type="config" label="Set Power Limit [DDD]">
         <data>SP </data>
         <par format="%03d">
-          <rerange>0:&lt;200</rerange>
+          <range>0:&lt;200</range>
         </par>
       </command>
       <command id="setv" type="config" label="Set Voltage [DD.DD]">
         <data>SV </data>
         <par format="%05.2f">
-          <rerange>0:&lt;100</rerange>
+          <range>0:&lt;100</range>
         </par>
       </command>
       <command id="pon" type="action" label="OUTPUT ON">

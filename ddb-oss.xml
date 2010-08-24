@@ -54,7 +54,7 @@
         <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
         <data>13200700</data>
         <par label="Inst ID" format="%02d">
-          <rerange>1:12</rerange>
+          <range>1:12</range>
         </par>
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>

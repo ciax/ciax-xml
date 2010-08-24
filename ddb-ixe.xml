@@ -8,23 +8,23 @@
       </command>
       <command id="chkr" label="Check Run (1-6)" response="chkr" type="stat">
         <par>
-          <rerange>1:6</rerange>
+          <range>1:6</range>
         </par>
         <data>=H</data>
       </command>
       <command id="getp" label="Get pulse (1-6)" response="getp" type="stat">
         <par>
-          <rerange>1:6</rerange>
+          <range>1:6</range>
         </par>
         <data>P21R</data>
       </command>
       <command id="setp" label="Set pulse (1-6) (0-19200)" response="default" type="config">
         <par>
-          <rerange>1:6</rerange>
+          <range>1:6</range>
         </par>
         <data>P21S</data>
         <par>
-          <rerange>0:19200</rerange>
+          <range>0:19200</range>
         </par>
       </command>
     </cmdselect>

@@ -113,6 +113,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:element name="regexp" type="xsd:string" />
+  <xsd:element name="range" type="ddb:rerange"></xsd:element>
   <!--Command Elements-->
   <xsd:attributeGroup name="cmd_attr">
     <xsd:attribute name="label" type="xsd:string" />
@@ -134,11 +135,10 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="rerange" type="ddb:rerange"></xsd:element>
   <xsd:element name="par">
     <xsd:complexType>
       <xsd:choice minOccurs="0">
-        <xsd:element ref="ddb:rerange" maxOccurs="unbounded" />
+        <xsd:element ref="ddb:range" maxOccurs="unbounded" />
         <xsd:element ref="ddb:regexp" />
       </xsd:choice>
       <xsd:attributeGroup ref="ddb:cmd_attr" />

@@ -49,8 +49,8 @@ module ModXml
       case d.name
       when 'regexp'
         return(str) if /^#{d.text}$/ === str
-      when 'rerange'
-        return(str) if ReRange.new(d.text) === str
+      when 'range'
+        return(str) if ReRange.new(d.text) == str
       end
     }
     @v.err("Parameter invalid(#{str})")
@@ -89,6 +89,18 @@ module ModXml
       @v.msg("Substutited to [#{str}]")
     end
     str
+  end
+
+  def subvar(str,var)
+    return str unless /\$/ === str
+    h=var.clone
+    # Sub ${id} by hash[id]
+    conv=str.gsub(/\$\{([\w:]+)\}/) {
+      $1.split(':').each {|i| h=h[i] }
+      h
+    }
+    @v.msg{"Substitute [#{str}] to [#{conv}]"}
+    conv
   end
 
   def esc(str) # convert escape char (i.e. "\n"..)

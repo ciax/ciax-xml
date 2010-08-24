@@ -77,7 +77,7 @@ class Obj < Hash
     cmd=''
     argv=[]
     e.each_element{|d|
-      str=eval(substitute(subnum(d.text)))
+      str=eval(subvar(subnum(d.text),self))
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }
@@ -86,17 +86,6 @@ class Obj < Hash
     cmd
   end
 
-  def substitute(str)
-    return str unless /\$/ === str
-    h=self.clone
-    # Sub ${id} by hash[id]
-    conv=str.gsub(/\$\{([\w:]+)\}/) {
-      $1.split(':').each {|i| h=h[i] }
-      h
-    }
-    @v.msg{"Substitute [#{str}] to [#{conv}]"}
-    conv
-  end
 
   #Stat Methods
   def get_var(var)

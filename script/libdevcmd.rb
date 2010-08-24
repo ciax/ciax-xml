@@ -51,13 +51,6 @@ class DevCmd
       when 'cc'
         frame << encode(c,@var[:cc])
         @v.msg{"GetFrame:#{label}(cc)[#{@var[:cc]}"}
-      when 'ref'
-        ref=c.attributes['ref']
-        @var[ref] || @v.err("No Reference (#{ref})")
-        str=@var[ref].shift
-        c.each_element {|d| str=validate(d,str)}
-        frame << encode(c,str)
-        @v.msg{"GetFrame:#{label}(#{ref})[#{str}"}
       end
     }
     frame

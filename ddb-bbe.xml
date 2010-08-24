@@ -12,7 +12,9 @@
       </command>
       <command id="output" label="OUTPUT [DDDDD]" type="action">
         <data>SO</data>
-        <par encode="bew" validate="range">0:65535</par>
+        <par encode="bew">
+          <rerange>0:65535</rerange>
+        </par>
       </command>
     </cmdselect>
     <cmdframe>

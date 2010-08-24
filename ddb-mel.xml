@@ -22,7 +22,11 @@
         <data label="Start Address" encode="lew">0x101</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <par label="Data" encode="lew" validate="range">1:12,98,99</par>
+        <par label="Data" encode="lew">
+          <rerange>1:12</rerange>
+          <rerange>98</rerange>
+          <rerange>99</rerange>
+        </par>
       </command>
       <command id="set_pos" label="Set Pos to Jack (1-4)" type="config" response="cmdrsp">
         <data label="Write region command" encode="lew">0x1401</data>
@@ -30,7 +34,13 @@
         <data label="Start Address" encode="lew">0x103</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <par label="Data" encode="lew" validate="range">1,2,4,8,16</par>
+        <par label="Data" encode="lew">
+          <rerange>1</rerange>
+          <rerange>2</rerange>
+          <rerange>4</rerange>
+          <rerange>8</rerange>
+          <rerange>16</rerange>
+        </par>
       </command>
       <command id="start" label="Start Trigger [HHHH]" type="action" response="cmdrsp">
         <data label="Write region command" encode="lew">0x1401</data>
@@ -38,7 +48,9 @@
         <data label="Start Address" encode="lew">0x102</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <par label="Data" encode="lew" validate="range">1,0x100,0x8000</par>
+        <par label="Data" encode="lew">
+          <regexp>(0x)?(1|100|8000)</regexp>
+        </par>
       </command>
       <command id="stop" label="Stop Trigger [HHHH]" type="action" response="cmdrsp">
         <data label="Write region command" encode="lew">0x1401</data>
@@ -46,7 +58,9 @@
         <data label="Start Address" encode="lew">0x100</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <par label="Data" encode="lew" validate="range">0:65535</par>
+        <par label="Data" encode="lew">
+          <rerange>0:65535</rerange>
+        </par>
       </command>
       <command id="clear" label="Clear Action Flags" type="config" response="cmdrsp">
         <data label="Write region command" encode="lew">0x1401</data>

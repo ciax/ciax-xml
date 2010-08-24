@@ -43,16 +43,17 @@ module ModXml
 
   def validate(e,str)
     str || @v.err("No Parameter")
-    @v.msg{"Validate String [#{str}]"}
-    case e.attributes['validate']
-    when 'regexp'
-      /^#{e.text}$/ === str || @v.err("Parameter invalid(#{e.text})")
-    when 'range'
-      e.text.split(',').any? { |s|
-        NumRange.new(s) == str
-      } || @v.err("Parameter out of range(#{e.text} <> #{str})")
-    end
-    str
+    @v.msg{"Validate: String for [#{str}]"}
+    e.each_element {|d|
+      @v.msg{"Validate: Match? [#{d.text}]"}
+      case d.name
+      when 'regexp'
+        return(str) if /^#{d.text}$/ === str
+      when 'rerange'
+        return(str) if NumRange.new(d.text) === str
+      end
+    }
+    @v.err("Parameter invalid(#{str})")
   end
 
   def format(e,code)

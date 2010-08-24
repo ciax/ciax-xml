@@ -30,6 +30,7 @@
  format
     usable: ddb//cmdselect/command/data
             ddb//cmdselect/command/par
+            ddb//cmdframe/data
             ddb//cmdframe/cc
             ddb//response/repeat
             --
@@ -42,7 +43,7 @@
 
  encode
     usable: ddb//cmdselect/command/data
-            ddb//cmdselect/command/par
+            ddb//cmdselect/command/par 
             ddb//cmdframe/data
             ddb//cmdframe/cc
  validate

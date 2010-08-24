@@ -8,7 +8,9 @@
       </command>
       <command id="in" label="Input Status (1-5)" response="in" type="stat">
         <data>in</data>
-        <par format="(%d)" validate="range">1:5</par>
+        <par format="(%d)">
+          <rerange>1:5</rerange>
+        </par>
       </command>
       <command id="err" label="Error Status" response="err" type="stat">
         <data>err</data>
@@ -21,15 +23,21 @@
       </command>
       <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
         <data>hl</data>
-        <par validate="regexp">[01]</par>
+        <par>
+          <regexp>[01]</regexp>
+        </par>
       </command>
       <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
         <data>e1=</data>
-        <par validate="regexp">[01]</par>
+        <par>
+          <regexp>[01]</regexp>
+        </par>
       </command>
       <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
         <data>e2=</data>
-        <par validate="regexp">[01]</par>
+        <par>
+          <regexp>[01]</regexp>
+        </par>
       </command>
       <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
         <data>abspos=0</data>

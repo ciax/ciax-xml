@@ -53,7 +53,9 @@
       <command id="setinst" label="Set Instrument ID [0-12]" type="config" response="exit">
         <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
         <data>13200700</data>
-        <par label="Inst ID" format="%02d" validate="range">1:12</par>
+        <par label="Inst ID" format="%02d">
+          <rerange>1:12</rerange>
+        </par>
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
       <command id="config" label="Execute Config Command [code]" response="exit">

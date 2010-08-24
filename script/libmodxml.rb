@@ -66,8 +66,9 @@ module ModXml
   end
 
   def repeat(e)
-    fmt=e.attributes['format'] || '%d'
-    Range.new(*e.attributes['range'].split(':')).each { |n|
+    a=e.attributes
+    fmt=a['format'] || '%d'
+    Range.new(a['from'],a['to']).each { |n|
       @n=fmt % n
       e.each_element { |d| yield d}
     }

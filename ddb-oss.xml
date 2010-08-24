@@ -122,13 +122,13 @@
           <length>2</length>
           <assign>cjb</assign>
         </field>
-        <repeat range="1:16" format="%02d">
+        <repeat format="%02d" from="1" to="16">
           <field label="Each Bolt Status(POWER_V1)">
             <length>1</length>
             <assign>bl$_</assign>
           </field>
         </repeat>
-        <repeat range="1:16" format="%02d">
+        <repeat format="%02d" from="1" to="16">
           <field label="Each Bolt Alarm(POWER_V1)">
             <length>1</length>
             <assign>be$_</assign>
@@ -150,7 +150,7 @@
           <length>1</length>
           <verify>10</verify>
         </field>
-        <repeat range="1:16" format="%02d">
+        <repeat format="%02d" from="1" to="16">
           <field label="Bolt Position(POWER_V2)">
             <length>6</length>
             <assign>jk$_</assign>
@@ -163,7 +163,7 @@
           <length>1</length>
           <verify>10</verify>
         </field>
-        <repeat range="1:4">
+        <repeat from="1" to="4">
           <field>
             <length>2</length>
           </field>

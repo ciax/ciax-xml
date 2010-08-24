@@ -4,7 +4,7 @@
     <selection>
       <session id="upd" label="Update Status">
         <statement format="getstat"></statement>
-        <repeat range="1:6">
+        <repeat from="1" to="6">
           <statement format="chkr %d">
             <par>$_</par>
           </statement>
@@ -14,7 +14,7 @@
         </repeat>
       </session>
       <session id="resume" label="Resume Pulses">
-        <repeat range="1:6">
+        <repeat from="1" to="6">
           <statement format="setp %d %d">
             <par>$_</par>
             <par>${field:p$_}</par>
@@ -22,7 +22,7 @@
         </repeat>
       </session>
       <session id="set0" label="Set 0 Pulses">
-        <repeat range="1:6">
+        <repeat from="1" to="6">
           <statement format="setp %d 0">
             <par>$_</par>
           </statement>
@@ -54,7 +54,7 @@
       <var id="cmd" label="Computer Mode" symbol="off-warn">
         <binary bit="7" field="stat" />
       </var>
-      <repeat range="1:6">
+      <repeat from="1" to="6">
         <var id="r$_" label="Running $_" trail="true" symbol="normal">
           <string field="r$_" />
         </var>

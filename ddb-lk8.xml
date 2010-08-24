@@ -26,7 +26,7 @@
     </cmdframe>
     <rspselect>
       <response id="getstat">
-        <repeat range="1:8" format="%d">
+        <repeat format="%d" from="1" to="8">
           <field>
             <regexp>[\w\.+-]+</regexp>
             <assign>ch$_</assign>

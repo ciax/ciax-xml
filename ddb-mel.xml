@@ -98,7 +98,7 @@
         </field>
       </response>
       <response id="getstat">
-        <repeat range="0:51" format="%02x">
+        <repeat format="%02x" from="0" to="51">
           <field decode="lew">
             <length>2</length>
             <assign>x$_</assign>

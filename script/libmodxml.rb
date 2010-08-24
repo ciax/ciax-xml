@@ -2,6 +2,8 @@
 # XML Common Method
 require 'librerange'
 module ModXml
+  # Instance variable: @v,@n
+
   def checkcode(e,frame)
     chk=0
     if method=e.attributes['method']
@@ -78,14 +80,14 @@ module ModXml
   def subnum(str) # Sub $_ by num
     str || return
     str=str.gsub(/\$_/,@n) if @n
-    str=subpar(str)
     @v.msg("Substutited to [#{str}]")
     str
   end
 
-  def subpar(str) # Sub $1 by @par[1]
+  def subpar(str,pary) # Sub $1 by pary[1]
+    str && pary || return
     if /\$[\d]/ === str
-      @par.each_with_index{|s,n| str=str.gsub(/\$#{n+1}/,s)}
+      pary.each_with_index{|s,n| str=str.gsub(/\$#{n+1}/,s)}
       @v.msg("Substutited to [#{str}]")
     end
     str

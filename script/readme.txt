@@ -7,9 +7,7 @@
             odb//session/repeat/statement/par
             odb//status/repeat/var@id
             odb//status/repeat/var@label
-            odb//status/repeat/var/int@field
-            odb//status/repeat/var/float@field
-            odb//status/repeat/var/string@field
+            odb//status/repeat/var/*@field
 
  $1..9
     description : substitute parameters
@@ -28,23 +26,21 @@
 ### Explicit conversion by Attributes ###
 
  format
-    usable: ddb//cmdselect/command/data
+    usable: ddb//repeat
+            ddb//data
             ddb//cmdselect/command/par
-            ddb//cmdframe/data
             ddb//cmdframe/cc
-            ddb//response/repeat
             --
+            odb//repeat
             odb//statement
-            odb//status/int
-            odb//status/float
+            odb//status/var/*
 
  decode
     usable: ddb//response/field
 
  encode
-    usable: ddb//cmdselect/command/data
-            ddb//cmdselect/command/par 
-            ddb//cmdframe/data
-            ddb//cmdframe/cc
+    usable: ddb//cmdselect/command/*
+            ddb//cmdframe/*
+
  validate
  

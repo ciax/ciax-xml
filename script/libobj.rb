@@ -73,11 +73,11 @@ class Obj < Hash
   
   private
   #Cmd Method
-  def get_cmd(e)
+  def get_cmd(e) # //statement
     cmd=''
     argv=[]
-    e.each_element{|d|
-      str=eval(subvar(subnum(d.text),self))
+    e.each_element{|d| # //par
+      str=eval(subvar(subpar(subnum(d.text),self),@par))
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }
@@ -88,7 +88,7 @@ class Obj < Hash
 
 
   #Stat Methods
-  def get_var(var)
+  def get_var(var) # //status/var
     a=var.attributes
     id=subnum(a['id'])
     st={'label'=> subnum(a['label']) }

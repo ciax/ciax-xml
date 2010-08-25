@@ -4,6 +4,7 @@ require "libverbose"
 require "librerange"
 require "libmodxml"
 require "libiofile"
+require "libconvstr"
 
 class Obj < Hash
   include ModXml
@@ -28,12 +29,12 @@ class Obj < Hash
     self['field']=Hash.new
     update(@odb)
     @obj=obj
-    @par=Array.new
+    @cs=ConvStr.new(@v,self)
   end
   
   public
   def setcmd(line)
-    cmd,*@par=line.split(' ')
+    cmd,*@cs.par=line.split(' ')
     @session=@odb.select_id('selection',cmd)
     a=@session.attributes
     @v.msg{"Exec(DDB):#{a['label']}"}
@@ -51,7 +52,7 @@ class Obj < Hash
       when 'statement'
         yield(get_cmd(c))
       when 'repeat'
-        repeat(c){|d| yield(get_cmd(d))}
+        @cs.repeat(c){|d| yield(get_cmd(d))}
       end
     }
   end
@@ -64,7 +65,7 @@ class Obj < Hash
       when 'var'
         get_var(var)
       when 'repeat'
-        repeat(var){|d| get_var(d) }
+        @cs.repeat(var){|d| get_var(d) }
       end
     }
     self['stat']['time']['val']=Time.at(self['field']['time'].to_f).to_s
@@ -77,11 +78,15 @@ class Obj < Hash
     cmd=''
     argv=[]
     e.each_element{|d| # //par
-      str=eval(subvar(subpar(subnum(d.text),self),@par))
+      str=@cs.subnum(d.text).subpar.subvar.eval.to_s
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }
-    cmd = e.attributes['format'] % argv
+    begin
+      cmd = e.attributes['format'] % argv
+    rescue
+      @v.err("No Parameter")
+    end
     @v.msg{"Exec(DDB):[#{cmd}]"}
     cmd
   end
@@ -90,8 +95,8 @@ class Obj < Hash
   #Stat Methods
   def get_var(var) # //status/var
     a=var.attributes
-    id=subnum(a['id'])
-    st={'label'=> subnum(a['label']) }
+    id=subnum(a['id']).to_s
+    st={'label'=> @cs.subnum(a['label']).to_s }
     if ref=a['ref']
       @rdb['status'].each_element_with_attribute('id',ref){|e| var=e } ||
         @rdb.list_id('status')
@@ -116,8 +121,8 @@ class Obj < Hash
     val=String.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=subnum(a['field']) || return
-      fld=subnum(self['field'][fld]) || return
+      fld=@cs.subnum(a['field']).to_s || return
+      fld=@cs.subnum(self['field'][fld]).to_s || return
       data=fld.clone
       # @v.msg{"STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]"}
       case dtype.name

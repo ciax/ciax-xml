@@ -8,5 +8,6 @@ for obj in $objects; do
     dev=$(lookup $obj dev) || _usage_key
     file=$HOME/.var/field_$obj.mar
     VER=${VER:-exec} objcmd $obj $cmd $par < $file
+    [ $cmd = 'upd' ] &&
     objstat $obj $file| { [ "$VER" ] && mar || stv; }
 done

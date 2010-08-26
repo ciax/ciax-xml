@@ -67,46 +67,4 @@ module ModXml
     code.to_s
   end
 
-  def repeat(e)
-    a=e.attributes
-    fmt=a['format'] || '%d'
-    Range.new(a['from'],a['to']).each { |n|
-      @n=fmt % n
-      e.each_element { |d| yield d}
-    }
-    @n=nil
-  end
-
-  def subnum(str) # Sub $_ by num
-    str || return
-    str=str.gsub(/\$_/,@n) if @n
-    @v.msg("Substutited to [#{str}]")
-    str
-  end
-
-  def subpar(str,pary) # Sub $1 by pary[1]
-    str && pary || return
-    if /\$[\d]/ === str
-      pary.each_with_index{|s,n| str=str.gsub(/\$#{n+1}/,s)}
-      @v.msg("Substutited to [#{str}]")
-    end
-    str
-  end
-
-  def subvar(str,var)
-    return str unless /\$/ === str
-    h=var.clone
-    # Sub ${id} by hash[id]
-    conv=str.gsub(/\$\{([\w:]+)\}/) {
-      $1.split(':').each {|i| h=h[i] }
-      h
-    }
-    @v.msg{"Substitute [#{str}] to [#{conv}]"}
-    conv
-  end
-
-  def esc(str) # convert escape char (i.e. "\n"..)
-    eval('"'+str+'"') if str
-  end
-
 end

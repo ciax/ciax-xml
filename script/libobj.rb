@@ -95,7 +95,7 @@ class Obj < Hash
   #Stat Methods
   def get_var(var) # //status/var
     a=var.attributes
-    id=subnum(a['id']).to_s
+    id=@cs.subnum(a['id']).to_s
     st={'label'=> @cs.subnum(a['label']).to_s }
     if ref=a['ref']
       @rdb['status'].each_element_with_attribute('id',ref){|e| var=e } ||

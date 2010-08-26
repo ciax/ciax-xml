@@ -53,13 +53,13 @@ class ConvStr
     self
   end
 
-  def esc # convert escape char (i.e. "\n"..)
+  def esc(str=nil) # convert escape char (i.e. "\n"..)
     @str=str if str
-    @str=eval('"'+@str+'"')
+    @str=Kernel.eval('"'+@str+'"').to_s
     self
   end
 
-  def eval
+  def eval(str=nil)
     @str=str if str
     @str=Kernel.eval(@str)
     self

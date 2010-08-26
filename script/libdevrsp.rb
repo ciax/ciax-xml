@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libmodxml"
+require "libconvstr"
 
 # Rsp Methods
 class DevRsp
@@ -9,14 +10,14 @@ class DevRsp
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @var=Hash.new
-    @par=Array.new
+    @cs=ConvStr.new(@v,@var)
   end
 
   def rspframe(sel)
     @var[:sel]=sel || @v.err("No Selection")
     @frame=yield || @v.err("No String")
     if tm=@ddb['rspframe'].attributes['terminator']
-      @frame.chomp!(esc(tm))
+      @frame.chomp!(@cs.esc(tm).to_s)
       @v.msg{"Remove terminator:[#{@frame}] by [#{tm}]" }
     end
     fld=Hash.new
@@ -29,7 +30,7 @@ class DevRsp
   end
 
   def par=(ary)
-    @par=ary
+    @cs.par=ary
   end
 
   private
@@ -50,7 +51,7 @@ class DevRsp
       when 'field'
         frame << field(c,fld)
       when 'repeat'
-        repeat(c){|d| frame << field(d,fld) }
+        @cs.repeat(c){|d| frame << field(d,fld) }
       end
     }
     frame
@@ -73,7 +74,7 @@ class DevRsp
         @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
         data=decode(e,str)
       when 'assign'
-        key=subpar(subnum(d.text),@par)
+        key=@cs.subnum(d.text).subpar.to_s
         fld[key]=data
         @v.msg{"Assign:[#{key}]<-[#{fld[key]}]"}
       when 'verify'

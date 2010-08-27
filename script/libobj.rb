@@ -29,7 +29,8 @@ class Obj < Hash
     self['field']=Hash.new
     update(@odb)
     @obj=obj
-    @cs=ConvStr.new(@v,self)
+    @cs=ConvStr.new(@v)
+    @cs.var=self
     @gn=0
   end
   

@@ -10,7 +10,7 @@ class DevRsp
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @var=Hash.new
-    @cs=ConvStr.new(@v,@var)
+    @cs=ConvStr.new(@v)
   end
 
   def rspframe(sel)

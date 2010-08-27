@@ -2,10 +2,10 @@
 # XML Common Method
 require 'librerange'
 class ConvStr
-  attr_accessor :par,:str
+  attr_accessor :par,:str,:var
 
-  def initialize(v,hash)
-    @v,@var,@str,@par,@n=v,hash,'',[],nil
+  def initialize(v)
+    @v,@var,@str,@par,@n=v,{},'',[],nil
   end
 
   def to_s

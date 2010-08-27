@@ -25,18 +25,30 @@
       </session>
     </selection>
     <status>
-      <var id="s6:sw" label="CIAO(S6) SWITCH" ref="x0:sw" />
-      <var id="s6:dr" label="CIAO(S6) DRIVE" ref="x0:dr" />
-      <var id="s6:tm" label="CIAO(S6) TEMP" ref="x0:tm" />
-      <var id="s6:pr" label="CIAO(S6) PRESSURE" ref="x0:pr" />
-      <var id="s4:sw" label="COMICS IMG(S4) SWITCH" ref="x2:sw" />
-      <var id="s4:dr" label="COMICS IMG(S4) DRIVE" ref="x2:dr" />
-      <var id="s4:tm" label="COMICS IMG(S4) TEMP" ref="x2:tm" />
-      <var id="s4:pr" label="COMICS IMG(S4) PRESSURE" ref="x2:pr" />
-      <var id="s5:sw" label="COMICS SPEC(S5) SWITCH" ref="x3:sw" />
-      <var id="s5:dr" label="COMICS SPEC(S5) DRIVE" ref="x3:dr" />
-      <var id="s5:tm" label="COMICS SPEC(S5) TEMP" ref="x3:tm" />
-      <var id="s5:pr" label="COMICS SPEC(S5) PRESSURE" ref="x3:pr" />
+      <group>
+        <var id="s6:sw" label="CIAO(S6) SWITCH" ref="x0:sw" />
+        <var id="s6:dr" label="CIAO(S6) DRIVE" ref="x0:dr" />
+      </group>
+      <group>
+        <var id="s6:tm" label="CIAO(S6) TEMP" ref="x0:tm" />
+        <var id="s6:pr" label="CIAO(S6) PRESSURE" ref="x0:pr" />
+      </group>
+      <group>
+        <var id="s4:sw" label="COMICS IMG(S4) SWITCH" ref="x2:sw" />
+        <var id="s4:dr" label="COMICS IMG(S4) DRIVE" ref="x2:dr" />
+      </group>
+      <group>
+        <var id="s4:tm" label="COMICS IMG(S4) TEMP" ref="x2:tm" />
+        <var id="s4:pr" label="COMICS IMG(S4) PRESSURE" ref="x2:pr" />
+      </group>
+      <group>
+        <var id="s5:sw" label="COMICS SPEC(S5) SWITCH" ref="x3:sw" />
+        <var id="s5:dr" label="COMICS SPEC(S5) DRIVE" ref="x3:dr" />
+      </group>
+      <group>
+        <var id="s5:tm" label="COMICS SPEC(S5) TEMP" ref="x3:tm" />
+        <var id="s5:pr" label="COMICS SPEC(S5) PRESSURE" ref="x3:pr" />
+      </group>
     </status>
   </object>
 </odb>

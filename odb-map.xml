@@ -7,9 +7,11 @@
       </session>
     </selection>
     <status>
-      <var id="pres" label="Air Pressure (Psi)" symbol="pres">
-        <float decimal="2" field="stat" format="%4.2f" />
-      </var>
+      <group>
+        <var id="pres" label="Air Pressure (Psi)" symbol="pres">
+          <float decimal="2" field="stat" format="%4.2f" />
+        </var>
+      </group>
     </status>
     <symbols>
       <symbol id="pres" type="FLOAT">

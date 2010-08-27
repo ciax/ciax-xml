@@ -2,7 +2,9 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object client="socat - tcp:ltt-o:4003" device="k3n" id="cf6" label="S6 Helium Compressor Coolant Flow" ref="cf1" server="socat - udp-l:45606,reuseaddr,fork">
     <status>
-      <var id="flow" label="CIAO(S6) Coolant Flow(l/min)" ref="flow" />
+      <group>
+        <var id="flow" label="CIAO(S6) Coolant Flow(l/min)" ref="flow" />
+      </group>
     </status>
   </object>
 </odb>

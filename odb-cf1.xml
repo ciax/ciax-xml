@@ -7,15 +7,19 @@
       </session>
     </selection>
     <status>
-      <var id="rcode" label="Response Code" symbol="rcode">
-        <string field="rcode" />
-      </var>
-      <var id="ecode" label="Exit Code" symbol="ecode">
-        <string field="ecode" />
-      </var>
-      <var id="flow" label="CS-2(S1) Coolant Flow(l/min)" symbol="flow">
-        <float decimal="2" field="stat" format="%4.2f" />
-      </var>
+      <group>
+        <var id="rcode" label="Response Code" symbol="rcode">
+          <string field="rcode" />
+        </var>
+        <var id="ecode" label="Exit Code" symbol="ecode">
+          <string field="ecode" />
+        </var>
+      </group>
+      <group>
+        <var id="flow" label="CS-2(S1) Coolant Flow(l/min)" symbol="flow">
+          <float decimal="2" field="stat" format="%4.2f" />
+        </var>
+      </group>
     </status>
     <symbols>
       <symbol id="rcode" label="Response Code" type="ENUM">

@@ -39,9 +39,7 @@ class Obj < Hash
     @session=@odb.select_id('selection',cmd)
     a=@session.attributes
     @v.msg{"Exec(DDB):#{a['label']}"}
-    if ref=a['ref']
-      @session=@rdb.select_id('selection',ref)
-    end
+    @session=@rdb.select_id('selection',a['ref']) if a['ref']
     line
   rescue
     raise "== Command List ==\n#{$!}"
@@ -104,8 +102,11 @@ class Obj < Hash
     id=@cs.subnum(a['id']).to_s
     st={'label'=> @cs.subnum(a['label']).to_s }
     if ref=a['ref']
-      @rdb['status'].each_element_with_attribute('id',ref){|e| var=e } ||
-        @rdb.list_id('status')
+      @rdb['status'].each_element{|d|
+        d.each_element_with_attribute('id',ref){|e|
+          var=e
+        }
+      } || @rdb.list_id('status')
       a=var.attributes
     end
     st['group']=@gn

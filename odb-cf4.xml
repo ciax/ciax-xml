@@ -1,10 +1,10 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object client='socat - tcp:ltt-o:4001' device='k3n' id='cf4' label='S4 Helium Compressor Coolant Flow' ref='cf1' server='socat - udp-l:45604,reuseaddr,fork'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:ltt-o:4001" device="k3n" id="cf4" label="S4 Helium Compressor Coolant Flow" ref="cf1" server="socat - udp-l:45604,reuseaddr,fork">
     <status>
-      <var id='flow' label='COMICS/IMAGE(S4) Coolant Flow(l/min)' ref='flow'/>
+      <group>
+        <var id="flow" label="COMICS/IMAGE(S4) Coolant Flow(l/min)" ref="flow" />
+      </group>
     </status>
   </object>
 </odb>
-
-

@@ -8,18 +8,22 @@
       </session>
     </selection>
     <status>
-      <var id="st1" label="Turbo Pump Stat" symbol="stat">
-        <string field="st1" />
-      </var>
-      <var id="ch1" label="Turbo Pump (Torr)">
-        <float field="ch1" format="%4.2e" />
-      </var>
-      <var id="st2" label="Scroll Pump Stat" symbol="stat">
-        <string field="st1" />
-      </var>
-      <var id="ch2" label="Scroll Pump (Torr)">
-        <float field="ch1" format="%4.2e" />
-      </var>
+      <group>
+        <var id="st1" label="Turbo Pump Stat" symbol="stat">
+          <string field="st1" />
+        </var>
+        <var id="ch1" label="Turbo Pump (Torr)">
+          <float field="ch1" format="%4.2e" />
+        </var>
+      </group>
+      <group>
+        <var id="st2" label="Scroll Pump Stat" symbol="stat">
+          <string field="st1" />
+        </var>
+        <var id="ch2" label="Scroll Pump (Torr)">
+          <float field="ch1" format="%4.2e" />
+        </var>
+      </group>
     </status>
     <symbols>
       <symbol id="stat" type="ENUM">

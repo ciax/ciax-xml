@@ -9,15 +9,21 @@
     <status>
       <group>
         <var id="rcode" label="Response Code" symbol="rcode">
-          <string field="rcode" />
+          <value format="%s">
+            <string field="rcode" />
+          </value>
         </var>
         <var id="ecode" label="Exit Code" symbol="ecode">
-          <string field="ecode" />
+          <value format="%s">
+            <string field="ecode" />
+          </value>
         </var>
       </group>
       <group>
         <var id="flow" label="CS-2(S1) Coolant Flow(l/min)" symbol="flow">
-          <float decimal="2" field="stat" format="%4.2f" />
+          <value format="%4.2f">
+            <float decimal="2" field="stat" />
+          </value>
         </var>
       </group>
     </status>

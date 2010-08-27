@@ -45,29 +45,43 @@
     <status>
       <group label="">
         <var id="iid" label="CAS INST ID" symbol="inst">
-          <string field="c1d2" />
+          <value format="%s">
+            <string field="c1d2" />
+          </value>
         </var>
         <var id="ipw" label="CAS IPW" symbol="off-warn">
-          <binary bit="0" field="c1d1" />
+          <value format="%s">
+            <binary bit="0" field="c1d1" />
+          </value>
         </var>
       </group>
       <group label="">
         <var id="stp" label="STOW PIN" symbol="warn">
-          <binary bit="1" field="c1d1" />
+          <value format="%s">
+            <binary bit="1" field="c1d1" />
+          </value>
         </var>
         <var id="ccd" label="CAS CCD PW" symbol="warn">
-          <binary bit="2" field="c1d0" />
+          <value format="%s">
+            <binary bit="2" field="c1d0" />
+          </value>
         </var>
         <var id="lan" label="CAS LAN PW" symbol="hide">
-          <binary bit="3" field="c1d0" />
+          <value format="%s">
+            <binary bit="3" field="c1d0" />
+          </value>
         </var>
       </group>
       <group label="">
         <var id="c3p" label="CIAX3 PW" symbol="hide">
-          <binary bit="0" field="c1d0" />
+          <value format="%s">
+            <binary bit="0" field="c1d0" />
+          </value>
         </var>
         <var id="c3e" label="CIAX3 EMG" symbol="alarm">
-          <binary bit="1" field="c1d0" />
+          <value format="%s">
+            <binary bit="1" field="c1d0" />
+          </value>
         </var>
       </group>
     </status>

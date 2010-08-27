@@ -110,9 +110,13 @@ class Obj < Hash
       a=var.attributes
     end
     st['group']=@gn
-    val=get_val(var)
-    st['val']=val
-    @v.msg{"STAT:GetStatus:#{id}=[#{val}]"}
+    var.each_element{|e|
+      case e.name
+      when 'value'
+        st['val']=get_val(e)
+        @v.msg{"STAT:GetStatus:#{id}=[#{st['val']}]"}
+      end
+    }
     if sid=a['symbol']
       std_symbol(sid,st)
       if @odb['symbols']
@@ -125,7 +129,7 @@ class Obj < Hash
   end
 
   def get_val(e)
-    val=String.new
+    ary=Array.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
       fld=@cs.subnum(a['field']).to_s || return
@@ -136,23 +140,23 @@ class Obj < Hash
       when 'binary'
         bit=(data.to_i >> a['bit'].to_i & 1)
         bit = -(bit-1) if /true|1/ === a['inv']
-       val << bit.to_s
+       ary << bit.to_s
       when 'float'
         if n=a['decimal']
           data.insert(-1-n.to_i,'.')
         end
-        val << format(dtype,data.to_f)
+        ary << data.to_f
       when 'int'
         if /true|1/ === a['signed']
           data=data.to_i
           data= data > 0x7fff ? data - 0x10000 : data
         end
-        val << format(dtype,data.to_i)
+        ary << data.to_i
       else
-        val << data
+        ary << data
       end
     }
-    val
+    e.attributes['format'] % ary
   end
 
   # Built-in Symbol (normal,hide,on-warn,off-warn,alarm)

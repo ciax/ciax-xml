@@ -9,7 +9,9 @@
     <status>
       <group>
         <var id="pres" label="Air Pressure (Psi)" symbol="pres">
-          <float decimal="2" field="stat" format="%4.2f" />
+          <value format="%4.2f">
+            <float decimal="2" field="stat" />
+          </value>
         </var>
       </group>
     </status>

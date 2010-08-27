@@ -37,48 +37,72 @@
     <status>
       <group>
         <var id="vol" label="OUTPUT (V)">
-          <float field="v" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="v" />
+          </value>
         </var>
         <var id="amp" label="OUTPUT (A)">
-          <float field="a" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="a" />
+          </value>
         </var>
         <var id="wat" label="OUTPUT (W)">
-          <float field="w" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="w" />
+          </value>
         </var>
       </group>
       <group>
         <var id="vl" label="Limit (V)">
-          <float field="u" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="u" />
+          </value>
         </var>
         <var id="il" label="Limit (A)">
-          <float field="i" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="i" />
+          </value>
         </var>
         <var id="pl" label="Limit (W)">
-          <float field="p" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="p" />
+          </value>
         </var>
       </group>
       <group>
         <var id="sw" label="OUTPUT ON/OFF" symbol="warn">
-          <string field="f1" />
+          <value format="%s">
+            <string field="f1" />
+          </value>
         </var>
         <var id="tmp" label="OverHeat" symbol="alarm">
-          <string field="f2" />
+          <value format="%s">
+            <string field="f2" />
+          </value>
         </var>
       </group>
       <group>
         <var id="kn1" label="Wheel Knov Fine" symbol="normal">
-          <string field="f3" />
+          <value format="%s">
+            <string field="f3" />
+          </value>
         </var>
         <var id="kn2" label="Wheel Knov Unlock" symbol="normal">
-          <string field="f4" />
+          <value format="%s">
+            <string field="f4" />
+          </value>
         </var>
       </group>
       <group>
         <var id="rem" label="REMOTE" symbol="normal">
-          <string field="f5" />
+          <value format="%s">
+            <string field="f5" />
+          </value>
         </var>
         <var id="loc" label="Local Lock" symbol="normal">
-          <string field="f6" />
+          <value format="%s">
+            <string field="f6" />
+          </value>
         </var>
       </group>
     </status>

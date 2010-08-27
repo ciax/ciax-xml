@@ -11,38 +11,58 @@
     <status>
       <group>
         <var id="ch1" label="MosCold2">
-          <float field="ch1" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="ch1" />
+          </value>
         </var>
         <var id="ch2" label="MosCold1">
-          <float field="ch2" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="ch2" />
+          </value>
         </var>
         <var id="ch3" label="Mask">
-          <float field="ch3" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="ch3" />
+          </value>
         </var>
         <var id="ch4" label="Wheel">
-          <float field="ch4" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="ch4" />
+          </value>
         </var>
       </group>
       <group>
         <var id="ch5" label="D1(NONE)">
-          <float field="ch5" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="ch5" />
+          </value>
         </var>
         <var id="ch6" label="D2(NONE)">
-          <float field="ch6" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="ch6" />
+          </value>
         </var>
         <var id="ch7" label="ChipBox1">
-          <float field="ch7" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="ch7" />
+          </value>
         </var>
         <var id="ch8" label="Det1">
-          <float field="ch8" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="ch8" />
+          </value>
         </var>
       </group>
       <group>
         <var id="sp" label="SetPoint1 (K)">
-          <float field="sp" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="sp" />
+          </value>
         </var>
         <var id="htr" label="HeaterPower1(%)">
-          <float field="htr" format="%3.2f" />
+          <value format="%3.2f">
+            <float field="htr" />
+          </value>
         </var>
       </group>
     </status>

@@ -40,42 +40,62 @@
     <status>
       <group label="">
         <var id="exit" label="Exit Code">
-          <int field="exit" />
+          <value format="%d">
+            <int field="exit" />
+          </value>
         </var>
         <var id="rts" label="ROT SEL" symbol="rsel">
-          <int field="rsel" />
+          <value format="%d">
+            <int field="rsel" />
+          </value>
         </var>
         <var id="iid" label="CAS INST ID" symbol="inst">
-          <int field="iid" />
+          <value format="%d">
+            <int field="iid" />
+          </value>
         </var>
         <var id="login" label="Login Status" symbol="login">
-          <string field="login0" />
-          <string field="login1" />
-          <string field="login2" />
-          <string field="login3" />
+          <value format="%s%s%s%s">
+            <string field="login0" />
+            <string field="login1" />
+            <string field="login2" />
+            <string field="login3" />
+          </value>
         </var>
       </group>
       <group label="">
         <var id="rpw" label="ROT DRIVE" symbol="rpw">
-          <int field="rpw" />
+          <value format="%d">
+            <int field="rpw" />
+          </value>
         </var>
         <var id="jpw" label="JAK DRIVE" symbol="normal">
-          <binary field="bstat" bit="7" />
+          <value format="%s">
+            <binary field="bstat" bit="7" />
+          </value>
         </var>
         <var id="nfb" label="BOLT NFB TRIP" symbol="alarm">
-          <binary field="bstat" bit="6" />
+          <value format="%s">
+            <binary field="bstat" bit="6" />
+          </value>
         </var>
         <var id="rps" label="ROT POS SENSOR" symbol="rps">
-          <binary field="bstat" bit="4" />
-          <binary field="bstat" bit="5" />
+          <value format="%s%s">
+            <binary field="bstat" bit="4" />
+            <binary field="bstat" bit="5" />
+          </value>
         </var>
       </group>
       <group label="">
         <var id="stw" label="EL STOW" symbol="off-warn">
-          <binary field="stow_1" bit="2" />
+          <value format="%s">
+            <binary field="stow_1" bit="2" />
+          </value>
         </var>
         <var id="stp" label="EL 90 STOW" symbol="off-warn">
-          <binary field="stow_1" bit="0" />
+          <value format="%s">
+            <binary field="stow_1" bit="0" />
+          </value>
         </var>
       </group>
     </status>

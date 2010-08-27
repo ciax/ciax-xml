@@ -27,24 +27,34 @@
     <status>
       <group>
         <var id="bs" label="Moter Moving" symbol="warn">
-          <string field="bs" />
+          <value format="%s">
+            <string field="bs" />
+          </value>
         </var>
         <var id="con" label="Contact Sensor" symbol="normal">
-          <string field="in5" />
+          <value format="%s">
+            <string field="in5" />
+          </value>
         </var>
         <var id="err" label="Error Code" symbol="err">
-          <int field="err" />
+          <value format="%d">
+            <int field="err" />
+          </value>
         </var>
       </group>
       <group>
         <var id="pos" label="Arm Position" symbol="pos">
-          <string field="in1" />
-          <string field="in2" />
-          <string field="in3" />
-          <string field="in4" />
+          <value format="%s%s%s%s">
+            <string field="in1" />
+            <string field="in2" />
+            <string field="in3" />
+            <string field="in4" />
+          </value>
         </var>
         <var id="abs" label="ABS position" symbol="pulse">
-          <float field="p" />
+          <value format="%f">
+            <float field="p" />
+          </value>
         </var>
       </group>
     </status>

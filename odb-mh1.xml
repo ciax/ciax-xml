@@ -35,42 +35,52 @@
       </session>
     </selection>
     <status>
-      <var id="vol" label="OUTPUT (V)" trail="true">
-        <float field="v" format="%3.2f" />
-      </var>
-      <var id="amp" label="OUTPUT (A)" trail="true">
-        <float field="a" format="%3.2f" />
-      </var>
-      <var id="wat" label="OUTPUT (W)">
-        <float field="w" format="%3.2f" />
-      </var>
-      <var id="vl" label="Limit (V)" trail="true">
-        <float field="u" format="%3.2f" />
-      </var>
-      <var id="il" label="Limit (A)" trail="true">
-        <float field="i" format="%3.2f" />
-      </var>
-      <var id="pl" label="Limit (W)">
-        <float field="p" format="%3.2f" />
-      </var>
-      <var id="sw" label="OUTPUT ON/OFF" trail="true" symbol="warn">
-        <string field="f1" />
-      </var>
-      <var id="tmp" label="OverHeat" symbol="alarm">
-        <string field="f2" />
-      </var>
-      <var id="kn1" label="Wheel Knov Fine" trail="true" symbol="normal">
-        <string field="f3" />
-      </var>
-      <var id="kn2" label="Wheel Knov Unlock" symbol="normal">
-        <string field="f4" />
-      </var>
-      <var id="rem" label="REMOTE" trail="true" symbol="normal">
-        <string field="f5" />
-      </var>
-      <var id="loc" label="Local Lock" symbol="normal">
-        <string field="f6" />
-      </var>
+      <group>
+        <var id="vol" label="OUTPUT (V)">
+          <float field="v" format="%3.2f" />
+        </var>
+        <var id="amp" label="OUTPUT (A)">
+          <float field="a" format="%3.2f" />
+        </var>
+        <var id="wat" label="OUTPUT (W)">
+          <float field="w" format="%3.2f" />
+        </var>
+      </group>
+      <group>
+        <var id="vl" label="Limit (V)">
+          <float field="u" format="%3.2f" />
+        </var>
+        <var id="il" label="Limit (A)">
+          <float field="i" format="%3.2f" />
+        </var>
+        <var id="pl" label="Limit (W)">
+          <float field="p" format="%3.2f" />
+        </var>
+      </group>
+      <group>
+        <var id="sw" label="OUTPUT ON/OFF" symbol="warn">
+          <string field="f1" />
+        </var>
+        <var id="tmp" label="OverHeat" symbol="alarm">
+          <string field="f2" />
+        </var>
+      </group>
+      <group>
+        <var id="kn1" label="Wheel Knov Fine" symbol="normal">
+          <string field="f3" />
+        </var>
+        <var id="kn2" label="Wheel Knov Unlock" symbol="normal">
+          <string field="f4" />
+        </var>
+      </group>
+      <group>
+        <var id="rem" label="REMOTE" symbol="normal">
+          <string field="f5" />
+        </var>
+        <var id="loc" label="Local Lock" symbol="normal">
+          <string field="f6" />
+        </var>
+      </group>
     </status>
     <symbols>
       <symbol id="flow" type="FLOAT">

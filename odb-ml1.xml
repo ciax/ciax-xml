@@ -9,36 +9,42 @@
       </session>
     </selection>
     <status>
-      <var id="ch1" label="MosCold2" trail="true">
-        <float field="ch1" format="%3.2f" />
-      </var>
-      <var id="ch2" label="MosCold1" trail="true">
-        <float field="ch2" format="%3.2f" />
-      </var>
-      <var id="ch3" label="Mask" trail="true">
-        <float field="ch3" format="%3.2f" />
-      </var>
-      <var id="ch4" label="Wheel">
-        <float field="ch4" format="%3.2f" />
-      </var>
-      <var id="ch5" label="D1(NONE)" trail="true">
-        <float field="ch5" format="%3.2f" />
-      </var>
-      <var id="ch6" label="D2(NONE)" trail="true">
-        <float field="ch6" format="%3.2f" />
-      </var>
-      <var id="ch7" label="ChipBox1" trail="true">
-        <float field="ch7" format="%3.2f" />
-      </var>
-      <var id="ch8" label="Det1">
-        <float field="ch8" format="%3.2f" />
-      </var>
-      <var id="sp" label="SetPoint1 (K)" trail="true">
-        <float field="sp" format="%3.2f" />
-      </var>
-      <var id="htr" label="HeaterPower1(%)">
-        <float field="htr" format="%3.2f" />
-      </var>
+      <group>
+        <var id="ch1" label="MosCold2">
+          <float field="ch1" format="%3.2f" />
+        </var>
+        <var id="ch2" label="MosCold1">
+          <float field="ch2" format="%3.2f" />
+        </var>
+        <var id="ch3" label="Mask">
+          <float field="ch3" format="%3.2f" />
+        </var>
+        <var id="ch4" label="Wheel">
+          <float field="ch4" format="%3.2f" />
+        </var>
+      </group>
+      <group>
+        <var id="ch5" label="D1(NONE)">
+          <float field="ch5" format="%3.2f" />
+        </var>
+        <var id="ch6" label="D2(NONE)">
+          <float field="ch6" format="%3.2f" />
+        </var>
+        <var id="ch7" label="ChipBox1">
+          <float field="ch7" format="%3.2f" />
+        </var>
+        <var id="ch8" label="Det1">
+          <float field="ch8" format="%3.2f" />
+        </var>
+      </group>
+      <group>
+        <var id="sp" label="SetPoint1 (K)">
+          <float field="sp" format="%3.2f" />
+        </var>
+        <var id="htr" label="HeaterPower1(%)">
+          <float field="htr" format="%3.2f" />
+        </var>
+      </group>
     </status>
   </object>
 </odb>

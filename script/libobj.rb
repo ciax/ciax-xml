@@ -30,6 +30,7 @@ class Obj < Hash
     update(@odb)
     @obj=obj
     @cs=ConvStr.new(@v,self)
+    @gn=0
   end
   
   public
@@ -65,14 +66,7 @@ class Obj < Hash
   def get_stat(dstat)
     return unless dstat
     self['field'].update(dstat)
-    @odb['status'].each_element {|var|
-      case var.name
-      when 'var'
-        get_var(var)
-      when 'repeat'
-        @cs.repeat(var){|d| get_var(d) }
-      end
-    }
+    @odb['status'].each_element{|g| group_var(g) }
     self['stat']['time']['val']=Time.at(self['field']['time'].to_f).to_s
     @f.save_json(self['stat'])
   end
@@ -92,8 +86,19 @@ class Obj < Hash
     cmd
   end
 
-
   #Stat Methods
+  def group_var(e)
+    case e.name
+    when 'group'
+      @gn+=1
+      e.each_element{|g| group_var(g) }
+    when 'var'
+      get_var(e)
+    when 'repeat'
+      @cs.repeat(e){|d| group_var(d) }
+    end
+  end
+
   def get_var(var) # //status/var
     a=var.attributes
     id=@cs.subnum(a['id']).to_s
@@ -103,7 +108,7 @@ class Obj < Hash
         @rdb.list_id('status')
       a=var.attributes
     end
-    st['trail']=a['trail']
+    st['group']=@gn
     val=get_val(var)
     st['val']=val
     @v.msg{"STAT:GetStatus:#{id}=[#{val}]"}

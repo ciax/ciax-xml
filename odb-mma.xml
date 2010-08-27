@@ -25,24 +25,28 @@
       </session>
     </selection>
     <status>
-      <var id="bs" label="Moter Moving" symbol="warn" trail="true">
-        <string field="bs" />
-      </var>
-      <var id="con" label="Contact Sensor" symbol="normal" trail="true">
-        <string field="in5" />
-      </var>
-      <var id="err" label="Error Code" symbol="err">
-        <int field="err" />
-      </var>
-      <var id="pos" label="Arm Position" symbol="pos" trail="true">
-        <string field="in1" />
-        <string field="in2" />
-        <string field="in3" />
-        <string field="in4" />
-      </var>
-      <var id="abs" label="ABS position" symbol="pulse">
-        <float field="p" />
-      </var>
+      <group>
+        <var id="bs" label="Moter Moving" symbol="warn">
+          <string field="bs" />
+        </var>
+        <var id="con" label="Contact Sensor" symbol="normal">
+          <string field="in5" />
+        </var>
+        <var id="err" label="Error Code" symbol="err">
+          <int field="err" />
+        </var>
+      </group>
+      <group>
+        <var id="pos" label="Arm Position" symbol="pos">
+          <string field="in1" />
+          <string field="in2" />
+          <string field="in3" />
+          <string field="in4" />
+        </var>
+        <var id="abs" label="ABS position" symbol="pulse">
+          <float field="p" />
+        </var>
+      </group>
     </status>
     <symbols>
       <symbol id="err" type="ENUM">

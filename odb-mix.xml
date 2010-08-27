@@ -30,37 +30,43 @@
       </session>
     </selection>
     <status>
-      <var id="rdy" label="Comm Ready" symbol="off-warn" trail="true">
-        <binary bit="0" field="stat" />
-      </var>
-      <var id="srq" label="SRQ" symbol="off-warn" trail="true">
-        <binary bit="1" field="stat" />
-      </var>
-      <var id="pme" label="Program Error" symbol="alarm" trail="true">
-        <binary bit="3" field="stat" />
-      </var>
-      <var id="pse" label="Power Stage Error" symbol="alarm" trail="true">
-        <binary bit="4" field="stat" />
-      </var>
-      <var id="oes" label="ONE EM Stop" symbol="alarm" trail="true">
-        <binary bit="5" field="stat" />
-      </var>
-      <var id="ees" label="EXT EM Stop" symbol="alarm">
-        <binary bit="6" field="stat" />
-      </var>
-      <var id="trm" label="Terminal Mode" trail="true" symbol="off-warn">
-        <binary bit="2" field="stat" />
-      </var>
-      <var id="cmd" label="Computer Mode" symbol="off-warn">
-        <binary bit="7" field="stat" />
-      </var>
+      <group label="">
+        <var id="rdy" label="Comm Ready" symbol="off-warn">
+          <binary bit="0" field="stat" />
+        </var>
+        <var id="srq" label="SRQ" symbol="off-warn">
+          <binary bit="1" field="stat" />
+        </var>
+        <var id="pme" label="Program Error" symbol="alarm">
+          <binary bit="3" field="stat" />
+        </var>
+        <var id="pse" label="Power Stage Error" symbol="alarm">
+          <binary bit="4" field="stat" />
+        </var>
+        <var id="oes" label="ONE EM Stop" symbol="alarm">
+          <binary bit="5" field="stat" />
+        </var>
+        <var id="ees" label="EXT EM Stop" symbol="alarm">
+          <binary bit="6" field="stat" />
+        </var>
+      </group>
+      <group label="">
+        <var id="trm" label="Terminal Mode" symbol="off-warn">
+          <binary bit="2" field="stat" />
+        </var>
+        <var id="cmd" label="Computer Mode" symbol="off-warn">
+          <binary bit="7" field="stat" />
+        </var>
+      </group>
       <repeat from="1" to="6">
-        <var id="r$_" label="Running $_" trail="true" symbol="normal">
-          <string field="r$_" />
-        </var>
-        <var id="p$_" label="Pulse $_">
-          <int field="p$_" />
-        </var>
+        <group label="">
+          <var id="r$_" label="Running $_" symbol="normal">
+            <string field="r$_" />
+          </var>
+          <var id="p$_" label="Pulse $_">
+            <int field="p$_" />
+          </var>
+        </group>
       </repeat>
     </status>
   </object>

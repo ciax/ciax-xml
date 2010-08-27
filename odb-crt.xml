@@ -35,72 +35,90 @@
       </session>
     </selection>
     <status>
-      <var id="ecode" label="EXIT CODE" symbol="ecode" trail="true">
-        <int field="ecode" format="%04X" />
-      </var>
-      <var id="rdy" label="READY" symbol="normal" trail="true">
-        <binary bit="0" field="x00" />
-      </var>
-      <var id="pse" label="PAUSE" symbol="warn" trail="true">
-        <binary bit="1" field="x00" />
-      </var>
-      <var id="emg" label="ENERGENCY" symbol="alarm" trail="true">
-        <binary bit="2" field="x00" />
-      </var>
-      <var id="stp" label="STOP" symbol="warn">
-        <binary bit="3" field="x00" />
-      </var>
-      <var id="run" label="RUNNING" symbol="normal" trail="true">
-        <binary bit="4" field="x00" />
-      </var>
-      <var id="jak" label="JACKING" symbol="normal" trail="true">
-        <binary bit="5" field="x00" />
-      </var>
-      <var id="con" label="CHARGING" symbol="normal" trail="true">
-        <binary bit="6" field="x00" />
-      </var>
-      <var id="flt" label="Fault" symbol="alarm">
-        <binary bit="7" field="x00" />
-      </var>
-      <var id="msr" label="Right Motor Servo" symbol="normal" trail="true">
-        <binary bit="8" field="x00" inv="true" />
-      </var>
-      <var id="msl" label="Left Motor Servo" symbol="normal">
-        <binary bit="9" field="x00" inv="true" />
-      </var>
-      <var id="jd1" label="Jack Motor1 Servo" symbol="normal" trail="true">
-        <binary bit="10" field="x00" inv="true" />
-      </var>
-      <var id="jd2" label="Jack Motor2 Servo" symbol="normal">
-        <binary bit="11" field="x00" inv="true" />
-      </var>
-      <var id="jd3" label="Jack Motor3 Servo" symbol="normal" trail="true">
-        <binary bit="12" field="x00" inv="true" />
-      </var>
-      <var id="jd4" label="Jack Motor4 Servo" symbol="normal">
-        <binary bit="13" field="x00" inv="true" />
-      </var>
-      <var id="mdar" label="Rignt Motor D/A" symbol="motor" trail="true">
-        <int field="x07" signed="true" />
-      </var>
-      <var id="mdal" label="Left Motor D/A" symbol="motor">
-        <int field="x08" signed="true" />
-      </var>
-      <var id="bvl" label="Battery Voltage" symbol="battery" trail="true">
-        <float decimal="2" field="x16" format="%2.2f" />
-      </var>
-      <var id="ist" label="Instrument" symbol="inst">
-        <int field="x17" />
-      </var>
-      <var id="cpos" label="Current Position" trail="true">
-        <int field="x19" />
-      </var>
-      <var id="dpos" label="Destination Position">
-        <int field="x1a" />
-      </var>
-      <var id="jpos" label="Jack Position" symbol="jpos">
-        <int field="x1b" />
-      </var>
+      <group label="">
+        <var id="ecode" label="EXIT CODE" symbol="ecode">
+          <int field="ecode" format="%04X" />
+        </var>
+        <var id="rdy" label="READY" symbol="normal">
+          <binary bit="0" field="x00" />
+        </var>
+        <var id="pse" label="PAUSE" symbol="warn">
+          <binary bit="1" field="x00" />
+        </var>
+        <var id="emg" label="ENERGENCY" symbol="alarm">
+          <binary bit="2" field="x00" />
+        </var>
+        <var id="stp" label="STOP" symbol="warn">
+          <binary bit="3" field="x00" />
+        </var>
+      </group>
+      <group label="">
+        <var id="run" label="RUNNING" symbol="normal">
+          <binary bit="4" field="x00" />
+        </var>
+        <var id="jak" label="JACKING" symbol="normal">
+          <binary bit="5" field="x00" />
+        </var>
+        <var id="con" label="CHARGING" symbol="normal">
+          <binary bit="6" field="x00" />
+        </var>
+        <var id="flt" label="Fault" symbol="alarm">
+          <binary bit="7" field="x00" />
+        </var>
+      </group>
+      <group label="">
+        <var id="msr" label="Right Motor Servo" symbol="normal">
+          <binary bit="8" field="x00" inv="true" />
+        </var>
+        <var id="msl" label="Left Motor Servo" symbol="normal">
+          <binary bit="9" field="x00" inv="true" />
+        </var>
+      </group>
+      <group label="">
+        <var id="jd1" label="Jack Motor1 Servo" symbol="normal">
+          <binary bit="10" field="x00" inv="true" />
+        </var>
+        <var id="jd2" label="Jack Motor2 Servo" symbol="normal">
+          <binary bit="11" field="x00" inv="true" />
+        </var>
+      </group>
+      <group label="">
+        <var id="jd3" label="Jack Motor3 Servo" symbol="normal">
+          <binary bit="12" field="x00" inv="true" />
+        </var>
+        <var id="jd4" label="Jack Motor4 Servo" symbol="normal">
+          <binary bit="13" field="x00" inv="true" />
+        </var>
+      </group>
+      <group label="">
+        <var id="mdar" label="Rignt Motor D/A" symbol="motor">
+          <int field="x07" signed="true" />
+        </var>
+        <var id="mdal" label="Left Motor D/A" symbol="motor">
+          <int field="x08" signed="true" />
+        </var>
+      </group>
+      <group label="">
+        <var id="bvl" label="Battery Voltage" symbol="battery">
+          <float decimal="2" field="x16" format="%2.2f" />
+        </var>
+        <var id="ist" label="Instrument" symbol="inst">
+          <int field="x17" />
+        </var>
+      </group>
+      <group label="">
+        <var id="cpos" label="Current Position">
+          <int field="x19" />
+        </var>
+        <var id="dpos" label="Destination Position">
+          <int field="x1a" />
+        </var>
+      </group>
+      <group label="">
+        <var id="jpos" label="Jack Position" symbol="jpos">
+          <int field="x1b" />
+        </var>
+      </group>
     </status>
     <symbols>
       <symbol id="ecode" label="ExitCode" type="ENUM">

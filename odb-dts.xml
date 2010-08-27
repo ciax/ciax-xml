@@ -38,40 +38,46 @@
       </session>
     </selection>
     <status>
-      <var id="exit" label="Exit Code" trail="true">
-        <int field="exit" />
-      </var>
-      <var id="rts" label="ROT SEL" trail="true" symbol="rsel">
-        <int field="rsel" />
-      </var>
-      <var id="iid" label="CAS INST ID" trail="true" symbol="inst">
-        <int field="iid" />
-      </var>
-      <var id="login" label="Login Status" symbol="login">
-        <string field="login0" />
-        <string field="login1" />
-        <string field="login2" />
-        <string field="login3" />
-      </var>
-      <var id="rpw" label="ROT DRIVE" trail="true" symbol="rpw">
-        <int field="rpw" />
-      </var>
-      <var id="jpw" label="JAK DRIVE" trail="true" symbol="normal">
-        <binary field="bstat" bit="7" />
-      </var>
-      <var id="nfb" label="BOLT NFB TRIP" trail="true" symbol="alarm">
-        <binary field="bstat" bit="6" />
-      </var>
-      <var id="rps" label="ROT POS SENSOR" symbol="rps">
-        <binary field="bstat" bit="4" />
-        <binary field="bstat" bit="5" />
-      </var>
-      <var id="stw" label="EL STOW" symbol="off-warn" trail="true">
-        <binary field="stow_1" bit="2" />
-      </var>
-      <var id="stp" label="EL 90 STOW" symbol="off-warn">
-        <binary field="stow_1" bit="0" />
-      </var>
+      <group label="">
+        <var id="exit" label="Exit Code">
+          <int field="exit" />
+        </var>
+        <var id="rts" label="ROT SEL" symbol="rsel">
+          <int field="rsel" />
+        </var>
+        <var id="iid" label="CAS INST ID" symbol="inst">
+          <int field="iid" />
+        </var>
+        <var id="login" label="Login Status" symbol="login">
+          <string field="login0" />
+          <string field="login1" />
+          <string field="login2" />
+          <string field="login3" />
+        </var>
+      </group>
+      <group label="">
+        <var id="rpw" label="ROT DRIVE" symbol="rpw">
+          <int field="rpw" />
+        </var>
+        <var id="jpw" label="JAK DRIVE" symbol="normal">
+          <binary field="bstat" bit="7" />
+        </var>
+        <var id="nfb" label="BOLT NFB TRIP" symbol="alarm">
+          <binary field="bstat" bit="6" />
+        </var>
+        <var id="rps" label="ROT POS SENSOR" symbol="rps">
+          <binary field="bstat" bit="4" />
+          <binary field="bstat" bit="5" />
+        </var>
+      </group>
+      <group label="">
+        <var id="stw" label="EL STOW" symbol="off-warn">
+          <binary field="stow_1" bit="2" />
+        </var>
+        <var id="stp" label="EL 90 STOW" symbol="off-warn">
+          <binary field="stow_1" bit="0" />
+        </var>
+      </group>
     </status>
     <symbols>
       <symbol id="inst" type="ENUM">

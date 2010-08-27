@@ -31,6 +31,7 @@
       <xsd:choice>
         <xsd:element minOccurs="1" maxOccurs="unbounded" ref="odb:statement" />
         <xsd:element minOccurs="1" maxOccurs="unbounded" ref="odb:var" />
+        <xsd:element ref="odb:group" minOccurs="1" maxOccurs="unbounded"></xsd:element>
       </xsd:choice>
       <xsd:attribute name="format" type="xsd:string" />
       <xsd:attribute name="from" use="required" type="xsd:int" />
@@ -88,9 +89,19 @@
   <xsd:element name="status">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="odb:var" />
-        <xsd:element ref="odb:repeat" />
+        <xsd:element ref="odb:group"></xsd:element>
+        <xsd:element ref="odb:repeat"></xsd:element>
       </xsd:choice>
+      <xsd:attribute name="ref" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="odb:repeat" />
+        <xsd:element ref="odb:var" />
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:string" use="optional" />
       <xsd:attribute name="ref" type="xsd:string" use="optional" />
     </xsd:complexType>
   </xsd:element>
@@ -104,7 +115,6 @@
       </xsd:choice>
       <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="symbol" type="xsd:string" />
-      <xsd:attribute name="trail" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in field-->

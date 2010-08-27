@@ -3,7 +3,13 @@ module ModView
   def view(stat)
     a=[]
     line=[]
+    group=nil
     stat.each {|id,item|
+      if item['group'] != group
+        a << line.join(' ') if line.size > 0
+        line=[]
+      end
+      group=item['group']
       case item['hl']
       when 'alarm'
         line << prt(item,'1')
@@ -16,10 +22,6 @@ module ModView
       else
         line << prt(item,'2')
       end
-      next if item['trail']
-      next unless line.size > 0
-      a << line.join(' ')
-      line=[]
     }
     a << line.join(' ') if line.size > 0
     a.join("\n")+"\n"

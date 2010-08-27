@@ -106,7 +106,7 @@ class Obj < Hash
         d.each_element_with_attribute('id',ref){|e|
           var=e
         }
-      } || @rdb.list_id('status')
+      } || @v.err("No such id in ref")
       a=var.attributes
     end
     st['group']=@gn

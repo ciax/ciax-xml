@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object client="socat - tcp:celaeno:4006" device="lk8" id="ml2" label="MOIRCS Temperature 2" server="socat - udp-l:24106,reuseaddr,fork" ref="ml1">
+    <status>
+      <group>
+        <var id="ch1" ref="ch1" label="Robohand"></var>
+        <var ref="ch2" label="CollBench" id="ch2"></var>
+        <var ref="ch3" label="BulkHead" id="ch3"></var>
+        <var ref="ch4" label="HeatPath" id="ch4"></var>
+      </group>
+      <group>
+        <var ref="ch5" label="D1(NONE)" id="ch5"></var>
+        <var ref="ch6" label="D2(NONE)" id="ch6"></var>
+        <var ref="ch7" label="ChipBox2" id="ch7"></var>
+        <var ref="ch8" label="Det2" id="ch8"></var>
+      </group>
+    </status>
+  </object>
+</odb>

@@ -98,25 +98,26 @@ class Obj < Hash
     end
   end
 
-  def get_var(var) # //status/var
-    id=var_attr(var,'id')
-    st={'label'=> var_attr(var,'label') }
-    if ref=var_attr(var,'ref')
+  def get_var(org) # //status/var
+    va=[org]
+    st={'group' => @gn }
+    if ref=var_attr(va,'ref')
       @rdb['status'].each_element{|d|
         d.each_element_with_attribute('id',ref){|e|
-          var=e
+          va << e
         }
       } || @v.err("No such id in ref")
     end
-    st['group']=@gn
-    var.each_element{|e|
+    id=var_attr(va,'id')
+    st['label']=var_attr(va,'label')
+    va.first.each_element{|e|
       case e.name
       when 'value'
         st['val']=get_val(e)
         @v.msg{"STAT:GetStatus:#{id}=[#{st['val']}]"}
       end
     }
-    if sid=var_attr(var,'symbol')
+    if sid=var_attr(va,'symbol')
       std_symbol(sid,st)
       if @odb['symbols']
         @odb['symbols'].each_element_with_attribute('id',sid){ |e|
@@ -131,7 +132,7 @@ class Obj < Hash
     ary=Array.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=var_attr(dtype,'field') || return
+      fld=var_attr([dtype],'field') || return
       fld=@cs.subnum(self['field'][fld]).to_s || return
       data=fld.clone
       # @v.msg{"STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]"}
@@ -195,8 +196,13 @@ class Obj < Hash
     set
   end
 
-  def var_attr(e,str)
-    @cs.subnum(e.attributes[str]).to_s
+  def var_attr(va,str)
+    va.each{|var|
+      if a=var.attributes[str]
+        return @cs.subnum(a).to_s
+      end
+    }
+    nil
   end
 
 end

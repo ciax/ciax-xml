@@ -8,7 +8,7 @@
         <statement format="err"></statement>
         <repeat from="1" to="5">
           <statement format="in %d">
-            <par>$_</par>
+            <argv>$_</argv>
           </statement>
         </repeat>
       </session>

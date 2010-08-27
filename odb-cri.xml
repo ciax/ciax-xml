@@ -8,56 +8,56 @@
       <session id="x0on" label="X0 ON">
         <statement format="getstat" />
         <statement format="output %d">
-          <par>${field:stat} | 0x01</par>
+          <argv>${field:stat} | 0x01</argv>
         </statement>
         <statement format="getstat" />
       </session>
       <session id="x0off" label="X0 OFF">
         <statement format="getstat" />
         <statement format="output %d">
-          <par>${field:stat} &amp; 0xfffe</par>
+          <argv>${field:stat} &amp; 0xfffe</argv>
         </statement>
         <statement format="getstat" />
       </session>
       <session id="x1on" label="X1 ON">
         <statement format="getstat" />
         <statement format="output %d">
-          <par>${field:stat} | 0x10</par>
+          <argv>${field:stat} | 0x10</argv>
         </statement>
         <statement format="getstat" />
       </session>
       <session id="x1off" label="X1 OFF">
         <statement format="getstat" />
         <statement format="output %d">
-          <par>${field:stat} &amp; 0xffef</par>
+          <argv>${field:stat} &amp; 0xffef</argv>
         </statement>
         <statement format="getstat" />
       </session>
       <session id="x2on" label="X2 ON">
         <statement format="getstat" />
         <statement format="output %d">
-          <par>${field:stat} | 0x100</par>
+          <argv>${field:stat} | 0x100</argv>
         </statement>
         <statement format="getstat" />
       </session>
       <session id="x2off" label="X2 OFF">
         <statement format="getstat" />
         <statement format="output %d">
-          <par>${field:stat} &amp; 0xfeff</par>
+          <argv>${field:stat} &amp; 0xfeff</argv>
         </statement>
         <statement format="getstat" />
       </session>
       <session id="x3on" label="X3 ON">
         <statement format="getstat" />
         <statement format="output %d">
-          <par>${field:stat} | 0x1000</par>
+          <argv>${field:stat} | 0x1000</argv>
         </statement>
         <statement format="getstat" />
       </session>
       <session id="x3off" label="X3 OFF">
         <statement format="getstat" />
         <statement format="output %d">
-          <par>${field:stat} &amp; 0xefff</par>
+          <argv>${field:stat} &amp; 0xefff</argv>
         </statement>
         <statement format="getstat" />
       </session>

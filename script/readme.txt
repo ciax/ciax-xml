@@ -13,11 +13,11 @@
     description : substitute parameters
     usable: ddb//response/field/assign
             --
-            odb//session/statement/par
+            odb//session/statement/argv
 
  ${??}
     description : substitute status(field)
-    usable: odb//session/statement/par
+    usable: odb//session/statement/argv
 
  \?
     description : convert escape characters

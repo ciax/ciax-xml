@@ -12,14 +12,14 @@
       <session id="maon" label="COMICS BOTH ON">
         <statement format="getstat"></statement>
         <statement format="output %d">
-          <par>${field:stat} | 0x1100</par>
+          <argv>${field:stat} | 0x1100</argv>
         </statement>
         <statement format="getstat"></statement>
       </session>
       <session id="maoff" label="COMICS BOTH OFF">
         <statement format="getstat"></statement>
         <statement format="output %d">
-          <par>${field:stat} &amp; 0xeeff</par>
+          <argv>${field:stat} &amp; 0xeeff</argv>
         </statement>
         <statement format="getstat"></statement>
       </session>

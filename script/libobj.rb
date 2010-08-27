@@ -77,7 +77,7 @@ class Obj < Hash
   def get_cmd(e) # //statement
     cmd=''
     argv=[]
-    e.each_element{|d| # //par
+    e.each_element{|d| # //argv
       str=@cs.subnum(d.text).subpar.subvar.eval.to_s
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str

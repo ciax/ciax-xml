@@ -13,13 +13,13 @@
       </session>
       <session id="setv" label="Set Voltage 0-50[V]">
         <statement format="setv %f">
-          <par>$1</par>
+          <argv>$1</argv>
         </statement>
         <statement format="getstat"></statement>
       </session>
       <session id="setp" label="Set Power 0-100[W]">
         <statement format="setv %5.2f">
-          <par>Math.sqrt($1*26)</par>
+          <argv>Math.sqrt($1*26)</argv>
         </statement>
         <statement format="getstat"></statement>
       </session>

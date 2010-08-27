@@ -47,13 +47,33 @@
   </xsd:element>
   <xsd:element name="session">
     <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="odb:statement" />
-        <xsd:element ref="odb:repeat" />
-      </xsd:choice>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="odb:parameters" />
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:element ref="odb:statement" />
+          <xsd:element ref="odb:repeat" />
+        </xsd:choice>
+      </xsd:sequence>
       <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>
+  <!--command param-->
+  <xsd:element name="parameters">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="odb:par" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="par">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0">
+        <xsd:element ref="odb:range" maxOccurs="unbounded" />
+        <xsd:element ref="odb:regexp" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <!--command statement-->
   <xsd:element name="statement">
     <xsd:complexType>
       <xsd:sequence>
@@ -115,11 +135,6 @@
     </xsd:complexType>
   </xsd:element>
   <!--symbol-->
-  <xsd:simpleType name="rerange">
-    <xsd:restriction base="xsd:string">
-      <xsd:pattern value="^(-?\d+(\.\d+)?&lt;?)?:(&lt;?-?\d+(\.\d+)?)?" />
-    </xsd:restriction>
-  </xsd:simpleType>
   <xsd:element name="symbols">
     <xsd:complexType>
       <xsd:sequence>
@@ -129,24 +144,19 @@
   </xsd:element>
   <xsd:element name="symbol">
     <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="xsd:anyType">
-          <xsd:choice minOccurs="0">
-            <xsd:element ref="odb:case" minOccurs="1" maxOccurs="unbounded" />
-            <xsd:element ref="odb:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
-          </xsd:choice>
-          <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
-          <xsd:attribute name="type">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="ENUM"></xsd:enumeration>
-                <xsd:enumeration value="FLOAT" />
-                <xsd:enumeration value="INT" />
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
-        </xsd:restriction>
-      </xsd:complexContent>
+      <xsd:choice minOccurs="0">
+        <xsd:element ref="odb:enum" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="ENUM"></xsd:enumeration>
+            <xsd:enumeration value="FLOAT" />
+            <xsd:enumeration value="INT" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="symbol_attr">
@@ -162,22 +172,21 @@
       </xsd:simpleType>
     </xsd:attribute>
   </xsd:attributeGroup>
-  <xsd:element name="case">
+  <xsd:element name="enum">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="odb:symbol_attr" />
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:choice>
+        <xsd:element ref="odb:regexp" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="odb:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+      </xsd:choice>
+      <xsd:attributeGroup ref="odb:symbol_attr" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="range">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="odb:rerange">
-          <xsd:attributeGroup ref="odb:symbol_attr" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
+  <!--cases-->
+  <xsd:simpleType name="rerange">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="^(-?\d+(\.\d+)?&lt;?)?:(&lt;?-?\d+(\.\d+)?)?" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="range" type="odb:rerange"></xsd:element>
+  <xsd:element name="regexp" type="xsd:string" />
 </xsd:schema>

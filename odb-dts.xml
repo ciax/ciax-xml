@@ -75,38 +75,78 @@
     </status>
     <symbols>
       <symbol id="inst" type="ENUM">
-        <case hl="warn" msg="NONE">0</case>
-        <case hl="normal" msg="IRCS">1</case>
-        <case hl="normal" msg="CIAO">3</case>
-        <case hl="normal" msg="FOCAS">5</case>
-        <case hl="normal" msg="COMICS">7</case>
-        <case hl="normal" msg="K3D">10</case>
-        <case hl="normal" msg="MOIRCS">12</case>
-        <case hl="normal" msg="CIAX3">13</case>
-        <case hl="normal" msg="N/A" />
+        <enum hl="warn" msg="NONE">
+          <regexp>0</regexp>
+        </enum>
+        <enum hl="normal" msg="IRCS">
+          <regexp>1</regexp>
+        </enum>
+        <enum hl="normal" msg="CIAO">
+          <regexp>3</regexp>
+        </enum>
+        <enum hl="normal" msg="FOCAS">
+          <regexp>5</regexp>
+        </enum>
+        <enum hl="normal" msg="COMICS">
+          <regexp>7</regexp>
+        </enum>
+        <enum hl="normal" msg="K3D">
+          <regexp>10</regexp>
+        </enum>
+        <enum hl="normal" msg="MOIRCS">
+          <regexp>12</regexp>
+        </enum>
+        <enum hl="normal" msg="CIAX3">
+          <regexp>13</regexp>
+        </enum>
+        <enum hl="normal" msg="N/A" />
       </symbol>
       <symbol id="rsel" type="ENUM">
-        <case hl="warn" msg="PFO">1</case>
-        <case hl="warn" msg="PFI">2</case>
-        <case hl="normal" msg="CAS">4</case>
-        <case hl="warn" msg="NSO">8</case>
-        <case hl="warn" msg="NSI">10</case>
-        <case hl="alarm" msg="N/A" />
+        <enum hl="warn" msg="PFO">
+          <regexp>1</regexp>
+        </enum>
+        <enum hl="warn" msg="PFI">
+          <regexp>2</regexp>
+        </enum>
+        <enum hl="normal" msg="CAS">
+          <regexp>4</regexp>
+        </enum>
+        <enum hl="warn" msg="NSO">
+          <regexp>8</regexp>
+        </enum>
+        <enum hl="warn" msg="NSI">
+          <regexp>10</regexp>
+        </enum>
+        <enum hl="alarm" msg="N/A" />
       </symbol>
       <symbol id="login" type="ENUM">
-        <case hl="alarm" msg="OSS Login">OSS</case>
-        <case hl="normal" msg="LOGIN">CXWS</case>
-        <case hl="warn" msg="LOGOUT" />
+        <enum hl="alarm" msg="OSS Login">
+          <regexp>OSS</regexp>
+        </enum>
+        <enum hl="normal" msg="LOGIN">
+          <regexp>CXWS</regexp>
+        </enum>
+        <enum hl="warn" msg="LOGOUT" />
       </symbol>
       <symbol id="rpw" type="ENUM">
-        <case hl="warn" msg="ON">1</case>
-        <case hl="normal" msg="OFF">2</case>
+        <enum hl="warn" msg="ON">
+          <regexp>1</regexp>
+        </enum>
+        <enum hl="normal" msg="OFF">
+          <regexp>2</regexp>
+        </enum>
       </symbol>
       <symbol id="rps" type="ENUM">
-        <case hl="normal" msg="OFF">11</case>
-        <case hl="normal" msg="0DEG">10</case>
-        <case hl="normal" msg="-4DEG">01</case>
-        <case hl="alarm" msg="N/A" />
+        <enum hl="normal" msg="OFF">
+          <regexp>11</regexp>
+        </enum>
+        <enum hl="normal" msg="0DEG">
+          <regexp>10</regexp>
+        </enum>
+        <enum hl="normal" msg="-4DEG">
+          <regexp>01</regexp>
+        </enum>
+        <enum hl="alarm" msg="N/A" />
       </symbol>
     </symbols>
   </object>

@@ -104,37 +104,77 @@
     </status>
     <symbols>
       <symbol id="ecode" label="ExitCode" type="ENUM">
-        <case hl="hide" msg="OK">0000</case>
-        <case msg="RW Region Error" hl="alarm">0002</case>
-        <case msg="CMD Code Error" hl="alarm">0050</case>
-        <case msg="Devide Num Error" hl="alarm">0056</case>
-        <case msg="Communication Error" hl="alarm">005B</case>
-        <case msg="CPU Watch timeout Error" hl="alarm">0060</case>
-        <case hl="alarm" msg="Unknown"></case>
+        <enum hl="hide" msg="OK">
+          <regexp>0000</regexp>
+        </enum>
+        <enum msg="RW Region Error" hl="alarm">
+          <regexp>0002</regexp>
+        </enum>
+        <enum msg="CMD Code Error" hl="alarm">
+          <regexp>0050</regexp>
+        </enum>
+        <enum msg="Devide Num Error" hl="alarm">
+          <regexp>0056</regexp>
+        </enum>
+        <enum msg="Communication Error" hl="alarm">
+          <regexp>005B</regexp>
+        </enum>
+        <enum msg="CPU Watch timeout Error" hl="alarm">
+          <regexp>0060</regexp>
+        </enum>
+        <enum hl="alarm" msg="Unknown"></enum>
       </symbol>
       <symbol id="motor" type="INT">
-        <range hl="alarm" msg="LOW">:10</range>
-        <range hl="normal" msg="OK">10&lt;:30</range>
-        <range hl="alarm" msg="HIGH">30&lt;:</range>
+        <enum hl="alarm" msg="LOW">
+          <range>:10</range>
+        </enum>
+        <enum hl="normal" msg="OK">
+          <range>10&lt;:30</range>
+        </enum>
+        <enum hl="alarm" msg="HIGH">
+          <range>30&lt;:</range>
+        </enum>
       </symbol>
       <symbol id="battery" type="FLOAT">
-        <range hl="alarm" msg="LOW">:20</range>
-        <range hl="warn" msg="LESS">20&lt;:22</range>
-        <range hl="normal" msg="OK">22&lt;:26</range>
-        <range hl="warn" msg="FULL">26&lt;:28</range>
-        <range hl="alarm" msg="HIGH">28&lt;:</range>
+        <enum hl="alarm" msg="LOW">
+          <range>:20</range>
+        </enum>
+        <enum hl="warn" msg="LESS">
+          <range>20&lt;:22</range>
+        </enum>
+        <enum hl="normal" msg="OK">
+          <range>22&lt;:26</range>
+        </enum>
+        <enum hl="warn" msg="FULL">
+          <range>26&lt;:28</range>
+        </enum>
+        <enum hl="alarm" msg="HIGH">
+          <range>28&lt;:</range>
+        </enum>
       </symbol>
       <symbol id="inst" type="ENUM">
-        <case hl="normal" msg="MOIRCS">2</case>
-        <case hl="warn" msg="N/A" />
+        <enum hl="normal" msg="MOIRCS">
+          <regexp>2</regexp>
+        </enum>
+        <enum hl="warn" msg="N/A" />
       </symbol>
       <symbol id="jpos" type="ENUM">
-        <case hl="normal" msg="D">0</case>
-        <case hl="normal" msg="1(L)">1</case>
-        <case hl="normal" msg="2(M)">2</case>
-        <case hl="normal" msg="3(H)">3</case>
-        <case hl="normal" msg="CHG">4</case>
-        <case hl="warn" msg="N/A" />
+        <enum hl="normal" msg="D">
+          <regexp>0</regexp>
+        </enum>
+        <enum hl="normal" msg="1(L)">
+          <regexp>1</regexp>
+        </enum>
+        <enum hl="normal" msg="2(M)">
+          <regexp>2</regexp>
+        </enum>
+        <enum hl="normal" msg="3(H)">
+          <regexp>3</regexp>
+        </enum>
+        <enum hl="normal" msg="CHG">
+          <regexp>4</regexp>
+        </enum>
+        <enum hl="warn" msg="N/A" />
       </symbol>
     </symbols>
   </object>

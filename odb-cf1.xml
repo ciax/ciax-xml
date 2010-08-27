@@ -3,9 +3,7 @@
   <object client="socat - tcp:ltt-i:4003" device="k3n" id="cf1" label="S1 Helium Compressor Coolant Flow" server="socat - udp-l:45601,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat"></statement>
       </session>
     </selection>
     <status>
@@ -21,33 +19,79 @@
     </status>
     <symbols>
       <symbol id="rcode" label="Response Code" type="ENUM">
-        <case hl="hide" msg="OK">0000</case>
-        <case hl="alarm" msg="Cmd Length Over">1001</case>
-        <case hl="alarm" msg="Cmd Length Short">1002</case>
-        <case hl="alarm" msg="Parameter Error">1100</case>
-        <case hl="alarm" msg="Area Error">1101</case>
-        <case hl="alarm" msg="Start Address Error">1103</case>
-        <case hl="alarm" msg="Action Error">2203</case>
-        <case msg="ResponseCode Error" hl="alarm"></case>
+        <enum hl="hide" msg="OK">
+          <regexp>0000</regexp>
+        </enum>
+        <enum hl="alarm" msg="Cmd Length Over">
+          <regexp>1001</regexp>
+        </enum>
+        <enum hl="alarm" msg="Cmd Length Short">
+          <regexp>1002</regexp>
+        </enum>
+        <enum hl="alarm" msg="Parameter Error">
+          <regexp>1100</regexp>
+        </enum>
+        <enum hl="alarm" msg="Area Error">
+          <regexp>1101</regexp>
+        </enum>
+        <enum hl="alarm" msg="Start Address Error">
+          <regexp>1103</regexp>
+        </enum>
+        <enum hl="alarm" msg="Action Error">
+          <regexp>2203</regexp>
+        </enum>
+        <enum msg="ResponseCode Error" hl="alarm">
+          <regexp>.</regexp>
+        </enum>
       </symbol>
       <symbol id="ecode" label="ExitCode" type="ENUM">
-        <case hl="hide" msg="OK">00</case>
-        <case hl="alarm" msg="CMD Error">0F</case>
-        <case hl="alarm" msg="Parity Error">10</case>
-        <case hl="alarm" msg="Fleming Error">11</case>
-        <case hl="alarm" msg="Over Run Error">12</case>
-        <case hl="alarm" msg="BCC Error">13</case>
-        <case hl="alarm" msg="Format Error">14</case>
-        <case hl="alarm" msg="Sub Address Error">16</case>
-        <case hl="alarm" msg="Frame Length Error">18</case>
-        <case msg="Unknown" hl="alarm"></case>
+        <enum hl="hide" msg="OK">
+          <regexp>00</regexp>
+        </enum>
+        <enum hl="alarm" msg="CMD Error">
+          <regexp>0F</regexp>
+        </enum>
+        <enum hl="alarm" msg="Parity Error">
+          <regexp>10</regexp>
+        </enum>
+        <enum hl="alarm" msg="Fleming Error">
+          <regexp>11</regexp>
+        </enum>
+        <enum hl="alarm" msg="Over Run Error">
+          <regexp>12</regexp>
+        </enum>
+        <enum hl="alarm" msg="BCC Error">
+          <regexp>13</regexp>
+        </enum>
+        <enum hl="alarm" msg="Format Error">
+          <regexp>14</regexp>
+        </enum>
+        <enum hl="alarm" msg="Sub Address Error">
+          <regexp>16</regexp>
+        </enum>
+        <enum hl="alarm" msg="Frame Length Error">
+          <regexp>18</regexp>
+        </enum>
+        <enum msg="Unknown" hl="alarm">
+          <regexp>.</regexp>
+        </enum>
       </symbol>
       <symbol id="flow" type="FLOAT">
-        <range hl="alarm" msg="HH">6:</range>
-        <range hl="warn" msg="H">5:&lt;6</range>
-        <range hl="normal" msg="M">4:&lt;5</range>
-        <range hl="warn" msg="L">3:&lt;4</range>
-        <range hl="alarm" msg="LL">:&lt;3</range>
+        <enum hl="alarm" msg="HH">
+          <range>6:</range>
+        </enum>
+        <enum hl="warn" msg="H">
+          <range>5:&lt;6</range>
+        </enum>
+        <enum hl="normal" msg="M">
+          <range>4:&lt;5</range>
+        </enum>
+        <enum hl="warn" msg="L">
+          <range>3:&lt;4</range>
+        </enum>
+        <enum hl="alarm" msg="LL">
+          <range>:&lt;3</range>
+        </enum>
       </symbol>
     </symbols>
   </object>

@@ -3,9 +3,7 @@
   <object device="oma" id="map" label="Compressed Air Pressure at MOIRCS" client="socat - tcp:celaeno:4002" server="socat - udp-l:24102,reuseaddr,fork">
     <selection>
       <session id="upd" label="Update Status">
-        <statement
-          format="getstat">
-        </statement>
+        <statement format="getstat"></statement>
       </session>
     </selection>
     <status>
@@ -15,11 +13,21 @@
     </status>
     <symbols>
       <symbol id="pres" type="FLOAT">
-        <range hl="alarm" msg="HH">110:</range>
-        <range hl="warn" msg="H">105:&lt;110</range>
-        <range hl="normal" msg="M">95:&lt;105</range>
-        <range hl="warn" msg="L">90:&lt;95</range>
-        <range hl="alarm" msg="LL">:&lt;90</range>
+        <enum hl="alarm" msg="HH">
+          <range>110:</range>
+        </enum>
+        <enum hl="warn" msg="H">
+          <range>105:&lt;110</range>
+        </enum>
+        <enum hl="normal" msg="M">
+          <range>95:&lt;105</range>
+        </enum>
+        <enum hl="warn" msg="L">
+          <range>90:&lt;95</range>
+        </enum>
+        <enum hl="alarm" msg="LL">
+          <range>:&lt;90</range>
+        </enum>
       </symbol>
     </symbols>
   </object>

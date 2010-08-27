@@ -2,8 +2,7 @@
 # XML Common Method
 require 'librerange'
 class ConvStr
-  attr_writer :par
-  attr_accessor :str
+  attr_accessor :par,:str
 
   def initialize(v,hash)
     @v,@var,@str,@par,@n=v,hash,'',[],nil

@@ -12,12 +12,22 @@
         <statement format="getstat"></statement>
       </session>
       <session id="setv" label="Set Voltage 0-50[V]">
+        <parameters>
+          <par>
+            <range>0:50</range>
+          </par>
+        </parameters>
         <statement format="setv %f">
           <argv>$1</argv>
         </statement>
         <statement format="getstat"></statement>
       </session>
       <session id="setp" label="Set Power 0-100[W]">
+        <parameters>
+          <par>
+            <range>0:100</range>
+          </par>
+        </parameters>
         <statement format="setv %5.2f">
           <argv>Math.sqrt($1*26)</argv>
         </statement>
@@ -64,11 +74,21 @@
     </status>
     <symbols>
       <symbol id="flow" type="FLOAT">
-        <range hl="alarm" msg="HH">6:</range>
-        <range hl="warn" msg="H">5:&lt;6</range>
-        <range hl="normal" msg="M">4:&lt;5</range>
-        <range hl="warn" msg="L">3:&lt;4</range>
-        <range hl="alarm" msg="LL">:&lt;3</range>
+        <enum hl="alarm" msg="HH">
+          <range>6:</range>
+        </enum>
+        <enum hl="warn" msg="H">
+          <range>5:&lt;6</range>
+        </enum>
+        <enum hl="normal" msg="M">
+          <range>4:&lt;5</range>
+        </enum>
+        <enum hl="warn" msg="L">
+          <range>3:&lt;4</range>
+        </enum>
+        <enum hl="alarm" msg="LL">
+          <range>:&lt;3</range>
+        </enum>
       </symbol>
     </symbols>
   </object>

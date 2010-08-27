@@ -67,16 +67,36 @@
     </status>
     <symbols>
       <symbol id="inst" type="ENUM">
-        <case hl="warn" msg="NONE">0</case>
-        <case hl="normal" msg="CIAX3">1</case>
-        <case hl="normal" msg="COMICS">2</case>
-        <case hl="normal" msg="CIAO">3</case>
-        <case hl="normal" msg="FOCAS">4</case>
-        <case hl="normal" msg="IRCS">5</case>
-        <case hl="normal" msg="N/A">6</case>
-        <case hl="normal" msg="MOIRCS">7</case>
-        <case hl="normal" msg="MP-CS1">8</case>
-        <case hl="normal" msg="MP-CS2">9</case>
+        <enum hl="warn" msg="NONE">
+          <regexp>0</regexp>
+        </enum>
+        <enum hl="normal" msg="CIAX3">
+          <regexp>1</regexp>
+        </enum>
+        <enum hl="normal" msg="COMICS">
+          <regexp>2</regexp>
+        </enum>
+        <enum hl="normal" msg="CIAO">
+          <regexp>3</regexp>
+        </enum>
+        <enum hl="normal" msg="FOCAS">
+          <regexp>4</regexp>
+        </enum>
+        <enum hl="normal" msg="IRCS">
+          <regexp>5</regexp>
+        </enum>
+        <enum hl="normal" msg="N/A">
+          <regexp>6</regexp>
+        </enum>
+        <enum hl="normal" msg="MOIRCS">
+          <regexp>7</regexp>
+        </enum>
+        <enum hl="normal" msg="MP-CS1">
+          <regexp>8</regexp>
+        </enum>
+        <enum hl="normal" msg="MP-CS2">
+          <regexp>9</regexp>
+        </enum>
       </symbol>
     </symbols>
   </object>

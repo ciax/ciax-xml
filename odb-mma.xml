@@ -46,26 +46,58 @@
     </status>
     <symbols>
       <symbol id="err" type="ENUM">
-        <case hl="hide" msg="No Error">0</case>
-        <case hl="alarm" msg="Could not burn flash successfully">1</case>
-        <case hl="alarm" msg="Could not download file">2</case>
-        <case hl="alarm" msg="Not enough memory to execute user program">3</case>
-        <case hl="alarm" msg="Attempt to access a non-existent array element">4</case>
-        <case hl="alarm" msg="Unknown Error"></case>
+        <enum hl="hide" msg="No Error">
+          <regexp>0</regexp>
+        </enum>
+        <enum hl="alarm" msg="Could not burn flash successfully">
+          <regexp>1</regexp>
+        </enum>
+        <enum hl="alarm" msg="Could not download file">
+          <regexp>2</regexp>
+        </enum>
+        <enum hl="alarm" msg="Not enough memory to execute user program">
+          <regexp>3</regexp>
+        </enum>
+        <enum hl="alarm" msg="Attempt to access a non-existent array element">
+          <regexp>4</regexp>
+        </enum>
+        <enum hl="alarm" msg="Unknown Error">
+          <regexp></regexp>
+        </enum>
       </symbol>
       <symbol id="pos" type="ENUM">
-        <case hl="normal" msg="INIT">0001</case>
-        <case hl="normal" msg="STOCK">0010</case>
-        <case hl="normal" msg="FOCUS">0100</case>
-        <case hl="normal" msg="ROT">1000</case>
-        <case hl="alarm" msg="N/A"></case>
+        <enum hl="normal" msg="INIT">
+          <regexp>0001</regexp>
+        </enum>
+        <enum hl="normal" msg="STOCK">
+          <regexp>0010</regexp>
+        </enum>
+        <enum hl="normal" msg="FOCUS">
+          <regexp>0100</regexp>
+        </enum>
+        <enum hl="normal" msg="ROT">
+          <regexp>1000</regexp>
+        </enum>
+        <enum hl="alarm" msg="N/A">
+          <regexp></regexp>
+        </enum>
       </symbol>
       <symbol id="pulse" type="FLOAT">
-        <range hl="normal" msg="INIT">0:0.5</range>
-        <range hl="normal" msg="FOCUS">12.3:13.2</range>
-        <range hl="normal" msg="ROT">122.5:123.5</range>
-        <range hl="normal" msg="WAIT">184.5:185.5</range>
-        <range hl="normal" msg="STOCK">200:201</range>
+        <enum hl="normal" msg="INIT">
+          <range>0:0.5</range>
+        </enum>
+        <enum hl="normal" msg="FOCUS">
+          <range>12.3:13.2</range>
+        </enum>
+        <enum hl="normal" msg="ROT">
+          <range>122.5:123.5</range>
+        </enum>
+        <enum hl="normal" msg="WAIT">
+          <range>184.5:185.5</range>
+        </enum>
+        <enum hl="normal" msg="STOCK">
+          <range>200:201</range>
+        </enum>
       </symbol>
     </symbols>
   </object>

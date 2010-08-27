@@ -49,6 +49,11 @@ class Obj < Hash
   def objcom
     @session.each_element {|c|
       case c.name
+      when 'parameters'
+        pary=@cs.par.clone
+        c.each_element{|d| #//par
+          validate(d,pary.shift)
+        }
       when 'statement'
         yield(get_cmd(c))
       when 'repeat'
@@ -173,15 +178,10 @@ class Obj < Hash
     e.each_element {|enum|
       a=enum.attributes
       msg=a['msg']
-      txt=enum.text
-      case enum.name
-      when 'range'
-        next if ReRange.new(txt) != set['val']
-        # @v.msg{"STAT:Symbol:Within([#{txt}] =~ [#{set['val']}])"}
-      when 'case'
-        # No text is default
-        next if txt &&  /#{txt}/ !~ set['val']
-        # @v.msg{"STAT:Symbol:Matches(/#{txt}/ =~ [#{set['val']}])"}
+      begin
+        validate(enum,set['val'])
+      rescue
+        next
       end
       a.each{|k,v| set[k]=v }
       break true

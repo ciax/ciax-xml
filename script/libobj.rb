@@ -87,11 +87,7 @@ class Obj < Hash
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }
-    begin
-      cmd = e.attributes['format'] % argv
-    rescue
-      @v.err("No Parameter")
-    end
+    cmd = e.attributes['format'] % argv
     @v.msg{"Exec(DDB):[#{cmd}]"}
     cmd
   end

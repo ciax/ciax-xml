@@ -22,9 +22,9 @@ class ConvStr
     @n=nil
   end
 
-  def subnum(str=nil) # Sub $_ by num
-    @str=str if str
-    return self unless @n
+  def subnum(str) # Sub $_ by num
+    @str=str
+    return self unless @n && @str
     @str=@str.gsub(/\$_/,@n)
     @v.msg("Substutited to [#{@str}]")
     self

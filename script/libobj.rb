@@ -98,16 +98,14 @@ class Obj < Hash
   end
 
   def get_var(var) # //status/var
-    a=var.attributes
-    id=@cs.subnum(a['id']).to_s
-    st={'label'=> @cs.subnum(a['label']).to_s }
-    if ref=a['ref']
+    id=var_attr(var,'id')
+    st={'label'=> var_attr(var,'label') }
+    if ref=var_attr(var,'ref')
       @rdb['status'].each_element{|d|
         d.each_element_with_attribute('id',ref){|e|
           var=e
         }
       } || @v.err("No such id in ref")
-      a=var.attributes
     end
     st['group']=@gn
     var.each_element{|e|
@@ -117,7 +115,7 @@ class Obj < Hash
         @v.msg{"STAT:GetStatus:#{id}=[#{st['val']}]"}
       end
     }
-    if sid=a['symbol']
+    if sid=var_attr(var,'symbol')
       std_symbol(sid,st)
       if @odb['symbols']
         @odb['symbols'].each_element_with_attribute('id',sid){ |e|
@@ -132,7 +130,7 @@ class Obj < Hash
     ary=Array.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=@cs.subnum(a['field']).to_s || return
+      fld=var_attr(dtype,'field') || return
       fld=@cs.subnum(self['field'][fld]).to_s || return
       data=fld.clone
       # @v.msg{"STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]"}
@@ -194,6 +192,10 @@ class Obj < Hash
     } || set.update({'msg'=>'N/A','hl'=>'warn'})
     @v.msg{"STAT:Symbol:[#{set['msg']}] for [#{set['val']}]"}
     set
+  end
+
+  def var_attr(e,str)
+    @cs.subnum(e.attributes[str]).to_s
   end
 
 end

@@ -7,7 +7,7 @@
             odb//session/repeat/statement/par
             odb//status/repeat/var@id
             odb//status/repeat/var@label
-            odb//status/repeat/var/*@field
+            odb//status/repeat/var/value/*@field
 
  $1..9
     description : substitute parameters
@@ -33,7 +33,7 @@
             --
             odb//repeat
             odb//statement
-            odb//status/var/*
+            odb//status/var/value
 
  decode
     usable: ddb//response/field

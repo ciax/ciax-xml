@@ -8,6 +8,7 @@ require "libconvstr"
 
 class Obj < Hash
   include ModXml
+  attr_reader :dev,:server,:client
 
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
@@ -32,6 +33,9 @@ class Obj < Hash
     @cs=ConvStr.new(@v)
     @cs.var=self
     @gn=0
+    @odb['comm'].each_element{|e|
+      self[e.name]=e.text
+    }
   end
   
   public

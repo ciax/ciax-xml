@@ -4,11 +4,12 @@ require "libdev"
 require "thread"
 
 class ObjSrv < Hash
+  attr_reader :server
 
   def initialize(obj)
     @odb=Obj.new(obj)
-    update({:cmd=>'upd',:int=>'10',:obj => obj,:issue =>''})
-    update(@odb)
+    @var={:cmd=>'upd',:int=>'10',:obj => obj,:issue =>''}
+    @server=@odb['server']
     @ddb=DevCom.new(@odb['device'],@odb['client'],obj)
     @odb.get_stat(@ddb.field)
     @q=Queue.new
@@ -20,8 +21,8 @@ class ObjSrv < Hash
 
   def prompt
     prom = @auto.alive? ? '&' : ''
-    prom << self[:obj]
-    prom << self[:issue]
+    prom << @var[:obj]
+    prom << @var[:issue]
     prom << ">"
   end
 
@@ -70,7 +71,7 @@ class ObjSrv < Hash
     Thread.new {
       loop {
         cmd=@q.shift
-        self[:issue]='*'
+        @var[:issue]='*'
         begin
           @ddb.setcmd(cmd)
           @ddb.devcom
@@ -78,7 +79,7 @@ class ObjSrv < Hash
         rescue
           @errmsg << e2s
         ensure
-          self[:issue]=''
+          @var[:issue]=''
         end
       }
     }
@@ -98,8 +99,8 @@ class ObjSrv < Hash
         @auto=Thread.new {
           begin
             loop{
-              self[:cmd].split(';').each {|c| session(c)} if @q.empty?
-              sleep self[:int].to_i
+              @var[:cmd].split(';').each {|c| session(c)} if @q.empty?
+              sleep @var[:int].to_i
             }
           rescue
             @errmsg << e2s
@@ -108,14 +109,14 @@ class ObjSrv < Hash
       when /^int=/
         num=$'
         if num.to_i > 0
-          self[:int]=num
+          @var[:int]=num
         else
           str << "Out of Range\n" 
         end
       when /^cmd=/
         line=$'
         line.split(";").each{|c| @odb.setcmd(c)}
-        self[:cmd]=line
+        @var[:cmd]=line
       else
         msg=["== option list =="]
         msg << " start\t:Start Auto update"
@@ -126,7 +127,7 @@ class ObjSrv < Hash
       end
     }
     str << "Not " unless @auto.alive?
-    str << "Running(cmd=[#{self[:cmd]}] int=[#{self[:int]}])\n"
+    str << "Running(cmd=[#{@var[:cmd]}] int=[#{@var[:int]}])\n"
   end
 
   def e2s

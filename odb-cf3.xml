@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object client="socat - tcp:ltt-i:4002" device="k3n" id="cf3" label="S3 Helium Compressor Coolant Flow" ref="cf1" server="socat - udp-l:45603,reuseaddr,fork">
+  <object id="cf3" label="S3 Helium Compressor Coolant Flow" device="k3n" ref="cf1">
+    <comm>
+      <client>socat - tcp:ltt-i:4002</client>
+      <server>socat - udp-l:45603,reuseaddr,fork</server>
+    </comm>
     <status>
       <group>
         <var id="flow" label="IRCS(S3) Coolant Flow(l/min)" ref="flow" />

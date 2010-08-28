@@ -15,16 +15,25 @@
   <xsd:element name="object">
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element ref="odb:comm" minOccurs="1" maxOccurs="1" />
         <xsd:element ref="odb:selection" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="odb:status" minOccurs="1" maxOccurs="1" />
         <xsd:element ref="odb:symbols" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="device" type="xsd:string" use="required" />
-      <xsd:attribute name="client" type="xsd:string"></xsd:attribute>
-      <xsd:attribute name="server" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="comm">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="odb:client"></xsd:element>
+        <xsd:element ref="odb:server"></xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="client" type="xsd:string"></xsd:element>
+  <xsd:element name="server" type="xsd:string" />
   <!--Share-->
   <xsd:element name="repeat">
     <xsd:complexType>

@@ -65,7 +65,7 @@ class Obj < Hash
   def get_stat(dstat)
     return unless dstat
     self['field'].update(dstat)
-    @odb['status'].each_element{|g| group_var(g) }
+    @odb['status'].each_element{|g| stat_group(g) }
     self['stat']['time']['val']=Time.at(self['field']['time'].to_f).to_s
     @f.save_json(self['stat'])
   end
@@ -86,38 +86,31 @@ class Obj < Hash
   end
 
   #Stat Methods
-  def group_var(e)
+  def stat_group(e)
     case e.name
     when 'group'
       @gn+=1
-      e.each_element{|g| group_var(g) }
+      e.each_element{|g| stat_group(g) }
     when 'var'
       get_var(e)
     when 'repeat'
-      @cs.repeat(e){|d| group_var(d) }
+      @cs.repeat(e){|d| stat_group(d) }
     end
   end
 
   def get_var(org) # //status/var
     va=[org]
     st={'group' => @gn }
-    if ref=var_attr(va,'ref')
+    if ref=org.attributes['ref']
       @rdb['status'].each_element{|d|
-        d.each_element_with_attribute('id',ref){|e|
-          va << e
-        }
+        d.each_element_with_attribute('id',ref){|e| va << e }
       } || @v.err("No such id in ref")
     end
-    id=var_attr(va,'id')
-    st['label']=var_attr(va,'label')
-    va.first.each_element{|e|
-      case e.name
-      when 'value'
-        st['val']=get_val(e)
-        @v.msg{"STAT:GetStatus:#{id}=[#{st['val']}]"}
-      end
-    }
-    if sid=var_attr(va,'symbol')
+    a=var_select(va)
+    st['label']=a['label']
+    st['val']=get_val(a[:value])
+    @v.msg{"STAT:GetStatus:#{a['id']}=[#{st['val']}]"}
+    if sid=a['symbol']
       std_symbol(sid,st)
       if @odb['symbols']
         @odb['symbols'].each_element_with_attribute('id',sid){ |e|
@@ -125,17 +118,16 @@ class Obj < Hash
         }
       end
     end
-    self['stat'][id]=st
+    self['stat'][a['id']]=st
   end
 
   def get_val(e)
     ary=Array.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=var_attr([dtype],'field') || return
+      fld=@cs.subnum(a['field']).to_s || return
       fld=@cs.subnum(self['field'][fld]).to_s || return
       data=fld.clone
-      # @v.msg{"STAT:Convert:#{dtype.name.capitalize} Field (#{fld}) [#{data}]"}
       case dtype.name
       when 'binary'
         bit=(data.to_i >> a['bit'].to_i & 1)
@@ -196,13 +188,15 @@ class Obj < Hash
     set
   end
 
-  def var_attr(va,str)
-    va.each{|var|
-      if a=var.attributes[str]
-        return @cs.subnum(a).to_s
-      end
+  def var_select(va)
+    h=Hash.new
+    va.reverse.each{|var|
+      var.attributes.each{|k,v|
+        h[k]=@cs.subnum(v).to_s
+      }
+      var.each_element{|e| h[:value]=e }
     }
-    nil
+    h
   end
 
 end

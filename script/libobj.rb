@@ -6,8 +6,57 @@ require "libmodxml"
 require "libiofile"
 require "libconvstr"
 
+module StatSymbol
+  def get_symbol(ea,st)
+    if sid=ea.last.attributes['symbol']
+      std_symbol(sid,st)
+      if @odb.last['symbols']
+        @odb.last['symbols'].each_element_with_attribute('id',sid){ |e|
+          local_symbol(e,st)
+        }
+      end
+    end
+    st
+  end
+
+  # Built-in Symbol (normal,hide,on-warn,off-warn,alarm)
+  def std_symbol(sid,st)
+    if /^(normal|warn|off-warn|alarm|off-alarm|hide)$/ === sid
+      st['type']='ENUM'
+      st['msg']=(st['val']=='1') ? 'ON' : 'OFF'
+      st['hl']=(/hide|alarm/ === sid) ? 'hide' : 'normal'
+      case sid
+      when 'warn'
+        st['hl']='warn' if st['msg'] == 'ON'
+      when 'off-warn'
+        st['hl']='warn' if st['msg'] == 'OFF'
+      when 'alarm'
+        st['hl'] = 'alarm' if st['msg'] == 'ON'
+      when 'off-alarm'
+        st['hl'] = 'alarm' if st['msg'] == 'OFF'
+      end
+      st
+    end
+  end
+
+  def local_symbol(e,set)
+    set['type']=e.attributes['type']
+    e.each_element {|enum|
+      a=enum.attributes
+      msg=a['msg']
+      validate(enum,set['val']) rescue next
+      a.each{|k,v| set[k]=v }
+      break true
+    } || set.update({'msg'=>'N/A','hl'=>'warn'})
+    @v.msg{"STAT:Symbol:[#{set['msg']}] for [#{set['val']}]"}
+    set
+  end
+  
+end
+
 class Obj < Hash
   include ModXml
+  include StatSymbol
 
   def initialize(obj)
     @odb=[XmlDoc.new('odb',obj)]
@@ -109,14 +158,7 @@ class Obj < Hash
     st['label']=a['label']
     st['val']=get_val(a[:value])
     @v.msg{"STAT:GetStatus:#{a['id']}=[#{st['val']}]"}
-    if sid=a['symbol']
-      std_symbol(sid,st)
-      if @odb.first['symbols']
-        @odb.first['symbols'].each_element_with_attribute('id',sid){ |e|
-          local_symbol(e,st)
-        }
-      end
-    end
+    get_symbol(va,st)
     @stat[a['id']]=st
   end
 
@@ -148,39 +190,6 @@ class Obj < Hash
       end
     }
     e.attributes['format'] % ary
-  end
-
-  # Built-in Symbol (normal,hide,on-warn,off-warn,alarm)
-  def std_symbol(sid,st)
-    if /^(normal|warn|off-warn|alarm|off-alarm|hide)$/ === sid
-      st['type']='ENUM'
-      st['msg']=(st['val']=='1') ? 'ON' : 'OFF'
-      st['hl']=(/hide|alarm/ === sid) ? 'hide' : 'normal'
-      case sid
-      when 'warn'
-        st['hl']='warn' if st['msg'] == 'ON'
-      when 'off-warn'
-        st['hl']='warn' if st['msg'] == 'OFF'
-      when 'alarm'
-        st['hl'] = 'alarm' if st['msg'] == 'ON'
-      when 'off-alarm'
-        st['hl'] = 'alarm' if st['msg'] == 'OFF'
-      end
-      st
-    end
-  end
-
-  def local_symbol(e,set)
-    set['type']=e.attributes['type']
-    e.each_element {|enum|
-      a=enum.attributes
-      msg=a['msg']
-      validate(enum,set['val']) rescue next
-      a.each{|k,v| set[k]=v }
-      break true
-    } || set.update({'msg'=>'N/A','hl'=>'warn'})
-    @v.msg{"STAT:Symbol:[#{set['msg']}] for [#{set['val']}]"}
-    set
   end
 
   def var_select(va)

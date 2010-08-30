@@ -10,10 +10,9 @@ class Obj < Hash
   include ModXml
 
   def initialize(obj)
-    @odb=XmlDoc.new('odb',obj)
-    if robj=@odb['ref']
-      @rdb=XmlDoc.new('odb',robj)
-      @odb.update(@rdb) {|k,o,r| o||r }
+    @odb=[XmlDoc.new('odb',obj)]
+    if robj=@odb.first['ref']
+      @odb << XmlDoc.new('odb',robj)
     end
   rescue RuntimeError
     abort $!.to_s
@@ -29,7 +28,7 @@ class Obj < Hash
     @field,@gn={},0
     @cs=ConvStr.new(@v)
     @cs.var={'field'=>@field,'stat'=>@stat }
-    @odb['comm'].each_element{|e|
+    @odb.first['comm'].each_element{|e|
       self[e.name]=e.text
     }
   end
@@ -37,10 +36,10 @@ class Obj < Hash
   public
   def setcmd(line)
     cmd,*@cs.par=line.split(' ')
-    @session=@odb.select_id('selection',cmd)
+    @session=@odb.first.select_id('selection',cmd)
     a=@session.attributes
     @v.msg{"Exec(DDB):#{a['label']}"}
-    @session=@rdb.select_id('selection',a['ref']) if a['ref']
+    @session=@odb.last.select_id('selection',a['ref']) if a['ref']
     line
   rescue
     raise "== Command List ==\n#{$!}"
@@ -65,7 +64,7 @@ class Obj < Hash
   def get_stat(dstat)
     return unless dstat
     @field.update(dstat)
-    @odb['status'].each_element{|g| stat_group(g) }
+    @odb.first['status'].each_element{|g| stat_group(g) }
     @stat['time']['val']=Time.at(@field['time'].to_f).to_s
     @f.save_json(@stat)
   end
@@ -102,7 +101,7 @@ class Obj < Hash
     va=[org]
     st={'group' => @gn }
     if ref=org.attributes['ref']
-      @rdb['status'].each_element{|d|
+      @odb.last['status'].each_element{|d|
         d.each_element_with_attribute('id',ref){|e| va << e }
       } || @v.err("No such id in ref")
     end
@@ -112,8 +111,8 @@ class Obj < Hash
     @v.msg{"STAT:GetStatus:#{a['id']}=[#{st['val']}]"}
     if sid=a['symbol']
       std_symbol(sid,st)
-      if @odb['symbols']
-        @odb['symbols'].each_element_with_attribute('id',sid){ |e|
+      if @odb.first['symbols']
+        @odb.first['symbols'].each_element_with_attribute('id',sid){ |e|
           local_symbol(e,st)
         }
       end
@@ -176,11 +175,7 @@ class Obj < Hash
     e.each_element {|enum|
       a=enum.attributes
       msg=a['msg']
-      begin
-        validate(enum,set['val'])
-      rescue
-        next
-      end
+      validate(enum,set['val']) rescue next
       a.each{|k,v| set[k]=v }
       break true
     } || set.update({'msg'=>'N/A','hl'=>'warn'})

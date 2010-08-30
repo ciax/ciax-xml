@@ -21,17 +21,18 @@
         <xsd:element ref="odb:symbols" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="device" type="xsd:string" use="required" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="comm">
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element ref="odb:device" minOccurs="1" maxOccurs="1"></xsd:element>
         <xsd:element ref="odb:client"></xsd:element>
         <xsd:element ref="odb:server"></xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="device" type="xsd:string"></xsd:element>
   <xsd:element name="client" type="xsd:string"></xsd:element>
   <xsd:element name="server" type="xsd:string" />
   <!--Share-->

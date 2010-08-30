@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="det" label="CsEtr Controller" device="srm">
+  <object id="det" label="CsEtr Controller">
     <comm>
+      <device xmlns="">srm</device>
       <client>socat - tcp:ltc-c:4001</client>
       <server>socat - udp-l:25104,reuseaddr,fork</server>
     </comm>

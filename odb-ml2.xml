@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="ml2" label="MOIRCS Temperature 2" device="lk8" ref="ml1">
+  <object id="ml2" label="MOIRCS Temperature 2" ref="ml1">
     <comm>
+      <device xmlns="">lk8</device>
       <client>socat - tcp:celaeno:4006</client>
       <server>socat - udp-l:24106,reuseaddr,fork</server>
     </comm>

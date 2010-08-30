@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object device="k3n" id="cf2" label="S2 Helium Compressor Coolant Flow" ref="cf1">
+  <object id="cf2" label="S2 Helium Compressor Coolant Flow" ref="cf1">
     <comm>
+      <device xmlns="">k3n</device>
       <client>socat - tcp:ltt-i:4001</client>
       <server>socat - udp-l:45602,reuseaddr,fork</server>
     </comm>

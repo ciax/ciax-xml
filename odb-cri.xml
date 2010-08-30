@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object device="bbe" id="cri" label="IR Compressor Room Reserve">
+  <object id="cri" label="IR Compressor Room Reserve">
     <comm>
+      <device xmlns="">bbe</device>
       <client>socat - tcp:ltc-i:4003</client>
       <server>socat - udp-l:25107,reuseaddr,fork</server>
     </comm>

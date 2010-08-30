@@ -8,7 +8,6 @@ require "libconvstr"
 
 class Obj < Hash
   include ModXml
-  attr_reader :dev,:server,:client
 
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
@@ -29,7 +28,6 @@ class Obj < Hash
     @v=Verbose.new("odb/#{obj}".upcase)
     self['field']=Hash.new
     update(@odb)
-    @obj=obj
     @cs=ConvStr.new(@v)
     @cs.var=self
     @gn=0

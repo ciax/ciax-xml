@@ -8,16 +8,16 @@
     </comm>
     <status>
       <group>
-        <var id="ch1" ref="ch1" label="Robohand"></var>
-        <var ref="ch2" label="CollBench" id="ch2"></var>
-        <var ref="ch3" label="BulkHead" id="ch3"></var>
-        <var ref="ch4" label="HeatPath" id="ch4"></var>
+        <var ref="ch1" label="Robohand"></var>
+        <var ref="ch2" label="CollBench"></var>
+        <var ref="ch3" label="BulkHead"></var>
+        <var ref="ch4" label="HeatPath"></var>
       </group>
       <group>
-        <var ref="ch5" label="D1(NONE)" id="ch5"></var>
-        <var ref="ch6" label="D2(NONE)" id="ch6"></var>
-        <var ref="ch7" label="ChipBox2" id="ch7"></var>
-        <var ref="ch8" label="Det2" id="ch8"></var>
+        <var ref="ch5" label="D1(NONE)"></var>
+        <var ref="ch6" label="D2(NONE)"></var>
+        <var ref="ch7" label="ChipBox2"></var>
+        <var ref="ch8" label="Det2"></var>
       </group>
     </status>
   </object>

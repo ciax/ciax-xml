@@ -20,17 +20,15 @@ class Obj < Hash
   else
     @f=IoFile.new(obj)
     begin
-      self['stat']=@f.load_json
+      @stat=@f.load_json
     rescue
       warn $!
-      self['stat']={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
+      @stat={'time'=>{'label'=>'LAST UPDATE','type'=>'DATETIME'}}
     end
     @v=Verbose.new("odb/#{obj}".upcase)
-    self['field']=Hash.new
-    update(@odb)
+    @field,@gn={},0
     @cs=ConvStr.new(@v)
-    @cs.var=self
-    @gn=0
+    @cs.var={'field'=>@field,'stat'=>@stat }
     @odb['comm'].each_element{|e|
       self[e.name]=e.text
     }
@@ -66,10 +64,10 @@ class Obj < Hash
   
   def get_stat(dstat)
     return unless dstat
-    self['field'].update(dstat)
+    @field.update(dstat)
     @odb['status'].each_element{|g| stat_group(g) }
-    self['stat']['time']['val']=Time.at(self['field']['time'].to_f).to_s
-    @f.save_json(self['stat'])
+    @stat['time']['val']=Time.at(@field['time'].to_f).to_s
+    @f.save_json(@stat)
   end
   
   private
@@ -120,7 +118,7 @@ class Obj < Hash
         }
       end
     end
-    self['stat'][a['id']]=st
+    @stat[a['id']]=st
   end
 
   def get_val(e)
@@ -128,7 +126,7 @@ class Obj < Hash
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
       fld=@cs.subnum(a['field']).to_s || return
-      fld=@cs.subnum(self['field'][fld]).to_s || return
+      fld=@cs.subnum(@field[fld]).to_s || return
       data=fld.clone
       case dtype.name
       when 'binary'

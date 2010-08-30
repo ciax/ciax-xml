@@ -2,7 +2,7 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object id="mh1" label="MOIRCS Ext Heater 1">
     <comm>
-      <device xmlns="">psp</device>
+      <device>psp</device>
       <client>socat - tcp:merope:59999</client>
       <server>socat - udp-l:24201,reuseaddr,fork</server>
     </comm>

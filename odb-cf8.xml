@@ -2,7 +2,7 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object id="cf8" label="S8 Helium Compressor Coolant Flow" ref="cf1">
     <comm>
-      <device xmlns="">k3n</device>
+      <device>k3n</device>
       <client>socat - tcp:ltt-i:4014</client>
       <server>socat - udp-l:45608,reuseaddr,fork</server>
     </comm>

@@ -2,7 +2,7 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object id="mix" label="MOIRCS Turret">
     <comm>
-      <device xmlns="">ixe</device>
+      <device>ixe</device>
       <client>socat - tcp:celaeno:4007</client>
       <server>socat - udp-l:24107,reuseaddr,fork</server>
     </comm>

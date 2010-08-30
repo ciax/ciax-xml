@@ -2,7 +2,7 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object id="ml1" label="MOIRCS Pressure Pump">
     <comm>
-      <device xmlns="">lk8</device>
+      <device>lk8</device>
       <client>socat - tcp:celaeno:4005</client>
       <server>socat - udp-l:24105,reuseaddr,fork</server>
     </comm>

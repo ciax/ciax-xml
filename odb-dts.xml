@@ -2,7 +2,7 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object id="dts" label="TSC Control">
     <comm>
-      <device xmlns="">oss</device>
+      <device>oss</device>
       <client>socat - tcp:cxws:9999</client>
       <server>socat - udp-l:25105,reuseaddr,fork</server>
     </comm>

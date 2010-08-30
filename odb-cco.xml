@@ -2,7 +2,7 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object id="cco" label="OPT Helium Compressor Control" ref="cri">
     <comm>
-      <device xmlns="">bbe</device>
+      <device>bbe</device>
       <client>socat - tcp:ltc-o:4002</client>
       <server>socat - udp-l:25106,reuseaddr,fork</server>
     </comm>

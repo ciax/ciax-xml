@@ -2,7 +2,7 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object id="crt" label="Cart PLC">
     <comm>
-      <device xmlns="">mel</device>
+      <device>mel</device>
       <client>socat - udp:cart3:5000</client>
       <server>socat - udp-l:25101,reuseaddr,fork</server>
     </comm>

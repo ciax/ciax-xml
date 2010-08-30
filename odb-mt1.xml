@@ -2,7 +2,7 @@
 <odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <object id="mt1" label="MOIRCS Pressure Main" ref="mt3">
     <comm>
-      <device xmlns="">tpg</device>
+      <device>tpg</device>
       <client>socat - tcp:celaeno:4009</client>
       <server>socat - udp-l:24109,reuseaddr,fork</server>
     </comm>

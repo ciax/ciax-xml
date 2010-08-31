@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class id="oma" label="Compressed Air Pressure at MOIRCS" device="oma">
+    <commands>
+      <session id="upd" label="Update Status">
+        <statement format="getstat"></statement>
+      </session>
+    </commands>
+    <status>
+      <value id="pres" label="Air Pressure (Psi)" format="%4.2f">
+        <float decimal="2" field="stat" />
+      </value>
+    </status>
+  </class>
+</cdb>

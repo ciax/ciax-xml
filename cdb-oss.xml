@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class id="oss" label="TSC Control" device="oss">
+    <commands>
+      <session id="upd" label="Update Status">
+        <statement format="getstat" />
+        <statement format="iststat" />
+        <statement format="jakstat" />
+        <statement format="inrstat" />
+        <statement format="logstat" />
+        <statement format="getexit" />
+      </session>
+      <session id="login" label="Login">
+        <statement format="login" />
+      </session>
+      <session id="logout" label="Logout">
+        <statement format="logout" />
+      </session>
+      <session id="request" label="Start TCP Status Request">
+        <statement format="config 1A1011" />
+      </session>
+      <session id="startup" label="Start Up CIAX operation">
+        <statement format="login" />
+        <statement label="TSC Only Mode(CIAX Mode)" format="config 1A1008TSCONLY" />
+      </session>
+      <session id="shutdown" label="Shutdown CIAX operation">
+        <statement label="TSC Primaly Mode" format="config 1A1008TSCPRI%" />
+        <statement format="logout" />
+      </session>
+      <session id="moircs" label="Set IID MOIRCS">
+        <statement format="setinst 12" />
+      </session>
+      <session id="focas" label="Set IID FOCAS">
+        <statement format="setinst 5" />
+      </session>
+      <session id="comics" label="Set IID COMICS">
+        <statement format="setinst 7" />
+      </session>
+    </commands>
+    <status>
+      <value id="exit" label="Exit Code" format="%d">
+        <int field="exit" />
+      </value>
+      <value id="rts" label="ROT SEL" format="%d">
+        <int field="rsel" />
+      </value>
+      <value id="iid" label="CAS INST ID" format="%d">
+        <int field="iid" />
+      </value>
+      <value id="login" label="Login Status" format="%s%s%s%s">
+        <string field="login0" />
+        <string field="login1" />
+        <string field="login2" />
+        <string field="login3" />
+      </value>
+      <value id="rpw" label="ROT DRIVE" format="%d">
+        <int field="rpw" />
+      </value>
+      <value id="jpw" label="JAK DRIVE" format="%s">
+        <binary field="bstat" bit="7" />
+      </value>
+      <value id="nfb" label="BOLT NFB TRIP" format="%s">
+        <binary field="bstat" bit="6" />
+      </value>
+      <value id="rps" label="ROT POS SENSOR" format="%s%s">
+        <binary field="bstat" bit="4" />
+        <binary field="bstat" bit="5" />
+      </value>
+      <value id="stw" label="EL STOW" format="%s">
+        <binary field="stow_1" bit="2" />
+      </value>
+      <value id="stp" label="EL 90 STOW" format="%s">
+        <binary field="stow_1" bit="0" />
+      </value>
+    </status>
+  </class>
+</cdb>

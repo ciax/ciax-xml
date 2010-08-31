@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class id="psp" label="MOIRCS Ext Heater" device="psp">
+    <commands>
+      <session id="upd" label="Update Status">
+        <statement format="getstat"></statement>
+      </session>
+      <session id="setlmt" label="Set Limit 20V/5A/100W">
+        <statement format="setvl 20"></statement>
+        <statement format="setal 5"></statement>
+        <statement format="setpl 100"></statement>
+        <statement format="getstat"></statement>
+      </session>
+      <session id="setv" label="Set Voltage 0-50[V]">
+        <parameters>
+          <par>
+            <range>0:50</range>
+          </par>
+        </parameters>
+        <statement format="setv %f">
+          <argv>$1</argv>
+        </statement>
+        <statement format="getstat"></statement>
+      </session>
+      <session id="setp" label="Set Power 0-100[W]">
+        <parameters>
+          <par>
+            <range>0:100</range>
+          </par>
+        </parameters>
+        <statement format="setv %5.2f">
+          <argv>Math.sqrt($1*26)</argv>
+        </statement>
+        <statement format="getstat"></statement>
+      </session>
+    </commands>
+    <status>
+      <value id="vol" label="OUTPUT (V)" format="%3.2f">
+        <float field="v" />
+      </value>
+      <value id="amp" label="OUTPUT (A)" format="%3.2f">
+        <float field="a" />
+      </value>
+      <value id="wat" label="OUTPUT (W)" format="%3.2f">
+        <float field="w" />
+      </value>
+      <value id="vl" label="Limit (V)" format="%3.2f">
+        <float field="u" />
+      </value>
+      <value id="il" label="Limit (A)" format="%3.2f">
+        <float field="i" />
+      </value>
+      <value id="pl" label="Limit (W)" format="%3.2f">
+        <float field="p" />
+      </value>
+      <value id="sw" label="OUTPUT ON/OFF" format="%s">
+        <string field="f1" />
+      </value>
+      <value id="tmp" label="OverHeat" format="%s">
+        <string field="f2" />
+      </value>
+      <value id="kn1" label="Wheel Knov Fine" format="%s">
+        <string field="f3" />
+      </value>
+      <value id="kn2" label="Wheel Knov Unlock" format="%s">
+        <string field="f4" />
+      </value>
+      <value id="rem" label="REMOTE" format="%s">
+        <string field="f5" />
+      </value>
+      <value id="loc" label="Local Lock" format="%s">
+        <string field="f6" />
+      </value>
+    </status>
+  </class>
+</cdb>

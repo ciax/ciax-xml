@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd">
+  <class id="oco" label="APS LN2 Flow Controller" device="oco">
+    <commands>
+      <session id="upd" label="Update Status">
+        <statement format="getstat"></statement>
+      </session>
+      <session id="i" label="Set Current by argvam(i:XX.XX)">
+        <parameters>
+          <par>
+            <range>0:99</range>
+          </par>
+        </parameters>
+        <statement format="i %f">
+          <argv>$1</argv>
+        </statement>
+      </session>
+    </commands>
+    <status>
+      <value id="stat" format="%f">
+        <float field="crnt" />
+      </value>
+    </status>
+  </class>
+</cdb>

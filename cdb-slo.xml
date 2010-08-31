@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class id="slo" label="MOIRCS Arm" device="slo">
+    <commands>
+      <session id="upd" label="Update Status">
+        <statement format="bs"></statement>
+        <statement format="p"></statement>
+        <statement format="err"></statement>
+        <repeat from="1" to="5">
+          <statement format="in %d">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
+      </session>
+      <session id="reset" label="Reset">
+        <statement format="reset"></statement>
+      </session>
+      <session id="defcon" label="Default Config">
+        <statement format="hl 0"></statement>
+        <statement format="e1 0"></statement>
+        <statement format="e2 0"></statement>
+      </session>
+      <session id="set0" label="Set 0 Pulses">
+        <statement format="set0"></statement>
+      </session>
+    </commands>
+    <status>
+      <value id="bs" label="Moter Moving" format="%s">
+        <string field="bs" />
+      </value>
+      <value id="con" label="Contact Sensor" format="%s">
+        <string field="in5" />
+      </value>
+      <value id="err" label="Error Code" format="%d">
+        <int field="err" />
+      </value>
+      <value id="pos" label="Arm Position" format="%s%s%s%s">
+        <string field="in1" />
+        <string field="in2" />
+        <string field="in3" />
+        <string field="in4" />
+      </value>
+      <value id="abs" label="ABS position" format="%f">
+        <float field="p" />
+      </value>
+    </status>
+  </class>
+</cdb>

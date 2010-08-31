@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class id="tpg" label="MOIRCS Pressure" device="tpg">
+    <commands>
+      <session id="upd" label="Update Status">
+        <statement format="reqstat"></statement>
+        <statement format="getstat"></statement>
+      </session>
+    </commands>
+    <status>
+      <value id="st1" label="Turbo Pump Stat" format="%s">
+        <string field="st1" />
+      </value>
+      <value id="ch1" label="Turbo Pump (Torr)" format="%4.2e">
+        <float field="ch1" />
+      </value>
+      <value id="st2" label="Scroll Pump Stat" format="%s">
+        <string field="st1" />
+      </value>
+      <value id="ch2" label="Scroll Pump (Torr)" format="%4.2e">
+        <float field="ch1" />
+      </value>
+    </status>
+  </class>
+</cdb>

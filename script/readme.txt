@@ -4,6 +4,10 @@
     description : substitute sequence number(in repeat)
     usable: ddb//response/repeat/field/assign
             --
+            cdb//session/repeat/statement/par
+            cdb//status/repeat/value/@id
+            cdb//status/repeat/value/*@field
+            --
             odb//session/repeat/statement/par
             odb//status/repeat/var@id
             odb//status/repeat/var@label
@@ -13,11 +17,15 @@
     description : substitute parameters
     usable: ddb//response/field/assign
             --
+            cdb//session/statement/argv
+            --
             odb//session/statement/argv
 
  ${??}
     description : substitute status(field)
-    usable: odb//session/statement/argv
+    usable: cdb//session/statement/argv
+            --
+            odb//session/statement/argv
 
  \?
     description : convert escape characters
@@ -30,6 +38,10 @@
             ddb//data
             ddb//cmdselect/command/par
             ddb//cmdframe/cc
+            --
+            cdb//repeat
+            cdb//statement
+            cdb//status/value
             --
             odb//repeat
             odb//statement

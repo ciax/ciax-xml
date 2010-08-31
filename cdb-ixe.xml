@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class id="ixe" label="MOIRCS Turret" device="ixe">
+    <commands>
+      <session id="upd" label="Update Status">
+        <statement format="getstat"></statement>
+        <repeat from="1" to="6">
+          <statement format="chkr %d">
+            <argv>$_</argv>
+          </statement>
+          <statement format="getp %d">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
+      </session>
+      <session id="resume" label="Resume Pulses">
+        <repeat from="1" to="6">
+          <statement format="setp %d %d">
+            <argv>$_</argv>
+            <argv>${field:p$_}</argv>
+          </statement>
+        </repeat>
+      </session>
+      <session id="set0" label="Set 0 Pulses">
+        <repeat from="1" to="6">
+          <statement format="setp %d 0">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
+      </session>
+    </commands>
+    <status>
+      <value id="rdy" label="Comm Ready" format="%s">
+        <binary bit="0" field="stat" />
+      </value>
+      <value id="srq" label="SRQ" format="%s">
+        <binary bit="1" field="stat" />
+      </value>
+      <value id="pme" label="Program Error" format="%s">
+        <binary bit="3" field="stat" />
+      </value>
+      <value id="pse" label="Power Stage Error" format="%s">
+        <binary bit="4" field="stat" />
+      </value>
+      <value id="oes" label="ONE EM Stop" format="%s">
+        <binary bit="5" field="stat" />
+      </value>
+      <value id="ees" label="EXT EM Stop" format="%s">
+        <binary bit="6" field="stat" />
+      </value>
+      <value id="trm" label="Terminal Mode" format="%s">
+        <binary bit="2" field="stat" />
+      </value>
+      <value id="cmd" label="Computer Mode" format="%s">
+        <binary bit="7" field="stat" />
+      </value>
+      <repeat from="1" to="6">
+        <value id="r$_" label="Running 1-6" format="%s">
+          <string field="r$_" />
+        </value>
+        <value id="p$_" label="Pulse 1-6" format="%d">
+          <int field="p$_" />
+        </value>
+      </repeat>
+    </status>
+  </class>
+</cdb>

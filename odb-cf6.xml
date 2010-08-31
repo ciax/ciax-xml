@@ -8,7 +8,7 @@
     </comm>
     <status>
       <group>
-        <var id="flow" label="CIAO(S6) Coolant Flow(l/min)" ref="flow" />
+        <var ref="flow" label="CIAO(S6) Coolant Flow(l/min)" />
       </group>
     </status>
   </object>

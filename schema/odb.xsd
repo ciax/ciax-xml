@@ -8,7 +8,7 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:string" use="required" />
+    <xsd:attribute name="id" type="xsd:string" use="optional" />
     <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
     <xsd:attribute name="ref" type="xsd:string" use="optional" />
   </xsd:attributeGroup>

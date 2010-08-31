@@ -8,7 +8,7 @@
     </comm>
     <status>
       <group>
-        <var id="flow" label="COMICS/SPECT(S5) Coolant Flow(l/min)" ref="flow" />
+        <var ref="flow" label="COMICS/SPECT(S5) Coolant Flow(l/min)" />
       </group>
     </status>
   </object>

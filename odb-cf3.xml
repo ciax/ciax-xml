@@ -8,7 +8,7 @@
     </comm>
     <status>
       <group>
-        <var id="flow" label="IRCS(S3) Coolant Flow(l/min)" ref="flow" />
+        <var ref="flow" label="IRCS(S3) Coolant Flow(l/min)" />
       </group>
     </status>
   </object>

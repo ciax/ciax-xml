@@ -8,8 +8,8 @@
     </comm>
     <status>
       <group>
-        <var id="st1" label="Throat Stat" ref="st1" />
-        <var id="ch1" label="Throat (Torr)" ref="ch1" />
+        <var label="Throat Stat" ref="st1" />
+        <var label="Throat (Torr)" ref="ch1" />
       </group>
     </status>
   </object>

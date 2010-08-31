@@ -37,10 +37,14 @@ class Obj < Hash
   public
   def setcmd(line)
     cmd,*@cs.par=line.split(' ')
-    @session=@odb.first.select_id('selection',cmd)
-    a=@session.attributes
-    @v.msg{"Exec(DDB):#{a['label']}"}
-    @session=@odb.last.select_id('selection',a['ref']) if a['ref']
+    ref=nil
+    @odb.each{|db|
+      next unless db['selection']
+      @session=db.select_id('selection',cmd)
+      a=@session.attributes
+      @v.msg{"Exec(DDB):#{a['label']}"}
+      cmd=a['ref'] || break
+    }
     line
   rescue
     raise "== Command List ==\n#{$!}"

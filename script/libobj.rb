@@ -9,6 +9,7 @@ require "libobjstat"
 class Obj < Hash
   include ModXml
   include ObjStat
+  attr_reader :stat
 
   def initialize(obj)
     @odb=[XmlDoc.new('odb',obj)]

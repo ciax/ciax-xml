@@ -33,15 +33,15 @@ class ObjSrv < Hash
     cmdary=line.split(' ')
     case cmdary.shift
     when 'stat'
-      yield @odb['stat']
+      yield @odb.stat
     when 'auto'
       auto_upd(cmdary)
     when 'save'
       @ddb.save(cmdary.shift)
-      yield @odb['stat']
+      yield @odb.stat
     when 'load'
       @odb.get_stat(@ddb.load(cmdary.shift))
-      yield @odb['stat']
+      yield @odb.stat
     else
       begin
         session(line)

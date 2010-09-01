@@ -4,54 +4,9 @@ require "libverbose"
 require "libiofile"
 require "libmodxml"
 require "libconvstr"
-
-module StatSymbol
-  def get_symbol(sid,st)
-    return st unless sid
-    return st if std_symbol(sid,st)
-    @odb['symbols'].each_element_with_attribute('id',sid){ |e|
-      return local_symbol(e,st)
-    }
-    st
-  end
-
-  # Built-in Symbol (normal,hide,on-warn,off-warn,alarm)
-  def std_symbol(sid,st)
-    if /^(normal|warn|off-warn|alarm|off-alarm|hide)$/ === sid
-      st['type']='ENUM'
-      st['msg']=(st['val']=='1') ? 'ON' : 'OFF'
-      st['hl']=(/hide|alarm/ === sid) ? 'hide' : 'normal'
-      case sid
-      when 'warn'
-        st['hl']='warn' if st['msg'] == 'ON'
-      when 'off-warn'
-        st['hl']='warn' if st['msg'] == 'OFF'
-      when 'alarm'
-        st['hl'] = 'alarm' if st['msg'] == 'ON'
-      when 'off-alarm'
-        st['hl'] = 'alarm' if st['msg'] == 'OFF'
-      end
-      st
-    end
-  end
-
-  def local_symbol(e,set)
-    set['type']=e.attributes['type']
-    e.each_element {|enum|
-      a=enum.attributes
-      msg=a['msg']
-      validate(enum,set['val']) rescue next
-      a.each{|k,v| set[k]=v }
-      break true
-    } || set.update({'msg'=>'N/A','hl'=>'warn'})
-    @v.msg{"STAT:Symbol:[#{set['msg']}] for [#{set['val']}]"}
-    set
-  end
-
-end
+require "libstatsym"
 
 module ObjStat
-  include StatSymbol
   #Stat Methods
   def stat_group(e)
     case e.name
@@ -72,7 +27,8 @@ module ObjStat
     st['title']=@cs.subnum(var.text).to_s
     st['val']=@value[ref]
     @v.msg{"STAT:GetStatus:#{ref}=[#{st['val']}]"}
-    get_symbol(a['symbol'],st)
+    st.update(@sym.get_symbol(a['symbol'],st['val']))
+    st.update(@sym.get_level(a['level'],st['val']))
     @stat[ref]=st
   end
 
@@ -102,6 +58,7 @@ class Obj < Hash
     @odb['comm'].each_element{|e|
       self[e.name]=e.text
     }
+    @sym=StatSym.new(@v)
   end
   
   public

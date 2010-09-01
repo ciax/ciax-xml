@@ -11,38 +11,13 @@
     </command>
     <status>
       <group>
-        <title ref="st1" symbol="stat">Turbo Pump Stat</title>
+        <title ref="st1" symbol="tpg:stat">Turbo Pump Stat</title>
         <title ref="ch1">Turbo Pump (Torr)</title>
       </group>
       <group>
-        <title ref="st2" symbol="stat">Scroll Pump Stat</title>
+        <title ref="st2" symbol="tpg:stat">Scroll Pump Stat</title>
         <title ref="ch2">Scroll Pump (Torr)</title>
       </group>
     </status>
-    <symbols>
-      <symbol id="stat" type="ENUM">
-        <enum hl="hide" msg="Measurment data okay">
-          <regexp>0</regexp>
-        </enum>
-        <enum hl="warn" msg="Underrange">
-          <regexp>1</regexp>
-        </enum>
-        <enum hl="warn" msg="Overrange">
-          <regexp>2</regexp>
-        </enum>
-        <enum hl="warn" msg="Sensor error">
-          <regexp>3</regexp>
-        </enum>
-        <enum hl="warn" msg="Sensor off">
-          <regexp>4</regexp>
-        </enum>
-        <enum hl="warn" msg="No sensor">
-          <regexp>5</regexp>
-        </enum>
-        <enum hl="warn" msg="Identification error">
-          <regexp>6</regexp>
-        </enum>
-      </symbol>
-    </symbols>
   </object>
 </adb>

@@ -111,24 +111,5 @@
         </var>
       </group>
     </status>
-    <symbols>
-      <symbol id="flow" type="FLOAT">
-        <enum hl="alarm" msg="HH">
-          <range>6:</range>
-        </enum>
-        <enum hl="warn" msg="H">
-          <range>5:&lt;6</range>
-        </enum>
-        <enum hl="normal" msg="M">
-          <range>4:&lt;5</range>
-        </enum>
-        <enum hl="warn" msg="L">
-          <range>3:&lt;4</range>
-        </enum>
-        <enum hl="alarm" msg="LL">
-          <range>:&lt;3</range>
-        </enum>
-      </symbol>
-    </symbols>
   </object>
 </odb>

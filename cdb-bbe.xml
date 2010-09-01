@@ -61,6 +61,34 @@
         </statement>
         <statement format="getstat" />
       </session>
+      <session id="x12on" label="X1 and X2 ON">
+        <statement format="getstat" />
+        <statement format="output %d">
+          <argv>${field:stat} | 0x0011</argv>
+        </statement>
+        <statement format="getstat" />
+      </session>
+      <session id="x12off" label="X1 and X2 OFF">
+        <statement format="getstat" />
+        <statement format="output %d">
+          <argv>${field:stat} &amp; 0xffee</argv>
+        </statement>
+        <statement format="getstat" />
+      </session>
+      <session id="x34on" label="X3 and X4 ON">
+        <statement format="getstat" />
+        <statement format="output %d">
+          <argv>${field:stat} | 0x1100</argv>
+        </statement>
+        <statement format="getstat" />
+      </session>
+      <session id="x34off" label="X3 and X4 OFF">
+        <statement format="getstat" />
+        <statement format="output %d">
+          <argv>${field:stat} &amp; 0xeeff</argv>
+        </statement>
+        <statement format="getstat" />
+      </session>
     </commands>
     <status>
       <value id="x0sw" label="X0 SWITCH" format="%s">

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<adb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/adb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="crt" label="Cart PLC">
+    <comm>
+      <class>mel</class>
+      <client>socat - udp:cart3:5000</client>
+      <server>socat - udp-l:25101,reuseaddr,fork</server>
+    </comm>
+    <command>
+      <session id="upd" label="Regular status update"></session>
+      <session id="start_run" label="Running Start"></session>
+      <session id="start_jak" label="Jacking Start"></session>
+      <session id="clear_trg" label="Jacking Start"></session>
+      <session id="set_fwd" label="Set Tag to Forward"></session>
+      <session id="set_run1" label="Run to Tag 1"></session>
+      <session id="set_jak1" label="Jack UP Level 1"></session>
+      <session id="pause" label="Pause"></session>
+      <session id="emstop" label="Emergency Stop"></session>
+      <session id="resume" label="Resume from Pause"></session>
+    </command>
+    <status>
+      <group>
+        <title ref="ecode" symbol="mel:ecode">EXIT CODE</title>
+        <title ref="rdy" symbol="normal">READY</title>
+        <title ref="pse" symbol="warn">PAUSE</title>
+        <title ref="emg" symbol="alarm">ENERGENCY</title>
+        <title ref="stp" symbol="warn">STOP</title>
+      </group>
+      <group>
+        <title ref="run" symbol="normal">RUNNING</title>
+        <title ref="jak" symbol="normal">JACKING</title>
+        <title ref="con" symbol="normal">CHARGING</title>
+        <title ref="flt" symbol="alarm">Fault</title>
+      </group>
+      <group>
+        <title ref="msr" symbol="normal">Right Motor Servo</title>
+        <title ref="msl" symbol="normal">Left Motor Servo</title>
+      </group>
+      <group>
+        <title ref="jd1" symbol="normal">Jack Motor1 Servo</title>
+        <title ref="jd2" symbol="normal">Jack Motor2 Servo</title>
+      </group>
+      <group>
+        <title ref="jd3" symbol="normal">Jack Motor3 Servo</title>
+        <title ref="jd4" symbol="normal">Jack Motor4 Servo</title>
+      </group>
+      <group>
+        <title ref="mdar" level="mel:motor">Rignt Motor D/A</title>
+        <title ref="mdal" level="mel:motor">Left Motor D/A</title>
+      </group>
+      <group>
+        <title ref="bvl" level="mel:battery">Battery Voltage</title>
+        <title ref="ist" symbol="mel:inst">Instrument</title>
+      </group>
+      <group>
+        <title ref="cpos">Current Position</title>
+        <title ref="dpos">Destination Position</title>
+      </group>
+      <group>
+        <title ref="jpos" symbol="mel:jpos">Jack Position</title>
+      </group>
+    </status>
+  </object>
+</adb>

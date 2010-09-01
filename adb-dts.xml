@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<adb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/adb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="dts" label="TSC Control">
+    <comm>
+      <class>oss</class>
+      <client>socat - tcp:cxws:9999</client>
+      <server>socat - udp-l:25105,reuseaddr,fork</server>
+    </comm>
+    <command>
+      <session id="upd" label="Update Status"></session>
+      <session id="login" label="Login"></session>
+      <session id="logout" label="Logout"></session>
+      <session id="request" label="Start TCP Status Request"></session>
+      <session id="startup" label="Start Up CIAX operation"></session>
+      <session id="shutdown" label="Shutdown CIAX operation"></session>
+      <session id="moircs" label="Set IID MOIRCS"></session>
+      <session id="focas" label="Set IID FOCAS"></session>
+      <session id="comics" label="Set IID COMICS"></session>
+    </command>
+    <status>
+      <group label="">
+        <title ref="exit">Exit Code</title>
+        <title ref="rts" symbol="oss:rsel">ROT SEL</title>
+        <title ref="iid" symbol="oss:inst">CAS INST ID</title>
+        <title ref="login" symbol="login">Login Status</title>
+      </group>
+      <group label="">
+        <title ref="rpw" level="oss:rpw">ROT DRIVE</title>
+        <title ref="jpw" symbol="normal">JAK DRIVE</title>
+        <title ref="nfb" symbol="alarm">BOLT NFB TRIP</title>
+        <title ref="rps" symbol="oss:rps">ROT POS SENSOR</title>
+      </group>
+      <group label="">
+        <title ref="stw" symbol="off-warn">EL STOW</title>
+        <title ref="stp" symbol="off-warn">EL 90 STOW</title>
+      </group>
+    </status>
+  </object>
+</adb>

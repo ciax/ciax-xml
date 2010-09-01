@@ -11,7 +11,7 @@
     </command>
     <status>
       <group>
-        <title ref="st1">Main Dewar Stat</title>
+        <title ref="st1" symbol="tpg:stat">Main Dewar Stat</title>
         <title ref="ch1">Main Dewar (Torr)</title>
       </group>
     </status>

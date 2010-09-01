@@ -18,7 +18,6 @@
         <xsd:element ref="adb:comm" minOccurs="1" maxOccurs="1" />
         <xsd:element ref="adb:command" minOccurs="1" maxOccurs="1"></xsd:element>
         <xsd:element ref="adb:status" minOccurs="1" maxOccurs="1" />
-        <xsd:element ref="adb:symbols" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="adb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
@@ -86,63 +85,9 @@
         <xsd:extension base="xsd:string">
           <xsd:attribute name="ref" type="xsd:string" use="required" />
           <xsd:attribute name="symbol" type="xsd:string" />
+          <xsd:attribute name="level" type="xsd:string" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <!--symbol-->
-  <xsd:element name="symbols">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="adb:symbol" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="symbol">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0">
-        <xsd:element ref="adb:enum" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:choice>
-      <xsd:attributeGroup ref="adb:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="type">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="ENUM"></xsd:enumeration>
-            <xsd:enumeration value="FLOAT" />
-            <xsd:enumeration value="INT" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:attributeGroup name="symbol_attr">
-    <xsd:attribute name="msg" type="xsd:string" use="required" />
-    <xsd:attribute name="hl" use="required">
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="normal" />
-          <xsd:enumeration value="warn" />
-          <xsd:enumeration value="alarm" />
-          <xsd:enumeration value="hide" />
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:attribute>
-  </xsd:attributeGroup>
-  <xsd:element name="enum">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:element ref="adb:regexp" minOccurs="0" maxOccurs="1" />
-        <xsd:element ref="adb:range" minOccurs="1" maxOccurs="unbounded"></xsd:element>
-      </xsd:choice>
-      <xsd:attributeGroup ref="adb:symbol_attr" />
-    </xsd:complexType>
-  </xsd:element>
-  <!--cases-->
-  <xsd:simpleType name="rerange">
-    <xsd:restriction base="xsd:string">
-      <xsd:pattern value="^(-?\d+(\.\d+)?&lt;?)?:(&lt;?-?\d+(\.\d+)?)?" />
-    </xsd:restriction>
-  </xsd:simpleType>
-  <xsd:element name="range" type="adb:rerange"></xsd:element>
-  <xsd:element name="regexp" type="xsd:string" />
 </xsd:schema>

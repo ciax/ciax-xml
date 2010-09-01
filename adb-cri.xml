@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<adb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/adb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="cri" label="IR Compressor Room Reserve">
+    <comm>
+      <class>bbe</class>
+      <client>socat - tcp:ltc-i:4003</client>
+      <server>socat - udp-l:25107,reuseaddr,fork</server>
+    </comm>
+    <command>
+      <session id="upd" label="Update Status" ref="upd"></session>
+      <session id="x0on" label="X0 ON" ref="x0on"></session>
+      <session id="x0off" label="X0 OFF" ref="x0off"></session>
+      <session id="x1on" label="X1 ON" ref="x1on"></session>
+      <session id="x1off" label="X1 OFF" ref="x1off"></session>
+      <session id="x2on" label="X2 ON" ref="x2on"></session>
+      <session id="x2off" label="X2 OFF" ref="x2off"></session>
+      <session id="x3on" label="X3 ON" ref="x3on"></session>
+      <session id="x3off" label="X3 OFF" ref="x3off"></session>
+    </command>
+    <status>
+      <group label="">
+        <title ref="x0sw">X0 SWITCH</title>
+        <title ref="x0dr">X0 DRIVE</title>
+      </group>
+      <group label="">
+        <title ref="x0tm" symbol="normal">X0 TEMP ALARM</title>
+        <title ref="x0pr" symbol="normal">X0 PRESSURE ALARM</title>
+      </group>
+      <group label="">
+        <title ref="x1sw" symbol="normal">X1 SWITCH</title>
+        <title ref="x1dr" symbol="normal">X1 DRIVE</title>
+      </group>
+      <group label="">
+        <title ref="x1tm" symbol="normal">X1 TEMP ALARM</title>
+        <title ref="x1pr" symbol="normal">X1 PRESSURE ALARM</title>
+      </group>
+      <group label="">
+        <title ref="x2sw" symbol="normal">X2 SWITCH</title>
+        <title ref="x2dr" symbol="normal">X2 DRIVE</title>
+      </group>
+      <group label="">
+        <title ref="x2tm" symbol="normal">X2 TEMP ALARM</title>
+        <title ref="x2pr" symbol="normal">X2 PRESSURE ALARM</title>
+      </group>
+      <group label="">
+        <title ref="x3sw" symbol="normal">X3 SWITCH</title>
+        <title ref="x3dr" symbol="normal">X3 DRIVE</title>
+      </group>
+      <group label="">
+        <title ref="x3tm" symbol="normal">X3 TEMP ALARM</title>
+        <title ref="x3pr" symbol="normal">X3 PRESSURE ALARM</title>
+      </group>
+    </status>
+  </object>
+</adb>

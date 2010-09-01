@@ -34,7 +34,8 @@ module ModView
   
   def prt(item,c)
     str='['
-    str << color(6,item['label'])
+    title=item['label'] || item['title']
+    str << color(6,title)
     str << ':'
     if item['type'] == 'ENUM'
       str << color(c,item['msg'])

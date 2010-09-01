@@ -1,7 +1,6 @@
 #!/bin/bash
 . ~/se/lib/libdb.sh cx_object
-#objects=${1:-cf1 crt det dts cci mh1 mt3 mix map mma ml1};shift
-objects=${1:-cri};shift
+objects=${1:-cf1 crt det dts cci mh1 mt3 mix map mma ml1};shift
 cmd=${1:-upd};shift
 par="$*"
 for obj in $objects; do

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<adb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/adb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="mt1" label="MOIRCS Pressure Main" ref="mt3">
+    <comm>
+      <class>tpg</class>
+      <client>socat - tcp:celaeno:4009</client>
+      <server>socat - udp-l:24109,reuseaddr,fork</server>
+    </comm>
+    <command>
+      <session id="upd" label="Update Status" />
+    </command>
+    <status>
+      <group>
+        <title ref="st1">Main Dewar Stat</title>
+        <title ref="ch1">Main Dewar (Torr)</title>
+      </group>
+    </status>
+  </object>
+</adb>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<adb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/adb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="ml1" label="MOIRCS Temperature 1">
+    <comm>
+      <class>lk8</class>
+      <client>socat - tcp:celaeno:4005</client>
+      <server>socat - udp-l:24105,reuseaddr,fork</server>
+    </comm>
+    <command>
+      <session id="upd" label="Update Status" />
+    </command>
+    <status>
+      <group>
+        <title ref="ch1">MosCold2</title>
+        <title ref="ch2">MosCold1</title>
+        <title ref="ch3">Mask</title>
+        <title ref="ch4">Wheel</title>
+      </group>
+      <group>
+        <title ref="ch5">D1(NONE)</title>
+        <title ref="ch6">D2(NONE)</title>
+        <title ref="ch7">ChipBox1</title>
+        <title ref="ch8">Det1</title>
+      </group>
+      <group>
+        <title ref="sp">SetPoint1 (K)</title>
+        <title ref="htr">HeaterPower1(%)</title>
+      </group>
+    </status>
+  </object>
+</adb>

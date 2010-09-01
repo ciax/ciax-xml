@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<adb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/adb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="mix" label="MOIRCS Turret">
+    <comm>
+      <class>ixe</class>
+      <client>socat - tcp:celaeno:4007</client>
+      <server>socat - udp-l:24107,reuseaddr,fork</server>
+    </comm>
+    <command>
+      <session id="upd" label="Update Status" />
+      <session id="resume" label="Resume Pulses" />
+      <session id="set0" label="Set 0 Pulses" />
+    </command>
+    <status>
+      <group>
+        <title ref="rdy" symbol="off-warn">Comm Ready</title>
+        <title ref="srq" symbol="off-warn">SRQ</title>
+        <title ref="pme" symbol="alarm">Program Error</title>
+        <title ref="pse" symbol="alarm">Power Stage Error</title>
+        <title ref="oes" symbol="alarm">ONE EM Stop</title>
+        <title ref="ees" symbol="alarm">EXT EM Stop</title>
+      </group>
+      <group>
+        <title ref="trm" symbol="off-warn">Terminal Mode</title>
+        <title ref="cmd" symbol="off-warn">Computer Mode</title>
+      </group>
+      <repeat from="1" to="6">
+        <group>
+          <title ref="r$_" symbol="normal">Running $_</title>
+          <title ref="p$_">Pulse $_</title>
+        </group>
+      </repeat>
+    </status>
+  </object>
+</adb>

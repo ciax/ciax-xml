@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<adb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/adb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="cfa" label="S10 Helium Compressor Coolant Flow" ref="cf1">
+    <comm>
+      <class>k3n</class>
+      <client>socat - tcp:ltt-i:4015</client>
+      <server>socat - udp-l:45610,reuseaddr,fork</server>
+    </comm>
+    <command>
+      <session id="upd" ref="upd" label="Update Status" />
+    </command>
+    <status>
+      <group>
+        <title ref="flow" symbol="k3n:flow">FMOS-K(S10) Coolant Flow(l/min)</title>
+      </group>
+    </status>
+  </object>
+</adb>

@@ -33,6 +33,16 @@
       <session id="resume" label="Resume from Pause">
         <statement format="clear"></statement>
       </session>
+      <session id="tbl_read" label="Resume from Pause">
+        <statement format="tbl_rw %d">
+          <argv>1</argv>
+        </statement>
+      </session>
+      <session id="tbl_write" label="Resume from Pause">
+        <statement format="tbl_rw %d">
+          <argv>2</argv>
+        </statement>
+      </session>
     </commands>
     <status>
       <value id="ecode" label="EXIT CODE" format="%04X">

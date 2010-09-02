@@ -73,6 +73,28 @@
         <data label="Data" encode="lew">0</data>
         <data label="Data" encode="lew">0</data>
       </command>
+      <command id="get_tbl" label="Get Jack Table [JK=0-3] [Tag=2-7]" type="stat" response="get_tbl">
+        <data label="Read region command" encode="lew">0x401</data>
+        <data label="Read region subcommand" encode="lew">0</data>
+        <par encode="chr" label="0=JK1,4=JK2,8=JK3,12=JK4" calc="$_ * 4">
+          <range>0:3</range>
+        </par>
+        <par encode="chr" label="2=Tag1,3=Tag9,4=Tag10,5=Tag11,6=Tag12,7=Opsm">
+          <range>2:7</range>
+        </par>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">0x2ch</data>
+      </command>
+      <command id="tbl_rw" label="Jack Table Read/Write" type="config" response="cmdrsp">
+        <data label="Write region command" encode="lew">0x1401</data>
+        <data label="Write region subcommand" encode="lew">0</data>
+        <data label="Start Address" encode="lew">0x7ff</data>
+        <data label="Device Code" encode="lew">0xB400</data>
+        <data label="Data Length" encode="lew">1</data>
+        <par label="Data" encode="lew">
+          <range>0:3</range>
+        </par>
+      </command>
     </cmdselect>
     <cmdccrange method="len">
       <data label="Q Header: CPU Watch Timer" encode="lew">1</data>
@@ -106,6 +128,26 @@
         </repeat>
       </response>
       <response id="cmdrsp" label="command resp" />
+      <response id="get_tbl">
+        <repeat format="%d" from="0" to="10">
+          <field decode="lew">
+            <length>2</length>
+            <assign>t$2j$1p1i$_</assign>
+          </field>
+          <field decode="lew">
+            <length>2</length>
+            <assign>t$2j$1p2i$_</assign>
+          </field>
+          <field decode="lew">
+            <length>2</length>
+            <assign>t$2j$1p3i$_</assign>
+          </field>
+          <field decode="lew">
+            <length>2</length>
+            <assign>t$2j$1p4i$_</assign>
+          </field>
+        </repeat>
+      </response>
     </rspselect>
     <rspccrange method="len">
       <field decode="lew">

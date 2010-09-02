@@ -44,7 +44,7 @@ class DevCmd
         @var['par'] || @v.err("No Parameter")
         str=validate(c,@var['par'].shift)
         @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
-        frame << encode(c,str)
+        frame << encode(c,calc(c,str))
       when 'ccrange'
         frame << @var[:ccrange]
         @v.msg{"GetFrame:(ccrange)[#{@var[:ccrange]}]"}

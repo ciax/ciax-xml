@@ -5,7 +5,7 @@ class ConvStr
   attr_accessor :par,:str,:var
 
   def initialize(v)
-    @v,@var,@str,@par,@n=v,{},'',[],nil
+    @v,@var,@str,@par,@n=v,{},'',[],[]
   end
 
   def to_s
@@ -15,17 +15,18 @@ class ConvStr
   def repeat(e)
     a=e.attributes
     fmt=a['format'] || '%d'
+    @n.push('')
     Range.new(a['from'],a['to']).each { |n|
-      @n=fmt % n
+      @n[-1] = fmt % n
       e.each_element { |d| yield d}
     }
-    @n=nil
+    @n.pop
   end
 
   def subnum(str) # Sub $_ by num
     @str=str
-    return self unless @n && @str
-    @str=@str.gsub(/\$_/,@n)
+    return self unless @n.size > 0 && @str
+    @str=@str.gsub(/\$_/,@n.last)
     @v.msg("Substutited to [#{@str}]")
     self
   end

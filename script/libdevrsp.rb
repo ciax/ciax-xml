@@ -31,7 +31,7 @@ class DevRsp
 
   def par=(ary)
     @cs.set_par(ary)
-  end
+   end
 
   private
   def setframe(e,fld)
@@ -51,7 +51,20 @@ class DevRsp
       when 'field'
         frame << field(c,fld)
       when 'repeat'
-        @cs.repeat(c){|d| frame << field(d,fld) }
+        frame << repeat_field(c,fld)
+      end
+    }
+    frame
+  end
+
+  def repeat_field(e,fld)
+    frame=String.new
+    @cs.repeat(e){|f|
+      case f.name
+      when 'repeat'
+        frame << repeat_field(f,fld)
+      when 'field'
+        frame << field(f,fld)
       end
     }
     frame

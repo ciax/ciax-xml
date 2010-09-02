@@ -28,9 +28,10 @@
         <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:statement" />
         <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:value" />
       </xsd:choice>
-      <xsd:attribute name="format" type="xsd:string" />
       <xsd:attribute name="from" use="required" type="xsd:int" />
       <xsd:attribute name="to" use="required" type="xsd:int" />
+      <xsd:attribute name="format" type="xsd:string" />
+      <xsd:attribute name="counter" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--command select-->

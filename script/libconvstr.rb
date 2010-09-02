@@ -22,7 +22,7 @@ class ConvStr
   end
 
   def set_par(par)
-    par.each_with_index{|s,n| @var[n+1]=s }
+    par.each_with_index{|s,n| @var[(n+1).to_s]=s }
   end
 
   def sub_var(str)
@@ -30,7 +30,6 @@ class ConvStr
     @v.msg{"Substitute from [#{str}]"}
     h=@var.clone
     str=str.gsub(/\$([_\d])/){ h[$1] }
-    @v.msg{"Substitute by [#{str}]"}
     # Sub ${id} by hash[id]
     str=str.gsub(/\$\{([\w:]+)\}/) {
       $1.split(':').each {|i| h=h[i] };h }

@@ -73,14 +73,14 @@
         <data label="Data" encode="lew">0</data>
         <data label="Data" encode="lew">0</data>
       </command>
-      <command id="get_tbl" label="Get Jack Table [JK=0-3] [Tag=2-7]" type="stat" response="get_tbl">
+      <command id="get_tbl" label="Get Jack Table [JK=0-3] [Tag=0-5]" type="stat" response="get_tbl">
         <data label="Read region command" encode="lew">0x401</data>
         <data label="Read region subcommand" encode="lew">0</data>
         <par encode="chr" label="0=JK1,4=JK2,8=JK3,12=JK4" calc="$_ * 4">
           <range>0:3</range>
         </par>
-        <par encode="chr" label="2=Tag1,3=Tag9,4=Tag10,5=Tag11,6=Tag12,7=Opsm">
-          <range>2:7</range>
+        <par encode="chr" label="0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm" calc="$_ + 2">
+          <range>0:5</range>
         </par>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">0x2ch</data>
@@ -129,22 +129,10 @@
       </response>
       <response id="cmdrsp" label="command resp" />
       <response id="get_tbl">
-        <repeat format="%d" from="0" to="10">
+        <repeat format="%02x" from="0" to="43">
           <field decode="lew">
             <length>2</length>
-            <assign>t$2j$1p1i$_</assign>
-          </field>
-          <field decode="lew">
-            <length>2</length>
-            <assign>t$2j$1p2i$_</assign>
-          </field>
-          <field decode="lew">
-            <length>2</length>
-            <assign>t$2j$1p3i$_</assign>
-          </field>
-          <field decode="lew">
-            <length>2</length>
-            <assign>t$2j$1p4i$_</assign>
+            <assign>t$2$1$_</assign>
           </field>
         </repeat>
       </response>

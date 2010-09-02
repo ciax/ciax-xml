@@ -13,6 +13,10 @@
             odb//status/repeat/var@label
             odb//status/repeat/var/value/*@field
 
+ $_
+    description : substitute parameter in calc
+    usable: ddb//cmdselect/command/par@calc
+
  $1..9
     description : substitute parameters
     usable: ddb//response/field/assign

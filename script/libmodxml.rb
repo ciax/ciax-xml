@@ -44,7 +44,7 @@ module ModXml
   end
 
   def validate(e,str)
-    str || @v.err("No Parameter")
+    str || @v.err("Too Few Parameters")
     @v.msg{"Validate: String for [#{str}]"}
     e.each_element {|d|
       @v.msg{"Validate: Match? [#{d.text}]"}

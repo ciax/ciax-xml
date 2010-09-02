@@ -22,7 +22,7 @@
     </cmdselect>
     <cmdframe>
       <selected />
-      <data label="Suffix">\r\n</data>
+      <data label="Suffix" encode="bew">0x0d0a</data>
     </cmdframe>
     <rspselect>
       <response id="getstat">

@@ -7,7 +7,7 @@ class Verbose
 
   # Public Method
   def msg(msg=nil) # Parameter = show it anytime, Block = depends on $VER
-    return mkmsg(msg) if msg
+    return warn mkmsg(msg) if msg
     return unless ENV['VER']
     msg=mkmsg(yield)
     if ENV['VER'].split(':').any? {|s|

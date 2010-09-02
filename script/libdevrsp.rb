@@ -17,7 +17,7 @@ class DevRsp
     @var[:sel]=sel || @v.err("No Selection")
     @frame=yield || @v.err("No String")
     if tm=@ddb['rspframe'].attributes['terminator']
-      @frame.chomp!(@cs.esc(tm).to_s)
+      @frame.chomp!(eval('"'+tm+'"'))
       @v.msg{"Remove terminator:[#{@frame}] by [#{tm}]" }
     end
     fld=Hash.new
@@ -30,7 +30,7 @@ class DevRsp
   end
 
   def par=(ary)
-    @cs.par=ary
+    @cs.set_par(ary)
   end
 
   private
@@ -74,7 +74,7 @@ class DevRsp
         @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
         data=decode(e,str)
       when 'assign'
-        key=@cs.subnum(d.text).subpar.to_s
+        key=@cs.sub_var(d.text)
         fld[key]=data
         @v.msg{"Assign:[#{key}]<-[#{fld[key]}]"}
       when 'verify'

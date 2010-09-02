@@ -37,7 +37,9 @@ class Obj < Hash
   
   public
   def setcmd(line)
-    cmd,*@cs.par=line.split(' ')
+    ca=line.split(' ')
+    cmd=ca.shift
+    @cs.set_par(ca)
     ref=nil
     @odb.each{|db|
       next unless db['selection']
@@ -81,7 +83,7 @@ class Obj < Hash
     cmd=''
     argv=[]
     e.each_element{|d| # //argv
-      str=@cs.subnum(d.text).subpar.subvar.eval.to_s
+      str=eval(@cs.sub_var(d.text))
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }

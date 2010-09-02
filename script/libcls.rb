@@ -31,8 +31,9 @@ class Cls < Hash
   
   public
   def setcmd(line)
-    cmd,*@cs.par=line.split(' ')
-    @session=@cdb.select_id('commands',cmd)
+    ca=line.split(' ')
+    @session=@cdb.select_id('commands',ca.shift)
+    @cs.set_par(ca)
     @v.msg{"Exec(DDB):#{@session.attributes['label']}"}
     line
   rescue
@@ -76,7 +77,7 @@ class Cls < Hash
     cmd=''
     argv=[]
     e.each_element{|d| # //argv
-      str=@cs.subnum(d.text).subpar.subvar.eval.to_s
+      str=eval(@cs.sub_var(d.text))
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }
@@ -90,7 +91,7 @@ class Cls < Hash
     ary=Array.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=@cs.subnum(a['field']).to_s || return
+      fld=@cs.sub_var(a['field']) || return
       data=@field[fld] || return
       
       case dtype.name
@@ -115,7 +116,7 @@ class Cls < Hash
       end
     }
     a=e.attributes
-    id=@cs.subnum(a['id']).to_s
+    id=@cs.sub_var(a['id'])
     value=a['format'] % ary
     @v.msg{"STAT:GetStatus:#{id}=[#{value}]"}
     @stat[id]=value

@@ -2,67 +2,40 @@
 # XML Common Method
 require 'librerange'
 class ConvStr
-  attr_accessor :par,:str,:var
+  attr_reader :par
+  attr_accessor :str,:var
 
   def initialize(v)
-    @v,@var,@str,@par,@n=v,{},'',[],[]
-  end
-
-  def to_s
-    @str
+    @v,@var=v,{}
   end
 
   def repeat(e)
     a=e.attributes
     fmt=a['format'] || '%d'
-    @n.push('')
+    counter=a['counter'] || '_'
+    @v.msg{"Repeat Counter [\$#{counter}]"}
     Range.new(a['from'],a['to']).each { |n|
-      @n[-1] = fmt % n
+      @var[counter]=fmt % n
       e.each_element { |d| yield d}
     }
-    @n.pop
+    @var.delete(counter)
   end
 
-  def subnum(str) # Sub $_ by num
-    @str=str
-    return self unless @n.size > 0 && @str
-    @str=@str.gsub(/\$_/,@n.last)
-    @v.msg("Substutited to [#{@str}]")
-    self
+  def set_par(par)
+    par.each_with_index{|s,n| @var[n+1]=s }
   end
 
-  def subpar(str=nil) # Sub $1 by pary[1]
-    @str=str if str
-    if /\$[\d]/ === @str
-      @par.each_with_index{|s,n| @str=@str.gsub(/\$#{n+1}/,s)}
-      @v.msg("Substutited to [#{@str}]")
-    end
-    self
-  end
-
-  def subvar(str=nil)
-    @str=str if str
-    return self unless /\$/ === @str
+  def sub_var(str)
+    return str unless /\$/ === str
+    @v.msg{"Substitute from [#{str}]"}
     h=@var.clone
+    str=str.gsub(/\$([_\d])/){ h[$1] }
+    @v.msg{"Substitute by [#{str}]"}
     # Sub ${id} by hash[id]
-    @str=@str.gsub(/\$\{([\w:]+)\}/) {
-      $1.split(':').each {|i| h=h[i] }
-      h
-    }
-    @v.msg{"Substitute to [#{@str}]"}
-    self
-  end
-
-  def esc(str=nil) # convert escape char (i.e. "\n"..)
-    @str=str if str
-    @str=Kernel.eval('"'+@str+'"').to_s
-    self
-  end
-
-  def eval(str=nil)
-    @str=str if str
-    @str=Kernel.eval(@str)
-    self
+    str=str.gsub(/\$\{([\w:]+)\}/) {
+      $1.split(':').each {|i| h=h[i] };h }
+    @v.msg{"Substitute to [#{str}]"}
+    str
   end
 
 end

@@ -82,8 +82,8 @@ module ObjStat
     ary=Array.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=@cs.subnum(a['field']).to_s || return
-      fld=@cs.subnum(@field[fld]).to_s || return
+      fld=@cs.sub_var(a['field']) || return
+      fld=@cs.sub_var(@field[fld]) || return
       data=fld.clone
       case dtype.name
       when 'binary'
@@ -112,7 +112,7 @@ module ObjStat
     h=Hash.new
     va.reverse.each{|var|
       var.attributes.each{|k,v|
-        h[k]=@cs.subnum(v).to_s
+        h[k]=@cs.sub_var(v)
       }
       var.each_element{|e| h[:value]=e }
     }

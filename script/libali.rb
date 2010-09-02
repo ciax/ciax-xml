@@ -23,8 +23,8 @@ module ObjStat
   def get_var(var) # //status/var
     st={'group' => @gn }
     a=var.attributes
-    ref=@cs.subnum(a['ref']).to_s
-    st['title']=@cs.subnum(var.text).to_s
+    ref=@cs.sub_var(a['ref'])
+    st['title']=@cs.sub_var(var.text)
     st['val']=@value[ref]
     @v.msg{"STAT:GetStatus:#{ref}=[#{st['val']}]"}
     st.update(@sym.get_symbol(a['symbol'],st['val']))
@@ -63,8 +63,9 @@ class Obj < Hash
   
   public
   def setcmd(line)
-    cmd,*@cs.par=line.split(' ')
-    @session=@odb.select_id('command',cmd)
+    ca=line.split(' ')
+    @session=@odb.select_id('command',ca.shift)
+    @cs.set_par(ca)
     a=@session.attributes
     @v.msg{"Exec(ODB):#{a['label']}"}
     line
@@ -102,7 +103,7 @@ class Obj < Hash
     cmd=@session.a''
     argv=[]
     e.each_element{|d| # //argv
-      str=@cs.subnum(d.text).subpar.subvar.eval.to_s
+      str=eval(@cs.sub_var(d.text))
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }

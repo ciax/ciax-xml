@@ -48,10 +48,10 @@ class ObjSrv < Hash
       rescue
         msg=[$!.to_s]
         msg << "== Internal Command =="
-        msg << " stat\t:Show Status"
-        msg << " auto ?\t:Auto Update (opt)"
-        msg << " save ?\t:Save Field (tag)"
-        msg << " load ?\t:Load Field (tag)"
+        msg << " stat      : Show Status"
+        msg << " auto ?    : Auto Update (opt)"
+        msg << " save ?    : Save Field (tag)"
+        msg << " load ?    : Load Field (tag)"
         raise msg.join("\n")
       end
     end

@@ -43,7 +43,7 @@ class XmlDoc < Hash
     list=Array.new
     ary.each { |e|
       a=e.attributes
-      list << " #{a['id']}\t:#{a['label']}" if a['label']
+      list << " %-10s: %s" % [a['id'],a['label']]if a['label']
     }
     raise(list.join("\n")) if list.size > 0
   end

@@ -9,12 +9,11 @@ class DevRsp
   def initialize(ddb)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
-    @var=Hash.new
     @cs=ConvStr.new(@v)
   end
 
   def rspframe(sel)
-    @var[:sel]=sel || @v.err("No Selection")
+    @sel=sel || @v.err("No Selection")
     @frame=yield || @v.err("No String")
     if tm=@ddb['rspframe'].attributes['terminator']
       @frame.chomp!(eval('"'+tm+'"'))
@@ -23,7 +22,7 @@ class DevRsp
     fld=Hash.new
     setframe(@ddb['rspframe'],fld)
     if cc=fld.delete('cc')
-      cc == @var[:cc] || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@var[:cc]}]")
+      cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
       @v.msg{"Verify:CC OK"}
     end
     fld
@@ -42,11 +41,11 @@ class DevRsp
       when 'ccrange'
         @v.msg{"Entering Ceck Code Node"}
         rc=@ddb['rspccrange']
-        @var[:cc] = checkcode(rc,setframe(rc,fld))
+        @cc = checkcode(rc,setframe(rc,fld))
         @v.msg{"Exitting Ceck Code Node"}
       when 'selected'
         @v.msg{"Entering Selected Node"}
-        frame << setframe(@var[:sel],fld)
+        frame << setframe(@sel,fld)
         @v.msg{"Exitting Selected Node"}
       when 'field'
         frame << field(c,fld)

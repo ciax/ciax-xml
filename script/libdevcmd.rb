@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libmodxml"
+require "libconvstr"
 
 # Cmd Methods
 class DevCmd
@@ -8,23 +9,22 @@ class DevCmd
   def initialize(ddb)
     @ddb=ddb
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
-    @var=Hash.new
+    @cs=ConvStr.new(@v)
   end
 
   def cmdframe(sel)
-    @var[:sel]=sel || @v.err("No Selection")
+    @sel=sel || @v.err("No Selection")
     if ccn=@ddb['cmdccrange']
       @v.msg{"Entering Ceck Code Range"}
-      @var[:ccrange]=getframe(ccn)
-      @var[:cc]=checkcode(ccn,@var[:ccrange])
-      @var['cc']=[@var[:cc]]
+      @ccrange=getframe(ccn)
+      @cc=checkcode(ccn,@ccrange)
       @v.msg{"Exitting Ceck Code Range"}
     end
     getframe(@ddb['cmdframe'])
   end
 
   def par=(ary)
-    @var['par']=ary
+    @cs.set_par(ary)
   end
 
   private
@@ -38,19 +38,18 @@ class DevCmd
         @v.msg{"GetFrame:#{label}[#{c.text}]"}
       when 'selected'
         @v.msg{"Entering Selected Node"}
-        frame << getframe(@var[:sel])
+        frame << getframe(@sel)
         @v.msg{"Exitting Selected Node"}
       when 'par'
-        @var['par'] || @v.err("No Parameter")
-        str=validate(c,@var['par'].shift)
+        str=validate(c,@cs.par.shift)
         @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
         frame << encode(c,calc(c,str))
       when 'ccrange'
-        frame << @var[:ccrange]
-        @v.msg{"GetFrame:(ccrange)[#{@var[:ccrange]}]"}
+        frame << @ccrange
+        @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
       when 'cc'
-        frame << encode(c,@var[:cc])
-        @v.msg{"GetFrame:#{label}(cc)[#{@var[:cc]}"}
+        frame << encode(c,@cc)
+        @v.msg{"GetFrame:#{label}(cc)[#{@cc}"}
       end
     }
     frame

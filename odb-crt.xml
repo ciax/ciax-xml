@@ -38,6 +38,32 @@
       <session id="resume" label="Resume from Pause">
         <statement format="clear"></statement>
       </session>
+      <session id="get_tbl" label="Get Jack Table">
+        <repeat from="0" to="3" counter="j">
+          <repeat from="0" to="5" counter="t">
+            <statement format="get_tbl %s %s">
+              <argv>${j}</argv>
+              <argv>${t}</argv>
+            </statement>
+          </repeat>
+        </repeat>
+      </session>
+      <session id="read_tbl" label="Read Jack Table to Buffer">
+        <statement format="tbl_rw %s">
+          <argv>1</argv>
+        </statement>
+        <statement format="tbl_rw %s">
+          <argv>0</argv>
+        </statement>
+      </session>
+      <session id="write_tbl" label="Write Jack Table to Buffer">
+        <statement format="tbl_rw %s">
+          <argv>2</argv>
+        </statement>
+        <statement format="tbl_rw %s">
+          <argv>0</argv>
+        </statement>
+      </session>
     </selection>
     <status>
       <group label="">

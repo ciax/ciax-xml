@@ -64,7 +64,7 @@ class Obj < Hash
       when 'statement'
         yield(get_cmd(c))
       when 'repeat'
-        @cs.repeat(c){|d| yield(get_cmd(d))}
+        repeat_cmd(c){|d| yield d }
       end
     }
   end
@@ -79,6 +79,17 @@ class Obj < Hash
   
   private
   #Cmd Method
+  def repeat_cmd(e)
+    @cs.repeat(e){|f|
+      case f.name
+      when 'statement'
+        yield(get_cmd(f))
+      when 'repeat'
+        repeat_cmd(f){|g| yield g }
+      end
+    }
+  end
+
   def get_cmd(e) # //statement
     cmd=''
     argv=[]

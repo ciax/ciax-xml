@@ -42,8 +42,8 @@
         <repeat from="0" to="3" counter="j">
           <repeat from="0" to="5" counter="t">
             <statement format="get_tbl %s %s">
-              <argv>${j}</argv>
-              <argv>${t}</argv>
+              <argv>$j</argv>
+              <argv>$t</argv>
             </statement>
           </repeat>
         </repeat>

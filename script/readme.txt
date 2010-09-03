@@ -1,6 +1,6 @@
 ### Substitution Strings (implicit conversion) ###
 
- $_ 
+ $_ $a..z
     description : substitute sequence number(in repeat)
     usable: ddb//response/repeat/field/assign
             --
@@ -25,11 +25,14 @@
             --
             odb//session/statement/argv
 
- ${??}
+ ${*:*}
     description : substitute status(field)
     usable: cdb//session/statement/argv
             --
             odb//session/statement/argv
+ # No parenthetic variable is processed prior to parenthetic one
+
+
 
  \?
     description : convert escape characters

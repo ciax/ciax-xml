@@ -29,7 +29,7 @@ class ConvStr
     return str unless /\$/ === str
     @v.msg{"Substitute from [#{str}]"}
     h=@var.clone
-    str=str.gsub(/\$([_\d])/){ h[$1] }
+    str=str.gsub(/\$([_\w])/){ h[$1] }
     # Sub ${id} by hash[id]
     str=str.gsub(/\$\{([\w:]+)\}/) {
       $1.split(':').each {|i| h=h[i] };h }

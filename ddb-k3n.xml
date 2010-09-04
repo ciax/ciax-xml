@@ -22,7 +22,7 @@
     <cmdframe>
       <data label="Prefix" encode="chr">2</data>
       <ccrange></ccrange>
-      <cc encode="chr" />
+      <data encode="chr" eval="1">${cc}</data>
     </cmdframe>
     <rspselect>
       <response id="getstat">

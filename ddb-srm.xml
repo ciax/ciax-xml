@@ -12,12 +12,15 @@
         <data label="length">0001</data>
       </command>
       <command id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
+        <parameters>
+          <par>
+            <regexp>[45][045]+</regexp>
+          </par>
+        </parameters>
         <data label="Header Code">FK</data>
         <data label="Operand">CIO </data>
         <data label="Channel">0000</data>
-        <par format="%016d">
-          <regexp>[45][045]+</regexp>
-        </par>
+        <data format="%016d" eval="1">$1</data>
       </command>
     </cmdselect>
     <cmdccrange method="bcc">
@@ -27,7 +30,7 @@
     </cmdccrange>
     <cmdframe>
       <ccrange></ccrange>
-      <cc format="%02X" />
+      <data format="%02X" eval="1">${cc}</data>
       <data label="Suffix">*</data>
       <data label="Delimiter" encode="chr">0xd</data>
     </cmdframe>

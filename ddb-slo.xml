@@ -7,10 +7,13 @@
         <data>bs</data>
       </command>
       <command id="in" label="Input Status (1-5)" response="in" type="stat">
+        <parameters>
+          <par>
+            <range>1:5</range>
+          </par>
+        </parameters>
         <data>in</data>
-        <par format="(%d)">
-          <range>1:5</range>
-        </par>
+        <data format="(%d)" eval="1">$1</data>
       </command>
       <command id="err" label="Error Status" response="err" type="stat">
         <data>err</data>
@@ -22,29 +25,43 @@
         <data>reset</data>
       </command>
       <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
+        <parameters>
+          <par>
+            <regexp>[01]</regexp>
+          </par>
+        </parameters>
         <data>hl</data>
-        <par>
-          <regexp>[01]</regexp>
-        </par>
+        <data eval="1">$1</data>
       </command>
       <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
+        <parameters>
+          <par>
+            <regexp>[01]</regexp>
+          </par>
+        </parameters>
         <data>e1=</data>
-        <par>
-          <regexp>[01]</regexp>
-        </par>
+        <data eval="1">$1</data>
       </command>
       <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
+        <parameters>
+          <par>
+            <regexp>[01]</regexp>
+          </par>
+        </parameters>
         <data>e2=</data>
-        <par>
-          <regexp>[01]</regexp>
-        </par>
+        <data eval="1">$1</data>
       </command>
       <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
         <data>abspos=0</data>
       </command>
       <command id="setp" label="Set Pulse Number" response="default" type="config">
+        <parameters>
+          <par>
+            <range>0:999</range>
+          </par>
+        </parameters>
         <data>p=</data>
-        <par format="%5.2" />
+        <data format="%5.2f" eval="1">$1</data>
       </command>
       <command id="stop" label="Stop Running" response="default" type="action">
         <data>stop</data>
@@ -56,8 +73,13 @@
         <data>j=-1</data>
       </command>
       <command id="ma" label="Move Absolute Position" response="default" type="action">
+        <parameters>
+          <par>
+            <range>0:999</range>
+          </par>
+        </parameters>
         <data>ma=</data>
-        <par format="%3.1" />
+        <data format="%3.1f" eval="1">$1</data>
       </command>
     </cmdselect>
     <cmdframe>

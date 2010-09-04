@@ -11,10 +11,13 @@
         <data label="msb" encode="bew">0x1111</data>
       </command>
       <command id="output" label="OUTPUT [DDDDD]" type="action">
+        <parameters>
+          <par>
+            <range>0:65535</range>
+          </par>
+        </parameters>
         <data>SO</data>
-        <par encode="bew">
-          <range>0:65535</range>
-        </par>
+        <data encode="bew" eval="1">$1</data>
       </command>
     </cmdselect>
     <cmdframe>

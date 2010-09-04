@@ -17,7 +17,7 @@ class DevCmd
     if ccn=@ddb['cmdccrange']
       @v.msg{"Entering Ceck Code Range"}
       @ccrange=getframe(ccn)
-      @cc=checkcode(ccn,@ccrange)
+      @cs.var['cc']=checkcode(ccn,@ccrange)
       @v.msg{"Exitting Ceck Code Range"}
     end
     getframe(@ddb['cmdframe'])
@@ -33,44 +33,19 @@ class DevCmd
     e.each_element { |c|
       label=c.attributes['label']
       case c.name
-      when 'data'
-        frame << encode(c,c.text)
-        @v.msg{"GetFrame:#{label}[#{c.text}]"}
-      when 'selected'
-        @v.msg{"Entering Selected Node"}
-        frame << getframe(@sel)
-        @v.msg{"Exitting Selected Node"}
-      when 'par'
-        str=validate(c,@cs.par.shift)
-        @v.msg{"GetFrame:#{label}(parameter)[#{str}]"}
-        frame << encode(c,calc(c,str))
-      when 'ccrange'
-        frame << @ccrange
-        @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
-      when 'cc'
-        frame << encode(c,@cc)
-        @v.msg{"GetFrame:#{label}(cc)[#{@cc}"}
       when 'parameters'
         c.each_element{|d|
           validate(d,@cs.par.shift)
         }
-      when 'eval'
-        frame << encode(c,eval(@cs.sub_var(c.text)).to_s)
-      when 'repeat'
-        frame << repeat_frame(c){|d| yield d }
-      end
-    }
-    frame
-  end
-  
-  def repeat_frame(e)
-    frame=''
-    @cs.repeat(e){|d|
-      case d.name
       when 'data'
-        frame << encode(d,d.text)
-      when 'eval'
-        frame << encode(c,eval(@cs.sub_var(c.text)).to_s)
+        frame << get_data(c)
+      when 'selected'
+        @v.msg{"Entering Selected Node"}
+        frame << getframe(@sel)
+        @v.msg{"Exitting Selected Node"}
+      when 'ccrange'
+        frame << @ccrange
+        @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
       when 'repeat'
         frame << repeat_frame(c){|d| yield d }
       end
@@ -78,4 +53,26 @@ class DevCmd
     frame
   end
 
+  def repeat_frame(e)
+    frame=''
+    @cs.repeat(e){|d|
+      case d.name
+      when 'data'
+        frame << get_data(d)
+      when 'repeat'
+        frame << repeat_frame(c){|d| yield d }
+      end
+    }
+    frame
+  end
+
+  def get_data(e)
+    a=e.attributes
+    str=e.text
+    if /1|true/ === a['eval']
+      str=eval(@cs.sub_var(str)).to_s
+    end
+    @v.msg{"GetFrame:#{a['label']}[#{str}]"}
+    encode(e,str)
+  end
 end

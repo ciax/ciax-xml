@@ -7,28 +7,40 @@
         <data>L</data>
       </command>
       <command id="setvl" type="config" label="Set Voltage Limit [DD]">
+        <parameters>
+          <par>
+            <range>0:20</range>
+          </par>
+        </parameters>
         <data>SU </data>
-        <par format="%02d">
-          <range>0:20</range>
-        </par>
+        <data format="%02d" eval="1">$1</data>
       </command>
       <command id="setal" type="config" label="Set Current Limit [D.DD]">
+        <parameters>
+          <par>
+            <range>0:&lt;10</range>
+          </par>
+        </parameters>
         <data>SI </data>
-        <par format="%04.2f">
-          <range>0:&lt;10</range>
-        </par>
+        <data format="%04.2f" eval="1">$1</data>
       </command>
       <command id="setpl" type="config" label="Set Power Limit [DDD]">
+        <parameters>
+          <par>
+            <range>0:&lt;200</range>
+          </par>
+        </parameters>
         <data>SP </data>
-        <par format="%03d">
-          <range>0:&lt;200</range>
-        </par>
+        <data format="%03d" eval="1">$1</data>
       </command>
       <command id="setv" type="config" label="Set Voltage [DD.DD]">
+        <parameters>
+          <par>
+            <range>0:&lt;100</range>
+          </par>
+        </parameters>
         <data>SV </data>
-        <par format="%05.2f">
-          <range>0:&lt;100</range>
-        </par>
+        <data format="%05.2f" eval="1">$1</data>
       </command>
       <command id="pon" type="action" label="OUTPUT ON">
         <data>KOE</data>

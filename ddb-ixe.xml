@@ -7,25 +7,35 @@
         <data>ST</data>
       </command>
       <command id="chkr" label="Check Run (1-6)" response="chkr" type="stat">
-        <par>
-          <range>1:6</range>
-        </par>
+        <parameters>
+          <par>
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <data eval="1">$1</data>
         <data>=H</data>
       </command>
       <command id="getp" label="Get pulse (1-6)" response="getp" type="stat">
-        <par>
-          <range>1:6</range>
-        </par>
+        <parameters>
+          <par>
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <data eval="1">$1</data>
         <data>P21R</data>
       </command>
       <command id="setp" label="Set pulse (1-6) (0-19200)" response="default" type="config">
-        <par>
-          <range>1:6</range>
-        </par>
+        <parameters>
+          <par>
+            <range>1:6</range>
+          </par>
+          <par>
+            <range>0:19200</range>
+          </par>
+        </parameters>
+        <data eval="1">$1</data>
         <data>P21S</data>
-        <par>
-          <range>0:19200</range>
-        </par>
+        <data eval="1">$2</data>
       </command>
     </cmdselect>
     <cmdframe>

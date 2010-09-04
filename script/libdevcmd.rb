@@ -50,8 +50,32 @@ class DevCmd
       when 'cc'
         frame << encode(c,@cc)
         @v.msg{"GetFrame:#{label}(cc)[#{@cc}"}
+      when 'parameters'
+        c.each_element{|d|
+          validate(d,@cs.par.shift)
+        }
+      when 'eval'
+        frame << encode(c,eval(@cs.sub_var(c.text)).to_s)
+      when 'repeat'
+        frame << repeat_frame(c){|d| yield d }
       end
     }
     frame
   end
+  
+  def repeat_frame(e)
+    frame=''
+    @cs.repeat(e){|d|
+      case d.name
+      when 'data'
+        frame << encode(d,d.text)
+      when 'eval'
+        frame << encode(c,eval(@cs.sub_var(c.text)).to_s)
+      when 'repeat'
+        frame << repeat_frame(c){|d| yield d }
+      end
+    }
+    frame
+  end
+
 end

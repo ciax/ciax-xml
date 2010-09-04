@@ -3,16 +3,17 @@
 require 'librerange'
 class ConvStr
   attr_reader :par
-  attr_accessor :str,:var
+  attr_accessor :var
 
   def initialize(v)
-    @v,@var=v,{}
+    @v,@var,@par=v,{},[]
   end
 
   def repeat(e)
     a=e.attributes
     fmt=a['format'] || '%d'
     counter=a['counter'] || '_'
+    counter.next! while @var[counter]
     @v.msg{"Repeat Counter [\$#{counter}]"}
     Range.new(a['from'],a['to']).each { |n|
       @var[counter]=fmt % n
@@ -22,6 +23,7 @@ class ConvStr
   end
 
   def set_par(par)
+    @par=par
     par.each_with_index{|s,n| @var[(n+1).to_s]=s }
   end
 
@@ -29,7 +31,7 @@ class ConvStr
     return str unless /\$/ === str
     @v.msg{"Substitute from [#{str}]"}
     h=@var.clone
-    str=str.gsub(/\$([_\w])/){ h[$1] }
+    str=str.gsub(/\$([_`\w])/){ h[$1] }
     # Sub ${id} by hash[id]
     str=str.gsub(/\$\{([\w:]+)\}/) {
       $1.split(':').each {|i| h=h[i] };h }

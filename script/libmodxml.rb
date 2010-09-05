@@ -67,13 +67,4 @@ module ModXml
     code.to_s
   end
 
-  def calc(e,int)
-    if ev=e.attributes['calc']
-      $_=int.to_i
-      int=Kernel.eval(ev)
-      @v.msg{"Calculate(#{ev}) ->[#{$_}] [#{int}]"}
-    end
-    int.to_s
-  end
-
 end

@@ -148,13 +148,11 @@
       </response>
       <response id="cmdrsp" label="command resp" />
       <response id="get_tbl">
-        <repeat format="%x" from="0" to="10" counter="i">
-          <repeat from="0" to="3">
-            <field decode="lew">
-              <length>2</length>
-              <assign>t$2j$1p$_i$i</assign>
-            </field>
-          </repeat>
+        <repeat format="%x" from="0" to="43">
+          <field decode="lew">
+            <length>2</length>
+            <array>t$2j$1</array>
+          </field>
         </repeat>
       </response>
     </rspselect>

@@ -14,7 +14,9 @@ class ConvStr
     fmt=a['format'] || '%d'
     counter=a['counter'] || '_'
     counter.next! while @var[counter]
-    @v.msg{"Repeat Counter [\$#{counter}]"}
+    @v.msg{"Repeat:Counter[\$#{counter}]"}
+    @v.msg{"Repeat:Range[#{a['from']}]-[#{a['to']}]"}
+    @v.msg{"Repeat:Format[#{fmt}]"}
     Range.new(a['from'],a['to']).each { |n|
       @var[counter]=fmt % n
       e.each_element { |d| yield d}

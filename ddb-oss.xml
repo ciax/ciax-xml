@@ -135,16 +135,16 @@
           <length>2</length>
           <assign>cjb</assign>
         </field>
-        <repeat format="%02d" from="1" to="16">
+        <repeat from="1" to="16">
           <field label="Each Bolt Status(POWER_V1)">
             <length>1</length>
-            <assign>bl$_</assign>
+            <array>bl</array>
           </field>
         </repeat>
-        <repeat format="%02d" from="1" to="16">
+        <repeat from="1" to="16">
           <field label="Each Bolt Alarm(POWER_V1)">
             <length>1</length>
-            <assign>be$_</assign>
+            <array>be</array>
           </field>
         </repeat>
         <field label="MLP3-BOLT COMM(POWER_V1)">
@@ -163,10 +163,10 @@
           <length>1</length>
           <verify>10</verify>
         </field>
-        <repeat format="%02d" from="1" to="16">
+        <repeat from="1" to="16">
           <field label="Bolt Position(POWER_V2)">
             <length>6</length>
-            <assign>jk$_</assign>
+            <array>jk</array>
           </field>
           <field>
             <length>6</length>
@@ -182,7 +182,7 @@
           </field>
           <field label="Zsensor Position">
             <length>4</length>
-            <assign>zp$_</assign>
+            <array>zp</array>
           </field>
           <field>
             <length>6</length>

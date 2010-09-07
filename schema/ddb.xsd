@@ -234,6 +234,7 @@
         </xsd:choice>
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="ddb:assign" />
+          <xsd:element ref="ddb:array" />
           <xsd:element ref="ddb:verify" />
         </xsd:choice>
       </xsd:sequence>
@@ -243,6 +244,7 @@
   <!--Field Elements-->
   <xsd:element name="length" type="xsd:int"></xsd:element>
   <xsd:element name="assign" type="xsd:string"></xsd:element>
+  <xsd:element name="array" type="xsd:string"></xsd:element>
   <xsd:element name="verify">
     <xsd:complexType>
       <xsd:simpleContent>

@@ -19,13 +19,13 @@ class DevRsp
       @frame.chomp!(eval('"'+tm+'"'))
       @v.msg{"Remove terminator:[#{@frame}] by [#{tm}]" }
     end
-    fld=Hash.new
-    setframe(@ddb['rspframe'],fld)
-    if cc=fld.delete('cc')
+    @field=Hash.new
+    setframe(@ddb['rspframe'])
+    if cc=@field.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
       @v.msg{"Verify:CC OK"}
     end
-    fld
+    @field
   end
 
   def par=(ary)
@@ -33,7 +33,7 @@ class DevRsp
    end
 
   private
-  def setframe(e,fld)
+  def setframe(e)
     frame=String.new
     e.each_element { |c|
       a=c.attributes
@@ -41,35 +41,24 @@ class DevRsp
       when 'ccrange'
         @v.msg{"Entering Ceck Code Node"}
         rc=@ddb['rspccrange']
-        @cc = checkcode(rc,setframe(rc,fld))
+        @cc = checkcode(rc,setframe(rc))
         @v.msg{"Exitting Ceck Code Node"}
       when 'selected'
         @v.msg{"Entering Selected Node"}
-        frame << setframe(@sel,fld)
+        frame << setframe(@sel)
         @v.msg{"Exitting Selected Node"}
       when 'field'
-        frame << field(c,fld)
+        frame << field(c)
       when 'repeat'
-        frame << repeat_field(c,fld)
+        @cs.repeat(c){|d|
+          frame << field(d)
+        }
       end
     }
     frame
   end
 
-  def repeat_field(e,fld)
-    frame=String.new
-    @cs.repeat(e){|f|
-      case f.name
-      when 'repeat'
-        frame << repeat_field(f,fld)
-      when 'field'
-        frame << field(f,fld)
-      end
-    }
-    frame
-  end
-
-  def field(e,fld)
+  def field(e)
     str=''
     data=''
     @v.msg{"Field:#{e.attributes['label']}"}
@@ -87,8 +76,12 @@ class DevRsp
         data=decode(e,str)
       when 'assign'
         key=@cs.sub_var(d.text)
-        fld[key]=data
-        @v.msg{"Assign:[#{key}]<-[#{fld[key]}]"}
+        @field[key]=data
+        @v.msg{"Assign:[#{key}]<-[#{data}]"}
+      when 'array'
+        key=@cs.sub_var(d.text)
+        @field[key] ? @field[key] << data : @field[key]=[data]
+        @v.msg{"Assign_Array:[#{key}]<-[#{data}]"}
       when 'verify'
         if txt=d.text
           @v.msg{"Verify:[#{txt}]"}

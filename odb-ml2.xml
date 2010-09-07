@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="ml2" label="MOIRCS Temperature 2" ref="ml1">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='ml2' label='MOIRCS Temperature 2' ref='ml1'>
     <comm>
       <device>lk8</device>
       <client>socat - tcp:celaeno:4006</client>
@@ -8,16 +8,16 @@
     </comm>
     <status>
       <group>
-        <var ref="ch1" label="Robohand"></var>
-        <var ref="ch2" label="CollBench"></var>
-        <var ref="ch3" label="BulkHead"></var>
-        <var ref="ch4" label="HeatPath"></var>
+        <var label='Robohand' ref='ch1'/>
+        <var label='CollBench' ref='ch2'/>
+        <var label='BulkHead' ref='ch3'/>
+        <var label='HeatPath' ref='ch4'/>
       </group>
       <group>
-        <var ref="ch5" label="D1(NONE)"></var>
-        <var ref="ch6" label="D2(NONE)"></var>
-        <var ref="ch7" label="ChipBox2"></var>
-        <var ref="ch8" label="Det2"></var>
+        <var label='D1(NONE)' ref='ch5'/>
+        <var label='D2(NONE)' ref='ch6'/>
+        <var label='ChipBox2' ref='ch7'/>
+        <var label='Det2' ref='ch8'/>
       </group>
     </status>
   </object>

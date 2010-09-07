@@ -1,94 +1,94 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="mix" label="MOIRCS Turret">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='mix' label='MOIRCS Turret'>
     <comm>
       <device>ixe</device>
       <client>socat - tcp:celaeno:4007</client>
       <server>socat - udp-l:24107,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id="upd" label="Update Status">
-        <statement format="getstat"></statement>
-        <repeat from="1" to="6">
-          <statement format="chkr %d">
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
+        <repeat from='1' to='6'>
+          <statement format='chkr %d'>
             <argv>$_</argv>
           </statement>
-          <statement format="getp %d">
+          <statement format='getp %d'>
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
-      <session id="resume" label="Resume Pulses">
-        <repeat from="1" to="6">
-          <statement format="setp %d %d">
+      <session id='resume' label='Resume Pulses'>
+        <repeat from='1' to='6'>
+          <statement format='setp %d %d'>
             <argv>$_</argv>
             <argv>${field:p$_}</argv>
           </statement>
         </repeat>
       </session>
-      <session id="set0" label="Set 0 Pulses">
-        <repeat from="1" to="6">
-          <statement format="setp %d 0">
+      <session id='set0' label='Set 0 Pulses'>
+        <repeat from='1' to='6'>
+          <statement format='setp %d 0'>
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
     </selection>
     <status>
-      <group label="">
-        <var id="rdy" label="Comm Ready" symbol="off-warn">
-          <value format="%s">
-            <binary bit="0" field="stat" />
+      <group label=''>
+        <var id='rdy' label='Comm Ready' symbol='off-warn'>
+          <value format='%s'>
+            <binary bit='0'>stat</binary>
           </value>
         </var>
-        <var id="srq" label="SRQ" symbol="off-warn">
-          <value format="%s">
-            <binary bit="1" field="stat" />
+        <var id='srq' label='SRQ' symbol='off-warn'>
+          <value format='%s'>
+            <binary bit='1'>stat</binary>
           </value>
         </var>
-        <var id="pme" label="Program Error" symbol="alarm">
-          <value format="%s">
-            <binary bit="3" field="stat" />
+        <var id='pme' label='Program Error' symbol='alarm'>
+          <value format='%s'>
+            <binary bit='3'>stat</binary>
           </value>
         </var>
-        <var id="pse" label="Power Stage Error" symbol="alarm">
-          <value format="%s">
-            <binary bit="4" field="stat" />
+        <var id='pse' label='Power Stage Error' symbol='alarm'>
+          <value format='%s'>
+            <binary bit='4'>stat</binary>
           </value>
         </var>
-        <var id="oes" label="ONE EM Stop" symbol="alarm">
-          <value format="%s">
-            <binary bit="5" field="stat" />
+        <var id='oes' label='ONE EM Stop' symbol='alarm'>
+          <value format='%s'>
+            <binary bit='5'>stat</binary>
           </value>
         </var>
-        <var id="ees" label="EXT EM Stop" symbol="alarm">
-          <value format="%s">
-            <binary bit="6" field="stat" />
-          </value>
-        </var>
-      </group>
-      <group label="">
-        <var id="trm" label="Terminal Mode" symbol="off-warn">
-          <value format="%s">
-            <binary bit="2" field="stat" />
-          </value>
-        </var>
-        <var id="cmd" label="Computer Mode" symbol="off-warn">
-          <value format="%s">
-            <binary bit="7" field="stat" />
+        <var id='ees' label='EXT EM Stop' symbol='alarm'>
+          <value format='%s'>
+            <binary bit='6'>stat</binary>
           </value>
         </var>
       </group>
-      <repeat from="1" to="6">
-        <group label="">
-          <var id="r$_" label="Running $_" symbol="normal">
-            <value format="%s">
-              <string field="r$_" />
+      <group label=''>
+        <var id='trm' label='Terminal Mode' symbol='off-warn'>
+          <value format='%s'>
+            <binary bit='2'>stat</binary>
+          </value>
+        </var>
+        <var id='cmd' label='Computer Mode' symbol='off-warn'>
+          <value format='%s'>
+            <binary bit='7'>stat</binary>
+          </value>
+        </var>
+      </group>
+      <repeat from='1' to='6'>
+        <group label=''>
+          <var id='r$_' label='Running $_' symbol='normal'>
+            <value format='%s'>
+              <string>r$_</string>
             </value>
           </var>
-          <var id="p$_" label="Pulse $_">
-            <value format="%d">
-              <int field="p$_" />
+          <var id='p$_' label='Pulse $_'>
+            <value format='%d'>
+              <int>p$_</int>
             </value>
           </var>
         </group>

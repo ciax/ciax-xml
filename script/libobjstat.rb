@@ -82,7 +82,7 @@ module ObjStat
     ary=Array.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=@cs.sub_var(a['field']) || return
+      fld=@cs.sub_var(dtype.text) || return
       fld=@cs.sub_var(@field[fld]) || return
       data=fld.clone
       case dtype.name

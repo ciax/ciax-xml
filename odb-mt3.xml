@@ -1,64 +1,64 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="mt3" label="MOIRCS Pressure Pump">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='mt3' label='MOIRCS Pressure Pump'>
     <comm>
       <device>tpg</device>
       <client>socat - tcp:celaeno:4011</client>
       <server>socat - udp-l:24111,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id="upd" label="Update Status">
-        <statement format="reqstat"></statement>
-        <statement format="getstat"></statement>
+      <session id='upd' label='Update Status'>
+        <statement format='reqstat'/>
+        <statement format='getstat'/>
       </session>
     </selection>
     <status>
       <group>
-        <var id="st1" label="Turbo Pump Stat" symbol="stat">
-          <value format="%s">
-            <string field="st1" />
+        <var id='st1' label='Turbo Pump Stat' symbol='stat'>
+          <value format='%s'>
+            <string>st1</string>
           </value>
         </var>
-        <var id="ch1" label="Turbo Pump (Torr)">
-          <value format="%4.2e">
-            <float field="ch1" />
+        <var id='ch1' label='Turbo Pump (Torr)'>
+          <value format='%4.2e'>
+            <float>ch1</float>
           </value>
         </var>
       </group>
       <group>
-        <var id="st2" label="Scroll Pump Stat" symbol="stat">
-          <value format="%s">
-            <string field="st1" />
+        <var id='st2' label='Scroll Pump Stat' symbol='stat'>
+          <value format='%s'>
+            <string>st1</string>
           </value>
         </var>
-        <var id="ch2" label="Scroll Pump (Torr)">
-          <value format="%4.2e">
-            <float field="ch1" />
+        <var id='ch2' label='Scroll Pump (Torr)'>
+          <value format='%4.2e'>
+            <float>ch1</float>
           </value>
         </var>
       </group>
     </status>
     <symbols>
-      <symbol id="stat" type="ENUM">
-        <enum hl="hide" msg="Measurment data okay">
+      <symbol id='stat' type='ENUM'>
+        <enum hl='hide' msg='Measurment data okay'>
           <regexp>0</regexp>
         </enum>
-        <enum hl="warn" msg="Underrange">
+        <enum hl='warn' msg='Underrange'>
           <regexp>1</regexp>
         </enum>
-        <enum hl="warn" msg="Overrange">
+        <enum hl='warn' msg='Overrange'>
           <regexp>2</regexp>
         </enum>
-        <enum hl="warn" msg="Sensor error">
+        <enum hl='warn' msg='Sensor error'>
           <regexp>3</regexp>
         </enum>
-        <enum hl="warn" msg="Sensor off">
+        <enum hl='warn' msg='Sensor off'>
           <regexp>4</regexp>
         </enum>
-        <enum hl="warn" msg="No sensor">
+        <enum hl='warn' msg='No sensor'>
           <regexp>5</regexp>
         </enum>
-        <enum hl="warn" msg="Identification error">
+        <enum hl='warn' msg='Identification error'>
           <regexp>6</regexp>
         </enum>
       </symbol>

@@ -1,112 +1,112 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="mh1" label="MOIRCS Ext Heater 1">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='mh1' label='MOIRCS Ext Heater 1'>
     <comm>
       <device>psp</device>
       <client>socat - tcp:merope:59999</client>
       <server>socat - udp-l:24201,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id="upd" label="Update Status">
-        <statement format="getstat"></statement>
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
       </session>
-      <session id="setlmt" label="Set Limit 20V/5A/100W">
-        <statement format="setvl 20"></statement>
-        <statement format="setal 5"></statement>
-        <statement format="setpl 100"></statement>
-        <statement format="getstat"></statement>
+      <session id='setlmt' label='Set Limit 20V/5A/100W'>
+        <statement format='setvl 20'/>
+        <statement format='setal 5'/>
+        <statement format='setpl 100'/>
+        <statement format='getstat'/>
       </session>
-      <session id="setv" label="Set Voltage 0-50[V]">
+      <session id='setv' label='Set Voltage 0-50[V]'>
         <parameters>
           <par>
             <range>0:50</range>
           </par>
         </parameters>
-        <statement format="setv %f">
+        <statement format='setv %f'>
           <argv>$1</argv>
         </statement>
-        <statement format="getstat"></statement>
+        <statement format='getstat'/>
       </session>
-      <session id="setp" label="Set Power 0-100[W]">
+      <session id='setp' label='Set Power 0-100[W]'>
         <parameters>
           <par>
             <range>0:100</range>
           </par>
         </parameters>
-        <statement format="setv %5.2f">
+        <statement format='setv %5.2f'>
           <argv>Math.sqrt($1*26)</argv>
         </statement>
-        <statement format="getstat"></statement>
+        <statement format='getstat'/>
       </session>
     </selection>
     <status>
       <group>
-        <var id="vol" label="OUTPUT (V)">
-          <value format="%3.2f">
-            <float field="v" />
+        <var id='vol' label='OUTPUT (V)'>
+          <value format='%3.2f'>
+            <float>v</float>
           </value>
         </var>
-        <var id="amp" label="OUTPUT (A)">
-          <value format="%3.2f">
-            <float field="a" />
+        <var id='amp' label='OUTPUT (A)'>
+          <value format='%3.2f'>
+            <float>a</float>
           </value>
         </var>
-        <var id="wat" label="OUTPUT (W)">
-          <value format="%3.2f">
-            <float field="w" />
-          </value>
-        </var>
-      </group>
-      <group>
-        <var id="vl" label="Limit (V)">
-          <value format="%3.2f">
-            <float field="u" />
-          </value>
-        </var>
-        <var id="il" label="Limit (A)">
-          <value format="%3.2f">
-            <float field="i" />
-          </value>
-        </var>
-        <var id="pl" label="Limit (W)">
-          <value format="%3.2f">
-            <float field="p" />
+        <var id='wat' label='OUTPUT (W)'>
+          <value format='%3.2f'>
+            <float>w</float>
           </value>
         </var>
       </group>
       <group>
-        <var id="sw" label="OUTPUT ON/OFF" symbol="warn">
-          <value format="%s">
-            <string field="f1" />
+        <var id='vl' label='Limit (V)'>
+          <value format='%3.2f'>
+            <float>u</float>
           </value>
         </var>
-        <var id="tmp" label="OverHeat" symbol="alarm">
-          <value format="%s">
-            <string field="f2" />
+        <var id='il' label='Limit (A)'>
+          <value format='%3.2f'>
+            <float>i</float>
           </value>
         </var>
-      </group>
-      <group>
-        <var id="kn1" label="Wheel Knov Fine" symbol="normal">
-          <value format="%s">
-            <string field="f3" />
-          </value>
-        </var>
-        <var id="kn2" label="Wheel Knov Unlock" symbol="normal">
-          <value format="%s">
-            <string field="f4" />
+        <var id='pl' label='Limit (W)'>
+          <value format='%3.2f'>
+            <float>p</float>
           </value>
         </var>
       </group>
       <group>
-        <var id="rem" label="REMOTE" symbol="normal">
-          <value format="%s">
-            <string field="f5" />
+        <var id='sw' label='OUTPUT ON/OFF' symbol='warn'>
+          <value format='%s'>
+            <string>f1</string>
           </value>
         </var>
-        <var id="loc" label="Local Lock" symbol="normal">
-          <value format="%s">
-            <string field="f6" />
+        <var id='tmp' label='OverHeat' symbol='alarm'>
+          <value format='%s'>
+            <string>f2</string>
+          </value>
+        </var>
+      </group>
+      <group>
+        <var id='kn1' label='Wheel Knov Fine' symbol='normal'>
+          <value format='%s'>
+            <string>f3</string>
+          </value>
+        </var>
+        <var id='kn2' label='Wheel Knov Unlock' symbol='normal'>
+          <value format='%s'>
+            <string>f4</string>
+          </value>
+        </var>
+      </group>
+      <group>
+        <var id='rem' label='REMOTE' symbol='normal'>
+          <value format='%s'>
+            <string>f5</string>
+          </value>
+        </var>
+        <var id='loc' label='Local Lock' symbol='normal'>
+          <value format='%s'>
+            <string>f6</string>
           </value>
         </var>
       </group>

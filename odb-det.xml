@@ -1,125 +1,125 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="det" label="CsEtr Controller">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='det' label='CsEtr Controller'>
     <comm>
       <device>srm</device>
       <client>socat - tcp:ltc-c:4001</client>
       <server>socat - udp-l:25104,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id="upd" label="Update Status">
-        <statement format="getstat" />
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
       </session>
-      <session id="c3on" label="CIAX3 POWER ON">
-        <statement label="Bit 0 on" format="fset 5" />
+      <session id='c3on' label='CIAX3 POWER ON'>
+        <statement format='fset 5' label='Bit 0 on'/>
       </session>
-      <session id="c3off" label="CIAX3 POWER OFF">
-        <statement label="Bit 0 OFF" format="fset 4" />
+      <session id='c3off' label='CIAX3 POWER OFF'>
+        <statement format='fset 4' label='Bit 0 OFF'/>
       </session>
-      <session id="emon" label="CIAX3 EMERGENCY ON">
-        <statement label="Bit 1 ON" format="fset 50" />
+      <session id='emon' label='CIAX3 EMERGENCY ON'>
+        <statement format='fset 50' label='Bit 1 ON'/>
       </session>
-      <session id="emoff" label="CIAX3 EMERGENCY OFF">
-        <statement label="Bit 1 OFF" format="fset 40" />
+      <session id='emoff' label='CIAX3 EMERGENCY OFF'>
+        <statement format='fset 40' label='Bit 1 OFF'/>
       </session>
-      <session id="ccdon" label="CS CCD ON">
-        <statement label="Bit 2 ON" format="fset 500" />
+      <session id='ccdon' label='CS CCD ON'>
+        <statement format='fset 500' label='Bit 2 ON'/>
       </session>
-      <session id="ccdoff" label="CS CCD OFF">
-        <statement label="Bit 2 OFF" format="fset 400" />
+      <session id='ccdoff' label='CS CCD OFF'>
+        <statement format='fset 400' label='Bit 2 OFF'/>
       </session>
-      <session id="lanon" label="CS LAN ON">
-        <statement label="Bit 3 ON" format="fset 5000" />
+      <session id='lanon' label='CS LAN ON'>
+        <statement format='fset 5000' label='Bit 3 ON'/>
       </session>
-      <session id="lanoff" label="CS LAN OFF">
-        <statement label="Bit 3 OFF" format="fset 4000" />
+      <session id='lanoff' label='CS LAN OFF'>
+        <statement format='fset 4000' label='Bit 3 OFF'/>
       </session>
-      <session id="ipwon" label="CS IPW ON">
-        <statement label="Bit 4 ON" format="fset 50000" />
+      <session id='ipwon' label='CS IPW ON'>
+        <statement format='fset 50000' label='Bit 4 ON'/>
       </session>
-      <session id="ipwoff" label="CS IPW OFF">
-        <statement label="Bit 4 OFF" format="fset 40000" />
+      <session id='ipwoff' label='CS IPW OFF'>
+        <statement format='fset 40000' label='Bit 4 OFF'/>
       </session>
-      <session id="ston" label="STOW PIN ON">
-        <statement label="Bit 5 ON" format="fset 500000" />
+      <session id='ston' label='STOW PIN ON'>
+        <statement format='fset 500000' label='Bit 5 ON'/>
       </session>
-      <session id="stoff" label="STOW PIN OFF">
-        <statement label="Bit 5 OFF" format="fset 400000" />
+      <session id='stoff' label='STOW PIN OFF'>
+        <statement format='fset 400000' label='Bit 5 OFF'/>
       </session>
     </selection>
     <status>
-      <group label="">
-        <var id="iid" label="CAS INST ID" symbol="inst">
-          <value format="%s">
-            <string field="c1d2" />
+      <group label=''>
+        <var id='iid' label='CAS INST ID' symbol='inst'>
+          <value format='%s'>
+            <string>c1d2</string>
           </value>
         </var>
-        <var id="ipw" label="CAS IPW" symbol="off-warn">
-          <value format="%s">
-            <binary bit="0" field="c1d1" />
-          </value>
-        </var>
-      </group>
-      <group label="">
-        <var id="stp" label="STOW PIN" symbol="warn">
-          <value format="%s">
-            <binary bit="1" field="c1d1" />
-          </value>
-        </var>
-        <var id="ccd" label="CAS CCD PW" symbol="warn">
-          <value format="%s">
-            <binary bit="2" field="c1d0" />
-          </value>
-        </var>
-        <var id="lan" label="CAS LAN PW" symbol="hide">
-          <value format="%s">
-            <binary bit="3" field="c1d0" />
+        <var id='ipw' label='CAS IPW' symbol='off-warn'>
+          <value format='%s'>
+            <binary bit='0'>c1d1</binary>
           </value>
         </var>
       </group>
-      <group label="">
-        <var id="c3p" label="CIAX3 PW" symbol="hide">
-          <value format="%s">
-            <binary bit="0" field="c1d0" />
+      <group label=''>
+        <var id='stp' label='STOW PIN' symbol='warn'>
+          <value format='%s'>
+            <binary bit='1'>c1d1</binary>
           </value>
         </var>
-        <var id="c3e" label="CIAX3 EMG" symbol="alarm">
-          <value format="%s">
-            <binary bit="1" field="c1d0" />
+        <var id='ccd' label='CAS CCD PW' symbol='warn'>
+          <value format='%s'>
+            <binary bit='2'>c1d0</binary>
+          </value>
+        </var>
+        <var id='lan' label='CAS LAN PW' symbol='hide'>
+          <value format='%s'>
+            <binary bit='3'>c1d0</binary>
+          </value>
+        </var>
+      </group>
+      <group label=''>
+        <var id='c3p' label='CIAX3 PW' symbol='hide'>
+          <value format='%s'>
+            <binary bit='0'>c1d0</binary>
+          </value>
+        </var>
+        <var id='c3e' label='CIAX3 EMG' symbol='alarm'>
+          <value format='%s'>
+            <binary bit='1'>c1d0</binary>
           </value>
         </var>
       </group>
     </status>
     <symbols>
-      <symbol id="inst" type="ENUM">
-        <enum hl="warn" msg="NONE">
+      <symbol id='inst' type='ENUM'>
+        <enum hl='warn' msg='NONE'>
           <regexp>0</regexp>
         </enum>
-        <enum hl="normal" msg="CIAX3">
+        <enum hl='normal' msg='CIAX3'>
           <regexp>1</regexp>
         </enum>
-        <enum hl="normal" msg="COMICS">
+        <enum hl='normal' msg='COMICS'>
           <regexp>2</regexp>
         </enum>
-        <enum hl="normal" msg="CIAO">
+        <enum hl='normal' msg='CIAO'>
           <regexp>3</regexp>
         </enum>
-        <enum hl="normal" msg="FOCAS">
+        <enum hl='normal' msg='FOCAS'>
           <regexp>4</regexp>
         </enum>
-        <enum hl="normal" msg="IRCS">
+        <enum hl='normal' msg='IRCS'>
           <regexp>5</regexp>
         </enum>
-        <enum hl="normal" msg="N/A">
+        <enum hl='normal' msg='N/A'>
           <regexp>6</regexp>
         </enum>
-        <enum hl="normal" msg="MOIRCS">
+        <enum hl='normal' msg='MOIRCS'>
           <regexp>7</regexp>
         </enum>
-        <enum hl="normal" msg="MP-CS1">
+        <enum hl='normal' msg='MP-CS1'>
           <regexp>8</regexp>
         </enum>
-        <enum hl="normal" msg="MP-CS2">
+        <enum hl='normal' msg='MP-CS2'>
           <regexp>9</regexp>
         </enum>
       </symbol>

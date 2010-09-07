@@ -1,183 +1,183 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="dts" label="TSC Control">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='dts' label='TSC Control'>
     <comm>
       <device>oss</device>
       <client>socat - tcp:cxws:9999</client>
       <server>socat - udp-l:25105,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id="upd" label="Update Status">
-        <statement format="getstat" />
-        <statement format="iststat" />
-        <statement format="jakstat" />
-        <statement format="inrstat" />
-        <statement format="logstat" />
-        <statement format="getexit" />
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
+        <statement format='iststat'/>
+        <statement format='jakstat'/>
+        <statement format='inrstat'/>
+        <statement format='logstat'/>
+        <statement format='getexit'/>
       </session>
-      <session id="login" label="Login">
-        <statement format="login" />
+      <session id='login' label='Login'>
+        <statement format='login'/>
       </session>
-      <session id="logout" label="Logout">
-        <statement format="logout" />
+      <session id='logout' label='Logout'>
+        <statement format='logout'/>
       </session>
-      <session id="request" label="Start TCP Status Request">
-        <statement format="config 1A1011" />
+      <session id='request' label='Start TCP Status Request'>
+        <statement format='config 1A1011'/>
       </session>
-      <session id="startup" label="Start Up CIAX operation">
-        <statement format="login" />
-        <statement label="TSC Only Mode(CIAX Mode)" format="config 1A1008TSCONLY" />
+      <session id='startup' label='Start Up CIAX operation'>
+        <statement format='login'/>
+        <statement format='config 1A1008TSCONLY' label='TSC Only Mode(CIAX Mode)'/>
       </session>
-      <session id="shutdown" label="Shutdown CIAX operation">
-        <statement label="TSC Primaly Mode" format="config 1A1008TSCPRI%" />
-        <statement format="logout" />
+      <session id='shutdown' label='Shutdown CIAX operation'>
+        <statement format='config 1A1008TSCPRI%' label='TSC Primaly Mode'/>
+        <statement format='logout'/>
       </session>
-      <session id="moircs" label="Set IID MOIRCS">
-        <statement format="setinst 12" />
+      <session id='moircs' label='Set IID MOIRCS'>
+        <statement format='setinst 12'/>
       </session>
-      <session id="focas" label="Set IID FOCAS">
-        <statement format="setinst 5" />
+      <session id='focas' label='Set IID FOCAS'>
+        <statement format='setinst 5'/>
       </session>
-      <session id="comics" label="Set IID COMICS">
-        <statement format="setinst 7" />
+      <session id='comics' label='Set IID COMICS'>
+        <statement format='setinst 7'/>
       </session>
     </selection>
     <status>
-      <group label="">
-        <var id="exit" label="Exit Code">
-          <value format="%d">
-            <int field="exit" />
+      <group label=''>
+        <var id='exit' label='Exit Code'>
+          <value format='%d'>
+            <int>exit</int>
           </value>
         </var>
-        <var id="rts" label="ROT SEL" symbol="rsel">
-          <value format="%d">
-            <int field="rsel" />
+        <var id='rts' label='ROT SEL' symbol='rsel'>
+          <value format='%d'>
+            <int>rsel</int>
           </value>
         </var>
-        <var id="iid" label="CAS INST ID" symbol="inst">
-          <value format="%d">
-            <int field="iid" />
+        <var id='iid' label='CAS INST ID' symbol='inst'>
+          <value format='%d'>
+            <int>iid</int>
           </value>
         </var>
-        <var id="login" label="Login Status" symbol="login">
-          <value format="%s%s%s%s">
-            <string field="login0" />
-            <string field="login1" />
-            <string field="login2" />
-            <string field="login3" />
-          </value>
-        </var>
-      </group>
-      <group label="">
-        <var id="rpw" label="ROT DRIVE" symbol="rpw">
-          <value format="%d">
-            <int field="rpw" />
-          </value>
-        </var>
-        <var id="jpw" label="JAK DRIVE" symbol="normal">
-          <value format="%s">
-            <binary field="bstat" bit="7" />
-          </value>
-        </var>
-        <var id="nfb" label="BOLT NFB TRIP" symbol="alarm">
-          <value format="%s">
-            <binary field="bstat" bit="6" />
-          </value>
-        </var>
-        <var id="rps" label="ROT POS SENSOR" symbol="rps">
-          <value format="%s%s">
-            <binary field="bstat" bit="4" />
-            <binary field="bstat" bit="5" />
+        <var id='login' label='Login Status' symbol='login'>
+          <value format='%s%s%s%s'>
+            <string>login0</string>
+            <string>login1</string>
+            <string>login2</string>
+            <string>login3</string>
           </value>
         </var>
       </group>
-      <group label="">
-        <var id="stw" label="EL STOW" symbol="off-warn">
-          <value format="%s">
-            <binary field="stow_1" bit="2" />
+      <group label=''>
+        <var id='rpw' label='ROT DRIVE' symbol='rpw'>
+          <value format='%d'>
+            <int>rpw</int>
           </value>
         </var>
-        <var id="stp" label="EL 90 STOW" symbol="off-warn">
-          <value format="%s">
-            <binary field="stow_1" bit="0" />
+        <var id='jpw' label='JAK DRIVE' symbol='normal'>
+          <value format='%s'>
+            <binary bit='7'>bstat</binary>
+          </value>
+        </var>
+        <var id='nfb' label='BOLT NFB TRIP' symbol='alarm'>
+          <value format='%s'>
+            <binary bit='6'>bstat</binary>
+          </value>
+        </var>
+        <var id='rps' label='ROT POS SENSOR' symbol='rps'>
+          <value format='%s%s'>
+            <binary bit='4'>bstat</binary>
+            <binary bit='5'>bstat</binary>
+          </value>
+        </var>
+      </group>
+      <group label=''>
+        <var id='stw' label='EL STOW' symbol='off-warn'>
+          <value format='%s'>
+            <binary bit='2'>stow_1</binary>
+          </value>
+        </var>
+        <var id='stp' label='EL 90 STOW' symbol='off-warn'>
+          <value format='%s'>
+            <binary bit='0'>stow_1</binary>
           </value>
         </var>
       </group>
     </status>
     <symbols>
-      <symbol id="inst" type="ENUM">
-        <enum hl="warn" msg="NONE">
+      <symbol id='inst' type='ENUM'>
+        <enum hl='warn' msg='NONE'>
           <regexp>0</regexp>
         </enum>
-        <enum hl="normal" msg="IRCS">
+        <enum hl='normal' msg='IRCS'>
           <regexp>1</regexp>
         </enum>
-        <enum hl="normal" msg="CIAO">
+        <enum hl='normal' msg='CIAO'>
           <regexp>3</regexp>
         </enum>
-        <enum hl="normal" msg="FOCAS">
+        <enum hl='normal' msg='FOCAS'>
           <regexp>5</regexp>
         </enum>
-        <enum hl="normal" msg="COMICS">
+        <enum hl='normal' msg='COMICS'>
           <regexp>7</regexp>
         </enum>
-        <enum hl="normal" msg="K3D">
+        <enum hl='normal' msg='K3D'>
           <regexp>10</regexp>
         </enum>
-        <enum hl="normal" msg="MOIRCS">
+        <enum hl='normal' msg='MOIRCS'>
           <regexp>12</regexp>
         </enum>
-        <enum hl="normal" msg="CIAX3">
+        <enum hl='normal' msg='CIAX3'>
           <regexp>13</regexp>
         </enum>
-        <enum hl="normal" msg="N/A" />
+        <enum hl='normal' msg='N/A'/>
       </symbol>
-      <symbol id="rsel" type="ENUM">
-        <enum hl="warn" msg="PFO">
+      <symbol id='rsel' type='ENUM'>
+        <enum hl='warn' msg='PFO'>
           <regexp>1</regexp>
         </enum>
-        <enum hl="warn" msg="PFI">
+        <enum hl='warn' msg='PFI'>
           <regexp>2</regexp>
         </enum>
-        <enum hl="normal" msg="CAS">
+        <enum hl='normal' msg='CAS'>
           <regexp>4</regexp>
         </enum>
-        <enum hl="warn" msg="NSO">
+        <enum hl='warn' msg='NSO'>
           <regexp>8</regexp>
         </enum>
-        <enum hl="warn" msg="NSI">
+        <enum hl='warn' msg='NSI'>
           <regexp>10</regexp>
         </enum>
-        <enum hl="alarm" msg="N/A" />
+        <enum hl='alarm' msg='N/A'/>
       </symbol>
-      <symbol id="login" type="ENUM">
-        <enum hl="alarm" msg="OSS Login">
+      <symbol id='login' type='ENUM'>
+        <enum hl='alarm' msg='OSS Login'>
           <regexp>OSS</regexp>
         </enum>
-        <enum hl="normal" msg="LOGIN">
+        <enum hl='normal' msg='LOGIN'>
           <regexp>CXWS</regexp>
         </enum>
-        <enum hl="warn" msg="LOGOUT" />
+        <enum hl='warn' msg='LOGOUT'/>
       </symbol>
-      <symbol id="rpw" type="ENUM">
-        <enum hl="warn" msg="ON">
+      <symbol id='rpw' type='ENUM'>
+        <enum hl='warn' msg='ON'>
           <regexp>1</regexp>
         </enum>
-        <enum hl="normal" msg="OFF">
+        <enum hl='normal' msg='OFF'>
           <regexp>2</regexp>
         </enum>
       </symbol>
-      <symbol id="rps" type="ENUM">
-        <enum hl="normal" msg="OFF">
+      <symbol id='rps' type='ENUM'>
+        <enum hl='normal' msg='OFF'>
           <regexp>11</regexp>
         </enum>
-        <enum hl="normal" msg="0DEG">
+        <enum hl='normal' msg='0DEG'>
           <regexp>10</regexp>
         </enum>
-        <enum hl="normal" msg="-4DEG">
+        <enum hl='normal' msg='-4DEG'>
           <regexp>01</regexp>
         </enum>
-        <enum hl="alarm" msg="N/A" />
+        <enum hl='alarm' msg='N/A'/>
       </symbol>
     </symbols>
   </object>

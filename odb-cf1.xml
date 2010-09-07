@@ -1,110 +1,110 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="cf1" label="S1 Helium Compressor Coolant Flow">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='cf1' label='S1 Helium Compressor Coolant Flow'>
     <comm>
       <device>k3n</device>
       <client>socat - tcp:ltt-o:4001</client>
       <server>socat - udp-l:45601,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id="upd" label="Update Status">
-        <statement format="getstat"></statement>
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
       </session>
     </selection>
     <status>
       <group>
-        <var id="rcode" label="Response Code" symbol="rcode">
-          <value format="%s">
-            <string field="rcode" />
+        <var id='rcode' label='Response Code' symbol='rcode'>
+          <value format='%s'>
+            <string>rcode</string>
           </value>
         </var>
-        <var id="ecode" label="Exit Code" symbol="ecode">
-          <value format="%s">
-            <string field="ecode" />
+        <var id='ecode' label='Exit Code' symbol='ecode'>
+          <value format='%s'>
+            <string>ecode</string>
           </value>
         </var>
       </group>
       <group>
-        <var id="flow" label="CS-2(S1) Coolant Flow(l/min)" symbol="flow">
-          <value format="%4.2f">
-            <float decimal="2" field="stat" />
+        <var id='flow' label='CS-2(S1) Coolant Flow(l/min)' symbol='flow'>
+          <value format='%4.2f'>
+            <float decimal='2'>stat</float>
           </value>
         </var>
       </group>
     </status>
     <symbols>
-      <symbol id="rcode" label="Response Code" type="ENUM">
-        <enum hl="hide" msg="OK">
+      <symbol id='rcode' label='Response Code' type='ENUM'>
+        <enum hl='hide' msg='OK'>
           <regexp>0000</regexp>
         </enum>
-        <enum hl="alarm" msg="Cmd Length Over">
+        <enum hl='alarm' msg='Cmd Length Over'>
           <regexp>1001</regexp>
         </enum>
-        <enum hl="alarm" msg="Cmd Length Short">
+        <enum hl='alarm' msg='Cmd Length Short'>
           <regexp>1002</regexp>
         </enum>
-        <enum hl="alarm" msg="Parameter Error">
+        <enum hl='alarm' msg='Parameter Error'>
           <regexp>1100</regexp>
         </enum>
-        <enum hl="alarm" msg="Area Error">
+        <enum hl='alarm' msg='Area Error'>
           <regexp>1101</regexp>
         </enum>
-        <enum hl="alarm" msg="Start Address Error">
+        <enum hl='alarm' msg='Start Address Error'>
           <regexp>1103</regexp>
         </enum>
-        <enum hl="alarm" msg="Action Error">
+        <enum hl='alarm' msg='Action Error'>
           <regexp>2203</regexp>
         </enum>
-        <enum msg="ResponseCode Error" hl="alarm">
+        <enum hl='alarm' msg='ResponseCode Error'>
           <regexp>.</regexp>
         </enum>
       </symbol>
-      <symbol id="ecode" label="ExitCode" type="ENUM">
-        <enum hl="hide" msg="OK">
+      <symbol id='ecode' label='ExitCode' type='ENUM'>
+        <enum hl='hide' msg='OK'>
           <regexp>00</regexp>
         </enum>
-        <enum hl="alarm" msg="CMD Error">
+        <enum hl='alarm' msg='CMD Error'>
           <regexp>0F</regexp>
         </enum>
-        <enum hl="alarm" msg="Parity Error">
+        <enum hl='alarm' msg='Parity Error'>
           <regexp>10</regexp>
         </enum>
-        <enum hl="alarm" msg="Fleming Error">
+        <enum hl='alarm' msg='Fleming Error'>
           <regexp>11</regexp>
         </enum>
-        <enum hl="alarm" msg="Over Run Error">
+        <enum hl='alarm' msg='Over Run Error'>
           <regexp>12</regexp>
         </enum>
-        <enum hl="alarm" msg="BCC Error">
+        <enum hl='alarm' msg='BCC Error'>
           <regexp>13</regexp>
         </enum>
-        <enum hl="alarm" msg="Format Error">
+        <enum hl='alarm' msg='Format Error'>
           <regexp>14</regexp>
         </enum>
-        <enum hl="alarm" msg="Sub Address Error">
+        <enum hl='alarm' msg='Sub Address Error'>
           <regexp>16</regexp>
         </enum>
-        <enum hl="alarm" msg="Frame Length Error">
+        <enum hl='alarm' msg='Frame Length Error'>
           <regexp>18</regexp>
         </enum>
-        <enum msg="Unknown" hl="alarm">
+        <enum hl='alarm' msg='Unknown'>
           <regexp>.</regexp>
         </enum>
       </symbol>
-      <symbol id="flow" type="FLOAT">
-        <enum hl="alarm" msg="HH">
+      <symbol id='flow' type='FLOAT'>
+        <enum hl='alarm' msg='HH'>
           <range>6:</range>
         </enum>
-        <enum hl="warn" msg="H">
+        <enum hl='warn' msg='H'>
           <range>5:&lt;6</range>
         </enum>
-        <enum hl="normal" msg="M">
+        <enum hl='normal' msg='M'>
           <range>4:&lt;5</range>
         </enum>
-        <enum hl="warn" msg="L">
+        <enum hl='warn' msg='L'>
           <range>3:&lt;4</range>
         </enum>
-        <enum hl="alarm" msg="LL">
+        <enum hl='alarm' msg='LL'>
           <range>:&lt;3</range>
         </enum>
       </symbol>

@@ -1,120 +1,120 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="mma" label="MOIRCS Arm">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='mma' label='MOIRCS Arm'>
     <comm>
       <device>slo</device>
       <client>socat - tcp:celaeno:4003</client>
       <server>socat - udp-l:24103,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id="upd" label="Update Status">
-        <statement format="bs"></statement>
-        <statement format="p"></statement>
-        <statement format="err"></statement>
-        <repeat from="1" to="5">
-          <statement format="in %d">
+      <session id='upd' label='Update Status'>
+        <statement format='bs'/>
+        <statement format='p'/>
+        <statement format='err'/>
+        <repeat from='1' to='5'>
+          <statement format='in %d'>
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
-      <session id="reset" label="Reset">
-        <statement format="reset"></statement>
+      <session id='reset' label='Reset'>
+        <statement format='reset'/>
       </session>
-      <session id="defcon" label="Default Config">
-        <statement format="hl 0"></statement>
-        <statement format="e1 0"></statement>
-        <statement format="e2 0"></statement>
+      <session id='defcon' label='Default Config'>
+        <statement format='hl 0'/>
+        <statement format='e1 0'/>
+        <statement format='e2 0'/>
       </session>
-      <session id="set0" label="Set 0 Pulses">
-        <statement format="set0"></statement>
+      <session id='set0' label='Set 0 Pulses'>
+        <statement format='set0'/>
       </session>
     </selection>
     <status>
       <group>
-        <var id="bs" label="Moter Moving" symbol="warn">
-          <value format="%s">
-            <string field="bs" />
+        <var id='bs' label='Moter Moving' symbol='warn'>
+          <value format='%s'>
+            <string>bs</string>
           </value>
         </var>
-        <var id="con" label="Contact Sensor" symbol="normal">
-          <value format="%s">
-            <string field="in5" />
+        <var id='con' label='Contact Sensor' symbol='normal'>
+          <value format='%s'>
+            <string>in5</string>
           </value>
         </var>
-        <var id="err" label="Error Code" symbol="err">
-          <value format="%d">
-            <int field="err" />
+        <var id='err' label='Error Code' symbol='err'>
+          <value format='%d'>
+            <int>err</int>
           </value>
         </var>
       </group>
       <group>
-        <var id="pos" label="Arm Position" symbol="pos">
-          <value format="%s%s%s%s">
-            <string field="in1" />
-            <string field="in2" />
-            <string field="in3" />
-            <string field="in4" />
+        <var id='pos' label='Arm Position' symbol='pos'>
+          <value format='%s%s%s%s'>
+            <string>in1</string>
+            <string>in2</string>
+            <string>in3</string>
+            <string>in4</string>
           </value>
         </var>
-        <var id="abs" label="ABS position" symbol="pulse">
-          <value format="%f">
-            <float field="p" />
+        <var id='abs' label='ABS position' symbol='pulse'>
+          <value format='%f'>
+            <float>p</float>
           </value>
         </var>
       </group>
     </status>
     <symbols>
-      <symbol id="err" type="ENUM">
-        <enum hl="hide" msg="No Error">
+      <symbol id='err' type='ENUM'>
+        <enum hl='hide' msg='No Error'>
           <regexp>0</regexp>
         </enum>
-        <enum hl="alarm" msg="Could not burn flash successfully">
+        <enum hl='alarm' msg='Could not burn flash successfully'>
           <regexp>1</regexp>
         </enum>
-        <enum hl="alarm" msg="Could not download file">
+        <enum hl='alarm' msg='Could not download file'>
           <regexp>2</regexp>
         </enum>
-        <enum hl="alarm" msg="Not enough memory to execute user program">
+        <enum hl='alarm' msg='Not enough memory to execute user program'>
           <regexp>3</regexp>
         </enum>
-        <enum hl="alarm" msg="Attempt to access a non-existent array element">
+        <enum hl='alarm' msg='Attempt to access a non-existent array element'>
           <regexp>4</regexp>
         </enum>
-        <enum hl="alarm" msg="Unknown Error">
-          <regexp></regexp>
+        <enum hl='alarm' msg='Unknown Error'>
+          <regexp/>
         </enum>
       </symbol>
-      <symbol id="pos" type="ENUM">
-        <enum hl="normal" msg="INIT">
+      <symbol id='pos' type='ENUM'>
+        <enum hl='normal' msg='INIT'>
           <regexp>0001</regexp>
         </enum>
-        <enum hl="normal" msg="STOCK">
+        <enum hl='normal' msg='STOCK'>
           <regexp>0010</regexp>
         </enum>
-        <enum hl="normal" msg="FOCUS">
+        <enum hl='normal' msg='FOCUS'>
           <regexp>0100</regexp>
         </enum>
-        <enum hl="normal" msg="ROT">
+        <enum hl='normal' msg='ROT'>
           <regexp>1000</regexp>
         </enum>
-        <enum hl="alarm" msg="N/A">
-          <regexp></regexp>
+        <enum hl='alarm' msg='N/A'>
+          <regexp/>
         </enum>
       </symbol>
-      <symbol id="pulse" type="FLOAT">
-        <enum hl="normal" msg="INIT">
+      <symbol id='pulse' type='FLOAT'>
+        <enum hl='normal' msg='INIT'>
           <range>0:0.5</range>
         </enum>
-        <enum hl="normal" msg="FOCUS">
+        <enum hl='normal' msg='FOCUS'>
           <range>12.3:13.2</range>
         </enum>
-        <enum hl="normal" msg="ROT">
+        <enum hl='normal' msg='ROT'>
           <range>122.5:123.5</range>
         </enum>
-        <enum hl="normal" msg="WAIT">
+        <enum hl='normal' msg='WAIT'>
           <range>184.5:185.5</range>
         </enum>
-        <enum hl="normal" msg="STOCK">
+        <enum hl='normal' msg='STOCK'>
           <range>200:201</range>
         </enum>
       </symbol>

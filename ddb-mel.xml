@@ -97,7 +97,7 @@
         <data label="Read region command" encode="lew">0x401</data>
         <data label="Read region subcommand" encode="lew">0</data>
         <data label="Jack Num" encode="chr" eval="1">$1 * 4</data>
-        <data label="Jack Num" encode="chr" eval="1">$2 + 2</data>
+        <data label="Tag Num" encode="chr" eval="1">$2 + 2</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">0x2ch</data>
       </command>

@@ -74,123 +74,123 @@
         </var>
         <var id='rdy' label='READY' symbol='normal'>
           <value format='%s'>
-            <binary bit='0'>x00</binary>
+            <binary bit='0'>x:0</binary>
           </value>
         </var>
         <var id='pse' label='PAUSE' symbol='warn'>
           <value format='%s'>
-            <binary bit='1'>x00</binary>
+            <binary bit='1'>x:0</binary>
           </value>
         </var>
         <var id='emg' label='ENERGENCY' symbol='alarm'>
           <value format='%s'>
-            <binary bit='2'>x00</binary>
+            <binary bit='2'>x:0</binary>
           </value>
         </var>
         <var id='stp' label='STOP' symbol='warn'>
           <value format='%s'>
-            <binary bit='3'>x00</binary>
+            <binary bit='3'>x:0</binary>
           </value>
         </var>
       </group>
       <group label=''>
         <var id='run' label='RUNNING' symbol='normal'>
           <value format='%s'>
-            <binary bit='4'>x00</binary>
+            <binary bit='4'>x:0</binary>
           </value>
         </var>
         <var id='jak' label='JACKING' symbol='normal'>
           <value format='%s'>
-            <binary bit='5'>x00</binary>
+            <binary bit='5'>x:0</binary>
           </value>
         </var>
         <var id='con' label='CHARGING' symbol='normal'>
           <value format='%s'>
-            <binary bit='6'>x00</binary>
+            <binary bit='6'>x:0</binary>
           </value>
         </var>
         <var id='flt' label='Fault' symbol='alarm'>
           <value format='%s'>
-            <binary bit='7'>x00</binary>
+            <binary bit='7'>x:0</binary>
           </value>
         </var>
       </group>
       <group label=''>
         <var id='msr' label='Right Motor Servo' symbol='normal'>
           <value format='%s'>
-            <binary bit='8' inv='true'>x00</binary>
+            <binary bit='8' inv='true'>x:0</binary>
           </value>
         </var>
         <var id='msl' label='Left Motor Servo' symbol='normal'>
           <value format='%s'>
-            <binary bit='9' inv='true'>x00</binary>
+            <binary bit='9' inv='true'>x:0</binary>
           </value>
         </var>
       </group>
       <group label=''>
         <var id='jd1' label='Jack Motor1 Servo' symbol='normal'>
           <value format='%s'>
-            <binary bit='10' inv='true'>x00</binary>
+            <binary bit='10' inv='true'>x:0</binary>
           </value>
         </var>
         <var id='jd2' label='Jack Motor2 Servo' symbol='normal'>
           <value format='%s'>
-            <binary bit='11' inv='true'>x00</binary>
+            <binary bit='11' inv='true'>x:0</binary>
           </value>
         </var>
       </group>
       <group label=''>
         <var id='jd3' label='Jack Motor3 Servo' symbol='normal'>
           <value format='%s'>
-            <binary bit='12' inv='true'>x00</binary>
+            <binary bit='12' inv='true'>x:0</binary>
           </value>
         </var>
         <var id='jd4' label='Jack Motor4 Servo' symbol='normal'>
           <value format='%s'>
-            <binary bit='13' inv='true'>x00</binary>
+            <binary bit='13' inv='true'>x:0</binary>
           </value>
         </var>
       </group>
       <group label=''>
         <var id='mdar' label='Rignt Motor D/A' symbol='motor'>
           <value format='%d'>
-            <int signed='true'>x07</int>
+            <int signed='true'>x:7</int>
           </value>
         </var>
         <var id='mdal' label='Left Motor D/A' symbol='motor'>
           <value format='%d'>
-            <int signed='true'>x08</int>
+            <int signed='true'>x:8</int>
           </value>
         </var>
       </group>
       <group label=''>
         <var id='bvl' label='Battery Voltage' symbol='battery'>
           <value format='%2.2f'>
-            <float decimal='2'>x16</float>
+            <float decimal='2'>x:22</float>
           </value>
         </var>
         <var id='ist' label='Instrument' symbol='inst'>
           <value format='%d'>
-            <int>x17</int>
+            <int>x:23</int>
           </value>
         </var>
       </group>
       <group label=''>
         <var id='cpos' label='Current Position'>
           <value format='%d'>
-            <int>x19</int>
+            <int>x:25</int>
           </value>
         </var>
         <var id='dpos' label='Destination Position'>
           <value format='%d'>
-            <int>x1a</int>
+            <int>x:26</int>
           </value>
         </var>
       </group>
       <group label=''>
         <var id='jpos' label='Jack Position' symbol='jpos'>
           <value format='%d'>
-            <int>x1b</int>
+            <int>x:27</int>
           </value>
         </var>
       </group>

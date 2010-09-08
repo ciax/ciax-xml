@@ -29,7 +29,7 @@
         <repeat format="%d" from="1" to="8">
           <field>
             <regexp>[\w\.+-]+</regexp>
-            <assign>ch$_</assign>
+            <array>ch</array>
           </field>
         </repeat>
       </response>

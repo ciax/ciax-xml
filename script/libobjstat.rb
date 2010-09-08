@@ -83,7 +83,7 @@ module ObjStat
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
       fld=@cs.sub_var(dtype.text) || return
-      fld=@cs.sub_var(@field[fld]) || return
+      fld=@cs.sub_var("${field:#{fld}}") || return
       data=fld.clone
       case dtype.name
       when 'binary'

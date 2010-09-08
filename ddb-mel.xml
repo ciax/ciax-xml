@@ -139,10 +139,10 @@
         </field>
       </response>
       <response id="getstat">
-        <repeat format="%02x" from="0" to="51">
+        <repeat from="0" to="51">
           <field decode="lew">
             <length>2</length>
-            <assign>x$_</assign>
+            <array>x</array>
           </field>
         </repeat>
       </response>

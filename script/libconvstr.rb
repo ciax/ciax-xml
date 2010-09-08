@@ -36,7 +36,17 @@ class ConvStr
     str=str.gsub(/\$([_`\w])/){ h[$1] }
     # Sub ${id} by hash[id]
     str=str.gsub(/\$\{([\w:]+)\}/) {
-      $1.split(':').each {|i| h=h[i] };h }
+      $1.split(':').each {|i| 
+        @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
+        case h
+        when Array
+          h=h[i.to_i]
+        when Hash
+          h=h[i]
+        end
+      }
+      h
+    }
     @v.msg{"Substitute to [#{str}]"}
     str
   end

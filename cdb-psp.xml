@@ -1,74 +1,89 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='psp' id='psp' label='MOIRCS Ext Heater'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="psp" id="psp" label="MOIRCS Ext Heater">
     <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='getstat'/>
+      <session id="upd" label="Update Status">
+        <statement>
+          <text>getstat</text>
+        </statement>
       </session>
-      <session id='setlmt' label='Set Limit 20V/5A/100W'>
-        <statement format='setvl 20'/>
-        <statement format='setal 5'/>
-        <statement format='setpl 100'/>
-        <statement format='getstat'/>
+      <session id="setlmt" label="Set Limit 20V/5A/100W">
+        <statement>
+          <text>setvl 20</text>
+        </statement>
+        <statement>
+          <text>setal 5</text>
+        </statement>
+        <statement>
+          <text>setpl 100</text>
+        </statement>
+        <statement>
+          <text>getstat</text>
+        </statement>
       </session>
-      <session id='setv' label='Set Voltage 0-50[V]'>
+      <session id="setv" label="Set Voltage 0-50[V]">
         <parameters>
           <par>
             <range>0:50</range>
           </par>
         </parameters>
-        <statement format='setv %f'>
-          <argv>$1</argv>
+        <statement>
+          <text>setv $1</text>
         </statement>
-        <statement format='getstat'/>
+        <statement>
+          <text>getstat</text>
+        </statement>
       </session>
-      <session id='setp' label='Set Power 0-100[W]'>
+      <session id="setp" label="Set Power 0-100[W]">
         <parameters>
           <par>
             <range>0:100</range>
           </par>
         </parameters>
-        <statement format='setv %5.2f'>
-          <argv>Math.sqrt($1*26)</argv>
+        <statement>
+          <text>setv %5.2f</text>
+          <eval format="%5.2f">Math.sqrt($1*26)</eval>
         </statement>
-        <statement format='getstat'/>
+        <statement>
+          <text>getstat</text>
+        </statement>
       </session>
     </commands>
     <status>
-      <value format='%3.2f' id='vol' label='OUTPUT (V)'>
+      <value format="%3.2f" id="vol" label="OUTPUT (V)">
         <float>v</float>
       </value>
-      <value format='%3.2f' id='amp' label='OUTPUT (A)'>
+      <value format="%3.2f" id="amp" label="OUTPUT (A)">
         <float>a</float>
       </value>
-      <value format='%3.2f' id='wat' label='OUTPUT (W)'>
+      <value format="%3.2f" id="wat" label="OUTPUT (W)">
         <float>w</float>
       </value>
-      <value format='%3.2f' id='vl' label='Limit (V)'>
+      <value format="%3.2f" id="vl" label="Limit (V)">
         <float>u</float>
       </value>
-      <value format='%3.2f' id='il' label='Limit (A)'>
+      <value format="%3.2f" id="il" label="Limit (A)">
         <float>i</float>
       </value>
-      <value format='%3.2f' id='pl' label='Limit (W)'>
+      <value format="%3.2f" id="pl" label="Limit (W)">
         <float>p</float>
       </value>
-      <value format='%s' id='sw' label='OUTPUT ON/OFF'>
+      <value format="%s" id="sw" label="OUTPUT ON/OFF">
         <string>f1</string>
       </value>
-      <value format='%s' id='tmp' label='OverHeat'>
+      <value format="%s" id="tmp" label="OverHeat">
         <string>f2</string>
       </value>
-      <value format='%s' id='kn1' label='Wheel Knov Fine'>
+      <value format="%s" id="kn1" label="Wheel Knov Fine">
         <string>f3</string>
       </value>
-      <value format='%s' id='kn2' label='Wheel Knov Unlock'>
+      <value format="%s" id="kn2" label="Wheel Knov Unlock">
         <string>f4</string>
       </value>
-      <value format='%s' id='rem' label='REMOTE'>
+      <value format="%s" id="rem" label="REMOTE">
         <string>f5</string>
       </value>
-      <value format='%s' id='loc' label='Local Lock'>
+      <value format="%s" id="loc" label="Local Lock">
         <string>f6</string>
       </value>
     </status>

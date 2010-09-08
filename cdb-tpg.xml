@@ -1,23 +1,27 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='tpg' id='tpg' label='MOIRCS Pressure'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="tpg" id="tpg" label="MOIRCS Pressure">
     <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='reqstat'/>
-        <statement format='getstat'/>
+      <session id="upd" label="Update Status">
+        <statement>
+          <text>reqstat</text>
+        </statement>
+        <statement>
+          <text>getstat</text>
+        </statement>
       </session>
     </commands>
     <status>
-      <value format='%s' id='st1' label='Turbo Pump Stat'>
+      <value format="%s" id="st1" label="Turbo Pump Stat">
         <string>st1</string>
       </value>
-      <value format='%4.2e' id='ch1' label='Turbo Pump (Torr)'>
+      <value format="%4.2e" id="ch1" label="Turbo Pump (Torr)">
         <float>ch1</float>
       </value>
-      <value format='%s' id='st2' label='Scroll Pump Stat'>
+      <value format="%s" id="st2" label="Scroll Pump Stat">
         <string>st1</string>
       </value>
-      <value format='%4.2e' id='ch2' label='Scroll Pump (Torr)'>
+      <value format="%4.2e" id="ch2" label="Scroll Pump (Torr)">
         <float>ch1</float>
       </value>
     </status>

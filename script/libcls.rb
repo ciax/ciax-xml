@@ -74,14 +74,17 @@ class Cls < Hash
   private
   #Cmd Method
   def get_cmd(e) # //statement
-    cmd=''
     argv=[]
     e.each_element{|d| # //argv
-      str=eval(@cs.sub_var(d.text))
+      str=@cs.sub_var(d.text)
+      case d.name
+      when 'eval'
+        str=format(d,eval(str))
+      end
       @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }
-    cmd = e.attributes['format'] % argv
+    cmd = argv.join(' ')
     @v.msg{"Exec(DDB):[#{cmd}]"}
     cmd
   end

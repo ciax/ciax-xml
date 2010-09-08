@@ -1,64 +1,67 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='ixe' id='ixe' label='MOIRCS Turret'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="ixe" id="ixe" label="MOIRCS Turret">
     <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='getstat'/>
-        <repeat from='1' to='6'>
-          <statement format='chkr %d'>
-            <argv>$_</argv>
+      <session id="upd" label="Update Status">
+        <statement>
+          <text>getstat</text>
+        </statement>
+        <repeat from="1" to="6">
+          <statement>
+            <text>chkr $_</text>
           </statement>
-          <statement format='getp %d'>
-            <argv>$_</argv>
-          </statement>
-        </repeat>
-      </session>
-      <session id='resume' label='Resume Pulses'>
-        <repeat from='1' to='6'>
-          <statement format='setp %d %d'>
-            <argv>$_</argv>
-            <argv>${field:p$_}</argv>
+          <statement>
+            <text>getp $_</text>
           </statement>
         </repeat>
       </session>
-      <session id='set0' label='Set 0 Pulses'>
-        <repeat from='1' to='6'>
-          <statement format='setp %d 0'>
-            <argv>$_</argv>
+      <session id="resume" label="Resume Pulses">
+        <repeat from="1" to="6">
+          <statement>
+            <text>setp</text>
+            <text>$_</text>
+            <text>${field:p$_}</text>
+          </statement>
+        </repeat>
+      </session>
+      <session id="set0" label="Set 0 Pulses">
+        <repeat from="1" to="6">
+          <statement>
+            <text>setp $_ 0</text>
           </statement>
         </repeat>
       </session>
     </commands>
     <status>
-      <value format='%s' id='rdy' label='Comm Ready'>
-        <binary bit='0'>stat</binary>
+      <value format="%s" id="rdy" label="Comm Ready">
+        <binary bit="0">stat</binary>
       </value>
-      <value format='%s' id='srq' label='SRQ'>
-        <binary bit='1'>stat</binary>
+      <value format="%s" id="srq" label="SRQ">
+        <binary bit="1">stat</binary>
       </value>
-      <value format='%s' id='pme' label='Program Error'>
-        <binary bit='3'>stat</binary>
+      <value format="%s" id="pme" label="Program Error">
+        <binary bit="3">stat</binary>
       </value>
-      <value format='%s' id='pse' label='Power Stage Error'>
-        <binary bit='4'>stat</binary>
+      <value format="%s" id="pse" label="Power Stage Error">
+        <binary bit="4">stat</binary>
       </value>
-      <value format='%s' id='oes' label='ONE EM Stop'>
-        <binary bit='5'>stat</binary>
+      <value format="%s" id="oes" label="ONE EM Stop">
+        <binary bit="5">stat</binary>
       </value>
-      <value format='%s' id='ees' label='EXT EM Stop'>
-        <binary bit='6'>stat</binary>
+      <value format="%s" id="ees" label="EXT EM Stop">
+        <binary bit="6">stat</binary>
       </value>
-      <value format='%s' id='trm' label='Terminal Mode'>
-        <binary bit='2'>stat</binary>
+      <value format="%s" id="trm" label="Terminal Mode">
+        <binary bit="2">stat</binary>
       </value>
-      <value format='%s' id='cmd' label='Computer Mode'>
-        <binary bit='7'>stat</binary>
+      <value format="%s" id="cmd" label="Computer Mode">
+        <binary bit="7">stat</binary>
       </value>
-      <repeat from='1' to='6'>
-        <value format='%s' id='r$_' label='Running 1-6'>
+      <repeat from="1" to="6">
+        <value format="%s" id="r$_" label="Running 1-6">
           <string>r$_</string>
         </value>
-        <value format='%d' id='p$_' label='Pulse 1-6'>
+        <value format="%d" id="p$_" label="Pulse 1-6">
           <int>p$_</int>
         </value>
       </repeat>

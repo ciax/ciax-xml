@@ -1,76 +1,108 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='oss' id='oss' label='TSC Control'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="oss" id="oss" label="TSC Control">
     <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='getstat'/>
-        <statement format='iststat'/>
-        <statement format='jakstat'/>
-        <statement format='inrstat'/>
-        <statement format='logstat'/>
-        <statement format='getexit'/>
+      <session id="upd" label="Update Status">
+        <statement>
+          <text>getstat</text>
+        </statement>
+        <statement>
+          <text>iststat</text>
+        </statement>
+        <statement>
+          <text>jakstat</text>
+        </statement>
+        <statement>
+          <text>inrstat</text>
+        </statement>
+        <statement>
+          <text>logstat</text>
+        </statement>
+        <statement>
+          <text>getexit</text>
+        </statement>
       </session>
-      <session id='login' label='Login'>
-        <statement format='login'/>
+      <session id="login" label="Login">
+        <statement>
+          <text>login</text>
+        </statement>
       </session>
-      <session id='logout' label='Logout'>
-        <statement format='logout'/>
+      <session id="logout" label="Logout">
+        <statement>
+          <text>logout</text>
+        </statement>
       </session>
-      <session id='request' label='Start TCP Status Request'>
-        <statement format='config 1A1011'/>
+      <session id="request" label="Start TCP Status Request">
+        <statement>
+          <text>config 1A1011</text>
+        </statement>
       </session>
-      <session id='startup' label='Start Up CIAX operation'>
-        <statement format='login'/>
-        <statement format='config 1A1008TSCONLY' label='TSC Only Mode(CIAX Mode)'/>
+      <session id="startup" label="Start Up CIAX operation">
+        <statement>
+          <text>login</text>
+        </statement>
+        <statement label="TSC Only Mode(CIAX Mode)">
+          <text>config 1A1008TSCONLY</text>
+        </statement>
       </session>
-      <session id='shutdown' label='Shutdown CIAX operation'>
-        <statement format='config 1A1008TSCPRI%' label='TSC Primaly Mode'/>
-        <statement format='logout'/>
+      <session id="shutdown" label="Shutdown CIAX operation">
+        <statement label="TSC Primaly Mode">
+          <text>config 1A1008TSCPRI%</text>
+        </statement>
+        <statement>
+          <text>logout</text>
+        </statement>
       </session>
-      <session id='moircs' label='Set IID MOIRCS'>
-        <statement format='setinst 12'/>
+      <session id="moircs" label="Set IID MOIRCS">
+        <statement>
+          <text>setinst 12</text>
+        </statement>
       </session>
-      <session id='focas' label='Set IID FOCAS'>
-        <statement format='setinst 5'/>
+      <session id="focas" label="Set IID FOCAS">
+        <statement>
+          <text>setinst 5</text>
+        </statement>
       </session>
-      <session id='comics' label='Set IID COMICS'>
-        <statement format='setinst 7'/>
+      <session id="comics" label="Set IID COMICS">
+        <statement>
+          <text>setinst 7</text>
+        </statement>
       </session>
     </commands>
     <status>
-      <value format='%d' id='exit' label='Exit Code'>
+      <value format="%d" id="exit" label="Exit Code">
         <int>exit</int>
       </value>
-      <value format='%d' id='rts' label='ROT SEL'>
+      <value format="%d" id="rts" label="ROT SEL">
         <int>rsel</int>
       </value>
-      <value format='%d' id='iid' label='CAS INST ID'>
+      <value format="%d" id="iid" label="CAS INST ID">
         <int>iid</int>
       </value>
-      <value format='%s%s%s%s' id='login' label='Login Status'>
+      <value format="%s%s%s%s" id="login" label="Login Status">
         <string>login0</string>
         <string>login1</string>
         <string>login2</string>
         <string>login3</string>
       </value>
-      <value format='%d' id='rpw' label='ROT DRIVE'>
+      <value format="%d" id="rpw" label="ROT DRIVE">
         <int>rpw</int>
       </value>
-      <value format='%s' id='jpw' label='JAK DRIVE'>
-        <binary bit='7'>bstat</binary>
+      <value format="%s" id="jpw" label="JAK DRIVE">
+        <binary bit="7">bstat</binary>
       </value>
-      <value format='%s' id='nfb' label='BOLT NFB TRIP'>
-        <binary bit='6'>bstat</binary>
+      <value format="%s" id="nfb" label="BOLT NFB TRIP">
+        <binary bit="6">bstat</binary>
       </value>
-      <value format='%s%s' id='rps' label='ROT POS SENSOR'>
-        <binary bit='4'>bstat</binary>
-        <binary bit='5'>bstat</binary>
+      <value format="%s%s" id="rps" label="ROT POS SENSOR">
+        <binary bit="4">bstat</binary>
+        <binary bit="5">bstat</binary>
       </value>
-      <value format='%s' id='stw' label='EL STOW'>
-        <binary bit='2'>stow_1</binary>
+      <value format="%s" id="stw" label="EL STOW">
+        <binary bit="2">stow_1</binary>
       </value>
-      <value format='%s' id='stp' label='EL 90 STOW'>
-        <binary bit='0'>stow_1</binary>
+      <value format="%s" id="stp" label="EL 90 STOW">
+        <binary bit="0">stow_1</binary>
       </value>
     </status>
   </class>

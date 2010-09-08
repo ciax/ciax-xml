@@ -73,14 +73,23 @@
   <!--command statement-->
   <xsd:element name="statement">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cdb:argv" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cdb:text" />
+        <xsd:element ref="cdb:eval" />
+      </xsd:choice>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
-      <xsd:attribute name="format" type="xsd:string" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="argv" type="xsd:string"></xsd:element>
+  <xsd:element name="text" type="xsd:string"></xsd:element>
+  <xsd:element name="eval">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
   <!--status-->
   <xsd:element name="status">
     <xsd:complexType>

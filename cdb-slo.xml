@@ -1,46 +1,62 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='slo' id='slo' label='MOIRCS Arm'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="slo" id="slo" label="MOIRCS Arm">
     <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='bs'/>
-        <statement format='p'/>
-        <statement format='err'/>
-        <repeat from='1' to='5'>
-          <statement format='in %d'>
-            <argv>$_</argv>
+      <session id="upd" label="Update Status">
+        <statement>
+          <text>bs</text>
+        </statement>
+        <statement>
+          <text>p</text>
+        </statement>
+        <statement>
+          <text>err</text>
+        </statement>
+        <repeat from="1" to="5">
+          <statement>
+            <text>in $_</text>
           </statement>
         </repeat>
       </session>
-      <session id='reset' label='Reset'>
-        <statement format='reset'/>
+      <session id="reset" label="Reset">
+        <statement>
+          <text>reset</text>
+        </statement>
       </session>
-      <session id='defcon' label='Default Config'>
-        <statement format='hl 0'/>
-        <statement format='e1 0'/>
-        <statement format='e2 0'/>
+      <session id="defcon" label="Default Config">
+        <statement>
+          <text>hl 0</text>
+        </statement>
+        <statement>
+          <text>e1 0</text>
+        </statement>
+        <statement>
+          <text>e2 0</text>
+        </statement>
       </session>
-      <session id='set0' label='Set 0 Pulses'>
-        <statement format='set0'/>
+      <session id="set0" label="Set 0 Pulses">
+        <statement>
+          <text>set0</text>
+        </statement>
       </session>
     </commands>
     <status>
-      <value format='%s' id='bs' label='Moter Moving'>
+      <value format="%s" id="bs" label="Moter Moving">
         <string>bs</string>
       </value>
-      <value format='%s' id='con' label='Contact Sensor'>
+      <value format="%s" id="con" label="Contact Sensor">
         <string>in5</string>
       </value>
-      <value format='%d' id='err' label='Error Code'>
+      <value format="%d" id="err" label="Error Code">
         <int>err</int>
       </value>
-      <value format='%s%s%s%s' id='pos' label='Arm Position'>
+      <value format="%s%s%s%s" id="pos" label="Arm Position">
         <string>in1</string>
         <string>in2</string>
         <string>in3</string>
         <string>in4</string>
       </value>
-      <value format='%f' id='abs' label='ABS position'>
+      <value format="%f" id="abs" label="ABS position">
         <float>p</float>
       </value>
     </status>

@@ -34,7 +34,7 @@ class Cls < Hash
     ca=line.split(' ')
     @session=@cdb.select_id('commands',ca.shift)
     @cs.set_par(ca)
-    @v.msg{"Exec(DDB):#{@session.attributes['label']}"}
+    @v.msg{"Exec(CDB):#{@session.attributes['label']}"}
     line
   rescue
     raise "== Command List ==\n#{$!}"

@@ -6,9 +6,6 @@
       <client>socat - tcp:ltt-i:4015</client>
       <server>socat - udp-l:45610,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" ref="upd" label="Update Status" />
-    </command>
     <status>
       <group>
         <title ref="flow" symbol="k3n:flow">FMOS-K(S10) Coolant Flow(l/min)</title>

@@ -6,21 +6,6 @@
       <client>socat - tcp:ltc-c:4001</client>
       <server>socat - udp-l:25104,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status"></session>
-      <session id="c3on" label="CIAX3 POWER ON"></session>
-      <session id="c3off" label="CIAX3 POWER OFF"></session>
-      <session id="emon" label="CIAX3 EMERGENCY ON"></session>
-      <session id="emoff" label="CIAX3 EMERGENCY OFF"></session>
-      <session id="ccdon" label="CS CCD ON"></session>
-      <session id="ccdoff" label="CS CCD OFF"></session>
-      <session id="lanon" label="CS LAN ON"></session>
-      <session id="lanoff" label="CS LAN OFF"></session>
-      <session id="ipwon" label="CS IPW ON"></session>
-      <session id="ipwoff" label="CS IPW OFF"></session>
-      <session id="ston" label="STOW PIN ON"></session>
-      <session id="stoff" label="STOW PIN OFF"></session>
-    </command>
     <status>
       <group label="">
         <title ref="iid" symbol="srm:inst">CAS INST ID</title>

@@ -6,9 +6,6 @@
       <client>socat - tcp:celaeno:4002</client>
       <server>socat - udp-l:24102,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status"></session>
-    </command>
     <status>
       <group>
         <title ref="pres" level="oma:pres">Air Pressure (Psi)</title>

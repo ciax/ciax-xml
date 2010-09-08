@@ -6,17 +6,6 @@
       <client>socat - tcp:cxws:9999</client>
       <server>socat - udp-l:25105,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status"></session>
-      <session id="login" label="Login"></session>
-      <session id="logout" label="Logout"></session>
-      <session id="request" label="Start TCP Status Request"></session>
-      <session id="startup" label="Start Up CIAX operation"></session>
-      <session id="shutdown" label="Shutdown CIAX operation"></session>
-      <session id="moircs" label="Set IID MOIRCS"></session>
-      <session id="focas" label="Set IID FOCAS"></session>
-      <session id="comics" label="Set IID COMICS"></session>
-    </command>
     <status>
       <group label="">
         <title ref="exit">Exit Code</title>

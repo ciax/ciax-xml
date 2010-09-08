@@ -6,12 +6,6 @@
       <client>socat - tcp:celaeno:4003</client>
       <server>socat - udp-l:24103,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status"></session>
-      <session id="reset" label="Reset"></session>
-      <session id="defcon" label="Default Config"></session>
-      <session id="set0" label="Set 0 Pulses"></session>
-    </command>
     <status>
       <group>
         <title ref="bs" symbol="warn">Moter Moving</title>

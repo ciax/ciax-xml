@@ -6,18 +6,6 @@
       <client>socat - udp:cart3:5000</client>
       <server>socat - udp-l:25101,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Regular status update"></session>
-      <session id="start_run" label="Running Start"></session>
-      <session id="start_jak" label="Jacking Start"></session>
-      <session id="clear_trg" label="Jacking Start"></session>
-      <session id="set_fwd" label="Set Tag to Forward"></session>
-      <session id="set_run1" label="Run to Tag 1"></session>
-      <session id="set_jak1" label="Jack UP Level 1"></session>
-      <session id="pause" label="Pause"></session>
-      <session id="emstop" label="Emergency Stop"></session>
-      <session id="resume" label="Resume from Pause"></session>
-    </command>
     <status>
       <group>
         <title ref="ecode" symbol="mel:ecode">EXIT CODE</title>

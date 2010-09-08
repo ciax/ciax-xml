@@ -6,12 +6,6 @@
       <client>socat - tcp:merope:59999</client>
       <server>socat - udp-l:24201,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status"></session>
-      <session id="setlmt" label="Set Limit 20V/5A/100W"></session>
-      <session id="setv" label="Set Voltage 0-50[V]"></session>
-      <session id="setp" label="Set Power 0-100[W]"></session>
-    </command>
     <status>
       <group>
         <title ref="vol">OUTPUT (V)</title>

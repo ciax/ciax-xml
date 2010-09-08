@@ -9,8 +9,9 @@ for obj in $objects; do
     obj=${obj#*-}
     echo "#### $obj ####"
     dev=$(lookup $obj dev) || _usage_key
-    file=$HOME/.var/status_$obj.mar
-    VER=${VER:-exec} alicmd $obj $cmd $par
+    input=$HOME/.var/field_$obj.mar
+    output=$HOME/.var/status_$obj.mar
+    VER=${VER:-exec} alicmd $obj $cmd $par < $input
     [ $cmd = 'upd' ] &&
-    alistat $obj $file| { [ "$VER" ] && mar || stv; }
+    alistat $obj $output| { [ "$VER" ] && mar || stv; }
 done

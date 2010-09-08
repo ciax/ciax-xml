@@ -6,9 +6,6 @@
       <client>socat - tcp:celaeno:4009</client>
       <server>socat - udp-l:24109,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status" />
-    </command>
     <status>
       <group>
         <title ref="st1" symbol="tpg:stat">Main Dewar Stat</title>

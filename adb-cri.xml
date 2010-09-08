@@ -6,17 +6,6 @@
       <client>socat - tcp:ltc-i:4003</client>
       <server>socat - udp-l:25107,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status" ref="upd"></session>
-      <session id="x0on" label="X0 ON" ref="x0on"></session>
-      <session id="x0off" label="X0 OFF" ref="x0off"></session>
-      <session id="x1on" label="X1 ON" ref="x1on"></session>
-      <session id="x1off" label="X1 OFF" ref="x1off"></session>
-      <session id="x2on" label="X2 ON" ref="x2on"></session>
-      <session id="x2off" label="X2 OFF" ref="x2off"></session>
-      <session id="x3on" label="X3 ON" ref="x3on"></session>
-      <session id="x3off" label="X3 OFF" ref="x3off"></session>
-    </command>
     <status>
       <group label="">
         <title ref="x0sw">X0 SWITCH</title>

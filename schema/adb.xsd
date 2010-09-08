@@ -16,7 +16,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="adb:comm" minOccurs="1" maxOccurs="1" />
-        <xsd:element ref="adb:command" minOccurs="1" maxOccurs="1"></xsd:element>
+        <xsd:element ref="adb:command" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="adb:status" minOccurs="1" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="adb:id_attr"></xsd:attributeGroup>

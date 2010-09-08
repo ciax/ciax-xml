@@ -6,9 +6,6 @@
       <client>socat - tcp:celaeno:4005</client>
       <server>socat - udp-l:24105,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status" />
-    </command>
     <status>
       <group>
         <title ref="ch0">MosCold2</title>

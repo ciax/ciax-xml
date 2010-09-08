@@ -6,9 +6,6 @@
       <client>socat - tcp:celaeno:4011</client>
       <server>socat - udp-l:24111,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status"></session>
-    </command>
     <status>
       <group>
         <title ref="st1" symbol="tpg:stat">Turbo Pump Stat</title>

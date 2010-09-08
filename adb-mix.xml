@@ -6,11 +6,6 @@
       <client>socat - tcp:celaeno:4007</client>
       <server>socat - udp-l:24107,reuseaddr,fork</server>
     </comm>
-    <command>
-      <session id="upd" label="Update Status" />
-      <session id="resume" label="Resume Pulses" />
-      <session id="set0" label="Set 0 Pulses" />
-    </command>
     <status>
       <group>
         <title ref="rdy" symbol="off-warn">Comm Ready</title>

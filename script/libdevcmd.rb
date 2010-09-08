@@ -31,14 +31,12 @@ class DevCmd
   def getframe(e)
     frame=''
     e.each_element { |c|
-      label=c.attributes['label']
+      a=c.attributes
       case c.name
       when 'parameters'
         c.each_element{|d|
           validate(d,@cs.par.shift)
         }
-      when 'data'
-        frame << get_data(c)
       when 'selected'
         @v.msg{"Entering Selected Node"}
         frame << getframe(@sel)
@@ -46,21 +44,14 @@ class DevCmd
       when 'ccrange'
         frame << @ccrange
         @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
-      when 'repeat'
-        frame << repeat_frame(c){|d| yield d }
-      end
-    }
-    frame
-  end
-
-  def repeat_frame(e)
-    frame=''
-    @cs.repeat(e){|d|
-      case d.name
       when 'data'
-        frame << get_data(d)
-      when 'repeat'
-        frame << repeat_frame(c){|d| yield d }
+        frame << get_data(c)
+      when 'eval'
+        s=eval(@cs.sub_var(c.text)).to_s
+        s.split(',').each{|str|
+          @v.msg{"GetFrame:[#{str}]"}
+          frame << encode(c,str)
+        }
       end
     }
     frame
@@ -69,9 +60,6 @@ class DevCmd
   def get_data(e)
     a=e.attributes
     str=e.text
-    if /1|true/ === a['eval']
-      str=eval(@cs.sub_var(str)).to_s
-    end
     @v.msg{"GetFrame:#{a['label']}[#{str}]"}
     encode(e,str)
   end

@@ -111,7 +111,6 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="ddb:field" />
-        <xsd:element ref="ddb:data" />
         <xsd:element ref="ddb:repeat"></xsd:element>
       </xsd:choice>
       <xsd:attribute name="from" type="xsd:int" use="required" />
@@ -133,15 +132,23 @@
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="encode" type="ddb:codec"></xsd:attribute>
     <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
-    <xsd:attribute name="eval" type="xsd:boolean"></xsd:attribute>
   </xsd:attributeGroup>
   <xsd:group name="cmd_elem">
     <xsd:choice>
       <xsd:element ref="ddb:data" />
-      <xsd:element ref="ddb:repeat"></xsd:element>
+      <xsd:element ref="ddb:eval" />
     </xsd:choice>
   </xsd:group>
   <xsd:element name="data">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="ddb:cmd_attr" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="eval">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">

@@ -29,7 +29,7 @@
         <data label="Start Address" encode="lew">0x101</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <data eval="1" encode="lew">$1</data>
+        <eval encode="lew">$1</eval>
       </command>
       <command id="set_pos" label="Set Pos to Jack (1-4)" type="config" response="cmdrsp">
         <parameters>
@@ -46,7 +46,7 @@
         <data label="Start Address" encode="lew">0x103</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <data encode="lew" eval="1">$1</data>
+        <eval encode="lew">$1</eval>
       </command>
       <command id="start" label="Start Trigger [HHHH]" type="action" response="cmdrsp">
         <parameters>
@@ -59,7 +59,7 @@
         <data label="Start Address" encode="lew">0x102</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <data eval="1" encode="lew">$1</data>
+        <eval encode="lew">$1</eval>
       </command>
       <command id="stop" label="Stop Trigger [HHHH]" type="action" response="cmdrsp">
         <parameters>
@@ -72,7 +72,7 @@
         <data label="Start Address" encode="lew">0x100</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <data eval="1" encode="lew">$1</data>
+        <eval encode="lew">$1</eval>
       </command>
       <command id="clear" label="Clear Action Flags" type="config" response="cmdrsp">
         <data label="Write region command" encode="lew">0x1401</data>
@@ -96,12 +96,12 @@
         </parameters>
         <data label="Read region command" encode="lew">0x401</data>
         <data label="Read region subcommand" encode="lew">0</data>
-        <data label="Jack Num" encode="chr" eval="1">$2 * 4</data>
-        <data label="Tag Num" encode="chr" eval="1">$1 + 2</data>
+        <eval label="Jack Num" encode="chr">$2 * 4</eval>
+        <eval label="Tag Num" encode="chr">$1 + 2</eval>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">0x2ch</data>
       </command>
-      <command id="set_tbl" label="Set Jack Table [Tag=0-5] [JK=0-3] data" type="config" response="cmdrsp">
+      <command id="set_tbl" label="Set Jack Table [Tag=0-5] [JK=0-3] n,n,n..(44)" type="config" response="cmdrsp">
         <parameters>
           <par label="Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm">
             <range>0:5</range>
@@ -109,16 +109,17 @@
           <par label="Jack 0=JK1,4=JK2,8=JK3,12=JK4">
             <range>0:3</range>
           </par>
+          <par label="Pulses n,n,n,n...(44)">
+            <regexp>([\d]+,){43}[\d]+</regexp>
+          </par>
         </parameters>
         <data label="Write region command" encode="lew">0x1401</data>
         <data label="Write region subcommand" encode="lew">0</data>
-        <data label="Jack Num" encode="chr" eval="1">$2 * 4</data>
-        <data label="Tag Num" encode="chr" eval="1">$1 + 2</data>
+        <eval label="Jack Num" encode="chr">$2 * 4</eval>
+        <eval label="Tag Num" encode="chr">$1 + 2</eval>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">0x2ch</data>
-        <repeat from="3" to="44">
-          <data encode="lew" eval="1">${$_}</data>
-        </repeat>
+        <eval encode="lew">"$3"</eval>
       </command>
       <command id="rw_tbl" label="Read/Write Jack Table" type="config" response="cmdrsp">
         <parameters>
@@ -131,7 +132,7 @@
         <data label="Start Address" encode="lew">0x7ff</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <data label="Parameter" encode="lew" eval="1">$1</data>
+        <eval label="Parameter" encode="lew">$1</eval>
       </command>
     </cmdselect>
     <cmdccrange method="len">
@@ -146,7 +147,7 @@
       <data label="Q Header: PC Number" encode="chr">0xFF</data>
       <data label="Q Header: Request Unit I/O Number" encode="lew">0x3FF</data>
       <data label="Q Header: Request Unit Station Number" encode="chr">0</data>
-      <data label="Q Header: Send Data Length MSB" encode="chr" eval="1">${cc}</data>
+      <eval label="Q Header: Send Data Length MSB" encode="chr">${cc}</eval>
       <data label="Q Header: Send Data Length LSB" encode="chr">0</data>
       <ccrange></ccrange>
     </cmdframe>

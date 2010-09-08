@@ -11,7 +11,7 @@
         <statement>
           <text>getstat</text>
         </statement>
-        <repeat from="1" to="6">
+        <repeat from="0" to="5">
           <statement>
             <text>chkr $_</text>
           </statement>
@@ -21,11 +21,11 @@
         </repeat>
       </session>
       <session id="resume" label="Resume Pulses">
-        <repeat from="1" to="6">
+        <repeat from="0" to="5">
           <statement>
             <text>setp</text>
             <text>$_</text>
-            <text>${field:p$_}</text>
+            <text>${field:p:$_}</text>
           </statement>
         </repeat>
       </session>
@@ -82,16 +82,16 @@
           </value>
         </var>
       </group>
-      <repeat from="1" to="6">
+      <repeat from="0" to="5">
         <group label="">
           <var id="r$_" label="Running $_" symbol="normal">
             <value format="%s">
-              <string>r$_</string>
+              <string>r:$_</string>
             </value>
           </var>
           <var id="p$_" label="Pulse $_">
             <value format="%d">
-              <int>p$_</int>
+              <int>p:$_</int>
             </value>
           </var>
         </group>

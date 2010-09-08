@@ -9,31 +9,31 @@
       <command id="chkr" label="Check Run (1-6)" response="chkr" type="stat">
         <parameters>
           <par>
-            <range>1:6</range>
+            <range>0:5</range>
           </par>
         </parameters>
-        <data eval="1">$1</data>
+        <data eval="1">$1 + 1</data>
         <data>=H</data>
       </command>
-      <command id="getp" label="Get pulse (1-6)" response="getp" type="stat">
+      <command id="getp" label="Get pulse (0-5)" response="getp" type="stat">
         <parameters>
           <par>
-            <range>1:6</range>
+            <range>0:5</range>
           </par>
         </parameters>
-        <data eval="1">$1</data>
+        <data eval="1">$1 + 1</data>
         <data>P21R</data>
       </command>
-      <command id="setp" label="Set pulse (1-6) (0-19200)" response="default" type="config">
+      <command id="setp" label="Set pulse (0-5) (0-19200)" response="default" type="config">
         <parameters>
           <par>
-            <range>1:6</range>
+            <range>0:5</range>
           </par>
           <par>
             <range>0:19200</range>
           </par>
         </parameters>
-        <data eval="1">$1</data>
+        <data eval="1">$1 + 1</data>
         <data>P21S</data>
         <data eval="1">$2</data>
       </command>
@@ -55,13 +55,13 @@
       <response id="chkr">
         <field>
           <length>1</length>
-          <assign>r$1</assign>
+          <array>r:$1</array>
         </field>
       </response>
       <response id="getp">
         <field>
           <regexp>[\d]+</regexp>
-          <assign>p$1</assign>
+          <array>p:$1</array>
         </field>
       </response>
       <response id="default"></response>

@@ -45,7 +45,7 @@ class ConvStr
           h=h[i]
         end
       }
-      h
+      [*h].join(' ')
     }
     @v.msg{"Substitute to [#{str}]"}
     str

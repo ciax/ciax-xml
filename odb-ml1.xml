@@ -8,9 +8,15 @@
     </comm>
     <selection>
       <session id="upd" label="Update Status">
-        <statement format="getstat" />
-        <statement format="htrstat" />
-        <statement format="spstat" />
+        <statement>
+          <text>getstat</text>
+        </statement>
+        <statement>
+          <text>htrstat</text>
+        </statement>
+        <statement>
+          <text>spstat</text>
+        </statement>
       </session>
     </selection>
     <status>

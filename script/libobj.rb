@@ -91,14 +91,16 @@ class Obj < Hash
   end
 
   def get_cmd(e) # //statement
-    cmd=''
-    argv=[]
+    ary=[]
     e.each_element{|d| # //argv
-      str=eval(@cs.sub_var(d.text))
-      @v.msg{"CMD:Evaluated [#{str}]"}
-      argv << str
+      str=@cs.sub_var(d.text)
+      case d.name
+      when 'eval'
+        str=format(d,eval(str))
+      end
+      ary << str
     }
-    cmd = e.attributes['format'] % argv
+    cmd = ary.join(' ')
     @v.msg{"Exec(DDB):[#{cmd}]"}
     cmd
   end

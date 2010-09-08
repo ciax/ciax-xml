@@ -8,42 +8,63 @@
     </comm>
     <selection>
       <session id="upd" label="Regular status update">
-        <statement format="getstat" />
-        <statement format="chken" />
+        <statement>
+          <text>getstat</text>
+        </statement>
+        <statement>
+          <text>chken</text>
+        </statement>
       </session>
       <session id="start_run" label="Running Start">
-        <statement format="start 1" />
+        <statement>
+          <text>start 1</text>
+        </statement>
       </session>
       <session id="start_jak" label="Jacking Start">
-        <statement format="start 0x100" />
+        <statement>
+          <text>start 0x100</text>
+        </statement>
       </session>
       <session id="clear_trg" label="Jacking Start">
-        <statement format="clear" />
+        <statement>
+          <text>clear</text>
+        </statement>
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
-        <statement format="set_tag 98" />
+        <statement>
+          <text>set_tag 98</text>
+        </statement>
       </session>
       <session id="set_run1" label="Run to Tag 1">
-        <statement format="set_tag 1" />
+        <statement>
+          <text>set_tag 1</text>
+        </statement>
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
-        <statement format="set_pos 2" />
+        <statement>
+          <text>set_pos 2</text>
+        </statement>
       </session>
       <session id="pause" label="Pause">
-        <statement format="stop 1" />
+        <statement>
+          <text>stop 1</text>
+        </statement>
       </session>
       <session id="emstop" label="Emergency Stop">
-        <statement format="stop 2" />
+        <statement>
+          <text>stop 2</text>
+        </statement>
       </session>
       <session id="resume" label="Resume from Pause">
-        <statement format="clear" />
+        <statement>
+          <text>clear</text>
+        </statement>
       </session>
       <session id="get_tbl" label="Get Jack Table">
         <repeat counter="j" from="0" to="3">
           <repeat counter="t" from="0" to="5">
-            <statement format="get_tbl %s %s">
-              <argv>$j</argv>
-              <argv>$t</argv>
+            <statement>
+              <text>get_tbl $j $t</text>
             </statement>
           </repeat>
         </repeat>
@@ -51,27 +72,28 @@
       <session id="set_tbl" label="Set Jack Table">
         <repeat counter="j" from="0" to="3">
           <repeat counter="t" from="0" to="5">
-            <statement format="set_tbl %s %s">
-              <argv>"t$tj$j"</argv>
-              <argv>${field:t$tj$j}</argv>
+            <statement>
+              <text>set_tbl</text>
+              <text>t$tj$j</text>
+              <text>${field:t$tj$j}</text>
             </statement>
           </repeat>
         </repeat>
       </session>
       <session id="read_tbl" label="Read Jack Table to Buffer">
-        <statement format="tbl_rw %s">
-          <argv>1</argv>
+        <statement>
+          <text>tbl_rw 1</text>
         </statement>
-        <statement format="tbl_rw %s">
-          <argv>0</argv>
+        <statement>
+          <text>tbl_rw 0</text>
         </statement>
       </session>
       <session id="write_tbl" label="Write Jack Table to Buffer">
-        <statement format="tbl_rw %s">
-          <argv>2</argv>
+        <statement>
+          <text>tbl_rw 2</text>
         </statement>
-        <statement format="tbl_rw %s">
-          <argv>0</argv>
+        <statement>
+          <text>tbl_rw 0</text>
         </statement>
       </session>
     </selection>

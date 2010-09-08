@@ -1,58 +1,68 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='cco' label='OPT Helium Compressor Control' ref='cri'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="cco" label="OPT Helium Compressor Control" ref="cri">
     <comm>
       <device>bbe</device>
       <client>socat - tcp:ltc-o:4002</client>
       <server>socat - udp-l:25106,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id='upd' label='Update Status' ref='upd'/>
-      <session id='f2on' label='CIAO(S6) ON' ref='x0on'/>
-      <session id='f2off' label='CIAO(S6) OFF' ref='x0off'/>
-      <session id='m1on' label='COMICS IMG(S4) ON' ref='x2on'/>
-      <session id='m1off' label='COMICS IMG(S4) OFF' ref='x2off'/>
-      <session id='m2on' label='COMICS SPEC(S5) ON' ref='x3on'/>
-      <session id='m2off' label='COMICS SPEC(S5) OFF' ref='x3off'/>
-      <session id='maon' label='COMICS BOTH ON'>
-        <statement format='getstat'/>
-        <statement format='output %d'>
-          <argv>${field:stat} | 0x1100</argv>
+      <session id="upd" label="Update Status" ref="upd" />
+      <session id="f2on" label="CIAO(S6) ON" ref="x0on" />
+      <session id="f2off" label="CIAO(S6) OFF" ref="x0off" />
+      <session id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
+      <session id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
+      <session id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
+      <session id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
+      <session id="maon" label="COMICS BOTH ON">
+        <statement>
+          <text>getstat</text>
         </statement>
-        <statement format='getstat'/>
+        <statement>
+          <text>output</text>
+          <eval>${field:stat} | 0x1100</eval>
+        </statement>
+        <statement>
+          <text>getstat</text>
+        </statement>
       </session>
-      <session id='maoff' label='COMICS BOTH OFF'>
-        <statement format='getstat'/>
-        <statement format='output %d'>
-          <argv>${field:stat} &amp; 0xeeff</argv>
+      <session id="maoff" label="COMICS BOTH OFF">
+        <statement>
+          <text>getstat</text>
         </statement>
-        <statement format='getstat'/>
+        <statement>
+          <text>output</text>
+          <eval>${field:stat} &amp; 0xeeff</eval>
+        </statement>
+        <statement>
+          <text>getstat</text>
+        </statement>
       </session>
     </selection>
     <status>
       <group>
-        <var id='s6:sw' label='CIAO(S6) SWITCH' ref='x0:sw'/>
-        <var id='s6:dr' label='CIAO(S6) DRIVE' ref='x0:dr'/>
+        <var id="s6:sw" label="CIAO(S6) SWITCH" ref="x0:sw" />
+        <var id="s6:dr" label="CIAO(S6) DRIVE" ref="x0:dr" />
       </group>
       <group>
-        <var id='s6:tm' label='CIAO(S6) TEMP' ref='x0:tm'/>
-        <var id='s6:pr' label='CIAO(S6) PRESSURE' ref='x0:pr'/>
+        <var id="s6:tm" label="CIAO(S6) TEMP" ref="x0:tm" />
+        <var id="s6:pr" label="CIAO(S6) PRESSURE" ref="x0:pr" />
       </group>
       <group>
-        <var id='s4:sw' label='COMICS IMG(S4) SWITCH' ref='x2:sw'/>
-        <var id='s4:dr' label='COMICS IMG(S4) DRIVE' ref='x2:dr'/>
+        <var id="s4:sw" label="COMICS IMG(S4) SWITCH" ref="x2:sw" />
+        <var id="s4:dr" label="COMICS IMG(S4) DRIVE" ref="x2:dr" />
       </group>
       <group>
-        <var id='s4:tm' label='COMICS IMG(S4) TEMP' ref='x2:tm'/>
-        <var id='s4:pr' label='COMICS IMG(S4) PRESSURE' ref='x2:pr'/>
+        <var id="s4:tm" label="COMICS IMG(S4) TEMP" ref="x2:tm" />
+        <var id="s4:pr" label="COMICS IMG(S4) PRESSURE" ref="x2:pr" />
       </group>
       <group>
-        <var id='s5:sw' label='COMICS SPEC(S5) SWITCH' ref='x3:sw'/>
-        <var id='s5:dr' label='COMICS SPEC(S5) DRIVE' ref='x3:dr'/>
+        <var id="s5:sw" label="COMICS SPEC(S5) SWITCH" ref="x3:sw" />
+        <var id="s5:dr" label="COMICS SPEC(S5) DRIVE" ref="x3:dr" />
       </group>
       <group>
-        <var id='s5:tm' label='COMICS SPEC(S5) TEMP' ref='x3:tm'/>
-        <var id='s5:pr' label='COMICS SPEC(S5) PRESSURE' ref='x3:pr'/>
+        <var id="s5:tm" label="COMICS SPEC(S5) TEMP" ref="x3:tm" />
+        <var id="s5:pr" label="COMICS SPEC(S5) PRESSURE" ref="x3:pr" />
       </group>
     </status>
   </object>

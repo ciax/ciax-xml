@@ -1,40 +1,42 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='map' label='Compressed Air Pressure at MOIRCS'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <object id="map" label="Compressed Air Pressure at MOIRCS">
     <comm>
       <device>oma</device>
       <client>socat - tcp:celaeno:4002</client>
       <server>socat - udp-l:24102,reuseaddr,fork</server>
     </comm>
     <selection>
-      <session id='upd' label='Update Status'>
-        <statement format='getstat'/>
+      <session id="upd" label="Update Status">
+        <statement>
+          <text>getstat</text>
+        </statement>
       </session>
     </selection>
     <status>
       <group>
-        <var id='pres' label='Air Pressure (Psi)' symbol='pres'>
-          <value format='%4.2f'>
-            <float decimal='2'>stat</float>
+        <var id="pres" label="Air Pressure (Psi)" symbol="pres">
+          <value format="%4.2f">
+            <float decimal="2">stat</float>
           </value>
         </var>
       </group>
     </status>
     <symbols>
-      <symbol id='pres' type='FLOAT'>
-        <enum hl='alarm' msg='HH'>
+      <symbol id="pres" type="FLOAT">
+        <enum hl="alarm" msg="HH">
           <range>110:</range>
         </enum>
-        <enum hl='warn' msg='H'>
+        <enum hl="warn" msg="H">
           <range>105:&lt;110</range>
         </enum>
-        <enum hl='normal' msg='M'>
+        <enum hl="normal" msg="M">
           <range>95:&lt;105</range>
         </enum>
-        <enum hl='warn' msg='L'>
+        <enum hl="warn" msg="L">
           <range>90:&lt;95</range>
         </enum>
-        <enum hl='alarm' msg='LL'>
+        <enum hl="alarm" msg="LL">
           <range>:&lt;90</range>
         </enum>
       </symbol>

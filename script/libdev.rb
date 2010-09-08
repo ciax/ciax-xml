@@ -16,8 +16,6 @@ class Dev
   else
     id=obj||dev
     @v=Verbose.new("ddb/#{id}".upcase)
-    @rsp=DevRsp.new(@ddb)
-    @cmd=DevCmd.new(@ddb)
     @cid=String.new
     @cmdcache=Hash.new
     @fd=IoFile.new("field_#{id}")
@@ -27,6 +25,8 @@ class Dev
       warn $!
       @field={'device'=>@ddb['id'] }
     end
+    @rsp=DevRsp.new(@ddb,@field)
+    @cmd=DevCmd.new(@ddb)
   end
 
   def setcmd(line)
@@ -54,7 +54,7 @@ class Dev
 
   def setrsp(time=Time.now)
     return unless @recv
-    @field.update(@rsp.rspframe(@recv){yield})
+    @rsp.rspframe(@recv){yield}
     @field['time']="%.3f" % time.to_f
     @fd.save_stat(@field)
   end

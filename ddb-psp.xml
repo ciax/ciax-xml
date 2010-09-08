@@ -13,7 +13,7 @@
           </par>
         </parameters>
         <data>SU </data>
-        <data format="%02d" eval="1">$1</data>
+        <eval format="%02d">$1</eval>
       </command>
       <command id="setal" type="config" label="Set Current Limit [D.DD]">
         <parameters>
@@ -22,7 +22,7 @@
           </par>
         </parameters>
         <data>SI </data>
-        <data format="%04.2f" eval="1">$1</data>
+        <eval format="%04.2f">$1</eval>
       </command>
       <command id="setpl" type="config" label="Set Power Limit [DDD]">
         <parameters>
@@ -31,7 +31,7 @@
           </par>
         </parameters>
         <data>SP </data>
-        <data format="%03d" eval="1">$1</data>
+        <eval format="%03d">$1</eval>
       </command>
       <command id="setv" type="config" label="Set Voltage [DD.DD]">
         <parameters>
@@ -40,7 +40,7 @@
           </par>
         </parameters>
         <data>SV </data>
-        <data format="%05.2f" eval="1">$1</data>
+        <eval format="%05.2f">$1</eval>
       </command>
       <command id="pon" type="action" label="OUTPUT ON">
         <data>KOE</data>

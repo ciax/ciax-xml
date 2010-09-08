@@ -12,7 +12,7 @@
             <range>0:5</range>
           </par>
         </parameters>
-        <data eval="1">$1 + 1</data>
+        <eval>$1 + 1</eval>
         <data>=H</data>
       </command>
       <command id="getp" label="Get pulse (0-5)" response="getp" type="stat">
@@ -21,7 +21,7 @@
             <range>0:5</range>
           </par>
         </parameters>
-        <data eval="1">$1 + 1</data>
+        <eval>$1 + 1</eval>
         <data>P21R</data>
       </command>
       <command id="setp" label="Set pulse (0-5) (0-19200)" response="default" type="config">
@@ -33,9 +33,9 @@
             <range>0:19200</range>
           </par>
         </parameters>
-        <data eval="1">$1 + 1</data>
+        <eval>$1 + 1</eval>
         <data>P21S</data>
-        <data eval="1">$2</data>
+        <eval>$2</eval>
       </command>
     </cmdselect>
     <cmdframe>

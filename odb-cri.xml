@@ -17,8 +17,8 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <eval>${field:stat} | 0x01</eval>
           <text>output</text>
+          <eval>${field:stat} | 0x01</eval>
         </statement>
         <statement>
           <text>getstat</text>

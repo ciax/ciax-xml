@@ -13,7 +13,7 @@
           </par>
         </parameters>
         <data>1AO+000</data>
-        <data format="%05.2f" eval="1">$1</data>
+        <eval format="%05.2f">$1</eval>
       </command>
     </cmdselect>
     <cmdframe>

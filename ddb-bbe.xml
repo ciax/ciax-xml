@@ -17,7 +17,7 @@
           </par>
         </parameters>
         <data>SO</data>
-        <data encode="bew" eval="1">$1</data>
+        <eval encode="bew">"$1"</eval>
       </command>
     </cmdselect>
     <cmdframe>

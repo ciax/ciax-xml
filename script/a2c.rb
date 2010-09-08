@@ -3,14 +3,14 @@ require "optparse"
 require "rexml/document"
 include REXML
 
-abort "Usage: a2c [xpath] [child elem] < xml" if ARGV.size < 2
+abort "Usage: a2c [xpath] [attr] < xml" if ARGV.size < 2
 
 xpath=ARGV.shift
-child=ARGV.shift
+attr=ARGV.shift
 doc=Document.new(gets(nil))
 doc.each_element(xpath) {|e|
-  a=e.attributes
-  e.add_element(child,a)
-  a.each_attribute { |attr| attr.remove }
+  str=e.attributes[attr]
+  e.delete_attribute(attr)
+  e.add_element(attr).text=str
 }
 puts doc

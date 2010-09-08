@@ -91,9 +91,8 @@ class Cls < Hash
     ary=Array.new
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=@cs.sub_var(a['field']) || return
-      data=@field[fld] || return
-      
+      fld=@cs.sub_var(dtype.text) || return
+      data=@cs.sub_var("${field:#{fld}}") || return
       case dtype.name
       when 'binary'
         bit=(data.to_i >> a['bit'].to_i & 1)

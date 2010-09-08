@@ -106,28 +106,33 @@
   <!--data type in value-->
   <xsd:element name="binary">
     <xsd:complexType>
-      <xsd:attribute name="field" type="xsd:string" use="required" />
-      <xsd:attribute name="bit" type="xsd:int" use="required" />
-      <xsd:attribute name="inv" type="xsd:boolean" />
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="bit" type="xsd:int" use="required" />
+          <xsd:attribute name="inv" type="xsd:boolean" />
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="float">
     <xsd:complexType>
-      <xsd:attribute name="field" type="xsd:string" use="required" />
-      <xsd:attribute name="decimal" type="xsd:integer" />
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="decimal" type="xsd:integer" />
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="int">
     <xsd:complexType>
-      <xsd:attribute name="field" type="xsd:string" use="required" />
-      <xsd:attribute name="signed" type="xsd:boolean" />
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="signed" type="xsd:boolean" />
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="string">
-    <xsd:complexType>
-      <xsd:attribute name="field" type="xsd:string" use="required" />
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:element name="string" type="xsd:string"></xsd:element>
   <xsd:element name="range">
     <xsd:simpleType>
       <xsd:restriction base="xsd:string">

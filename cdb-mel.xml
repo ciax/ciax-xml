@@ -1,115 +1,115 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <class id="mel" label="Cart PLC" device="mel">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <class device='mel' id='mel' label='Cart PLC'>
     <commands>
-      <session id="upd" label="Regular status update">
-        <statement format="getstat"></statement>
-        <statement format="chken"></statement>
+      <session id='upd' label='Regular status update'>
+        <statement format='getstat'/>
+        <statement format='chken'/>
       </session>
-      <session id="start_run" label="Running Start">
-        <statement format="start 1"></statement>
+      <session id='start_run' label='Running Start'>
+        <statement format='start 1'/>
       </session>
-      <session id="start_jak" label="Jacking Start">
-        <statement format="start 0x100"></statement>
+      <session id='start_jak' label='Jacking Start'>
+        <statement format='start 0x100'/>
       </session>
-      <session id="clear_trg" label="Jacking Start">
-        <statement format="clear"></statement>
+      <session id='clear_trg' label='Jacking Start'>
+        <statement format='clear'/>
       </session>
-      <session id="set_fwd" label="Set Tag to Forward">
-        <statement format="set_tag 98"></statement>
+      <session id='set_fwd' label='Set Tag to Forward'>
+        <statement format='set_tag 98'/>
       </session>
-      <session id="set_run1" label="Run to Tag 1">
-        <statement format="set_tag 1"></statement>
+      <session id='set_run1' label='Run to Tag 1'>
+        <statement format='set_tag 1'/>
       </session>
-      <session id="set_jak1" label="Jack UP Level 1">
-        <statement format="set_pos 2"></statement>
+      <session id='set_jak1' label='Jack UP Level 1'>
+        <statement format='set_pos 2'/>
       </session>
-      <session id="pause" label="Pause">
-        <statement format="stop 1"></statement>
+      <session id='pause' label='Pause'>
+        <statement format='stop 1'/>
       </session>
-      <session id="emstop" label="Emergency Stop">
-        <statement format="stop 2"></statement>
+      <session id='emstop' label='Emergency Stop'>
+        <statement format='stop 2'/>
       </session>
-      <session id="resume" label="Resume from Pause">
-        <statement format="clear"></statement>
+      <session id='resume' label='Resume from Pause'>
+        <statement format='clear'/>
       </session>
-      <session id="tbl_read" label="Resume from Pause">
-        <statement format="tbl_rw %d">
+      <session id='tbl_read' label='Resume from Pause'>
+        <statement format='tbl_rw %d'>
           <argv>1</argv>
         </statement>
       </session>
-      <session id="tbl_write" label="Resume from Pause">
-        <statement format="tbl_rw %d">
+      <session id='tbl_write' label='Resume from Pause'>
+        <statement format='tbl_rw %d'>
           <argv>2</argv>
         </statement>
       </session>
     </commands>
     <status>
-      <value id="ecode" label="EXIT CODE" format="%04X">
-        <int field="ecode" />
+      <value format='%04X' id='ecode' label='EXIT CODE'>
+        <int>ecode</int>
       </value>
-      <value id="rdy" label="READY" format="%s">
-        <binary bit="0" field="x00" />
+      <value format='%s' id='rdy' label='READY'>
+        <binary bit='0'>x:0</binary>
       </value>
-      <value id="pse" label="PAUSE" format="%s">
-        <binary bit="1" field="x00" />
+      <value format='%s' id='pse' label='PAUSE'>
+        <binary bit='1'>x:0</binary>
       </value>
-      <value id="emg" label="ENERGENCY" format="%s">
-        <binary bit="2" field="x00" />
+      <value format='%s' id='emg' label='ENERGENCY'>
+        <binary bit='2'>x:0</binary>
       </value>
-      <value id="stp" label="STOP" format="%s">
-        <binary bit="3" field="x00" />
+      <value format='%s' id='stp' label='STOP'>
+        <binary bit='3'>x:0</binary>
       </value>
-      <value id="run" label="RUNNING" format="%s">
-        <binary bit="4" field="x00" />
+      <value format='%s' id='run' label='RUNNING'>
+        <binary bit='4'>x:0</binary>
       </value>
-      <value id="jak" label="JACKING" format="%s">
-        <binary bit="5" field="x00" />
+      <value format='%s' id='jak' label='JACKING'>
+        <binary bit='5'>x:0</binary>
       </value>
-      <value id="con" label="CHARGING" format="%s">
-        <binary bit="6" field="x00" />
+      <value format='%s' id='con' label='CHARGING'>
+        <binary bit='6'>x:0</binary>
       </value>
-      <value id="flt" label="Fault" format="%s">
-        <binary bit="7" field="x00" />
+      <value format='%s' id='flt' label='Fault'>
+        <binary bit='7'>x:0</binary>
       </value>
-      <value id="msr" label="Right Motor Servo" format="%s">
-        <binary bit="8" field="x00" inv="true" />
+      <value format='%s' id='msr' label='Right Motor Servo'>
+        <binary bit='8' inv='true'>x:0</binary>
       </value>
-      <value id="msl" label="Left Motor Servo" format="%s">
-        <binary bit="9" field="x00" inv="true" />
+      <value format='%s' id='msl' label='Left Motor Servo'>
+        <binary bit='9' inv='true'>x:0</binary>
       </value>
-      <value id="jd1" label="Jack Motor1 Servo" format="%s">
-        <binary bit="10" field="x00" inv="true" />
+      <value format='%s' id='jd1' label='Jack Motor1 Servo'>
+        <binary bit='10' inv='true'>x:0</binary>
       </value>
-      <value id="jd2" label="Jack Motor2 Servo" format="%s">
-        <binary bit="11" field="x00" inv="true" />
+      <value format='%s' id='jd2' label='Jack Motor2 Servo'>
+        <binary bit='11' inv='true'>x:0</binary>
       </value>
-      <value id="jd3" label="Jack Motor3 Servo" format="%s">
-        <binary bit="12" field="x00" inv="true" />
+      <value format='%s' id='jd3' label='Jack Motor3 Servo'>
+        <binary bit='12' inv='true'>x:0</binary>
       </value>
-      <value id="jd4" label="Jack Motor4 Servo" format="%s">
-        <binary bit="13" field="x00" inv="true" />
+      <value format='%s' id='jd4' label='Jack Motor4 Servo'>
+        <binary bit='13' inv='true'>x:0</binary>
       </value>
-      <value id="mdar" label="Rignt Motor D/A" format="%d">
-        <int field="x07" signed="true" />
+      <value format='%d' id='mdar' label='Rignt Motor D/A'>
+        <int signed='true'>x:7</int>
       </value>
-      <value id="mdal" label="Left Motor D/A" format="%d">
-        <int field="x08" signed="true" />
+      <value format='%d' id='mdal' label='Left Motor D/A'>
+        <int signed='true'>x:8</int>
       </value>
-      <value id="bvl" label="Battery Voltage" format="%2.2f">
-        <float decimal="2" field="x16" />
+      <value format='%2.2f' id='bvl' label='Battery Voltage'>
+        <float decimal='2'>x:22</float>
       </value>
-      <value id="ist" label="Instrument" format="%d">
-        <int field="x17" />
+      <value format='%d' id='ist' label='Instrument'>
+        <int>x:23</int>
       </value>
-      <value id="cpos" label="Current Position" format="%d">
-        <int field="x19" />
+      <value format='%d' id='cpos' label='Current Position'>
+        <int>x:25</int>
       </value>
-      <value id="dpos" label="Destination Position" format="%d">
-        <int field="x1a" />
+      <value format='%d' id='dpos' label='Destination Position'>
+        <int>x:26</int>
       </value>
-      <value id="jpos" label="Jack Position" format="%d">
-        <int field="x1b" />
+      <value format='%d' id='jpos' label='Jack Position'>
+        <int>x:27</int>
       </value>
     </status>
   </class>

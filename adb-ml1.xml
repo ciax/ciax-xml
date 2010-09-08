@@ -11,16 +11,16 @@
     </command>
     <status>
       <group>
-        <title ref="ch1">MosCold2</title>
-        <title ref="ch2">MosCold1</title>
-        <title ref="ch3">Mask</title>
-        <title ref="ch4">Wheel</title>
+        <title ref="ch0">MosCold2</title>
+        <title ref="ch1">MosCold1</title>
+        <title ref="ch2">Mask</title>
+        <title ref="ch3">Wheel</title>
       </group>
       <group>
-        <title ref="ch5">D1(NONE)</title>
-        <title ref="ch6">D2(NONE)</title>
-        <title ref="ch7">ChipBox1</title>
-        <title ref="ch8">Det1</title>
+        <title ref="ch4">D1(NONE)</title>
+        <title ref="ch5">D2(NONE)</title>
+        <title ref="ch6">ChipBox1</title>
+        <title ref="ch7">Det1</title>
       </group>
       <group>
         <title ref="sp">SetPoint1 (K)</title>

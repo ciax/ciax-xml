@@ -19,7 +19,7 @@
         <title ref="trm" symbol="off-warn">Terminal Mode</title>
         <title ref="cmd" symbol="off-warn">Computer Mode</title>
       </group>
-      <repeat from="1" to="6">
+      <repeat from="0" to="5">
         <group>
           <title ref="r$_">Running $_</title>
           <title ref="p$_">Pulse $_</title>

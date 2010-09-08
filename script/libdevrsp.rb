@@ -6,8 +6,9 @@ require "libconvstr"
 class DevRsp
   include ModXml
 
-  def initialize(ddb)
+  def initialize(ddb,field={})
     @ddb=ddb
+    @field=field
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @cs=ConvStr.new(@v)
   end
@@ -19,7 +20,6 @@ class DevRsp
       @frame.chomp!(eval('"'+tm+'"'))
       @v.msg{"Remove terminator:[#{@frame}] by [#{tm}]" }
     end
-    @field=Hash.new
     setframe(@ddb['rspframe'])
     if cc=@field.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
@@ -79,8 +79,13 @@ class DevRsp
         @field[key]=data
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       when 'array'
-        key=@cs.sub_var(d.text)
-        @field[key] ? @field[key] << data : @field[key]=[data]
+        key,idx=@cs.sub_var(d.text).split(':')
+        @field[key]=[] unless Array === @field[key]
+        if idx
+          @field[key][idx.to_i]=data
+        else
+          @field[key] << data
+        end
         @v.msg{"Assign_Array:[#{key}]<-[#{data}]"}
       when 'verify'
         if txt=d.text

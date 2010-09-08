@@ -58,9 +58,8 @@ class DevRsp
     frame
   end
 
-  def field(e)
-    str=''
-    data=''
+  def field(e,ary=[])
+    str,data='',''
     @v.msg{"Field:#{e.attributes['label']}"}
     e.each_element {|d|
       case d.name
@@ -80,7 +79,7 @@ class DevRsp
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       when 'array'
         key,idx=@cs.sub_var(d.text).split(':')
-        @field[key]=[] unless Array === @field[key]
+        @field[key]=[] if @cs.first || ! Array === @field[key]
         if idx
           @field[key][idx.to_i]=data
         else

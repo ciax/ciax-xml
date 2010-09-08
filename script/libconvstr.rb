@@ -2,11 +2,11 @@
 # XML Common Method
 require 'librerange'
 class ConvStr
-  attr_reader :par
+  attr_reader :par,:first # for shift
   attr_accessor :var
 
   def initialize(v)
-    @v,@var,@par=v,{},[]
+    @v,@var,@par,@first=v,{},[]
   end
 
   def repeat(e)
@@ -17,9 +17,11 @@ class ConvStr
     @v.msg{"Repeat:Counter[\$#{counter}]"}
     @v.msg{"Repeat:Range[#{a['from']}]-[#{a['to']}]"}
     @v.msg{"Repeat:Format[#{fmt}]"}
+    @first=true
     Range.new(a['from'],a['to']).each { |n|
       @var[counter]=fmt % n
       e.each_element { |d| yield d}
+      @first=nil
     }
     @var.delete(counter)
   end

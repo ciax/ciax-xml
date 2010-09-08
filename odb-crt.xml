@@ -74,7 +74,7 @@
           <repeat counter="t" from="0" to="5">
             <statement>
               <text>set_tbl</text>
-              <text>t$tj$j</text>
+              <text>$t $j</text>
               <text>${field:t$tj$j}</text>
             </statement>
           </repeat>

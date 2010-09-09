@@ -82,18 +82,18 @@
       </session>
       <session id="read_tbl" label="Read Jack Table to Buffer">
         <statement>
-          <text>tbl_rw 1</text>
+          <text>rw_tbl 1</text>
         </statement>
         <statement>
-          <text>tbl_rw 0</text>
+          <text>rw_tbl 0</text>
         </statement>
       </session>
       <session id="write_tbl" label="Write Jack Table to Buffer">
         <statement>
-          <text>tbl_rw 2</text>
+          <text>rw_tbl 2</text>
         </statement>
         <statement>
-          <text>tbl_rw 0</text>
+          <text>rw_tbl 0</text>
         </statement>
       </session>
     </selection>

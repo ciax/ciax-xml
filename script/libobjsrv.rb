@@ -39,11 +39,7 @@ class ObjSrv < Hash
     when 'auto'
       auto_upd(cmdary)
     when 'save'
-begin
       @ddb.save(*cmdary)
-rescue
-raise $!.to_s
-end
     when 'load'
       @odb.get_stat(@ddb.load(*cmdary))
     else

@@ -159,21 +159,17 @@
         </field>
       </response>
       <response id="getstat">
-        <repeat from="0" to="51">
-          <field decode="lew">
-            <length>2</length>
-            <array>x</array>
-          </field>
-        </repeat>
+        <field decode="lew" array="52">
+          <length>2</length>
+          <assign>x</assign>
+        </field>
       </response>
       <response id="cmdrsp" label="command resp" />
       <response id="get_tbl">
-        <repeat format="%x" from="0" to="43">
-          <field decode="lew">
-            <length>2</length>
-            <array>t$2j$1</array>
-          </field>
-        </repeat>
+        <field decode="lew" array="44">
+          <length>2</length>
+          <assign>t$2j$1</assign>
+        </field>
       </response>
     </rspselect>
     <rspccrange method="len">

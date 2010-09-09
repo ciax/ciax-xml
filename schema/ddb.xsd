@@ -225,6 +225,7 @@
   <xsd:attributeGroup name="rsp_flf">
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
+    <xsd:attribute name="array" type="xsd:int"></xsd:attribute>
   </xsd:attributeGroup>
   <xsd:group name="rsp_elem">
     <xsd:choice>
@@ -241,7 +242,6 @@
         </xsd:choice>
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="ddb:assign" />
-          <xsd:element ref="ddb:array" />
           <xsd:element ref="ddb:verify" />
         </xsd:choice>
       </xsd:sequence>
@@ -249,18 +249,17 @@
     </xsd:complexType>
   </xsd:element>
   <!--Field Elements-->
-  <xsd:element name="length" type="xsd:int"></xsd:element>
-  <xsd:element name="assign" type="xsd:string"></xsd:element>
-  <xsd:element name="array" type="xsd:string"></xsd:element>
-  <xsd:element name="verify">
+  <xsd:element name="length">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="field" />
+        <xsd:extension base="xsd:int">
+          <xsd:attribute name="range" type="ddb:rerange" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="assign" type="xsd:string"></xsd:element>
+  <xsd:element name="verify" type="xsd:string"></xsd:element>
   <!--Response Select-->
   <xsd:element name="rspselect">
     <xsd:complexType>

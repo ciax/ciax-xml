@@ -135,18 +135,14 @@
           <length>2</length>
           <assign>cjb</assign>
         </field>
-        <repeat from="1" to="16">
-          <field label="Each Bolt Status(POWER_V1)">
-            <length>1</length>
-            <array>bl</array>
-          </field>
-        </repeat>
-        <repeat from="1" to="16">
-          <field label="Each Bolt Alarm(POWER_V1)">
-            <length>1</length>
-            <array>be</array>
-          </field>
-        </repeat>
+        <field label="Each Bolt Status(POWER_V1)" array="16">
+          <length>1</length>
+          <assign>bl</assign>
+        </field>
+        <field label="Each Bolt Alarm(POWER_V1)" array="16">
+          <length>1</length>
+          <assign>be</assign>
+        </field>
         <field label="MLP3-BOLT COMM(POWER_V1)">
           <length>2</length>
           <assign>mba</assign>
@@ -163,31 +159,18 @@
           <length>1</length>
           <verify>10</verify>
         </field>
-        <repeat from="1" to="16">
-          <field label="Bolt Position(POWER_V2)">
-            <length>6</length>
-            <array>jk</array>
-          </field>
-          <field>
-            <length>6</length>
-          </field>
-        </repeat>
+        <field label="Bolt Position(POWER_V2)" array="16">
+          <length range="0:6">12</length>
+          <assign>jk</assign>
+        </field>
         <field decode="chr">
           <length>1</length>
           <verify>10</verify>
         </field>
-        <repeat from="1" to="4">
-          <field>
-            <length>2</length>
-          </field>
-          <field label="Zsensor Position">
-            <length>4</length>
-            <array>zp</array>
-          </field>
-          <field>
-            <length>6</length>
-          </field>
-        </repeat>
+        <field label="Zsensor Position" array="4">
+          <length range="2:4">12</length>
+          <assign>zp</assign>
+        </field>
       </response>
       <response id="inrstat">
         <field label="InR Angle(deg)">

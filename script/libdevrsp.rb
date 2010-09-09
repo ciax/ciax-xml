@@ -49,51 +49,61 @@ class DevRsp
         @v.msg{"Exitting Selected Node"}
       when 'field'
         frame << field(c)
-      when 'repeat'
-        @cs.repeat(c){|d|
-          frame << field(d)
-        }
       end
     }
     frame
   end
 
-  def field(e,ary=[])
-    str,data='',''
-    @v.msg{"Field:#{e.attributes['label']}"}
-    e.each_element {|d|
-      case d.name
-      when 'length'
-        len=d.text.to_i
-        @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
-        str=@frame.slice!(0,len)
-        @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-        data=decode(e,str)
-      when 'regexp'
-        str=@frame.slice!(/#{d.text}/)
-        @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
-        data=decode(e,str)
-      when 'assign'
-        key=@cs.sub_var(d.text)
-        @field[key]=data
-        @v.msg{"Assign:[#{key}]<-[#{data}]"}
-      when 'array'
-        key,idx=@cs.sub_var(d.text).split(':')
-        @field[key]=[] if @cs.first || ! Array === @field[key]
-        if idx
-          @field[key][idx.to_i]=data
-        else
-          @field[key] << data
+  def field(e)
+    frame,data,key,fld='','',''
+    a=e.attributes
+    @v.msg{"Field:#{a['label']}"}
+    (a['array']||1).to_i.times{ 
+      e.each_element {|d|
+        case d.name
+        when 'length'
+          len=d.text.to_i
+          @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
+          str=@frame.slice!(0,len)
+          frame << str
+          @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
+          if r=d.attributes['range']
+            str=str[*r.split(':').map{|i| i.to_i }]
+            @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
+          end
+          data=decode(e,str)
+        when 'regexp'
+          str=@frame.slice!(/#{d.text}/)
+          frame << str
+          @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
+          data=decode(e,str)
+        when 'assign'
+          key,idx=@cs.sub_var(d.text).split(':')
+          if idx
+            fld=[*@field[key]]
+            fld[idx.to_i]=data
+          elsif a['array']
+            @v.msg{"Assign_Array:[#{key}]<-[#{data}]"}
+            fld=[*fld,data]
+          else
+            fld=data
+            @v.msg{"Assign:[#{key}]<-[#{data}]"}
+          end
+        when 'verify'
+          if txt=d.text
+            @v.msg{"Verify:[#{txt}]"}
+            txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
+            return frame
+          end
         end
-        @v.msg{"Assign_Array:[#{key}]<-[#{data}]"}
-      when 'verify'
-        if txt=d.text
-          @v.msg{"Verify:[#{txt}]"}
-          txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
-        end
-      end
+      }
     }
-    str
+    @field[key]=fld
+    frame
   end
+
+  def cut_len(d)
+  end
+
 
 end

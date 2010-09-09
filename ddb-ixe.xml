@@ -55,13 +55,13 @@
       <response id="chkr">
         <field>
           <length>1</length>
-          <array>r:$1</array>
+          <assign>r:$1</assign>
         </field>
       </response>
       <response id="getp">
         <field>
           <regexp>[\d]+</regexp>
-          <array>p:$1</array>
+          <assign>p:$1</assign>
         </field>
       </response>
       <response id="default"></response>

@@ -26,12 +26,10 @@
     </cmdframe>
     <rspselect>
       <response id="getstat">
-        <repeat format="%d" from="1" to="8">
-          <field>
-            <regexp>[\w\.+-]+</regexp>
-            <array>ch</array>
-          </field>
-        </repeat>
+        <field array="8">
+          <regexp>[\w\.+-]+</regexp>
+          <assign>ch</assign>
+        </field>
       </response>
       <response id="htrstat">
         <field>

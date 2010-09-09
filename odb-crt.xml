@@ -64,7 +64,7 @@
         <repeat counter="j" from="0" to="3">
           <repeat counter="t" from="0" to="5">
             <statement>
-              <text>get_tbl $j $t</text>
+              <text>get_tbl $t $j</text>
             </statement>
           </repeat>
         </repeat>

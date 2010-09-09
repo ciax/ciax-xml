@@ -26,7 +26,7 @@ class ConvStr
     @var.delete(counter)
   end
 
-  def set_par(par)
+  def par=(par)
     @par=par
     par.each_with_index{|s,n| @var[(n+1).to_s]=s }
   end
@@ -49,6 +49,7 @@ class ConvStr
       }
       [*h].join(',')
     }
+    return if str == ''
     @v.msg{"Substitute to [#{str}]"}
     str
   end

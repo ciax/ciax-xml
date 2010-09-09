@@ -39,7 +39,7 @@ class Obj < Hash
   def setcmd(line)
     ca=line.split(' ')
     cmd=ca.shift
-    @cs.set_par(ca)
+    @cs.par=ca
     ref=nil
     @odb.each{|db|
       next unless db['selection']

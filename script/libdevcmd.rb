@@ -24,7 +24,7 @@ class DevCmd
   end
 
   def par=(ary)
-    @cs.set_par(ary)
+    @cs.par=ary
   end
 
   private

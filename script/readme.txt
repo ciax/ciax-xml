@@ -2,9 +2,7 @@
 
  $_ $a..z
     description : substitute sequence number(in repeat)
-    usable: ddb//response/repeat/field/assign
-            --
-            cdb//session/repeat/statement/par
+    usable: cdb//session/repeat/statement/par
             cdb//status/repeat/value/@id
             cdb//status/repeat/value/*@field
             --
@@ -13,26 +11,24 @@
             odb//status/repeat/var@label
             odb//status/repeat/var/value/*@field
 
- $_
-    description : substitute parameter in calc
-    usable: ddb//cmdselect/command/par@calc
-
  $1..9
     description : substitute parameters
     usable: ddb//response/field/assign
             --
-            cdb//session/statement/argv
+            cdb//session/statement/eval
             --
-            odb//session/statement/argv
+            odb//session/statement/eval
 
  ${*:*}
     description : substitute status(field)
-    usable: cdb//session/statement/argv
+    usable: ddb//cmdframe/eval
             --
-            odb//session/statement/argv
+            cdb//session/statement/text
+            cdb//session/statement/eval
+            --
+            odb//session/statement/text
+            odb//session/statement/eval
  # No parenthetic variable is processed prior to parenthetic one
-
-
 
  \?
     description : convert escape characters
@@ -41,10 +37,8 @@
 ### Explicit conversion by Attributes ###
 
  format
-    usable: ddb//repeat
-            ddb//data
-            ddb//cmdselect/command/par
-            ddb//cmdframe/cc
+    usable: ddb//data
+            ddb//eval
             --
             cdb//repeat
             cdb//statement
@@ -58,8 +52,8 @@
     usable: ddb//response/field
 
  encode
-    usable: ddb//cmdselect/command/*
-            ddb//cmdframe/*
+    usable: ddb//data
+            ddb//eval
 
  validate
  

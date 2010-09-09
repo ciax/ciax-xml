@@ -16,7 +16,7 @@
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">52</data>
       </command>
-      <command id="set_tag" label="Set Tag to Run (1-12)" type="config" response="cmdrsp">
+      <command id="set_tag" label="Set Tag to Run [1-12,98,99]" type="config" response="cmdrsp">
         <parameters>
           <par label="Data">
             <range>1:12</range>
@@ -31,7 +31,7 @@
         <data label="Data Length" encode="lew">1</data>
         <eval encode="lew">$1</eval>
       </command>
-      <command id="set_pos" label="Set Pos to Jack (1-4)" type="config" response="cmdrsp">
+      <command id="set_pos" label="Set Pos to Jack [1-4]" type="config" response="cmdrsp">
         <parameters>
           <par label="Data">
             <range>1</range>
@@ -48,7 +48,7 @@
         <data label="Data Length" encode="lew">1</data>
         <eval encode="lew">$1</eval>
       </command>
-      <command id="start" label="Start Trigger [HHHH]" type="action" response="cmdrsp">
+      <command id="start" label="Start Trigger [b0=run,b8=jak,b15=chg]" type="action" response="cmdrsp">
         <parameters>
           <par label="Data">
             <regexp>(0x)?(1|100|8000)</regexp>
@@ -61,7 +61,7 @@
         <data label="Data Length" encode="lew">1</data>
         <eval encode="lew">$1</eval>
       </command>
-      <command id="stop" label="Stop Trigger [HHHH]" type="action" response="cmdrsp">
+      <command id="stop" label="Stop Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" type="action" response="cmdrsp">
         <parameters>
           <par label="Data">
             <range>0:65535</range>
@@ -121,7 +121,7 @@
         <data label="Data Length" encode="lew">0x2ch</data>
         <eval encode="lew">"$3"</eval>
       </command>
-      <command id="rw_tbl" label="Read/Write Jack Table" type="config" response="cmdrsp">
+      <command id="rw_tbl" label="Read/Write Jack Table [1=Read,2=Write]" type="config" response="cmdrsp">
         <parameters>
           <par label="Data">
             <range>0:2</range>

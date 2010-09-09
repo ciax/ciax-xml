@@ -34,14 +34,18 @@ class ObjSrv < Hash
     case cmdary.shift
     when 'stat'
       yield @odb.stat
+    when 'field'
+      @ddb.field
     when 'auto'
       auto_upd(cmdary)
     when 'save'
-      @ddb.save(cmdary.shift)
-      yield @odb.stat
+begin
+      @ddb.save(*cmdary)
+rescue
+raise $!.to_s
+end
     when 'load'
-      @odb.get_stat(@ddb.load(cmdary.shift))
-      yield @odb.stat
+      @odb.get_stat(@ddb.load(*cmdary))
     else
       begin
         session(line)
@@ -49,9 +53,10 @@ class ObjSrv < Hash
         msg=[$!.to_s]
         msg << "== Internal Command =="
         msg << " stat      : Show Status"
+        msg << " field     : Show Fields"
         msg << " auto ?    : Auto Update (opt)"
-        msg << " save ?    : Save Field (tag)"
-        msg << " load ?    : Load Field (tag)"
+        msg << " save ?    : Save Field (var) (tag)"
+        msg << " load ?    : Load Field (var) (tag)"
         raise msg.join("\n")
       end
     end

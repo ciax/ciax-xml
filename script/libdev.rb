@@ -59,14 +59,13 @@ class Dev
     @fd.save_stat(@field)
   end
 
-  def save(tag)
-    tag=tag || 'default'
-    @fd.save_stat(@field,"_#{tag}")
+  def save(key=nil,tag='default')
+    @field[key] || raise("save #{@field.keys} [tag]")
+    @fd.save_stat({ key => @field[key] },"_#{key}_#{tag}")
   end
 
-  def load(tag)
-    tag=tag || 'default'
-    @field=@fd.load_stat("_#{tag}")
+  def load(key=nil,tag='default')
+    @field.update(@fd.load_stat("_#{key}_#{tag}"))
   end
 
 end

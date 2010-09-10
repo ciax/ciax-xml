@@ -38,7 +38,7 @@ class IoFile
     list=["== Tag list =="]
     Dir.glob(VarDir+"/#{@type}_*.mar"){|f|
       /#{@type}_(.+)\.mar/ =~ f
-      list << " #{$1}"
+      list << " #{$1.tr('_',' ')}"
     }
     list.join("\n")
   end

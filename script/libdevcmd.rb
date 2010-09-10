@@ -47,10 +47,9 @@ class DevCmd
       when 'data'
         frame << get_data(c)
       when 'eval'
-        s=eval(@cs.sub_var(c.text)).to_s
-        s.split(',').each{|str|
+        @cs.sub_var(c.text).split(',').each{|str|
           @v.msg{"GetFrame:[#{str}]"}
-          frame << encode(c,str)
+          frame << encode(c,eval(str).to_s)
         }
       end
     }

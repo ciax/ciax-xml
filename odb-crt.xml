@@ -61,8 +61,8 @@
         </statement>
       </session>
       <session id="get_tbl" label="Get Jack Table">
-        <repeat counter="j" from="0" to="3">
-          <repeat counter="t" from="0" to="5">
+        <repeat counter="t" from="0" to="5">
+          <repeat counter="j" from="0" to="3">
             <statement>
               <text>get_tbl $t $j</text>
             </statement>
@@ -70,8 +70,8 @@
         </repeat>
       </session>
       <session id="set_tbl" label="Set Jack Table">
-        <repeat counter="j" from="0" to="3">
-          <repeat counter="t" from="0" to="5">
+        <repeat counter="t" from="0" to="5">
+          <repeat counter="j" from="0" to="3">
             <statement>
               <text>set_tbl</text>
               <text>$t $j</text>

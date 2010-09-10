@@ -17,6 +17,6 @@ loop {
   when ''
     line='stat'
   end
-  print odb.dispatch(line) { |s| view(s) }
+  puts odb.dispatch(line) { |s| view(s) }
 }
 

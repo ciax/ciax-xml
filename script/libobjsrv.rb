@@ -35,26 +35,15 @@ class ObjSrv < Hash
     when 'stat'
       yield @odb.stat
     when 'field'
-      @ddb.field
+      field(cmdary)
     when 'auto'
       auto_upd(cmdary)
     when 'save'
       @ddb.save(*cmdary)
     when 'load'
-      @odb.get_stat(@ddb.load(*cmdary))
+      yield @odb.get_stat(@ddb.load(*cmdary))
     else
-      begin
-        session(line)
-      rescue
-        msg=[$!.to_s]
-        msg << "== Internal Command =="
-        msg << " stat      : Show Status"
-        msg << " field     : Show Fields"
-        msg << " auto ?    : Auto Update (opt)"
-        msg << " save ?    : Save Field (var) (tag)"
-        msg << " load ?    : Load Field (var) (tag)"
-        raise msg.join("\n")
-      end
+      session(line)
     end
   rescue
     e2s
@@ -66,6 +55,15 @@ class ObjSrv < Hash
     @odb.setcmd(line)
     @odb.objcom {|cmd| @q.push(cmd)}
     "Accepted\n"
+  rescue
+    msg=[$!.to_s]
+    msg << "== Internal Command =="
+    msg << " stat      : Show Status"
+    msg << " field ?   : Field (opt)"
+    msg << " auto ?    : Auto Update (opt)"
+    msg << " save ?    : Save Field [var] (tag)"
+    msg << " load ?    : Load Field [var] (tag)"
+    raise msg.join("\n")
   end
 
   def device_thread
@@ -85,6 +83,26 @@ class ObjSrv < Hash
       }
     }
   end
+
+  def field(cmds)
+    cmds.each{ |cmd|
+      key,val=cmd.split('=')
+      h=@ddb.field
+      key.split(':').each{|i|
+        i=i.to_i if Array === h
+        raise "No such var [#{i}]" unless h[i]
+        h=h[i]
+      }
+      h.replace(val) if val
+      return "#{h}"
+    }
+    msg=["== option list =="]
+    msg << " key:(num)\t:Show Value"
+    msg << " key:(num)=?\t:Set Value"
+    msg << " key=#{@ddb.field.keys}"
+    raise msg.join("\n")
+  end
+
 
   def auto_upd(cmds)
     str=''

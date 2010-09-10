@@ -51,7 +51,9 @@
       <command id="start" label="Start Trigger [b0=run,b8=jak,b15=chg]" type="action" response="cmdrsp">
         <parameters>
           <par label="Data">
-            <regexp>(0x)?(1|100|8000)</regexp>
+            <range>1</range>
+            <range>256</range>
+            <range>32768</range>
           </par>
         </parameters>
         <data label="Write region command" encode="lew">0x1401</data>
@@ -119,7 +121,7 @@
         <eval label="Tag Num" encode="chr">$1 + 2</eval>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">0x2ch</data>
-        <eval encode="lew">"$3"</eval>
+        <eval encode="lew">$3</eval>
       </command>
       <command id="rw_tbl" label="Read/Write Jack Table [1=Read,2=Write]" type="config" response="cmdrsp">
         <parameters>
@@ -168,7 +170,7 @@
       <response id="get_tbl">
         <field decode="lew" array="44">
           <length>2</length>
-          <assign>t$2j$1</assign>
+          <assign>t$1j$2</assign>
         </field>
       </response>
     </rspselect>

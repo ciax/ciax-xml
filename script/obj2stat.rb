@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
-require "libali"
+require "libobj2"
 
-abort "Usage: alistat [object] < status_file" if ARGV.size < 1
+abort "Usage: obj2stat [object] < status_file" if ARGV.size < 1
 
 begin
   odb=Obj.new(ARGV.shift)

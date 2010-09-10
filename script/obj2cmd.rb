@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libali"
+require "libobj2"
 require "libcls"
 
-warn "Usage: alicmd [obj] [cmd] (par)" if ARGV.size < 1
+warn "Usage: obj2cmd [obj] [cmd] (par)" if ARGV.size < 1
 
 obj=ARGV.shift
 cmd=ARGV.join(" ")

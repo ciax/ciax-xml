@@ -54,7 +54,7 @@ class ObjSrv < Hash
     return '' if line == ''
     @odb.setcmd(line)
     @odb.objcom {|cmd| @q.push(cmd)}
-    "Accepted\n"
+    "Accepted"
   rescue
     msg=[$!.to_s]
     msg << "== Internal Command =="
@@ -94,11 +94,11 @@ class ObjSrv < Hash
         h=h[i]
       }
       h.replace(val) if val
-      return "#{h}"
+      return "#{key} = #{h}"
     }
     msg=["== option list =="]
-    msg << " key:(num)\t:Show Value"
-    msg << " key:(num)=?\t:Set Value"
+    msg << " key:(num)  : Show Value"
+    msg << " key:(num)= : Set Value"
     msg << " key=#{@ddb.field.keys}"
     raise msg.join("\n")
   end
@@ -130,7 +130,7 @@ class ObjSrv < Hash
         if num.to_i > 0
           @var[:int]=num
         else
-          str << "Out of Range\n" 
+          raise "Out of Range"
         end
       when /^cmd=/
         line=$'
@@ -138,20 +138,20 @@ class ObjSrv < Hash
         @var[:cmd]=line
       else
         msg=["== option list =="]
-        msg << " start\t:Start Auto update"
-        msg << " stop\t:Stop Auto update"
-        msg << " cmd=\t:Set Commands (cmd;..)"
-        msg << " int=\t:Set Interval (sec)"
+        msg << " start      : Start Auto update"
+        msg << " stop       : Stop Auto update"
+        msg << " cmd=       : Set Commands (cmd;..)"
+        msg << " int=       : Set Interval (sec)"
         raise msg.join("\n")
       end
     }
     str << "Not " unless @auto.alive?
-    str << "Running(cmd=[#{@var[:cmd]}] int=[#{@var[:int]}])\n"
+    str << "Running(cmd=[#{@var[:cmd]}] int=[#{@var[:int]}])"
   end
 
   def e2s
-    msg=$!.to_s+"\n"
-    msg << $@.to_s+"\n" if ENV['VER']
-    msg
+    msg=[$!.to_s]
+    msg << $@.to_s if ENV['VER']
+    msg.join("\n")
   end
 end

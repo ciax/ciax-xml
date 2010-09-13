@@ -81,7 +81,7 @@ class DevRsp
           key,idx=@cs.sub_var(d.text).split(':')
           if idx
             fld=[*@field[key]]
-            fld[idx.to_i]=data
+            fld[eval(idx)]=data
           elsif a['array']
             @v.msg{"Assign_Array:[#{key}]<-[#{data}]"}
             fld=[*fld,data]

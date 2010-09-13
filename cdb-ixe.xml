@@ -57,12 +57,12 @@
       <value format="%s" id="cmd" label="Computer Mode">
         <binary bit="7">stat</binary>
       </value>
-      <repeat from="0" to="5">
-        <value format="%s" id="r$_" label="Running 0-6">
-          <string>r:$_</string>
+      <repeat from="1" to="6">
+        <value format="%s" id="r$_" label="Running 1-6">
+          <string>r:$_-1</string>
         </value>
-        <value format="%d" id="p$_" label="Pulse 0-6">
-          <int>p:$_</int>
+        <value format="%d" id="p$_" label="Pulse 1-6">
+          <int>p:$_-1</int>
         </value>
       </repeat>
     </status>

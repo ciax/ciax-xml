@@ -20,7 +20,7 @@
             odb//session/statement/eval
 
  ${*:*}
-    description : substitute status(field)
+    description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
     usable: ddb//cmdframe/eval
             --
             cdb//session/statement/text
@@ -29,6 +29,7 @@
             odb//session/statement/text
             odb//session/statement/eval
  # No parenthetic variable is processed prior to parenthetic one
+ # idx can be equation (i.e. $_+1 )
 
  \?
     description : convert escape characters

@@ -36,13 +36,13 @@ class ConvStr
     @v.msg{"Substitute from [#{str}]"}
     h=@var.clone
     str=str.gsub(/\$([_`\w])/){ h[$1] }
-    # Sub ${id} by hash[id]
-    str=str.gsub(/\$\{([\w:]+)\}/) {
-      $1.split(':').each {|i| 
+    # Sub ${key1:key2:idx} => hash[key1][key2][idx]
+    str=str.gsub(/\$\{(.+)\}/) {
+      $1.split(':').each {|i|
         @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
         case h
         when Array
-          h=h[i.to_i]
+          h=h[eval(i)]
         when Hash
           h=h[i]
         end

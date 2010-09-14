@@ -160,7 +160,7 @@
           <verify>10</verify>
         </field>
         <field label="Bolt Position(POWER_V2)" array="16">
-          <length range="0:6">12</length>
+          <length slice="0:6">12</length>
           <assign>jk</assign>
         </field>
         <field decode="chr">
@@ -168,7 +168,7 @@
           <verify>10</verify>
         </field>
         <field label="Zsensor Position" array="4">
-          <length range="2:4">12</length>
+          <length slice="2:4">12</length>
           <assign>zp</assign>
         </field>
       </response>

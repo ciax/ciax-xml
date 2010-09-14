@@ -48,13 +48,13 @@ class DevRsp
         frame << setframe(@sel)
         @v.msg{"Exitting Selected Node"}
       when 'field'
-        frame << field(c)
+        frame << frame_to_field(c)
       end
     }
     frame
   end
 
-  def field(e)
+  def frame_to_field(e)
     frame,data,key,fld='','',''
     a=e.attributes
     @v.msg{"Field:#{a['label']}"}
@@ -67,8 +67,8 @@ class DevRsp
           str=@frame.slice!(0,len)
           frame << str
           @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-          if r=d.attributes['range']
-            str=str[*r.split(':').map{|i| i.to_i }]
+          if r=d.attributes['slice']
+            str=str.slice(*r.split(':').map{|i| i.to_i })
             @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
           end
           data=decode(e,str)
@@ -101,9 +101,5 @@ class DevRsp
     @field[key]=fld
     frame
   end
-
-  def cut_len(d)
-  end
-
 
 end

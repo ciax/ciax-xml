@@ -240,7 +240,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:int">
-          <xsd:attribute name="range" type="ddb:rerange" />
+          <xsd:attribute name="slice" type="ddb:rerange" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

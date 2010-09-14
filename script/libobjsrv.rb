@@ -59,10 +59,10 @@ class ObjSrv < Hash
     msg=[$!.to_s]
     msg << "== Internal Command =="
     msg << " stat      : Show Status"
-    msg << " field ?   : Field (opt)"
-    msg << " auto ?    : Auto Update (opt)"
+    msg << " field ?   : Manipulate Field (opt)"
     msg << " save ?    : Save Field [var] (tag)"
     msg << " load ?    : Load Field [var] (tag)"
+    msg << " auto ?    : Auto Update (opt)"
     raise msg.join("\n")
   end
 

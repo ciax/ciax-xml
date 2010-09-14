@@ -40,12 +40,8 @@ class ConvStr
     str=str.gsub(/\$\{(.+)\}/) {
       $1.split(':').each {|i|
         @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
-        case h
-        when Array
-          h=h[eval(i)]
-        when Hash
-          h=h[i]
-        end
+        i=eval(i) if Array === h
+        h=h[i]
       }
       [*h].join(',')
     }

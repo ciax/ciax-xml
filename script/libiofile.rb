@@ -37,8 +37,8 @@ class IoFile
   def list_stat
     list=["== Tag list =="]
     Dir.glob(VarDir+"/#{@type}_*.mar"){|f|
-      /#{@type}_(.+)\.mar/ =~ f
-      list << " #{$1.tr('_',' ')}"
+      tag=f.slice(/#{@type}_(.+)\.mar/,1).tr('_',' ')
+      list << " #{tag}"
     }
     list.join("\n")
   end

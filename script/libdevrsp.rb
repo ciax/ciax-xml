@@ -57,7 +57,7 @@ class DevRsp
   end
 
   def frame_to_field(e)
-    frame,data,key,fld='','',''
+    frame,data,key='','',''
     a=e.attributes
     @v.msg{"Field:#{a['label']}"}
     e.each_element {|d|
@@ -79,37 +79,19 @@ class DevRsp
     frame
   end
 
-  def cut_frame(e,frame)
-    case e.name
-    when 'length'
-      len=e.text.to_i
-      @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
-      str=@frame.slice!(0,len)
-      frame << str
-      @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-      if r=e.attributes['slice']
-        str=str.slice(*r.split(':').map{|i| i.to_i })
-        @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
-      end
-    when 'regexp'
-      str=@frame.slice!(/#{e.text}/)
-      frame << str
-      @v.msg{"CutFrame:[#{str}] by regexp=[#{e.text}]"}
-    end
-    str
-  end
 
   def field_array(e)
     a=e.attributes
     key,frame,cut='',''
-    frame=''
     idxs=[]
+    @v.msg{"Array:#{a['label']}"}
     e.each_element{ |f|
       case f.name
       when 'length','regexp'
         cut=f
       when 'assign'
         key=@cs.sub_var(f.text)
+        @v.msg{"ArrayAssign:[#{key}]"}
       when 'index'
         idxs << @cs.sub_var(f.text)
       end
@@ -128,5 +110,25 @@ class DevRsp
       fld[i] = idx.empty? ? yield : rep(idx.clone,fld[i]||[]){yield}
     }
     fld
+  end
+
+  def cut_frame(e,frame)
+    case e.name
+    when 'length'
+      len=e.text.to_i
+      @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
+      str=@frame.slice!(0,len)
+      frame << str
+      @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
+      if r=e.attributes['slice']
+        str=str.slice(*r.split(':').map{|i| i.to_i })
+        @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
+      end
+    when 'regexp'
+      str=@frame.slice!(/#{e.text}/)
+      frame << str
+      @v.msg{"CutFrame:[#{str}] by regexp=[#{e.text}]"}
+    end
+    str
   end
 end

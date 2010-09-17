@@ -223,10 +223,8 @@
           <xsd:element ref="ddb:length" />
           <xsd:element ref="ddb:regexp" />
         </xsd:choice>
-        <xsd:choice minOccurs="0" maxOccurs="unbounded">
-          <xsd:element ref="ddb:assign" />
-          <xsd:element ref="ddb:verify" />
-        </xsd:choice>
+        <xsd:element minOccurs="0" maxOccurs="1" ref="ddb:assign" />
+        <xsd:element minOccurs="0" maxOccurs="1" ref="ddb:verify" />
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:string" />
       <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
@@ -239,10 +237,10 @@
           <xsd:element ref="ddb:length" />
           <xsd:element ref="ddb:regexp" />
         </xsd:choice>
+        <xsd:element minOccurs="1" maxOccurs="1" ref="ddb:assign" />
         <xsd:element ref="ddb:index" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="assign" type="xsd:string" />
       <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>

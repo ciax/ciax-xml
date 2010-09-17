@@ -106,8 +106,9 @@
         </field>
       </response>
       <response id="in">
-        <array assign="in">
+        <array>
           <length>1</length>
+          <assign>in</assign>
           <index>$1-1</index>
         </array>
       </response>

@@ -101,14 +101,15 @@ class DevRsp
 
   def field_array(e)
     a=e.attributes
-    key=a['assign']
-    cut=nil
+    key,frame,cut='',''
     frame=''
     idxs=[]
     e.each_element{ |f|
       case f.name
       when 'length','regexp'
         cut=f
+      when 'assign'
+        key=@cs.sub_var(f.text)
       when 'index'
         idxs << @cs.sub_var(f.text)
       end

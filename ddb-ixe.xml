@@ -53,14 +53,16 @@
         </field>
       </response>
       <response id="chkr">
-        <array assign="r">
+        <array>
           <length>1</length>
+          <assign>r</assign>
           <index>$1-1</index>
         </array>
       </response>
       <response id="getp">
-        <array assign="p">
+        <array>
           <regexp>[\d]+</regexp>
+          <assign>p</assign>
           <index>$1-1</index>
         </array>
       </response>

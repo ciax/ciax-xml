@@ -174,8 +174,7 @@
           <assign>t</assign>
           <index>$1</index>
           <index>$2</index>
-          <index>0:10</index>
-          <index>0:3</index>
+          <index>0:43</index>
         </array>
       </response>
     </rspselect>

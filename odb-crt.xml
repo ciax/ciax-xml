@@ -75,7 +75,7 @@
             <statement>
               <text>set_tbl</text>
               <text>$t $j</text>
-              <text>${field:t$tj$j}</text>
+              <text>${field:t:$t:$j}</text>
             </statement>
           </repeat>
         </repeat>

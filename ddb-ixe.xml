@@ -53,16 +53,16 @@
         </field>
       </response>
       <response id="chkr">
-        <field>
+        <array assign="r">
           <length>1</length>
-          <assign>r:$1-1</assign>
-        </field>
+          <index>$1-1</index>
+        </array>
       </response>
       <response id="getp">
-        <field>
+        <array assign="p">
           <regexp>[\d]+</regexp>
-          <assign>p:$1-1</assign>
-        </field>
+          <index>$1-1</index>
+        </array>
       </response>
       <response id="default"></response>
     </rspselect>

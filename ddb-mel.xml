@@ -161,17 +161,20 @@
         </field>
       </response>
       <response id="getstat">
-        <field decode="lew" array="52">
+        <array assign="x" decode="lew">
           <length>2</length>
-          <assign>x</assign>
-        </field>
+          <index>0:51</index>
+        </array>
       </response>
       <response id="cmdrsp" label="command resp" />
       <response id="get_tbl">
-        <field decode="lew" array="44">
+        <array assign="t" decode="lew">
           <length>2</length>
-          <assign>t$1j$2</assign>
-        </field>
+          <index>$1</index>
+          <index>$2</index>
+          <index>0:10</index>
+          <index>0:3</index>
+        </array>
       </response>
     </rspselect>
     <rspccrange method="len">

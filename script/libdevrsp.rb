@@ -49,6 +49,8 @@ class DevRsp
         @v.msg{"Exitting Selected Node"}
       when 'field'
         frame << frame_to_field(c)
+      when 'array'
+        frame << field_array(c)
       end
     }
     frame
@@ -58,48 +60,72 @@ class DevRsp
     frame,data,key,fld='','',''
     a=e.attributes
     @v.msg{"Field:#{a['label']}"}
-    (a['array']||1).to_i.times{ 
-      e.each_element {|d|
-        case d.name
-        when 'length'
-          len=d.text.to_i
-          @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
-          str=@frame.slice!(0,len)
-          frame << str
-          @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-          if r=d.attributes['slice']
-            str=str.slice(*r.split(':').map{|i| i.to_i })
-            @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
-          end
-          data=decode(e,str)
-        when 'regexp'
-          str=@frame.slice!(/#{d.text}/)
-          frame << str
-          @v.msg{"CutFrame:[#{str}] by regexp=[#{d.text}]"}
-          data=decode(e,str)
-        when 'assign'
-          key,idx=@cs.sub_var(d.text).split(':')
-          if idx
-            fld=[*@field[key]]
-            fld[eval(idx)]=data
-          elsif a['array']
-            @v.msg{"Assign_Array:[#{key}]<-[#{data}]"}
-            fld=[*fld,data]
-          else
-            fld=data
-            @v.msg{"Assign:[#{key}]<-[#{data}]"}
-          end
-        when 'verify'
-          if txt=d.text
-            @v.msg{"Verify:[#{txt}]"}
-            txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
-            return frame
-          end
+    e.each_element {|d|
+      case d.name
+      when 'length','regexp'
+        data=decode(e,cut_frame(d,frame))
+      when 'assign'
+        key=@cs.sub_var(d.text)
+        @field[key]=data
+        @v.msg{"Assign:[#{key}]<-[#{data}]"}
+      when 'verify'
+        if txt=d.text
+          @v.msg{"Verify:[#{txt}]"}
+          txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
+          return frame
         end
-      }
+      end
     }
-    @field[key]=fld
     frame
   end
 
+  def cut_frame(e,frame)
+    case e.name
+    when 'length'
+      len=e.text.to_i
+      @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
+      str=@frame.slice!(0,len)
+      frame << str
+      @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
+      if r=e.attributes['slice']
+        str=str.slice(*r.split(':').map{|i| i.to_i })
+        @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
+      end
+    when 'regexp'
+      str=@frame.slice!(/#{e.text}/)
+      frame << str
+      @v.msg{"CutFrame:[#{str}] by regexp=[#{e.text}]"}
+    end
+    str
+  end
+
+  def field_array(e)
+    a=e.attributes
+    key=a['assign']
+    cut=nil
+    frame=''
+    idxs=[]
+    e.each_element{ |f|
+      case f.name
+      when 'length','regexp'
+        cut=f
+      when 'index'
+        idxs << @cs.sub_var(f.text)
+      end
+    }
+    @field[key]=rep(idxs,@field[key]||[]){
+      decode(e,cut_frame(cut,frame))
+    }
+    frame
+  end
+
+  def rep(idx,fld=[]) # make recursive array
+    f,l=idx.shift.split(':')
+    l=l||f
+    Range.new(eval(f),eval(l)).each{ |i|
+      @v.msg{"ArrayIndex:[#{i}]"}
+      fld[i] = idx.empty? ? yield : rep(idx.clone,fld[i]||[]){yield}
+    }
+    fld
+  end
 end

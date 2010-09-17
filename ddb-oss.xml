@@ -135,14 +135,14 @@
           <length>2</length>
           <assign>cjb</assign>
         </field>
-        <field label="Each Bolt Status(POWER_V1)" array="16">
+        <array label="Each Bolt Status(POWER_V1)" assign="bl">
           <length>1</length>
-          <assign>bl</assign>
-        </field>
-        <field label="Each Bolt Alarm(POWER_V1)" array="16">
+          <index>0:15</index>
+        </array>
+        <array label="Each Bolt Alarm(POWER_V1)" assign="be">
           <length>1</length>
-          <assign>be</assign>
-        </field>
+          <index>0:15</index>
+        </array>
         <field label="MLP3-BOLT COMM(POWER_V1)">
           <length>2</length>
           <assign>mba</assign>
@@ -159,18 +159,18 @@
           <length>1</length>
           <verify>10</verify>
         </field>
-        <field label="Bolt Position(POWER_V2)" array="16">
+        <array label="Bolt Position(POWER_V2)" assign="jk">
           <length slice="0:6">12</length>
-          <assign>jk</assign>
-        </field>
+          <index>0:15</index>
+        </array>
         <field decode="chr">
           <length>1</length>
           <verify>10</verify>
         </field>
-        <field label="Zsensor Position" array="4">
+        <array label="Zsensor Position" assign="zp">
           <length slice="2:4">12</length>
-          <assign>zp</assign>
-        </field>
+          <index>0:3</index>
+        </array>
       </response>
       <response id="inrstat">
         <field label="InR Angle(deg)">

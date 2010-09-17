@@ -3,6 +3,9 @@
   <device id="slo" label="SLOSYN SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" wait="0.1">
     <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
     <cmdselect>
+      <command id="getstat" label="Error Status" response="getstat" type="stat">
+        <data>err</data>
+      </command>
       <command id="bs" type="stat" response="bs" label="Running Status">
         <data>bs</data>
       </command>
@@ -14,9 +17,6 @@
         </parameters>
         <data>in</data>
         <eval format="(%d)">$1</eval>
-      </command>
-      <command id="err" label="Error Status" response="err" type="stat">
-        <data>err</data>
       </command>
       <command id="p" label="Pulse Number" response="p" type="stat">
         <data>p</data>
@@ -87,6 +87,12 @@
       <data encode="chr">0xd</data>
     </cmdframe>
     <rspselect>
+      <response id="getstat">
+        <field>
+          <regexp>[\d]+</regexp>
+          <assign>err</assign>
+        </field>
+      </response>
       <response id="bs">
         <field>
           <length>1</length>
@@ -99,17 +105,11 @@
           <assign>p</assign>
         </field>
       </response>
-      <response id="err">
-        <field>
-          <regexp>[\d]+</regexp>
-          <assign>err</assign>
-        </field>
-      </response>
       <response id="in">
-        <field>
+        <array assign="in">
           <length>1</length>
-          <assign>in$1</assign>
-        </field>
+          <index>$1-1</index>
+        </array>
       </response>
       <response id="default">
         <field>

@@ -54,7 +54,7 @@
         </var>
         <var id="con" label="Contact Sensor" symbol="normal">
           <value format="%s">
-            <string>in5</string>
+            <string>in:4</string>
           </value>
         </var>
         <var id="err" label="Error Code" symbol="err">
@@ -66,10 +66,10 @@
       <group>
         <var id="pos" label="Arm Position" symbol="pos">
           <value format="%s%s%s%s">
-            <string>in1</string>
-            <string>in2</string>
-            <string>in3</string>
-            <string>in4</string>
+            <string>in:0</string>
+            <string>in:1</string>
+            <string>in:2</string>
+            <string>in:3</string>
           </value>
         </var>
         <var id="abs" label="ABS position" symbol="pulse">

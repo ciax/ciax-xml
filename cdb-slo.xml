@@ -45,16 +45,16 @@
         <string>bs</string>
       </value>
       <value format="%s" id="con" label="Contact Sensor">
-        <string>in5</string>
+        <string>in:4</string>
       </value>
       <value format="%d" id="err" label="Error Code">
         <int>err</int>
       </value>
       <value format="%s%s%s%s" id="pos" label="Arm Position">
-        <string>in1</string>
-        <string>in2</string>
-        <string>in3</string>
-        <string>in4</string>
+        <string>in:0</string>
+        <string>in:1</string>
+        <string>in:2</string>
+        <string>in:3</string>
       </value>
       <value format="%f" id="abs" label="ABS position">
         <float>p</float>

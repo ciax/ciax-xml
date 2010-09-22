@@ -96,18 +96,17 @@ class DevRsp
         idxs << @cs.sub_var(f.text)
       end
     }
-    @field[key]=rep(idxs,@field[key]||[]){
+    @field[key]=array_rec(idxs,@field[key]||[]){
       decode(e,cut_frame(cut,frame))
     }
     frame
   end
 
-  def rep(idx,fld=[]) # make recursive array
-    f,l=idx.shift.split(':')
-    l=l||f
-    Range.new(eval(f),eval(l)).each{ |i|
+  def array_rec(idx,fld=[]) # make recursive array
+    f,l=idx.shift.split(':').map{ |i| eval(i) }
+    Range.new(f,l||f).each{ |i|
       @v.msg{"ArrayIndex:[#{i}]"}
-      fld[i] = idx.empty? ? yield : rep(idx.clone,fld[i]||[]){yield}
+      fld[i] = idx.empty? ? yield : array_rec(idx.clone,fld[i]||[]){yield}
     }
     fld
   end

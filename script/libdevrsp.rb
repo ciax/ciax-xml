@@ -11,6 +11,7 @@ class DevRsp
     @field=field
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @cs=ConvStr.new(@v)
+    @fp=0
   end
 
   def rspframe(sel)
@@ -23,7 +24,7 @@ class DevRsp
     setframe(@ddb['rspframe'])
     if cc=@field.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
-      @v.msg{"Verify:CC OK"}
+      @v.msg{"Verify:CC OK [#{cc}]"}
     end
     @field
   end
@@ -34,36 +35,35 @@ class DevRsp
 
   private
   def setframe(e)
-    frame=String.new
     e.each_element { |c|
       a=c.attributes
       case c.name
       when 'ccrange'
         @v.msg{"Entering Ceck Code Node"}
         rc=@ddb['rspccrange']
-        @cc = checkcode(rc,setframe(rc))
+        fst=@fp;setframe(rc)
+        @cc = checkcode(rc,@frame.slice(fst...@fp))
         @v.msg{"Exitting Ceck Code Node"}
       when 'selected'
         @v.msg{"Entering Selected Node"}
-        frame << setframe(@sel)
+        setframe(@sel)
         @v.msg{"Exitting Selected Node"}
       when 'field'
-        frame << frame_to_field(c)
+        frame_to_field(c)
       when 'array'
-        frame << field_array(c)
+        field_array(c)
       end
     }
-    frame
   end
 
   def frame_to_field(e)
-    frame,data,key='','',''
+    data,key='','',''
     a=e.attributes
     @v.msg{"Field:#{a['label']}"}
     e.each_element {|d|
       case d.name
       when 'length','regexp'
-        data=decode(e,cut_frame(d,frame))
+        data=decode(e,cut_frame(d))
       when 'assign'
         key=@cs.sub_var(d.text)
         @field[key]=data
@@ -72,16 +72,14 @@ class DevRsp
         if txt=d.text
           @v.msg{"Verify:[#{txt}]"}
           txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
-          return frame
         end
       end
     }
-    frame
   end
 
   def field_array(e)
     a=e.attributes
-    key,frame,cut='',''
+    key,cut=''
     idxs=[]
     @v.msg{"Array:#{a['label']}"}
     e.each_element{ |f|
@@ -96,9 +94,8 @@ class DevRsp
       end
     }
     @field[key]=mk_array(idxs,@field[key]){
-      decode(e,cut_frame(cut,frame))
+      decode(e,cut_frame(cut))
     }
-    frame
   end
 
   def mk_array(idxary,field) 
@@ -115,21 +112,20 @@ class DevRsp
     fld
   end
 
-  def cut_frame(e,frame)
+  def cut_frame(e)
     case e.name
     when 'length'
       len=e.text.to_i
-      @frame.size >= len || @v.err("Too short (#{@frame.size-len})")
-      str=@frame.slice!(0,len)
-      frame << str
+      str=@frame.slice(@fp,len)
+      @fp+=len
       @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
       if r=e.attributes['slice']
         str=str.slice(*r.split(':').map{|i| i.to_i })
         @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
       end
     when 'regexp'
-      str=@frame.slice!(/#{e.text}/)
-      frame << str
+      str=@frame.slice(/#{e.text}/)
+      @fp+=str.length
       @v.msg{"CutFrame:[#{str}] by regexp=[#{e.text}]"}
     end
     str

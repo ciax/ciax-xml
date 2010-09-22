@@ -79,7 +79,6 @@ class DevRsp
     frame
   end
 
-
   def field_array(e)
     a=e.attributes
     key,frame,cut='',''
@@ -96,17 +95,22 @@ class DevRsp
         idxs << @cs.sub_var(f.text)
       end
     }
-    @field[key]=array_rec(idxs,@field[key]||[]){
+    @field[key]=mk_array(idxs,@field[key]){
       decode(e,cut_frame(cut,frame))
     }
     frame
   end
 
-  def array_rec(idx,fld=[]) # make recursive array
-    f,l=idx.shift.split(':').map{ |i| eval(i) }
+  def mk_array(idxary,field) 
+    # make multidimensional array
+    # i.e. idxary=[0,0:10,0] -> field[0][0][0] .. field[0][10][0]
+    return yield if idxary.empty?
+    fld=field||[]
+    idx=idxary.dup
+    f,l=idx.shift.split(':').map{|i| eval(i)}
     Range.new(f,l||f).each{ |i|
       @v.msg{"ArrayIndex:[#{i}]"}
-      fld[i] = idx.empty? ? yield : array_rec(idx.clone,fld[i]||[]){yield}
+      fld[i] = mk_array(idx,fld[i]){yield}
     }
     fld
   end

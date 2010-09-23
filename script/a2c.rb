@@ -9,7 +9,7 @@ xpath=ARGV.shift
 attr=ARGV.shift
 doc=Document.new(gets(nil))
 doc.each_element(xpath) {|e|
-  str=e.attributes[attr]
+  str=e.attributes[attr] || next
   e.delete_attribute(attr)
   e.add_element(attr).text=str
 }

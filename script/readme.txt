@@ -13,7 +13,7 @@
 
  $1..9
     description : substitute parameters
-    usable: ddb//response/field/assign
+    usable: ddb//response/array/index
             --
             cdb//session/statement/eval
             --
@@ -34,6 +34,7 @@
  \?
     description : convert escape characters
     usable: ddb//rspframe@terminator
+            ddb//rspframe@delimiter
 
 ### Explicit conversion by Attributes ###
 

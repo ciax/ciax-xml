@@ -4,13 +4,13 @@
     <commands>
       <session id="upd" label="Update Status">
         <statement>
+          <text>getstat</text>
+        </statement>
+        <statement>
           <text>bs</text>
         </statement>
         <statement>
           <text>p</text>
-        </statement>
-        <statement>
-          <text>err</text>
         </statement>
         <repeat from="1" to="5">
           <statement>

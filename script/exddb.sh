@@ -11,7 +11,9 @@ for obj in $devices; do
     link="$HOME/.var/field_${dev}.mar"
     cmd=$defcmd
     { devcmd $dev $cmd || exit 1; } | visi
-    [ $defcmd = 'getstat' ] && rm $output
-    grep "rcv:${cmd// /:}" $input|tail -1| devstat $dev $cmd|mar
+    [ "$defcmd" = 'getstat' ] && rm $output
+    stat="`grep rcv:${cmd// /:} $input|tail -1`"
+    [ "$stat" ] && echo "$stat" | devstat $dev $cmd|mar
     ln -sf $output $link
+    read
 done

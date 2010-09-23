@@ -20,17 +20,17 @@
         </field>
       </response>
       <response id='getstat'>
-        <field>
-          <assign>st1</assign>
+        <field assign='st1'>
+          
         </field>
-        <field>
-          <assign>ch1</assign>
+        <field assign='ch1'>
+          
         </field>
-        <field>
-          <assign>st2</assign>
+        <field assign='st2'>
+          
         </field>
-        <field>
-          <assign>ch2</assign>
+        <field assign='ch2'>
+          
         </field>
       </response>
     </rspselect>

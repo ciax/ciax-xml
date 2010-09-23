@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb">
-  <device id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
-    <serial speed="9600" databit="7" parity="NONE" stopbit="1" flowctl="NONE" />
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='lk8' label='Lakeshore MODEL 340 8CH' wait='0.3'>
+    <serial databit='7' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
     <cmdselect>
-      <command id="getstat" type="stat" label="Get Status" response="getstat">
+      <command id='getstat' label='Get Status' response='getstat' type='stat'>
         <data>krdg? c1;</data>
         <data>krdg? c2;</data>
         <data>krdg? c3;</data>
@@ -13,37 +13,37 @@
         <data>krdg? d3;</data>
         <data>krdg? d4;</data>
       </command>
-      <command id="htrstat" type="stat" label="Heater Power (%)" response="htrstat">
+      <command id='htrstat' label='Heater Power (%)' response='htrstat' type='stat'>
         <data>HTR?</data>
       </command>
-      <command id="spstat" type="stat" label="Set Point (K)" response="spstat">
+      <command id='spstat' label='Set Point (K)' response='spstat' type='stat'>
         <data>SETP? 1</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <selected />
-      <data label="Suffix" encode="bew">0x0d0a</data>
+      <selected/>
+      <data encode='bew' label='Suffix'>0x0d0a</data>
     </cmdframe>
     <rspselect>
-      <response id="getstat">
-        <array>
-          <assign>ch</assign>
+      <response id='getstat'>
+        <array assign='ch'>
+          
           <index>0:7</index>
         </array>
       </response>
-      <response id="htrstat">
-        <field>
-          <assign>htr</assign>
+      <response id='htrstat'>
+        <field assign='htr'>
+          
         </field>
       </response>
-      <response id="spstat">
-        <field>
-          <assign>sp</assign>
+      <response id='spstat'>
+        <field assign='sp'>
+          
         </field>
       </response>
     </rspselect>
-    <rspframe terminator="\r\n" delimiter=";">
-      <selected />
+    <rspframe delimiter=';' terminator='\r\n'>
+      <selected/>
     </rspframe>
   </device>
 </ddb>

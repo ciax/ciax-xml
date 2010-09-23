@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
-  <device id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" wait="0.2">
-    <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='ixe' label='Phytron IXEa-A' reference='http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf' wait='0.2'>
+    <serial databit='8' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
     <cmdselect>
-      <command id="getstat" label="Get status" response="getstat" type="stat">
+      <command id='getstat' label='Get status' response='getstat' type='stat'>
         <data>ST</data>
       </command>
-      <command id="chkr" label="Check Run (1-6)" response="chkr" type="stat">
-        <parameters label="[1-6]">
+      <command id='chkr' label='Check Run (1-6)' response='chkr' type='stat'>
+        <parameters label='[1-6]'>
           <par>
             <range>1:6</range>
           </par>
@@ -15,8 +15,8 @@
         <eval>$1</eval>
         <data>=H</data>
       </command>
-      <command id="getp" label="Get pulse (1-6)" response="getp" type="stat">
-        <parameters label="[1-6]">
+      <command id='getp' label='Get pulse (1-6)' response='getp' type='stat'>
+        <parameters label='[1-6]'>
           <par>
             <range>1:6</range>
           </par>
@@ -24,8 +24,8 @@
         <eval>$1</eval>
         <data>P21R</data>
       </command>
-      <command id="setp" label="Set pulse (1-6) (0-19200)" response="default" type="config">
-        <parameters label="[1-6] [0-19200]">
+      <command id='setp' label='Set pulse (1-6) (0-19200)' response='default' type='config'>
+        <parameters label='[1-6] [0-19200]'>
           <par>
             <range>1:6</range>
           </par>
@@ -39,40 +39,40 @@
       </command>
     </cmdselect>
     <cmdframe>
-      <data label="Prefix" encode="chr">2</data>
-      <selected />
-      <data label="Suffix" encode="chr">3</data>
-      <data encode="chr">13</data>
-      <data encode="chr">10</data>
+      <data encode='chr' label='Prefix'>2</data>
+      <selected/>
+      <data encode='chr' label='Suffix'>3</data>
+      <data encode='chr'>13</data>
+      <data encode='chr'>10</data>
     </cmdframe>
     <rspselect>
-      <response id="getstat">
-        <field>
-          <assign>stat</assign>
+      <response id='getstat'>
+        <field assign='stat'>
+          
         </field>
       </response>
-      <response id="chkr">
-        <array>
-          <assign>r</assign>
+      <response id='chkr'>
+        <array assign='r'>
+          
           <index>$1-1</index>
         </array>
       </response>
-      <response id="getp">
-        <array>
-          <assign>p</assign>
+      <response id='getp'>
+        <array assign='p'>
+          
           <index>$1-1</index>
         </array>
       </response>
-      <response id="default"></response>
+      <response id='default'/>
     </rspselect>
-    <rspframe terminator="\003\r\n">
-      <field label="Prefix" decode="chr" length="1">
+    <rspframe terminator='\003\r\n'>
+      <field decode='chr' label='Prefix' length='1'>
         <verify>2</verify>
       </field>
-      <field label="ACK" decode="chr" length="1">
+      <field decode='chr' label='ACK' length='1'>
         <verify>6</verify>
       </field>
-      <selected />
+      <selected/>
     </rspframe>
   </device>
 </ddb>

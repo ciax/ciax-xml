@@ -42,8 +42,8 @@
         <field label='Response Code' length='2'>
           <verify>00</verify>
         </field>
-        <field label='Model Number' length='2'>
-          <assign>model</assign>
+        <field assign='model' label='Model Number' length='2'>
+          
         </field>
       </response>
       <response id='getstat'>
@@ -54,17 +54,17 @@
           <verify>00</verify>
         </field>
         <!--Big endian-->
-        <field label='CH1 bit12-15' length='1'>
-          <assign>c1d3</assign>
+        <field assign='c1d3' label='CH1 bit12-15' length='1'>
+          
         </field>
-        <field label='CH1 bit8-11' length='1'>
-          <assign>c1d2</assign>
+        <field assign='c1d2' label='CH1 bit8-11' length='1'>
+          
         </field>
-        <field label='CH1 bit4-7' length='1'>
-          <assign>c1d1</assign>
+        <field assign='c1d1' label='CH1 bit4-7' length='1'>
+          
         </field>
-        <field label='CH1 bit0-3' length='1'>
-          <assign>c1d0</assign>
+        <field assign='c1d0' label='CH1 bit0-3' length='1'>
+          
         </field>
       </response>
       <response id='fset'>
@@ -84,8 +84,8 @@
     </rspccrange>
     <rspframe>
       <ccrange/>
-      <field decode='hexstr' label='BCC' length='2'>
-        <assign>cc</assign>
+      <field assign='cc' decode='hexstr' label='BCC' length='2'>
+        
       </field>
       <field label='Terminater' length='1'>
         <verify>*</verify>

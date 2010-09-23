@@ -18,9 +18,9 @@
           
           <verify>01CP=</verify>
         </field>
-        <field length='6'>
+        <field assign='stat' length='6'>
           
-          <assign>stat</assign>
+          
         </field>
       </response>
     </rspselect>

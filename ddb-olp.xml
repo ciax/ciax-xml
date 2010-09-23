@@ -14,9 +14,9 @@
     </cmdframe>
     <rspselect>
       <response id='getstat'>
-        <field length='6'>
+        <field assign='pres' length='6'>
           
-          <assign>pres</assign>
+          
         </field>
       </response>
     </rspselect>

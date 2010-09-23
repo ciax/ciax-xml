@@ -26,8 +26,8 @@
     </cmdframe>
     <rspselect>
       <response id='getstat'>
-        <field decode='bew'>
-          <assign>stat</assign>
+        <field assign='stat' decode='bew'>
+          
         </field>
       </response>
     </rspselect>

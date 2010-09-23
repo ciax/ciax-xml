@@ -68,33 +68,27 @@ class DevRsp
     data=decode(e,cut_frame(e))
     a=e.attributes
     @v.msg{"Field:#{a['label']}"}
-    e.each_element {|d|
-      case d.name
-      when 'assign'
-        key=@cs.sub_var(d.text)
-        @field[key]=data
-        @v.msg{"Assign:[#{key}]<-[#{data}]"}
-      when 'verify'
-        if txt=d.text
-          @v.msg{"Verify:[#{txt}]"}
-          txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
-        end
+    if key=a['assign']
+      @field[key]=data
+      @v.msg{"Assign:[#{key}]<-[#{data}]"}
+    end
+    e.each_element {|d| # Verify
+      if txt=d.text
+        @v.msg{"Verify:[#{txt}]"}
+        txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
       end
     }
   end
 
   def field_array(e)
-    key=''
     idxs=[]
+    a=e.attributes
     @v.msg{"Array:#{e.attributes['label']}"}
-    e.each_element{ |f|
-      case f.name
-      when 'assign'
-        key=@cs.sub_var(f.text)
-        @v.msg{"ArrayAssign:[#{key}]"}
-      when 'index'
-        idxs << @cs.sub_var(f.text)
-      end
+    if key=a['assign']
+      @v.msg{"ArrayAssign:[#{key}]"}
+    end
+    e.each_element{ |f| # Index
+      idxs << @cs.sub_var(f.text)
     }
     @field[key]=mk_array(idxs,@field[key]){
       decode(e,cut_frame(e))

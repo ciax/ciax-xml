@@ -211,6 +211,12 @@
     </xsd:complexType>
   </xsd:element>
   <!--Response Elements-->
+  <xsd:attributeGroup name="rsp_attr">
+    <xsd:attribute name="label" type="xsd:string" />
+    <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
+    <xsd:attribute name="length" type="xsd:int" />
+    <xsd:attribute name="slice" type="ddb:rerange" />
+  </xsd:attributeGroup>
   <xsd:group name="rsp_elem">
     <xsd:choice>
       <xsd:element ref="ddb:field" />
@@ -220,41 +226,22 @@
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:sequence minOccurs="1" maxOccurs="1">
-        <xsd:choice>
-          <xsd:element ref="ddb:length" />
-          <xsd:element ref="ddb:regexp" />
-        </xsd:choice>
         <xsd:element minOccurs="0" maxOccurs="1" ref="ddb:assign" />
         <xsd:element minOccurs="0" maxOccurs="1" ref="ddb:verify" />
       </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
+      <xsd:attributeGroup ref="ddb:rsp_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="array">
     <xsd:complexType>
       <xsd:sequence minOccurs="1" maxOccurs="1">
-        <xsd:choice>
-          <xsd:element ref="ddb:length" />
-          <xsd:element ref="ddb:regexp" />
-        </xsd:choice>
         <xsd:element minOccurs="1" maxOccurs="1" ref="ddb:assign" />
         <xsd:element ref="ddb:index" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
+      <xsd:attributeGroup ref="ddb:rsp_attr" />
     </xsd:complexType>
   </xsd:element>
   <!--Field Elements-->
-  <xsd:element name="length">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:int">
-          <xsd:attribute name="slice" type="ddb:rerange" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
   <xsd:element name="assign" type="xsd:string"></xsd:element>
   <xsd:element name="verify" type="xsd:string"></xsd:element>
   <xsd:element name="index" type="xsd:string"></xsd:element>
@@ -294,6 +281,7 @@
         <xsd:element ref="ddb:ccrange" />
       </xsd:choice>
       <xsd:attribute name="terminator" type="xsd:string" />
+      <xsd:attribute name="delimiter" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

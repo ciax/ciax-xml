@@ -88,126 +88,96 @@
     <rspselect>
       <response id="getstat">
         <field label="InR Select(NsOpt/NsIR/Cas)">
-          <regexp>.+</regexp>
           <assign>rsel</assign>
         </field>
         <field label="Stow pin Status" decode="hexstr">
-          <regexp>.+</regexp>
           <assign>stow_1</assign>
         </field>
         <field label="Shutter Status">
-          <regexp>.+</regexp>
           <assign>shutter</assign>
         </field>
         <field label="AZ/EL Drive Status">
-          <regexp>.+</regexp>
           <assign>teldrive</assign>
         </field>
         <field label="EL Angle(deg)">
-          <regexp>.+</regexp>
           <assign>el</assign>
         </field>
         <field label="CIAX-MLP3 Comm Error">
-          <regexp>.+</regexp>
           <assign>mlp3</assign>
         </field>
         <field label="InR Drive ON/OFF">
-          <regexp>.+</regexp>
           <assign>rpw</assign>
         </field>
         <field label="BOLT System Status" decode="hexstr">
-          <regexp>.+</regexp>
           <assign>bstat</assign>
         </field>
       </response>
       <response id="iststat">
         <field label="CAS Instrument">
-          <regexp>.+</regexp>
           <assign>iid</assign>
         </field>
       </response>
       <response id="jakstat">
-        <field label="BOLT SUM ALM(POWER_V1)">
-          <length>2</length>
+        <field label="BOLT SUM ALM(POWER_V1)" length="2">
           <assign>bsa</assign>
         </field>
-        <field label="ALL BOLT STAT(POWER_V1)">
-          <length>2</length>
+        <field label="ALL BOLT STAT(POWER_V1)" length="2">
           <assign>cjb</assign>
         </field>
-        <array label="Each Bolt Status(POWER_V1)">
-          <length>1</length>
+        <array label="Each Bolt Status(POWER_V1)" length="1">
           <assign>bl</assign>
           <index>0:15</index>
         </array>
-        <array label="Each Bolt Alarm(POWER_V1)">
-          <length>1</length>
+        <array label="Each Bolt Alarm(POWER_V1)" length="1">
           <assign>be</assign>
           <index>0:15</index>
         </array>
-        <field label="MLP3-BOLT COMM(POWER_V1)">
-          <length>2</length>
+        <field label="MLP3-BOLT COMM(POWER_V1)" length="2">
           <assign>mba</assign>
         </field>
-        <field label="BOLT CONTROL SOURCE(POWER_V1)">
-          <length>2</length>
+        <field label="BOLT CONTROL SOURCE(POWER_V1)" length="2">
           <assign>bcl</assign>
         </field>
-        <field label="Jack Home(POWER_V1)">
-          <length>4</length>
+        <field label="Jack Home(POWER_V1)" length="4">
           <assign>cjh</assign>
         </field>
-        <field decode="chr">
-          <length>1</length>
-          <verify>10</verify>
-        </field>
-        <array label="Bolt Position(POWER_V2)">
-          <length slice="0:6">12</length>
+        <field></field>
+        <array label="Bolt Position(POWER_V2)" length="12">
           <assign>jk</assign>
           <index>0:15</index>
         </array>
-        <field decode="chr">
-          <length>1</length>
-          <verify>10</verify>
-        </field>
-        <array label="Zsensor Position">
-          <length slice="2:4">12</length>
+        <field></field>
+        <array label="Zsensor Position" length="12" slice="2:4">
           <assign>zp</assign>
           <index>0:3</index>
         </array>
       </response>
       <response id="inrstat">
         <field label="InR Angle(deg)">
-          <regexp>.+</regexp>
           <assign>iang</assign>
         </field>
       </response>
       <response id="logstat">
         <field label="LOGIN 0">
-          <regexp>.+</regexp>
           <assign>login0</assign>
         </field>
         <field label="LOGIN 1">
-          <regexp>.+</regexp>
           <assign>login1</assign>
         </field>
         <field label="LOGIN 2">
-          <regexp>.+</regexp>
           <assign>login2</assign>
         </field>
         <field label="LOGIN 3">
-          <regexp>.+</regexp>
           <assign>login3</assign>
         </field>
       </response>
       <response id="exit">
         <field label="Exit Code">
-          <regexp>.+</regexp>
           <assign>exit</assign>
         </field>
       </response>
     </rspselect>
-    <rspframe>
+    <rspframe delimiter="\n">
       <selected />
     </rspframe>
   </device>

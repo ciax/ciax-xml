@@ -1,46 +1,41 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd">
-  <device id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='tpg' label='Pfeiffer Vacuum Gauge TPG262' reference='http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf' wait='0.3'>
     <cmdselect>
-      <command id="reqstat" label="Request status" type="stat" response="reqstat">
-        <data label="Measurment data gauges 1&amp;2">PRX</data>
-        <data label="Suffix" encode="chr">13</data>
+      <command id='reqstat' label='Request status' response='reqstat' type='stat'>
+        <data label='Measurment data gauges 1&amp;2'>PRX</data>
+        <data encode='chr' label='Suffix'>13</data>
       </command>
-      <command id="getstat" label="Get status" type="stat" response="getstat">
-        <data label="ENQ" encode="chr">5</data>
+      <command id='getstat' label='Get status' response='getstat' type='stat'>
+        <data encode='chr' label='ENQ'>5</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <selected />
+      <selected/>
     </cmdframe>
     <rspselect>
-      <response id="reqstat">
-        <field decode="chr">
-          <length>1</length>
+      <response id='reqstat'>
+        <field decode='chr'>
           <verify>6</verify>
         </field>
       </response>
-      <response id="getstat">
+      <response id='getstat'>
         <field>
-          <regexp>\w+</regexp>
           <assign>st1</assign>
         </field>
         <field>
-          <regexp>[\w\.+-]+</regexp>
           <assign>ch1</assign>
         </field>
         <field>
-          <regexp>\w+</regexp>
           <assign>st2</assign>
         </field>
         <field>
-          <regexp>[\w\.+-]+</regexp>
           <assign>ch2</assign>
         </field>
       </response>
     </rspselect>
-    <rspframe terminator="\r\n">
-      <selected />
+    <rspframe delimiter=',' terminator='\r\n'>
+      <selected/>
     </rspframe>
   </device>
 </ddb>

@@ -11,15 +11,23 @@ class DevRsp
     @field=field
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @cs=ConvStr.new(@v)
+    @fary=[]
     @fp=0
   end
 
   def rspframe(sel)
     @sel=sel || @v.err("No Selection")
-    @frame=yield || @v.err("No String")
+    frame=yield || @v.err("No String")
     if tm=@ddb['rspframe'].attributes['terminator']
-      @frame.chomp!(eval('"'+tm+'"'))
-      @v.msg{"Remove terminator:[#{@frame}] by [#{tm}]" }
+      frame.chomp!(eval('"'+tm+'"'))
+      @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
+    end
+    if dm=@ddb['rspframe'].attributes['delimiter']
+      @fary=frame.split(eval('"'+dm+'"'))
+      @frame=@fary.shift
+      @v.msg{"Split:[#{frame}] by [#{dm}]" }
+    else
+      @frame=frame
     end
     setframe(@ddb['rspframe'])
     if cc=@field.delete('cc')
@@ -57,13 +65,11 @@ class DevRsp
   end
 
   def frame_to_field(e)
-    data,key='','',''
+    data=decode(e,cut_frame(e))
     a=e.attributes
     @v.msg{"Field:#{a['label']}"}
     e.each_element {|d|
       case d.name
-      when 'length','regexp'
-        data=decode(e,cut_frame(d))
       when 'assign'
         key=@cs.sub_var(d.text)
         @field[key]=data
@@ -78,14 +84,11 @@ class DevRsp
   end
 
   def field_array(e)
-    a=e.attributes
-    key,cut=''
+    key=''
     idxs=[]
-    @v.msg{"Array:#{a['label']}"}
+    @v.msg{"Array:#{e.attributes['label']}"}
     e.each_element{ |f|
       case f.name
-      when 'length','regexp'
-        cut=f
       when 'assign'
         key=@cs.sub_var(f.text)
         @v.msg{"ArrayAssign:[#{key}]"}
@@ -94,7 +97,7 @@ class DevRsp
       end
     }
     @field[key]=mk_array(idxs,@field[key]){
-      decode(e,cut_frame(cut))
+      decode(e,cut_frame(e))
     }
   end
 
@@ -113,20 +116,19 @@ class DevRsp
   end
 
   def cut_frame(e)
-    case e.name
-    when 'length'
-      len=e.text.to_i
-      str=@frame.slice(@fp,len)
-      @fp+=len
+    if len=e.attributes['length']
+      str=@frame.slice(@fp,len.to_i)
+      @fp+=len.to_i
       @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-      if r=e.attributes['slice']
-        str=str.slice(*r.split(':').map{|i| i.to_i })
-        @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
-      end
-    when 'regexp'
-      str=@frame.slice(/#{e.text}/)
-      @fp+=str.length
-      @v.msg{"CutFrame:[#{str}] by regexp=[#{e.text}]"}
+    else
+      str=@frame.slice(@fp..-1)
+      @v.msg{"GetAllFrame:[#{str}]"}
+      @frame=@fary.shift
+      @fp=0
+    end
+    if r=e.attributes['slice']
+      str=str.slice(*r.split(':').map{|i| i.to_i })
+      @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
     end
     str
   end

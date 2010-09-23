@@ -48,40 +48,31 @@
     <rspselect>
       <response id="getstat">
         <field>
-          <regexp>[\d]+</regexp>
           <assign>stat</assign>
         </field>
       </response>
       <response id="chkr">
         <array>
-          <length>1</length>
           <assign>r</assign>
           <index>$1-1</index>
         </array>
       </response>
       <response id="getp">
         <array>
-          <regexp>[\d]+</regexp>
           <assign>p</assign>
           <index>$1-1</index>
         </array>
       </response>
       <response id="default"></response>
     </rspselect>
-    <rspframe>
-      <field label="Prefix" decode="chr">
-        <length>1</length>
+    <rspframe terminator="\003\r\n">
+      <field label="Prefix" decode="chr" length="1">
         <verify>2</verify>
       </field>
-      <field label="ACK" decode="chr">
-        <length>1</length>
+      <field label="ACK" decode="chr" length="1">
         <verify>6</verify>
       </field>
       <selected />
-      <field label="Suffix" decode="chr">
-        <length>1</length>
-        <verify>3</verify>
-      </field>
     </rspframe>
   </device>
 </ddb>

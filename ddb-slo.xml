@@ -89,32 +89,27 @@
     <rspselect>
       <response id="getstat">
         <field>
-          <regexp>[\d]+</regexp>
           <assign>err</assign>
         </field>
       </response>
       <response id="bs">
         <field>
-          <length>1</length>
           <assign>bs</assign>
         </field>
       </response>
       <response id="p">
         <field>
-          <regexp>\d+(\.\d+)?</regexp>
           <assign>p</assign>
         </field>
       </response>
       <response id="in">
         <array>
-          <length>1</length>
           <assign>in</assign>
           <index>$1-1</index>
         </array>
       </response>
       <response id="default">
         <field>
-          <length>1</length>
           <verify>&gt;</verify>
         </field>
       </response>

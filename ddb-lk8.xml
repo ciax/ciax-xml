@@ -27,25 +27,22 @@
     <rspselect>
       <response id="getstat">
         <array>
-          <regexp>[\w\.+-]+</regexp>
           <assign>ch</assign>
           <index>0:7</index>
         </array>
       </response>
       <response id="htrstat">
         <field>
-          <regexp>[\w\.+-]+</regexp>
           <assign>htr</assign>
         </field>
       </response>
       <response id="spstat">
         <field>
-          <regexp>[\w\.+-]+</regexp>
           <assign>sp</assign>
         </field>
       </response>
     </rspselect>
-    <rspframe terminator="\r\n">
+    <rspframe terminator="\r\n" delimiter=";">
       <selected />
     </rspframe>
   </device>

@@ -1,39 +1,38 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb">
-  <device id="bbe" label="BB Electric 232SDD16" wait="0.3">
-    <serial speed="9600" databit="8" parity="NONE" stopbit="1" flowctl="NONE" />
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='bbe' label='BB Electric 232SDD16' wait='0.3'>
+    <serial databit='8' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
     <cmdselect>
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
+      <command id='getstat' label='Get Status' response='getstat' type='stat'>
         <data>RD</data>
       </command>
-      <command id="defio" label="DEFINE IN/OUT" type="config">
+      <command id='defio' label='DEFINE IN/OUT' type='config'>
         <data>SD</data>
-        <data label="msb" encode="bew">0x1111</data>
+        <data encode='bew' label='msb'>0x1111</data>
       </command>
-      <command id="output" label="OUTPUT [DDDDD]" type="action">
-        <parameters label="[0-65535]">
+      <command id='output' label='OUTPUT [DDDDD]' type='action'>
+        <parameters label='[0-65535]'>
           <par>
             <range>0:65535</range>
           </par>
         </parameters>
         <data>SO</data>
-        <eval encode="bew">"$1"</eval>
+        <eval encode='bew'>"$1"</eval>
       </command>
     </cmdselect>
     <cmdframe>
-      <data label="Prefix">!0</data>
-      <selected />
+      <data label='Prefix'>!0</data>
+      <selected/>
     </cmdframe>
     <rspselect>
-      <response id="getstat">
-        <field decode="bew">
-          <length>2</length>
+      <response id='getstat'>
+        <field decode='bew'>
           <assign>stat</assign>
         </field>
       </response>
     </rspselect>
     <rspframe>
-      <selected />
+      <selected/>
     </rspframe>
   </device>
 </ddb>

@@ -51,7 +51,7 @@
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
       <command id="setinst" label="Set Instrument ID [0-12]" type="config" response="exit">
-        <parameters>
+        <parameters label="[0-12]">
           <par label="Inst ID">
             <range>1:12</range>
           </par>
@@ -62,7 +62,7 @@
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
       <command id="config" label="Execute Config Command [code]" response="exit">
-        <parameters>
+        <parameters label="[XXX]">
           <par label="Command Code">
             <regexp>.+</regexp>
           </par>
@@ -72,7 +72,7 @@
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
       <command id="ossact" label="Execute Action Command [code]" type="action" response="exit">
-        <parameters>
+        <parameters label="[XXX]">
           <par label="Command Code">
             <regexp>.+</regexp>
           </par>

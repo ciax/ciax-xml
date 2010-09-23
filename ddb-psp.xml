@@ -7,7 +7,7 @@
         <data>L</data>
       </command>
       <command id="setvl" type="config" label="Set Voltage Limit [DD]">
-        <parameters>
+        <parameters label="[0-20]">
           <par>
             <range>0:20</range>
           </par>
@@ -16,7 +16,7 @@
         <eval format="%02d">$1</eval>
       </command>
       <command id="setal" type="config" label="Set Current Limit [D.DD]">
-        <parameters>
+        <parameters label="[0-9.99]">
           <par>
             <range>0:&lt;10</range>
           </par>
@@ -25,7 +25,7 @@
         <eval format="%04.2f">$1</eval>
       </command>
       <command id="setpl" type="config" label="Set Power Limit [DDD]">
-        <parameters>
+        <parameters label="[0-200]">
           <par>
             <range>0:&lt;200</range>
           </par>
@@ -34,7 +34,7 @@
         <eval format="%03d">$1</eval>
       </command>
       <command id="setv" type="config" label="Set Voltage [DD.DD]">
-        <parameters>
+        <parameters label="[0-99]">
           <par>
             <range>0:&lt;100</range>
           </par>

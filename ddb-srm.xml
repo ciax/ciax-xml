@@ -12,7 +12,7 @@
         <data label="length">0001</data>
       </command>
       <command id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
-        <parameters>
+        <parameters label="[000..04(5)]">
           <par>
             <regexp>[45][045]+</regexp>
           </par>

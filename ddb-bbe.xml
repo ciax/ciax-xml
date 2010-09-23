@@ -11,7 +11,7 @@
         <data label="msb" encode="bew">0x1111</data>
       </command>
       <command id="output" label="OUTPUT [DDDDD]" type="action">
-        <parameters>
+        <parameters label="[0-65535]">
           <par>
             <range>0:65535</range>
           </par>

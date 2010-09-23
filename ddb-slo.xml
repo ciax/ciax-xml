@@ -10,7 +10,7 @@
         <data>bs</data>
       </command>
       <command id="in" label="Input Status (1-5)" response="in" type="stat">
-        <parameters>
+        <parameters label="[1-5]">
           <par>
             <range>1:5</range>
           </par>
@@ -25,7 +25,7 @@
         <data>reset</data>
       </command>
       <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
-        <parameters>
+        <parameters label="[0,1]">
           <par>
             <regexp>[01]</regexp>
           </par>
@@ -34,7 +34,7 @@
         <eval>$1</eval>
       </command>
       <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
-        <parameters>
+        <parameters label="[0,1]">
           <par>
             <regexp>[01]</regexp>
           </par>
@@ -43,7 +43,7 @@
         <eval>$1</eval>
       </command>
       <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
-        <parameters>
+        <parameters label="[0,1]">
           <par>
             <regexp>[01]</regexp>
           </par>
@@ -55,7 +55,7 @@
         <data>abspos=0</data>
       </command>
       <command id="setp" label="Set Pulse Number" response="default" type="config">
-        <parameters>
+        <parameters label="[0-999]">
           <par>
             <range>0:999</range>
           </par>
@@ -73,7 +73,7 @@
         <data>j=-1</data>
       </command>
       <command id="ma" label="Move Absolute Position" response="default" type="action">
-        <parameters>
+        <parameters label="[0-999]">
           <par>
             <range>0:999</range>
           </par>

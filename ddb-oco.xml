@@ -7,7 +7,7 @@
         <data>1RD</data>
       </command>
       <command id="i" label="Set Current by argv [DD.DD]" type="action">
-        <parameters>
+        <parameters label="[0-99.99]">
           <par>
             <range>0:99</range>
           </par>

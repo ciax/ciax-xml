@@ -17,7 +17,7 @@
         <data label="Data Length" encode="lew">52</data>
       </command>
       <command id="set_tag" label="Set Tag to Run [1-12,98,99]" type="config" response="cmdrsp">
-        <parameters>
+        <parameters label="[1-12,98,99]">
           <par label="Data">
             <range>1:12</range>
             <range>98</range>
@@ -31,14 +31,10 @@
         <data label="Data Length" encode="lew">1</data>
         <eval encode="lew">$1</eval>
       </command>
-      <command id="set_pos" label="Set Pos to Jack [1-4]" type="config" response="cmdrsp">
-        <parameters>
+      <command id="set_pos" label="Set Pos to Jack [1-5]" type="config" response="cmdrsp">
+        <parameters label="[1-5]">
           <par label="Data">
-            <range>1</range>
-            <range>2</range>
-            <range>4</range>
-            <range>8</range>
-            <range>16</range>
+            <range>1:5</range>
           </par>
         </parameters>
         <data label="Write region command" encode="lew">0x1401</data>
@@ -46,10 +42,10 @@
         <data label="Start Address" encode="lew">0x103</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <eval encode="lew">$1</eval>
+        <eval encode="lew">1 &lt;&lt; ($1-1)</eval>
       </command>
       <command id="start" label="Start Trigger [b0=run,b8=jak,b15=chg]" type="action" response="cmdrsp">
-        <parameters>
+        <parameters label="[1,256,32768]">
           <par label="Data">
             <range>1</range>
             <range>256</range>
@@ -64,9 +60,9 @@
         <eval encode="lew">$1</eval>
       </command>
       <command id="stop" label="Stop Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" type="action" response="cmdrsp">
-        <parameters>
+        <parameters label="[0-7]">
           <par label="Data">
-            <range>0:65535</range>
+            <range>0:7</range>
           </par>
         </parameters>
         <data label="Write region command" encode="lew">0x1401</data>
@@ -74,7 +70,7 @@
         <data label="Start Address" encode="lew">0x100</data>
         <data label="Device Code" encode="lew">0xB400</data>
         <data label="Data Length" encode="lew">1</data>
-        <eval encode="lew">$1</eval>
+        <eval encode="lew">1 &lt;&lt; ($1-1)</eval>
       </command>
       <command id="clear" label="Clear Action Flags" type="config" response="cmdrsp">
         <data label="Write region command" encode="lew">0x1401</data>
@@ -88,7 +84,7 @@
         <data label="Data" encode="lew">0</data>
       </command>
       <command id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" type="stat" response="get_tbl">
-        <parameters>
+        <parameters label="[0-5] [0-3]">
           <par label="Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm">
             <range>0:5</range>
           </par>
@@ -104,7 +100,7 @@
         <data label="Data Length" encode="lew">0x2ch</data>
       </command>
       <command id="set_tbl" label="Set Jack Table [Tag=0-5] [JK=0-3] n,n,n..(44)" type="config" response="cmdrsp">
-        <parameters>
+        <parameters label="[0-5] [0-3] [n,n,n,...(44)]">
           <par label="Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm">
             <range>0:5</range>
           </par>
@@ -124,7 +120,7 @@
         <eval encode="lew">$3</eval>
       </command>
       <command id="rw_tbl" label="Read/Write Jack Table [1=Read,2=Write]" type="config" response="cmdrsp">
-        <parameters>
+        <parameters label="[1,2]">
           <par label="Data">
             <range>0:2</range>
           </par>

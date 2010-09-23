@@ -42,12 +42,12 @@
       </session>
       <session id="pause" label="Pause">
         <statement>
-          <text>stop 1</text>
+          <text>stop 0</text>
         </statement>
       </session>
       <session id="emstop" label="Emergency Stop">
         <statement>
-          <text>stop 2</text>
+          <text>stop 1</text>
         </statement>
       </session>
       <session id="resume" label="Resume from Pause">

@@ -7,7 +7,7 @@
         <data>ST</data>
       </command>
       <command id="chkr" label="Check Run (1-6)" response="chkr" type="stat">
-        <parameters>
+        <parameters label="[1-6]">
           <par>
             <range>1:6</range>
           </par>
@@ -16,7 +16,7 @@
         <data>=H</data>
       </command>
       <command id="getp" label="Get pulse (1-6)" response="getp" type="stat">
-        <parameters>
+        <parameters label="[1-6]">
           <par>
             <range>1:6</range>
           </par>
@@ -25,7 +25,7 @@
         <data>P21R</data>
       </command>
       <command id="setp" label="Set pulse (1-6) (0-19200)" response="default" type="config">
-        <parameters>
+        <parameters label="[1-6] [0-19200]">
           <par>
             <range>1:6</range>
           </par>

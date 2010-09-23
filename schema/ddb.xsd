@@ -150,6 +150,7 @@
       <xsd:sequence>
         <xsd:element ref="ddb:par" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
+      <xsd:attribute name="label" type="xsd:string" use="required" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="par">

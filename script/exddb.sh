@@ -15,5 +15,5 @@ for obj in $devices; do
     stat="`grep rcv:${cmd// /:} $input|tail -1`"
     [ "$stat" ] && echo "$stat" | devstat $dev $cmd|mar
     ln -sf $output $link
-    read
+    read -n 1
 done

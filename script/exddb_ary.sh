@@ -1,5 +1,5 @@
 #!/bin/bash
-for obj in ${*:-mma mix crt ml1} ; do
+for obj in ${*:-mma mix crt ml1 dts} ; do
     yes|exddb $obj getstat
     case $obj in
         mma)
@@ -24,6 +24,6 @@ for obj in ${*:-mma mix crt ml1} ; do
         *)
             yes|exddb $obj;;
     esac
-    read
+    read -n 1
 done
 

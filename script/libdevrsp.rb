@@ -84,9 +84,8 @@ class DevRsp
     idxs=[]
     a=e.attributes
     @v.msg{"Array:#{e.attributes['label']}"}
-    if key=a['assign']
-      @v.msg{"ArrayAssign:[#{key}]"}
-    end
+    key=a['assign'] || @v.err("No key for Array")
+    @v.msg{"ArrayAssign:[#{key}]"}
     e.each_element{ |f| # Index
       idxs << @cs.sub_var(f.text)
     }
@@ -110,16 +109,15 @@ class DevRsp
   end
 
   def cut_frame(e)
-    if len=e.attributes['length']
-      str=@frame.slice(@fp,len.to_i)
-      @fp+=len.to_i
-      @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-    else
-      str=@frame.slice(@fp..-1)
-      @v.msg{"GetAllFrame:[#{str}]"}
+    if @fp >= @frame.size
+      @v.err("No more string in frame") if @fary.empty?
       @frame=@fary.shift
       @fp=0
     end
+    len=e.attributes['length']||@frame.size
+    str=@frame.slice(@fp,len.to_i)
+    @fp+=len.to_i
+    @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
     if r=e.attributes['slice']
       str=str.slice(*r.split(':').map{|i| i.to_i })
       @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}

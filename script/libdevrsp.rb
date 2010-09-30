@@ -11,6 +11,7 @@ class DevRsp
     @field=field
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @cs=ConvStr.new(@v)
+    @frame=''
     @fary=[]
     @fp=0
   end
@@ -24,10 +25,9 @@ class DevRsp
     end
     if dm=@ddb['rspframe'].attributes['delimiter']
       @fary=frame.split(eval('"'+dm+'"'))
-      @frame=@fary.shift
       @v.msg{"Split:[#{frame}] by [#{dm}]" }
     else
-      @frame=frame
+      @fary=[frame]
     end
     setframe(@ddb['rspframe'])
     if cc=@field.delete('cc')

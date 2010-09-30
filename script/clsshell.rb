@@ -1,33 +1,23 @@
 #!/usr/bin/ruby
-require "libdev"
-require "libcls"
+require "libclssrv"
+require "libmodview"
 require "readline"
 
-warn "Usage: clsshell [class] [iocmd] (obj)" if ARGV.size < 2
+warn "Usage: clsshell [cls] [iocmd] (obj)" if ARGV.size < 1
 
 cls=ARGV.shift
 iocmd=ARGV.shift
-obj=ARGV.shift || cls
-cdb=Cls.new(cls,obj)
-ddb=DevCom.new(cdb['device'],iocmd,obj)
+obj=ARGV.shift||cls
+cdb=ClsSrv.new(cls,iocmd,obj)
 
-loop{
-  line=Readline.readline("#{cls}>",true).chomp
+loop {
+  line=Readline.readline(cdb.prompt,true)
   case line
   when /^q/
     break
-  when /[\w]+/
-    begin
-      cdb.setcmd(line)
-      cdb.clscom{|cmd|
-        ddb.setcmd(cmd)
-        ddb.devcom
-        cdb.get_stat(ddb.field)
-      }
-    rescue
-      puts $!
-    end
-  else
-    p cdb.stat
+  when ''
+    line='stat'
   end
+  puts cdb.dispatch(line){|s| s}
 }
+

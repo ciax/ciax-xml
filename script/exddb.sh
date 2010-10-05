@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/se/lib/libdb.sh cx_object
+. ~/lib/libcsv.sh
 devices=${1:-cf1 crt det dts cci mh1 mt3 mix map mma ml1};shift
 defcmd="${*:-getstat}"
 for obj in $devices; do

@@ -8,7 +8,7 @@
         </statement>
         <repeat from="1" to="6">
           <statement>
-            <text>chkr $_</text>
+            <text>chkrun $_</text>
           </statement>
           <statement>
             <text>getp $_</text>
@@ -59,7 +59,7 @@
       </value>
       <repeat from="1" to="6">
         <value format="%s" id="r$_" label="Running 1-6">
-          <string>r:$_-1</string>
+          <string>run:$_-1</string>
         </value>
         <value format="%d" id="p$_" label="Pulse 1-6">
           <int>p:$_-1</int>

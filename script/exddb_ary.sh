@@ -8,7 +8,7 @@ for obj in ${*:-mma mix crt ml1 dts} ; do
             done;;
         mix)
             for i in 1 2 3 4 5 6; do
-                yes|exddb mix chkr $i
+                yes|exddb mix chkrun $i
                 yes|exddb mix getp $i
             done;;
         crt)

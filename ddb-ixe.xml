@@ -64,6 +64,15 @@
         <data>P21S</data>
         <eval>$2</eval>
       </command>
+      <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
+        <parameters label="[1-6]">
+          <par>
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <eval>$1</eval>
+        <data>P14R</data>
+      </command>
       <command id="setspd" label="Set speed [1-6] [1-1000] (/1000 hps)" response="default" type="config">
         <parameters label="[1-6] [1-1000]">
           <par>
@@ -176,6 +185,11 @@
       </response>
       <response id="getp">
         <array assign="p">
+          <index>$1-1</index>
+        </array>
+      </response>
+      <response id="getspd">
+        <array assign="spd">
           <index>$1-1</index>
         </array>
       </response>

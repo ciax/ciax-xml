@@ -15,6 +15,13 @@
           </statement>
         </repeat>
       </session>
+      <session id="cfg" label="Show Config">
+        <repeat from="1" to="6">
+          <statement>
+            <text>getspd $_</text>
+          </statement>
+        </repeat>
+      </session>
       <session id="resume" label="Resume Pulses">
         <repeat from="1" to="6">
           <statement>

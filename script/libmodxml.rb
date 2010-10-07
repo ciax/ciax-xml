@@ -55,7 +55,7 @@ module ModXml
         return(str) if ReRange.new(d.text) == str
       end
     }
-    @v.err("Parameter invalid(#{str})")
+    @v.err("Parameter invalid(#{e.attributes['label']})")
   end
 
   def format(e,code)

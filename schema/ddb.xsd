@@ -125,6 +125,7 @@
     <xsd:choice>
       <xsd:element ref="ddb:data" />
       <xsd:element ref="ddb:eval" />
+      <xsd:element ref="ddb:csv" />
     </xsd:choice>
   </xsd:group>
   <xsd:element name="data">
@@ -137,6 +138,15 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="eval">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="ddb:cmd_attr" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="csv">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">

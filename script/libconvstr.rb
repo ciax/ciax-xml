@@ -37,6 +37,7 @@ class ConvStr
     h=@var.clone
     str=str.gsub(/\$([_`\w])/){ h[$1] }
     # Sub ${key1:key2:idx} => hash[key1][key2][idx]
+    # output csv if array
     str=str.gsub(/\$\{(.+)\}/) {
       $1.split(':').each {|i|
         @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}

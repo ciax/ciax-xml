@@ -45,7 +45,9 @@ class DevCmd
         frame << @ccrange
         @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
       when 'data'
-        frame << get_data(c)
+        str=c.text
+        @v.msg{"GetFrame:#{a['label']}[#{str}]"}
+        frame << encode(c,str)
       when 'eval'
         str=eval(@cs.sub_var(c.text)).to_s
         @v.msg{"GetFrame:(calculated)[#{str}]"}
@@ -58,12 +60,5 @@ class DevCmd
       end
     }
     frame
-  end
-
-  def get_data(e)
-    a=e.attributes
-    str=e.text
-    @v.msg{"GetFrame:#{a['label']}[#{str}]"}
-    encode(e,str)
   end
 end

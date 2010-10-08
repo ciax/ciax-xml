@@ -20,7 +20,7 @@ class Cls < Hash
       @stat=@f.load_stat
     rescue
       warn $!
-      @stat={}
+      @stat={ 'id'=>id }
     end
     @v=Verbose.new("cdb/#{id}".upcase)
     @field={}

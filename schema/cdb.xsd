@@ -25,7 +25,10 @@
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:statement" />
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="cdb:statement" />
+          <xsd:element ref="cdb:repeat" />
+        </xsd:choice>
         <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:value" />
       </xsd:choice>
       <xsd:attribute name="from" use="required" type="xsd:int" />

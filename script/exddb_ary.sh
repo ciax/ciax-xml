@@ -11,7 +11,7 @@ for obj in ${*:-mma mix crt ml1 dts} ; do
                 yes|exddb mix chkrun $i
                 yes|exddb mix getp $i
                 yes|exddb mix getspd $i
-                yes|exddb mix getoffset $i
+                yes|exddb mix getofs $i
             done;;
         crt)
             for i in 0 1 2 3 4 5; do

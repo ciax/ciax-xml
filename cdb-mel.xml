@@ -55,6 +55,26 @@
           <text>clear</text>
         </statement>
       </session>
+      <session id="get_tbl" label="Get Jack Table">
+        <repeat counter="t" from="0" to="5">
+          <repeat counter="j" from="0" to="3">
+            <statement>
+              <text>get_tbl $t $j</text>
+            </statement>
+          </repeat>
+        </repeat>
+      </session>
+      <session id="set_tbl" label="Set Jack Table">
+        <repeat counter="t" from="0" to="5">
+          <repeat counter="j" from="0" to="3">
+            <statement>
+              <text>set_tbl</text>
+              <text>$t $j</text>
+              <text>${field:t:$t:$j}</text>
+            </statement>
+          </repeat>
+        </repeat>
+      </session>
       <session id="tbl_read" label="Resume from Pause">
         <statement>
           <text>tbl_rw 1</text>

@@ -13,34 +13,92 @@
           <statement>
             <text>getp $_</text>
           </statement>
-        </repeat>
-      </session>
-      <session id="cfg" label="Show Config">
-        <repeat from="1" to="6">
           <statement>
             <text>getspd $_</text>
           </statement>
-        </repeat>
-      </session>
-      <session id="resume" label="Resume Pulses">
-        <repeat from="1" to="6">
           <statement>
-            <text>setp</text>
-            <text>$_</text>
-            <text>${field:p$_}</text>
+            <text>getofs $_</text>
           </statement>
         </repeat>
       </session>
-      <session id="set0" label="Set 0 Pulses">
+      <session id="sysinit" label="System Initialize">
+        <statement>
+          <text>initrot</text>
+        </statement>
+        <statement>
+          <text>initunit</text>
+        </statement>
+        <statement>
+          <text>initfactor</text>
+        </statement>
+      </session>
+      <session id="setp" label="Resume Pulses">
+        <repeat from="0" to="5">
+          <statement>
+            <text>setp</text>
+            <eval>$_+1</eval>
+            <text>${field:p:$_}</text>
+          </statement>
+        </repeat>
+      </session>
+      <session id="resetp" label="Set 0 Pulses">
         <repeat from="1" to="6">
           <statement>
             <text>setp $_ 0</text>
           </statement>
         </repeat>
       </session>
+      <session id="setspd" label="Resume Speed">
+        <repeat from="0" to="5">
+          <statement>
+            <text>setspd</text>
+            <eval>$_+1</eval>
+            <text>${field:spd:$_}</text>
+          </statement>
+        </repeat>
+      </session>
+      <session id="setofs" label="Resume Offset">
+        <repeat from="0" to="5">
+          <statement>
+            <text>setofs</text>
+            <eval>$_+1</eval>
+            <text>${field:ofs:$_}</text>
+          </statement>
+        </repeat>
+      </session>
+      <session id="fw" label="Move Forward [1-6] [1-6(hole)]">
+        <parameters>
+          <par>
+            <range>1:6</range>
+          </par>
+          <par>
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <statement>
+          <text>fw</text>
+          <text>$1</text>
+          <eval>$2 * 8000</eval>
+        </statement>
+      </session>
+      <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
+        <parameters>
+          <par>
+            <range>1:6</range>
+          </par>
+          <par>
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <statement>
+          <text>bk</text>
+          <text>$1</text>
+          <eval>$2 * 8000</eval>
+        </statement>
+      </session>
     </commands>
     <status>
-      <value format="%s" id="rdy" label="Comm Ready">
+      <value id="rdy" format="%s" label="Comm Ready">
         <binary bit="0">stat</binary>
       </value>
       <value format="%s" id="srq" label="SRQ">
@@ -70,6 +128,12 @@
         </value>
         <value format="%d" id="p$_" label="Pulse 1-6">
           <int>p:$_-1</int>
+        </value>
+        <value format="%d" id="spd$_" label="Speed 1-6">
+          <int>spd:$_-1</int>
+        </value>
+        <value format="%d" id="ofs$_" label="Offset 1-6">
+          <int>ofs:$_-1</int>
         </value>
       </repeat>
     </status>

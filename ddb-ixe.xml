@@ -9,20 +9,11 @@
       <command id="initrot" label="Parameter set for rotation" response="default" type="config">
         <data>1P01S0 2P01S0 3P01S0 4P01S0 5P01S0 6P01S0</data>
       </command>
-      <command id="initstep" label="Parameter set for pulse step" response="default" type="config">
+      <command id="initunit" label="Parameter unit set to pulse step" response="default" type="config">
         <data>1P02S1 2P02S1 3P02S1 4P02S1 5P02S1 6P02S1</data>
       </command>
-      <command id="initfactor" label="Parameter set for unit factor" response="default" type="config">
+      <command id="initfactor" label="Parameter unit factor set to 1" response="default" type="config">
         <data>1P03S1 2P03S1 3P03S1 4P03S1 5P03S1 6P03S1</data>
-      </command>
-      <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
-        <parameters label="[1-6]">
-          <par>
-            <range>1:6</range>
-          </par>
-        </parameters>
-        <eval>$1</eval>
-        <data>=H</data>
       </command>
       <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
         <parameters label="[1-6]">
@@ -41,6 +32,15 @@
         </parameters>
         <eval>$1</eval>
         <data>=E</data>
+      </command>
+      <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
+        <parameters label="[1-6]">
+          <par>
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <eval>$1</eval>
+        <data>=H</data>
       </command>
       <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
         <parameters label="[1-6]">
@@ -86,13 +86,22 @@
         <data>P14S</data>
         <eval>$2</eval>
       </command>
-      <command id="setoffset" label="Set offset [1-6] [0-4000]" response="default" type="config">
+      <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
+        <parameters label="[1-6]">
+          <par>
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <eval>$1</eval>
+        <data>P12R</data>
+      </command>
+      <command id="setofs" label="Set offset [1-6] [0-4000]" response="default" type="config">
         <parameters label="[1-6] [0-4000]">
           <par>
             <range>1:6</range>
           </par>
           <par>
-            <range>1:1000</range>
+            <range>0:4000</range>
           </par>
         </parameters>
         <eval>$1</eval>
@@ -190,6 +199,11 @@
       </response>
       <response id="getspd">
         <array assign="spd">
+          <index>$1-1</index>
+        </array>
+      </response>
+      <response id="getofs">
+        <array assign="ofs">
           <index>$1-1</index>
         </array>
       </response>

@@ -103,10 +103,12 @@ class Cls < Hash
   #Stat Methods
   def get_val(e)
     ary=Array.new
+    id=@cs.sub_var(e.attributes['id'])
+    @v.msg(1){"STAT:GetStatus:[#{id}]"}
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=@cs.sub_var(dtype.text) || return
-      data=@cs.sub_var("${field:#{fld}}") || return
+      fld=@cs.sub_var(dtype.text) || raise
+      data=@cs.sub_var("${field:#{fld}}") || raise
       case dtype.name
       when 'binary'
         bit=(data.to_i >> a['bit'].to_i & 1)
@@ -128,11 +130,11 @@ class Cls < Hash
         ary << data
       end
     }
-    a=e.attributes
-    id=@cs.sub_var(a['id'])
-    value=a['format'] % ary
-    @v.msg{"STAT:GetStatus:#{id}=[#{value}]"}
+    value=e.attributes['format'] % ary
+    @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}
     @stat[id]=value
+  rescue
+    @v.msg(-1){"STAT:Fail to Get Status:[#{id}]" }
   end
 
 end

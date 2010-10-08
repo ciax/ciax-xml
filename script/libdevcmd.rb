@@ -15,10 +15,10 @@ class DevCmd
   def cmdframe(sel)
     @sel=sel || @v.err("No Selection")
     if ccn=@ddb['cmdccrange']
-      @v.msg{"Entering Ceck Code Range"}
+      @v.msg(1){"Entering Ceck Code Range"}
       @ccrange=getframe(ccn)
       @cs.var['cc']=checkcode(ccn,@ccrange)
-      @v.msg{"Exitting Ceck Code Range"}
+      @v.msg(-1){"Exitting Ceck Code Range"}
     end
     getframe(@ddb['cmdframe'])
   end
@@ -38,9 +38,9 @@ class DevCmd
           validate(d,@cs.par.shift){"(#{a['label']})"}
         }
       when 'selected'
-        @v.msg{"Entering Selected Node"}
+        @v.msg(1){"Entering Selected Node"}
         frame << getframe(@sel)
-        @v.msg{"Exitting Selected Node"}
+        @v.msg(-1){"Exitting Selected Node"}
       when 'ccrange'
         frame << @ccrange
         @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}

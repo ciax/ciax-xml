@@ -47,15 +47,15 @@ class DevRsp
       a=c.attributes
       case c.name
       when 'ccrange'
-        @v.msg{"Entering Ceck Code Node"}
+        @v.msg(1){"Entering Ceck Code Node"}
         rc=@ddb['rspccrange']
         fst=@fp;setframe(rc)
         @cc = checkcode(rc,@frame.slice(fst...@fp))
-        @v.msg{"Exitting Ceck Code Node"}
+        @v.msg(-1){"Exitting Ceck Code Node"}
       when 'selected'
-        @v.msg{"Entering Selected Node"}
+        @v.msg(1){"Entering Selected Node"}
         setframe(@sel)
-        @v.msg{"Exitting Selected Node"}
+        @v.msg(-1){"Exitting Selected Node"}
       when 'field'
         frame_to_field(c)
       when 'array'
@@ -65,9 +65,9 @@ class DevRsp
   end
 
   def frame_to_field(e)
-    data=decode(e,cut_frame(e))
     a=e.attributes
-    @v.msg{"Field:#{a['label']}"}
+    @v.msg(1){"Field:#{a['label']}"}
+    data=decode(e,cut_frame(e))
     if key=a['assign']
       @field[key]=data
       @v.msg{"Assign:[#{key}]<-[#{data}]"}
@@ -78,12 +78,13 @@ class DevRsp
         txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
       end
     }
+    @v.msg(-1){}
   end
 
   def field_array(e)
     idxs=[]
     a=e.attributes
-    @v.msg{"Array:#{e.attributes['label']}"}
+    @v.msg(1){"Array:#{e.attributes['label']}"}
     key=a['assign'] || @v.err("No key for Array")
     @v.msg{"ArrayAssign:[#{key}]"}
     e.each_element{ |f| # Index
@@ -92,6 +93,7 @@ class DevRsp
     @field[key]=mk_array(idxs,@field[key]){
       decode(e,cut_frame(e))
     }
+    @v.msg(-1){}
   end
 
   def mk_array(idxary,field) 

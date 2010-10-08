@@ -3,17 +3,20 @@ class Verbose
   Start_time=Time.now
   def initialize(title)
     @title=title
+    @base=1
   end
 
   # Public Method
-  def msg(msg=nil) # Parameter = show it anytime, Block = depends on $VER
-    return warn mkmsg(msg) if msg
+  def msg(ind=0)
+    @base+=ind
     return unless ENV['VER']
-    msg=mkmsg(yield)
+    ind=(ind > 0) ? -ind : 0
+    msg=mkmsg(yield,ind) || return
     if ENV['VER'].split(':').any? {|s|
         (msg+'all').upcase.include?(s.upcase) }
       warn msg
     end
+    return
   end
 
   def err(msg='error')
@@ -22,8 +25,10 @@ class Verbose
 
   # Private Method
   private
-  def mkmsg(text)
+  def mkmsg(text,ind=0)
+    return unless text
+    ind+=@base
     pass=sprintf("%5.4f",Time.now-Start_time)
-    "[#{pass}] #{@title}:#{text}".dump
+    "[#{pass}]"+'  '*ind+@title+":"+text.inspect
   end
 end

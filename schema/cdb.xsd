@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdb="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="libdb.xsd" />
   <xsd:element name="cdb">
     <xsd:complexType>
       <xsd:sequence>
@@ -55,22 +56,6 @@
         </xsd:choice>
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
-    </xsd:complexType>
-  </xsd:element>
-  <!--command param-->
-  <xsd:element name="parameters">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="cdb:par" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="par">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0">
-        <xsd:element ref="cdb:range" maxOccurs="unbounded" />
-        <xsd:element ref="cdb:regexp" />
-      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <!--command statement-->
@@ -145,12 +130,4 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="string" type="xsd:string"></xsd:element>
-  <xsd:element name="range">
-    <xsd:simpleType>
-      <xsd:restriction base="xsd:string">
-        <xsd:pattern value="^(-?\d+(\.\d+)?&lt;?)?:(&lt;?-?\d+(\.\d+)?)?" />
-      </xsd:restriction>
-    </xsd:simpleType>
-  </xsd:element>
-  <xsd:element name="regexp" type="xsd:string" />
 </xsd:schema>

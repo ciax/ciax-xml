@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:ddb="http://ciax.sum.naoj.org/ciax-xml/ddb">
   <!--Device database-->
+  <xsd:include schemaLocation="libdb.xsd" />
   <xsd:element name="ddb">
     <xsd:complexType>
       <xsd:sequence>
@@ -107,14 +108,6 @@
       <xsd:enumeration value="len" />
     </xsd:restriction>
   </xsd:simpleType>
-  <!--ReRange-->
-  <xsd:simpleType name="rerange">
-    <xsd:restriction base="xsd:string">
-      <xsd:pattern value="^(-?\d+(\.\d+)?&lt;?)?(:&lt;?-?\d+(\.\d+)?)?" />
-    </xsd:restriction>
-  </xsd:simpleType>
-  <xsd:element name="regexp" type="xsd:string" />
-  <xsd:element name="range" type="ddb:rerange"></xsd:element>
   <!--Command Elements-->
   <xsd:attributeGroup name="cmd_attr">
     <xsd:attribute name="label" type="xsd:string" />
@@ -128,50 +121,16 @@
       <xsd:element ref="ddb:csv" />
     </xsd:choice>
   </xsd:group>
-  <xsd:element name="data">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="ddb:cmd_attr" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="eval">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="ddb:cmd_attr" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="csv">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="ddb:cmd_attr" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="parameters">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="ddb:par" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:string" use="required" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="par">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0">
-        <xsd:element ref="ddb:range" maxOccurs="unbounded" />
-        <xsd:element ref="ddb:regexp" />
-      </xsd:choice>
-      <xsd:attribute name="label" type="xsd:string" />
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:complexType name="cmd_type">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attributeGroup ref="ddb:cmd_attr" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:element name="data" type="ddb:cmd_type"></xsd:element>
+  <xsd:element name="eval" type="ddb:cmd_type"></xsd:element>
+  <xsd:element name="csv" type="ddb:cmd_type"></xsd:element>
   <!--Command Select-->
   <xsd:element name="cmdselect">
     <xsd:complexType>

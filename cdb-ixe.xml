@@ -21,6 +21,19 @@
           </statement>
         </repeat>
       </session>
+      <session id="upp" label="Update Pulse">
+        <parameters>
+          <par label="[1-6]">
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <statement>
+          <text>chkrun $1</text>
+        </statement>
+        <statement>
+          <text>getp $1</text>
+        </statement>
+      </session>
       <session id="sysinit" label="System Initialize">
         <statement>
           <text>initrot</text>
@@ -68,10 +81,10 @@
       </session>
       <session id="fw" label="Move Forward [1-6] [1-6(hole)]">
         <parameters>
-          <par>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par>
+          <par label="[1-6(hole)]">
             <range>1:6</range>
           </par>
         </parameters>
@@ -83,10 +96,10 @@
       </session>
       <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
         <parameters>
-          <par>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par>
+          <par label="[1-6(hole)]">
             <range>1:6</range>
           </par>
         </parameters>

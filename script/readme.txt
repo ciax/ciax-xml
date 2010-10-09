@@ -1,3 +1,6 @@
+## String restriction ##
+cdb//session@id -> never use ':'
+
 ### Substitution Strings (implicit conversion) ###
 
  $_ $a..z

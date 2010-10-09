@@ -56,6 +56,7 @@ class ClsSrv < Hash
     @cdb.clscom {|cmd| @q.push(cmd)}
     "Accepted"
   rescue
+    raise $! unless /^==/ === $!.to_s
     msg=[$!.to_s]
     msg << "== Internal Command =="
     msg << " stat      : Show Status"
@@ -140,7 +141,7 @@ class ClsSrv < Hash
         msg=["== option list =="]
         msg << " start      : Start Auto update"
         msg << " stop       : Stop Auto update"
-        msg << " cmd=       : Set Commands (cmd;..)"
+        msg << " cmd=       : Set Commands (cmd:par;..)"
         msg << " int=       : Set Interval (sec)"
         raise msg.join("\n")
       end

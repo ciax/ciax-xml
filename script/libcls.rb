@@ -31,7 +31,7 @@ class Cls < Hash
   
   public
   def setcmd(line)
-    ca=line.split(' ')
+    ca=line.split(/[: ]/)
     @session=@cdb.select_id('commands',ca.shift)
     @cs.par=ca
     @v.msg{"Exec(CDB):#{@session.attributes['label']}"}

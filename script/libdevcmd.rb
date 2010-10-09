@@ -35,7 +35,7 @@ class DevCmd
       case c.name
       when 'parameters'
         c.each_element{|d|
-          validate(d,@cs.par.shift){"(#{a['label']})"}
+          validate(d,@cs.par.shift)
         }
       when 'selected'
         @v.msg(1){"Entering Selected Node"}

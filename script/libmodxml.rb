@@ -44,7 +44,8 @@ module ModXml
   end
 
   def validate(e,str)
-    str || @v.err("Too Few Parameters#{yield}")
+    label=e.attributes['label']
+    str || @v.err("Validate: Too Few Parameters(#{label})")
     @v.msg{"Validate: String for [#{str}]"}
     e.each_element {|d|
       @v.msg{"Validate: Match? [#{d.text}]"}
@@ -55,7 +56,7 @@ module ModXml
         return(str) if ReRange.new(d.text) == str
       end
     }
-    @v.err("Parameter invalid(#{e.attributes['label']})")
+    @v.err("Validate: Parameter invalid(#{label})")
   end
 
   def format(e,code)

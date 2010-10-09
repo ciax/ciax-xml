@@ -14,7 +14,6 @@
       <xsd:sequence>
         <xsd:element ref="par" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="par">

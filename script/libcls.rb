@@ -25,7 +25,7 @@ class Cls < Hash
     @v=Verbose.new("cdb/#{id}".upcase)
     @field={}
     @cs=ConvStr.new(@v)
-    @cs.var={'field'=>@field,'stat'=>@stat }
+    @cs.stat={'field'=>@field,'stat'=>@stat }
     self.update(@cdb)
   end
   

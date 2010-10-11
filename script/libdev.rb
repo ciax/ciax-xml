@@ -2,6 +2,7 @@
 require "libxmldoc"
 require "libiocmd"
 require "libiofile"
+require "libconvstr"
 require "libdevcmd"
 require "libdevrsp"
 
@@ -19,14 +20,15 @@ class Dev
     @cid=String.new
     @cmdcache=Hash.new
     @fd=IoFile.new("field_#{id}")
+    @cs=ConvStr.new(@v)
     begin
-      @field=@fd.load_stat
+      @cs.stat=@fd.load_stat
     rescue
       warn $!
-      @field={'device'=>@ddb['id'] }
+      @cs.stat={'device'=>@ddb['id'] }
     end
-    @rsp=DevRsp.new(@ddb,@field)
-    @cmd=DevCmd.new(@ddb)
+    @rsp=DevRsp.new(@ddb,@cs)
+    @cmd=DevCmd.new(@ddb,@cs)
   end
 
   def setcmd(line)
@@ -55,17 +57,17 @@ class Dev
   def setrsp(time=Time.now)
     return unless @recv
     @rsp.rspframe(@recv){yield}
-    @field['time']="%.3f" % time.to_f
-    @fd.save_stat(@field)
+    @cs.stat['time']="%.3f" % time.to_f
+    @fd.save_stat(@cs.stat)
   end
 
   def save(key=nil,tag='default')
-    @field[key] || raise("save #{@field.keys} [tag]")
-    @fd.save_stat({ key => @field[key] },"_#{key}_#{tag}")
+    @cs.stat[key] || raise("save #{@cs.stat.keys} [tag]")
+    @fd.save_stat({ key => @cs.stat[key] },"_#{key}_#{tag}")
   end
 
   def load(key=nil,tag='default')
-    @field.update(@fd.load_stat("_#{key}_#{tag}"))
+    @cs.stat.update(@fd.load_stat("_#{key}_#{tag}"))
   end
 
 end

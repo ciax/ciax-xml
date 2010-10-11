@@ -3,10 +3,10 @@
 require 'librerange'
 class ConvStr
   attr_reader :par,:first # for shift
-  attr_accessor :var
+  attr_accessor :stat
 
   def initialize(v)
-    @v,@var,@par,@first=v,{},[]
+    @v,@var,@par,@stat,@first=v,{},[],{}
   end
 
   def repeat(e)
@@ -37,6 +37,7 @@ class ConvStr
     str=str.gsub(/\$([_`\w])/){ h[$1] }
     # Sub ${key1:key2:idx} => hash[key1][key2][idx]
     # output csv if array
+    h=@stat.clone
     str=str.gsub(/\$\{(.+)\}/) {
       $1.split(':').each {|i|
         @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}

@@ -29,7 +29,7 @@ class Obj < Hash
     @v=Verbose.new("odb/#{obj}".upcase)
     @field,@gn={},0
     @cs=ConvStr.new(@v)
-    @cs.var={'field'=>@field,'stat'=>@stat }
+    @cs.stat={'field'=>@field,'stat'=>@stat }
     @odb.first['comm'].each_element{|e|
       self[e.name]=e.text
     }

@@ -6,10 +6,9 @@ require "libconvstr"
 class DevCmd
   include ModXml
 
-  def initialize(ddb)
-    @ddb=ddb
+  def initialize(ddb,cs)
+    @ddb,@cs=ddb,cs
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
-    @cs=ConvStr.new(@v)
   end
 
   def cmdframe(sel)
@@ -17,7 +16,7 @@ class DevCmd
     if ccn=@ddb['cmdccrange']
       @v.msg(1){"Entering Ceck Code Range"}
       @ccrange=getframe(ccn)
-      @cs.var['cc']=checkcode(ccn,@ccrange)
+      @cs.stat['cc']=checkcode(ccn,@ccrange)
       @v.msg(-1){"Exitting Ceck Code Range"}
     end
     getframe(@ddb['cmdframe'])

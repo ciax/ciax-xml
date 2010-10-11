@@ -6,11 +6,9 @@ require "libconvstr"
 class DevRsp
   include ModXml
 
-  def initialize(ddb,field={})
-    @ddb=ddb
-    @field=field
+  def initialize(ddb,cs)
+    @ddb,@cs=ddb,cs
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
-    @cs=ConvStr.new(@v)
     @frame=''
     @fary=[]
     @fp=0
@@ -30,11 +28,11 @@ class DevRsp
       @fary=[frame]
     end
     setframe(@ddb['rspframe'])
-    if cc=@field.delete('cc')
+    if cc=@cs.stat.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
       @v.msg{"Verify:CC OK [#{cc}]"}
     end
-    @field
+    @cs.stat
   end
 
   def par=(ary)
@@ -69,7 +67,7 @@ class DevRsp
     @v.msg(1){"Field:#{a['label']}"}
     data=decode(e,cut_frame(e))
     if key=a['assign']
-      @field[key]=data
+      @cs.stat[key]=data
       @v.msg{"Assign:[#{key}]<-[#{data}]"}
     end
     e.each_element {|d| # Verify
@@ -90,7 +88,7 @@ class DevRsp
     e.each_element{ |f| # Index
       idxs << @cs.sub_var(f.text)
     }
-    @field[key]=mk_array(idxs,@field[key]){
+    @cs.stat[key]=mk_array(idxs,@cs.stat[key]){
       decode(e,cut_frame(e))
     }
     @v.msg(-1){}

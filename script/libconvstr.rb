@@ -55,7 +55,7 @@ class ConvStr
       key.split(':').each {|i|
         @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
         i=eval(i) if Array === h
-        h=h[i]||{}
+        h=h[i]||raise("No such Value")
       }
     end
     h

@@ -88,13 +88,7 @@ class ClsSrv < Hash
   def field(cmds)
     cmds.each{ |cmd|
       key,val=cmd.split('=')
-      h=@ddb.field
-      key.split(':').each{|i|
-        i=i.to_i if Array === h
-        raise "No such var [#{i}]" unless h[i]
-        h=h[i]
-      }
-      h.replace(val) if val
+      h=@ddb.setfld(key,val)
       return "#{key} = #{h}"
     }
     msg=["== option list =="]

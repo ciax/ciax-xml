@@ -51,11 +51,13 @@ class ConvStr
 
   def acc_stat(key)
     h=@stat
-    key.split(':').each {|i|
-      @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
-      i=eval(i) if Array === h
-      h=h[i]||{}
-    }
+    if key
+      key.split(':').each {|i|
+        @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
+        i=eval(i) if Array === h
+        h=h[i]||{}
+      }
+    end
     h
   end
 

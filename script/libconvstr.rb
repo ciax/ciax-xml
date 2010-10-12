@@ -39,12 +39,7 @@ class ConvStr
     # output csv if array
     h=@stat.clone
     str=str.gsub(/\$\{(.+)\}/) {
-      $1.split(':').each {|i|
-        @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
-        i=eval(i) if Array === h
-        h=h[i]||{}
-      }
-      [*h].join(',')
+      [*acc_stat($1)].join(',')
     }
     if str == ''
       @v.msg(-1){"Substitute Fail"}
@@ -52,6 +47,16 @@ class ConvStr
       @v.msg(-1){"Substitute to [#{str}]"}
       str
     end
+  end
+
+  def acc_stat(key)
+    h=@stat
+    key.split(':').each {|i|
+      @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
+      i=eval(i) if Array === h
+      h=h[i]||{}
+    }
+    h
   end
 
 end

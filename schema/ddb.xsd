@@ -148,6 +148,7 @@
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" />
       <xsd:attribute name="response" type="xsd:string" />
+      <xsd:attribute name="nocache" type="xsd:boolean" />
       <xsd:attribute name="type">
         <xsd:simpleType>
           <xsd:restriction base="xsd:string">

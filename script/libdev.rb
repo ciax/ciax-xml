@@ -27,7 +27,7 @@ class Dev
       @cs.stat=@fd.load_stat
     rescue
       warn $!
-      @rsp.init_field{''}
+      @rsp.init_field{"0"}
       @cs.stat['device']=@ddb['id']
     end
     @field=@cs.stat
@@ -37,8 +37,10 @@ class Dev
     cmdary=line.split(' ').compact
     @cid=cmdary.join(':')
     @send=@ddb.select_id('cmdselect',cmdary.shift)
-    @v.msg{'Select:'+@send.attributes['label']}
-    res=@send.attributes['response']
+    a=@send.attributes
+    @v.msg{'Select:'+a['label']}
+    @nocache=a['nocache']
+    res=a['response']
     @recv= res ? @ddb.select_id('rspselect',res) : nil
     @cmd.par=cmdary.clone
     @rsp.par=cmdary
@@ -48,7 +50,7 @@ class Dev
 
   def getcmd
     return unless @send
-    if cmd=@cmdcache[@cid]
+    if ! @nocache && cmd=@cmdcache[@cid] 
       @v.msg{"Cmd cache found [#{@cid}]"}
       cmd
     else

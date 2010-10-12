@@ -19,7 +19,7 @@
         <data>SO</data>
         <eval encode="bew">$1</eval>
       </command>
-      <command id="outfld" label="OUTPUT from Field" type="action">
+      <command id="outfld" label="OUTPUT from Field" type="action" nocache="true">
         <data>SO</data>
         <eval encode="bew">${stat}</eval>
       </command>

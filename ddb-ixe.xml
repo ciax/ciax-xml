@@ -51,18 +51,15 @@
         <eval>$1</eval>
         <data>P21R</data>
       </command>
-      <command id="setp" label="Set pulse [1-6] [0-192000]" response="default" type="config">
+      <command id="setp" label="Set pulse [1-6]" response="default" type="config">
         <parameters>
           <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par label="[0-192000]">
-            <range>0:192000</range>
-          </par>
         </parameters>
         <eval>$1</eval>
         <data>P21S</data>
-        <eval>$2</eval>
+        <eval>${p:$1-1}</eval>
       </command>
       <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
         <parameters>
@@ -73,18 +70,15 @@
         <eval>$1</eval>
         <data>P14R</data>
       </command>
-      <command id="setspd" label="Set speed [1-6] [1-1000] (/1000 hps)" response="default" type="config">
+      <command id="setspd" label="Set speed [1-6]" response="default" type="config" nocache="true">
         <parameters>
           <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par label="[1-1000]">
-            <range>1:1000</range>
-          </par>
         </parameters>
         <eval>$1</eval>
         <data>P14S</data>
-        <eval>$2</eval>
+        <eval>${spd:$1-1}</eval>
       </command>
       <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
         <parameters>
@@ -95,18 +89,15 @@
         <eval>$1</eval>
         <data>P12R</data>
       </command>
-      <command id="setofs" label="Set offset [1-6] [0-4000]" response="default" type="config">
+      <command id="setofs" label="Set offset [1-6]" response="default" type="config" nocache="true">
         <parameters>
           <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par label="[0-4000]">
-            <range>0:4000</range>
-          </par>
         </parameters>
         <eval>$1</eval>
         <data>P12S</data>
-        <eval>$2</eval>
+        <eval>${ofs:$1-1}</eval>
       </command>
       <command id="act" label="Activate (Servo) All" response="default" type="action">
         <data>1MA 2MA 3MA 4MA 5MA 6MA</data>

@@ -21,11 +21,10 @@
         </repeat>
       </session>
       <session id="resume" label="Resume Pulses">
-        <repeat from="0" to="5">
+        <repeat from="1" to="6">
           <statement>
             <text>setp</text>
             <text>$_</text>
-            <text>${field:p:$_}</text>
           </statement>
         </repeat>
       </session>

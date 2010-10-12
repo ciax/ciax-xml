@@ -46,11 +46,10 @@
         </statement>
       </session>
       <session id="setp" label="Resume Pulses">
-        <repeat from="0" to="5">
+        <repeat from="1" to="6">
           <statement>
             <text>setp</text>
-            <eval>$_+1</eval>
-            <text>${field:p:$_}</text>
+            <eval>$_</eval>
           </statement>
         </repeat>
       </session>
@@ -62,20 +61,18 @@
         </repeat>
       </session>
       <session id="setspd" label="Resume Speed">
-        <repeat from="0" to="5">
+        <repeat from="1" to="6">
           <statement>
             <text>setspd</text>
-            <eval>$_+1</eval>
-            <text>${field:spd:$_}</text>
+            <eval>$_</eval>
           </statement>
         </repeat>
       </session>
       <session id="setofs" label="Resume Offset">
-        <repeat from="0" to="5">
+        <repeat from="1" to="6">
           <statement>
             <text>setofs</text>
-            <eval>$_+1</eval>
-            <text>${field:ofs:$_}</text>
+            <eval>$_</eval>
           </statement>
         </repeat>
       </session>

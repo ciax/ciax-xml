@@ -16,7 +16,8 @@ cdb//session@id -> never use ':'
 
  $1..9
     description : substitute parameters
-    usable: ddb//response/array/index
+    usable: ddb//cmdframe/eval
+            ddb//response/array/index
             --
             cdb//session/statement/eval
             --

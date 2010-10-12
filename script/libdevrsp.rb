@@ -37,9 +37,42 @@ class DevRsp
 
   def par=(ary)
     @cs.par=ary
-   end
+  end
+
+  def init_field
+    @v.msg(1){"Field:Initialize"}
+    @ddb['rspselect'].each_element{ |e| # response
+      e.each_element{|f| #field|array|vefiry
+        assign=f.attributes['assign'] || next
+        case f.name
+        when 'field'
+          @v.msg{"Field:Init Field[#{assign}]"}
+          @cs.stat[assign]=yield
+        when 'array'
+          @v.msg{"Field:Init Array[#{assign}]"}
+          sary=[]
+          f.each_element{ |d|
+            sary << d.attributes['size'].to_i
+          }
+          @cs.stat[assign]=init_array(sary){yield}
+        end
+      }
+    }
+    @v.msg(-1){}
+  end
 
   private
+  def init_array(sary,field=nil)
+    return yield if sary.empty?
+    a=field||[]
+    sad=sary.dup
+    size=sad.shift
+    size.times{|i|
+      a[i]=init_array(sad,a[i]){yield}
+    }
+    a
+  end
+
   def setframe(e)
     e.each_element { |c|
       a=c.attributes

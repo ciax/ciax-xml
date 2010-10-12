@@ -16,8 +16,8 @@
         <data>1P03S1 2P03S1 3P03S1 4P03S1 5P03S1 6P03S1</data>
       </command>
       <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
-        <parameters label="[1-6]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
         </parameters>
@@ -25,8 +25,8 @@
         <data>=N</data>
       </command>
       <command id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
-        <parameters label="[1-6]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
         </parameters>
@@ -34,8 +34,8 @@
         <data>=E</data>
       </command>
       <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
-        <parameters label="[1-6]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
         </parameters>
@@ -43,8 +43,8 @@
         <data>=H</data>
       </command>
       <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
-        <parameters label="[1-6]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
         </parameters>
@@ -52,11 +52,11 @@
         <data>P21R</data>
       </command>
       <command id="setp" label="Set pulse [1-6] [0-192000]" response="default" type="config">
-        <parameters label="[1-6] [0-192000]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par>
+          <par label="[0-192000]">
             <range>0:192000</range>
           </par>
         </parameters>
@@ -65,8 +65,8 @@
         <eval>$2</eval>
       </command>
       <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
-        <parameters label="[1-6]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
         </parameters>
@@ -74,11 +74,11 @@
         <data>P14R</data>
       </command>
       <command id="setspd" label="Set speed [1-6] [1-1000] (/1000 hps)" response="default" type="config">
-        <parameters label="[1-6] [1-1000]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par>
+          <par label="[1-1000]">
             <range>1:1000</range>
           </par>
         </parameters>
@@ -87,8 +87,8 @@
         <eval>$2</eval>
       </command>
       <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
-        <parameters label="[1-6]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
         </parameters>
@@ -96,11 +96,11 @@
         <data>P12R</data>
       </command>
       <command id="setofs" label="Set offset [1-6] [0-4000]" response="default" type="config">
-        <parameters label="[1-6] [0-4000]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par>
+          <par label="[0-4000]">
             <range>0:4000</range>
           </par>
         </parameters>
@@ -118,8 +118,8 @@
         <data>1S 2S 3S 4S 5S 6S</data>
       </command>
       <command id="init" label="Initialize [1-6]" response="default" type="action">
-        <parameters label="[1-6]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
         </parameters>
@@ -127,11 +127,11 @@
         <data>0</data>
       </command>
       <command id="fw" label="Move forward (8000/hole)" response="default" type="action">
-        <parameters label="[1-6] [0-19200]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par>
+          <par label="[0-19200]">
             <range>0:19200</range>
           </par>
         </parameters>
@@ -140,11 +140,11 @@
         <eval>$2</eval>
       </command>
       <command id="bk" label="Move backward (8000/hole)" response="default" type="action">
-        <parameters label="[1-6] [0-19200]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par>
+          <par label="[0-19200]">
             <range>0:19200</range>
           </par>
         </parameters>
@@ -153,11 +153,11 @@
         <eval>$2</eval>
       </command>
       <command id="abs" label="Move absolute pos [19200-28400] (8000/hole)" response="default" type="action">
-        <parameters label="[1-6] [0-19200]">
-          <par>
+        <parameters>
+          <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par>
+          <par label="[0-19200]">
             <range>19200:28400</range>
           </par>
         </parameters>
@@ -179,32 +179,32 @@
       </response>
       <response id="chkrun">
         <array assign="run">
-          <index>$1-1</index>
+          <index size="6">$1-1</index>
         </array>
       </response>
       <response id="chkems">
         <array assign="ems">
-          <index>$1-1</index>
+          <index size="6">$1-1</index>
         </array>
       </response>
       <response id="chkpse">
         <array assign="pse">
-          <index>$1-1</index>
+          <index size="6">$1-1</index>
         </array>
       </response>
       <response id="getp">
         <array assign="p">
-          <index>$1-1</index>
+          <index size="6">$1-1</index>
         </array>
       </response>
       <response id="getspd">
         <array assign="spd">
-          <index>$1-1</index>
+          <index size="6">$1-1</index>
         </array>
       </response>
       <response id="getofs">
         <array assign="ofs">
-          <index>$1-1</index>
+          <index size="6">$1-1</index>
         </array>
       </response>
       <response id="default" />

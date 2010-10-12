@@ -21,14 +21,16 @@ class Dev
     @cmdcache=Hash.new
     @fd=IoFile.new("field_#{id}")
     @cs=ConvStr.new(@v)
+    @rsp=DevRsp.new(@ddb,@cs)
+    @cmd=DevCmd.new(@ddb,@cs)
     begin
       @cs.stat=@fd.load_stat
     rescue
       warn $!
-      @cs.stat={'device'=>@ddb['id'] }
+      @rsp.init_field{''}
+      @cs.stat['device']=@ddb['id']
     end
-    @rsp=DevRsp.new(@ddb,@cs)
-    @cmd=DevCmd.new(@ddb,@cs)
+    @field=@cs.stat
   end
 
   def setcmd(line)
@@ -68,6 +70,12 @@ class Dev
 
   def load(key=nil,tag='default')
     @cs.stat.update(@fd.load_stat("_#{key}_#{tag}"))
+  end
+
+  def setfld(key,val=nil)
+    h=@cs.acc_stat(key)
+    h.replace(val) if val
+    h
   end
 
 end

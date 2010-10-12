@@ -17,8 +17,8 @@
         <data encode="lew" label="Data Length">52</data>
       </command>
       <command id="set_tag" label="Set Tag to Run [1-12,98,99]" response="cmdrsp" type="config">
-        <parameters label="[1-12,98,99]">
-          <par label="Data">
+        <parameters>
+          <par label="[1-12,98,99]">
             <range>1:12</range>
             <range>98</range>
             <range>99</range>
@@ -32,8 +32,8 @@
         <eval encode="lew">$1</eval>
       </command>
       <command id="set_pos" label="Set Pos to Jack [1-5]" response="cmdrsp" type="config">
-        <parameters label="[1-5]">
-          <par label="Data">
+        <parameters>
+          <par label="[1-5]">
             <range>1:5</range>
           </par>
         </parameters>
@@ -45,8 +45,8 @@
         <eval encode="lew">1 &lt;&lt; ($1-1)</eval>
       </command>
       <command id="start" label="Start Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
-        <parameters label="[1,256,32768]">
-          <par label="Data">
+        <parameters>
+          <par label="[1,256,32768]">
             <range>1</range>
             <range>256</range>
             <range>32768</range>
@@ -60,8 +60,8 @@
         <eval encode="lew">$1</eval>
       </command>
       <command id="stop" label="Stop Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" response="cmdrsp" type="action">
-        <parameters label="[0-7]">
-          <par label="Data">
+        <parameters>
+          <par label="[0-7]">
             <range>0:7</range>
           </par>
         </parameters>
@@ -84,7 +84,7 @@
         <data encode="lew" label="Data">0</data>
       </command>
       <command id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
-        <parameters label="[0-5] [0-3]">
+        <parameters>
           <par label="Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm">
             <range>0:5</range>
           </par>
@@ -100,7 +100,7 @@
         <data encode="lew" label="Data Length">0x2ch</data>
       </command>
       <command id="set_tbl" label="Set Jack Table [Tag=0-5] [JK=0-3] n,n,n..(44)" response="cmdrsp" type="config">
-        <parameters label="[0-5] [0-3] [n,n,n,...(44)]">
+        <parameters>
           <par label="Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm">
             <range>0:5</range>
           </par>
@@ -120,8 +120,8 @@
         <csv encode="lew">$3</csv>
       </command>
       <command id="rw_tbl" label="Read/Write Jack Table [1=Read,2=Write]" response="cmdrsp" type="config">
-        <parameters label="[1,2]">
-          <par label="Data">
+        <parameters>
+          <par label="[1,2]">
             <range>0:2</range>
           </par>
         </parameters>
@@ -155,15 +155,15 @@
       </response>
       <response id="getstat">
         <array assign="x" decode="lew" length="2">
-          <index>0:51</index>
+          <index size="52">0:51</index>
         </array>
       </response>
       <response id="cmdrsp" label="command resp" />
       <response id="get_tbl">
         <array assign="t" decode="lew" length="2">
-          <index>$1</index>
-          <index>$2</index>
-          <index>0:43</index>
+          <index size="6">$1</index>
+          <index size="4">$2</index>
+          <index size="44">0:43</index>
         </array>
       </response>
     </rspselect>

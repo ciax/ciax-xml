@@ -212,7 +212,15 @@
   <!--Field Elements-->
   <xsd:element name="assign" type="xsd:string"></xsd:element>
   <xsd:element name="verify" type="xsd:string"></xsd:element>
-  <xsd:element name="index" type="xsd:string"></xsd:element>
+  <xsd:element name="index">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="size" type="xsd:int" use="required" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
   <!--Response Select-->
   <xsd:element name="rspselect">
     <xsd:complexType>

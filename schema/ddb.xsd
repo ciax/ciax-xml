@@ -109,11 +109,6 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!--Command Elements-->
-  <xsd:attributeGroup name="cmd_attr">
-    <xsd:attribute name="label" type="xsd:string" />
-    <xsd:attribute name="encode" type="ddb:codec"></xsd:attribute>
-    <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
-  </xsd:attributeGroup>
   <xsd:group name="cmd_elem">
     <xsd:choice>
       <xsd:element ref="ddb:data" />
@@ -124,7 +119,9 @@
   <xsd:complexType name="cmd_type">
     <xsd:simpleContent>
       <xsd:extension base="xsd:string">
-        <xsd:attributeGroup ref="ddb:cmd_attr" />
+        <xsd:attribute name="label" type="xsd:string" />
+        <xsd:attribute name="encode" type="ddb:codec"></xsd:attribute>
+        <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>

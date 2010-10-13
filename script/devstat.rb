@@ -12,6 +12,5 @@ rescue RuntimeError
 end
 ary=gets.split("\t")
 time=Time.at(ary.shift.to_f)
-abort("CID mismatch") if 'rcv:'+c.cid !=  ary.shift
+abort("Input CID mismatch") if 'rcv:'+c.cid !=  ary.shift
 print Marshal.dump c.setrsp(time){ eval(ary.shift) }
-

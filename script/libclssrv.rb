@@ -35,7 +35,7 @@ class ClsSrv < Hash
     when 'stat'
       yield @cdb.stat
     when 'set'
-      @ddb.setfld(cmdary)
+      @ddb.set(cmdary)
     when 'auto'
       auto_upd(cmdary)
     when 'save'
@@ -73,7 +73,7 @@ class ClsSrv < Hash
         cmd=@q.shift
         @var[:issue]='*'
         begin
-          @ddb.setcmd(cmd) || @ddb.devcom
+          @ddb.devcom(cmd)
           @cdb.get_stat(@ddb.field)
         rescue
           @errmsg << e2s

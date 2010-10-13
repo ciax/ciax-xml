@@ -34,7 +34,7 @@ class Cls < Hash
     ca=line.split(/[: ]/)
     @session=@cdb.select_id('commands',ca.shift)
     @cs.par=ca
-    @v.msg{"Exec(CDB):#{@session.attributes['label']}"}
+    @v.msg{"CMD:Exec(CDB):#{@session.attributes['label']}"}
     line
   rescue
     raise "== Command List ==\n#{$!}"
@@ -86,17 +86,20 @@ class Cls < Hash
 
   def get_cmd(e) # //statement
     argv=[]
-    e.each_element{|d| # //argv
-      str=@cs.sub_var(d.text)
+    @v.msg(1){"CMD:GettingCmd(DDB)"}
+    e.each_element{|d| # //text or formula
       case d.name
+      when 'text'
+        str=d.text
+        @v.msg{"CMD:GetText [#{str}]"}
       when 'eval'
-        str=format(d,eval(str))
+        str=format(d,eval(@cs.sub_var(d.text)))
+        @v.msg{"CMD:Evaluated [#{str}]"}
       end
-      @v.msg{"CMD:Evaluated [#{str}]"}
       argv << str
     }
     cmd = argv.join(' ')
-    @v.msg{"Exec(DDB):[#{cmd}]"}
+    @v.msg(-1){"CMD:Exec(DDB):[#{cmd}]"}
     cmd
   end
 

@@ -14,7 +14,7 @@ class ConvStr
     fmt=a['format'] || '%d'
     counter=a['counter'] || '_'
     counter.next! while @var[counter]
-    @v.msg(1){"Repeat:Counter[\$#{counter}]:Range[#{a['from']}]-[#{a['to']}]:Format[#{fmt}]"}
+    @v.msg(1){"Repeat:Counter[\$#{counter}]/Range[#{a['from']}-#{a['to']}]/Format[#{fmt}]"}
     @first=true
     Range.new(a['from'],a['to']).each { |n|
       @var[counter]=fmt % n
@@ -33,11 +33,10 @@ class ConvStr
   def sub_var(str)
     return str unless /\$/ === str
     @v.msg(1){"Substitute from [#{str}]"}
-    h=@var.clone
-    str=str.gsub(/\$([_`\w])[\W]/){ h[$1] }
+    # Sub $key => @var[key]
+    str=str.gsub(/\$([\w]+)/){ @var[$1] }
     # Sub ${key1:key2:idx} => hash[key1][key2][idx]
     # output csv if array
-    str=str.gsub(/\$([:\w]+)/){"\${#{$1}}"}
     h=@stat.clone
     str=str.gsub(/\$\{(.+)\}/) {
       [*acc_stat($1)].join(',')

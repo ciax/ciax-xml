@@ -9,13 +9,16 @@
       </session>
       <session id="setlmt" label="Set Limit 20V/5A/100W">
         <statement>
-          <text>setvl 20</text>
+          <text>setvl</text>
+          <text>20</text>
         </statement>
         <statement>
-          <text>setal 5</text>
+          <text>setal</text>
+          <text>5</text>
         </statement>
         <statement>
-          <text>setpl 100</text>
+          <text>setpl</text>
+          <text>100</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -28,7 +31,8 @@
           </par>
         </parameters>
         <statement>
-          <text>setv $1</text>
+          <text>setv</text>
+          <eval>$1</eval>
         </statement>
         <statement>
           <text>getstat</text>
@@ -41,7 +45,7 @@
           </par>
         </parameters>
         <statement>
-          <text>setv %5.2f</text>
+          <text>setv</text>
           <eval format="%5.2f">Math.sqrt($1*26)</eval>
         </statement>
         <statement>

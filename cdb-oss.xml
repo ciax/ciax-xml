@@ -34,7 +34,8 @@
       </session>
       <session id="request" label="Start TCP Status Request">
         <statement>
-          <text>config 1A1011</text>
+          <text>config</text>
+          <text>1A1011</text>
         </statement>
       </session>
       <session id="startup" label="Start Up CIAX operation">
@@ -42,12 +43,14 @@
           <text>login</text>
         </statement>
         <statement label="TSC Only Mode(CIAX Mode)">
-          <text>config 1A1008TSCONLY</text>
+          <text>config</text>
+          <text>1A1008TSCONLY</text>
         </statement>
       </session>
       <session id="shutdown" label="Shutdown CIAX operation">
         <statement label="TSC Primaly Mode">
-          <text>config 1A1008TSCPRI%</text>
+          <text>config</text>
+          <text>1A1008TSCPRI%</text>
         </statement>
         <statement>
           <text>logout</text>
@@ -55,17 +58,20 @@
       </session>
       <session id="moircs" label="Set IID MOIRCS">
         <statement>
-          <text>setinst 12</text>
+          <text>setinst</text>
+          <text>12</text>
         </statement>
       </session>
       <session id="focas" label="Set IID FOCAS">
         <statement>
-          <text>setinst 5</text>
+          <text>setinst</text>
+          <text>5</text>
         </statement>
       </session>
       <session id="comics" label="Set IID COMICS">
         <statement>
-          <text>setinst 7</text>
+          <text>setinst</text>
+          <text>7</text>
         </statement>
       </session>
     </commands>

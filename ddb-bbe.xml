@@ -6,10 +6,6 @@
       <command id="getstat" label="Get Status" response="getstat" type="stat">
         <data>RD</data>
       </command>
-      <command id="defio" label="DEFINE IN/OUT" type="config">
-        <data>SD</data>
-        <data encode="bew" label="msb">0x1111</data>
-      </command>
       <command id="output" label="OUTPUT [DDDDD]" type="action">
         <parameters>
           <par label="[0-65535]">

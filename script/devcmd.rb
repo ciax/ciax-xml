@@ -5,7 +5,7 @@ warn "Usage: devcmd [dev] [cmd] (par)" if ARGV.size < 1
 
 begin
   c=Dev.new(ARGV.shift,ENV['obj'])
-  c.setcmd(ARGV.join(' '))
+  c.setcmd(ARGV)
   print c.getcmd
 rescue RuntimeError
   abort $!.to_s

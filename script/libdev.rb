@@ -33,8 +33,7 @@ class Dev
     @field=@cs.stat
   end
 
-  def setcmd(line)
-    cmdary=line.split(' ').compact
+  def setcmd(cmdary)
     @cid=cmdary.join(':')
     cmd=cmdary.shift
     @xpsend=@ddb.select_id('cmdselect',cmd)
@@ -76,16 +75,17 @@ class DevCom < Dev
 
   def devcom(line)
     cmdary=line.split(' ').compact
-    case cmd=cmdary.shift
+    par=cmdary.dup
+    case par.shift
     when 'set'
-      set(cmdary)
+      set(par)
     when 'load'
-      load(*cmdary)
+      load(*par)
     when 'save'
-      save(*cmdary)
+      save(*par)
     else
       begin
-        setcmd(line)
+        setcmd(cmdary)
       rescue
         msg=["== Command List =="]
         msg << $!.to_s

@@ -47,7 +47,7 @@ class DevCmd
         str=c.text
         @v.msg{"GetFrame:#{a['label']}[#{str}]"}
         frame << encode(c,str)
-      when 'eval'
+      when 'formula'
         str=eval(@cs.sub_var(c.text)).to_s
         @v.msg{"GetFrame:(calculated)[#{str}]"}
         frame << encode(c,str)

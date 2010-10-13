@@ -17,11 +17,11 @@
           </par>
         </parameters>
         <data>SO</data>
-        <eval encode="bew">$1</eval>
+        <formula encode="bew">$1</formula>
       </command>
       <command id="outfld" label="OUTPUT from Field" type="action" nocache="true">
         <data>SO</data>
-        <eval encode="bew">${stat}</eval>
+        <formula encode="bew">${stat}</formula>
       </command>
     </cmdselect>
     <cmdframe>

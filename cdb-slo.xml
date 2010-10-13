@@ -15,7 +15,7 @@
         <repeat from="1" to="5">
           <statement>
             <text>in</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
           </statement>
         </repeat>
       </session>

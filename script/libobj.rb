@@ -95,7 +95,7 @@ class Obj < Hash
     e.each_element{|d| # //argv
       str=@cs.sub_var(d.text)
       case d.name
-      when 'eval'
+      when 'formula'
         str=format(d,eval(str))
       end
       ary << str

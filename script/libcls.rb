@@ -92,9 +92,9 @@ class Cls < Hash
       when 'text'
         str=d.text
         @v.msg{"CMD:GetText [#{str}]"}
-      when 'eval'
+      when 'formula'
         str=format(d,eval(@cs.sub_var(d.text)))
-        @v.msg{"CMD:Evaluated [#{str}]"}
+        @v.msg{"CMD:Calculated [#{str}]"}
       end
       argv << str
     }

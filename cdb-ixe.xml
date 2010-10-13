@@ -9,19 +9,19 @@
         <repeat from="1" to="6">
           <statement>
             <text>chkrun</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
           </statement>
           <statement>
             <text>getp</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
           </statement>
           <statement>
             <text>getspd</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
           </statement>
           <statement>
             <text>getofs</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
           </statement>
         </repeat>
       </session>
@@ -33,11 +33,11 @@
         </parameters>
         <statement>
           <text>chkrun</text>
-          <eval>$_</eval>
+          <formula>$_</formula>
         </statement>
         <statement>
           <text>getp</text>
-          <eval>$_</eval>
+          <formula>$_</formula>
         </statement>
       </session>
       <session id="sysinit" label="System Initialize">
@@ -55,7 +55,7 @@
         <repeat from="1" to="6">
           <statement>
             <text>setp</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
           </statement>
         </repeat>
       </session>
@@ -63,7 +63,7 @@
         <repeat from="1" to="6">
           <statement>
             <text>setp</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
             <text>0</text>
           </statement>
         </repeat>
@@ -72,7 +72,7 @@
         <repeat from="1" to="6">
           <statement>
             <text>setspd</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
           </statement>
         </repeat>
       </session>
@@ -80,7 +80,7 @@
         <repeat from="1" to="6">
           <statement>
             <text>setofs</text>
-            <eval>$_</eval>
+            <formula>$_</formula>
           </statement>
         </repeat>
       </session>
@@ -95,8 +95,8 @@
         </parameters>
         <statement>
           <text>fw</text>
-          <eval>$1</eval>
-          <eval>$2 * 8000</eval>
+          <formula>$1</formula>
+          <formula>$2 * 8000</formula>
         </statement>
       </session>
       <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
@@ -110,8 +110,8 @@
         </parameters>
         <statement>
           <text>bk</text>
-          <eval>$1</eval>
-          <eval>$2 * 8000</eval>
+          <formula>$1</formula>
+          <formula>$2 * 8000</formula>
         </statement>
       </session>
     </commands>

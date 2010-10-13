@@ -19,7 +19,7 @@
       <session id="start_jak" label="Jacking Start">
         <statement>
           <text>start</text>
-          <eval>0x100</eval>
+          <formula>0x100</formula>
         </statement>
       </session>
       <session id="clear_trg" label="Jacking Start">
@@ -67,8 +67,8 @@
           <repeat counter="j" from="0" to="3">
             <statement>
               <text>get_tbl</text>
-              <eval>$t</eval>
-              <eval>$j</eval>
+              <formula>$t</formula>
+              <formula>$j</formula>
             </statement>
           </repeat>
         </repeat>
@@ -78,8 +78,8 @@
           <repeat counter="j" from="0" to="3">
             <statement>
               <text>set_tbl</text>
-              <eval>$t</eval>
-              <eval>$j</eval>
+              <formula>$t</formula>
+              <formula>$j</formula>
             </statement>
           </repeat>
         </repeat>

@@ -117,7 +117,7 @@
   <xsd:group name="cmd_elem">
     <xsd:choice>
       <xsd:element ref="ddb:data" />
-      <xsd:element ref="ddb:eval" />
+      <xsd:element ref="ddb:formula" />
       <xsd:element ref="ddb:csv" />
     </xsd:choice>
   </xsd:group>
@@ -129,7 +129,7 @@
     </xsd:simpleContent>
   </xsd:complexType>
   <xsd:element name="data" type="ddb:cmd_type"></xsd:element>
-  <xsd:element name="eval" type="ddb:cmd_type"></xsd:element>
+  <xsd:element name="formula" type="ddb:cmd_type"></xsd:element>
   <xsd:element name="csv" type="ddb:cmd_type"></xsd:element>
   <!--Command Select-->
   <xsd:element name="cmdselect">

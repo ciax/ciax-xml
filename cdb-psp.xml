@@ -32,7 +32,7 @@
         </parameters>
         <statement>
           <text>setv</text>
-          <eval>$1</eval>
+          <formula>$1</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -46,7 +46,7 @@
         </parameters>
         <statement>
           <text>setv</text>
-          <eval format="%5.2f">Math.sqrt($1*26)</eval>
+          <formula format="%5.2f">Math.sqrt($1*26)</formula>
         </statement>
         <statement>
           <text>getstat</text>

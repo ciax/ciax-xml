@@ -34,9 +34,10 @@ class ConvStr
     return str unless /\$/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     h=@var.clone
-    str=str.gsub(/\$([_`\w])/){ h[$1] }
+    str=str.gsub(/\$([_`\w])[\W]/){ h[$1] }
     # Sub ${key1:key2:idx} => hash[key1][key2][idx]
     # output csv if array
+    str=str.gsub(/\$([:\w]+)/){"\${#{$1}}"}
     h=@stat.clone
     str=str.gsub(/\$\{(.+)\}/) {
       [*acc_stat($1)].join(',')
@@ -51,13 +52,12 @@ class ConvStr
 
   def acc_stat(key)
     h=@stat
-    if key
-      key.split(':').each {|i|
-        @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
-        i=eval(i) if Array === h
-        h=h[i]||raise("No such Value")
-      }
-    end
+    return h unless key
+    key.split(':').each {|i|
+      @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
+      i=eval(i) if Array === h
+      h=h[i]||raise("No such Value")
+    }
     h
   end
 

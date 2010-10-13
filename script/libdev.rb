@@ -36,16 +36,34 @@ class Dev
   def setcmd(line)
     cmdary=line.split(' ').compact
     @cid=cmdary.join(':')
-    @send=@ddb.select_id('cmdselect',cmdary.shift)
-    a=@send.attributes
-    @v.msg{'Select:'+a['label']}
-    @nocache=a['nocache']
-    res=a['response']
-    @recv= res ? @ddb.select_id('rspselect',res) : nil
-    @cmd.par=cmdary.clone
-    @rsp.par=cmdary
-  rescue
-    raise "== Command List ==\n#{$!}"
+    case cmd=cmdary.shift
+    when 'set'
+      setfld(cmdary)
+    when 'load'
+      load(*cmdary)
+    when 'save'
+      save(*cmdary)
+    else
+      begin
+        @send=@ddb.select_id('cmdselect',cmd)
+      rescue
+        msg=["== Command List =="]
+        msg << $!.to_s
+        msg << "== Data Handling =="
+        msg << " set       : Set Value  [key(:index)=val]"
+        msg << " load      : Load Field [key] (tag)"
+        msg << " save      : Save Field [key] (tag)"
+        raise msg.join("\n")
+      end
+      a=@send.attributes
+      @v.msg{'Select:'+a['label']}
+      @nocache=a['nocache']
+      res=a['response']
+      @recv= res ? @ddb.select_id('rspselect',res) : nil
+      @cmd.par=cmdary.clone
+      @rsp.par=cmdary
+      return
+    end
   end
 
   def getcmd
@@ -66,18 +84,30 @@ class Dev
   end
 
   def save(key=nil,tag='default')
-    @cs.stat[key] || raise("save #{@cs.stat.keys} [tag]")
+    @cs.stat[key] || raise(["== Key List =="," #{@cs.stat.keys}"].join("\n"))
     @fd.save_stat({ key => @cs.stat[key] },"_#{key}_#{tag}")
   end
 
   def load(key=nil,tag='default')
     @cs.stat.update(@fd.load_stat("_#{key}_#{tag}"))
   end
-
-  def setfld(key,val=nil)
-    h=@cs.acc_stat(key)
-    h.replace(val) if val
-    h
+  
+  def setfld(cmdary)
+    if cmdary.empty?
+      msg=["== option list =="]
+      msg << " key(:idx)  : Show Value"
+      msg << " key(:idx)= : Set Value"
+      msg << " key=#{@cs.stat.keys}"
+      raise msg.join("\n")
+    end
+    list=[]
+    cmdary.each{|e|
+      key,val=e.split('=')
+      h=@cs.acc_stat(key)
+      h.replace(eval(@cs.sub_var(val)).to_s) if val
+      list << "#{key}=#{h}"
+    }
+    list
   end
 
 end

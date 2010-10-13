@@ -51,7 +51,7 @@
         <eval>$1</eval>
         <data>P21R</data>
       </command>
-      <command id="setp" label="Set pulse [1-6]" response="default" type="config">
+      <command id="setp" label="Set pulse [1-6]" response="default" type="config" nocache="true">
         <parameters>
           <par label="[1-6]">
             <range>1:6</range>

@@ -10,7 +10,7 @@ begin
   cdb=Cls.new(cls,ENV['obj'])
   cdb.get_stat(Marshal.load(gets(nil)))
   ENV['VER']="#{ENV['VER']}:exec"
-  cdb.getcmd(cmd){}
+  cdb.session(cmd){}
 rescue RuntimeError
   abort $!.to_s
 end

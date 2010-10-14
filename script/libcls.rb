@@ -31,7 +31,7 @@ class Cls < Hash
   
   public
 
-  def getcmd(line)
+  def session(line)
     ca=line.split(/[: ]/)
     @session=@cdb.select_id('commands',ca.shift)
   rescue

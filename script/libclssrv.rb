@@ -35,7 +35,8 @@ class ClsSrv < Hash
     when 'stat'
       yield @cdb.stat
     when 'set'
-      @ddb.set(cmdary)
+      @cdb.get_stat(stat=@ddb.set(cmdary))
+      stat
     when 'save'
       yield @cdb.get_stat(@ddb.save(*cmdary))
     when 'load'
@@ -44,7 +45,7 @@ class ClsSrv < Hash
       auto_upd(cmdary)
     else
       begin
-        @cdb.getcmd(line) {|cmd| @q.push(cmd)}
+        @cdb.session(line) {|cmd| @q.push(cmd)}
       rescue
         raise $! unless /^==/ === $!.to_s
         msg=[$!.to_s]

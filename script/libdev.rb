@@ -80,9 +80,9 @@ class DevCom < Dev
     when 'set'
       set(par)
     when 'load'
-      load(*par)
+      load(par)
     when 'save'
-      save(*par)
+      save(par)
     else
       begin
         setcmd(cmdary)
@@ -118,13 +118,14 @@ class DevCom < Dev
     stat
   end
 
-  def load(key=nil,tag='default')
-    @cs.stat.update(@fd.load_stat("_#{key}_#{tag}"))
+  def load(id)
+    @cs.stat.update(@fd.load_stat(id))
   end
  
-  def save(key=nil,tag='default')
+  def save(id)
+    key=id.first
     if stat=@cs.stat[key]
-      @fd.save_stat({ key => stat },"_#{key}_#{tag}")
+      @fd.save_stat({ key => stat },id)
     else
       msg=["== Key List =="]
       msg << " #{@cs.stat.keys}"

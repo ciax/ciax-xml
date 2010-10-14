@@ -14,20 +14,22 @@ class IoFile
     @logfile=@type+'_'+Time.now.year.to_s
   end
 
-  def save_stat(stat,suffix='')
-    raise("Not valid charactors") unless suffix == '' || /^[\w]+$/ === suffix
-    fname=VarDir+"/#{@type}#{suffix}.mar"
+  def save_stat(stat,suffix=[])
+    raise("Not valid charactors") unless suffix.all?{|s| /^[\w]*$/ === s }
+    base=[@type,*suffix].join('_')
+    fname=VarDir+"/#{base}.mar"
     open(fname,'w') {|f|
-      @v.msg{"Status Saving for [#{@type}#{suffix}]"}
+      @v.msg{"Status Saving for [#{base}]"}
       f << Marshal.dump(stat)
     }
     stat
   end
 
-  def load_stat(suffix='')
-    @v.msg{"Status Loading for [#{@type}#{suffix}]"}
-    fname=VarDir+"/#{@type}#{suffix}.mar"
-    raise(list_stat) unless suffix == '' || FileTest.exist?(fname)
+  def load_stat(suffix=[])
+    base=[@type,*suffix].join('_')
+    @v.msg{"Status Loading for [#{base}]"}
+    fname=VarDir+"/#{base}.mar"
+    raise(list_stat) unless suffix == [] || FileTest.exist?(fname)
     stat=Marshal.load(IO.read(fname))
     raise "No status in File" unless stat
     @v.msg{stat.inspect}
@@ -59,19 +61,19 @@ class IoFile
     stat
   end
 
-  def save_frame(frame,id=nil)
-    name=id ? @type+'_'+id.tr(':','_') : @type
-    open(VarDir+"/#{name}.bin",'w') {|f|
-      @v.msg{"Frame Saving for [#{name}]"}
+  def save_frame(frame,suffix=[])
+    base=[@type,*suffix].compact.join('_')
+    open(VarDir+"/#{base}.bin",'w') {|f|
+      @v.msg{"Frame Saving for [#{base}]"}
       f << frame
     }
     frame
   end
 
-  def load_frame(id=nil)
-    name=id ? @type+'_'+id.tr(':','_') : @type
-    @v.msg{"Raw Status Loading for [#{name}]"}
-    frame=IO.read(VarDir+"/#{name}.bin")
+  def load_frame(suffix=[])
+    base=[@type,*suffix].compact.join('_')
+    @v.msg{"Raw Status Loading for [#{base}]"}
+    frame=IO.read(VarDir+"/#{base}.bin")
     raise "No frame in File" unless frame
     @v.msg{frame.dump}
     frame

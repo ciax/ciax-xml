@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+!/usr/bin/ruby
 require "libxmldoc"
 require "libiocmd"
 require "libiofile"
@@ -80,9 +80,9 @@ class DevCom < Dev
     when 'set'
       set(par)
     when 'load'
-      load(par)
+      load(par.shift)
     when 'save'
-      save(par)
+      save(*par)
     else
       begin
         setcmd(cmdary)
@@ -90,9 +90,9 @@ class DevCom < Dev
         msg=["== Command List =="]
         msg << $!.to_s
         msg << "== Data Handling =="
-        msg << " set       : Set Value  [key(:index)=val]"
-        msg << " load      : Load Field [key] (tag)"
-        msg << " save      : Save Field [key] (tag)"
+        msg << " set       : Set Value  [key(:idx)(=val)] ..."
+        msg << " load      : Load Field (tag)"
+        msg << " save      : Save Field [key,key...] (tag)"
         raise msg.join("\n")
       end
       @ic.snd(getcmd,'snd:'+@cid)
@@ -108,6 +108,7 @@ class DevCom < Dev
       msg << " key=#{@cs.stat.keys}"
       raise msg.join("\n")
     end
+    @v.msg{"CMD:set[#{cmdary}]"}
     stat={}
     cmdary.each{|e|
       key,val=e.split('=')
@@ -118,19 +119,18 @@ class DevCom < Dev
     stat
   end
 
-  def load(id)
-    @cs.stat.update(@fd.load_stat(id))
+  def load(tag)
+    @cs.stat.update(@fd.load_stat(tag))
   end
  
-  def save(id)
-    key=id.first
-    if stat=@cs.stat[key]
-      @fd.save_stat({ key => stat },id)
-    else
-      msg=["== Key List =="]
-      msg << " #{@cs.stat.keys}"
-      raise msg.join("\n")
-    end
+  def save(keys=nil,tag='default')
+    raise("key=#{@cs.stat.keys}") unless keys
+    stat={}
+    keys.split(',').each{|k|
+      s=@cs.stat[k] || raise("No such key[#{k}]")
+      stat[k]=s
+    }
+    @fd.save_stat(stat,tag)
   end
 
 end

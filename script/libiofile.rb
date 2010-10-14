@@ -14,9 +14,9 @@ class IoFile
     @logfile=@type+'_'+Time.now.year.to_s
   end
 
-  def save_stat(stat,suffix=[])
-    raise("Not valid charactors") unless suffix.all?{|s| /^[\w]*$/ === s }
-    base=[@type,*suffix].join('_')
+  def save_stat(stat,tag=nil)
+    raise("Not valid charactors") unless /^[\w]*$/ === tag
+    base=[@type,tag].compact.join('_')
     fname=VarDir+"/#{base}.mar"
     open(fname,'w') {|f|
       @v.msg{"Status Saving for [#{base}]"}
@@ -25,11 +25,11 @@ class IoFile
     stat
   end
 
-  def load_stat(suffix=[])
-    base=[@type,*suffix].join('_')
+  def load_stat(tag=nil)
+    base=[@type,tag].compact.join('_')
     @v.msg{"Status Loading for [#{base}]"}
     fname=VarDir+"/#{base}.mar"
-    raise(list_stat) unless suffix == [] || FileTest.exist?(fname)
+    raise(list_stat) unless !tag || FileTest.exist?(fname)
     stat=Marshal.load(IO.read(fname))
     raise "No status in File" unless stat
     @v.msg{stat.inspect}
@@ -61,8 +61,8 @@ class IoFile
     stat
   end
 
-  def save_frame(frame,suffix=[])
-    base=[@type,*suffix].compact.join('_')
+  def save_frame(frame,tag=nil)
+    base=[@type,tag].compact.join('_')
     open(VarDir+"/#{base}.bin",'w') {|f|
       @v.msg{"Frame Saving for [#{base}]"}
       f << frame
@@ -70,8 +70,8 @@ class IoFile
     frame
   end
 
-  def load_frame(suffix=[])
-    base=[@type,*suffix].compact.join('_')
+  def load_frame(tag=nil)
+    base=[@type,tag].compact.join('_')
     @v.msg{"Raw Status Loading for [#{base}]"}
     frame=IO.read(VarDir+"/#{base}.bin")
     raise "No frame in File" unless frame

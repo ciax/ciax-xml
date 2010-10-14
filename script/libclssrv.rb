@@ -52,8 +52,7 @@ class ClsSrv < Hash
   private
   def session(line)
     return '' if line == ''
-    @cdb.setcmd(line)
-    @cdb.clscom {|cmd| @q.push(cmd)}
+    @cdb.getcmd(line) {|cmd| @q.push(cmd)}
     "Accepted"
   rescue
     raise $! unless /^==/ === $!.to_s

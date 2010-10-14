@@ -30,17 +30,15 @@ class Cls < Hash
   end
   
   public
-  def setcmd(line)
+
+  def getcmd(line)
     ca=line.split(/[: ]/)
     @session=@cdb.select_id('commands',ca.shift)
-    @cs.par=ca
-    @v.msg{"CMD:Exec(CDB):#{@session.attributes['label']}"}
-    line
   rescue
     raise "== Command List ==\n#{$!}"
-  end
-
-  def clscom
+  else
+    @cs.par=ca
+    @v.msg{"CMD:Exec(CDB):#{@session.attributes['label']}"}
     @session.each_element {|c|
       case c.name
       when 'parameters'

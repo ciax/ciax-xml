@@ -34,13 +34,6 @@ class ClsSrv < Hash
     case cmdary.shift
     when 'stat'
       yield @cdb.stat
-    when 'set'
-      @cdb.get_stat(stat=@ddb.set(cmdary))
-      stat
-    when 'save'
-      yield @cdb.get_stat(@ddb.save(*cmdary))
-    when 'load'
-      yield @cdb.get_stat(@ddb.load(*cmdary))
     when 'auto'
       auto_upd(cmdary)
     else
@@ -51,9 +44,6 @@ class ClsSrv < Hash
         msg=[$!.to_s]
         msg << "== Internal Command =="
         msg << " stat      : Show Status"
-        msg << " set ?     : Set Field [key(:index)(=val)]"
-        msg << " save ?    : Save Field [key] (tag)"
-        msg << " load ?    : Load Field [key] (tag)"
         msg << " auto ?    : Auto Update (opt)"
         raise msg.join("\n")
       end

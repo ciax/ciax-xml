@@ -51,14 +51,6 @@
           <text>initfactor</text>
         </statement>
       </session>
-      <session id="setp" label="Resume Pulses">
-        <repeat from="1" to="6">
-          <statement>
-            <text>setp</text>
-            <formula>$_</formula>
-          </statement>
-        </repeat>
-      </session>
       <session id="resetp" label="Set 0 Pulses">
         <repeat from="1" to="6">
           <statement>
@@ -68,16 +60,31 @@
           </statement>
         </repeat>
       </session>
-      <session id="setspd" label="Resume Speed">
+      <session id="shutdown" label="Backup Pulse,Speed,Offset">
+        <statement>
+          <text>save</text>
+          <text>p,spd,ofs</text>
+        </statement>
+        <statement>
+          <text>deact</text>
+        </statement>
+      </session>
+      <session id="resume" label="Resume Pulse,Speed,Offset">
+        <statement>
+          <text>act</text>
+        </statement>
+        <statement>
+          <text>load</text>
+        </statement>
         <repeat from="1" to="6">
+          <statement>
+            <text>setp</text>
+            <formula>$_</formula>
+          </statement>
           <statement>
             <text>setspd</text>
             <formula>$_</formula>
           </statement>
-        </repeat>
-      </session>
-      <session id="setofs" label="Resume Offset">
-        <repeat from="1" to="6">
           <statement>
             <text>setofs</text>
             <formula>$_</formula>

@@ -15,7 +15,6 @@ class IoFile
   end
 
   def save_stat(stat,tag=nil)
-    raise("Not valid charactors") unless /^[\w]*$/ === tag
     base=[@type,tag].compact.join('_')
     fname=VarDir+"/#{base}.mar"
     open(fname,'w') {|f|

@@ -27,8 +27,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} &amp; 0xfffe</formula>
+          <text>set</text>
+          <text>stat=${stat}&amp;0xfffe</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -39,8 +42,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} | 0x10</formula>
+          <text>set</text>
+          <text>stat=${stat}|0x10</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -51,8 +57,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} &amp; 0xffef</formula>
+          <text>set</text>
+          <text>stat=${stat}&amp;0xffef</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -63,8 +72,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} | 0x100</formula>
+          <text>set</text>
+          <text>stat=${stat}|0x100</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -75,8 +87,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} &amp; 0xfeff</formula>
+          <text>set</text>
+          <text>stat=${stat}&amp;0xfeff</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -87,8 +102,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} | 0x1000</formula>
+          <text>set</text>
+          <text>stat=${stat}|0x1000</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -99,8 +117,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} &amp; 0xefff</formula>
+          <text>set</text>
+          <text>stat=${stat}&amp;0xefff</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -111,8 +132,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} | 0x0011</formula>
+          <text>set</text>
+          <text>stat=${stat}|0x0011</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -123,8 +147,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} &amp; 0xffee</formula>
+          <text>set</text>
+          <text>stat=${stat}&amp;0xffee</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -135,8 +162,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} | 0x1100</formula>
+          <text>set</text>
+          <text>stat=${stat}|0x1100</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>
@@ -147,8 +177,11 @@
           <text>getstat</text>
         </statement>
         <statement>
-          <text>output</text>
-          <formula>${field:stat} &amp; 0xeeff</formula>
+          <text>set</text>
+          <text>stat=${stat}&amp;0xeeff</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
         </statement>
         <statement>
           <text>getstat</text>

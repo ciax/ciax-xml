@@ -73,8 +73,7 @@ class DevCom < Dev
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
   end
 
-  def devcom(line)
-    cmdary=line.split(' ').compact
+  def devcom(cmdary)
     par=cmdary.dup
     case par.shift
     when 'set'

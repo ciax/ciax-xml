@@ -25,21 +25,20 @@ class Cls < Hash
     @v=Verbose.new("cdb/#{id}".upcase)
     @field={}
     @cs=ConvStr.new(@v)
-    @cs.stat={'field'=>@field,'stat'=>@stat }
+    @cs.stat=@stat
     self.update(@cdb)
   end
   
   public
 
-  def session(line)
-    ca=line.split(/[: ]/)
-    @session=@cdb.select_id('commands',ca.shift)
+  def session(statement)
+    xpcmd=@cdb.select_id('commands',statement.shift)
   rescue
     raise "== Command List ==\n#{$!}"
   else
-    @cs.par=ca
-    @v.msg{"CMD:Exec(CDB):#{@session.attributes['label']}"}
-    @session.each_element {|c|
+    @cs.par=statement
+    @v.msg{"CMD:Exec(CDB):#{xpcmd.attributes['label']}"}
+    xpcmd.each_element {|c|
       case c.name
       when 'parameters'
         pary=@cs.par.clone
@@ -83,7 +82,7 @@ class Cls < Hash
   end
 
   def get_cmd(e) # //statement
-    argv=[]
+    statement=[]
     @v.msg(1){"CMD:GettingCmd(DDB)"}
     e.each_element{|d| # //text or formula
       case d.name
@@ -94,11 +93,10 @@ class Cls < Hash
         str=format(d,eval(@cs.sub_var(d.text)))
         @v.msg{"CMD:Calculated [#{str}]"}
       end
-      argv << str
+      statement << str
     }
-    cmd = argv.join(' ')
-    @v.msg(-1){"CMD:Exec(DDB):[#{cmd}]"}
-    cmd
+    @v.msg(-1){"CMD:Exec(DDB):#{statement}"}
+    statement
   end
 
   #Stat Methods

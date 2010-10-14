@@ -30,15 +30,15 @@ class ClsSrv < Hash
     resp=@errmsg.shift
     return resp if resp
     return '' if line.empty?
-    cmdary=line.split(' ')
-    case cmdary.shift
+    statement=line.split(' ')
+    case statement.first
     when 'stat'
       yield @cdb.stat
     when 'auto'
-      auto_upd(cmdary)
+      auto_upd(statement)
     else
       begin
-        @cdb.session(line) {|cmd| @q.push(cmd)}
+        @cdb.session(statement) {|cmd| @q.push(cmd)}
       rescue
         raise $! unless /^==/ === $!.to_s
         msg=[$!.to_s]
@@ -57,10 +57,10 @@ class ClsSrv < Hash
   def device_thread
     Thread.new {
       loop {
-        cmd=@q.shift
+        statement=@q.shift
         @var[:issue]='*'
         begin
-          @ddb.devcom(cmd)
+          @ddb.devcom(statement)
           @cdb.get_stat(@ddb.field)
         rescue
           @errmsg << e2s
@@ -71,10 +71,10 @@ class ClsSrv < Hash
     }
   end
 
-  def auto_upd(cmds)
-    str=''
-    cmds.each { |cmd|
+  def auto_upd(statement)
+    statement.each { |cmd|
       case cmd
+      when 'auto'
       when 'stop'
         if @auto
           @auto.kill
@@ -85,7 +85,11 @@ class ClsSrv < Hash
         @auto=Thread.new {
           begin
             loop{
-              @var[:cmd].split(';').each {|c| session(c)} if @q.empty?
+              if @q.empty?
+                @var[:cmd].split(';').each { |s|
+                  @cdb.session(s.split(':')){ |cmd| @q.push(cmd) }
+                } 
+              end
               sleep @var[:int].to_i
             }
           rescue
@@ -112,8 +116,9 @@ class ClsSrv < Hash
         raise msg.join("\n")
       end
     }
-    str << "Not " unless @auto.alive?
-    str << "Running(cmd=[#{@var[:cmd]}] int=[#{@var[:int]}])"
+    str=["Running(cmd=[#{@var[:cmd]}] int=[#{@var[:int]}])"]
+    str.unshift("Not") unless @auto.alive?
+    str.join(' ')
   end
 
   def e2s

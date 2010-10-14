@@ -58,7 +58,7 @@ class Dev
   end
 
   def setrsp(time=Time.now)
-    return unless @xprecv
+    return "Send Only" unless @xprecv
     @rsp.rspframe(@xprecv){yield}
     @cs.stat['time']="%.3f" % time.to_f
     @fd.save_stat(@cs.stat)
@@ -108,14 +108,14 @@ class DevCom < Dev
       msg << " key=#{@cs.stat.keys}"
       raise msg.join("\n")
     end
-    list=[]
+    stat={}
     cmdary.each{|e|
       key,val=e.split('=')
       h=@cs.acc_stat(key)
       h.replace(eval(@cs.sub_var(val)).to_s) if val
-      list << "#{key}=#{h}"
+      stat[key]=@cs.stat[key]
     }
-    list
+    stat
   end
 
   def load(key=nil,tag='default')

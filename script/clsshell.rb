@@ -11,13 +11,9 @@ obj=ARGV.shift||cls
 cdb=ClsSrv.new(cls,iocmd,obj)
 
 loop {
-  line=Readline.readline(cdb.prompt,true)
-  case line
-  when /^q/
-    break
-  when ''
-    line='stat'
-  end
-  puts cdb.dispatch(line){|s| s}
+  stm=Readline.readline(cdb.prompt,true).split(' ')
+  stm=['stat'] if stm.empty?
+  break if /^q/ === stm.first
+  puts cdb.dispatch(stm){|s| s}
 }
 

@@ -10,13 +10,13 @@ obj=ARGV.shift || dev
 ddb=DevCom.new(dev,iocmd,obj)
 
 loop{
-  statement=Readline.readline("#{dev}>",true).chomp.split(" ")
-  case statement.first
+  stm=Readline.readline("#{dev}>",true).chomp.split(" ")
+  case stm.first
   when /^q/
     break
   when /[\w]+/
     begin
-      puts ddb.devcom(statement)
+      puts ddb.devcom(stm)
     rescue
       puts $!
     end

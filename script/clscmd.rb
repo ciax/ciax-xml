@@ -4,7 +4,7 @@ require "libcls"
 warn "Usage: clscmd [class] [cmd] (par)" if ARGV.size < 1
 
 cls=ARGV.shift
-cmd=ARGV.join(" ")
+cmd=ARGV.dup
 ARGV.clear
 begin
   cdb=Cls.new(cls,ENV['obj'])

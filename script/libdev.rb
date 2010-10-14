@@ -33,16 +33,16 @@ class Dev
     @field=@cs.stat
   end
 
-  def setcmd(cmdary)
-    @cid=cmdary.join(':')
-    cmd=cmdary.shift
-    @xpsend=@ddb.select_id('cmdselect',cmd)
+  def setcmd(stm)
+    @cid=stm.join(':')
+    par=stm.dup
+    @xpsend=@ddb.select_id('cmdselect',par.shift)
     a=@xpsend.attributes
     @v.msg{'Select:'+a['label']}
     res=a['response']
     @xprecv= res ? @ddb.select_id('rspselect',res) : nil
-    @cmd.par=cmdary.clone
-    @rsp.par=cmdary
+    @cmd.par=par.clone
+    @rsp.par=par
   end
 
   def getcmd
@@ -73,43 +73,41 @@ class DevCom < Dev
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
   end
 
-  def devcom(cmdary)
-    par=cmdary.dup
-    case par.shift
+  def devcom(stm)
+    setcmd(stm)
+  rescue
+    case stm.shift
     when 'set'
-      set(par)
+      set(stm)
     when 'load'
-      load(par.shift)
+      load(stm.shift)
     when 'save'
-      save(*par)
+      save(stm.shift,stm.shift)
     else
-      begin
-        setcmd(cmdary)
-      rescue
-        msg=["== Command List =="]
-        msg << $!.to_s
-        msg << "== Data Handling =="
-        msg << " set       : Set Value  [key(:idx)(=val)] ..."
-        msg << " load      : Load Field (tag)"
-        msg << " save      : Save Field [key,key...] (tag)"
-        raise msg.join("\n")
-      end
-      @ic.snd(getcmd,'snd:'+@cid)
-      setrsp(@ic.time){ @ic.rcv('rcv:'+@cid) }
+      msg=["== Command List =="]
+      msg << $!.to_s
+      msg << "== Data Handling =="
+      msg << " set       : Set Value  [key(:idx)(=val)]"
+      msg << " load      : Load Field (tag)"
+      msg << " save      : Save Field [key,key...] (tag)"
+      raise msg.join("\n")
     end
+  else
+    @ic.snd(getcmd,'snd:'+@cid)
+    setrsp(@ic.time){ @ic.rcv('rcv:'+@cid) }
   end
 
-  def set(cmdary)
-    if cmdary.empty?
+  def set(stm)
+    if stm.empty?
       msg=["== option list =="]
       msg << " key(:idx)  : Show Value"
       msg << " key(:idx)= : Set Value"
       msg << " key=#{@cs.stat.keys}"
       raise msg.join("\n")
     end
-    @v.msg{"CMD:set[#{cmdary}]"}
+    @v.msg{"CMD:set#{stm}"}
     stat={}
-    cmdary.each{|e|
+    stm.each{|e|
       key,val=e.split('=')
       h=@cs.acc_stat(key)
       h.replace(eval(@cs.sub_var(val)).to_s) if val
@@ -118,7 +116,7 @@ class DevCom < Dev
     stat
   end
 
-  def load(tag)
+  def load(tag='default')
     @cs.stat.update(@fd.load_stat(tag))
   end
  

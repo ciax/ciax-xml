@@ -47,6 +47,9 @@ class ConvStr
       @v.msg(-1){"Substitute to [#{str}]"}
       str
     end
+  rescue
+    @v.msg(-1){"Substitute Fail"}
+    raise $!
   end
 
   def acc_stat(key)

@@ -26,20 +26,21 @@ class ClsSrv < Hash
     prom << ">"
   end
 
-  def dispatch(line)
-    resp=@errmsg.shift
-    return resp if resp
-    return '' if line.empty?
-    statement=line.split(' ')
-    case statement.first
-    when 'stat'
-      yield @cdb.stat
-    when 'auto'
-      auto_upd(statement)
-    else
-      begin
-        @cdb.session(statement) {|cmd| @q.push(cmd)}
-      rescue
+  def dispatch(stm)
+    return '' if stm.empty?
+    if resp=@errmsg.shift
+      return resp
+    end
+    begin
+      @cdb.session(stm) {|cmd| @q.push(cmd)}
+      "Accepted"
+    rescue
+      case stm.shift
+      when 'stat'
+        yield @cdb.stat
+      when 'auto'
+        auto_upd(stm)
+      else
         raise $! unless /^==/ === $!.to_s
         msg=[$!.to_s]
         msg << "== Internal Command =="
@@ -47,7 +48,6 @@ class ClsSrv < Hash
         msg << " auto ?    : Auto Update (opt)"
         raise msg.join("\n")
       end
-      "Accepted"
     end
   rescue
     e2s
@@ -57,10 +57,10 @@ class ClsSrv < Hash
   def device_thread
     Thread.new {
       loop {
-        statement=@q.shift
+        stm=@q.shift
         @var[:issue]='*'
         begin
-          @ddb.devcom(statement)
+          @ddb.devcom(stm)
           @cdb.get_stat(@ddb.field)
         rescue
           @errmsg << e2s
@@ -71,10 +71,9 @@ class ClsSrv < Hash
     }
   end
 
-  def auto_upd(statement)
-    statement.each { |cmd|
+  def auto_upd(stm)
+    stm.each { |cmd|
       case cmd
-      when 'auto'
       when 'stop'
         if @auto
           @auto.kill

@@ -13,7 +13,7 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>${stat}|0x01</text>
+          <text>stat=${stat}|0x01</text>
         </statement>
         <statement>
           <text>outfld</text>

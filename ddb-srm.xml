@@ -20,7 +20,7 @@
         <data label="Header Code">FK</data>
         <data label="Operand">CIO </data>
         <data label="Channel">0000</data>
-        <eval format="%016d">$1</eval>
+        <formula format="%016d">$1</formula>
       </command>
     </cmdselect>
     <cmdccrange method="bcc">
@@ -30,7 +30,7 @@
     </cmdccrange>
     <cmdframe>
       <ccrange />
-      <eval format="%02X">${cc}</eval>
+      <formula format="%02X">${cc}</formula>
       <data label="Suffix">*</data>
       <data encode="chr" label="Delimiter">0xd</data>
     </cmdframe>

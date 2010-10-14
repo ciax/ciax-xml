@@ -85,7 +85,7 @@
         <group label="">
           <var id="r$_" label="Running $_" symbol="normal">
             <value format="%s">
-              <string>r:$_-1</string>
+              <string>run:$_-1</string>
             </value>
           </var>
           <var id="p$_" label="Pulse $_">

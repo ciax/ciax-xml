@@ -5,9 +5,9 @@ cdb//session@id -> never use ':'
 
  $_ $a..z
     description : substitute sequence number(in repeat)
-    usable: cdb//session/repeat/statement/par
-            cdb//status/repeat/value/@id
-            cdb//status/repeat/value/*@field
+    usable: cdb//session/repeat/statement/formula
+            cdb//status/repeat/value@id
+            cdb//status/repeat/value/*
             --
             odb//session/repeat/statement/par
             odb//status/repeat/var@id
@@ -16,22 +16,21 @@ cdb//session@id -> never use ':'
 
  $1..9
     description : substitute parameters
-    usable: ddb//cmdframe/eval
+    usable: ddb//cmdframe/formula
             ddb//response/array/index
             --
-            cdb//session/statement/eval
+            cdb//session/statement/formula
             --
-            odb//session/statement/eval
+            odb//session/statement/formula
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
-    usable: ddb//cmdframe/eval
+    usable: ddb//cmdframe/formula
             --
-            cdb//session/statement/text
-            cdb//session/statement/eval
+            cdb//session/statement/formula
             --
             odb//session/statement/text
-            odb//session/statement/eval
+            odb//session/statement/formula
  # No parenthetic variable is processed prior to parenthetic one
  # idx can be equation (i.e. $_+1 )
 

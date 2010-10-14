@@ -16,7 +16,7 @@
           </par>
         </parameters>
         <data>in</data>
-        <eval format="(%d)">$1</eval>
+        <formula format="(%d)">$1</formula>
       </command>
       <command id="p" label="Pulse Number" response="p" type="stat">
         <data>p</data>
@@ -31,7 +31,7 @@
           </par>
         </parameters>
         <data>hl</data>
-        <eval>$1</eval>
+        <formula>$1</formula>
       </command>
       <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
         <parameters>
@@ -40,7 +40,7 @@
           </par>
         </parameters>
         <data>e1=</data>
-        <eval>$1</eval>
+        <formula>$1</formula>
       </command>
       <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
         <parameters>
@@ -49,7 +49,7 @@
           </par>
         </parameters>
         <data>e2=</data>
-        <eval>$1</eval>
+        <formula>$1</formula>
       </command>
       <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
         <data>abspos=0</data>
@@ -61,7 +61,7 @@
           </par>
         </parameters>
         <data>p=</data>
-        <eval format="%5.2f">$1</eval>
+        <formula format="%5.2f">$1</formula>
       </command>
       <command id="stop" label="Stop Running" response="default" type="action">
         <data>stop</data>
@@ -79,7 +79,7 @@
           </par>
         </parameters>
         <data>ma=</data>
-        <eval format="%3.1f">$1</eval>
+        <formula format="%3.1f">$1</formula>
       </command>
     </cmdselect>
     <cmdframe>

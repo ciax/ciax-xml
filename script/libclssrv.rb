@@ -35,45 +35,42 @@ class ClsSrv < Hash
     when 'stat'
       yield @cdb.stat
     when 'set'
-      @ddb.setfld(cmdary)
-    when 'auto'
-      auto_upd(cmdary)
+      @cdb.get_stat(stat=@ddb.set(cmdary))
+      stat
     when 'save'
       yield @cdb.get_stat(@ddb.save(*cmdary))
     when 'load'
       yield @cdb.get_stat(@ddb.load(*cmdary))
+    when 'auto'
+      auto_upd(cmdary)
     else
-      session(line)
+      begin
+        @cdb.session(line) {|cmd| @q.push(cmd)}
+      rescue
+        raise $! unless /^==/ === $!.to_s
+        msg=[$!.to_s]
+        msg << "== Internal Command =="
+        msg << " stat      : Show Status"
+        msg << " set ?     : Set Field [key(:index)(=val)]"
+        msg << " save ?    : Save Field [key] (tag)"
+        msg << " load ?    : Load Field [key] (tag)"
+        msg << " auto ?    : Auto Update (opt)"
+        raise msg.join("\n")
+      end
+      "Accepted"
     end
   rescue
     e2s
   end
-  
-  private
-  def session(line)
-    return '' if line == ''
-    @cdb.setcmd(line)
-    @cdb.clscom {|cmd| @q.push(cmd)}
-    "Accepted"
-  rescue
-    raise $! unless /^==/ === $!.to_s
-    msg=[$!.to_s]
-    msg << "== Internal Command =="
-    msg << " stat      : Show Status"
-    msg << " set ?     : Set Field [key(:index)(=val)]"
-    msg << " save ?    : Save Field [key] (tag)"
-    msg << " load ?    : Load Field [key] (tag)"
-    msg << " auto ?    : Auto Update (opt)"
-    raise msg.join("\n")
-  end
 
+  private
   def device_thread
     Thread.new {
       loop {
         cmd=@q.shift
         @var[:issue]='*'
         begin
-          @ddb.setcmd(cmd) || @ddb.devcom
+          @ddb.devcom(cmd)
           @cdb.get_stat(@ddb.field)
         rescue
           @errmsg << e2s

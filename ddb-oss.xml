@@ -58,7 +58,7 @@
         </parameters>
         <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
         <data>13200700</data>
-        <eval format="%02d">$1</eval>
+        <formula format="%02d">$1</formula>
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
       <command id="config" label="Execute Config Command [code]" response="exit">
@@ -68,7 +68,7 @@
           </par>
         </parameters>
         <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-        <eval>$1</eval>
+        <formula>$1</formula>
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
       <command id="ossact" label="Execute Action Command [code]" response="exit" type="action">
@@ -78,7 +78,7 @@
           </par>
         </parameters>
         <data>ossact</data>
-        <eval>$1</eval>
+        <formula>$1</formula>
       </command>
     </cmdselect>
     <cmdframe>

@@ -26,7 +26,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} | 0x0011</eval>
+          <formula>${field:stat} | 0x0011</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -38,7 +38,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} &amp; 0xffee</eval>
+          <formula>${field:stat} &amp; 0xffee</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -50,7 +50,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} | 0x1100</eval>
+          <formula>${field:stat} | 0x1100</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -62,7 +62,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} &amp; 0xeeff</eval>
+          <formula>${field:stat} &amp; 0xeeff</formula>
         </statement>
         <statement>
           <text>getstat</text>

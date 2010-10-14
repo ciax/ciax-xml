@@ -12,12 +12,14 @@
       </session>
       <session id="start_run" label="Running Start">
         <statement>
-          <text>start 1</text>
+          <text>start</text>
+          <text>1</text>
         </statement>
       </session>
       <session id="start_jak" label="Jacking Start">
         <statement>
-          <text>start 0x100</text>
+          <text>start</text>
+          <formula>0x100</formula>
         </statement>
       </session>
       <session id="clear_trg" label="Jacking Start">
@@ -27,27 +29,32 @@
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
         <statement>
-          <text>set_tag 98</text>
+          <text>set_tag</text>
+          <text>98</text>
         </statement>
       </session>
       <session id="set_run1" label="Run to Tag 1">
         <statement>
-          <text>set_tag 1</text>
+          <text>set_tag</text>
+          <text>1</text>
         </statement>
       </session>
       <session id="set_jak1" label="Jack UP Level 1">
         <statement>
-          <text>set_pos 2</text>
+          <text>set_pos</text>
+          <text>2</text>
         </statement>
       </session>
       <session id="pause" label="Pause">
         <statement>
-          <text>stop 0</text>
+          <text>stop</text>
+          <text>0</text>
         </statement>
       </session>
       <session id="emstop" label="Emergency Stop">
         <statement>
-          <text>stop 1</text>
+          <text>stop</text>
+          <text>1</text>
         </statement>
       </session>
       <session id="resume" label="Resume from Pause">
@@ -59,7 +66,9 @@
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
             <statement>
-              <text>get_tbl $t $j</text>
+              <text>get_tbl</text>
+              <formula>$t</formula>
+              <formula>$j</formula>
             </statement>
           </repeat>
         </repeat>
@@ -69,19 +78,22 @@
           <repeat counter="j" from="0" to="3">
             <statement>
               <text>set_tbl</text>
-              <text>$t $j</text>
+              <formula>$t</formula>
+              <formula>$j</formula>
             </statement>
           </repeat>
         </repeat>
       </session>
       <session id="tbl_read" label="Resume from Pause">
         <statement>
-          <text>tbl_rw 1</text>
+          <text>tbl_rw</text>
+          <text>1</text>
         </statement>
       </session>
       <session id="tbl_write" label="Resume from Pause">
         <statement>
-          <text>tbl_rw 2</text>
+          <text>tbl_rw</text>
+          <text>2</text>
         </statement>
       </session>
     </commands>

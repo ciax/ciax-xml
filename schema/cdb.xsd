@@ -63,13 +63,13 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cdb:text" />
-        <xsd:element ref="cdb:eval" />
+        <xsd:element ref="cdb:formula" />
       </xsd:choice>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="text" type="xsd:string"></xsd:element>
-  <xsd:element name="eval">
+  <xsd:element name="formula">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">

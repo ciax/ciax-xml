@@ -14,7 +14,8 @@
         </statement>
         <repeat from="1" to="5">
           <statement>
-            <text>in $_</text>
+            <text>in</text>
+            <formula>$_</formula>
           </statement>
         </repeat>
       </session>
@@ -25,13 +26,16 @@
       </session>
       <session id="defcon" label="Default Config">
         <statement>
-          <text>hl 0</text>
+          <text>hl</text>
+          <text>0</text>
         </statement>
         <statement>
-          <text>e1 0</text>
+          <text>e1</text>
+          <text>0</text>
         </statement>
         <statement>
-          <text>e2 0</text>
+          <text>e2</text>
+          <text>0</text>
         </statement>
       </session>
       <session id="set0" label="Set 0 Pulses">

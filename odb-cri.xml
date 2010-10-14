@@ -18,7 +18,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} | 0x01</eval>
+          <formula>${field:stat} | 0x01</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -30,7 +30,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} &amp; 0xfffe</eval>
+          <formula>${field:stat} &amp; 0xfffe</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -42,7 +42,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} | 0x10</eval>
+          <formula>${field:stat} | 0x10</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -54,7 +54,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} &amp; 0xffef</eval>
+          <formula>${field:stat} &amp; 0xffef</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -66,7 +66,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} | 0x100</eval>
+          <formula>${field:stat} | 0x100</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -78,7 +78,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} &amp; 0xfeff</eval>
+          <formula>${field:stat} &amp; 0xfeff</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -90,7 +90,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} | 0x1000</eval>
+          <formula>${field:stat} | 0x1000</formula>
         </statement>
         <statement>
           <text>getstat</text>
@@ -102,7 +102,7 @@
         </statement>
         <statement>
           <text>output</text>
-          <eval>${field:stat} &amp; 0xefff</eval>
+          <formula>${field:stat} &amp; 0xefff</formula>
         </statement>
         <statement>
           <text>getstat</text>

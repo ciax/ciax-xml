@@ -34,19 +34,18 @@ class ClsSrv < Hash
     begin
       @cdb.session(stm) {|cmd| @q.push(cmd)}
       "Accepted"
-    rescue
+    rescue SelectID
       case stm.shift
       when 'stat'
         yield @cdb.stat
       when 'auto'
         auto_upd(stm)
       else
-        raise $! unless /^==/ === $!.to_s
         msg=[$!.to_s]
         msg << "== Internal Command =="
         msg << " stat      : Show Status"
         msg << " auto ?    : Auto Update (opt)"
-        raise msg.join("\n")
+        raise SelectID,msg.join("\n")
       end
     end
   rescue
@@ -112,7 +111,7 @@ class ClsSrv < Hash
         msg << " stop       : Stop Auto update"
         msg << " cmd=       : Set Commands (cmd:par;..)"
         msg << " int=       : Set Interval (sec)"
-        raise msg.join("\n")
+        raise SelectID,msg.join("\n")
       end
     }
     str=["Running(cmd=[#{@var[:cmd]}] int=[#{@var[:int]}])"]

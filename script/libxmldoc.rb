@@ -1,13 +1,15 @@
 #!/usr/bin/ruby
 require "rexml/document"
 include REXML
-class XmlDoc < Hash
 
+class SelectID < RuntimeError ; end
+
+class XmlDoc < Hash
   def initialize(db = nil ,type = nil)
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
     f=open(path)
-  rescue
+  rescue Errno::ENOENT
     list=Array.new
     Dir.glob("#{pre}-*.xml").each {|p|
       list << getdoc(open(p))
@@ -45,7 +47,7 @@ class XmlDoc < Hash
       a=e.attributes
       list << " %-10s: %s" % [a['id'],a['label']]if a['label']
     }
-    raise(list.join("\n")) if list.size > 0
+    raise(SelectID,list.join("\n")) if list.size > 0
   end
 
 end

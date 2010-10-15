@@ -75,7 +75,7 @@ class DevCom < Dev
 
   def devcom(stm)
     setcmd(stm)
-  rescue
+  rescue SelectID
     case stm.shift
     when 'set'
       set(stm)
@@ -90,7 +90,7 @@ class DevCom < Dev
       msg << " set       : Set Value  [key(:idx)(=val)]"
       msg << " load      : Load Field (tag)"
       msg << " save      : Save Field [key,key...] (tag)"
-      raise msg.join("\n")
+      raise SelectID,msg.join("\n")
     end
   else
     @ic.snd(getcmd,'snd:'+@cid)
@@ -103,7 +103,7 @@ class DevCom < Dev
       msg << " key(:idx)  : Show Value"
       msg << " key(:idx)= : Set Value"
       msg << " key=#{@cs.stat.keys}"
-      raise msg.join("\n")
+      raise SelectID,msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
     stat={}

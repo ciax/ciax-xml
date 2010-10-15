@@ -41,12 +41,9 @@ class ConvStr
     str=str.gsub(/\$\{(.+)\}/) {
       [*acc_stat($1)].join(',')
     }
-    if str == ''
-      @v.msg(-1){"Substitute Fail"}
-    else
-      @v.msg(-1){"Substitute to [#{str}]"}
-      str
-    end
+    raise if str == ''
+    @v.msg(-1){"Substitute to [#{str}]"}
+    str
   rescue
     @v.msg(-1){"Substitute Fail"}
     raise $!

@@ -51,6 +51,10 @@ class ConvStr
     end
   end
 
+  def acc_stat(key)
+    acc_array(key,@stat)
+  end
+
   def acc_array(key,h)
     return h unless key
     key.split(':').each {|i|

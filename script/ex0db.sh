@@ -7,7 +7,7 @@ for obj in $objects; do
     echo "#### $obj ####"
     dev=$(lookup $obj dev) || _usage_key
     file=$HOME/.var/field_$obj.mar
-    VER=${VER:-exec} objcmd $obj $cmd $par < $file
+    VER=${VER:-exec} 0bjcmd $obj $cmd $par < $file
     [ $cmd = 'upd' ] &&
-    objstat $obj $file| { [ "$VER" ] && mar || stv; }
+    0bjstat $obj $file| { [ "$VER" ] && mar || stv; }
 done

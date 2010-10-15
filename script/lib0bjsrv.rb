@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobj"
+require "lib0bj"
 require "libdev"
 require "thread"
 

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobj"
+require "lib0bj"
 
 warn "Usage: objcmd [obj] [cmd] (par)" if ARGV.size < 1
 

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobj"
+require "lib0bj"
 
 abort "Usage: objstat [object] < field_file" if ARGV.size < 1
 

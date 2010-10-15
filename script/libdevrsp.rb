@@ -58,7 +58,8 @@ class DevRsp
         end
       }
     }
-    @v.msg(-1){}
+  ensure
+    @v.msg(-1){"Field:Initialized"}
   end
 
   private
@@ -78,15 +79,21 @@ class DevRsp
       a=c.attributes
       case c.name
       when 'ccrange'
-        @v.msg(1){"Entering Ceck Code Node"}
-        rc=@ddb['rspccrange']
-        fst=@fp;setframe(rc)
-        @cc = checkcode(rc,@frame.slice(fst...@fp))
-        @v.msg(-1){"Exitting Ceck Code Node"}
+        begin
+          @v.msg(1){"Entering Ceck Code Node"}
+          rc=@ddb['rspccrange']
+          fst=@fp;setframe(rc)
+          @cc = checkcode(rc,@frame.slice(fst...@fp))
+        ensure
+          @v.msg(-1){"Exitting Ceck Code Node"}
+        end
       when 'selected'
-        @v.msg(1){"Entering Selected Node"}
-        setframe(@sel)
-        @v.msg(-1){"Exitting Selected Node"}
+        begin
+          @v.msg(1){"Entering Selected Node"}
+          setframe(@sel)
+        ensure
+          @v.msg(-1){"Exitting Selected Node"}
+        end
       when 'field'
         frame_to_field(c)
       when 'array'
@@ -109,7 +116,8 @@ class DevRsp
         txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
       end
     }
-    @v.msg(-1){}
+  ensure    
+    @v.msg(-1){"Field:End"}
   end
 
   def field_array(e)
@@ -117,14 +125,14 @@ class DevRsp
     a=e.attributes
     @v.msg(1){"Array:#{e.attributes['label']}"}
     key=a['assign'] || @v.err("No key for Array")
-    @v.msg{"ArrayAssign:[#{key}]"}
     e.each_element{ |f| # Index
       idxs << @cs.sub_var(f.text)
     }
     @cs.stat[key]=mk_array(idxs,@cs.stat[key]){
       decode(e,cut_frame(e))
     }
-    @v.msg(-1){}
+  ensure
+    @v.msg(-1){"Array:Assign[#{key}]"}
   end
 
   def mk_array(idxary,field) 
@@ -135,7 +143,7 @@ class DevRsp
     idx=idxary.dup
     f,l=idx.shift.split(':').map{|i| eval(i)}
     Range.new(f,l||f).each{ |i|
-      @v.msg{"ArrayIndex:[#{i}]"}
+      @v.msg{"Array:Index[#{i}]"}
       fld[i] = mk_array(idx,fld[i]){yield}
     }
     fld

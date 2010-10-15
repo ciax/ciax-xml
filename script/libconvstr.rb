@@ -22,6 +22,7 @@ class ConvStr
       @first=nil
     }
     @var.delete(counter)
+  ensure
     @v.msg(-1){"Repeat:Close"}
   end
 
@@ -42,11 +43,9 @@ class ConvStr
       [*acc_stat($1)].join(',')
     }
     raise if str == ''
-    @v.msg(-1){"Substitute to [#{str}]"}
     str
-  rescue
-    @v.msg(-1){"Substitute Fail"}
-    raise $!
+  ensure
+    @v.msg(-1){"Substitute to [#{str}]"}
   end
 
   def acc_stat(key)

@@ -98,7 +98,7 @@ class DevCom < Dev
 
   def set(stm)
     if stm.empty?
-      msg=["== option list =="]
+      msg=["== Option list =="]
       msg << " key(:idx)  : Show Value"
       msg << " key(:idx)= : Set Value"
       msg << " key=#{@cs.stat.keys}"

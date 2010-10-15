@@ -25,7 +25,7 @@ class Cls < Hash
     @v=Verbose.new("cdb/#{id}".upcase)
     @field={}
     @cs=ConvStr.new(@v)
-    @cs.stat={ 'stat' => @stat, 'field' => @field }
+    @cs.stat=@stat
     self.update(@cdb)
   end
   
@@ -80,7 +80,7 @@ class Cls < Hash
 
   def get_cmd(e) # //stm
     stm=[]
-    @v.msg(1){"CMD:GettingCmd(DDB)"}
+    @v.msg(1){"CMD:GetCmd(DDB)"}
     e.each_element{|d| # //text or formula
       case d.name
       when 'text'
@@ -92,8 +92,9 @@ class Cls < Hash
       end
       stm << str
     }
-    @v.msg(-1){"CMD:Exec(DDB):#{stm}"}
     stm
+  ensure
+    @v.msg(-1){"CMD:Exec(DDB):#{stm}"}
   end
 
   #Stat Methods
@@ -103,8 +104,8 @@ class Cls < Hash
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
     e.each_element {|dtype| #element(split and concat)
       a=dtype.attributes
-      fld=@cs.sub_var(dtype.text) || raise
-      data=@cs.sub_var("${field:#{fld}}") || raise
+      fld=@cs.sub_var(dtype.text) || raise("No field Key")
+      data=@cs.sub_var(@field[fld]) || raise("No field Value[#{fld}]")
       case dtype.name
       when 'binary'
         bit=(data.to_i >> a['bit'].to_i & 1)
@@ -127,10 +128,9 @@ class Cls < Hash
       end
     }
     value=e.attributes['format'] % ary
-    @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}
     @stat[id]=value
-  rescue
-    @v.msg(-1){"STAT:Fail to Get Status:[#{id}]" }
+  ensure
+    @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}
   end
 
 end

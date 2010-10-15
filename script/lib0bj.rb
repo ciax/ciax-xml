@@ -12,9 +12,9 @@ class Obj < Hash
   attr_reader :stat
 
   def initialize(obj)
-    @odb=[XmlDoc.new('odb',obj)]
+    @odb=[XmlDoc.new('0db',obj)]
     if robj=@odb.first['ref']
-      @odb << XmlDoc.new('odb',robj)
+      @odb << XmlDoc.new('0db',robj)
     end
   rescue RuntimeError
     abort $!.to_s

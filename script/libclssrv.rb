@@ -3,14 +3,12 @@ require "libcls"
 require "libdev"
 require "thread"
 
-class ClsSrv < Hash
-  attr_reader :server
+class ClsSrv
 
   def initialize(cls,iocmd,obj=nil)
     @cdb=Cls.new(cls,obj)
     @var={:cmd=>'upd',:int=>'10',:cls => cls,:issue =>''}
-    @server=@cdb['server']
-    @ddb=DevCom.new(@cdb['device'],iocmd,obj)
+    @ddb=DevCom.new(@cdb.device,iocmd,obj)
     @cdb.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new

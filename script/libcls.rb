@@ -5,9 +5,9 @@ require "libiofile"
 require "libmodxml"
 require "libconvstr"
 
-class Cls < Hash
+class Cls
   include ModXml
-  attr_reader :stat
+  attr_reader :stat,:device
 
   def initialize(cls,obj=nil)
     @cdb=XmlDoc.new('cdb',cls)
@@ -26,7 +26,7 @@ class Cls < Hash
     @field={}
     @cs=ConvStr.new(@v)
     @cs.stat=@stat
-    self.update(@cdb)
+    @device=@cdb['device']
   end
   
   public

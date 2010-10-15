@@ -10,12 +10,11 @@ require "libdevrsp"
 class Dev
   attr_reader :cid,:field
 
-  def initialize(dev,obj=nil)
+  def initialize(dev,id)
     @ddb=XmlDoc.new('ddb',dev)
   rescue RuntimeError
     abort $!.to_s
   else
-    id=obj||dev
     @v=Verbose.new("ddb/#{id}".upcase)
     @cid=String.new
     @cmdcache=Hash.new
@@ -67,9 +66,8 @@ class Dev
 end
 
 class DevCom < Dev
-  def initialize(dev,iocmd,obj=nil)
-    super(dev,obj)
-    id=obj||dev
+  def initialize(dev,iocmd,id)
+    super(dev,id)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
   end
 

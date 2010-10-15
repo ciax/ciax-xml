@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libdev"
 
-warn "Usage: devstat [dev] [cmd] < logfile" if ARGV.size < 1
+warn "Usage: devstat [dev] [cmd] < logline" if ARGV.size < 1
 
 begin
   c=Dev.new(ARGV.shift,ENV['obj'])

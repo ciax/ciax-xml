@@ -31,9 +31,9 @@ class XmlDoc < Hash
 
   # Error Handling
   def list_id(name)
-    list=Array.new
+    list=[]
     self[name].each_element { |e| list << e }
-    mklist(list)
+    mklist(list,"== Command List ==")
   end
 
   private
@@ -41,13 +41,13 @@ class XmlDoc < Hash
     Document.new(f).root.elements.first
   end
 
-  def mklist(ary)
-    list=Array.new
+  def mklist(ary,title=nil)
+    list=[title]
     ary.each { |e|
       a=e.attributes
       list << " %-10s: %s" % [a['id'],a['label']]if a['label']
     }
-    raise(SelectID,list.join("\n")) if list.size > 0
+    raise(SelectID,list.compact.join("\n")) if list.size > 0
   end
 
 end

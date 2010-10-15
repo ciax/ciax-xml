@@ -34,9 +34,6 @@ class Cls < Hash
   def session(stm)
     @cs.par=stm.dup
     xpcmd=@cdb.select_id('commands',@cs.par.shift)
-  rescue SelectID
-    raise SelectID,"== Command List ==\n#{$!}"
-  else
     @v.msg{"CMD:Exec(CDB):#{xpcmd.attributes['label']}"}
     xpcmd.each_element {|c|
       case c.name

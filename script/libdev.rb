@@ -84,8 +84,7 @@ class DevCom < Dev
     when 'save'
       save(stm.shift,stm.shift)
     else
-      msg=["== Command List =="]
-      msg << $!.to_s
+      msg=[$!.to_s]
       msg << "== Data Handling =="
       msg << " set       : Set Value  [key(:idx)(=val)]"
       msg << " load      : Load Field (tag)"

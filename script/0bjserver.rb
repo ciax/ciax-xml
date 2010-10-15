@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobjsrv"
+require "lib0bjsrv"
 require "libiocmd"
 
 warn "Usage: objserver [obj]" if ARGV.size < 1

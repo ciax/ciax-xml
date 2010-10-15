@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobjsrv"
+require "lib0bjsrv"
 require "libmodview"
 require "readline"
 include ModView

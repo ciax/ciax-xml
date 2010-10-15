@@ -11,7 +11,7 @@ for obj in $objects; do
     dev=$(lookup $obj dev) || _usage_key
     input=$HOME/.var/field_$obj.mar
     output=$HOME/.var/status_$obj.mar
-    VER=${VER:-exec} obj2cmd $obj $cmd $par < $input
+    VER=${VER:-exec} objcmd $obj $cmd $par < $input
     [ $cmd = 'upd' ] &&
-    obj2stat $obj $output| { [ "$VER" ] && mar || stv; }
+    objstat $obj $output| { [ "$VER" ] && mar || stv; }
 done

@@ -1,16 +1,19 @@
 #!/usr/bin/ruby
 require "libdev"
 
-warn "Usage: devstat [dev] [cmd] < logline" if ARGV.size < 1
+abort "Usage: devstat [dev] [id] < logline" if ARGV.size < 2
+dev=ARGV.shift
+id=ARGV.shift
+ARGV.clear
 
+ary=gets.split("\t")
+time=Time.at(ary.shift.to_f)
+stm=ary.shift.split(':')
+abort ("Logline:Not response") unless /rcv/ === stm.shift
 begin
-  c=Dev.new(ARGV.shift,ENV['obj'])
-  c.setcmd(ARGV)
-  ARGV.clear
+  c=Dev.new(dev,id)
+  c.setcmd(stm)
 rescue RuntimeError
   abort $!.to_s
 end
-ary=gets.split("\t")
-time=Time.at(ary.shift.to_f)
-abort("Input CID mismatch") if 'rcv:'+c.cid !=  ary.shift
 print Marshal.dump c.setrsp(time){ eval(ary.shift) }

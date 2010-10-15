@@ -25,7 +25,7 @@ class Dev
     begin
       @cs.stat=@fd.load_stat
     rescue
-      warn $!
+#      warn "----- Create field_#{id}.mar"
       @rsp.init_field{"0"}
       @cs.stat['device']=@ddb['id']
     end
@@ -66,7 +66,7 @@ class Dev
 end
 
 class DevCom < Dev
-  def initialize(dev,iocmd,id)
+  def initialize(dev,id,iocmd)
     super(dev,id)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
   end

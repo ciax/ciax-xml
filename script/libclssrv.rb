@@ -8,7 +8,7 @@ class ClsSrv
   def initialize(cls,iocmd,obj=nil)
     @cdb=Cls.new(cls,obj)
     @var={:cmd=>'upd',:int=>'10',:cls => cls,:issue =>''}
-    @ddb=DevCom.new(@cdb.device,iocmd,obj)
+    @ddb=DevCom.new(@cdb.device,obj,iocmd)
     @cdb.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new

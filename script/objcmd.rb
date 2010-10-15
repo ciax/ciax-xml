@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libobj2"
+require "libobj"
 require "libcls"
 
-warn "Usage: obj2cmd [obj] [cmd] (par)" if ARGV.size < 1
+warn "Usage: objcmd [obj] [cmd] (par)" if ARGV.size < 1
 
 obj=ARGV.shift
 cmd=ARGV.join(" ")

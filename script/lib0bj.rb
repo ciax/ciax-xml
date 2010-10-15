@@ -4,7 +4,7 @@ require "libverbose"
 require "libiofile"
 require "libmodxml"
 require "libconvstr"
-require "libobjstat"
+require "lib0bjstat"
 
 class Obj < Hash
   include ModXml

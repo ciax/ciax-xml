@@ -11,7 +11,7 @@ class Obj < Hash
   attr_reader :stat
 
   def initialize(obj)
-    @odb=XmlDoc.new('adb',obj)
+    @odb=XmlDoc.new('odb',obj)
   rescue RuntimeError
     abort $!.to_s
   else

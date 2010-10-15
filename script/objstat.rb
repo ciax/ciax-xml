@@ -1,13 +1,12 @@
 #!/usr/bin/ruby
 require "libobj"
-
-abort "Usage: objstat [object] < status_file" if ARGV.size < 1
-
+# "Usage: objstat < status_file"
 begin
-  odb=Obj.new(ARGV.shift)
-  stat=odb.get_stat(Marshal.load(gets(nil)))
+  stat=Marshal.load(gets(nil))
+  odb=Obj.new(stat['id'])
+  objstat=odb.get_stat(stat)
 rescue RuntimeError
   abort $!.to_s
 end
-print Marshal.dump stat
+print Marshal.dump objstat
 

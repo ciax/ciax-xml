@@ -45,7 +45,7 @@ class Obj < Hash
         raise "== Command List ==\n#{$!}"
       end
     end
-    yield line
+    yield line.split(' ')
   end
   
   def get_stat(value)

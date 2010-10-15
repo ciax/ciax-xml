@@ -41,25 +41,27 @@ class DevRsp
 
   def init_field
     @v.msg(1){"Field:Initialize"}
-    @ddb['rspselect'].each_element{ |e| # response
-      e.each_element{|f| #field|array|vefiry
-        assign=f.attributes['assign'] || next
-        case f.name
-        when 'field'
-          @v.msg{"Field:Init Field[#{assign}]"}
-          @cs.stat[assign]=yield
-        when 'array'
-          @v.msg{"Field:Init Array[#{assign}]"}
-          sary=[]
-          f.each_element{ |d|
-            sary << d.attributes['size'].to_i
-          }
-          @cs.stat[assign]=init_array(sary){yield}
-        end
+    begin
+      @ddb['rspselect'].each_element{ |e| # response
+        e.each_element{|f| #field|array|vefiry
+          assign=f.attributes['assign'] || next
+          case f.name
+          when 'field'
+            @v.msg{"Field:Init Field[#{assign}]"}
+            @cs.stat[assign]=yield
+          when 'array'
+            @v.msg{"Field:Init Array[#{assign}]"}
+            sary=[]
+            f.each_element{ |d|
+              sary << d.attributes['size'].to_i
+            }
+            @cs.stat[assign]=init_array(sary){yield}
+          end
+        }
       }
-    }
-  ensure
-    @v.msg(-1){"Field:Initialized"}
+    ensure
+      @v.msg(-1){"Field:Initialized"}
+    end
   end
 
   private
@@ -105,34 +107,38 @@ class DevRsp
   def frame_to_field(e)
     a=e.attributes
     @v.msg(1){"Field:#{a['label']}"}
-    data=decode(e,cut_frame(e))
-    if key=a['assign']
-      @cs.stat[key]=data
-      @v.msg{"Assign:[#{key}]<-[#{data}]"}
-    end
-    e.each_element {|d| # Verify
+    begin
+      data=decode(e,cut_frame(e))
+      if key=a['assign']
+        @cs.stat[key]=data
+        @v.msg{"Assign:[#{key}]<-[#{data}]"}
+      end
+      e.each_element {|d| # Verify
       if txt=d.text
         @v.msg{"Verify:[#{txt}]"}
         txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
       end
-    }
-  ensure    
-    @v.msg(-1){"Field:End"}
+      }
+    ensure    
+      @v.msg(-1){"Field:End"}
+    end
   end
 
   def field_array(e)
     idxs=[]
     a=e.attributes
     @v.msg(1){"Array:#{e.attributes['label']}"}
-    key=a['assign'] || @v.err("No key for Array")
-    e.each_element{ |f| # Index
-      idxs << @cs.sub_var(f.text)
-    }
-    @cs.stat[key]=mk_array(idxs,@cs.stat[key]){
-      decode(e,cut_frame(e))
-    }
-  ensure
-    @v.msg(-1){"Array:Assign[#{key}]"}
+    begin
+      key=a['assign'] || @v.err("No key for Array")
+      e.each_element{ |f| # Index
+        idxs << @cs.sub_var(f.text)
+      }
+      @cs.stat[key]=mk_array(idxs,@cs.stat[key]){
+        decode(e,cut_frame(e))
+      }
+    ensure
+      @v.msg(-1){"Array:Assign[#{key}]"}
+    end
   end
 
   def mk_array(idxary,field) 

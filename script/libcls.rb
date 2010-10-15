@@ -81,20 +81,22 @@ class Cls < Hash
   def get_cmd(e) # //stm
     stm=[]
     @v.msg(1){"CMD:GetCmd(DDB)"}
-    e.each_element{|d| # //text or formula
-      case d.name
-      when 'text'
-        str=d.text
-        @v.msg{"CMD:GetText [#{str}]"}
-      when 'formula'
-        str=format(d,eval(@cs.sub_var(d.text)))
-        @v.msg{"CMD:Calculated [#{str}]"}
-      end
-      stm << str
-    }
-    stm
-  ensure
-    @v.msg(-1){"CMD:Exec(DDB):#{stm}"}
+    begin
+      e.each_element{|d| # //text or formula
+        case d.name
+        when 'text'
+          str=d.text
+          @v.msg{"CMD:GetText [#{str}]"}
+        when 'formula'
+          str=format(d,eval(@cs.sub_var(d.text)))
+          @v.msg{"CMD:Calculated [#{str}]"}
+        end
+        stm << str
+      }
+      stm
+    ensure
+      @v.msg(-1){"CMD:Exec(DDB):#{stm}"}
+    end
   end
 
   #Stat Methods
@@ -102,35 +104,37 @@ class Cls < Hash
     ary=Array.new
     id=@cs.sub_var(e.attributes['id'])
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
-    e.each_element {|dtype| #element(split and concat)
-      a=dtype.attributes
-      fld=@cs.sub_var(dtype.text) || raise("No field Key")
-      data=@cs.sub_var(@field[fld]) || raise("No field Value[#{fld}]")
-      case dtype.name
-      when 'binary'
-        bit=(data.to_i >> a['bit'].to_i & 1)
-        bit = -(bit-1) if /true|1/ === a['inv']
-       ary << bit.to_s
-      when 'float'
-        if n=a['decimal']
-          n=n.to_i
-          data=data[0..(-1-n)]+'.'+data[-n..-1]
+    begin
+      e.each_element {|dtype| #element(split and concat)
+        a=dtype.attributes
+        fld=@cs.sub_var(dtype.text) || raise("No field Key")
+        data=@cs.acc_array(fld,@field) || raise("No field Value[#{fld}]")
+        case dtype.name
+        when 'binary'
+          bit=(data.to_i >> a['bit'].to_i & 1)
+          bit = -(bit-1) if /true|1/ === a['inv']
+          ary << bit.to_s
+        when 'float'
+          if n=a['decimal']
+            n=n.to_i
+            data=data[0..(-1-n)]+'.'+data[-n..-1]
+          end
+          ary << data.to_f
+        when 'int'
+          if /true|1/ === a['signed']
+            data=data.to_i
+            data= data > 0x7fff ? data - 0x10000 : data
+          end
+          ary << data.to_i
+        else
+          ary << data
         end
-        ary << data.to_f
-      when 'int'
-        if /true|1/ === a['signed']
-          data=data.to_i
-          data= data > 0x7fff ? data - 0x10000 : data
-        end
-        ary << data.to_i
-      else
-        ary << data
-      end
-    }
-    value=e.attributes['format'] % ary
-    @stat[id]=value
-  ensure
-    @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}
+      }
+      value=e.attributes['format'] % ary
+      @stat[id]=value
+    ensure
+      @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}
+    end
   end
 
 end

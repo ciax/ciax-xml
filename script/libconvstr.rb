@@ -15,15 +15,17 @@ class ConvStr
     counter=a['counter'] || '_'
     counter.next! while @var[counter]
     @v.msg(1){"Repeat:Counter[\$#{counter}]/Range[#{a['from']}-#{a['to']}]/Format[#{fmt}]"}
-    @first=true
-    Range.new(a['from'],a['to']).each { |n|
-      @var[counter]=fmt % n
-      e.each_element { |d| yield d}
-      @first=nil
-    }
-    @var.delete(counter)
-  ensure
-    @v.msg(-1){"Repeat:Close"}
+    begin
+      @first=true
+      Range.new(a['from'],a['to']).each { |n|
+        @var[counter]=fmt % n
+        e.each_element { |d| yield d}
+        @first=nil
+      }
+      @var.delete(counter)
+    ensure
+      @v.msg(-1){"Repeat:Close"}
+    end
   end
 
   def par=(par)
@@ -34,22 +36,22 @@ class ConvStr
   def sub_var(str)
     return str unless /\$/ === str
     @v.msg(1){"Substitute from [#{str}]"}
-    # Sub $key => @var[key]
-    str=str.gsub(/\$([\w]+)/){ @var[$1] }
-    # Sub ${key1:key2:idx} => hash[key1][key2][idx]
-    # output csv if array
-    h=@stat.clone
-    str=str.gsub(/\$\{(.+)\}/) {
-      [*acc_stat($1)].join(',')
-    }
-    raise if str == ''
-    str
-  ensure
-    @v.msg(-1){"Substitute to [#{str}]"}
+    begin
+      # Sub $key => @var[key]
+      str=str.gsub(/\$([\w]+)/){ @var[$1] }
+      # Sub ${key1:key2:idx} => hash[key1][key2][idx]
+      # output csv if array
+      str=str.gsub(/\$\{(.+)\}/) {
+        [*acc_array($1,@stat)].join(',')
+      }
+      raise if str == ''
+      str
+    ensure
+      @v.msg(-1){"Substitute to [#{str}]"}
+    end
   end
 
-  def acc_stat(key)
-    h=@stat
+  def acc_array(key,h)
     return h unless key
     key.split(':').each {|i|
       @v.msg{"Var:Type[#{h.class}] Name[#{i}]"}
@@ -58,5 +60,4 @@ class ConvStr
     }
     h
   end
-
 end

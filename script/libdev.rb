@@ -2,7 +2,7 @@
 require "libxmldoc"
 require "libiocmd"
 require "libiofile"
-require "libconvstr"
+require "libvar"
 require "libdevcmd"
 require "libdevrsp"
 
@@ -19,7 +19,7 @@ class Dev
     @cid=String.new
     @cmdcache=Hash.new
     @fd=IoFile.new("field_#{id}")
-    @cs=ConvStr.new(@v)
+    @cs=Var.new(@v)
     @rsp=DevRsp.new(@ddb,@cs)
     @cmd=DevCmd.new(@ddb,@cs)
     begin

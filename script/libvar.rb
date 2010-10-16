@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # XML Common Method
 require 'librerange'
-class ConvStr
+class Var
   attr_reader :par,:first # for shift
   attr_accessor :stat
 

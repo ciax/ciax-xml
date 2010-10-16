@@ -3,7 +3,7 @@ require "libxmldoc"
 require "libverbose"
 require "libiofile"
 require "libmodxml"
-require "libconvstr"
+require "libvar"
 
 class Cls
   include ModXml
@@ -23,7 +23,7 @@ class Cls
     end
     @v=Verbose.new("cdb/#{id}".upcase)
     @field={}
-    @cs=ConvStr.new(@v)
+    @cs=Var.new(@v)
     @cs.stat=@stat
     @device=@cdb['device']
   end

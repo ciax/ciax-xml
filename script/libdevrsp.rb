@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmodxml"
-require "libconvstr"
+require "libvar"
 
 # Rsp Methods
 class DevRsp

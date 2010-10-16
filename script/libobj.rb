@@ -3,7 +3,7 @@ require "libxmldoc"
 require "libverbose"
 require "libiofile"
 require "libmodxml"
-require "libconvstr"
+require "libvar"
 require "libstatsym"
 
 class Obj < Hash
@@ -24,7 +24,7 @@ class Obj < Hash
     end
     @v=Verbose.new("odb/#{obj}".upcase)
     @value,@gn={},0
-    @cs=ConvStr.new(@v)
+    @cs=Var.new(@v)
     @cs.stat={'value'=>@value,'stat'=>@stat }
     @odb['comm'].each_element{|e|
       self[e.name]=e.text

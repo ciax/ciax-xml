@@ -25,9 +25,10 @@ class Dev
     begin
       @cs.stat=@fd.load_stat
     rescue
-#      warn "----- Create field_#{id}.mar"
+      warn "----- Create field_#{id}.mar"
       @rsp.init_field{"0"}
       @cs.stat['device']=@ddb['id']
+      @cs.stat['id']=id
     end
     @field=@cs.stat
   end

@@ -10,7 +10,7 @@ for id in $devices; do
     link="$HOME/.var/field_${dev}.mar"
     cmd=$default
     { devcmd $dev $id $cmd || exit 1; } | visi
-    [ "$default" = 'getstat' ] && rm $output
+    [ "$default" = 'getstat' ] && [ -e $output ] && rm $output
     stat="`grep rcv:${cmd// /:} $input|tail -1`"
     [ "$stat" ] && echo "$stat" | devstat $dev $id|mar
     ln -sf $output $link

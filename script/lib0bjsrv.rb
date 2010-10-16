@@ -10,7 +10,7 @@ class ObjSrv < Hash
     @odb=Obj.new(obj)
     @var={:cmd=>'upd',:int=>'10',:obj => obj,:issue =>''}
     @server=@odb['server']
-    @ddb=DevCom.new(@odb['device'],@odb['client'],obj)
+    @ddb=DevCom.new(@odb['device'],obj,@odb['client'])
     @odb.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new

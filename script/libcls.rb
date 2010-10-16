@@ -19,8 +19,8 @@ class Cls
     begin
       @stat=@f.load_stat
     rescue
-      warn $!
-      @stat={ 'id'=>id }
+      warn "----- Create status_#{id}.mar"
+      @stat={ 'id'=>id, 'class' => cls }
     end
     @v=Verbose.new("cdb/#{id}".upcase)
     @field={}

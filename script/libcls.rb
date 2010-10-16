@@ -9,12 +9,11 @@ class Cls
   include ModXml
   attr_reader :stat,:device
 
-  def initialize(cls,obj=nil)
+  def initialize(cls,id)
     @cdb=XmlDoc.new('cdb',cls)
   rescue RuntimeError
     abort $!.to_s
   else
-    id=obj||cls
     @f=IoFile.new("status_#{id}")
     begin
       @stat=@f.load_stat

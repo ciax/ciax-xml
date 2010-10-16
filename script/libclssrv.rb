@@ -5,10 +5,10 @@ require "thread"
 
 class ClsSrv
 
-  def initialize(cls,iocmd,obj=nil)
-    @cdb=Cls.new(cls,obj)
+  def initialize(cls,id,iocmd)
+    @cdb=Cls.new(cls,id)
     @var={:cmd=>'upd',:int=>'10',:cls => cls,:issue =>''}
-    @ddb=DevCom.new(@cdb.device,obj,iocmd)
+    @ddb=DevCom.new(@cdb.device,id,iocmd)
     @cdb.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libdev"
 
-abort "Usage: devstat [dev] [id] < logline" if ARGV.size < 2
+abort "Usage: devstat [device] [id] < logline" if ARGV.size < 2
 dev=ARGV.shift
 id=ARGV.shift
 ARGV.clear

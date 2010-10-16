@@ -3,12 +3,12 @@ require "libclssrv"
 require "libmodview"
 require "readline"
 
-warn "Usage: clsshell [cls] [iocmd] (obj)" if ARGV.size < 1
+warn "Usage: clsshell [cls] [id] [iocmd]" if ARGV.size < 1
 
 cls=ARGV.shift
+id=ARGV.shift
 iocmd=ARGV.shift
-obj=ARGV.shift||cls
-cdb=ClsSrv.new(cls,iocmd,obj)
+cdb=ClsSrv.new(cls,id,iocmd)
 
 loop {
   stm=Readline.readline(cdb.prompt,true).split(' ')
@@ -16,4 +16,3 @@ loop {
   break if /^q/ === stm.first
   puts cdb.dispatch(stm){|s| s}
 }
-

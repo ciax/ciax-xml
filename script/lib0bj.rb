@@ -3,7 +3,7 @@ require "libxmldoc"
 require "libverbose"
 require "libiofile"
 require "libmodxml"
-require "libvar"
+require "lib0var"
 require "lib0bjstat"
 
 class Obj < Hash

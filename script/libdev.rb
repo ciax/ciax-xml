@@ -2,7 +2,7 @@
 require "libxmldoc"
 require "libiocmd"
 require "libiofile"
-require "libvar"
+require "lib0var"
 require "libdevcmd"
 require "libdevrsp"
 

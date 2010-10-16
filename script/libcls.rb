@@ -5,7 +5,7 @@ require "libiofile"
 require "libmodxml"
 require "libvar"
 
-class Cls
+class Cls < Var
   include ModXml
   attr_reader :stat,:device
 
@@ -23,21 +23,20 @@ class Cls
     end
     @v=Verbose.new("cdb/#{id}".upcase)
     @field={}
-    @cs=Var.new(@v)
-    @cs.stat=@stat
     @device=@cdb['device']
   end
   
   public
 
   def session(stm)
-    @cs.par=stm.dup
-    xpcmd=@cdb.select_id('commands',@cs.par.shift)
+    par=stm.dup
+    setpar(par)
+    xpcmd=@cdb.select_id('commands',par.shift)
     @v.msg{"CMD:Exec(CDB):#{xpcmd.attributes['label']}"}
     xpcmd.each_element {|c|
       case c.name
       when 'parameters'
-        pary=@cs.par.dup
+        pary=par.dup
         c.each_element{|d| #//par
           validate(d,pary.shift)
         }
@@ -57,7 +56,7 @@ class Cls
       when 'value'
         get_val(g)
       when 'repeat'
-        @cs.repeat(g){|e| get_val(e) }
+        repeat(g){|e| get_val(e) }
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
@@ -67,7 +66,7 @@ class Cls
   private
   #Cmd Method
   def repeat_cmd(e)
-    @cs.repeat(e){ |f|
+    repeat(e){ |f|
       case f.name
       when 'statement'
         yield(get_cmd(f))
@@ -87,7 +86,7 @@ class Cls
           str=d.text
           @v.msg{"CMD:GetText [#{str}]"}
         when 'formula'
-          str=format(d,eval(@cs.sub_var(d.text)))
+          str=format(d,eval(sub_var(d.text)))
           @v.msg{"CMD:Calculated [#{str}]"}
         end
         stm << str
@@ -101,13 +100,13 @@ class Cls
   #Stat Methods
   def get_val(e)
     ary=Array.new
-    id=@cs.sub_var(e.attributes['id'])
+    id=sub_var(e.attributes['id'])
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
     begin
       e.each_element {|dtype| #element(split and concat)
         a=dtype.attributes
-        fld=@cs.sub_var(dtype.text) || raise("No field Key")
-        data=@cs.acc_array(fld,@field) || raise("No field Value[#{fld}]")
+        fld=sub_var(dtype.text) || raise("No field Key")
+        data=acc_array(fld,@field) || raise("No field Value[#{fld}]")
         case dtype.name
         when 'binary'
           bit=(data.to_i >> a['bit'].to_i & 1)

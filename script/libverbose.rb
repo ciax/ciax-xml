@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 class Verbose
   Start_time=Time.now
-  def initialize(title)
+  def initialize(title='')
     @title=title
     @base=1
   end

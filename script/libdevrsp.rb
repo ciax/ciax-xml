@@ -5,8 +5,8 @@ require "libmodxml"
 class DevRsp
   include ModXml
 
-  def initialize(ddb,cs)
-    @ddb,@cs=ddb,cs
+  def initialize(ddb,var)
+    @ddb,@var=ddb,var
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @frame=''
     @fary=[]
@@ -27,11 +27,11 @@ class DevRsp
       @fary=[frame]
     end
     setframe(@ddb['rspframe'])
-    if cc=@cs.stat.delete('cc')
+    if cc=@var.stat.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
       @v.msg{"Verify:CC OK [#{cc}]"}
     end
-    @cs.stat
+    @var.stat
   end
 
   def init_field
@@ -43,14 +43,14 @@ class DevRsp
           case f.name
           when 'field'
             @v.msg{"Field:Init Field[#{assign}]"}
-            @cs.stat[assign]=yield
+            @var.stat[assign]=yield
           when 'array'
             @v.msg{"Field:Init Array[#{assign}]"}
             sary=[]
             f.each_element{ |d|
               sary << d.attributes['size'].to_i
             }
-            @cs.stat[assign]=init_array(sary){yield}
+            @var.stat[assign]=init_array(sary){yield}
           end
         }
       }
@@ -105,7 +105,7 @@ class DevRsp
     begin
       data=decode(e,cut_frame(e))
       if key=a['assign']
-        @cs.stat[key]=data
+        @var.stat[key]=data
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       end
       e.each_element {|d| # Verify
@@ -126,9 +126,9 @@ class DevRsp
     begin
       key=a['assign'] || @v.err("No key for Array")
       e.each_element{ |f| # Index
-        idxs << @cs.sub_var(f.text)
+        idxs << @var.sub_var(f.text)
       }
-      @cs.stat[key]=mk_array(idxs,@cs.stat[key]){
+      @var.stat[key]=mk_array(idxs,@var.stat[key]){
         decode(e,cut_frame(e))
       }
     ensure

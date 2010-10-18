@@ -19,24 +19,24 @@ class Dev
     @cid=String.new
     @cmdcache=Hash.new
     @fd=IoFile.new("field_#{id}")
-    @cs=Var.new
-    @rsp=DevRsp.new(@ddb,@cs)
-    @cmd=DevCmd.new(@ddb,@cs)
+    @var=Var.new
+    @rsp=DevRsp.new(@ddb,@var)
+    @cmd=DevCmd.new(@ddb,@var)
     begin
-      @cs.stat=@fd.load_stat
+      @var.stat=@fd.load_stat
     rescue
       warn "----- Create field_#{id}.mar"
       @rsp.init_field{"0"}
-      @cs.stat['device']=@ddb['id']
-      @cs.stat['id']=id
+      @var.stat['device']=@ddb['id']
+      @var.stat['id']=id
     end
-    @field=@cs.stat
+    @field=@var.stat
   end
 
   def setcmd(stm)
     @cid=stm.join(':')
     par=stm.dup
-    @cs.setstm(par)
+    @var.setstm(par)
     @xpsend=@ddb.select_id('cmdselect',par.shift)
     a=@xpsend.attributes
     @v.msg{'Select:'+a['label']}
@@ -59,8 +59,8 @@ class Dev
   def setrsp(time=Time.now)
     return "Send Only" unless @xprecv
     @rsp.rspframe(@xprecv){yield}
-    @cs.stat['time']="%.3f" % time.to_f
-    @fd.save_stat(@cs.stat)
+    @var.stat['time']="%.3f" % time.to_f
+    @fd.save_stat(@var.stat)
   end
 
 end
@@ -99,29 +99,29 @@ class DevCom < Dev
       msg=["== Option list =="]
       msg << " key(:idx)  : Show Value"
       msg << " key(:idx)= : Set Value"
-      msg << " key=#{@cs.stat.keys}"
+      msg << " key=#{@var.stat.keys}"
       raise SelectID,msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
     stat={}
     stm.each{|e|
       key,val=e.split('=')
-      h=@cs.acc_stat(key)
-      h.replace(eval(@cs.sub_var(val)).to_s) if val
-      stat[key]=@cs.stat[key]
+      h=@var.acc_stat(key)
+      h.replace(eval(@var.sub_var(val)).to_s) if val
+      stat[key]=@var.stat[key]
     }
     stat
   end
 
   def load(tag='default')
-    @cs.stat.update(@fd.load_stat(tag))
+    @var.stat.update(@fd.load_stat(tag))
   end
  
   def save(keys=nil,tag='default')
-    raise("key=#{@cs.stat.keys}") unless keys
+    raise("key=#{@var.stat.keys}") unless keys
     stat={}
     keys.split(',').each{|k|
-      s=@cs.stat[k] || raise("No such key[#{k}]")
+      s=@var.stat[k] || raise("No such key[#{k}]")
       stat[k]=s
     }
     @fd.save_stat(stat,tag)

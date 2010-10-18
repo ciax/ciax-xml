@@ -43,7 +43,7 @@ cdb//session@id -> never use ':'
 
  format
     usable: ddb//data
-            ddb//eval
+            ddb//formula
             --
             cdb//repeat
             cdb//statement
@@ -58,7 +58,7 @@ cdb//session@id -> never use ':'
 
  encode
     usable: ddb//data
-            ddb//eval
+            ddb//formula
 
  validate
  

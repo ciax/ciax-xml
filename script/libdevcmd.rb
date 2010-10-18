@@ -5,8 +5,8 @@ require "libmodxml"
 class DevCmd
   include ModXml
 
-  def initialize(ddb,cs)
-    @ddb,@cs=ddb,cs
+  def initialize(ddb,var)
+    @ddb,@var=ddb,var
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
   end
 
@@ -16,7 +16,7 @@ class DevCmd
       begin
         @v.msg(1){"Entering Ceck Code Range"}
         @ccrange=getframe(ccn)
-        @cs.stat['cc']=checkcode(ccn,@ccrange)
+        @var.stat['cc']=checkcode(ccn,@ccrange)
       ensure
         @v.msg(-1){"Exitting Ceck Code Range"}
       end
@@ -33,7 +33,7 @@ class DevCmd
       when 'parameters'
         i='0'
         c.each_element{|d|
-          validate(d,@cs[i.next])
+          validate(d,@var[i.next])
         }
       when 'selected'
         begin
@@ -50,11 +50,11 @@ class DevCmd
         @v.msg{"GetFrame:#{a['label']}[#{str}]"}
         frame << encode(c,str)
       when 'formula'
-        str=eval(@cs.sub_var(c.text)).to_s
+        str=eval(@var.sub_var(c.text)).to_s
         @v.msg{"GetFrame:(calculated)[#{str}]"}
         frame << encode(c,str)
       when 'csv'
-        @cs.sub_var(c.text).split(',').each{|str|
+        @var.sub_var(c.text).split(',').each{|str|
           @v.msg{"GetFrame:(csv)[#{str}]"}
           frame << encode(c,str)
         }

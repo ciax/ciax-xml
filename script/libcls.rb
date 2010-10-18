@@ -30,7 +30,7 @@ class Cls < Var
 
   def session(stm)
     par=stm.dup
-    setpar(par)
+    setstm(stm)
     xpcmd=@cdb.select_id('commands',par.shift)
     @v.msg{"CMD:Exec(CDB):#{xpcmd.attributes['label']}"}
     xpcmd.each_element {|c|

@@ -27,8 +27,8 @@ class Var < Hash
     end
   end
 
-  def setpar(par)
-    par.each_with_index{|s,n| self[(n+1).to_s]=s }
+  def setstm(stm)
+    stm.each_with_index{|s,n| self[n.to_s]=s }
   end
 
   def sub_var(str)

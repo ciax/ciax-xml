@@ -41,8 +41,7 @@ class Dev
     @v.msg{'Select:'+a['label']}
     res=a['response']
     @xprecv= res ? @ddb.select_id('rspselect',res) : nil
-    @cmd.par=par.clone
-    @rsp.par=par
+    @cs.par=par
   end
 
   def getcmd

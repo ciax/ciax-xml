@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libxmldoc"
+require "libmodxml"
 require "libverbose"
 require "libiofile"
-require "libmodxml"
 require "libvar"
 
 class Cls < Var

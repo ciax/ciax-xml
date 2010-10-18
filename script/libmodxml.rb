@@ -2,7 +2,7 @@
 # XML Common Method
 require 'librerange'
 module ModXml
-  # Instance variable: @v,@n
+  # Instance variable: @v
 
   def checkcode(e,frame)
     chk=0

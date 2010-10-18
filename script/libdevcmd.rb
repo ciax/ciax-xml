@@ -25,10 +25,6 @@ class DevCmd
     getframe(@ddb['cmdframe'])
   end
 
-  def par=(ary)
-    @cs.par=ary
-  end
-
   private
   def getframe(e)
     frame=''

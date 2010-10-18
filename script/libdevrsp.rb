@@ -35,10 +35,6 @@ class DevRsp
     @cs.stat
   end
 
-  def par=(ary)
-    @cs.par=ary
-  end
-
   def init_field
     @v.msg(1){"Field:Initialize"}
     begin

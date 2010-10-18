@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libmodxml"
-require "lib0var"
 
 # Cmd Methods
 class DevCmd
@@ -32,8 +31,9 @@ class DevCmd
       a=c.attributes
       case c.name
       when 'parameters'
+        i='0'
         c.each_element{|d|
-          validate(d,@cs.par.shift)
+          validate(d,@cs[i.next])
         }
       when 'selected'
         begin

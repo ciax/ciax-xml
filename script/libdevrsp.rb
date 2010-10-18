@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libmodxml"
-require "lib0var"
 
 # Rsp Methods
 class DevRsp

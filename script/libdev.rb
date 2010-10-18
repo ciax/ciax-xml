@@ -2,7 +2,7 @@
 require "libxmldoc"
 require "libiocmd"
 require "libiofile"
-require "lib0var"
+require "libvar"
 require "libdevcmd"
 require "libdevrsp"
 
@@ -19,7 +19,7 @@ class Dev
     @cid=String.new
     @cmdcache=Hash.new
     @fd=IoFile.new("field_#{id}")
-    @cs=Var.new(@v)
+    @cs=Var.new
     @rsp=DevRsp.new(@ddb,@cs)
     @cmd=DevCmd.new(@ddb,@cs)
     begin
@@ -36,12 +36,12 @@ class Dev
   def setcmd(stm)
     @cid=stm.join(':')
     par=stm.dup
+    @cs.setstm(par)
     @xpsend=@ddb.select_id('cmdselect',par.shift)
     a=@xpsend.attributes
     @v.msg{'Select:'+a['label']}
     res=a['response']
     @xprecv= res ? @ddb.select_id('rspselect',res) : nil
-    @cs.par=par
   end
 
   def getcmd

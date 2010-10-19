@@ -41,6 +41,7 @@ class DevRsp
   end
 
   private
+  # Fill default values in the Field
   def init_field(fill='')
     @v.msg(1){"Field:Initialize"}
     begin
@@ -50,14 +51,14 @@ class DevRsp
           case f.name
           when 'field'
             @v.msg{"Field:Init Field[#{assign}]"}
-            @var.stat[assign]=fill
+            @var.stat[assign]=fill unless @var.stat[assign]
           when 'array'
             @v.msg{"Field:Init Array[#{assign}]"}
             sary=[]
             f.each_element{ |d|
               sary << d.attributes['size'].to_i
             }
-            @var.stat[assign]=init_array(sary){fill}
+            @var.stat[assign]=init_array(sary){fill} unless @var.stat[assign]
           end
         }
       }
@@ -78,6 +79,7 @@ class DevRsp
     a
   end
 
+  # Process Frame to Field
   def setframe(e)
     e.each_element { |c|
       a=c.attributes

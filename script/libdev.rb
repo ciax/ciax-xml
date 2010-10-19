@@ -35,25 +35,12 @@ class Dev
 
   def setcmd(stm)
     @cid=stm.join(':')
-    par=stm.dup
-    @var.setstm(par)
-    @xpsend=@ddb.select_id('cmdselect',par.shift)
-    a=@xpsend.attributes
-    @v.msg{'Select:'+a['label']}
-    res=a['response']
+    res=@cmd.setcmd(stm)
     @xprecv= res ? @ddb.select_id('rspselect',res) : nil
   end
 
   def getcmd
-    return unless @xpsend
-    if @xpsend.attributes['nocache']
-      @cmd.cmdframe(@xpsend)
-    elsif cmd=@cmdcache[@cid]
-      @v.msg{"Cmd cache found [#{@cid}]"}
-      cmd
-    else
-      @cmdcache[@cid]=@cmd.cmdframe(@xpsend)
-    end
+    @cmd.getcmd
   end
 
   def setrsp(time=Time.now)

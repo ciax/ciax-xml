@@ -8,20 +8,36 @@ class DevCmd
   def initialize(ddb,var)
     @ddb,@var=ddb,var
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
+    @cache={}
   end
 
-  def cmdframe(sel)
-    @sel=sel || @v.err("No Selection")
-    if ccn=@ddb['cmdccrange']
-      begin
-        @v.msg(1){"Entering Ceck Code Range"}
-        @ccrange=getframe(ccn)
-        @var.stat['cc']=checkcode(ccn,@ccrange)
-      ensure
-        @v.msg(-1){"Exitting Ceck Code Range"}
+  def setcmd(stm) # return = response select
+    @cid=stm.join(':')
+    @var.setstm(stm)
+    @sel=@ddb.select_id('cmdselect',stm.first)
+    a=@sel.attributes
+    @v.msg{'Select:'+a['label']}
+    a['response']
+  end
+
+  def getcmd
+    return unless @sel
+    if cmd=@cache[@cid]
+      @v.msg{"Cmd cache found [#{@cid}]"}
+    else
+      if ccn=@ddb['cmdccrange']
+        begin
+          @v.msg(1){"Entering Ceck Code Range"}
+          @ccrange=getframe(ccn)
+          @var.stat['cc']=checkcode(ccn,@ccrange)
+        ensure
+          @v.msg(-1){"Exitting Ceck Code Range"}
+        end
       end
+      cmd=getframe(@ddb['cmdframe'])
+      @cache[@cid]=cmd unless @sel.attributes['nocache']
     end
-    getframe(@ddb['cmdframe'])
+    cmd
   end
 
   private

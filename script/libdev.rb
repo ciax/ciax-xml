@@ -7,59 +7,56 @@ require "libdevcmd"
 require "libdevrsp"
 
 # Main
-class Dev
+class Dev < Var
+  def initialize(id)
+    super()
+    begin
+      @fd=IoFile.new("field_#{id}")
+      @stat=@fd.load_stat
+    rescue
+      warn "----- Create field_#{id}.mar"
+    end
+    @stat['id']=id
+  end
+
+  def load(tag='default')
+    @stat.update(@fd.load_stat(tag))
+  end
+
+  def save_all
+    @fd.save_stat(@stat)
+  end
+
+  def save(stat,tag='default')
+    @fd.save_stat(stat,tag)
+  end
+end
+
+class DevCom
   attr_reader :field
 
-  def initialize(dev,id)
+  def initialize(dev,id,iocmd)
     @ddb=XmlDoc.new('ddb',dev)
   rescue RuntimeError
     abort $!.to_s
   else
-    @var=Var.new
-    @cid=String.new
-    @cmd=DevCmd.new(@ddb,@var)
-    @rsp=DevRsp.new(@ddb,@var)
-    begin
-      @fd=IoFile.new("field_#{id}")
-      @var.stat=@fd.load_stat
-    rescue
-      warn "----- Create field_#{id}.mar"
-    end
-    @var.stat['id']=id
-    @field=@var.stat
-  end
-
-  def setcmd(stm)
-    @cid=stm.join(':')
-    res=@cmd.setcmd(stm)
-    @rsp.setrsp(res)
-  end
-
-  def getframe
-    @cmd.getframe
-  end
-
-  def getfield(time=Time.now)
-    @rsp.getfield(time){|c|yield c}
-    @fd.save_stat(@var.stat)
-  end
-end
-
-class DevCom < Dev
-  def initialize(dev,id,iocmd)
-    super(dev,id)
+    @dvar=Dev.new(id)
+    @cmd=DevCmd.new(@ddb,@dvar)
+    @rsp=DevRsp.new(@ddb,@dvar)
     @v=Verbose.new("ddb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
+    @field=@dvar.stat
   end
 
   def devcom(stm)
-    setcmd(stm)
+    res=@cmd.setcmd(stm)
+    @rsp.setrsp(res)
   rescue SelectID
     case stm.shift
     when 'set'
       set(stm)
     when 'load'
-      load(stm.shift)
+      @dvar.load(stm.shift)
     when 'save'
       save(stm.shift,stm.shift)
     else
@@ -71,8 +68,10 @@ class DevCom < Dev
       raise SelectID,msg.join("\n")
     end
   else
-    @ic.snd(getframe,'snd:'+@cid)
-    getfield(@ic.time){ @ic.rcv('rcv:'+@cid) }
+    cid=stm.join(':')
+    @ic.snd(@cmd.getframe,'snd:'+cid)
+    @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
+    @dvar.save_all
   end
 
   def set(stm)
@@ -80,32 +79,27 @@ class DevCom < Dev
       msg=["== Option list =="]
       msg << " key(:idx)  : Show Value"
       msg << " key(:idx)= : Set Value"
-      msg << " key=#{@var.stat.keys}"
+      msg << " key=#{@field.keys}"
       raise SelectID,msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
     stat={}
     stm.each{|e|
       key,val=e.split('=')
-      h=@var.acc_stat(key)
-      h.replace(eval(@var.sub_var(val)).to_s) if val
-      stat[key]=@var.stat[key]
+      h=@dvar.acc_stat(key)
+      h.replace(eval(@dvar.sub_var(val)).to_s) if val
+      stat[key]=@field[key]
     }
     stat
   end
-
-  def load(tag='default')
-    @var.stat.update(@fd.load_stat(tag))
-  end
  
   def save(keys=nil,tag='default')
-    raise("key=#{@var.stat.keys}") unless keys
+    raise("key=#{@field.keys}") unless keys
     stat={}
     keys.split(',').each{|k|
-      s=@var.stat[k] || raise("No such key[#{k}]")
+      s=@field[k] || raise("No such key[#{k}]")
       stat[k]=s
     }
-    @fd.save_stat(stat,tag)
+    @dvar.save(stat,tag)
   end
-
 end

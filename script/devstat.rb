@@ -11,9 +11,12 @@ time=Time.at(ary.shift.to_f)
 stm=ary.shift.split(':')
 abort ("Logline:Not response") unless /rcv/ === stm.shift
 begin
-  c=Dev.new(dev,id)
-  c.setcmd(stm)
+  ddb=XmlDoc.new('ddb',dev)
+  dvar=Dev.new(id)
+  c=DevCmd.new(ddb,dvar)
+  r=DevRsp.new(ddb,dvar)
+  r.setrsp(c.setcmd(stm))
 rescue RuntimeError
   abort $!.to_s
 end
-print Marshal.dump c.getfield(time){ eval(ary.shift) }
+print Marshal.dump r.getfield(time){ eval(ary.shift) }

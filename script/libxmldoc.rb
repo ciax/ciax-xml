@@ -23,7 +23,6 @@ class XmlDoc < Hash
 
   def select_id(xpath,id)
     if id && id != ''
-      self[:cid]=id
       self[xpath].each_element_with_attribute('id',id){|e| return e }
     end
     list_id(xpath)

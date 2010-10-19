@@ -40,7 +40,6 @@ class DevRsp
     @var.stat
   end
 
-
   private
   def init_field(fill='')
     @v.msg(1){"Field:Initialize"}

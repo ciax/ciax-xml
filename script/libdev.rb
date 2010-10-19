@@ -8,7 +8,7 @@ require "libdevrsp"
 
 # Main
 class Dev
-  attr_reader :cid,:field
+  attr_reader :field
 
   def initialize(dev,id)
     @ddb=XmlDoc.new('ddb',dev)

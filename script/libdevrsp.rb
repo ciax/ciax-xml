@@ -13,6 +13,16 @@ class DevRsp
     @fp=0
   end
 
+  def setrsp(res)
+    @sel= res ? @ddb.select_id('rspselect',res) : nil
+  end
+
+  def getfield(time=Time.now)
+    return "Send Only" unless @sel
+    rspframe(@sel){yield}
+    @var.stat['time']="%.3f" % time.to_f
+  end
+
   def rspframe(sel)
     @sel=sel || @v.err("No Selection")
     frame=yield || @v.err("No String")

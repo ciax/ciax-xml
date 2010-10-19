@@ -20,7 +20,7 @@ class DevCmd
     a['response']
   end
 
-  def getcmd
+  def getframe
     return unless @sel
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
@@ -28,20 +28,20 @@ class DevCmd
       if ccn=@ddb['cmdccrange']
         begin
           @v.msg(1){"Entering Ceck Code Range"}
-          @ccrange=getframe(ccn)
+          @ccrange=getstr(ccn)
           @var.stat['cc']=checkcode(ccn,@ccrange)
         ensure
           @v.msg(-1){"Exitting Ceck Code Range"}
         end
       end
-      cmd=getframe(@ddb['cmdframe'])
+      cmd=getstr(@ddb['cmdframe'])
       @cache[@cid]=cmd unless @sel.attributes['nocache']
     end
     cmd
   end
 
   private
-  def getframe(e)
+  def getstr(e)
     frame=''
     e.each_element { |c|
       a=c.attributes
@@ -54,7 +54,7 @@ class DevCmd
       when 'selected'
         begin
           @v.msg(1){"Entering Selected Node"}
-          frame << getframe(@sel)
+          frame << getstr(@sel)
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end

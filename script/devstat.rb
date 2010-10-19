@@ -16,4 +16,4 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
-print Marshal.dump c.setrsp(time){ eval(ary.shift) }
+print Marshal.dump c.getfield(time){ eval(ary.shift) }

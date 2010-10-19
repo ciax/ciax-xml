@@ -17,36 +17,33 @@ class Dev
   else
     @v=Verbose.new("ddb/#{id}".upcase)
     @cid=String.new
-    @cmdcache=Hash.new
-    @fd=IoFile.new("field_#{id}")
     @var=Var.new
     @rsp=DevRsp.new(@ddb,@var)
     @cmd=DevCmd.new(@ddb,@var)
     begin
+      @fd=IoFile.new("field_#{id}")
       @var.stat=@fd.load_stat
     rescue
       warn "----- Create field_#{id}.mar"
       @rsp.init_field{"0"}
-      @var.stat['device']=@ddb['id']
-      @var.stat['id']=id
     end
+    @var.stat['device']=@ddb['id']
+    @var.stat['id']=id
     @field=@var.stat
   end
 
   def setcmd(stm)
     @cid=stm.join(':')
     res=@cmd.setcmd(stm)
-    @xprecv= res ? @ddb.select_id('rspselect',res) : nil
+    @rsp.setrsp(res)
   end
 
-  def getcmd
-    @cmd.getcmd
+  def getframe
+    @cmd.getframe
   end
 
-  def setrsp(time=Time.now)
-    return "Send Only" unless @xprecv
-    @rsp.rspframe(@xprecv){yield}
-    @var.stat['time']="%.3f" % time.to_f
+  def getfield(time=Time.now)
+    @rsp.getfield(time){ |c| yield c}
     @fd.save_stat(@var.stat)
   end
 
@@ -77,8 +74,8 @@ class DevCom < Dev
       raise SelectID,msg.join("\n")
     end
   else
-    @ic.snd(getcmd,'snd:'+@cid)
-    setrsp(@ic.time){ @ic.rcv('rcv:'+@cid) }
+    @ic.snd(getframe,'snd:'+@cid)
+    getfield(@ic.time){ @ic.rcv('rcv:'+@cid) }
   end
 
   def set(stm)

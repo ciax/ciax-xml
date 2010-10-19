@@ -13,9 +13,8 @@ abort ("Logline:Not response") unless /rcv/ === stm.shift
 begin
   ddb=XmlDoc.new('ddb',dev)
   dvar=Dev.new(id)
-  c=DevCmd.new(ddb,dvar)
   r=DevRsp.new(ddb,dvar)
-  r.setrsp(c.setcmd(stm))
+  r.setrsp(stm)
 rescue RuntimeError
   abort $!.to_s
 end

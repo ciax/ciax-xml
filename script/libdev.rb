@@ -49,8 +49,8 @@ class DevCom
   end
 
   def devcom(stm)
-    res=@cmd.setcmd(stm)
-    @rsp.setrsp(res)
+    @cmd.setcmd(stm)
+    @rsp.setrsp(stm)
   rescue SelectID
     case stm.shift
     when 'set'

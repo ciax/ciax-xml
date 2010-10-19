@@ -6,7 +6,7 @@ class DevRsp
   include ModXml
 
   def initialize(ddb,var)
-    @ddb,@var=ddb,var
+    @ddb,@var,@sel=ddb,var
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @frame=''
     @fary=[]
@@ -14,7 +14,9 @@ class DevRsp
     init_field
   end
 
-  def setrsp(res)
+  def setrsp(stm)
+    cmd=@ddb.select_id('cmdselect',stm.first)
+    res=cmd.attributes['response']
     @sel= res ? @ddb.select_id('rspselect',res) : nil
   end
 

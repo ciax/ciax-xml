@@ -15,9 +15,7 @@ class DevCmd
     @cid=stm.join(':')
     @var.setstm(stm)
     @sel=@ddb.select_id('cmdselect',stm.first)
-    a=@sel.attributes
-    @v.msg{'Select:'+a['label']}
-    a['response']
+    @v.msg{'Select:'+@sel.attributes['label']}
   end
 
   def getframe

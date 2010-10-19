@@ -1,15 +1,17 @@
 #!/usr/bin/ruby
-require "libcls"
+require "libclscmd"
+require "libclsstat"
 require "libdev"
 require "thread"
 
 class ClsSrv
 
   def initialize(cls,id,iocmd)
-    @cdb=Cls.new(cls,id)
+    @cdbc=ClsCmd.new(cls,id)
+    @cdbs=ClsStat.new(cls,id)
     @var={:cmd=>'upd',:int=>'10',:cls => cls,:issue =>''}
-    @ddb=DevCom.new(@cdb.device,id,iocmd)
-    @cdb.get_stat(@ddb.field)
+    @ddb=DevCom.new(@cdbc.device,id,iocmd)
+    @cdbs.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new
     @auto=Thread.new{}
@@ -30,12 +32,12 @@ class ClsSrv
       return resp
     end
     begin
-      @cdb.session(stm) {|cmd| @q.push(cmd)}
+      @cdbc.session(stm) {|cmd| @q.push(cmd)}
       "Accepted"
     rescue SelectID
       case stm.shift
       when 'stat'
-        yield @cdb.stat
+        yield @cdbs.stat
       when 'auto'
         auto_upd(stm)
       else
@@ -58,7 +60,7 @@ class ClsSrv
         @var[:issue]='*'
         begin
           @ddb.devcom(stm)
-          @cdb.get_stat(@ddb.field)
+          @cdbs.get_stat(@ddb.field)
         rescue
           @errmsg << e2s
         ensure
@@ -82,9 +84,7 @@ class ClsSrv
           begin
             loop{
               if @q.empty?
-                @var[:cmd].split(';').each { |s|
-                  @cdb.session(s.split(':')){ |cmd| @q.push(cmd) }
-                } 
+                setcmd(@var[:cmd]){|c| @q.push(c) }
               end
               sleep @var[:int].to_i
             }
@@ -101,7 +101,7 @@ class ClsSrv
         end
       when /^cmd=/
         line=$'
-        line.split(";").each{|c| @cdb.setcmd(c)}
+        setcmd(line){}
         @var[:cmd]=line
       else
         msg=["== option list =="]
@@ -115,6 +115,12 @@ class ClsSrv
     str=["Running(cmd=[#{@var[:cmd]}] int=[#{@var[:int]}])"]
     str.unshift("Not") unless @auto.alive?
     str.join(' ')
+  end
+
+  def setcmd(line)
+    line.split(';').each { |s|
+      @cdbc.session(s.split(':')){ |cmd| yield cmd }
+    }
   end
 
   def e2s

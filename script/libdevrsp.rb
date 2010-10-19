@@ -11,6 +11,7 @@ class DevRsp
     @frame=''
     @fary=[]
     @fp=0
+    init_field
   end
 
   def setrsp(res)
@@ -19,12 +20,6 @@ class DevRsp
 
   def getfield(time=Time.now)
     return "Send Only" unless @sel
-    rspframe(@sel){yield}
-    @var.stat['time']="%.3f" % time.to_f
-  end
-
-  def rspframe(sel)
-    @sel=sel || @v.err("No Selection")
     frame=yield || @v.err("No String")
     if tm=@ddb['rspframe'].attributes['terminator']
       frame.chomp!(eval('"'+tm+'"'))
@@ -41,10 +36,13 @@ class DevRsp
       cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
       @v.msg{"Verify:CC OK [#{cc}]"}
     end
+    @var.stat['time']="%.3f" % time.to_f
     @var.stat
   end
 
-  def init_field
+
+  private
+  def init_field(fill='')
     @v.msg(1){"Field:Initialize"}
     begin
       @ddb['rspselect'].each_element{ |e| # response
@@ -53,23 +51,23 @@ class DevRsp
           case f.name
           when 'field'
             @v.msg{"Field:Init Field[#{assign}]"}
-            @var.stat[assign]=yield
+            @var.stat[assign]=fill
           when 'array'
             @v.msg{"Field:Init Array[#{assign}]"}
             sary=[]
             f.each_element{ |d|
               sary << d.attributes['size'].to_i
             }
-            @var.stat[assign]=init_array(sary){yield}
+            @var.stat[assign]=init_array(sary){fill}
           end
         }
       }
+      @var.stat['device']=@ddb['id']
     ensure
       @v.msg(-1){"Field:Initialized"}
     end
   end
 
-  private
   def init_array(sary,field=nil)
     return yield if sary.empty?
     a=field||[]

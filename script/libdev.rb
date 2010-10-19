@@ -15,19 +15,16 @@ class Dev
   rescue RuntimeError
     abort $!.to_s
   else
-    @v=Verbose.new("ddb/#{id}".upcase)
-    @cid=String.new
     @var=Var.new
-    @rsp=DevRsp.new(@ddb,@var)
+    @cid=String.new
     @cmd=DevCmd.new(@ddb,@var)
+    @rsp=DevRsp.new(@ddb,@var)
     begin
       @fd=IoFile.new("field_#{id}")
       @var.stat=@fd.load_stat
     rescue
       warn "----- Create field_#{id}.mar"
-      @rsp.init_field{"0"}
     end
-    @var.stat['device']=@ddb['id']
     @var.stat['id']=id
     @field=@var.stat
   end
@@ -43,15 +40,15 @@ class Dev
   end
 
   def getfield(time=Time.now)
-    @rsp.getfield(time){ |c| yield c}
+    @rsp.getfield(time){|c|yield c}
     @fd.save_stat(@var.stat)
   end
-
 end
 
 class DevCom < Dev
   def initialize(dev,id,iocmd)
     super(dev,id)
+    @v=Verbose.new("ddb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
   end
 

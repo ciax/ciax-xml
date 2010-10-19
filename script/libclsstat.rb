@@ -1,18 +1,15 @@
 #!/usr/bin/ruby
-require "libcls"
+require "libvar"
 require "libmodxml"
 require "libverbose"
 require "libiofile"
 
-class ClsStat < Cls
+class ClsStat < Var
   include ModXml
   attr_reader :stat
 
-  def initialize(cls,id)
-    @cdb=XmlDoc.new('cdb',cls)
-  rescue RuntimeError
-    abort $!.to_s
-  else
+  def initialize(cdb,id)
+    @cdb=cdb
     @f=IoFile.new("status_#{id}")
     begin
       @stat=@f.load_stat
@@ -20,7 +17,7 @@ class ClsStat < Cls
       warn "----- Create status_#{id}.mar"
       @stat={ 'id'=>id, 'class' => cls }
     end
-    @v=Verbose.new("cdb/#{cls}/stat".upcase)
+    @v=Verbose.new("cdb/#{cdb['id']}/stat".upcase)
     @field={}
   end
   

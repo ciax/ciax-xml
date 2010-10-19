@@ -1,14 +1,14 @@
 #!/usr/bin/ruby
-require "libcls"
+require "libvar"
 require "libmodxml"
 require "libverbose"
 
-class ClsCmd < Cls
+class ClsCmd < Var
   include ModXml
 
-  def initialize(cls)
-    super
-    @v=Verbose.new("cdb/#{cls}/cmd".upcase)
+  def initialize(cdb)
+    @cdb=cdb
+    @v=Verbose.new("cdb/#{cdb['id']}/cmd".upcase)
   end
 
   public

@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libxmldoc"
 require "libclscmd"
 require "libclsstat"
 require "libdev"
@@ -7,10 +8,11 @@ require "thread"
 class ClsSrv
 
   def initialize(cls,id,iocmd)
-    @cdbc=ClsCmd.new(cls,id)
-    @cdbs=ClsStat.new(cls,id)
+    cdb=XmlDoc.new('cdb',cls)
+    @cdbc=ClsCmd.new(cdb)
+    @cdbs=ClsStat.new(cdb,id)
     @var={:cmd=>'upd',:int=>'10',:cls => cls,:issue =>''}
-    @ddb=DevCom.new(@cdbc.device,id,iocmd)
+    @ddb=DevCom.new(cdb['device'],id,iocmd)
     @cdbs.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new

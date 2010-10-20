@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libiofile'
 require 'libverbose'
 class Stat < Hash
   def initialize(fname)

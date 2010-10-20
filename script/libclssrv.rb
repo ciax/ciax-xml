@@ -12,7 +12,7 @@ class ClsSrv
     @cdbc=ClsCmd.new(cdb)
     @cdbs=ClsStat.new(cdb,id)
     @var={:cmd=>'upd',:int=>'10',:cls => cls,:issue =>''}
-    @ddb=DevCom.new(cdb['device'],id,iocmd)
+    @ddb=Dev.new(cdb['device'],id,iocmd)
     @cdbs.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new

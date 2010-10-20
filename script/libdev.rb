@@ -6,25 +6,18 @@ require "libstat"
 require "libdevcmd"
 require "libdevrsp"
 
-# Main
-class Dev < Stat
-  def initialize(id)
-    super("field_#{id}")
-    self['id']=id
-  end
-end
-
-class DevCom
+class Dev
   def initialize(dev,id,iocmd)
     @ddb=XmlDoc.new('ddb',dev)
   rescue RuntimeError
  abort $!.to_s
   else
-    @stat=Dev.new(id)
+    @stat=Stat.new("field_#{id}")
     @cmd=DevCmd.new(@ddb,@stat)
     @rsp=DevRsp.new(@ddb,@stat)
     @v=Verbose.new("ddb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
+    @stat['id']=id
   end
 
   def field

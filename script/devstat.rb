@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
-require "libdev"
+require "libstat"
+require "libdevrsp"
+require "libxmldoc"
 
 abort "Usage: devstat [device] [id] < logline" if ARGV.size < 2
 dev=ARGV.shift
@@ -12,11 +14,11 @@ stm=ary.shift.split(':')
 abort ("Logline:Not response") unless /rcv/ === stm.shift
 begin
   ddb=XmlDoc.new('ddb',dev)
-  dvar=Dev.new(id)
-  r=DevRsp.new(ddb,dvar)
+  st=Stat.new("field_#{id}")
+  r=DevRsp.new(ddb,st)
   r.setrsp(stm)
 rescue RuntimeError
   abort $!.to_s
 end
 print Marshal.dump r.getfield(time){ eval(ary.shift) }
-dvar.save_all
+st.save_all

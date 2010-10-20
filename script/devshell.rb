@@ -7,7 +7,7 @@ warn "Usage: devshell [dev] [id] [iocmd]" if ARGV.size < 3
 dev=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
-ddb=DevCom.new(dev,id,iocmd)
+ddb=Dev.new(dev,id,iocmd)
 
 loop{
   stm=Readline.readline("#{dev}>",true).chomp.split(" ")

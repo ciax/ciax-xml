@@ -52,11 +52,9 @@ class Dev
 
   def set(stm)
     if stm.empty?
-      msg=["== Option list =="]
-      msg << " key(:idx)  : Show Value"
-      msg << " key(:idx)= : Set Value"
-      msg << " key=#{@stat.keys}"
-      raise SelectID,msg.join("\n")
+      msg=["  Usage: set [key(:idx)(=val)] .."]
+      msg << "  key=#{@stat.keys}"
+      raise msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
     stat={}
@@ -70,11 +68,14 @@ class Dev
   end
  
   def save(keys=nil,tag=nil)
-    raise("key=#{@stat.keys}") unless keys
+    unless keys
+      msg=["  Usage: save [key,key..] (tag)"]
+      msg << "  key=#{@stat.keys}"
+      raise msg.join("\n")
+    end
     stat={}
     keys.split(',').each{|k|
-      s=@stat[k] || raise("No such key[#{k}]")
-      stat[k]=s
+      stat[k]=@stat[k] || raise("No such key[#{k}]")
     }
     @stat.save(stat,tag)
   end

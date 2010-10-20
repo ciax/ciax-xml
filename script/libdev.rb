@@ -87,7 +87,7 @@ class DevCom
     stm.each{|e|
       key,val=e.split('=')
       h=@dvar.acc_stat(key)
-      h.replace(eval(@dvar.sub_var(val)).to_s) if val
+      h.replace(eval(@dvar.sub_stat(val)).to_s) if val
       stat[key]=@field[key]
     }
     stat

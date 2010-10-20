@@ -43,13 +43,13 @@ class ClsStat < Stat
   def get_val(e)
     ary=Array.new
     id=@rep.sub_index(e.attributes['id'])
-    id=sub_var(id)
+    id=sub_stat(id)
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
     begin
       e.each_element {|dtype| #element(split and concat)
         a=dtype.attributes
         fld=@rep.sub_index(dtype.text)
-        fld=sub_var(fld) || raise("No field Key")
+        fld=sub_stat(fld) || raise("No field Key")
         data=acc_array(fld,@field) || raise("No field Value[#{fld}]")
         case dtype.name
         when 'binary'

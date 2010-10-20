@@ -8,7 +8,7 @@ class Stat < Hash
     @stat={}
   end
 
-  def sub_var(str)
+  def sub_stat(str)
     return str unless /\${/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin

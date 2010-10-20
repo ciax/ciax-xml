@@ -67,7 +67,7 @@ class DevCmd
         frame << encode(c,str)
       when 'formula'
         str=@par.sub_par(c.text)
-        str=eval(@var.sub_var(str)).to_s
+        str=eval(@var.sub_stat(str)).to_s
         @v.msg{"GetFrame:(calculated)[#{str}]"}
         frame << encode(c,str)
       when 'csv'

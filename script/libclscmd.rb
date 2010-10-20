@@ -61,7 +61,7 @@ class ClsCmd < Stat
         when 'formula'
           str=@rep.sub_index(d.text)
           str=@par.sub_par(str)
-          str=format(d,eval(sub_var(str)))
+          str=format(d,eval(sub_stat(str)))
           @v.msg{"CMD:Calculated [#{str}]"}
         end
         stm << str

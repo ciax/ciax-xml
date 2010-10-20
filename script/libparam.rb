@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
 require 'libverbose'
 class Param < Array
+  alias :setpar :replace
+
   def initialize
     @v=Verbose.new("Parameter")
-  end
-
-  def setpar(stm)
-    replace(stm)
   end
 
   def sub_par(str)

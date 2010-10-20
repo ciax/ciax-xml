@@ -23,9 +23,9 @@ class ClsCmd
     ecmd.each_element {|e0|
       case e0.name
       when 'parameters'
-        pary=par.dup
+        i=0
         e0.each_element{|e1| #//par
-          validate(e1,pary.shift)
+          validate(e1,@par[i+=1])
         }
       when 'statement'
         yield(get_cmd(e0))

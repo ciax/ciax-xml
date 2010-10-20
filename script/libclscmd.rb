@@ -18,49 +18,49 @@ class ClsCmd
   def session(stm)
     par=stm.dup
     @par.setpar(stm)
-    xpcmd=@cdb.select_id('commands',par.shift)
-    @v.msg{"CMD:Exec(CDB):#{xpcmd.attributes['label']}"}
-    xpcmd.each_element {|c|
-      case c.name
+    ecmd=@cdb.select_id('commands',par.shift)
+    @v.msg{"CMD:Exec(CDB):#{ecmd.attributes['label']}"}
+    ecmd.each_element {|e0|
+      case e0.name
       when 'parameters'
         pary=par.dup
-        c.each_element{|d| #//par
-          validate(d,pary.shift)
+        e0.each_element{|e1| #//par
+          validate(e1,pary.shift)
         }
       when 'statement'
-        yield(get_cmd(c))
+        yield(get_cmd(e0))
       when 'repeat'
-        repeat_cmd(c){|d| yield d }
+        repeat_cmd(e0){|e1| yield e1 }
       end
     }
   end
 
   private
   #Cmd Method
-  def repeat_cmd(e)
-    @rep.repeat(e){ |f|
-      case f.name
+  def repeat_cmd(e0)
+    @rep.repeat(e0){ |e1|
+      case e1.name
       when 'statement'
-        yield(get_cmd(f))
+        yield(get_cmd(e1))
       when 'repeat'
-        repeat_cmd(f){ |g| yield g }
+        repeat_cmd(e1){|e2| yield e2}
       end
     }
   end
 
-  def get_cmd(e) # //stm
+  def get_cmd(e0) # //stm
     stm=[]
     @v.msg(1){"CMD:GetCmd(DDB)"}
     begin
-      e.each_element{|d| # //text or formula
-        case d.name
+      e0.each_element{|e1| # //text or formula
+        case e1.name
         when 'text'
-          str=d.text
+          str=e1.text
           @v.msg{"CMD:GetText [#{str}]"}
         when 'formula'
-          str=@rep.sub_index(d.text)
+          str=@rep.sub_index(e1.text)
           str=@par.sub_par(str)
-          str=format(d,eval(str))
+          str=format(e1,eval(str))
           @v.msg{"CMD:Calculated [#{str}]"}
         end
         stm << str

@@ -41,15 +41,15 @@ class DevCmd
   end
 
   private
-  def getstr(e)
+  def getstr(e0)
     frame=''
-    e.each_element { |c|
-      a=c.attributes
-      case c.name
+    e0.each_element { |e1|
+      a=e1.attributes
+      case e1.name
       when 'parameters'
         i=0
-        c.each_element{|d|
-          validate(d,@par[i+=1])
+        e1.each_element{|e2|
+          validate(e2,@par[i+=1])
         }
       when 'selected'
         begin
@@ -62,19 +62,19 @@ class DevCmd
         frame << @ccrange
         @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
       when 'data'
-        str=c.text
+        str=e1.text
         @v.msg{"GetFrame:#{a['label']}[#{str}]"}
-        frame << encode(c,str)
+        frame << encode(e1,str)
       when 'formula'
-        str=@par.sub_par(c.text)
+        str=@par.sub_par(e1.text)
         str=eval(@stat.sub_stat(str)).to_s
         @v.msg{"GetFrame:(calculated)[#{str}]"}
-        frame << encode(c,str)
+        frame << encode(e1,str)
       when 'csv'
-        str=@par.sub_par(c.text)
+        str=@par.sub_par(e1.text)
         @par.sub_par(str).split(',').each{|str|
           @v.msg{"GetFrame:(csv)[#{str}]"}
-          frame << encode(c,str)
+          frame << encode(e1,str)
         }
       end
     }

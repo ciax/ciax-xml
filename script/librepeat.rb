@@ -5,8 +5,8 @@ class Repeat < Hash
     @v=Verbose.new("Repeat")
   end
 
-  def repeat(e)
-    a=e.attributes
+  def repeat(e0)
+    a=e0.attributes
     fmt=a['format'] || '%d'
     c=a['counter'] || '_'
     c.next! while self[c]
@@ -14,7 +14,7 @@ class Repeat < Hash
     begin
       Range.new(a['from'],a['to']).each { |n|
         self[c]=fmt % n
-        e.each_element { |d| yield d}
+        e0.each_element { |e1| yield e1}
       }
       self.delete(c)
     ensure

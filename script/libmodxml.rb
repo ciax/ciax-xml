@@ -47,13 +47,13 @@ module ModXml
     label=e.attributes['label']
     str || @v.err("Validate: Too Few Parameters(#{label})")
     @v.msg{"Validate: String for [#{str}]"}
-    e.each_element {|d|
-      @v.msg{"Validate: Match? [#{d.text}]"}
-      case d.name
+    e.each_element {|e1|
+      @v.msg{"Validate: Match? [#{e1.text}]"}
+      case e1.name
       when 'regexp'
-        return(str) if /^#{d.text}$/ === str
+        return(str) if /^#{e1.text}$/ === str
       when 'range'
-        return(str) if ReRange.new(d.text) == str
+        return(str) if ReRange.new(e1.text) == str
       end
     }
     @v.err("Validate: Parameter invalid(#{label})")

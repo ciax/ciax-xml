@@ -49,18 +49,18 @@ class DevRsp
   def init_field(fill='')
     @v.msg(1){"Field:Initialize"}
     begin
-      @ddb['rspselect'].each_element{ |e| # response
-        e.each_element{|f| #field|array|vefiry
-          assign=f.attributes['assign'] || next
-          case f.name
+      @ddb['rspselect'].each_element{ |e0| # response
+        e0.each_element{|e1| #field|array|vefiry
+          assign=e1.attributes['assign'] || next
+          case e1.name
           when 'field'
             @v.msg{"Field:Init Field[#{assign}]"}
             @stat[assign]=fill unless @stat[assign]
           when 'array'
             @v.msg{"Field:Init Array[#{assign}]"}
             sary=[]
-            f.each_element{ |d|
-              sary << d.attributes['size'].to_i
+            e1.each_element{ |e2|
+              sary << e2.attributes['size'].to_i
             }
             @stat[assign]=init_array(sary){fill} unless @stat[assign]
           end
@@ -84,10 +84,10 @@ class DevRsp
   end
 
   # Process Frame to Field
-  def setframe(e)
-    e.each_element { |c|
-      a=c.attributes
-      case c.name
+  def setframe(e0)
+    e0.each_element { |e1|
+      a=e1.attributes
+      case e1.name
       when 'ccrange'
         begin
           @v.msg(1){"Entering Ceck Code Node"}
@@ -105,24 +105,24 @@ class DevRsp
           @v.msg(-1){"Exitting Selected Node"}
         end
       when 'field'
-        frame_to_field(c)
+        frame_to_field(e1)
       when 'array'
-        field_array(c)
+        field_array(e1)
       end
     }
   end
 
-  def frame_to_field(e)
-    a=e.attributes
+  def frame_to_field(e0)
+    a=e0.attributes
     @v.msg(1){"Field:#{a['label']}"}
     begin
-      data=decode(e,cut_frame(e))
+      data=decode(e0,cut_frame(e0))
       if key=a['assign']
         @stat[key]=data
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       end
-      e.each_element {|d| # Verify
-      if txt=d.text
+      e0.each_element {|e1| # Verify
+      if txt=e1.text
         @v.msg{"Verify:[#{txt}]"}
         txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
       end
@@ -132,17 +132,17 @@ class DevRsp
     end
   end
 
-  def field_array(e)
+  def field_array(e0)
     idxs=[]
-    a=e.attributes
-    @v.msg(1){"Array:#{e.attributes['label']}"}
+    a=e0.attributes
+    @v.msg(1){"Array:#{e0.attributes['label']}"}
     begin
       key=a['assign'] || @v.err("No key for Array")
-      e.each_element{ |f| # Index
-        idxs << @par.sub_par(f.text)
+      e0.each_element{ |e1| # Index
+        idxs << @par.sub_par(e1.text)
       }
       @stat[key]=mk_array(idxs,@stat[key]){
-        decode(e,cut_frame(e))
+        decode(e0,cut_frame(e0))
       }
     ensure
       @v.msg(-1){"Array:Assign[#{key}]"}
@@ -163,17 +163,17 @@ class DevRsp
     fld
   end
 
-  def cut_frame(e)
+  def cut_frame(e0)
     if @fp >= @frame.size
       @v.err("No more string in frame") if @fary.empty?
       @frame=@fary.shift
       @fp=0
     end
-    len=e.attributes['length']||@frame.size
+    len=e0.attributes['length']||@frame.size
     str=@frame.slice(@fp,len.to_i)
     @fp+=len.to_i
     @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-    if r=e.attributes['slice']
+    if r=e0.attributes['slice']
       str=str.slice(*r.split(':').map{|i| i.to_i })
       @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
     end

@@ -18,15 +18,15 @@ class ClsStat
   end
   
   public
-  def get_stat(dstat)
-    return unless dstat
-    @field.update(dstat)
-    @cdb['status'].each_element{|g|
-      case g.name
+  def get_stat(field)
+    return unless field
+    @field.update(field)
+    @cdb['status'].each_element{|e0|
+      case e0.name
       when 'value'
-        get_val(g)
+        get_val(e0)
       when 'repeat'
-        @rep.repeat(g){|e| get_val(e) }
+        @rep.repeat(e0){|e1| get_val(e1) }
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
@@ -36,19 +36,18 @@ class ClsStat
   def stat
     Hash[@stat]
   end
-
   
   private
-  def get_val(e)
+  def get_val(e0)
     ary=Array.new
-    id=@rep.sub_index(e.attributes['id'])
+    id=@rep.sub_index(e0.attributes['id'])
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
     begin
-      e.each_element {|dtype| #element(split and concat)
-        a=dtype.attributes
-        fld=@rep.sub_index(dtype.text) || raise("No field Key")
+      e0.each_element {|e1| #element(split and concat)
+        a=e1.attributes
+        fld=@rep.sub_index(e1.text) || raise("No field Key")
         data=@field.acc_stat(fld) || raise("No field Value[#{fld}]")
-        case dtype.name
+        case e1.name
         when 'binary'
           bit=(data.to_i >> a['bit'].to_i & 1)
           bit = -(bit-1) if /true|1/ === a['inv']
@@ -69,7 +68,7 @@ class ClsStat
           ary << data
         end
       }
-      value=e.attributes['format'] % ary
+      value=e0.attributes['format'] % ary
       @stat[id]=value
     ensure
       @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}

@@ -10,23 +10,6 @@ class Var < Hash
     @stat={}
   end
 
-  def repeat(e)
-    a=e.attributes
-    fmt=a['format'] || '%d'
-    counter=a['counter'] || '_'
-    counter.next! while self[counter]
-    @v.msg(1){"Repeat:Counter[\$#{counter}]/Range[#{a['from']}-#{a['to']}]/Format[#{fmt}]"}
-    begin
-      Range.new(a['from'],a['to']).each { |n|
-        self[counter]=fmt % n
-        e.each_element { |d| yield d}
-      }
-      self.delete(counter)
-    ensure
-      @v.msg(-1){"Repeat:Close"}
-    end
-  end
-
   def setstm(stm)
     stm.each_with_index{|s,n| self[n.to_s]=s }
   end

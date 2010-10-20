@@ -19,3 +19,4 @@ rescue RuntimeError
   abort $!.to_s
 end
 print Marshal.dump r.getfield(time){ eval(ary.shift) }
+dvar.save_all

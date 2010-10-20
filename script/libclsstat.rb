@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "librepeat"
 require "libvar"
 require "libmodxml"
 require "libverbose"
@@ -18,6 +19,7 @@ class ClsStat < Var
       @stat={ 'id'=>id, 'class' => cls }
     end
     @v=Verbose.new("cdb/#{cdb['id']}/stat".upcase)
+    @rep=Repeat.new
     @field={}
   end
   
@@ -30,7 +32,7 @@ class ClsStat < Var
       when 'value'
         get_val(g)
       when 'repeat'
-        repeat(g){|e| get_val(e) }
+        @rep.repeat(g){|e| get_val(e) }
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
@@ -40,12 +42,14 @@ class ClsStat < Var
   private
   def get_val(e)
     ary=Array.new
-    id=sub_var(e.attributes['id'])
+    id=@rep.sub_index(e.attributes['id'])
+    id=sub_var(id)
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
     begin
       e.each_element {|dtype| #element(split and concat)
         a=dtype.attributes
-        fld=sub_var(dtype.text) || raise("No field Key")
+        fld=@rep.sub_index(dtype.text)
+        fld=sub_var(fld) || raise("No field Key")
         data=acc_array(fld,@field) || raise("No field Value[#{fld}]")
         case dtype.name
         when 'binary'

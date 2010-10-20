@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libvar"
+require "librepeat"
 require "libmodxml"
 require "libverbose"
 
@@ -9,6 +10,7 @@ class ClsCmd < Var
   def initialize(cdb)
     @cdb=cdb
     @v=Verbose.new("cdb/#{cdb['id']}/cmd".upcase)
+    @rep=Repeat.new
   end
 
   public
@@ -35,7 +37,7 @@ class ClsCmd < Var
   private
   #Cmd Method
   def repeat_cmd(e)
-    repeat(e){ |f|
+    @rep.repeat(e){ |f|
       case f.name
       when 'statement'
         yield(get_cmd(f))
@@ -55,7 +57,8 @@ class ClsCmd < Var
           str=d.text
           @v.msg{"CMD:GetText [#{str}]"}
         when 'formula'
-          str=format(d,eval(sub_var(d.text)))
+          str=@rep.sub_index(d.text)
+          str=format(d,eval(sub_var(str)))
           @v.msg{"CMD:Calculated [#{str}]"}
         end
         stm << str

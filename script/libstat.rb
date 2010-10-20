@@ -16,7 +16,7 @@ class Stat < Hash
   end
 
   def save_all
-    @fd.save_stat({}.update(self))
+    @fd.save_stat(Hash[self])
   end
 
   def save(stat,tag='default')

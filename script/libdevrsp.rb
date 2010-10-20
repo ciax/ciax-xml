@@ -41,7 +41,7 @@ class DevRsp
       @v.msg{"Verify:CC OK [#{cc}]"}
     end
     @stat['time']="%.3f" % time.to_f
-    { }.update(@stat)
+    Hash[@stat]
   end
 
   private

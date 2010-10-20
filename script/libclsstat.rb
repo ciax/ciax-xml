@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "librepeat"
-require "libvar"
+require "libstat"
 require "libmodxml"
 require "libverbose"
 require "libiofile"
 
-class ClsStat < Var
+class ClsStat < Stat
   include ModXml
   attr_reader :stat
 

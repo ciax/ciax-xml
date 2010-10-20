@@ -2,12 +2,12 @@
 require "libxmldoc"
 require "libiocmd"
 require "libiofile"
-require "libvar"
+require "libstat"
 require "libdevcmd"
 require "libdevrsp"
 
 # Main
-class Dev < Var
+class Dev < Stat
   def initialize(id)
     super()
     begin

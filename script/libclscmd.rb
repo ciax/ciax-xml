@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require "libvar"
+require "libstat"
 require "libparam"
 require "librepeat"
 require "libmodxml"
 require "libverbose"
 
-class ClsCmd < Var
+class ClsCmd < Stat
   include ModXml
 
   def initialize(cdb)

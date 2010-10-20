@@ -2,7 +2,7 @@
 require 'libverbose'
 class Repeat < Hash
   def initialize
-    @v=Verbose.new
+    @v=Verbose.new("Repeat")
   end
 
   def repeat(e)
@@ -10,7 +10,7 @@ class Repeat < Hash
     fmt=a['format'] || '%d'
     c=a['counter'] || '_'
     c.next! while self[c]
-    @v.msg(1){"Repeat:Counter[\$#{c}]/Range[#{a['from']}-#{a['to']}]/Format[#{fmt}]"}
+    @v.msg(1){"Counter[\$#{c}]/Range[#{a['from']}-#{a['to']}]/Format[#{fmt}]"}
     begin
       Range.new(a['from'],a['to']).each { |n|
         self[c]=fmt % n
@@ -18,7 +18,7 @@ class Repeat < Hash
       }
       self.delete(c)
     ensure
-      @v.msg(-1){"Repeat:End"}
+      @v.msg(-1){"End"}
     end
   end
 

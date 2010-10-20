@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libvar"
+require "libparam"
 require "librepeat"
 require "libmodxml"
 require "libverbose"
@@ -11,12 +12,13 @@ class ClsCmd < Var
     @cdb=cdb
     @v=Verbose.new("cdb/#{cdb['id']}/cmd".upcase)
     @rep=Repeat.new
+    @par=Param.new
   end
 
   public
   def session(stm)
     par=stm.dup
-    setstm(stm)
+    @par.setpar(stm)
     xpcmd=@cdb.select_id('commands',par.shift)
     @v.msg{"CMD:Exec(CDB):#{xpcmd.attributes['label']}"}
     xpcmd.each_element {|c|
@@ -58,6 +60,7 @@ class ClsCmd < Var
           @v.msg{"CMD:GetText [#{str}]"}
         when 'formula'
           str=@rep.sub_index(d.text)
+          str=@par.sub_par(str)
           str=format(d,eval(sub_var(str)))
           @v.msg{"CMD:Calculated [#{str}]"}
         end

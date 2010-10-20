@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libmodxml"
+require "libparam"
 
 # Cmd Methods
 class DevCmd
@@ -9,11 +10,12 @@ class DevCmd
     @ddb,@var=ddb,var
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
     @cache={}
+    @par=Param.new
   end
 
   def setcmd(stm) # return = response select
     @cid=stm.join(':')
-    @var.setstm(stm)
+    @par.setpar(stm)
     @sel=@ddb.select_id('cmdselect',stm.first)
     @v.msg{'Select:'+@sel.attributes['label']}
   end
@@ -45,9 +47,9 @@ class DevCmd
       a=c.attributes
       case c.name
       when 'parameters'
-        i='0'
+        i=0
         c.each_element{|d|
-          validate(d,@var[i.next])
+          validate(d,@par[i+=1])
         }
       when 'selected'
         begin
@@ -64,11 +66,13 @@ class DevCmd
         @v.msg{"GetFrame:#{a['label']}[#{str}]"}
         frame << encode(c,str)
       when 'formula'
-        str=eval(@var.sub_var(c.text)).to_s
+        str=@par.sub_par(c.text)
+        str=eval(@var.sub_var(str)).to_s
         @v.msg{"GetFrame:(calculated)[#{str}]"}
         frame << encode(c,str)
       when 'csv'
-        @var.sub_var(c.text).split(',').each{|str|
+        str=@par.sub_par(c.text)
+        @par.sub_par(str).split(',').each{|str|
           @v.msg{"GetFrame:(csv)[#{str}]"}
           frame << encode(c,str)
         }

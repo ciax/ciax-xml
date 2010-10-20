@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmodxml"
-
+require "libparam"
 # Rsp Methods
 class DevRsp
   include ModXml
@@ -11,11 +11,12 @@ class DevRsp
     @frame=''
     @fary=[]
     @fp=0
+    @par=Param.new
     init_field
   end
 
   def setrsp(stm)
-    @var.setstm(stm)
+    @par.setpar(stm)
     cmd=@ddb.select_id('cmdselect',stm.first)
     res=cmd.attributes['response']
     @sel= res ? @ddb.select_id('rspselect',res) : nil
@@ -138,7 +139,7 @@ class DevRsp
     begin
       key=a['assign'] || @v.err("No key for Array")
       e.each_element{ |f| # Index
-        idxs << @var.sub_var(f.text)
+        idxs << @par.sub_par(f.text)
       }
       @var.stat[key]=mk_array(idxs,@var.stat[key]){
         decode(e,cut_frame(e))

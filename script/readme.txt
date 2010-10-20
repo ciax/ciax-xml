@@ -17,6 +17,7 @@ cdb//session@id -> never use ':'
  $1..9
     description : substitute parameters
     usable: ddb//cmdframe/formula
+            ddb//cmdframe/csv
             ddb//response/array/index
             --
             cdb//session/statement/formula
@@ -26,6 +27,7 @@ cdb//session@id -> never use ':'
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
     usable: ddb//cmdframe/formula
+            ddb//cmdframe/csv
             --
             cdb//session/statement/formula
             --

@@ -7,8 +7,6 @@ require "libiofile"
 
 class ClsStat
   include ModXml
-  attr_reader :stat
-
   def initialize(cdb,id)
     @cdb=cdb
     cls=cdb['id']
@@ -34,6 +32,11 @@ class ClsStat
     @stat['time']=Time.at(@field['time'].to_f).to_s
     @stat.save_all
   end
+  
+  def stat
+    Hash[@stat]
+  end
+
   
   private
   def get_val(e)

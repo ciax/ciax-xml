@@ -5,8 +5,8 @@ require "libparam"
 class DevRsp
   include ModXml
 
-  def initialize(ddb,var)
-    @ddb,@stat,@sel=ddb,var
+  def initialize(ddb,stat)
+    @ddb,@stat,@sel=ddb,stat
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @frame=''
     @fary=[]

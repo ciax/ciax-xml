@@ -60,8 +60,7 @@ class Dev
     stat={}
     stm.each{|e|
       key,val=e.split('=')
-      h=@stat.acc_stat(key)
-      h.replace(eval(@stat.sub_stat(val)).to_s) if val
+      @stat.set_stat(key,val)
       stat[key]=@stat[key]
     }
     stat

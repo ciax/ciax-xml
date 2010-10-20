@@ -28,7 +28,6 @@ class Stat < Hash
     return str unless /\${/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
-      # Sub ${key1:key2:idx} => hash[key1][key2][idx]
       # output csv if array
       str=str.gsub(/\$\{(.+)\}/) {
         [*acc_stat($1)].join(',')
@@ -40,7 +39,13 @@ class Stat < Hash
     end
   end
 
-  def acc_stat(key)
+  def set_stat(key,val)
+    h=acc_stat(key)
+    h.replace(eval(sub_stat(val)).to_s) if val
+    h
+  end
+
+  def acc_stat(key) # ${key1:key2:idx} => hash[key1][key2][idx]
     h=self
     return h unless key
     key.split(':').each {|i|

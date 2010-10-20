@@ -10,7 +10,7 @@ require "libdevrsp"
 class Dev < Stat
   def initialize(id)
     super("field_#{id}")
-    @stat['id']=id
+    self['id']=id
   end
 end
 
@@ -27,7 +27,7 @@ class DevCom
     @rsp=DevRsp.new(@ddb,@stat)
     @v=Verbose.new("ddb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
-    @field=@stat.stat
+    @field=@stat
   end
 
   def devcom(stm)

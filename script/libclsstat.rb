@@ -12,8 +12,7 @@ class ClsStat
   def initialize(cdb,id)
     @cdb=cdb
     cls=cdb['id']
-    @st=Stat.new("status_#{id}")
-    @stat=@st.stat
+    @stat=Stat.new("status_#{id}")
     @stat.update({ 'id'=>id, 'class' => cls })
     @v=Verbose.new("cdb/#{cls}/stat".upcase)
     @rep=Repeat.new
@@ -23,7 +22,7 @@ class ClsStat
   public
   def get_stat(dstat)
     return unless dstat
-    @field.stat.update(dstat)
+    @field.update(dstat)
     @cdb['status'].each_element{|g|
       case g.name
       when 'value'
@@ -32,8 +31,8 @@ class ClsStat
         @rep.repeat(g){|e| get_val(e) }
       end
     }
-    @st.stat['time']=Time.at(@field.stat['time'].to_f).to_s
-    @st.save_all
+    @stat['time']=Time.at(@field['time'].to_f).to_s
+    @stat.save_all
   end
   
   private

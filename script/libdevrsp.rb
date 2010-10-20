@@ -6,7 +6,7 @@ class DevRsp
   include ModXml
 
   def initialize(ddb,var)
-    @ddb,@var,@sel=ddb,var
+    @ddb,@stat,@sel=ddb,var
     @v=Verbose.new("ddb/#{@ddb['id']}/rsp".upcase)
     @frame=''
     @fary=[]
@@ -36,12 +36,12 @@ class DevRsp
       @fary=[frame]
     end
     setframe(@ddb['rspframe'])
-    if cc=@var.stat.delete('cc')
+    if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
       @v.msg{"Verify:CC OK [#{cc}]"}
     end
-    @var.stat['time']="%.3f" % time.to_f
-    @var.stat
+    @stat['time']="%.3f" % time.to_f
+    { }.update(@stat)
   end
 
   private
@@ -55,18 +55,18 @@ class DevRsp
           case f.name
           when 'field'
             @v.msg{"Field:Init Field[#{assign}]"}
-            @var.stat[assign]=fill unless @var.stat[assign]
+            @stat[assign]=fill unless @stat[assign]
           when 'array'
             @v.msg{"Field:Init Array[#{assign}]"}
             sary=[]
             f.each_element{ |d|
               sary << d.attributes['size'].to_i
             }
-            @var.stat[assign]=init_array(sary){fill} unless @var.stat[assign]
+            @stat[assign]=init_array(sary){fill} unless @stat[assign]
           end
         }
       }
-      @var.stat['device']=@ddb['id']
+      @stat['device']=@ddb['id']
     ensure
       @v.msg(-1){"Field:Initialized"}
     end
@@ -118,7 +118,7 @@ class DevRsp
     begin
       data=decode(e,cut_frame(e))
       if key=a['assign']
-        @var.stat[key]=data
+        @stat[key]=data
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       end
       e.each_element {|d| # Verify
@@ -141,7 +141,7 @@ class DevRsp
       e.each_element{ |f| # Index
         idxs << @par.sub_par(f.text)
       }
-      @var.stat[key]=mk_array(idxs,@var.stat[key]){
+      @stat[key]=mk_array(idxs,@stat[key]){
         decode(e,cut_frame(e))
       }
     ensure

@@ -1,25 +1,22 @@
 #!/usr/bin/ruby
 require 'libverbose'
 class Stat < Hash
-  attr_accessor :stat
-
   def initialize(fname)
     @v=Verbose.new
-    @stat={}
     begin
       @fd=IoFile.new(fname)
-      @stat=@fd.load_stat
+      update(@fd.load_stat)
     rescue
       warn "----- Create #{fname}.mar"
     end
   end
 
   def load(tag='default')
-    @stat.update(@fd.load_stat(tag))
+    update(@fd.load_stat(tag))
   end
 
   def save_all
-    @fd.save_stat(@stat)
+    @fd.save_stat({}.update(self))
   end
 
   def save(stat,tag='default')
@@ -43,7 +40,7 @@ class Stat < Hash
   end
 
   def acc_stat(key)
-    h=@stat
+    h=self
     return h unless key
     key.split(':').each {|i|
       @v.msg{"Stat:Type[#{h.class}] Name[#{i}]"}

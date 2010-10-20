@@ -6,8 +6,8 @@ require "libparam"
 class DevCmd
   include ModXml
 
-  def initialize(ddb,var)
-    @ddb,@var=ddb,var
+  def initialize(ddb,stat)
+    @ddb,@stat=ddb,stat
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
     @cache={}
     @par=Param.new
@@ -29,7 +29,7 @@ class DevCmd
         begin
           @v.msg(1){"Entering Ceck Code Range"}
           @ccrange=getstr(ccn)
-          @var.stat['cc']=checkcode(ccn,@ccrange)
+          @stat['cc']=checkcode(ccn,@ccrange)
         ensure
           @v.msg(-1){"Exitting Ceck Code Range"}
         end
@@ -67,7 +67,7 @@ class DevCmd
         frame << encode(c,str)
       when 'formula'
         str=@par.sub_par(c.text)
-        str=eval(@var.sub_stat(str)).to_s
+        str=eval(@stat.sub_stat(str)).to_s
         @v.msg{"GetFrame:(calculated)[#{str}]"}
         frame << encode(c,str)
       when 'csv'

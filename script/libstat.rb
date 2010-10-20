@@ -3,9 +3,27 @@ require 'libverbose'
 class Stat < Hash
   attr_accessor :stat
 
-  def initialize
+  def initialize(fname)
     @v=Verbose.new
     @stat={}
+    begin
+      @fd=IoFile.new(fname)
+      @stat=@fd.load_stat
+    rescue
+      warn "----- Create #{fname}.mar"
+    end
+  end
+
+  def load(tag='default')
+    @stat.update(@fd.load_stat(tag))
+  end
+
+  def save_all
+    @fd.save_stat(@stat)
+  end
+
+  def save(stat,tag='default')
+    @fd.save_stat(stat,tag)
   end
 
   def sub_stat(str)
@@ -15,7 +33,7 @@ class Stat < Hash
       # Sub ${key1:key2:idx} => hash[key1][key2][idx]
       # output csv if array
       str=str.gsub(/\$\{(.+)\}/) {
-        [*acc_array($1,@stat)].join(',')
+        [*acc_stat($1)].join(',')
       }
       raise if str == ''
       str
@@ -25,10 +43,7 @@ class Stat < Hash
   end
 
   def acc_stat(key)
-    acc_array(key,@stat)
-  end
-
-  def acc_array(key,h)
+    h=@stat
     return h unless key
     key.split(':').each {|i|
       @v.msg{"Stat:Type[#{h.class}] Name[#{i}]"}

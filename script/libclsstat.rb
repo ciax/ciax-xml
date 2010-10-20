@@ -11,16 +11,13 @@ class ClsStat
 
   def initialize(cdb,id)
     @cdb=cdb
-    @f=IoFile.new("status_#{id}")
-    begin
-      @stat=@f.load_stat
-    rescue
-      warn "----- Create status_#{id}.mar"
-      @stat={ 'id'=>id, 'class' => cls }
-    end
-    @v=Verbose.new("cdb/#{cdb['id']}/stat".upcase)
+    cls=cdb['id']
+    @st=Stat.new("status_#{id}")
+    @stat=@st.stat
+    @stat.update({ 'id'=>id, 'class' => cls })
+    @v=Verbose.new("cdb/#{cls}/stat".upcase)
     @rep=Repeat.new
-    @field=Stat.new
+    @field=Stat.new("field_#{id}")
   end
   
   public
@@ -35,8 +32,8 @@ class ClsStat
         @rep.repeat(g){|e| get_val(e) }
       end
     }
-    @stat['time']=Time.at(@field.stat['time'].to_f).to_s
-    @f.save_stat(@stat)
+    @st.stat['time']=Time.at(@field.stat['time'].to_f).to_s
+    @st.save_all
   end
   
   private

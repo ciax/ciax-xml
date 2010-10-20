@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require "librepeat"
-require "libstat"
 require "libmodxml"
 require "libverbose"
+require "librepeat"
+require "libstat"
 require "libiofile"
 
-class ClsStat < Stat
+class ClsStat
   include ModXml
   attr_reader :stat
 
@@ -20,13 +20,13 @@ class ClsStat < Stat
     end
     @v=Verbose.new("cdb/#{cdb['id']}/stat".upcase)
     @rep=Repeat.new
-    @field={}
+    @field=Stat.new
   end
   
   public
   def get_stat(dstat)
     return unless dstat
-    @field.update(dstat)
+    @field.stat.update(dstat)
     @cdb['status'].each_element{|g|
       case g.name
       when 'value'
@@ -35,7 +35,7 @@ class ClsStat < Stat
         @rep.repeat(g){|e| get_val(e) }
       end
     }
-    @stat['time']=Time.at(@field['time'].to_f).to_s
+    @stat['time']=Time.at(@field.stat['time'].to_f).to_s
     @f.save_stat(@stat)
   end
   
@@ -43,14 +43,12 @@ class ClsStat < Stat
   def get_val(e)
     ary=Array.new
     id=@rep.sub_index(e.attributes['id'])
-    id=sub_stat(id)
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
     begin
       e.each_element {|dtype| #element(split and concat)
         a=dtype.attributes
-        fld=@rep.sub_index(dtype.text)
-        fld=sub_stat(fld) || raise("No field Key")
-        data=acc_array(fld,@field) || raise("No field Value[#{fld}]")
+        fld=@rep.sub_index(dtype.text) || raise("No field Key")
+        data=@field.acc_stat(fld) || raise("No field Value[#{fld}]")
         case dtype.name
         when 'binary'
           bit=(data.to_i >> a['bit'].to_i & 1)

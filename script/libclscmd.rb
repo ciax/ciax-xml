@@ -1,11 +1,10 @@
 #!/usr/bin/ruby
-require "libstat"
 require "libparam"
 require "librepeat"
 require "libmodxml"
 require "libverbose"
 
-class ClsCmd < Stat
+class ClsCmd
   include ModXml
 
   def initialize(cdb)
@@ -61,7 +60,7 @@ class ClsCmd < Stat
         when 'formula'
           str=@rep.sub_index(d.text)
           str=@par.sub_par(str)
-          str=format(d,eval(sub_stat(str)))
+          str=format(d,eval(str))
           @v.msg{"CMD:Calculated [#{str}]"}
         end
         stm << str

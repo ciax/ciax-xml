@@ -29,8 +29,6 @@ cdb//session@id -> never use ':'
     usable: ddb//cmdframe/formula
             ddb//cmdframe/csv
             --
-            cdb//session/statement/formula
-            --
             odb//session/statement/text
             odb//session/statement/formula
  # No parenthetic variable is processed prior to parenthetic one

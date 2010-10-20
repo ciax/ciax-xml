@@ -15,8 +15,6 @@ class Dev < Stat
 end
 
 class DevCom
-  attr_reader :field
-
   def initialize(dev,id,iocmd)
     @ddb=XmlDoc.new('ddb',dev)
   rescue RuntimeError
@@ -27,7 +25,10 @@ class DevCom
     @rsp=DevRsp.new(@ddb,@stat)
     @v=Verbose.new("ddb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
-    @field=@stat
+  end
+
+  def field
+    Hash[@stat]
   end
 
   def devcom(stm)
@@ -38,9 +39,9 @@ class DevCom
     when 'set'
       set(stm)
     when 'load'
-      @stat.load(stm.shift)
+      @stat.load(stm.shift||'default')
     when 'save'
-      save(stm.shift,stm.shift)
+      save(stm.shift,stm.shift||'default')
     else
       msg=[$!.to_s]
       msg << "== Data Handling =="
@@ -61,7 +62,7 @@ class DevCom
       msg=["== Option list =="]
       msg << " key(:idx)  : Show Value"
       msg << " key(:idx)= : Set Value"
-      msg << " key=#{@field.keys}"
+      msg << " key=#{@stat.keys}"
       raise SelectID,msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
@@ -70,16 +71,16 @@ class DevCom
       key,val=e.split('=')
       h=@stat.acc_stat(key)
       h.replace(eval(@stat.sub_stat(val)).to_s) if val
-      stat[key]=@field[key]
+      stat[key]=@stat[key]
     }
     stat
   end
  
-  def save(keys=nil,tag='default')
-    raise("key=#{@field.keys}") unless keys
+  def save(keys=nil,tag=nil)
+    raise("key=#{@stat.keys}") unless keys
     stat={}
     keys.split(',').each{|k|
-      s=@field[k] || raise("No such key[#{k}]")
+      s=@stat[k] || raise("No such key[#{k}]")
       stat[k]=s
     }
     @stat.save(stat,tag)

@@ -5,13 +5,13 @@ class Stat < Hash
     @v=Verbose.new
     begin
       @fd=IoFile.new(fname)
-      update(@fd.load_stat)
+      load
     rescue
       warn "----- Create #{fname}.mar"
     end
   end
 
-  def load(tag='default')
+  def load(tag=nil)
     update(@fd.load_stat(tag))
   end
 

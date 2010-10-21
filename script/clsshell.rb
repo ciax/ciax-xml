@@ -11,7 +11,6 @@ cdb=ClsSrv.new(cls,id,iocmd)
 
 loop {
   stm=Readline.readline(cdb.prompt,true).split(' ')
-  stm=['stat'] if stm.empty?
   break if /^q/ === stm.first
-  puts cdb.dispatch(stm){|s| s}
+  puts cdb.dispatch(stm) || cdb.stat
 }

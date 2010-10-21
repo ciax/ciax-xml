@@ -5,10 +5,8 @@ require "libverbose"
 require "librepeat"
 require "libstatsym"
 
-class ObjStat < Hash
+class ObjStat
   include ModXml
-  attr_reader :stat
-
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
   rescue RuntimeError
@@ -18,9 +16,6 @@ class ObjStat < Hash
     @v=Verbose.new("odb/#{obj}".upcase)
     @value,@group={},0
     @rep=Repeat.new
-    @odb['comm'].each_element{|e|
-      self[e.name]=e.text
-    }
     @sym=StatSym.new(@v)
   end
   

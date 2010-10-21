@@ -15,7 +15,7 @@ class ObjCmd
   end
   
   public
-  def setcmd(stm)
+  def alias(stm)
     par=stm.dup
     if @odb['command']
       @session=@odb.select_id('command',par.shift)

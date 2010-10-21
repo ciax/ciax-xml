@@ -9,7 +9,7 @@ ARGV.clear
 begin
   odb=ObjCmd.new(obj)
   ENV['VER']="#{ENV['VER']}:exec"
-  puts odb.setcmd(cmd)
+  puts odb.alias(cmd)
 rescue RuntimeError
   abort $!.to_s
 end

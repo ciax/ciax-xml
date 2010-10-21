@@ -2,16 +2,16 @@
 require "libxmldoc"
 require "libclsstat"
 
-abort "Usage: clsstat [class] [id] < field_file" if ARGV.size < 2
+abort "Usage: clsstat [class] < field_file" if ARGV.size < 1
 
 cls=ARGV.shift
-id=ARGV.shift
 ARGV.clear
 
 begin
   cdb=XmlDoc.new('cdb',cls)
-  cs=ClsStat.new(cdb,id)
-  stat=cs.get_stat(Marshal.load(gets(nil)))
+  field=Marshal.load(gets(nil))
+  cs=ClsStat.new(cdb,field['id'])
+  stat=cs.get_stat(field)
 rescue RuntimeError
   abort $!.to_s
 end

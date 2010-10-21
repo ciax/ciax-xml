@@ -25,6 +25,7 @@ class Dev
   end
 
   def devcom(stm)
+    return if stm.empty?
     @cmd.setcmd(stm)
     @rsp.setrsp(stm)
   rescue SelectID

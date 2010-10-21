@@ -11,16 +11,10 @@ ddb=Dev.new(dev,id,iocmd)
 
 loop{
   stm=Readline.readline("#{dev}>",true).chomp.split(" ")
-  case stm.first
-  when /^q/
-    break
-  when /[\w]+/
-    begin
-      puts ddb.devcom(stm)
-    rescue
-      puts $!
-    end
-  else
-    p ddb.field
+  break if /^q/ === stm.first
+  begin
+    puts ddb.devcom(stm) || ddb.field
+  rescue
+    puts $!
   end
 }

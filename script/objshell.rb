@@ -15,7 +15,6 @@ odb=Obj.new(id)
 
 loop {
   stm=Readline.readline(cdb.prompt,true).split(' ')
-  stm=['stat'] if stm.empty?
   break if /^q/ === stm.first
-  puts cdb.dispatch(stm){|s| view(odb.get_stat(s))}
+  puts cdb.dispatch(stm) || view(odb.get_stat(cdb.stat))
 }

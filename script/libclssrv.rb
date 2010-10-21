@@ -36,7 +36,7 @@ class ClsSrv
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
     begin
-      @cdbc.session(stm) {|cmd| @q.push(cmd)}
+      @cdbc.session(yield stm) {|cmd| @q.push(cmd)}
       "Accepted"
     rescue SelectID
       case stm.shift

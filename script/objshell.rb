@@ -12,10 +12,11 @@ cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
 cdb=ClsSrv.new(cls,id,iocmd)
-odb=ObjStat.new(id)
+oc=ObjCmd.new(id)
+os=ObjStat.new(id)
 
 loop {
   stm=Readline.readline(cdb.prompt,true).split(' ')
   break if /^q/ === stm.first
-  puts cdb.dispatch(stm) || view(odb.get_stat(cdb.stat))
+  puts cdb.dispatch(stm){|c| oc.setcmd(c)} || view(os.get_stat(cdb.stat))
 }

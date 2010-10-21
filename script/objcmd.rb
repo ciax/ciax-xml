@@ -1,18 +1,15 @@
 #!/usr/bin/ruby
-require "libobj"
-require "libcls"
+require "libobjcmd"
 
 warn "Usage: objcmd [obj] [cmd] (par)" if ARGV.size < 1
 
 obj=ARGV.shift
-cmd=ARGV.join(" ")
+cmd=ARGV.dup
 ARGV.clear
 begin
-  odb=Obj.new(obj)
-  cdb=Cls.new(odb['class'],obj)
-  cdb.get_stat(Marshal.load(gets(nil)))
+  odb=ObjCmd.new(obj)
   ENV['VER']="#{ENV['VER']}:exec"
-  odb.setcmd(cmd){|line| cdb.session(line){} }
+  puts odb.setcmd(cmd)
 rescue RuntimeError
   abort $!.to_s
 end

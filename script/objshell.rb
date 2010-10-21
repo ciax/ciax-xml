@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
-require "libobj"
+require "libobjcmd"
+require "libobjstat"
 require "libclssrv"
 require "libmodview"
 require "readline"
@@ -11,7 +12,7 @@ cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
 cdb=ClsSrv.new(cls,id,iocmd)
-odb=Obj.new(id)
+odb=ObjStat.new(id)
 
 loop {
   stm=Readline.readline(cdb.prompt,true).split(' ')

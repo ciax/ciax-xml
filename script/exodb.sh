@@ -8,10 +8,8 @@ for obj in $objects; do
     obj=${obj%.*}
     obj=${obj#*-}
     echo "#### $obj ####"
-    dev=$(lookup $obj dev) || _usage_key
-    input=$HOME/.var/field_$obj.mar
     output=$HOME/.var/status_$obj.mar
-    VER=${VER:-exec} objcmd $obj $cmd $par < $input
+    VER=${VER:-exec} objcmd $obj $cmd $par
     [ $cmd = 'upd' ] &&
     objstat $output| { [ "$VER" ] && mar || stv; }
 done

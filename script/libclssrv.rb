@@ -35,19 +35,17 @@ class ClsSrv
   def dispatch(stm)
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
-    begin
-      @cdbc.session(yield stm) {|cmd| @q.push(cmd)}
-      "Accepted"
-    rescue SelectID
-      case stm.shift
-      when 'auto'
-        auto_upd(stm.first)
-      else
-        msg=[$!.to_s]
-        msg << "== Internal Command =="
-        msg << " auto ?    : Auto Update (opt)"
-        msg.join("\n")
-      end
+    @cdbc.session(yield stm) {|cmd| @q.push(cmd)}
+    "Accepted"
+  rescue SelectID
+    case stm.shift
+    when 'auto'
+      auto_upd(stm.first)
+    else
+      msg=[$!.to_s]
+      msg << "== Internal Command =="
+      msg << " auto ?    : Auto Update (opt)"
+      msg.join("\n")
     end
   rescue RuntimeError
     $!.to_s
@@ -91,16 +89,10 @@ class ClsSrv
       msg << " stat       : Auto update Status"
       msg << " start      : Start Auto update"
       msg << " stop       : Stop Auto update"
-      msg << " cmd=       : Set Commands (cmd:par;..)"
+      msg << " cmd=       : Set Commands (cmd:par,...)"
       msg << " int=       : Set Interval (sec)"
       msg.join("\n")
     end
-  end
-
-  def setcmd(line)
-    line.split(';').each { |s|
-      @cdbc.session(s.split(':')){ |cmd| yield cmd }
-    }
   end
 
   def device_thread
@@ -117,6 +109,12 @@ class ClsSrv
           @var[:issue]=''
         end
       }
+    }
+  end
+
+  def setcmd(line)
+    line.split(',').each { |s|
+      @cdbc.session(s.split(':')){ |cmd| yield cmd }
     }
   end
 

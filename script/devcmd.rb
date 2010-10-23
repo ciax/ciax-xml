@@ -7,7 +7,7 @@ warn "Usage: devcmd [dev] [id] [cmd] (par)" if ARGV.size < 3
 
 dev=ARGV.shift
 id=ARGV.shift
-cmd=ARGV.dup
+cmd=ARGV
 begin
   ddb=XmlDoc.new('ddb',dev)
   st=Stat.new("field_#{id}")

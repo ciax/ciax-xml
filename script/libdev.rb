@@ -58,8 +58,7 @@ class Dev
       raise msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
-    s=stm.dup
-    @stat.set_stat(s.shift,s.shift).inspect
+    @stat.set_stat(stm[0],stm[1]).inspect
   end
  
   def save(keys=nil,tag=nil)

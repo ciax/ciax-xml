@@ -16,9 +16,8 @@ class ClsCmd
 
   public
   def session(stm)
-    par=stm.dup
     @par.setpar(stm)
-    ecmd=@cdb.select_id('commands',par.shift)
+    ecmd=@cdb.select_id('commands',stm.first)
     @v.msg{"CMD:Exec(CDB):#{ecmd.attributes['label']}"}
     ecmd.each_element {|e0|
       case e0.name

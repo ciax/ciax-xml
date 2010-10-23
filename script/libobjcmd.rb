@@ -16,14 +16,13 @@ class ObjCmd
   
   public
   def alias(stm)
-    par=stm.dup
     if @odb['command']
-      @session=@odb.select_id('command',par.shift)
+      @session=@odb.select_id('command',stm[0])
       a=@session.attributes
       @v.msg{"Exec(ODB):#{a['label']}"}
-      [a['ref'],*par]
+      stm[1..-1].unshift(a['ref'])
     else
-      par
+      stm
     end
   end
 end

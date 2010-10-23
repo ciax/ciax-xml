@@ -75,10 +75,8 @@ class DevRsp
   def init_array(sary,field=nil)
     return yield if sary.empty?
     a=field||[]
-    sad=sary.dup
-    size=sad.shift
-    size.times{|i|
-      a[i]=init_array(sad,a[i]){yield}
+    sary[0].times{|i|
+      a[i]=init_array(sary[1..-1],a[i]){yield}
     }
     a
   end
@@ -149,16 +147,15 @@ class DevRsp
     end
   end
 
-  def mk_array(idxary,field) 
+  def mk_array(idx,field)
     # make multidimensional array
     # i.e. idxary=[0,0:10,0] -> field[0][0][0] .. field[0][10][0]
-    return yield if idxary.empty?
+    return yield if idx.empty?
     fld=field||[]
-    idx=idxary.dup
-    f,l=idx.shift.split(':').map{|i| eval(i)}
+    f,l=idx[0].split(':').map{|i| eval(i)}
     Range.new(f,l||f).each{ |i|
       @v.msg{"Array:Index[#{i}]"}
-      fld[i] = mk_array(idx,fld[i]){yield}
+      fld[i] = mk_array(idx[1..-1],fld[i]){yield}
     }
     fld
   end

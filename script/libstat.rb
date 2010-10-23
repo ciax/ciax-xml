@@ -50,7 +50,11 @@ class Stat < Hash
     return h unless key
     key.split(':').each {|i|
       @v.msg{"Stat:Type[#{h.class}] Name[#{i}]"}
-      i=eval(i) if Array === h
+      begin
+        i=eval(i) if Array === h
+      rescue SyntaxError
+        raise("#{i} is not number")
+      end
       h=h[i]||raise("No such Value [#{i}]")
     }
     h

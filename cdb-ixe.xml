@@ -42,22 +42,28 @@
             <range>0:800</range>
           </par>
         </parameters>
-        <repeat from="1" to="6">
+        <repeat from="0" to="5">
           <statement>
-            <text>setspd</text>
-            <formula>$_</formula>
-            <text>$1</text>
+            <text>set</text>
+            <formula>"spd:$_"</formula>
+            <formula>$1</formula>
           </statement>
         </repeat>
+        <statement>
+          <text>setspd</text>
+        </statement>
       </session>
       <session id="resetp" label="Set 0 Pulses">
-        <repeat from="1" to="6">
+        <repeat from="0" to="5">
           <statement>
-            <text>setp</text>
-            <formula>$_</formula>
-            <text>0</text>
+            <text>set</text>
+            <formula>"p:$_"</formula>
+            <formula>$1</formula>
           </statement>
         </repeat>
+        <statement>
+          <text>setp</text>
+        </statement>
       </session>
       <session id="shutdown" label="Backup Pulse,Speed,Offset">
         <statement>
@@ -75,20 +81,15 @@
         <statement>
           <text>load</text>
         </statement>
-        <repeat from="1" to="6">
-          <statement>
-            <text>setp</text>
-            <formula>$_</formula>
-          </statement>
-          <statement>
-            <text>setspd</text>
-            <formula>$_</formula>
-          </statement>
-          <statement>
-            <text>setofs</text>
-            <formula>$_</formula>
-          </statement>
-        </repeat>
+        <statement>
+          <text>setp</text>
+        </statement>
+        <statement>
+          <text>setspd</text>
+        </statement>
+        <statement>
+          <text>setofs</text>
+        </statement>
       </session>
       <session id="upp" label="Update Pulse [1-6]">
         <parameters>

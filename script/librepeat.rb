@@ -27,7 +27,7 @@ class Repeat < Hash
     @v.msg(1){"Substitute from [#{str}]"}
     begin
       # Sub $key => self[key]
-      str=str.gsub(/\$([\w]+)/){ self[$1] }
+      str=str.gsub(/\$([_a-z]+)/){ self[$1] }
       raise if str == ''
       str
     ensure

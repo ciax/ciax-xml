@@ -39,7 +39,7 @@ class Dev
     else
       msg=[$!.to_s]
       msg << "== Data Handling =="
-      msg << " set       : Set Value  [key(:idx)(=val)]"
+      msg << " set       : Set Value  [key(:idx)] (val)]"
       msg << " load      : Load Field (tag)"
       msg << " save      : Save Field [key,key...] (tag)"
       raise SelectID,msg.join("\n")
@@ -53,17 +53,13 @@ class Dev
 
   def set(stm)
     if stm.empty?
-      msg=["  Usage: set [key(:idx)(=val)] .."]
+      msg=["  Usage: set [key(:idx)] (val)"]
       msg << "  key=#{@stat.keys}"
       raise msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
-    stat=[]
-    stm.each{|e|
-      key,val=e.split('=')
-      stat << @stat.set_stat(key,val)
-    }
-    stat.inspect
+    s=stm.dup
+    @stat.set_stat(s.shift,s.shift).inspect
   end
  
   def save(keys=nil,tag=nil)

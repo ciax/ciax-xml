@@ -23,6 +23,8 @@
         <group>
           <title ref="r$_">Running $_</title>
           <title ref="p$_">Pulse $_</title>
+          <title ref="spd$_">Speed $_</title>
+          <title ref="ofs$_">Offset $_</title>
         </group>
       </repeat>
     </status>

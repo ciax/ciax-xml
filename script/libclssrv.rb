@@ -4,6 +4,7 @@ require "libclscmd"
 require "libclsstat"
 require "libdev"
 require "thread"
+require "libauto"
 
 class ClsSrv
 
@@ -16,13 +17,13 @@ class ClsSrv
     @cdbs.get_stat(@ddb.field)
     @q=Queue.new
     @errmsg=Array.new
-    @auto=Thread.new{}
+    @auto=Auto.new(@q,@cdbc)
     device_thread
     sleep 0.01
   end
 
   def prompt
-    prom = @auto.alive? ? '&' : ''
+    prom = @auto.auto.alive? ? '&' : ''
     prom << @var[:cls]
     prom << @var[:issue]
     prom << ">"
@@ -38,15 +39,7 @@ class ClsSrv
     @cdbc.session(yield stm) {|cmd| @q.push(cmd)}
     "Accepted"
   rescue SelectID
-    case stm.shift
-    when 'auto'
-      auto_upd(stm.first)
-    else
-      msg=[$!.to_s]
-      msg << "== Internal Command =="
-      msg << " auto ?    : Auto Update (opt)"
-      msg.join("\n")
-    end
+    @auto.auto_upd(stm){|s| yield s}
   rescue RuntimeError
     $!.to_s
   rescue
@@ -54,47 +47,6 @@ class ClsSrv
   end
 
   private
-  def auto_upd(par)
-    case par
-    when 'stat'
-      str=["Running(cmd=[#{@var[:cmd]}] int=[#{@var[:int]}])"]
-      str.unshift("Not") unless @auto.alive?
-      str.join(' ')
-    when 'start'
-      @auto.kill if @auto
-      @auto=auto_thread
-    when 'stop'
-      if @auto
-        @auto.kill
-        sleep 0.1
-      end
-    when /^int=/
-      num=$'
-      if num.to_i > 0
-        @var[:int]=num
-      else
-        raise "Out of Range"
-      end
-    when /^cmd=/
-      line=$'
-      begin
-        setcmd(line){}
-        @var[:cmd]=line
-      rescue SelectID
-        msg=["Invalid Command"]
-        msg << $!.to_s
-      end
-    else
-      msg=["Usage: auto [opt]"]
-      msg << " stat       : Auto update Status"
-      msg << " start      : Start Auto update"
-      msg << " stop       : Stop Auto update"
-      msg << " cmd=       : Set Commands (cmd:par,...)"
-      msg << " int=       : Set Interval (sec)"
-      msg.join("\n")
-    end
-  end
-
   def device_thread
     Thread.new {
       loop {
@@ -111,24 +63,4 @@ class ClsSrv
       }
     }
   end
-
-  def setcmd(line)
-    line.split(',').each { |s|
-      @cdbc.session(s.split(':')){ |cmd| yield cmd }
-    }
-  end
-
-  def auto_thread
-    Thread.new {
-      begin
-        loop{
-          setcmd(@var[:cmd]){|c| @q.push(c) } if @q.empty?
-          sleep @var[:int].to_i
-        }
-      rescue
-        @errmsg << $!.to_s
-      end
-    }
-  end
-
 end

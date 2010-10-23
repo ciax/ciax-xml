@@ -23,7 +23,7 @@ class Repeat < Hash
   end
 
   def sub_index(str)
-    return str unless /\$[\w]+/ === str
+    return str unless /\$[_a-z]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
       # Sub $key => self[key]

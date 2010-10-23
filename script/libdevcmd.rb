@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmodxml"
 require "libparam"
-
+require "librepeat"
 # Cmd Methods
 class DevCmd
   include ModXml
@@ -11,6 +11,7 @@ class DevCmd
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
     @cache={}
     @par=Param.new
+    @rep=Repeat.new
   end
 
   def setcmd(stm) # return = response select
@@ -61,23 +62,38 @@ class DevCmd
       when 'ccrange'
         frame << @ccrange
         @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
-      when 'data'
-        str=e1.text
-        @v.msg{"GetFrame:#{a['label']}[#{str}]"}
-        frame << encode(e1,str)
-      when 'formula'
-        str=@par.sub_par(e1.text)
-        str=eval(@stat.sub_stat(str)).to_s
-        @v.msg{"GetFrame:(calculated)[#{str}]"}
-        frame << encode(e1,str)
-      when 'csv'
-        str=@par.sub_par(e1.text)
-        @par.sub_par(str).split(',').each{|str|
-          @v.msg{"GetFrame:(csv)[#{str}]"}
-          frame << encode(e1,str)
+      when 'repeat'
+        @rep.repeat(e1){|e2|
+          frame << get_data(e2)
         }
+      else
+        frame << get_data(e1)
       end
     }
+    frame
+  end
+
+  def get_data(e)
+    frame=''
+    a=e.attributes
+    str=e.text
+    case e.name
+    when 'data'
+      @v.msg{"GetFrame:#{a['label']}[#{str}]"}
+      frame << encode(e,str)
+    when 'formula'
+      str=@rep.sub_index(str)
+      str=@par.sub_par(str)
+      str=eval(@stat.sub_stat(str)).to_s
+      @v.msg{"GetFrame:(calculated)[#{str}]"}
+      frame << encode(e,str)
+    when 'csv'
+      str=@par.sub_par(str)
+      @par.sub_par(str).split(',').each{|s|
+        @v.msg{"GetFrame:(csv)[#{s}]"}
+        frame << encode(e,s)
+      }
+    end
     frame
   end
 end

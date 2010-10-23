@@ -140,7 +140,10 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="ddb:parameters" minOccurs="0" maxOccurs="1" />
-        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="ddb:cmd_elem" />
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:group ref="ddb:cmd_elem" />
+          <xsd:element ref="ddb:repeat" />
+        </xsd:choice>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" />
@@ -155,6 +158,14 @@
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="ddb:cmd_elem" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="ddb:repeat" />
     </xsd:complexType>
   </xsd:element>
   <!--Command CC-->

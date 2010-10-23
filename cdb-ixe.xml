@@ -25,21 +25,6 @@
           </statement>
         </repeat>
       </session>
-      <session id="upp" label="Update Pulse">
-        <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
-        </parameters>
-        <statement>
-          <text>chkrun</text>
-          <formula>$_</formula>
-        </statement>
-        <statement>
-          <text>getp</text>
-          <formula>$_</formula>
-        </statement>
-      </session>
       <session id="sysinit" label="System Initialize">
         <statement>
           <text>initrot</text>
@@ -50,6 +35,20 @@
         <statement>
           <text>initfactor</text>
         </statement>
+      </session>
+      <session id="spd" label="Set Speed [0-800]">
+        <parameters>
+          <par label="[0-800]">
+            <range>0:800</range>
+          </par>
+        </parameters>
+        <repeat from="1" to="6">
+          <statement>
+            <text>setspd</text>
+            <formula>$_</formula>
+            <text>$1</text>
+          </statement>
+        </repeat>
       </session>
       <session id="resetp" label="Set 0 Pulses">
         <repeat from="1" to="6">
@@ -90,6 +89,21 @@
             <formula>$_</formula>
           </statement>
         </repeat>
+      </session>
+      <session id="upp" label="Update Pulse [1-6]">
+        <parameters>
+          <par label="[1-6]">
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <statement>
+          <text>chkrun</text>
+          <formula>$_</formula>
+        </statement>
+        <statement>
+          <text>getp</text>
+          <formula>$_</formula>
+        </statement>
       </session>
       <session id="fw" label="Move Forward [1-6] [1-6(hole)]">
         <parameters>

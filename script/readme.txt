@@ -5,7 +5,9 @@ cdb//session@id -> never use ':'
 
  $_ $a..z
     description : substitute sequence number(in repeat)
-    usable: cdb//session/repeat/statement/formula
+    usable: ddb//cmdframe/repeat/formula
+            --
+            cdb//session/repeat/statement/formula
             cdb//status/repeat/value@id
             cdb//status/repeat/value/*
             --

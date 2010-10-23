@@ -58,13 +58,12 @@ class Dev
       raise msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
-    stat={}
+    stat=[]
     stm.each{|e|
       key,val=e.split('=')
-      @stat.set_stat(key,val)
-      stat[key]=@stat[key]
+      stat << @stat.set_stat(key,val)
     }
-    stat
+    stat.inspect
   end
  
   def save(keys=nil,tag=nil)

@@ -39,7 +39,7 @@ class Dev
     else
       msg=[$!.to_s]
       msg << "== Data Handling =="
-      msg << " set       : Set Value  [key(:idx)] (val)]"
+      msg << " set       : Set Value  [key(:idx)] (val)"
       msg << " load      : Load Field (tag)"
       msg << " save      : Save Field [key,key...] (tag)"
       raise SelectID,msg.join("\n")

@@ -8,6 +8,8 @@ for obj in $objects; do
     echo "#### $obj ####"
     dev=$(lookup $obj dev) || _usage_key
     file=$HOME/.var/field_$obj.mar
-    VER=${VER:-exec} clscmd $dev $cmd $par < $file
-    [ $cmd = 'upd' ] && clsstat $dev < $file| mar
+    VER=${VER:-exec(cdb)} clscmd $dev $cmd $par < $file
+    [ $cmd = 'upd' ] || continue
+    echo " *** Status ***"
+    clsstat $dev < $file| mar
 done

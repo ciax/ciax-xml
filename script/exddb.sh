@@ -12,7 +12,10 @@ for id in $devices; do
     { devcmd $dev $id $cmd || exit 1; } | visi
     [ "$default" = 'getstat' ] && [ -e $output ] && rm $output
     stat="`grep rcv:${cmd// /:} $input|tail -1`"
-    [ "$stat" ] && echo "$stat" | devstat $dev $id|mar
-    ln -sf $output $link
+    if [ "$stat" ] ; then
+        echo " *** Stat ***"
+        echo "$stat" | devstat $dev $id|mar
+        ln -sf $output $link
+    fi
     read -n 1
 done

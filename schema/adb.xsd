@@ -51,11 +51,11 @@
   <xsd:element name="command">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="adb:session" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="adb:alias" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="session">
+  <xsd:element name="alias">
     <xsd:complexType>
       <xsd:attributeGroup ref="adb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>

@@ -7,15 +7,15 @@
       <server>socat - udp-l:25106,reuseaddr,fork</server>
     </comm>
     <command>
-      <session id="upd" label="Update Status" ref="upd" />
-      <session id="f2on" label="CIAO(S6) ON" ref="x0on" />
-      <session id="f2off" label="CIAO(S6) OFF" ref="x0off" />
-      <session id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
-      <session id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
-      <session id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
-      <session id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
-      <session id="maon" label="COMICS BOTH ON" ref="x23on" />
-      <session id="maoff" label="COMICS BOTH OFF" ref="x23off" />
+      <alias id="upd" label="Update Status" ref="upd" />
+      <alias id="f2on" label="CIAO(S6) ON" ref="x0on" />
+      <alias id="f2off" label="CIAO(S6) OFF" ref="x0off" />
+      <alias id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
+      <alias id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
+      <alias id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
+      <alias id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
+      <alias id="maon" label="COMICS BOTH ON" ref="x23on" />
+      <alias id="maoff" label="COMICS BOTH OFF" ref="x23off" />
     </command>
     <status>
       <group>

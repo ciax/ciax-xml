@@ -14,7 +14,9 @@ loop{
   break if /^q/ === stm.first
   begin
     puts ddb.devcom(stm) || ddb.field
-  rescue
+  rescue RuntimeError
     puts $!
+  rescue
+    puts $!.to_s+$@.to_s
   end
 }

@@ -19,7 +19,7 @@ class Auto
       msg=[$!.to_s]
       msg << "== Internal Command =="
       msg << " auto ?    : Auto Update (opt)"
-      return msg.compact.join("\n")
+      raise SelectID,msg.compact.join("\n")
     end
     case par.shift
     when 'stat'
@@ -71,7 +71,7 @@ class Auto
       msg << " stop       : Stop Auto update"
       msg << " cmd=       : Set Commands (cmd:par,...)"
       msg << " int=       : Set Interval (sec)"
-      msg.join("\n")
+      raise SelectID,msg.join("\n")
     end
   end
 end

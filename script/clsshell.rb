@@ -12,5 +12,11 @@ cdb=ClsSrv.new(cls,id,iocmd){|s| s}
 loop {
   stm=Readline.readline(cdb.prompt,true).split(' ')
   break if /^q/ === stm.first
-  puts cdb.dispatch(stm) || cdb.stat
+  begin
+    puts cdb.dispatch(stm) || cdb.stat
+  rescue RuntimeError
+    puts $!.to_s
+  rescue
+    puts $!
+  end
 }

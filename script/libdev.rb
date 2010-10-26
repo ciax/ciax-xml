@@ -55,7 +55,7 @@ class Dev
     if stm.empty?
       msg=["  Usage: set [key(:idx)] (val)"]
       msg << "  key=#{@stat.keys}"
-      raise msg.join("\n")
+      raise SelectID,msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
     @stat.set_stat(stm[0],stm[1]).inspect
@@ -65,7 +65,7 @@ class Dev
     unless keys
       msg=["  Usage: save [key,key..] (tag)"]
       msg << "  key=#{@stat.keys}"
-      raise msg.join("\n")
+      raise SelectID,msg.join("\n")
     end
     stat={}
     keys.split(',').each{|k|

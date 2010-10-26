@@ -37,14 +37,10 @@ class ClsSrv
   def dispatch(stm)
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
-    @cdbc.session(@conv.yield stm) {|cmd| @q.push(cmd)}
+    @cdbc.session(@conv.call(stm)) {|cmd| @q.push(cmd)}
     "Accepted"
   rescue SelectID
     @auto.auto_upd(stm){|i,o| @cdbc.session(i,&o) }
-  rescue RuntimeError
-    $!.to_s
-  rescue
-    $!.to_s+$@.to_s
   end
 
   private

@@ -9,8 +9,7 @@ cmd=ARGV
 begin
   cdb=XmlDoc.new('cdb',cls)
   cc=ClsCmd.new(cdb)
-  ENV['VER']="#{ENV['VER']}:exec"
-  cc.session(cmd){}
-rescue RuntimeError
+  cc.session(cmd){|c| p c}
+rescue SelectID
   abort $!.to_s
 end

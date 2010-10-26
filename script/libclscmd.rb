@@ -18,7 +18,7 @@ class ClsCmd
   def session(stm)
     @par.setpar(stm)
     ecmd=@cdb.select_id('commands',stm.first)
-    @v.msg{"CMD:Exec(CDB):#{ecmd.attributes['label']}"}
+    @v.msg{"Exec(CDB):#{ecmd.attributes['label']}"}
     ecmd.each_element {|e0|
       case e0.name
       when 'parameters'
@@ -49,24 +49,24 @@ class ClsCmd
 
   def get_cmd(e0) # //stm
     stm=[]
-    @v.msg(1){"CMD:GetCmd(DDB)"}
+    @v.msg(1){"GetCmd(DDB)"}
     begin
       e0.each_element{|e1| # //text or formula
         case e1.name
         when 'text'
           str=e1.text
-          @v.msg{"CMD:GetText [#{str}]"}
+          @v.msg{"GetText [#{str}]"}
         when 'formula'
           str=@rep.sub_index(e1.text)
           str=@par.sub_par(str)
           str=format(e1,eval(str))
-          @v.msg{"CMD:Calculated [#{str}]"}
+          @v.msg{"Calculated [#{str}]"}
         end
         stm << str
       }
       stm
     ensure
-      @v.msg(-1){"CMD:Exec(DDB):#{stm}"}
+      @v.msg(-1){"Exec(DDB):#{stm}"}
     end
   end
 end

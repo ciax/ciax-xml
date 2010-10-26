@@ -10,7 +10,7 @@ class Dev
   def initialize(dev,id,iocmd)
     @ddb=XmlDoc.new('ddb',dev)
   rescue RuntimeError
- abort $!.to_s
+    abort $!.to_s
   else
     @stat=Stat.new("field_#{id}")
     @cmd=DevCmd.new(@ddb,@stat)

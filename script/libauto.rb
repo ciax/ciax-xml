@@ -1,17 +1,16 @@
 #!/usr/bin/ruby
-require "libclscmd"
 require "thread"
 
 class Auto
   attr_reader :auto
 
-  def initialize(queue,cdb)
+  def initialize(fi=nil,fo=nil)
     @cmd='upd'
     @int=10
-    @q=queue
-    @cdb=cdb
     @errmsg=Array.new
     @auto=Thread.new{}
+    @fi=fi || proc{|s|s}
+    @fo=fo || proc{|s|s}
   end
 
   def auto_upd(stm)
@@ -26,6 +25,7 @@ class Auto
     when 'stat'
       str=["Running(cmd=[#{@cmd}] int=[#{@int}])"]
       str.unshift("Not") unless @auto.alive?
+      str << @errmsg
       str.join(' ')
     when 'start'
       @auto.kill if @auto
@@ -33,8 +33,8 @@ class Auto
         begin
           loop{
             @cmd.split(',').each {|s|
-              @cdb.session((yield s).split(':')){|c| @q.push(c) }
-            } if @q.empty?
+              yield(@fi.call(s.split(':')),@fo)
+            }
             sleep @int.to_i
           }
         rescue
@@ -57,7 +57,7 @@ class Auto
       line=$'
       begin
         line.split(',').each { |s|
-          @cdb.session((yield s).split(':')){}
+          yield(@fi.call(s.split(':')),proc{|c|c})
         }
         @cmd=line
       rescue SelectID

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:odb="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="odb">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="odb:object" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:attributeGroup name="id_attr">
+    <xsd:attribute name="id" type="xsd:string" use="optional" />
+    <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+    <xsd:attribute name="ref" type="xsd:string" use="optional" />
+  </xsd:attributeGroup>
+  <xsd:element name="object">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="odb:comm" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="odb:command" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="odb:status" minOccurs="1" maxOccurs="1" />
+      </xsd:sequence>
+      <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="comm">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="odb:class" minOccurs="1" maxOccurs="1"></xsd:element>
+        <xsd:element ref="odb:client"></xsd:element>
+        <xsd:element ref="odb:server"></xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="class" type="xsd:string"></xsd:element>
+  <xsd:element name="client" type="xsd:string"></xsd:element>
+  <xsd:element name="server" type="xsd:string" />
+  <!--Share-->
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="odb:title" />
+        <xsd:element ref="odb:group" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+      </xsd:choice>
+      <xsd:attribute name="from" use="required" type="xsd:int" />
+      <xsd:attribute name="to" use="required" type="xsd:int" />
+      <xsd:attribute name="format" type="xsd:string" />
+      <xsd:attribute name="counter" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <!--command select-->
+  <xsd:element name="command">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="odb:alias" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="alias">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
+    </xsd:complexType>
+  </xsd:element>
+  <!--status-->
+  <xsd:element name="status">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="odb:group"></xsd:element>
+        <xsd:element ref="odb:repeat"></xsd:element>
+      </xsd:choice>
+      <xsd:attribute name="ref" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="odb:repeat" />
+        <xsd:element ref="odb:title" />
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:string" use="optional" />
+      <xsd:attribute name="ref" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="title">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="ref" type="xsd:string" use="required" />
+          <xsd:attribute name="symbol" type="xsd:string" />
+          <xsd:attribute name="level" type="xsd:string" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

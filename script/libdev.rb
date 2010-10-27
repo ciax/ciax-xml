@@ -12,12 +12,11 @@ class Dev
   rescue RuntimeError
     abort $!.to_s
   else
-    @stat=Stat.new("field_#{id}")
+    @stat=Stat.new(id,"field")
     @cmd=DevCmd.new(@ddb,@stat)
     @rsp=DevRsp.new(@ddb,@stat)
     @v=Verbose.new("ddb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
-    @stat['id']=id
   end
 
   def field

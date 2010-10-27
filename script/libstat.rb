@@ -2,8 +2,10 @@
 require 'libiofile'
 require 'libverbose'
 class Stat < Hash
-  def initialize(fname)
+  def initialize(id,fname)
     @v=Verbose.new
+    self['id']=id
+    fname+="_#{id}"
     begin
       @fd=IoFile.new(fname)
       load

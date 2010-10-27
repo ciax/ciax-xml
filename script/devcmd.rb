@@ -10,7 +10,7 @@ id=ARGV.shift
 cmd=ARGV
 begin
   ddb=XmlDoc.new('ddb',dev)
-  st=Stat.new("field_#{id}")
+  st=Stat.new(id,"field")
   c=DevCmd.new(ddb,st)
   c.setcmd(cmd)
   print c.getframe

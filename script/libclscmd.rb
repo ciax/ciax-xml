@@ -6,6 +6,7 @@ require "libverbose"
 
 class ClsCmd
   include ModXml
+  attr_reader :par
 
   def initialize(cdb)
     @cdb=cdb
@@ -30,11 +31,12 @@ class ClsCmd
         yield(get_cmd(e0))
       when 'repeat'
         repeat_cmd(e0){|e1| yield e1 }
+      when 'async'
+        return e0
       end
     }
   end
 
-  private
   #Cmd Method
   def repeat_cmd(e0)
     @rep.repeat(e0){ |e1|

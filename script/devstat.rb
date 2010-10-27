@@ -14,7 +14,7 @@ stm=ary.shift.split(':')
 abort ("Logline:Not response") unless /rcv/ === stm.shift
 begin
   ddb=XmlDoc.new('ddb',dev)
-  st=Stat.new("field_#{id}")
+  st=Stat.new(id,"field")
   r=DevRsp.new(ddb,st)
   r.setrsp(stm)
 rescue RuntimeError

@@ -10,11 +10,11 @@ class ClsStat
   def initialize(cdb,id)
     @cdb=cdb
     cls=cdb['id']
-    @stat=Stat.new("status_#{id}")
+    @stat=Stat.new(id,"status")
     @stat.update({ 'id'=>id, 'class' => cls })
     @v=Verbose.new("cdb/#{cls}/stat".upcase)
     @rep=Repeat.new
-    @field=Stat.new("field_#{id}")
+    @field=Stat.new(id,"field")
   end
   
   public

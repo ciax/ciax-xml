@@ -33,8 +33,9 @@ class ClsStat
     @stat.save_all
   end
   
-  def stat
-    Hash[@stat]
+  def stat(key=nil)
+    return Hash[@stat] unless key
+    @stat.acc_stat(key)
   end
   
   private

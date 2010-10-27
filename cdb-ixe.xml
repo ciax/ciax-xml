@@ -171,6 +171,37 @@
           <formula>$1</formula>
           <formula>$2 * 8000</formula>
         </statement>
+        <async timeout="10" interval="1">
+          <until_any>
+            <stat ref="r$1">E</stat>
+          </until_any>
+          <blocking>
+            <statement>
+              <text>fw</text>
+              <formula>$1</formula>
+            </statement>
+            <statement>
+              <text>bw</text>
+              <formula>$1</formula>
+            </statement>
+          </blocking>
+          <interrupt>
+            <statement>
+              <text>stop</text>
+            </statement>
+          </interrupt>
+          <execution>
+            <statement>
+              <text>upp</text>
+              <formula>$1</formula>
+            </statement>
+          </execution>
+          <completion>
+            <statement>
+              <text>stop</text>
+            </statement>
+          </completion>
+        </async>
       </session>
     </commands>
     <status>

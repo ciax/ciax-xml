@@ -18,12 +18,12 @@ class Stat < Hash
     update(@fd.load_stat(tag))
   end
 
-  def save_all
-    @fd.save_stat(Hash[self])
-  end
-
-  def save(stat,tag='default')
-    @fd.save_stat(stat,tag)
+  def save(stat=nil,tag='default')
+    if stat
+      @fd.save_stat(stat,tag)
+    else
+      @fd.save_stat(Hash[self])
+    end
   end
 
   def subst(str)

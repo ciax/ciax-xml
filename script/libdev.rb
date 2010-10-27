@@ -47,7 +47,7 @@ class Dev
     cid=stm.join(':')
     @ic.snd(@cmd.getframe,'snd:'+cid)
     @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
-    @stat.save_all
+    @stat.save
   end
 
   def set(stm)

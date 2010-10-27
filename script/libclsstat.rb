@@ -30,7 +30,7 @@ class ClsStat
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
-    @stat.save_all
+    @stat.save
   end
   
   def stat(key=nil)

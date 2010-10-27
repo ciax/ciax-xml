@@ -18,8 +18,12 @@ class Stat < Hash
     update(@fd.load_stat(tag))
   end
 
-  def save(stat=nil,tag='default')
-    if stat
+  def save(tag=nil,keys=nil)
+    if keys
+      stat={}
+      keys.each{|k|
+        stat[k]=self[k] if key?(k)
+      }
       @fd.save_stat(stat,tag)
     else
       @fd.save_stat(Hash[self])
@@ -47,9 +51,9 @@ class Stat < Hash
     h
   end
 
-  def get(key) # ${key1:key2:idx} => hash[key1][key2][idx]
+  def get(key=nil) # ${key1:key2:idx} => hash[key1][key2][idx]
     h=self
-    return h unless key
+    return Hash[h] unless key
     key.split(':').each {|i|
       @v.msg{"Stat:Type[#{h.class}] Name[#{i}]"}
       begin

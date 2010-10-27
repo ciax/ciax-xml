@@ -34,7 +34,6 @@ class ClsStat
   end
   
   def stat(key=nil)
-    return Hash[@stat] unless key
     @stat.get(key)
   end
   

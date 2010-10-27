@@ -60,16 +60,12 @@ class Dev
     @stat.set(stm[0],stm[1])
   end
  
-  def save(keys=nil,tag=nil)
+  def save(keys=nil,tag='default')
     unless keys
       msg=["  Usage: save [key,key..] (tag)"]
       msg << "  key=#{@stat.keys}"
       raise SelectID,msg.join("\n")
     end
-    stat={}
-    keys.split(',').each{|k|
-      stat[k]=@stat[k] || raise("No such key[#{k}]")
-    }
-    @stat.save(stat,tag)
+    @stat.save(tag,keys.split(','))
   end
 end

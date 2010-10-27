@@ -32,7 +32,7 @@ class Stat < Hash
     begin
       # output csv if array
       str=str.gsub(/\$\{(.+)\}/) {
-        [*acc_stat($1)].join(',')
+        [*get($1)].join(',')
       }
       raise if str == ''
       str
@@ -41,13 +41,13 @@ class Stat < Hash
     end
   end
 
-  def set_stat(key,val)
-    h=acc_stat(key)
+  def set(key,val)
+    h=get(key)
     h.replace(eval(subst(val)).to_s) if val
     h
   end
 
-  def acc_stat(key) # ${key1:key2:idx} => hash[key1][key2][idx]
+  def get(key) # ${key1:key2:idx} => hash[key1][key2][idx]
     h=self
     return h unless key
     key.split(':').each {|i|

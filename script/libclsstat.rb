@@ -35,7 +35,7 @@ class ClsStat
   
   def stat(key=nil)
     return Hash[@stat] unless key
-    @stat.acc_stat(key)
+    @stat.get(key)
   end
   
   private
@@ -47,7 +47,7 @@ class ClsStat
       e0.each_element {|e1| #element(split and concat)
         a=e1.attributes
         fld=@rep.subst(e1.text) || raise("No field Key")
-        data=@field.acc_stat(fld) || raise("No field Value[#{fld}]")
+        data=@field.get(fld) || raise("No field Value[#{fld}]")
         case e1.name
         when 'binary'
           bit=(data.to_i >> a['bit'].to_i & 1)

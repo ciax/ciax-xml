@@ -57,7 +57,7 @@ class Dev
       raise SelectID,msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
-    @stat.set_stat(stm[0],stm[1])
+    @stat.set(stm[0],stm[1])
   end
  
   def save(keys=nil,tag=nil)

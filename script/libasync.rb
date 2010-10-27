@@ -13,7 +13,7 @@ class Async < Array
     @errmsg=Array.new
     @timeout=10
     @interval=10
-    @stat=[]
+    @sary=[]
     @var={ }
     @v=Verbose.new("ASYNC")
   end
@@ -25,10 +25,10 @@ class Async < Array
     e0.each_element{|e1| # //async/*
       case e1.name
       when 'until_any'
-        @stat=[]
+        @sary=[]
         e1.each_element{|e2| #stat
           key=@cdb.par.subst(e2.attributes['ref'])
-          @stat << {:sp=>@sdb.stat(key),:val=>e2.text}
+          @sary << {:sp=>@sdb.stat(key),:val=>e2.text}
         }
       else
         @var[e1.name]=_mk_array(e1) #session
@@ -40,7 +40,7 @@ class Async < Array
     self << Thread.new {
       begin
         timeout(@timeout){
-          @stat.any?{|hash|
+          @sary.any?{|hash|
             @v.msg{"Exit if #{hash[:sp]} == #{hash[:val]}" }
             hash[:sp] == hash[:val]
           } && break

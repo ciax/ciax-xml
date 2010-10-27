@@ -55,13 +55,14 @@ class ClsCmd
     @v.msg(1){"GetCmd(DDB)"}
     begin
       e0.each_element{|e1| # //text or formula
-        case e1.name
+        str=e1.text
+       case e1.name
         when 'text'
-          str=e1.text
           @v.msg{"GetText [#{str}]"}
         when 'formula'
-          str=@rep.sub_index(e1.text)
-          str=@par.sub_par(str)
+          [@rep,@par].each{|s|
+            str=s.subst(str)
+          }
           str=format(e1,eval(str))
           @v.msg{"Calculated [#{str}]"}
         end

@@ -22,7 +22,7 @@ class Repeat < Hash
     end
   end
 
-  def sub_index(str)
+  def subst(str)
     return str unless /\$[_a-z]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin

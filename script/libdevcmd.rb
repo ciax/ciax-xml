@@ -82,14 +82,17 @@ class DevCmd
       @v.msg{"GetFrame:#{a['label']}[#{str}]"}
       frame << encode(e,str)
     when 'formula'
-      str=@rep.sub_index(str)
-      str=@par.sub_par(str)
-      str=eval(@stat.sub_stat(str)).to_s
+      [@rep,@par,@stat].each{|s|
+        str=s.subst(str)
+      }
+      str=eval(str).to_s
       @v.msg{"GetFrame:(calculated)[#{str}]"}
       frame << encode(e,str)
     when 'csv'
-      str=@par.sub_par(str)
-      @par.sub_par(str).split(',').each{|s|
+      [@par,@stat].each{|s|
+        str=s.subst(str)
+      }
+      str.split(',').each{|s|
         @v.msg{"GetFrame:(csv)[#{s}]"}
         frame << encode(e,s)
       }

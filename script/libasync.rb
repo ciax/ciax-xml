@@ -26,7 +26,7 @@ class Async < Array
       when 'until_any'
         @stat=[]
         e1.each_element{|e2| #stat
-          key=@cdb.par.sub_par(e2.attributes['ref'])
+          key=@cdb.par.subst(e2.attributes['ref'])
           @stat << {:sp=>@sdb.acc_stat(key),:val=>e2.text}
         }
       else

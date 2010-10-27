@@ -40,12 +40,12 @@ class ClsStat
   private
   def get_val(e0)
     ary=Array.new
-    id=@rep.sub_index(e0.attributes['id'])
+    id=@rep.subst(e0.attributes['id'])
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
     begin
       e0.each_element {|e1| #element(split and concat)
         a=e1.attributes
-        fld=@rep.sub_index(e1.text) || raise("No field Key")
+        fld=@rep.subst(e1.text) || raise("No field Key")
         data=@field.acc_stat(fld) || raise("No field Value[#{fld}]")
         case e1.name
         when 'binary'

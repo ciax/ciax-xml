@@ -30,7 +30,7 @@ class Dev
   rescue SelectID
     case stm.shift
     when 'set'
-      set(stm)
+      set(stm).inspect
     when 'load'
       @stat.load(stm.shift||'default')
     when 'save'
@@ -57,7 +57,7 @@ class Dev
       raise SelectID,msg.join("\n")
     end
     @v.msg{"CMD:set#{stm}"}
-    @stat.set_stat(stm[0],stm[1]).inspect
+    @stat.set_stat(stm[0],stm[1])
   end
  
   def save(keys=nil,tag=nil)

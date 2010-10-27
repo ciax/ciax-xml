@@ -7,7 +7,7 @@ class Param < Array
     @v=Verbose.new("Parameter")
   end
 
-  def sub_par(str)
+  def subst(str)
     return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin

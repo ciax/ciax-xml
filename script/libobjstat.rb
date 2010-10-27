@@ -45,8 +45,8 @@ class ObjStat
   def get_var(var) # //status/var
     st={'group' => @group }
     a=var.attributes
-    ref=@rep.sub_index(a['ref'])
-    st['title']=@rep.sub_index(var.text)
+    ref=@rep.subst(a['ref'])
+    st['title']=@rep.subst(var.text)
     st['val']=@value[ref]
     @v.msg{"STAT:GetStatus:#{ref}=[#{st['val']}]"}
     st.update(@sym.get_symbol(a['symbol'],st['val']))

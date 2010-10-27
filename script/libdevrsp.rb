@@ -137,7 +137,7 @@ class DevRsp
     begin
       key=a['assign'] || @v.err("No key for Array")
       e0.each_element{ |e1| # Index
-        idxs << @par.sub_par(e1.text)
+        idxs << @par.subst(e1.text)
       }
       @stat[key]=mk_array(idxs,@stat[key]){
         decode(e0,cut_frame(e0))

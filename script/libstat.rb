@@ -26,7 +26,7 @@ class Stat < Hash
     @fd.save_stat(stat,tag)
   end
 
-  def sub_stat(str)
+  def subst(str)
     return str unless /\${/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
@@ -43,7 +43,7 @@ class Stat < Hash
 
   def set_stat(key,val)
     h=acc_stat(key)
-    h.replace(eval(sub_stat(val)).to_s) if val
+    h.replace(eval(subst(val)).to_s) if val
     h
   end
 

@@ -41,7 +41,10 @@ class ClsSrv
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
     e=@cdbc.session(@conv.call(stm)) {|cmd| @q.push(cmd)}
-    @async.set_async(e) if e
+    if e
+      @async.set_async(e)
+      @async.start
+    end
     "Accepted"
   rescue SelectID
     @auto.auto_upd(stm){|i,o| @cdbc.session(i,&o) }

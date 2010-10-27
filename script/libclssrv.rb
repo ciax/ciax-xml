@@ -5,6 +5,7 @@ require "libclsstat"
 require "libdev"
 require "thread"
 require "libauto"
+require "libasync"
 
 class ClsSrv
 
@@ -19,6 +20,7 @@ class ClsSrv
     @q=Queue.new
     @errmsg=Array.new
     @auto=Auto.new(@conv,proc{|s| @q.push(s) if @q.empty? })
+    @async=Async.new(@q,@cdbc,@cdbs,@conv)
     device_thread
     sleep 0.01
   end
@@ -27,6 +29,7 @@ class ClsSrv
     prom = @auto.auto.alive? ? '&' : ''
     prom << @var[:cls]
     prom << @var[:issue]
+    prom << (@async.any?{|t| t.alive? } ? '!' : '')
     prom << ">"
   end
 
@@ -37,7 +40,8 @@ class ClsSrv
   def dispatch(stm)
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
-    @cdbc.session(@conv.call(stm)) {|cmd| @q.push(cmd)}
+    e=@cdbc.session(@conv.call(stm)) {|cmd| @q.push(cmd)}
+    @async.set_async(e) if e
     "Accepted"
   rescue SelectID
     @auto.auto_upd(stm){|i,o| @cdbc.session(i,&o) }

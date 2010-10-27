@@ -35,6 +35,7 @@ class ClsCmd
         return e0
       end
     }
+    nil
   end
 
   #Cmd Method

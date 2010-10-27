@@ -36,6 +36,11 @@
           <text>initfactor</text>
         </statement>
       </session>
+      <session id="emstop" label="Emergency Stop">
+        <statement>
+          <text>stop</text>
+        </statement>
+      </session>
       <session id="spd" label="Set Speed [0-800]">
         <parameters>
           <par label="[0-800]">
@@ -99,11 +104,11 @@
         </parameters>
         <statement>
           <text>chkrun</text>
-          <formula>$_</formula>
+          <formula>$1</formula>
         </statement>
         <statement>
           <text>getp</text>
-          <formula>$_</formula>
+          <formula>$1</formula>
         </statement>
       </session>
       <session id="fw" label="Move Forward [1-6] [1-6(hole)]">
@@ -120,6 +125,37 @@
           <formula>$1</formula>
           <formula>$2 * 8000</formula>
         </statement>
+        <async timeout="10" interval="1">
+          <until_any>
+            <stat ref="r$1">E</stat>
+          </until_any>
+          <blocking>
+            <statement>
+              <text>fw</text>
+              <formula>$1</formula>
+            </statement>
+            <statement>
+              <text>bw</text>
+              <formula>$1</formula>
+            </statement>
+          </blocking>
+          <interrupt>
+            <statement>
+              <text>stop</text>
+            </statement>
+          </interrupt>
+          <execution>
+            <statement>
+              <text>upp</text>
+              <formula>$1</formula>
+            </statement>
+          </execution>
+          <completion>
+            <statement>
+              <text>stop</text>
+            </statement>
+          </completion>
+        </async>
       </session>
       <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
         <parameters>

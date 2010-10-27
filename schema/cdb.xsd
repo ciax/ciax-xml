@@ -51,6 +51,7 @@
           <xsd:element ref="cdb:statement" />
           <xsd:element ref="cdb:repeat" />
         </xsd:choice>
+        <xsd:element minOccurs="0" ref="cdb:async" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
@@ -71,6 +72,46 @@
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
           <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!--command async-->
+  <xsd:element name="async">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="1" ref="cdb:until_any" />
+        <xsd:element ref="cdb:blocking" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdb:interrupt" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdb:execution" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdb:completion" minOccurs="0" maxOccurs="1"></xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+      <xsd:attribute name="timeout" type="xsd:int" use="optional"></xsd:attribute>
+      <xsd:attribute name="interval" type="xsd:int" use="optional"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:complexType name="statement">
+    <xsd:choice>
+      <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:statement" />
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="blocking" type="cdb:statement"></xsd:element>
+  <xsd:element name="interrupt" type="cdb:statement"></xsd:element>
+  <xsd:element name="execution" type="cdb:statement"></xsd:element>
+  <xsd:element name="completion" type="cdb:statement"></xsd:element>
+  <xsd:element name="until_any">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:stat" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="stat">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="ref" type="xsd:string"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

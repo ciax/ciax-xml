@@ -156,9 +156,9 @@
     </commands>
     <async>
       <bgsession id="move" timeout="30" interval="1">
-        <until_any>
+        <while>
           <stat ref="r$1">P</stat>
-        </until_any>
+        </while>
         <blocking>
           <statement>
             <text>fw</text>

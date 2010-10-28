@@ -3,12 +3,12 @@ class Verbose
   Start_time=Time.now
   def initialize(title='')
     @title=title
-    @base=1
+    @@base=1
   end
 
   # Public Method
   def msg(ind=0)
-    @base+=ind
+    @@base+=ind
     return unless ENV['VER']
     ind=(ind > 0) ? -ind : 0
     msg=mkmsg(yield,ind) || return
@@ -27,7 +27,7 @@ class Verbose
   private
   def mkmsg(text,ind=0)
     return unless text
-    ind+=@base
+    ind+=@@base
     pass=sprintf("%5.4f",Time.now-Start_time)
     "[#{pass}]"+'  '*ind+@title+":"+text.inspect
   end

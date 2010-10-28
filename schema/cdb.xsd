@@ -98,7 +98,6 @@
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:string" use="required"></xsd:attribute>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
-      <xsd:attribute name="timeout" type="xsd:int" use="optional"></xsd:attribute>
       <xsd:attribute name="interval" type="xsd:int" use="optional"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>

@@ -156,7 +156,7 @@
     </commands>
     <async>
       <repeat from="1" to="6">
-        <bgsession id="move" timeout="30" interval="1">
+        <bgsession id="move$_" interval="1">
           <while>
             <stat ref="r$_">N</stat>
           </while>

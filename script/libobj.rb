@@ -62,11 +62,13 @@ class Obj < Hash
     case e.name
     when 'group'
       @gn+=1
-      e.each_element{|g| stat_group(g) }
+      e.each_element{|e1| stat_group(e1)}
     when 'title'
       get_var(e)
     when 'repeat'
-      @cs.repeat(e){|d| stat_group(d) }
+      @cs.repeat(e){
+        e.each_element{|e1| stat_group(e1)}
+      }
     end
   end
 

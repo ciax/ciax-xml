@@ -40,13 +40,15 @@ class ClsCmd
 
   #Cmd Method
   def repeat_cmd(e0)
-    @rep.repeat(e0){ |e1|
-      case e1.name
-      when 'statement'
-        yield(get_cmd(e1))
-      when 'repeat'
-        repeat_cmd(e1){|e2| yield e2}
-      end
+    @rep.repeat(e0){
+      e0.each_element{|e1|
+        case e1.name
+        when 'statement'
+          yield(get_cmd(e1))
+        when 'repeat'
+          repeat_cmd(e1){|e2| yield e2}
+        end
+      }
     }
   end
 

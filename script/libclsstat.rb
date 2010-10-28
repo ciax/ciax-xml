@@ -26,7 +26,9 @@ class ClsStat
       when 'value'
         get_val(e0)
       when 'repeat'
-        @rep.repeat(e0){|e1| get_val(e1) }
+        @rep.repeat(e0){
+          e0.each_element{|e1| get_val(e1)}
+        }
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s

@@ -34,11 +34,13 @@ class ObjStat
     case e.name
     when 'group'
       @group+=1
-      e.each_element{|g| stat_group(g) }
+      e.each_element{|e1| stat_group(e1) }
     when 'title'
       get_var(e)
     when 'repeat'
-      @rep.repeat(e){|d| stat_group(d) }
+      @rep.repeat(e){
+        e.each_element{|e1| stat_group(e1) }
+      }
     end
   end
 

@@ -14,7 +14,7 @@ class Repeat < Hash
     begin
       Range.new(a['from'],a['to']).each { |n|
         self[c]=fmt % n
-        e0.each_element { |e1| yield e1}
+        yield
       }
       self.delete(c)
     ensure

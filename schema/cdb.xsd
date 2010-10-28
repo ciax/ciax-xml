@@ -16,6 +16,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="cdb:commands" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdb:async" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:status" minOccurs="1" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
@@ -51,9 +52,9 @@
           <xsd:element ref="cdb:statement" />
           <xsd:element ref="cdb:repeat" />
         </xsd:choice>
-        <xsd:element minOccurs="0" ref="cdb:async" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
+      <xsd:attribute name="async" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--command statement-->
@@ -80,12 +81,20 @@
   <xsd:element name="async">
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:bgsession" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="bgsession">
+    <xsd:complexType>
+      <xsd:sequence>
         <xsd:element minOccurs="0" maxOccurs="1" ref="cdb:until_any" />
         <xsd:element ref="cdb:blocking" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:interrupt" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:execution" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:completion" minOccurs="0" maxOccurs="1"></xsd:element>
       </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required"></xsd:attribute>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
       <xsd:attribute name="timeout" type="xsd:int" use="optional"></xsd:attribute>
       <xsd:attribute name="interval" type="xsd:int" use="optional"></xsd:attribute>

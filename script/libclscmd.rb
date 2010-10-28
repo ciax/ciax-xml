@@ -18,24 +18,23 @@ class ClsCmd
   public
   def session(stm)
     @par.setpar(stm)
-    ecmd=@cdb.select_id('commands',stm.first)
-    @v.msg{"Exec(CDB):#{ecmd.attributes['label']}"}
-    ecmd.each_element {|e0|
-      case e0.name
+    e0=@cdb.select_id('commands',stm.first)
+    a=e0.attributes
+    @v.msg{"Exec(CDB):#{a['label']}"}
+    e0.each_element {|e1|
+      case e1.name
       when 'parameters'
         i=0
-        e0.each_element{|e1| #//par
-          validate(e1,@par[i+=1])
+        e1.each_element{|e2| #//par
+          validate(e2,@par[i+=1])
         }
       when 'statement'
-        yield(get_cmd(e0))
+        yield(get_cmd(e1))
       when 'repeat'
-        repeat_cmd(e0){|e1| yield e1 }
-      when 'async'
-        return e0
+        repeat_cmd(e1){|e2| yield e2 }
       end
     }
-    nil
+    a['async']
   end
 
   #Cmd Method

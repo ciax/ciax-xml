@@ -5,8 +5,9 @@ require "thread"
 
 class Async < Array
 
-  def initialize(queue,cdb,sdb,fi)
+  def initialize(db,queue,cdb,sdb,fi)
     @q=queue
+    @db=db
     @cdb=cdb
     @sdb=sdb
     @fi=fi
@@ -18,13 +19,15 @@ class Async < Array
     @v=Verbose.new("ASYNC")
   end
 
-  def set_async(e0)
-    a=e0.attributes
+  def set_async(id)
+    asy=@db.select_id('async',id)
+    @v.msg{"Async(CDB):#{asy.attributes['label']}"}
+    a=asy.attributes
     @timeout=a['timeout'] ? a['timeout'].to_i : @timeout
     @v.msg{"Timeout[#{@timeout}]"}
     @interval=a['interval'] ? a['interval'] : @interval
     @v.msg{"Interval[#{@interval}]"}
-    e0.each_element{|e1| # //async/*
+    asy.each_element{|e1| # //async/*
       case e1.name
       when 'until_any'
         @sary=[]
@@ -52,12 +55,12 @@ class Async < Array
 
   def background
     timeout(@timeout){
+      _exec(@var['execution']) if @q.empty?
+      sleep @interval
       @sary.any?{|hash|
         @v.msg{"Exit if #{hash[:sp]} == #{hash[:val]}" }
         hash[:sp] == hash[:val]
       } && break
-      _exec(@var['execution']) if @q.empty?
-      sleep @interval
     }
     _exec(@var['completion'])
   rescue

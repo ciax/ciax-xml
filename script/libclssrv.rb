@@ -20,7 +20,7 @@ class ClsSrv
     @q=Queue.new
     @errmsg=Array.new
     @auto=Auto.new(@conv,proc{|s| @q.push(s) if @q.empty? })
-    @async=Async.new(@q,@cdbc,@cdbs,@conv)
+    @async=Async.new(cdb,@q,@cdbc,@cdbs,@conv)
     device_thread
     sleep 0.01
   end
@@ -40,9 +40,9 @@ class ClsSrv
   def dispatch(stm)
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
-    e=@cdbc.session(@conv.call(stm)) {|cmd| @q.push(cmd)}
-    if e
-      @async.set_async(e)
+    asy=@cdbc.session(@conv.call(stm)) {|cmd| @q.push(cmd)}
+    if asy
+      @async.set_async(asy)
       @async.start
     end
     "Accepted"

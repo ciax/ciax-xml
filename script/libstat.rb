@@ -3,7 +3,7 @@ require 'libiofile'
 require 'libverbose'
 class Stat < Hash
   def initialize(id,fname)
-    @v=Verbose.new
+    @v=Verbose.new("Stat")
     self['id']=id
     fname+="_#{id}"
     begin
@@ -55,12 +55,12 @@ class Stat < Hash
     h=self
     return Hash[h] unless key
     key.split(':').each {|i|
-      @v.msg{"Stat:Type[#{h.class}] Name[#{i}]"}
       begin
         i=eval(i) if Array === h
       rescue SyntaxError
         raise("#{i} is not number")
       end
+      @v.msg{"Type[#{h.class}] Name[#{i}]"}
       h=h[i]||raise("No such Value [#{i}]")
     }
     h

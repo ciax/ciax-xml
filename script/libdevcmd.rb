@@ -15,10 +15,12 @@ class DevCmd
   end
 
   def setcmd(stm) # return = response select
-    @cid=stm.join(':')
     @par.setpar(stm)
     @sel=@ddb.select_id('cmdselect',stm.first)
-    @v.msg{'Select:'+@sel.attributes['label']}
+    a=@sel.attributes
+    stm << '*' if /true|1/ === a['nocache']
+    @cid=stm.join(':')
+    @v.msg{'Select:'+a['label']+"(#{@cid})"}
   end
 
   def getframe
@@ -36,7 +38,7 @@ class DevCmd
         end
       end
       cmd=getstr(@ddb['cmdframe'])
-      @cache[@cid]=cmd unless @sel.attributes['nocache']
+      @cache[@cid]=cmd unless /\*/ === @cid
     end
     cmd
   end

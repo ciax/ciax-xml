@@ -13,8 +13,13 @@ class Repeat < Hash
     @v.msg(1){"Counter[\$#{c}]/Range[#{a['from']}-#{a['to']}]/Format[#{fmt}]"}
     begin
       Range.new(a['from'],a['to']).each { |n|
+        @v.msg(1){"Turn Number[#{n}]"}
         self[c]=fmt % n
-        yield
+        begin
+          yield
+        ensure
+          @v.msg(-1){"Turn End"}
+        end
       }
       self.delete(c)
     ensure

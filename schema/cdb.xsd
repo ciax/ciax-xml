@@ -28,7 +28,7 @@
     <xsd:complexType>
       <xsd:choice>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element ref="cdb:statement" />
+          <xsd:element ref="cdb:statement"></xsd:element>
           <xsd:element ref="cdb:repeat" />
         </xsd:choice>
         <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:value" />
@@ -45,19 +45,7 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="session">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element minOccurs="0" ref="cdb:parameters" />
-        <xsd:choice minOccurs="0" maxOccurs="unbounded">
-          <xsd:element ref="cdb:statement" />
-          <xsd:element ref="cdb:repeat" />
-        </xsd:choice>
-      </xsd:sequence>
-      <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="async" type="xsd:string" />
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:element name="session"></xsd:element>
   <!--command statement-->
   <xsd:element name="statement">
     <xsd:complexType>
@@ -85,6 +73,7 @@
         <xsd:element ref="cdb:bgsession" />
         <xsd:element ref="cdb:repeat" />
       </xsd:choice>
+      <xsd:attribute name="interval" type="xsd:int" use="optional"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="bgsession">
@@ -96,32 +85,18 @@
         <xsd:element ref="cdb:execution" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:completion" minOccurs="0" maxOccurs="1"></xsd:element>
       </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:string" use="required"></xsd:attribute>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
-      <xsd:attribute name="interval" type="xsd:int" use="optional"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:complexType name="statement">
-    <xsd:choice>
-      <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:statement" />
-    </xsd:choice>
-  </xsd:complexType>
   <xsd:element name="blocking" type="xsd:string"></xsd:element>
-  <xsd:element name="interrupt" type="cdb:statement"></xsd:element>
-  <xsd:element name="execution" type="cdb:statement"></xsd:element>
-  <xsd:element name="completion" type="cdb:statement"></xsd:element>
+  <xsd:element name="interrupt" type="xsd:string"></xsd:element>
+  <xsd:element name="execution" type="xsd:string"></xsd:element>
+  <xsd:element name="completion" type="xsd:string"></xsd:element>
   <xsd:element name="while">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:stat" />
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="stat">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attribute name="ref" type="xsd:string"></xsd:attribute>
+          <xsd:attribute name="stat" type="xsd:string" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

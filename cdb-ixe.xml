@@ -154,28 +154,13 @@
         </statement>
       </session>
     </commands>
-    <async>
+    <async interval="1">
       <repeat from="1" to="6">
-        <bgsession id="move$_" interval="1">
-          <while>
-            <stat ref="r$_">N</stat>
-          </while>
+        <bgsession label="move$_">
+          <while stat="r$_">N</while>
           <blocking>(fw|bk) $_</blocking>
-          <interrupt>
-            <statement>
-              <text>stop</text>
-            </statement>
-          </interrupt>
-          <execution>
-            <statement>
-              <text>chkrun</text>
-              <formula>$_</formula>
-            </statement>
-            <statement>
-              <text>getp</text>
-              <formula>$_</formula>
-            </statement>
-          </execution>
+          <interrupt>stop</interrupt>
+          <execution>chkrun $_;getp $_</execution>
         </bgsession>
       </repeat>
     </async>

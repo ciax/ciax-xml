@@ -1,85 +1,71 @@
 #!/usr/bin/ruby
-require "libclscmd"
-require "timeout"
-require "thread"
+require "librepeat"
 
 class Async < Array
+  attr_reader :interval
 
-  def initialize(db,queue,cdb,sdb,fi)
-    @q=queue
-    @db=db
-    @cdb=cdb
-    @sdb=sdb
-    @fi=fi
-    @errmsg=Array.new
-    @timeout=10
-    @interval=10
-    @sary=[]
-    @var={ }
+  def initialize(cdb)
     @v=Verbose.new("ASYNC")
-  end
-
-  def set_async(id)
-    asy=@db.select_id('async',id)
-    @v.msg{"Async(CDB):#{asy.attributes['label']}"}
-    a=asy.attributes
-    @timeout=a['timeout'] ? a['timeout'].to_i : @timeout
-    @v.msg{"Timeout[#{@timeout}]"}
-    @interval=a['interval'] ? a['interval'] : @interval
+    @rep=Repeat.new
+    @interval=cdb.['async'].attributes['interval'] || 10
     @v.msg{"Interval[#{@interval}]"}
-    asy.each_element{|e1| # //async/*
+    @active=[]
+    cdb['async'].each_element{ |e1|
       case e1.name
-      when 'until_any'
-        @sary=[]
-        e1.each_element{|e2| #stat
-          key=@cdb.par.subst(e2.attributes['ref'])
-          @sary << {:sp=>@sdb.stat(key),:val=>e2.text}
-          @v.msg{"Terminate at:[#{key}] == [#{e2.text}]" }
+      when 'bgsession'
+        set_async(e1)
+      when 'repeat'
+        @rep.repeat{
+          e1.each_element{|e2| set_async(e2)}
         }
-      else
-        @var[e1.name]=_mk_array(e1) #session
-        @v.msg{"Sessions for:[#{e1.name}]"+@var[e1.name].inspect}
       end
     }
   end
 
-  def start
-    self << Thread.new{ background }
-  end
-
-  def stop
-    @q.replace(@var['interrupt'])
-    @var['blocking']=[]
-    @var['interrupt']=[]
-  end
-
-  def background
-    timeout(@timeout){
-      _exec(@var['execution']) if @q.empty?
-      sleep @interval
-      @sary.any?{|hash|
-        @v.msg{"Exit if #{hash[:sp]} == #{hash[:val]}" }
-        hash[:sp] == hash[:val]
-      } && break
+  def set_async(e0)
+    label=@rep.subst(e0.attributes['label'])
+    bg={:label=>label}
+    @v.msg{"Async(CDB):#{label}"}
+    e0.each_element{|e1| # //bgsession/*
+      case e1.name
+      when 'while'
+        key=@rep.subst(e1.attributes['stat'])
+        bg[e1.name]={:key=>key,:val=>e1.text}
+        @v.msg{"[#{id}] evaluated if:[#{key}] == [#{e2.text}]" }
+      else
+        bg[e1.name]=@rep.subst(e1.text)
+        @v.msg{"Sessions for:[#{e1.name}]"+bg[e1.name]}
+      end
     }
-    _exec(@var['completion'])
-  rescue
-    @errmsg << $!.to_s
-  ensure
-    @var['blocking']=[]
-    @var['interrupt']=[]
+    push(bg)
   end
 
-  private
-  def _mk_array(e)
+  def update # Need Status pointer
+    each{|bg|
+      c=bg['while']
+      bg[:act]=(/#{c[:val]}/ === yield c[:key])
+      @v.msg{"Active:#{bg[:label]}"} if bg[:act]
+    }
+  end
+
+  def blocking?(cmd)
+    each{|bg|
+      next unless bg[:act]
+      pattern=bg['blocking'] || next
+      return true if /#{pattern}/ === cmd
+    }
+    false
+  end
+
+  def cmd(type) # type = interrupt|execution|completion
     ary=[]
-    e.each_element{ |e1| #statement
-      ary << @fi.call(@cdb.get_cmd(e1))
+    each{|bg|
+      next unless bg[:act]
+      line=bg[type] || next
+      line.split(';').each{|cmd|
+        ary << cmd
+      }
     }
-    ary
-  end
-
-  def _exec(ary)
-    ary.each {|s| @q.push(s) } if ary
+    ary.uniq
   end
 end

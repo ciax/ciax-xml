@@ -32,6 +32,7 @@
           <xsd:element ref="cdb:repeat" />
         </xsd:choice>
         <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:value" />
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:bgsession" />
       </xsd:choice>
       <xsd:attributeGroup ref="cdb:repeat" />
     </xsd:complexType>
@@ -80,9 +81,10 @@
   <!--command async-->
   <xsd:element name="async">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:bgsession" />
-      </xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cdb:bgsession" />
+        <xsd:element ref="cdb:repeat" />
+      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="bgsession">
@@ -105,7 +107,7 @@
       <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:statement" />
     </xsd:choice>
   </xsd:complexType>
-  <xsd:element name="blocking" type="cdb:statement"></xsd:element>
+  <xsd:element name="blocking" type="xsd:string"></xsd:element>
   <xsd:element name="interrupt" type="cdb:statement"></xsd:element>
   <xsd:element name="execution" type="cdb:statement"></xsd:element>
   <xsd:element name="completion" type="cdb:statement"></xsd:element>

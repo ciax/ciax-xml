@@ -155,36 +155,37 @@
       </session>
     </commands>
     <async>
-      <bgsession id="move" timeout="30" interval="1">
-        <while>
-          <stat ref="r$1">P</stat>
-        </while>
-        <blocking>
-          <statement>
-            <text>fw</text>
-            <formula>$1</formula>
-          </statement>
-          <statement>
-            <text>bw</text>
-            <formula>$1</formula>
-          </statement>
-        </blocking>
-        <interrupt>
-          <statement>
-            <text>stop</text>
-          </statement>
-        </interrupt>
-        <execution>
-          <statement>
-            <text>chkrun</text>
-            <formula>$1</formula>
-          </statement>
-          <statement>
-            <text>getp</text>
-            <formula>$1</formula>
-          </statement>
-        </execution>
-      </bgsession>
+      <repeat from="1" to="6">
+        <bgsession id="move" timeout="30" interval="1">
+          <while>
+            <stat ref="r$_">N</stat>
+          </while>
+          <blocking>
+            <statement>
+              <text>fw</text>
+              <formula>$_</formula>
+            </statement>
+            <statement>
+              <text>bk</text>
+              <formula>$_</formula>
+            </statement>(fw|bk) $_</blocking>
+          <interrupt>
+            <statement>
+              <text>stop</text>
+            </statement>
+          </interrupt>
+          <execution>
+            <statement>
+              <text>chkrun</text>
+              <formula>$1</formula>
+            </statement>
+            <statement>
+              <text>getp</text>
+              <formula>$1</formula>
+            </statement>
+          </execution>
+        </bgsession>
+      </repeat>
     </async>
     <status>
       <value id="rdy" format="%s" label="Comm Ready">

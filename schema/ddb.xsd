@@ -166,6 +166,7 @@
         <xsd:group ref="ddb:cmd_elem" />
       </xsd:choice>
       <xsd:attributeGroup ref="ddb:repeat" />
+      <xsd:attribute name="delimiter" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
   <!--Command CC-->

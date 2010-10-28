@@ -3,6 +3,7 @@
   <device id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" wait="0.2">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdselect>
+      <!--String Length must be <32-->
       <command id="getstat" label="Get status" response="getstat" type="stat">
         <data>ST</data>
       </command>
@@ -63,8 +64,16 @@
         <formula>$1</formula>
         <data>P21R</data>
       </command>
-      <command id="setp" label="Set pulse from buffer" response="default" type="config" nocache="true">
-        <repeat from="1" to="6">
+      <command id="setp_a" label="Set pulse from buffer(1-3)" response="default" type="config" nocache="true">
+        <repeat from="1" to="3">
+          <formula>$_</formula>
+          <data>P21S</data>
+          <formula>${p:$_-1}</formula>
+          <data></data>
+        </repeat>
+      </command>
+      <command id="setp_b" label="Set pulse from buffer(4-6)" response="default" type="config" nocache="true">
+        <repeat from="4" to="6">
           <formula>$_</formula>
           <data>P21S</data>
           <formula>${p:$_-1}</formula>
@@ -80,8 +89,15 @@
         <formula>$1</formula>
         <data>P14R</data>
       </command>
-      <command id="setspd" label="Set speed from buffer" response="default" type="config" nocache="true">
-        <repeat from="1" to="6" delimiter=" ">
+      <command id="setspd_a" label="Set speed from buffer (1-3)" response="default" type="config" nocache="true">
+        <repeat from="1" to="3" delimiter=" ">
+          <formula>$_</formula>
+          <data>P14S</data>
+          <formula>${spd:$_-1}</formula>
+        </repeat>
+      </command>
+      <command id="setspd_b" label="Set speed from buffer (4-6)" response="default" type="config" nocache="true">
+        <repeat from="4" to="6" delimiter=" ">
           <formula>$_</formula>
           <data>P14S</data>
           <formula>${spd:$_-1}</formula>
@@ -96,8 +112,16 @@
         <formula>$1</formula>
         <data>P12R</data>
       </command>
-      <command id="setofs" label="Set offset from buffer" response="default" type="config" nocache="true">
-        <repeat from="1" to="6">
+      <command id="setofs_a" label="Set offset from buffer(1-3)" response="default" type="config" nocache="true">
+        <repeat from="1" to="3">
+          <formula>$_</formula>
+          <data>P12S</data>
+          <formula>${ofs:$_-1}</formula>
+          <data></data>
+        </repeat>
+      </command>
+      <command id="setofs_b" label="Set offset from buffer(4-6)" response="default" type="config" nocache="true">
+        <repeat from="4" to="6">
           <formula>$_</formula>
           <data>P12S</data>
           <formula>${ofs:$_-1}</formula>

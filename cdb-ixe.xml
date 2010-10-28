@@ -55,7 +55,10 @@
           </statement>
         </repeat>
         <statement>
-          <text>setspd</text>
+          <text>setspd_a</text>
+        </statement>
+        <statement>
+          <text>setspd_b</text>
         </statement>
       </session>
       <session id="resetp" label="Set 0 Pulses">
@@ -87,13 +90,22 @@
           <text>load</text>
         </statement>
         <statement>
-          <text>setp</text>
+          <text>setp_a</text>
+        </statement>
+        <statement>
+          <text>setp_b</text>
+        </statement>
+        <statement>
+          <text>setspd_a</text>
         </statement>
         <statement>
           <text>setspd</text>
         </statement>
         <statement>
-          <text>setofs</text>
+          <text>setofs_a</text>
+        </statement>
+        <statement>
+          <text>setofs_b</text>
         </statement>
       </session>
       <session id="upp" label="Update Pulse [1-6]">

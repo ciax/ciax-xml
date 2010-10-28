@@ -63,13 +63,16 @@ class DevCmd
         frame << @ccrange
         @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
       when 'repeat'
+        ary=[]
         @rep.repeat(e1){
-          ary=[]
+          str=''
           e1.each_element{|e2|
-            ary << get_data(e2)
+            str << get_data(e2)
           }
-          frame << ary.join(a['delimiter'])
+          @v.msg{"GetFrame:(repeat)[#{str}]"}
+          ary << str
         }
+        frame << ary.join(a['delimiter'])
       else
         frame << get_data(e1)
       end
@@ -90,15 +93,15 @@ class DevCmd
         str=s.subst(str)
       }
       str=eval(str).to_s
-      @v.msg{"GetFrame:(calculated)[#{str}]"}
       frame << encode(e,str)
+      @v.msg{"GetFrame:(calculated)[#{str}]"}
     when 'csv'
       [@par,@stat].each{|s|
         str=s.subst(str)
       }
       str.split(',').each{|s|
-        @v.msg{"GetFrame:(csv)[#{s}]"}
         frame << encode(e,s)
+        @v.msg{"GetFrame:(csv)[#{s}]"}
       }
     end
     frame

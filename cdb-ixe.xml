@@ -63,7 +63,7 @@
           <statement>
             <text>set</text>
             <formula>"p:$_"</formula>
-            <formula>$1</formula>
+            <text>0</text>
           </statement>
         </repeat>
         <statement>
@@ -150,11 +150,6 @@
               <formula>$1</formula>
             </statement>
           </execution>
-          <completion>
-            <statement>
-              <text>stop</text>
-            </statement>
-          </completion>
         </async>
       </session>
       <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
@@ -196,11 +191,6 @@
               <formula>$1</formula>
             </statement>
           </execution>
-          <completion>
-            <statement>
-              <text>stop</text>
-            </statement>
-          </completion>
         </async>
       </session>
     </commands>

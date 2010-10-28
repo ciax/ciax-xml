@@ -160,15 +160,7 @@
           <while>
             <stat ref="r$_">N</stat>
           </while>
-          <blocking>
-            <statement>
-              <text>fw</text>
-              <formula>$_</formula>
-            </statement>
-            <statement>
-              <text>bk</text>
-              <formula>$_</formula>
-            </statement>(fw|bk) $_</blocking>
+          <blocking>(fw|bk) $_</blocking>
           <interrupt>
             <statement>
               <text>stop</text>
@@ -177,11 +169,11 @@
           <execution>
             <statement>
               <text>chkrun</text>
-              <formula>$1</formula>
+              <formula>$_</formula>
             </statement>
             <statement>
               <text>getp</text>
-              <formula>$1</formula>
+              <formula>$_</formula>
             </statement>
           </execution>
         </bgsession>

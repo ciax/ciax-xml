@@ -22,9 +22,9 @@ class ClsSrv
     @input=proc{|c| yield c}
     @output=proc{|s| @ddb.push(s) if @ddb.empty? }
     @auto=ClsAuto.new(@input,@output)
-    @event=ClsEvent.new(cdb)
     session_thread
-    event_thread unless @event.empty?
+    @event=ClsEvent.new(cdb)
+    @event.thread(@q)
     sleep 0.01
   end
 
@@ -67,18 +67,6 @@ class ClsSrv
         ensure
           @issue=''
         end
-      }
-    }
-  end
-
-  def event_thread
-    Thread.new{
-      loop{
-        @event.update{|k| @stat.stat(k)}
-        @event.cmd('execution').each{|cmd|
-          @q.push(cmd.split(" "))
-        } if @q.empty?
-        sleep @event.interval
       }
     }
   end

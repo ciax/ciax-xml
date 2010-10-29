@@ -4,7 +4,6 @@ require "librepeat"
 class ClsEvent < Array
   attr_reader :interval
 
-  private
   def initialize(cdb)
     events=cdb['events'] || return
     @v=Verbose.new("EVENT")
@@ -21,23 +20,6 @@ class ClsEvent < Array
         set_event(e1)
       end
     }
-  end
-
-  def set_event(e0)
-    a=e0.attributes
-    label=@rep.subst(a['label'])
-    bg={:label=>label}
-    @v.msg(1){label}
-    key=@rep.subst(a['ref'])
-    bg[e0.name]={:key=>key,:val=>a['val']}
-    @v.msg{"Evaluated on #{e0.name}:[#{key}] == [#{a['val']}]" }
-    e0.each_element{|e1| # //while or change
-      bg[e1.name]=@rep.subst(e1.text)
-      @v.msg{"Sessions for:[#{e1.name}]"+bg[e1.name]}
-    }
-    push(bg)
-  ensure
-    @v.msg(-1){label}
   end
 
   public
@@ -85,5 +67,36 @@ class ClsEvent < Array
       end
     }
     ary.uniq
+  end
+
+  def thread(queue)
+    return if empty?
+    Thread.new{
+      loop{
+        update{|k| @stat.stat(k)}
+        cmd('execution').each{|cmd|
+          queue.push(cmd.split(" "))
+        } if queue.empty?
+        sleep @interval
+      }
+    }
+  end
+
+  private
+  def set_event(e0)
+    a=e0.attributes
+    label=@rep.subst(a['label'])
+    bg={:label=>label}
+    @v.msg(1){label}
+    key=@rep.subst(a['ref'])
+    bg[e0.name]={:key=>key,:val=>a['val']}
+    @v.msg{"Evaluated on #{e0.name}:[#{key}] == [#{a['val']}]" }
+    e0.each_element{|e1| # //while or change
+      bg[e1.name]=@rep.subst(e1.text)
+      @v.msg{"Sessions for:[#{e1.name}]"+bg[e1.name]}
+    }
+    push(bg)
+  ensure
+    @v.msg(-1){label}
   end
 end

@@ -5,45 +5,49 @@ class Async < Array
   attr_reader :interval
 
   def initialize(cdb)
-    @v=Verbose.new("ASYNC")
+    @v=Verbose.new("EVENT")
     @rep=Repeat.new
-    @interval=cdb.['async'].attributes['interval'] || 10
+    @interval=cdb.['events'].attributes['interval'] || 10
     @v.msg{"Interval[#{@interval}]"}
     @active=[]
-    cdb['async'].each_element{ |e1|
+    cdb['events'].each_element{ |e1|
       case e1.name
-      when 'bgsession'
-        set_async(e1)
       when 'repeat'
         @rep.repeat{
-          e1.each_element{|e2| set_async(e2)}
+          e1.each_element{|e2| set_event(e2)}
         }
+      else
+        set_event(e1)
       end
     }
   end
 
-  def set_async(e0)
-    label=@rep.subst(e0.attributes['label'])
+  def set_event(e0)
+    a=e0.attributes
+    label=@rep.subst(a['label'])
     bg={:label=>label}
-    @v.msg{"Async(CDB):#{label}"}
-    e0.each_element{|e1| # //bgsession/*
-      case e1.name
-      when 'while'
-        key=@rep.subst(e1.attributes['stat'])
-        bg[e1.name]={:key=>key,:val=>e1.text}
-        @v.msg{"[#{id}] evaluated if:[#{key}] == [#{e2.text}]" }
-      else
-        bg[e1.name]=@rep.subst(e1.text)
-        @v.msg{"Sessions for:[#{e1.name}]"+bg[e1.name]}
-      end
+    @v.msg{label}
+    key=@rep.subst(a['ref'])
+    bg[e0.name]={:key=>key,:val=>a['val']}
+    @v.msg{"[#{id}] evaluated on #{e0.name}:[#{key}] == [#{e2.text}]" }
+    e0.each_element{|e1| # //while or change
+      bg[e1.name]=@rep.subst(e1.text)
+      @v.msg{"Sessions for:[#{e1.name}]"+bg[e1.name]}
     }
     push(bg)
   end
 
   def update # Need Status pointer
     each{|bg|
-      c=bg['while']
-      bg[:act]=(/#{c[:val]}/ === yield c[:key])
+      if c=bg['while']
+        bg[:act]=(/#{c[:val]}/ === yield c[:key])
+      elsif c=bg['change']
+        val=yield c[:key]
+        if c[:prev]
+          bg[:act]=(/#{c[:val]}/ === val) && (c[:prev] != val)
+        end
+        c[:prev]=val
+      end
       @v.msg{"Active:#{bg[:label]}"} if bg[:act]
     }
   end
@@ -57,7 +61,7 @@ class Async < Array
     false
   end
 
-  def cmd(type) # type = interrupt|execution|completion
+  def cmd(type) # type = interrupt|execution
     ary=[]
     each{|bg|
       next unless bg[:act]

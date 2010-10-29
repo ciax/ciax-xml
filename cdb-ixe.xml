@@ -154,16 +154,15 @@
         </statement>
       </session>
     </commands>
-    <async interval="1">
+    <events interval="1">
       <repeat from="1" to="6">
-        <bgsession label="move$_">
-          <while stat="r$_">N</while>
+        <while label="Moving $_" ref="r$_" val="N">
           <blocking>(fw|bk) $_</blocking>
           <interrupt>stop</interrupt>
           <execution>chkrun $_;getp $_</execution>
-        </bgsession>
+        </while>
       </repeat>
-    </async>
+    </events>
     <status>
       <value id="rdy" format="%s" label="Comm Ready">
         <binary bit="0">stat</binary>

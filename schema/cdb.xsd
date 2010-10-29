@@ -16,7 +16,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="cdb:commands" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="cdb:async" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdb:events" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:status" minOccurs="1" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
@@ -32,7 +32,10 @@
           <xsd:element ref="cdb:repeat" />
         </xsd:choice>
         <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:value" />
-        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:bgsession" />
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="cdb:while" />
+          <xsd:element ref="cdb:change" />
+        </xsd:choice>
       </xsd:choice>
       <xsd:attributeGroup ref="cdb:repeat" />
     </xsd:complexType>
@@ -66,41 +69,43 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <!--command async-->
-  <xsd:element name="async">
+  <!--command events-->
+  <xsd:element name="events">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="cdb:bgsession" />
+        <xsd:element ref="cdb:while" />
+        <xsd:element ref="cdb:change" />
         <xsd:element ref="cdb:repeat" />
       </xsd:choice>
       <xsd:attribute name="interval" type="xsd:int" use="optional"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="bgsession">
+  <xsd:attributeGroup name="attr_event">
+    <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+    <xsd:attribute name="ref" type="xsd:string" use="required"></xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string" use="required"></xsd:attribute>
+  </xsd:attributeGroup>
+  <xsd:element name="while">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element minOccurs="0" maxOccurs="1" ref="cdb:while" />
         <xsd:element ref="cdb:blocking" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:interrupt" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:execution" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="cdb:completion" minOccurs="0" maxOccurs="1"></xsd:element>
       </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+      <xsd:attributeGroup ref="cdb:attr_event" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="change">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="cdb:execution" minOccurs="0" maxOccurs="1"></xsd:element>
+      </xsd:sequence>
+      <xsd:attributeGroup ref="cdb:attr_event" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="blocking" type="xsd:string"></xsd:element>
   <xsd:element name="interrupt" type="xsd:string"></xsd:element>
   <xsd:element name="execution" type="xsd:string"></xsd:element>
-  <xsd:element name="completion" type="xsd:string"></xsd:element>
-  <xsd:element name="while">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="stat" type="xsd:string" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
   <!--status-->
   <xsd:element name="status">
     <xsd:complexType>

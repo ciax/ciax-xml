@@ -13,7 +13,7 @@ class ClsSrv
     cdb=XmlDoc.new('cdb',cls)
     @cdbc=ClsCmd.new(cdb)
     @cdbs=ClsStat.new(cdb,id)
-    @var={:cmd=>'upd',:int=>'10',:cls => cls,:issue =>''}
+    @var={:cmd=>'upd',:int=>'10',:cls => cls}
     @ddb=DevBg.new(cdb['device'],id,iocmd){|s| @cdbs.get_stat(s) }
     @errmsg=@ddb.errmsg
     @cdbs.get_stat(@ddb.field)
@@ -27,7 +27,7 @@ class ClsSrv
   def prompt
     prom = @auto.auto.alive? ? '&' : ''
     prom << @var[:cls]
-    prom << @var[:issue]
+    prom << @ddb.issue
     prom << (@event.any?{|bg| bg[:act] } ? '!' : '')
     prom << ">"
   end
@@ -49,8 +49,8 @@ class ClsSrv
   private
 
   def event_thread
-    Thread.new{ 
-      loop{ 
+    Thread.new{
+      loop{
         @event.update{|k| @cdbs.stat(k)}
         @event.cmd('execution').each{|cmd|
           @cdbc.session(cmd.split(" ")){|c| @ddb.push(c)}

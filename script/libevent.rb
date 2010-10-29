@@ -5,12 +5,12 @@ class Event < Array
   attr_reader :interval
 
   def initialize(cdb)
+    events=cdb['events'] || return
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
-    @interval=cdb['events'].attributes['interval'] || 10
+    @interval=events.attributes['interval'] || 10
     @v.msg{"Interval[#{@interval}]"}
-    @active=[]
-    cdb['events'].each_element{ |e1|
+    events.each_element{ |e1|
       case e1.name
       when 'repeat'
         @rep.repeat(e1){
@@ -55,7 +55,8 @@ class Event < Array
     }
   end
 
-  def blocking?(cmd)
+  def blocking?(stm)
+    cmd=stm.join(' ')
     each{|bg|
       next unless bg[:act]
       pattern=bg['blocking'] || next

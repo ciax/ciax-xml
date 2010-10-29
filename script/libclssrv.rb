@@ -20,8 +20,10 @@ class ClsSrv
     @q=Queue.new
     @errmsg=Array.new
     @auto=Auto.new(@conv,proc{|s| @q.push(s) if @q.empty? })
-    @async=Event.new(cdb,@q,@cdbc,@cdbs,@conv)
+    @event=Event.new(cdb)
     device_thread
+    sleep 0.01
+    event_thread unless @event.empty?
     sleep 0.01
   end
 
@@ -29,7 +31,7 @@ class ClsSrv
     prom = @auto.auto.alive? ? '&' : ''
     prom << @var[:cls]
     prom << @var[:issue]
-    prom << (@async.any?{|t| t.alive? } ? '!' : '')
+    prom << (@event.any?{|bg| bg[:act] } ? '!' : '')
     prom << ">"
   end
 
@@ -40,11 +42,8 @@ class ClsSrv
   def dispatch(stm)
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
-    asy=@cdbc.session(@conv.call(stm)) {|cmd| @q.push(cmd)}
-    if asy
-      @async.set_async(asy)
-      @async.start
-    end
+    return "Blocking" if @event.blocking?(stm)
+    @cdbc.session(@conv.call(stm)) {|cmd| @q.push(cmd)}
     "Accepted"
   rescue SelectID
     @auto.auto_upd(stm){|i,o| @cdbc.session(i,&o) }
@@ -64,6 +63,18 @@ class ClsSrv
         ensure
           @var[:issue]=''
         end
+      }
+    }
+  end
+
+  def event_thread
+    Thread.new{ 
+      loop{ 
+        @event.update{|k| @cdbs.stat(k)}
+        @event.cmd('execution').each{|cmd|
+          @cdbc.session(cmd.split(" ")){|c| @q.push(c)}
+        } if @q.empty?
+        sleep @event.interval
       }
     }
   end

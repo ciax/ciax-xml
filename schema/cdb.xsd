@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdb="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
-  <xsd:include schemaLocation="libdb.xsd" />
+  <xsd:include schemaLocation="repeat.xsd" />
+  <xsd:include schemaLocation="param.xsd" />
   <xsd:element name="cdb">
     <xsd:complexType>
       <xsd:sequence>
@@ -48,7 +49,18 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="session"></xsd:element>
+  <xsd:element name="session">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="1" ref="cdb:parameters" />
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="cdb:statement" />
+          <xsd:element ref="cdb:repeat" />
+        </xsd:choice>
+      </xsd:sequence>
+      <xsd:attributeGroup ref="cdb:id_attr" />
+    </xsd:complexType>
+  </xsd:element>
   <!--command statement-->
   <xsd:element name="statement">
     <xsd:complexType>

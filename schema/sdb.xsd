@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="range.xsd" />
   <xsd:element name="sdb">
     <xsd:complexType>
       <xsd:sequence>
@@ -92,11 +93,6 @@
       </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:simpleType name="rerange">
-    <xsd:restriction base="xsd:string">
-      <xsd:pattern value="^(-?\d+(\.\d+)?&lt;?)?:(&lt;?-?\d+(\.\d+)?)?" />
-    </xsd:restriction>
-  </xsd:simpleType>
   <xsd:element name="range">
     <xsd:complexType>
       <xsd:simpleContent>

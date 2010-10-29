@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="range.xsd" />
+  <!--Command Elements-->
+  <xsd:element name="parameters">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="par" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="par">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0">
+        <xsd:element ref="range" maxOccurs="unbounded" />
+        <xsd:element ref="regexp" />
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="range" type="rerange"></xsd:element>
+  <xsd:element name="regexp" type="xsd:string" />
+</xsd:schema>

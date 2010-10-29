@@ -28,7 +28,7 @@ class ClsSrv
     prom = @auto.auto.alive? ? '&' : ''
     prom << @var[:cls]
     prom << @ddb.issue
-    prom << (@event.any?{|bg| bg[:act] } ? '!' : '')
+    prom << (@event.active? ? '!' : '')
     prom << ">"
   end
 

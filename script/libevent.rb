@@ -4,6 +4,7 @@ require "librepeat"
 class Event < Array
   attr_reader :interval
 
+  private
   def initialize(cdb)
     events=cdb['events'] || return
     @v=Verbose.new("EVENT")
@@ -39,6 +40,7 @@ class Event < Array
     @v.msg(-1){label}
   end
 
+  public
   def update # Need Status pointer
     each{|bg|
       if c=bg['while']
@@ -53,6 +55,10 @@ class Event < Array
       end
       @v.msg{"Active:#{bg[:label]}"} if bg[:act]
     }
+  end
+
+  def active?
+    any?{|bg| bg[:act] }
   end
 
   def blocking?(stm)

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "librepeat"
 
-class Event < Array
+class ClsEvent < Array
   attr_reader :interval
 
   private

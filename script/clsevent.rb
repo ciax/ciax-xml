@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libxmldoc"
-require "libevent"
+require "libclsevent"
 # "Usage: clsevent < status_file"
 begin
   stat=Marshal.load(gets(nil))
   cdb=XmlDoc.new('cdb',stat['class'])
-  ev=Event.new(cdb)
+  ev=ClsEvent.new(cdb)
   puts "Interval="+ev.interval
   ev.update{|k| stat[k] }
   puts ev.cmd('blocking')

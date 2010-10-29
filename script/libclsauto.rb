@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "thread"
 
-class Auto
+class ClsAuto
   attr_reader :auto
 
   def initialize(fi=nil,fo=nil)

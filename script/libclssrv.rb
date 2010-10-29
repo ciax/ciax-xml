@@ -4,8 +4,8 @@ require "libclscmd"
 require "libclsstat"
 require "libdevbg"
 require "thread"
-require "libauto"
-require "libevent"
+require "libclsauto"
+require "libclsevent"
 
 class ClsSrv
 
@@ -19,8 +19,8 @@ class ClsSrv
     @stat.get_stat(@ddb.field)
     @input=proc{|c| yield c}
     @output=proc{|s| @ddb.push(s) if @ddb.empty? }
-    @auto=Auto.new(@input,@output)
-    @event=Event.new(cdb)
+    @auto=ClsAuto.new(@input,@output)
+    @event=ClsEvent.new(cdb)
     event_thread unless @event.empty?
     sleep 0.01
   end

@@ -1,19 +1,19 @@
 #!/usr/bin/ruby
 require "librepeat"
 
-class Async < Array
+class Event < Array
   attr_reader :interval
 
   def initialize(cdb)
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
-    @interval=cdb.['events'].attributes['interval'] || 10
+    @interval=cdb['events'].attributes['interval'] || 10
     @v.msg{"Interval[#{@interval}]"}
     @active=[]
     cdb['events'].each_element{ |e1|
       case e1.name
       when 'repeat'
-        @rep.repeat{
+        @rep.repeat(e1){
           e1.each_element{|e2| set_event(e2)}
         }
       else
@@ -26,21 +26,24 @@ class Async < Array
     a=e0.attributes
     label=@rep.subst(a['label'])
     bg={:label=>label}
-    @v.msg{label}
+    @v.msg(1){label}
     key=@rep.subst(a['ref'])
     bg[e0.name]={:key=>key,:val=>a['val']}
-    @v.msg{"[#{id}] evaluated on #{e0.name}:[#{key}] == [#{e2.text}]" }
+    @v.msg{"Evaluated on #{e0.name}:[#{key}] == [#{a['val']}]" }
     e0.each_element{|e1| # //while or change
       bg[e1.name]=@rep.subst(e1.text)
       @v.msg{"Sessions for:[#{e1.name}]"+bg[e1.name]}
     }
     push(bg)
+  ensure
+    @v.msg(-1){label}
   end
 
   def update # Need Status pointer
     each{|bg|
       if c=bg['while']
-        bg[:act]=(/#{c[:val]}/ === yield c[:key])
+        val=yield c[:key]
+        bg[:act]=( /#{c[:val]}/ === val )
       elsif c=bg['change']
         val=yield c[:key]
         if c[:prev]
@@ -64,11 +67,15 @@ class Async < Array
   def cmd(type) # type = interrupt|execution
     ary=[]
     each{|bg|
-      next unless bg[:act]
-      line=bg[type] || next
-      line.split(';').each{|cmd|
-        ary << cmd
-      }
+      if bg[:act]
+        @v.msg{"#{bg[:label]} is active" }
+        line=bg[type] || next
+        line.split(';').each{|cmd|
+          ary << cmd
+        }
+      else
+        @v.msg{"#{bg[:label]} is inactive" }
+      end
     }
     ary.uniq
   end

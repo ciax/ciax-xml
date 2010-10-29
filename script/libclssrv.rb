@@ -5,7 +5,7 @@ require "libclsstat"
 require "libdev"
 require "thread"
 require "libauto"
-require "libasync"
+require "libevent"
 
 class ClsSrv
 
@@ -20,7 +20,7 @@ class ClsSrv
     @q=Queue.new
     @errmsg=Array.new
     @auto=Auto.new(@conv,proc{|s| @q.push(s) if @q.empty? })
-    @async=Async.new(cdb,@q,@cdbc,@cdbs,@conv)
+    @async=Event.new(cdb,@q,@cdbc,@cdbs,@conv)
     device_thread
     sleep 0.01
   end

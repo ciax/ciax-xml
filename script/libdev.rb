@@ -50,6 +50,7 @@ class Dev
     @stat.save
   end
 
+  private
   def set(stm)
     if stm.empty?
       msg=["  Usage: set [key(:idx)] (val)"]

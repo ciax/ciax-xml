@@ -19,17 +19,15 @@ class ClsSrv
     @stat=ClsStat.new(cdb,id)
     @ddb=Dev.new(cdb['device'],id,iocmd)
     @stat.get_stat(@ddb.field)
-    @input=proc{|c| yield c}
-    @output=proc{|s| @ddb.push(s) if @ddb.empty? }
-    @auto=ClsAuto.new(@input,@output)
     session_thread
+    @auto=ClsAuto.new(@q)
     @event=ClsEvent.new(cdb)
     @event.thread(@q)
     sleep 0.01
   end
 
   def prompt
-    prom = @auto.auto.alive? ? '&' : ''
+    prom = (@auto.active? ? '&' : '')
     prom << @cls
     prom << @issue
     prom << (@event.active? ? '!' : '')
@@ -44,11 +42,11 @@ class ClsSrv
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
     return "Blocking" if @event.blocking?(stm)
-    @cmd.session(@input.call(stm)){}
-    @q.push(stm)
+    @cmd.session(yield(stm)){}
+    @q.push(yield(stm))
     "Accepted"
   rescue SelectID
-    @auto.auto_upd(stm){|i,o| @cmd.session(i,&o) }
+    @auto.auto_upd(stm){|s| @cmd.session(yield(s)) }
   end
 
   private
@@ -58,7 +56,7 @@ class ClsSrv
         stm=@q.pop
         @issue='*'
         begin
-          @cmd.session(@input.call(stm)) {|c|
+          @cmd.session(stm) {|c|
             @ddb.devcom(c)
             @stat.get_stat(@ddb.field)
           }

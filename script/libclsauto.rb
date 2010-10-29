@@ -4,13 +4,29 @@ require "thread"
 class ClsAuto
   attr_reader :auto
 
-  def initialize(fi=nil,fo=nil)
+  def initialize(queue)
     @cmd='upd'
     @int=10
+    @q=queue
     @errmsg=Array.new
-    @auto=Thread.new{}
-    @fi=fi || proc{|s|s}
-    @fo=fo || proc{|s|s}
+    @auto=Thread.new {
+      Thread.stop
+      begin
+        loop{
+          @cmd.split(',').each {|s|
+            @q.push(s)
+          }
+          sleep @int
+        }
+      rescue
+        @errmsg << $!.to_s
+        Thread.stop
+      end
+    }
+  end
+
+  def active?
+    ! @auto.stop?
   end
 
   def auto_upd(stm)
@@ -24,31 +40,17 @@ class ClsAuto
     case par.shift
     when 'stat'
       str=["Running(cmd=[#{@cmd}] int=[#{@int}])"]
-      str.unshift("Not") unless @auto.alive?
+      str.unshift("Not") if @auto.stop?
       str << @errmsg
       str.join(' ')
     when 'start'
-      @auto.kill if @auto
-      @auto=Thread.new {
-        begin
-          loop{
-            @cmd.split(',').each {|s|
-              yield(@fi.call(s.split(':')),@fo)
-            }
-            sleep @int.to_i
-          }
-        rescue
-          @errmsg << $!.to_s
-        end
-      }
+      @auto.run
     when 'stop'
-      if @auto
-        @auto.kill
-        sleep 0.1
-      end
+      @auto.raise "Stopped"
+      sleep 0.1
     when /^int=/
-      num=$'
-      if num.to_i > 0
+      num=$'.to_i
+      if num > 0
         @int=num
       else
         raise "Out of Range"
@@ -57,7 +59,7 @@ class ClsAuto
       line=$'
       begin
         line.split(',').each { |s|
-          yield(@fi.call(s.split(':')),proc{|c|c})
+          yield(s.split(':'))
         }
         @cmd=line
       rescue SelectID

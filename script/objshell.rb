@@ -13,13 +13,13 @@ id=ARGV.shift
 iocmd=ARGV.shift
 oc=ObjCmd.new(id)
 os=ObjStat.new(id)
-cdb=ClsSrv.new(cls,id,iocmd){|c| oc.alias(c)}
+cdb=ClsSrv.new(cls,id,iocmd)
 
 loop {
   stm=Readline.readline(cdb.prompt,true).split(' ')
   break if /^q/ === stm.first
   begin
-    puts cdb.dispatch(stm) || view(os.get_stat(cdb.stat))
+    puts cdb.dispatch(stm){|c| oc.alias(c)} || view(os.get_stat(cdb.stat))
   rescue RuntimeError
     puts $!.to_s
   rescue

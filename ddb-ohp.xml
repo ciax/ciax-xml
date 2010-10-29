@@ -1,43 +1,42 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='ohp' label='OMEGA Helium Pressure Sensor'>
-    <serial databit='7' flowctl='NONE' parity='ODD' speed='9600' stopbit='1'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="ohp" label="OMEGA Helium Pressure Sensor">
+    <serial databit="7" flowctl="NONE" parity="ODD" speed="9600" stopbit="1" />
+    <cmdselect>
+      <command id="getstat" label="Get Status" type="stat">
+        <data>*X01</data>
+      </command>
+      <command id="setd" label="Set default" type="config">
+        <data>*W1F14</data>
+      </command>
+      <command id="init" label="Initialize" type="config">
+        <data>*Z02</data>
+      </command>
+    </cmdselect>
     <cmdframe>
-      <select>
-        <option id='getstat' label='Get Status' type='stat'>
-          <data>*X01</data>
-        </option>
-        <option id='setd' label='Set default' type='config'>
-          <data>*W1F14</data>
-        </option>
-        <option id='init' label='Initialize' type='config'>
-          <data>*Z02</data>
-        </option>
-      </select>
-      <data pack='H*'>0D</data>
+      <selected />
+      <data encode="chr">13</data>
     </cmdframe>
-    <rspframe wait='1'>
-      <select>
-        <option id='getstat'>
-          <verify length='3'>
-            <case msg='Prefix OK' type='pass'>X01</case>
-            <case msg='Prefix mismatch' type='error'/>
-          </verify>
-          <assign field='pres' length='5'/>
-        </option>
-        <option id='setd'>
-          <verify length='3'>
-            <case msg='Command OK' type='pass'>W1F</case>
-            <case msg='Command mismatch' type='error'/>
-          </verify>
-        </option>
-        <option id='init'>
-          <verify length='3'>
-            <case msg='Command OK' type='pass'>Z02</case>
-            <case msg='Command mismatch' type='error'/>
-          </verify>
-        </option>
-      </select>
+    <rspselect>
+      <response id="getstat">
+        <field length="3" label="Prefix">
+          <verify>X01</verify>
+        </field>
+        <field length="5" assign="pres"></field>
+      </response>
+      <response id="setd">
+        <field length="3" label="Command">
+          <verify>W1F</verify>
+        </field>
+      </response>
+      <response id="init">
+        <field length="3" label="Command">
+          <verify>Z02</verify>
+        </field>
+      </response>
+    </rspselect>
+    <rspframe>
+      <selected />
     </rspframe>
   </device>
 </ddb>

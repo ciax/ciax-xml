@@ -2,31 +2,28 @@
 require "thread"
 
 class ClsAuto
-  attr_reader :auto
+  attr_reader :active
 
   def initialize(queue)
     @cmd='upd'
     @int=10
     @q=queue
     @errmsg=Array.new
+    @active=nil
     @auto=Thread.new {
-      Thread.stop
-      begin
-        loop{
-          @cmd.split(',').each {|s|
-            @q.push(s)
-          }
-          sleep @int
-        }
-      rescue
-        @errmsg << $!.to_s
-        Thread.stop
-      end
+      loop{
+        sleep @int
+        if @active && @q.empty?
+          begin
+            @cmd.split(',').each {|s|
+              @q.push(s.split(':'))
+            }
+          rescue
+            @errmsg << $!.to_s
+          end
+        end
+      }
     }
-  end
-
-  def active?
-    ! @auto.stop?
   end
 
   def auto_upd(stm)
@@ -39,15 +36,14 @@ class ClsAuto
     end
     case par.shift
     when 'stat'
-      str=["Running(cmd=[#{@cmd}] int=[#{@int}])"]
-      str.unshift("Not") if @auto.stop?
+      str= @active ? ["Active"] : ["Inactive"]
+      str << "(cmd=[#{@cmd}] int=[#{@int}])"
       str << @errmsg
       str.join(' ')
     when 'start'
-      @auto.run
+      @active=true
     when 'stop'
-      @auto.raise "Stopped"
-      sleep 0.1
+      @active=nil
     when /^int=/
       num=$'.to_i
       if num > 0

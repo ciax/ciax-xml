@@ -27,7 +27,7 @@ class ClsSrv
   end
 
   def prompt
-    prom = (@auto.active? ? '&' : '')
+    prom = @auto.active ? "&" : ''
     prom << @cls
     prom << @issue
     prom << (@event.active? ? '!' : '')

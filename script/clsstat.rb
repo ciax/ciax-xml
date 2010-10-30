@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "json"
 require "libxmldoc"
 require "libclsstat"
 
@@ -9,10 +10,10 @@ ARGV.clear
 
 begin
   cdb=XmlDoc.new('cdb',cls)
-  field=Marshal.load(gets(nil))
+  field=JSON.load(gets(nil))
   cs=ClsStat.new(cdb,field['id'])
   stat=cs.get_stat(field)
 rescue RuntimeError
   abort $!.to_s
 end
-print Marshal.dump stat
+print JSON.dump stat

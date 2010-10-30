@@ -7,9 +7,10 @@ for obj in $objects; do
     export obj
     echo "#### $obj ####"
     dev=$(lookup $obj dev) || _usage_key
-    file=$HOME/.var/field_$obj.mar
+    file=$HOME/.var/field_$obj.json
     VER=${VER:-exec(cdb)} clscmd $dev $cmd $par < $file
     [ $cmd = 'upd' ] || continue
     echo " *** Status ***"
-    clsstat $dev < $file| mar
+    clsstat $dev < $file
+    echo
 done

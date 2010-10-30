@@ -8,8 +8,8 @@ for obj in $objects; do
     obj=${obj%.*}
     obj=${obj#*-}
     echo "#### $obj ####"
-    output=$HOME/.var/status_$obj.mar
+    output=$HOME/.var/status_$obj.json
     VER=${VER:-exec} objcmd $obj $cmd $par
     [ $cmd = 'upd' ] &&
-    objstat $output| { [ "$VER" ] && mar || stv; }
+    objstat $output| { [ "$VER" ] || stv; }
 done

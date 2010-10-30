@@ -10,7 +10,7 @@ class Stat < Hash
       @fd=IoFile.new(fname)
       load
     rescue
-      warn "----- Create #{fname}.mar"
+      warn "----- Create #{fname}.json"
     end
   end
 

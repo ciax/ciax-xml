@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "json"
 require "libstat"
 require "libdevrsp"
 require "libxmldoc"
@@ -20,5 +21,5 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
-print Marshal.dump r.getfield(time){ eval(ary.shift) }
+print JSON.dump r.getfield(time){ eval(ary.shift) }
 st.save

@@ -16,10 +16,10 @@ class IoFile
 
   def save_stat(stat,tag=nil)
     base=[@type,tag].compact.join('_')
-    fname=VarDir+"/#{base}.mar"
+    fname=VarDir+"/#{base}.json"
     open(fname,'w') {|f|
       @v.msg{"Status Saving for [#{base}]"}
-      f << Marshal.dump(stat)
+      f << JSON.dump(stat)
     }
     stat
   end
@@ -27,9 +27,9 @@ class IoFile
   def load_stat(tag=nil)
     base=[@type,tag].compact.join('_')
     @v.msg{"Status Loading for [#{base}]"}
-    fname=VarDir+"/#{base}.mar"
+    fname=VarDir+"/#{base}.json"
     raise(list_stat) unless !tag || FileTest.exist?(fname)
-    stat=Marshal.load(IO.read(fname))
+    stat=JSON.load(IO.read(fname))
     raise "No status in File" unless stat
     @v.msg{stat.inspect}
     stat

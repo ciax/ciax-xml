@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "json"
 require "libmodview"
 include ModView
-puts view(Marshal.load(gets(nil)))
+puts view(JSON.load(gets(nil)))

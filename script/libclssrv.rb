@@ -21,16 +21,19 @@ class ClsSrv
     @stat.get_stat(@ddb.field)
     session_thread
     @auto=ClsAuto.new(@q)
-    @event=ClsEvent.new(cdb)
-    @event.thread(@q)
-    sleep 0.01
+    @event=[]
+    cdb['events'].each_element{|e|
+      @event << ClsEvent.new(e)
+      @event.last.thread(@q)
+      sleep 0.01
+    } if cdb['events']
   end
 
   def prompt
     prom = @auto.active ? "&" : ''
     prom << @cls
     prom << @issue
-    prom << (@event.active? ? '!' : '')
+    prom << (@event.any?{|e| e.active?} ? '!' : '')
     prom << ">"
   end
 
@@ -41,7 +44,7 @@ class ClsSrv
   def dispatch(stm)
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
-    return "Blocking" if @event.blocking?(stm)
+    return "Blocking" if @event.any?{|e| e.blocking?(stm)}
     @cmd.session(yield(stm)){}
     @q.push(yield(stm))
     "Accepted"

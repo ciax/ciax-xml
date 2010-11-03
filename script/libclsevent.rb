@@ -1,32 +1,59 @@
 #!/usr/bin/ruby
 require "librepeat"
 
-class ClsEvent < Array
-  attr_reader :interval,:label
-  attr_accessor :switch
+class ClsEvent < Hash
 
-  def initialize(edb) # watch
+  def initialize(cdb)
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
-    @label=edb.attributes['label']
-    @v.msg{@label}
-    @interval=edb.attributes['interval'] || 3600
-    @v.msg{"Interval[#{@interval}]"}
-    edb.each_element{ |e1|
-      case e1.name
-      when 'repeat'
-        @rep.repeat(e1){
-          e1.each_element{|e2| set_event(e2)}
-        }
-      else
-        set_event(e1)
-      end
+    edb=cdb['events'] || return
+    edb.each_element{|e0| # watch
+      a=e0.attributes
+      group=a['interval'] || 3600
+      @v.msg{"Interval[#{group}]"}
+      self[group]=self[group] || {:label => a['label']}
+      @v.msg{a['label']}
+      self[group][:events]=mk_watch(e0)
+    }
+  end
+  
+  public
+  def interrupt
+    ary=[]
+    each{|group,ev|
+      ev[:events].each{ |bg|
+        if bg[:active]
+          @v.msg{"#{bg[:label]} is active" }
+          ary << bg[:interrput]
+        else
+          @v.msg{"#{bg[:label]} is inactive" }
+        end
+      }
+    }
+    ary.compact.uniq
+  end
+
+  def active?
+    each{ |group,ev|
+      return true if ev[:events].any?{|bg| bg[:active] }
     }
   end
 
-  public
-  def update # Need Status pointer
-    each{|bg|
+  def blocking?(stm)
+    cmd=stm.join(' ')
+    each{|group,ev|
+      ev[:events].each{|bg|
+        pattern=bg['blocking'] || next
+        if bg[:active]
+          return true if /#{pattern}/ === cmd
+        end
+      }
+    }
+    false
+  end
+
+  def update(group) # Need Status pointer
+    self[group][:events].each{|bg|
       case bg[:type]
       when 'while'
         val=yield bg[:key]
@@ -44,24 +71,9 @@ class ClsEvent < Array
     }
   end
 
-  def active?
-    any?{|bg| bg[:active] }
-  end
-
-  def blocking?(stm)
-    cmd=stm.join(' ')
-    each{|bg|
-      pattern=bg['blocking'] || next
-      if bg[:active]
-        return true if /#{pattern}/ === cmd
-      end
-    }
-    false
-  end
-
-  def command
+  def command(group)
     ary=[]
-    each{|bg|
+    self[group][:events].each{|bg|
       if bg[:active]
         @v.msg{"#{bg[:label]} is active" }
         bg[:command].each{|cmd|
@@ -74,33 +86,38 @@ class ClsEvent < Array
     ary.uniq
   end
 
-  def interrupt
-    ary=[]
-    each{ |bg|
-      if bg[:active]
-        @v.msg{"#{bg[:label]} is active" }
-        ary << bg[:interrput]
-      else
-        @v.msg{"#{bg[:label]} is inactive" }
-      end
-    }
-    ary.compact.uniq
-  end
-
   def thread(queue)
-    return if empty?
-    Thread.new{
-      loop{
-        update{|k| @stat.stat(k)}
-        command.each{|cmd|
-          queue.push(cmd.split(" "))
-        } if queue.empty?
-        sleep @interval
+    each{|group,ev|
+      Thread.new{
+        loop{
+          update(group){|k| @stat.stat(k)}
+          command(group).each{|cmd|
+            queue.push(cmd.split(" "))
+          } if queue.empty?
+          sleep @interval
+        }
       }
     }
   end
 
   private
+  def mk_watch(e0)
+    evs=[]
+    e0.each_element{|e1| # event
+      case e1.name
+      when 'repeat'
+        @rep.repeat(e1){
+          e1.each_element{|e2| 
+            evs << set_event(e2)
+          }
+        }
+      else
+        evs << set_event(e1)
+      end
+    }
+    evs
+  end
+  
   def set_event(e0) # event
     label=@rep.subst(e0.attributes['label'])
     bg={:label => label,:command => []}
@@ -125,7 +142,7 @@ class ClsEvent < Array
         @v.msg{"Sessions:"+bg[:command].last}
       end
     }
-    push(bg)
+    bg
   ensure
     @v.msg(-1){label}
   end

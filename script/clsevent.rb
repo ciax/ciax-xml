@@ -7,13 +7,13 @@ event=[]
 begin
   stat=JSON.load(gets(nil))
   cdb=XmlDoc.new('cdb',stat['class'])
-  cdb['events'].each_element{|e|
-    ev=ClsEvent.new(e)
-    puts "Label="+ev.label
-    puts "Interval="+ev.interval
-    ev.update{|k| stat[k] }
-    ev.each{|e| p e }
+  watch=ClsEvent.new(cdb)
+#  puts "Label="+ev.label
+#  puts "Interval="+ev.interval
+  watch.each{|group,e|
+    watch.update(group){|k| stat[k] }
   }
+  p watch
 rescue RuntimeError
   abort $!.to_s
 end

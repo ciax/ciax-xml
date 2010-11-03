@@ -17,7 +17,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="cdb:commands" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="cdb:events" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdb:watch" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:status" minOccurs="1" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
@@ -77,20 +77,12 @@
     </xsd:complexType>
   </xsd:element>
   <!--command events-->
-  <xsd:element name="events">
-    <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="cdb:watch" />
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
   <xsd:element name="watch">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cdb:event"></xsd:element>
         <xsd:element ref="cdb:repeat"></xsd:element>
       </xsd:choice>
-      <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
       <xsd:attribute name="interval" type="xsd:int" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
@@ -98,9 +90,11 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:choice minOccurs="0" maxOccurs="1">
+          <xsd:element ref="cdb:periodic" />
           <xsd:element ref="cdb:while"></xsd:element>
           <xsd:element ref="cdb:onchange" />
         </xsd:choice>
+        <xsd:element ref="cdb:interrupt" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:command" minOccurs="1" maxOccurs="unbounded"></xsd:element>
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
@@ -110,9 +104,8 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:string">
-          <xsd:attribute name="ref" type="xsd:string" use="required"></xsd:attribute>
           <xsd:attribute name="blocking" type="xsd:string" />
-          <xsd:attribute name="interrupt" type="xsd:string" />
+          <xsd:attribute name="ref" type="xsd:string" use="required"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -126,6 +119,12 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="periodic">
+    <xsd:complexType>
+      <xsd:attribute name="period" use="required" type="xsd:int"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="interrupt" type="xsd:string"></xsd:element>
   <xsd:element name="command" type="xsd:string"></xsd:element>
   <!--status-->
   <xsd:element name="status">

@@ -10,10 +10,8 @@ begin
   watch=ClsEvent.new(cdb)
 #  puts "Label="+ev.label
 #  puts "Interval="+ev.interval
-  watch.each{|group,e|
-    watch.update(group){|k| stat[k] }
-  }
-  p watch
+  watch.update{|k| stat[k] }
+  watch.each{|i| p i }
 rescue RuntimeError
   abort $!.to_s
 end

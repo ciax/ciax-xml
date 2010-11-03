@@ -154,22 +154,20 @@
         </statement>
       </session>
     </commands>
-    <events>
-      <watch label="short term" interval="1">
-        <repeat from="1" to="6">
-          <event label="Moving $_">
-            <while ref="r$_" blocking="(fw|bk) $_" interrupt="stop">N</while>
-            <command>chkrun $_</command>
-            <command>getp $_</command>
-          </event>
-        </repeat>
-      </watch>
-      <watch label="long term" interval="3600">
-        <event label="Update Status">
-          <command>upd</command>
+    <watch interval="1">
+      <event label="Update Status">
+        <periodic period="3600" />
+        <command>upd</command>
+      </event>
+      <repeat from="1" to="6">
+        <event label="Moving $_">
+          <while blocking="(fw|bk) $_" ref="r$_">N</while>
+          <interrupt>stop</interrupt>
+          <command>chkrun $_</command>
+          <command>getp $_</command>
         </event>
-      </watch>
-    </events>
+      </repeat>
+    </watch>
     <status>
       <value id="rdy" format="%s" label="Comm Ready">
         <binary bit="0">stat</binary>

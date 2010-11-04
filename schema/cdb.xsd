@@ -50,12 +50,28 @@
         <xsd:element minOccurs="0" maxOccurs="1" ref="cdb:parameters" />
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="cdb:statement" />
+          <xsd:element ref="cdb:wait" />
           <xsd:element ref="cdb:repeat" />
         </xsd:choice>
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr" />
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="wait">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="cdb:until" />
+        <xsd:element ref="cdb:while" />
+      </xsd:choice>
+      <xsd:attribute name="timeout" type="xsd:int"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:complexType name="condition">
+    <xsd:attribute name="ref" type="xsd:string"></xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string"></xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="until" type="cdb:condition"></xsd:element>
+  <xsd:element name="while" type="cdb:condition"></xsd:element>
   <!--command statement-->
   <xsd:element name="statement">
     <xsd:complexType>
@@ -89,42 +105,24 @@
   <xsd:element name="event">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:choice minOccurs="0" maxOccurs="1">
+        <xsd:choice>
+          <xsd:element ref="cdb:until" />
+          <xsd:element ref="cdb:while" />
           <xsd:element ref="cdb:periodic" />
-          <xsd:element ref="cdb:while"></xsd:element>
-          <xsd:element ref="cdb:onchange" />
         </xsd:choice>
-        <xsd:element ref="cdb:interrupt" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="cdb:command" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="cdb:command" />
       </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="while">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="blocking" type="xsd:string" />
-          <xsd:attribute name="ref" type="xsd:string" use="required"></xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="onchange">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="ref" type="xsd:string" use="required"></xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="interrupt" type="xsd:string" />
+      <xsd:attribute name="blocking" type="xsd:string"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="periodic">
     <xsd:complexType>
+      <xsd:attribute name="label" type="xsd:string" />
       <xsd:attribute name="period" use="required" type="xsd:int"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="interrupt" type="xsd:string"></xsd:element>
   <xsd:element name="command" type="xsd:string"></xsd:element>
   <!--status-->
   <xsd:element name="status">

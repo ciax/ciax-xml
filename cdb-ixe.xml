@@ -137,6 +137,9 @@
           <formula>$1</formula>
           <formula>$2 * 8000</formula>
         </statement>
+        <wait>
+          <while ref="r$1" val="N" />
+        </wait>
       </session>
       <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
         <parameters>
@@ -152,6 +155,9 @@
           <formula>$1</formula>
           <formula>$2 * 8000</formula>
         </statement>
+        <wait>
+          <while ref="r$1" val="N" />
+        </wait>
       </session>
     </commands>
     <watch interval="1">
@@ -160,9 +166,8 @@
         <command>upd</command>
       </event>
       <repeat from="1" to="6">
-        <event label="Moving $_">
-          <while blocking="(fw|bk) $_" ref="r$_">N</while>
-          <interrupt>stop</interrupt>
+        <event label="Moving $_" blocking="(fw|bk) $_" interrupt="stop">
+          <while ref="r$_" val="N" />
           <command>chkrun $_</command>
           <command>getp $_</command>
         </event>

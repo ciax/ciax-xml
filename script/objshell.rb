@@ -6,13 +6,14 @@ require "libmodview"
 require "readline"
 include ModView
 
-warn "Usage: objshell [cls] [id] [iocmd]" if ARGV.size < 1
+warn "Usage: objshell [cls] [obj] [id] [iocmd]" if ARGV.size < 1
 
 cls=ARGV.shift
+obj=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
-oc=ObjCmd.new(id)
-os=ObjStat.new(id)
+oc=ObjCmd.new(obj)
+os=ObjStat.new(obj)
 cdb=ClsSrv.new(cls,id,iocmd)
 
 loop {

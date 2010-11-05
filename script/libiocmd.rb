@@ -7,7 +7,7 @@ class IoCmd
     abort "No IO command" unless iocmd
     @iof=IoFile.new(id) if id
     @v=Verbose.new('IOCMD:'+iocmd)
-    @f=IO.popen(iocmd,'r+')
+    @f=IO.popen(iocmd.split(' '),'r+')
     @timeout=timeout
     @wait=wait.to_f
     @v.msg{"Init"}

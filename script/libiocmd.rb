@@ -11,8 +11,8 @@ class IoCmd
     @timeout=timeout
     @wait=wait.to_f
     at_exit {
-      Process.kill(:TERM,@f.pid)
       @f.close
+      Process.kill(:TERM,@f.pid)
     }
     Signal.trap(:CHLD,"EXIT")
     @v.msg{"Init"}

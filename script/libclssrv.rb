@@ -21,8 +21,8 @@ class ClsSrv
     @stat.get_stat(@ddb.field)
     session_thread
     @auto=ClsAuto.new(@q)
-    @event=ClsEvent.new(cdb)
-    @event.thread(@q)
+    @event=ClsEvent.new(cdb,@errmsg)
+    @ev=@event.thread(@q){|k| @stat.stat(k)}
     sleep 0.01
   end
 
@@ -31,7 +31,7 @@ class ClsSrv
     prom << @cls
     prom << @issue
     prom << (@event.active? ? '!' : '')
-    prom << ">"
+    prom << (@ev.alive? ? ">" : "<")
   end
 
   def stat

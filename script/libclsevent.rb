@@ -3,11 +3,12 @@ require "librepeat"
 
 class ClsEvent < Array
 
-  def initialize(cdb)
+  def initialize(cdb,errmsg)
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
+    @errmsg=errmsg
     wdb=cdb['watch'] || return
-    @interval=wdb.attributes['interval']||1
+    @interval=wdb.attributes['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
     @last=Time.now
     wdb.each_element{|e1| # repeat|while|periodic
@@ -26,6 +27,7 @@ class ClsEvent < Array
 
   public
   def interrupt
+    ary=[]
     each{ |bg|
       if bg[:active]
         @v.msg{"#{bg['label']} is active" }
@@ -67,6 +69,7 @@ class ClsEvent < Array
   end
 
   def command
+    ary=[]
     each{|bg|
       if bg[:active]
         @v.msg{"#{bg['label']} is active" }
@@ -81,13 +84,17 @@ class ClsEvent < Array
   end
 
   def thread(queue)
-      Thread.new{
-        loop{
-          update{|k| @stat.stat(k)}
+    Thread.new{
+      loop{
+        begin
+          update{|key| yield key}
           command.each{|cmd|
             queue.push(cmd.split(" "))
           } if queue.empty?
           sleep @interval
+        rescue
+          @errmsg << $!.to_s+$@.to_s
+        end
         }
       }
   end
@@ -117,6 +124,6 @@ class ClsEvent < Array
     }
     bg
   ensure
-    @v.msg(-1){label}
+    @v.msg(-1){bg['label']}
   end
 end

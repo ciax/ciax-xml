@@ -10,11 +10,6 @@ class IoCmd
     @f=IO.popen(iocmd,'r+')
     @timeout=timeout
     @wait=wait.to_f
-    at_exit {
-      @f.close
-      Process.kill(:TERM,@f.pid)
-    }
-    Signal.trap(:CHLD,"EXIT")
     @v.msg{"Init"}
   end
 

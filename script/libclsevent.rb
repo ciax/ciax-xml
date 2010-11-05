@@ -11,6 +11,7 @@ class ClsEvent < Array
     @interval=wdb.attributes['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
     @last=Time.now
+    @threads=[]
     wdb.each_element{|e1| # repeat|while|periodic
       case e1.name
       when 'repeat'
@@ -31,7 +32,7 @@ class ClsEvent < Array
     each{ |bg|
       if bg[:active]
         @v.msg{"#{bg['label']} is active" }
-        ary << bg["interrupt"]
+        ary << bg["interrupt"].split(' ')
       else
         @v.msg{"#{bg['label']} is inactive" }
       end
@@ -40,7 +41,11 @@ class ClsEvent < Array
   end
 
   def active?
-    return true if any?{|bg| bg[:active] }
+    any?{|bg| bg[:active] }
+  end
+
+  def alive?
+    @threads.any?{|t| t.alive? }
   end
 
   def blocking?(stm)
@@ -84,7 +89,7 @@ class ClsEvent < Array
   end
 
   def thread(queue)
-    Thread.new{
+    @threads << Thread.new{
       loop{
         begin
           update{|key| yield key}

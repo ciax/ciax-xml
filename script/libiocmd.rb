@@ -5,9 +5,10 @@ require "libiofile"
 class IoCmd
   def initialize(iocmd,id=nil,wait=0,timeout=nil)
     abort "No IO command" unless iocmd
+    @iocmd=iocmd.split(' ')
     @iof=IoFile.new(id) if id
+    @f=IO.popen(@iocmd,'r+')
     @v=Verbose.new('IOCMD:'+iocmd)
-    @f=IO.popen(iocmd.split(' '),'r+')
     @timeout=timeout
     @wait=wait.to_f
     @v.msg{"Init"}
@@ -20,15 +21,25 @@ class IoCmd
   def snd(str,id=nil)
     return unless str && str != ''
     @iof.log_frame(str,id) if @iof
-    @f.syswrite(str)
+    begin
+      @f.syswrite(str)
+    rescue
+      @f=IO.popen(@iocmd,'r+')
+      retry
+    end
     @v.msg{"Send #{str.dump}"}
     sleep @wait
     str
   end
 
   def rcv(id=nil)
-    select([@f],nil,nil,@timeout) || return
-    str=@f.sysread(1024)
+    begin
+      select([@f],nil,nil,@timeout) || return
+      str=@f.sysread(1024)
+    rescue
+      @f=IO.popen(@iocmd,'r+')
+      retry
+    end
     @v.msg{"Recv #{str.dump}"}
     @iof.log_frame(str,id) if @iof
     sleep @wait

@@ -29,7 +29,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}&amp;0xfffe</text>
+          <text>stat</text>
+          <text>${stat}&amp;0xfffe</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -44,7 +45,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}|0x10</text>
+          <text>stat</text>
+          <text>${stat}|0x10</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -59,7 +61,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}&amp;0xffef</text>
+          <text>stat</text>
+          <text>${stat}&amp;0xffef</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -74,7 +77,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}|0x100</text>
+          <text>stat</text>
+          <text>${stat}|0x100</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -89,7 +93,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}&amp;0xfeff</text>
+          <text>stat</text>
+          <text>${stat}&amp;0xfeff</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -104,7 +109,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}|0x1000</text>
+          <text>stat</text>
+          <text>${stat}|0x1000</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -119,7 +125,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}&amp;0xefff</text>
+          <text>stat</text>
+          <text>${stat}&amp;0xefff</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -134,7 +141,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}|0x0011</text>
+          <text>stat</text>
+          <text>${stat}|0x0011</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -149,7 +157,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}&amp;0xffee</text>
+          <text>stat</text>
+          <text>${stat}&amp;0xffee</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -164,7 +173,8 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}|0x1100</text>
+          <text>stat</text>
+          <text>${stat}|0x1100</text>
         </statement>
         <statement>
           <text>outfld</text>
@@ -179,7 +189,33 @@
         </statement>
         <statement>
           <text>set</text>
-          <text>stat</text><text>${stat}&amp;0xeeff</text>
+          <text>stat</text>
+          <text>${stat}&amp;0xeeff</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
+        </statement>
+        <statement>
+          <text>getstat</text>
+        </statement>
+      </session>
+      <session id="x0t" label="X0 Timer">
+        <statement>
+          <text>getstat</text>
+        </statement>
+        <statement>
+          <text>set</text>
+          <text>stat</text>
+          <text>${stat}|0x01</text>
+        </statement>
+        <statement>
+          <text>outfld</text>
+        </statement>
+        <wait timeout="10"></wait>
+        <statement>
+          <text>set</text>
+          <text>stat</text>
+          <text>${stat}&amp;0xFE</text>
         </statement>
         <statement>
           <text>outfld</text>

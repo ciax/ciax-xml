@@ -59,7 +59,7 @@
   </xsd:element>
   <xsd:element name="wait">
     <xsd:complexType>
-      <xsd:choice>
+      <xsd:choice minOccurs="0" maxOccurs="1">
         <xsd:element ref="cdb:until" />
         <xsd:element ref="cdb:while" />
       </xsd:choice>

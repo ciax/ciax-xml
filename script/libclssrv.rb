@@ -10,19 +10,19 @@ require "libclsevent"
 class ClsSrv
 
   def initialize(cls,id,iocmd)
+    cdb=XmlDoc.new('cdb',cls)
+  rescue RuntimeError
+    abort $!.to_s
+  else
     @cls=cls
-    @q=Queue.new
     @issue=''
     @errmsg=[]
-    cdb=XmlDoc.new('cdb',cls)
+    @q=Queue.new
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
-    @ddb=Dev.new(cdb['device'],id,iocmd)
-    @stat.get_stat(@ddb.field)
-    session_thread
     @auto=ClsAuto.new(@q)
-    @event=ClsEvent.new(cdb,@errmsg)
-    @ev=@event.thread(@q){|k| @stat.stat(k)}
+    @event=ClsEvent.new(cdb,@errmsg).thread(@q){|k| @stat.stat(k)}
+    session_thread(cdb['device'],id,iocmd)
     sleep 0.01
   end
 
@@ -31,7 +31,7 @@ class ClsSrv
     prom << @cls
     prom << @issue
     prom << (@event.active? ? '!' : '')
-    prom << (@ev.alive? ? ">" : "<")
+    prom << (@event.alive? ? ">" : "<")
   end
 
   def stat
@@ -50,32 +50,28 @@ class ClsSrv
   end
 
   private
-  def session_thread
+  def session_thread(dev,id,iocmd)
     Thread.new{
-      loop{
-        stm=@q.pop
-        @issue='*'
-        begin
-          @cmd.session(stm) {|c|
-            @ddb.devcom(c)
-            @stat.get_stat(@ddb.field)
-          }
-        rescue
-          @errmsg << $!.to_s
-        ensure
-          @issue=''
-        end
-      }
-    }
-  end
-
-  def interrupt
-    @event.interrupt.each{|cmd|
-      @q.clear
-      @cmd.session(cmd.split(' ')) {|c|
-        @ddb.devcom(c)
-        @stat.get_stat(@ddb.field)
-      }
+      ddb=Dev.new(dev,id,iocmd)
+      begin
+        loop{
+          begin
+            @stat.get_stat(ddb.field)
+            @issue=''
+            stm=@q.pop
+            @issue='*'
+            @cmd.session(stm) {|c|
+              ddb.devcom(c)
+            }
+          rescue
+            @errmsg << $!.to_s
+          end
+        }
+      rescue Interrupt
+        @q.clear
+        @event.interrupt.each{|c| ddb.devcom(c)}
+        @errmsg << "STOP"
+      end
     }
   end
 end

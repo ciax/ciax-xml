@@ -2,16 +2,17 @@
 require "librepeat"
 
 class ClsEvent < Array
+attr_reader :tary
 
   def initialize(cdb,errmsg=[])
+    wdb=cdb['watch'] || return
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
     @errmsg=errmsg
-    wdb=cdb['watch'] || return
+    @tary=[]
     @interval=wdb.attributes['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
     @last=Time.now
-    @tary=[]
     wdb.each_element{|e1| # repeat|while|periodic
       case e1.name
       when 'repeat'
@@ -28,6 +29,7 @@ class ClsEvent < Array
 
   public
   def interrupt
+    return [] unless @tary
     ary=[]
     each{ |bg|
       if bg[:active]
@@ -45,6 +47,7 @@ class ClsEvent < Array
   end
 
   def alive?
+    return unless @tary
     @tary.any?{|t| t.alive? }
   end
 
@@ -71,6 +74,7 @@ class ClsEvent < Array
       end
       @v.msg{"Active:#{bg['label']}"} if bg[:active]
     }
+    self
   end
 
   def command
@@ -89,6 +93,7 @@ class ClsEvent < Array
   end
 
   def thread(queue)
+    return self unless @tary
     @tary << Thread.new{
       loop{
         begin
@@ -102,6 +107,7 @@ class ClsEvent < Array
         end
       }
     }
+    self
   end
   
   private

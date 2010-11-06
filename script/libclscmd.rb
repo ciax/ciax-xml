@@ -21,6 +21,7 @@ class ClsCmd
     e0=@cdb.select_id('commands',stm.first)
     a=e0.attributes
     @v.msg{"Exec(CDB):#{a['label']}"}
+    dstm=[]
     e0.each_element {|e1|
       case e1.name
       when 'parameters'
@@ -29,30 +30,32 @@ class ClsCmd
           validate(e2,@par[i+=1])
         }
       when 'statement'
-        yield(get_cmd(e1))
+        dstm << get_cmd(e1)
       when 'repeat'
-        repeat_cmd(e1){|e2| yield e2 }
+        dstm += repeat_cmd(e1){|e2| yield e2 }
       end
     }
-    a['async']
+    dstm
   end
 
   #Cmd Method
   def repeat_cmd(e0)
+    dstm=[]
     @rep.repeat(e0){
       e0.each_element{|e1|
         case e1.name
         when 'statement'
-          yield(get_cmd(e1))
+          dstm << get_cmd(e1)
         when 'repeat'
-          repeat_cmd(e1){|e2| yield e2}
+          dstm+= repeat_cmd(e1){|e2| yield e2}
         end
       }
     }
+    dstm
   end
 
   def get_cmd(e0) # //stm
-    stm=[]
+    dstm=[]
     @v.msg(1){"GetCmd(DDB)"}
     begin
       e0.each_element{|e1| # //text or formula
@@ -67,11 +70,11 @@ class ClsCmd
           str=format(e1,eval(str))
           @v.msg{"Calculated [#{str}]"}
         end
-        stm << str
+        dstm << str
       }
-      stm
+      dstm
     ensure
-      @v.msg(-1){"Exec(DDB):#{stm}"}
+      @v.msg(-1){"Exec(DDB):#{dstm}"}
     end
   end
 end

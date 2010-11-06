@@ -9,7 +9,7 @@ cmd=ARGV
 begin
   cdb=XmlDoc.new('cdb',cls)
   cc=ClsCmd.new(cdb)
-  cc.session(cmd){|c| p c}
+  cc.session(cmd).each{|c| p c}
 rescue SelectID
   abort $!.to_s
 end

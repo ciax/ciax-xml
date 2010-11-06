@@ -42,7 +42,7 @@ class ClsSrv
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
     return "Blocking" if @event.blocking?(stm)
-    @cmd.session(yield(stm)){}
+    @cmd.session(yield(stm))
     @q.push(yield(stm))
     "Accepted"
   rescue SelectID
@@ -60,7 +60,7 @@ class ClsSrv
             @issue=''
             stm=@q.pop
             @issue='*'
-            @cmd.session(stm) {|c|
+            @cmd.session(stm).each{|c|
               ddb.devcom(c)
             }
           rescue

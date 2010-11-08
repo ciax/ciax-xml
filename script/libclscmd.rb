@@ -9,20 +9,23 @@ class ClsCmd
   attr_reader :par
 
   def initialize(cdb)
-    @cdb=cdb
+    @cdb=@sel=cdb
     @v=Verbose.new("cdb/#{cdb['id']}/cmd".upcase)
     @rep=Repeat.new
     @par=Param.new
   end
 
-  public
-  def session(stm)
+  def setcmd(stm)
     @par.setpar(stm)
-    e0=@cdb.select_id('commands',stm.first)
-    a=e0.attributes
+    @sel=@cdb.select_id('commands',stm.first)
+    self
+  end
+
+  def session
+    a=@sel.attributes
     @v.msg{"Exec(CDB):#{a['label']}"}
     dstm=[]
-    e0.each_element {|e1|
+    @sel.each_element {|e1|
       case e1.name
       when 'parameters'
         i=0
@@ -38,6 +41,7 @@ class ClsCmd
     dstm
   end
 
+  private
   #Cmd Method
   def repeat_cmd(e0)
     dstm=[]

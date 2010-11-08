@@ -42,11 +42,11 @@ class ClsSrv
     return @errmsg.shift unless @errmsg.empty?
     return if stm.empty?
     return "Blocking" if @event.blocking?(stm)
-    @cmd.session(yield(stm))
+    @cmd.setcmd(yield(stm))
     @q.push(yield(stm))
     "Accepted"
   rescue SelectID
-    @auto.auto_upd(stm){|s| @cmd.session(yield(s)) }
+    @auto.auto_upd(stm){|s| @cmd.setcmd(yield(s)).session }
   end
 
   private
@@ -60,7 +60,7 @@ class ClsSrv
             @issue=''
             stm=@q.pop
             @issue='*'
-            @cmd.session(stm).each{|c|
+            @cmd.setcmd(stm).session.each{|c|
               ddb.devcom(c)
             }
           rescue

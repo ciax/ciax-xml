@@ -21,6 +21,7 @@ class DevCmd
     stm << '*' if /true|1/ === a['nocache']
     @cid=stm.join(':')
     @v.msg{'Select:'+a['label']+"(#{@cid})"}
+    self
   end
 
   def getframe

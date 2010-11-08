@@ -20,6 +20,7 @@ class DevRsp
     cmd=@ddb.select_id('cmdselect',stm.first)
     res=cmd.attributes['response']
     @sel= res ? @ddb.select_id('rspselect',res) : nil
+    self
   end
 
   def getfield(time=Time.now)

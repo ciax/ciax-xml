@@ -28,7 +28,7 @@ class IoFile
     base=[@type,tag].compact.join('_')
     @v.msg{"Status Loading for [#{base}]"}
     fname=VarDir+"/#{base}.json"
-    raise(list_stat) unless !tag || FileTest.exist?(fname)
+    raise SelectID,list_stat unless !tag || FileTest.exist?(fname)
     stat=JSON.load(IO.read(fname))
     raise "No status in File" unless stat
     @v.msg{stat.inspect}
@@ -36,12 +36,12 @@ class IoFile
   end
 
   def list_stat
-    list=["== Tag list =="]
-    Dir.glob(VarDir+"/#{@type}_*.mar"){|f|
-      tag=f.slice(/#{@type}_(.+)\.mar/,1).tr('_',' ')
-      list << " #{tag}"
+    list=[]
+    Dir.glob(VarDir+"/#{@type}_*.json"){|f|
+      tag=f.slice(/#{@type}_(.+)\.json/,1)
+      list << tag
     }
-    list.join("\n")
+    "Tag=#{list}"
   end
 
   def save_json(stat)

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libobjcmd"
 require "libobjstat"
-require "libclssrv"
+require "libcls"
 require "libmodview"
 require "readline"
 include ModView
@@ -14,7 +14,7 @@ id=ARGV.shift
 iocmd=ARGV.shift
 oc=ObjCmd.new(obj)
 os=ObjStat.new(obj)
-cdb=ClsSrv.new(cls,id,iocmd)
+cdb=Cls.new(cls,id,iocmd)
 
 loop {
   begin

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libclssrv"
+require "libcls"
 require "readline"
 
 warn "Usage: clsshell [cls] [id] [iocmd]" if ARGV.size < 1
@@ -7,7 +7,7 @@ warn "Usage: clsshell [cls] [id] [iocmd]" if ARGV.size < 1
 cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
-cdb=ClsSrv.new(cls,id,iocmd)
+cdb=Cls.new(cls,id,iocmd)
 
 loop {
   begin

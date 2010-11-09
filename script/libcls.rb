@@ -7,7 +7,7 @@ require "thread"
 require "libclsauto"
 require "libclsevent"
 
-class ClsSrv
+class Cls
 
   def initialize(cls,id,iocmd)
     cdb=XmlDoc.new('cdb',cls)
@@ -70,8 +70,12 @@ class ClsSrv
             stm=@q.pop
             @issue='*'
             @cmd.setcmd(stm).session.each{|c|
-              ddb.devcom(c)
-              @stat.get_stat(ddb.field)
+              case c[0]
+              when 'sleep'
+              else
+                ddb.devcom(c)
+                @stat.get_stat(ddb.field)
+              end
             }
           rescue
             $errmsg << $!.to_s

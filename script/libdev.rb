@@ -33,20 +33,15 @@ class Dev
     when 'set'
       set(stm).inspect
     when 'load'
-      @stat.load(stm.shift||'default')
+      load(stm.shift||'default')
     when 'save'
       save(stm.shift,stm.shift||'default')
     when 'sleep'
-      s=stm.shift
-      @stat['sleep']=1
-      @v.msg{"Sleep #{s} sec" }
-      sleep s.to_i
-      @stat['sleep']=0
+      slp(stm)
     else
       msg=[$!.to_s]
-      msg << "== Async Control =="
+      msg << "== Internal Command =="
       msg << " sleep     : Sleep [sec]"
-      msg << "== Data Handling =="
       msg << " set       : Set Value  [key(:idx)] (val)"
       msg << " load      : Load Field (tag)"
       msg << " save      : Save Field [key,key...] (tag)"
@@ -60,6 +55,18 @@ class Dev
   end
 
   private
+  def slp(stm)
+    if stm.empty?
+      msg=["  Usage: sleep [sec]"]
+      raise SelectID,msg.join("\n")
+    end
+    s=stm[0]
+    @stat['sleep']=1
+    @v.msg{"Sleep #{s} sec" }
+    sleep s.to_i
+    @stat['sleep']=0
+  end
+
   def set(stm)
     if stm.empty?
       msg=["  Usage: set [key(:idx)] (val)"]
@@ -77,5 +84,13 @@ class Dev
       raise SelectID,msg.join("\n")
     end
     @stat.save(tag,keys.split(','))
+  end
+
+  def load(tag='default')
+    @stat.load(tag)
+  rescue SelectID
+    msg=["  Usage: load (tag)"]
+    msg << "  #{$!}"
+    raise SelectID,msg.join("\n")
   end
 end

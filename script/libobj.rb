@@ -12,7 +12,7 @@ class Obj < Hash
 
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
-  rescue RuntimeError
+  rescue SelectID
     abort $!.to_s
   else
     @f=IoFile.new(obj)

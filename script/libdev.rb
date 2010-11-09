@@ -9,9 +9,10 @@ require "libdevrsp"
 class Dev
   def initialize(dev,id,iocmd)
     @ddb=XmlDoc.new('ddb',dev)
-  rescue RuntimeError
+  rescue SelectID
     abort $!.to_s
   else
+    $errmsg=''
     @stat=Stat.new(id,"field")
     @cmd=DevCmd.new(@ddb,@stat)
     @rsp=DevRsp.new(@ddb,@stat)
@@ -28,6 +29,10 @@ class Dev
     return if stm.empty?
     @cmd.setcmd(stm)
     @rsp.setrsp(stm)
+    cid=stm.join(':')
+    @ic.snd(@cmd.getframe,'snd:'+cid)
+    @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
+    @stat.save
   rescue SelectID
     case stm.shift
     when 'set'
@@ -39,26 +44,19 @@ class Dev
     when 'sleep'
       slp(stm)
     else
-      msg=[$!.to_s]
-      msg << "== Internal Command =="
-      msg << " sleep     : Sleep [sec]"
-      msg << " set       : Set Value  [key(:idx)] (val)"
-      msg << " load      : Load Field (tag)"
-      msg << " save      : Save Field [key,key...] (tag)"
-      raise SelectID,msg.join("\n")
+      $errmsg << "== Internal Command ==\n"
+      $errmsg << " sleep     : Sleep [sec]\n"
+      $errmsg << " set       : Set Value  [key(:idx)] (val)\n"
+      $errmsg << " load      : Load Field (tag)\n"
+      $errmsg << " save      : Save Field [key,key...] (tag)\n"
+      raise $errmsg.slice!(0..-1)
     end
-  else
-    cid=stm.join(':')
-    @ic.snd(@cmd.getframe,'snd:'+cid)
-    @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
-    @stat.save
   end
 
   private
   def slp(stm)
     if stm.empty?
-      msg=["  Usage: sleep [sec]"]
-      raise SelectID,msg.join("\n")
+      raise "Usage: sleep [sec]"
     end
     s=stm[0]
     @stat['sleep']=1
@@ -69,9 +67,7 @@ class Dev
 
   def set(stm)
     if stm.empty?
-      msg=["  Usage: set [key(:idx)] (val)"]
-      msg << "  key=#{@stat.keys}"
-      raise SelectID,msg.join("\n")
+      raise "Usage: set [key(:idx)] (val)\n key=#{@stat.keys}"
     end
     @v.msg{"CMD:set#{stm}"}
     @stat.set(stm[0],stm[1])
@@ -79,9 +75,7 @@ class Dev
  
   def save(keys=nil,tag='default')
     unless keys
-      msg=["  Usage: save [key,key..] (tag)"]
-      msg << "  key=#{@stat.keys}"
-      raise SelectID,msg.join("\n")
+      raise "Usage: save [key,key..] (tag)\n key=#{@stat.keys}"
     end
     @stat.save(tag,keys.split(','))
   end
@@ -89,8 +83,7 @@ class Dev
   def load(tag='default')
     @stat.load(tag)
   rescue SelectID
-    msg=["  Usage: load (tag)"]
-    msg << "  #{$!}"
-    raise SelectID,msg.join("\n")
+    raise "Usage: load (tag)\n #{$!}"
+
   end
 end

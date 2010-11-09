@@ -16,8 +16,6 @@ loop {
     puts cdb.dispatch(stm){|s|s} || cdb.stat
   rescue Interrupt
     puts "STOP"
-  rescue RuntimeError
-    puts $!.to_s
   rescue
     puts $!
   end

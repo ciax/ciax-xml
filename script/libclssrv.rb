@@ -11,17 +11,17 @@ class ClsSrv
 
   def initialize(cls,id,iocmd)
     cdb=XmlDoc.new('cdb',cls)
-  rescue RuntimeError
+  rescue SelectID
     abort $!.to_s
   else
     @cls=cls
     @issue=''
-    @errmsg=[]
+    $errmsg=''
     @q=Queue.new
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
     @auto=ClsAuto.new(@q)
-    @event=ClsEvent.new(cdb,@errmsg).thread(@q){|k| @stat.stat(k)}
+    @event=ClsEvent.new(cdb).thread(@q){|k| @stat.stat(k)}
     session_thread(cdb['device'],id,iocmd)
     sleep 0.01
   end
@@ -39,14 +39,23 @@ class ClsSrv
   end
 
   def dispatch(stm)
-    return @errmsg.shift unless @errmsg.empty?
-    return if stm.empty?
-    return "Blocking" if @event.blocking?(stm)
-    @cmd.setcmd(yield(stm))
-    @q.push(yield(stm))
-    "Accepted"
-  rescue SelectID
-    @auto.auto_upd(stm){|s| @cmd.setcmd(yield(s)).session }
+    if $errmsg.empty?
+      return if stm.empty?
+      return "Blocking" if @event.blocking?(stm)
+      begin
+        @cmd.setcmd(yield(stm))
+        @q.push(yield(stm))
+        return "Accepted"
+      rescue SelectID
+      end
+      begin
+        return @auto.auto_upd(stm){|s|
+          @cmd.setcmd(yield(s)).session
+        }
+      rescue SelectID
+      end
+    end
+    raise $errmsg.slice!(0..-1)
   end
 
   private
@@ -65,13 +74,13 @@ class ClsSrv
               @stat.get_stat(ddb.field)
             }
           rescue
-            @errmsg << $!.to_s
+            $errmsg << $!.to_s
           end
         }
       rescue Interrupt
         @q.clear
         @event.interrupt.each{|c| ddb.devcom(c)}
-        @errmsg << "STOP"
+        $errmsg << "STOP"
       end
     }
   end

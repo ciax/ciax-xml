@@ -4,11 +4,11 @@ require "librepeat"
 class ClsEvent < Array
 attr_reader :tary
 
-  def initialize(cdb,errmsg=[])
+  def initialize(cdb)
     wdb=cdb['watch'] || return
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
-    @errmsg=errmsg
+    $errmsg=''
     @tary=[]
     @interval=wdb.attributes['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
@@ -103,7 +103,7 @@ attr_reader :tary
           } if queue.empty?
           sleep @interval
         rescue
-          @errmsg << $!.to_s+$@.to_s
+          $errmsg << $!.to_s+$@.to_s
         end
       }
     }

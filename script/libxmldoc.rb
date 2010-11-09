@@ -6,15 +6,16 @@ class SelectID < RuntimeError ; end
 
 class XmlDoc < Hash
   def initialize(db = nil ,type = nil)
+    $errmsg=''
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
     f=open(path)
   rescue Errno::ENOENT
     list=Array.new
     Dir.glob("#{pre}-*.xml").each {|p|
-      list << getdoc(open(p))
+      addlist(getdoc(open(p)))
     }
-    mklist(list)
+    raise(SelectID,$errmsg) unless $errmsg.empty?
   else
     doc=getdoc(f)
     doc.each_element {|e| self[e.name]=e }
@@ -25,14 +26,9 @@ class XmlDoc < Hash
     if id && id != ''
       self[xpath].each_element_with_attribute('id',id){|e| return e }
     end
-    list_id(xpath)
-  end
-
-  # Error Handling
-  def list_id(name)
-    list=[]
-    self[name].each_element { |e| list << e }
-    mklist(list,"== Command List ==")
+    $errmsg << "== Command List ==\n"
+    self[xpath].each_element { |e| addlist(e) }
+    raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 
   private
@@ -40,13 +36,9 @@ class XmlDoc < Hash
     Document.new(f).root.elements.first
   end
 
-  def mklist(ary,title=nil)
-    list=[title]
-    ary.each { |e|
-      a=e.attributes
-      list << " %-10s: %s" % [a['id'],a['label']]if a['label']
-    }
-    raise(SelectID,list.compact.join("\n")) if list.size > 0
+  def addlist(e)
+    a=e.attributes
+    $errmsg << " %-10s: %s\n" % [a['id'],a['label']] if a['label']
   end
 
 end

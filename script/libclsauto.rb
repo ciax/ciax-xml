@@ -8,7 +8,7 @@ class ClsAuto
     @cmd='upd'
     @int=10
     @q=queue
-    @errmsg=Array.new
+    $errmsg=''
     @active=nil
     @auto=Thread.new {
       loop{
@@ -19,7 +19,7 @@ class ClsAuto
               @q.push(s.split(':'))
             }
           rescue
-            @errmsg << $!.to_s
+            $errmsg << $!.to_s
           end
         end
       }
@@ -29,16 +29,14 @@ class ClsAuto
   def auto_upd(stm)
     par=stm.dup
     if par.shift != 'auto'
-      msg=[$!.to_s]
-      msg << "== Internal Command =="
-      msg << " auto ?    : Auto Update (opt)"
-      raise SelectID,msg.compact.join("\n")
+      $errmsg << "== Internal Command ==\n"
+      $errmsg << " auto ?    : Auto Update (opt)\n"
+      raise SelectID,$errmsg
     end
     case par.shift
     when 'stat'
       str= @active ? ["Active"] : ["Inactive"]
       str << "(cmd=[#{@cmd}] int=[#{@int}])"
-      str << @errmsg
       str.join(' ')
     when 'start'
       @active=true
@@ -63,13 +61,13 @@ class ClsAuto
         msg << $!.to_s
       end
     else
-      msg=["Usage: auto [opt]"]
-      msg << " stat       : Auto update Status"
-      msg << " start      : Start Auto update"
-      msg << " stop       : Stop Auto update"
-      msg << " cmd=       : Set Commands (cmd:par,...)"
-      msg << " int=       : Set Interval (sec)"
-      raise SelectID,msg.join("\n")
+      $errmsg ="Usage: auto [opt]\n"
+      $errmsg << " stat       : Auto update Status\n"
+      $errmsg << " start      : Start Auto update\n"
+      $errmsg << " stop       : Stop Auto update\n"
+      $errmsg << " cmd=       : Set Commands (cmd:par,...)\n"
+      $errmsg << " int=       : Set Interval (sec)\n"
+      raise SelectID,$errmsg
     end
   end
 end

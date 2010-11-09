@@ -17,6 +17,7 @@ class Dev
     @rsp=DevRsp.new(@ddb,@stat)
     @v=Verbose.new("ddb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
+    @stat['sleep']=0
   end
 
   def field
@@ -35,8 +36,16 @@ class Dev
       @stat.load(stm.shift||'default')
     when 'save'
       save(stm.shift,stm.shift||'default')
+    when 'sleep'
+      s=stm.shift
+      @stat['sleep']=1
+      @v.msg{"Sleep #{s} sec" }
+      sleep s.to_i
+      @stat['sleep']=0
     else
       msg=[$!.to_s]
+      msg << "== Async Control =="
+      msg << " sleep     : Sleep [sec]"
       msg << "== Data Handling =="
       msg << " set       : Set Value  [key(:idx)] (val)"
       msg << " load      : Load Field (tag)"

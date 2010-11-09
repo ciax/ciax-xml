@@ -53,15 +53,16 @@ class ClsSrv
   def session_thread(dev,id,iocmd)
     Thread.new{
       ddb=Dev.new(dev,id,iocmd)
+      @stat.get_stat(ddb.field)
       begin
         loop{
           begin
-            @stat.get_stat(ddb.field)
             @issue=''
             stm=@q.pop
             @issue='*'
             @cmd.setcmd(stm).session.each{|c|
               ddb.devcom(c)
+              @stat.get_stat(ddb.field)
             }
           rescue
             @errmsg << $!.to_s

@@ -36,12 +36,12 @@
           <text>initfactor</text>
         </statement>
       </session>
-      <session id="emstop" label="Emergency Stop">
+      <session id="stop" label="Emergency Stop">
         <statement>
           <text>stop</text>
         </statement>
       </session>
-      <session id="spd" label="Set Speed [0-800]">
+      <session id="speed" label="Set Speed [0-800]">
         <parameters>
           <par label="[0-800]">
             <range>0:800</range>
@@ -73,7 +73,7 @@
           <text>setp</text>
         </statement>
       </session>
-      <session id="shutdown" label="Backup Pulse,Speed,Offset">
+      <session id="backup" label="Backup Pulse,Speed,Offset">
         <statement>
           <text>save</text>
           <text>p,spd,ofs</text>
@@ -82,7 +82,7 @@
           <text>deact</text>
         </statement>
       </session>
-      <session id="resume" label="Resume Pulse,Speed,Offset">
+      <session id="restore" label="Restore Pulse,Speed,Offset">
         <statement>
           <text>act</text>
         </statement>
@@ -141,13 +141,6 @@
           <text>chkrun</text>
           <formula>$1</formula>
         </statement>
-        <wait>
-          <while ref="r$1" val="N" />
-        </wait>
-        <statement>
-          <text>getp</text>
-          <formula>$1</formula>
-        </statement>
       </session>
       <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
         <parameters>
@@ -167,11 +160,23 @@
           <text>chkrun</text>
           <formula>$1</formula>
         </statement>
-        <wait>
-          <while ref="r$1" val="N" />
-        </wait>
+      </session>
+      <session id="abs" label="Move Absolute [1-6] [1-12(hole)]">
+        <parameters>
+          <par label="[1-6]">
+            <range>1:6</range>
+          </par>
+          <par label="[1-12(hole)]">
+            <range>1:12</range>
+          </par>
+        </parameters>
         <statement>
-          <text>getp</text>
+          <text>abs</text>
+          <formula>$1</formula>
+          <formula>($2-1) * 8000</formula>
+        </statement>
+        <statement>
+          <text>chkrun</text>
           <formula>$1</formula>
         </statement>
       </session>

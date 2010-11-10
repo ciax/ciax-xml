@@ -163,8 +163,8 @@
           <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par label="[0-19200]">
-            <range>0:19200</range>
+          <par label="[0-192000]">
+            <range>0:192000</range>
           </par>
         </parameters>
         <formula>$1</formula>
@@ -176,21 +176,21 @@
           <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par label="[0-19200]">
-            <range>0:19200</range>
+          <par label="[0-192000]">
+            <range>0:192000</range>
           </par>
         </parameters>
         <formula>$1</formula>
         <data>-</data>
         <formula>$2</formula>
       </command>
-      <command id="abs" label="Move absolute pos [19200-28400] (8000/hole)" response="default" type="action">
+      <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
         <parameters>
           <par label="[1-6]">
             <range>1:6</range>
           </par>
-          <par label="[0-19200]">
-            <range>19200:28400</range>
+          <par label="[0-192000]">
+            <range>0:192000</range>
           </par>
         </parameters>
         <formula>$1</formula>

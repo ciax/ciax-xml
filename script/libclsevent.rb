@@ -69,8 +69,7 @@ attr_reader :tary
         val=yield bg['ref']
         bg[:active]=( /#{bg['val']}/ === val )
       when 'periodic'
-        bg[:active]=(@last+bg['period'].to_i < Time.now)
-        bg[:active] && @last=Time.now
+        bg[:active]=(@last+bg['period'].to_i < Time.now) && @last=Time.now
       end
       @v.msg{"Active:#{bg['label']}"} if bg[:active]
     }

@@ -47,12 +47,12 @@ class Cls
         @q.push(yield(stm))
         return "Accepted"
       rescue SelectID
-      end
-      begin
-        return @auto.auto_upd(stm){|s|
-          @cmd.setcmd(yield(s)).session
-        }
-      rescue SelectID
+        begin
+          return @auto.auto_upd(stm){|s|
+            @cmd.setcmd(yield(s)).session
+          }
+        rescue SelectID
+        end
       end
     end
     raise $errmsg.slice!(0..-1)

@@ -25,6 +25,7 @@ class XmlDoc < Hash
   def select_id(xpath,id)
     if id && id != ''
       self[xpath].each_element_with_attribute('id',id){|e| return e }
+      $errmsg << "No such command [#{id}]\n"
     end
     $errmsg << "== Command List ==\n"
     self[xpath].each_element { |e| addlist(e) }

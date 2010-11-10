@@ -26,6 +26,7 @@ class Dev
 
   def transaction(stm)
     return if stm.empty?
+    @v.msg{"Receive #{stm}"}
     @cmd.setcmd(stm)
     @rsp.setrsp(stm)
     cid=stm.join(':')
@@ -47,6 +48,7 @@ class Dev
       $errmsg << " save      : Save Field [key,key...] (tag)\n"
       raise $errmsg.slice!(0..-1)
     end
+    $errmsg.clear
   end
 
   private

@@ -57,31 +57,33 @@ class Cls
     end
     raise $errmsg.slice!(0..-1)
   end
-
+  
+  def interrupt
+    @q.clear
+    @issue=''
+    @event.interrupt.each{|c| @q.push(c)}
+    "Interrupt"
+  end
+  
   private
   def session_thread(dev,id,iocmd)
     Thread.new{
       ddb=Dev.new(dev,id,iocmd)
       @stat.get_stat(ddb.field)
-      begin
-        loop{
-          begin
-            @issue=''
-            stm=@q.pop
-            @issue='*'
-            @cmd.setcmd(stm).session.each{|c|
-              ddb.devcom(c)
-              @stat.get_stat(ddb.field)
-            }
-          rescue
-            $errmsg << $!.to_s
-          end
-        }
-      rescue Interrupt
-        @q.clear
-        @event.interrupt.each{|c| ddb.devcom(c)}
-        $errmsg << "STOP"
-      end
+      loop{
+        begin
+          @issue=''
+          stm=@q.pop
+          @issue='*'
+          @cmd.setcmd(stm).session.each{|c|
+            break if @issue == ''
+            ddb.devcom(c)
+            @stat.get_stat(ddb.field)
+          }
+        rescue
+          $errmsg << $!.to_s+$@.to_s+stm
+        end
+      }
     }
   end
 end

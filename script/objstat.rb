@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 require "json"
 require "libobjstat"
-# "Usage: objstat < status_file"
+
+abort "Usage: objstat < status_file" if STDIN.tty?
 begin
   stat=JSON.load(gets(nil))
   odb=ObjStat.new(stat['id'])

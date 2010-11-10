@@ -11,5 +11,5 @@ for obj in $objects; do
     output=$HOME/.var/status_$obj.json
     VER=${VER:-exec} objcmd $obj $cmd $par
     [ $cmd = 'upd' ] &&
-    objstat $output| { [ "$VER" ] || stv; }
+    <$output objstat | { [ "$VER" ] || stv; }
 done

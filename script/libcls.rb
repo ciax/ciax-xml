@@ -4,7 +4,6 @@ require "libclscmd"
 require "libclsstat"
 require "libdev"
 require "thread"
-require "libclsauto"
 require "libclsevent"
 
 class Cls
@@ -20,18 +19,17 @@ class Cls
     @q=Queue.new
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
-    @auto=ClsAuto.new(@q)
     @event=ClsEvent.new(cdb).thread(@q){|k| @stat.stat(k)}
     session_thread(cdb['device'],id,iocmd)
     sleep 0.01
   end
 
   def prompt
-    prom = @auto.active ? "&" : ''
+    prom = (@event.alive? ? "&" : "")
     prom << @cls
     prom << @issue
     prom << (@event.active? ? '!' : '')
-    prom << (@event.alive? ? ">" : "<")
+    prom << ">"
   end
 
   def stat
@@ -39,22 +37,13 @@ class Cls
   end
 
   def dispatch(stm)
-    if $errmsg.empty?
-      return if stm.empty?
-      return "Blocking" if @event.blocking?(stm)
-      begin
-        @cmd.setcmd(yield(stm))
-        @q.push(yield(stm))
-        return "Accepted"
-      rescue SelectID
-        begin
-          return @auto.auto_upd(stm){|s|
-            @cmd.setcmd(yield(s)).session
-          }
-        rescue SelectID
-        end
-      end
-    end
+    raise unless $errmsg.empty?
+    return if stm.empty?
+    return "Blocking" if @event.blocking?(stm)
+    @cmd.setcmd(yield stm)
+    @q.push(yield stm)
+    return "Accepted"
+  rescue
     raise $errmsg.slice!(0..-1)
   end
   

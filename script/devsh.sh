@@ -4,8 +4,7 @@
 id="$1"
 setfld -s $id || _usage_key "(-d)"
 [ "$iodst" ] || _die "No entry in iodst field"
-echo " [$iodst]" >&2
-echo " [$id]" >&2
+echo " [$iodst] with [$id]" >&2
 if [ "$dmy" ] ; then
     devshell $dev dmy-$id "devsim $id"
 else

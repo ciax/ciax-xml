@@ -142,12 +142,14 @@
           <data></data>
         </repeat>
       </command>
-      <command id="stop" label="Stop All" response="default" type="action">
-        <repeat from="1" to="6">
-          <formula>$_</formula>
-          <data>S</data>
-          <data></data>
-        </repeat>
+      <command id="stop" label="Stop Moving [1-6]" response="default" type="action">
+        <parameters>
+          <par label="[1-6]">
+            <range>1:6</range>
+          </par>
+        </parameters>
+        <formula>$1</formula>
+        <data>S</data>
       </command>
       <command id="init" label="Initialize [1-6]" response="default" type="action">
         <parameters>

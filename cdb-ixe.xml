@@ -36,7 +36,7 @@
           <text>initfactor</text>
         </statement>
       </session>
-      <session id="stop" label="Motor Stop">
+      <session id="stop" label="Motor Stop [1-6]">
         <parameters>
           <par label="[1-6]">
             <range>1:6</range>

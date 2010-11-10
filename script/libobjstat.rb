@@ -20,7 +20,7 @@ class ObjStat
   end
   
   public
-  def get_stat(value)
+  def get_view(value)
     return unless value
     @value.update(value)
     @odb['status'].each_element{|g| stat_group(g) }

@@ -22,7 +22,7 @@ loop {
       break if /^q/ === line
       puts cdb.dispatch(line.split(' ')){|c|
         oc.alias(c)
-      } || view(os.get_stat(cdb.stat))
+      } || view(os.get_view(cdb.stat))
     else
       puts cdb.interrupt
     end

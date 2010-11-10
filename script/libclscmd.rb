@@ -16,8 +16,8 @@ class ClsCmd
   end
 
   def setcmd(stm)
-    @par.setpar(stm)
     @sel=@cdb.select_id('commands',stm.first)
+    @par.setpar(@sel,stm)
     self
   end
 
@@ -27,11 +27,6 @@ class ClsCmd
     dstm=[]
     @sel.each_element {|e1|
       case e1.name
-      when 'parameters'
-        i=0
-        e1.each_element{|e2| #//par
-          validate(e2,@par[i+=1])
-        }
       when 'statement'
         dstm << get_cmd(e1)
       when 'repeat'

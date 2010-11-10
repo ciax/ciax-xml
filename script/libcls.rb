@@ -80,8 +80,10 @@ class Cls
             ddb.devcom(c)
             @stat.get_stat(ddb.field)
           }
+        rescue RuntimeError
+          $errmsg << $!.to_s
         rescue
-          $errmsg << $!.to_s+$@.to_s+stm
+          $errmsg << $!.to_s+$@.to_s
         end
       }
     }

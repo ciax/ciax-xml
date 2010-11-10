@@ -16,8 +16,8 @@ class DevRsp
   end
 
   def setrsp(stm)
-    @par.setpar(stm)
     cmd=@ddb.select_id('cmdselect',stm.first)
+    @par.setpar(cmd,stm)
     res=cmd.attributes['response']
     @sel= res ? @ddb.select_id('rspselect',res) : nil
     self

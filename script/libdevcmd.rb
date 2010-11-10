@@ -15,8 +15,8 @@ class DevCmd
   end
 
   def setcmd(stm) # return = response select
-    @par.setpar(stm)
     @sel=@ddb.select_id('cmdselect',stm.first)
+    @par.setpar(@sel,stm)
     a=@sel.attributes
     stm << '*' if /true|1/ === a['nocache']
     @cid=stm.join(':')
@@ -50,11 +50,6 @@ class DevCmd
     e0.each_element { |e1|
       a=e1.attributes
       case e1.name
-      when 'parameters'
-        i=0
-        e1.each_element{|e2|
-          validate(e2,@par[i+=1])
-        }
       when 'selected'
         begin
           @v.msg(1){"Entering Selected Node"}

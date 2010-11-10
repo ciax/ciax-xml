@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 require "json"
 require "libobjstat"
+require "libmodview"
+include ModView
 
 abort "Usage: objstat < status_file" if STDIN.tty?
 begin
@@ -10,5 +12,4 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
-print JSON.dump objstat
-
+print view(objstat)

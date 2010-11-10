@@ -199,37 +199,6 @@
           <text>getstat</text>
         </statement>
       </session>
-      <session id="x0t" label="X0 Timer">
-        <statement>
-          <text>getstat</text>
-        </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}|0x01</text>
-        </statement>
-        <statement>
-          <text>outfld</text>
-        </statement>
-        <statement>
-          <text>getstat</text>
-        </statement>
-        <statement>
-          <text>sleep</text>
-          <text>10</text>
-        </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}&amp;0xFE</text>
-        </statement>
-        <statement>
-          <text>outfld</text>
-        </statement>
-        <statement>
-          <text>getstat</text>
-        </statement>
-      </session>
     </commands>
     <status>
       <value format="%s" id="x0sw" label="X0 SWITCH">

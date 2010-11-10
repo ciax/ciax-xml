@@ -70,12 +70,8 @@ class Cls
             stm=@q.pop
             @issue='*'
             @cmd.setcmd(stm).session.each{|c|
-              case c[0]
-              when 'sleep'
-              else
-                ddb.devcom(c)
-                @stat.get_stat(ddb.field)
-              end
+              ddb.devcom(c)
+              @stat.get_stat(ddb.field)
             }
           rescue
             $errmsg << $!.to_s

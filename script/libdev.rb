@@ -18,7 +18,6 @@ class Dev
     @rsp=DevRsp.new(@ddb,@stat)
     @v=Verbose.new("ddb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
-    @stat['sleep']=0
   end
 
   def field
@@ -41,11 +40,8 @@ class Dev
       load(stm.shift||'default')
     when 'save'
       save(stm.shift,stm.shift||'default')
-    when 'sleep'
-      slp(stm)
     else
       $errmsg << "== Internal Command ==\n"
-      $errmsg << " sleep     : Sleep [sec]\n"
       $errmsg << " set       : Set Value  [key(:idx)] (val)\n"
       $errmsg << " load      : Load Field (tag)\n"
       $errmsg << " save      : Save Field [key,key...] (tag)\n"
@@ -54,17 +50,6 @@ class Dev
   end
 
   private
-  def slp(stm)
-    if stm.empty?
-      raise "Usage: sleep [sec]"
-    end
-    s=stm[0]
-    @stat['sleep']=1
-    @v.msg{"Sleep #{s} sec" }
-    sleep s.to_i
-    @stat['sleep']=0
-  end
-
   def set(stm)
     if stm.empty?
       raise "Usage: set [key(:idx)] (val)\n key=#{@stat.keys}"

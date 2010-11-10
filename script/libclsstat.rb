@@ -32,7 +32,6 @@ class ClsStat
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
-    @stat['sleep']=@field['sleep']
     @stat.save
   end
   

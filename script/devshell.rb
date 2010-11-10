@@ -13,7 +13,7 @@ loop{
   stm=Readline.readline("#{dev}>",true).chomp.split(" ")
   break if /^q/ === stm.first
   begin
-    puts ddb.devcom(stm) || ddb.field
+    puts ddb.transaction(stm) || ddb.field
   rescue RuntimeError
     puts $!
   rescue

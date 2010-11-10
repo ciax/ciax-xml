@@ -77,7 +77,7 @@ class Cls
           @issue='*'
           @cmd.setcmd(stm).session.each{|c|
             break if @issue == ''
-            ddb.devcom(c)
+            ddb.transaction(c)
             @stat.get_stat(ddb.field)
           }
         rescue RuntimeError

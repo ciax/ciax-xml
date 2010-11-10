@@ -24,7 +24,7 @@ class Dev
     Hash[@stat]
   end
 
-  def devcom(stm)
+  def transaction(stm)
     return if stm.empty?
     @cmd.setcmd(stm)
     @rsp.setrsp(stm)

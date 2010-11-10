@@ -17,18 +17,18 @@ os=ObjStat.new(obj)
 cdb=Cls.new(cls,id,iocmd)
 
 loop {
-    begin
-      if line=Readline.readline(cdb.prompt,true)
-        break if /^q/ === line
-        puts cdb.dispatch(line.split(' ')){|c|
+  begin
+    if line=Readline.readline(cdb.prompt,true)
+      break if /^q/ === line
+      puts cdb.dispatch(line.split(' ')){|c|
         oc.alias(c)
       } || view(os.get_stat(cdb.stat))
-      else
-        puts cdb.interrupt
-      end
-    rescue RuntimeError
-      puts $!.to_s
-    rescue
-      puts $!.to_s+$@.to_s
+    else
+      puts cdb.interrupt
     end
+  rescue RuntimeError
+    puts $!.to_s
+  rescue
+    puts $!.to_s+$@.to_s
+  end
 }

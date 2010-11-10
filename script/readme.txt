@@ -8,9 +8,8 @@ cdb//session@id -> never use ':'
     usable: ddb//cmdframe/repeat/formula
             --
             cdb//session/repeat/statement/formula
-            cdb//events/repeat/*@label
-            cdb//events/repeat/*@ref
-            cdb//events/repeat/*/*
+            cdb//watch/repeat/event@*
+            cdb//watch/repeat/event/*/@*
             cdb//status/repeat/value@id
             cdb//status/repeat/value/*
             --

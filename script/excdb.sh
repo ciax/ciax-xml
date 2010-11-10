@@ -6,7 +6,7 @@ par="$*"
 for obj in $objects; do
     export obj
     echo "#### $obj ####"
-    dev=$(lookup $obj dev) || _usage_key
+    setfld -s $obj || _usage_key
     file=$HOME/.var/field_$obj.json
     VER=${VER:-exec(cdb)} clscmd $dev $cmd $par < $file
     [ $cmd = 'upd' ] || continue

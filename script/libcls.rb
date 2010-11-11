@@ -17,10 +17,11 @@ class Cls
     @issue=''
     $errmsg=''
     @q=Queue.new
+    @buf=[]
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
     @event=ClsEvent.new(cdb).thread(@q){|k| @stat.stat(k)}
-    session_thread(cdb['device'],id,iocmd)
+    @main=session_thread(cdb['device'],id,iocmd)
     sleep 0.01
   end
 
@@ -28,6 +29,7 @@ class Cls
     prom = (@event.alive? ? "&" : "")
     prom << @cls
     prom << @issue
+    prom << (@sleep ? '#' : '')
     prom << (@event.active? ? '!' : '')
     prom << ">"
   end
@@ -40,21 +42,44 @@ class Cls
     raise unless $errmsg.empty?
     return if stm.empty?
     return "Blocking" if @event.blocking?(stm)
-    @cmd.setcmd(yield stm)
-    @q.push(yield stm)
+    stm=yield stm
+    @cmd.setcmd(stm)
+    @buf.push(stm)
+    flush_buf
     return "Accepted"
-  rescue
-    raise $errmsg.slice!(0..-1)
+  rescue SelectID
+    case stm[0]
+    when 'sleep'
+      @sleep=1
+      @st=Thread.new(stm[1].to_i){|s|
+        sleep s
+        @sleep=nil
+        flush_buf
+      }
+    else
+      $errmsg << " sleep     : sleep [sec]"
+      raise $errmsg.slice!(0..-1)
+    end
+    $errmsg.clear
   end
   
   def interrupt
     @q.clear
+    @buf.clear
     @issue=''
     @event.interrupt.each{|c| @q.push(c)}
+    @st.run if @st
     "Interrupt"
   end
   
   private
+  def flush_buf
+    return if @sleep
+    while c=@buf.pop
+      @q.push(c)
+    end
+  end
+
   def session_thread(dev,id,iocmd)
     Thread.new{
       ddb=Dev.new(dev,id,iocmd)

@@ -19,10 +19,16 @@ cdb=Cls.new(cls,id,iocmd)
 loop {
   begin
     if line=Readline.readline(cdb.prompt,true)
-      break if /^q/ === line
-      puts cdb.dispatch(line.split(' ')){|c|
-        oc.alias(c)
-      } || view(os.get_view(cdb.stat))
+      case line
+      when /^q/
+        break
+      when ''
+        puts view(os.get_view(cdb.stat))
+      else
+        line.split(';').each{|stm|
+          cdb.dispatch(stm.split(' ')){|c| oc.alias(c)}
+        }
+      end
     else
       puts cdb.interrupt
     end

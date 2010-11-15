@@ -24,16 +24,7 @@ class ClsCmd
   def session
     a=@sel.attributes
     @v.msg{"Exec(CDB):#{a['label']}"}
-    dstm=[]
-    @sel.each_element {|e1|
-      case e1.name
-      when 'statement'
-        dstm << get_cmd(e1)
-      when 'repeat'
-        dstm += repeat_cmd(e1){|e2| yield e2 }
-      end
-    }
-    dstm
+    get_cmd(@sel)
   end
 
   private
@@ -41,39 +32,39 @@ class ClsCmd
   def repeat_cmd(e0)
     dstm=[]
     @rep.repeat(e0){
-      e0.each_element{|e1|
-        case e1.name
-        when 'statement'
-          dstm << get_cmd(e1)
-        when 'repeat'
-          dstm+= repeat_cmd(e1){|e2| yield e2}
-        end
-      }
+      dstm << get_cmd(e0)
     }
     dstm
   end
 
   def get_cmd(e0) # //stm
     dstm=[]
-    @v.msg(1){"GetCmd(DDB)"}
-    begin
-      e0.each_element{|e1| # //text or formula
-        str=e1.text
-       case e1.name
-        when 'text'
-          @v.msg{"GetText [#{str}]"}
-        when 'formula'
-          [@rep,@par].each{|s|
-            str=s.subst(str)
+    e0.each_element{|e1|
+      case e1.name
+      when 'statement'
+        @v.msg(1){"GetCmd(DDB)"}
+        begin
+          e1.each_element{|e2| # //text or formula
+            str=e2.text
+            case e2.name
+            when 'text'
+              @v.msg{"GetText [#{str}]"}
+            when 'formula'
+              [@rep,@par].each{|s|
+                str=s.subst(str)
+              }
+              str=format(e2,eval(str))
+              @v.msg{"Calculated [#{str}]"}
+            end
+            dstm << str
           }
-          str=format(e1,eval(str))
-          @v.msg{"Calculated [#{str}]"}
+        ensure
+          @v.msg(-1){"Exec(DDB):#{dstm}"}
         end
-        dstm << str
-      }
-      dstm
-    ensure
-      @v.msg(-1){"Exec(DDB):#{dstm}"}
-    end
+      when 'repeat'
+        dstm+= repeat_cmd(e1){|e2| yield e2}
+      end
+    }
+    dstm
   end
 end

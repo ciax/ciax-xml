@@ -29,14 +29,6 @@ class ClsCmd
 
   private
   #Cmd Method
-  def repeat_cmd(e0)
-    dstm=[]
-    @rep.repeat(e0){
-      dstm << get_cmd(e0)
-    }
-    dstm
-  end
-
   def get_cmd(e0) # //stm
     dstm=[]
     e0.each_element{|e1|
@@ -62,7 +54,7 @@ class ClsCmd
           @v.msg(-1){"Exec(DDB):#{dstm}"}
         end
       when 'repeat'
-        dstm+= repeat_cmd(e1){|e2| yield e2}
+        dstm+= @rep.repeat(e1){ get_cmd(e1)}
       end
     }
     dstm

@@ -61,16 +61,14 @@ class DevCmd
         frame << @ccrange
         @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
       when 'repeat'
-        ary=[]
-        @rep.repeat(e1){
+        frame << @rep.repeat(e1){
           str=''
           e1.each_element{|e2|
             str << get_data(e2)
           }
           @v.msg{"GetFrame:(repeat)[#{str}]"}
-          ary << str
-        }
-        frame << ary.join(a['delimiter'])
+          str
+        }.join(a['delimiter'])
       else
         frame << get_data(e1)
       end

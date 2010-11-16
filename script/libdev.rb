@@ -48,6 +48,7 @@ class Dev
       $errmsg << " save      : Save Field [key,key...] (tag)\n"
       raise $errmsg.slice!(0..-1)
     end
+  ensure
     $errmsg.clear
   end
 
@@ -59,6 +60,7 @@ class Dev
     @v.msg{"CMD:set#{stm}"}
     @stat.set(stm[0],stm[1])
   end
+
  
   def save(keys=nil,tag='default')
     unless keys
@@ -71,6 +73,5 @@ class Dev
     @stat.load(tag)
   rescue SelectID
     raise "Usage: load (tag)\n #{$!}"
-
   end
 end

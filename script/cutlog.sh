@@ -1,5 +1,5 @@
 #!/bin/bash
-[ "$1" ] || { echo "Usage: cutlog [date_from|-] (date_to)"; exit 1; }
+[ "$1" ] || { echo "Usage: cutlog [date_from|-] (date_to) < logfile"; exit 1; }
 if [ "$1" = '-' ] ; then
     shift
     if [ "$1" ] ; then

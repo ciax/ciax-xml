@@ -35,6 +35,7 @@ class ClsCmd
       case e1.name
       when 'statement'
         @v.msg(1){"GetCmd(DDB)"}
+        stm=[]
         begin
           e1.each_element{|e2| # //text or formula
             str=e2.text
@@ -48,11 +49,12 @@ class ClsCmd
               str=format(e2,eval(str))
               @v.msg{"Calculated [#{str}]"}
             end
-            dstm << str
+            stm << str
           }
         ensure
           @v.msg(-1){"Exec(DDB):#{dstm}"}
         end
+        dstm << stm
       when 'repeat'
         dstm+= @rep.repeat(e1){ get_cmd(e1)}
       end

@@ -8,8 +8,15 @@ class ClsBuf < Array
     @proc=Queue.new
     @st=Thread.new{
       loop{
-        @proc.shift.call
-        flush
+        p=@proc.shift
+        dl=Time.now+@wait
+        while @wait
+          sleep 1
+          if p.call || dl < Time.now
+            flush
+            break
+          end
+        end
       }
     }
   end
@@ -20,8 +27,8 @@ class ClsBuf < Array
     flush
   end
 
-  def wait # Need Block
-    @wait=1
+  def wait_for(timeout=10) # Need Block of boolean
+    @wait=timeout.to_i
     @proc.push(proc)
   end
 
@@ -29,10 +36,9 @@ class ClsBuf < Array
     @wait
   end
 
-  def interrupt(cmds)
+  def interrupt(cmds=[])
     replace(cmds)
     flush
-    @st.run if @st.stop?
   end
 
   private

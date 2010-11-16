@@ -47,11 +47,15 @@ class Cls
     @cmd.setcmd(stm)
     @buf.issue(stm)
   rescue SelectID
-    case stm[0]
+    case stm.shift
     when 'sleep'
-      @buf.wait{ sleep stm[1].to_i }
+      @buf.wait_for(stm[0].to_i){}
+    when 'waitfor'
+      @buf.wait_for(10){ @stat.stat(stm[0]) == stm[1] }
     else
-      $errmsg << " sleep     : sleep [sec]"
+      $errmsg << "== Internal Command ==\n"
+      $errmsg << " sleep     : sleep [sec]\n"
+      $errmsg << " waitfor   : [key] [val] (timeout=10)\n"
       raise $errmsg.slice!(0..-1)
     end
   ensure

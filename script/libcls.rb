@@ -2,9 +2,10 @@
 require "libxmldoc"
 require "libclscmd"
 require "libclsstat"
+require "libclsbuf"
+require "libclsevent"
 require "libdev"
 require "thread"
-require "libclsevent"
 
 class Cls
 
@@ -17,10 +18,10 @@ class Cls
     @issue=''
     $errmsg=''
     @q=Queue.new
-    @buf=[]
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
     @event=ClsEvent.new(cdb).thread(@q){|k| @stat.stat(k)}
+    @buf=ClsBuf.new(@q)
     @main=session_thread(cdb['device'],id,iocmd)
     sleep 0.01
   end
@@ -29,7 +30,7 @@ class Cls
     prom = (@event.alive? ? "&" : "")
     prom << @cls
     prom << @issue
-    prom << (@sleep ? '#' : '')
+    prom << (@buf.wait? ? '#' : '')
     prom << (@event.active? ? '!' : '')
     prom << ">"
   end
@@ -39,47 +40,31 @@ class Cls
   end
 
   def dispatch(stm)
-    raise unless $errmsg.empty?
+    raise $errmsg.slice!(0..-1) unless $errmsg.empty?
     return if stm.empty?
     return "Blocking" if @event.blocking?(stm)
     stm=yield stm
     @cmd.setcmd(stm)
-    @buf.push(stm)
-    flush_buf
-    return "Accepted"
+    @buf.issue(stm)
   rescue SelectID
     case stm[0]
     when 'sleep'
-      @sleep=1
-      @st=Thread.new(stm[1].to_i){|s|
-        sleep s
-        @sleep=nil
-        flush_buf
-      }
+      @buf.wait{ sleep stm[1].to_i }
     else
       $errmsg << " sleep     : sleep [sec]"
       raise $errmsg.slice!(0..-1)
     end
+  ensure
     $errmsg.clear
   end
   
   def interrupt
-    @q.clear
-    @buf.clear
     @issue=''
-    @event.interrupt.each{|c| @q.push(c)}
-    @st.run if @st
+    @buf.interrupt(@event.interrupt)
     "Interrupt"
   end
   
   private
-  def flush_buf
-    return if @sleep
-    while c=@buf.pop
-      @q.push(c)
-    end
-  end
-
   def session_thread(dev,id,iocmd)
     Thread.new{
       ddb=Dev.new(dev,id,iocmd)
@@ -87,7 +72,7 @@ class Cls
       loop{
         begin
           @issue=''
-          stm=@q.pop
+          stm=@q.shift
           @issue='*'
           @cmd.setcmd(stm).session.each{|c|
             break if @issue == ''

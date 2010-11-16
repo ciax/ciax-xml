@@ -56,7 +56,7 @@ class Cls
       $errmsg << "== Internal Command ==\n"
       $errmsg << " sleep     : sleep [sec]\n"
       $errmsg << " waitfor   : [key] [val] (timeout=10)\n"
-      raise $errmsg.slice!(0..-1)
+      raise SelectID,$errmsg.slice!(0..-1)
     end
   ensure
     $errmsg.clear

@@ -32,6 +32,11 @@ loop {
     else
       puts cdb.interrupt
     end
+  rescue SelectID
+    puts $!.to_s
+    puts "== Shell Command =="
+    puts " q         : Quit"
+    puts " D^        : Interrupt"
   rescue RuntimeError
     puts $!.to_s
   rescue

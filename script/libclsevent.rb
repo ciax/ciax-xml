@@ -2,14 +2,13 @@
 require "librepeat"
 
 class ClsEvent < Array
-attr_reader :tary
+attr_reader :wt
 
-  def initialize(cdb)
+  def initialize(cdb,queue)
     wdb=cdb['watch'] || return
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
     $errmsg=''
-    @tary=[]
     @interval=wdb.attributes['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
     @last=Time.now
@@ -25,11 +24,12 @@ attr_reader :tary
         push set_event(e1)
       end
     }
+    @wt=watch(queue){|k| yield k }
   end
 
   public
   def interrupt
-    return [] unless @tary
+    return [] unless @wt
     ary=[]
     each{ |bg|
       if bg[:active]
@@ -47,8 +47,7 @@ attr_reader :tary
   end
 
   def alive?
-    return unless @tary
-    @tary.any?{|t| t.alive? }
+    @wt
   end
 
   def blocking?(stm)
@@ -60,6 +59,23 @@ attr_reader :tary
       end
     }
     false
+  end
+
+  private
+  def watch(queue)
+    Thread.new{
+      loop{
+        begin
+          update{|key| yield key}
+          issue.each{|cmd|
+            queue.push(cmd.split(" "))
+          } if queue.empty?
+          sleep @interval
+        rescue
+          $errmsg << $!.to_s+$@.to_s
+        end
+      }
+    }
   end
 
   def update # Need Status pointer
@@ -76,7 +92,7 @@ attr_reader :tary
     self
   end
 
-  def command
+  def issue
     ary=[]
     each{|bg|
       if bg[:active]
@@ -91,25 +107,6 @@ attr_reader :tary
     ary.uniq
   end
 
-  def thread(queue)
-    return self unless @tary
-    @tary << Thread.new{
-      loop{
-        begin
-          update{|key| yield key}
-          command.each{|cmd|
-            queue.push(cmd.split(" "))
-          } if queue.empty?
-          sleep @interval
-        rescue
-          $errmsg << $!.to_s+$@.to_s
-        end
-      }
-    }
-    self
-  end
-  
-  private
   def set_event(e0)
     bg={:commands => []}
     e0.attributes.each{|a,v|

@@ -20,7 +20,7 @@ class Cls
     @q=Queue.new
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
-    @event=ClsEvent.new(cdb).thread(@q){|k| @stat.stat(k)}
+    @event=ClsEvent.new(cdb,@q){|k| @stat.stat(k)}
     @buf=ClsBuf.new(@q)
     @main=session_thread(cdb['device'],id,iocmd)
     sleep 0.01

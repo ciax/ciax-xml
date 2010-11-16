@@ -52,11 +52,11 @@ class ClsCmd
             stm << str
           }
         ensure
-          @v.msg(-1){"Exec(DDB):#{dstm}"}
+          @v.msg(-1){"Exec(DDB):#{stm}"}
         end
         dstm << stm
       when 'repeat'
-        dstm+= @rep.repeat(e1){ get_cmd(e1)}
+        @rep.repeat(e1){ dstm+= get_cmd(e1)}
       end
     }
     dstm

@@ -4,9 +4,12 @@
 id="$1"
 setfld -s $id || _usage_key "(-d)"
 [ "$iodst" ] || _die "No entry in iodst field"
-echo " [$iodst] (q:Quit, D^:Stop)" >&2
+echo " [$iodst]" >&2
 if [ "$dmy" ] ; then
-    objshell $cls $id dmy-$id "devsim $id"
+    iocmd="devsim $id"
+    oid="dmy-$id"
 else
-    objshell $cls $id $id "socat - $iodst"
+    iocmd="socat - $iodst"
+    oid=$id
 fi
+objshell $cls $id $oid "$iocmd"

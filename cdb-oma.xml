@@ -8,6 +8,12 @@
         </statement>
       </session>
     </commands>
+    <watch interval="2">
+      <event label="Update">
+        <periodic period="10" />
+        <command>upd</command>
+      </event>
+    </watch>
     <status>
       <value format="%4.2f" id="pres" label="Air Pressure (Psi)">
         <float decimal="2">stat</float>

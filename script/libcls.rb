@@ -19,8 +19,8 @@ class Cls
     @q=Queue.new
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
-    @event=ClsEvent.new(cdb,@q){|k| @stat.stat(k)}
     @buf=ClsBuf.new(@q)
+    @event=ClsEvent.new(cdb,@buf){|k| @stat.stat(k)}
     @main=session_thread(cdb['device'],id,iocmd)
     sleep 0.01
   end
@@ -44,7 +44,7 @@ class Cls
     return "Blocking" if @event.blocking?(stm)
     stm=yield stm
     @cmd.setcmd(stm)
-    @buf.issue(stm)
+    @buf.push(stm)
   rescue SelectID
     case stm.shift
     when 'sleep'

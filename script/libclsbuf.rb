@@ -23,8 +23,8 @@ class ClsBuf < Array
     }
   end
 
-  def issue(cmd)
-    push(cmd)
+  def push(cmd)
+    super
     @v.msg{"Issued"}
     return if @wait
     flush

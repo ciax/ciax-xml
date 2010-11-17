@@ -4,7 +4,7 @@ require "librepeat"
 class ClsEvent < Array
 attr_reader :wt
 
-  def initialize(cdb,queue)
+  def initialize(cdb,queue=[])
     wdb=cdb['watch'] || return
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
@@ -61,6 +61,20 @@ attr_reader :wt
     false
   end
 
+  def update # Need Status pointer
+    each{|bg|
+      case bg[:type]
+      when 'while'
+        val=yield bg['ref']
+        bg[:active]=( /#{bg['val']}/ === val )
+      when 'periodic'
+        (bg[:active]=(@last < Time.now)) && @last=Time.now+bg['period'].to_i
+      end
+      @v.msg{"Active:#{bg['label']}"} if bg[:active]
+    }
+    self
+  end
+
   private
   def watch(queue)
     Thread.new{
@@ -68,6 +82,7 @@ attr_reader :wt
         begin
           update{|key| yield key}
           issue.each{|cmd|
+            @v.msg{"Issue:#{cmd}"}
             queue.push(cmd.split(" "))
           } if queue.empty?
           sleep @interval
@@ -76,20 +91,6 @@ attr_reader :wt
         end
       }
     }
-  end
-
-  def update # Need Status pointer
-    each{|bg|
-      case bg[:type]
-      when 'while'
-        val=yield bg['ref']
-        bg[:active]=( /#{bg['val']}/ === val )
-      when 'periodic'
-        bg[:active]=(@last+bg['period'].to_i < Time.now) && @last=Time.now
-      end
-      @v.msg{"Active:#{bg['label']}"} if bg[:active]
-    }
-    self
   end
 
   def issue

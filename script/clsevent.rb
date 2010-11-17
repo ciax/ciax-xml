@@ -2,7 +2,7 @@
 require "json"
 require "libxmldoc"
 require "libclsevent"
-# "Usage: clsevent < status_file"
+abort "Usage: clsevent < status_file" if STDIN.tty?
 event=[]
 begin
   stat=JSON.load(gets(nil))

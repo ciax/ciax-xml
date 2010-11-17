@@ -15,7 +15,6 @@ class Cls
     abort $!.to_s
   else
     @cls=cls
-    @issue=''
     $errmsg=''
     @q=Queue.new
     @cmd=ClsCmd.new(cdb)
@@ -29,9 +28,9 @@ class Cls
   def prompt
     prom = (@event.alive? ? "&" : "")
     prom << @cls
-    prom << @issue
+    prom << (@buf.issue? ? '*' : '')
     prom << (@buf.wait? ? '#' : '')
-    prom << (@event.active? ? '!' : '')
+    prom << (@event.active? ? '@' : '')
     prom << ">"
   end
 
@@ -63,7 +62,6 @@ class Cls
   end
   
   def interrupt
-    @issue=''
     @buf.interrupt(@event.interrupt)
     "Interrupt"
   end
@@ -75,11 +73,9 @@ class Cls
       @stat.get_stat(ddb.field)
       loop{
         begin
-          @issue=''
-          stm=@q.shift
-          @issue='*'
+          stm=@buf.recv
           @cmd.setcmd(stm).session.each{|c|
-            break if @issue == ''
+            break unless @buf.issue?
             ddb.transaction(c)
             @stat.get_stat(ddb.field)
           }

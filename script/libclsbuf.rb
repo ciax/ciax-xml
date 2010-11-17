@@ -1,10 +1,12 @@
 #!/usr/bin/ruby
+require "libverbose"
 require "thread"
 
 class ClsBuf < Array
   def initialize(queue)
     @q=queue
-    @wait=nil
+    @v=Verbose.new("BUF")
+    @wait=@issue=nil
     @proc=Queue.new
     @st=Thread.new{
       loop{
@@ -23,6 +25,7 @@ class ClsBuf < Array
 
   def issue(cmd)
     push(cmd)
+    @v.msg{"Issued"}
     return if @wait
     flush
   end
@@ -32,20 +35,38 @@ class ClsBuf < Array
     @proc.push(proc)
   end
 
+  def issue?
+    @issue
+  end
+
   def wait?
     @wait
   end
 
   def interrupt(cmds=[])
+    @issue=nil
+    @q.clear
     replace(cmds)
     flush
   end
 
+  # For session thread
+  def recv
+    @issue=nil
+    @v.msg{"Complete"}
+    c=@q.shift
+    @v.msg{"Recieve #{c}"}
+    c
+  end
+
   private
   def flush
+    @v.msg{"Flushing #{self}"}
     while c=shift
+      @issue=true
       @q.push(c)
     end
     @wait=nil
+    @v.msg{"Sent" }
   end
 end

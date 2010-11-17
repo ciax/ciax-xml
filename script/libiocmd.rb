@@ -21,10 +21,12 @@ class IoCmd
   def snd(str,id=nil)
     return unless str && str != ''
     @iof.log_frame(str,id) if @iof
+    int=1
     begin
       @f.syswrite(str)
     rescue
       @f=IO.popen(@iocmd,'r+')
+      sleep int*=2
       retry
     end
     @v.msg{"Send #{str.dump}"}
@@ -33,11 +35,13 @@ class IoCmd
   end
 
   def rcv(id=nil)
+    int=1
     begin
       select([@f],nil,nil,@timeout) || return
       str=@f.sysread(1024)
     rescue
       @f=IO.popen(@iocmd,'r+')
+      sleep int*=2
       retry
     end
     @v.msg{"Recv #{str.dump}"}

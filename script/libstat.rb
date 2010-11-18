@@ -4,13 +4,14 @@ require 'libverbose'
 class Stat < Hash
   def initialize(id,fname)
     @v=Verbose.new("Stat")
+    raise " No ID" unless id
     self['id']=id
     fname+="_#{id}"
     begin
       @fd=IoFile.new(fname)
       load
     rescue
-      warn "----- Create #{fname}.json"
+      warn "----- No #{fname}.json"
     end
   end
 

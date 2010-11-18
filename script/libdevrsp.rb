@@ -18,7 +18,7 @@ class DevRsp
   def setrsp(stm)
     cmd=@ddb.select_id('cmdselect',stm.first)
     @par.setpar(cmd,stm)
-    res=cmd.attributes['response']
+    res=cmd['response']
     @sel= res ? @ddb.select_id('rspselect',res) : nil
     self
   end
@@ -26,11 +26,11 @@ class DevRsp
   def getfield(time=Time.now)
     return "Send Only" unless @sel
     frame=yield || @v.err("No String")
-    if tm=@ddb['rspframe'].attributes['terminator']
+    if tm=@ddb['rspframe']['terminator']
       frame.chomp!(eval('"'+tm+'"'))
       @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
     end
-    if dm=@ddb['rspframe'].attributes['delimiter']
+    if dm=@ddb['rspframe']['delimiter']
       @fary=frame.split(eval('"'+dm+'"'))
       @v.msg{"Split:[#{frame}] by [#{dm}]" }
     else
@@ -50,9 +50,9 @@ class DevRsp
   def init_field(fill='')
     @v.msg(1){"Field:Initialize"}
     begin
-      @ddb['rspselect'].each_element{ |e0| # response
-        e0.each_element{|e1| #field|array|vefiry
-          assign=e1.attributes['assign'] || next
+      @ddb['rspselect'].each{|e0| # response
+        e0.each{|e1| #field|array|vefiry
+          assign=e1['assign'] || next
           case e1.name
           when 'field'
             @v.msg{"Field:Init Field[#{assign}]"}
@@ -60,8 +60,8 @@ class DevRsp
           when 'array'
             @v.msg{"Field:Init Array[#{assign}]"}
             sary=[]
-            e1.each_element{ |e2|
-              sary << e2.attributes['size'].to_i
+            e1.each{|e2|
+              sary << e2['size'].to_i
             }
             @stat[assign]=init_array(sary){fill} unless @stat[assign]
           end
@@ -84,8 +84,7 @@ class DevRsp
 
   # Process Frame to Field
   def setframe(e0)
-    e0.each_element { |e1|
-      a=e1.attributes
+    e0.each{|e1|
       case e1.name
       when 'ccrange'
         begin
@@ -112,15 +111,14 @@ class DevRsp
   end
 
   def frame_to_field(e0)
-    a=e0.attributes
-    @v.msg(1){"Field:#{a['label']}"}
+    @v.msg(1){"Field:#{e0['label']}"}
     begin
       data=decode(e0,cut_frame(e0))
-      if key=a['assign']
+      if key=e0['assign']
         @stat[key]=data
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       end
-      e0.each_element {|e1| # Verify
+      e0.each{|e1| # Verify
       if txt=e1.text
         @v.msg{"Verify:[#{txt}]"}
         txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
@@ -133,11 +131,10 @@ class DevRsp
 
   def field_array(e0)
     idxs=[]
-    a=e0.attributes
-    @v.msg(1){"Array:#{e0.attributes['label']}"}
+    @v.msg(1){"Array:#{e0['label']}"}
     begin
-      key=a['assign'] || @v.err("No key for Array")
-      e0.each_element{ |e1| # Index
+      key=e0['assign'] || @v.err("No key for Array")
+      e0.each{|e1| # Index
         idxs << @par.subst(e1.text)
       }
       @stat[key]=mk_array(idxs,@stat[key]){
@@ -154,7 +151,7 @@ class DevRsp
     return yield if idx.empty?
     fld=field||[]
     f,l=idx[0].split(':').map{|i| eval(i)}
-    Range.new(f,l||f).each{ |i|
+    Range.new(f,l||f).each{|i|
       @v.msg{"Array:Index[#{i}]"}
       fld[i] = mk_array(idx[1..-1],fld[i]){yield}
     }
@@ -167,11 +164,11 @@ class DevRsp
       @frame=@fary.shift
       @fp=0
     end
-    len=e0.attributes['length']||@frame.size
+    len=e0['length']||@frame.size
     str=@frame.slice(@fp,len.to_i)
     @fp+=len.to_i
     @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
-    if r=e0.attributes['slice']
+    if r=e0['slice']
       str=str.slice(*r.split(':').map{|i| i.to_i })
       @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
     end

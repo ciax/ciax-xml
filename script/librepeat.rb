@@ -8,13 +8,12 @@ class Repeat < Array
 
   def repeat(e0)
     clear
-    a=e0.attributes
-    fmt=a['format'] || '%d'
-    c=a['counter'] || '_'
+    fmt=e0['format'] || '%d'
+    c=e0['counter'] || '_'
     c.next! while @counter[c]
-    @v.msg(1){"Counter[\$#{c}]/Range[#{a['from']}-#{a['to']}]/Format[#{fmt}]"}
+    @v.msg(1){"Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"}
     begin
-      Range.new(a['from'],a['to']).each { |n|
+      Range.new(e0['from'],e0['to']).each { |n|
         @v.msg(1){"Turn Number[#{n}]"}
         @counter[c]=fmt % n
         begin

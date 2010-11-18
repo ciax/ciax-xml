@@ -22,8 +22,7 @@ class ClsCmd
   end
 
   def session
-    a=@sel.attributes
-    @v.msg{"Exec(CDB):#{a['label']}"}
+    @v.msg{"Exec(CDB):#{@sel['label']}"}
     get_cmd(@sel)
   end
 
@@ -31,13 +30,13 @@ class ClsCmd
   #Cmd Method
   def get_cmd(e0) # //stm
     dstm=[]
-    e0.each_element{|e1|
+    e0.each{|e1|
       case e1.name
       when 'statement'
         @v.msg(1){"GetCmd(DDB)"}
         stm=[]
         begin
-          e1.each_element{|e2| # //text or formula
+          e1.each{|e2| # //text or formula
             str=e2.text
             case e2.name
             when 'text'

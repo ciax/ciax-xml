@@ -23,7 +23,7 @@ class ObjStat
   def get_view(value)
     return unless value
     @value.update(value)
-    @odb['status'].each_element{|g| stat_group(g) }
+    @odb['status'].each{|g| stat_group(g) }
     @stat['time']['val']=@value['time']
     @stat
   end
@@ -34,25 +34,24 @@ class ObjStat
     case e.name
     when 'group'
       @group+=1
-      e.each_element{|e1| stat_group(e1) }
+      e.each{|e1| stat_group(e1) }
     when 'title'
       get_var(e)
     when 'repeat'
       @rep.repeat(e){
-        e.each_element{|e1| stat_group(e1) }
+        e.each{|e1| stat_group(e1) }
       }
     end
   end
 
   def get_var(var) # //status/var
     st={'group' => @group }
-    a=var.attributes
-    ref=@rep.subst(a['ref'])
+    ref=@rep.subst(var['ref'])
     st['title']=@rep.subst(var.text)
     st['val']=@value[ref]
     @v.msg{"STAT:GetStatus:#{ref}=[#{st['val']}]"}
-    st.update(@sym.get_symbol(a['symbol'],st['val']))
-    st.update(@sym.get_level(a['level'],st['val']))
+    st.update(@sym.get_symbol(var['symbol'],st['val']))
+    st.update(@sym.get_level(var['level'],st['val']))
     @stat[ref]=st
   end
 

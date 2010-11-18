@@ -21,13 +21,13 @@ class ClsStat
   def get_stat(field)
     return unless field
     @field.update(field)
-    @cdb['status'].each_element{|e0|
+    @cdb['status'].each{|e0|
       case e0.name
       when 'value'
         get_val(e0)
       when 'repeat'
         @rep.repeat(e0){
-          e0.each_element{|e1| get_val(e1)}
+          e0.each{|e1| get_val(e1)}
         }
       end
     }
@@ -42,26 +42,25 @@ class ClsStat
   private
   def get_val(e0)
     ary=Array.new
-    id=@rep.subst(e0.attributes['id'])
+    id=@rep.subst(e0['id'])
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
     begin
-      e0.each_element {|e1| #element(split and concat)
-        a=e1.attributes
+      e0.each{|e1| #element(split and concat)
         fld=@rep.subst(e1.text) || raise("No field Key")
         data=@field.get(fld) || raise("No field Value[#{fld}]")
         case e1.name
         when 'binary'
-          bit=(data.to_i >> a['bit'].to_i & 1)
-          bit = -(bit-1) if /true|1/ === a['inv']
+          bit=(data.to_i >> e1['bit'].to_i & 1)
+          bit = -(bit-1) if /true|1/ === e1['inv']
           ary << bit.to_s
         when 'float'
-          if n=a['decimal']
+          if n=e1['decimal']
             n=n.to_i
             data=data[0..(-1-n)]+'.'+data[-n..-1]
           end
           ary << data.to_f
         when 'int'
-          if /true|1/ === a['signed']
+          if /true|1/ === e1['signed']
             data=data.to_i
             data= data > 0x7fff ? data - 0x10000 : data
           end
@@ -70,7 +69,7 @@ class ClsStat
           ary << data
         end
       }
-      value=e0.attributes['format'] % ary
+      value=e0['format'] % ary
       @stat[id]=value
     ensure
       @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}

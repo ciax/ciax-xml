@@ -17,8 +17,7 @@ class DevCmd
   def setcmd(stm) # return = response select
     @sel=@ddb.select_id('cmdselect',stm.first)
     @par.setpar(@sel,stm)
-    a=@sel.attributes
-    stm << '*' if /true|1/ === a['nocache']
+    stm << '*' if /true|1/ === @sel['nocache']
     @cid=stm.join(':')
     @v.msg{'Select:'+a['label']+"(#{@cid})"}
     self
@@ -47,8 +46,7 @@ class DevCmd
   private
   def getstr(e0)
     frame=''
-    e0.each_element { |e1|
-      a=e1.attributes
+    e0.each { |e1,a|
       case e1.name
       when 'selected'
         begin
@@ -63,7 +61,7 @@ class DevCmd
       when 'repeat'
         frame << @rep.repeat(e1){
           str=''
-          e1.each_element{|e2|
+          e1.each{|e2|
             str << get_data(e2)
           }
           @v.msg{"GetFrame:(repeat)[#{str}]"}
@@ -78,11 +76,10 @@ class DevCmd
 
   def get_data(e)
     frame=''
-    a=e.attributes
     str=e.text
     case e.name
     when 'data'
-      @v.msg{"GetFrame:#{a['label']}[#{str}]"}
+      @v.msg{"GetFrame:#{e['label']}[#{str}]"}
       frame << encode(e,str)
     when 'formula'
       [@rep,@par,@stat].each{|s|

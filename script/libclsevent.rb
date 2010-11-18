@@ -9,14 +9,14 @@ attr_reader :wt
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
     $errmsg=''
-    @interval=wdb.attributes['interval'].to_i||1
+    @interval=wdb['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
     @last=Time.now
-    wdb.each_element{|e1| # repeat|while|periodic
+    wdb.each{|e1| # repeat|while|periodic
       case e1.name
       when 'repeat'
         @rep.repeat(e1){
-          e1.each_element{|e2|
+          e1.each{|e2|
             push set_event(e2)
           }
         }
@@ -110,7 +110,7 @@ attr_reader :wt
 
   def set_event(e0)
     bg={:commands => []}
-    e0.attributes.each{|a,v|
+    e0.to_h.each{|a,v|
       bg[a]=@rep.subst(v)
     }
     @v.msg(1){bg['label']}
@@ -118,11 +118,11 @@ attr_reader :wt
     when 'while','periodic'
       bg[:type]=e0.name
     end
-    e0.each_element{ |e1|
+    e0.each{ |e1|
       case e1.name
       when 'while','until','periodic'
         bg[:type]=e1.name
-        e1.attributes.each{|attr,v|
+        e1.to_h.each{|attr,v|
           bg[attr]=@rep.subst(v)
         }
       when 'command'

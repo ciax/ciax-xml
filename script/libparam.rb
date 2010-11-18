@@ -10,11 +10,11 @@ class Param < Array
   end
 
   def setpar(e0,stm)
-    e0.each_element {|e1|
+    e0.each {|e1|
       case e1.name
       when 'parameters'
         i=0
-        e1.each_element{|e2| #//par
+        e1.each{|e2| #//par
           validate(e2,stm[i+=1])
         }
       end

@@ -6,7 +6,7 @@ module ModXml
 
   def checkcode(e,frame)
     chk=0
-    if method=e.attributes['method']
+    if method=e['method']
       case method
       when 'len'
         chk=frame.length
@@ -24,7 +24,7 @@ module ModXml
   Codec={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
 
   def decode(e,code)
-    cdc=e.attributes['decode']
+    cdc=e['decode']
     if upk=Codec[cdc]
       str=(upk == 'hex') ? code.hex : code.unpack(upk).first
       @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{str}]"}
@@ -34,7 +34,7 @@ module ModXml
   end
 
   def encode(e,str)
-    cdc=e.attributes['encode']
+    cdc=e['encode']
     if pck=Codec[cdc]
       code=[str.to_i(0)].pack(pck)
       @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
@@ -44,10 +44,10 @@ module ModXml
   end
 
   def validate(e,str)
-    label=e.attributes['label']
+    label=e['label']
     str || @v.err("Validate: Too Few Parameters(#{label})")
     @v.msg{"Validate: String for [#{str}]"}
-    e.each_element {|e1|
+    e.each {|e1|
       @v.msg{"Validate: Match? [#{e1.text}]"}
       case e1.name
       when 'regexp'
@@ -60,7 +60,7 @@ module ModXml
   end
 
   def format(e,code)
-    if fmt=e.attributes['format']
+    if fmt=e['format']
       str=fmt % code
       @v.msg{"Formatted code(#{fmt}) [#{code}] -> [#{str}]"}
       code=str

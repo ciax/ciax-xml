@@ -9,14 +9,15 @@ class XmlDoc < Hash
     f=open(path)
   rescue Errno::ENOENT
     list=Array.new
-    Dir.glob("#{pre}-*.xml").each {|p|
-      addlist(XmlElem.new(open(p)))
+    Dir.glob("#{pre}-*.xml").each{|p|
+      $errmsg << XmlElem.new(open(p)).list
     }
     raise(SelectID,$errmsg) unless $errmsg.empty?
   else
-    doc=XmlElem.new(f)
-    doc.each{|e| self[e.name]=e }
-    update(doc.to_h)
+    XmlElem.new(f).each{|e|
+      update(e.attr)
+      e.each{|e1| self[e1.name]=e1 }
+    }
   end
 
   def select_id(xpath,id)
@@ -24,13 +25,7 @@ class XmlDoc < Hash
   rescue SelectID
     $errmsg << "No such command [#{id}]\n" if id
     $errmsg << "== Command List ==\n"
-    self[xpath].each { |e| addlist(e) }
+    $errmsg << $!.to_s
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
-
-  private
-  def addlist(e)
-    $errmsg << " %-10s: %s\n" % [e['id'],e['label']] if e['label']
-  end
-
 end

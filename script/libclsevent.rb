@@ -110,7 +110,7 @@ attr_reader :wt
 
   def set_event(e0)
     bg={:commands => []}
-    e0.to_h.each{|a,v|
+    e0.attr.each{|a,v|
       bg[a]=@rep.subst(v)
     }
     @v.msg(1){bg['label']}
@@ -122,8 +122,8 @@ attr_reader :wt
       case e1.name
       when 'while','until','periodic'
         bg[:type]=e1.name
-        e1.to_h.each{|attr,v|
-          bg[attr]=@rep.subst(v)
+        e1.attr.each{|k,v|
+          bg[k]=@rep.subst(v)
         }
       when 'command'
         bg[:commands] << @rep.subst(e1.text)

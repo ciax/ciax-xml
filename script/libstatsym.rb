@@ -16,7 +16,7 @@ class StatSym
     e.each{|enum|
       @v.msg{"STAT:Symbol:compare [#{enum.text}] and [#{val}]"}
       next unless /#{enum.text}/ === val
-      set.update(enum.to_h)
+      set.update(enum.attr)
       break true
     } || set.update({'msg'=>'N/A','hl'=>'warn'})
     @v.msg{"STAT:Symbol:[#{set['msg']}] for [#{val}]"}
@@ -29,7 +29,7 @@ class StatSym
     return set unless e=@sdb['levels'].selid(id)
     e.each{|range|
       next unless ReRange.new(range.text) == val
-      set.update(range.to_h)
+      set.update(range.attr)
       break true
     } || set.update({'msg'=>'N/A','hl'=>'warn'})
     @v.msg{"STAT:Level:[#{set['msg']}] for [#{val}]"}

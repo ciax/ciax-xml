@@ -5,14 +5,22 @@ include REXML
 class SelectID < RuntimeError ; end
 
 class XmlElem
+  include Enumerable
 
   def initialize(f)
-    @e=Document.new(f).root.elements.first
+    case f
+    when IO
+      @e=Document.new(f).root
+    when Element
+      @e=f
+    else
+      raise "Parameter shoud be IO or Element"
+    end
   end
 
   def each
     @e.each_element{|e|
-      yield dup.set(e)
+      yield XmlElem.new(e)
     }
   end
 
@@ -20,9 +28,9 @@ class XmlElem
     @e.attributes[key]
   end
 
-  def to_h
+  def attr # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
     h={}
-    @e.attributes.each{|k,v| h[k]=v}
+    @e.attributes.each{|k,v| h[k]=v }
     h
   end
 
@@ -34,15 +42,18 @@ class XmlElem
     @e.text
   end
 
-  def selid(id)
+  def selid(id=nil)
     @e.each_element_with_attribute('id',id){|e|
-        return dup.set(e)
+        return XmlElem.new(e)
     } if id
-    raise SelectID
+    raise SelectID,list
   end
 
-  def set(e)
-    @e=e
-    self
+  def list
+    inject(''){|msg,e|
+      if e['id'] && e['label']
+        msg + " %-10s: %s\n" % [e['id'],e['label']]
+      end
+    }
   end
 end

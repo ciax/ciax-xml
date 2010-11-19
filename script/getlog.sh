@@ -1,7 +1,7 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 obj=$1;shift
-setfld -s $obj || _usage_key '' "[date_from|-] (date_to)"
+setfld $obj || _usage_key '' "[date_from|-] (date_to)"
 file=$HOME/.var/device_${obj}_2010.log
 if [ "$1" ] ; then
     par="$*"

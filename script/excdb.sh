@@ -6,7 +6,7 @@ par="$*"
 for obj in $objects; do
     export obj
     echo "#### $obj ####"
-    setfld -s $obj || _usage_key
+    setfld $obj || _usage_key
     file=$HOME/.var/field_$obj.json
     VER=${VER:-exec(cdb)} clscmd $dev $cmd $par < $file
     [ $cmd = 'upd' ] || continue

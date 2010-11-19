@@ -3,7 +3,7 @@
 cmd="$1";shift
 [ "$1" = "-d" ] && { dmy=1;shift; }
 id="$1"
-setfld -s $id || _usage_key "[start|stop] (-d)"
+setfld $id || _usage_key "[start|stop] (-d)"
 [ "$iodst" ] || _die "No entry in iodst field"
 echo "Listen port [udp:$port]" >&2
 echo "Connect to [$iodst]" >&2

@@ -53,17 +53,15 @@ class Stat < Hash
   end
 
   def get(key=nil) # ${key1:key2:idx} => hash[key1][key2][idx]
-    h=self
     return Hash[h] unless key
-    key.split(':').each {|i|
+    key.split(':').inject(self){|h,i|
       begin
         i=eval(i) if Array === h
       rescue SyntaxError
         raise("#{i} is not number")
       end
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
-      h=h[i]||raise("No such Value [#{i}]")
+      h[i]||raise("No such Value [#{i}]")
     }
-    h
   end
 end

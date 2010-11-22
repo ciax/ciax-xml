@@ -3,19 +3,22 @@ require "optparse"
 require "rexml/document"
 include REXML
 
-# //xpath@attr -> //xpath/attr.text()
+# //xpath@attr <-> //xpath/attr.text()
 abort "Usage: a2e (-r) [xpath] [attr] < xml" if ARGV.size < 2
 
 xpath=ARGV.shift
 if /-r/ === xpath
   xpath=ARGV.shift
-  attr=ARGV.shift
+  attr=ARGV.shift || abort("No attr")
   doc=Document.new(gets(nil))
   doc.each_element(xpath) {|e|
-    val=''
-    e.each_element("./#{attr}"){|e1| val=e1.text }
-    e.add_attribute(attr,val)
-    e.delete_element("./#{attr}")
+    del=nil
+    e.each_element{|e1|
+      del=e1 if e1.name == attr
+    }
+    next unless del
+    e.add_attribute(attr,del.text)
+    e.delete_element(del)
   }
 else
   attr=ARGV.shift

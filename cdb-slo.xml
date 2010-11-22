@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <class device="slo" id="slo" label="MOIRCS Arm">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <class device='slo' id='slo' label='MOIRCS Arm'>
     <commands>
-      <session id="upd" label="Update Status">
+      <session id='upd' label='Update Status'>
         <statement>
           <text>getstat</text>
         </statement>
@@ -12,19 +12,19 @@
         <statement>
           <text>p</text>
         </statement>
-        <repeat from="1" to="5">
+        <repeat from='1' to='5'>
           <statement>
             <text>in</text>
             <formula>$_</formula>
           </statement>
         </repeat>
       </session>
-      <session id="reset" label="Reset">
+      <session id='reset' label='Reset'>
         <statement>
           <text>reset</text>
         </statement>
       </session>
-      <session id="defcon" label="Default Config">
+      <session id='defcon' label='Default Config'>
         <statement>
           <text>hl</text>
           <text>0</text>
@@ -38,30 +38,30 @@
           <text>0</text>
         </statement>
       </session>
-      <session id="set0" label="Set 0 Pulses">
+      <session id='set0' label='Set 0 Pulses'>
         <statement>
           <text>set0</text>
         </statement>
       </session>
     </commands>
     <status>
-      <value format="%s" id="bs" label="Moter Moving">
-        <string>bs</string>
+      <value format='%s' id='bs' label='Moter Moving'>
+        <string ref='bs'/>
       </value>
-      <value format="%s" id="con" label="Contact Sensor">
-        <string>in:4</string>
+      <value format='%s' id='con' label='Contact Sensor'>
+        <string ref='in:4'/>
       </value>
-      <value format="%d" id="err" label="Error Code">
-        <int>err</int>
+      <value format='%d' id='err' label='Error Code'>
+        <int ref='err'/>
       </value>
-      <value format="%s%s%s%s" id="pos" label="Arm Position">
-        <string>in:0</string>
-        <string>in:1</string>
-        <string>in:2</string>
-        <string>in:3</string>
+      <value format='%s%s%s%s' id='pos' label='Arm Position'>
+        <string ref='in:0'/>
+        <string ref='in:1'/>
+        <string ref='in:2'/>
+        <string ref='in:3'/>
       </value>
-      <value format="%f" id="abs" label="ABS position">
-        <float>p</float>
+      <value format='%f' id='abs' label='ABS position'>
+        <float ref='p'/>
       </value>
     </status>
   </class>

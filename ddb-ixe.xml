@@ -27,36 +27,28 @@
       </command>
       <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="=N" type="text" />
       </command>
       <command id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="=E" type="text" />
       </command>
       <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="=H" type="text" />
       </command>
       <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="P21R" type="text" />
@@ -77,9 +69,7 @@
       </command>
       <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="P14R" type="text" />
@@ -100,9 +90,7 @@
       </command>
       <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="P12R" type="text" />
@@ -135,30 +123,22 @@
       </command>
       <command id="stop" label="Stop Moving [1-6]" response="default" type="action">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="S" type="text" />
       </command>
       <command id="init" label="Initialize [1-6]" response="default" type="action">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="0" type="text" />
       </command>
       <command id="fw" label="Move forward (8000/hole)" response="default" type="action">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
-          <par label="[0-192000]">
-            <range>0:192000</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
+          <par label="[0-192000]" range="0:192000"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="+" type="text" />
@@ -166,12 +146,8 @@
       </command>
       <command id="bk" label="Move backward (8000/hole)" response="default" type="action">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
-          <par label="[0-192000]">
-            <range>0:192000</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
+          <par label="[0-192000]" range="0:192000"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="-" type="text" />
@@ -179,12 +155,8 @@
       </command>
       <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
         <parameters>
-          <par label="[1-6]">
-            <range>1:6</range>
-          </par>
-          <par label="[0-192000]">
-            <range>0:192000</range>
-          </par>
+          <par label="[1-6]" range="1:6"></par>
+          <par label="[0-192000]" range="0:192000"></par>
         </parameters>
         <data text="$1" type="formula" />
         <data text="A" type="text" />

@@ -11,13 +11,9 @@
   </xsd:element>
   <xsd:element name="par">
     <xsd:complexType>
-      <xsd:choice minOccurs="0">
-        <xsd:element ref="range" maxOccurs="unbounded" />
-        <xsd:element ref="regexp" />
-      </xsd:choice>
       <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="pattern" type="xsd:string" />
+      <xsd:attribute name="range" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="range" type="rerange"></xsd:element>
-  <xsd:element name="regexp" type="xsd:string" />
 </xsd:schema>

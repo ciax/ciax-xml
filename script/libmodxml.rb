@@ -47,15 +47,16 @@ module ModXml
     label=e['label']
     str || @v.err("Validate: Too Few Parameters(#{label})")
     @v.msg{"Validate: String for [#{str}]"}
-    e.each {|e1|
-      @v.msg{"Validate: Match? [#{e1.text}]"}
-      case e1.name
-      when 'regexp'
-        return(str) if /^#{e1.text}$/ === str
-      when 'range'
-        return(str) if ReRange.new(e1.text) == str
-      end
-    }
+    if pattern=e['pattern']
+      @v.msg{"Validate: Match? [#{pattern}]"}
+      return(str) if /^#{pattern}$/ === str
+    end
+    if ranges=e['range']
+      ranges.split(',').each{|r|
+        @v.msg{"Validate: Match? [#{r}]"}
+        return(str) if ReRange.new(r) == str
+      }
+    end
     @v.err("Validate: Parameter invalid(#{label})")
   end
 

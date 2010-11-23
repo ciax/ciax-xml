@@ -18,11 +18,7 @@
       </command>
       <command id='set_tag' label='Set Tag to Run [1-12,98,99]' response='cmdrsp' type='config'>
         <parameters>
-          <par label='[1-12,98,99]'>
-            <range>1:12</range>
-            <range>98</range>
-            <range>99</range>
-          </par>
+          <par label='[1-12,98,99]' range='1:12,98,99'/>
         </parameters>
         <data encode='lew' label='Write region command' text='0x1401' type='text'/>
         <data encode='lew' label='Write region subcommand' text='0' type='text'/>
@@ -33,9 +29,7 @@
       </command>
       <command id='set_pos' label='Set Pos to Jack [1-5]' response='cmdrsp' type='config'>
         <parameters>
-          <par label='[1-5]'>
-            <range>1:5</range>
-          </par>
+          <par label='[1-5]' range='1:5'/>
         </parameters>
         <data encode='lew' label='Write region command' text='0x1401' type='text'/>
         <data encode='lew' label='Write region subcommand' text='0' type='text'/>
@@ -46,11 +40,7 @@
       </command>
       <command id='start' label='Start Trigger [b0=run,b8=jak,b15=chg]' response='cmdrsp' type='action'>
         <parameters>
-          <par label='[1,256,32768]'>
-            <range>1</range>
-            <range>256</range>
-            <range>32768</range>
-          </par>
+          <par label='[1,256,32768]' range='1,256,32768'/>
         </parameters>
         <data encode='lew' label='Write region command' text='0x1401' type='text'/>
         <data encode='lew' label='Write region subcommand' text='0' type='text'/>
@@ -61,9 +51,7 @@
       </command>
       <command id='stop' label='Stop Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]' response='cmdrsp' type='action'>
         <parameters>
-          <par label='[0-7]'>
-            <range>0:7</range>
-          </par>
+          <par label='[0-7]' range='0:7'/>
         </parameters>
         <data encode='lew' label='Write region command' text='0x1401' type='text'/>
         <data encode='lew' label='Write region subcommand' text='0' type='text'/>
@@ -85,12 +73,8 @@
       </command>
       <command id='get_tbl' label='Get Jack Table [Tag=0-5] [JK=0-3]' response='get_tbl' type='stat'>
         <parameters>
-          <par label='Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm'>
-            <range>0:5</range>
-          </par>
-          <par label='Jack 0=JK1,4=JK2,8=JK3,12=JK4'>
-            <range>0:3</range>
-          </par>
+          <par label='Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm' range='0:5'/>
+          <par label='Jack 0=JK1,4=JK2,8=JK3,12=JK4' range='0:3'/>
         </parameters>
         <data encode='lew' label='Read region command' text='0x401' type='text'/>
         <data encode='lew' label='Read region subcommand' text='0' type='text'/>
@@ -101,12 +85,8 @@
       </command>
       <command id='set_tbl' label='Set Jack Table from Field [Tag=0-5] [JK=0-3]' nocache='true' response='cmdrsp' type='config'>
         <parameters>
-          <par label='Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm'>
-            <range>0:5</range>
-          </par>
-          <par label='Jack 0=JK1,4=JK2,8=JK3,12=JK4'>
-            <range>0:3</range>
-          </par>
+          <par label='Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm' range='0:5'/>
+          <par label='Jack 0=JK1,4=JK2,8=JK3,12=JK4' range='0:3'/>
         </parameters>
         <data encode='lew' label='Write region command' text='0x1401' type='text'/>
         <data encode='lew' label='Write region subcommand' text='0' type='text'/>
@@ -118,9 +98,7 @@
       </command>
       <command id='rw_tbl' label='Read/Write Jack Table [1=Read,2=Write]' response='cmdrsp' type='config'>
         <parameters>
-          <par label='[1,2]'>
-            <range>0:2</range>
-          </par>
+          <par label='[1,2]' range='0:2'/>
         </parameters>
         <data encode='lew' label='Write region command' text='0x1401' type='text'/>
         <data encode='lew' label='Write region subcommand' text='0' type='text'/>

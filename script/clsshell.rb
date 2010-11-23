@@ -32,7 +32,5 @@ loop {
     puts " D^        : Interrupt"
   rescue RuntimeError
     puts $!.to_s
-  rescue
-    puts $!.to_s+$@.to_s
   end
 }

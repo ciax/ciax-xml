@@ -46,7 +46,7 @@ class Dev
       $errmsg << " set       : Set Value  [key(:idx)] (val)\n"
       $errmsg << " load      : Load Field (tag)\n"
       $errmsg << " save      : Save Field [key,key...] (tag)\n"
-      raise $errmsg.slice!(0..-1)
+      raise SelectID,$errmsg.slice!(0..-1)
     end
   ensure
     $errmsg.clear

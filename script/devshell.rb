@@ -14,9 +14,12 @@ loop{
   break if /^q/ === stm.first
   begin
     puts ddb.transaction(stm) || ddb.field
+  rescue SelectID
+    puts $!.to_s
+    puts "== Shell Command =="
+    puts " q         : Quit"
+    puts " D^        : Interrupt"
   rescue RuntimeError
-    puts $!
-  rescue
-    puts $!.to_s+$@.to_s
+    puts $!.to_s
   end
 }

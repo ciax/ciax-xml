@@ -40,8 +40,5 @@ loop {
   rescue RuntimeError
     puts "RuntimeError"
     puts $!.to_s
-  rescue
-    puts "Error"
-    puts $!.to_s+$@.to_s
   end
 }

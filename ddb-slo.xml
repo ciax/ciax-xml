@@ -88,13 +88,13 @@
     </cmdframe>
     <rspselect>
       <response id="getstat">
-        <field assign="err"></field>
+        <field assign="err" />
       </response>
       <response id="bs">
-        <field assign="bs"></field>
+        <field assign="bs" />
       </response>
       <response id="p">
-        <field assign="p"></field>
+        <field assign="p" />
       </response>
       <response id="in">
         <array assign="in">
@@ -102,9 +102,7 @@
         </array>
       </response>
       <response id="default">
-        <field>
-          <verify>&gt;</verify>
-        </field>
+        <field verify="&gt;"></field>
       </response>
     </rspselect>
     <rspframe terminator="\r\n">

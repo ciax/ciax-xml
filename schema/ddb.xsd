@@ -194,6 +194,7 @@
   <xsd:attributeGroup name="rsp_attr">
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="assign" type="xsd:string" />
+    <xsd:attribute name="verify" type="xsd:string" />
     <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="ddb:rerange" />
@@ -206,9 +207,6 @@
   </xsd:group>
   <xsd:element name="field">
     <xsd:complexType>
-      <xsd:sequence minOccurs="1" maxOccurs="1">
-        <xsd:element minOccurs="0" maxOccurs="1" ref="ddb:verify" />
-      </xsd:sequence>
       <xsd:attributeGroup ref="ddb:rsp_attr" />
     </xsd:complexType>
   </xsd:element>
@@ -221,8 +219,6 @@
     </xsd:complexType>
   </xsd:element>
   <!--Field Elements-->
-  <xsd:element name="assign" type="xsd:string"></xsd:element>
-  <xsd:element name="verify" type="xsd:string"></xsd:element>
   <xsd:element name="index">
     <xsd:complexType>
       <xsd:simpleContent>

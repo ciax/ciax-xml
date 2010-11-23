@@ -11,7 +11,7 @@ cdb//session@id -> never use ':'
             cdb//watch/repeat/event@*
             cdb//watch/repeat/event/*/@*
             cdb//status/repeat/value@id
-            cdb//status/repeat/value/*
+            cdb//status/repeat/value/*@ref
             --
             odb//session/repeat/statement/par
             odb//status/repeat/var@id

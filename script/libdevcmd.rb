@@ -19,7 +19,7 @@ class DevCmd
     @par.setpar(@sel,stm)
     stm << '*' if /true|1/ === @sel['nocache']
     @cid=stm.join(':')
-    @v.msg{'Select:'+a['label']+"(#{@cid})"}
+    @v.msg{'Select:'+@sel['label']+"(#{@cid})"}
     self
   end
 

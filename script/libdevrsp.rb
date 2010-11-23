@@ -118,13 +118,11 @@ class DevRsp
         @stat[key]=data
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       end
-      e0.each{|e1| # Verify
-      if txt=e1.text
-        @v.msg{"Verify:[#{txt}]"}
-        txt == data || @v.err("Verify Mismatch[#{data}]!=[#{txt}]")
+      if val=e0['verify']
+        @v.msg{"Verify:[#{val}]"}
+        val == data || @v.err("Verify Mismatch[#{data}]!=[#{val}]")
       end
-      }
-    ensure    
+    ensure
       @v.msg(-1){"Field:End"}
     end
   end

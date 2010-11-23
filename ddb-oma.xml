@@ -1,35 +1,26 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='oma' label='OMEGA Air Pressure Sensor(PX971)' wait='0.1'>
-    <serial databit='8' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="oma" label="OMEGA Air Pressure Sensor(PX971)" wait="0.1">
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdselect>
-      <command id='getstat' label='Get Status' response='getstat' type='stat'>
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
         <data>00P1</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <data label='Prefix'>*</data>
-      <selected/>
-      <data encode='chr' label='Suffix'>0xd</data>
+      <data label="Prefix">*</data>
+      <selected />
+      <data encode="chr" label="Suffix">0xd</data>
     </cmdframe>
     <rspselect>
-      <response id='getstat'>
-        <field length='5'>
-          
-          <verify>01CP=</verify>
-        </field>
-        <field assign='stat' length='6'>
-          
-          
-        </field>
+      <response id="getstat">
+        <field length="5" verify="01CP="></field>
+        <field assign="stat" length="6"></field>
       </response>
     </rspselect>
-    <rspframe terminator='\r'>
-      <field label='Prefix' length='1'>
-        
-        <verify>?</verify>
-      </field>
-      <selected/>
+    <rspframe terminator="\r">
+      <field label="Prefix" length="1" verify="?"></field>
+      <selected />
     </rspframe>
   </device>
 </ddb>

@@ -55,39 +55,25 @@
     </cmdframe>
     <rspselect>
       <response id="getstat">
-        <field label="Format" length="1">
-          <verify>V</verify>
-        </field>
-        <field assign="v" length="5"></field>
-        <field label="Format" length="1">
-          <verify>A</verify>
-        </field>
-        <field assign="a" length="5"></field>
-        <field label="Format" length="1">
-          <verify>W</verify>
-        </field>
-        <field assign="w" length="5"></field>
-        <field label="Format" length="1">
-          <verify>U</verify>
-        </field>
-        <field assign="u" length="2"></field>
-        <field label="Format" length="1">
-          <verify>I</verify>
-        </field>
-        <field assign="i" length="4"></field>
-        <field label="Format" length="1">
-          <verify>P</verify>
-        </field>
-        <field assign="p" length="3"></field>
-        <field label="Format" length="1">
-          <verify>F</verify>
-        </field>
-        <field assign="f1" length="1"></field>
-        <field assign="f2" length="1"></field>
-        <field assign="f3" length="1"></field>
-        <field assign="f4" length="1"></field>
-        <field assign="f5" length="1"></field>
-        <field assign="f6" length="1"></field>
+        <field label="Format" length="1" verify="V"></field>
+        <field assign="v" length="5" />
+        <field label="Format" length="1" verify="A"></field>
+        <field assign="a" length="5" />
+        <field label="Format" length="1" verify="W"></field>
+        <field assign="w" length="5" />
+        <field label="Format" length="1" verify="U"></field>
+        <field assign="u" length="2" />
+        <field label="Format" length="1" verify="I"></field>
+        <field assign="i" length="4" />
+        <field label="Format" length="1" verify="P"></field>
+        <field assign="p" length="3" />
+        <field label="Format" length="1" verify="F"></field>
+        <field assign="f1" length="1" />
+        <field assign="f2" length="1" />
+        <field assign="f3" length="1" />
+        <field assign="f4" length="1" />
+        <field assign="f5" length="1" />
+        <field assign="f6" length="1" />
       </response>
     </rspselect>
     <rspframe terminator="\r\n">

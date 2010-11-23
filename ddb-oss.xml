@@ -1,43 +1,43 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="oss" label="OSS Command line">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='oss' label='OSS Command line'>
     <cmdselect>
-      <command id="getstat" label="Get all status" response="getstat" type="stat">
-        <data label="Status Command">OSSC_screenPrint -R</data>
-        <data label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</data>
-        <data label="Stow pin Status"> CXWS.TSCV.STOW_1</data>
-        <data label="Shutter Status"> CXWS.TSCV.SHUTTER</data>
-        <data label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</data>
-        <data label="EL Angle(deg)"> CXWS.TSCS.EL</data>
-        <data label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</data>
-        <data label="InR Drive ON/OFF"> TSCV.InsRotRotation</data>
-        <data label="BOLT Status"> CXWS.TSCV.0_SENSOR</data>
+      <command id='getstat' label='Get all status' response='getstat' type='stat'>
+        <data label='Status Command'>OSSC_screenPrint -R</data>
+        <data label='InR Select(NsOpt/NsIR/Cas)'> TSCV.RotatorType</data>
+        <data label='Stow pin Status'> CXWS.TSCV.STOW_1</data>
+        <data label='Shutter Status'> CXWS.TSCV.SHUTTER</data>
+        <data label='AZ/EL Drive Status'> CXWS.TSCV.TELDRIVE</data>
+        <data label='EL Angle(deg)'> CXWS.TSCS.EL</data>
+        <data label='CIAX-MLP3 Comm Error'> CXWS.TSCV.CIAX_MLP3_FAULT</data>
+        <data label='InR Drive ON/OFF'> TSCV.InsRotRotation</data>
+        <data label='BOLT Status'> CXWS.TSCV.0_SENSOR</data>
       </command>
-      <command id="iststat" label="Get Instrument ID" response="iststat" type="stat">
-        <data label="Status Command">OSSC_screenPrint -R</data>
-        <data label="CAS Instrument"> CXWS.TSCV.OBE_INR</data>
+      <command id='iststat' label='Get Instrument ID' response='iststat' type='stat'>
+        <data label='Status Command'>OSSC_screenPrint -R</data>
+        <data label='CAS Instrument'> CXWS.TSCV.OBE_INR</data>
       </command>
-      <command id="jakstat" label="Jack Bolt Status" response="jakstat" type="stat">
-        <data label="Status Command">OSSC_screenPrint -R</data>
-        <data label="Bolt Each Status"> CXWS.TSCV.POWER_V1</data>
-        <data label="Bolt Each Position"> CXWS.TSCV.POWER_V2</data>
-        <data label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</data>
+      <command id='jakstat' label='Jack Bolt Status' response='jakstat' type='stat'>
+        <data label='Status Command'>OSSC_screenPrint -R</data>
+        <data label='Bolt Each Status'> CXWS.TSCV.POWER_V1</data>
+        <data label='Bolt Each Position'> CXWS.TSCV.POWER_V2</data>
+        <data label='Zsensor Each Position'> CXWS.TSCL.Z_SENSOR</data>
       </command>
-      <command id="inrstat" label="Cas InR Status" response="inrstat" type="stat">
-        <data label="Status Command">OSSC_screenPrint -R</data>
-        <data label="InR Angle(deg)"> CXWS.TSCS.INSROT</data>
+      <command id='inrstat' label='Cas InR Status' response='inrstat' type='stat'>
+        <data label='Status Command'>OSSC_screenPrint -R</data>
+        <data label='InR Angle(deg)'> CXWS.TSCS.INSROT</data>
       </command>
-      <command id="logstat" label="Login Status" response="logstat" type="stat">
-        <data label="Status Command">OSSC_screenPrint -R</data>
-        <data label="LOGIN 0"> TSCV.TSC.LOGIN0</data>
-        <data label="LOGIN 1"> TSCV.TSC.LOGIN1</data>
-        <data label="LOGIN 2"> TSCV.TSC.LOGIN2</data>
-        <data label="LOGIN 3"> TSCV.TSC.LOGIN3</data>
+      <command id='logstat' label='Login Status' response='logstat' type='stat'>
+        <data label='Status Command'>OSSC_screenPrint -R</data>
+        <data label='LOGIN 0'> TSCV.TSC.LOGIN0</data>
+        <data label='LOGIN 1'> TSCV.TSC.LOGIN1</data>
+        <data label='LOGIN 2'> TSCV.TSC.LOGIN2</data>
+        <data label='LOGIN 3'> TSCV.TSC.LOGIN3</data>
       </command>
-      <command id="getexit" label="Exit Code" response="exit" type="stat">
+      <command id='getexit' label='Exit Code' response='exit' type='stat'>
         <data>cat $HOME/.var/exit.txt</data>
       </command>
-      <command id="login" label="TSC Login" response="exit">
+      <command id='login' label='TSC Login' response='exit'>
         <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
         <data>1A1901 </data>
         <data>ciax%%%%%%%%%%%%%%%% </data>
@@ -45,25 +45,25 @@
         <data>dummyunit dummyMenu dummyMessage</data>
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
-      <command id="logout" label="TSC Logout" response="exit">
+      <command id='logout' label='TSC Logout' response='exit'>
         <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
         <data>1A1902</data>
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
-      <command id="setinst" label="Set Instrument ID [0-12]" response="exit" type="config">
+      <command id='setinst' label='Set Instrument ID [0-12]' response='exit' type='config'>
         <parameters>
-          <par label="Inst ID [0-12]">
+          <par label='Inst ID [0-12]'>
             <range>1:12</range>
           </par>
         </parameters>
         <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
         <data>13200700</data>
-        <formula format="%02d">$1</formula>
+        <formula format='%02d'>$1</formula>
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
-      <command id="config" label="Execute Config Command [code]" response="exit">
+      <command id='config' label='Execute Config Command [code]' response='exit'>
         <parameters>
-          <par label="Command Code">
+          <par label='Command Code'>
             <regexp>.+</regexp>
           </par>
         </parameters>
@@ -71,9 +71,9 @@
         <formula>$1</formula>
         <data>"';echo $?|tee $HOME/.var/exit.txt</data>
       </command>
-      <command id="ossact" label="Execute Action Command [code]" response="exit" type="action">
+      <command id='ossact' label='Execute Action Command [code]' response='exit' type='action'>
         <parameters>
-          <par label="Command Code">
+          <par label='Command Code'>
             <regexp>.+</regexp>
           </par>
         </parameters>
@@ -82,58 +82,58 @@
       </command>
     </cmdselect>
     <cmdframe>
-      <selected />
-      <data encode="chr" label="Suffix">0xa</data>
+      <selected/>
+      <data encode='chr' label='Suffix'>0xa</data>
     </cmdframe>
     <rspselect>
-      <response id="getstat">
-        <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)"></field>
-        <field assign="stow_1" decode="hexstr" label="Stow pin Status"></field>
-        <field assign="shutter" label="Shutter Status"></field>
-        <field assign="teldrive" label="AZ/EL Drive Status"></field>
-        <field assign="el" label="EL Angle(deg)"></field>
-        <field assign="mlp3" label="CIAX-MLP3 Comm Error"></field>
-        <field assign="rpw" label="InR Drive ON/OFF"></field>
-        <field assign="bstat" decode="hexstr" label="BOLT System Status"></field>
+      <response id='getstat'>
+        <field assign='rsel' label='InR Select(NsOpt/NsIR/Cas)'/>
+        <field assign='stow_1' decode='hexstr' label='Stow pin Status'/>
+        <field assign='shutter' label='Shutter Status'/>
+        <field assign='teldrive' label='AZ/EL Drive Status'/>
+        <field assign='el' label='EL Angle(deg)'/>
+        <field assign='mlp3' label='CIAX-MLP3 Comm Error'/>
+        <field assign='rpw' label='InR Drive ON/OFF'/>
+        <field assign='bstat' decode='hexstr' label='BOLT System Status'/>
       </response>
-      <response id="iststat">
-        <field assign="iid" label="CAS Instrument"></field>
+      <response id='iststat'>
+        <field assign='iid' label='CAS Instrument'/>
       </response>
-      <response id="jakstat">
-        <field assign="bsa" label="BOLT SUM ALM(POWER_V1)" length="2"></field>
-        <field assign="cjb" label="ALL BOLT STAT(POWER_V1)" length="2"></field>
-        <array assign="bl" label="Each Bolt Status(POWER_V1)" length="1">
-          <index size="16">0:15</index>
+      <response id='jakstat'>
+        <field assign='bsa' label='BOLT SUM ALM(POWER_V1)' length='2'/>
+        <field assign='cjb' label='ALL BOLT STAT(POWER_V1)' length='2'/>
+        <array assign='bl' label='Each Bolt Status(POWER_V1)' length='1'>
+          <index size='16'>0:15</index>
         </array>
-        <array assign="be" label="Each Bolt Alarm(POWER_V1)" length="1">
-          <index size="16">0:15</index>
+        <array assign='be' label='Each Bolt Alarm(POWER_V1)' length='1'>
+          <index size='16'>0:15</index>
         </array>
-        <field assign="mba" label="MLP3-BOLT COMM(POWER_V1)" length="2"></field>
-        <field label="Cut off" />
-        <field assign="bcl" label="BOLT CONTROL SOURCE(POWER_V1)" length="2"></field>
-        <field assign="cjh" label="Jack Home(POWER_V1)" length="4"></field>
-        <array assign="jk" label="Bolt Position(POWER_V2)" length="12">
-          <index size="16">0:15</index>
+        <field assign='mba' label='MLP3-BOLT COMM(POWER_V1)' length='2'/>
+        <field label='Cut off'/>
+        <field assign='bcl' label='BOLT CONTROL SOURCE(POWER_V1)' length='2'/>
+        <field assign='cjh' label='Jack Home(POWER_V1)' length='4'/>
+        <array assign='jk' label='Bolt Position(POWER_V2)' length='12'>
+          <index size='16'>0:15</index>
         </array>
-        <array assign="zp" label="Zsensor Position" length="12" slice="2:4">
-          <index size="4">0:3</index>
+        <array assign='zp' label='Zsensor Position' length='12' slice='2:4'>
+          <index size='4'>0:3</index>
         </array>
       </response>
-      <response id="inrstat">
-        <field assign="iang" label="InR Angle(deg)"></field>
+      <response id='inrstat'>
+        <field assign='iang' label='InR Angle(deg)'/>
       </response>
-      <response id="logstat">
-        <field assign="login0" label="LOGIN 0"></field>
-        <field assign="login1" label="LOGIN 1"></field>
-        <field assign="login2" label="LOGIN 2"></field>
-        <field assign="login3" label="LOGIN 3"></field>
+      <response id='logstat'>
+        <field assign='login0' label='LOGIN 0'/>
+        <field assign='login1' label='LOGIN 1'/>
+        <field assign='login2' label='LOGIN 2'/>
+        <field assign='login3' label='LOGIN 3'/>
       </response>
-      <response id="exit">
-        <field assign="exit" label="Exit Code"></field>
+      <response id='exit'>
+        <field assign='exit' label='Exit Code'/>
       </response>
     </rspselect>
-    <rspframe delimiter="\n">
-      <selected />
+    <rspframe delimiter='\n'>
+      <selected/>
     </rspframe>
   </device>
 </ddb>

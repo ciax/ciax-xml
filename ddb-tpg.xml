@@ -15,23 +15,13 @@
     </cmdframe>
     <rspselect>
       <response id='reqstat'>
-        <field decode='chr'>
-          <verify>6</verify>
-        </field>
+        <field decode='chr' verify='6'/>
       </response>
       <response id='getstat'>
-        <field assign='st1'>
-          
-        </field>
-        <field assign='ch1'>
-          
-        </field>
-        <field assign='st2'>
-          
-        </field>
-        <field assign='ch2'>
-          
-        </field>
+        <field assign='st1'/>
+        <field assign='ch1'/>
+        <field assign='st2'/>
+        <field assign='ch2'/>
       </response>
     </rspselect>
     <rspframe delimiter=',' terminator='\r\n'>

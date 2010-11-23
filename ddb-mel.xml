@@ -99,7 +99,7 @@
         <data encode="lew" label="Device Code">0xB400</data>
         <data encode="lew" label="Data Length">0x2ch</data>
       </command>
-      <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" response="cmdrsp" type="config" nocache="true">
+      <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
         <parameters>
           <par label="Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm">
             <range>0:5</range>
@@ -148,7 +148,7 @@
     </cmdframe>
     <rspselect>
       <response id="chken">
-        <field assign="cre" decode="lew" length="2"></field>
+        <field assign="cre" decode="lew" length="2" />
       </response>
       <response id="getstat">
         <array assign="x" decode="lew" length="2">
@@ -165,34 +165,18 @@
       </response>
     </rspselect>
     <rspccrange method="len">
-      <field assign="ecode" decode="lew" length="2">
-        <verify>0</verify>
-      </field>
+      <field assign="ecode" decode="lew" length="2" verify="0"></field>
       <selected />
     </rspccrange>
     <rspframe>
-      <field decode="lew" label="SubHeader: Prefix" length="2">
-        <verify>212</verify>
-      </field>
-      <field label="SubHeader: Serial Number" length="2">
-        <verify>XX</verify>
-      </field>
-      <field decode="lew" label="SubHeader: Fixed Number" length="2">
-        <verify>0</verify>
-      </field>
-      <field decode="chr" label="Q Header: Network Number" length="1">
-        <verify>0</verify>
-      </field>
-      <field decode="chr" label="Q Header: PC Number" length="1">
-        <verify>255</verify>
-      </field>
-      <field decode="lew" label="Q Header: Request Unit I/O Number" length="2">
-        <verify>1023</verify>
-      </field>
-      <field decode="chr" label="Q Header: Request Unit Station Number" length="1">
-        <verify>0</verify>
-      </field>
-      <field assign="cc" decode="lew" label="Response Data Length" length="2"></field>
+      <field decode="lew" label="SubHeader: Prefix" length="2" verify="212"></field>
+      <field label="SubHeader: Serial Number" length="2" verify="XX"></field>
+      <field decode="lew" label="SubHeader: Fixed Number" length="2" verify="0"></field>
+      <field decode="chr" label="Q Header: Network Number" length="1" verify="0"></field>
+      <field decode="chr" label="Q Header: PC Number" length="1" verify="255"></field>
+      <field decode="lew" label="Q Header: Request Unit I/O Number" length="2" verify="1023"></field>
+      <field decode="chr" label="Q Header: Request Unit Station Number" length="1" verify="0"></field>
+      <field assign="cc" decode="lew" label="Response Data Length" length="2" />
       <ccrange />
     </rspframe>
   </device>

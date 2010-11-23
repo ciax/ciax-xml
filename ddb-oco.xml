@@ -23,13 +23,11 @@
     </cmdframe>
     <rspselect>
       <response id="getstat">
-        <field assign="crnt" length="9"></field>
+        <field assign="crnt" length="9" />
       </response>
     </rspselect>
     <rspframe>
-      <field length="1">
-        <verify>*</verify>
-      </field>
+      <field length="1" verify="*"></field>
       <selected />
     </rspframe>
   </device>

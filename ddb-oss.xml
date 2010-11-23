@@ -103,20 +103,20 @@
         <field assign='bsa' label='BOLT SUM ALM(POWER_V1)' length='2'/>
         <field assign='cjb' label='ALL BOLT STAT(POWER_V1)' length='2'/>
         <array assign='bl' label='Each Bolt Status(POWER_V1)' length='1'>
-          <index size='16'>0:15</index>
+          <index range='0:15' size='16'/>
         </array>
         <array assign='be' label='Each Bolt Alarm(POWER_V1)' length='1'>
-          <index size='16'>0:15</index>
+          <index range='0:15' size='16'/>
         </array>
         <field assign='mba' label='MLP3-BOLT COMM(POWER_V1)' length='2'/>
         <field label='Cut off'/>
         <field assign='bcl' label='BOLT CONTROL SOURCE(POWER_V1)' length='2'/>
         <field assign='cjh' label='Jack Home(POWER_V1)' length='4'/>
         <array assign='jk' label='Bolt Position(POWER_V2)' length='12'>
-          <index size='16'>0:15</index>
+          <index range='0:15' size='16'/>
         </array>
         <array assign='zp' label='Zsensor Position' length='12' slice='2:4'>
-          <index size='4'>0:3</index>
+          <index range='0:3' size='4'/>
         </array>
       </response>
       <response id='inrstat'>

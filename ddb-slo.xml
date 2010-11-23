@@ -98,11 +98,11 @@
       </response>
       <response id="in">
         <array assign="in">
-          <index size="5">$1-1</index>
+          <index range="$1-1" size="5" />
         </array>
       </response>
       <response id="default">
-        <field verify="&gt;"></field>
+        <field verify="&gt;" />
       </response>
     </rspselect>
     <rspframe terminator="\r\n">

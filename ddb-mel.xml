@@ -152,30 +152,30 @@
       </response>
       <response id="getstat">
         <array assign="x" decode="lew" length="2">
-          <index size="52">0:51</index>
+          <index range="0:51" size="52" />
         </array>
       </response>
       <response id="cmdrsp" label="command resp" />
       <response id="get_tbl">
         <array assign="t" decode="lew" length="2">
-          <index size="6">$1</index>
-          <index size="4">$2</index>
-          <index size="44">0:43</index>
+          <index range="$1" size="6" />
+          <index range="$2" size="4" />
+          <index range="0:43" size="44" />
         </array>
       </response>
     </rspselect>
     <rspccrange method="len">
-      <field assign="ecode" decode="lew" length="2" verify="0"></field>
+      <field assign="ecode" decode="lew" length="2" verify="0" />
       <selected />
     </rspccrange>
     <rspframe>
-      <field decode="lew" label="SubHeader: Prefix" length="2" verify="212"></field>
-      <field label="SubHeader: Serial Number" length="2" verify="XX"></field>
-      <field decode="lew" label="SubHeader: Fixed Number" length="2" verify="0"></field>
-      <field decode="chr" label="Q Header: Network Number" length="1" verify="0"></field>
-      <field decode="chr" label="Q Header: PC Number" length="1" verify="255"></field>
-      <field decode="lew" label="Q Header: Request Unit I/O Number" length="2" verify="1023"></field>
-      <field decode="chr" label="Q Header: Request Unit Station Number" length="1" verify="0"></field>
+      <field decode="lew" label="SubHeader: Prefix" length="2" verify="212" />
+      <field label="SubHeader: Serial Number" length="2" verify="XX" />
+      <field decode="lew" label="SubHeader: Fixed Number" length="2" verify="0" />
+      <field decode="chr" label="Q Header: Network Number" length="1" verify="0" />
+      <field decode="chr" label="Q Header: PC Number" length="1" verify="255" />
+      <field decode="lew" label="Q Header: Request Unit I/O Number" length="2" verify="1023" />
+      <field decode="chr" label="Q Header: Request Unit Station Number" length="1" verify="0" />
       <field assign="cc" decode="lew" label="Response Data Length" length="2" />
       <ccrange />
     </rspframe>

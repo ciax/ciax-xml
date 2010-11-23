@@ -27,7 +27,7 @@
     <rspselect>
       <response id='getstat'>
         <array assign='ch'>
-          <index size='8'>0:7</index>
+          <index range='0:7' size='8'/>
         </array>
       </response>
       <response id='htrstat'>

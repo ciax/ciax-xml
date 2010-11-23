@@ -1,36 +1,36 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="ohp" label="OMEGA Helium Pressure Sensor">
-    <serial databit="7" flowctl="NONE" parity="ODD" speed="9600" stopbit="1" />
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='ohp' label='OMEGA Helium Pressure Sensor'>
+    <serial databit='7' flowctl='NONE' parity='ODD' speed='9600' stopbit='1'/>
     <cmdselect>
-      <command id="getstat" label="Get Status" type="stat">
+      <command id='getstat' label='Get Status' type='stat'>
         <data>*X01</data>
       </command>
-      <command id="setd" label="Set default" type="config">
+      <command id='setd' label='Set default' type='config'>
         <data>*W1F14</data>
       </command>
-      <command id="init" label="Initialize" type="config">
+      <command id='init' label='Initialize' type='config'>
         <data>*Z02</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <selected />
-      <data encode="chr">13</data>
+      <selected/>
+      <data encode='chr'>13</data>
     </cmdframe>
     <rspselect>
-      <response id="getstat">
-        <field label="Prefix" length="3" verify="X01"></field>
-        <field assign="pres" length="5" />
+      <response id='getstat'>
+        <field label='Prefix' length='3' verify='X01'/>
+        <field assign='pres' length='5'/>
       </response>
-      <response id="setd">
-        <field label="Command" length="3" verify="W1F"></field>
+      <response id='setd'>
+        <field label='Command' length='3' verify='W1F'/>
       </response>
-      <response id="init">
-        <field label="Command" length="3" verify="Z02"></field>
+      <response id='init'>
+        <field label='Command' length='3' verify='Z02'/>
       </response>
     </rspselect>
     <rspframe>
-      <selected />
+      <selected/>
     </rspframe>
   </device>
 </ddb>

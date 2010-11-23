@@ -221,11 +221,8 @@
   <!--Field Elements-->
   <xsd:element name="index">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="size" type="xsd:int" use="required" />
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:attribute name="size" type="xsd:int" use="required" />
+      <xsd:attribute name="range" type="xsd:string" use="required" />
     </xsd:complexType>
   </xsd:element>
   <!--Response Select-->

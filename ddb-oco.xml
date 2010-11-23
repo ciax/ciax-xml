@@ -1,34 +1,34 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="oco" label="OMEGA Current Output(D4251)" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf" wait="1">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='oco' label='OMEGA Current Output(D4251)' reference='http://www.omega.com/manuals/manualpdf/M1552.pdf' wait='1'>
+    <serial databit='8' flowctl='NONE' parity='NONE' speed='300' stopbit='1'/>
     <cmdselect>
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
+      <command id='getstat' label='Get Status' response='getstat' type='stat'>
         <data>1RD</data>
       </command>
-      <command id="i" label="Set Current by argv [DD.DD]" type="action">
+      <command id='i' label='Set Current by argv [DD.DD]' type='action'>
         <parameters>
-          <par label="[0-99.99]">
+          <par label='[0-99.99]'>
             <range>0:99</range>
           </par>
         </parameters>
         <data>1AO+000</data>
-        <formula format="%05.2f">$1</formula>
+        <formula format='%05.2f'>$1</formula>
       </command>
     </cmdselect>
     <cmdframe>
-      <data label="Prefix">$</data>
-      <selected />
-      <data encode="chr" label="Suffix">0xd</data>
+      <data label='Prefix'>$</data>
+      <selected/>
+      <data encode='chr' label='Suffix'>0xd</data>
     </cmdframe>
     <rspselect>
-      <response id="getstat">
-        <field assign="crnt" length="9" />
+      <response id='getstat'>
+        <field assign='crnt' length='9'/>
       </response>
     </rspselect>
     <rspframe>
-      <field length="1" verify="*"></field>
-      <selected />
+      <field length='1' verify='*'/>
+      <selected/>
     </rspframe>
   </device>
 </ddb>

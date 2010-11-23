@@ -5,7 +5,7 @@ cdb//session@id -> never use ':'
 
  $_ $a..z
     description : substitute sequence number(in repeat)
-    usable: ddb//cmdframe/repeat/formula
+    usable: ddb//cmdframe/repeat/data[@type=formula]
             --
             cdb//session/repeat/statement/formula
             cdb//watch/repeat/event@*
@@ -20,8 +20,7 @@ cdb//session@id -> never use ':'
 
  $1..9
     description : substitute parameters
-    usable: ddb//cmdframe/formula
-            ddb//cmdframe/csv
+    usable: ddb//cmdframe/data[@type=formula]
             ddb//response/array/index
             --
             cdb//session/statement/formula
@@ -30,8 +29,7 @@ cdb//session@id -> never use ':'
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
-    usable: ddb//cmdframe/formula
-            ddb//cmdframe/csv
+    usable: ddb//cmdframe/data[@type=formula]
             --
             odb//session/statement/text
             odb//session/statement/formula

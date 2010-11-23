@@ -3,11 +3,11 @@
   <device id='tpg' label='Pfeiffer Vacuum Gauge TPG262' reference='http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf' wait='0.3'>
     <cmdselect>
       <command id='reqstat' label='Request status' response='reqstat' type='stat'>
-        <data label='Measurment data gauges 1&amp;2'>PRX</data>
-        <data encode='chr' label='Suffix'>13</data>
+        <data label='Measurment data gauges 1&amp;2' text='PRX' type='text'/>
+        <data encode='chr' label='Suffix' text='13' type='text'/>
       </command>
       <command id='getstat' label='Get status' response='getstat' type='stat'>
-        <data encode='chr' label='ENQ'>5</data>
+        <data encode='chr' label='ENQ' text='5' type='text'/>
       </command>
     </cmdselect>
     <cmdframe>

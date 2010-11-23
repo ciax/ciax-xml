@@ -4,18 +4,18 @@
     <serial databit='7' flowctl='NONE' parity='ODD' speed='9600' stopbit='1'/>
     <cmdselect>
       <command id='getstat' label='Get Status' type='stat'>
-        <data>*X01</data>
+        <data text='*X01' type='text'/>
       </command>
       <command id='setd' label='Set default' type='config'>
-        <data>*W1F14</data>
+        <data text='*W1F14' type='text'/>
       </command>
       <command id='init' label='Initialize' type='config'>
-        <data>*Z02</data>
+        <data text='*Z02' type='text'/>
       </command>
     </cmdselect>
     <cmdframe>
       <selected/>
-      <data encode='chr'>13</data>
+      <data encode='chr' text='13' type='text'/>
     </cmdframe>
     <rspselect>
       <response id='getstat'>

@@ -4,25 +4,25 @@
     <serial databit='7' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
     <cmdselect>
       <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data>krdg? c1;</data>
-        <data>krdg? c2;</data>
-        <data>krdg? c3;</data>
-        <data>krdg? c4;</data>
-        <data>krdg? d1;</data>
-        <data>krdg? d2;</data>
-        <data>krdg? d3;</data>
-        <data>krdg? d4;</data>
+        <data text='krdg? c1;' type='text'/>
+        <data text='krdg? c2;' type='text'/>
+        <data text='krdg? c3;' type='text'/>
+        <data text='krdg? c4;' type='text'/>
+        <data text='krdg? d1;' type='text'/>
+        <data text='krdg? d2;' type='text'/>
+        <data text='krdg? d3;' type='text'/>
+        <data text='krdg? d4;' type='text'/>
       </command>
       <command id='htrstat' label='Heater Power (%)' response='htrstat' type='stat'>
-        <data>HTR?</data>
+        <data text='HTR?' type='text'/>
       </command>
       <command id='spstat' label='Set Point (K)' response='spstat' type='stat'>
-        <data>SETP? 1</data>
+        <data text='SETP? 1' type='text'/>
       </command>
     </cmdselect>
     <cmdframe>
       <selected/>
-      <data encode='bew' label='Suffix'>0x0d0a</data>
+      <data encode='bew' label='Suffix' text='0x0d0a' type='text'/>
     </cmdframe>
     <rspselect>
       <response id='getstat'>

@@ -46,7 +46,7 @@ class DevCmd
   private
   def getstr(e0)
     frame=''
-    e0.each { |e1,a|
+    e0.each { |e1|
       case e1.name
       when 'selected'
         begin
@@ -66,7 +66,7 @@ class DevCmd
           }
           @v.msg{"GetFrame:(repeat)[#{str}]"}
           str
-        }.join(a['delimiter'])
+        }.join(e1['delimiter'])
       else
         frame << get_data(e1)
       end
@@ -76,9 +76,9 @@ class DevCmd
 
   def get_data(e)
     frame=''
-    str=e.text
-    case e.name
-    when 'data'
+    str=e['text']
+    case e['type']
+    when 'text'
       @v.msg{"GetFrame:#{e['label']}[#{str}]"}
       frame << encode(e,str)
     when 'formula'

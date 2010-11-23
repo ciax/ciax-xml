@@ -4,7 +4,7 @@
     <serial databit='8' flowctl='NONE' parity='NONE' speed='2400' stopbit='1'/>
     <cmdselect>
       <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data>L</data>
+        <data text='L' type='text'/>
       </command>
       <command id='setvl' label='Set Voltage Limit [DD]' type='config'>
         <parameters>
@@ -12,8 +12,8 @@
             <range>0:20</range>
           </par>
         </parameters>
-        <data>SU </data>
-        <formula format='%02d'>$1</formula>
+        <data text='SU ' type='text'/>
+        <data format='%02d' text='$1' type='formula'/>
       </command>
       <command id='setal' label='Set Current Limit [D.DD]' type='config'>
         <parameters>
@@ -21,8 +21,8 @@
             <range>0:&lt;10</range>
           </par>
         </parameters>
-        <data>SI </data>
-        <formula format='%04.2f'>$1</formula>
+        <data text='SI ' type='text'/>
+        <data format='%04.2f' text='$1' type='formula'/>
       </command>
       <command id='setpl' label='Set Power Limit [DDD]' type='config'>
         <parameters>
@@ -30,8 +30,8 @@
             <range>0:&lt;200</range>
           </par>
         </parameters>
-        <data>SP </data>
-        <formula format='%03d'>$1</formula>
+        <data text='SP ' type='text'/>
+        <data format='%03d' text='$1' type='formula'/>
       </command>
       <command id='setv' label='Set Voltage [DD.DD]' type='config'>
         <parameters>
@@ -39,19 +39,19 @@
             <range>0:&lt;100</range>
           </par>
         </parameters>
-        <data>SV </data>
-        <formula format='%05.2f'>$1</formula>
+        <data text='SV ' type='text'/>
+        <data format='%05.2f' text='$1' type='formula'/>
       </command>
       <command id='pon' label='OUTPUT ON' type='action'>
-        <data>KOE</data>
+        <data text='KOE' type='text'/>
       </command>
       <command id='poff' label='OUTPUT OFF' type='action'>
-        <data>KOD</data>
+        <data text='KOD' type='text'/>
       </command>
     </cmdselect>
     <cmdframe>
       <selected/>
-      <data encode='chr'>0xd</data>
+      <data encode='chr' text='0xd' type='text'/>
     </cmdframe>
     <rspselect>
       <response id='getstat'>

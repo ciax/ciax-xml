@@ -4,7 +4,7 @@
     <serial databit='8' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
     <cmdselect>
       <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data>RD</data>
+        <data text='RD' type='text'/>
       </command>
       <command id='output' label='OUTPUT [DDDDD]' type='action'>
         <parameters>
@@ -12,16 +12,16 @@
             <range>0:65535</range>
           </par>
         </parameters>
-        <data>SO</data>
-        <formula encode='bew'>$1</formula>
+        <data text='SO' type='text'/>
+        <data encode='bew' text='$1' type='formula'/>
       </command>
       <command id='outfld' label='OUTPUT from Field' nocache='true' type='action'>
-        <data>SO</data>
-        <formula encode='bew'>${stat}</formula>
+        <data text='SO' type='text'/>
+        <data encode='bew' text='${stat}' type='formula'/>
       </command>
     </cmdselect>
     <cmdframe>
-      <data label='Prefix'>!0</data>
+      <data label='Prefix' text='!0' type='text'/>
       <selected/>
     </cmdframe>
     <rspselect>

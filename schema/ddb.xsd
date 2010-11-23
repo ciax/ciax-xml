@@ -110,25 +110,23 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!--Command Elements-->
-  <xsd:group name="cmd_elem">
-    <xsd:choice>
-      <xsd:element ref="ddb:data" />
-      <xsd:element ref="ddb:formula" />
-      <xsd:element ref="ddb:csv" />
-    </xsd:choice>
-  </xsd:group>
-  <xsd:complexType name="cmd_type">
-    <xsd:simpleContent>
-      <xsd:extension base="xsd:string">
-        <xsd:attribute name="label" type="xsd:string" />
-        <xsd:attribute name="encode" type="ddb:codec"></xsd:attribute>
-        <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
-      </xsd:extension>
-    </xsd:simpleContent>
-  </xsd:complexType>
-  <xsd:element name="data" type="ddb:cmd_type"></xsd:element>
-  <xsd:element name="formula" type="ddb:cmd_type"></xsd:element>
-  <xsd:element name="csv" type="ddb:cmd_type"></xsd:element>
+  <xsd:element name="data">
+    <xsd:complexType>
+      <xsd:attribute name="text" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="encode" type="ddb:codec"></xsd:attribute>
+      <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
+      <xsd:attribute name="type" use="required">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="text"></xsd:enumeration>
+            <xsd:enumeration value="formula"></xsd:enumeration>
+            <xsd:enumeration value="csv"></xsd:enumeration>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
   <!--Command Select-->
   <xsd:element name="cmdselect">
     <xsd:complexType>
@@ -142,7 +140,7 @@
       <xsd:sequence>
         <xsd:element ref="ddb:parameters" minOccurs="0" maxOccurs="1" />
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
-          <xsd:group ref="ddb:cmd_elem" />
+          <xsd:element ref="ddb:data" />
           <xsd:element ref="ddb:repeat" />
         </xsd:choice>
       </xsd:sequence>
@@ -164,7 +162,7 @@
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="ddb:cmd_elem" />
+        <xsd:element ref="ddb:data" />
       </xsd:choice>
       <xsd:attributeGroup ref="ddb:repeat" />
       <xsd:attribute name="delimiter" type="xsd:string" />
@@ -175,7 +173,7 @@
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="ddb:selected" />
-        <xsd:group ref="ddb:cmd_elem" />
+        <xsd:element ref="ddb:data" />
       </xsd:choice>
       <xsd:attribute name="method" type="ddb:ccmethod"></xsd:attribute>
     </xsd:complexType>
@@ -184,7 +182,7 @@
   <xsd:element name="cmdframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="ddb:cmd_elem" />
+        <xsd:element ref="ddb:data" />
         <xsd:element ref="ddb:selected" />
         <xsd:element ref="ddb:ccrange" />
       </xsd:choice>

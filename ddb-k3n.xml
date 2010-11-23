@@ -4,25 +4,25 @@
     <serial databit='7' flowctl='NONE' parity='EVEN' speed='9600' stopbit='2'/>
     <cmdselect>
       <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data label='Node No.'>00</data>
-        <data label='Sub Address'>00</data>
-        <data label='SID'>0</data>
-        <data label='MRC'>01</data>
-        <data label='SRC'>01</data>
-        <data label='Variable type'>C0</data>
-        <data label='Start Address'>0000</data>
-        <data label='Void'>00</data>
-        <data label='Number of element'>0001</data>
+        <data label='Node No.' text='00' type='text'/>
+        <data label='Sub Address' text='00' type='text'/>
+        <data label='SID' text='0' type='text'/>
+        <data label='MRC' text='01' type='text'/>
+        <data label='SRC' text='01' type='text'/>
+        <data label='Variable type' text='C0' type='text'/>
+        <data label='Start Address' text='0000' type='text'/>
+        <data label='Void' text='00' type='text'/>
+        <data label='Number of element' text='0001' type='text'/>
       </command>
     </cmdselect>
     <cmdccrange method='bcc'>
       <selected/>
-      <data encode='chr' label='Suffix'>3</data>
+      <data encode='chr' label='Suffix' text='3' type='text'/>
     </cmdccrange>
     <cmdframe>
-      <data encode='chr' label='Prefix'>2</data>
+      <data encode='chr' label='Prefix' text='2' type='text'/>
       <ccrange/>
-      <formula encode='chr'>${cc}</formula>
+      <data encode='chr' text='${cc}' type='formula'/>
     </cmdframe>
     <rspselect>
       <response id='getstat'>

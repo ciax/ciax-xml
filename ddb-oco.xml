@@ -4,7 +4,7 @@
     <serial databit='8' flowctl='NONE' parity='NONE' speed='300' stopbit='1'/>
     <cmdselect>
       <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data>1RD</data>
+        <data text='1RD' type='text'/>
       </command>
       <command id='i' label='Set Current by argv [DD.DD]' type='action'>
         <parameters>
@@ -12,14 +12,14 @@
             <range>0:99</range>
           </par>
         </parameters>
-        <data>1AO+000</data>
-        <formula format='%05.2f'>$1</formula>
+        <data text='1AO+000' type='text'/>
+        <data format='%05.2f' text='$1' type='formula'/>
       </command>
     </cmdselect>
     <cmdframe>
-      <data label='Prefix'>$</data>
+      <data label='Prefix' text='$' type='text'/>
       <selected/>
-      <data encode='chr' label='Suffix'>0xd</data>
+      <data encode='chr' label='Suffix' text='0xd' type='text'/>
     </cmdframe>
     <rspselect>
       <response id='getstat'>

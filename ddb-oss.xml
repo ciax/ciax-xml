@@ -3,52 +3,52 @@
   <device id='oss' label='OSS Command line'>
     <cmdselect>
       <command id='getstat' label='Get all status' response='getstat' type='stat'>
-        <data label='Status Command'>OSSC_screenPrint -R</data>
-        <data label='InR Select(NsOpt/NsIR/Cas)'> TSCV.RotatorType</data>
-        <data label='Stow pin Status'> CXWS.TSCV.STOW_1</data>
-        <data label='Shutter Status'> CXWS.TSCV.SHUTTER</data>
-        <data label='AZ/EL Drive Status'> CXWS.TSCV.TELDRIVE</data>
-        <data label='EL Angle(deg)'> CXWS.TSCS.EL</data>
-        <data label='CIAX-MLP3 Comm Error'> CXWS.TSCV.CIAX_MLP3_FAULT</data>
-        <data label='InR Drive ON/OFF'> TSCV.InsRotRotation</data>
-        <data label='BOLT Status'> CXWS.TSCV.0_SENSOR</data>
+        <data label='Status Command' text='OSSC_screenPrint -R' type='text'/>
+        <data label='InR Select(NsOpt/NsIR/Cas)' text=' TSCV.RotatorType' type='text'/>
+        <data label='Stow pin Status' text=' CXWS.TSCV.STOW_1' type='text'/>
+        <data label='Shutter Status' text=' CXWS.TSCV.SHUTTER' type='text'/>
+        <data label='AZ/EL Drive Status' text=' CXWS.TSCV.TELDRIVE' type='text'/>
+        <data label='EL Angle(deg)' text=' CXWS.TSCS.EL' type='text'/>
+        <data label='CIAX-MLP3 Comm Error' text=' CXWS.TSCV.CIAX_MLP3_FAULT' type='text'/>
+        <data label='InR Drive ON/OFF' text=' TSCV.InsRotRotation' type='text'/>
+        <data label='BOLT Status' text=' CXWS.TSCV.0_SENSOR' type='text'/>
       </command>
       <command id='iststat' label='Get Instrument ID' response='iststat' type='stat'>
-        <data label='Status Command'>OSSC_screenPrint -R</data>
-        <data label='CAS Instrument'> CXWS.TSCV.OBE_INR</data>
+        <data label='Status Command' text='OSSC_screenPrint -R' type='text'/>
+        <data label='CAS Instrument' text=' CXWS.TSCV.OBE_INR' type='text'/>
       </command>
       <command id='jakstat' label='Jack Bolt Status' response='jakstat' type='stat'>
-        <data label='Status Command'>OSSC_screenPrint -R</data>
-        <data label='Bolt Each Status'> CXWS.TSCV.POWER_V1</data>
-        <data label='Bolt Each Position'> CXWS.TSCV.POWER_V2</data>
-        <data label='Zsensor Each Position'> CXWS.TSCL.Z_SENSOR</data>
+        <data label='Status Command' text='OSSC_screenPrint -R' type='text'/>
+        <data label='Bolt Each Status' text=' CXWS.TSCV.POWER_V1' type='text'/>
+        <data label='Bolt Each Position' text=' CXWS.TSCV.POWER_V2' type='text'/>
+        <data label='Zsensor Each Position' text=' CXWS.TSCL.Z_SENSOR' type='text'/>
       </command>
       <command id='inrstat' label='Cas InR Status' response='inrstat' type='stat'>
-        <data label='Status Command'>OSSC_screenPrint -R</data>
-        <data label='InR Angle(deg)'> CXWS.TSCS.INSROT</data>
+        <data label='Status Command' text='OSSC_screenPrint -R' type='text'/>
+        <data label='InR Angle(deg)' text=' CXWS.TSCS.INSROT' type='text'/>
       </command>
       <command id='logstat' label='Login Status' response='logstat' type='stat'>
-        <data label='Status Command'>OSSC_screenPrint -R</data>
-        <data label='LOGIN 0'> TSCV.TSC.LOGIN0</data>
-        <data label='LOGIN 1'> TSCV.TSC.LOGIN1</data>
-        <data label='LOGIN 2'> TSCV.TSC.LOGIN2</data>
-        <data label='LOGIN 3'> TSCV.TSC.LOGIN3</data>
+        <data label='Status Command' text='OSSC_screenPrint -R' type='text'/>
+        <data label='LOGIN 0' text=' TSCV.TSC.LOGIN0' type='text'/>
+        <data label='LOGIN 1' text=' TSCV.TSC.LOGIN1' type='text'/>
+        <data label='LOGIN 2' text=' TSCV.TSC.LOGIN2' type='text'/>
+        <data label='LOGIN 3' text=' TSCV.TSC.LOGIN3' type='text'/>
       </command>
       <command id='getexit' label='Exit Code' response='exit' type='stat'>
-        <data>cat $HOME/.var/exit.txt</data>
+        <data text='cat $HOME/.var/exit.txt' type='text'/>
       </command>
       <command id='login' label='TSC Login' response='exit'>
-        <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-        <data>1A1901 </data>
-        <data>ciax%%%%%%%%%%%%%%%% </data>
-        <data>CIAX%%%%%%%%%%%% </data>
-        <data>dummyunit dummyMenu dummyMessage</data>
-        <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+        <data text='OSST_ciaxTSCcommand 10 &apos;EXEC TSC NATIVE CMD=&quot;cccccc' type='text'/>
+        <data text='1A1901 ' type='text'/>
+        <data text='ciax%%%%%%%%%%%%%%%% ' type='text'/>
+        <data text='CIAX%%%%%%%%%%%% ' type='text'/>
+        <data text='dummyunit dummyMenu dummyMessage' type='text'/>
+        <data text='&quot;&apos;;echo $?|tee $HOME/.var/exit.txt' type='text'/>
       </command>
       <command id='logout' label='TSC Logout' response='exit'>
-        <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-        <data>1A1902</data>
-        <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+        <data text='OSST_ciaxTSCcommand 10 &apos;EXEC TSC NATIVE CMD=&quot;cccccc' type='text'/>
+        <data text='1A1902' type='text'/>
+        <data text='&quot;&apos;;echo $?|tee $HOME/.var/exit.txt' type='text'/>
       </command>
       <command id='setinst' label='Set Instrument ID [0-12]' response='exit' type='config'>
         <parameters>
@@ -56,10 +56,10 @@
             <range>1:12</range>
           </par>
         </parameters>
-        <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-        <data>13200700</data>
-        <formula format='%02d'>$1</formula>
-        <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+        <data text='OSST_ciaxTSCcommand 10 &apos;EXEC TSC NATIVE CMD=&quot;cccccc' type='text'/>
+        <data text='13200700' type='text'/>
+        <data format='%02d' text='$1' type='formula'/>
+        <data text='&quot;&apos;;echo $?|tee $HOME/.var/exit.txt' type='text'/>
       </command>
       <command id='config' label='Execute Config Command [code]' response='exit'>
         <parameters>
@@ -67,9 +67,9 @@
             <regexp>.+</regexp>
           </par>
         </parameters>
-        <data>OSST_ciaxTSCcommand 10 'EXEC TSC NATIVE CMD="cccccc</data>
-        <formula>$1</formula>
-        <data>"';echo $?|tee $HOME/.var/exit.txt</data>
+        <data text='OSST_ciaxTSCcommand 10 &apos;EXEC TSC NATIVE CMD=&quot;cccccc' type='text'/>
+        <data text='$1' type='formula'/>
+        <data text='&quot;&apos;;echo $?|tee $HOME/.var/exit.txt' type='text'/>
       </command>
       <command id='ossact' label='Execute Action Command [code]' response='exit' type='action'>
         <parameters>
@@ -77,13 +77,13 @@
             <regexp>.+</regexp>
           </par>
         </parameters>
-        <data>ossact</data>
-        <formula>$1</formula>
+        <data text='ossact' type='text'/>
+        <data text='$1' type='formula'/>
       </command>
     </cmdselect>
     <cmdframe>
       <selected/>
-      <data encode='chr' label='Suffix'>0xa</data>
+      <data encode='chr' label='Suffix' text='0xa' type='text'/>
     </cmdframe>
     <rspselect>
       <response id='getstat'>

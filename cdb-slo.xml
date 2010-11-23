@@ -3,44 +3,32 @@
   <class device='slo' id='slo' label='MOIRCS Arm'>
     <commands>
       <session id='upd' label='Update Status'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>bs</text>
+        <statement format='bs'>
         </statement>
-        <statement>
-          <text>p</text>
+        <statement format='p'>
         </statement>
         <repeat from='1' to='5'>
-          <statement>
-            <text>in</text>
-            <formula>$_</formula>
+          <statement format='in %d'>
+            <argv formula='$_'/>
           </statement>
         </repeat>
       </session>
       <session id='reset' label='Reset'>
-        <statement>
-          <text>reset</text>
+        <statement format='reset'>
         </statement>
       </session>
       <session id='defcon' label='Default Config'>
-        <statement>
-          <text>hl</text>
-          <text>0</text>
+        <statement format='hl 0'>
         </statement>
-        <statement>
-          <text>e1</text>
-          <text>0</text>
+        <statement format='e1 0'>
         </statement>
-        <statement>
-          <text>e2</text>
-          <text>0</text>
+        <statement format='e2 0'>
         </statement>
       </session>
       <session id='set0' label='Set 0 Pulses'>
-        <statement>
-          <text>set0</text>
+        <statement format='set0'>
         </statement>
       </session>
     </commands>

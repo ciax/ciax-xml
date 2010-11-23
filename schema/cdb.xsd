@@ -65,21 +65,16 @@
   <!--command statement-->
   <xsd:element name="statement">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="cdb:text" />
-        <xsd:element ref="cdb:formula" />
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="cdb:argv" />
       </xsd:choice>
       <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+      <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="text" type="xsd:string"></xsd:element>
-  <xsd:element name="formula">
+  <xsd:element name="argv">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:attribute name="formula" type="xsd:string"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <!--command events-->

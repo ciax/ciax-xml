@@ -3,8 +3,7 @@
   <class device='k3n' id='k3n' label='Helium Compressor Coolant Flow'>
     <commands>
       <session id='upd' label='Update Status'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
     </commands>

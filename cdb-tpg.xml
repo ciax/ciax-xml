@@ -3,11 +3,9 @@
   <class device='tpg' id='tpg' label='MOIRCS Pressure'>
     <commands>
       <session id='upd' label='Update Status'>
-        <statement>
-          <text>reqstat</text>
+        <statement format='reqstat'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
     </commands>

@@ -3,8 +3,7 @@
   <class device='oma' id='oma' label='Compressed Air Pressure at MOIRCS'>
     <commands>
       <session id='upd' label='Update Status'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
     </commands>

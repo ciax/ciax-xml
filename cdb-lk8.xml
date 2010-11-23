@@ -3,14 +3,11 @@
   <class device='lk8' id='lk8' label='MOIRCS LakeShore'>
     <commands>
       <session id='upd' label='Update Status'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>htrstat</text>
+        <statement format='htrstat'>
         </statement>
-        <statement>
-          <text>spstat</text>
+        <statement format='spstat'>
         </statement>
       </session>
     </commands>

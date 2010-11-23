@@ -53,7 +53,7 @@ class Stat < Hash
   end
 
   def get(key=nil) # ${key1:key2:idx} => hash[key1][key2][idx]
-    return Hash[h] unless key
+    return Hash[self] unless key
     key.split(':').inject(self){|h,i|
       begin
         i=eval(i) if Array === h

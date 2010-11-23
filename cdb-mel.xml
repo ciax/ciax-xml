@@ -3,72 +3,54 @@
   <class device='mel' id='mel' label='Cart PLC'>
     <commands>
       <session id='upd' label='Regular status update'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>chken</text>
+        <statement format='chken'>
         </statement>
       </session>
       <session id='start_run' label='Running Start'>
-        <statement>
-          <text>start</text>
-          <text>1</text>
+        <statement format='start 1'>
         </statement>
       </session>
       <session id='start_jak' label='Jacking Start'>
-        <statement>
-          <text>start</text>
-          <formula>0x100</formula>
+        <statement format='start %d'>
+          <argv formula='0x100'/>
         </statement>
       </session>
       <session id='clear_trg' label='Jacking Start'>
-        <statement>
-          <text>clear</text>
+        <statement format='clear'>
         </statement>
       </session>
       <session id='set_fwd' label='Set Tag to Forward'>
-        <statement>
-          <text>set_tag</text>
-          <text>98</text>
+        <statement format='set_tag 98'>
         </statement>
       </session>
       <session id='set_run1' label='Run to Tag 1'>
-        <statement>
-          <text>set_tag</text>
-          <text>1</text>
+        <statement format='set_tag 1'>
         </statement>
       </session>
       <session id='set_jak1' label='Jack UP Level 1'>
-        <statement>
-          <text>set_pos</text>
-          <text>2</text>
+        <statement format='set_pos 2'>
         </statement>
       </session>
       <session id='pause' label='Pause'>
-        <statement>
-          <text>stop</text>
-          <text>0</text>
+        <statement format='stop 0'>
         </statement>
       </session>
       <session id='emstop' label='Emergency Stop'>
-        <statement>
-          <text>stop</text>
-          <text>1</text>
+        <statement format='stop 1'>
         </statement>
       </session>
       <session id='resume' label='Resume from Pause'>
-        <statement>
-          <text>clear</text>
+        <statement format='clear'>
         </statement>
       </session>
       <session id='get_tbl' label='Get Jack Table'>
         <repeat counter='t' from='0' to='5'>
           <repeat counter='j' from='0' to='3'>
-            <statement>
-              <text>get_tbl</text>
-              <formula>$t</formula>
-              <formula>$j</formula>
+            <statement format='get_tbl %d %d'>
+              <argv formula='$t'/>
+              <argv formula='$j'/>
             </statement>
           </repeat>
         </repeat>
@@ -76,24 +58,19 @@
       <session id='set_tbl' label='Set Jack Table'>
         <repeat counter='t' from='0' to='5'>
           <repeat counter='j' from='0' to='3'>
-            <statement>
-              <text>set_tbl</text>
-              <formula>$t</formula>
-              <formula>$j</formula>
+            <statement format='set_tbl %d %d'>
+              <argv formula='$t'/>
+              <argv formula='$j'/>
             </statement>
           </repeat>
         </repeat>
       </session>
       <session id='tbl_read' label='Resume from Pause'>
-        <statement>
-          <text>tbl_rw</text>
-          <text>1</text>
+        <statement format='tbl_rw 1'>
         </statement>
       </session>
       <session id='tbl_write' label='Resume from Pause'>
-        <statement>
-          <text>tbl_rw</text>
-          <text>2</text>
+        <statement format='tbl_rw 2'>
         </statement>
       </session>
     </commands>

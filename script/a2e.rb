@@ -19,6 +19,7 @@ if /-r/ === xpath
     next unless del
     e.add_attribute(attr,del.text)
     e.delete_element(del)
+    e.text=nil
   }
 else
   attr=ARGV.shift
@@ -29,4 +30,4 @@ else
     e.add_element(attr).text=str
   }
 end
-puts doc
+doc.write

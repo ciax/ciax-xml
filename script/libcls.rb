@@ -76,7 +76,7 @@ class Cls
           stm=@buf.recv
           @cmd.setcmd(stm).session.each{|c|
             break unless @buf.issue?
-            ddb.transaction(c)
+            ddb.transaction(c.split(' '))
             @stat.get_stat(ddb.field)
           }
         rescue RuntimeError

@@ -3,200 +3,124 @@
   <class device='bbe' id='bbe' label='Helium Compressor'>
     <commands>
       <session id='upd' label='Update Status'>
-        <statement>
-          <text>getstat</text>
-        </statement>
+        <statement format='getstat'/>
       </session>
       <session id='x0on' label='X0 ON'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'/>
+        <statement format='set stat ${stat}|0x01'/>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}|0x01</text>
-        </statement>
-        <statement>
-          <text>outfld</text>
-        </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x0off' label='X0 OFF'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}&amp;0xfffe</text>
+        <statement format='set stat ${stat}&amp;0xfffe'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x1on' label='X1 ON'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}|0x10</text>
+        <statement format='set stat ${stat}|0x10'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x1off' label='X1 OFF'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}&amp;0xffef</text>
+        <statement format='set stat ${stat}&amp;0xffef'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x2on' label='X2 ON'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}|0x100</text>
+        <statement format='set stat ${stat}|0x100'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x2off' label='X2 OFF'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}&amp;0xfeff</text>
+        <statement format='set stat ${stat}&amp;0xfeff'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x3on' label='X3 ON'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}|0x1000</text>
+        <statement format='set stat ${stat}|0x1000'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x3off' label='X3 OFF'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}&amp;0xefff</text>
+        <statement format='set stat ${stat}&amp;0xefff'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x12on' label='X1 and X2 ON'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}|0x0011</text>
+        <statement format='set stat ${stat}|0x0011'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x12off' label='X1 and X2 OFF'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}&amp;0xffee</text>
+        <statement format='set stat ${stat}&amp;0xffee'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x34on' label='X3 and X4 ON'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}|0x1100</text>
+        <statement format='set stat ${stat}|0x1100'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
       <session id='x34off' label='X3 and X4 OFF'>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
-        <statement>
-          <text>set</text>
-          <text>stat</text>
-          <text>${stat}&amp;0xeeff</text>
+        <statement format='set stat ${stat}&amp;0xeeff'>
         </statement>
-        <statement>
-          <text>outfld</text>
+        <statement format='outfld'>
         </statement>
-        <statement>
-          <text>getstat</text>
+        <statement format='getstat'>
         </statement>
       </session>
     </commands>

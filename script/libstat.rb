@@ -32,7 +32,7 @@ class Stat < Hash
   end
 
   def subst(str)
-    return str unless /\${/ === str
+    return str unless /\$\{/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
       # output csv if array

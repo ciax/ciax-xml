@@ -3,8 +3,13 @@ require "optparse"
 require "rexml/document"
 include REXML
 
-# //xpath@attr <-> //xpath/attr.text()
-abort "Usage: a2e (-r) [xpath] [attr] < xml" if ARGV.size < 2
+if ARGV.size < 2
+  abort <<EOF
+Usage: a2e (-r) [xpath] [attr] < xml
+       //xpath@attr <-> //xpath/attr.text()
+EOF
+end
+
 
 xpath=ARGV.shift
 if /-r/ === xpath

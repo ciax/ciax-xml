@@ -67,7 +67,7 @@ class DevCmd
           @v.msg{"GetFrame:(repeat)[#{str}]"}
           str
         }.join(e1['delimiter'])
-      else
+      when 'data'
         frame << get_data(e1)
       end
     }

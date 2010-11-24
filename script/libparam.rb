@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 require 'libverbose'
-require 'libmodxml'
+require 'librerange'
 
 class Param < Array
-  include ModXml
 
   def initialize
     @v=Verbose.new("Parameter")
@@ -17,6 +16,7 @@ class Param < Array
         e1.each{|e2| #//par
           validate(e2,stm[i+=1])
         }
+        break
       end
     }
     replace(stm)
@@ -33,5 +33,22 @@ class Param < Array
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end
+  end
+
+  def validate(e,str)
+    label=e['label']
+    str || @v.err("Validate: Too Few Parameters(#{label})")
+    @v.msg{"Validate: String for [#{str}]"}
+    case e['validate']
+    when 'regexp'
+      @v.msg{"Validate: Match? [#{e.text}]"}
+      return(str) if /^#{e.text}$/ === str
+    when 'range'
+      e.text.split(',').each{|r|
+        @v.msg{"Validate: Match? [#{r}]"}
+        return(str) if ReRange.new(r) == str
+      }
+    end
+    @v.err("Validate: Parameter invalid(#{label})")
   end
 end

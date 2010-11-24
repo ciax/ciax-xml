@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 # XML Common Method
-require 'librerange'
 module ModXml
   # Instance variable: @v
 
@@ -41,23 +40,6 @@ module ModXml
       str=code
     end
     format(e,str)
-  end
-
-  def validate(e,str)
-    label=e['label']
-    str || @v.err("Validate: Too Few Parameters(#{label})")
-    @v.msg{"Validate: String for [#{str}]"}
-    if pattern=e['pattern']
-      @v.msg{"Validate: Match? [#{pattern}]"}
-      return(str) if /^#{pattern}$/ === str
-    end
-    if ranges=e['range']
-      ranges.split(',').each{|r|
-        @v.msg{"Validate: Match? [#{r}]"}
-        return(str) if ReRange.new(r) == str
-      }
-    end
-    @v.err("Validate: Parameter invalid(#{label})")
   end
 
   def format(e,code)

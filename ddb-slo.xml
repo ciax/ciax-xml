@@ -11,7 +11,7 @@
       </command>
       <command id='in' label='Input Status (1-5)' response='in' type='stat'>
         <parameters>
-          <par label='[1-5]' range='1:5'/>
+          <par label='[1-5]' validate='range'>1:5</par>
         </parameters>
         <data type='text'>in</data>
         <data format='(%d)' type='formula'>$1</data>
@@ -24,21 +24,21 @@
       </command>
       <command id='hl' label='Hard Limit ON/OFF' response='default' type='config'>
         <parameters>
-          <par label='[0,1]' pattern='[01]'/>
+          <par label='[0,1]' validate='regexp'>[01]</par>
         </parameters>
         <data type='text'>hl</data>
         <data type='formula'>$1</data>
       </command>
       <command id='e1' label='Event1 Enable/Disable' response='default' type='config'>
         <parameters>
-          <par label='[0,1]' pattern='[01]'/>
+          <par label='[0,1]' validate='regexp'>[01]</par>
         </parameters>
         <data type='text'>e1=</data>
         <data type='formula'>$1</data>
       </command>
       <command id='e2' label='Event2 Enable/Disable' response='default' type='config'>
         <parameters>
-          <par label='[0,1]' pattern='[01]'/>
+          <par label='[0,1]' validate='regexp'>[01]</par>
         </parameters>
         <data type='text'>e2=</data>
         <data type='formula'>$1</data>
@@ -48,7 +48,7 @@
       </command>
       <command id='setp' label='Set Pulse Number' response='default' type='config'>
         <parameters>
-          <par label='[0-999]' range='0:999'/>
+          <par label='[0-999]' validate='range'>0:999</par>
         </parameters>
         <data type='text'>p=</data>
         <data format='%5.2f' type='formula'>$1</data>
@@ -64,7 +64,7 @@
       </command>
       <command id='ma' label='Move Absolute Position' response='default' type='action'>
         <parameters>
-          <par label='[0-999]' range='0:999'/>
+          <par label='[0-999]' validate='range'>0:999</par>
         </parameters>
         <data type='text'>ma=</data>
         <data format='%3.1f' type='formula'>$1</data>

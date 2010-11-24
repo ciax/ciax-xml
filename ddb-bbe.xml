@@ -8,7 +8,7 @@
       </command>
       <command id='output' label='OUTPUT [DDDDD]' type='action'>
         <parameters>
-          <par label='[0-65535]' range='0:65535'/>
+          <par label='[0-65535]' validate='range'>0:65535</par>
         </parameters>
         <data type='text'>SO</data>
         <data encode='bew' type='formula'>$1</data>

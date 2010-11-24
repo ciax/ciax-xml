@@ -27,28 +27,28 @@
       </command>
       <command id='chkems' label='Check Emstop [1-6]' response='chkems' type='stat'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>=N</data>
       </command>
       <command id='chkpse' label='Check Power Stage Err [1-6]' response='chkpse' type='stat'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>=E</data>
       </command>
       <command id='chkrun' label='Check Run [1-6]' response='chkrun' type='stat'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>=H</data>
       </command>
       <command id='getp' label='Get pulse [1-6]' response='getp' type='stat'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>P21R</data>
@@ -69,7 +69,7 @@
       </command>
       <command id='getspd' label='Get speed [1-6]' response='getspd' type='stat'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>P14R</data>
@@ -90,7 +90,7 @@
       </command>
       <command id='getofs' label='Get Offset [1-6]' response='getofs' type='stat'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>P12R</data>
@@ -123,22 +123,22 @@
       </command>
       <command id='stop' label='Stop Moving [1-6]' response='default' type='action'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>S</data>
       </command>
       <command id='init' label='Initialize [1-6]' response='default' type='action'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>0</data>
       </command>
       <command id='fw' label='Move forward (8000/hole)' response='default' type='action'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
-          <par label='[0-192000]' range='0:192000'/>
+          <par label='[1-6]' validate='range'>1:6</par>
+          <par label='[0-192000]' validate='range'>0:192000</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>+</data>
@@ -146,8 +146,8 @@
       </command>
       <command id='bk' label='Move backward (8000/hole)' response='default' type='action'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
-          <par label='[0-192000]' range='0:192000'/>
+          <par label='[1-6]' validate='range'>1:6</par>
+          <par label='[0-192000]' validate='range'>0:192000</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>-</data>
@@ -155,8 +155,8 @@
       </command>
       <command id='abs' label='Move absolute pos [0-192000] (8000/hole)' response='default' type='action'>
         <parameters>
-          <par label='[1-6]' range='1:6'/>
-          <par label='[0-192000]' range='0:192000'/>
+          <par label='[1-6]' validate='range'>1:6</par>
+          <par label='[0-192000]' validate='range'>0:192000</par>
         </parameters>
         <data type='formula'>$1</data>
         <data type='text'>A</data>

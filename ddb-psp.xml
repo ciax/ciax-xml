@@ -8,28 +8,28 @@
       </command>
       <command id='setvl' label='Set Voltage Limit [DD]' type='config'>
         <parameters>
-          <par label='[0-20]' range='0:20'/>
+          <par label='[0-20]' validate='range'>0:20</par>
         </parameters>
         <data type='text'>SU </data>
         <data format='%02d' type='formula'>$1</data>
       </command>
       <command id='setal' label='Set Current Limit [D.DD]' type='config'>
         <parameters>
-          <par label='[0-9.99]' range='0:&lt;10'/>
+          <par label='[0-9.99]' validate='range'>0:&lt;10</par>
         </parameters>
         <data type='text'>SI </data>
         <data format='%04.2f' type='formula'>$1</data>
       </command>
       <command id='setpl' label='Set Power Limit [DDD]' type='config'>
         <parameters>
-          <par label='[0-200]' range='0:&lt;200'/>
+          <par label='[0-200]' validate='range'>0:&lt;200</par>
         </parameters>
         <data type='text'>SP </data>
         <data format='%03d' type='formula'>$1</data>
       </command>
       <command id='setv' label='Set Voltage [DD.DD]' type='config'>
         <parameters>
-          <par label='[0-99]' range='0:&lt;100'/>
+          <par label='[0-99]' validate='range'>0:&lt;100</par>
         </parameters>
         <data type='text'>SV </data>
         <data format='%05.2f' type='formula'>$1</data>

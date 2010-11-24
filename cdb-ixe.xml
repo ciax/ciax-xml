@@ -1,172 +1,172 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <class device="ixe" id="ixe" label="MOIRCS Turret">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <class device='ixe' id='ixe' label='MOIRCS Turret'>
     <commands>
-      <session id="upd" label="Update Status">
-        <statement format="getstat"></statement>
-        <repeat from="1" to="6">
-          <statement format="chkrun %d">
-            <argv formula="$_" />
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
+        <repeat from='1' to='6'>
+          <statement format='chkrun %d'>
+            <argv formula='$_'/>
           </statement>
-          <statement format="getp %d">
-            <argv formula="$_" />
+          <statement format='getp %d'>
+            <argv formula='$_'/>
           </statement>
-          <statement format="getspd %d">
-            <argv formula="$_" />
+          <statement format='getspd %d'>
+            <argv formula='$_'/>
           </statement>
-          <statement format="getofs %d">
-            <argv formula="$_" />
-          </statement>
-        </repeat>
-      </session>
-      <session id="sysinit" label="System Initialize">
-        <statement format="initrot"></statement>
-        <statement format="initunit"></statement>
-        <statement format="initfactor"></statement>
-      </session>
-      <session id="stop" label="Motor Stop [1-6]">
-        <parameters>
-          <par label="[1-6]" range="1:6"></par>
-        </parameters>
-        <statement format="stop %d">
-          <argv formula="$1" />
-        </statement>
-      </session>
-      <session id="speed" label="Set Speed [0-800]">
-        <parameters>
-          <par label="[0-800]" range="0:800"></par>
-        </parameters>
-        <repeat from="0" to="5">
-          <statement format="set spd:%d %d">
-            <argv formula="$_" />
-            <argv formula="$1" />
+          <statement format='getofs %d'>
+            <argv formula='$_'/>
           </statement>
         </repeat>
-        <statement format="setspd_a"></statement>
-        <statement format="setspd_b"></statement>
       </session>
-      <session id="resetp" label="Set 0 Pulses">
-        <repeat from="0" to="5">
-          <statement format="set p:%d 0">
-            <argv formula="$_" />
+      <session id='sysinit' label='System Initialize'>
+        <statement format='initrot'/>
+        <statement format='initunit'/>
+        <statement format='initfactor'/>
+      </session>
+      <session id='stop' label='Motor Stop [1-6]'>
+        <parameters>
+          <par label='[1-6]' validate='range'>1:6</par>
+        </parameters>
+        <statement format='stop %d'>
+          <argv formula='$1'/>
+        </statement>
+      </session>
+      <session id='speed' label='Set Speed [0-800]'>
+        <parameters>
+          <par label='[0-800]' validate='range'>0:800</par>
+        </parameters>
+        <repeat from='0' to='5'>
+          <statement format='set spd:%d %d'>
+            <argv formula='$_'/>
+            <argv formula='$1'/>
           </statement>
         </repeat>
-        <statement format="setp"></statement>
+        <statement format='setspd_a'/>
+        <statement format='setspd_b'/>
       </session>
-      <session id="backup" label="Backup Pulse,Speed,Offset">
-        <statement format="save p,spd,ofs"></statement>
-        <statement format="deact"></statement>
+      <session id='resetp' label='Set 0 Pulses'>
+        <repeat from='0' to='5'>
+          <statement format='set p:%d 0'>
+            <argv formula='$_'/>
+          </statement>
+        </repeat>
+        <statement format='setp'/>
       </session>
-      <session id="restore" label="Restore Pulse,Speed,Offset">
-        <statement format="act"></statement>
-        <statement format="load"></statement>
-        <statement format="setp_a"></statement>
-        <statement format="setp_b"></statement>
-        <statement format="setspd_a"></statement>
-        <statement format="setspd"></statement>
-        <statement format="setofs_a"></statement>
-        <statement format="setofs_b"></statement>
+      <session id='backup' label='Backup Pulse,Speed,Offset'>
+        <statement format='save p,spd,ofs'/>
+        <statement format='deact'/>
       </session>
-      <session id="upp" label="Update Pulse [1-6]">
+      <session id='restore' label='Restore Pulse,Speed,Offset'>
+        <statement format='act'/>
+        <statement format='load'/>
+        <statement format='setp_a'/>
+        <statement format='setp_b'/>
+        <statement format='setspd_a'/>
+        <statement format='setspd'/>
+        <statement format='setofs_a'/>
+        <statement format='setofs_b'/>
+      </session>
+      <session id='upp' label='Update Pulse [1-6]'>
         <parameters>
-          <par label="[1-6]" range="1:6"></par>
+          <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
-        <statement format="chkrun %d">
-          <argv formula="$1" />
+        <statement format='chkrun %d'>
+          <argv formula='$1'/>
         </statement>
-        <statement format="getp %d">
-          <argv formula="$1" />
+        <statement format='getp %d'>
+          <argv formula='$1'/>
         </statement>
       </session>
-      <session id="fw" label="Move Forward [1-6] [1-6(hole)]">
+      <session id='fw' label='Move Forward [1-6] [1-6(hole)]'>
         <parameters>
-          <par label="[1-6]" range="1:6"></par>
-          <par label="[1-6(hole)]" range="1:6"></par>
+          <par label='[1-6]' validate='range'>1:6</par>
+          <par label='[1-6(hole)]' validate='range'>1:6</par>
         </parameters>
-        <statement format="fw %d %d">
-          <argv formula="$1" />
-          <argv formula="$2 * 8000" />
+        <statement format='fw %d %d'>
+          <argv formula='$1'/>
+          <argv formula='$2 * 8000'/>
         </statement>
-        <statement format="chkrun %d">
-          <argv formula="$1" />
+        <statement format='chkrun %d'>
+          <argv formula='$1'/>
         </statement>
       </session>
-      <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
+      <session id='bk' label='Move Backward [1-6] [1-6(hole)]'>
         <parameters>
-          <par label="[1-6]" range="1:6"></par>
-          <par label="[1-6(hole)]" range="1:6"></par>
+          <par label='[1-6]' validate='range'>1:6</par>
+          <par label='[1-6(hole)]' validate='range'>1:6</par>
         </parameters>
-        <statement format="bk %d %d">
-          <argv formula="$1" />
-          <argv formula="$2 * 8000" />
+        <statement format='bk %d %d'>
+          <argv formula='$1'/>
+          <argv formula='$2 * 8000'/>
         </statement>
-        <statement format="chkrun %d">
-          <argv formula="$1" />
+        <statement format='chkrun %d'>
+          <argv formula='$1'/>
         </statement>
       </session>
-      <session id="abs" label="Move Absolute [1-6] [1-12(hole)]">
+      <session id='abs' label='Move Absolute [1-6] [1-12(hole)]'>
         <parameters>
-          <par label="[1-6]" range="1:6"></par>
-          <par label="[1-12(hole)]" range="1:12"></par>
+          <par label='[1-6]' validate='range'>1:6</par>
+          <par label='[1-12(hole)]' validate='range'>1:12</par>
         </parameters>
-        <statement format="abs %d %d">
-          <argv formula="$1" />
-          <argv formula="($2-1) * 8000" />
+        <statement format='abs %d %d'>
+          <argv formula='$1'/>
+          <argv formula='($2-1) * 8000'/>
         </statement>
-        <statement format="chkrun %d">
-          <argv formula="$1" />
+        <statement format='chkrun %d'>
+          <argv formula='$1'/>
         </statement>
       </session>
     </commands>
-    <watch interval="1">
-      <event label="Update Status">
-        <periodic period="3600" />
+    <watch interval='1'>
+      <event label='Update Status'>
+        <periodic period='3600'/>
         <command>upd</command>
       </event>
-      <repeat from="1" to="6">
-        <event blocking="(fw|bk) $_" interrupt="stop $_" label="Moving $_">
-          <while ref="r$_" val="N" />
+      <repeat from='1' to='6'>
+        <event blocking='(fw|bk) $_' interrupt='stop $_' label='Moving $_'>
+          <while ref='r$_' val='N'/>
           <command>upp $_</command>
         </event>
       </repeat>
     </watch>
     <status>
-      <value format="%s" id="rdy" label="Comm Ready">
-        <binary bit="0" ref="stat" />
+      <value format='%s' id='rdy' label='Comm Ready'>
+        <binary bit='0' ref='stat'/>
       </value>
-      <value format="%s" id="srq" label="SRQ">
-        <binary bit="1" ref="stat" />
+      <value format='%s' id='srq' label='SRQ'>
+        <binary bit='1' ref='stat'/>
       </value>
-      <value format="%s" id="pme" label="Program Error">
-        <binary bit="3" ref="stat" />
+      <value format='%s' id='pme' label='Program Error'>
+        <binary bit='3' ref='stat'/>
       </value>
-      <value format="%s" id="pse" label="Power Stage Error">
-        <binary bit="4" ref="stat" />
+      <value format='%s' id='pse' label='Power Stage Error'>
+        <binary bit='4' ref='stat'/>
       </value>
-      <value format="%s" id="oes" label="ONE EM Stop">
-        <binary bit="5" ref="stat" />
+      <value format='%s' id='oes' label='ONE EM Stop'>
+        <binary bit='5' ref='stat'/>
       </value>
-      <value format="%s" id="ees" label="EXT EM Stop">
-        <binary bit="6" ref="stat" />
+      <value format='%s' id='ees' label='EXT EM Stop'>
+        <binary bit='6' ref='stat'/>
       </value>
-      <value format="%s" id="trm" label="Terminal Mode">
-        <binary bit="2" ref="stat" />
+      <value format='%s' id='trm' label='Terminal Mode'>
+        <binary bit='2' ref='stat'/>
       </value>
-      <value format="%s" id="cmd" label="Computer Mode">
-        <binary bit="7" ref="stat" />
+      <value format='%s' id='cmd' label='Computer Mode'>
+        <binary bit='7' ref='stat'/>
       </value>
-      <repeat from="1" to="6">
-        <value format="%s" id="r$_" label="Running 1-6">
-          <string ref="run:$_-1" />
+      <repeat from='1' to='6'>
+        <value format='%s' id='r$_' label='Running 1-6'>
+          <string ref='run:$_-1'/>
         </value>
-        <value format="%d" id="p$_" label="Pulse 1-6">
-          <int ref="p:$_-1" />
+        <value format='%d' id='p$_' label='Pulse 1-6'>
+          <int ref='p:$_-1'/>
         </value>
-        <value format="%d" id="spd$_" label="Speed 1-6">
-          <int ref="spd:$_-1" />
+        <value format='%d' id='spd$_' label='Speed 1-6'>
+          <int ref='spd:$_-1'/>
         </value>
-        <value format="%d" id="ofs$_" label="Offset 1-6">
-          <int ref="ofs:$_-1" />
+        <value format='%d' id='ofs$_' label='Offset 1-6'>
+          <int ref='ofs:$_-1'/>
         </value>
       </repeat>
     </status>

@@ -13,7 +13,7 @@
       </command>
       <command id='fset' label='Multiple Forced Set [D*16]' response='fset' type='action'>
         <parameters>
-          <par label='[000..04(5)]' pattern='[45][045]+'/>
+          <par label='[000..04(5)]' validate='regexp'>[45][045]+</par>
         </parameters>
         <data label='Header Code' type='text'>FK</data>
         <data label='Operand' type='text'>CIO </data>

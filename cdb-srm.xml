@@ -1,68 +1,68 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <class device="srm" id="srm" label="CsEtr Controller">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <class device='srm' id='srm' label='CsEtr Controller'>
     <commands>
-      <session id="upd" label="Update Status">
-        <statement format="getstat"></statement>
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
       </session>
-      <session id="c3on" label="CIAX3 POWER ON">
-        <statement format="fset 5" label="Bit 0 on"></statement>
+      <session id='c3on' label='CIAX3 POWER ON'>
+        <statement format='fset 5' label='Bit 0 on'/>
       </session>
-      <session id="c3off" label="CIAX3 POWER OFF">
-        <statement format="fset 4" label="Bit 0 OFF"></statement>
+      <session id='c3off' label='CIAX3 POWER OFF'>
+        <statement format='fset 4' label='Bit 0 OFF'/>
       </session>
-      <session id="emon" label="CIAX3 EMERGENCY ON">
-        <statement format="fset 50" label="Bit 1 ON"></statement>
+      <session id='emon' label='CIAX3 EMERGENCY ON'>
+        <statement format='fset 50' label='Bit 1 ON'/>
       </session>
-      <session id="emoff" label="CIAX3 EMERGENCY OFF">
-        <statement format="fset 40" label="Bit 1 OFF"></statement>
+      <session id='emoff' label='CIAX3 EMERGENCY OFF'>
+        <statement format='fset 40' label='Bit 1 OFF'/>
       </session>
-      <session id="ccdon" label="CS CCD ON">
-        <statement format="fset 500" label="Bit 2 ON"></statement>
+      <session id='ccdon' label='CS CCD ON'>
+        <statement format='fset 500' label='Bit 2 ON'/>
       </session>
-      <session id="ccdoff" label="CS CCD OFF">
-        <statement format="fset 400" label="Bit 2 OFF"></statement>
+      <session id='ccdoff' label='CS CCD OFF'>
+        <statement format='fset 400' label='Bit 2 OFF'/>
       </session>
-      <session id="lanon" label="CS LAN ON">
-        <statement format="fset 5000" label="Bit 3 ON"></statement>
+      <session id='lanon' label='CS LAN ON'>
+        <statement format='fset 5000' label='Bit 3 ON'/>
       </session>
-      <session id="lanoff" label="CS LAN OFF">
-        <statement format="fset 4000" label="Bit 3 OFF"></statement>
+      <session id='lanoff' label='CS LAN OFF'>
+        <statement format='fset 4000' label='Bit 3 OFF'/>
       </session>
-      <session id="ipwon" label="CS IPW ON">
-        <statement format="fset 50000" label="Bit 4 ON"></statement>
+      <session id='ipwon' label='CS IPW ON'>
+        <statement format='fset 50000' label='Bit 4 ON'/>
       </session>
-      <session id="ipwoff" label="CS IPW OFF">
-        <statement format="fset 40000" label="Bit 4 OFF"></statement>
+      <session id='ipwoff' label='CS IPW OFF'>
+        <statement format='fset 40000' label='Bit 4 OFF'/>
       </session>
-      <session id="ston" label="STOW PIN ON">
-        <statement format="fset 500000" label="Bit 5 ON"></statement>
+      <session id='ston' label='STOW PIN ON'>
+        <statement format='fset 500000' label='Bit 5 ON'/>
       </session>
-      <session id="stoff" label="STOW PIN OFF">
-        <statement format="fset 400000" label="Bit 5 OFF"></statement>
+      <session id='stoff' label='STOW PIN OFF'>
+        <statement format='fset 400000' label='Bit 5 OFF'/>
       </session>
     </commands>
     <status>
-      <value format="%s" id="iid" label="CAS INST ID">
-        <string ref="c1d2" />
+      <value format='%s' id='iid' label='CAS INST ID'>
+        <string ref='c1d2'/>
       </value>
-      <value format="%s" id="ipw" label="CAS IPW">
-        <binary bit="0" ref="c1d1" />
+      <value format='%s' id='ipw' label='CAS IPW'>
+        <binary bit='0' ref='c1d1'/>
       </value>
-      <value format="%s" id="stp" label="STOW PIN">
-        <binary bit="1" ref="c1d1" />
+      <value format='%s' id='stp' label='STOW PIN'>
+        <binary bit='1' ref='c1d1'/>
       </value>
-      <value format="%s" id="ccd" label="CAS CCD PW">
-        <binary bit="2" ref="c1d0" />
+      <value format='%s' id='ccd' label='CAS CCD PW'>
+        <binary bit='2' ref='c1d0'/>
       </value>
-      <value format="%s" id="lan" label="CAS LAN PW">
-        <binary bit="3" ref="c1d0" />
+      <value format='%s' id='lan' label='CAS LAN PW'>
+        <binary bit='3' ref='c1d0'/>
       </value>
-      <value format="%s" id="c3p" label="CIAX3 PW">
-        <binary bit="0" ref="c1d0" />
+      <value format='%s' id='c3p' label='CIAX3 PW'>
+        <binary bit='0' ref='c1d0'/>
       </value>
-      <value format="%s" id="c3e" label="CIAX3 EMG">
-        <binary bit="1" ref="c1d0" />
+      <value format='%s' id='c3e' label='CIAX3 EMG'>
+        <binary bit='1' ref='c1d0'/>
       </value>
     </status>
   </class>

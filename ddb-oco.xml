@@ -8,7 +8,7 @@
       </command>
       <command id='i' label='Set Current by argv [DD.DD]' type='action'>
         <parameters>
-          <par label='[0-99.99]' range='0:99'/>
+          <par label='[0-99.99]' validate='range'>0:99</par>
         </parameters>
         <data type='text'>1AO+000</data>
         <data format='%05.2f' type='formula'>$1</data>

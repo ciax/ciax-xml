@@ -52,7 +52,7 @@
       </command>
       <command id='setinst' label='Set Instrument ID [0-12]' response='exit' type='config'>
         <parameters>
-          <par label='Inst ID [0-12]' range='1:12'/>
+          <par label='Inst ID [0-12]' validate='range'>1:12</par>
         </parameters>
         <data type='text'>OSST_ciaxTSCcommand 10 &apos;EXEC TSC NATIVE CMD=&quot;cccccc</data>
         <data type='text'>13200700</data>
@@ -61,7 +61,7 @@
       </command>
       <command id='config' label='Execute Config Command [code]' response='exit'>
         <parameters>
-          <par label='Command Code' pattern='.+'/>
+          <par label='Command Code' validate='regexp'>.+</par>
         </parameters>
         <data type='text'>OSST_ciaxTSCcommand 10 &apos;EXEC TSC NATIVE CMD=&quot;cccccc</data>
         <data type='formula'>$1</data>
@@ -69,7 +69,7 @@
       </command>
       <command id='ossact' label='Execute Action Command [code]' response='exit' type='action'>
         <parameters>
-          <par label='Command Code' pattern='.+'/>
+          <par label='Command Code' validate='regexp'>.+</par>
         </parameters>
         <data type='text'>ossact</data>
         <data type='formula'>$1</data>

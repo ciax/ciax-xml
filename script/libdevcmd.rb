@@ -76,11 +76,8 @@ class DevCmd
 
   def get_data(e)
     frame=''
-    str=e['text']
+    str=e.text
     case e['type']
-    when 'text'
-      @v.msg{"GetFrame:#{e['label']}[#{str}]"}
-      frame << encode(e,str)
     when 'formula'
       [@rep,@par,@stat].each{|s|
         str=s.subst(str)
@@ -96,6 +93,9 @@ class DevCmd
         frame << encode(e,s)
         @v.msg{"GetFrame:(csv)[#{s}]"}
       }
+    else
+      @v.msg{"GetFrame:#{e['label']}[#{str}]"}
+      frame << encode(e,str)
     end
     frame
   end

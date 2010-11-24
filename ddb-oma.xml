@@ -4,13 +4,13 @@
     <serial databit='8' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
     <cmdselect>
       <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data text='00P1' type='text'/>
+        <data type='text'>00P1</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <data label='Prefix' text='*' type='text'/>
+      <data label='Prefix' type='text'>*</data>
       <selected/>
-      <data encode='chr' label='Suffix' text='0xd' type='text'/>
+      <data encode='chr' label='Suffix' type='text'>0xd</data>
     </cmdframe>
     <rspselect>
       <response id='getstat'>

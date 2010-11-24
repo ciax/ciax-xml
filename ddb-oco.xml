@@ -1,32 +1,32 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="oco" label="OMEGA Current Output(D4251)" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf" wait="1">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='oco' label='OMEGA Current Output(D4251)' reference='http://www.omega.com/manuals/manualpdf/M1552.pdf' wait='1'>
+    <serial databit='8' flowctl='NONE' parity='NONE' speed='300' stopbit='1'/>
     <cmdselect>
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
-        <data text="1RD" type="text" />
+      <command id='getstat' label='Get Status' response='getstat' type='stat'>
+        <data type='text'>1RD</data>
       </command>
-      <command id="i" label="Set Current by argv [DD.DD]" type="action">
+      <command id='i' label='Set Current by argv [DD.DD]' type='action'>
         <parameters>
-          <par label="[0-99.99]" range="0:99"></par>
+          <par label='[0-99.99]' range='0:99'/>
         </parameters>
-        <data text="1AO+000" type="text" />
-        <data format="%05.2f" text="$1" type="formula" />
+        <data type='text'>1AO+000</data>
+        <data format='%05.2f' type='formula'>$1</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <data label="Prefix" text="$" type="text" />
-      <selected />
-      <data encode="chr" label="Suffix" text="0xd" type="text" />
+      <data label='Prefix' type='text'>$</data>
+      <selected/>
+      <data encode='chr' label='Suffix' type='text'>0xd</data>
     </cmdframe>
     <rspselect>
-      <response id="getstat">
-        <field assign="crnt" length="9" />
+      <response id='getstat'>
+        <field assign='crnt' length='9'/>
       </response>
     </rspselect>
     <rspframe>
-      <field length="1" verify="*" />
-      <selected />
+      <field length='1' verify='*'/>
+      <selected/>
     </rspframe>
   </device>
 </ddb>

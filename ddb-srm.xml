@@ -1,65 +1,65 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="srm" label="OMRON SRM1" wait="0.3">
-    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='srm' label='OMRON SRM1' wait='0.3'>
+    <serial databit='7' flowctl='NONE' parity='EVEN' speed='9600' stopbit='1'/>
     <cmdselect>
-      <command id="getmodel" label="Get Model Code" response="getmodel" type="stat">
-        <data label="Header Code" text="MM" type="text" />
+      <command id='getmodel' label='Get Model Code' response='getmodel' type='stat'>
+        <data label='Header Code' type='text'>MM</data>
       </command>
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
-        <data label="Header Code" text="RR" type="text" />
-        <data label="Start Channel" text="0000" type="text" />
-        <data label="length" text="0001" type="text" />
+      <command id='getstat' label='Get Status' response='getstat' type='stat'>
+        <data label='Header Code' type='text'>RR</data>
+        <data label='Start Channel' type='text'>0000</data>
+        <data label='length' type='text'>0001</data>
       </command>
-      <command id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
+      <command id='fset' label='Multiple Forced Set [D*16]' response='fset' type='action'>
         <parameters>
-          <par label="[000..04(5)]" pattern="[45][045]+"></par>
+          <par label='[000..04(5)]' pattern='[45][045]+'/>
         </parameters>
-        <data label="Header Code" text="FK" type="text" />
-        <data label="Operand" text="CIO " type="text" />
-        <data label="Channel" text="0000" type="text" />
-        <data format="%016d" text="$1" type="formula" />
+        <data label='Header Code' type='text'>FK</data>
+        <data label='Operand' type='text'>CIO </data>
+        <data label='Channel' type='text'>0000</data>
+        <data format='%016d' type='formula'>$1</data>
       </command>
     </cmdselect>
-    <cmdccrange method="bcc">
-      <data label="Prefix" text="@" type="text" />
-      <data label="Device No." text="00" type="text" />
-      <selected />
+    <cmdccrange method='bcc'>
+      <data label='Prefix' type='text'>@</data>
+      <data label='Device No.' type='text'>00</data>
+      <selected/>
     </cmdccrange>
     <cmdframe>
-      <ccrange />
-      <data format="%02X" text="${cc}" type="formula" />
-      <data label="Suffix" text="*" type="text" />
-      <data encode="chr" label="Delimiter" text="0xd" type="text" />
+      <ccrange/>
+      <data format='%02X' type='formula'>${cc}</data>
+      <data label='Suffix' type='text'>*</data>
+      <data encode='chr' label='Delimiter' type='text'>0xd</data>
     </cmdframe>
     <rspselect>
-      <response id="getmodel">
-        <field label="Command Code" length="4" verify="00MM" />
-        <field label="Response Code" length="2" verify="00" />
-        <field assign="model" label="Model Number" length="2" />
+      <response id='getmodel'>
+        <field label='Command Code' length='4' verify='00MM'/>
+        <field label='Response Code' length='2' verify='00'/>
+        <field assign='model' label='Model Number' length='2'/>
       </response>
-      <response id="getstat">
-        <field label="Command Code" length="4" verify="00RR" />
-        <field label="Response Code" length="2" verify="00" />
+      <response id='getstat'>
+        <field label='Command Code' length='4' verify='00RR'/>
+        <field label='Response Code' length='2' verify='00'/>
         <!--Big endian-->
-        <field assign="c1d3" label="CH1 bit12-15" length="1" />
-        <field assign="c1d2" label="CH1 bit8-11" length="1" />
-        <field assign="c1d1" label="CH1 bit4-7" length="1" />
-        <field assign="c1d0" label="CH1 bit0-3" length="1" />
+        <field assign='c1d3' label='CH1 bit12-15' length='1'/>
+        <field assign='c1d2' label='CH1 bit8-11' length='1'/>
+        <field assign='c1d1' label='CH1 bit4-7' length='1'/>
+        <field assign='c1d0' label='CH1 bit0-3' length='1'/>
       </response>
-      <response id="fset">
-        <field label="Command Code" length="4" verify="00FK" />
-        <field label="Exit Code" length="2" verify="00" />
+      <response id='fset'>
+        <field label='Command Code' length='4' verify='00FK'/>
+        <field label='Exit Code' length='2' verify='00'/>
       </response>
     </rspselect>
-    <rspccrange method="bcc">
-      <field label="Prefix" length="1" verify="@" />
-      <selected />
+    <rspccrange method='bcc'>
+      <field label='Prefix' length='1' verify='@'/>
+      <selected/>
     </rspccrange>
     <rspframe>
-      <ccrange />
-      <field assign="cc" decode="hexstr" label="BCC" length="2" />
-      <field label="Terminater" length="1" verify="*" />
+      <ccrange/>
+      <field assign='cc' decode='hexstr' label='BCC' length='2'/>
+      <field label='Terminater' length='1' verify='*'/>
     </rspframe>
   </device>
 </ddb>

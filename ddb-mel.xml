@@ -3,125 +3,125 @@
   <device id='mel' label='MELSEC Q Series'>
     <cmdselect>
       <command id='chken' label='Check Enable Flag' response='chken' type='stat'>
-        <data encode='lew' label='Read region command' text='0x401' type='text'/>
-        <data encode='lew' label='Read region subcommand' text='0' type='text'/>
-        <data encode='lew' label='Start Address' text='0x20' type='text'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='1' type='text'/>
+        <data encode='lew' label='Read region command' type='text'>0x401</data>
+        <data encode='lew' label='Read region subcommand' type='text'>0</data>
+        <data encode='lew' label='Start Address' type='text'>0x20</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>1</data>
       </command>
       <command id='getstat' label='Get all status' response='getstat' type='stat'>
-        <data encode='lew' label='Read region command' text='0x401' type='text'/>
-        <data encode='lew' label='Read region subcommand' text='0' type='text'/>
-        <data encode='lew' label='Start Address' text='0' type='text'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='52' type='text'/>
+        <data encode='lew' label='Read region command' type='text'>0x401</data>
+        <data encode='lew' label='Read region subcommand' type='text'>0</data>
+        <data encode='lew' label='Start Address' type='text'>0</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>52</data>
       </command>
       <command id='set_tag' label='Set Tag to Run [1-12,98,99]' response='cmdrsp' type='config'>
         <parameters>
           <par label='[1-12,98,99]' range='1:12,98,99'/>
         </parameters>
-        <data encode='lew' label='Write region command' text='0x1401' type='text'/>
-        <data encode='lew' label='Write region subcommand' text='0' type='text'/>
-        <data encode='lew' label='Start Address' text='0x101' type='text'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='1' type='text'/>
-        <data encode='lew' text='$1' type='formula'/>
+        <data encode='lew' label='Write region command' type='text'>0x1401</data>
+        <data encode='lew' label='Write region subcommand' type='text'>0</data>
+        <data encode='lew' label='Start Address' type='text'>0x101</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>1</data>
+        <data encode='lew' type='formula'>$1</data>
       </command>
       <command id='set_pos' label='Set Pos to Jack [1-5]' response='cmdrsp' type='config'>
         <parameters>
           <par label='[1-5]' range='1:5'/>
         </parameters>
-        <data encode='lew' label='Write region command' text='0x1401' type='text'/>
-        <data encode='lew' label='Write region subcommand' text='0' type='text'/>
-        <data encode='lew' label='Start Address' text='0x103' type='text'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='1' type='text'/>
-        <data encode='lew' text='1 &lt;&lt; ($1-1)' type='formula'/>
+        <data encode='lew' label='Write region command' type='text'>0x1401</data>
+        <data encode='lew' label='Write region subcommand' type='text'>0</data>
+        <data encode='lew' label='Start Address' type='text'>0x103</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>1</data>
+        <data encode='lew' type='formula'>1 &lt;&lt; ($1-1)</data>
       </command>
       <command id='start' label='Start Trigger [b0=run,b8=jak,b15=chg]' response='cmdrsp' type='action'>
         <parameters>
           <par label='[1,256,32768]' range='1,256,32768'/>
         </parameters>
-        <data encode='lew' label='Write region command' text='0x1401' type='text'/>
-        <data encode='lew' label='Write region subcommand' text='0' type='text'/>
-        <data encode='lew' label='Start Address' text='0x102' type='text'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='1' type='text'/>
-        <data encode='lew' text='$1' type='formula'/>
+        <data encode='lew' label='Write region command' type='text'>0x1401</data>
+        <data encode='lew' label='Write region subcommand' type='text'>0</data>
+        <data encode='lew' label='Start Address' type='text'>0x102</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>1</data>
+        <data encode='lew' type='formula'>$1</data>
       </command>
       <command id='stop' label='Stop Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]' response='cmdrsp' type='action'>
         <parameters>
           <par label='[0-7]' range='0:7'/>
         </parameters>
-        <data encode='lew' label='Write region command' text='0x1401' type='text'/>
-        <data encode='lew' label='Write region subcommand' text='0' type='text'/>
-        <data encode='lew' label='Start Address' text='0x100' type='text'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='1' type='text'/>
-        <data encode='lew' text='1 &lt;&lt; ($1-1)' type='formula'/>
+        <data encode='lew' label='Write region command' type='text'>0x1401</data>
+        <data encode='lew' label='Write region subcommand' type='text'>0</data>
+        <data encode='lew' label='Start Address' type='text'>0x100</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>1</data>
+        <data encode='lew' type='formula'>1 &lt;&lt; ($1-1)</data>
       </command>
       <command id='clear' label='Clear Action Flags' response='cmdrsp' type='config'>
-        <data encode='lew' label='Write region command' text='0x1401' type='text'/>
-        <data encode='lew' label='Write region subcommand' text='0' type='text'/>
-        <data encode='lew' label='Start Address' text='0x100' type='text'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='4' type='text'/>
-        <data encode='lew' label='Data' text='0' type='text'/>
-        <data encode='lew' label='Data' text='0' type='text'/>
-        <data encode='lew' label='Data' text='0' type='text'/>
-        <data encode='lew' label='Data' text='0' type='text'/>
+        <data encode='lew' label='Write region command' type='text'>0x1401</data>
+        <data encode='lew' label='Write region subcommand' type='text'>0</data>
+        <data encode='lew' label='Start Address' type='text'>0x100</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>4</data>
+        <data encode='lew' label='Data' type='text'>0</data>
+        <data encode='lew' label='Data' type='text'>0</data>
+        <data encode='lew' label='Data' type='text'>0</data>
+        <data encode='lew' label='Data' type='text'>0</data>
       </command>
       <command id='get_tbl' label='Get Jack Table [Tag=0-5] [JK=0-3]' response='get_tbl' type='stat'>
         <parameters>
           <par label='Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm' range='0:5'/>
           <par label='Jack 0=JK1,4=JK2,8=JK3,12=JK4' range='0:3'/>
         </parameters>
-        <data encode='lew' label='Read region command' text='0x401' type='text'/>
-        <data encode='lew' label='Read region subcommand' text='0' type='text'/>
-        <data encode='chr' label='Jack Num' text='$2 * 4' type='formula'/>
-        <data encode='chr' label='Tag Num' text='$1 + 2' type='formula'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='0x2ch' type='text'/>
+        <data encode='lew' label='Read region command' type='text'>0x401</data>
+        <data encode='lew' label='Read region subcommand' type='text'>0</data>
+        <data encode='chr' label='Jack Num' type='formula'>$2 * 4</data>
+        <data encode='chr' label='Tag Num' type='formula'>$1 + 2</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>0x2ch</data>
       </command>
       <command id='set_tbl' label='Set Jack Table from Field [Tag=0-5] [JK=0-3]' nocache='true' response='cmdrsp' type='config'>
         <parameters>
           <par label='Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm' range='0:5'/>
           <par label='Jack 0=JK1,4=JK2,8=JK3,12=JK4' range='0:3'/>
         </parameters>
-        <data encode='lew' label='Write region command' text='0x1401' type='text'/>
-        <data encode='lew' label='Write region subcommand' text='0' type='text'/>
-        <data encode='chr' label='Jack Num' text='$2 * 4' type='formula'/>
-        <data encode='chr' label='Tag Num' text='$1 + 2' type='formula'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='0x2ch' type='text'/>
-        <data encode='lew' text='${t:$1:$2}' type='csv'/>
+        <data encode='lew' label='Write region command' type='text'>0x1401</data>
+        <data encode='lew' label='Write region subcommand' type='text'>0</data>
+        <data encode='chr' label='Jack Num' type='formula'>$2 * 4</data>
+        <data encode='chr' label='Tag Num' type='formula'>$1 + 2</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>0x2ch</data>
+        <data encode='lew' type='csv'>${t:$1:$2}</data>
       </command>
       <command id='rw_tbl' label='Read/Write Jack Table [1=Read,2=Write]' response='cmdrsp' type='config'>
         <parameters>
           <par label='[1,2]' range='0:2'/>
         </parameters>
-        <data encode='lew' label='Write region command' text='0x1401' type='text'/>
-        <data encode='lew' label='Write region subcommand' text='0' type='text'/>
-        <data encode='lew' label='Start Address' text='0x7ff' type='text'/>
-        <data encode='lew' label='Device Code' text='0xB400' type='text'/>
-        <data encode='lew' label='Data Length' text='1' type='text'/>
-        <data encode='lew' label='Parameter' text='$1' type='formula'/>
+        <data encode='lew' label='Write region command' type='text'>0x1401</data>
+        <data encode='lew' label='Write region subcommand' type='text'>0</data>
+        <data encode='lew' label='Start Address' type='text'>0x7ff</data>
+        <data encode='lew' label='Device Code' type='text'>0xB400</data>
+        <data encode='lew' label='Data Length' type='text'>1</data>
+        <data encode='lew' label='Parameter' type='formula'>$1</data>
       </command>
     </cmdselect>
     <cmdccrange method='len'>
-      <data encode='lew' label='Q Header: CPU Watch Timer' text='1' type='text'/>
+      <data encode='lew' label='Q Header: CPU Watch Timer' type='text'>1</data>
       <selected/>
     </cmdccrange>
     <cmdframe>
-      <data encode='lew' label='SubHeader: Prefix' text='0x54' type='text'/>
-      <data label='SubHeader: Serial Number' text='XX' type='text'/>
-      <data encode='lew' label='SubHeader: Fixed Number' text='0' type='text'/>
-      <data encode='chr' label='Q Header: Network Number' text='0' type='text'/>
-      <data encode='chr' label='Q Header: PC Number' text='0xFF' type='text'/>
-      <data encode='lew' label='Q Header: Request Unit I/O Number' text='0x3FF' type='text'/>
-      <data encode='chr' label='Q Header: Request Unit Station Number' text='0' type='text'/>
-      <data encode='chr' label='Q Header: Send Data Length MSB' text='${cc}' type='formula'/>
-      <data encode='chr' label='Q Header: Send Data Length LSB' text='0' type='text'/>
+      <data encode='lew' label='SubHeader: Prefix' type='text'>0x54</data>
+      <data label='SubHeader: Serial Number' type='text'>XX</data>
+      <data encode='lew' label='SubHeader: Fixed Number' type='text'>0</data>
+      <data encode='chr' label='Q Header: Network Number' type='text'>0</data>
+      <data encode='chr' label='Q Header: PC Number' type='text'>0xFF</data>
+      <data encode='lew' label='Q Header: Request Unit I/O Number' type='text'>0x3FF</data>
+      <data encode='chr' label='Q Header: Request Unit Station Number' type='text'>0</data>
+      <data encode='chr' label='Q Header: Send Data Length MSB' type='formula'>${cc}</data>
+      <data encode='chr' label='Q Header: Send Data Length LSB' type='text'>0</data>
       <ccrange/>
     </cmdframe>
     <rspselect>

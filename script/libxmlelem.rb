@@ -52,8 +52,9 @@ class XmlElem
   def list
     inject(''){|msg,e|
       if e['id'] && e['label']
-        msg + " %-10s: %s\n" % [e['id'],e['label']]
+        msg << " %-10s: %s\n" % [e['id'],e['label']]
       end
+      msg
     }
   end
 end

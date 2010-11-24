@@ -1,15 +1,13 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
-#objects=${1:-cf1 crt det dts cci mh1 mt3 mix map mma ml1};shift
-objects=${1:-`cd ~/ciax-xml;ls odb-*.xml`};shift
+devices=${1:-`ls ~/.var/status_???.json|cut -d_ -f2|cut -d. -f1`};shift
 cmd=${1:-upd};shift
 par="$*"
-for obj in $objects; do
-    obj=${obj%.*}
-    obj=${obj#*-}
-    echo "#### $obj ####"
-    output=$HOME/.var/status_$obj.json
+for id in $devices; do
+    setfld $id || _usage_key
+    echo "#### $obj($id) ####"
+    output=$HOME/.var/status_$id.json
     VER=${VER:-exec} objcmd $obj $cmd $par
     [ $cmd = 'upd' ] &&
-    <$output objstat
+    <$output objstat $obj
 done

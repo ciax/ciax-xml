@@ -48,6 +48,8 @@ class Param < Array
         @v.msg{"Validate: Match? [#{r}]"}
         return(str) if ReRange.new(r) == str
       }
+    else
+      return(str)
     end
     @v.err("Validate: Parameter invalid(#{label})")
   end

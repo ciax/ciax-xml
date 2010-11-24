@@ -37,7 +37,7 @@ class ClsCmd
         argv=[]
         begin
           e1.each{|e2| # //argv
-            str=e2['formula']
+            str=e2.text
             [@rep,@par].each{|s|
               str=s.subst(str)
             }

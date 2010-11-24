@@ -16,7 +16,7 @@
           <par validate='range'>0:50</par>
         </parameters>
         <statement format='setv %d'>
-          <argv formula='$1'/>
+          <argv>$1</argv>
         </statement>
         <statement format='getstat'/>
       </session>
@@ -25,7 +25,7 @@
           <par validate='range'>0:100</par>
         </parameters>
         <statement format='setv %5.2f'>
-          <argv formula='Math.sqrt($1*26)'/>
+          <argv>Math.sqrt($1*26)</argv>
         </statement>
         <statement format='getstat'/>
       </session>

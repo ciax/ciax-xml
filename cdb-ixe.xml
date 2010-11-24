@@ -6,16 +6,16 @@
         <statement format='getstat'/>
         <repeat from='1' to='6'>
           <statement format='chkrun %d'>
-            <argv formula='$_'/>
+            <argv>$_</argv>
           </statement>
           <statement format='getp %d'>
-            <argv formula='$_'/>
+            <argv>$_</argv>
           </statement>
           <statement format='getspd %d'>
-            <argv formula='$_'/>
+            <argv>$_</argv>
           </statement>
           <statement format='getofs %d'>
-            <argv formula='$_'/>
+            <argv>$_</argv>
           </statement>
         </repeat>
       </session>
@@ -29,7 +29,7 @@
           <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <statement format='stop %d'>
-          <argv formula='$1'/>
+          <argv>$1</argv>
         </statement>
       </session>
       <session id='speed' label='Set Speed [0-800]'>
@@ -38,8 +38,8 @@
         </parameters>
         <repeat from='0' to='5'>
           <statement format='set spd:%d %d'>
-            <argv formula='$_'/>
-            <argv formula='$1'/>
+            <argv>$_</argv>
+            <argv>$1</argv>
           </statement>
         </repeat>
         <statement format='setspd_a'/>
@@ -48,7 +48,7 @@
       <session id='resetp' label='Set 0 Pulses'>
         <repeat from='0' to='5'>
           <statement format='set p:%d 0'>
-            <argv formula='$_'/>
+            <argv>$_</argv>
           </statement>
         </repeat>
         <statement format='setp'/>
@@ -72,10 +72,10 @@
           <par label='[1-6]' validate='range'>1:6</par>
         </parameters>
         <statement format='chkrun %d'>
-          <argv formula='$1'/>
+          <argv>$1</argv>
         </statement>
         <statement format='getp %d'>
-          <argv formula='$1'/>
+          <argv>$1</argv>
         </statement>
       </session>
       <session id='fw' label='Move Forward [1-6] [1-6(hole)]'>
@@ -84,11 +84,11 @@
           <par label='[1-6(hole)]' validate='range'>1:6</par>
         </parameters>
         <statement format='fw %d %d'>
-          <argv formula='$1'/>
-          <argv formula='$2 * 8000'/>
+          <argv>$1</argv>
+          <argv>$2 * 8000</argv>
         </statement>
         <statement format='chkrun %d'>
-          <argv formula='$1'/>
+          <argv>$1</argv>
         </statement>
       </session>
       <session id='bk' label='Move Backward [1-6] [1-6(hole)]'>
@@ -97,11 +97,11 @@
           <par label='[1-6(hole)]' validate='range'>1:6</par>
         </parameters>
         <statement format='bk %d %d'>
-          <argv formula='$1'/>
-          <argv formula='$2 * 8000'/>
+          <argv>$1</argv>
+          <argv>$2 * 8000</argv>
         </statement>
         <statement format='chkrun %d'>
-          <argv formula='$1'/>
+          <argv>$1</argv>
         </statement>
       </session>
       <session id='abs' label='Move Absolute [1-6] [1-12(hole)]'>
@@ -110,11 +110,11 @@
           <par label='[1-12(hole)]' validate='range'>1:12</par>
         </parameters>
         <statement format='abs %d %d'>
-          <argv formula='$1'/>
-          <argv formula='($2-1) * 8000'/>
+          <argv>$1</argv>
+          <argv>($2-1) * 8000</argv>
         </statement>
         <statement format='chkrun %d'>
-          <argv formula='$1'/>
+          <argv>$1</argv>
         </statement>
       </session>
     </commands>

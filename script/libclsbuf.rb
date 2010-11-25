@@ -26,8 +26,8 @@ class ClsBuf < Array
   def push(cmd)
     super
     @v.msg{"Issued"}
-    return if @wait
-    flush
+    flush unless @wait
+    self
   end
 
   def wait_for(timeout=10) # Need Block of boolean
@@ -68,5 +68,6 @@ class ClsBuf < Array
     end
     @wait=nil
     @v.msg{"Sent" }
+    self
   end
 end

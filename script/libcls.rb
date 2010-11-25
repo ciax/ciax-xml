@@ -38,9 +38,12 @@ class Cls
     @stat.stat
   end
 
-  def dispatch(stm)
+  def err?
     raise $errmsg.slice!(0..-1) unless $errmsg.empty?
-    return if stm.empty?
+  end
+
+  def dispatch(stm)
+    return nil if stm.empty?
     return "Blocking" if @event.blocking?(stm)
     stm=yield stm
     @cmd.setcmd(stm)

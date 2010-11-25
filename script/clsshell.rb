@@ -12,6 +12,7 @@ cdb=Cls.new(cls,id,iocmd)
 loop {
   begin
     if line=Readline.readline(cdb.prompt,true)
+      cdb.err?
       case line
       when /^q/
         break

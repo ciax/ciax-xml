@@ -158,8 +158,8 @@ class DevRsp
 
   def cut_frame(e0)
     if @fp >= @frame.size
-      @v.err("No more string in frame") if @fary.empty?
-      @frame=@fary.shift
+#      @v.err("No more string in frame") if @fary.empty?
+      @frame=@fary.shift||''
       @fp=0
     end
     len=e0['length']||@frame.size

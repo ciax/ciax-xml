@@ -1,5 +1,5 @@
 #!/bin/bash
-for obj in ${*:-mma mix crt ml1 dts} ; do
+for obj in ${*:-mma mix crt ml1 dts dt2} ; do
     yes|exddb $obj getstat
     case $obj in
         mma)
@@ -19,7 +19,7 @@ for obj in ${*:-mma mix crt ml1 dts} ; do
                     yes|exddb crt get_tbl $i $j
                 done
             done;;
-        dts)
+        dt*)
             for i in get ist jak inr log; do
                 yes|exddb dts ${i}stat
             done;;

@@ -86,7 +86,6 @@
         <xsd:extension base="xsd:string">
           <xsd:attribute name="ref" type="xsd:string" use="required" />
           <xsd:attribute name="symbol" type="xsd:string" />
-          <xsd:attribute name="level" type="xsd:string" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

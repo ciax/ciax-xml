@@ -51,7 +51,6 @@ class ObjStat
     st['val']=@value[ref]
     @v.msg{"STAT:GetStatus:#{ref}=[#{st['val']}]"}
     st.update(@sym.get_symbol(var['symbol'],st['val']))
-    st.update(@sym.get_level(var['level'],st['val']))
     @stat[ref]=st
   end
 

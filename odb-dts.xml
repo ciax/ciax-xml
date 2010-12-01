@@ -14,7 +14,7 @@
         <title ref="login" symbol="login">Login Status</title>
       </group>
       <group label="">
-        <title ref="rpw" level="oss:rpw">ROT DRIVE</title>
+        <title ref="rpw" symbol="oss:rpw">ROT DRIVE</title>
         <title ref="jpw" symbol="normal">JAK DRIVE</title>
         <title ref="nfb" symbol="alarm">BOLT NFB TRIP</title>
         <title ref="rps" symbol="oss:rps">ROT POS SENSOR</title>

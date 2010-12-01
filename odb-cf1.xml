@@ -12,7 +12,7 @@
         <title ref="ecode" symbol="k3n:ecode">Exit Code</title>
       </group>
       <group>
-        <title ref="flow" level="k3n:flow">CS-2(S1) Coolant Flow(l/min)</title>
+        <title ref="flow" symbol="k3n:flow">CS-2(S1) Coolant Flow(l/min)</title>
       </group>
     </status>
   </object>

@@ -4,50 +4,39 @@
   <xsd:element name="sdb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="sdb:status" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="sdb:status" minOccurs="1" maxOccurs="1" />
       </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="status">
+    <xsd:complexType>
+      <xsd:choice maxOccurs="unbounded">
+        <xsd:element ref="sdb:symbol" />
+      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="id" type="xsd:string" use="optional" />
     <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
-  <xsd:element name="status">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="sdb:symbols" minOccurs="0" maxOccurs="1" />
-        <xsd:element ref="sdb:levels" minOccurs="1" maxOccurs="1" />
-      </xsd:sequence>
-      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
-    </xsd:complexType>
-  </xsd:element>
   <!--symbol-->
-  <xsd:element name="symbols">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="sdb:symbol" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
   <xsd:element name="symbol">
     <xsd:complexType>
-      <xsd:choice minOccurs="0">
-        <xsd:element ref="sdb:enum" minOccurs="1" maxOccurs="unbounded" />
+      <xsd:choice maxOccurs="unbounded">
+        <xsd:element ref="sdb:enum" />
+        <xsd:element ref="sdb:range" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="enum">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="sdb:case" minOccurs="1" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="type">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="ENUM"></xsd:enumeration>
-            <xsd:enumeration value="FLOAT" />
-            <xsd:enumeration value="INT" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="symbol_attr">
-    <xsd:attribute name="msg" type="xsd:string" use="required" />
     <xsd:attribute name="hl" use="required">
       <xsd:simpleType>
         <xsd:restriction base="xsd:string">
@@ -58,34 +47,18 @@
         </xsd:restriction>
       </xsd:simpleType>
     </xsd:attribute>
+    <xsd:attribute name="msg" type="xsd:string" use="required" />
   </xsd:attributeGroup>
-  <xsd:element name="enum">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attributeGroup ref="sdb:symbol_attr" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
   <!--cases-->
-  <xsd:element name="levels">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="sdb:level" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="level">
+  <xsd:element name="range">
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element ref="sdb:range" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="sdb:case" minOccurs="1" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="type">
         <xsd:simpleType>
           <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="ENUM"></xsd:enumeration>
             <xsd:enumeration value="FLOAT" />
             <xsd:enumeration value="INT" />
           </xsd:restriction>
@@ -93,10 +66,10 @@
       </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="range">
+  <xsd:element name="case">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="sdb:rerange">
+        <xsd:extension base="xsd:string">
           <xsd:attributeGroup ref="sdb:symbol_attr" />
         </xsd:extension>
       </xsd:simpleContent>

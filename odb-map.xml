@@ -8,7 +8,7 @@
     </comm>
     <status>
       <group>
-        <title ref="pres" level="oma:pres">Air Pressure (Psi)</title>
+        <title ref="pres" symbol="oma:pres">Air Pressure (Psi)</title>
       </group>
     </status>
   </object>

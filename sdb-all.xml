@@ -1,190 +1,177 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <sdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <status id="status">
-    <symbols>
-      <symbol id="tpg:stat" type="ENUM">
-        <enum hl="hide" msg="Measurment data okay">0</enum>
-        <enum hl="warn" msg="Underrange">1</enum>
-        <enum hl="warn" msg="Overrange">2</enum>
-        <enum hl="warn" msg="Sensor error">3</enum>
-        <enum hl="warn" msg="Sensor off">4</enum>
-        <enum hl="warn" msg="No sensor">5</enum>
-        <enum hl="warn" msg="Identification error">6</enum>
-      </symbol>
-      <symbol id="slo:err" type="ENUM">
-        <enum hl="hide" msg="No Error">0</enum>
-        <enum hl="alarm" msg="Could not burn flash successfully">1</enum>
-        <enum hl="alarm" msg="Could not download file">2</enum>
-        <enum hl="alarm" msg="Not enough memory to execute user program">3</enum>
-        <enum hl="alarm" msg="Attempt to access a non-existent array element">
-4</enum>
-        <enum hl="alarm" msg="Unknown Error"></enum>
-      </symbol>
-      <symbol id="slo:pos" type="ENUM">
-        <enum hl="normal" msg="INIT">0001</enum>
-        <enum hl="normal" msg="STOCK">0010</enum>
-        <enum hl="normal" msg="FOCUS">0100</enum>
-        <enum hl="normal" msg="ROT">1000</enum>
-        <enum hl="alarm" msg="N/A"></enum>
-      </symbol>
-      <symbol id="oss:inst" type="ENUM">
-        <enum hl="warn" msg="NONE">0</enum>
-        <enum hl="normal" msg="IRCS">1</enum>
-        <enum hl="normal" msg="CIAO">3</enum>
-        <enum hl="normal" msg="FOCAS">5
-</enum>
-        <enum hl="normal" msg="COMICS">7</enum>
-        <enum hl="normal" msg="K3D">10</enum>
-        <enum hl="normal" msg="MOIRCS">12</enum>
-        <enum hl="normal" msg="CIAX3">13</enum>
-        <enum hl="normal" msg="N/A" />
-      </symbol>
-      <symbol id="oss:rsel" type="ENUM">
-        <enum hl="warn" msg="PFO">1</enum>
-        <enum hl="warn" msg="PFI">2</enum>
-        <enum hl="normal" msg="CAS">4</enum>
-        <enum hl="warn" msg="NSO">8</enum>
-        <enum hl="warn" msg="NSI">10</enum>
-        <enum hl="alarm" msg="N/A" />
-      </symbol>
-      <symbol id="oss:login" type="ENUM">
-        <enum hl="alarm" msg="OSS Login">OSS</enum>
-        <enum hl="normal" msg="LOGIN">CXWS
-</enum>
-        <enum hl="warn" msg="LOGOUT" />
-      </symbol>
-      <symbol id="oss:rpw" type="ENUM">
-        <enum hl="warn" msg="ON">1</enum>
-        <enum hl="normal" msg="OFF">2</enum>
-      </symbol>
-      <symbol id="oss:rps" type="ENUM">
-        <enum hl="normal" msg="OFF">11</enum>
-        <enum hl="normal" msg="0DEG">10
-</enum>
-        <enum hl="normal" msg="-4DEG">01</enum>
-        <enum hl="alarm" msg="N/A" />
-      </symbol>
-      <symbol id="srm:inst" type="ENUM">
-        <enum hl="warn" msg="NONE">0</enum>
-        <enum hl="normal" msg="CIAX3">1
-</enum>
-        <enum hl="normal" msg="COMICS">2</enum>
-        <enum hl="normal" msg="CIAO">3</enum>
-        <enum hl="normal" msg="FOCAS">4</enum>
-        <enum hl="normal" msg="IRCS">5</enum>
-        <enum hl="normal" msg="N/A">6
-</enum>
-        <enum hl="normal" msg="MOIRCS">7</enum>
-        <enum hl="normal" msg="MP-CS1">8</enum>
-        <enum hl="normal" msg="MP-CS2">9</enum>
-      </symbol>
-      <symbol id="mel:ecode" label="ExitCode" type="ENUM">
-        <enum hl="hide" msg="OK">0000</enum>
-        <enum msg="RW Region Error" hl="alarm">0002</enum>
-        <enum msg="CMD Code Error" hl="alarm">0050
-</enum>
-        <enum msg="Devide Num Error" hl="alarm">0056</enum>
-        <enum msg="Communication Error" hl="alarm">005B</enum>
-        <enum msg="CPU Watch timeout Error" hl="alarm">0060</enum>
-        <enum hl="alarm" msg="Unknown" />
-      </symbol>
-      <symbol id="mel:inst" type="ENUM">
-        <enum hl="normal" msg="MOIRCS">2</enum>
-        <enum hl="warn" msg="N/A" />
-      </symbol>
-      <symbol id="mel:jpos" type="ENUM">
-        <enum hl="normal" msg="D">0</enum>
-        <enum hl="normal" msg="1(L)">1</enum>
-        <enum hl="normal" msg="2(M)">2</enum>
-        <enum hl="normal" msg="3(H)">3
-</enum>
-        <enum hl="normal" msg="CHG">4</enum>
-        <enum hl="warn" msg="N/A" />
-      </symbol>
-      <symbol id="k3n:rcode" label="Response Code" type="ENUM">
-        <enum hl="hide" msg="OK">0000</enum>
-        <enum hl="alarm" msg="Cmd Length Over">1001</enum>
-        <enum hl="alarm" msg="Cmd Length Short">1002</enum>
-        <enum hl="alarm" msg="Parameter Error">1100
-</enum>
-        <enum hl="alarm" msg="Area Error">1101</enum>
-        <enum hl="alarm" msg="Start Address Error">1103</enum>
-        <enum hl="alarm" msg="Action Error">2203</enum>
-        <enum msg="ResponseCode Error" hl="alarm">. </enum>
-      </symbol>
-      <symbol id="k3n:ecode" label="ExitCode" type="ENUM">
-        <enum hl="hide" msg="OK">00</enum>
-        <enum hl="alarm" msg="CMD Error">0F</enum>
-        <enum hl="alarm" msg="Parity Error">10</enum>
-        <enum hl="alarm" msg="Fleming Error">
-11</enum>
-        <enum hl="alarm" msg="Over Run Error">12</enum>
-        <enum hl="alarm" msg="BCC Error">13</enum>
-        <enum hl="alarm" msg="Format Error">14</enum>
-        <enum hl="alarm" msg="Sub Address Error">16
-</enum>
-        <enum hl="alarm" msg="Frame Length Error">18</enum>
-        <enum msg="Unknown" hl="alarm">. </enum>
-      </symbol>
-      <symbol id="normal" type="ENUM">
-        <enum hl="normal" msg="ON">1</enum>
-        <enum hl="normal" msg="OFF">0</enum>
-      </symbol>
-      <symbol id="warn" type="ENUM">
-        <enum hl="warn" msg="ON">1</enum>
-        <enum hl="normal" msg="OFF">0</enum>
-      </symbol>
-      <symbol id="off-warn" type="ENUM">
-        <enum hl="normal" msg="ON">1</enum>
-        <enum hl="warn" msg="OFF">0</enum>
-      </symbol>
-      <symbol id="alarm" type="ENUM">
-        <enum hl="alarm" msg="ON">1</enum>
-        <enum hl="hide" msg="OFF">0</enum>
-      </symbol>
-      <symbol id="off-alarm" type="ENUM">
-        <enum hl="hide" msg="ON">1</enum>
-        <enum hl="alarm" msg="OFF">0</enum>
-      </symbol>
-      <symbol id="hide" type="ENUM">
-        <enum hl="hide" msg="ON">1</enum>
-        <enum hl="hide" msg="OFF">0</enum>
-      </symbol>
-    </symbols>
-    <levels>
-      <level id="slo:pulse" type="FLOAT">
-        <range hl="normal" msg="INIT">0:0.5</range>
-        <range hl="normal" msg="FOCUS">12.3:13.2</range>
-        <range hl="normal" msg="ROT">122.5:123.5</range>
-        <range hl="normal" msg="WAIT">184.5:185.5</range>
-        <range hl="normal" msg="STOCK">200:201</range>
-      </level>
-      <level id="oma:pres" type="FLOAT">
-        <range hl="alarm" msg="HH">110:</range>
-        <range hl="warn" msg="H">105:&lt;110</range>
-        <range hl="normal" msg="M">95:&lt;105</range>
-        <range hl="warn" msg="L">90:&lt;95</range>
-        <range hl="alarm" msg="LL">:&lt;90</range>
-      </level>
-      <level id="mel:motor" type="INT">
-        <range hl="alarm" msg="LOW">:10</range>
-        <range hl="normal" msg="OK">10&lt;:30</range>
-        <range hl="alarm" msg="HIGH">30&lt;:</range>
-      </level>
-      <level id="mel:battery" type="FLOAT">
-        <range hl="alarm" msg="LOW">:20</range>
-        <range hl="warn" msg="LESS">20&lt;:22</range>
-        <range hl="normal" msg="OK">22&lt;:26</range>
-        <range hl="warn" msg="FULL">26&lt;:28</range>
-        <range hl="alarm" msg="HIGH">28&lt;:</range>
-      </level>
-      <level id="k3n:flow" type="FLOAT">
-        <range hl="alarm" msg="HH">6:</range>
-        <range hl="warn" msg="H">5:&lt;6</range>
-        <range hl="normal" msg="M">4:&lt;5</range>
-        <range hl="warn" msg="L">3:&lt;4</range>
-        <range hl="alarm" msg="LL">:&lt;3</range>
-      </level>
-    </levels>
+  <status>
+    <symbol>
+      <enum id="tpg:stat">
+        <case hl="hide" msg="Measurment data okay">0</case>
+        <case hl="warn" msg="Underrange">1</case>
+        <case hl="warn" msg="Overrange">2</case>
+        <case hl="warn" msg="Sensor error">3</case>
+        <case hl="warn" msg="Sensor off">4</case>
+        <case hl="warn" msg="No sensor">5</case>
+        <case hl="warn" msg="Identification error">6</case>
+      </enum>
+      <enum id="slo:err">
+        <case hl="hide" msg="No Error">0</case>
+        <case hl="alarm" msg="Could not burn flash successfully">1</case>
+        <case hl="alarm" msg="Could not download file">2</case>
+        <case hl="alarm" msg="Not enough memory to execute user program">3</case>
+        <case hl="alarm" msg="Attempt to access a non-existent array element">4</case>
+        <case hl="alarm" msg="Unknown Error"></case>
+      </enum>
+      <enum id="slo:pos">
+        <case hl="normal" msg="INIT">0001</case>
+        <case hl="normal" msg="STOCK">0010</case>
+        <case hl="normal" msg="FOCUS">0100</case>
+        <case hl="normal" msg="ROT">1000</case>
+        <case hl="alarm" msg="N/A"></case>
+      </enum>
+      <enum id="oss:inst">
+        <case hl="warn" msg="NONE">0</case>
+        <case hl="normal" msg="IRCS">1</case>
+        <case hl="normal" msg="CIAO">3</case>
+        <case hl="normal" msg="FOCAS">5</case>
+        <case hl="normal" msg="COMICS">7</case>
+        <case hl="normal" msg="K3D">10</case>
+        <case hl="normal" msg="MOIRCS">12</case>
+        <case hl="normal" msg="CIAX3">13</case>
+        <case hl="normal" msg="N/A" />
+      </enum>
+      <enum id="oss:rsel">
+        <case hl="warn" msg="PFO">1</case>
+        <case hl="warn" msg="PFI">2</case>
+        <case hl="normal" msg="CAS">4</case>
+        <case hl="warn" msg="NSO">8</case>
+        <case hl="warn" msg="NSI">10</case>
+        <case hl="alarm" msg="N/A" />
+      </enum>
+      <enum id="oss:login">
+        <case hl="alarm" msg="OSS Login">OSS</case>
+        <case hl="normal" msg="LOGIN">CXWS</case>
+        <case hl="warn" msg="LOGOUT" />
+      </enum>
+      <enum id="oss:rpw">
+        <case hl="warn" msg="ON">1</case>
+        <case hl="normal" msg="OFF">2</case>
+      </enum>
+      <enum id="oss:rps">
+        <case hl="normal" msg="OFF">11</case>
+        <case hl="normal" msg="0DEG">10</case>
+        <case hl="normal" msg="-4DEG">01</case>
+        <case hl="alarm" msg="N/A" />
+      </enum>
+      <enum id="srm:inst">
+        <case hl="warn" msg="NONE">0</case>
+        <case hl="normal" msg="CIAX3">1</case>
+        <case hl="normal" msg="COMICS">2</case>
+        <case hl="normal" msg="CIAO">3</case>
+        <case hl="normal" msg="FOCAS">4</case>
+        <case hl="normal" msg="IRCS">5</case>
+        <case hl="normal" msg="N/A">6</case>
+        <case hl="normal" msg="MOIRCS">7</case>
+        <case hl="normal" msg="MP-CS1">8</case>
+        <case hl="normal" msg="MP-CS2">9</case>
+      </enum>
+      <enum id="mel:ecode" label="ExitCode">
+        <case hl="hide" msg="OK">0000</case>
+        <case msg="RW Region Error" hl="alarm">0002</case>
+        <case msg="CMD Code Error" hl="alarm">0050</case>
+        <case msg="Devide Num Error" hl="alarm">0056</case>
+        <case msg="Communication Error" hl="alarm">005B</case>
+        <case msg="CPU Watch timeout Error" hl="alarm">0060</case>
+        <case hl="alarm" msg="Unknown" />
+      </enum>
+      <enum id="mel:inst">
+        <case hl="normal" msg="MOIRCS">2</case>
+        <case hl="warn" msg="N/A" />
+      </enum>
+      <enum id="mel:jpos">
+        <case hl="normal" msg="D">0</case>
+        <case hl="normal" msg="1(L)">1</case>
+        <case hl="normal" msg="2(M)">2</case>
+        <case hl="normal" msg="3(H)">3</case>
+        <case hl="normal" msg="CHG">4</case>
+        <case hl="warn" msg="N/A" />
+      </enum>
+      <enum id="k3n:rcode" label="Response Code">
+        <case hl="hide" msg="OK">0000</case>
+        <case hl="alarm" msg="Cmd Length Over">1001</case>
+        <case hl="alarm" msg="Cmd Length Short">1002</case>
+        <case hl="alarm" msg="Parameter Error">1100</case>
+        <case hl="alarm" msg="Area Error">1101</case>
+        <case hl="alarm" msg="Start Address Error">1103</case>
+        <case hl="alarm" msg="Action Error">2203</case>
+        <case msg="ResponseCode Error" hl="alarm" />
+      </enum>
+      <enum id="k3n:ecode" label="ExitCode">
+        <case hl="hide" msg="OK">00</case>
+        <case hl="alarm" msg="CMD Error">0F</case>
+        <case hl="alarm" msg="Parity Error">10</case>
+        <case hl="alarm" msg="Fleming Error">11</case>
+        <case hl="alarm" msg="Over Run Error">12</case>
+        <case hl="alarm" msg="BCC Error">13</case>
+        <case hl="alarm" msg="Format Error">14</case>
+        <case hl="alarm" msg="Sub Address Error">16</case>
+        <case hl="alarm" msg="Frame Length Error">18</case>
+        <case msg="Unknown" hl="alarm" />
+      </enum>
+      <enum id="normal">
+        <case hl="normal" msg="ON">1</case>
+        <case hl="normal" msg="OFF">0</case>
+      </enum>
+      <enum id="warn">
+        <case hl="warn" msg="ON">1</case>
+        <case hl="normal" msg="OFF">0</case>
+      </enum>
+      <enum id="off-warn">
+        <case hl="normal" msg="ON">1</case>
+        <case hl="warn" msg="OFF">0</case>
+      </enum>
+      <enum id="alarm">
+        <case hl="alarm" msg="ON">1</case>
+        <case hl="hide" msg="OFF">0</case>
+      </enum>
+      <enum id="off-alarm">
+        <case hl="hide" msg="ON">1</case>
+        <case hl="alarm" msg="OFF">0</case>
+      </enum>
+      <enum id="hide">
+        <case hl="hide" msg="ON">1</case>
+        <case hl="hide" msg="OFF">0</case>
+      </enum>
+      <range id="slo:pulse" type="FLOAT">
+        <case hl="normal" msg="INIT">0:0.5</case>
+        <case hl="normal" msg="FOCUS">12.3:13.2</case>
+        <case hl="normal" msg="ROT">122.5:123.5</case>
+        <case hl="normal" msg="WAIT">184.5:185.5</case>
+        <case hl="normal" msg="STOCK">200:201</case>
+      </range>
+      <range id="oma:pres" type="FLOAT">
+        <case hl="alarm" msg="HH">110:</case>
+        <case hl="warn" msg="H">105:&lt;110</case>
+        <case hl="normal" msg="M">95:&lt;105</case>
+        <case hl="warn" msg="L">90:&lt;95</case>
+        <case hl="alarm" msg="LL">:&lt;90</case>
+      </range>
+      <range id="mel:motor" type="INT">
+        <case hl="alarm" msg="LOW">:10</case>
+        <case hl="normal" msg="OK">10&lt;:30</case>
+        <case hl="alarm" msg="HIGH">30&lt;:</case>
+      </range>
+      <range id="mel:battery" type="FLOAT">
+        <case hl="alarm" msg="LOW">:20</case>
+        <case hl="warn" msg="LESS">20&lt;:22</case>
+        <case hl="normal" msg="OK">22&lt;:26</case>
+        <case hl="warn" msg="FULL">26&lt;:28</case>
+        <case hl="alarm" msg="HIGH">28&lt;:</case>
+      </range>
+      <range id="k3n:flow" type="FLOAT">
+        <case hl="alarm" msg="HH">6:</case>
+        <case hl="warn" msg="H">5:&lt;6</case>
+        <case hl="normal" msg="M">4:&lt;5</case>
+        <case hl="warn" msg="L">3:&lt;4</case>
+        <case hl="alarm" msg="LL">:&lt;3</case>
+      </range>
+    </symbol>
   </status>
 </sdb>

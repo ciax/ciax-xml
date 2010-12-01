@@ -33,11 +33,11 @@
         <title ref="jd4" symbol="normal">Jack Motor4 Servo</title>
       </group>
       <group>
-        <title ref="mdar" level="mel:motor">Rignt Motor D/A</title>
-        <title ref="mdal" level="mel:motor">Left Motor D/A</title>
+        <title ref="mdar" symbol="mel:motor">Rignt Motor D/A</title>
+        <title ref="mdal" symbol="mel:motor">Left Motor D/A</title>
       </group>
       <group>
-        <title ref="bvl" level="mel:battery">Battery Voltage</title>
+        <title ref="bvl" symbol="mel:battery">Battery Voltage</title>
         <title ref="ist" symbol="mel:inst">Instrument</title>
       </group>
       <group>

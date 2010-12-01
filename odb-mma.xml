@@ -14,7 +14,7 @@
       </group>
       <group>
         <title ref="pos" symbol="slo:pos">Arm Position</title>
-        <title ref="abs" level="slo:pulse">ABS position</title>
+        <title ref="abs" symbol="slo:pulse">ABS position</title>
       </group>
     </status>
   </object>

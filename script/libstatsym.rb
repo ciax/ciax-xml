@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libxmldoc"
 require "libverbose"
+require "librerange"
 
 class StatSym
   def initialize(v)
@@ -11,30 +12,20 @@ class StatSym
   def get_symbol(id,val)
     set={}
     return set unless id
-    return set unless e=@sdb['symbols'].selid(id)
-    set['type']=e['type']
-    e.each{|enum|
-      @v.msg{"STAT:Symbol:compare [#{enum.text}] and [#{val}]"}
-      next unless /#{enum.text}/ === val
-      set.update(enum.attr)
+    return set unless e=@sdb.select_id('symbol',id)
+    set['type']=e['type']||'ENUM'
+    e.each{|cs|
+      @v.msg{"STAT:Symbol:compare [#{cs.text}] and [#{val}]"}
+      case e.name
+      when 'enum'
+        next unless /#{cs.text}/ === val
+      when 'range'
+        next unless ReRange.new(cs.text) == val
+      end
+      set.update(cs.attr)
       break true
     } || set.update({'msg'=>'N/A','hl'=>'warn'})
-    @v.msg{"STAT:Symbol:[#{set['msg']}] for [#{val}]"}
+    @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
     set
   end
-
-  def get_level(id,val)
-    set={}
-    return set unless id
-    return set unless e=@sdb['levels'].selid(id)
-    e.each{|range|
-      next unless ReRange.new(range.text) == val
-      set.update(range.attr)
-      break true
-    } || set.update({'msg'=>'N/A','hl'=>'warn'})
-    @v.msg{"STAT:Level:[#{set['msg']}] for [#{val}]"}
-    set
-  end
-
-
 end

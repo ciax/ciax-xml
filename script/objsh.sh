@@ -7,9 +7,8 @@ setfld $id || _usage_key "(-d)"
 echo " [$iodst]" >&2
 if [ "$dmy" ] ; then
     iocmd="devsim $id"
-    oid="dmy-$id"
+    id="dmy-$id"
 else
     iocmd="socat - $iodst"
-    oid=$id
 fi
-objshell $cls $id $oid "$iocmd"
+objshell $cls $obj $id "$iocmd"

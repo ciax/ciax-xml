@@ -16,10 +16,9 @@ class Cls
   else
     @cls=cls
     $errmsg=''
-    @q=Queue.new
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
-    @buf=ClsBuf.new(@q)
+    @buf=ClsBuf.new
     @event=ClsEvent.new(cdb,@buf){|k| @stat.stat(k)}
     @main=session_thread(cdb['device'],id,iocmd)
     sleep 0.01

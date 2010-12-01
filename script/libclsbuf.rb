@@ -3,8 +3,8 @@ require "libverbose"
 require "thread"
 
 class ClsBuf < Array
-  def initialize(queue)
-    @q=queue
+  def initialize
+    @q=Queue.new
     @v=Verbose.new("BUF")
     @wait=@issue=nil
     @proc=Queue.new

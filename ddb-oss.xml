@@ -120,7 +120,6 @@
         </parameters>
         <data type="text">osscmd 13200700</data>
         <data format="%02d" type="formula">$1</data>
-        <data type="text">"'</data>
       </command>
     </cmdselect>
     <cmdframe>

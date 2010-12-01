@@ -52,7 +52,7 @@
         <data>osscmd 1A1902</data>
       </command>
       <command id="init" label="Status Delivery Request" response="exit">
-        <data>osscmd 1A1902</data>
+        <data>osscmd 1A1011</data>
       </command>
       <command id="tsconly" label="TSC Only Mode(CIAX Mode)" response="exit">
         <data>osscmd 1A1008TSCONLY</data>

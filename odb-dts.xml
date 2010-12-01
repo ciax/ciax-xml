@@ -11,7 +11,7 @@
         <title ref="exit">Exit Code</title>
         <title ref="rts" symbol="oss:rsel">ROT SEL</title>
         <title ref="iid" symbol="oss:inst">CAS INST ID</title>
-        <title ref="login" symbol="login">Login Status</title>
+        <title ref="login" symbol="oss:login">Login Status</title>
       </group>
       <group label="">
         <title ref="rpw" symbol="oss:rpw">ROT DRIVE</title>

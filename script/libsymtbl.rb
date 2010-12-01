@@ -14,25 +14,19 @@ class SymTbl
     return set unless id
     return set unless e=@sdb.select_id('symbol',id)
     set['type']=e['type']||'ENUM'
-    begin
+    e.each{|cs|
+      @v.msg{"STAT:Symbol:compare [#{cs['val']}] and [#{val}]"}
       case e.name
       when 'enum'
-        sel=e.select('val',val)
-        set['msg']=sel.text
-        set.update(sel.attr)
+        next unless /#{cs['val']}/ === val
       when 'range'
-        e.each{|cs|
-          @v.msg{"STAT:Symbol:compare [#{cs['val']}] and [#{val}]"}
-          next unless ReRange.new(cs['val']) == val
-          set['msg']=cs.text
-          set.update(cs.attr)
-          @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
-          break true
-        } || raise(SelectID)
+        next unless ReRange.new(cs['val']) == val
       end
-    rescue SelectID
-      set.update({'msg'=>'N/A','hl'=>'warn'})
-    end
+      set['msg']=cs.text
+      set.update(cs.attr)
+      @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
+      break true
+    } || set.update({'msg'=>'N/A','hl'=>'warn'})
     set
   end
 end

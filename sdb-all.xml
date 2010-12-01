@@ -16,14 +16,14 @@
         <case hl='alarm' val='2'>Could not download file</case>
         <case hl='alarm' val='3'>Not enough memory to execute user program</case>
         <case hl='alarm' val='4'>Attempt to access a non-existent array element</case>
-        <case hl='alarm' val='*'>Unknown Error</case>
+        <case hl='alarm' val='.'>Unknown Error</case>
       </enum>
       <enum id='slo:pos'>
         <case hl='normal' val='0001'>INIT</case>
         <case hl='normal' val='0010'>STOCK</case>
         <case hl='normal' val='0100'>FOCUS</case>
         <case hl='normal' val='1000'>ROT</case>
-        <case hl='alarm' val='*'>N/A</case>
+        <case hl='alarm' val='.'>N/A</case>
       </enum>
       <enum id='oss:inst'>
         <case hl='warn' val='0'>NONE</case>
@@ -34,7 +34,7 @@
         <case hl='normal' val='10'>K3D</case>
         <case hl='normal' val='12'>MOIRCS</case>
         <case hl='normal' val='13'>CIAX3</case>
-        <case hl='normal' val='*'>N/A</case>
+        <case hl='normal' val='.'>N/A</case>
       </enum>
       <enum id='oss:rsel'>
         <case hl='warn' val='1'>PFO</case>
@@ -42,12 +42,12 @@
         <case hl='normal' val='4'>CAS</case>
         <case hl='warn' val='8'>NSO</case>
         <case hl='warn' val='10'>NSI</case>
-        <case hl='alarm' val='*'>N/A</case>
+        <case hl='alarm' val='.'>N/A</case>
       </enum>
       <enum id='oss:login'>
         <case hl='alarm' val='OSS'>OSS Login</case>
         <case hl='normal' val='CXWS'>LOGIN</case>
-        <case hl='warn' val='*'>LOGOUT</case>
+        <case hl='warn' val='.'>LOGOUT</case>
       </enum>
       <enum id='oss:rpw'>
         <case hl='warn' val='1'>ON</case>
@@ -57,7 +57,7 @@
         <case hl='normal' val='11'>OFF</case>
         <case hl='normal' val='10'>0DEG</case>
         <case hl='normal' val='01'>-4DEG</case>
-        <case hl='alarm' val='*'>N/A</case>
+        <case hl='alarm' val='.'>N/A</case>
       </enum>
       <enum id='srm:inst'>
         <case hl='warn' val='0'>NONE</case>
@@ -78,11 +78,11 @@
         <case hl='alarm' val='0056'>Devide Num Error</case>
         <case hl='alarm' val='005B'>Communication Error</case>
         <case hl='alarm' val='0060'>CPU Watch timeout Error</case>
-        <case hl='alarm' val='*'>Unknown</case>
+        <case hl='alarm' val='.'>Unknown</case>
       </enum>
       <enum id='mel:inst'>
         <case hl='normal' val='2'>MOIRCS</case>
-        <case hl='warn' val='*'>N/A</case>
+        <case hl='warn' val='.'>N/A</case>
       </enum>
       <enum id='mel:jpos'>
         <case hl='normal' val='0'>D</case>
@@ -90,7 +90,7 @@
         <case hl='normal' val='2'>2(M)</case>
         <case hl='normal' val='3'>3(H)</case>
         <case hl='normal' val='4'>CHG</case>
-        <case hl='warn' val='*'>N/A</case>
+        <case hl='warn' val='.'>N/A</case>
       </enum>
       <enum id='k3n:rcode' label='Response Code'>
         <case hl='hide' val='0000'>OK</case>
@@ -100,7 +100,7 @@
         <case hl='alarm' val='1101'>Area Error</case>
         <case hl='alarm' val='1103'>Start Address Error</case>
         <case hl='alarm' val='2203'>Action Error</case>
-        <case hl='alarm' val='*'>ResponseCode Error</case>
+        <case hl='alarm' val='.'>ResponseCode Error</case>
       </enum>
       <enum id='k3n:ecode' label='ExitCode'>
         <case hl='hide' val='00'>OK</case>
@@ -112,7 +112,7 @@
         <case hl='alarm' val='14'>Format Error</case>
         <case hl='alarm' val='16'>Sub Address Error</case>
         <case hl='alarm' val='18'>Frame Length Error</case>
-        <case hl='alarm' val='*'>Unknown</case>
+        <case hl='alarm' val='.'>Unknown</case>
       </enum>
       <enum id='normal'>
         <case hl='normal' val='1'>ON</case>

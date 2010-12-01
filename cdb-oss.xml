@@ -18,7 +18,7 @@
         <statement format="logstat"></statement>
       </session>
       <session id="logout" label="Logout">
-        <statement format="config 1A1902"></statement>
+        <statement format="logout"></statement>
         <statement format="logstat"></statement>
       </session>
       <session id="init" label="Start TCP Status Request">

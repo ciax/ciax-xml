@@ -18,6 +18,8 @@ class SymTbl
       @v.msg{"STAT:Symbol:compare [#{cs['val']}] and [#{val}]"}
       case e.name
       when 'enum'
+        next unless cs['val'] == val
+      when 'regexp'
         next unless /#{cs['val']}/ === val
       when 'range'
         next unless ReRange.new(cs['val']) == val

@@ -17,11 +17,20 @@
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
         <xsd:element ref="sdb:enum" />
+        <xsd:element ref="sdb:regexp" />
         <xsd:element ref="sdb:range" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="enum">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="sdb:case" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="regexp">
     <xsd:complexType>
       <xsd:choice>
         <xsd:element ref="sdb:case" minOccurs="1" maxOccurs="unbounded" />

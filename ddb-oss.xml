@@ -118,7 +118,7 @@
         <parameters>
           <par label="Inst ID [0-12]" validate="range">1:12</par>
         </parameters>
-        <data type="text">osscmd cccccc13200700</data>
+        <data type="text">osscmd 13200700</data>
         <data format="%02d" type="formula">$1</data>
         <data type="text">"'</data>
       </command>

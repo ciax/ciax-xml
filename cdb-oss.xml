@@ -54,12 +54,15 @@
       </session>
       <session id="moircs" label="Set IID MOIRCS">
         <statement format="setinst 12" />
+        <statement format="iststat" />
       </session>
       <session id="focas" label="Set IID FOCAS">
         <statement format="setinst 5" />
+        <statement format="iststat" />
       </session>
       <session id="comics" label="Set IID COMICS">
         <statement format="setinst 7" />
+        <statement format="iststat" />
       </session>
     </commands>
     <status>

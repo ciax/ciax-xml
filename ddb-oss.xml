@@ -60,19 +60,19 @@
       <command id="tscpri" label="TSC Primaly Mode(OBS Mode)" response="exit">
         <data>osscmd 1A1008TSCPRI%</data>
       </command>
-      <command id="cron" label="InR Drive ON" response="exit">
+      <command id="ron" label="InR Drive ON" response="exit">
         <data>osscmd 904013</data>
       </command>
-      <command id="croff" label="InR Drive OFF" response="exit">
+      <command id="roff" label="InR Drive OFF" response="exit">
         <data>osscmd 904014</data>
       </command>
-      <command id="cjon" label="Jack Drive ON" response="exit">
+      <command id="jon" label="Jack Drive ON" response="exit">
         <data>osscmd 132001ON%</data>
       </command>
-      <command id="cjoff" label="Jack Drive OFF" response="exit">
+      <command id="joff" label="Jack Drive OFF" response="exit">
         <data>osscmd 132001OFF</data>
       </command>
-      <command id="cjres" label="Jack Drive Reset" response="exit">
+      <command id="jres" label="Jack Drive Reset" response="exit">
         <data>osscmd 132008</data>
       </command>
       <command id="rhook" label="InR Hook(0deg)" response="exit" type="action">

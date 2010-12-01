@@ -15,20 +15,42 @@
       </session>
       <session id="login" label="Login">
         <statement format="login"></statement>
+        <statement format="logstat"></statement>
       </session>
       <session id="logout" label="Logout">
         <statement format="config 1A1902"></statement>
+        <statement format="logstat"></statement>
       </session>
-      <session id="request" label="Start TCP Status Request">
-        <statement format="config 1A1011" />
+      <session id="init" label="Start TCP Status Request">
+        <statement format="init" />
       </session>
       <session id="startup" label="Start Up CIAX operation">
         <statement format="login" />
-        <statement label="TSC Only Mode(CIAX Mode)" format="config 1A1008TSCONLY" />
+        <statement label="TSC Only Mode(CIAX Mode)" format="tsconly" />
+        <statement format="ron" />
+        <statement format="jon" />
       </session>
       <session id="shutdown" label="Shutdown CIAX operation">
-        <statement format="config 1A1008TSCPRI%" label="TSC Primaly Mode" />
+        <statement format="joff" />
+        <statement format="roff" />
+        <statement format="tscpri" label="TSC Primaly Mode" />
         <statement format="logout" />
+      </session>
+      <session id="rhook" label="InR Hook">
+        <statement format="rhook" />
+        <statement format="inrstat" />
+      </session>
+      <session id="runhk" label="InR UnHook">
+        <statement format="runhk" />
+        <statement format="inrstat" />
+      </session>
+      <session id="jup" label="All EJB Up">
+        <statement format="ajup" />
+        <statement format="jakstat" />
+      </session>
+      <session id="jdw" label="All EJB Down">
+        <statement format="ajdw" />
+        <statement format="jakstat" />
       </session>
       <session id="moircs" label="Set IID MOIRCS">
         <statement format="setinst 12" />

@@ -15,6 +15,7 @@ class XmlDoc < Hash
     raise(SelectID,$errmsg) unless $errmsg.empty?
   else
     XmlElem.new(f).each{|e|
+      self[e.name]=e
       update(e.attr)
       e.each{|e1| self[e1.name]=e1 }
     }

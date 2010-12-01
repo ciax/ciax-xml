@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <sdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <status>
     <symbol>
       <enum id="tpg:stat">
         <case hl="hide" msg="Measurment data okay">0</case>
@@ -173,5 +172,4 @@
         <case hl="alarm" msg="LL">:&lt;3</case>
       </range>
     </symbol>
-  </status>
 </sdb>

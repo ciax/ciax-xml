@@ -4,15 +4,8 @@
   <xsd:element name="sdb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="sdb:status" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="sdb:symbol" minOccurs="1" maxOccurs="1" />
       </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="status">
-    <xsd:complexType>
-      <xsd:choice maxOccurs="unbounded">
-        <xsd:element ref="sdb:symbol" />
-      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="id_attr">

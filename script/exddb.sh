@@ -1,5 +1,6 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
+[ "$1" = "-r" ] && { shift; clear=1; }
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
 default="${*:-getstat}"
 for id in $devices; do
@@ -9,7 +10,7 @@ for id in $devices; do
     output="$HOME/.var/field_${id}.json"
     cmd=$default
     { devcmd $dev $id $cmd || exit 1; } | visi
-    [ "$default" = 'getstat' ] && [ -e $output ] && rm $output
+    [ "$clear" ] && [ -e $output ] && rm $output
     stat="`grep rcv:${cmd// /:} $input|tail -1`"
     if [ "$stat" ] ; then
         echo " *** Stat ***"

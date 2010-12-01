@@ -4,7 +4,7 @@ require "libverbose"
 require "librerange"
 
 class SymTbl
-  def initialize(v)
+  def initialize(v=Verbose.new("Symbol"))
     @sdb=XmlDoc.new('sdb','all')
     @v=v
   end

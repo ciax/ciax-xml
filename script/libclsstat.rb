@@ -4,6 +4,7 @@ require "libverbose"
 require "librepeat"
 require "libstat"
 require "libiofile"
+require "libsymtbl"
 
 class ClsStat
   include ModXml
@@ -15,6 +16,7 @@ class ClsStat
     @v=Verbose.new("cdb/#{cls}/stat".upcase)
     @rep=Repeat.new
     @field=Stat.new(id,"field")
+    @sym=SymTbl.new(@v)
   end
   
   public
@@ -70,6 +72,7 @@ class ClsStat
         end
       }
       value=e0['format'] % ary
+      value=@sym.get_symbol(e0['symbol'],value)['msg'] if e0['symbol']
       @stat[id]=value
     ensure
       @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}

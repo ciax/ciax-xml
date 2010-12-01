@@ -15,13 +15,14 @@ class SymTbl
     return set unless e=@sdb.select_id('symbol',id)
     set['type']=e['type']||'ENUM'
     e.each{|cs|
-      @v.msg{"STAT:Symbol:compare [#{cs.text}] and [#{val}]"}
+      @v.msg{"STAT:Symbol:compare [#{cs['val']}] and [#{val}]"}
       case e.name
       when 'enum'
-        next unless /#{cs.text}/ === val
+        next unless cs['val'] == val
       when 'range'
-        next unless ReRange.new(cs.text) == val
+        next unless ReRange.new(cs['val']) == val
       end
+      set['msg']=cs.text
       set.update(cs.attr)
       break true
     } || set.update({'msg'=>'N/A','hl'=>'warn'})

@@ -1,175 +1,175 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<sdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<sdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/sdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
     <symbol>
-      <enum id="tpg:stat">
-        <case hl="hide" msg="Measurment data okay">0</case>
-        <case hl="warn" msg="Underrange">1</case>
-        <case hl="warn" msg="Overrange">2</case>
-        <case hl="warn" msg="Sensor error">3</case>
-        <case hl="warn" msg="Sensor off">4</case>
-        <case hl="warn" msg="No sensor">5</case>
-        <case hl="warn" msg="Identification error">6</case>
+      <enum id='tpg:stat'>
+        <case hl='hide' val='0'>Measurment data okay</case>
+        <case hl='warn' val='1'>Underrange</case>
+        <case hl='warn' val='2'>Overrange</case>
+        <case hl='warn' val='3'>Sensor error</case>
+        <case hl='warn' val='4'>Sensor off</case>
+        <case hl='warn' val='5'>No sensor</case>
+        <case hl='warn' val='6'>Identification error</case>
       </enum>
-      <enum id="slo:err">
-        <case hl="hide" msg="No Error">0</case>
-        <case hl="alarm" msg="Could not burn flash successfully">1</case>
-        <case hl="alarm" msg="Could not download file">2</case>
-        <case hl="alarm" msg="Not enough memory to execute user program">3</case>
-        <case hl="alarm" msg="Attempt to access a non-existent array element">4</case>
-        <case hl="alarm" msg="Unknown Error"></case>
+      <enum id='slo:err'>
+        <case hl='hide' val='0'>No Error</case>
+        <case hl='alarm' val='1'>Could not burn flash successfully</case>
+        <case hl='alarm' val='2'>Could not download file</case>
+        <case hl='alarm' val='3'>Not enough memory to execute user program</case>
+        <case hl='alarm' val='4'>Attempt to access a non-existent array element</case>
+        <case hl='alarm' val='*'>Unknown Error</case>
       </enum>
-      <enum id="slo:pos">
-        <case hl="normal" msg="INIT">0001</case>
-        <case hl="normal" msg="STOCK">0010</case>
-        <case hl="normal" msg="FOCUS">0100</case>
-        <case hl="normal" msg="ROT">1000</case>
-        <case hl="alarm" msg="N/A"></case>
+      <enum id='slo:pos'>
+        <case hl='normal' val='0001'>INIT</case>
+        <case hl='normal' val='0010'>STOCK</case>
+        <case hl='normal' val='0100'>FOCUS</case>
+        <case hl='normal' val='1000'>ROT</case>
+        <case hl='alarm' val='*'>N/A</case>
       </enum>
-      <enum id="oss:inst">
-        <case hl="warn" msg="NONE">0</case>
-        <case hl="normal" msg="IRCS">1</case>
-        <case hl="normal" msg="CIAO">3</case>
-        <case hl="normal" msg="FOCAS">5</case>
-        <case hl="normal" msg="COMICS">7</case>
-        <case hl="normal" msg="K3D">10</case>
-        <case hl="normal" msg="MOIRCS">12</case>
-        <case hl="normal" msg="CIAX3">13</case>
-        <case hl="normal" msg="N/A" />
+      <enum id='oss:inst'>
+        <case hl='warn' val='0'>NONE</case>
+        <case hl='normal' val='1'>IRCS</case>
+        <case hl='normal' val='3'>CIAO</case>
+        <case hl='normal' val='5'>FOCAS</case>
+        <case hl='normal' val='7'>COMICS</case>
+        <case hl='normal' val='10'>K3D</case>
+        <case hl='normal' val='12'>MOIRCS</case>
+        <case hl='normal' val='13'>CIAX3</case>
+        <case hl='normal' val='*'>N/A</case>
       </enum>
-      <enum id="oss:rsel">
-        <case hl="warn" msg="PFO">1</case>
-        <case hl="warn" msg="PFI">2</case>
-        <case hl="normal" msg="CAS">4</case>
-        <case hl="warn" msg="NSO">8</case>
-        <case hl="warn" msg="NSI">10</case>
-        <case hl="alarm" msg="N/A" />
+      <enum id='oss:rsel'>
+        <case hl='warn' val='1'>PFO</case>
+        <case hl='warn' val='2'>PFI</case>
+        <case hl='normal' val='4'>CAS</case>
+        <case hl='warn' val='8'>NSO</case>
+        <case hl='warn' val='10'>NSI</case>
+        <case hl='alarm' val='*'>N/A</case>
       </enum>
-      <enum id="oss:login">
-        <case hl="alarm" msg="OSS Login">OSS</case>
-        <case hl="normal" msg="LOGIN">CXWS</case>
-        <case hl="warn" msg="LOGOUT" />
+      <enum id='oss:login'>
+        <case hl='alarm' val='OSS'>OSS Login</case>
+        <case hl='normal' val='CXWS'>LOGIN</case>
+        <case hl='warn' val='*'>LOGOUT</case>
       </enum>
-      <enum id="oss:rpw">
-        <case hl="warn" msg="ON">1</case>
-        <case hl="normal" msg="OFF">2</case>
+      <enum id='oss:rpw'>
+        <case hl='warn' val='1'>ON</case>
+        <case hl='normal' val='2'>OFF</case>
       </enum>
-      <enum id="oss:rps">
-        <case hl="normal" msg="OFF">11</case>
-        <case hl="normal" msg="0DEG">10</case>
-        <case hl="normal" msg="-4DEG">01</case>
-        <case hl="alarm" msg="N/A" />
+      <enum id='oss:rps'>
+        <case hl='normal' val='11'>OFF</case>
+        <case hl='normal' val='10'>0DEG</case>
+        <case hl='normal' val='01'>-4DEG</case>
+        <case hl='alarm' val='*'>N/A</case>
       </enum>
-      <enum id="srm:inst">
-        <case hl="warn" msg="NONE">0</case>
-        <case hl="normal" msg="CIAX3">1</case>
-        <case hl="normal" msg="COMICS">2</case>
-        <case hl="normal" msg="CIAO">3</case>
-        <case hl="normal" msg="FOCAS">4</case>
-        <case hl="normal" msg="IRCS">5</case>
-        <case hl="normal" msg="N/A">6</case>
-        <case hl="normal" msg="MOIRCS">7</case>
-        <case hl="normal" msg="MP-CS1">8</case>
-        <case hl="normal" msg="MP-CS2">9</case>
+      <enum id='srm:inst'>
+        <case hl='warn' val='0'>NONE</case>
+        <case hl='normal' val='1'>CIAX3</case>
+        <case hl='normal' val='2'>COMICS</case>
+        <case hl='normal' val='3'>CIAO</case>
+        <case hl='normal' val='4'>FOCAS</case>
+        <case hl='normal' val='5'>IRCS</case>
+        <case hl='normal' val='6'>N/A</case>
+        <case hl='normal' val='7'>MOIRCS</case>
+        <case hl='normal' val='8'>MP-CS1</case>
+        <case hl='normal' val='9'>MP-CS2</case>
       </enum>
-      <enum id="mel:ecode" label="ExitCode">
-        <case hl="hide" msg="OK">0000</case>
-        <case msg="RW Region Error" hl="alarm">0002</case>
-        <case msg="CMD Code Error" hl="alarm">0050</case>
-        <case msg="Devide Num Error" hl="alarm">0056</case>
-        <case msg="Communication Error" hl="alarm">005B</case>
-        <case msg="CPU Watch timeout Error" hl="alarm">0060</case>
-        <case hl="alarm" msg="Unknown" />
+      <enum id='mel:ecode' label='ExitCode'>
+        <case hl='hide' val='0000'>OK</case>
+        <case hl='alarm' val='0002'>RW Region Error</case>
+        <case hl='alarm' val='0050'>CMD Code Error</case>
+        <case hl='alarm' val='0056'>Devide Num Error</case>
+        <case hl='alarm' val='005B'>Communication Error</case>
+        <case hl='alarm' val='0060'>CPU Watch timeout Error</case>
+        <case hl='alarm' val='*'>Unknown</case>
       </enum>
-      <enum id="mel:inst">
-        <case hl="normal" msg="MOIRCS">2</case>
-        <case hl="warn" msg="N/A" />
+      <enum id='mel:inst'>
+        <case hl='normal' val='2'>MOIRCS</case>
+        <case hl='warn' val='*'>N/A</case>
       </enum>
-      <enum id="mel:jpos">
-        <case hl="normal" msg="D">0</case>
-        <case hl="normal" msg="1(L)">1</case>
-        <case hl="normal" msg="2(M)">2</case>
-        <case hl="normal" msg="3(H)">3</case>
-        <case hl="normal" msg="CHG">4</case>
-        <case hl="warn" msg="N/A" />
+      <enum id='mel:jpos'>
+        <case hl='normal' val='0'>D</case>
+        <case hl='normal' val='1'>1(L)</case>
+        <case hl='normal' val='2'>2(M)</case>
+        <case hl='normal' val='3'>3(H)</case>
+        <case hl='normal' val='4'>CHG</case>
+        <case hl='warn' val='*'>N/A</case>
       </enum>
-      <enum id="k3n:rcode" label="Response Code">
-        <case hl="hide" msg="OK">0000</case>
-        <case hl="alarm" msg="Cmd Length Over">1001</case>
-        <case hl="alarm" msg="Cmd Length Short">1002</case>
-        <case hl="alarm" msg="Parameter Error">1100</case>
-        <case hl="alarm" msg="Area Error">1101</case>
-        <case hl="alarm" msg="Start Address Error">1103</case>
-        <case hl="alarm" msg="Action Error">2203</case>
-        <case msg="ResponseCode Error" hl="alarm" />
+      <enum id='k3n:rcode' label='Response Code'>
+        <case hl='hide' val='0000'>OK</case>
+        <case hl='alarm' val='1001'>Cmd Length Over</case>
+        <case hl='alarm' val='1002'>Cmd Length Short</case>
+        <case hl='alarm' val='1100'>Parameter Error</case>
+        <case hl='alarm' val='1101'>Area Error</case>
+        <case hl='alarm' val='1103'>Start Address Error</case>
+        <case hl='alarm' val='2203'>Action Error</case>
+        <case hl='alarm' val='*'>ResponseCode Error</case>
       </enum>
-      <enum id="k3n:ecode" label="ExitCode">
-        <case hl="hide" msg="OK">00</case>
-        <case hl="alarm" msg="CMD Error">0F</case>
-        <case hl="alarm" msg="Parity Error">10</case>
-        <case hl="alarm" msg="Fleming Error">11</case>
-        <case hl="alarm" msg="Over Run Error">12</case>
-        <case hl="alarm" msg="BCC Error">13</case>
-        <case hl="alarm" msg="Format Error">14</case>
-        <case hl="alarm" msg="Sub Address Error">16</case>
-        <case hl="alarm" msg="Frame Length Error">18</case>
-        <case msg="Unknown" hl="alarm" />
+      <enum id='k3n:ecode' label='ExitCode'>
+        <case hl='hide' val='00'>OK</case>
+        <case hl='alarm' val='0F'>CMD Error</case>
+        <case hl='alarm' val='10'>Parity Error</case>
+        <case hl='alarm' val='11'>Fleming Error</case>
+        <case hl='alarm' val='12'>Over Run Error</case>
+        <case hl='alarm' val='13'>BCC Error</case>
+        <case hl='alarm' val='14'>Format Error</case>
+        <case hl='alarm' val='16'>Sub Address Error</case>
+        <case hl='alarm' val='18'>Frame Length Error</case>
+        <case hl='alarm' val='*'>Unknown</case>
       </enum>
-      <enum id="normal">
-        <case hl="normal" msg="ON">1</case>
-        <case hl="normal" msg="OFF">0</case>
+      <enum id='normal'>
+        <case hl='normal' val='1'>ON</case>
+        <case hl='normal' val='0'>OFF</case>
       </enum>
-      <enum id="warn">
-        <case hl="warn" msg="ON">1</case>
-        <case hl="normal" msg="OFF">0</case>
+      <enum id='warn'>
+        <case hl='warn' val='1'>ON</case>
+        <case hl='normal' val='0'>OFF</case>
       </enum>
-      <enum id="off-warn">
-        <case hl="normal" msg="ON">1</case>
-        <case hl="warn" msg="OFF">0</case>
+      <enum id='off-warn'>
+        <case hl='normal' val='1'>ON</case>
+        <case hl='warn' val='0'>OFF</case>
       </enum>
-      <enum id="alarm">
-        <case hl="alarm" msg="ON">1</case>
-        <case hl="hide" msg="OFF">0</case>
+      <enum id='alarm'>
+        <case hl='alarm' val='1'>ON</case>
+        <case hl='hide' val='0'>OFF</case>
       </enum>
-      <enum id="off-alarm">
-        <case hl="hide" msg="ON">1</case>
-        <case hl="alarm" msg="OFF">0</case>
+      <enum id='off-alarm'>
+        <case hl='hide' val='1'>ON</case>
+        <case hl='alarm' val='0'>OFF</case>
       </enum>
-      <enum id="hide">
-        <case hl="hide" msg="ON">1</case>
-        <case hl="hide" msg="OFF">0</case>
+      <enum id='hide'>
+        <case hl='hide' val='1'>ON</case>
+        <case hl='hide' val='0'>OFF</case>
       </enum>
-      <range id="slo:pulse" type="FLOAT">
-        <case hl="normal" msg="INIT">0:0.5</case>
-        <case hl="normal" msg="FOCUS">12.3:13.2</case>
-        <case hl="normal" msg="ROT">122.5:123.5</case>
-        <case hl="normal" msg="WAIT">184.5:185.5</case>
-        <case hl="normal" msg="STOCK">200:201</case>
+      <range id='slo:pulse' type='FLOAT'>
+        <case hl='normal' val='0:0.5'>INIT</case>
+        <case hl='normal' val='12.3:13.2'>FOCUS</case>
+        <case hl='normal' val='122.5:123.5'>ROT</case>
+        <case hl='normal' val='184.5:185.5'>WAIT</case>
+        <case hl='normal' val='200:201'>STOCK</case>
       </range>
-      <range id="oma:pres" type="FLOAT">
-        <case hl="alarm" msg="HH">110:</case>
-        <case hl="warn" msg="H">105:&lt;110</case>
-        <case hl="normal" msg="M">95:&lt;105</case>
-        <case hl="warn" msg="L">90:&lt;95</case>
-        <case hl="alarm" msg="LL">:&lt;90</case>
+      <range id='oma:pres' type='FLOAT'>
+        <case hl='alarm' val='110:'>HH</case>
+        <case hl='warn' val='105:&lt;110'>H</case>
+        <case hl='normal' val='95:&lt;105'>M</case>
+        <case hl='warn' val='90:&lt;95'>L</case>
+        <case hl='alarm' val=':&lt;90'>LL</case>
       </range>
-      <range id="mel:motor" type="INT">
-        <case hl="alarm" msg="LOW">:10</case>
-        <case hl="normal" msg="OK">10&lt;:30</case>
-        <case hl="alarm" msg="HIGH">30&lt;:</case>
+      <range id='mel:motor' type='INT'>
+        <case hl='alarm' val=':10'>LOW</case>
+        <case hl='normal' val='10&lt;:30'>OK</case>
+        <case hl='alarm' val='30&lt;:'>HIGH</case>
       </range>
-      <range id="mel:battery" type="FLOAT">
-        <case hl="alarm" msg="LOW">:20</case>
-        <case hl="warn" msg="LESS">20&lt;:22</case>
-        <case hl="normal" msg="OK">22&lt;:26</case>
-        <case hl="warn" msg="FULL">26&lt;:28</case>
-        <case hl="alarm" msg="HIGH">28&lt;:</case>
+      <range id='mel:battery' type='FLOAT'>
+        <case hl='alarm' val=':20'>LOW</case>
+        <case hl='warn' val='20&lt;:22'>LESS</case>
+        <case hl='normal' val='22&lt;:26'>OK</case>
+        <case hl='warn' val='26&lt;:28'>FULL</case>
+        <case hl='alarm' val='28&lt;:'>HIGH</case>
       </range>
-      <range id="k3n:flow" type="FLOAT">
-        <case hl="alarm" msg="HH">6:</case>
-        <case hl="warn" msg="H">5:&lt;6</case>
-        <case hl="normal" msg="M">4:&lt;5</case>
-        <case hl="warn" msg="L">3:&lt;4</case>
-        <case hl="alarm" msg="LL">:&lt;3</case>
+      <range id='k3n:flow' type='FLOAT'>
+        <case hl='alarm' val='6:'>HH</case>
+        <case hl='warn' val='5:&lt;6'>H</case>
+        <case hl='normal' val='4:&lt;5'>M</case>
+        <case hl='warn' val='3:&lt;4'>L</case>
+        <case hl='alarm' val=':&lt;3'>LL</case>
       </range>
     </symbol>
 </sdb>

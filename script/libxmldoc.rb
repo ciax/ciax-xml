@@ -10,7 +10,7 @@ class XmlDoc < Hash
   rescue Errno::ENOENT
     list=Array.new
     Dir.glob("#{pre}-*.xml").each{|p|
-      $errmsg << XmlElem.new(open(p)).list
+      $errmsg << XmlElem.new(open(p)).list('id')
     }
     raise(SelectID,$errmsg) unless $errmsg.empty?
   else
@@ -22,7 +22,7 @@ class XmlDoc < Hash
   end
 
   def select_id(xpath,id)
-    return self[xpath].selid(id)
+    return self[xpath].select('id',id)
   rescue SelectID
     $errmsg << "No such command [#{id}]\n" if id
     $errmsg << "== Command List ==\n"

@@ -42,17 +42,23 @@ class XmlElem
     @e.text
   end
 
-  def selid(id=nil)
-    @e.each_element_with_attribute('id',id){|e|
+  # select element with key=val, or key='*', or display list
+  def select(key,val)
+    if val
+      @e.each_element_with_attribute(key,val){|e|
         return XmlElem.new(e)
-    } if id
-    raise SelectID,list
+      }
+      @e.each_element_with_attribute(key,'*'){|e|
+        return XmlElem.new(e)
+      }
+    end
+    raise SelectID,list(key)
   end
 
-  def list
+  def list(key)
     inject(''){|msg,e|
-      if e['id'] && e['label']
-        msg << " %-10s: %s\n" % [e['id'],e['label']]
+      if e[key] && e['label']
+        msg << " %-10s: %s\n" % [e[key],e['label']]
       end
       msg
     }

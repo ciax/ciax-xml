@@ -3,7 +3,7 @@ require "libxmldoc"
 require "libverbose"
 require "librerange"
 
-class StatSym
+class SymTbl
   def initialize(v)
     @sdb=XmlDoc.new('sdb','all')
     @v=v

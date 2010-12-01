@@ -3,7 +3,7 @@ require "libxmldoc"
 require "libmodxml"
 require "libverbose"
 require "librepeat"
-require "libstatsym"
+require "libsymtbl"
 
 class ObjStat
   include ModXml
@@ -16,7 +16,7 @@ class ObjStat
     @v=Verbose.new("odb/#{obj}".upcase)
     @value,@group={},0
     @rep=Repeat.new
-    @sym=StatSym.new(@v)
+    @sym=SymTbl.new(@v)
   end
   
   public

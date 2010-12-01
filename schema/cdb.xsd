@@ -124,6 +124,7 @@
         <xsd:element ref="cdb:int" />
       </xsd:choice>
       <xsd:attribute name="format" type="xsd:string" use="required" />
+      <xsd:attribute name="symbol" type="xsd:string"/>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>

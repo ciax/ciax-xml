@@ -71,7 +71,7 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="argv" type="xsd:string"></xsd:element>
-  <!--command events-->
+  <!--watch events-->
   <xsd:element name="watch">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
@@ -85,6 +85,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:choice>
+          <xsd:element ref="cdb:onchange" />
           <xsd:element ref="cdb:until" />
           <xsd:element ref="cdb:while" />
           <xsd:element ref="cdb:periodic" />
@@ -104,6 +105,11 @@
   </xsd:element>
   <xsd:element name="while" type="cdb:condition"></xsd:element>
   <xsd:element name="until" type="cdb:condition"></xsd:element>
+  <xsd:element name="onchange">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="command" type="xsd:string"></xsd:element>
   <!--status-->
   <xsd:element name="status">
@@ -124,7 +130,7 @@
         <xsd:element ref="cdb:int" />
       </xsd:choice>
       <xsd:attribute name="format" type="xsd:string" use="required" />
-      <xsd:attribute name="symbol" type="xsd:string"/>
+      <xsd:attribute name="symbol" type="xsd:string" />
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>

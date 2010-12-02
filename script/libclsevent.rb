@@ -115,12 +115,12 @@ attr_reader :wt
     }
     @v.msg(1){bg['label']}
     case e0.name
-    when 'while','periodic'
+    when 'while','until','periodic','onchange'
       bg[:type]=e0.name
     end
     e0.each{ |e1|
       case e1.name
-      when 'while','until','periodic'
+      when 'while','until','periodic','onchange'
         bg[:type]=e1.name
         e1.attr.each{|k,v|
           bg[k]=@rep.subst(v)

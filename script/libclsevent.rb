@@ -67,6 +67,13 @@ attr_reader :wt
       when 'while'
         val=yield bg['ref']
         bg[:active]=( /#{bg['val']}/ === val )
+      when 'until'
+        val=yield bg['ref']
+        bg[:active]= !( /#{bg['val']}/ === val )
+      when 'onchange'
+        val=yield bg['ref']
+        bg[:active]=( bg[:prev] != val)
+        bg[:prev]=val
       when 'periodic'
         (bg[:active]=(@last < Time.now)) && @last=Time.now+bg['period'].to_i
       end

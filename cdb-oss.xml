@@ -9,7 +9,8 @@
         <statement format="jakstat" />
         <statement format="inrstat" />
       </session>
-      <session id="up2" label="Update Status">
+      <session id="up2" label="Update jak pid">
+        <statement format="jakstat" />
         <statement format="getexit" />
         <statement format="getpid" />
       </session>
@@ -68,7 +69,7 @@
     <watch interval="1">
       <event blocking="jup|jdw" interrupt="jstop" label="Moving Jack">
         <onchange ref="jk1" />
-        <command>jakstat</command>
+        <command>up2</command>
       </event>
     </watch>
     <status>

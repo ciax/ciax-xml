@@ -72,8 +72,8 @@ attr_reader :wt
         bg[:active]= !( /#{bg['val']}/ === val )
       when 'onchange'
         val=yield bg['ref']
-        bg[:active]=( bg[:prev] != val)
-        bg[:prev]=val
+        bg[:active]=( bg[:val] != val)
+        bg[:val]=val
       when 'periodic'
         (bg[:active]=(@last < Time.now)) && @last=Time.now+bg['period'].to_i
       end

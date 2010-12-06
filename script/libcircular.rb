@@ -1,9 +1,12 @@
 #!/usr/bin/ruby
+require "libverbose"
+
 class Circular
   def initialize(max=2)
     @max=max
     @counter=1
     @times=0
+    @v=Verbose.new("Circ")
   end
 
   def next
@@ -11,6 +14,7 @@ class Circular
     if @counter > @max
       @counter=1
       @times+=1
+      @v.msg{"Counter over [#{@times}]"}
     end
     self
   end
@@ -18,6 +22,7 @@ class Circular
   def reset
     @counter=1
     @times+=1
+    @v.msg{"Resetted [#{@times}]"}
     self
   end
 

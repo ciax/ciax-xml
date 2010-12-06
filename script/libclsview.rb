@@ -16,6 +16,8 @@ class ClsView
         if label != plabel
           @c.reset
           plabel=label
+        else
+          @c.next
         end
         set_tbl(e1)
       when 'repeat'

@@ -10,6 +10,6 @@ for id in $devices; do
     VER=${VER:-exec(cdb)} clscmd $cls $cmd $par < $file
     [ $cmd = 'upd' ] || continue
     echo " *** Status ***"
-    clsstat $cls < $file
+    clsstat $cls < $file | clsview
     echo
 done

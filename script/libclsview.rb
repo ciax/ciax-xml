@@ -23,6 +23,7 @@ class ClsView
           @c.reset
           e1.each{|e2|
             set_tbl(e2)
+            @c.next
           }
         }
       end
@@ -32,7 +33,7 @@ class ClsView
   def set_tbl(e)
     id=@rep.subst(e['id'])
     label=@rep.subst(e['label'])
-    @tbl[id]={:label=>label,:symbol=>e['symbol'],:group=>@c.round }
+    @tbl[id]={:label=>label,:symbol=>e['symbol'],:group=>@c.times }
   end
 
 end

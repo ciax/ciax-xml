@@ -3,21 +3,21 @@ class Circular
   def initialize(max=2)
     @max=max
     @counter=1
-    @round=0
+    @times=0
   end
 
   def next
     @counter+=1
     if @counter > @max
       @counter=1
-      @round+=1
+      @times+=1
     end
     self
   end
 
   def reset
     @counter=1
-    @round+=1
+    @times+=1
     self
   end
 
@@ -25,7 +25,7 @@ class Circular
     @counter==1
   end
 
-  def round
-    @round
+  def times
+    @times
   end
 end

@@ -52,7 +52,8 @@ class ClsStat
         data=@field.get(fld) || raise("No field Value[#{fld}]")
         case e1.name
         when 'binary'
-          bit=(data.to_i >> e1['bit'].to_i & 1)
+          loc=eval(@rep.subst(e1['bit']))
+          bit=(data.to_i >> loc & 1)
           bit = -(bit-1) if /true|1/ === e1['inv']
           ary << bit.to_s
         when 'float'

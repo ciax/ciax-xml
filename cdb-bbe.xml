@@ -1,178 +1,98 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='bbe' id='bbe' label='Helium Compressor'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="bbe" id="bbe" label="Helium Compressor">
     <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='getstat'/>
+      <session id="upd" label="Update Status">
+        <statement format="getstat" />
       </session>
-      <session id='x0on' label='X0 ON'>
-        <statement format='getstat'/>
-        <statement format='set stat ${stat}|0x01'/>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x0on" label="X0 ON">
+        <statement format="getstat" />
+        <statement format="set stat ${stat}|0x01" />
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x0off' label='X0 OFF'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}&amp;0xfffe'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x0off" label="X0 OFF">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}&amp;0xfffe"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x1on' label='X1 ON'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}|0x10'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x1on" label="X1 ON">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}|0x10"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x1off' label='X1 OFF'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}&amp;0xffef'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x1off" label="X1 OFF">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}&amp;0xffef"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x2on' label='X2 ON'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}|0x100'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x2on" label="X2 ON">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}|0x100"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x2off' label='X2 OFF'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}&amp;0xfeff'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x2off" label="X2 OFF">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}&amp;0xfeff"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x3on' label='X3 ON'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}|0x1000'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x3on" label="X3 ON">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}|0x1000"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x3off' label='X3 OFF'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}&amp;0xefff'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x3off" label="X3 OFF">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}&amp;0xefff"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x12on' label='X1 and X2 ON'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}|0x0011'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x12on" label="X1 and X2 ON">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}|0x0011"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x12off' label='X1 and X2 OFF'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}&amp;0xffee'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x12off" label="X1 and X2 OFF">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}&amp;0xffee"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x34on' label='X3 and X4 ON'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}|0x1100'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x34on" label="X3 and X4 ON">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}|0x1100"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
-      <session id='x34off' label='X3 and X4 OFF'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='set stat ${stat}&amp;0xeeff'>
-        </statement>
-        <statement format='outfld'>
-        </statement>
-        <statement format='getstat'>
-        </statement>
+      <session id="x34off" label="X3 and X4 OFF">
+        <statement format="getstat"></statement>
+        <statement format="set stat ${stat}&amp;0xeeff"></statement>
+        <statement format="outfld"></statement>
+        <statement format="getstat"></statement>
       </session>
     </commands>
     <status>
-      <value format='%s' id='x0sw' label='X0 SWITCH'>
-        <binary bit='0' ref='stat'/>
-      </value>
-      <value format='%s' id='x0dr' label='X0 DRIVE'>
-        <binary bit='1' ref='stat'/>
-      </value>
-      <value format='%s' id='x0tm' label='X0 TEMP ALARM'>
-        <binary bit='2' ref='stat'/>
-      </value>
-      <value format='%s' id='x0pr' label='X0 PRESSURE ALARM'>
-        <binary bit='3' ref='stat'/>
-      </value>
-      <value format='%s' id='x1sw' label='X1 SWITCH'>
-        <binary bit='4' ref='stat'/>
-      </value>
-      <value format='%s' id='x1dr' label='X1 DRIVE'>
-        <binary bit='5' ref='stat'/>
-      </value>
-      <value format='%s' id='x1tm' label='X1 TEMP ALARM'>
-        <binary bit='6' ref='stat'/>
-      </value>
-      <value format='%s' id='x1pr' label='X1 PRESSURE ALARM'>
-        <binary bit='7' ref='stat'/>
-      </value>
-      <value format='%s' id='x2sw' label='X2 SWITCH'>
-        <binary bit='8' ref='stat'/>
-      </value>
-      <value format='%s' id='x2dr' label='X2 DRIVE'>
-        <binary bit='9' ref='stat'/>
-      </value>
-      <value format='%s' id='x2tm' label='X2 TEMP ALARM'>
-        <binary bit='10' ref='stat'/>
-      </value>
-      <value format='%s' id='x2pr' label='X2 PRESSURE ALARM'>
-        <binary bit='11' ref='stat'/>
-      </value>
-      <value format='%s' id='x3sw' label='X3 SWITCH'>
-        <binary bit='12' ref='stat'/>
-      </value>
-      <value format='%s' id='x3dr' label='X3 DRIVE'>
-        <binary bit='13' ref='stat'/>
-      </value>
-      <value format='%s' id='x3tm' label='X3 TEMP ALARM'>
-        <binary bit='14' ref='stat'/>
-      </value>
-      <value format='%s' id='x3pr' label='X3 PRESSURE ALARM'>
-        <binary bit='15' ref='stat'/>
-      </value>
+      <repeat from="0" to="3">
+        <value format="%s" id="x$_sw" label="SWITCH $_">
+          <binary bit="$_*4" ref="stat" />
+        </value>
+        <value format="%s" id="x$_dr" label="DRIVE $_">
+          <binary bit="$_*4+1" ref="stat" />
+        </value>
+        <value format="%s" id="x$_tm" label="TEMP ALARM $_">
+          <binary bit="$_*4+2" ref="stat" />
+        </value>
+        <value format="%s" id="x$_pr" label="PRES ALARM $_">
+          <binary bit="$_*4+3" ref="stat" />
+        </value>
+      </repeat>
     </status>
   </class>
 </cdb>

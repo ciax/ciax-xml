@@ -138,7 +138,7 @@
   <xsd:element name="binary">
     <xsd:complexType>
       <xsd:attribute name="ref" type="xsd:string" use="required" />
-      <xsd:attribute name="bit" type="xsd:int" use="required" />
+      <xsd:attribute name="bit" type="xsd:string" use="required" />
       <xsd:attribute name="inv" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>

@@ -8,7 +8,8 @@
     </comm>
     <status>
       <group>
-        <title ref="flow" symbol="k3n:flow">FMOS-K(S10) Coolant Flow(l/min)</title>
+        <title ref="flow" symbol="k3n:flow">FMOS-K(S10) Coolant Flow</title>
+        <title ref="flow">(l/min)</title>
       </group>
     </status>
   </object>

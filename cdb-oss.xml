@@ -108,7 +108,7 @@
         <binary bit="0" ref="stow_1" />
       </value>
       <repeat from="0" to="15">
-        <value format="%d" id="jk$_">
+        <value format="%d" id="jk$_" label="Jack Pulse $_">
           <int ref="jk:$_" />
         </value>
       </repeat>

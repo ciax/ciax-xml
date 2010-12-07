@@ -1,100 +1,100 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='slo' label='SLOSYN SS6000i' reference='http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf' wait='0.1'>
-    <serial databit='8' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="slo" label="SLOSYN SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" wait="0.1">
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdselect>
-      <command id='getstat' label='Error Status' response='getstat' type='stat'>
-        <data type='text'>err</data>
+      <command id="getstat" label="Error Status" response="getstat" type="stat">
+        <data type="text">err</data>
       </command>
-      <command id='bs' label='Running Status' response='bs' type='stat'>
-        <data type='text'>bs</data>
+      <command id="bs" label="Running Status" response="bs" type="stat">
+        <data type="text">bs</data>
       </command>
-      <command id='in' label='Input Status (1-5)' response='in' type='stat'>
+      <command id="in" label="Input Status (1-5)" response="in" type="stat">
         <parameters>
-          <par label='[1-5]' validate='range'>1:5</par>
+          <par label="[1-5]" validate="range">1:5</par>
         </parameters>
-        <data type='text'>in</data>
-        <data format='(%d)' type='formula'>$1</data>
+        <data type="text">in</data>
+        <data format="(%d)" type="formula">$1</data>
       </command>
-      <command id='p' label='Pulse Number' response='p' type='stat'>
-        <data type='text'>p</data>
+      <command id="p" label="Pulse Number" response="p" type="stat">
+        <data type="text">p</data>
       </command>
-      <command id='reset' label='Reset' response='default' type='config'>
-        <data type='text'>reset</data>
+      <command id="reset" label="Reset" response="default" type="config">
+        <data type="text">reset</data>
       </command>
-      <command id='hl' label='Hard Limit ON/OFF' response='default' type='config'>
+      <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
         <parameters>
-          <par label='[0,1]' validate='regexp'>[01]</par>
+          <par label="[0,1]" validate="regexp">[01]</par>
         </parameters>
-        <data type='text'>hl</data>
-        <data type='formula'>$1</data>
+        <data type="text">hl</data>
+        <data type="formula">$1</data>
       </command>
-      <command id='e1' label='Event1 Enable/Disable' response='default' type='config'>
+      <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
         <parameters>
-          <par label='[0,1]' validate='regexp'>[01]</par>
+          <par label="[0,1]" validate="regexp">[01]</par>
         </parameters>
-        <data type='text'>e1=</data>
-        <data type='formula'>$1</data>
+        <data type="text">e1=</data>
+        <data type="formula">$1</data>
       </command>
-      <command id='e2' label='Event2 Enable/Disable' response='default' type='config'>
+      <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
         <parameters>
-          <par label='[0,1]' validate='regexp'>[01]</par>
+          <par label="[0,1]" validate="regexp">[01]</par>
         </parameters>
-        <data type='text'>e2=</data>
-        <data type='formula'>$1</data>
+        <data type="text">e2=</data>
+        <data type="formula">$1</data>
       </command>
-      <command id='set0' label='Set 0 ABS Counter' response='default' type='config'>
-        <data type='text'>abspos=0</data>
+      <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
+        <data type="text">abspos=0</data>
       </command>
-      <command id='setp' label='Set Pulse Number' response='default' type='config'>
+      <command id="setp" label="Set Pulse Number" response="default" type="config">
         <parameters>
-          <par label='[0-999]' validate='range'>0:999</par>
+          <par label="[0-999]" validate="range">0:999</par>
         </parameters>
-        <data type='text'>p=</data>
-        <data format='%5.2f' type='formula'>$1</data>
+        <data type="text">p=</data>
+        <data format="%5.2f" type="formula">$1</data>
       </command>
-      <command id='stop' label='Stop Running' response='default' type='action'>
-        <data type='text'>stop</data>
+      <command id="stop" label="Stop Running" response="default" type="action">
+        <data type="text">stop</data>
       </command>
-      <command id='jp' label='JOG Positive' response='default' type='action'>
-        <data type='text'>j=1</data>
+      <command id="jp" label="JOG Positive" response="default" type="action">
+        <data type="text">j=1</data>
       </command>
-      <command id='jn' label='JOG Negative' response='default' type='action'>
-        <data type='text'>j=-1</data>
+      <command id="jn" label="JOG Negative" response="default" type="action">
+        <data type="text">j=-1</data>
       </command>
-      <command id='ma' label='Move Absolute Position' response='default' type='action'>
+      <command id="ma" label="Move Absolute Position" response="default" type="action">
         <parameters>
-          <par label='[0-999]' validate='range'>0:999</par>
+          <par label="[0-999]" validate="range">0:999</par>
         </parameters>
-        <data type='text'>ma=</data>
-        <data format='%3.1f' type='formula'>$1</data>
+        <data type="text">ma=</data>
+        <data format="%3.1f" type="formula">$1</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <selected/>
-      <data encode='chr' type='text'>0xd</data>
+      <selected />
+      <data encode="chr" type="text">0xd</data>
     </cmdframe>
     <rspselect>
-      <response id='getstat'>
-        <field assign='err'/>
+      <response id="getstat">
+        <field assign="err" label="ErrorCode" />
       </response>
-      <response id='bs'>
-        <field assign='bs'/>
+      <response id="bs">
+        <field assign="bs" label="Moving" />
       </response>
-      <response id='p'>
-        <field assign='p'/>
+      <response id="p">
+        <field assign="p" label="Pulse" />
       </response>
-      <response id='in'>
-        <array assign='in'>
-          <index range='$1-1' size='5'/>
+      <response id="in">
+        <array assign="in" label="Input">
+          <index range="$1-1" size="5" />
         </array>
       </response>
-      <response id='default'>
-        <field verify='&gt;'/>
+      <response id="default">
+        <field verify="&gt;" />
       </response>
     </rspselect>
-    <rspframe terminator='\r\n'>
-      <selected/>
+    <rspframe terminator="\r\n">
+      <selected />
     </rspframe>
   </device>
 </ddb>

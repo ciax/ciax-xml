@@ -1,31 +1,31 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='tpg' label='Pfeiffer Vacuum Gauge TPG262' reference='http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf' wait='0.3'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
     <cmdselect>
-      <command id='reqstat' label='Request status' response='reqstat' type='stat'>
-        <data label='Measurment data gauges 1&amp;2' type='text'>PRX</data>
-        <data encode='chr' label='Suffix' type='text'>13</data>
+      <command id="reqstat" label="Request status" response="reqstat" type="stat">
+        <data label="Measurment data gauges 1&amp;2" type="text">PRX</data>
+        <data encode="chr" label="Suffix" type="text">13</data>
       </command>
-      <command id='getstat' label='Get status' response='getstat' type='stat'>
-        <data encode='chr' label='ENQ' type='text'>5</data>
+      <command id="getstat" label="Get status" response="getstat" type="stat">
+        <data encode="chr" label="ENQ" type="text">5</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <selected/>
+      <selected />
     </cmdframe>
     <rspselect>
-      <response id='reqstat'>
-        <field decode='chr' verify='6'/>
+      <response id="reqstat">
+        <field decode="chr" verify="6" />
       </response>
-      <response id='getstat'>
-        <field assign='st1'/>
-        <field assign='ch1'/>
-        <field assign='st2'/>
-        <field assign='ch2'/>
+      <response id="getstat">
+        <field assign="st1" label="CH1 RetCode" />
+        <field assign="ch1" label="CH1 Value" />
+        <field assign="st2" label="CH2 RetCode" />
+        <field assign="ch2" label="CH2 Value" />
       </response>
     </rspselect>
-    <rspframe delimiter=',' terminator='\r\n'>
-      <selected/>
+    <rspframe delimiter="," terminator="\r\n">
+      <selected />
     </rspframe>
   </device>
 </ddb>

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 module ModView
-  def view(stat)
+  def view(stat,ver=nil)
     a=[]
     line=[]
     group=nil
@@ -18,7 +18,7 @@ module ModView
       when 'normal'
         line << prt(item,'2')
       when 'hide'
-        line << prt(item,'2') if ENV['VER']
+        line << prt(item,'2') if ver
       else
         line << prt(item,'2')
       end

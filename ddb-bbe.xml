@@ -1,34 +1,34 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='bbe' label='BB Electric 232SDD16' wait='0.3'>
-    <serial databit='8' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="bbe" label="BB Electric 232SDD16" wait="0.3">
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdselect>
-      <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data type='text'>RD</data>
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <data type="text">RD</data>
       </command>
-      <command id='output' label='OUTPUT [DDDDD]' type='action'>
+      <command id="output" label="OUTPUT [DDDDD]" type="action">
         <parameters>
-          <par label='[0-65535]' validate='range'>0:65535</par>
+          <par label="[0-65535]" validate="range">0:65535</par>
         </parameters>
-        <data type='text'>SO</data>
-        <data encode='bew' type='formula'>$1</data>
+        <data type="text">SO</data>
+        <data encode="bew" type="formula">$1</data>
       </command>
-      <command id='outfld' label='OUTPUT from Field' nocache='true' type='action'>
-        <data type='text'>SO</data>
-        <data encode='bew' type='formula'>${stat}</data>
+      <command id="outfld" label="OUTPUT from Field" nocache="true" type="action">
+        <data type="text">SO</data>
+        <data encode="bew" type="formula">${stat}</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <data label='Prefix' type='text'>!0</data>
-      <selected/>
+      <data label="Prefix" type="text">!0</data>
+      <selected />
     </cmdframe>
     <rspselect>
-      <response id='getstat'>
-        <field assign='stat' decode='bew'/>
+      <response id="getstat">
+        <field assign="stat" decode="bew" label="Status" />
       </response>
     </rspselect>
     <rspframe>
-      <selected/>
+      <selected />
     </rspframe>
   </device>
 </ddb>

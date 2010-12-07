@@ -1,6 +1,7 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 [ "$1" = "-r" ] && { shift; clear=1; }
+[ "$1" = "-v" ] && { shift; view=1; }
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
 default="${*:-getstat}"
 for id in $devices; do
@@ -14,8 +15,12 @@ for id in $devices; do
     stat="`grep rcv:${cmd// /:} $input|tail -1`"
     if [ "$stat" ] ; then
         echo " *** Stat ***"
-        echo "$stat" | devstat $dev $id
-        echo
+        if [ "$view" ] ; then
+            echo "$stat" | devstat $dev $id | devview
+        else
+            echo "$stat" | devstat $dev $id
+            echo
+        fi
     fi
     read -n 1
 done

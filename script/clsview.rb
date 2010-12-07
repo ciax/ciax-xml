@@ -23,4 +23,4 @@ dv.tbl.each{|k,v|
   sym['group']=v[:group]
   st[k]=sym
 }
-puts view(st)
+puts view(st,1)

@@ -22,4 +22,4 @@ dv.tbl.each{|k,v|
   sym['label']=v[:label]
   st[k]=sym
 }
-puts view(st)
+puts view(st,1)

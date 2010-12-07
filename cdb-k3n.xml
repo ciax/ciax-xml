@@ -1,21 +1,20 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='k3n' id='k3n' label='Helium Compressor Coolant Flow'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="k3n" id="k3n" label="Helium Compressor Coolant Flow">
     <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='getstat'>
-        </statement>
+      <session id="upd" label="Update Status">
+        <statement format="getstat"></statement>
       </session>
     </commands>
     <status>
-      <value format='%s' id='rcode' label='Response Code'>
-        <string ref='rcode'/>
+      <value format="%s" id="rcode" label="Response Code" symbol="k3n:rcode">
+        <string ref="rcode" />
       </value>
-      <value format='%s' id='ecode' label='Exit Code'>
-        <string ref='ecode'/>
+      <value format="%s" id="ecode" label="Exit Code" symbol="k3n:ecode">
+        <string ref="ecode" />
       </value>
-      <value format='%4.2f' id='flow' label='CS-2(S1) Coolant Flow(l/min)'>
-        <float decimal='2' ref='stat'/>
+      <value format="%4.2f" id="flow" label="CS-2(S1) Coolant Flow(l/min)">
+        <float decimal="2" ref="stat" />
       </value>
     </status>
   </class>

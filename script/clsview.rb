@@ -16,17 +16,8 @@ rescue RuntimeError
   abort $!.to_s
 end
 dv=View.new('id')
-cdb['status'].each{|e1|
-  case e1.name
-  when 'repeat'
-    rep.repeat(e1){
-      e1.each{|e2|
-        dv.set_tbl(e2){|v| rep.subst(v) }
-      }
-    }
-  else
-    dv.set_tbl(e1){|v| v }
-  end
+rep.each(cdb['status']){|e1|
+  dv.set_tbl(e1){|v| rep.subst(v) }
 }
 st=dv.get_view(stat)
 puts view(st,1)

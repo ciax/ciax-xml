@@ -1,13 +1,29 @@
 #!/usr/bin/ruby
 require 'libverbose'
-class Repeat < Array
+class Repeat
   def initialize
     @v=Verbose.new("Repeat")
     @counter={}
+    @rep=[]
+  end
+
+  def each(e0)
+    e0.each{|e1|
+      case e1.name
+      when 'repeat'
+        repeat(e1){
+          e1.each{|e2|
+            yield e2
+          }
+        }
+      else
+        yield e1
+      end
+    }
   end
 
   def repeat(e0)
-    clear
+    @rep.clear
     fmt=e0['format'] || '%d'
     c=e0['counter'] || '_'
     c.next! while @counter[c]
@@ -17,7 +33,7 @@ class Repeat < Array
         @v.msg(1){"Turn Number[#{n}]"}
         @counter[c]=fmt % n
         begin
-          push yield
+          @rep.push yield
         ensure
           @v.msg(-1){"Turn End"}
         end

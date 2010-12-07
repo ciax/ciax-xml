@@ -12,17 +12,8 @@ attr_reader :wt
     @interval=wdb['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
     @last=Time.now
-    wdb.each{|e1| # repeat|while|periodic
-      case e1.name
-      when 'repeat'
-        @rep.repeat(e1){
-          e1.each{|e2|
-            push set_event(e2)
-          }
-        }
-      else
-        push set_event(e1)
-      end
+    @rep.each(wdb){|e1| # while|periodic
+      push set_event(e1)
     }
     @wt=watch(queue){|k| yield k }
   end

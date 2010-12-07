@@ -30,27 +30,22 @@ class ClsCmd
   #Cmd Method
   def get_cmd(e0) # //stm
     dstm=[]
-    e0.each{|e1|
-      case e1.name
-      when 'statement'
-        @v.msg(1){"GetCmd(DDB)"}
-        argv=[]
-        begin
-          e1.each{|e2| # //argv
-            str=e2.text
-            [@rep,@par].each{|s|
-              str=s.subst(str)
-            }
-            str=eval(str)
-            @v.msg{"Calculated [#{str}]"}
-            argv << str
+    @rep.each(e0){|e1|
+      @v.msg(1){"GetCmd(DDB)"}
+      argv=[]
+      begin
+        e1.each{|e2| # //argv
+          str=e2.text
+          [@rep,@par].each{|s|
+            str=s.subst(str)
           }
-          dstm << e1['format'] % argv
-        ensure
-          @v.msg(-1){"Exec(DDB):#{argv}"}
-        end
-      when 'repeat'
-        @rep.repeat(e1){ dstm+= get_cmd(e1)}
+          str=eval(str)
+          @v.msg{"Calculated [#{str}]"}
+            argv << str
+        }
+        dstm << e1['format'] % argv
+      ensure
+        @v.msg(-1){"Exec(DDB):#{argv}"}
       end
     }
     dstm

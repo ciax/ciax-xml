@@ -23,7 +23,7 @@ class ObjStat
   def get_view(value)
     return unless value
     @value.update(value)
-    @odb['status'].each{|g| stat_group(g) }
+    stat_group(@odb['status'])
     @stat['time']['val']=@value['time']
     @stat
   end
@@ -31,17 +31,15 @@ class ObjStat
   private
   #Stat Methods
   def stat_group(e)
-    case e.name
-    when 'group'
-      @group+=1
-      e.each{|e1| stat_group(e1) }
-    when 'title'
-      get_var(e)
-    when 'repeat'
-      @rep.repeat(e){
-        e.each{|e1| stat_group(e1) }
-      }
-    end
+    @rep.each(e){|e1|
+      case e1.name
+      when 'group'
+        @group+=1
+        stat_group(e1)
+      when 'title'
+        get_var(e1)
+      end
+    }
   end
 
   def get_var(var) # //status/var

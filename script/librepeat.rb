@@ -12,7 +12,7 @@ class Repeat
       case e1.name
       when 'repeat'
         repeat(e1){
-          e1.each{|e2|
+          each(e1){|e2|
             yield e2
           }
         }

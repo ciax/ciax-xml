@@ -21,15 +21,8 @@ class ClsStat
   def get_stat(field)
     return unless field
     @field.update(field)
-    @cdb['status'].each{|e0|
-      case e0.name
-      when 'value'
-        get_val(e0)
-      when 'repeat'
-        @rep.repeat(e0){
-          e0.each{|e1| get_val(e1)}
-        }
-      end
+    @rep.each(@cdb['status']){|e0|
+      get_val(e0)
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
     @stat.save

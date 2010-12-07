@@ -14,17 +14,27 @@
           <argv>0x100</argv>
         </statement>
       </session>
-      <session id="clear_trg" label="Jacking Start">
+      <session id="clear_trg" label="Clear Trigger">
         <statement format="clear"></statement>
       </session>
       <session id="set_fwd" label="Set Tag to Forward">
         <statement format="set_tag 98"></statement>
       </session>
-      <session id="set_run1" label="Run to Tag 1">
-        <statement format="set_tag 1"></statement>
+      <session id="set_tag" label="Set Destination Tag [1-12]">
+        <parameters>
+          <par validate="range">1:12</par>
+        </parameters>
+        <statement format="set_tag %d">
+          <argv>$1</argv>
+        </statement>
       </session>
-      <session id="set_jak1" label="Jack UP Level 1">
-        <statement format="set_pos 2"></statement>
+      <session id="set_jak1" label="Set Jack Level [0-3]">
+        <parameters>
+          <par validate="range">0:3</par>
+        </parameters>
+        <statement format="set_pos %d">
+          <argv>$1</argv>
+        </statement>
       </session>
       <session id="pause" label="Pause">
         <statement format="stop 0"></statement>
@@ -55,10 +65,10 @@
           </repeat>
         </repeat>
       </session>
-      <session id="tbl_read" label="Resume from Pause">
+      <session id="tbl_read" label="Read to Buffer">
         <statement format="tbl_rw 1"></statement>
       </session>
-      <session id="tbl_write" label="Resume from Pause">
+      <session id="tbl_write" label="Write from Buffer">
         <statement format="tbl_rw 2"></statement>
       </session>
     </commands>

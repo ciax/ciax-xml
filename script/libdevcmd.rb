@@ -46,7 +46,7 @@ class DevCmd
   private
   def getstr(e0)
     frame=''
-    e0.each { |e1|
+    @rep.each(e0){ |e1|
       case e1.name
       when 'selected'
         begin
@@ -60,17 +60,6 @@ class DevCmd
         @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
       when 'data'
         frame << get_data(e1)
-      when 'repeat'
-        ary=[]
-        @rep.repeat(e1){
-          str=''
-          e1.each{|e2|
-            str << get_data(e2)
-          }
-          @v.msg{"GetFrame:(repeat)[#{str}]"}
-          ary << str
-        }
-        frame << ary.join(e1['delimiter'])
       end
     }
     frame

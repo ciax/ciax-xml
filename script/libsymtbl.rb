@@ -10,7 +10,7 @@ class SymTbl
   end
 
   def get_symbol(id,val)
-    set={'msg'=>'N/A','hl'=>'warn','val'=>val}
+    set={'hl'=>'normal','val'=>val}
     return set unless id
     return set unless e=@sdb.select_id('symbol',id)
     set['type']=e['type']||'ENUM'

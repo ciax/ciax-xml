@@ -1,8 +1,7 @@
 #!/usr/bin/ruby
 require "json"
 require "libxmldoc"
-require "libdevview"
-require "libsymtbl"
+require "libview"
 require "libmodview"
 include ModView
 #abort "Usage: devview < field_file" if ARGV.size < 1
@@ -10,16 +9,15 @@ include ModView
 field=JSON.load(gets(nil))
 dev=field['device']
 begin
-  sdb=SymTbl.new
   ddb=XmlDoc.new('ddb',dev)
-  dv=DevView.new(ddb)
+  dv=View.new('assign')
 rescue RuntimeError
   abort $!.to_s
 end
-st={ }
-dv.tbl.each{|k,v|
-  sym=sdb.get_symbol(v[:symbol],field[k])
-  sym['label']=v[:label]
-  st[k]=sym
+ddb['rspselect'].each{|e1|
+  e1.each{ |e2|
+    dv.set_tbl(e2){|v| v }
+  }
 }
+st=dv.get_view(field)
 puts view(st,1)

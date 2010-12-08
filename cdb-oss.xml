@@ -9,8 +9,13 @@
         <statement format="jakstat" />
         <statement format="inrstat" />
       </session>
-      <session id="up2" label="Update jak pid">
+      <session id="upj" label="Update jak and pid">
         <statement format="jakstat" />
+        <statement format="getexit" />
+        <statement format="getpid" />
+      </session>
+      <session id="upr" label="Update InR and  pid">
+        <statement format="inrstat" />
         <statement format="getexit" />
         <statement format="getpid" />
       </session>
@@ -45,12 +50,20 @@
         <statement format="runhk" />
         <statement format="inrstat" />
       </session>
+      <session id="rstop" label="InR Stop">
+        <statement format="rstop" />
+        <statement format="inrstat" />
+      </session>
       <session id="jup" label="All EJB Up">
         <statement format="ajup" />
         <statement format="jakstat" />
       </session>
       <session id="jdw" label="All EJB Down">
         <statement format="ajdw" />
+        <statement format="jakstat" />
+      </session>
+      <session id="jstop" label="All EJB Stop">
+        <statement format="jstop" />
         <statement format="jakstat" />
       </session>
       <session id="moircs" label="Set IID MOIRCS">
@@ -69,7 +82,11 @@
     <watch interval="1">
       <event blocking="jup|jdw" interrupt="jstop" label="Moving Jack">
         <onchange ref="jk1" />
-        <command>up2</command>
+        <command>upj</command>
+      </event>
+      <event blocking="rhook|runhk" interrupt="rstop" label="Moving InR">
+        <onchange ref="iang" />
+        <command>upr</command>
       </event>
     </watch>
     <status>

@@ -76,18 +76,18 @@ attr_reader :wt
   private
   def watch(queue)
     Thread.new{
-      loop{
-        begin
+      begin
+        loop{
           update{|key| yield key}
           issue.each{|cmd|
             @v.msg{"Issue:#{cmd}"}
             queue.push(cmd.split(" "))
           } if queue.empty?
           sleep @interval
-        rescue
-          $errmsg << $!.to_s+$@.to_s
-        end
-      }
+        }
+      rescue
+        $errmsg << $!.to_s+$@.to_s
+      end
     }
   end
 

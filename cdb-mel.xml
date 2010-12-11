@@ -73,61 +73,61 @@
       </session>
     </commands>
     <status>
-      <value format="%04X" id="ecode" label="EXIT CODE">
+      <value format="%04X" id="ecode" label="EXIT CODE" symbol="mel:ecode">
         <int ref="ecode" />
       </value>
-      <value format="%s" id="rdy" label="READY">
+      <value format="%s" id="rdy" label="READY" symbol="normal">
         <binary bit="0" ref="x:0" />
       </value>
-      <value format="%s" id="pse" label="PAUSE">
+      <value format="%s" id="pse" label="PAUSE" symbol="warn">
         <binary bit="1" ref="x:0" />
       </value>
-      <value format="%s" id="emg" label="ENERGENCY">
+      <value format="%s" id="emg" label="ENERGENCY" symbol="alarm">
         <binary bit="2" ref="x:0" />
       </value>
-      <value format="%s" id="stp" label="STOP">
+      <value format="%s" id="stp" label="STOP" symbol="warn">
         <binary bit="3" ref="x:0" />
       </value>
-      <value format="%s" id="run" label="RUNNING">
+      <value format="%s" id="run" label="RUNNING" symbol="normal">
         <binary bit="4" ref="x:0" />
       </value>
-      <value format="%s" id="jak" label="JACKING">
+      <value format="%s" id="jak" label="JACKING" symbol="normal">
         <binary bit="5" ref="x:0" />
       </value>
-      <value format="%s" id="con" label="CHARGING">
+      <value format="%s" id="con" label="CHARGING" symbol="normal">
         <binary bit="6" ref="x:0" />
       </value>
-      <value format="%s" id="flt" label="Fault">
+      <value format="%s" id="flt" label="Fault" symbol="alarm">
         <binary bit="7" ref="x:0" />
       </value>
-      <value format="%s" id="msr" label="Right Motor Servo">
+      <value format="%s" id="msr" label="Right Motor Servo" symbol="normal">
         <binary bit="8" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="msl" label="Left Motor Servo">
+      <value format="%s" id="msl" label="Left Motor Servo" symbol="normal">
         <binary bit="9" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd1" label="Jack Motor Servo1">
+      <value format="%s" id="jd1" label="Jack Motor Servo1" symbol="normal">
         <binary bit="10" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd2" label="Jack Motor Servo2">
+      <value format="%s" id="jd2" label="Jack Motor Servo2" symbol="normal">
         <binary bit="11" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd3" label="Jack Motor Servo3">
+      <value format="%s" id="jd3" label="Jack Motor Servo3" symbol="normal">
         <binary bit="12" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd4" label="Jack Motor Servo4">
+      <value format="%s" id="jd4" label="Jack Motor Servo4" symbol="normal">
         <binary bit="13" inv="true" ref="x:0" />
       </value>
-      <value format="%d" id="mdar" label="Rignt Motor D/A">
+      <value format="%d" id="mdar" label="Rignt Motor D/A" symbol="mel:motor">
         <int ref="x:7" signed="true" />
       </value>
-      <value format="%d" id="mdal" label="Left Motor D/A">
+      <value format="%d" id="mdal" label="Left Motor D/A" symbol="mel:motor">
         <int ref="x:8" signed="true" />
       </value>
-      <value format="%2.2f" id="bvl" label="Battery Voltage">
+      <value format="%2.2f" id="bvl" label="Battery Voltage" symbol="mel:battery">
         <float decimal="2" ref="x:22" />
       </value>
-      <value format="%d" id="ist" label="Instrument">
+      <value format="%d" id="ist" label="Instrument" symbol="mel:inst">
         <int ref="x:23" />
       </value>
       <value format="%d" id="cpos" label="Current Position">
@@ -136,7 +136,7 @@
       <value format="%d" id="dpos" label="Destination Position">
         <int ref="x:26" />
       </value>
-      <value format="%d" id="jpos" label="Jack Position">
+      <value format="%d" id="jpos" label="Jack Position" symbol="mel:jpos">
         <int ref="x:27" />
       </value>
     </status>

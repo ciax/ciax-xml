@@ -39,7 +39,7 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="symbol_attr">
-    <xsd:attribute name="hl" use="required">
+    <xsd:attribute name="class" use="required">
       <xsd:simpleType>
         <xsd:restriction base="xsd:string">
           <xsd:enumeration value="normal" />

@@ -25,7 +25,7 @@ class SymTbl
         next unless ReRange.new(cs['val']) == val
       end
       set['msg']=cs.text
-      set.update(cs.attr)
+      set['class']=cs['class']
       @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
       break true
     } || set.update({'msg'=>'N/A','hl'=>'warn'})

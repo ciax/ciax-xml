@@ -10,7 +10,7 @@ module ModView
         line=[]
       end
       group=item['group']
-      case item['hl']
+      case item['class']
       when 'alarm'
         line << prt(item,'1')
       when 'warn'

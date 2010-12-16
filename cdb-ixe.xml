@@ -78,10 +78,10 @@
           <argv>$1</argv>
         </statement>
       </session>
-      <session id="fw" label="Move Forward [1-6] [1-6(hole)]">
+      <session id="fw" label="Move Forward [1-6] [1-(hole)]">
         <parameters>
-          <par label="[1-6]" validate="range">1:6</par>
-          <par label="[1-6(hole)]" validate="range">1:6</par>
+          <par label="[1-6(Turret)]" validate="range">1:6</par>
+          <par label="[1-(hole)]" validate="range">1:</par>
         </parameters>
         <statement format="fw %d %d">
           <argv>$1</argv>
@@ -91,10 +91,10 @@
           <argv>$1</argv>
         </statement>
       </session>
-      <session id="bk" label="Move Backward [1-6] [1-6(hole)]">
+      <session id="bk" label="Move Backward [1-6] [1-(hole)]">
         <parameters>
-          <par label="[1-6]" validate="range">1:6</par>
-          <par label="[1-6(hole)]" validate="range">1:6</par>
+          <par label="[1-6(Turret)]" validate="range">1:6</par>
+          <par label="[1-(hole)]" validate="range">1:</par>
         </parameters>
         <statement format="bk %d %d">
           <argv>$1</argv>

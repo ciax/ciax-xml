@@ -31,6 +31,7 @@ class ClsCmd
   def get_cmd(e0) # //stm
     dstm=[]
     @rep.each(e0){|e1|
+      next unless /statement/ === e1.name
       @v.msg(1){"GetCmd(DDB)"}
       argv=[]
       begin

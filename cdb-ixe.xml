@@ -124,7 +124,7 @@
         <command>upd</command>
       </event>
       <repeat from="1" to="6">
-        <event blocking="(fw|bk) $_" interrupt="stop $_" label="Moving $_">
+        <event blocking="(fw|bk|abs) $_" interrupt="stop $_" label="Moving $_">
           <while ref="r$_" val="N" />
           <command>upp $_</command>
         </event>

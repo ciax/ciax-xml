@@ -6,7 +6,7 @@ class ClsBuf < Array
   def initialize
     @q=Queue.new
     @v=Verbose.new("BUF")
-    @wait=@issue=nil
+    @wait=@issue=@int=nil
     @proc=Queue.new
     @st=Thread.new{
       loop{
@@ -43,8 +43,13 @@ class ClsBuf < Array
     @wait
   end
 
+  def int?
+    @int
+  end
+
   def interrupt(cmds=[])
     @issue=nil
+    @int=true
     @q.clear
     replace(cmds)
     flush
@@ -53,6 +58,7 @@ class ClsBuf < Array
   # For session thread
   def recv
     @issue=nil
+    @int=nil
     @v.msg{"Complete"}
     c=@q.shift
     @v.msg{"Recieve #{c}"}

@@ -26,10 +26,10 @@ class Cls
 
   def prompt
     prom = (@event.alive? ? "&" : "")
+    prom << (@event.active? ? '@' : '')
     prom << @cls
     prom << (@buf.issue? ? '*' : '')
     prom << (@buf.wait? ? '#' : '')
-    prom << (@event.active? ? '@' : '')
     prom << ">"
   end
 
@@ -43,7 +43,7 @@ class Cls
 
   def dispatch(stm)
     return nil if stm.empty?
-    return "Blocking" if @event.blocking?(stm)
+    raise "Blocking" if @event.blocking?(stm)
     stm=yield stm
     @cmd.setcmd(stm)
     @buf.push(stm)
@@ -65,7 +65,7 @@ class Cls
   
   def interrupt
     @buf.interrupt(@event.interrupt)
-    "Interrupt"
+    raise "Interrupt"
   end
   
   private
@@ -77,7 +77,7 @@ class Cls
         begin
           stm=@buf.recv
           @cmd.setcmd(stm).session.each{|c|
-            break unless @buf.issue?
+            break if @buf.int?
             ddb.transaction(c.split(' '))
             @stat.get_stat(ddb.field)
           }

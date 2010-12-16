@@ -30,7 +30,7 @@ loop {
         }
       end
     else
-      puts cdb.interrupt
+      cdb.interrupt
     end
   rescue SelectID
     puts $!.to_s
@@ -38,7 +38,6 @@ loop {
     puts " q         : Quit"
     puts " D^        : Interrupt"
   rescue RuntimeError
-    puts "RuntimeError"
     puts $!.to_s
   end
 }

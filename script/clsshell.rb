@@ -24,7 +24,7 @@ loop {
         }
       end
     else
-      puts cdb.interrupt
+      cdb.interrupt
     end
   rescue SelectID
     puts $!.to_s

@@ -104,14 +104,14 @@
           <argv>$1</argv>
         </statement>
       </session>
-      <session id="abs" label="Move Absolute [1-6] [1-12(hole)]">
+      <session id="abs" label="Move Absolute [1-6] [0-48(hole)]">
         <parameters>
           <par label="[1-6]" validate="range">1:6</par>
-          <par label="[1-12(hole)]" validate="range">1:12</par>
+          <par label="[0-48(hole)]" validate="range">0:48</par>
         </parameters>
         <statement format="abs %d %d">
           <argv>$1</argv>
-          <argv>($2-1) * 8000</argv>
+          <argv>$2 * 8000</argv>
         </statement>
         <statement format="chkrun %d">
           <argv>$1</argv>

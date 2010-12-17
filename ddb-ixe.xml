@@ -156,7 +156,7 @@
       <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
         <parameters>
           <par label="[1-6]" validate="range">1:6</par>
-          <par label="[0-192000]" validate="range">0:192000</par>
+          <par label="[0-384000]" validate="range">0:384000</par>
         </parameters>
         <data type="formula">$1</data>
         <data type="text">A</data>

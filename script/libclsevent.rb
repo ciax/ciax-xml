@@ -20,7 +20,6 @@ attr_reader :wt
 
   public
   def interrupt
-    return [] unless @wt
     ary=[]
     each{ |bg|
       if bg[:active]
@@ -29,7 +28,7 @@ attr_reader :wt
       else
         @v.msg{"#{bg['label']} is inactive" }
       end
-    }
+    } if @wt
     ary.compact.uniq
   end
 

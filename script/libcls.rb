@@ -46,7 +46,7 @@ class Cls
     raise "Blocking" if @event.blocking?(stm)
     stm=yield stm
     @cmd.setcmd(stm)
-    @buf.push(stm)
+    @buf.push(stm,1)
   rescue SelectID
     case stm.shift
     when 'sleep'
@@ -75,9 +75,9 @@ class Cls
       @stat.get_stat(ddb.field)
       loop{
         begin
-          stm=@buf.recv
+          stm,level=@buf.recv
           @cmd.setcmd(stm).session.each{|c|
-            break if @buf.int?
+            break if @buf.int?(level)
             ddb.transaction(c.split(' '))
             @stat.get_stat(ddb.field)
           }

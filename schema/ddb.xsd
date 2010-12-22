@@ -214,8 +214,8 @@
   </xsd:element>
   <xsd:element name="array">
     <xsd:complexType>
-      <xsd:sequence minOccurs="1" maxOccurs="1">
-        <xsd:element ref="ddb:index" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:sequence>
+        <xsd:element ref="ddb:index" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attributeGroup ref="ddb:rsp_attr" />
     </xsd:complexType>
@@ -251,7 +251,7 @@
         <xsd:element ref="ddb:selected" />
         <xsd:group ref="ddb:rsp_elem" />
       </xsd:choice>
-      <xsd:attribute name="method" type="ddb:ccmethod"></xsd:attribute>
+      <xsd:attribute name="method" type="ddb:ccmethod" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <!--Response frame-->

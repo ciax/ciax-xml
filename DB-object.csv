@@ -33,6 +33,6 @@ mva,mva,var,var,tcp:celaeno:4008,ciax,24108
 mt1,mt1,tpg,tpg,tcp:celaeno:4009,ciax,24109
 mt2,mt2,tpg,tpg,tcp:celaeno:4010,ciax,24110
 mt3,mt3,tpg,tpg,tcp:celaeno:4011,ciax,24111
-mft,mft,ofp,ofp,tcp:celaeno:4012,ciax,24112
+mft,mft,fpa,fpa,tcp:celaeno:4012,ciax,24112
 mh1,mh1,psp,psp,tcp:merope:59999,ciax,24201
 mh2,mh2,psp,psp,tcp:atlas:59999,ciax,24202

@@ -11,6 +11,9 @@ module ModXml
         chk=frame.length
       when 'bcc'
         frame.each_byte {|c| chk ^= c }
+      when 'sum'
+        frame.each_byte {|c| chk += c }
+        chk%=256
       else
         @v.err("No such CC method #{method}")
       end

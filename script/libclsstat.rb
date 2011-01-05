@@ -52,6 +52,9 @@ class ClsStat
             n=n.to_i
             data=data[0..(-1-n)]+'.'+data[-n..-1]
           end
+          if f=e1['formula']
+            data=eval(f.gsub(/\$#/,"#{data}.prec_f"))
+          end
           ary << data.to_f
         when 'int'
           if /true|1/ === e1['signed']

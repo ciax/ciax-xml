@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <device id="fpa" label="Field Point Analog Input(FP-AI-100)" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" wait="0">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
     <cmdselect>
       <!--String Length must be <32-->
       <command id="getstat" label="Get status" response="getstat" type="stat">
@@ -35,7 +35,7 @@
     </cmdframe>
     <rspselect>
       <response id="getstat">
-        <array assign="stat" label="Status" length="4">
+        <array assign="stat" label="Status" length="4" decode="hexstr">
           <index range="0:7" size="8" />
         </array>
       </response>

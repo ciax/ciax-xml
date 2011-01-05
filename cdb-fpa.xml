@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
+    <commands>
+      <session id="upd" label="Update Status">
+        <statement format="getstat" />
+      </session>
+      <session id="set1v" label="Set Range +-1.2V">
+        <statement format="setr1" />
+      </session>
+      <session id="set6v" label="Set Range +-6V">
+        <statement format="setr5" />
+      </session>
+    </commands>
+    <status>
+      <repeat from="1" to="6">
+        <value format="%3.2f" id="v$_" label="OUTPUT (V)">
+          <float ref="stat:$_+1" formula="($#-2048)/4096"/>
+        </value>
+      </repeat>
+    </status>
+  </class>
+</cdb>

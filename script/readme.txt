@@ -29,6 +29,10 @@ cdb//session@id -> never use ':'
             --
             odb//session/statement/formula
 
+ $#
+    description : formula parameter
+    usable: cdb//status/value/float@formula
+
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
     usable: ddb//cmdframe/data[@type=formula]

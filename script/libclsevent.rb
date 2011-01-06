@@ -78,7 +78,7 @@ attr_reader :wt
         update{|key| yield key}
         issue.each{|cmd|
           @v.msg{"Issue:#{cmd}"}
-          queue.push(cmd.split(" "))
+          queue.send(cmd)
         } if queue.empty?
         sleep @interval
       }

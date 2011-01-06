@@ -2,7 +2,7 @@
 require "libxmldoc"
 require "libclscmd"
 require "libclsstat"
-require "libclsbuf"
+require "libcmdbuf"
 require "libclsevent"
 require "libdev"
 require "thread"
@@ -18,7 +18,7 @@ class Cls
     $errmsg=''
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
-    @buf=ClsBuf.new
+    @buf=CmdBuf.new
     @event=ClsEvent.new(cdb,@buf){|k| @stat.stat(k)}
     @main=session_thread(cdb['device'],id,iocmd)
     sleep 0.01
@@ -45,8 +45,9 @@ class Cls
     return nil if stm.empty?
     raise "Blocking" if @event.blocking?(stm)
     stm=yield stm
-    @cmd.setcmd(stm)
-    @buf.push(stm,1)
+    @cmd.setcmd(stm).session.each{|c|
+      @buf.send(c,1)
+    }
   rescue SelectID
     case stm.shift
     when 'sleep'
@@ -75,16 +76,10 @@ class Cls
       @stat.get_stat(ddb.field)
       loop{
         begin
-          stm,level=@buf.recv
-          @cmd.setcmd(stm).session.each{|c|
-            break if @buf.int?(level)
-            ddb.transaction(c.split(' '))
-            @stat.get_stat(ddb.field)
-          }
+          ddb.transaction(@buf.recv.split(' '))
+          @stat.get_stat(ddb.field)
         rescue RuntimeError
           $errmsg << $!.to_s
-        rescue
-          $errmsg << $!.to_s+$@.to_s
         end
       }
     }

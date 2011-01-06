@@ -8,7 +8,6 @@ attr_reader :wt
     wdb=cdb['watch'] || return
     @v=Verbose.new("EVENT")
     @rep=Repeat.new
-    $errmsg=''
     @interval=wdb['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
     @last=Time.now
@@ -75,18 +74,14 @@ attr_reader :wt
   private
   def watch(queue)
     Thread.new{
-      begin
-        loop{
-          update{|key| yield key}
-          issue.each{|cmd|
-            @v.msg{"Issue:#{cmd}"}
-            queue.push(cmd.split(" "))
-          } if queue.empty?
-          sleep @interval
-        }
-      rescue
-        $errmsg << $!.to_s+$@.to_s
-      end
+      loop{
+        update{|key| yield key}
+        issue.each{|cmd|
+          @v.msg{"Issue:#{cmd}"}
+          queue.push(cmd.split(" "))
+        } if queue.empty?
+        sleep @interval
+      }
     }
   end
 

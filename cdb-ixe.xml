@@ -121,12 +121,22 @@
     <watch interval="1">
       <event label="Update Status">
         <periodic period="3600" />
-        <command>upd</command>
+        <command>getstat</command>
       </event>
+      <repeat from="1" to="6">
+        <event label="Update Pulses">
+          <periodic period="3600" />
+          <command>chkrun $_</command>
+          <command>getp $_</command>
+          <command>getspd $_</command>
+          <command>getofs $_</command>
+        </event>
+      </repeat>
       <repeat from="1" to="6">
         <event blocking="(fw|bk|abs) $_" interrupt="stop $_" label="Moving $_">
           <while ref="r$_" val="N" />
-          <command>upp $_</command>
+          <command>chkrun $_</command>
+          <command>getp $_</command>
         </event>
       </repeat>
     </watch>

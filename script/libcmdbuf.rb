@@ -72,7 +72,7 @@ class CmdBuf
       end
       p,c=@q.shift
       @v.msg{"SUB:Recieve [#{c}] with priority[#{p}]"}
-      if @outbuf[p] === Array
+      if @outbuf[p]
         @outbuf[p].push(c)
       else
         @outbuf[p]=[c]

@@ -22,7 +22,7 @@ attr_reader :wt
     each{ |bg|
       if bg[:active]
         @v.msg{"#{bg['label']} is active" }
-        ary << bg["interrupt"].split(' ')
+        ary << bg["interrupt"]
       else
         @v.msg{"#{bg['label']} is inactive" }
       end

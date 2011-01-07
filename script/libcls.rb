@@ -66,7 +66,7 @@ class Cls
   
   def interrupt
     @buf.interrupt(@event.interrupt)
-    raise "Interrupt"
+    raise "Interrupt #{@event.interrupt}"
   end
   
   private

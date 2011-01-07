@@ -65,7 +65,7 @@ class CmdBuf
         @outbuf.each{|c|
           next if ! c || c.empty?
           cmd=c.shift
-          @v.msg{"SUB:Exec #{cmd} #{cmd.class}"}
+          @v.msg{"SUB:Exec []#{cmd}]"}
           return cmd
         }
         @v.msg{"SUB:Waiting"}

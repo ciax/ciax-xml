@@ -1,4 +1,4 @@
-#!/usr/bin/ruby -d
+#!/usr/bin/ruby
 require "libobjcmd"
 require "libobjstat"
 require "libcls"

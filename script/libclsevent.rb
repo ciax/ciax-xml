@@ -10,7 +10,6 @@ attr_reader :wt
     @rep=Repeat.new
     @interval=wdb['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
-    @last=Time.now
     @rep.each(wdb){|e1| # while|periodic
       push set_event(e1)
     }
@@ -64,7 +63,13 @@ attr_reader :wt
         bg[:active]=( bg[:val] != val)
         bg[:val]=val
       when 'periodic'
-        (bg[:active]=(@last < Time.now)) && @last=Time.now+bg['period'].to_i
+        now=Time.now
+        if bg[:next] < now
+          bg[:active]=true
+          bg[:next]=now+bg[:period]
+        else
+          bg[:active]=false
+        end
       end
       @v.msg{"Active:#{bg['label']}"} if bg[:active]
     }
@@ -106,17 +111,17 @@ attr_reader :wt
       bg[a]=@rep.subst(v)
     }
     @v.msg(1){bg['label']}
-    case e0.name
-    when 'while','until','periodic','onchange'
-      bg[:type]=e0.name
-    end
     e0.each{ |e1|
       case e1.name
-      when 'while','until','periodic','onchange'
+      when 'while','until','onchange'
         bg[:type]=e1.name
         e1.attr.each{|k,v|
           bg[k]=@rep.subst(v)
         }
+      when 'periodic'
+        bg[:type]=e1.name
+        bg[:period]=e1['period'].to_i
+        bg[:next]=Time.at(0)
       when 'command'
         bg[:commands] << @rep.subst(e1.text)
         @v.msg{"Sessions:"+bg[:commands].last}

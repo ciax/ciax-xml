@@ -53,19 +53,13 @@
         <data type="formula">$1</data>
         <data type="text">P21R</data>
       </command>
-      <command id="setp_a" label="Set pulse from buffer(1-3)" nocache="true" response="default" type="config">
-        <repeat from="1" to="3">
-          <data type="formula">$_</data>
-          <data type="text">P21S</data>
-          <data type="formula">${p:$_-1}</data>
-        </repeat>
-      </command>
-      <command id="setp_b" label="Set pulse from buffer(4-6)" nocache="true" response="default" type="config">
-        <repeat from="4" to="6">
-          <data type="formula">$_</data>
-          <data type="text">P21S</data>
-          <data type="formula">${p:$_-1}</data>
-        </repeat>
+      <command id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
+        <parameters>
+          <par label="[1-6]" validate="range">1:6</par>
+        </parameters>
+        <data type="formula">$1</data>
+        <data type="text">P21S</data>
+        <data type="formula">${p:$1-1}</data>
       </command>
       <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
         <parameters>
@@ -74,19 +68,13 @@
         <data type="formula">$1</data>
         <data type="text">P14R</data>
       </command>
-      <command id="setspd_a" label="Set speed from buffer (1-3)" nocache="true" response="default" type="config">
-        <repeat delimiter=" " from="1" to="3">
-          <data type="formula">$_</data>
-          <data type="text">P14S</data>
-          <data type="formula">${spd:$_-1}</data>
-        </repeat>
-      </command>
-      <command id="setspd_b" label="Set speed from buffer (4-6)" nocache="true" response="default" type="config">
-        <repeat delimiter=" " from="4" to="6">
-          <data type="formula">$_</data>
-          <data type="text">P14S</data>
-          <data type="formula">${spd:$_-1}</data>
-        </repeat>
+      <command id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
+        <parameters>
+          <par label="[1-6]" validate="range">1:6</par>
+        </parameters>
+        <data type="formula">$1</data>
+        <data type="text">P14S</data>
+        <data type="formula">${spd:$1-1}</data>
       </command>
       <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
         <parameters>
@@ -95,19 +83,13 @@
         <data type="formula">$1</data>
         <data type="text">P12R</data>
       </command>
-      <command id="setofs_a" label="Set offset from buffer(1-3)" nocache="true" response="default" type="config">
-        <repeat from="1" to="3">
-          <data type="formula">$_</data>
-          <data type="text">P12S</data>
-          <data type="formula">${ofs:$_-1}</data>
-        </repeat>
-      </command>
-      <command id="setofs_b" label="Set offset from buffer(4-6)" nocache="true" response="default" type="config">
-        <repeat from="4" to="6">
-          <data type="formula">$_</data>
-          <data type="text">P12S</data>
-          <data type="formula">${ofs:$_-1}</data>
-        </repeat>
+      <command id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
+        <parameters>
+          <par label="[1-6]" validate="range">1:6</par>
+        </parameters>
+        <data type="formula">$1</data>
+        <data type="text">P12S</data>
+        <data type="formula">${ofs:$1-1}</data>
       </command>
       <command id="act" label="Activate (Servo) All" response="default" type="action">
         <repeat from="1" to="6">

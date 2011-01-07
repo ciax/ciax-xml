@@ -24,6 +24,16 @@
         <statement format="initunit" />
         <statement format="initfactor" />
       </session>
+      <session id="posinit" label="Position Initialize">
+        <repeat from="1" to="6">
+          <statement format="init %d">
+            <argv>$_</argv>
+          </statement>
+          <statement format="chkrun %d">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
+      </session>
       <session id="stop" label="Motor Stop [1-6]">
         <parameters>
           <par label="[1-6]" validate="range">1:6</par>
@@ -36,22 +46,25 @@
         <parameters>
           <par label="[0-800]" validate="range">0:800</par>
         </parameters>
-        <repeat from="0" to="5">
+        <repeat from="1" to="6">
           <statement format="set spd:%d %d">
-            <argv>$_</argv>
+            <argv>$_-1</argv>
             <argv>$1</argv>
           </statement>
-        </repeat>
-        <statement format="setspd_a" />
-        <statement format="setspd_b" />
-      </session>
-      <session id="resetp" label="Set 0 Pulses">
-        <repeat from="0" to="5">
-          <statement format="set p:%d 0">
+          <statement format="setspd %d">
             <argv>$_</argv>
           </statement>
         </repeat>
-        <statement format="setp" />
+      </session>
+      <session id="resetp" label="Set 0 Pulses">
+        <repeat from="1" to="6">
+          <statement format="set p:%d 0">
+            <argv>$_-1</argv>
+          </statement>
+          <statement format="setp %d">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
       </session>
       <session id="backup" label="Backup Pulse,Speed,Offset">
         <statement format="save p,spd,ofs" />
@@ -60,12 +73,17 @@
       <session id="restore" label="Restore Pulse,Speed,Offset">
         <statement format="act" />
         <statement format="load" />
-        <statement format="setp_a" />
-        <statement format="setp_b" />
-        <statement format="setspd_a" />
-        <statement format="setspd" />
-        <statement format="setofs_a" />
-        <statement format="setofs_b" />
+        <repeat from="1" to="6">
+          <statement format="setp %d">
+            <argv>$_</argv>
+          </statement>
+          <statement format="setspd %d">
+            <argv>$_</argv>
+          </statement>
+          <statement format="setofs %d">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
       </session>
       <session id="upp" label="Update Pulse [1-6]">
         <parameters>

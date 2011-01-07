@@ -25,7 +25,7 @@ class View
 
   def set_tbl(e)
     e[@key] || return
-    label=yield(e['label'])
+    label=yield(e['label'])||"Noname"
     clabel=label.split(' ')
     if clabel.first == @plabel.first || clabel.last == @plabel.last
       @c.next

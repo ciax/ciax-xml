@@ -143,7 +143,7 @@
       </response>
     </rspselect>
     <rspccrange method="len">
-      <field assign="ecode" decode="lew" length="2" verify="0" />
+      <field assign="ecode" decode="lew" length="2" verify="0" label="Error Code" />
       <selected />
     </rspccrange>
     <rspframe>

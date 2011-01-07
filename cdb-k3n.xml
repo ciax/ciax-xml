@@ -13,7 +13,7 @@
       <value format="%s" id="ecode" label="Exit Code" symbol="k3n:ecode">
         <string ref="ecode" />
       </value>
-      <value format="%4.2f" id="flow" label="CS-2(S1) Coolant Flow(l/min)">
+      <value format="%4.2f" id="flow" label="Helium Compressor Coolant Flow(l/min)">
         <float decimal="2" ref="stat" />
       </value>
     </status>

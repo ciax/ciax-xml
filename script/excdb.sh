@@ -12,7 +12,7 @@ for id in $devices; do
     [ $cmd = 'upd' ] || continue
     echo " *** Status ***"
     if [ "$visi" ] ; then
-        clsstat $cls < $file | clsview
+        clsstat $cls < $file | stview
     else
         clsstat $cls < $file
         echo

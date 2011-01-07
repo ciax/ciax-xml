@@ -16,7 +16,7 @@ for id in $devices; do
     if [ "$stat" ] ; then
         echo " *** Stat ***"
         if [ "$view" ] ; then
-            echo "$stat" | devstat $dev $id | devview
+            echo "$stat" | devstat $dev $id | stview
         else
             echo "$stat" | devstat $dev $id
             echo

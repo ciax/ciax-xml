@@ -3,7 +3,7 @@ class ReRange
   include Comparable
   # Range format "X","X:Y","X<:Y","X:<Y","X<:",":Y"
   def initialize(str)
-    @eq=@min_ex=@max_ex=nil
+    @eq=@max=@min=@min_ex=@max_ex=nil
     if /:/ === str
       min,max=str.split(':')
       if min != ''

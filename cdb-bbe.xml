@@ -80,16 +80,16 @@
     </commands>
     <status>
       <repeat from="0" to="3">
-        <value format="%s" id="x$_sw" label="SWITCH $_">
+        <value format="%s" id="x$_sw" label="SWITCH $_" symbol="off-warn">
           <binary bit="$_*4" ref="stat" />
         </value>
-        <value format="%s" id="x$_dr" label="DRIVE $_">
+        <value format="%s" id="x$_dr" label="DRIVE $_" symbol="off-warn">
           <binary bit="$_*4+1" ref="stat" />
         </value>
-        <value format="%s" id="x$_tm" label="TEMP ALARM $_">
+        <value format="%s" id="x$_tm" label="TEMP ALARM $_" symbol="alarm">
           <binary bit="$_*4+2" ref="stat" />
         </value>
-        <value format="%s" id="x$_pr" label="PRES ALARM $_">
+        <value format="%s" id="x$_pr" label="PRES ALARM $_" symbol="alarm">
           <binary bit="$_*4+3" ref="stat" />
         </value>
       </repeat>

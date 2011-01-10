@@ -41,12 +41,11 @@
       </response>
       <response id="default" />
     </rspselect>
-    <rspccrange method="sum">
-      <selected />
-    </rspccrange>
     <rspframe>
       <field label="Prefix" length="1" verify="A" />
-      <ccrange></ccrange>
+      <rspccrange method="sum">
+        <selected />
+      </rspccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>
   </device>

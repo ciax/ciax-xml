@@ -10,6 +10,7 @@ class DevCmd
     @ddb,@stat=ddb,stat
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
     @cache={}
+    @pass=0
     @par=Param.new
     @rep=Repeat.new
   end
@@ -28,16 +29,11 @@ class DevCmd
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
-      if ccn=@ddb['cmdccrange']
-        begin
-          @v.msg(1){"Entering Ceck Code Range"}
-          @ccrange=getstr(ccn)
-          @stat['cc']=checkcode(ccn,@ccrange)
-        ensure
-          @v.msg(-1){"Exitting Ceck Code Range"}
-        end
+      cmd=getstr(@ddb['cmdframe']).join('')
+      if @pass == 1
+        @v.msg{"Retry by CC fail"}
+        cmd=getstr(@ddb['cmdframe']).join('')
       end
-      cmd=getstr(@ddb['cmdframe'])
       @cache[@cid]=cmd unless /\*/ === @cid
     end
     cmd
@@ -45,24 +41,35 @@ class DevCmd
 
   private
   def getstr(e0)
-    frame=''
+    fary=[]
     @rep.each(e0){ |e1|
       case e1.name
       when 'selected'
         begin
           @v.msg(1){"Entering Selected Node"}
-          frame << getstr(@sel)
+          fary+=getstr(@sel)
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end
-      when 'ccrange'
-        frame << @ccrange
-        @v.msg{"GetFrame:(ccrange)[#{@ccrange}]"}
+      when 'cmdccrange'
+        begin
+          @v.msg(1){"Entering Ceck Code Range"}
+          ccrange=getstr(e1)
+          @stat['cc']=checkcode(e1,ccrange.join(''))
+          fary+=ccrange
+        ensure
+          @v.msg(-1){"Exitting Ceck Code Range"}
+        end
       when 'data'
-        frame << get_data(e1)
+        begin
+          fary << get_data(e1)
+        rescue RuntimeError
+          @pass+=1
+          raise $! if @pass > 1
+        end
       end
     }
-    frame
+    fary
   end
 
   def get_data(e)

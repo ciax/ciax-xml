@@ -18,11 +18,9 @@
         <xsd:element ref="ddb:serial" minOccurs="0" maxOccurs="1" />
         <!--Command frame-->
         <xsd:element ref="ddb:cmdselect" minOccurs="1" maxOccurs="1"></xsd:element>
-        <xsd:element ref="ddb:cmdccrange" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="ddb:cmdframe" minOccurs="0" maxOccurs="1" />
         <!--Response frame-->
         <xsd:element ref="ddb:rspselect" minOccurs="1" maxOccurs="1"></xsd:element>
-        <xsd:element ref="ddb:rspccrange" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="ddb:rspframe" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:string" use="required" />
@@ -88,9 +86,6 @@
     </xsd:complexType>
   </xsd:element>
   <!--Shared frame-->
-  <xsd:element name="ccrange">
-    <xsd:complexType></xsd:complexType>
-  </xsd:element>
   <xsd:element name="selected">
     <xsd:complexType></xsd:complexType>
   </xsd:element>
@@ -188,7 +183,7 @@
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="ddb:data" />
         <xsd:element ref="ddb:selected" />
-        <xsd:element ref="ddb:ccrange" />
+        <xsd:element ref="ddb:cmdccrange" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -260,7 +255,7 @@
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="ddb:rsp_elem" />
         <xsd:element ref="ddb:selected" />
-        <xsd:element ref="ddb:ccrange" />
+        <xsd:element ref="ddb:rspccrange" />
       </xsd:choice>
       <xsd:attribute name="terminator" type="xsd:string" />
       <xsd:attribute name="delimiter" type="xsd:string" />

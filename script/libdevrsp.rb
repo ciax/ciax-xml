@@ -86,12 +86,11 @@ class DevRsp
   def setframe(e0)
     e0.each{|e1|
       case e1.name
-      when 'ccrange'
+      when 'rspccrange'
         begin
           @v.msg(1){"Entering Ceck Code Node"}
-          rc=@ddb['rspccrange']
-          fst=@fp;setframe(rc)
-          @cc = checkcode(rc,@frame.slice(fst...@fp))
+          fst=@fp;setframe(e1)
+          @cc = checkcode(e1,@frame.slice(fst...@fp))
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end

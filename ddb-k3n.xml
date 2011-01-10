@@ -1,46 +1,44 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='k3n' label='OMRON K3NR' wait='1'>
-    <serial databit='7' flowctl='NONE' parity='EVEN' speed='9600' stopbit='2'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="k3n" label="OMRON K3NR" wait="1">
+    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
     <cmdselect>
-      <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data label='Node No.' type='text'>00</data>
-        <data label='Sub Address' type='text'>00</data>
-        <data label='SID' type='text'>0</data>
-        <data label='MRC' type='text'>01</data>
-        <data label='SRC' type='text'>01</data>
-        <data label='Variable type' type='text'>C0</data>
-        <data label='Start Address' type='text'>0000</data>
-        <data label='Void' type='text'>00</data>
-        <data label='Number of element' type='text'>0001</data>
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <data label="Node No." type="text">00</data>
+        <data label="Sub Address" type="text">00</data>
+        <data label="SID" type="text">0</data>
+        <data label="MRC" type="text">01</data>
+        <data label="SRC" type="text">01</data>
+        <data label="Variable type" type="text">C0</data>
+        <data label="Start Address" type="text">0000</data>
+        <data label="Void" type="text">00</data>
+        <data label="Number of element" type="text">0001</data>
       </command>
     </cmdselect>
-    <cmdccrange method='bcc'>
-      <selected/>
-      <data encode='chr' label='Suffix' type='text'>3</data>
-    </cmdccrange>
     <cmdframe>
-      <data encode='chr' label='Prefix' type='text'>2</data>
-      <ccrange/>
-      <data encode='chr' type='formula'>${cc}</data>
+      <data encode="chr" label="Prefix" type="text">2</data>
+      <cmdccrange method="bcc">
+        <selected />
+        <data encode="chr" label="Suffix" type="text">3</data>
+      </cmdccrange>
+      <data encode="chr" type="formula">${cc}</data>
     </cmdframe>
     <rspselect>
-      <response id='getstat'>
-        <field label='MRC SRC' length='4' verify='0101'/>
-        <field assign='rcode' label='Response Code' length='4'/>
-        <field assign='stat' label='Status' length='8'/>
+      <response id="getstat">
+        <field label="MRC SRC" length="4" verify="0101" />
+        <field assign="rcode" label="Response Code" length="4" />
+        <field assign="stat" label="Status" length="8" />
       </response>
     </rspselect>
-    <rspccrange method='bcc'>
-      <field label='Node' length='4' verify='0000'/>
-      <field assign='ecode' label='Exit Code' length='2'/>
-      <selected/>
-      <field decode='chr' label='Suffix' length='1' verify='3'/>
-    </rspccrange>
     <rspframe>
-      <field decode='chr' label='Prefix' length='1' verify='2'/>
-      <ccrange/>
-      <field assign='cc' decode='chr' label='BCC' length='1'/>
+      <field decode="chr" label="Prefix" length="1" verify="2" />
+      <rspccrange method="bcc">
+        <field label="Node" length="4" verify="0000" />
+        <field assign="ecode" label="Exit Code" length="2" />
+        <selected />
+        <field decode="chr" label="Suffix" length="1" verify="3" />
+      </rspccrange>
+      <field assign="cc" decode="chr" label="BCC" length="1" />
     </rspframe>
   </device>
 </ddb>

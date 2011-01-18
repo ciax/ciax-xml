@@ -118,7 +118,8 @@ class DevRsp
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       end
       if val=e0['verify']
-        @v.msg{"Verify:[#{val}]"}
+        val=eval(val).to_s if e0['decode'] == 'chr'
+        @v.msg{"Verify:[#{val}] and RSP=[#{data}]"}
         val == data || @v.err("Verify Mismatch[#{data}]!=[#{val}]")
       end
     ensure

@@ -10,7 +10,7 @@ class DevCmd
     @ddb,@stat=ddb,stat
     @v=Verbose.new("ddb/#{@ddb['id']}/cmd".upcase)
     @cache={}
-    @pass=0
+    @pass=true
     @par=Param.new
     @rep=Repeat.new
   end
@@ -64,8 +64,11 @@ class DevCmd
         begin
           fary << get_data(e1)
         rescue RuntimeError
-          @pass+=1
-          raise $! if @pass > 1
+          if /cc/ === $!.to_s
+            @v.msg{"Fail to Get CC"}
+            @pass=!@pass
+          end
+          raise $! if @pass
         end
       end
     }

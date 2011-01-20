@@ -153,11 +153,78 @@
       <value format="%d" id="zerr" label="Z sensor Error">
         <int ref="zerr" />
       </value>
+      <value format="%s%s" id="fhk" label="Fix Hook" symbol="cj2:hook">
+        <binary bit="0" ref="w:11" />
+        <binary bit="1" ref="w:11" />
+      </value>
+      <value format="%s%s" id="fjk" label="Fix Jack" symbol="cj2:jack">
+        <binary bit="14" ref="w:11" />
+        <binary bit="15" ref="w:11" />
+      </value>
+      <value format="%s%s%s%s" id="fist" label="Fix Instrument">
+        <binary bit="0" ref="w:12" />
+        <binary bit="1" ref="w:12" />
+        <binary bit="2" ref="w:12" />
+        <binary bit="3" ref="w:12" />
+      </value>
+      <value format="%s%s" id="chg" label="CHG Plug" symbol="cj2:mov">
+        <binary bit="6" ref="w:12" />
+        <binary bit="7" ref="w:12" />
+      </value>
+      <value format="%s%s" id="mhk" label="Mov Hook" symbol="cj2:hook">
+        <binary bit="0" ref="w:15" />
+        <binary bit="1" ref="w:15" />
+      </value>
+      <value format="%s%s" id="mrt" label="Mov Rotation" symbol="cj2:rot">
+        <binary bit="2" ref="w:15" />
+        <binary bit="3" ref="w:15" />
+      </value>
+      <value format="%s%s" id="mtr" label="Mov Transer" symbol="cj2:mov">
+        <binary bit="6" ref="w:16" />
+        <binary bit="8" ref="w:16" />
+      </value>
+      <value format="%s%s" id="mjk" label="Mov Jack" symbol="cj2:jack">
+        <binary bit="14" ref="w:15" />
+        <binary bit="15" ref="w:15" />
+      </value>
+      <value format="%s%s%s%s" id="mist" label="Mov Instrument">
+        <binary bit="0" ref="w:16" />
+        <binary bit="1" ref="w:16" />
+        <binary bit="2" ref="w:16" />
+        <binary bit="3" ref="w:16" />
+      </value>
+      <value format="%s%s" id="door" label="Door" symbol="cj2:door">
+        <binary bit="0" ref="w:19" />
+        <binary bit="1" ref="w:19" />
+      </value>
+      <value format="%s" id="fipw" label="Fix Inst Power" symbol="off-warn">
+        <binary bit="8" ref="w:19" />
+      </value>
+      <value format="%s" id="fcpw" label="Fix CCD Power" symbol="off-warn">
+        <binary bit="10" ref="w:19" />
+      </value>
+      <value format="%s" id="mipw" label="Mov Inst Power" symbol="off-warn">
+        <binary bit="9" ref="w:19"></binary>
+      </value>
+      <value format="%s" id="mcpw" label="Mov CCD Power" symbol="off-warn">
+        <binary bit="11" ref="w:19" />
+      </value>
       <repeat from="1" to="4">
         <value format="%.2f" id="fz$_" label="Fix Z Sensor">
           <float ref="d:($_-1)" formula="$#/100" />
         </value>
       </repeat>
+      <repeat from="1" to="4">
+        <value format="%.2f" id="mz$_" label="Mov Z Sensor">
+          <float ref="d:($_+3)" formula="$#/100" />
+        </value>
+      </repeat>
+      <value format="%d" id="fiid" label="Fix Instrument ID">
+        <int ref="d:8" />
+      </value>
+      <value format="%d" id="miid" label="Mov Instrument ID">
+        <int ref="d:9" />
+      </value>
     </status>
   </class>
 </cdb>

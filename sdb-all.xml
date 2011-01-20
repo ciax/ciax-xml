@@ -6,6 +6,31 @@
       <case class="normal" val="01">MANUAL</case>
       <case class="alarm" val="00">N/A</case>
     </enum>
+    <enum id="cj2:hook">
+      <case class="normal" val="10">HOOK</case>
+      <case class="normal" val="01">UNHOOK</case>
+      <case class="alarm" val="00">N/A</case>
+    </enum>
+    <enum id="cj2:jack">
+      <case class="normal" val="10">UP</case>
+      <case class="normal" val="01">DW</case>
+      <case class="alarm" val="00">N/A</case>
+    </enum>
+    <enum id="cj2:mov">
+      <case class="normal" val="10">FW</case>
+      <case class="normal" val="01">BK</case>
+      <case class="alarm" val="00">N/A</case>
+    </enum>
+    <enum id="cj2:rot">
+      <case class="normal" val="10">LOAD</case>
+      <case class="normal" val="01">STORE</case>
+      <case class="alarm" val="00">N/A</case>
+    </enum>
+    <enum id="cj2:door">
+      <case class="normal" val="10">OPEN</case>
+      <case class="normal" val="01">CLOSE</case>
+      <case class="alarm" val="00">N/A</case>
+    </enum>
     <enum id="tpg:stat">
       <case class="hide" val="0">Measurment data okay</case>
       <case class="warn" val="1">Underrange</case>

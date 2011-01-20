@@ -97,7 +97,7 @@
         <field decode="chr" label="FINS Command:MRES" length="1" verify="0x00" />
         <field decode="chr" label="FINS Command:SRES" length="1" verify="0x00" />
         <array assign="d" decode="bew" length="2" label="Status">
-          <index range="0:7" size="8" />
+          <index range="0:9" size="8" />
         </array>
       </response>
       <response id="cmdrsp" label="command resp">

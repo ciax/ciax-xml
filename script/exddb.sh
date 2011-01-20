@@ -7,7 +7,7 @@ default="${*:-getstat}"
 for id in $devices; do
     setfld $id || _usage_key
     echo "#### $dev($id) ####"
-    input="$HOME/.var/device_${id}_2010.log"
+    input="$HOME/.var/device_${id}_*.log"
     output="$HOME/.var/field_${id}.json"
     cmd=$default
     { devcmd $dev $id $cmd || exit 1; } | visi

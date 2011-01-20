@@ -46,6 +46,7 @@ class ClsStat
           loc=eval(@rep.subst(e1['bit']))
           bit=(data.to_i >> loc & 1)
           bit = -(bit-1) if /true|1/ === e1['inv']
+          @v.msg{"GetBit[#{bit}]"}
           ary << bit.to_s
         when 'float'
           if n=e1['decimal']
@@ -53,7 +54,9 @@ class ClsStat
             data=data[0..(-1-n)]+'.'+data[-n..-1]
           end
           if f=e1['formula']
-            data=eval(f.gsub(/\$#/,"#{data}.prec_f"))
+            f=f.gsub(/\$#/,"1.0*#{data}")
+            @v.msg{"Formula:#{f}"}
+            data=eval(f)
           end
           ary << data.to_f
         when 'int'

@@ -61,6 +61,7 @@ class Stat < Hash
         raise("#{i} is not number")
       end
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
+      @v.msg{"Content[#{h[i]}]"}
       h[i]||raise("No such Value [#{i}]")
     }
   end

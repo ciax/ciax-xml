@@ -146,18 +146,15 @@
       <value format="%s" id="rdy" label="READY" symbol="off-warn">
         <binary bit="3" ref="w:0" />
       </value>
-      <value format="%s" id="ctl" label="CONTROL" symbol="cj2:ctl">
+      <value format="%s%s" id="ctl" label="CONTROL" symbol="cj2:ctl">
         <binary bit="6" ref="w:0" />
         <binary bit="7" ref="w:0" />
       </value>
       <value format="%d" id="zerr" label="Z sensor Error">
         <int ref="zerr" />
       </value>
-      <value format="%s" id="pse" label="PAUSE" symbol="warn">
-        <binary bit="1" ref="x:0" />
-      </value>
       <repeat from="1" to="4">
-        <value format="%f" id="fz$_" label="Fix Z Sensor">
+        <value format="%.2f" id="fz$_" label="Fix Z Sensor">
           <float ref="d:($_-1)" formula="$#/100" />
         </value>
       </repeat>

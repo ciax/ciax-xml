@@ -26,6 +26,7 @@ class DevRsp
   def getfield(time=Time.now)
     return "Send Only" unless @sel
     frame=yield || @v.err("No String")
+    @v.msg{"ResponseFrame:[#{frame}]" }
     if tm=@ddb['rspframe']['terminator']
       frame.chomp!(eval('"'+tm+'"'))
       @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }

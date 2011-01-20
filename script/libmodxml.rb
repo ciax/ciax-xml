@@ -25,17 +25,17 @@ module ModXml
 
   Codec={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
 
-  def decode(e,code)
+  def decode(e,code) # Chr -> Num
     cdc=e['decode']
     if upk=Codec[cdc]
-      str=(upk == 'hex') ? code.hex : code.unpack(upk).first
-      @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{str}]"}
-      code=str
+      num=(upk == 'hex') ? code.hex : code.unpack(upk).first
+      @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{num}]"}
+      code=num
     end
     return code.to_s
   end
 
-  def encode(e,str)
+  def encode(e,str) # Num -> Chr
     cdc=e['encode']
     if pck=Codec[cdc]
       code=[str.to_i(0)].pack(pck)

@@ -66,13 +66,13 @@
       <data encode="chr" label="FINS Header:RSV" type="text">0x00</data>
       <data encode="chr" label="FINS Header:GCT" type="text">0x02</data>
       <data encode="chr" label="FINS Header:DNA" type="text">0x00</data>
-      <data encode="chr" label="FINS Header:DA1" type="text">0x64</data>
+      <data encode="chr" label="FINS Header:DA1" type="text">100<!--DST IP address--></data>
       <data encode="chr" label="FINS Header:DA2" type="text">0x00</data>
       <data encode="chr" label="FINS Header:SNA" type="text">0x00</data>
-      <data encode="chr" label="FINS Header:SA1" type="text">0x39</data>
+      <data encode="chr" label="FINS Header:SA1" type="text">57<!--SRC IP address--></data>
       <data encode="chr" label="FINS Header:SA2" type="text">0x00</data>
       <data encode="chr" label="FINS Header:SID" type="text">0xFF</data>
-      <selected/>
+      <selected />
     </cmdframe>
     <rspselect>
       <response id="getstat">
@@ -112,13 +112,13 @@
       <field decode="chr" label="FINS Header:RSV" length="1" verify="0x00"></field>
       <field decode="chr" label="FINS Header:GCT" length="1" verify="0x02"></field>
       <field decode="chr" label="FINS Header:DNA" length="1" verify="0x00"></field>
-      <field decode="chr" label="FINS Header:DA1" length="1" verify="0x39"></field>
+      <field decode="chr" label="FINS Header:DA1" length="1" verify="57"></field>
       <field decode="chr" label="FINS Header:DA2" length="1" verify="0x00"></field>
       <field decode="chr" label="FINS Header:SNA" length="1" verify="0x00"></field>
-      <field decode="chr" label="FINS Header:SA1" length="1" verify="0x64"></field>
+      <field decode="chr" label="FINS Header:SA1" length="1" verify="100"></field>
       <field decode="chr" label="FINS Header:SA2" length="1" verify="0x00"></field>
       <field decode="chr" label="FINS Header:SID" length="1" verify="0xFF"></field>
-      <selected/>
+      <selected />
     </rspframe>
   </device>
 </ddb>

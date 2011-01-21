@@ -10,7 +10,7 @@
       <session id="clr" label="ClearBit">
         <statement format="clrbit"></statement>
       </session>
-      <session id="emgstop" label="Emergency Stop">
+      <session id="stop" label="Emergency Stop">
         <statement format="setbit 0 0"></statement>
       </session>
       <session id="pause" label="Pause">
@@ -107,21 +107,34 @@
         <statement format="setbit 3 14"></statement>
       </session>
     </commands>
+    <watch interval="1">
+      <event label="Regular">
+        <periodic period="300" />
+        <command>getstat</command>
+      </event>
+      <event label="On Motion">
+        <while ref="isu" val="1" />
+        <command>getstat</command>
+      </event>
+    </watch>
     <status>
-      <value format="%s" id="emg" label="EMG STOP" symbol="alarm">
+      <value format="%s" id="emg" label="GL:EMG STOP" symbol="alarm">
         <binary bit="0" ref="w:0" />
       </value>
-      <value format="%s" id="pse" label="PAUSE" symbol="warn">
+      <value format="%s" id="pse" label="GL:PAUSE" symbol="warn">
         <binary bit="1" ref="w:0" />
       </value>
-      <value format="%s" id="rdy" label="READY" symbol="off-warn">
+      <value format="%s" id="rdy" label="GL:READY" symbol="off-warn">
         <binary bit="3" ref="w:0" />
       </value>
-      <value format="%s%s" id="ctl" label="CONTROL" symbol="cj2:ctl">
+      <value format="%s" id="isu" label="GL:COMMAND ISSUED" symbol="normal">
+        <binary bit="15" ref="w:0" />
+      </value>
+      <value format="%s%s" id="ctl" label="GL:CONTROL" symbol="cj2:ctl">
         <binary bit="6" ref="w:0" />
         <binary bit="7" ref="w:0" />
       </value>
-      <value format="%d" id="zerr" label="Z sensor Error">
+      <value format="%d" id="zerr" label="GL:Z SensorError">
         <int ref="zerr" />
       </value>
       <value format="%s%s" id="fhk" label="Fix Hook" symbol="cj2:hook">

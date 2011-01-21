@@ -43,7 +43,7 @@
       <session id="chgbk" label="Charging Plug Backward">
         <statement format="setbit 1 7"></statement>
       </session>
-      <session id="chgoff" label="Charging Off">
+      <session id="pwoff" label="Outlet Power Off">
         <statement format="setbit 1 8"></statement>
       </session>
       <session id="mhook" label="Movable Flange Hook">

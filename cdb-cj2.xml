@@ -7,133 +7,104 @@
         <statement format="getzerr"></statement>
         <statement format="getzlen"></statement>
       </session>
+      <session id="clr" label="ClearBit">
+        <statement format="clrbit"></statement>
+      </session>
       <session id="emgstop" label="Emergency Stop">
         <statement format="setbit 0 0"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="pause" label="Pause">
         <statement format="setbit 0 1"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="ready" label="Drive Ready">
         <statement format="setbit 0 3"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="resume" label="Reset Pause">
         <statement format="setbit 0 10"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="reset" label="Reset Error">
         <statement format="setbit 0 11"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="fhook" label="Fix Flange Hook">
         <statement format="setbit 1 0"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="funhk" label="Fix Flange UnHook">
         <statement format="setbit 1 1"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="fjup" label="Fix Flange Jack Up">
         <statement format="setbit 1 4"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="fjdw" label="Fix Flange Jack Down">
         <statement format="setbit 1 5"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="chgfw" label="Charging Plug Forward">
         <statement format="setbit 1 6"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="chgbk" label="Charging Plug Backward">
         <statement format="setbit 1 7"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="chgoff" label="Charging Off">
         <statement format="setbit 1 8"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="mhook" label="Movable Flange Hook">
         <statement format="setbit 2 0"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="munhk" label="Movable Flange UnHook">
         <statement format="setbit 2 1"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="rotout" label="Movable Flange Rotation for Loading">
         <statement format="setbit 2 2"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="rotin" label="Movable Flange Rotation for Storing">
         <statement format="setbit 2 3"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="mjup" label="Movable Flange Jack Up">
         <statement format="setbit 2 4"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="mjup" label="Movable Flange Jack Down">
         <statement format="setbit 2 5"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="trout" label="Movable Flange Transer Out">
         <statement format="setbit 2 6"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="trin" label="Movable Flange Transer In">
         <statement format="setbit 2 7"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="dopen" label="Door Open">
         <statement format="setbit 3 0"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="dclose" label="Door Close">
         <statement format="setbit 3 1"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="fpwon" label="Fix Flange Instrument Power On">
         <statement format="setbit 3 2"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="fpwoff" label="Fix Flange Instrument Power Off">
         <statement format="setbit 3 3"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="mpwon" label="Movable Flange Instrument Power On">
         <statement format="setbit 3 4"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="mpwoff" label="Movable Flange Instrument Power Off">
         <statement format="setbit 3 5"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="fccdon" label="Fix Flange CCD Power On">
         <statement format="setbit 3 8"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="fccdoff" label="Fix Flange CCD Power Off">
         <statement format="setbit 3 9"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="fccdtoff" label="Fix Flange CCD Timer Off">
         <statement format="setbit 3 10"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="mccdon" label="Movable Flange CCD Power On">
         <statement format="setbit 3 12"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="mccdoff" label="Movable Flange CCD Power Off">
         <statement format="setbit 3 13"></statement>
-        <statement format="clrbit"></statement>
       </session>
       <session id="mccdtoff" label="Movable Flange CCD Timer Off">
         <statement format="setbit 3 14"></statement>
-        <statement format="clrbit"></statement>
       </session>
     </commands>
     <status>
@@ -154,60 +125,60 @@
         <int ref="zerr" />
       </value>
       <value format="%s%s" id="fhk" label="Fix Hook" symbol="cj2:hook">
-        <binary bit="0" ref="w:11" />
-        <binary bit="1" ref="w:11" />
+        <binary bit="0" ref="w:1" />
+        <binary bit="1" ref="w:1" />
       </value>
       <value format="%s%s" id="fjk" label="Fix Jack" symbol="cj2:jack">
-        <binary bit="14" ref="w:11" />
-        <binary bit="15" ref="w:11" />
+        <binary bit="14" ref="w:1" />
+        <binary bit="15" ref="w:1" />
       </value>
       <value format="%s%s" id="mhk" label="Mov Hook" symbol="cj2:hook">
-        <binary bit="0" ref="w:15" />
-        <binary bit="1" ref="w:15" />
+        <binary bit="0" ref="w:5" />
+        <binary bit="1" ref="w:5" />
       </value>
       <value format="%s%s" id="mjk" label="Mov Jack" symbol="cj2:jack">
-        <binary bit="14" ref="w:15" />
-        <binary bit="15" ref="w:15" />
+        <binary bit="14" ref="w:5" />
+        <binary bit="15" ref="w:5" />
       </value>
       <value format="%s%s" id="mrt" label="Mov Rotation" symbol="cj2:rot">
-        <binary bit="2" ref="w:15" />
-        <binary bit="3" ref="w:15" />
+        <binary bit="2" ref="w:5" />
+        <binary bit="3" ref="w:5" />
       </value>
       <value format="%s%s" id="mtr" label="Mov Transer" symbol="cj2:mov">
-        <binary bit="6" ref="w:16" />
-        <binary bit="8" ref="w:16" />
+        <binary bit="8" ref="w:6" />
+        <binary bit="6" ref="w:6" />
       </value>
       <value format="%s%s%s%s" id="fist" label="Fix Attach">
-        <binary bit="0" ref="w:12" />
-        <binary bit="1" ref="w:12" />
-        <binary bit="2" ref="w:12" />
-        <binary bit="3" ref="w:12" />
+        <binary bit="0" ref="w:2" />
+        <binary bit="1" ref="w:2" />
+        <binary bit="2" ref="w:2" />
+        <binary bit="3" ref="w:2" />
       </value>
       <value format="%s%s%s%s" id="mist" label="Mov Attach">
-        <binary bit="0" ref="w:16" />
-        <binary bit="1" ref="w:16" />
-        <binary bit="2" ref="w:16" />
-        <binary bit="3" ref="w:16" />
+        <binary bit="0" ref="w:6" />
+        <binary bit="1" ref="w:6" />
+        <binary bit="2" ref="w:6" />
+        <binary bit="3" ref="w:6" />
       </value>
       <value format="%s%s" id="chg" label="CHG Plug" symbol="cj2:mov">
-        <binary bit="6" ref="w:12" />
-        <binary bit="7" ref="w:12" />
+        <binary bit="6" ref="w:2" />
+        <binary bit="7" ref="w:2" />
       </value>
       <value format="%s%s" id="door" label="Door" symbol="cj2:door">
-        <binary bit="0" ref="w:19" />
-        <binary bit="1" ref="w:19" />
+        <binary bit="0" ref="w:9" />
+        <binary bit="1" ref="w:9" />
       </value>
       <value format="%s" id="fipw" label="Fix Inst Power" symbol="off-warn">
-        <binary bit="8" ref="w:19" />
+        <binary bit="8" ref="w:9" />
       </value>
       <value format="%s" id="fcpw" label="Fix CCD" symbol="off-warn">
-        <binary bit="10" ref="w:19" />
+        <binary bit="10" ref="w:9" />
       </value>
       <value format="%s" id="mipw" label="Mov Inst Power" symbol="off-warn">
-        <binary bit="9" ref="w:19"></binary>
+        <binary bit="9" ref="w:9"></binary>
       </value>
       <value format="%s" id="mcpw" label="Mov CCD" symbol="off-warn">
-        <binary bit="11" ref="w:19" />
+        <binary bit="11" ref="w:9" />
       </value>
       <repeat from="1" to="4">
         <value format="%.2f" id="fz$_" label="Fix Z">

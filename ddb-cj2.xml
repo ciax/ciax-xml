@@ -30,7 +30,7 @@
         <data encode="chr" label="FINS Param:Start Address(L)" type="text">0x0A</data>
         <data encode="chr" label="FINS Param:Bit Number" type="text">0x00</data>
         <data encode="chr" label="FINS Param:Data Length (H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (L)" type="text">0x08</data>
+        <data encode="chr" label="FINS Param:Data Length (L)" type="text">0x0A</data>
       </command>
       <command id="setbit" label="Set Bit" response="cmdrsp" type="stat">
         <parameters>

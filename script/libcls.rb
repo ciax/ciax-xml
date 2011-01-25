@@ -66,7 +66,13 @@ class Cls
   end
   
   def interrupt
-    @buf.interrupt(@event.interrupt)
+    ary=[]
+    @event.interrupt.each{|cmd|
+      @cmd.setcmd(cmd.split(' ')).session.each{|c|
+        ary << c
+      }
+    }
+    @buf.interrupt(ary)
     raise "Interrupt #{@event.interrupt}"
   end
   
@@ -88,18 +94,17 @@ class Cls
 
   def watch_thread
     Thread.new{
-      exit unless @event.interval
-      loop{
+      while(@event.interval)
         @event.update{|key|
           @stat.stat(key)
         }
-        @event.issue.each{|stm|
-          #          @cmd.setcmd(stm).session.each{|c|
-          @buf.send(stm)
-          #          }
+        @event.issue.each{|cmd|
+          @cmd.setcmd(cmd.split(' ')).session.each{|c|
+            @buf.send(c)
+          }
         } if @buf.empty?
         sleep @event.interval
-      }
+      end
     }
   end
 end

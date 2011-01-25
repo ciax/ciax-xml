@@ -9,7 +9,7 @@
     <watch interval="2">
       <event label="Update">
         <periodic period="10" />
-        <command>getstat</command>
+        <command>upd</command>
       </event>
     </watch>
     <status>

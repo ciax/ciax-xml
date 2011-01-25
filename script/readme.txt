@@ -70,3 +70,7 @@ cdb//session@id -> never use ':'
 
  validate
  
+### Reference Content ###
+  cdb//statement@format <= ddb//command@id + par
+  cdb//event/command <= cdb//session@id + par
+  cdb//event/while@ref <= cdb//value@id

@@ -19,13 +19,14 @@ class Cls
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)
     @buf=CmdBuf.new
-    @event=ClsEvent.new(cdb,@buf){|k| @stat.stat(k)}
+    @event=ClsEvent.new(cdb)
     @main=session_thread(cdb['device'],id,iocmd)
+    @watch=watch_thread
     sleep 0.01
   end
 
   def prompt
-    prom = (@event.alive? ? "&" : "")
+    prom = (@watch.alive? ? "&" : "")
     prom << (@event.active? ? '@' : '')
     prom << @cls
     prom << (@buf.issue? ? '*' : '')
@@ -81,6 +82,23 @@ class Cls
         rescue RuntimeError
           $errmsg << $!.to_s
         end
+      }
+    }
+  end
+
+  def watch_thread
+    Thread.new{
+      exit unless @event.interval
+      loop{
+        @event.update{|key|
+          @stat.stat(key)
+        }
+        @event.issue.each{|stm|
+          #          @cmd.setcmd(stm).session.each{|c|
+          @buf.send(stm)
+          #          }
+        } if @buf.empty?
+        sleep @event.interval
       }
     }
   end

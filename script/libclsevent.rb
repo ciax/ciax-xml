@@ -2,18 +2,17 @@
 require "librepeat"
 
 class ClsEvent < Array
-attr_reader :wt
+  attr_reader :interval
 
-  def initialize(cdb,queue=[])
+  def initialize(cdb)
     wdb=cdb['watch'] || return
     @v=Verbose.new("EVENT")
-    @rep=Repeat.new
     @interval=wdb['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}
+    @rep=Repeat.new
     @rep.each(wdb){|e1| # while|periodic
       push set_event(e1)
     }
-    @wt=watch(queue){|k| yield k }
   end
 
   public
@@ -26,16 +25,12 @@ attr_reader :wt
       else
         @v.msg{"#{bg['label']} is inactive" }
       end
-    } if @wt
+    }
     ary.compact.uniq
   end
 
   def active?
     any?{|bg| bg[:active] }
-  end
-
-  def alive?
-    @wt
   end
 
   def blocking?(stm)
@@ -74,20 +69,6 @@ attr_reader :wt
       @v.msg{"Active:#{bg['label']}"} if bg[:active]
     }
     self
-  end
-
-  private
-  def watch(queue)
-    Thread.new{
-      loop{
-        update{|key| yield key}
-        issue.each{|cmd|
-          @v.msg{"Issue:#{cmd}"}
-          queue.send(cmd)
-        } if queue.empty?
-        sleep @interval
-      }
-    }
   end
 
   def issue

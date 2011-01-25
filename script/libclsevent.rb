@@ -4,8 +4,8 @@ require "librepeat"
 class ClsEvent < Array
   attr_reader :interval
 
-  def initialize(cdb)
-    wdb=cdb['watch'] || return
+  def initialize(wdb)
+    return unless wdb
     @v=Verbose.new("EVENT")
     @interval=wdb['interval'].to_i||1
     @v.msg{"Interval[#{@interval}]"}

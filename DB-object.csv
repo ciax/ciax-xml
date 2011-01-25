@@ -3,8 +3,7 @@ crt,crt,mel,mel,udp:cart3:5000,ciax,25101
 dsi,dsi,cj2,cj2,udp:192.168.24.100:9600,ciax,25102
 dso,dso,cj2,cj2,udp:192.168.24.100:9600,ciax,25103
 det,det,srm,srm,tcp:ltc-c:4001,ciax,25104
-dts,dts,oss,oss,tcp:cxws:9999,ciax,25105
-dt2,dts,oss,oss,tcp:cxws2:9999,ciax,25900
+dts,dts,oss,oss,tcp:cxws2:9999,ciax,25105
 #Compressor
 cci,cci,bbe,bbe,tcp:ltc-i:4002,ciax,25105
 cco,cco,bbe,bbe,tcp:ltc-o:4002,ciax,25106

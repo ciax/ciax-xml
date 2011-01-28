@@ -57,7 +57,7 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:complexType name="condition">
-    <xsd:attribute name="ref" type="xsd:string"></xsd:attribute>
+    <xsd:attribute name="ref" type="xsd:string" use="required"></xsd:attribute>
     <xsd:attribute name="val" type="xsd:string"></xsd:attribute>
   </xsd:complexType>
   <!--command statement-->
@@ -105,11 +105,7 @@
   </xsd:element>
   <xsd:element name="while" type="cdb:condition"></xsd:element>
   <xsd:element name="until" type="cdb:condition"></xsd:element>
-  <xsd:element name="onchange">
-    <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:string"></xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:element name="onchange" type="cdb:condition"></xsd:element>
   <xsd:element name="command" type="xsd:string"></xsd:element>
   <!--status-->
   <xsd:element name="status">

@@ -150,7 +150,7 @@
         <command>upd</command>
       </event>
       <event label="On Completion">
-        <while ref="cmp" val="1" />
+        <onchange ref="cmp" val="1" />
         <command>clr</command>
         <command>upd</command>
       </event>

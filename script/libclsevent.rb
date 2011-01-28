@@ -57,6 +57,9 @@ class ClsEvent < Array
         val=yield bg['ref']
         bg[:active]=( bg[:val] != val)
         bg[:val]=val
+        if bg['val']
+          bg[:active]=bg[:active] && ( bg['val'] == val )
+        end
       when 'periodic'
         now=Time.now
         if bg[:next] < now

@@ -171,34 +171,34 @@
       <value format="%s" id="isu" label="GL:COMMAND ISSUED" symbol="normal">
         <binary bit="15" ref="w:0" />
       </value>
-      <value format="%s%s" id="ctl" label="GL:CONTROL" symbol="cj2:ctl">
+      <value format="%s%s" id="ctl" label="GL:CONTROL" symbol="ctl">
         <binary bit="6" ref="w:0" />
         <binary bit="7" ref="w:0" />
       </value>
       <value format="%d" id="zerr" label="GL:Z SensorError">
         <int ref="zerr" />
       </value>
-      <value format="%s%s" id="fhk" label="Fix Hook" symbol="cj2:hook">
+      <value format="%s%s" id="fhk" label="Fix Hook" symbol="hook">
         <binary bit="0" ref="w:1" />
         <binary bit="1" ref="w:1" />
       </value>
-      <value format="%s%s" id="fjk" label="Fix Jack" symbol="cj2:jack">
+      <value format="%s%s" id="fjk" label="Fix Jack" symbol="jack">
         <binary bit="14" ref="w:1" />
         <binary bit="15" ref="w:1" />
       </value>
-      <value format="%s%s" id="mhk" label="Mov Hook" symbol="cj2:hook">
+      <value format="%s%s" id="mhk" label="Mov Hook" symbol="hook">
         <binary bit="0" ref="w:5" />
         <binary bit="1" ref="w:5" />
       </value>
-      <value format="%s%s" id="mjk" label="Mov Jack" symbol="cj2:jack">
+      <value format="%s%s" id="mjk" label="Mov Jack" symbol="jack">
         <binary bit="14" ref="w:5" />
         <binary bit="15" ref="w:5" />
       </value>
-      <value format="%s%s" id="mrt" label="Mov Rotation" symbol="cj2:rot">
+      <value format="%s%s" id="mrt" label="Mov Rotation" symbol="rot">
         <binary bit="2" ref="w:5" />
         <binary bit="3" ref="w:5" />
       </value>
-      <value format="%s%s" id="mtr" label="Mov Transer" symbol="cj2:mov">
+      <value format="%s%s" id="mtr" label="Mov Transer" symbol="mov">
         <binary bit="8" ref="w:6" />
         <binary bit="6" ref="w:6" />
       </value>
@@ -214,11 +214,11 @@
         <binary bit="2" ref="w:6" />
         <binary bit="3" ref="w:6" />
       </value>
-      <value format="%s%s" id="chg" label="CHG Plug" symbol="cj2:mov">
+      <value format="%s%s" id="chg" label="CHG Plug" symbol="mov">
         <binary bit="6" ref="w:2" />
         <binary bit="7" ref="w:2" />
       </value>
-      <value format="%s%s" id="door" label="Door" symbol="cj2:door">
+      <value format="%s%s" id="door" label="Door" symbol="door">
         <binary bit="0" ref="w:9" />
         <binary bit="1" ref="w:9" />
       </value>
@@ -251,5 +251,37 @@
         <int ref="d:9" />
       </value>
     </status>
+    <symbol>
+      <enum id="ctl">
+        <case class="normal" val="10">AUTO</case>
+        <case class="normal" val="01">MANUAL</case>
+        <case class="alarm" val="00">N/A</case>
+      </enum>
+      <enum id="hook">
+        <case class="normal" val="10">HOOK</case>
+        <case class="normal" val="01">UNHOOK</case>
+        <case class="alarm" val="00">N/A</case>
+      </enum>
+      <enum id="jack">
+        <case class="normal" val="10">UP</case>
+        <case class="normal" val="01">DW</case>
+        <case class="alarm" val="00">N/A</case>
+      </enum>
+      <enum id="mov">
+        <case class="normal" val="10">FW</case>
+        <case class="normal" val="01">BK</case>
+        <case class="alarm" val="00">N/A</case>
+      </enum>
+      <enum id="rot">
+        <case class="normal" val="10">LOAD</case>
+        <case class="normal" val="01">STORE</case>
+        <case class="alarm" val="00">N/A</case>
+      </enum>
+      <enum id="door">
+        <case class="normal" val="10">OPEN</case>
+        <case class="normal" val="01">CLOSE</case>
+        <case class="alarm" val="00">N/A</case>
+      </enum>
+    </symbol>
   </class>
 </cdb>

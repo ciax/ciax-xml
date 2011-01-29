@@ -35,8 +35,10 @@ class SymTbl
   end
 
   def select_id(id)
-    e=@local ? @local.select_id('symbol',id) : nil
-    e=@sdb.select_id('symbol',id) unless e
-    return e
+    begin
+      return @local.select_id('symbol',id) if @local
+    rescue SelectID
+    end
+    return @sdb.select_id('symbol',id)
   end
 end

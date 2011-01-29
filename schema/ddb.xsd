@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:ddb="http://ciax.sum.naoj.org/ciax-xml/ddb">
   <!--Device database-->
+  <xsd:include schemaLocation="symbol.xsd" />
   <xsd:include schemaLocation="range.xsd" />
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="param.xsd" />
@@ -22,6 +23,7 @@
         <!--Response frame-->
         <xsd:element ref="ddb:rspselect" minOccurs="1" maxOccurs="1"></xsd:element>
         <xsd:element ref="ddb:rspframe" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="ddb:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:string" use="required" />
       <xsd:attribute name="label" type="xsd:string" />

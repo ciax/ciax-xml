@@ -22,6 +22,7 @@ class XmlDoc < Hash
   end
 
   def select_id(xpath,id)
+    raise SelectID unless key?(xpath)
     return self[xpath].select('id',id)
   rescue SelectID
     $errmsg << "No such command [#{id}]\n" if id

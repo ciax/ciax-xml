@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdb="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="symbol.xsd" />
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="param.xsd" />
   <xsd:element name="cdb">
@@ -19,6 +20,7 @@
         <xsd:element ref="cdb:commands" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:watch" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="cdb:status" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="cdb:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="device" type="xsd:string" use="required" />

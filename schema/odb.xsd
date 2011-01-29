@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:odb="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="symbol.xsd" />
   <xsd:element name="odb">
     <xsd:complexType>
       <xsd:sequence>
@@ -18,6 +19,7 @@
         <xsd:element ref="odb:comm" minOccurs="1" maxOccurs="1" />
         <xsd:element ref="odb:command" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="odb:status" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="odb:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>

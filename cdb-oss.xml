@@ -95,19 +95,19 @@
       <value format="%d" id="exit" label="Exit Code">
         <int ref="exit" />
       </value>
-      <value format="%d" id="rts" label="ROT SEL">
+      <value format="%d" id="rts" label="ROT SEL" symbol="rsel">
         <int ref="rsel" />
       </value>
-      <value format="%d" id="iid" label="CAS INST ID">
+      <value format="%d" id="iid" label="CAS INST ID" symbol="inst">
         <int ref="iid" />
       </value>
-      <value format="%s%s%s%s" id="login" label="Login Status">
+      <value format="%s%s%s%s" id="login" label="Login Status" symbol="login">
         <string ref="login0" />
         <string ref="login1" />
         <string ref="login2" />
         <string ref="login3" />
       </value>
-      <value format="%d" id="rpw" label="ROT DRIVE">
+      <value format="%d" id="rpw" label="ROT DRIVE" symbol="rpw">
         <int ref="rpw" />
       </value>
       <value format="%s" id="jpw" label="JAK DRIVE">
@@ -116,7 +116,7 @@
       <value format="%s" id="nfb" label="BOLT NFB TRIP">
         <binary bit="6" ref="bstat" />
       </value>
-      <value format="%s%s" id="rps" label="ROT POS SENSOR">
+      <value format="%s%s" id="rps" label="ROT POS SENSOR" symbol="rps">
         <binary bit="4" ref="bstat" />
         <binary bit="5" ref="bstat" />
       </value>
@@ -135,5 +135,41 @@
         </value>
       </repeat>
     </status>
+    <symbol>
+      <enum id="rsel">
+        <case class="warn" val="1">PFO</case>
+        <case class="warn" val="2">PFI</case>
+        <case class="normal" val="4">CAS</case>
+        <case class="warn" val="8">NSO</case>
+        <case class="warn" val="10">NSI</case>
+        <case class="alarm" val=".">N/A</case>
+      </enum>
+      <enum id="inst">
+        <case class="warn" val="0">NONE</case>
+        <case class="normal" val="1">IRCS</case>
+        <case class="normal" val="3">CIAO</case>
+        <case class="normal" val="5">FOCAS</case>
+        <case class="normal" val="7">COMICS</case>
+        <case class="normal" val="10">K3D</case>
+        <case class="normal" val="12">MOIRCS</case>
+        <case class="normal" val="13">CIAX3</case>
+        <case class="normal" val=".">N/A</case>
+      </enum>
+      <regexp id="login">
+        <case class="alarm" val="OSS">OSS Login</case>
+        <case class="normal" val="CXWS">LOGIN</case>
+        <case class="warn" val=".">LOGOUT</case>
+      </regexp>
+      <enum id="rpw">
+        <case class="warn" val="1">ON</case>
+        <case class="normal" val="2">OFF</case>
+      </enum>
+      <enum id="rps">
+        <case class="normal" val="11">OFF</case>
+        <case class="normal" val="10">0DEG</case>
+        <case class="normal" val="01">-4DEG</case>
+        <case class="alarm" val=".">N/A</case>
+      </enum>
+    </symbol>
   </class>
 </cdb>

@@ -40,8 +40,7 @@ class ClsStat
     begin
       e0.each{|e1| #element(split and concat)
         fld=@rep.subst(e1['ref']) || raise("No field Key")
-        data=@field.get(fld)
-        raise("No field Value[#{fld}]") if data == ''
+        data=@field.get(fld) || raise("No field Value[#{fld}]")
         case e1.name
         when 'binary'
           loc=eval(@rep.subst(e1['bit']))

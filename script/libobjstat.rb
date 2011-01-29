@@ -16,7 +16,7 @@ class ObjStat
     @v=Verbose.new("odb/#{obj}".upcase)
     @value,@group={},0
     @rep=Repeat.new
-    @sym=SymTbl.new(@odb)
+    @sym=SymTbl.new([@odb])
   end
   
   public

@@ -4,9 +4,9 @@ require "libverbose"
 require "librerange"
 
 class SymTbl
-  def initialize(local=nil)
-    @local=local
-    @sdb=XmlDoc.new('sdb','all')
+  def initialize(dba=[])
+    @dba=dba
+    dba.unshift(XmlDoc.new('sdb','all'))
     @v=Verbose.new("Symbol")
   end
 
@@ -35,10 +35,11 @@ class SymTbl
   end
 
   def select_id(id)
-    begin
-      return @local.select_id('symbol',id) if @local
-    rescue SelectID
-    end
-    return @sdb.select_id('symbol',id)
+    @dba.each{|db|
+      begin
+        return db.select_id('symbol',id) if db
+      rescue SelectID
+      end
+    }
   end
 end

@@ -4,10 +4,10 @@ require "libcircular"
 class View
   attr_reader :tbl
 
-  def initialize(key,local)
+  def initialize(key,dba)
     @key=key
     @c=Circular.new(4)
-    @sdb=SymTbl.new(local)
+    @sdb=SymTbl.new(dba)
     @tbl={}
     @plabel=[]
   end

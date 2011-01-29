@@ -4,15 +4,17 @@ require "libverbose"
 require "librerange"
 
 class SymTbl
-  def initialize(v=Verbose.new("Symbol"))
+  def initialize(local=nil)
+    @local=local
     @sdb=XmlDoc.new('sdb','all')
-    @v=v
+    @v=Verbose.new("Symbol")
   end
 
   def get_symbol(id,val)
     set={'hl'=>'normal','val'=>val}
     return set unless id
-    return set unless e=@sdb.select_id('symbol',id)
+    e=select_id(id)
+    return set unless e
     set['type']=e['type']||'ENUM'
     e.each{|cs|
       @v.msg{"STAT:Symbol:compare [#{cs['val']}] and [#{val}]"}
@@ -30,5 +32,11 @@ class SymTbl
       break true
     } || set.update({'msg'=>'N/A','hl'=>'warn'})
     set
+  end
+
+  def select_id(id)
+    e=@local ? @local.select_id('symbol',id) : nil
+    e=@sdb.select_id('symbol',id) unless e
+    return e
   end
 end

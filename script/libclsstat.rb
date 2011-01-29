@@ -40,7 +40,8 @@ class ClsStat
     begin
       e0.each{|e1| #element(split and concat)
         fld=@rep.subst(e1['ref']) || raise("No field Key")
-        data=@field.get(fld) || raise("No field Value[#{fld}]")
+        data=@field.get(fld)
+        raise("No field Value[#{fld}]") if data == ''
         case e1.name
         when 'binary'
           loc=eval(@rep.subst(e1['bit']))
@@ -55,7 +56,7 @@ class ClsStat
           end
           if f=e1['formula']
             f=f.gsub(/\$#/,"1.0*#{data}")
-            @v.msg{"Formula:#{f}"}
+            @v.msg{"Formula:#{f}(#{data})"}
             data=eval(f)
           end
           ary << data.to_f

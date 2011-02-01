@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="cf1" label="S1 Helium Compressor Coolant Flow">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='cf1' label='S1 Helium Compressor Coolant Flow'>
     <comm>
       <class>k3n</class>
       <client>socat - tcp:ltt-o:4001</client>
@@ -8,11 +8,11 @@
     </comm>
     <status>
       <group>
-        <title ref="rcode" symbol="k3n:rcode">Response Code</title>
-        <title ref="ecode" symbol="k3n:ecode">Exit Code</title>
+        <title ref='rcode' symbol='k3n:rcode'>Response Code</title>
+        <title ref='ecode' symbol='k3n:ecode'>Exit Code</title>
       </group>
       <group>
-        <title ref="flow" symbol="k3n:flow">CS-2(S1) Coolant Flow(l/min)</title>
+        <title ref='flow' symbol='k3n:flow'>CS-2(S1) Coolant Flow(l/min)</title>
       </group>
     </status>
   </object>

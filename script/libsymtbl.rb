@@ -17,16 +17,16 @@ class SymTbl
     return set unless e
     set['type']=e['type']||'ENUM'
     e.each{|cs|
-      @v.msg{"STAT:Symbol:compare [#{cs['val']}] and [#{val}]"}
+      @v.msg{"STAT:Symbol:compare [#{cs.text}] and [#{val}]"}
       case e.name
       when 'enum'
-        next unless cs['val'] == val
+        next unless cs.text == val
       when 'regexp'
-        next unless /#{cs['val']}/ === val
+        next unless /#{cs.text}/ === val
       when 'range'
-        next unless ReRange.new(cs['val']) == val
+        next unless ReRange.new(cs.text) == val
       end
-      set['msg']=cs.text
+      set['msg']=cs['msg']
       set['class']=cs['class']
       @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
       break true

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="map" label="Compressed Air Pressure at MOIRCS">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='map' label='Compressed Air Pressure at MOIRCS'>
     <comm>
       <class>oma</class>
       <client>socat - tcp:celaeno:4002</client>
@@ -8,7 +8,7 @@
     </comm>
     <status>
       <group>
-        <title ref="pres" symbol="oma:pres">Air Pressure (Psi)</title>
+        <title ref='pres' symbol='oma:pres'>Air Pressure (Psi)</title>
       </group>
     </status>
   </object>

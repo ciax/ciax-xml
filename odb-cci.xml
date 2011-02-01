@@ -1,62 +1,62 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="cci" label="IR Helium Compressor Control" ref="cri">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='cci' label='IR Helium Compressor Control' ref='cri'>
     <comm>
       <class>bbe</class>
       <client>socat - tcp:ltc-i:4002</client>
       <server>socat - udp-l:25105,reuseaddr,fork</server>
     </comm>
     <command>
-      <alias id="upd" label="Update Status" ref="upd" />
-      <alias id="c2on" label="CAS2(S1) ON" ref="x0on" />
-      <alias id="c2off" label="CAS2(S1) OFF" ref="x0off" />
-      <alias id="c1on" label="CAS1(S2) ON" ref="x1on" />
-      <alias id="c1off" label="CAS1(S2) OFF" ref="x1off" />
-      <alias id="m2on" label="MOIRCS CR(S8) ON" ref="x2on" />
-      <alias id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off" />
-      <alias id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on" />
-      <alias id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off" />
-      <alias id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on" />
-      <alias id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
-      <alias id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
-      <alias id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
-      <alias id="caon" label="CAS BOTH HC ON" ref="x12on" />
-      <alias id="caoff" label="CAS BOTH HC OFF" ref="x12off" />
-      <alias id="maon" label="MOIRCS BOTH ON" ref="x34on" />
-      <alias id="maoff" label="MOIRCS BOTH OFF" ref="x34off" />
+      <alias id='upd' label='Update Status' ref='upd'/>
+      <alias id='c2on' label='CAS2(S1) ON' ref='x0on'/>
+      <alias id='c2off' label='CAS2(S1) OFF' ref='x0off'/>
+      <alias id='c1on' label='CAS1(S2) ON' ref='x1on'/>
+      <alias id='c1off' label='CAS1(S2) OFF' ref='x1off'/>
+      <alias id='m2on' label='MOIRCS CR(S8) ON' ref='x2on'/>
+      <alias id='m2off' label='MOIRCS CR(S8) OFF' ref='x2off'/>
+      <alias id='m1on' label='MOIRCS MAIN(S9) ON' ref='x3on'/>
+      <alias id='m1off' label='MOIRCS MAIN(S9) OFF' ref='x3off'/>
+      <alias id='cmon' label='CAS MOIRCS/MAIN ON' ref='x0on'/>
+      <alias id='cmoff' label='CAS MOIRCS/MAIN OFF' ref='x0off'/>
+      <alias id='ccon' label='CAS MOIRCS/CR ON' ref='x1on'/>
+      <alias id='ccoff' label='CAS MOIRCS/CR OFF' ref='x1off'/>
+      <alias id='caon' label='CAS BOTH HC ON' ref='x12on'/>
+      <alias id='caoff' label='CAS BOTH HC OFF' ref='x12off'/>
+      <alias id='maon' label='MOIRCS BOTH ON' ref='x34on'/>
+      <alias id='maoff' label='MOIRCS BOTH OFF' ref='x34off'/>
     </command>
     <status>
       <group>
-        <title ref="x0sw" symbol="off-warn">CAS2(S1)(CIAO) SWITCH</title>
-        <title ref="x0dr" symbol="off-warn">CAS2(S1)(CIAO) DRIVE</title>
+        <title ref='x0sw' symbol='off-warn'>CAS2(S1)(CIAO) SWITCH</title>
+        <title ref='x0dr' symbol='off-warn'>CAS2(S1)(CIAO) DRIVE</title>
       </group>
       <group>
-        <title ref="x0tm" symbol="alarm">CAS2(S1)(CIAO) TEMP</title>
-        <title ref="x0pr" symbol="alarm">CAS2(S1)(CIAO) PRESSURE</title>
+        <title ref='x0tm' symbol='alarm'>CAS2(S1)(CIAO) TEMP</title>
+        <title ref='x0pr' symbol='alarm'>CAS2(S1)(CIAO) PRESSURE</title>
       </group>
       <group>
-        <title ref="x1sw" symbol="off-warn">CAS1(S2)(MOIRCS/MAIN) SWITCH</title>
-        <title ref="x1dr" symbol="off-warn">CAS1(S2)(MOIRCS/MAIN) DRIVE</title>
+        <title ref='x1sw' symbol='off-warn'>CAS1(S2)(MOIRCS/MAIN) SWITCH</title>
+        <title ref='x1dr' symbol='off-warn'>CAS1(S2)(MOIRCS/MAIN) DRIVE</title>
       </group>
       <group>
-        <title ref="x1tm" symbol="alarm">CAS1(S2)(MOIRCS/MAIN) TEMP</title>
-        <title ref="x1pr" symbol="alarm">CAS1(S2)(MOIRCS/MAIN) PRESSURE</title>
+        <title ref='x1tm' symbol='alarm'>CAS1(S2)(MOIRCS/MAIN) TEMP</title>
+        <title ref='x1pr' symbol='alarm'>CAS1(S2)(MOIRCS/MAIN) PRESSURE</title>
       </group>
       <group>
-        <title ref="x2sw" symbol="off-warn">MOIRCS/CR(S8) SWITCH</title>
-        <title ref="x2dr" symbol="off-warn">MOIRCS/CR(S8) DRIVE</title>
+        <title ref='x2sw' symbol='off-warn'>MOIRCS/CR(S8) SWITCH</title>
+        <title ref='x2dr' symbol='off-warn'>MOIRCS/CR(S8) DRIVE</title>
       </group>
       <group>
-        <title ref="x2tm" symbol="alarm">MOIRCS/CR(S8) TEMP</title>
-        <title ref="x2pr" symbol="alarm">MOIRCS/CR(S8) PRESSURE</title>
+        <title ref='x2tm' symbol='alarm'>MOIRCS/CR(S8) TEMP</title>
+        <title ref='x2pr' symbol='alarm'>MOIRCS/CR(S8) PRESSURE</title>
       </group>
       <group>
-        <title ref="x3sw" symbol="off-warn">MOIRCS/MAIN(S9) SWITCH</title>
-        <title ref="x3dr" symbol="off-warn">MOIRCS/MAIN(S9) DRIVE</title>
+        <title ref='x3sw' symbol='off-warn'>MOIRCS/MAIN(S9) SWITCH</title>
+        <title ref='x3dr' symbol='off-warn'>MOIRCS/MAIN(S9) DRIVE</title>
       </group>
       <group>
-        <title ref="x3tm" symbol="alarm">MOIRCS/MAIN(S9) TEMP</title>
-        <title ref="x3pr" symbol="alarm">MOIRCS/MAIN(S9) PRESSURE</title>
+        <title ref='x3tm' symbol='alarm'>MOIRCS/MAIN(S9) TEMP</title>
+        <title ref='x3pr' symbol='alarm'>MOIRCS/MAIN(S9) PRESSURE</title>
       </group>
     </status>
   </object>

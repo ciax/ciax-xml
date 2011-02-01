@@ -1,20 +1,20 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <class device="oma" id="oma" label="Compressed Air Pressure at MOIRCS">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <class device='oma' id='oma' label='Compressed Air Pressure at MOIRCS'>
     <commands>
-      <session id="upd" label="Update Status">
-        <statement format="getstat"></statement>
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
       </session>
     </commands>
-    <watch interval="2">
-      <event label="Update">
-        <periodic period="10" />
+    <watch interval='2'>
+      <event label='Update'>
+        <periodic period='10'/>
         <command>upd</command>
       </event>
     </watch>
     <status>
-      <value format="%4.2f" id="pres" label="Air Pressure (Psi)">
-        <float decimal="2" ref="stat" />
+      <value format='%4.2f' id='pres' label='Air Pressure (Psi)'>
+        <float decimal='2' ref='stat'/>
       </value>
     </status>
   </class>

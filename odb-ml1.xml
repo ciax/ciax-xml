@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="ml1" label="MOIRCS Temperature 1">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='ml1' label='MOIRCS Temperature 1'>
     <comm>
       <class>lk8</class>
       <client>socat - tcp:celaeno:4005</client>
@@ -8,20 +8,20 @@
     </comm>
     <status>
       <group>
-        <title ref="ch0">MosCold2</title>
-        <title ref="ch1">MosCold1</title>
-        <title ref="ch2">Mask</title>
-        <title ref="ch3">Wheel</title>
+        <title ref='ch0'>MosCold2</title>
+        <title ref='ch1'>MosCold1</title>
+        <title ref='ch2'>Mask</title>
+        <title ref='ch3'>Wheel</title>
       </group>
       <group>
-        <title ref="ch4">D1(NONE)</title>
-        <title ref="ch5">D2(NONE)</title>
-        <title ref="ch6">ChipBox1</title>
-        <title ref="ch7">Det1</title>
+        <title ref='ch4'>D1(NONE)</title>
+        <title ref='ch5'>D2(NONE)</title>
+        <title ref='ch6'>ChipBox1</title>
+        <title ref='ch7'>Det1</title>
       </group>
       <group>
-        <title ref="sp">SetPoint1 (K)</title>
-        <title ref="htr">HeaterPower1(%)</title>
+        <title ref='sp'>SetPoint1 (K)</title>
+        <title ref='htr'>HeaterPower1(%)</title>
       </group>
     </status>
   </object>

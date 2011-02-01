@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="mt3" label="MOIRCS Pressure Pump">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='mt3' label='MOIRCS Pressure Pump'>
     <comm>
       <class>tpg</class>
       <client>socat - tcp:celaeno:4011</client>
@@ -8,12 +8,12 @@
     </comm>
     <status>
       <group>
-        <title ref="st1" symbol="tpg:stat">Turbo Pump Stat</title>
-        <title ref="ch1">Turbo Pump (Torr)</title>
+        <title ref='st1' symbol='tpg:stat'>Turbo Pump Stat</title>
+        <title ref='ch1'>Turbo Pump (Torr)</title>
       </group>
       <group>
-        <title ref="st2" symbol="tpg:stat">Scroll Pump Stat</title>
-        <title ref="ch2">Scroll Pump (Torr)</title>
+        <title ref='st2' symbol='tpg:stat'>Scroll Pump Stat</title>
+        <title ref='ch2'>Scroll Pump (Torr)</title>
       </group>
     </status>
   </object>

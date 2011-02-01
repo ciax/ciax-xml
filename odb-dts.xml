@@ -1,27 +1,27 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<odb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <object id="dts" label="TSC Control">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <object id='dts' label='TSC Control'>
     <comm>
       <class>oss</class>
       <client>socat - tcp:cxws:9999</client>
       <server>socat - udp-l:25105,reuseaddr,fork</server>
     </comm>
     <status>
-      <group label="">
-        <title ref="exit">Exit Code</title>
-        <title ref="rts" symbol="oss:rsel">ROT SEL</title>
-        <title ref="iid" symbol="oss:inst">CAS INST ID</title>
-        <title ref="login" symbol="oss:login">Login Status</title>
+      <group label=''>
+        <title ref='exit'>Exit Code</title>
+        <title ref='rts' symbol='oss:rsel'>ROT SEL</title>
+        <title ref='iid' symbol='oss:inst'>CAS INST ID</title>
+        <title ref='login' symbol='oss:login'>Login Status</title>
       </group>
-      <group label="">
-        <title ref="rpw" symbol="oss:rpw">ROT DRIVE</title>
-        <title ref="jpw" symbol="normal">JAK DRIVE</title>
-        <title ref="nfb" symbol="alarm">BOLT NFB TRIP</title>
-        <title ref="rps" symbol="oss:rps">ROT POS SENSOR</title>
+      <group label=''>
+        <title ref='rpw' symbol='oss:rpw'>ROT DRIVE</title>
+        <title ref='jpw' symbol='normal'>JAK DRIVE</title>
+        <title ref='nfb' symbol='alarm'>BOLT NFB TRIP</title>
+        <title ref='rps' symbol='oss:rps'>ROT POS SENSOR</title>
       </group>
-      <group label="">
-        <title ref="stw" symbol="off-warn">EL STOW</title>
-        <title ref="stp" symbol="off-warn">EL 90 STOW</title>
+      <group label=''>
+        <title ref='stw' symbol='off-warn'>EL STOW</title>
+        <title ref='stp' symbol='off-warn'>EL 90 STOW</title>
       </group>
     </status>
   </object>

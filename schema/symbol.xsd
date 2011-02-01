@@ -42,7 +42,7 @@
         </xsd:restriction>
       </xsd:simpleType>
     </xsd:attribute>
-    <xsd:attribute name="val" type="xsd:string" use="required" />
+    <xsd:attribute name="msg" type="xsd:string" use="required" />
   </xsd:attributeGroup>
   <!--cases-->
   <xsd:element name="range">

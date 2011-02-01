@@ -1,124 +1,124 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="cj2" label="OMRON CJ2M-CPU33">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <device id='cj2' label='OMRON CJ2M-CPU33'>
     <cmdselect>
-      <command id="getstat" label="Get all status" response="getstat" type="stat">
-        <data encode="chr" label="FINS Command:MRC" type="text">0x01</data>
-        <data encode="chr" label="FINS Command:SRC" type="text">0x01</data>
-        <data encode="chr" label="FINS Param:Memory type(W)" type="text">0xB1</data>
-        <data encode="chr" label="FINS Param:Start Address(H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Start Address(L)" type="text">0x0A</data>
-        <data encode="chr" label="FINS Param:Bit Number" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (L)" type="text">0x14</data>
+      <command id='getstat' label='Get all status' response='getstat' type='stat'>
+        <data encode='chr' label='FINS Command:MRC' type='text'>0x01</data>
+        <data encode='chr' label='FINS Command:SRC' type='text'>0x01</data>
+        <data encode='chr' label='FINS Param:Memory type(W)' type='text'>0xB1</data>
+        <data encode='chr' label='FINS Param:Start Address(H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Start Address(L)' type='text'>0x0A</data>
+        <data encode='chr' label='FINS Param:Bit Number' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Data Length (H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Data Length (L)' type='text'>0x14</data>
       </command>
-      <command id="getzerr" label="Get Z Sensor Error" response="getzerr" type="stat">
-        <data encode="chr" label="FINS Command:MRC" type="text">0x01</data>
-        <data encode="chr" label="FINS Command:SRC" type="text">0x01</data>
-        <data encode="chr" label="FINS Param:Memory type(D)" type="text">0x82</data>
-        <data encode="chr" label="FINS Param:Start Address(H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Start Address(L)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Bit Number" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (L)" type="text">0x01</data>
+      <command id='getzerr' label='Get Z Sensor Error' response='getzerr' type='stat'>
+        <data encode='chr' label='FINS Command:MRC' type='text'>0x01</data>
+        <data encode='chr' label='FINS Command:SRC' type='text'>0x01</data>
+        <data encode='chr' label='FINS Param:Memory type(D)' type='text'>0x82</data>
+        <data encode='chr' label='FINS Param:Start Address(H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Start Address(L)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Bit Number' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Data Length (H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Data Length (L)' type='text'>0x01</data>
       </command>
-      <command id="getzlen" label="Get Z Sensor Length" response="getzlen" type="stat">
-        <data encode="chr" label="FINS Command:MRC" type="text">0x01</data>
-        <data encode="chr" label="FINS Command:SRC" type="text">0x01</data>
-        <data encode="chr" label="FINS Param:Memory type(D)" type="text">0x82</data>
-        <data encode="chr" label="FINS Param:Start Address(H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Start Address(L)" type="text">0x0A</data>
-        <data encode="chr" label="FINS Param:Bit Number" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (L)" type="text">0x0A</data>
+      <command id='getzlen' label='Get Z Sensor Length' response='getzlen' type='stat'>
+        <data encode='chr' label='FINS Command:MRC' type='text'>0x01</data>
+        <data encode='chr' label='FINS Command:SRC' type='text'>0x01</data>
+        <data encode='chr' label='FINS Param:Memory type(D)' type='text'>0x82</data>
+        <data encode='chr' label='FINS Param:Start Address(H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Start Address(L)' type='text'>0x0A</data>
+        <data encode='chr' label='FINS Param:Bit Number' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Data Length (H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Data Length (L)' type='text'>0x0A</data>
       </command>
-      <command id="setbit" label="Set Bit" response="cmdrsp" type="stat">
+      <command id='setbit' label='Set Bit' response='cmdrsp' type='stat'>
         <parameters>
-          <par label="Address [0-3]" validate="range">0:3</par>
-          <par label="Bit [0-15]" validate="range">0:15</par>
+          <par label='Address [0-3]' validate='range'>0:3</par>
+          <par label='Bit [0-15]' validate='range'>0:15</par>
         </parameters>
-        <data encode="chr" label="FINS Command:MRC" type="text">0x01</data>
-        <data encode="chr" label="FINS Command:SRC" type="text">0x02</data>
-        <data encode="chr" label="FINS Param:Memory type(W)" type="text">0x31</data>
-        <data encode="chr" label="FINS Param:Start Address(H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Start Address(L)" type="formula">$1</data>
-        <data encode="chr" label="FINS Param:Bit Number" type="formula">$2</data>
-        <data encode="chr" label="FINS Param:Bit Data Length (H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Bit Data Length (L)" type="text">0x01</data>
-        <data encode="chr" label="FINS Param:Bit Data" type="text">0x01</data>
+        <data encode='chr' label='FINS Command:MRC' type='text'>0x01</data>
+        <data encode='chr' label='FINS Command:SRC' type='text'>0x02</data>
+        <data encode='chr' label='FINS Param:Memory type(W)' type='text'>0x31</data>
+        <data encode='chr' label='FINS Param:Start Address(H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Start Address(L)' type='formula'>$1</data>
+        <data encode='chr' label='FINS Param:Bit Number' type='formula'>$2</data>
+        <data encode='chr' label='FINS Param:Bit Data Length (H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Bit Data Length (L)' type='text'>0x01</data>
+        <data encode='chr' label='FINS Param:Bit Data' type='text'>0x01</data>
       </command>
-      <command id="clrbit" label="Clear All Bit" response="cmdrsp" type="stat">
-        <data encode="chr" label="FINS Command:MRC" type="text">0x01</data>
-        <data encode="chr" label="FINS Command:SRC" type="text">0x02</data>
-        <data encode="chr" label="FINS Param:Memory type(W)" type="text">0xB1</data>
-        <data encode="chr" label="FINS Param:Start Address(H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Start Address(L)" type="formula">0x00</data>
-        <data encode="chr" label="FINS Param:Bit Number" type="formula">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (H)" type="text">0x00</data>
-        <data encode="chr" label="FINS Param:Data Length (L)" type="text">0x03</data>
-        <data encode="bew" label="FINS Param:Bit Data" type="text">0x00</data>
-        <data encode="bew" label="FINS Param:Bit Data" type="text">0x00</data>
-        <data encode="bew" label="FINS Param:Bit Data" type="text">0x00</data>
+      <command id='clrbit' label='Clear All Bit' response='cmdrsp' type='stat'>
+        <data encode='chr' label='FINS Command:MRC' type='text'>0x01</data>
+        <data encode='chr' label='FINS Command:SRC' type='text'>0x02</data>
+        <data encode='chr' label='FINS Param:Memory type(W)' type='text'>0xB1</data>
+        <data encode='chr' label='FINS Param:Start Address(H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Start Address(L)' type='formula'>0x00</data>
+        <data encode='chr' label='FINS Param:Bit Number' type='formula'>0x00</data>
+        <data encode='chr' label='FINS Param:Data Length (H)' type='text'>0x00</data>
+        <data encode='chr' label='FINS Param:Data Length (L)' type='text'>0x03</data>
+        <data encode='bew' label='FINS Param:Bit Data' type='text'>0x00</data>
+        <data encode='bew' label='FINS Param:Bit Data' type='text'>0x00</data>
+        <data encode='bew' label='FINS Param:Bit Data' type='text'>0x00</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <data encode="chr" label="FINS Header:ICF" type="text">0x80</data>
-      <data encode="chr" label="FINS Header:RSV" type="text">0x00</data>
-      <data encode="chr" label="FINS Header:GCT" type="text">0x02</data>
-      <data encode="chr" label="FINS Header:DNA" type="text">0x00</data>
-      <data encode="chr" label="FINS Header:DA1" type="text">100<!--DST IP address--></data>
-      <data encode="chr" label="FINS Header:DA2" type="text">0x00</data>
-      <data encode="chr" label="FINS Header:SNA" type="text">0x00</data>
-      <data encode="chr" label="FINS Header:SA1" type="text">57<!--SRC IP address--></data>
-      <data encode="chr" label="FINS Header:SA2" type="text">0x00</data>
-      <data encode="chr" label="FINS Header:SID" type="text">0xFF</data>
-      <selected />
+      <data encode='chr' label='FINS Header:ICF' type='text'>0x80</data>
+      <data encode='chr' label='FINS Header:RSV' type='text'>0x00</data>
+      <data encode='chr' label='FINS Header:GCT' type='text'>0x02</data>
+      <data encode='chr' label='FINS Header:DNA' type='text'>0x00</data>
+      <data encode='chr' label='FINS Header:DA1' type='text'>100<!--DST IP address--></data>
+      <data encode='chr' label='FINS Header:DA2' type='text'>0x00</data>
+      <data encode='chr' label='FINS Header:SNA' type='text'>0x00</data>
+      <data encode='chr' label='FINS Header:SA1' type='text'>57<!--SRC IP address--></data>
+      <data encode='chr' label='FINS Header:SA2' type='text'>0x00</data>
+      <data encode='chr' label='FINS Header:SID' type='text'>0xFF</data>
+      <selected/>
     </cmdframe>
     <rspselect>
-      <response id="getstat">
-        <field decode="chr" label="FINS Command:MRC" length="1" verify="0x01" />
-        <field decode="chr" label="FINS Command:SRC" length="1" verify="0x01" />
-        <field decode="chr" label="FINS Command:MRES" length="1" verify="0x00" />
-        <field decode="chr" label="FINS Command:SRES" length="1" verify="0x00" />
-        <array assign="w" decode="bew" length="2" label="Status">
-          <index range="0:19" size="20" />
+      <response id='getstat'>
+        <field decode='chr' label='FINS Command:MRC' length='1' verify='0x01'/>
+        <field decode='chr' label='FINS Command:SRC' length='1' verify='0x01'/>
+        <field decode='chr' label='FINS Command:MRES' length='1' verify='0x00'/>
+        <field decode='chr' label='FINS Command:SRES' length='1' verify='0x00'/>
+        <array assign='w' decode='bew' label='Status' length='2'>
+          <index range='0:19' size='20'/>
         </array>
       </response>
-      <response id="getzerr">
-        <field decode="chr" label="FINS Command:MRC" length="1" verify="0x01" />
-        <field decode="chr" label="FINS Command:SRC" length="1" verify="0x01" />
-        <field decode="chr" label="FINS Command:MRES" length="1" verify="0x00" />
-        <field decode="chr" label="FINS Command:SRES" length="1" verify="0x00" />
-        <field decode="bew" label="FINS Command:Z sensor error" length="2" assign="zerr"></field>
+      <response id='getzerr'>
+        <field decode='chr' label='FINS Command:MRC' length='1' verify='0x01'/>
+        <field decode='chr' label='FINS Command:SRC' length='1' verify='0x01'/>
+        <field decode='chr' label='FINS Command:MRES' length='1' verify='0x00'/>
+        <field decode='chr' label='FINS Command:SRES' length='1' verify='0x00'/>
+        <field assign='zerr' decode='bew' label='FINS Command:Z sensor error' length='2'/>
       </response>
-      <response id="getzlen">
-        <field decode="chr" label="FINS Command:MRC" length="1" verify="0x01" />
-        <field decode="chr" label="FINS Command:SRC" length="1" verify="0x01" />
-        <field decode="chr" label="FINS Command:MRES" length="1" verify="0x00" />
-        <field decode="chr" label="FINS Command:SRES" length="1" verify="0x00" />
-        <array assign="d" decode="bew" length="2" label="Status">
-          <index range="0:9" size="8" />
+      <response id='getzlen'>
+        <field decode='chr' label='FINS Command:MRC' length='1' verify='0x01'/>
+        <field decode='chr' label='FINS Command:SRC' length='1' verify='0x01'/>
+        <field decode='chr' label='FINS Command:MRES' length='1' verify='0x00'/>
+        <field decode='chr' label='FINS Command:SRES' length='1' verify='0x00'/>
+        <array assign='d' decode='bew' label='Status' length='2'>
+          <index range='0:9' size='8'/>
         </array>
       </response>
-      <response id="cmdrsp" label="command resp">
-        <field decode="chr" label="FINS Command:MRC" length="1" verify="0x01" />
-        <field decode="chr" label="FINS Command:SRC" length="1" verify="0x02" />
-        <field decode="chr" label="FINS Command:MRES" length="1" verify="0x00" />
-        <field decode="chr" label="FINS Command:SRES" length="1" verify="0x00" />
+      <response id='cmdrsp' label='command resp'>
+        <field decode='chr' label='FINS Command:MRC' length='1' verify='0x01'/>
+        <field decode='chr' label='FINS Command:SRC' length='1' verify='0x02'/>
+        <field decode='chr' label='FINS Command:MRES' length='1' verify='0x00'/>
+        <field decode='chr' label='FINS Command:SRES' length='1' verify='0x00'/>
       </response>
     </rspselect>
     <rspframe>
-      <field decode="chr" length="1" label="FINS Header:ICF" verify="0xc0"></field>
-      <field decode="chr" label="FINS Header:RSV" length="1" verify="0x00"></field>
-      <field decode="chr" label="FINS Header:GCT" length="1" verify="0x02"></field>
-      <field decode="chr" label="FINS Header:DNA" length="1" verify="0x00"></field>
-      <field decode="chr" label="FINS Header:DA1" length="1" verify="57"></field>
-      <field decode="chr" label="FINS Header:DA2" length="1" verify="0x00"></field>
-      <field decode="chr" label="FINS Header:SNA" length="1" verify="0x00"></field>
-      <field decode="chr" label="FINS Header:SA1" length="1" verify="100"></field>
-      <field decode="chr" label="FINS Header:SA2" length="1" verify="0x00"></field>
-      <field decode="chr" label="FINS Header:SID" length="1" verify="0xFF"></field>
-      <selected />
+      <field decode='chr' label='FINS Header:ICF' length='1' verify='0xc0'/>
+      <field decode='chr' label='FINS Header:RSV' length='1' verify='0x00'/>
+      <field decode='chr' label='FINS Header:GCT' length='1' verify='0x02'/>
+      <field decode='chr' label='FINS Header:DNA' length='1' verify='0x00'/>
+      <field decode='chr' label='FINS Header:DA1' length='1' verify='57'/>
+      <field decode='chr' label='FINS Header:DA2' length='1' verify='0x00'/>
+      <field decode='chr' label='FINS Header:SNA' length='1' verify='0x00'/>
+      <field decode='chr' label='FINS Header:SA1' length='1' verify='100'/>
+      <field decode='chr' label='FINS Header:SA2' length='1' verify='0x00'/>
+      <field decode='chr' label='FINS Header:SID' length='1' verify='0xFF'/>
+      <selected/>
     </rspframe>
   </device>
 </ddb>

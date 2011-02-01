@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<mdb xmlns="http://ciax.sum.naoj.org/ciax-xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/mdb.xsd">
-  <macro_group id="crt" class="crt" label="Cart Macro">
-    <macro id="runf" label="Run Forward to Tag">
-      <break label="On Tag?">
-        <item stat="cpos" field="val">^0</item>
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<mdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/mdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <macro_group class='crt' id='crt' label='Cart Macro'>
+    <macro id='runf' label='Run Forward to Tag'>
+      <break label='On Tag?'>
+        <item field='val' stat='cpos'>^0</item>
       </break>
-      <pass label="Ready?">
-        <item stat="rdy" field="val">1</item>
+      <pass label='Ready?'>
+        <item field='val' stat='rdy'>1</item>
       </pass>
       <session>
         <text>set_fwd</text>
@@ -14,9 +14,9 @@
       <session>
         <text>start_run</text>
       </session>
-      <wait timeout="1">
+      <wait timeout='1'>
         <break>
-          <item stat="run" field="val">1</item>
+          <item field='val' stat='run'>1</item>
         </break>
         <session>
           <text>upd</text>
@@ -25,24 +25,24 @@
       <session>
         <text>clear_trg</text>
       </session>
-      <wait timeout="40" abort="pause">
+      <wait abort='pause' timeout='40'>
         <break>
-          <item stat="run" field="val">0</item>
+          <item field='val' stat='run'>0</item>
         </break>
         <session>
           <text>upd</text>
         </session>
       </wait>
       <pass>
-        <item stat="cpos" field="val">^0</item>
+        <item field='val' stat='cpos'>^0</item>
       </pass>
     </macro>
-    <macro id="run1" label="Run to Tag 1">
-      <break label="On Tag1 ?">
-        <item stat="cpos" field="val">1</item>
+    <macro id='run1' label='Run to Tag 1'>
+      <break label='On Tag1 ?'>
+        <item field='val' stat='cpos'>1</item>
       </break>
-      <pass label="Ready?">
-        <item stat="rdy" field="val">1</item>
+      <pass label='Ready?'>
+        <item field='val' stat='rdy'>1</item>
       </pass>
       <session>
         <text>set_tag1</text>
@@ -50,9 +50,9 @@
       <session>
         <text>start_run</text>
       </session>
-      <wait label="Start Run?" timeout="1">
+      <wait label='Start Run?' timeout='1'>
         <break>
-          <item stat="run_start" field="val">1</item>
+          <item field='val' stat='run_start'>1</item>
         </break>
         <session>
           <text>upd</text>
@@ -61,24 +61,24 @@
       <session>
         <text>clear_trg</text>
       </session>
-      <wait label="Running" timeout="40" abort="pause">
+      <wait abort='pause' label='Running' timeout='40'>
         <break>
-          <item stat="running" field="val">0</item>
+          <item field='val' stat='running'>0</item>
         </break>
         <session>
           <text>upd</text>
         </session>
       </wait>
-      <pass label="On Tag1 ?">
-        <item stat="cpos" field="val">1</item>
+      <pass label='On Tag1 ?'>
+        <item field='val' stat='cpos'>1</item>
       </pass>
     </macro>
-    <macro id="jak1" label="Jack UP Level 1">
-      <break label="On Level 1?">
-        <item stat="jpos" field="val">1</item>
+    <macro id='jak1' label='Jack UP Level 1'>
+      <break label='On Level 1?'>
+        <item field='val' stat='jpos'>1</item>
       </break>
-      <pass label="Ready?">
-        <item stat="rdy" field="val">1</item>
+      <pass label='Ready?'>
+        <item field='val' stat='rdy'>1</item>
       </pass>
       <session>
         <text>set_jak1</text>
@@ -86,9 +86,9 @@
       <session>
         <text>start_jak</text>
       </session>
-      <wait label="Start Jak?" timeout="1">
+      <wait label='Start Jak?' timeout='1'>
         <break>
-          <item stat="jak_start" field="val">1</item>
+          <item field='val' stat='jak_start'>1</item>
         </break>
         <session>
           <text>upd</text>
@@ -97,24 +97,24 @@
       <session>
         <text>clear_trg</text>
       </session>
-      <wait label="Jacking" timeout="40" abort="pause">
+      <wait abort='pause' label='Jacking' timeout='40'>
         <break>
-          <item stat="jaking" field="val">0</item>
+          <item field='val' stat='jaking'>0</item>
         </break>
         <session>
           <text>upd</text>
         </session>
       </wait>
-      <pass label="On Level 1?">
-        <item stat="jpos" field="val">1</item>
+      <pass label='On Level 1?'>
+        <item field='val' stat='jpos'>1</item>
       </pass>
     </macro>
-    <macro id="runto" label="Run to Tag" argc="1">
-      <break label="On Tag?">
-        <item stat="cpos" field="val" ref="par"></item>
+    <macro argc='1' id='runto' label='Run to Tag'>
+      <break label='On Tag?'>
+        <item field='val' ref='par' stat='cpos'/>
       </break>
-      <pass label="Ready?">
-        <item stat="rdy" field="val">1</item>
+      <pass label='Ready?'>
+        <item field='val' stat='rdy'>1</item>
       </pass>
       <session>
         <text>set_tag1</text>
@@ -122,9 +122,9 @@
       <session>
         <text>start_run</text>
       </session>
-      <wait label="Start Run?" timeout="1">
+      <wait label='Start Run?' timeout='1'>
         <break>
-          <item stat="run_start" field="val">1</item>
+          <item field='val' stat='run_start'>1</item>
         </break>
         <session>
           <text>upd</text>
@@ -133,16 +133,16 @@
       <session>
         <text>clear_trg</text>
       </session>
-      <wait label="Running" timeout="40" abort="pause">
+      <wait abort='pause' label='Running' timeout='40'>
         <break>
-          <item stat="running" field="val">0</item>
+          <item field='val' stat='running'>0</item>
         </break>
         <session>
           <text>upd</text>
         </session>
       </wait>
-      <pass label="On Tag1 ?">
-        <item stat="cpos" field="val">1</item>
+      <pass label='On Tag1 ?'>
+        <item field='val' stat='cpos'>1</item>
       </pass>
     </macro>
   </macro_group>

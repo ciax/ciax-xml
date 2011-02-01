@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <class device="lk8" id="lk8" label="MOIRCS LakeShore">
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <class device='lk8' id='lk8' label='MOIRCS LakeShore'>
     <commands>
-      <session id="upd" label="Update Status">
-        <statement format="getstat"></statement>
-        <statement format="htrstat"></statement>
-        <statement format="spstat"></statement>
+      <session id='upd' label='Update Status'>
+        <statement format='getstat'/>
+        <statement format='htrstat'/>
+        <statement format='spstat'/>
       </session>
     </commands>
     <status>
-      <repeat from="0" to="7">
-        <value format="%3.2f" id="ch$_" label="CH $_">
-          <float ref="ch:$_" />
+      <repeat from='0' to='7'>
+        <value format='%3.2f' id='ch$_' label='CH $_'>
+          <float ref='ch:$_'/>
         </value>
       </repeat>
-      <value format="%3.2f" id="sp" label="SetPoint1 (K)">
-        <float ref="sp" />
+      <value format='%3.2f' id='sp' label='SetPoint1 (K)'>
+        <float ref='sp'/>
       </value>
-      <value format="%3.2f" id="htr" label="HeaterPower1(%)">
-        <float ref="htr" />
+      <value format='%3.2f' id='htr' label='HeaterPower1(%)'>
+        <float ref='htr'/>
       </value>
     </status>
   </class>

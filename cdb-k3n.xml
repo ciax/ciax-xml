@@ -7,15 +7,19 @@
       </session>
     </commands>
     <status>
-      <value format="%s" id="rcode" label="Response Code" symbol="k3n:rcode">
+      <value format="%s%s" id="err" label="STAT" symbol="err">
         <string ref="rcode" />
-      </value>
-      <value format="%s" id="ecode" label="Exit Code" symbol="k3n:ecode">
         <string ref="ecode" />
       </value>
       <value format="%4.2f" id="flow" label="Helium Compressor Coolant Flow(l/min)">
         <float decimal="2" ref="stat" />
       </value>
     </status>
+    <symbol>
+      <regexp id="err">
+        <case val="000000" class="hide">OK</case>
+        <case class="alarm" val=".">Error</case>
+      </regexp>
+    </symbol>
   </class>
 </cdb>

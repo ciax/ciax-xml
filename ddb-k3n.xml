@@ -26,7 +26,7 @@
     <rspselect>
       <response id="getstat">
         <field label="MRC SRC" length="4" verify="0101" />
-        <field assign="rcode" label="Response Code" length="4" />
+        <field assign="rcode" label="Response Code" length="4" symbol="rcode" />
         <field assign="stat" label="Status" length="8" />
       </response>
     </rspselect>
@@ -34,11 +34,35 @@
       <field decode="chr" label="Prefix" length="1" verify="2" />
       <rspccrange method="bcc">
         <field label="Node" length="4" verify="0000" />
-        <field assign="ecode" label="Exit Code" length="2" />
+        <field assign="ecode" label="Exit Code" length="2" verify="00" symbol="ecode" />
         <selected />
         <field decode="chr" label="Suffix" length="1" verify="3" />
       </rspccrange>
       <field assign="cc" decode="chr" label="BCC" length="1" />
     </rspframe>
+    <symbol>
+      <enum id="rcode" label="Response Code">
+        <case class="normal" val="0000">OK</case>
+        <case class="alarm" val="1001">Cmd Length Over</case>
+        <case class="alarm" val="1002">Cmd Length Short</case>
+        <case class="alarm" val="1100">Parameter Error</case>
+        <case class="alarm" val="1101">Area Error</case>
+        <case class="alarm" val="1103">Start Address Error</case>
+        <case class="alarm" val="2203">Action Error</case>
+        <case class="alarm" val=".">ResponseCode Error</case>
+      </enum>
+      <enum id="ecode" label="ExitCode">
+        <case class="normal" val="00">OK</case>
+        <case class="alarm" val="0F">CMD Error</case>
+        <case class="alarm" val="10">Parity Error</case>
+        <case class="alarm" val="11">Fleming Error</case>
+        <case class="alarm" val="12">Over Run Error</case>
+        <case class="alarm" val="13">BCC Error</case>
+        <case class="alarm" val="14">Format Error</case>
+        <case class="alarm" val="16">Sub Address Error</case>
+        <case class="alarm" val="18">Frame Length Error</case>
+        <case class="alarm" val=".">Unknown</case>
+      </enum>
+    </symbol>
   </device>
 </ddb>

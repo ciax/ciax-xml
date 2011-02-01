@@ -92,28 +92,6 @@
       <case class="normal" val="4">CHG</case>
       <case class="warn" val=".">N/A</case>
     </enum>
-    <enum id="k3n:rcode" label="Response Code">
-      <case class="hide" val="0000">OK</case>
-      <case class="alarm" val="1001">Cmd Length Over</case>
-      <case class="alarm" val="1002">Cmd Length Short</case>
-      <case class="alarm" val="1100">Parameter Error</case>
-      <case class="alarm" val="1101">Area Error</case>
-      <case class="alarm" val="1103">Start Address Error</case>
-      <case class="alarm" val="2203">Action Error</case>
-      <case class="alarm" val=".">ResponseCode Error</case>
-    </enum>
-    <enum id="k3n:ecode" label="ExitCode">
-      <case class="hide" val="00">OK</case>
-      <case class="alarm" val="0F">CMD Error</case>
-      <case class="alarm" val="10">Parity Error</case>
-      <case class="alarm" val="11">Fleming Error</case>
-      <case class="alarm" val="12">Over Run Error</case>
-      <case class="alarm" val="13">BCC Error</case>
-      <case class="alarm" val="14">Format Error</case>
-      <case class="alarm" val="16">Sub Address Error</case>
-      <case class="alarm" val="18">Frame Length Error</case>
-      <case class="alarm" val=".">Unknown</case>
-    </enum>
     <enum id="normal">
       <case class="normal" val="1">ON</case>
       <case class="normal" val="0">OFF</case>

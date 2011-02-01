@@ -197,6 +197,7 @@
     <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="ddb:rerange" />
+    <xsd:attribute name="symbol" type="xsd:string" />
   </xsd:attributeGroup>
   <xsd:group name="rsp_elem">
     <xsd:choice>

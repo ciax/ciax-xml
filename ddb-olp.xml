@@ -18,7 +18,7 @@
       </response>
     </rspselect>
     <rspframe terminator='\r'>
-      <field label='Prefix' length='1' verify='*'/>
+      <field label='Prefix' length='1'>*</field>
       <selected/>
     </rspframe>
   </device>

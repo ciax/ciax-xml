@@ -25,7 +25,7 @@
       </response>
     </rspselect>
     <rspframe>
-      <field length='1' verify='*'/>
+      <field length='1'>*</field>
       <selected/>
     </rspframe>
   </device>

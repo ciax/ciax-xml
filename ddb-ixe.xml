@@ -189,8 +189,8 @@
       <response id='default'/>
     </rspselect>
     <rspframe terminator='\003\r\n'>
-      <field decode='chr' label='Prefix' length='1' verify='2'/>
-      <field decode='chr' label='ACK' length='1' verify='6'/>
+      <field decode='chr' label='Prefix' length='1'>2</field>
+      <field decode='chr' label='ACK' length='1'>6</field>
       <selected/>
     </rspframe>
   </device>

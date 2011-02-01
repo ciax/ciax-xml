@@ -42,7 +42,7 @@
       <response id='default'/>
     </rspselect>
     <rspframe>
-      <field label='Prefix' length='1' verify='A'/>
+      <field label='Prefix' length='1'>A</field>
       <rspccrange method='sum'>
         <selected/>
       </rspccrange>

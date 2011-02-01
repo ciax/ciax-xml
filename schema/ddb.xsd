@@ -193,7 +193,6 @@
   <xsd:attributeGroup name="rsp_attr">
     <xsd:attribute name="label" type="xsd:string" />
     <xsd:attribute name="assign" type="xsd:string" />
-    <xsd:attribute name="verify" type="xsd:string" />
     <xsd:attribute name="decode" type="ddb:codec"></xsd:attribute>
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="ddb:rerange" />
@@ -207,7 +206,11 @@
   </xsd:group>
   <xsd:element name="field">
     <xsd:complexType>
-      <xsd:attributeGroup ref="ddb:rsp_attr" />
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="ddb:rsp_attr" />
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="array">

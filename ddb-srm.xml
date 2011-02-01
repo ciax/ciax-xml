@@ -33,13 +33,13 @@
     </cmdframe>
     <rspselect>
       <response id='getmodel'>
-        <field label='Command Code' length='4' verify='00MM'/>
-        <field label='Response Code' length='2' verify='00'/>
+        <field label='Command Code' length='4'>00MM</field>
+        <field label='Response Code' length='2'>00</field>
         <field assign='model' label='Model Number' length='2'/>
       </response>
       <response id='getstat'>
-        <field label='Command Code' length='4' verify='00RR'/>
-        <field label='Response Code' length='2' verify='00'/>
+        <field label='Command Code' length='4'>00RR</field>
+        <field label='Response Code' length='2'>00</field>
         <!--Big endian-->
         <field assign='c1d3' label='CH1 bit12-15' length='1'/>
         <field assign='c1d2' label='CH1 bit8-11' length='1'/>
@@ -47,17 +47,17 @@
         <field assign='c1d0' label='CH1 bit0-3' length='1'/>
       </response>
       <response id='fset'>
-        <field label='Command Code' length='4' verify='00FK'/>
-        <field label='Exit Code' length='2' verify='00'/>
+        <field label='Command Code' length='4'>00FK</field>
+        <field label='Exit Code' length='2'>00</field>
       </response>
     </rspselect>
     <rspframe>
       <rspccrange method='bcc'>
-        <field label='Prefix' length='1' verify='@'/>
+        <field label='Prefix' length='1'>@</field>
         <selected/>
       </rspccrange>
       <field assign='cc' decode='hexstr' label='BCC' length='2'/>
-      <field label='Terminater' length='1' verify='*'/>
+      <field label='Terminater' length='1'>*</field>
     </rspframe>
   </device>
 </ddb>

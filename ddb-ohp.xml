@@ -19,14 +19,14 @@
     </cmdframe>
     <rspselect>
       <response id='getstat'>
-        <field label='Prefix' length='3' verify='X01'/>
+        <field label='Prefix' length='3'>X01</field>
         <field assign='pres' length='5'/>
       </response>
       <response id='setd'>
-        <field label='Command' length='3' verify='W1F'/>
+        <field label='Command' length='3'>W1F</field>
       </response>
       <response id='init'>
-        <field label='Command' length='3' verify='Z02'/>
+        <field label='Command' length='3'>Z02</field>
       </response>
     </rspselect>
     <rspframe>

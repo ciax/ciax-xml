@@ -14,12 +14,12 @@
     </cmdframe>
     <rspselect>
       <response id='getstat'>
-        <field length='5' verify='01CP='/>
+        <field length='5'>01CP=</field>
         <field assign='stat' label='Status' length='6'/>
       </response>
     </rspselect>
     <rspframe terminator='\r'>
-      <field label='Prefix' length='1' verify='?'/>
+      <field label='Prefix' length='1'>?</field>
       <selected/>
     </rspframe>
   </device>

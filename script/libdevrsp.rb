@@ -118,7 +118,7 @@ class DevRsp
         @stat[key]=data
         @v.msg{"Assign:[#{key}]<-[#{data}]"}
       end
-      if val=e0['verify']
+      if val=e0.text
         val=eval(val).to_s if e0['decode'] == 'chr'
         @v.msg{"Verify:[#{val}] and RSP=[#{data}]"}
         val == data || @v.err("Verify Mismatch[#{data}]!=[#{val}]")

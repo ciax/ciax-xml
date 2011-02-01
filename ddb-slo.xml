@@ -90,7 +90,7 @@
         </array>
       </response>
       <response id='default'>
-        <field verify='&gt;'/>
+        <field>&gt;</field>
       </response>
     </rspselect>
     <rspframe terminator='\r\n'>

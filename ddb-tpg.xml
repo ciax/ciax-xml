@@ -15,7 +15,7 @@
     </cmdframe>
     <rspselect>
       <response id='reqstat'>
-        <field decode='chr' verify='6'/>
+        <field decode='chr'>6</field>
       </response>
       <response id='getstat'>
         <field assign='st1' label='CH1 RetCode'/>

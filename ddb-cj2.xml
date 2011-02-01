@@ -76,48 +76,48 @@
     </cmdframe>
     <rspselect>
       <response id='getstat'>
-        <field decode='chr' label='FINS Command:MRC' length='1' verify='0x01'/>
-        <field decode='chr' label='FINS Command:SRC' length='1' verify='0x01'/>
-        <field decode='chr' label='FINS Command:MRES' length='1' verify='0x00'/>
-        <field decode='chr' label='FINS Command:SRES' length='1' verify='0x00'/>
+        <field decode='chr' label='FINS Command:MRC' length='1'>0x01</field>
+        <field decode='chr' label='FINS Command:SRC' length='1'>0x01</field>
+        <field decode='chr' label='FINS Command:MRES' length='1'>0x00</field>
+        <field decode='chr' label='FINS Command:SRES' length='1'>0x00</field>
         <array assign='w' decode='bew' label='Status' length='2'>
           <index range='0:19' size='20'/>
         </array>
       </response>
       <response id='getzerr'>
-        <field decode='chr' label='FINS Command:MRC' length='1' verify='0x01'/>
-        <field decode='chr' label='FINS Command:SRC' length='1' verify='0x01'/>
-        <field decode='chr' label='FINS Command:MRES' length='1' verify='0x00'/>
-        <field decode='chr' label='FINS Command:SRES' length='1' verify='0x00'/>
+        <field decode='chr' label='FINS Command:MRC' length='1'>0x01</field>
+        <field decode='chr' label='FINS Command:SRC' length='1'>0x01</field>
+        <field decode='chr' label='FINS Command:MRES' length='1'>0x00</field>
+        <field decode='chr' label='FINS Command:SRES' length='1'>0x00</field>
         <field assign='zerr' decode='bew' label='FINS Command:Z sensor error' length='2'/>
       </response>
       <response id='getzlen'>
-        <field decode='chr' label='FINS Command:MRC' length='1' verify='0x01'/>
-        <field decode='chr' label='FINS Command:SRC' length='1' verify='0x01'/>
-        <field decode='chr' label='FINS Command:MRES' length='1' verify='0x00'/>
-        <field decode='chr' label='FINS Command:SRES' length='1' verify='0x00'/>
+        <field decode='chr' label='FINS Command:MRC' length='1'>0x01</field>
+        <field decode='chr' label='FINS Command:SRC' length='1'>0x01</field>
+        <field decode='chr' label='FINS Command:MRES' length='1'>0x00</field>
+        <field decode='chr' label='FINS Command:SRES' length='1'>0x00</field>
         <array assign='d' decode='bew' label='Status' length='2'>
           <index range='0:9' size='8'/>
         </array>
       </response>
       <response id='cmdrsp' label='command resp'>
-        <field decode='chr' label='FINS Command:MRC' length='1' verify='0x01'/>
-        <field decode='chr' label='FINS Command:SRC' length='1' verify='0x02'/>
-        <field decode='chr' label='FINS Command:MRES' length='1' verify='0x00'/>
-        <field decode='chr' label='FINS Command:SRES' length='1' verify='0x00'/>
+        <field decode='chr' label='FINS Command:MRC' length='1'>0x01</field>
+        <field decode='chr' label='FINS Command:SRC' length='1'>0x02</field>
+        <field decode='chr' label='FINS Command:MRES' length='1'>0x00</field>
+        <field decode='chr' label='FINS Command:SRES' length='1'>0x00</field>
       </response>
     </rspselect>
     <rspframe>
-      <field decode='chr' label='FINS Header:ICF' length='1' verify='0xc0'/>
-      <field decode='chr' label='FINS Header:RSV' length='1' verify='0x00'/>
-      <field decode='chr' label='FINS Header:GCT' length='1' verify='0x02'/>
-      <field decode='chr' label='FINS Header:DNA' length='1' verify='0x00'/>
-      <field decode='chr' label='FINS Header:DA1' length='1' verify='57'/>
-      <field decode='chr' label='FINS Header:DA2' length='1' verify='0x00'/>
-      <field decode='chr' label='FINS Header:SNA' length='1' verify='0x00'/>
-      <field decode='chr' label='FINS Header:SA1' length='1' verify='100'/>
-      <field decode='chr' label='FINS Header:SA2' length='1' verify='0x00'/>
-      <field decode='chr' label='FINS Header:SID' length='1' verify='0xFF'/>
+      <field decode='chr' label='FINS Header:ICF' length='1'>0xc0</field>
+      <field decode='chr' label='FINS Header:RSV' length='1'>0x00</field>
+      <field decode='chr' label='FINS Header:GCT' length='1'>0x02</field>
+      <field decode='chr' label='FINS Header:DNA' length='1'>0x00</field>
+      <field decode='chr' label='FINS Header:DA1' length='1'>57</field>
+      <field decode='chr' label='FINS Header:DA2' length='1'>0x00</field>
+      <field decode='chr' label='FINS Header:SNA' length='1'>0x00</field>
+      <field decode='chr' label='FINS Header:SA1' length='1'>100</field>
+      <field decode='chr' label='FINS Header:SA2' length='1'>0x00</field>
+      <field decode='chr' label='FINS Header:SID' length='1'>0xFF</field>
       <selected/>
     </rspframe>
   </device>

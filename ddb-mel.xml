@@ -142,16 +142,16 @@
       </response>
     </rspselect>
     <rspframe>
-      <field decode='lew' label='SubHeader: Prefix' length='2' verify='212'/>
-      <field label='SubHeader: Serial Number' length='2' verify='XX'/>
-      <field decode='lew' label='SubHeader: Fixed Number' length='2' verify='0'/>
-      <field decode='chr' label='Q Header: Network Number' length='1' verify='0'/>
-      <field decode='chr' label='Q Header: PC Number' length='1' verify='255'/>
-      <field decode='lew' label='Q Header: Request Unit I/O Number' length='2' verify='1023'/>
-      <field decode='chr' label='Q Header: Request Unit Station Number' length='1' verify='0'/>
+      <field decode='lew' label='SubHeader: Prefix' length='2'>212</field>
+      <field label='SubHeader: Serial Number' length='2'>XX</field>
+      <field decode='lew' label='SubHeader: Fixed Number' length='2'>0</field>
+      <field decode='chr' label='Q Header: Network Number' length='1'>0</field>
+      <field decode='chr' label='Q Header: PC Number' length='1'>255</field>
+      <field decode='lew' label='Q Header: Request Unit I/O Number' length='2'>1023</field>
+      <field decode='chr' label='Q Header: Request Unit Station Number' length='1'>0</field>
       <field assign='cc' decode='lew' label='Response Data Length' length='2'/>
       <rspccrange method='len'>
-        <field assign='ecode' decode='lew' label='Error Code' length='2' verify='0'/>
+        <field assign='ecode' decode='lew' label='Error Code' length='2'>0</field>
         <selected/>
       </rspccrange>
     </rspframe>

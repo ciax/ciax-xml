@@ -1,10 +1,8 @@
 #!/usr/bin/ruby
 require "libxmldoc"
-require "libmodxml"
 require "libverbose"
 
 class ObjCmd
-  include ModXml
 
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)

@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
-require "libmodxml"
 require "libverbose"
 require "librepeat"
 require "libstat"
 require "libiofile"
 
 class ClsStat
-  include ModXml
   def initialize(cdb,id)
     @cdb=cdb
     cls=cdb['id']

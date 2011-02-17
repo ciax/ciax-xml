@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
 require "libxmldoc"
-require "libmodxml"
 require "libverbose"
 require "librepeat"
 require "libsymtbl"
 
 class ObjStat
-  include ModXml
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)
   rescue RuntimeError

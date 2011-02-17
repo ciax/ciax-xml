@@ -1,11 +1,9 @@
 #!/usr/bin/ruby
 require "libparam"
 require "librepeat"
-require "libmodxml"
 require "libverbose"
 
 class ClsCmd
-  include ModXml
   attr_reader :par
 
   def initialize(cdb)

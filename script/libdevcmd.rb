@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require "libmodxml"
+require "libdevmod"
 require "libparam"
 require "librepeat"
 # Cmd Methods
 class DevCmd
-  include ModXml
+  include DevMod
 
   def initialize(ddb,stat)
     @ddb,@stat=ddb,stat

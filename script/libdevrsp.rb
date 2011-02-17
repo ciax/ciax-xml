@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libmodxml"
+require "libdevmod"
 require "libparam"
 # Rsp Methods
 class DevRsp
-  include ModXml
+  include DevMod
 
   def initialize(ddb,stat)
     @ddb,@stat,@sel=ddb,stat

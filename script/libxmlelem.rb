@@ -18,8 +18,8 @@ class XmlElem
     end
   end
 
-  def each
-    @e.each_element{|e|
+  def each(xpath=nil)
+    @e.each_element(xpath){|e|
       yield XmlElem.new(e)
     }
   end

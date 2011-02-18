@@ -4,7 +4,7 @@ include REXML
 
 class SelectID < RuntimeError ; end
 
-class XmlElem
+class XmlRe
   include Enumerable
 
   def initialize(f)
@@ -20,7 +20,7 @@ class XmlElem
 
   def each(xpath=nil)
     @e.each_element(xpath){|e|
-      yield XmlElem.new(e)
+      yield XmlRe.new(e)
     }
   end
 
@@ -28,7 +28,7 @@ class XmlElem
     @e.attributes[key]
   end
 
-  def attr # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
+  def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
     h={}
     @e.attributes.each{|k,v| h[k]=v }
     h
@@ -45,7 +45,7 @@ class XmlElem
   # select element with key=val, or display list
   def select(key,val)
     @e.each_element_with_attribute(key,val){|e|
-      return XmlElem.new(e)
+      return XmlRe.new(e)
     } if val
     raise SelectID,list(key)
   end

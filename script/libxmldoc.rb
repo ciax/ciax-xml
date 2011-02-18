@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libxmlelem"
+require "libxmlre"
 
 class XmlDoc < Hash
   def initialize(db = nil ,type = nil)
@@ -10,13 +10,13 @@ class XmlDoc < Hash
   rescue Errno::ENOENT
     list=Array.new
     Dir.glob("#{pre}-*.xml").each{|p|
-      $errmsg << XmlElem.new(open(p)).list('id')
+      $errmsg << XmlRe.new(open(p)).list('id')
     }
     raise(SelectID,$errmsg) unless $errmsg.empty?
   else
-    XmlElem.new(f).each{|e|
+    XmlRe.new(f).each{|e|
       self[e.name]=e
-      update(e.attr)
+      update(e.to_h)
       e.each{|e1| self[e1.name]=e1 }
     }
   end

@@ -38,8 +38,8 @@ class DevRsp
     end
     getfield_rec(@ddb['rspframe'])
     if cc=@stat.delete('cc')
-      cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
-      @v.msg{"Verify:CC OK [#{cc}]"}
+      cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
+      @v.msg{"Verify:CC OK <#{cc}>"}
     end
     @stat['time']="%.3f" % time.to_f
     Hash[@stat]
@@ -126,12 +126,12 @@ class DevRsp
       data=decode(e0,cut_frame(e0))
       if key=e0['assign']
         @stat[key]=data
-        @v.msg{"Assign:[#{key}]<-[#{data}]"}
+        @v.msg{"Assign:[#{key}] <- <#{data}>"}
       end
       if val=e0.text
         val=eval(val).to_s if e0['decode'] == 'chr'
-        @v.msg{"Verify:[#{val}] and RSP=[#{data}]"}
-        val == data || @v.err("Verify Mismatch[#{data}]!=[#{val}]")
+        @v.msg{"Verify:[#{val}] and <#{data}>"}
+        val == data || @v.err("Verify Mismatch <#{data}> != [#{val}]")
       end
     ensure
       @v.msg(-1){"Field:End"}
@@ -176,10 +176,10 @@ class DevRsp
     len=e0['length']||@frame.size
     str=@frame.slice(@fp,len.to_i)
     @fp+=len.to_i
-    @v.msg{"CutFrame:[#{str}] by size=[#{len}]"}
+    @v.msg{"CutFrame: <#{str}> by size=[#{len}]"}
     if r=e0['slice']
       str=str.slice(*r.split(':').map{|i| i.to_i })
-      @v.msg{"PickFrame:[#{str}] by range=[#{r}]"}
+      @v.msg{"PickFrame: <#{str}> by range=[#{r}]"}
     end
     str
   end

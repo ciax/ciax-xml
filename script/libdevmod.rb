@@ -16,7 +16,7 @@ module DevMod
       else
         @v.err("No such CC method #{method}")
       end
-      @v.msg{"Calc:CC [#{method.upcase}] -> [#{chk}]"}
+      @v.msg{"Calc:CC [#{method.upcase}] -> (#{chk})"}
       return chk.to_s
     end
     @v.err("CC No method")

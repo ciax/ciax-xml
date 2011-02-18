@@ -1,24 +1,22 @@
 #!/usr/bin/ruby
-require "libxmlre"
+require "libxmlgn"
 
 class XmlDoc < Hash
   def initialize(db = nil ,type = nil)
     $errmsg=''
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
-    f=open(path)
-  rescue Errno::ENOENT
-    list=Array.new
-    Dir.glob("#{pre}-*.xml").each{|p|
-      $errmsg << XmlRe.new(open(p)).list('id')
-    }
-    raise(SelectID,$errmsg) unless $errmsg.empty?
-  else
-    XmlRe.new(f).each{|e|
+    XmlGn.new(path).each{|e|
       self[e.name]=e
       update(e.to_h)
       e.each{|e1| self[e1.name]=e1 }
     }
+  rescue Errno::ENOENT
+    list=Array.new
+    Dir.glob("#{pre}-*.xml").each{|p|
+      $errmsg << XmlGn.new(p).list('id')
+    }
+    raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 
   def select_id(xpath,id)

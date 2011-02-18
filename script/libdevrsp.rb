@@ -18,8 +18,7 @@ class DevRsp
   def setrsp(stm)
     cmd=@ddb.select_id('cmdselect',stm.first)
     @par.setpar(cmd,stm)
-    res=cmd['response']
-    @sel= res ? @ddb.select_id('rspselect',res) : nil
+    @sel=cmd['response']
     self
   end
 
@@ -37,7 +36,7 @@ class DevRsp
     else
       @fary=[frame]
     end
-    setframe(@ddb['rspframe'])
+    getfield_rec(@ddb['rspframe'])
     if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch[#{cc}]!=[#{@cc}]")
       @v.msg{"Verify:CC OK [#{cc}]"}
@@ -48,30 +47,41 @@ class DevRsp
 
   private
   # Fill default values in the Field
-  def init_field(fill='')
+  def init_field
     @v.msg(1){"Field:Initialize"}
     begin
-      @ddb['rspselect'].each{|e0| # response
-        e0.each{|e1| #field|array|vefiry
-          assign=e1['assign'] || next
-          case e1.name
-          when 'field'
-            @v.msg{"Field:Init Field[#{assign}]"}
-            @stat[assign]=fill unless @stat[assign]
-          when 'array'
-            @v.msg{"Field:Init Array[#{assign}]"}
-            sary=[]
-            e1.each{|e2|
-              sary << e2['size'].to_i
-            }
-            @stat[assign]=init_array(sary){fill} unless @stat[assign]
-          end
-        }
-      }
+      init_rec(@ddb['rspframe'])
       @stat['device']=@ddb['id']
     ensure
       @v.msg(-1){"Field:Initialized"}
     end
+  end
+
+  def init_rec(e0)
+    fill=''
+    e0.each{|e1| #field|array|vefiry
+      case e1.name
+      when 'rspccrange'
+        init_rec(e1)
+      when 'rspselect'
+        e1.each{|e2|
+          init_rec(e2)
+        }
+      when 'field'
+        if assign=e1['assign']
+          @v.msg{"Field:Init Field[#{assign}]"}
+          @stat[assign]=fill unless @stat[assign]
+        end
+      when 'array'
+        assign=e1['assign']
+        @v.msg{"Field:Init Array[#{assign}]"}
+        sary=[]
+        e1.each{|e2|
+          sary << e2['size'].to_i
+        }
+        @stat[assign]=init_array(sary){fill} unless @stat[assign]
+      end
+    }
   end
 
   def init_array(sary,field=nil)
@@ -84,21 +94,21 @@ class DevRsp
   end
 
   # Process Frame to Field
-  def setframe(e0)
+  def getfield_rec(e0)
     e0.each{|e1|
       case e1.name
       when 'rspccrange'
         begin
           @v.msg(1){"Entering Ceck Code Node"}
-          fst=@fp;setframe(e1)
+          fst=@fp;getfield_rec(e1)
           @cc = checkcode(e1,@frame.slice(fst...@fp))
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end
-      when 'selected'
+      when 'rspselect'
         begin
           @v.msg(1){"Entering Selected Node"}
-          setframe(@sel)
+          getfield_rec(e1.select('id',@sel))
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end

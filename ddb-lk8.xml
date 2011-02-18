@@ -1,44 +1,43 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='lk8' label='Lakeshore MODEL 340 8CH' wait='0.3'>
-    <serial databit='7' flowctl='NONE' parity='NONE' speed='9600' stopbit='1'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
+    <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdselect>
-      <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data type='text'>krdg? c1;</data>
-        <data type='text'>krdg? c2;</data>
-        <data type='text'>krdg? c3;</data>
-        <data type='text'>krdg? c4;</data>
-        <data type='text'>krdg? d1;</data>
-        <data type='text'>krdg? d2;</data>
-        <data type='text'>krdg? d3;</data>
-        <data type='text'>krdg? d4;</data>
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <data type="text">krdg? c1;</data>
+        <data type="text">krdg? c2;</data>
+        <data type="text">krdg? c3;</data>
+        <data type="text">krdg? c4;</data>
+        <data type="text">krdg? d1;</data>
+        <data type="text">krdg? d2;</data>
+        <data type="text">krdg? d3;</data>
+        <data type="text">krdg? d4;</data>
       </command>
-      <command id='htrstat' label='Heater Power (%)' response='htrstat' type='stat'>
-        <data type='text'>HTR?</data>
+      <command id="htrstat" label="Heater Power (%)" response="htrstat" type="stat">
+        <data type="text">HTR?</data>
       </command>
-      <command id='spstat' label='Set Point (K)' response='spstat' type='stat'>
-        <data type='text'>SETP? 1</data>
+      <command id="spstat" label="Set Point (K)" response="spstat" type="stat">
+        <data type="text">SETP? 1</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <selected/>
-      <data encode='bew' label='Suffix' type='text'>0x0d0a</data>
+      <selected />
+      <data encode="bew" label="Suffix" type="text">0x0d0a</data>
     </cmdframe>
-    <rspselect>
-      <response id='getstat'>
-        <array assign='ch' label='Value'>
-          <index range='0:7' size='8'/>
-        </array>
-      </response>
-      <response id='htrstat'>
-        <field assign='htr' label='Heater Power'/>
-      </response>
-      <response id='spstat'>
-        <field assign='sp' label='SetPoint'/>
-      </response>
-    </rspselect>
-    <rspframe delimiter=';' terminator='\r\n'>
-      <selected/>
+    <rspframe delimiter=";" terminator="\r\n">
+      <rspselect>
+        <response id="getstat">
+          <array assign="ch" label="Value">
+            <index range="0:7" size="8" />
+          </array>
+        </response>
+        <response id="htrstat">
+          <field assign="htr" label="Heater Power" />
+        </response>
+        <response id="spstat">
+          <field assign="sp" label="SetPoint" />
+        </response>
+      </rspselect>
     </rspframe>
   </device>
 </ddb>

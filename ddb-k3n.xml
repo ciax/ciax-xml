@@ -1,67 +1,66 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='k3n' label='OMRON K3NR' wait='1'>
-    <serial databit='7' flowctl='NONE' parity='EVEN' speed='9600' stopbit='2'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="k3n" label="OMRON K3NR" wait="1">
+    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
     <cmdselect>
-      <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data label='Node No.' type='text'>00</data>
-        <data label='Sub Address' type='text'>00</data>
-        <data label='SID' type='text'>0</data>
-        <data label='MRC' type='text'>01</data>
-        <data label='SRC' type='text'>01</data>
-        <data label='Variable type' type='text'>C0</data>
-        <data label='Start Address' type='text'>0000</data>
-        <data label='Void' type='text'>00</data>
-        <data label='Number of element' type='text'>0001</data>
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <data label="Node No." type="text">00</data>
+        <data label="Sub Address" type="text">00</data>
+        <data label="SID" type="text">0</data>
+        <data label="MRC" type="text">01</data>
+        <data label="SRC" type="text">01</data>
+        <data label="Variable type" type="text">C0</data>
+        <data label="Start Address" type="text">0000</data>
+        <data label="Void" type="text">00</data>
+        <data label="Number of element" type="text">0001</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <data encode='chr' label='Prefix' type='text'>2</data>
-      <cmdccrange method='bcc'>
-        <selected/>
-        <data encode='chr' label='Suffix' type='text'>3</data>
+      <data encode="chr" label="Prefix" type="text">2</data>
+      <cmdccrange method="bcc">
+        <selected />
+        <data encode="chr" label="Suffix" type="text">3</data>
       </cmdccrange>
-      <data encode='chr' type='formula'>${cc}</data>
+      <data encode="chr" type="formula">${cc}</data>
     </cmdframe>
-    <rspselect>
-      <response id='getstat'>
-        <field label='MRC SRC' length='4'>0101</field>
-        <field assign='rcode' label='Response Code' length='4' symbol='rcode'/>
-        <field assign='stat' label='Status' length='8'/>
-      </response>
-    </rspselect>
     <rspframe>
-      <field decode='chr' label='Prefix' length='1'>2</field>
-      <rspccrange method='bcc'>
-        <field label='Node' length='4'>0000</field>
-        <field assign='ecode' label='Exit Code' length='2' symbol='ecode'>00</field>
-        <selected/>
-        <field decode='chr' label='Suffix' length='1'>3</field>
+      <field decode="chr" label="Prefix" length="1">2</field>
+      <rspccrange method="bcc">
+        <field label="Node" length="4">0000</field>
+        <field assign="ecode" label="Exit Code" length="2" symbol="ecode">00</field>
+        <rspselect>
+          <response id="getstat">
+            <field label="MRC SRC" length="4">0101</field>
+            <field assign="rcode" label="Response Code" length="4" symbol="rcode" />
+            <field assign="stat" label="Status" length="8" />
+          </response>
+        </rspselect>
+        <field decode="chr" label="Suffix" length="1">3</field>
       </rspccrange>
-      <field assign='cc' decode='chr' label='BCC' length='1'/>
+      <field assign="cc" decode="chr" label="BCC" length="1" />
     </rspframe>
     <symbol>
-      <enum id='rcode' label='Response Code'>
-        <case class='normal' msg='OK'>0000</case>
-        <case class='alarm' msg='Cmd Length Over'>1001</case>
-        <case class='alarm' msg='Cmd Length Short'>1002</case>
-        <case class='alarm' msg='Parameter Error'>1100</case>
-        <case class='alarm' msg='Area Error'>1101</case>
-        <case class='alarm' msg='Start Address Error'>1103</case>
-        <case class='alarm' msg='Action Error'>2203</case>
-        <case class='alarm' msg='ResponseCode Error'>.</case>
+      <enum id="rcode" label="Response Code">
+        <case class="normal" msg="OK">0000</case>
+        <case class="alarm" msg="Cmd Length Over">1001</case>
+        <case class="alarm" msg="Cmd Length Short">1002</case>
+        <case class="alarm" msg="Parameter Error">1100</case>
+        <case class="alarm" msg="Area Error">1101</case>
+        <case class="alarm" msg="Start Address Error">1103</case>
+        <case class="alarm" msg="Action Error">2203</case>
+        <case class="alarm" msg="ResponseCode Error">.</case>
       </enum>
-      <enum id='ecode' label='ExitCode'>
-        <case class='normal' msg='OK'>00</case>
-        <case class='alarm' msg='CMD Error'>0F</case>
-        <case class='alarm' msg='Parity Error'>10</case>
-        <case class='alarm' msg='Fleming Error'>11</case>
-        <case class='alarm' msg='Over Run Error'>12</case>
-        <case class='alarm' msg='BCC Error'>13</case>
-        <case class='alarm' msg='Format Error'>14</case>
-        <case class='alarm' msg='Sub Address Error'>16</case>
-        <case class='alarm' msg='Frame Length Error'>18</case>
-        <case class='alarm' msg='Unknown'>.</case>
+      <enum id="ecode" label="ExitCode">
+        <case class="normal" msg="OK">00</case>
+        <case class="alarm" msg="CMD Error">0F</case>
+        <case class="alarm" msg="Parity Error">10</case>
+        <case class="alarm" msg="Fleming Error">11</case>
+        <case class="alarm" msg="Over Run Error">12</case>
+        <case class="alarm" msg="BCC Error">13</case>
+        <case class="alarm" msg="Format Error">14</case>
+        <case class="alarm" msg="Sub Address Error">16</case>
+        <case class="alarm" msg="Frame Length Error">18</case>
+        <case class="alarm" msg="Unknown">.</case>
       </enum>
     </symbol>
   </device>

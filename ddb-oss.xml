@@ -1,46 +1,46 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='oss' label='OSS Command line'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="oss" label="OSS Command line">
     <cmdselect>
-      <command id='getstat' label='Get all status' response='getstat' type='stat'>
-        <data label='Status Command' type='text'>OSSC_screenPrint -R</data>
-        <data label='InR Select(NsOpt/NsIR/Cas)' type='text'> TSCV.RotatorType</data>
-        <data label='Stow pin Status' type='text'> CXWS.TSCV.STOW_1</data>
-        <data label='Shutter Status' type='text'> CXWS.TSCV.SHUTTER</data>
-        <data label='AZ/EL Drive Status' type='text'> CXWS.TSCV.TELDRIVE</data>
-        <data label='EL Angle(deg)' type='text'> CXWS.TSCS.EL</data>
-        <data label='CIAX-MLP3 Comm Error' type='text'> CXWS.TSCV.CIAX_MLP3_FAULT</data>
-        <data label='InR Drive ON/OFF' type='text'> TSCV.InsRotRotation</data>
-        <data label='BOLT Status' type='text'> CXWS.TSCV.0_SENSOR</data>
+      <command id="getstat" label="Get all status" response="getstat" type="stat">
+        <data label="Status Command" type="text">OSSC_screenPrint -R</data>
+        <data label="InR Select(NsOpt/NsIR/Cas)" type="text"> TSCV.RotatorType</data>
+        <data label="Stow pin Status" type="text"> CXWS.TSCV.STOW_1</data>
+        <data label="Shutter Status" type="text"> CXWS.TSCV.SHUTTER</data>
+        <data label="AZ/EL Drive Status" type="text"> CXWS.TSCV.TELDRIVE</data>
+        <data label="EL Angle(deg)" type="text"> CXWS.TSCS.EL</data>
+        <data label="CIAX-MLP3 Comm Error" type="text"> CXWS.TSCV.CIAX_MLP3_FAULT</data>
+        <data label="InR Drive ON/OFF" type="text"> TSCV.InsRotRotation</data>
+        <data label="BOLT Status" type="text"> CXWS.TSCV.0_SENSOR</data>
       </command>
-      <command id='iststat' label='Get Instrument ID' response='iststat' type='stat'>
-        <data label='Status Command' type='text'>OSSC_screenPrint -R</data>
-        <data label='CAS Instrument' type='text'> CXWS.TSCV.OBE_INR</data>
+      <command id="iststat" label="Get Instrument ID" response="iststat" type="stat">
+        <data label="Status Command" type="text">OSSC_screenPrint -R</data>
+        <data label="CAS Instrument" type="text"> CXWS.TSCV.OBE_INR</data>
       </command>
-      <command id='jakstat' label='Jack Bolt Status' response='jakstat' type='stat'>
-        <data label='Status Command' type='text'>OSSC_screenPrint -R</data>
-        <data label='Bolt Each Status' type='text'> CXWS.TSCV.POWER_V1</data>
-        <data label='Bolt Each Position' type='text'> CXWS.TSCV.POWER_V2</data>
-        <data label='Zsensor Each Position' type='text'> CXWS.TSCL.Z_SENSOR</data>
+      <command id="jakstat" label="Jack Bolt Status" response="jakstat" type="stat">
+        <data label="Status Command" type="text">OSSC_screenPrint -R</data>
+        <data label="Bolt Each Status" type="text"> CXWS.TSCV.POWER_V1</data>
+        <data label="Bolt Each Position" type="text"> CXWS.TSCV.POWER_V2</data>
+        <data label="Zsensor Each Position" type="text"> CXWS.TSCL.Z_SENSOR</data>
       </command>
-      <command id='inrstat' label='Cas InR Status' response='inrstat' type='stat'>
-        <data label='Status Command' type='text'>OSSC_screenPrint -R</data>
-        <data label='InR Angle(deg)' type='text'> CXWS.TSCS.INSROT</data>
+      <command id="inrstat" label="Cas InR Status" response="inrstat" type="stat">
+        <data label="Status Command" type="text">OSSC_screenPrint -R</data>
+        <data label="InR Angle(deg)" type="text"> CXWS.TSCS.INSROT</data>
       </command>
-      <command id='logstat' label='Login Status' response='logstat' type='stat'>
-        <data label='Status Command' type='text'>OSSC_screenPrint -R</data>
-        <data label='LOGIN 0' type='text'> TSCV.TSC.LOGIN0</data>
-        <data label='LOGIN 1' type='text'> TSCV.TSC.LOGIN1</data>
-        <data label='LOGIN 2' type='text'> TSCV.TSC.LOGIN2</data>
-        <data label='LOGIN 3' type='text'> TSCV.TSC.LOGIN3</data>
+      <command id="logstat" label="Login Status" response="logstat" type="stat">
+        <data label="Status Command" type="text">OSSC_screenPrint -R</data>
+        <data label="LOGIN 0" type="text"> TSCV.TSC.LOGIN0</data>
+        <data label="LOGIN 1" type="text"> TSCV.TSC.LOGIN1</data>
+        <data label="LOGIN 2" type="text"> TSCV.TSC.LOGIN2</data>
+        <data label="LOGIN 3" type="text"> TSCV.TSC.LOGIN3</data>
       </command>
-      <command id='getexit' label='Exit Code' response='exit' type='stat'>
-        <data type='text'>exe</data>
+      <command id="getexit" label="Exit Code" response="exit" type="stat">
+        <data type="text">exe</data>
       </command>
-      <command id='getpid' label='Running?' response='pid' type='stat'>
-        <data type='text'>exe -b</data>
+      <command id="getpid" label="Running?" response="pid" type="stat">
+        <data type="text">exe -b</data>
       </command>
-      <command id='login' label='TSC Login' response='exit'>
+      <command id="login" label="TSC Login" response="exit">
         <data>osscmd</data>
         <data> 1A1901ciax%%%%%%%%%%%%%%%%</data>
         <data> CIAX%%%%%%%%%%%%</data>
@@ -48,136 +48,135 @@
         <data> dummyMenu</data>
         <data> dummyMessage</data>
       </command>
-      <command id='logout' label='TSC Login' response='exit'>
+      <command id="logout" label="TSC Login" response="exit">
         <data>osscmd 1A1902</data>
       </command>
-      <command id='init' label='Status Delivery Request' response='exit'>
+      <command id="init" label="Status Delivery Request" response="exit">
         <data>osscmd 1A1011</data>
       </command>
-      <command id='tsconly' label='TSC Only Mode(CIAX Mode)' response='exit'>
+      <command id="tsconly" label="TSC Only Mode(CIAX Mode)" response="exit">
         <data>osscmd 1A1008TSCONLY</data>
       </command>
-      <command id='tscpri' label='TSC Primaly Mode(OBS Mode)' response='exit'>
+      <command id="tscpri" label="TSC Primaly Mode(OBS Mode)" response="exit">
         <data>osscmd 1A1008TSCPRI%</data>
       </command>
-      <command id='ron' label='InR Drive ON' response='exit'>
+      <command id="ron" label="InR Drive ON" response="exit">
         <data>osscmd 904013</data>
       </command>
-      <command id='roff' label='InR Drive OFF' response='exit'>
+      <command id="roff" label="InR Drive OFF" response="exit">
         <data>osscmd 904014</data>
       </command>
-      <command id='jon' label='Jack Drive ON' response='exit'>
+      <command id="jon" label="Jack Drive ON" response="exit">
         <data>osscmd 132001ON%</data>
       </command>
-      <command id='joff' label='Jack Drive OFF' response='exit'>
+      <command id="joff" label="Jack Drive OFF" response="exit">
         <data>osscmd 132001OFF</data>
       </command>
-      <command id='jres' label='Jack Drive Reset' response='exit'>
+      <command id="jres" label="Jack Drive Reset" response="exit">
         <data>osscmd 132008</data>
       </command>
-      <command id='rhook' label='InR Hook(0deg)' response='exit' type='action'>
+      <command id="rhook" label="InR Hook(0deg)" response="exit" type="action">
         <data>osscmd -b 132004</data>
       </command>
-      <command id='runhk' label='InR UnHook(-4deg)' response='exit' type='action'>
+      <command id="runhk" label="InR UnHook(-4deg)" response="exit" type="action">
         <data>osscmd -b 132005</data>
       </command>
-      <command id='rstop' label='InR Stop' response='exit' type='action'>
+      <command id="rstop" label="InR Stop" response="exit" type="action">
         <data>osscmd 104011</data>
       </command>
-      <command id='ajup' label='All EJB Up' response='exit' type='action'>
+      <command id="ajup" label="All EJB Up" response="exit" type="action">
         <data>osscmd -b 932001</data>
       </command>
-      <command id='ajdw' label='All EJB Down' response='exit' type='action'>
+      <command id="ajdw" label="All EJB Down" response="exit" type="action">
         <data>osscmd -b 932002</data>
       </command>
-      <command id='ajstop' label='All EJB Stop' response='exit' type='action'>
+      <command id="ajstop" label="All EJB Stop" response="exit" type="action">
         <data>osscmd 104011</data>
       </command>
-      <command id='jup' label='EJB Up [num]' response='exit' type='action'>
+      <command id="jup" label="EJB Up [num]" response="exit" type="action">
         <parameters>
-          <par label='EJB Num' validate='range'>1:16</par>
+          <par label="EJB Num" validate="range">1:16</par>
         </parameters>
-        <data type='text'>osscmd -b 9320</data>
-        <data format='%02d' type='formula'>$1*3+1</data>
+        <data type="text">osscmd -b 9320</data>
+        <data format="%02d" type="formula">$1*3+1</data>
       </command>
-      <command id='jdw' label='EJB Down [num]' response='exit' type='action'>
+      <command id="jdw" label="EJB Down [num]" response="exit" type="action">
         <parameters>
-          <par label='EJB Num' validate='range'>1:16</par>
+          <par label="EJB Num" validate="range">1:16</par>
         </parameters>
-        <data type='text'>osscmd -b 9320</data>
-        <data format='%02d' type='formula'>$1*3+2</data>
+        <data type="text">osscmd -b 9320</data>
+        <data format="%02d" type="formula">$1*3+2</data>
       </command>
-      <command id='jstop' label='EJB Stop [num]' response='exit' type='action'>
+      <command id="jstop" label="EJB Stop [num]" response="exit" type="action">
         <parameters>
-          <par label='EJB Num' validate='range'>1:16</par>
+          <par label="EJB Num" validate="range">1:16</par>
         </parameters>
-        <data type='text'>osscmd 9320</data>
-        <data format='%02d' type='formula'>$1*3+3</data>
+        <data type="text">osscmd 9320</data>
+        <data format="%02d" type="formula">$1*3+3</data>
       </command>
-      <command id='setinst' label='Set Instrument ID [0-12]' response='exit' type='config'>
+      <command id="setinst" label="Set Instrument ID [0-12]" response="exit" type="config">
         <parameters>
-          <par label='Inst ID [0-12]' validate='range'>1:12</par>
+          <par label="Inst ID [0-12]" validate="range">1:12</par>
         </parameters>
-        <data type='text'>osscmd 13200700</data>
-        <data format='%02d' type='formula'>$1</data>
+        <data type="text">osscmd 13200700</data>
+        <data format="%02d" type="formula">$1</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <selected/>
-      <data encode='chr' label='Suffix' type='text'>0xa</data>
+      <selected />
+      <data encode="chr" label="Suffix" type="text">0xa</data>
     </cmdframe>
-    <rspselect>
-      <response id='getstat'>
-        <field assign='rsel' label='InR Select(NsOpt/NsIR/Cas)'/>
-        <field assign='stow_1' decode='hexstr' label='Stow pin Status'/>
-        <field assign='shutter' label='Shutter Status'/>
-        <field assign='teldrive' label='AZ/EL Drive Status'/>
-        <field assign='el' label='EL Angle(deg)'/>
-        <field assign='mlp3' label='CIAX-MLP3 Comm Error'/>
-        <field assign='rpw' label='InR Drive ON/OFF'/>
-        <field assign='bstat' decode='hexstr' label='BOLT System Status'/>
-      </response>
-      <response id='iststat'>
-        <field assign='iid' label='CAS Instrument'/>
-      </response>
-      <response id='jakstat'>
-        <field assign='bsa' label='BOLT SUM ALM(POWER_V1)' length='2'/>
-        <field assign='cjb' label='ALL BOLT STAT(POWER_V1)' length='2'/>
-        <array assign='bl' label='Each Bolt Status(POWER_V1)' length='1'>
-          <index range='0:15' size='16'/>
-        </array>
-        <array assign='be' label='Each Bolt Alarm(POWER_V1)' length='1'>
-          <index range='0:15' size='16'/>
-        </array>
-        <field assign='mba' label='MLP3-BOLT COMM(POWER_V1)' length='2'/>
-        <field label='Cut off'/>
-        <field assign='bcl' label='BOLT CONTROL SOURCE(POWER_V1)' length='2'/>
-        <field assign='cjh' label='Jack Home(POWER_V1)' length='4'/>
-        <array assign='jk' label='Bolt Position(POWER_V2)' length='12'>
-          <index range='0:15' size='16'/>
-        </array>
-        <array assign='zp' label='Zsensor Position' length='12' slice='2:4'>
-          <index range='0:3' size='4'/>
-        </array>
-      </response>
-      <response id='inrstat'>
-        <field assign='iang' label='InR Angle(deg)'/>
-      </response>
-      <response id='logstat'>
-        <field assign='login0' label='LOGIN 0'/>
-        <field assign='login1' label='LOGIN 1'/>
-        <field assign='login2' label='LOGIN 2'/>
-        <field assign='login3' label='LOGIN 3'/>
-      </response>
-      <response id='exit'>
-        <field assign='exit' label='Exit Code'/>
-      </response>
-      <response id='pid'>
-        <field assign='pid' label='Background Process ID'/>
-      </response>
-    </rspselect>
-    <rspframe delimiter='\n'>
-      <selected/>
+    <rspframe delimiter="\n">
+      <rspselect>
+        <response id="getstat">
+          <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" />
+          <field assign="stow_1" decode="hexstr" label="Stow pin Status" />
+          <field assign="shutter" label="Shutter Status" />
+          <field assign="teldrive" label="AZ/EL Drive Status" />
+          <field assign="el" label="EL Angle(deg)" />
+          <field assign="mlp3" label="CIAX-MLP3 Comm Error" />
+          <field assign="rpw" label="InR Drive ON/OFF" />
+          <field assign="bstat" decode="hexstr" label="BOLT System Status" />
+        </response>
+        <response id="iststat">
+          <field assign="iid" label="CAS Instrument" />
+        </response>
+        <response id="jakstat">
+          <field assign="bsa" label="BOLT SUM ALM(POWER_V1)" length="2" />
+          <field assign="cjb" label="ALL BOLT STAT(POWER_V1)" length="2" />
+          <array assign="bl" label="Each Bolt Status(POWER_V1)" length="1">
+            <index range="0:15" size="16" />
+          </array>
+          <array assign="be" label="Each Bolt Alarm(POWER_V1)" length="1">
+            <index range="0:15" size="16" />
+          </array>
+          <field assign="mba" label="MLP3-BOLT COMM(POWER_V1)" length="2" />
+          <field label="Cut off" />
+          <field assign="bcl" label="BOLT CONTROL SOURCE(POWER_V1)" length="2" />
+          <field assign="cjh" label="Jack Home(POWER_V1)" length="4" />
+          <array assign="jk" label="Bolt Position(POWER_V2)" length="12">
+            <index range="0:15" size="16" />
+          </array>
+          <array assign="zp" label="Zsensor Position" length="12" slice="2:4">
+            <index range="0:3" size="4" />
+          </array>
+        </response>
+        <response id="inrstat">
+          <field assign="iang" label="InR Angle(deg)" />
+        </response>
+        <response id="logstat">
+          <field assign="login0" label="LOGIN 0" />
+          <field assign="login1" label="LOGIN 1" />
+          <field assign="login2" label="LOGIN 2" />
+          <field assign="login3" label="LOGIN 3" />
+        </response>
+        <response id="exit">
+          <field assign="exit" label="Exit Code" />
+        </response>
+        <response id="pid">
+          <field assign="pid" label="Background Process ID" />
+        </response>
+      </rspselect>
     </rspframe>
   </device>
 </ddb>

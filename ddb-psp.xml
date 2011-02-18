@@ -1,75 +1,74 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<ddb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/ddb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <device id='psp' label='Power Supply PSP-603' reference='http://www.bellnw.com/images/man/0685.pdf' wait='0.3'>
-    <serial databit='8' flowctl='NONE' parity='NONE' speed='2400' stopbit='1'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <device id="psp" label="Power Supply PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" wait="0.3">
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
     <cmdselect>
-      <command id='getstat' label='Get Status' response='getstat' type='stat'>
-        <data type='text'>L</data>
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <data type="text">L</data>
       </command>
-      <command id='setvl' label='Set Voltage Limit [DD]' type='config'>
+      <command id="setvl" label="Set Voltage Limit [DD]" type="config">
         <parameters>
-          <par label='[0-20]' validate='range'>0:20</par>
+          <par label="[0-20]" validate="range">0:20</par>
         </parameters>
-        <data type='text'>SU </data>
-        <data format='%02d' type='formula'>$1</data>
+        <data type="text">SU </data>
+        <data format="%02d" type="formula">$1</data>
       </command>
-      <command id='setal' label='Set Current Limit [D.DD]' type='config'>
+      <command id="setal" label="Set Current Limit [D.DD]" type="config">
         <parameters>
-          <par label='[0-9.99]' validate='range'>0:&lt;10</par>
+          <par label="[0-9.99]" validate="range">0:&lt;10</par>
         </parameters>
-        <data type='text'>SI </data>
-        <data format='%04.2f' type='formula'>$1</data>
+        <data type="text">SI </data>
+        <data format="%04.2f" type="formula">$1</data>
       </command>
-      <command id='setpl' label='Set Power Limit [DDD]' type='config'>
+      <command id="setpl" label="Set Power Limit [DDD]" type="config">
         <parameters>
-          <par label='[0-200]' validate='range'>0:&lt;200</par>
+          <par label="[0-200]" validate="range">0:&lt;200</par>
         </parameters>
-        <data type='text'>SP </data>
-        <data format='%03d' type='formula'>$1</data>
+        <data type="text">SP </data>
+        <data format="%03d" type="formula">$1</data>
       </command>
-      <command id='setv' label='Set Voltage [DD.DD]' type='config'>
+      <command id="setv" label="Set Voltage [DD.DD]" type="config">
         <parameters>
-          <par label='[0-99]' validate='range'>0:&lt;100</par>
+          <par label="[0-99]" validate="range">0:&lt;100</par>
         </parameters>
-        <data type='text'>SV </data>
-        <data format='%05.2f' type='formula'>$1</data>
+        <data type="text">SV </data>
+        <data format="%05.2f" type="formula">$1</data>
       </command>
-      <command id='pon' label='OUTPUT ON' type='action'>
-        <data type='text'>KOE</data>
+      <command id="pon" label="OUTPUT ON" type="action">
+        <data type="text">KOE</data>
       </command>
-      <command id='poff' label='OUTPUT OFF' type='action'>
-        <data type='text'>KOD</data>
+      <command id="poff" label="OUTPUT OFF" type="action">
+        <data type="text">KOD</data>
       </command>
     </cmdselect>
     <cmdframe>
-      <selected/>
-      <data encode='chr' type='text'>0xd</data>
+      <selected />
+      <data encode="chr" type="text">0xd</data>
     </cmdframe>
-    <rspselect>
-      <response id='getstat'>
-        <field length='1'>V</field>
-        <field assign='v' label='Output(V)' length='5'/>
-        <field length='1'>A</field>
-        <field assign='a' label='Output(A)' length='5'/>
-        <field length='1'>W</field>
-        <field assign='w' label='Output(W)' length='5'/>
-        <field length='1'>U</field>
-        <field assign='u' label='Limit(V)' length='2'/>
-        <field length='1'>I</field>
-        <field assign='i' label='Limit(A)' length='4'/>
-        <field length='1'>P</field>
-        <field assign='p' label='Limit(W)' length='3'/>
-        <field length='1'>F</field>
-        <field assign='f1' label='Output(ON/OFF)' length='1'/>
-        <field assign='f2' label='OverHeat' length='1'/>
-        <field assign='f3' label='ADJ Fine' length='1'/>
-        <field assign='f4' label='ADJ Unlock' length='1'/>
-        <field assign='f5' label='Remote' length='1'/>
-        <field assign='f6' label='Local Lock' length='1'/>
-      </response>
-    </rspselect>
-    <rspframe terminator='\r\n'>
-      <selected/>
+    <rspframe terminator="\r\n">
+      <rspselect>
+        <response id="getstat">
+          <field length="1">V</field>
+          <field assign="v" label="Output(V)" length="5" />
+          <field length="1">A</field>
+          <field assign="a" label="Output(A)" length="5" />
+          <field length="1">W</field>
+          <field assign="w" label="Output(W)" length="5" />
+          <field length="1">U</field>
+          <field assign="u" label="Limit(V)" length="2" />
+          <field length="1">I</field>
+          <field assign="i" label="Limit(A)" length="4" />
+          <field length="1">P</field>
+          <field assign="p" label="Limit(W)" length="3" />
+          <field length="1">F</field>
+          <field assign="f1" label="Output(ON/OFF)" length="1" />
+          <field assign="f2" label="OverHeat" length="1" />
+          <field assign="f3" label="ADJ Fine" length="1" />
+          <field assign="f4" label="ADJ Unlock" length="1" />
+          <field assign="f5" label="Remote" length="1" />
+          <field assign="f6" label="Local Lock" length="1" />
+        </response>
+      </rspselect>
     </rspframe>
   </device>
 </ddb>

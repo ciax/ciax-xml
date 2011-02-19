@@ -4,10 +4,10 @@ require "libverbose"
 require "librerange"
 
 class SymConv
-  def initialize(dbl,root,xpath,key)
+  def initialize(dbl,xpath,key)
     @dbl=dbl
     @sdl={}
-    dbl[root].each(xpath){|e|
+    dbl.each(xpath){|e|
       sym=e['symbol'] || next
       @sdl[e[key]]=sym
     }

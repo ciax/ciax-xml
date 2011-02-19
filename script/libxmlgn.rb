@@ -41,6 +41,14 @@ class XmlGn
     (txt == '') ? nil : txt
   end
 
+  def doc
+    @e.doc
+  end
+
+  def ns
+    @e.namespaces.namespace.to_s
+  end
+
   # select element with key=val, or display list
   def select(key,val)
     @e.each_element{|e|

@@ -28,4 +28,12 @@ class XmlDoc < Hash
     $errmsg << $!.to_s
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
+
+  def each(xpath)
+    doc=values.first.doc
+    doc.root.namespaces.default_prefix='find'
+    doc.find("//find:#{xpath}").each{|e|
+      yield XmlGn.new(e)
+    }
+  end
 end

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+  <!--Device database-->
+  <xsd:include schemaLocation="codec.xsd" />
+  <xsd:include schemaLocation="symbol.xsd" />
+  <xsd:include schemaLocation="range.xsd" />
+  <!--Response Elements-->
+  <xsd:attributeGroup name="rsp_attr">
+    <xsd:attribute name="label" type="xsd:string" />
+    <xsd:attribute name="assign" type="xsd:string" />
+    <xsd:attribute name="decode" type="fdbr:codec"></xsd:attribute>
+    <xsd:attribute name="length" type="xsd:int" />
+    <xsd:attribute name="slice" type="fdbr:rerange" />
+    <xsd:attribute name="symbol" type="xsd:string" />
+  </xsd:attributeGroup>
+  <xsd:group name="rsp_elem">
+    <xsd:choice>
+      <xsd:element ref="fdbr:field" />
+      <xsd:element ref="fdbr:array" />
+    </xsd:choice>
+  </xsd:group>
+  <xsd:element name="field">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attributeGroup ref="fdbr:rsp_attr" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="array">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="fdbr:index" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:attributeGroup ref="fdbr:rsp_attr" />
+    </xsd:complexType>
+  </xsd:element>
+  <!--Field Elements-->
+  <xsd:element name="index">
+    <xsd:complexType>
+      <xsd:attribute name="size" type="xsd:int" use="required" />
+      <xsd:attribute name="range" type="xsd:string" use="required" />
+    </xsd:complexType>
+  </xsd:element>
+  <!--Response Select-->
+  <xsd:element name="rspselect">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="fdbr:response" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="response">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="fdbr:rsp_elem"></xsd:group>
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+  <!--Response CC-->
+  <xsd:element name="rspccrange">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="fdbr:rspselect" />
+        <xsd:group ref="fdbr:rsp_elem" />
+      </xsd:choice>
+      <xsd:attribute name="method" type="fdbr:ccmethod" use="required"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <!--Response frame-->
+  <xsd:element name="rspframe">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="fdbr:rsp_elem" />
+        <xsd:element ref="fdbr:rspselect" />
+        <xsd:element ref="fdbr:rspccrange" />
+      </xsd:choice>
+      <xsd:attribute name="terminator" type="xsd:string" />
+      <xsd:attribute name="delimiter" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

@@ -17,7 +17,7 @@
       <selected />
       <data encode="chr" type="text">13</data>
     </cmdframe>
-    <rspframe>
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <rspselect>
         <response id="getstat">
           <field label="Prefix" length="3">X01</field>

@@ -22,7 +22,7 @@
       <data label="Prefix" type="text">!0</data>
       <selected />
     </cmdframe>
-    <rspframe>
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <rspselect>
         <response id="getstat">
           <field assign="stat" decode="bew" label="Status" />

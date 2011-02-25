@@ -74,7 +74,7 @@
       <data encode="chr" label="FINS Header:SID" type="text">0xFF</data>
       <selected />
     </cmdframe>
-    <rspframe>
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="chr" label="FINS Header:ICF" length="1">0xc0</field>
       <field decode="chr" label="FINS Header:RSV" length="1">0x00</field>
       <field decode="chr" label="FINS Header:GCT" length="1">0x02</field>

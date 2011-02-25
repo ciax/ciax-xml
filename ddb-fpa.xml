@@ -33,7 +33,7 @@
       <data encode="chr" type="text">13</data>
       <data encode="chr" type="text">10</data>
     </cmdframe>
-    <rspframe>
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>
       <rspccrange method="sum">
         <rspselect>

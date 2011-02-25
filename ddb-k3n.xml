@@ -23,7 +23,7 @@
       </cmdccrange>
       <data encode="chr" type="formula">${cc}</data>
     </cmdframe>
-    <rspframe>
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="chr" label="Prefix" length="1">2</field>
       <rspccrange method="bcc">
         <field label="Node" length="4">0000</field>

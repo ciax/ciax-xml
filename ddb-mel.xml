@@ -123,7 +123,7 @@
         <selected />
       </cmdccrange>
     </cmdframe>
-    <rspframe>
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="lew" label="SubHeader: Prefix" length="2">212</field>
       <field label="SubHeader: Serial Number" length="2">XX</field>
       <field decode="lew" label="SubHeader: Fixed Number" length="2">0</field>

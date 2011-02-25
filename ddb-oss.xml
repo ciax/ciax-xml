@@ -126,7 +126,7 @@
       <selected />
       <data encode="chr" label="Suffix" type="text">0xa</data>
     </cmdframe>
-    <rspframe delimiter="\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="\n">
       <rspselect>
         <response id="getstat">
           <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" />

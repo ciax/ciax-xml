@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:simpleType name="codec">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="chr" />
+      <xsd:enumeration value="hexstr" />
+      <xsd:enumeration value="bew" />
+      <xsd:enumeration value="lew"></xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ccmethod">
+    <!--Check Code Method-->
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="bcc" />
+      <xsd:enumeration value="sum" />
+      <xsd:enumeration value="len" />
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

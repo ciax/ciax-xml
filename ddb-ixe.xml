@@ -152,7 +152,7 @@
       <data encode="chr" type="text">13</data>
       <data encode="chr" type="text">10</data>
     </cmdframe>
-    <rspframe terminator="\003\r\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="chr" label="Prefix" length="1">2</field>
       <field decode="chr" label="ACK" length="1">6</field>
       <rspselect>

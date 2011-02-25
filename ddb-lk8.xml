@@ -24,7 +24,7 @@
       <selected />
       <data encode="bew" label="Suffix" type="text">0x0d0a</data>
     </cmdframe>
-    <rspframe delimiter=";" terminator="\r\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
       <rspselect>
         <response id="getstat">
           <array assign="ch" label="Value">

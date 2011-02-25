@@ -31,7 +31,7 @@
       <data label="Suffix" type="text">*</data>
       <data encode="chr" label="Delimiter" type="text">0xd</data>
     </cmdframe>
-    <rspframe>
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <rspccrange method="bcc">
         <field label="Prefix" length="1">@</field>
         <rspselect>

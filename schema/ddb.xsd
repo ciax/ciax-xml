@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="shift_jis"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:ddb="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:ddb="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc">
   <!--Device database-->
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" schemaLocation="fdbr.xsd" />
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" schemaLocation="fdbc.xsd" />
   <xsd:include schemaLocation="symbol.xsd" />
-  <xsd:include schemaLocation="range.xsd" />
-  <xsd:include schemaLocation="repeat.xsd" />
-  <xsd:include schemaLocation="param.xsd" />
   <xsd:element name="ddb">
     <xsd:complexType>
       <xsd:sequence>
@@ -19,8 +17,7 @@
         <!--Protocol for RS232C-->
         <xsd:element ref="ddb:serial" minOccurs="0" maxOccurs="1" />
         <!--Command frame-->
-        <xsd:element ref="ddb:cmdselect" minOccurs="1" maxOccurs="1"></xsd:element>
-        <xsd:element ref="ddb:cmdframe" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdbc:cmdframe" minOccurs="0" maxOccurs="1" />
         <!--Response frame-->
         <xsd:element ref="fdbr:rspframe" minOccurs="0" maxOccurs="1" />
         <xsd:element ref="ddb:symbol" minOccurs="0" maxOccurs="1" />
@@ -85,108 +82,6 @@
           </xsd:restriction>
         </xsd:simpleType>
       </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <!--Shared frame-->
-  <xsd:element name="selected">
-    <xsd:complexType></xsd:complexType>
-  </xsd:element>
-  <xsd:simpleType name="codec">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="chr" />
-      <xsd:enumeration value="hexstr" />
-      <xsd:enumeration value="bew" />
-      <xsd:enumeration value="lew"></xsd:enumeration>
-    </xsd:restriction>
-  </xsd:simpleType>
-  <xsd:simpleType name="ccmethod">
-    <!--Check Code Method-->
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="bcc" />
-      <xsd:enumeration value="sum" />
-      <xsd:enumeration value="len" />
-    </xsd:restriction>
-  </xsd:simpleType>
-  <!--Command Elements-->
-  <xsd:element name="data">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="label" type="xsd:string" />
-          <xsd:attribute name="encode" type="ddb:codec"></xsd:attribute>
-          <xsd:attribute name="format" type="xsd:string"></xsd:attribute>
-          <xsd:attribute name="type">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="text"></xsd:enumeration>
-                <xsd:enumeration value="formula"></xsd:enumeration>
-                <xsd:enumeration value="csv"></xsd:enumeration>
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!--Command Select-->
-  <xsd:element name="cmdselect">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="ddb:command" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="command">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="ddb:parameters" minOccurs="0" maxOccurs="1" />
-        <xsd:choice minOccurs="0" maxOccurs="unbounded">
-          <xsd:element ref="ddb:data" />
-          <xsd:element ref="ddb:repeat" />
-        </xsd:choice>
-      </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:string" use="required" />
-      <xsd:attribute name="label" type="xsd:string" />
-      <xsd:attribute name="response" type="xsd:string" />
-      <xsd:attribute name="nocache" type="xsd:boolean" />
-      <xsd:attribute name="type">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="stat" />
-            <xsd:enumeration value="action" />
-            <xsd:enumeration value="config" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="repeat">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="ddb:data" />
-      </xsd:choice>
-      <xsd:attributeGroup ref="ddb:repeat" />
-      <xsd:attribute name="delimiter" type="xsd:string" />
-    </xsd:complexType>
-  </xsd:element>
-  <!--Command CC-->
-  <xsd:element name="cmdccrange">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="ddb:selected" />
-        <xsd:element ref="ddb:data" />
-      </xsd:choice>
-      <xsd:attribute name="method" type="ddb:ccmethod"></xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <!--Command frame-->
-  <xsd:element name="cmdframe">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="ddb:data" />
-        <xsd:element ref="ddb:selected" />
-        <xsd:element ref="ddb:cmdccrange" />
-      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

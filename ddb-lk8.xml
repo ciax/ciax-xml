@@ -2,26 +2,25 @@
 <ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <device id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
     <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
-    <cmdselect>
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
-        <data type="text">krdg? c1;</data>
-        <data type="text">krdg? c2;</data>
-        <data type="text">krdg? c3;</data>
-        <data type="text">krdg? c4;</data>
-        <data type="text">krdg? d1;</data>
-        <data type="text">krdg? d2;</data>
-        <data type="text">krdg? d3;</data>
-        <data type="text">krdg? d4;</data>
-      </command>
-      <command id="htrstat" label="Heater Power (%)" response="htrstat" type="stat">
-        <data type="text">HTR?</data>
-      </command>
-      <command id="spstat" label="Set Point (K)" response="spstat" type="stat">
-        <data type="text">SETP? 1</data>
-      </command>
-    </cmdselect>
-    <cmdframe>
-      <selected />
+    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <cmdselect>
+        <command id="getstat" label="Get Status" response="getstat" type="stat">
+          <data type="text">krdg? c1;</data>
+          <data type="text">krdg? c2;</data>
+          <data type="text">krdg? c3;</data>
+          <data type="text">krdg? c4;</data>
+          <data type="text">krdg? d1;</data>
+          <data type="text">krdg? d2;</data>
+          <data type="text">krdg? d3;</data>
+          <data type="text">krdg? d4;</data>
+        </command>
+        <command id="htrstat" label="Heater Power (%)" response="htrstat" type="stat">
+          <data type="text">HTR?</data>
+        </command>
+        <command id="spstat" label="Set Point (K)" response="spstat" type="stat">
+          <data type="text">SETP? 1</data>
+        </command>
+      </cmdselect>
       <data encode="bew" label="Suffix" type="text">0x0d0a</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">

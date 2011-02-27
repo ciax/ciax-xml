@@ -2,23 +2,22 @@
 <ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <device id="k3n" label="OMRON K3NR" wait="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
-    <cmdselect>
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
-        <data label="Node No." type="text">00</data>
-        <data label="Sub Address" type="text">00</data>
-        <data label="SID" type="text">0</data>
-        <data label="MRC" type="text">01</data>
-        <data label="SRC" type="text">01</data>
-        <data label="Variable type" type="text">C0</data>
-        <data label="Start Address" type="text">0000</data>
-        <data label="Void" type="text">00</data>
-        <data label="Number of element" type="text">0001</data>
-      </command>
-    </cmdselect>
-    <cmdframe>
+    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="chr" label="Prefix" type="text">2</data>
       <cmdccrange method="bcc">
-        <selected />
+        <cmdselect>
+          <command id="getstat" label="Get Status" response="getstat" type="stat">
+            <data label="Node No." type="text">00</data>
+            <data label="Sub Address" type="text">00</data>
+            <data label="SID" type="text">0</data>
+            <data label="MRC" type="text">01</data>
+            <data label="SRC" type="text">01</data>
+            <data label="Variable type" type="text">C0</data>
+            <data label="Start Address" type="text">0000</data>
+            <data label="Void" type="text">00</data>
+            <data label="Number of element" type="text">0001</data>
+          </command>
+        </cmdselect>
         <data encode="chr" label="Suffix" type="text">3</data>
       </cmdccrange>
       <data encode="chr" type="formula">${cc}</data>

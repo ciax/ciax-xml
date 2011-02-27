@@ -2,14 +2,13 @@
 <ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <device id="oma" label="OMEGA Air Pressure Sensor(PX971)" wait="0.1">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
-    <cmdselect>
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
-        <data type="text">00P1</data>
-      </command>
-    </cmdselect>
-    <cmdframe>
+    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data label="Prefix" type="text">*</data>
-      <selected />
+      <cmdselect>
+        <command id="getstat" label="Get Status" response="getstat" type="stat">
+          <data type="text">00P1</data>
+        </command>
+      </cmdselect>
       <data encode="chr" label="Suffix" type="text">0xd</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">

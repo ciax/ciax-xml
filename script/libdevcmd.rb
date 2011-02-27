@@ -16,7 +16,7 @@ class DevCmd
   end
 
   def setcmd(stm) # return = response select
-    @sel=@ddb.select_id('cmdselect',stm.first)
+    @sel=@ddb.find_id('cmdframe','cmdselect',stm.first)
     @par.setpar(@sel,stm)
     stm << '*' if /true|1/ === @sel['nocache']
     @cid=stm.join(':')
@@ -44,7 +44,7 @@ class DevCmd
     fary=[]
     @rep.each(e0){ |e1|
       case e1.name
-      when 'selected'
+      when 'cmdselect'
         begin
           @v.msg(1){"Entering Selected Node"}
           fary+=getstr(@sel)

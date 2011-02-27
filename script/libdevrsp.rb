@@ -16,7 +16,7 @@ class DevRsp
   end
 
   def setrsp(stm)
-    cmd=@ddb.select_id('cmdselect',stm.first)
+    cmd=@ddb.find_id('cmdframe','cmdselect',stm.first)
     @par.setpar(cmd,stm)
     @sel=cmd['response']
     self

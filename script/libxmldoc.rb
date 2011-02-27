@@ -6,7 +6,8 @@ class XmlDoc < Hash
     $errmsg=''
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
-    XmlGn.new(path).each{|e|
+    @doc=Document.file(path)
+    XmlGn.new(@doc.root).each{|e|
       self[e.name]=e
       update(e.to_h)
       e.each{|e1| self[e1.name]=e1 }
@@ -14,14 +15,26 @@ class XmlDoc < Hash
   rescue Errno::ENOENT
     list=Array.new
     Dir.glob("#{pre}-*.xml").each{|p|
-      $errmsg << XmlGn.new(p).list('id')
+      $errmsg << XmlGn.new(Document.file(p)).list('id')
     }
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 
-  def select_id(xpath,id)
-    raise SelectID unless key?(xpath)
-    return self[xpath].select('id',id)
+  def select_id(domain,id)
+    raise SelectID unless key?(domain)
+    return self[domain].select('id',id)
+  rescue SelectID
+    $errmsg << "No such command [#{id}]\n" if id
+    $errmsg << "== Command List ==\n"
+    $errmsg << $!.to_s
+    raise(SelectID,$errmsg) unless $errmsg.empty?
+  end
+
+  def find_id(domain,xpath,id)
+    raise SelectID unless key?(domain)
+    ns=self[domain].ns
+    e=@doc.find_first("//ns:#{xpath}","ns:#{ns}")
+    return XmlGn.new(e).select('id',id)
   rescue SelectID
     $errmsg << "No such command [#{id}]\n" if id
     $errmsg << "== Command List ==\n"

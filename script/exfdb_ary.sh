@@ -19,10 +19,14 @@ for obj in ${*:-mma mix crt ml1 dts dt2} ; do
                     yes|exfdb crt get_tbl $i $j
                 done
             done;;
-        dt*)
+        dts)
             for i in get ist jak inr log; do
                 yes|exfdb dts ${i}stat
             done;;
+        ds*)
+            exfdb $obj getzerr
+            exfdb $obj getzlen
+            ;;
         *)
             yes|exfdb $obj;;
     esac

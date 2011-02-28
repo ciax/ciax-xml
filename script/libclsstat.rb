@@ -51,18 +51,19 @@ class ClsStat
             n=n.to_i
             data=data[0..(-1-n)]+'.'+data[-n..-1]
           end
+          data=data.to_f
           if f=e1['formula']
-            f=f.gsub(/\$#/,"1.0*#{data}")
+            f=f.gsub(/\$#/,data.to_s)
             @v.msg{"Formula:#{f}(#{data})"}
             data=eval(f)
           end
           ary << data.to_f
         when 'int'
+          data=data.to_i
           if /true|1/ === e1['signed']
-            data=data.to_i
             data= data > 0x7fff ? data - 0x10000 : data
           end
-          ary << data.to_i
+          ary << data
         else
           ary << data
         end

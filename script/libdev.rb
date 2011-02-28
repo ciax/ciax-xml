@@ -8,16 +8,16 @@ require "libdevrsp"
 
 class Dev
   def initialize(dev,id,iocmd)
-    @ddb=XmlDoc.new('ddb',dev)
+    @fdb=XmlDoc.new('fdb',dev)
   rescue SelectID
     abort $!.to_s
   else
     $errmsg=''
     @stat=Stat.new(id,"field")
-    @cmd=DevCmd.new(@ddb,@stat)
-    @rsp=DevRsp.new(@ddb,@stat)
-    @v=Verbose.new("ddb/#{id}".upcase)
-    @ic=IoCmd.new(iocmd,'device_'+id,@ddb['wait'],1)
+    @cmd=DevCmd.new(@fdb,@stat)
+    @rsp=DevRsp.new(@fdb,@stat)
+    @v=Verbose.new("fdb/#{id}".upcase)
+    @ic=IoCmd.new(iocmd,'device_'+id,@fdb['wait'],1)
   end
 
   def field

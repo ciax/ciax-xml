@@ -79,12 +79,12 @@ class Cls
   private
   def session_thread(dev,id,iocmd)
     Thread.new{
-      ddb=Dev.new(dev,id,iocmd)
-      @stat.get_stat(ddb.field)
+      fdb=Dev.new(dev,id,iocmd)
+      @stat.get_stat(fdb.field)
       loop{
         begin
-          ddb.transaction(@buf.recv.split(' '))
-          @stat.get_stat(ddb.field)
+          fdb.transaction(@buf.recv.split(' '))
+          @stat.get_stat(fdb.field)
         rescue RuntimeError
           $errmsg << $!.to_s
         end

@@ -5,7 +5,7 @@ cdb//session@id -> never use ':'
 
  $_ $a..z
     description : substitute sequence number(in repeat)
-    usable: ddb//cmdframe/repeat/data[@type=formula]
+    usable: fdb//cmdframe/repeat/data[@type=formula]
             --
             cdb//session/repeat/statement/argv@formula
             cdb//watch/repeat/event@*
@@ -22,8 +22,8 @@ cdb//session@id -> never use ':'
 
  $1..9
     description : substitute parameters
-    usable: ddb//cmdframe/data[@type=formula]
-            ddb//response/array/index
+    usable: fdb//cmdframe/data[@type=formula]
+            fdb//response/array/index
             --
             cdb//session/statement/argv@formula
             --
@@ -35,7 +35,7 @@ cdb//session@id -> never use ':'
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
-    usable: ddb//cmdframe/data[@type=formula]
+    usable: fdb//cmdframe/data[@type=formula]
             --
             odb//session/statement/text
             odb//session/statement/formula
@@ -44,14 +44,14 @@ cdb//session@id -> never use ':'
 
  \?
     description : convert escape characters
-    usable: ddb//rspframe@terminator
-            ddb//rspframe@delimiter
+    usable: fdb//rspframe@terminator
+            fdb//rspframe@delimiter
 
 ### Explicit conversion by Attributes ###
 
  format
-    usable: ddb//data
-            ddb//formula
+    usable: fdb//data
+            fdb//formula
             --
             cdb//repeat
             cdb//statement
@@ -62,15 +62,15 @@ cdb//session@id -> never use ':'
             odb//status/var/value
 
  decode
-    usable: ddb//response/field
+    usable: fdb//response/field
 
  encode
-    usable: ddb//data
-            ddb//formula
+    usable: fdb//data
+            fdb//formula
 
  validate
  
 ### Reference Content ###
-  cdb//statement@format <= ddb//command@id + par
+  cdb//statement@format <= fdb//command@id + par
   cdb//event/command <= cdb//session@id + par
   cdb//event/while@ref <= cdb//value@id

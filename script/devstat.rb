@@ -14,9 +14,9 @@ time=Time.at(ary.shift.to_f)
 stm=ary.shift.split(':')
 abort ("Logline:Not response") unless /rcv/ === stm.shift
 begin
-  ddb=XmlDoc.new('ddb',dev)
+  fdb=XmlDoc.new('fdb',dev)
   st=Stat.new(id,"field")
-  r=DevRsp.new(ddb,st)
+  r=DevRsp.new(fdb,st)
   r.setrsp(stm)
 rescue RuntimeError
   abort $!.to_s

@@ -1,30 +1,30 @@
 #!/bin/bash
 for obj in ${*:-mma mix crt ml1 dts dt2} ; do
-    yes|exddb $obj getstat
+    yes|exfdb $obj getstat
     case $obj in
         mma)
             for i in 1 2 3 4 5; do
-                yes|exddb mma in $i
+                yes|exfdb mma in $i
             done;;
         mix)
             for i in 1 2 3 4 5 6; do
-                yes|exddb mix chkrun $i
-                yes|exddb mix getp $i
-                yes|exddb mix getspd $i
-                yes|exddb mix getofs $i
+                yes|exfdb mix chkrun $i
+                yes|exfdb mix getp $i
+                yes|exfdb mix getspd $i
+                yes|exfdb mix getofs $i
             done;;
         crt)
             for i in 0 1 2 3 4 5; do
                 for j in 0 1 2 3; do
-                    yes|exddb crt get_tbl $i $j
+                    yes|exfdb crt get_tbl $i $j
                 done
             done;;
         dt*)
             for i in get ist jak inr log; do
-                yes|exddb dts ${i}stat
+                yes|exfdb dts ${i}stat
             done;;
         *)
-            yes|exddb $obj;;
+            yes|exfdb $obj;;
     esac
     read -n 1
 done

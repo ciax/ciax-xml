@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdb="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+  <!--Device database-->
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" schemaLocation="fdbr.xsd" />
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" schemaLocation="fdbc.xsd" />
+  <xsd:include schemaLocation="symbol.xsd" />
+  <xsd:element name="fdb">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="fdb:device" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="device">
+    <xsd:complexType>
+      <xsd:sequence>
+        <!--Protocol for RS232C-->
+        <xsd:element ref="fdb:serial" minOccurs="0" maxOccurs="1" />
+        <!--Command frame-->
+        <xsd:element ref="fdbc:cmdframe" minOccurs="0" maxOccurs="1" />
+        <!--Response frame-->
+        <xsd:element ref="fdbr:rspframe" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdb:symbol" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required" />
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="reference" type="xsd:anyURI" />
+      <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="serial">
+    <xsd:complexType>
+      <xsd:attribute name="speed">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:double">
+            <xsd:enumeration value="300" />
+            <xsd:enumeration value="600" />
+            <xsd:enumeration value="1200" />
+            <xsd:enumeration value="2400" />
+            <xsd:enumeration value="4800" />
+            <xsd:enumeration value="9600" />
+            <xsd:enumeration value="19200" />
+            <xsd:enumeration value="38400" />
+            <xsd:enumeration value="56000" />
+            <xsd:enumeration value="57600" />
+            <xsd:enumeration value="115200" />
+            <xsd:enumeration value="230400" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="databit">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="7" />
+            <xsd:maxInclusive value="8" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="parity">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="NONE" />
+            <xsd:enumeration value="EVEN" />
+            <xsd:enumeration value="ODD" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="stopbit">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="1" />
+            <xsd:maxInclusive value="2" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      <xsd:attribute name="flowctl">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="NONE" />
+            <xsd:enumeration value="XONXOFF" />
+            <xsd:enumeration value="CTSRTS" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

@@ -1,143 +1,143 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='mel' id='mel' label='Cart PLC'>
-    <commands>
-      <session id='upd' label='Regular status update'>
-        <statement format='getstat'/>
-        <statement format='chken'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="mel" id="mel" label="Cart PLC">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+      <session id="upd" label="Regular status update">
+        <statement format="getstat" />
+        <statement format="chken" />
       </session>
-      <session id='start_run' label='Running Start'>
-        <statement format='start 1'/>
+      <session id="start_run" label="Running Start">
+        <statement format="start 1" />
       </session>
-      <session id='start_jak' label='Jacking Start'>
-        <statement format='start %d'>
+      <session id="start_jak" label="Jacking Start">
+        <statement format="start %d">
           <argv>0x100</argv>
         </statement>
       </session>
-      <session id='clear_trg' label='Clear Trigger'>
-        <statement format='clear'/>
+      <session id="clear_trg" label="Clear Trigger">
+        <statement format="clear" />
       </session>
-      <session id='set_fwd' label='Set Tag to Forward'>
-        <statement format='set_tag 98'/>
+      <session id="set_fwd" label="Set Tag to Forward">
+        <statement format="set_tag 98" />
       </session>
-      <session id='set_tag' label='Set Destination Tag [1-12]'>
+      <session id="set_tag" label="Set Destination Tag [1-12]">
         <parameters>
-          <par validate='range'>1:12</par>
+          <par validate="range">1:12</par>
         </parameters>
-        <statement format='set_tag %d'>
+        <statement format="set_tag %d">
           <argv>$1</argv>
         </statement>
       </session>
-      <session id='set_jak1' label='Set Jack Level [0-3]'>
+      <session id="set_jak1" label="Set Jack Level [0-3]">
         <parameters>
-          <par validate='range'>0:3</par>
+          <par validate="range">0:3</par>
         </parameters>
-        <statement format='set_pos %d'>
+        <statement format="set_pos %d">
           <argv>$1</argv>
         </statement>
       </session>
-      <session id='pause' label='Pause'>
-        <statement format='stop 0'/>
+      <session id="pause" label="Pause">
+        <statement format="stop 0" />
       </session>
-      <session id='emstop' label='Emergency Stop'>
-        <statement format='stop 1'/>
+      <session id="emstop" label="Emergency Stop">
+        <statement format="stop 1" />
       </session>
-      <session id='resume' label='Resume from Pause'>
-        <statement format='clear'/>
+      <session id="resume" label="Resume from Pause">
+        <statement format="clear" />
       </session>
-      <session id='get_tbl' label='Get Jack Table'>
-        <repeat counter='t' from='0' to='5'>
-          <repeat counter='j' from='0' to='3'>
-            <statement format='get_tbl %d %d'>
+      <session id="get_tbl" label="Get Jack Table">
+        <repeat counter="t" from="0" to="5">
+          <repeat counter="j" from="0" to="3">
+            <statement format="get_tbl %d %d">
               <argv>$t</argv>
               <argv>$j</argv>
             </statement>
           </repeat>
         </repeat>
       </session>
-      <session id='set_tbl' label='Set Jack Table'>
-        <repeat counter='t' from='0' to='5'>
-          <repeat counter='j' from='0' to='3'>
-            <statement format='set_tbl %d %d'>
+      <session id="set_tbl" label="Set Jack Table">
+        <repeat counter="t" from="0" to="5">
+          <repeat counter="j" from="0" to="3">
+            <statement format="set_tbl %d %d">
               <argv>$t</argv>
               <argv>$j</argv>
             </statement>
           </repeat>
         </repeat>
       </session>
-      <session id='tbl_read' label='Read to Buffer'>
-        <statement format='tbl_rw 1'/>
+      <session id="tbl_read" label="Read to Buffer">
+        <statement format="tbl_rw 1" />
       </session>
-      <session id='tbl_write' label='Write from Buffer'>
-        <statement format='tbl_rw 2'/>
+      <session id="tbl_write" label="Write from Buffer">
+        <statement format="tbl_rw 2" />
       </session>
     </commands>
-    <status>
-      <value format='%04X' id='ecode' label='EXIT CODE' symbol='mel:ecode'>
-        <int ref='ecode'/>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+      <value format="%04X" id="ecode" label="EXIT CODE" symbol="mel:ecode">
+        <int ref="ecode" />
       </value>
-      <value format='%s' id='rdy' label='READY' symbol='normal'>
-        <binary bit='0' ref='x:0'/>
+      <value format="%s" id="rdy" label="READY" symbol="normal">
+        <binary bit="0" ref="x:0" />
       </value>
-      <value format='%s' id='pse' label='PAUSE' symbol='warn'>
-        <binary bit='1' ref='x:0'/>
+      <value format="%s" id="pse" label="PAUSE" symbol="warn">
+        <binary bit="1" ref="x:0" />
       </value>
-      <value format='%s' id='emg' label='ENERGENCY' symbol='alarm'>
-        <binary bit='2' ref='x:0'/>
+      <value format="%s" id="emg" label="ENERGENCY" symbol="alarm">
+        <binary bit="2" ref="x:0" />
       </value>
-      <value format='%s' id='stp' label='STOP' symbol='warn'>
-        <binary bit='3' ref='x:0'/>
+      <value format="%s" id="stp" label="STOP" symbol="warn">
+        <binary bit="3" ref="x:0" />
       </value>
-      <value format='%s' id='run' label='RUNNING' symbol='normal'>
-        <binary bit='4' ref='x:0'/>
+      <value format="%s" id="run" label="RUNNING" symbol="normal">
+        <binary bit="4" ref="x:0" />
       </value>
-      <value format='%s' id='jak' label='JACKING' symbol='normal'>
-        <binary bit='5' ref='x:0'/>
+      <value format="%s" id="jak" label="JACKING" symbol="normal">
+        <binary bit="5" ref="x:0" />
       </value>
-      <value format='%s' id='con' label='CHARGING' symbol='normal'>
-        <binary bit='6' ref='x:0'/>
+      <value format="%s" id="con" label="CHARGING" symbol="normal">
+        <binary bit="6" ref="x:0" />
       </value>
-      <value format='%s' id='flt' label='Fault' symbol='alarm'>
-        <binary bit='7' ref='x:0'/>
+      <value format="%s" id="flt" label="Fault" symbol="alarm">
+        <binary bit="7" ref="x:0" />
       </value>
-      <value format='%s' id='msr' label='Right Motor Servo' symbol='normal'>
-        <binary bit='8' inv='true' ref='x:0'/>
+      <value format="%s" id="msr" label="Right Motor Servo" symbol="normal">
+        <binary bit="8" inv="true" ref="x:0" />
       </value>
-      <value format='%s' id='msl' label='Left Motor Servo' symbol='normal'>
-        <binary bit='9' inv='true' ref='x:0'/>
+      <value format="%s" id="msl" label="Left Motor Servo" symbol="normal">
+        <binary bit="9" inv="true" ref="x:0" />
       </value>
-      <value format='%s' id='jd1' label='Jack Motor Servo1' symbol='normal'>
-        <binary bit='10' inv='true' ref='x:0'/>
+      <value format="%s" id="jd1" label="Jack Motor Servo1" symbol="normal">
+        <binary bit="10" inv="true" ref="x:0" />
       </value>
-      <value format='%s' id='jd2' label='Jack Motor Servo2' symbol='normal'>
-        <binary bit='11' inv='true' ref='x:0'/>
+      <value format="%s" id="jd2" label="Jack Motor Servo2" symbol="normal">
+        <binary bit="11" inv="true" ref="x:0" />
       </value>
-      <value format='%s' id='jd3' label='Jack Motor Servo3' symbol='normal'>
-        <binary bit='12' inv='true' ref='x:0'/>
+      <value format="%s" id="jd3" label="Jack Motor Servo3" symbol="normal">
+        <binary bit="12" inv="true" ref="x:0" />
       </value>
-      <value format='%s' id='jd4' label='Jack Motor Servo4' symbol='normal'>
-        <binary bit='13' inv='true' ref='x:0'/>
+      <value format="%s" id="jd4" label="Jack Motor Servo4" symbol="normal">
+        <binary bit="13" inv="true" ref="x:0" />
       </value>
-      <value format='%d' id='mdar' label='Rignt Motor D/A' symbol='mel:motor'>
-        <int ref='x:7' signed='true'/>
+      <value format="%d" id="mdar" label="Rignt Motor D/A" symbol="mel:motor">
+        <int ref="x:7" signed="true" />
       </value>
-      <value format='%d' id='mdal' label='Left Motor D/A' symbol='mel:motor'>
-        <int ref='x:8' signed='true'/>
+      <value format="%d" id="mdal" label="Left Motor D/A" symbol="mel:motor">
+        <int ref="x:8" signed="true" />
       </value>
-      <value format='%2.2f' id='bvl' label='Battery Voltage' symbol='mel:battery'>
-        <float decimal='2' ref='x:22'/>
+      <value format="%2.2f" id="bvl" label="Battery Voltage" symbol="mel:battery">
+        <float decimal="2" ref="x:22" />
       </value>
-      <value format='%d' id='ist' label='Instrument' symbol='mel:inst'>
-        <int ref='x:23'/>
+      <value format="%d" id="ist" label="Instrument" symbol="mel:inst">
+        <int ref="x:23" />
       </value>
-      <value format='%d' id='cpos' label='Current Position'>
-        <int ref='x:25'/>
+      <value format="%d" id="cpos" label="Current Position">
+        <int ref="x:25" />
       </value>
-      <value format='%d' id='dpos' label='Destination Position'>
-        <int ref='x:26'/>
+      <value format="%d" id="dpos" label="Destination Position">
+        <int ref="x:26" />
       </value>
-      <value format='%d' id='jpos' label='Jack Position' symbol='mel:jpos'>
-        <int ref='x:27'/>
+      <value format="%d" id="jpos" label="Jack Position" symbol="mel:jpos">
+        <int ref="x:27" />
       </value>
     </status>
   </class>

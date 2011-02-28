@@ -1,55 +1,47 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='slo' id='slo' label='MOIRCS Arm'>
-    <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='getstat'>
-        </statement>
-        <statement format='bs'>
-        </statement>
-        <statement format='p'>
-        </statement>
-        <repeat from='1' to='5'>
-          <statement format='in %d'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="slo" id="slo" label="MOIRCS Arm">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+      <session id="upd" label="Update Status">
+        <statement format="getstat" />
+        <statement format="bs" />
+        <statement format="p" />
+        <repeat from="1" to="5">
+          <statement format="in %d">
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
-      <session id='reset' label='Reset'>
-        <statement format='reset'>
-        </statement>
+      <session id="reset" label="Reset">
+        <statement format="reset" />
       </session>
-      <session id='defcon' label='Default Config'>
-        <statement format='hl 0'>
-        </statement>
-        <statement format='e1 0'>
-        </statement>
-        <statement format='e2 0'>
-        </statement>
+      <session id="defcon" label="Default Config">
+        <statement format="hl 0" />
+        <statement format="e1 0" />
+        <statement format="e2 0" />
       </session>
-      <session id='set0' label='Set 0 Pulses'>
-        <statement format='set0'>
-        </statement>
+      <session id="set0" label="Set 0 Pulses">
+        <statement format="set0" />
       </session>
     </commands>
-    <status>
-      <value format='%s' id='bs' label='Moter Moving'>
-        <string ref='bs'/>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+      <value format="%s" id="bs" label="Moter Moving">
+        <string ref="bs" />
       </value>
-      <value format='%s' id='con' label='Contact Sensor'>
-        <string ref='in:4'/>
+      <value format="%s" id="con" label="Contact Sensor">
+        <string ref="in:4" />
       </value>
-      <value format='%d' id='err' label='Error Code'>
-        <int ref='err'/>
+      <value format="%d" id="err" label="Error Code">
+        <int ref="err" />
       </value>
-      <value format='%s%s%s%s' id='pos' label='Arm Position'>
-        <string ref='in:0'/>
-        <string ref='in:1'/>
-        <string ref='in:2'/>
-        <string ref='in:3'/>
+      <value format="%s%s%s%s" id="pos" label="Arm Position">
+        <string ref="in:0" />
+        <string ref="in:1" />
+        <string ref="in:2" />
+        <string ref="in:3" />
       </value>
-      <value format='%f' id='abs' label='ABS position'>
-        <float ref='p'/>
+      <value format="%f" id="abs" label="ABS position">
+        <float ref="p" />
       </value>
     </status>
   </class>

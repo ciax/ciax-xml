@@ -1,192 +1,192 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='ixe' id='ixe' label='MOIRCS Turret'>
-    <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='getstat'/>
-        <repeat from='1' to='6'>
-          <statement format='chkrun %d'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="ixe" id="ixe" label="MOIRCS Turret">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+      <session id="upd" label="Update Status">
+        <statement format="getstat" />
+        <repeat from="1" to="6">
+          <statement format="chkrun %d">
             <argv>$_</argv>
           </statement>
-          <statement format='getp %d'>
+          <statement format="getp %d">
             <argv>$_</argv>
           </statement>
-          <statement format='getspd %d'>
+          <statement format="getspd %d">
             <argv>$_</argv>
           </statement>
-          <statement format='getofs %d'>
-            <argv>$_</argv>
-          </statement>
-        </repeat>
-      </session>
-      <session id='sysinit' label='System Initialize'>
-        <statement format='initrot'/>
-        <statement format='initunit'/>
-        <statement format='initfactor'/>
-      </session>
-      <session id='posinit' label='Position Initialize'>
-        <repeat from='1' to='6'>
-          <statement format='init %d'>
-            <argv>$_</argv>
-          </statement>
-          <statement format='chkrun %d'>
+          <statement format="getofs %d">
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
-      <session id='speed' label='Set Speed [0-800]'>
+      <session id="sysinit" label="System Initialize">
+        <statement format="initrot" />
+        <statement format="initunit" />
+        <statement format="initfactor" />
+      </session>
+      <session id="posinit" label="Position Initialize">
+        <repeat from="1" to="6">
+          <statement format="init %d">
+            <argv>$_</argv>
+          </statement>
+          <statement format="chkrun %d">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
+      </session>
+      <session id="speed" label="Set Speed [0-800]">
         <parameters>
-          <par label='[0-800]' validate='range'>0:800</par>
+          <par label="[0-800]" validate="range">0:800</par>
         </parameters>
-        <repeat from='1' to='6'>
-          <statement format='set spd:%d %d'>
+        <repeat from="1" to="6">
+          <statement format="set spd:%d %d">
             <argv>$_-1</argv>
             <argv>$1</argv>
           </statement>
-          <statement format='setspd %d'>
+          <statement format="setspd %d">
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
-      <session id='resetp' label='Set 0 Pulses'>
-        <repeat from='1' to='6'>
-          <statement format='set p:%d 0'>
+      <session id="resetp" label="Set 0 Pulses">
+        <repeat from="1" to="6">
+          <statement format="set p:%d 0">
             <argv>$_-1</argv>
           </statement>
-          <statement format='setp %d'>
+          <statement format="setp %d">
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
-      <session id='backup' label='Backup Pulse,Speed,Offset'>
-        <statement format='save p,spd,ofs'/>
-        <statement format='deact'/>
+      <session id="backup" label="Backup Pulse,Speed,Offset">
+        <statement format="save p,spd,ofs" />
+        <statement format="deact" />
       </session>
-      <session id='restore' label='Restore Pulse,Speed,Offset'>
-        <statement format='act'/>
-        <statement format='load'/>
-        <repeat from='1' to='6'>
-          <statement format='setp %d'>
+      <session id="restore" label="Restore Pulse,Speed,Offset">
+        <statement format="act" />
+        <statement format="load" />
+        <repeat from="1" to="6">
+          <statement format="setp %d">
             <argv>$_</argv>
           </statement>
-          <statement format='setspd %d'>
+          <statement format="setspd %d">
             <argv>$_</argv>
           </statement>
-          <statement format='setofs %d'>
+          <statement format="setofs %d">
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
-      <session id='fw' label='Move Forward [1-6] [1-(hole)]'>
+      <session id="fw" label="Move Forward [1-6] [1-(hole)]">
         <parameters>
-          <par label='[1-6(Turret)]' validate='range'>1:6</par>
-          <par label='[1-(hole)]' validate='range'>1:</par>
+          <par label="[1-6(Turret)]" validate="range">1:6</par>
+          <par label="[1-(hole)]" validate="range">1:</par>
         </parameters>
-        <statement format='fw %d %d'>
+        <statement format="fw %d %d">
           <argv>$1</argv>
           <argv>$2 * 8000</argv>
         </statement>
-        <statement format='chkrun %d'>
+        <statement format="chkrun %d">
           <argv>$1</argv>
         </statement>
       </session>
-      <session id='bk' label='Move Backward [1-6] [1-(hole)]'>
+      <session id="bk" label="Move Backward [1-6] [1-(hole)]">
         <parameters>
-          <par label='[1-6(Turret)]' validate='range'>1:6</par>
-          <par label='[1-(hole)]' validate='range'>1:</par>
+          <par label="[1-6(Turret)]" validate="range">1:6</par>
+          <par label="[1-(hole)]" validate="range">1:</par>
         </parameters>
-        <statement format='bk %d %d'>
+        <statement format="bk %d %d">
           <argv>$1</argv>
           <argv>$2 * 8000</argv>
         </statement>
-        <statement format='chkrun %d'>
+        <statement format="chkrun %d">
           <argv>$1</argv>
         </statement>
       </session>
-      <session id='abs' label='Move Absolute [1-6] [0-48(hole)]'>
+      <session id="abs" label="Move Absolute [1-6] [0-48(hole)]">
         <parameters>
-          <par label='[1-6]' validate='range'>1:6</par>
-          <par label='[0-48(hole)]' validate='range'>0:48</par>
+          <par label="[1-6]" validate="range">1:6</par>
+          <par label="[0-48(hole)]" validate="range">0:48</par>
         </parameters>
-        <statement format='abs %d %d'>
+        <statement format="abs %d %d">
           <argv>$1</argv>
           <argv>$2 * 8000</argv>
         </statement>
-        <statement format='chkrun %d'>
+        <statement format="chkrun %d">
           <argv>$1</argv>
         </statement>
       </session>
-      <session id='upp'>
+      <session id="upp">
         <!--Update Pulse [1-6]-->
         <parameters>
-          <par label='[1-6]' validate='range'>1:6</par>
+          <par label="[1-6]" validate="range">1:6</par>
         </parameters>
-        <statement format='chkrun %d'>
+        <statement format="chkrun %d">
           <argv>$1</argv>
         </statement>
-        <statement format='getp %d'>
+        <statement format="getp %d">
           <argv>$1</argv>
         </statement>
       </session>
-      <session id='stop'>
+      <session id="stop">
         <!--Motor Stop [1-6]-->
         <parameters>
-          <par label='[1-6]' validate='range'>1:6</par>
+          <par label="[1-6]" validate="range">1:6</par>
         </parameters>
-        <statement format='stop %d'>
+        <statement format="stop %d">
           <argv>$1</argv>
         </statement>
       </session>
     </commands>
-    <watch interval='1'>
-      <event label='Update Status'>
-        <periodic period='3600'/>
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbw">
+      <event label="Update Status">
+        <periodic period="3600" />
         <command>upd</command>
       </event>
-      <repeat from='1' to='6'>
-        <event blocking='(fw|bk|abs) $_' interrupt='stop $_' label='Moving $_'>
-          <while ref='r$_' val='N'/>
+      <repeat from="1" to="6">
+        <event blocking="(fw|bk|abs) $_" interrupt="stop $_" label="Moving $_">
+          <while ref="r$_" val="N" />
           <command>upp $_</command>
         </event>
       </repeat>
     </watch>
-    <status>
-      <value format='%s' id='rdy' label='Comm Ready'>
-        <binary bit='0' ref='stat'/>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+      <value format="%s" id="rdy" label="Comm Ready">
+        <binary bit="0" ref="stat" />
       </value>
-      <value format='%s' id='srq' label='SRQ'>
-        <binary bit='1' ref='stat'/>
+      <value format="%s" id="srq" label="SRQ">
+        <binary bit="1" ref="stat" />
       </value>
-      <value format='%s' id='pme' label='Program Error'>
-        <binary bit='3' ref='stat'/>
+      <value format="%s" id="pme" label="Program Error">
+        <binary bit="3" ref="stat" />
       </value>
-      <value format='%s' id='pse' label='Power Stage Error'>
-        <binary bit='4' ref='stat'/>
+      <value format="%s" id="pse" label="Power Stage Error">
+        <binary bit="4" ref="stat" />
       </value>
-      <value format='%s' id='oes' label='ONE EM Stop'>
-        <binary bit='5' ref='stat'/>
+      <value format="%s" id="oes" label="ONE EM Stop">
+        <binary bit="5" ref="stat" />
       </value>
-      <value format='%s' id='ees' label='EXT EM Stop'>
-        <binary bit='6' ref='stat'/>
+      <value format="%s" id="ees" label="EXT EM Stop">
+        <binary bit="6" ref="stat" />
       </value>
-      <value format='%s' id='trm' label='Terminal Mode'>
-        <binary bit='2' ref='stat'/>
+      <value format="%s" id="trm" label="Terminal Mode">
+        <binary bit="2" ref="stat" />
       </value>
-      <value format='%s' id='cmd' label='Computer Mode'>
-        <binary bit='7' ref='stat'/>
+      <value format="%s" id="cmd" label="Computer Mode">
+        <binary bit="7" ref="stat" />
       </value>
-      <repeat from='1' to='6'>
-        <value format='%s' id='r$_' label='Running $_'>
-          <string ref='run:$_-1'/>
+      <repeat from="1" to="6">
+        <value format="%s" id="r$_" label="Running $_">
+          <string ref="run:$_-1" />
         </value>
-        <value format='%d' id='p$_' label='Pulse $_'>
-          <int ref='p:$_-1'/>
+        <value format="%d" id="p$_" label="Pulse $_">
+          <int ref="p:$_-1" />
         </value>
-        <value format='%d' id='spd$_' label='Speed $_'>
-          <int ref='spd:$_-1'/>
+        <value format="%d" id="spd$_" label="Speed $_">
+          <int ref="spd:$_-1" />
         </value>
-        <value format='%d' id='ofs$_' label='Offset $_'>
-          <int ref='ofs:$_-1'/>
+        <value format="%d" id="ofs$_" label="Offset $_">
+          <int ref="ofs:$_-1" />
         </value>
       </repeat>
     </status>

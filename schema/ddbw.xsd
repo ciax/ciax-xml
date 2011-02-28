@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/ddbw" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ddbw="http://ciax.sum.naoj.org/ciax-xml/ddbw" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="repeat.xsd" />
+  <xsd:attributeGroup name="id_attr">
+    <xsd:attribute name="id" type="xsd:string" use="required" />
+    <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+  </xsd:attributeGroup>
+  <!--Share-->
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="ddbw:repeat" />
+        <xsd:element ref="ddbw:event" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="ddbw:repeat" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:complexType name="condition">
+    <xsd:attribute name="ref" type="xsd:string" use="required"></xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string"></xsd:attribute>
+  </xsd:complexType>
+  <!--watch events-->
+  <xsd:element name="watch">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="ddbw:event"></xsd:element>
+        <xsd:element ref="ddbw:repeat"></xsd:element>
+      </xsd:choice>
+      <xsd:attribute name="interval" type="xsd:int" use="required"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="event">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:choice>
+          <xsd:element ref="ddbw:onchange" />
+          <xsd:element ref="ddbw:until" />
+          <xsd:element ref="ddbw:while" />
+          <xsd:element ref="ddbw:periodic" />
+        </xsd:choice>
+        <xsd:element minOccurs="1" maxOccurs="unbounded" ref="ddbw:command" />
+      </xsd:sequence>
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="interrupt" type="xsd:string" />
+      <xsd:attribute name="blocking" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="periodic">
+    <xsd:complexType>
+      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="period" use="required" type="xsd:int"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="while" type="ddbw:condition"></xsd:element>
+  <xsd:element name="until" type="ddbw:condition"></xsd:element>
+  <xsd:element name="onchange" type="ddbw:condition"></xsd:element>
+  <xsd:element name="command" type="xsd:string"></xsd:element>
+</xsd:schema>

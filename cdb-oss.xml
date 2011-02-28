@@ -1,174 +1,174 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<cdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/cdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <class device='oss' id='oss' label='TSC Control'>
-    <commands>
-      <session id='upd' label='Update Status'>
-        <statement format='logstat'/>
-        <statement format='getstat'/>
-        <statement format='iststat'/>
-        <statement format='jakstat'/>
-        <statement format='inrstat'/>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class device="oss" id="oss" label="TSC Control">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+      <session id="upd" label="Update Status">
+        <statement format="logstat" />
+        <statement format="getstat" />
+        <statement format="iststat" />
+        <statement format="jakstat" />
+        <statement format="inrstat" />
       </session>
-      <session id='login' label='Login'>
-        <statement format='login'/>
-        <statement format='logstat'/>
+      <session id="login" label="Login">
+        <statement format="login" />
+        <statement format="logstat" />
       </session>
-      <session id='logout' label='Logout'>
-        <statement format='logout'/>
-        <statement format='logstat'/>
+      <session id="logout" label="Logout">
+        <statement format="logout" />
+        <statement format="logstat" />
       </session>
-      <session id='init' label='Start TCP Status Request'>
-        <statement format='init'/>
+      <session id="init" label="Start TCP Status Request">
+        <statement format="init" />
       </session>
-      <session id='startup' label='Start Up CIAX operation'>
-        <statement format='login'/>
-        <statement format='tsconly' label='TSC Only Mode(CIAX Mode)'/>
-        <statement format='ron'/>
-        <statement format='jon'/>
+      <session id="startup" label="Start Up CIAX operation">
+        <statement format="login" />
+        <statement format="tsconly" label="TSC Only Mode(CIAX Mode)" />
+        <statement format="ron" />
+        <statement format="jon" />
       </session>
-      <session id='shutdown' label='Shutdown CIAX operation'>
-        <statement format='joff'/>
-        <statement format='roff'/>
-        <statement format='tscpri' label='TSC Primaly Mode'/>
-        <statement format='logout'/>
+      <session id="shutdown" label="Shutdown CIAX operation">
+        <statement format="joff" />
+        <statement format="roff" />
+        <statement format="tscpri" label="TSC Primaly Mode" />
+        <statement format="logout" />
       </session>
-      <session id='rhook' label='InR Hook'>
-        <statement format='rhook'/>
-        <statement format='inrstat'/>
+      <session id="rhook" label="InR Hook">
+        <statement format="rhook" />
+        <statement format="inrstat" />
       </session>
-      <session id='runhk' label='InR UnHook'>
-        <statement format='runhk'/>
-        <statement format='inrstat'/>
+      <session id="runhk" label="InR UnHook">
+        <statement format="runhk" />
+        <statement format="inrstat" />
       </session>
-      <session id='rstop' label='InR Stop'>
-        <statement format='rstop'/>
-        <statement format='inrstat'/>
+      <session id="rstop" label="InR Stop">
+        <statement format="rstop" />
+        <statement format="inrstat" />
       </session>
-      <session id='jup' label='All EJB Up'>
-        <statement format='ajup'/>
-        <statement format='jakstat'/>
+      <session id="jup" label="All EJB Up">
+        <statement format="ajup" />
+        <statement format="jakstat" />
       </session>
-      <session id='jdw' label='All EJB Down'>
-        <statement format='ajdw'/>
-        <statement format='jakstat'/>
+      <session id="jdw" label="All EJB Down">
+        <statement format="ajdw" />
+        <statement format="jakstat" />
       </session>
-      <session id='jstop' label='All EJB Stop'>
-        <statement format='jstop'/>
-        <statement format='jakstat'/>
+      <session id="jstop" label="All EJB Stop">
+        <statement format="jstop" />
+        <statement format="jakstat" />
       </session>
-      <session id='moircs' label='Set IID MOIRCS'>
-        <statement format='setinst 12'/>
-        <statement format='iststat'/>
+      <session id="moircs" label="Set IID MOIRCS">
+        <statement format="setinst 12" />
+        <statement format="iststat" />
       </session>
-      <session id='focas' label='Set IID FOCAS'>
-        <statement format='setinst 5'/>
-        <statement format='iststat'/>
+      <session id="focas" label="Set IID FOCAS">
+        <statement format="setinst 5" />
+        <statement format="iststat" />
       </session>
-      <session id='comics' label='Set IID COMICS'>
-        <statement format='setinst 7'/>
-        <statement format='iststat'/>
+      <session id="comics" label="Set IID COMICS">
+        <statement format="setinst 7" />
+        <statement format="iststat" />
       </session>
-      <session id='upj'>
+      <session id="upj">
         <!--Update Jack Status-->
-        <statement format='jakstat'/>
-        <statement format='getexit'/>
-        <statement format='getpid'/>
+        <statement format="jakstat" />
+        <statement format="getexit" />
+        <statement format="getpid" />
       </session>
-      <session id='upr'>
+      <session id="upr">
         <!--Update InR Status-->
-        <statement format='inrstat'/>
-        <statement format='getexit'/>
-        <statement format='getpid'/>
+        <statement format="inrstat" />
+        <statement format="getexit" />
+        <statement format="getpid" />
       </session>
     </commands>
-    <watch interval='1'>
-      <event blocking='jup|jdw' interrupt='jstop' label='Moving Jack'>
-        <onchange ref='jk1'/>
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbw">
+      <event blocking="jup|jdw" interrupt="jstop" label="Moving Jack">
+        <onchange ref="jk1" />
         <command>upj</command>
       </event>
-      <event blocking='rhook|runhk' interrupt='rstop' label='Moving InR'>
-        <onchange ref='iang'/>
+      <event blocking="rhook|runhk" interrupt="rstop" label="Moving InR">
+        <onchange ref="iang" />
         <command>upr</command>
       </event>
     </watch>
-    <status>
-      <value format='%d' id='exit' label='Exit Code'>
-        <int ref='exit'/>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+      <value format="%d" id="exit" label="Exit Code">
+        <int ref="exit" />
       </value>
-      <value format='%d' id='rts' label='ROT SEL' symbol='rsel'>
-        <int ref='rsel'/>
+      <value format="%d" id="rts" label="ROT SEL" symbol="rsel">
+        <int ref="rsel" />
       </value>
-      <value format='%d' id='iid' label='CAS INST ID' symbol='inst'>
-        <int ref='iid'/>
+      <value format="%d" id="iid" label="CAS INST ID" symbol="inst">
+        <int ref="iid" />
       </value>
-      <value format='%s%s%s%s' id='login' label='Login Status' symbol='login'>
-        <string ref='login0'/>
-        <string ref='login1'/>
-        <string ref='login2'/>
-        <string ref='login3'/>
+      <value format="%s%s%s%s" id="login" label="Login Status" symbol="login">
+        <string ref="login0" />
+        <string ref="login1" />
+        <string ref="login2" />
+        <string ref="login3" />
       </value>
-      <value format='%d' id='rpw' label='ROT DRIVE' symbol='rpw'>
-        <int ref='rpw'/>
+      <value format="%d" id="rpw" label="ROT DRIVE" symbol="rpw">
+        <int ref="rpw" />
       </value>
-      <value format='%s' id='jpw' label='JAK DRIVE'>
-        <binary bit='7' ref='bstat'/>
+      <value format="%s" id="jpw" label="JAK DRIVE">
+        <binary bit="7" ref="bstat" />
       </value>
-      <value format='%s' id='nfb' label='BOLT NFB TRIP'>
-        <binary bit='6' ref='bstat'/>
+      <value format="%s" id="nfb" label="BOLT NFB TRIP">
+        <binary bit="6" ref="bstat" />
       </value>
-      <value format='%s%s' id='rps' label='ROT POS SENSOR' symbol='rps'>
-        <binary bit='4' ref='bstat'/>
-        <binary bit='5' ref='bstat'/>
+      <value format="%s%s" id="rps" label="ROT POS SENSOR" symbol="rps">
+        <binary bit="4" ref="bstat" />
+        <binary bit="5" ref="bstat" />
       </value>
-      <value format='%s' id='stw' label='EL STOW'>
-        <binary bit='2' ref='stow_1'/>
+      <value format="%s" id="stw" label="EL STOW">
+        <binary bit="2" ref="stow_1" />
       </value>
-      <value format='%s' id='stp' label='EL 90 STOW'>
-        <binary bit='0' ref='stow_1'/>
+      <value format="%s" id="stp" label="EL 90 STOW">
+        <binary bit="0" ref="stow_1" />
       </value>
-      <value format='%f' id='iang' label='InR Angle'>
-        <float ref='iang'/>
+      <value format="%f" id="iang" label="InR Angle">
+        <float ref="iang" />
       </value>
-      <repeat from='0' to='15'>
-        <value format='%d' id='jk$_' label='Jack Pulse $_'>
-          <int ref='jk:$_'/>
+      <repeat from="0" to="15">
+        <value format="%d" id="jk$_" label="Jack Pulse $_">
+          <int ref="jk:$_" />
         </value>
       </repeat>
     </status>
     <symbol>
-      <enum id='rsel'>
-        <case class='warn' msg='PFO'>1</case>
-        <case class='warn' msg='PFI'>2</case>
-        <case class='normal' msg='CAS'>4</case>
-        <case class='warn' msg='NSO'>8</case>
-        <case class='warn' msg='NSI'>10</case>
-        <case class='alarm' msg='N/A'>.</case>
+      <enum id="rsel">
+        <case class="warn" msg="PFO">1</case>
+        <case class="warn" msg="PFI">2</case>
+        <case class="normal" msg="CAS">4</case>
+        <case class="warn" msg="NSO">8</case>
+        <case class="warn" msg="NSI">10</case>
+        <case class="alarm" msg="N/A">.</case>
       </enum>
-      <enum id='inst'>
-        <case class='warn' msg='NONE'>0</case>
-        <case class='normal' msg='IRCS'>1</case>
-        <case class='normal' msg='CIAO'>3</case>
-        <case class='normal' msg='FOCAS'>5</case>
-        <case class='normal' msg='COMICS'>7</case>
-        <case class='normal' msg='K3D'>10</case>
-        <case class='normal' msg='MOIRCS'>12</case>
-        <case class='normal' msg='CIAX3'>13</case>
-        <case class='normal' msg='N/A'>.</case>
+      <enum id="inst">
+        <case class="warn" msg="NONE">0</case>
+        <case class="normal" msg="IRCS">1</case>
+        <case class="normal" msg="CIAO">3</case>
+        <case class="normal" msg="FOCAS">5</case>
+        <case class="normal" msg="COMICS">7</case>
+        <case class="normal" msg="K3D">10</case>
+        <case class="normal" msg="MOIRCS">12</case>
+        <case class="normal" msg="CIAX3">13</case>
+        <case class="normal" msg="N/A">.</case>
       </enum>
-      <regexp id='login'>
-        <case class='alarm' msg='OSS Login'>OSS</case>
-        <case class='normal' msg='LOGIN'>CXWS</case>
-        <case class='warn' msg='LOGOUT'>.</case>
+      <regexp id="login">
+        <case class="alarm" msg="OSS Login">OSS</case>
+        <case class="normal" msg="LOGIN">CXWS</case>
+        <case class="warn" msg="LOGOUT">.</case>
       </regexp>
-      <enum id='rpw'>
-        <case class='warn' msg='ON'>1</case>
-        <case class='normal' msg='OFF'>2</case>
+      <enum id="rpw">
+        <case class="warn" msg="ON">1</case>
+        <case class="normal" msg="OFF">2</case>
       </enum>
-      <enum id='rps'>
-        <case class='normal' msg='OFF'>11</case>
-        <case class='normal' msg='0DEG'>10</case>
-        <case class='normal' msg='-4DEG'>01</case>
-        <case class='alarm' msg='N/A'>.</case>
+      <enum id="rps">
+        <case class="normal" msg="OFF">11</case>
+        <case class="normal" msg="0DEG">10</case>
+        <case class="normal" msg="-4DEG">01</case>
+        <case class="alarm" msg="N/A">.</case>
       </enum>
     </symbol>
   </class>

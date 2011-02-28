@@ -51,7 +51,7 @@ class DevRsp
     @v.msg(1){"Field:Initialize"}
     begin
       init_rec(@fdb['rspframe'])
-      @stat['device']=@fdb['id']
+      @stat['frame']=@fdb['id']
     ensure
       @v.msg(-1){"Field:Initialized"}
     end

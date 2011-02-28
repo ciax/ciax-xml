@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="k3n" label="OMRON K3NR" wait="1">
+  <frame id="k3n" label="OMRON K3NR" wait="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="chr" label="Prefix" type="text">2</data>
@@ -62,5 +62,5 @@
         <case class="alarm" msg="Unknown">.</case>
       </enum>
     </symbol>
-  </device>
+  </frame>
 </fdb>

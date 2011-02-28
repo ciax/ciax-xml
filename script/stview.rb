@@ -8,7 +8,7 @@ include ModView
 #abort "Usage: devview < field_file" if ARGV.size < 1
 
 stat=JSON.load(gets(nil))
-if type=stat['device']
+if type=stat['frame']
   fdb=XmlDoc.new('fdb',type)
   dv=View.new('assign',[fdb])
   fdb['select'].each{|e1|

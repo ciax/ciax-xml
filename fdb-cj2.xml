@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="cj2" label="OMRON CJ2M-CPU33">
+  <frame id="cj2" label="OMRON CJ2M-CPU33">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="chr" label="FINS Header:ICF" type="text">0x80</data>
       <data encode="chr" label="FINS Header:RSV" type="text">0x00</data>
@@ -118,5 +118,5 @@
         </response>
       </select>
     </rspframe>
-  </device>
+  </frame>
 </fdb>

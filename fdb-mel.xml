@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="mel" label="MELSEC Q Series">
+  <frame id="mel" label="MELSEC Q Series">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="lew" label="SubHeader: Prefix" type="text">0x54</data>
       <data label="SubHeader: Serial Number" type="text">XX</data>
@@ -153,5 +153,5 @@
         </select>
       </ccrange>
     </rspframe>
-  </device>
+  </frame>
 </fdb>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="oss" label="OSS Command line">
+  <frame id="oss" label="OSS Command line">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Get all status" response="getstat" type="stat">
@@ -177,5 +177,5 @@
         </response>
       </select>
     </rspframe>
-  </device>
+  </frame>
 </fdb>

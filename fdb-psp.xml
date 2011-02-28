@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="psp" label="Power Supply PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" wait="0.3">
+  <frame id="psp" label="Power Supply PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" wait="0.3">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
@@ -69,5 +69,5 @@
         </response>
       </select>
     </rspframe>
-  </device>
+  </frame>
 </fdb>

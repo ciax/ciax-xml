@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
+  <frame id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
     <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
@@ -38,5 +38,5 @@
         </response>
       </select>
     </rspframe>
-  </device>
+  </frame>
 </fdb>

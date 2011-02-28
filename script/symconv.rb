@@ -6,7 +6,7 @@ require "librepeat"
 #abort "Usage: symcomv < file" if ARGV.size < 1
 
 stat=JSON.load(gets(nil))
-if type=stat['device']
+if type=stat['frame']
   fdb=XmlDoc.new('fdb',type)
   dv=SymConv.new(fdb,'field','assign')
 elsif type=stat['class']
@@ -16,7 +16,7 @@ end
 conv={}
 stat.each{|key,val|
   case key
-  when 'id','time','class','device'
+  when 'id','time','class','frame'
     conv[key]=val
   else
     conv[key]=dv.get_symbol(key,val)

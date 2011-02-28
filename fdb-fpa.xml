@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="fpa" label="Field Point Analog Input(FP-AI-100)" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" wait="0">
+  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" wait="0">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data label="Prefix" type="text">&gt;01</data>
@@ -46,5 +46,5 @@
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>
-  </device>
+  </frame>
 </fdb>

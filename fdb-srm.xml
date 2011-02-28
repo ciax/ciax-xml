@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <device id="srm" label="OMRON SRM1" wait="0.3">
+  <frame id="srm" label="OMRON SRM1" wait="0.3">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <ccrange method="bcc">
@@ -57,5 +57,5 @@
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
       <field label="Terminater" length="1">*</field>
     </rspframe>
-  </device>
+  </frame>
 </fdb>

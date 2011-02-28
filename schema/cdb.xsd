@@ -24,7 +24,7 @@
         <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="device" type="xsd:string" use="required" />
+      <xsd:attribute name="frame" type="xsd:string" use="required" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

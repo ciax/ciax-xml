@@ -4,7 +4,7 @@ require "libstat"
 require "libfrmrsp"
 require "libxmldoc"
 
-abort "Usage: frmstat [device] [id] < logline" if ARGV.size < 2
+abort "Usage: frmstat [frame] [id] < logline" if ARGV.size < 2
 dev=ARGV.shift
 id=ARGV.shift
 ARGV.clear

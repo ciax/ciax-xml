@@ -20,7 +20,7 @@ class Cls
     @stat=ClsStat.new(cdb,id)
     @buf=CmdBuf.new
     @event=ClsEvent.new(cdb['watch'])
-    @main=session_thread(cdb['device'],id,iocmd)
+    @main=session_thread(cdb['frame'],id,iocmd)
     @watch=watch_thread
     sleep 0.01
   end

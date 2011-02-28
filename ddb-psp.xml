@@ -3,7 +3,7 @@
   <device id="psp" label="Power Supply PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" wait="0.3">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <cmdselect>
+      <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
           <data type="text">L</data>
         </command>
@@ -41,11 +41,11 @@
         <command id="poff" label="OUTPUT OFF" type="action">
           <data type="text">KOD</data>
         </command>
-      </cmdselect>
+      </select>
       <data encode="chr" type="text">0xd</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
-      <rspselect>
+      <select>
         <response id="getstat">
           <field length="1">V</field>
           <field assign="v" label="Output(V)" length="5" />
@@ -67,7 +67,7 @@
           <field assign="f5" label="Remote" length="1" />
           <field assign="f6" label="Local Lock" length="1" />
         </response>
-      </rspselect>
+      </select>
     </rspframe>
   </device>
 </ddb>

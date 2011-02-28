@@ -4,21 +4,21 @@
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data label="Prefix" type="text">*</data>
-      <cmdselect>
+      <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
           <data type="text">00P1</data>
         </command>
-      </cmdselect>
+      </select>
       <data encode="chr" label="Suffix" type="text">0xd</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <field label="Prefix" length="1">?</field>
-      <rspselect>
+      <select>
         <response id="getstat">
           <field length="5">01CP=</field>
           <field assign="stat" label="Status" length="6" />
         </response>
-      </rspselect>
+      </select>
     </rspframe>
   </device>
 </ddb>

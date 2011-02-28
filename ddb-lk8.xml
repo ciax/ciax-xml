@@ -3,7 +3,7 @@
   <device id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
     <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <cmdselect>
+      <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
           <data type="text">krdg? c1;</data>
           <data type="text">krdg? c2;</data>
@@ -20,11 +20,11 @@
         <command id="spstat" label="Set Point (K)" response="spstat" type="stat">
           <data type="text">SETP? 1</data>
         </command>
-      </cmdselect>
+      </select>
       <data encode="bew" label="Suffix" type="text">0x0d0a</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
-      <rspselect>
+      <select>
         <response id="getstat">
           <array assign="ch" label="Value">
             <index range="0:7" size="8" />
@@ -36,7 +36,7 @@
         <response id="spstat">
           <field assign="sp" label="SetPoint" />
         </response>
-      </rspselect>
+      </select>
     </rspframe>
   </device>
 </ddb>

@@ -16,7 +16,7 @@ class DevRsp
   end
 
   def setrsp(stm)
-    cmd=@ddb.find_id('cmdframe','cmdselect',stm.first)
+    cmd=@ddb.find_id('cmdframe','select',stm.first)
     @par.setpar(cmd,stm)
     @sel=cmd['response']
     self
@@ -61,9 +61,9 @@ class DevRsp
     fill=''
     e0.each{|e1| #field|array|vefiry
       case e1.name
-      when 'rspccrange'
+      when 'ccrange'
         init_rec(e1)
-      when 'rspselect'
+      when 'select'
         e1.each{|e2|
           init_rec(e2)
         }
@@ -97,7 +97,7 @@ class DevRsp
   def getfield_rec(e0)
     e0.each{|e1|
       case e1.name
-      when 'rspccrange'
+      when 'ccrange'
         begin
           @v.msg(1){"Entering Ceck Code Node"}
           fst=@fp;getfield_rec(e1)
@@ -105,7 +105,7 @@ class DevRsp
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end
-      when 'rspselect'
+      when 'select'
         begin
           @v.msg(1){"Entering Selected Node"}
           getfield_rec(e1.select('id',@sel))

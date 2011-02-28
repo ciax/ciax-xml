@@ -26,7 +26,7 @@
     </xsd:complexType>
   </xsd:element>
   <!--Command Select-->
-  <xsd:element name="cmdselect">
+  <xsd:element name="select">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="fdbc:command" minOccurs="1" maxOccurs="unbounded" />
@@ -67,10 +67,10 @@
     </xsd:complexType>
   </xsd:element>
   <!--Command CC-->
-  <xsd:element name="cmdccrange">
+  <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbc:cmdselect" />
+        <xsd:element ref="fdbc:select" />
         <xsd:element ref="fdbc:data" />
       </xsd:choice>
       <xsd:attribute name="method" type="fdbc:ccmethod"></xsd:attribute>
@@ -81,8 +81,8 @@
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="fdbc:data" />
-        <xsd:element ref="fdbc:cmdselect" />
-        <xsd:element ref="fdbc:cmdccrange" />
+        <xsd:element ref="fdbc:select" />
+        <xsd:element ref="fdbc:ccrange" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>

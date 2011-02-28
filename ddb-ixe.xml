@@ -4,7 +4,7 @@
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="chr" label="Prefix" type="text">2</data>
-      <cmdselect>
+      <select>
         <!--String Length must be <32-->
         <command id="getstat" label="Get status" response="getstat" type="stat">
           <data type="text">ST</data>
@@ -146,7 +146,7 @@
           <data type="text">A</data>
           <data type="formula">$2</data>
         </command>
-      </cmdselect>
+      </select>
       <data encode="chr" label="Suffix" type="text">3</data>
       <data encode="chr" type="text">13</data>
       <data encode="chr" type="text">10</data>
@@ -154,7 +154,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="chr" label="Prefix" length="1">2</field>
       <field decode="chr" label="ACK" length="1">6</field>
-      <rspselect>
+      <select>
         <response id="getstat">
           <field assign="stat" label="StatusCode" />
         </response>
@@ -189,7 +189,7 @@
           </array>
         </response>
         <response id="default" />
-      </rspselect>
+      </select>
     </rspframe>
   </device>
 </ddb>

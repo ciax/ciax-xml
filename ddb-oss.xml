@@ -2,7 +2,7 @@
 <ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <device id="oss" label="OSS Command line">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <cmdselect>
+      <select>
         <command id="getstat" label="Get all status" response="getstat" type="stat">
           <data label="Status Command" type="text">OSSC_screenPrint -R</data>
           <data label="InR Select(NsOpt/NsIR/Cas)" type="text"> TSCV.RotatorType</data>
@@ -122,11 +122,11 @@
           <data type="text">osscmd 13200700</data>
           <data format="%02d" type="formula">$1</data>
         </command>
-      </cmdselect>
+      </select>
       <data encode="chr" label="Suffix" type="text">0xa</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="\n">
-      <rspselect>
+      <select>
         <response id="getstat">
           <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" />
           <field assign="stow_1" decode="hexstr" label="Stow pin Status" />
@@ -175,7 +175,7 @@
         <response id="pid">
           <field assign="pid" label="Background Process ID" />
         </response>
-      </rspselect>
+      </select>
     </rspframe>
   </device>
 </ddb>

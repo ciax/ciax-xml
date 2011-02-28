@@ -12,7 +12,7 @@
       <data encode="chr" label="FINS Header:SA1" type="text">57<!--SRC IP address--></data>
       <data encode="chr" label="FINS Header:SA2" type="text">0x00</data>
       <data encode="chr" label="FINS Header:SID" type="text">0xFF</data>
-      <cmdselect>
+      <select>
         <command id="getstat" label="Get all status" response="getstat" type="stat">
           <data encode="chr" label="FINS Command:MRC" type="text">0x01</data>
           <data encode="chr" label="FINS Command:SRC" type="text">0x01</data>
@@ -71,7 +71,7 @@
           <data encode="bew" label="FINS Param:Bit Data" type="text">0x00</data>
           <data encode="bew" label="FINS Param:Bit Data" type="text">0x00</data>
         </command>
-      </cmdselect>
+      </select>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="chr" label="FINS Header:ICF" length="1">0xc0</field>
@@ -84,7 +84,7 @@
       <field decode="chr" label="FINS Header:SA1" length="1">100</field>
       <field decode="chr" label="FINS Header:SA2" length="1">0x00</field>
       <field decode="chr" label="FINS Header:SID" length="1">0xFF</field>
-      <rspselect>
+      <select>
         <response id="getstat">
           <field decode="chr" label="FINS Command:MRC" length="1">0x01</field>
           <field decode="chr" label="FINS Command:SRC" length="1">0x01</field>
@@ -116,7 +116,7 @@
           <field decode="chr" label="FINS Command:MRES" length="1">0x00</field>
           <field decode="chr" label="FINS Command:SRES" length="1">0x00</field>
         </response>
-      </rspselect>
+      </select>
     </rspframe>
   </device>
 </ddb>

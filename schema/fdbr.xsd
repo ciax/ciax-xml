@@ -43,7 +43,7 @@
     </xsd:complexType>
   </xsd:element>
   <!--Response Select-->
-  <xsd:element name="rspselect">
+  <xsd:element name="select">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="fdbr:response" minOccurs="1" maxOccurs="unbounded" />
@@ -60,10 +60,10 @@
     </xsd:complexType>
   </xsd:element>
   <!--Response CC-->
-  <xsd:element name="rspccrange">
+  <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbr:rspselect" />
+        <xsd:element ref="fdbr:select" />
         <xsd:group ref="fdbr:rsp_elem" />
       </xsd:choice>
       <xsd:attribute name="method" type="fdbr:ccmethod" use="required"></xsd:attribute>
@@ -74,8 +74,8 @@
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="fdbr:rsp_elem" />
-        <xsd:element ref="fdbr:rspselect" />
-        <xsd:element ref="fdbr:rspccrange" />
+        <xsd:element ref="fdbr:select" />
+        <xsd:element ref="fdbr:ccrange" />
       </xsd:choice>
       <xsd:attribute name="terminator" type="xsd:string" />
       <xsd:attribute name="delimiter" type="xsd:string" />

@@ -16,7 +16,7 @@ class DevCmd
   end
 
   def setcmd(stm) # return = response select
-    @sel=@ddb.find_id('cmdframe','cmdselect',stm.first)
+    @sel=@ddb.find_id('cmdframe','select',stm.first)
     @par.setpar(@sel,stm)
     stm << '*' if /true|1/ === @sel['nocache']
     @cid=stm.join(':')
@@ -44,14 +44,14 @@ class DevCmd
     fary=[]
     @rep.each(e0){ |e1|
       case e1.name
-      when 'cmdselect'
+      when 'select'
         begin
           @v.msg(1){"Entering Selected Node"}
           fary+=getstr(@sel)
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end
-      when 'cmdccrange'
+      when 'ccrange'
         begin
           @v.msg(1){"Entering Ceck Code Range"}
           ccrange=getstr(e1)

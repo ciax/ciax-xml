@@ -11,14 +11,14 @@ stat=JSON.load(gets(nil))
 if type=stat['device']
   ddb=XmlDoc.new('ddb',type)
   dv=View.new('assign',[ddb])
-  ddb['rspselect'].each{|e1|
+  ddb['select'].each{|e1|
     e1.each{ |e2|
       dv.set_tbl(e2){|v| v }
     }
   }
-  ddb['rspccrange'].each{|e1|
+  ddb['ccrange'].each{|e1|
     dv.set_tbl(e1){|v| v }
-  } if ddb['rspccrange']
+  } if ddb['ccrange']
 elsif type=stat['class']
   cdb=XmlDoc.new('cdb',type)
   dv=View.new('id',[cdb])

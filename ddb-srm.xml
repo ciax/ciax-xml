@@ -3,10 +3,10 @@
   <device id="srm" label="OMRON SRM1" wait="0.3">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <cmdccrange method="bcc">
+      <ccrange method="bcc">
         <data label="Prefix" type="text">@</data>
         <data label="Device No." type="text">00</data>
-        <cmdselect>
+        <select>
           <command id="getmodel" label="Get Model Code" response="getmodel" type="stat">
             <data label="Header Code" type="text">MM</data>
           </command>
@@ -24,16 +24,16 @@
             <data label="Channel" type="text">0000</data>
             <data format="%016d" type="formula">$1</data>
           </command>
-        </cmdselect>
-      </cmdccrange>
+        </select>
+      </ccrange>
       <data format="%02X" type="formula">${cc}</data>
       <data label="Suffix" type="text">*</data>
       <data encode="chr" label="Delimiter" type="text">0xd</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <rspccrange method="bcc">
+      <ccrange method="bcc">
         <field label="Prefix" length="1">@</field>
-        <rspselect>
+        <select>
           <response id="getmodel">
             <field label="Command Code" length="4">00MM</field>
             <field label="Response Code" length="2">00</field>
@@ -52,8 +52,8 @@
             <field label="Command Code" length="4">00FK</field>
             <field label="Exit Code" length="2">00</field>
           </response>
-        </rspselect>
-      </rspccrange>
+        </select>
+      </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
       <field label="Terminater" length="1">*</field>
     </rspframe>

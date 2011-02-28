@@ -4,7 +4,7 @@
     <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data label="Prefix" type="text">&gt;01</data>
-      <cmdselect>
+      <select>
         <!--String Length must be <32-->
         <command id="getstat" label="Get status" response="getstat" type="stat">
           <data type="text">!F00FF</data>
@@ -27,23 +27,23 @@
             <data type="text">0000112</data>
           </repeat>
         </command>
-      </cmdselect>
+      </select>
       <data type="text">??</data>
       <data encode="chr" type="text">13</data>
       <data encode="chr" type="text">10</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>
-      <rspccrange method="sum">
-        <rspselect>
+      <ccrange method="sum">
+        <select>
           <response id="getstat">
             <array assign="stat" decode="hexstr" label="Status" length="4">
               <index range="0:7" size="8" />
             </array>
           </response>
           <response id="default" />
-        </rspselect>
-      </rspccrange>
+        </select>
+      </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>
   </device>

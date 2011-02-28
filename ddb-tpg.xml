@@ -2,7 +2,7 @@
 <ddb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/ddb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <device id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <cmdselect>
+      <select>
         <command id="reqstat" label="Request status" response="reqstat" type="stat">
           <data label="Measurment data gauges 1&amp;2" type="text">PRX</data>
           <data encode="chr" label="Suffix" type="text">13</data>
@@ -10,10 +10,10 @@
         <command id="getstat" label="Get status" response="getstat" type="stat">
           <data encode="chr" label="ENQ" type="text">5</data>
         </command>
-      </cmdselect>
+      </select>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="," terminator="\r\n">
-      <rspselect>
+      <select>
         <response id="reqstat">
           <field decode="chr">6</field>
         </response>
@@ -23,7 +23,7 @@
           <field assign="st2" label="CH2 RetCode" />
           <field assign="ch2" label="CH2 Value" />
         </response>
-      </rspselect>
+      </select>
     </rspframe>
   </device>
 </ddb>

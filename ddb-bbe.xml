@@ -4,7 +4,7 @@
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data label="Prefix" type="text">!0</data>
-      <cmdselect>
+      <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
           <data type="text">RD</data>
         </command>
@@ -19,14 +19,14 @@
           <data type="text">SO</data>
           <data encode="bew" type="formula">${stat}</data>
         </command>
-      </cmdselect>
+      </select>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <rspselect>
+      <select>
         <response id="getstat">
           <field assign="stat" decode="bew" label="Status" />
         </response>
-      </rspselect>
+      </select>
     </rspframe>
   </device>
 </ddb>

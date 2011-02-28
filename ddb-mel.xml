@@ -11,9 +11,9 @@
       <data encode="chr" label="Q Header: Request Unit Station Number" type="text">0</data>
       <data encode="chr" label="Q Header: Send Data Length MSB" type="formula">${cc}</data>
       <data encode="chr" label="Q Header: Send Data Length LSB" type="text">0</data>
-      <cmdccrange method="len">
+      <ccrange method="len">
         <data encode="lew" label="Q Header: CPU Watch Timer" type="text">1</data>
-        <cmdselect>
+        <select>
           <command id="chken" label="Check Enable Flag" response="chken" type="stat">
             <data encode="lew" label="Read region command" type="text">0x401</data>
             <data encode="lew" label="Read region subcommand" type="text">0</data>
@@ -119,8 +119,8 @@
             <data encode="lew" label="Data Length" type="text">1</data>
             <data encode="lew" label="Parameter" type="formula">$1</data>
           </command>
-        </cmdselect>
-      </cmdccrange>
+        </select>
+      </ccrange>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="lew" label="SubHeader: Prefix" length="2">212</field>
@@ -131,9 +131,9 @@
       <field decode="lew" label="Q Header: Request Unit I/O Number" length="2">1023</field>
       <field decode="chr" label="Q Header: Request Unit Station Number" length="1">0</field>
       <field assign="cc" decode="lew" label="Response Data Length" length="2" />
-      <rspccrange method="len">
+      <ccrange method="len">
         <field assign="ecode" decode="lew" label="Error Code" length="2">0</field>
-        <rspselect>
+        <select>
           <response id="chken">
             <field assign="cre" decode="lew" label="Enable Flag" length="2" />
           </response>
@@ -150,8 +150,8 @@
               <index range="0:43" size="44" />
             </array>
           </response>
-        </rspselect>
-      </rspccrange>
+        </select>
+      </ccrange>
     </rspframe>
   </device>
 </ddb>

@@ -7,7 +7,7 @@ class SymConv
   def initialize(dbl,xpath,key)
     @dbl=dbl
     @sdl={}
-    dbl.each(xpath){|e|
+    dbl.find_each(xpath){|e|
       sym=e['symbol'] || next
       @sdl[e[key]]=sym
     }

@@ -6,16 +6,16 @@ class XmlDoc < Hash
     $errmsg=''
     pre="#{ENV['XMLPATH']}/#{db}"
     path="#{pre}-#{type}.xml"
-    @doc=Document.file(path)
-    XmlGn.new(@doc.root).each{|e|
+    XmlGn.new(path).each{|e|
       self[e.name]=e
       update(e.to_h)
       e.each{|e1| self[e1.name]=e1 }
     }
+    @doc=values.first.doc
   rescue Errno::ENOENT
     list=Array.new
     Dir.glob("#{pre}-*.xml").each{|p|
-      $errmsg << XmlGn.new(Document.file(p)).list('id')
+      $errmsg << XmlGn.new(p).list('id')
     }
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
@@ -42,10 +42,9 @@ class XmlDoc < Hash
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 
-  def each(xpath)
-    doc=values.first.doc
-    doc.root.namespaces.default_prefix='find'
-    doc.find("//find:#{xpath}").each{|e|
+  def find_each(xpath)
+    @doc.root.namespaces.default_prefix='find'
+    @doc.find("//find:#{xpath}").each{|e|
       yield XmlGn.new(e)
     }
   end

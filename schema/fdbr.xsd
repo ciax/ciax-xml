@@ -2,7 +2,6 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr">
   <!--Device database-->
   <xsd:include schemaLocation="codec.xsd" />
-  <xsd:include schemaLocation="symbol.xsd" />
   <xsd:include schemaLocation="range.xsd" />
   <!--Response Elements-->
   <xsd:attributeGroup name="rsp_attr">

@@ -251,7 +251,7 @@
         <int ref="d:9" />
       </value>
     </status>
-    <symbol>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <enum id="ctl">
         <case class="normal" msg="AUTO">10</case>
         <case class="normal" msg="MANUAL">01</case>

@@ -15,7 +15,7 @@
         <float decimal="2" ref="stat" />
       </value>
     </status>
-    <symbol>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <regexp id="err">
         <case class="hide" msg="OK">000000</case>
         <case class="alarm" msg="Error">.</case>

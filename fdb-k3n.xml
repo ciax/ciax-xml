@@ -38,7 +38,7 @@
       </ccrange>
       <field assign="cc" decode="chr" label="BCC" length="1" />
     </rspframe>
-    <symbol>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <enum id="rcode" label="Response Code">
         <case class="normal" msg="OK">0000</case>
         <case class="alarm" msg="Cmd Length Over">1001</case>

@@ -135,7 +135,7 @@
         </value>
       </repeat>
     </status>
-    <symbol>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <enum id="rsel">
         <case class="warn" msg="PFO">1</case>
         <case class="warn" msg="PFI">2</case>

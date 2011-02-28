@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-module DevMod
+module FrmMod
   # Instance variable: @v
 
   def checkcode(e,frame)

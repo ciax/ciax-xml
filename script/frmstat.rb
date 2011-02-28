@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
 require "json"
 require "libstat"
-require "libdevrsp"
+require "libfrmrsp"
 require "libxmldoc"
 
-abort "Usage: devstat [device] [id] < logline" if ARGV.size < 2
+abort "Usage: frmstat [device] [id] < logline" if ARGV.size < 2
 dev=ARGV.shift
 id=ARGV.shift
 ARGV.clear
@@ -16,7 +16,7 @@ abort ("Logline:Not response") unless /rcv/ === stm.shift
 begin
   fdb=XmlDoc.new('fdb',dev)
   st=Stat.new(id,"field")
-  r=DevRsp.new(fdb,st)
+  r=FrmRsp.new(fdb,st)
   r.setrsp(stm)
 rescue RuntimeError
   abort $!.to_s

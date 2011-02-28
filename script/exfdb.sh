@@ -10,15 +10,15 @@ for id in $devices; do
     input="$HOME/.var/device_${id}_*.log"
     output="$HOME/.var/field_${id}.json"
     cmd=$default
-    { devcmd $dev $id $cmd || exit 1; } | visi
+    { frmcmd $dev $id $cmd || exit 1; } | visi
     [ "$clear" ] && [ -e $output ] && rm $output
     stat="`grep rcv:${cmd// /:} $input|tail -1`"
     if [ "$stat" ] ; then
         echo " *** Stat ***"
         if [ "$sym" ] ; then
-            echo "$stat" | devstat $dev $id | symconv
+            echo "$stat" | frmstat $dev $id | symconv
         else
-            echo "$stat" | devstat $dev $id
+            echo "$stat" | frmstat $dev $id
             echo
         fi
     fi

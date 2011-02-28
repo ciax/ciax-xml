@@ -10,5 +10,5 @@ else
 fi
 cutlog $par < $file|\
     while read -r line ; do
-    echo "$line"|devstat $dev $obj|clsstat $cls|objstat
+    echo "$line"|frmstat $dev $obj|clsstat $cls|objstat
     done

@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libdevmod"
+require "libfrmmod"
 require "libparam"
 # Rsp Methods
-class DevRsp
-  include DevMod
+class FrmRsp
+  include FrmMod
 
   def initialize(fdb,stat)
     @fdb,@stat,@sel=fdb,stat

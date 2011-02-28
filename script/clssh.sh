@@ -6,7 +6,7 @@ setfld $id || _usage_key "(-d)"
 [ "$iodst" ] || _die "No entry in iodst field"
 echo " [$iodst]" >&2
 if [ "$dmy" ] ; then
-    iocmd="devsim $id"
+    iocmd="frmsim $id"
     id="dmy-$id"
 else
     iocmd="socat - $iodst"

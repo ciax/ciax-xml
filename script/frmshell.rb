@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
-require "libdev"
+require "libfrm"
 require "readline"
 
-warn "Usage: devshell [dev] [id] [iocmd]" if ARGV.size < 3
+warn "Usage: frmshell [dev] [id] [iocmd]" if ARGV.size < 3
 
 dev=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
-fdb=Dev.new(dev,id,iocmd)
+fdb=Frm.new(dev,id,iocmd)
 
 loop{
   stm=Readline.readline("#{dev}>",true).chomp.split(" ")

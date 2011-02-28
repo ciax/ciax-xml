@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require "libdevmod"
+require "libfrmmod"
 require "libparam"
 require "librepeat"
 # Cmd Methods
-class DevCmd
-  include DevMod
+class FrmCmd
+  include FrmMod
 
   def initialize(fdb,stat)
     @fdb,@stat=fdb,stat

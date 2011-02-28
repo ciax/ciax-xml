@@ -3,10 +3,10 @@ require "libxmldoc"
 require "libiocmd"
 require "libiofile"
 require "libstat"
-require "libdevcmd"
-require "libdevrsp"
+require "libfrmcmd"
+require "libfrmrsp"
 
-class Dev
+class Frm
   def initialize(dev,id,iocmd)
     @fdb=XmlDoc.new('fdb',dev)
   rescue SelectID
@@ -14,8 +14,8 @@ class Dev
   else
     $errmsg=''
     @stat=Stat.new(id,"field")
-    @cmd=DevCmd.new(@fdb,@stat)
-    @rsp=DevRsp.new(@fdb,@stat)
+    @cmd=FrmCmd.new(@fdb,@stat)
+    @rsp=FrmRsp.new(@fdb,@stat)
     @v=Verbose.new("fdb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,@fdb['wait'],1)
   end

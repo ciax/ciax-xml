@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-abort "Usage: devsim [obj]" if ARGV.size < 1
+abort "Usage: frmsim [obj]" if ARGV.size < 1
 obj=ARGV.shift
 ARGV.clear
 begin

@@ -10,22 +10,25 @@ class Print
     a=[]
     line=[]
     plabel=[]
-    ptimes=0
+    pgroup=0
     stat.each {|id,item|
       next unless item.class == Hash
       item['label']=id.upcase unless item['label']
-      clabel=item['label'].split(/[ :]/)
-      if clabel.first == plabel.first || clabel.last == plabel.last
-        @c.next
-      else
-        @c.reset
+      unless item['group']
+        clabel=item['label'].split(/[ :]/)
+        if clabel.first == plabel.first || clabel.last == plabel.last
+          @c.next
+        else
+          @c.reset
+        end
+        plabel=clabel
+        item['group']=@c.times
       end
-      if @c.times != ptimes
+      if item['group'] != pgroup
         a << line.join(' ') if line.size > 0
         line=[]
-        ptimes=@c.times
+        pgroup=item['group']
       end
-      plabel=clabel
       case item['class']
       when 'alarm'
         line << prt(item,'1')

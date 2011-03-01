@@ -1,6 +1,8 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 [ "$1" = '-s' ] && { sym=1; shift; }
+[ "$1" = '-l' ] && { label=1; shift; }
+[ "$1" = '-p' ] && { print=1; shift; }
 devices=${1:-`ls ~/.var/field_???.json|cut -d_ -f2|cut -d. -f1`};shift
 cmd=${1:-upd};shift
 par="$*"
@@ -11,7 +13,11 @@ for id in $devices; do
     VER=${VER:-exec(cdb)} clscmd $cls $cmd $par < $file
     [ $cmd = 'upd' ] || continue
     echo " *** Status ***"
-    if [ "$sym" ] ; then
+    if [ "$print" ] ; then
+        clsstat $cls < $file | symconv | labeling | stprint
+    elif [ "$label" ] ; then
+        clsstat $cls < $file | symconv | labeling
+    elif [ "$sym" ] ; then
         clsstat $cls < $file | symconv
     else
         clsstat $cls < $file

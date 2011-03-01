@@ -4,24 +4,28 @@ require "libcircular"
 class Print
   def initialize
     @c=Circular.new(4)
-    @plabel=[]
   end
 
   def print(stat,ver=nil)
     a=[]
     line=[]
+    plabel=[]
+    ptimes=0
     stat.each {|id,item|
       next unless item.class == Hash
       item['label']=id.upcase unless item['label']
       clabel=item['label'].split(/[ :]/)
-      if clabel.first == @plabel.first || clabel.last == @plabel.last
+      if clabel.first == plabel.first || clabel.last == plabel.last
         @c.next
       else
-        a << line.join(' ') if line.size > 0
-        line=[]
         @c.reset
       end
-      @plabel=clabel
+      if @c.times != ptimes
+        a << line.join(' ') if line.size > 0
+        line=[]
+        ptimes=@c.times
+      end
+      plabel=clabel
       case item['class']
       when 'alarm'
         line << prt(item,'1')

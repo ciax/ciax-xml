@@ -3,18 +3,19 @@ require "librepeat"
 
 class Label
   attr_reader :label
-  def initialize(db,domain,xpath=nil)
+  def initialize(db,domain,key,xpath=nil)
     @label={}
     if xpath
       db.find_each(domain,xpath){|e|
         sym=e['label'] || next
-        @label[e['assign']]=sym
+        @label[e[key]]={'label'=>sym}
+        @label[e[key]]['group']=e['group'] if e['group']
       }
     else
       rep=Repeat.new
       rep.each(db[domain]){|e|
         sym=e['label'] || next
-        @label[rep.subst(e['id'])]=rep.subst(sym)
+        @label[rep.subst(e[key])]={'label'=>rep.subst(sym)}
       }
     end
   end
@@ -23,9 +24,11 @@ class Label
     @label.each{|id,label|
       case stat[id]
       when Hash
-        stat[id]['label']=@label[id]
+        stat[id].update(@label[id])
       else
-        stat[id]={'label'=>@label[id],'val'=>stat[id]}
+        val=stat[id]
+        stat[id]=@label[id]
+        stat[id]['val']=val
       end
     }
     stat

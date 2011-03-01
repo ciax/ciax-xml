@@ -8,9 +8,9 @@ require "liblabel"
 stat=JSON.load(gets(nil))
 if type=stat['frame']
   fdb=XmlDoc.new('fdb',type)
-  dv=Label.new(fdb,'rspframe','field')
+  dv=Label.new(fdb,'rspframe','assign','field')
 elsif type=stat['class']
   cdb=XmlDoc.new('cdb',type)
-  dv=Label.new(cdb,'status')
+  dv=Label.new(cdb,'status','id')
 end
 puts JSON.dump(dv.merge(stat))

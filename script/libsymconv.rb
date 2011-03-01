@@ -2,6 +2,7 @@
 require "libxmldoc"
 require "libverbose"
 require "librerange"
+require "librepeat"
 
 class SymConv
   def initialize(dbl,domain,key,xpath=nil)

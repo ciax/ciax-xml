@@ -2,7 +2,7 @@
 require "json"
 require "libxmldoc"
 require "libsymconv"
-require "librepeat"
+
 #abort "Usage: symcomv < file" if ARGV.size < 1
 
 stat=JSON.load(gets(nil))
@@ -22,4 +22,4 @@ stat.each{|key,val|
     conv[key]=dv.get_symbol(key,val)
   end
 }
-puts conv
+puts JSON.dump(conv)

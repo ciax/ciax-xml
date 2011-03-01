@@ -42,9 +42,9 @@ class XmlDoc < Hash
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 
-  def find_each(xpath)
-    @doc.root.namespaces.default_prefix='find'
-    @doc.find("//find:#{xpath}").each{|e|
+  def find_each(domain,xpath)
+    ns=self[domain].ns
+    e=@doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
       yield XmlGn.new(e)
     }
   end

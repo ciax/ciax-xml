@@ -4,13 +4,21 @@ require "libverbose"
 require "librerange"
 
 class SymConv
-  def initialize(dbl,xpath,key)
+  def initialize(dbl,domain,key,xpath=nil)
     @dbl=dbl
     @sdl={}
-    dbl.find_each(xpath){|e|
-      sym=e['symbol'] || next
-      @sdl[e[key]]=sym
-    }
+    if xpath
+      dbl.find_each(domain,xpath){|e|
+        sym=e['symbol'] || next
+        @sdl[e[key]]=sym
+      }
+    else
+      rep=Repeat.new
+      rep.each(dbl[domain]){|e|
+        sym=e['symbol'] || next
+        @sdl[rep.subst(e[key])]=sym
+      }
+    end
     @dba=XmlDoc.new('sdb','all')
     @v=Verbose.new("Symbol")
   end

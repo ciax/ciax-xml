@@ -8,10 +8,10 @@ require "librepeat"
 stat=JSON.load(gets(nil))
 if type=stat['frame']
   fdb=XmlDoc.new('fdb',type)
-  dv=SymConv.new(fdb,'field','assign')
+  dv=SymConv.new(fdb,'rspframe','assign','field')
 elsif type=stat['class']
   cdb=XmlDoc.new('cdb',type)
-  dv=SymConv.new(cdb,'value','id')
+  dv=SymConv.new(cdb,'status','id')
 end
 conv={}
 stat.each{|key,val|

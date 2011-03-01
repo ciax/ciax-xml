@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='mma' label='MOIRCS Arm'>
+<?xml version="1.0" encoding="UTF-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="mma" label="MOIRCS Arm">
     <comm>
       <class>slo</class>
       <client>socat - tcp:celaeno:4003</client>
@@ -8,13 +8,13 @@
     </comm>
     <status>
       <group>
-        <title ref='bs' symbol='warn'>Moter Moving</title>
-        <title ref='con' symbol='normal'>Contact Sensor</title>
-        <title ref='err' symbol='slo:err'>Error Code</title>
+        <title ref="bs" symbol="warn" label="Moter Moving"></title>
+        <title ref="con" symbol="normal" label="Contact Sensor"></title>
+        <title ref="err" symbol="slo:err" label="Error Code"></title>
       </group>
       <group>
-        <title ref='pos' symbol='slo:pos'>Arm Position</title>
-        <title ref='abs' symbol='slo:pulse'>ABS position</title>
+        <title ref="pos" symbol="slo:pos" label="Arm Position"></title>
+        <title ref="abs" symbol="slo:pulse" label="ABS position"></title>
       </group>
     </status>
   </object>

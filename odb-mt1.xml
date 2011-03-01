@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='mt1' label='MOIRCS Pressure Main' ref='mt3'>
+<?xml version="1.0" encoding="UTF-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="mt1" label="MOIRCS Pressure Main" ref="mt3">
     <comm>
       <class>tpg</class>
       <client>socat - tcp:celaeno:4009</client>
@@ -8,8 +8,8 @@
     </comm>
     <status>
       <group>
-        <title ref='st1' symbol='tpg:stat'>Main Dewar Stat</title>
-        <title ref='ch1'>Main Dewar (Torr)</title>
+        <title ref="st1" symbol="tpg:stat" label="Main Dewar Stat"></title>
+        <title ref="ch1" label="Main Dewar (Torr)"></title>
       </group>
     </status>
   </object>

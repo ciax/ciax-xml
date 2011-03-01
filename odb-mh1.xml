@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='mh1' label='MOIRCS Ext Heater 1'>
+<?xml version="1.0" encoding="UTF-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="mh1" label="MOIRCS Ext Heater 1">
     <comm>
       <class>psp</class>
       <client>socat - tcp:merope:59999</client>
@@ -8,26 +8,26 @@
     </comm>
     <status>
       <group>
-        <title ref='vol'>OUTPUT (V)</title>
-        <title ref='amp'>OUTPUT (A)</title>
-        <title ref='wat'>OUTPUT (W)</title>
+        <title ref="vol" label="OUTPUT (V)"></title>
+        <title ref="amp" label="OUTPUT (A)"></title>
+        <title ref="wat" label="OUTPUT (W)"></title>
       </group>
       <group>
-        <title ref='vl'>Limit (V)</title>
-        <title ref='il'>Limit (A)</title>
-        <title ref='pl'>Limit (W)</title>
+        <title ref="vl" label="Limit (V)"></title>
+        <title ref="il" label="Limit (A)"></title>
+        <title ref="pl" label="Limit (W)"></title>
       </group>
       <group>
-        <title ref='sw' symbol='warn'>OUTPUT ON/OFF</title>
-        <title ref='tmp' symbol='alarm'>OverHeat</title>
+        <title ref="sw" symbol="warn" label="OUTPUT ON/OFF"></title>
+        <title ref="tmp" symbol="alarm" label="OverHeat"></title>
       </group>
       <group>
-        <title ref='kn1' symbol='normal'>Wheel Knov Fine</title>
-        <title ref='kn2' symbol='normal'>Wheel Knov Unlock</title>
+        <title ref="kn1" symbol="normal" label="Wheel Knov Fine"></title>
+        <title ref="kn2" symbol="normal" label="Wheel Knov Unlock"></title>
       </group>
       <group>
-        <title ref='rem' symbol='normal'>REMOTE</title>
-        <title ref='loc' symbol='normal'>Local Lock</title>
+        <title ref="rem" symbol="normal" label="REMOTE"></title>
+        <title ref="loc" symbol="normal" label="Local Lock"></title>
       </group>
     </status>
   </object>

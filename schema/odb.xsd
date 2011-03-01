@@ -84,12 +84,9 @@
   </xsd:element>
   <xsd:element name="title">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="ref" type="xsd:string" use="required" />
-          <xsd:attribute name="symbol" type="xsd:string" />
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attribute name="symbol" type="xsd:string" />
+      <xsd:attribute name="label" type="xsd:string" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

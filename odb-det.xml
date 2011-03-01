@@ -1,24 +1,24 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='det' label='CsEtr Controller'>
+<?xml version="1.0" encoding="UTF-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="det" label="CsEtr Controller">
     <comm>
       <class>srm</class>
       <client>socat - tcp:ltc-c:4001</client>
       <server>socat - udp-l:25104,reuseaddr,fork</server>
     </comm>
     <status>
-      <group label=''>
-        <title ref='iid' symbol='srm:inst'>CAS INST ID</title>
-        <title ref='ipw' symbol='off-warn'>CAS IPW</title>
+      <group label="">
+        <title ref="iid" symbol="srm:inst" label="CAS INST ID"></title>
+        <title ref="ipw" symbol="off-warn" label="CAS IPW"></title>
       </group>
-      <group label=''>
-        <title ref='stp' symbol='warn'>STOW PIN</title>
-        <title ref='ccd' symbol='warn'>CAS CCD PW</title>
-        <title ref='lan' symbol='hide'>CAS LAN PW</title>
+      <group label="">
+        <title ref="stp" symbol="warn" label="STOW PIN"></title>
+        <title ref="ccd" symbol="warn" label="CAS CCD PW"></title>
+        <title ref="lan" symbol="hide" label="CAS LAN PW"></title>
       </group>
-      <group label=''>
-        <title ref='c3p' symbol='hide'>CIAX3 PW</title>
-        <title ref='c3e' symbol='alarm'>CIAX3 EMG</title>
+      <group label="">
+        <title ref="c3p" symbol="hide" label="CIAX3 PW"></title>
+        <title ref="c3e" symbol="alarm" label="CIAX3 EMG"></title>
       </group>
     </status>
   </object>

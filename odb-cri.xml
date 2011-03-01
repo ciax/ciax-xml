@@ -1,43 +1,43 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='cri' label='IR Compressor Room Reserve'>
+<?xml version="1.0" encoding="UTF-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="cri" label="IR Compressor Room Reserve">
     <comm>
       <class>bbe</class>
       <client>socat - tcp:ltc-i:4003</client>
       <server>socat - udp-l:25107,reuseaddr,fork</server>
     </comm>
     <status>
-      <group label=''>
-        <title ref='x0sw'>X0 SWITCH</title>
-        <title ref='x0dr'>X0 DRIVE</title>
+      <group label="">
+        <title ref="x0sw" label="X0 SWITCH"></title>
+        <title ref="x0dr" label="X0 DRIVE"></title>
       </group>
-      <group label=''>
-        <title ref='x0tm' symbol='normal'>X0 TEMP ALARM</title>
-        <title ref='x0pr' symbol='normal'>X0 PRESSURE ALARM</title>
+      <group label="">
+        <title ref="x0tm" symbol="normal" label="X0 TEMP ALARM"></title>
+        <title ref="x0pr" symbol="normal" label="X0 PRESSURE ALARM"></title>
       </group>
-      <group label=''>
-        <title ref='x1sw' symbol='normal'>X1 SWITCH</title>
-        <title ref='x1dr' symbol='normal'>X1 DRIVE</title>
+      <group label="">
+        <title ref="x1sw" symbol="normal" label="X1 SWITCH"></title>
+        <title ref="x1dr" symbol="normal" label="X1 DRIVE"></title>
       </group>
-      <group label=''>
-        <title ref='x1tm' symbol='normal'>X1 TEMP ALARM</title>
-        <title ref='x1pr' symbol='normal'>X1 PRESSURE ALARM</title>
+      <group label="">
+        <title ref="x1tm" symbol="normal" label="X1 TEMP ALARM"></title>
+        <title ref="x1pr" symbol="normal" label="X1 PRESSURE ALARM"></title>
       </group>
-      <group label=''>
-        <title ref='x2sw' symbol='normal'>X2 SWITCH</title>
-        <title ref='x2dr' symbol='normal'>X2 DRIVE</title>
+      <group label="">
+        <title ref="x2sw" symbol="normal" label="X2 SWITCH"></title>
+        <title ref="x2dr" symbol="normal" label="X2 DRIVE"></title>
       </group>
-      <group label=''>
-        <title ref='x2tm' symbol='normal'>X2 TEMP ALARM</title>
-        <title ref='x2pr' symbol='normal'>X2 PRESSURE ALARM</title>
+      <group label="">
+        <title ref="x2tm" symbol="normal" label="X2 TEMP ALARM"></title>
+        <title ref="x2pr" symbol="normal" label="X2 PRESSURE ALARM"></title>
       </group>
-      <group label=''>
-        <title ref='x3sw' symbol='normal'>X3 SWITCH</title>
-        <title ref='x3dr' symbol='normal'>X3 DRIVE</title>
+      <group label="">
+        <title ref="x3sw" symbol="normal" label="X3 SWITCH"></title>
+        <title ref="x3dr" symbol="normal" label="X3 DRIVE"></title>
       </group>
-      <group label=''>
-        <title ref='x3tm' symbol='normal'>X3 TEMP ALARM</title>
-        <title ref='x3pr' symbol='normal'>X3 PRESSURE ALARM</title>
+      <group label="">
+        <title ref="x3tm" symbol="normal" label="X3 TEMP ALARM"></title>
+        <title ref="x3pr" symbol="normal" label="X3 PRESSURE ALARM"></title>
       </group>
     </status>
   </object>

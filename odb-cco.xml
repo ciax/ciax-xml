@@ -1,46 +1,46 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='cco' label='OPT Helium Compressor Control' ref='cri'>
+<?xml version="1.0" encoding="UTF-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="cco" label="OPT Helium Compressor Control" ref="cri">
     <comm>
       <class>bbe</class>
       <client>socat - tcp:ltc-o:4002</client>
       <server>socat - udp-l:25106,reuseaddr,fork</server>
     </comm>
     <command>
-      <alias id='upd' label='Update Status' ref='upd'/>
-      <alias id='f2on' label='CIAO(S6) ON' ref='x0on'/>
-      <alias id='f2off' label='CIAO(S6) OFF' ref='x0off'/>
-      <alias id='m1on' label='COMICS IMG(S4) ON' ref='x2on'/>
-      <alias id='m1off' label='COMICS IMG(S4) OFF' ref='x2off'/>
-      <alias id='m2on' label='COMICS SPEC(S5) ON' ref='x3on'/>
-      <alias id='m2off' label='COMICS SPEC(S5) OFF' ref='x3off'/>
-      <alias id='maon' label='COMICS BOTH ON' ref='x23on'/>
-      <alias id='maoff' label='COMICS BOTH OFF' ref='x23off'/>
+      <alias id="upd" label="Update Status" ref="upd"/>
+      <alias id="f2on" label="CIAO(S6) ON" ref="x0on"/>
+      <alias id="f2off" label="CIAO(S6) OFF" ref="x0off"/>
+      <alias id="m1on" label="COMICS IMG(S4) ON" ref="x2on"/>
+      <alias id="m1off" label="COMICS IMG(S4) OFF" ref="x2off"/>
+      <alias id="m2on" label="COMICS SPEC(S5) ON" ref="x3on"/>
+      <alias id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off"/>
+      <alias id="maon" label="COMICS BOTH ON" ref="x23on"/>
+      <alias id="maoff" label="COMICS BOTH OFF" ref="x23off"/>
     </command>
     <status>
       <group>
-        <title ref='x0sw' symbol='off-warn'>CIAO(S6) SWITCH</title>
-        <title ref='x0dr' symbol='off-warn'>CIAO(S6) DRIVE</title>
+        <title ref="x0sw" symbol="off-warn" label="CIAO(S6) SWITCH"></title>
+        <title ref="x0dr" symbol="off-warn" label="CIAO(S6) DRIVE"></title>
       </group>
       <group>
-        <title ref='x0tm' symbol='alarm'>CIAO(S6) TEMP</title>
-        <title ref='x0pr' symbol='alarm'>CIAO(S6) PRESSURE</title>
+        <title ref="x0tm" symbol="alarm" label="CIAO(S6) TEMP"></title>
+        <title ref="x0pr" symbol="alarm" label="CIAO(S6) PRESSURE"></title>
       </group>
       <group>
-        <title ref='x2sw' symbol='off-warn'>COMICS IMG(S4) SWITCH</title>
-        <title ref='x2dr' symbol='off-warn'>COMICS IMG(S4) DRIVE</title>
+        <title ref="x2sw" symbol="off-warn" label="COMICS IMG(S4) SWITCH"></title>
+        <title ref="x2dr" symbol="off-warn" label="COMICS IMG(S4) DRIVE"></title>
       </group>
       <group>
-        <title ref='x2tm' symbol='alarm'>COMICS IMG(S4) TEMP</title>
-        <title ref='x2pr' symbol='alarm'>COMICS IMG(S4) PRESSURE</title>
+        <title ref="x2tm" symbol="alarm" label="COMICS IMG(S4) TEMP"></title>
+        <title ref="x2pr" symbol="alarm" label="COMICS IMG(S4) PRESSURE"></title>
       </group>
       <group>
-        <title ref='x3sw' symbol='off-warn'>COMICS SPEC(S5) SWITCH</title>
-        <title ref='x3dr' symbol='off-warn'>COMICS SPEC(S5) DRIVE</title>
+        <title ref="x3sw" symbol="off-warn" label="COMICS SPEC(S5) SWITCH"></title>
+        <title ref="x3dr" symbol="off-warn" label="COMICS SPEC(S5) DRIVE"></title>
       </group>
       <group>
-        <title ref='x3tm' symbol='alarm'>COMICS SPEC(S5) TEMP</title>
-        <title ref='x3pr' symbol='alarm'>COMICS SPEC(S5) PRESSURE</title>
+        <title ref="x3tm" symbol="alarm" label="COMICS SPEC(S5) TEMP"></title>
+        <title ref="x3pr" symbol="alarm" label="COMICS SPEC(S5) PRESSURE"></title>
       </group>
     </status>
   </object>

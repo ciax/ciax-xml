@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<odb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/odb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
-  <object id='cfa' label='S10 Helium Compressor Coolant Flow' ref='cf1'>
+<?xml version="1.0" encoding="UTF-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="cfa" label="S10 Helium Compressor Coolant Flow" ref="cf1">
     <comm>
       <class>k3n</class>
       <client>socat - tcp:ltt-i:4015</client>
@@ -8,8 +8,8 @@
     </comm>
     <status>
       <group>
-        <title ref='flow' symbol='k3n:flow'>FMOS-K(S10) Coolant Flow</title>
-        <title ref='flow'>(l/min)</title>
+        <title ref="flow" symbol="k3n:flow" label="FMOS-K(S10) Coolant Flow"></title>
+        <title ref="flow" label="(l/min)"></title>
       </group>
     </status>
   </object>

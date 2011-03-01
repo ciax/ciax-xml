@@ -8,7 +8,7 @@ class Label
     if xpath
       db.find_each(domain,xpath){|e|
         sym=e['label'] || next
-        @label[e['id']]=sym
+        @label[e['assign']]=sym
       }
     else
       rep=Repeat.new

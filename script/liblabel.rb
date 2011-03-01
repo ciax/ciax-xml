@@ -8,14 +8,17 @@ class Label
     if xpath
       db.find_each(domain,xpath){|e|
         sym=e['label'] || next
-        @label[e[key]]={'label'=>sym}
-        @label[e[key]]['group']=e['group'] if e['group']
+        id=e[key]
+        @label[id]={'label'=>sym}
+        @label[id]['group']=e['group'] if e['group']
       }
     else
       rep=Repeat.new
       rep.each(db[domain]){|e|
         sym=e['label'] || next
-        @label[rep.subst(e[key])]={'label'=>rep.subst(sym)}
+        id=rep.subst(e[key])
+        @label[id]={'label'=>rep.subst(sym)}
+        @label[id]['group']=rep.subst(e['group']) if e['group']
       }
     end
   end

@@ -6,5 +6,5 @@ require "libprint"
 
 pr=Print.new
 stat=JSON.load(gets(nil))
-puts pr.print(stat,1)
+puts pr.print(stat)
 

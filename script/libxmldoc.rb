@@ -12,7 +12,7 @@ class XmlDoc < Hash
       e.each{|e1| self[e1.name]=e1 }
     }
     @doc=values.first.doc
-  rescue Errno::ENOENT
+  rescue SelectID
     list=Array.new
     Dir.glob("#{pre}-*.xml").each{|p|
       $errmsg << XmlGn.new(p).list('id')

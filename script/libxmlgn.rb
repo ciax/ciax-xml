@@ -10,6 +10,7 @@ class XmlGn
   def initialize(f)
     case f
     when String
+      test(?r,f) || raise(SelectID)
       @e=Document.file(f).root
     when Node
       @e=f

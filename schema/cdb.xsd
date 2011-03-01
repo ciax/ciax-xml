@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="shift_jis"?>
-<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdb="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:ddbc="http://ciax.sum.naoj.org/ciax-xml/ddbc" xmlns:ddbs="http://ciax.sum.naoj.org/ciax-xml/ddbs" xmlns:ddbw="http://ciax.sum.naoj.org/ciax-xml/ddbw" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/ddbc" schemaLocation="ddbc.xsd" />
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/ddbw" schemaLocation="ddbw.xsd" />
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/ddbs" schemaLocation="ddbs.xsd" />
+<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdb="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:cdbc="http://ciax.sum.naoj.org/ciax-xml/cdbc" xmlns:cdbs="http://ciax.sum.naoj.org/ciax-xml/cdbs" xmlns:cdbw="http://ciax.sum.naoj.org/ciax-xml/cdbw" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/cdbc" schemaLocation="cdbc.xsd" />
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/cdbw" schemaLocation="cdbw.xsd" />
+  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/cdbs" schemaLocation="cdbs.xsd" />
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/sdb" schemaLocation="sdb.xsd" />
   <xsd:element name="cdb">
     <xsd:complexType>
@@ -18,9 +18,9 @@
   <xsd:element name="class">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="ddbc:commands" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="ddbw:watch" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="ddbs:status" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="cdbc:commands" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdbw:watch" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdbs:status" minOccurs="1" maxOccurs="1" />
         <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>

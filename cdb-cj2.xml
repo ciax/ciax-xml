@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Regular status update">
         <statement format="getstat" />
         <statement format="getzerr" />
@@ -140,7 +140,7 @@
         <statement format="getstat" />
       </session>
     </commands>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbw">
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw">
       <event label="Regular">
         <periodic period="300" />
         <command>upd</command>
@@ -155,7 +155,7 @@
         <command>upd</command>
       </event>
     </watch>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value format="%s" id="emg" label="GL:EMG STOP" symbol="alarm">
         <binary bit="0" ref="w:0" />
       </value>

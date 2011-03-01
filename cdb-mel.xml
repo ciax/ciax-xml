@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="mel" id="mel" label="Cart PLC">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Regular status update">
         <statement format="getstat" />
         <statement format="chken" />
@@ -72,7 +72,7 @@
         <statement format="tbl_rw 2" />
       </session>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value format="%04X" id="ecode" label="EXIT CODE" symbol="mel:ecode">
         <int ref="ecode" />
       </value>

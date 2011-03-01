@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="srm" id="srm" label="CsEtr Controller">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
         <statement format="getstat" />
       </session>
@@ -42,7 +42,7 @@
         <statement format="fset 400000" label="Bit 5 OFF" />
       </session>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value format="%s" id="iid" label="CAS INST ID">
         <string ref="c1d2" />
       </value>

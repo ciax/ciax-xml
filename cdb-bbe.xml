@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="bbe" id="bbe" label="Helium Compressor">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
         <statement format="getstat" />
       </session>
@@ -78,7 +78,7 @@
         <statement format="getstat" />
       </session>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <repeat from="0" to="3">
         <value format="%s" id="xsw$_" label="SWITCH $_" symbol="off-warn">
           <binary bit="$_*4" ref="stat" />

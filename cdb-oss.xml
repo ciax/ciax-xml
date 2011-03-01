@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
         <statement format="logstat" />
         <statement format="getstat" />
@@ -81,7 +81,7 @@
         <statement format="getpid" />
       </session>
     </commands>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbw">
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw">
       <event blocking="jup|jdw" interrupt="jstop" label="Moving Jack">
         <onchange ref="jk1" />
         <command>upj</command>
@@ -91,7 +91,7 @@
         <command>upr</command>
       </event>
     </watch>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/ddbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value format="%d" id="exit" label="Exit Code">
         <int ref="exit" />
       </value>

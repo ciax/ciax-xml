@@ -11,30 +11,28 @@ class Print
     a=[]
     line=[]
     stat.each {|id,item|
-      case item
-      when Hash
-        clabel=item['label'].split(/[ :]/)
-        if clabel.first == @plabel.first || clabel.last == @plabel.last
-          @c.next
-        else
-          a << line.join(' ') if line.size > 0
-          line=[]
-          @c.reset
-        end
-        @plabel=clabel
-warn item
-        case item['class']
-        when 'alarm'
-          line << prt(item,'1')
-        when 'warn'
-          line << prt(item,'3')
-        when 'normal'
-          line << prt(item,'2')
-        when 'hide'
-          line << prt(item,'2') if ver
-        else
-          line << prt(item,'2')
-        end
+      next unless item.class == Hash
+      item['label']=id.upcase unless item['label']
+      clabel=item['label'].split(/[ :]/)
+      if clabel.first == @plabel.first || clabel.last == @plabel.last
+        @c.next
+      else
+        a << line.join(' ') if line.size > 0
+        line=[]
+        @c.reset
+      end
+      @plabel=clabel
+      case item['class']
+      when 'alarm'
+        line << prt(item,'1')
+      when 'warn'
+        line << prt(item,'3')
+      when 'normal'
+        line << prt(item,'2')
+      when 'hide'
+        line << prt(item,'2') if ver
+      else
+        line << prt(item,'2')
       end
     }
     a << line.join(' ') if line.size > 0

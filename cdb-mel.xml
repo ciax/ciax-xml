@@ -73,70 +73,70 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%04X" id="ecode" label="EXIT CODE" symbol="mel:ecode">
+      <value format="%04X" id="ecode" label="EXIT CODE" symbol="mel:ecode" group="1">
         <int ref="ecode" />
       </value>
-      <value format="%s" id="rdy" label="READY" symbol="normal">
+      <value format="%s" id="rdy" label="READY" symbol="normal" group="1">
         <binary bit="0" ref="x:0" />
       </value>
-      <value format="%s" id="pse" label="PAUSE" symbol="warn">
+      <value format="%s" id="pse" label="PAUSE" symbol="warn" group="1">
         <binary bit="1" ref="x:0" />
       </value>
-      <value format="%s" id="emg" label="ENERGENCY" symbol="alarm">
+      <value format="%s" id="emg" label="ENERGENCY" symbol="alarm" group="1">
         <binary bit="2" ref="x:0" />
       </value>
-      <value format="%s" id="stp" label="STOP" symbol="warn">
+      <value format="%s" id="stp" label="STOP" symbol="warn" group="1">
         <binary bit="3" ref="x:0" />
       </value>
-      <value format="%s" id="run" label="RUNNING" symbol="normal">
+      <value format="%s" id="run" label="RUNNING" symbol="normal" group="2">
         <binary bit="4" ref="x:0" />
       </value>
-      <value format="%s" id="jak" label="JACKING" symbol="normal">
+      <value format="%s" id="jak" label="JACKING" symbol="normal" group="2">
         <binary bit="5" ref="x:0" />
       </value>
-      <value format="%s" id="con" label="CHARGING" symbol="normal">
+      <value format="%s" id="con" label="CHARGING" symbol="normal" group="2">
         <binary bit="6" ref="x:0" />
       </value>
-      <value format="%s" id="flt" label="Fault" symbol="alarm">
+      <value format="%s" id="flt" label="Fault" symbol="alarm" group="2">
         <binary bit="7" ref="x:0" />
       </value>
-      <value format="%s" id="msr" label="Right Motor Servo" symbol="normal">
+      <value format="%s" id="msr" label="Right Motor Servo" symbol="normal" group="ms">
         <binary bit="8" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="msl" label="Left Motor Servo" symbol="normal">
+      <value format="%s" id="msl" label="Left Motor Servo" symbol="normal" group="ms">
         <binary bit="9" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd1" label="Jack Motor Servo1" symbol="normal">
+      <value format="%s" id="jd1" label="Jack Motor Servo1" symbol="normal" group="j1">
         <binary bit="10" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd2" label="Jack Motor Servo2" symbol="normal">
+      <value format="%s" id="jd2" label="Jack Motor Servo2" symbol="normal" group="j1">
         <binary bit="11" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd3" label="Jack Motor Servo3" symbol="normal">
+      <value format="%s" id="jd3" label="Jack Motor Servo3" symbol="normal" group="j2">
         <binary bit="12" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd4" label="Jack Motor Servo4" symbol="normal">
+      <value format="%s" id="jd4" label="Jack Motor Servo4" symbol="normal" group="j2">
         <binary bit="13" inv="true" ref="x:0" />
       </value>
-      <value format="%d" id="mdar" label="Rignt Motor D/A" symbol="mel:motor">
+      <value format="%d" id="mdar" label="Rignt Motor D/A" symbol="mel:motor" group="da">
         <int ref="x:7" signed="true" />
       </value>
-      <value format="%d" id="mdal" label="Left Motor D/A" symbol="mel:motor">
+      <value format="%d" id="mdal" label="Left Motor D/A" symbol="mel:motor" group="da">
         <int ref="x:8" signed="true" />
       </value>
-      <value format="%2.2f" id="bvl" label="Battery Voltage" symbol="mel:battery">
+      <value format="%2.2f" id="bvl" label="Battery Voltage" symbol="mel:battery" group="bv">
         <float decimal="2" ref="x:22" />
       </value>
-      <value format="%d" id="ist" label="Instrument" symbol="mel:inst">
+      <value format="%d" id="ist" label="Instrument" symbol="mel:inst" group="bv">
         <int ref="x:23" />
       </value>
-      <value format="%d" id="cpos" label="Current Position">
+      <value format="%d" id="cpos" label="Current Position" group="pos">
         <int ref="x:25" />
       </value>
-      <value format="%d" id="dpos" label="Destination Position">
+      <value format="%d" id="dpos" label="Destination Position" group="pos">
         <int ref="x:26" />
       </value>
-      <value format="%d" id="jpos" label="Jack Position" symbol="mel:jpos">
+      <value format="%d" id="jpos" label="Jack Position" symbol="mel:jpos" group="jpos">
         <int ref="x:27" />
       </value>
     </status>

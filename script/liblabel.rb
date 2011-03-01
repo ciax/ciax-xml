@@ -24,16 +24,17 @@ class Label
   end
 
   def merge(stat)
+    result={}
     @label.each{|id,label|
       case stat[id]
       when Hash
-        stat[id].update(@label[id])
+        result[id]=stat[id].update(@label[id])
       else
         val=stat[id]
-        stat[id]=@label[id]
-        stat[id]['val']=val
+        result[id]=@label[id]
+        result[id]['val']=val
       end
     }
-    stat
+    result
   end
 end

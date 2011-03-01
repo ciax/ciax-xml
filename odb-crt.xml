@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="crt" label="Cart PLC">
     <comm>
@@ -6,46 +6,46 @@
       <client>socat - udp:cart3:5000</client>
       <server>socat - udp-l:25101,reuseaddr,fork</server>
     </comm>
-    <status>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <group>
-        <title ref="ecode" symbol="mel:ecode" label="EXIT CODE"></title>
-        <title ref="rdy" symbol="normal" label="READY"></title>
-        <title ref="pse" symbol="warn" label="PAUSE"></title>
-        <title ref="emg" symbol="alarm" label="ENERGENCY"></title>
-        <title ref="stp" symbol="warn" label="STOP"></title>
+        <title ref="ecode" symbol="mel:ecode" label="EXIT CODE" />
+        <title ref="rdy" symbol="normal" label="READY" />
+        <title ref="pse" symbol="warn" label="PAUSE" />
+        <title ref="emg" symbol="alarm" label="ENERGENCY" />
+        <title ref="stp" symbol="warn" label="STOP" />
       </group>
       <group>
-        <title ref="run" symbol="normal" label="RUNNING"></title>
-        <title ref="jak" symbol="normal" label="JACKING"></title>
-        <title ref="con" symbol="normal" label="CHARGING"></title>
-        <title ref="flt" symbol="alarm" label="Fault"></title>
+        <title ref="run" symbol="normal" label="RUNNING" />
+        <title ref="jak" symbol="normal" label="JACKING" />
+        <title ref="con" symbol="normal" label="CHARGING" />
+        <title ref="flt" symbol="alarm" label="Fault" />
       </group>
       <group>
-        <title ref="msr" symbol="normal" label="Right Motor Servo"></title>
-        <title ref="msl" symbol="normal" label="Left Motor Servo"></title>
+        <title ref="msr" symbol="normal" label="Right Motor Servo" />
+        <title ref="msl" symbol="normal" label="Left Motor Servo" />
       </group>
       <group>
-        <title ref="jd1" symbol="normal" label="Jack Motor1 Servo"></title>
-        <title ref="jd2" symbol="normal" label="Jack Motor2 Servo"></title>
+        <title ref="jd1" symbol="normal" label="Jack Motor1 Servo" />
+        <title ref="jd2" symbol="normal" label="Jack Motor2 Servo" />
       </group>
       <group>
-        <title ref="jd3" symbol="normal" label="Jack Motor3 Servo"></title>
-        <title ref="jd4" symbol="normal" label="Jack Motor4 Servo"></title>
+        <title ref="jd3" symbol="normal" label="Jack Motor3 Servo" />
+        <title ref="jd4" symbol="normal" label="Jack Motor4 Servo" />
       </group>
       <group>
-        <title ref="mdar" symbol="mel:motor" label="Rignt Motor D/A"></title>
-        <title ref="mdal" symbol="mel:motor" label="Left Motor D/A"></title>
+        <title ref="mdar" symbol="mel:motor" label="Rignt Motor D/A" />
+        <title ref="mdal" symbol="mel:motor" label="Left Motor D/A" />
       </group>
       <group>
-        <title ref="bvl" symbol="mel:battery" label="Battery Voltage"></title>
-        <title ref="ist" symbol="mel:inst" label="Instrument"></title>
+        <title ref="bvl" symbol="mel:battery" label="Battery Voltage" />
+        <title ref="ist" symbol="mel:inst" label="Instrument" />
       </group>
       <group>
-        <title ref="cpos" label="Current Position"></title>
-        <title ref="dpos" label="Destination Position"></title>
+        <title ref="cpos" label="Current Position" />
+        <title ref="dpos" label="Destination Position" />
       </group>
       <group>
-        <title ref="jpos" symbol="mel:jpos" label="Jack Position"></title>
+        <title ref="jpos" symbol="mel:jpos" label="Jack Position" />
       </group>
     </status>
   </object>

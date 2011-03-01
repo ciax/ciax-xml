@@ -4,6 +4,7 @@ devices=${1:-`ls ~/.var/status_???.json|cut -d_ -f2|cut -d. -f1`};shift
 cmd=${1:-upd};shift
 par="$*"
 for id in $devices; do
+    [ -f ~/ciax-xml/odb-$id.xml ] || continue
     setfld $id || _usage_key
     echo "#### $obj($id) ####"
     output=$HOME/.var/status_$id.json

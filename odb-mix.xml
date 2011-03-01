@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="mix" label="MOIRCS Turret">
     <comm>
@@ -6,25 +6,25 @@
       <client>socat - tcp:celaeno:4007</client>
       <server>socat - udp-l:24107,reuseaddr,fork</server>
     </comm>
-    <status>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <group>
-        <title ref="rdy" symbol="off-warn" label="Comm Ready"></title>
-        <title ref="srq" symbol="off-warn" label="SRQ"></title>
-        <title ref="pme" symbol="alarm" label="Program Error"></title>
-        <title ref="pse" symbol="alarm" label="Power Stage Error"></title>
-        <title ref="oes" symbol="alarm" label="ONE EM Stop"></title>
-        <title ref="ees" symbol="alarm" label="EXT EM Stop"></title>
+        <title ref="rdy" symbol="off-warn" label="Comm Ready" />
+        <title ref="srq" symbol="off-warn" label="SRQ" />
+        <title ref="pme" symbol="alarm" label="Program Error" />
+        <title ref="pse" symbol="alarm" label="Power Stage Error" />
+        <title ref="oes" symbol="alarm" label="ONE EM Stop" />
+        <title ref="ees" symbol="alarm" label="EXT EM Stop" />
       </group>
       <group>
-        <title ref="trm" symbol="off-warn" label="Terminal Mode"></title>
-        <title ref="cmd" symbol="off-warn" label="Computer Mode"></title>
+        <title ref="trm" symbol="off-warn" label="Terminal Mode" />
+        <title ref="cmd" symbol="off-warn" label="Computer Mode" />
       </group>
       <repeat from="1" to="6">
         <group>
-          <title ref="r$_" label="Running $_"></title>
-          <title ref="p$_" label="Pulse $_"></title>
-          <title ref="spd$_" label="Speed $_"></title>
-          <title ref="ofs$_" label="Offset $_"></title>
+          <title ref="r$_" label="Running $_" />
+          <title ref="p$_" label="Pulse $_" />
+          <title ref="spd$_" label="Speed $_" />
+          <title ref="ofs$_" label="Offset $_" />
         </group>
       </repeat>
     </status>

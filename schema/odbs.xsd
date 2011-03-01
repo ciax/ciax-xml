@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/odbs" xmlns:odbs="http://ciax.sum.naoj.org/ciax-xml/odbs">
+  <xsd:include schemaLocation="repeat.xsd" />
+  <!--status-->
+  <xsd:element name="status">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="odbs:group"></xsd:element>
+        <xsd:element ref="odbs:repeat"></xsd:element>
+      </xsd:choice>
+      <xsd:attribute name="ref" type="xsd:string" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="odbs:title" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="odbs:group" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+      </xsd:choice>
+      <xsd:attributeGroup ref="odbs:repeat" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="odbs:repeat" />
+        <xsd:element ref="odbs:title" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="title">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attribute name="symbol" type="xsd:string" />
+      <xsd:attribute name="label" type="xsd:string" />
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

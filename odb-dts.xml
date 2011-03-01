@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="dts" label="TSC Control">
     <comm>
@@ -6,22 +6,22 @@
       <client>socat - tcp:cxws:9999</client>
       <server>socat - udp-l:25105,reuseaddr,fork</server>
     </comm>
-    <status>
-      <group label="">
-        <title ref="exit" label="Exit Code"></title>
-        <title ref="rts" symbol="oss:rsel" label="ROT SEL"></title>
-        <title ref="iid" symbol="oss:inst" label="CAS INST ID"></title>
-        <title ref="login" symbol="oss:login" label="Login Status"></title>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
+      <group>
+        <title ref="exit" label="Exit Code" />
+        <title ref="rts" symbol="oss:rsel" label="ROT SEL" />
+        <title ref="iid" symbol="oss:inst" label="CAS INST ID" />
+        <title ref="login" symbol="oss:login" label="Login Status" />
       </group>
-      <group label="">
-        <title ref="rpw" symbol="oss:rpw" label="ROT DRIVE"></title>
-        <title ref="jpw" symbol="normal" label="JAK DRIVE"></title>
-        <title ref="nfb" symbol="alarm" label="BOLT NFB TRIP"></title>
-        <title ref="rps" symbol="oss:rps" label="ROT POS SENSOR"></title>
+      <group>
+        <title ref="rpw" symbol="oss:rpw" label="ROT DRIVE" />
+        <title ref="jpw" symbol="normal" label="JAK DRIVE" />
+        <title ref="nfb" symbol="alarm" label="BOLT NFB TRIP" />
+        <title ref="rps" symbol="oss:rps" label="ROT POS SENSOR" />
       </group>
-      <group label="">
-        <title ref="stw" symbol="off-warn" label="EL STOW"></title>
-        <title ref="stp" symbol="off-warn" label="EL 90 STOW"></title>
+      <group>
+        <title ref="stw" symbol="off-warn" label="EL STOW" />
+        <title ref="stp" symbol="off-warn" label="EL 90 STOW" />
       </group>
     </status>
   </object>

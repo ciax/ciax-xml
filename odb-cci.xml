@@ -27,36 +27,36 @@
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <group>
-        <title ref="x0sw" symbol="off-warn" label="CAS2(S1)(CIAO) SWITCH" />
-        <title ref="x0dr" symbol="off-warn" label="CAS2(S1)(CIAO) DRIVE" />
+        <title ref="xsw0" symbol="off-warn" label="CAS2(S1)(CIAO) SWITCH" />
+        <title ref="xdr0" symbol="off-warn" label="CAS2(S1)(CIAO) DRIVE" />
       </group>
       <group>
-        <title ref="x0tm" symbol="alarm" label="CAS2(S1)(CIAO) TEMP" />
-        <title ref="x0pr" symbol="alarm" label="CAS2(S1)(CIAO) PRESSURE" />
+        <title ref="xtm0" symbol="alarm" label="CAS2(S1)(CIAO) TEMP" />
+        <title ref="xpr0" symbol="alarm" label="CAS2(S1)(CIAO) PRESSURE" />
       </group>
       <group>
-        <title ref="x1sw" symbol="off-warn" label="CAS1(S2)(MOIRCS/MAIN) SWITCH" />
-        <title ref="x1dr" symbol="off-warn" label="CAS1(S2)(MOIRCS/MAIN) DRIVE" />
+        <title ref="xsw1" symbol="off-warn" label="CAS1(S2)(MOIRCS/MAIN) SWITCH" />
+        <title ref="xdr1" symbol="off-warn" label="CAS1(S2)(MOIRCS/MAIN) DRIVE" />
       </group>
       <group>
-        <title ref="x1tm" symbol="alarm" label="CAS1(S2)(MOIRCS/MAIN) TEMP" />
-        <title ref="x1pr" symbol="alarm" label="CAS1(S2)(MOIRCS/MAIN) PRESSURE" />
+        <title ref="xtm1" symbol="alarm" label="CAS1(S2)(MOIRCS/MAIN) TEMP" />
+        <title ref="xpr1" symbol="alarm" label="CAS1(S2)(MOIRCS/MAIN) PRESSURE" />
       </group>
       <group>
-        <title ref="x2sw" symbol="off-warn" label="MOIRCS/CR(S8) SWITCH" />
-        <title ref="x2dr" symbol="off-warn" label="MOIRCS/CR(S8) DRIVE" />
+        <title ref="xsw2" symbol="off-warn" label="MOIRCS/CR(S8) SWITCH" />
+        <title ref="xdr2" symbol="off-warn" label="MOIRCS/CR(S8) DRIVE" />
       </group>
       <group>
-        <title ref="x2tm" symbol="alarm" label="MOIRCS/CR(S8) TEMP" />
-        <title ref="x2pr" symbol="alarm" label="MOIRCS/CR(S8) PRESSURE" />
+        <title ref="xtm2" symbol="alarm" label="MOIRCS/CR(S8) TEMP" />
+        <title ref="xpr2" symbol="alarm" label="MOIRCS/CR(S8) PRESSURE" />
       </group>
       <group>
-        <title ref="x3sw" symbol="off-warn" label="MOIRCS/MAIN(S9) SWITCH" />
-        <title ref="x3dr" symbol="off-warn" label="MOIRCS/MAIN(S9) DRIVE" />
+        <title ref="xsw3" symbol="off-warn" label="MOIRCS/MAIN(S9) SWITCH" />
+        <title ref="xdr3" symbol="off-warn" label="MOIRCS/MAIN(S9) DRIVE" />
       </group>
       <group>
-        <title ref="x3tm" symbol="alarm" label="MOIRCS/MAIN(S9) TEMP" />
-        <title ref="x3pr" symbol="alarm" label="MOIRCS/MAIN(S9) PRESSURE" />
+        <title ref="xtm3" symbol="alarm" label="MOIRCS/MAIN(S9) TEMP" />
+        <title ref="xpr3" symbol="alarm" label="MOIRCS/MAIN(S9) PRESSURE" />
       </group>
     </status>
   </object>

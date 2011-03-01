@@ -8,36 +8,36 @@
     </comm>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <group>
-        <title ref="x0sw" label="X0 SWITCH" />
-        <title ref="x0dr" label="X0 DRIVE" />
+        <title ref="xsw0" label="X0 SWITCH" />
+        <title ref="xdr0" label="X0 DRIVE" />
       </group>
       <group>
-        <title ref="x0tm" symbol="normal" label="X0 TEMP ALARM" />
-        <title ref="x0pr" symbol="normal" label="X0 PRESSURE ALARM" />
+        <title ref="xtm0" symbol="normal" label="X0 TEMP ALARM" />
+        <title ref="xpr0" symbol="normal" label="X0 PRESSURE ALARM" />
       </group>
       <group>
-        <title ref="x1sw" symbol="normal" label="X1 SWITCH" />
-        <title ref="x1dr" symbol="normal" label="X1 DRIVE" />
+        <title ref="xsw1" symbol="normal" label="X1 SWITCH" />
+        <title ref="xdr1" symbol="normal" label="X1 DRIVE" />
       </group>
       <group>
-        <title ref="x1tm" symbol="normal" label="X1 TEMP ALARM" />
-        <title ref="x1pr" symbol="normal" label="X1 PRESSURE ALARM" />
+        <title ref="xtm1" symbol="normal" label="X1 TEMP ALARM" />
+        <title ref="xpr1" symbol="normal" label="X1 PRESSURE ALARM" />
       </group>
       <group>
-        <title ref="x2sw" symbol="normal" label="X2 SWITCH" />
-        <title ref="x2dr" symbol="normal" label="X2 DRIVE" />
+        <title ref="xsw2" symbol="normal" label="X2 SWITCH" />
+        <title ref="xdr2" symbol="normal" label="X2 DRIVE" />
       </group>
       <group>
-        <title ref="x2tm" symbol="normal" label="X2 TEMP ALARM" />
-        <title ref="x2pr" symbol="normal" label="X2 PRESSURE ALARM" />
+        <title ref="xtm2" symbol="normal" label="X2 TEMP ALARM" />
+        <title ref="xpr2" symbol="normal" label="X2 PRESSURE ALARM" />
       </group>
       <group>
-        <title ref="x3sw" symbol="normal" label="X3 SWITCH" />
-        <title ref="x3dr" symbol="normal" label="X3 DRIVE" />
+        <title ref="xsw3" symbol="normal" label="X3 SWITCH" />
+        <title ref="xdr3" symbol="normal" label="X3 DRIVE" />
       </group>
       <group>
-        <title ref="x3tm" symbol="normal" label="X3 TEMP ALARM" />
-        <title ref="x3pr" symbol="normal" label="X3 PRESSURE ALARM" />
+        <title ref="xtm3" symbol="normal" label="X3 TEMP ALARM" />
+        <title ref="xpr3" symbol="normal" label="X3 PRESSURE ALARM" />
       </group>
     </status>
   </object>

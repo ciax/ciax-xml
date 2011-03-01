@@ -19,28 +19,28 @@
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <group>
-        <title ref="x0sw" symbol="off-warn" label="CIAO(S6) SWITCH" />
-        <title ref="x0dr" symbol="off-warn" label="CIAO(S6) DRIVE" />
+        <title ref="xsw0" symbol="off-warn" label="CIAO(S6) SWITCH" />
+        <title ref="xdr0" symbol="off-warn" label="CIAO(S6) DRIVE" />
       </group>
       <group>
-        <title ref="x0tm" symbol="alarm" label="CIAO(S6) TEMP" />
-        <title ref="x0pr" symbol="alarm" label="CIAO(S6) PRESSURE" />
+        <title ref="xtm0" symbol="alarm" label="CIAO(S6) TEMP" />
+        <title ref="xpr0" symbol="alarm" label="CIAO(S6) PRESSURE" />
       </group>
       <group>
-        <title ref="x2sw" symbol="off-warn" label="COMICS IMG(S4) SWITCH" />
-        <title ref="x2dr" symbol="off-warn" label="COMICS IMG(S4) DRIVE" />
+        <title ref="xsw2" symbol="off-warn" label="COMICS IMG(S4) SWITCH" />
+        <title ref="xdr2" symbol="off-warn" label="COMICS IMG(S4) DRIVE" />
       </group>
       <group>
-        <title ref="x2tm" symbol="alarm" label="COMICS IMG(S4) TEMP" />
-        <title ref="x2pr" symbol="alarm" label="COMICS IMG(S4) PRESSURE" />
+        <title ref="xtm2" symbol="alarm" label="COMICS IMG(S4) TEMP" />
+        <title ref="xpr2" symbol="alarm" label="COMICS IMG(S4) PRESSURE" />
       </group>
       <group>
-        <title ref="x3sw" symbol="off-warn" label="COMICS SPEC(S5) SWITCH" />
-        <title ref="x3dr" symbol="off-warn" label="COMICS SPEC(S5) DRIVE" />
+        <title ref="xsw3" symbol="off-warn" label="COMICS SPEC(S5) SWITCH" />
+        <title ref="xdr3" symbol="off-warn" label="COMICS SPEC(S5) DRIVE" />
       </group>
       <group>
-        <title ref="x3tm" symbol="alarm" label="COMICS SPEC(S5) TEMP" />
-        <title ref="x3pr" symbol="alarm" label="COMICS SPEC(S5) PRESSURE" />
+        <title ref="xtm3" symbol="alarm" label="COMICS SPEC(S5) TEMP" />
+        <title ref="xpr3" symbol="alarm" label="COMICS SPEC(S5) PRESSURE" />
       </group>
     </status>
   </object>

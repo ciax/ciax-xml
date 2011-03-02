@@ -9,15 +9,20 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <repeat from="0" to="7">
-        <value format="%3.2f" id="ch$_" label="CH $_">
+      <repeat from="0" to="3">
+        <value format="%3.2f" id="ch$_" label="CH $_" group="a">
           <float ref="ch:$_" />
         </value>
       </repeat>
-      <value format="%3.2f" id="sp" label="SetPoint1 (K)">
+      <repeat from="4" to="7">
+        <value format="%3.2f" id="ch$_" label="CH $_" group="b">
+          <float ref="ch:$_" />
+        </value>
+      </repeat>
+      <value format="%3.2f" id="sp" label="SetPoint1 (K)" group="s">
         <float ref="sp" />
       </value>
-      <value format="%3.2f" id="htr" label="HeaterPower1(%)">
+      <value format="%3.2f" id="htr" label="HeaterPower1(%)" group="s">
         <float ref="htr" />
       </value>
     </status>

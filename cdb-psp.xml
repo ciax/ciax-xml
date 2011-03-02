@@ -58,7 +58,7 @@
       <value format="%s" id="kn1" label="Wheel Knov Fine" symbol="normal" group="s2">
         <string ref="f3" />
       </value>
-      <value format="%s" id="kn2" label="Wheel Knov Unlock" symbol="normal" group="s1">
+      <value format="%s" id="kn2" label="Wheel Knov Unlock" symbol="normal" group="s2">
         <string ref="f4" />
       </value>
       <value format="%s" id="rem" label="REMOTE" symbol="normal" group="s3">

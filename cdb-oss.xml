@@ -92,41 +92,41 @@
       </event>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%d" id="exit" label="Exit Code">
+      <value format="%d" id="exit" label="Exit Code" group="1">
         <int ref="exit" />
       </value>
-      <value format="%d" id="rts" label="ROT SEL" symbol="rsel">
+      <value format="%d" id="rts" label="ROT SEL" symbol="rsel" group="1">
         <int ref="rsel" />
       </value>
-      <value format="%d" id="iid" label="CAS INST ID" symbol="inst">
+      <value format="%d" id="iid" label="CAS INST ID" symbol="inst" group="1">
         <int ref="iid" />
       </value>
-      <value format="%s%s%s%s" id="login" label="Login Status" symbol="login">
+      <value format="%s%s%s%s" id="login" label="Login Status" symbol="login" group="1">
         <string ref="login0" />
         <string ref="login1" />
         <string ref="login2" />
         <string ref="login3" />
       </value>
-      <value format="%d" id="rpw" label="ROT DRIVE" symbol="rpw">
+      <value format="%d" id="rpw" label="ROT DRIVE" symbol="rpw" group="2">
         <int ref="rpw" />
       </value>
-      <value format="%s" id="jpw" label="JAK DRIVE">
+      <value format="%s" id="jpw" label="JAK DRIVE" group="2">
         <binary bit="7" ref="bstat" />
       </value>
-      <value format="%s" id="nfb" label="BOLT NFB TRIP">
+      <value format="%s" id="nfb" label="BOLT NFB TRIP" group="2">
         <binary bit="6" ref="bstat" />
       </value>
-      <value format="%s%s" id="rps" label="ROT POS SENSOR" symbol="rps">
+      <value format="%s%s" id="rps" label="ROT POS SENSOR" symbol="rps" group="2">
         <binary bit="4" ref="bstat" />
         <binary bit="5" ref="bstat" />
       </value>
-      <value format="%s" id="stw" label="EL STOW">
+      <value format="%s" id="stw" label="EL STOW" group="2">
         <binary bit="2" ref="stow_1" />
       </value>
-      <value format="%s" id="stp" label="EL 90 STOW">
+      <value format="%s" id="stp" label="EL 90 STOW" group="3">
         <binary bit="0" ref="stow_1" />
       </value>
-      <value format="%f" id="iang" label="InR Angle">
+      <value format="%f" id="iang" label="InR Angle" group="3">
         <float ref="iang" />
       </value>
       <repeat from="0" to="15">

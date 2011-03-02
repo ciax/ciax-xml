@@ -43,25 +43,25 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s" id="iid" label="CAS INST ID">
+      <value format="%s" id="iid" label="CAS INST ID" symbol="srm:inst" group="1">
         <string ref="c1d2" />
       </value>
-      <value format="%s" id="ipw" label="CAS IPW">
+      <value format="%s" id="ipw" label="CAS IPW" symbol="off-warn" group="1">
         <binary bit="0" ref="c1d1" />
       </value>
-      <value format="%s" id="stp" label="STOW PIN">
+      <value format="%s" id="stp" label="STOW PIN" symbol="warn" group="2">
         <binary bit="1" ref="c1d1" />
       </value>
-      <value format="%s" id="ccd" label="CAS CCD PW">
+      <value format="%s" id="ccd" label="CAS CCD PW" symbol="warn" group="2">
         <binary bit="2" ref="c1d0" />
       </value>
-      <value format="%s" id="lan" label="CAS LAN PW">
+      <value format="%s" id="lan" label="CAS LAN PW" symbol="hide" group="2">
         <binary bit="3" ref="c1d0" />
       </value>
-      <value format="%s" id="c3p" label="CIAX3 PW">
+      <value format="%s" id="c3p" label="CIAX3 PW" symbol="hide" group="3">
         <binary bit="0" ref="c1d0" />
       </value>
-      <value format="%s" id="c3e" label="CIAX3 EMG">
+      <value format="%s" id="c3e" label="CIAX3 EMG" symbol="alarm" group="3">
         <binary bit="1" ref="c1d0" />
       </value>
     </status>

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
+require "libcls"
 require "libobjcmd"
 require "libobjstat"
-require "libcls"
 require "libmodview"
 require "readline"
 include ModView

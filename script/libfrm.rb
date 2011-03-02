@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libxmldoc"
 require "libiocmd"
+require "libxmldoc"
 require "libiofile"
 require "libstat"
 require "libfrmcmd"

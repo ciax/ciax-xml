@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
+require "libfrm"
 require "libxmldoc"
 require "libclscmd"
 require "libclsstat"
 require "libcmdbuf"
 require "libclsevent"
-require "libfrm"
 require "thread"
 
 class Cls

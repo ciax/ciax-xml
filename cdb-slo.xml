@@ -25,22 +25,22 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s" id="bs" label="Moter Moving">
+      <value format="%s" id="bs" label="Moter Moving" group="1" symbol="warn">
         <string ref="bs" />
       </value>
-      <value format="%s" id="con" label="Contact Sensor">
+      <value format="%s" id="con" label="Contact Sensor" group="1" symbol="normal">
         <string ref="in:4" />
       </value>
-      <value format="%d" id="err" label="Error Code">
+      <value format="%d" id="err" label="Error Code" group="1" symbol="slo:err">
         <int ref="err" />
       </value>
-      <value format="%s%s%s%s" id="pos" label="Arm Position">
+      <value format="%s%s%s%s" id="pos" label="Arm Position" group="2" symbol="slo:pos">
         <string ref="in:0" />
         <string ref="in:1" />
         <string ref="in:2" />
         <string ref="in:3" />
       </value>
-      <value format="%f" id="abs" label="ABS position">
+      <value format="%f" id="abs" label="ABS position" group="2" symbol="slo:pulse">
         <float ref="p" />
       </value>
     </status>

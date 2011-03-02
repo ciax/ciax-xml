@@ -13,7 +13,7 @@
       </event>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%4.2f" id="pres" label="Air Pressure (Psi)">
+      <value format="%4.2f" id="pres" label="Air Pressure (Psi)" symbol="oma:pres">
         <float decimal="2" ref="stat" />
       </value>
     </status>

@@ -31,40 +31,40 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%3.2f" id="vol" label="OUTPUT (V)">
+      <value format="%3.2f" id="vol" label="OUTPUT (V)" group="o">
         <float ref="v" />
       </value>
-      <value format="%3.2f" id="amp" label="OUTPUT (A)">
+      <value format="%3.2f" id="amp" label="OUTPUT (A)" group="o">
         <float ref="a" />
       </value>
-      <value format="%3.2f" id="wat" label="OUTPUT (W)">
+      <value format="%3.2f" id="wat" label="OUTPUT (W)" group="o">
         <float ref="w" />
       </value>
-      <value format="%3.2f" id="vl" label="Limit (V)">
+      <value format="%3.2f" id="vl" label="Limit (V)" group="l">
         <float ref="u" />
       </value>
-      <value format="%3.2f" id="il" label="Limit (A)">
+      <value format="%3.2f" id="il" label="Limit (A)" group="l">
         <float ref="i" />
       </value>
-      <value format="%3.2f" id="pl" label="Limit (W)">
+      <value format="%3.2f" id="pl" label="Limit (W)" group="l">
         <float ref="p" />
       </value>
-      <value format="%s" id="sw" label="OUTPUT ON/OFF">
+      <value format="%s" id="sw" label="OUTPUT ON/OFF" symbol="warn" group="s1">
         <string ref="f1" />
       </value>
-      <value format="%s" id="tmp" label="OverHeat">
+      <value format="%s" id="tmp" label="OverHeat" symbol="alarm" group="s1">
         <string ref="f2" />
       </value>
-      <value format="%s" id="kn1" label="Wheel Knov Fine">
+      <value format="%s" id="kn1" label="Wheel Knov Fine" symbol="normal" group="s2">
         <string ref="f3" />
       </value>
-      <value format="%s" id="kn2" label="Wheel Knov Unlock">
+      <value format="%s" id="kn2" label="Wheel Knov Unlock" symbol="normal" group="s1">
         <string ref="f4" />
       </value>
-      <value format="%s" id="rem" label="REMOTE">
+      <value format="%s" id="rem" label="REMOTE" symbol="normal" group="s3">
         <string ref="f5" />
       </value>
-      <value format="%s" id="loc" label="Local Lock">
+      <value format="%s" id="loc" label="Local Lock" symbol="normal" group="s3">
         <string ref="f6" />
       </value>
     </status>

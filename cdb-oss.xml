@@ -113,20 +113,20 @@
       <value format="%s" id="jpw" label="JAK DRIVE" group="2">
         <binary bit="7" ref="bstat" />
       </value>
-      <value format="%s" id="nfb" label="BOLT NFB TRIP" group="2">
+      <value format="%s" id="nfb" label="BOLT NFB TRIP" group="3">
         <binary bit="6" ref="bstat" />
       </value>
-      <value format="%s%s" id="rps" label="ROT POS SENSOR" symbol="rps" group="2">
+      <value format="%s%s" id="rps" label="ROT POS SENSOR" symbol="rps" group="3">
         <binary bit="4" ref="bstat" />
         <binary bit="5" ref="bstat" />
       </value>
-      <value format="%s" id="stw" label="EL STOW" group="2">
+      <value format="%s" id="stw" label="EL STOW" group="4">
         <binary bit="2" ref="stow_1" />
       </value>
-      <value format="%s" id="stp" label="EL 90 STOW" group="3">
+      <value format="%s" id="stp" label="EL 90 STOW" group="4">
         <binary bit="0" ref="stow_1" />
       </value>
-      <value format="%f" id="iang" label="InR Angle" group="3">
+      <value format="%f" id="iang" label="InR Angle" group="4">
         <float ref="iang" />
       </value>
       <repeat from="0" to="15">

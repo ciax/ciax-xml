@@ -91,7 +91,7 @@ class ClsEvent < Array
 
   def set_event(e0)
     bg={:commands => []}
-    e0.attr.each{|a,v|
+    e0.to_h.each{|a,v|
       bg[a]=@rep.subst(v)
     }
     @v.msg(1){bg['label']}
@@ -99,7 +99,7 @@ class ClsEvent < Array
       case e1.name
       when 'while','until','onchange'
         bg[:type]=e1.name
-        e1.attr.each{|k,v|
+        e1.to_h.each{|k,v|
           bg[k]=@rep.subst(v)
         }
       when 'periodic'

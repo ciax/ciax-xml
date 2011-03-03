@@ -56,8 +56,8 @@ class Print
     title=item['label'] || item['title']
     str << color(6,title)
     str << ':'
-    if item['msg'] && item['val']
-      str << color(c,item['val']+'('+item['msg']+')')
+    if item['level']
+      str << color(c,item['val']+'('+item['level']+')')
     elsif item['msg']
       str << color(c,item['msg'])
     elsif item['val']

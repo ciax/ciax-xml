@@ -59,12 +59,14 @@ class Sym
       case e.name
       when 'enum'
         next unless cs.text == val
+        set['msg']=cs['msg']
       when 'regexp'
         next unless /#{cs.text}/ === val
+        set['msg']=cs['msg']
       when 'range'
         next unless ReRange.new(cs.text) == val
+        set['level']=cs['msg']
       end
-      set['msg']=cs['msg']
       set['class']=cs['class']
       @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
       break true

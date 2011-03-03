@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libcls"
-require "libobjcmd"
+require "libalias"
 require "libobjstat"
 require "libmodview"
 require "readline"
@@ -12,7 +12,7 @@ cls=ARGV.shift
 obj=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
-oc=ObjCmd.new(obj)
+oc=Alias.new(obj)
 os=ObjStat.new(obj)
 cdb=Cls.new(cls,id,iocmd)
 

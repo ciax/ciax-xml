@@ -2,7 +2,7 @@
 require "libxmldoc"
 require "libverbose"
 
-class ObjCmd
+class Alias
 
   def initialize(obj)
     @odb=XmlDoc.new('odb',obj)

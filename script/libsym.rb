@@ -37,12 +37,22 @@ class Sym
     conv
   end
 
+  def overwrite(stat)
+    stat.each{|key,val|
+      case val
+      when Hash
+        stat[key].update(get_symbol(key,val['val']))
+      end
+    }
+    stat
+  end
+
   def get_symbol(id,val)
-    set={'class'=>'normal'}
+    set={'class'=>'normal','val'=>val}
     begin
       e=select_id(@sdl[id])
     rescue SelectID
-      return set.update({'val'=>val})
+      return set
     end
     e.each{|cs|
       @v.msg{"STAT:Symbol:compare [#{cs.text}] and [#{val}]"}
@@ -53,7 +63,6 @@ class Sym
         next unless /#{cs.text}/ === val
       when 'range'
         next unless ReRange.new(cs.text) == val
-        set['val']=val
       end
       set['msg']=cs['msg']
       set['class']=cs['class']

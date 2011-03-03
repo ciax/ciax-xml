@@ -24,6 +24,19 @@ class SymConv
     @v=Verbose.new("Symbol")
   end
 
+  def convert(stat)
+    conv={}
+    stat.each{|key,val|
+      case key
+      when 'id','time','class','frame'
+        conv[key]=val
+      else
+        conv[key]=get_symbol(key,val)
+      end
+    }
+    conv
+  end
+
   def get_symbol(id,val)
     set={'class'=>'normal'}
     begin

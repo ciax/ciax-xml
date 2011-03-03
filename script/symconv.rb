@@ -13,13 +13,4 @@ elsif type=stat['class']
   cdb=XmlDoc.new('cdb',type)
   dv=SymConv.new(cdb,'status','id')
 end
-conv={}
-stat.each{|key,val|
-  case key
-  when 'id','time','class','frame'
-    conv[key]=val
-  else
-    conv[key]=dv.get_symbol(key,val)
-  end
-}
-puts JSON.dump(conv)
+puts JSON.dump(dv.convert(stat))

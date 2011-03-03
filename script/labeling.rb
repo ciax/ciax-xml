@@ -1,22 +1,15 @@
 #!/usr/bin/ruby
 require "json"
-require "libxmldoc"
-require "liblabel"
 
-#abort "Usage: labering < file" if ARGV.size < 1
+#abort "Usage: labeling < file" if ARGV.size < 1
 
 stat=JSON.load(gets(nil))
 if type=stat['frame']
-  fdb=XmlDoc.new('fdb',type)
-  dv=Label.new(fdb,'rspframe','assign','field')
+  require "libfrmlabel"
+  dv=FrmLabel.new(type)
 elsif type=stat['class']
+  require "libclslabel"
   id=stat['id']
-  cdb=XmlDoc.new('cdb',type)
-  stat=Label.new(cdb,'status','id').merge(stat)
-  begin
-    odb=XmlDoc.new('odb',id)
-    stat=Label.new(odb,'status','ref','title').merge(stat)
-  rescue SelectID
-  end
+  dv=ClsLabel.new(type,id)
 end
-puts JSON.dump(stat)
+puts JSON.dump(dv.merge(stat))

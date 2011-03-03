@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libxmldoc"
-require "libsymconv"
+require "libsym"
 
-class FrmSym < SymConv
+class FrmSym < Sym
   def initialize(id)
     fdb=XmlDoc.new('fdb',id)
     super(fdb,'rspframe','assign','field')

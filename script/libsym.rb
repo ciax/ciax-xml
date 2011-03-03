@@ -4,7 +4,7 @@ require "libverbose"
 require "librerange"
 require "librepeat"
 
-class SymConv
+class Sym
   def initialize(dbl,domain,key,xpath=nil)
     @dbl=dbl
     @sdl={}

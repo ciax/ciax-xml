@@ -14,11 +14,11 @@ for id in $devices; do
     [ $cmd = 'upd' ] || continue
     echo " *** Status ***"
     if [ "$print" ] ; then
-        clsstat $cls < $file | symconv | labeling | stprint
+        clsstat $cls < $file | symboling | labeling | stprint
     elif [ "$label" ] ; then
-        clsstat $cls < $file | symconv | labeling
+        clsstat $cls < $file | symboling | labeling
     elif [ "$sym" ] ; then
-        clsstat $cls < $file | symconv
+        clsstat $cls < $file | symboling
     else
         clsstat $cls < $file
         echo

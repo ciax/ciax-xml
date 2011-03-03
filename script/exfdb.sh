@@ -18,11 +18,11 @@ for id in $devices; do
     if [ "$stat" ] ; then
         echo " *** Stat ***"
         if [ "$print" ] ; then
-            echo "$stat" | frmstat $dev $id | symconv | labeling | stprint
+            echo "$stat" | frmstat $dev $id | symboling | labeling | stprint
         elif [ "$label" ] ; then
-            echo "$stat" | frmstat $dev $id | symconv | labeling
+            echo "$stat" | frmstat $dev $id | symboling | labeling
         elif [ "$sym" ] ; then
-            echo "$stat" | frmstat $dev $id | symconv
+            echo "$stat" | frmstat $dev $id | symboling
         else
             echo "$stat" | frmstat $dev $id
             echo

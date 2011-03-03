@@ -70,7 +70,7 @@ class FrmRsp
       when 'field'
         if assign=e1['assign']
           @v.msg{"Field:Init Field[#{assign}]"}
-          @stat[assign]=fill unless @stat[assign]
+          @stat[assign]=fill.dup unless @stat[assign]
         end
       when 'array'
         assign=e1['assign']
@@ -79,7 +79,7 @@ class FrmRsp
         e1.each{|e2|
           sary << e2['size'].to_i
         }
-        @stat[assign]=init_array(sary){fill} unless @stat[assign]
+        @stat[assign]=init_array(sary){fill.dup} unless @stat[assign]
       end
     }
   end

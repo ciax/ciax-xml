@@ -8,19 +8,26 @@ class Sym
   def initialize(tbl)
     @tbl=tbl
     @com=XmlDoc.new('sdb','all')
+    @rep=Repeat.new
     @v=Verbose.new("Symbol")
   end
 
   def convert(stat)
     conv={}
-    @tbl.each{|e|
-      id=e['id']
-      if ref=e['ref']
-        e=@tbl.select_id('symbol',ref) rescue SelectID
-        e=@com.select_id('symbol',ref)
-      end
-      conv[id]=get_symbol(e,stat[id])
-    }
+    if @tbl
+      @rep.each(@tbl){|e|
+        id=@rep.subst(e['id'])
+        if ref=e['ref']
+          e=@tbl.select_id('symbol',ref) rescue SelectID
+          e=@com.select_id('symbol',ref)
+        end
+        conv[id]=get_symbol(e,stat[id])
+      }
+    else
+      stat.each{|key,val|
+        conv[key]=get_symbol([],val)
+      }
+    end
     conv
   end
 

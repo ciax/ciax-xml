@@ -94,5 +94,13 @@
         </value>
       </repeat>
     </status>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+      <repeat from="0" to="3">
+        <enum id="xsw$_" ref="off-warn"></enum>
+        <enum id="xdr$_" ref="off-warn"></enum>
+        <enum id="xtm$_" ref="alarm"></enum>
+        <enum id="xpr$_" ref="alarm"></enum>
+      </repeat>
+    </symbol>
   </class>
 </cdb>

@@ -1,17 +1,15 @@
 #!/usr/bin/ruby
 require "json"
 require "libxmldoc"
-require "libview"
-#abort "Usage: symcomv < file" if ARGV.size < 1
+require "libsym"
+#abort "Usage: symboling < file" if ARGV.size < 1
 
 stat=JSON.load(gets(nil))
 if frm=stat['frame']
-  fdb=XmlDoc.new('fdb',frm)
-  sym=View.new(fdb)
-  res=sym.convert(stat)
-elsif type=stat['class']
-  require "libclssym"
-  sym=ClsSym.new(type)
-  res=sym.convert(stat)
+  doc=XmlDoc.new('fdb',frm)
+elsif cls=stat['class']
+  doc=XmlDoc.new('cdb',cls)
 end
+sym=Sym.new(doc['symbol'])
+res=sym.convert(stat)
 puts JSON.dump(res)

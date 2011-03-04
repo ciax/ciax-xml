@@ -2,7 +2,8 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:include schemaLocation="range.xsd" />
   <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:string" use="optional" />
+    <xsd:attribute name="id" type="xsd:string" use="required" />
+    <xsd:attribute name="ref" type="xsd:string" use="optional" />
     <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
   <!--root-->
@@ -20,6 +21,7 @@
         <xsd:element ref="sdb:enum" />
         <xsd:element ref="sdb:regexp" />
         <xsd:element ref="sdb:range" />
+        <xsd:element ref="sdb:val" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -36,6 +38,11 @@
       <xsd:choice>
         <xsd:element ref="sdb:case" minOccurs="1" maxOccurs="unbounded" />
       </xsd:choice>
+      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="val">
+    <xsd:complexType>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>

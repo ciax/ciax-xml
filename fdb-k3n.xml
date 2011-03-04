@@ -65,6 +65,7 @@
         <case class="alarm" msg="Frame Length Error">18</case>
         <case class="alarm" msg="Unknown">.</case>
       </enum>
+      <val id="stat" />
     </symbol>
   </frame>
 </fdb>

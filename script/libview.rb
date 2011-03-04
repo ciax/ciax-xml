@@ -1,39 +1,74 @@
 #!/usr/bin/ruby
-require "libsymtbl"
-require "libcircular"
+require "libxmldoc"
+require "libverbose"
+require "librerange"
+require "librepeat"
+
 class View
-  attr_reader :tbl
-
-  def initialize(key,dba)
-    @key=key
-    @c=Circular.new(4)
-    @sdb=SymTbl.new(dba)
-    @tbl={}
-    @plabel=[]
-  end
-
-  def get_view(stat)
-    st={ }
-    @tbl.each{|k,v|
-      sym=@sdb.get_symbol(v[:symbol],stat[k])
-      sym['label']=v[:label]
-      sym['group']=v[:group]
-      st[k]=sym
+  def initialize(dbl)
+    @dbl=dbl
+    @sdl={}
+    rep=Repeat.new
+    rep.each(dbl['view']){|e|
+      sym=e['symbol'] || next
+      @sdl[rep.subst(e['id'])]=sym
     }
-    st
+    @dba=XmlDoc.new('sdb','all')
+    @v=Verbose.new("Symbol")
   end
 
-  def set_tbl(e)
-    e[@key] || return
-    label=yield(e['label'])||"Noname"
-    clabel=label.split(/[ :]/)
-    if clabel.first == @plabel.first || clabel.last == @plabel.last
-      @c.next
-    else
-      @c.reset
+  def convert(stat)
+    conv={}
+    stat.each{|key,val|
+      case key
+      when 'id','time','class','frame'
+        conv[key]=val
+      else
+        conv[key]=get_symbol(key,val)
+      end
+    }
+    conv
+  end
+
+  def overwrite(stat)
+    stat.each{|key,val|
+      case val
+      when Hash
+        stat[key].update(get_symbol(key,val['val']))
+      end
+    }
+    stat
+  end
+
+  def get_symbol(id,val)
+    set={'class'=>'normal','val'=>val}
+    begin
+      e=select_id(@sdl[id])
+    rescue SelectID
+      return set
     end
-    @plabel=clabel
-    id=yield(e[@key])
-    @tbl[id]={:label=>label,:symbol=>e['symbol'],:group=>@c.times }
+    e.each{|cs|
+      @v.msg{"STAT:Symbol:compare [#{cs.text}] and [#{val}]"}
+      case e.name
+      when 'enum'
+        next unless cs.text == val
+        set['msg']=cs['msg']
+      when 'regexp'
+        next unless /#{cs.text}/ === val
+        set['msg']=cs['msg']
+      when 'range'
+        next unless ReRange.new(cs.text) == val
+        set['level']=cs['msg']
+      end
+      set['class']=cs['class']
+      @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
+      break true
+    } || set.update({'msg'=>'N/A','hl'=>'warn'})
+    set
+  end
+
+  def select_id(id)
+    return @dbl.select_id('symbol',id) rescue SelectID
+    return @dba.select_id('symbol',id)
   end
 end

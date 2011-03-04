@@ -2,7 +2,7 @@
 require "json"
 require "libxmldoc"
 require "libview"
-require "libmodview"
+require "libmodview0"
 require "librepeat"
 include ModView
 #abort "Usage: devview < field_file" if ARGV.size < 1

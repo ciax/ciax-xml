@@ -1,12 +1,13 @@
 #!/usr/bin/ruby
 require "json"
-
+require "libxmldoc"
+require "libview"
 #abort "Usage: symcomv < file" if ARGV.size < 1
 
 stat=JSON.load(gets(nil))
-if type=stat['frame']
-  require "libfrmsym"
-  sym=FrmSym.new(type)
+if frm=stat['frame']
+  fdb=XmlDoc.new('fdb',frm)
+  sym=View.new(fdb)
   res=sym.convert(stat)
 elsif type=stat['class']
   require "libclssym"

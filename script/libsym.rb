@@ -14,6 +14,9 @@ class Sym
 
   def convert(stat)
     conv={}
+    ['id','class','frame','time'].each{|key|
+      conv[key]=stat[key] if stat[key]
+    }
     if @tbl
       @rep.each(@tbl){|e|
         id=@rep.subst(e['id'])
@@ -22,10 +25,6 @@ class Sym
           e=@com.select_id('symbol',ref)
         end
         conv[id]=get_symbol(e,stat[id])
-      }
-    else
-      stat.each{|key,val|
-        conv[key]=get_symbol([],val)
       }
     end
     conv
@@ -54,7 +53,7 @@ class Sym
       set['class']=cs['class']
       @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
       break true
-    } || set.update({'msg'=>'N/A','hl'=>'warn'})
+    }
     set
   end
 end

@@ -29,6 +29,7 @@ class Label
       case stat[id]
       when Hash
         result[id]=stat[id].update(@label[id])
+      when nil
       else
         val=stat[id]
         result[id]=@label[id]

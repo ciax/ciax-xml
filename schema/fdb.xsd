@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="shift_jis"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdb="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:vdb="http://ciax.sum.naoj.org/ciax-xml/vdb" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdb="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <!--Device database-->
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" schemaLocation="fdbr.xsd" />
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" schemaLocation="fdbc.xsd" />
-  <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/vdb" schemaLocation="vdb.xsd" />
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/sdb" schemaLocation="sdb.xsd" />
   <xsd:element name="fdb">
     <xsd:complexType>

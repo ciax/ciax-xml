@@ -8,7 +8,7 @@ class Label
     if xpath
       db.find_each(domain,xpath){|e|
         sym=e['label'] || next
-        id=e[key]
+        id=e[key] || next
         @label[id]={'label'=>sym}
         @label[id]['group']=e['group'] if e['group']
       }

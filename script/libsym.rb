@@ -15,7 +15,10 @@ class Sym
   def convert(stat)
     conv={}
     ['id','class','frame','time'].each{|key|
-      conv[key]=stat[key] if stat[key]
+      if stat[key]
+        conv[key]=stat[key]
+        stat.delete(key)
+      end
     }
     if @tbl
       @rep.each(@tbl){|e|
@@ -25,6 +28,10 @@ class Sym
           e=@com.select_id('symbol',ref)
         end
         conv[id]=get_symbol(e,stat[id])
+        }
+    else
+      stat.each{|key,val|
+        conv[key]=get_symbol([],val)
       }
     end
     conv

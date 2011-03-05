@@ -66,7 +66,7 @@
           <data encode="chr" label="FINS Param:Start Address(L)" type="formula">0x00</data>
           <data encode="chr" label="FINS Param:Bit Number" type="formula">0x00</data>
           <data encode="chr" label="FINS Param:Data Length (H)" type="text">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (L)" type="text">0x03</data>
+          <data encode="chr" label="FINS Param:Data Length (L)" type="text">0x04</data>
           <data encode="bew" label="FINS Param:Bit Data" type="text">0x00</data>
           <data encode="bew" label="FINS Param:Bit Data" type="text">0x00</data>
           <data encode="bew" label="FINS Param:Bit Data" type="text">0x00</data>

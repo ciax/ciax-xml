@@ -36,10 +36,16 @@ class FrmRsp
     else
       @fary=[frame]
     end
-    getfield_rec(@fdb['rspframe'])
-    if cc=@stat.delete('cc')
-      cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
-      @v.msg{"Verify:CC OK <#{cc}>"}
+    begin
+      getfield_rec(@fdb['rspframe'])
+      if cc=@stat.delete('cc')
+        cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
+        @v.msg{"Verify:CC OK <#{cc}>"}
+      end
+    rescue
+      @fary=[]
+      @frame=''
+      raise $!
     end
     @stat['time']="%.3f" % time.to_f
     Hash[@stat]

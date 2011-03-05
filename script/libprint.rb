@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libsymtbl"
 require "libcircular"
 class Print
   def initialize

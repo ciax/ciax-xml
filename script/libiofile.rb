@@ -2,7 +2,6 @@
 require "json"
 require "libverbose"
 class IoFile
-  include JSON
   VarDir="#{ENV['HOME']}/.var"
   JsonDir=VarDir+"/json"
   attr_reader :time

@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "xml"
-include XML
 
 class SelectID < RuntimeError ; end
 
@@ -11,8 +10,8 @@ class XmlGn
     case f
     when String
       test(?r,f) || raise(SelectID)
-      @e=Document.file(f).root
-    when Node
+      @e=XML::Document.file(f).root
+    when XML::Node
       @e=f
     else
       raise "Parameter shoud be String or Node"

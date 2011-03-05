@@ -20,6 +20,7 @@ class Sym
         stat.delete(key)
       end
     }
+    tbl={}
     if @doc
       @rep.each(@doc['symbol']){|e|
         id=@rep.subst(e['id'])
@@ -30,13 +31,12 @@ class Sym
             e=@com.select_id('symbol',ref)
           end
         end
-        conv[id]=get_symbol(e,stat[id])
-        }
-    else
-      stat.each{|key,val|
-        conv[key]=get_symbol([],val)
+        tbl[id]=get_symbol(e,stat[id])
       }
     end
+    stat.each{|id,val|
+      conv[id]=tbl[id] ? tbl[id] : get_symbol([],val)
+    }
     conv
   end
 

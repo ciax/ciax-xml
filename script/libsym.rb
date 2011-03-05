@@ -21,7 +21,7 @@ class Sym
       end
     }
     tbl={}
-    if @doc
+    if @doc['symbol']
       @rep.each(@doc['symbol']){|e|
         id=@rep.subst(e['id'])
         if ref=e['ref']

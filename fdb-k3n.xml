@@ -26,11 +26,11 @@
       <field decode="chr" label="Prefix" length="1">2</field>
       <ccrange method="bcc">
         <field label="Node" length="4">0000</field>
-        <field assign="ecode" label="Exit Code" length="2" symbol="ecode">00</field>
+        <field assign="ecode" label="Exit Code" length="2">00</field>
         <select>
           <response id="getstat">
             <field label="MRC SRC" length="4">0101</field>
-            <field assign="rcode" label="Response Code" length="4" symbol="rcode" />
+            <field assign="rcode" label="Response Code" length="4" />
             <field assign="stat" label="Status" length="8" />
           </response>
         </select>
@@ -38,10 +38,6 @@
       </ccrange>
       <field assign="cc" decode="chr" label="BCC" length="1" />
     </rspframe>
-    <view xmlns="http://ciax.sum.naoj.org/ciax-xml/vdb">
-      <stat id="ecode" symbol="ecode"></stat>
-      <stat id="rcode" symbol="rcode" />
-    </view>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <enum id="rcode" label="Response Code">
         <case class="normal" msg="OK">0000</case>

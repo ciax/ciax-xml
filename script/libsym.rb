@@ -5,8 +5,8 @@ require "librerange"
 require "librepeat"
 
 class Sym
-  def initialize(tbl)
-    @tbl=tbl
+  def initialize(doc)
+    @doc=doc
     @com=XmlDoc.new('sdb','all')
     @rep=Repeat.new
     @v=Verbose.new("Symbol")
@@ -20,12 +20,15 @@ class Sym
         stat.delete(key)
       end
     }
-    if @tbl
-      @rep.each(@tbl){|e|
+    if @doc
+      @rep.each(@doc['symbol']){|e|
         id=@rep.subst(e['id'])
         if ref=e['ref']
-          e=@tbl.select_id('symbol',ref) rescue SelectID
-          e=@com.select_id('symbol',ref)
+          begin
+            e=@doc.select_id('symbol',ref)
+          rescue SelectID
+            e=@com.select_id('symbol',ref)
+          end
         end
         conv[id]=get_symbol(e,stat[id])
         }

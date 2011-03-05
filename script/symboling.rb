@@ -10,6 +10,6 @@ if frm=stat['frame']
 elsif cls=stat['class']
   doc=XmlDoc.new('cdb',cls)
 end
-sym=Sym.new(doc['symbol'])
+sym=Sym.new(doc)
 res=sym.convert(stat)
 puts JSON.dump(res)

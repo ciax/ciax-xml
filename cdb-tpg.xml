@@ -21,5 +21,9 @@
         <float ref="ch1" />
       </value>
     </status>
+<symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+<enum id="st1" ref="tpg:stat" />
+<enum id="st2" ref="tpg:stat" />
+</symbol>
   </class>
 </cdb>

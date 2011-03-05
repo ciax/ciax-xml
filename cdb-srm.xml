@@ -65,5 +65,13 @@
         <binary bit="1" ref="c1d0" />
       </value>
     </status>
-  </class>
+<symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+<enum id="iid" ref="srm:inst" />
+<enum id="ipw" ref="off-warn" />
+<enum id="stp" ref="warn" />
+<enum id="ccd" ref="warn" />
+<enum id="lan" ref="hide" />
+<enum id="c3p" ref="hide" />
+<enum id="c3e" ref="alarm" />
+</symbol></class>
 </cdb>

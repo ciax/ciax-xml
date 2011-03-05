@@ -44,5 +44,12 @@
         <float ref="p" />
       </value>
     </status>
+<symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+<enum id="bs"  ref="warn"/>
+<enum id="con"  ref="normal"/>
+<enum id="err"  ref="slo:err"/>
+<enum id="pos"  ref="slo:pos"/>
+<enum id="abs"  ref="slo:pulse"/>
+</symbol>
   </class>
 </cdb>

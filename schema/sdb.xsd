@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:include schemaLocation="range.xsd" />
+  <xsd:include schemaLocation="repeat.xsd" />
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="id" type="xsd:string" use="required" />
     <xsd:attribute name="ref" type="xsd:string" use="optional" />
     <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
   <!--root-->
+  <xsd:group name="type">
+    <xsd:choice>
+      <xsd:element ref="sdb:repeat" />
+      <xsd:element ref="sdb:enum" />
+      <xsd:element ref="sdb:regexp" />
+      <xsd:element ref="sdb:range" />
+      <xsd:element ref="sdb:val" />
+    </xsd:choice>
+  </xsd:group>
   <xsd:element name="sdb">
     <xsd:complexType>
       <xsd:sequence>
@@ -17,18 +27,19 @@
   <!--symbol-->
   <xsd:element name="symbol">
     <xsd:complexType>
-      <xsd:choice maxOccurs="unbounded">
-        <xsd:element ref="sdb:enum" />
-        <xsd:element ref="sdb:regexp" />
-        <xsd:element ref="sdb:range" />
-        <xsd:element ref="sdb:val" />
-      </xsd:choice>
+      <xsd:group maxOccurs="unbounded" ref="sdb:type" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:group maxOccurs="unbounded" ref="sdb:type" />
+      <xsd:attributeGroup ref="sdb:repeat" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="enum">
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element ref="sdb:case" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="sdb:case" minOccurs="0" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
@@ -36,9 +47,25 @@
   <xsd:element name="regexp">
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element ref="sdb:case" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="sdb:case" minOccurs="0" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="range">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="sdb:case" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
+      <xsd:attribute name="type">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="FLOAT" />
+            <xsd:enumeration value="INT" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="val">
@@ -60,22 +87,6 @@
     <xsd:attribute name="msg" type="xsd:string" use="required" />
   </xsd:attributeGroup>
   <!--cases-->
-  <xsd:element name="range">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:element ref="sdb:case" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:choice>
-      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="type">
-        <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="FLOAT" />
-            <xsd:enumeration value="INT" />
-          </xsd:restriction>
-        </xsd:simpleType>
-      </xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
   <xsd:element name="case">
     <xsd:complexType>
       <xsd:simpleContent>

@@ -26,5 +26,12 @@
         <float ref="htr" />
       </value>
     </status>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+      <repeat from="0" to="7">
+        <val id="ch$_" />
+      </repeat>
+      <val id="sp"/>
+      <val id="htr"/>
+    </symbol>
   </class>
 </cdb>

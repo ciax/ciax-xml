@@ -140,5 +140,28 @@
         <int ref="x:27" />
       </value>
     </status>
+<symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+<enum id="ecode" ref="mel:ecode" />
+<enum id="rdy" ref="normal" />
+<enum id="pse" ref="warn" />
+<enum id="emg" ref="alarm" />
+<enum id="stp" ref="warn" />
+<enum id="run" ref="normal" />
+<enum id="jak" ref="normal" />
+<enum id="con" ref="normal" />
+<enum id="flt" ref="alarm" />
+<enum id="msr" ref="normal" />
+<enum id="msl" ref="normal" />
+<enum id="jd1" ref="normal" />
+<enum id="jd2" ref="normal" />
+<enum id="jd3" ref="normal" />
+<enum id="jd4" ref="normal" />
+<enum id="mdar" ref="mel:motor" />
+<enum id="mdal" ref="mel:motor" />
+<enum id="bvl" ref="mel:battery" />
+<enum id="ist" ref="mel:inst" />
+<enum id="jpos" ref="mel:jpos" />
+</symbol>
   </class>
 </cdb>
+

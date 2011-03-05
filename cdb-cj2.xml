@@ -67,11 +67,11 @@
         <statement format="setbit 2 1" />
         <statement format="getstat" />
       </session>
-      <session id="rotout" label="Movable Flange Rotation for Loading">
+      <session id="mrotout" label="Movable Flange Rotation for Loading">
         <statement format="setbit 2 2" />
         <statement format="getstat" />
       </session>
-      <session id="rotin" label="Movable Flange Rotation for Storing">
+      <session id="mrotin" label="Movable Flange Rotation for Storing">
         <statement format="setbit 2 3" />
         <statement format="getstat" />
       </session>
@@ -79,7 +79,7 @@
         <statement format="setbit 2 4" />
         <statement format="getstat" />
       </session>
-      <session id="mjup" label="Movable Flange Jack Down">
+      <session id="mjdw" label="Movable Flange Jack Down">
         <statement format="setbit 2 5" />
         <statement format="getstat" />
       </session>
@@ -145,7 +145,7 @@
         <periodic period="300" />
         <command>upd</command>
       </event>
-      <event blocking="." interrupt="pause" label="On Motion">
+      <event blocking="[fmt].+" interrupt="pause" label="On Motion">
         <while ref="isu" val="1" />
         <command>upd</command>
       </event>
@@ -252,11 +252,23 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+<enum id="emg" ref="alarm"/>
+<enum id="pse" ref="warn"/>
+<enum id="rdy" ref="off-warn"/>
+<enum id="cmp" ref="normal"/>
+<enum id="isu" ref="normal"/>
       <enum id="ctl">
         <case class="normal" msg="AUTO">10</case>
         <case class="normal" msg="MANUAL">01</case>
         <case class="alarm" msg="N/A">00</case>
       </enum>
+<enum id="fhk" ref="hook"/>
+<enum id="fjk" ref="jack"/>
+<enum id="mhk" ref="hook"/>
+<enum id="mjk" ref="jack"/>
+<enum id="mrt" ref="rot"/>
+<enum id="mtr" ref="mov"/>
+<enum id="chg" ref="mov"/>
       <enum id="hook">
         <case class="normal" msg="HOOK">10</case>
         <case class="normal" msg="UNHOOK">01</case>
@@ -282,6 +294,10 @@
         <case class="normal" msg="CLOSE">01</case>
         <case class="alarm" msg="N/A">00</case>
       </enum>
+<enum id="fipw" ref="off-warn"/>
+<enum id="fcpw" ref="off-warn"/>
+<enum id="mipw" ref="off-warn"/>
+<enum id="mcpw" ref="off-warn"/>
     </symbol>
   </class>
 </cdb>

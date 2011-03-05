@@ -24,5 +24,10 @@
         </value>
       </repeat>
     </status>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+      <repeat from="1" to="6">
+        <value id="v$_"/>
+      </repeat>
+    </symbol>
   </class>
 </cdb>

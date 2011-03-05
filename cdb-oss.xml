@@ -136,7 +136,7 @@
       </repeat>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <enum id="rsel">
+      <enum id="rts">
         <case class="warn" msg="PFO">1</case>
         <case class="warn" msg="PFI">2</case>
         <case class="normal" msg="CAS">4</case>
@@ -144,7 +144,7 @@
         <case class="warn" msg="NSI">10</case>
         <case class="alarm" msg="N/A">.</case>
       </enum>
-      <enum id="inst">
+      <enum id="iid">
         <case class="warn" msg="NONE">0</case>
         <case class="normal" msg="IRCS">1</case>
         <case class="normal" msg="CIAO">3</case>

@@ -20,6 +20,7 @@
         <case class="hide" msg="OK">000000</case>
         <case class="alarm" msg="Error">.</case>
       </regexp>
+      <range id="flow" ref="k3n:flow"/>
     </symbol>
   </class>
 </cdb>

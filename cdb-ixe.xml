@@ -190,5 +190,15 @@
         </value>
       </repeat>
     </status>
+<symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+<enum id="rdy" ref="off-warn" />
+<enum id="srq" ref="off-warn" />
+<enum id="pme" ref="alarm" />
+<enum id="pse" ref="alarm" />
+<enum id="oes" ref="alarm" />
+<enum id="ees" ref="alarm" />
+<enum id="trm" ref="off-warn" />
+<enum id="cmd" ref="off-warn" />
+</symbol>
   </class>
 </cdb>

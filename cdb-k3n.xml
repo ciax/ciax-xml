@@ -7,11 +7,11 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s%s" id="err" label="STAT" symbol="err">
+      <value format="%s%s" id="err" label="STAT">
         <string ref="rcode" />
         <string ref="ecode" />
       </value>
-      <value format="%4.2f" id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="k3n:flow">
+      <value format="%4.2f" id="flow" label="Helium Compressor Coolant Flow(l/min)">
         <float decimal="2" ref="stat" />
       </value>
     </status>
@@ -20,7 +20,13 @@
         <case class="hide" msg="OK">000000</case>
         <case class="alarm" msg="Error">.</case>
       </regexp>
-      <range id="flow" ref="k3n:flow"/>
+      <range id="flow" type="FLOAT">
+        <case class="alarm" msg="HH">6:</case>
+        <case class="warn" msg="H">5:&lt;6</case>
+        <case class="normal" msg="M">4:&lt;5</case>
+        <case class="warn" msg="L">3:&lt;4</case>
+        <case class="alarm" msg="LL">:&lt;3</case>
+      </range>
     </symbol>
   </class>
 </cdb>

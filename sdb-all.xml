@@ -1,153 +1,52 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<sdb xsi:schemaLocation='http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd' xmlns='http://ciax.sum.naoj.org/ciax-xml/sdb' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<sdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <symbol>
-    <enum id='tpg:stat'>
-      <case class='hide' msg='Measurment data okay'>0</case>
-      <case class='warn' msg='Underrange'>1</case>
-      <case class='warn' msg='Overrange'>2</case>
-      <case class='warn' msg='Sensor error'>3</case>
-      <case class='warn' msg='Sensor off'>4</case>
-      <case class='warn' msg='No sensor'>5</case>
-      <case class='warn' msg='Identification error'>6</case>
+    <enum id="iid_tsc" label="Instrument ID by TSC">
+      <case class="warn" msg="NONE">0</case>
+      <case class="normal" msg="IRCS">1</case>
+      <case class="normal" msg="CIAO">3</case>
+      <case class="normal" msg="FOCAS">5</case>
+      <case class="normal" msg="COMICS">7</case>
+      <case class="normal" msg="K3D">10</case>
+      <case class="normal" msg="MOIRCS">12</case>
+      <case class="normal" msg="CIAX3">13</case>
+      <case class="normal" msg="N/A">.</case>
     </enum>
-    <enum id='slo:err'>
-      <case class='hide' msg='No Error'>0</case>
-      <case class='alarm' msg='Could not burn flash successfully'>1</case>
-      <case class='alarm' msg='Could not download file'>2</case>
-      <case class='alarm' msg='Not enough memory to execute user program'>3</case>
-      <case class='alarm' msg='Attempt to access a non-existent array element'>4</case>
-      <case class='alarm' msg='Unknown Error'>.</case>
+    <enum id="iid_ac" label="Instrument ID by Auto Connector">
+      <case class="warn" msg="NONE">0</case>
+      <case class="normal" msg="CIAX3">1</case>
+      <case class="normal" msg="COMICS">2</case>
+      <case class="normal" msg="CIAO">3</case>
+      <case class="normal" msg="FOCAS">4</case>
+      <case class="normal" msg="IRCS">5</case>
+      <case class="normal" msg="N/A">6</case>
+      <case class="normal" msg="MOIRCS">7</case>
+      <case class="normal" msg="MP-CS1">8</case>
+      <case class="normal" msg="MP-CS2">9</case>
     </enum>
-    <enum id='slo:pos'>
-      <case class='normal' msg='INIT'>0001</case>
-      <case class='normal' msg='STOCK'>0010</case>
-      <case class='normal' msg='FOCUS'>0100</case>
-      <case class='normal' msg='ROT'>1000</case>
-      <case class='alarm' msg='N/A'>.</case>
+    <enum id="normal">
+      <case class="normal" msg="ON">1</case>
+      <case class="normal" msg="OFF">0</case>
     </enum>
-    <enum id='oss:inst'>
-      <case class='warn' msg='NONE'>0</case>
-      <case class='normal' msg='IRCS'>1</case>
-      <case class='normal' msg='CIAO'>3</case>
-      <case class='normal' msg='FOCAS'>5</case>
-      <case class='normal' msg='COMICS'>7</case>
-      <case class='normal' msg='K3D'>10</case>
-      <case class='normal' msg='MOIRCS'>12</case>
-      <case class='normal' msg='CIAX3'>13</case>
-      <case class='normal' msg='N/A'>.</case>
+    <enum id="warn">
+      <case class="warn" msg="ON">1</case>
+      <case class="normal" msg="OFF">0</case>
     </enum>
-    <enum id='oss:rsel'>
-      <case class='warn' msg='PFO'>1</case>
-      <case class='warn' msg='PFI'>2</case>
-      <case class='normal' msg='CAS'>4</case>
-      <case class='warn' msg='NSO'>8</case>
-      <case class='warn' msg='NSI'>10</case>
-      <case class='alarm' msg='N/A'>.</case>
+    <enum id="off-warn">
+      <case class="normal" msg="ON">1</case>
+      <case class="warn" msg="OFF">0</case>
     </enum>
-    <regexp id='oss:login'>
-      <case class='alarm' msg='OSS Login'>OSS</case>
-      <case class='normal' msg='LOGIN'>CXWS</case>
-      <case class='warn' msg='LOGOUT'>.</case>
-    </regexp>
-    <enum id='oss:rpw'>
-      <case class='warn' msg='ON'>1</case>
-      <case class='normal' msg='OFF'>2</case>
+    <enum id="alarm">
+      <case class="alarm" msg="ON">1</case>
+      <case class="hide" msg="OFF">0</case>
     </enum>
-    <enum id='oss:rps'>
-      <case class='normal' msg='OFF'>11</case>
-      <case class='normal' msg='0DEG'>10</case>
-      <case class='normal' msg='-4DEG'>01</case>
-      <case class='alarm' msg='N/A'>.</case>
+    <enum id="off-alarm">
+      <case class="hide" msg="ON">1</case>
+      <case class="alarm" msg="OFF">0</case>
     </enum>
-    <enum id='srm:inst'>
-      <case class='warn' msg='NONE'>0</case>
-      <case class='normal' msg='CIAX3'>1</case>
-      <case class='normal' msg='COMICS'>2</case>
-      <case class='normal' msg='CIAO'>3</case>
-      <case class='normal' msg='FOCAS'>4</case>
-      <case class='normal' msg='IRCS'>5</case>
-      <case class='normal' msg='N/A'>6</case>
-      <case class='normal' msg='MOIRCS'>7</case>
-      <case class='normal' msg='MP-CS1'>8</case>
-      <case class='normal' msg='MP-CS2'>9</case>
+    <enum id="hide">
+      <case class="hide" msg="ON">1</case>
+      <case class="hide" msg="OFF">0</case>
     </enum>
-    <enum id='mel:ecode' label='ExitCode'>
-      <case class='hide' msg='OK'>0000</case>
-      <case class='alarm' msg='RW Region Error'>0002</case>
-      <case class='alarm' msg='CMD Code Error'>0050</case>
-      <case class='alarm' msg='Devide Num Error'>0056</case>
-      <case class='alarm' msg='Communication Error'>005B</case>
-      <case class='alarm' msg='CPU Watch timeout Error'>0060</case>
-      <case class='alarm' msg='Unknown'>.</case>
-    </enum>
-    <enum id='mel:inst'>
-      <case class='normal' msg='MOIRCS'>2</case>
-      <case class='warn' msg='N/A'>.</case>
-    </enum>
-    <enum id='mel:jpos'>
-      <case class='normal' msg='D'>0</case>
-      <case class='normal' msg='1(L)'>1</case>
-      <case class='normal' msg='2(M)'>2</case>
-      <case class='normal' msg='3(H)'>3</case>
-      <case class='normal' msg='CHG'>4</case>
-      <case class='warn' msg='N/A'>.</case>
-    </enum>
-    <enum id='normal'>
-      <case class='normal' msg='ON'>1</case>
-      <case class='normal' msg='OFF'>0</case>
-    </enum>
-    <enum id='warn'>
-      <case class='warn' msg='ON'>1</case>
-      <case class='normal' msg='OFF'>0</case>
-    </enum>
-    <enum id='off-warn'>
-      <case class='normal' msg='ON'>1</case>
-      <case class='warn' msg='OFF'>0</case>
-    </enum>
-    <enum id='alarm'>
-      <case class='alarm' msg='ON'>1</case>
-      <case class='hide' msg='OFF'>0</case>
-    </enum>
-    <enum id='off-alarm'>
-      <case class='hide' msg='ON'>1</case>
-      <case class='alarm' msg='OFF'>0</case>
-    </enum>
-    <enum id='hide'>
-      <case class='hide' msg='ON'>1</case>
-      <case class='hide' msg='OFF'>0</case>
-    </enum>
-    <range id='slo:pulse' type='FLOAT'>
-      <case class='normal' msg='INIT'>0:0.5</case>
-      <case class='normal' msg='FOCUS'>12.3:13.2</case>
-      <case class='normal' msg='ROT'>122.5:123.5</case>
-      <case class='normal' msg='WAIT'>184.5:185.5</case>
-      <case class='normal' msg='STOCK'>200:201</case>
-    </range>
-    <range id='oma:pres' type='FLOAT'>
-      <case class='alarm' msg='HH'>110:</case>
-      <case class='warn' msg='H'>105:&lt;110</case>
-      <case class='normal' msg='M'>95:&lt;105</case>
-      <case class='warn' msg='L'>90:&lt;95</case>
-      <case class='alarm' msg='LL'>:&lt;90</case>
-    </range>
-    <range id='mel:motor' type='INT'>
-      <case class='alarm' msg='LOW'>:10</case>
-      <case class='normal' msg='OK'>10&lt;:30</case>
-      <case class='alarm' msg='HIGH'>30&lt;:</case>
-    </range>
-    <range id='mel:battery' type='FLOAT'>
-      <case class='alarm' msg='LOW'>:20</case>
-      <case class='warn' msg='LESS'>20&lt;:22</case>
-      <case class='normal' msg='OK'>22&lt;:26</case>
-      <case class='warn' msg='FULL'>26&lt;:28</case>
-      <case class='alarm' msg='HIGH'>28&lt;:</case>
-    </range>
-    <range id='k3n:flow' type='FLOAT'>
-      <case class='alarm' msg='HH'>6:</case>
-      <case class='warn' msg='H'>5:&lt;6</case>
-      <case class='normal' msg='M'>4:&lt;5</case>
-      <case class='warn' msg='L'>3:&lt;4</case>
-      <case class='alarm' msg='LL'>:&lt;3</case>
-    </range>
   </symbol>
 </sdb>

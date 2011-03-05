@@ -49,32 +49,32 @@
       <value format="%3.2f" id="pl" label="Limit (W)" group="l">
         <float ref="p" />
       </value>
-      <value format="%s" id="sw" label="OUTPUT ON/OFF" symbol="warn" group="s1">
+      <value format="%s" id="sw" label="OUTPUT ON/OFF" group="s1">
         <string ref="f1" />
       </value>
-      <value format="%s" id="tmp" label="OverHeat" symbol="alarm" group="s1">
+      <value format="%s" id="tmp" label="OverHeat" group="s1">
         <string ref="f2" />
       </value>
-      <value format="%s" id="kn1" label="Wheel Knov Fine" symbol="normal" group="s2">
+      <value format="%s" id="kn1" label="Wheel Knov Fine" group="s2">
         <string ref="f3" />
       </value>
-      <value format="%s" id="kn2" label="Wheel Knov Unlock" symbol="normal" group="s2">
+      <value format="%s" id="kn2" label="Wheel Knov Unlock" group="s2">
         <string ref="f4" />
       </value>
-      <value format="%s" id="rem" label="REMOTE" symbol="normal" group="s3">
+      <value format="%s" id="rem" label="REMOTE" group="s3">
         <string ref="f5" />
       </value>
-      <value format="%s" id="loc" label="Local Lock" symbol="normal" group="s3">
+      <value format="%s" id="loc" label="Local Lock" group="s3">
         <string ref="f6" />
       </value>
     </status>
-<symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-<enum id="sw" ref="warn" />
-<enum id="tmp" ref="alarm" />
-<enum id="kn1" ref="normal" />
-<enum id="kn2" ref="normal" />
-<enum id="rem" ref="normal" />
-<enum id="loc" ref="normal" />
-</symbol>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+      <enum id="sw" ref="warn" />
+      <enum id="tmp" ref="alarm" />
+      <enum id="kn1" ref="normal" />
+      <enum id="kn2" ref="normal" />
+      <enum id="rem" ref="normal" />
+      <enum id="loc" ref="normal" />
+    </symbol>
   </class>
 </cdb>

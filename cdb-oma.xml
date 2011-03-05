@@ -13,9 +13,18 @@
       </event>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%4.2f" id="pres" label="Air Pressure (Psi)" symbol="oma:pres">
+      <value format="%4.2f" id="pres" label="Air Pressure (Psi)">
         <float decimal="2" ref="stat" />
       </value>
     </status>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+      <range id="pres" type="FLOAT">
+        <case class="alarm" msg="HH">110:</case>
+        <case class="warn" msg="H">105:&lt;110</case>
+        <case class="normal" msg="M">95:&lt;105</case>
+        <case class="warn" msg="L">90:&lt;95</case>
+        <case class="alarm" msg="LL">:&lt;90</case>
+      </range>
+    </symbol>
   </class>
 </cdb>

@@ -151,28 +151,28 @@
       </repeat>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s" id="rdy" label="Comm Ready" symbol="off-warn" group="s1">
+      <value format="%s" id="rdy" label="Comm Ready" group="s1">
         <binary bit="0" ref="stat" />
       </value>
-      <value format="%s" id="srq" label="SRQ" symbol="off-warn" group="s1">
+      <value format="%s" id="srq" label="SRQ" group="s1">
         <binary bit="1" ref="stat" />
       </value>
-      <value format="%s" id="pme" label="Program Error" symbol="alarm" group="s1">
+      <value format="%s" id="pme" label="Program Error" group="s1">
         <binary bit="3" ref="stat" />
       </value>
-      <value format="%s" id="pse" label="Power Stage Error" symbol="alarm" group="s1">
+      <value format="%s" id="pse" label="Power Stage Error" group="s1">
         <binary bit="4" ref="stat" />
       </value>
-      <value format="%s" id="oes" label="ONE EM Stop" symbol="alarm" group="s1">
+      <value format="%s" id="oes" label="ONE EM Stop" group="s1">
         <binary bit="5" ref="stat" />
       </value>
-      <value format="%s" id="ees" label="EXT EM Stop" symbol="alarm" group="s1">
+      <value format="%s" id="ees" label="EXT EM Stop" group="s1">
         <binary bit="6" ref="stat" />
       </value>
-      <value format="%s" id="trm" label="Terminal Mode" symbol="off-warn" group="s2">
+      <value format="%s" id="trm" label="Terminal Mode" group="s2">
         <binary bit="2" ref="stat" />
       </value>
-      <value format="%s" id="cmd" label="Computer Mode" symbol="off-warn" group="s2">
+      <value format="%s" id="cmd" label="Computer Mode" group="s2">
         <binary bit="7" ref="stat" />
       </value>
       <repeat from="1" to="6">
@@ -190,15 +190,15 @@
         </value>
       </repeat>
     </status>
-<symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-<enum id="rdy" ref="off-warn" />
-<enum id="srq" ref="off-warn" />
-<enum id="pme" ref="alarm" />
-<enum id="pse" ref="alarm" />
-<enum id="oes" ref="alarm" />
-<enum id="ees" ref="alarm" />
-<enum id="trm" ref="off-warn" />
-<enum id="cmd" ref="off-warn" />
-</symbol>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+      <enum id="rdy" ref="off-warn" />
+      <enum id="srq" ref="off-warn" />
+      <enum id="pme" ref="alarm" />
+      <enum id="pse" ref="alarm" />
+      <enum id="oes" ref="alarm" />
+      <enum id="ees" ref="alarm" />
+      <enum id="trm" ref="off-warn" />
+      <enum id="cmd" ref="off-warn" />
+    </symbol>
   </class>
 </cdb>

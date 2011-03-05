@@ -156,49 +156,49 @@
       </event>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s" id="emg" label="GL:EMG STOP" symbol="alarm">
+      <value format="%s" id="emg" label="GL:EMG STOP">
         <binary bit="0" ref="w:0" />
       </value>
-      <value format="%s" id="pse" label="GL:PAUSE" symbol="warn">
+      <value format="%s" id="pse" label="GL:PAUSE">
         <binary bit="1" ref="w:0" />
       </value>
-      <value format="%s" id="rdy" label="GL:READY" symbol="off-warn">
+      <value format="%s" id="rdy" label="GL:READY">
         <binary bit="3" ref="w:0" />
       </value>
-      <value format="%s" id="cmp" label="GL:COMMAND COMPLETE" symbol="normal">
+      <value format="%s" id="cmp" label="GL:COMMAND COMPLETE">
         <binary bit="14" ref="w:0" />
       </value>
-      <value format="%s" id="isu" label="GL:COMMAND ISSUED" symbol="normal">
+      <value format="%s" id="isu" label="GL:COMMAND ISSUED">
         <binary bit="15" ref="w:0" />
       </value>
-      <value format="%s%s" id="ctl" label="GL:CONTROL" symbol="ctl">
+      <value format="%s%s" id="ctl" label="GL:CONTROL">
         <binary bit="6" ref="w:0" />
         <binary bit="7" ref="w:0" />
       </value>
       <value format="%d" id="zerr" label="GL:Z SensorError">
         <int ref="zerr" />
       </value>
-      <value format="%s%s" id="fhk" label="Fix Hook" symbol="hook">
+      <value format="%s%s" id="fhk" label="Fix Hook">
         <binary bit="0" ref="w:1" />
         <binary bit="1" ref="w:1" />
       </value>
-      <value format="%s%s" id="fjk" label="Fix Jack" symbol="jack">
+      <value format="%s%s" id="fjk" label="Fix Jack">
         <binary bit="14" ref="w:1" />
         <binary bit="15" ref="w:1" />
       </value>
-      <value format="%s%s" id="mhk" label="Mov Hook" symbol="hook">
+      <value format="%s%s" id="mhk" label="Mov Hook">
         <binary bit="0" ref="w:5" />
         <binary bit="1" ref="w:5" />
       </value>
-      <value format="%s%s" id="mjk" label="Mov Jack" symbol="jack">
+      <value format="%s%s" id="mjk" label="Mov Jack">
         <binary bit="14" ref="w:5" />
         <binary bit="15" ref="w:5" />
       </value>
-      <value format="%s%s" id="mrt" label="Mov Rotation" symbol="rot">
+      <value format="%s%s" id="mrt" label="Mov Rotation">
         <binary bit="2" ref="w:5" />
         <binary bit="3" ref="w:5" />
       </value>
-      <value format="%s%s" id="mtr" label="Mov Transer" symbol="mov">
+      <value format="%s%s" id="mtr" label="Mov Transer">
         <binary bit="8" ref="w:6" />
         <binary bit="6" ref="w:6" />
       </value>
@@ -214,24 +214,24 @@
         <binary bit="2" ref="w:6" />
         <binary bit="3" ref="w:6" />
       </value>
-      <value format="%s%s" id="chg" label="CHG Plug" symbol="mov">
+      <value format="%s%s" id="chg" label="CHG Plug">
         <binary bit="6" ref="w:2" />
         <binary bit="7" ref="w:2" />
       </value>
-      <value format="%s%s" id="door" label="Door" symbol="door">
+      <value format="%s%s" id="door" label="Door">
         <binary bit="0" ref="w:9" />
         <binary bit="1" ref="w:9" />
       </value>
-      <value format="%s" id="fipw" label="Fix Inst Power" symbol="off-warn">
+      <value format="%s" id="fipw" label="Fix Inst Power">
         <binary bit="8" ref="w:9" />
       </value>
-      <value format="%s" id="fcpw" label="Fix CCD" symbol="off-warn">
+      <value format="%s" id="fcpw" label="Fix CCD">
         <binary bit="10" ref="w:9" />
       </value>
-      <value format="%s" id="mipw" label="Mov Inst Power" symbol="off-warn">
+      <value format="%s" id="mipw" label="Mov Inst Power">
         <binary bit="9" ref="w:9" />
       </value>
-      <value format="%s" id="mcpw" label="Mov CCD" symbol="off-warn">
+      <value format="%s" id="mcpw" label="Mov CCD">
         <binary bit="11" ref="w:9" />
       </value>
       <repeat from="1" to="4">
@@ -252,23 +252,23 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-<enum id="emg" ref="alarm"/>
-<enum id="pse" ref="warn"/>
-<enum id="rdy" ref="off-warn"/>
-<enum id="cmp" ref="normal"/>
-<enum id="isu" ref="normal"/>
+      <enum id="emg" ref="alarm" />
+      <enum id="pse" ref="warn" />
+      <enum id="rdy" ref="off-warn" />
+      <enum id="cmp" ref="normal" />
+      <enum id="isu" ref="normal" />
       <enum id="ctl">
         <case class="normal" msg="AUTO">10</case>
         <case class="normal" msg="MANUAL">01</case>
         <case class="alarm" msg="N/A">00</case>
       </enum>
-<enum id="fhk" ref="hook"/>
-<enum id="fjk" ref="jack"/>
-<enum id="mhk" ref="hook"/>
-<enum id="mjk" ref="jack"/>
-<enum id="mrt" ref="rot"/>
-<enum id="mtr" ref="mov"/>
-<enum id="chg" ref="mov"/>
+      <enum id="fhk" ref="hook" />
+      <enum id="fjk" ref="jack" />
+      <enum id="mhk" ref="hook" />
+      <enum id="mjk" ref="jack" />
+      <enum id="mrt" ref="rot" />
+      <enum id="mtr" ref="mov" />
+      <enum id="chg" ref="mov" />
       <enum id="hook">
         <case class="normal" msg="HOOK">10</case>
         <case class="normal" msg="UNHOOK">01</case>
@@ -294,10 +294,12 @@
         <case class="normal" msg="CLOSE">01</case>
         <case class="alarm" msg="N/A">00</case>
       </enum>
-<enum id="fipw" ref="off-warn"/>
-<enum id="fcpw" ref="off-warn"/>
-<enum id="mipw" ref="off-warn"/>
-<enum id="mcpw" ref="off-warn"/>
+      <enum id="fipw" ref="off-warn" />
+      <enum id="fcpw" ref="off-warn" />
+      <enum id="mipw" ref="off-warn" />
+      <enum id="mcpw" ref="off-warn" />
+      <enum id="fiid" ref="iid_ac" />
+      <enum id="miid" ref="iid_ac" />
     </symbol>
   </class>
 </cdb>

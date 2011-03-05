@@ -34,7 +34,6 @@
         <xsd:element ref="cdbs:int" />
       </xsd:choice>
       <xsd:attribute name="format" type="xsd:string" use="required" />
-      <xsd:attribute name="symbol" type="xsd:string" />
       <xsd:attribute name="group" type="xsd:string" />
       <xsd:attributeGroup ref="cdbs:id_attr"></xsd:attributeGroup>
     </xsd:complexType>

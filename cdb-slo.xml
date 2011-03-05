@@ -25,31 +25,50 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s" id="bs" label="Moter Moving" group="1" symbol="warn">
+      <value format="%s" id="bs" label="Moter Moving" group="1">
         <string ref="bs" />
       </value>
-      <value format="%s" id="con" label="Contact Sensor" group="1" symbol="normal">
+      <value format="%s" id="con" label="Contact Sensor" group="1">
         <string ref="in:4" />
       </value>
-      <value format="%d" id="err" label="Error Code" group="1" symbol="slo:err">
+      <value format="%d" id="err" label="Error Code" group="1">
         <int ref="err" />
       </value>
-      <value format="%s%s%s%s" id="pos" label="Arm Position" group="2" symbol="slo:pos">
+      <value format="%s%s%s%s" id="pos" label="Arm Position" group="2">
         <string ref="in:0" />
         <string ref="in:1" />
         <string ref="in:2" />
         <string ref="in:3" />
       </value>
-      <value format="%f" id="abs" label="ABS position" group="2" symbol="slo:pulse">
+      <value format="%f" id="abs" label="ABS position" group="2">
         <float ref="p" />
       </value>
     </status>
-<symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-<enum id="bs"  ref="warn"/>
-<enum id="con"  ref="normal"/>
-<enum id="err"  ref="slo:err"/>
-<enum id="pos"  ref="slo:pos"/>
-<enum id="abs"  ref="slo:pulse"/>
-</symbol>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+      <enum id="bs" ref="warn" />
+      <enum id="con" ref="normal"></enum>
+      <enum id="err">
+        <case class="hide" msg="No Error">0</case>
+        <case class="alarm" msg="Could not burn flash successfully">1</case>
+        <case class="alarm" msg="Could not download file">2</case>
+        <case class="alarm" msg="Not enough memory to execute user program">3</case>
+        <case class="alarm" msg="Attempt to access a non-existent array element">4</case>
+        <case class="alarm" msg="Unknown Error">.</case>
+      </enum>
+      <enum id="pos">
+        <case class="normal" msg="INIT">0001</case>
+        <case class="normal" msg="STOCK">0010</case>
+        <case class="normal" msg="FOCUS">0100</case>
+        <case class="normal" msg="ROT">1000</case>
+        <case class="alarm" msg="N/A">.</case>
+      </enum>
+      <range id="abs" type="FLOAT">
+        <case class="normal" msg="INIT">0:0.5</case>
+        <case class="normal" msg="FOCUS">12.3:13.2</case>
+        <case class="normal" msg="ROT">122.5:123.5</case>
+        <case class="normal" msg="WAIT">184.5:185.5</case>
+        <case class="normal" msg="STOCK">200:201</case>
+      </range>
+    </symbol>
   </class>
 </cdb>

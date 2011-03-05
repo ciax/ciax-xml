@@ -95,19 +95,19 @@
       <value format="%d" id="exit" label="Exit Code" group="1">
         <int ref="exit" />
       </value>
-      <value format="%d" id="rts" label="ROT SEL" symbol="rsel" group="1">
+      <value format="%d" id="rts" label="ROT SEL" group="1">
         <int ref="rsel" />
       </value>
-      <value format="%d" id="iid" label="CAS INST ID" symbol="inst" group="1">
+      <value format="%d" id="iid" label="CAS INST ID" group="1">
         <int ref="iid" />
       </value>
-      <value format="%s%s%s%s" id="login" label="Login Status" symbol="login" group="1">
+      <value format="%s%s%s%s" id="login" label="Login Status" group="1">
         <string ref="login0" />
         <string ref="login1" />
         <string ref="login2" />
         <string ref="login3" />
       </value>
-      <value format="%d" id="rpw" label="ROT DRIVE" symbol="rpw" group="2">
+      <value format="%d" id="rpw" label="ROT DRIVE" group="2">
         <int ref="rpw" />
       </value>
       <value format="%s" id="jpw" label="JAK DRIVE" group="2">
@@ -116,7 +116,7 @@
       <value format="%s" id="nfb" label="BOLT NFB TRIP" group="3">
         <binary bit="6" ref="bstat" />
       </value>
-      <value format="%s%s" id="rps" label="ROT POS SENSOR" symbol="rps" group="3">
+      <value format="%s%s" id="rps" label="ROT POS SENSOR" group="3">
         <binary bit="4" ref="bstat" />
         <binary bit="5" ref="bstat" />
       </value>

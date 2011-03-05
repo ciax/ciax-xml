@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libcls"
+require "libxmldoc"
 require "readline"
 
 warn "Usage: clsshell [cls] [id] [iocmd]" if ARGV.size < 1
@@ -7,8 +8,12 @@ warn "Usage: clsshell [cls] [id] [iocmd]" if ARGV.size < 1
 cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
-cdb=Cls.new(cls,id,iocmd)
-
+begin
+  doc=XmlDoc.new('cdb',cls)
+rescue SelectID
+  abort $!.to_s
+end
+cdb=Cls.new(doc,id,iocmd)
 loop {
   begin
     if line=Readline.readline(cdb.prompt,true)

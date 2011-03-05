@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libfrm"
-require "libxmldoc"
 require "libclscmd"
 require "libclsstat"
 require "libcmdbuf"
@@ -9,12 +8,8 @@ require "thread"
 
 class Cls
 
-  def initialize(cls,id,iocmd)
-    cdb=XmlDoc.new('cdb',cls)
-  rescue SelectID
-    abort $!.to_s
-  else
-    @cls=cls
+  def initialize(cdb,id,iocmd)
+    @cls=cdb['id']
     $errmsg=''
     @cmd=ClsCmd.new(cdb)
     @stat=ClsStat.new(cdb,id)

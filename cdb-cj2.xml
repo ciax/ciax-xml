@@ -4,7 +4,7 @@
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Regular status update">
         <statement format="getstat" />
-        <statement format="getzerr" />
+        <statement format="geterr" />
         <statement format="getzlen" />
       </session>
       <session id="clr" label="ClearBit">
@@ -175,8 +175,8 @@
         <binary bit="6" ref="w:0" />
         <binary bit="7" ref="w:0" />
       </value>
-      <value format="%d" id="zerr" label="GL:Z SensorError">
-        <int ref="zerr" />
+      <value format="%d" id="err" label="GL:Error Code">
+        <int ref="err" />
       </value>
       <value format="%s%s" id="fhk" label="Fix Hook">
         <binary bit="0" ref="w:1" />

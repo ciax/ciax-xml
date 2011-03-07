@@ -50,7 +50,7 @@ class Repeat
     @v.msg(1){"Substitute from [#{str}]"}
     begin
       # Sub $key => @counter[key]
-      str=str.gsub(/\$([_a-z])/){ @counter[$1] }
+      str=str.gsub(/\$([_a-z])/){ @counter[$1] || $1 }
       raise if str == ''
       str
     ensure

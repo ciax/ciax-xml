@@ -23,10 +23,6 @@
         <statement format="setbit 0 3" />
         <statement format="getstat" />
       </session>
-      <session id="resume" label="Reset Pause">
-        <statement format="setbit 0 10" />
-        <statement format="getstat" />
-      </session>
       <session id="reset" label="Reset Error">
         <statement format="setbit 0 11" />
         <statement format="getstat" />

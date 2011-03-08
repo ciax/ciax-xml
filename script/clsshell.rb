@@ -1,17 +1,18 @@
 #!/usr/bin/ruby
 require "json"
-require "libfilter"
 require "libcls"
 require "libxmldoc"
+require "libalias"
+require "libfilter"
 require "readline"
 
-warn "Usage: clsshell [cls] [id] [iocmd] (outcmd) (incmd)" if ARGV.size < 1
+warn "Usage: clsshell [cls] [id] [iocmd] (outcmd)" if ARGV.size < 1
 
 cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
 out=Filter.new(ARGV.shift)
-inp=Filter.new(ARGV.shift)
+al=Alias.new(id)
 begin
   doc=XmlDoc.new('cdb',cls)
 rescue SelectID
@@ -29,7 +30,7 @@ loop {
       puts out.filter(JSON.dump(cdb.stat))
     else
       line.split(';').each{|cmd|
-        stm=inp.filter(cmd).split(' ')
+        stm=al.alias(cmd).split(' ')
         cdb.dispatch(stm){|s|s}
       }
     end

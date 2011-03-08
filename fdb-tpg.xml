@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <frame id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">

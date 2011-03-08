@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="shift_jis"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdbc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdbc="http://ciax.sum.naoj.org/ciax-xml/cdbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="param.xsd" />

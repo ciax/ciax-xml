@@ -145,12 +145,22 @@
         <periodic period="300" />
         <command>upd</command>
       </event>
-      <event blocking="[fmt].+" interrupt="pause" label="On Motion">
+      <event blocking="^[fmtd].+" interrupt="pause" label="On Motion">
         <while ref="isu" val="1" />
         <command>upd</command>
       </event>
       <event label="On Completion">
         <onchange ref="cmp" val="1" />
+        <command>clr</command>
+        <command>upd</command>
+      </event>
+      <event label="On Emergency">
+        <onchange ref="emg" val="1" />
+        <command>clr</command>
+        <command>upd</command>
+      </event>
+      <event label="On Pause">
+        <onchange ref="pse" val="1" />
         <command>clr</command>
         <command>upd</command>
       </event>

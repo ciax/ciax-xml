@@ -1,13 +1,15 @@
 #!/usr/bin/ruby
+require "json"
 require "libcls"
 require "libxmldoc"
 require "readline"
 
-warn "Usage: clsshell [cls] [id] [iocmd]" if ARGV.size < 1
+warn "Usage: clsshell [cls] [id] [iocmd] (outcmd)" if ARGV.size < 1
 
 cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
+ocmd=ARGV.shift
 begin
   doc=XmlDoc.new('cdb',cls)
 rescue SelectID
@@ -22,7 +24,15 @@ loop {
       when /^q/
         break
       when ''
-        puts cdb.stat
+        if ocmd != ''
+          IO.popen(ocmd,'r+'){|f|
+            f.write(JSON.dump(cdb.stat))
+            f.close_write
+            puts f.read
+          }
+        else
+          puts cdb.stat
+        end
       else
         line.split(';').each{|stm|
           cdb.dispatch(stm.split(' ')){|s|s}

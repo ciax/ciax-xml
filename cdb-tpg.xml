@@ -15,10 +15,10 @@
         <float ref="ch1" />
       </value>
       <value format="%s" id="st2" label="Scroll Pump Stat" group="s2">
-        <string ref="st1" />
+        <string ref="st2" />
       </value>
       <value format="%4.2e" id="ch2" label="Scroll Pump (Torr)" group="s2">
-        <float ref="ch1" />
+        <float ref="ch2" />
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">

@@ -1,19 +1,20 @@
 #!/usr/bin/ruby
+require "libshell"
 require "libfrm"
-require "readline"
 
-warn "Usage: frmshell [dev] [id] [iocmd]" if ARGV.size < 3
+warn "Usage: frmshell [dev] [id] [iocmd] (filter)" if ARGV.size < 3
 
 dev=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
+sh=Shell.new(ARGV.shift)
 fdb=Frm.new(dev,id,iocmd)
 
 loop{
-  stm=Readline.readline("#{dev}>",true).chomp.split(" ")
+  stm=sh.input("#{dev}>"){}.chomp.split(" ")
   break if /^q/ === stm.first
   begin
-    puts fdb.transaction(stm) || fdb.field
+    puts fdb.transaction(stm) || sh.filter(JSON.dump(fdb.field))
   rescue SelectID
     puts $!.to_s
     puts "== Shell Command =="

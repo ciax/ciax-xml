@@ -6,8 +6,8 @@ abort "Usage: clsevent < status_file" if STDIN.tty?
 event=[]
 begin
   stat=JSON.load(gets(nil))
-  cdb=XmlDoc.new('cdb',stat['class'])
-  watch=ClsEvent.new(cdb)
+  doc=XmlDoc.new('cdb',stat['class'])
+  watch=ClsEvent.new(doc['watch'])
 #  puts "Label="+ev.label
 #  puts "Interval="+ev.interval
   watch.update{|k| stat[k] }

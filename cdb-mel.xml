@@ -28,12 +28,32 @@
           <argv>$1</argv>
         </statement>
       </session>
-      <session id="set_jak1" label="Set Jack Level [0-3]">
+      <session id="set_jak" label="Set Jack Level [0-3]">
         <parameters>
           <par validate="range">0:3</par>
         </parameters>
         <statement format="set_pos %d">
           <argv>$1</argv>
+        </statement>
+      </session>
+      <session id="run" label="Run to Destination Tag [1-12]">
+        <parameters>
+          <par validate="range">1:12</par>
+        </parameters>
+        <statement format="set_tag %d">
+          <argv>$1</argv>
+        </statement>
+        <statement format="start 1" />
+      </session>
+      <session id="lift" label="Lift Jack Level [0-3]">
+        <parameters>
+          <par validate="range">0:3</par>
+        </parameters>
+        <statement format="set_pos %d">
+          <argv>$1</argv>
+        </statement>
+        <statement format="start %d">
+          <argv>0x100</argv>
         </statement>
       </session>
       <session id="pause" label="Pause">

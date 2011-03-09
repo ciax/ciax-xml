@@ -72,6 +72,20 @@
         <statement format="tbl_rw 2" />
       </session>
     </commands>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw" interval="1">
+      <event>
+        <periodic period="3600" />
+        <command>upd</command>
+      </event>
+      <event>
+        <onchange ref="run" val="1" />
+        <command>clear_trig</command>
+      </event>
+      <event>
+        <onchange ref="jak" val="1" />
+        <command>clear_trig</command>
+      </event>
+    </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value format="%04X" id="ecode" label="EXIT CODE" group="1">
         <int ref="ecode" />

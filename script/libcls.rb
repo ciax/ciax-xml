@@ -30,7 +30,12 @@ class Cls
   end
 
   def stat
-    @stat.stat
+    stat={}
+    stat['wach']=(@watch.alive? ? "1" : "0")
+    stat['evet']=(@event.active? ? '1' : '0')
+    stat['isu']=(@buf.issue? ? '1' : '0')
+    stat['wait']=(@buf.wait? ? '1' : '0')
+    stat.update(@stat.stat)
   end
 
   def err?

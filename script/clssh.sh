@@ -15,4 +15,4 @@ if [ "$dmy" ] ; then
 else
     iocmd="socat - $iodst"
 fi
-clsshell $cls $id "$iocmd" "$output" "aliasing $id"
+clsshell $cls $id "$iocmd" "$output"

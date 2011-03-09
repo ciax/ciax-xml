@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -146,7 +146,7 @@
         <command>upd</command>
       </event>
       <event blocking="^[fmtd].+" interrupt="pause" label="On Motion">
-        <while ref="isu" val="1" />
+        <while ref="exe" val="1" />
         <command>upd</command>
       </event>
       <event label="On Completion">
@@ -188,13 +188,13 @@
       <value format="%s" id="cmp" label="COMMAND COMPLETE" group="g2">
         <binary bit="14" ref="w:0" />
       </value>
-      <value format="%s" id="isu" label="COMMAND ISSUED" group="g2">
+      <value format="%s" id="exe" label="COMMAND EXEC" group="g2">
         <binary bit="15" ref="w:0" />
       </value>
       <value format="%d" id="err" label="Error Code" group="g2">
         <int ref="err" />
       </value>
-      <value format="%s%s%s%s" id="fist" label="Fix Attach" group="fix">
+      <value format="%s%s%s%s" id="fis" label="Fix Attach" group="fix">
         <binary bit="0" ref="w:2" />
         <binary bit="1" ref="w:2" />
         <binary bit="2" ref="w:2" />
@@ -204,11 +204,11 @@
         <binary bit="0" ref="w:1" />
         <binary bit="1" ref="w:1" />
       </value>
-      <value format="%s%s" id="fjk" label="Fix Jack" group="fix">
+      <value format="%s%s" id="fjb" label="Fix Jack Bolt" group="fix">
         <binary bit="14" ref="w:1" />
         <binary bit="15" ref="w:1" />
       </value>
-      <value format="%s%s%s%s" id="mist" label="Mov Attach" group="mov1">
+      <value format="%s%s%s%s" id="mis" label="Mov Attach" group="mov1">
         <binary bit="0" ref="w:6" />
         <binary bit="1" ref="w:6" />
         <binary bit="2" ref="w:6" />
@@ -218,7 +218,7 @@
         <binary bit="0" ref="w:5" />
         <binary bit="1" ref="w:5" />
       </value>
-      <value format="%s%s" id="mjk" label="Mov Jack" group="mov1">
+      <value format="%s%s" id="mjb" label="Mov Jack Bolt" group="mov1">
         <binary bit="14" ref="w:5" />
         <binary bit="15" ref="w:5" />
       </value>
@@ -230,16 +230,16 @@
         <binary bit="8" ref="w:6" />
         <binary bit="6" ref="w:6" />
       </value>
-      <value format="%s" id="fipw" label="Fix Inst Power" group="fix3">
+      <value format="%s" id="fpw" label="Fix Inst Power" group="fix3">
         <binary bit="8" ref="w:9" />
       </value>
-      <value format="%s" id="fcpw" label="Fix CCD" group="fix3">
+      <value format="%s" id="fcc" label="Fix CCD Power" group="fix3">
         <binary bit="10" ref="w:9" />
       </value>
-      <value format="%s" id="mipw" label="Mov Inst Power" group="mov3">
+      <value format="%s" id="mpw" label="Mov Inst Power" group="mov3">
         <binary bit="9" ref="w:9" />
       </value>
-      <value format="%s" id="mcpw" label="Mov CCD" group="mov3">
+      <value format="%s" id="mcc" label="Mov CCD Power" group="mov3">
         <binary bit="11" ref="w:9" />
       </value>
       <repeat from="1" to="4">
@@ -252,17 +252,17 @@
           <float formula="$#/100" ref="d:($_+3)" />
         </value>
       </repeat>
-      <value format="%d" id="fiid" label="Fix Instrument ID" group="iid">
+      <value format="%d" id="fid" label="Fix Instrument ID" group="iid">
         <int ref="d:8" />
       </value>
-      <value format="%d" id="miid" label="Mov Instrument ID" group="iid">
+      <value format="%d" id="mid" label="Mov Instrument ID" group="iid">
         <int ref="d:9" />
       </value>
       <value format="%s%s" id="chg" label="CHG Plug" group="other">
         <binary bit="6" ref="w:2" />
         <binary bit="7" ref="w:2" />
       </value>
-      <value format="%s%s" id="door" label="Door" group="other">
+      <value format="%s%s" id="dor" label="Door" group="other">
         <binary bit="0" ref="w:9" />
         <binary bit="1" ref="w:9" />
       </value>
@@ -287,18 +287,18 @@
       <enum id="pse" ref="warn" />
       <enum id="rdy" ref="off-warn" />
       <enum id="cmp" ref="normal" />
-      <enum id="isu" ref="normal" />
+      <enum id="exe" ref="normal" />
       <enum id="ctl">
         <case class="normal" msg="AUTO">10</case>
         <case class="normal" msg="MANUAL">01</case>
         <case class="alarm" msg="N/A">00</case>
       </enum>
-      <enum id="fist" ref="ist" />
+      <enum id="fis" ref="ist" />
       <enum id="fhk" ref="hook" />
-      <enum id="fjk" ref="jack" />
-      <enum id="mist" ref="ist" />
+      <enum id="fjb" ref="jack" />
+      <enum id="mis" ref="ist" />
       <enum id="mhk" ref="hook" />
-      <enum id="mjk" ref="jack" />
+      <enum id="mjb" ref="jack" />
       <enum id="mrt" ref="rot" />
       <enum id="mtr" ref="mov" />
       <enum id="chg" ref="mov" />
@@ -312,17 +312,17 @@
         <case class="normal" msg="STORE">01</case>
         <case class="alarm" msg="N/A">00</case>
       </enum>
-      <enum id="door">
+      <enum id="dor">
         <case class="normal" msg="OPEN">10</case>
         <case class="normal" msg="CLOSE">01</case>
         <case class="alarm" msg="N/A">00</case>
       </enum>
-      <enum id="fipw" ref="off-warn" />
-      <enum id="fcpw" ref="off-warn" />
-      <enum id="mipw" ref="off-warn" />
-      <enum id="mcpw" ref="off-warn" />
-      <enum id="fiid" ref="iid_ac" />
-      <enum id="miid" ref="iid_ac" />
+      <enum id="fpw" ref="off-warn" />
+      <enum id="fcc" ref="off-warn" />
+      <enum id="mpw" ref="off-warn" />
+      <enum id="mcc" ref="off-warn" />
+      <enum id="fid" ref="iid_ac" />
+      <enum id="mid" ref="iid_ac" />
     </symbol>
   </class>
 </cdb>

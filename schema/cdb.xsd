@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="shift_jis"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdb="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:cdbc="http://ciax.sum.naoj.org/ciax-xml/cdbc" xmlns:cdbs="http://ciax.sum.naoj.org/ciax-xml/cdbs" xmlns:cdbw="http://ciax.sum.naoj.org/ciax-xml/cdbw" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/cdbc" schemaLocation="cdbc.xsd" />
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/cdbw" schemaLocation="cdbw.xsd" />

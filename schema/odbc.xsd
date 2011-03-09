@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="shift_jis"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/odbc" xmlns:odbc="http://ciax.sum.naoj.org/ciax-xml/odbc">
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="id" type="xsd:string" use="optional" />

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <frame id="oco" label="OMEGA Current Output(D4251)" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf" wait="1">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />

@@ -19,7 +19,7 @@
         <statement format="setbit 0 1" />
         <statement format="getstat" />
       </session>
-      <session id="resume" label="Reset Pause">
+      <session id="resetp" label="Reset Pause">
         <statement format="setbit 0 10" />
         <statement format="getstat" />
       </session>
@@ -162,7 +162,11 @@
       <event label="On Pause">
         <onchange ref="pse" val="1" />
         <command>clr</command>
-        <command>resume</command>
+        <command>resetp</command>
+        <command>upd</command>
+      </event>
+      <event label="Off Pause">
+        <onchange ref="pse" val="0" />
         <command>clr</command>
         <command>upd</command>
       </event>

@@ -5,6 +5,7 @@ require "libserver"
 
 warn "Usage: clsserver [cls] [id] [port] [iocmd]" if ARGV.size < 1
 
+$DEBUG=true
 cls=ARGV.shift
 id=ARGV.shift
 port=ARGV.shift

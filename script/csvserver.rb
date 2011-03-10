@@ -27,5 +27,5 @@ Server.new(port){|line|
       cdb.dispatch(stm.split(' ')){|s|s}
     }
   end
-  cx.mkres(cdb.stat)
+  cx.mkres(cdb.stat)+"\n"
 }

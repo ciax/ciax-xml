@@ -12,5 +12,4 @@ if [ "$dmy" ] ; then
 else
     iocmd="socat - $iodst"
 fi
-line="clsserver $cls $id $port \"$iocmd\""
-exec $line &
+clsserver $cls $id $port "$iocmd" > /dev/null 2>&1 &

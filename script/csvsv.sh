@@ -4,6 +4,7 @@
 id="$1"
 setfld $id || _usage_key "(-d)"
 [ "$iodst" ] || _die "No entry in iodst field"
+logfile="$HOME/.var/csvs_$id.log"
 echo "Listen port [udp:$port]" >&2
 echo "Connect to [$iodst]" >&2
 if [ "$dmy" ] ; then
@@ -12,4 +13,4 @@ if [ "$dmy" ] ; then
 else
     iocmd="socat - $iodst"
 fi
-csvserver $cls $id $port "$iocmd" > /dev/null 2>&1 &
+csvserver $cls $id $port "$iocmd"  > $logfile 2>&1 &

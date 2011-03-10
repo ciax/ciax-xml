@@ -5,7 +5,7 @@ require "libcxcsv"
 require "libserver"
 
 warn "Usage: clsserver [cls] [id] [port] [iocmd]" if ARGV.size < 1
-
+$DEBUG=true
 cls=ARGV.shift
 id=ARGV.shift
 port=ARGV.shift
@@ -19,7 +19,7 @@ end
 cdb=Cls.new(doc,id,iocmd)
 Server.new(port){|line|
   case line
-  when 'stat'
+  when 'stat',''
   when /stop/
     cdb.interrupt
   else
@@ -27,5 +27,5 @@ Server.new(port){|line|
       cdb.dispatch(stm.split(' ')){|s|s}
     }
   end
-  cx.mkres(cdb.stat)+"\n"
+  cx.mkres(cdb.stat)
 }

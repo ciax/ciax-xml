@@ -18,5 +18,5 @@ case $cmd  in
     stop) opt=-k ;;
     *) exit ;;
 esac
-d $opt csvserver $cls $id $port "$iocmd"
-
+line="d $opt csvserver $cls $id $port '$iocmd'"
+exec $line

@@ -21,11 +21,11 @@ class Cls
   end
 
   def prompt
-    prom = (@watch.alive? ? "&" : "")
-    prom << (@event.active? ? '@' : '')
+    prom = (stat['wach'] == "1" ? "&" : "")
+    prom << (stat['evet'] == "1" ? '@' : '')
     prom << @cls
-    prom << (@buf.issue? ? '*' : '')
-    prom << (@buf.wait? ? '#' : '')
+    prom << (stat['isu'] == "1" ? '*' : '')
+    prom << (stat['wait'] == "1" ? '#' : '')
     prom << ">"
   end
 
@@ -85,7 +85,7 @@ class Cls
         begin
           fdb.transaction(@buf.recv.split(' '))
           @stat.get_stat(fdb.field)
-        rescue RuntimeError
+        rescue
           $errmsg << $!.to_s
         end
       }

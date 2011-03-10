@@ -6,15 +6,15 @@ require "libverbose"
 class ClsCmd
   attr_reader :par
 
-  def initialize(cdb)
-    @cdb=@sel=cdb
-    @v=Verbose.new("cdb/#{cdb['id']}/cmd".upcase)
+  def initialize(doc)
+    @doc=doc
+    @v=Verbose.new("doc/#{doc['id']}/cmd".upcase)
     @rep=Repeat.new
     @par=Param.new
   end
 
   def setcmd(stm)
-    @sel=@cdb.select_id('commands',stm.first)
+    @sel=@doc.select_id('commands',stm.first)
     @par.setpar(@sel,stm)
     self
   end

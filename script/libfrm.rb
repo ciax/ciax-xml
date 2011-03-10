@@ -1,23 +1,18 @@
 #!/usr/bin/ruby
 require "libiocmd"
-require "libxmldoc"
 require "libiofile"
 require "libstat"
 require "libfrmcmd"
 require "libfrmrsp"
 
 class Frm
-  def initialize(dev,id,iocmd)
-    @fdb=XmlDoc.new('fdb',dev)
-  rescue SelectID
-    abort $!.to_s
-  else
+  def initialize(doc,id,iocmd)
     $errmsg=''
     @stat=Stat.new(id,"field")
-    @cmd=FrmCmd.new(@fdb,@stat)
-    @rsp=FrmRsp.new(@fdb,@stat)
+    @cmd=FrmCmd.new(doc,@stat)
+    @rsp=FrmRsp.new(doc,@stat)
     @v=Verbose.new("fdb/#{id}".upcase)
-    @ic=IoCmd.new(iocmd,'device_'+id,@fdb['wait'],1)
+    @ic=IoCmd.new(iocmd,'device_'+id,doc['wait'],1)
   end
 
   def field

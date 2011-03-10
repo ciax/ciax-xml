@@ -5,9 +5,9 @@ require "libstat"
 require "libiofile"
 
 class ClsStat
-  def initialize(cdb,id)
-    @cdb=cdb
-    cls=cdb['id']
+  def initialize(doc,id)
+    @doc=doc
+    cls=doc['id']
     @stat=Stat.new(id,"status")
     @stat.update({ 'id'=>id, 'class' => cls })
     @v=Verbose.new("cdb/#{cls}/stat".upcase)
@@ -19,7 +19,7 @@ class ClsStat
   def get_stat(field)
     return unless field
     @field.update(field)
-    @rep.each(@cdb['status']){|e0|
+    @rep.each(@doc['status']){|e0|
       get_val(e0)
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s

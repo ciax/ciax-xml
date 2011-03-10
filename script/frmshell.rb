@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libfilter"
+require "libxmldoc"
 require "libfrm"
 require "readline"
 
@@ -9,18 +10,27 @@ dev=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
 out=Filter.new(ARGV.shift)
-fdb=Frm.new(dev,id,iocmd)
-
+begin
+  doc=XmlDoc.new('fdb',dev)
+rescue SelectID
+  abort $!.to_s
+end
+fdb=Frm.new(doc,id,iocmd)
 loop{
   stm=Readline.readline("#{dev}>",true).chomp.split(" ")
-  break if /^q/ === stm.first
-  begin
-    puts fdb.transaction(stm) || out.filter(JSON.dump(fdb.field))
-  rescue SelectID
-    puts $!.to_s
-    puts "== Shell Command =="
-    puts " q         : Quit"
-  rescue RuntimeError
-    puts $!.to_s
+  case stm.first
+  when /^q/
+    break
+  else
+    begin
+      fdb.transaction(stm)
+    rescue SelectID
+      puts $!.to_s
+      puts "== Shell Command =="
+      puts " q         : Quit"
+    rescue RuntimeError
+      puts $!.to_s
+    end
   end
+  puts out.filter(JSON.dump(fdb.field))
 }

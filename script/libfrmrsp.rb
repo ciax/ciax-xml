@@ -5,9 +5,9 @@ require "libparam"
 class FrmRsp
   include FrmMod
 
-  def initialize(fdb,stat)
-    @fdb,@stat,@sel=fdb,stat
-    @v=Verbose.new("fdb/#{@fdb['id']}/rsp".upcase)
+  def initialize(doc,stat)
+    @doc,@stat,@sel=doc,stat
+    @v=Verbose.new("fdb/#{@doc['id']}/rsp".upcase)
     @frame=''
     @fary=[]
     @fp=0
@@ -16,7 +16,7 @@ class FrmRsp
   end
 
   def setrsp(stm)
-    cmd=@fdb.find_id('cmdframe','select',stm.first)
+    cmd=@doc.find_id('cmdframe','select',stm.first)
     @par.setpar(cmd,stm)
     @sel=cmd['response']
     self
@@ -26,18 +26,18 @@ class FrmRsp
     return "Send Only" unless @sel
     frame=yield || @v.err("No String")
     @v.msg{"ResponseFrame:[#{frame}]" }
-    if tm=@fdb['rspframe']['terminator']
+    if tm=@doc['rspframe']['terminator']
       frame.chomp!(eval('"'+tm+'"'))
       @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
     end
-    if dm=@fdb['rspframe']['delimiter']
+    if dm=@doc['rspframe']['delimiter']
       @fary=frame.split(eval('"'+dm+'"'))
       @v.msg{"Split:[#{frame}] by [#{dm}]" }
     else
       @fary=[frame]
     end
     begin
-      getfield_rec(@fdb['rspframe'])
+      getfield_rec(@doc['rspframe'])
       if cc=@stat.delete('cc')
         cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
@@ -56,8 +56,8 @@ class FrmRsp
   def init_field
     @v.msg(1){"Field:Initialize"}
     begin
-      init_rec(@fdb['rspframe'])
-      @stat['frame']=@fdb['id']
+      init_rec(@doc['rspframe'])
+      @stat['frame']=@doc['id']
     ensure
       @v.msg(-1){"Field:Initialized"}
     end

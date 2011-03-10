@@ -9,9 +9,9 @@ dev=ARGV.shift
 id=ARGV.shift
 cmd=ARGV
 begin
-  fdb=XmlDoc.new('fdb',dev)
+  doc=XmlDoc.new('fdb',dev)
   st=Stat.new(id,"field")
-  c=FrmCmd.new(fdb,st)
+  c=FrmCmd.new(doc,st)
   c.setcmd(cmd)
   print c.getframe
 rescue RuntimeError

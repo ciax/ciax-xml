@@ -8,14 +8,14 @@ require "thread"
 
 class Cls
 
-  def initialize(cdb,id,iocmd)
-    @cls=cdb['id']
+  def initialize(doc,id,iocmd)
+    @cls=doc['id']
     $errmsg=''
-    @cmd=ClsCmd.new(cdb)
-    @stat=ClsStat.new(cdb,id)
+    @cmd=ClsCmd.new(doc)
+    @stat=ClsStat.new(doc,id)
     @buf=CmdBuf.new
-    @event=ClsEvent.new(cdb['watch'])
-    @main=session_thread(cdb['frame'],id,iocmd)
+    @event=ClsEvent.new(doc['watch'])
+    @main=session_thread(doc['frame'],id,iocmd)
     @watch=watch_thread
     sleep 0.01
   end

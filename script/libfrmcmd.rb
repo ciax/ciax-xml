@@ -6,9 +6,9 @@ require "librepeat"
 class FrmCmd
   include FrmMod
 
-  def initialize(fdb,stat)
-    @fdb,@stat=fdb,stat
-    @v=Verbose.new("fdb/#{@fdb['id']}/cmd".upcase)
+  def initialize(doc,stat)
+    @doc,@stat=doc,stat
+    @v=Verbose.new("fdb/#{@doc['id']}/cmd".upcase)
     @cache={}
     @pass=true
     @par=Param.new
@@ -16,7 +16,7 @@ class FrmCmd
   end
 
   def setcmd(stm) # return = response select
-    @sel=@fdb.find_id('cmdframe','select',stm.first)
+    @sel=@doc.find_id('cmdframe','select',stm.first)
     @par.setpar(@sel,stm)
     stm << '*' if /true|1/ === @sel['nocache']
     @cid=stm.join(':')
@@ -29,10 +29,10 @@ class FrmCmd
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
-      cmd=getstr(@fdb['cmdframe']).join('')
+      cmd=getstr(@doc['cmdframe']).join('')
       if @pass == 1
         @v.msg{"Retry by CC fail"}
-        cmd=getstr(@fdb['cmdframe']).join('')
+        cmd=getstr(@doc['cmdframe']).join('')
       end
       @cache[@cid]=cmd unless /\*/ === @cid
     end

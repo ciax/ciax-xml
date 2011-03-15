@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 class Verbose
   Start_time=Time.now
+  $DEBUG=true if ENV['VER']
   def initialize(title='')
     @title=title
     @@base=1

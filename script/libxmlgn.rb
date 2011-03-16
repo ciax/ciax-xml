@@ -41,14 +41,6 @@ class XmlGn
     (txt == '') ? nil : txt
   end
 
-  def doc
-    @e.doc
-  end
-
-  def ns
-    @e.namespaces.namespace.to_s
-  end
-
   # select element with key=val, or display list
   def select(key,val)
     @e.each_element{|e|
@@ -61,6 +53,13 @@ class XmlGn
     inject(''){|msg,e|
       msg << " %-10s: %s\n" % [e[key],e['label']] if e[key] && e['label']
       msg
+    }
+  end
+
+  def find_each(xpath)
+    ns=@e.namespaces.namespace.to_s
+    @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
+      yield XmlGn.new(e)
     }
   end
 end

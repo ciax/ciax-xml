@@ -16,7 +16,7 @@ class FrmRsp
   end
 
   def setrsp(stm)
-    cmd=@doc.find_id('cmdframe','select',stm.first)
+    cmd=@doc.select_id('cmdframe',stm.first,'select')
     @par.setpar(cmd,stm)
     @sel=cmd['response']
     self

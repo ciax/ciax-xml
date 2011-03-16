@@ -11,7 +11,6 @@ class XmlDoc < Hash
       update(e.to_h)
       e.each{|e1| self[e1.name]=e1 }
     }
-    @doc=values.first.doc
   rescue SelectID
     list=Array.new
     Dir.glob("#{pre}-*.xml").each{|p|
@@ -20,21 +19,15 @@ class XmlDoc < Hash
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 
-  def select_id(domain,id)
+  def select_id(domain,id,xpath=nil)
     raise SelectID unless key?(domain)
-    return self[domain].select('id',id)
-  rescue SelectID
-    $errmsg << "No such command [#{id}]\n" if id
-    $errmsg << "== Command List ==\n"
-    $errmsg << $!.to_s
-    raise(SelectID,$errmsg) unless $errmsg.empty?
-  end
-
-  def find_id(domain,xpath,id)
-    raise SelectID unless key?(domain)
-    ns=self[domain].ns
-    e=@doc.find_first("//ns:#{xpath}","ns:#{ns}")
-    return XmlGn.new(e).select('id',id)
+    if xpath
+      find_each(domain,xpath){|e|
+        return e.select('id',id)
+      }
+    else
+      return self[domain].select('id',id)
+    end
   rescue SelectID
     $errmsg << "No such command [#{id}]\n" if id
     $errmsg << "== Command List ==\n"
@@ -43,9 +36,8 @@ class XmlDoc < Hash
   end
 
   def find_each(domain,xpath)
-    ns=self[domain].ns
-    e=@doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-      yield XmlGn.new(e)
+    self[domain].find_each(xpath){|e|
+      yield e
     }
   end
 end

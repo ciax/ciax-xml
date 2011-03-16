@@ -29,11 +29,16 @@ class FrmCmd
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
+      @doc.find_each('cmdframe','ccrange'){|e|
+        begin
+          @v.msg(1){"Entering Ceck Code Range"}
+          @ccary=getstr(e)
+          @stat['cc']=checkcode(e,@ccary.join(''))
+        ensure
+          @v.msg(-1){"Exitting Ceck Code Range"}
+        end
+      }
       cmd=getstr(@doc['cmdframe']).join('')
-      if @pass == 1
-        @v.msg{"Retry by CC fail"}
-        cmd=getstr(@doc['cmdframe']).join('')
-      end
       @cache[@cid]=cmd unless /\*/ === @cid
     end
     cmd
@@ -52,24 +57,9 @@ class FrmCmd
           @v.msg(-1){"Exitting Selected Node"}
         end
       when 'ccrange'
-        begin
-          @v.msg(1){"Entering Ceck Code Range"}
-          ccrange=getstr(e1)
-          @stat['cc']=checkcode(e1,ccrange.join(''))
-          fary+=ccrange
-        ensure
-          @v.msg(-1){"Exitting Ceck Code Range"}
-        end
+        fary+=@ccary
       when 'data'
-        begin
-          fary << get_data(e1)
-        rescue RuntimeError
-          if /cc/ === $!.to_s
-            @v.msg{"Fail to Get CC"}
-            @pass=!@pass
-          end
-          raise $! if @pass
-        end
+        fary << get_data(e1)
       end
     }
     fary

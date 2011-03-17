@@ -80,7 +80,7 @@ class Cls
   private
   def session_thread(dev,id,iocmd)
     Thread.new{
-      fdb=Frm.new(dev,id,iocmd)
+      fdb=Frm.new(XmlDoc.new('fdb',dev),id,iocmd)
       @stat.get_stat(fdb.field)
       loop{
         begin

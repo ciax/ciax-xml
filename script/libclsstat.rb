@@ -6,6 +6,7 @@ require "libiofile"
 
 class ClsStat
   def initialize(doc,id)
+    raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc=doc
     cls=doc['id']
     @stat=Stat.new(id,"status")

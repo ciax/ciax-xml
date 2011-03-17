@@ -6,6 +6,7 @@ class FrmRsp
   include FrmMod
 
   def initialize(doc,stat)
+    raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc,@stat,@sel=doc,stat
     @v=Verbose.new("fdb/#{@doc['id']}/rsp".upcase)
     @frame=''

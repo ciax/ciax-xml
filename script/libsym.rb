@@ -6,6 +6,7 @@ require "librepeat"
 
 class Sym
   def initialize(doc)
+    raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc=doc
     @com=XmlDoc.new('sdb','all')
     @rep=Repeat.new

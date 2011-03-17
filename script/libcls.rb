@@ -9,6 +9,7 @@ require "thread"
 class Cls
 
   def initialize(doc,id,iocmd)
+    raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @cls=doc['id']
     $errmsg=''
     @cmd=ClsCmd.new(doc)

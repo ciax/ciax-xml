@@ -7,6 +7,7 @@ class ClsCmd
   attr_reader :par
 
   def initialize(doc)
+    raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc=doc
     @v=Verbose.new("doc/#{doc['id']}/cmd".upcase)
     @rep=Repeat.new

@@ -7,6 +7,7 @@ require "libfrmrsp"
 
 class Frm
   def initialize(doc,id,iocmd)
+    raise "Init Param must be XmlDoc" unless XmlDoc === doc
     $errmsg=''
     @stat=Stat.new(id,"field")
     @cmd=FrmCmd.new(doc,@stat)

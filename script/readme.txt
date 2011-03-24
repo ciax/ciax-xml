@@ -7,7 +7,7 @@ cdb//session@id -> never use ':'
     description : substitute sequence number(in repeat)
     usable: fdb//cmdframe/repeat/data[@type=formula]
             --
-            cdb//session/repeat/statement/argv@formula
+            cdb//session/repeat/statement/argv
             cdb//watch/repeat/event@*
             cdb//watch/repeat/event/*/@*
             cdb//status/repeat/value@id

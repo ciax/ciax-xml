@@ -2,23 +2,32 @@
 require "libxmlgn"
 
 class XmlDoc < Hash
+  private
   def initialize(db = nil ,type = nil)
     $errmsg=''
-    pre="#{ENV['XMLPATH']}/#{db}"
-    path="#{pre}-#{type}.xml"
-    XmlGn.new(path).each{|e|
-      self[e.name]=e
-      update(e.to_h)
-      e.each{|e1| self[e1.name]=e1 }
+    @db=db
+    readxml(type){|e0|
+      e0.each{|e1|
+        self[e1.name]=e1
+        update(e1.to_h)
+        e1.each{|e2| self[e2.name]=e2 }
+      }
     }
   rescue SelectID
-    list=Array.new
-    Dir.glob("#{pre}-*.xml").each{|p|
-      $errmsg << XmlGn.new(p).list('id')
-    }
+    readxml{|e| $errmsg << e.list('id') }
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 
+  def readxml(type='*')
+    raise SelectID unless type
+    pre="#{ENV['XMLPATH']}/#{@db}"
+    path="#{pre}-#{type}.xml"
+    Dir.glob(path).each{|p|
+      yield(XmlGn.new(p))
+    }
+  end
+
+  public
   def select_id(domain,id,xpath=nil)
     raise SelectID unless key?(domain)
     if xpath

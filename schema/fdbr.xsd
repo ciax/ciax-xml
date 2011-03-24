@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr">
   <!--Device database-->
   <xsd:include schemaLocation="codec.xsd" />
@@ -48,6 +48,10 @@
         <xsd:element ref="fdbr:response" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
+    <xsd:key name="frsp">
+      <xsd:selector xpath="response" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
   </xsd:element>
   <xsd:element name="response">
     <xsd:complexType>

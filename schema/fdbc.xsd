@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc">
   <!--Device database-->
   <xsd:include schemaLocation="repeat.xsd" />
@@ -32,6 +32,14 @@
         <xsd:element ref="fdbc:command" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
+    <xsd:key name="fcmd">
+      <xsd:selector xpath="command" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
+    <xsd:keyref name="response" refer="fdbr:frsp">
+      <xsd:selector xpath="command" />
+      <xsd:field xpath="@response" />
+    </xsd:keyref>
   </xsd:element>
   <xsd:element name="command">
     <xsd:complexType>

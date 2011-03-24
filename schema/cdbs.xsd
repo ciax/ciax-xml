@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdbs" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdbs="http://ciax.sum.naoj.org/ciax-xml/cdbs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:string" use="required" />
-    <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+    <xsd:attribute name="id" type="xsd:token" use="required" />
+    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
+  </xsd:attributeGroup>
+  <xsd:attributeGroup name="ref_attr">
+    <xsd:attribute name="ref" type="xsd:token" use="required" />
+    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
   <!--Share-->
   <xsd:element name="repeat">
@@ -22,7 +26,7 @@
         <xsd:element ref="cdbs:value"></xsd:element>
         <xsd:element ref="cdbs:repeat"></xsd:element>
       </xsd:choice>
-      <xsd:attribute name="ref" type="xsd:string" use="optional" />
+      <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="value">
@@ -33,35 +37,35 @@
         <xsd:element ref="cdbs:float" />
         <xsd:element ref="cdbs:int" />
       </xsd:choice>
-      <xsd:attribute name="format" type="xsd:string" use="required" />
-      <xsd:attribute name="group" type="xsd:string" />
       <xsd:attributeGroup ref="cdbs:id_attr"></xsd:attributeGroup>
+      <xsd:attribute name="format" type="xsd:token" use="required" />
+      <xsd:attribute name="group" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in value-->
   <xsd:element name="binary">
     <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:string" use="required" />
-      <xsd:attribute name="bit" type="xsd:string" use="required" />
+      <xsd:attributeGroup ref="cdbs:ref_attr" />
+      <xsd:attribute name="bit" type="xsd:token" use="required" />
       <xsd:attribute name="inv" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="float">
     <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attributeGroup ref="cdbs:ref_attr" />
       <xsd:attribute name="decimal" type="xsd:integer" />
-      <xsd:attribute name="formula" type="xsd:string" />
+      <xsd:attribute name="formula" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="int">
     <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attributeGroup ref="cdbs:ref_attr" />
       <xsd:attribute name="signed" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="string">
     <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:string" use="required" />
+      <xsd:attributeGroup ref="cdbs:ref_attr" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

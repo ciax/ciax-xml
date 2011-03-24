@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="mt3" label="MOIRCS Pressure Pump">
     <comm>
@@ -8,11 +8,11 @@
     </comm>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <group>
-        <title ref="st1" symbol="tpg:stat" label="Turbo Pump Stat" />
+        <title ref="st1" label="Turbo Pump Stat" />
         <title ref="ch1" label="Turbo Pump (Torr)" />
       </group>
       <group>
-        <title ref="st2" symbol="tpg:stat" label="Scroll Pump Stat" />
+        <title ref="st2" label="Scroll Pump Stat" />
         <title ref="ch2" label="Scroll Pump (Torr)" />
       </group>
     </status>

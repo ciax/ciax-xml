@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="mt1" label="MOIRCS Pressure Main" ref="mt3">
     <comm>
@@ -8,7 +8,7 @@
     </comm>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <group>
-        <title ref="st1" symbol="tpg:stat" label="Main Dewar Stat" />
+        <title ref="st1" label="Main Dewar Stat" />
         <title ref="ch1" label="Main Dewar (Torr)" />
       </group>
     </status>

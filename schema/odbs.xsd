@@ -8,7 +8,7 @@
         <xsd:element ref="odbs:group"></xsd:element>
         <xsd:element ref="odbs:repeat"></xsd:element>
       </xsd:choice>
-      <xsd:attribute name="ref" type="xsd:string" use="optional" />
+      <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="repeat">
@@ -30,9 +30,9 @@
   </xsd:element>
   <xsd:element name="title">
     <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:string" use="required" />
-      <xsd:attribute name="symbol" type="xsd:string" />
-      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="ref" type="xsd:NCName" use="required" />
+      <xsd:attribute name="symbol" type="xsd:NCName" />
+      <xsd:attribute name="label" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cf1" label="S1 Helium Compressor Coolant Flow">
     <comm>
@@ -8,7 +8,7 @@
     </comm>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <group>
-        <title ref="flow" symbol="k3n:flow" label="CS-2(S1) Coolant Flow(l/min)" />
+        <title ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
       </group>
     </status>
   </object>

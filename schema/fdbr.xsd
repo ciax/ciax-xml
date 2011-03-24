@@ -5,8 +5,8 @@
   <xsd:include schemaLocation="range.xsd" />
   <!--Response Elements-->
   <xsd:attributeGroup name="rsp_attr">
-    <xsd:attribute name="label" type="xsd:string" />
-    <xsd:attribute name="assign" type="xsd:string" />
+    <xsd:attribute name="label" type="xsd:token" />
+    <xsd:attribute name="assign" type="xsd:NCName" />
     <xsd:attribute name="decode" type="fdbr:codec"></xsd:attribute>
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="fdbr:rerange" />
@@ -20,7 +20,7 @@
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
+        <xsd:extension base="xsd:token">
           <xsd:attributeGroup ref="fdbr:rsp_attr" />
         </xsd:extension>
       </xsd:simpleContent>
@@ -38,7 +38,7 @@
   <xsd:element name="index">
     <xsd:complexType>
       <xsd:attribute name="size" type="xsd:int" use="required" />
-      <xsd:attribute name="range" type="xsd:string" use="required" />
+      <xsd:attribute name="range" type="xsd:token" use="required" />
     </xsd:complexType>
   </xsd:element>
   <!--Response Select-->
@@ -58,8 +58,8 @@
       <xsd:choice>
         <xsd:group minOccurs="0" maxOccurs="unbounded" ref="fdbr:rsp_elem"></xsd:group>
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:string" use="required" />
-      <xsd:attribute name="label" type="xsd:string" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="label" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <!--Response CC-->
@@ -80,8 +80,8 @@
         <xsd:element ref="fdbr:select" />
         <xsd:element ref="fdbr:ccrange" />
       </xsd:choice>
-      <xsd:attribute name="terminator" type="xsd:string" />
-      <xsd:attribute name="delimiter" type="xsd:string" />
+      <xsd:attribute name="terminator" type="xsd:token" />
+      <xsd:attribute name="delimiter" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

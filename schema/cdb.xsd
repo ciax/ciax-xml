@@ -12,8 +12,8 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:string" use="required" />
-    <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+    <xsd:attribute name="id" type="xsd:NCName" use="required" />
+    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
   <xsd:element name="class">
     <xsd:complexType>
@@ -24,7 +24,7 @@
         <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="frame" type="xsd:string" use="required" />
+      <xsd:attribute name="frame" type="xsd:NCName" use="required" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

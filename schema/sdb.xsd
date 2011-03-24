@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:include schemaLocation="range.xsd" />
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:string" use="required" />
-    <xsd:attribute name="ref" type="xsd:string" use="optional" />
-    <xsd:attribute name="label" type="xsd:string" use="optional"></xsd:attribute>
+    <xsd:attribute name="id" type="xsd:token" use="required" />
+    <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
+    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
   <!--root-->
   <xsd:group name="type">
@@ -60,7 +60,7 @@
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="type">
         <xsd:simpleType>
-          <xsd:restriction base="xsd:string">
+          <xsd:restriction base="xsd:token">
             <xsd:enumeration value="FLOAT" />
             <xsd:enumeration value="INT" />
           </xsd:restriction>
@@ -76,7 +76,7 @@
   <xsd:attributeGroup name="symbol_attr">
     <xsd:attribute name="class" use="required">
       <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
+        <xsd:restriction base="xsd:token">
           <xsd:enumeration value="normal" />
           <xsd:enumeration value="warn" />
           <xsd:enumeration value="alarm" />
@@ -84,13 +84,13 @@
         </xsd:restriction>
       </xsd:simpleType>
     </xsd:attribute>
-    <xsd:attribute name="msg" type="xsd:string" use="required" />
+    <xsd:attribute name="msg" type="xsd:token" use="required" />
   </xsd:attributeGroup>
   <!--cases-->
   <xsd:element name="case">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
+        <xsd:extension base="xsd:token">
           <xsd:attributeGroup ref="sdb:symbol_attr" />
         </xsd:extension>
       </xsd:simpleContent>

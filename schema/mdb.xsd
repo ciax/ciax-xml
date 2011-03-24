@@ -12,9 +12,9 @@
       <xsd:sequence>
         <xsd:element ref="cx:macro" minOccurs="1" maxOccurs="unbounded"></xsd:element>
       </xsd:sequence>
-      <xsd:attribute name="id" type="xsd:string" use="required" />
-      <xsd:attribute name="class" type="xsd:string" use="required" />
-      <xsd:attribute name="label" type="xsd:string" use="optional" />
+      <xsd:attribute name="id" type="xsd:token" use="required" />
+      <xsd:attribute name="class" type="xsd:token" use="required" />
+      <xsd:attribute name="label" type="xsd:token" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="macro">
@@ -25,8 +25,8 @@
         <xsd:element ref="cx:session" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="cx:wait" minOccurs="0" maxOccurs="unbounded" />
       </xsd:choice>
-      <xsd:attribute name="id" type="xsd:string" use="required" />
-      <xsd:attribute name="label" type="xsd:string" use="optional" />
+      <xsd:attribute name="id" type="xsd:token" use="required" />
+      <xsd:attribute name="label" type="xsd:token" use="optional" />
       <xsd:attribute name="argc" type="xsd:int" use="optional" />
     </xsd:complexType>
   </xsd:element>
@@ -36,19 +36,19 @@
         <xsd:element ref="cx:break" minOccurs="0" maxOccurs="1" />
         <xsd:element ref="cx:session" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="label" type="xsd:string" use="optional" />
-      <xsd:attribute name="timeout" type="xsd:string" use="optional" />
-      <xsd:attribute name="abort" type="xsd:string" />
+      <xsd:attribute name="label" type="xsd:token" use="optional" />
+      <xsd:attribute name="timeout" type="xsd:token" use="optional" />
+      <xsd:attribute name="abort" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:complexType name="condition">
     <xsd:sequence>
       <xsd:element ref="cx:item" minOccurs="1" maxOccurs="unbounded"></xsd:element>
     </xsd:sequence>
-    <xsd:attribute name="label" type="xsd:string" use="optional" />
+    <xsd:attribute name="label" type="xsd:token" use="optional" />
     <xsd:attribute name="combination">
       <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
+        <xsd:restriction base="xsd:token">
           <xsd:enumeration value="and" />
           <xsd:enumeration value="or" />
         </xsd:restriction>
@@ -60,17 +60,17 @@
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="stat" type="xsd:string" />
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="stat" type="xsd:token" />
           <xsd:attribute name="field">
             <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
+              <xsd:restriction base="xsd:token">
                 <xsd:enumeration value="msg" />
                 <xsd:enumeration value="val" />
               </xsd:restriction>
             </xsd:simpleType>
           </xsd:attribute>
-          <xsd:attribute name="ref" type="xsd:string" />
+          <xsd:attribute name="ref" type="xsd:token" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -82,5 +82,5 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="text" type="xsd:string"></xsd:element>
+  <xsd:element name="text" type="xsd:token"></xsd:element>
 </xsd:schema>

@@ -10,11 +10,11 @@
   <xsd:element name="par">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="xsd:string">
-          <xsd:attribute name="label" type="xsd:string" />
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="label" type="xsd:token" />
           <xsd:attribute name="validate">
             <xsd:simpleType>
-              <xsd:restriction base="xsd:string">
+              <xsd:restriction base="xsd:token">
                 <xsd:enumeration value="regexp" />
                 <xsd:enumeration value="range" />
               </xsd:restriction>

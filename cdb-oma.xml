@@ -3,7 +3,7 @@
   <class frame="oma" id="oma" label="Compressed Air Pressure at MOIRCS">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement format="getstat" />
+        <statement command="getstat" />
       </session>
     </commands>
     <watch interval="2" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw">

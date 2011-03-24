@@ -1,30 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Regular status update">
-        <statement format="getstat" />
-        <statement format="chken" />
+        <statement command="getstat" />
+        <statement command="chken" />
       </session>
       <session id="start_run" label="Running Start">
-        <statement format="start 1" />
+        <statement command="start">
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="start_jak" label="Jacking Start">
-        <statement format="start %d">
-          <argv>0x100</argv>
+        <statement command="start">
+          <argv format="%d">0x100</argv>
         </statement>
       </session>
       <session id="clear_trg" label="Clear Trigger">
-        <statement format="clear" />
-      </session>
-      <session id="set_fwd" label="Set Tag to Forward">
-        <statement format="set_tag 98" />
+        <statement command="clear" />
       </session>
       <session id="set_tag" label="Set Destination Tag [1-12]">
         <parameters>
           <par validate="range">1:12</par>
         </parameters>
-        <statement format="set_tag %d">
+        <statement command="set_tag">
           <argv>$1</argv>
         </statement>
       </session>
@@ -32,7 +31,7 @@
         <parameters>
           <par validate="range">0:3</par>
         </parameters>
-        <statement format="set_pos %d">
+        <statement command="set_pos">
           <argv>$1</argv>
         </statement>
       </session>
@@ -40,35 +39,57 @@
         <parameters>
           <par validate="range">1:12</par>
         </parameters>
-        <statement format="set_tag %d">
+        <statement command="set_tag">
           <argv>$1</argv>
         </statement>
-        <statement format="start 1" />
+        <statement command="start">
+          <argv>1</argv>
+        </statement>
+      </session>
+      <session id="fwd" label="Run Forward">
+        <statement command="set_tag">
+          <argv>98</argv>
+        </statement>
+        <statement command="start">
+          <argv>1</argv>
+        </statement>
+      </session>
+      <session id="bak" label="Run Backword">
+        <statement command="set_tag">
+          <argv>99</argv>
+        </statement>
+        <statement command="start">
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="lift" label="Lift Jack Level [0-3]">
         <parameters>
           <par validate="range">0:3</par>
         </parameters>
-        <statement format="set_pos %d">
+        <statement command="set_pos">
           <argv>$1</argv>
         </statement>
-        <statement format="start %d">
-          <argv>0x100</argv>
+        <statement command="start">
+          <argv format="%d">0x100</argv>
         </statement>
       </session>
       <session id="pause" label="Pause">
-        <statement format="stop 0" />
+        <statement command="stop">
+          <argv>0</argv>
+        </statement>
       </session>
       <session id="emstop" label="Emergency Stop">
-        <statement format="stop 1" />
+        <statement command="stop">
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="resume" label="Resume from Pause">
-        <statement format="clear" />
+        <statement command="clear" />
       </session>
       <session id="get_tbl" label="Get Jack Table">
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
-            <statement format="get_tbl %d %d">
+            <statement command="get_tbl">
               <argv>$t</argv>
               <argv>$j</argv>
             </statement>
@@ -78,7 +99,7 @@
       <session id="set_tbl" label="Set Jack Table">
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
-            <statement format="set_tbl %d %d">
+            <statement command="set_tbl">
               <argv>$t</argv>
               <argv>$j</argv>
             </statement>
@@ -86,10 +107,14 @@
         </repeat>
       </session>
       <session id="tbl_read" label="Read to Buffer">
-        <statement format="tbl_rw 1" />
+        <statement command="tbl_rw">
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="tbl_write" label="Write from Buffer">
-        <statement format="tbl_rw 2" />
+        <statement command="tbl_rw">
+          <argv>0</argv>
+        </statement>
       </session>
     </commands>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw" interval="1">

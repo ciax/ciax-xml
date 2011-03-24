@@ -1,33 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="psp" id="psp" label="MOIRCS Ext Heater">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement format="getstat" />
+        <statement command="getstat" />
       </session>
       <session id="setlmt" label="Set Limit 20V/5A/100W">
-        <statement format="setvl 20" />
-        <statement format="setal 5" />
-        <statement format="setpl 100" />
-        <statement format="getstat" />
+        <statement command="setvl">
+          <argv>20</argv>
+        </statement>
+        <statement command="setal">
+          <argv>5</argv>
+        </statement>
+        <statement command="setpl">
+          <argv>100</argv>
+        </statement>
+        <statement command="getstat" />
       </session>
       <session id="setv" label="Set Voltage 0-50[V]">
         <parameters>
           <par validate="range">0:50</par>
         </parameters>
-        <statement format="setv %d">
+        <statement command="setv">
           <argv>$1</argv>
         </statement>
-        <statement format="getstat" />
+        <statement command="getstat" />
       </session>
       <session id="setp" label="Set Power 0-100[W]">
         <parameters>
           <par validate="range">0:100</par>
         </parameters>
-        <statement format="setv %5.2f">
-          <argv>Math.sqrt($1*26)</argv>
+        <statement command="setv">
+          <argv format="%5.2f">Math.sqrt($1*26)</argv>
         </statement>
-        <statement format="getstat" />
+        <statement command="getstat" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

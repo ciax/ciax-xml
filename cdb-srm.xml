@@ -1,45 +1,69 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="srm" id="srm" label="CsEtr Controller">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement format="getstat" />
+        <statement command="getstat" />
       </session>
       <session id="c3on" label="CIAX3 POWER ON">
-        <statement format="fset 5" label="Bit 0 on" />
+        <statement command="fset" label="Bit 0 on">
+          <argv>5</argv>
+        </statement>
       </session>
       <session id="c3off" label="CIAX3 POWER OFF">
-        <statement format="fset 4" label="Bit 0 OFF" />
+        <statement command="fset" label="Bit 0 OFF">
+          <argv>4</argv>
+        </statement>
       </session>
       <session id="emon" label="CIAX3 EMERGENCY ON">
-        <statement format="fset 50" label="Bit 1 ON" />
+        <statement command="fset" label="Bit 1 ON">
+          <argv>50</argv>
+        </statement>
       </session>
       <session id="emoff" label="CIAX3 EMERGENCY OFF">
-        <statement format="fset 40" label="Bit 1 OFF" />
+        <statement command="fset" label="Bit 1 OFF">
+          <argv>40</argv>
+        </statement>
       </session>
       <session id="ccdon" label="CS CCD ON">
-        <statement format="fset 500" label="Bit 2 ON" />
+        <statement command="fset" label="Bit 2 ON">
+          <argv>500</argv>
+        </statement>
       </session>
       <session id="ccdoff" label="CS CCD OFF">
-        <statement format="fset 400" label="Bit 2 OFF" />
+        <statement command="fset" label="Bit 2 OFF">
+          <argv>400</argv>
+        </statement>
       </session>
       <session id="lanon" label="CS LAN ON">
-        <statement format="fset 5000" label="Bit 3 ON" />
+        <statement command="fset" label="Bit 3 ON">
+          <argv>5000</argv>
+        </statement>
       </session>
       <session id="lanoff" label="CS LAN OFF">
-        <statement format="fset 4000" label="Bit 3 OFF" />
+        <statement command="fset" label="Bit 3 OFF">
+          <argv>4000</argv>
+        </statement>
       </session>
       <session id="ipwon" label="CS IPW ON">
-        <statement format="fset 50000" label="Bit 4 ON" />
+        <statement command="fset" label="Bit 4 ON">
+          <argv>50000</argv>
+        </statement>
       </session>
       <session id="ipwoff" label="CS IPW OFF">
-        <statement format="fset 40000" label="Bit 4 OFF" />
+        <statement command="fset" label="Bit 4 OFF">
+          <argv>40000</argv>
+        </statement>
       </session>
       <session id="ston" label="STOW PIN ON">
-        <statement format="fset 500000" label="Bit 5 ON" />
+        <statement command="fset" label="Bit 5 ON">
+          <argv>500000</argv>
+        </statement>
       </session>
       <session id="stoff" label="STOW PIN OFF">
-        <statement format="fset 400000" label="Bit 5 OFF" />
+        <statement command="fset" label="Bit 5 OFF">
+          <argv>400000</argv>
+        </statement>
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

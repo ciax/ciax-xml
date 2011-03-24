@@ -1,84 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement format="logstat" />
-        <statement format="getstat" />
-        <statement format="iststat" />
-        <statement format="jakstat" />
-        <statement format="inrstat" />
+        <statement command="logstat" />
+        <statement command="getstat" />
+        <statement command="iststat" />
+        <statement command="jakstat" />
+        <statement command="inrstat" />
       </session>
       <session id="login" label="Login">
-        <statement format="login" />
-        <statement format="logstat" />
+        <statement command="login" />
+        <statement command="logstat" />
       </session>
       <session id="logout" label="Logout">
-        <statement format="logout" />
-        <statement format="logstat" />
+        <statement command="logout" />
+        <statement command="logstat" />
       </session>
       <session id="init" label="Start TCP Status Request">
-        <statement format="init" />
+        <statement command="init" />
       </session>
       <session id="startup" label="Start Up CIAX operation">
-        <statement format="login" />
-        <statement format="tsconly" label="TSC Only Mode(CIAX Mode)" />
-        <statement format="ron" />
-        <statement format="jon" />
+        <statement command="login" />
+        <statement command="tsconly" label="TSC Only Mode(CIAX Mode)" />
+        <statement command="ron" />
+        <statement command="jon" />
       </session>
       <session id="shutdown" label="Shutdown CIAX operation">
-        <statement format="joff" />
-        <statement format="roff" />
-        <statement format="tscpri" label="TSC Primaly Mode" />
-        <statement format="logout" />
+        <statement command="joff" />
+        <statement command="roff" />
+        <statement command="tscpri" label="TSC Primaly Mode" />
+        <statement command="logout" />
       </session>
       <session id="rhook" label="InR Hook">
-        <statement format="rhook" />
-        <statement format="inrstat" />
+        <statement command="rhook" />
+        <statement command="inrstat" />
       </session>
       <session id="runhk" label="InR UnHook">
-        <statement format="runhk" />
-        <statement format="inrstat" />
+        <statement command="runhk" />
+        <statement command="inrstat" />
       </session>
       <session id="rstop" label="InR Stop">
-        <statement format="rstop" />
-        <statement format="inrstat" />
+        <statement command="rstop" />
+        <statement command="inrstat" />
       </session>
       <session id="jup" label="All EJB Up">
-        <statement format="ajup" />
-        <statement format="jakstat" />
+        <statement command="ajup" />
+        <statement command="jakstat" />
       </session>
       <session id="jdw" label="All EJB Down">
-        <statement format="ajdw" />
-        <statement format="jakstat" />
+        <statement command="ajdw" />
+        <statement command="jakstat" />
       </session>
       <session id="jstop" label="All EJB Stop">
-        <statement format="jstop" />
-        <statement format="jakstat" />
+        <statement command="jstop" />
+        <statement command="jakstat" />
       </session>
       <session id="moircs" label="Set IID MOIRCS">
-        <statement format="setinst 12" />
-        <statement format="iststat" />
+        <statement command="setinst">
+          <argv>12</argv>
+        </statement>
+        <statement command="iststat" />
       </session>
       <session id="focas" label="Set IID FOCAS">
-        <statement format="setinst 5" />
-        <statement format="iststat" />
+        <statement command="setinst">
+          <argv>5</argv>
+        </statement>
+        <statement command="iststat" />
       </session>
       <session id="comics" label="Set IID COMICS">
-        <statement format="setinst 7" />
-        <statement format="iststat" />
+        <statement command="setinst">
+          <argv>7</argv>
+        </statement>
+        <statement command="iststat" />
       </session>
       <session id="upj">
         <!--Update Jack Status-->
-        <statement format="jakstat" />
-        <statement format="getexit" />
-        <statement format="getpid" />
+        <statement command="jakstat" />
+        <statement command="getexit" />
+        <statement command="getpid" />
       </session>
       <session id="upr">
         <!--Update InR Status-->
-        <statement format="inrstat" />
-        <statement format="getexit" />
-        <statement format="getpid" />
+        <statement command="inrstat" />
+        <statement command="getexit" />
+        <statement command="getpid" />
       </session>
     </commands>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw">

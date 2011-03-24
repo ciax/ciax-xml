@@ -1,27 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="slo" id="slo" label="MOIRCS Arm">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement format="getstat" />
-        <statement format="bs" />
-        <statement format="p" />
+        <statement command="getstat" />
+        <statement command="bs" />
+        <statement command="p" />
         <repeat from="1" to="5">
-          <statement format="in %d">
+          <statement command="in">
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
       <session id="reset" label="Reset">
-        <statement format="reset" />
+        <statement command="reset" />
       </session>
       <session id="defcon" label="Default Config">
-        <statement format="hl 0" />
-        <statement format="e1 0" />
-        <statement format="e2 0" />
+        <statement command="hl">
+          <argv>0</argv>
+        </statement>
+        <statement command="e1">
+          <argv>0</argv>
+        </statement>
+        <statement command="e2">
+          <argv>0</argv>
+        </statement>
       </session>
       <session id="set0" label="Set 0 Pulses">
-        <statement format="set0" />
+        <statement command="set0" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

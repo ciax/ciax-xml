@@ -28,26 +28,26 @@ class ClsCmd
   private
   #Cmd Method
   def get_cmd(e0) # //stm
-    dstm=[]
+    stma=[]
     @rep.each(e0){|e1|
       next unless /statement/ === e1.name
-      @v.msg(1){"GetCmd(DDB)"}
-      argv=[]
+      stm=[e1['command']]
+      @v.msg(1){"GetCmd(DDB):#{stm}"}
       begin
         e1.each{|e2| # //argv
           str=e2.text
           [@rep,@par].each{|s|
             str=s.subst(str)
           }
-          str=eval(str)
+          str=e2['format'] % eval(str) if e2['format']
           @v.msg{"Calculated [#{str}]"}
-            argv << str
+          stm << str
         }
-        dstm << e1['format'] % argv
+        stma << stm.join(' ')
       ensure
-        @v.msg(-1){"Exec(DDB):#{argv}"}
+        @v.msg(-1){"Exec(DDB):#{stm}"}
       end
     }
-    dstm
+    stma
   end
 end

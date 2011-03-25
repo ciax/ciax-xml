@@ -1,40 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
-    <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <data type="text">krdg? c1;</data>
-          <data type="text">krdg? c2;</data>
-          <data type="text">krdg? c3;</data>
-          <data type="text">krdg? c4;</data>
-          <data type="text">krdg? d1;</data>
-          <data type="text">krdg? d2;</data>
-          <data type="text">krdg? d3;</data>
-          <data type="text">krdg? d4;</data>
+          <data>krdg? c1;</data>
+          <data>krdg? c2;</data>
+          <data>krdg? c3;</data>
+          <data>krdg? c4;</data>
+          <data>krdg? d1;</data>
+          <data>krdg? d2;</data>
+          <data>krdg? d3;</data>
+          <data>krdg? d4;</data>
         </command>
         <command id="htrstat" label="Heater Power (%)" response="htrstat" type="stat">
-          <data type="text">HTR?</data>
+          <data>HTR?</data>
         </command>
         <command id="spstat" label="Set Point (K)" response="spstat" type="stat">
-          <data type="text">SETP? 1</data>
+          <data>SETP? 1</data>
         </command>
       </select>
-      <data encode="bew" label="Suffix" type="text">0x0d0a</data>
+      <data encode="bew" label="Suffix">0x0d0a</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
       <select>
         <response id="getstat">
           <array assign="ch" label="Value">
-            <index range="0:7" size="8" />
+            <index range="0:7" size="8"/>
           </array>
         </response>
         <response id="htrstat">
-          <field assign="htr" label="Heater Power" />
+          <field assign="htr" label="Heater Power"/>
         </response>
         <response id="spstat">
-          <field assign="sp" label="SetPoint" />
+          <field assign="sp" label="SetPoint"/>
         </response>
       </select>
     </rspframe>

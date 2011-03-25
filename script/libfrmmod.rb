@@ -37,12 +37,12 @@ module FrmMod
   def encode(e,str) # Num -> Chr
     cdc=e['encode']
     if pck=Codec[cdc]
-      code=[str.to_i(0)].pack(pck)
+      code=[eval(str)].pack(pck)
       @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
       str=code
     end
     if fmt=e['format']
-      code=fmt % str
+      code=fmt % eval(str)
       @v.msg{"Formatted code(#{fmt}) [#{str}] -> [#{code}]"}
       str=code
     end

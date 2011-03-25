@@ -1,36 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" wait="0">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data label="Prefix" type="text">&gt;01</data>
+      <data label="Prefix">&gt;01</data>
       <select>
         <!--String Length must be <32-->
         <command id="getstat" label="Get status" response="getstat" type="stat">
-          <data type="text">!F00FF</data>
+          <data>!F00FF</data>
         </command>
         <command id="setr1" label="Set range +-1.2V" response="default" type="config">
-          <data type="text">!D00FF</data>
+          <data>!D00FF</data>
           <repeat from="1" to="8">
-            <data type="text">0000107</data>
+            <data>0000107</data>
           </repeat>
         </command>
         <command id="setr6" label="Set range +-6V" response="default" type="config">
-          <data type="text">!D00FF</data>
+          <data>!D00FF</data>
           <repeat from="1" to="8">
-            <data type="text">0000105</data>
+            <data>0000105</data>
           </repeat>
         </command>
         <command id="setr15" label="Set range +-15V" response="default" type="config">
-          <data type="text">!D00FF</data>
+          <data>!D00FF</data>
           <repeat from="1" to="8">
-            <data type="text">0000112</data>
+            <data>0000112</data>
           </repeat>
         </command>
       </select>
-      <data type="text">??</data>
-      <data encode="chr" type="text">13</data>
-      <data encode="chr" type="text">10</data>
+      <data>??</data>
+      <data encode="chr">13</data>
+      <data encode="chr">10</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>
@@ -38,13 +38,13 @@
         <select>
           <response id="getstat">
             <array assign="stat" decode="hexstr" label="Status" length="4">
-              <index range="0:7" size="8" />
+              <index range="0:7" size="8"/>
             </array>
           </response>
-          <response id="default" />
+          <response id="default"/>
         </select>
       </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2" />
+      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
     </rspframe>
   </frame>
 </fdb>

@@ -1,30 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="bbe" label="BB Electric 232SDD16" wait="0.3">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data label="Prefix" type="text">!0</data>
+      <data label="Prefix">!0</data>
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <data type="text">RD</data>
+          <data>RD</data>
         </command>
         <command id="output" label="OUTPUT [DDDDD]" type="action">
           <parameters>
             <par label="[0-65535]" validate="range">0:65535</par>
           </parameters>
-          <data type="text">SO</data>
-          <data encode="bew" type="formula">$1</data>
+          <data>SO</data>
+          <data encode="bew">$1</data>
         </command>
         <command id="outfld" label="OUTPUT from Field" nocache="true" type="action">
-          <data type="text">SO</data>
-          <data encode="bew" type="formula">${stat}</data>
+          <data>SO</data>
+          <data encode="bew">${stat}</data>
         </command>
       </select>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <select>
         <response id="getstat">
-          <field assign="stat" decode="bew" label="Status" />
+          <field assign="stat" decode="bew" label="Status"/>
         </response>
       </select>
     </rspframe>

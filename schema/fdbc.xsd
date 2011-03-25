@@ -12,15 +12,6 @@
           <xsd:attribute name="label" type="xsd:token" />
           <xsd:attribute name="encode" type="fdbc:codec"></xsd:attribute>
           <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
-          <xsd:attribute name="type">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:token">
-                <xsd:enumeration value="text"></xsd:enumeration>
-                <xsd:enumeration value="formula"></xsd:enumeration>
-                <xsd:enumeration value="csv"></xsd:enumeration>
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

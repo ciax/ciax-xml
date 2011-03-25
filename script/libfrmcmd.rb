@@ -71,21 +71,11 @@ class FrmCmd
     str=e.text
     [@rep,@par,@stat].each{|s|
       str=s.subst(str)
-    } unless e['type'] == 'raw'
-    case e['type']
-    when 'formula'
-      str=eval(str).to_s
-      frame << encode(e,str)
-      @v.msg{"GetFrame:(calculated)[#{str}]"}
-    when 'csv'
-      str.split(',').each{|s|
-        frame << encode(e,s)
-        @v.msg{"GetFrame:(csv)[#{s}]"}
-      }
-    else
-      @v.msg{"GetFrame:#{e['label']}[#{str}]"}
-      frame << encode(e,str)
-    end
+    }
+    str.split(',').each{|s|
+      frame << encode(e,s)
+      @v.msg{"GetFrame:#{e['label']}[#{e}]"}
+    }
     frame
   end
 end

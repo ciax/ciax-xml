@@ -1,26 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="k3n" label="OMRON K3NR" wait="1">
-    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
+    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data encode="chr" label="Prefix" type="text">2</data>
+      <data encode="chr" label="Prefix">2</data>
       <ccrange method="bcc">
         <select>
           <command id="getstat" label="Get Status" response="getstat" type="stat">
-            <data label="Node No." type="text">00</data>
-            <data label="Sub Address" type="text">00</data>
-            <data label="SID" type="text">0</data>
-            <data label="MRC" type="text">01</data>
-            <data label="SRC" type="text">01</data>
-            <data label="Variable type" type="text">C0</data>
-            <data label="Start Address" type="text">0000</data>
-            <data label="Void" type="text">00</data>
-            <data label="Number of element" type="text">0001</data>
+            <data label="Node No.">00</data>
+            <data label="Sub Address">00</data>
+            <data label="SID">0</data>
+            <data label="MRC">01</data>
+            <data label="SRC">01</data>
+            <data label="Variable type">C0</data>
+            <data label="Start Address">0000</data>
+            <data label="Void">00</data>
+            <data label="Number of element">0001</data>
           </command>
         </select>
-        <data encode="chr" label="Suffix" type="text">3</data>
+        <data encode="chr" label="Suffix">3</data>
       </ccrange>
-      <data encode="chr" type="formula">${cc}</data>
+      <data encode="chr">${cc}</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="chr" label="Prefix" length="1">2</field>
@@ -30,13 +30,13 @@
         <select>
           <response id="getstat">
             <field label="MRC SRC" length="4">0101</field>
-            <field assign="rcode" label="Response Code" length="4" />
-            <field assign="stat" label="Status" length="8" />
+            <field assign="rcode" label="Response Code" length="4"/>
+            <field assign="stat" label="Status" length="8"/>
           </response>
         </select>
         <field decode="chr" label="Suffix" length="1">3</field>
       </ccrange>
-      <field assign="cc" decode="chr" label="BCC" length="1" />
+      <field assign="cc" decode="chr" label="BCC" length="1"/>
     </rspframe>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <enum id="rcode" label="Response Code">
@@ -61,7 +61,7 @@
         <case class="alarm" msg="Frame Length Error">18</case>
         <case class="alarm" msg="Unknown">.</case>
       </enum>
-      <val id="stat" />
+      <val id="stat"/>
     </symbol>
   </frame>
 </fdb>

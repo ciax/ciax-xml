@@ -1,194 +1,194 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" wait="0.2">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data encode="chr" label="Prefix" type="text">2</data>
+      <data encode="chr" label="Prefix">2</data>
       <select>
         <!--String Length must be <32-->
         <command id="getstat" label="Get status" response="getstat" type="stat">
-          <data type="text">ST</data>
+          <data>ST</data>
         </command>
         <command id="initrot" label="Parameter set for rotation" response="default" type="config">
           <repeat from="1" to="6">
-            <data type="formula">$_</data>
-            <data type="text">P01S0</data>
+            <data>$_</data>
+            <data>P01S0</data>
           </repeat>
         </command>
         <command id="initunit" label="Parameter unit set to pulse step" response="default" type="config">
           <repeat from="1" to="6">
-            <data type="formula">$_</data>
-            <data type="text">P02S1</data>
+            <data>$_</data>
+            <data>P02S1</data>
           </repeat>
         </command>
         <command id="initfactor" label="Parameter unit factor set to 1" response="default" type="config">
           <repeat from="1" to="6">
-            <data type="formula">$_</data>
-            <data type="text">P03S1</data>
+            <data>$_</data>
+            <data>P03S1</data>
           </repeat>
         </command>
         <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">=N</data>
+          <data>$1</data>
+          <data>=N</data>
         </command>
         <command id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">=E</data>
+          <data>$1</data>
+          <data>=E</data>
         </command>
         <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">=H</data>
+          <data>$1</data>
+          <data>=H</data>
         </command>
         <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">P21R</data>
+          <data>$1</data>
+          <data>P21R</data>
         </command>
         <command id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">P21S</data>
-          <data type="formula">${p:$1-1}</data>
+          <data>$1</data>
+          <data>P21S</data>
+          <data>${p:$1-1}</data>
         </command>
         <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">P14R</data>
+          <data>$1</data>
+          <data>P14R</data>
         </command>
         <command id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">P14S</data>
-          <data type="formula">${spd:$1-1}</data>
+          <data>$1</data>
+          <data>P14S</data>
+          <data>${spd:$1-1}</data>
         </command>
         <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">P12R</data>
+          <data>$1</data>
+          <data>P12R</data>
         </command>
         <command id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">P12S</data>
-          <data type="formula">${ofs:$1-1}</data>
+          <data>$1</data>
+          <data>P12S</data>
+          <data>${ofs:$1-1}</data>
         </command>
         <command id="act" label="Activate (Servo) All" response="default" type="action">
           <repeat from="1" to="6">
-            <data type="formula">$_</data>
-            <data type="text">MA</data>
+            <data>$_</data>
+            <data>MA</data>
           </repeat>
         </command>
         <command id="deact" label="Deactivate (Free) All" response="default" type="action">
           <repeat from="1" to="6">
-            <data type="formula">$_</data>
-            <data type="text">MD</data>
+            <data>$_</data>
+            <data>MD</data>
           </repeat>
         </command>
         <command id="stop" label="Stop Moving [1-6]" response="default" type="action">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">S</data>
+          <data>$1</data>
+          <data>S</data>
         </command>
         <command id="init" label="Initialize [1-6]" response="default" type="action">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">0</data>
+          <data>$1</data>
+          <data>0</data>
         </command>
         <command id="fw" label="Move forward (8000/hole)" response="default" type="action">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
             <par label="[0-]" validate="range">0:</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">+</data>
-          <data type="formula">$2</data>
+          <data>$1</data>
+          <data>+</data>
+          <data>$2</data>
         </command>
         <command id="bk" label="Move backward (8000/hole)" response="default" type="action">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
             <par label="[0-]" validate="range">0:</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">-</data>
-          <data type="formula">$2</data>
+          <data>$1</data>
+          <data>-</data>
+          <data>$2</data>
         </command>
         <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
           <parameters>
             <par label="[1-6]" validate="range">1:6</par>
             <par label="[0-384000]" validate="range">0:384000</par>
           </parameters>
-          <data type="formula">$1</data>
-          <data type="text">A</data>
-          <data type="formula">$2</data>
+          <data>$1</data>
+          <data>A</data>
+          <data>$2</data>
         </command>
       </select>
-      <data encode="chr" label="Suffix" type="text">3</data>
-      <data encode="chr" type="text">13</data>
-      <data encode="chr" type="text">10</data>
+      <data encode="chr" label="Suffix">3</data>
+      <data encode="chr">13</data>
+      <data encode="chr">10</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="chr" label="Prefix" length="1">2</field>
       <field decode="chr" label="ACK" length="1">6</field>
       <select>
         <response id="getstat">
-          <field assign="stat" label="StatusCode" />
+          <field assign="stat" label="StatusCode"/>
         </response>
         <response id="chkrun">
           <array assign="run" label="Moving">
-            <index range="$1-1" size="6" />
+            <index range="$1-1" size="6"/>
           </array>
         </response>
         <response id="chkems">
           <array assign="ems" label="Emergency">
-            <index range="$1-1" size="6" />
+            <index range="$1-1" size="6"/>
           </array>
         </response>
         <response id="chkpse">
           <array assign="pse" label="Power Stage Err">
-            <index range="$1-1" size="6" />
+            <index range="$1-1" size="6"/>
           </array>
         </response>
         <response id="getp">
           <array assign="p" label="Pulse">
-            <index range="$1-1" size="6" />
+            <index range="$1-1" size="6"/>
           </array>
         </response>
         <response id="getspd">
           <array assign="spd" label="Speed">
-            <index range="$1-1" size="6" />
+            <index range="$1-1" size="6"/>
           </array>
         </response>
         <response id="getofs">
           <array assign="ofs" label="Offset">
-            <index range="$1-1" size="6" />
+            <index range="$1-1" size="6"/>
           </array>
         </response>
-        <response id="default" />
+        <response id="default"/>
       </select>
     </rspframe>
   </frame>

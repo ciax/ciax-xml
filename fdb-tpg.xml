@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="reqstat" label="Request status" response="reqstat" type="stat">
-          <data label="Measurment data gauges 1&amp;2" type="text">PRX</data>
-          <data encode="chr" label="Suffix" type="text">13</data>
+          <data label="Measurment data gauges 1&amp;2">PRX</data>
+          <data encode="chr" label="Suffix">13</data>
         </command>
         <command id="getstat" label="Get status" response="getstat" type="stat">
-          <data encode="chr" label="ENQ" type="text">5</data>
+          <data encode="chr" label="ENQ">5</data>
         </command>
       </select>
     </cmdframe>
@@ -18,10 +18,10 @@
           <field decode="chr">6</field>
         </response>
         <response id="getstat">
-          <field assign="st1" label="CH1 RetCode" />
-          <field assign="ch1" label="CH1 Value" />
-          <field assign="st2" label="CH2 RetCode" />
-          <field assign="ch2" label="CH2 Value" />
+          <field assign="st1" label="CH1 RetCode"/>
+          <field assign="ch1" label="CH1 Value"/>
+          <field assign="st2" label="CH2 RetCode"/>
+          <field assign="ch2" label="CH2 Value"/>
         </response>
       </select>
     </rspframe>

@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="oma" label="OMEGA Air Pressure Sensor(PX971)" wait="0.1">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data label="Prefix" type="text">*</data>
+      <data label="Prefix">*</data>
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <data type="text">00P1</data>
+          <data>00P1</data>
         </command>
       </select>
-      <data encode="chr" label="Suffix" type="text">0xd</data>
+      <data encode="chr" label="Suffix">0xd</data>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <field label="Prefix" length="1">?</field>
       <select>
         <response id="getstat">
           <field length="5">01CP=</field>
-          <field assign="stat" label="Status" length="6" />
+          <field assign="stat" label="Status" length="6"/>
         </response>
       </select>
     </rspframe>

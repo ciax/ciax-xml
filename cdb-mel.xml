@@ -132,70 +132,70 @@
       </event>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%04X" id="ecode" label="EXIT CODE" group="1">
-        <int ref="ecode" />
+      <value id="ecode" label="EXIT CODE" group="1">
+        <int format="%04X" ref="ecode" />
       </value>
-      <value format="%s" id="rdy" label="READY" group="1">
+      <value id="rdy" label="READY" group="1">
         <binary bit="0" ref="x:0" />
       </value>
-      <value format="%s" id="pse" label="PAUSE" group="1">
+      <value id="pse" label="PAUSE" group="1">
         <binary bit="1" ref="x:0" />
       </value>
-      <value format="%s" id="emg" label="ENERGENCY" group="1">
+      <value id="emg" label="ENERGENCY" group="1">
         <binary bit="2" ref="x:0" />
       </value>
-      <value format="%s" id="stp" label="STOP" group="1">
+      <value id="stp" label="STOP" group="1">
         <binary bit="3" ref="x:0" />
       </value>
-      <value format="%s" id="run" label="RUNNING" group="2">
+      <value id="run" label="RUNNING" group="2">
         <binary bit="4" ref="x:0" />
       </value>
-      <value format="%s" id="jak" label="JACKING" group="2">
+      <value id="jak" label="JACKING" group="2">
         <binary bit="5" ref="x:0" />
       </value>
-      <value format="%s" id="con" label="CHARGING" group="2">
+      <value id="con" label="CHARGING" group="2">
         <binary bit="6" ref="x:0" />
       </value>
-      <value format="%s" id="flt" label="Fault" group="2">
+      <value id="flt" label="Fault" group="2">
         <binary bit="7" ref="x:0" />
       </value>
-      <value format="%s" id="msr" label="Right Motor Servo" group="ms">
+      <value id="msr" label="Right Motor Servo" group="ms">
         <binary bit="8" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="msl" label="Left Motor Servo" group="ms">
+      <value id="msl" label="Left Motor Servo" group="ms">
         <binary bit="9" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd1" label="Jack Motor Servo1" group="j1">
+      <value id="jd1" label="Jack Motor Servo1" group="j1">
         <binary bit="10" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd2" label="Jack Motor Servo2" group="j1">
+      <value id="jd2" label="Jack Motor Servo2" group="j1">
         <binary bit="11" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd3" label="Jack Motor Servo3" group="j2">
+      <value id="jd3" label="Jack Motor Servo3" group="j2">
         <binary bit="12" inv="true" ref="x:0" />
       </value>
-      <value format="%s" id="jd4" label="Jack Motor Servo4" group="j2">
+      <value id="jd4" label="Jack Motor Servo4" group="j2">
         <binary bit="13" inv="true" ref="x:0" />
       </value>
-      <value format="%d" id="mdar" label="Rignt Motor D/A" group="da">
+      <value id="mdar" label="Rignt Motor D/A" group="da">
         <int ref="x:7" signed="true" />
       </value>
-      <value format="%d" id="mdal" label="Left Motor D/A" group="da">
+      <value id="mdal" label="Left Motor D/A" group="da">
         <int ref="x:8" signed="true" />
       </value>
-      <value format="%2.2f" id="bvl" label="Battery Voltage" group="bv">
-        <float decimal="2" ref="x:22" />
+      <value id="bvl" label="Battery Voltage" group="bv">
+        <float decimal="2" format="%2.2f" ref="x:22" />
       </value>
-      <value format="%d" id="ist" label="Instrument" group="bv">
+      <value id="ist" label="Instrument" group="bv">
         <int ref="x:23" />
       </value>
-      <value format="%d" id="cpos" label="Current Position" group="pos">
+      <value id="cpos" label="Current Position" group="pos">
         <int ref="x:25" />
       </value>
-      <value format="%d" id="dpos" label="Destination Position" group="pos">
+      <value id="dpos" label="Destination Position" group="pos">
         <int ref="x:26" />
       </value>
-      <value format="%d" id="jpos" label="Jack Position" group="jpos">
+      <value id="jpos" label="Jack Position" group="jpos">
         <int ref="x:27" />
       </value>
     </status>

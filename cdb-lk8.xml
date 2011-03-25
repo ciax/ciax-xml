@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="lk8" id="lk8" label="MOIRCS LakeShore">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -10,28 +10,28 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <repeat from="0" to="3">
-        <value format="%3.2f" id="ch$_" label="CH $_" group="a">
-          <float ref="ch:$_" />
+        <value id="ch$_" label="CH $_" group="a">
+          <float ref="ch:$_" format="%3.2f" />
         </value>
       </repeat>
       <repeat from="4" to="7">
-        <value format="%3.2f" id="ch$_" label="CH $_" group="b">
-          <float ref="ch:$_" />
+        <value id="ch$_" label="CH $_" group="b">
+          <float ref="ch:$_" format="%3.2f" />
         </value>
       </repeat>
-      <value format="%3.2f" id="sp" label="SetPoint1 (K)" group="s">
-        <float ref="sp" />
+      <value id="sp" label="SetPoint1 (K)" group="s">
+        <float ref="sp" format="%3.2f" />
       </value>
-      <value format="%3.2f" id="htr" label="HeaterPower1(%)" group="s">
-        <float ref="htr" />
+      <value id="htr" label="HeaterPower1(%)" group="s">
+        <float ref="htr" format="%3.2f" />
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <repeat from="0" to="7">
         <val id="ch$_" />
       </repeat>
-      <val id="sp"/>
-      <val id="htr"/>
+      <val id="sp" />
+      <val id="htr" />
     </symbol>
   </class>
 </cdb>

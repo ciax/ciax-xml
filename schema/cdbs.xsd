@@ -38,7 +38,6 @@
         <xsd:element ref="cdbs:int" />
       </xsd:choice>
       <xsd:attributeGroup ref="cdbs:id_attr"></xsd:attributeGroup>
-      <xsd:attribute name="format" type="xsd:token" use="required" />
       <xsd:attribute name="group" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
@@ -53,6 +52,7 @@
   <xsd:element name="float">
     <xsd:complexType>
       <xsd:attributeGroup ref="cdbs:ref_attr" />
+      <xsd:attribute name="format" type="xsd:token" use="optional" />
       <xsd:attribute name="decimal" type="xsd:integer" />
       <xsd:attribute name="formula" type="xsd:token" />
     </xsd:complexType>
@@ -61,6 +61,7 @@
     <xsd:complexType>
       <xsd:attributeGroup ref="cdbs:ref_attr" />
       <xsd:attribute name="signed" type="xsd:boolean" />
+      <xsd:attribute name="format" type="xsd:token" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="string">

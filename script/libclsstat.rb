@@ -33,9 +33,9 @@ class ClsStat
   
   private
   def get_val(e0)
-    ary=Array.new
     id=@rep.subst(e0['id'])
     @v.msg(1){"STAT:GetStatus:[#{id}]"}
+    str=''
     begin
       e0.each{|e1| #element(split and concat)
         fld=@rep.subst(e1['ref']) || raise("No field Key")
@@ -46,7 +46,7 @@ class ClsStat
           bit=(data.to_i >> loc & 1)
           bit = -(bit-1) if /true|1/ === e1['inv']
           @v.msg{"GetBit[#{bit}]"}
-          ary << bit.to_s
+          str << bit.to_s
         when 'float'
           if n=e1['decimal']
             n=n.to_i
@@ -58,21 +58,22 @@ class ClsStat
             @v.msg{"Formula:#{f}(#{data})"}
             data=eval(f)
           end
-          ary << data.to_f
+          fmt=e1['format'] || "%f"
+          str << fmt % data
         when 'int'
           data=data.to_i
           if /true|1/ === e1['signed']
             data= data > 0x7fff ? data - 0x10000 : data
           end
-          ary << data
+          fmt=e1['format'] || "%d"
+          str << fmt % data
         else
-          ary << data
+          str << data
         end
       }
-      value=e0['format'] % ary
-      @stat[id]=value
+      @stat[id]=str
     ensure
-      @v.msg(-1){"STAT:GetStatus:#{id}=[#{value}]"}
+      @v.msg(-1){"STAT:GetStatus:#{id}=[#{str}]"}
     end
   end
 

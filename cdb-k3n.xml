@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="k3n" id="k3n" label="Helium Compressor Coolant Flow">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -7,12 +7,12 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s%s" id="err" label="STAT">
+      <value id="err" label="STAT">
         <string ref="rcode" />
         <string ref="ecode" />
       </value>
-      <value format="%4.2f" id="flow" label="Helium Compressor Coolant Flow(l/min)">
-        <float decimal="2" ref="stat" />
+      <value id="flow" label="Helium Compressor Coolant Flow(l/min)">
+        <float decimal="2" format="%4.2f" ref="stat" />
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">

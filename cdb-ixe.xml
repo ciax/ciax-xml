@@ -154,41 +154,41 @@
       </repeat>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s" id="rdy" label="Comm Ready" group="s1">
+      <value id="rdy" label="Comm Ready" group="s1">
         <binary bit="0" ref="stat" />
       </value>
-      <value format="%s" id="srq" label="SRQ" group="s1">
+      <value id="srq" label="SRQ" group="s1">
         <binary bit="1" ref="stat" />
       </value>
-      <value format="%s" id="pme" label="Program Error" group="s1">
+      <value id="pme" label="Program Error" group="s1">
         <binary bit="3" ref="stat" />
       </value>
-      <value format="%s" id="pse" label="Power Stage Error" group="s1">
+      <value id="pse" label="Power Stage Error" group="s1">
         <binary bit="4" ref="stat" />
       </value>
-      <value format="%s" id="oes" label="ONE EM Stop" group="s1">
+      <value id="oes" label="ONE EM Stop" group="s1">
         <binary bit="5" ref="stat" />
       </value>
-      <value format="%s" id="ees" label="EXT EM Stop" group="s1">
+      <value id="ees" label="EXT EM Stop" group="s1">
         <binary bit="6" ref="stat" />
       </value>
-      <value format="%s" id="trm" label="Terminal Mode" group="s2">
+      <value id="trm" label="Terminal Mode" group="s2">
         <binary bit="2" ref="stat" />
       </value>
-      <value format="%s" id="cmd" label="Computer Mode" group="s2">
+      <value id="cmd" label="Computer Mode" group="s2">
         <binary bit="7" ref="stat" />
       </value>
       <repeat from="1" to="6">
-        <value format="%s" id="r$_" label="Running $_" group="r$_">
+        <value id="r$_" label="Running $_" group="r$_">
           <string ref="run:$_-1" />
         </value>
-        <value format="%d" id="p$_" label="Pulse $_" group="r$_">
+        <value id="p$_" label="Pulse $_" group="r$_">
           <int ref="p:$_-1" />
         </value>
-        <value format="%d" id="spd$_" label="Speed $_" group="r$_">
+        <value id="spd$_" label="Speed $_" group="r$_">
           <int ref="spd:$_-1" />
         </value>
-        <value format="%d" id="ofs$_" label="Offset $_" group="r$_">
+        <value id="ofs$_" label="Offset $_" group="r$_">
           <int ref="ofs:$_-1" />
         </value>
       </repeat>

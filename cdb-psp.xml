@@ -37,40 +37,40 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%3.2f" id="vol" label="OUTPUT (V)" group="o">
-        <float ref="v" />
+      <value id="vol" label="OUTPUT (V)" group="o">
+        <float ref="v" format="%3.2f" />
       </value>
-      <value format="%3.2f" id="amp" label="OUTPUT (A)" group="o">
-        <float ref="a" />
+      <value id="amp" label="OUTPUT (A)" group="o">
+        <float ref="a" format="%3.2f" />
       </value>
-      <value format="%3.2f" id="wat" label="OUTPUT (W)" group="o">
-        <float ref="w" />
+      <value id="wat" label="OUTPUT (W)" group="o">
+        <float ref="w" format="%3.2f" />
       </value>
-      <value format="%3.2f" id="vl" label="Limit (V)" group="l">
-        <float ref="u" />
+      <value id="vl" label="Limit (V)" group="l">
+        <float ref="u" format="%3.2f" />
       </value>
-      <value format="%3.2f" id="il" label="Limit (A)" group="l">
-        <float ref="i" />
+      <value id="il" label="Limit (A)" group="l">
+        <float ref="i" format="%3.2f" />
       </value>
-      <value format="%3.2f" id="pl" label="Limit (W)" group="l">
-        <float ref="p" />
+      <value id="pl" label="Limit (W)" group="l">
+        <float ref="p" format="%3.2f" />
       </value>
-      <value format="%s" id="sw" label="OUTPUT ON/OFF" group="s1">
+      <value id="sw" label="OUTPUT ON/OFF" group="s1">
         <string ref="f1" />
       </value>
-      <value format="%s" id="tmp" label="OverHeat" group="s1">
+      <value id="tmp" label="OverHeat" group="s1">
         <string ref="f2" />
       </value>
-      <value format="%s" id="kn1" label="Wheel Knov Fine" group="s2">
+      <value id="kn1" label="Wheel Knov Fine" group="s2">
         <string ref="f3" />
       </value>
-      <value format="%s" id="kn2" label="Wheel Knov Unlock" group="s2">
+      <value id="kn2" label="Wheel Knov Unlock" group="s2">
         <string ref="f4" />
       </value>
-      <value format="%s" id="rem" label="REMOTE" group="s3">
+      <value id="rem" label="REMOTE" group="s3">
         <string ref="f5" />
       </value>
-      <value format="%s" id="loc" label="Local Lock" group="s3">
+      <value id="loc" label="Local Lock" group="s3">
         <string ref="f6" />
       </value>
     </status>

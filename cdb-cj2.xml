@@ -268,97 +268,97 @@
       </event>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s" id="emg" label="EMG STOP" group="g1">
+      <value id="emg" label="EMG STOP" group="g1">
         <binary bit="0" ref="w:0" />
       </value>
-      <value format="%s%s" id="ctl" label="CONTROL" group="g1">
+      <value id="ctl" label="CONTROL" group="g1">
         <binary bit="6" ref="w:0" />
         <binary bit="7" ref="w:0" />
       </value>
-      <value format="%s" id="pse" label="PAUSE" group="g1">
+      <value id="pse" label="PAUSE" group="g1">
         <binary bit="1" ref="w:0" />
       </value>
-      <value format="%s" id="rdy" label="READY" group="g1">
+      <value id="rdy" label="READY" group="g1">
         <binary bit="3" ref="w:0" />
       </value>
-      <value format="%s" id="cmp" label="COMMAND COMPLETE" group="g2">
+      <value id="cmp" label="COMMAND COMPLETE" group="g2">
         <binary bit="14" ref="w:0" />
       </value>
-      <value format="%s" id="exe" label="COMMAND EXEC" group="g2">
+      <value id="exe" label="COMMAND EXEC" group="g2">
         <binary bit="15" ref="w:0" />
       </value>
-      <value format="%d" id="err" label="Error Code" group="g2">
+      <value id="err" label="Error Code" group="g2">
         <int ref="err" />
       </value>
-      <value format="%s%s%s%s" id="fis" label="Fix Attach" group="fix">
+      <value id="fis" label="Fix Attach" group="fix">
         <binary bit="0" ref="w:2" />
         <binary bit="1" ref="w:2" />
         <binary bit="2" ref="w:2" />
         <binary bit="3" ref="w:2" />
       </value>
-      <value format="%s%s" id="fhk" label="Fix Hook" group="fix">
+      <value id="fhk" label="Fix Hook" group="fix">
         <binary bit="0" ref="w:1" />
         <binary bit="1" ref="w:1" />
       </value>
-      <value format="%s%s" id="fjb" label="Fix Jack Bolt" group="fix">
+      <value id="fjb" label="Fix Jack Bolt" group="fix">
         <binary bit="14" ref="w:1" />
         <binary bit="15" ref="w:1" />
       </value>
-      <value format="%s%s%s%s" id="mis" label="Mov Attach" group="mov1">
+      <value id="mis" label="Mov Attach" group="mov1">
         <binary bit="0" ref="w:6" />
         <binary bit="1" ref="w:6" />
         <binary bit="2" ref="w:6" />
         <binary bit="3" ref="w:6" />
       </value>
-      <value format="%s%s" id="mhk" label="Mov Hook" group="mov1">
+      <value id="mhk" label="Mov Hook" group="mov1">
         <binary bit="0" ref="w:5" />
         <binary bit="1" ref="w:5" />
       </value>
-      <value format="%s%s" id="mjb" label="Mov Jack Bolt" group="mov1">
+      <value id="mjb" label="Mov Jack Bolt" group="mov1">
         <binary bit="14" ref="w:5" />
         <binary bit="15" ref="w:5" />
       </value>
-      <value format="%s%s" id="mrt" label="Mov Rotation" group="mov2">
+      <value id="mrt" label="Mov Rotation" group="mov2">
         <binary bit="2" ref="w:5" />
         <binary bit="3" ref="w:5" />
       </value>
-      <value format="%s%s" id="mtr" label="Mov Transer" group="mov2">
+      <value id="mtr" label="Mov Transer" group="mov2">
         <binary bit="8" ref="w:6" />
         <binary bit="6" ref="w:6" />
       </value>
-      <value format="%s" id="fpw" label="Fix Inst Power" group="fix3">
+      <value id="fpw" label="Fix Inst Power" group="fix3">
         <binary bit="8" ref="w:9" />
       </value>
-      <value format="%s" id="fcc" label="Fix CCD Power" group="fix3">
+      <value id="fcc" label="Fix CCD Power" group="fix3">
         <binary bit="10" ref="w:9" />
       </value>
-      <value format="%s" id="mpw" label="Mov Inst Power" group="mov3">
+      <value id="mpw" label="Mov Inst Power" group="mov3">
         <binary bit="9" ref="w:9" />
       </value>
-      <value format="%s" id="mcc" label="Mov CCD Power" group="mov3">
+      <value id="mcc" label="Mov CCD Power" group="mov3">
         <binary bit="11" ref="w:9" />
       </value>
       <repeat from="1" to="4">
-        <value format="%.2f" id="fz$_" label="Fix Z" group="zf">
-          <float formula="$#/100" ref="d:($_-1)" />
+        <value id="fz$_" label="Fix Z" group="zf">
+          <float format="%.2f" formula="$#/100" ref="d:($_-1)" />
         </value>
       </repeat>
       <repeat from="1" to="4">
-        <value format="%.2f" id="mz$_" label="Mov Z" group="zm">
-          <float formula="$#/100" ref="d:($_+3)" />
+        <value id="mz$_" label="Mov Z" group="zm">
+          <float format="%.2f" formula="$#/100" ref="d:($_+3)" />
         </value>
       </repeat>
-      <value format="%d" id="fid" label="Fix Instrument ID" group="iid">
+      <value id="fid" label="Fix Instrument ID" group="iid">
         <int ref="d:8" />
       </value>
-      <value format="%d" id="mid" label="Mov Instrument ID" group="iid">
+      <value id="mid" label="Mov Instrument ID" group="iid">
         <int ref="d:9" />
       </value>
-      <value format="%s%s" id="chg" label="CHG Plug" group="other">
+      <value id="chg" label="CHG Plug" group="other">
         <binary bit="6" ref="w:2" />
         <binary bit="7" ref="w:2" />
       </value>
-      <value format="%s%s" id="dor" label="Door" group="other">
+      <value id="dor" label="Door" group="other">
         <binary bit="0" ref="w:9" />
         <binary bit="1" ref="w:9" />
       </value>

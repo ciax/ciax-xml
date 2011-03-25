@@ -31,22 +31,22 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%s" id="bs" label="Moter Moving" group="1">
+      <value id="bs" label="Moter Moving" group="1">
         <string ref="bs" />
       </value>
-      <value format="%s" id="con" label="Contact Sensor" group="1">
+      <value id="con" label="Contact Sensor" group="1">
         <string ref="in:4" />
       </value>
-      <value format="%d" id="err" label="Error Code" group="1">
+      <value id="err" label="Error Code" group="1">
         <int ref="err" />
       </value>
-      <value format="%s%s%s%s" id="pos" label="Arm Position" group="2">
+      <value id="pos" label="Arm Position" group="2">
         <string ref="in:0" />
         <string ref="in:1" />
         <string ref="in:2" />
         <string ref="in:3" />
       </value>
-      <value format="%f" id="abs" label="ABS position" group="2">
+      <value id="abs" label="ABS position" group="2">
         <float ref="p" />
       </value>
     </status>

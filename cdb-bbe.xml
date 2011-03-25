@@ -116,16 +116,16 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <repeat from="0" to="3">
-        <value format="%s" id="xsw$_" label="SWITCH $_" group="$_a">
+        <value id="xsw$_" label="SWITCH $_" group="$_a">
           <binary bit="$_*4" ref="stat" />
         </value>
-        <value format="%s" id="xdr$_" label="DRIVE $_" group="$_a">
+        <value id="xdr$_" label="DRIVE $_" group="$_a">
           <binary bit="$_*4+1" ref="stat" />
         </value>
-        <value format="%s" id="xtm$_" label="TEMP ALARM $_" group="$_b">
+        <value id="xtm$_" label="TEMP ALARM $_" group="$_b">
           <binary bit="$_*4+2" ref="stat" />
         </value>
-        <value format="%s" id="xpr$_" label="PRES ALARM $_" group="$_b">
+        <value id="xpr$_" label="PRES ALARM $_" group="$_b">
           <binary bit="$_*4+3" ref="stat" />
         </value>
       </repeat>

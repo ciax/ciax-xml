@@ -98,45 +98,45 @@
       </event>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value format="%d" id="exit" label="Exit Code" group="1">
+      <value id="exit" label="Exit Code" group="1">
         <int ref="exit" />
       </value>
-      <value format="%d" id="rts" label="ROT SEL" group="1">
+      <value id="rts" label="ROT SEL" group="1">
         <int ref="rsel" />
       </value>
-      <value format="%d" id="iid" label="CAS INST ID" group="1">
+      <value id="iid" label="CAS INST ID" group="1">
         <int ref="iid" />
       </value>
-      <value format="%s%s%s%s" id="login" label="Login Status" group="1">
+      <value id="login" label="Login Status" group="1">
         <string ref="login0" />
         <string ref="login1" />
         <string ref="login2" />
         <string ref="login3" />
       </value>
-      <value format="%d" id="rpw" label="ROT DRIVE" group="2">
+      <value id="rpw" label="ROT DRIVE" group="2">
         <int ref="rpw" />
       </value>
-      <value format="%s" id="jpw" label="JAK DRIVE" group="2">
+      <value id="jpw" label="JAK DRIVE" group="2">
         <binary bit="7" ref="bstat" />
       </value>
-      <value format="%s" id="nfb" label="BOLT NFB TRIP" group="3">
+      <value id="nfb" label="BOLT NFB TRIP" group="3">
         <binary bit="6" ref="bstat" />
       </value>
-      <value format="%s%s" id="rps" label="ROT POS SENSOR" group="3">
+      <value id="rps" label="ROT POS SENSOR" group="3">
         <binary bit="4" ref="bstat" />
         <binary bit="5" ref="bstat" />
       </value>
-      <value format="%s" id="stw" label="EL STOW" group="4">
+      <value id="stw" label="EL STOW" group="4">
         <binary bit="2" ref="stow_1" />
       </value>
-      <value format="%s" id="stp" label="EL 90 STOW" group="4">
+      <value id="stp" label="EL 90 STOW" group="4">
         <binary bit="0" ref="stow_1" />
       </value>
-      <value format="%f" id="iang" label="InR Angle" group="4">
+      <value id="iang" label="InR Angle" group="4">
         <float ref="iang" />
       </value>
       <repeat from="0" to="15">
-        <value format="%d" id="jk$_" label="Jack Pulse $_">
+        <value id="jk$_" label="Jack Pulse $_">
           <int ref="jk:$_" />
         </value>
       </repeat>

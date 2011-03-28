@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -364,61 +364,61 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <enum id="ist">
-        <case class="normal" msg="ON">1111</case>
-        <case class="normal" msg="OFF">0000</case>
-        <case class="warn" msg="N/A"></case>
-      </enum>
-      <enum id="hook">
-        <case class="normal" msg="HOOK">10</case>
-        <case class="normal" msg="UNHOOK">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </enum>
-      <enum id="jack">
-        <case class="normal" msg="UP">10</case>
-        <case class="normal" msg="DW">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </enum>
-      <enum id="emg" ref="alarm" />
-      <enum id="pse" ref="warn" />
-      <enum id="rdy" ref="off-warn" />
-      <enum id="cmp" ref="normal" />
-      <enum id="exe" ref="normal" />
-      <enum id="ctl">
-        <case class="normal" msg="AUTO">10</case>
-        <case class="normal" msg="MANUAL">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </enum>
-      <enum id="fis" ref="ist" />
-      <enum id="fhk" ref="hook" />
-      <enum id="fjb" ref="jack" />
-      <enum id="mis" ref="ist" />
-      <enum id="mhk" ref="hook" />
-      <enum id="mjb" ref="jack" />
-      <enum id="mrt" ref="rot" />
-      <enum id="mtr" ref="mov" />
-      <enum id="chg" ref="mov" />
-      <enum id="mov">
-        <case class="normal" msg="FW">10</case>
-        <case class="normal" msg="BK">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </enum>
-      <enum id="rot">
-        <case class="normal" msg="LOAD">10</case>
-        <case class="normal" msg="STORE">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </enum>
-      <enum id="dor">
-        <case class="normal" msg="OPEN">10</case>
-        <case class="normal" msg="CLOSE">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </enum>
-      <enum id="fpw" ref="off-warn" />
-      <enum id="fcc" ref="off-warn" />
-      <enum id="mpw" ref="off-warn" />
-      <enum id="mcc" ref="off-warn" />
-      <enum id="fid" ref="iid_ac" />
-      <enum id="mid" ref="iid_ac" />
+      <case id="ist">
+        <enum class="normal" msg="ON">1111</enum>
+        <enum class="normal" msg="OFF">0000</enum>
+        <enum class="warn" msg="N/A"></enum>
+      </case>
+      <case id="hook">
+        <enum class="normal" msg="HOOK">10</enum>
+        <enum class="normal" msg="UNHOOK">01</enum>
+        <enum class="alarm" msg="N/A">00</enum>
+      </case>
+      <case id="jack">
+        <enum class="normal" msg="UP">10</enum>
+        <enum class="normal" msg="DW">01</enum>
+        <enum class="alarm" msg="N/A">00</enum>
+      </case>
+      <case id="emg" ref="alarm" />
+      <case id="pse" ref="warn" />
+      <case id="rdy" ref="off-warn" />
+      <case id="cmp" ref="normal" />
+      <case id="exe" ref="normal" />
+      <case id="ctl">
+        <enum class="normal" msg="AUTO">10</enum>
+        <enum class="normal" msg="MANUAL">01</enum>
+        <enum class="alarm" msg="N/A">00</enum>
+      </case>
+      <case id="fis" ref="ist" />
+      <case id="fhk" ref="hook" />
+      <case id="fjb" ref="jack" />
+      <case id="mis" ref="ist" />
+      <case id="mhk" ref="hook" />
+      <case id="mjb" ref="jack" />
+      <case id="mrt" ref="rot" />
+      <case id="mtr" ref="mov" />
+      <case id="chg" ref="mov" />
+      <case id="mov">
+        <enum class="normal" msg="FW">10</enum>
+        <enum class="normal" msg="BK">01</enum>
+        <enum class="alarm" msg="N/A">00</enum>
+      </case>
+      <case id="rot">
+        <enum class="normal" msg="LOAD">10</enum>
+        <enum class="normal" msg="STORE">01</enum>
+        <enum class="alarm" msg="N/A">00</enum>
+      </case>
+      <case id="dor">
+        <enum class="normal" msg="OPEN">10</enum>
+        <enum class="normal" msg="CLOSE">01</enum>
+        <enum class="alarm" msg="N/A">00</enum>
+      </case>
+      <case id="fpw" ref="off-warn" />
+      <case id="fcc" ref="off-warn" />
+      <case id="mpw" ref="off-warn" />
+      <case id="mcc" ref="off-warn" />
+      <case id="fid" ref="iid_ac" />
+      <case id="mid" ref="iid_ac" />
     </symbol>
   </class>
 </cdb>

@@ -50,7 +50,7 @@ class Sym
     end
     e.each{|cs|
       @v.msg{"STAT:Symbol:compare [#{cs.text}] and [#{val}]"}
-      case e.name
+      case cs.name
       when 'enum'
         next unless cs.text == val
         set['msg']=cs['msg']

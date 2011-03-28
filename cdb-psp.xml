@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="psp" id="psp" label="MOIRCS Ext Heater">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -75,12 +75,12 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <enum id="sw" ref="warn" />
-      <enum id="tmp" ref="alarm" />
-      <enum id="kn1" ref="normal" />
-      <enum id="kn2" ref="normal" />
-      <enum id="rem" ref="normal" />
-      <enum id="loc" ref="normal" />
+      <case id="sw" ref="warn" />
+      <case id="tmp" ref="alarm" />
+      <case id="kn1" ref="normal" />
+      <case id="kn2" ref="normal" />
+      <case id="rem" ref="normal" />
+      <case id="loc" ref="normal" />
     </symbol>
   </class>
 </cdb>

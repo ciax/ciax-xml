@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -194,14 +194,14 @@
       </repeat>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <enum id="rdy" ref="off-warn" />
-      <enum id="srq" ref="off-warn" />
-      <enum id="pme" ref="alarm" />
-      <enum id="pse" ref="alarm" />
-      <enum id="oes" ref="alarm" />
-      <enum id="ees" ref="alarm" />
-      <enum id="trm" ref="off-warn" />
-      <enum id="cmd" ref="off-warn" />
+      <case id="rdy" ref="off-warn" />
+      <case id="srq" ref="off-warn" />
+      <case id="pme" ref="alarm" />
+      <case id="pse" ref="alarm" />
+      <case id="oes" ref="alarm" />
+      <case id="ees" ref="alarm" />
+      <case id="trm" ref="off-warn" />
+      <case id="cmd" ref="off-warn" />
     </symbol>
   </class>
 </cdb>

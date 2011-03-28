@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="slo" id="slo" label="MOIRCS Arm">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -51,30 +51,30 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <enum id="bs" ref="warn" />
-      <enum id="con" ref="normal"></enum>
-      <enum id="err">
-        <case class="hide" msg="No Error">0</case>
-        <case class="alarm" msg="Could not burn flash successfully">1</case>
-        <case class="alarm" msg="Could not download file">2</case>
-        <case class="alarm" msg="Not enough memory to execute user program">3</case>
-        <case class="alarm" msg="Attempt to access a non-existent array element">4</case>
-        <case class="alarm" msg="Unknown Error">.</case>
-      </enum>
-      <enum id="pos">
-        <case class="normal" msg="INIT">0001</case>
-        <case class="normal" msg="STOCK">0010</case>
-        <case class="normal" msg="FOCUS">0100</case>
-        <case class="normal" msg="ROT">1000</case>
-        <case class="alarm" msg="N/A">.</case>
-      </enum>
-      <range id="abs" type="FLOAT">
-        <case class="normal" msg="INIT">0:0.5</case>
-        <case class="normal" msg="FOCUS">12.3:13.2</case>
-        <case class="normal" msg="ROT">122.5:123.5</case>
-        <case class="normal" msg="WAIT">184.5:185.5</case>
-        <case class="normal" msg="STOCK">200:201</case>
-      </range>
+      <case id="bs" ref="warn" />
+      <case id="con" ref="normal"></case>
+      <case id="err">
+        <enum class="hide" msg="No Error">0</enum>
+        <enum class="alarm" msg="Could not burn flash successfully">1</enum>
+        <enum class="alarm" msg="Could not download file">2</enum>
+        <enum class="alarm" msg="Not enough memory to execute user program">3</enum>
+        <enum class="alarm" msg="Attempt to access a non-existent array element">4</enum>
+        <enum class="alarm" msg="Unknown Error">.</enum>
+      </case>
+      <case id="pos">
+        <enum class="normal" msg="INIT">0001</enum>
+        <enum class="normal" msg="STOCK">0010</enum>
+        <enum class="normal" msg="FOCUS">0100</enum>
+        <enum class="normal" msg="ROT">1000</enum>
+        <enum class="alarm" msg="N/A">.</enum>
+      </case>
+      <case id="abs" type="FLOAT">
+        <range class="normal" msg="INIT">0:0.5</range>
+        <range class="normal" msg="FOCUS">12.3:13.2</range>
+        <range class="normal" msg="ROT">122.5:123.5</range>
+        <range class="normal" msg="WAIT">184.5:185.5</range>
+        <range class="normal" msg="STOCK">200:201</range>
+      </case>
     </symbol>
   </class>
 </cdb>

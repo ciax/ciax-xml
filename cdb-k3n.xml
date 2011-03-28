@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="k3n" id="k3n" label="Helium Compressor Coolant Flow">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -16,17 +16,17 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <regexp id="err">
-        <case class="hide" msg="OK">000000</case>
-        <case class="alarm" msg="Error">.</case>
-      </regexp>
-      <range id="flow" type="FLOAT">
-        <case class="alarm" msg="HH">6:</case>
-        <case class="warn" msg="H">5:&lt;6</case>
-        <case class="normal" msg="M">4:&lt;5</case>
-        <case class="warn" msg="L">3:&lt;4</case>
-        <case class="alarm" msg="LL">:&lt;3</case>
-      </range>
+      <case id="err">
+        <regexp class="hide" msg="OK">000000</regexp>
+        <regexp class="alarm" msg="Error">.</regexp>
+      </case>
+      <case id="flow" type="FLOAT">
+        <range class="alarm" msg="HH">6:</range>
+        <range class="warn" msg="H">5:&lt;6</range>
+        <range class="normal" msg="M">4:&lt;5</range>
+        <range class="warn" msg="L">3:&lt;4</range>
+        <range class="alarm" msg="LL">:&lt;3</range>
+      </case>
     </symbol>
   </class>
 </cdb>

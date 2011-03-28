@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oma" id="oma" label="Compressed Air Pressure at MOIRCS">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -18,13 +18,13 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <range id="pres" type="FLOAT">
-        <case class="alarm" msg="HH">110:</case>
-        <case class="warn" msg="H">105:&lt;110</case>
-        <case class="normal" msg="M">95:&lt;105</case>
-        <case class="warn" msg="L">90:&lt;95</case>
-        <case class="alarm" msg="LL">:&lt;90</case>
-      </range>
+      <case id="pres" type="FLOAT">
+        <range class="alarm" msg="HH">110:</range>
+        <range class="warn" msg="H">105:&lt;110</range>
+        <range class="normal" msg="M">95:&lt;105</range>
+        <range class="warn" msg="L">90:&lt;95</range>
+        <range class="alarm" msg="LL">:&lt;90</range>
+      </case>
     </symbol>
   </class>
 </cdb>

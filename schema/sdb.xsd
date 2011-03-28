@@ -8,15 +8,6 @@
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
   <!--root-->
-  <xsd:group name="type">
-    <xsd:choice>
-      <xsd:element ref="sdb:repeat" />
-      <xsd:element ref="sdb:enum" />
-      <xsd:element ref="sdb:regexp" />
-      <xsd:element ref="sdb:range" />
-      <xsd:element ref="sdb:val" />
-    </xsd:choice>
-  </xsd:group>
   <xsd:element name="sdb">
     <xsd:complexType>
       <xsd:sequence>
@@ -27,40 +18,23 @@
   <!--symbol-->
   <xsd:element name="symbol">
     <xsd:complexType>
-      <xsd:group maxOccurs="unbounded" ref="sdb:type" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="repeat">
-    <xsd:complexType>
-      <xsd:group maxOccurs="unbounded" ref="sdb:type" />
-      <xsd:attributeGroup ref="sdb:repeat" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="enum">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:element ref="sdb:case" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:choice maxOccurs="unbounded">
+        <xsd:element ref="sdb:repeat" />
+        <xsd:element ref="sdb:case" />
       </xsd:choice>
-      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="regexp">
+  <xsd:element name="case">
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element ref="sdb:case" minOccurs="0" maxOccurs="unbounded" />
-      </xsd:choice>
-      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="range">
-    <xsd:complexType>
-      <xsd:choice>
-        <xsd:element ref="sdb:case" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:choice minOccurs="0" maxOccurs="1">
+        <xsd:element ref="sdb:enum" maxOccurs="unbounded" />
+        <xsd:element ref="sdb:regexp" maxOccurs="unbounded" />
+        <xsd:element ref="sdb:range" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="type">
         <xsd:simpleType>
-          <xsd:restriction base="xsd:token">
+          <xsd:restriction base="xsd:string">
             <xsd:enumeration value="FLOAT" />
             <xsd:enumeration value="INT" />
           </xsd:restriction>
@@ -68,32 +42,32 @@
       </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="val">
+  <xsd:element name="repeat">
     <xsd:complexType>
-      <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
+      <xsd:sequence maxOccurs="unbounded">
+        <xsd:element ref="sdb:case" />
+      </xsd:sequence>
+      <xsd:attributeGroup ref="sdb:repeat" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:attributeGroup name="symbol_attr">
-    <xsd:attribute name="class" use="required">
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:token">
-          <xsd:enumeration value="normal" />
-          <xsd:enumeration value="warn" />
-          <xsd:enumeration value="alarm" />
-          <xsd:enumeration value="hide" />
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:attribute>
-    <xsd:attribute name="msg" type="xsd:token" use="required" />
-  </xsd:attributeGroup>
-  <!--cases-->
-  <xsd:element name="case">
-    <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:token">
-          <xsd:attributeGroup ref="sdb:symbol_attr" />
-        </xsd:extension>
-      </xsd:simpleContent>
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:complexType name="type_sym">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:token">
+        <xsd:attribute name="class" use="required">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="normal" />
+              <xsd:enumeration value="warn" />
+              <xsd:enumeration value="alarm" />
+              <xsd:enumeration value="hide" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="msg" type="xsd:token" use="required" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:element name="enum" type="sdb:type_sym"></xsd:element>
+  <xsd:element name="regexp" type="sdb:type_sym"></xsd:element>
+  <xsd:element name="range" type="sdb:type_sym"></xsd:element>
 </xsd:schema>

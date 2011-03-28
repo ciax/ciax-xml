@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -200,55 +200,55 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <enum id="ecode" label="ExitCode">
-        <case class="hide" msg="OK">0000</case>
-        <case class="alarm" msg="RW Region Error">0002</case>
-        <case class="alarm" msg="CMD Code Error">0050</case>
-        <case class="alarm" msg="Devide Num Error">0056</case>
-        <case class="alarm" msg="Communication Error">005B</case>
-        <case class="alarm" msg="CPU Watch timeout Error">0060</case>
-        <case class="alarm" msg="Unknown">.</case>
-      </enum>
-      <enum id="rdy" ref="normal" />
-      <enum id="pse" ref="warn" />
-      <enum id="emg" ref="alarm" />
-      <enum id="stp" ref="warn" />
-      <enum id="run" ref="normal" />
-      <enum id="jak" ref="normal" />
-      <enum id="con" ref="normal" />
-      <enum id="flt" ref="alarm" />
-      <enum id="msr" ref="normal" />
-      <enum id="msl" ref="normal" />
-      <enum id="jd1" ref="normal" />
-      <enum id="jd2" ref="normal" />
-      <enum id="jd3" ref="normal" />
-      <enum id="jd4" ref="normal" />
-      <range id="motor" type="INT">
-        <case class="alarm" msg="LOW">:10</case>
-        <case class="normal" msg="OK">10&lt;:30</case>
-        <case class="alarm" msg="HIGH">30&lt;:</case>
-      </range>
-      <enum id="mdar" ref="motor" />
-      <enum id="mdal" ref="motor" />
-      <range id="bvl" type="FLOAT">
-        <case class="alarm" msg="LOW">:20</case>
-        <case class="warn" msg="LESS">20&lt;:22</case>
-        <case class="normal" msg="OK">22&lt;:26</case>
-        <case class="warn" msg="FULL">26&lt;:28</case>
-        <case class="alarm" msg="HIGH">28&lt;:</case>
-      </range>
-      <enum id="ist">
-        <case class="normal" msg="MOIRCS">2</case>
-        <case class="warn" msg="N/A">.</case>
-      </enum>
-      <enum id="jpos">
-        <case class="normal" msg="D">0</case>
-        <case class="normal" msg="1(L)">1</case>
-        <case class="normal" msg="2(M)">2</case>
-        <case class="normal" msg="3(H)">3</case>
-        <case class="normal" msg="CHG">4</case>
-        <case class="warn" msg="N/A">.</case>
-      </enum>
+      <case id="ecode" label="ExitCode">
+        <enum class="hide" msg="OK">0000</enum>
+        <enum class="alarm" msg="RW Region Error">0002</enum>
+        <enum class="alarm" msg="CMD Code Error">0050</enum>
+        <enum class="alarm" msg="Devide Num Error">0056</enum>
+        <enum class="alarm" msg="Communication Error">005B</enum>
+        <enum class="alarm" msg="CPU Watch timeout Error">0060</enum>
+        <enum class="alarm" msg="Unknown">.</enum>
+      </case>
+      <case id="rdy" ref="normal" />
+      <case id="pse" ref="warn" />
+      <case id="emg" ref="alarm" />
+      <case id="stp" ref="warn" />
+      <case id="run" ref="normal" />
+      <case id="jak" ref="normal" />
+      <case id="con" ref="normal" />
+      <case id="flt" ref="alarm" />
+      <case id="msr" ref="normal" />
+      <case id="msl" ref="normal" />
+      <case id="jd1" ref="normal" />
+      <case id="jd2" ref="normal" />
+      <case id="jd3" ref="normal" />
+      <case id="jd4" ref="normal" />
+      <case id="motor" type="INT">
+        <range class="alarm" msg="LOW">:10</range>
+        <range class="normal" msg="OK">10&lt;:30</range>
+        <range class="alarm" msg="HIGH">30&lt;:</range>
+      </case>
+      <case id="mdar" ref="motor" />
+      <case id="mdal" ref="motor" />
+      <case id="bvl" type="FLOAT">
+        <range class="alarm" msg="LOW">:20</range>
+        <range class="warn" msg="LESS">20&lt;:22</range>
+        <range class="normal" msg="OK">22&lt;:26</range>
+        <range class="warn" msg="FULL">26&lt;:28</range>
+        <range class="alarm" msg="HIGH">28&lt;:</range>
+      </case>
+      <case id="ist">
+        <enum class="normal" msg="MOIRCS">2</enum>
+        <enum class="warn" msg="N/A">.</enum>
+      </case>
+      <case id="jpos">
+        <enum class="normal" msg="D">0</enum>
+        <enum class="normal" msg="1(L)">1</enum>
+        <enum class="normal" msg="2(M)">2</enum>
+        <enum class="normal" msg="3(H)">3</enum>
+        <enum class="normal" msg="CHG">4</enum>
+        <enum class="warn" msg="N/A">.</enum>
+      </case>
     </symbol>
   </class>
 </cdb>

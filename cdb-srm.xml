@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="srm" id="srm" label="CsEtr Controller">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -90,13 +90,13 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <enum id="iid" ref="iid_ac" />
-      <enum id="ipw" ref="off-warn" />
-      <enum id="stp" ref="warn" />
-      <enum id="ccd" ref="warn" />
-      <enum id="lan" ref="hide" />
-      <enum id="c3p" ref="hide" />
-      <enum id="c3e" ref="alarm" />
+      <case id="iid" ref="iid_ac" />
+      <case id="ipw" ref="off-warn" />
+      <case id="stp" ref="warn" />
+      <case id="ccd" ref="warn" />
+      <case id="lan" ref="hide" />
+      <case id="c3p" ref="hide" />
+      <case id="c3e" ref="alarm" />
     </symbol>
   </class>
 </cdb>

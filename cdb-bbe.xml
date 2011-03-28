@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="bbe" id="bbe" label="Helium Compressor">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -132,10 +132,10 @@
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <repeat from="0" to="3">
-        <enum id="xsw$_" ref="off-warn"></enum>
-        <enum id="xdr$_" ref="off-warn"></enum>
-        <enum id="xtm$_" ref="alarm"></enum>
-        <enum id="xpr$_" ref="alarm"></enum>
+        <case id="xsw$_" ref="off-warn"></case>
+        <case id="xdr$_" ref="off-warn"></case>
+        <case id="xtm$_" ref="alarm"></case>
+        <case id="xpr$_" ref="alarm"></case>
       </repeat>
     </symbol>
   </class>

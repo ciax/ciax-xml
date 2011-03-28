@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -26,7 +26,7 @@
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <repeat from="1" to="6">
-        <val id="v$_" />
+        <case id="v$_" />
       </repeat>
     </symbol>
   </class>

@@ -1,52 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <symbol>
-    <enum id="iid_tsc" label="Instrument ID by TSC">
-      <case class="warn" msg="NONE">0</case>
-      <case class="normal" msg="IRCS">1</case>
-      <case class="normal" msg="CIAO">3</case>
-      <case class="normal" msg="FOCAS">5</case>
-      <case class="normal" msg="COMICS">7</case>
-      <case class="normal" msg="K3D">10</case>
-      <case class="normal" msg="MOIRCS">12</case>
-      <case class="normal" msg="CIAX3">13</case>
-      <case class="normal" msg="N/A">.</case>
-    </enum>
-    <enum id="iid_ac" label="Instrument ID by Auto Connector">
-      <case class="warn" msg="NONE">0</case>
-      <case class="normal" msg="CIAX3">1</case>
-      <case class="normal" msg="COMICS">2</case>
-      <case class="normal" msg="CIAO">3</case>
-      <case class="normal" msg="FOCAS">4</case>
-      <case class="normal" msg="IRCS">5</case>
-      <case class="normal" msg="N/A">6</case>
-      <case class="normal" msg="MOIRCS">7</case>
-      <case class="normal" msg="MP-CS1">8</case>
-      <case class="normal" msg="MP-CS2">9</case>
-    </enum>
-    <enum id="normal">
-      <case class="normal" msg="ON">1</case>
-      <case class="normal" msg="OFF">0</case>
-    </enum>
-    <enum id="warn">
-      <case class="warn" msg="ON">1</case>
-      <case class="normal" msg="OFF">0</case>
-    </enum>
-    <enum id="off-warn">
-      <case class="normal" msg="ON">1</case>
-      <case class="warn" msg="OFF">0</case>
-    </enum>
-    <enum id="alarm">
-      <case class="alarm" msg="ON">1</case>
-      <case class="hide" msg="OFF">0</case>
-    </enum>
-    <enum id="off-alarm">
-      <case class="hide" msg="ON">1</case>
-      <case class="alarm" msg="OFF">0</case>
-    </enum>
-    <enum id="hide">
-      <case class="hide" msg="ON">1</case>
-      <case class="hide" msg="OFF">0</case>
-    </enum>
+    <case id="iid_tsc" label="Instrument ID by TSC">
+      <enum class="warn" msg="NONE">0</enum>
+      <enum class="normal" msg="IRCS">1</enum>
+      <enum class="normal" msg="CIAO">3</enum>
+      <enum class="normal" msg="FOCAS">5</enum>
+      <enum class="normal" msg="COMICS">7</enum>
+      <enum class="normal" msg="K3D">10</enum>
+      <enum class="normal" msg="MOIRCS">12</enum>
+      <enum class="normal" msg="CIAX3">13</enum>
+      <enum class="normal" msg="N/A">.</enum>
+    </case>
+    <case id="iid_ac" label="Instrument ID by Auto Connector">
+      <enum class="warn" msg="NONE">0</enum>
+      <enum class="normal" msg="CIAX3">1</enum>
+      <enum class="normal" msg="COMICS">2</enum>
+      <enum class="normal" msg="CIAO">3</enum>
+      <enum class="normal" msg="FOCAS">4</enum>
+      <enum class="normal" msg="IRCS">5</enum>
+      <enum class="normal" msg="N/A">6</enum>
+      <enum class="normal" msg="MOIRCS">7</enum>
+      <enum class="normal" msg="MP-CS1">8</enum>
+      <enum class="normal" msg="MP-CS2">9</enum>
+    </case>
+    <case id="normal">
+      <enum class="normal" msg="ON">1</enum>
+      <enum class="normal" msg="OFF">0</enum>
+    </case>
+    <case id="warn">
+      <enum class="warn" msg="ON">1</enum>
+      <enum class="normal" msg="OFF">0</enum>
+    </case>
+    <case id="off-warn">
+      <enum class="normal" msg="ON">1</enum>
+      <enum class="warn" msg="OFF">0</enum>
+    </case>
+    <case id="alarm">
+      <enum class="alarm" msg="ON">1</enum>
+      <enum class="hide" msg="OFF">0</enum>
+    </case>
+    <case id="off-alarm">
+      <enum class="hide" msg="ON">1</enum>
+      <enum class="alarm" msg="OFF">0</enum>
+    </case>
+    <case id="hide">
+      <enum class="hide" msg="ON">1</enum>
+      <enum class="hide" msg="OFF">0</enum>
+    </case>
   </symbol>
 </sdb>

@@ -45,14 +45,6 @@ class XmlGn
     (txt == '') ? nil : txt
   end
 
-  # select element with key=val, or display list
-  def select(key,val)
-    @e.each_element{|e|
-      return XmlGn.new(e) if e.attributes[key] == val
-    } if val
-    raise SelectID,list(key)
-  end
-
   def list(key)
     inject(''){|msg,e|
       msg << " %-10s: %s\n" % [e[key],e['label']] if e[key] && e['label']

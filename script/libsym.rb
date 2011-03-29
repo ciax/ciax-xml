@@ -3,6 +3,7 @@ require "libxmldoc"
 require "libverbose"
 require "librerange"
 require "librepeat"
+S='symbol'
 
 class Sym
   def initialize(doc)
@@ -22,15 +23,14 @@ class Sym
       end
     }
     tbl={}
-    if @doc['symbol']
-      @rep.each(@doc['symbol']){|e|
+    if @doc[S]
+      @rep.each(@doc[S]){|e|
         id=@rep.subst(e['id'])
         if ref=e['ref']
-          begin
-            e=@doc.select_id('symbol',ref)
-          rescue SelectID
-            e=@com.select_id('symbol',ref)
-          end
+          pre="case[@id='#{ref}']"
+          e=@doc.select(S,pre) ||\
+          @com.select(S,pre) ||\
+          raise("No symbol ref(#{ref})")
         end
         tbl[id]=get_symbol(e,stat[id])
       }

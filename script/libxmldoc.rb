@@ -24,23 +24,26 @@ class XmlDoc < Hash
     path="#{pre}-#{type}.xml"
     Dir.glob(path).each{|p|
       yield(XmlGn.new(p))
-    }
+    }.empty? && raise(SelectID)
   end
 
   public
-  def select_id(domain,id,xpath=nil)
+  def select(domain,xpath)
     raise SelectID unless key?(domain)
-    if xpath
-      find_each(domain,xpath){|e|
-        return e.select('id',id)
-      }
-    else
-      return self[domain].select('id',id)
+    self[domain].find_each(xpath){|e|
+      return e
+    }
+    nil
+  end
+
+  def select_id(domain,id,xpath='*')
+    if key?(domain)
+      return select(domain,"#{xpath}[@id='#{id}']") || raise(SelectID)
     end
   rescue SelectID
     $errmsg << "No such command [#{id}]\n" if id
     $errmsg << "== Command List ==\n"
-    $errmsg << $!.to_s
+    $errmsg << self[domain].list('id')
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 

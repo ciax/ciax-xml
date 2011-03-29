@@ -29,17 +29,19 @@ loop {
     when ''
       puts out.filter(JSON.dump(cdb.stat))
     else
-      line.split(';').each{|cmd|
-        stm=al.alias(cmd).split(' ')
-        cdb.dispatch(stm){|s|s}
-      }
+      begin
+        line.split(';').each{|cmd|
+          stm=al.alias(cmd.split(' '))
+          cdb.dispatch(stm){|s|s}
+        }
+      rescue SelectID
+        puts $!.to_s
+        puts "== Shell Command =="
+        puts " q         : Quit"
+        puts " D^        : Interrupt"
+      end
     end
-  rescue SelectID
-    puts $!.to_s
-    puts "== Shell Command =="
-    puts " q         : Quit"
-    puts " D^        : Interrupt"
-  rescue RuntimeError
+  rescue
     puts $!.to_s
   end
 }

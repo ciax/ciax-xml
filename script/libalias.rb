@@ -7,17 +7,18 @@ class Alias
     @odb=XmlDoc.new('odb',obj)
   rescue RuntimeError
   else
-    @v=Verbose.new("odb/#{obj}".upcase)
+    @v=Verbose.new("alias/#{obj}".upcase)
   end
   
   public
   def alias(stm)
+    raise unless Array === stm
     if @odb && @odb['command']
       @session=@odb.select_id('command',stm[0])
-      @v.msg{"Exec(ODB):#{@session['label']}"}
+      @v.msg{"Before:#{stm}(#{@session['label']})"}
       stm[1..-1].unshift(@session['ref'])
-    else
-      stm
+      @v.msg{"After:#{stm}"}
     end
+    stm
   end
 end

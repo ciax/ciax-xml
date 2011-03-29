@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -6,34 +6,9 @@
         <statement command="getstat" />
         <statement command="chken" />
       </session>
-      <session id="start_run" label="Running Start">
-        <statement command="start">
-          <argv>1</argv>
-        </statement>
-      </session>
-      <session id="start_jak" label="Jacking Start">
-        <statement command="start">
-          <argv format="%d">0x100</argv>
-        </statement>
-      </session>
-      <session id="clear_trg" label="Clear Trigger">
+      <session id="clear_trg">
+        <!--Clear Trigger-->
         <statement command="clear" />
-      </session>
-      <session id="set_tag" label="Set Destination Tag [1-12]">
-        <parameters>
-          <par validate="range">1:12</par>
-        </parameters>
-        <statement command="set_tag">
-          <argv>$1</argv>
-        </statement>
-      </session>
-      <session id="set_jak" label="Set Jack Level [0-3]">
-        <parameters>
-          <par validate="range">0:3</par>
-        </parameters>
-        <statement command="set_pos">
-          <argv>$1</argv>
-        </statement>
       </session>
       <session id="run" label="Run to Destination Tag [1-12]">
         <parameters>
@@ -207,7 +182,7 @@
         <enum class="alarm" msg="Devide Num Error">0056</enum>
         <enum class="alarm" msg="Communication Error">005B</enum>
         <enum class="alarm" msg="CPU Watch timeout Error">0060</enum>
-       </case>
+      </case>
       <case id="rdy" ref="normal" />
       <case id="pse" ref="warn" />
       <case id="emg" ref="alarm" />

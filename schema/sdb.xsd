@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:include schemaLocation="range.xsd" />
   <xsd:include schemaLocation="repeat.xsd" />
@@ -24,6 +24,14 @@
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
+  <xsd:simpleType name="type_hl">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="normal" />
+      <xsd:enumeration value="warn" />
+      <xsd:enumeration value="alarm" />
+      <xsd:enumeration value="hide" />
+    </xsd:restriction>
+  </xsd:simpleType>
   <xsd:element name="case">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="1">
@@ -32,6 +40,8 @@
         <xsd:element ref="sdb:range" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="sdb:id_attr"></xsd:attributeGroup>
+      <xsd:attribute name="class" type="sdb:type_hl" />
+      <xsd:attribute name="msg" type="xsd:token" />
       <xsd:attribute name="type">
         <xsd:simpleType>
           <xsd:restriction base="xsd:string">
@@ -53,16 +63,7 @@
   <xsd:complexType name="type_sym">
     <xsd:simpleContent>
       <xsd:extension base="xsd:token">
-        <xsd:attribute name="class" use="required">
-          <xsd:simpleType>
-            <xsd:restriction base="xsd:token">
-              <xsd:enumeration value="normal" />
-              <xsd:enumeration value="warn" />
-              <xsd:enumeration value="alarm" />
-              <xsd:enumeration value="hide" />
-            </xsd:restriction>
-          </xsd:simpleType>
-        </xsd:attribute>
+        <xsd:attribute name="class" type="sdb:type_hl" use="required" />
         <xsd:attribute name="msg" type="xsd:token" use="required" />
       </xsd:extension>
     </xsd:simpleContent>

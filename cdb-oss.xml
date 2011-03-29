@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -142,15 +142,14 @@
       </repeat>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case id="rts">
+      <case id="rts" class="alarm" msg="N/A">
         <enum class="warn" msg="PFO">1</enum>
         <enum class="warn" msg="PFI">2</enum>
         <enum class="normal" msg="CAS">4</enum>
         <enum class="warn" msg="NSO">8</enum>
         <enum class="warn" msg="NSI">10</enum>
-        <enum class="alarm" msg="N/A">.</enum>
       </case>
-      <case id="iid">
+      <case id="iid" msg="N/A">
         <enum class="warn" msg="NONE">0</enum>
         <enum class="normal" msg="IRCS">1</enum>
         <enum class="normal" msg="CIAO">3</enum>
@@ -159,22 +158,19 @@
         <enum class="normal" msg="K3D">10</enum>
         <enum class="normal" msg="MOIRCS">12</enum>
         <enum class="normal" msg="CIAX3">13</enum>
-        <enum class="normal" msg="N/A">.</enum>
       </case>
-      <case id="login">
+      <case id="login" class="warn" msg="LOGOUT">
         <regexp class="alarm" msg="OSS Login">OSS</regexp>
         <regexp class="normal" msg="LOGIN">CXWS</regexp>
-        <regexp class="warn" msg="LOGOUT">.</regexp>
       </case>
       <case id="rpw">
         <enum class="warn" msg="ON">1</enum>
         <enum class="normal" msg="OFF">2</enum>
       </case>
-      <case id="rps">
+      <case id="rps" class="alarm" msg="N/A">
         <enum class="normal" msg="OFF">11</enum>
         <enum class="normal" msg="0DEG">10</enum>
         <enum class="normal" msg="-4DEG">01</enum>
-        <enum class="alarm" msg="N/A">.</enum>
       </case>
     </symbol>
   </class>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <symbol>
-    <case id="iid_tsc" label="Instrument ID by TSC">
+    <case id="iid_tsc" label="Instrument ID by TSC" msg="N/A">
       <enum class="warn" msg="NONE">0</enum>
       <enum class="normal" msg="IRCS">1</enum>
       <enum class="normal" msg="CIAO">3</enum>
@@ -10,9 +10,8 @@
       <enum class="normal" msg="K3D">10</enum>
       <enum class="normal" msg="MOIRCS">12</enum>
       <enum class="normal" msg="CIAX3">13</enum>
-      <enum class="normal" msg="N/A">.</enum>
     </case>
-    <case id="iid_ac" label="Instrument ID by Auto Connector">
+    <case id="iid_ac" label="Instrument ID by Auto Connector" msg="OTHER">
       <enum class="warn" msg="NONE">0</enum>
       <enum class="normal" msg="CIAX3">1</enum>
       <enum class="normal" msg="COMICS">2</enum>

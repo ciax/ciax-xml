@@ -46,7 +46,8 @@ class Sym
     when Hash
       set=val
     else
-      set={'class'=>'normal','val'=>val}
+      set={'val'=>val,'msg'=>e['msg']}
+      set['class'] = e['class'] || 'normal'
     end
     e.each{|cs|
       @v.msg{"STAT:Symbol:compare [#{cs.text}] and [#{val}]"}

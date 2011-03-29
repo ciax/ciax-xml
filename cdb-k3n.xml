@@ -16,9 +16,8 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case id="err">
+      <case id="err" class="alarm" msg="Error">
         <regexp class="hide" msg="OK">000000</regexp>
-        <regexp class="alarm" msg="Error">.</regexp>
       </case>
       <case id="flow" type="FLOAT">
         <range class="alarm" msg="HH">6:</range>

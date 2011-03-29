@@ -92,19 +92,16 @@
         </statement>
       </session>
     </commands>
-    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw" interval="1">
-      <event>
-        <periodic period="3600" />
-        <command>upd</command>
-      </event>
-      <event>
-        <onchange ref="run" val="1" />
-        <command>clear_trig</command>
-      </event>
-      <event>
-        <onchange ref="jak" val="1" />
-        <command>clear_trig</command>
-      </event>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <periodic period="3600">
+        <session command="upd"></session>
+      </periodic>
+      <onchange ref="run" val="1">
+        <session command="clear_trig"></session>
+      </onchange>
+      <onchange ref="jak" val="1">
+        <session command="clear_trig"></session>
+      </onchange>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="ecode" label="EXIT CODE" group="1">

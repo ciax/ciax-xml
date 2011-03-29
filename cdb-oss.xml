@@ -87,15 +87,17 @@
         <statement command="getpid" />
       </session>
     </commands>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw">
-      <event blocking="jup|jdw" interrupt="jstop" label="Moving Jack">
-        <onchange ref="jk1" />
-        <command>upj</command>
-      </event>
-      <event blocking="rhook|runhk" interrupt="rstop" label="Moving InR">
-        <onchange ref="iang" />
-        <command>upr</command>
-      </event>
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <onchange label="Moving Jack" ref="jk1">
+        <blocking>jup|jdw</blocking>
+        <interrupt command="jstop" />
+        <session command="upj"></session>
+      </onchange>
+      <onchange label="Moving InR" ref="iang">
+        <blocking>rhook|runhk</blocking>
+        <interrupt command="rstop" />
+        <session command="upr"></session>
+      </onchange>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="exit" label="Exit Code" group="1">

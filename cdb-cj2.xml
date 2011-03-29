@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -236,36 +236,34 @@
         <statement command="getstat" />
       </session>
     </commands>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw">
-      <event label="Regular">
-        <periodic period="300" />
-        <command>upd</command>
-      </event>
-      <event blocking="^[fmtd].+" interrupt="pause" label="On Motion">
-        <while ref="exe" val="1" />
-        <command>upd</command>
-      </event>
-      <event label="On Completion">
-        <onchange ref="cmp" val="1" />
-        <command>clr</command>
-        <command>upd</command>
-      </event>
-      <event label="On Emergency">
-        <onchange ref="emg" val="1" />
-        <command>clr</command>
-        <command>upd</command>
-      </event>
-      <event label="On Pause">
-        <onchange ref="pse" val="1" />
-        <command>clr</command>
-        <command>resetp</command>
-        <command>upd</command>
-      </event>
-      <event label="Off Pause">
-        <onchange ref="pse" val="0" />
-        <command>clr</command>
-        <command>upd</command>
-      </event>
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <periodic label="Regular" period="300">
+        <session>
+          <argv>upd</argv>
+        </session>
+      </periodic>
+      <while label="On Motion" ref="exe" val="1">
+        <blocking>^[fmtd].+</blocking>
+        <interrupt command="pause"></interrupt>
+        <session command="upd"></session>
+      </while>
+      <onchange label="On Completion" ref="cmp" val="1">
+        <session command="clr"></session>
+        <session command="upd"></session>
+      </onchange>
+      <onchange label="On Emergency" ref="emg" val="1">
+        <session command="clr"></session>
+        <session command="upd"></session>
+      </onchange>
+      <onchange label="On Pause" ref="pse" val="1">
+        <session command="clr"></session>
+        <session command="resetp"></session>
+        <session command="upd"></session>
+      </onchange>
+      <onchange label="Off Pause" ref="pse" val="0">
+        <session command="clr"></session>
+        <session command="upd"></session>
+      </onchange>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="emg" label="EMG STOP" group="g1">

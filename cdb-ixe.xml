@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -141,16 +141,20 @@
         </statement>
       </session>
     </commands>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbw">
-      <event label="Update Status">
-        <periodic period="3600" />
-        <command>upd</command>
-      </event>
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <periodic label="Update Status" period="3600">
+        <session command="upd"></session>
+      </periodic>
       <repeat from="1" to="6">
-        <event blocking="(fw|bk|abs) $_" interrupt="stop $_" label="Moving $_">
-          <while ref="r$_" val="N" />
-          <command>upp $_</command>
-        </event>
+        <while label="Moving $_" ref="r$_" val="N">
+          <blocking>(fw|bk|abs) $_</blocking>
+          <interrupt command="stop">
+            <argv>$_</argv>
+          </interrupt>
+          <session command="upp">
+            <argv>$_</argv>
+          </session>
+        </while>
       </repeat>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:odb="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:odbc="http://ciax.sum.naoj.org/ciax-xml/odbc" xmlns:odbs="http://ciax.sum.naoj.org/ciax-xml/odbs" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:import schemaLocation="odbc.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/odbc" />
   <xsd:import schemaLocation="odbs.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/odbs" />
@@ -10,11 +10,6 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:NCName" use="optional" />
-    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-    <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
-  </xsd:attributeGroup>
   <xsd:element name="object">
     <xsd:complexType>
       <xsd:sequence>
@@ -23,7 +18,8 @@
         <xsd:element ref="odbs:status" minOccurs="1" maxOccurs="1" />
         <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
-      <xsd:attributeGroup ref="odb:id_attr"></xsd:attributeGroup>
+      <xsd:attribute name="id" type="xsd:NCName" use="optional" />
+      <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="comm">

@@ -1,16 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="mt2" label="MOIRCS Pressure Main" ref="mt3">
+  <object id="mt2" label="MOIRCS Pressure Main">
     <comm>
       <class>tpg</class>
       <client>socat - tcp:celaeno:4010</client>
       <server>socat - udp-l:24110,reuseaddr,fork</server>
     </comm>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
-      <group>
-        <title ref="st1" label="Throat Stat" />
-        <title ref="ch1" label="Throat (Torr)" />
-      </group>
+      <title ref="st1" label="Throat Stat" />
+      <title ref="ch1" label="Throat (Torr)" />
     </status>
   </object>
 </odb>

@@ -7,14 +7,10 @@
       <server>socat - udp-l:24111,reuseaddr,fork</server>
     </comm>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
-      <group>
-        <title ref="st1" label="Turbo Pump Stat" />
-        <title ref="ch1" label="Turbo Pump (Torr)" />
-      </group>
-      <group>
-        <title ref="st2" label="Scroll Pump Stat" />
-        <title ref="ch2" label="Scroll Pump (Torr)" />
-      </group>
+      <title ref="st1" label="Turbo Pump Stat" />
+      <title ref="ch1" label="Turbo Pump (Torr)" />
+      <title ref="st2" label="Scroll Pump Stat" />
+      <title ref="ch2" label="Scroll Pump (Torr)" />
     </status>
   </object>
 </odb>

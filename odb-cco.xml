@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cco" label="OPT Helium Compressor Control" ref="cri">
+  <object id="cco" label="OPT Helium Compressor Control">
     <comm>
       <class>bbe</class>
       <client>socat - tcp:ltc-o:4002</client>
@@ -18,30 +18,18 @@
       <alias id="maoff" label="COMICS BOTH OFF" ref="x23off" />
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
-      <group>
-        <title ref="xsw0" symbol="off-warn" label="CIAO(S6) SWITCH" />
-        <title ref="xdr0" symbol="off-warn" label="CIAO(S6) DRIVE" />
-      </group>
-      <group>
-        <title ref="xtm0" symbol="alarm" label="CIAO(S6) TEMP" />
-        <title ref="xpr0" symbol="alarm" label="CIAO(S6) PRESSURE" />
-      </group>
-      <group>
-        <title ref="xsw2" symbol="off-warn" label="COMICS IMG(S4) SWITCH" />
-        <title ref="xdr2" symbol="off-warn" label="COMICS IMG(S4) DRIVE" />
-      </group>
-      <group>
-        <title ref="xtm2" symbol="alarm" label="COMICS IMG(S4) TEMP" />
-        <title ref="xpr2" symbol="alarm" label="COMICS IMG(S4) PRESSURE" />
-      </group>
-      <group>
-        <title ref="xsw3" symbol="off-warn" label="COMICS SPEC(S5) SWITCH" />
-        <title ref="xdr3" symbol="off-warn" label="COMICS SPEC(S5) DRIVE" />
-      </group>
-      <group>
-        <title ref="xtm3" symbol="alarm" label="COMICS SPEC(S5) TEMP" />
-        <title ref="xpr3" symbol="alarm" label="COMICS SPEC(S5) PRESSURE" />
-      </group>
+      <title ref="xsw0" symbol="off-warn" label="CIAO(S6) SWITCH" />
+      <title ref="xdr0" symbol="off-warn" label="CIAO(S6) DRIVE" />
+      <title ref="xtm0" symbol="alarm" label="CIAO(S6) TEMP" />
+      <title ref="xpr0" symbol="alarm" label="CIAO(S6) PRESSURE" />
+      <title ref="xsw2" symbol="off-warn" label="COMICS IMG(S4) SWITCH" />
+      <title ref="xdr2" symbol="off-warn" label="COMICS IMG(S4) DRIVE" />
+      <title ref="xtm2" symbol="alarm" label="COMICS IMG(S4) TEMP" />
+      <title ref="xpr2" symbol="alarm" label="COMICS IMG(S4) PRESSURE"></title>
+      <title ref="xsw3" symbol="off-warn" label="COMICS SPEC(S5) SWITCH" />
+      <title ref="xdr3" symbol="off-warn" label="COMICS SPEC(S5) DRIVE" />
+      <title ref="xtm3" symbol="alarm" label="COMICS SPEC(S5) TEMP" />
+      <title ref="xpr3" symbol="alarm" label="COMICS SPEC(S5) PRESSURE" />
     </status>
   </object>
 </odb>

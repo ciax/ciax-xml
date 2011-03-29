@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
   <object id="cri" label="IR Compressor Room Reserve">
     <comm>
@@ -7,38 +7,22 @@
       <server>socat - udp-l:25107,reuseaddr,fork</server>
     </comm>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
-      <group>
-        <title ref="xsw0" label="X0 SWITCH" />
-        <title ref="xdr0" label="X0 DRIVE" />
-      </group>
-      <group>
-        <title ref="xtm0" symbol="normal" label="X0 TEMP ALARM" />
-        <title ref="xpr0" symbol="normal" label="X0 PRESSURE ALARM" />
-      </group>
-      <group>
-        <title ref="xsw1" symbol="normal" label="X1 SWITCH" />
-        <title ref="xdr1" symbol="normal" label="X1 DRIVE" />
-      </group>
-      <group>
-        <title ref="xtm1" symbol="normal" label="X1 TEMP ALARM" />
-        <title ref="xpr1" symbol="normal" label="X1 PRESSURE ALARM" />
-      </group>
-      <group>
-        <title ref="xsw2" symbol="normal" label="X2 SWITCH" />
-        <title ref="xdr2" symbol="normal" label="X2 DRIVE" />
-      </group>
-      <group>
-        <title ref="xtm2" symbol="normal" label="X2 TEMP ALARM" />
-        <title ref="xpr2" symbol="normal" label="X2 PRESSURE ALARM" />
-      </group>
-      <group>
-        <title ref="xsw3" symbol="normal" label="X3 SWITCH" />
-        <title ref="xdr3" symbol="normal" label="X3 DRIVE" />
-      </group>
-      <group>
-        <title ref="xtm3" symbol="normal" label="X3 TEMP ALARM" />
-        <title ref="xpr3" symbol="normal" label="X3 PRESSURE ALARM" />
-      </group>
+      <title ref="xsw0" label="X0 SWITCH" />
+      <title ref="xdr0" label="X0 DRIVE" />
+      <title ref="xtm0" symbol="normal" label="X0 TEMP ALARM" />
+      <title ref="xpr0" symbol="normal" label="X0 PRESSURE ALARM" />
+      <title ref="xsw1" symbol="normal" label="X1 SWITCH" />
+      <title ref="xdr1" symbol="normal" label="X1 DRIVE" />
+      <title ref="xtm1" symbol="normal" label="X1 TEMP ALARM" />
+      <title ref="xpr1" symbol="normal" label="X1 PRESSURE ALARM" />
+      <title ref="xsw2" symbol="normal" label="X2 SWITCH" />
+      <title ref="xdr2" symbol="normal" label="X2 DRIVE" />
+      <title ref="xtm2" symbol="normal" label="X2 TEMP ALARM" />
+      <title ref="xpr2" symbol="normal" label="X2 PRESSURE ALARM" />
+      <title ref="xsw3" symbol="normal" label="X3 SWITCH" />
+      <title ref="xdr3" symbol="normal" label="X3 DRIVE" />
+      <title ref="xtm3" symbol="normal" label="X3 TEMP ALARM" />
+      <title ref="xpr3" symbol="normal" label="X3 PRESSURE ALARM" />
     </status>
   </object>
 </odb>

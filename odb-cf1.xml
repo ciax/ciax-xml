@@ -7,9 +7,7 @@
       <server>socat - udp-l:45601,reuseaddr,fork</server>
     </comm>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
-      <group>
-        <title ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
-      </group>
+      <title ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
     </status>
   </object>
 </odb>

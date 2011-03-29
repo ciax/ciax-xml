@@ -32,6 +32,10 @@ class XmlGn
     @e.attributes.to_h
   end
 
+  def to_s
+    @e.to_s
+  end
+
   def name
     @e.name
   end

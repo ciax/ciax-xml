@@ -68,8 +68,8 @@ class Cls
   
   def interrupt
     ary=[]
-    @event.interrupt.each{|cmd|
-      @cmd.setcmd(cmd.split(' ')).session.each{|stm|
+    @event.interrupt.each{|ssn|
+      @cmd.setcmd(ssn).session.each{|stm|
         ary << stm
       }
     }
@@ -99,11 +99,15 @@ class Cls
         @event.update{|key|
           @stat.stat(key)
         }
-        @event.issue.each{|cmd|
-          @cmd.setcmd(cmd.split(' ')).session.each{|c|
-            @buf.send(c)
-          }
-        } if @buf.empty?
+        begin
+          @event.issue.each{|ssn|
+            @cmd.setcmd(ssn).session.each{|stm|
+              @buf.send(stm)
+            }
+          } if @buf.empty?
+        rescue
+          $errmsg << $!.to_s
+        end
         sleep @event.interval
       end
     }

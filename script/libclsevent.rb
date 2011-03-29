@@ -64,7 +64,7 @@ class ClsEvent < Array
         now=Time.now
         if bg[:next] < now
           bg[:active]=true
-          bg[:next]=now+bg[:period]
+          bg[:next]=now+bg['period'].to_i
         else
           bg[:active]=false
         end
@@ -79,9 +79,7 @@ class ClsEvent < Array
     each{|bg|
       if bg[:active]
         @v.msg{"#{bg['label']} is active" }
-        bg[:commands].each{|cmd|
-          ary << cmd
-        }
+        ary=bg['session'].dup
       else
         @v.msg{"#{bg['label']} is inactive" }
       end
@@ -89,30 +87,33 @@ class ClsEvent < Array
     ary.uniq
   end
 
+  private
   def set_event(e0)
-    bg={:commands => []}
+    bg={:type => e0.name}
+    bg[:next]=Time.at(0) if e0.name == 'periodic'
     e0.to_h.each{|a,v|
       bg[a]=@rep.subst(v)
     }
-    @v.msg(1){bg['label']}
+    @v.msg(1){bg[:type]+":"+bg['label']}
     e0.each{ |e1|
       case e1.name
-      when 'while','until','onchange'
-        bg[:type]=e1.name
-        e1.to_h.each{|k,v|
-          bg[k]=@rep.subst(v)
+      when 'blocking'
+        bg[e1.name]=@rep.subst(e1.text)
+      when 'interrupt','session'
+        ssn=[e1['command']]
+        e1.each{|e2|
+          ssn << @rep.subst(e2.text)
         }
-      when 'periodic'
-        bg[:type]=e1.name
-        bg[:period]=e1['period'].to_i
-        bg[:next]=Time.at(0)
-      when 'command'
-        bg[:commands] << @rep.subst(e1.text)
-        @v.msg{"Sessions:"+bg[:commands].last}
+        if Array == bg[e1.name]
+          bg[e1.name] << ssn
+        else
+          bg[e1.name] = [ssn]
+        end
+        @v.msg{e1.name.capitalize+":#{ssn}"}
       end
     }
     bg
   ensure
-    @v.msg(-1){bg['label']}
+    @v.msg(-1){"/#{bg[:type]}"}
   end
 end

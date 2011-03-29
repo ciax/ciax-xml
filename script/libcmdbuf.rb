@@ -25,10 +25,15 @@ class CmdBuf
     }
   end
 
-  def send(cmd,p=2)
-    @inbuf.push([p,cmd])
-    @v.msg{"MAIN:Issued [#{cmd}] with priority [#{p}]"}
-    flush unless @wait
+  def send(p=2)
+    if p < 2 || @q.empty?
+      raise "command should be Array" unless Array === cmd=yield
+      @inbuf.push([p,cmd])
+      @v.msg{"MAIN:Issued [#{cmd}] with priority [#{p}]"}
+      flush unless @wait
+    else
+      @v.msg{"MAIN:Rejected [#{cmd}] with priority [#{p}]"}
+    end
     self
   end
 
@@ -53,6 +58,7 @@ class CmdBuf
     @v.msg{"MAIN:Stopped"}
     @issue=nil
     @q.clear
+    @v.msg{"MAIN:Issued #{cmds}"}
     @inbuf.replace(cmds.map!{|c| [0,c]})
     flush
   end

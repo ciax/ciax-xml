@@ -9,7 +9,7 @@ cmd=ARGV
 begin
   doc=XmlDoc.new('cdb',cls)
   cc=ClsCmd.new(doc)
-  cc.setcmd(cmd).session.each{|c| p c}
+  cc.setcmd(cmd).statements.each{|c| p c}
 rescue RuntimeError
   abort $!.to_s
 end

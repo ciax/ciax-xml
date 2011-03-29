@@ -47,9 +47,7 @@ class Cls
     return nil if ssn.empty?
     raise "Blocking" if @event.blocking?(ssn)
     ssn=yield ssn
-    @cmd.setcmd(ssn).session.each{|stm|
-      @buf.send(stm,1)
-    }
+    @buf.send(1){@cmd.setcmd(ssn).statements}
   rescue SelectID
     case ssn.shift
     when 'sleep'
@@ -67,13 +65,7 @@ class Cls
   end
   
   def interrupt
-    ary=[]
-    @event.interrupt.each{|ssn|
-      @cmd.setcmd(ssn).session.each{|stm|
-        ary << stm
-      }
-    }
-    @buf.interrupt(ary)
+    @buf.interrupt(@event.interrupt)
     raise "Interrupt #{@event.interrupt}"
   end
   
@@ -99,15 +91,7 @@ class Cls
         @event.update{|key|
           @stat.stat(key)
         }
-        begin
-          @event.issue.each{|ssn|
-            @cmd.setcmd(ssn).session.each{|stm|
-              @buf.send(stm)
-            }
-          } if @buf.empty?
-        rescue
-          $errmsg << $!.to_s
-        end
+        @buf.send{@event.issue}
         sleep @event.interval
       end
     }

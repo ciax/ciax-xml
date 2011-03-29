@@ -20,7 +20,7 @@ class ClsCmd
     self
   end
 
-  def session
+  def statements
     @v.msg{"Exec(CDB):#{@sel['label']}"}
     get_cmd(@sel)
   end

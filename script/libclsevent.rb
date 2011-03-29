@@ -16,25 +16,12 @@ class ClsEvent < Array
   end
 
   public
-  def interrupt
-    ary=[]
-    each{ |bg|
-      if bg[:active]
-        @v.msg{"#{bg['label']} is active" }
-        ary << bg["interrupt"]
-      else
-        @v.msg{"#{bg['label']} is inactive" }
-      end
-    }
-    ary.compact.uniq
-  end
-
   def active?
     any?{|bg| bg[:active] }
   end
 
-  def blocking?(stm)
-    cmd=stm.join(' ')
+  def blocking?(ssn)
+    cmd=ssn.join(' ')
     each{|bg|
       pattern=bg['blocking'] || next
       if bg[:active]
@@ -74,17 +61,21 @@ class ClsEvent < Array
     self
   end
 
-  def issue
+  def issue(key='statement')
     ary=[]
     each{|bg|
       if bg[:active]
         @v.msg{"#{bg['label']} is active" }
-        ary=bg['session'].dup
+        ary << bg[key]
       else
         @v.msg{"#{bg['label']} is inactive" }
       end
     }
-    ary.uniq
+    ary.compact.uniq
+  end
+
+  def interrupt
+    issue('interrupt')
   end
 
   private
@@ -99,16 +90,13 @@ class ClsEvent < Array
       case e1.name
       when 'blocking'
         bg[e1.name]=@rep.subst(e1.text)
-      when 'interrupt','session'
+      when 'interrupt','statement'
         ssn=[e1['command']]
         e1.each{|e2|
           ssn << @rep.subst(e2.text)
         }
-        if Array == bg[e1.name]
-          bg[e1.name] << ssn
-        else
-          bg[e1.name] = [ssn]
-        end
+        bg[e1.name]=[] unless Array === bg[e1.name]
+        bg[e1.name] << ssn
         @v.msg{e1.name.capitalize+":#{ssn}"}
       end
     }

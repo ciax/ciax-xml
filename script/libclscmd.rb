@@ -43,7 +43,7 @@ class ClsCmd
           @v.msg{"Calculated [#{str}]"}
           stm << str
         }
-        stma << stm.join(' ')
+        stma << stm
       ensure
         @v.msg(-1){"Exec(DDB):#{stm}"}
       end

@@ -84,7 +84,7 @@ class Cls
       @stat.get_stat(fdb.field)
       loop{
         begin
-          fdb.transaction(@buf.recv.split(' '))
+          fdb.transaction(@buf.recv)
           @stat.get_stat(fdb.field)
         rescue
           $errmsg << $!.to_s

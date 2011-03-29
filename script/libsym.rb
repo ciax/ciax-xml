@@ -36,7 +36,7 @@ class Sym
       }
     end
     stat.each{|id,val|
-      conv[id]=tbl[id] ? tbl[id] : get_symbol([],val)
+      conv[id]=tbl[id] ? tbl[id] : get_symbol({},val)
     }
     conv
   end

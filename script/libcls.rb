@@ -43,19 +43,19 @@ class Cls
     raise $errmsg.slice!(0..-1) unless $errmsg.empty?
   end
 
-  def dispatch(stm)
-    return nil if stm.empty?
-    raise "Blocking" if @event.blocking?(stm)
-    stm=yield stm
-    @cmd.setcmd(stm).session.each{|c|
-      @buf.send(c,1)
+  def dispatch(ssn)
+    return nil if ssn.empty?
+    raise "Blocking" if @event.blocking?(ssn)
+    ssn=yield ssn
+    @cmd.setcmd(ssn).session.each{|stm|
+      @buf.send(stm,1)
     }
   rescue SelectID
-    case stm.shift
+    case ssn.shift
     when 'sleep'
-      @buf.wait_for(stm[0].to_i){}
+      @buf.wait_for(ssn[0].to_i){}
     when 'waitfor'
-      @buf.wait_for(10){ @stat.stat(stm[0]) == stm[1] }
+      @buf.wait_for(10){ @stat.stat(ssn[0]) == ssn[1] }
     else
       $errmsg << "== Internal Command ==\n"
       $errmsg << " sleep     : sleep [sec]\n"
@@ -69,8 +69,8 @@ class Cls
   def interrupt
     ary=[]
     @event.interrupt.each{|cmd|
-      @cmd.setcmd(cmd.split(' ')).session.each{|c|
-        ary << c
+      @cmd.setcmd(cmd.split(' ')).session.each{|stm|
+        ary << stm
       }
     }
     @buf.interrupt(ary)

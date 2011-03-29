@@ -14,9 +14,9 @@ class ClsCmd
     @par=Param.new
   end
 
-  def setcmd(stm)
-    @sel=@doc.select_id('commands',stm.first)
-    @par.setpar(@sel,stm)
+  def setcmd(ssn)
+    @sel=@doc.select_id('commands',ssn.first)
+    @par.setpar(@sel,ssn)
     self
   end
 
@@ -27,7 +27,7 @@ class ClsCmd
 
   private
   #Cmd Method
-  def get_cmd(e0) # //stm
+  def get_cmd(e0) # //session
     stma=[]
     @rep.each(e0){|e1|
       next unless /statement/ === e1.name

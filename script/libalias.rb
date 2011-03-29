@@ -11,14 +11,14 @@ class Alias
   end
   
   public
-  def alias(stm)
-    raise unless Array === stm
+  def alias(ssn)
+    raise unless Array === ssn
     if @odb && @odb['command']
-      @session=@odb.select_id('command',stm[0])
-      @v.msg{"Before:#{stm}(#{@session['label']})"}
-      stm[1..-1].unshift(@session['ref'])
-      @v.msg{"After:#{stm}"}
+      @session=@odb.select_id('command',ssn[0])
+      @v.msg{"Before:#{ssn}(#{@session['label']})"}
+      ssn[1..-1].unshift(@session['ref'])
+      @v.msg{"After:#{ssn}"}
     end
-    stm
+    ssn
   end
 end

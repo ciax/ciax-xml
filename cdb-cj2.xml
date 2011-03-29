@@ -238,31 +238,39 @@
     </commands>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <periodic label="Regular" period="300">
-        <session>
-          <argv>upd</argv>
-        </session>
+        <statement command="getstat"></statement>
+        <statement command="geterr"></statement>
+        <statement command="getzlen"></statement>
       </periodic>
       <while label="On Motion" ref="exe" val="1">
         <blocking>^[fmtd].+</blocking>
-        <interrupt command="pause"></interrupt>
-        <session command="upd"></session>
+        <interrupt command="setbit">
+          <!--pause-->
+          <argv>0</argv>
+          <argv>1</argv>
+        </interrupt>
+        <statement command="getstat" />
       </while>
       <onchange label="On Completion" ref="cmp" val="1">
-        <session command="clr"></session>
-        <session command="upd"></session>
+        <statement command="clrbit" />
+        <statement command="getstat" />
       </onchange>
       <onchange label="On Emergency" ref="emg" val="1">
-        <session command="clr"></session>
-        <session command="upd"></session>
+        <statement command="clrbit" />
+        <statement command="getstat" />
       </onchange>
       <onchange label="On Pause" ref="pse" val="1">
-        <session command="clr"></session>
-        <session command="resetp"></session>
-        <session command="upd"></session>
+        <statement command="clrbit" />
+        <statement command="setbit">
+          <!--resetp-->
+          <argv>0</argv>
+          <argv>10</argv>
+        </statement>
+        <statement command="getstat" />
       </onchange>
       <onchange label="Off Pause" ref="pse" val="0">
-        <session command="clr"></session>
-        <session command="upd"></session>
+        <statement command="clrbit" />
+        <statement command="getstat" />
       </onchange>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

@@ -8,7 +8,7 @@
     </commands>
     <watch interval="2" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <periodic label="Update" period="10">
-        <session command="upd"></session>
+        <statement command="getstat" />
       </periodic>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

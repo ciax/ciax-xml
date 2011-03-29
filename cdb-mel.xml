@@ -6,10 +6,6 @@
         <statement command="getstat" />
         <statement command="chken" />
       </session>
-      <session id="clear_trg">
-        <!--Clear Trigger-->
-        <statement command="clear" />
-      </session>
       <session id="run" label="Run to Destination Tag [1-12]">
         <parameters>
           <par validate="range">1:12</par>
@@ -94,13 +90,14 @@
     </commands>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <periodic period="3600">
-        <session command="upd"></session>
+        <statement command="getstat" />
+        <statement command="chken" />
       </periodic>
       <onchange ref="run" val="1">
-        <session command="clear_trig"></session>
+        <statement command="clear" />
       </onchange>
       <onchange ref="jak" val="1">
-        <session command="clear_trig"></session>
+        <statement command="clear" />
       </onchange>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

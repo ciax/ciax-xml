@@ -33,7 +33,7 @@
   <xsd:element name="periodic">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="wdb:session" maxOccurs="unbounded" />
+        <xsd:element ref="wdb:statement" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="period" use="required" type="xsd:int"></xsd:attribute>
       <xsd:attribute name="label" type="xsd:token" />
@@ -47,19 +47,19 @@
     <xsd:sequence>
       <xsd:element ref="wdb:blocking" minOccurs="0" />
       <xsd:element ref="wdb:interrupt" minOccurs="0" />
-      <xsd:element ref="wdb:session" maxOccurs="unbounded" />
+      <xsd:element ref="wdb:statement" maxOccurs="unbounded" />
     </xsd:sequence>
     <xsd:attributeGroup ref="wdb:condition" />
   </xsd:complexType>
   <xsd:element name="blocking" type="xsd:token"></xsd:element>
-  <xsd:element name="interrupt" type="wdb:session"></xsd:element>
-  <!--session-->
-  <xsd:complexType name="session">
+  <xsd:element name="interrupt" type="wdb:statement"></xsd:element>
+  <!--statement-->
+  <xsd:complexType name="statement">
     <xsd:sequence>
       <xsd:element ref="wdb:argv" minOccurs="0" maxOccurs="unbounded" />
     </xsd:sequence>
     <xsd:attribute name="command" type="xsd:token" />
   </xsd:complexType>
   <xsd:element name="argv" type="xsd:token"></xsd:element>
-  <xsd:element name="session" type="wdb:session"></xsd:element>
+  <xsd:element name="statement" type="wdb:statement"></xsd:element>
 </xsd:schema>

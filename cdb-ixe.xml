@@ -143,7 +143,7 @@
     </commands>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <periodic label="Update Status" period="3600">
-        <session command="upd"></session>
+        <statement command="upd" />
       </periodic>
       <repeat from="1" to="6">
         <while label="Moving $_" ref="r$_" val="N">
@@ -151,9 +151,12 @@
           <interrupt command="stop">
             <argv>$_</argv>
           </interrupt>
-          <session command="upp">
+          <statement command="chkrun">
             <argv>$_</argv>
-          </session>
+          </statement>
+          <statement command="getp">
+            <argv>$_</argv>
+          </statement>
         </while>
       </repeat>
     </watch>

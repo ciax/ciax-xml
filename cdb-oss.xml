@@ -74,29 +74,21 @@
         </statement>
         <statement command="iststat" />
       </session>
-      <session id="upj">
-        <!--Update Jack Status-->
-        <statement command="jakstat" />
-        <statement command="getexit" />
-        <statement command="getpid" />
-      </session>
-      <session id="upr">
-        <!--Update InR Status-->
-        <statement command="inrstat" />
-        <statement command="getexit" />
-        <statement command="getpid" />
-      </session>
     </commands>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <onchange label="Moving Jack" ref="jk1">
         <blocking>jup|jdw</blocking>
         <interrupt command="jstop" />
-        <session command="upj"></session>
+        <statement command="jakstat" />
+        <statement command="getexit" />
+        <statement command="getpid" />
       </onchange>
       <onchange label="Moving InR" ref="iang">
         <blocking>rhook|runhk</blocking>
         <interrupt command="rstop" />
-        <session command="upr"></session>
+        <statement command="inrstat" />
+        <statement command="getexit" />
+        <statement command="getpid" />
       </onchange>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

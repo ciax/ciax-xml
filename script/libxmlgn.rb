@@ -4,8 +4,6 @@ require "xml"
 class SelectID < RuntimeError ; end
 
 class XmlGn
-  include Enumerable
-
   def initialize(f)
     case f
     when String
@@ -45,11 +43,8 @@ class XmlGn
     (txt == '') ? nil : txt
   end
 
-  def list(key)
-    inject(''){|msg,e|
-      msg << " %-10s: %s\n" % [e[key],e['label']] if e[key] && e['label']
-      msg
-    }
+  def item(key)
+    " %-10s: %s\n" % [@e[key],@e['label']] if @e[key] && @e['label']
   end
 
   def find_each(xpath)

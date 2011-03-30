@@ -6,15 +6,13 @@ class XmlDoc < Hash
   def initialize(db = nil ,type = nil)
     $errmsg=''
     @db=db
-    readxml(type){|e0|
-      e0.each{|e1|
-        self[e1.name]=e1
-        update(e1.to_h)
-        e1.each{|e2| self[e2.name]=e2 }
-      }
+    readxml(type){|e|
+      self[e.name]=e
+      update(e.to_h)
+      e.each{|e1| self[e1.name]=e1 }
     }
   rescue SelectID
-    readxml{|e| $errmsg << e.list('id') }
+    readxml{|e| $errmsg << e.item('id') }
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 
@@ -23,7 +21,9 @@ class XmlDoc < Hash
     pre="#{ENV['XMLPATH']}/#{@db}"
     path="#{pre}-#{type}.xml"
     Dir.glob(path).each{|p|
-      yield(XmlGn.new(p))
+      XmlGn.new(p).each{|e|
+        yield e
+      }
     }.empty? && raise(SelectID)
   end
 
@@ -43,7 +43,9 @@ class XmlDoc < Hash
   rescue SelectID
     $errmsg << "No such command [#{id}]\n" if id
     $errmsg << "== Command List ==\n"
-    $errmsg << self[domain].list('id')
+    find_each(domain,xpath){|e|
+      $errmsg << e.item('id')
+    }
     raise(SelectID,$errmsg) unless $errmsg.empty?
   end
 

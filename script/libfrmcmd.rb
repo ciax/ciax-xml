@@ -17,7 +17,7 @@ class FrmCmd
   end
 
   def setcmd(stm) # return = response select
-    @sel=@doc.select_id('cmdframe',stm.first,'select')
+    @sel=@doc.select_id('cmdframe',stm.first,'command')
     @par.setpar(@sel,stm)
     stm << '*' if /true|1/ === @sel['nocache']
     @cid=stm.join(':')

@@ -17,9 +17,10 @@ class FrmRsp
   end
 
   def setrsp(stm)
-    cmd=@doc.select_id('cmdframe',stm.first,'select')
+    cmd=@doc.select_id('cmdframe',stm.first,'command')
     @par.setpar(cmd,stm)
-    @sel=cmd['response']
+    xpath="response[@id='#{cmd['response']}']"
+    @sel=@doc.select('rspframe',xpath)
     self
   end
 
@@ -115,7 +116,7 @@ class FrmRsp
       when 'select'
         begin
           @v.msg(1){"Entering Selected Node"}
-          getfield_rec(e1.select('id',@sel))
+          getfield_rec(@sel)
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end

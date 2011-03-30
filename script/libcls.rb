@@ -3,7 +3,7 @@ require "libfrm"
 require "libclscmd"
 require "libclsstat"
 require "libcmdbuf"
-require "libclsevent"
+require "libwatch"
 require "thread"
 
 class Cls
@@ -15,7 +15,7 @@ class Cls
     @cmd=ClsCmd.new(doc)
     @stat=ClsStat.new(doc,id)
     @buf=CmdBuf.new
-    @event=ClsEvent.new(doc['watch'])
+    @event=Watch.new(doc['watch'])
     @main=session_thread(doc['frame'],id,iocmd)
     @watch=watch_thread
     sleep 0.01

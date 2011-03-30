@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "librepeat"
 
-class ClsEvent < Array
+class Watch < Array
   attr_reader :interval
 
   def initialize(wdb)

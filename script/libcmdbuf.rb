@@ -27,12 +27,15 @@ class CmdBuf
 
   def send(p=2)
     if p < 2 || @q.empty?
-      raise "command should be Array" unless Array === cmd=yield
-      @inbuf.push([p,cmd])
-      @v.msg{"MAIN:Issued [#{cmd}] with priority [#{p}]"}
+      stms=yield
+      raise "Should be Array of statements" unless Array === stms
+      stms.each{|stm|
+        @inbuf.push([p,stm])
+        @v.msg{"MAIN:Issued [#{stm}] with priority [#{p}]"}
+      }
       flush unless @wait
     else
-      @v.msg{"MAIN:Rejected [#{cmd}] with priority [#{p}]"}
+      @v.msg{"MAIN:Rejected [#{stms}] with priority [#{p}]"}
     end
     self
   end
@@ -70,19 +73,16 @@ class CmdBuf
       if @q.empty?
         @outbuf.each{|c|
           next if ! c || c.empty?
-          cmd=c.shift
-          @v.msg{"SUB:Exec [#{cmd}]"}
-          return cmd
+          stm=c.shift
+          @v.msg{"SUB:Exec [#{stm}]"}
+          return stm
         }
         @v.msg{"SUB:Waiting"}
       end
-      p,c=@q.shift
-      @v.msg{"SUB:Recieve [#{c}] with priority[#{p}]"}
-      if @outbuf[p]
-        @outbuf[p].push(c)
-      else
-        @outbuf[p]=[c]
-      end
+      p,stm=@q.shift
+      @v.msg{"SUB:Recieve [#{stm}] with priority[#{p}]"}
+      @outbuf[p]=[] unless Array === @outbuf[p]
+      @outbuf[p].push(stm)
     }
   end
 

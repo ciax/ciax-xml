@@ -66,7 +66,7 @@ class ClsEvent < Array
     each{|bg|
       if bg[:active]
         @v.msg{"#{bg['label']} is active" }
-        ary << bg[key]
+        ary=ary+bg[key]
       else
         @v.msg{"#{bg['label']} is inactive" }
       end
@@ -85,7 +85,7 @@ class ClsEvent < Array
     e0.to_h.each{|a,v|
       bg[a]=@rep.subst(v)
     }
-    @v.msg(1){bg[:type]+":"+bg['label']}
+    @v.msg(1){"#{bg[:type]}:#{bg['label']}"}
     e0.each{ |e1|
       case e1.name
       when 'blocking'

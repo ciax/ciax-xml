@@ -346,12 +346,12 @@
       </value>
       <repeat from="1" to="4">
         <value id="fz$_" label="Fix Z" group="zf">
-          <float format="%.2f" formula="$#/100" ref="d:($_-1)" />
+          <float format="%.2f" ref="d:($_-1)">$#/100</float>
         </value>
       </repeat>
       <repeat from="1" to="4">
         <value id="mz$_" label="Mov Z" group="zm">
-          <float format="%.2f" formula="$#/100" ref="d:($_+3)" />
+          <float format="%.2f" ref="d:($_+3)">$#/100</float>
         </value>
       </repeat>
       <value id="fid" label="Fix Instrument ID" group="iid">

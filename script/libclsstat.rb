@@ -53,10 +53,10 @@ class ClsStat
             data=data[0..(-1-n)]+'.'+data[-n..-1]
           end
           data=data.to_f
-          if f=e1['formula']
-            f=f.gsub(/\$#/,data.to_s)
-            @v.msg{"Formula:#{f}(#{data})"}
+          if e1.text
+            f=e1.text.gsub(/\$#/,data.to_s)
             data=eval(f)
+            @v.msg{"Formula:#{f}(#{data})"}
           end
           fmt=e1['format'] || "%f"
           str << fmt % data

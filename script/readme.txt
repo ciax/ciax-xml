@@ -22,23 +22,19 @@ cdb//session@id -> never use ':'
 
  $1..9
     description : substitute parameters
-    usable: fdb//cmdframe/data[@type=formula]
+    usable: fdb//cmdframe/data
             fdb//response/array/index
             --
-            cdb//session/statement/argv@formula
-            --
-            odb//session/statement/formula
+            cdb//session/statement/argv
 
  $#
     description : formula parameter
-    usable: cdb//status/value/float@formula
+    usable: cdb//status/value/float
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
-    usable: fdb//cmdframe/data[@type=formula]
-            --
-            odb//session/statement/text
-            odb//session/statement/formula
+    usable: fdb//cmdframe/data
+
  # No parenthetic variable is processed prior to parenthetic one
  # idx can be equation (i.e. $_+1 )
 

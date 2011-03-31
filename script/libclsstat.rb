@@ -3,20 +3,17 @@ require "libverbose"
 require "librepeat"
 
 class ClsStat
-  def initialize(doc,stat)
+  def initialize(doc,stat,field)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    @doc,@stat=doc,stat
+    @doc,@stat,@field=doc,stat,field
     cls=doc['id']
     @stat.update({'class' => cls })
     @v=Verbose.new("cdb/#{cls}/stat".upcase)
     @rep=Repeat.new
-    @field=Stat.new(@stat['id'],"field")
   end
   
   public
-  def get_stat(field)
-    return unless field
-    @field.update(field)
+  def get_stat
     @rep.each(@doc['status']){|e0|
       get_val(e0)
     }

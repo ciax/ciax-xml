@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libcls"
+require "libfrm"
 require "libxmldoc"
 require "libserver"
 
@@ -10,19 +11,21 @@ id=ARGV.shift
 port=ARGV.shift
 iocmd=ARGV.shift
 begin
-  doc=XmlDoc.new('cdb',cls)
+  cdoc=XmlDoc.new('cdb',cls)
+  fdoc=XmlDoc.new('fdb',cdoc['frame'])
 rescue SelectID
   abort $!.to_s
 end
-cdb=Cls.new(doc,id,iocmd)
+fdb=Frm.new(fdoc,id,iocmd)
+cdb=Cls.new(cdoc,id,fdb)
 Server.new(port){|line|
   case line
   when ''
   when /stop/
     cdb.interrupt
   else
-    line.split(';').each{|stm|
-      cdb.dispatch(stm.split(' ')){|s|s}
+    line.split(';').each{|cmd|
+      cdb.dispatch(cmd.split(' '))
     }
   end
   cdb.stat.inspect+"\n"+cdb.prompt

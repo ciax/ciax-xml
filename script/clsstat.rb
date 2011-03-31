@@ -12,9 +12,12 @@ ARGV.clear
 begin
   cdb=XmlDoc.new('cdb',cls)
   field=JSON.load(gets(nil))
-  st=Stat.new(field['id'],'status')
-  cs=ClsStat.new(cdb,st)
-  cs.get_stat(field)
+  id=field['id']
+  st=Stat.new(id,'status')
+  fl=Stat.new(id,"field")
+  cs=ClsStat.new(cdb,st,fl)
+  fl.update(field)
+  cs.get_stat
 rescue RuntimeError
   abort $!.to_s
 end

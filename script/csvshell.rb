@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "json"
 require "libcls"
+require "libfrm"
 require "libxmldoc"
 require "readline"
 require "libcxcsv"
@@ -12,11 +13,13 @@ id=ARGV.shift
 iocmd=ARGV.shift
 cx=CxCsv.new(id)
 begin
-  doc=XmlDoc.new('cdb',cls)
+  cdoc=XmlDoc.new('cdb',cls)
+  fdoc=XmlDoc.new('fdb',cdoc['frame'])
 rescue SelectID
   abort $!.to_s
 end
-cdb=Cls.new(doc,id,iocmd)
+fdb=Frm.new(fdoc,id,iocmd)
+cdb=Cls.new(cdoc,id,fdb)
 loop {
   begin
     line=Readline.readline(cdb.prompt,true) || cdb.interrupt
@@ -28,7 +31,7 @@ loop {
     else
       line.split(';').each{|cmd|
         stm=cmd.split(' ')
-        cdb.dispatch(stm){|s|s}
+        cdb.dispatch(stm)
       }
     end
     puts cx.mkres(cdb.stat)

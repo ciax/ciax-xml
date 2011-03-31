@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "json"
 require "libcls"
+require "libfrm"
 require "libxmldoc"
 require "libalias"
 require "libfilter"
@@ -14,11 +15,13 @@ iocmd=ARGV.shift
 out=Filter.new(ARGV.shift)
 al=Alias.new(id)
 begin
-  doc=XmlDoc.new('cdb',cls)
+  cdoc=XmlDoc.new('cdb',cls)
+  fdoc=XmlDoc.new('fdb',cdoc['frame'])
 rescue SelectID
   abort $!.to_s
 end
-cdb=Cls.new(doc,id,iocmd)
+fdb=Frm.new(fdoc,id,iocmd)
+cdb=Cls.new(cdoc,id,fdb)
 loop {
   begin
     line=Readline.readline(cdb.prompt,true) || cdb.interrupt
@@ -33,7 +36,7 @@ loop {
       begin
         line.split(';').each{|cmd|
           stm=al.alias(cmd.split(' '))
-          cdb.dispatch(stm){|s|s}
+          cdb.dispatch(stm)
         }
       rescue SelectID
         puts $!.to_s

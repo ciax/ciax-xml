@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libstat"
-require "libfrm"
 require "libclscmd"
 require "libclsstat"
 require "libcmdbuf"
@@ -9,16 +8,17 @@ require "thread"
 
 class Cls
 
-  def initialize(doc,id,iocmd)
+  def initialize(doc,id,fdb)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @cls=doc['id']
     $errmsg=''
     @stat=Stat.new(id,'status')
+    @field=Stat.new(id,"field")
     @cc=ClsCmd.new(doc)
-    @cs=ClsStat.new(doc,@stat)
+    @cs=ClsStat.new(doc,@stat,@field)
     @buf=CmdBuf.new
     @event=Watch.new(doc['watch'])
-    @main=session_thread(doc['frame'],id,iocmd)
+    @main=session_thread(fdb)
     @watch=watch_thread
     sleep 0.01
   end
@@ -52,7 +52,6 @@ class Cls
   def dispatch(ssn)
     return nil if ssn.empty?
     raise "Blocking" if @event.blocking?(ssn)
-    ssn=yield ssn
     @buf.send(1){@cc.setcmd(ssn).statements}
   rescue SelectID
     case ssn.shift
@@ -76,14 +75,13 @@ class Cls
   end
   
   private
-  def session_thread(dev,id,iocmd)
+  def session_thread(fdb)
     Thread.new{
-      fdb=Frm.new(XmlDoc.new('fdb',dev),id,iocmd)
-      @cs.get_stat(fdb.field)
       loop{
         begin
           fdb.transaction(@buf.recv)
-          @cs.get_stat(fdb.field)
+          @field.update(fdb.field)
+          @cs.get_stat
         rescue
           $errmsg << $!.to_s
         end

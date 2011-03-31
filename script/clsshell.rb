@@ -31,7 +31,6 @@ loop {
       cdb.quit
       break
     when ''
-      puts out.filter(JSON.dump(cdb.stat))
     else
       begin
         line.split(';').each{|cmd|
@@ -45,6 +44,7 @@ loop {
         puts " D^        : Interrupt"
       end
     end
+    puts out.filter(JSON.dump(cdb.stat))
   rescue
     puts $!.to_s
   end

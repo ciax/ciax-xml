@@ -20,6 +20,7 @@ loop{
   stm=Readline.readline("#{dev}>",true).chomp.split(" ")
   case stm.first
   when /^q/
+    fdb.quit
     break
   else
     begin

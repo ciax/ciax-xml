@@ -25,6 +25,7 @@ loop {
     cdb.err?
     case line
     when /^q/
+      cdb.quit
       break
     when ''
       puts out.filter(JSON.dump(cdb.stat))

@@ -1,18 +1,16 @@
 #!/usr/bin/ruby
 require "libverbose"
 require "librepeat"
-require "libstat"
 
 class ClsStat
-  def initialize(doc,id)
+  def initialize(doc,stat)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    @doc=doc
+    @doc,@stat=doc,stat
     cls=doc['id']
-    @stat=Stat.new(id,"status")
-    @stat.update({ 'id'=>id, 'class' => cls })
+    @stat.update({'class' => cls })
     @v=Verbose.new("cdb/#{cls}/stat".upcase)
     @rep=Repeat.new
-    @field=Stat.new(id,"field")
+    @field=Stat.new(@stat['id'],"field")
   end
   
   public
@@ -23,11 +21,7 @@ class ClsStat
       get_val(e0)
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
-    @stat
-  end
-  
-  def stat(key=nil)
-    @stat.get(key)
+    self
   end
   
   private

@@ -19,6 +19,10 @@ class Frm
     Hash[@stat]
   end
 
+  def quit
+    @stat.save
+  end
+
   def transaction(stm)
     return if stm.empty?
     @v.msg{"Receive #{stm}"}
@@ -27,7 +31,6 @@ class Frm
     cid=stm.join(':')
     @ic.snd(@cmd.getframe,'snd:'+cid)
     @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
-    @stat.save
   rescue SelectID
     case stm.shift
     when 'set'
@@ -56,7 +59,6 @@ class Frm
     @stat.set(stm[0],stm[1])
   end
 
- 
   def save(keys=nil,tag='default')
     unless keys
       raise "Usage: save [key,key..] (tag)\n key=#{@stat.keys}"

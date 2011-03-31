@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libstat"
 require "libfrm"
 require "libclscmd"
 require "libclsstat"
@@ -12,8 +13,9 @@ class Cls
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @cls=doc['id']
     $errmsg=''
-    @cmd=ClsCmd.new(doc)
-    @stat=ClsStat.new(doc,id)
+    @stat=Stat.new(id,'status')
+    @cc=ClsCmd.new(doc)
+    @cs=ClsStat.new(doc,@stat)
     @buf=CmdBuf.new
     @event=Watch.new(doc['watch'])
     @main=session_thread(doc['frame'],id,iocmd)
@@ -36,24 +38,28 @@ class Cls
     stat['evet']=(@event.active? ? '1' : '0')
     stat['isu']=(@buf.issue? ? '1' : '0')
     stat['wait']=(@buf.wait? ? '1' : '0')
-    stat.update(@stat.stat)
+    stat.update(Hash[@stat])
   end
 
   def err?
     raise $errmsg.slice!(0..-1) unless $errmsg.empty?
   end
 
+  def quit
+    @stat.save
+  end
+
   def dispatch(ssn)
     return nil if ssn.empty?
     raise "Blocking" if @event.blocking?(ssn)
     ssn=yield ssn
-    @buf.send(1){@cmd.setcmd(ssn).statements}
+    @buf.send(1){@cc.setcmd(ssn).statements}
   rescue SelectID
     case ssn.shift
     when 'sleep'
       @buf.wait_for(ssn[0].to_i){}
     when 'waitfor'
-      @buf.wait_for(10){ @stat.stat(ssn[0]) == ssn[1] }
+      @buf.wait_for(10){ @stat.get(ssn[0]) == ssn[1] }
     else
       $errmsg << "== Internal Command ==\n"
       $errmsg << " sleep     : sleep [sec]\n"
@@ -73,11 +79,11 @@ class Cls
   def session_thread(dev,id,iocmd)
     Thread.new{
       fdb=Frm.new(XmlDoc.new('fdb',dev),id,iocmd)
-      @stat.get_stat(fdb.field)
+      @cs.get_stat(fdb.field)
       loop{
         begin
           fdb.transaction(@buf.recv)
-          @stat.get_stat(fdb.field)
+          @cs.get_stat(fdb.field)
         rescue
           $errmsg << $!.to_s
         end
@@ -89,7 +95,7 @@ class Cls
     Thread.new{
       while(@event.interval)
         @event.update{|key|
-          @stat.stat(key)
+          @stat.get(key)
         }
         @buf.send{@event.issue}
         sleep @event.interval

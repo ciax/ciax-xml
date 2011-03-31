@@ -1,3 +1,10 @@
+## Install required (Debian squeeze) ##
+ruby1.9.1 (for using JSON)
+libxml-ruby1.9.1 (XML instead of REXML)
+libxml2-utils (xmllint)
+socat
+libsqlite3-ruby1.9.1
+
 ## String restriction ##
 cdb//session@id -> never use ':'
 

@@ -2,7 +2,6 @@
 require "libverbose"
 require "librepeat"
 require "libstat"
-require "libiofile"
 
 class ClsStat
   def initialize(doc,id)
@@ -24,7 +23,7 @@ class ClsStat
       get_val(e0)
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
-    @stat.save
+    @stat
   end
   
   def stat(key=nil)

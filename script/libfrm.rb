@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libiocmd"
-require "libiofile"
 require "libstat"
 require "libfrmcmd"
 require "libfrmrsp"

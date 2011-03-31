@@ -17,6 +17,7 @@ class Stat < Hash
 
   def load(tag=nil)
     update(@fd.load_stat(tag))
+    self
   end
 
   def save(tag=nil,keys=nil)
@@ -29,6 +30,7 @@ class Stat < Hash
     else
       @fd.save_stat(Hash[self])
     end
+    self
   end
 
   def subst(str)

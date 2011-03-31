@@ -12,10 +12,10 @@ iocmd=ARGV.shift
 out=Filter.new(ARGV.shift)
 begin
   doc=XmlDoc.new('fdb',dev)
+  fdb=Frm.new(doc,id,iocmd)
 rescue SelectID
   abort $!.to_s
 end
-fdb=Frm.new(doc,id,iocmd)
 loop{
   stm=Readline.readline("#{dev}>",true).chomp.split(" ")
   case stm.first

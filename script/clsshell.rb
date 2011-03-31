@@ -17,11 +17,11 @@ al=Alias.new(id)
 begin
   cdoc=XmlDoc.new('cdb',cls)
   fdoc=XmlDoc.new('fdb',cdoc['frame'])
+  fdb=Frm.new(fdoc,id,iocmd)
+  cdb=Cls.new(cdoc,id,fdb)
 rescue SelectID
   abort $!.to_s
 end
-fdb=Frm.new(fdoc,id,iocmd)
-cdb=Cls.new(cdoc,id,fdb)
 loop {
   begin
     line=Readline.readline(cdb.prompt,true) || cdb.interrupt

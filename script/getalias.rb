@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libalias"
 
-warn "Usage: aliasing [obj] [cmd] (par)" if ARGV.size < 1
+warn "Usage: aliasing [obj] [cmd] (par)" if ARGV.size < 2
 
 obj=ARGV.shift
 cmd=ARGV.dup

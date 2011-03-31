@@ -2,7 +2,7 @@
 require "libxmldoc"
 require "libclscmd"
 
-warn "Usage: clscmd [class] [cmd] (par)" if ARGV.size < 1
+warn "Usage: clscmd [class] [cmd] (par)" if ARGV.size < 2
 
 cls=ARGV.shift
 cmd=ARGV

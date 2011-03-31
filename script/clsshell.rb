@@ -7,7 +7,7 @@ require "libalias"
 require "libfilter"
 require "readline"
 
-warn "Usage: clsshell [cls] [id] [iocmd] (outcmd)" if ARGV.size < 1
+warn "Usage: clsshell [cls] [id] [iocmd] (outcmd)" if ARGV.size < 4
 
 cls=ARGV.shift
 id=ARGV.shift

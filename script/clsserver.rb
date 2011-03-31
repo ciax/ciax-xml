@@ -4,7 +4,7 @@ require "libfrm"
 require "libxmldoc"
 require "libserver"
 
-warn "Usage: clsserver [cls] [id] [port] [iocmd]" if ARGV.size < 1
+warn "Usage: clsserver [cls] [id] [port] [iocmd]" if ARGV.size < 4
 
 cls=ARGV.shift
 id=ARGV.shift

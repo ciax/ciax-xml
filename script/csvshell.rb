@@ -6,7 +6,7 @@ require "libxmldoc"
 require "readline"
 require "libcxcsv"
 
-warn "Usage: csvshell [cls] [id] [iocmd]" if ARGV.size < 1
+warn "Usage: csvshell [cls] [id] [iocmd]" if ARGV.size < 3
 
 cls=ARGV.shift
 id=ARGV.shift

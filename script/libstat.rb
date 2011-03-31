@@ -4,7 +4,7 @@ require 'libverbose'
 class Stat < Hash
   def initialize(id,fname)
     @v=Verbose.new("Stat")
-    raise " No ID" unless id
+    raise SelectID," No ID" unless id
     self['id']=id
     fname+="_#{id}"
     begin

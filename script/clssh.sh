@@ -7,7 +7,7 @@
 [ "$1" = "-p" ] && { output="symboling|labeling|stprint";shift; }
 
 id="$1"
-setfld $id || _usage_key "(-d)"
+setfld $id || _usage_key "(-d,c,s,l,p)"
 [ "$iodst" ] || _die "No entry in iodst field"
 echo " [$iodst]" >&2
 if [ "$dmy" ] ; then

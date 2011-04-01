@@ -1,15 +1,17 @@
 #!/usr/bin/ruby
+require "json"
 require "libcls"
 require "libfrm"
 require "libxmldoc"
 require "libserver"
 
-warn "Usage: clsserver [cls] [id] [port] [iocmd]" if ARGV.size < 4
+warn "Usage: clsserver [cls] [id] [port] [iocmd] (outcmd)" if ARGV.size < 4
 
 cls=ARGV.shift
 id=ARGV.shift
 port=ARGV.shift
 iocmd=ARGV.shift
+out=Filter.new(ARGV.shift)
 begin
   cdoc=XmlDoc.new('cdb',cls)
   fdoc=XmlDoc.new('fdb',cdoc['frame'])
@@ -20,7 +22,7 @@ rescue SelectID
 end
 Server.new(port){|line|
   case line
-  when ''
+  when '',/stat/
   when /stop/
     cdb.interrupt
   else
@@ -28,5 +30,5 @@ Server.new(port){|line|
       cdb.dispatch(cmd.split(' '))
     }
   end
-  cdb.stat.inspect+"\n"+cdb.prompt
+  out.filter(JSON.dump(cdb.stat))
 }

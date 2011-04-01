@@ -7,16 +7,24 @@ class AscPck
     @list=[]
     open(file){|f|
       while line=f.gets
-        next unless /.+/ === line
-        @list << line.split(',').first
-    end
+        key=line.split(',').first
+        case key
+        when /^[%#]/,/^$/
+        else
+          @list << key
+        end
+      end
     }
   end
 
   def convert(stat)
     res="%#{@id}_#{stat['exe']}#{stat['isu']}_"
     @list.each{|key|
-      res << stat[key]
+      if val=stat[key]
+        res << val
+      else
+        warn "NO key(#{key}) in Status"
+      end
     }
     res
   end

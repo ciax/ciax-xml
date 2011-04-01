@@ -5,4 +5,4 @@ require "libcxcsv"
 
 stat=JSON.load(gets(nil))
 cx=CxCsv.new(stat['id'])
-puts cx.mkres(stat)
+print cx.mkres(stat)

@@ -4,6 +4,7 @@ require "libcls"
 require "libfrm"
 require "libxmldoc"
 require "libserver"
+require "libfilter"
 
 warn "Usage: clsserver [cls] [id] [port] [iocmd] (outcmd)" if ARGV.size < 4
 

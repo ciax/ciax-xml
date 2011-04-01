@@ -13,4 +13,5 @@ if [ "$dmy" ] ; then
 else
     iocmd="socat - $iodst"
 fi
-clsserver $cls $id $port "$iocmd" $out> /dev/null 2>&1 &
+errlog="$HOME/.var/err-$id.log"
+clsserver $cls $id $port "$iocmd" $out >> $errlog 2>&1 &

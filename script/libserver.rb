@@ -16,6 +16,7 @@ class Server
           msg=yield line
         rescue RuntimeError
           msg=$!.to_s
+          warn msg
         end
         udp.send(msg,0,addr[2],addr[1])
       }

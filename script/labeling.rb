@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "json"
-
-#abort "Usage: labeling < file" if ARGV.size < 1
+abort "Usage: labeling [file]" if STDIN.tty? && ARGV.size < 1
 
 stat=JSON.load(gets(nil))
 if type=stat['frame']

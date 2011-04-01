@@ -2,7 +2,7 @@
 require "json"
 require "libxmldoc"
 require "libsym"
-#abort "Usage: symboling < file" if ARGV.size < 1
+abort "Usage: symboling [file]" if STDIN.tty? && ARGV.size < 1
 
 stat=JSON.load(gets(nil))
 if frm=stat['frame']

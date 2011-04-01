@@ -1,7 +1,7 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 [ "$1" = "-d" ] && { dmy=1;shift; }
-[ "$1" = "-c" ] && { output="mkcxcsv";shift; }
+[ "$1" = "-c" ] && { output="ascpck";shift; }
 [ "$1" = "-s" ] && { output="symboling";shift; }
 [ "$1" = "-l" ] && { output="symboling|labeling";shift; }
 [ "$1" = "-p" ] && { output="symboling|labeling|stprint";shift; }

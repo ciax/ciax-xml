@@ -41,6 +41,7 @@ class Sym
     conv
   end
 
+  private
   def get_symbol(e,val)
     case val
     when Hash

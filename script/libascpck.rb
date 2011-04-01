@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-class CxCsv
+class AscPck
   def initialize(id)
     file="/home/ciax/config/sdb_#{id}.txt"
     @id=id
@@ -13,7 +13,7 @@ class CxCsv
     }
   end
 
-  def mkres(stat)
+  def convert(stat)
     res="%#{@id}_#{stat['exe']}#{stat['isu']}_"
     @list.each{|key|
       res << stat[key]

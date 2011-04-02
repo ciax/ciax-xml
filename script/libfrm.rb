@@ -5,6 +5,7 @@ require "libfrmcmd"
 require "libfrmrsp"
 
 class Frm
+  attr_reader :interrupt,:prompt
   def initialize(doc,id,iocmd)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     $errmsg=''
@@ -13,6 +14,7 @@ class Frm
     @rsp=FrmRsp.new(doc,@stat)
     @v=Verbose.new("fdb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,doc['wait'],1)
+    @interupt='',@prompt="#{doc['id']}>"
   end
 
   def field
@@ -24,13 +26,14 @@ class Frm
   end
 
   def transaction(stm)
-    return if stm.empty?
+    return self if stm.empty?
     @v.msg{"Receive #{stm}"}
     @cmd.setcmd(stm)
     @rsp.setrsp(stm)
     cid=stm.join(':')
     @ic.snd(@cmd.getframe,'snd:'+cid)
     @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
+    self
   rescue SelectID
     case stm.shift
     when 'set'

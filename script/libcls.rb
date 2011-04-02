@@ -24,25 +24,20 @@ class Cls
   end
 
   def prompt
-    prom = (stat['wach'] == "1" ? "&" : "")
-    prom << (stat['evet'] == "1" ? '@' : '')
+    prom = (@stat['wach'] == "1" ? "&" : "")
+    prom << (@stat['evet'] == "1" ? '@' : '')
     prom << @cls
-    prom << (stat['isu'] == "1" ? '*' : '')
-    prom << (stat['wait'] == "1" ? '#' : '')
-    prom << ">"
+    prom << (@stat['isu'] == "1" ? '*' : '')
+    prom << (@stat['wait'] == "1" ? '#' : '')
+    prom << (@main.alive? ? ">" : "X")
   end
 
   def stat
-    stat={}
-    stat['wach']=(@watch.alive? ? "1" : "0")
-    stat['evet']=(@event.active? ? '1' : '0')
-    stat['isu']=(@buf.issue? ? '1' : '0')
-    stat['wait']=(@buf.wait? ? '1' : '0')
-    stat.update(Hash[@stat])
-  end
-
-  def err?
-    raise $errmsg.slice!(0..-1) unless $errmsg.empty?
+    @stat['wach']=(@watch.alive? ? "1" : "0")
+    @stat['evet']=(@event.active? ? '1' : '0')
+    @stat['isu']=(@buf.issue? ? '1' : '0')
+    @stat['wait']=(@buf.wait? ? '1' : '0')
+    Hash[@stat]
   end
 
   def quit
@@ -50,28 +45,34 @@ class Cls
   end
 
   def dispatch(ssn)
+    raise $errmsg.slice!(0..-1) unless $errmsg.empty?
     return nil if ssn.empty?
     raise "Blocking" if @event.blocking?(ssn)
-    @buf.send(1){@cc.setcmd(ssn).statements}
-  rescue SelectID
-    case ssn.shift
+    case ssn[0]
     when 'sleep'
       @buf.wait_for(ssn[0].to_i){}
     when 'waitfor'
       @buf.wait_for(10){ @stat.get(ssn[0]) == ssn[1] }
     else
-      $errmsg << "== Internal Command ==\n"
-      $errmsg << " sleep     : sleep [sec]\n"
-      $errmsg << " waitfor   : [key] [val] (timeout=10)\n"
-      raise SelectID,$errmsg.slice!(0..-1)
+      @buf.send(1){@cc.setcmd(ssn).statements}
     end
-  ensure
-    $errmsg.clear
+    self
+  rescue SelectID
+    err="#{$!}"
+    err << "== Internal Command ==\n"
+    err << " sleep     : sleep [sec]\n"
+    err << " waitfor   : [key] [val] (timeout=10)\n"
+    raise SelectID,err
   end
-  
+
   def interrupt
-    @buf.interrupt(@event.interrupt)
-    raise "Interrupt #{@event.interrupt}"
+    stop=@event.interrupt
+    if stop.empty?
+      raise ''
+    else
+      @buf.interrupt(stop)
+      raise "Interrupt #{stop}"
+    end
   end
   
   private
@@ -92,11 +93,15 @@ class Cls
   def watch_thread
     Thread.new{
       while(@event.interval)
-        @event.update{|key|
-          @stat.get(key)
-        }
-        @buf.send{@event.issue}
-        sleep @event.interval
+        begin
+          @event.update{|key|
+            @stat.get(key)
+          }
+          @buf.send{@event.issue}
+          sleep @event.interval
+        rescue
+          $errmsg << $!.to_s
+        end
       end
     }
   end

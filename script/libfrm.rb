@@ -8,7 +8,6 @@ class Frm
   attr_reader :interrupt,:prompt
   def initialize(doc,id,iocmd)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    $errmsg=''
     @stat=Stat.new(id,"field")
     @cmd=FrmCmd.new(doc,@stat)
     @rsp=FrmRsp.new(doc,@stat)
@@ -43,14 +42,13 @@ class Frm
     when 'save'
       save(stm.shift,stm.shift||'default')
     else
-      $errmsg << "== Internal Command ==\n"
-      $errmsg << " set       : Set Value  [key(:idx)] (val)\n"
-      $errmsg << " load      : Load Field (tag)\n"
-      $errmsg << " save      : Save Field [key,key...] (tag)\n"
-      raise SelectID,$errmsg.slice!(0..-1)
+      err="#{$!}"
+      err << "== Internal Command ==\n"
+      err << " set       : Set Value  [key(:idx)] (val)\n"
+      err << " load      : Load Field (tag)\n"
+      err << " save      : Save Field [key,key...] (tag)\n"
+      raise SelectID,err
     end
-  ensure
-    $errmsg.clear
   end
 
   private

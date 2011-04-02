@@ -4,13 +4,13 @@ require "libxmldoc"
 require "libclsstat"
 require "libstat"
 
-abort "Usage: clsstat [class] < field_file" if ARGV.size < 1
+usage="Usage: clsstat [class] < field_file\n"
 
 cls=ARGV.shift
 ARGV.clear
 
 begin
-  cdb=XmlDoc.new('cdb',cls)
+  cdb=XmlDoc.new('cdb',cls,usage)
   field=JSON.load(gets(nil))
   id=field['id']
   st=Stat.new(id,'status')

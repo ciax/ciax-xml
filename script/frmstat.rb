@@ -4,17 +4,17 @@ require "libstat"
 require "libfrmrsp"
 require "libxmldoc"
 
-abort "Usage: frmstat [frame] [id] < logline" if ARGV.size < 2
+usage="Usage: frmstat [frame] [id] < logline\n"
 dev=ARGV.shift
 id=ARGV.shift
 ARGV.clear
 
-ary=gets.split("\t")
-time=Time.at(ary.shift.to_f)
-stm=ary.shift.split(':')
-abort ("Logline:Not response") unless /rcv/ === stm.shift
 begin
-  doc=XmlDoc.new('fdb',dev)
+  doc=XmlDoc.new('fdb',dev,usage)
+  ary=gets.split("\t")
+  time=Time.at(ary.shift.to_f)
+  stm=ary.shift.split(':')
+  abort ("Logline:Not response") unless /rcv/ === stm.shift
   st=Stat.new(id,"field")
   r=FrmRsp.new(doc,st)
   r.setrsp(stm)

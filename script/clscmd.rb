@@ -2,12 +2,11 @@
 require "libxmldoc"
 require "libclscmd"
 
-warn "Usage: clscmd [class] [cmd] (par)" if ARGV.size < 2
-
+usage="Usage: clscmd [class] [cmd] (par)\n"
 cls=ARGV.shift
 cmd=ARGV
 begin
-  doc=XmlDoc.new('cdb',cls)
+  doc=XmlDoc.new('cdb',cls,usage)
   cc=ClsCmd.new(doc)
   cc.setcmd(cmd).statements.each{|c| p c}
 rescue RuntimeError

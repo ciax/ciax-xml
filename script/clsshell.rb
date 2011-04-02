@@ -4,48 +4,23 @@ require "libcls"
 require "libfrm"
 require "libxmldoc"
 require "libalias"
-require "libfilter"
-require "readline"
+require "libshell"
 
-warn "Usage: clsshell [cls] [id] [iocmd] (outcmd)" if ARGV.size < 4
-
+usage="Usage: clsshell [cls] [id] [iocmd] (outcmd)\n"
 cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
-out=Filter.new(ARGV.shift)
+filter=ARGV.shift
 al=Alias.new(id)
 begin
-  cdoc=XmlDoc.new('cdb',cls)
+  cdoc=XmlDoc.new('cdb',cls,usage)
   fdoc=XmlDoc.new('fdb',cdoc['frame'])
   fdb=Frm.new(fdoc,id,iocmd)
   cdb=Cls.new(cdoc,id,fdb)
 rescue SelectID
   abort $!.to_s
 end
-loop {
-  begin
-    line=Readline.readline(cdb.prompt,true) || cdb.interrupt
-    cdb.err?
-    case line
-    when /^q/
-      cdb.quit
-      break
-    when ''
-    else
-      begin
-        line.split(';').each{|cmd|
-          stm=al.alias(cmd.split(' '))
-          cdb.dispatch(stm)
-        }
-      rescue SelectID
-        puts $!.to_s
-        puts "== Shell Command =="
-        puts " q         : Quit"
-        puts " D^        : Interrupt"
-      end
-    end
-    puts out.filter(JSON.dump(cdb.stat))
-  rescue
-    puts $!.to_s
-  end
+Shell.new(cdb,cdb.stat,filter){|stm|
+  stm=al.alias(stm)
+  cdb.dispatch(stm).stat
 }

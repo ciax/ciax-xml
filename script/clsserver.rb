@@ -6,7 +6,7 @@ require "libxmldoc"
 require "libserver"
 require "libfilter"
 
-warn "Usage: clsserver [cls] [id] [port] [iocmd] (outcmd)" if ARGV.size < 4
+usage="Usage: clsserver [cls] [id] [port] [iocmd] (outcmd)\n"
 
 cls=ARGV.shift
 id=ARGV.shift
@@ -14,7 +14,7 @@ port=ARGV.shift
 iocmd=ARGV.shift
 out=Filter.new(ARGV.shift)
 begin
-  cdoc=XmlDoc.new('cdb',cls)
+  cdoc=XmlDoc.new('cdb',cls,usage)
   fdoc=XmlDoc.new('fdb',cdoc['frame'])
   fdb=Frm.new(fdoc,id,iocmd)
   cdb=Cls.new(cdoc,id,fdb)

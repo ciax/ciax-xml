@@ -3,14 +3,13 @@ require "libxmldoc"
 require "libfrm"
 require "libshell"
 
-warn "Usage: frmshell [dev] [id] [iocmd] (outcmd)" if ARGV.size < 3
-
+usage="Usage: frmshell [dev] [id] [iocmd] (outcmd)\n"
 dev=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
 filter=ARGV.shift
 begin
-  doc=XmlDoc.new('fdb',dev)
+  doc=XmlDoc.new('fdb',dev,usage)
   fdb=Frm.new(doc,id,iocmd)
 rescue SelectID
   abort $!.to_s

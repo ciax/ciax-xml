@@ -4,6 +4,7 @@ require "thread"
 
 class CmdBuf
   def initialize
+    $errmsg=''
     @inbuf=Array.new
     @outbuf=Array.new
     @q=Queue.new
@@ -12,14 +13,18 @@ class CmdBuf
     @proc=Queue.new
     @st=Thread.new{
       loop{
-        p=@proc.shift
-        dl=Time.now+@wait
-        while @wait
-          sleep 1
-          if p.call || dl < Time.now
-            flush
-            break
+        begin
+          p=@proc.shift
+          dl=Time.now+@wait
+          while @wait
+            sleep 1
+            if p.call || dl < Time.now
+              flush
+              break
+            end
           end
+        rescue
+          $errmsg << $!.to_s
         end
       }
     }

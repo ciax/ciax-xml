@@ -44,7 +44,11 @@ class XmlGn
   end
 
   def item(key)
-    " %-10s: %s\n" % [@e[key],@e['label']] if @e[key] && @e['label']
+    if @e[key] && @e['label']
+      " %-10s: %s\n" % [@e[key],@e['label']] 
+    else
+      ''
+    end
   end
 
   def find_each(xpath)

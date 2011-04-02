@@ -3,6 +3,7 @@ module FrmMod
   # Instance variable: @v
 
   def checkcode(e,frame)
+    @v.msg{"CC Frame <#{frame}>"}
     chk=0
     if method=e['method']
       case method

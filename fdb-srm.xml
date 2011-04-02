@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="srm" label="OMRON SRM1" wait="0.3">
-    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1"/>
+    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <ccrange method="bcc">
         <data label="Prefix">@</data>
@@ -30,23 +30,23 @@
       <data label="Suffix">*</data>
       <data encode="chr" label="Delimiter">0xd</data>
     </cmdframe>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <ccrange method="bcc">
         <field label="Prefix" length="1">@</field>
         <select>
           <response id="getmodel">
             <field label="Command Code" length="4">00MM</field>
             <field label="Response Code" length="2">00</field>
-            <field assign="model" label="Model Number" length="2"/>
+            <field assign="model" label="Model Number" length="2" />
           </response>
           <response id="getstat">
             <field label="Command Code" length="4">00RR</field>
             <field label="Response Code" length="2">00</field>
             <!--Big endian-->
-            <field assign="c1d3" label="CH1 bit12-15" length="1"/>
-            <field assign="c1d2" label="CH1 bit8-11" length="1"/>
-            <field assign="c1d1" label="CH1 bit4-7" length="1"/>
-            <field assign="c1d0" label="CH1 bit0-3" length="1"/>
+            <field assign="c1d3" label="CH1 bit12-15" length="1" />
+            <field assign="c1d2" label="CH1 bit8-11" length="1" />
+            <field assign="c1d1" label="CH1 bit4-7" length="1" />
+            <field assign="c1d0" label="CH1 bit0-3" length="1" />
           </response>
           <response id="fset">
             <field label="Command Code" length="4">00FK</field>
@@ -54,7 +54,7 @@
           </response>
         </select>
       </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
+      <field assign="cc" decode="hexstr" label="BCC" length="2" />
       <field label="Terminater" length="1">*</field>
     </rspframe>
   </frame>

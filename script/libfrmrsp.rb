@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
+require "libframe"
 require "libfrmmod"
 require "libparam"
+
 # Rsp Methods
 class FrmRsp
   include FrmMod
@@ -9,9 +11,6 @@ class FrmRsp
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc,@stat,@sel=doc,stat
     @v=Verbose.new("fdb/#{@doc['id']}/rsp".upcase)
-    @frame=''
-    @fary=[]
-    @fp=0
     @par=Param.new
     init_field
   end
@@ -27,27 +26,13 @@ class FrmRsp
   def getfield(time=Time.now)
     return "Send Only" unless @sel
     frame=yield || @v.err("No String")
-    @v.msg{"ResponseFrame:[#{frame}]" }
-    if tm=@doc['rspframe']['terminator']
-      frame.chomp!(eval('"'+tm+'"'))
-      @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
-    end
-    if dm=@doc['rspframe']['delimiter']
-      @fary=frame.split(eval('"'+dm+'"'))
-      @v.msg{"Split:[#{frame}] by [#{dm}]" }
-    else
-      @fary=[frame]
-    end
-    begin
-      getfield_rec(@doc['rspframe'])
-      if cc=@stat.delete('cc')
-        cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
-        @v.msg{"Verify:CC OK <#{cc}>"}
-      end
-    rescue
-      @fary=[]
-      @frame=''
-      raise $!
+    tm=@doc['rspframe']['terminator']
+    dm=@doc['rspframe']['delimiter']
+    @frm=Frame.new(frame,dm,tm)
+    getfield_rec(@doc['rspframe'])
+    if cc=@stat.delete('cc')
+      cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
+      @v.msg{"Verify:CC OK <#{cc}>"}
     end
     @stat['time']="%.3f" % time.to_f
     Hash[@stat]
@@ -108,8 +93,9 @@ class FrmRsp
       when 'ccrange'
         begin
           @v.msg(1){"Entering Ceck Code Node"}
-          fst=@fp;getfield_rec(e1)
-          @cc = checkcode(e1,@frame.slice(fst...@fp))
+          @frm.mark
+          getfield_rec(e1)
+          @cc = checkcode(e1,@frm.copy)
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end
@@ -131,7 +117,7 @@ class FrmRsp
   def frame_to_field(e0)
     @v.msg(1){"Field:#{e0['label']}"}
     begin
-      data=decode(e0,cut_frame(e0))
+      data=decode(e0,@frm.cut(e0))
       if key=e0['assign']
         @stat[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
@@ -155,7 +141,7 @@ class FrmRsp
         idxs << @par.subst(e1['range'])
       }
       @stat[key]=mk_array(idxs,@stat[key]){
-        decode(e0,cut_frame(e0))
+        decode(e0,@frm.cut(e0))
       }
     ensure
       @v.msg(-1){"Array:Assign[#{key}]"}
@@ -173,22 +159,5 @@ class FrmRsp
       fld[i] = mk_array(idx[1..-1],fld[i]){yield}
     }
     fld
-  end
-
-  def cut_frame(e0)
-    if @fp >= @frame.size
-#      @v.err("No more string in frame") if @fary.empty?
-      @frame=@fary.shift||''
-      @fp=0
-    end
-    len=e0['length']||@frame.size
-    str=@frame.slice(@fp,len.to_i)
-    @fp+=len.to_i
-    @v.msg{"CutFrame: <#{str}> by size=[#{len}]"}
-    if r=e0['slice']
-      str=str.slice(*r.split(':').map{|i| i.to_i })
-      @v.msg{"PickFrame: <#{str}> by range=[#{r}]"}
-    end
-    str
   end
 end

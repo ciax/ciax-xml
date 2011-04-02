@@ -14,6 +14,6 @@ begin
 rescue SelectID
   abort $!.to_s
 end
-Shell.new(fdb,fdb.field,filter){|stm|
-  fdb.transaction(stm).field
+Shell.new(fdb,filter){|stm|
+  fdb.transaction(stm)
 }

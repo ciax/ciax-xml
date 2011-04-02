@@ -6,7 +6,7 @@ require "readline"
 # db needs these methods
 # "prompt","interrupt","quit"
 class Shell
-  def initialize(db,stat,filter=nil)
+  def initialize(db,filter=nil)
     out=Filter.new(filter)
     loop {
       begin
@@ -19,16 +19,17 @@ class Shell
         else
           begin
             line.split(';').each{|cmd|
-              stat=yield cmd.split(" ")
+              yield cmd.split(" ")
             }
           rescue SelectID
-            puts $!.to_s
-            puts "== Shell Command =="
-            puts " q         : Quit"
-            puts " D^        : Interrupt"
+            err="#{$!}"
+            err << "== Shell Command ==\n"
+            err << " q         : Quit\n"
+            err << " D^        : Interrupt\n"
+            raise SelectID,err
           end
         end
-        puts out.filter(JSON.dump(stat))
+        puts out.filter(JSON.dump(db.stat))
       rescue
         puts $!.to_s
       end

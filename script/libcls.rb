@@ -81,7 +81,7 @@ class Cls
       loop{
         begin
           fdb.transaction(@buf.recv)
-          @field.update(fdb.field)
+          @field.update(fdb.stat)
           @cs.get_stat
         rescue
           $errmsg << $!.to_s

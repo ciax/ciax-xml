@@ -20,7 +20,7 @@ begin
 rescue SelectID
   abort $!.to_s
 end
-Shell.new(cdb,cdb.stat,filter){|stm|
+Shell.new(cdb,filter){|stm|
   stm=al.alias(stm)
-  cdb.dispatch(stm).stat
+  cdb.dispatch(stm)
 }

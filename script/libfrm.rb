@@ -16,7 +16,7 @@ class Frm
     @interupt='',@prompt="#{doc['id']}>"
   end
 
-  def field
+  def stat
     Hash[@stat]
   end
 

@@ -93,7 +93,7 @@
             <data encode="chr" label="Jack Num">$2 * 4</data>
             <data encode="chr" label="Tag Num">$1 + 2</data>
             <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">0x2ch</data>
+            <data encode="lew" label="Data Length">0x2c</data>
           </command>
           <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
             <parameters>
@@ -105,7 +105,7 @@
             <data encode="chr" label="Jack Num">$2 * 4</data>
             <data encode="chr" label="Tag Num">$1 + 2</data>
             <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">0x2ch</data>
+            <data encode="lew" label="Data Length">0x2c</data>
             <data encode="lew">${t:$1:$2}</data>
           </command>
           <command id="rw_tbl" label="Read/Write Jack Table [1=Read,2=Write]" response="cmdrsp" type="config">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="mel" label="MELSEC Q Series">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -52,14 +52,14 @@
           </command>
           <command id="start" label="Start Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
             <parameters>
-              <par label="[1,256,32768]" validate="range">1,256,32768</par>
+              <par label="[0,8,15]" validate="range">0,8,15</par>
             </parameters>
             <data encode="lew" label="Write region command">0x1401</data>
             <data encode="lew" label="Write region subcommand">0</data>
             <data encode="lew" label="Start Address">0x102</data>
             <data encode="lew" label="Device Code">0xB400</data>
             <data encode="lew" label="Data Length">1</data>
-            <data encode="lew">$1</data>
+            <data encode="lew">1 &lt;&lt; $1</data>
           </command>
           <command id="stop" label="Stop Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" response="cmdrsp" type="action">
             <parameters>
@@ -70,7 +70,7 @@
             <data encode="lew" label="Start Address">0x100</data>
             <data encode="lew" label="Device Code">0xB400</data>
             <data encode="lew" label="Data Length">1</data>
-            <data encode="lew">1 &lt;&lt; ($1-1)</data>
+            <data encode="lew">1 &lt;&lt; $1</data>
           </command>
           <command id="clear" label="Clear Action Flags" response="cmdrsp" type="config">
             <data encode="lew" label="Write region command">0x1401</data>
@@ -130,24 +130,24 @@
       <field decode="chr" label="Q Header: PC Number" length="1">255</field>
       <field decode="lew" label="Q Header: Request Unit I/O Number" length="2">1023</field>
       <field decode="chr" label="Q Header: Request Unit Station Number" length="1">0</field>
-      <field assign="cc" decode="lew" label="Response Data Length" length="2"/>
+      <field assign="cc" decode="lew" label="Response Data Length" length="2" />
       <ccrange method="len">
         <field assign="ecode" decode="lew" label="Error Code" length="2">0</field>
         <select>
           <response id="chken">
-            <field assign="cre" decode="lew" label="Enable Flag" length="2"/>
+            <field assign="cre" decode="lew" label="Enable Flag" length="2" />
           </response>
           <response id="getstat">
             <array assign="x" decode="lew" label="Status" length="2">
-              <index range="0:51" size="52"/>
+              <index range="0:51" size="52" />
             </array>
           </response>
-          <response id="cmdrsp" label="command resp"/>
+          <response id="cmdrsp" label="command resp" />
           <response id="get_tbl">
             <array assign="t" decode="lew" label="Jack Pulse Tables" length="2">
-              <index range="$1" size="6"/>
-              <index range="$2" size="4"/>
-              <index range="0:43" size="44"/>
+              <index range="$1" size="6" />
+              <index range="$2" size="4" />
+              <index range="0:43" size="44" />
             </array>
           </response>
         </select>

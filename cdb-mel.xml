@@ -14,8 +14,9 @@
           <argv>$1</argv>
         </statement>
         <statement command="start">
-          <argv>1</argv>
+          <argv>0</argv>
         </statement>
+        <statement command="getstat" />
       </session>
       <session id="fwd" label="Run Forward">
         <statement command="set_tag">
@@ -24,6 +25,7 @@
         <statement command="start">
           <argv>1</argv>
         </statement>
+        <statement command="getstat" />
       </session>
       <session id="bak" label="Run Backword">
         <statement command="set_tag">
@@ -32,6 +34,7 @@
         <statement command="start">
           <argv>1</argv>
         </statement>
+        <statement command="getstat" />
       </session>
       <session id="lift" label="Lift Jack Level [0-3]">
         <parameters>
@@ -41,8 +44,23 @@
           <argv>$1</argv>
         </statement>
         <statement command="start">
-          <argv format="%d">0x100</argv>
+          <argv>8</argv>
         </statement>
+        <statement command="getstat" />
+      </session>
+      <session id="chgon" label="Start Charging">
+        <statement command="start">
+          <argv>15</argv>
+        </statement>
+        <statement command="clear" />
+        <statement command="getstat" />
+      </session>
+      <session id="chgoff" label="Stop Charging">
+        <statement command="stop">
+          <argv format="%d">3</argv>
+        </statement>
+        <statement command="clear" />
+        <statement command="getstat" />
       </session>
       <session id="pause" label="Pause">
         <statement command="stop">
@@ -93,16 +111,25 @@
         <statement command="getstat" />
         <statement command="chken" />
       </periodic>
-      <onchange ref="run" val="1">
+      <onchange ref="acp" val="00">
         <statement command="clear" />
       </onchange>
-      <onchange ref="jak" val="1">
-        <statement command="clear" />
-      </onchange>
+      <while ref="acp" val="00">
+        <blocking>run|jak|charge</blocking>
+        <interrupt command="stop">
+          <argv>0</argv>
+        </interrupt>
+        <statement command="getstat" />
+        <statement command="chken" />
+      </while>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="ecode" label="EXIT CODE" group="1">
         <int format="%04X" ref="ecode" />
+      </value>
+      <value id="acp" label="CMD ACCEPT" group="1">
+        <binary bit="6" ref="x:0" />
+        <binary bit="0" ref="cre" />
       </value>
       <value id="rdy" label="READY" group="1">
         <binary bit="0" ref="x:0" />

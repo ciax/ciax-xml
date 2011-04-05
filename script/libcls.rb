@@ -80,7 +80,7 @@ class Cls
     Thread.new{
       loop{
         begin
-          fdb.transaction(@buf.recv)
+          fdb.request(@buf.recv)
           @field.update(fdb.stat)
           @cs.get_stat
         rescue

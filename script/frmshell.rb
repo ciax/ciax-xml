@@ -15,5 +15,5 @@ rescue SelectID
   abort $!.to_s
 end
 Shell.new(fdb,filter){|stm|
-  fdb.transaction(stm)
+  fdb.request(stm)
 }

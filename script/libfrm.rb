@@ -24,7 +24,7 @@ class Frm
     @stat.save
   end
 
-  def transaction(stm)
+  def request(stm)
     return self if stm.empty?
     @v.msg{"Receive #{stm}"}
     @cmd.setcmd(stm)

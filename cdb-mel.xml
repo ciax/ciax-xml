@@ -4,7 +4,6 @@
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Regular status update">
         <statement command="getstat" />
-        <statement command="chken" />
       </session>
       <session id="run" label="Run to Destination Tag [1-12]">
         <parameters>
@@ -59,6 +58,7 @@
         <statement command="stop">
           <argv format="%d">3</argv>
         </statement>
+        <statement command="getstat" />
         <statement command="clear" />
         <statement command="getstat" />
       </session>
@@ -109,7 +109,6 @@
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <periodic period="3600">
         <statement command="getstat" />
-        <statement command="chken" />
       </periodic>
       <onchange ref="acp" val="00">
         <statement command="clear" />
@@ -120,7 +119,6 @@
           <argv>0</argv>
         </interrupt>
         <statement command="getstat" />
-        <statement command="chken" />
       </while>
     </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
@@ -129,7 +127,7 @@
       </value>
       <value id="acp" label="CMD ACCEPT" group="1">
         <binary bit="6" ref="x:0" />
-        <binary bit="0" ref="cre" />
+        <binary bit="0" ref="x:32" />
       </value>
       <value id="rdy" label="READY" group="1">
         <binary bit="0" ref="x:0" />

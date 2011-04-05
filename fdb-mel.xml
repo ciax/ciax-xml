@@ -14,13 +14,6 @@
       <ccrange method="len">
         <data encode="lew" label="Q Header: CPU Watch Timer">1</data>
         <select>
-          <command id="chken" label="Check Enable Flag" response="chken" type="stat">
-            <data encode="lew" label="Read region command">0x401</data>
-            <data encode="lew" label="Read region subcommand">0</data>
-            <data encode="lew" label="Start Address">0x20</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">1</data>
-          </command>
           <command id="getstat" label="Get all status" response="getstat" type="stat">
             <data encode="lew" label="Read region command">0x401</data>
             <data encode="lew" label="Read region subcommand">0</data>
@@ -134,9 +127,6 @@
       <ccrange method="len">
         <field assign="ecode" decode="lew" label="Error Code" length="2">0</field>
         <select>
-          <response id="chken">
-            <field assign="cre" decode="lew" label="Enable Flag" length="2" />
-          </response>
           <response id="getstat">
             <array assign="x" decode="lew" label="Status" length="2">
               <index range="0:51" size="52" />

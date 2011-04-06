@@ -10,6 +10,7 @@ class ClsStat
     @stat.update({'class' => cls })
     @v=Verbose.new("cdb/#{cls}/stat".upcase)
     @rep=Repeat.new
+    init_stat
   end
   
   public
@@ -22,6 +23,14 @@ class ClsStat
   end
   
   private
+  def init_stat
+    @rep.each(@doc['status']){|e0|
+      id=@rep.subst(e0['id'])
+      @stat[id]=''
+    }
+    @stat['time']=Time.now.to_s
+  end
+
   def get_val(e0)
     id=@rep.subst(e0['id'])
     @v.msg(1){"STAT:GetStatus:[#{id}]"}

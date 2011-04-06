@@ -24,9 +24,10 @@ class Cls
   end
 
   def prompt
-    prom = (@stat['wach'] == "1" ? "&" : "")
-    prom << (@stat['evet'] == "1" ? '@' : '')
-    prom << @cls
+    prom=@cls.dup
+    if @stat['wach'] == "1"
+      prom << (@stat['evet'] == "1" ? '@' : '&')
+    end
     prom << (@stat['isu'] == "1" ? '*' : '')
     prom << (@stat['wait'] == "1" ? '#' : '')
     prom << (@main.alive? ? ">" : "X")
@@ -78,30 +79,30 @@ class Cls
   private
   def session_thread(fdb)
     Thread.new{
-      loop{
-        begin
+      begin
+        loop{
           fdb.request(@buf.recv)
           @field.update(fdb.stat)
           @cs.get_stat
-        rescue
-          $errmsg << $!.to_s
-        end
-      }
+        }
+      rescue
+        $errmsg << $!.to_s
+      end
     }
   end
 
   def watch_thread
     Thread.new{
-      while(@event.interval)
-        begin
+      begin
+        while(@event.interval)
           @event.update{|key|
             @stat.get(key)
           }
           @buf.send{@event.issue}
           sleep @event.interval
-        rescue
-          $errmsg << $!.to_s
         end
+      rescue
+        $errmsg << $!.to_s
       end
     }
   end

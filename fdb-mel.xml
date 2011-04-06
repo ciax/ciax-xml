@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="mel" label="MELSEC Q Series">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -32,16 +32,16 @@
             <data encode="lew" label="Data Length">1</data>
             <data encode="lew">$1</data>
           </command>
-          <command id="set_pos" label="Set Pos to Jack [1-5]" response="cmdrsp" type="config">
+          <command id="set_pos" label="Set Pos to Jack [0-4]" response="cmdrsp" type="config">
             <parameters>
-              <par label="[1-5]" validate="range">1:5</par>
+              <par label="[0-4]" validate="range">1:5</par>
             </parameters>
             <data encode="lew" label="Write region command">0x1401</data>
             <data encode="lew" label="Write region subcommand">0</data>
             <data encode="lew" label="Start Address">0x103</data>
             <data encode="lew" label="Device Code">0xB400</data>
             <data encode="lew" label="Data Length">1</data>
-            <data encode="lew">1 &lt;&lt; ($1-1)</data>
+            <data encode="lew">1 &lt;&lt; $1</data>
           </command>
           <command id="start" label="Start Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
             <parameters>

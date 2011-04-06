@@ -22,7 +22,7 @@
           <argv>98</argv>
         </statement>
         <statement command="start">
-          <argv>1</argv>
+          <argv>0</argv>
         </statement>
         <statement command="getstat" />
       </session>
@@ -31,7 +31,7 @@
           <argv>99</argv>
         </statement>
         <statement command="start">
-          <argv>1</argv>
+          <argv>0</argv>
         </statement>
         <statement command="getstat" />
       </session>
@@ -66,16 +66,30 @@
         <statement command="stop">
           <argv>0</argv>
         </statement>
+        <statement command="clear" />
       </session>
       <session id="emstop" label="Emergency Stop">
         <statement command="stop">
           <argv>1</argv>
         </statement>
+        <statement command="clear" />
       </session>
       <session id="resume" label="Resume from Pause">
+        <statement command="stop">
+          <argv>5</argv>
+        </statement>
+        <statement command="clear" />
+      </session>
+      <session id="cancel" label="Command Cancel">
+        <statement command="stop">
+          <argv>4</argv>
+        </statement>
         <statement command="clear" />
       </session>
       <session id="get_tbl" label="Get Jack Table">
+        <statement command="tbl_rw">
+          <argv>1</argv>
+        </statement>
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
             <statement command="get_tbl">
@@ -94,13 +108,6 @@
             </statement>
           </repeat>
         </repeat>
-      </session>
-      <session id="tbl_read" label="Read to Buffer">
-        <statement command="tbl_rw">
-          <argv>1</argv>
-        </statement>
-      </session>
-      <session id="tbl_write" label="Write from Buffer">
         <statement command="tbl_rw">
           <argv>0</argv>
         </statement>

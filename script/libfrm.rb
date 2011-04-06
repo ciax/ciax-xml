@@ -27,28 +27,29 @@ class Frm
   def request(stm)
     return self if stm.empty?
     @v.msg{"Receive #{stm}"}
-    @cmd.setcmd(stm)
-    @rsp.setrsp(stm)
-    cid=stm.join(':')
-    @ic.snd(@cmd.getframe,'snd:'+cid)
-    @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
-    self
-  rescue SelectID
-    case stm.shift
+    case stm[0]
     when 'set'
+      stm.shift
       set(stm).inspect
     when 'load'
-      load(stm.shift)
+      load(stm[1])
     when 'save'
-      save(stm.shift,stm.shift)
+      save(stm[1],stm[2])
     else
-      err="#{$!}"
-      err << "== Internal Command ==\n"
-      err << " set       : Set Value  [key(:idx)] (val)\n"
-      err << " load      : Load Field (tag)\n"
-      err << " save      : Save Field [key,key...] (tag)\n"
-      raise SelectID,err
+      @cmd.setcmd(stm)
+      @rsp.setrsp(stm)
+      cid=stm.join(':')
+      @ic.snd(@cmd.getframe,'snd:'+cid)
+      @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
+      'OK'
     end
+  rescue SelectID
+    err="#{$!}"
+    err << "== Internal Command ==\n"
+    err << " set       : Set Value  [key(:idx)] (val)\n"
+    err << " load      : Load Field (tag)\n"
+    err << " save      : Save Field [key,key...] (tag)\n"
+    raise SelectID,err
   end
 
   private
@@ -58,7 +59,7 @@ class Frm
     end
     @v.msg{"CMD:set#{stm}"}
     @stat.set(stm[0],stm[1])
-    "[#{stm}] set"
+    "[#{stm}] set\n"
   end
 
   def save(keys,tag=nil)
@@ -67,7 +68,7 @@ class Frm
     end
     tag=Time.now.strftime('%y%m%d-%H%M%S') unless tag
     @stat.save(tag,keys.split(','))
-    "[#{tag}] saved"
+    "[#{tag}] saved\n"
   end
 
   def load(tag)

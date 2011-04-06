@@ -47,17 +47,16 @@ class FrmRsp
       @v.msg(1){"Field:Initialize"}
       @doc.find_each('rspframe',"*[@assign]"){|e1|
         assign=e1['assign']
+        next if @stat[assign]
         case e1.name
         when 'field'
           @v.msg{"Field:Init Field[#{assign}]"}
-          @stat[assign]=fill.dup unless @stat[assign]
+          @stat[assign]=fill.dup
         when 'array'
           @v.msg{"Field:Init Array[#{assign}]"}
           sary=[]
-          e1.each{|e2|
-            sary << e2['size'].to_i
-          }
-          @stat[assign]=init_array(sary){fill.dup} unless @stat[assign]
+          e1.each{|e2| sary << e2['size'].to_i}
+          @stat[assign]=init_array(sary){fill.dup}
         end
       }
     ensure

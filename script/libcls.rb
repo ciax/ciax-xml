@@ -8,7 +8,7 @@ require "thread"
 
 class Cls
 
-  def initialize(doc,id,fdb)
+  def initialize(doc,id)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @cls=doc['id']
     $errmsg=''
@@ -18,8 +18,17 @@ class Cls
     @cs=ClsStat.new(doc,@stat,@field)
     @buf=CmdBuf.new
     @event=Watch.new(doc['watch'])
-    @main=session_thread(fdb)
     @watch=watch_thread
+    @main=Thread.new{
+      begin
+        loop{
+          @field.update(yield @buf.recv)
+          @cs.get_stat
+        }
+      rescue
+        $errmsg << $!.to_s
+      end
+    }
     sleep 0.01
   end
 
@@ -57,7 +66,7 @@ class Cls
     else
       @buf.send(1){@cc.setcmd(ssn).statements}
     end
-    self
+    "OK"
   rescue SelectID
     err="#{$!}"
     err << "== Internal Command ==\n"
@@ -77,20 +86,6 @@ class Cls
   end
   
   private
-  def session_thread(fdb)
-    Thread.new{
-      begin
-        loop{
-          fdb.request(@buf.recv)
-          @field.update(fdb.stat)
-          @cs.get_stat
-        }
-      rescue
-        $errmsg << $!.to_s
-      end
-    }
-  end
-
   def watch_thread
     Thread.new{
       begin

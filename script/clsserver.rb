@@ -17,7 +17,10 @@ begin
   cdoc=XmlDoc.new('cdb',cls,usage)
   fdoc=XmlDoc.new('fdb',cdoc['frame'])
   fdb=Frm.new(fdoc,id,iocmd)
-  cdb=Cls.new(cdoc,id,fdb)
+  cdb=Cls.new(cdoc,id){|stm|
+    fdb.request(stm)
+    fdb.stat
+  }
 rescue SelectID
   abort $!.to_s
 end

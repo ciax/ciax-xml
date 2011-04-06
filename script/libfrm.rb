@@ -61,7 +61,7 @@ class Frm
     "[#{stm}] set"
   end
 
-  def save(keys=nil,tag=nil)
+  def save(keys,tag=nil)
     unless keys
       raise "Usage: save [key,key..] (tag)\n key=#{@stat.keys}"
     end
@@ -70,8 +70,8 @@ class Frm
     "[#{tag}] saved"
   end
 
-  def load(tag=nil)
-    tag='latest' unless tag
+  def load(tag)
+    tag='' unless tag
     @stat.load(tag)
     "[#{tag}] loaded"
   rescue SelectID

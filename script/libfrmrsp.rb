@@ -134,9 +134,9 @@ class FrmRsp
 
   def field_array(e0)
     idxs=[]
-    @v.msg(1){"Array:#{e0['label']}"}
     begin
       key=e0['assign'] || @v.err("No key for Array")
+      @v.msg(1){"Array:#{e0['label']}[#{key}]"}
       e0.each{|e1| # Index
         idxs << @par.subst(e1['range'])
       }

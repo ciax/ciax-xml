@@ -19,6 +19,13 @@ class IoFile
     open(fname,'w') {|f|
       @v.msg{"Status Saving for [#{base}]"}
       f << JSON.dump(stat)
+      if tag
+        base=[@type,'latest'].compact.join('_')
+        sname=VarDir+"/#{base}.json"
+        File.unlink(sname) if File.exist?(sname)
+        File.symlink(fname,sname)
+        @v.msg{"Symboliclink to [#{base}]"}
+      end
     }
     stat
   end

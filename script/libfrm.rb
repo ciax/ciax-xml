@@ -38,9 +38,9 @@ class Frm
     when 'set'
       set(stm).inspect
     when 'load'
-      load(stm.shift||'default')
+      load(stm.shift)
     when 'save'
-      save(stm.shift,stm.shift||'default')
+      save(stm.shift,stm.shift)
     else
       err="#{$!}"
       err << "== Internal Command ==\n"
@@ -58,17 +58,22 @@ class Frm
     end
     @v.msg{"CMD:set#{stm}"}
     @stat.set(stm[0],stm[1])
+    "[#{stm}] set"
   end
 
-  def save(keys=nil,tag='default')
+  def save(keys=nil,tag=nil)
     unless keys
       raise "Usage: save [key,key..] (tag)\n key=#{@stat.keys}"
     end
+    tag=Time.now.strftime('%y%m%d-%H%M%S') unless tag
     @stat.save(tag,keys.split(','))
+    "[#{tag}] saved"
   end
 
-  def load(tag='default')
+  def load(tag=nil)
+    tag='latest' unless tag
     @stat.load(tag)
+    "[#{tag}] loaded"
   rescue SelectID
     raise "Usage: load (tag)\n #{$!}"
   end

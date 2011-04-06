@@ -16,10 +16,11 @@ class Shell
           db.quit
           break
         when ''
+          puts out.filter(JSON.dump(db.stat))
         else
           begin
             line.split(';').each{|cmd|
-              yield cmd.split(" ")
+              puts yield cmd.split(" ")
             }
           rescue SelectID
             err="#{$!}"
@@ -29,7 +30,6 @@ class Shell
             raise SelectID,err
           end
         end
-        puts out.filter(JSON.dump(db.stat))
       rescue
         puts $!.to_s
       end

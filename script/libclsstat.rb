@@ -24,8 +24,8 @@ class ClsStat
   def set_stat
     @rep.each(@doc['status']){|e0|
       begin
-        @v.msg(1){"STAT:GetStatus:[#{id}]"}
         id=@rep.subst(e0['id'])
+        @v.msg(1){"STAT:GetStatus:[#{id}]"}
         @stat[id]=yield e0
       ensure
         @v.msg(-1){"STAT:GetStatus:#{id}=[#{@stat[id]}]"}

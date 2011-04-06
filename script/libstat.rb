@@ -56,7 +56,9 @@ class Stat < Hash
 
   def get(key=nil) # ${key1:key2:idx} => hash[key1][key2][idx]
     return Hash[self] unless key
+    vname=[]
     key.split(':').inject(self){|h,i|
+      vname << i
       begin
         i=eval(i) if Array === h
       rescue SyntaxError
@@ -64,7 +66,7 @@ class Stat < Hash
       end
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
       @v.msg{"Content[#{h[i]}]"}
-      h[i]||raise("No such Value [#{i}]")
+      h[i]||raise("No such Value #{vname}")
     }
   end
 end

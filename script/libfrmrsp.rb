@@ -12,6 +12,7 @@ class FrmRsp
     @doc,@stat,@sel=doc,stat
     @v=Verbose.new("fdb/#{@doc['id']}/rsp".upcase)
     @par=Param.new
+    @stat['frame']=@doc['id']
     init_field
   end
 
@@ -41,40 +42,27 @@ class FrmRsp
   private
   # Fill default values in the Field
   def init_field
-    @v.msg(1){"Field:Initialize"}
+    fill=''
     begin
-      init_rec(@doc['rspframe'])
-      @stat['frame']=@doc['id']
+      @v.msg(1){"Field:Initialize"}
+      @doc.find_each('rspframe',"*[@assign]"){|e1|
+        assign=e1['assign']
+        case e1.name
+        when 'field'
+          @v.msg{"Field:Init Field[#{assign}]"}
+          @stat[assign]=fill.dup unless @stat[assign]
+        when 'array'
+          @v.msg{"Field:Init Array[#{assign}]"}
+          sary=[]
+          e1.each{|e2|
+            sary << e2['size'].to_i
+          }
+          @stat[assign]=init_array(sary){fill.dup} unless @stat[assign]
+        end
+      }
     ensure
       @v.msg(-1){"Field:Initialized"}
     end
-  end
-
-  def init_rec(e0)
-    fill=''
-    e0.each{|e1| #field|array|vefiry
-      case e1.name
-      when 'ccrange'
-        init_rec(e1)
-      when 'select'
-        e1.each{|e2|
-          init_rec(e2)
-        }
-      when 'field'
-        if assign=e1['assign']
-          @v.msg{"Field:Init Field[#{assign}]"}
-          @stat[assign]=fill.dup unless @stat[assign]
-        end
-      when 'array'
-        assign=e1['assign']
-        @v.msg{"Field:Init Array[#{assign}]"}
-        sary=[]
-        e1.each{|e2|
-          sary << e2['size'].to_i
-        }
-        @stat[assign]=init_array(sary){fill.dup} unless @stat[assign]
-      end
-    }
   end
 
   def init_array(sary,field=nil)
@@ -115,8 +103,8 @@ class FrmRsp
   end
 
   def frame_to_field(e0)
-    @v.msg(1){"Field:#{e0['label']}"}
     begin
+      @v.msg(1){"Field:#{e0['label']}"}
       data=decode(e0,@frm.cut(e0))
       if key=e0['assign']
         @stat[key]=data
@@ -133,9 +121,9 @@ class FrmRsp
   end
 
   def field_array(e0)
+    key=e0['assign'] || @v.err("No key for Array")
     idxs=[]
     begin
-      key=e0['assign'] || @v.err("No key for Array")
       @v.msg(1){"Array:#{e0['label']}[#{key}]"}
       e0.each{|e1| # Index
         idxs << @par.subst(e1['range'])

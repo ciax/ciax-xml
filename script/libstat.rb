@@ -15,6 +15,10 @@ class Stat < Hash
     end
   end
 
+  def to_h
+    Hash[self]
+  end
+
   def load(tag=nil)
     update(@fd.load_stat(tag))
     self
@@ -28,7 +32,7 @@ class Stat < Hash
       }
       @fd.save_stat(stat,tag)
     else
-      @fd.save_stat(Hash[self])
+      @fd.save_stat(to_h)
     end
     self
   end
@@ -48,14 +52,9 @@ class Stat < Hash
     end
   end
 
-  def set(key,val)
-    h=get(key)
-    h.replace(eval(subst(val)).to_s) if val
-    h
-  end
-
-  def get(key=nil) # ${key1:key2:idx} => hash[key1][key2][idx]
-    return Hash[self] unless key
+  # For multiple dimention
+  def get(key) # ${key1:key2:idx} => hash[key1][key2][idx]
+    raise "No Key" unless key
     vname=[]
     key.split(':').inject(self){|h,i|
       vname << i
@@ -68,5 +67,12 @@ class Stat < Hash
       @v.msg{"Content[#{h[i]}]"}
       h[i]||raise("No such Value #{vname}")
     }
+  end
+
+  def set(key,val)
+    if val
+      get(key).replace(eval(subst(val)).to_s)
+    end
+    self
   end
 end

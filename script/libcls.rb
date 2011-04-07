@@ -37,7 +37,7 @@ class Cls
     @stat['evet']=(@event.active? ? '1' : '0')
     @stat['isu']=(@buf.issue? ? '1' : '0')
     @stat['wait']=(@buf.wait? ? '1' : '0')
-    Hash[@stat]
+    @stat.to_h
   end
 
   def quit

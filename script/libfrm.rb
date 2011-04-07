@@ -17,7 +17,7 @@ class Frm
   end
 
   def stat
-    Hash[@stat]
+    @stat.to_h
   end
 
   def quit

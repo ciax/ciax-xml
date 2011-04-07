@@ -21,5 +21,5 @@ begin
 rescue RuntimeError
   abort $!.to_s
 end
-print JSON.dump Hash[st]
+print JSON.dump st.to_h
 st.save

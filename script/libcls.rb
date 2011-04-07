@@ -11,25 +11,15 @@ class Cls
   def initialize(doc,id)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @cls=doc['id']
-    $errmsg=''
     @stat=Stat.new(id,'status')
     @field=Stat.new(id,"field")
     @cc=ClsCmd.new(doc)
     @cs=ClsStat.new(doc,@stat,@field)
+    Thread.abort_on_exception=true
     @buf=CmdBuf.new
     @event=Watch.new(doc['watch'])
     @watch=watch_thread
-    @main=Thread.new{
-      begin
-        loop{
-          @field.update(yield @buf.recv)
-          @cs.get_stat
-        }
-      rescue
-        $errmsg << $!.to_s
-      end
-    }
-    sleep 0.01
+    @main=session_thread{|buf| yield buf}
   end
 
   def prompt
@@ -55,7 +45,6 @@ class Cls
   end
 
   def dispatch(ssn)
-    raise $errmsg.slice!(0..-1) unless $errmsg.empty?
     return nil if ssn.empty?
     raise "Blocking" if @event.blocking?(ssn)
     case ssn[0]
@@ -66,7 +55,7 @@ class Cls
     else
       @buf.send(1){@cc.setcmd(ssn).statements}
     end
-    "OK"
+    "ISSUED"
   rescue SelectID
     err="#{$!}"
     err << "== Internal Command ==\n"
@@ -86,18 +75,28 @@ class Cls
   end
   
   private
+  def session_thread
+    Thread.new{
+      Thread.pass
+      begin
+        loop{
+          @field.update(yield @buf.recv)
+          @cs.get_stat
+        }
+      rescue SelectID
+        raise "Session Thread Error\n"+$!.to_s
+      end
+    }
+  end
   def watch_thread
     Thread.new{
-      begin
-        while(@event.interval)
-          @event.update{|key|
-            @stat.get(key)
-          }
-          @buf.send{@event.issue}
-          sleep @event.interval
-        end
-      rescue
-        $errmsg << $!.to_s
+      Thread.pass
+      while(@event.interval)
+        @event.update{|key|
+          @stat.get(key)
+        }
+        @buf.send{@event.issue}
+        sleep @event.interval
       end
     }
   end

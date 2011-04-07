@@ -4,30 +4,13 @@ require "thread"
 
 class CmdBuf
   def initialize
-    $errmsg=''
     @inbuf=Array.new
     @outbuf=Array.new
     @q=Queue.new
     @v=Verbose.new("BUF")
     @wait=@issue=@int=nil
     @proc=Queue.new
-    @st=Thread.new{
-      loop{
-        begin
-          p=@proc.shift
-          dl=Time.now+@wait
-          while @wait
-            sleep 1
-            if p.call || dl < Time.now
-              flush
-              break
-            end
-          end
-        rescue
-          $errmsg << $!.to_s
-        end
-      }
-    }
+    @st=delay
   end
 
   def send(p=2)
@@ -93,6 +76,22 @@ class CmdBuf
 
   # Internal command
   private
+  def delay
+    Thread.new{
+      Thread.pass
+      loop{
+        p=@proc.shift
+        dl=Time.now+@wait
+        while @wait
+          sleep 1
+          if p.call || dl < Time.now
+            flush
+            break
+          end
+        end
+      }
+    }
+  end
   def flush
     @v.msg{"MAIN:Flushing #{@inbuf}"}
     unless @inbuf.empty?

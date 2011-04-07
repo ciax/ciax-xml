@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -87,7 +87,7 @@
         <statement command="clear" />
       </session>
       <session id="get_tbl" label="Get Jack Table">
-        <statement command="tbl_rw">
+        <statement command="rw_tbl">
           <argv>1</argv>
         </statement>
         <repeat counter="t" from="0" to="5">
@@ -108,7 +108,7 @@
             </statement>
           </repeat>
         </repeat>
-        <statement command="tbl_rw">
+        <statement command="rw_tbl">
           <argv>0</argv>
         </statement>
       </session>

@@ -39,8 +39,10 @@ class XmlGn
   end
 
   def text
-    txt=@e.content
-    (txt == '') ? nil : txt
+    @e.each{|n|
+      return n.to_s if n.text?
+    }
+    nil
   end
 
   def item(key)

@@ -47,11 +47,17 @@ class ClsStat
         @v.msg{"GetBit[#{bit}]"}
         str << bit.to_s
       when 'float'
+        sign=nil
+        if /true|1/ === e1['signed']
+          sign=(data[0] == "8")
+          data=data[1..-1]
+        end
         if n=e1['decimal']
           n=n.to_i
           data=data[0..(-1-n)]+'.'+data[-n..-1]
         end
         data=data.to_f
+        data= -data if sign
         if e1.text
           f=e1.text.gsub(/\$#/,data.to_s)
           data=eval(f)

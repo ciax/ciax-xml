@@ -9,6 +9,10 @@
     <xsd:attribute name="ref" type="xsd:token" use="required" />
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
+  <xsd:attributeGroup name="num_attr">
+    <xsd:attribute name="signed" type="xsd:boolean" />
+    <xsd:attribute name="format" type="xsd:token" use="optional" />
+  </xsd:attributeGroup>
   <!--Share-->
   <xsd:element name="repeat">
     <xsd:complexType>
@@ -54,7 +58,7 @@
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
           <xsd:attributeGroup ref="cdbs:ref_attr" />
-          <xsd:attribute name="format" type="xsd:token" use="optional" />
+          <xsd:attributeGroup ref="cdbs:num_attr" />
           <xsd:attribute name="decimal" type="xsd:integer" />
         </xsd:extension>
       </xsd:simpleContent>
@@ -63,8 +67,7 @@
   <xsd:element name="int">
     <xsd:complexType>
       <xsd:attributeGroup ref="cdbs:ref_attr" />
-      <xsd:attribute name="signed" type="xsd:boolean" />
-      <xsd:attribute name="format" type="xsd:token" use="optional" />
+      <xsd:attributeGroup ref="cdbs:num_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="string">

@@ -129,10 +129,12 @@
       <value id="iang" label="InR Angle" group="4">
         <float ref="iang" />
       </value>
-      <repeat from="0" to="15">
-        <value id="jk$_" label="Jack Pulse $_">
-          <int ref="jk:$_" />
-        </value>
+      <repeat from="0" to="7" counter="i">
+        <repeat from="0" to="1" counter="j">
+          <value id="jk$_" label="Jack Length $_">
+            <float ref="jk:$_" decimal="2" signed="true" format="%5.2f" />
+          </value>
+        </repeat>
       </repeat>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">

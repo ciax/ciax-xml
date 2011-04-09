@@ -1,7 +1,7 @@
 ascpck: exe and isu is down just after command issued
 ruby bug: segmentation fault inside of xmllib2 
-analize,config file: dts
+add more status: cdb-oss
+verify on motion: cdb-oss
 
-make cdb//value/int@signed various method
 using sqlite for logging
 sql: using sqlite for symboling, labeling as cache

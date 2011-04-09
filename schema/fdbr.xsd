@@ -37,7 +37,9 @@
   <!--Field Elements-->
   <xsd:element name="index">
     <xsd:complexType>
+      <!--Whole size of Array-->
       <xsd:attribute name="size" type="xsd:int" use="required" />
+      <!--Part of Array Range-->
       <xsd:attribute name="range" type="xsd:token" use="required" />
     </xsd:complexType>
   </xsd:element>

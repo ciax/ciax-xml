@@ -35,9 +35,9 @@
   </xsd:element>
   <xsd:element name="value">
     <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="cdbs:string" />
-        <xsd:element ref="cdbs:binary" />
+      <xsd:choice minOccurs="0">
+        <xsd:element ref="cdbs:binary" maxOccurs="unbounded" />
+        <xsd:element ref="cdbs:string" maxOccurs="unbounded" />
         <xsd:element ref="cdbs:float" />
         <xsd:element ref="cdbs:int" />
       </xsd:choice>

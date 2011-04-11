@@ -57,15 +57,15 @@ class Stat < Hash
     raise "No Key" unless key
     vname=[]
     key.split(':').inject(self){|h,i|
-      vname << i
       begin
         i=eval(i) if Array === h
       rescue SyntaxError
         raise("#{i} is not number")
       end
+      vname << i
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
       @v.msg{"Content[#{h[i]}]"}
-      h[i]||raise("No such Value #{vname}")
+      h[i]||raise("No such Value [#{vname.join(':')}]")
     }
   end
 

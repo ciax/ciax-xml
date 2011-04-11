@@ -146,8 +146,7 @@
         <statement command="upd" />
       </periodic>
       <repeat from="1" to="6">
-        <while label="Moving %d" ref="r%d" val="N">
-          <blocking>(fw|bk|abs) %d</blocking>
+        <while label="Moving %d" ref="r%d" val="N" blocking="(fw|bk|abs) %d">
           <interrupt command="stop">
             <argv>$_</argv>
           </interrupt>

@@ -87,18 +87,13 @@ class Watch < Array
     }
     @v.msg(1){"#{bg[:type]}:#{bg['label']}"}
     e0.each{ |e1|
-      case e1.name
-      when 'blocking'
-        bg[e1.name]=@rep.format(e1.text)
-      when 'interrupt','statement'
-        ssn=[e1['command']]
-        e1.each{|e2|
-          ssn << @rep.subst(e2.text)
-        }
-        bg[e1.name]=[] unless Array === bg[e1.name]
-        bg[e1.name] << ssn
-        @v.msg{e1.name.capitalize+":#{ssn}"}
-      end
+      ssn=[e1['command']]
+      e1.each{|e2|
+        ssn << @rep.subst(e2.text)
+      }
+      bg[e1.name]=[] unless Array === bg[e1.name]
+      bg[e1.name] << ssn
+      @v.msg{e1.name.capitalize+":#{ssn}"}
     }
     bg
   ensure

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -120,8 +120,7 @@
       <onchange ref="acp" val="00">
         <statement command="clear" />
       </onchange>
-      <while ref="acp" val="00">
-        <blocking>run|jak|charge</blocking>
+      <while ref="acp" val="00" blocking="run|jak|charge">
         <interrupt command="stop">
           <argv>0</argv>
         </interrupt>

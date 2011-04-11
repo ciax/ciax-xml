@@ -76,15 +76,13 @@
       </session>
     </commands>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <onchange label="Moving Jack" ref="jk1">
-        <blocking>jup|jdw</blocking>
+      <onchange label="Moving Jack" ref="jk1" blocking="jup|jdw">
         <interrupt command="jstop" />
         <statement command="jakstat" />
         <statement command="getexit" />
         <statement command="getpid" />
       </onchange>
-      <onchange label="Moving InR" ref="iang">
-        <blocking>rhook|runhk</blocking>
+      <onchange label="Moving InR" ref="iang" blocking="rhook|runhk">
         <interrupt command="rstop" />
         <statement command="inrstat" />
         <statement command="getexit" />

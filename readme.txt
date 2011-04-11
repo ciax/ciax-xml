@@ -26,7 +26,7 @@ cdb//session@id -> never use ':'
             cdb//status/repeat/value@group
             cdb//watch/repeat/*/@ref
             cdb//watch/repeat/*/@label
-            cdb//watch/repeat/*/blocking
+            cdb//watch/repeat/*/@blocking
             --
             sdb//symbol/repeat/case@id
 

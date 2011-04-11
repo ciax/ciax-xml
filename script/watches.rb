@@ -8,7 +8,9 @@ begin
   doc=XmlDoc.new('cdb',stat['class'])
   watch=Watch.new(doc['watch'])
   watch.update{|k| stat[k] }
-  puts JSON.dump(watch)
+  watch.each{|i|
+    puts i
+  }
 rescue RuntimeError
   abort $!.to_s
 end

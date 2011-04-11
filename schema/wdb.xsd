@@ -12,6 +12,7 @@
     <xsd:attribute name="label" type="xsd:token" />
     <xsd:attribute name="ref" type="xsd:token" use="required"></xsd:attribute>
     <xsd:attribute name="val" type="xsd:token"></xsd:attribute>
+    <xsd:attribute name="blocking" type="xsd:token" />
   </xsd:attributeGroup>
   <!--watch events-->
   <xsd:element name="watch">
@@ -45,13 +46,11 @@
   <xsd:element name="until" type="wdb:onexec"></xsd:element>
   <xsd:complexType name="onexec">
     <xsd:sequence>
-      <xsd:element ref="wdb:blocking" minOccurs="0" />
       <xsd:element ref="wdb:interrupt" minOccurs="0" />
       <xsd:element ref="wdb:statement" maxOccurs="unbounded" />
     </xsd:sequence>
     <xsd:attributeGroup ref="wdb:condition" />
   </xsd:complexType>
-  <xsd:element name="blocking" type="xsd:token"></xsd:element>
   <xsd:element name="interrupt" type="wdb:statement"></xsd:element>
   <!--statement-->
   <xsd:complexType name="statement">

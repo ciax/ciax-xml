@@ -242,8 +242,7 @@
         <statement command="geterr"></statement>
         <statement command="getzlen"></statement>
       </periodic>
-      <while label="On Motion" ref="exe" val="1">
-        <blocking>^[fmtd].+</blocking>
+      <while label="On Motion" ref="exe" val="1" blocking="^[fmtd].+">
         <interrupt command="setbit">
           <!--pause-->
           <argv>0</argv>

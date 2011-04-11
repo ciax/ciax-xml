@@ -10,12 +10,12 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <repeat from="0" to="3">
-        <value id="ch$_" label="CH $_" group="a">
+        <value id="ch%d" label="CH %d" group="a">
           <float ref="ch:$_" format="%3.2f" />
         </value>
       </repeat>
       <repeat from="4" to="7">
-        <value id="ch$_" label="CH $_" group="b">
+        <value id="ch%d" label="CH %d" group="b">
           <float ref="ch:$_" format="%3.2f" />
         </value>
       </repeat>
@@ -28,7 +28,7 @@
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <repeat from="0" to="7">
-        <case id="ch$_" />
+        <case id="ch%d" />
       </repeat>
       <case id="sp" />
       <case id="htr" />

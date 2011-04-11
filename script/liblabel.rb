@@ -16,9 +16,9 @@ class Label
       rep=Repeat.new
       rep.each(db[domain]){|e|
         sym=e['label'] || next
-        id=rep.subst(e[key])
-        @label[id]={'label'=>rep.subst(sym)}
-        @label[id]['group']=rep.subst(e['group']) if e['group']
+        id=rep.format(e[key])
+        @label[id]={'label'=>rep.format(sym)}
+        @label[id]['group']=rep.format(e['group']) if e['group']
       }
     end
   end

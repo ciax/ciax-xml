@@ -83,13 +83,13 @@ class Watch < Array
     bg={:type => e0.name}
     bg[:next]=Time.at(0) if e0.name == 'periodic'
     e0.to_h.each{|a,v|
-      bg[a]=@rep.subst(v)
+      bg[a]=@rep.format(v)
     }
     @v.msg(1){"#{bg[:type]}:#{bg['label']}"}
     e0.each{ |e1|
       case e1.name
       when 'blocking'
-        bg[e1.name]=@rep.subst(e1.text)
+        bg[e1.name]=@rep.format(e1.text)
       when 'interrupt','statement'
         ssn=[e1['command']]
         e1.each{|e2|

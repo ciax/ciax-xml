@@ -345,12 +345,12 @@
         <binary bit="11" ref="w:9" />
       </value>
       <repeat from="1" to="4">
-        <value id="fz$_" label="Fix Z" group="zf">
+        <value id="fz%d" label="Fix Z" group="zf">
           <float format="%.2f" ref="d:($_-1)">$#/100</float>
         </value>
       </repeat>
       <repeat from="1" to="4">
-        <value id="mz$_" label="Mov Z" group="zm">
+        <value id="mz%d" label="Mov Z" group="zm">
           <float format="%.2f" ref="d:($_+3)">$#/100</float>
         </value>
       </repeat>

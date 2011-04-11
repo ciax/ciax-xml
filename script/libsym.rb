@@ -25,7 +25,7 @@ class Sym
     tbl={}
     if @doc[S]
       @rep.each(@doc[S]){|e|
-        id=@rep.subst(e['id'])
+        id=@rep.format(e['id'])
         if ref=e['ref']
           pre="case[@id='#{ref}']"
           e=@doc.select(S,pre) ||\

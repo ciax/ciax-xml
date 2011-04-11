@@ -14,19 +14,19 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <repeat from="1" to="3">
-        <value id="v$_" label="OUTPUT$_ (V)" group="1">
+        <value id="v%d" label="OUTPUT%d (V)" group="1">
           <float format="%3.2f" ref="stat:$_+1">($#-2048)/4096</float>
         </value>
       </repeat>
       <repeat from="4" to="6">
-        <value id="v$_" label="OUTPUT$_ (V)" group="2">
+        <value id="v%d" label="OUTPUT%d (V)" group="2">
           <float format="%3.2f" ref="stat:$_+1">($#-2048)/4096</float>
         </value>
       </repeat>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <repeat from="1" to="6">
-        <case id="v$_" />
+        <case id="v%d" />
       </repeat>
     </symbol>
   </class>

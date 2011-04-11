@@ -15,17 +15,20 @@ cdb//session@id -> never use ':'
     usable: fdb//cmdframe/repeat/data[@type=formula]
             --
             cdb//session/repeat/statement/argv
-            cdb//watch/repeat/event@*
-            cdb//watch/repeat/event/*/@*
-            cdb//status/repeat/value@id
-            cdb//status/repeat/value@label
             cdb//status/repeat/value/*@ref
             cdb//status/repeat/value/binary@bit
+            cdb//watch/repeat//argv
+
+ %? (Format string)
+    description : sprintf with sequence number array (in repeat)
+            cdb//status/repeat/value@id
+            cdb//status/repeat/value@label
+            cdb//status/repeat/value@group
+            cdb//watch/repeat/*/@ref
+            cdb//watch/repeat/*/@label
+            cdb//watch/repeat/*/blocking
             --
-            odb//session/repeat/statement/par
-            odb//status/repeat/var@id
-            odb//status/repeat/var@label
-            odb//status/repeat/var/value/*@field
+            sdb//symbol/repeat/case@id
 
  $1..9
     description : substitute parameters

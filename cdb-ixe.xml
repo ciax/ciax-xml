@@ -146,8 +146,8 @@
         <statement command="upd" />
       </periodic>
       <repeat from="1" to="6">
-        <while label="Moving $_" ref="r$_" val="N">
-          <blocking>(fw|bk|abs) $_</blocking>
+        <while label="Moving %d" ref="r%d" val="N">
+          <blocking>(fw|bk|abs) %d</blocking>
           <interrupt command="stop">
             <argv>$_</argv>
           </interrupt>
@@ -186,16 +186,16 @@
         <binary bit="7" ref="stat" />
       </value>
       <repeat from="1" to="6">
-        <value id="r$_" label="Running $_" group="r$_">
+        <value id="r%d" label="Running %d" group="r%d">
           <string ref="run:$_-1" />
         </value>
-        <value id="p$_" label="Pulse $_" group="r$_">
+        <value id="p%d" label="Pulse %d" group="r%d">
           <int ref="p:$_-1" />
         </value>
-        <value id="spd$_" label="Speed $_" group="r$_">
+        <value id="spd%d" label="Speed %d" group="r%d">
           <int ref="spd:$_-1" />
         </value>
-        <value id="ofs$_" label="Offset $_" group="r$_">
+        <value id="ofs%d" label="Offset %d" group="r%d">
           <int ref="ofs:$_-1" />
         </value>
       </repeat>

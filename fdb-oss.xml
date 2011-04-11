@@ -149,9 +149,8 @@
             <index range="0:15" size="16"></index>
           </array>
           <array assign="be" label="Each Bolt Alarm(DrvAlm,UP,DW,UnitAlm)" length="1" decode="hexstr">
-            <index range="0:15" size="16">
-              <!--Order:2,1,4,3..-->
-            </index>
+            <!--Order:2,1,4,3..-->
+            <index range="0:15" size="16"></index>
           </array>
           <field assign="mba" label="MLP3-BOLT COMM ALM(18:B0)" length="2" decode="hexstr"></field>
           <field assign="loc" label="CS BOLT LOCAL(19:B0)" length="2" decode="hexstr"></field>

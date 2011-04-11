@@ -107,10 +107,10 @@
         <string ref="login2" />
         <string ref="login3" />
       </value>
-      <value id="rpw" label="ROT DRIVE" group="2">
+      <value id="rpw" label="ROT DRIVE" group="drv">
         <int ref="rpw" />
       </value>
-      <value id="jpw" label="JAK DRIVE" group="2">
+      <value id="jpw" label="JAK DRIVE" group="drv">
         <binary bit="7" ref="bstat" />
       </value>
       <value id="nfb" label="BOLT NFB TRIP" group="3">
@@ -129,9 +129,14 @@
       <value id="iang" label="InR Angle" group="4">
         <float ref="iang" />
       </value>
-      <repeat from="0" to="15">
-        <value id="jk$_" label="Jack Length $_">
-          <float ref="jk:$_" decimal="2" signed="true" format="%5.2f" />
+      <repeat from="1" to="16">
+        <!--Order:2,1,4,3,6,5...-->
+        <value id="jk%02d" label="Jack Len %02d" group="j%d">
+          <float ref="jk:$_-2-($_%2)*2" decimal="2" signed="true" format="%5.2f" />
+        </value>
+        <value id="bl%02d" label="Bolt Limit %02d" group="j%d">
+          <binary ref="bl:$_-2-($_%2)*2" bit="1" />
+          <binary ref="bl:$_-2-($_%2)*2" bit="2" />
         </value>
       </repeat>
     </status>
@@ -166,6 +171,14 @@
         <enum class="normal" msg="0DEG">10</enum>
         <enum class="normal" msg="-4DEG">01</enum>
       </case>
+      <case id="stw" ref="off-warn" />
+      <repeat from="1" to="16">
+        <case id="bl%02d">
+          <enum class="warn" msg="MID">00</enum>
+          <enum class="normal" msg="UP">10</enum>
+          <enum class="normal" msg="DW">01</enum>
+        </case>
+      </repeat>
     </symbol>
   </class>
 </cdb>

@@ -3,7 +3,7 @@ abort "Usage: frmsim [obj]" if ARGV.size < 1
 obj=ARGV.shift
 ARGV.clear
 begin
-  open(ENV['HOME']+"/.var/device_#{obj}_2010.log"){|fd|
+  open(ENV['HOME']+"/.var/device_#{obj}_2011.log"){|fd|
     loop{
       select([STDIN])
       input=STDIN.sysread(1024)

@@ -128,10 +128,12 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="\n">
       <select>
         <response id="getstat">
+          <!--TSCMON-->
           <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" />
+          <!--MCUMON-->
           <field assign="stow_1" decode="hexstr" label="Stow pin Status" />
-          <field assign="shutter" label="Shutter Status" />
-          <field assign="teldrive" label="AZ/EL Drive Status" />
+          <field assign="shutter" decode="hexstr" label="Shutter Status" />
+          <field assign="teldrive" decode="hexstr" label="AZ/EL Drive Status" />
           <field assign="el" label="EL Angle(deg)" />
           <field assign="mlp3" label="CIAX-MLP3 Comm Error" />
           <field assign="rpw" label="InR Drive ON/OFF" />
@@ -143,12 +145,12 @@
         <response id="jakstat">
           <!--POWER_V1-->
           <field assign="bsa" label="BOLT SUM ALM(B0)" length="2" decode="hexstr"></field>
-          <field assign="cjb" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" decode="hexstr"></field>
+          <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" decode="hexstr"></field>
           <!--Order:2,1,4,3..-->
-          <array assign="bl" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="1" decode="hexstr">
+          <array assign="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="1" decode="hexstr">
             <index range="0:15" size="16"></index>
           </array>
-          <array assign="be" label="Each Bolt Alarm(DrvAlm,UP,DW,UnitAlm)" length="1" decode="hexstr">
+          <array assign="bl" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1" decode="hexstr">
             <!--Order:2,1,4,3..-->
             <index range="0:15" size="16"></index>
           </array>

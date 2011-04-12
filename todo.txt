@@ -1,5 +1,6 @@
 ascpck: exe and isu is down just after command issued -> macro should wait for exe on
 ruby bug: segmentation fault inside of xmllib2 
+switch order: cdb//watch <-> status
 add more status: cdb-oss
 verify on motion: cdb-oss
 

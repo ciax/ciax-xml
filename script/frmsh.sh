@@ -9,8 +9,11 @@ setfld $id || _usage_key "(-d)"
 [ "$iodst" ] || _die "No entry in iodst field"
 echo " [$iodst]" >&2
 if [ "$dmy" ] ; then
+    fh="$HOME/.var/field_"
     iocmd="frmsim $id"
+    org=$id
     id="dmy-$id"
+    cp $fh$org.json $fh$id.json
 else
     iocmd="socat - $iodst"
 fi

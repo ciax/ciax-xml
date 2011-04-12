@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oma" id="oma" label="Compressed Air Pressure at MOIRCS">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -6,16 +6,16 @@
         <statement command="getstat" />
       </session>
     </commands>
-    <watch interval="2" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <periodic label="Update" period="10">
-        <statement command="getstat" />
-      </periodic>
-    </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="pres" label="Air Pressure (Psi)">
         <float format="%4.2f" decimal="2" ref="stat" />
       </value>
     </status>
+    <watch interval="2" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <periodic label="Update" period="10">
+        <statement command="getstat" />
+      </periodic>
+    </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <case id="pres" type="FLOAT">
         <range class="alarm" msg="HH">110:</range>

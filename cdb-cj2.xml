@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -236,42 +236,6 @@
         <statement command="getstat" />
       </session>
     </commands>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <periodic label="Regular" period="300">
-        <statement command="getstat"></statement>
-        <statement command="geterr"></statement>
-        <statement command="getzlen"></statement>
-      </periodic>
-      <while label="On Motion" ref="exe" val="1" blocking="^[fmtd].+">
-        <interrupt command="setbit">
-          <!--pause-->
-          <argv>0</argv>
-          <argv>1</argv>
-        </interrupt>
-        <statement command="getstat" />
-      </while>
-      <onchange label="On Completion" ref="cmp" val="1">
-        <statement command="clrbit" />
-        <statement command="getstat" />
-      </onchange>
-      <onchange label="On Emergency" ref="emg" val="1">
-        <statement command="clrbit" />
-        <statement command="getstat" />
-      </onchange>
-      <onchange label="On Pause" ref="pse" val="1">
-        <statement command="clrbit" />
-        <statement command="setbit">
-          <!--resetp-->
-          <argv>0</argv>
-          <argv>10</argv>
-        </statement>
-        <statement command="getstat" />
-      </onchange>
-      <onchange label="Off Pause" ref="pse" val="0">
-        <statement command="clrbit" />
-        <statement command="getstat" />
-      </onchange>
-    </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="emg" label="EMG STOP" group="g1">
         <binary bit="0" ref="w:0" />
@@ -368,6 +332,42 @@
         <binary bit="1" ref="w:9" />
       </value>
     </status>
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <periodic label="Regular" period="300">
+        <statement command="getstat"></statement>
+        <statement command="geterr"></statement>
+        <statement command="getzlen"></statement>
+      </periodic>
+      <while label="On Motion" ref="exe" val="1" blocking="^[fmtd].+">
+        <interrupt command="setbit">
+          <!--pause-->
+          <argv>0</argv>
+          <argv>1</argv>
+        </interrupt>
+        <statement command="getstat" />
+      </while>
+      <onchange label="On Completion" ref="cmp" val="1">
+        <statement command="clrbit" />
+        <statement command="getstat" />
+      </onchange>
+      <onchange label="On Emergency" ref="emg" val="1">
+        <statement command="clrbit" />
+        <statement command="getstat" />
+      </onchange>
+      <onchange label="On Pause" ref="pse" val="1">
+        <statement command="clrbit" />
+        <statement command="setbit">
+          <!--resetp-->
+          <argv>0</argv>
+          <argv>10</argv>
+        </statement>
+        <statement command="getstat" />
+      </onchange>
+      <onchange label="Off Pause" ref="pse" val="0">
+        <statement command="clrbit" />
+        <statement command="getstat" />
+      </onchange>
+    </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <case id="ist">
         <enum class="normal" msg="ON">1111</enum>

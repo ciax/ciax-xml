@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -141,24 +141,6 @@
         </statement>
       </session>
     </commands>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <periodic label="Update Status" period="3600">
-        <statement command="upd" />
-      </periodic>
-      <repeat from="1" to="6">
-        <while label="Moving %d" ref="r%d" val="N" blocking="(fw|bk|abs) %d">
-          <interrupt command="stop">
-            <argv>$_</argv>
-          </interrupt>
-          <statement command="chkrun">
-            <argv>$_</argv>
-          </statement>
-          <statement command="getp">
-            <argv>$_</argv>
-          </statement>
-        </while>
-      </repeat>
-    </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="rdy" label="Comm Ready" group="s1">
         <binary bit="0" ref="stat" />
@@ -199,6 +181,24 @@
         </value>
       </repeat>
     </status>
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <periodic label="Update Status" period="3600">
+        <statement command="upd" />
+      </periodic>
+      <repeat from="1" to="6">
+        <while label="Moving %d" ref="r%d" val="N" blocking="(fw|bk|abs) %d">
+          <interrupt command="stop">
+            <argv>$_</argv>
+          </interrupt>
+          <statement command="chkrun">
+            <argv>$_</argv>
+          </statement>
+          <statement command="getp">
+            <argv>$_</argv>
+          </statement>
+        </while>
+      </repeat>
+    </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <case id="rdy" ref="off-warn" />
       <case id="srq" ref="off-warn" />

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -113,20 +113,6 @@
         </statement>
       </session>
     </commands>
-    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <periodic period="3600">
-        <statement command="getstat" />
-      </periodic>
-      <onchange ref="acp" val="00">
-        <statement command="clear" />
-      </onchange>
-      <while ref="acp" val="00" blocking="run|jak|charge">
-        <interrupt command="stop">
-          <argv>0</argv>
-        </interrupt>
-        <statement command="getstat" />
-      </while>
-    </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="ecode" label="EXIT CODE" group="1">
         <int format="%04X" ref="ecode" />
@@ -199,6 +185,20 @@
         <int ref="x:27" />
       </value>
     </status>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <periodic period="3600">
+        <statement command="getstat" />
+      </periodic>
+      <onchange ref="acp" val="00">
+        <statement command="clear" />
+      </onchange>
+      <while ref="acp" val="00" blocking="run|jak|charge">
+        <interrupt command="stop">
+          <argv>0</argv>
+        </interrupt>
+        <statement command="getstat" />
+      </while>
+    </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <case id="ecode" label="ExitCode" class="alarm" msg="Unknown">
         <enum class="hide" msg="OK">0000</enum>

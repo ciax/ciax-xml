@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdb="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:cdbc="http://ciax.sum.naoj.org/ciax-xml/cdbc" xmlns:cdbs="http://ciax.sum.naoj.org/ciax-xml/cdbs" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/cdbc" schemaLocation="cdbc.xsd" />
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/wdb" schemaLocation="wdb.xsd" />
@@ -13,17 +13,17 @@
   </xsd:element>
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="id" type="xsd:NCName" use="required" />
-    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
+    <xsd:attribute name="label" type="xsd:token" use="optional" />
   </xsd:attributeGroup>
   <xsd:element name="class">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cdbc:commands" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="wdb:watch" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="cdbc:commands" minOccurs="0" maxOccurs="1" />
         <xsd:element ref="cdbs:status" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="wdb:watch" minOccurs="0" maxOccurs="1" />
         <xsd:element ref="sdb:symbol" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
-      <xsd:attributeGroup ref="cdb:id_attr"></xsd:attributeGroup>
+      <xsd:attributeGroup ref="cdb:id_attr" />
       <xsd:attribute name="frame" type="xsd:NCName" use="required" />
     </xsd:complexType>
   </xsd:element>

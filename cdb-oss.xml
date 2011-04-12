@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -75,20 +75,6 @@
         <statement command="iststat" />
       </session>
     </commands>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <onchange label="Moving Jack" ref="jk01" blocking="jup|jdw">
-        <interrupt command="jstop" />
-        <statement command="jakstat" />
-        <statement command="getexit" />
-        <statement command="getpid" />
-      </onchange>
-      <onchange label="Moving InR" ref="iang" blocking="rhook|runhk">
-        <interrupt command="rstop" />
-        <statement command="inrstat" />
-        <statement command="getexit" />
-        <statement command="getpid" />
-      </onchange>
-    </watch>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <value id="exit" label="Exit Code" group="er">
         <int ref="exit" />
@@ -167,6 +153,20 @@
         </value>
       </repeat>
     </status>
+    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <onchange label="Moving Jack" ref="jk01" blocking="jup|jdw">
+        <interrupt command="jstop" />
+        <statement command="jakstat" />
+        <statement command="getexit" />
+        <statement command="getpid" />
+      </onchange>
+      <onchange label="Moving InR" ref="iang" blocking="rhook|runhk">
+        <interrupt command="rstop" />
+        <statement command="inrstat" />
+        <statement command="getexit" />
+        <statement command="getpid" />
+      </onchange>
+    </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <repeat from="0" to="16">
         <case id="bl%02d">

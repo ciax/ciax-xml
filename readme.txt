@@ -43,6 +43,7 @@ cdb//session@id -> never use ':'
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
+                  content should be numerical expression or of csv array
     usable: fdb//cmdframe/data
 
  # No parenthetic variable is processed prior to parenthetic one

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -52,6 +52,10 @@
           <argv>0</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="funhk" label="Fix Flange UnHook">
         <statement command="setbit">
@@ -59,6 +63,10 @@
           <argv>1</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="fjup" label="Fix Flange Jack Up">
         <statement command="setbit">
@@ -66,6 +74,10 @@
           <argv>4</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="fjdw" label="Fix Flange Jack Down">
         <statement command="setbit">
@@ -73,6 +85,10 @@
           <argv>5</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="chgfw" label="Charging Plug Forward">
         <statement command="setbit">
@@ -80,6 +96,10 @@
           <argv>6</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="chgbk" label="Charging Plug Backward">
         <statement command="setbit">
@@ -87,6 +107,10 @@
           <argv>7</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="pwoff" label="Outlet Power Off">
         <statement command="setbit">
@@ -101,6 +125,10 @@
           <argv>0</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="munhk" label="Movable Flange UnHook">
         <statement command="setbit">
@@ -108,6 +136,10 @@
           <argv>1</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="mrotout" label="Movable Flange Rotation for Loading">
         <statement command="setbit">
@@ -115,6 +147,10 @@
           <argv>2</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="mrotin" label="Movable Flange Rotation for Storing">
         <statement command="setbit">
@@ -122,6 +158,10 @@
           <argv>3</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="mjup" label="Movable Flange Jack Up">
         <statement command="setbit">
@@ -129,6 +169,10 @@
           <argv>4</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="mjdw" label="Movable Flange Jack Down">
         <statement command="setbit">
@@ -136,6 +180,10 @@
           <argv>5</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="trout" label="Movable Flange Transer Out">
         <statement command="setbit">
@@ -143,6 +191,10 @@
           <argv>6</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="trin" label="Movable Flange Transer In">
         <statement command="setbit">
@@ -150,6 +202,10 @@
           <argv>7</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="dopen" label="Door Open">
         <statement command="setbit">
@@ -157,6 +213,10 @@
           <argv>0</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="dclose" label="Door Close">
         <statement command="setbit">
@@ -164,6 +224,10 @@
           <argv>1</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="fpwon" label="Fix Flange Instrument Power On">
         <statement command="setbit">
@@ -213,6 +277,10 @@
           <argv>10</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
       <session id="mccdon" label="Movable Flange CCD Power On">
         <statement command="setbit">
@@ -234,9 +302,16 @@
           <argv>14</argv>
         </statement>
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>1</argv>
+        </statement>
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+      <value id="exe" label="EXECUTING" group="g1">
+        <binary bit="0" ref="exe" />
+      </value>
       <value id="emg" label="EMG STOP" group="g1">
         <binary bit="0" ref="w:0" />
       </value>
@@ -253,7 +328,7 @@
       <value id="cmp" label="COMMAND COMPLETE" group="g2">
         <binary bit="14" ref="w:0" />
       </value>
-      <value id="exe" label="COMMAND EXEC" group="g2">
+      <value id="run" label="Running" group="g2">
         <binary bit="15" ref="w:0" />
       </value>
       <value id="err" label="Error Code" group="g2">
@@ -349,6 +424,10 @@
       <onchange label="On Completion" ref="cmp" val="1">
         <statement command="clrbit" />
         <statement command="getstat" />
+        <statement command="set">
+          <argv>exe</argv>
+          <argv>0</argv>
+        </statement>
       </onchange>
       <onchange label="On Emergency" ref="emg" val="1">
         <statement command="clrbit" />

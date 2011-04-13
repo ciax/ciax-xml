@@ -31,6 +31,8 @@ class Frm
     when 'set'
       stm.shift
       set(stm).inspect
+    when 'unset'
+      @stat.delete(stm[1]).inspect
     when 'load'
       load(stm[1])
     when 'save'
@@ -47,6 +49,7 @@ class Frm
     err="#{$!}"
     err << "== Internal Command ==\n"
     err << " set       : Set Value  [key(:idx)] (val)\n"
+    err << " unset     : Remove Value  [key]\n"
     err << " load      : Load Field (tag)\n"
     err << " save      : Save Field [key,key...] (tag)\n"
     raise SelectID,err
@@ -58,7 +61,12 @@ class Frm
       raise "Usage: set [key(:idx)] (val)\n key=#{@stat.keys}"
     end
     @v.msg{"CMD:set#{stm}"}
-    @stat.set(stm[0],stm[1])
+    case stm[0]
+    when /:/
+      @stat.set(stm[0],stm[1])
+    else
+      @stat[stm[0]]=@stat.subst(stm[1])
+    end
     "[#{stm}] set\n"
   end
 

@@ -43,7 +43,7 @@ class Stat < Hash
     begin
       # output csv if array
       str=str.gsub(/\$\{(.+)\}/) {
-        ary=[*get($1)]
+        ary=[*get($1)].map!{|i| eval(i)}
         raise("No value for subst [#{$1}]") if ary.empty?
         ary.join(',')
       }
@@ -53,7 +53,7 @@ class Stat < Hash
     end
   end
 
-  # For multiple dimention
+  # For multiple dimention (content should be numerical)
   def get(key) # ${key1:key2:idx} => hash[key1][key2][idx]
     raise "No Key" unless key
     vname=[]
@@ -71,11 +71,7 @@ class Stat < Hash
   end
 
   def set(key,val)
-    if ! key.include?(':') && ! key?(key)
-      self[key]=val
-    elsif val
-      get(key).replace(eval(subst(val)).to_s)
-    end
+    get(key).replace(subst(val).to_s)
     self
   end
 end

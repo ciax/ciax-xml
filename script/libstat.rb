@@ -43,9 +43,10 @@ class Stat < Hash
     begin
       # output csv if array
       str=str.gsub(/\$\{(.+)\}/) {
-        [*get($1)].join(',')
+        ary=[*get($1)]
+        raise("No value for subst [#{$1}]") if ary.empty?
+        ary.join(',')
       }
-      raise if str == ''
       str
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}

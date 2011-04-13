@@ -53,7 +53,7 @@ class Cls
     when 'waitfor'
       @buf.wait_for(10){ @stat.get(ssn[0]) == ssn[1] }
     else
-      @buf.send(1){@cc.setcmd(ssn).statements}
+      @buf.send{@cc.setcmd(ssn).statements}
     end
     "ISSUED"
   rescue SelectID
@@ -95,7 +95,7 @@ class Cls
         @event.update{|key|
           @stat.get(key)
         }
-        @buf.send{@event.issue}
+        @buf.auto{@event.issue}
         sleep @event.interval
       end
     }

@@ -8,24 +8,40 @@ class CmdBuf
     @outbuf=Array.new
     @q=Queue.new
     @v=Verbose.new("BUF")
-    @wait=@issue=@int=nil
+    @issue=@wait=nil
     @proc=Queue.new
     @st=delay
   end
 
-  def send(p=2)
-    if p < 2 || @q.empty?
-      stms=yield
-      raise "Should be Array of statements" unless Array === stms
-      stms.each{|stm|
-        @inbuf.push([p,stm])
-        @v.msg{"MAIN:Issued [#{stm}] with priority [#{p}]"}
-      }
-      flush unless @wait
-    else
-      @v.msg{"MAIN:Rejected [#{stms}] with priority [#{p}]"}
-    end
+  def send
+    stms=yield
+    raise "Should be Array of statements" unless Array === stms
+    stms.each{|stm|
+      @inbuf.push([1,stm])
+      @v.msg{"MAIN:Issued [#{stm}] with priority [normal]"}
+    }
+    flush unless @wait
     self
+  end
+
+  def auto
+    if @q.empty?
+      yield.each{|stm|
+        @inbuf.push([2,stm])
+      }
+      flush
+    else
+      @v.msg{"MAIN:Rejected [#{stms}] with priority [auto]"}
+    end
+  end
+
+  def interrupt(cmds=[])
+    @v.msg{"MAIN:Stopped"}
+    @issue=@wait=nil
+    @q.clear
+    @v.msg{"MAIN:Issued #{cmds}"}
+    @inbuf.replace(cmds.map!{|c| [0,c]})
+    flush
   end
 
   def wait_for(timeout=10) # Need Block of boolean
@@ -39,19 +55,6 @@ class CmdBuf
 
   def wait?
     @wait
-  end
-
-  def empty?
-    @q.empty?
-  end
-
-  def interrupt(cmds=[])
-    @v.msg{"MAIN:Stopped"}
-    @issue=nil
-    @q.clear
-    @v.msg{"MAIN:Issued #{cmds}"}
-    @inbuf.replace(cmds.map!{|c| [0,c]})
-    flush
   end
 
   # For session thread
@@ -92,14 +95,14 @@ class CmdBuf
       }
     }
   end
+
   def flush
-    @v.msg{"MAIN:Flushing #{@inbuf}"}
     unless @inbuf.empty?
       @issue=true
-      @inbuf.each{|c| @q.push(c) }
-      @inbuf.clear
       @wait=nil
-      @v.msg{"MAIN:Flushed all" }
+      @inbuf.each{|c| @q.push(c) }
+      @v.msg{"MAIN:Flushed #{@inbuf}"}
+      @inbuf.clear
     end
     self
   end

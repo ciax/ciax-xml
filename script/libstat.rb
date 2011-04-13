@@ -71,7 +71,9 @@ class Stat < Hash
   end
 
   def set(key,val)
-    if val
+    if ! key.include?(':') && ! key?(key)
+      self[key]=val
+    elsif val
       get(key).replace(eval(subst(val)).to_s)
     end
     self

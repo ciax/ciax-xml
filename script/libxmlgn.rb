@@ -40,7 +40,7 @@ class XmlGn
 
   def text
     @e.each{|n|
-      return n.to_s if n.text?
+      return n.content if n.text?
     }
     nil
   end

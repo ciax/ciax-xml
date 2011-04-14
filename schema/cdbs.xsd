@@ -55,13 +55,10 @@
   </xsd:element>
   <xsd:element name="float">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:token">
-          <xsd:attributeGroup ref="cdbs:ref_attr" />
-          <xsd:attributeGroup ref="cdbs:num_attr" />
-          <xsd:attribute name="decimal" type="xsd:integer" />
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:attributeGroup ref="cdbs:ref_attr" />
+      <xsd:attributeGroup ref="cdbs:num_attr" />
+      <xsd:attribute name="decimal" type="xsd:integer" />
+      <xsd:attribute name="formula" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="int">

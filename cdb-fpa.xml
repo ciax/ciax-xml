@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -15,12 +15,12 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <repeat from="1" to="3">
         <value id="v%d" label="OUTPUT%d (V)" group="1">
-          <float format="%3.2f" ref="stat:$_+1">($#-2048)/4096</float>
+          <float format="%3.2f" ref="stat:$_+1" formula="($#-2048)/4096" />
         </value>
       </repeat>
       <repeat from="4" to="6">
         <value id="v%d" label="OUTPUT%d (V)" group="2">
-          <float format="%3.2f" ref="stat:$_+1">($#-2048)/4096</float>
+          <float format="%3.2f" ref="stat:$_+1" formula="($#-2048)/4096" />
         </value>
       </repeat>
     </status>

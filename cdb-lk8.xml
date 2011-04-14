@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="lk8" id="lk8" label="MOIRCS LakeShore">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -22,7 +22,7 @@
       <value id="sp" label="SetPoint1 (K)" group="s">
         <float ref="sp" format="%3.2f" />
       </value>
-      <value id="htr" label="HeaterPower1(%)" group="s">
+      <value id="htr" label="HeaterPower1(percent)" group="s">
         <float ref="htr" format="%3.2f" />
       </value>
     </status>

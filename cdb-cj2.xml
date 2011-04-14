@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -384,12 +384,12 @@
       </value>
       <repeat from="1" to="4">
         <value id="fz%d" label="Fix Z" group="zf">
-          <float format="%.2f" ref="d:($_-1)">$#/100</float>
+          <float format="%.2f" ref="d:($_-1)" formula="$#/100" />
         </value>
       </repeat>
       <repeat from="1" to="4">
         <value id="mz%d" label="Mov Z" group="zm">
-          <float format="%.2f" ref="d:($_+3)">$#/100</float>
+          <float format="%.2f" ref="d:($_+3)" formula="$#/100" />
         </value>
       </repeat>
       <value id="fid" label="Fix Instrument ID" group="iid">

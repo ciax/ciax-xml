@@ -36,6 +36,8 @@ class Repeat
   end
 
   def format(str)
+    return str unless str.include?('%')
+    @v.msg{"Format [#{str}] from #{@counter.values}"}
     str % @counter.values
   end
 

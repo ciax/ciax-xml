@@ -16,7 +16,7 @@
       <title ref="ch6" label="ChipBox1" />
       <title ref="ch7" label="Det1" />
       <title ref="sp" label="SetPoint1 (K)" />
-      <title ref="htr" label="HeaterPower1(%)" />
+      <title ref="htr" label="HeaterPower1(%%)" />
     </status>
   </object>
 </odb>

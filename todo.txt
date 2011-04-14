@@ -1,6 +1,10 @@
-ascpck: exe and isu is down just after command issued -> macro should wait for exe on
-ruby bug: segmentation fault inside of xmllib2 
-verify on motion: cdb-oss
+ruby bug: segmentation fault inside of xmllib2 -> xml process description moves to hash at initialize
+debug:error "no such command 'exe'" in dsi
+ascpck: exe can be reset
 
-using sqlite for logging
+
+verify on motion: cdb-oss
+more variation:fdb//values/int@decode (sined/unsined, hexstr16,...)
+
+using sqlite for logging stat
 sql: using sqlite for symboling, labeling as cache

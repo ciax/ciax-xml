@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -105,7 +105,7 @@
         <binary label="Ready" bit="5" ref="teldrive" />
       </value>
       <value id="elv" label="EL Angle" group="el">
-        <float ref="el" />
+        <float ref="el" format="%.3f" />
       </value>
       <value id="stw" label="EL STOW" group="el">
         <binary bit="2" ref="stow_1" />
@@ -114,19 +114,21 @@
         <int ref="rpw" />
       </value>
       <value id="iang" label="InR Angle" group="rt">
-        <float ref="iang" />
+        <float ref="iang" format="%.3f" />
       </value>
       <value id="jpw" label="JAK DRIVE" group="jd">
         <binary bit="7" ref="bstat" />
       </value>
-      <value id="abs" label="ALL Bolt STAT" group="jd">
-        <binary ref="abs" bit="0" />
-        <binary ref="abs" bit="2" />
-        <binary ref="abs" bit="4" />
-      </value>
       <value id="rps" label="ROT POS SENSOR" group="jd">
         <binary bit="4" ref="bstat" />
         <binary bit="5" ref="bstat" />
+      </value>
+      <value id="abm" label="ALL Bolt MOVING" group="ja">
+        <binary ref="abs" bit="2" inv="true" />
+      </value>
+      <value id="abs" label="ALL Bolt STAT(Anc,Rdy)" group="ja">
+        <binary ref="abs" bit="0" />
+        <binary ref="abs" bit="4" />
       </value>
       <repeat from="1" to="16">
         <!--Order:2,1,4,3,6,5...-->
@@ -137,10 +139,17 @@
           <binary ref="bl:$_-2-($_%2)*2" bit="1" />
           <binary ref="bl:$_-2-($_%2)*2" bit="2" />
         </value>
-        <value id="bs%02d" label="Stat %02d(Anc,Stop,Rdy)" group="j%d">
+        <value id="bm%02d" label="Moving %02d" group="j%d">
+          <binary ref="bs:$_-2-($_%2)*2" bit="2" inv="true" />
+        </value>
+        <value id="bs%02d" label="Stat %02d(Anc,Rdy,Clnt)" group="j%d">
           <binary ref="bs:$_-2-($_%2)*2" bit="0" />
-          <binary ref="bs:$_-2-($_%2)*2" bit="2" />
           <binary ref="bs:$_-2-($_%2)*2" bit="4" />
+          <binary ref="clm:1-($_-1)/8" bit="($_-1)%8" />
+        </value>
+        <value id="ba%02d" label="Alarm %02d" group="j%d">
+          <binary ref="bl:$_-2-($_%2)*2" bit="0" />
+          <binary ref="bl:$_-2-($_%2)*2" bit="4" />
         </value>
         <value id="ba%02d" label="Alarm %02d" group="j%d">
           <binary ref="bl:$_-2-($_%2)*2" bit="0" />
@@ -154,12 +163,12 @@
       </repeat>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <onchange label="Moving Jack" ref="jk01" blocking="jup|jdw">
+      <while label="Moving Jack" ref="abm" blocking="jup|jdw" val="1">
         <interrupt command="jstop" />
         <statement command="jakstat" />
         <statement command="getexit" />
         <statement command="getpid" />
-      </onchange>
+      </while>
       <onchange label="Moving InR" ref="iang" blocking="rhook|runhk">
         <interrupt command="rstop" />
         <statement command="inrstat" />
@@ -168,14 +177,13 @@
       </onchange>
     </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <repeat from="0" to="16">
+      <repeat from="1" to="16">
+        <case id="bm%02d" ref="warn" />
         <case id="bl%02d">
           <enum class="warn" msg="MID">00</enum>
           <enum class="normal" msg="UP">10</enum>
           <enum class="normal" msg="DW">01</enum>
         </case>
-      </repeat>
-      <repeat from="1" to="16">
         <case id="ba%02d" msg="ON" class="alarm">
           <enum class="hide" msg="OK">00</enum>
         </case>

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libfrmmod"
-require "libparam"
+require "libparam0"
 require "librepeat"
 # Cmd Methods
 class FrmCmd

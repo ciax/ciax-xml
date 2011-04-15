@@ -79,6 +79,7 @@ class ClsStat
 
   def float(e1,data)
     sign=nil
+    # For Constant Length Data
     if /true|1/ === e1['signed']
       sign=(data[0] == "8")
       data=data[1..-1]
@@ -88,6 +89,7 @@ class ClsStat
       data=data[0..(-1-n)]+'.'+data[-n..-1]
     end
     data=data.to_f
+    # Numerical Data
     data= -data if sign
     if e1['formula']
       f=e1['formula'].gsub(/\$#/,data.to_s)

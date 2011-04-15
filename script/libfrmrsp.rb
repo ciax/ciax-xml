@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libframe"
 require "libfrmmod"
-require "libparam"
+require "libparam0"
 
 # Rsp Methods
 class FrmRsp

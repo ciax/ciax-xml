@@ -29,8 +29,7 @@ class Frm
     @v.msg{"Receive #{stm}"}
     case stm[0]
     when 'set'
-      stm.shift
-      set(stm).inspect
+      set(stm[1..-1]).inspect
     when 'unset'
       @stat.delete(stm[1]).inspect
     when 'load'

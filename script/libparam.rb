@@ -3,22 +3,17 @@ require 'libverbose'
 require 'librerange'
 
 class Param < Array
-
   def initialize
     @v=Verbose.new("Parameter")
   end
 
-  def setpar(e0,stm)
-    e0.each {|e1|
-      case e1.name
-      when 'parameters'
-        i=0
-        e1.each{|e2| #//par
-          validate(e2,stm[i+=1])
-        }
-        break
-      end
-    }
+  def setpar(e1,stm)
+    if e1['parameters']
+      i=0
+      e1['parameters'].each{|e2| #//par
+        validate(e2,stm[i+=1])
+      }
+    end
     replace(stm)
   end
 
@@ -41,10 +36,10 @@ class Param < Array
     @v.msg{"Validate: String for [#{str}]"}
     case e['validate']
     when 'regexp'
-      @v.msg{"Validate: Match? [#{e.text}]"}
-      return(str) if /^#{e.text}$/ === str
+      @v.msg{"Validate: Match? [#{e['val']}]"}
+      return(str) if /^#{e['val']}$/ === str
     when 'range'
-      e.text.split(',').each{|r|
+      e['val'].split(',').each{|r|
         @v.msg{"Validate: Match? [#{r}]"}
         return(str) if ReRange.new(r) == str
       }

@@ -27,9 +27,9 @@ class Param < Array
     @v.msg(1){"Substitute from [#{str}]"}
     begin
       # Sub $key => self[key]
-      str=str.gsub(/\$([\d]+)/){ self[$1.to_i] }
-      raise if str == ''
-      str
+      conv=str.gsub(/\$([\d]+)/){ self[$1.to_i] }
+      raise "Empty Str by Subst Param [#{str}]" if conv == ''
+      conv
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -223,6 +223,7 @@
         <enum class="normal" msg="OFF">011</enum>
         <enum class="normal" msg="RDY">001</enum>
       </case>
+      <case id="abm" ref="warn" />
       <case id="azd" ref="eld" />
       <case id="jpw" ref="warn" />
       <case id="stw" ref="off-warn" />

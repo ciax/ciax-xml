@@ -1,10 +1,24 @@
+***DEBUG
+mcr:dsi,dso/ exe finish immediately after command issue [4/17-
+mcr: cart run1 at tag 9 with comics gives error with "No such key 'n'" [4/17-
+cart:attach at tag11 gives overload error by corn load unbalance [4/17-
+dso:bolt stat is N/A with cramp -> macro interlock [4/17-
 ruby bug: segmentation fault inside of xmllib2 -> xml process description moves to hash at initialize
-debug:error "no such command 'exe'" in dsi
-ascpck: exe can be reset
+  -> Purge xml access from operational method(getstat)
+  --> Purge xml access from cdb stat [4/10]
+dts:status update works but appears incorrect status [4/17-
+station:OPT side -> charging can be on under auto mode, IR side -> carging will be off under auto mode
 
+***LACK FUNCTION
+ascpck: exe should be reset
 
+***CHECK NEED
 verify on motion: cdb-oss
-more variation:fdb//values/int@decode (sined/unsined, hexstr16,...)
 
+***UPGRADE
+more variation:fdb//values/int@decode (sined/unsined, hexstr16,...)
 using sqlite for logging stat
 sql: using sqlite for symboling, labeling as cache
+
+***SOLVED
+debug:error "no such command 'exe'" in dsi

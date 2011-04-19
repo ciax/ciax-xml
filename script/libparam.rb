@@ -2,6 +2,7 @@
 require 'libverbose'
 require 'librerange'
 
+# Parameter must be numerical
 class Param < Hash
   def initialize
     @stm=[]
@@ -9,11 +10,6 @@ class Param < Hash
   end
 
   def setpar(stm)
-    i=0
-    id=stm[i]
-    self[id].each{|par|
-      validate(par,stm[i+=1])
-    } if key?(id)
     @stm=stm
   end
 
@@ -21,9 +17,13 @@ class Param < Hash
     return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
-      # Sub $key => self[key]
-      str=str.gsub(/\$([\d]+)/){ @stm[$1.to_i] }
-      raise if str == ''
+      id=@stm[0]
+      str=str.gsub(/\$([\d]+)/){
+        i=$1.to_i
+        @v.msg{"Param No. [#{i}]"}
+        i > 0 ? validate(self[id][i-1],@stm[i]) : id
+      }
+      @v.err("Nil string") if str == ''
       str
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}

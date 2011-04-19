@@ -13,7 +13,8 @@ class Param < Hash
     @stm=stm
   end
 
-  def subst(str)
+  def subst(h) # h={ val,range,format }
+    str=h['val']
     return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
@@ -21,31 +22,24 @@ class Param < Hash
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
         @v.msg{"Param No. [#{i}]"}
-        i > 0 ? validate(self[id][i-1],@stm[i]) : id
+        i > 0 ? validate(h,@stm[i]) : id
       }
       @v.err("Nil string") if str == ''
+      str=h['format'] % eval(str) if h['format']
       str
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end
   end
 
+  private
   def validate(par,str)
-    label=par['label']
-    str || @v.err("Validate: Too Few Parameters(#{label})")
-    @v.msg{"Validate: String for [#{str}]"}
-    case par['validate']
-    when 'regexp'
-      @v.msg{"Validate: Match? [#{par['val']}]"}
-      return(str) if /^#{par['val']}$/ === str
-    when 'range'
-      par['val'].split(',').each{|r|
-        @v.msg{"Validate: Match? [#{r}]"}
-        return(str) if ReRange.new(r) == str
-      }
-    else
-      return(str)
-    end
+    str || @v.err("Validate: Too Few Parameters")
+    r=par['range']
+    return(str) unless r
+    label=r.tr(':','-')
+    @v.msg{"Validate: [#{str}] Match? [#{r}]"}
+    return(str) if ReRange.new(r) == str
     @v.err("Validate: Parameter invalid(#{label})")
   end
 end

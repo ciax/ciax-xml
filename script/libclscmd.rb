@@ -34,8 +34,7 @@ class ClsCmd
           when String
             stm << e2
           when Hash
-            str=@par.subst(e2['val'])
-            str=e2['format'] % eval(str) if e2['format']
+            str=@par.subst(e2)
             @v.msg{"Calculated [#{str}]"}
             stm << str
           end
@@ -56,24 +55,13 @@ class ClsCmd
       @label[id]=e0['label']
       @session[id]=[]
       rep.each(e0){|e1|
-        case e1.name
-        when 'statement'
-          command=[e1['command']]
-          e1.each{|e2|
-            argv=e2.to_h
-            argv['val'] = rep.subst(e2.text)
-            command << argv.freeze
-          }
-          @session[id] << command.freeze
-        when 'parameters'
-          @par[id]=[]
-           e1.each{|e2|
-            param=e2.to_h
-            param['val']=e2.text
-            @par[id] << param.freeze
-          @v.msg{"Parameters:Init[#{id}] #{@par[id]}"}
-          }
-        end
+        command=[e1['command']]
+        e1.each{|e2|
+          argv=e2.to_h
+          argv['val'] = rep.subst(e2.text)
+          command << argv.freeze
+        }
+        @session[id] << command.freeze
       }
       @v.msg{"Session:Init[#{id}] #{@session[id]}"}
     }

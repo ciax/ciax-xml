@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -35,13 +35,10 @@
         </repeat>
       </session>
       <session id="speed" label="Set Speed [0-800]">
-        <parameters>
-          <par label="[0-800]" validate="range">0:800</par>
-        </parameters>
         <repeat from="1" to="6">
           <statement command="set">
             <argv format="spd:%d">$_-1</argv>
-            <argv>$1</argv>
+            <argv range="0:800">$1</argv>
           </statement>
           <statement command="setspd">
             <argv>$_</argv>
@@ -80,63 +77,30 @@
           </statement>
         </repeat>
       </session>
-      <session id="fw" label="Move Forward [1-6] [1-(hole)]">
-        <parameters>
-          <par label="[1-6(Turret)]" validate="range">1:6</par>
-          <par label="[1-(hole)]" validate="range">1:</par>
-        </parameters>
+      <session id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
         <statement command="fw">
-          <argv>$1</argv>
-          <argv format="%d">$2 * 8000</argv>
+          <argv range="1:6">$1</argv>
+          <argv range="1:" format="%d">$2 * 8000</argv>
         </statement>
         <statement command="chkrun">
           <argv>$1</argv>
         </statement>
       </session>
-      <session id="bk" label="Move Backward [1-6] [1-(hole)]">
-        <parameters>
-          <par label="[1-6(Turret)]" validate="range">1:6</par>
-          <par label="[1-(hole)]" validate="range">1:</par>
-        </parameters>
+      <session id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
         <statement command="bk">
-          <argv>$1</argv>
-          <argv format="%d">$2 * 8000</argv>
+          <argv range="1:6">$1</argv>
+          <argv format="%d" range="1:">$2 * 8000</argv>
         </statement>
         <statement command="chkrun">
           <argv>$1</argv>
         </statement>
       </session>
-      <session id="abs" label="Move Absolute [1-6] [0-48(hole)]">
-        <parameters>
-          <par label="[1-6]" validate="range">1:6</par>
-          <par label="[0-48(hole)]" validate="range">0:48</par>
-        </parameters>
+      <session id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
         <statement command="abs">
-          <argv>$1</argv>
-          <argv format="%d">$2 * 8000</argv>
+          <argv range="1:6">$1</argv>
+          <argv format="%d" range="0:48">$2 * 8000</argv>
         </statement>
         <statement command="chkrun">
-          <argv>$1</argv>
-        </statement>
-      </session>
-      <session id="upp">
-        <!--Update Pulse [1-6]-->
-        <parameters>
-          <par label="[1-6]" validate="range">1:6</par>
-        </parameters>
-        <statement command="chkrun">
-          <argv>$1</argv>
-        </statement>
-        <statement command="getp">
-          <argv>$1</argv>
-        </statement>
-      </session>
-      <session id="stop">
-        <!--Motor Stop [1-6]-->
-        <parameters>
-          <par label="[1-6]" validate="range">1:6</par>
-        </parameters>
-        <statement command="stop">
           <argv>$1</argv>
         </statement>
       </session>
@@ -182,10 +146,22 @@
       </repeat>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <periodic label="Update Status" period="3600">
-        <statement command="upd" />
-      </periodic>
       <repeat from="1" to="6">
+        <periodic label="Update Status" period="3600">
+          <statement command="getstat" />
+          <statement command="chkrun">
+            <argv>$_</argv>
+          </statement>
+          <statement command="getp">
+            <argv>$_</argv>
+          </statement>
+          <statement command="getspd">
+            <argv>$_</argv>
+          </statement>
+          <statement command="getofs">
+            <argv>$_</argv>
+          </statement>
+        </periodic>
         <while label="Moving %d" ref="r%d" val="N" blocking="(fw|bk|abs) %d">
           <interrupt command="stop">
             <argv>$_</argv>

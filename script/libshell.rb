@@ -28,7 +28,7 @@ class Shell
           err << " D^        : Interrupt\n"
           puts err
         rescue
-          puts $!.to_s
+          puts $@.to_s
         end
       end
     }

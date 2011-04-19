@@ -3,24 +3,27 @@ require "libverbose"
 require "librepeat"
 
 class ClsStat
+  attr_reader :label
   def initialize(doc,stat,field)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc,@stat,@field=doc,stat,field
+    @label={}
+    @struct={}
     cls=doc['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls })
     @v=Verbose.new("cdb/#{cls}/stat".upcase)
     @rep=Repeat.new
-    @list=init_stat
+    init_stat
   end
   
   public
   def get_stat
-    @list.each{|line|
+    @struct.each{|id,fields|
       begin
-        @v.msg(1){"STAT:GetStatus:[#{line['id']}]"}
-        get_val(line)
+        @v.msg(1){"STAT:GetStatus:[#{id}]"}
+        @stat[id]=get_val(fields)
       ensure
-        @v.msg(-1){"STAT:GetStatus:#{line['id']}=[#{@stat[line['id']]}]"}
+        @v.msg(-1){"STAT:GetStatus:#{id}=[#{@stat[id]}]"}
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
@@ -31,28 +34,31 @@ class ClsStat
   def init_stat
     list=[]
     @rep.each(@doc['status']){|e0|
-      line={ :val => [] }
+      label={}
       e0.to_h.each{|k,v|
-        line[k]=@rep.format(v)
+        label[k]=@rep.format(v)
       }
+      id=label.delete('id')
+      @label[id]=label
+      @v.msg{"STAT:Init LABEL [#{id}] : #{label}"}
+      fields=[]
       e0.each{|e1|
         st={:type => e1.name}
         e1.to_h.each{|k,v|
           st[k] = @rep.subst(v)
         }
-        line[:val] << st
+        fields << st
       }
-      @stat[line['id']]=''
-      @v.msg{"STAT:Init #{line}"}
-      list << line
+      @stat[id]=''
+      @struct[id]=fields
+    @v.msg{"STAT:Init VAL [#{id}] : #{fields}"}
     }
-    list
+    self
   end
 
-  def get_val(e0)
-    id=e0['id']
+  def get_val(fields)
     str=''
-    e0[:val].each{|e1| #element(split and concat)
+    fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || raise("No field Key")
       data=@field.get(fld) || raise("No field Value[#{fld}]")
       case e1[:type]
@@ -66,7 +72,7 @@ class ClsStat
         str << data
       end
     }
-    @stat[id]=str
+    str
   end
 
   def binary(e1,data)

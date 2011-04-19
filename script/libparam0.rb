@@ -2,7 +2,7 @@
 require 'libverbose'
 require 'librerange'
 
-class Param < Array
+class Param0 < Array
 
   def initialize
     @v=Verbose.new("Parameter")

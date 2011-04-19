@@ -11,7 +11,7 @@ class FrmRsp
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc,@stat,@sel=doc,stat
     @v=Verbose.new("fdb/#{@doc['id']}/rsp".upcase)
-    @par=Param.new
+    @par=Param0.new
     @stat['frame']=@doc['id']
     init_field
   end

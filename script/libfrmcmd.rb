@@ -12,7 +12,7 @@ class FrmCmd
     @v=Verbose.new("fdb/#{@doc['id']}/cmd".upcase)
     @cache={}
     @pass=true
-    @par=Param.new
+    @par=Param0.new
     @rep=Repeat.new
   end
 

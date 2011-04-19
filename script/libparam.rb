@@ -2,19 +2,19 @@
 require 'libverbose'
 require 'librerange'
 
-class Param < Array
+class Param < Hash
   def initialize
+    @stm=[]
     @v=Verbose.new("Parameter")
   end
 
-  def setpar(e1,stm)
-    if e1['parameters']
-      i=0
-      e1['parameters'].each{|e2| #//par
-        validate(e2,stm[i+=1])
-      }
-    end
-    replace(stm)
+  def setpar(stm)
+    i=0
+    id=stm[i]
+    self[id].each{|par|
+      validate(par,stm[i+=1])
+    } if key?(id)
+    @stm=stm
   end
 
   def subst(str)
@@ -22,7 +22,7 @@ class Param < Array
     @v.msg(1){"Substitute from [#{str}]"}
     begin
       # Sub $key => self[key]
-      str=str.gsub(/\$([\d]+)/){ self[$1.to_i] }
+      str=str.gsub(/\$([\d]+)/){ @stm[$1.to_i] }
       raise if str == ''
       str
     ensure
@@ -30,16 +30,16 @@ class Param < Array
     end
   end
 
-  def validate(e,str)
-    label=e['label']
+  def validate(par,str)
+    label=par['label']
     str || @v.err("Validate: Too Few Parameters(#{label})")
     @v.msg{"Validate: String for [#{str}]"}
-    case e['validate']
+    case par['validate']
     when 'regexp'
-      @v.msg{"Validate: Match? [#{e['val']}]"}
-      return(str) if /^#{e['val']}$/ === str
+      @v.msg{"Validate: Match? [#{par['val']}]"}
+      return(str) if /^#{par['val']}$/ === str
     when 'range'
-      e['val'].split(',').each{|r|
+      par['val'].split(',').each{|r|
         @v.msg{"Validate: Match? [#{r}]"}
         return(str) if ReRange.new(r) == str
       }

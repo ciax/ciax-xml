@@ -13,11 +13,13 @@ class Param < Hash
     @stm=stm
   end
 
-  def subst(h) # h={ val,range,format }
-    str=h['val']
+  def subst(par) # h={ val,range,format }
+    h=par.dup
+    str=h.delete('val')
     return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
+      fmt=h.delete('format')
       id=@stm[0]
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
@@ -25,7 +27,7 @@ class Param < Hash
         i > 0 ? validate(h,@stm[i]) : id
       }
       @v.err("Nil string") if str == ''
-      str=h['format'] % eval(str) if h['format']
+      str=fmt % eval(str) if fmt
       str
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
@@ -35,11 +37,10 @@ class Param < Hash
   private
   def validate(par,str)
     str || @v.err("Validate: Too Few Parameters")
-    r=par['range']
-    return(str) unless r
-    label=r.tr(':','-')
-    @v.msg{"Validate: [#{str}] Match? [#{r}]"}
-    return(str) if ReRange.new(r) == str
+    return(str) unless v=par['range']
+    label=v.tr(':','-')
+    @v.msg{"Validate: [#{str}] Match? [#{v}]"}
+    return(str) if ReRange.new(v) == str
     @v.err("Validate: Parameter invalid(#{label})")
   end
 end

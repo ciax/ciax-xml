@@ -94,33 +94,21 @@
         <command id="ajstop" label="All EJB Stop" response="exit" type="action">
           <data>osscmd 104011</data>
         </command>
-        <command id="jup" label="EJB Up [num]" response="exit" type="action">
-          <parameters>
-            <par label="EJB Num" validate="range">1:16</par>
-          </parameters>
+        <command id="jup" label="EJB Up [#]" response="exit" type="action">
           <data>osscmd -b 9320</data>
-          <data format="%02d">$1*3+1</data>
+          <data format="%02d" range="1:16">$1*3+1</data>
         </command>
-        <command id="jdw" label="EJB Down [num]" response="exit" type="action">
-          <parameters>
-            <par label="EJB Num" validate="range">1:16</par>
-          </parameters>
+        <command id="jdw" label="EJB Down [#]" response="exit" type="action">
           <data>osscmd -b 9320</data>
-          <data format="%02d">$1*3+2</data>
+          <data format="%02d" range="1:16">$1*3+2</data>
         </command>
         <command id="jstop" label="EJB Stop [num]" response="exit" type="action">
-          <parameters>
-            <par label="EJB Num" validate="range">1:16</par>
-          </parameters>
           <data>osscmd 9320</data>
-          <data format="%02d">$1*3+3</data>
+          <data format="%02d" range="1:16">$1*3+3</data>
         </command>
         <command id="setinst" label="Set Instrument ID [0-12]" response="exit" type="config">
-          <parameters>
-            <par label="Inst ID [0-12]" validate="range">1:12</par>
-          </parameters>
           <data>osscmd 13200700</data>
-          <data format="%02d">$1</data>
+          <data format="%02d" range="1:12">$1</data>
         </command>
       </select>
       <data encode="chr" label="Suffix">0xa</data>

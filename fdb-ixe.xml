@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" wait="0.2">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="chr" label="Prefix">2</data>
       <select>
@@ -28,68 +28,41 @@
           </repeat>
         </command>
         <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>=N</data>
         </command>
         <command id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>=E</data>
         </command>
         <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>=H</data>
         </command>
         <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>P21R</data>
         </command>
         <command id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>P21S</data>
           <data>${p:$1-1}</data>
         </command>
         <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>P14R</data>
         </command>
         <command id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>P14S</data>
           <data>${spd:$1-1}</data>
         </command>
         <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>P12R</data>
         </command>
         <command id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>P12S</data>
           <data>${ofs:$1-1}</data>
         </command>
@@ -106,45 +79,27 @@
           </repeat>
         </command>
         <command id="stop" label="Stop Moving [1-6]" response="default" type="action">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>S</data>
         </command>
         <command id="init" label="Initialize [1-6]" response="default" type="action">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>0</data>
         </command>
-        <command id="fw" label="Move forward (8000/hole)" response="default" type="action">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-            <par label="[0-]" validate="range">0:</par>
-          </parameters>
-          <data>$1</data>
+        <command id="fw" label="Move forward [T] [H}(8000/hole)" response="default" type="action">
+          <data range="1:6">$1</data>
           <data>+</data>
-          <data>$2</data>
+          <data range="0:">$2</data>
         </command>
-        <command id="bk" label="Move backward (8000/hole)" response="default" type="action">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-            <par label="[0-]" validate="range">0:</par>
-          </parameters>
-          <data>$1</data>
+        <command id="bk" label="Move backward [T] [H](8000/hole)" response="default" type="action">
+          <data range="1:6">$1</data>
           <data>-</data>
-          <data>$2</data>
+          <data range="0:">$2</data>
         </command>
         <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
-          <parameters>
-            <par label="[1-6]" validate="range">1:6</par>
-            <par label="[0-384000]" validate="range">0:384000</par>
-          </parameters>
-          <data>$1</data>
+          <data range="1:6">$1</data>
           <data>A</data>
-          <data>$2</data>
+          <data range="0:384000">$2</data>
         </command>
       </select>
       <data encode="chr" label="Suffix">3</data>
@@ -156,39 +111,39 @@
       <field decode="chr" label="ACK" length="1">6</field>
       <select>
         <response id="getstat">
-          <field assign="stat" label="StatusCode"/>
+          <field assign="stat" label="StatusCode" />
         </response>
         <response id="chkrun">
           <array assign="run" label="Moving">
-            <index range="$1-1" size="6"/>
+            <index range="$1-1" size="6" />
           </array>
         </response>
         <response id="chkems">
           <array assign="ems" label="Emergency">
-            <index range="$1-1" size="6"/>
+            <index range="$1-1" size="6" />
           </array>
         </response>
         <response id="chkpse">
           <array assign="pse" label="Power Stage Err">
-            <index range="$1-1" size="6"/>
+            <index range="$1-1" size="6" />
           </array>
         </response>
         <response id="getp">
           <array assign="p" label="Pulse">
-            <index range="$1-1" size="6"/>
+            <index range="$1-1" size="6" />
           </array>
         </response>
         <response id="getspd">
           <array assign="spd" label="Speed">
-            <index range="$1-1" size="6"/>
+            <index range="$1-1" size="6" />
           </array>
         </response>
         <response id="getofs">
           <array assign="ofs" label="Offset">
-            <index range="$1-1" size="6"/>
+            <index range="$1-1" size="6" />
           </array>
         </response>
-        <response id="default"/>
+        <response id="default" />
       </select>
     </rspframe>
   </frame>

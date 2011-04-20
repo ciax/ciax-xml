@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="slo" label="SLOSYN SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf" wait="0.1">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Error Status" response="getstat" type="stat">
@@ -11,11 +11,8 @@
           <data>bs</data>
         </command>
         <command id="in" label="Input Status (1-5)" response="in" type="stat">
-          <parameters>
-            <par label="[1-5]" validate="range">1:5</par>
-          </parameters>
           <data>in</data>
-          <data format="(%d)">$1</data>
+          <data format="(%d)" range="1:5">$1</data>
         </command>
         <command id="p" label="Pulse Number" response="p" type="stat">
           <data>p</data>
@@ -24,35 +21,23 @@
           <data>reset</data>
         </command>
         <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
-          <parameters>
-            <par label="[0,1]" validate="regexp">[01]</par>
-          </parameters>
           <data>hl</data>
-          <data>$1</data>
+          <data range="0:1">$1</data>
         </command>
         <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
-          <parameters>
-            <par label="[0,1]" validate="regexp">[01]</par>
-          </parameters>
           <data>e1=</data>
-          <data>$1</data>
+          <data range="0:1">$1</data>
         </command>
         <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
-          <parameters>
-            <par label="[0,1]" validate="regexp">[01]</par>
-          </parameters>
           <data>e2=</data>
-          <data>$1</data>
+          <data range="0:1">$1</data>
         </command>
         <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
           <data>abspos=0</data>
         </command>
         <command id="setp" label="Set Pulse Number" response="default" type="config">
-          <parameters>
-            <par label="[0-999]" validate="range">0:999</par>
-          </parameters>
           <data>p=</data>
-          <data format="%5.2f">$1</data>
+          <data format="%5.2f" range="0:999">$1</data>
         </command>
         <command id="stop" label="Stop Running" response="default" type="action">
           <data>stop</data>
@@ -64,11 +49,8 @@
           <data>j=-1</data>
         </command>
         <command id="ma" label="Move Absolute Position" response="default" type="action">
-          <parameters>
-            <par label="[0-999]" validate="range">0:999</par>
-          </parameters>
           <data>ma=</data>
-          <data format="%3.1f">$1</data>
+          <data format="%3.1f" range="0:999">$1</data>
         </command>
       </select>
       <data encode="chr">0xd</data>
@@ -76,17 +58,17 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <select>
         <response id="getstat">
-          <field assign="err" label="ErrorCode"/>
+          <field assign="err" label="ErrorCode" />
         </response>
         <response id="bs">
-          <field assign="bs" label="Moving"/>
+          <field assign="bs" label="Moving" />
         </response>
         <response id="p">
-          <field assign="p" label="Pulse"/>
+          <field assign="p" label="Pulse" />
         </response>
         <response id="in">
           <array assign="in" label="Input">
-            <index range="$1-1" size="5"/>
+            <index range="$1-1" size="5" />
           </array>
         </response>
         <response id="default">

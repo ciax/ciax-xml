@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="oco" label="OMEGA Current Output(D4251)" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf" wait="1">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1"/>
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data label="Prefix">$</data>
       <select>
@@ -9,11 +9,8 @@
           <data>1RD</data>
         </command>
         <command id="i" label="Set Current by argv [DD.DD]" type="action">
-          <parameters>
-            <par label="[0-99.99]" validate="range">0:99</par>
-          </parameters>
           <data>1AO+000</data>
-          <data format="%05.2f">$1</data>
+          <data format="%05.2f" range="0:99">$1</data>
         </command>
       </select>
       <data encode="chr" label="Suffix">0xd</data>
@@ -22,7 +19,7 @@
       <field length="1">*</field>
       <select>
         <response id="getstat">
-          <field assign="crnt" length="9"/>
+          <field assign="crnt" length="9" />
         </response>
       </select>
     </rspframe>

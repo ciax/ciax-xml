@@ -9,6 +9,7 @@ libsqlite3-ruby1.9.1
 cdb//session@id -> never use ':'
 
 ### Substitution Strings (implicit conversion) ###
+ ## Convert order: repeat -> parameter -> status
 
  $_ $a..z
     description : substitute sequence number(in repeat)
@@ -18,6 +19,24 @@ cdb//session@id -> never use ':'
             cdb//status/repeat/value/*@ref
             cdb//status/repeat/value/binary@bit
             cdb//watch/repeat//argv
+
+ $1..9
+    description : substitute parameters
+    usable: fdb//cmdframe/data
+            fdb//response/array/index
+            --
+            cdb//session/statement/argv
+
+ ${*:*}
+    description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
+                  content should be numerical expression or of csv array
+    usable: fdb//cmdframe/data
+
+ ## Other conversions
+
+ $#
+    description : formula parameter
+    usable: cdb//status/value/float
 
  %? (Format string)
     description : sprintf with sequence number array (in repeat)
@@ -29,22 +48,6 @@ cdb//session@id -> never use ':'
             cdb//watch/repeat/*/@blocking
             --
             sdb//symbol/repeat/case@id
-
- $1..9
-    description : substitute parameters
-    usable: fdb//cmdframe/data
-            fdb//response/array/index
-            --
-            cdb//session/statement/argv
-
- $#
-    description : formula parameter
-    usable: cdb//status/value/float
-
- ${*:*}
-    description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
-                  content should be numerical expression or of csv array
-    usable: fdb//cmdframe/data
 
  # No parenthetic variable is processed prior to parenthetic one
  # idx can be equation (i.e. $_+1 )

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libfrmmod"
-require "libparam0"
+require "libparam"
 require "librepeat"
 # Cmd Methods
 class FrmCmd
@@ -11,71 +11,107 @@ class FrmCmd
     @doc,@stat=doc,stat
     @v=Verbose.new("fdb/#{@doc['id']}/cmd".upcase)
     @cache={}
-    @pass=true
-    @par=Param0.new
+    @label={}
+    @response={}
+    @par=Param.new
     @rep=Repeat.new
+    @fary=init_frame
   end
 
   def setcmd(stm) # return = response select
-    @sel=@doc.select_id('cmdframe',stm.first,'command')
-    @par.setpar(@sel,stm)
+    @id=stm.first
+    @sel=@fary[@id] || list_cmd
+    @par.setpar(stm)
     stm << '*' if /true|1/ === @sel['nocache']
     @cid=stm.join(':')
-    @v.msg{'Select:'+@sel['label']+"(#{@cid})"}
+    @v.msg{'Select:'+@label[@id]+"(#{@cid})"}
     self
   end
 
   def getframe
-    return unless @sel
+    return unless @id
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
-      @doc.find_each('cmdframe','ccrange'){|e|
+      if @sel.key?('ccrange')
         begin
           @v.msg(1){"Entering Ceck Code Range"}
-          @ccary=getstr(e)
-          @stat['cc']=checkcode(e,@ccary.join(''))
+          ccstr=@sel['ccrange'].map{|a|
+            @stat.subst(@par.subst(a)).split(',').map{|s|
+              encode(a,s)
+            }
+          }.join('')
+          @stat['cc']=checkcode(@sel,ccstr)
         ensure
           @v.msg(-1){"Exitting Ceck Code Range"}
         end
-      }
-      cmd=getstr(@doc['cmdframe']).join('')
+      end
+      cmd=@sel['frame'].map{|a|
+        if a == :ccrange
+          ccstr
+        else
+          encode(a,@stat.subst(a['val']))
+        end
+      }.join('')
       @cache[@cid]=cmd unless /\*/ === @cid
     end
     cmd
   end
 
   private
-  def getstr(e0)
-    fary=[]
-    @rep.each(e0){ |e1|
-      case e1.name
-      when 'select'
-        begin
-          @v.msg(1){"Entering Selected Node"}
-          fary+=getstr(@sel)
-        ensure
-          @v.msg(-1){"Exitting Selected Node"}
+  def init_frame
+    frames={}
+    @doc.find_each('cmdframe','command'){|e0|
+      line=e0.to_h
+      id=line.delete('id')
+      @label[id]=line.delete('label')
+      @response[id]=line.delete('response')
+      select=[]
+      @rep.each(e0){|e1|
+        select << init_data(e1)
+      }
+      frame=[]
+      @doc['cmdframe'].each{|e1|
+        case e1.name
+        when 'data'
+          frame << init_data(e1)
+        when 'ccrange'
+          line['method']=e1['method']
+          ccrange=[]
+          e1.each{|e2|
+            case e2.name
+            when 'data'
+              ccrange << init_data(e2)
+            when 'select'
+              ccrange.concat select
+            end
+          }
+          line['ccrange']=ccrange
+          frame << :ccrange
+        when 'select'
+          frame.concat select
         end
-      when 'ccrange'
-        fary+=@ccary
-      when 'data'
-        fary << get_data(e1)
-      end
+      }
+      line['frame']=frame
+      frames[id] = line
+      @v.msg{"Frame:[#{line}]"}
     }
-    fary
+    frames
   end
 
-  def get_data(e)
-    frame=''
-    str=e.text
-    [@rep,@par,@stat].each{|s|
-      str=s.subst(str)
+  def init_data(e)
+    attr=e.to_h
+    label=attr.delete('label')
+    attr['val']=@rep.subst(e.text)
+    @v.msg{"InitFrame:#{label}[#{e}]"}
+    attr
+  end
+
+  def list_cmd
+    err=["== Command List=="]
+    @label.each{|key,val|
+      err << (" %-10s: %s" % [key,val]) if val
     }
-    str.split(',').each{|s|
-      frame << encode(e,s)
-      @v.msg{"GetFrame:#{e['label']}[#{e}]"}
-    }
-    frame
+    raise SelectID,err.join("\n")
   end
 end

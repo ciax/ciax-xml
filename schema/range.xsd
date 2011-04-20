@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <!--ReRange-->
   <!--value="^(-?\d+(\.\d+)?&lt;?)?(:&lt;?-?\d+(\.\d+)?)?"-->
   <xsd:simpleType name="rerange">
     <xsd:restriction base="xsd:token">
-      <xsd:pattern value="(&lt;?:?&lt;?[0-9\.]*)+"></xsd:pattern>
+      <xsd:pattern value="[0-9\.\-:&lt;,]+"></xsd:pattern>
     </xsd:restriction>
   </xsd:simpleType>
 </xsd:schema>

@@ -22,8 +22,8 @@ class FrmCmd
     @id=stm.first
     @sel=@fary[@id] || list_cmd
     @par.setpar(stm)
-    stm << '*' if /true|1/ === @sel['nocache']
     @cid=stm.join(':')
+    @cid << ':*' if /true|1/ === @sel['nocache']
     @v.msg{'Select:'+@label[@id]+"(#{@cid})"}
     self
   end

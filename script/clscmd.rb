@@ -9,6 +9,6 @@ begin
   doc=XmlDoc.new('cdb',cls,usage)
   cc=ClsCmd.new(doc)
   cc.setcmd(cmd).statements.each{|c| p c}
-rescue RuntimeError
+rescue ParameterError
   abort $!.to_s
 end

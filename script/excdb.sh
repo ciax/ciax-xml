@@ -10,7 +10,7 @@ for id in $devices; do
     setfld $id || _usage_key "(-s)"
     echo "#### $cls($id) ####"
     file=$HOME/.var/field_$id.json
-    VER=${VER:-exec(cdb)} clscmd $cls $cmd $par < $file
+    clscmd $cls $cmd $par < $file
     [ $cmd = 'upd' ] || continue
     echo " *** Status ***"
     if [ "$print" ] ; then

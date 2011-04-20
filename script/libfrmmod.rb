@@ -43,6 +43,7 @@ module FrmMod
       str=code
     end
     if fmt=e['format']
+      @v.msg{"Formatted code(#{fmt}) [#{str}]"}
       code=fmt % eval(str)
       @v.msg{"Formatted code(#{fmt}) [#{str}] -> [#{code}]"}
       str=code

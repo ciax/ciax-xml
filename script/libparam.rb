@@ -10,7 +10,8 @@ class Param < Hash
   end
 
   def setpar(stm)
-    @stm=stm
+    @v.msg{"SetPar: #{stm}"}
+    @stm=stm.dup
   end
 
   def subst(par) # h={ val,range,format }
@@ -23,7 +24,7 @@ class Param < Hash
       id=@stm[0]
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        @v.msg{"Param No. [#{i}]"}
+        @v.msg{"Param No.#{i} = [#{@stm[i]}]"}
         i > 0 ? validate(h,@stm[i]) : id
       }
       @v.err("Nil string") if str == ''
@@ -36,11 +37,11 @@ class Param < Hash
 
   private
   def validate(par,str)
-    str || @v.err("Validate: Too Few Parameters")
+    str || raise(ParameterError," Short of Parameters")
     return(str) unless v=par['range']
     label=v.tr(':','-')
     @v.msg{"Validate: [#{str}] Match? [#{v}]"}
     return(str) if ReRange.new(v) == str
-    @v.err("Validate: Parameter invalid(#{label})")
+    raise(ParameterError," Parameter invalid(#{label})")
   end
 end

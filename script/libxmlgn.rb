@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 require "xml"
 
-class SelectID < RuntimeError ; end
+class ParameterError < RuntimeError ; end
+class SelectID < ParameterError ; end
 
 class XmlGn
   def initialize(f)
@@ -12,7 +13,7 @@ class XmlGn
     when XML::Node
       @e=f
     else
-      raise "Parameter shoud be String or Node"
+      raise ParameterError,"Parameter shoud be String or Node"
     end
   end
 

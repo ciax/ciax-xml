@@ -14,6 +14,6 @@ begin
   c=FrmCmd.new(doc,st)
   c.setcmd(cmd)
   print c.getframe
-rescue SelectID
+rescue ParameterError
   abort $!.to_s
 end

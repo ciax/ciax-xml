@@ -9,15 +9,15 @@ class ClsCmd
   def initialize(doc)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @v=Verbose.new("doc/#{doc['id']}/cmd".upcase)
-    @par=Param.new
     @label={}
     @session={}
     init_cmd(doc)
+    @par=Param.new(@label)
   end
 
   def setcmd(ssn)
     @id=ssn.first
-    @sel=@session[ssn.first] || list_cmd
+    @sel=@session[ssn.first] || @par.list_cmd
     @par.setpar(ssn)
     self
   end
@@ -35,6 +35,7 @@ class ClsCmd
             stm << e2
           when Hash
             str=@par.subst(e2)
+            str = e2['format'] % str if e2['format']
             @v.msg{"Calculated [#{str}]"}
             stm << str
           end
@@ -66,13 +67,5 @@ class ClsCmd
       @v.msg{"Session:Init[#{id}] #{@session[id]}"}
     }
     self
-  end
-
-  def list_cmd
-    err=["== Command List=="]
-    @label.each{|key,val|
-      err << (" %-10s: %s" % [key,val]) if val
-    }
-    raise SelectID,err.join("\n")
   end
 end

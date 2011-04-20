@@ -13,14 +13,14 @@ class FrmCmd
     @cache={}
     @label={}
     @response={}
-    @par=Param.new
     @rep=Repeat.new
     @fary=init_frame
+    @par=Param.new(@label)
   end
 
   def setcmd(stm) # return = response select
     @id=stm.first
-    @sel=@fary[@id] || list_cmd
+    @sel=@fary[@id] || @par.list_cmd
     @par.setpar(stm)
     @cid=stm.join(':')
     @cid << ':*' if /true|1/ === @sel['nocache']
@@ -50,7 +50,7 @@ class FrmCmd
         if a == :ccrange
           ccstr
         else
-          encode(a,@stat.subst(a['val']))
+          encode(a,@stat.subst(@par.subst(a)))
         end
       }.join('')
       @cache[@cid]=cmd unless /\*/ === @cid
@@ -105,13 +105,5 @@ class FrmCmd
     attr['val']=@rep.subst(e.text)
     @v.msg{"InitFrame:#{label}[#{e}]"}
     attr
-  end
-
-  def list_cmd
-    err=["== Command List=="]
-    @label.each{|key,val|
-      err << (" %-10s: %s" % [key,val]) if val
-    }
-    raise SelectID,err.join("\n")
   end
 end

@@ -4,7 +4,8 @@ require 'librerange'
 
 # Parameter must be numerical
 class Param < Hash
-  def initialize
+  def initialize(label)
+    @label=label
     @stm=[]
     @v=Verbose.new("Parameter")
   end
@@ -15,24 +16,29 @@ class Param < Hash
   end
 
   def subst(par) # h={ val,range,format }
-    h=par.dup
-    str=h.delete('val')
+    str=par['val']
     return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
-      fmt=h.delete('format')
       id=@stm[0]
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
         @v.msg{"Param No.#{i} = [#{@stm[i]}]"}
-        i > 0 ? validate(h,@stm[i]) : id
+        i > 0 ? validate(par,@stm[i]) : id
       }
       @v.err("Nil string") if str == ''
-      str=fmt % eval(str) if fmt
       str
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end
+  end
+
+  def list_cmd
+    err=["== Command List=="]
+    @label.each{|key,val|
+      err << (" %-10s: %s" % [key,val]) if val
+    }
+    raise SelectID,err.join("\n")
   end
 
   private

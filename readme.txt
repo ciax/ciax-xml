@@ -9,11 +9,11 @@ libsqlite3-ruby1.9.1
 cdb//session@id -> never use ':'
 
 ### Substitution Strings (implicit conversion) ###
- ## Convert order: repeat -> parameter -> status
+ ## Process order: repeat -> parameter -> status -> formula -> format(w/eval)
 
  $_ $a..z
     description : substitute sequence number(in repeat)
-    usable: fdb//cmdframe/repeat/data[@type=formula]
+    usable: fdb//cmdframe/repeat/data
             --
             cdb//session/repeat/statement/argv
             cdb//status/repeat/value/*@ref
@@ -21,7 +21,7 @@ cdb//session@id -> never use ':'
             cdb//watch/repeat//argv
 
  $1..9
-    description : substitute parameters
+    description : substitute parameters, sould be numerical
     usable: fdb//cmdframe/data
             fdb//response/array/index
             --
@@ -30,13 +30,12 @@ cdb//session@id -> never use ':'
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
                   content should be numerical expression or of csv array
+                  idx can be equation (i.e. $_+1 )
     usable: fdb//cmdframe/data
-
- ## Other conversions
 
  $#
     description : formula parameter
-    usable: cdb//status/value/float
+    usable: cdb//status/value/float@formula
 
  %? (Format string)
     description : sprintf with sequence number array (in repeat)
@@ -49,8 +48,6 @@ cdb//session@id -> never use ':'
             --
             sdb//symbol/repeat/case@id
 
- # No parenthetic variable is processed prior to parenthetic one
- # idx can be equation (i.e. $_+1 )
 
  \?
     description : convert escape characters
@@ -61,24 +58,25 @@ cdb//session@id -> never use ':'
 
  format
     usable: fdb//data
-            fdb//formula
             --
-            cdb//repeat
-            cdb//statement
-            cdb//status/value
-            --
-            odb//repeat
-            odb//statement
-            odb//status/var/value
+            cdb//statement/argv
+            cdb//status/value/float
+            cdb//status/value/int
 
  decode
     usable: fdb//response/field
+            fdb//response/array
 
  encode
     usable: fdb//data
-            fdb//formula
 
- validate
+ range
+    description: To validate parameters
+    example: "0:<10,98,99"
+    usable: fdb//data
+            --
+            cdb//statement/argv
+
  
 ### Reference Content ###
   cdb//statement@format <= fdb//command@id + par

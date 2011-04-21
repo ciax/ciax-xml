@@ -13,7 +13,6 @@ for id in $devices; do
     [ "$clear" ] && [ -e $output ] && rm $output
     stat="`grep rcv:${cmd// /:} $input|tail -1`"
     if [ "$stat" ] ; then
-        echo " *** Stat ***"
         if [ "$print" ] ; then
             echo "$stat" | frmstat $dev $id | symboling | labeling | stprint
         elif [ "$label" ] ; then

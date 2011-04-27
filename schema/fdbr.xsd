@@ -11,12 +11,6 @@
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="fdbr:rerange" />
   </xsd:attributeGroup>
-  <xsd:group name="rsp_elem">
-    <xsd:choice>
-      <xsd:element ref="fdbr:field" />
-      <xsd:element ref="fdbr:array" />
-    </xsd:choice>
-  </xsd:group>
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:simpleContent>
@@ -57,8 +51,9 @@
   </xsd:element>
   <xsd:element name="response">
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="fdbr:rsp_elem"></xsd:group>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="fdbr:field" />
+        <xsd:element ref="fdbr:array" />
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="label" type="xsd:token" />
@@ -69,7 +64,7 @@
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="fdbr:select" />
-        <xsd:group ref="fdbr:rsp_elem" />
+        <xsd:element ref="fdbr:field" />
       </xsd:choice>
       <xsd:attribute name="method" type="fdbr:ccmethod" use="required"></xsd:attribute>
     </xsd:complexType>
@@ -78,9 +73,9 @@
   <xsd:element name="rspframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="fdbr:rsp_elem" />
         <xsd:element ref="fdbr:select" />
         <xsd:element ref="fdbr:ccrange" />
+        <xsd:element ref="fdbr:field" />
       </xsd:choice>
       <xsd:attribute name="terminator" type="xsd:token" />
       <xsd:attribute name="delimiter" type="xsd:token" />

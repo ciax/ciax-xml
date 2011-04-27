@@ -82,7 +82,7 @@ class FrmRsp
           @v.msg(1){"Entering Ceck Code Node"}
           @frm.mark
           getfield_rec(e1)
-          @cc = checkcode(e1,@frm.copy)
+          @cc = checkcode(e1['method'],@frm.copy)
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end

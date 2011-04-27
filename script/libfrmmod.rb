@@ -2,25 +2,23 @@
 module FrmMod
   # Instance variable: @v
 
-  def checkcode(e,frame)
+  def checkcode(method,frame)
+    @v.err("CC No method") unless method
     @v.msg{"CC Frame <#{frame}>"}
     chk=0
-    if method=e['method']
-      case method
-      when 'len'
-        chk=frame.length
-      when 'bcc'
-        frame.each_byte {|c| chk ^= c }
-      when 'sum'
-        frame.each_byte {|c| chk += c }
-        chk%=256
-      else
-        @v.err("No such CC method #{method}")
-      end
-      @v.msg{"Calc:CC [#{method.upcase}] -> (#{chk})"}
-      return chk.to_s
+    case method
+    when 'len'
+      chk=frame.length
+    when 'bcc'
+      frame.each_byte {|c| chk ^= c }
+    when 'sum'
+      frame.each_byte {|c| chk += c }
+      chk%=256
+    else
+      @v.err("No such CC method #{method}")
     end
-    @v.err("CC No method")
+    @v.msg{"Calc:CC [#{method.upcase}] -> (#{chk})"}
+    return chk.to_s
   end
 
   Codec={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}

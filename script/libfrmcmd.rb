@@ -14,16 +14,22 @@ class FrmCmd
     @label={}
     @response={}
     @rep=Repeat.new
-    @fary=init_frame
+    @frmstr={}
+    @frmhash={}
+    @frmsel={}
+    @opt={}
+    init_main
+    init_cc
+    init_sel
     @par=Param.new(@label)
   end
 
   def setcmd(stm) # return = response select
     @id=stm.first
-    @sel=@fary[@id] || @par.list_cmd
+    @frmhash['select']=@frmsel[@id] || @par.list_cmd
     @par.setpar(stm)
     @cid=stm.join(':')
-    @cid << ':*' if /true|1/ === @sel['nocache']
+    @cid << ':*' if /true|1/ === @opt[@id]['nocache']
     @v.msg{'Select:'+@label[@id]+"(#{@cid})"}
     self
   end
@@ -33,77 +39,93 @@ class FrmCmd
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
-      if @sel.key?('ccrange')
-        begin
-          @v.msg(1){"Entering Ceck Code Range"}
-          ccstr=@sel['ccrange'].map{|a|
-            @stat.subst(@par.subst(a)).split(',').map{|s|
-              encode(a,s)
-            }
-          }.join('')
-          @stat['cc']=checkcode(@sel,ccstr)
-        ensure
-          @v.msg(-1){"Exitting Ceck Code Range"}
-        end
-      end
-      cmd=@sel['frame'].map{|a|
-        if a == :ccrange
-          ccstr
-        else
-          encode(a,@stat.subst(@par.subst(a)))
-        end
-      }.join('')
+      mk_frame('select')
+      @stat['cc']=checkcode(@ccm,mk_frame('ccrange')) if @ccm
+      cmd=mk_frame('main')
       @cache[@cid]=cmd unless /\*/ === @cid
     end
     cmd
   end
 
   private
-  def init_frame
-    frames={}
-    @doc.find_each('cmdframe','command'){|e0|
-      line=e0.to_h
-      id=line.delete('id')
-      @label[id]=line.delete('label')
-      @response[id]=line.delete('response')
-      select=[]
-      @rep.each(e0){|e1|
-        select << init_data(e1)
-      }
-      frame=[]
+  def mk_frame(fname)
+    @frmstr[fname]=@frmhash[fname].map{|a|
+      case a
+      when Hash
+        @stat.subst(@par.subst(a)).split(',').map{|s|
+          encode(a,s)
+        }
+      else
+        @frmstr[a]
+      end
+    }.join('')
+  end
+
+  #Initialize
+  def init_main
+    frame=[]
+    begin
+      @v.msg(1){"Start Main Frame"}
       @doc['cmdframe'].each{|e1|
-        case e1.name
-        when 'data'
-          frame << init_data(e1)
-        when 'ccrange'
-          line['method']=e1['method']
-          ccrange=[]
-          e1.each{|e2|
-            case e2.name
-            when 'data'
-              ccrange << init_data(e2)
-            when 'select'
-              ccrange.concat select
-            end
-          }
-          line['ccrange']=ccrange
-          frame << :ccrange
-        when 'select'
-          frame.concat select
-        end
+        frame << init_data(e1)
       }
-      line['frame']=frame
-      frames[id] = line
-      @v.msg{"Frame:[#{line}]"}
+    ensure
+      @v.msg(-1){"End Main Frame"}
+    end
+    @v.msg{"InitMainFrame:[#{frame}]"}
+    @frmhash['main']=frame.freeze
+  end
+
+  def init_cc
+    @doc.find_each('cmdframe','ccrange'){|e0|
+      begin
+        @v.msg(1){"Start Ceck Code Frame"}
+        frame=[]
+        e0.each{|e1|
+          frame << init_data(e1)
+        }
+        @ccm=e0['method']
+        @v.msg{"InitCCFrame:[#{frame}]"}
+        @frmhash['ccrange']=frame.freeze
+      ensure
+        @v.msg(-1){"End Ceck Code Frame"}
+      end
     }
-    frames
+  end
+
+  def init_sel
+    seldb={}
+    @doc.find_each('cmdframe','command'){|e0|
+      begin
+        @v.msg(1){"Start Select Frame"}
+        frame=[]
+        @rep.each(e0){|e1|
+          frame << init_data(e1)
+        }
+        selh=e0.to_h
+        id=selh.delete('id')
+        @label[id]=selh.delete('label')
+        @response[id]=selh.delete('response')
+        @opt[id]=selh.freeze
+        @v.msg{"InitSelFrame:[#{frame}]"}
+        @frmsel[id] = frame.freeze
+      ensure
+        @v.msg(-1){"End Select Frame"}
+      end
+    }
+    seldb
   end
 
   def init_data(e)
-    attr=e.to_h
-    label=attr.delete('label')
-    attr['val']=@rep.subst(e.text)
-    @v.msg{"InitFrame:#{label}[#{e}]"}
-    attr
+    case e.name
+    when 'data'
+      attr=e.to_h
+      label=attr.delete('label')
+      attr['val']=@rep.subst(e.text)
+      @v.msg{"Data:#{label}[#{e}]"}
+      attr
+    else
+      e.name
+    end
   end
 end

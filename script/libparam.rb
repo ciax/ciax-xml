@@ -15,7 +15,7 @@ class Param < Hash
     @stm=stm.dup
   end
 
-  def subst(par) # h={ val,range,format }
+  def subst(par) # par={ val,range,format }
     str=par['val']
     return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}

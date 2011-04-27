@@ -35,7 +35,7 @@ class ClsCmd
             stm << e2
           when Hash
             str=@par.subst(e2)
-            str = e2['format'] % str if e2['format']
+            str = e2['format'] % eval(str) if e2['format']
             @v.msg{"Calculated [#{str}]"}
             stm << str
           end

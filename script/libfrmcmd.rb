@@ -9,7 +9,7 @@ class FrmCmd
   def initialize(doc,stat)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @stat=stat
-    @v=Verbose.new("fdb/#{doc['id']}/cmd".upcase)
+    @v=Verbose.new("#{doc['id']}/cmd".upcase,3)
     @cache={}
     @rep=Repeat.new
     @fstr={}
@@ -68,7 +68,7 @@ class FrmCmd
       attr=e.to_h
       label=attr.delete('label')
       attr['val']=@rep.subst(e.text)
-      @v.msg{"Data:#{label}[#{e}]"}
+      @v.msg{"Data:#{label}[#{attr}]"}
       attr
     else
       e.name

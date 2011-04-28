@@ -94,7 +94,7 @@ module FrmMod
         selh=e0.to_h
         id=selh.delete('id')
         selh[:frame] = frame.freeze
-        @v.msg{"InitSelFrame:[#{frame}]"}
+        @v.msg{"InitSelFrame(#{id}):[#{frame}]"}
         list[id]=selh
       ensure
         @v.msg(-1){"-> INIT:Select Frame"}

@@ -49,4 +49,56 @@ module FrmMod
     str.to_s
   end
 
+  #Initialize
+  def init_main(doc,domain,hash)
+    begin
+      @v.msg(1){"Start Main Frame"}
+      frame=[]
+      doc[domain].each{|e1|
+        frame << init_element(e1)
+      }
+      @v.msg{"InitMainFrame:[#{frame}]"}
+      hash['main']=frame.freeze
+    ensure
+      @v.msg(-1){"End Main Frame"}
+    end
+  end
+
+  def init_cc(doc,domain,hash)
+    doc.find_each(domain,'ccrange'){|e0|
+      begin
+        @v.msg(1){"Start Ceck Code Frame"}
+        frame=[]
+        e0.each{|e1|
+          frame << init_element(e1)
+        }
+        @v.msg{"InitCCFrame:[#{frame}]"}
+        hash[:method]=e0['method']
+        hash['ccrange']=frame.freeze
+      ensure
+        @v.msg(-1){"End Ceck Code Frame"}
+      end
+    }
+  end
+
+  def init_sel(doc,domain,select)
+    list={}
+    doc.find_each(domain,select){|e0|
+      begin
+        @v.msg(1){"Start Select Frame"}
+        frame=[]
+        e0.each{|e1|
+          frame << init_element(e1)
+        }
+        selh=e0.to_h
+        id=selh.delete('id')
+        selh[:frame] = frame.freeze
+        @v.msg{"InitSelFrame:[#{frame}]"}
+        list[id]=selh
+      ensure
+        @v.msg(-1){"End Select Frame"}
+      end
+    }
+    list
+  end
 end

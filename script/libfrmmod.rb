@@ -58,6 +58,7 @@ module FrmMod
         frame << init_element(e1)
       }
       @v.msg{"InitMainFrame:[#{frame}]"}
+      hash.update(doc[domain].to_h)
       hash['main']=frame.freeze
     ensure
       @v.msg(-1){"End Main Frame"}
@@ -100,5 +101,13 @@ module FrmMod
       end
     }
     list
+  end
+
+  def mk_db(db,name)
+    hash={}
+    db.each{|k,v|
+      hash[k]=v[name]
+    }
+    hash
   end
 end

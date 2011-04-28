@@ -17,15 +17,8 @@ class FrmCmd
     init_main(doc,'cmdframe',@fdb)
     init_cc(doc,'cmdframe',@fdb)
     @flist=init_sel(doc,'cmdframe','command')
-    @par=Param.new(label)
-  end
-
-  def label
-    mk_list('label')
-  end
-
-  def response
-    mk_list('response')
+    @label=mk_db(@flist,'label')
+    @par=Param.new(@label)
   end
 
   def setcmd(stm) # return = response select
@@ -35,7 +28,7 @@ class FrmCmd
     @par.setpar(stm)
     @cid=stm.join(':')
     @cid << ':*' if /true|1/ === sel['nocache']
-    @v.msg{'Select:'+label[id]+"(#{@cid})"}
+    @v.msg{'Select:'+@label[id]+"(#{@cid})"}
     self
   end
 
@@ -55,14 +48,6 @@ class FrmCmd
   end
 
   private
-  def mk_list(name)
-    hash={}
-    @flist.each{|k,v|
-      hash[k]=v[name]
-    }
-    hash
-  end
-
   def mk_frame(fname)
     @fstr[fname]=@fdb[fname].map{|a|
       case a

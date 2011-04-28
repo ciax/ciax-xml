@@ -11,8 +11,6 @@ class FrmCmd
     @doc,@stat=doc,stat
     @v=Verbose.new("fdb/#{@doc['id']}/cmd".upcase)
     @cache={}
-    @label={}
-    @response={}
     @rep=Repeat.new
     @frmstr={}
     @frmhash={}
@@ -21,7 +19,15 @@ class FrmCmd
     init_main
     init_cc
     init_sel
-    @par=Param.new(@label)
+    @par=Param.new(label)
+  end
+
+  def label
+    mk_list('label')
+  end
+
+  def response
+    mk_list('response')
   end
 
   def setcmd(stm) # return = response select
@@ -48,6 +54,14 @@ class FrmCmd
   end
 
   private
+  def mk_list(name)
+    hash={}
+    @opt.each{|k,v|
+      hash[k]=v[name]
+    }
+    hash
+  end
+
   def mk_frame(fname)
     @frmstr[fname]=@frmhash[fname].map{|a|
       case a
@@ -63,17 +77,17 @@ class FrmCmd
 
   #Initialize
   def init_main
-    frame=[]
     begin
       @v.msg(1){"Start Main Frame"}
+      frame=[]
       @doc['cmdframe'].each{|e1|
         frame << init_data(e1)
       }
+      @v.msg{"InitMainFrame:[#{frame}]"}
+      @frmhash['main']=frame.freeze
     ensure
       @v.msg(-1){"End Main Frame"}
     end
-    @v.msg{"InitMainFrame:[#{frame}]"}
-    @frmhash['main']=frame.freeze
   end
 
   def init_cc
@@ -94,7 +108,6 @@ class FrmCmd
   end
 
   def init_sel
-    seldb={}
     @doc.find_each('cmdframe','command'){|e0|
       begin
         @v.msg(1){"Start Select Frame"}
@@ -104,8 +117,6 @@ class FrmCmd
         }
         selh=e0.to_h
         id=selh.delete('id')
-        @label[id]=selh.delete('label')
-        @response[id]=selh.delete('response')
         @opt[id]=selh.freeze
         @v.msg{"InitSelFrame:[#{frame}]"}
         @frmsel[id] = frame.freeze
@@ -113,7 +124,6 @@ class FrmCmd
         @v.msg(-1){"End Select Frame"}
       end
     }
-    seldb
   end
 
   def init_data(e)

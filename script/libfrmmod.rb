@@ -52,7 +52,7 @@ module FrmMod
   #Initialize
   def init_main(doc,domain,hash)
     begin
-      @v.msg(1){"Start Main Frame"}
+      @v.msg(1){"INIT:Main Frame <-"}
       frame=[]
       doc[domain].each{|e1|
         frame << init_element(e1)
@@ -61,14 +61,14 @@ module FrmMod
       hash.update(doc[domain].to_h)
       hash['main']=frame.freeze
     ensure
-      @v.msg(-1){"End Main Frame"}
+      @v.msg(-1){"-> INIT:Main Frame"}
     end
   end
 
   def init_cc(doc,domain,hash)
     doc.find_each(domain,'ccrange'){|e0|
       begin
-        @v.msg(1){"Start Ceck Code Frame"}
+        @v.msg(1){"INIT:Ceck Code Frame <-"}
         frame=[]
         e0.each{|e1|
           frame << init_element(e1)
@@ -77,7 +77,7 @@ module FrmMod
         hash[:method]=e0['method']
         hash['ccrange']=frame.freeze
       ensure
-        @v.msg(-1){"End Ceck Code Frame"}
+        @v.msg(-1){"-> INIT:Ceck Code Frame"}
       end
     }
   end
@@ -86,7 +86,7 @@ module FrmMod
     list={}
     doc.find_each(domain,select){|e0|
       begin
-        @v.msg(1){"Start Select Frame"}
+        @v.msg(1){"INIT:Select Frame <-"}
         frame=[]
         e0.each{|e1|
           frame << init_element(e1)
@@ -97,7 +97,7 @@ module FrmMod
         @v.msg{"InitSelFrame:[#{frame}]"}
         list[id]=selh
       ensure
-        @v.msg(-1){"End Select Frame"}
+        @v.msg(-1){"-> INIT:Select Frame"}
       end
     }
     list

@@ -9,7 +9,7 @@ class IoFile
   def initialize(type)
     @type=type
     @time=Time.now
-    @v=Verbose.new('FILE')
+    @v=Verbose.new('FILE',5)
     @logfile=@type+'_'+Time.now.year.to_s
   end
 

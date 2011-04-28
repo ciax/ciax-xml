@@ -8,7 +8,8 @@ class IoCmd
     @iocmd=iocmd.split(' ')
     @iof=IoFile.new(id) if id
     @f=IO.popen(@iocmd,'r+')
-    @v=Verbose.new('IOCMD:'+iocmd)
+    @v=Verbose.new('IOCMD',1)
+    @v.msg{iocmd}
     @timeout=timeout
     @wait=wait.to_f
     @v.msg{"Init"}

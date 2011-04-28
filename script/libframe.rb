@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 class Frame
   def initialize(frame,dm=nil,tm=nil) # delimiter,terminator
-    @v=Verbose.new("fdb/frame".upcase)
+    @v=Verbose.new("fdb/frm".upcase,6)
     @fp=@mark=0
     @frame=[]
     if tm

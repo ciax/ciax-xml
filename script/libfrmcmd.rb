@@ -29,18 +29,18 @@ class FrmCmd
   end
 
   def setcmd(stm) # return = response select
-    @id=stm.first
-    sel=@flist[@id] || @par.list_cmd
+    id=stm.first
+    sel=@flist[id] || @par.list_cmd
     @fdb['select']=sel[:frame]
     @par.setpar(stm)
     @cid=stm.join(':')
     @cid << ':*' if /true|1/ === sel['nocache']
-    @v.msg{'Select:'+label[@id]+"(#{@cid})"}
+    @v.msg{'Select:'+label[id]+"(#{@cid})"}
     self
   end
 
   def getframe
-    return unless @id
+    return unless @fdb['select']
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else

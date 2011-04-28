@@ -8,16 +8,15 @@ class FrmCmd
 
   def initialize(doc,stat)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    @doc,@stat=doc,stat
-    @v=Verbose.new("fdb/#{@doc['id']}/cmd".upcase)
+    @stat=stat
+    @v=Verbose.new("fdb/#{doc['id']}/cmd".upcase)
     @cache={}
     @rep=Repeat.new
-    @frmstr={}
-    @frmsel={}
+    @fstr={}
     @fdb={}
-    init_main(@doc,'cmdframe',@fdb)
-    init_cc(@doc,'cmdframe',@fdb)
-    @frmsel=init_sel(@doc,'cmdframe','command')
+    init_main(doc,'cmdframe',@fdb)
+    init_cc(doc,'cmdframe',@fdb)
+    @flist=init_sel(doc,'cmdframe','command')
     @par=Param.new(label)
   end
 
@@ -31,7 +30,7 @@ class FrmCmd
 
   def setcmd(stm) # return = response select
     @id=stm.first
-    sel=@frmsel[@id] || @par.list_cmd
+    sel=@flist[@id] || @par.list_cmd
     @fdb['select']=sel[:frame]
     @par.setpar(stm)
     @cid=stm.join(':')
@@ -58,21 +57,21 @@ class FrmCmd
   private
   def mk_list(name)
     hash={}
-    @frmsel.each{|k,v|
+    @flist.each{|k,v|
       hash[k]=v[name]
     }
     hash
   end
 
   def mk_frame(fname)
-    @frmstr[fname]=@fdb[fname].map{|a|
+    @fstr[fname]=@fdb[fname].map{|a|
       case a
       when Hash
         @stat.subst(@par.subst(a)).split(',').map{|s|
           encode(a,s)
         }
       else
-        @frmstr[a]
+        @fstr[a]
       end
     }.join('')
   end

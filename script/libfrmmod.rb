@@ -57,7 +57,7 @@ module FrmMod
       doc[domain].each{|e1|
         frame << init_element(e1)
       }
-      @v.msg{"InitMainFrame:[#{frame}]"}
+      @v.msg{"InitMainFrame:#{frame}"}
       hash.update(doc[domain].to_h)
       hash['main']=frame.freeze
     ensure
@@ -73,7 +73,7 @@ module FrmMod
         e0.each{|e1|
           frame << init_element(e1)
         }
-        @v.msg{"InitCCFrame:[#{frame}]"}
+        @v.msg{"InitCCFrame:#{frame}"}
         hash[:method]=e0['method']
         hash['ccrange']=frame.freeze
       ensure
@@ -87,14 +87,18 @@ module FrmMod
     doc.find_each(domain,select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}
-        frame=[]
-        e0.each{|e1|
-          frame << init_element(e1)
-        }
         selh=e0.to_h
         id=selh.delete('id')
-        selh[:frame] = frame.freeze
-        @v.msg{"InitSelFrame(#{id}):[#{frame}]"}
+        @v.msg{"InitSelHash(#{id}):#{selh}"}
+        frame=[]
+        e0.each{|e1|
+          e=init_element(e1) || next
+          frame << e
+        }
+        unless frame.empty?
+          selh[:frame] = frame.freeze 
+          @v.msg{"InitSelFrame(#{id}):#{frame}"}
+        end
         list[id]=selh
       ensure
         @v.msg(-1){"-> INIT:Select Frame"}

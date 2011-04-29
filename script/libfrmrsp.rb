@@ -144,8 +144,10 @@ class FrmRsp
       }
       @stat[id]=@stat[id] || init_array(idx.map{|h| h['size']}){''}
       attr
-    else
+    when 'ccrange','select'
       e.name
+    else
+      nil
     end
   end
   

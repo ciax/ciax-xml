@@ -7,7 +7,7 @@ class Param < Hash
   def initialize(label)
     @label=label
     @stm=[]
-    @v=Verbose.new("Parameter")
+    @v=Verbose.new("PARAM",4)
   end
 
   def setpar(stm)
@@ -15,8 +15,7 @@ class Param < Hash
     @stm=stm.dup
   end
 
-  def subst(par) # par={ val,range,format }
-    str=par['val']
+  def subst(str,range=nil) # par={ val,range,format } or String
     return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
@@ -24,7 +23,7 @@ class Param < Hash
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
         @v.msg{"Param No.#{i} = [#{@stm[i]}]"}
-        i > 0 ? validate(par,@stm[i]) : id
+        i > 0 ? validate(range,@stm[i]) : id
       }
       @v.err("Nil string") if str == ''
       str
@@ -42,12 +41,12 @@ class Param < Hash
   end
 
   private
-  def validate(par,str)
+  def validate(range,str)
     str || raise(ParameterError," Short of Parameters")
-    return(str) unless ra=par['range']
-    label=ra.tr(':','-')
-    @v.msg{"Validate: [#{str}] Match? [#{ra}]"}
-    ra.split(',').each{|r|
+    return(str) unless range
+    label=range.tr(':','-')
+    @v.msg{"Validate: [#{str}] Match? [#{range}]"}
+    range.split(',').each{|r|
       return(str) if ReRange.new(r) == str
     }
     raise(ParameterError," Parameter invalid(#{label})")

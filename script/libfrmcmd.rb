@@ -52,7 +52,7 @@ class FrmCmd
     @fstr[fname]=@fdb[fname].map{|a|
       case a
       when Hash
-        @stat.subst(@par.subst(a)).split(',').map{|s|
+        @stat.subst(@par.subst(a['val'],a['range'])).split(',').map{|s|
           encode(a,s)
         }
       else

@@ -8,7 +8,7 @@ class ClsCmd
 
   def initialize(doc)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    @v=Verbose.new("doc/#{doc['id']}/cmd".upcase)
+    @v=Verbose.new("#{doc['id']}/stm",2)
     @label={}
     @session={}
     init_cmd(doc)

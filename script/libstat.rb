@@ -3,7 +3,7 @@ require 'libiofile'
 require 'libverbose'
 class Stat < Hash
   def initialize(id,fname)
-    @v=Verbose.new("Stat")
+    @v=Verbose.new("stat",6)
     raise SelectID," No ID" unless id
     self['id']=id
     fname+="_#{id}"

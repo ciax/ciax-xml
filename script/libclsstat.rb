@@ -11,7 +11,7 @@ class ClsStat
     @struct={}
     cls=doc['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls })
-    @v=Verbose.new("cdb/#{cls}/stat".upcase)
+    @v=Verbose.new("#{cls}/stat",2)
     @rep=Repeat.new
     init_stat
   end

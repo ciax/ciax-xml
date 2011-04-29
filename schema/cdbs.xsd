@@ -43,6 +43,7 @@
       </xsd:choice>
       <xsd:attributeGroup ref="cdbs:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="group" type="xsd:token" />
+      <xsd:attribute name="symbol" type="xsd:NCName" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in value-->

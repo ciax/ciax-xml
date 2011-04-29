@@ -12,11 +12,10 @@ for id in $devices; do
     if [ "$print" ] ; then
         clsstat $cls < $file | symboling | labeling | stprint
     elif [ "$label" ] ; then
-        clsstat $cls < $file | symboling | labeling
+        clsstat $cls < $file | labeling | h2s
     elif [ "$sym" ] ; then
-        clsstat $cls < $file | symboling
+        clsstat $cls < $file | symboling | h2s
     else
-        clsstat $cls < $file
-        echo
+        clsstat $cls < $file | h2s
     fi
 done

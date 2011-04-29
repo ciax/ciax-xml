@@ -17,12 +17,11 @@ for id in $devices; do
         if [ "$print" ] ; then
             echo "$stat" | frmstat $dev $id | symboling | labeling | stprint
         elif [ "$label" ] ; then
-            echo "$stat" | frmstat $dev $id | symboling | labeling
+            echo "$stat" | frmstat $dev $id | labeling | h2s
         elif [ "$sym" ] ; then
-            echo "$stat" | frmstat $dev $id | symboling
+            echo "$stat" | frmstat $dev $id | symboling | h2s
         else
-            echo "$stat" | frmstat $dev $id
-            echo
+            echo "$stat" | frmstat $dev $id | h2s
         fi
     fi
 done

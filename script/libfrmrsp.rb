@@ -69,7 +69,7 @@ class FrmRsp
         end
       when Hash
         if e1[:index]
-          field_array(e1)
+          frame_to_array(e1)
         else
           frame_to_field(e1)
         end
@@ -95,7 +95,7 @@ class FrmRsp
     end
   end
 
-  def field_array(e0)
+  def frame_to_array(e0)
     key=e0['assign'] || @v.err("No key for Array")
     begin
       @v.msg(1){"Array:#{e0['label']}[#{key}]"}

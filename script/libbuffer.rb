@@ -2,7 +2,7 @@
 require "libverbose"
 require "thread"
 
-class CmdBuf
+class Buffer
   def initialize
     @inbuf=Array.new
     @outbuf=Array.new

@@ -2,7 +2,7 @@
 require "libstat"
 require "libclscmd"
 require "libclsstat"
-require "libcmdbuf"
+require "libbuffer"
 require "libwatch"
 require "thread"
 
@@ -16,7 +16,7 @@ class Cls
     @cc=ClsCmd.new(doc)
     @cs=ClsStat.new(doc,@stat,@field)
     Thread.abort_on_exception=true
-    @buf=CmdBuf.new
+    @buf=Buffer.new
     @event=Watch.new(doc['watch'])
     @watch=watch_thread
     @main=session_thread{|buf| yield buf}

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libframe"
 require "libfrmmod"
-require "libparam0"
+require "libparam"
 
 # Rsp Methods
 class FrmRsp
@@ -10,27 +10,34 @@ class FrmRsp
   def initialize(doc,stat)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc,@stat,@sel=doc,stat
-    @v=Verbose.new("fdb/#{@doc['id']}/rsp".upcase)
-    @par=Param0.new
+    @v=Verbose.new("#{@doc['id']}/rsp",3)
     @stat['frame']=@doc['id']
-    init_field
+    @fdb={}
+    init_main(@doc,'rspframe',@fdb)
+    init_cc(@doc,'rspframe',@fdb)
+    @rlist=init_sel(@doc,'rspframe','response')
+    @clist=init_sel(@doc,'cmdframe','command')
+    @par=Param.new(mk_db(@clist,'label'))
   end
 
   def setrsp(stm)
-    cmd=@doc.select_id('cmdframe',stm.first,'command')
-    @par.setpar(cmd,stm)
-    xpath="response[@id='#{cmd['response']}']"
-    @sel=@doc.select('rspframe',xpath)
+    cid=stm.first
+    csel=@clist[cid] || @par.list_cmd
+    rid=csel['response']
+    sel=@rlist[rid] || @v.err("No such id [#{rid}]")
+    @fdb['select']=sel[:frame]
+    @par.setpar(stm)
+    @v.msg{"Set Statement #{stm}"}
     self
   end
 
   def getfield(time=Time.now)
-    return "Send Only" unless @sel
+    return "Send Only" unless @fdb['select']
     frame=yield || @v.err("No String")
-    tm=@doc['rspframe']['terminator']
-    dm=@doc['rspframe']['delimiter']
+    tm=@fdb['terminator']
+    dm=@fdb['delimiter']
     @frm=Frame.new(frame,dm,tm)
-    getfield_rec(@doc['rspframe'])
+    getfield_rec(@fdb['main'])
     if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
       @v.msg{"Verify:CC OK <#{cc}>"}
@@ -40,63 +47,32 @@ class FrmRsp
   end
 
   private
-  # Fill default values in the Field
-  def init_field
-    fill=''
-    begin
-      @v.msg(1){"Field:Initialize"}
-      @doc.find_each('rspframe',"*[@assign]"){|e1|
-        assign=e1['assign']
-        next if @stat[assign]
-        case e1.name
-        when 'field'
-          @v.msg{"Field:Init Field[#{assign}]"}
-          @stat[assign]=fill.dup
-        when 'array'
-          @v.msg{"Field:Init Array[#{assign}]"}
-          sary=[]
-          e1.each{|e2| sary << e2['size'].to_i}
-          @stat[assign]=init_array(sary){fill.dup}
-        end
-      }
-    ensure
-      @v.msg(-1){"Field:Initialized"}
-    end
-  end
-
-  def init_array(sary,field=nil)
-    return yield if sary.empty?
-    a=field||[]
-    sary[0].times{|i|
-      a[i]=init_array(sary[1..-1],a[i]){yield}
-    }
-    a
-  end
-
   # Process Frame to Field
   def getfield_rec(e0)
     e0.each{|e1|
-      case e1.name
+      case e1
       when 'ccrange'
         begin
           @v.msg(1){"Entering Ceck Code Node"}
           @frm.mark
-          getfield_rec(e1)
-          @cc = checkcode(e1['method'],@frm.copy)
+          getfield_rec(@fdb['ccrange'])
+          @cc = checkcode(@fdb[:method],@frm.copy)
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end
       when 'select'
         begin
           @v.msg(1){"Entering Selected Node"}
-          getfield_rec(@sel)
+          getfield_rec(@fdb['select'])
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end
-      when 'field'
-        frame_to_field(e1)
-      when 'array'
-        field_array(e1)
+      when Hash
+        if e1[:index]
+          field_array(e1)
+        else
+          frame_to_field(e1)
+        end
       end
     }
   end
@@ -109,7 +85,7 @@ class FrmRsp
         @stat[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
       end
-      if val=e0.text
+      if val=e0['val']
         val=eval(val).to_s if e0['decode'] == 'chr'
         @v.msg{"Verify:[#{val}] and <#{data}>"}
         val == data || @v.err("Verify Mismatch <#{data}> != [#{val}]")
@@ -121,12 +97,13 @@ class FrmRsp
 
   def field_array(e0)
     key=e0['assign'] || @v.err("No key for Array")
-    idxs=[]
     begin
       @v.msg(1){"Array:#{e0['label']}[#{key}]"}
-      e0.each{|e1| # Index
+      idxs=[]
+      e0[:index].each{|e1| # Index
         idxs << @par.subst(e1['range'])
       }
+      @v.msg(1){"Array:Indexs#{e0[:index]} -> #{idxs}"}
       @stat[key]=mk_array(idxs,@stat[key]){
         decode(e0,@frm.cut(e0))
       }
@@ -146,5 +123,38 @@ class FrmRsp
       fld[i] = mk_array(idx[1..-1],fld[i]){yield}
     }
     fld
+  end
+
+  def init_element(e)
+    case e.name
+    when 'field'
+      attr=e.to_h
+      attr['val']=e.text
+      if id=attr['assign']
+        @stat[id]=@stat[id] || attr['val']
+      end
+      @v.msg{"InitElement:#{attr['label']} #{attr}"}
+      attr
+    when 'array'
+      attr=e.to_h
+      id=attr['assign']
+      idx=attr[:index]=[]
+      e.each{|e1|
+        idx << e1.to_h
+      }
+      @stat[id]=@stat[id] || init_array(idx.map{|h| h['size']}){''}
+      attr
+    else
+      e.name
+    end
+  end
+  
+  def init_array(sary,field=nil)
+    return yield if sary.empty?
+    a=field||[]
+    sary[0].times{|i|
+      a[i]=init_array(sary[1..-1],a[i]){yield}
+    }
+    a
   end
 end

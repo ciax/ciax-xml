@@ -2,6 +2,7 @@
 . ~/lib/libcsv.sh
 [ "$1" = '-s' ] && { sym=1; shift; }
 [ "$1" = '-l' ] && { label=1; shift; }
+[ "$1" = '-r' ] && { reverse=1; shift; }
 [ "$1" = '-p' ] && { print=1; shift; }
 devices=${1:-`ls ~/.var/field_???.json|cut -d_ -f2|cut -d. -f1`};shift
 par="$*"
@@ -11,6 +12,8 @@ for id in $devices; do
     file=$HOME/.var/field_$id.json
     if [ "$print" ] ; then
         clsstat $cls < $file | symboling | labeling | stprint
+    elif [ "$reverse" ] ; then
+        clsstat $cls < $file | labeling | symboling | h2s
     elif [ "$label" ] ; then
         clsstat $cls < $file | labeling | h2s
     elif [ "$sym" ] ; then

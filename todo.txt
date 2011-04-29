@@ -10,6 +10,8 @@ dts:status update works but appears incorrect status [4/17-
 
 ***UPDATE
 labeling: use the lib*cmd.rb
+symboling: symbol reference will move to status/value@symbol
+symboling&labeling: should be commutative
 
 ***LACK FUNCTION
 ascpck: exe should be reset

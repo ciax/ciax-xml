@@ -334,23 +334,23 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="exe" label="EXECUTING" group="g1">
+      <value id="exe" label="EXECUTING" group="g1" symbol="normal">
         <binary bit="0" ref="exe" />
       </value>
-      <value id="emg" label="EMG STOP" group="g1">
+      <value id="emg" label="EMG STOP" group="g1" symbol="alarm">
         <binary bit="0" ref="w:0" />
       </value>
       <value id="ctl" label="CONTROL" group="g1">
         <binary bit="6" ref="w:0" />
         <binary bit="7" ref="w:0" />
       </value>
-      <value id="pse" label="PAUSE" group="g1">
+      <value id="pse" label="PAUSE" group="g1" symbol="warn">
         <binary bit="1" ref="w:0" />
       </value>
-      <value id="rdy" label="READY" group="g1">
+      <value id="rdy" label="READY" group="g1" symbol="off-warn">
         <binary bit="3" ref="w:0" />
       </value>
-      <value id="cmp" label="COMMAND COMPLETE" group="g2">
+      <value id="cmp" label="COMMAND COMPLETE" group="g2" symbol="normal">
         <binary bit="14" ref="w:0" />
       </value>
       <value id="run" label="Running" group="g2">
@@ -359,52 +359,52 @@
       <value id="err" label="Error Code" group="g2">
         <int ref="err" />
       </value>
-      <value id="fis" label="Fix Attach" group="fix">
+      <value id="fis" label="Fix Attach" group="fix" symbol="ist">
         <binary bit="0" ref="w:2" />
         <binary bit="1" ref="w:2" />
         <binary bit="2" ref="w:2" />
         <binary bit="3" ref="w:2" />
       </value>
-      <value id="fhk" label="Fix Hook" group="fix">
+      <value id="fhk" label="Fix Hook" group="fix" symbol="hook">
         <binary bit="0" ref="w:1" />
         <binary bit="1" ref="w:1" />
       </value>
-      <value id="fjb" label="Fix Jack Bolt" group="fix">
+      <value id="fjb" label="Fix Jack Bolt" group="fix" symbol="jack">
         <binary bit="14" ref="w:1" />
         <binary bit="15" ref="w:1" />
       </value>
-      <value id="mis" label="Mov Attach" group="mov1">
+      <value id="mis" label="Mov Attach" group="mov1" symbol="ist">
         <binary bit="0" ref="w:6" />
         <binary bit="1" ref="w:6" />
         <binary bit="2" ref="w:6" />
         <binary bit="3" ref="w:6" />
       </value>
-      <value id="mhk" label="Mov Hook" group="mov1">
+      <value id="mhk" label="Mov Hook" group="mov1" symbol="hook">
         <binary bit="0" ref="w:5" />
         <binary bit="1" ref="w:5" />
       </value>
-      <value id="mjb" label="Mov Jack Bolt" group="mov1">
+      <value id="mjb" label="Mov Jack Bolt" group="mov1" symbol="jack">
         <binary bit="14" ref="w:5" />
         <binary bit="15" ref="w:5" />
       </value>
-      <value id="mrt" label="Mov Rotation" group="mov2">
+      <value id="mrt" label="Mov Rotation" group="mov2" symbol="rot">
         <binary bit="2" ref="w:5" />
         <binary bit="3" ref="w:5" />
       </value>
-      <value id="mtr" label="Mov Transer" group="mov2">
+      <value id="mtr" label="Mov Transer" group="mov2" symbol="mov">
         <binary bit="8" ref="w:6" />
         <binary bit="6" ref="w:6" />
       </value>
-      <value id="fpw" label="Fix Inst Power" group="fix3">
+      <value id="fpw" label="Fix Inst Power" group="fix3" symbol="off-warn">
         <binary bit="8" ref="w:9" />
       </value>
-      <value id="fcc" label="Fix CCD Power" group="fix3">
+      <value id="fcc" label="Fix CCD Power" group="fix3" symbol="off-warn">
         <binary bit="10" ref="w:9" />
       </value>
-      <value id="mpw" label="Mov Inst Power" group="mov3">
+      <value id="mpw" label="Mov Inst Power" group="mov3" symbol="off-warn">
         <binary bit="9" ref="w:9" />
       </value>
-      <value id="mcc" label="Mov CCD Power" group="mov3">
+      <value id="mcc" label="Mov CCD Power" group="mov3" symbol="off-warn">
         <binary bit="11" ref="w:9" />
       </value>
       <repeat from="1" to="4">
@@ -417,17 +417,17 @@
           <float format="%.2f" ref="d:($_+3)" formula="$#/100" />
         </value>
       </repeat>
-      <value id="fid" label="Fix Instrument ID" group="iid">
+      <value id="fid" label="Fix Instrument ID" group="iid" symbol="iid_ac">
         <int ref="d:8" />
       </value>
-      <value id="mid" label="Mov Instrument ID" group="iid">
+      <value id="mid" label="Mov Instrument ID" group="iid" symbol="iid_ac">
         <int ref="d:9" />
       </value>
-      <value id="chg" label="CHG Plug" group="other">
+      <value id="chg" label="CHG Plug" group="other" symbol="mov">
         <binary bit="6" ref="w:2" />
         <binary bit="7" ref="w:2" />
       </value>
-      <value id="dor" label="Door" group="other">
+      <value id="dor" label="Door" group="other" symbol="dor">
         <binary bit="0" ref="w:9" />
         <binary bit="1" ref="w:9" />
       </value>
@@ -483,61 +483,41 @@
       </onchange>
     </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case id="ist">
-        <enum class="normal" msg="ON">1111</enum>
-        <enum class="normal" msg="OFF">0000</enum>
-        <enum class="warn" msg="N/A"></enum>
-      </case>
-      <case id="hook">
-        <enum class="normal" msg="HOOK">10</enum>
-        <enum class="normal" msg="UNHOOK">01</enum>
-        <enum class="alarm" msg="N/A">00</enum>
-      </case>
-      <case id="jack">
-        <enum class="normal" msg="UP">10</enum>
-        <enum class="normal" msg="DW">01</enum>
-        <enum class="alarm" msg="N/A">00</enum>
-      </case>
-      <case id="emg" ref="alarm" />
-      <case id="pse" ref="warn" />
-      <case id="rdy" ref="off-warn" />
-      <case id="cmp" ref="normal" />
-      <case id="exe" ref="normal" />
-      <case id="ctl">
-        <enum class="normal" msg="AUTO">10</enum>
-        <enum class="normal" msg="MANUAL">01</enum>
-        <enum class="alarm" msg="N/A">00</enum>
-      </case>
-      <case id="fis" ref="ist" />
-      <case id="fhk" ref="hook" />
-      <case id="fjb" ref="jack" />
-      <case id="mis" ref="ist" />
-      <case id="mhk" ref="hook" />
-      <case id="mjb" ref="jack" />
-      <case id="mrt" ref="rot" />
-      <case id="mtr" ref="mov" />
-      <case id="chg" ref="mov" />
-      <case id="mov">
-        <enum class="normal" msg="FW">10</enum>
-        <enum class="normal" msg="BK">01</enum>
-        <enum class="alarm" msg="N/A">00</enum>
-      </case>
-      <case id="rot">
-        <enum class="normal" msg="LOAD">10</enum>
-        <enum class="normal" msg="STORE">01</enum>
-        <enum class="alarm" msg="N/A">00</enum>
-      </case>
-      <case id="dor">
-        <enum class="normal" msg="OPEN">10</enum>
-        <enum class="normal" msg="CLOSE">01</enum>
-        <enum class="alarm" msg="N/A">00</enum>
-      </case>
-      <case id="fpw" ref="off-warn" />
-      <case id="fcc" ref="off-warn" />
-      <case id="mpw" ref="off-warn" />
-      <case id="mcc" ref="off-warn" />
-      <case id="fid" ref="iid_ac" />
-      <case id="mid" ref="iid_ac" />
+      <table id="ist" type="string">
+        <case class="normal" msg="ON">1111</case>
+        <case class="normal" msg="OFF">0000</case>
+        <case class="warn" msg="N/A" />
+      </table>
+      <table id="hook" type="string">
+        <case class="normal" msg="HOOK">10</case>
+        <case class="normal" msg="UNHOOK">01</case>
+        <case class="alarm" msg="N/A">00</case>
+      </table>
+      <table id="jack" type="string">
+        <case class="normal" msg="UP">10</case>
+        <case class="normal" msg="DW">01</case>
+        <case class="alarm" msg="N/A">00</case>
+      </table>
+      <table id="ctl" type="string">
+        <case class="normal" msg="AUTO">10</case>
+        <case class="normal" msg="MANUAL">01</case>
+        <case class="alarm" msg="N/A">00</case>
+      </table>
+      <table id="mov" type="string">
+        <case class="normal" msg="FW">10</case>
+        <case class="normal" msg="BK">01</case>
+        <case class="alarm" msg="N/A">00</case>
+      </table>
+      <table id="rot" type="string">
+        <case class="normal" msg="LOAD">10</case>
+        <case class="normal" msg="STORE">01</case>
+        <case class="alarm" msg="N/A">00</case>
+      </table>
+      <table id="dor" type="string">
+        <case class="normal" msg="OPEN">10</case>
+        <case class="normal" msg="CLOSE">01</case>
+        <case class="alarm" msg="N/A">00</case>
+      </table>
     </symbol>
   </class>
 </cdb>

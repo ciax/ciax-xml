@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -82,24 +82,24 @@
       <value id="nfb" label="BOLT NFB TRIP" group="er">
         <binary bit="6" ref="bstat" />
       </value>
-      <value id="rts" label="ROT SEL" group="gs">
+      <value id="rts" label="ROT SEL" group="gs" symbol="rts">
         <int ref="rsel" />
       </value>
-      <value id="iid" label="CAS INST ID" group="gs">
+      <value id="iid" label="CAS INST ID" group="gs" symbol="iid">
         <int ref="iid" />
       </value>
-      <value id="login" label="Login Status" group="gs">
+      <value id="login" label="Login Status" group="gs" symbol="login">
         <string ref="login0" />
         <string ref="login1" />
         <string ref="login2" />
         <string ref="login3" />
       </value>
-      <value id="azd" label="AZ DRIVE" group="az">
+      <value id="azd" label="AZ DRIVE" group="az" symbol="drv">
         <binary label="ON" bit="0" ref="teldrive" />
         <binary label="OFF" bit="1" ref="teldrive" />
         <binary label="Ready" bit="2" ref="teldrive" />
       </value>
-      <value id="eld" label="EL DRIVE" group="el">
+      <value id="eld" label="EL DRIVE" group="el" symbol="drv">
         <binary label="ON" bit="3" ref="teldrive" />
         <binary label="OFF" bit="4" ref="teldrive" />
         <binary label="Ready" bit="5" ref="teldrive" />
@@ -107,23 +107,23 @@
       <value id="elv" label="EL Angle" group="el">
         <float ref="el" format="%.3f" />
       </value>
-      <value id="stw" label="EL STOW" group="el">
+      <value id="stw" label="EL STOW" group="el" symbol="off-warn">
         <binary bit="2" ref="stow_1" />
       </value>
-      <value id="rpw" label="ROT DRIVE" group="rt">
+      <value id="rpw" label="ROT DRIVE" group="rt" symbol="rpw">
         <int ref="rpw" />
       </value>
       <value id="iang" label="InR Angle" group="rt">
         <float ref="iang" format="%.3f" />
       </value>
-      <value id="jpw" label="JAK DRIVE" group="jd">
+      <value id="jpw" label="JAK DRIVE" group="jd" symbol="warn">
         <binary bit="7" ref="bstat" />
       </value>
-      <value id="rps" label="ROT POS SENSOR" group="jd">
+      <value id="rps" label="ROT POS SENSOR" group="jd" symbol="rps">
         <binary bit="4" ref="bstat" />
         <binary bit="5" ref="bstat" />
       </value>
-      <value id="abm" label="ALL Bolt MOVING" group="ja">
+      <value id="abm" label="ALL Bolt MOVING" group="ja" symbol="warn">
         <binary ref="abs" bit="2" inv="true" />
       </value>
       <value id="abs" label="ALL Bolt STAT(Anc,Rdy)" group="ja">
@@ -135,11 +135,11 @@
         <value id="jk%02d" label="Jack Len %02d" group="j%d">
           <float ref="jk:$_-2-($_%2)*2" decimal="2" signed="true" format="%5.2f" />
         </value>
-        <value id="bl%02d" label="Pos %02d" group="j%d">
+        <value id="bl%02d" label="Pos %02d" group="j%d" symbol="bl">
           <binary ref="bl:$_-2-($_%2)*2" bit="1" />
           <binary ref="bl:$_-2-($_%2)*2" bit="2" />
         </value>
-        <value id="bm%02d" label="Moving %02d" group="j%d">
+        <value id="bm%02d" label="Moving %02d" group="j%d" symbol="warn">
           <binary ref="bs:$_-2-($_%2)*2" bit="2" inv="true" />
         </value>
         <value id="bs%02d" label="Stat %02d(Anc,Rdy,Clnt)" group="j%d">
@@ -147,7 +147,7 @@
           <binary ref="bs:$_-2-($_%2)*2" bit="4" />
           <binary ref="clm:1-($_-1)/8" bit="($_-1)%8" />
         </value>
-        <value id="ba%02d" label="Alarm %02d" group="j%d">
+        <value id="ba%02d" label="Alarm %02d" group="j%d" symbol="ba">
           <binary ref="bl:$_-2-($_%2)*2" bit="0" />
           <binary ref="bl:$_-2-($_%2)*2" bit="4" />
         </value>
@@ -177,56 +177,55 @@
       </onchange>
     </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <repeat from="1" to="16">
-        <case id="bm%02d" ref="warn" />
-        <case id="bl%02d">
-          <enum class="warn" msg="MID">00</enum>
-          <enum class="normal" msg="UP">10</enum>
-          <enum class="normal" msg="DW">01</enum>
-        </case>
-        <case id="ba%02d" msg="ON" class="alarm">
-          <enum class="hide" msg="OK">00</enum>
-        </case>
-      </repeat>
-      <case id="rts" class="alarm" msg="N/A">
-        <enum class="warn" msg="PFO">1</enum>
-        <enum class="warn" msg="PFI">2</enum>
-        <enum class="normal" msg="CAS">4</enum>
-        <enum class="warn" msg="NSO">8</enum>
-        <enum class="warn" msg="NSI">10</enum>
-      </case>
-      <case id="iid" msg="N/A">
-        <enum class="warn" msg="NONE">0</enum>
-        <enum class="normal" msg="IRCS">1</enum>
-        <enum class="normal" msg="CIAO">3</enum>
-        <enum class="normal" msg="FOCAS">5</enum>
-        <enum class="normal" msg="COMICS">7</enum>
-        <enum class="normal" msg="K3D">10</enum>
-        <enum class="normal" msg="MOIRCS">12</enum>
-        <enum class="normal" msg="CIAX3">13</enum>
-      </case>
-      <case id="login" class="warn" msg="LOGOUT">
-        <regexp class="alarm" msg="OSS Login">OSS</regexp>
-        <regexp class="normal" msg="LOGIN">CXWS</regexp>
-      </case>
-      <case id="rpw">
-        <enum class="warn" msg="ON">1</enum>
-        <enum class="normal" msg="OFF">2</enum>
-      </case>
-      <case id="rps" class="alarm" msg="N/A">
-        <enum class="alarm" msg="OFF">11</enum>
-        <enum class="normal" msg="0DEG">10</enum>
-        <enum class="normal" msg="-4DEG">01</enum>
-      </case>
-      <case id="eld" class="alarm" msg="N/A">
-        <enum class="alarm" msg="ON">101</enum>
-        <enum class="normal" msg="OFF">011</enum>
-        <enum class="normal" msg="RDY">001</enum>
-      </case>
-      <case id="abm" ref="warn" />
-      <case id="azd" ref="eld" />
-      <case id="jpw" ref="warn" />
-      <case id="stw" ref="off-warn" />
+      <table id="bl" type="string">
+        <case class="warn" msg="MID">00</case>
+        <case class="normal" msg="UP">10</case>
+        <case class="normal" msg="DW">01</case>
+      </table>
+      <table id="ba" type="string">
+        <case class="hide" msg="OK">00</case>
+        <case class="alarm" msg="ON" />
+      </table>
+      <table id="rts" type="string">
+        <case class="warn" msg="PFO">1</case>
+        <case class="warn" msg="PFI">2</case>
+        <case class="normal" msg="CAS">4</case>
+        <case class="warn" msg="NSO">8</case>
+        <case class="warn" msg="NSI">10</case>
+        <case class="alarm" msg="N/A" />
+      </table>
+      <table id="iid" type="string">
+        <case class="warn" msg="NONE">0</case>
+        <case class="normal" msg="IRCS">1</case>
+        <case class="normal" msg="CIAO">3</case>
+        <case class="normal" msg="FOCAS">5</case>
+        <case class="normal" msg="COMICS">7</case>
+        <case class="normal" msg="K3D">10</case>
+        <case class="normal" msg="MOIRCS">12</case>
+        <case class="normal" msg="CIAX3">13</case>
+        <case class="warn" msg="N/A" />
+      </table>
+      <table id="login" type="regexp">
+        <case class="alarm" msg="OSS Login">OSS</case>
+        <case class="normal" msg="LOGIN">CXWS</case>
+        <case class="warn" msg="LOGOUT" />
+      </table>
+      <table id="rpw" type="string">
+        <case class="warn" msg="ON">1</case>
+        <case class="normal" msg="OFF">2</case>
+      </table>
+      <table id="rps" type="string">
+        <case class="alarm" msg="OFF">11</case>
+        <case class="normal" msg="0DEG">10</case>
+        <case class="normal" msg="-4DEG">01</case>
+        <case class="alarm" msg="N/A" />
+      </table>
+      <table id="drv" type="string">
+        <case class="alarm" msg="ON">101</case>
+        <case class="normal" msg="OFF">011</case>
+        <case class="normal" msg="RDY">001</case>
+        <case class="alarm" msg="N/A" />
+      </table>
     </symbol>
   </class>
 </cdb>

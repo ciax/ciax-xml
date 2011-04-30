@@ -106,28 +106,28 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="rdy" label="Comm Ready" group="s1">
+      <value id="rdy" label="Comm Ready" group="s1" symbol="off-warn">
         <binary bit="0" ref="stat" />
       </value>
-      <value id="srq" label="SRQ" group="s1">
+      <value id="srq" label="SRQ" group="s1" symbol="off-warn">
         <binary bit="1" ref="stat" />
       </value>
-      <value id="pme" label="Program Error" group="s1">
+      <value id="pme" label="Program Error" group="s1" symbol="alarm">
         <binary bit="3" ref="stat" />
       </value>
-      <value id="pse" label="Power Stage Error" group="s1">
+      <value id="pse" label="Power Stage Error" group="s1" symbol="alarm">
         <binary bit="4" ref="stat" />
       </value>
-      <value id="oes" label="ONE EM Stop" group="s1">
+      <value id="oes" label="ONE EM Stop" group="s1" symbol="alarm">
         <binary bit="5" ref="stat" />
       </value>
-      <value id="ees" label="EXT EM Stop" group="s1">
+      <value id="ees" label="EXT EM Stop" group="s1" symbol="alarm">
         <binary bit="6" ref="stat" />
       </value>
-      <value id="trm" label="Terminal Mode" group="s2">
+      <value id="trm" label="Terminal Mode" group="s2" symbol="off-warn">
         <binary bit="2" ref="stat" />
       </value>
-      <value id="cmd" label="Computer Mode" group="s2">
+      <value id="cmd" label="Computer Mode" group="s2" symbol="off-warn">
         <binary bit="7" ref="stat" />
       </value>
       <repeat from="1" to="6">
@@ -175,15 +175,5 @@
         </while>
       </repeat>
     </watch>
-    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case id="rdy" ref="off-warn" />
-      <case id="srq" ref="off-warn" />
-      <case id="pme" ref="alarm" />
-      <case id="pse" ref="alarm" />
-      <case id="oes" ref="alarm" />
-      <case id="ees" ref="alarm" />
-      <case id="trm" ref="off-warn" />
-      <case id="cmd" ref="off-warn" />
-    </symbol>
   </class>
 </cdb>

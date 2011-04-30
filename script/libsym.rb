@@ -2,71 +2,78 @@
 require "libxmldoc"
 require "libverbose"
 require "librerange"
-require "librepeat"
-S='symbol'
 
 class Sym
   def initialize(doc)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc=doc
     @com=XmlDoc.new('sdb','all')
-    @rep=Repeat.new
     @v=Verbose.new("Symbol")
+    @sdb={}
+    init_sym(doc)
+    init_sym(@com)
+    @ss={}
+    init_ss(doc)
   end
 
   def convert(stat)
     conv={}
-    ['id','class','frame','time'].each{|key|
-      if stat[key]
-        conv[key]=stat[key]
-        stat.delete(key)
+    stat.each{|k,v|
+      case v
+      when Hash
+        val=v['val']
+        h=v
+      else
+        val=v
+        h={'val'=>v}
       end
-    }
-    tbl={}
-    if @doc[S]
-      @rep.each(@doc[S]){|e|
-        id=@rep.format(e['id'])
-        if ref=e['ref']
-          pre="case[@id='#{ref}']"
-          e=@doc.select(S,pre) ||\
-          @com.select(S,pre) ||\
-          raise("No symbol ref(#{ref})")
+      if sid=@ss[k]
+        tbl=@sdb[sid][:table]
+        case @sdb[sid]['type']
+        when 'range'
+          tbl.each{|match,hash|
+            next unless ReRange.new(match) == val
+            h.update(hash)
+            @v.msg{"STAT:Range:[#{match}] and [#{val}]"}
+          }
+        when 'regexp'
+          tbl.each{|match,hash|
+            @v.msg{"STAT:Regexp:[#{match}] and [#{val}]"}
+            next unless /#{match}/ === val
+            h.update(hash)
+          }
+        else
+          h.update(@sdb[sid][:table][val])
         end
-        tbl[id]=get_symbol(e,stat[id])
-      }
-    end
-    stat.each{|id,val|
-      conv[id]=tbl[id] ? tbl[id] : get_symbol({},val)
+      end
+      conv[k]=h
     }
     conv
   end
 
   private
-  def get_symbol(e,val)
-    case val
-    when Hash
-      set=val
-    else
-      set={'val'=>val,'msg'=>e['msg']}
-      set['class'] = e['class'] || 'normal'
-    end
-    e.each{|cs|
-      @v.msg{"STAT:Symbol:compare [#{cs.text}] and [#{val}]"}
-      case cs.name
-      when 'enum'
-        next unless cs.text == val
-        set['msg']=cs['msg']
-      when 'regexp'
-        next unless /#{cs.text}/ === val
-        set['msg']=cs['msg']
-      when 'range'
-        next unless ReRange.new(cs.text) == val
-        set['level']=cs['msg']
-      end
-      set['class']=cs['class']
-      @v.msg{"STAT:Range:[#{set['msg']}] for [#{val}]"}
-      break true
+  def init_ss(doc)
+    doc.find_each('status','value[@symbol]'){|e0|
+      @ss[e0['id']]=e0['symbol']
     }
-    set
+    @v.msg{"Stat-Symbol:#{@ss}"}
   end
+
+  def init_sym(doc)
+    doc.find_each('symbol','table'){|e1|
+      row=e1.to_h
+      id=row.delete('id')
+      tbl=row[:table]={}
+      e1.each{|e2|
+        if e2.text
+          tbl[e2.text]=e2.to_h
+        else
+          tbl.default=e2.to_h
+        end
+      }
+      @sdb[id]=row
+    }
+    @v.msg{"Table:#{@sdb}"}
+  end
+
 end

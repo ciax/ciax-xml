@@ -108,65 +108,65 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="ecode" label="EXIT CODE" group="1">
+      <value id="ecode" label="EXIT CODE" group="1" symbol="ecode">
         <int format="%04X" ref="ecode" />
       </value>
       <value id="acp" label="CMD ACCEPT" group="1">
         <binary bit="6" ref="x:0" />
         <binary bit="0" ref="x:32" />
       </value>
-      <value id="rdy" label="READY" group="1">
+      <value id="rdy" label="READY" group="1" symbol="normal">
         <binary bit="0" ref="x:0" />
       </value>
-      <value id="pse" label="PAUSE" group="1">
+      <value id="pse" label="PAUSE" group="1" symbol="warn">
         <binary bit="1" ref="x:0" />
       </value>
-      <value id="emg" label="ENERGENCY" group="1">
+      <value id="emg" label="ENERGENCY" group="1" symbol="alarm">
         <binary bit="2" ref="x:0" />
       </value>
-      <value id="stp" label="STOP" group="1">
+      <value id="stp" label="STOP" group="1" symbol="warn">
         <binary bit="3" ref="x:0" />
       </value>
-      <value id="run" label="RUNNING" group="2">
+      <value id="run" label="RUNNING" group="2" symbol="normal">
         <binary bit="4" ref="x:0" />
       </value>
-      <value id="jak" label="JACKING" group="2">
+      <value id="jak" label="JACKING" group="2" symbol="normal">
         <binary bit="5" ref="x:0" />
       </value>
-      <value id="con" label="CHARGING" group="2">
+      <value id="con" label="CHARGING" group="2" symbol="normal">
         <binary bit="6" ref="x:0" />
       </value>
-      <value id="flt" label="Fault" group="2">
+      <value id="flt" label="Fault" group="2" symbol="alarm">
         <binary bit="7" ref="x:0" />
       </value>
-      <value id="msr" label="Right Motor Servo" group="ms">
+      <value id="msr" label="Right Motor Servo" group="ms" symbol="normal">
         <binary bit="8" inv="true" ref="x:0" />
       </value>
-      <value id="msl" label="Left Motor Servo" group="ms">
+      <value id="msl" label="Left Motor Servo" group="ms" symbol="normal">
         <binary bit="9" inv="true" ref="x:0" />
       </value>
-      <value id="jd1" label="Jack Motor Servo1" group="j1">
+      <value id="jd1" label="Jack Motor Servo1" group="j1" symbol="normal">
         <binary bit="10" inv="true" ref="x:0" />
       </value>
-      <value id="jd2" label="Jack Motor Servo2" group="j1">
+      <value id="jd2" label="Jack Motor Servo2" group="j1" symbol="normal">
         <binary bit="11" inv="true" ref="x:0" />
       </value>
-      <value id="jd3" label="Jack Motor Servo3" group="j2">
+      <value id="jd3" label="Jack Motor Servo3" group="j2" symbol="normal">
         <binary bit="12" inv="true" ref="x:0" />
       </value>
-      <value id="jd4" label="Jack Motor Servo4" group="j2">
+      <value id="jd4" label="Jack Motor Servo4" group="j2" symbol="normal">
         <binary bit="13" inv="true" ref="x:0" />
       </value>
-      <value id="mdar" label="Rignt Motor D/A" group="da">
+      <value id="mdar" label="Rignt Motor D/A" group="da" symbol="motor">
         <int ref="x:7" signed="true" />
       </value>
-      <value id="mdal" label="Left Motor D/A" group="da">
+      <value id="mdal" label="Left Motor D/A" group="da" symbol="motor">
         <int ref="x:8" signed="true" />
       </value>
-      <value id="bvl" label="Battery Voltage" group="bv">
+      <value id="bvl" label="Battery Voltage" group="bv" symbol="bvl">
         <float decimal="2" format="%2.2f" ref="x:22" />
       </value>
-      <value id="ist" label="Instrument" group="bv">
+      <value id="ist" label="Instrument" group="bv" symbol="ist">
         <int ref="x:23" />
       </value>
       <value id="cpos" label="Current Position" group="pos">
@@ -175,7 +175,7 @@
       <value id="dpos" label="Destination Position" group="pos">
         <int ref="x:26" />
       </value>
-      <value id="jpos" label="Jack Position" group="jpos">
+      <value id="jpos" label="Jack Position" group="jpos" symbol="jpos">
         <int ref="x:27" />
       </value>
     </status>
@@ -194,52 +194,39 @@
       </while>
     </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case id="ecode" label="ExitCode" class="alarm" msg="Unknown">
-        <enum class="hide" msg="OK">0000</enum>
-        <enum class="alarm" msg="RW Region Error">0002</enum>
-        <enum class="alarm" msg="CMD Code Error">0050</enum>
-        <enum class="alarm" msg="Devide Num Error">0056</enum>
-        <enum class="alarm" msg="Communication Error">005B</enum>
-        <enum class="alarm" msg="CPU Watch timeout Error">0060</enum>
-      </case>
-      <case id="rdy" ref="normal" />
-      <case id="pse" ref="warn" />
-      <case id="emg" ref="alarm" />
-      <case id="stp" ref="warn" />
-      <case id="run" ref="normal" />
-      <case id="jak" ref="normal" />
-      <case id="con" ref="normal" />
-      <case id="flt" ref="alarm" />
-      <case id="msr" ref="normal" />
-      <case id="msl" ref="normal" />
-      <case id="jd1" ref="normal" />
-      <case id="jd2" ref="normal" />
-      <case id="jd3" ref="normal" />
-      <case id="jd4" ref="normal" />
-      <case id="motor" type="INT">
-        <range class="alarm" msg="LOW">:10</range>
-        <range class="normal" msg="OK">10&lt;:30</range>
-        <range class="alarm" msg="HIGH">30&lt;:</range>
-      </case>
-      <case id="mdar" ref="motor" />
-      <case id="mdal" ref="motor" />
-      <case id="bvl" type="FLOAT">
-        <range class="alarm" msg="LOW">:20</range>
-        <range class="warn" msg="LESS">20&lt;:22</range>
-        <range class="normal" msg="OK">22&lt;:26</range>
-        <range class="warn" msg="FULL">26&lt;:28</range>
-        <range class="alarm" msg="HIGH">28&lt;:</range>
-      </case>
-      <case id="ist" class="warn" msg="N/A">
-        <enum class="normal" msg="MOIRCS">2</enum>
-      </case>
-      <case id="jpos" class="warn" msg="N/A">
-        <enum class="normal" msg="D">0</enum>
-        <enum class="normal" msg="1(L)">1</enum>
-        <enum class="normal" msg="2(M)">2</enum>
-        <enum class="normal" msg="3(H)">3</enum>
-        <enum class="normal" msg="CHG">4</enum>
-      </case>
+      <table id="ecode" label="ExitCode" type="string">
+        <case class="hide" msg="OK">0000</case>
+        <case class="alarm" msg="RW Region Error">0002</case>
+        <case class="alarm" msg="CMD Code Error">0050</case>
+        <case class="alarm" msg="Devide Num Error">0056</case>
+        <case class="alarm" msg="Communication Error">005B</case>
+        <case class="alarm" msg="CPU Watch timeout Error">0060</case>
+        <case class="alarm" msg="Unknown" />
+      </table>
+      <table id="motor" type="range">
+        <case class="alarm" msg="LOW">:10</case>
+        <case class="normal" msg="OK">10&lt;:30</case>
+        <case class="alarm" msg="HIGH">30&lt;:</case>
+      </table>
+      <table id="bvl" type="range">
+        <case class="alarm" msg="LOW">:20</case>
+        <case class="warn" msg="LESS">20&lt;:22</case>
+        <case class="normal" msg="OK">22&lt;:26</case>
+        <case class="warn" msg="FULL">26&lt;:28</case>
+        <case class="alarm" msg="HIGH">28&lt;:</case>
+      </table>
+      <table id="ist" type="string">
+        <case class="normal" msg="MOIRCS">2</case>
+        <case class="warn" msg="N/A" />
+      </table>
+      <table id="jpos" type="string">
+        <case class="normal" msg="D">0</case>
+        <case class="normal" msg="1(L)">1</case>
+        <case class="normal" msg="2(M)">2</case>
+        <case class="normal" msg="3(H)">3</case>
+        <case class="normal" msg="CHG">4</case>
+        <case class="warn" msg="N/A" />
+      </table>
     </symbol>
   </class>
 </cdb>

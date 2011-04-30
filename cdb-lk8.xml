@@ -26,12 +26,5 @@
         <float ref="htr" format="%3.2f" />
       </value>
     </status>
-    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <repeat from="0" to="7">
-        <case id="ch%d" />
-      </repeat>
-      <case id="sp" />
-      <case id="htr" />
-    </symbol>
   </class>
 </cdb>

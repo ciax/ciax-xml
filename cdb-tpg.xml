@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="tpg" id="tpg" label="MOIRCS Pressure">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -8,13 +8,13 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="st1" label="Turbo Pump Stat" group="s1">
+      <value id="st1" label="Turbo Pump Stat" group="s1" symbol="stat">
         <string ref="st1" />
       </value>
       <value id="ch1" label="Turbo Pump (Torr)" group="s1">
         <float format="%4.2e" ref="ch1" />
       </value>
-      <value id="st2" label="Scroll Pump Stat" group="s2">
+      <value id="st2" label="Scroll Pump Stat" group="s2" symbol="stat">
         <string ref="st2" />
       </value>
       <value id="ch2" label="Scroll Pump (Torr)" group="s2">
@@ -22,17 +22,15 @@
       </value>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case id="stat">
-        <enum class="hide" msg="Measurment data okay">0</enum>
-        <enum class="warn" msg="Underrange">1</enum>
-        <enum class="warn" msg="Overrange">2</enum>
-        <enum class="warn" msg="Sensor error">3</enum>
-        <enum class="warn" msg="Sensor off">4</enum>
-        <enum class="warn" msg="No sensor">5</enum>
-        <enum class="warn" msg="Identification error">6</enum>
-      </case>
-      <case id="st1" ref="stat" />
-      <case id="st2" ref="stat" />
+      <table id="stat" type="string">
+        <case class="hide" msg="Measurment data okay">0</case>
+        <case class="warn" msg="Underrange">1</case>
+        <case class="warn" msg="Overrange">2</case>
+        <case class="warn" msg="Sensor error">3</case>
+        <case class="warn" msg="Sensor off">4</case>
+        <case class="warn" msg="No sensor">5</case>
+        <case class="warn" msg="Identification error">6</case>
+      </table>
     </symbol>
   </class>
 </cdb>

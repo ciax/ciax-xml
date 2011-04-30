@@ -49,32 +49,24 @@
       <value id="pl" label="Limit (W)" group="l">
         <float ref="p" format="%3.2f" />
       </value>
-      <value id="sw" label="OUTPUT ON/OFF" group="s1">
+      <value id="sw" label="OUTPUT ON/OFF" group="s1" symbol="warn">
         <string ref="f1" />
       </value>
-      <value id="tmp" label="OverHeat" group="s1">
+      <value id="tmp" label="OverHeat" group="s1" symbol="alarm">
         <string ref="f2" />
       </value>
-      <value id="kn1" label="Wheel Knov Fine" group="s2">
+      <value id="kn1" label="Wheel Knov Fine" group="s2" symbol="normal">
         <string ref="f3" />
       </value>
-      <value id="kn2" label="Wheel Knov Unlock" group="s2">
+      <value id="kn2" label="Wheel Knov Unlock" group="s2" symbol="normal">
         <string ref="f4" />
       </value>
-      <value id="rem" label="REMOTE" group="s3">
+      <value id="rem" label="REMOTE" group="s3" symbol="normal">
         <string ref="f5" />
       </value>
-      <value id="loc" label="Local Lock" group="s3">
+      <value id="loc" label="Local Lock" group="s3" symbol="normal">
         <string ref="f6" />
       </value>
     </status>
-    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case id="sw" ref="warn" />
-      <case id="tmp" ref="alarm" />
-      <case id="kn1" ref="normal" />
-      <case id="kn2" ref="normal" />
-      <case id="rem" ref="normal" />
-      <case id="loc" ref="normal" />
-    </symbol>
   </class>
 </cdb>

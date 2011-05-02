@@ -6,10 +6,10 @@ class SelectID < UserError ; end
 
 class XmlGn
   def initialize(f)
-    @v=Verbose.new("Element",2)
+    @v=Verbose.new("Xml",2)
     case f
     when String
-#      test(?r,f) || raise(SelectID)
+      test(?r,f) || raise(SelectID)
       @e=XML::Document.file(f).root
     when XML::Node
       @e=f

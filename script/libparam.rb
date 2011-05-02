@@ -42,13 +42,13 @@ class Param < Hash
 
   private
   def validate(range,str)
-    str || raise(ParameterError," Short of Parameters")
+    str || @v.warn(" Short of Parameters")
     return(str) unless range
     label=range.tr(':','-')
     @v.msg{"Validate: [#{str}] Match? [#{range}]"}
     range.split(',').each{|r|
       return(str) if ReRange.new(r) == str
     }
-    raise(ParameterError," Parameter invalid(#{label})")
+    @v.warn(" Parameter invalid(#{label})")
   end
 end

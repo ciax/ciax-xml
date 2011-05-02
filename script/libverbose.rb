@@ -23,12 +23,12 @@ class Verbose
     return
   end
 
-  def err(msg='error',err=RuntimeError)
-    raise err,color(msg,1)
+  def err(msg='error')
+    raise color(msg,1)
   end
 
-  def warn(msg='error',err=UserError)
-    raise err,color(msg,3)
+  def warn(msg='error')
+    raise UserError,color(msg,3)
   end
 
   # Private Method

@@ -6,7 +6,6 @@ class XmlDoc < Hash
   def initialize(db = nil,type = nil,usage='')
     @db=db
     @usage=usage
-    @v=Verbose.new("DOC")
     readxml(type){|e|
       self[e.name]=e
       update(e.to_h)
@@ -15,23 +14,23 @@ class XmlDoc < Hash
   rescue SelectID
     err="#{$!}"
     readxml{|e| err << e.item('id') }
-    @v.warn(err,SelectID)
+    raise SelectID,err
   end
 
   def readxml(type='*')
-    @v.warn(@usage,SelectID) unless type
+    raise SelectID,@usage unless type
     pre="#{ENV['XMLPATH']}/#{@db}"
     path="#{pre}-#{type}.xml"
     Dir.glob(path).each{|p|
       XmlGn.new(p).each{|e|
         yield e
       }
-    }.empty? && @v.warn(@usage,SelectID)
+    }.empty? && raise(SelectID,@usage)
   end
 
   public
   def select(domain,xpath)
-    @v.err("No Domain") unless key?(domain)
+    raise "No Domain" unless key?(domain)
     self[domain].find_each(xpath){|e|
       return e
     }
@@ -47,11 +46,11 @@ class XmlDoc < Hash
     find_each(domain,xpath){|e|
       err << e.item('id')
     }
-    @v.warn(err,SelectID)
+    raise SelectID,err
   end
 
   def find_each(domain,xpath)
-    @v.err("No Domain") unless key?(domain)
+    raise "No Domain" unless key?(domain)
     self[domain].find_each(xpath){|e|
       yield e
     }

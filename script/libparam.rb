@@ -33,11 +33,11 @@ class Param < Hash
   end
 
   def list_cmd
-    err=["== Command List=="]
+    err="== Command List==\n"
     @label.each{|key,val|
-      err << (" %-10s: %s" % [key,val]) if val
+      err << (" %-10s: %s\n" % [key,val]) if val
     }
-    raise SelectID,err.join("\n")
+    raise SelectID,err
   end
 
   private

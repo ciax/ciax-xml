@@ -1,4 +1,7 @@
 #!/usr/bin/ruby
+
+class UserError < RuntimeError; end
+
 class Verbose
   Start_time=Time.now
   $DEBUG=true if ENV['VER']
@@ -12,8 +15,7 @@ class Verbose
   def msg(ind=0)
     @@base+=ind
     return unless ENV['VER']
-    ind=(ind > 0) ? -ind : 0
-    msg=mkmsg(yield,ind) || return
+    msg=mkmsg(yield) || return
     if ENV['VER'].split(':').any? {|s|
         (msg+'all').upcase.include?(s.upcase) }
       warn msg
@@ -21,21 +23,30 @@ class Verbose
     return
   end
 
-  def err(msg='error')
-    raise mkmsg(msg)
+  def err(msg='error',err=RuntimeError)
+    raise err,color(msg,1)
+  end
+
+  def warn(msg='error',err=UserError)
+    raise err,color(msg,3)
   end
 
   # Private Method
   private
-  def mkmsg(text,ind=0)
+  def mkmsg(text)
     return unless text
     pass=sprintf("%5.4f",Time.now-Start_time)
-    "[#{pass}]"+'  '*(ind+@@base)+color("#{@title}:")+text.inspect
+    ts= STDERR.tty? ? '' : "[#{pass}]"
+    ts+indent+color("#{@title}:")+text.inspect
+  end
+
+  def indent
+    '  '*@@base
   end
 
   # 1=red,2=green,4=blue
-  def color(text)
+  def color(text,color=@color)
     return text unless STDERR.tty?
-    "\033[3#{@color}m#{text}\33[0m"
+    "\033[3#{color}m#{text}\33[0m"
   end
 end

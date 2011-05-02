@@ -1,19 +1,20 @@
 #!/usr/bin/ruby
 require "xml"
+require "libverbose"
 
-class ParameterError < RuntimeError ; end
-class SelectID < ParameterError ; end
+class SelectID < UserError ; end
 
 class XmlGn
   def initialize(f)
+    @v=Verbose.new("Element",2)
     case f
     when String
-      test(?r,f) || raise(SelectID)
+#      test(?r,f) || raise(SelectID)
       @e=XML::Document.file(f).root
     when XML::Node
       @e=f
     else
-      raise ParameterError,"Parameter shoud be String or Node"
+      @v.err("Parameter shoud be String or Node")
     end
   end
 

@@ -33,6 +33,12 @@ class Verbose
     raise UserError,color(msg,3)
   end
 
+  # 1=red,2=green,4=blue
+  def color(text,color=@color)
+    return text unless STDERR.tty?
+    "\033[3#{color}m#{text}\33[0m"
+  end
+
   # Private Method
   private
   def mkmsg(text)
@@ -44,11 +50,5 @@ class Verbose
 
   def indent
     '  '*@ind
-  end
-
-  # 1=red,2=green,4=blue
-  def color(text,color=@color)
-    return text unless STDERR.tty?
-    "\033[3#{color}m#{text}\33[0m"
   end
 end

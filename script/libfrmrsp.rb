@@ -96,12 +96,11 @@ class FrmRsp
   def frame_to_array(e0)
     key=e0['assign'] || @v.err("No key for Array")
     begin
-      @v.msg(1){"Array:#{e0['label']}[#{key}]"}
       idxs=[]
       e0[:index].each{|e1| # Index
         idxs << @par.subst(e1['range'])
       }
-      @v.msg(1){"Array:Indexs#{e0[:index]} -> #{idxs}"}
+      @v.msg(1){"Array:#{e0['label']}[#{key}]:Range#{idxs}"}
       @stat[key]=mk_array(idxs,@stat[key]){
         decode(e0,@frm.cut(e0))
       }

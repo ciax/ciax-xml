@@ -18,7 +18,7 @@ class Verbose
     msg=mkmsg(yield) || return
     if ENV['VER'].split(':').any? {|s|
         (msg+'all').upcase.include?(s.upcase) }
-      warn msg
+      Kernel.warn msg
     end
     return
   end

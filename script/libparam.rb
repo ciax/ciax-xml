@@ -39,10 +39,10 @@ class Param
 
   private
   def list_cmd
-    err=@v.color("== Command List==",2)+"\n"
+    err=Verbose.color("== Command List==",2)+"\n"
     @list.each{|key,val|
       if label=val['label']
-        err << @v.color(" %-10s" % key,3)+": #{label}\n"
+        err << Verbose.color(" %-10s" % key,3)+": #{label}\n"
       end
     }
     raise SelectID,err

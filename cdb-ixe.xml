@@ -38,7 +38,7 @@
         <repeat from="1" to="6">
           <statement command="set">
             <argv format="spd:%d">$_-1</argv>
-            <argv range="0:800">$1</argv>
+            <argv valid="0:800">$1</argv>
           </statement>
           <statement command="setspd">
             <argv>$_</argv>
@@ -79,8 +79,8 @@
       </session>
       <session id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
         <statement command="fw">
-          <argv range="1:6">$1</argv>
-          <argv range="1:" format="%d">$2 * 8000</argv>
+          <argv valid="1:6">$1</argv>
+          <argv valid="1:" format="%d">$2 * 8000</argv>
         </statement>
         <statement command="chkrun">
           <argv>$1</argv>
@@ -88,8 +88,8 @@
       </session>
       <session id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
         <statement command="bk">
-          <argv range="1:6">$1</argv>
-          <argv format="%d" range="1:">$2 * 8000</argv>
+          <argv valid="1:6">$1</argv>
+          <argv format="%d" valid="1:">$2 * 8000</argv>
         </statement>
         <statement command="chkrun">
           <argv>$1</argv>
@@ -97,8 +97,8 @@
       </session>
       <session id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
         <statement command="abs">
-          <argv range="1:6">$1</argv>
-          <argv format="%d" range="0:48">$2 * 8000</argv>
+          <argv valid="1:6">$1</argv>
+          <argv format="%d" valid="0:48">$2 * 8000</argv>
         </statement>
         <statement command="chkrun">
           <argv>$1</argv>

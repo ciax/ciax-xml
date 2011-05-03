@@ -7,7 +7,7 @@
       </session>
       <session id="run" label="Run to Destination Tag [1-12]">
         <statement command="set_tag">
-          <argv range="1:12">$1</argv>
+          <argv valid="1:12">$1</argv>
         </statement>
         <statement command="start">
           <argv>0</argv>
@@ -34,7 +34,7 @@
       </session>
       <session id="lift" label="Lift Jack Level [0-3]">
         <statement command="set_pos">
-          <argv range="0:3">$1</argv>
+          <argv valid="0:3">$1</argv>
         </statement>
         <statement command="start">
           <argv>8</argv>

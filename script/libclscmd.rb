@@ -30,7 +30,7 @@ class ClsCmd
           when String
             stm << e2
           when Hash
-            str=@par.subst(e2['val'],e2['range'])
+            str=@par.subst(e2['val'],e2['valid'])
             str = e2['format'] % eval(str) if e2['format']
             @v.msg{"Calculated [#{str}]"}
             stm << str

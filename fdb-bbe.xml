@@ -10,7 +10,7 @@
         </command>
         <command id="output" label="OUTPUT [DDDDD]" type="action">
           <data>SO</data>
-          <data encode="bew" range="0:65535">$1</data>
+          <data encode="bew" valid="0:65535">$1</data>
         </command>
         <command id="outfld" label="OUTPUT from Field" nocache="true" type="action">
           <data>SO</data>

@@ -28,41 +28,41 @@
           </repeat>
         </command>
         <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>=N</data>
         </command>
         <command id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>=E</data>
         </command>
         <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>=H</data>
         </command>
         <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>P21R</data>
         </command>
         <command id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>P21S</data>
           <data>${p:$1-1}</data>
         </command>
         <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>P14R</data>
         </command>
         <command id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>P14S</data>
           <data>${spd:$1-1}</data>
         </command>
         <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>P12R</data>
         </command>
         <command id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>P12S</data>
           <data>${ofs:$1-1}</data>
         </command>
@@ -79,27 +79,27 @@
           </repeat>
         </command>
         <command id="stop" label="Stop Moving [1-6]" response="default" type="action">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>S</data>
         </command>
         <command id="init" label="Initialize [1-6]" response="default" type="action">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>0</data>
         </command>
         <command id="fw" label="Move forward [T] [H}(8000/hole)" response="default" type="action">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>+</data>
-          <data range="0:">$2</data>
+          <data valid="0:">$2</data>
         </command>
         <command id="bk" label="Move backward [T] [H](8000/hole)" response="default" type="action">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>-</data>
-          <data range="0:">$2</data>
+          <data valid="0:">$2</data>
         </command>
         <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
-          <data range="1:6">$1</data>
+          <data valid="1:6">$1</data>
           <data>A</data>
-          <data range="0:384000">$2</data>
+          <data valid="0:384000">$2</data>
         </command>
       </select>
       <data encode="chr" label="Suffix">3</data>

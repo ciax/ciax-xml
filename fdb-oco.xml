@@ -10,7 +10,7 @@
         </command>
         <command id="i" label="Set Current by argv [DD.DD]" type="action">
           <data>1AO+000</data>
-          <data format="%05.2f" range="0:99">$1</data>
+          <data format="%05.2f" valid="0:99">$1</data>
         </command>
       </select>
       <data encode="chr" label="Suffix">0xd</data>

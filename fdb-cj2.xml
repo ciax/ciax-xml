@@ -48,8 +48,8 @@
           <data encode="chr" label="FINS Command:SRC">0x02</data>
           <data encode="chr" label="FINS Param:Memory type(W)">0x31</data>
           <data encode="chr" label="FINS Param:Start Address(H)">0x00</data>
-          <data encode="chr" label="FINS Param:Start Address(L)" range="0:3">$1</data>
-          <data encode="chr" label="FINS Param:Bit Number" range="0:15">$2</data>
+          <data encode="chr" label="FINS Param:Start Address(L)" valid="0:3">$1</data>
+          <data encode="chr" label="FINS Param:Bit Number" valid="0:15">$2</data>
           <data encode="chr" label="FINS Param:Bit Data Length (H)">0x00</data>
           <data encode="chr" label="FINS Param:Bit Data Length (L)">0x01</data>
           <data encode="chr" label="FINS Param:Bit Data">0x01</data>

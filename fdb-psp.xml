@@ -9,19 +9,19 @@
         </command>
         <command id="setvl" label="Set Voltage Limit [DD]" type="config">
           <data>SU </data>
-          <data range="0:20" format="%02d">$1</data>
+          <data valid="0:20" format="%02d">$1</data>
         </command>
         <command id="setal" label="Set Current Limit [D.DD]" type="config">
           <data>SI </data>
-          <data format="%04.2f" range="0:&lt;10">$1</data>
+          <data format="%04.2f" valid="0:&lt;10">$1</data>
         </command>
         <command id="setpl" label="Set Power Limit [DDD]" type="config">
           <data>SP </data>
-          <data format="%03d" range="0:&lt;200">$1</data>
+          <data format="%03d" valid="0:&lt;200">$1</data>
         </command>
         <command id="setv" label="Set Voltage [DD.DD]" type="config">
           <data>SV </data>
-          <data format="%05.2f" range="0:&lt;100">$1</data>
+          <data format="%05.2f" valid="0:&lt;100">$1</data>
         </command>
         <command id="pon" label="OUTPUT ON" type="action">
           <data>KOE</data>

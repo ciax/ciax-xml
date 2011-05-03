@@ -20,7 +20,7 @@
             <data label="Operand">CIO </data>
             <data label="Channel">0000</data>
             <!--[000..04(5)]-->
-            <data format="%016d" range="0:500000">$1</data>
+            <data format="%016d" valid="0:500000">$1</data>
           </command>
         </select>
       </ccrange>

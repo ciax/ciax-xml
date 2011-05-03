@@ -9,15 +9,14 @@ class FrmRsp
 
   def initialize(doc,stat)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    @doc,@stat,@sel=doc,stat
-    @v=Verbose.new("#{@doc['id']}/rsp",3)
-    @stat['frame']=@doc['id']
+    @stat=stat
+    @v=Verbose.new("#{doc['id']}/rsp",3)
+    @stat['frame']=doc['id']
     @fdb={}
-    init_main(@doc,'rspframe',@fdb)
-    init_cc(@doc,'rspframe',@fdb)
-    @rlist=init_sel(@doc,'rspframe','response')
-    @clist=init_sel(@doc,'cmdframe','command')
-    @par=Param.new(@clist)
+    init_main(doc,'rspframe',@fdb)
+    init_cc(doc,'rspframe',@fdb)
+    @rlist=init_sel(doc,'rspframe','response')
+    @par=Param.new(init_sel(doc,'cmdframe','command'))
   end
 
   def setrsp(stm)

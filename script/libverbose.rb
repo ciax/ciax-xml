@@ -27,25 +27,35 @@ class Verbose
   end
 
   def err(msg='error')
-    raise Verbose.color(msg,1)
+    raise color(msg,1)
   end
 
   def warn(msg='error')
-    raise UserError,Verbose.color(msg,3)
+    raise UserError,color(msg,3)
   end
 
-  # 1=red,2=green,4=blue
-  def Verbose.color(text,color)
-    return text unless STDERR.tty?
-    "\033[3#{color}m#{text}\33[0m"
+  def list(list,title)
+    err=color(title,2)+"\n"
+    list.each{|key,val|
+      if label=val['label']
+        err << color(" %-10s" % key,3)+": #{label}\n"
+      end
+    }
+    err
   end
 
   # Private Method
   private
+  # 1=red,2=green,4=blue
+  def color(text,color)
+    return text unless STDERR.tty?
+    "\033[3#{color}m#{text}\33[0m"
+  end
+
   def mkmsg(text)
     return unless text
     pass=sprintf("%5.4f",Time.now-Start_time)
     ts= STDERR.tty? ? '' : "[#{pass}]"
-    ts+'  '*@ind+Verbose.color("#{@title}:",@color)+text.inspect
+    ts+'  '*@ind+color("#{@title}:",@color)+text.inspect
   end
 end

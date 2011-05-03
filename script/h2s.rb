@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "json"
 
-usage="Usage: h2s < json_file\n"
+usage="Usage: h2s < json_file"
 
 field=JSON.load(gets(nil))
 field.each{|k,v|

@@ -6,7 +6,7 @@ require "libxmldoc"
 require "libalias"
 require "libshell"
 
-usage="Usage: clsshell [cls] [id] [iocmd] (outcmd)\n"
+usage="Usage: clsshell [cls] [id] [iocmd] (outcmd)"
 cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift

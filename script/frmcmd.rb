@@ -3,7 +3,7 @@ require "libstat"
 require "libfrmcmd"
 require "libxmldoc"
 
-usage="Usage: frmcmd [dev] [id] [cmd] (par)\n"
+usage="Usage: frmcmd [dev] [id] [cmd] (par)"
 
 dev=ARGV.shift
 id=ARGV.shift

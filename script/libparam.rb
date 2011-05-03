@@ -13,7 +13,7 @@ class Param
   def setpar(stm)
     @v.msg{"SetPar: #{stm}"}
     @stm=stm.dup
-    @list[stm.first] || list_cmd
+    @list[stm.first] || raise(SelectID,@v.list(@list,"== Command List=="))
   end
 
   def subst(str,range=nil) # par={ val,range,format } or String
@@ -38,16 +38,6 @@ class Param
   end
 
   private
-  def list_cmd
-    err=Verbose.color("== Command List==",2)+"\n"
-    @list.each{|key,val|
-      if label=val['label']
-        err << Verbose.color(" %-10s" % key,3)+": #{label}\n"
-      end
-    }
-    raise SelectID,err
-  end
-
   def validate(range,str)
     str || @v.warn(" Short of Parameters")
     return(str) unless range

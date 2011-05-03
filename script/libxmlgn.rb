@@ -47,14 +47,6 @@ class XmlGn
     nil
   end
 
-  def item(key)
-    if @e[key] && @e['label']
-      " %-10s: %s\n" % [@e[key],@e['label']] 
-    else
-      ''
-    end
-  end
-
   def find_each(xpath)
     ns=@e.namespaces.namespace.to_s
     @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|

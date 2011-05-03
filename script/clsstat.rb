@@ -4,7 +4,7 @@ require "libxmldoc"
 require "libclsstat"
 require "libstat"
 
-usage="Usage: clsstat [class] < field_file\n"
+usage="Usage: clsstat [class] < field_file"
 
 cls=ARGV.shift
 ARGV.clear

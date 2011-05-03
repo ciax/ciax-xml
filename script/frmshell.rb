@@ -3,7 +3,7 @@ require "libxmldoc"
 require "libfrm"
 require "libshell"
 
-usage="Usage: frmshell [dev] [id] [iocmd] (outcmd)\n"
+usage="Usage: frmshell [dev] [id] [iocmd] (outcmd)"
 dev=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift

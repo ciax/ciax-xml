@@ -4,7 +4,7 @@ require "libstat"
 require "libfrmrsp"
 require "libxmldoc"
 
-usage="Usage: frmstat [frame] [id] < logline\n"
+usage="Usage: frmstat [frame] [id] < logline"
 dev=ARGV.shift
 id=ARGV.shift
 ARGV.clear

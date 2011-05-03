@@ -6,15 +6,16 @@ class XmlDoc < Hash
   def initialize(db = nil,type = nil,usage='')
     @db=db
     @usage=usage
+    @v=Verbose.new("Doc",4)
     readxml(type){|e|
       self[e.name]=e
       update(e.to_h)
       e.each{|e1| self[e1.name]=e1 }
     }
   rescue SelectID
-    err="#{$!}"
-    readxml{|e| err << e.item('id') }
-    raise SelectID,err
+    list={}
+    readxml{|e| list[e['id']]=e }
+    raise SelectID,@v.list(list,"#{$!}")
   end
 
   def readxml(type='*')

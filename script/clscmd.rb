@@ -2,7 +2,7 @@
 require "libxmldoc"
 require "libclscmd"
 
-usage="Usage: clscmd [class] [cmd] (par)\n"
+usage="Usage: clscmd [class] [cmd] (par)"
 cls=ARGV.shift
 cmd=ARGV
 begin

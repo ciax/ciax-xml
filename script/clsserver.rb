@@ -6,7 +6,7 @@ require "libxmldoc"
 require "libserver"
 require "libfilter"
 
-usage="Usage: clsserver [cls] [id] [port] [iocmd] (outcmd)\n"
+usage="Usage: clsserver [cls] [id] [port] [iocmd] (outcmd)"
 
 cls=ARGV.shift
 id=ARGV.shift

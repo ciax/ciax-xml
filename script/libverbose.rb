@@ -9,12 +9,14 @@ class Verbose
     @title=title.upcase
     @color=color
     @@base=1
-  end
+ end
 
   # Public Method
   def msg(ind=0)
-    @@base+=ind
     return unless ENV['VER']
+    @ind=@@base
+    @@base+=ind
+    @ind=@@base if ind < 0
     msg=mkmsg(yield) || return
     if ENV['VER'].split(':').any? {|s|
         (msg+'all').upcase.include?(s.upcase) }
@@ -41,7 +43,7 @@ class Verbose
   end
 
   def indent
-    '  '*@@base
+    '  '*@ind
   end
 
   # 1=red,2=green,4=blue

@@ -3,9 +3,9 @@ require 'libverbose'
 require 'librerange'
 
 # Parameter must be numerical
-class Param < Hash
-  def initialize(label)
-    @label=label
+class Param
+  def initialize(list)
+    @list=list
     @stm=[]
     @v=Verbose.new("PARAM",4)
   end
@@ -13,6 +13,7 @@ class Param < Hash
   def setpar(stm)
     @v.msg{"SetPar: #{stm}"}
     @stm=stm.dup
+    @list[stm.first] || list_cmd
   end
 
   def subst(str,range=nil) # par={ val,range,format } or String
@@ -32,15 +33,21 @@ class Param < Hash
     end
   end
 
+  def [](key)
+    @list[@stm.first][key]
+  end
+
+  private
   def list_cmd
     err="== Command List==\n"
-    @label.each{|key,val|
-      err << (" %-10s: %s\n" % [key,val]) if val
+    @list.each{|key,val|
+      if label=val['label']
+        err << (" %-10s: %s\n" % [key,label])
+      end
     }
     raise SelectID,err
   end
 
-  private
   def validate(range,str)
     str || @v.warn(" Short of Parameters")
     return(str) unless range

@@ -9,15 +9,11 @@ class ClsCmd
   def initialize(doc)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @v=Verbose.new("#{doc['id']}/stm",2)
-    @label={}
-    @session={}
-    init_cmd(doc)
-    @par=Param.new(@label)
+    @par=Param.new(init_cmd(doc))
   end
 
   def setcmd(ssn)
     @id=ssn.first
-    @sel=@session[ssn.first] || @par.list_cmd
     @par.setpar(ssn)
     self
   end
@@ -25,7 +21,7 @@ class ClsCmd
   def statements
     @v.msg{"Exec(CDB):#{@id}"}
     stma=[]
-    @sel.each{|e1|
+    @par[:statements].each{|e1|
       stm=[]
       @v.msg(1){"GetCmd(DDB):#{e1.first}"}
       begin
@@ -51,10 +47,11 @@ class ClsCmd
   private
   def init_cmd(doc)
     rep=Repeat.new
+    session={}
     doc['commands'].each{|e0|
-      id=e0['id']
-      @label[id]=e0['label']
-      @session[id]=[]
+      hash=e0.to_h
+      id=hash.delete('id')
+      hash[:statements]=[]
       rep.each(e0){|e1|
         command=[e1['command']]
         e1.each{|e2|
@@ -62,10 +59,11 @@ class ClsCmd
           argv['val'] = rep.subst(e2.text)
           command << argv.freeze
         }
-        @session[id] << command.freeze
+        hash[:statements] << command.freeze
       }
-      @v.msg{"Session:Init[#{id}] #{@session[id]}"}
+      session[id]=hash.freeze
+      @v.msg{"Session:Init[#{id}] #{hash}"}
     }
-    self
+    session
   end
 end

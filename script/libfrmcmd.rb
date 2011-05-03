@@ -16,19 +16,16 @@ class FrmCmd
     @fdb={}
     init_main(doc,'cmdframe',@fdb)
     init_cc(doc,'cmdframe',@fdb)
-    @flist=init_sel(doc,'cmdframe','command')
-    @label=mk_db(@flist,'label')
-    @par=Param.new(@label)
+    @par=Param.new(init_sel(doc,'cmdframe','command'))
   end
 
   def setcmd(stm) # return = response select
     id=stm.first
-    sel=@flist[id] || @par.list_cmd
-    @fdb['select']=sel[:frame]
     @par.setpar(stm)
+    @fdb['select']=@par[:frame]
     @cid=stm.join(':')
-    @cid << ':*' if /true|1/ === sel['nocache']
-    @v.msg{'Select:'+@label[id]+"(#{@cid})"}
+    @cid << ':*' if /true|1/ === @par['nocache']
+    @v.msg{"Select:#{@par['label']}(#{@cid})"}
     self
   end
 

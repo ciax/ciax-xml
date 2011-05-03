@@ -17,16 +17,15 @@ class FrmRsp
     init_cc(@doc,'rspframe',@fdb)
     @rlist=init_sel(@doc,'rspframe','response')
     @clist=init_sel(@doc,'cmdframe','command')
-    @par=Param.new(mk_db(@clist,'label'))
+    @par=Param.new(@clist)
   end
 
   def setrsp(stm)
     cid=stm.first
-    csel=@clist[cid] || @par.list_cmd
+    csel=@par.setpar(stm)
     rid=csel['response']
     sel=@rlist[rid] || @v.err("No such id [#{rid}]")
     @fdb['select']=sel[:frame]
-    @par.setpar(stm)
     @v.msg{"Set Statement #{stm}"}
     self
   end

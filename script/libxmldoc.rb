@@ -30,16 +30,8 @@ class XmlDoc < Hash
   end
 
   public
-  def select(domain,xpath)
-    raise "No Domain" unless key?(domain)
-    self[domain].find_each(xpath){|e|
-      return e
-    }
-    nil
-  end
-
   def select_id(domain,id,xpath='*')
-    elem=select(domain,"#{xpath}[@id='#{id}']")
+    elem=find_each(domain,"#{xpath}[@id='#{id}']"){|e| return e }
     return elem if elem
     err=''
     err << "No such command [#{id}]\n" if id

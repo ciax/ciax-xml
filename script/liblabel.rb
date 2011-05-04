@@ -27,16 +27,15 @@ class Label
 
   def merge(stat)
     result={}
-    @label.each{|id,label|
-      case stat[id]
-      when Hash
-        result[id]=stat[id].update(@label[id])
-      when nil
+    stat.each{|k,v|
+      case k
+      when 'header'
+        result[k]=v
       else
-        val=stat[id]
-        result[id]=@label[id]
-        result[id]['val']=val
+        next unless @label.key?(k)
+        v.update(@label[k])
       end
+      result[k]=v
     }
     result
   end

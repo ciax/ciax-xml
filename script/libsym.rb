@@ -17,38 +17,31 @@ class Sym
   end
 
   def convert(stat)
-    conv={}
+    result={}
     stat.each{|k,v|
-      case v
-      when Hash
-        val=v['val']
-        h=v
-      else
-        val=v
-        h={'val'=>v}
-      end
+      val=v['val']
       if sid=@ss[k]
         tbl=@sdb[sid][:table]
         case @sdb[sid]['type']
         when 'range'
           tbl.each{|match,hash|
             next unless ReRange.new(match) == val
-            h.update(hash)
+            v.update(hash)
             @v.msg{"STAT:Range:[#{match}] and [#{val}]"}
           }
         when 'regexp'
           tbl.each{|match,hash|
             @v.msg{"STAT:Regexp:[#{match}] and [#{val}]"}
             next unless /#{match}/ === val
-            h.update(hash)
+            v.update(hash)
           }
         else
-          h.update(@sdb[sid][:table][val])
+          v.update(@sdb[sid][:table][val])
         end
       end
-      conv[k]=h
+      result[k]=v
     }
-    conv
+    result
   end
 
   private

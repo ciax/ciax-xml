@@ -1,15 +1,17 @@
 #!/usr/bin/ruby
 require "json"
+require "libmods2h"
+include S2h
 abort "Usage: labeling [file]" if STDIN.tty? && ARGV.size < 1
 
 begin
-  stat=JSON.load(gets(nil))
-  if type=stat['frame']
+  stat=s2h(JSON.load(gets(nil)))
+  if type=stat['header']['frame']
     require "libfrmlabel"
     dv=FrmLabel.new(type)
-  elsif type=stat['class']
+  elsif type=stat['header']['class']
     require "libclslabel"
-    id=stat['id']
+    id=stat['header']['id']
     dv=ClsLabel.new(type,id)
   else
     raise "NO ID in Stat"

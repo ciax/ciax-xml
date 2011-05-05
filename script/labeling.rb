@@ -16,7 +16,7 @@ begin
   else
     raise "NO ID in Stat"
   end
-  puts JSON.dump(dv.merge(stat))
+  puts JSON.dump(dv.convert(stat))
 rescue
   abort $!.to_s
 end

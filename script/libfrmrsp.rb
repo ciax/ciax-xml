@@ -139,7 +139,7 @@ class FrmRsp
       e.each{|e1|
         idx << e1.to_h
       }
-      @stat[id]=@stat[id] || init_array(idx.map{|h| h['size']}){''}
+      @stat[id]=@stat[id] || init_array(idx.map{|h| h['size']}){'0'}
       attr
     when 'ccrange','select'
       e.name

@@ -96,7 +96,7 @@
           <field decode="chr" label="FINS Command:SRC" length="1">0x01</field>
           <field decode="chr" label="FINS Command:MRES" length="1">0x00</field>
           <field decode="chr" label="FINS Command:SRES" length="1">0x00</field>
-          <field assign="err" decode="bew" label="FINS Command:Error Code" length="2" />
+          <field assign="err" decode="bew" label="FINS Command:Error Code" length="2">0</field>
         </response>
         <response id="getzlen">
           <field decode="chr" label="FINS Command:MRC" length="1">0x01</field>
@@ -112,6 +112,11 @@
           <field decode="chr" label="FINS Command:SRC" length="1">0x02</field>
           <field decode="chr" label="FINS Command:MRES" length="1">0x00</field>
           <field decode="chr" label="FINS Command:SRES" length="1">0x00</field>
+        </response>
+        <response id="dmy" label="for csv daemon">
+          <field decode="chr" label="Local IP (CIAX)" length="1" assign="ipl">1</field>
+          <field decode="chr" label="Remote IP (DSO)" length="1" assign="ipr">32</field>
+          <field decode="chr" label="Exe Flag" length="1" assign="exe">0</field>
         </response>
       </select>
     </rspframe>

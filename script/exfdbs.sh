@@ -5,23 +5,26 @@
 [ "$1" = "-l" ] && { shift; label=1; }
 [ "$1" = "-p" ] && { shift; print=1; }
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
-cmd=${*:-getstat}
 for id in $devices; do
     setfld $id || _usage_key "(-r|-s)"
     echo "#### $dev($id) ####"
     input="$HOME/.var/device_${id}_*.log"
     output="$HOME/.var/field_${id}.json"
     [ "$clear" ] && [ -e $output ] && rm $output
-    stat="`grep rcv:${cmd// /:} $input|tail -1`"
-    if [ "$stat" ] ; then
-        if [ "$print" ] ; then
-            echo "$stat" | frmstat $dev $id | symboling | labeling | stprint
-        elif [ "$label" ] ; then
-            echo "$stat" | frmstat $dev $id | labeling | h2s
-        elif [ "$sym" ] ; then
-            echo "$stat" | frmstat $dev $id | symboling | h2s
-        else
-            echo "$stat" | frmstat $dev $id | h2s
+    frmcmd $dev 2>&1 |grep : | while read line; do
+        cmd=${line%:*}
+        stat="`grep rcv:${cmd// /:} $input|tail -1`"
+        if [ "$stat" ] ; then
+            echo "$stat" | frmstat $dev $id > /dev/null
         fi
+    done
+    if [ "$print" ] ; then
+        < $output symboling | labeling | stprint
+    elif [ "$label" ] ; then
+        < $output labeling | h2s
+    elif [ "$sym" ] ; then
+        < $output symboling | h2s
+    else
+        < $output h2s
     fi
 done

@@ -2,6 +2,7 @@
 require "libxmldoc"
 require "libverbose"
 require "librerange"
+require "librepeat"
 
 class Sym
   def initialize(doc)
@@ -9,6 +10,7 @@ class Sym
     @doc=doc
     @com=XmlDoc.new('sdb','all')
     @v=Verbose.new("Symbol",4)
+    @rep=Repeat.new
     @sdb={}
     init_sym(doc)
     init_sym(@com)
@@ -48,8 +50,8 @@ class Sym
 
   private
   def init_ss(doc)
-    doc.find_each('status','value[@symbol]'){|e0|
-      @ss[e0['id']]=e0['symbol']
+    @rep.each(doc['status']){|e0|
+      @ss[@rep.format(e0['id'])]=e0['symbol'] if e0['symbol']
     }
     @v.msg{"Stat-Symbol:#{@ss}"}
   end

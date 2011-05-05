@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
-module S2h
-  def s2h(stat)
+# String to Qualified string (String with attributes)
+module S2q
+  def s2q(stat)
     return stat.clone if stat.key?('header')
     result={'header' => {}}
     ['id','class','frame'].each{|key|

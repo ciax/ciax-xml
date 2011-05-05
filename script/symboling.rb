@@ -2,13 +2,13 @@
 require "json"
 require "libxmldoc"
 require "libsym"
-require "libmods2h"
-include S2h
+require "libmods2q"
+include S2q
 
 abort "Usage: symboling [file]" if STDIN.tty? && ARGV.size < 1
 
 begin
-  stat=s2h(JSON.load(gets(nil)))
+  stat=s2q(JSON.load(gets(nil)))
   if frm=stat['header']['frame']
     doc=XmlDoc.new('fdb',frm)
   elsif cls=stat['header']['class']

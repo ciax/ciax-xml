@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "json"
-require "libmods2h"
-include S2h
+require "libmods2q"
+include S2q
 abort "Usage: labeling [file]" if STDIN.tty? && ARGV.size < 1
 
 begin
-  stat=s2h(JSON.load(gets(nil)))
+  stat=s2q(JSON.load(gets(nil)))
   if type=stat['header']['frame']
     require "libfrmlabel"
     dv=FrmLabel.new(type)

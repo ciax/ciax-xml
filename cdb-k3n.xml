@@ -7,11 +7,11 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="err" label="STAT">
+      <value id="err" label="STAT" symbol="err">
         <string ref="rcode" />
         <string ref="ecode" />
       </value>
-      <value id="flow" label="Helium Compressor Coolant Flow(l/min)">
+      <value id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="flow">
         <float decimal="2" format="%4.2f" ref="stat" />
       </value>
     </status>

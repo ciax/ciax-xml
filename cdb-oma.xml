@@ -7,7 +7,7 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="pres" label="Air Pressure (Psi)">
+      <value id="pres" label="Air Pressure (Psi)" symbol="pres">
         <float format="%4.2f" decimal="2" ref="stat" />
       </value>
     </status>

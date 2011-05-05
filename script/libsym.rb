@@ -8,7 +8,7 @@ class Sym
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc=doc
     @com=XmlDoc.new('sdb','all')
-    @v=Verbose.new("Symbol")
+    @v=Verbose.new("Symbol",4)
     @sdb={}
     init_sym(doc)
     init_sym(@com)
@@ -19,13 +19,15 @@ class Sym
   def convert(stat)
     result={}
     stat.each{|k,v|
-      val=v['val']
-      if sid=@ss[k]
+      val=v['val'] 
+      if (sid=@ss[k]) && val != ''
+        @v.msg{"ID=#{k},symbol=#{sid}"}
         tbl=@sdb[sid][:table]
         case @sdb[sid]['type']
         when 'range'
           tbl.each{|match,hash|
             next unless ReRange.new(match) == val
+            v['val']=val.to_f
             v.update(hash)
             @v.msg{"STAT:Range:[#{match}] and [#{val}]"}
           }

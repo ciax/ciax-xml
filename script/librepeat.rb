@@ -19,7 +19,7 @@ class Repeat
       else
         yield e1
       end
-    }
+    } if e0
   end
 
   def subst(str)

@@ -42,9 +42,8 @@ class XmlDoc < Hash
   end
 
   def find_each(domain,xpath)
-    return unless key?(domain)
     self[domain].find_each(xpath){|e|
       yield e
-    }
+    } if key?(domain)
   end
 end

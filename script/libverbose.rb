@@ -39,8 +39,8 @@ class Verbose
     Kernel.warn color(msg,3)
   end
 
-  def list(list,title)
-    err=color(title,2)+"\n"
+  def list(list,title,pre='')
+    err="#{$!}#{color(title,2)}\n"
     list.each{|key,val|
       if label=val['label']
         err << color(" %-10s" % key,3)+": #{label}\n"

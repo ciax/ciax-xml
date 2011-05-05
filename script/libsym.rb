@@ -23,29 +23,29 @@ class Sym
   def convert(stat)
     result={}
     stat.each{|k,v|
-      val=v['val'] 
-      if (sid=@ss[k]) && val != ''
-        @v.msg{"ID=#{k},symbol=#{sid}"}
-        tbl=@sdb[sid][:table]
-        case @sdb[sid]['type']
-        when 'range'
-          tbl.each{|match,hash|
-            next unless ReRange.new(match) == val
-            v['val']=val.to_f
-            v.update(hash)
-            @v.msg{"STAT:Range:[#{match}] and [#{val}]"}
-          }
-        when 'regexp'
-          tbl.each{|match,hash|
-            @v.msg{"STAT:Regexp:[#{match}] and [#{val}]"}
-            next unless /#{match}/ === val
-            v.update(hash)
-          }
-        else
-          v.update(@sdb[sid][:table][val])
-        end
-      end
       result[k]=v
+      val=v['val']
+      next if val == ''
+      next unless sid=@ss[k]
+      @v.msg{"ID=#{k},symbol=#{sid}"}
+      tbl=@sdb[sid][:table]
+      case @sdb[sid]['type']
+      when 'range'
+        tbl.each{|match,hash|
+          next unless ReRange.new(match) == val
+          v['val']=val.to_f
+          v.update(hash)
+          @v.msg{"STAT:Range:[#{match}] and [#{val}]"}
+        }
+      when 'regexp'
+        tbl.each{|match,hash|
+          @v.msg{"STAT:Regexp:[#{match}] and [#{val}]"}
+          next unless /#{match}/ === val
+          v.update(hash)
+        }
+      else
+        v.update(@sdb[sid][:table][val])
+      end
     }
     result
   end

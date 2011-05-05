@@ -51,7 +51,7 @@ class ClsStat
       }
       @stat[id]=''
       @cdbs[id]=fields
-    @v.msg{"STAT:Init VAL [#{id}] : #{fields}"}
+      @v.msg{"STAT:Init VAL [#{id}] : #{fields}"}
     }
     self
   end

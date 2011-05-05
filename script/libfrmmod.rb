@@ -50,7 +50,8 @@ module FrmMod
   end
 
   #Initialize
-  def init_main(doc,domain,hash)
+  def init_main(doc,domain)
+    hash={}
     begin
       @v.msg(1){"INIT:Main Frame <-"}
       frame=[]
@@ -63,9 +64,6 @@ module FrmMod
     ensure
       @v.msg(-1){"-> INIT:Main Frame"}
     end
-  end
-
-  def init_cc(doc,domain,hash)
     doc.find_each(domain,'ccrange'){|e0|
       begin
         @v.msg(1){"INIT:Ceck Code Frame <-"}
@@ -80,6 +78,7 @@ module FrmMod
         @v.msg(-1){"-> INIT:Ceck Code Frame"}
       end
     }
+    hash
   end
 
   def init_sel(doc,domain,select)

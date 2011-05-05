@@ -17,6 +17,7 @@ class Sym
     @ss={}
     init_frm(doc)
     init_cls(doc)
+    @v.msg{"Stat-Symbol:#{@ss}"}
   end
 
   def convert(stat)
@@ -54,14 +55,12 @@ class Sym
     @rep.each(doc['status']){|e0|
       @ss[@rep.format(e0['id'])]=e0['symbol'] if e0['symbol']
     }
-    @v.msg{"Stat-Symbol:#{@ss}"}
   end
 
   def init_frm(doc)
     doc.find_each('rspframe','*[@symbol]'){|e0|
       @ss[e0['assign']]=e0['symbol']
     }
-    @v.msg{"Stat-Symbol:#{@ss}"}
   end
 
   def init_sym(doc)

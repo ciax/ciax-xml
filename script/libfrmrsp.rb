@@ -12,9 +12,7 @@ class FrmRsp
     @stat=stat
     @v=Verbose.new("#{doc['id']}/rsp",3)
     @stat['frame']=doc['id']
-    @fdbs={}
-    init_main(doc,'rspframe',@fdbs)
-    init_cc(doc,'rspframe',@fdbs)
+    @fdbs=init_main(doc,'rspframe')
     @fdbsel=init_sel(doc,'rspframe','response')
     @par=Param.new(init_sel(doc,'cmdframe','command'))
   end

@@ -13,9 +13,7 @@ class FrmCmd
     @cache={}
     @rep=Repeat.new
     @fstr={}
-    @fdbc={}
-    init_main(doc,'cmdframe',@fdbc)
-    init_cc(doc,'cmdframe',@fdbc)
+    @fdbc=init_main(doc,'cmdframe')
     @par=Param.new(init_sel(doc,'cmdframe','command'))
   end
 

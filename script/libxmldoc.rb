@@ -5,28 +5,27 @@ class XmlDoc < Hash
   private
   def initialize(db = nil,type = nil,usage='')
     @db=db
-    @usage=usage
     @v=Verbose.new("Doc",4)
-    readxml(type){|e|
-      self[e.name]=e
-      update(e.to_h)
-      e.each{|e1| self[e1.name]=e1 }
-    }
-  rescue SelectID
-    list={}
-    readxml{|e| list[e['id']]=e }
-    @v.list(list,"#{$!}")
+    if type && ! readxml(type){|e|
+        self[e.name]=e
+        update(e.to_h)
+        e.each{|e1| self[e1.name]=e1 }
+      }.empty?
+    else
+      list={}
+      readxml{|e| list[e['id']]=e }
+      @v.list(list,usage)
+    end
   end
 
   def readxml(type='*')
-    raise SelectID,@usage unless type
     pre="#{ENV['XMLPATH']}/#{@db}"
     path="#{pre}-#{type}.xml"
     Dir.glob(path).each{|p|
       XmlGn.new(p).each{|e|
         yield e
       }
-    }.empty? && raise(SelectID,@usage)
+    }
   end
 
   public

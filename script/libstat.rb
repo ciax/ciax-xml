@@ -11,7 +11,7 @@ class Stat < Hash
       @fd=IoFile.new(fname)
       load
     rescue
-      warn "----- No #{fname}.json"
+      @v.warn("----- No #{fname}.json")
     end
   end
 
@@ -44,7 +44,7 @@ class Stat < Hash
       # output csv if array
       str=str.gsub(/\$\{(.+)\}/) {
         ary=[*get($1)].map!{|i| eval(i)}
-        raise("No value for subst [#{$1}]") if ary.empty?
+        @v.abort("No value for subst [#{$1}]") if ary.empty?
         ary.join(',')
       }
       str
@@ -55,18 +55,18 @@ class Stat < Hash
 
   # For multiple dimention (content should be numerical)
   def get(key) # ${key1:key2:idx} => hash[key1][key2][idx]
-    raise "No Key" unless key
+    @v.abort("No Key") unless key
     vname=[]
     key.split(':').inject(self){|h,i|
       begin
         i=eval(i) if Array === h
       rescue SyntaxError
-        raise("#{i} is not number")
+        @v.abort("#{i} is not number")
       end
       vname << i
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
       @v.msg{"Content[#{h[i]}]"}
-      h[i]||raise("No such Value [#{vname.join(':')}]")
+      h[i]||@v.abort("No such Value [#{vname.join(':')}]")
     }
   end
 

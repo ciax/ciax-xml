@@ -26,12 +26,16 @@ class Verbose
     return
   end
 
-  def err(msg='error')
-    raise color(msg,1)
+  def abort(msg='abort')
+    Kernel.abort color(msg,1)
   end
 
-  def warn(msg='error')
-    raise UserError,color(msg,3)
+  def err(msg='error') # Raise User error (Invalid User input)
+    raise UserError,color(msg,1)
+  end
+
+  def warn(msg='warning') # Display only
+    Kernel.warn color(msg,3)
   end
 
   def list(list,title)

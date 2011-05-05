@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 class UserError < RuntimeError; end
+class SelectID < UserError; end
 
 class Verbose
   Start_time=Time.now
@@ -45,7 +46,7 @@ class Verbose
         err << color(" %-10s" % key,3)+": #{label}\n"
       end
     }
-    err
+    raise SelectID,err
   end
 
   # Private Method

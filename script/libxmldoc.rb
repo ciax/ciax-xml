@@ -15,7 +15,7 @@ class XmlDoc < Hash
   rescue SelectID
     list={}
     readxml{|e| list[e['id']]=e }
-    raise SelectID,@v.list(list,"#{$!}")
+    @v.list(list,"#{$!}")
   end
 
   def readxml(type='*')

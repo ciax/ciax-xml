@@ -2,8 +2,6 @@
 require "xml"
 require "libverbose"
 
-class SelectID < UserError ; end
-
 class XmlGn
   def initialize(f)
     @v=Verbose.new("Xml",2)

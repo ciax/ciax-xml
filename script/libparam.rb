@@ -13,7 +13,7 @@ class Param
   def setpar(stm)
     @v.msg{"SetPar: #{stm}"}
     @stm=stm.dup
-    @list[stm.first] || raise(SelectID,@v.list(@list,"== Command List=="))
+    @list[stm.first] || @v.list(@list,"== Command List==")
   end
 
   def subst(str,range=nil) # par={ val,range,format } or String

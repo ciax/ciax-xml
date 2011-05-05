@@ -12,6 +12,7 @@ class Print
     pgroup=0
     stat.each {|id,item|
       next unless item.class == Hash
+      next unless item.key?('val')
       item['label']=id.upcase unless item['label']
       unless item['group']
         clabel=item['label'].split(/[ :]/)
@@ -55,12 +56,12 @@ class Print
     title=item['label'] || item['title']
     str << color(6,title)
     str << ':'
-    if item['level']
-      str << color(c,item['val']+'('+item['level']+')')
-    elsif item['msg']
-      str << color(c,item['msg'])
-    elsif item['val']
-      str << color(c,item['val'])
+    msg=item['msg']
+    case v=item['val']
+    when Numeric
+      str << color(c,"#{v}(#{msg})")
+    else
+      str << color(c,msg||v)
     end
     str << "]"
   end

@@ -66,7 +66,7 @@ class Stat < Hash
       vname << i
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
       @v.msg{"Content[#{h[i]}]"}
-      h[i]||@v.abort("No such Value [#{vname.join(':')}]")
+      h[i]||@v.warn("No such Value [#{vname.join(':')}]")
     }
   end
 

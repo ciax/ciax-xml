@@ -3,12 +3,12 @@ require "librepeat"
 
 class Label
   attr_reader :label
-  def initialize(db,domain,key,xpath=nil)
+  def initialize(doc,domain,key,xpath=nil)
     @label={}
     @label['id'] = {'label' => 'OBJECT','group' => '0'}
     @label['time'] = {'label' => 'TIMESTAMP','group' => '0' }
     if xpath
-      db.find_each(domain,xpath){|e|
+      doc.find_each(domain,xpath){|e|
         sym=e['label'] || next
         id=e[key] || next
         @label[id]={'label'=>sym}
@@ -16,7 +16,7 @@ class Label
       }
     else
       rep=Repeat.new
-      rep.each(db[domain]){|e|
+      rep.each(doc[domain]){|e|
         sym=e['label'] || next
         id=rep.format(e[key])
         @label[id]={'label'=>rep.format(sym)}

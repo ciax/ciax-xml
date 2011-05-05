@@ -12,10 +12,10 @@ class FrmRsp
     @stat=stat
     @v=Verbose.new("#{doc['id']}/rsp",3)
     @stat['frame']=doc['id']
-    @fdb={}
-    init_main(doc,'rspframe',@fdb)
-    init_cc(doc,'rspframe',@fdb)
-    @rlist=init_sel(doc,'rspframe','response')
+    @fdbs={}
+    init_main(doc,'rspframe',@fdbs)
+    init_cc(doc,'rspframe',@fdbs)
+    @fdbsel=init_sel(doc,'rspframe','response')
     @par=Param.new(init_sel(doc,'cmdframe','command'))
   end
 
@@ -23,19 +23,19 @@ class FrmRsp
     cid=stm.first
     csel=@par.setpar(stm)
     rid=csel['response']
-    sel=@rlist[rid] || @v.err("No such id [#{rid}]")
-    @fdb['select']=sel[:frame]
+    sel=@fdbsel[rid] || @v.err("No such id [#{rid}]")
+    @fdbs['select']=sel[:frame]
     @v.msg{"Set Statement #{stm}"}
     self
   end
 
   def getfield(time=Time.now)
-    return "Send Only" unless @fdb['select']
+    return "Send Only" unless @fdbs['select']
     frame=yield || @v.err("No String")
-    tm=@fdb['terminator']
-    dm=@fdb['delimiter']
-    @frm=Frame.new(frame,dm,tm)
-    getfield_rec(@fdb['main'])
+    tm=@fdbs['terminator']
+    dm=@fdbs['delimiter']
+    @frame=Frame.new(frame,dm,tm)
+    getfield_rec(@fdbs['main'])
     if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
       @v.msg{"Verify:CC OK <#{cc}>"}
@@ -52,16 +52,16 @@ class FrmRsp
       when 'ccrange'
         begin
           @v.msg(1){"Entering Ceck Code Node"}
-          @frm.mark
-          getfield_rec(@fdb['ccrange'])
-          @cc = checkcode(@fdb[:method],@frm.copy)
+          @frame.mark
+          getfield_rec(@fdbs['ccrange'])
+          @cc = checkcode(@fdbs[:method],@frame.copy)
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end
       when 'select'
         begin
           @v.msg(1){"Entering Selected Node"}
-          getfield_rec(@fdb['select'])
+          getfield_rec(@fdbs['select'])
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end
@@ -78,7 +78,7 @@ class FrmRsp
   def frame_to_field(e0)
     begin
       @v.msg(1){"Field:#{e0['label']}"}
-      data=decode(e0,@frm.cut(e0))
+      data=decode(e0,@frame.cut(e0))
       if key=e0['assign']
         @stat[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
@@ -102,7 +102,7 @@ class FrmRsp
       }
       @v.msg(1){"Array:#{e0['label']}[#{key}]:Range#{idxs}"}
       @stat[key]=mk_array(idxs,@stat[key]){
-        decode(e0,@frm.cut(e0))
+        decode(e0,@frame.cut(e0))
       }
     ensure
       @v.msg(-1){"Array:Assign[#{key}]"}

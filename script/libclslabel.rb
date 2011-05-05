@@ -11,7 +11,7 @@ class ClsLabel < Label
     @v.msg{"using[#{cls}] for class"}
     begin
       odb=XmlDoc.new('odb',id)
-      @odb=Label.new(odb,'status','ref')
+      @odb=super(odb,'status','ref')
       @v.msg{"using[#{id}] for object"}
     rescue SelectID
       @v.msg{"No [#{id}] for object"}

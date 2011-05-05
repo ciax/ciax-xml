@@ -8,7 +8,7 @@ class ClsStat
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @doc,@stat,@field=doc,stat,field
     @label={}
-    @struct={}
+    @cdbs={}
     cls=doc['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls })
     @v=Verbose.new("#{cls}/stat",2)
@@ -18,7 +18,7 @@ class ClsStat
   
   public
   def get_stat
-    @struct.each{|id,fields|
+    @cdbs.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
         @stat[id]=get_val(fields)
@@ -50,7 +50,7 @@ class ClsStat
         fields << st
       }
       @stat[id]=''
-      @struct[id]=fields
+      @cdbs[id]=fields
     @v.msg{"STAT:Init VAL [#{id}] : #{fields}"}
     }
     self

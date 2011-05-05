@@ -13,16 +13,16 @@ class FrmCmd
     @cache={}
     @rep=Repeat.new
     @fstr={}
-    @fdb={}
-    init_main(doc,'cmdframe',@fdb)
-    init_cc(doc,'cmdframe',@fdb)
+    @fdbc={}
+    init_main(doc,'cmdframe',@fdbc)
+    init_cc(doc,'cmdframe',@fdbc)
     @par=Param.new(init_sel(doc,'cmdframe','command'))
   end
 
   def setcmd(stm) # return = response select
     id=stm.first
     @par.setpar(stm)
-    @fdb['select']=@par[:frame]
+    @fdbc['select']=@par[:frame]
     @cid=stm.join(':')
     @cid << ':*' if /true|1/ === @par['nocache']
     @v.msg{"Select:#{@par['label']}(#{@cid})"}
@@ -30,12 +30,12 @@ class FrmCmd
   end
 
   def getframe
-    return unless @fdb['select']
+    return unless @fdbc['select']
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
       mk_frame('select')
-      if ccm=@fdb[:method]
+      if ccm=@fdbc[:method]
         @stat['cc']=checkcode(ccm,mk_frame('ccrange'))
       end
       cmd=mk_frame('main')
@@ -46,7 +46,7 @@ class FrmCmd
 
   private
   def mk_frame(fname)
-    @fstr[fname]=@fdb[fname].map{|a|
+    @fstr[fname]=@fdbc[fname].map{|a|
       case a
       when Hash
         @stat.subst(@par.subst(a['val'],a['valid'])).split(',').map{|s|

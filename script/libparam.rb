@@ -4,8 +4,8 @@ require 'librerange'
 
 # Parameter must be numerical
 class Param
-  def initialize(list)
-    @list=list
+  def initialize(db)
+    @db=db
     @stm=[]
     @v=Verbose.new("PARAM",4)
   end
@@ -13,7 +13,7 @@ class Param
   def setpar(stm)
     @v.msg{"SetPar: #{stm}"}
     @stm=stm.dup
-    @list[stm.first] || @v.list(@list,"== Command List==")
+    @db[stm.first] || @v.list(@db,"== Command List==")
   end
 
   def subst(str,range=nil) # par={ val,range,format } or String
@@ -34,7 +34,7 @@ class Param
   end
 
   def [](key)
-    @list[@stm.first][key]
+    @db[@stm.first][key]
   end
 
   private

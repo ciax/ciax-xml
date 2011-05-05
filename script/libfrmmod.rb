@@ -21,34 +21,6 @@ module FrmMod
     return chk.to_s
   end
 
-  Codec={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}
-
-  def decode(e,code) # Chr -> Num
-    cdc=e['decode']
-    if upk=Codec[cdc]
-      num=(upk == 'hex') ? code.hex : code.unpack(upk).first
-      @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{num}]"}
-      code=num
-    end
-    return code.to_s
-  end
-
-  def encode(e,str) # Num -> Chr
-    cdc=e['encode']
-    if pck=Codec[cdc]
-      code=[eval(str)].pack(pck)
-      @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
-      str=code
-    end
-    if fmt=e['format']
-      @v.msg{"Formatted code(#{fmt}) [#{str}]"}
-      code=fmt % eval(str)
-      @v.msg{"Formatted code(#{fmt}) [#{str}] -> [#{code}]"}
-      str=code
-    end
-    str.to_s
-  end
-
   #Initialize
   def init_main(doc,domain)
     hash={}
@@ -104,13 +76,5 @@ module FrmMod
       end
     }
     list
-  end
-
-  def mk_db(db,name)
-    hash={}
-    db.each{|k,v|
-      hash[k]=v[name]
-    }
-    hash
   end
 end

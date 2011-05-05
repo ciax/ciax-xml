@@ -39,6 +39,17 @@ class Frame
       str=str.slice(*r.split(':').map{|i| i.to_i })
       @v.msg{"PickFrame: <#{str}> by range=[#{r}]"}
     end
-    str
+    decode(e0,str)
+  end
+
+  private
+  def decode(e,code) # Chr -> Num
+    cdc=e['decode']
+    if upk={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}[cdc]
+      num=(upk == 'hex') ? code.hex : code.unpack(upk).first
+      @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{num}]"}
+      code=num
+    end
+    return code.to_s
   end
 end

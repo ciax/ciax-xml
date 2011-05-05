@@ -56,6 +56,22 @@ class FrmCmd
     }.join('')
   end
 
+  def encode(e,str) # Num -> Chr
+    cdc=e['encode']
+    if pck={'chr'=>'C','bew'=>'n','lew'=>'v'}[cdc]
+      code=[eval(str)].pack(pck)
+      @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
+      str=code
+    end
+    if fmt=e['format']
+      @v.msg{"Formatted code(#{fmt}) [#{str}]"}
+      code=fmt % eval(str)
+      @v.msg{"Formatted code(#{fmt}) [#{str}] -> [#{code}]"}
+      str=code
+    end
+    str.to_s
+  end
+
   #Initialize
   def init_element(e)
     case e.name

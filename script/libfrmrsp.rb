@@ -76,7 +76,7 @@ class FrmRsp
   def frame_to_field(e0)
     begin
       @v.msg(1){"Field:#{e0['label']}"}
-      data=decode(e0,@frame.cut(e0))
+      data=@frame.cut(e0)
       if key=e0['assign']
         @stat[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
@@ -100,7 +100,7 @@ class FrmRsp
       }
       @v.msg(1){"Array:#{e0['label']}[#{key}]:Range#{idxs}"}
       @stat[key]=mk_array(idxs,@stat[key]){
-        decode(e0,@frame.cut(e0))
+        @frame.cut(e0)
       }
     ensure
       @v.msg(-1){"Array:Assign[#{key}]"}

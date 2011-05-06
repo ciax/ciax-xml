@@ -51,10 +51,10 @@ class Verbose
 
   # Private Method
   private
-  # 1=red,2=green,4=blue
-  def color(text,color)
+  # 1=red,2=green,4=blue,8=bright
+  def color(text,c=@color)
     return text unless STDERR.tty?
-    "\033[3#{color}m#{text}\33[0m"
+    "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end
 
   def mkmsg(text)

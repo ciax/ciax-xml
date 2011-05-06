@@ -5,7 +5,7 @@ require "libclscmd"
 cls=ARGV.shift
 cmd=ARGV
 begin
-  cdbc=ClsDb.new(cls).cdbc
+  cdbc=ClsDb.new(cls).command
   cc=ClsCmd.new(cdbc,cls)
   cc.setcmd(cmd).statements.each{|c| p c}
 rescue UserError

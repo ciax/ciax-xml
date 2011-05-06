@@ -10,7 +10,7 @@ cls=ARGV.shift
 ARGV.clear
 
 begin
-  cdbs=ClsDb.new(cls).cdbs
+  cdbs=ClsDb.new(cls).status
   field=JSON.load(gets(nil))
   id=field['id']
   st=Stat.new(id,'status')

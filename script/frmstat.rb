@@ -4,13 +4,12 @@ require "libstat"
 require "libfrmrsp"
 require "libxmldoc"
 
-usage="Usage: frmstat [frame] [id] < logline"
 dev=ARGV.shift
 id=ARGV.shift
 ARGV.clear
 
 begin
-  doc=XmlDoc.new('fdb',dev,usage)
+  doc=XmlDoc.new('fdb',dev)
   ary=gets.split("\t")
   time=Time.at(ary.shift.to_f)
   stm=ary.shift.split(':')
@@ -19,7 +18,7 @@ begin
   r=FrmRsp.new(doc,st)
   r.setrsp(stm)
 rescue RuntimeError
-  abort $!.to_s
+  abort "Usage: frmstat [frame] [id] < logline\n#{$!}"
 end
 print JSON.dump r.getfield(time){ eval(ary.shift) }
 st.save

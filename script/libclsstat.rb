@@ -3,9 +3,10 @@ require "libverbose"
 require "libclsdb"
 
 class ClsStat
-  def initialize(cdbs,stat,field,cls)
+  def initialize(cdb,stat,field)
     @stat,@field=stat,field
-    @cdbs=cdbs
+    @cdbs=cdb.status
+    cls=cdb['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls})
     @v=Verbose.new("#{cls}/stat",2)
   end

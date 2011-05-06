@@ -1,13 +1,12 @@
 #!/usr/bin/ruby
 require "libparam"
 require "libverbose"
-require "libclsdb"
 
 class ClsCmd
 
-  def initialize(cdbc,cls)
-    @v=Verbose.new("#{cls}/stm",2)
-    @par=Param.new(cdbc)
+  def initialize(cdb)
+    @v=Verbose.new("#{cdb['id']}/stm",2)
+    @par=Param.new(cdb.command)
   end
 
   def setcmd(ssn)

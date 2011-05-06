@@ -39,20 +39,21 @@ class Verbose
     Kernel.warn color(msg,3)
   end
 
-  def list(list,title,pre='')
-    err="#{$!}#{color(title,2)}\n"
+  def list(list,title=nil)
+    err=[$!,color(title,2)]
     list.each{|key,val|
       if label=val['label']
-        err << color(" %-10s" % key,3)+": #{label}\n"
+        err << color(" %-10s" % key,3)+": #{label}"
       end
     }
-    raise SelectID,err
+    raise SelectID,err.grep(/./).join("\n")
   end
 
   # Private Method
   private
   # 1=red,2=green,4=blue,8=bright
   def color(text,c=@color)
+    return '' unless text || text == ''
     return text unless STDERR.tty?
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end

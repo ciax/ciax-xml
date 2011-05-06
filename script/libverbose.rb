@@ -39,12 +39,16 @@ class Verbose
     Kernel.warn color(msg,3)
   end
 
-  def list(list,title=nil)
-    err=[$!,color(title,2)]
+  def list(list,title='')
+    err=[$!.to_s,color(title,2)]
     list.each{|key,val|
-      if label=val['label']
-        err << color(" %-10s" % key,3)+": #{label}"
+      case val
+      when String
+        label=val
+      when Hash
+        label=val['label']
       end
+      err << color(" %-10s" % key,3)+": #{label}" if label
     }
     raise SelectID,err.grep(/./).join("\n")
   end

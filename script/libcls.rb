@@ -4,12 +4,15 @@ require "libclscmd"
 require "libclsstat"
 require "libbuffer"
 require "libwatch"
+require "libverbose"
 require "thread"
+
 
 class Cls
 
   def initialize(cdb,id)
     @cls=cdb['id'].freeze
+    @v=Verbose.new("cls/#{id}",6)
     @stat=Stat.new(id,'status')
     @field=Stat.new(id,"field")
     @cc=ClsCmd.new(cdb)
@@ -56,11 +59,10 @@ class Cls
     end
     "ISSUED"
   rescue SelectID
-    err="#{$!}"
-    err << "== Internal Command ==\n"
-    err << " sleep     : sleep [sec]\n"
-    err << " waitfor   : [key] [val] (timeout=10)\n"
-    raise SelectID,err
+    list={}
+    list['sleep']="sleep [sec]"
+    list['waitfor']="[key] [val] (timeout=10)"
+    @v.list(list,"== Internal Command ==")
   end
 
   def interrupt

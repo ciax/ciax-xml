@@ -45,13 +45,12 @@ class Frm
       'OK'
     end
   rescue SelectID
-    err="#{$!}"
-    err << "== Internal Command ==\n"
-    err << " set       : Set Value  [key(:idx)] (val)\n"
-    err << " unset     : Remove Value  [key]\n"
-    err << " load      : Load Field (tag)\n"
-    err << " save      : Save Field [key,key...] (tag)\n"
-    raise SelectID,err
+    list={}
+    list['set']="Set Value  [key(:idx)] (val)"
+    list['unset']="Remove Value  [key]"
+    list['load']="Load Field (tag)"
+    list['save']="Save Field [key,key...] (tag)"
+    @v.list(list,"== Internal Command ==")
   end
 
   private

@@ -7,6 +7,7 @@ require "readline"
 # "prompt","interrupt","quit"
 class Shell
   def initialize(db,filter=nil)
+    v=Verbose.new("shell")
     out=Filter.new(filter)
     loop {
       line=Readline.readline(db.prompt,true) || db.interrupt
@@ -22,11 +23,10 @@ class Shell
             puts yield cmd.split(" ")
           }
         rescue SelectID
-          err="#{$!}"
-          err << "== Shell Command ==\n"
-          err << " q         : Quit\n"
-          err << " D^        : Interrupt\n"
-          puts err
+          list={}
+          list['q']="Quit"
+          list['D^']="Interrupt"
+          v.list(list,"== Shell Command ==") rescue puts($!)
         rescue
           puts $@.to_s
         end

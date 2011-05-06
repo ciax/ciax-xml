@@ -4,7 +4,7 @@ require "libverbose"
 require "libxmldoc"
 
 class ClsDb
-  attr_reader :cdbc,:cdbs,:label,:symbol
+  attr_reader :cdbc,:cdbs,:label,:symbol,:watch
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls,"==== Device Classes ====")
     @v=Verbose.new("cdb/#{doc['id']}",2)
@@ -12,9 +12,11 @@ class ClsDb
     @cdbs={}
     @label={}
     @symbol={}
+    @watch=doc['watch'].to_h
     @rep=Repeat.new
     init_cmd(doc)
     init_stat(doc)
+    init_watch(doc['watch'])
   end
 
   private
@@ -33,7 +35,7 @@ class ClsDb
         hash[:statements] << command.freeze
       }
       @cdbc[id]=hash.freeze
-      @v.msg{"CMD:Init[#{id}] #{hash}"}
+      @v.msg{"CMD:[#{id}] #{hash}"}
     }
     self
   end
@@ -47,10 +49,10 @@ class ClsDb
       id=label.delete('id')
       if symbol=label.delete('symbol')
         @symbol[id]=symbol
-        @v.msg{"STAT:Init SYMBOL [#{id}] : #{symbol}"}
+        @v.msg{"SYMBOL:[#{id}] : #{symbol}"}
       end
       @label[id]=label
-      @v.msg{"STAT:Init LABEL [#{id}] : #{label}"}
+      @v.msg{"LABEL:[#{id}] : #{label}"}
       fields=[]
       e0.each{|e1|
         st={:type => e1.name}
@@ -60,7 +62,35 @@ class ClsDb
         fields << st
       }
       @cdbs[id]=fields
-      @v.msg{"STAT:Init CDB [#{id}] : #{fields}"}
+      @v.msg{"STAT:[#{id}] : #{fields}"}
+    }
+    self
+  end
+
+  def init_watch(e)
+    line=@watch[:conditions]=[]
+    @rep.each(e){|e0|
+      bg={:type => e0.name}
+      e0.to_h.each{|a,v|
+        bg[a]=@rep.format(v)
+      }
+      @v.msg(1){"WATCH:#{bg[:type]}:#{bg['label']}"}
+      e0.each{ |e1|
+        ssn=[e1['command']]
+        e1.each{|e2|
+          ssn << @rep.subst(e2.text)
+        }
+        bg[e1.name]=[] unless Array === bg[e1.name]
+        bg[e1.name] << ssn.freeze
+        @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
+      }
+      bg[:var]={}
+      if e0.name == 'periodic'
+        bg[:var][:current]=Time.now
+        bg[:var][:next]=Time.at(0)
+      end
+      @v.msg(-1){"WATCH:#{bg[:type]}"}
+      line << bg.freeze
     }
     self
   end

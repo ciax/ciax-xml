@@ -2,28 +2,28 @@
 require "json"
 require "libcls"
 require "libfrm"
+require "libclsdb"
 require "libxmldoc"
 require "libalias"
 require "libshell"
 
-usage="Usage: clsshell [cls] [id] [iocmd] (outcmd)"
 cls=ARGV.shift
 id=ARGV.shift
 iocmd=ARGV.shift
 filter=ARGV.shift
 al=Alias.new(id)
 begin
-  cdoc=XmlDoc.new('cdb',cls,usage)
-  fdoc=XmlDoc.new('fdb',cdoc['frame'])
-  fdb=Frm.new(fdoc,id,iocmd)
-  cdb=Cls.new(cdoc,id){|stm|
-    fdb.request(stm)
-    fdb.stat
+  cdb=ClsDb.new(cls)
+  fdoc=XmlDoc.new('fdb',cdb['frame'])
+  fctl=Frm.new(fdoc,id,iocmd)
+  cctl=Cls.new(cdb,id){|stm|
+    fctl.request(stm)
+    fctl.stat
   }
 rescue SelectID
-  abort $!.to_s
+  abort "Usage: clsshell [cls] [id] [iocmd] (outcmd)\n#{$!}"
 end
-Shell.new(cdb,filter){|stm|
+Shell.new(cctl,filter){|stm|
   stm=al.alias(stm)
-  cdb.dispatch(stm)
+  cctl.dispatch(stm)
 }

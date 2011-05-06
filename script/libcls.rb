@@ -8,16 +8,15 @@ require "thread"
 
 class Cls
 
-  def initialize(doc,id)
-    raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    @cls=doc['id']
+  def initialize(cdb,id)
+    @cls=cdb['id'].freeze
     @stat=Stat.new(id,'status')
     @field=Stat.new(id,"field")
-    @cc=ClsCmd.new(doc)
-    @cs=ClsStat.new(doc,@stat,@field)
+    @cc=ClsCmd.new(cdb)
+    @cs=ClsStat.new(cdb,@stat,@field)
     Thread.abort_on_exception=true
     @buf=Buffer.new
-    @event=Watch.new(doc['watch'])
+    @event=Watch.new(cdb.watch)
     @watch=watch_thread
     @main=session_thread{|buf| yield buf}
   end

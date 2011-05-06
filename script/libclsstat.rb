@@ -1,19 +1,15 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "librepeat"
+require "libclsdb"
 
 class ClsStat
-  attr_reader :label
   def initialize(doc,stat,field)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    @doc,@stat,@field=doc,stat,field
-    @label={}
-    @cdbs={}
-    cls=doc['id']
-    @stat.update({'time' => Time.now.to_s,'class' => cls })
-    @v=Verbose.new("#{cls}/stat",2)
+    @stat,@field=stat,field
+    @cdbs=ClsDb.new(doc).cdbs
+    @stat.update({'time' => Time.now.to_s,'class' => doc['id'] })
+    @v=Verbose.new("#{doc['id']}/stat",2)
     @rep=Repeat.new
-    init_stat
   end
   
   public
@@ -31,31 +27,6 @@ class ClsStat
   end
   
   private
-  def init_stat
-    list=[]
-    @rep.each(@doc['status']){|e0|
-      label={}
-      e0.to_h.each{|k,v|
-        label[k]=@rep.format(v)
-      }
-      id=label.delete('id')
-      @label[id]=label
-      @v.msg{"STAT:Init LABEL [#{id}] : #{label}"}
-      fields=[]
-      e0.each{|e1|
-        st={:type => e1.name}
-        e1.to_h.each{|k,v|
-          st[k] = @rep.subst(v)
-        }
-        fields << st
-      }
-      @stat[id]=''
-      @cdbs[id]=fields
-      @v.msg{"STAT:Init VAL [#{id}] : #{fields}"}
-    }
-    self
-  end
-
   def get_val(fields)
     str=''
     fields.each{|e1| #element(split and concat)

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libparam"
-require "librepeat"
 require "libverbose"
+require "libclsdb"
 
 class ClsCmd
   attr_reader :par,:label
@@ -9,7 +9,7 @@ class ClsCmd
   def initialize(doc)
     raise "Init Param must be XmlDoc" unless XmlDoc === doc
     @v=Verbose.new("#{doc['id']}/stm",2)
-    @par=Param.new(init_cmd(doc))
+    @par=Param.new(ClsDb.new(doc).cdbc)
   end
 
   def setcmd(ssn)
@@ -42,28 +42,5 @@ class ClsCmd
       end
     }
     stma
-  end
-
-  private
-  def init_cmd(doc)
-    rep=Repeat.new
-    session={}
-    doc['commands'].each{|e0|
-      hash=e0.to_h
-      id=hash.delete('id')
-      hash[:statements]=[]
-      rep.each(e0){|e1|
-        command=[e1['command']]
-        e1.each{|e2|
-          argv=e2.to_h
-          argv['val'] = rep.subst(e2.text)
-          command << argv.freeze
-        }
-        hash[:statements] << command.freeze
-      }
-      session[id]=hash.freeze
-      @v.msg{"Session:Init[#{id}] #{hash}"}
-    }
-    session
   end
 end

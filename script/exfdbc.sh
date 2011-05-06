@@ -7,7 +7,7 @@ for id in $devices; do
     if [ "$1" ] ; then
         frmcmd $dev $id $* | visi
     else
-        frmcmd $dev $id 2>&1 |grep : | while read line; do
+        frmcmd $dev $id 2>&1 |grep " : "| while read line; do
             cmd=${line%:*}
             echo -n "   $cmd ";frmcmd $dev $id $cmd 1 0| visi
         done

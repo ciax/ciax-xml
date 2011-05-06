@@ -6,7 +6,7 @@ abort "Usage: watches [file]" if STDIN.tty? && ARGV.size < 1
 begin
   stat=JSON.load(gets(nil))
   cdb=ClsDb.new(stat['class'])
-  watch=Watch.new(cdb.watch)
+  watch=Watch.new(cdb)
   watch.update{|k| stat[k] }
   puts watch
 rescue RuntimeError

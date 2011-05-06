@@ -2,8 +2,8 @@
 class Watch
   attr_reader :interval,:wdb
 
-  def initialize(wdb)
-    return unless wdb
+  def initialize(cdb)
+    return unless wdb=cdb.watch
     @wdb=wdb[:conditions]
     @v=Verbose.new("EVENT",3)
     @interval=wdb['interval'].to_i||1

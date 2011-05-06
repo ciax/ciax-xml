@@ -1,25 +1,23 @@
 #!/usr/bin/ruby
+require "libverbose"
 require "libstat"
+require "libbuffer"
 require "libclscmd"
 require "libclsstat"
-require "libbuffer"
 require "libwatch"
-require "libverbose"
 require "thread"
 
-
 class Cls
-
   def initialize(cdb,id)
     @cls=cdb['id'].freeze
-    @v=Verbose.new("cls/#{id}",6)
+    @v=Verbose.new("ctl",6)
     @stat=Stat.new(id,'status')
     @field=Stat.new(id,"field")
     @cc=ClsCmd.new(cdb)
     @cs=ClsStat.new(cdb,@stat,@field)
     Thread.abort_on_exception=true
     @buf=Buffer.new
-    @event=Watch.new(cdb.watch)
+    @event=Watch.new(cdb)
     @watch=watch_thread
     @main=session_thread{|buf| yield buf}
   end

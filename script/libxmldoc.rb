@@ -3,23 +3,22 @@ require "libxmlgn"
 
 class XmlDoc < Hash
   private
-  def initialize(db = nil,type = nil,usage='')
-    @db=db
+  def initialize(dbid = nil,type = nil)
     @v=Verbose.new("Doc",4)
-    if type && ! readxml(type){|e|
+    if type && ! readxml(dbid,type){|e|
         self[e.name]=e
         update(e.to_h)
         e.each{|e1| self[e1.name]=e1 }
       }.empty?
     else
       list={}
-      readxml{|e| list[e['id']]=e }
-      @v.list(list,usage)
+      readxml(dbid){|e| list[e['id']]=e }
+      @v.list(list)
     end
   end
 
-  def readxml(type='*')
-    pre="#{ENV['XMLPATH']}/#{@db}"
+  def readxml(dbid,type='*')
+    pre="#{ENV['XMLPATH']}/#{dbid}"
     path="#{pre}-#{type}.xml"
     Dir.glob(path).each{|p|
       XmlGn.new(p).each{|e|

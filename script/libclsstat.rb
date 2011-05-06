@@ -3,13 +3,11 @@ require "libverbose"
 require "libclsdb"
 
 class ClsStat
-  def initialize(doc,stat,field)
-    raise "Init Param must be XmlDoc" unless XmlDoc === doc
+  def initialize(cdbs,stat,field,cls)
     @stat,@field=stat,field
-    @cdbs=ClsDb.new(doc).cdbs
-    @stat.update({'time' => Time.now.to_s,'class' => doc['id'] })
-    @v=Verbose.new("#{doc['id']}/stat",2)
-    @rep=Repeat.new
+    @cdbs=cdbs
+    @stat.update({'time' => Time.now.to_s,'class' => cls})
+    @v=Verbose.new("#{cls}/stat",2)
   end
   
   public

@@ -4,12 +4,10 @@ require "libverbose"
 require "libclsdb"
 
 class ClsCmd
-  attr_reader :par,:label
 
-  def initialize(doc)
-    raise "Init Param must be XmlDoc" unless XmlDoc === doc
-    @v=Verbose.new("#{doc['id']}/stm",2)
-    @par=Param.new(ClsDb.new(doc).cdbc)
+  def initialize(cdbc,cls)
+    @v=Verbose.new("#{cls}/stm",2)
+    @par=Param.new(cdbc)
   end
 
   def setcmd(ssn)

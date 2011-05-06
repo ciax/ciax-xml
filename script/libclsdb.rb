@@ -1,11 +1,12 @@
 #!/usr/bin/ruby
 require "librepeat"
 require "libverbose"
+require "libxmldoc"
 
 class ClsDb
   attr_reader :cdbc,:cdbs,:label,:symbol
-  def initialize(doc)
-    raise "Init Param must be XmlDoc" unless XmlDoc === doc
+  def initialize(cls)
+    doc=XmlDoc.new('cdb',cls,"==== Device Classes ====")
     @v=Verbose.new("cdb/#{doc['id']}",2)
     @cdbc={}
     @cdbs={}
@@ -59,7 +60,7 @@ class ClsDb
         fields << st
       }
       @cdbs[id]=fields
-      @v.msg{"STAT:Init VAL [#{id}] : #{fields}"}
+      @v.msg{"STAT:Init CDB [#{id}] : #{fields}"}
     }
     self
   end

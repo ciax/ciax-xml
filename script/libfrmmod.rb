@@ -62,7 +62,7 @@ module FrmMod
         id=selh.delete('id')
         @v.msg{"InitSelHash(#{id}):#{selh}"}
         frame=[]
-        e0.each{|e1|
+        @rep.each(e0){|e1|
           e=init_element(e1) || next
           frame << e
         }

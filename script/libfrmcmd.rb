@@ -1,20 +1,17 @@
 #!/usr/bin/ruby
 require "libfrmmod"
 require "libparam"
-require "librepeat"
 # Cmd Methods
 class FrmCmd
   include FrmMod
 
-  def initialize(doc,stat)
-    raise "Init Param must be XmlDoc" unless XmlDoc === doc
+  def initialize(fdb,stat)
     @stat=stat
-    @v=Verbose.new("#{doc['id']}/cmd".upcase,3)
+    @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
-    @rep=Repeat.new
     @fstr={}
-    @fdbc=init_main(doc,'cmdframe')
-    @par=Param.new(init_sel(doc,'cmdframe','command'))
+    @fdbc=fdb.fdbc
+    @par=Param.new(fdb.selc)
   end
 
   def setcmd(stm) # return = response select
@@ -70,19 +67,5 @@ class FrmCmd
       str=code
     end
     str.to_s
-  end
-
-  #Initialize
-  def init_element(e)
-    case e.name
-    when 'data'
-      attr=e.to_h
-      label=attr.delete('label')
-      attr['val']=@rep.subst(e.text)
-      @v.msg{"Data:#{label}[#{attr}]"}
-      attr
-    else
-      e.name
-    end
   end
 end

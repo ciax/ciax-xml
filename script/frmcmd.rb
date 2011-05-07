@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
 require "libstat"
 require "libfrmcmd"
-require "libxmldoc"
+require "libfrmdb"
 
 dev=ARGV.shift
 id=ARGV.shift
 cmd=ARGV
 begin
-  doc=XmlDoc.new('fdb',dev)
+  fdb=FrmDb.new(dev)
   st=Stat.new(id,"field")
-  c=FrmCmd.new(doc,st)
+  c=FrmCmd.new(fdb,st)
   c.setcmd(cmd)
   print c.getframe
 rescue UserError

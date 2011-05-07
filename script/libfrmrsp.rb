@@ -7,14 +7,13 @@ require "libparam"
 class FrmRsp
   include FrmMod
 
-  def initialize(doc,stat)
-    raise "Init Param must be XmlDoc" unless XmlDoc === doc
+  def initialize(fdb,stat)
     @stat=stat
-    @v=Verbose.new("#{doc['id']}/rsp",3)
-    @stat['frame']=doc['id']
-    @fdbs=init_main(doc,'rspframe')
-    @fdbsel=init_sel(doc,'rspframe','response')
-    @par=Param.new(init_sel(doc,'cmdframe','command'))
+    @v=Verbose.new("#{fdb['id']}/rsp",3)
+    @stat['frame']=fdb['id']
+    @fdbs=fdb.fdbs
+    @fdbsel=fdb.sels
+    @par=Param.new(fdb.selc)
   end
 
   def setrsp(stm)
@@ -118,40 +117,5 @@ class FrmRsp
       fld[i] = mk_array(idx[1..-1],fld[i]){yield}
     }
     fld
-  end
-
-  def init_element(e)
-    case e.name
-    when 'field'
-      attr=e.to_h
-      attr['val']=e.text
-      if id=attr['assign']
-        @stat[id]=@stat[id] || attr['val']
-      end
-      @v.msg{"InitElement:#{attr['label']} #{attr}"}
-      attr
-    when 'array'
-      attr=e.to_h
-      id=attr['assign']
-      idx=attr[:index]=[]
-      e.each{|e1|
-        idx << e1.to_h
-      }
-      @stat[id]=@stat[id] || init_array(idx.map{|h| h['size']}){'0'}
-      attr
-    when 'ccrange','select'
-      e.name
-    else
-      nil
-    end
-  end
-  
-  def init_array(sary,field=nil)
-    return yield if sary.empty?
-    a=field||[]
-    sary[0].to_i.times{|i|
-      a[i]=init_array(sary[1..-1],a[i]){yield}
-    }
-    a
   end
 end

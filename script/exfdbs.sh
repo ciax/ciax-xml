@@ -5,7 +5,7 @@
 [ "$1" = "-l" ] && { shift; label=1; }
 [ "$1" = "-p" ] && { shift; print=1; }
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
-cmd=$1;shift
+cmd=$*
 for id in $devices; do
     setfld $id || _usage_key "(-r|-s)"
     echo "$C2#### $dev($id) ####$C0"
@@ -13,7 +13,7 @@ for id in $devices; do
     output="$HOME/.var/field_${id}.json"
     [ "$clear" ] && [ -e $output ] && rm $output
     if [ "$cmd" ] ; then
-        echo $cmd
+        echo ${cmd// /:}
     else
         frmcmd $dev $id 2>&1 |grep " : "
     fi | while read cmd dmy; do

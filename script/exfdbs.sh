@@ -5,17 +5,22 @@
 [ "$1" = "-l" ] && { shift; label=1; }
 [ "$1" = "-p" ] && { shift; print=1; }
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
+cmd=$1;shift
 for id in $devices; do
     setfld $id || _usage_key "(-r|-s)"
-    echo "#### $dev($id) ####"
+    echo "$C2#### $dev($id) ####$C0"
     input="$HOME/.var/device_${id}_*.log"
     output="$HOME/.var/field_${id}.json"
     [ "$clear" ] && [ -e $output ] && rm $output
-    frmcmd $dev 2>&1 |grep : | while read line; do
-        cmd=${line%:*}
-        stat="`grep rcv:${cmd// /:} $input|tail -1`"
+    if [ "$cmd" ] ; then
+        echo $cmd
+    else
+        frmcmd $dev $id 2>&1 |grep " : "
+    fi | while read cmd dmy; do
+        stat="`egrep 'rcv:$cmd[ :]' $input|tail -1`"
         if [ "$stat" ] ; then
-            echo "$stat" | frmstat $dev $id > /dev/null
+            echo "process for $cmd ($stat)"
+            echo "$stat" | frmstat $dev $id
         fi
     done
     if [ "$print" ] ; then

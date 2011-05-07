@@ -6,8 +6,7 @@ for cls in $devices; do
     if [ "$1" ] ; then
         clscmd $cls $*
     else
-        clscmd $cls 2>&1 |grep " : "| while read line; do
-            cmd=${line%:*}
+        clscmd $cls 2>&1 |grep " : "| while read cmd dmy; do
             echo "$C3$cmd$C0"
             clscmd $cls $cmd 1 0 || break
         done

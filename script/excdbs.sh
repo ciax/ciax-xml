@@ -8,7 +8,7 @@ devices=${1:-`ls ~/.var/field_???.json|cut -d_ -f2|cut -d. -f1`};shift
 par="$*"
 for id in $devices; do
     setfld $id || _usage_key "(-s)"
-    echo "#### $cls($id) ####"
+    echo "$C2#### $cls($id) ####$C0"
     file=$HOME/.var/field_$id.json
     if [ "$print" ] ; then
         clsstat $cls < $file | symboling | labeling | stprint

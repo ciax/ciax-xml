@@ -45,7 +45,7 @@ class Verbose
       case val
       when String
         label=val
-      when Hash
+      when Hash,XmlGn
         label=val['label']
       end
       err << color(" %-10s" % key,3)+": #{label}" if label

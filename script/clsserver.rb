@@ -2,7 +2,8 @@
 require "json"
 require "libcls"
 require "libfrm"
-require "libxmldoc"
+require "libclsdb"
+require "libfrmdb"
 require "libserver"
 require "libfilter"
 
@@ -12,12 +13,12 @@ port=ARGV.shift
 iocmd=ARGV.shift
 out=Filter.new(ARGV.shift)
 begin
-  cdoc=XmlDoc.new('cdb',cls)
-  fdoc=XmlDoc.new('fdb',cdoc['frame'])
-  fdb=Frm.new(fdoc,id,iocmd)
-  cdb=Cls.new(cdoc,id){|stm|
-    fdb.request(stm)
-    fdb.stat
+  cdoc=ClsDb.new(cls)
+  fdoc=FrmDb.new(cdoc['frame'])
+  fobj=Frm.new(fdoc,id,iocmd)
+  cobj=Cls.new(cdoc,id){|stm|
+    fobj.request(stm)
+    fobj.stat
   }
 rescue SelectID
   abort "Usage: clsserver [cls] [id] [port] [iocmd] (outcmd)\n#{$!}"
@@ -26,11 +27,11 @@ Server.new(port){|line|
   case line
   when '',/stat/
   when /stop/
-    cdb.interrupt
+    cobj.interrupt
   else
     line.split(';').each{|cmd|
-      cdb.dispatch(cmd.split(' '))
+      cobj.dispatch(cmd.split(' '))
     }
   end
-  out.filter(JSON.dump(cdb.stat))
+  out.filter(JSON.dump(cobj.stat))
 }

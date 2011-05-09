@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libxmldoc"
+require "libfrmdb"
 require "libfrm"
 require "libshell"
 
@@ -8,11 +8,11 @@ id=ARGV.shift
 iocmd=ARGV.shift
 filter=ARGV.shift
 begin
-  doc=XmlDoc.new('fdb',dev)
-  fdb=Frm.new(doc,id,iocmd)
+  fdb=FrmDb.new(dev)
+  fobj=Frm.new(fdb,id,iocmd)
 rescue SelectID
   abort "Usage: frmshell [dev] [id] [iocmd] (outcmd)\n#{$!}"
 end
-Shell.new(fdb,filter){|stm|
-  fdb.request(stm)
+Shell.new(fobj,filter){|stm|
+  fobj.request(stm)
 }

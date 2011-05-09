@@ -3,7 +3,7 @@ require "json"
 require "libcls"
 require "libfrm"
 require "libclsdb"
-require "libxmldoc"
+require "libfrmdb"
 require "libalias"
 require "libshell"
 
@@ -14,16 +14,16 @@ filter=ARGV.shift
 al=Alias.new(id)
 begin
   cdb=ClsDb.new(cls)
-  fdoc=XmlDoc.new('fdb',cdb['frame'])
-  fctl=Frm.new(fdoc,id,iocmd)
-  cctl=Cls.new(cdb,id){|stm|
-    fctl.request(stm)
-    fctl.stat
+  fdb=FrmDb.new(cdb['frame'])
+  fobj=Frm.new(fdb,id,iocmd)
+  cobj=Cls.new(cdb,id){|stm|
+    fobj.request(stm)
+    fobj.stat
   }
 rescue SelectID
   abort "Usage: clsshell [cls] [id] [iocmd] (outcmd)\n#{$!}"
 end
-Shell.new(cctl,filter){|stm|
+Shell.new(cobj,filter){|stm|
   stm=al.alias(stm)
-  cctl.dispatch(stm)
+  cobj.dispatch(stm)
 }

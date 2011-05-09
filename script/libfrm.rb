@@ -6,14 +6,13 @@ require "libfrmrsp"
 
 class Frm
   attr_reader :interrupt,:prompt
-  def initialize(doc,id,iocmd)
-    raise "Init Param must be XmlDoc" unless XmlDoc === doc
+  def initialize(fdb,id,iocmd)
     @stat=Stat.new(id,"field")
-    @cmd=FrmCmd.new(doc,@stat)
-    @rsp=FrmRsp.new(doc,@stat)
+    @cmd=FrmCmd.new(fdb,@stat)
+    @rsp=FrmRsp.new(fdb,@stat)
     @v=Verbose.new("fdb/#{id}".upcase)
-    @ic=IoCmd.new(iocmd,'device_'+id,doc['wait'],1)
-    @interupt='',@prompt="#{doc['id']}>"
+    @ic=IoCmd.new(iocmd,'device_'+id,fdb['wait'],1)
+    @interupt='',@prompt="#{fdb['id']}>"
   end
 
   def stat

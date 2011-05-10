@@ -2,23 +2,27 @@
 require "json"
 require "libmods2q"
 require "liblabel"
+require "libobjdb"
+
 include S2q
 abort "Usage: labeling [file]" if STDIN.tty? && ARGV.size < 1
 
-begin
-  stat=s2q(JSON.load(gets(nil)))
-  if type=stat['header']['frame']
-    require "libfrmdb"
-    fdb=FrmDb.new(type)
-    dv=Label.new.update(fdb.label)
-  elsif type=stat['header']['class']
-    require "libclslabel"
-    id=stat['header']['id']
-    dv=ClsLabel.new(type,id)
-  else
-    raise "NO ID in Stat"
+stat=s2q(JSON.load(gets(nil)))
+if type=stat['header']['frame']
+  require "libfrmdb"
+  fdb=FrmDb.new(type)
+  dv=Label.new.update(fdb.label)
+elsif type=stat['header']['class']
+  require "libclsdb"
+  id=stat['header']['id']
+  cdb=ClsDb.new(type)
+  dv=Label.new.update(cdb.label)
+  begin
+    odb=ObjDb.new(id)
+    odb.override(dv)
+  rescue SelectID
   end
-  puts JSON.dump(dv.convert(stat))
-rescue
-  abort $!.to_s
+else
+  raise "NO ID in Stat"
 end
+puts JSON.dump(dv.convert(stat))

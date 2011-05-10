@@ -9,7 +9,7 @@ getstat(){
     cmd=$1
     stat="`egrep \"rcv:$cmd\" $input|tail -1`"
     if [ "$stat" ] ; then
-        echo "process for $cmd"
+        echo "${C3}process for $cmd$C0"
         echo "$stat" | frmstat $dev $id
     fi
 }

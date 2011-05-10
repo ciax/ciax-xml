@@ -1,11 +1,9 @@
 #!/usr/bin/ruby
-require "libfrmmod"
 require "libparam"
 # Cmd Methods
 class FrmCmd
-  include FrmMod
-
   def initialize(fdb,stat)
+    @fdb=fdb
     @stat=stat
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
@@ -30,8 +28,8 @@ class FrmCmd
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
       mk_frame('select')
-      if ccm=@fdbc[:method]
-        @stat['cc']=checkcode(ccm,mk_frame('ccrange'))
+      if @fdbc.key?('ccrange')
+        @stat['cc']=@fdb.checkcode(mk_frame('ccrange'))
       end
       cmd=mk_frame('main')
       @cache[@cid]=cmd unless /\*/ === @cid

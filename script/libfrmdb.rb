@@ -16,6 +16,29 @@ class FrmDb
     @sels=init_sel('rspframe','response'){|e| init_stat(e)}
   end
 
+  def [](key)
+    @doc[key]
+  end
+
+  def checkcode(frame)
+    @v.msg{"CC Frame <#{frame}>"}
+    chk=0
+    case @method
+    when 'len'
+      chk=frame.length
+    when 'bcc'
+      frame.each_byte {|c| chk ^= c }
+    when 'sum'
+      frame.each_byte {|c| chk += c }
+      chk%=256
+    else
+      @v.err("No such CC method #{@method}")
+    end
+    @v.msg{"Calc:CC [#{@method.upcase}] -> (#{chk})"}
+    return chk.to_s
+  end
+
+  private
   def init_main(domain)
     hash={}
     begin
@@ -38,7 +61,8 @@ class FrmDb
           frame << yield(e1)
         }
         @v.msg{"InitCCFrame:#{frame}"}
-        hash[:method]=e0['method']
+        @method=e0['method']
+        @v.err("CC No method") unless @method
         hash['ccrange']=frame.freeze
       ensure
         @v.msg(-1){"-> INIT:Ceck Code Frame"}
@@ -117,26 +141,4 @@ class FrmDb
     a
   end
 
-  def [](key)
-    @doc[key]
-  end
-
-  def checkcode(method,frame)
-    @v.err("CC No method") unless method
-    @v.msg{"CC Frame <#{frame}>"}
-    chk=0
-    case method
-    when 'len'
-      chk=frame.length
-    when 'bcc'
-      frame.each_byte {|c| chk ^= c }
-    when 'sum'
-      frame.each_byte {|c| chk += c }
-      chk%=256
-    else
-      @v.err("No such CC method #{method}")
-    end
-    @v.msg{"Calc:CC [#{method.upcase}] -> (#{chk})"}
-    return chk.to_s
-  end
 end

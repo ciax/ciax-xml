@@ -1,13 +1,11 @@
 #!/usr/bin/ruby
 require "libframe"
-require "libfrmmod"
 require "libparam"
 
 # Rsp Methods
 class FrmRsp
-  include FrmMod
-
   def initialize(fdb,stat)
+    @fdb=fdb
     @stat=stat
     @v=Verbose.new("#{fdb['id']}/rsp",3)
     @stat['frame']=fdb['id']
@@ -51,7 +49,7 @@ class FrmRsp
           @v.msg(1){"Entering Ceck Code Node"}
           @frame.mark
           getfield_rec(@fdbs['ccrange'])
-          @cc = checkcode(@fdbs[:method],@frame.copy)
+          @cc = @fdb.checkcode(@frame.copy)
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end

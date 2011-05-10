@@ -1,15 +1,10 @@
 ***DEBUG
 mcr:dsi,dso/ exe finish immediately after command issue [4/17-
 cart:attach at tag11 gives overload error by corn load unbalance [4/17-
-ruby bug: segmentation fault inside of xmllib2 -> xml process description moves to hash at initialize
-  -> Purge xml access from operational method(getstat)
-  --> Purge xml access from cdb stat [4/10]
-  --> Purge xml access from fdb stat [4/20]
 dts:status update works but appears incorrect status [4/17-
 
-
 ***UPDATE
-labeling: use the lib*cmd.rb
+labeling: use the lib*cmd.rb -> use lib*db.rb
 symboling: symbol reference will move to status/value@symbol
 symboling&labeling: should be commutative
 
@@ -36,3 +31,8 @@ dso:bolt stat is N/A with cramp -> macro interlock
          status corrected by farther push button [4/17-4/21]
 debug:VER=all getilk dsi fhook - makes Socket error [4/21]
       refered dzi status in idb; connect to dzi makes error
+XML to DB: using libfrmdb, libclsdb[5/9]
+  ruby bug: segmentation fault inside of xmllib2 -> xml process description moves to hash at initialize
+    -> Purge xml access from operational method(getstat)
+    --> Purge xml access from cdb stat [4/10]
+    --> Purge xml access from fdb stat [4/20]

@@ -11,15 +11,14 @@ stat=s2q(JSON.load(gets(nil)))
 if type=stat['header']['frame']
   require "libfrmdb"
   fdb=FrmDb.new(type)
-  dv=Label.new.update(fdb.label)
+  dv=Label.new(fdb.label)
 elsif type=stat['header']['class']
   require "libclsdb"
   id=stat['header']['id']
   cdb=ClsDb.new(type)
-  dv=Label.new.update(cdb.label)
+  dv=Label.new(cdb.label)
   begin
-    odb=ObjDb.new(id)
-    odb.override(dv)
+    ObjDb.new(id).override(dv)
   rescue SelectID
   end
 else

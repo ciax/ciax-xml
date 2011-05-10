@@ -2,9 +2,10 @@
 require "librepeat"
 
 class Label < Hash
-  def initialize
+  def initialize(hash)
     self['id'] = {'label' => 'OBJECT','group' => '0'}
     self['time'] = {'label' => 'TIMESTAMP','group' => '0' }
+    update(hash)
   end
 
   def convert(stat)

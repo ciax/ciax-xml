@@ -2,9 +2,11 @@
 require "librepeat"
 require "libverbose"
 require "libxmldoc"
+require "libmodsym"
 
 class ClsDb
-  attr_reader :status,:label,:symbol
+  include ModSym
+  attr_reader :status,:label,:symbol,:table
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls)
     @v=Verbose.new("cdb/#{doc['id']}",2)
@@ -13,7 +15,9 @@ class ClsDb
     @status={}
     @label={}
     @symbol={}
+    @table={}
     init_stat
+    init_sym(doc,@table)
   end
 
   def [](key)

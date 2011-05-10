@@ -4,7 +4,7 @@ require "libxmldoc"
 require "librepeat"
 
 class FrmDb
-  attr_reader :fdbc,:selc,:fdbs,:sels
+  attr_reader :fdbc,:selc,:fdbs,:sels,:label
 
   def initialize(frm)
     @doc=XmlDoc.new('fdb',frm)
@@ -12,6 +12,7 @@ class FrmDb
     @rep=Repeat.new
     @fdbc=init_main('cmdframe'){|e| init_cmd(e)}
     @selc=init_sel('cmdframe','command'){|e| init_cmd(e)}
+    @label={}
     @fdbs=init_main('rspframe'){|e| init_stat(e)}
     @sels=init_sel('rspframe','response'){|e| init_stat(e)}
   end
@@ -114,7 +115,12 @@ class FrmDb
     when 'field'
       attr=e.to_h
       attr['val']=e.text
-      @v.msg{"InitElement:#{attr['label']} #{attr}"}
+      if id=attr['assign']
+        @label[id]={'label' => attr.delete('label'),\
+          'group' => attr.delete('group')}
+        @v.msg{"InitLabel [#{id}] => #{label}"}
+      end
+      @v.msg{"InitElement: #{attr}"}
       attr
     when 'array'
       attr=e.to_h

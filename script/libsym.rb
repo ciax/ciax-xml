@@ -68,6 +68,7 @@ class Sym
       row=e1.to_h
       id=row.delete('id')
       tbl=row[:table]={}
+      tbl.default={'class' => 'alarm', 'msg' => 'N/A'}
       e1.each{|e2|
         if e2.text
           tbl[e2.text]=e2.to_h

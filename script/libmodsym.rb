@@ -1,19 +1,20 @@
 #!/usr/bin/ruby
 module ModSym
-  def init_sym(doc,tbl)
-    doc.find_each('symbol','table'){|e1|
+  def init_sym(tbl={})
+    @doc.find_each('symbol','table'){|e1|
       row=e1.to_h
       id=row.delete('id')
-      tbl=row[:table]={}
-      e1.each{|e2|
+      rc=row[:record]={}
+      e1.each{|e2| # case
         if e2.text
-          tbl[e2.text]=e2.to_h
+          rc[e2.text]=e2.to_h
         else
-          tbl.default=e2.to_h
+          rc.default=e2.to_h
         end
       }
       tbl[id]=row
     }
-    @v.msg{"Table:#{@sdb}"}
+    @v.msg{"Table:#{tbl}"}
+    tbl
   end
 end

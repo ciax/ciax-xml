@@ -1,9 +1,11 @@
 #!/usr/bin/ruby
 require "libverbose"
 require "libxmldoc"
+require "libmodsym"
 
 class ObjDb
-  attr_reader :alias,:list,:label,:symbol
+  include ModSym
+  attr_reader :alias,:list,:label,:symbol,:table
   def initialize(obj)
     doc=XmlDoc.new('odb',obj)
     @v=Verbose.new("odb/#{doc['id']}",2)
@@ -14,6 +16,7 @@ class ObjDb
     @symbol={}
     init_command
     init_stat
+    @table=init_sym
   end
 
   def override(obj)

@@ -15,9 +15,8 @@ class ClsDb
     @status={}
     @label={}
     @symbol={}
-    @table={}
     init_stat
-    init_sym(doc,@table)
+    @table=init_sym
   end
 
   def [](key)

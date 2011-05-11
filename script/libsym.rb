@@ -1,16 +1,18 @@
 #!/usr/bin/ruby
-require "libxmldoc"
+require "libsymdb"
 require "libverbose"
 require "librerange"
-require "libmodsym"
 
 class Sym
-  include ModSym
-  def initialize(db)
+  def initialize
     @v=Verbose.new("Symbol",4)
-    @doc=XmlDoc.new('sdb','all')
-    @table=init_sym(db.table)
-    @symbol=db.symbol
+    @table=SymDb.new
+    @symbol={}
+  end
+
+  def update(db)
+    @table.update(db.table)
+    @symbol.update(db.symbol)
     @v.msg{"Stat-Symbol:#{@symbol}"}
   end
 

@@ -2,6 +2,7 @@
 mcr:dsi,dso/ exe finish immediately after command issue [4/17-
 cart:attach at tag11 gives overload error by corn load unbalance [4/17-
 dts:status update works but appears incorrect status [4/17-
+crt:clssh crt gives error
 
 ***UPDATE
 labeling: use the lib*cmd.rb -> use lib*db.rb

@@ -27,8 +27,8 @@ class Shell
           list['q']="Quit"
           list['D^']="Interrupt"
           v.list(list,"== Shell Command ==") rescue puts($!)
-        rescue
-          puts $@.to_s
+        rescue UserError
+          puts $!.to_s
         end
       end
     }

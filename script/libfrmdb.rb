@@ -6,7 +6,7 @@ require "libmodsym"
 
 class FrmDb
   include ModSym
-  attr_reader :fdbc,:selc,:fdbs,:sels,:label,:table
+  attr_reader :fdbc,:selc,:fdbs,:sels,:label,:table,:symbol
 
   def initialize(frm)
     @doc=XmlDoc.new('fdb',frm)
@@ -15,6 +15,7 @@ class FrmDb
     @fdbc=init_main('cmdframe'){|e| init_cmd(e)}
     @selc=init_sel('cmdframe','command'){|e| init_cmd(e)}
     @label={}
+    @symbol={}
     @fdbs=init_main('rspframe'){|e| init_stat(e)}
     @sels=init_sel('rspframe','response'){|e| init_stat(e)}
     @table=init_sym
@@ -122,6 +123,7 @@ class FrmDb
         @label[id]={'label' => attr.delete('label'),\
           'group' => attr.delete('group')}
         @v.msg{"InitLabel [#{id}] => #{label}"}
+        @symbol[id]=attr.delete('symbol')
       end
       @v.msg{"InitElement: #{attr}"}
       attr

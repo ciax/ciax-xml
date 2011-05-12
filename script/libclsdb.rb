@@ -6,7 +6,8 @@ require "libmodsym"
 
 class ClsDb
   include ModSym
-  attr_reader :status,:label,:symbol,:table
+  attr_reader :status,:table
+  attr_accessor:symbol,:label,:group
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls)
     @v=Verbose.new("cdb/#{doc['id']}",2)
@@ -15,6 +16,7 @@ class ClsDb
     @status={}
     @label={}
     @symbol={}
+    @group={}
     init_stat
     @table=init_sym
   end
@@ -86,8 +88,14 @@ class ClsDb
         @symbol[id]=symbol
         @v.msg{"SYMBOL:[#{id}] : #{symbol}"}
       end
-      @label[id]=ldb
-      @v.msg{"LABEL:[#{id}] : #{ldb}"}
+      if label=ldb.delete('label')
+        @label[id]=label
+        @v.msg{"LABEL:[#{id}] : #{label}"}
+      end
+      if group=ldb.delete('group')
+        @group[id]=group
+        @v.msg{"GROUP:[#{id}] : #{group}"}
+      end
       fields=[]
       e0.each{|e1|
         st={:type => e1.name}

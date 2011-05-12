@@ -1,10 +1,8 @@
 #!/usr/bin/ruby
-require "librepeat"
-
 class Label < Hash
   def initialize(hash)
-    self['id'] = {'label' => 'OBJECT','group' => '0'}
-    self['time'] = {'label' => 'TIMESTAMP','group' => '0' }
+    self['id'] = 'OBJECT'
+    self['time'] = 'TIMESTAMP'
     update(hash)
   end
 
@@ -16,7 +14,7 @@ class Label < Hash
         result[k]=v
       else
         next unless key?(k)
-        v.update(self[k])
+        v['label']=self[k]
       end
       result[k]=v
     }

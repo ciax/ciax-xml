@@ -5,7 +5,7 @@ require "libmodsym"
 
 class ObjDb
   include ModSym
-  attr_reader :alias,:list,:label,:symbol,:table
+  attr_reader :alias,:list,:label,:symbol,:table,:group
   def initialize(obj)
     doc=XmlDoc.new('odb',obj)
     @v=Verbose.new("odb/#{doc['id']}",2)
@@ -14,6 +14,7 @@ class ObjDb
     @list={}
     @label={}
     @symbol={}
+    @group={}
     init_command
     init_stat
     @table=init_sym
@@ -52,6 +53,10 @@ class ObjDb
       if label=hash.delete('label')
         @label[id]=label
         @v.msg{"LABEL:[#{id}] : #{label}"}
+      end
+      if group=hash.delete('group')
+        @group[id]=group
+        @v.msg{"GROUP:[#{id}] : #{group}"}
       end
     }
     self

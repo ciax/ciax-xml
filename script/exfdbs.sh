@@ -17,7 +17,7 @@ getstat(){
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
 par=$*
 for id in $devices; do
-    setfld $id || _usage_key "(-r|-s)"
+    setfld $id || _usage_key "(-rslp)"
     echo "$C2#### $dev($id) ####$C0"
     input="$HOME/.var/device_${id}_*.log"
     output="$HOME/.var/field_${id}.json"
@@ -32,9 +32,9 @@ for id in $devices; do
     if [ "$print" ] ; then
         < $output symboling | labeling | stprint
     elif [ "$label" ] ; then
-        < $output labeling | h2s
+        < $output labeling | v2s
     elif [ "$sym" ] ; then
-        < $output symboling | h2s
+        < $output symboling | v2s
     else
         < $output h2s
     fi

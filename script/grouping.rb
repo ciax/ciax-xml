@@ -1,27 +1,26 @@
 #!/usr/bin/ruby
 require "json"
-require "libmods2q"
+require "libview"
 require "libgroup"
 require "libobjdb"
 
-include S2q
 abort "Usage: grouping [file]" if STDIN.tty? && ARGV.size < 1
 
-stat=s2q(JSON.load(gets(nil)))
-if type=stat['header']['frame']
+view=View.new(JSON.load(gets(nil)))
+if type=view['frame']
   require "libfrmdb"
   fdb=FrmDb.new(type)
-  dv=Group.new(fdb.group)
-elsif type=stat['header']['class']
+  group=Group.new(fdb.group)
+elsif type=view['class']
   require "libclsdb"
-  id=stat['header']['id']
+  id=view['id']
   cdb=ClsDb.new(type)
-  dv=Group.new(cdb.group)
+  group=Group.new(cdb.group)
   begin
-    dv.update(ObjDb.new(id).group)
+    group.update(ObjDb.new(id).group)
   rescue SelectID
   end
 else
-  raise "NO ID in Stat"
+  raise "NO ID in Status"
 end
-puts JSON.dump(dv.convert(stat))
+puts JSON.dump(view.convert('group',group))

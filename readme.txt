@@ -82,3 +82,9 @@ cdb//session@id -> never use ':'
   cdb//statement@format <= fdb//command@id + par
   cdb//event/command <= cdb//session@id + par
   cdb//event/while@ref <= cdb//value@id
+
+
+### Struct of status ###
+  field: { id => data }
+  stat: { id => data }
+  view: { header => {id=>..}, :view => [ {id=>a,label=>..},{},.. ]}

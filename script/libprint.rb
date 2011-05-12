@@ -5,14 +5,15 @@ class Print
     @c=Circular.new(4)
   end
 
-  def print(stat,ver=nil)
+  def print(view,ver=nil)
     a=[]
     line=[]
     plabel=[]
     pgroup=0
-    stat.each {|id,item|
+    view['list'].each {|item|
       next unless item.class == Hash
       next unless item.key?('val')
+      id=item['id']
       item['label']=id.upcase unless item['label']
       unless item['group']
         clabel=item['label'].split(/[ :]/)

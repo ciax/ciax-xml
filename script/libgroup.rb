@@ -5,14 +5,4 @@ class Group < Hash
     self['time'] = '0'
     update(hash)
   end
-
-  def convert(stat)
-    result={'header' => stat['header']}
-    each{|k,v|
-      next unless stat.key?(k)
-      result[k]=stat[k].dup
-      result[k]['group']=v
-    }
-    result
-  end
 end

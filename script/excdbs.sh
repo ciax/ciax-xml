@@ -11,13 +11,13 @@ for id in $devices; do
     echo "$C2#### $cls($id) ####$C0"
     file=$HOME/.var/field_$id.json
     if [ "$print" ] ; then
-        clsstat $cls < $file | symboling | labeling |grouping| stprint
+        clsstat $cls < $file | symboling | labeling | grouping | stprint
     elif [ "$reverse" ] ; then
-        clsstat $cls < $file | labeling | symboling | h2s
+        clsstat $cls < $file | labeling | symboling | v2s
     elif [ "$label" ] ; then
-        clsstat $cls < $file | labeling | grouping | h2s
+        clsstat $cls < $file | labeling | grouping | v2s
     elif [ "$sym" ] ; then
-        clsstat $cls < $file | symboling | h2s
+        clsstat $cls < $file | symboling | v2s
     else
         clsstat $cls < $file | h2s
     fi

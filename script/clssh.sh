@@ -4,7 +4,7 @@
 [ "$1" = "-c" ] && { output="ascpck";shift; }
 [ "$1" = "-s" ] && { output="symboling";shift; }
 [ "$1" = "-l" ] && { output="symboling|labeling";shift; }
-[ "$1" = "-p" ] && { output="symboling|labeling|stprint";shift; }
+[ "$1" = "-p" ] && { output="symboling|labeling|grouping|stprint";shift; }
 
 id="$1"
 setfld $id || _usage_key "(-d,c,s,l,p)"

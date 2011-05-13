@@ -48,8 +48,11 @@ class XmlGn
     nil
   end
 
+  def ns
+    @e.namespaces.default
+  end
+
   def find_each(xpath)
-    ns=@e.namespaces.default
     @v.msg{"Find:#{xpath}"}
     @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
       yield XmlGn.new(e)

@@ -1,18 +1,19 @@
 #!/usr/bin/ruby
 require "libxmlgn"
 
+# Domain is the top node of each name spaces
 class XmlDoc < Hash
   private
   def initialize(dbid = nil,type = nil)
     @v=Verbose.new("Doc/#{dbid}",4)
     @domain={}
     if type && ! readxml(dbid,type){|e|
-        @domain[e.name]=e #Top domain
+        @domain[e.name]=e #Top domain for sdb <symbol>
         update(e.to_h)
         e.each{|e1|
-          @domain[e1.name]=e1 # Sub domain
-          @v.msg{"Register Domain:#{e1.name}"}
+          @domain[e1.name]=e1 unless e.ns == e1.ns
         }
+        @v.msg{"Domain registerd:#{@domain.keys}"}
       }.empty?
     else
       list={}
@@ -45,7 +46,7 @@ class XmlDoc < Hash
   end
 
   def find_each(domain,xpath=nil)  # child or find
-# For Symbol, domain is not <symbol> at sdb_all
+    # For Symbol, domain is not <symbol> at sdb_all
     return unless @domain.key?(domain)
     if xpath
       @domain[domain].find_each(xpath){|e| yield e}

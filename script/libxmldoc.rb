@@ -7,11 +7,11 @@ class XmlDoc < Hash
     @v=Verbose.new("Doc/#{dbid}",4)
     @domain={}
     if type && ! readxml(dbid,type){|e|
-        @domain[e.name]=e
+        @domain[e.name]=e #Top domain
         update(e.to_h)
         e.each{|e1|
-          @domain[e1.name]=e1
-          @v.msg{"Domain:#{e1.name}"}
+          @domain[e1.name]=e1 # Sub domain
+          @v.msg{"Register Domain:#{e1.name}"}
         }
       }.empty?
     else

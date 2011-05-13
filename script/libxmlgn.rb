@@ -9,6 +9,7 @@ class XmlGn
     when String
       test(?r,f) || raise(SelectID)
       @e=XML::Document.file(f).root
+      @v.msg{@e.namespaces.default}
     when XML::Node
       @e=f
     else
@@ -18,7 +19,9 @@ class XmlGn
 
   def each
     @e.each_element{|e|
+      @v.msg(1){"<#{e.name}>"}
       yield XmlGn.new(e)
+      @v.msg(-1){"</#{e.name}>"}
     }
   end
 
@@ -46,7 +49,8 @@ class XmlGn
   end
 
   def find_each(xpath)
-    ns=@e.namespaces.namespace.to_s
+    ns=@e.namespaces.default
+    @v.msg{"Find:#{xpath}"}
     @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
       yield XmlGn.new(e)
     }

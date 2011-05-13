@@ -2,7 +2,7 @@
 require 'libverbose'
 class Repeat
   def initialize
-    @v=Verbose.new("Repeat")
+    @v=Verbose.new("Repeat",4)
     @counter={}
     @rep=[]
   end
@@ -24,21 +24,18 @@ class Repeat
 
   def subst(str)
     return str unless /\$[_a-z]/ === str
-    @v.msg(1){"Substitute from [#{str}]"}
-    begin
-      # Sub $key => @counter[key]
-      str=str.gsub(/\$([_a-z])/){ @counter[$1] || $1 }
-      raise if str == ''
-      str
-    ensure
-      @v.msg(-1){"Substitute to [#{str}]"}
-    end
+    # Sub $key => @counter[key]
+    res=str.gsub(/\$([_a-z])/){ @counter[$1] || $1 }
+    raise if res == ''
+    @v.msg{"Substitute [#{str}] to [#{res}]"}
+    res
   end
 
   def format(str)
     return str unless str.include?('%')
-    @v.msg{"Format [#{str}] from #{@counter.values}"}
-    str % @counter.values
+    res = str % @counter.values
+    @v.msg{"Format [#{str}] to [#{res}]"}
+    res
   end
 
   private

@@ -5,7 +5,7 @@ require "librepeat"
 require "libsymdb"
 
 class FrmDb
-  attr_reader :fdbc,:selc,:fdbs,:sels,:label,:table,:symbol,:group
+  attr_reader :fdbc,:selc,:fdbs,:sels,:label,:table,:symref,:group
 
   def initialize(frm)
     @doc=XmlDoc.new('fdb',frm)
@@ -14,7 +14,7 @@ class FrmDb
     @fdbc=init_main('cmdframe'){|e| init_cmd(e)}
     @selc=init_sel('cmdframe','command'){|e| init_cmd(e)}
     @label={}
-    @symbol={}
+    @symref={}
     @group={}
     @fdbs=init_main('rspframe'){|e| init_stat(e)}
     @sels=init_sel('rspframe','response'){|e| init_stat(e)}
@@ -120,11 +120,11 @@ class FrmDb
       attr['val']=e.text
       if id=attr['assign']
         @label[id]=attr.delete('label')
-        @v.msg{"LABEL [#{id}] => #{label}"}
-        @symbol[id]=attr.delete('symbol')
-        @v.msg{"SYMREF [#{id}] => #{symbol}"}
+        @v.msg{"LABEL [#{id}] => #{@label}"}
+        @symref[id]=attr.delete('symbol')
+        @v.msg{"SYMREF [#{id}] => #{@symref}"}
         @group[id]=attr.delete('group')
-        @v.msg{"GROUP [#{id}] => #{group}"}
+        @v.msg{"GROUP [#{id}] => #{@group}"}
       end
       @v.msg{"InitElement: #{attr}"}
       attr

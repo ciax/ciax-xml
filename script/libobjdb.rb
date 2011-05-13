@@ -4,12 +4,12 @@ require "libxmldoc"
 require "libsymdb"
 
 class ObjDb
-  attr_reader :alias,:list,:label,:symbol,:table,:group
+  attr_reader :alias,:list,:label,:symref,:table,:group
   def initialize(obj)
     @alias={}
     @list={}
     @label={}
-    @symbol={}
+    @symref={}
     @group={}
     @table={}
     doc=XmlDoc.new('odb',obj)
@@ -37,9 +37,9 @@ class ObjDb
     @doc.find_each('status','title'){|e0|
       hash=e0.to_h
       id=hash.delete('ref')
-      if symbol=hash.delete('symbol')
-        @symbol[id]=symbol
-        @v.msg{"SYMREF:[#{id}] : #{symbol}"}
+      if symref=hash.delete('symbol')
+        @symref[id]=symref
+        @v.msg{"SYMREF:[#{id}] : #{symref}"}
       end
       if label=hash.delete('label')
         @label[id]=label

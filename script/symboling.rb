@@ -21,7 +21,7 @@ else
 end
 ref={}
 dba.each{|db|
-  ref.update(db.symbol)
+  ref.update(db.symref)
   sdb.update(db.table)
 }
 sym=Sym.new(sdb,ref)

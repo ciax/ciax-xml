@@ -3,10 +3,10 @@ require "libverbose"
 require "librerange"
 
 class Sym
-  def initialize(table,symbol)
+  def initialize(table,ref)
     @v=Verbose.new("Symbol",6)
     @table=table
-    @symbol=symbol
+    @ref=ref
   end
 
   def convert(view)
@@ -16,8 +16,8 @@ class Sym
       list << v
       val=v['val']
       next if val == ''
-      next unless sid=@symbol[k]
-      @v.msg{"ID=#{k},symbol=#{sid}"}
+      next unless sid=@ref[k]
+      @v.msg{"ID=#{k},ref=#{sid}"}
       tbl=@table[sid][:record]
       case @table[sid]['type']
       when 'range'
@@ -34,7 +34,7 @@ class Sym
           v.update(hash)
         }
       else
-        @v.msg{"VIEW:No Symbol:[#{val}]"}
+        @v.msg{"VIEW:No Symbol Reference:[#{val}]"}
         v.update(@table[sid][:record][val])
       end
     }

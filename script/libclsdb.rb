@@ -6,7 +6,7 @@ require "libsymdb"
 
 class ClsDb
   attr_reader :status,:table
-  attr_accessor:symbol,:label,:group
+  attr_accessor:symref,:label,:group
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls)
     @v=Verbose.new("cdb/#{doc['id']}",2)
@@ -14,7 +14,7 @@ class ClsDb
     @rep=Repeat.new
     @status={}
     @label={}
-    @symbol={}
+    @symref={}
     @group={}
     init_stat
     @table=SymDb.new(doc)
@@ -83,9 +83,9 @@ class ClsDb
         ldb[k]=@rep.format(v)
       }
       id=ldb.delete('id')
-      if symbol=ldb.delete('symbol')
-        @symbol[id]=symbol
-        @v.msg{"SYMREF:[#{id}] : #{symbol}"}
+      if symref=ldb.delete('symbol')
+        @symref[id]=symref
+        @v.msg{"SYMREF:[#{id}] : #{symref}"}
       end
       if label=ldb.delete('label')
         @label[id]=label

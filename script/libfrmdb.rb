@@ -5,7 +5,7 @@ require "librepeat"
 require "libsymdb"
 
 class FrmDb
-  attr_reader :fdbc,:selc,:fdbs,:sels,:label,:table,:symref,:group
+  attr_reader :fdbc,:selc,:fdbs,:sels,:label,:symtbl,:symref,:group
 
   def initialize(frm)
     @doc=XmlDoc.new('fdb',frm)
@@ -18,7 +18,7 @@ class FrmDb
     @group={}
     @fdbs=init_main('rspframe'){|e| init_stat(e)}
     @sels=init_sel('rspframe','response'){|e| init_stat(e)}
-    @table=SymDb.new(@doc)
+    @symtbl=SymDb.new(@doc)
   end
 
   def [](key)

@@ -5,7 +5,7 @@ require "libxmldoc"
 require "libsymdb"
 
 class ClsDb
-  attr_reader :status,:table
+  attr_reader :status,:symtbl
   attr_accessor:symref,:label,:group
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls)
@@ -17,7 +17,7 @@ class ClsDb
     @symref={}
     @group={}
     init_stat
-    @table=SymDb.new(doc)
+    @symtbl=SymDb.new(doc)
   end
 
   def [](key)

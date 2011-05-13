@@ -22,7 +22,7 @@ end
 ref={}
 dba.each{|db|
   ref.update(db.symref)
-  sdb.update(db.table)
+  sdb.update(db.symtbl)
 }
 sym=Sym.new(sdb,ref)
 res=sym.convert(view)

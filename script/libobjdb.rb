@@ -4,20 +4,20 @@ require "libxmldoc"
 require "libsymdb"
 
 class ObjDb
-  attr_reader :alias,:list,:label,:symref,:table,:group
+  attr_reader :alias,:list,:label,:symref,:symtbl,:group
   def initialize(obj)
     @alias={}
     @list={}
     @label={}
     @symref={}
     @group={}
-    @table={}
+    @symtbl={}
     doc=XmlDoc.new('odb',obj)
     @v=Verbose.new("odb/#{doc['id']}",2)
     @doc=doc
     init_command
     init_stat
-    @table=SymDb.new(doc)
+    @symtbl=SymDb.new(doc)
   rescue SelectID
   end
 

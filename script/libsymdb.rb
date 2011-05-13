@@ -5,7 +5,7 @@ require "libxmldoc"
 class SymDb < Hash
   def initialize(doc=nil)
     doc=doc || XmlDoc.new('sdb','all')
-    @v=Verbose.new("sdb")
+    @v=Verbose.new("sdb",6)
     doc.find_each('symbol','table'){|e1|
       row=e1.to_h
       id=row.delete('id')
@@ -18,8 +18,8 @@ class SymDb < Hash
         end
       }
       self[id]=row
+      @v.msg{"Symbol Table:#{id} : #{row}"}
     }
-    @v.msg{"Symbol Table:#{self}"}
     self
   end
 end

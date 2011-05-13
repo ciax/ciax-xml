@@ -26,7 +26,7 @@ class ClsDb
 
   def command
     cdbc={}
-    @doc['commands'].each{|e0|
+    @doc.find_each('commands'){|e0|
       hash=e0.to_h
       id=hash.delete('id')
       hash[:statements]=[]
@@ -46,7 +46,7 @@ class ClsDb
   end
 
   def watch
-    return unless wdb=@doc['watch']
+    return unless wdb=@doc.domain('watch')
     watch=wdb.to_h
     line=watch[:conditions]=[]
     @rep.each(wdb){|e0|
@@ -77,7 +77,7 @@ class ClsDb
 
   private
   def init_stat
-    @rep.each(@doc['status']){|e0|
+    @rep.each(@doc.domain('status')){|e0|
       ldb={}
       e0.to_h.each{|k,v|
         ldb[k]=@rep.format(v)
@@ -85,7 +85,7 @@ class ClsDb
       id=ldb.delete('id')
       if symbol=ldb.delete('symbol')
         @symbol[id]=symbol
-        @v.msg{"SYMBOL:[#{id}] : #{symbol}"}
+        @v.msg{"SYMREF:[#{id}] : #{symbol}"}
       end
       if label=ldb.delete('label')
         @label[id]=label

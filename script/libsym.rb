@@ -4,7 +4,7 @@ require "librerange"
 
 class Sym
   def initialize(table,symbol)
-    @v=Verbose.new("Symbol",4)
+    @v=Verbose.new("Symbol",6)
     @table=table
     @symbol=symbol
   end
@@ -34,7 +34,7 @@ class Sym
           v.update(hash)
         }
       else
-        @v.msg{"VIEW:Match:[#{match}] and [#{val}]"}
+        @v.msg{"VIEW:No Symbol:[#{val}]"}
         v.update(@table[sid][:record][val])
       end
     }

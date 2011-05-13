@@ -39,7 +39,7 @@ class ObjDb
       id=hash.delete('ref')
       if symbol=hash.delete('symbol')
         @symbol[id]=symbol
-        @v.msg{"SYMBOL:[#{id}] : #{symbol}"}
+        @v.msg{"SYMREF:[#{id}] : #{symbol}"}
       end
       if label=hash.delete('label')
         @label[id]=label

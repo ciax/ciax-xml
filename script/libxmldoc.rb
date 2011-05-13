@@ -4,11 +4,15 @@ require "libxmlgn"
 class XmlDoc < Hash
   private
   def initialize(dbid = nil,type = nil)
-    @v=Verbose.new("Doc",4)
+    @v=Verbose.new("Doc/#{dbid}",4)
+    @domain={}
     if type && ! readxml(dbid,type){|e|
-        self[e.name]=e
+        @domain[e.name]=e
         update(e.to_h)
-        e.each{|e1| self[e1.name]=e1 }
+        e.each{|e1|
+          @domain[e1.name]=e1
+          @v.msg{"Domain:#{e1.name}"}
+        }
       }.empty?
     else
       list={}
@@ -40,9 +44,17 @@ class XmlDoc < Hash
     raise SelectID,err
   end
 
-  def find_each(domain,xpath)
-    self[domain].find_each(xpath){|e|
-      yield e
-    } if key?(domain)
+  def find_each(domain,xpath=nil)  # child or find
+# For Symbol, domain is not <symbol> at sdb_all
+    return unless @domain.key?(domain)
+    if xpath
+      @domain[domain].find_each(xpath){|e| yield e}
+    else
+      @domain[domain].each{|e| yield e}
+    end
+  end
+
+  def domain(domain)
+    @domain[domain]
   end
 end

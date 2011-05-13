@@ -4,6 +4,7 @@ require "libsym"
 require "libsymdb"
 require "libview"
 
+
 abort "Usage: symboling [file]" if STDIN.tty? && ARGV.size < 1
 
 view=View.new(JSON.load(gets(nil)))

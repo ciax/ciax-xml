@@ -45,15 +45,14 @@ class FrmDb
 
   private
   def init_main(domain)
-    hash={}
+    hash=@doc.domain(domain).to_h
     begin
       @v.msg(1){"INIT:Main Frame <-"}
       frame=[]
-      @doc[domain].each{|e1|
+      @doc.find_each(domain){|e1|
         frame << yield(e1)
       }
       @v.msg{"InitMainFrame:#{frame}"}
-      hash.update(@doc[domain].to_h)
       hash['main']=frame.freeze
     ensure
       @v.msg(-1){"-> INIT:Main Frame"}
@@ -85,7 +84,7 @@ class FrmDb
         id=selh.delete('id')
         @v.msg{"InitSelHash(#{id}):#{selh}"}
         frame=[]
-        e0.each{|e1|
+        @rep.each(e0){|e1|
           e=yield(e1) || next
           frame << e
         }
@@ -123,7 +122,7 @@ class FrmDb
         @label[id]=attr.delete('label')
         @v.msg{"LABEL [#{id}] => #{label}"}
         @symbol[id]=attr.delete('symbol')
-        @v.msg{"SYMBOL [#{id}] => #{symbol}"}
+        @v.msg{"SYMREF [#{id}] => #{symbol}"}
         @group[id]=attr.delete('group')
         @v.msg{"GROUP [#{id}] => #{group}"}
       end

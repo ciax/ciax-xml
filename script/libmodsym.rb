@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 module ModSym
-  def init_sym(tbl={})
-    @doc.find_each('symbol','table'){|e1|
+  def init_sym(doc)
+    return {} unless doc === XmlDoc
+    doc.find_each('symbol','table'){|e1|
       row=e1.to_h
       id=row.delete('id')
       rc=row[:record]={}

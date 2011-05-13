@@ -2,10 +2,9 @@
 require "libverbose"
 require "libxmldoc"
 require "librepeat"
-require "libmodsym"
+require "libsymdb"
 
 class FrmDb
-  include ModSym
   attr_reader :fdbc,:selc,:fdbs,:sels,:label,:table,:symbol,:group
 
   def initialize(frm)
@@ -19,7 +18,7 @@ class FrmDb
     @group={}
     @fdbs=init_main('rspframe'){|e| init_stat(e)}
     @sels=init_sel('rspframe','response'){|e| init_stat(e)}
-    @table=init_sym
+    @table=SymDb.new(@doc)
   end
 
   def [](key)

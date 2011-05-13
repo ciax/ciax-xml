@@ -1,13 +1,25 @@
 #!/usr/bin/ruby
 require "libverbose"
 require "libxmldoc"
-require "libmodsym"
 
 class SymDb < Hash
-  include ModSym
-  def initialize
-    @v=Verbose.new("sym")
-    @doc=XmlDoc.new('sdb','all')
-    update init_sym
+  def initialize(doc=nil)
+    doc=doc || XmlDoc.new('sdb','all')
+    @v=Verbose.new("sdb")
+    doc.find_each('symbol','table'){|e1|
+      row=e1.to_h
+      id=row.delete('id')
+      rc=row[:record]={}
+      e1.each{|e2| # case
+        if e2.text
+          rc[e2.text]=e2.to_h
+        else
+          rc.default=e2.to_h
+        end
+      }
+      self[id]=row
+    }
+    @v.msg{"Symbol Table:#{self}"}
+    self
   end
 end

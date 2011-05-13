@@ -2,10 +2,9 @@
 require "librepeat"
 require "libverbose"
 require "libxmldoc"
-require "libmodsym"
+require "libsymdb"
 
 class ClsDb
-  include ModSym
   attr_reader :status,:table
   attr_accessor:symbol,:label,:group
   def initialize(cls)
@@ -18,7 +17,7 @@ class ClsDb
     @symbol={}
     @group={}
     init_stat
-    @table=init_sym
+    @table=SymDb.new(doc)
   end
 
   def [](key)

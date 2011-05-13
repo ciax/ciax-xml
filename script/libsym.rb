@@ -1,19 +1,12 @@
 #!/usr/bin/ruby
-require "libsymdb"
 require "libverbose"
 require "librerange"
 
 class Sym
-  def initialize
+  def initialize(table,symbol)
     @v=Verbose.new("Symbol",4)
-    @table=SymDb.new
-    @symbol={}
-  end
-
-  def update(db)
-    @table.update(db.table)
-    @symbol.update(db.symbol)
-    @v.msg{"Stat-Symbol:#{@symbol}"}
+    @table=table
+    @symbol=symbol
   end
 
   def convert(view)

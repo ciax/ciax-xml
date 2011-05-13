@@ -16,10 +16,7 @@ elsif type=view['class']
   id=view['id']
   cdb=ClsDb.new(type)
   label=Label.new(cdb.label)
-  begin
-    label.update(ObjDb.new(id).label)
-  rescue SelectID
-  end
+  label.update(ObjDb.new(id).label)
 else
   raise "NO ID in View"
 end

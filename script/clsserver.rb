@@ -13,10 +13,10 @@ port=ARGV.shift
 iocmd=ARGV.shift
 out=Filter.new(ARGV.shift)
 begin
-  cdoc=ClsDb.new(cls)
-  fdoc=FrmDb.new(cdoc['frame'])
-  fobj=Frm.new(fdoc,id,iocmd)
-  cobj=Cls.new(cdoc,id){|stm|
+  cdb=ClsDb.new(cls)
+  fdb=FrmDb.new(cdb['frame'])
+  fobj=Frm.new(fdb,id,iocmd)
+  cobj=Cls.new(cdb,id){|stm|
     fobj.request(stm)
     fobj.stat
   }

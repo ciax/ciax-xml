@@ -3,21 +3,18 @@ require "libverbose"
 require "libxmldoc"
 require "libsymdb"
 
-class ObjDb
-  attr_reader :alias,:list,:label,:symref,:symtbl,:group
-  def initialize(obj)
+class ObjDb < Hash
+  attr_reader :alias,:list
+  def initialize(obj,db={})
+    update(db)
     @alias={}
     @list={}
-    @label={}
-    @symref={}
-    @group={}
-    @symtbl={}
     doc=XmlDoc.new('odb',obj)
     @v=Verbose.new("odb/#{doc['id']}",2)
     @doc=doc
     init_command
     init_stat
-    @symtbl=SymDb.new(doc)
+    self[:symtbl].update(SymDb.new(doc))
   rescue SelectID
   end
 
@@ -37,18 +34,13 @@ class ObjDb
     @doc.find_each('status','title'){|e0|
       hash=e0.to_h
       id=hash.delete('ref')
-      if symref=hash.delete('symbol')
-        @symref[id]=symref
-        @v.msg{"SYMREF:[#{id}] : #{symref}"}
-      end
-      if label=hash.delete('label')
-        @label[id]=label
-        @v.msg{"LABEL:[#{id}] : #{label}"}
-      end
-      if group=hash.delete('group')
-        @group[id]=group
-        @v.msg{"GROUP:[#{id}] : #{group}"}
-      end
+      [:symbol,:label,:group].each{|k|
+        self[k]={} unless key?(k)
+        if d=hash[k.to_s]
+          self[k][id]=d
+          @v.msg{k.to_s.upcase+":[#{id}] : #{k}"}
+        end
+      }
     }
     self
   end

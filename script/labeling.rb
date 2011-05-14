@@ -10,13 +10,12 @@ view=View.new(JSON.load(gets(nil)))
 if type=view['frame']
   require "libfrmdb"
   fdb=FrmDb.new(type)
-  label=Label.new(fdb.label)
+  label=Label.new(fdb[:label])
 elsif type=view['class']
   require "libclsdb"
   id=view['id']
-  cdb=ClsDb.new(type)
-  label=Label.new(cdb.label)
-  label.update(ObjDb.new(id).label)
+  cdb=ObjDb.new(id,ClsDb.new(type))
+  label=Label.new(cdb[:label])
 else
   raise "NO ID in View"
 end

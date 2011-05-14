@@ -4,24 +4,17 @@ require "libverbose"
 require "libxmldoc"
 require "libsymdb"
 
-class ClsDb
-  attr_reader :status,:symtbl
-  attr_accessor:symref,:label,:group
+class ClsDb < Hash
+  attr_reader :status
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls)
     @v=Verbose.new("cdb/#{doc['id']}",2)
     @doc=doc
+    update(doc)
     @rep=Repeat.new
     @status={}
-    @label={}
-    @symref={}
-    @group={}
     init_stat
-    @symtbl=SymDb.new(doc)
-  end
-
-  def [](key)
-    @doc[key]
+    self[:symtbl]=SymDb.new(doc)
   end
 
   def command
@@ -83,18 +76,13 @@ class ClsDb
         ldb[k]=@rep.format(v)
       }
       id=ldb.delete('id')
-      if symref=ldb.delete('symbol')
-        @symref[id]=symref
-        @v.msg{"SYMREF:[#{id}] : #{symref}"}
-      end
-      if label=ldb.delete('label')
-        @label[id]=label
-        @v.msg{"LABEL:[#{id}] : #{label}"}
-      end
-      if group=ldb.delete('group')
-        @group[id]=group
-        @v.msg{"GROUP:[#{id}] : #{group}"}
-      end
+      [:symbol,:label,:group].each{|k|
+        self[k]={} unless key?(k)
+        if d=ldb.delete(k.to_s)
+          self[k][id]=d
+          @v.msg{k.to_s.upcase+":[#{id}] : #{k}"}
+        end
+      }
       fields=[]
       e0.each{|e1|
         st={:type => e1.name}

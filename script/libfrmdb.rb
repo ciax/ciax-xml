@@ -4,25 +4,18 @@ require "libxmldoc"
 require "librepeat"
 require "libsymdb"
 
-class FrmDb
-  attr_reader :fdbc,:selc,:fdbs,:sels,:label,:symtbl,:symref,:group
-
+class FrmDb < Hash
+  attr_reader :fdbc,:selc,:fdbs,:sels
   def initialize(frm)
     @doc=XmlDoc.new('fdb',frm)
     @v=Verbose.new("fdb/#{@doc['id']}",2)
     @rep=Repeat.new
+    update(@doc)
     @fdbc=init_main('cmdframe'){|e| init_cmd(e)}
     @selc=init_sel('cmdframe','command'){|e| init_cmd(e)}
-    @label={}
-    @symref={}
-    @group={}
     @fdbs=init_main('rspframe'){|e| init_stat(e)}
     @sels=init_sel('rspframe','response'){|e| init_stat(e)}
-    @symtbl=SymDb.new(@doc)
-  end
-
-  def [](key)
-    @doc[key]
+    self[:symtbl]=SymDb.new(@doc)
   end
 
   def checkcode(frame)
@@ -119,12 +112,13 @@ class FrmDb
       attr=e.to_h
       attr['val']=e.text
       if id=attr['assign']
-        @label[id]=attr.delete('label')
-        @v.msg{"LABEL [#{id}] => #{@label}"}
-        @symref[id]=attr.delete('symbol')
-        @v.msg{"SYMREF [#{id}] => #{@symref}"}
-        @group[id]=attr.delete('group')
-        @v.msg{"GROUP [#{id}] => #{@group}"}
+        [:symbol,:label,:group].each{|k|
+          self[k]={} unless key?(k)
+          if d=attr.delete(k.to_s)
+            self[k][id]=d
+            @v.msg{k.to_s.upcase+":[#{id}] : #{k}"}
+          end
+        }
       end
       @v.msg{"InitElement: #{attr}"}
       attr

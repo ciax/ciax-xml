@@ -14,12 +14,8 @@ if type=view['frame']
 elsif type=view['class']
   require "libclsdb"
   id=view['id']
-  cdb=ClsDb.new(type)
-  group=Group.new(cdb.group)
-  begin
-    group.update(ObjDb.new(id).group)
-  rescue SelectID
-  end
+  cdb=ObjDb.new(id,ClsDb.new(type))
+  group=Group.new(cdb[:group])
 else
   raise "NO ID in Status"
 end

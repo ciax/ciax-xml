@@ -17,7 +17,7 @@ class XmlDoc < Hash
       }.empty?
     else
       list={}
-      readxml(dbid){|e| list[e['id']]=e }
+      readxml(dbid){|e| list[e['id']]=e['label'] }
       @v.list(list)
     end
   end

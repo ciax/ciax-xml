@@ -5,7 +5,7 @@ require "libxmldoc"
 require "libsymdb"
 
 class ClsDb < Hash
-  attr_reader :status
+  attr_reader :status,:command
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls)
     @v=Verbose.new("cdb/#{doc['id']}",2)
@@ -14,10 +14,11 @@ class ClsDb < Hash
     @rep=Repeat.new
     @status={}
     init_stat
+    @command=init_command
     self[:symtbl]=SymDb.new(doc)
   end
 
-  def command
+  def init_command
     cdbc={}
     @doc.find_each('commands'){|e0|
       hash=e0.to_h
@@ -75,14 +76,7 @@ class ClsDb < Hash
       e0.to_h.each{|k,v|
         ldb[k]=@rep.format(v)
       }
-      id=ldb.delete('id')
-      [:symbol,:label,:group].each{|k|
-        self[k]={} unless key?(k)
-        if d=ldb.delete(k.to_s)
-          self[k][id]=d
-          @v.msg{k.to_s.upcase+":[#{id}] : #{k}"}
-        end
-      }
+      id=attr2db(ldb)
       fields=[]
       e0.each{|e1|
         st={:type => e1.name}
@@ -95,5 +89,17 @@ class ClsDb < Hash
       @v.msg{"STAT:[#{id}] : #{fields}"}
     }
     self
+  end
+
+  def attr2db(e)
+    attr=Hash[e]
+    id=attr.delete('id') || return
+    attr.each{|k,v|
+      s=k.to_sym
+      self[s]={} unless key?(s)
+      self[s][id]=v
+      @v.msg{k.upcase+":[#{id}] : #{k}"}
+    }
+    id
   end
 end

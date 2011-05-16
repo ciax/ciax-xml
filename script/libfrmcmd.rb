@@ -9,15 +9,17 @@ class FrmCmd
     @cache={}
     @fstr={}
     @fdbc=fdb.fdbc
-    @par=Param.new(fdb.selc)
+    @selc=fdb.selc
+    @par=Param.new
   end
 
   def setcmd(stm) # return = response select
     id=stm.first
+    @v.list(@selc,"=== Command List ===") unless @selc.key?(id)
     @par.setpar(stm)
-    @fdbc['select']=@par[:frame]
+    @fdbc['select']=@selc[id][:frame]
     @cid=stm.join(':')
-    @cid << ':*' if /true|1/ === @par['nocache']
+    @cid << ':*' if /true|1/ === @selc[id]['nocache']
     @v.msg{"Select:#{@par['label']}(#{@cid})"}
     self
   end

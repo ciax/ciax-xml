@@ -11,13 +11,15 @@ class FrmRsp
     @stat['frame']=fdb['id']
     @fdbs=fdb.fdbs
     @fdbsel=fdb.sels
-    @par=Param.new(fdb.selc)
+    @selc=fdb.selc
+    @par=Param.new
   end
 
   def setrsp(stm)
     cid=stm.first
+    @v.list(@selc,"=== Command List ===") unless @selc.key?(cid)
     csel=@par.setpar(stm)
-    rid=csel['response']
+    rid=@selc[cid]['response']
     sel=@fdbsel[rid] || @v.err("No such id [#{rid}]")
     @fdbs['select']=sel[:frame]
     @v.msg{"Set Statement #{stm}"}

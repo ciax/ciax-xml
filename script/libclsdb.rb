@@ -5,7 +5,6 @@ require "libxmldoc"
 require "libsymdb"
 
 class ClsDb < Hash
-  attr_reader :status
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls)
     @v=Verbose.new("cdb/#{doc['id']}",2)
@@ -14,7 +13,7 @@ class ClsDb < Hash
     @rep=Repeat.new
     @status={}
     self[:command]=init_command
-    init_stat
+    self[:status]=init_stat
     self[:symtbl]=SymDb.new(doc)
   end
 
@@ -70,6 +69,7 @@ class ClsDb < Hash
 
   private
   def init_stat
+    stat={}
     @rep.each(@doc.domain('status')){|e0|
       ldb={}
       e0.to_h.each{|k,v|
@@ -84,10 +84,10 @@ class ClsDb < Hash
         }
         fields << st
       }
-      @status[id]=fields
+      stat[id]=fields
       @v.msg{"STAT:[#{id}] : #{fields}"}
     }
-    self
+    stat
   end
 
   def attr2db(e,pre='')

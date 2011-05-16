@@ -17,26 +17,6 @@ class ClsDb < Hash
     self[:symtbl]=SymDb.new(doc)
   end
 
-  def init_command
-    cdbc={}
-    @doc.find_each('commands'){|e0|
-      id=attr2db(e0.to_h,'c')
-      list=[]
-      @rep.each(e0){|e1|
-        command=[e1['command']]
-        e1.each{|e2|
-          argv=e2.to_h
-          argv['val'] = @rep.subst(e2.text)
-          command << argv.freeze
-        }
-        list << command.freeze
-      }
-      cdbc[id]=list
-      @v.msg{"CMD:[#{id}] #{list}"}
-    }
-    cdbc
-  end
-
   def watch
     return unless wdb=@doc.domain('watch')
     watch=wdb.to_h
@@ -68,14 +48,30 @@ class ClsDb < Hash
   end
 
   private
+  def init_command
+    cdbc={}
+    @doc.find_each('commands'){|e0|
+      id=e0.attr2db(self,'c'){|v|v}
+      list=[]
+      @rep.each(e0){|e1|
+        command=[e1['command']]
+        e1.each{|e2|
+          argv=e2.to_h
+          argv['val'] = @rep.subst(e2.text)
+          command << argv.freeze
+        }
+        list << command.freeze
+      }
+      cdbc[id]=list
+      @v.msg{"CMD:[#{id}] #{list}"}
+    }
+    cdbc
+  end
+
   def init_stat
     stat={}
     @rep.each(@doc.domain('status')){|e0|
-      ldb={}
-      e0.to_h.each{|k,v|
-        ldb[k]=@rep.format(v)
-      }
-      id=attr2db(ldb)
+      id=e0.attr2db(self){|v|@rep.format(v)}
       fields=[]
       e0.each{|e1|
         st={:type => e1.name}
@@ -88,18 +84,5 @@ class ClsDb < Hash
       @v.msg{"STAT:[#{id}] : #{fields}"}
     }
     stat
-  end
-
-  def attr2db(e,pre='')
-    attr=Hash[e]
-    id=attr.delete('id') || return
-    attr.each{|k,v|
-      str=pre+k
-      sym=str.to_sym
-      self[sym]={} unless key?(sym)
-      self[sym][id]=v
-      @v.msg{str.upcase+":[#{id}] : #{v}"}
-    }
-    id
   end
 end

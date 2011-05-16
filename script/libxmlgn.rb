@@ -58,4 +58,20 @@ class XmlGn
       yield XmlGn.new(e)
     }
   end
+
+  def attr2db(db,pre='')
+    attr={}
+    to_h.each{|k,v|
+      attr[k]=yield v
+    }
+    id=attr.delete('id') || return
+    attr.each{|k,v|
+      str=pre+k
+      sym=str.to_sym
+      db[sym]={} unless db.key?(sym)
+      db[sym][id]=v
+      @v.msg{str.upcase+":[#{id}] : #{v}"}
+    }
+    id
+  end
 end

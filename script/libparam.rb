@@ -4,37 +4,30 @@ require 'librerange'
 
 # Parameter must be numerical
 class Param
-  def initialize(db)
-    @db=db
-    @stm=[]
+  def initialize
     @v=Verbose.new("PARAM",4)
   end
 
   def setpar(stm)
     @v.msg{"SetPar: #{stm}"}
     @stm=stm.dup
-    @db[stm.first] || @v.list(@db,"== Command List==")
+    @id=@stm.first
   end
 
   def subst(str,range=nil) # par={ val,range,format } or String
     return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
-      id=@stm[0]
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
         @v.msg{"Param No.#{i} = [#{@stm[i]}]"}
-        i > 0 ? validate(range,@stm[i]) : id
+        i > 0 ? validate(range,@stm[i]) : @id
       }
       @v.err("Nil string") if str == ''
       str
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end
-  end
-
-  def [](key)
-    @db[@stm.first][key]
   end
 
   private

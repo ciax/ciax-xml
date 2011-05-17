@@ -48,9 +48,9 @@ class ClsDb < Hash
 
   private
   def init_command
-    cdbc={}
+    cdbc={:cdb => {}}
     @doc.find_each('commands'){|e0|
-      id=e0.attr2db(self,'id','c'){|v|v}
+      id=e0.attr2db(cdbc){|v|v}
       list=[]
       @rep.each(e0){|e1|
         command=[e1['command']]
@@ -61,16 +61,16 @@ class ClsDb < Hash
         }
         list << command.freeze
       }
-      cdbc[id]=list
+      cdbc[:cdb][id]=list
       @v.msg{"CMD:[#{id}] #{list}"}
     }
     cdbc
   end
 
   def init_stat
-    stat={}
+    cdbs={:cdb => {}}
     @rep.each(@doc.domain('status')){|e0|
-      id=e0.attr2db(self){|v|@rep.format(v)}
+      id=e0.attr2db(cdbs){|v|@rep.format(v)}
       fields=[]
       e0.each{|e1|
         st={:type => e1.name}
@@ -79,9 +79,9 @@ class ClsDb < Hash
         }
         fields << st
       }
-      stat[id]=fields
+      cdbs[:cdb][id]=fields
       @v.msg{"STAT:[#{id}] : #{fields}"}
     }
-    stat
+    cdbs
   end
 end

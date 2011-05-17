@@ -15,7 +15,7 @@ elsif type=view['class']
   require "libclsdb"
   id=view['id']
   cdb=ObjDb.new(id,ClsDb.new(type))
-  group=Group.new(cdb[:group])
+  group=Group.new(cdb[:status][:group])
 else
   raise "NO ID in Status"
 end

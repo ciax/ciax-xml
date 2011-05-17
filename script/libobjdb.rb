@@ -9,23 +9,22 @@ class ObjDb < Hash
     doc=XmlDoc.new('odb',obj)
     @v=Verbose.new("odb/#{doc['id']}",2)
     @doc=doc
-    init_command
-    init_stat
+    init_command(self[:command])
+    init_stat(self[:status])
     self[:symtbl].update(SymDb.new(doc))
   rescue SelectID
   end
 
   private
-  def init_command
+  def init_command(db)
     @doc.find_each('command','alias'){|e0|
-      e0.attr2db(self,'id','c'){|v|v}
+      e0.attr2db(db){|v|v}
     }
   end
 
-  def init_stat
+  def init_stat(db)
     @doc.find_each('status','title'){|e0|
-      e0.attr2db(self,'ref'){|v|v}
+      e0.attr2db(db,'ref'){|v|v}
     }
-    self
   end
 end

@@ -7,12 +7,12 @@ class ClsCmd
   def initialize(cdb)
     @v=Verbose.new("#{cdb['id']}/stm",2)
     @par=Param.new
-    @cdb=cdb
+    @cdb=cdb[:command]
   end
 
   def setcmd(ssn)
     @id=ssn.first
-    @v.list(@cdb[:clabel],"== Command List==") unless @cdb[:clabel].key?(@id)
+    @v.list(@cdb[:label],"== Command List==") unless @cdb[:label].key?(@id)
     @par.setpar(ssn)
     self
   end
@@ -20,7 +20,7 @@ class ClsCmd
   def statements
     @v.msg{"Exec(CDB):#{@id}"}
     stma=[]
-    @cdb[:command][@id].each{|e1|
+    @cdb[:cdb][@id].each{|e1|
       stm=[]
       @v.msg(1){"GetCmd(DDB):#{e1.first}"}
       begin

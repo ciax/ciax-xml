@@ -20,6 +20,6 @@ else
 end
 sdb=SymDb.new
 sdb.update(db[:symtbl])
-sym=Sym.new(sdb,db[:symbol])
+sym=Sym.new(sdb,db[:status][:symbol])
 res=sym.convert(view)
 puts JSON.dump(res)

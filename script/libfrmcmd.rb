@@ -3,13 +3,13 @@ require "libparam"
 # Cmd Methods
 class FrmCmd
   def initialize(fdb,stat)
-    @fdb=fdb.command
+    @fdb=fdb
     @stat=stat
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
-    @fdbc=fdb[:fdb]
-    @selc=fdb[:sel]
+    @fdbc=fdb.command[:fdb]
+    @selc=fdb.command[:sel]
     @par=Param.new
   end
 

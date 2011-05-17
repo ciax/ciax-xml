@@ -18,13 +18,13 @@ class ObjDb < Hash
   private
   def init_command
     @doc.find_each('command','alias'){|e0|
-      e0.attr2db(self){|v|v}
+      e0.attr2db(self,'id','c'){|v|v}
     }
   end
 
   def init_stat
     @doc.find_each('status','title'){|e0|
-      e0.attr2db(self){|v|v}
+      e0.attr2db(self,'ref'){|v|v}
     }
     self
   end

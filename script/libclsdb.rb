@@ -50,7 +50,7 @@ class ClsDb < Hash
   def init_command
     cdbc={}
     @doc.find_each('commands'){|e0|
-      id=e0.attr2db(self,'c'){|v|v}
+      id=e0.attr2db(self,'id','c'){|v|v}
       list=[]
       @rep.each(e0){|e1|
         command=[e1['command']]

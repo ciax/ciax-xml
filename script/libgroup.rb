@@ -3,6 +3,6 @@ class Group < Hash
   def initialize(hash)
     self['id'] = '0'
     self['time'] = '0'
-    update(hash)
+    update(hash||{})
   end
 end

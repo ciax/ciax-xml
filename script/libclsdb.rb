@@ -11,7 +11,6 @@ class ClsDb < Hash
     @doc=doc
     update(doc)
     @rep=Repeat.new
-    @status={}
     self[:command]=init_command
     self[:status]=init_stat
     self[:symtbl]=SymDb.new(doc)

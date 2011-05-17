@@ -6,7 +6,7 @@ class Sym
   def initialize(table,ref)
     @v=Verbose.new("Symbol",6)
     @table=table
-    @ref=ref
+    @ref=ref||{}
   end
 
   def convert(view)

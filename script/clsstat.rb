@@ -4,8 +4,6 @@ require "libclsdb"
 require "libclsstat"
 require "libstat"
 
-usage=
-
 cls=ARGV.shift
 ARGV.clear
 

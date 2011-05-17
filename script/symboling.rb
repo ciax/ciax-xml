@@ -12,9 +12,8 @@ if frm=view['frame']
   require "libfrmdb"
   db=FrmDb.new(frm)
 elsif cls=view['class']
-  require "libclsdb"
   require "libobjdb"
-  db=ObjDb.new(view['id'],ClsDb.new(cls))
+  db=ObjDb.new(cls,view['id'])
 else
   raise "NO ID in Status"
 end

@@ -2,7 +2,6 @@
 require "json"
 require "libview"
 require "libgroup"
-require "libobjdb"
 
 abort "Usage: grouping [file]" if STDIN.tty? && ARGV.size < 1
 
@@ -12,9 +11,9 @@ if type=view['frame']
   fdb=FrmDb.new(type)
   group=Group.new(fdb.group)
 elsif type=view['class']
-  require "libclsdb"
+  require "libobjdb"
   id=view['id']
-  cdb=ObjDb.new(id,ClsDb.new(type))
+  cdb=ObjDb.new(type,id)
   group=Group.new(cdb[:status][:group])
 else
   raise "NO ID in Status"

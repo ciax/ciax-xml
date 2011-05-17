@@ -2,7 +2,6 @@
 require "json"
 require "libview"
 require "liblabel"
-require "libobjdb"
 
 abort "Usage: labeling [file]" if STDIN.tty? && ARGV.size < 1
 
@@ -12,10 +11,9 @@ if type=view['frame']
   fdb=FrmDb.new(type)
   label=Label.new(fdb[:status][:label])
 elsif type=view['class']
-  require "libclsdb"
-  id=view['id']
-  cdb=ObjDb.new(id,ClsDb.new(type))
-  label=Label.new(cdb[:status][:label]).freeze
+  require "libobjdb"
+  cdb=ObjDb.new(type,view['id'])
+  label=Label.new(cdb[:status][:label])
 else
   raise "NO ID in View"
 end

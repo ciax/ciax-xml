@@ -15,7 +15,7 @@ class ObjDb < ClsDb
     doc.find_each('status','title'){|e0|
       e0.attr2db(@status,'ref'){|v|v}
     }
-    @symtbl.update(SymDb.new(doc))
+    SymDb.new(doc,@symtbl)
   rescue SelectID
   end
 end

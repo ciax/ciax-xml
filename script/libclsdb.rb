@@ -5,15 +5,16 @@ require "libxmldoc"
 require "libsymdb"
 
 class ClsDb < Hash
+  attr_reader :command,:status,:symtbl
   def initialize(cls)
     doc=XmlDoc.new('cdb',cls)
     @v=Verbose.new("cdb/#{doc['id']}",2)
     @doc=doc
     update(doc)
     @rep=Repeat.new
-    self[:command]=init_command
-    self[:status]=init_stat
-    self[:symtbl]=SymDb.new(doc)
+    @command=init_command
+    @status=init_stat
+    @symtbl=SymDb.new(doc)
   end
 
   def watch

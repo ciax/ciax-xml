@@ -18,7 +18,7 @@ else
   raise "NO ID in Status"
 end
 sdb=SymDb.new
-sdb.update(db[:symtbl])
-sym=Sym.new(sdb,db[:status][:symbol])
+sdb.update(db.symtbl)
+sym=Sym.new(sdb,db.status[:symbol])
 res=sym.convert(view)
 puts JSON.dump(res)

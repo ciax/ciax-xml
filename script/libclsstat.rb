@@ -5,7 +5,7 @@ require "libclsdb"
 class ClsStat
   def initialize(cdb,stat,field)
     @stat,@field=stat,field
-    @cdbs=cdb[:status][:cdb]
+    @cdbs=cdb.status[:cdb]
     cls=cdb['id']
     id=field['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls,'id' => id})

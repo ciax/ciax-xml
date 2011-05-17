@@ -1,23 +1,24 @@
 #!/usr/bin/ruby
-require "libxmldoc"
 require "libverbose"
+require "libobjdb"
 
 class Alias
   def initialize(obj)
-    @odb=XmlDoc.new('odb',obj)
-  rescue RuntimeError
-  else
-    @v=Verbose.new("alias/#{obj}".upcase)
+    @v=Verbose.new("alias/#{obj}".upcase,6)
+    @odb=ObjDb.new(obj).alias
   end
   
   public
   def alias(ssn)
     raise unless Array === ssn
-    if @odb && @odb['command']
-      @session=@odb.select_id('command',ssn[0])
-      @v.msg{"Before:#{ssn}(#{@session['label']})"}
-      ssn[1..-1].unshift(@session['ref'])
+    return ssn unless @odb
+    id=ssn.first
+    if ref=@odb[:ref][id] && ! ssn.empty?
+      @v.msg{"Before:#{ssn}(#{@odb[:label][id]})"}
+      ssn[1..-1].unshift(ref)
       @v.msg{"After:#{ssn}"}
+    else
+      @v.list(@odb[:label],"=== Command List ===")
     end
     ssn
   end

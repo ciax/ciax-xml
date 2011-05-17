@@ -1,11 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cri" label="IR Compressor Room Reserve">
-    <comm>
-      <class>bbe</class>
-      <client>socat - tcp:ltc-i:4003</client>
-      <server>socat - udp-l:25107,reuseaddr,fork</server>
-    </comm>
+  <object id="cri" label="IR Compressor Room Reserve" class="bbe" client="socat - tcp:ltc-i:4003" server="socat - udp-l:25107,reuseaddr,fork">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="xsw0" label="X0 SWITCH" />
       <title ref="xdr0" label="X0 DRIVE" />

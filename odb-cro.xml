@@ -1,11 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
-  <object id="cco" label="OPT Helium Compressor Control">
-    <comm>
-      <class>bbe</class>
-      <client>socat - tcp:ltc-o:4003</client>
-      <server>socat - udp-l:25106,reuseaddr,fork</server>
-    </comm>
+  <object id="cco" label="OPT Helium Compressor Control" class="bbe" client="socat - tcp:ltc-o:4003" server="socat - udp-l:25106,reuseaddr,fork">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/odbc">
       <alias id="upd" label="Update Status" ref="upd" />
       <alias id="f2on" label="CIAO(S6) ON" ref="x0on" />

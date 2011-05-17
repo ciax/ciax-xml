@@ -11,7 +11,8 @@ class Verbose
     @title=title.upcase
     @color=color
     @ind=1
- end
+    msg{"Initialize Messaging"}
+  end
 
   # Public Method
   def msg(add=0)

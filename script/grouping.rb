@@ -13,7 +13,7 @@ if type=view['frame']
 elsif type=view['class']
   require "libobjdb"
   id=view['id']
-  cdb=ObjDb.new(type,id)
+  cdb=ObjDb.new(id,type)
   group=Group.new(cdb.status[:group])
 else
   raise "NO ID in Status"

@@ -13,7 +13,7 @@ if frm=view['frame']
   db=FrmDb.new(frm)
 elsif cls=view['class']
   require "libobjdb"
-  db=ObjDb.new(cls,view['id'])
+  db=ObjDb.new(view['id'],cls)
 else
   raise "NO ID in Status"
 end

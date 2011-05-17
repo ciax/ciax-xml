@@ -12,7 +12,7 @@ if type=view['frame']
   label=Label.new(fdb.status[:label])
 elsif type=view['class']
   require "libobjdb"
-  cdb=ObjDb.new(type,view['id'])
+  cdb=ObjDb.new(view['id'],type)
   label=Label.new(cdb.status[:label])
 else
   raise "NO ID in View"

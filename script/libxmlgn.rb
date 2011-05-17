@@ -19,7 +19,7 @@ class XmlGn
 
   def each
     @e.each_element{|e|
-      @v.msg(1){"<#{e.name}>"}
+      @v.msg(1){"each <#{e.name}>"}
       yield XmlGn.new(e)
       @v.msg(-1){"</#{e.name}>"}
     }
@@ -53,14 +53,14 @@ class XmlGn
   end
 
   def find_each(xpath)
-    @v.msg{"Find:#{xpath}"}
+    @v.msg{"FindXpath:#{xpath}"}
     @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
       yield XmlGn.new(e)
     }
   end
 
   def attr2db(db,id='id')
-    db ||= {}
+    raise "Param should be Hash" unless Hash === db
     attr={}
     to_h.each{|k,v|
       attr[k]=yield v
@@ -70,7 +70,7 @@ class XmlGn
       sym=str.to_sym
       db[sym]={} unless db.key?(sym)
       db[sym][key]=v
-      @v.msg{str.upcase+":[#{key}] : #{v}"}
+      @v.msg{"ATTRDB:"+str.upcase+":[#{key}] : #{v}"}
     }
     key
   end

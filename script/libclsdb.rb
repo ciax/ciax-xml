@@ -63,7 +63,7 @@ class ClsDb < Hash
         list << command.freeze
       }
       cdbc[:cdb][id]=list
-      @v.msg{"CMD:[#{id}] #{list}"}
+      @v.msg{"COMMAND:[#{id}] #{list}"}
     }
     cdbc
   end
@@ -81,7 +81,7 @@ class ClsDb < Hash
         fields << st
       }
       cdbs[:cdb][id]=fields
-      @v.msg{"STAT:[#{id}] : #{fields}"}
+      @v.msg{"STATUS:[#{id}] : #{fields}"}
     }
     cdbs
   end

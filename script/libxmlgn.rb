@@ -60,6 +60,7 @@ class XmlGn
   end
 
   def attr2db(db,id='id')
+    db ||= {}
     attr={}
     to_h.each{|k,v|
       attr[k]=yield v

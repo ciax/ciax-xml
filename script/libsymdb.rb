@@ -3,8 +3,9 @@ require "libverbose"
 require "libxmldoc"
 
 class SymDb < Hash
-  def initialize(doc=nil)
-    doc=doc || XmlDoc.new('sdb','all')
+  def initialize(doc=nil,db=nil)
+    doc ||= XmlDoc.new('sdb','all')
+    update(db) if db
     @v=Verbose.new("sdb",6)
     doc.find_each('symbol','table'){|e1|
       row=e1.to_h

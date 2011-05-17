@@ -5,17 +5,19 @@ require "librepeat"
 require "libsymdb"
 
 class FrmDb < Hash
-  attr_reader :fdbc,:selc,:fdbs,:sels
+  attr_reader :command,:status,:symtbl
   def initialize(frm)
     @doc=XmlDoc.new('fdb',frm)
     @v=Verbose.new("fdb/#{@doc['id']}",2)
     @rep=Repeat.new
     update(@doc)
-    @fdbc=init_main('cmdframe'){|e| init_cmd(e)}
-    @selc=init_sel('cmdframe','command'){|e| init_cmd(e)}
-    @fdbs=init_main('rspframe'){|e| init_stat(e)}
-    @sels=init_sel('rspframe','response'){|e| init_stat(e)}
-    self[:symtbl]=SymDb.new(@doc)
+    @command={}
+    @status={}
+    @command[:fdb]=init_main('cmdframe'){|e| init_cmd(e)}
+    @command[:sel]=init_sel('cmdframe','command'){|e| init_cmd(e)}
+    @status[:fdb]=init_main('rspframe'){|e| init_stat(e)}
+    @status[:sel]=init_sel('rspframe','response'){|e| init_stat(e)}
+    @symtbl=SymDb.new(@doc)
   end
 
   def checkcode(frame)
@@ -113,10 +115,10 @@ class FrmDb < Hash
       attr['val']=e.text
       if id=attr['assign']
         [:symbol,:label,:group].each{|k|
-          self[k]={} unless key?(k)
+          @status[k]={} unless @status.key?(k)
           if d=attr.delete(k.to_s)
-            self[k][id]=d
-            @v.msg{k.to_s.upcase+":[#{id}] : #{k}"}
+            @status[k][id]=d
+            @v.msg{k.to_s.upcase+":[#{id}] : #{d}"}
           end
         }
       end

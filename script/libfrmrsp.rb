@@ -9,9 +9,9 @@ class FrmRsp
     @stat=stat
     @v=Verbose.new("#{fdb['id']}/rsp",3)
     @stat['frame']=fdb['id']
-    @fdbs=fdb.fdbs
-    @fdbsel=fdb.sels
-    @selc=fdb.selc
+    @fdbs=fdb.status[:fdb]
+    @fdbsel=fdb.status[:sel]
+    @selc=fdb.command[:sel]
     @par=Param.new
   end
 

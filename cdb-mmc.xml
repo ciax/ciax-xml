@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <class frame="slo" id="mmc" label="MOIRCS Carrousel">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+      <session id="upd" label="Update Status">
+        <statement command="getstat" />
+        <statement command="bs" />
+        <statement command="p" />
+        <repeat from="1" to="5">
+          <statement command="in">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
+      </session>
+      <session id="reset" label="Reset">
+        <statement command="reset" />
+      </session>
+      <session id="defcon" label="Default Config">
+        <statement command="hl">
+          <argv>0</argv>
+        </statement>
+        <statement command="e1">
+          <argv>0</argv>
+        </statement>
+        <statement command="e2">
+          <argv>0</argv>
+        </statement>
+      </session>
+      <session id="set0" label="Set 0 Pulses">
+        <statement command="set0" />
+      </session>
+    </commands>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+      <value id="bs" label="Moter Moving" group="1" symbol="warn">
+        <string ref="bs" />
+      </value>
+      <value id="con" label="Contact Sensor" group="1" symbol="normal">
+        <string ref="in:4" />
+      </value>
+      <value id="err" label="Error Code" group="1" symbol="err">
+        <int ref="err" />
+      </value>
+      <value id="pos" label="Arm Position" group="2" symbol="pos">
+        <string ref="in:0" />
+        <string ref="in:1" />
+        <string ref="in:2" />
+        <string ref="in:3" />
+      </value>
+      <value id="abs" label="ABS position" group="2" symbol="abs">
+        <float ref="p" />
+      </value>
+    </status>
+    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+      <table id="err" type="string">
+        <case class="hide" msg="No Error">0</case>
+        <case class="alarm" msg="Could not burn flash successfully">1</case>
+        <case class="alarm" msg="Could not download file">2</case>
+        <case class="alarm" msg="Not enough memory to execute user program">3</case>
+        <case class="alarm" msg="Attempt to access a non-existent array element">4</case>
+        <case class="alarm" msg="Unknown Error" />
+      </table>
+      <table id="pos" type="string">
+        <case class="normal" msg="INIT">0001</case>
+        <case class="normal" msg="STOCK">0010</case>
+        <case class="normal" msg="FOCUS">0100</case>
+        <case class="normal" msg="ROT">1000</case>
+        <case class="alarm" msg="N/A" />
+      </table>
+      <table id="abs" type="range">
+        <case class="normal" msg="INIT">0:0.5</case>
+        <case class="normal" msg="FOCUS">12.3:13.2</case>
+        <case class="normal" msg="ROT">122.5:123.5</case>
+        <case class="normal" msg="WAIT">184.5:185.5</case>
+        <case class="normal" msg="STOCK">200:201</case>
+      </table>
+    </symbol>
+  </class>
+</cdb>

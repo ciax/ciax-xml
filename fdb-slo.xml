@@ -52,6 +52,10 @@
           <data>ma=</data>
           <data format="%3.1f" valid="0:999">$1</data>
         </command>
+        <command id="mi" label="Move Incremental" response="default" type="action">
+          <data>mi=</data>
+          <data format="%3.1f" valid="-999:999">$1</data>
+        </command>
       </select>
       <data encode="chr">0xd</data>
     </cmdframe>

@@ -10,7 +10,7 @@ getstat(){
     stat="`egrep \"rcv:$cmd\" $input|tail -1`"
     if [ "$stat" ] ; then
         echo "${C3}process for $cmd$C0"
-        echo "$stat" | frmstat $dev $id
+        echo "$stat" | frmstat $dev | merging $output
     fi
 }
 

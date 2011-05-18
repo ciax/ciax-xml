@@ -1,16 +1,14 @@
 #!/usr/bin/ruby
 require "json"
-require "libstat"
 require "libfrmrsp"
 require "libfrmdb"
 
 dev=ARGV.shift
-id=ARGV.shift
 ARGV.clear
 
 begin
   fdb=FrmDb.new(dev)
-  st=Stat.new(id,"field")
+  st={}
   r=FrmRsp.new(fdb,st)
   ary=gets.split("\t")
   time=Time.at(ary.shift.to_f)
@@ -18,8 +16,9 @@ begin
   abort ("Logline:Not response") unless /rcv/ === stm.shift
   r.setrsp(stm)
   r.getfield(time){ eval(ary.shift) }
-  st.save
+warn st
+  puts JSON.dump(st)
 rescue RuntimeError
-  abort "Usage: frmstat [frame] [id] < logline\n#{$!}"
+  abort "Usage: frmstat [frame] < logline\n#{$!}"
 end
 

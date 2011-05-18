@@ -16,7 +16,6 @@ begin
   abort ("Logline:Not response") unless /rcv/ === stm.shift
   r.setrsp(stm)
   r.getfield(time){ eval(ary.shift) }
-warn st
   puts JSON.dump(st)
 rescue RuntimeError
   abort "Usage: frmstat [frame] < logline\n#{$!}"

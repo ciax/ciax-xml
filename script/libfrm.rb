@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require "libiocmd"
-require "libstat"
+require "libiostat"
 require "libfrmcmd"
 require "libfrmrsp"
 
 class Frm
   attr_reader :interrupt,:prompt
   def initialize(fdb,id,iocmd)
-    @stat=Stat.new(id,"field")
+    @stat=IoStat.new(id,"field")
     @cmd=FrmCmd.new(fdb,@stat)
     @rsp=FrmRsp.new(fdb,@stat)
     @v=Verbose.new("fdb/#{id}".upcase)

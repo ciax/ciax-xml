@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libstat"
+require "libiostat"
 require "libbuffer"
 require "libclscmd"
 require "libclsstat"
@@ -11,8 +11,8 @@ class Cls
   def initialize(cdb,id)
     @cls=cdb['id'].freeze
     @v=Verbose.new("ctl",6)
-    @stat=Stat.new(id,'status')
-    @field=Stat.new(id,"field")
+    @stat=IoStat.new(id,'status')
+    @field=IoStat.new(id,"field")
     @cc=ClsCmd.new(cdb)
     @cs=ClsStat.new(cdb,@stat,@field)
     Thread.abort_on_exception=true

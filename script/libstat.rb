@@ -1,40 +1,13 @@
 #!/usr/bin/ruby
-require 'libiofile'
 require 'libverbose'
 class Stat < Hash
-  def initialize(id,fname)
+  def initialize(hash={})
     @v=Verbose.new("stat",6)
-    raise SelectID," No ID" unless id
-    self['id']=id
-    fname+="_#{id}"
-    begin
-      @fd=IoFile.new(fname)
-      load
-    rescue
-      @v.warn("----- No #{fname}.json")
-    end
+    update(hash)
   end
 
   def to_h
     Hash[self]
-  end
-
-  def load(tag=nil)
-    update(@fd.load_stat(tag))
-    self
-  end
-
-  def save(tag=nil,keys=nil)
-    if keys
-      stat={}
-      keys.each{|k|
-        stat[k]=self[k] if key?(k)
-      }
-      @fd.save_stat(stat,tag)
-    else
-      @fd.save_stat(to_h)
-    end
-    self
   end
 
   def subst(str)

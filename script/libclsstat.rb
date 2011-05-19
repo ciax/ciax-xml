@@ -7,8 +7,7 @@ class ClsStat
     @stat,@field=stat,field
     @cdbs=cdb.status[:cdb]
     cls=cdb['id']
-    id=field['id']
-    @stat.update({'time' => Time.now.to_s,'class' => cls,'id' => id})
+    @stat.update({'time' => Time.now.to_s,'class' => cls})
     @v=Verbose.new("#{cls}/stat",2)
   end
   
@@ -23,7 +22,7 @@ class ClsStat
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
-    self
+    @stat.to_h
   end
   
   private

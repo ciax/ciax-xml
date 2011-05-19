@@ -4,5 +4,6 @@ require "libview"
 
 abort "Usage: v2s < json_file" if STDIN.tty?
 
-view=View.new(JSON.load(gets(nil)))
+str=gets(nil) || exit
+view=View.new(JSON.load(str))
 puts view

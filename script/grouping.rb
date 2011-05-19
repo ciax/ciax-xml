@@ -5,7 +5,8 @@ require "libgroup"
 
 abort "Usage: grouping [file]" if STDIN.tty? && ARGV.size < 1
 
-view=View.new(JSON.load(gets(nil)))
+str=gets(nil) || exit
+view=View.new(JSON.load(str))
 if type=view['frame']
   require "libfrmdb"
   fdb=FrmDb.new(type)

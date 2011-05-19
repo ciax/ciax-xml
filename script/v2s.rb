@@ -2,7 +2,7 @@
 require "json"
 require "libview"
 
-usage="Usage: vs < json_file"
+abort "Usage: v2s < json_file" if STDIN.tty?
 
 view=View.new(JSON.load(gets(nil)))
 puts view

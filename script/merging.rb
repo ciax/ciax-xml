@@ -14,7 +14,7 @@ def merge(a,b)
       b[i]=merge(a[i],b[i])
     }
   else
-    b=a
+    b=a||b
   end
   b
 end

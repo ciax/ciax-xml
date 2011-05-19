@@ -8,15 +8,16 @@ ARGV.clear
 
 begin
   fdb=FrmDb.new(dev)
-  st={}
-  r=FrmRsp.new(fdb,st)
-  ary=gets.split("\t")
+  field={}
+  r=FrmRsp.new(fdb,field)
+  str=gets(nil) || exit
+  ary=str.split("\t")
   time=Time.at(ary.shift.to_f)
   stm=ary.shift.split(':')
   abort ("Logline:Not response") unless /rcv/ === stm.shift
   r.setrsp(stm)
   r.getfield(time){ eval(ary.shift) }
-  puts JSON.dump(st)
+  puts JSON.dump(field)
 rescue RuntimeError
   abort "Usage: frmstat [frame] < logline\n#{$!}"
 end

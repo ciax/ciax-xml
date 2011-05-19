@@ -4,7 +4,8 @@ require "libclsdb"
 require "libwatch"
 abort "Usage: watches [file]" if STDIN.tty? && ARGV.size < 1
 begin
-  stat=JSON.load(gets(nil))
+  str=gets(nil) || exit
+  stat=JSON.load(str)
   cdb=ClsDb.new(stat['class'])
   watch=Watch.new(cdb)
   watch.update{|k| stat[k] }

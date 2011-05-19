@@ -9,7 +9,8 @@ ARGV.clear
 
 begin
   cdb=ClsDb.new(cls)
-  field=JSON.load(gets(nil))
+  str=gets(nil) || exit
+  field=JSON.load(str)
   id=field['id']
   st=Stat.new(id,'status')
   fl=Stat.new(id,"field")

@@ -10,14 +10,12 @@ class FrmRsp
     @v=Verbose.new("#{fdb['id']}/rsp",3)
     @stat['frame']=fdb['id']
     @fdbs=fdb.frame[:status]
-    @fdbsel=fdb.status[:select]
-    @selc=fdb.command[:select]
     @par=Param.new(fdb.command)
   end
 
   def setrsp(stm)
     rid=@par.setpar(stm).check_id[:response]
-    sel=@fdbsel[rid] || @v.err("No such response id [#{rid}]")
+    sel=@fdb.status[:select][rid] || @v.err("No such response id [#{rid}]")
     @fdbs[:select]=sel
     @v.msg{"Set Statement #{stm}"}
     self

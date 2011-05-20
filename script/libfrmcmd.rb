@@ -9,14 +9,13 @@ class FrmCmd
     @cache={}
     @fstr={}
     @fdbc=fdb.frame[:command]
-    @selc=fdb.command[:select]
     @par=Param.new(@fdb.command)
   end
 
   def setcmd(stm) # return = response select
     id=stm.first
     @par.setpar(stm).check_id
-    @fdbc[:select]=@selc[id]
+    @fdbc[:select]=@par[:select]
     @v.msg{"Attr of Param:#{@par}"}
     @cid=stm.join(':')
     @cid << ':*' if /true|1/ === @par[:nocache]

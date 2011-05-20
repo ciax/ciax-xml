@@ -13,8 +13,11 @@ class ClsDb < Hash
     update(doc)
     @rep=Repeat.new
     @command=init_command
+    @v.msg{"Structure:command #{@command}"}
     @status=init_stat
+    @v.msg{"Structure:status #{@status}"}
     @symtbl=SymDb.new(doc)
+    @v.msg{"Structure:symtbl #{@symtbl}"}
   end
 
   def watch

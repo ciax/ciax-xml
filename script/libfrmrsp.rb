@@ -9,30 +9,29 @@ class FrmRsp
     @stat=stat
     @v=Verbose.new("#{fdb['id']}/rsp",3)
     @stat['frame']=fdb['id']
-    @fdbs=fdb.status[:fdb]
-    @fdbsel=fdb.status[:sel]
-    @selc=fdb.command[:sel]
-    @par=Param.new
+    @fdbs=fdb.status[:frame]
+    @fdbsel=fdb.status[:select]
+    @selc=fdb.command[:select]
+    @par=Param.new(fdb.command)
   end
 
   def setrsp(stm)
     cid=stm.first
-    @v.list(@selc,"=== Command List ===") unless @selc.key?(cid)
-    @par.setpar(stm)
-    rid=@selc[cid]['response']
-    sel=@fdbsel[rid] || @v.err("No such id [#{rid}]")
-    @fdbs['select']=sel[:frame]
+    @par.setpar(stm).check_id
+    rid=@fdb.command[:response][cid]
+    sel=@fdbsel[rid] || @v.err("No such response id [#{rid}] in #{@fdbsel.keys}")
+    @fdbs[:select]=sel
     @v.msg{"Set Statement #{stm}"}
     self
   end
 
   def getfield(time=Time.now)
-    return "Send Only" unless @fdbs['select']
+    return "Send Only" unless @fdbs[:select]
     frame=yield || @v.err("No String")
     tm=@fdbs['terminator']
     dm=@fdbs['delimiter']
     @frame=Frame.new(frame,dm,tm)
-    getfield_rec(@fdbs['main'])
+    getfield_rec(@fdbs[:main])
     if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
       @v.msg{"Verify:CC OK <#{cc}>"}
@@ -50,7 +49,7 @@ class FrmRsp
         begin
           @v.msg(1){"Entering Ceck Code Node"}
           @frame.mark
-          getfield_rec(@fdbs['ccrange'])
+          getfield_rec(@fdbs[:ccrange])
           @cc = @fdb.checkcode(@frame.copy)
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
@@ -58,7 +57,7 @@ class FrmRsp
       when 'select'
         begin
           @v.msg(1){"Entering Selected Node"}
-          getfield_rec(@fdbs['select'])
+          getfield_rec(@fdbs[:select])
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end

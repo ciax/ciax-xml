@@ -8,32 +8,33 @@ class FrmCmd
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
-    @fdbc=fdb.command[:fdb]
-    @selc=fdb.command[:sel]
-    @par=Param.new(@selc)
+    @fdbc=fdb.command[:frame]
+    @selc=fdb.command[:select]
+    @par=Param.new(@fdb.command)
   end
 
   def setcmd(stm) # return = response select
     id=stm.first
-    @v.list(@selc,"=== Command List ===") unless @selc.key?(id)
-    @par.setpar(stm)
-    @fdbc['select']=@selc[id][:frame]
+    @par.setpar(stm).check_id
+    @fdbc[:select]=@selc[id]
     @cid=stm.join(':')
-    @cid << ':*' if /true|1/ === @selc[id]['nocache']
-    @v.msg{"Select:#{@par['label']}(#{@cid})"}
+    if @fdb.key?('nochache')
+      @cid << ':*' if /true|1/ === @fdb[:nocache][id]
+    end
+    @v.msg{"Select:#{@fdb[:label][id]}(#{@cid})"}
     self
   end
 
   def getframe
-    return unless @fdbc['select']
+    return unless @fdbc[:select]
     if cmd=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
-      mk_frame('select')
-      if @fdbc.key?('ccrange')
-        @field['cc']=@fdb.checkcode(mk_frame('ccrange'))
+      mk_frame(:select)
+      if @fdbc.key?(:ccrange)
+        @field['cc']=@fdb.checkcode(mk_frame(:ccrange))
       end
-      cmd=mk_frame('main')
+      cmd=mk_frame(:main)
       @cache[@cid]=cmd unless /\*/ === @cid
     end
     cmd
@@ -48,7 +49,7 @@ class FrmCmd
           encode(a,s)
         }
       else
-        @fstr[a]
+        @fstr[a.to_sym]
       end
     }.join('')
   end

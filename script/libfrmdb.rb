@@ -13,10 +13,12 @@ class FrmDb < Hash
     update(@doc)
     @command={}
     @status={}
-    @command[:fdb]=init_main('cmdframe'){|e| init_cmd(e)}
-    @command[:sel]=init_sel('cmdframe','command'){|e| init_cmd(e)}
-    @status[:fdb]=init_main('rspframe'){|e| init_stat(e)}
-    @status[:sel]=init_sel('rspframe','response'){|e| init_stat(e)}
+    @command[:frame]=init_main('cmdframe'){|e| init_cmd(e)}
+    @command.update(init_sel('cmdframe','command'){|e| init_cmd(e)})
+    @v.msg{"Structure:command:#{@command}"}
+    @status[:frame]=init_main('rspframe'){|e| init_stat(e)}
+    @status.update(init_sel('rspframe','response'){|e| init_stat(e)})
+    @v.msg{"Structure:status:#{@status}"}
     @symtbl=SymDb.new(@doc)
   end
 
@@ -48,7 +50,7 @@ class FrmDb < Hash
         frame << yield(e1)
       }
       @v.msg{"InitMainFrame:#{frame}"}
-      hash['main']=frame.freeze
+      hash[:main]=frame.freeze
     ensure
       @v.msg(-1){"-> INIT:Main Frame"}
     end
@@ -62,7 +64,7 @@ class FrmDb < Hash
         @v.msg{"InitCCFrame:#{frame}"}
         @method=e0['method']
         @v.err("CC No method") unless @method
-        hash['ccrange']=frame.freeze
+        hash[:ccrange]=frame.freeze
       ensure
         @v.msg(-1){"-> INIT:Ceck Code Frame"}
       end
@@ -71,28 +73,26 @@ class FrmDb < Hash
   end
 
   def init_sel(domain,select)
+    selh={}
     list={}
     @doc.find_each(domain,select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}
-        selh=e0.to_h
-        id=selh.delete('id')
+        id=e0.attr2db(selh){|v|v}
         @v.msg{"InitSelHash(#{id}):#{selh}"}
         frame=[]
         @rep.each(e0){|e1|
           e=yield(e1) || next
           frame << e
         }
-        unless frame.empty?
-          selh[:frame] = frame.freeze 
-          @v.msg{"InitSelFrame(#{id}):#{frame}"}
-        end
-        list[id]=selh
+        list[id]=frame.freeze 
+        @v.msg{"InitSelFrame(#{id}):#{frame}"}
       ensure
         @v.msg(-1){"-> INIT:Select Frame"}
       end
     }
-    list
+    selh[:select] = list.freeze
+    selh
   end
 
   def init_cmd(e)
@@ -139,7 +139,7 @@ class FrmDb < Hash
       nil
     end
   end
-  
+
   def init_array(sary,field=nil)
     return yield if sary.empty?
     a=field||[]
@@ -148,5 +148,4 @@ class FrmDb < Hash
     }
     a
   end
-
 end

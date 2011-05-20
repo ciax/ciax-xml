@@ -6,7 +6,7 @@ class IoCmd
   def initialize(iocmd,id=nil,wait=0,timeout=nil)
     abort " No IO command" unless iocmd
     @iocmd=iocmd.split(' ')
-    @iof=IoFile.new(id) if id
+    @iof=IoFile.new("device_#{id}") if id
     @f=IO.popen(@iocmd,'r+')
     @v=Verbose.new('IOCMD',1)
     @v.msg{iocmd}

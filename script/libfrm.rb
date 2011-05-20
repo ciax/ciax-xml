@@ -11,7 +11,7 @@ class Frm
     @cmd=FrmCmd.new(fdb,@field)
     @rsp=FrmRsp.new(fdb,@field)
     @v=Verbose.new("fdb/#{id}".upcase)
-    @ic=IoCmd.new(iocmd,'device_'+id,fdb['wait'],1)
+    @ic=IoCmd.new(iocmd,id,fdb['wait'],1)
     @interupt='',@prompt="#{fdb['id']}>"
   end
 

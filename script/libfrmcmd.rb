@@ -8,7 +8,7 @@ class FrmCmd
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
-    @fdbc=fdb.command[:frame]
+    @fdbc=fdb.frame[:command]
     @selc=fdb.command[:select]
     @par=Param.new(@fdb.command)
   end

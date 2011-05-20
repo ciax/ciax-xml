@@ -5,18 +5,20 @@ require "librepeat"
 require "libsymdb"
 
 class FrmDb < Hash
-  attr_reader :command,:status,:symtbl
+  attr_reader :frame,:command,:status,:symtbl
   def initialize(frm)
     @doc=XmlDoc.new('fdb',frm)
     @v=Verbose.new("fdb/#{@doc['id']}",2)
     @rep=Repeat.new
     update(@doc)
+    @frame={}
     @command={}
     @status={}
-    @command[:frame]=init_main('cmdframe'){|e| init_cmd(e)}
+    @frame[:command]=init_main('cmdframe'){|e| init_cmd(e)}
+    @frame[:status]=init_main('rspframe'){|e| init_stat(e)}
+    @v.msg{"Structure:frame:#{@frame}"}
     @command.update(init_sel('cmdframe','command'){|e| init_cmd(e)})
     @v.msg{"Structure:command:#{@command}"}
-    @status[:frame]=init_main('rspframe'){|e| init_stat(e)}
     @status.update(init_sel('rspframe','response'){|e| init_stat(e)})
     @v.msg{"Structure:status:#{@status}"}
     @symtbl=SymDb.new(@doc)

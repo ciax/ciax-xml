@@ -9,20 +9,26 @@ class ObjDb < ClsDb
   def initialize(obj,cls=nil)
     if cls
       super(cls)
-      doc=XmlDoc.new('odb',obj) rescue SelectID
+      begin
+        doc=XmlDoc.new('odb',obj)
+      rescue SelectID
+        doc=nil
+      end
     else
       @status={}
       @symtbl={}
       doc=XmlDoc.new('odb',obj)
     end
     @alias={}
-    doc.find_each('command','alias'){|e0|
-      e0.attr2db(@alias){|v|v}
-    }
-    @status[:label]={}
-    doc.find_each('status','title'){|e0|
-      e0.attr2db(@status,'ref'){|v|v}
-    }
-    SymDb.new(doc,@symtbl)
+    if doc
+      doc.find_each('command','alias'){|e0|
+        e0.attr2db(@alias){|v|v}
+      }
+      @status[:label]={}
+      doc.find_each('status','title'){|e0|
+        e0.attr2db(@status,'ref'){|v|v}
+      }
+      SymDb.new(doc,@symtbl)
+    end
   end
 end

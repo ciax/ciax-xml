@@ -16,10 +16,8 @@ class FrmRsp
   end
 
   def setrsp(stm)
-    cid=stm.first
-    @par.setpar(stm).check_id
-    rid=@fdb.command[:response][cid]
-    sel=@fdbsel[rid] || @v.err("No such response id [#{rid}] in #{@fdbsel.keys}")
+    rid=@par.setpar(stm).check_id[:response]
+    sel=@fdbsel[rid] || @v.err("No such response id [#{rid}]")
     @fdbs[:select]=sel
     @v.msg{"Set Statement #{stm}"}
     self

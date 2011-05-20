@@ -17,11 +17,10 @@ class FrmCmd
     id=stm.first
     @par.setpar(stm).check_id
     @fdbc[:select]=@selc[id]
+    @v.msg{"Attr of Param:#{@par}"}
     @cid=stm.join(':')
-    if @fdb.key?('nochache')
-      @cid << ':*' if /true|1/ === @fdb[:nocache][id]
-    end
-    @v.msg{"Select:#{@fdb[:label][id]}(#{@cid})"}
+    @cid << ':*' if /true|1/ === @par[:nocache]
+    @v.msg{"Select:#{@par[:label]}(#{@cid})"}
     self
   end
 

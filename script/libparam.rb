@@ -3,7 +3,7 @@ require 'libverbose'
 require 'librerange'
 
 # Parameter must be numerical
-class Param
+class Param < Hash
   def initialize(db=nil)
     @v=Verbose.new("PARAM",4)
     @db=db
@@ -19,6 +19,9 @@ class Param
   def check_id
     return self unless @db
     @v.list(@db[:label],"== Command List==") unless @db[:label].key?(@id)
+    @db.each{|k,v|
+      self[k]=v[@id] if v[@id].is_a?(String)
+    }
     self
   end
 

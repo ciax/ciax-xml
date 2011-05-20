@@ -5,16 +5,16 @@ require "libsymdb"
 require "libview"
 
 
-abort "Usage: symboling [file]" if STDIN.tty? && ARGV.size < 1
+abort "Usage: symboling (obj) < [file]" if STDIN.tty? && ARGV.size < 1
 
-str=gets(nil) || exit
+str=STDIN.gets(nil) || exit
 view=View.new(JSON.load(str))
 if frm=view['frame']
   require "libfrmdb"
   db=FrmDb.new(frm)
 elsif cls=view['class']
   require "libobjdb"
-  db=ObjDb.new(view['id'],cls)
+  db=ObjDb.new(ARGV.shift,cls)
 else
   raise "NO ID in Status"
 end

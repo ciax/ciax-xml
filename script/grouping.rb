@@ -3,20 +3,18 @@ require "json"
 require "libview"
 require "libgroup"
 
-abort "Usage: grouping [file]" if STDIN.tty? && ARGV.size < 1
+abort "Usage: grouping (obj) < [file]" if STDIN.tty? && ARGV.size < 1
 
-str=gets(nil) || exit
+str=STDIN.gets(nil) || exit
 view=View.new(JSON.load(str))
 if type=view['frame']
   require "libfrmdb"
-  fdb=FrmDb.new(type)
-  group=Group.new(fdb.group)
+  db=FrmDb.new(type)
 elsif type=view['class']
   require "libobjdb"
-  id=view['id']
-  cdb=ObjDb.new(id,type)
-  group=Group.new(cdb.status[:group])
+  db=ObjDb.new(ARGV.shift,type)
 else
   raise "NO ID in Status"
 end
+group=Group.new(db.status[:group])
 puts JSON.dump(view.convert('group',group))

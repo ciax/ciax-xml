@@ -3,8 +3,9 @@ require "libverbose"
 require "libclsdb"
 
 class ClsStat
-  def initialize(cdb,stat,field)
-    @stat,@field=stat,field
+  def initialize(cdb,field)
+    @field=field
+    @stat={}
     @cdbs=cdb.status[:cdb]
     cls=cdb['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls})
@@ -22,7 +23,7 @@ class ClsStat
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
-    @stat.to_h
+    @stat
   end
   
   private

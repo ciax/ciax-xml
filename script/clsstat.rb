@@ -11,7 +11,7 @@ begin
   cdb=ClsDb.new(cls)
   str=gets(nil) || exit
   field=Stat.new(JSON.load(str))
-  cs=ClsStat.new(cdb,Stat.new,field)
+  cs=ClsStat.new(cdb,field)
   print JSON.dump cs.get_stat
 rescue RuntimeError
   abort "Usage: clsstat [class] < field_file\n#{$!}"

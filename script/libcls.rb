@@ -11,10 +11,10 @@ class Cls
   def initialize(cdb,id)
     @cls=cdb['id'].freeze
     @v=Verbose.new("ctl",6)
-    @stat=IoStat.new(id,'status')
     @field=IoStat.new(id,"field")
     @cc=ClsCmd.new(cdb)
-    @cs=ClsStat.new(cdb,@stat,@field)
+    @cs=ClsStat.new(cdb,@field)
+    @stat=IoStat.new(id,@cs.get_stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @event=Watch.new(cdb)
@@ -92,7 +92,7 @@ class Cls
       Thread.pass
       while(@event.interval)
         @event.update{|key|
-          @stat.get(key)
+          @stat[key]
         }
         @buf.auto{@event.issue}
         sleep @event.interval

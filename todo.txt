@@ -5,9 +5,7 @@ dts:status update works but appears incorrect status [4/17-
 crt:clssh crt gives error
 
 ***UPDATE
-labeling: use the lib*cmd.rb -> use lib*db.rb
-symboling: symbol reference will move to status/value@symbol
-symboling&labeling: should be commutative
+grouping: sort function, move circular from libprint
 
 ***LACK FUNCTION
 ascpck: exe should be reset
@@ -37,3 +35,8 @@ XML to DB: using libfrmdb, libclsdb[5/9]
     -> Purge xml access from operational method(getstat)
     --> Purge xml access from cdb stat [4/10]
     --> Purge xml access from fdb stat [4/20]
+labeling: use the lib*cmd.rb -> use lib*db.rb
+symboling: symbol reference will move to status/value@symbol
+symboling&labeling: should be commutative
+
+***DISCARD

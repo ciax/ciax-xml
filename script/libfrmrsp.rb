@@ -95,7 +95,7 @@ class FrmRsp
     begin
       idxs=[]
       e0[:index].each{|e1| # Index
-        idxs << @par.subst(e1['range'])
+        idxs << @par.subst(e1['range']) # Insert range depends on command param
       }
       @v.msg(1){"Array:#{e0['label']}[#{key}]:Range#{idxs}"}
       @stat[key]=mk_array(idxs,@stat[key]){

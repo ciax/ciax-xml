@@ -10,7 +10,7 @@ class FrmCmd
     @fstr={}
     @fdbc=fdb.command[:fdb]
     @selc=fdb.command[:sel]
-    @par=Param.new
+    @par=Param.new(@selc)
   end
 
   def setcmd(stm) # return = response select

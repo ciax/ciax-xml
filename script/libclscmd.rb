@@ -6,14 +6,13 @@ class ClsCmd
 
   def initialize(cdb)
     @v=Verbose.new("#{cdb['id']}/stm",2)
-    @par=Param.new
     @cdb=cdb.command
+    @par=Param.new(@cdb)
   end
 
   def setcmd(ssn)
     @id=ssn.first
-    @v.list(@cdb[:label],"== Command List==") unless @cdb[:label].key?(@id)
-    @par.setpar(ssn)
+    @par.setpar(ssn).check_id
     self
   end
 

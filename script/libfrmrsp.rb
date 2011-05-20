@@ -18,7 +18,7 @@ class FrmRsp
   def setrsp(stm)
     cid=stm.first
     @v.list(@selc,"=== Command List ===") unless @selc.key?(cid)
-    csel=@par.setpar(stm)
+    @par.setpar(stm)
     rid=@selc[cid]['response']
     sel=@fdbsel[rid] || @v.err("No such id [#{rid}]")
     @fdbs['select']=sel[:frame]

@@ -4,14 +4,22 @@ require 'librerange'
 
 # Parameter must be numerical
 class Param
-  def initialize
+  def initialize(db=nil)
     @v=Verbose.new("PARAM",4)
+    @db=db
   end
 
   def setpar(stm)
     @v.msg{"SetPar: #{stm}"}
     @stm=stm.dup
     @id=@stm.first
+    self
+  end
+
+  def check_id
+    return self unless @db
+    @v.list(@db[:label],"== Command List==") unless @db[:label].key?(@id)
+    self
   end
 
   def subst(str,range=nil) # par={ val,range,format } or String

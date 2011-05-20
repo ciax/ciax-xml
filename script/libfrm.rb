@@ -7,20 +7,20 @@ require "libfrmrsp"
 class Frm
   attr_reader :interrupt,:prompt
   def initialize(fdb,id,iocmd)
-    @stat=IoStat.new(id,"field")
-    @cmd=FrmCmd.new(fdb,@stat)
-    @rsp=FrmRsp.new(fdb,@stat)
+    @field=IoStat.new(id,"field")
+    @cmd=FrmCmd.new(fdb,@field)
+    @rsp=FrmRsp.new(fdb,@field)
     @v=Verbose.new("fdb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,'device_'+id,fdb['wait'],1)
     @interupt='',@prompt="#{fdb['id']}>"
   end
 
   def stat
-    @stat.to_h
+    @field.to_h
   end
 
   def quit
-    @stat.save
+    @field.save
   end
 
   def request(stm)
@@ -30,7 +30,7 @@ class Frm
     when 'set'
       set(stm[1..-1]).inspect
     when 'unset'
-      @stat.delete(stm[1]).inspect
+      @field.delete(stm[1]).inspect
     when 'load'
       load(stm[1])
     when 'save'
@@ -55,30 +55,30 @@ class Frm
   private
   def set(stm)
     if stm.empty?
-      raise "Usage: set [key(:idx)] (val)\n key=#{@stat.keys}"
+      raise "Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
     end
     @v.msg{"CMD:set#{stm}"}
     case stm[0]
     when /:/
-      @stat.set(stm[0],stm[1])
+      @field.set(stm[0],stm[1])
     else
-      @stat[stm[0]]=@stat.subst(stm[1])
+      @field[stm[0]]=@field.subst(stm[1])
     end
     "[#{stm}] set\n"
   end
 
   def save(keys,tag=nil)
     unless keys
-      raise "Usage: save [key,key..] (tag)\n key=#{@stat.keys}"
+      raise "Usage: save [key,key..] (tag)\n key=#{@field.keys}"
     end
     tag=Time.now.strftime('%y%m%d-%H%M%S') unless tag
-    @stat.save(tag,keys.split(','))
+    @field.save(tag,keys.split(','))
     "[#{tag}] saved\n"
   end
 
   def load(tag)
     tag='' unless tag
-    @stat.load(tag)
+    @field.load(tag)
     "[#{tag}] loaded"
   rescue SelectID
     raise "Usage: load (tag)\n #{$!}"

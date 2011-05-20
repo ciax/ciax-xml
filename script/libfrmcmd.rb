@@ -2,9 +2,9 @@
 require "libparam"
 # Cmd Methods
 class FrmCmd
-  def initialize(fdb,stat)
+  def initialize(fdb,field)
     @fdb=fdb
-    @stat=stat
+    @field=field
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
@@ -31,7 +31,7 @@ class FrmCmd
     else
       mk_frame('select')
       if @fdbc.key?('ccrange')
-        @stat['cc']=@fdb.checkcode(mk_frame('ccrange'))
+        @field['cc']=@fdb.checkcode(mk_frame('ccrange'))
       end
       cmd=mk_frame('main')
       @cache[@cid]=cmd unless /\*/ === @cid
@@ -44,7 +44,7 @@ class FrmCmd
     @fstr[fname]=@fdbc[fname].map{|a|
       case a
       when Hash
-        @stat.subst(@par.subst(a['val'],a['valid'])).split(',').map{|s|
+        @field.subst(@par.subst(a['val'],a['valid'])).split(',').map{|s|
           encode(a,s)
         }
       else

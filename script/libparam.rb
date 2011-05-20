@@ -4,23 +4,34 @@ require 'librerange'
 
 # Parameter must be numerical
 class Param < Hash
-  def initialize(db=nil)
+  def initialize(db,al=nil) # command,alias
     @v=Verbose.new("PARAM",4)
     @db=db
+    if al
+      @label=al[:label]
+      @alias=al[:ref]
+     else
+      @label=db[:label]
+      @alias={}
+      @label.each{|k,v|
+        @alias[k]=k
+      }
+    end
   end
 
   def setpar(stm)
     @v.msg{"SetPar: #{stm}"}
     @stm=stm.dup
-    @id=@stm.first
+    self[:id]=@alias[stm.first]
     self
   end
 
   def check_id
-    return self unless @db
-    @v.list(@db[:label],"== Command List==") unless @db[:label].key?(@id)
+    id=@stm.first
+    @v.list(@label,"== Command List==") unless @label.key?(id)
+    id=self[:id]
     @db.each{|k,v|
-      self[k]=v[@id] if v[@id].is_a?(String)
+      self[k]=v[id]
     }
     self
   end
@@ -32,7 +43,7 @@ class Param < Hash
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
         @v.msg{"Param No.#{i} = [#{@stm[i]}]"}
-        i > 0 ? validate(range,@stm[i]) : @id
+        i > 0 ? validate(range,@stm[i]) : self[:id]
       }
       @v.err("Nil string") if str == ''
       str

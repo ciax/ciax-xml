@@ -1,18 +1,18 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
-output="viewing $2|stprint"
-[ "$1" = "-d" ] && { dmy=1;shift; }
-[ "$1" = "-c" ] && { output="ascpck";shift; }
-[ "$1" = "-r" ] && { output="";shift; }
+
+[[ "$1" == -* ]] && { opt=$1;shift; }
 
 id="$1"
 setfld $id || _usage_key "(-dcp)"
 [ "$iodst" ] || _die "No entry in iodst field"
 echo " [$iodst]" >&2
-if [ "$dmy" ] ; then
-    iocmd="frmsim $id"
-    id="dmy-$id"
-else
-    iocmd="socat - $iodst"
-fi
+iocmd="socat - $iodst"
+output="viewing $obj|stprint"
+case "$opt" in
+    -d) iocmd="frmsim $id";id="dmy-$id";;
+    -c) output="ascpck";;
+    -r) output='';;
+    *);;
+esac
 clsshell $cls $id "$iocmd" "$output"

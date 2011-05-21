@@ -13,7 +13,6 @@ class Shell
       line=Readline.readline(db.prompt,true) || db.interrupt
       case line
       when /^q/
-        db.quit
         break
       when ''
         puts out.filter(JSON.dump(db.stat))

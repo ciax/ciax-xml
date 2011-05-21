@@ -14,7 +14,7 @@ class Cls
     @field=IoStat.new(id,"field")
     @cc=ClsCmd.new(cdb)
     @cs=ClsStat.new(cdb,@field)
-    @stat=IoStat.new(id,@cs.get_stat)
+    @stat=@cs.get_stat
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @event=Watch.new(cdb)
@@ -37,11 +37,7 @@ class Cls
     @stat['evet']=(@event.active? ? '1' : '0')
     @stat['isu']=(@buf.issue? ? '1' : '0')
     @stat['wait']=(@buf.wait? ? '1' : '0')
-    @stat.to_h
-  end
-
-  def quit
-    @stat.save
+    @stat
   end
 
   def dispatch(ssn)

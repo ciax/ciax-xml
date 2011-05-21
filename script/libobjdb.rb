@@ -22,11 +22,11 @@ class ObjDb < ClsDb
     @alias={}
     if doc
       doc.find_each('command','alias'){|e0|
-        e0.attr2db(@alias){|v|v}
+        e0.attr2db(@alias)
       }
       @status[:label]={}
       doc.find_each('status','title'){|e0|
-        e0.attr2db(@status,'ref'){|v|v}
+        e0.attr2db(@status,'ref')
       }
       SymDb.new(doc,@symtbl)
     end

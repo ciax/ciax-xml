@@ -63,7 +63,7 @@ class XmlGn
     raise "Param should be Hash" unless Hash === db
     attr={}
     to_h.each{|k,v|
-      attr[k]=yield v
+      attr[k] = defined?(yield) ? (yield v) : v
     }
     key=attr.delete(id) || return
     attr.each{|str,v|

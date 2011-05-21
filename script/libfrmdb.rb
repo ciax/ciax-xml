@@ -76,11 +76,11 @@ class FrmDb < Hash
 
   def init_sel(domain,select)
     selh={}
-    list={}
+    list=selh[:select]={}
     @doc.find_each(domain,select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}
-        id=e0.attr2db(selh){|v|v}
+        id=e0.attr2db(selh)
         @v.msg{"InitSelHash(#{id}):#{selh}"}
         frame=[]
         @rep.each(e0){|e1|
@@ -93,7 +93,6 @@ class FrmDb < Hash
         @v.msg(-1){"-> INIT:Select Frame"}
       end
     }
-    selh[:select] = list.freeze
     selh
   end
 

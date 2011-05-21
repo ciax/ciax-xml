@@ -12,7 +12,7 @@ class Alias
   def alias(ssn)
     raise unless Array === ssn
     @v.msg{"Command:#{ssn}"}
-    return ssn unless @odb
+    return ssn if @odb.empty?
     id=ssn.first
     if (ref=@odb[:ref][id]) && ! ssn.empty?
       @v.msg{"Before:#{ssn}(#{@odb[:label][id]})"}

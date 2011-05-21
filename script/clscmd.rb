@@ -3,11 +3,7 @@ require "libclsdb"
 require "libclscmd"
 
 cls=ARGV.shift
-if STDIN.tty?
-  cmd=ARGV
-else
-  cmd=STDIN.readlines.map{|s| s.chomp}
-end
+cmd=ARGV
 begin
   cdb=ClsDb.new(cls)
   cc=ClsCmd.new(cdb)

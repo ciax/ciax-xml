@@ -1,8 +1,9 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
+output="viewing $2|stprint"
 [ "$1" = "-d" ] && { dmy=1;shift; }
 [ "$1" = "-c" ] && { output="ascpck";shift; }
-[ "$1" = "-p" ] && { output="viewing $2|stprint";shift; }
+[ "$1" = "-r" ] && { output="";shift; }
 
 id="$1"
 setfld $id || _usage_key "(-dcp)"

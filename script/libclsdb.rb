@@ -21,9 +21,9 @@ class ClsDb < Hash
   end
 
   def watch
-    return unless wdb=@doc.domain('watch')
-    watch=wdb.to_h
-    line=watch[:conditions]=[]
+    return [] unless wdb=@doc.domain('watch')
+    update(wdb.to_h)
+    line=[]
     @rep.each(wdb){|e0|
       bg={:type => e0.name}
       e0.to_h.each{|a,v|
@@ -47,7 +47,8 @@ class ClsDb < Hash
       @v.msg(-1){"WATCH:#{bg[:type]}"}
       line << bg.freeze
     }
-    watch
+    @v.msg{"Structure:watch #{line}"}
+    line
   end
 
   private

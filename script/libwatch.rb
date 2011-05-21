@@ -1,27 +1,22 @@
 #!/usr/bin/ruby
-class Watch
-  attr_reader :interval,:wdb
-
+class Watch < Array
   def initialize(cdb)
-    return unless wdb=cdb.watch
-    @wdb=wdb[:conditions]
+    push(*cdb.watch)
     @v=Verbose.new("EVENT",3)
-    @interval=wdb['interval'].to_i||1
-    @v.msg{"Interval[#{@interval}]"}
   end
 
   public
   def to_s
-    @wdb.join("\n")
+    join("\n")
   end
 
   def active?
-    @wdb.any?{|bg| bg[:var][:active] }
+    any?{|bg| bg[:var][:active] }
   end
 
   def blocking?(ssn)
     cmd=ssn.join(' ')
-    @wdb.each{|bg|
+    each{|bg|
       pattern=bg['blocking'] || next
       if bg[:var][:active]
         return true if /#{pattern}/ === cmd
@@ -31,7 +26,7 @@ class Watch
   end
 
   def update # Need Status pointer
-    @wdb.each{|bg|
+    each{|bg|
       var=bg[:var]
       case bg[:type]
       when 'while'
@@ -69,7 +64,7 @@ class Watch
 
   def issue(key='statement')
     ary=[]
-    @wdb.each{|bg|
+    each{|bg|
       if bg[:var][:active]
         @v.msg{"#{bg['label']} is active" }
         ary=ary+bg[key]

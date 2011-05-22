@@ -33,6 +33,7 @@ class Buffer
     else
       @v.msg{"MAIN:Rejected [#{stms}] with priority [auto]"}
     end
+    self
   end
 
   def interrupt(cmds=[])
@@ -40,13 +41,14 @@ class Buffer
     @issue=@wait=nil
     @q.clear
     @v.msg{"MAIN:Issued #{cmds}"}
-    @inbuf.replace(cmds.map!{|c| [0,c]})
+    @inbuf.replace(cmds.map{|c| [0,c]})
     flush
   end
 
   def wait_for(timeout=10) # Need Block of boolean
     @wait=timeout.to_i
     @proc.push(proc)
+    self
   end
 
   def issue?

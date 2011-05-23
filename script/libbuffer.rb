@@ -4,11 +4,11 @@ require "thread"
 
 class Buffer
   def initialize
-    @inbuf=Array.new
-    @outbuf=Array.new
+    @inbuf=[[],[],[]]
+    @outbuf=[[],[],[]]
     @q=Queue.new
     @v=Verbose.new("BUF")
-    @issue=@wait=nil
+    @issue=@wait=false
     @proc=Queue.new
     @st=delay
   end
@@ -17,19 +17,19 @@ class Buffer
     stms=yield
     raise "Should be Array of statements" unless Array === stms
     stms.each{|stm|
-      @inbuf.push([1,stm])
+      @inbuf[1].push(stm)
       @v.msg{"MAIN:Issued [#{stm}] with priority [normal]"}
     }
-    flush unless @wait
+    flush(1) unless @wait
     self
   end
 
   def auto
     if @q.empty?
       yield.each{|stm|
-        @inbuf.push([2,stm])
+        @inbuf[2].push(stm)
       }
-      flush
+      flush(2)
     else
       @v.msg{"MAIN:Rejected [#{stms}] with priority [auto]"}
     end
@@ -38,11 +38,11 @@ class Buffer
 
   def interrupt(cmds=[])
     @v.msg{"MAIN:Stopped"}
-    @issue=@wait=nil
+    @issue=@wait=false
     @q.clear
     @v.msg{"MAIN:Issued #{cmds}"}
-    @inbuf.replace(cmds.map{|c| [0,c]})
-    flush
+    @inbuf[0]=cmds
+    flush(0)
   end
 
   def wait_for(timeout=10) # Need Block of boolean
@@ -61,7 +61,7 @@ class Buffer
 
   # For session thread
   def recv
-    @issue=nil
+    @issue=false
     loop{
       if @q.empty?
         @outbuf.each{|c|
@@ -74,7 +74,7 @@ class Buffer
       end
       p,stm=@q.shift
       @v.msg{"SUB:Recieve [#{stm}] with priority[#{p}]"}
-      @outbuf[p]=[] unless Array === @outbuf[p]
+      @outbuf[p] ||= []
       @outbuf[p].push(stm)
     }
   end
@@ -98,13 +98,13 @@ class Buffer
     }
   end
 
-  def flush
-    unless @inbuf.empty?
+  def flush(p)
+    unless @inbuf[p].empty?
       @issue=true
-      @wait=nil
-      @inbuf.each{|c| @q.push(c) }
-      @v.msg{"MAIN:Flushed #{@inbuf}"}
-      @inbuf.clear
+      @wait=false
+      @inbuf[p].each{|c| @q.push([p,c]) }
+      @v.msg{"MAIN:Flushed #{@inbuf[p]}"}
+      @inbuf[p].clear
     end
     self
   end

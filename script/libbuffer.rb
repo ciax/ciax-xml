@@ -104,7 +104,7 @@ class Buffer
       @wait=false
       @inbuf[p].each{|c| @q.push([p,c]) }
       @v.msg{"MAIN:Flushed #{@inbuf[p]}"}
-      @inbuf[p].clear
+      @inbuf[p]=[]
     end
     self
   end

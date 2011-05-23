@@ -10,8 +10,10 @@ class Shell
     v=Verbose.new("shell")
     out=Filter.new(filter)
     loop {
-      line=Readline.readline(db.prompt,true) || db.interrupt
+      line=Readline.readline(db.prompt,true)
       case line
+      when nil
+        puts db.interrupt
       when /^q/
         break
       when ''

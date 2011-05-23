@@ -42,7 +42,7 @@ class Cls
   end
 
   def dispatch(ssn)
-    return nil if ssn.empty?
+    return false if ssn.empty?
     raise "Blocking" if @event.blocking?(ssn)
     case ssn[0]
     when 'sleep'
@@ -62,14 +62,12 @@ class Cls
 
   def interrupt
     stop=@event.interrupt
-    if stop.empty?
-      raise ''
-    else
+    unless stop.empty?
       @buf.interrupt(stop)
-      raise "Interrupt #{stop}"
+      "Interrupt #{stop}"
     end
   end
-  
+
   private
   def session_thread
     Thread.new{

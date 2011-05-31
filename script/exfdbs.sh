@@ -23,9 +23,10 @@ for id in $devices; do
             getstat $cmd
         done
     fi
-    if [ "$opt" ] ; then
-        < $output viewing $opt | stprint
+    < $output viewing $opt | if [ "$opt" ]
+    then
+        v2s
     else
-        < $output h2s
+        stprint
     fi
 done

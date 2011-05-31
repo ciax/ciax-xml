@@ -39,6 +39,6 @@ class Sym
       end
     }
     view['list']=list
-    view
+    self
   end
 end

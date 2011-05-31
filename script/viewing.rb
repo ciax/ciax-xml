@@ -34,8 +34,7 @@ opt.split('').each{|s|
   when 's'
     sdb=SymDb.new
     sdb.update(db.symtbl)
-    sym=Sym.new(sdb,db.status[:symbol])
-    view=sym.convert(view)
+    Sym.new(sdb,db.status[:symbol]).convert(view)
   end
 }
 puts JSON.dump(view)

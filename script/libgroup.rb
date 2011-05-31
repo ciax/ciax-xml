@@ -14,8 +14,7 @@ class Group < Hash
       if key?(id)
         hash['group']=self[id]
       else
-        @c.next
-        hash['group']=@c.times
+        hash['group']="AN#{@c.next.row}"
       end
         list << hash
     }

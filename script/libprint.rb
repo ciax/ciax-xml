@@ -23,7 +23,7 @@ class Print
           @c.reset
         end
         plabel=clabel
-        item['group']=@c.times
+        item['group']=@c.row
       end
       if item['group'] != pgroup
         a << line.join(' ') if line.size > 0

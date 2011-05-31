@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 class Label < Hash
   def initialize(hash)
+    raise "Label have to be given Db" unless hash.kind_of?(Db)
     self['time'] = 'TIMESTAMP'
-    update(hash||{})
+    update(hash.status[:label]||{})
   end
 
   def convert(view)

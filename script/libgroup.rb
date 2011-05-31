@@ -2,9 +2,10 @@
 require "libcircular"
 class Group < Hash
   def initialize(hash)
+    raise "Group have to be given Db" unless hash.kind_of?(Db)
     @c=Circular.new(4)
     self['time'] = '0'
-    update(hash||{})
+    update(hash.status[:group]||{})
   end
 
   def convert(view)

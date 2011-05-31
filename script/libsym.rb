@@ -4,9 +4,10 @@ require "librerange"
 
 class Sym
   def initialize(table,ref)
+    raise "Sym have to be given Db" unless ref.kind_of?(Db)
     @v=Verbose.new("Symbol",6)
     @table=table
-    @ref=ref||{}
+    @ref=ref.status[:symbol]||{}
   end
 
   def convert(view)

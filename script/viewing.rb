@@ -28,13 +28,13 @@ end
 opt.split('').each{|s|
   case s
   when 'l'
-    Label.new(db.status[:label]).convert(view)
+    Label.new(db).convert(view)
   when 'g'
-    Group.new(db.status[:group]).convert(view)
+    Group.new(db).convert(view)
   when 's'
     sdb=SymDb.new
     sdb.update(db.symtbl)
-    Sym.new(sdb,db.status[:symbol]).convert(view)
+    Sym.new(sdb,db).convert(view)
   end
 }
 puts JSON.dump(view)

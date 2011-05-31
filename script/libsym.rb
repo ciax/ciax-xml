@@ -5,6 +5,7 @@ require "librerange"
 class Sym
   def initialize(table,ref)
     raise "Sym have to be given Db" unless ref.kind_of?(Db)
+    raise "Sym have to be given SymDb" unless table.kind_of?(SymDb)
     @v=Verbose.new("Symbol",6)
     @table=table
     @ref=ref.status[:symbol]||{}

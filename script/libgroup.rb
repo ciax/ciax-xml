@@ -15,6 +15,6 @@ class Group < Hash
       list << hash
     }
     view['list']=list
-    view
+    self
   end
 end

@@ -15,6 +15,6 @@ class Label < Hash
       list << hash
     }
     view['list']=list
-    view
+    self
   end
 end

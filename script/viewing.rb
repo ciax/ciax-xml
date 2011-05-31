@@ -19,7 +19,6 @@ view=View.new(JSON.load(str))
 if type=view['frame']
   require "libfrmdb"
   db=FrmDb.new(type)
-  opt.delete!('g')
 elsif type=view['class']
   require "libobjdb"
   db=ObjDb.new(obj,type)

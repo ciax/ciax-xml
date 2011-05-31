@@ -31,6 +31,6 @@ class Circular
   end
 
   def times
-    @times
+    "AN#{@times}"
   end
 end

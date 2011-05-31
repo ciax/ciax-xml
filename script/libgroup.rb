@@ -20,7 +20,7 @@ class Group < Hash
       end
         list << hash
     }
-    view['list']=list
+    view['list']=list.sort_by{|h| h['group']}
     self
   end
 end

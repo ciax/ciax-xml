@@ -3,7 +3,6 @@ require "libcircular"
 class Group < Hash
   def initialize(hash)
     @c=Circular.new(4)
-    self['id'] = '0'
     self['time'] = '0'
     update(hash||{})
   end

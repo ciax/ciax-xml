@@ -1,23 +1,15 @@
 #!/usr/bin/ruby
 require "librepeat"
-require "libverbose"
-require "libxmldoc"
-require "libsymdb"
+require "libdb"
 
-class ClsDb < Hash
-  attr_reader :command,:status,:symtbl
+class ClsDb < Db
   def initialize(cls)
-    doc=XmlDoc.new('cdb',cls)
-    @v=Verbose.new("cdb/#{doc['id']}",2)
-    @doc=doc
-    update(doc)
+    super('cdb',cls)
     @rep=Repeat.new
     @command=init_command
     @v.msg{"Structure:command #{@command}"}
     @status=init_stat
     @v.msg{"Structure:status #{@status}"}
-    @symtbl=SymDb.new(doc)
-    @v.msg{"Structure:symtbl #{@symtbl}"}
   end
 
   def watch

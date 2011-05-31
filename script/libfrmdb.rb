@@ -1,19 +1,13 @@
 #!/usr/bin/ruby
-require "libverbose"
-require "libxmldoc"
 require "librepeat"
-require "libsymdb"
+require "libdb"
 
-class FrmDb < Hash
-  attr_reader :frame,:command,:status,:symtbl
+class FrmDb < Db
+  attr_reader :frame
   def initialize(frm)
-    @doc=XmlDoc.new('fdb',frm)
-    @v=Verbose.new("fdb/#{@doc['id']}",2)
+    super('fdb',frm)
     @rep=Repeat.new
-    update(@doc)
     @frame={}
-    @command={}
-    @status={}
     @frame[:command]=init_main('cmdframe'){|e| init_cmd(e)}
     @frame[:status]=init_main('rspframe'){|e| init_stat(e)}
     @v.msg{"Structure:frame:#{@frame}"}
@@ -21,7 +15,6 @@ class FrmDb < Hash
     @v.msg{"Structure:command:#{@command}"}
     @status.update(init_sel('rspframe','response'){|e| init_stat(e)})
     @v.msg{"Structure:status:#{@status}"}
-    @symtbl=SymDb.new(@doc)
   end
 
   def checkcode(frame)

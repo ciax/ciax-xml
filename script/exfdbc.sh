@@ -8,7 +8,8 @@ for id in $devices; do
     if [ "$1" ] ; then
         frmcmd $dev $* | visi
     else
-        frmcmd $dev 2>&1 |grep " : "| while read cmd dmy; do
+        frmcmd $dev 2>&1 |grep " : "| while read cmd dmy
+        do
             echo -n "   $C3$cmd$C0 ";frmcmd $dev $cmd 1 0 < $input| visi
         done
     fi

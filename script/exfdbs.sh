@@ -18,7 +18,8 @@ for id in $devices; do
     if [ "$par" ] ; then
         getstat $par
     else
-        frmcmd $dev $id 2>&1 |grep ' : '|while read cmd dmy; do
+        frmcmd $dev $id 2>&1 |grep ' : '|while read cmd dmy
+        do
             getstat $cmd
         done
     fi

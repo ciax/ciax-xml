@@ -5,4 +5,16 @@ class Group < Hash
     self['time'] = '0'
     update(hash||{})
   end
+
+  def convert(view)
+    list=[]
+    view['list'].each{|hash|
+      id=hash['id']
+      next unless key?(id)
+      hash['group']=self[id]
+      list << hash
+    }
+    view['list']=list
+    view
+  end
 end

@@ -23,16 +23,4 @@ class View < Hash
     }
     (header+self['list']).join("\n")
   end
-
-  def convert(key,db)
-    list=[]
-    self['list'].each{|hash|
-      id=hash['id']
-      next unless db.key?(id)
-      hash[key]=db[id]
-      list << hash
-    }
-    self['list']=list
-    self
-  end
 end

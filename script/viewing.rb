@@ -29,11 +29,9 @@ end
 opt.split('').each{|s|
   case s
   when 'l'
-    label=Label.new(db.status[:label])
-    view.convert('label',label)
+    Label.new(db.status[:label]).convert(view)
   when 'g'
-    group=Group.new(db.status[:group])
-    view.convert('group',group)
+    Group.new(db.status[:group]).convert(view)
   when 's'
     sdb=SymDb.new
     sdb.update(db.symtbl)

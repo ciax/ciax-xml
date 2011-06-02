@@ -46,7 +46,7 @@ class Frame
   private
   def decode(e,code) # Chr -> Num
     return code.to_s unless cdc=e['decode']
-    if cdc == 'hex'
+    if cdc == 'hexstr'
       num=code.hex
     else
       ary=code.unpack("C*")

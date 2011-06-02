@@ -30,7 +30,7 @@ class FrmRsp
     @frame=Frame.new(frame,dm,tm,@endian)
     getfield_rec(@fdbs[:main])
     if cc=@stat.delete('cc')
-      cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
+      cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
       @v.msg{"Verify:CC OK <#{cc}>"}
     end
     @stat['time']="%.3f" % time.to_f

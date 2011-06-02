@@ -46,7 +46,7 @@ class FrmCmd
         @field.subst(@par.subst(a['val'],a['valid'])).split(',').map{|s|
           encode(a,s)
         }
-      else
+      else # ccrange,select,..
         @fstr[a.to_sym]
       end
     }.join('')

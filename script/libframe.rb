@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 class Frame
-  def initialize(frame,dm=nil,tm=nil) # delimiter,terminator
+  def initialize(frame,dm=nil,tm=nil,endian=nil) # delimiter,terminator
     @v=Verbose.new("fdb/frm".upcase,6)
+    @endian=endian
     @fp=@mark=0
     @frame=[]
     if tm
@@ -44,12 +45,19 @@ class Frame
 
   private
   def decode(e,code) # Chr -> Num
-    cdc=e['decode']
-    if upk={'hexstr'=>'hex','chr'=>'C','bew'=>'n','lew'=>'v'}[cdc]
-      num=(upk == 'hex') ? code.hex : code.unpack(upk).first
-      @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{num}]"}
-      code=num
+    return code.to_s unless cdc=e['decode']
+    if cdc == 'hex'
+      num=code.hex
+    else
+      ary=code.unpack("C*")
+      ary.reverse! if @endian=='little'
+      num=ary.inject(0){|r,i| r*256+i}
+      if cdc=='signed'
+        p= 256 ** code.size
+        num = num < p/2 ? num : num - p
+      end
     end
-    return code.to_s
+    @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{num}]"}
+    num.to_s
   end
 end

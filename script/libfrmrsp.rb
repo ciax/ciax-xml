@@ -9,6 +9,7 @@ class FrmRsp
     @stat=stat
     @v=Verbose.new("#{fdb['id']}/rsp",3)
     @stat['frame']=fdb['id']
+    @endian=fdb['endian']
     @fdbs=fdb.frame[:status]
     @par=Param.new(fdb.command)
   end
@@ -26,7 +27,7 @@ class FrmRsp
     frame=yield || @v.err("No String")
     tm=@fdbs['terminator']
     dm=@fdbs['delimiter']
-    @frame=Frame.new(frame,dm,tm)
+    @frame=Frame.new(frame,dm,tm,@endian)
     getfield_rec(@fdbs[:main])
     if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verifu:CC Mismatch <#{cc}> != (#{@cc})")
@@ -76,7 +77,7 @@ class FrmRsp
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
       end
       if val=e0['val']
-        val=eval(val).to_s if e0['decode'] == 'chr'
+        val=eval(val).to_s if e0['decode']
         @v.msg{"Verify:[#{val}] and <#{data}>"}
         val == data || @v.err("Verify Mismatch <#{data}> != [#{val}]")
       end

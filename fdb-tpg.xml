@@ -15,7 +15,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="," terminator="\r\n">
       <select>
         <response id="reqstat">
-          <field decode="chr">6</field>
+          <field decode="unsigned">6</field>
         </response>
         <response id="getstat">
           <field assign="st1" label="CH1 RetCode"/>

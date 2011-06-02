@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
-  <frame id="bbe" label="BB Electric 232SDD16" wait="0.3">
+  <frame id="bbe" label="BB Electric 232SDD16" endian="big" wait="0.3">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data label="Prefix">!0</data>
@@ -21,7 +21,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <select>
         <response id="getstat">
-          <field assign="stat" decode="bew" label="Status" />
+          <field assign="stat" decode="unsigned" label="Status" length="2"/>
         </response>
       </select>
     </rspframe>

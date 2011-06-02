@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
-  <frame id="cj2" label="OMRON CJ2M-CPU33">
+  <frame id="cj2" label="OMRON CJ2M-CPU33" endian="big">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="chr" label="FINS Header:ICF">0x80</data>
       <data encode="chr" label="FINS Header:RSV">0x00</data>
@@ -81,61 +81,61 @@
       </select>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field decode="chr" label="FINS Header:ICF" length="1">0xc0</field>
-      <field decode="chr" label="FINS Header:RSV" length="1">0x00</field>
-      <field decode="chr" label="FINS Header:GCT" length="1">0x02</field>
-      <field decode="chr" label="FINS Header:DNA" length="1">0x00</field>
-      <field decode="chr" label="FINS Header:DA1" length="1" assign="ipl" />
-      <field decode="chr" label="FINS Header:DA2" length="1">0x00</field>
-      <field decode="chr" label="FINS Header:SNA" length="1">0x00</field>
-      <field decode="chr" label="FINS Header:SA1" length="1" assign="ipr" />
-      <field decode="chr" label="FINS Header:SA2" length="1">0x00</field>
-      <field decode="chr" label="FINS Header:SID" length="1">0xFF</field>
+      <field decode="unsigned" label="FINS Header:ICF" length="1">0xc0</field>
+      <field decode="unsigned" label="FINS Header:RSV" length="1">0x00</field>
+      <field decode="unsigned" label="FINS Header:GCT" length="1">0x02</field>
+      <field decode="unsigned" label="FINS Header:DNA" length="1">0x00</field>
+      <field decode="unsigned" label="FINS Header:DA1" length="1" assign="ipl" />
+      <field decode="unsigned" label="FINS Header:DA2" length="1">0x00</field>
+      <field decode="unsigned" label="FINS Header:SNA" length="1">0x00</field>
+      <field decode="unsigned" label="FINS Header:SA1" length="1" assign="ipr" />
+      <field decode="unsigned" label="FINS Header:SA2" length="1">0x00</field>
+      <field decode="unsigned" label="FINS Header:SID" length="1">0xFF</field>
       <select>
         <response id="getstat">
-          <field decode="chr" label="FINS Command:MRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:SRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:MRES" length="1">0x00</field>
-          <field decode="chr" label="FINS Command:SRES" length="1">0x00</field>
-          <array assign="w" decode="bew" label="Status" length="2">
+          <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
+          <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
+          <array assign="w" decode="unsigned" label="Status" length="2">
             <index range="0:12" size="13" />
           </array>
         </response>
         <response id="getcmd">
-          <field decode="chr" label="FINS Command:MRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:SRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:MRES" length="1">0x00</field>
-          <field decode="chr" label="FINS Command:SRES" length="1">0x00</field>
-          <array assign="c" decode="bew" label="Status" length="2">
+          <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
+          <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
+          <array assign="c" decode="unsigned" label="Status" length="2">
             <index range="0:3" size="4" />
           </array>
         </response>
         <response id="geterr">
-          <field decode="chr" label="FINS Command:MRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:SRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:MRES" length="1">0x00</field>
-          <field decode="chr" label="FINS Command:SRES" length="1">0x00</field>
-          <field assign="err" decode="bew" label="FINS Command:Error Code" length="2">0</field>
+          <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
+          <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
+          <field assign="err" decode="unsigned" label="FINS Command:Error Code" length="2">0</field>
         </response>
         <response id="getzlen">
-          <field decode="chr" label="FINS Command:MRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:SRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:MRES" length="1">0x00</field>
-          <field decode="chr" label="FINS Command:SRES" length="1">0x00</field>
-          <array assign="d" decode="bew" label="Status" length="2">
+          <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
+          <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
+          <array assign="d" decode="unsigned" label="Status" length="2">
             <index range="0:9" size="8" />
           </array>
         </response>
         <response id="cmdrsp" label="command resp">
-          <field decode="chr" label="FINS Command:MRC" length="1">0x01</field>
-          <field decode="chr" label="FINS Command:SRC" length="1">0x02</field>
-          <field decode="chr" label="FINS Command:MRES" length="1">0x00</field>
-          <field decode="chr" label="FINS Command:SRES" length="1">0x00</field>
+          <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>
+          <field decode="unsigned" label="FINS Command:SRC" length="1">0x02</field>
+          <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
+          <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
         </response>
         <response id="dmy" label="for csv daemon">
-          <field decode="chr" label="Local IP (CIAX)" length="1" assign="ipl">1</field>
-          <field decode="chr" label="Remote IP (DSO)" length="1" assign="ipr">32</field>
-          <field decode="chr" label="Exe Flag" length="1" assign="exe">0</field>
+          <field decode="unsigned" label="Local IP (CIAX)" length="1" assign="ipl">1</field>
+          <field decode="unsigned" label="Remote IP (DSO)" length="1" assign="ipr">32</field>
+          <field decode="unsigned" label="Exe Flag" length="1" assign="exe">0</field>
         </response>
       </select>
     </rspframe>

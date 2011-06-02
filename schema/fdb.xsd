@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdb="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <!--Device database-->
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" schemaLocation="fdbr.xsd" />
@@ -26,6 +26,14 @@
       <xsd:attribute name="label" type="xsd:token" />
       <xsd:attribute name="reference" type="xsd:anyURI" />
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>
+      <xsd:attribute name="endian">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="big" />
+            <xsd:enumeration value="little" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="serial">

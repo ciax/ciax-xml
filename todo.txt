@@ -5,7 +5,6 @@ dts:status update works but appears incorrect status [4/17-
 crt:clssh crt gives error
 
 ***UPDATE
-grouping: sort function, move circular from libprint
 
 ***LACK FUNCTION
 ascpck: exe should be reset
@@ -39,5 +38,6 @@ labeling: use the lib*cmd.rb -> use lib*db.rb
 symboling: symbol reference will move to status/value@symbol
 symboling&labeling: should be commutative
 interrupt: interrupt handling (add new error class)[5/23]
+grouping: sort function, move circular from libprint[5/31]
 
 ***DISCARD

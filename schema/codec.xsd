@@ -1,11 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <xsd:simpleType name="codec">
     <xsd:restriction base="xsd:token">
-      <xsd:enumeration value="chr" />
       <xsd:enumeration value="hexstr" />
+      <xsd:enumeration value="unsigned" />
+      <xsd:enumeration value="signed" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="encode">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="chr" />
       <xsd:enumeration value="bew" />
-      <xsd:enumeration value="lew"></xsd:enumeration>
+      <xsd:enumeration value="lew" />
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:simpleType name="ccmethod">

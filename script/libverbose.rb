@@ -21,23 +21,28 @@ class Verbose
     @@base+=add
     @ind=@@base if add < 0
     msg=mkmsg(yield) || return
-    if ENV['VER'].split(':').any? {|s|
-        (msg+'all').upcase.include?(s.upcase) }
-      Kernel.warn msg
+    ver=ENV['VER'].split(':').map{|s| s.upcase}
+    all=ver.delete('ALL')
+    flg=ver.any?{|s| msg.upcase.include?(s) }
+    if all
+      Kernel.warn msg unless flg
+    else
+      Kernel.warn msg if flg
     end
-    return
+    self
   end
 
-  def abort(msg='abort')
-    Kernel.abort color(msg,1)
+  def warn(msg='warning') # Display only
+    Kernel.warn color(msg,3)
+    self
   end
 
   def err(msg='error') # Raise User error (Invalid User input)
     raise UserError,color(msg,1)
   end
 
-  def warn(msg='warning') # Display only
-    Kernel.warn color(msg,3)
+  def abort(msg='abort')
+    Kernel.abort color(msg,1)
   end
 
   def list(list,title='')

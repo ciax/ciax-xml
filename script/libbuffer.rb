@@ -7,7 +7,7 @@ class Buffer
     @inbuf=[[],[],[]]
     @outbuf=[[],[],[]]
     @q=Queue.new
-    @v=Verbose.new("BUF")
+    @v=Verbose.new("BUF",5)
     @issue=@wait=false
     @proc=Queue.new
     @st=delay

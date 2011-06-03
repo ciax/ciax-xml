@@ -4,7 +4,7 @@ require "libverbose"
 
 class XmlGn
   def initialize(f)
-    @v=Verbose.new("Xml",2)
+    @v=Verbose.new("Xml",4)
     case f
     when String
       test(?r,f) || raise(SelectID)

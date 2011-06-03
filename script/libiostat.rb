@@ -5,7 +5,7 @@ require 'libiofile'
 
 class IoStat < Stat
   def initialize(id,fname)
-    @v=Verbose.new("stat",6)
+    @v=Verbose.new("stat",5)
     raise SelectID," No ID" unless id
     fname+="_#{id}"
     begin

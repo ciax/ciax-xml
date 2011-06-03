@@ -2,7 +2,7 @@
 require 'libverbose'
 class Repeat
   def initialize
-    @v=Verbose.new("Repeat",4)
+    @v=Verbose.new("Repeat",5)
     @counter={}
     @rep=[]
   end

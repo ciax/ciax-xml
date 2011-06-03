@@ -5,7 +5,7 @@ require 'librerange'
 # Parameter must be numerical
 class Param < Hash
   def initialize(db,al=nil) # command,alias
-    @v=Verbose.new("PARAM",4)
+    @v=Verbose.new("PARAM",5)
     @db=db
     if al
       @label=al[:label]

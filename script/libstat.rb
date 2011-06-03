@@ -2,7 +2,7 @@
 require 'libverbose'
 class Stat < Hash
   def initialize(hash={})
-    @v=Verbose.new("stat",6)
+    @v=Verbose.new("stat",5)
     update(hash)
   end
 

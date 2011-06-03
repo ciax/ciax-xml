@@ -16,7 +16,7 @@ for id in $devices; do
     output="$HOME/.var/field_${id}.json"
     [ "$clear" ] && [ -e $output ] && rm $output
     if [ "$par" ] ; then
-        frmcmd $dev $par > /dev/null || continue
+        VER= frmcmd $dev $par > /dev/null || continue
         getstat $par
     else
         VER= frmcmd $dev $id 2>&1 |grep ' : '|while read cmd dmy

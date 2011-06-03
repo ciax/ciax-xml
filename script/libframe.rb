@@ -8,8 +8,10 @@ class Frame
   end
 
   def add(frame)
-    @v.msg{"Frame add [#{frame}]"}
-    @frame << frame
+    if frame
+      @v.msg{"Frame add [#{frame}]"}
+      @frame << frame
+    end
     self
   end
 

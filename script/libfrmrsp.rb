@@ -121,8 +121,8 @@ class FrmRsp
     fld=field||[]
     f,l=idx[0].split(':').map{|i| eval(i)}
     Range.new(f,l||f).each{|i|
-      @v.msg{"Array:Index[#{i}]"}
       fld[i] = mk_array(idx[1..-1],fld[i]){yield}
+      @v.msg{"Array:Index[#{i}]=#{fld[i]}"}
     }
     fld
   end

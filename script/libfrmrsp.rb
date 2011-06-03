@@ -35,7 +35,7 @@ class FrmRsp
     else
       @fary=[frame]
     end
-    @frame.add(@fary.shift)
+    @frame.set(@fary.shift)
     getfield_rec(@fdbs[:main])
     if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
@@ -47,7 +47,7 @@ class FrmRsp
 
   private
   def cut(e)
-    @frame.cut(e) || @frame.add(@fary.shift).cut(e)
+    @frame.cut(e) || @frame.set(@fary.shift).cut(e)
   end
 
   # Process Frame to Field

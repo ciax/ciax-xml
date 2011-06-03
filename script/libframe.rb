@@ -7,10 +7,20 @@ class Frame
     @frame=''
   end
 
+  def set(frame)
+    if frame
+      @v.msg{"Frame set [#{frame}]"}
+      @frame=frame
+      @fp=@mark=0
+    end
+    self
+  end
+
   def add(frame)
     if frame
       @v.msg{"Frame add [#{frame}]"}
       @frame << frame
+      @fp += frame.size
     end
     self
   end

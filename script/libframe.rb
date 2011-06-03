@@ -1,14 +1,10 @@
 #!/usr/bin/ruby
 class Frame
-  def initialize(frame,dm=nil,tm=nil,endian=nil) # delimiter,terminator
+  def initialize(frame,dm=nil,endian=nil) # delimiter,terminator
     @v=Verbose.new("fdb/frm".upcase,6)
     @endian=endian
     @fp=@mark=0
     @frame=[]
-    if tm
-      frame.chomp!(eval('"'+tm+'"'))
-      @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
-    end
     if dm
       @fary=frame.split(eval('"'+dm+'"'))
       @v.msg{"Split:[#{frame}] by [#{dm}]" }

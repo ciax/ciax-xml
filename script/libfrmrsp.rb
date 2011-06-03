@@ -25,9 +25,12 @@ class FrmRsp
   def getfield(time=Time.now)
     return "Send Only" unless @fdbs[:select]
     frame=yield || @v.err("No String")
-    tm=@fdbs['terminator']
+    if tm=@fdbs['terminator']
+      frame.chomp!(eval('"'+tm+'"'))
+      @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
+    end
     dm=@fdbs['delimiter']
-    @frame=Frame.new(frame,dm,tm,@endian)
+    @frame=Frame.new(frame,dm,@endian)
     getfield_rec(@fdbs[:main])
     if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")

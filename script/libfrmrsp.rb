@@ -9,9 +9,9 @@ class FrmRsp
     @stat=stat
     @v=Verbose.new("#{fdb['id']}/rsp",3)
     @stat['frame']=fdb['id']
-    @endian=fdb['endian']
     @fdbs=fdb.frame[:status]
     @par=Param.new(fdb.command)
+    @frame=Frame.new(fdb['endian'])
   end
 
   def setrsp(stm)
@@ -29,8 +29,13 @@ class FrmRsp
       frame.chomp!(eval('"'+tm+'"'))
       @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
     end
-    dm=@fdbs['delimiter']
-    @frame=Frame.new(frame,dm,@endian)
+    if dm=@fdbs['delimiter']
+      @fary=frame.split(eval('"'+dm+'"'))
+      @v.msg{"Split:[#{frame}] by [#{dm}]" }
+    else
+      @fary=[frame]
+    end
+    @frame.add(@fary.shift)
     getfield_rec(@fdbs[:main])
     if cc=@stat.delete('cc')
       cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
@@ -41,6 +46,14 @@ class FrmRsp
   end
 
   private
+  def cut(e)
+    if data=@frame.cut(e)
+      data
+    elsif frame=@fary.shift
+      @frame.add(frame).cut(e)
+    end
+  end
+
   # Process Frame to Field
   def getfield_rec(e0)
     e0.each{|e1|
@@ -74,7 +87,7 @@ class FrmRsp
   def frame_to_field(e0)
     begin
       @v.msg(1){"Field:#{e0['label']}"}
-      data=@frame.cut(e0)
+      data=cut(e0)
       if key=e0['assign']
         @stat[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
@@ -98,7 +111,7 @@ class FrmRsp
       }
       @v.msg(1){"Array:#{e0['label']}[#{key}]:Range#{idxs}"}
       @stat[key]=mk_array(idxs,@stat[key]){
-        @frame.cut(e0)
+        cut(e0)
       }
     ensure
       @v.msg(-1){"Array:Assign[#{key}]"}

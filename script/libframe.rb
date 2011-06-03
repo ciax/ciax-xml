@@ -1,21 +1,22 @@
 #!/usr/bin/ruby
 class Frame
-  def initialize(frame,dm=nil,endian=nil) # delimiter,terminator
+  def initialize(endian=nil) # delimiter,terminator
     @v=Verbose.new("fdb/frm".upcase,6)
     @endian=endian
     @fp=@mark=0
-    @frame=[]
-    if dm
-      @fary=frame.split(eval('"'+dm+'"'))
-      @v.msg{"Split:[#{frame}] by [#{dm}]" }
-    else
-      @fary=[frame]
-    end
+    @frame=''
+  end
+
+  def add(frame)
+    @v.msg{"Frame add [#{frame}]"}
+    @frame << frame
+    self
   end
 
   def mark
     @v.msg{"Mark FP:[#{@fp}]" }
     @mark=@fp
+    self
   end
 
   def copy
@@ -24,11 +25,9 @@ class Frame
   end
 
   def cut(e0)
-    if @fp >= @frame.size
-      @frame=@fary.shift||''
-      @fp=0
-    end
-    len=e0['length']||@frame.size
+    rest=@frame.size-@fp
+    return nil unless rest > 0
+    len=e0['length']||rest
     str=@frame.slice(@fp,len.to_i)
     @fp+=len.to_i
     @v.msg{"CutFrame: <#{str}> by size=[#{len}]"}

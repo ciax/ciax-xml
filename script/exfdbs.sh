@@ -16,14 +16,15 @@ for id in $devices; do
     output="$HOME/.var/field_${id}.json"
     [ "$clear" ] && [ -e $output ] && rm $output
     if [ "$par" ] ; then
+        frmcmd $dev $par > /dev/null || continue
         getstat $par
     else
-        frmcmd $dev $id 2>&1 |grep ' : '|while read cmd dmy
+        VER= frmcmd $dev $id 2>&1 |grep ' : '|while read cmd dmy
         do
             getstat $cmd
         done
     fi
-    < $output viewing $opt | if [ "$opt" ]
+    VER= < $output viewing $opt | if [ "$opt" ]
     then
         v2s
     else

@@ -10,7 +10,7 @@ class Frame
 
   def set(frame='')
     if frame
-      @v.msg{"Frame set [#{frame}]"}
+      @v.msg{"Frame set <#{frame}>"}
       @frame=frame
       @fp=@mark=0
     end
@@ -19,22 +19,24 @@ class Frame
 
   def add(frame,e={})
     if frame
-      @v.msg{"Frame add [#{frame}]"}
-      @frame << encode(e,frame)
-      @fp += frame.size
+      code=encode(e,frame)
+      @frame << code
+      @fp += code.size
+      @v.msg{"Frame add <#{frame}> (#{@fp})"}
     end
     self
   end
 
   def mark
-    @v.msg{"Mark FP:[#{@fp}]" }
+    @v.msg{"Mark FP:(#{@fp})" }
     @mark=@fp
     self
   end
 
   def copy
-    @v.msg{"Copy Frame from [#{@mark}-#{@fp}]"}
-    @frame.slice(@mark...@fp)
+    str=@frame.slice(@mark...@fp)
+    @v.msg{"Copy Frame <#{str}> (#{@mark}-#{@fp})"}
+    str
   end
 
   def cut(e0)

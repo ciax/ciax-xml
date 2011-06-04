@@ -4,7 +4,6 @@ class Frame
     @v=Verbose.new("fdb/frm".upcase,6)
     @endian=endian
     @method=ccmethod
-    @fp=@mark=0
     @frame=''
   end
 
@@ -12,39 +11,37 @@ class Frame
     if frame
       @v.msg{"Frame set <#{frame}>"}
       @frame=frame
-      @fp=@mark=0
     end
     self
   end
 
+  # Command
   def add(frame,e={})
     if frame
       code=encode(e,frame)
       @frame << code
-      @fp += code.size
-      @v.msg{"Frame add <#{frame}> (#{@fp})"}
+      @ccrange << code if @ccrange
+      @v.msg{"Frame add <#{frame}>"}
     end
     self
   end
 
+  def copy
+    @v.msg{"Copy Frame <#{@frame}>"}
+    @frame
+  end
+
+  # Response
   def mark
-    @v.msg{"Mark FP:(#{@fp})" }
-    @mark=@fp
+    @v.msg{"Mark CC range" }
+    @ccrange=''
     self
   end
 
-  def copy
-    str=@frame.slice(@mark...@fp)
-    @v.msg{"Copy Frame <#{str}> (#{@mark}-#{@fp})"}
-    str
-  end
-
   def cut(e0)
-    rest=@frame.size-@fp
-    return nil unless rest > 0
-    len=e0['length']||rest
-    str=@frame.slice(@fp,len.to_i)
-    @fp+=len.to_i
+    len=e0['length']||@frame.size
+    str=@frame.slice!(0,len.to_i)
+    @ccrange << str if @ccrange
     @v.msg{"CutFrame: <#{str}> by size=[#{len}]"}
     if r=e0['slice']
       str=str.slice(*r.split(':').map{|i| i.to_i })
@@ -54,21 +51,21 @@ class Frame
   end
 
   def checkcode
-    frame=copy
-    @v.msg{"CC Frame <#{frame}>"}
+    @v.msg{"CC Frame <#{@ccrange}>"}
     chk=0
     case @method
     when 'len'
-      chk=frame.length
+      chk=@ccrange.length
     when 'bcc'
-      frame.each_byte {|c| chk ^= c }
+      @ccrange.each_byte {|c| chk ^= c }
     when 'sum'
-      frame.each_byte {|c| chk += c }
+      @ccrange.each_byte {|c| chk += c }
       chk%=256
     else
       @v.err("No such CC method #{@method}")
     end
     @v.msg{"Calc:CC [#{@method.upcase}] -> (#{chk})"}
+    @ccrange=nil
     return chk.to_s
   end
 

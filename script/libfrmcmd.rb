@@ -32,6 +32,7 @@ class FrmCmd
     else
       mk_frame(:select)
       if @fdbc.key?(:ccrange)
+        @frame.mark
         mk_frame(:ccrange)
         @field['cc']=@frame.checkcode
       end

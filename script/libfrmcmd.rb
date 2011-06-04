@@ -42,7 +42,7 @@ class FrmCmd
 
   private
   def mk_frame(fname)
-    @frame.set('')
+    @frame.set
     @fdbc[fname].each{|a|
       case a
       when Hash

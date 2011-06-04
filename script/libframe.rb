@@ -7,7 +7,7 @@ class Frame
     @frame=''
   end
 
-  def set(frame)
+  def set(frame='')
     if frame
       @v.msg{"Frame set [#{frame}]"}
       @frame=frame

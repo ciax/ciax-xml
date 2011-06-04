@@ -59,7 +59,7 @@ class FrmRsp
           @v.msg(1){"Entering Ceck Code Node"}
           @frame.mark
           getfield_rec(@fdbs[:ccrange])
-          @cc = @frame.checkcode(@frame.copy)
+          @cc = @frame.checkcode
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end

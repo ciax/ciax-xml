@@ -51,7 +51,8 @@ class Frame
     decode(e0,str)
   end
 
-  def checkcode(frame)
+  def checkcode
+    frame=copy
     @v.msg{"CC Frame <#{frame}>"}
     chk=0
     case @method

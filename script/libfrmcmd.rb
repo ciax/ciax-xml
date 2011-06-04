@@ -32,7 +32,8 @@ class FrmCmd
     else
       mk_frame(:select)
       if @fdbc.key?(:ccrange)
-        @field['cc']=@frame.checkcode(mk_frame(:ccrange))
+        mk_frame(:ccrange)
+        @field['cc']=@frame.checkcode
       end
       cmd=mk_frame(:main)
       @cache[@cid]=cmd unless /\*/ === @cid

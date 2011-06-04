@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libframe"
 require "libparam"
 # Cmd Methods
 class FrmCmd
@@ -9,6 +10,7 @@ class FrmCmd
     @cache={}
     @fstr={}
     @fdbc=fdb.frame[:command]
+    @frame=Frame.new(fdb['endian'])
     @par=Param.new(@fdb.command)
   end
 
@@ -40,31 +42,17 @@ class FrmCmd
 
   private
   def mk_frame(fname)
-    @fstr[fname]=@fdbc[fname].map{|a|
+    @frame.set('')
+    @fdbc[fname].each{|a|
       case a
       when Hash
-        @field.subst(@par.subst(a['val'],a['valid'])).split(',').map{|s|
-          encode(a,s)
+        @field.subst(@par.subst(a['val'],a['valid'])).split(',').each{|s|
+          @frame.add(s,a)
         }
       else # ccrange,select,..
-        @fstr[a.to_sym]
+        @frame.add(@fstr[a.to_sym])
       end
-    }.join('')
-  end
-
-  def encode(e,str) # Num -> Chr
-    cdc=e['encode']
-    if pck={'chr'=>'C','bew'=>'n','lew'=>'v'}[cdc]
-      code=[eval(str)].pack(pck)
-      @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
-      str=code
-    end
-    if fmt=e['format']
-      @v.msg{"Formatted code(#{fmt}) [#{str}]"}
-      code=fmt % eval(str)
-      @v.msg{"Formatted code(#{fmt}) [#{str}] -> [#{code}]"}
-      str=code
-    end
-    str.to_s
+    }
+    @fstr[fname]=@frame.copy
   end
 end

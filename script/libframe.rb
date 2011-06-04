@@ -16,10 +16,10 @@ class Frame
     self
   end
 
-  def add(frame)
+  def add(frame,e={})
     if frame
       @v.msg{"Frame add [#{frame}]"}
-      @frame << frame
+      @frame << encode(e,frame)
       @fp += frame.size
     end
     self
@@ -66,5 +66,21 @@ class Frame
     end
     @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{num}]"}
     num.to_s
+  end
+
+  def encode(e,str) # Num -> Chr
+    cdc=e['encode']
+    if pck={'chr'=>'C','bew'=>'n','lew'=>'v'}[cdc]
+      code=[eval(str)].pack(pck)
+      @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
+      str=code
+    end
+    if fmt=e['format']
+      @v.msg{"Formatted code(#{fmt}) [#{str}]"}
+      code=fmt % eval(str)
+      @v.msg{"Formatted code(#{fmt}) [#{str}] -> [#{code}]"}
+      str=code
+    end
+    str.to_s
   end
 end

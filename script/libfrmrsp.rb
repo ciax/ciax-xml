@@ -11,7 +11,7 @@ class FrmRsp
     @stat['frame']=fdb['id']
     @fdbs=fdb.frame[:status]
     @par=Param.new(fdb.command)
-    @frame=Frame.new(fdb['endian'])
+    @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
   def setrsp(stm)
@@ -59,7 +59,7 @@ class FrmRsp
           @v.msg(1){"Entering Ceck Code Node"}
           @frame.mark
           getfield_rec(@fdbs[:ccrange])
-          @cc = @fdb.checkcode(@frame.copy)
+          @cc = @frame.checkcode(@frame.copy)
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
         end

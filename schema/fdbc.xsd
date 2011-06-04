@@ -68,7 +68,6 @@
         <xsd:element ref="fdbc:select" />
         <xsd:element ref="fdbc:data" />
       </xsd:choice>
-      <xsd:attribute name="method" type="fdbc:ccmethod"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <!--Command frame-->

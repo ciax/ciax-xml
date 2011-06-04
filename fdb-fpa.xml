@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
-  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" wait="0">
-    <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1"/>
+  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" ccmethod="sum" wait="0">
+    <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data label="Prefix">&gt;01</data>
       <select>
@@ -34,17 +34,17 @@
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>
-      <ccrange method="sum">
+      <ccrange>
         <select>
           <response id="getstat">
             <array assign="stat" decode="hexstr" label="Status" length="4">
-              <index range="0:7" size="8"/>
+              <index range="0:7" size="8" />
             </array>
           </response>
-          <response id="default"/>
+          <response id="default" />
         </select>
       </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
+      <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>
   </frame>
 </fdb>

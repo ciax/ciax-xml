@@ -17,24 +17,6 @@ class FrmDb < Db
     @v.msg{"Structure:status:#{@status}"}
   end
 
-  def checkcode(frame)
-    @v.msg{"CC Frame <#{frame}>"}
-    chk=0
-    case @method
-    when 'len'
-      chk=frame.length
-    when 'bcc'
-      frame.each_byte {|c| chk ^= c }
-    when 'sum'
-      frame.each_byte {|c| chk += c }
-      chk%=256
-    else
-      @v.err("No such CC method #{@method}")
-    end
-    @v.msg{"Calc:CC [#{@method.upcase}] -> (#{chk})"}
-    return chk.to_s
-  end
-
   private
   def init_main(domain)
     hash=@doc.domain(domain).to_h
@@ -57,8 +39,6 @@ class FrmDb < Db
           frame << yield(e1)
         }
         @v.msg{"InitCCFrame:#{frame}"}
-        @method=e0['method']
-        @v.err("CC No method") unless @method
         hash[:ccrange]=frame.freeze
       ensure
         @v.msg(-1){"-> INIT:Ceck Code Frame"}

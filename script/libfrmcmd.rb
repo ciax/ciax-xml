@@ -10,7 +10,7 @@ class FrmCmd
     @cache={}
     @fstr={}
     @fdbc=fdb.frame[:command]
-    @frame=Frame.new(fdb['endian'])
+    @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
     @par=Param.new(@fdb.command)
   end
 
@@ -32,7 +32,7 @@ class FrmCmd
     else
       mk_frame(:select)
       if @fdbc.key?(:ccrange)
-        @field['cc']=@fdb.checkcode(mk_frame(:ccrange))
+        @field['cc']=@frame.checkcode(mk_frame(:ccrange))
       end
       cmd=mk_frame(:main)
       @cache[@cid]=cmd unless /\*/ === @cid

@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 class Frame
-  def initialize(endian=nil) # delimiter,terminator
+  def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
     @v=Verbose.new("fdb/frm".upcase,6)
     @endian=endian
+    @method=ccmethod
     @fp=@mark=0
     @frame=''
   end
@@ -48,6 +49,24 @@ class Frame
       @v.msg{"PickFrame: <#{str}> by range=[#{r}]"}
     end
     decode(e0,str)
+  end
+
+  def checkcode(frame)
+    @v.msg{"CC Frame <#{frame}>"}
+    chk=0
+    case @method
+    when 'len'
+      chk=frame.length
+    when 'bcc'
+      frame.each_byte {|c| chk ^= c }
+    when 'sum'
+      frame.each_byte {|c| chk += c }
+      chk%=256
+    else
+      @v.err("No such CC method #{@method}")
+    end
+    @v.msg{"Calc:CC [#{@method.upcase}] -> (#{chk})"}
+    return chk.to_s
   end
 
   private

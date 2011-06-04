@@ -67,7 +67,6 @@
         <xsd:element ref="fdbr:select" />
         <xsd:element ref="fdbr:field" />
       </xsd:choice>
-      <xsd:attribute name="method" type="fdbr:ccmethod" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <!--Response frame-->

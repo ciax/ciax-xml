@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
-  <frame id="k3n" label="OMRON K3NR" wait="1">
+  <frame id="k3n" label="OMRON K3NR" ccmethod="bcc" wait="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="chr" label="Prefix">2</data>
-      <ccrange method="bcc">
+      <ccrange>
         <select>
           <command id="getstat" label="Get Status" response="getstat" type="stat">
             <data label="Node No.">00</data>
@@ -24,7 +24,7 @@
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="Prefix" length="1">2</field>
-      <ccrange method="bcc">
+      <ccrange>
         <field label="Node" length="4">0000</field>
         <field assign="ecode" label="Exit Code" length="2" symbol="ecode">00</field>
         <select>

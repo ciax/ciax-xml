@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
-  <frame id="mel" label="MELSEC Q Series" endian="little">
+  <frame id="mel" label="MELSEC Q Series" endian="little" ccmethod="len">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <data encode="lew" label="SubHeader: Prefix">0x54</data>
       <data label="SubHeader: Serial Number">XX</data>
@@ -11,7 +11,7 @@
       <data encode="chr" label="Q Header: Request Unit Station Number">0</data>
       <data encode="chr" label="Q Header: Send Data Length MSB">${cc}</data>
       <data encode="chr" label="Q Header: Send Data Length LSB">0</data>
-      <ccrange method="len">
+      <ccrange>
         <data encode="lew" label="Q Header: CPU Watch Timer">1</data>
         <select>
           <command id="getstat" label="Get all status" response="getstat" type="stat">
@@ -103,7 +103,7 @@
       <field decode="unsigned" label="Q Header: Request Unit I/O Number" length="2">1023</field>
       <field decode="unsigned" label="Q Header: Request Unit Station Number" length="1">0</field>
       <field assign="cc" decode="unsigned" label="Response Data Length" length="2" />
-      <ccrange method="len">
+      <ccrange>
         <field assign="ecode" decode="unsigned" label="Error Code" length="2">0</field>
         <select>
           <response id="getstat">

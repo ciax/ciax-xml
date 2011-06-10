@@ -19,7 +19,7 @@ class Group < Hash
       end
         list << hash
     }
-    view['list']=list.sort_by{|h| h['group']}
+    view['list']=list.sort_by{|h| h['group']+h['id']}
     self
   end
 end

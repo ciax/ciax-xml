@@ -1,19 +1,18 @@
 ***DEBUG
-mcr:dsi,dso/ exe finish immediately after command issue [4/17-
-cart:attach at tag11 gives overload error by corn load unbalance [4/17-
-dts:status update works but appears incorrect status [4/17-
+mcr:dsi,dso/ exe finish immediately after command issue [4/17,6/9
+cart:attach at tag11 gives overload error by corn load unbalance [4/17
+  -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
+dts:status update works but appears incorrect status [4/17
 crt:clssh crt gives error
 
 ***UPDATE
 
 ***LACK FUNCTION
 ascpck: exe should be reset
+mcr:inter lock error log is  really needed
 
 ***CHECK NEED
 verify on motion: cdb-oss
-mcr: cart run1 at tag 9 with comics gives error with "No such key 'n'" [4/17-4/21
-   -> mcr converted %r to n/a came from "ion"
-   --> ion symbol changed (0=OFF f=ON DEF=N/A -> DEF=ON) 
 
 ***UPGRADE
 more variation:fdb//values/int@decode (sined/unsined, hexstr16,...)
@@ -39,5 +38,9 @@ symboling: symbol reference will move to status/value@symbol
 symboling&labeling: should be commutative
 interrupt: interrupt handling (add new error class)[5/23]
 grouping: sort function, move circular from libprint[5/31]
+mcr: cart run1 at tag 9 with comics gives error with "No such key 'n'" [4/17]
+    -> mcr converted %r to n/a came from "ion"
+   --> ion symbol changed (0=OFF f=ON DEF=N/A -> DEF=ON) [4/21] 
+   ---> change both crt and dct (was crt only) [6/9]
 
 ***DISCARD

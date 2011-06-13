@@ -13,7 +13,7 @@ cdb//session@id -> never use ':'
 
  $_ $a..z
     description : substitute sequence number(in repeat)
-    usable: fdb//cmdframe/repeat/data
+    usable: fdb//cmdframe/repeat/code
             --
             cdb//session/repeat/statement/argv
             cdb//status/repeat/value/*@ref
@@ -22,7 +22,7 @@ cdb//session@id -> never use ':'
 
  $1..9
     description : substitute parameters, sould be numerical
-    usable: fdb//cmdframe/data
+    usable: fdb//cmdframe/code
             fdb//response/array/index
             --
             cdb//session/statement/argv
@@ -31,7 +31,7 @@ cdb//session@id -> never use ':'
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
                   content should be numerical expression or of csv array
                   idx can be equation (i.e. $_+1 )
-    usable: fdb//cmdframe/data
+    usable: fdb//cmdframe/code
 
  $#
     description : formula parameter
@@ -57,7 +57,7 @@ cdb//session@id -> never use ':'
 ### Explicit conversion by Attributes ###
 
  format
-    usable: fdb//data
+    usable: fdb//code
             --
             cdb//statement/argv
             cdb//status/value/float
@@ -68,12 +68,12 @@ cdb//session@id -> never use ':'
             fdb//response/array
 
  encode
-    usable: fdb//data
+    usable: fdb//code
 
  range
     description: To validate parameters
     example: "0:<10,98,99"
-    usable: fdb//data
+    usable: fdb//code
             --
             cdb//statement/argv
 

@@ -3,13 +3,13 @@
   <frame id="oma" label="OMEGA Air Pressure Sensor(PX971)" wait="0.1">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data label="Prefix">*</data>
+      <code label="Prefix">*</code>
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <data>00P1</data>
+          <code>00P1</code>
         </command>
       </select>
-      <data encode="chr" label="Suffix">0xd</data>
+      <code encode="chr" label="Suffix">0xd</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <field label="Prefix" length="1">?</field>

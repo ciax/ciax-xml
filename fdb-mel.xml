@@ -2,94 +2,94 @@
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="mel" label="MELSEC Q Series" endian="little" ccmethod="len">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data encode="lew" label="SubHeader: Prefix">0x54</data>
-      <data label="SubHeader: Serial Number">XX</data>
-      <data encode="lew" label="SubHeader: Fixed Number">0</data>
-      <data encode="chr" label="Q Header: Network Number">0</data>
-      <data encode="chr" label="Q Header: PC Number">0xFF</data>
-      <data encode="lew" label="Q Header: Request Unit I/O Number">0x3FF</data>
-      <data encode="chr" label="Q Header: Request Unit Station Number">0</data>
-      <data encode="chr" label="Q Header: Send Data Length MSB">${cc}</data>
-      <data encode="chr" label="Q Header: Send Data Length LSB">0</data>
+      <code encode="lew" label="SubHeader: Prefix">0x54</code>
+      <code label="SubHeader: Serial Number">XX</code>
+      <code encode="lew" label="SubHeader: Fixed Number">0</code>
+      <code encode="chr" label="Q Header: Network Number">0</code>
+      <code encode="chr" label="Q Header: PC Number">0xFF</code>
+      <code encode="lew" label="Q Header: Request Unit I/O Number">0x3FF</code>
+      <code encode="chr" label="Q Header: Request Unit Station Number">0</code>
+      <code encode="chr" label="Q Header: Send Data Length MSB">${cc}</code>
+      <code encode="chr" label="Q Header: Send Data Length LSB">0</code>
       <ccrange>
-        <data encode="lew" label="Q Header: CPU Watch Timer">1</data>
+        <code encode="lew" label="Q Header: CPU Watch Timer">1</code>
         <select>
           <command id="getstat" label="Get all status" response="getstat" type="stat">
-            <data encode="lew" label="Read region command">0x401</data>
-            <data encode="lew" label="Read region subcommand">0</data>
-            <data encode="lew" label="Start Address">0</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">52</data>
+            <code encode="lew" label="Read region command">0x401</code>
+            <code encode="lew" label="Read region subcommand">0</code>
+            <code encode="lew" label="Start Address">0</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">52</code>
           </command>
           <command id="set_tag" label="Set Tag to Run [1-12,98,99]" response="cmdrsp" type="config">
-            <data encode="lew" label="Write region command">0x1401</data>
-            <data encode="lew" label="Write region subcommand">0</data>
-            <data encode="lew" label="Start Address">0x101</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">1</data>
-            <data encode="lew" valid="1:12,98,99">$1</data>
+            <code encode="lew" label="Write region command">0x1401</code>
+            <code encode="lew" label="Write region subcommand">0</code>
+            <code encode="lew" label="Start Address">0x101</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">1</code>
+            <code encode="lew" valid="1:12,98,99">$1</code>
           </command>
           <command id="set_pos" label="Set Pos to Jack [0-4]" response="cmdrsp" type="config">
-            <data encode="lew" label="Write region command">0x1401</data>
-            <data encode="lew" label="Write region subcommand">0</data>
-            <data encode="lew" label="Start Address">0x103</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">1</data>
-            <data encode="lew" valid="0:4">1 &lt;&lt; $1</data>
+            <code encode="lew" label="Write region command">0x1401</code>
+            <code encode="lew" label="Write region subcommand">0</code>
+            <code encode="lew" label="Start Address">0x103</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">1</code>
+            <code encode="lew" valid="0:4">1 &lt;&lt; $1</code>
           </command>
           <command id="start" label="Start Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
-            <data encode="lew" label="Write region command">0x1401</data>
-            <data encode="lew" label="Write region subcommand">0</data>
-            <data encode="lew" label="Start Address">0x102</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">1</data>
-            <data encode="lew" valid="0,8,15">1 &lt;&lt; $1</data>
+            <code encode="lew" label="Write region command">0x1401</code>
+            <code encode="lew" label="Write region subcommand">0</code>
+            <code encode="lew" label="Start Address">0x102</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">1</code>
+            <code encode="lew" valid="0,8,15">1 &lt;&lt; $1</code>
           </command>
           <command id="stop" label="Stop Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" response="cmdrsp" type="action">
-            <data encode="lew" label="Write region command">0x1401</data>
-            <data encode="lew" label="Write region subcommand">0</data>
-            <data encode="lew" label="Start Address">0x100</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">1</data>
-            <data encode="lew" valid="0:7">1 &lt;&lt; $1</data>
+            <code encode="lew" label="Write region command">0x1401</code>
+            <code encode="lew" label="Write region subcommand">0</code>
+            <code encode="lew" label="Start Address">0x100</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">1</code>
+            <code encode="lew" valid="0:7">1 &lt;&lt; $1</code>
           </command>
           <command id="clear" label="Clear Action Flags" response="cmdrsp" type="config">
-            <data encode="lew" label="Write region command">0x1401</data>
-            <data encode="lew" label="Write region subcommand">0</data>
-            <data encode="lew" label="Start Address">0x100</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">4</data>
-            <data encode="lew" label="Data">0</data>
-            <data encode="lew" label="Data">0</data>
-            <data encode="lew" label="Data">0</data>
-            <data encode="lew" label="Data">0</data>
+            <code encode="lew" label="Write region command">0x1401</code>
+            <code encode="lew" label="Write region subcommand">0</code>
+            <code encode="lew" label="Start Address">0x100</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">4</code>
+            <code encode="lew" label="Data">0</code>
+            <code encode="lew" label="Data">0</code>
+            <code encode="lew" label="Data">0</code>
+            <code encode="lew" label="Data">0</code>
           </command>
           <command id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
-            <data encode="lew" label="Read region command">0x401</data>
-            <data encode="lew" label="Read region subcommand">0</data>
+            <code encode="lew" label="Read region command">0x401</code>
+            <code encode="lew" label="Read region subcommand">0</code>
             <!--Jack 0=JK1,1=JK2,2=JK3,3=JK4-->
-            <data encode="chr" label="Jack Num" valid="0:3">$2 * 4</data>
+            <code encode="chr" label="Jack Num" valid="0:3">$2 * 4</code>
             <!--Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm-->
-            <data encode="chr" label="Tag Num" valid="0:5">$1 + 2</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">0x2c</data>
+            <code encode="chr" label="Tag Num" valid="0:5">$1 + 2</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">0x2c</code>
           </command>
           <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
-            <data encode="lew" label="Write region command">0x1401</data>
-            <data encode="lew" label="Write region subcommand">0</data>
-            <data encode="chr" label="Jack Num" valid="0:3">$2 * 4</data>
-            <data encode="chr" label="Tag Num" valid="0:5">$1 + 2</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">0x2c</data>
-            <data encode="lew">${t:$1:$2}</data>
+            <code encode="lew" label="Write region command">0x1401</code>
+            <code encode="lew" label="Write region subcommand">0</code>
+            <code encode="chr" label="Jack Num" valid="0:3">$2 * 4</code>
+            <code encode="chr" label="Tag Num" valid="0:5">$1 + 2</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">0x2c</code>
+            <code encode="lew">${t:$1:$2}</code>
           </command>
           <command id="rw_tbl" label="Read/Write Jack Table [1=Read,2=Write]" response="cmdrsp" type="config">
-            <data encode="lew" label="Write region command">0x1401</data>
-            <data encode="lew" label="Write region subcommand">0</data>
-            <data encode="lew" label="Start Address">0x7ff</data>
-            <data encode="lew" label="Device Code">0xB400</data>
-            <data encode="lew" label="Data Length">1</data>
-            <data encode="lew" label="Parameter" valid="1:2">$1</data>
+            <code encode="lew" label="Write region command">0x1401</code>
+            <code encode="lew" label="Write region subcommand">0</code>
+            <code encode="lew" label="Start Address">0x7ff</code>
+            <code encode="lew" label="Device Code">0xB400</code>
+            <code encode="lew" label="Data Length">1</code>
+            <code encode="lew" label="Parameter" valid="1:2">$1</code>
           </command>
         </select>
       </ccrange>

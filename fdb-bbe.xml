@@ -3,18 +3,18 @@
   <frame id="bbe" label="BB Electric 232SDD16" endian="big" wait="0.3">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data label="Prefix">!0</data>
+      <code label="Prefix">!0</code>
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <data>RD</data>
+          <code>RD</code>
         </command>
         <command id="output" label="OUTPUT [DDDDD]" type="action">
-          <data>SO</data>
-          <data encode="bew" valid="0:65535">$1</data>
+          <code>SO</code>
+          <code encode="bew" valid="0:65535">$1</code>
         </command>
         <command id="outfld" label="OUTPUT from Field" nocache="true" type="action">
-          <data>SO</data>
-          <data encode="bew">${stat}</data>
+          <code>SO</code>
+          <code encode="bew">${stat}</code>
         </command>
       </select>
     </cmdframe>

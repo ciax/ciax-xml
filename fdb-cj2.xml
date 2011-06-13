@@ -2,81 +2,81 @@
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="cj2" label="OMRON CJ2M-CPU33" endian="big">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data encode="chr" label="FINS Header:ICF">0x80</data>
-      <data encode="chr" label="FINS Header:RSV">0x00</data>
-      <data encode="chr" label="FINS Header:GCT">0x02</data>
-      <data encode="chr" label="FINS Header:DNA">0x00</data>
-      <data encode="chr" label="FINS Header:DA1">${ipr}</data>
-      <data encode="chr" label="FINS Header:DA2">0x00</data>
-      <data encode="chr" label="FINS Header:SNA">0x00</data>
-      <data encode="chr" label="FINS Header:SA1">${ipl}</data>
-      <data encode="chr" label="FINS Header:SA2">0x00</data>
-      <data encode="chr" label="FINS Header:SID">0xFF</data>
+      <code encode="chr" label="FINS Header:ICF">0x80</code>
+      <code encode="chr" label="FINS Header:RSV">0x00</code>
+      <code encode="chr" label="FINS Header:GCT">0x02</code>
+      <code encode="chr" label="FINS Header:DNA">0x00</code>
+      <code encode="chr" label="FINS Header:DA1">${ipr}</code>
+      <code encode="chr" label="FINS Header:DA2">0x00</code>
+      <code encode="chr" label="FINS Header:SNA">0x00</code>
+      <code encode="chr" label="FINS Header:SA1">${ipl}</code>
+      <code encode="chr" label="FINS Header:SA2">0x00</code>
+      <code encode="chr" label="FINS Header:SID">0xFF</code>
       <select>
         <command id="getstat" label="Get all status" response="getstat" type="stat">
-          <data encode="chr" label="FINS Command:MRC">0x01</data>
-          <data encode="chr" label="FINS Command:SRC">0x01</data>
-          <data encode="chr" label="FINS Param:Memory type(W)">0xB1</data>
-          <data encode="chr" label="FINS Param:Start Address(H)">0x00</data>
-          <data encode="chr" label="FINS Param:Start Address(L)">0x0A</data>
-          <data encode="chr" label="FINS Param:Bit Number">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (H)">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (L)">0x13</data>
+          <code encode="chr" label="FINS Command:MRC">0x01</code>
+          <code encode="chr" label="FINS Command:SRC">0x01</code>
+          <code encode="chr" label="FINS Param:Memory type(W)">0xB1</code>
+          <code encode="chr" label="FINS Param:Start Address(H)">0x00</code>
+          <code encode="chr" label="FINS Param:Start Address(L)">0x0A</code>
+          <code encode="chr" label="FINS Param:Bit Number">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (H)">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (L)">0x13</code>
         </command>
         <command id="getcmd" label="Get issued command" response="getcmd" type="stat">
-          <data encode="chr" label="FINS Command:MRC">0x01</data>
-          <data encode="chr" label="FINS Command:SRC">0x01</data>
-          <data encode="chr" label="FINS Param:Memory type(W)">0xB1</data>
-          <data encode="chr" label="FINS Param:Start Address(H)">0x00</data>
-          <data encode="chr" label="FINS Param:Start Address(L)">0x00</data>
-          <data encode="chr" label="FINS Param:Bit Number">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (H)">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (L)">0x04</data>
+          <code encode="chr" label="FINS Command:MRC">0x01</code>
+          <code encode="chr" label="FINS Command:SRC">0x01</code>
+          <code encode="chr" label="FINS Param:Memory type(W)">0xB1</code>
+          <code encode="chr" label="FINS Param:Start Address(H)">0x00</code>
+          <code encode="chr" label="FINS Param:Start Address(L)">0x00</code>
+          <code encode="chr" label="FINS Param:Bit Number">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (H)">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (L)">0x04</code>
         </command>
         <command id="geterr" label="Get Error Code" response="geterr" type="stat">
-          <data encode="chr" label="FINS Command:MRC">0x01</data>
-          <data encode="chr" label="FINS Command:SRC">0x01</data>
-          <data encode="chr" label="FINS Param:Memory type(D)">0x82</data>
-          <data encode="chr" label="FINS Param:Start Address(H)">0x00</data>
-          <data encode="chr" label="FINS Param:Start Address(L)">0x00</data>
-          <data encode="chr" label="FINS Param:Bit Number">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (H)">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (L)">0x01</data>
+          <code encode="chr" label="FINS Command:MRC">0x01</code>
+          <code encode="chr" label="FINS Command:SRC">0x01</code>
+          <code encode="chr" label="FINS Param:Memory type(D)">0x82</code>
+          <code encode="chr" label="FINS Param:Start Address(H)">0x00</code>
+          <code encode="chr" label="FINS Param:Start Address(L)">0x00</code>
+          <code encode="chr" label="FINS Param:Bit Number">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (H)">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (L)">0x01</code>
         </command>
         <command id="getzlen" label="Get Z Sensor Length" response="getzlen" type="stat">
-          <data encode="chr" label="FINS Command:MRC">0x01</data>
-          <data encode="chr" label="FINS Command:SRC">0x01</data>
-          <data encode="chr" label="FINS Param:Memory type(D)">0x82</data>
-          <data encode="chr" label="FINS Param:Start Address(H)">0x00</data>
-          <data encode="chr" label="FINS Param:Start Address(L)">0x0A</data>
-          <data encode="chr" label="FINS Param:Bit Number">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (H)">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (L)">0x0A</data>
+          <code encode="chr" label="FINS Command:MRC">0x01</code>
+          <code encode="chr" label="FINS Command:SRC">0x01</code>
+          <code encode="chr" label="FINS Param:Memory type(D)">0x82</code>
+          <code encode="chr" label="FINS Param:Start Address(H)">0x00</code>
+          <code encode="chr" label="FINS Param:Start Address(L)">0x0A</code>
+          <code encode="chr" label="FINS Param:Bit Number">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (H)">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (L)">0x0A</code>
         </command>
         <command id="setbit" label="Set Bit" response="cmdrsp" type="stat">
-          <data encode="chr" label="FINS Command:MRC">0x01</data>
-          <data encode="chr" label="FINS Command:SRC">0x02</data>
-          <data encode="chr" label="FINS Param:Memory type(W)">0x31</data>
-          <data encode="chr" label="FINS Param:Start Address(H)">0x00</data>
-          <data encode="chr" label="FINS Param:Start Address(L)" valid="0:3">$1</data>
-          <data encode="chr" label="FINS Param:Bit Number" valid="0:15">$2</data>
-          <data encode="chr" label="FINS Param:Bit Data Length (H)">0x00</data>
-          <data encode="chr" label="FINS Param:Bit Data Length (L)">0x01</data>
-          <data encode="chr" label="FINS Param:Bit Data">0x01</data>
+          <code encode="chr" label="FINS Command:MRC">0x01</code>
+          <code encode="chr" label="FINS Command:SRC">0x02</code>
+          <code encode="chr" label="FINS Param:Memory type(W)">0x31</code>
+          <code encode="chr" label="FINS Param:Start Address(H)">0x00</code>
+          <code encode="chr" label="FINS Param:Start Address(L)" valid="0:3">$1</code>
+          <code encode="chr" label="FINS Param:Bit Number" valid="0:15">$2</code>
+          <code encode="chr" label="FINS Param:Bit Data Length (H)">0x00</code>
+          <code encode="chr" label="FINS Param:Bit Data Length (L)">0x01</code>
+          <code encode="chr" label="FINS Param:Bit Data">0x01</code>
         </command>
         <command id="clrbit" label="Clear All Bit" response="cmdrsp" type="stat">
-          <data encode="chr" label="FINS Command:MRC">0x01</data>
-          <data encode="chr" label="FINS Command:SRC">0x02</data>
-          <data encode="chr" label="FINS Param:Memory type(W)">0xB1</data>
-          <data encode="chr" label="FINS Param:Start Address(H)">0x00</data>
-          <data encode="chr" label="FINS Param:Start Address(L)">0x00</data>
-          <data encode="chr" label="FINS Param:Bit Number">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (H)">0x00</data>
-          <data encode="chr" label="FINS Param:Data Length (L)">0x04</data>
-          <data encode="bew" label="FINS Param:Bit Data">0x00</data>
-          <data encode="bew" label="FINS Param:Bit Data">0x00</data>
-          <data encode="bew" label="FINS Param:Bit Data">0x00</data>
-          <data encode="bew" label="FINS Param:Bit Data">0x00</data>
+          <code encode="chr" label="FINS Command:MRC">0x01</code>
+          <code encode="chr" label="FINS Command:SRC">0x02</code>
+          <code encode="chr" label="FINS Param:Memory type(W)">0xB1</code>
+          <code encode="chr" label="FINS Param:Start Address(H)">0x00</code>
+          <code encode="chr" label="FINS Param:Start Address(L)">0x00</code>
+          <code encode="chr" label="FINS Param:Bit Number">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (H)">0x00</code>
+          <code encode="chr" label="FINS Param:Data Length (L)">0x04</code>
+          <code encode="bew" label="FINS Param:Bit Data">0x00</code>
+          <code encode="bew" label="FINS Param:Bit Data">0x00</code>
+          <code encode="bew" label="FINS Param:Bit Data">0x00</code>
+          <code encode="bew" label="FINS Param:Bit Data">0x00</code>
         </command>
       </select>
     </cmdframe>

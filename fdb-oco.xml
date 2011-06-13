@@ -3,17 +3,17 @@
   <frame id="oco" label="OMEGA Current Output(D4251)" reference="http://www.omega.com/manuals/manualpdf/M1552.pdf" wait="1">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <data label="Prefix">$</data>
+      <code label="Prefix">$</code>
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <data>1RD</data>
+          <code>1RD</code>
         </command>
         <command id="i" label="Set Current by argv [DD.DD]" type="action">
-          <data>1AO+000</data>
-          <data format="%05.2f" valid="0:99">$1</data>
+          <code>1AO+000</code>
+          <code format="%05.2f" valid="0:99">$1</code>
         </command>
       </select>
-      <data encode="chr" label="Suffix">0xd</data>
+      <code encode="chr" label="Suffix">0xd</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field length="1">*</field>

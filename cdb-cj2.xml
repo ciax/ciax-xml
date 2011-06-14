@@ -296,84 +296,84 @@
       <value id="cmp" label="COMMAND COMPLETE" group="g2" symbol="normal">
         <binary bit="14" ref="w:0" />
       </value>
-      <value id="run" label="Running" group="g2">
+      <value id="run" label="Running" group="g2" symbol="warn">
         <binary bit="15" ref="w:0" />
       </value>
       <value id="err" label="Error Code" group="g2">
         <int ref="err" />
       </value>
-      <value id="fis" label="Fix Attach" group="fix" symbol="ist">
+      <value id="fis" label="Fix Attach" group="jf" symbol="ist">
         <binary bit="0" ref="w:2" />
         <binary bit="1" ref="w:2" />
         <binary bit="2" ref="w:2" />
         <binary bit="3" ref="w:2" />
       </value>
-      <value id="fhk" label="Fix Hook" group="fix" symbol="hook">
+      <value id="fhk" label="Fix Hook" group="jf" symbol="hook">
         <binary bit="0" ref="w:1" />
         <binary bit="1" ref="w:1" />
       </value>
-      <value id="fjb" label="Fix Jack Bolt" group="fix" symbol="jack">
+      <value id="fjb" label="Fix Jack Bolt" group="jf" symbol="jack">
         <binary bit="14" ref="w:1" />
         <binary bit="15" ref="w:1" />
       </value>
-      <value id="mis" label="Mov Attach" group="mov1" symbol="ist">
+      <value id="mis" label="Mov Attach" group="jm1" symbol="ist">
         <binary bit="0" ref="w:6" />
         <binary bit="1" ref="w:6" />
         <binary bit="2" ref="w:6" />
         <binary bit="3" ref="w:6" />
       </value>
-      <value id="mhk" label="Mov Hook" group="mov1" symbol="hook">
+      <value id="mhk" label="Mov Hook" group="jm1" symbol="hook">
         <binary bit="0" ref="w:5" />
         <binary bit="1" ref="w:5" />
       </value>
-      <value id="mjb" label="Mov Jack Bolt" group="mov1" symbol="jack">
+      <value id="mjb" label="Mov Jack Bolt" group="jm1" symbol="jack">
         <binary bit="14" ref="w:5" />
         <binary bit="15" ref="w:5" />
       </value>
-      <value id="mrt" label="Mov Rotation" group="mov2" symbol="rot">
+      <value id="mrt" label="Mov Rotation" group="jm2" symbol="rot">
         <binary bit="2" ref="w:5" />
         <binary bit="3" ref="w:5" />
       </value>
-      <value id="mtr" label="Mov Transer" group="mov2" symbol="mov">
+      <value id="mtr" label="Mov Transer" group="jm2" symbol="mov">
         <binary bit="8" ref="w:6" />
         <binary bit="6" ref="w:6" />
       </value>
-      <value id="fpw" label="Fix Inst Power" group="fix3" symbol="off-warn">
+      <value id="fpw" label="Fix Inst Power" group="kf" symbol="off-warn">
         <binary bit="8" ref="w:9" />
       </value>
-      <value id="fph" label="Fix PW RST" group="fix3" symbol="rst">
+      <value id="fph" label="Fix PW RST" group="kf" symbol="rst">
         <binary bit="0" ref="w:10" />
         <binary bit="1" ref="w:10" />
         <binary bit="2" ref="w:10" />
       </value>
-      <value id="fcc" label="Fix CCD Power" group="fix3" symbol="off-warn">
+      <value id="fcc" label="Fix CCD Power" group="kf" symbol="off-warn">
         <binary bit="10" ref="w:9" />
       </value>
-      <value id="mpw" label="Mov Inst Power" group="mov3" symbol="off-warn">
+      <value id="mpw" label="Mov Inst Power" group="km" symbol="off-warn">
         <binary bit="9" ref="w:9" />
       </value>
-      <value id="mph" label="Mov PW RST" group="mov3" symbol="rst">
+      <value id="mph" label="Mov PW RST" group="km" symbol="rst">
         <binary bit="8" ref="w:10" />
         <binary bit="9" ref="w:10" />
         <binary bit="10" ref="w:10" />
       </value>
-      <value id="mcc" label="Mov CCD Power" group="mov3" symbol="off-warn">
+      <value id="mcc" label="Mov CCD Power" group="km" symbol="off-warn">
         <binary bit="11" ref="w:9" />
       </value>
       <repeat from="1" to="4">
-        <value id="fz%d" label="Fix Z" group="zf">
+        <value id="fz%d" label="Fix Z" group="lf">
           <float format="%.2f" ref="d:($_-1)" formula="$#/100" />
         </value>
       </repeat>
       <repeat from="1" to="4">
-        <value id="mz%d" label="Mov Z" group="zm">
+        <value id="mz%d" label="Mov Z" group="lm">
           <float format="%.2f" ref="d:($_+3)" formula="$#/100" />
         </value>
       </repeat>
-      <value id="fid" label="Fix Instrument ID" group="iid" symbol="iid_ac">
+      <value id="fid" label="Fix Instrument ID" group="nid" symbol="iid_ac">
         <int ref="d:8" />
       </value>
-      <value id="mid" label="Mov Instrument ID" group="iid" symbol="iid_ac">
+      <value id="mid" label="Mov Instrument ID" group="nid" symbol="iid_ac">
         <int ref="d:9" />
       </value>
       <value id="chg" label="CHG Plug" group="other" symbol="mov">
@@ -451,13 +451,13 @@
         <case class="alarm" msg="BAD" />
       </table>
       <table id="ist" type="string">
-        <case class="normal" msg="ON">1111</case>
-        <case class="normal" msg="OFF">0000</case>
-        <case class="warn" msg="N/A" />
+        <case class="normal" msg="ON ">1111</case>
+        <case class="warn" msg="OFF">0000</case>
+        <case class="alarm" msg="N/A" />
       </table>
       <table id="hook" type="string">
         <case class="normal" msg="HOOK">10</case>
-        <case class="normal" msg="UNHOOK">01</case>
+        <case class="normal" msg="UNHK">01</case>
         <case class="alarm" msg="N/A">00</case>
       </table>
       <table id="jack" type="string">

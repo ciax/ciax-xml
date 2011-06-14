@@ -1,16 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc">
   <!--Device database-->
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="range.xsd" />
-  <xsd:include schemaLocation="codec.xsd" />
   <!--Command Elements-->
+  <xsd:group name="data">
+    <xsd:choice>
+      <xsd:element ref="fdbc:code"></xsd:element>
+      <xsd:element ref="fdbc:string"></xsd:element>
+    </xsd:choice>
+  </xsd:group>
   <xsd:element name="code">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
+          <xsd:attribute name="length" type="xsd:int" use="required"></xsd:attribute>
           <xsd:attribute name="label" type="xsd:token" />
-          <xsd:attribute name="encode" type="fdbc:encode"></xsd:attribute>
+          <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
+          <xsd:attribute name="valid" type="fdbc:rerange"></xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="string">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="label" type="xsd:token" />
           <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
           <xsd:attribute name="valid" type="fdbc:rerange"></xsd:attribute>
         </xsd:extension>
@@ -33,8 +49,8 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
-          <xsd:element ref="fdbc:code" />
           <xsd:element ref="fdbc:repeat" />
+          <xsd:group ref="fdbc:data" />
         </xsd:choice>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
@@ -55,7 +71,7 @@
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbc:code" />
+        <xsd:group ref="fdbc:data" />
       </xsd:choice>
       <xsd:attributeGroup ref="fdbc:repeat" />
       <xsd:attribute name="delimiter" type="xsd:token" />
@@ -66,7 +82,7 @@
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="fdbc:select" />
-        <xsd:element ref="fdbc:code" />
+        <xsd:group ref="fdbc:data" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -74,7 +90,7 @@
   <xsd:element name="cmdframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbc:code" />
+        <xsd:group ref="fdbc:data" />
         <xsd:element ref="fdbc:select" />
         <xsd:element ref="fdbc:ccrange" />
       </xsd:choice>

@@ -4,114 +4,114 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Get all status" response="getstat" type="stat">
-          <code label="Status Command">OSSC_screenPrint -R</code>
-          <code label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</code>
-          <code label="Stow pin Status"> CXWS.TSCV.STOW_1</code>
-          <code label="Shutter Status"> CXWS.TSCV.SHUTTER</code>
-          <code label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</code>
-          <code label="EL Angle(deg)"> CXWS.TSCS.EL</code>
-          <code label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</code>
-          <code label="InR Drive ON/OFF"> TSCV.InsRotRotation</code>
-          <code label="BOLT Status"> CXWS.TSCV.0_SENSOR</code>
+          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</string>
+          <string label="Stow pin Status"> CXWS.TSCV.STOW_1</string>
+          <string label="Shutter Status"> CXWS.TSCV.SHUTTER</string>
+          <string label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</string>
+          <string label="EL Angle(deg)"> CXWS.TSCS.EL</string>
+          <string label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</string>
+          <string label="InR Drive ON/OFF"> TSCV.InsRotRotation</string>
+          <string label="BOLT Status"> CXWS.TSCV.0_SENSOR</string>
         </command>
         <command id="iststat" label="Get Instrument ID" response="iststat" type="stat">
-          <code label="Status Command">OSSC_screenPrint -R</code>
-          <code label="CAS Instrument"> CXWS.TSCV.OBE_INR</code>
+          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="CAS Instrument"> CXWS.TSCV.OBE_INR</string>
         </command>
         <command id="jakstat" label="Jack Bolt Status" response="jakstat" type="stat">
-          <code label="Status Command">OSSC_screenPrint -R</code>
-          <code label="Bolt Each Status"> CXWS.TSCV.POWER_V1</code>
-          <code label="Bolt Each Position"> CXWS.TSCV.POWER_V2</code>
-          <code label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</code>
+          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="Bolt Each Status"> CXWS.TSCV.POWER_V1</string>
+          <string label="Bolt Each Position"> CXWS.TSCV.POWER_V2</string>
+          <string label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</string>
         </command>
         <command id="inrstat" label="Cas InR Status" response="inrstat" type="stat">
-          <code label="Status Command">OSSC_screenPrint -R</code>
-          <code label="InR Angle(deg)"> CXWS.TSCS.INSROT</code>
+          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="InR Angle(deg)"> CXWS.TSCS.INSROT</string>
         </command>
         <command id="logstat" label="Login Status" response="logstat" type="stat">
-          <code label="Status Command">OSSC_screenPrint -R</code>
-          <code label="LOGIN 0"> TSCV.TSC.LOGIN0</code>
-          <code label="LOGIN 1"> TSCV.TSC.LOGIN1</code>
-          <code label="LOGIN 2"> TSCV.TSC.LOGIN2</code>
-          <code label="LOGIN 3"> TSCV.TSC.LOGIN3</code>
+          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="LOGIN 0"> TSCV.TSC.LOGIN0</string>
+          <string label="LOGIN 1"> TSCV.TSC.LOGIN1</string>
+          <string label="LOGIN 2"> TSCV.TSC.LOGIN2</string>
+          <string label="LOGIN 3"> TSCV.TSC.LOGIN3</string>
         </command>
         <command id="getexit" label="Exit Code" response="exit" type="stat">
-          <code>exe</code>
+          <string>exe</string>
         </command>
         <command id="getpid" label="Running?" response="pid" type="stat">
-          <code>exe -b</code>
+          <string>exe -b</string>
         </command>
         <command id="login" label="TSC Login" response="exit">
-          <code>osscmd</code>
-          <code> 1A1901ciax%%%%%%%%%%%%%%%%</code>
-          <code> CIAX%%%%%%%%%%%%</code>
-          <code> dummyunit</code>
-          <code> dummyMenu</code>
-          <code> dummyMessage</code>
+          <string>osscmd</string>
+          <string> 1A1901ciax%%%%%%%%%%%%%%%%</string>
+          <string> CIAX%%%%%%%%%%%%</string>
+          <string> dummyunit</string>
+          <string> dummyMenu</string>
+          <string> dummyMessage</string>
         </command>
         <command id="logout" label="TSC Login" response="exit">
-          <code>osscmd 1A1902</code>
+          <string>osscmd 1A1902</string>
         </command>
         <command id="init" label="Status Delivery Request" response="exit">
-          <code>osscmd 1A1011</code>
+          <string>osscmd 1A1011</string>
         </command>
         <command id="tsconly" label="TSC Only Mode(CIAX Mode)" response="exit">
-          <code>osscmd 1A1008TSCONLY</code>
+          <string>osscmd 1A1008TSCONLY</string>
         </command>
         <command id="tscpri" label="TSC Primaly Mode(OBS Mode)" response="exit">
-          <code>osscmd 1A1008TSCPRI%</code>
+          <string>osscmd 1A1008TSCPRI%</string>
         </command>
         <command id="ron" label="InR Drive ON" response="exit">
-          <code>osscmd 904013</code>
+          <string>osscmd 904013</string>
         </command>
         <command id="roff" label="InR Drive OFF" response="exit">
-          <code>osscmd 904014</code>
+          <string>osscmd 904014</string>
         </command>
         <command id="jon" label="Jack Drive ON" response="exit">
-          <code>osscmd 132001ON%</code>
+          <string>osscmd 132001ON%</string>
         </command>
         <command id="joff" label="Jack Drive OFF" response="exit">
-          <code>osscmd 132001OFF</code>
+          <string>osscmd 132001OFF</string>
         </command>
         <command id="jres" label="Jack Drive Reset" response="exit">
-          <code>osscmd 132008</code>
+          <string>osscmd 132008</string>
         </command>
         <command id="rhook" label="InR Hook(0deg)" response="exit" type="action">
-          <code>osscmd -b 132004</code>
+          <string>osscmd -b 132004</string>
         </command>
         <command id="runhk" label="InR UnHook(-4deg)" response="exit" type="action">
-          <code>osscmd -b 132005</code>
+          <string>osscmd -b 132005</string>
         </command>
         <command id="rstop" label="InR Stop" response="exit" type="action">
-          <code>osscmd 104011</code>
+          <string>osscmd 104011</string>
         </command>
         <command id="ajup" label="All EJB Up" response="exit" type="action">
-          <code>osscmd -b 932001</code>
+          <string>osscmd -b 932001</string>
         </command>
         <command id="ajdw" label="All EJB Down" response="exit" type="action">
-          <code>osscmd -b 932002</code>
+          <string>osscmd -b 932002</string>
         </command>
         <command id="ajstop" label="All EJB Stop" response="exit" type="action">
-          <code>osscmd 104011</code>
+          <string>osscmd 104011</string>
         </command>
         <command id="jup" label="EJB Up [#]" response="exit" type="action">
-          <code>osscmd -b 9320</code>
-          <code format="%02d" valid="1:16">$1*3+1</code>
+          <string>osscmd -b 9320</string>
+          <string format="%02d" valid="1:16">$1*3+1</string>
         </command>
         <command id="jdw" label="EJB Down [#]" response="exit" type="action">
-          <code>osscmd -b 9320</code>
-          <code format="%02d" valid="1:16">$1*3+2</code>
+          <string>osscmd -b 9320</string>
+          <string format="%02d" valid="1:16">$1*3+2</string>
         </command>
         <command id="jstop" label="EJB Stop [num]" response="exit" type="action">
-          <code>osscmd 9320</code>
-          <code format="%02d" valid="1:16">$1*3+3</code>
+          <string>osscmd 9320</string>
+          <string format="%02d" valid="1:16">$1*3+3</string>
         </command>
         <command id="setinst" label="Set Instrument ID [0-12]" response="exit" type="config">
-          <code>osscmd 13200700</code>
-          <code format="%02d" valid="1:12">$1</code>
+          <string>osscmd 13200700</string>
+          <string format="%02d" valid="1:12">$1</string>
         </command>
       </select>
-      <code encode="chr" label="Suffix">0xa</code>
+      <code length="1" label="Suffix">0xa</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="\n">
       <select>

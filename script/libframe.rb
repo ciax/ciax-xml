@@ -88,10 +88,15 @@ class Frame
   end
 
   def encode(e,str) # Num -> Chr
-    cdc=e['encode']
-    if pck={'chr'=>'C','bew'=>'n','lew'=>'v'}[cdc]
-      code=[eval(str)].pack(pck)
-      @v.msg{"Encode:(#{cdc}) [#{str}] -> [#{code}]"}
+    if len=e['length']
+      code=''
+      num=eval(str)
+      len.to_i.times{
+        c = (num % 256).chr
+        num/=256
+        code =(@endian == 'little') ? code+c : c+code
+      }
+      @v.msg{"Encode:[#{str}](#{len}) -> [#{code}]"}
       str=code
     end
     if fmt=e['format']

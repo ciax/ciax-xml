@@ -4,29 +4,29 @@
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <ccrange>
-        <code label="Prefix">@</code>
-        <code label="Device No.">00</code>
+        <string label="Prefix">@</string>
+        <string label="Device No.">00</string>
         <select>
           <command id="getmodel" label="Get Model Code" response="getmodel" type="stat">
-            <code label="Header Code">MM</code>
+            <string label="Header Code">MM</string>
           </command>
           <command id="getstat" label="Get Status" response="getstat" type="stat">
-            <code label="Header Code">RR</code>
-            <code label="Start Channel">0000</code>
-            <code label="length">0001</code>
+            <string label="Header Code">RR</string>
+            <string label="Start Channel">0000</string>
+            <string label="length">0001</string>
           </command>
           <command id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
-            <code label="Header Code">FK</code>
-            <code label="Operand">CIO </code>
-            <code label="Channel">0000</code>
+            <string label="Header Code">FK</string>
+            <string label="Operand">CIO </string>
+            <string label="Channel">0000</string>
             <!--[000..04(5)]-->
-            <code format="%016d" valid="0:500000">$1</code>
+            <string format="%016d" valid="0:500000">$1</string>
           </command>
         </select>
       </ccrange>
-      <code format="%02X">${cc}</code>
-      <code label="Suffix">*</code>
-      <code encode="chr" label="Delimiter">0xd</code>
+      <string format="%02X">${cc}</string>
+      <string label="Suffix">*</string>
+      <code length="1" label="Delimiter">0xd</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <ccrange>

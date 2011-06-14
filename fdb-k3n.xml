@@ -3,24 +3,24 @@
   <frame id="k3n" label="OMRON K3NR" ccmethod="bcc" wait="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <code encode="chr" label="Prefix">2</code>
+      <code length="1" label="Prefix">2</code>
       <ccrange>
         <select>
           <command id="getstat" label="Get Status" response="getstat" type="stat">
-            <code label="Node No.">00</code>
-            <code label="Sub Address">00</code>
-            <code label="SID">0</code>
-            <code label="MRC">01</code>
-            <code label="SRC">01</code>
-            <code label="Variable type">C0</code>
-            <code label="Start Address">0000</code>
-            <code label="Void">00</code>
-            <code label="Number of element">0001</code>
+            <string label="Node No.">00</string>
+            <string label="Sub Address">00</string>
+            <string label="SID">0</string>
+            <string label="MRC">01</string>
+            <string label="SRC">01</string>
+            <string label="Variable type">C0</string>
+            <string label="Start Address">0000</string>
+            <string label="Void">00</string>
+            <string label="Number of element">0001</string>
           </command>
         </select>
-        <code encode="chr" label="Suffix">3</code>
+        <code length="1" label="Suffix">3</code>
       </ccrange>
-      <code encode="chr">${cc}</code>
+      <code length="1">${cc}</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="Prefix" length="1">2</field>

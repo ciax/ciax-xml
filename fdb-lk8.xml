@@ -5,23 +5,23 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <code>krdg? c1;</code>
-          <code>krdg? c2;</code>
-          <code>krdg? c3;</code>
-          <code>krdg? c4;</code>
-          <code>krdg? d1;</code>
-          <code>krdg? d2;</code>
-          <code>krdg? d3;</code>
-          <code>krdg? d4;</code>
+          <string>krdg? c1;</string>
+          <string>krdg? c2;</string>
+          <string>krdg? c3;</string>
+          <string>krdg? c4;</string>
+          <string>krdg? d1;</string>
+          <string>krdg? d2;</string>
+          <string>krdg? d3;</string>
+          <string>krdg? d4;</string>
         </command>
         <command id="htrstat" label="Heater Power (%)" response="htrstat" type="stat">
-          <code>HTR?</code>
+          <string>HTR?</string>
         </command>
         <command id="spstat" label="Set Point (K)" response="spstat" type="stat">
-          <code>SETP? 1</code>
+          <string>SETP? 1</string>
         </command>
       </select>
-      <code encode="bew" label="Suffix">0x0d0a</code>
+      <code length="2" label="Suffix">0x0d0a</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
       <select>

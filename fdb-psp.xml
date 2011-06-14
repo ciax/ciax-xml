@@ -5,32 +5,32 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <code>L</code>
+          <string>L</string>
         </command>
         <command id="setvl" label="Set Voltage Limit [DD]" type="config">
-          <code>SU </code>
-          <code valid="0:20" format="%02d">$1</code>
+          <string>SU </string>
+          <string valid="0:20" format="%02d">$1</string>
         </command>
         <command id="setal" label="Set Current Limit [D.DD]" type="config">
-          <code>SI </code>
-          <code format="%04.2f" valid="0:&lt;10">$1</code>
+          <string>SI </string>
+          <string format="%04.2f" valid="0:&lt;10">$1</string>
         </command>
         <command id="setpl" label="Set Power Limit [DDD]" type="config">
-          <code>SP </code>
-          <code format="%03d" valid="0:&lt;200">$1</code>
+          <string>SP </string>
+          <string format="%03d" valid="0:&lt;200">$1</string>
         </command>
         <command id="setv" label="Set Voltage [DD.DD]" type="config">
-          <code>SV </code>
-          <code format="%05.2f" valid="0:&lt;100">$1</code>
+          <string>SV </string>
+          <string format="%05.2f" valid="0:&lt;100">$1</string>
         </command>
         <command id="pon" label="OUTPUT ON" type="action">
-          <code>KOE</code>
+          <string>KOE</string>
         </command>
         <command id="poff" label="OUTPUT OFF" type="action">
-          <code>KOD</code>
+          <string>KOD</string>
         </command>
       </select>
-      <code encode="chr">0xd</code>
+      <code length="1">0xd</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <select>

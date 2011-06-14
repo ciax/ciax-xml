@@ -4,11 +4,11 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="reqstat" label="Request status" response="reqstat" type="stat">
-          <code label="Measurment code gauges 1&amp;2">PRX</code>
-          <code encode="chr" label="Suffix">13</code>
+          <string label="Measurment string gauges 1&amp;2">PRX</string>
+          <code length="1" label="Suffix">13</code>
         </command>
         <command id="getstat" label="Get status" response="getstat" type="stat">
-          <code encode="chr" label="ENQ">5</code>
+          <code length="1" label="ENQ">5</code>
         </command>
       </select>
     </cmdframe>

@@ -5,16 +5,16 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Get Status" type="stat">
-          <code>*X01</code>
+          <string>*X01</string>
         </command>
         <command id="setd" label="Set default" type="config">
-          <code>*W1F14</code>
+          <string>*W1F14</string>
         </command>
         <command id="init" label="Initialize" type="config">
-          <code>*Z02</code>
+          <string>*Z02</string>
         </command>
       </select>
-      <code encode="chr">13</code>
+      <code length="1">13</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <select>

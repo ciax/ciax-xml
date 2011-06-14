@@ -3,34 +3,34 @@
   <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" ccmethod="sum" wait="0">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <code label="Prefix">&gt;01</code>
+      <string label="Prefix">&gt;01</string>
       <select>
         <!--String Length must be <32-->
         <command id="getstat" label="Get status" response="getstat" type="stat">
-          <code>!F00FF</code>
+          <string>!F00FF</string>
         </command>
         <command id="setr1" label="Set range +-1.2V" response="default" type="config">
-          <code>!D00FF</code>
+          <string>!D00FF</string>
           <repeat from="1" to="8">
-            <code>0000107</code>
+            <string>0000107</string>
           </repeat>
         </command>
         <command id="setr6" label="Set range +-6V" response="default" type="config">
-          <code>!D00FF</code>
+          <string>!D00FF</string>
           <repeat from="1" to="8">
-            <code>0000105</code>
+            <string>0000105</string>
           </repeat>
         </command>
         <command id="setr15" label="Set range +-15V" response="default" type="config">
-          <code>!D00FF</code>
+          <string>!D00FF</string>
           <repeat from="1" to="8">
-            <code>0000112</code>
+            <string>0000112</string>
           </repeat>
         </command>
       </select>
-      <code>??</code>
-      <code encode="chr">13</code>
-      <code encode="chr">10</code>
+      <string>??</string>
+      <code length="1">13</code>
+      <code length="1">10</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>

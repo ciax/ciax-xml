@@ -3,108 +3,108 @@
   <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" wait="0.2">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <code encode="chr" label="Prefix">2</code>
+      <code length="1" label="Prefix">2</code>
       <select>
         <!--String Length must be <32-->
         <command id="getstat" label="Get status" response="getstat" type="stat">
-          <code>ST</code>
+          <string>ST</string>
         </command>
         <command id="initrot" label="Parameter set for rotation" response="default" type="config">
           <repeat from="1" to="6">
-            <code>$_</code>
-            <code>P01S0</code>
+            <string>$_</string>
+            <string>P01S0</string>
           </repeat>
         </command>
         <command id="initunit" label="Parameter unit set to pulse step" response="default" type="config">
           <repeat from="1" to="6">
-            <code>$_</code>
-            <code>P02S1</code>
+            <string>$_</string>
+            <string>P02S1</string>
           </repeat>
         </command>
         <command id="initfactor" label="Parameter unit factor set to 1" response="default" type="config">
           <repeat from="1" to="6">
-            <code>$_</code>
-            <code>P03S1</code>
+            <string>$_</string>
+            <string>P03S1</string>
           </repeat>
         </command>
         <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
-          <code valid="1:6">$1</code>
-          <code>=N</code>
+          <string valid="1:6">$1</string>
+          <string>=N</string>
         </command>
         <command id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
-          <code valid="1:6">$1</code>
-          <code>=E</code>
+          <string valid="1:6">$1</string>
+          <string>=E</string>
         </command>
         <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
-          <code valid="1:6">$1</code>
-          <code>=H</code>
+          <string valid="1:6">$1</string>
+          <string>=H</string>
         </command>
         <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
-          <code valid="1:6">$1</code>
-          <code>P21R</code>
+          <string valid="1:6">$1</string>
+          <string>P21R</string>
         </command>
         <command id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
-          <code valid="1:6">$1</code>
-          <code>P21S</code>
-          <code>${p:$1-1}</code>
+          <string valid="1:6">$1</string>
+          <string>P21S</string>
+          <string>${p:$1-1}</string>
         </command>
         <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
-          <code valid="1:6">$1</code>
-          <code>P14R</code>
+          <string valid="1:6">$1</string>
+          <string>P14R</string>
         </command>
         <command id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
-          <code valid="1:6">$1</code>
-          <code>P14S</code>
-          <code>${spd:$1-1}</code>
+          <string valid="1:6">$1</string>
+          <string>P14S</string>
+          <string>${spd:$1-1}</string>
         </command>
         <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
-          <code valid="1:6">$1</code>
-          <code>P12R</code>
+          <string valid="1:6">$1</string>
+          <string>P12R</string>
         </command>
         <command id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
-          <code valid="1:6">$1</code>
-          <code>P12S</code>
-          <code>${ofs:$1-1}</code>
+          <string valid="1:6">$1</string>
+          <string>P12S</string>
+          <string>${ofs:$1-1}</string>
         </command>
         <command id="act" label="Activate (Servo) All" response="default" type="action">
           <repeat from="1" to="6">
-            <code>$_</code>
-            <code>MA</code>
+            <string>$_</string>
+            <string>MA</string>
           </repeat>
         </command>
         <command id="deact" label="Deactivate (Free) All" response="default" type="action">
           <repeat from="1" to="6">
-            <code>$_</code>
-            <code>MD</code>
+            <string>$_</string>
+            <string>MD</string>
           </repeat>
         </command>
         <command id="stop" label="Stop Moving [1-6]" response="default" type="action">
-          <code valid="1:6">$1</code>
-          <code>S</code>
+          <string valid="1:6">$1</string>
+          <string>S</string>
         </command>
         <command id="init" label="Initialize [1-6]" response="default" type="action">
-          <code valid="1:6">$1</code>
-          <code>0</code>
+          <string valid="1:6">$1</string>
+          <string>0</string>
         </command>
         <command id="fw" label="Move forward [T] [H}(8000/hole)" response="default" type="action">
-          <code valid="1:6">$1</code>
-          <code>+</code>
-          <code valid="0:">$2</code>
+          <string valid="1:6">$1</string>
+          <string>+</string>
+          <string valid="0:">$2</string>
         </command>
         <command id="bk" label="Move backward [T] [H](8000/hole)" response="default" type="action">
-          <code valid="1:6">$1</code>
-          <code>-</code>
-          <code valid="0:">$2</code>
+          <string valid="1:6">$1</string>
+          <string>-</string>
+          <string valid="0:">$2</string>
         </command>
         <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
-          <code valid="1:6">$1</code>
-          <code>A</code>
-          <code valid="0:384000">$2</code>
+          <string valid="1:6">$1</string>
+          <string>A</string>
+          <string valid="0:384000">$2</string>
         </command>
       </select>
-      <code encode="chr" label="Suffix">3</code>
-      <code encode="chr">13</code>
-      <code encode="chr">10</code>
+      <code length="1" label="Suffix">3</code>
+      <code length="1">13</code>
+      <code length="1">10</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="Prefix" length="1">2</field>

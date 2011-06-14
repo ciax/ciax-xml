@@ -5,59 +5,59 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Error Status" response="getstat" type="stat">
-          <code>err</code>
+          <string>err</string>
         </command>
         <command id="bs" label="Running Status" response="bs" type="stat">
-          <code>bs</code>
+          <string>bs</string>
         </command>
         <command id="in" label="Input Status (1-5)" response="in" type="stat">
-          <code>in</code>
-          <code format="(%d)" valid="1:5">$1</code>
+          <string>in</string>
+          <string format="(%d)" valid="1:5">$1</string>
         </command>
         <command id="p" label="Pulse Number" response="p" type="stat">
-          <code>p</code>
+          <string>p</string>
         </command>
         <command id="reset" label="Reset" response="default" type="config">
-          <code>reset</code>
+          <string>reset</string>
         </command>
         <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
-          <code>hl</code>
-          <code valid="0:1">$1</code>
+          <string>hl</string>
+          <string valid="0:1">$1</string>
         </command>
         <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
-          <code>e1=</code>
-          <code valid="0:1">$1</code>
+          <string>e1=</string>
+          <string valid="0:1">$1</string>
         </command>
         <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
-          <code>e2=</code>
-          <code valid="0:1">$1</code>
+          <string>e2=</string>
+          <string valid="0:1">$1</string>
         </command>
         <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
-          <code>abspos=0</code>
+          <string>abspos=0</string>
         </command>
         <command id="setp" label="Set Pulse Number" response="default" type="config">
-          <code>p=</code>
-          <code format="%5.2f" valid="0:999">$1</code>
+          <string>p=</string>
+          <string format="%5.2f" valid="0:999">$1</string>
         </command>
         <command id="stop" label="Stop Running" response="default" type="action">
-          <code>stop</code>
+          <string>stop</string>
         </command>
         <command id="jp" label="JOG Positive" response="default" type="action">
-          <code>j=1</code>
+          <string>j=1</string>
         </command>
         <command id="jn" label="JOG Negative" response="default" type="action">
-          <code>j=-1</code>
+          <string>j=-1</string>
         </command>
         <command id="ma" label="Move Absolute Position" response="default" type="action">
-          <code>ma=</code>
-          <code format="%3.1f" valid="0:999">$1</code>
+          <string>ma=</string>
+          <string format="%3.1f" valid="0:999">$1</string>
         </command>
         <command id="mi" label="Move Incremental" response="default" type="action">
-          <code>mi=</code>
-          <code format="%3.1f" valid="-999:999">$1</code>
+          <string>mi=</string>
+          <string format="%3.1f" valid="-999:999">$1</string>
         </command>
       </select>
-      <code encode="chr">0xd</code>
+      <code length="1">0xd</code>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <select>

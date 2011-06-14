@@ -71,7 +71,7 @@ class FrmDb < Db
 
   def init_cmd(e)
     case e.name
-    when 'code'
+    when 'code','string'
       attr=e.to_h
       label=attr.delete('label')
       attr['val']=@rep.subst(e.text)

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="bbe" id="bbe" label="Helium Compressor">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -116,16 +116,16 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <repeat from="0" to="3">
-        <value id="xsw%d" label="SWITCH %d" group="%da" symbol="off-warn">
+        <value id="xsw%d" label="SWITCH %d" group="x%da" symbol="off-warn">
           <binary bit="$_*4" ref="stat" />
         </value>
-        <value id="xdr%d" label="DRIVE %d" group="%da" symbol="off-warn">
+        <value id="xdr%d" label="DRIVE %d" group="x%da" symbol="off-warn">
           <binary bit="$_*4+1" ref="stat" />
         </value>
-        <value id="xtm%d" label="TEMP ALARM %d" group="%db" symbol="alarm">
+        <value id="xtm%d" label="TEMP ALARM %d" group="x%db" symbol="alarm">
           <binary bit="$_*4+2" ref="stat" />
         </value>
-        <value id="xpr%d" label="PRES ALARM %d" group="%db" symbol="alarm">
+        <value id="xpr%d" label="PRES ALARM %d" group="x%db" symbol="alarm">
           <binary bit="$_*4+3" ref="stat" />
         </value>
       </repeat>

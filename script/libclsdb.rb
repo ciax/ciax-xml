@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libcircular"
 require "librepeat"
 require "libdb"
 
@@ -65,10 +66,9 @@ class ClsDb < Db
   end
 
   def init_stat
+    c=Circular.new(5)
     cdbs={:cdb => {},:row => {},:col => {}}
-    row=1
     @doc.domain('status').each{|grp|
-      col=1
       @rep.each(grp){|e0|
         id=e0.attr2db(cdbs){|v|@rep.format(v)}
         fields=[]
@@ -80,12 +80,12 @@ class ClsDb < Db
           fields << st
         }
         cdbs[:cdb][id]=fields
-        cdbs[:row][id]=row
-        cdbs[:col][id]=col
-        col+=1
+        cdbs[:row][id]=c.row
+        cdbs[:col][id]=c.col
+        c.next
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       }
-      row+=1
+      c.reset
     }
     cdbs
   end

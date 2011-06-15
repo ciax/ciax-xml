@@ -4,7 +4,7 @@ require "libverbose"
 class Circular
   def initialize(max=2)
     @max=max
-    @counter=1
+    @counter=0
     @v=Verbose.new("Circ",6)
   end
 
@@ -15,8 +15,7 @@ class Circular
   end
 
   def reset
-    row=@counter/@max
-    @counter=row*@max + 1
+    @counter-=col
     @v.msg{"Resetted [#{row}]"}
     self
   end
@@ -25,5 +24,11 @@ class Circular
     row=@counter/@max
     @v.msg{"Row [#{row}]"}
     row
+  end
+
+  def col
+    col=@counter % @max
+    @v.msg{"Col [#{col}]"}
+    col
   end
 end

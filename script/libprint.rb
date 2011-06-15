@@ -1,23 +1,25 @@
 #!/usr/bin/ruby
+require "libcircular"
 class Print
+  def initialize
+    @c=Circular.new(5)
+  end
+
   def print(view,ver=nil)
     a=[]
     line=[]
-    pgroup=''
-    col=3
-    n=0
+    prow=0
     view['list'].each {|item|
       next unless item.class == Hash
       next unless item.key?('val')
       id=item['id']
       item['label']=id.upcase unless item['label']
-      n=0 if item['group'] != pgroup || n > col
-      if n == 0
+      @c.reset if item['row'] != prow
+      if @c.next.col == 1
         a << line.join(' ') if line.size > 0
         line=[]
       end
-      n+=1
-      pgroup=item['group']
+      prow=item['row']
       case item['class']
       when 'alarm'
         line << prt(item,'1')

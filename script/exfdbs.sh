@@ -22,7 +22,11 @@ for id in $devices; do
     else
         frmcmd $dev 2>&1 |grep ' : '|while read cmd dmy
         do
-            VER=$ver getstat $cmd
+            if [ "$ver" ] ; then
+                VER=$ver getstat $cmd
+            else
+                getstat $cmd
+            fi
         done
     fi
     < $output viewing $opt | if [ "$opt" ]

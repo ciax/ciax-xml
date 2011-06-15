@@ -1,35 +1,23 @@
 #!/usr/bin/ruby
-require "libcircular"
 class Print
-  def initialize
-    @c=Circular.new(4)
-  end
-
   def print(view,ver=nil)
     a=[]
     line=[]
-    plabel=[]
-    pgroup=0
+    pgroup=''
+    col=3
+    n=0
     view['list'].each {|item|
       next unless item.class == Hash
       next unless item.key?('val')
       id=item['id']
       item['label']=id.upcase unless item['label']
-      unless item['group']
-        clabel=item['label'].split(/[ :]/)
-        if clabel.first == plabel.first || clabel.last == plabel.last
-          @c.next
-        else
-          @c.reset
-        end
-        plabel=clabel
-        item['group']=@c.row
-      end
-      if item['group'] != pgroup
+      n=0 if item['group'] != pgroup || n > col
+      if n == 0
         a << line.join(' ') if line.size > 0
         line=[]
-        pgroup=item['group']
       end
+      n+=1
+      pgroup=item['group']
       case item['class']
       when 'alarm'
         line << prt(item,'1')
@@ -65,9 +53,5 @@ class Print
       str << color(c,msg||v)
     end
     str << "]"
-  end
-
-  def concat(ary)
-    line=ary.compact.join(" ")
   end
 end

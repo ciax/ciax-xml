@@ -9,22 +9,28 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <repeat from="0" to="3">
-        <value id="ch%d" label="CH %d" group="a">
-          <float ref="ch:$_" format="%3.2f" />
+      <row label="Group">
+        <repeat from="0" to="3">
+          <value id="ch%d" label="CH %d">
+            <float ref="ch:$_" format="%3.2f" />
+          </value>
+        </repeat>
+      </row>
+      <row label="Group">
+        <repeat from="4" to="7">
+          <value id="ch%d" label="CH %d">
+            <float ref="ch:$_" format="%3.2f" />
+          </value>
+        </repeat>
+      </row>
+      <row label="Group">
+        <value id="sp" label="SetPoint1 (K)">
+          <float ref="sp" format="%3.2f" />
         </value>
-      </repeat>
-      <repeat from="4" to="7">
-        <value id="ch%d" label="CH %d" group="b">
-          <float ref="ch:$_" format="%3.2f" />
+        <value id="htr" label="HeaterPower1(percent)">
+          <float ref="htr" format="%3.2f" />
         </value>
-      </repeat>
-      <value id="sp" label="SetPoint1 (K)" group="s">
-        <float ref="sp" format="%3.2f" />
-      </value>
-      <value id="htr" label="HeaterPower1(percent)" group="s">
-        <float ref="htr" format="%3.2f" />
-      </value>
+      </row>
     </status>
   </class>
 </cdb>

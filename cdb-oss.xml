@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -76,91 +76,109 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="exit" label="Exit Code" group="er">
-        <int ref="exit" />
-      </value>
-      <value id="nfb" label="BOLT NFB TRIP" group="er">
-        <binary bit="6" ref="bstat" />
-      </value>
-      <value id="rts" label="ROT SEL" group="gs" symbol="rts">
-        <int ref="rsel" />
-      </value>
-      <value id="iid" label="CAS INST ID" group="gs" symbol="iid">
-        <int ref="iid" />
-      </value>
-      <value id="login" label="Login Status" group="gs" symbol="login">
-        <string ref="login0" />
-        <string ref="login1" />
-        <string ref="login2" />
-        <string ref="login3" />
-      </value>
-      <value id="azd" label="AZ DRIVE" group="az" symbol="drv">
-        <binary label="ON" bit="0" ref="teldrive" />
-        <binary label="OFF" bit="1" ref="teldrive" />
-        <binary label="Ready" bit="2" ref="teldrive" />
-      </value>
-      <value id="eld" label="EL DRIVE" group="el" symbol="drv">
-        <binary label="ON" bit="3" ref="teldrive" />
-        <binary label="OFF" bit="4" ref="teldrive" />
-        <binary label="Ready" bit="5" ref="teldrive" />
-      </value>
-      <value id="elv" label="EL Angle" group="el">
-        <float ref="el" format="%.3f" />
-      </value>
-      <value id="stw" label="EL STOW" group="el" symbol="off-warn">
-        <binary bit="2" ref="stow_1" />
-      </value>
-      <value id="rpw" label="ROT DRIVE" group="rt" symbol="rpw">
-        <int ref="rpw" />
-      </value>
-      <value id="iang" label="InR Angle" group="rt">
-        <float ref="iang" format="%.3f" />
-      </value>
-      <value id="jpw" label="JAK DRIVE" group="jd" symbol="warn">
-        <binary bit="7" ref="bstat" />
-      </value>
-      <value id="rps" label="ROT POS SENSOR" group="jd" symbol="rps">
-        <binary bit="4" ref="bstat" />
-        <binary bit="5" ref="bstat" />
-      </value>
-      <value id="abm" label="ALL Bolt MOVING" group="ja" symbol="warn">
-        <binary ref="abs" bit="2" inv="true" />
-      </value>
-      <value id="abs" label="ALL Bolt STAT(Anc,Rdy)" group="ja">
-        <binary ref="abs" bit="0" />
-        <binary ref="abs" bit="4" />
-      </value>
-      <repeat from="1" to="16">
-        <!--Order:2,1,4,3,6,5...-->
-        <value id="jk%02d" label="Jack Len %02d" group="j%d">
-          <float ref="jk:$_-2-($_%2)*2" formula="$#/100" format="%5.2f" />
+      <row label="Group">
+        <value id="exit" label="Exit Code">
+          <int ref="exit" />
         </value>
-        <value id="bl%02d" label="Pos %02d" group="j%d" symbol="bl">
-          <binary ref="bl:$_-2-($_%2)*2" bit="1" />
-          <binary ref="bl:$_-2-($_%2)*2" bit="2" />
+        <value id="nfb" label="BOLT NFB TRIP">
+          <binary bit="6" ref="bstat" />
         </value>
-        <value id="bm%02d" label="Moving %02d" group="j%d" symbol="warn">
-          <binary ref="bs:$_-2-($_%2)*2" bit="2" inv="true" />
+      </row>
+      <row label="Group">
+        <value id="rts" label="ROT SEL" symbol="rts">
+          <int ref="rsel" />
         </value>
-        <value id="bs%02d" label="Stat %02d(Anc,Rdy,Clnt)" group="j%d">
-          <binary ref="bs:$_-2-($_%2)*2" bit="0" />
-          <binary ref="bs:$_-2-($_%2)*2" bit="4" />
-          <binary ref="clm:1-($_-1)/8" bit="($_-1)%8" />
+        <value id="iid" label="CAS INST ID" symbol="iid">
+          <int ref="iid" />
         </value>
-        <value id="ba%02d" label="Alarm %02d" group="j%d" symbol="ba">
-          <binary ref="bl:$_-2-($_%2)*2" bit="0" />
-          <binary ref="bl:$_-2-($_%2)*2" bit="4" />
+        <value id="login" label="Login Status" symbol="login">
+          <string ref="login0" />
+          <string ref="login1" />
+          <string ref="login2" />
+          <string ref="login3" />
         </value>
-        <value id="ba%02d" label="Alarm %02d" group="j%d">
-          <binary ref="bl:$_-2-($_%2)*2" bit="0" />
-          <binary ref="bl:$_-2-($_%2)*2" bit="4" />
+      </row>
+      <row label="Group">
+        <value id="azd" label="AZ DRIVE" symbol="drv">
+          <binary label="ON" bit="0" ref="teldrive" />
+          <binary label="OFF" bit="1" ref="teldrive" />
+          <binary label="Ready" bit="2" ref="teldrive" />
         </value>
-      </repeat>
-      <repeat from="1" to="4">
-        <value id="z%d" label="Z Len %d" group="z">
-          <float ref="zp:$_-1" formula="$#/100" format="%5.2f" />
+      </row>
+      <row label="Group">
+        <value id="eld" label="EL DRIVE" symbol="drv">
+          <binary label="ON" bit="3" ref="teldrive" />
+          <binary label="OFF" bit="4" ref="teldrive" />
+          <binary label="Ready" bit="5" ref="teldrive" />
         </value>
-      </repeat>
+        <value id="elv" label="EL Angle">
+          <float ref="el" format="%.3f" />
+        </value>
+        <value id="stw" label="EL STOW" symbol="off-warn">
+          <binary bit="2" ref="stow_1" />
+        </value>
+      </row>
+      <row label="Group">
+        <value id="rpw" label="ROT DRIVE" symbol="rpw">
+          <int ref="rpw" />
+        </value>
+        <value id="iang" label="InR Angle">
+          <float ref="iang" format="%.3f" />
+        </value>
+      </row>
+      <row label="Group">
+        <value id="jpw" label="JAK DRIVE" symbol="warn">
+          <binary bit="7" ref="bstat" />
+        </value>
+        <value id="rps" label="ROT POS SENSOR" symbol="rps">
+          <binary bit="4" ref="bstat" />
+          <binary bit="5" ref="bstat" />
+        </value>
+      </row>
+      <row label="Group">
+        <value id="abm" label="ALL Bolt MOVING" symbol="warn">
+          <binary ref="abs" bit="2" inv="true" />
+        </value>
+        <value id="abs" label="ALL Bolt STAT(Anc,Rdy)">
+          <binary ref="abs" bit="0" />
+          <binary ref="abs" bit="4" />
+        </value>
+      </row>
+      <row label="Group">
+        <repeat from="1" to="16">
+          <!--Order:2,1,4,3,6,5...-->
+          <value id="jk%02d" label="Jack Len %02d">
+            <float ref="jk:$_-2-($_%2)*2" formula="$#/100" format="%5.2f" />
+          </value>
+          <value id="bl%02d" label="Pos %02d" symbol="bl">
+            <binary ref="bl:$_-2-($_%2)*2" bit="1" />
+            <binary ref="bl:$_-2-($_%2)*2" bit="2" />
+          </value>
+          <value id="bm%02d" label="Moving %02d" symbol="warn">
+            <binary ref="bs:$_-2-($_%2)*2" bit="2" inv="true" />
+          </value>
+          <value id="bs%02d" label="Stat %02d(Anc,Rdy,Clnt)">
+            <binary ref="bs:$_-2-($_%2)*2" bit="0" />
+            <binary ref="bs:$_-2-($_%2)*2" bit="4" />
+            <binary ref="clm:1-($_-1)/8" bit="($_-1)%8" />
+          </value>
+          <value id="ba%02d" label="Alarm %02d" symbol="ba">
+            <binary ref="bl:$_-2-($_%2)*2" bit="0" />
+            <binary ref="bl:$_-2-($_%2)*2" bit="4" />
+          </value>
+          <value id="ba%02d" label="Alarm %02d">
+            <binary ref="bl:$_-2-($_%2)*2" bit="0" />
+            <binary ref="bl:$_-2-($_%2)*2" bit="4" />
+          </value>
+        </repeat>
+      </row>
+      <row label="Group">
+        <repeat from="1" to="4">
+          <value id="z%d" label="Z Len %d">
+            <float ref="zp:$_-1" formula="$#/100" format="%5.2f" />
+          </value>
+        </repeat>
+      </row>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <while label="Moving Jack" ref="abm" blocking="jup|jdw" val="1">

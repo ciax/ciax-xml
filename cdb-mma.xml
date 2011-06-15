@@ -31,24 +31,28 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="bs" label="Moter Moving" group="1" symbol="warn">
-        <string ref="bs" />
-      </value>
-      <value id="con" label="Contact Sensor" group="1" symbol="normal">
-        <string ref="in:4" />
-      </value>
-      <value id="err" label="Error Code" group="1" symbol="err">
-        <int ref="err" />
-      </value>
-      <value id="pos" label="Arm Position" group="2" symbol="pos">
-        <string ref="in:0" />
-        <string ref="in:1" />
-        <string ref="in:2" />
-        <string ref="in:3" />
-      </value>
-      <value id="abs" label="ABS position" group="2" symbol="abs">
-        <float ref="p" />
-      </value>
+      <row label="Group">
+        <value id="bs" label="Moter Moving" symbol="warn">
+          <string ref="bs" />
+        </value>
+        <value id="con" label="Contact Sensor" symbol="normal">
+          <string ref="in:4" />
+        </value>
+        <value id="err" label="Error Code" symbol="err">
+          <int ref="err" />
+        </value>
+      </row>
+      <row label="Group">
+        <value id="pos" label="Arm Position" symbol="pos">
+          <string ref="in:0" />
+          <string ref="in:1" />
+          <string ref="in:2" />
+          <string ref="in:3" />
+        </value>
+        <value id="abs" label="ABS position" symbol="abs">
+          <float ref="p" />
+        </value>
+      </row>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <table id="err" type="string">

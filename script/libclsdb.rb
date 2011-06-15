@@ -65,19 +65,27 @@ class ClsDb < Db
   end
 
   def init_stat
-    cdbs={:cdb => {}}
-    @rep.each(@doc.domain('status')){|e0|
-      id=e0.attr2db(cdbs){|v|@rep.format(v)}
-      fields=[]
-      e0.each{|e1|
-        st={:type => e1.name}
-        e1.to_h.each{|k,v|
-          st[k] = @rep.subst(v)
+    cdbs={:cdb => {},:row => {},:col => {}}
+    row=1
+    @doc.domain('status').each{|grp|
+      col=1
+      @rep.each(grp){|e0|
+        id=e0.attr2db(cdbs){|v|@rep.format(v)}
+        fields=[]
+        e0.each{|e1|
+          st={:type => e1.name}
+          e1.to_h.each{|k,v|
+            st[k] = @rep.subst(v)
+          }
+          fields << st
         }
-        fields << st
+        cdbs[:cdb][id]=fields
+        cdbs[:row][id]=row
+        cdbs[:col][id]=col
+        col+=1
+        @v.msg{"STATUS:[#{id}] : #{fields}"}
       }
-      cdbs[:cdb][id]=fields
-      @v.msg{"STATUS:[#{id}] : #{fields}"}
+      row+=1
     }
     cdbs
   end

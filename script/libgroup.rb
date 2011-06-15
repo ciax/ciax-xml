@@ -4,22 +4,25 @@ class Group < Hash
   def initialize(hash)
     raise "Group have to be given Db" unless hash.kind_of?(Db)
     @c=Circular.new(4)
-    self['time'] = '0'
-    update(hash.status[:group]||{})
+    @row=hash.status[:row]||{}
+    @col=hash.status[:col]||{}
+    @row['time']=@col['time'] = 0
   end
 
   def convert(view)
     list=[]
     view['list'].each{|hash|
       id=hash['id']
-      if key?(id)
-        hash['group']=self[id]
+      if @row.key?(id)
+        hash['col']=@col[id]
+        hash['row']=@row[id]
       else
-        hash['group']="AN#{@c.next.row}"
+        hash['row']=@c.next.row
+        hash['col']=@c.col
       end
         list << hash
     }
-    view['list']=list.sort_by{|h| h['group']+h['id']}
+    view['list']=list.sort_by{|h| "%02d%02d" % [h['row'],h['col']] }
     self
   end
 end

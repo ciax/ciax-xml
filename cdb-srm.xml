@@ -67,27 +67,33 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="iid" label="CAS INST ID" group="1" symbol="iid_ac">
-        <string ref="c1d2" />
-      </value>
-      <value id="ipw" label="CAS IPW" group="1" symbol="off-warn">
-        <binary bit="0" ref="c1d1" />
-      </value>
-      <value id="stp" label="STOW PIN" group="2" symbol="warn">
-        <binary bit="1" ref="c1d1" />
-      </value>
-      <value id="ccd" label="CAS CCD PW" group="2" symbol="warn">
-        <binary bit="2" ref="c1d0" />
-      </value>
-      <value id="lan" label="CAS LAN PW" group="2" symbol="hide">
-        <binary bit="3" ref="c1d0" />
-      </value>
-      <value id="c3p" label="CIAX3 PW" group="3" symbol="hide">
-        <binary bit="0" ref="c1d0" />
-      </value>
-      <value id="c3e" label="CIAX3 EMG" group="3" symbol="alarm">
-        <binary bit="1" ref="c1d0" />
-      </value>
+      <row>
+        <value id="iid" label="CAS INST ID" symbol="iid_ac">
+          <string ref="c1d2" />
+        </value>
+        <value id="ipw" label="CAS IPW" symbol="off-warn">
+          <binary bit="0" ref="c1d1" />
+        </value>
+      </row>
+      <row>
+        <value id="stp" label="STOW PIN" symbol="warn">
+          <binary bit="1" ref="c1d1" />
+        </value>
+        <value id="ccd" label="CAS CCD PW" symbol="warn">
+          <binary bit="2" ref="c1d0" />
+        </value>
+        <value id="lan" label="CAS LAN PW" symbol="hide">
+          <binary bit="3" ref="c1d0" />
+        </value>
+      </row>
+      <row>
+        <value id="c3p" label="CIAX3 PW" symbol="hide">
+          <binary bit="0" ref="c1d0" />
+        </value>
+        <value id="c3e" label="CIAX3 EMG" symbol="alarm">
+          <binary bit="1" ref="c1d0" />
+        </value>
+      </row>
     </status>
   </class>
 </cdb>

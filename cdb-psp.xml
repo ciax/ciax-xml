@@ -31,42 +31,50 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="vol" label="OUTPUT (V)" group="o">
-        <float ref="v" format="%3.2f" />
-      </value>
-      <value id="amp" label="OUTPUT (A)" group="o">
-        <float ref="a" format="%3.2f" />
-      </value>
-      <value id="wat" label="OUTPUT (W)" group="o">
-        <float ref="w" format="%3.2f" />
-      </value>
-      <value id="vl" label="Limit (V)" group="l">
-        <float ref="u" format="%3.2f" />
-      </value>
-      <value id="il" label="Limit (A)" group="l">
-        <float ref="i" format="%3.2f" />
-      </value>
-      <value id="pl" label="Limit (W)" group="l">
-        <float ref="p" format="%3.2f" />
-      </value>
-      <value id="sw" label="OUTPUT ON/OFF" group="s1" symbol="warn">
-        <string ref="f1" />
-      </value>
-      <value id="tmp" label="OverHeat" group="s1" symbol="alarm">
-        <string ref="f2" />
-      </value>
-      <value id="kn1" label="Wheel Knov Fine" group="s2" symbol="normal">
-        <string ref="f3" />
-      </value>
-      <value id="kn2" label="Wheel Knov Unlock" group="s2" symbol="normal">
-        <string ref="f4" />
-      </value>
-      <value id="rem" label="REMOTE" group="s3" symbol="normal">
-        <string ref="f5" />
-      </value>
-      <value id="loc" label="Local Lock" group="s3" symbol="normal">
-        <string ref="f6" />
-      </value>
+      <row label="Group">
+        <value id="vol" label="OUTPUT (V)">
+          <float ref="v" format="%3.2f" />
+        </value>
+        <value id="amp" label="OUTPUT (A)">
+          <float ref="a" format="%3.2f" />
+        </value>
+        <value id="wat" label="OUTPUT (W)">
+          <float ref="w" format="%3.2f" />
+        </value>
+      </row>
+      <row label="Group">
+        <value id="vl" label="Limit (V)">
+          <float ref="u" format="%3.2f" />
+        </value>
+        <value id="il" label="Limit (A)">
+          <float ref="i" format="%3.2f" />
+        </value>
+        <value id="pl" label="Limit (W)">
+          <float ref="p" format="%3.2f" />
+        </value>
+      </row>
+      <row label="Group">
+        <value id="sw" label="OUTPUT ON/OFF" symbol="warn">
+          <string ref="f1" />
+        </value>
+        <value id="tmp" label="OverHeat" symbol="alarm">
+          <string ref="f2" />
+        </value>
+        <value id="kn1" label="Wheel Knov Fine" symbol="normal">
+          <string ref="f3" />
+        </value>
+        <value id="kn2" label="Wheel Knov Unlock" symbol="normal">
+          <string ref="f4" />
+        </value>
+      </row>
+      <row label="Group">
+        <value id="rem" label="REMOTE" symbol="normal">
+          <string ref="f5" />
+        </value>
+        <value id="loc" label="Local Lock" symbol="normal">
+          <string ref="f6" />
+        </value>
+      </row>
     </status>
   </class>
 </cdb>

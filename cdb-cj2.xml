@@ -274,122 +274,144 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="exe" label="EXECUTING" group="g1" symbol="exe">
-        <string ref="c:0" />
-        <string ref="c:1" />
-        <string ref="c:2" />
-        <string ref="c:3" />
-      </value>
-      <value id="emg" label="EMG STOP" group="g1" symbol="alarm">
-        <binary bit="0" ref="w:0" />
-      </value>
-      <value id="ctl" label="CONTROL" group="g1">
-        <binary bit="6" ref="w:0" />
-        <binary bit="7" ref="w:0" />
-      </value>
-      <value id="pse" label="PAUSE" group="g1" symbol="warn">
-        <binary bit="1" ref="w:0" />
-      </value>
-      <value id="rdy" label="READY" group="g1" symbol="off-warn">
-        <binary bit="3" ref="w:0" />
-      </value>
-      <value id="cmp" label="COMMAND COMPLETE" group="g2" symbol="normal">
-        <binary bit="14" ref="w:0" />
-      </value>
-      <value id="run" label="Running" group="g2" symbol="warn">
-        <binary bit="15" ref="w:0" />
-      </value>
-      <value id="err" label="Error Code" group="g2">
-        <int ref="err" />
-      </value>
-      <value id="fis" label="Fix Attach" group="jf" symbol="ist">
-        <binary bit="0" ref="w:2" />
-        <binary bit="1" ref="w:2" />
-        <binary bit="2" ref="w:2" />
-        <binary bit="3" ref="w:2" />
-      </value>
-      <value id="fhk" label="Fix Hook" group="jf" symbol="hook">
-        <binary bit="0" ref="w:1" />
-        <binary bit="1" ref="w:1" />
-      </value>
-      <value id="fjb" label="Fix Jack Bolt" group="jf" symbol="jack">
-        <binary bit="14" ref="w:1" />
-        <binary bit="15" ref="w:1" />
-      </value>
-      <value id="mis" label="Mov Attach" group="jm1" symbol="ist">
-        <binary bit="0" ref="w:6" />
-        <binary bit="1" ref="w:6" />
-        <binary bit="2" ref="w:6" />
-        <binary bit="3" ref="w:6" />
-      </value>
-      <value id="mhk" label="Mov Hook" group="jm1" symbol="hook">
-        <binary bit="0" ref="w:5" />
-        <binary bit="1" ref="w:5" />
-      </value>
-      <value id="mjb" label="Mov Jack Bolt" group="jm1" symbol="jack">
-        <binary bit="14" ref="w:5" />
-        <binary bit="15" ref="w:5" />
-      </value>
-      <value id="mrt" label="Mov Rotation" group="jm2" symbol="rot">
-        <binary bit="2" ref="w:5" />
-        <binary bit="3" ref="w:5" />
-      </value>
-      <value id="mtr" label="Mov Transer" group="jm2" symbol="mov">
-        <binary bit="8" ref="w:6" />
-        <binary bit="6" ref="w:6" />
-      </value>
-      <value id="fpw" label="Fix Inst Power" group="kf" symbol="off-warn">
-        <binary bit="8" ref="w:9" />
-      </value>
-      <value id="fph" label="Fix PW RST" group="kf" symbol="rst">
-        <binary bit="0" ref="w:10" />
-        <binary bit="1" ref="w:10" />
-        <binary bit="2" ref="w:10" />
-      </value>
-      <value id="fcc" label="Fix CCD Power" group="kf" symbol="off-warn">
-        <binary bit="10" ref="w:9" />
-      </value>
-      <value id="mpw" label="Mov Inst Power" group="km" symbol="off-warn">
-        <binary bit="9" ref="w:9" />
-      </value>
-      <value id="mph" label="Mov PW RST" group="km" symbol="rst">
-        <binary bit="8" ref="w:10" />
-        <binary bit="9" ref="w:10" />
-        <binary bit="10" ref="w:10" />
-      </value>
-      <value id="mcc" label="Mov CCD Power" group="km" symbol="off-warn">
-        <binary bit="11" ref="w:9" />
-      </value>
-      <repeat from="1" to="4">
-        <value id="fz%d" label="Fix Z" group="lf">
-          <float format="%.2f" ref="d:($_-1)" formula="$#/100" />
+      <row label="General">
+        <value id="exe" label="EXECUTING" symbol="exe">
+          <string ref="c:0" />
+          <string ref="c:1" />
+          <string ref="c:2" />
+          <string ref="c:3" />
         </value>
-      </repeat>
-      <repeat from="1" to="4">
-        <value id="mz%d" label="Mov Z" group="lm">
-          <float format="%.2f" ref="d:($_+3)" formula="$#/100" />
+        <value id="emg" label="EMG STOP" symbol="alarm">
+          <binary bit="0" ref="w:0" />
         </value>
-      </repeat>
-      <value id="fid" label="Fix Instrument ID" group="nid" symbol="iid_ac">
-        <int ref="d:8" />
-      </value>
-      <value id="mid" label="Mov Instrument ID" group="nid" symbol="iid_ac">
-        <int ref="d:9" />
-      </value>
-      <value id="chg" label="CHG Plug" group="other" symbol="mov">
-        <binary bit="6" ref="w:2" />
-        <binary bit="7" ref="w:2" />
-      </value>
-      <value id="ccn" label="CHG Connect" group="other" symbol="off-warn">
-        <binary bit="8" ref="w:4" />
-      </value>
-      <value id="cpw" label="CHG Power" group="other" symbol="off-warn">
-        <binary bit="12" ref="w:4" />
-      </value>
-      <value id="dor" label="Door" group="other" symbol="dor">
-        <binary bit="0" ref="w:9" />
-        <binary bit="1" ref="w:9" />
-      </value>
+        <value id="ctl" label="CONTROL" symbol="ctl">
+          <binary bit="6" ref="w:0" />
+          <binary bit="7" ref="w:0" />
+        </value>
+        <value id="pse" label="PAUSE" symbol="warn">
+          <binary bit="1" ref="w:0" />
+        </value>
+        <value id="rdy" label="READY" symbol="off-warn">
+          <binary bit="3" ref="w:0" />
+        </value>
+      </row>
+      <row>
+        <value id="cmp" label="COMMAND COMPLETE" symbol="normal">
+          <binary bit="14" ref="w:0" />
+        </value>
+        <value id="run" label="Running" symbol="warn">
+          <binary bit="15" ref="w:0" />
+        </value>
+        <value id="err" label="Error Code">
+          <int ref="err" />
+        </value>
+      </row>
+      <row label="Fix Jack Bolt">
+        <value id="fis" label="Fix Attach" symbol="ist">
+          <binary bit="0" ref="w:2" />
+          <binary bit="1" ref="w:2" />
+          <binary bit="2" ref="w:2" />
+          <binary bit="3" ref="w:2" />
+        </value>
+        <value id="fhk" label="Fix Hook" symbol="hook">
+          <binary bit="0" ref="w:1" />
+          <binary bit="1" ref="w:1" />
+        </value>
+        <value id="fjb" label="Fix Jack Bolt" symbol="jack">
+          <binary bit="14" ref="w:1" />
+          <binary bit="15" ref="w:1" />
+        </value>
+      </row>
+      <row label="Mov Jack Bolt">
+        <value id="mis" label="Mov Attach" symbol="ist">
+          <binary bit="0" ref="w:6" />
+          <binary bit="1" ref="w:6" />
+          <binary bit="2" ref="w:6" />
+          <binary bit="3" ref="w:6" />
+        </value>
+        <value id="mhk" label="Mov Hook" symbol="hook">
+          <binary bit="0" ref="w:5" />
+          <binary bit="1" ref="w:5" />
+        </value>
+        <value id="mjb" label="Mov Jack Bolt" symbol="jack">
+          <binary bit="14" ref="w:5" />
+          <binary bit="15" ref="w:5" />
+        </value>
+      </row>
+      <row label="Mov Transer">
+        <value id="mrt" label="Mov Rotation" symbol="rot">
+          <binary bit="2" ref="w:5" />
+          <binary bit="3" ref="w:5" />
+        </value>
+        <value id="mtr" label="Mov Transer" symbol="mov">
+          <binary bit="8" ref="w:6" />
+          <binary bit="6" ref="w:6" />
+        </value>
+      </row>
+      <row label="Fix Power Status" width="3">
+        <value id="fpw" label="Fix Inst Power" symbol="off-warn">
+          <binary bit="8" ref="w:9" />
+        </value>
+        <value id="fph" label="Fix PW RST" symbol="rst">
+          <binary bit="0" ref="w:10" />
+          <binary bit="1" ref="w:10" />
+          <binary bit="2" ref="w:10" />
+        </value>
+        <value id="fcc" label="Fix CCD Power" symbol="off-warn">
+          <binary bit="10" ref="w:9" />
+        </value>
+      </row>
+      <row label="Mov Power Status" width="3">
+        <value id="mpw" label="Mov Inst Power" symbol="off-warn">
+          <binary bit="9" ref="w:9" />
+        </value>
+        <value id="mph" label="Mov PW RST" symbol="rst">
+          <binary bit="8" ref="w:10" />
+          <binary bit="9" ref="w:10" />
+          <binary bit="10" ref="w:10" />
+        </value>
+        <value id="mcc" label="Mov CCD Power" symbol="off-warn">
+          <binary bit="11" ref="w:9" />
+        </value>
+      </row>
+      <row>
+        <repeat from="1" to="4">
+          <value id="fz%d" label="Fix Z">
+            <float format="%.2f" ref="d:($_-1)" formula="$#/100" />
+          </value>
+        </repeat>
+      </row>
+      <row>
+        <repeat from="1" to="4">
+          <value id="mz%d" label="Mov Z">
+            <float format="%.2f" ref="d:($_+3)" formula="$#/100" />
+          </value>
+        </repeat>
+      </row>
+      <row label="Instrument ID">
+        <value id="fid" label="Fix Instrument ID" symbol="iid_ac">
+          <int ref="d:8" />
+        </value>
+        <value id="mid" label="Mov Instrument ID" symbol="iid_ac">
+          <int ref="d:9" />
+        </value>
+      </row>
+      <row label="Charging">
+        <value id="chg" label="CHG Plug" symbol="mov">
+          <binary bit="6" ref="w:2" />
+          <binary bit="7" ref="w:2" />
+        </value>
+        <value id="ccn" label="CHG Connect" symbol="off-warn">
+          <binary bit="8" ref="w:4" />
+        </value>
+        <value id="cpw" label="CHG Power" symbol="off-warn">
+          <binary bit="12" ref="w:4" />
+        </value>
+        <value id="dor" label="Door" symbol="dor">
+          <binary bit="0" ref="w:9" />
+          <binary bit="1" ref="w:9" />
+        </value>
+      </row>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <periodic label="Regular" period="300">

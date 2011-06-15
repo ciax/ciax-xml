@@ -8,18 +8,22 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <value id="st1" label="Turbo Pump Stat" group="s1" symbol="stat">
-        <string ref="st1" />
-      </value>
-      <value id="ch1" label="Turbo Pump (Torr)" group="s1">
-        <float format="%4.2e" ref="ch1" />
-      </value>
-      <value id="st2" label="Scroll Pump Stat" group="s2" symbol="stat">
-        <string ref="st2" />
-      </value>
-      <value id="ch2" label="Scroll Pump (Torr)" group="s2">
-        <float format="%4.2e" ref="ch2" />
-      </value>
+      <row>
+        <value id="st1" label="Turbo Pump Stat" symbol="stat">
+          <string ref="st1" />
+        </value>
+        <value id="ch1" label="Turbo Pump (Torr)">
+          <float format="%4.2e" ref="ch1" />
+        </value>
+      </row>
+      <row>
+        <value id="st2" label="Scroll Pump Stat" symbol="stat">
+          <string ref="st2" />
+        </value>
+        <value id="ch2" label="Scroll Pump (Torr)">
+          <float format="%4.2e" ref="ch2" />
+        </value>
+      </row>
     </status>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <table id="stat" type="string">

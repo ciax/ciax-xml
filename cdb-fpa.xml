@@ -13,16 +13,20 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <repeat from="1" to="3">
-        <value id="v%d" label="OUTPUT%d (V)" group="1">
-          <float format="%3.2f" ref="stat:$_+1" formula="($#-2048)/4096" />
-        </value>
-      </repeat>
-      <repeat from="4" to="6">
-        <value id="v%d" label="OUTPUT%d (V)" group="2">
-          <float format="%3.2f" ref="stat:$_+1" formula="($#-2048)/4096" />
-        </value>
-      </repeat>
+      <row label="Group">
+        <repeat from="1" to="3">
+          <value id="v%d" label="OUTPUT%d (V)">
+            <float format="%3.2f" ref="stat:$_+1" formula="($#-2048)/4096" />
+          </value>
+        </repeat>
+      </row>
+      <row label="Group">
+        <repeat from="4" to="6">
+          <value id="v%d" label="OUTPUT%d (V)">
+            <float format="%3.2f" ref="stat:$_+1" formula="($#-2048)/4096" />
+          </value>
+        </repeat>
+      </row>
     </status>
   </class>
 </cdb>

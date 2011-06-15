@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -133,7 +133,7 @@
       <repeat from="1" to="16">
         <!--Order:2,1,4,3,6,5...-->
         <value id="jk%02d" label="Jack Len %02d" group="j%d">
-          <float ref="jk:$_-2-($_%2)*2" decimal="2" signed="true" format="%5.2f" />
+          <float ref="jk:$_-2-($_%2)*2" formula="$#/100" format="%5.2f" />
         </value>
         <value id="bl%02d" label="Pos %02d" group="j%d" symbol="bl">
           <binary ref="bl:$_-2-($_%2)*2" bit="1" />
@@ -158,7 +158,7 @@
       </repeat>
       <repeat from="1" to="4">
         <value id="z%d" label="Z Len %d" group="z">
-          <float ref="zp:$_-1" decimal="2" format="%5.2f" />
+          <float ref="zp:$_-1" formula="$#/100" format="%5.2f" />
         </value>
       </repeat>
     </status>

@@ -77,7 +77,8 @@ class Frame
     when 'hexstr' # "FF" -> "255"
       num=code.hex
     when 'decstr' # "80000123" -> "-123"
-      sign=(code[0] == '8') ? '-' : ''
+      # sign: k3n=F, oss=8,
+      sign=(/[8Ff]/ === code[0]) ? '-' : ''
       num=sign+code[1..-1].sub(/0+/,'')
     else
       ary=code.unpack("C*")

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
   <frame id="k3n" label="OMRON K3NR" ccmethod="bcc" wait="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
@@ -31,7 +31,7 @@
           <response id="getstat">
             <field label="MRC SRC" length="4">0101</field>
             <field assign="rcode" label="Response Code" length="4" symbol="rcode" />
-            <field assign="stat" label="Status" length="8" />
+            <field assign="stat" label="Status" decode="decstr" length="8" />
           </response>
         </select>
         <field decode="unsigned" label="Suffix" length="1">3</field>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <cdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/cdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -158,13 +158,13 @@
         <binary bit="13" inv="true" ref="x:0" />
       </value>
       <value id="mdar" label="Rignt Motor D/A" group="da" symbol="motor">
-        <int ref="x:7" signed="true" />
+        <int ref="x:7" />
       </value>
       <value id="mdal" label="Left Motor D/A" group="da" symbol="motor">
-        <int ref="x:8" signed="true" />
+        <int ref="x:8" />
       </value>
       <value id="bvl" label="Battery Voltage" group="bv" symbol="bvl">
-        <float decimal="2" format="%2.2f" ref="x:22" />
+        <float format="%2.2f" ref="x:22" formula="$#/100"/>
       </value>
       <value id="ist" label="Instrument" group="bv" symbol="ist">
         <int ref="x:23" />

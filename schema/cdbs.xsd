@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/cdbs" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cdbs="http://ciax.sum.naoj.org/ciax-xml/cdbs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:attributeGroup name="id_attr">
@@ -8,10 +8,6 @@
   <xsd:attributeGroup name="ref_attr">
     <xsd:attribute name="ref" type="xsd:token" use="required" />
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-  </xsd:attributeGroup>
-  <xsd:attributeGroup name="num_attr">
-    <xsd:attribute name="signed" type="xsd:boolean" />
-    <xsd:attribute name="format" type="xsd:token" use="optional" />
   </xsd:attributeGroup>
   <!--Share-->
   <xsd:element name="repeat">
@@ -57,15 +53,14 @@
   <xsd:element name="float">
     <xsd:complexType>
       <xsd:attributeGroup ref="cdbs:ref_attr" />
-      <xsd:attributeGroup ref="cdbs:num_attr" />
-      <xsd:attribute name="decimal" type="xsd:integer" />
+      <xsd:attribute name="format" type="xsd:token" use="optional" />
       <xsd:attribute name="formula" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="int">
     <xsd:complexType>
       <xsd:attributeGroup ref="cdbs:ref_attr" />
-      <xsd:attributeGroup ref="cdbs:num_attr" />
+      <xsd:attribute name="format" type="xsd:token" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="string">

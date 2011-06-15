@@ -21,14 +21,7 @@ class Verbose
     @@base+=add
     @ind=@@base if add < 0
     msg=mkmsg(yield) || return
-    ver=ENV['VER'].split(':').map{|s| s.upcase}
-    all=ver.delete('ALL')
-    flg=ver.any?{|s| msg.upcase.include?(s) }
-    if all
-      Kernel.warn msg unless flg
-    else
-      Kernel.warn msg if flg
-    end
+    Kernel.warn msg if condition(msg)
     self
   end
 
@@ -73,5 +66,12 @@ class Verbose
     pass=sprintf("%5.4f",Time.now-Start_time)
     ts= STDERR.tty? ? '' : "[#{pass}]"
     ts+'  '*@ind+color("#{@title}:",@color)+text.inspect
+  end
+
+  def condition(msg) # VER= makes setenv "" to VER otherwise nil
+    if ENV['VER']
+      ver=ENV['VER'].split(':').map{|s| s.upcase}
+      ver.all?{|s| msg.upcase.include?(s) }
+    end
   end
 end

@@ -41,6 +41,7 @@ class Frame
   def cut(e0)
     len=e0['length']||@frame.size
     str=@frame.slice!(0,len.to_i)
+    return if str.empty?
     @ccrange << str if @ccrange
     @v.msg{"CutFrame: <#{str}> by size=[#{len}]"}
     if r=e0['slice']

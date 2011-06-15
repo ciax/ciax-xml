@@ -2,16 +2,10 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <xsd:simpleType name="codec">
     <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="decstr" />
       <xsd:enumeration value="hexstr" />
       <xsd:enumeration value="unsigned" />
       <xsd:enumeration value="signed" />
-    </xsd:restriction>
-  </xsd:simpleType>
-  <xsd:simpleType name="encode">
-    <xsd:restriction base="xsd:token">
-      <xsd:enumeration value="chr" />
-      <xsd:enumeration value="bew" />
-      <xsd:enumeration value="lew" />
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:simpleType name="ccmethod">

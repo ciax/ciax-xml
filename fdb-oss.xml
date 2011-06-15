@@ -148,7 +148,7 @@
             <index range="0:1" size="2" />
           </array>
           <!--POWER_V2-->
-          <array assign="jk" label="Bolt Position" length="12" slice="0:6">
+          <array assign="jk" label="Bolt Position" length="12" slice="0:6" decode="decstr">
             <index range="0:15" size="16" />
           </array>
           <!--Z_SENSOR-->

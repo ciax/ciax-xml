@@ -73,8 +73,12 @@ class Frame
   private
   def decode(e,code) # Chr -> Num
     return code.to_s unless cdc=e['decode']
-    if cdc == 'hexstr'
+    case cdc
+    when 'hexstr' # "FF" -> "255"
       num=code.hex
+    when 'decstr' # "80000123" -> "-123"
+      sign=(code[0] == '8') ? '-' : ''
+      num=sign+code[1..-1].sub(/0+/,'')
     else
       ary=code.unpack("C*")
       ary.reverse! if @endian=='little'

@@ -7,8 +7,9 @@ getstat(){
     logline $id $cmd | frmstat $dev | merging $output
 }
 
-devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
+devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2|sort -u`};shift
 par="$*"
+ver=$VER;unset VER
 for id in $devices; do
     setfld $id || _usage_key "(-ls)"
     echo "$C2#### $dev($id) ####$C0"
@@ -16,15 +17,15 @@ for id in $devices; do
     output="$HOME/.var/field_${id}.json"
     [ "$clear" ] && [ -e $output ] && rm $output
     if [ "$par" ] ; then
-        VER= frmcmd $dev $par > /dev/null || continue
+        frmcmd $dev $par > /dev/null || continue
         getstat $par
     else
-        VER= frmcmd $dev $id 2>&1 |grep ' : '|while read cmd dmy
+        frmcmd $dev 2>&1 |grep ' : '|while read cmd dmy
         do
-            getstat $cmd
+            VER=$ver getstat $cmd
         done
     fi
-    VER= < $output viewing $opt | if [ "$opt" ]
+    < $output viewing $opt | if [ "$opt" ]
     then
         v2s
     else

@@ -8,9 +8,13 @@ class ClsDb < Db
     super('cdb',cls)
     @rep=Repeat.new
     @command=init_command
-    @v.msg{"Structure:command #{@command}"}
+    @v.msg{
+      @command.keys.map{|k| "Structure:command:#{k} #{@command[k]}"}
+    }
     @status=init_stat
-    @v.msg{"Structure:status #{@status}"}
+    @v.msg{
+      @status.keys.map{|k| "Structure:status:#{k} #{@status[k]}"}
+    }
   end
 
   def watch
@@ -66,8 +70,8 @@ class ClsDb < Db
   end
 
   def init_stat
-    c=Circular.new(5)
-    cdbs={:cdb => {},:row => {},:col => {}}
+    c=Circular.new(6)
+    cdbs={:cdb => {},:row => {}}
     @doc.domain('status').each{|grp|
       @rep.each(grp){|e0|
         id=e0.attr2db(cdbs){|v|@rep.format(v)}
@@ -80,9 +84,7 @@ class ClsDb < Db
           fields << st
         }
         cdbs[:cdb][id]=fields
-        cdbs[:row][id]=c.row
-        cdbs[:col][id]=c.col
-        c.next
+        cdbs[:row][id]=c.next.row
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       }
       c.reset

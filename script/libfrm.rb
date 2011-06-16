@@ -55,7 +55,7 @@ class Frm
   private
   def set(stm)
     if stm.empty?
-      raise "Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
+      raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
     end
     @v.msg{"CMD:set#{stm}"}
     case stm[0]
@@ -69,7 +69,7 @@ class Frm
 
   def save(keys,tag=nil)
     unless keys
-      raise "Usage: save [key,key..] (tag)\n key=#{@field.keys}"
+      raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.keys}"
     end
     tag=Time.now.strftime('%y%m%d-%H%M%S') unless tag
     @field.save(tag,keys.split(','))

@@ -64,7 +64,7 @@
         <command id="setrmp" label="Set ramp from buffer [1-6]" nocache="true" response="default" type="config">
           <string valid="1:6">$1</string>
           <string>P15S</string>
-          <string>${spd:$1-1}</string>
+          <string>${rmp:$1-1}</string>
         </command>
         <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
           <string valid="1:6">$1</string>

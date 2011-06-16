@@ -37,13 +37,24 @@
           </statement>
         </repeat>
       </session>
-      <session id="speed" label="Set Speed [0-800]">
+      <session id="speed" label="Set Speed [25-800]">
         <repeat from="1" to="6">
           <statement command="set">
             <argv format="spd:%d">$_-1</argv>
-            <argv valid="0:800">$1</argv>
+            <argv valid="25:800">$1</argv>
           </statement>
           <statement command="setspd">
+            <argv>$_</argv>
+          </statement>
+        </repeat>
+      </session>
+      <session id="ramp" label="Set ramp [200-800]">
+        <repeat from="1" to="6">
+          <statement command="set">
+            <argv format="rmp:%d">$_-1</argv>
+            <argv valid="200:800">$1</argv>
+          </statement>
+          <statement command="setrmp">
             <argv>$_</argv>
           </statement>
         </repeat>

@@ -98,14 +98,14 @@
           <string ref="login3" />
         </value>
       </row>
-      <row label="Group">
+      <row label="AZ">
         <value id="azd" label="AZ DRIVE" symbol="drv">
           <binary label="ON" bit="0" ref="teldrive" />
           <binary label="OFF" bit="1" ref="teldrive" />
           <binary label="Ready" bit="2" ref="teldrive" />
         </value>
       </row>
-      <row label="Group">
+      <row label="EL">
         <value id="eld" label="EL DRIVE" symbol="drv">
           <binary label="ON" bit="3" ref="teldrive" />
           <binary label="OFF" bit="4" ref="teldrive" />
@@ -118,7 +118,7 @@
           <binary bit="2" ref="stow_1" />
         </value>
       </row>
-      <row label="Group">
+      <row label="InR">
         <value id="rpw" label="ROT DRIVE" symbol="rpw">
           <int ref="rpw" />
         </value>
@@ -126,7 +126,7 @@
           <float ref="iang" format="%.3f" />
         </value>
       </row>
-      <row label="Group">
+      <row label="JACK PW">
         <value id="jpw" label="JAK DRIVE" symbol="warn">
           <binary bit="7" ref="bstat" />
         </value>
@@ -135,7 +135,7 @@
           <binary bit="5" ref="bstat" />
         </value>
       </row>
-      <row label="Group">
+      <row label="JACK ALL">
         <value id="abm" label="ALL Bolt MOVING" symbol="warn">
           <binary ref="abs" bit="2" inv="true" />
         </value>
@@ -144,8 +144,8 @@
           <binary ref="abs" bit="4" />
         </value>
       </row>
-      <row label="Group">
-        <repeat from="1" to="16">
+      <repeat from="1" to="16">
+        <row label="JACK EACH">
           <!--Order:2,1,4,3,6,5...-->
           <value id="jk%02d" label="Jack Len %02d">
             <float ref="jk:$_-2-($_%2)*2" formula="$#/100" format="%5.2f" />
@@ -170,9 +170,9 @@
             <binary ref="bl:$_-2-($_%2)*2" bit="0" />
             <binary ref="bl:$_-2-($_%2)*2" bit="4" />
           </value>
-        </repeat>
-      </row>
-      <row label="Group">
+        </row>
+      </repeat>
+      <row label="Z Sensor">
         <repeat from="1" to="4">
           <value id="z%d" label="Z Len %d">
             <float ref="zp:$_-1" formula="$#/100" format="%5.2f" />

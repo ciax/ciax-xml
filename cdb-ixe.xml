@@ -134,8 +134,8 @@
           <binary bit="7" ref="stat" />
         </value>
       </row>
-      <row label="Group">
-        <repeat from="1" to="6">
+      <repeat from="1" to="6">
+        <row label="Group">
           <value id="r%d" label="Running %d">
             <string ref="run:$_-1" />
           </value>
@@ -148,8 +148,8 @@
           <value id="ofs%d" label="Offset %d">
             <int ref="ofs:$_-1" />
           </value>
-        </repeat>
-      </row>
+        </row>
+      </repeat>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <repeat from="1" to="6">

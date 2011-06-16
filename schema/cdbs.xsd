@@ -12,9 +12,10 @@
   <!--status & group-->
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cdbs:row"></xsd:element>
-      </xsd:sequence>
+        <xsd:element ref="cdbs:repeat"></xsd:element>
+      </xsd:choice>
       <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
@@ -33,6 +34,7 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cdbs:repeat" />
+        <xsd:element ref="cdbs:row" />
         <xsd:element ref="cdbs:value" />
       </xsd:choice>
       <xsd:attributeGroup ref="cdbs:repeat" />

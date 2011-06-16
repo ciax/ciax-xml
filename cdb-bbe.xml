@@ -115,8 +115,8 @@
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <row label="Group">
-        <repeat from="0" to="3">
+      <repeat from="0" to="3">
+        <row label="Group">
           <value id="xsw%d" label="SWITCH %d" symbol="off-warn">
             <binary bit="$_*4" ref="stat" />
           </value>
@@ -129,8 +129,8 @@
           <value id="xpr%d" label="PRES ALARM %d" symbol="alarm">
             <binary bit="$_*4+3" ref="stat" />
           </value>
-        </repeat>
-      </row>
+        </row>
+      </repeat>
     </status>
   </class>
 </cdb>

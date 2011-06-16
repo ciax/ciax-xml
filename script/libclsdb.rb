@@ -70,11 +70,18 @@ class ClsDb < Db
   end
 
   def init_stat
-    c=Circular.new(6)
-    cdbs={:cdb => {},:row => {}}
-    @doc.domain('status').each{|grp|
-      @rep.each(grp){|e0|
-        id=e0.attr2db(cdbs){|v|@rep.format(v)}
+    @c=Circular.new(6)
+    @cdbs={:cdb => {},:row => {}}
+    rec_stat(@doc.domain('status'))
+  end
+
+  def rec_stat(e)
+    @rep.each(e){|e0|
+      if e0.name == 'row'
+        @c.reset
+        rec_stat(e0)
+      else
+        id=e0.attr2db(@cdbs){|v|@rep.format(v)}
         fields=[]
         e0.each{|e1|
           st={:type => e1.name}
@@ -83,12 +90,11 @@ class ClsDb < Db
           }
           fields << st
         }
-        cdbs[:cdb][id]=fields
-        cdbs[:row][id]=c.next.row
+        @cdbs[:cdb][id]=fields
+        @cdbs[:row][id]=@c.next.row
         @v.msg{"STATUS:[#{id}] : #{fields}"}
-      }
-      c.reset
+      end
     }
-    cdbs
+    @cdbs
   end
 end

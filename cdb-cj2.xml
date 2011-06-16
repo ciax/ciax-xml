@@ -275,15 +275,6 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="General">
-        <value id="exe" label="EXECUTING" symbol="exe">
-          <string ref="c:0" />
-          <string ref="c:1" />
-          <string ref="c:2" />
-          <string ref="c:3" />
-        </value>
-        <value id="emg" label="EMG STOP" symbol="alarm">
-          <binary bit="0" ref="w:0" />
-        </value>
         <value id="ctl" label="CONTROL" symbol="ctl">
           <binary bit="6" ref="w:0" />
           <binary bit="7" ref="w:0" />
@@ -294,16 +285,25 @@
         <value id="rdy" label="READY" symbol="off-warn">
           <binary bit="3" ref="w:0" />
         </value>
+        <value id="err" label="Error Code">
+          <int ref="err" />
+        </value>
+        <value id="emg" label="EMG STOP" symbol="alarm">
+          <binary bit="0" ref="w:0" />
+        </value>
       </row>
       <row>
-        <value id="cmp" label="COMMAND COMPLETE" symbol="normal">
-          <binary bit="14" ref="w:0" />
+        <value id="exe" label="EXECUTING" symbol="exe">
+          <string ref="c:0" />
+          <string ref="c:1" />
+          <string ref="c:2" />
+          <string ref="c:3" />
         </value>
         <value id="run" label="Running" symbol="warn">
           <binary bit="15" ref="w:0" />
         </value>
-        <value id="err" label="Error Code">
-          <int ref="err" />
+        <value id="cmp" label="COMMAND COMPLETE" symbol="normal">
+          <binary bit="14" ref="w:0" />
         </value>
       </row>
       <row label="Fix Jack Bolt">
@@ -419,21 +419,18 @@
         <statement command="geterr"></statement>
         <statement command="getzlen"></statement>
       </periodic>
-      <until label="On Motion" ref="exe" val="0000" blocking="^[fmtd].+">
+      <while label="On Motion" ref="run" val="1" blocking="^[fmtd].+">
         <interrupt command="setbit">
           <!--pause-->
           <argv>0</argv>
           <argv>1</argv>
         </interrupt>
-        <statement command="getcmd" />
-      </until>
+        <statement command="getstat" />
+      </while>
       <onchange label="On Completion" ref="cmp" val="1">
         <statement command="clrbit" />
         <statement command="getstat" />
-        <statement command="set">
-          <argv>exe</argv>
-          <argv>0</argv>
-        </statement>
+        <statement command="getcmd" />
       </onchange>
       <onchange label="On ErrReset" ref="err" val="0">
         <statement command="clrbit" />

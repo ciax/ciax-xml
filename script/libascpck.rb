@@ -18,7 +18,9 @@ class AscPck
   end
 
   def convert(stat)
-    res="%#{@id}_#{stat['exe']}#{stat['isu']}_"
+    exe=(stat['exe'] == '0000') ? '0' : '1'
+    isu=(exe+stat['cmp']+stat['run'] == '100') ? '1' : '0'
+    res="%#{@id}_#{exe}#{isu}_"
     @list.each{|key|
       if val=stat[key]
         res << val

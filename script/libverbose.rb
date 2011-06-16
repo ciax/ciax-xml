@@ -20,8 +20,10 @@ class Verbose
     @ind=@@base
     @@base+=add
     @ind=@@base if add < 0
-    msg=mkmsg(yield) || return
-    Kernel.warn msg if condition(msg)
+    [*yield].each{|str|
+      msg=mkmsg(str)
+      Kernel.warn msg if condition(msg)
+    }
     self
   end
 

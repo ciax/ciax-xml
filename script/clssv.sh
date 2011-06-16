@@ -1,7 +1,7 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 [ "$1" = "-d" ] && { dmy=1;shift; }
-[ "$1" = "-c" ] && { out="ascpck";shift; }
+[ "$1" = "-c" ] && { out="ascpck $2";shift; }
 id="$1"
 setfld $id || _usage_key "(-d,c)"
 [ "$iodst" ] || _die "No entry in iodst field"

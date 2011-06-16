@@ -19,10 +19,6 @@ class Frm
     @field.to_h
   end
 
-  def quit
-    @field.save
-  end
-
   def request(stm)
     return self if stm.empty?
     @v.msg{"Receive #{stm}"}
@@ -41,6 +37,7 @@ class Frm
       cid=stm.join(':')
       @ic.snd(@cmd.getframe,'snd:'+cid)
       @rsp.getfield(@ic.time){ @ic.rcv('rcv:'+cid) }
+      @field.save
       'OK'
     end
   rescue SelectID

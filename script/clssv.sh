@@ -15,4 +15,4 @@ else
 fi
 errlog="$HOME/.var/err-$id.log"
 date >> $errlog
-clsserver $cls $id $port "$iocmd" $out >> $errlog 2>&1 &
+clsserver $cls $id $port "$iocmd" "$out" >> $errlog 2>&1 &

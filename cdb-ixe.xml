@@ -14,6 +14,9 @@
           <statement command="getspd">
             <argv>$_</argv>
           </statement>
+          <statement command="getrmp">
+            <argv>$_</argv>
+          </statement>
           <statement command="getofs">
             <argv>$_</argv>
           </statement>
@@ -143,6 +146,9 @@
             <int ref="p:$_-1" />
           </value>
           <value id="spd%d" label="Speed %d">
+            <int ref="spd:$_-1" />
+          </value>
+          <value id="rmp%d" label="Ramp %d">
             <int ref="spd:$_-1" />
           </value>
           <value id="ofs%d" label="Offset %d">

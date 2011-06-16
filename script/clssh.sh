@@ -11,7 +11,7 @@ iocmd="socat - $iodst"
 output="viewing $obj|stprint"
 case "$opt" in
     -d) iocmd="frmsim $id";id="dmy-$id";;
-    -c) output="ascpck";;
+    -c) output="ascpck $id";;
     -r) output='';;
     *);;
 esac

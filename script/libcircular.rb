@@ -4,7 +4,7 @@ require "libverbose"
 class Circular
   def initialize(max=2)
     @max=max
-    @counter=max
+    @counter=0
     @v=Verbose.new("Circ",6)
   end
 

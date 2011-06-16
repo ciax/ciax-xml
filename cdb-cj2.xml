@@ -467,6 +467,7 @@
       </table>
       <table id="rst" type="string">
         <case class="normal" msg="OK">111</case>
+        <case class="normal" msg="OFF">000</case>
         <case class="alarm" msg="BAD" />
       </table>
       <table id="ist" type="string">

@@ -57,7 +57,7 @@
     <xsd:sequence>
       <xsd:element ref="wdb:argv" minOccurs="0" maxOccurs="unbounded" />
     </xsd:sequence>
-    <xsd:attribute name="command" type="xsd:token" />
+    <xsd:attribute name="command" type="xsd:token" use="required" />
   </xsd:complexType>
   <xsd:element name="argv" type="xsd:token"></xsd:element>
   <xsd:element name="statement" type="wdb:statement"></xsd:element>

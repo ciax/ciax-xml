@@ -17,7 +17,7 @@
       </session>
       <session id="defcon" label="Default Config">
         <statement command="hl">
-          <argv>0</argv>
+          <argv>1</argv>
         </statement>
         <statement command="e1">
           <argv>0</argv>
@@ -28,6 +28,42 @@
       </session>
       <session id="set0" label="Set 0 Pulses">
         <statement command="set0" />
+      </session>
+      <session id="gf" label="Goto Focal Position">
+        <statement command="ma">
+          <argv>12.8</argv>
+        </statement>
+      </session>
+      <session id="gr" label="Goto Rotate Position">
+        <statement command="ma">
+          <argv>123</argv>
+        </statement>
+      </session>
+      <session id="gw" label="Goto Waiting Position">
+        <statement command="ma">
+          <argv>185</argv>
+        </statement>
+      </session>
+      <session id="gs" label="Goto Stock Position">
+        <statement command="ma">
+          <argv>jp</argv>
+        </statement>
+      </session>
+      <session id="sets" label="Set Stock Pos Pulse">
+        <statement command="setp">
+          <argv>200.44</argv>
+        </statement>
+      </session>
+      <session id="rini" label="Init to RP at AV">
+        <statement command="e2">
+          <argv>1</argv>
+        </statement>
+        <statement command="mhn"></statement>
+      </session>
+      <session id="setr" label="Set Rotate Pos Pulse">
+        <statement command="setp">
+          <argv>123</argv>
+        </statement>
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
@@ -54,6 +90,28 @@
         </value>
       </row>
     </status>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <periodic period="300">
+        <statement command="getstat" />
+        <statement command="bs" />
+        <statement command="p" />
+      </periodic>
+      <while ref="bs" val="1" blocking="g.">
+        <interrupt command="stop" />
+        <statement command="p"></statement>
+        <statement command="in">
+          <argv>5</argv>
+        </statement>
+        <statement command="in">
+          <argv>3</argv>
+        </statement>
+      </while>
+      <onchange ref="bs" val="0">
+        <statement command="e2">
+          <argv>0</argv>
+        </statement>
+      </onchange>
+    </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <table id="err" type="string">
         <case class="hide" msg="No Error">0</case>

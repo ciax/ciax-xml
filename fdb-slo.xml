@@ -63,6 +63,9 @@
           <string>mi=</string>
           <string format="%3.1f" valid="-999:999">$1</string>
         </command>
+        <command id="mhn" label="Move To e2 Sensor Negative" response="default" type="action">
+          <string>mh=-1</string>
+        </command>
       </select>
       <code length="1">0xd</code>
     </cmdframe>

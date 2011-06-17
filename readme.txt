@@ -76,13 +76,10 @@ cdb//session@id -> never use ':'
     usable: fdb//code
             --
             cdb//statement/argv
-
  
 ### Reference Content ###
-  cdb//statement@format <= fdb//command@id + par
-  cdb//event/command <= cdb//session@id + par
-  cdb//event/while@ref <= cdb//value@id
-
+  cdb//(commands|watch)//statement@command <= fdb//command@id
+  cdb//watch/*@ref <= cdb//value@id
 
 ### Struct of status ###
   field: { id => data }

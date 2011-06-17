@@ -86,9 +86,7 @@ class Cls
     Thread.new{
       Thread.pass
       until(@event.empty?)
-        @event.update{|key|
-          @stat[key]
-        }
+        @event.update(@stat)
         @buf.auto{@event.issue}
         sleep @interval
       end

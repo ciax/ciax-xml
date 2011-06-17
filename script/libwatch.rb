@@ -25,20 +25,20 @@ class Watch < Array
     false
   end
 
-  def update # Need Status pointer
+  def update(stat) # Need Status hash
     each{|bg|
       var=bg[:var]
       case bg[:type]
       when 'while'
-        val=yield bg['ref']
+        val=stat[bg['ref']]
         @v.msg{"While [#{bg['val']}] <#{val}>"}
         var[:active]=( /#{bg['val']}/ === val )
       when 'until'
-        val=yield bg['ref']
+        val=stat[bg['ref']]
         @v.msg{"Until [#{bg['val']}] <#{val}>"}
         var[:active]= !( /#{bg['val']}/ === val )
       when 'onchange'
-        val=yield bg['ref']
+        val=stat[bg['ref']]
         var[:active]=( var[:current] != val)
         var[:last]=var[:current]
         if bg['val']

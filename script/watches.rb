@@ -8,7 +8,7 @@ begin
   stat=JSON.load(str)
   cdb=ClsDb.new(stat['class'])
   watch=Watch.new(cdb)
-  watch.update{|k| stat[k] }
+  watch.update(stat)
   puts watch
 rescue RuntimeError
   abort $!.to_s

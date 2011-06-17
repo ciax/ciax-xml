@@ -5,6 +5,7 @@ dts:status update works but appears incorrect status [4/17
 crt:clssh crt gives error
 
 ***UPDATE
+libdb: chache function
 
 ***LACK FUNCTION
 ascpck: exe should be reset

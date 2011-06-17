@@ -20,9 +20,16 @@ class ClsDb < Db
   def watch
     return [] unless wdb=@doc.domain('watch')
     update(wdb.to_h)
-    line=[]
+    period={:type => 'periodic'}
+    period[:var] = {:current => Time.now,:next => Time.at(0)}
+    line=[period]
     @rep.each(wdb){|e0|
-      bg={:type => e0.name}
+      if e0.name == 'periodic'
+        bg=period
+      else
+        bg={:type => e0.name, :var => {}}
+        line << bg
+      end
       e0.to_h.each{|a,v|
         bg[a]=@rep.format(v)
       }
@@ -33,16 +40,10 @@ class ClsDb < Db
           ssn << @rep.subst(e2.text)
         }
         bg[e1.name]=[] unless Array === bg[e1.name]
-        bg[e1.name] << ssn.freeze
+        bg[e1.name] << ssn.freeze unless bg[e1.name].include? ssn
         @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
       }
-      bg[:var]={}
-      if e0.name == 'periodic'
-        bg[:var][:current]=Time.now
-        bg[:var][:next]=Time.at(0)
-      end
       @v.msg(-1){"WATCH:#{bg[:type]}"}
-      line << bg.freeze
     }
     @v.msg{"Structure:watch #{line}"}
     line

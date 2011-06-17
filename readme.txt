@@ -25,7 +25,7 @@ cdb//session@id -> never use ':'
     usable: fdb//cmdframe/code
             fdb//response/array/index
             --
-            cdb//session/statement/argv
+            cdb//session/statement/argv (eval if @format exists)
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]

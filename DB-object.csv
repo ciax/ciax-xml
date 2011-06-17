@@ -24,7 +24,7 @@ cfa,cfa,k3n,k3n,tcp:ltt-i:4015,ciax,45610
 #mfp,mfp,cfp,cfp,tcp:celaeno:4001,ciax,24101
 map,map,oma,oma,tcp:celaeno:4002,ciax,24102
 mma,mma,mma,slo,tcp:celaeno:4003,ciax,24103
-#mmc,mmc,mmc,slo,tcp:celaeno:4004,ciax,24104
+mmc,mmc,mmc,slo,tcp:celaeno:4004,ciax,24104
 ml1,ml1,lk8,lk8,tcp:celaeno:4005,ciax,24105
 ml2,mk2,lk8,lk8,tcp:celaeno:4006,ciax,24106
 mix,mix,ixe,ixe,tcp:celaeno:4007,ciax,24107

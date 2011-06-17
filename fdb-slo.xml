@@ -17,6 +17,9 @@
         <command id="p" label="Pulse Number" response="p" type="stat">
           <string>p</string>
         </command>
+        <command id="spd" label="Spped Number" response="spd" type="stat">
+          <string>spd</string>
+        </command>
         <command id="reset" label="Reset" response="default" type="config">
           <string>reset</string>
         </command>
@@ -37,6 +40,10 @@
         </command>
         <command id="setp" label="Set Pulse Number" response="default" type="config">
           <string>p=</string>
+          <string format="%5.2f" valid="0:999">$1</string>
+        </command>
+        <command id="setspd" label="Set Speed Number" response="default" type="config">
+          <string>spd=</string>
           <string format="%5.2f" valid="0:999">$1</string>
         </command>
         <command id="stop" label="Stop Running" response="default" type="action">
@@ -69,6 +76,9 @@
         </response>
         <response id="p">
           <field assign="p" label="Pulse" />
+        </response>
+        <response id="spd">
+          <field assign="spd" label="Speed" />
         </response>
         <response id="in">
           <array assign="in" label="Input">

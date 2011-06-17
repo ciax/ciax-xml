@@ -6,6 +6,7 @@
         <statement command="getstat" />
         <statement command="bs" />
         <statement command="p" />
+        <statement command="spd" />
         <repeat from="1" to="5">
           <statement command="in">
             <argv>$_</argv>
@@ -25,9 +26,40 @@
         <statement command="e2">
           <argv>0</argv>
         </statement>
+        <statement command="setspd">
+          <argv>0.2</argv>
+        </statement>
       </session>
-      <session id="set0" label="Set 0 Pulses">
+      <session id="cwini" label="Goto CW Limit">
+        <statement command="jp" />
+      </session>
+      <session id="cwhome" label="Goto Home from CW Limit">
+        <statement command="mi">
+          <argv>-0.41</argv>
+        </statement>
+      </session>
+      <session id="cwset0" label="Set 0 at S00">
         <statement command="set0" />
+      </session>
+      <session id="cw" label="Move CW [1-5]">
+        <statement command="mi">
+          <argv valid="1:5">$1</argv>
+        </statement>
+      </session>
+      <session id="ccw" label="Move CCW [1-5]">
+        <statement command="mi">
+          <argv valid="1:5">-$1</argv>
+        </statement>
+      </session>
+      <session id="slot" label="Move to Slot [0-23]">
+        <statement command="ma">
+          <argv valid="0:23">-$1</argv>
+        </statement>
+      </session>
+      <session id="access" label="Move to Access [0-23]">
+        <statement command="ma">
+          <argv format="%d" valid="0:23">$1&gt;18?-$1+18:-$1-6</argv>
+        </statement>
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
@@ -36,24 +68,36 @@
           <string ref="bs" />
         </value>
         <value id="con" label="Contact Sensor" symbol="normal">
-          <string ref="in:4" />
+          <string ref="in:1" />
+        </value>
+        <value id="spd" label="Speed">
+          <float ref="spd" format="%.2f" />
         </value>
         <value id="err" label="Error Code" symbol="err">
           <int ref="err" />
         </value>
       </row>
       <row label="Group">
-        <value id="pos" label="Arm Position" symbol="pos">
-          <string ref="in:0" />
-          <string ref="in:1" />
-          <string ref="in:2" />
+        <value id="lcw" label="CW Limit" symbol="normal">
           <string ref="in:3" />
         </value>
+        <value id="lccw" label="CCW Limit" symbol="normal">
+          <string ref="in:4" />
+        </value>
         <value id="abs" label="ABS position" symbol="abs">
-          <float ref="p" />
+          <float ref="p" format="%.2f" />
         </value>
       </row>
     </status>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <while ref="bs" val="1" blocking="cw">
+        <interrupt command="stop" />
+        <statement command="p"></statement>
+        <statement command="in">
+          <argv>1</argv>
+        </statement>
+      </while>
+    </watch>
     <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
       <table id="err" type="string">
         <case class="hide" msg="No Error">0</case>
@@ -63,19 +107,31 @@
         <case class="alarm" msg="Attempt to access a non-existent array element">4</case>
         <case class="alarm" msg="Unknown Error" />
       </table>
-      <table id="pos" type="string">
-        <case class="normal" msg="INIT">0001</case>
-        <case class="normal" msg="STOCK">0010</case>
-        <case class="normal" msg="FOCUS">0100</case>
-        <case class="normal" msg="ROT">1000</case>
-        <case class="alarm" msg="N/A" />
-      </table>
       <table id="abs" type="range">
-        <case class="normal" msg="INIT">0:0.5</case>
-        <case class="normal" msg="FOCUS">12.3:13.2</case>
-        <case class="normal" msg="ROT">122.5:123.5</case>
-        <case class="normal" msg="WAIT">184.5:185.5</case>
-        <case class="normal" msg="STOCK">200:201</case>
+        <case class="warn" msg="S00/A06">0</case>
+        <case class="warn" msg="S01/A07">-1</case>
+        <case class="warn" msg="S02/A08">-2</case>
+        <case class="warn" msg="S03/A09">-3</case>
+        <case class="warn" msg="S04/A10">-4</case>
+        <case class="warn" msg="S05/A11">-5</case>
+        <case class="warn" msg="S06/A12">-6</case>
+        <case class="warn" msg="S07/A13">-7</case>
+        <case class="warn" msg="S08/A14">-8</case>
+        <case class="warn" msg="S09/A15">-9</case>
+        <case class="warn" msg="S10/A16">-10</case>
+        <case class="warn" msg="S11/A17">-11</case>
+        <case class="warn" msg="S12/A18">-12</case>
+        <case class="warn" msg="S13/H19">-13</case>
+        <case class="warn" msg="S14/H20">-14</case>
+        <case class="warn" msg="S15/H21">-15</case>
+        <case class="warn" msg="S16/H22">-16</case>
+        <case class="warn" msg="S17/X23">-17</case>
+        <case class="warn" msg="S18/A00">-18</case>
+        <case class="warn" msg="S19/A01">-19</case>
+        <case class="warn" msg="S20/A02">-20</case>
+        <case class="warn" msg="S21/A03">-21</case>
+        <case class="warn" msg="X22/A04">-22</case>
+        <case class="warn" msg="X23(Sensor)/A05">-23</case>
       </table>
     </symbol>
   </class>

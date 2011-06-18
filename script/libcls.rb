@@ -18,7 +18,7 @@ class Cls
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=cdb['interval']||1
-    @event=Watch.new(cdb)
+    @event=Watch.new(cdb,@stat)
     @watch=watch_thread
     @main=session_thread{|buf| yield buf}
   end
@@ -86,7 +86,7 @@ class Cls
     Thread.new{
       Thread.pass
       until(@event.empty?)
-        @event.update(@stat)
+        @event.update
         @buf.auto{@event.issue}
         sleep @interval
       end

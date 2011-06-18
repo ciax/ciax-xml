@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 class Watch < Array
-  def initialize(cdb)
+  def initialize(cdb,stat)
     push(*cdb.watch)
+    @stat=stat
     @v=Verbose.new("EVENT",3)
   end
 
@@ -25,20 +26,20 @@ class Watch < Array
     false
   end
 
-  def update(stat) # Need Status hash
+  def update
     each{|bg|
       var=bg[:var]
       case bg[:type]
       when 'while'
-        val=stat[bg['ref']]
+        val=@stat[bg['ref']]
         @v.msg{"While [#{bg['val']}] <#{val}>"}
         var[:active]=( /#{bg['val']}/ === val )
       when 'until'
-        val=stat[bg['ref']]
+        val=@stat[bg['ref']]
         @v.msg{"Until [#{bg['val']}] <#{val}>"}
         var[:active]= !( /#{bg['val']}/ === val )
       when 'onchange'
-        val=stat[bg['ref']]
+        val=@stat[bg['ref']]
         var[:active]=( var[:current] != val)
         var[:last]=var[:current]
         if bg['val']

@@ -7,8 +7,8 @@ begin
   str=gets(nil) || exit
   stat=JSON.load(str)
   cdb=ClsDb.new(stat['class'])
-  watch=Watch.new(cdb)
-  watch.update(stat)
+  watch=Watch.new(cdb,stat)
+  watch.update
   puts watch
 rescue RuntimeError
   abort $!.to_s

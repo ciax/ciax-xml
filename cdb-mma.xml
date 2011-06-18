@@ -96,7 +96,10 @@
         <statement command="bs" />
         <statement command="p" />
       </periodic>
-      <while ref="bs" val="1" blocking="g.">
+      <while blocking="g.">
+        <condition>
+          <value ref="bs">1</value>
+        </condition>
         <interrupt command="stop" />
         <statement command="p"></statement>
         <statement command="in">
@@ -106,7 +109,10 @@
           <argv>3</argv>
         </statement>
       </while>
-      <onchange ref="bs" val="0">
+      <onchange>
+        <condition>
+          <value ref="bs">0</value>
+        </condition>
         <statement command="e2">
           <argv>0</argv>
         </statement>

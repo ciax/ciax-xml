@@ -181,13 +181,19 @@
       </row>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <while label="Moving Jack" ref="abm" blocking="jup|jdw" val="1">
+      <while label="Moving Jack" blocking="jup|jdw">
+        <condition>
+          <value ref="abm">1</value>
+        </condition>
         <interrupt command="jstop" />
         <statement command="jakstat" />
         <statement command="getexit" />
         <statement command="getpid" />
       </while>
-      <onchange label="Moving InR" ref="iang" blocking="rhook|runhk">
+      <onchange label="Moving InR" blocking="rhook|runhk">
+        <condition>
+          <value ref="iang"></value>
+        </condition>
         <interrupt command="rstop" />
         <statement command="inrstat" />
         <statement command="getexit" />

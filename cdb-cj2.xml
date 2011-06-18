@@ -419,7 +419,10 @@
         <statement command="geterr"></statement>
         <statement command="getzlen"></statement>
       </periodic>
-      <while label="On Motion" ref="run" val="1" blocking="^[fmtd].+">
+      <while label="On Motion" blocking="^[fmtd].+">
+        <condition>
+          <value ref="run">1</value>
+        </condition>
         <interrupt command="setbit">
           <!--pause-->
           <argv>0</argv>
@@ -427,26 +430,41 @@
         </interrupt>
         <statement command="getstat" />
       </while>
-      <onchange label="On Completion" ref="cmp" val="1">
+      <onchange label="On Completion">
+        <condition>
+          <value ref="cmp">1</value>
+        </condition>
         <statement command="clrbit" />
         <statement command="getstat" />
         <statement command="getcmd" />
       </onchange>
-      <onchange label="On ErrReset" ref="err" val="0">
+      <onchange label="On ErrReset">
+        <condition>
+          <value ref="err">0</value>
+        </condition>
         <statement command="clrbit" />
         <statement command="geterr" />
       </onchange>
-      <onchange label="On Error" ref="err" val="[^0]">
+      <onchange label="On Error">
+        <condition>
+          <value ref="err">[^0]</value>
+        </condition>
         <statement command="set">
           <argv>exe</argv>
           <argv>0</argv>
         </statement>
       </onchange>
-      <onchange label="On Emergency" ref="emg" val="1">
+      <onchange label="On Emergency">
+        <condition>
+          <value ref="emg">1</value>
+        </condition>
         <statement command="clrbit" />
         <statement command="getstat" />
       </onchange>
-      <onchange label="On Pause" ref="pse" val="1">
+      <onchange label="On Pause">
+        <condition>
+          <value ref="pse">1</value>
+        </condition>
         <statement command="clrbit" />
         <statement command="setbit">
           <!--resetp-->
@@ -455,7 +473,10 @@
         </statement>
         <statement command="getstat" />
       </onchange>
-      <onchange label="Off Pause" ref="pse" val="0">
+      <onchange label="Off Pause">
+        <condition>
+          <value ref="pse">0</value>
+        </condition>
         <statement command="clrbit" />
         <statement command="getstat" />
       </onchange>

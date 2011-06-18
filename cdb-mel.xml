@@ -201,10 +201,16 @@
       <periodic period="3600">
         <statement command="getstat" />
       </periodic>
-      <onchange label="CMD ACCEPT" ref="acp" val="00">
+      <onchange label="CMD ACCEPT">
+        <condition>
+          <value ref="acp">00</value>
+        </condition>
         <statement command="clear" />
       </onchange>
-      <while ref="acp" val="00" blocking="run|jak|charge">
+      <while blocking="run|jak|charge">
+        <condition>
+          <value ref="acp">00</value>
+        </condition>
         <interrupt command="stop">
           <argv>0</argv>
         </interrupt>

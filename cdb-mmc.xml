@@ -90,7 +90,10 @@
       </row>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <while ref="bs" val="1" blocking="cw">
+      <while blocking="cw">
+        <condition>
+          <value ref="bs">1</value>
+        </condition>
         <interrupt command="stop" />
         <statement command="p"></statement>
         <statement command="in">

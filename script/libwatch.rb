@@ -31,23 +31,13 @@ class Watch < Array
       var=bg[:var]
       case bg[:type]
       when 'while'
-        val=@stat[bg['ref']]
-        @v.msg{"While [#{bg['val']}] <#{val}>"}
-        var[:active]=( /#{bg['val']}/ === val )
-      when 'until'
-        val=@stat[bg['ref']]
-        @v.msg{"Until [#{bg['val']}] <#{val}>"}
-        var[:active]= !( /#{bg['val']}/ === val )
+        @v.msg{"While [#{bg['val']}]"}
+        var[:active]=rec_cond(bg['condition'])
       when 'onchange'
-        val=@stat[bg['ref']]
-        var[:active]=( var[:current] != val)
+        var[:current]=rec_cond(bg['condition'])
+        var[:active]=( var[:current] && ! var[:last])
         var[:last]=var[:current]
-        if bg['val']
-          @v.msg{"OnChange [#{bg['val']}] <#{var[:last]}> -> <#{val}>"}
-          var[:active]=var[:active] && ( bg['val'] == val )
-        else
-          @v.msg{"OnChange <#{var[:last]}> -> <#{val}>"}
-        end
+        @v.msg{"OnChange <#{var[:last]}>"}
       when 'periodic'
         val=Time.now
         if var[:next] < var[:current]
@@ -58,7 +48,7 @@ class Watch < Array
         end
       end
       var[:current]=val
-      @v.msg{"Active:#{bg['label']}"} if var[:active]
+      @v.msg{"Type:<#{bg[:type]}> Active:<#{var[:active]}> <#{bg['label']}>"}
     }
     self
   end
@@ -78,5 +68,30 @@ class Watch < Array
 
   def interrupt
     issue('interrupt')
+  end
+
+  private
+  def rec_cond(e)
+    if e.key?('ref')
+      condition(e)
+    elsif e.key?(:ary)
+      mul=e[:ary].map{|e1| rec_cond(e1)}
+      case e[:operator]
+      when 'and'
+        mul.all?
+      when 'or'
+        mul.any?
+      when 'nand'
+        ! mul.all?
+      when 'nor'
+        ! mul.any?
+      end
+    end
+  end
+
+  def condition(e)
+    val=@stat[e['ref']]
+    @v.msg{"Match [#{e['val']}] <#{val}>"}
+    /#{e['val']}/ === val
   end
 end

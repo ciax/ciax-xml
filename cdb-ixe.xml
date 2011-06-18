@@ -185,7 +185,10 @@
             <argv>$_</argv>
           </statement>
         </periodic>
-        <while label="Moving %d" ref="r%d" val="N" blocking="(fw|bk|abs) %d">
+        <while label="Moving %d" blocking="(fw|bk|abs) %d">
+          <condition operator="and">
+            <value ref="r%d">N</value>
+          </condition>
           <interrupt command="stop">
             <argv>$_</argv>
           </interrupt>

@@ -35,13 +35,19 @@ class ClsDb < Db
       }
       @v.msg(1){"WATCH:#{bg[:type]}:#{bg['label']}"}
       e0.each{ |e1|
-        ssn=[e1['command']]
-        e1.each{|e2|
-          ssn << @rep.subst(e2.text)
-        }
-        bg[e1.name]=[] unless Array === bg[e1.name]
-        bg[e1.name] << ssn.freeze unless bg[e1.name].include? ssn
-        @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
+        case e1.name
+        when 'interrupt','statement'
+          bg[e1.name]||=[]
+          ssn=[e1['command']]
+          e1.each{|e2|
+            ssn << @rep.subst(e2.text)
+          }
+          bg[e1.name] << ssn.freeze unless bg[e1.name].include? ssn
+          @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
+        when 'condition'
+          bg[e1.name]||={}
+          bg[e1.name]=rec_cond(e1)
+        end
       }
       @v.msg(-1){"WATCH:#{bg[:type]}"}
     }
@@ -50,6 +56,15 @@ class ClsDb < Db
   end
 
   private
+  def rec_cond(e)
+    case e.name
+    when 'condition'
+      {:operator => (e['operator']||'and'),:ary => e.map{|e1| rec_cond(e1) }}
+    else
+      {:ref => @rep.format(e['ref']),:val => e.text}
+    end
+  end
+
   def init_command
     cdbc={:cdb => {}}
     @doc.find_each('commands'){|e0|

@@ -25,6 +25,14 @@ class XmlGn
     }
   end
 
+  def map
+    ary=[]
+    each{|e|
+      ary << (yield e)
+    }
+    ary
+  end
+
   def [](key)
     @e.attributes[key]
   end

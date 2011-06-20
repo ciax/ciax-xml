@@ -15,6 +15,9 @@ class Verbose
 
   # Public Method
   def msg(add=0)
+    # block takes array (shown by each line)
+    # [val] -> taken from  xml
+    # <val> -> taken from status
     return unless ENV['VER']
     @ind=@@base
     @@base+=add

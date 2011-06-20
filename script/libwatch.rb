@@ -55,7 +55,6 @@ class Watch < Array
     each{|bg|
       if bg[:var][:active]
         @v.msg{"#{bg['label']} is active" }
-warn bg
         ary=ary+bg[key]
       else
         @v.msg{"#{bg['label']} is inactive" }

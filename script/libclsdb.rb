@@ -20,11 +20,15 @@ class ClsDb < Db
   def watch
     return [] unless wdb=@doc.domain('watch')
     update(wdb.to_h)
-    period={:type => 'periodic'}
-    period[:var] = {:current => Time.now,:next => Time.at(0)}
-    line=[period]
+    line=[]
+    period=nil
     @rep.each(wdb){|e0|
       if e0.name == 'periodic'
+        unless period
+          period={:type => 'periodic'}
+          period[:var] = {:next => Time.at(0)}
+          line << period
+        end
         bg=period
       else
         bg={:type => e0.name, :var => {}}

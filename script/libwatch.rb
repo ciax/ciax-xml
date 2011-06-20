@@ -34,20 +34,17 @@ class Watch < Array
         @v.msg{"While [#{bg['val']}]"}
         var[:active]=rec_cond(bg['condition'])
       when 'onchange'
-        var[:current]=rec_cond(bg['condition'])
-        var[:active]=( var[:current] && ! var[:last])
-        var[:last]=var[:current]
+        var[:active]=rec_cond(bg['condition'],var)
         @v.msg{"OnChange <#{var[:last]}>"}
       when 'periodic'
         val=Time.now
-        if var[:next] < var[:current]
-          var[:active]=true
+        if var[:next] < val
           var[:next]=val+bg['period'].to_i
+          var[:active]=true
         else
           var[:active]=false
         end
       end
-      var[:current]=val
       @v.msg{"Type:<#{bg[:type]}> Active:<#{var[:active]}> <#{bg['label']}>"}
     }
     self
@@ -58,6 +55,7 @@ class Watch < Array
     each{|bg|
       if bg[:var][:active]
         @v.msg{"#{bg['label']} is active" }
+warn bg
         ary=ary+bg[key]
       else
         @v.msg{"#{bg['label']} is inactive" }
@@ -71,11 +69,11 @@ class Watch < Array
   end
 
   private
-  def rec_cond(e)
-    if e.key?('ref')
-      condition(e)
+  def rec_cond(e,var=nil)
+    if e.key?(:ref)
+      condition(e,var)
     elsif e.key?(:ary)
-      mul=e[:ary].map{|e1| rec_cond(e1)}
+      mul=e[:ary].map{|e1| rec_cond(e1,var)}
       case e[:operator]
       when 'and'
         mul.all?
@@ -89,9 +87,20 @@ class Watch < Array
     end
   end
 
-  def condition(e)
-    val=@stat[e['ref']]
-    @v.msg{"Match [#{e['val']}] <#{val}>"}
-    /#{e['val']}/ === val
+  def condition(e,var)
+    val=@stat[e[:ref]]
+    if org=e['val']
+      flg=(/#{org}/ === val)
+    else
+      flg=true
+    end
+    @v.msg{"Match? [#{org}] <#{val}>"}
+    if var
+      last=var[:last]
+      var[:last]=val.dup
+      @v.msg{"Change? <#{last}> -> <#{val}>"}
+      flg && (last != val)
+    end
+    flg
   end
 end

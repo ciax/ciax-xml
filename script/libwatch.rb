@@ -18,7 +18,7 @@ class Watch < Array
   def blocking?(ssn)
     cmd=ssn.join(' ')
     each{|bg|
-      pattern=bg['blocking'] || next
+      pattern=bg[:blocking] || next
       if bg[:var][:active]
         return true if /#{pattern}/ === cmd
       end
@@ -31,40 +31,40 @@ class Watch < Array
       var=bg[:var]
       case bg[:type]
       when 'while'
-        @v.msg{"While [#{bg['val']}]"}
-        var[:active]=rec_cond(bg['condition'])
+        @v.msg{"While [#{bg[:val]}]"}
+        var[:active]=rec_cond(bg[:condition])
       when 'onchange'
-        var[:active]=rec_cond(bg['condition'],var)
+        var[:active]=rec_cond(bg[:condition],var)
         @v.msg{"OnChange <#{var[:last]}>"}
       when 'periodic'
         val=Time.now
         if var[:next] < val
-          var[:next]=val+bg['period'].to_i
+          var[:next]=val+bg[:period].to_i
           var[:active]=true
         else
           var[:active]=false
         end
       end
-      @v.msg{"Type:<#{bg[:type]}> Active:<#{var[:active]}> <#{bg['label']}>"}
+      @v.msg{"Type:<#{bg[:type]}> Active:<#{var[:active]}> <#{bg[:label]}>"}
     }
     self
   end
 
-  def issue(key='statement')
+  def issue(key=:statement)
     ary=[]
     each{|bg|
       if bg[:var][:active]
-        @v.msg{"#{bg['label']} is active" }
+        @v.msg{"#{bg[:label]} is active" }
         ary=ary+bg[key]
       else
-        @v.msg{"#{bg['label']} is inactive" }
+        @v.msg{"#{bg[:label]} is inactive" }
       end
     }
     ary.compact.uniq.freeze
   end
 
   def interrupt
-    issue('interrupt')
+    issue(:interrupt)
   end
 
   private
@@ -88,7 +88,7 @@ class Watch < Array
 
   def condition(e,var)
     val=@stat[e[:ref]]
-    if org=e['val']
+    if org=e[:val]
       flg=(/#{org}/ === val)
     else
       flg=true

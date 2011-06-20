@@ -23,7 +23,8 @@ class ClsDb < Db
     line=[]
     period=nil
     @rep.each(wdb){|e0|
-      if e0.name == 'periodic'
+      case name=e0.name
+      when 'periodic'
         unless period
           period={:type => 'periodic'}
           period[:var] = {:next => Time.at(0)}
@@ -35,22 +36,22 @@ class ClsDb < Db
         line << bg
       end
       e0.to_h.each{|a,v|
-        bg[a]=@rep.format(v)
+        bg[a.to_sym]=@rep.format(v)
       }
       @v.msg(1){"WATCH:#{bg[:type]}:#{bg['label']}"}
       e0.each{ |e1|
-        case e1.name
-        when 'interrupt','statement'
-          bg[e1.name]||=[]
+        case name=e1.name.to_sym
+        when :interrupt,:statement
+          bg[name]||=[]
           ssn=[e1['command']]
           e1.each{|e2|
             ssn << @rep.subst(e2.text)
           }
-          bg[e1.name] << ssn.freeze unless bg[e1.name].include? ssn
+          bg[name] << ssn.freeze unless bg[name].include? ssn
           @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
-        when 'condition'
-          bg[e1.name]||={}
-          bg[e1.name]=rec_cond(e1)
+        when :condition
+          bg[name]||={}
+          bg[name]=rec_cond(e1)
         end
       }
       @v.msg(-1){"WATCH:#{bg[:type]}"}

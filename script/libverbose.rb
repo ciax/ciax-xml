@@ -5,7 +5,6 @@ class SelectID < UserError; end
 
 class Verbose
   Start_time=Time.now
-  $DEBUG=true if ENV['VER']
   @@base=1
   def initialize(title='',color=7)
     @title=title.upcase

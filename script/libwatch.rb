@@ -31,11 +31,9 @@ class Watch < Array
       var=bg[:var]
       case bg[:type]
       when 'while'
-        @v.msg{"While [#{bg[:val]}]"}
         var[:active]=rec_cond(bg[:condition])
       when 'onchange'
         var[:active]=rec_cond(bg[:condition],var)
-        @v.msg{"OnChange <#{var[:last]}>"}
       when 'periodic'
         val=Time.now
         if var[:next] < val
@@ -45,7 +43,7 @@ class Watch < Array
           var[:active]=false
         end
       end
-      @v.msg{"Type:<#{bg[:type]}> Active:<#{var[:active]}> <#{bg[:label]}>"}
+      @v.msg{"#{bg[:label]}: Type:<#{bg[:type]}> Active:<#{var[:active]}>"}
     }
     self
   end
@@ -54,10 +52,8 @@ class Watch < Array
     ary=[]
     each{|bg|
       if bg[:var][:active]
-        @v.msg{"#{bg[:label]} is active" }
         ary=ary+bg[key]
       else
-        @v.msg{"#{bg[:label]} is inactive" }
       end
     }
     ary.compact.uniq.freeze
@@ -93,12 +89,14 @@ class Watch < Array
     else
       flg=true
     end
-    @v.msg{"Match? [#{org}] <#{val}>"}
     if var
       last=var[:last]
       var[:last]=val.dup
-      @v.msg{"Change? <#{last}> -> <#{val}>"}
-      flg && (last != val)
+      @v.msg{with=org ? " with Org:[#{org}]":'';
+        " onChange(#{e[:ref]}) Last:<#{last}> -> Now:<#{val}>#{with}"}
+      flg &&= (last != val)
+    else
+      @v.msg{" While(#{e[:ref]}) Org:[#{org}] -> Now:<#{val}>"}
     end
     flg
   end

@@ -68,6 +68,7 @@ class XmlGn
   end
 
   def attr2db(db,id='id')
+    # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
     raise "Param should be Hash" unless Hash === db
     attr={}
     to_h.each{|k,v|

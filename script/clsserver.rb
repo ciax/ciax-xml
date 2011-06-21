@@ -6,12 +6,14 @@ require "libclsdb"
 require "libfrmdb"
 require "libserver"
 require "libfilter"
+require "libalias"
 
 cls=ARGV.shift
 id=ARGV.shift
 port=ARGV.shift
 iocmd=ARGV.shift
 out=Filter.new(ARGV.shift)
+inp=Alias.new(id)
 begin
   cdb=ClsDb.new(cls)
   fdb=FrmDb.new(cdb['frame'])
@@ -30,7 +32,8 @@ Server.new(port){|line|
     cobj.interrupt
   else
     line.split(';').each{|cmd|
-      cobj.dispatch(cmd.split(' '))
+      cmda=cmd.split(' ')
+      cobj.dispatch(inp.alias(cmda))
     }
   end
   out.filter(JSON.dump(cobj.stat))

@@ -16,6 +16,45 @@ class View < Hash
     end
   end
 
+  def add_label(odb)
+    if odb
+      require "liblabel"
+      Label.new(odb).convert(self)
+    end
+    self
+  end
+
+  def add_group(odb)
+    if odb
+      require "libgroup"
+      Group.new(odb).convert(self)
+    end
+    self
+  end
+
+  def init_sym(odb)
+    if odb
+      require "libsymdb"
+      require "libsym"
+      sym=SymDb.new
+      sym.update(odb.symtbl)
+      @sdb=Sym.new(sym,odb)
+    end
+    self
+  end
+
+  def conv_sym
+    if @sdb
+      @sdb.convert(self)
+    end
+    self
+  end
+
+  def prt
+    pr=Print.new
+    pr.print(self)
+  end
+
   def to_s
     header=[]
     ['id','frame','class'].each{|s|

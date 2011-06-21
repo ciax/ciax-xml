@@ -20,7 +20,6 @@ id=ARGV.shift
 iocmd=ARGV.shift
 filter=ARGV.shift
 al=Alias.new(id)
-sdb=nil
 begin
   odb=ObjDb.new(id,cls)
   cdb=ClsDb.new(cls)
@@ -31,23 +30,9 @@ begin
     fobj.stat
   }
   view=View.new(cobj.stat)
-  pr=Print.new
-  opt.split('').each{|s|
-    case s
-    when 'l'
-      require "liblabel"
-      Label.new(odb).convert(view)
-    when 'g'
-      require "libgroup"
-      Group.new(odb).convert(view)
-    when 's'
-      require "libsymdb"
-      require "libsym"
-      sym=SymDb.new
-      sym.update(odb.symtbl)
-      sdb=Sym.new(sym,odb)
-    end
-  }
+  view.add_label(odb) if opt.include?('l')
+  view.add_group(odb) if opt.include?('g')
+  view.init_sym(odb) if opt.include?('s')
 rescue SelectID
   abort "Usage: clsshell (-lgs) [cls] [id] [iocmd]\n#{$!}"
 end
@@ -55,7 +40,7 @@ inf=proc{|cmd|
   cobj.dispatch(al.alias(cmd))
 }
 outf=proc{|stat|
-  sdb.convert(view) if sdb
-  opt=='lgs' ? pr.print(view) : view
+  view.conv_sym
+  opt=='lgs' ? view.prt : view
 }
 Shell.new(cobj,inf,outf)

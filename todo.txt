@@ -1,4 +1,5 @@
 ***DEBUG
+mcr:dsi,dso/ exe finish immediately after command issue [4/17,6/9,6/19]
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]
   -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
 dts:status update works but appears incorrect status [4/17
@@ -6,6 +7,7 @@ crt:clssh crt gives error
 
 ***UPDATE
 libdb: chache function
+crt: jack table edit interface (sql+web)
 
 ***LACK FUNCTION
 ascpck: exe should be reset
@@ -13,7 +15,6 @@ mcr:inter lock error log is  really needed
 
 ***CHECK NEED
 verify on motion: cdb-oss
-mcr:dsi,dso/ exe finish immediately after command issue [4/17,6/9]
 
 ***UPGRADE
 using sqlite for logging stat

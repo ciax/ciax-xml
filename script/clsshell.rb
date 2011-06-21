@@ -6,31 +6,9 @@ require "libobjdb"
 require "libclsdb"
 require "libfrmdb"
 require "libalias"
-require "libfilter"
 require "libview"
 require "libshell"
 require "libprint"
-
-def filters(opt,odb)
-  filters=[]
-  opt.split('').each{|s|
-    case s
-    when 'l'
-      require "liblabel"
-      filters << Label.new(odb)
-    when 'g'
-      require "libgroup"
-      filters << Group.new(odb)
-    when 's'
-      require "libsymdb"
-      require "libsym"
-      sym=SymDb.new
-      sym.update(odb.symtbl)
-      filters << Sym.new(sym,odb)
-    end
-  }
-  filters
-end
 
 cls=ARGV.shift
 opt='lgs'
@@ -42,7 +20,7 @@ id=ARGV.shift
 iocmd=ARGV.shift
 filter=ARGV.shift
 al=Alias.new(id)
-out=Filter.new(filter)
+sdb=nil
 begin
   odb=ObjDb.new(id,cls)
   cdb=ClsDb.new(cls)
@@ -54,7 +32,22 @@ begin
   }
   view=View.new(cobj.stat)
   pr=Print.new
-  fi=filters(opt,odb)
+  opt.split('').each{|s|
+    case s
+    when 'l'
+      require "liblabel"
+      Label.new(odb).convert(view)
+    when 'g'
+      require "libgroup"
+      Group.new(odb).convert(view)
+    when 's'
+      require "libsymdb"
+      require "libsym"
+      sym=SymDb.new
+      sym.update(odb.symtbl)
+      sdb=Sym.new(sym,odb)
+    end
+  }
 rescue SelectID
   abort "Usage: clsshell (-lgs) [cls] [id] [iocmd]\n#{$!}"
 end
@@ -62,7 +55,7 @@ inf=proc{|cmd|
   cobj.dispatch(al.alias(cmd))
 }
 outf=proc{|stat|
-  fi.each{|f| f.convert(view)}
+  sdb.convert(view) if sdb
   opt=='lgs' ? pr.print(view) : view
 }
 Shell.new(cobj,inf,outf)

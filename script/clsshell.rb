@@ -5,6 +5,7 @@ require "libfrm"
 require "libclsdb"
 require "libfrmdb"
 require "libalias"
+require "libfilter"
 require "libshell"
 
 cls=ARGV.shift
@@ -12,6 +13,7 @@ id=ARGV.shift
 iocmd=ARGV.shift
 filter=ARGV.shift
 al=Alias.new(id)
+out=Filter.new(filter)
 begin
   cdb=ClsDb.new(cls)
   fdb=FrmDb.new(cdb['frame'])
@@ -23,7 +25,10 @@ begin
 rescue SelectID
   abort "Usage: clsshell [cls] [id] [iocmd] (outcmd)\n#{$!}"
 end
-Shell.new(cobj,filter){|stm|
-  stm=al.alias(stm)
-  cobj.dispatch(stm)
+inf=proc{|cmd|
+  cobj.dispatch(al.alias(cmd))
 }
+outf=proc{|stat|
+  out.filter(JSON.dump(stat))
+}
+Shell.new(cobj,inf,outf)

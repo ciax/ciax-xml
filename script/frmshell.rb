@@ -13,6 +13,4 @@ begin
 rescue SelectID
   abort "Usage: frmshell [dev] [id] [iocmd] (outcmd)\n#{$!}"
 end
-Shell.new(fobj,filter){|stm|
-  fobj.request(stm)
-}
+Shell.new(fobj,proc{|stm| fobj.request(stm)})

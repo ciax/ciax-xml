@@ -45,6 +45,7 @@ class XmlDoc < Hash
   end
 
   def domain(domain)
+    @v.err("No such Domain [#{domain}]") unless @domain.key?(domain)
     @domain[domain]
   end
 end

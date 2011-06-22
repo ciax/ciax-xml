@@ -55,11 +55,19 @@ class View < Hash
     pr.print(self)
   end
 
+  # Filterling values by env value of VAL
+  # VAL=a:b:c -> grep "a|b|c"
   def to_s
     header=[]
     ['id','frame','class'].each{|s|
       header << "#{s} = #{self[s]}" if key?(s)
     }
-    (header+self['list']).join("\n")
+    if pick=ENV['VAL']
+      exp=pick.tr(':','|')
+      list=self['list'].select{|line| /#{exp}/ === line['id']}
+    else
+      list=self['list']
+    end
+    (header+list).join("\n")
   end
 end

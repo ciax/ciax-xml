@@ -4,7 +4,10 @@
 getstat(){
     cmd="$*"
     echo "${C3}process for $cmd$C0"
-    logline $id $cmd | frmstat $dev | merging $output
+    logline $id $cmd | if [ "$ver" ]
+    then VER=$ver frmstat $dev
+    else frmstat $dev
+    fi | merging $output
 }
 
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2|sort -u`};shift
@@ -22,11 +25,7 @@ for id in $devices; do
     else
         frmcmd $dev 2>&1 |grep ' : '|while read cmd dmy
         do
-            if [ "$ver" ] ; then
-                VER=$ver getstat $cmd
-            else
-                getstat $cmd
-            fi
+            getstat $cmd
         done
     fi
     < $output viewing $opt | if [ "$opt" ]

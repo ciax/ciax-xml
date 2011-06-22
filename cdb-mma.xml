@@ -118,29 +118,29 @@
         </statement>
       </onchange>
     </watch>
-    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <table id="err" type="string">
-        <case class="hide" msg="No Error">0</case>
-        <case class="alarm" msg="Could not burn flash successfully">1</case>
-        <case class="alarm" msg="Could not download file">2</case>
-        <case class="alarm" msg="Not enough memory to execute user program">3</case>
-        <case class="alarm" msg="Attempt to access a non-existent array element">4</case>
-        <case class="alarm" msg="Unknown Error" />
-      </table>
-      <table id="pos" type="string">
-        <case class="normal" msg="INIT">0001</case>
-        <case class="normal" msg="STOCK">0010</case>
-        <case class="normal" msg="FOCUS">0100</case>
-        <case class="normal" msg="ROT">1000</case>
-        <case class="alarm" msg="N/A" />
-      </table>
-      <table id="abs" type="range">
-        <case class="normal" msg="INIT">0:0.5</case>
-        <case class="normal" msg="FOCUS">12.3:13.2</case>
-        <case class="normal" msg="ROT">122.5:123.5</case>
-        <case class="normal" msg="WAIT">184.5:185.5</case>
-        <case class="normal" msg="STOCK">200:201</case>
-      </table>
-    </symbol>
   </class>
+  <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+    <table id="err" type="string">
+      <case class="hide" msg="No Error">0</case>
+      <case class="alarm" msg="Could not burn flash successfully">1</case>
+      <case class="alarm" msg="Could not download file">2</case>
+      <case class="alarm" msg="Not enough memory to execute user program">3</case>
+      <case class="alarm" msg="Attempt to access a non-existent array element">4</case>
+      <case class="alarm" msg="Unknown Error" />
+    </table>
+    <table id="pos" type="string">
+      <case class="normal" msg="INIT">0001</case>
+      <case class="normal" msg="STOCK">0010</case>
+      <case class="normal" msg="FOCUS">0100</case>
+      <case class="normal" msg="ROT">1000</case>
+      <case class="alarm" msg="N/A" />
+    </table>
+    <table id="abs" type="range">
+      <case class="normal" msg="INIT">0:0.5</case>
+      <case class="normal" msg="FOCUS">12.3:13.2</case>
+      <case class="normal" msg="ROT">122.5:123.5</case>
+      <case class="normal" msg="WAIT">184.5:185.5</case>
+      <case class="normal" msg="STOCK">200:201</case>
+    </table>
+  </symbol>
 </cdb>

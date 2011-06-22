@@ -200,56 +200,56 @@
         <statement command="getpid" />
       </onchange>
     </watch>
-    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <table id="bl" type="string">
-        <case class="warn" msg="MID">00</case>
-        <case class="normal" msg="UP">10</case>
-        <case class="normal" msg="DW">01</case>
-      </table>
-      <table id="ba" type="string">
-        <case class="hide" msg="OK">00</case>
-        <case class="alarm" msg="ON" />
-      </table>
-      <table id="rts" type="string">
-        <case class="warn" msg="PFO">1</case>
-        <case class="warn" msg="PFI">2</case>
-        <case class="normal" msg="CAS">4</case>
-        <case class="warn" msg="NSO">8</case>
-        <case class="warn" msg="NSI">10</case>
-        <case class="alarm" msg="N/A" />
-      </table>
-      <table id="iid" type="string">
-        <case class="warn" msg="NONE">0</case>
-        <case class="normal" msg="IRCS">1</case>
-        <case class="normal" msg="CIAO">3</case>
-        <case class="normal" msg="FOCAS">5</case>
-        <case class="normal" msg="COMICS">7</case>
-        <case class="normal" msg="K3D">10</case>
-        <case class="normal" msg="MOIRCS">12</case>
-        <case class="normal" msg="CIAX3">13</case>
-        <case class="warn" msg="N/A" />
-      </table>
-      <table id="login" type="regexp">
-        <case class="alarm" msg="OSS Login">OSS</case>
-        <case class="normal" msg="LOGIN">CXWS</case>
-        <case class="warn" msg="LOGOUT" />
-      </table>
-      <table id="rpw" type="string">
-        <case class="warn" msg="ON">1</case>
-        <case class="normal" msg="OFF">2</case>
-      </table>
-      <table id="rps" type="string">
-        <case class="alarm" msg="OFF">11</case>
-        <case class="normal" msg="0DEG">10</case>
-        <case class="normal" msg="-4DEG">01</case>
-        <case class="alarm" msg="N/A" />
-      </table>
-      <table id="drv" type="string">
-        <case class="alarm" msg="ON">101</case>
-        <case class="normal" msg="OFF">011</case>
-        <case class="normal" msg="RDY">001</case>
-        <case class="alarm" msg="N/A" />
-      </table>
-    </symbol>
   </class>
+  <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+    <table id="bl" type="string">
+      <case class="warn" msg="MID">00</case>
+      <case class="normal" msg="UP">10</case>
+      <case class="normal" msg="DW">01</case>
+    </table>
+    <table id="ba" type="string">
+      <case class="hide" msg="OK">00</case>
+      <case class="alarm" msg="ON" />
+    </table>
+    <table id="rts" type="string">
+      <case class="warn" msg="PFO">1</case>
+      <case class="warn" msg="PFI">2</case>
+      <case class="normal" msg="CAS">4</case>
+      <case class="warn" msg="NSO">8</case>
+      <case class="warn" msg="NSI">10</case>
+      <case class="alarm" msg="N/A" />
+    </table>
+    <table id="iid" type="string">
+      <case class="warn" msg="NONE">0</case>
+      <case class="normal" msg="IRCS">1</case>
+      <case class="normal" msg="CIAO">3</case>
+      <case class="normal" msg="FOCAS">5</case>
+      <case class="normal" msg="COMICS">7</case>
+      <case class="normal" msg="K3D">10</case>
+      <case class="normal" msg="MOIRCS">12</case>
+      <case class="normal" msg="CIAX3">13</case>
+      <case class="warn" msg="N/A" />
+    </table>
+    <table id="login" type="regexp">
+      <case class="alarm" msg="OSS Login">OSS</case>
+      <case class="normal" msg="LOGIN">CXWS</case>
+      <case class="warn" msg="LOGOUT" />
+    </table>
+    <table id="rpw" type="string">
+      <case class="warn" msg="ON">1</case>
+      <case class="normal" msg="OFF">2</case>
+    </table>
+    <table id="rps" type="string">
+      <case class="alarm" msg="OFF">11</case>
+      <case class="normal" msg="0DEG">10</case>
+      <case class="normal" msg="-4DEG">01</case>
+      <case class="alarm" msg="N/A" />
+    </table>
+    <table id="drv" type="string">
+      <case class="alarm" msg="ON">101</case>
+      <case class="normal" msg="OFF">011</case>
+      <case class="normal" msg="RDY">001</case>
+      <case class="alarm" msg="N/A" />
+    </table>
+  </symbol>
 </cdb>

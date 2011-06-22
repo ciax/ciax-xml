@@ -481,51 +481,51 @@
         <statement command="getstat" />
       </onchange>
     </watch>
-    <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <table id="exe" type="string">
-        <case class="normal" msg="OFF">0000</case>
-        <case class="warn" msg="ON" />
-      </table>
-      <table id="rst" type="string">
-        <case class="normal" msg="OK">111</case>
-        <case class="normal" msg="OFF">000</case>
-        <case class="alarm" msg="BAD" />
-      </table>
-      <table id="ist" type="string">
-        <case class="normal" msg="ON ">1111</case>
-        <case class="warn" msg="OFF">0000</case>
-        <case class="alarm" msg="N/A" />
-      </table>
-      <table id="hook" type="string">
-        <case class="normal" msg="HOOK">10</case>
-        <case class="normal" msg="UNHK">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </table>
-      <table id="jack" type="string">
-        <case class="normal" msg="UP">10</case>
-        <case class="normal" msg="DW">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </table>
-      <table id="ctl" type="string">
-        <case class="normal" msg="AUTO">10</case>
-        <case class="normal" msg="MANUAL">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </table>
-      <table id="mov" type="string">
-        <case class="normal" msg="FW">10</case>
-        <case class="normal" msg="BK">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </table>
-      <table id="rot" type="string">
-        <case class="normal" msg="LOAD">10</case>
-        <case class="normal" msg="STORE">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </table>
-      <table id="dor" type="string">
-        <case class="normal" msg="OPEN">10</case>
-        <case class="normal" msg="CLOSE">01</case>
-        <case class="alarm" msg="N/A">00</case>
-      </table>
-    </symbol>
   </class>
+  <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+    <table id="exe" type="string">
+      <case class="normal" msg="OFF">0000</case>
+      <case class="warn" msg="ON" />
+    </table>
+    <table id="rst" type="string">
+      <case class="normal" msg="OK">111</case>
+      <case class="normal" msg="OFF">000</case>
+      <case class="alarm" msg="BAD" />
+    </table>
+    <table id="ist" type="string">
+      <case class="normal" msg="ON ">1111</case>
+      <case class="warn" msg="OFF">0000</case>
+      <case class="alarm" msg="N/A" />
+    </table>
+    <table id="hook" type="string">
+      <case class="normal" msg="HOOK">10</case>
+      <case class="normal" msg="UNHK">01</case>
+      <case class="alarm" msg="N/A">00</case>
+    </table>
+    <table id="jack" type="string">
+      <case class="normal" msg="UP">10</case>
+      <case class="normal" msg="DW">01</case>
+      <case class="alarm" msg="N/A">00</case>
+    </table>
+    <table id="ctl" type="string">
+      <case class="normal" msg="AUTO">10</case>
+      <case class="normal" msg="MANUAL">01</case>
+      <case class="alarm" msg="N/A">00</case>
+    </table>
+    <table id="mov" type="string">
+      <case class="normal" msg="FW">10</case>
+      <case class="normal" msg="BK">01</case>
+      <case class="alarm" msg="N/A">00</case>
+    </table>
+    <table id="rot" type="string">
+      <case class="normal" msg="LOAD">10</case>
+      <case class="normal" msg="STORE">01</case>
+      <case class="alarm" msg="N/A">00</case>
+    </table>
+    <table id="dor" type="string">
+      <case class="normal" msg="OPEN">10</case>
+      <case class="normal" msg="CLOSE">01</case>
+      <case class="alarm" msg="N/A">00</case>
+    </table>
+  </symbol>
 </cdb>

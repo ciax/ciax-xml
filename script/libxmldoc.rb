@@ -3,15 +3,17 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  private
+  attr_reader :symbol
   def initialize(dbid = nil,type = nil)
     @v=Verbose.new("Doc/#{dbid}",4)
     @domain={}
     if type && ! readxml(dbid,type){|e|
-        @domain[e.name]=e #Top domain for sdb <symbol>
+        @symbol=e if e.name == 'symbol'
         update(e.to_h)
         e.each{|e1|
-          @domain[e1.name]=e1 unless e.ns == e1.ns
+          unless e.ns == e1.ns
+            @domain[e1.name]=e1
+          end
         }
         @v.msg{"Domain registerd:#{@domain.keys}"}
       }.empty?
@@ -22,6 +24,7 @@ class XmlDoc < Hash
     end
   end
 
+  private
   def readxml(dbid,type='*')
     pre="#{ENV['XMLPATH']}/#{dbid}"
     path="#{pre}-#{type}.xml"
@@ -33,18 +36,6 @@ class XmlDoc < Hash
   end
 
   public
-  def select_id(domain,id,xpath='*')
-    elem=find_each(domain,"#{xpath}[@id='#{id}']"){|e| return e }
-    return elem if elem
-    err=''
-    err << "No such command [#{id}]\n" if id
-    err << "== Command List ==\n"
-    find_each(domain,xpath){|e|
-      err << e.item('id')
-    }
-    raise SelectID,err
-  end
-
   def find_each(domain,xpath=nil)  # child or find
     # For Symbol, domain is not <symbol> at sdb_all
     return unless @domain.key?(domain)

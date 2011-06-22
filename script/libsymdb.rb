@@ -7,7 +7,7 @@ class SymDb < Hash
     doc ||= XmlDoc.new('sdb','all')
     update(db) if db
     @v=Verbose.new("sdb",6)
-    doc.find_each('symbol','table'){|e1|
+    doc.symbol.each{|e1|
       row=e1.to_h
       id=row.delete('id')
       rc=row[:record]={}

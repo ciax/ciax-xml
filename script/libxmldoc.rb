@@ -6,14 +6,12 @@ class XmlDoc < Hash
   attr_reader :symbol
   def initialize(dbid = nil,type = nil)
     @v=Verbose.new("Doc/#{dbid}",4)
-    @domain={}
     if type && ! readxml(dbid,type){|e|
-        @symbol=e if e.name == 'symbol'
+        @symbol= (e.name == 'symbol') ? e : {}
         update(e.to_h)
+        @domain={}
         e.each{|e1|
-          unless e.ns == e1.ns
-            @domain[e1.name]=e1
-          end
+          @domain[e1.name]=e1 unless e.ns == e1.ns
         }
         @v.msg{"Domain registerd:#{@domain.keys}"}
       }.empty?

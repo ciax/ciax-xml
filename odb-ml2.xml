@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+  <object id="ml1" label="MOIRCS Temperature 1" class="lk8" client="socat - tcp:celaeno:4005" server="socat - udp-l:24105,reuseaddr,fork">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
+      <title ref="ch0" label="Robohand" />
+      <title ref="ch1" label="CollBench" />
+      <title ref="ch2" label="BulkHead" />
+      <title ref="ch3" label="HeatPath" />
+      <title ref="ch4" label="D1(NONE)" />
+      <title ref="ch5" label="D2(NONE)" />
+      <title ref="ch6" label="ChipBox2" />
+      <title ref="ch7" label="Det2" />
+      <title ref="sp" label="SetPoint2 (K)" />
+      <title ref="htr" label="HeaterPower2(%%)" />
+    </status>
+  </object>
+</odb>

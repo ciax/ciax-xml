@@ -1,10 +1,6 @@
 #!/usr/bin/ruby
 require "json"
 require "libview"
-require "liblabel"
-require "libgroup"
-require "libsym"
-require "libsymdb"
 
 abort "Usage: viewing (-lgs) (obj) < [file]" if STDIN.tty?
 
@@ -28,13 +24,11 @@ end
 opt.split('').each{|s|
   case s
   when 'l'
-    Label.new(db).convert(view)
+    view.add_label(db)
   when 'g'
-    Group.new(db).convert(view)
+    view.add_group(db)
   when 's'
-    sdb=SymDb.new
-    sdb.update(db.symtbl)
-    Sym.new(sdb,db).convert(view)
+    view.init_sym(db).conv_sym
   end
 }
 puts JSON.dump(view)

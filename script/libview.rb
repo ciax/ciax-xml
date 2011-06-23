@@ -24,10 +24,10 @@ class View < Hash
     self
   end
 
-  def add_group(odb=@odb)
+  def add_arrange(odb=@odb)
     if @odb=odb
-      require "libgroup"
-      Group.new(odb).convert(self)
+      require "libarrange"
+      Arrange.new(odb).convert(self)
     end
     self
   end

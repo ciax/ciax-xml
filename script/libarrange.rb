@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libcircular"
-class Group < Hash
+class Arrange < Hash
   def initialize(hash)
-    raise "Group have to be given Db" unless hash.kind_of?(Db)
+    raise "Arrange have to be given Db" unless hash.kind_of?(Db)
     @c=Circular.new(5)
     update(hash.status[:row]||{})
     update({'time'=>0,'class'=>0,'frame'=>0})

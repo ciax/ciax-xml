@@ -31,7 +31,7 @@ begin
   }
   view=View.new(cobj.stat)
   view.add_label(odb) if opt.include?('l')
-  view.add_group(odb) if opt.include?('g')
+  view.add_arrange(odb) if opt.include?('g')
   view.init_sym(odb) if opt.include?('s')
 rescue SelectID
   abort "Usage: clsshell (-lgs) [cls] [id] [iocmd]\n#{$!}"

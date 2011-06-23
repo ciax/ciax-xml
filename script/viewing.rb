@@ -26,7 +26,7 @@ opt.split('').each{|s|
   when 'l'
     view.add_label(db)
   when 'g'
-    view.add_group(db)
+    view.add_arrange(db)
   when 's'
     view.init_sym(db).conv_sym
   end

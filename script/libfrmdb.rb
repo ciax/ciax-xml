@@ -90,7 +90,7 @@ class FrmDb < Db
       attr=e.to_h
       attr['val']=e.text
       if id=attr['assign']
-        [:symbol,:label,:group].each{|k|
+        [:symbol,:label,:arrange].each{|k|
           @status[k]={} unless @status.key?(k)
           if d=attr.delete(k.to_s)
             @status[k][id]=d

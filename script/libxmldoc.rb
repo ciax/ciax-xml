@@ -3,7 +3,7 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  attr_reader :symbol,:domain
+  attr_reader :symbol
   def initialize(dbid = nil,type = nil)
     @v=Verbose.new("Doc/#{dbid}",4)
     @symbol={}
@@ -49,7 +49,7 @@ class XmlDoc < Hash
     if @domain.key?(domain)
       @domain[domain]
     else
-      Array
+      XmlGn.new
     end
   end
 end

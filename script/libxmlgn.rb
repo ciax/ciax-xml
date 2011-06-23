@@ -3,7 +3,7 @@ require "xml"
 require "libverbose"
 
 class XmlGn
-  def initialize(f)
+  def initialize(f=nil)
     @v=Verbose.new("Xml",4)
     case f
     when String
@@ -12,25 +12,20 @@ class XmlGn
       @v.msg{@e.namespaces.default}
     when XML::Node
       @e=f
+    when nil
+      doc=XML::Document.new
+      @e=doc.root=XML::Node.new('blank')
     else
       @v.err("Parameter shoud be String or Node")
     end
   end
 
-  def each
-    @e.each_element{|e|
-      @v.msg(1){"each <#{e.name}>"}
-      yield XmlGn.new(e)
-      @v.msg(-1){"</#{e.name}>"}
-    }
+  def to_s
+    @e.to_s
   end
 
-  def map
-    ary=[]
-    each{|e|
-      ary << (yield e)
-    }
-    ary
+  def ns
+    @e.namespaces.default
   end
 
   def [](key)
@@ -39,10 +34,6 @@ class XmlGn
 
   def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
     @e.attributes.to_h
-  end
-
-  def to_s
-    @e.to_s
   end
 
   def name
@@ -56,8 +47,12 @@ class XmlGn
     nil
   end
 
-  def ns
-    @e.namespaces.default
+  def each
+    @e.each_element{|e|
+      @v.msg(1){"each <#{e.name}>"}
+      yield XmlGn.new(e)
+      @v.msg(-1){"</#{e.name}>"}
+    }
   end
 
   def find_each(xpath)
@@ -65,6 +60,14 @@ class XmlGn
     @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
       yield XmlGn.new(e)
     }
+  end
+
+  def map
+    ary=[]
+    each{|e|
+      ary << (yield e)
+    }
+    ary
   end
 
   def attr2db(db,id='id')

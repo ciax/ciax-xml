@@ -16,28 +16,27 @@ class View < Hash
     end
   end
 
-  def add_label(odb)
-    if odb
+  def add_label(odb=@odb)
+    if @odb=odb
       require "liblabel"
       Label.new(odb).convert(self)
     end
     self
   end
 
-  def add_group(odb)
-    if odb
+  def add_group(odb=@odb)
+    if @odb=odb
       require "libgroup"
       Group.new(odb).convert(self)
     end
     self
   end
 
-  def init_sym(odb)
-    if odb
+  def init_sym(odb=@odb)
+    if @odb=odb
       require "libsymdb"
       require "libsym"
-      sym=SymDb.new
-      sym.update(odb.symtbl)
+      sym=SymDb.new.update(odb.symtbl)
       @sdb=Sym.new(sym,odb)
     end
     self

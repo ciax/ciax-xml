@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<sdb xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/sdb.xsd" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol>
     <table id="iid_tsc" label="Instrument ID by TSC" type="string">
       <case class="warn" msg="NONE">0</case>

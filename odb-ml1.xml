@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
   <object id="ml1" label="MOIRCS Temperature 1" class="lk8" client="socat - tcp:celaeno:4005" server="socat - udp-l:24105,reuseaddr,fork">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="ch0" label="MosCold2" />

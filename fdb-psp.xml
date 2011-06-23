@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="psp" label="Power Supply Instek PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" wait="0.3">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">

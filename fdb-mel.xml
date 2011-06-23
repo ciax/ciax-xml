@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="mel" label="MELSEC Q Series" endian="little" ccmethod="len">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <code length="2" label="SubHeader: Prefix">0x54</code>

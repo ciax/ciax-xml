@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
@@ -18,10 +18,10 @@
           <field decode="unsigned">6</field>
         </response>
         <response id="getstat">
-          <field assign="st1" label="CH1 RetCode"/>
-          <field assign="ch1" label="CH1 Value"/>
-          <field assign="st2" label="CH2 RetCode"/>
-          <field assign="ch2" label="CH2 Value"/>
+          <field assign="st1" label="CH1 RetCode" />
+          <field assign="ch1" label="CH1 Value" />
+          <field assign="st2" label="CH2 RetCode" />
+          <field assign="ch2" label="CH2 Value" />
         </response>
       </select>
     </rspframe>

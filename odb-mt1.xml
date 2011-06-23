@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/odb.xsd">
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
   <object id="mt1" label="MOIRCS Pressure Main" class="tpg" client="socat - tcp:celaeno:4009" server="socat - udp-l:24109,reuseaddr,fork">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="st1" label="Main Dewar Stat" />

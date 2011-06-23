@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
-    <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
+    <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Get Status" response="getstat" type="stat">
@@ -27,14 +27,14 @@
       <select>
         <response id="getstat">
           <array assign="ch" label="Value">
-            <index range="0:7" size="8"/>
+            <index range="0:7" size="8" />
           </array>
         </response>
         <response id="htrstat">
-          <field assign="htr" label="Heater Power"/>
+          <field assign="htr" label="Heater Power" />
         </response>
         <response id="spstat">
-          <field assign="sp" label="SetPoint"/>
+          <field assign="sp" label="SetPoint" />
         </response>
       </select>
     </rspframe>

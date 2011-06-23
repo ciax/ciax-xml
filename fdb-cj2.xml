@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ciax.sum.naoj.org/ciax-xml/schema/fdb.xsd">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="cj2" label="OMRON CJ2M-CPU33" endian="big">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <code length="1" label="FINS Header:ICF">0x80</code>

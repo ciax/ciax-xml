@@ -39,18 +39,17 @@ class XmlDoc < Hash
   end
 
   public
-  def find_each(domain,xpath=nil)  # child or find
-    # For Symbol, domain is not <symbol> at sdb_all
+  def find_each(domain,xpath)
     return unless @domain.key?(domain)
-    if xpath
-      @domain[domain].find_each(xpath){|e| yield e}
-    else
-      @domain[domain].each{|e| yield e}
-    end
+    @domain[domain].find_each(xpath){|e| yield e}
+    self
   end
 
   def domain(domain)
-    @v.err("No such Domain [#{domain}]") unless @domain.key?(domain)
-    @domain[domain]
+    if @domain.key?(domain)
+      @domain[domain]
+    else
+      Array
+    end
   end
 end

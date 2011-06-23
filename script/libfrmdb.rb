@@ -23,7 +23,7 @@ class FrmDb < Db
     begin
       @v.msg(1){"INIT:Main Frame <-"}
       frame=[]
-      @doc.find_each(domain){|e1|
+      @doc.domain(domain).each{|e1|
         frame << yield(e1)
       }
       @v.msg{"InitMainFrame:#{frame}"}

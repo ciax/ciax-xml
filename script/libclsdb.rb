@@ -72,7 +72,7 @@ class ClsDb < Db
 
   def init_command
     cdbc={:cdb => {}}
-    @doc.find_each('commands'){|e0|
+    @doc.domain('commands').each{|e0|
       id=e0.attr2db(cdbc)
       list=[]
       @rep.each(e0){|e1|

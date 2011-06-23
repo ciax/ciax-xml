@@ -9,7 +9,7 @@ class ObjDb < ClsDb
   def initialize(obj,cls=nil)
     @alias={}
     @status={}
-    @symtbl={}
+    @tables={}
     super(cls) if cls
     doc=XmlDoc.new('odb',obj)
     doc.domain('command').each('alias'){|e0|
@@ -19,7 +19,7 @@ class ObjDb < ClsDb
     doc.domain('status').each('title'){|e0|
       e0.attr2db(@status,'ref')
     }
-    SymDb.new(doc,@symtbl)
+    SymDb.new(doc,@tables)
   rescue SelectID
   end
 end

@@ -77,7 +77,7 @@
         <statement command="outfld" />
         <statement command="getstat" />
       </session>
-      <session id="x12on" label="X1 and X2 ON">
+      <session id="x01on" label="X0 and X1 ON">
         <statement command="getstat" />
         <statement command="set">
           <argv>stat</argv>
@@ -86,7 +86,7 @@
         <statement command="outfld" />
         <statement command="getstat" />
       </session>
-      <session id="x12off" label="X1 and X2 OFF">
+      <session id="x01off" label="X0 and X1 OFF">
         <statement command="getstat" />
         <statement command="set">
           <argv>stat</argv>
@@ -95,7 +95,7 @@
         <statement command="outfld" />
         <statement command="getstat" />
       </session>
-      <session id="x34on" label="X3 and X4 ON">
+      <session id="x23on" label="X2 and X3 ON">
         <statement command="getstat" />
         <statement command="set">
           <argv>stat</argv>
@@ -104,7 +104,7 @@
         <statement command="outfld" />
         <statement command="getstat" />
       </session>
-      <session id="x34off" label="X3 and X4 OFF">
+      <session id="x23off" label="X2 and X3 OFF">
         <statement command="getstat" />
         <statement command="set">
           <argv>stat</argv>

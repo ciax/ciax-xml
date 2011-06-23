@@ -15,10 +15,10 @@
       <alias id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
       <alias id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
       <alias id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
-      <alias id="caon" label="CAS BOTH HC ON" ref="x12on" />
-      <alias id="caoff" label="CAS BOTH HC OFF" ref="x12off" />
-      <alias id="maon" label="MOIRCS BOTH ON" ref="x34on" />
-      <alias id="maoff" label="MOIRCS BOTH OFF" ref="x34off" />
+      <alias id="caon" label="CAS BOTH HC ON" ref="x01on" />
+      <alias id="caoff" label="CAS BOTH HC OFF" ref="x01off" />
+      <alias id="maon" label="MOIRCS BOTH ON" ref="x23on" />
+      <alias id="maoff" label="MOIRCS BOTH OFF" ref="x23off" />
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="xsw0" symbol="off-warn" label="CAS2(S1)(CIAO) SWITCH" />

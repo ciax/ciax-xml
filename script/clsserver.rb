@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "json"
 require "libcls"
-require "libfrm"
+require "libfrmobj"
 require "libclsdb"
 require "libfrmdb"
 require "libserver"
@@ -17,7 +17,7 @@ inp=Alias.new(id)
 begin
   cdb=ClsDb.new(cls)
   fdb=FrmDb.new(cdb['frame'])
-  fobj=Frm.new(fdb,id,iocmd)
+  fobj=FrmObj.new(fdb,id,iocmd)
   cobj=Cls.new(cdb,id){|stm|
     fobj.request(stm)
     fobj.stat

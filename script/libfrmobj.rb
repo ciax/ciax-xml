@@ -4,7 +4,7 @@ require "libiostat"
 require "libfrmcmd"
 require "libfrmrsp"
 
-class Frm
+class FrmObj
   attr_reader :interrupt,:prompt
   def initialize(fdb,id,iocmd)
     @field=IoStat.new(id,"field")

@@ -3,17 +3,22 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  attr_reader :symbol
+  attr_reader :symbol,:domain
   def initialize(dbid = nil,type = nil)
     @v=Verbose.new("Doc/#{dbid}",4)
+    @symbol={}
+    @domain={}
     if type && ! readxml(dbid,type){|e|
-        @symbol= (e.name == 'symbol') ? e : {}
-        update(e.to_h)
-        @domain={}
-        e.each{|e1|
-          @domain[e1.name]=e1 unless e.ns == e1.ns
-        }
-        @v.msg{"Domain registerd:#{@domain.keys}"}
+        case e.name
+        when 'symbol'
+          @symbol=e
+        else
+          update(e.to_h)
+          e.each{|e1|
+            @domain[e1.name]=e1 unless e.ns == e1.ns
+          }
+          @v.msg{"Domain registerd:#{@domain.keys}"}
+        end
       }.empty?
     else
       list={}
@@ -27,7 +32,7 @@ class XmlDoc < Hash
     pre="#{ENV['XMLPATH']}/#{dbid}"
     path="#{pre}-#{type}.xml"
     Dir.glob(path).each{|p|
-      XmlGn.new(p).each{|e|
+      XmlGn.new(p).each{|e| # Second level
         yield e
       }
     }

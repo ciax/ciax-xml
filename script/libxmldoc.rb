@@ -27,6 +27,14 @@ class XmlDoc < Hash
     end
   end
 
+  def domain(domain)
+    if @domain.key?(domain)
+      @domain[domain]
+    else
+      XmlGn.new
+    end
+  end
+
   private
   def readxml(dbid,type='*')
     pre="#{ENV['XMLPATH']}/#{dbid}"
@@ -36,20 +44,5 @@ class XmlDoc < Hash
         yield e
       }
     }
-  end
-
-  public
-  def find_each(domain,xpath)
-    return unless @domain.key?(domain)
-    @domain[domain].find_each(xpath){|e| yield e}
-    self
-  end
-
-  def domain(domain)
-    if @domain.key?(domain)
-      @domain[domain]
-    else
-      XmlGn.new
-    end
   end
 end

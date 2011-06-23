@@ -8,22 +8,24 @@ class FrmDb < Db
     super('fdb',frm)
     @rep=Repeat.new
     @frame={}
-    @frame[:command]=init_main('cmdframe'){|e| init_cmd(e)}
-    @frame[:status]=init_main('rspframe'){|e| init_stat(e)}
+    domc=@doc.domain('cmdframe')
+    domr=@doc.domain('rspframe')
+    @frame[:command]=init_main(domc){|e| init_cmd(e)}
+    @frame[:status]=init_main(domr){|e| init_stat(e)}
     @v.msg{"Structure:frame:#{@frame}"}
-    @command.update(init_sel('cmdframe','command'){|e| init_cmd(e)})
+    @command.update(init_sel(domc,'command'){|e| init_cmd(e)})
     @v.msg{"Structure:command:#{@command}"}
-    @status.update(init_sel('rspframe','response'){|e| init_stat(e)})
+    @status.update(init_sel(domr,'response'){|e| init_stat(e)})
     @v.msg{"Structure:status:#{@status}"}
   end
 
   private
   def init_main(domain)
-    hash=@doc.domain(domain).to_h
+    hash=domain.to_h
     begin
       @v.msg(1){"INIT:Main Frame <-"}
       frame=[]
-      @doc.domain(domain).each{|e1|
+      domain.each{|e1|
         frame << yield(e1)
       }
       @v.msg{"InitMainFrame:#{frame}"}
@@ -31,7 +33,7 @@ class FrmDb < Db
     ensure
       @v.msg(-1){"-> INIT:Main Frame"}
     end
-    @doc.find_each(domain,'ccrange'){|e0|
+    domain.find_each('ccrange'){|e0|
       begin
         @v.msg(1){"INIT:Ceck Code Frame <-"}
         frame=[]
@@ -50,7 +52,7 @@ class FrmDb < Db
   def init_sel(domain,select)
     selh={}
     list=selh[:select]={}
-    @doc.find_each(domain,select){|e0|
+    domain.find_each(select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}
         id=e0.attr2db(selh)

@@ -33,7 +33,7 @@ class FrmDb < Db
     ensure
       @v.msg(-1){"-> INIT:Main Frame"}
     end
-    domain.find_each('ccrange'){|e0|
+    domain.each('ccrange'){|e0|
       begin
         @v.msg(1){"INIT:Ceck Code Frame <-"}
         frame=[]
@@ -52,7 +52,7 @@ class FrmDb < Db
   def init_sel(domain,select)
     selh={}
     list=selh[:select]={}
-    domain.find_each(select){|e0|
+    domain.each(select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}
         id=e0.attr2db(selh)

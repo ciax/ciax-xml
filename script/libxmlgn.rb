@@ -47,19 +47,21 @@ class XmlGn
     nil
   end
 
-  def each
-    @e.each_element{|e|
-      @v.msg(1){"each <#{e.name}>"}
-      yield XmlGn.new(e)
-      @v.msg(-1){"</#{e.name}>"}
-    }
-  end
-
-  def find_each(xpath)
-    @v.msg{"FindXpath:#{xpath}"}
-    @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-      yield XmlGn.new(e)
-    }
+  def each(xpath=nil)
+    if xpath
+      @v.msg{"FindXpath:#{xpath}"}
+      @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
+        @v.msg(1){"<#{e.name}>"}
+        yield XmlGn.new(e)
+        @v.msg(-1){"</#{e.name}>"}
+      }
+    else
+      @e.each_element{|e|
+        @v.msg(1){"<#{e.name}>"}
+        yield XmlGn.new(e)
+        @v.msg(-1){"</#{e.name}>"}
+      }
+    end
   end
 
   def map

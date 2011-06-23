@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "json"
-require "libcls"
+require "libclsobj"
 require "libfrmobj"
 require "libobjdb"
 require "libclsdb"
@@ -25,7 +25,7 @@ begin
   cdb=ClsDb.new(cls)
   fdb=FrmDb.new(cdb['frame'])
   fobj=FrmObj.new(fdb,id,iocmd)
-  cobj=Cls.new(cdb,id){|stm|
+  cobj=ClsObj.new(cdb,id){|stm|
     fobj.request(stm)
     fobj.stat
   }

@@ -7,7 +7,7 @@ require "libclsstat"
 require "libwatch"
 require "thread"
 
-class Cls
+class ClsObj
   def initialize(cdb,id)
     @cls=cdb['id'].freeze
     @v=Verbose.new("ctl",6)

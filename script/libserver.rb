@@ -8,12 +8,11 @@ class Server
     UDPSocket.open{ |udp|
       udp.bind("0.0.0.0",port)
       loop {
+        select([udp])
+        line,addr=udp.recvfrom(1024)
+        @v.msg{"#{line} is #{line.class}"}
         begin
-          select([udp])
-          line,addr=udp.recvfrom(1024)
-          @v.msg{"#{line} is #{line.class}"}
-          line.chomp!
-          msg=yield line
+          msg=yield line.chomp
         rescue RuntimeError
           msg=$!.to_s
           warn msg

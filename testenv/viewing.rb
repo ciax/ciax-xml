@@ -28,7 +28,7 @@ opt.split('').each{|s|
   when 'g'
     view.add_arrange(db)
   when 's'
-    view.init_sym(db).conv_sym
+    view.init_sym(db).upd
   end
 }
 puts JSON.dump(view)

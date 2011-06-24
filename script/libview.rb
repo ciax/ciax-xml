@@ -21,6 +21,7 @@ class View < Hash
     self['list'].each{|h|
       h['val']=@stat[h['id']]
     }
+    @sdb.convert(self) if @sdb
     self
   end
 
@@ -46,13 +47,6 @@ class View < Hash
       require "libsymtbls"
       sym=SymDb.new.update(odb.tables)
       @sdb=SymTbls.new(sym,odb)
-    end
-    self
-  end
-
-  def conv_sym
-    if @sdb
-      @sdb.convert(self)
     end
     self
   end

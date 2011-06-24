@@ -41,7 +41,7 @@ Shell.new(cobj.prompt){|line|
   when nil
     cobj.interrupt
   when ''
-    view.upd.conv_sym
+    view.upd
     opt=='lgs' ? view.prt : view
   else
     line.split(';').each{|cmd|

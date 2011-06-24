@@ -14,6 +14,7 @@ class View < Hash
         end
         ary << {'id'=>k, 'val'=>v}
       }
+      upd
     end
   end
 

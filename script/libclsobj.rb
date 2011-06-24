@@ -25,6 +25,7 @@ class ClsObj
     @v.add("== Internal Command ==")
     @v.add('sleep'=>"sleep [sec]")
     @v.add('waitfor'=>"[key] [val] (timeout=10)")
+    upd
   end
 
   def upd

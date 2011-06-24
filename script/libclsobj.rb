@@ -8,8 +8,9 @@ require "libwatch"
 require "thread"
 
 class ClsObj
+  attr_reader :stat,:prompt
   def initialize(cdb,id)
-    @cls=cdb['id'].freeze
+    @prompt=[cdb['id']]
     @v=Verbose.new("ctl",6)
     @field=IoStat.new(id,"field")
     @cc=ClsCmd.new(cdb)
@@ -23,22 +24,14 @@ class ClsObj
     @main=session_thread{|buf| yield buf}
   end
 
-  def prompt
-    prom=@cls.dup
-    if @stat['wach'] == "1"
-      prom << (@stat['evet'] == "1" ? '@' : '&')
-    end
-    prom << (@stat['isu'] == "1" ? '*' : '')
-    prom << (@stat['wait'] == "1" ? '#' : '')
-    prom << (@main.alive? ? ">" : "X")
-  end
-
-  def stat
-    @stat['wach']=(@watch.alive? ? "1" : "0")
-    @stat['evet']=(@event.active? ? '1' : '0')
-    @stat['isu']=(@buf.issue? ? '1' : '0')
-    @stat['wait']=(@buf.wait? ? '1' : '0')
-    @stat
+  def upd
+    i=0
+    upd_elem(@watch.alive?,'wach',i+=1,'@')
+    upd_elem(@event.active?,'evet',i+=1,'&')
+    upd_elem(@buf.issue?,'isu',i+=1,'*')
+    upd_elem(@buf.wait?,'wait',i+=1,'#')
+    upd_elem(@main.alive?,nil,i+=1,'>','X')
+    self
   end
 
   def dispatch(ssn)
@@ -69,6 +62,12 @@ class ClsObj
   end
 
   private
+  def upd_elem(flg,key,idx,sym=nil,sym2='')
+    @stat[key]= flg ? '1' : '0' if key
+    @prompt[idx]= flg ? sym : sym2 if idx
+    flg
+  end
+
   def session_thread
     Thread.new{
       Thread.pass

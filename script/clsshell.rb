@@ -36,11 +36,20 @@ begin
 rescue SelectID
   abort "Usage: clsshell (-lgs) [cls] [id] [iocmd]\n#{$!}"
 end
-inf=proc{|cmd|
-  cobj.dispatch(al.alias(cmd))
+Shell.new(cobj.upd.prompt){|line|
+  case line
+  when nil
+    puts cobj.interrupt
+  when ''
+    view.conv_sym
+#    puts opt=='lgs' ? view.prt : view
+    puts view
+    puts cobj.stat
+  else
+    line.split(';').each{|cmd|
+      cmda=cmd.split(" ")
+      cobj.dispatch(al.alias(cmda))
+    }
+  end
+  cobj.upd
 }
-outf=proc{|stat|
-  view.conv_sym
-  opt=='lgs' ? view.prt : view
-}
-Shell.new(cobj,inf,outf)

@@ -20,7 +20,7 @@ class FrmObj
   end
 
   def request(stm)
-    return self if stm.empty?
+    return '' if stm.empty?
     @v.msg{"Receive #{stm}"}
     case stm[0]
     when 'set'

@@ -6,31 +6,20 @@ require "readline"
 # "prompt","interrupt","quit"
 # Param: db, input filter(proc), output filter(proc)
 class Shell
-  def initialize(db,inpf=nil,outf=nil)
+  def initialize(pary=[])
     v=Verbose.new("shell")
     loop {
-      line=Readline.readline(db.prompt,true)
-      case line
-      when nil
-        puts db.interrupt
-      when /^q/
-        break
-      when ''
-        puts outf ? outf.call(db.stat) : db.stat
-      else
-        begin
-          line.split(';').each{|cmd|
-            cmda=cmd.split(" ")
-            puts inpf ? inpf.call(cmda) : cmda
-          }
-        rescue SelectID
-          list={}
-          list['q']="Quit"
-          list['D^']="Interrupt"
-          v.list(list,"== Shell Command ==") rescue puts($!)
-        rescue UserError
-          puts $!.to_s
-        end
+      line=Readline.readline(pary.join(''),true)
+      break if /^q/ === line
+      begin
+        yield line
+      rescue SelectID
+        list={}
+        list['q']="Quit"
+        list['D^']="Interrupt"
+        v.list(list,"== Shell Command ==") rescue puts($!)
+      rescue UserError
+        puts $!.to_s
       end
     }
   end

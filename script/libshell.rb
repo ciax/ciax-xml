@@ -8,16 +8,15 @@ require "readline"
 class Shell
   def initialize(pary=[])
     v=Verbose.new("shell")
+    v.add("== Shell Command ==")
+    v.add('q'=>"Quit",'D^'=>"Interrupt")
     loop {
       line=Readline.readline(pary.join(''),true)
       break if /^q/ === line
       begin
         yield line
       rescue SelectID
-        list={}
-        list['q']="Quit"
-        list['D^']="Interrupt"
-        v.list(list,"== Shell Command ==") rescue puts($!)
+        puts v
       rescue UserError
         puts $!.to_s
       end

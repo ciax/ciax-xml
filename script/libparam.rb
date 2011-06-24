@@ -17,6 +17,7 @@ class Param < Hash
         @alias[k]=k
       }
     end
+    @v.add("== Command List==").add(@label)
   end
 
   def setpar(stm)
@@ -28,7 +29,7 @@ class Param < Hash
 
   def check_id
     id=@stm.first
-    @v.list(@label,"== Command List==") unless @label.key?(id)
+    raise SelectID,@v.to_s unless @label.key?(id)
     id=self[:id]
     @db.each{|k,v|
       self[k]=v[id]

@@ -22,6 +22,9 @@ class ClsObj
     @event=Watch.new(cdb,@stat)
     @watch=watch_thread
     @main=session_thread{|buf| yield buf}
+    @v.add("== Internal Command ==")
+    @v.add('sleep'=>"sleep [sec]")
+    @v.add('waitfor'=>"[key] [val] (timeout=10)")
   end
 
   def upd
@@ -47,10 +50,7 @@ class ClsObj
     end
     "ISSUED"
   rescue SelectID
-    list={}
-    list['sleep']="sleep [sec]"
-    list['waitfor']="[key] [val] (timeout=10)"
-    @v.list(list,"== Internal Command ==")
+    raise SelectID,@v.to_s
   end
 
   def interrupt

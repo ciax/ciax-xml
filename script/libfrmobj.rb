@@ -13,6 +13,11 @@ class FrmObj
     @v=Verbose.new("fdb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,id,fdb['wait'],1)
     @interupt='',@prompt="#{fdb['id']}>"
+    @v.add("== Internal Command ==")
+    @v.add('set'=>"Set Value  [key(:idx)] (val)")
+    @v.add('unset'=>"Remove Value  [key]")
+    @v.add('load'=>"Load Field (tag)")
+    @v.add('save'=>"Save Field [key,key...] (tag)")
   end
 
   def stat
@@ -41,12 +46,7 @@ class FrmObj
       'OK'
     end
   rescue SelectID
-    list={}
-    list['set']="Set Value  [key(:idx)] (val)"
-    list['unset']="Remove Value  [key]"
-    list['load']="Load Field (tag)"
-    list['save']="Save Field [key,key...] (tag)"
-    @v.list(list,"== Internal Command ==")
+    raise SelectID,@v.to_s
   end
 
   private

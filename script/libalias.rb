@@ -6,6 +6,8 @@ class Alias
   def initialize(obj)
     @v=Verbose.new("alias/#{obj}".upcase,6)
     @odb=ObjDb.new(obj).alias
+    @v.add("=== Command List ===")
+    @v.add(@odb[:label])
   end
   
   public
@@ -19,7 +21,7 @@ class Alias
       ssn=ssn[1..-1].unshift(ref)
       @v.msg{"After:#{ref}/#{ssn}"}
     else
-      @v.list(@odb[:label],"=== Command List ===")
+      raise SelectID,@v.to_s
     end
     ssn
   end

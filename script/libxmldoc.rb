@@ -23,7 +23,7 @@ class XmlDoc < Hash
     else
       list={}
       readxml(dbid){|e| list[e['id']]=e['label'] }
-      @v.list(list)
+      raise SelectID,@v.add(list).to_s
     end
   end
 

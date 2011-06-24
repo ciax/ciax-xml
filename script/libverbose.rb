@@ -6,10 +6,11 @@ class SelectID < UserError; end
 class Verbose
   Start_time=Time.now
   @@base=1
-  def initialize(title='',color=7)
-    @title=title.upcase
+  def initialize(prefix='',color=7)
+    @prefix=prefix.upcase
     @color=color
     @ind=1
+    @list=[]
     msg{"Initialize Messaging"}
   end
 
@@ -42,18 +43,26 @@ class Verbose
     Kernel.abort color(msg,1)
   end
 
-  def list(list,title='')
-    err=[$!.to_s,color(title,2)]
-    list.each{|key,val|
-      case val
-      when String
-        label=val
-      when Hash,XmlGn
-        label=val['label']
-      end
-      err << color(" %-10s" % key,3)+": #{label}" if label
-    }
-    raise SelectID,err.grep(/./).join("\n")
+  def add(list)
+    case list
+    when String
+      @list << color(list,2)
+    when Hash
+      list.each{|key,val|
+        case val
+        when String
+          label=val
+        when Hash,XmlGn
+          label=val['label']
+        end
+        @list << color(" %-10s" % key,3)+": #{label}" if label
+      }
+    end
+    self
+  end
+
+  def to_s
+    [$!.to_s,*@list].grep(/./).join("\n")
   end
 
   # Private Method
@@ -69,7 +78,7 @@ class Verbose
     return unless text
     pass=sprintf("%5.4f",Time.now-Start_time)
     ts= STDERR.tty? ? '' : "[#{pass}]"
-    ts+'  '*@ind+color("#{@title}:",@color)+text.inspect
+    ts+'  '*@ind+color("#{@prefix}:",@color)+text.inspect
   end
 
   def condition(msg) # VER= makes setenv "" to VER otherwise nil

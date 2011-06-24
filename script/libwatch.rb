@@ -3,7 +3,7 @@ class Watch < Array
   def initialize(cdb,stat)
     push(*cdb.watch)
     @stat=stat
-    @v=Verbose.new("EVENT",3)
+    @v=Verbose.new("WATCH",3)
   end
 
   public

@@ -18,7 +18,6 @@ if (/^-/ === cls)
 end
 id=ARGV.shift
 iocmd=ARGV.shift
-filter=ARGV.shift
 al=Alias.new(id)
 begin
   odb=ObjDb.new(id,cls)

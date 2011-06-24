@@ -16,6 +16,13 @@ class View < Hash
     end
   end
 
+  def upd(stat)
+    self['list'].each{|h|
+      h['val']=stat[h['id']]
+    }
+    self
+  end
+
   def add_label(odb=@odb)
     if @odb=odb
       require "liblabel"

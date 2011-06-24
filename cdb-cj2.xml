@@ -9,7 +9,7 @@
       </session>
       <session id="clr" label="ClearBit">
         <statement command="clrbit" />
-        <statement command="getstat" />
+        <statement command="getcmd" />
       </session>
       <session id="stop" label="Emergency Stop">
         <statement command="setbit">

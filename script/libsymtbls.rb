@@ -2,7 +2,7 @@
 require "libverbose"
 require "librerange"
 
-class Sym
+class SymTbls
   def initialize(table,ref)
     raise "Sym have to be given Db" unless ref.kind_of?(Db)
     raise "Sym have to be given SymDb" unless table.kind_of?(SymDb)

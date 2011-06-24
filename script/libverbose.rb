@@ -43,6 +43,10 @@ class Verbose
     Kernel.abort color(msg,1)
   end
 
+  def assert(cls,val)
+    cls === val || raise(color("Param should be #{cls}",1))
+  end
+
   def add(list)
     case list
     when String

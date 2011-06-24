@@ -14,7 +14,7 @@ class Shell
       line=Readline.readline(pary.join(''),true)
       break if /^q/ === line
       begin
-        yield line
+        puts yield line
       rescue SelectID
         puts v
       rescue UserError

@@ -38,15 +38,14 @@ end
 Shell.new(cobj.upd.prompt){|line|
   case line
   when nil
-    puts cobj.interrupt
+    cobj.interrupt
   when ''
-    view.conv_sym
-    puts opt=='lgs' ? view.prt : view
+    view.upd(cobj.upd.stat).conv_sym
+    opt=='lgs' ? view.prt : view
   else
     line.split(';').each{|cmd|
       cmda=cmd.split(" ")
       cobj.dispatch(al.alias(cmda))
     }
   end
-  view.upd(cobj.upd.stat)
 }

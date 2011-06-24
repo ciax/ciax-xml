@@ -13,6 +13,10 @@ rescue SelectID
   abort "Usage: frmshell [dev] [id] [iocmd]\n#{$!}"
 end
 Shell.new(['>']){|line|
-  puts fobj.request(line.split(" "))
-  puts fobj.stat
+  case line
+  when '',nil
+    fobj.stat
+  else
+    fobj.request(line.split(" "))
+  end
 }

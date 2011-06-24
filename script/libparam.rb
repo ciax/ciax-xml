@@ -29,7 +29,7 @@ class Param < Hash
 
   def check_id
     id=@stm.first
-    raise SelectID,@v.to_s unless @label.key?(id)
+    @v.list unless @label.key?(id)
     id=self[:id]
     @db.each{|k,v|
       self[k]=v[id]

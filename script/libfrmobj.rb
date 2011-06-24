@@ -46,7 +46,7 @@ class FrmObj
       'OK'
     end
   rescue SelectID
-    raise SelectID,@v.to_s
+    @v.list
   end
 
   private

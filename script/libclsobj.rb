@@ -50,7 +50,7 @@ class ClsObj
     end
     "ISSUED"
   rescue SelectID
-    raise SelectID,@v.to_s
+    @v.list
   end
 
   def interrupt

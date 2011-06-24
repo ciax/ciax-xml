@@ -65,6 +65,10 @@ class Verbose
     [$!.to_s,*@list].grep(/./).join("\n")
   end
 
+  def list
+    raise SelectID,to_s
+  end
+
   # Private Method
   private
   # 1=red,2=green,4=blue,8=bright

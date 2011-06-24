@@ -21,7 +21,7 @@ class Alias
       ssn=ssn[1..-1].unshift(ref)
       @v.msg{"After:#{ref}/#{ssn}"}
     else
-      raise SelectID,@v.to_s
+      @v.list
     end
     ssn
   end

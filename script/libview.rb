@@ -5,6 +5,7 @@ class View < Hash
     if stat.key?('list')
       update(stat)
     else
+      @stat=stat
       ary=self['list']=[]
       stat.each{|k,v|
         case k
@@ -16,9 +17,9 @@ class View < Hash
     end
   end
 
-  def upd(stat)
+  def upd
     self['list'].each{|h|
-      h['val']=stat[h['id']]
+      h['val']=@stat[h['id']]
     }
     self
   end

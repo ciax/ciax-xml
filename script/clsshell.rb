@@ -35,12 +35,13 @@ begin
 rescue SelectID
   abort "Usage: clsshell (-lgs) [cls] [id] [iocmd]\n#{$!}"
 end
-Shell.new(cobj.upd.prompt){|line|
+Shell.new(cobj.prompt){|line|
+  cobj.upd
   case line
   when nil
     cobj.interrupt
   when ''
-    view.upd(cobj.upd.stat).conv_sym
+    view.upd.conv_sym
     opt=='lgs' ? view.prt : view
   else
     line.split(';').each{|cmd|

@@ -41,6 +41,7 @@ Shell.new(cobj.upd.prompt){|line|
   when nil
     puts cobj.interrupt
   when ''
+    view.conv_sym
     puts opt=='lgs' ? view.prt : view
   else
     line.split(';').each{|cmd|
@@ -48,5 +49,5 @@ Shell.new(cobj.upd.prompt){|line|
       cobj.dispatch(al.alias(cmda))
     }
   end
-  view.upd(cobj.upd.stat).conv_sym
+  view.upd(cobj.upd.stat)
 }

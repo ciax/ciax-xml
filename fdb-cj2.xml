@@ -115,7 +115,7 @@
           <field decode="unsigned" label="FINS Command:SRC" length="1">0x01</field>
           <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
           <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
-          <field assign="err" decode="unsigned" label="FINS Command:Error Code" length="2">0</field>
+          <field assign="err" decode="unsigned" label="FINS Command:Error Code" length="2"></field>
         </response>
         <response id="getzlen">
           <field decode="unsigned" label="FINS Command:MRC" length="1">0x01</field>

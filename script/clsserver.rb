@@ -26,7 +26,7 @@ rescue SelectID
 end
 Server.new(port){|line|
   case line
-  when '',/stat/
+  when ''
   when /stop/
     cobj.interrupt
   else

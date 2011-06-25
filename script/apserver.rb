@@ -36,13 +36,13 @@ end
 int.new(port){|line|
   cobj.upd
   case line
-  when '',/stat/
+  when ''
+    ap.upd
   when /stop/
     cobj.interrupt
   else
+    ap.isu
     cmda=line.split(' ')
     cobj.dispatch(inp.alias(cmda))
-    ap.isu
   end
-  ap.upd
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
@@ -302,7 +302,7 @@
         <value id="run" label="Running" symbol="warn">
           <binary bit="15" ref="w:0" />
         </value>
-        <value id="cmp" label="COMMAND COMPLETE" symbol="normal">
+        <value id="cmp" label="COMMAND COMPLETE" symbol="warn">
           <binary bit="14" ref="w:0" />
         </value>
       </row>

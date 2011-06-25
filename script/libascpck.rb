@@ -1,10 +1,12 @@
 #!/usr/bin/ruby
-
+# Ascii Pack
 class AscPck
-  def initialize(id)
+  def initialize(id,stat)
     file="/home/ciax/config/sdb_#{id}.txt"
     @id=id
+    @stat=stat
     @list=[]
+    @res=''
     open(file){|f|
       while line=f.gets
         key=line.split(',').first
@@ -15,19 +17,26 @@ class AscPck
         end
       end
     }
+    upd
   end
 
-  def convert(stat)
-    exe=(stat['exe'] == '0000') ? '0' : '1'
-    isu=(exe+stat['cmp']+stat['run'] == '100') ? '1' : '0'
-    res="%#{@id}_#{exe}#{isu}_"
+  def isu
+    @stat['isu']='1'
+  end
+
+  def upd
+    @res="%#{@id}_#{@stat['run']}#{@stat['isu']}_"
     @list.each{|key|
-      if val=stat[key]
-        res << val
+      if val=@stat[key]
+        @res << val
       else
         warn "NO key(#{key}) in Status"
       end
     }
-    res
+    self
+  end
+
+  def to_s
+    @res
   end
 end

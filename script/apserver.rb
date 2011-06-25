@@ -1,0 +1,49 @@
+#!/usr/bin/ruby
+require "json"
+require "libclsobj"
+require "libfrmobj"
+require "libclsdb"
+require "libfrmdb"
+require "libshell"
+require "libascpck"
+require "libalias"
+
+cls=ARGV.shift
+id=ARGV.shift
+port=ARGV.shift
+iocmd=ARGV.shift
+inp=Alias.new(id)
+begin
+  cdb=ClsDb.new(cls)
+  fdb=FrmDb.new(cdb['frame'])
+  fobj=FrmObj.new(fdb,id,iocmd)
+  cobj=ClsObj.new(cdb,id){|stm|
+    fobj.request(stm)
+    fobj.stat
+  }
+  ap=AscPck.new(id,cobj.stat)
+rescue SelectID
+  abort "Usage: apserver [cls] [id] [port] [iocmd]\n#{$!}"
+end
+if port == '0'
+  require "libshell"
+  int=Shell
+  port=['>']
+else
+  require "libserver"
+  int=Server
+end
+
+int.new(port){|line|
+  cobj.upd
+  case line
+  when '',/stat/
+  when /stop/
+    cobj.interrupt
+  else
+    cmda=line.split(' ')
+    cobj.dispatch(inp.alias(cmda))
+    ap.isu
+  end
+  ap.upd
+}

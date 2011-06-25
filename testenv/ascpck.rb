@@ -4,5 +4,4 @@ require "libascpck"
 abort "Usage: ascpck [id] < [status file]" if ARGV.size < 1
 id=ARGV.shift
 stat=JSON.load(gets(nil))
-ap=AscPck.new(id)
-print ap.convert(stat)
+puts AscPck.new(id,stat)

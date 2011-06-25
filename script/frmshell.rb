@@ -12,7 +12,7 @@ begin
 rescue SelectID
   abort "Usage: frmshell [dev] [id] [iocmd]\n#{$!}"
 end
-Shell.new(['>']){|line|
+Shell.new([dev,'>']){|line|
   case line
   when '',nil
     fobj.stat

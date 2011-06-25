@@ -5,14 +5,12 @@ require "libfrmcmd"
 require "libfrmrsp"
 
 class FrmObj
-  attr_reader :interrupt,:prompt
   def initialize(fdb,id,iocmd)
     @field=IoStat.new(id,"field")
     @cmd=FrmCmd.new(fdb,@field)
     @rsp=FrmRsp.new(fdb,@field)
     @v=Verbose.new("fdb/#{id}".upcase)
     @ic=IoCmd.new(iocmd,id,fdb['wait'],1)
-    @interupt='',@prompt="#{fdb['id']}>"
     @v.add("== Internal Command ==")
     @v.add('set'=>"Set Value  [key(:idx)] (val)")
     @v.add('unset'=>"Remove Value  [key]")

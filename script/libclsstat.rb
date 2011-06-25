@@ -3,6 +3,7 @@ require "libverbose"
 require "libclsdb"
 
 class ClsStat
+  attr_reader :stat
   def initialize(cdb,field)
     @field=field
     @stat={}
@@ -10,10 +11,11 @@ class ClsStat
     cls=cdb['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls})
     @v=Verbose.new("#{cls}/stat",2)
+    upd
   end
   
   public
-  def get_stat
+  def upd
     @cdbs.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
@@ -23,7 +25,7 @@ class ClsStat
       end
     }
     @stat['time']=Time.at(@field['time'].to_f).to_s
-    @stat
+    self
   end
   
   private

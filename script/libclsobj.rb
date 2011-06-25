@@ -15,7 +15,7 @@ class ClsObj
     @field=IoStat.new(id,"field")
     @cc=ClsCmd.new(cdb)
     @cs=ClsStat.new(cdb,@field)
-    @stat=@cs.get_stat
+    @stat=@cs.stat
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=cdb['interval']||1
@@ -75,7 +75,7 @@ class ClsObj
       begin
         loop{
           @field.update(yield @buf.recv)
-          @cs.get_stat
+          @cs.upd
         }
       rescue SelectID
         raise "Session Thread Error\n"+$!.to_s

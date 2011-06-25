@@ -22,6 +22,10 @@ class FrmObj
     @field.to_h
   end
 
+  def to_s
+    @field.to_s
+  end
+
   def request(stm)
     return '' if stm.empty?
     @v.msg{"Receive #{stm}"}

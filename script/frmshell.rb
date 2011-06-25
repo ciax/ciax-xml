@@ -15,7 +15,7 @@ end
 Shell.new([dev,'>']){|line|
   case line
   when '',nil
-    fobj.stat
+    fobj
   else
     fobj.request(line.split(" "))
   end

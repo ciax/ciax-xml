@@ -10,6 +10,14 @@ class Stat < Hash
     Hash[self]
   end
 
+  def to_s
+    str=''
+    each{|k,v|
+      str << sprintf(" %-6s : %s\n",k,v)
+    }
+    str
+  end
+
   def subst(str)
     return str unless /\$\{/ === str
     @v.msg(1){"Substitute from [#{str}]"}

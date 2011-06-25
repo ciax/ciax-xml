@@ -42,7 +42,6 @@ int.new(port){|line|
     cobj.interrupt
   else
     ap.isu
-    cmda=line.split(' ')
-    cobj.dispatch(inp.alias(cmda))
+    cobj.dispatch(inp.alias(line.split(' ')))
   end
 }

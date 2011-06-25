@@ -30,10 +30,7 @@ Server.new(port){|line|
   when /stop/
     cobj.interrupt
   else
-    line.split(';').each{|cmd|
-      cmda=cmd.split(' ')
-      cobj.dispatch(inp.alias(cmda))
-    }
+    cobj.dispatch(inp.alias(line.split(' ')))
   end
   out.filter(JSON.dump(cobj.stat))
 }

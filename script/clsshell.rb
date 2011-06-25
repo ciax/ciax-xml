@@ -43,9 +43,6 @@ Shell.new(cobj.prompt){|line|
     view.upd
     opt=='lgs' ? view.prt : view
   else
-    line.split(';').each{|cmd|
-      cmda=cmd.split(" ")
-      cobj.dispatch(al.alias(cmda))
-    }
+    cobj.dispatch(al.alias(line.split(" ")))
   end
 }

@@ -17,9 +17,8 @@ begin
   cdb=ClsDb.new(cls)
   fdb=FrmDb.new(cdb['frame'])
   fobj=FrmObj.new(fdb,id,iocmd)
-  cobj=ClsObj.new(cdb,id){|stm|
+  cobj=ClsObj.new(cdb,id,fobj.field){|stm|
     fobj.request(stm)
-    fobj.stat
   }
   ap=AscPck.new(id,cobj.stat)
 rescue SelectID

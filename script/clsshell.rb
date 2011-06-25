@@ -24,9 +24,8 @@ begin
   cdb=ClsDb.new(cls)
   fdb=FrmDb.new(cdb['frame'])
   fobj=FrmObj.new(fdb,id,iocmd)
-  cobj=ClsObj.new(cdb,id){|stm|
+  cobj=ClsObj.new(cdb,id,fobj.field){|stm|
     fobj.request(stm)
-    fobj.stat
   }
   view=View.new(cobj.stat)
   view.add_label(odb) if opt.include?('l')

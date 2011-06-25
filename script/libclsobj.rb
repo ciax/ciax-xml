@@ -9,10 +9,10 @@ require "thread"
 
 class ClsObj
   attr_reader :stat,:prompt
-  def initialize(cdb,id)
+  def initialize(cdb,id,field)
     @prompt=[cdb['id']]
     @v=Verbose.new("ctl",6)
-    @field=IoStat.new(id,"field")
+    @field=field
     @cc=ClsCmd.new(cdb)
     @cs=ClsStat.new(cdb,@field)
     @stat=@cs.stat
@@ -74,7 +74,7 @@ class ClsObj
       Thread.pass
       begin
         loop{
-          @field.update(yield @buf.recv)
+          yield @buf.recv
           @cs.upd
         }
       rescue SelectID

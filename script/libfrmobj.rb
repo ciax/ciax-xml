@@ -5,6 +5,7 @@ require "libfrmcmd"
 require "libfrmrsp"
 
 class FrmObj
+  attr_reader :field
   def initialize(fdb,id,iocmd)
     @field=IoStat.new(id,"field")
     @cmd=FrmCmd.new(fdb,@field)
@@ -16,10 +17,6 @@ class FrmObj
     @v.add('unset'=>"Remove Value  [key]")
     @v.add('load'=>"Load Field (tag)")
     @v.add('save'=>"Save Field [key,key...] (tag)")
-  end
-
-  def stat
-    @field.to_h
   end
 
   def to_s

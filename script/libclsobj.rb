@@ -13,9 +13,9 @@ class ClsObj
     @prompt=[cdb['id']]
     @v=Verbose.new("ctl",6)
     @field=field
+    @stat=IoStat.new(id,"json/status")
     @cc=ClsCmd.new(cdb)
-    @cs=ClsStat.new(cdb,@field)
-    @stat=@cs.stat
+    @cs=ClsStat.new(cdb,@field,@stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=cdb['interval']||1
@@ -76,6 +76,7 @@ class ClsObj
         loop{
           yield @buf.recv
           @cs.upd
+          @stat.save
         }
       rescue SelectID
         raise "Session Thread Error\n"+$!.to_s

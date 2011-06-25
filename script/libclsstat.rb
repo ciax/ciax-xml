@@ -4,9 +4,9 @@ require "libclsdb"
 
 class ClsStat
   attr_reader :stat
-  def initialize(cdb,field)
+  def initialize(cdb,field,stat={})
     @field=field
-    @stat={}
+    @stat=stat
     @cdbs=cdb.status[:cdb]
     cls=cdb['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls})

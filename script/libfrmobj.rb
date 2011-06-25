@@ -40,7 +40,7 @@ class FrmObj
       @cmd.setcmd(stm)
       cid=stm.join(':')
       @ic.snd(@cmd.getframe,'snd:'+cid)
-      @rsp.setrsp(stm).getfield(@ic.time){ @ic.rcv('rcv:'+cid)||@v.err("No response") }
+      @rsp.setrsp(stm,@ic.time){ @ic.rcv('rcv:'+cid)||@v.err("No response") }
       @field.save
       'OK'
     end

@@ -4,48 +4,43 @@ require "libparam"
 
 # Rsp Methods
 class FrmRsp
-  def initialize(fdb,stat)
+  def initialize(fdb,field)
     @fdb=fdb
-    @stat=stat
+    @field=field
     @v=Verbose.new("#{fdb['id']}/rsp",3)
-    @stat['frame']=fdb['id']
+    @field['frame']=fdb['id']
     @fdbs=fdb.frame[:status]
     @par=Param.new(fdb.command)
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
-  def setrsp(stm)
+  def setrsp(stm,time=Time.now)
     if rid=@par.setpar(stm).check_id[:response]
       sel=@fdb.status[:select][rid] || @v.err("No such response id [#{rid}]")
       @fdbs[:select]=sel
+      @v.msg{"Set Statement #{stm}"}
+      frame=yield || @v.err("No String")
+      if tm=@fdbs['terminator']
+        frame.chomp!(eval('"'+tm+'"'))
+        @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
+      end
+      if dm=@fdbs['delimiter']
+        @fary=frame.split(eval('"'+dm+'"'))
+        @v.msg{"Split:[#{frame}] by [#{dm}]" }
+      else
+        @fary=[frame]
+      end
+      @frame.set(@fary.shift)
+      getfield_rec(@fdbs[:main])
+      if cc=@field.delete('cc')
+        cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
+        @v.msg{"Verify:CC OK <#{cc}>"}
+      end
+      @field['time']="%.3f" % time.to_f
     else
+      @v.msg{"Send Only"}
       @fdbs[:select]=nil
     end
-    @v.msg{"Set Statement #{stm}"}
-    self
-  end
-
-  def getfield(time=Time.now)
-    return "Send Only" unless @fdbs[:select]
-    frame=yield || @v.err("No String")
-    if tm=@fdbs['terminator']
-      frame.chomp!(eval('"'+tm+'"'))
-      @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
-    end
-    if dm=@fdbs['delimiter']
-      @fary=frame.split(eval('"'+dm+'"'))
-      @v.msg{"Split:[#{frame}] by [#{dm}]" }
-    else
-      @fary=[frame]
-    end
-    @frame.set(@fary.shift)
-    getfield_rec(@fdbs[:main])
-    if cc=@stat.delete('cc')
-      cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
-      @v.msg{"Verify:CC OK <#{cc}>"}
-    end
-    @stat['time']="%.3f" % time.to_f
-    Hash[@stat]
   end
 
   private
@@ -88,7 +83,7 @@ class FrmRsp
       @v.msg(1){"Field:#{e0['label']}"}
       data=cut(e0)
       if key=e0['assign']
-        @stat[key]=data
+        @field[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
       end
       if val=e0['val']
@@ -109,7 +104,7 @@ class FrmRsp
         idxs << @par.subst(e1['range']) # Insert range depends on command param
       }
       @v.msg(1){"Array:#{e0['label']}[#{key}]:Range#{idxs}"}
-      @stat[key]=mk_array(idxs,@stat[key]){
+      @field[key]=mk_array(idxs,@field[key]){
         cut(e0)
       }
     ensure

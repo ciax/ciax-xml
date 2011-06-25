@@ -15,9 +15,12 @@ class FrmRsp
   end
 
   def setrsp(stm)
-    rid=@par.setpar(stm).check_id[:response]
-    sel=@fdb.status[:select][rid] || @v.err("No such response id [#{rid}]")
-    @fdbs[:select]=sel
+    if rid=@par.setpar(stm).check_id[:response]
+      sel=@fdb.status[:select][rid] || @v.err("No such response id [#{rid}]")
+      @fdbs[:select]=sel
+    else
+      @fdbs[:select]=nil
+    end
     @v.msg{"Set Statement #{stm}"}
     self
   end

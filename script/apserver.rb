@@ -36,7 +36,7 @@ end
 int.new(port){|line|
   cobj.upd
   case line
-  when ''
+  when '',/stat/
     ap.upd
   when /stop/
     cobj.interrupt

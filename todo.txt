@@ -17,6 +17,7 @@ mcr:inter lock error log is  really needed
 
 ***CHECK NEED
 verify on motion: cdb-oss
+watch: multicondition
 
 ***UPGRADE
 using sqlite for logging stat

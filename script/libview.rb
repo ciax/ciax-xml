@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # Status to View (String with attributes)
+require "libprint"
 class View < Hash
   def initialize(stat={})
     if stat.key?('list')

@@ -8,7 +8,6 @@ require "libfrmdb"
 require "libalias"
 require "libview"
 require "libshell"
-require "libprint"
 
 cls=ARGV.shift
 opt='lgs'
@@ -20,13 +19,13 @@ id=ARGV.shift
 iocmd=ARGV.shift
 al=Alias.new(id)
 begin
-  odb=ObjDb.new(id,cls)
   cdb=ClsDb.new(cls)
   fdb=FrmDb.new(cdb['frame'])
   fobj=FrmObj.new(fdb,id,iocmd)
   cobj=ClsObj.new(cdb,id,fobj.field){|stm|
     fobj.request(stm)
   }
+  odb=ObjDb.new(id,cls)
   view=View.new(cobj.stat)
   view.add_label(odb) if opt.include?('l')
   view.add_arrange(odb) if opt.include?('g')

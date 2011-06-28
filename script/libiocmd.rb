@@ -3,10 +3,10 @@ require "libverbose"
 require "libiofile"
 
 class IoCmd
-  def initialize(iocmd,id=nil,wait=0,timeout=nil)
+  def initialize(iocmd,logid=nil,wait=0,timeout=nil)
     abort " No IO command" unless iocmd
     @iocmd=iocmd.split(' ')
-    @iof=IoFile.new("device_#{id}") if id
+    @logging=IoFile.new("device_#{logid}") if logid
     @f=IO.popen(@iocmd,'r+')
     @v=Verbose.new('IOCMD',1)
     @v.msg{iocmd}
@@ -16,12 +16,12 @@ class IoCmd
   end
 
   def time
-    @iof.time
+    @logging.time
   end
 
   def snd(str,id=nil)
     return unless str && str != ''
-    @iof.log_frame(str,id) if @iof
+    @logging.log_frame(str,id) if @logging
     int=1
     begin
       @f.syswrite(str)
@@ -46,7 +46,7 @@ class IoCmd
       retry
     end
     @v.msg{"Recv #{str.dump}"}
-    @iof.log_frame(str,id) if @iof
+    @logging.log_frame(str,id) if @logging
     sleep @wait
     str
   end

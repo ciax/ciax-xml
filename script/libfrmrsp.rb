@@ -14,12 +14,15 @@ class FrmRsp
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
-  def setrsp(stm,time=Time.now)
+  # Block accepts [time,frame]
+  def setrsp(stm)
     if rid=@par.setpar(stm).check_id[:response]
       sel=@fdb.status[:select][rid] || @v.err("No such response id [#{rid}]")
       @fdbs[:select]=sel
       @v.msg{"Set Statement #{stm}"}
-      frame=yield || @v.err("No String")
+      time,frame=yield
+      @v.err("No Response") unless frame
+      @field['time']="%.3f" % time.to_f
       if tm=@fdbs['terminator']
         frame.chomp!(eval('"'+tm+'"'))
         @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
@@ -36,7 +39,6 @@ class FrmRsp
         cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
-      @field['time']="%.3f" % time.to_f
     else
       @v.msg{"Send Only"}
       @fdbs[:select]=nil

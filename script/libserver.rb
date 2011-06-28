@@ -14,10 +14,10 @@ class Server
         begin
           msg=yield line.chomp
         rescue RuntimeError
-          msg=$!.to_s
+          msg=$!
           warn msg
         end
-        udp.send(msg,0,addr[2],addr[1])
+        udp.send(msg.to_s,0,addr[2],addr[1])
       }
     }
   end

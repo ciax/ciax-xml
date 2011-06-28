@@ -15,7 +15,7 @@ begin
   time=Time.at(ary.shift.to_f)
   stm=ary.shift.split(':')
   abort ("Logline:Not response") unless /rcv/ === stm.shift
-  r.setrsp(stm,time){ eval(ary.shift) }
+  r.setrsp(stm){[time,eval(ary.shift)]}
   puts JSON.dump(field)
 rescue RuntimeError
   abort "Usage: frmstat [frame] < logline\n#{$!}"

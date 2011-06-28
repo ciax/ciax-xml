@@ -15,10 +15,6 @@ class IoCmd
     @v.msg{"Init"}
   end
 
-  def time
-    @logging.time
-  end
-
   def snd(str,id=nil)
     return unless str && str != ''
     @logging.log_frame(str,id) if @logging
@@ -45,9 +41,10 @@ class IoCmd
       sleep int*=2
       retry
     end
+    time=Time.now
     @v.msg{"Recv #{str.dump}"}
-    @logging.log_frame(str,id) if @logging
+    @logging.log_frame(str,id,time) if @logging
     sleep @wait
-    str
+    [time,str]
   end
 end

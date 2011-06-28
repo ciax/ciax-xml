@@ -4,11 +4,9 @@ require "libverbose"
 class IoFile
   VarDir="#{ENV['HOME']}/.var"
   JsonDir=VarDir+"/json"
-  attr_reader :time
 
   def initialize(type)
     @type=type
-    @time=Time.now
     @v=Verbose.new('FILE',1)
     @logfile=@type+'_'+Time.now.year.to_s
   end
@@ -84,9 +82,8 @@ class IoFile
     frame
   end 
 
-  def log_frame(frame,id=nil)
-    @time=Time.now
-    line=["%.3f" % @time.to_f,id,frame.dump].compact.join("\t")
+  def log_frame(frame,id=nil,time=Time.now)
+    line=["%.3f" % time.to_f,id,frame.dump].compact.join("\t")
     open(VarDir+"/#{@logfile}.log",'a') {|f|
       @v.msg{"Frame Logging for [#{id}]"}
       f << line+"\n"

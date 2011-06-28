@@ -45,7 +45,7 @@ class FrmRsp
 
   private
   def cut(e)
-    @frame.cut(e) || @frame.set(@fary.shift).cut(e)
+    @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
   end
 
   # Process Frame to Field

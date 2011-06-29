@@ -19,6 +19,14 @@ class View < Hash
     end
   end
 
+  def add(odb,opt)
+    add_label(odb) if opt.include?('l')
+    add_arrange(odb) if opt.include?('a')
+    init_sym(odb) if opt.include?('s')
+    @prt=Print.new if opt.include?('p')
+    self
+  end
+
   def upd
     self['list'].each{|h|
       h['val']=@stat[h['id']]
@@ -53,11 +61,6 @@ class View < Hash
     self
   end
 
-  def prt
-    pr=Print.new
-    pr.print(self)
-  end
-
   # Filterling values by env value of VAL
   # VAL=a:b:c -> grep "a|b|c"
   def to_s
@@ -71,6 +74,10 @@ class View < Hash
     else
       list=self['list']
     end
-    (header+list).join("\n")
+    if @prt
+      @prt.print(self)
+    else
+      (header+list).join("\n")
+    end
   end
 end

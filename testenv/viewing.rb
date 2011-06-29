@@ -5,7 +5,7 @@ require "libview"
 abort "Usage: viewing (-lgs) (obj) < [file]" if STDIN.tty?
 
 obj=ARGV.shift
-opt='lgs'
+opt='als'
 if (/^-/ === obj)
   opt=obj.delete('-')
   obj=ARGV.shift
@@ -21,14 +21,5 @@ elsif type=view['class']
 else
   raise "NO ID in View"
 end
-opt.split('').each{|s|
-  case s
-  when 'l'
-    view.add_label(db)
-  when 'g'
-    view.add_arrange(db)
-  when 's'
-    view.init_sym(db).upd
-  end
-}
+view.add(db,opt)
 puts JSON.dump(view)

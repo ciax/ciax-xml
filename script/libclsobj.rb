@@ -8,11 +8,11 @@ require "libwatch"
 require "thread"
 
 class ClsObj
-  attr_reader :stat,:prompt
-  def initialize(cdb,id,field)
+  attr_reader :prompt
+  def initialize(cdb,stat,field)
     @prompt=[cdb['id']]
     @v=Verbose.new("ctl",6)
-    @stat=IoStat.new(id,"json/status")
+    @stat=stat
     @cc=ClsCmd.new(cdb)
     @cs=ClsStat.new(cdb,field,@stat)
     Thread.abort_on_exception=true
@@ -25,10 +25,6 @@ class ClsObj
     @v.add('sleep'=>"sleep [sec]")
     @v.add('waitfor'=>"[key] [val] (timeout=10)")
     upd
-  end
-
-  def to_s
-    @stat.to_s
   end
 
   def upd

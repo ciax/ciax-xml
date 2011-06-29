@@ -3,9 +3,9 @@ require "libverbose"
 require "libobjdb"
 
 class Alias
-  def initialize(obj)
-    @v=Verbose.new("alias/#{obj}".upcase,6)
-    @odb=ObjDb.new(obj).alias
+  def initialize(odb)
+    @v=Verbose.new("alias/#{odb['id']}".upcase,6)
+    @odb=odb.alias
     @v.add("=== Command List ===")
     @v.add(@odb[:label])
   end

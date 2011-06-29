@@ -13,10 +13,10 @@ else
     iocmd="socat - $iodst"
 fi
 if [ "$shell" ] ; then
-    apserver $cls $id 0 "$iocmd"
+    apserver $cls $id "$iocmd"
 else
     echo "Listen port [udp:$port]" >&2
     errlog="$HOME/.var/err-$id.log"
     date >> $errlog
-    apserver $cls $id $port "$iocmd" >> $errlog 2>&1 &
+    apserver $cls $id "$iocmd" $port >> $errlog 2>&1 &
 fi

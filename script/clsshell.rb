@@ -22,14 +22,10 @@ begin
 rescue SelectID
   abort "Usage: clsshell (-alsp) [cls] [id] [iocmd]\n#{$!}"
 end
-Shell.new(cobj.prompt){|line|
-  cobj.upd
-  case line
-  when nil
-    cobj.interrupt
-  when ''
+cobj.session{|stm|
+  if stm.empty?
     view.upd
   else
-    cobj.dispatch(al.alias(line.split(' ')))
+    cobj.dispatch(al.alias(stm))
   end
 }

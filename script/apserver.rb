@@ -5,32 +5,22 @@ require "libascpck"
 
 cls=ARGV.shift
 id=ARGV.shift
-port=ARGV.shift
 iocmd=ARGV.shift
+port=ARGV.shift
 begin
   cobj=ClsSrv.new(id,cls,iocmd)
   ap=AscPck.new(id,cobj.stat)
 rescue SelectID
-  abort "Usage: apserver [cls] [id] [port] [iocmd]\n#{$!}"
+  abort "Usage: apserver [cls] [id] [iocmd] [port]\n#{$!}"
 end
-if port == '0'
-  require "libshell"
-  int=Shell
-  port=['>']
-else
-  require "libserver"
-  int=Server
-end
-
-int.new(port){|line|
-  cobj.upd
-  case line
-  when '',/stat/
-    ap.upd
+cobj.session(port,['>']){|stm|
+  case stm[0]
+  when nil,/stat/
   when /stop/
     cobj.interrupt
   else
     ap.issue
-    cobj.dispatch(line.split(' '))
+    cobj.dispatch(stm)
   end
+  ap.upd
 }

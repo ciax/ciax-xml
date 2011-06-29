@@ -21,4 +21,24 @@ class ClsSrv < ClsObj
       fobj.request(stm)
     }
   end
+
+  def session(port=0,pary=nil)
+    if port.to_i > 0
+      require "libserver"
+      Server.new(port){|line|
+        upd
+        yield line.split(' ')
+      }
+    else
+      require "libshell"
+      Shell.new(pary||prompt){|line|
+        if line
+          upd
+          yield line.split(' ')
+        else
+          interrupt
+        end
+      }
+    end
+  end
 end

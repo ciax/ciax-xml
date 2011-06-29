@@ -3,7 +3,7 @@ require "socket"
 require "libverbose"
 
 class Server
-  def initialize(port)
+  def initialize(port,prom=[])
     @v=Verbose.new("UDPS")
     UDPSocket.open{ |udp|
       udp.bind("0.0.0.0",port)
@@ -14,10 +14,10 @@ class Server
         begin
           msg=yield line.chomp
         rescue RuntimeError
-          msg=$!
+          msg=$!.to_s+"\n"
           warn msg
         end
-        udp.send(msg.to_s,0,addr[2],addr[1])
+        udp.send(msg.to_s+prom.join(''),0,addr[2],addr[1])
       }
     }
   end

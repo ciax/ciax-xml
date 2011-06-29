@@ -11,15 +11,16 @@ if (/^-/ === obj)
   obj=ARGV.shift
 end
 str=STDIN.gets(nil) || exit
-view=View.new(JSON.load(str))
-if type=view['frame']
+stat=JSON.load(str)
+if type=stat['frame']
   require "libfrmdb"
   db=FrmDb.new(type)
-elsif type=view['class']
+elsif type=stat['class']
   require "libobjdb"
   db=ObjDb.new(obj,type)
 else
   raise "NO ID in View"
 end
-view.add(db,opt)
+view=View.new(stat,db)
+view.opt(opt).upd
 puts JSON.dump(view)

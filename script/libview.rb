@@ -2,7 +2,8 @@
 # Status to View (String with attributes)
 require "libprint"
 class View < Hash
-  def initialize(stat={})
+  def initialize(stat={},odb=nil)
+    @odb=odb
     if stat.key?('list')
       update(stat)
     else
@@ -15,14 +16,13 @@ class View < Hash
         end
         ary << {'id'=>k, 'val'=>v}
       }
-      upd
     end
   end
 
-  def add(odb,opt)
-    add_label(odb) if opt.include?('l')
-    add_arrange(odb) if opt.include?('a')
-    init_sym(odb) if opt.include?('s')
+  def opt(opt)
+    add_label if opt.include?('l')
+    add_arrange if opt.include?('a')
+    init_sym if opt.include?('s')
     @prt=Print.new if opt.include?('p')
     self
   end
@@ -35,28 +35,28 @@ class View < Hash
     self
   end
 
-  def add_label(odb=@odb)
-    if @odb=odb
+  def add_label
+    if @odb
       require "liblabel"
-      Label.new(odb).convert(self)
+      Label.new(@odb).convert(self)
     end
     self
   end
 
-  def add_arrange(odb=@odb)
-    if @odb=odb
+  def add_arrange
+    if @odb
       require "libarrange"
-      Arrange.new(odb).convert(self)
+      Arrange.new(@odb).convert(self)
     end
     self
   end
 
-  def init_sym(odb=@odb)
-    if @odb=odb
+  def init_sym
+    if @odb
       require "libsymdb"
       require "libsymtbls"
-      sym=SymDb.new.update(odb.tables)
-      @sdb=SymTbls.new(sym,odb)
+      sym=SymDb.new.update(@odb.tables)
+      @sdb=SymTbls.new(sym,@odb)
     end
     self
   end

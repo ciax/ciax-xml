@@ -13,6 +13,5 @@ rescue SelectID
   abort "Usage: clsserver [cls] [id] [iocmd] [port]\n#{$!}"
 end
 cobj.session(port,['>']){|line|
-  line=nil if /stop/ === line
   cobj.dispatch(line)||cobj.stat
 }

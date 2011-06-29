@@ -39,11 +39,12 @@ class ClsObj
 
   def dispatch(line)
     return interrupt unless line
-    return if line.empty?
     ssn=line.split(' ')
     ssn=yield ssn if defined? yield
     return "Blocking" if @event.blocking?(ssn)
     case ssn[0]
+    when nil,/stat/
+      return
     when 'sleep'
       @buf.wait_for(ssn[0].to_i){}
     when 'waitfor'

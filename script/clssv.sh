@@ -14,4 +14,4 @@ else
 fi
 errlog="$HOME/.var/err-$id.log"
 date >> $errlog
-clsserver $cls $id "$iocmd" $port >> $errlog 2>&1 &
+clsserver $cls $id "$iocmd" $port >> $errlog 2>&1 & client $id;tail $errlog

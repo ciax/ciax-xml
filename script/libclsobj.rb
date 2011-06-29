@@ -27,6 +27,10 @@ class ClsObj
     upd
   end
 
+  def to_s
+    @stat.to_s
+  end
+
   def upd
     i=0
     upd_elem(@watch.alive?,'wach',i+=1,'@')

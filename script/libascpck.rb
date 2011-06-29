@@ -20,7 +20,7 @@ class AscPck
     upd
   end
 
-  def isu
+  def issue
     @stat['isu']='1'
   end
 

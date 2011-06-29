@@ -1,26 +1,22 @@
 #!/usr/bin/ruby
 require "libiocmd"
-require "libiostat"
 require "libfrmcmd"
 require "libfrmrsp"
 
 class FrmObj
-  attr_reader :field
-  def initialize(fdb,id,iocmd)
-    @field=IoStat.new(id,"field")
-    @cmd=FrmCmd.new(fdb,@field)
-    @rsp=FrmRsp.new(fdb,@field)
-    @v=Verbose.new("fdb/#{id}".upcase)
-    @ic=IoCmd.new(iocmd,id,fdb['wait'],1)
+  def initialize(fdb,field,iocmd)
+    raise "Field is not Stat" unless field.is_a?(IoStat)
+    @field=field
+    raise "Command is not IoCmd" unless iocmd.is_a?(IoCmd)
+    @ic=iocmd
+    @cmd=FrmCmd.new(fdb,field)
+    @rsp=FrmRsp.new(fdb,field)
+    @v=Verbose.new("fdb".upcase)
     @v.add("== Internal Command ==")
     @v.add('set'=>"Set Value  [key(:idx)] (val)")
     @v.add('unset'=>"Remove Value  [key]")
     @v.add('load'=>"Load Field (tag)")
     @v.add('save'=>"Save Field [key,key...] (tag)")
-  end
-
-  def to_s
-    @field.to_s
   end
 
   def request(stm)

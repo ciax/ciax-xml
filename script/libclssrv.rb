@@ -27,17 +27,13 @@ class ClsSrv < ClsObj
       require "libserver"
       Server.new(port){|line|
         upd
-        yield line.split(' ')
+        yield(line)
       }
     else
       require "libshell"
       Shell.new(pary||prompt){|line|
-        if line
-          upd
-          yield line.split(' ')
-        else
-          interrupt
-        end
+        upd
+        yield(line)
       }
     end
   end

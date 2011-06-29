@@ -22,10 +22,6 @@ begin
 rescue SelectID
   abort "Usage: clsshell (-alsp) [cls] [id] [iocmd]\n#{$!}"
 end
-cobj.session{|stm|
-  if stm.empty?
-    view.upd
-  else
-    cobj.dispatch(al.alias(stm))
-  end
+cobj.session{|line|
+  cobj.dispatch(line){|stm| al.alias(stm)}||view.upd
 }

@@ -37,9 +37,12 @@ class ClsObj
     self
   end
 
-  def dispatch(ssn)
-    return false if ssn.empty?
-    raise "Blocking" if @event.blocking?(ssn)
+  def dispatch(line)
+    return interrupt unless line
+    return if line.empty?
+    ssn=line.split(' ')
+    ssn=yield ssn if defined? yield
+    return "Blocking" if @event.blocking?(ssn)
     case ssn[0]
     when 'sleep'
       @buf.wait_for(ssn[0].to_i){}

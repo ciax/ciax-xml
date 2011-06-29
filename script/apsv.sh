@@ -17,6 +17,10 @@ if [ "$shell" ] ; then
 else
     echo "Listen port [udp:$port]" >&2
     errlog="$HOME/.var/err-$id.log"
-    date >> $errlog
-    apserver $cls $id "$iocmd" $port >> $errlog 2>&1 & client $id;tail $errlog
+    date > $errlog
+    apserver $cls $id "$iocmd" $port >> $errlog 2>&1 &
+    client $id
+    echo
+    cat $errlog
+    psg -k "$cls $id"
 fi

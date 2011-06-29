@@ -13,5 +13,9 @@ else
     iocmd="socat - $iodst"
 fi
 errlog="$HOME/.var/err-$id.log"
-date >> $errlog
-clsserver $cls $id "$iocmd" $port >> $errlog 2>&1 & client $id;tail $errlog
+date > $errlog
+clsserver $cls $id "$iocmd" $port >> $errlog 2>&1 &
+client $id
+echo
+cat $errlog
+psg -k "$cls $id"

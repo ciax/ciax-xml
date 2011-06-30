@@ -6,7 +6,7 @@ for obj in ${*:-mma mmc mix crt ml1 dts} ; do
             for i in 1 2 3 4 5; do
                 exfdbs - mma in $i
             done;;
-        mma)
+        mmc)
             for i in 1 2 3 4 5; do
                 exfdbs - mmc in $i
             done;;

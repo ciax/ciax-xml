@@ -3,10 +3,7 @@ require "json"
 require "libclssrv"
 require "libserver"
 
-cls=ARGV.shift
-id=ARGV.shift
-iocmd=ARGV.shift
-port=ARGV.shift
+cls,id,iocmd,port=ARGV
 begin
   cobj=ClsSrv.new(id,cls,iocmd)
 rescue SelectID

@@ -6,15 +6,10 @@ require "libview"
 require "libclssrv"
 require "libshell"
 
-opt=ARGV.shift
-if (/^-/ === opt)
-  cls=ARGV.shift
-else
-  cls=opt
-  opt='alsp'
-end
-id=ARGV.shift
-iocmd=ARGV.shift
+opt,arg = ARGV.partition{|s| /^-/ === s}
+opt= opt.empty? ? 'alsp' : opt.join('')
+cls,id,iocmd=arg
+
 begin
   cobj=ClsSrv.new(id,cls,iocmd)
   odb=ObjDb.new(id,cls)

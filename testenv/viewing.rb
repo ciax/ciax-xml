@@ -2,14 +2,12 @@
 require "json"
 require "libview"
 
-abort "Usage: viewing (-lgs) (obj) < [file]" if STDIN.tty?
+abort "Usage: viewing (-als) (obj) < [status_file]" if STDIN.tty?
 
-obj=ARGV.shift
-opt='als'
-if (/^-/ === obj)
-  opt=obj.delete('-')
-  obj=ARGV.shift
-end
+opt,arg=ARGV.partition{|s| /^-/ === s}
+opt=opt.empty? ? 'als' : opt.join('')
+obj=arg.first
+
 str=STDIN.gets(nil) || exit
 stat=JSON.load(str)
 if type=stat['frame']
@@ -22,5 +20,5 @@ else
   raise "NO ID in View"
 end
 view=View.new(stat,db)
-view.opt(opt).upd
+view.add(opt).upd
 puts JSON.dump(view)

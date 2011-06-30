@@ -4,8 +4,7 @@ require "libstat"
 require "libfrmcmd"
 require "libfrmdb"
 
-dev=ARGV.shift
-cmd=ARGV
+dev,*cmd=ARGV
 begin
   fdb=FrmDb.new(dev)
   st=Stat.new

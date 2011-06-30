@@ -18,10 +18,9 @@ def merge(a,b)
   end
   b
 end
-
-abort "Usage: merging [orgfile] < input\n#{$!}" if STDIN.tty? && ARGV.size < 1
-
-file=ARGV.shift
+if STDIN.tty? || ! file=ARGV.shift
+  abort "Usage: merging [status_file] < [json_data]\n#{$!}"
+end
 output={}
 open(file){|f|
   output=JSON.load(f.gets(nil))

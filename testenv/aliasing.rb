@@ -3,8 +3,7 @@ require "libobjdb"
 require "libalias"
 
 abort "Usage: aliasing [obj] [cmd] (par)\n#{$!}" if ARGV.size < 1
-obj=ARGV.shift
-cmd=ARGV.dup
+obj,*cmd=ARGV
 begin
   odb=ObjDb.new(obj)
   al=Alias.new(odb)

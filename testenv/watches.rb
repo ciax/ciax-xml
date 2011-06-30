@@ -2,7 +2,7 @@
 require "json"
 require "libclsdb"
 require "libwatch"
-abort "Usage: watches [file]" if STDIN.tty? && ARGV.size < 1
+abort "Usage: watches < [file]" if STDIN.tty?
 begin
   str=gets(nil) || exit
   stat=JSON.load(str)

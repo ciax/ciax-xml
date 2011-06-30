@@ -2,8 +2,7 @@
 require "libclsdb"
 require "libclscmd"
 
-cls=ARGV.shift
-cmd=ARGV
+cls,*cmd=ARGV
 begin
   cdb=ClsDb.new(cls)
   cc=ClsCmd.new(cdb)

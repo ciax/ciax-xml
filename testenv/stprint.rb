@@ -2,9 +2,8 @@
 require "json"
 require "libview"
 
-abort "Usage: stprint < status_file" if STDIN.tty? && ARGV.size < 1
-
+abort "Usage: stprint < [file]" if STDIN.tty?
 str=gets(nil) || exit
 view=View.new(JSON.load(str))
-puts view.opt('p')
+puts view.add('p')
 

@@ -5,9 +5,7 @@ require "libfrmdb"
 require "libfrmobj"
 require "libshell"
 
-dev=ARGV.shift
-id=ARGV.shift
-iocmd=ARGV.shift
+dev,id,iocmd=ARGV
 begin
   fdb=FrmDb.new(dev)
   field=IoStat.new(id,'field')

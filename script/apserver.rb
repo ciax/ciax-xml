@@ -13,7 +13,7 @@ begin
 rescue SelectID
   abort "Usage: apserver [cls] [id] [iocmd] [port]\n#{$!}"
 end
-cobj.session(port,['>']){|line|
-  cobj.dispatch(line){|s| ap.issue;s}
+cobj.session(port,["\n",">"]){|line|
+  cobj.dispatch(line){|s| ap.issue(s)}
   ap.upd
 }

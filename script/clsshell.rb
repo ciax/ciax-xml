@@ -6,11 +6,12 @@ require "libview"
 require "libclssrv"
 require "libshell"
 
-cls=ARGV.shift
-opt='alsp'
-if (/^-/ === cls)
-  opt=cls.delete('-')
+opt=ARGV.shift
+if (/^-/ === opt)
   cls=ARGV.shift
+else
+  cls=opt
+  opt='alsp'
 end
 id=ARGV.shift
 iocmd=ARGV.shift
@@ -18,7 +19,7 @@ begin
   cobj=ClsSrv.new(id,cls,iocmd)
   odb=ObjDb.new(id,cls)
   al=Alias.new(odb)
-  view=View.new(cobj.stat,odb).opt(opt)
+  view=View.new(cobj.stat,odb).add(opt)
 rescue SelectID
   abort "Usage: clsshell (-alsp) [cls] [id] [iocmd]\n#{$!}"
 end

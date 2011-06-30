@@ -15,8 +15,7 @@ class Watch < Array
     any?{|bg| bg[:var][:active] }
   end
 
-  def blocking?(ssn)
-    cmd=ssn.join(' ')
+  def blocking?(cmd)
     each{|bg|
       pattern=bg[:blocking] || next
       if bg[:var][:active]

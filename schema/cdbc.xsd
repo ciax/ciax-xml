@@ -45,7 +45,7 @@
         <xsd:element ref="cdbc:argv" />
       </xsd:choice>
       <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-      <xsd:attribute name="command" type="xsd:NCName" use="required"></xsd:attribute>
+      <xsd:attribute name="name" type="xsd:NCName" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="argv">

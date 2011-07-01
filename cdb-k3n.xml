@@ -3,7 +3,7 @@
   <class frame="k3n" id="k3n" label="Helium Compressor Coolant Flow">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement command="getstat" />
+        <statement name="getstat" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

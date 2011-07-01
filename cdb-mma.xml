@@ -3,65 +3,65 @@
   <class frame="slo" id="mma" label="MOIRCS Arm">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement command="getstat" />
-        <statement command="bs" />
-        <statement command="p" />
+        <statement name="getstat" />
+        <statement name="bs" />
+        <statement name="p" />
         <repeat from="1" to="5">
-          <statement command="in">
+          <statement name="in">
             <argv>$_</argv>
           </statement>
         </repeat>
       </session>
       <session id="reset" label="Reset">
-        <statement command="reset" />
+        <statement name="reset" />
       </session>
       <session id="defcon" label="Default Config">
-        <statement command="hl">
+        <statement name="hl">
           <argv>1</argv>
         </statement>
-        <statement command="e1">
+        <statement name="e1">
           <argv>0</argv>
         </statement>
-        <statement command="e2">
+        <statement name="e2">
           <argv>0</argv>
         </statement>
       </session>
       <session id="set0" label="Set 0 Pulses">
-        <statement command="set0" />
+        <statement name="set0" />
       </session>
       <session id="gf" label="Goto Focal Position">
-        <statement command="ma">
+        <statement name="ma">
           <argv>12.8</argv>
         </statement>
       </session>
       <session id="gr" label="Goto Rotate Position">
-        <statement command="ma">
+        <statement name="ma">
           <argv>123</argv>
         </statement>
       </session>
       <session id="gw" label="Goto Waiting Position">
-        <statement command="ma">
+        <statement name="ma">
           <argv>185</argv>
         </statement>
       </session>
       <session id="gs" label="Goto Stock Position">
-        <statement command="ma">
+        <statement name="ma">
           <argv>jp</argv>
         </statement>
       </session>
       <session id="sets" label="Set Stock Pos Pulse">
-        <statement command="setp">
+        <statement name="setp">
           <argv>200.44</argv>
         </statement>
       </session>
       <session id="rini" label="Init to RP at AV">
-        <statement command="e2">
+        <statement name="e2">
           <argv>1</argv>
         </statement>
-        <statement command="mhn"></statement>
+        <statement name="mhn"></statement>
       </session>
       <session id="setr" label="Set Rotate Pos Pulse">
-        <statement command="setp">
+        <statement name="setp">
           <argv>123</argv>
         </statement>
       </session>
@@ -92,20 +92,20 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <periodic period="300">
-        <statement command="getstat" />
-        <statement command="bs" />
-        <statement command="p" />
+        <statement name="getstat" />
+        <statement name="bs" />
+        <statement name="p" />
       </periodic>
       <while blocking="g.">
         <condition>
           <value ref="bs">1</value>
         </condition>
-        <interrupt command="stop" />
-        <statement command="p"></statement>
-        <statement command="in">
+        <interrupt name="stop" />
+        <statement name="p"></statement>
+        <statement name="in">
           <argv>5</argv>
         </statement>
-        <statement command="in">
+        <statement name="in">
           <argv>3</argv>
         </statement>
       </while>
@@ -113,7 +113,7 @@
         <condition>
           <value ref="bs">0</value>
         </condition>
-        <statement command="e2">
+        <statement name="e2">
           <argv>0</argv>
         </statement>
       </onchange>

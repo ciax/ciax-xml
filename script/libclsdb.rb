@@ -43,7 +43,7 @@ class ClsDb < Db
         case name=e1.name.to_sym
         when :interrupt,:statement
           bg[name]||=[]
-          ssn=[e1['command']]
+          ssn=[e1['name']]
           e1.each{|e2|
             ssn << @rep.subst(e2.text)
           }
@@ -76,7 +76,7 @@ class ClsDb < Db
       id=e0.attr2db(cdbc)
       list=[]
       @rep.each(e0){|e1|
-        command=[e1['command']]
+        command=[e1['name']]
         e1.each{|e2|
           argv=e2.to_h
           argv['val'] = @rep.subst(e2.text)

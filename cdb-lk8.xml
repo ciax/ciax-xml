@@ -3,9 +3,9 @@
   <class frame="lk8" id="lk8" label="MOIRCS LakeShore">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement command="getstat" />
-        <statement command="htrstat" />
-        <statement command="spstat" />
+        <statement name="getstat" />
+        <statement name="htrstat" />
+        <statement name="spstat" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

@@ -3,8 +3,8 @@
   <class frame="tpg" id="tpg" label="MOIRCS Pressure">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement command="reqstat" />
-        <statement command="getstat" />
+        <statement name="reqstat" />
+        <statement name="getstat" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

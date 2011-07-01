@@ -3,31 +3,31 @@
   <class frame="psp" id="psp" label="MOIRCS Ext Heater">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement command="getstat" />
+        <statement name="getstat" />
       </session>
       <session id="setlmt" label="Set Limit 20V/5A/100W">
-        <statement command="setvl">
+        <statement name="setvl">
           <argv>20</argv>
         </statement>
-        <statement command="setal">
+        <statement name="setal">
           <argv>5</argv>
         </statement>
-        <statement command="setpl">
+        <statement name="setpl">
           <argv>100</argv>
         </statement>
-        <statement command="getstat" />
+        <statement name="getstat" />
       </session>
       <session id="setv" label="Set Voltage 0-50[V]">
-        <statement command="setv">
+        <statement name="setv">
           <argv valid="0:50">$1</argv>
         </statement>
-        <statement command="getstat" />
+        <statement name="getstat" />
       </session>
       <session id="setp" label="Set Power 0-100[W]">
-        <statement command="setv">
+        <statement name="setv">
           <argv format="%5.2f" valid="0:100">Math.sqrt($1*26)</argv>
         </statement>
-        <statement command="getstat" />
+        <statement name="getstat" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

@@ -10,7 +10,7 @@ class Shell
     v=Verbose.new("shell")
     v.add("== Shell Command ==")
     v.add('q'=>"Quit",'D^'=>"Interrupt")
-    v.assert(Array,pary)
+    v.assert(Array === pary)
     loop {
       line=Readline.readline(pary.join(''),true)
       break if /^q/ === line

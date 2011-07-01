@@ -41,7 +41,7 @@ class ClsDb < Db
       @v.msg(1){"WATCH:#{bg[:type]}:#{bg['label']}"}
       e0.each{ |e1|
         case name=e1.name.to_sym
-        when :interrupt,:statement
+        when :interrupt,:command
           bg[name]||=[]
           ssn=[e1['name']]
           e1.each{|e2|

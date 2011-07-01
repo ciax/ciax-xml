@@ -3,13 +3,13 @@
   <class frame="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement name="getstat" />
+        <command name="getstat" />
       </session>
       <session id="set1v" label="Set Range +-1.2V">
-        <statement name="setr1" />
+        <command name="setr1" />
       </session>
       <session id="set6v" label="Set Range +-6V">
-        <statement name="setr5" />
+        <command name="setr5" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">

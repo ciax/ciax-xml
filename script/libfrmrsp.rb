@@ -15,11 +15,11 @@ class FrmRsp
   end
 
   # Block accepts [time,frame]
-  def setrsp(stm)
-    if rid=@par.setpar(stm).check_id[:response]
+  def setrsp(cmd)
+    if rid=@par.setpar(cmd).check_id[:response]
       sel=@fdb.status[:select][rid] || @v.err("No such response id [#{rid}]")
       @fdbs[:select]=sel
-      @v.msg{"Set Statement #{stm}"}
+      @v.msg{"Set Statement #{cmd}"}
       time,frame=yield
       @v.err("No Response") unless frame
       @field['time']="%.3f" % time.to_f

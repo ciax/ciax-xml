@@ -5,7 +5,7 @@ require "libverbose"
 class ClsCmd
 
   def initialize(cdb)
-    @v=Verbose.new("#{cdb['id']}/stm",2)
+    @v=Verbose.new("#{cdb['id']}/cmd",2)
     @cdb=cdb.command
     @par=Param.new(@cdb)
   end
@@ -16,29 +16,29 @@ class ClsCmd
     self
   end
 
-  def statements
+  def cmdset
     @v.msg{"Exec(CDB):#{@id}"}
-    stma=[]
+    cmdset=[]
     @cdb[:cdb][@id].each{|e1|
-      stm=[]
+      cmd=[]
       @v.msg(1){"GetCmd(DDB):#{e1.first}"}
       begin
         e1.each{|e2| # //argv
           case e2
           when String
-            stm << e2
+            cmd << e2
           when Hash
             str=@par.subst(e2['val'],e2['valid'])
             str = e2['format'] % eval(str) if e2['format']
             @v.msg{"Calculated [#{str}]"}
-            stm << str
+            cmd << str
           end
         }
-        stma << stm
+        cmdset << cmd
       ensure
-        @v.msg(-1){"Exec(DDB):#{stm}"}
+        @v.msg(-1){"Exec(DDB):#{cmd}"}
       end
     }
-    stma
+    cmdset
   end
 end

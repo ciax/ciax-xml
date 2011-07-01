@@ -19,23 +19,23 @@ class FrmObj
     @v.add('save'=>"Save Field [key,key...] (tag)")
   end
 
-  def request(stm)
-    return '' if stm.empty?
-    @v.msg{"Receive #{stm}"}
-    case stm[0]
+  def request(cmd)
+    return '' if cmd.empty?
+    @v.msg{"Receive #{cmd}"}
+    case cmd[0]
     when 'set'
-      set(stm[1..-1]).inspect
+      set(cmd[1..-1]).inspect
     when 'unset'
-      @field.delete(stm[1]).inspect
+      @field.delete(cmd[1]).inspect
     when 'load'
-      load(stm[1])
+      load(cmd[1])
     when 'save'
-      save(stm[1],stm[2])
+      save(cmd[1],cmd[2])
     else
-      @cmd.setcmd(stm)
-      cid=stm.join(':')
+      @cmd.setcmd(cmd)
+      cid=cmd.join(':')
       @ic.snd(@cmd.getframe,'snd:'+cid)
-      @rsp.setrsp(stm){@ic.rcv('rcv:'+cid)}
+      @rsp.setrsp(cmd){@ic.rcv('rcv:'+cid)}
       @field.save
       'OK'
     end
@@ -44,18 +44,18 @@ class FrmObj
   end
 
   private
-  def set(stm)
-    if stm.empty?
+  def set(cmd)
+    if cmd.empty?
       raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
     end
-    @v.msg{"CMD:set#{stm}"}
-    case stm[0]
+    @v.msg{"CMD:set#{cmd}"}
+    case cmd[0]
     when /:/
-      @field.set(stm[0],stm[1])
+      @field.set(cmd[0],cmd[1])
     else
-      @field[stm[0]]=@field.subst(stm[1])
+      @field[cmd[0]]=@field.subst(cmd[1])
     end
-    "[#{stm}] set\n"
+    "[#{cmd}] set\n"
   end
 
   def save(keys,tag=nil)

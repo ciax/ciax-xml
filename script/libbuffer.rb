@@ -14,11 +14,11 @@ class Buffer
   end
 
   def send
-    stms=yield
-    raise "Should be Array of statements" unless Array === stms
-    stms.each{|stm|
-      @inbuf[1].push(stm)
-      @v.msg{"MAIN:Issued [#{stm}] with priority [normal]"}
+    cmdset=yield
+    raise "Cmdset should be Array" unless Array === cmdset
+    cmdset.each{|cmd|
+      @inbuf[1].push(cmd)
+      @v.msg{"MAIN:Issued [#{cmd}] with priority [normal]"}
     }
     flush(1) unless @wait
     self
@@ -26,22 +26,20 @@ class Buffer
 
   def auto
     if @q.empty?
-      yield.each{|stm|
-        @inbuf[2].push(stm)
+      yield.each{|cmd|
+        @inbuf[2].push(cmd)
       }
       flush(2)
-    else
-      @v.msg{"MAIN:Rejected [#{stms}] with priority [auto]"}
     end
     self
   end
 
-  def interrupt(cmds=[])
+  def interrupt(cmd=[])
     @v.msg{"MAIN:Stopped"}
     @issue=@wait=false
     @q.clear
-    @v.msg{"MAIN:Issued #{cmds}"}
-    @inbuf[0]=cmds
+    @v.msg{"MAIN:Issued #{cmd}"}
+    @inbuf[0]=cmd
     flush(0)
   end
 
@@ -64,18 +62,18 @@ class Buffer
     @issue=false
     loop{
       if @q.empty?
-        @outbuf.each{|c|
-          next if ! c || c.empty?
-          stm=c.shift
-          @v.msg{"SUB:Exec [#{stm}]"}
-          return stm
+        @outbuf.each{|buf|
+          next if ! buf || buf.empty?
+          cmd=buf.shift
+          @v.msg{"SUB:Exec [#{cmd}]"}
+          return cmd
         }
         @v.msg{"SUB:Waiting"}
       end
-      p,stm=@q.shift
-      @v.msg{"SUB:Recieve [#{stm}] with priority[#{p}]"}
+      p,cmd=@q.shift
+      @v.msg{"SUB:Recieve [#{cmd}] with priority[#{p}]"}
       @outbuf[p] ||= []
-      @outbuf[p].push(stm)
+      @outbuf[p].push(cmd)
     }
   end
 
@@ -85,11 +83,11 @@ class Buffer
     Thread.new{
       Thread.pass
       loop{
-        p=@proc.shift
+        proc=@proc.shift
         dl=Time.now+@wait
         while @wait
           sleep 1
-          if p.call || dl < Time.now
+          if proc.call || dl < Time.now
             flush
             break
           end
@@ -98,13 +96,13 @@ class Buffer
     }
   end
 
-  def flush(p)
-    unless @inbuf[p].empty?
+  def flush(pri)
+    unless @inbuf[pri].empty?
       @issue=true
       @wait=false
-      @inbuf[p].each{|c| @q.push([p,c]) }
-      @v.msg{"MAIN:Flushed #{@inbuf[p]}"}
-      @inbuf[p]=[]
+      @inbuf[pri].each{|cmd| @q.push([pri,cmd]) }
+      @v.msg{"MAIN:Flushed #{@inbuf[pri]}"}
+      @inbuf[pri]=[]
     end
     self
   end

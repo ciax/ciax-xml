@@ -19,5 +19,5 @@ rescue SelectID
   abort "Usage: clsshell (-alsp) [cls] [id] [iocmd]\n#{$!}"
 end
 cobj.session{|line|
-  cobj.dispatch(line){|stm| al.alias(stm)}||view.upd
+  cobj.dispatch(line){|cmd| al.alias(cmd)}||view.upd
 }

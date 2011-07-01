@@ -3,108 +3,108 @@
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Regular status update">
-        <statement name="getstat" />
+        <command name="getstat" />
       </session>
       <session id="run" label="Run to Destination Tag [1-12]">
-        <statement name="set_tag">
+        <command name="set_tag">
           <argv valid="1:12">$1</argv>
-        </statement>
-        <statement name="start">
+        </command>
+        <command name="start">
           <argv>0</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="fwd" label="Run Forward">
-        <statement name="set_tag">
+        <command name="set_tag">
           <argv>98</argv>
-        </statement>
-        <statement name="start">
+        </command>
+        <command name="start">
           <argv>0</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="bak" label="Run Backword">
-        <statement name="set_tag">
+        <command name="set_tag">
           <argv>99</argv>
-        </statement>
-        <statement name="start">
+        </command>
+        <command name="start">
           <argv>0</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="lift" label="Lift Jack Level [0-3]">
-        <statement name="set_pos">
+        <command name="set_pos">
           <argv valid="0:3">$1</argv>
-        </statement>
-        <statement name="start">
+        </command>
+        <command name="start">
           <argv>8</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="chgon" label="Start Charging">
-        <statement name="start">
+        <command name="start">
           <argv>15</argv>
-        </statement>
-        <statement name="clear" />
-        <statement name="getstat" />
+        </command>
+        <command name="clear" />
+        <command name="getstat" />
       </session>
       <session id="chgoff" label="Stop Charging">
-        <statement name="stop">
+        <command name="stop">
           <argv format="%d">3</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="clear" />
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
+        <command name="clear" />
+        <command name="getstat" />
       </session>
       <session id="pause" label="Pause">
-        <statement name="stop">
+        <command name="stop">
           <argv>0</argv>
-        </statement>
-        <statement name="clear" />
+        </command>
+        <command name="clear" />
       </session>
       <session id="emstop" label="Emergency Stop">
-        <statement name="stop">
+        <command name="stop">
           <argv>1</argv>
-        </statement>
-        <statement name="clear" />
+        </command>
+        <command name="clear" />
       </session>
       <session id="resume" label="Resume from Pause">
-        <statement name="stop">
+        <command name="stop">
           <argv>5</argv>
-        </statement>
-        <statement name="clear" />
+        </command>
+        <command name="clear" />
       </session>
       <session id="cancel" label="Command Cancel">
-        <statement name="stop">
+        <command name="stop">
           <argv>4</argv>
-        </statement>
-        <statement name="clear" />
+        </command>
+        <command name="clear" />
       </session>
       <session id="get_tbl" label="Get Jack Table">
-        <statement name="rw_tbl">
+        <command name="rw_tbl">
           <argv>1</argv>
-        </statement>
+        </command>
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
-            <statement name="get_tbl">
+            <command name="get_tbl">
               <argv>$t</argv>
               <argv>$j</argv>
-            </statement>
+            </command>
           </repeat>
         </repeat>
       </session>
       <session id="set_tbl" label="Set Jack Table">
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
-            <statement name="set_tbl">
+            <command name="set_tbl">
               <argv>$t</argv>
               <argv>$j</argv>
-            </statement>
+            </command>
           </repeat>
         </repeat>
-        <statement name="rw_tbl">
+        <command name="rw_tbl">
           <argv>0</argv>
-        </statement>
+        </command>
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
@@ -199,13 +199,13 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <periodic period="3600">
-        <statement name="getstat" />
+        <command name="getstat" />
       </periodic>
       <onchange label="CMD ACCEPT">
         <condition>
           <value ref="acp">00</value>
         </condition>
-        <statement name="clear" />
+        <command name="clear" />
       </onchange>
       <while blocking="run|jak|charge">
         <condition>
@@ -214,7 +214,7 @@
         <interrupt name="stop">
           <argv>0</argv>
         </interrupt>
-        <statement name="getstat" />
+        <command name="getstat" />
       </while>
     </watch>
   </class>

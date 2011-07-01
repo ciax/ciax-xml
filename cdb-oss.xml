@@ -3,76 +3,76 @@
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement name="logstat" />
-        <statement name="getstat" />
-        <statement name="iststat" />
-        <statement name="jakstat" />
-        <statement name="inrstat" />
+        <command name="logstat" />
+        <command name="getstat" />
+        <command name="iststat" />
+        <command name="jakstat" />
+        <command name="inrstat" />
       </session>
       <session id="login" label="Login">
-        <statement name="login" />
-        <statement name="logstat" />
+        <command name="login" />
+        <command name="logstat" />
       </session>
       <session id="logout" label="Logout">
-        <statement name="logout" />
-        <statement name="logstat" />
+        <command name="logout" />
+        <command name="logstat" />
       </session>
       <session id="init" label="Start TCP Status Request">
-        <statement name="init" />
+        <command name="init" />
       </session>
       <session id="startup" label="Start Up CIAX operation">
-        <statement name="login" />
-        <statement name="tsconly" label="TSC Only Mode(CIAX Mode)" />
-        <statement name="ron" />
-        <statement name="jon" />
+        <command name="login" />
+        <command name="tsconly" label="TSC Only Mode(CIAX Mode)" />
+        <command name="ron" />
+        <command name="jon" />
       </session>
       <session id="shutdown" label="Shutdown CIAX operation">
-        <statement name="joff" />
-        <statement name="roff" />
-        <statement name="tscpri" label="TSC Primaly Mode" />
-        <statement name="logout" />
+        <command name="joff" />
+        <command name="roff" />
+        <command name="tscpri" label="TSC Primaly Mode" />
+        <command name="logout" />
       </session>
       <session id="rhook" label="InR Hook">
-        <statement name="rhook" />
-        <statement name="inrstat" />
+        <command name="rhook" />
+        <command name="inrstat" />
       </session>
       <session id="runhk" label="InR UnHook">
-        <statement name="runhk" />
-        <statement name="inrstat" />
+        <command name="runhk" />
+        <command name="inrstat" />
       </session>
       <session id="rstop" label="InR Stop">
-        <statement name="rstop" />
-        <statement name="inrstat" />
+        <command name="rstop" />
+        <command name="inrstat" />
       </session>
       <session id="jup" label="All EJB Up">
-        <statement name="ajup" />
-        <statement name="jakstat" />
+        <command name="ajup" />
+        <command name="jakstat" />
       </session>
       <session id="jdw" label="All EJB Down">
-        <statement name="ajdw" />
-        <statement name="jakstat" />
+        <command name="ajdw" />
+        <command name="jakstat" />
       </session>
       <session id="jstop" label="All EJB Stop">
-        <statement name="jstop" />
-        <statement name="jakstat" />
+        <command name="jstop" />
+        <command name="jakstat" />
       </session>
       <session id="moircs" label="Set IID MOIRCS">
-        <statement name="setinst">
+        <command name="setinst">
           <argv>12</argv>
-        </statement>
-        <statement name="iststat" />
+        </command>
+        <command name="iststat" />
       </session>
       <session id="focas" label="Set IID FOCAS">
-        <statement name="setinst">
+        <command name="setinst">
           <argv>5</argv>
-        </statement>
-        <statement name="iststat" />
+        </command>
+        <command name="iststat" />
       </session>
       <session id="comics" label="Set IID COMICS">
-        <statement name="setinst">
+        <command name="setinst">
           <argv>7</argv>
-        </statement>
-        <statement name="iststat" />
+        </command>
+        <command name="iststat" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
@@ -186,18 +186,18 @@
           <value ref="abm">1</value>
         </condition>
         <interrupt name="jstop" />
-        <statement name="jakstat" />
-        <statement name="getexit" />
-        <statement name="getpid" />
+        <command name="jakstat" />
+        <command name="getexit" />
+        <command name="getpid" />
       </while>
       <onchange label="Moving InR" blocking="rhook|runhk">
         <condition>
           <value ref="iang"></value>
         </condition>
         <interrupt name="rstop" />
-        <statement name="inrstat" />
-        <statement name="getexit" />
-        <statement name="getpid" />
+        <command name="inrstat" />
+        <command name="getexit" />
+        <command name="getpid" />
       </onchange>
     </watch>
   </class>

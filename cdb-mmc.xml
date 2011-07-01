@@ -3,63 +3,63 @@
   <class frame="slo" id="mmc" label="MOIRCS Carrousel">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement name="getstat" />
-        <statement name="bs" />
-        <statement name="p" />
-        <statement name="spd" />
+        <command name="getstat" />
+        <command name="bs" />
+        <command name="p" />
+        <command name="spd" />
         <repeat from="1" to="5">
-          <statement name="in">
+          <command name="in">
             <argv>$_</argv>
-          </statement>
+          </command>
         </repeat>
       </session>
       <session id="reset" label="Reset">
-        <statement name="reset" />
+        <command name="reset" />
       </session>
       <session id="defcon" label="Default Config">
-        <statement name="hl">
+        <command name="hl">
           <argv>0</argv>
-        </statement>
-        <statement name="e1">
+        </command>
+        <command name="e1">
           <argv>0</argv>
-        </statement>
-        <statement name="e2">
+        </command>
+        <command name="e2">
           <argv>0</argv>
-        </statement>
-        <statement name="setspd">
+        </command>
+        <command name="setspd">
           <argv>0.2</argv>
-        </statement>
+        </command>
       </session>
       <session id="cwini" label="Goto CW Limit">
-        <statement name="jp" />
+        <command name="jp" />
       </session>
       <session id="cwhome" label="Goto Home from CW Limit">
-        <statement name="mi">
+        <command name="mi">
           <argv>-0.41</argv>
-        </statement>
+        </command>
       </session>
       <session id="cwset0" label="Set 0 at S00">
-        <statement name="set0" />
+        <command name="set0" />
       </session>
       <session id="cw" label="Move CW [1-5]">
-        <statement name="mi">
+        <command name="mi">
           <argv valid="1:5">$1</argv>
-        </statement>
+        </command>
       </session>
       <session id="ccw" label="Move CCW [1-5]">
-        <statement name="mi">
+        <command name="mi">
           <argv valid="1:5">-$1</argv>
-        </statement>
+        </command>
       </session>
       <session id="slot" label="Move to Slot [0-23]">
-        <statement name="ma">
+        <command name="ma">
           <argv valid="0:23">-$1</argv>
-        </statement>
+        </command>
       </session>
       <session id="access" label="Move to Access [0-23]">
-        <statement name="ma">
+        <command name="ma">
           <argv format="%d" valid="0:23">$1&gt;18?-$1+18:-$1-6</argv>
-        </statement>
+        </command>
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
@@ -95,10 +95,10 @@
           <value ref="bs">1</value>
         </condition>
         <interrupt name="stop" />
-        <statement name="p"></statement>
-        <statement name="in">
+        <command name="p"></command>
+        <command name="in">
           <argv>1</argv>
-        </statement>
+        </command>
       </while>
     </watch>
   </class>

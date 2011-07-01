@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="condition.xsd" />
@@ -32,7 +32,7 @@
   <xsd:element name="periodic">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="wdb:statement" maxOccurs="unbounded" />
+        <xsd:element ref="wdb:command" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="period" use="required" type="xsd:int"></xsd:attribute>
       <xsd:attribute name="label" type="xsd:token" />
@@ -45,18 +45,18 @@
     <xsd:sequence>
       <xsd:element ref="wdb:condition" minOccurs="1" maxOccurs="1" />
       <xsd:element ref="wdb:interrupt" minOccurs="0" />
-      <xsd:element ref="wdb:statement" maxOccurs="unbounded" />
+      <xsd:element ref="wdb:command" maxOccurs="unbounded" />
     </xsd:sequence>
     <xsd:attributeGroup ref="wdb:condition" />
   </xsd:complexType>
-  <xsd:element name="interrupt" type="wdb:statement"></xsd:element>
-  <!--statement-->
-  <xsd:complexType name="statement">
+  <!--command-->
+  <xsd:complexType name="command">
     <xsd:sequence>
       <xsd:element ref="wdb:argv" minOccurs="0" maxOccurs="unbounded" />
     </xsd:sequence>
-    <xsd:attribute name="command" type="xsd:token" use="required" />
+    <xsd:attribute name="name" type="xsd:token" use="required" />
   </xsd:complexType>
+  <xsd:element name="interrupt" type="wdb:command"></xsd:element>
+  <xsd:element name="command" type="wdb:command"></xsd:element>
   <xsd:element name="argv" type="xsd:token"></xsd:element>
-  <xsd:element name="statement" type="wdb:statement"></xsd:element>
 </xsd:schema>

@@ -10,7 +10,7 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cdbc:repeat" />
-        <xsd:element ref="cdbc:statement"></xsd:element>
+        <xsd:element ref="cdbc:command"></xsd:element>
       </xsd:choice>
       <xsd:attributeGroup ref="cdbc:repeat" />
     </xsd:complexType>
@@ -31,7 +31,7 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element ref="cdbc:statement" />
+          <xsd:element ref="cdbc:command" />
           <xsd:element ref="cdbc:repeat" />
         </xsd:choice>
       </xsd:sequence>
@@ -39,7 +39,7 @@
     </xsd:complexType>
   </xsd:element>
   <!--command statement-->
-  <xsd:element name="statement">
+  <xsd:element name="command">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="cdbc:argv" />

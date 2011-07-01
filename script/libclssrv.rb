@@ -17,8 +17,8 @@ class ClsSrv < ClsObj
     field=IoStat.new(obj,'field')
     io=IoCmd.new(iocmd,obj,fdb['wait'],1)
     fobj=FrmObj.new(fdb,field,io)
-    super(cdb,@stat,field){|stm|
-      fobj.request(stm)
+    super(cdb,@stat,field){|cmd|
+      fobj.request(cmd)
     }
   end
 

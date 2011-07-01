@@ -47,7 +47,7 @@ class Watch < Array
     self
   end
 
-  def issue(key=:statement)
+  def issue(key=:command)
     ary=[]
     each{|bg|
       if bg[:var][:active]

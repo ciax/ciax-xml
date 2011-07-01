@@ -49,7 +49,7 @@ class ClsObj
     when 'waitfor'
       @buf.wait_for(10){ @stat.get(ssn[0]) == ssn[1] }
     else
-      @buf.send{@cc.setcmd(ssn).statements}
+      @buf.send{@cc.setcmd(ssn).cmdset}
     end
     "ISSUED"
   rescue SelectID

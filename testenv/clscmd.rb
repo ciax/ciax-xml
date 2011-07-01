@@ -6,7 +6,7 @@ cls,*cmd=ARGV
 begin
   cdb=ClsDb.new(cls)
   cc=ClsCmd.new(cdb)
-  cc.setcmd(cmd).statements.each{|c| p c}
+  cc.setcmd(cmd).cmdset.each{|cmd| p cmd}
 rescue UserError
   abort "Usage: clscmd [class] [cmd] (par)\n#{$!}"
 end

@@ -3,120 +3,120 @@
   <class frame="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Update Status">
-        <statement name="getstat" />
+        <command name="getstat" />
         <repeat from="1" to="6">
-          <statement name="chkrun">
+          <command name="chkrun">
             <argv>$_</argv>
-          </statement>
-          <statement name="getp">
+          </command>
+          <command name="getp">
             <argv>$_</argv>
-          </statement>
-          <statement name="getspd">
+          </command>
+          <command name="getspd">
             <argv>$_</argv>
-          </statement>
-          <statement name="getrmp">
+          </command>
+          <command name="getrmp">
             <argv>$_</argv>
-          </statement>
-          <statement name="getofs">
+          </command>
+          <command name="getofs">
             <argv>$_</argv>
-          </statement>
+          </command>
         </repeat>
       </session>
       <session id="sysinit" label="System Initialize">
-        <statement name="initrot" />
-        <statement name="initunit" />
-        <statement name="initfactor" />
+        <command name="initrot" />
+        <command name="initunit" />
+        <command name="initfactor" />
       </session>
       <session id="posinit" label="Position Initialize">
         <repeat from="1" to="6">
-          <statement name="init">
+          <command name="init">
             <argv>$_</argv>
-          </statement>
-          <statement name="chkrun">
+          </command>
+          <command name="chkrun">
             <argv>$_</argv>
-          </statement>
+          </command>
         </repeat>
       </session>
       <session id="speed" label="Set Speed [25-800]">
         <repeat from="1" to="6">
-          <statement name="set">
+          <command name="set">
             <argv format="spd:%d">$_-1</argv>
             <argv valid="25:800">$1</argv>
-          </statement>
-          <statement name="setspd">
+          </command>
+          <command name="setspd">
             <argv>$_</argv>
-          </statement>
+          </command>
         </repeat>
       </session>
       <session id="ramp" label="Set ramp [200-800]">
         <repeat from="1" to="6">
-          <statement name="set">
+          <command name="set">
             <argv format="rmp:%d">$_-1</argv>
             <argv valid="200:800">$1</argv>
-          </statement>
-          <statement name="setrmp">
+          </command>
+          <command name="setrmp">
             <argv>$_</argv>
-          </statement>
+          </command>
         </repeat>
       </session>
       <session id="resetp" label="Set 0 Pulses">
         <repeat from="1" to="6">
-          <statement name="set">
+          <command name="set">
             <argv format="p:%d">$_-1</argv>
             <argv>0</argv>
-          </statement>
-          <statement name="setp">
+          </command>
+          <command name="setp">
             <argv>$_</argv>
-          </statement>
+          </command>
         </repeat>
       </session>
       <session id="backup" label="Backup Pulse,Speed,Offset">
-        <statement name="save">
+        <command name="save">
           <argv>p,spd,ofs</argv>
-        </statement>
-        <statement name="deact" />
+        </command>
+        <command name="deact" />
       </session>
       <session id="restore" label="Restore Pulse,Speed,Offset">
-        <statement name="act" />
-        <statement name="load" />
+        <command name="act" />
+        <command name="load" />
         <repeat from="1" to="6">
-          <statement name="setp">
+          <command name="setp">
             <argv>$_</argv>
-          </statement>
-          <statement name="setspd">
+          </command>
+          <command name="setspd">
             <argv>$_</argv>
-          </statement>
-          <statement name="setofs">
+          </command>
+          <command name="setofs">
             <argv>$_</argv>
-          </statement>
+          </command>
         </repeat>
       </session>
       <session id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
-        <statement name="fw">
+        <command name="fw">
           <argv valid="1:6">$1</argv>
           <argv valid="1:" format="%d">$2 * 8000</argv>
-        </statement>
-        <statement name="chkrun">
+        </command>
+        <command name="chkrun">
           <argv>$1</argv>
-        </statement>
+        </command>
       </session>
       <session id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
-        <statement name="bk">
+        <command name="bk">
           <argv valid="1:6">$1</argv>
           <argv format="%d" valid="1:">$2 * 8000</argv>
-        </statement>
-        <statement name="chkrun">
+        </command>
+        <command name="chkrun">
           <argv>$1</argv>
-        </statement>
+        </command>
       </session>
       <session id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
-        <statement name="abs">
+        <command name="abs">
           <argv valid="1:6">$1</argv>
           <argv format="%d" valid="0:48">$2 * 8000</argv>
-        </statement>
-        <statement name="chkrun">
+        </command>
+        <command name="chkrun">
           <argv>$1</argv>
-        </statement>
+        </command>
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
@@ -171,19 +171,19 @@
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <repeat from="1" to="6">
         <periodic label="Update Status" period="3600">
-          <statement name="getstat" />
-          <statement name="chkrun">
+          <command name="getstat" />
+          <command name="chkrun">
             <argv>$_</argv>
-          </statement>
-          <statement name="getp">
+          </command>
+          <command name="getp">
             <argv>$_</argv>
-          </statement>
-          <statement name="getspd">
+          </command>
+          <command name="getspd">
             <argv>$_</argv>
-          </statement>
-          <statement name="getofs">
+          </command>
+          <command name="getofs">
             <argv>$_</argv>
-          </statement>
+          </command>
         </periodic>
         <while label="Moving %d" blocking="(fw|bk|abs) %d">
           <condition operator="and">
@@ -192,12 +192,12 @@
           <interrupt name="stop">
             <argv>$_</argv>
           </interrupt>
-          <statement name="chkrun">
+          <command name="chkrun">
             <argv>$_</argv>
-          </statement>
-          <statement name="getp">
+          </command>
+          <command name="getp">
             <argv>$_</argv>
-          </statement>
+          </command>
         </while>
       </repeat>
     </watch>

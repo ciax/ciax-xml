@@ -3,274 +3,274 @@
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <session id="upd" label="Regular status update">
-        <statement name="getstat" />
-        <statement name="geterr" />
-        <statement name="getzlen" />
+        <command name="getstat" />
+        <command name="geterr" />
+        <command name="getzlen" />
       </session>
       <session id="clr" label="ClearBit">
-        <statement name="clrbit" />
-        <statement name="getcmd" />
+        <command name="clrbit" />
+        <command name="getcmd" />
       </session>
       <session id="stop" label="Emergency Stop">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>0</argv>
           <argv>0</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="pause" label="Pause">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>0</argv>
           <argv>1</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="resume" label="Resume Pause">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>0</argv>
           <argv>10</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="reset" label="Reset Error">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>0</argv>
           <argv>11</argv>
-        </statement>
-        <statement name="geterr" />
-        <statement name="getstat" />
+        </command>
+        <command name="geterr" />
+        <command name="getstat" />
       </session>
       <session id="ready" label="Drive Ready">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>0</argv>
           <argv>3</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="fhook" label="Fix Flange Hook">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>1</argv>
           <argv>0</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="funhk" label="Fix Flange UnHook">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>1</argv>
           <argv>1</argv>
-        </statement>
-        <statement name="getstat"></statement>
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat"></command>
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="fjup" label="Fix Flange Jack Up">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>1</argv>
           <argv>4</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="fjdw" label="Fix Flange Jack Down">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>1</argv>
           <argv>5</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="chgfw" label="Charging Plug Forward">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>1</argv>
           <argv>6</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="chgbk" label="Charging Plug Backward">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>1</argv>
           <argv>7</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="pwoff" label="Outlet Power Off">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>1</argv>
           <argv>8</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="mhook" label="Movable Flange Hook">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>2</argv>
           <argv>0</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr"></statement>
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr"></command>
       </session>
       <session id="munhk" label="Movable Flange UnHook">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>2</argv>
           <argv>1</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr"></statement>
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr"></command>
       </session>
       <session id="mrotout" label="Movable Flange Rotation for Loading">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>2</argv>
           <argv>2</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr"></statement>
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr"></command>
       </session>
       <session id="mrotin" label="Movable Flange Rotation for Storing">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>2</argv>
           <argv>3</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="mjup" label="Movable Flange Jack Up">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>2</argv>
           <argv>4</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="mjdw" label="Movable Flange Jack Down">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>2</argv>
           <argv>5</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="trout" label="Movable Flange Transer Out">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>2</argv>
           <argv>6</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="trin" label="Movable Flange Transer In">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>2</argv>
           <argv>7</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="dopen" label="Door Open">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>0</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="dclose" label="Door Close">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>1</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="fpwon" label="Fix Flange Instrument Power On">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>2</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="fpwoff" label="Fix Flange Instrument Power Off">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>3</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="mpwon" label="Movable Flange Instrument Power On">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>4</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="mpwoff" label="Movable Flange Instrument Power Off">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>5</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="fccdon" label="Fix Flange CCD Power On">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>8</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="fccdoff" label="Fix Flange CCD Power Off">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>9</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="fccdtoff" label="Fix Flange CCD Timer Off">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>10</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
       <session id="mccdon" label="Movable Flange CCD Power On">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>12</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="mccdoff" label="Movable Flange CCD Power Off">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>13</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </session>
       <session id="mccdtoff" label="Movable Flange CCD Timer Off">
-        <statement name="setbit">
+        <command name="setbit">
           <argv>3</argv>
           <argv>14</argv>
-        </statement>
-        <statement name="getstat" />
-        <statement name="getcmd"></statement>
-        <statement name="geterr" />
+        </command>
+        <command name="getstat" />
+        <command name="getcmd"></command>
+        <command name="geterr" />
       </session>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
@@ -415,9 +415,9 @@
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <periodic label="Regular" period="300">
-        <statement name="getstat"></statement>
-        <statement name="geterr"></statement>
-        <statement name="getzlen"></statement>
+        <command name="getstat"></command>
+        <command name="geterr"></command>
+        <command name="getzlen"></command>
       </periodic>
       <while label="On Motion" blocking="^[fmtd].+">
         <condition>
@@ -428,57 +428,57 @@
           <argv>0</argv>
           <argv>1</argv>
         </interrupt>
-        <statement name="getstat" />
+        <command name="getstat" />
       </while>
       <onchange label="On Completion">
         <condition>
           <value ref="cmp">1</value>
         </condition>
-        <statement name="clrbit" />
-        <statement name="getstat" />
-        <statement name="getcmd" />
+        <command name="clrbit" />
+        <command name="getstat" />
+        <command name="getcmd" />
       </onchange>
       <onchange label="On ErrReset">
         <condition>
           <value ref="err">0</value>
         </condition>
-        <statement name="clrbit" />
-        <statement name="geterr" />
+        <command name="clrbit" />
+        <command name="geterr" />
       </onchange>
       <onchange label="On Error">
         <condition>
           <value ref="err">[^0]</value>
         </condition>
-        <statement name="set">
+        <command name="set">
           <argv>exe</argv>
           <argv>0</argv>
-        </statement>
+        </command>
       </onchange>
       <onchange label="On Emergency">
         <condition>
           <value ref="emg">1</value>
         </condition>
-        <statement name="clrbit" />
-        <statement name="getstat" />
+        <command name="clrbit" />
+        <command name="getstat" />
       </onchange>
       <onchange label="On Pause">
         <condition>
           <value ref="pse">1</value>
         </condition>
-        <statement name="clrbit" />
-        <statement name="setbit">
+        <command name="clrbit" />
+        <command name="setbit">
           <!--resetp-->
           <argv>0</argv>
           <argv>10</argv>
-        </statement>
-        <statement name="getstat" />
+        </command>
+        <command name="getstat" />
       </onchange>
       <onchange label="Off Pause">
         <condition>
           <value ref="pse">0</value>
         </condition>
-        <statement name="clrbit" />
-        <statement name="getstat" />
+        <command name="clrbit" />
+        <command name="getstat" />
       </onchange>
     </watch>
   </class>

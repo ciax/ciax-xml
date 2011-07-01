@@ -14,12 +14,12 @@ class FrmCmd
     @par=Param.new(@fdb.command)
   end
 
-  def setcmd(stm) # return = response select
-    id=stm.first
-    @par.setpar(stm).check_id
+  def setcmd(cmd) # return = response select
+    id=cmd.first
+    @par.setpar(cmd).check_id
     @fdbc[:select]=@par[:select]
     @v.msg{"Attr of Param:#{@par}"}
-    @cid=stm.join(':')
+    @cid=cmd.join(':')
     @cid << ':*' if /true|1/ === @par[:nocache]
     @v.msg{"Select:#{@par[:label]}(#{@cid})"}
     self
@@ -27,7 +27,7 @@ class FrmCmd
 
   def getframe
     return unless @fdbc[:select]
-    if cmd=@cache[@cid]
+    if frame=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
       mk_frame(:select)
@@ -36,16 +36,16 @@ class FrmCmd
         mk_frame(:ccrange)
         @field['cc']=@frame.checkcode
       end
-      cmd=mk_frame(:main)
-      @cache[@cid]=cmd unless /\*/ === @cid
+      frame=mk_frame(:main)
+      @cache[@cid]=frame unless /\*/ === @cid
     end
-    cmd
+    frame
   end
 
   private
-  def mk_frame(fname)
+  def mk_frame(domain)
     @frame.set
-    @fdbc[fname].each{|a|
+    @fdbc[domain].each{|a|
       case a
       when Hash
         @field.subst(@par.subst(a['val'],a['valid'])).split(',').each{|s|
@@ -55,6 +55,6 @@ class FrmCmd
         @frame.add(@fstr[a.to_sym])
       end
     }
-    @fstr[fname]=@frame.copy
+    @fstr[domain]=@frame.copy
   end
 end

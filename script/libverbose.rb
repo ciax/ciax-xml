@@ -45,8 +45,15 @@ class Verbose
 
   def assert(exp)
     return exp if exp
-    msg=defined? yield ? yield : "Assert exception"
+    msg=defined?(yield) ? yield : "Assert exception"
     raise(color(msg,1))
+  end
+
+  def check(exp)
+    return exp if exp
+    msg=defined?(yield) ? yield : "Nil Data detected"
+    Kernel.warn color(msg,5)
+    exp
   end
 
   def add(list)

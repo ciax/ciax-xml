@@ -33,8 +33,7 @@ class ClsStat
     str=''
     fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || @v.abort("No field Key")
-      data=@field.get(fld)
-      @v.warn("No field Value[#{fld}]") unless data
+      data=@v.check(@field.get(fld)){"No field Value[#{fld}]"}
       case e1[:type]
       when 'binary'
         str << binary(e1,data)

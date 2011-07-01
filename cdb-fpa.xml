@@ -2,15 +2,15 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Update Status">
+      <cmdset id="upd" label="Update Status">
         <command name="getstat" />
-      </session>
-      <session id="set1v" label="Set Range +-1.2V">
+      </cmdset>
+      <cmdset id="set1v" label="Set Range +-1.2V">
         <command name="setr1" />
-      </session>
-      <session id="set6v" label="Set Range +-6V">
+      </cmdset>
+      <cmdset id="set6v" label="Set Range +-6V">
         <command name="setr5" />
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="Group">

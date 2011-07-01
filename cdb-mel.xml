@@ -2,10 +2,10 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Regular status update">
+      <cmdset id="upd" label="Regular status update">
         <command name="getstat" />
-      </session>
-      <session id="run" label="Run to Destination Tag [1-12]">
+      </cmdset>
+      <cmdset id="run" label="Run to Destination Tag [1-12]">
         <command name="set_tag">
           <argv valid="1:12">$1</argv>
         </command>
@@ -13,8 +13,8 @@
           <argv>0</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="fwd" label="Run Forward">
+      </cmdset>
+      <cmdset id="fwd" label="Run Forward">
         <command name="set_tag">
           <argv>98</argv>
         </command>
@@ -22,8 +22,8 @@
           <argv>0</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="bak" label="Run Backword">
+      </cmdset>
+      <cmdset id="bak" label="Run Backword">
         <command name="set_tag">
           <argv>99</argv>
         </command>
@@ -31,8 +31,8 @@
           <argv>0</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="lift" label="Lift Jack Level [0-3]">
+      </cmdset>
+      <cmdset id="lift" label="Lift Jack Level [0-3]">
         <command name="set_pos">
           <argv valid="0:3">$1</argv>
         </command>
@@ -40,47 +40,47 @@
           <argv>8</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="chgon" label="Start Charging">
+      </cmdset>
+      <cmdset id="chgon" label="Start Charging">
         <command name="start">
           <argv>15</argv>
         </command>
         <command name="clear" />
         <command name="getstat" />
-      </session>
-      <session id="chgoff" label="Stop Charging">
+      </cmdset>
+      <cmdset id="chgoff" label="Stop Charging">
         <command name="stop">
           <argv format="%d">3</argv>
         </command>
         <command name="getstat" />
         <command name="clear" />
         <command name="getstat" />
-      </session>
-      <session id="pause" label="Pause">
+      </cmdset>
+      <cmdset id="pause" label="Pause">
         <command name="stop">
           <argv>0</argv>
         </command>
         <command name="clear" />
-      </session>
-      <session id="emstop" label="Emergency Stop">
+      </cmdset>
+      <cmdset id="emstop" label="Emergency Stop">
         <command name="stop">
           <argv>1</argv>
         </command>
         <command name="clear" />
-      </session>
-      <session id="resume" label="Resume from Pause">
+      </cmdset>
+      <cmdset id="resume" label="Resume from Pause">
         <command name="stop">
           <argv>5</argv>
         </command>
         <command name="clear" />
-      </session>
-      <session id="cancel" label="Command Cancel">
+      </cmdset>
+      <cmdset id="cancel" label="Command Cancel">
         <command name="stop">
           <argv>4</argv>
         </command>
         <command name="clear" />
-      </session>
-      <session id="get_tbl" label="Get Jack Table">
+      </cmdset>
+      <cmdset id="get_tbl" label="Get Jack Table">
         <command name="rw_tbl">
           <argv>1</argv>
         </command>
@@ -92,8 +92,8 @@
             </command>
           </repeat>
         </repeat>
-      </session>
-      <session id="set_tbl" label="Set Jack Table">
+      </cmdset>
+      <cmdset id="set_tbl" label="Set Jack Table">
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
             <command name="set_tbl">
@@ -105,7 +105,7 @@
         <command name="rw_tbl">
           <argv>0</argv>
         </command>
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="Group">

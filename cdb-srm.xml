@@ -2,69 +2,69 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="srm" id="srm" label="CsEtr Controller">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Update Status">
+      <cmdset id="upd" label="Update Status">
         <command name="getstat" />
-      </session>
-      <session id="c3on" label="CIAX3 POWER ON">
+      </cmdset>
+      <cmdset id="c3on" label="CIAX3 POWER ON">
         <command name="fset" label="Bit 0 on">
           <argv>5</argv>
         </command>
-      </session>
-      <session id="c3off" label="CIAX3 POWER OFF">
+      </cmdset>
+      <cmdset id="c3off" label="CIAX3 POWER OFF">
         <command name="fset" label="Bit 0 OFF">
           <argv>4</argv>
         </command>
-      </session>
-      <session id="emon" label="CIAX3 EMERGENCY ON">
+      </cmdset>
+      <cmdset id="emon" label="CIAX3 EMERGENCY ON">
         <command name="fset" label="Bit 1 ON">
           <argv>50</argv>
         </command>
-      </session>
-      <session id="emoff" label="CIAX3 EMERGENCY OFF">
+      </cmdset>
+      <cmdset id="emoff" label="CIAX3 EMERGENCY OFF">
         <command name="fset" label="Bit 1 OFF">
           <argv>40</argv>
         </command>
-      </session>
-      <session id="ccdon" label="CS CCD ON">
+      </cmdset>
+      <cmdset id="ccdon" label="CS CCD ON">
         <command name="fset" label="Bit 2 ON">
           <argv>500</argv>
         </command>
-      </session>
-      <session id="ccdoff" label="CS CCD OFF">
+      </cmdset>
+      <cmdset id="ccdoff" label="CS CCD OFF">
         <command name="fset" label="Bit 2 OFF">
           <argv>400</argv>
         </command>
-      </session>
-      <session id="lanon" label="CS LAN ON">
+      </cmdset>
+      <cmdset id="lanon" label="CS LAN ON">
         <command name="fset" label="Bit 3 ON">
           <argv>5000</argv>
         </command>
-      </session>
-      <session id="lanoff" label="CS LAN OFF">
+      </cmdset>
+      <cmdset id="lanoff" label="CS LAN OFF">
         <command name="fset" label="Bit 3 OFF">
           <argv>4000</argv>
         </command>
-      </session>
-      <session id="ipwon" label="CS IPW ON">
+      </cmdset>
+      <cmdset id="ipwon" label="CS IPW ON">
         <command name="fset" label="Bit 4 ON">
           <argv>50000</argv>
         </command>
-      </session>
-      <session id="ipwoff" label="CS IPW OFF">
+      </cmdset>
+      <cmdset id="ipwoff" label="CS IPW OFF">
         <command name="fset" label="Bit 4 OFF">
           <argv>40000</argv>
         </command>
-      </session>
-      <session id="ston" label="STOW PIN ON">
+      </cmdset>
+      <cmdset id="ston" label="STOW PIN ON">
         <command name="fset" label="Bit 5 ON">
           <argv>500000</argv>
         </command>
-      </session>
-      <session id="stoff" label="STOW PIN OFF">
+      </cmdset>
+      <cmdset id="stoff" label="STOW PIN OFF">
         <command name="fset" label="Bit 5 OFF">
           <argv>400000</argv>
         </command>
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row>

@@ -2,10 +2,10 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="bbe" id="bbe" label="Helium Compressor">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Update Status">
+      <cmdset id="upd" label="Update Status">
         <command name="getstat" />
-      </session>
-      <session id="x0on" label="X0 ON">
+      </cmdset>
+      <cmdset id="x0on" label="X0 ON">
         <command name="getstat"></command>
         <command name="set">
           <argv>stat</argv>
@@ -13,8 +13,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x0off" label="X0 OFF">
+      </cmdset>
+      <cmdset id="x0off" label="X0 OFF">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -22,8 +22,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x1on" label="X1 ON">
+      </cmdset>
+      <cmdset id="x1on" label="X1 ON">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -31,8 +31,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x1off" label="X1 OFF">
+      </cmdset>
+      <cmdset id="x1off" label="X1 OFF">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -40,8 +40,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x2on" label="X2 ON">
+      </cmdset>
+      <cmdset id="x2on" label="X2 ON">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -49,8 +49,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x2off" label="X2 OFF">
+      </cmdset>
+      <cmdset id="x2off" label="X2 OFF">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -58,8 +58,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x3on" label="X3 ON">
+      </cmdset>
+      <cmdset id="x3on" label="X3 ON">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -67,8 +67,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x3off" label="X3 OFF">
+      </cmdset>
+      <cmdset id="x3off" label="X3 OFF">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -76,8 +76,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x01on" label="X0 and X1 ON">
+      </cmdset>
+      <cmdset id="x01on" label="X0 and X1 ON">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -85,8 +85,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x01off" label="X0 and X1 OFF">
+      </cmdset>
+      <cmdset id="x01off" label="X0 and X1 OFF">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -94,8 +94,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x23on" label="X2 and X3 ON">
+      </cmdset>
+      <cmdset id="x23on" label="X2 and X3 ON">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -103,8 +103,8 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
-      <session id="x23off" label="X2 and X3 OFF">
+      </cmdset>
+      <cmdset id="x23off" label="X2 and X3 OFF">
         <command name="getstat" />
         <command name="set">
           <argv>stat</argv>
@@ -112,7 +112,7 @@
         </command>
         <command name="outfld" />
         <command name="getstat" />
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <repeat from="0" to="3">

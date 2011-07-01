@@ -2,9 +2,9 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="oma" id="oma" label="Compressed Air Pressure at MOIRCS">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Update Status">
+      <cmdset id="upd" label="Update Status">
         <command name="getstat" />
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="Group">

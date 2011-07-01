@@ -20,7 +20,7 @@ class ClsObj
     @interval=cdb['interval']||1
     @event=Watch.new(cdb,@stat)
     @watch=watch_thread
-    @main=session_thread{|buf| yield buf}
+    @main=cmdset_thread{|buf| yield buf}
     @v.add("== Internal Command ==")
     @v.add('sleep'=>"sleep [sec]")
     @v.add('waitfor'=>"[key] [val] (timeout=10)")
@@ -69,7 +69,7 @@ class ClsObj
     flg
   end
 
-  def session_thread
+  def cmdset_thread
     Thread.new{
       Thread.pass
       begin

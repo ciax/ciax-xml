@@ -6,7 +6,7 @@ socat
 libsqlite3-ruby1.9.1
 
 ## String restriction ##
-cdb//session@id -> never use ':'
+cdb//cmdset@id -> never use ':'
 
 ### Substitution Strings (implicit conversion) ###
  ## Process order: repeat -> parameter -> status -> formula -> format(w/eval)
@@ -15,7 +15,7 @@ cdb//session@id -> never use ':'
     description : substitute sequence number(in repeat)
     usable: fdb//cmdframe/repeat/code
             --
-            cdb//session/repeat/statement/argv
+            cdb//cmdset/repeat/command/argv
             cdb//status/repeat/value/*@ref
             cdb//status/repeat/value/binary@bit
             cdb//watch/repeat//argv
@@ -25,7 +25,7 @@ cdb//session@id -> never use ':'
     usable: fdb//cmdframe/code
             fdb//response/array/index
             --
-            cdb//session/statement/argv (eval if @format exists)
+            cdb//cmdset/command/argv (eval if @format exists)
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
@@ -59,7 +59,7 @@ cdb//session@id -> never use ':'
  format
     usable: fdb//code
             --
-            cdb//statement/argv
+            cdb//command/argv
             cdb//status/value/float
             cdb//status/value/int
 
@@ -75,11 +75,15 @@ cdb//session@id -> never use ':'
     example: "0:<10,98,99"
     usable: fdb//code
             --
-            cdb//statement/argv
+            cdb//command/argv
  
 ### Reference Content ###
-  cdb//(commands|watch)//statement@command <= fdb//command@id
-  cdb//watch/*@ref <= cdb//value@id
+  fdb//cmdframe//command@response <= fdb//rspframe//response@id
+  cdb//(commands|watch)//command@name <= fdb//command@id
+  cdb//watch/interrupt@name <= fdb//command@id
+  cdb//watch//condition/value@ref <= cdb//value@id
+  *@symbol <= *//symbol/table@id
+
 
 ### Struct of status ###
   field: { id => data }

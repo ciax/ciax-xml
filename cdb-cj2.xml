@@ -2,52 +2,52 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Regular status update">
+      <cmdset id="upd" label="Regular status update">
         <command name="getstat" />
         <command name="geterr" />
         <command name="getzlen" />
-      </session>
-      <session id="clr" label="ClearBit">
+      </cmdset>
+      <cmdset id="clr" label="ClearBit">
         <command name="clrbit" />
         <command name="getcmd" />
-      </session>
-      <session id="stop" label="Emergency Stop">
+      </cmdset>
+      <cmdset id="stop" label="Emergency Stop">
         <command name="setbit">
           <argv>0</argv>
           <argv>0</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="pause" label="Pause">
+      </cmdset>
+      <cmdset id="pause" label="Pause">
         <command name="setbit">
           <argv>0</argv>
           <argv>1</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="resume" label="Resume Pause">
+      </cmdset>
+      <cmdset id="resume" label="Resume Pause">
         <command name="setbit">
           <argv>0</argv>
           <argv>10</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="reset" label="Reset Error">
+      </cmdset>
+      <cmdset id="reset" label="Reset Error">
         <command name="setbit">
           <argv>0</argv>
           <argv>11</argv>
         </command>
         <command name="geterr" />
         <command name="getstat" />
-      </session>
-      <session id="ready" label="Drive Ready">
+      </cmdset>
+      <cmdset id="ready" label="Drive Ready">
         <command name="setbit">
           <argv>0</argv>
           <argv>3</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="fhook" label="Fix Flange Hook">
+      </cmdset>
+      <cmdset id="fhook" label="Fix Flange Hook">
         <command name="setbit">
           <argv>1</argv>
           <argv>0</argv>
@@ -55,8 +55,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="funhk" label="Fix Flange UnHook">
+      </cmdset>
+      <cmdset id="funhk" label="Fix Flange UnHook">
         <command name="setbit">
           <argv>1</argv>
           <argv>1</argv>
@@ -64,8 +64,8 @@
         <command name="getstat"></command>
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="fjup" label="Fix Flange Jack Up">
+      </cmdset>
+      <cmdset id="fjup" label="Fix Flange Jack Up">
         <command name="setbit">
           <argv>1</argv>
           <argv>4</argv>
@@ -73,8 +73,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="fjdw" label="Fix Flange Jack Down">
+      </cmdset>
+      <cmdset id="fjdw" label="Fix Flange Jack Down">
         <command name="setbit">
           <argv>1</argv>
           <argv>5</argv>
@@ -82,8 +82,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="chgfw" label="Charging Plug Forward">
+      </cmdset>
+      <cmdset id="chgfw" label="Charging Plug Forward">
         <command name="setbit">
           <argv>1</argv>
           <argv>6</argv>
@@ -91,8 +91,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="chgbk" label="Charging Plug Backward">
+      </cmdset>
+      <cmdset id="chgbk" label="Charging Plug Backward">
         <command name="setbit">
           <argv>1</argv>
           <argv>7</argv>
@@ -100,15 +100,15 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="pwoff" label="Outlet Power Off">
+      </cmdset>
+      <cmdset id="pwoff" label="Outlet Power Off">
         <command name="setbit">
           <argv>1</argv>
           <argv>8</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="mhook" label="Movable Flange Hook">
+      </cmdset>
+      <cmdset id="mhook" label="Movable Flange Hook">
         <command name="setbit">
           <argv>2</argv>
           <argv>0</argv>
@@ -116,8 +116,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr"></command>
-      </session>
-      <session id="munhk" label="Movable Flange UnHook">
+      </cmdset>
+      <cmdset id="munhk" label="Movable Flange UnHook">
         <command name="setbit">
           <argv>2</argv>
           <argv>1</argv>
@@ -125,8 +125,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr"></command>
-      </session>
-      <session id="mrotout" label="Movable Flange Rotation for Loading">
+      </cmdset>
+      <cmdset id="mrotout" label="Movable Flange Rotation for Loading">
         <command name="setbit">
           <argv>2</argv>
           <argv>2</argv>
@@ -134,8 +134,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr"></command>
-      </session>
-      <session id="mrotin" label="Movable Flange Rotation for Storing">
+      </cmdset>
+      <cmdset id="mrotin" label="Movable Flange Rotation for Storing">
         <command name="setbit">
           <argv>2</argv>
           <argv>3</argv>
@@ -143,8 +143,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="mjup" label="Movable Flange Jack Up">
+      </cmdset>
+      <cmdset id="mjup" label="Movable Flange Jack Up">
         <command name="setbit">
           <argv>2</argv>
           <argv>4</argv>
@@ -152,8 +152,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="mjdw" label="Movable Flange Jack Down">
+      </cmdset>
+      <cmdset id="mjdw" label="Movable Flange Jack Down">
         <command name="setbit">
           <argv>2</argv>
           <argv>5</argv>
@@ -161,8 +161,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="trout" label="Movable Flange Transer Out">
+      </cmdset>
+      <cmdset id="trout" label="Movable Flange Transer Out">
         <command name="setbit">
           <argv>2</argv>
           <argv>6</argv>
@@ -170,8 +170,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="trin" label="Movable Flange Transer In">
+      </cmdset>
+      <cmdset id="trin" label="Movable Flange Transer In">
         <command name="setbit">
           <argv>2</argv>
           <argv>7</argv>
@@ -179,8 +179,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="dopen" label="Door Open">
+      </cmdset>
+      <cmdset id="dopen" label="Door Open">
         <command name="setbit">
           <argv>3</argv>
           <argv>0</argv>
@@ -188,8 +188,8 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="dclose" label="Door Close">
+      </cmdset>
+      <cmdset id="dclose" label="Door Close">
         <command name="setbit">
           <argv>3</argv>
           <argv>1</argv>
@@ -197,50 +197,50 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="fpwon" label="Fix Flange Instrument Power On">
+      </cmdset>
+      <cmdset id="fpwon" label="Fix Flange Instrument Power On">
         <command name="setbit">
           <argv>3</argv>
           <argv>2</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="fpwoff" label="Fix Flange Instrument Power Off">
+      </cmdset>
+      <cmdset id="fpwoff" label="Fix Flange Instrument Power Off">
         <command name="setbit">
           <argv>3</argv>
           <argv>3</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="mpwon" label="Movable Flange Instrument Power On">
+      </cmdset>
+      <cmdset id="mpwon" label="Movable Flange Instrument Power On">
         <command name="setbit">
           <argv>3</argv>
           <argv>4</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="mpwoff" label="Movable Flange Instrument Power Off">
+      </cmdset>
+      <cmdset id="mpwoff" label="Movable Flange Instrument Power Off">
         <command name="setbit">
           <argv>3</argv>
           <argv>5</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="fccdon" label="Fix Flange CCD Power On">
+      </cmdset>
+      <cmdset id="fccdon" label="Fix Flange CCD Power On">
         <command name="setbit">
           <argv>3</argv>
           <argv>8</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="fccdoff" label="Fix Flange CCD Power Off">
+      </cmdset>
+      <cmdset id="fccdoff" label="Fix Flange CCD Power Off">
         <command name="setbit">
           <argv>3</argv>
           <argv>9</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="fccdtoff" label="Fix Flange CCD Timer Off">
+      </cmdset>
+      <cmdset id="fccdtoff" label="Fix Flange CCD Timer Off">
         <command name="setbit">
           <argv>3</argv>
           <argv>10</argv>
@@ -248,22 +248,22 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
-      <session id="mccdon" label="Movable Flange CCD Power On">
+      </cmdset>
+      <cmdset id="mccdon" label="Movable Flange CCD Power On">
         <command name="setbit">
           <argv>3</argv>
           <argv>12</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="mccdoff" label="Movable Flange CCD Power Off">
+      </cmdset>
+      <cmdset id="mccdoff" label="Movable Flange CCD Power Off">
         <command name="setbit">
           <argv>3</argv>
           <argv>13</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="mccdtoff" label="Movable Flange CCD Timer Off">
+      </cmdset>
+      <cmdset id="mccdtoff" label="Movable Flange CCD Timer Off">
         <command name="setbit">
           <argv>3</argv>
           <argv>14</argv>
@@ -271,7 +271,7 @@
         <command name="getstat" />
         <command name="getcmd"></command>
         <command name="geterr" />
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="General">

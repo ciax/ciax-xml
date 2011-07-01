@@ -57,7 +57,7 @@ class Buffer
     @wait
   end
 
-  # For session thread
+  # For cmdset thread
   def recv
     @issue=false
     loop{

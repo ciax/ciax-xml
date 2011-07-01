@@ -2,7 +2,7 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="slo" id="mma" label="MOIRCS Arm">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Update Status">
+      <cmdset id="upd" label="Update Status">
         <command name="getstat" />
         <command name="bs" />
         <command name="p" />
@@ -11,11 +11,11 @@
             <argv>$_</argv>
           </command>
         </repeat>
-      </session>
-      <session id="reset" label="Reset">
+      </cmdset>
+      <cmdset id="reset" label="Reset">
         <command name="reset" />
-      </session>
-      <session id="defcon" label="Default Config">
+      </cmdset>
+      <cmdset id="defcon" label="Default Config">
         <command name="hl">
           <argv>1</argv>
         </command>
@@ -25,46 +25,46 @@
         <command name="e2">
           <argv>0</argv>
         </command>
-      </session>
-      <session id="set0" label="Set 0 Pulses">
+      </cmdset>
+      <cmdset id="set0" label="Set 0 Pulses">
         <command name="set0" />
-      </session>
-      <session id="gf" label="Goto Focal Position">
+      </cmdset>
+      <cmdset id="gf" label="Goto Focal Position">
         <command name="ma">
           <argv>12.8</argv>
         </command>
-      </session>
-      <session id="gr" label="Goto Rotate Position">
+      </cmdset>
+      <cmdset id="gr" label="Goto Rotate Position">
         <command name="ma">
           <argv>123</argv>
         </command>
-      </session>
-      <session id="gw" label="Goto Waiting Position">
+      </cmdset>
+      <cmdset id="gw" label="Goto Waiting Position">
         <command name="ma">
           <argv>185</argv>
         </command>
-      </session>
-      <session id="gs" label="Goto Stock Position">
+      </cmdset>
+      <cmdset id="gs" label="Goto Stock Position">
         <command name="ma">
           <argv>jp</argv>
         </command>
-      </session>
-      <session id="sets" label="Set Stock Pos Pulse">
+      </cmdset>
+      <cmdset id="sets" label="Set Stock Pos Pulse">
         <command name="setp">
           <argv>200.44</argv>
         </command>
-      </session>
-      <session id="rini" label="Init to RP at AV">
+      </cmdset>
+      <cmdset id="rini" label="Init to RP at AV">
         <command name="e2">
           <argv>1</argv>
         </command>
         <command name="mhn"></command>
-      </session>
-      <session id="setr" label="Set Rotate Pos Pulse">
+      </cmdset>
+      <cmdset id="setr" label="Set Rotate Pos Pulse">
         <command name="setp">
           <argv>123</argv>
         </command>
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="Group">

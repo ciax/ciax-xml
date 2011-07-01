@@ -2,10 +2,10 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="psp" id="psp" label="MOIRCS Ext Heater">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Update Status">
+      <cmdset id="upd" label="Update Status">
         <command name="getstat" />
-      </session>
-      <session id="setlmt" label="Set Limit 20V/5A/100W">
+      </cmdset>
+      <cmdset id="setlmt" label="Set Limit 20V/5A/100W">
         <command name="setvl">
           <argv>20</argv>
         </command>
@@ -16,19 +16,19 @@
           <argv>100</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="setv" label="Set Voltage 0-50[V]">
+      </cmdset>
+      <cmdset id="setv" label="Set Voltage 0-50[V]">
         <command name="setv">
           <argv valid="0:50">$1</argv>
         </command>
         <command name="getstat" />
-      </session>
-      <session id="setp" label="Set Power 0-100[W]">
+      </cmdset>
+      <cmdset id="setp" label="Set Power 0-100[W]">
         <command name="setv">
           <argv format="%5.2f" valid="0:100">Math.sqrt($1*26)</argv>
         </command>
         <command name="getstat" />
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="Group">

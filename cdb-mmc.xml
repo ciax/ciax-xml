@@ -2,7 +2,7 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="slo" id="mmc" label="MOIRCS Carrousel">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Update Status">
+      <cmdset id="upd" label="Update Status">
         <command name="getstat" />
         <command name="bs" />
         <command name="p" />
@@ -12,11 +12,11 @@
             <argv>$_</argv>
           </command>
         </repeat>
-      </session>
-      <session id="reset" label="Reset">
+      </cmdset>
+      <cmdset id="reset" label="Reset">
         <command name="reset" />
-      </session>
-      <session id="defcon" label="Default Config">
+      </cmdset>
+      <cmdset id="defcon" label="Default Config">
         <command name="hl">
           <argv>0</argv>
         </command>
@@ -29,38 +29,38 @@
         <command name="setspd">
           <argv>0.2</argv>
         </command>
-      </session>
-      <session id="cwini" label="Goto CW Limit">
+      </cmdset>
+      <cmdset id="cwini" label="Goto CW Limit">
         <command name="jp" />
-      </session>
-      <session id="cwhome" label="Goto Home from CW Limit">
+      </cmdset>
+      <cmdset id="cwhome" label="Goto Home from CW Limit">
         <command name="mi">
           <argv>-0.41</argv>
         </command>
-      </session>
-      <session id="cwset0" label="Set 0 at S00">
+      </cmdset>
+      <cmdset id="cwset0" label="Set 0 at S00">
         <command name="set0" />
-      </session>
-      <session id="cw" label="Move CW [1-5]">
+      </cmdset>
+      <cmdset id="cw" label="Move CW [1-5]">
         <command name="mi">
           <argv valid="1:5">$1</argv>
         </command>
-      </session>
-      <session id="ccw" label="Move CCW [1-5]">
+      </cmdset>
+      <cmdset id="ccw" label="Move CCW [1-5]">
         <command name="mi">
           <argv valid="1:5">-$1</argv>
         </command>
-      </session>
-      <session id="slot" label="Move to Slot [0-23]">
+      </cmdset>
+      <cmdset id="slot" label="Move to Slot [0-23]">
         <command name="ma">
           <argv valid="0:23">-$1</argv>
         </command>
-      </session>
-      <session id="access" label="Move to Access [0-23]">
+      </cmdset>
+      <cmdset id="access" label="Move to Access [0-23]">
         <command name="ma">
           <argv format="%d" valid="0:23">$1&gt;18?-$1+18:-$1-6</argv>
         </command>
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="Group">

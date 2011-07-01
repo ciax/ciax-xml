@@ -19,15 +19,15 @@
   <xsd:element name="commands">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="cdbc:session" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="cdbc:cmdset" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
     <xsd:key name="ccmd">
-      <xsd:selector xpath="session" />
+      <xsd:selector xpath="cmdset" />
       <xsd:field xpath="@id" />
     </xsd:key>
   </xsd:element>
-  <xsd:element name="session">
+  <xsd:element name="cmdset">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">

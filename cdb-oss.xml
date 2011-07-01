@@ -2,78 +2,78 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <class frame="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
-      <session id="upd" label="Update Status">
+      <cmdset id="upd" label="Update Status">
         <command name="logstat" />
         <command name="getstat" />
         <command name="iststat" />
         <command name="jakstat" />
         <command name="inrstat" />
-      </session>
-      <session id="login" label="Login">
+      </cmdset>
+      <cmdset id="login" label="Login">
         <command name="login" />
         <command name="logstat" />
-      </session>
-      <session id="logout" label="Logout">
+      </cmdset>
+      <cmdset id="logout" label="Logout">
         <command name="logout" />
         <command name="logstat" />
-      </session>
-      <session id="init" label="Start TCP Status Request">
+      </cmdset>
+      <cmdset id="init" label="Start TCP Status Request">
         <command name="init" />
-      </session>
-      <session id="startup" label="Start Up CIAX operation">
+      </cmdset>
+      <cmdset id="startup" label="Start Up CIAX operation">
         <command name="login" />
         <command name="tsconly" label="TSC Only Mode(CIAX Mode)" />
         <command name="ron" />
         <command name="jon" />
-      </session>
-      <session id="shutdown" label="Shutdown CIAX operation">
+      </cmdset>
+      <cmdset id="shutdown" label="Shutdown CIAX operation">
         <command name="joff" />
         <command name="roff" />
         <command name="tscpri" label="TSC Primaly Mode" />
         <command name="logout" />
-      </session>
-      <session id="rhook" label="InR Hook">
+      </cmdset>
+      <cmdset id="rhook" label="InR Hook">
         <command name="rhook" />
         <command name="inrstat" />
-      </session>
-      <session id="runhk" label="InR UnHook">
+      </cmdset>
+      <cmdset id="runhk" label="InR UnHook">
         <command name="runhk" />
         <command name="inrstat" />
-      </session>
-      <session id="rstop" label="InR Stop">
+      </cmdset>
+      <cmdset id="rstop" label="InR Stop">
         <command name="rstop" />
         <command name="inrstat" />
-      </session>
-      <session id="jup" label="All EJB Up">
+      </cmdset>
+      <cmdset id="jup" label="All EJB Up">
         <command name="ajup" />
         <command name="jakstat" />
-      </session>
-      <session id="jdw" label="All EJB Down">
+      </cmdset>
+      <cmdset id="jdw" label="All EJB Down">
         <command name="ajdw" />
         <command name="jakstat" />
-      </session>
-      <session id="jstop" label="All EJB Stop">
+      </cmdset>
+      <cmdset id="jstop" label="All EJB Stop">
         <command name="jstop" />
         <command name="jakstat" />
-      </session>
-      <session id="moircs" label="Set IID MOIRCS">
+      </cmdset>
+      <cmdset id="moircs" label="Set IID MOIRCS">
         <command name="setinst">
           <argv>12</argv>
         </command>
         <command name="iststat" />
-      </session>
-      <session id="focas" label="Set IID FOCAS">
+      </cmdset>
+      <cmdset id="focas" label="Set IID FOCAS">
         <command name="setinst">
           <argv>5</argv>
         </command>
         <command name="iststat" />
-      </session>
-      <session id="comics" label="Set IID COMICS">
+      </cmdset>
+      <cmdset id="comics" label="Set IID COMICS">
         <command name="setinst">
           <argv>7</argv>
         </command>
         <command name="iststat" />
-      </session>
+      </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="Group">

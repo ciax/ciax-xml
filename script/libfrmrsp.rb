@@ -83,8 +83,7 @@ class FrmRsp
   def frame_to_field(e0)
     begin
       @v.msg(1){"Field:#{e0['label']}"}
-      data=cut(e0)
-      verify(e0,data)
+      data=verify(e0)
       if key=e0['assign']
         @field[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
@@ -94,11 +93,15 @@ class FrmRsp
     end
   end
 
-  def verify(e0,data)
+  def verify(e0)
+    data=cut(e0)
     if val=e0['val']
       val=eval(val).to_s if e0['decode']
       @v.msg{"Verify:[#{val}] and <#{data}>"}
       val == data || @v.err("Verify Mismatch <#{data}> != [#{val}]")
+      val
+    else
+      data
     end
   end
 

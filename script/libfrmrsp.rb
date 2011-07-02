@@ -84,17 +84,21 @@ class FrmRsp
     begin
       @v.msg(1){"Field:#{e0['label']}"}
       data=cut(e0)
+      verify(e0,data)
       if key=e0['assign']
         @field[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
       end
-      if val=e0['val']
-        val=eval(val).to_s if e0['decode']
-        @v.msg{"Verify:[#{val}] and <#{data}>"}
-        val == data || @v.err("Verify Mismatch <#{data}> != [#{val}]")
-      end
     ensure
       @v.msg(-1){"Field:End"}
+    end
+  end
+
+  def verify(e0,data)
+    if val=e0['val']
+      val=eval(val).to_s if e0['decode']
+      @v.msg{"Verify:[#{val}] and <#{data}>"}
+      val == data || @v.err("Verify Mismatch <#{data}> != [#{val}]")
     end
   end
 

@@ -44,6 +44,14 @@
         </xsd:simpleType>
       </xsd:attribute>
     </xsd:complexType>
+    <xsd:key name="response_id">
+      <xsd:selector xpath=".//fdbr:response" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
+    <xsd:keyref name="command_id" refer="fdb:response_id">
+      <xsd:selector xpath=".//fdbc:command" />
+      <xsd:field xpath="@response" />
+    </xsd:keyref>
   </xsd:element>
   <xsd:element name="serial">
     <xsd:complexType>

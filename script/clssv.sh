@@ -7,8 +7,8 @@ setfld $id || _usage_key "(-d,c)"
 echo "Listen port [udp:$port]" >&2
 echo "Connect to [$iodst]" >&2
 if [ "$dmy" ] ; then
+    export NOLOG=1
     iocmd="frmsim $id"
-    id="dmy-$id"
 else
     iocmd="socat - $iodst"
 fi

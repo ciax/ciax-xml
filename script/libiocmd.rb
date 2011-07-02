@@ -6,7 +6,7 @@ class IoCmd
   def initialize(iocmd,logid=nil,wait=0,timeout=nil)
     abort " No IO command" unless iocmd
     @iocmd=iocmd.split(' ')
-    @logging=IoFile.new("device_#{logid}") if logid
+    @logging=IoFile.new("device_#{logid}") if logid && ! ENV.key?('NOLOG')
     @f=IO.popen(@iocmd,'r+')
     @v=Verbose.new('IOCMD',1)
     @v.msg{iocmd}

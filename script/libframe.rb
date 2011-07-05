@@ -42,13 +42,22 @@ class Frame
     len=e0['length']||@frame.size
     str=@frame.slice!(0,len.to_i)
     return if str.empty?
+    # Check Code
     @ccrange << str if @ccrange
     @v.msg{"CutFrame: <#{str}> by size=[#{len}]"}
+    # Pick Part
     if r=e0['slice']
       str=str.slice(*r.split(':').map{|i| i.to_i })
       @v.msg{"PickFrame: <#{str}> by range=[#{r}]"}
     end
-    decode(e0,str)
+    str=decode(e0,str)
+    # Verify
+    if val=e0['val']
+      val=eval(val).to_s if e0['decode']
+      @v.msg{"Verify:[#{val}] and <#{str}>"}
+      val == str || @v.err("Verify Mismatch <#{str}> != [#{val}]")
+    end
+    str
   end
 
   def checkcode

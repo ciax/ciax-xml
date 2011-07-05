@@ -101,7 +101,7 @@ class Verbose
   def condition(msg) # VER= makes setenv "" to VER otherwise nil
     if ENV['VER']
       ver=ENV['VER'].split(' ').map{|s| s.upcase}
-      ver.all?{|s| msg.upcase.include?(s) }
+      ver.any?{|s| msg.upcase.include?(s) }
     end
   end
 end

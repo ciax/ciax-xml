@@ -50,6 +50,46 @@ class FrmRsp
     @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
   end
 
+  def mk_array(idx,field)
+    # make multidimensional array
+    # i.e. idxary=[0,0:10,0] -> field[0][0][0] .. field[0][10][0]
+    return yield if idx.empty?
+    fld=field||[]
+    f,l=idx[0].split(':').map{|i| eval(i)}
+    Range.new(f,l||f).each{|i|
+      fld[i] = mk_array(idx[1..-1],fld[i]){yield}
+      @v.msg{"Array:Index[#{i}]=#{fld[i]}"}
+    }
+    fld
+  end
+
+  def frame_to_field(e0)
+    @v.msg(1){"Field:#{e0['label']}"}
+    if e0[:index]
+      # Array
+      key=e0['assign'] || @v.err("No key for Array")
+      # Insert range depends on command param
+      idxs=e0[:index].map{|e1|
+        @par.subst(e1['range'])
+      }
+      begin
+        @v.msg(1){"Array:[#{key}]:Range#{idxs}"}
+        @field[key]=mk_array(idxs,@field[key]){yield}
+      ensure
+        @v.msg(-1){"Array:Assign[#{key}]"}
+      end
+    else
+      #Field
+      data=yield
+      if key=e0['assign']
+        @field[key]=data
+        @v.msg{"Assign:[#{key}] <- <#{data}>"}
+      end
+    end
+  ensure
+    @v.msg(-1){"Field:End"}
+  end
+
   # Process Frame to Field
   def getfield_rec(e0)
     e0.each{|e1|
@@ -71,54 +111,8 @@ class FrmRsp
           @v.msg(-1){"Exitting Selected Node"}
         end
       when Hash
-        if e1[:index]
-          frame_to_array(e1)
-        else
-          frame_to_field(e1)
-        end
+        frame_to_field(e1){ cut(e1) }
       end
     }
-  end
-
-  def frame_to_field(e0)
-    begin
-      @v.msg(1){"Field:#{e0['label']}"}
-      data=cut(e0)
-      if key=e0['assign']
-        @field[key]=data
-        @v.msg{"Assign:[#{key}] <- <#{data}>"}
-      end
-    ensure
-      @v.msg(-1){"Field:End"}
-    end
-  end
-
-  def frame_to_array(e0)
-    key=e0['assign'] || @v.err("No key for Array")
-    begin
-      idxs=[]
-      e0[:index].each{|e1| # Index
-        idxs << @par.subst(e1['range']) # Insert range depends on command param
-      }
-      @v.msg(1){"Array:#{e0['label']}[#{key}]:Range#{idxs}"}
-      @field[key]=mk_array(idxs,@field[key]){
-        cut(e0)
-      }
-    ensure
-      @v.msg(-1){"Array:Assign[#{key}]"}
-    end
-  end
-
-  def mk_array(idx,field)
-    # make multidimensional array
-    # i.e. idxary=[0,0:10,0] -> field[0][0][0] .. field[0][10][0]
-    return yield if idx.empty?
-    fld=field||[]
-    f,l=idx[0].split(':').map{|i| eval(i)}
-    Range.new(f,l||f).each{|i|
-      fld[i] = mk_array(idx[1..-1],fld[i]){yield}
-      @v.msg{"Array:Index[#{i}]=#{fld[i]}"}
-    }
-    fld
   end
 end

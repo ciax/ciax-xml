@@ -35,8 +35,13 @@ class Verbose
     self
   end
 
+  def alert(msg='alert') # Display only
+    Kernel.warn $!.to_s+color(msg,1)
+    self
+  end
+
   def err(msg='error') # Raise User error (Invalid User input)
-    raise UserError,color(msg,1)
+    raise UserError,$!.to_s+color(msg,1)
   end
 
   def abort(msg='abort')

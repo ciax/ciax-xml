@@ -78,8 +78,8 @@ class ClsObj
           @cs.upd
           @stat.save
         }
-      rescue SelectID
-        raise "Session Thread Error\n"+$!.to_s
+      rescue UserError
+        @v.alert(" in Command Thread")
       end
     }
   end

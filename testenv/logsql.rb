@@ -11,5 +11,8 @@ id = ARGV.shift if cre
 id||=cls
 keys=stat.keys.join(',')
 vals=stat.values.map{|s| "\"#{s}\""}.join(',')
-puts "create table #{id} (#{keys},primary key(time));" if cre
-puts "insert into #{id} (#{keys}) values (#{vals});"
+if cre
+  puts "create table #{id} (#{keys},primary key(time));"
+else
+  puts "insert into #{id} (#{keys}) values (#{vals});"
+end

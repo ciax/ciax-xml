@@ -22,11 +22,15 @@ if STDIN.tty? || ! file=ARGV.shift
   abort "Usage: merging [status_file] < [json_data]\n#{$!}"
 end
 output={}
-open(file){|f|
-  output=JSON.load(f.gets(nil))
-} if test(?r,file)
-str=STDIN.gets(nil) || exit
-input=JSON.load(str)
+begin
+  open(file){|f|
+    output=JSON.load(f.gets(nil))
+  } if test(?r,file)
+  str=STDIN.gets(nil) || raise
+  input=JSON.load(str)
+rescue
+  abort
+end
 output=merge(input,output)
 open(file,'w'){|f|
   f.puts(JSON.dump(output))

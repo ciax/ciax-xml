@@ -86,6 +86,34 @@ cdb//cmdset@id -> never use ':'
 
 
 ### Struct of status ###
-  field: { id => data }
+  FrmDb
+    ::command
+         :select
+             cmd=>[ {data1},{data2} ..]
+             ...
+         :label
+             cmd=>Label String
+             ...
+    ::status
+         :select
+             id=>[ {val1},{val2} ..]
+             ...
+         :label
+             id=>Label String
+             ...
+         :symbol
+             id=>Table ID
+             ...
+    ::frame (Common part)
+         :command
+             :main=>[ {data1},{data2} ..]
+             :ccrange=>[ {data1},{data2} ..]
+         :status
+             :main=>[ {val1},{val2} ..]
+             :ccrange=>[ {val1},{val2} ..]
+    ::symbol (Tables)
+          table1=>{table}
+          table2=>{table}
+
   stat: { id => data }
   view: { header => {id=>..}, :view => [ {id=>a,label=>..},{},.. ]}

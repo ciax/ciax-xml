@@ -49,3 +49,4 @@ mcr: cart run1 at tag 9 with comics gives error with "No such key 'n'" [4/17]
 more variation:fdb//values/int@decode (sined/unsined, hexstr16,...) [6/13]
 
 ***DISCARD
+field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain

@@ -6,7 +6,7 @@ require "libsymdb"
 
 class ObjDb < ClsDb
   attr_reader :alias
-  def initialize(obj,cls=nil)
+  def initialize(obj,cls=nil) # cls can be gotten from odb, otherwise DB-object
     @alias={}
     @status={}
     @tables={}

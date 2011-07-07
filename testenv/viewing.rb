@@ -17,7 +17,7 @@ elsif type=stat['class']
   require "libobjdb"
   db=ObjDb.new(obj,type)
 else
-  raise "NO ID in View"
+  raise "NO Type ID in View"
 end
 view=View.new(stat,db)
 view.add(opt).upd

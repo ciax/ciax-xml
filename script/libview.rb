@@ -13,8 +13,9 @@ class View < Hash
         case k
         when 'id','frame','class'
           self[k]=v
+        else
+          ary << {'id'=>k, 'val'=>v}
         end
-        ary << {'id'=>k, 'val'=>v}
       }
     end
   end

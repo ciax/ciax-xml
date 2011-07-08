@@ -31,11 +31,13 @@ class HtmlTbl < Hash
         row=h['row']
         list << "</tr><tr>"
       end
-      list << "<td>#{h['label']}</td><td><div id=\"#{h['id']}\" /></td>"
+      list << "<td>#{h['label']}</td>"
+      list << "<td><div id=\"#{h['id']}\">*******</div></td>"
     }
     list << "</tr></table>"
-    list.unshift "<th colspan=#{maxcol*2+2}>#{@id}</th>"
-    list.unshift "<table class=\"CIAX\"><tr>"
-    list.join("\n")
+    head=[]
+    head << "<table class=\"CIAX\"><tr>"
+    head << "<th colspan=#{maxcol*2+2}>#{@id}</th>"
+    (head+list).join("\n")
   end
 end

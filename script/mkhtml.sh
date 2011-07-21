@@ -1,6 +1,6 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
-id=$1;shift
+id=${1%*=};shift
 setfld $id || _usage_key
 file=$HOME/.var/json/first.html
 #<link rel="stylesheet" type="text/css" href="/ciax-style.css" />
@@ -16,29 +16,36 @@ body{
   color : #000066;
   background-color : white;
 }
-a:link{
-  color : #2266cc;
-}
-a:visited{
-  color : #997744;
-}
-a:active{
-  color : #224466;
-}
 h1{
   text-align : center;
 }
-table.CIAX{
+table{
   width : 70%;
   border : 5px outset #aadd99;
   margin-left : 15%;
   margin-right : 15%;
 }
-table.CIAX th{
+th{
   font-size : x-large;
   text-align : center;
   color : white;
   background-color:#aadd99;
+}
+td{
+  border : 3px inset
+}
+
+.label{
+  color : blue;
+}
+.normal{
+  color : green;
+}
+.alarm{
+  color : red;
+}
+.warn{
+  color : yellow;
 }
 </style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>

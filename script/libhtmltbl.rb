@@ -24,6 +24,7 @@ class HtmlTbl < Hash
     maxcol=0
     list=[]
     self['list'].each{|h|
+      colspan=(h['id'] == 'time')? ' colspan=20' : ''
       if maxcol < col=h['col'].to_i
         maxcol=col
       end
@@ -31,12 +32,12 @@ class HtmlTbl < Hash
         row=h['row']
         list << "</tr><tr>"
       end
-      list << "<td>#{h['label']}</td>"
-      list << "<td><div id=\"#{h['id']}\">*******</div></td>"
+      list << "<td class=\"label\">#{h['label']}</td>"
+      list << "<td#{colspan}><div id=\"#{h['id']}\" class=\"normal\">*******</div></td>"
     }
     list << "</tr></table>"
     head=[]
-    head << "<table class=\"CIAX\"><tr>"
+    head << "<table><tr>"
     head << "<th colspan=#{maxcol*2+2}>#{@id}</th>"
     (head+list).join("\n")
   end

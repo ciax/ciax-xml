@@ -285,7 +285,9 @@
         <value id="rdy" label="READY" symbol="off-warn">
           <binary bit="3" ref="w:0" />
         </value>
-        <value id="err" label="Error" symbol="err">
+      </row>
+      <row>
+        <value id="err" label="ERROR CODE" symbol="err">
           <int ref="err" />
         </value>
         <value id="emg" label="EMG STOP" symbol="alarm">
@@ -299,10 +301,10 @@
           <string ref="c:2" />
           <string ref="c:3" />
         </value>
-        <value id="run" label="Running" symbol="warn">
+        <value id="run" label="RUNNING" symbol="warn">
           <binary bit="15" ref="w:0" />
         </value>
-        <value id="cmp" label="COMMAND COMPLETE" symbol="warn">
+        <value id="cmp" label="CMD COMPLETE" symbol="warn">
           <binary bit="14" ref="w:0" />
         </value>
       </row>

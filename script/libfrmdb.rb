@@ -19,6 +19,10 @@ class FrmDb < Db
     @v.msg{"Structure:status:#{@status}"}
   end
 
+  def to_s
+    super+mkline("Frame",@frame)
+  end
+
   private
   def init_main(domain)
     hash=domain.to_h
@@ -124,4 +128,9 @@ class FrmDb < Db
     }
     a
   end
+end
+
+if __FILE__ == $0
+  db=FrmDb.new(ARGV.shift) rescue ("USAGE: #{$0} [id]\n#{$!}")
+  puts db
 end

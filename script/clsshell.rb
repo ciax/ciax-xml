@@ -8,15 +8,15 @@ require "libshell"
 
 opt,arg = ARGV.partition{|s| /^-/ === s}
 opt= opt.empty? ? 'alsp' : opt.join('')
-cls,id,iocmd=arg
+cls,obj,iocmd=arg
 
 begin
-  cobj=ClsSrv.new(id,cls,iocmd)
-  odb=ObjDb.new(id,cls)
+  cobj=ClsSrv.new(obj,cls,iocmd)
+  odb=ObjDb.new(obj,cls)
   al=Alias.new(odb)
   view=View.new(cobj.stat,odb).add(opt)
 rescue SelectID
-  abort "Usage: clsshell (-alsp) [cls] [id] [iocmd]\n#{$!}"
+  abort "Usage: clsshell (-alsp) [cls] [obj] [iocmd]\n#{$!}"
 end
 cobj.session{|line|
   cobj.dispatch(line){|cmd| al.alias(cmd)}||view.upd

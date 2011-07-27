@@ -60,6 +60,10 @@ class ClsDb < Db
     line
   end
 
+  def to_s
+    super+mkline("Watch",watch)
+  end
+
   private
   def rec_cond(e)
     case e.name
@@ -118,4 +122,9 @@ class ClsDb < Db
     }
     @cdbs
   end
+end
+
+if __FILE__ == $0
+  db=ClsDb.new(ARGV.shift) rescue ("USAGE: #{$0} [id]\n#{$!}")
+  puts db
 end

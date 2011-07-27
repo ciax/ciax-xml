@@ -2,9 +2,11 @@
 require "libverbose"
 
 class Circular
-  def initialize(max=2)
-    @max=max
+  attr_reader :max
+  def initialize(limit=2)
+    @limit=limit
     @counter=0
+    @max=0
     @v=Verbose.new("Circ",6)
   end
 
@@ -15,20 +17,21 @@ class Circular
   end
 
   def reset
-    @counter=@counter-col+@max
+    @counter=(row+1)*@limit
     @v.msg{"Resetted [#{row}]"}
     self
   end
 
   def row
-    row=@counter/@max
+    row=@counter/@limit
     @v.msg{"Row [#{row}]"}
     row
   end
 
   def col
-    col=@counter % @max
+    col=@counter % @limit
     @v.msg{"Col [#{col}]"}
+    @max=col if @max < col
     col
   end
 end

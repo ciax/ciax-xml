@@ -20,5 +20,5 @@ else
   raise "NO Type ID in View"
 end
 view=View.new(stat,db)
-view.add(opt).upd
+view.opt(opt).upd
 puts JSON.dump(view)

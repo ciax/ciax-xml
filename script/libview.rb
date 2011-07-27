@@ -20,7 +20,7 @@ class View < Hash
     end
   end
 
-  def add(opt)
+  def opt(opt)
     add_label if opt.include?('l')
     add_arrange if opt.include?('a')
     init_sym if opt.include?('s')

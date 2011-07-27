@@ -14,7 +14,7 @@ begin
   cobj=ClsSrv.new(obj,cls,iocmd)
   odb=ObjDb.new(obj,cls)
   al=Alias.new(odb)
-  view=View.new(cobj.stat,odb).add(opt)
+  view=View.new(cobj.stat,odb).opt(opt)
 rescue SelectID
   abort "Usage: clsshell (-alsp) [cls] [obj] [iocmd]\n#{$!}"
 end

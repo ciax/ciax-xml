@@ -21,24 +21,21 @@ class HtmlTbl < Hash
   # VAL=a:b:c -> grep "a|b|c"
   def to_s
     row=''
-    maxcol=0
+    col=self['col']*2+2
     list=[]
+    list << "<table><tr>"
+    list << "<th colspan=#{col}>#{@id}</th>"
     self['list'].each{|h|
-      colspan=(h['id'] == 'time')? ' colspan=20' : ''
-      if maxcol < col=h['col'].to_i
-        maxcol=col
-      end
+      colspan=(h['id'] == 'time')? " colspan=#{col-1}" : ''
+      id="id=\"#{h['id']}\""
       if row != h['row']
         row=h['row']
         list << "</tr><tr>"
       end
       list << "<td class=\"label\">#{h['label']}</td>"
-      list << "<td#{colspan}><div id=\"#{h['id']}\" class=\"normal\">*******</div></td>"
+      list << "<td#{colspan}><div #{id} class=\"normal\">*******</div></td>"
     }
     list << "</tr></table>"
-    head=[]
-    head << "<table><tr>"
-    head << "<th colspan=#{maxcol*2+2}>#{@id}</th>"
-    (head+list).join("\n")
+    list.join("\n")
   end
 end

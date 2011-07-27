@@ -26,6 +26,7 @@ class Arrange < Hash
       @c.next
       list << hash
     }
+    view['col']=@c.max
     view['list']=list.sort_by{|h| "%02d%02d" % [h['row'],h['col']] }
     self
   end

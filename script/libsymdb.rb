@@ -23,4 +23,13 @@ class SymDb < Hash
     }
     self
   end
+
+  def to_s
+    Verbose.view_struct("Symbol Table",self)
+  end
+end
+
+if __FILE__ == $0
+  db=SymDb.new() rescue ("USAGE: #{$0} [id]\n#{$!}")
+  puts db
 end

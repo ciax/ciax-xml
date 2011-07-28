@@ -20,7 +20,7 @@ class FrmDb < Db
   end
 
   def to_s
-    super+mkline("Frame",@frame)
+    super+view_struct("Frame",@frame)
   end
 
   private

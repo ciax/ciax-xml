@@ -61,7 +61,7 @@ class ClsDb < Db
   end
 
   def to_s
-    super+mkline("Watch",watch)
+    super+view_struct("Watch",watch)
   end
 
   private

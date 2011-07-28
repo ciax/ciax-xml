@@ -16,23 +16,23 @@ class Db < Hash
   end
 
   def to_s
-    str=mkline("Command",@command)
-    str << mkline("Status",@status)
-    str << mkline("SymTable",@tables)
+    str=view_struct("Command",@command)
+    str << view_struct("Status",@status)
+    str << view_struct("SymTable",@tables)
   end
 
   private
-  def mkline(key,val,indent=0)
+  def view_struct(key,val,indent=0)
     str="  " * indent
     if Hash === val
       str << ("%-4s :\n" % key)
       val.each{|k,v|
-        str << mkline(k,v,indent+1)
+        str << view_struct(k,v,indent+1)
       }
     elsif Array === val
       str << ("%-4s :\n" % key)
       val.each_with_index{|v,i|
-        str << mkline("[#{i}]",v,indent+1)
+        str << view_struct("[#{i}]",v,indent+1)
       }
     else
       str << ("%-4s : %s\n" % [key,val])

@@ -20,7 +20,7 @@ class FrmDb < Db
   end
 
   def to_s
-    super+view_struct("Frame",@frame)
+    super+Verbose.view_struct("Frame",@frame)
   end
 
   private

@@ -109,4 +109,24 @@ class Verbose
       ver.any?{|s| msg.upcase.include?(s) }
     end
   end
+
+  # Class method
+  def self.view_struct(key,val,indent=0)
+    return '' if ! val || val.empty?
+    str="  " * indent
+    if Hash === val
+      str << ("%-4s :\n" % key)
+      val.each{|k,v|
+        str << view_struct(k,v,indent+1)
+      }
+    elsif Array === val
+      str << ("%-4s :\n" % key)
+      val.each_with_index{|v,i|
+        str << view_struct("[#{i}]",v,indent+1)
+      }
+    else
+      str << ("%-4s : %s\n" % [key,val])
+    end
+    str
+  end
 end

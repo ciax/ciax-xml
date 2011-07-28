@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # Status to View (String with attributes)
 require "libsymdb"
-require "libsymtbls"
+require "libsymbols"
 require "liblabel"
 require "libarrange"
 class HtmlTbl < Hash
@@ -14,7 +14,7 @@ class HtmlTbl < Hash
     Label.new(odb).convert(self)
     Arrange.new(odb).convert(self)
     sym=SymDb.new.update(odb.tables)
-    @sdb=SymTbls.new(sym,odb)
+    @sdb=Symbols.new(sym,odb)
   end
 
   # Filterling values by env value of VAL

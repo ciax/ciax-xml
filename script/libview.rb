@@ -55,9 +55,9 @@ class View < Hash
   def init_sym
     if @odb
       require "libsymdb"
-      require "libsymtbls"
+      require "libsymbols"
       sym=SymDb.new.update(@odb.tables)
-      @sdb=SymTbls.new(sym,@odb)
+      @sdb=Symbols.new(sym,@odb)
     end
     self
   end

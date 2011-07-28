@@ -2,7 +2,7 @@
 . ~/lib/libcsv.sh
 id=${1%*=};shift
 setfld $id || _usage_key
-file=$HOME/.var/json/first.html
+file=$HOME/.var/json/$id.html
 #<link rel="stylesheet" type="text/css" href="/ciax-style.css" />
 cat > $file <<EOF
 <html>

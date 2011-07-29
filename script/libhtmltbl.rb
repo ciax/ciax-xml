@@ -19,7 +19,7 @@ class HtmlTbl < Hash
   end
 
   def tables
-    "DB="+JSON.dump(@sdb)
+    "SDB="+JSON.dump(@sdb)
   end
 
   def symbols

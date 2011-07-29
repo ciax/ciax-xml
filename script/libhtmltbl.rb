@@ -15,7 +15,7 @@ class HtmlTbl < Hash
     }
     Label.new(odb).convert(self)
     Arrange.new(odb).convert(self)
-    @sdb=SymDb.new
+    @sdb=SymDb.new.update(odb.tables)
   end
 
   def tables

@@ -1,0 +1,38 @@
+body{
+  background-image : url(/bg-1.jpg);
+  background-repeat : repeat;
+  background-attachment : fixed;
+  color : #000066;
+  background-color : white;
+}
+h1{
+  text-align : center;
+}
+table{
+  width : 70%;
+  border : 5px outset #aadd99;
+  margin-left : 15%;
+  margin-right : 15%;
+}
+th{
+  font-size : x-large;
+  text-align : center;
+  color : white;
+  background-color:#aadd99;
+}
+td{
+  border : 3px inset
+}
+
+.label{
+  color : blue;
+}
+.normal{
+  color : green;
+}
+.alarm{
+  color : red;
+}
+.warn{
+  color : yellow;
+}

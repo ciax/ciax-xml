@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # Status to View (String with attributes)
+require "json"
 require "libsymdb"
 require "libsymbols"
 require "liblabel"
@@ -7,14 +8,22 @@ require "libarrange"
 class HtmlTbl < Hash
   def initialize(odb)
     ary=self['list']=[{'id'=>'time'}]
+    @odb=odb
     @id=odb['id']
     odb.status[:row].each{|k,v|
       ary << {'id'=>k, 'val'=>v}
     }
     Label.new(odb).convert(self)
     Arrange.new(odb).convert(self)
-    sym=SymDb.new.update(odb.tables)
-    @sdb=Symbols.new(sym,odb)
+    @sdb=SymDb.new
+  end
+
+  def tables
+    "DB="+JSON.dump(@sdb)
+  end
+
+  def symbols
+    "SYM="+JSON.dump(@odb.status[:symbol])
   end
 
   # Filterling values by env value of VAL

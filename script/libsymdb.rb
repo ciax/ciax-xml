@@ -12,11 +12,8 @@ class SymDb < Hash
       id=row.delete('id')
       rc=row[:record]={}
       e1.each{|e2| # case
-        if e2.text
-          rc[e2.text]=e2.to_h
-        else
-          rc.default=e2.to_h
-        end
+        key=e2.text||"default"
+        rc[key]=e2.to_h
       }
       self[id]=row
       @v.msg{"Symbol Table:#{id} : #{row}"}

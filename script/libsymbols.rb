@@ -28,12 +28,14 @@ class Symbols
           v['val']=val.to_f
           v.update(hash)
           @v.msg{"VIEW:Range:[#{match}] and [#{val}]"}
+          break
         }
       when 'regexp'
         tbl.each{|match,hash|
           @v.msg{"VIEW:Regexp:[#{match}] and [#{val}]"}
-          next unless /#{match}/ === val
+          next unless /#{match}/ === val || val == 'default'
           v.update(hash)
+          break
         }
       else
         @v.msg{"VIEW:No Symbol Reference:[#{val}]"}

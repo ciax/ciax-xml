@@ -4,6 +4,7 @@ require "librepeat"
 require "libdb"
 
 class ClsDb < Db
+  attr_reader :watch
   def initialize(cls)
     super('cdb',cls)
     @rep=Repeat.new
@@ -15,53 +16,11 @@ class ClsDb < Db
     @v.msg{
       @status.keys.map{|k| "Structure:status:#{k} #{@status[k]}"}
     }
-  end
-
-  def watch
-    return [] unless wdb=@doc.domain('watch')
-    update(wdb.to_h)
-    line=[]
-    period=nil
-    @rep.each(wdb){|e0|
-      case name=e0.name
-      when 'periodic'
-        unless period
-          period={:type => 'periodic'}
-          period[:var] = {:next => Time.at(0)}
-          line << period
-        end
-        bg=period
-      else
-        bg={:type => e0.name, :var => {}}
-        line << bg
-      end
-      e0.to_h.each{|a,v|
-        bg[a.to_sym]=@rep.format(v)
-      }
-      @v.msg(1){"WATCH:#{bg[:type]}:#{bg['label']}"}
-      e0.each{ |e1|
-        case name=e1.name.to_sym
-        when :interrupt,:command
-          bg[name]||=[]
-          ssn=[e1['name']]
-          e1.each{|e2|
-            ssn << @rep.subst(e2.text)
-          }
-          bg[name] << ssn.freeze unless bg[name].include? ssn
-          @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
-        when :condition
-          bg[name]||={}
-          bg[name]=rec_cond(e1)
-        end
-      }
-      @v.msg(-1){"WATCH:#{bg[:type]}"}
-    }
-    @v.msg{"Structure:watch #{line}"}
-    line
+    @watch=init_watch
   end
 
   def to_s
-    super+Verbose.view_struct("Watch",watch)
+    super+Verbose.view_struct("Watch",@watch)
   end
 
   private
@@ -121,6 +80,49 @@ class ClsDb < Db
       end
     }
     @cdbs
+  end
+
+  def init_watch
+    return [] unless wdb=@doc.domain('watch')
+    update(wdb.to_h)
+    line=[]
+    period=nil
+    @rep.each(wdb){|e0|
+      case name=e0.name
+      when 'periodic'
+        unless period
+          period={:type => 'periodic'}
+          period[:var] = {:next => Time.at(0)}
+          line << period
+        end
+        bg=period
+      else
+        bg={:type => e0.name, :var => {}}
+        line << bg
+      end
+      e0.to_h.each{|a,v|
+        bg[a.to_sym]=@rep.format(v)
+      }
+      @v.msg(1){"WATCH:#{bg[:type]}:#{bg['label']}"}
+      e0.each{ |e1|
+        case name=e1.name.to_sym
+        when :interrupt,:command
+          bg[name]||=[]
+          ssn=[e1['name']]
+          e1.each{|e2|
+            ssn << @rep.subst(e2.text)
+          }
+          bg[name] << ssn.freeze unless bg[name].include? ssn
+          @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
+        when :condition
+          bg[name]||={}
+          bg[name]=rec_cond(e1)
+        end
+      }
+      @v.msg(-1){"WATCH:#{bg[:type]}"}
+    }
+    @v.msg{"Structure:watch #{line}"}
+    line
   end
 end
 

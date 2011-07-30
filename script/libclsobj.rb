@@ -17,7 +17,7 @@ class ClsObj
     @cs=ClsStat.new(cdb,field,@stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
-    @interval=cdb['interval']||1
+    @interval=(cdb['interval']||1).to_i
     @event=Watch.new(cdb,@stat)
     @watch=watch_thread
     @main=cmdset_thread{|buf| yield buf}

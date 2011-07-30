@@ -21,5 +21,15 @@ class ObjDb < ClsDb
     }
     SymDb.new(doc,@tables)
   rescue SelectID
+    raise SelectID,$!.to_s if __FILE__ == $0
   end
+
+  def to_s
+    super+Verbose.view_struct("Alias",@alias)
+  end
+end
+
+if __FILE__ == $0
+  db=ObjDb.new(ARGV.shift,ARGV.shift) rescue ("USAGE: #{$0} [id] [cls]\n#{$!}")
+  puts db
 end

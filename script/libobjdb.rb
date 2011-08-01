@@ -24,7 +24,7 @@ class ObjDb < ClsDb
     doc.domain('status').each('title'){|e0|
       e0.attr2db(@status,'ref')
     }
-    SymDb.new(doc,@tables)
+    @tables.update(SymDb.new(doc))
   rescue SelectID
     raise SelectID,$!.to_s if __FILE__ == $0
   end

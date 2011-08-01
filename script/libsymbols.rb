@@ -3,11 +3,10 @@ require "libverbose"
 require "librerange"
 
 class Symbols
-  def initialize(table,ref)
+  def initialize(ref)
     raise "Sym have to be given Db" unless ref.kind_of?(Db)
-    raise "Sym have to be given SymDb" unless table.kind_of?(SymDb)
     @v=Verbose.new("Symbol",6)
-    @table=table
+    @table=ref.tables
     @ref=ref.status[:symbol]||{}
   end
 

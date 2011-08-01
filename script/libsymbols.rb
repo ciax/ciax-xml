@@ -36,9 +36,10 @@ class Symbols
           v.update(hash)
           break
         }
-      else
-        @v.msg{"VIEW:No Symbol Reference:[#{val}]"}
-        v.update(@table[sid][:record][val])
+      when 'string'
+        val='default' unless tbl.key?(val)
+        v.update(tbl[val])
+        @v.msg{"VIEW:String:[#{val}](#{tbl[val]['msg']})"}
       end
     }
     view['list']=list

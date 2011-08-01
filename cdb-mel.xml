@@ -242,6 +242,7 @@
     </table>
     <table id="ist" type="string">
       <case class="normal" msg="MOIRCS">2</case>
+      <case class="normal" msg="CIAO">3</case>
       <case class="warn" msg="N/A" />
     </table>
     <table id="jpos" type="string">

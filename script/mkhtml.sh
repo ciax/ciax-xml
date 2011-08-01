@@ -2,12 +2,13 @@
 . ~/lib/libcsv.sh
 id=${1%*=};shift
 setfld $id || _usage_key
+src=$HOME/ciax-xml/script
 dir=$HOME/.var/json
 file=$dir/$id.html
 sdb=symbol_$obj.js
 jsdb $obj $cls > $dir/$sdb
-cp symconv.js $dir/
-cp ciax-xml.css $dir/
+install $src/symconv.js $dir/
+install $src/ciax-xml.css $dir/
 cat > $file <<EOF
 <html>
 <head>

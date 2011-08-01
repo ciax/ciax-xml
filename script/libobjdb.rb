@@ -7,10 +7,15 @@ require "libsymdb"
 class ObjDb < ClsDb
   attr_reader :alias
   def initialize(obj,cls=nil) # cls can be gotten from odb, otherwise DB-object
+    if cls
+      super(cls)
+      self['class']=cls
+    else
+      @command={}
+      @status={}
+    end
+    self['id']=obj
     @alias={}
-    @status={}
-    @tables={}
-    super(cls) if cls
     doc=XmlDoc.new('odb',obj)
     doc.domain('command').each('alias'){|e0|
       e0.attr2db(@alias)

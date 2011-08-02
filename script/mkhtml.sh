@@ -7,8 +7,8 @@ dir=$HOME/.var/json
 file=$dir/$id.html
 sdb=symbol_$obj.js
 jsdb $obj $cls > $dir/$sdb
-install $src/symconv.js $dir/
-install $src/ciax-xml.css $dir/
+ln -sf $src/symconv.js $dir/
+ln -sf $src/ciax-xml.css $dir/
 cat > $file <<EOF
 <html>
 <head>

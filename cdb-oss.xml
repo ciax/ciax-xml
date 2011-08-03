@@ -150,6 +150,11 @@
           <value id="jk%02d" label="Jack Len %02d">
             <float ref="jk:$_-2-($_%2)*2" formula="$#/100" format="%5.2f" />
           </value>
+          <value id="bs%02d" label="Stat %02d(Anc,Rdy,Clnt)">
+            <binary ref="bs:$_-2-($_%2)*2" bit="0" />
+            <binary ref="bs:$_-2-($_%2)*2" bit="4" />
+            <binary ref="clm:1-($_-1)/8" bit="($_-1)%8" />
+          </value>
           <value id="bl%02d" label="Pos %02d" symbol="bl">
             <binary ref="bl:$_-2-($_%2)*2" bit="1" />
             <binary ref="bl:$_-2-($_%2)*2" bit="2" />
@@ -157,16 +162,7 @@
           <value id="bm%02d" label="Moving %02d" symbol="warn">
             <binary ref="bs:$_-2-($_%2)*2" bit="2" inv="true" />
           </value>
-          <value id="bs%02d" label="Stat %02d(Anc,Rdy,Clnt)">
-            <binary ref="bs:$_-2-($_%2)*2" bit="0" />
-            <binary ref="bs:$_-2-($_%2)*2" bit="4" />
-            <binary ref="clm:1-($_-1)/8" bit="($_-1)%8" />
-          </value>
           <value id="ba%02d" label="Alarm %02d" symbol="ba">
-            <binary ref="bl:$_-2-($_%2)*2" bit="0" />
-            <binary ref="bl:$_-2-($_%2)*2" bit="4" />
-          </value>
-          <value id="ba%02d" label="Alarm %02d">
             <binary ref="bl:$_-2-($_%2)*2" bit="0" />
             <binary ref="bl:$_-2-($_%2)*2" bit="4" />
           </value>

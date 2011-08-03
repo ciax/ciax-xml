@@ -8,24 +8,30 @@ body{
 h1{
   text-align : center;
 }
-table{
+.outline{
   width : 70%;
   border : 5px outset #aadd99;
   margin-left : 15%;
   margin-right : 15%;
 }
-th{
+.title{
   font-size : x-large;
   text-align : center;
   color : white;
   background-color:#aadd99;
 }
-td{
-  border : 2px inset
+.value{
+  border : 2px inset;
+  float : right;
 }
-
+.hide{
+  hidden : true;
+  color : red;
+}
 .label{
+  border : 2px inset;
   color : blue;
+  float : left;
 }
 .normal{
   color : green;

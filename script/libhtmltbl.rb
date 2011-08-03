@@ -29,11 +29,14 @@ class HtmlTbl < Hash
   # Filterling values by env value of VAL
   # VAL=a:b:c -> grep "a|b|c"
   def to_s
-    row=''
+    row=self['list'].first['row']
     col=self['col']*2+2
     list=[]
-    list << "<table><tr>"
-    list << "<th colspan=#{col}>#{@id}</th>"
+    list << "<table class=\"outline\">"
+    list << "<thead class=\"title\"><tr>"
+    list << "<th class=\"title\"colspan=#{col}>#{@id}</th>"
+    list << "</tr></thead>"
+    list << "<tbody><tr>"
     self['list'].each{|h|
       colspan=(h['id'] == 'time')? " colspan=#{col-1}" : ''
       id="id=\"#{h['id']}\""
@@ -42,9 +45,12 @@ class HtmlTbl < Hash
         list << "</tr><tr>"
       end
       list << "<td class=\"label\">#{h['label']}</td>"
-      list << "<td#{colspan}><div #{id} class=\"normal\">*******</div></td>"
+      list << "<td class=\"value\"#{colspan}>"
+      list << "<div #{id} class=\"normal\">*******</div>"
+      list << "</td>"
     }
-    list << "</tr></table>"
+    list << "</tr></tbody>"
+    list << "</table>"
     list.join("\n")
   end
 end

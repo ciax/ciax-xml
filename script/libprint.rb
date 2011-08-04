@@ -14,7 +14,7 @@ class Print
       next unless item.key?('val')
       id=item['id']
       item['label']=id.upcase unless item['label']
-      @c.reset if item['row'] != prow
+      @c.roundup if item['row'] != prow
       if @c.next.col == 1
         a << line.join(' ') if line.size > 0
         line=[]

@@ -10,13 +10,18 @@ class Circular
     @v=Verbose.new("Circ",6)
   end
 
+  def reset
+    @counter=0
+    @max=0
+  end
+
   def next
     @counter+=1
     @v.msg{"Counter increment [#{@counter}]"}
     self
   end
 
-  def reset
+  def roundup
     @counter=(row+1)*@limit
     @v.msg{"Resetted [#{row}]"}
     self

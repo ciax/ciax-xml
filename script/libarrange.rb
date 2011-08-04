@@ -16,7 +16,7 @@ class Arrange < Hash
       if key?(id)
         hash['row']=self[id]
         if prev != hash['row']
-          @c.reset
+          @c.roundup
           prev=hash['row']
         end
       else

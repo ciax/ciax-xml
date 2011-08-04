@@ -62,7 +62,7 @@ class ClsDb < Db
   def rec_stat(e)
     @rep.each(e){|e0|
       if e0.name == 'row'
-        @c.reset
+        @c.roundup
         rec_stat(e0)
       else
         id=e0.attr2db(@cdbs){|v|@rep.format(v)}

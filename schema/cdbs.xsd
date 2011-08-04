@@ -15,8 +15,18 @@
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="cdbs:row"></xsd:element>
         <xsd:element ref="cdbs:repeat"></xsd:element>
+        <xsd:element ref="cdbs:group"></xsd:element>
       </xsd:choice>
       <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cdbs:row"></xsd:element>
+        <xsd:element ref="cdbs:repeat"></xsd:element>
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:token" use="required" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="row">

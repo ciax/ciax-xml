@@ -108,77 +108,83 @@
       </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <row label="Group">
-        <value id="rdy" label="READY" symbol="normal">
-          <binary bit="0" ref="x:0" />
-        </value>
-        <value id="acp" label="CMD ACCEPT">
-          <binary bit="6" ref="x:0" />
-          <binary bit="0" ref="x:32" />
-        </value>
-      </row>
-      <row>
-        <value id="pse" label="PAUSE" symbol="warn">
-          <binary bit="1" ref="x:0" />
-        </value>
-        <value id="stp" label="STOP" symbol="warn">
-          <binary bit="3" ref="x:0" />
-        </value>
-      </row>
-      <row>
-        <value id="ecode" label="EXIT CODE" symbol="ecode">
-          <int format="%04X" ref="ecode" />
-        </value>
-        <value id="flt" label="Fault" symbol="alarm">
-          <binary bit="7" ref="x:0" />
-        </value>
-        <value id="emg" label="ENERGENCY" symbol="alarm">
-          <binary bit="2" ref="x:0" />
-        </value>
-      </row>
-      <row label="Group">
-        <value id="run" label="RUNNING" symbol="normal">
-          <binary bit="4" ref="x:0" />
-        </value>
-        <value id="jak" label="JACKING" symbol="normal">
-          <binary bit="5" ref="x:0" />
-        </value>
-        <value id="con" label="CHARGING" symbol="normal">
-          <binary bit="6" ref="x:0" />
-        </value>
-      </row>
-      <row label="Group">
-        <value id="msr" label="Right Motor Servo" symbol="normal">
-          <binary bit="8" inv="true" ref="x:0" />
-        </value>
-        <value id="msl" label="Left Motor Servo" symbol="normal">
-          <binary bit="9" inv="true" ref="x:0" />
-        </value>
-      </row>
-      <row label="Group">
-        <value id="jd1" label="Jack Motor Servo1" symbol="normal">
-          <binary bit="10" inv="true" ref="x:0" />
-        </value>
-        <value id="jd2" label="Jack Motor Servo2" symbol="normal">
-          <binary bit="11" inv="true" ref="x:0" />
-        </value>
-      </row>
-      <row label="Group">
-        <value id="jd3" label="Jack Motor Servo3" symbol="normal">
-          <binary bit="12" inv="true" ref="x:0" />
-        </value>
-        <value id="jd4" label="Jack Motor Servo4" symbol="normal">
-          <binary bit="13" inv="true" ref="x:0" />
-        </value>
-      </row>
-      <row label="Group">
-        <value id="mdar" label="Rignt Motor D/A" symbol="motor">
-          <int ref="x:7" />
-        </value>
-        <value id="mdal" label="Left Motor D/A" symbol="motor">
-          <int ref="x:8" />
-        </value>
-      </row>
+      <group label="Main">
+        <row>
+          <value id="rdy" label="READY" symbol="normal">
+            <binary bit="0" ref="x:0" />
+          </value>
+          <value id="acp" label="CMD ACCEPT">
+            <binary bit="6" ref="x:0" />
+            <binary bit="0" ref="x:32" />
+          </value>
+        </row>
+        <row>
+          <value id="pse" label="PAUSE" symbol="warn">
+            <binary bit="1" ref="x:0" />
+          </value>
+          <value id="stp" label="STOP" symbol="warn">
+            <binary bit="3" ref="x:0" />
+          </value>
+        </row>
+        <row>
+          <value id="ecode" label="EXIT CODE" symbol="ecode">
+            <int format="%04X" ref="ecode" />
+          </value>
+          <value id="flt" label="Fault" symbol="alarm">
+            <binary bit="7" ref="x:0" />
+          </value>
+          <value id="emg" label="ENERGENCY" symbol="alarm">
+            <binary bit="2" ref="x:0" />
+          </value>
+        </row>
+      </group>
+      <group label="Action">
+        <row>
+          <value id="run" label="RUNNING" symbol="normal">
+            <binary bit="4" ref="x:0" />
+          </value>
+          <value id="jak" label="JACKING" symbol="normal">
+            <binary bit="5" ref="x:0" />
+          </value>
+          <value id="con" label="CHARGING" symbol="normal">
+            <binary bit="6" ref="x:0" />
+          </value>
+        </row>
+      </group>
+      <group label="Motor Stat">
+        <row>
+          <value id="msr" label="Right Motor Servo" symbol="normal">
+            <binary bit="8" inv="true" ref="x:0" />
+          </value>
+          <value id="msl" label="Left Motor Servo" symbol="normal">
+            <binary bit="9" inv="true" ref="x:0" />
+          </value>
+        </row>
+        <row>
+          <value id="jd1" label="Jack Motor Servo1" symbol="normal">
+            <binary bit="10" inv="true" ref="x:0" />
+          </value>
+          <value id="jd2" label="Jack Motor Servo2" symbol="normal">
+            <binary bit="11" inv="true" ref="x:0" />
+          </value>
+        </row>
+        <row>
+          <value id="jd3" label="Jack Motor Servo3" symbol="normal">
+            <binary bit="12" inv="true" ref="x:0" />
+          </value>
+          <value id="jd4" label="Jack Motor Servo4" symbol="normal">
+            <binary bit="13" inv="true" ref="x:0" />
+          </value>
+        </row>
+        <row>
+          <value id="mdar" label="Rignt Motor D/A" symbol="motor">
+            <int ref="x:7" />
+          </value>
+          <value id="mdal" label="Left Motor D/A" symbol="motor">
+            <int ref="x:8" />
+          </value>
+        </row>
+      </group>
       <row label="Group">
         <value id="bvl" label="Battery Voltage" symbol="bvl">
           <float format="%2.2f" ref="x:22" formula="$#/100" />

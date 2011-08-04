@@ -55,13 +55,19 @@ class ClsDb < Db
 
   def init_stat
     @c=Circular.new(6)
-    @cdbs={:cdb => {},:row => {}}
+    @cdbs={:cdb => {},:row => {},:group =>{},:title => {}}
+    @group="G0"
     rec_stat(@doc.domain('status'))
   end
 
   def rec_stat(e)
     @rep.each(e){|e0|
-      if e0.name == 'row'
+      if e0.name == 'group'
+        @c.reset
+        @cdbs[:title][@group]=e0['label']
+        rec_stat(e0)
+        @group=@group.next
+      elsif e0.name == 'row'
         @c.roundup
         rec_stat(e0)
       else
@@ -76,6 +82,7 @@ class ClsDb < Db
         }
         @cdbs[:cdb][id]=fields
         @cdbs[:row][id]=@c.next.row
+        @cdbs[:group][id]=@group
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }

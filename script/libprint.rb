@@ -41,13 +41,13 @@ class Print
         line << prt(item,'2')
       end
     }
-    a << line.join(' ') if line.size > 0
+    flush(a,line)
     a.join("\n")+"\n"
   end
 
   private
   def flush(ary,line)
-    ary << line.join(' ') if line.size > 0
+    ary << "  "+line.join(' ') if line.size > 0
     line=[]
   end
 

@@ -9,10 +9,10 @@ h1{
   text-align : center;
 }
 .outline{
-  width : 70%;
+  width : 90%;
   border : 5px outset #aadd99;
-  margin-left : 15%;
-  margin-right : 15%;
+  margin-left : 5%;
+  margin-right : 5%;
 }
 .title{
   font-size : x-large;

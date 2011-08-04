@@ -109,24 +109,31 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <row label="Group">
-        <value id="ecode" label="EXIT CODE" symbol="ecode">
-          <int format="%04X" ref="ecode" />
+        <value id="rdy" label="READY" symbol="normal">
+          <binary bit="0" ref="x:0" />
         </value>
         <value id="acp" label="CMD ACCEPT">
           <binary bit="6" ref="x:0" />
           <binary bit="0" ref="x:32" />
         </value>
-        <value id="rdy" label="READY" symbol="normal">
-          <binary bit="0" ref="x:0" />
-        </value>
+      </row>
+      <row>
         <value id="pse" label="PAUSE" symbol="warn">
           <binary bit="1" ref="x:0" />
         </value>
-        <value id="emg" label="ENERGENCY" symbol="alarm">
-          <binary bit="2" ref="x:0" />
-        </value>
         <value id="stp" label="STOP" symbol="warn">
           <binary bit="3" ref="x:0" />
+        </value>
+      </row>
+      <row>
+        <value id="ecode" label="EXIT CODE" symbol="ecode">
+          <int format="%04X" ref="ecode" />
+        </value>
+        <value id="flt" label="Fault" symbol="alarm">
+          <binary bit="7" ref="x:0" />
+        </value>
+        <value id="emg" label="ENERGENCY" symbol="alarm">
+          <binary bit="2" ref="x:0" />
         </value>
       </row>
       <row label="Group">
@@ -138,9 +145,6 @@
         </value>
         <value id="con" label="CHARGING" symbol="normal">
           <binary bit="6" ref="x:0" />
-        </value>
-        <value id="flt" label="Fault" symbol="alarm">
-          <binary bit="7" ref="x:0" />
         </value>
       </row>
       <row label="Group">

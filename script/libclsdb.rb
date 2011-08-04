@@ -55,7 +55,7 @@ class ClsDb < Db
 
   def init_stat
     @c=Circular.new(6)
-    @cdbs={:cdb => {},:row => {},:group =>{},:title => {}}
+    @cdbs={:cdb => {},:row => {},:group =>{},:title => {"G0" => "MAIN"}}
     @group="G1"
     rec_stat(@doc.domain('status'))
   end

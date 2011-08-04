@@ -9,17 +9,25 @@ class Print
     a=[]
     line=[]
     prow=0
+    pgr=0
     view['list'].each {|item|
       next unless item.class == Hash
       next unless item.key?('val')
-      id=item['id']
-      item['label']=id.upcase unless item['label']
-      @c.roundup if item['row'] != prow
-      if @c.next.col == 1
-        a << line.join(' ') if line.size > 0
-        line=[]
+      if item['grp'] != pgr
+        line=flush(a,line)
+        title=view['title'][item['grp']]
+        a << "***"+color(2,title)+"***"
+        @c.roundup
+        pgr=item['grp']
+      elsif item['row'] != prow
+        @c.roundup
       end
       prow=item['row']
+      if @c.next.col == 1
+        line=flush(a,line)
+      end
+      id=item['id']
+      item['label']=id.upcase unless item['label']
       case item['class']
       when 'alarm'
         line << prt(item,'1')
@@ -38,6 +46,11 @@ class Print
   end
 
   private
+  def flush(ary,line)
+    ary << line.join(' ') if line.size > 0
+    line=[]
+  end
+
   def color(c,msg)
     "\e[1;3#{c}m#{msg}\e[0m"
   end

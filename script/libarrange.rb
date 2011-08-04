@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require "libcircular"
-class Arrange < Hash
-  def initialize(hash)
-    raise "Arrange have to be given Db" unless hash.kind_of?(Db)
+class Arrange
+  def initialize(db)
+    raise "Arrange have to be given Db" unless db.kind_of?(Db)
     @c=Circular.new(5)
-    @group=hash.status[:group].update({'time' => "G0"})
-    @title=hash.status[:title]
-    update(hash.status[:row]||{})
-    update({'time'=>0,'class'=>0,'frame'=>0})
+    @group=db.status[:group].update({'time' => 0})
+    @title=db.status[:title]
+    @row=db.status[:row]||{}
+    @row.update({'time'=>0,'class'=>0,'frame'=>0})
   end
 
   def convert(view)
@@ -17,8 +17,8 @@ class Arrange < Hash
     view['list'].each{|hash|
       id=hash['id']
       hash['grp']=@group[id]
-      if key?(id)
-        hash['row']=self[id]
+      if @row.key?(id)
+        hash['row']=@row[id]
         if prev != hash['row']
           @c.roundup
           prev=hash['row']

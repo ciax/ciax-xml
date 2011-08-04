@@ -55,23 +55,23 @@ class ClsDb < Db
 
   def init_stat
     @c=Circular.new(6)
-    @cdbs={:cdb => {},:row => {},:group =>{},:title => {"G0" => "MAIN"}}
-    @group="G1"
-    rec_stat(@doc.domain('status'))
+    cdbs={:cdb => {},:row => {},:group =>{},:title => ['','']}
+    rec_stat(@doc.domain('status'),cdbs)
   end
 
-  def rec_stat(e)
+  def rec_stat(e,db)
+    title=db[:title]
     @rep.each(e){|e0|
       if e0.name == 'group'
         @c.reset
-        @cdbs[:title][@group]=e0['label']
-        rec_stat(e0)
-        @group=@group.next
+        title.last.replace(e0['label'])
+        rec_stat(e0,db)
+        title << ''
       elsif e0.name == 'row'
         @c.roundup
-        rec_stat(e0)
+        rec_stat(e0,db)
       else
-        id=e0.attr2db(@cdbs){|v|@rep.format(v)}
+        id=e0.attr2db(db){|v|@rep.format(v)}
         fields=[]
         e0.each{|e1|
           st={:type => e1.name}
@@ -80,13 +80,13 @@ class ClsDb < Db
           }
           fields << st
         }
-        @cdbs[:cdb][id]=fields
-        @cdbs[:row][id]=@c.next.row
-        @cdbs[:group][id]=@group
+        db[:cdb][id]=fields
+        db[:row][id]=@c.next.row
+        db[:group][id]=title.size-1
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }
-    @cdbs
+    db
   end
 
   def init_watch

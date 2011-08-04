@@ -32,11 +32,9 @@ class HtmlTbl < Hash
     row=self['list'].first['row']
     col=self['col']*2+2
     list=[]
-    list << "<table class=\"outline\">"
-    list << "<thead class=\"title\"><tr>"
-    list << "<th class=\"title\"colspan=#{col}>#{@id}</th>"
-    list << "</tr></thead>"
-    list << "<tbody><tr>"
+    list << "<div class=\"outline\">"
+    list << "<div class=\"title\">#{@id}</div>"
+    list << "<table><tbody><tr>"
     self['list'].each{|h|
       colspan=(h['id'] == 'time')? " colspan=#{col-1}" : ''
       id="id=\"#{h['id']}\""
@@ -49,8 +47,8 @@ class HtmlTbl < Hash
       list << "<div #{id} class=\"normal\">*******</div>"
       list << "</td>"
     }
-    list << "</tr></tbody>"
-    list << "</table>"
+    list << "</tr></tbody></table>"
+    list << "</div>"
     list.join("\n")
   end
 end

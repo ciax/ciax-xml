@@ -23,9 +23,9 @@ class Print
       end
     }
     if group.empty?
-      line << ids.map{|i|
+      line << fold(ids.map{|i|
         get_element(view,i)
-      }.join(" ")
+      })
     else
       line << "***"+color(2,ids[0])+"***" unless ids.empty?
       group.each{|a|
@@ -36,6 +36,15 @@ class Print
   end
 
   private
+  def fold(ary,col=3)
+    da=ary.dup
+    row=[]
+    while da.size > 0
+      row << da.shift(col).join(" ")
+    end
+    row.join("\n")
+  end
+
   def color(c,msg)
     "\e[1;3#{c}m#{msg}\e[0m"
   end

@@ -11,10 +11,7 @@ class Symbols
   end
 
   def convert(view)
-    list=[]
-    view['list'].each{|v|
-      k=v['id']
-      list << v
+    view['list'].each{|k,v|
       val=v['val']
       next if val == ''
       next unless sid=@ref[k]
@@ -42,7 +39,6 @@ class Symbols
         @v.msg{"VIEW:String:[#{val}](#{tbl[val]['msg']})"}
       end
     }
-    view['list']=list
     self
   end
 end

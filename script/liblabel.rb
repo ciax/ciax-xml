@@ -9,14 +9,9 @@ class Label < Hash
   end
 
   def convert(view)
-    list=[]
-    view['list'].each{|hash|
-      id=hash['id']
-      next unless key?(id)
+    view['list'].each{|id,hash|
       hash['label']=self[id]
-      list << hash
     }
-    view['list']=list
     self
   end
 end

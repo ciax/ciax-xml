@@ -10,7 +10,7 @@ class Print
     line=[]
     prow=0
     pgr=0
-    view['list'].each {|item|
+    view['list'].each {|id,item|
       next unless item.class == Hash
       next unless item.key?('val')
       if item['grp'] != pgr
@@ -26,7 +26,6 @@ class Print
       if @c.next.col == 1
         line=flush(a,line)
       end
-      id=item['id']
       item['label']=id.upcase unless item['label']
       case item['class']
       when 'alarm'

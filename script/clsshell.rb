@@ -2,7 +2,7 @@
 require "json"
 require "libobjdb"
 require "libalias"
-require "libview"
+require "libviewopt"
 require "libclssrv"
 require "libshell"
 
@@ -14,7 +14,7 @@ begin
   cobj=ClsSrv.new(obj,cls,iocmd)
   odb=ObjDb.new(obj,cls)
   al=Alias.new(odb)
-  view=View.new(cobj.stat,odb).opt(opt)
+  view=ViewOpt.new(odb,cobj.stat).opt(opt)
 rescue SelectID
   abort "Usage: clsshell (-alsp) [cls] [obj] [iocmd]\n#{$!}"
 end

@@ -12,10 +12,8 @@ class Arrange
 
   def convert(view)
     view['title']=@title
-    list=[]
     prev=-1
-    view['list'].each{|hash|
-      id=hash['id']
+    view['list'].each{|id,hash|
       hash['grp']=@group[id]
       if @row.key?(id)
         hash['row']=@row[id]
@@ -28,10 +26,8 @@ class Arrange
       end
       hash['col']=@c.col
       @c.next
-      list << hash
     }
     view['col']=@c.max
-    view['list']=list.sort_by{|h| "%s%02d%02d" % [h['grp'],h['row'],h['col']] }
     self
   end
 end

@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 require "json"
-require "libview"
+require "libprint"
 
-abort "Usage: stprint < [file]" if STDIN.tty?
+abort "Usage: stprint < [view_file]" if STDIN.tty?
 str=gets(nil) || exit
-view=View.new(JSON.load(str))
-puts view.opt('p')
+puts Print.new.print(JSON.load(str))
 

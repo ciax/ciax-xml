@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "json"
-require "libview"
+require "libviewopt"
 
 abort "Usage: viewing (-als) (obj) < [status_file]" if STDIN.tty?
 
@@ -19,6 +19,6 @@ elsif type=stat['class']
 else
   raise "NO Type ID in View"
 end
-view=View.new(stat,db)
+view=ViewOpt.new(db,stat)
 view.opt(opt).upd
 puts JSON.dump(view)

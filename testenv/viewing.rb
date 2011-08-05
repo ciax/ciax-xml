@@ -21,4 +21,8 @@ else
 end
 view=ViewOpt.new(db,stat)
 view.opt(opt).upd
-puts JSON.dump(view)
+if opt.include?('p')
+  puts view
+else
+  puts JSON.dump(view)
+end

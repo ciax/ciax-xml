@@ -27,14 +27,19 @@ class View < Hash
   def to_s
     list=[]
     each{|k,v|
-      case k
-      when 'list'
-        list << "List:"
+      case v
+      when Hash
+        list << "#{k}:"
         pick=ENV['VAL']||'.'
         exp=pick.tr(':','|')
         v.each{|i,h|
           next unless /#{exp}/ === i
           list << "  #{i} : #{h}"
+        }
+      when Array
+        list << "#{k}:"
+        v.each{|l|
+          list << "  #{l}"
         }
       else
         list << "#{k} : #{v}"

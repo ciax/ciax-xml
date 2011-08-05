@@ -54,22 +54,18 @@ class ClsDb < Db
   end
 
   def init_stat
-    @c=Circular.new(6)
-    cdbs={:cdb => {},:row => {},:group =>{},:title => ['','']}
-    rec_stat(@doc.domain('status'),cdbs)
+    cdbs={:cdb => {},:row => {},:group =>[]}
+    rec_stat(@doc.domain('status'),cdbs,cdbs[:group])
   end
 
-  def rec_stat(e,db)
-    title=db[:title]
+  def rec_stat(e,db,group)
     @rep.each(e){|e0|
       if e0.name == 'group'
-        @c.reset
-        title.last.replace(e0['label'])
-        rec_stat(e0,db)
-        title << ''
+        group << [e0['label']]
+        rec_stat(e0,db,group.last)
       elsif e0.name == 'row'
-        @c.roundup
-        rec_stat(e0,db)
+        group << []
+        rec_stat(e0,db,group.last)
       else
         id=e0.attr2db(db){|v|@rep.format(v)}
         fields=[]
@@ -81,8 +77,7 @@ class ClsDb < Db
           fields << st
         }
         db[:cdb][id]=fields
-        db[:row][id]=@c.next.row
-        db[:group][id]=title.size-1
+        group << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }

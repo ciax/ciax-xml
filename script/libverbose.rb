@@ -112,24 +112,26 @@ class Verbose
 
   # Class method
   def self.view_struct(key,val,indent=0)
-    str=''
-    if Hash === val
-      unless val.empty?
-        str << "  " * indent + ("%-4s :\n" % key)
+    return '' unless val
+    str="  " * indent + ("%-4s :" % key)
+    case val
+    when Array
+      unless val.all?{|v| v.kind_of?(Comparable)}
+        str << "\n"
+        val.each_with_index{|v,i|
+          str << view_struct("(#{i})",v,indent+1)
+        }
+        return str
+      end
+    when Hash
+      #      unless val.values.all?{|v| v.kind_of?(Comparable)}
+        str << "\n"
         val.each{|k,v|
           str << view_struct(k,v,indent+1)
         }
-      end
-    elsif Array === val
-      unless val.empty?
-        str << "  " * indent + ("%-4s :\n" % key)
-        val.each_with_index{|v,i|
-          str << view_struct("[#{i}]",v,indent+1)
-        }
-      end
-    elsif val
-      str << "  " * indent + ("%-4s : %s\n" % [key,val])
+        return str
+      #      end
     end
-    str
+    str << " #{val}\n"
   end
 end

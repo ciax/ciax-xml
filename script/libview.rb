@@ -27,20 +27,20 @@ class View < Hash
     each{|k,v|
       case v
       when Hash
-        list << "#{k}:"
+        list << "#{k.inspect}:"
         pick=ENV['VAL']||'.'
         exp=pick.tr(':','|')
         v.each{|i,h|
           next unless /#{exp}/ === i
-          list << "  #{i} : #{h}"
+          list << "  #{i.inspect} : #{h}"
         }
       when Array
-        list << "#{k}:"
+        list << "#{k.inspect}:"
         v.each{|l|
           list << "  #{l}"
         }
       else
-        list << "#{k} : #{v}"
+        list << "#{k.inspect} : #{v}"
       end
     }
     list.join("\n")

@@ -185,27 +185,29 @@
           </value>
         </row>
       </group>
-      <row label="Group">
-        <value id="bvl" label="Battery Voltage" symbol="bvl">
-          <float format="%2.2f" ref="x:22" formula="$#/100" />
-        </value>
-        <value id="ist" label="Instrument" symbol="ist">
-          <int ref="x:23" />
-        </value>
-      </row>
-      <row label="Group">
-        <value id="cpos" label="Current Position">
-          <int ref="x:25" />
-        </value>
-        <value id="dpos" label="Destination Position">
-          <int ref="x:26" />
-        </value>
-      </row>
-      <row label="Group">
-        <value id="jpos" label="Jack Position" symbol="jpos">
-          <int ref="x:27" />
-        </value>
-      </row>
+      <group label="Etc">
+        <row label="Group">
+          <value id="bvl" label="Battery Voltage" symbol="bvl">
+            <float format="%2.2f" ref="x:22" formula="$#/100" />
+          </value>
+          <value id="ist" label="Instrument" symbol="ist">
+            <int ref="x:23" />
+          </value>
+        </row>
+        <row label="Group">
+          <value id="cpos" label="Current Position">
+            <int ref="x:25" />
+          </value>
+          <value id="dpos" label="Destination Position">
+            <int ref="x:26" />
+          </value>
+        </row>
+        <row label="Group">
+          <value id="jpos" label="Jack Position" symbol="jpos">
+            <int ref="x:27" />
+          </value>
+        </row>
+      </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <periodic period="3600">

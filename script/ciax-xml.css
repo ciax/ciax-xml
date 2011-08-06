@@ -5,9 +5,6 @@ body{
   color : #000066;
   background-color : white;
 }
-h1{
-  text-align : center;
-}
 table{
   width : 100%;
 }
@@ -22,6 +19,9 @@ table{
   text-align : center;
   color : white;
   background-color:#bbeeaa;
+}
+.caption{
+  text-align : center;
 }
 .value{
   border : 2px inset;

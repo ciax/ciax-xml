@@ -1,54 +1,74 @@
 #!/usr/bin/ruby
 # Status to View (String with attributes)
 require "json"
-require "libsymdb"
-require "libsymbols"
-require "liblabel"
-require "libarrange"
-class HtmlTbl < Hash
+require "libviewopt"
+require "libprint"
+
+class HtmlTbl
   def initialize(odb)
-    ary=self['list']=[{'id'=>'time'}]
     @odb=odb
-    @id=odb['id']
-    odb.status[:row].each{|k,v|
-      ary << {'id'=>k, 'val'=>v}
-    }
-    Label.new(odb).convert(self)
-    Arrange.new(odb).convert(self)
-    @sdb=SymDb.new.update(odb.tables)
+    @view=ViewOpt.new(odb).opt('al')
   end
 
-  def tables
-    "SDB="+JSON.dump(@sdb)
-  end
-
-  def symbols
-    "SYM="+JSON.dump(@odb.status[:symbol])
-  end
-
-  # Filterling values by env value of VAL
-  # VAL=a:b:c -> grep "a|b|c"
   def to_s
-    row=self['list'].first['row']
-    col=self['col']*2+2
+    group = @view['group'] || @view['list'].keys
     list=[]
     list << "<div class=\"outline\">"
-    list << "<div class=\"title\">#{@id}</div>"
-    list << "<table><tbody><tr>"
-    self['list'].each{|h|
-      colspan=(h['id'] == 'time')? " colspan=#{col-1}" : ''
-      id="id=\"#{h['id']}\""
-      if row != h['row']
-        row=h['row']
-        list << "</tr><tr>"
-      end
-      list << "<td class=\"label\">#{h['label']}</td>"
-      list << "<td class=\"value\"#{colspan}>"
-      list << "<div #{id} class=\"normal\">*******</div>"
-      list << "</td>"
-    }
-    list << "</tr></tbody></table>"
+    list << "<div class=\"title\">#{@odb['id']}</div>"
+    list << arc_print(group)
     list << "</div>"
     list.join("\n")
+  end
+
+  private
+  def arc_print(ary)
+    ids=[]
+    group=[]
+    list=[]
+    ary.each{|i|
+      case i
+      when Array
+        group << i
+      else
+        ids << i
+      end
+    }
+    if group.empty?
+      list+=fold(ids.map{|i|
+        get_element(i)
+      })
+    else
+      list << "<table><tbody>"
+      list << get_title(ids[0]) unless ids.empty?
+      group.each{|a|
+        list+=arc_print(a)
+      }
+      list << "</tbody></table>"
+    end
+  end
+
+  def get_title(title)
+    "<tr><th class=\"caption\" colspan=\"10\">#{title}</th></tr>"
+  end
+
+  def get_element(id)
+    return '' unless @view['list'].key?(id)
+    item=@view['list'][id]
+    label=item['label']||id.upcase
+    list=["<td class=\"label\">#{label}</td>"]
+    list << "<td class=\"value\">"
+    list << "<div id=\"#{id}\" class=\"normal\">*******</div>"
+    list << "</td>"
+  end
+
+  def fold(ary,col=3)
+    da=ary.dup
+    row=[]
+    while da.size > 0
+      row << "<tr>"
+      row+=da.shift(col)
+      row << "</tr>"
+    end
+    row
   end
 end

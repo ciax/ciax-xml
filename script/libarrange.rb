@@ -8,7 +8,7 @@ class Arrange
   end
 
   def convert(view)
-    view[:group]=@group if @group
+    view['group']=@group if @group
     self
   end
 end

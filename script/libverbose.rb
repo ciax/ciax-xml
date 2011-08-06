@@ -113,13 +113,13 @@ class Verbose
   # Class method
   def self.view_struct(key,val,indent=0)
     return '' unless val
-    str="  " * indent + ("%-4s :" % key)
+    str="  " * indent + ("%-4s :" % key.inspect)
     case val
     when Array
       unless val.all?{|v| v.kind_of?(Comparable)}
         str << "\n"
         val.each_with_index{|v,i|
-          str << view_struct("(#{i})",v,indent+1)
+          str << view_struct(i,v,indent+1)
         }
         return str
       end

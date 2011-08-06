@@ -4,27 +4,21 @@ require "json"
 require "libviewopt"
 require "libprint"
 
-class HtmlTbl
+class HtmlTbl < Array
   def initialize(odb)
     @odb=odb
     @view=ViewOpt.new(odb).opt('al')
-  end
-
-  def to_s
     group = @view['group'] || @view['list'].keys
-    list=[]
-    list << "<div class=\"outline\">"
-    list << "<div class=\"title\">#{@odb['id']}</div>"
-    list << arc_print(group)
-    list << "</div>"
-    list.join("\n")
+    push "<div class=\"outline\">"
+    push "<div class=\"title\">#{@odb['id']}</div>"
+    arc_group(group)
+    push "</div>"
   end
 
   private
-  def arc_print(ary)
+  def arc_group(ary)
     ids=[]
     group=[]
-    list=[]
     ary.each{|i|
       case i
       when Array
@@ -34,41 +28,51 @@ class HtmlTbl
       end
     }
     if group.empty?
-      list+=fold(ids.map{|i|
-        get_element(i)
-      })
+      fold(ids){|i| get_element(i)}
     else
-      list << "<table><tbody>"
-      list << get_title(ids[0]) unless ids.empty?
+      open_group(ids[0])
       group.each{|a|
-        list+=arc_print(a)
+        arc_group(a)
       }
-      list << "</tbody></table>"
+      close_group
     end
   end
 
-  def get_title(title)
-    "<tr><th class=\"caption\" colspan=\"10\">#{title}</th></tr>"
+  def open_group(cap)
+    push "<table><tbody>"
+    if cap
+      push "<tr>"
+      push "<th class=\"caption\" colspan=\"8\">#{cap}</th>"
+      push "</tr>"
+    end
+    self
+  end
+
+  def close_group
+    push "</tbody></table>"
+    self
   end
 
   def get_element(id)
-    return '' unless @view['list'].key?(id)
+    return self unless @view['list'].key?(id)
     item=@view['list'][id]
     label=item['label']||id.upcase
-    list=["<td class=\"label\">#{label}</td>"]
-    list << "<td class=\"value\">"
-    list << "<div id=\"#{id}\" class=\"normal\">*******</div>"
-    list << "</td>"
+    push "<td class=\"label\">#{label}</td>"
+    push "<td class=\"value\">"
+    push "<div id=\"#{id}\" class=\"normal\">*******</div>"
+    push "</td>"
+    self
   end
 
   def fold(ary,col=3)
     da=ary.dup
-    row=[]
     while da.size > 0
-      row << "<tr>"
-      row+=da.shift(col)
-      row << "</tr>"
+      push "<tr>"
+      da.shift(col).each{|e|
+        yield e
+      }
+      push "</tr>"
     end
-    row
+    self
   end
 end

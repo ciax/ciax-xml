@@ -3,9 +3,9 @@
 require "libview"
 require "libprint"
 class ViewOpt < View
-  def initialize(odb,stat)
-    super(stat)
+  def initialize(odb)
     @odb=odb
+    super(['time']+odb.status[:cdb].keys)
   end
 
   def opt(opt)
@@ -15,7 +15,7 @@ class ViewOpt < View
     self
   end
 
-  def upd
+  def upd(stat)
     super
     @sdb.convert(self) if @sdb
     self

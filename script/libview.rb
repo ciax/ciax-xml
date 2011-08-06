@@ -1,23 +1,21 @@
 #!/usr/bin/ruby
 # Status to View (String with attributes)
-require "libprint"
 class View < Hash
-  def initialize(stat)
-    @stat=stat
+  def initialize(ids)
     hash=self['list']={}
-    stat.each{|k,v|
-      case k
+    ids.each{|id|
+      case id
       when 'id','frame','class'
-        self[k]=v
+        self[id]=''
       else
-        hash[k]={'val'=>v}
+        hash[id]={'val'=>''}
       end
     }
   end
 
-  def upd
+  def upd(stat)
     self['list'].each{|k,h|
-      h['val']=@stat[k]
+      h['val']=stat[k]
     }
     self
   end

@@ -1,16 +1,16 @@
 #!/usr/bin/ruby
-require "libcircular"
 class Print
-  def initialize
-    @c=Circular.new(5)
+  def initialize(view)
+    @view=view
   end
 
-  def print(view)
-    group = view['group'] || view['list'].keys
-    arc_print(group,view)
+  def to_s
+    group = @view['group'] || @view['list'].keys
+    arc_print(group)
   end
 
-  def arc_print(ary,view)
+  private
+  def arc_print(ary)
     ids=[]
     group=[]
     line=[]
@@ -24,18 +24,39 @@ class Print
     }
     if group.empty?
       line << fold(ids.map{|i|
-        get_element(view,i)
+        get_element(i)
       })
     else
-      line << "***"+color(2,ids[0])+"***" unless ids.empty?
+      line << get_title(ids[0]) unless ids.empty?
       group.each{|a|
-        line << arc_print(a,view)
+        line << arc_print(a)
       }
     end
     line.join("\n")
   end
 
-  private
+  def get_title(title)
+    "***"+color(2,title)+"***" if title
+  end
+
+  def get_element(id)
+    return '' unless @view['list'].key?(id)
+    item=@view['list'][id]
+    item['label']=id.upcase unless item['label']
+    case item['class']
+    when 'alarm'
+      prt(item,'1')
+    when 'warn'
+      prt(item,'3')
+    when 'normal'
+      prt(item,'2')
+    when 'hide'
+      prt(item,'0')
+    else
+      prt(item,'2')
+    end
+  end
+
   def fold(ary,col=3)
     da=ary.dup
     row=[]
@@ -43,10 +64,6 @@ class Print
       row << da.shift(col).join(" ")
     end
     row.join("\n")
-  end
-
-  def color(c,msg)
-    "\e[1;3#{c}m#{msg}\e[0m"
   end
 
   def prt(item,c)
@@ -64,21 +81,7 @@ class Print
     str << "]"
   end
 
-  def get_element(view,id)
-    return '' unless view['list'].key?(id)
-    item=view['list'][id]
-    item['label']=id.upcase unless item['label']
-    case item['class']
-    when 'alarm'
-      prt(item,'1')
-    when 'warn'
-      prt(item,'3')
-    when 'normal'
-      prt(item,'2')
-    when 'hide'
-      prt(item,'0')
-    else
-      prt(item,'2')
-    end
+  def color(c,msg)
+    "\e[1;3#{c}m#{msg}\e[0m"
   end
 end

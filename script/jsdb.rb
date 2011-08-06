@@ -1,13 +1,14 @@
 #!/usr/bin/ruby
-require "libhtmltbl"
+require "json"
 require "libobjdb"
+require "libsymdb"
 
 abort "Usage: jsdb [obj] [class]" if ARGV.size < 2
 
 obj=ARGV.shift
 cls=ARGV.shift
-db=ObjDb.new(obj,cls)
-tbl=HtmlTbl.new(db)
+odb=ObjDb.new(obj,cls)
+sdb=SymDb.new.update(odb.tables)
 puts "OBJ=\"#{obj}\";"
-puts tbl.tables
-puts tbl.symbols
+puts "SDB="+JSON.dump(sdb)
+puts "SYM="+JSON.dump(odb.status[:symbol])

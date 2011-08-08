@@ -5,7 +5,7 @@ require "libprint"
 class ViewOpt < View
   def initialize(odb)
     @odb=odb
-    super(['time']+odb.status[:cdb].keys)
+    super(['time']+odb.status[:select].keys)
   end
 
   def opt(opt)

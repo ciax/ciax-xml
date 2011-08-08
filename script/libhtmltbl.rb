@@ -8,9 +8,9 @@ class HtmlTbl < Array
   def initialize(odb)
     @odb=odb
     @view=ViewOpt.new(odb).opt('al')
-    group = @view['group'] || @view['list'].keys
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{@odb['id']}</div>"
+    group = @view['group'] || @view['list'].keys
     arc_group(group)
     push "</div>"
   end
@@ -38,7 +38,7 @@ class HtmlTbl < Array
     end
   end
 
-  def open_group(cap)
+  def open_group(cap=nil)
     push "<table><tbody>"
     if cap
       push "<tr>"

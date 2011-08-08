@@ -34,7 +34,7 @@ class ClsDb < Db
   end
 
   def init_command
-    cdbc={:cdb => {}}
+    cdbc={:select => {}}
     @doc.domain('commands').each{|e0|
       id=e0.attr2db(cdbc)
       list=[]
@@ -47,14 +47,14 @@ class ClsDb < Db
         }
         list << command.freeze
       }
-      cdbc[:cdb][id]=list
+      cdbc[:select][id]=list
       @v.msg{"COMMAND:[#{id}] #{list}"}
     }
     cdbc
   end
 
   def init_stat
-    cdbs={:cdb => {},:row => {},:group =>[]}
+    cdbs={:select => {},:group =>[]}
     rec_stat(@doc.domain('status'),cdbs,cdbs[:group])
   end
 
@@ -76,7 +76,7 @@ class ClsDb < Db
           }
           fields << st
         }
-        db[:cdb][id]=fields
+        db[:select][id]=fields
         group << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end

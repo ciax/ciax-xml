@@ -19,7 +19,7 @@ class ClsCmd
   def cmdset
     @v.msg{"Exec(CDB):#{@id}"}
     cmdset=[]
-    @cdb[:cdb][@id].each{|e1|
+    @cdb[:select][@id].each{|e1|
       cmd=[]
       @v.msg(1){"GetCmd(DDB):#{e1.first}"}
       begin

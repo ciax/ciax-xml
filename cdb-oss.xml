@@ -77,7 +77,7 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
       <group label="[Main]">
-        <row label="Group">
+        <row>
           <value id="exit" label="Exit Code">
             <int ref="exit" />
           </value>
@@ -85,7 +85,7 @@
             <binary bit="6" ref="bstat" />
           </value>
         </row>
-        <row label="Group">
+        <row>
           <value id="rts" label="ROT SEL" symbol="rts">
             <int ref="rsel" />
           </value>
@@ -101,7 +101,7 @@
         </row>
       </group>
       <group label="Drive Stat">
-        <row label="AZ,EL">
+        <row>
           <value id="azd" label="AZ" symbol="drv">
             <binary label="ON" bit="0" ref="teldrive" />
             <binary label="OFF" bit="1" ref="teldrive" />
@@ -131,7 +131,7 @@
         </row>
       </group>
       <group label="Position">
-        <row label="EL">
+        <row>
           <value id="stw" label="EL STOW" symbol="off-warn">
             <binary bit="2" ref="stow_1" />
           </value>

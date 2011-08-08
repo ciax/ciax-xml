@@ -55,17 +55,18 @@ class ClsDb < Db
 
   def init_stat
     cdbs={:select => {},:group =>[]}
-    rec_stat(@doc.domain('status'),cdbs,cdbs[:group])
+    rec_stat(@doc.domain('status'),cdbs)
   end
 
-  def rec_stat(e,db,group)
+  def rec_stat(e,db)
     @rep.each(e){|e0|
       if e0.name == 'group'
-        group << [e0['label']]
-        rec_stat(e0,db,group.last)
+        db[:group] << [e0['label']]
+        rec_stat(e0,db)
       elsif e0.name == 'row'
-        group << []
-        rec_stat(e0,db,group.last)
+        db[:group] << [] if db[:group].empty?
+        db[:group].last << []
+        rec_stat(e0,db)
       else
         id=e0.attr2db(db){|v|@rep.format(v)}
         fields=[]
@@ -77,7 +78,7 @@ class ClsDb < Db
           fields << st
         }
         db[:select][id]=fields
-        group << id
+        db[:group].last.last << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }

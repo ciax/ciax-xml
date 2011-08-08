@@ -11,7 +11,9 @@ class HtmlTbl < Array
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{@odb['id']}</div>"
     group = @view['group'] || @view['list'].keys
-    arc_group(group)
+    group.each{|g|
+      arc_group(g)
+    }
     push "</div>"
   end
 

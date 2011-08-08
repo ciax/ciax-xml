@@ -124,13 +124,14 @@ class Verbose
         return str
       end
     when Hash
-      #      unless val.values.all?{|v| v.kind_of?(Comparable)}
+      val=Hash[val]
+      if val.values.any?{|v| ! v.kind_of?(Comparable)} || val.size > 4
         str << "\n"
         val.each{|k,v|
           str << view_struct(k,v,indent+1)
         }
         return str
-      #      end
+      end
     end
     str << " #{val}\n"
   end

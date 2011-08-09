@@ -1,28 +1,22 @@
 #!/usr/bin/ruby
 # Status to View (String with attributes)
 class View < Hash
-  def initialize(ids)
+  def initialize(stat)
+    @stat=stat
     hash=self['list']={}
-    ids.each{|id|
-      case id
+    stat.each{|k,v|
+      case k
       when 'id','frame','class'
-        self[id]=''
+        self[k]=v
       else
-        hash[id]={'val'=>''}
+        hash[k]={'val'=>v}
       end
     }
   end
 
   def upd(stat)
-    each{|k,v|
-      case v
-      when Hash
-        self[k].each{|i,h|
-          h['val']=stat[i]
-        }
-      else
-        self[k]=stat[k]
-      end
+    self['list'].each{|k,v|
+      v['val']=stat[k]
     }
     self
   end

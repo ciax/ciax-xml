@@ -120,24 +120,20 @@
           </value>
         </row>
       </group>
-      <group label="Angle">
-        <row>
-          <value id="elv" label="EL">
-            <float ref="el" format="%.3f" />
-          </value>
-          <value id="iang" label="InR">
-            <float ref="iang" format="%.3f" />
-          </value>
-        </row>
-      </group>
       <group label="Position">
         <row>
           <value id="stw" label="EL STOW" symbol="off-warn">
             <binary bit="2" ref="stow_1" />
           </value>
+          <value id="elv" label="EL">
+            <float ref="el" format="%.3f" />
+          </value>
           <value id="rps" label="ROT SENSOR" symbol="rps">
             <binary bit="4" ref="bstat" />
             <binary bit="5" ref="bstat" />
+          </value>
+          <value id="iang" label="InR">
+            <float ref="iang" format="%.3f" />
           </value>
         </row>
       </group>

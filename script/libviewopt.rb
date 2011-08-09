@@ -3,9 +3,9 @@
 require "libview"
 require "libprint"
 class ViewOpt < View
-  def initialize(db,ids)
+  def initialize(db,hash)
     @db=db
-    super(['time']+ids)
+    super(hash)
   end
 
   def opt(opt)

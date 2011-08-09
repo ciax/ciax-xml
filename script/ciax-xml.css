@@ -21,7 +21,7 @@ table{
   color : white;
   background-color:#bbeeaa;
 }
-.caption{
+th{
   border : 2px outset;
   text-align : center;
 }

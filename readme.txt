@@ -85,35 +85,87 @@ cdb//cmdset@id -> never use ':'
   *@symbol <= *//symbol/table@id
 
 
-### Struct of status ###
+### Structure of Data ###
+  FIELD:
+
+  STAT: {}
+        id => data 
+        ...
+
+  VIEW: {}
+        "id" => ID
+        "class" => class
+        "frame" => frame
+        "list" =>[]
+           id => {"val","class","msg"}
+           ...
+        "label" => { id => label }
+           ...
+        "group" =>[]
+           [ Title, [ id1, id2,.. ] ]
+           ...
+
+
+### Struct of Db ###
   FrmDb
     ::command
-         :select
-             cmd=>[ {data1},{data2} ..]
-             ...
-         :label
-             cmd=>Label String
-             ...
+      :select
+         id=>[ {data1},{data2} ..]
+         ...
+      :label
+         id=>Label String
+         ...
     ::status
-         :select
-             id=>[ {val1},{val2} ..]
-             ...
-         :label
-             id=>Label String
-             ...
-         :symbol
-             id=>Table ID
-             ...
+      :select
+         id=>[ {val1},{val2} ..]
+         ...
+      :label
+         id=>Label String
+         ...
+      :symbol
+         id=>Table ID
+         ...
     ::frame (Common part)
-         :command
-             :main=>[ {data1},{data2} ..]
-             :ccrange=>[ {data1},{data2} ..]
-         :status
-             :main=>[ {val1},{val2} ..]
-             :ccrange=>[ {val1},{val2} ..]
+      :command
+         :main=>[ {data1},{data2} ..]
+         :ccrange=>[ {data1},{data2} ..]
+      :status
+         :main=>[ {val1},{val2} ..]
+         :ccrange=>[ {val1},{val2} ..]
     ::symbol (Tables)
-          table1=>{table}
-          table2=>{table}
+       table1=>{table}
+       table2=>{table}
 
-  stat: { id => data }
-  view: { header => {id=>..}, :view => [ {id=>a,label=>..},{},.. ]}
+  ClsDb
+    { "id" ,"frame", "label", "interval }
+    ::command
+      :select => {}
+        id => [ statement,.. ]
+           statement=["cmd",{arg1},{arg2}..]
+        ...
+      :label => {}
+        id => Label String
+    ::status
+      :select => {}
+        id => [ { :type, "ref" .. },... ]
+        ...
+      :group => []
+        [ Title, [ id1, id2,.. ] ]
+        ...
+      :label => {}
+        id => Label String
+      :symbol => {}
+        id => Symbol Table ID
+        ..
+    ::table (Symbol Table)
+        id => { label, type, :record}
+          :record => {}
+            val=>{ class,msg }
+            ...
+    ::watch => []
+        {:type, :var=>{variable},.. }
+          :period => second
+          :condition => {:operator, :ary => [ {:ref,:val},.. ] }
+          :command => [ [statement],.. ]
+          :blocking => regexp
+          :interrupt => [ [statement],..]

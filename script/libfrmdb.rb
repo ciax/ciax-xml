@@ -13,9 +13,9 @@ class FrmDb < Db
     @frame[:command]=init_main(domc){|e| init_cmd(e)}
     @frame[:status]=init_main(domr){|e| init_stat(e)}
     @v.msg{"Structure:frame:#{@frame}"}
-    @command.update(init_sel(domc,'command'){|e| init_cmd(e)})
+    init_sel(domc,'command',@command){|e| init_cmd(e)}
     @v.msg{"Structure:command:#{@command}"}
-    @status.update(init_sel(domr,'response'){|e| init_stat(e)})
+    init_sel(domr,'response',@status){|e| init_stat(e)}
     @v.msg{"Structure:status:#{@status}"}
   end
 
@@ -53,8 +53,7 @@ class FrmDb < Db
     hash
   end
 
-  def init_sel(domain,select)
-    selh={}
+  def init_sel(domain,select,selh)
     list=selh[:select]={}
     domain.each(select){|e0|
       begin
@@ -72,7 +71,7 @@ class FrmDb < Db
         @v.msg(-1){"-> INIT:Select Frame"}
       end
     }
-    selh
+    self
   end
 
   def init_cmd(e)

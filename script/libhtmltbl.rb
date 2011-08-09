@@ -7,7 +7,7 @@ require "libprint"
 class HtmlTbl < Array
   def initialize(odb)
     @odb=odb
-    @view=ViewOpt.new(odb).opt('al')
+    @view=ViewOpt.new(odb,odb.status[:select].keys).opt('al')
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{@odb['id']}</div>"
     group = @view['group'] || @view['list'].keys

@@ -19,7 +19,7 @@ elsif type=stat['class']
 else
   raise "NO Type ID in View"
 end
-view=ViewOpt.new(db)
+view=ViewOpt.new(db,stat.keys)
 view.opt(opt).upd(stat)
 if opt.include?('p')
   puts view

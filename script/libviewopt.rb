@@ -3,9 +3,9 @@
 require "libview"
 require "libprint"
 class ViewOpt < View
-  def initialize(odb)
-    @odb=odb
-    super(['time']+odb.status[:select].keys)
+  def initialize(db,ids)
+    @db=db
+    super(['time']+ids)
   end
 
   def opt(opt)
@@ -23,27 +23,27 @@ class ViewOpt < View
 
   private
   def add_label
-    if @odb
+    if @db
       require "liblabel"
-      Label.new(@odb).convert(self)
+      Label.new(@db).convert(self)
     end
     self
   end
 
   def add_arrange
-    if @odb
+    if @db
       require "libarrange"
-      Arrange.new(@odb).convert(self)
+      Arrange.new(@db).convert(self)
     end
     self
   end
 
   def init_sym
-    if @odb
+    if @db
       require "libsymdb"
       require "libsymbols"
-      @odb.tables.update(SymDb.new)
-      @sdb=Symbols.new(@odb)
+      @db.tables.update(SymDb.new)
+      @sdb=Symbols.new(@db)
     end
     self
   end

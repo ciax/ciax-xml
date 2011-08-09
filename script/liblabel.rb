@@ -9,9 +9,7 @@ class Label < Hash
   end
 
   def convert(view)
-    view['list'].each{|id,hash|
-      hash['label']=self[id]
-    }
+    view['label']=Hash[self]
     self
   end
 end

@@ -44,22 +44,13 @@ class Print
     "***"+color(2,title)+"***" if title
   end
 
+  CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','normal' => '2','hide' =>'0'})
+
   def get_element(id)
     return '' unless @view['list'].key?(id)
     item=@view['list'][id]
-    item['label']=id.upcase unless item['label']
-    case item['class']
-    when 'alarm'
-      prt(item,'1')
-    when 'warn'
-      prt(item,'3')
-    when 'normal'
-      prt(item,'2')
-    when 'hide'
-      prt(item,'0')
-    else
-      prt(item,'2')
-    end
+    label=@view['label'][id] || id.upcase
+    prt(item,CM[item['class']],label)
   end
 
   def fold(ary,col=6)
@@ -71,10 +62,9 @@ class Print
     row.join("\n")
   end
 
-  def prt(item,c)
+  def prt(item,c,label)
     str='['
-    title=item['label'] || item['title']
-    str << color(6,title)
+    str << color(6,label)
     str << ':'
     msg=item['msg']
     case v=item['val']

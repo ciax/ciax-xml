@@ -59,7 +59,7 @@ class HtmlTbl < Array
   def get_element(id)
     return self unless @view['list'].key?(id)
     item=@view['list'][id]
-    label=item['label']||id.upcase
+    label=@view['label'][id]||id.upcase
     push "<td class=\"item\">"
     push "<span class=\"label\">#{label}</span>"
     push "<span id=\"#{id}\" class=\"normal\">*******</span>"

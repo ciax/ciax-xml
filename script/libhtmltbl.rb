@@ -1,8 +1,6 @@
 #!/usr/bin/ruby
-# Status to View (String with attributes)
 require "json"
 require "libviewopt"
-require "libprint"
 
 class HtmlTbl < Array
   def initialize(odb)
@@ -12,23 +10,23 @@ class HtmlTbl < Array
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{@odb['id']}</div>"
     group = @view['group'] || @view['list'].keys
-    group.each{|g|
-      get_group(g)
-    }
+    get_group(group)
     push "</div>"
   end
 
   private
   def get_group(group)
-    push "<table><tbody>"
-    unless Array === group[0]
-      cap=group.shift
-      push "<tr><th colspan=\"6\">#{cap}</th></tr>" if cap
-    end
-    group.each{|a|
-      get_element(a)
+    group.each{|g|
+      push "<table><tbody>"
+      unless Array === g[0]
+        cap,*g=g
+        push "<tr><th colspan=\"6\">#{cap}</th></tr>"
+      end
+      g.each{|a|
+        get_element(a)
+      }
+      push "</tbody></table>"
     }
-    push "</tbody></table>"
     self
   end
 

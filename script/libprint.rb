@@ -1,72 +1,52 @@
 #!/usr/bin/ruby
-class Print
+class Print < Array
+  CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(view)
     @view=view
+    @group = @view['group'] || @view['list'].keys
+    get_group
   end
 
   def upd
     @view.upd
-    self
-  end
-
-  def to_s
-    group = @view['group'] || @view['list'].keys
-    arc_print(group)
+    clear
+    get_group
   end
 
   private
-  def arc_print(ary)
-    ids=[]
-    group=[]
-    line=[]
-    ary.each{|i|
-      case i
-      when Array
-        group << i
-      else
-        ids << i
+  def get_group
+    @group.each{|g|
+      unless Array === g[0]
+        cap,*g=g
+        push "***"+color(2,cap)+"***"
       end
-    }
-    if group.empty?
-      line << fold(ids.map{|i|
-        get_element(i)
-      })
-    else
-      line << get_title(ids[0]) unless ids.empty?
-      group.each{|a|
-        line << arc_print(a)
+      g.each{|a|
+        get_element(a)
       }
-    end
-    line.join("\n")
+    }
+    self
   end
 
-  def get_title(title)
-    "***"+color(2,title)+"***" if title
-  end
-
-  CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','normal' => '2','hide' =>'0'})
-
-  def get_element(id)
-    return '' unless @view['list'].key?(id)
-    item=@view['list'][id]
-    label=@view['label'][id] || id.upcase
-    prt(item,CM[item['class']],label)
-  end
-
-  def fold(ary,col=6)
-    da=ary.dup
-    row=[]
+  def get_element(ids,col=6)
+    da=[]
+    ids.each{|id|
+      next unless @view['list'].key?(id)
+      item=@view['list'][id]
+      label=@view['label'][id] || id.upcase
+      da << prt(item,label)
+    }
     while da.size > 0
-      row << da.shift(col).join(" ")
+      push da.shift(col).join(" ")
     end
-    row.join("\n")
+    self
   end
 
-  def prt(item,c,label)
+  def prt(item,label)
     str='['
     str << color(6,label)
     str << ':'
     msg=item['msg']
+    c=CM[item['class']]
     case v=item['val']
     when Numeric
       str << color(c,"#{v}(#{msg})")

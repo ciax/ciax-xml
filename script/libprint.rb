@@ -4,6 +4,11 @@ class Print
     @view=view
   end
 
+  def upd
+    @view.upd
+    self
+  end
+
   def to_s
     group = @view['group'] || @view['list'].keys
     arc_print(group)

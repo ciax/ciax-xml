@@ -2,6 +2,7 @@
 require "json"
 require "libobjdb"
 require "libalias"
+require "libprint"
 require "libviewopt"
 require "libclssrv"
 require "libshell"
@@ -14,10 +15,11 @@ begin
   cobj=ClsSrv.new(obj,cls,iocmd)
   odb=ObjDb.new(obj,cls)
   al=Alias.new(odb)
-  view=ViewOpt.new(odb,odb.status[:select].keys).opt(opt)
+  view=ViewOpt.new(odb,cobj.stat).opt(opt)
+  prt=Print.new(view)
 rescue SelectID
   abort "Usage: clsshell (-alsp) [cls] [obj] [iocmd]\n#{$!}"
 end
 cobj.session{|line|
-  cobj.dispatch(line){|cmd| al.alias(cmd)}||view.upd(cobj.stat)
+  cobj.dispatch(line){|cmd| al.alias(cmd)}||prt.upd
 }

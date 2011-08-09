@@ -14,9 +14,9 @@ class View < Hash
     }
   end
 
-  def upd(stat)
+  def upd
     self['list'].each{|k,v|
-      v['val']=stat[k]
+      v['val']=@stat[k]
     }
     self
   end

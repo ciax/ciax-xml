@@ -15,7 +15,7 @@ class ViewOpt < View
     self
   end
 
-  def upd(stat)
+  def upd
     super
     @sdb.convert(self) if @sdb
     self

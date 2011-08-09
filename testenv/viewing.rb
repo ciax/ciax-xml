@@ -20,7 +20,7 @@ else
   raise "NO Type ID in View"
 end
 view=ViewOpt.new(db,stat)
-view.opt(opt).upd(stat)
+view.opt(opt).upd
 if opt.include?('p')
   puts view
 else

@@ -24,16 +24,14 @@ class ViewOpt < View
   private
   def add_label
     if @db
-      require "liblabel"
-      Label.new(@db).convert(self)
+      self['label']=Hash[@db.status[:label]]
     end
     self
   end
 
   def add_arrange
-    if @db
-      require "libarrange"
-      Arrange.new(@db).convert(self)
+    if @db && @db.status.key?(:group)
+      self['group']=@db.status[:group]
     end
     self
   end
@@ -47,5 +45,4 @@ class ViewOpt < View
     end
     self
   end
-
 end

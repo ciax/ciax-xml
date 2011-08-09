@@ -13,7 +13,7 @@ class ClsDb < Db
       @command.keys.map{|k| "Structure:command:#{k} #{@command[k]}"}
     }
     @status[:select]={}
-    @status[:group]=[]
+    @status[:group]=[[['time']]]
     init_stat(@doc.domain('status'))
     @v.msg{
       @status.keys.map{|k| "Structure:status:#{k} #{@status[k]}"}

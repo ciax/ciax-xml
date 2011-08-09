@@ -59,9 +59,9 @@ class HtmlTbl < Array
     return self unless @view['list'].key?(id)
     item=@view['list'][id]
     label=item['label']||id.upcase
-    push "<td class=\"label\">#{label}</td>"
-    push "<td class=\"value\">"
-    push "<div id=\"#{id}\" class=\"normal\">*******</div>"
+    push "<td class=\"item\">"
+    push "<span class=\"label\">#{label}</span>"
+    push "<span id=\"#{id}\" class=\"normal\">*******</span>"
     push "</td>"
     self
   end

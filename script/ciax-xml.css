@@ -25,17 +25,16 @@ table{
   border : 2px outset;
   text-align : center;
 }
-.value{
+.item{
   border : 2px inset;
-  float : right;
-}
-.hide{
-  hidden : true;
-  color : red;
 }
 .label{
+  border : 2px outset;
   text-align : center;
   color : blue;
+}
+.hide{
+  color : black;
 }
 .normal{
   color : green;

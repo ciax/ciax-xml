@@ -307,79 +307,79 @@
           <value id="run" label="RUNNING" symbol="warn">
             <binary bit="15" ref="w:0" />
           </value>
-          <value id="cmp" label="CMD COMPLETE" symbol="warn">
+          <value id="cmp" label="COMPLETE" symbol="warn">
             <binary bit="14" ref="w:0" />
           </value>
         </row>
       </group>
       <group label="FIX Flange">
         <row label="Fix Jack Bolt">
-          <value id="fis" label="Fix Attach" symbol="ist">
+          <value id="fis" label="Attach" symbol="ist">
             <binary bit="0" ref="w:2" />
             <binary bit="1" ref="w:2" />
             <binary bit="2" ref="w:2" />
             <binary bit="3" ref="w:2" />
           </value>
-          <value id="fhk" label="Fix Hook" symbol="hook">
+          <value id="fhk" label="Hook" symbol="hook">
             <binary bit="0" ref="w:1" />
             <binary bit="1" ref="w:1" />
           </value>
-          <value id="fjb" label="Fix Jack Bolt" symbol="jack">
+          <value id="fjb" label="Jack Bolt" symbol="jack">
             <binary bit="14" ref="w:1" />
             <binary bit="15" ref="w:1" />
           </value>
         </row>
         <row label="Fix Power Status" width="3">
-          <value id="fpw" label="Fix Inst Power" symbol="off-warn">
+          <value id="fpw" label="Inst Power" symbol="off-warn">
             <binary bit="8" ref="w:9" />
           </value>
-          <value id="fph" label="Fix PW RST" symbol="rst">
+          <value id="fph" label="PW Phase" symbol="rst">
             <binary bit="0" ref="w:10" />
             <binary bit="1" ref="w:10" />
             <binary bit="2" ref="w:10" />
           </value>
-          <value id="fcc" label="Fix CCD Power" symbol="off-warn">
+          <value id="fcc" label="CCD Power" symbol="off-warn">
             <binary bit="10" ref="w:9" />
           </value>
         </row>
       </group>
       <group label="MOV Flange">
         <row label="Mov Jack Bolt">
-          <value id="mis" label="Mov Attach" symbol="ist">
+          <value id="mis" label="Attach" symbol="ist">
             <binary bit="0" ref="w:6" />
             <binary bit="1" ref="w:6" />
             <binary bit="2" ref="w:6" />
             <binary bit="3" ref="w:6" />
           </value>
-          <value id="mhk" label="Mov Hook" symbol="hook">
+          <value id="mhk" label="Hook" symbol="hook">
             <binary bit="0" ref="w:5" />
             <binary bit="1" ref="w:5" />
           </value>
-          <value id="mjb" label="Mov Jack Bolt" symbol="jack">
+          <value id="mjb" label="Jack Bolt" symbol="jack">
             <binary bit="14" ref="w:5" />
             <binary bit="15" ref="w:5" />
           </value>
         </row>
         <row label="Mov Transer">
-          <value id="mrt" label="Mov Rotation" symbol="rot">
+          <value id="mrt" label="Rotation" symbol="rot">
             <binary bit="2" ref="w:5" />
             <binary bit="3" ref="w:5" />
           </value>
-          <value id="mtr" label="Mov Transer" symbol="mov">
+          <value id="mtr" label="Transer" symbol="mov">
             <binary bit="8" ref="w:6" />
             <binary bit="6" ref="w:6" />
           </value>
         </row>
         <row label="Mov Power Status" width="3">
-          <value id="mpw" label="Mov Inst Power" symbol="off-warn">
+          <value id="mpw" label="Inst Power" symbol="off-warn">
             <binary bit="9" ref="w:9" />
           </value>
-          <value id="mph" label="Mov PW RST" symbol="rst">
+          <value id="mph" label="PW Phase" symbol="rst">
             <binary bit="8" ref="w:10" />
             <binary bit="9" ref="w:10" />
             <binary bit="10" ref="w:10" />
           </value>
-          <value id="mcc" label="Mov CCD Power" symbol="off-warn">
+          <value id="mcc" label="CCD Power" symbol="off-warn">
             <binary bit="11" ref="w:9" />
           </value>
         </row>
@@ -387,14 +387,14 @@
       <group label="Z Sensor">
         <row>
           <repeat from="1" to="4">
-            <value id="fz%d" label="Fix Z">
+            <value id="fz%d" label="Fix %d">
               <float format="%.2f" ref="d:($_-1)" formula="$#/100" />
             </value>
           </repeat>
         </row>
         <row>
           <repeat from="1" to="4">
-            <value id="mz%d" label="Mov Z">
+            <value id="mz%d" label="Mov %d">
               <float format="%.2f" ref="d:($_+3)" formula="$#/100" />
             </value>
           </repeat>

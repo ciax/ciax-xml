@@ -57,7 +57,7 @@ class Print
     end
   end
 
-  def fold(ary,col=3)
+  def fold(ary,col=6)
     da=ary.dup
     row=[]
     while da.size > 0

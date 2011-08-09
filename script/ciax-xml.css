@@ -15,12 +15,14 @@ table{
   margin-right : 5%;
 }
 .title{
+  border : 2px outset;
   font-size : x-large;
   text-align : center;
   color : white;
   background-color:#bbeeaa;
 }
 .caption{
+  border : 2px outset;
   text-align : center;
 }
 .value{
@@ -32,9 +34,8 @@ table{
   color : red;
 }
 .label{
-  border : 2px inset;
+  text-align : center;
   color : blue;
-  float : left;
 }
 .normal{
   color : green;

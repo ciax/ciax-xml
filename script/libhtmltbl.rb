@@ -44,7 +44,7 @@ class HtmlTbl < Array
     push "<table><tbody>"
     if cap
       push "<tr>"
-      push "<th class=\"caption\" colspan=\"8\">#{cap}</th>"
+      push "<th class=\"caption\" colspan=\"12\">#{cap}</th>"
       push "</tr>"
     end
     self
@@ -66,7 +66,7 @@ class HtmlTbl < Array
     self
   end
 
-  def fold(ary,col=3)
+  def fold(ary,col=6)
     da=ary.dup
     while da.size > 0
       push "<tr>"

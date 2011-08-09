@@ -8,11 +8,13 @@ class ClsDb < Db
   def initialize(cls)
     super('cdb',cls)
     @rep=Repeat.new
-    @command=init_command
+    init_command
     @v.msg{
       @command.keys.map{|k| "Structure:command:#{k} #{@command[k]}"}
     }
-    @status=init_stat
+    @status[:select]={}
+    @status[:group]=[]
+    init_stat(@doc.domain('status'))
     @v.msg{
       @status.keys.map{|k| "Structure:status:#{k} #{@status[k]}"}
     }
@@ -34,9 +36,9 @@ class ClsDb < Db
   end
 
   def init_command
-    cdbc={:select => {}}
+    @command[:select]={}
     @doc.domain('commands').each{|e0|
-      id=e0.attr2db(cdbc)
+      id=e0.attr2db(@command)
       list=[]
       @rep.each(e0){|e1|
         command=[e1['name']]
@@ -47,28 +49,23 @@ class ClsDb < Db
         }
         list << command.freeze
       }
-      cdbc[:select][id]=list
+      @command[:select][id]=list
       @v.msg{"COMMAND:[#{id}] #{list}"}
     }
-    cdbc
+    self
   end
 
-  def init_stat
-    cdbs={:select => {},:group =>[]}
-    rec_stat(@doc.domain('status'),cdbs)
-  end
-
-  def rec_stat(e,db)
+  def init_stat(e)
     @rep.each(e){|e0|
       if e0.name == 'group'
-        db[:group] << [e0['label']]
-        rec_stat(e0,db)
+        @status[:group] << [e0['label']]
+        init_stat(e0)
       elsif e0.name == 'row'
-        db[:group] << [] if db[:group].empty?
-        db[:group].last << []
-        rec_stat(e0,db)
+        @status[:group] << [] if @status[:group].empty?
+        @status[:group].last << []
+        init_stat(e0)
       else
-        id=e0.attr2db(db){|v|@rep.format(v)}
+        id=e0.attr2db(@status){|v|@rep.format(v)}
         fields=[]
         e0.each{|e1|
           st={:type => e1.name}
@@ -77,12 +74,12 @@ class ClsDb < Db
           }
           fields << st
         }
-        db[:select][id]=fields
-        db[:group].last.last << id
+        @status[:select][id]=fields
+        @status[:group].last.last << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }
-    db
+    self
   end
 
   def init_watch

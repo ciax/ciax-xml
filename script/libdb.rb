@@ -10,7 +10,7 @@ class Db < Hash
     @v=Verbose.new("#{type}/#{@doc['id']}",2)
     update(@doc)
     @command={}
-    @status={}
+    @status={:label => {'time' => 'TIMESTAMP' }}
     @tables=SymDb.new(@doc)
     @v.msg{"Structure:tables #{@tables}"}
   end

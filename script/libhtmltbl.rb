@@ -44,7 +44,7 @@ class HtmlTbl < Array
     push "<table><tbody>"
     if cap
       push "<tr>"
-      push "<th class=\"caption\" colspan=\"12\">#{cap}</th>"
+      push "<th class=\"caption\" colspan=\"6\">#{cap}</th>"
       push "</tr>"
     end
     self

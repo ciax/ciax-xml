@@ -151,7 +151,7 @@
           </value>
         </row>
       </group>
-      <group label="Motor Stat">
+      <group label="Traveling Motor Stat">
         <row>
           <value id="msr" label="Right Servo" symbol="normal">
             <binary bit="8" inv="true" ref="x:0" />
@@ -161,28 +161,21 @@
           </value>
         </row>
         <row>
-          <value id="jd1" label="Jack1 Servo" symbol="normal">
-            <binary bit="10" inv="true" ref="x:0" />
-          </value>
-          <value id="jd2" label="Jack2 Servo" symbol="normal">
-            <binary bit="11" inv="true" ref="x:0" />
-          </value>
-        </row>
-        <row>
-          <value id="jd3" label="Jack3 Servo" symbol="normal">
-            <binary bit="12" inv="true" ref="x:0" />
-          </value>
-          <value id="jd4" label="Jack4 Servo" symbol="normal">
-            <binary bit="13" inv="true" ref="x:0" />
-          </value>
-        </row>
-        <row>
           <value id="mdar" label="Rignt D/A" symbol="motor">
             <int ref="x:7" />
           </value>
           <value id="mdal" label="Left D/A" symbol="motor">
             <int ref="x:8" />
           </value>
+        </row>
+      </group>
+      <group label="Jacking Motor Servo">
+        <row>
+          <repeat from="1" to="4">
+            <value id="jd%d" label="%d" symbol="normal">
+              <binary bit="9+$_" inv="true" ref="x:0" />
+            </value>
+          </repeat>
         </row>
       </group>
       <group label="Etc">

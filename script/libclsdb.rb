@@ -15,7 +15,7 @@ class ClsDb < Db
     @status[:select]={}
     @status[:group]=[]
     init_stat(@doc.domain('status'))
-    @status[:group].unshift [nil,['time']]
+    @status[:group].unshift [['time']]
     @v.msg{
       @status.keys.map{|k| "Structure:status:#{k} #{@status[k]}"}
     }

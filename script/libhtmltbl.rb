@@ -21,7 +21,7 @@ class HtmlTbl < Array
   private
   def get_group(group)
     push "<table><tbody>"
-    if group[0] != Array
+    unless Array === group[0]
       cap=group.shift
       push "<tr><th colspan=\"6\">#{cap}</th></tr>" if cap
     end

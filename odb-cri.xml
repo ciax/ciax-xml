@@ -9,14 +9,10 @@
       <alias id="f2off" label="FMOS/IRS2(S11)OFF" ref="x2off" />
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
-      <title ref="xsw0" symbol="off-warn" label="FMOS/IRS1(S10)SWITCH" />
-      <title ref="xdr0" symbol="off-warn" label="FMOS/IRS1(S10)DRIVE" />
-      <title ref="xtm0" symbol="alarm" label="FMOS/IRS1(S10)TEMP" />
-      <title ref="xpr0" symbol="alarm" label="FMOS/IRS1(S10)PRESSURE" />
-      <title ref="xsw2" symbol="off-warn" label="FMOS/IRS2(S11)SWITCH" />
-      <title ref="xdr2" symbol="off-warn" label="FMOS/IRS2(S11)DRIVE" />
-      <title ref="xtm2" symbol="alarm" label="FMOS/IRS2(S11)TEMP" />
-      <title ref="xpr2" symbol="alarm" label="FMOS/IRS2(S11)PRESSURE" />
+      <title ref="g0" label="FMOS/IRS1(S10)" />
+      <title ref="g1" label="" />
+      <title ref="g3" label="" />
+      <title ref="g2" label="FMOS/IRS2(S11)" />
     </status>
   </object>
 </odb>

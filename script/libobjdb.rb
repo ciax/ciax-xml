@@ -13,6 +13,7 @@ class ObjDb < ClsDb
     else
       @command={}
       @status={}
+      @tables={}
     end
     self['id']=obj
     @alias={}
@@ -35,6 +36,10 @@ class ObjDb < ClsDb
 end
 
 if __FILE__ == $0
-  db=ObjDb.new(ARGV.shift,ARGV.shift) rescue ("USAGE: #{$0} [id] [cls]\n#{$!}")
+  begin
+    db=ObjDb.new(ARGV.shift,ARGV.shift)
+  rescue SelectID
+    abort ("USAGE: #{$0} [id] [cls]\n#{$!}")
+  end
   puts db
 end

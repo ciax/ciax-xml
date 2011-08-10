@@ -23,7 +23,7 @@ class ClsDb < Db
   end
 
   def to_s
-    super+Verbose.view_struct("Watch",@watch)
+    super+Verbose.view_struct(@watch,"Watch")
   end
 
   private

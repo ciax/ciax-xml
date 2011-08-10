@@ -118,28 +118,30 @@ class Verbose
   end
 
   # Class method
-  def self.view_struct(key,val,indent=0)
-    return '' unless val
-    str="  " * indent + ("%-4s :" % key.inspect)
-    case val
+  def self.view_struct(data,title=nil,indent=0)
+    return '' unless data
+    str=''
+    if title
+      str << "  " * indent + ("%-4s :\n" % title.inspect)
+      indent+=1
+    end
+    case data
     when Array
-      unless val.all?{|v| v.kind_of?(Comparable)}
-        str << "\n"
-        val.each_with_index{|v,i|
-          str << view_struct(i,v,indent+1)
+      unless data.all?{|v| v.kind_of?(Comparable)}
+        data.each_with_index{|v,i|
+          str << view_struct(v,i,indent)
         }
         return str
       end
     when Hash
-      val=Hash[val]
-      if val.values.any?{|v| ! v.kind_of?(Comparable)} || val.size > 4
-        str << "\n"
-        val.each{|k,v|
-          str << view_struct(k,v,indent+1)
+      data=Hash[data]
+      if data.values.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
+        data.each{|k,v|
+          str << view_struct(v,k,indent)
         }
         return str
       end
     end
-    str << " #{val.inspect}\n"
+    str.chomp + " #{data.inspect}\n"
   end
 end

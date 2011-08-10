@@ -16,9 +16,9 @@ class Db < Hash
   end
 
   def to_s
-    str=Verbose.view_struct("Root",self)
-    str << Verbose.view_struct("Command",@command)
-    str << Verbose.view_struct("Status",@status)
-    str << Verbose.view_struct("SymTable",@tables)
+    str=Verbose.view_struct(self,"Root")
+    str << Verbose.view_struct(@command,"Command")
+    str << Verbose.view_struct(@status,"Status")
+    str << Verbose.view_struct(@tables,"SymTable")
   end
 end

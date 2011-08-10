@@ -30,7 +30,7 @@ class ObjDb < ClsDb
   end
 
   def to_s
-    super+Verbose.view_struct("Alias",@alias)
+    super+Verbose.view_struct(@alias,"Alias")
   end
 end
 

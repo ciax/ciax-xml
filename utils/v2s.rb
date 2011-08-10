@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 require "json"
-require "libview"
+require "libverbose"
 
 abort "Usage: v2s < json_file" if STDIN.tty?
 
 str=gets(nil) || exit
-view=View.new(JSON.load(str))
-puts view
+puts Verbose.view_struct('VIEW',JSON.load(str))

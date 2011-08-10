@@ -9,7 +9,7 @@ for id in $devices; do
     file=$HOME/.var/field_$id.json
     clsstat $cls < $file | viewing $opt $obj | if [ "$opt" ]
     then
-        cat
+        v2s
     else
         stprint
     fi

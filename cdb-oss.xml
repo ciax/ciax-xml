@@ -76,7 +76,7 @@
       </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <group label="[Main]">
+      <group id="g1" label="Main">
         <row>
           <value id="exit" label="Exit Code">
             <int ref="exit" />
@@ -100,7 +100,7 @@
           </value>
         </row>
       </group>
-      <group label="Drive Stat">
+      <group id="g2" label="Drive Stat">
         <row>
           <value id="azd" label="AZ" symbol="drv">
             <binary label="ON" bit="0" ref="teldrive" />
@@ -120,7 +120,7 @@
           </value>
         </row>
       </group>
-      <group label="Position">
+      <group id="g3" label="Position">
         <row>
           <value id="stw" label="EL STOW" symbol="off-warn">
             <binary bit="2" ref="stow_1" />
@@ -137,7 +137,7 @@
           </value>
         </row>
       </group>
-      <group label="[Moving] [Stat(Anc,Rdy)] [Pos] [Jack Len]  [Clnt Lmt] [Alm]">
+      <group id="g4" label="[Moving] [Stat(Anc,Rdy)] [Pos] [Jack Len]  [Clnt Lmt] [Alm]">
         <row label="JACK ALL">
           <value id="abm" label="All" symbol="warn">
             <binary ref="abs" bit="2" inv="true" />
@@ -174,7 +174,7 @@
           </row>
         </repeat>
       </group>
-      <group label="[Z Sensor Len]">
+      <group id="g5" label="[Z Sensor Len]">
         <row>
           <repeat from="1" to="4">
             <value id="z%d" label="%d">

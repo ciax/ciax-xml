@@ -59,7 +59,7 @@ class ClsDb < Db
   def init_stat(e)
     @rep.each(e){|e0|
       if e0.name == 'group'
-        @status[:group] << [e0['label']]
+        @status[:group] << [@rep.subst(e0['label'])]
         init_stat(e0)
       elsif e0.name == 'row'
         @status[:group] << [] if @status[:group].empty?

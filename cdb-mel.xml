@@ -108,7 +108,7 @@
       </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <group label="Main">
+      <group id="g1" label="Main">
         <row>
           <value id="rdy" label="READY" symbol="normal">
             <binary bit="0" ref="x:0" />
@@ -138,7 +138,7 @@
           </value>
         </row>
       </group>
-      <group label="Action">
+      <group id="g2" label="Action">
         <row>
           <value id="run" label="RUNNING" symbol="normal">
             <binary bit="4" ref="x:0" />
@@ -151,7 +151,7 @@
           </value>
         </row>
       </group>
-      <group label="Traveling Motor Stat">
+      <group id="g3" label="Traveling Motor Stat">
         <row>
           <value id="msr" label="Right Servo" symbol="normal">
             <binary bit="8" inv="true" ref="x:0" />
@@ -169,7 +169,7 @@
           </value>
         </row>
       </group>
-      <group label="Jacking Motor Servo">
+      <group id="g4" label="Jacking Motor Servo">
         <row>
           <repeat from="1" to="4">
             <value id="jd%d" label="%d" symbol="normal">
@@ -178,7 +178,7 @@
           </repeat>
         </row>
       </group>
-      <group label="Etc">
+      <group id="g5" label="Etc">
         <row label="Group">
           <value id="bvl" label="Battery Voltage" symbol="bvl">
             <float format="%2.2f" ref="x:22" formula="$#/100" />

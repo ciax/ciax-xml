@@ -274,7 +274,7 @@
       </cmdset>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
-      <group label="MAIN">
+      <group id="g1" label="MAIN">
         <row label="General">
           <value id="ctl" label="CONTROL" symbol="ctl">
             <binary bit="6" ref="w:0" />
@@ -296,7 +296,7 @@
           </value>
         </row>
       </group>
-      <group label="ACTION STAT">
+      <group id="g2" label="ACTION STAT">
         <row>
           <value id="exe" label="EXECUTING" symbol="exe">
             <string ref="c:0" />
@@ -312,7 +312,7 @@
           </value>
         </row>
       </group>
-      <group label="FIX Flange">
+      <group id="g3" label="FIX Flange">
         <row label="Fix Jack Bolt">
           <value id="fis" label="Attach" symbol="ist">
             <binary bit="0" ref="w:2" />
@@ -343,7 +343,7 @@
           </value>
         </row>
       </group>
-      <group label="MOV Flange">
+      <group id="g4" label="MOV Flange">
         <row label="Mov Jack Bolt">
           <value id="mis" label="Attach" symbol="ist">
             <binary bit="0" ref="w:6" />
@@ -384,7 +384,7 @@
           </value>
         </row>
       </group>
-      <group label="Z Sensor">
+      <group id="g5" label="Z Sensor">
         <row>
           <repeat from="1" to="4">
             <value id="fz%d" label="Fix %d">
@@ -400,7 +400,7 @@
           </repeat>
         </row>
       </group>
-      <group label="Instrument">
+      <group id="g6" label="Instrument">
         <row label="Instrument ID">
           <value id="fid" label="Fix Instrument ID" symbol="iid_ac">
             <int ref="d:8" />
@@ -410,7 +410,7 @@
           </value>
         </row>
       </group>
-      <group label="Charging">
+      <group id="g7" label="Charging">
         <row label="Charging">
           <value id="chg" label="CHG Plug" symbol="mov">
             <binary bit="6" ref="w:2" />

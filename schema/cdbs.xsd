@@ -10,17 +10,20 @@
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
   <!--status & group-->
+  <xsd:group name="group">
+    <xsd:choice>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="cdbs:row"></xsd:element>
+        <xsd:element ref="cdbs:repeat"></xsd:element>
+      </xsd:choice>
+      <xsd:sequence maxOccurs="unbounded">
+        <xsd:element ref="cdbs:group"></xsd:element>
+      </xsd:sequence>
+    </xsd:choice>
+  </xsd:group>
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element ref="cdbs:row"></xsd:element>
-          <xsd:element ref="cdbs:repeat"></xsd:element>
-        </xsd:choice>
-        <xsd:sequence maxOccurs="unbounded">
-          <xsd:element ref="cdbs:group"></xsd:element>
-        </xsd:sequence>
-      </xsd:choice>
+      <xsd:group ref="cdbs:group" />
       <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
@@ -30,7 +33,7 @@
         <xsd:element ref="cdbs:row"></xsd:element>
         <xsd:element ref="cdbs:repeat"></xsd:element>
       </xsd:choice>
-      <xsd:attribute name="label" type="xsd:token" use="required" />
+      <xsd:attributeGroup ref="cdbs:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="row">
@@ -46,10 +49,14 @@
   <!--values-->
   <xsd:element name="repeat">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="cdbs:repeat" />
-        <xsd:element ref="cdbs:row" />
-        <xsd:element ref="cdbs:value" />
+      <xsd:choice>
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="cdbs:row"></xsd:element>
+          <xsd:element ref="cdbs:value"></xsd:element>
+        </xsd:choice>
+        <xsd:sequence maxOccurs="unbounded">
+          <xsd:element ref="cdbs:group"></xsd:element>
+        </xsd:sequence>
       </xsd:choice>
       <xsd:attributeGroup ref="cdbs:repeat" />
     </xsd:complexType>

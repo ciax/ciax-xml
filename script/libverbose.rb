@@ -133,6 +133,6 @@ class Verbose
         return str
       end
     end
-    str << " #{val}\n"
+    str << " #{val.inspect}\n"
   end
 end

@@ -14,6 +14,7 @@
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="g0" label="CIAO(S6) SWITCH" />
+      <title ref="g1" label="" />
       <title ref="g2" label="COMICS IMG(S4)" />
       <title ref="g3" label="COMICS SPEC(S5)" />
     </status>

@@ -21,22 +21,26 @@
       <alias id="maoff" label="MOIRCS BOTH OFF" ref="x23off" />
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
-      <title ref="xsw0" symbol="off-warn" label="CAS2(S1)(CIAO) SWITCH" />
-      <title ref="xdr0" symbol="off-warn" label="CAS2(S1)(CIAO) DRIVE" />
-      <title ref="xtm0" symbol="alarm" label="CAS2(S1)(CIAO) TEMP" />
-      <title ref="xpr0" symbol="alarm" label="CAS2(S1)(CIAO) PRESSURE" />
-      <title ref="xsw1" symbol="off-warn" label="CAS1(S2)(MOIRCS/MAIN) SWITCH" />
-      <title ref="xdr1" symbol="off-warn" label="CAS1(S2)(MOIRCS/MAIN) DRIVE" />
-      <title ref="xtm1" symbol="alarm" label="CAS1(S2)(MOIRCS/MAIN) TEMP" />
-      <title ref="xpr1" symbol="alarm" label="CAS1(S2)(MOIRCS/MAIN) PRESSURE" />
-      <title ref="xsw2" symbol="off-warn" label="MOIRCS/CR(S8) SWITCH" />
-      <title ref="xdr2" symbol="off-warn" label="MOIRCS/CR(S8) DRIVE" />
-      <title ref="xtm2" symbol="alarm" label="MOIRCS/CR(S8) TEMP" />
-      <title ref="xpr2" symbol="alarm" label="MOIRCS/CR(S8) PRESSURE" />
-      <title ref="xsw3" symbol="off-warn" label="MOIRCS/MAIN(S9) SWITCH" />
-      <title ref="xdr3" symbol="off-warn" label="MOIRCS/MAIN(S9) DRIVE" />
-      <title ref="xtm3" symbol="alarm" label="MOIRCS/MAIN(S9) TEMP" />
-      <title ref="xpr3" symbol="alarm" label="MOIRCS/MAIN(S9) PRESSURE" />
+      <title ref="g0" label="CAS2(S1)(CIAO)" />
+      <title ref="g1" label="CAS1(S2)(MOIRCS/MAIN)" />
+      <title ref="g2" label="MOIRCS/CR(S8)" />
+      <title ref="g3" label="MOIRCS/MAIN(S9)" />
+      <title ref="xsw0" symbol="off-warn" label="SWITCH" />
+      <title ref="xdr0" symbol="off-warn" label="DRIVE" />
+      <title ref="xtm0" symbol="alarm" label="TEMP" />
+      <title ref="xpr0" symbol="alarm" label="PRESSURE" />
+      <title ref="xsw1" symbol="off-warn" label="SWITCH" />
+      <title ref="xdr1" symbol="off-warn" label="DRIVE" />
+      <title ref="xtm1" symbol="alarm" label="TEMP" />
+      <title ref="xpr1" symbol="alarm" label="PRESSURE" />
+      <title ref="xsw2" symbol="off-warn" label="SWITCH" />
+      <title ref="xdr2" symbol="off-warn" label="DRIVE" />
+      <title ref="xtm2" symbol="alarm" label="TEMP" />
+      <title ref="xpr2" symbol="alarm" label="PRESSURE" />
+      <title ref="xsw3" symbol="off-warn" label="SWITCH" />
+      <title ref="xdr3" symbol="off-warn" label="DRIVE" />
+      <title ref="xtm3" symbol="alarm" label="TEMP" />
+      <title ref="xpr3" symbol="alarm" label="PRESSURE" />
     </status>
   </object>
 </odb>

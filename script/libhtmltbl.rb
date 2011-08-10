@@ -20,7 +20,7 @@ class HtmlTbl < Array
       push "<table><tbody>"
       unless Array === g[0]
         cap,*g=g
-        push "<tr><th colspan=\"6\">#{cap}</th></tr>"
+        push "<tr><th colspan=\"6\">#{@view['label'][cap]}</th></tr>"
       end
       g.each{|a|
         get_element(a)

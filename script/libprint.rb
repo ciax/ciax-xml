@@ -18,7 +18,7 @@ class Print < Array
     @group.each{|g|
       unless Array === g[0]
         cap,*g=g
-        push "***"+color(2,cap)+"***"
+        push "***"+color(2,@view['label'][cap])+"***"
       end
       g.each{|a|
         get_element(a)

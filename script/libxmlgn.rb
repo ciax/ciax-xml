@@ -2,7 +2,7 @@
 require "xml"
 require "libverbose"
 
-class XmlGn
+class Xml
   def initialize(f=nil)
     @v=Verbose.new("Xml",4)
     case f
@@ -52,13 +52,13 @@ class XmlGn
       @v.msg{"FindXpath:#{xpath}"}
       @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
         @v.msg(1){"<#{e.name}>"}
-        yield XmlGn.new(e)
+        yield Xml.new(e)
         @v.msg(-1){"</#{e.name}>"}
       }
     else
       @e.each_element{|e|
         @v.msg(1){"<#{e.name}>"}
-        yield XmlGn.new(e)
+        yield Xml.new(e)
         @v.msg(-1){"</#{e.name}>"}
       }
     end

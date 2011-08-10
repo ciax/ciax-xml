@@ -31,7 +31,7 @@ class XmlDoc < Hash
     if @domain.key?(domain)
       @domain[domain]
     else
-      XmlGn.new
+      Xml.new
     end
   end
 
@@ -40,7 +40,7 @@ class XmlDoc < Hash
     pre="#{ENV['XMLPATH']}/#{dbid}"
     path="#{pre}-#{type}.xml"
     Dir.glob(path).each{|p|
-      XmlGn.new(p).each{|e| # Second level
+      Xml.new(p).each{|e| # Second level
         yield e
       }
     }

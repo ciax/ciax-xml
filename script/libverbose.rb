@@ -17,8 +17,9 @@ class Verbose
   # Public Method
   def msg(add=0)
     # block takes array (shown by each line)
-    # [val] -> taken from  xml
-    # <val> -> taken from status
+    # Description of values
+    #   [val] -> taken from  xml (prepared)
+    #   <val> -> taken from status (incoming)
     return unless ENV['VER']
     @ind=@@base
     @@base+=add
@@ -104,9 +105,15 @@ class Verbose
   end
 
   def condition(msg) # VER= makes setenv "" to VER otherwise nil
-    if ENV['VER']
-      ver=ENV['VER'].split(' ').map{|s| s.upcase}
-      ver.any?{|s| msg.upcase.include?(s) }
+    case ENV['VER']
+    when ''
+      true
+    else
+      ENV['VER'].upcase.split(',').any?{|s|
+        s.split(':').all?{|e|
+          msg.upcase.include?(e)
+        }
+      }
     end
   end
 

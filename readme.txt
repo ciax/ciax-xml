@@ -5,6 +5,11 @@ libxml2-utils (xmllint)
 socat
 libsqlite3-ruby1.9.1
 
+## Verbose mode ##
+set VER environment
+VER=string1,string2... for set sum
+VER=string1:strint2..  for set intersection
+
 ## String restriction ##
 cdb//cmdset@id -> never use ':'
 

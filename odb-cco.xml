@@ -16,18 +16,6 @@
       <title ref="g0" label="CIAO(S6) SWITCH" />
       <title ref="g2" label="COMICS IMG(S4)" />
       <title ref="g3" label="COMICS SPEC(S5)" />
-      <title ref="xsw0" symbol="off-warn" label="SWITCH" />
-      <title ref="xdr0" symbol="off-warn" label="DRIVE" />
-      <title ref="xtm0" symbol="alarm" label="TEMP" />
-      <title ref="xpr0" symbol="alarm" label="PRESSURE" />
-      <title ref="xsw2" symbol="off-warn" label="SWITCH" />
-      <title ref="xdr2" symbol="off-warn" label="DRIVE" />
-      <title ref="xtm2" symbol="alarm" label="TEMP" />
-      <title ref="xpr2" symbol="alarm" label="PRESSURE"></title>
-      <title ref="xsw3" symbol="off-warn" label="SWITCH" />
-      <title ref="xdr3" symbol="off-warn" label="DRIVE" />
-      <title ref="xtm3" symbol="alarm" label="TEMP" />
-      <title ref="xpr3" symbol="alarm" label="PRESSURE" />
     </status>
   </object>
 </odb>

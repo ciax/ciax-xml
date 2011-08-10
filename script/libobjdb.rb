@@ -20,7 +20,7 @@ class ObjDb < ClsDb
     doc.domain('command').each('alias'){|e0|
       e0.attr2db(@alias)
     }
-    @status[:label]={}
+    @status[:label]||={}
     doc.domain('status').each('title'){|e0|
       e0.attr2db(@status,'ref')
     }

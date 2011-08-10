@@ -118,16 +118,16 @@
       <repeat from="0" to="3">
         <group id="g$_" label="group $_">
           <row label="Group">
-            <value id="xsw%d" label="SWITCH %d" symbol="off-warn">
+            <value id="xsw%d" label="SWITCH" symbol="off-warn">
               <binary bit="$_*4" ref="stat" />
             </value>
-            <value id="xdr%d" label="DRIVE %d" symbol="off-warn">
+            <value id="xdr%d" label="DRIVE" symbol="off-warn">
               <binary bit="$_*4+1" ref="stat" />
             </value>
-            <value id="xtm%d" label="TEMP ALARM %d" symbol="alarm">
+            <value id="xtm%d" label="TEMP ALM" symbol="alarm">
               <binary bit="$_*4+2" ref="stat" />
             </value>
-            <value id="xpr%d" label="PRES ALARM %d" symbol="alarm">
+            <value id="xpr%d" label="PRES ALM" symbol="alarm">
               <binary bit="$_*4+3" ref="stat" />
             </value>
           </row>

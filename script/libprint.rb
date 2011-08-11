@@ -16,12 +16,12 @@ class Print < Array
   private
   def get_group
     @group.each{|g|
-      unless Array === g[0]
-        id,*g=g
-        cap=@view['label'][id] || next
+      arys,ids = g.partition{|e| Array === e}
+      unless ids.empty?
+        cap=@view['label'][ids.first] || next
         push " ***"+color(2,cap)+"***"
       end
-      g.each{|a|
+      arys.each{|a|
         get_element(a)
       }
     }

@@ -17,13 +17,13 @@ class HtmlTbl < Array
   private
   def get_group(group)
     group.each{|g|
-      unless Array === g[0]
-        id,*g=g
-        cap=@view['label'][id] || next
+      arys,ids=g.partition{|e| Array === e}
+      unless ids.empty?
+        cap=@view['label'][ids.first] || next
       end
       push "<table><tbody>"
       push  "<tr><th colspan=\"6\">#{cap}</th></tr>" if cap
-      g.each{|a|
+      arys.each{|a|
         get_element(a)
       }
       push "</tbody></table>"

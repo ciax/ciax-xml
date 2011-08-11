@@ -2,6 +2,7 @@
 require "json"
 require "libfrmrsp"
 require "libfrmdb"
+require "libcache"
 
 args=ARGV.partition{|s| /^-/ === s}
 opt=args.shift.join('')
@@ -9,7 +10,7 @@ dev=args.shift.first
 ARGV.clear
 
 begin
-  fdb=FrmDb.new(dev)
+  fdb=Cache.new("fdb_#{dev}"){FrmDb.new(dev)}
   field={}
   r=FrmRsp.new(fdb,field)
   str=gets(nil) || exit

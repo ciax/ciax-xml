@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "json"
+require "libcache"
 require "libclsdb"
 require "libclsstat"
 require "libstat"
@@ -8,7 +9,7 @@ cls=ARGV.shift
 ARGV.clear
 
 begin
-  cdb=ClsDb.new(cls)
+  cdb=Cache.new("cdb_#{cls}"){ClsDb.new(cls)}
   str=gets(nil) || exit
   field=Stat.new(JSON.load(str))
   cs=ClsStat.new(cdb,field)

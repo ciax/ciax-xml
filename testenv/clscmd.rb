@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
 require "libclsdb"
 require "libclscmd"
+require "libcache"
 
 cls,*cmd=ARGV
 begin
-  cdb=ClsDb.new(cls)
+  cdb=Cache.new("cdb_#{cls}"){ClsDb.new(cls)}
   cc=ClsCmd.new(cdb)
   cc.setcmd(cmd).cmdset.each{|cmd| p cmd}
 rescue UserError

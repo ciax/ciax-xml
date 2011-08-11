@@ -3,10 +3,11 @@ require "json"
 require "libstat"
 require "libfrmcmd"
 require "libfrmdb"
+require "libcache"
 
 dev,*cmd=ARGV
 begin
-  fdb=FrmDb.new(dev)
+  fdb=Cache.new("fdb_#{dev}"){FrmDb.new(dev)}
   st=Stat.new
   c=FrmCmd.new(fdb,st)
   c.setcmd(cmd)

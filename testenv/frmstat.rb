@@ -3,7 +3,9 @@ require "json"
 require "libfrmrsp"
 require "libfrmdb"
 
-dev=ARGV.shift
+args=ARGV.partition{|s| /^-/ === s}
+opt=args.shift.join('')
+dev=args.shift.first
 ARGV.clear
 
 begin
@@ -18,6 +20,10 @@ begin
   r.setrsp(stm){[time,eval(ary.shift)]}
   puts JSON.dump(field)
 rescue RuntimeError
-  abort "Usage: frmstat [frame] < logline\n#{$!}"
+  if opt.include?('q')
+    exit 1
+  else
+    abort "Usage: frmstat [frame] < logline\n#{$!}"
+  end
 end
 

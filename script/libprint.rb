@@ -36,9 +36,9 @@ class Print < Array
       label=@view['label'][id] || id.upcase
       da << prt(item,label)
     }
-    while da.size > 0
-      push "  "+da.shift(col).join(" ")
-    end
+    da.each_slice(col){|a|
+      push "  "+a.join(" ")
+    }
     self
   end
 

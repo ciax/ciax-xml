@@ -32,10 +32,9 @@ class HtmlTbl < Array
   end
 
   def get_element(ary,col=6)
-    da=ary.dup
-    while da.size > 0
+    ary.each_slice(col){|da|
       push "<tr>"
-      da.shift(col).each{|id|
+      da.each{|id|
         next unless @view['list'].key?(id)
         item=@view['list'][id]
         label=@view['label'][id]||id.upcase
@@ -45,7 +44,7 @@ class HtmlTbl < Array
         push "</td>"
       }
       push "</tr>"
-    end
+    }
     self
   end
 end

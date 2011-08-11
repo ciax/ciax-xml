@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 class Watch < Array
   def initialize(cdb,stat)
-    push(*cdb.watch)
+    push(*cdb[:watch])
     @stat=stat
     @v=Verbose.new("WATCH",3)
   end

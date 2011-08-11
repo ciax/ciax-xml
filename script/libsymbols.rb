@@ -6,8 +6,8 @@ class Symbols
   def initialize(ref)
     raise "Sym have to be given Db" unless ref.kind_of?(Db)
     @v=Verbose.new("Symbol",6)
-    @table=ref.tables
-    @ref=ref.status[:symbol]||{}
+    @table=ref[:tables]
+    @ref=ref[:status][:symbol]||{}
   end
 
   def convert(view)

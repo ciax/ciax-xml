@@ -24,14 +24,14 @@ class ViewOpt < View
   private
   def add_label
     if @db
-      self['label']=Hash[@db.status[:label]]
+      self['label']=Hash[@db[:status][:label]]
     end
     self
   end
 
   def add_arrange
-    if @db && @db.status.key?(:group)
-      self['group']=@db.status[:group]
+    if @db && @db[:status].key?(:group)
+      self['group']=@db[:status][:group]
     end
     self
   end
@@ -40,7 +40,7 @@ class ViewOpt < View
     if @db
       require "libsymdb"
       require "libsymbols"
-      @db.tables.update(SymDb.new)
+      @db[:tables].update(SymDb.new)
       @sdb=Symbols.new(@db)
     end
     self

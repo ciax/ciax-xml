@@ -5,33 +5,28 @@ require "libclsdb"
 require "libsymdb"
 
 class ObjDb < ClsDb
-  attr_reader :alias
   def initialize(obj,cls=nil) # cls can be gotten from odb, otherwise DB-object
     if cls
       super(cls)
       self['class']=cls
     else
-      @command={}
-      @status={}
-      @tables={}
+      self[:command]={}
+      self[:status]={}
+      self[:tables]={}
     end
     self['id']=obj
-    @alias={}
+    self[:alias]={}
     doc=XmlDoc.new('odb',obj)
     doc.domain('command').each('alias'){|e0|
-      e0.attr2db(@alias)
+      e0.attr2db(self[:alias])
     }
-    @status[:label]||={}
+    self[:status][:label]||={}
     doc.domain('status').each('title'){|e0|
-      e0.attr2db(@status,'ref')
+      e0.attr2db(self[:status],'ref')
     }
-    @tables.update(SymDb.new(doc))
+    self[:tables].update(SymDb.new(doc))
   rescue SelectID
     raise SelectID,$!.to_s if __FILE__ == $0
-  end
-
-  def to_s
-    super+Verbose.view_struct(@alias,"Alias")
   end
 end
 

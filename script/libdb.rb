@@ -9,16 +9,13 @@ class Db < Hash
     @doc=XmlDoc.new(type,id)
     @v=Verbose.new("#{type}/#{@doc['id']}",2)
     update(@doc)
-    @command={}
-    @status={:label => {'time' => 'TIMESTAMP' }}
-    @tables=SymDb.new(@doc)
-    @v.msg{"Structure:tables #{@tables}"}
+    self[:command]={}
+    self[:status]={:label => {'time' => 'TIMESTAMP' }}
+    self[:tables]=SymDb.new(@doc)
+    @v.msg{"Structure:tables #{self[:tables]}"}
   end
 
   def to_s
-    str=Verbose.view_struct(self,"Root")
-    str << Verbose.view_struct(@command,"Command")
-    str << Verbose.view_struct(@status,"Status")
-    str << Verbose.view_struct(@tables,"SymTable")
+    Verbose.view_struct(self)
   end
 end

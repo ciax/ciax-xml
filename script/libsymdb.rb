@@ -22,7 +22,7 @@ class SymDb < Hash
   end
 
   def to_s
-    Verbose.view_struct(self,"Symbol Table")
+    Verbose.view_struct(self)
   end
 end
 

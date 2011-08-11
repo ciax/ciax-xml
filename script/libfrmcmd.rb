@@ -9,9 +9,9 @@ class FrmCmd
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
-    @fdbc=fdb.frame[:command]
+    @fdbc=fdb[:frame][:command]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
-    @par=Param.new(@fdb.command)
+    @par=Param.new(fdb[:command])
   end
 
   def setcmd(cmd) # return = response select

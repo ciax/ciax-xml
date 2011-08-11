@@ -6,7 +6,7 @@ class ClsCmd
 
   def initialize(cdb)
     @v=Verbose.new("#{cdb['id']}/cmd",2)
-    @cdb=cdb.command
+    @cdb=cdb[:command]
     @par=Param.new(@cdb)
   end
 

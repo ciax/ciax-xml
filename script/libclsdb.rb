@@ -4,26 +4,21 @@ require "librepeat"
 require "libdb"
 
 class ClsDb < Db
-  attr_reader :watch
   def initialize(cls)
     super('cdb',cls)
     @rep=Repeat.new
     init_command
     @v.msg{
-      @command.keys.map{|k| "Structure:command:#{k} #{@command[k]}"}
+      self[:command].keys.map{|k| "Structure:command:#{k} #{self[:command][k]}"}
     }
-    @status[:select]={}
-    @status[:group]=[]
+    self[:status][:select]={}
+    self[:status][:group]=[]
     init_stat(@doc.domain('status'))
-    @status[:group].unshift [['time']]
+    self[:status][:group].unshift [['time']]
     @v.msg{
-      @status.keys.map{|k| "Structure:status:#{k} #{@status[k]}"}
+      self[:status].keys.map{|k| "Structure:status:#{k} #{self[:status][k]}"}
     }
-    @watch=init_watch
-  end
-
-  def to_s
-    super+Verbose.view_struct(@watch,"Watch")
+    self[:watch]=init_watch
   end
 
   private
@@ -37,9 +32,9 @@ class ClsDb < Db
   end
 
   def init_command
-    @command[:select]={}
+    self[:command][:select]={}
     @doc.domain('commands').each{|e0|
-      id=e0.attr2db(@command)
+      id=e0.attr2db(self[:command])
       list=[]
       @rep.each(e0){|e1|
         command=[e1['name']]
@@ -50,7 +45,7 @@ class ClsDb < Db
         }
         list << command.freeze
       }
-      @command[:select][id]=list
+      self[:command][:select][id]=list
       @v.msg{"COMMAND:[#{id}] #{list}"}
     }
     self
@@ -60,15 +55,15 @@ class ClsDb < Db
     @rep.each(e){|e0|
       if e0.name == 'group'
         id=@rep.subst(e0['id'])
-        @status[:group] << [id]
-        @status[:label][id]=@rep.subst(e0['label'])
+        self[:status][:group] << [id]
+        self[:status][:label][id]=@rep.subst(e0['label'])
         init_stat(e0)
       elsif e0.name == 'row'
-        @status[:group] << [] if @status[:group].empty?
-        @status[:group].last << []
+        self[:status][:group] << [] if self[:status][:group].empty?
+        self[:status][:group].last << []
         init_stat(e0)
       else
-        id=e0.attr2db(@status){|v|@rep.format(v)}
+        id=e0.attr2db(self[:status]){|v|@rep.format(v)}
         fields=[]
         e0.each{|e1|
           st={:type => e1.name}
@@ -77,8 +72,8 @@ class ClsDb < Db
           }
           fields << st
         }
-        @status[:select][id]=fields
-        @status[:group].last.last << id
+        self[:status][:select][id]=fields
+        self[:status][:group].last.last << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }

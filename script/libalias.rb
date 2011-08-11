@@ -5,7 +5,7 @@ require "libobjdb"
 class Alias
   def initialize(odb)
     @v=Verbose.new("alias/#{odb['id']}".upcase,6)
-    @odb=odb.alias
+    @odb=odb[:alias]
     @v.add("=== Command List ===")
     @v.add(@odb[:label])
   end

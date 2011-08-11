@@ -7,20 +7,16 @@ class FrmDb < Db
   def initialize(frm)
     super('fdb',frm)
     @rep=Repeat.new
-    @frame={}
+    self[:frame]={}
     domc=@doc.domain('cmdframe')
     domr=@doc.domain('rspframe')
-    @frame[:command]=init_main(domc){|e| init_cmd(e)}
-    @frame[:status]=init_main(domr){|e| init_stat(e)}
-    @v.msg{"Structure:frame:#{@frame}"}
-    init_sel(domc,'command',@command){|e| init_cmd(e)}
-    @v.msg{"Structure:command:#{@command}"}
-    init_sel(domr,'response',@status){|e| init_stat(e)}
-    @v.msg{"Structure:status:#{@status}"}
-  end
-
-  def to_s
-    super+Verbose.view_struct(@frame,"Frame")
+    self[:frame][:command]=init_main(domc){|e| init_cmd(e)}
+    self[:frame][:status]=init_main(domr){|e| init_stat(e)}
+    @v.msg{"Structure:frame:#{self[:frame]}"}
+    init_sel(domc,'command',self[:command]){|e| init_cmd(e)}
+    @v.msg{"Structure:command:#{self[:command]}"}
+    init_sel(domr,'response',self[:status]){|e| init_stat(e)}
+    @v.msg{"Structure:status:#{self[:status]}"}
   end
 
   private
@@ -94,9 +90,9 @@ class FrmDb < Db
       attr['val']=e.text
       if id=attr['assign']
         [:symbol,:label,:arrange].each{|k|
-          @status[k]={} unless @status.key?(k)
+          self[:status][k]={} unless self[:status].key?(k)
           if d=attr.delete(k.to_s)
-            @status[k][id]=d
+            self[:status][k][id]=d
             @v.msg{k.to_s.upcase+":[#{id}] : #{d}"}
           end
         }

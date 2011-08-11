@@ -18,8 +18,7 @@ class Print < Array
     @group.each{|g|
       unless Array === g[0]
         id,*g=g
-        cap=@view['label'][id]
-        next if cap == ''
+        cap=@view['label'][id] || next
         push "***"+color(2,cap)+"***"
       end
       g.each{|a|

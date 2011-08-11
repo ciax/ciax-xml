@@ -17,14 +17,12 @@ class HtmlTbl < Array
   private
   def get_group(group)
     group.each{|g|
-      line =[ "<table><tbody>" ]
       unless Array === g[0]
         id,*g=g
-        cap=@view['label'][id]
-        next if cap == ''
-        line <<  "<tr><th colspan=\"6\">#{cap}</th></tr>"
+        cap=@view['label'][id] || next
       end
-      concat line
+      push "<table><tbody>"
+      push  "<tr><th colspan=\"6\">#{cap}</th></tr>" if cap
       g.each{|a|
         get_element(a)
       }

@@ -10,8 +10,6 @@
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="g0" label="FMOS/IRS1(S10)" />
-      <title ref="g1" label="" />
-      <title ref="g3" label="" />
       <title ref="g2" label="FMOS/IRS2(S11)" />
     </status>
   </object>

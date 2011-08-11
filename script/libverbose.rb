@@ -18,8 +18,9 @@ class Verbose
   def msg(add=0)
     # block takes array (shown by each line)
     # Description of values
-    #   [val] -> taken from  xml (prepared)
+    #   [val] -> taken from  xml (criteria)
     #   <val> -> taken from status (incoming)
+    #   (val) -> calcurated from status
     return unless ENV['VER']
     @ind=@@base
     @@base+=add

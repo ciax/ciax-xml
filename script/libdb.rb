@@ -4,7 +4,6 @@ require "libxmldoc"
 require "libsymdb"
 
 class Db < Hash
-  attr_reader :command,:status,:tables
   def initialize(type,id)
     @doc=XmlDoc.new(type,id)
     @v=Verbose.new("#{type}/#{@doc['id']}",2)

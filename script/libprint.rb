@@ -19,7 +19,7 @@ class Print < Array
       unless Array === g[0]
         id,*g=g
         cap=@view['label'][id] || next
-        push "***"+color(2,cap)+"***"
+        push " ***"+color(2,cap)+"***"
       end
       g.each{|a|
         get_element(a)
@@ -37,7 +37,7 @@ class Print < Array
       da << prt(item,label)
     }
     while da.size > 0
-      push da.shift(col).join(" ")
+      push "  "+da.shift(col).join(" ")
     end
     self
   end

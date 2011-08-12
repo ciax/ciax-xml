@@ -13,7 +13,7 @@ class Server
         line,addr=udp.recvfrom(1024)
         @v.msg{"Recv:#{line} is #{line.class}"}
         begin
-          msg=yield line.chomp
+          msg=yield(/interrupt/ === line ? nil : line.chomp)
         rescue RuntimeError
           msg=$!.to_s
           warn msg

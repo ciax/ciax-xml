@@ -1,12 +1,12 @@
 !id,obj,cls,dev,iodst,host,port
 crt,crt,mel,mel,udp:cart3:5000,ciax,25101
-dsi,dsi,cj2,cj2,udp:cst-i:9600,cxws2,25102
-dso,dso,cj2,cj2,udp:cst-o:9600,cxws2,25103
+dsi,dsi,cj2,cj2,udp:cst-i:9600,ciax,25102
+dso,dso,cj2,cj2,udp:cst-o:9600,ciax,25103
 det,det,srm,srm,tcp:ltc-c:4001,ciax,25104
-dts,dts,oss,oss,tcp:cxws2:9999,ciax,25105
+dts,dts,oss,oss,tcp:ciax:9999,ciax,25105
 #AscPck Relay
-asi,dsi,,,udp:cxws2:25102,cxws2,26102
-aso,dso,,,udp:cxws2:25103,cxws2,26103
+asi,dsi,,,udp:ciax:25102,ciax,26102
+aso,dso,,,udp:ciax:25103,ciax,26103
 #Compressor
 cci,cci,bbe,bbe,tcp:ltc-i:4002,ciax,25105
 cco,cco,bbe,bbe,tcp:ltc-o:4002,ciax,25106

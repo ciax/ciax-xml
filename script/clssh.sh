@@ -15,4 +15,4 @@ setfld $id || _usage_key "(-dcplas)"
 [ "$iodst" ] || _die "No entry in iodst field"
 echo " [$iodst]" >&2
 [ "$dmy" ] && iocmd="frmsim $id" || iocmd="socat - $iodst"
-clsshell ${opt:+"-$opt"} $cls $id "$iocmd"
+clsint ${opt:+"-$opt"} $cls $id "$iocmd"

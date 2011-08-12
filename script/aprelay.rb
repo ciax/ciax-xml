@@ -2,6 +2,7 @@
 require "json"
 require "libiocmd"
 require "libascpck"
+require "libinteract"
 
 id,iocmd,port=ARGV
 
@@ -13,8 +14,13 @@ rescue SelectID
   abort "Usage: aprelay [obj] [iocmd] (port)\n#{$!}"
 end
 
-def session(line)
-  if line.empty?
+Interact.new(port||['>']){|line|
+  case line
+  when nil
+    puts
+    line='interrupt'
+    @ap.issue
+  when ''
     line='stat'
   else
     @ap.issue
@@ -22,20 +28,8 @@ def session(line)
   @io.snd(line)
   time,str=@io.rcv
   begin
-  @stat.update(JSON.load(str))
+    @stat.update(JSON.load(str))
   rescue
   end
   @ap.upd
-end
-
-if port.to_i > 0
-  require "libserver"
-  Server.new(port){|line|
-    session(line)
-  }
-else
-  require "libshell"
-  Shell.new(['>']){|line|
-    session(line)
-  }
-end
+}

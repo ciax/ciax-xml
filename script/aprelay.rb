@@ -1,25 +1,41 @@
 #!/usr/bin/ruby
 require "json"
 require "libiocmd"
-require "libserver"
 require "libascpck"
 
-cls,id,iocmd,port=ARGV
+id,iocmd,port=ARGV
+
 begin
-  stat={}
-  io=IoCmd.new(iocmd)
-  ap=AscPck.new(id,stat)
+  @stat={}
+  @io=IoCmd.new(iocmd)
+  @ap=AscPck.new(id,@stat)
 rescue SelectID
-  abort "Usage: aprelay [cls] [id] [iocmd] [port]\n#{$!}"
+  abort "Usage: aprelay [id] [iocmd] (port)\n#{$!}"
 end
-Server.new(port,["\n",">"]){|line|
+
+def session(line)
   if line.empty?
-    io.snd(line)
-    stat.update(JSON.load(io.rcv))
+    line='stat'
   else
-    io.snd(line)
-    ap.issue
-    io.rcv
+    @ap.issue
   end
-  ap.upd
-}
+  @io.snd(line)
+  time,str=@io.rcv
+  begin
+  @stat.update(JSON.load(str))
+  rescue
+  end
+  @ap.upd
+end
+
+if port.to_i > 0
+  require "libserver"
+  Server.new(port){|line|
+    session(line)
+  }
+else
+  require "libshell"
+  Shell.new(['>']){|line|
+    session(line)
+  }
+end

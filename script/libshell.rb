@@ -2,17 +2,15 @@
 require "json"
 require "readline"
 
-# db needs these methods
-# "prompt","interrupt","quit"
-# Param: db, input filter(proc), output filter(proc)
+# Prompt should be Array
 class Shell
-  def initialize(pary=[])
+  def initialize(prompt=[])
     v=Verbose.new("shell")
     v.add("== Shell Command ==")
     v.add('q'=>"Quit",'D^'=>"Interrupt")
-    v.assert(Array === pary)
+    v.assert(Array === prompt)
     loop {
-      line=Readline.readline(pary.join(''),true)
+      line=Readline.readline(prompt.join(''),true)
       break if /^q/ === line
       begin
         puts yield line

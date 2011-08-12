@@ -17,7 +17,6 @@ class AscPck
         end
       end
     }
-    upd
   end
 
   def issue(s=self)

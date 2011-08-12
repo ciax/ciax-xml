@@ -25,7 +25,7 @@ class ClsSrv < ClsObj
   def session(port=0,pary=nil)
     if port.to_i > 0
       require "libserver"
-      Server.new(port,pary||[]){|line|
+      Server.new(port){|line|
         upd
         yield(line)
       }

@@ -9,6 +9,6 @@ begin
 rescue SelectID
   abort "Usage: clsserver [cls] [id] [iocmd] [port]\n#{$!}"
 end
-cobj.session(port,['>']){|line|
-  cobj.dispatch(line)||cobj.stat
+cobj.session(port){|line|
+  cobj.dispatch(line)||JSON.dump(cobj.stat.to_h)
 }

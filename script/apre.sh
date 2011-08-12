@@ -11,7 +11,7 @@ if [ "$daemon" ] ; then
     aprelay $obj "$iocmd" $port
     client $id
     echo
-    psg -k "$cls $id"
+    psg -k "$iocmd"
 else
     aprelay $obj "$iocmd"
 fi

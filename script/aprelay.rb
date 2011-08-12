@@ -10,7 +10,7 @@ begin
   @io=IoCmd.new(iocmd)
   @ap=AscPck.new(id,@stat)
 rescue SelectID
-  abort "Usage: aprelay [id] [iocmd] (port)\n#{$!}"
+  abort "Usage: aprelay [obj] [iocmd] (port)\n#{$!}"
 end
 
 def session(line)

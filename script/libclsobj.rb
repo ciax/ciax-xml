@@ -51,6 +51,7 @@ class ClsObj
     else
       @buf.send{@cc.setcmd(ssn).cmdset}
     end
+    upd
     "ISSUED"
   rescue SelectID
     @v.list
@@ -83,6 +84,7 @@ class ClsObj
       end
     }
   end
+
   def watch_thread
     Thread.new{
       Thread.pass

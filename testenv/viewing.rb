@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "json"
-require "libviewopt"
+require "libview"
 
 abort "Usage: viewing (-als) (obj) < [status_file]" if STDIN.tty?
 

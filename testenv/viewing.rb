@@ -19,6 +19,6 @@ elsif type=stat['class']
 else
   raise "NO Type ID in View"
 end
-view=ViewOpt.new(db,stat)
-view.opt(opt).upd
+view=View.new(stat)
+view.opt(opt,db).upd
 puts JSON.dump(view)

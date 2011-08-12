@@ -11,11 +11,7 @@ class Stat < Hash
   end
 
   def to_s
-    str=''
-    each{|k,v|
-      str << sprintf(" %-6s : %s\n",k,v)
-    }
-    str
+    Verbose.view_struct(self)
   end
 
   def subst(str)

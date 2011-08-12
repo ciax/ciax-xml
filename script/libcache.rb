@@ -28,8 +28,4 @@ class Cache < Hash
     update(@proc.call)
     save
   end
-
-#  def to_s
-#    Verbose.view_struct(self)
-#  end
 end

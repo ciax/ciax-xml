@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libverbose"
 # Status to View (String with attributes)
 class View < Hash
   def initialize(stat)
@@ -21,29 +22,7 @@ class View < Hash
     self
   end
 
-  # Filterling values by env value of VAL
-  # VAL=a:b:c -> grep "a|b|c"
   def to_s
-    list=[]
-    each{|k,v|
-      case v
-      when Hash
-        list << "#{k.inspect}:"
-        pick=ENV['VAL']||'.'
-        exp=pick.tr(':','|')
-        v.each{|i,h|
-          next unless /#{exp}/ === i
-          list << "  #{i.inspect} : #{h}"
-        }
-      when Array
-        list << "#{k.inspect}:"
-        v.each{|l|
-          list << "  #{l}"
-        }
-      else
-        list << "#{k.inspect} : #{v}"
-      end
-    }
-    list.join("\n")
+    Verbose.view_struct(self)
   end
 end

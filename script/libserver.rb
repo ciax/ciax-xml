@@ -6,6 +6,7 @@ class Server
   def initialize(port)
     @v=Verbose.new("UDPS")
     @v.msg{"Prompt:#{prom.inspect}"}
+    @v.add("interrupt" => "Interrupt")
     UDPSocket.open{ |udp|
       udp.bind("0.0.0.0",port)
       loop {
@@ -14,6 +15,8 @@ class Server
         @v.msg{"Recv:#{line} is #{line.class}"}
         begin
           msg=yield(/interrupt/ === line ? nil : line.chomp)
+        rescue SelectID
+          msg=@v.to_s
         rescue RuntimeError
           msg=$!.to_s
           warn msg

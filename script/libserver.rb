@@ -22,7 +22,7 @@ class Server
           warn msg
         end
         @v.msg{"Send:#{msg},#{prom}"}
-        udp.send(msg.to_s+"\n",0,addr[2],addr[1])
+        udp.send(msg.to_s,0,addr[2],addr[1])
       }
     }
   end

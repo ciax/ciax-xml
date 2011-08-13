@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
+  <object id="crt" label="CART 3" class="mel" client="socat - udp:cart3:5000" port="25101"></object>
+  <object id="dsi" label="IR Stand-by Flange" class="cj2" client="socat - udp:cst-i:9600" port="25102"></object>
+  <object id="dso" label="OPT Stand-by Flange" class="cj2" client="socat - udp:cst-o:9600" port="25103"></object>
+  <object id="det" label="CsEtr Control" class="srm" client="socat - tcp:ltc-c:4001" port="25104"></object>
+  <object id="dts" label="TSC Control" class="oss" client="socat - tcp:cxws2:9999" port="25105"></object>
+</odb>

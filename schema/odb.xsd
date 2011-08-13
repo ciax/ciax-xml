@@ -20,8 +20,8 @@
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
       <xsd:attribute name="class" use="required" type="xsd:NCName" />
-      <xsd:attribute name="client" />
-      <xsd:attribute name="server" />
+      <xsd:attribute name="client" type="xsd:token" />
+      <xsd:attribute name="port" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="class" type="xsd:NCName"></xsd:element>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
-  <object id="cco" label="OPT Helium Compressor Control" class="bbe" client="socat - tcp:ltc-o:4003" server="socat - udp-l:25106,reuseaddr,fork">
+  <object id="cco" label="OPT Helium Compressor Control" class="bbe" client="socat - tcp:ltc-o:4003" port="25106">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/odbc">
       <alias id="upd" label="Update Status" ref="upd" />
       <alias id="f1on" label="FMOS/IRS1(S10)ON" ref="x0on" />

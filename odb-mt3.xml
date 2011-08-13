@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
-  <object id="mt3" label="MOIRCS Pressure Pump" class="tpg" client="socat - tcp:celaeno:4011" server="socat - udp-l:24111,reuseaddr,fork">
+  <object id="mt3" label="MOIRCS Pressure Pump" class="tpg" client="socat - tcp:celaeno:4011" port="24111">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="st1" label="Turbo Pump Stat" />
       <title ref="ch1" label="Turbo Pump (Torr)" />

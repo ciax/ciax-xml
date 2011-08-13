@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
-  <object id="mt2" label="MOIRCS Pressure Main" class="tpg" client="socat - tcp:celaeno:4010" server="socat - udp-l:24110,reuseaddr,fork">
+  <object id="mt2" label="MOIRCS Pressure Main" class="tpg" client="socat - tcp:celaeno:4010" port="24110">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="st1" label="Throat Stat" />
       <title ref="ch1" label="Throat (Torr)" />

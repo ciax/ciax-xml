@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <symbol id="oma">
+    <table id="pres" type="range">
+      <case class="alarm" msg="HH">110:</case>
+      <case class="warn" msg="H">105:&lt;110</case>
+      <case class="normal" msg="M">95:&lt;105</case>
+      <case class="warn" msg="L">90:&lt;95</case>
+      <case class="alarm" msg="LL">:&lt;90</case>
+    </table>
+  </symbol>
+</sdb>

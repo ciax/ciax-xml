@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <symbol id="tpg">
+    <table id="stat" type="string">
+      <case class="hide" msg="Measurment data okay">0</case>
+      <case class="warn" msg="Underrange">1</case>
+      <case class="warn" msg="Overrange">2</case>
+      <case class="warn" msg="Sensor error">3</case>
+      <case class="warn" msg="Sensor off">4</case>
+      <case class="warn" msg="No sensor">5</case>
+      <case class="warn" msg="Identification error">6</case>
+    </table>
+  </symbol>
+</sdb>

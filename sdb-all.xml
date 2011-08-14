@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <symbol id="all">
+  <symbol id="all" label="Shared">
     <table id="iid_tsc" label="Instrument ID by TSC" type="string">
       <case class="warn" msg="NONE">0</case>
       <case class="normal" msg="IRCS">1</case>

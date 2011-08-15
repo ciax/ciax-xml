@@ -3,11 +3,12 @@
 [[ "$1" == -* ]] && { opt=$1;shift; }
 getstat(){
     cmd="$*"
-    echo "${C3}process for $cmd$C0"
-    logline $id $cmd | if [ "$ver" ]
-    then VER=$ver frmstat $dev
-    else frmstat $dev
-    fi | merging $output
+    echo "${C3}process $id for $cmd$C0"
+    logline $id $cmd | if [ "$ver" ] ; then
+        VER=$ver frmupd $id
+    else
+        frmupd $id
+    fi
 }
 
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2|sort -u`};shift

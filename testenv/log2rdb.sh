@@ -12,6 +12,6 @@ egrep -h "rcv:$cmd" $input | while read -r line ;do
     set - $line
     if echo "$line" | frmupd $id ; then
         echo -n "${2#*:} : "
-        <$field clsstat $cls | logsql $id | $sql >/dev/null 2>&1 || echo "SKIP"
+        <$field clsstat $cls | logsql $id | $sql >/dev/null 2>&1 && echo "OK" || echo "SKIP"
     fi
 done

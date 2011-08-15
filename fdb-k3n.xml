@@ -39,28 +39,4 @@
       <field assign="cc" decode="unsigned" label="BCC" length="1" />
     </rspframe>
   </frame>
-  <symbol xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-    <table id="rcode" label="Response Code" type="string">
-      <case class="normal" msg="OK">0000</case>
-      <case class="alarm" msg="Cmd Length Over">1001</case>
-      <case class="alarm" msg="Cmd Length Short">1002</case>
-      <case class="alarm" msg="Parameter Error">1100</case>
-      <case class="alarm" msg="Area Error">1101</case>
-      <case class="alarm" msg="Start Address Error">1103</case>
-      <case class="alarm" msg="Action Error">2203</case>
-      <case class="alarm" msg="ResponseCode Error" />
-    </table>
-    <table id="ecode" label="ExitCode" type="string">
-      <case class="normal" msg="OK">00</case>
-      <case class="alarm" msg="CMD Error">0F</case>
-      <case class="alarm" msg="Parity Error">10</case>
-      <case class="alarm" msg="Fleming Error">11</case>
-      <case class="alarm" msg="Over Run Error">12</case>
-      <case class="alarm" msg="BCC Error">13</case>
-      <case class="alarm" msg="Format Error">14</case>
-      <case class="alarm" msg="Sub Address Error">16</case>
-      <case class="alarm" msg="Frame Length Error">18</case>
-      <case class="alarm" msg="Unknown" />
-    </table>
-  </symbol>
 </fdb>

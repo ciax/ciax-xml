@@ -3,11 +3,10 @@ require "libverbose"
 require "libxmldoc"
 
 class SymDb < Hash
-  def initialize(doc=nil,db=nil)
-    doc ||= XmlDoc.new('sdb','all')
-    update(db) if db
+  def initialize(type='all')
     @v=Verbose.new("sdb",6)
-    doc.symbol.each{|e1|
+    doc=XmlDoc.new('sdb',type)
+    doc.top.each{|e1|
       row=e1.to_h
       id=row.delete('id')
       rc=row[:record]={}
@@ -19,6 +18,8 @@ class SymDb < Hash
       @v.msg{"Symbol Table:#{id} : #{row}"}
     }
     self
+  rescue SelectID
+    abort "USAGE: #{$0} [id]\n#{$!}" if __FILE__ == $0
   end
 
   def to_s
@@ -27,6 +28,5 @@ class SymDb < Hash
 end
 
 if __FILE__ == $0
-  db=SymDb.new() rescue ("USAGE: #{$0} [id]\n#{$!}")
-  puts db
+  puts SymDb.new(ARGV.shift)
 end

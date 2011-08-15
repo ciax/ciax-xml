@@ -24,17 +24,12 @@ class ObjDb < ClsDb
     doc.domain('status').each('title'){|e0|
       e0.attr2db(self[:status],'ref')
     }
-    self[:tables].update(SymDb.new(doc))
+    self[:tables].update(SymDb.new(obj))
   rescue SelectID
-    raise SelectID,$!.to_s if __FILE__ == $0
+    abort ("USAGE: #{$0} [id] [cls]\n#{$!}") if __FILE__ == $0
   end
 end
 
 if __FILE__ == $0
-  begin
-    db=ObjDb.new(ARGV.shift,ARGV.shift)
-  rescue SelectID
-    abort ("USAGE: #{$0} [id] [cls]\n#{$!}")
-  end
-  puts db
+  puts ObjDb.new(ARGV.shift,ARGV.shift)
 end

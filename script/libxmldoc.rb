@@ -3,28 +3,24 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  attr_reader :symbol
-  def initialize(dbid = nil,type = nil)
-    @v=Verbose.new("Doc/#{dbid}",4)
-    @symbol={}
+  attr_reader :top
+  def initialize(dbname = nil,id = nil)
+    @v=Verbose.new("Doc/#{dbname}",4)
     @domain={}
-    if type && ! readxml(dbid,type){|e|
-        case e.name
-        when 'symbol'
-          @symbol=e
-        else
-          update(e.to_h)
-          e.each{|e1|
-            @domain[e1.name]=e1 unless e.ns == e1.ns
-          }
-          @v.msg{"Domain registerd:#{@domain.keys}"}
-        end
-      }.empty?
-    else
-      list={}
-      readxml(dbid){|e| list[e['id']]=e['label'] }
-      raise SelectID,@v.add(list).to_s
-    end
+    raise SelectID unless id
+    readxml(dbname,id){|e|
+      @top=e
+      update(e.to_h)
+      e.each{|e1|
+        @domain[e1.name]=e1 unless e.ns == e1.ns
+      }
+      @v.msg{"Domain registerd:#{@domain.keys}"}
+    }
+    raise SelectID unless @top
+  rescue SelectID
+    list={}
+    readxml(dbname){|e| list[e['id']]=e['label'] }
+    raise SelectID,@v.add(list).to_s
   end
 
   def domain(domain)
@@ -36,11 +32,12 @@ class XmlDoc < Hash
   end
 
   private
-  def readxml(dbid,type='*')
-    pre="#{ENV['XMLPATH']}/#{dbid}"
-    path="#{pre}-#{type}.xml"
+  def readxml(dbname,id=nil)
+    pre="#{ENV['XMLPATH']}/#{dbname}"
+    path="#{pre}-*.xml"
+    xpath=id ? "*[@id='#{id}']" : nil
     Dir.glob(path).each{|p|
-      Xml.new(p).each{|e| # Second level
+      Xml.new(p).each(xpath){|e| # Second level
         yield e
       }
     }

@@ -125,6 +125,10 @@ class ClsDb < Db
 end
 
 if __FILE__ == $0
-  db=ClsDb.new(ARGV.shift) rescue ("USAGE: #{$0} [id]\n#{$!}")
+  begin
+    db=ClsDb.new(ARGV.shift)
+  rescue SelectID
+    abort "USAGE: #{$0} [id]\n#{$!}"
+  end
   puts db
 end

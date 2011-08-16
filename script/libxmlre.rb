@@ -35,7 +35,7 @@ class Xml
   end
 
   def each(xpath=nil)
-    xpath="//"+xpath if xpath
+    xpath=".//"+xpath if xpath
     @e.each_element(xpath){|e|
       @v.msg(1){"<#{e.name}>"}
       yield Xml.new(e)

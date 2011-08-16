@@ -4,7 +4,7 @@ require "librerange"
 
 class Symbols
   def initialize(ref)
-    raise "Sym have to be given Db" unless ref.kind_of?(Db)
+    raise "Sym have to be given Hash" unless ref.kind_of?(Hash)
     @v=Verbose.new("Symbol",6)
     @table=ref[:tables]
     @ref=ref[:status][:symbol]||{}

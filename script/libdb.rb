@@ -10,7 +10,7 @@ class Db < Hash
     update(@doc)
     self[:command]={}
     self[:status]={:label => {'time' => 'TIMESTAMP' }}
-    self[:tables]=SymDb.new(id)
+    self[:tables]=Hash[SymDb.new(id)]
     @v.msg{"Structure:tables #{self[:tables]}"}
   end
 

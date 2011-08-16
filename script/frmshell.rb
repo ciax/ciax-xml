@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libcache"
 require "libiostat"
 require "libiocmd"
 require "libfrmdb"

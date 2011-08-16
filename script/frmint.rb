@@ -16,5 +16,6 @@ rescue SelectID
   abort "Usage: frmshell [dev] [id] [iocmd] (port)\n#{$!}"
 end
 Interact.new(port||[dev,'>']){|line|
-  fobj.request(line)||(port ? field.to_j : field)
+  (line && fobj.request(line.split(' ')))||\
+  (port ? field.to_j : field)
 }

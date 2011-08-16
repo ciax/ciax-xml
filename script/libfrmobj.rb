@@ -19,10 +19,9 @@ class FrmObj
     @v.add('save'=>"Save Field [key,key...] (tag)")
   end
 
-  def request(line) #Should be array
-    return unless line && !line.empty?
+  def request(cmd) #Should be array
+    return if cmd.empty?
     @v.msg{"Receive #{line}"}
-    cmd=line.split(' ')
     case cmd[0]
     when 'set'
       set(cmd[1..-1]).inspect

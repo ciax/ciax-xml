@@ -3,6 +3,7 @@
 objects=${1:-`lookup all id`};shift
 for id in $objects; do
     setfld $id || _usage_key
+    [ "$cls" ] || continue
     echo "$C2#### $id ####$C0"
     if [ "$1" ] ; then
         al=$( aliasing $obj $* ) && clscmd $cls $al

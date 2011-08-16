@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libxmlre"
+require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash

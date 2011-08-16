@@ -3,6 +3,7 @@
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
 for id in $devices; do
     setfld $id || _usage_key
+    [ "$dev" ] || continue
     echo "$C2#### $dev($id) ####$C0"
     input="$HOME/.var/field_$id.json"
     if [ "$1" ] ; then

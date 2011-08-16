@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "json"
 require "libview"
+require "libcache"
 
 abort "Usage: viewing (-als) (obj) < [status_file]" if STDIN.tty?
 
@@ -12,10 +13,10 @@ while STDIN.gets
   stat=JSON.load($_)
   if type=stat['frame']
     require "libfrmdb"
-    db=FrmDb.new(type)
+    db=Cache.new("fdb_#{type}"){FrmDb.new(type)}
   elsif type=stat['class']
     require "libobjdb"
-    db=ObjDb.new(obj,type)
+    db=Cache.new("odb_#{obj}"){ObjDb.new(obj,type)}
   else
     raise "NO Type ID in View"
   end

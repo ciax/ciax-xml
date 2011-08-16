@@ -72,6 +72,6 @@ class FrmObj
     @field.load(tag)
     "[#{tag}] loaded"
   rescue SelectID
-    raise "Usage: load (tag)\n #{$!}"
+    raise UserError,"Usage: load (tag)\n #{$!}"
   end
 end

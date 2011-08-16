@@ -17,6 +17,7 @@ class ObjDb < ClsDb
     self['id']=obj
     self[:alias]={}
     doc=XmlDoc.new('odb',obj)
+    update(doc)
     doc.domain('command').each('alias'){|e0|
       e0.attr2db(self[:alias])
     }

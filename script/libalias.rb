@@ -9,20 +9,16 @@ class Alias
     @v.add("=== Command List ===")
     @v.add(@odb[:label])
   end
-  
-  public
-  def alias(ssn)
-    raise unless Array === ssn
-    @v.msg{"Command:#{ssn}"}
-    return ssn if @odb.empty?
-    id=ssn.first
-    if (ref=@odb[:ref][id]) && ! ssn.empty?
-      @v.msg{"Before:#{ssn}(#{@odb[:label][id]})"}
-      ssn=ssn[1..-1].unshift(ref)
-      @v.msg{"After:#{ref}/#{ssn}"}
-    else
-      @v.list
-    end
-    ssn
+
+  def alias(str)
+    @v.list if str.empty?
+    @v.msg{"Command:#{str}"}
+    return str if @odb.empty?
+    rel=str.dup
+    @odb[:ref].each{|k,v|
+      rel.sub!(/^#{k}\b/,v) && break
+    } && @v.list
+    @v.msg{"Subst:#{str}->#{rel}"}
+    rel
   end
 end

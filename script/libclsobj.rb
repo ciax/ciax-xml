@@ -27,23 +27,13 @@ class ClsObj
     upd
   end
 
-  def upd
-    i=0
-    upd_elem(@watch.alive?,'wach',i+=1,'@')
-    upd_elem(@event.active?,'evet',i+=1,'&')
-    upd_elem(@buf.issue?,'isu',i+=1,'*')
-    upd_elem(@buf.wait?,'wait',i+=1,'#')
-    upd_elem(@main.alive?,nil,i+=1,'>','X')
-    self
-  end
-
   def dispatch(line)
     upd
     return interrupt unless line
     return if /^(stat|)$/ === line
     return "Blocking" if @event.blocking?(line)
+    line=yield line if defined? yield
     ssn=line.split(' ')
-    ssn=yield ssn if defined? yield
     case ssn[0]
     when 'sleep'
       @buf.wait_for(ssn[0].to_i){}
@@ -56,6 +46,16 @@ class ClsObj
     "ISSUED"
   rescue SelectID
     @v.list
+  end
+
+  def upd
+    i=0
+    upd_elem(@watch.alive?,'wach',i+=1,'@')
+    upd_elem(@event.active?,'evet',i+=1,'&')
+    upd_elem(@buf.issue?,'isu',i+=1,'*')
+    upd_elem(@buf.wait?,'wait',i+=1,'#')
+    upd_elem(@main.alive?,nil,i+=1,'>','X')
+    self
   end
 
   def interrupt

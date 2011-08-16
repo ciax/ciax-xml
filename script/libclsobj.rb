@@ -38,6 +38,7 @@ class ClsObj
   end
 
   def dispatch(line)
+    upd
     return interrupt unless line
     return if /^(stat|)$/ === line
     return "Blocking" if @event.blocking?(line)

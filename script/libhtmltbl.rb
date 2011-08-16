@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "json"
-require "libviewopt"
+require "libview"
 
 class HtmlTbl < Array
   def initialize(odb)

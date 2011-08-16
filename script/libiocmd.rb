@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libiofile"
 
 class IoCmd
   VarDir=""

@@ -3,10 +3,14 @@ require "libverbose"
 require "libiofile"
 
 class IoCmd
-  def initialize(iocmd,logid=nil,wait=0,timeout=nil)
+  VarDir=""
+  def initialize(iocmd,id=nil,wait=0,timeout=nil)
     abort " No IO command" unless iocmd
     @iocmd=iocmd.split(' ')
-    @logging=IoFile.new("device_#{logid}") if logid && ! ENV.key?('NOLOG')
+    if id && ! ENV.key?('NOLOG')
+      @logfile=ENV['HOME']+"/.var/device_#{id}_"
+      @logfile << Time.now.year.to_s+".log"
+    end
     @f=IO.popen(@iocmd,'r+')
     @v=Verbose.new('IOCMD',1)
     @v.msg{iocmd}
@@ -17,7 +21,7 @@ class IoCmd
 
   def snd(str,id=nil)
     return unless str && str != ''
-    @logging.log_frame(str,id) if @logging
+    log_frame(str,id)
     int=1
     begin
       @f.syswrite(str)
@@ -41,10 +45,22 @@ class IoCmd
       sleep int*=2
       retry
     end
-    time=Time.now
     @v.msg{"Recv #{str.dump}"}
-    @logging.log_frame(str,id,time) if @logging
+    time=Time.now
+    log_frame(str,id,time)
     sleep @wait
     [time,str]
   end
+
+  private
+  def log_frame(frame,id=nil,time=Time.now)
+    return unless @logfile
+    line=["%.3f" % time.to_f,id,frame.dump].compact.join("\t")
+    open(@logfile,'a') {|f|
+      @v.msg{"Frame Logging for [#{id}]"}
+      f << line+"\n"
+    }
+    frame
+  end
+
 end

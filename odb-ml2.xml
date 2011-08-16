@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
-  <object id="ml1" label="MOIRCS Temperature 1" class="lk8" client="socat - tcp:celaeno:4005" port="24105">
+  <object id="ml2" label="MOIRCS Temperature 1" class="lk8" client="socat - tcp:celaeno:4005" port="24105">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="ch0" label="Robohand" />
       <title ref="ch1" label="CollBench" />

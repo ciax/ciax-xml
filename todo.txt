@@ -1,15 +1,14 @@
 ***DEBUG
-mcr:dsi,dso/ exe finish immediately after command issue [4/17,6/9,6/19]
+dso:fix jack bolt stack after interrupt(8/15)
+aso:need reset function for executing flag
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]
   -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
-dts:status update works but appears incorrect status [4/17
-crt:clssh crt gives error
 
 ***UPDATE
-libdb: chache function
 crt: jack table edit interface (sql+web)
 client: add view function
 status_??: update with clsobj
+objdb: using objdb to get iocmd instead of DB-object
 
 ***LACK FUNCTION
 ascpck: exe should be reset
@@ -47,6 +46,10 @@ mcr: cart run1 at tag 9 with comics gives error with "No such key 'n'" [4/17]
    --> ion symbol changed (0=OFF f=ON DEF=N/A -> DEF=ON) [4/21] 
    ---> change both crt and dct (was crt only) [6/9]
 more variation:fdb//values/int@decode (sined/unsined, hexstr16,...) [6/13]
+libdb: chache function[8/15]
+mcr:dsi,dso/ exe finish immediately after command issue [4/17,6/9,6/19]
+crt:clssh crt gives error
+dts:status update works but appears incorrect status [4/17
 
 ***DISCARD
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain

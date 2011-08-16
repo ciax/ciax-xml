@@ -1,15 +1,15 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
-id=${1%*=};shift
-setfld $id || _usage_key
 src=$HOME/ciax-xml/script
 dir=$HOME/.var/json
-file=$dir/$id.html
-sdb=symbol_$obj.js
-jsdb $obj $cls > $dir/$sdb
-ln -sf $src/symconv.js $dir/
-ln -sf $src/ciax-xml.css $dir/
-cat > $file <<EOF
+for id; do
+    setfld $id || _usage_key
+    file=$dir/$id.html
+    sdb=symbol_$obj.js
+    jsdb $obj $cls > $dir/$sdb
+    ln -sf $src/symconv.js $dir/
+    ln -sf $src/ciax-xml.css $dir/
+    cat > $file <<EOF
 <html>
 <head>
 <title>CIAX-XML</title>
@@ -24,3 +24,5 @@ cat >> $file <<EOF
 </body>
 </html>
 EOF
+echo "$file created"
+done

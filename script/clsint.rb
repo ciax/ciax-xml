@@ -40,5 +40,5 @@ prt=Print.new(view)
 
 Interact.new(port||cobj.prompt){|line|
   cobj.dispatch(line){|cmd| al.alias(cmd)}||\
-  (port ? JSON.dump(stat.to_h) : prt.upd)
+  (port ? stat.to_j : prt.upd)
 }

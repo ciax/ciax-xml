@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "json"
+require "libstat"
 require "libiocmd"
 require "libascpck"
 require "libinteract"
@@ -7,7 +7,7 @@ require "libinteract"
 id,iocmd,port=ARGV
 
 begin
-  @stat={}
+  @stat=Stat.new
   @io=IoCmd.new(iocmd)
   @ap=AscPck.new(id,@stat)
 rescue SelectID
@@ -28,7 +28,7 @@ Interact.new(port||['>']){|line|
   @io.snd(line)
   time,str=@io.rcv
   begin
-    @stat.update(JSON.load(str))
+    @stat.update_j(str)
   rescue
   end
   @ap.upd

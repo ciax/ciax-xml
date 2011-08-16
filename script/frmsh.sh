@@ -6,7 +6,6 @@ setfld $id || _usage_key "(-dlgs)"
 [ "$iodst" ] || _die "No entry in iodst field"
 echo " [$iodst]" >&2
 iocmd="socat - $iodst"
-output="h2s"
 case "$opt" in
     -d)
         fh="$HOME/.var/field_"
@@ -15,8 +14,6 @@ case "$opt" in
         id="dmy-$id"
         cp $fh$org.json $fh$id.json
         ;;
-    -*) output="viewing $opt $obj|v2s"
-        ;;
     *) ;;
 esac
-frmshell $dev $id "$iocmd" "$output"
+frmint $dev $id "$iocmd"

@@ -10,7 +10,7 @@ class Xml
     when String
       test(?r,f) || raise(SelectID)
       @e=Document.new(open(f)).root
-      @v.msg{@e.namespace}
+      @v.msg{ns}
     when Element
       @e=f
     when nil
@@ -21,7 +21,7 @@ class Xml
   end
 
   def ns
-    @e.namespaces
+    @e.namespace
   end
 
   def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})

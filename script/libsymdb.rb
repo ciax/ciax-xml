@@ -3,8 +3,12 @@ require "libverbose"
 require "libxmldoc"
 
 class SymDb < Hash
-  def initialize(type='all')
+  def initialize
     @v=Verbose.new("sdb",6)
+    add('all')
+  end
+
+  def add(type)
     doc=XmlDoc.new('sdb',type)
     doc.top.each{|e1|
       row=e1.to_h
@@ -28,5 +32,5 @@ class SymDb < Hash
 end
 
 if __FILE__ == $0
-  puts SymDb.new(ARGV.shift)
+  puts SymDb.new.add(ARGV.shift)
 end

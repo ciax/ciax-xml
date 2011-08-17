@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libverbose"
 require "libxmldoc"
-require "libsymdb"
 
 class Db < Hash
   def initialize(type,id)
@@ -10,8 +9,6 @@ class Db < Hash
     update(@doc)
     self[:command]={}
     self[:status]={:label => {'time' => 'TIMESTAMP' }}
-    self[:tables]=Hash[SymDb.new(id)]
-    @v.msg{"Structure:tables #{self[:tables]}"}
   end
 
   def to_s

@@ -54,7 +54,11 @@ class View < Hash
     if @db
       require "libsymdb"
       require "libsymbols"
-      @db[:tables].update(SymDb.new)
+      table=SymDb.new
+      ['id','frame','class'].each{|k|
+        table.add(self[k]) if key?(k)
+      }
+      @db[:tables]=table
       @sdb=Symbols.new(@db)
     end
     self

@@ -2,7 +2,6 @@
 require "libverbose"
 require "libxmldoc"
 require "libclsdb"
-require "libsymdb"
 
 class ObjDb < ClsDb
   def initialize(obj,cls=nil) # cls can be gotten from odb, otherwise DB-object
@@ -12,7 +11,6 @@ class ObjDb < ClsDb
     else
       self[:command]={}
       self[:status]={}
-      self[:tables]={}
     end
     self['id']=obj
     self[:alias]={}
@@ -25,7 +23,6 @@ class ObjDb < ClsDb
     doc.domain('status').each('title'){|e0|
       e0.attr2db(self[:status],'ref')
     }
-    self[:tables].update(SymDb.new(obj))
   rescue SelectID
     abort ("USAGE: #{$0} [id] [cls]\n#{$!}") if __FILE__ == $0
   end

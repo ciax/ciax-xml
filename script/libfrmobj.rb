@@ -21,7 +21,7 @@ class FrmObj
 
   def request(cmd) #Should be array
     return if cmd.empty?
-    @v.msg{"Receive #{line}"}
+    @v.msg{"Receive #{cmd}"}
     case cmd[0]
     when 'set'
       set(cmd[1..-1]).inspect

@@ -8,27 +8,29 @@ class Watch < Array
 
   public
   def to_s
-    join("\n")
+    Verbose.view_struct(self,Watch)
   end
 
   def active?
-    any?{|bg| bg[:var][:active] }
+    !get_active(:var).empty?
   end
 
   def block_pattern
-    ary=[]
-    each_active{|bg|
-      ary << bg[:blocking]
-    }
-    ary.empty? ? false : ary.compact.join('|')
+    get_active(:blocking).join('|')
   end
 
   def blocking?(cmd)
-    each_active{|bg|
-      pattern=bg[:blocking] || next
-      return true if /#{pattern}/ === cmd
+    get_active(:blocking).any?{|ptn|
+      /#{ptn}/ === cmd
     }
-    false
+  end
+
+  def issue(key=:command)
+    get_active(key).uniq
+  end
+
+  def interrupt
+    issue(:interrupt)
   end
 
   def update
@@ -53,25 +55,11 @@ class Watch < Array
     self
   end
 
-  def issue(key=:command)
-    ary=[]
-    each_active{|bg|
-      ary << bg[key]
-    }
-    ary.compact.uniq.freeze
-  end
-
-  def interrupt
-    issue(:interrupt)
-  end
-
   private
-  def each_active
-    each{|bg|
-      if bg[:var][:active]
-        yield bg
-      end
-    }
+  def get_active(key)
+    map{|bg|
+      bg[key] if bg[:var][:active]
+    }.compact
   end
 
   def rec_cond(e,var=nil)

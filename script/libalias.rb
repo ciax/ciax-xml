@@ -11,9 +11,9 @@ class Alias
   end
 
   def alias(str)
+    return str if @odb.empty?
     @v.list if str.empty?
     @v.msg{"Command:#{str}"}
-    return str if @odb.empty?
     rel=str.dup
     @odb[:ref].each{|k,v|
       rel.sub!(/^#{k}\b/,v) && break

@@ -15,12 +15,18 @@ class Watch < Array
     any?{|bg| bg[:var][:active] }
   end
 
+  def block_pattern
+    ary=[]
+    each_active{|bg|
+      ary << bg[:blocking]
+    }
+    ary.empty? ? false : ary.compact.join('|')
+  end
+
   def blocking?(cmd)
-    each{|bg|
+    each_active{|bg|
       pattern=bg[:blocking] || next
-      if bg[:var][:active]
-        return true if /#{pattern}/ === cmd
-      end
+      return true if /#{pattern}/ === cmd
     }
     false
   end
@@ -49,11 +55,8 @@ class Watch < Array
 
   def issue(key=:command)
     ary=[]
-    each{|bg|
-      if bg[:var][:active]
-        ary=ary+bg[key]
-      else
-      end
+    each_active{|bg|
+      ary << bg[key]
     }
     ary.compact.uniq.freeze
   end
@@ -63,6 +66,14 @@ class Watch < Array
   end
 
   private
+  def each_active
+    each{|bg|
+      if bg[:var][:active]
+        yield bg
+      end
+    }
+  end
+
   def rec_cond(e,var=nil)
     if e.key?(:ref)
       condition(e,var)

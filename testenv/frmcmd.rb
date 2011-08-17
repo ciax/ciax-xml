@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "json"
 require "libstat"
 require "libfrmcmd"
 require "libfrmdb"
@@ -12,7 +11,7 @@ begin
   c=FrmCmd.new(fdb,st)
   c.setcmd(cmd)
   if ! STDIN.tty? && str=STDIN.gets(nil)
-    st.update(JSON.load(str))
+    st.update_j(str)
   end
   print c.getframe
 rescue UserError

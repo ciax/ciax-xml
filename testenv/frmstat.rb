@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "json"
+require "libstat"
 require "libfrmrsp"
 require "libfrmdb"
 require "libcache"
@@ -11,7 +11,7 @@ ARGV.clear
 
 begin
   fdb=Cache.new("fdb_#{dev}"){FrmDb.new(dev)}
-  field={}
+  field=Stat.new
   r=FrmRsp.new(fdb,field)
   str=gets(nil) || exit
   ary=str.split("\t")
@@ -19,7 +19,7 @@ begin
   stm=ary.shift.split(':')
   abort ("Logline:Not response") unless /rcv/ === stm.shift
   r.setrsp(stm){[time,eval(ary.shift)]}
-  puts JSON.dump(field)
+  puts field.to_j
 rescue RuntimeError
   if opt.include?('q')
     exit 1

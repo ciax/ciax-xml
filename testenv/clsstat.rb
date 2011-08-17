@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "json"
 require "libcache"
 require "libclsdb"
 require "libclsstat"
@@ -11,9 +10,9 @@ ARGV.clear
 begin
   cdb=Cache.new("cdb_#{cls}"){ClsDb.new(cls)}
   str=gets(nil) || exit
-  field=Stat.new(JSON.load(str))
-  cs=ClsStat.new(cdb,field)
-  print JSON.dump cs.stat
+  field=Stat.new.update_j(str)
+  cs=ClsStat.new(cdb,field,Stat.new)
+  print cs.stat.to_j
 rescue RuntimeError
   abort "Usage: clsstat [class] < field_file\n#{$!}"
 end

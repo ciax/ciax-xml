@@ -1,14 +1,13 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
-src=$HOME/ciax-xml/script
+src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json
 for id; do
     setfld $id || _usage_key
     file=$dir/$id.html
     sdb=symbol_$obj.js
     jsdb $obj $cls > $dir/$sdb
-    ln -sf $src/symconv.js $dir/
-    ln -sf $src/ciax-xml.css $dir/
+    ln -sf $src/* $dir/
     cat > $file <<EOF
 <html>
 <head>

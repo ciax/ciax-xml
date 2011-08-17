@@ -2,9 +2,9 @@
 require 'json'
 require 'libverbose'
 class Stat < Hash
-  def initialize(hash={})
+  def initialize(str=nil)
     @v=Verbose.new("stat",5)
-    update(hash)
+    update_j(str) if str
   end
 
   def to_j

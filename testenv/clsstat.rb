@@ -10,7 +10,7 @@ ARGV.clear
 begin
   cdb=Cache.new("cdb_#{cls}"){ClsDb.new(cls)}
   str=gets(nil) || exit
-  field=Stat.new.update_j(str)
+  field=Stat.new(str)
   cs=ClsStat.new(cdb,field,Stat.new)
   print cs.stat.to_j
 rescue RuntimeError

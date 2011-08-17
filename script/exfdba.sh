@@ -34,6 +34,6 @@ for obj in ${*:-mma mmc mix crt ml1 dts} ; do
         *)
             exfdbs - $obj;;
     esac
-    read -n 1
+    read -t 0 && break
 done
 

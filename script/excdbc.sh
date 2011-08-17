@@ -13,5 +13,5 @@ for id in $objects; do
             al=$( aliasing $obj $cmd 1 0 ) &&  clscmd $cls $al
         done < <( { aliasing $obj && clscmd $cls; } 2>&1 |grep " : " )
     fi
-    read
+    read -t 0 && break
 done

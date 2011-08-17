@@ -30,4 +30,5 @@ for id in $devices; do
         done
     fi
     < $output viewing $opt | v2s
+    read -t 0 && break
 done

@@ -14,4 +14,5 @@ for id in $devices; do
             echo -n "   $C3$cmd$C0 ";frmcmd $dev $cmd 1 0 < $input| visi
         done
     fi
+    read -t 0 && break
 done

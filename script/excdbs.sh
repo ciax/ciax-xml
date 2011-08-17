@@ -13,4 +13,5 @@ for id in $devices; do
     else
         stprint
     fi
+    read -t 0 && break
 done

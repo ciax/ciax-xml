@@ -8,12 +8,12 @@ class ClsStat
     @field=field
     @stat=stat
     @cdbs=cdb[:status][:select]
-    cls=cdb['id']
+    cls=cdb['class']||cdb['id']
     @stat.update({'time' => Time.now.to_s,'class' => cls})
     @v=Verbose.new("#{cls}/stat",2)
     upd
   end
-  
+
   public
   def upd
     @cdbs.each{|id,fields|
@@ -27,7 +27,7 @@ class ClsStat
     @stat['time']=Time.at(@field['time'].to_f).to_s
     self
   end
-  
+
   private
   def get_val(fields)
     str=''

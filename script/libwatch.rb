@@ -57,9 +57,7 @@ class Watch < Array
 
   private
   def get_active(key)
-    map{|bg|
-      bg[key] if bg[:var][:active]
-    }.compact
+    select{|e| e[:var][:active]}.map{|e| e[key]}.compact
   end
 
   def rec_cond(e,var=nil)

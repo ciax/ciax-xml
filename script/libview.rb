@@ -52,13 +52,7 @@ class View < Hash
 
   def init_sym
     if @db
-      require "libsymdb"
       require "libsymbols"
-      table=SymDb.new
-      ['id','frame','class'].each{|k|
-        table.add(self[k]) if key?(k)
-      }
-      @db[:tables]=table
       @sdb=Symbols.new(@db)
     end
     self

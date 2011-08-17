@@ -1,13 +1,20 @@
 #!/usr/bin/ruby
 require "libverbose"
+require "libxmldoc"
 require "librerange"
 
-class Symbols
-  def initialize(ref)
+class Symbols < Hash
+  def initialize(ref={})
     raise "Sym have to be given Hash" unless ref.kind_of?(Hash)
     @v=Verbose.new("Symbol",6)
-    @table=ref[:tables]
-    @ref=ref[:status][:symbol]||{}
+    if ref.key?(:status) && ref[:status].key?(:symbol)
+      @ref=ref[:status][:symbol]
+    else
+      @ref={}
+    end
+    ids=['id','obj','class','frame'].map{|i| ref[i]}.compact.uniq
+    ids << 'all'
+    ids.each{|k| add(k)}
   end
 
   def convert(view)
@@ -16,8 +23,8 @@ class Symbols
       next if val == ''
       next unless sid=@ref[k]
       @v.msg{"ID=#{k},ref=#{sid}"}
-      tbl=@table[sid][:record]
-      case @table[sid]['type']
+      tbl=self[sid][:record]
+      case self[sid]['type']
       when 'range'
         tbl.each{|match,hash|
           next unless ReRange.new(match) == val
@@ -41,4 +48,31 @@ class Symbols
     }
     self
   end
+
+  def to_s
+    Verbose.view_struct(self)
+  end
+
+  private
+  def add(type)
+    doc=XmlDoc.new('sdb',type)
+    doc.top.each{|e1|
+      row=e1.to_h
+      id=row.delete('id')
+      rc=row[:record]={}
+      e1.each{|e2| # case
+        key=e2.text||"default"
+        rc[key]=e2.to_h
+      }
+      self[id]=row
+      @v.msg{"Symbol Table:#{id} : #{row}"}
+    }
+    self
+  rescue SelectID
+    abort "USAGE: #{$0} [id]\n#{$!}" if __FILE__ == $0
+  end
+end
+
+if __FILE__ == $0
+  puts Symbols.new({'id' => ARGV.shift})
 end

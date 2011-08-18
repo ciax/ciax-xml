@@ -26,7 +26,7 @@ class Watch < Array
   end
 
   def issue(key=:command)
-    get_active(key).uniq
+    get_active(key).flatten(1).uniq
   end
 
   def interrupt

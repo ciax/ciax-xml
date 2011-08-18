@@ -6,7 +6,7 @@ class HtmlTbl < Array
   def initialize(odb)
     @odb=odb
     stat={'time' => ''}.update(odb[:status][:select])
-    @view=View.new(stat).opt('al',odb)
+    @view=View.new(stat).opt('al',odb[:status])
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{@odb['label']}</div>"
     group = @view['group'] || @view['list'].keys

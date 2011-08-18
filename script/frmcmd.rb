@@ -6,7 +6,7 @@ require "libcache"
 
 dev,*cmd=ARGV
 begin
-  fdb=Cache.new("fdb_#{dev}"){FrmDb.new(dev)}
+  fdb=Cache.new("fdb",dev){FrmDb.new(dev)}
   st=Stat.new
   c=FrmCmd.new(fdb,st)
   c.setcmd(cmd)

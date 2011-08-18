@@ -18,8 +18,8 @@ opt= opt.empty? ? 'als' : opt.join('')
 cls,obj,iocmd,port=arg
 
 begin
-  odb=Cache.new("odb_#{obj}"){ObjDb.new(obj,cls)}
-  fdb=Cache.new("fdb_#{odb['frame']}"){FrmDb.new(odb['frame'])}
+  odb=Cache.new("odb",obj){ObjDb.new(obj,cls)}
+  fdb=Cache.new("fdb",odb['frame']){FrmDb.new(odb['frame'])}
 rescue SelectID
   abort "Usage: clsint (-als) [cls] [obj] [iocmd] (port)\n#{$!}"
 end

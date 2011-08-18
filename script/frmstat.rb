@@ -10,7 +10,7 @@ dev=args.shift.first
 ARGV.clear
 
 begin
-  fdb=Cache.new("fdb_#{dev}"){FrmDb.new(dev)}
+  fdb=Cache.new("fdb",dev){FrmDb.new(dev)}
   field=Stat.new
   r=FrmRsp.new(fdb,field)
   str=gets(nil) || exit

@@ -5,7 +5,7 @@ require "libcache"
 
 cls,*cmd=ARGV
 begin
-  cdb=Cache.new("cdb_#{cls}"){ClsDb.new(cls)}
+  cdb=Cache.new("cdb",cls){ClsDb.new(cls)}
   cc=ClsCmd.new(cdb)
   cc.setcmd(cmd).cmdset.each{|cmd| p cmd}
 rescue UserError

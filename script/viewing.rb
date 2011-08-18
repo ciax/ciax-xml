@@ -13,10 +13,10 @@ while STDIN.gets
   stat=JSON.load($_)
   if type=stat['frame']
     require "libfrmdb"
-    db=Cache.new("fdb-#{type}"){FrmDb.new(type)}
+    db=Cache.new("fdb",type){FrmDb.new(type)}
   elsif type=stat['class']
     require "libobjdb"
-    db=Cache.new("odb-#{obj}"){ObjDb.new(obj,type)}
+    db=Cache.new("odb",obj){ObjDb.new(obj,type)}
   else
     raise "NO Type ID in View"
   end

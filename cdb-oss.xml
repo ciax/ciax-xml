@@ -75,7 +75,7 @@
         <command name="iststat" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="oss">
       <group id="g1" label="Main">
         <row>
           <value id="exit" label="Exit Code">

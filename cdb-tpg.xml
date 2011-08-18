@@ -7,7 +7,7 @@
         <command name="getstat" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="tpg">
       <row>
         <value id="st1" label="Turbo Pump Stat" symbol="stat">
           <string ref="st1" />

@@ -62,7 +62,7 @@
         </command>
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="mmc">
       <row label="Group">
         <value id="bs" label="Moter Moving" symbol="warn">
           <string ref="bs" />

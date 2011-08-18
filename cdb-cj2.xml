@@ -273,7 +273,7 @@
         <command name="geterr" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="cj2">
       <group id="g1" label="MAIN">
         <row label="General">
           <value id="ctl" label="CONTROL" symbol="ctl">

@@ -38,14 +38,14 @@ class View < Hash
   private
   def add_label
     if @db
-      self['label']=Hash[@db[:status][:label]]
+      self['label']=Hash[@db[:label]]
     end
     self
   end
 
   def add_arrange
-    if @db && @db[:status].key?(:group)
-      self['group']=@db[:status][:group]
+    if @db && @db.key?(:group)
+      self['group']=@db[:group]
     end
     self
   end

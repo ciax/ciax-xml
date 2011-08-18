@@ -107,7 +107,7 @@
         </command>
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="mel">
       <group id="g1" label="Main">
         <row>
           <value id="rdy" label="READY" symbol="normal">

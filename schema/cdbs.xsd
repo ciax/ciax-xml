@@ -24,7 +24,7 @@
   <xsd:element name="status">
     <xsd:complexType>
       <xsd:group ref="cdbs:group" />
-      <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
+      <xsd:attribute name="table" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="group">

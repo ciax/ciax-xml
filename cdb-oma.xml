@@ -6,7 +6,7 @@
         <command name="getstat" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="oma">
       <row label="Group">
         <value id="pres" label="Air Pressure (Psi)" symbol="pres">
           <float format="%4.2f" ref="stat" />

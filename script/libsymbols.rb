@@ -4,17 +4,17 @@ require "libxmldoc"
 require "librerange"
 
 class Symbols < Hash
-  def initialize(ref={})
-    raise "Sym have to be given Hash" unless ref.kind_of?(Hash)
+  attr_reader :ref
+  def initialize(sdb={})
+    raise "Sym have to be given Hash" unless sdb.kind_of?(Hash)
     @v=Verbose.new("Symbol",6)
-    if ref.key?(:status) && ref[:status].key?(:symbol)
-      @ref=ref[:status][:symbol]
+    if sdb.key?(:symbol)
+      @ref=sdb[:symbol]
     else
       @ref={}
     end
-    ids=['id','obj','class','frame'].map{|i| ref[i]}.compact.uniq
-    ids << 'all'
-    ids.each{|k| add(k)}
+    add(sdb['table']) if sdb.key?('table')
+    add('all')
   end
 
   def convert(view)
@@ -22,6 +22,10 @@ class Symbols < Hash
       val=v['val']
       next if val == ''
       next unless sid=@ref[k]
+      unless key?(sid)
+        @v.warn("Table[#{sid}] not exist")
+        next
+      end
       @v.msg{"ID=#{k},ref=#{sid}"}
       tbl=self[sid][:record]
       case self[sid]['type']
@@ -50,7 +54,7 @@ class Symbols < Hash
   end
 
   def to_s
-    Verbose.view_struct(self)
+    Verbose.view_struct(self,"Tables")+Verbose.view_struct(@ref,"Symbol")
   end
 
   private
@@ -74,5 +78,11 @@ class Symbols < Hash
 end
 
 if __FILE__ == $0
-  puts Symbols.new({'id' => ARGV.shift})
+  require 'libclsdb'
+  begin
+    cdb=ClsDb.new(ARGV.shift)
+  rescue SelectID
+    abort "USAGE: #{$0} [id]\n#{$!}"
+  end
+  puts Symbols.new(cdb[:status])
 end

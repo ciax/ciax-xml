@@ -11,9 +11,11 @@ class ClsDb < Db
     @v.msg{
       self[:command].keys.map{|k| "Structure:command:#{k} #{self[:command][k]}"}
     }
+    status=@doc.domain('status')
     self[:status][:select]={}
     self[:status][:group]=[]
-    init_stat(@doc.domain('status'))
+    self[:status].update(status.to_h)
+    init_stat(status)
     self[:status][:group].unshift [['time']]
     @v.msg{
       self[:status].keys.map{|k| "Structure:status:#{k} #{self[:status][k]}"}

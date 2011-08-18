@@ -60,7 +60,7 @@ class ClsObj
 
   def interrupt
     stop=@event.interrupt
-    @buf.interrupt(stop) unless stop.empty?
+    @buf.interrupt{stop} unless stop.empty?
     "Interrupt #{stop}"
   end
 

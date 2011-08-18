@@ -34,12 +34,14 @@ class Buffer
     self
   end
 
-  def interrupt(cmd=[])
+  def interrupt
     @v.msg{"MAIN:Stopped"}
     @issue=@wait=false
     @q.clear
     @v.msg{"MAIN:Issued #{cmd}"}
-    @inbuf[0]=cmd
+    yield.each{|cmd|
+      @inbuf[0].push(cmd)
+    }
     flush(0)
   end
 

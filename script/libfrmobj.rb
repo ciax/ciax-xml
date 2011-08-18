@@ -40,6 +40,7 @@ class FrmObj
       'OK'
     end
   rescue SelectID
+    @v.add("No such command '#{cmd}'")
     @v.list
   end
 

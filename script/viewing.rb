@@ -15,8 +15,10 @@ while STDIN.gets
     require "libfrmdb"
     db=Cache.new("fdb",type){FrmDb.new(type)}
   elsif type=stat['class']
+    require "libclsdb"
     require "libobjdb"
-    db=Cache.new("odb",obj){ObjDb.new(obj,type)}
+    cdb=Cache.new("cdb",type){ClsDb.new(type)}
+    db=Cache.new("odb",obj){ObjDb.new(obj).cover(cdb)}
   else
     raise "NO Type ID in View"
   end

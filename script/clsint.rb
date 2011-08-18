@@ -2,6 +2,7 @@
 require "json"
 require "libcache"
 require "libobjdb"
+require "libclsdb"
 require "libfrmdb"
 require "libfrmobj"
 require "libclsdb"
@@ -18,7 +19,8 @@ opt= opt.empty? ? 'als' : opt.join('')
 cls,obj,iocmd,port=arg
 
 begin
-  odb=Cache.new("odb",obj){ObjDb.new(obj,cls)}
+  cdb=Cache.new("cdb",cls){ClsDb.new(cls)}
+  odb=Cache.new("odb",obj){ObjDb.new(obj).cover(cdb)}
   fdb=Cache.new("fdb",odb['frame']){FrmDb.new(odb['frame'])}
 rescue SelectID
   abort "Usage: clsint (-als) [cls] [obj] [iocmd] (port)\n#{$!}"
@@ -35,7 +37,7 @@ cobj=ClsObj.new(odb,stat,field){|cmd|
 }
 
 al=Alias.new(odb)
-view=View.new(stat).opt(opt,odb)
+view=View.new(stat).opt(opt,odb[:status])
 prt=Print.new(view)
 
 Interact.new(port||cobj.prompt){|line|

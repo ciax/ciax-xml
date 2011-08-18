@@ -50,6 +50,7 @@ class FrmDb < Db
   end
 
   def init_sel(domain,select,selh)
+    selh.update(domain.to_h)
     list=selh[:select]={}
     domain.each(select){|e0|
       begin

@@ -8,6 +8,7 @@ class FrmDb < Db
     super('fdb',frm)
     @rep=Repeat.new
     frame=self[:frame]={}
+    self[:status]={}
     domc=@doc.domain('cmdframe')
     domr=@doc.domain('rspframe')
     frame[:command]=init_main(domc){|e| init_cmd(e)}
@@ -127,6 +128,10 @@ class FrmDb < Db
 end
 
 if __FILE__ == $0
-  db=FrmDb.new(ARGV.shift) rescue ("USAGE: #{$0} [id]\n#{$!}")
+  begin
+    db=FrmDb.new(ARGV.shift)
+  rescue SelectID
+    abort("USAGE: #{$0} [id]\n#{$!}")
+  end
   puts db
 end

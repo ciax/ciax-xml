@@ -6,8 +6,8 @@ class ClsCmd
 
   def initialize(cdb)
     @v=Verbose.new("#{cdb['id']}/cmd",2)
-    @cdb=cdb[:command]
-    @par=Param.new(@cdb)
+    @cdb=cdb[:structure][:command]
+    @par=Param.new(cdb[:command])
   end
 
   def setcmd(ssn)
@@ -19,7 +19,7 @@ class ClsCmd
   def cmdset
     @v.msg{"Exec(CDB):#{@id}"}
     cmdset=[]
-    @cdb[:select][@id].each{|e1|
+    @cdb[@id].each{|e1|
       cmd=[]
       @v.msg(1){"GetCmd(DDB):#{e1.first}"}
       begin

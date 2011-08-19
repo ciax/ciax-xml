@@ -7,12 +7,12 @@ class ClsDb < Db
   def initialize(cls)
     super('cdb',cls)
     @rep=Repeat.new
+    self[:structure]={:command => {}, :status => {}}
     init_command
     @v.msg{
       self[:command].keys.map{|k| "Structure:command:#{k} #{self[:command][k]}"}
     }
     status=@doc.domain('status')
-    self[:status][:select]={}
     self[:status][:group]=[]
     self[:status].update(status.to_h)
     init_stat(status)
@@ -34,7 +34,6 @@ class ClsDb < Db
   end
 
   def init_command
-    self[:command][:select]={}
     @doc.domain('commands').each{|e0|
       id=e0.attr2db(self[:command])
       list=[]
@@ -47,7 +46,7 @@ class ClsDb < Db
         }
         list << command.freeze
       }
-      self[:command][:select][id]=list
+      self[:structure][:command][id]=list
       @v.msg{"COMMAND:[#{id}] #{list}"}
     }
     self
@@ -74,7 +73,7 @@ class ClsDb < Db
           }
           fields << st
         }
-        self[:status][:select][id]=fields
+        self[:structure][:status][id]=fields
         self[:status][:group].last.last << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end

@@ -9,7 +9,7 @@ class FrmRsp
     @field=field
     @v=Verbose.new("#{fdb['id']}/rsp",3)
     @field['frame']=fdb['id']
-    @fdbs=fdb[:frame][:status]
+    @fdbs=fdb[:frame][:status].dup
     @par=Param.new(fdb[:command])
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
@@ -17,8 +17,7 @@ class FrmRsp
   # Block accepts [time,frame]
   def setrsp(cmd)
     if rid=@par.setpar(cmd).check_id[:response]
-      sel=@fdb[:status][:select][rid] || @v.err("No such response id [#{rid}]")
-      @fdbs[:select]=sel
+      @fdbs[:select]=@fdbs[:select][rid] || @v.err("No such response id [#{rid}]")
       @v.msg{"Set Statement #{cmd}"}
       time,frame=yield
       @v.err("No Response") unless frame

@@ -9,7 +9,7 @@ class FrmCmd
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
-    @fdbc=fdb[:frame][:command]
+    @fdbc=fdb[:frame][:command].dup
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
     @par=Param.new(fdb[:command])
   end
@@ -17,7 +17,7 @@ class FrmCmd
   def setcmd(cmd) # return = response select
     id=cmd.first
     @par.setpar(cmd).check_id
-    @fdbc[:select]=@par[:select]
+    @fdbc[:select]=@fdbc[:select][id]
     @v.msg{"Attr of Param:#{@par}"}
     @cid=cmd.join(':')
     @cid << ':*' if /true|1/ === @par[:nocache]

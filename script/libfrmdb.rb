@@ -7,15 +7,15 @@ class FrmDb < Db
   def initialize(frm)
     super('fdb',frm)
     @rep=Repeat.new
-    self[:frame]={}
+    frame=self[:frame]={}
     domc=@doc.domain('cmdframe')
     domr=@doc.domain('rspframe')
-    self[:frame][:command]=init_main(domc){|e| init_cmd(e)}
-    self[:frame][:status]=init_main(domr){|e| init_stat(e)}
+    frame[:command]=init_main(domc){|e| init_cmd(e)}
+    frame[:status]=init_main(domr){|e| init_stat(e)}
     @v.msg{"Structure:frame:#{self[:frame]}"}
-    init_sel(domc,'command',self[:command]){|e| init_cmd(e)}
+    init_sel(domc,'command',:command){|e| init_cmd(e)}
     @v.msg{"Structure:command:#{self[:command]}"}
-    init_sel(domr,'response',self[:status]){|e| init_stat(e)}
+    init_sel(domr,'response',:status){|e| init_stat(e)}
     @v.msg{"Structure:status:#{self[:status]}"}
   end
 
@@ -49,9 +49,10 @@ class FrmDb < Db
     hash
   end
 
-  def init_sel(domain,select,selh)
+  def init_sel(domain,select,key)
+    selh=self[key]
     selh.update(domain.to_h)
-    list=selh[:select]={}
+    list=self[:frame][key][:select]={}
     domain.each(select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}

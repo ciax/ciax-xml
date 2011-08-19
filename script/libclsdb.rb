@@ -8,13 +8,15 @@ class ClsDb < Db
     super('cdb',cls)
     @rep=Repeat.new
     self[:structure]={:command => {}, :status => {}}
+    self[:command]={}
     init_command
     @v.msg{
       self[:command].keys.map{|k| "Structure:command:#{k} #{self[:command][k]}"}
     }
     status=@doc.domain('status')
+    self[:status]=status.to_h
+    self[:status][:label]={'time' => 'TIMESTAMP'}
     self[:status][:group]=[]
-    self[:status].update(status.to_h)
     init_stat(status)
     self[:status][:group].unshift [['time']]
     @v.msg{

@@ -7,8 +7,6 @@ class Db < Hash
     @doc=XmlDoc.new(type,id)
     @v=Verbose.new("#{type}/#{@doc['id']}",2)
     update(@doc)
-    self[:command]={}
-    self[:status]={:label => {'time' => 'TIMESTAMP' }}
   end
 
   def to_s

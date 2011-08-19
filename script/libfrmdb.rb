@@ -50,8 +50,7 @@ class FrmDb < Db
   end
 
   def init_sel(domain,select,key)
-    selh=self[key]
-    selh.update(domain.to_h)
+    selh=self[key]=domain.to_h
     list=self[:frame][key][:select]={}
     domain.each(select){|e0|
       begin

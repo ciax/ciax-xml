@@ -5,13 +5,13 @@ require "libobjdb"
 class Alias
   def initialize(odb)
     @v=Verbose.new("alias/#{odb['id']}".upcase,6)
-    @odb=odb[:alias]
+    @odb=odb[:alias]||return
     @v.add("=== Command List ===")
     @v.add(@odb[:label])
   end
 
   def alias(str)
-    return str if @odb.empty?
+    return str unless @odb
     @v.list if str.empty?
     @v.msg{"Command:#{str}"}
     rel=str.dup

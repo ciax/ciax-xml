@@ -37,4 +37,19 @@ class Cache < Hash
     update(@proc.call)
     save
   end
+
+  def to_s
+    Verbose.view_struct(self)
+  end
+
+  def cover(hash) # override with hash
+    replace(rec_merge(self,hash))
+  end
+
+  private
+  def rec_merge(me,oth)
+    me.merge(oth){|k,s,h|
+      Hash === h ? rec_merge(s,h) : s
+    }
+  end
 end

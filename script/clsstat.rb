@@ -8,7 +8,7 @@ cls=ARGV.shift
 ARGV.clear
 
 begin
-  cdb=Cache.new("cdb",cls){ClsDb.new(cls)}
+  cdb=ClsDb.new(cls)
   str=gets(nil) || exit
   field=Stat.new(str)
   cs=ClsStat.new(cdb,field,Stat.new)

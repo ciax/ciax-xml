@@ -5,19 +5,20 @@ require "libdb"
 class FrmDb < Db
   attr_reader :frame
   def initialize(frm)
-    super('fdb',frm)
-    @rep=Repeat.new
-    frame=self[:frame]={}
-    self[:status]={}
-    domc=@doc.domain('cmdframe')
-    domr=@doc.domain('rspframe')
-    frame[:command]=init_main(domc){|e| init_cmd(e)}
-    frame[:status]=init_main(domr){|e| init_stat(e)}
-    @v.msg{"Structure:frame:#{self[:frame]}"}
-    init_sel(domc,'command',:command){|e| init_cmd(e)}
-    @v.msg{"Structure:command:#{self[:command]}"}
-    init_sel(domr,'response',:status){|e| init_stat(e)}
-    @v.msg{"Structure:status:#{self[:status]}"}
+    super('fdb',frm){
+      @rep=Repeat.new
+      frame=self[:frame]={}
+      self[:status]={}
+      domc=@doc.domain('cmdframe')
+      domr=@doc.domain('rspframe')
+      frame[:command]=init_main(domc){|e| init_cmd(e)}
+      frame[:status]=init_main(domr){|e| init_stat(e)}
+      @v.msg{"Structure:frame:#{self[:frame]}"}
+      init_sel(domc,'command',:command){|e| init_cmd(e)}
+      @v.msg{"Structure:command:#{self[:command]}"}
+      init_sel(domr,'response',:status){|e| init_stat(e)}
+      @v.msg{"Structure:status:#{self[:status]}"}
+    }
   end
 
   private

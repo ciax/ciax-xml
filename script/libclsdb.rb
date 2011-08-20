@@ -5,24 +5,20 @@ require "libdb"
 
 class ClsDb < Db
   def initialize(cls)
-    super('cdb',cls)
-    @rep=Repeat.new
-    self[:structure]={:command => {}, :status => {}}
-    self[:command]={}
-    init_command
-    @v.msg{
-      self[:command].keys.map{|k| "Structure:command:#{k} #{self[:command][k]}"}
+    super('cdb',cls){
+      @rep=Repeat.new
+      self[:structure]={:command => {}, :status => {}}
+      init_command
+      status=@doc.domain('status')
+      @stat=self[:status]=status.to_h
+      @stat[:label]={'time' => 'TIMESTAMP'}
+      @stat[:group]=[[['time']]]
+      init_stat(status)
+      @v.msg{
+        @stat.keys.map{|k| "Structure:status:#{k} #{@stat[k]}"}
+      }
+      self[:watch]=init_watch
     }
-    status=@doc.domain('status')
-    self[:status]=status.to_h
-    self[:status][:label]={'time' => 'TIMESTAMP'}
-    self[:status][:group]=[]
-    init_stat(status)
-    self[:status][:group].unshift [['time']]
-    @v.msg{
-      self[:status].keys.map{|k| "Structure:status:#{k} #{self[:status][k]}"}
-    }
-    self[:watch]=init_watch
   end
 
   private
@@ -36,6 +32,7 @@ class ClsDb < Db
   end
 
   def init_command
+    self[:command]={}
     @doc.domain('commands').each{|e0|
       id=e0.attr2db(self[:command])
       list=[]
@@ -51,6 +48,11 @@ class ClsDb < Db
       self[:structure][:command][id]=list
       @v.msg{"COMMAND:[#{id}] #{list}"}
     }
+    @v.msg{
+      self[:command].keys.map{|k|
+        "Structure:command:#{k} #{self[:command][k]}"
+      }
+    }
     self
   end
 
@@ -58,15 +60,15 @@ class ClsDb < Db
     @rep.each(e){|e0|
       if e0.name == 'group'
         id=@rep.subst(e0['id'])
-        self[:status][:group] << [id]
-        self[:status][:label][id]=@rep.subst(e0['label'])
+        @stat[:group] << [id]
+        @stat[:label][id]=@rep.subst(e0['label'])
         init_stat(e0)
       elsif e0.name == 'row'
-        self[:status][:group] << [] if self[:status][:group].empty?
-        self[:status][:group].last << []
+        @stat[:group] << [] if @stat[:group].empty?
+        @stat[:group].last << []
         init_stat(e0)
       else
-        id=e0.attr2db(self[:status]){|v|@rep.format(v)}
+        id=e0.attr2db(@stat){|v|@rep.format(v)}
         fields=[]
         e0.each{|e1|
           st={:type => e1.name}
@@ -76,7 +78,7 @@ class ClsDb < Db
           fields << st
         }
         self[:structure][:status][id]=fields
-        self[:status][:group].last.last << id
+        @stat[:group].last.last << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }

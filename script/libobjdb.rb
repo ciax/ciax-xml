@@ -4,13 +4,14 @@ require "libdb"
 
 class ObjDb < Db
   def initialize(obj)
-    super("odb",obj)
-    self['id']=obj
-    @doc.domain('command').each('alias'){|e0|
-      e0.attr2db(self[:alias]||={})
-    }
-    @doc.domain('status').each('title'){|e0|
-      e0.attr2db(self[:status]||={},'ref')
+    super("odb",obj){
+      self['id']=obj
+      @doc.domain('command').each('alias'){|e0|
+        e0.attr2db(self[:alias]||={})
+      }
+      @doc.domain('status').each('title'){|e0|
+        e0.attr2db(self[:status]||={},'ref')
+      }
     }
   rescue SelectID
     abort ("USAGE: #{$0} [obj] [cls]\n#{$!}") if __FILE__ == $0

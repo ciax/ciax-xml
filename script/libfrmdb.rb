@@ -10,15 +10,14 @@ class FrmDb < DbCache
 
   def refresh
     doc=super
-    @rep=Repeat.new
     frame=self[:frame]={}
     self[:status]={}
     domc=doc.domain('cmdframe')
     domr=doc.domain('rspframe')
-    frame[:command]=init_main(domc){|e| init_cmd(e)}
+    frame[:command]=init_main(domc){|e,r| init_cmd(e,r)}
     frame[:status]=init_main(domr){|e| init_stat(e)}
     @v.msg{"Structure:frame:#{self[:frame]}"}
-    init_sel(domc,'command',:command){|e| init_cmd(e)}
+    init_sel(domc,'command',:command){|e,r| init_cmd(e,r)}
     @v.msg{"Structure:command:#{self[:command]}"}
     init_sel(domr,'response',:status){|e| init_stat(e)}
     @v.msg{"Structure:status:#{self[:status]}"}
@@ -42,8 +41,8 @@ class FrmDb < DbCache
       begin
         @v.msg(1){"INIT:Ceck Code Frame <-"}
         frame=[]
-        @rep.each(e0){|e1|
-          frame << yield(e1)
+        Repeat.new.each(e0){|e1,r1|
+          frame << yield(e1,r1)
         }
         @v.msg{"InitCCFrame:#{frame}"}
         hash[:ccrange]=frame.freeze
@@ -63,8 +62,8 @@ class FrmDb < DbCache
         id=e0.attr2db(selh)
         @v.msg{"InitSelHash(#{id}):#{selh}"}
         frame=[]
-        @rep.each(e0){|e1|
-          e=yield(e1) || next
+        Repeat.new.each(e0){|e1,r1|
+          e=yield(e1,r1) || next
           frame << e
         }
         list[id]=frame.freeze 
@@ -76,12 +75,12 @@ class FrmDb < DbCache
     self
   end
 
-  def init_cmd(e)
+  def init_cmd(e,rep=nil)
     case e.name
     when 'code','string'
       attr=e.to_h
       label=attr.delete('label')
-      attr['val']=@rep.subst(e.text)
+      attr['val']=rep ? rep.subst(e.text) : e.text
       @v.msg{"Data:#{label}[#{attr}]"}
       attr
     else

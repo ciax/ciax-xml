@@ -13,11 +13,11 @@ class Repeat
       when 'repeat'
         repeat(e1){
           each(e1){|e2|
-            yield e2
+            yield e2,self
           }
         }
       else
-        yield e1
+        yield e1,self
       end
     } if e0
   end

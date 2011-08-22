@@ -10,14 +10,13 @@ class ClsDb < DbCache
 
   def refresh
     doc=super
-    @rep=Repeat.new
     self[:structure]={:command => {}, :status => {}}
     init_command(doc.domain('commands'))
     status=doc.domain('status')
     @stat=self[:status]=status.to_h
     @stat[:label]={'time' => 'TIMESTAMP'}
     @stat[:group]=[[['time']]]
-    init_stat(status)
+    init_stat(status,Repeat.new)
     @v.msg{
       @stat.keys.map{|k| "Structure:status:#{k} #{@stat[k]}"}
     }
@@ -25,25 +24,16 @@ class ClsDb < DbCache
   end
 
   private
-  def rec_cond(e)
-    case e.name
-    when 'condition'
-      {:operator => (e['operator']||'and'),:ary => e.map{|e1| rec_cond(e1) }}
-    else
-      {:ref => @rep.format(e['ref']),:val => e.text}
-    end
-  end
-
   def init_command(cdb)
     self[:command]={}
     cdb.each{|e0|
       id=e0.attr2db(self[:command])
       list=[]
-      @rep.each(e0){|e1|
+      Repeat.new.each(e0){|e1,rep|
         command=[e1['name']]
         e1.each{|e2|
           argv=e2.to_h
-          argv['val'] = @rep.subst(e2.text)
+          argv['val'] = rep.subst(e2.text)
           command << argv.freeze
         }
         list << command.freeze
@@ -59,24 +49,24 @@ class ClsDb < DbCache
     self
   end
 
-  def init_stat(e)
-    @rep.each(e){|e0|
+  def init_stat(e,rep)
+    rep.each(e){|e0,r0|
       if e0.name == 'group'
-        id=@rep.subst(e0['id'])
+        id=r0.subst(e0['id'])
         @stat[:group] << [id]
-        @stat[:label][id]=@rep.subst(e0['label'])
-        init_stat(e0)
+        @stat[:label][id]=r0.subst(e0['label'])
+        init_stat(e0,r0)
       elsif e0.name == 'row'
         @stat[:group] << [] if @stat[:group].empty?
         @stat[:group].last << []
-        init_stat(e0)
+        init_stat(e0,r0)
       else
-        id=e0.attr2db(@stat){|v|@rep.format(v)}
+        id=e0.attr2db(@stat){|v|r0.format(v)}
         fields=[]
         e0.each{|e1|
           st={:type => e1.name}
           e1.to_h.each{|k,v|
-            st[k] = @rep.subst(v)
+            st[k] = r0.subst(v)
           }
           fields << st
         }
@@ -93,7 +83,7 @@ class ClsDb < DbCache
     update(wdb.to_h)
     line=[]
     period=nil
-    @rep.each(wdb){|e0|
+    Repeat.new.each(wdb){|e0,r0|
       case name=e0.name
       when 'periodic'
         unless period
@@ -107,7 +97,7 @@ class ClsDb < DbCache
         line << bg
       end
       e0.to_h.each{|a,v|
-        bg[a.to_sym]=@rep.format(v)
+        bg[a.to_sym]=r0.format(v)
       }
       @v.msg(1){"WATCH:#{bg[:type]}:#{bg['label']}"}
       e0.each{ |e1|
@@ -116,19 +106,28 @@ class ClsDb < DbCache
           bg[name]||=[]
           ssn=[e1['name']]
           e1.each{|e2|
-            ssn << @rep.subst(e2.text)
+            ssn << r0.subst(e2.text)
           }
           bg[name] << ssn.freeze unless bg[name].include? ssn
           @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
         when :condition
           bg[name]||={}
-          bg[name]=rec_cond(e1)
+          bg[name]=rec_cond(e1,r0)
         end
       }
       @v.msg(-1){"WATCH:#{bg[:type]}"}
     }
     @v.msg{"Structure:watch #{line}"}
     line
+  end
+
+  def rec_cond(e,rep)
+    case e.name
+    when 'condition'
+      {:operator => (e['operator']||'and'),:ary => e.map{|e1| rec_cond(e1,rep) }}
+    else
+      {:ref => rep.format(e['ref']),:val => e.text}
+    end
   end
 end
 

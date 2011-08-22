@@ -1,13 +1,17 @@
 #!/usr/bin/ruby
 require "libverbose"
-class Cache < Hash
+require "libxmldoc"
+require "libdb"
+
+class DbCache < Db
   VarDir="#{ENV['HOME']}/.var"
   XmlDir="#{ENV['HOME']}/ciax-xml"
-  def initialize(type,id,&proc)
-    @proc=proc
-    @v=Verbose.new('CACHE',1)
+  def initialize(type,id)
+    @type=type
+    @id=id
     @fmar=VarDir+"/#{type}-#{id}.mar"
     @fxml=XmlDir+"/#{type}-#{id}.xml"
+    @v=Verbose.new("cache",2)
     load
   end
 
@@ -34,22 +38,8 @@ class Cache < Hash
 
   def refresh
     @v.msg{"Refresh"}
-    update(@proc.call)
-    save
-  end
-
-  def to_s
-    Verbose.view_struct(self)
-  end
-
-  def cover(hash) # override with hash
-    replace(rec_merge(self,hash))
-  end
-
-  private
-  def rec_merge(me,oth)
-    me.merge(oth){|k,s,h|
-      Hash === h ? rec_merge(s,h) : s
-    }
+    doc=XmlDoc.new(@type,@id)
+    update(doc)
+    doc
   end
 end

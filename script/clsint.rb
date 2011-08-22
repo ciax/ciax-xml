@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "json"
-require "libcache"
 require "libobjdb"
 require "libclsdb"
 require "libfrmdb"

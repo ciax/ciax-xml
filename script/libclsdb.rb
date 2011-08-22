@@ -1,24 +1,27 @@
 #!/usr/bin/ruby
 require "libcircular"
 require "librepeat"
-require "libdb"
+require "libdbcache"
 
-class ClsDb < Db
+class ClsDb < DbCache
   def initialize(cls)
-    super('cdb',cls){
-      @rep=Repeat.new
-      self[:structure]={:command => {}, :status => {}}
-      init_command
-      status=@doc.domain('status')
-      @stat=self[:status]=status.to_h
-      @stat[:label]={'time' => 'TIMESTAMP'}
-      @stat[:group]=[[['time']]]
-      init_stat(status)
-      @v.msg{
-        @stat.keys.map{|k| "Structure:status:#{k} #{@stat[k]}"}
-      }
-      self[:watch]=init_watch
+    super('cdb',cls)
+  end
+
+  def refresh
+    doc=super
+    @rep=Repeat.new
+    self[:structure]={:command => {}, :status => {}}
+    init_command(doc.domain('commands'))
+    status=doc.domain('status')
+    @stat=self[:status]=status.to_h
+    @stat[:label]={'time' => 'TIMESTAMP'}
+    @stat[:group]=[[['time']]]
+    init_stat(status)
+    @v.msg{
+      @stat.keys.map{|k| "Structure:status:#{k} #{@stat[k]}"}
     }
+    self[:watch]=init_watch(doc.domain('watch'))
   end
 
   private
@@ -31,9 +34,9 @@ class ClsDb < Db
     end
   end
 
-  def init_command
+  def init_command(cdb)
     self[:command]={}
-    @doc.domain('commands').each{|e0|
+    cdb.each{|e0|
       id=e0.attr2db(self[:command])
       list=[]
       @rep.each(e0){|e1|
@@ -85,8 +88,8 @@ class ClsDb < Db
     self
   end
 
-  def init_watch
-    return [] unless wdb=@doc.domain('watch')
+  def init_watch(wdb)
+    return [] unless wdb
     update(wdb.to_h)
     line=[]
     period=nil

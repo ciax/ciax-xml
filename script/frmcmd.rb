@@ -2,7 +2,6 @@
 require "libstat"
 require "libfrmcmd"
 require "libfrmdb"
-require "libcache"
 
 dev,*cmd=ARGV
 begin

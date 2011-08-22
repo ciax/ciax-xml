@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libcache"
 require "libclsdb"
 require "libclsstat"
 require "libstat"

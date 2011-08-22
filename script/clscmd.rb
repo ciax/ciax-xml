@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libclsdb"
 require "libclscmd"
-require "libcache"
 
 cls,*cmd=ARGV
 begin

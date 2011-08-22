@@ -2,7 +2,6 @@
 require "libstat"
 require "libfrmrsp"
 require "libfrmdb"
-require "libcache"
 
 args=ARGV.partition{|s| /^-/ === s}
 opt=args.shift.join('')

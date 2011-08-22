@@ -5,7 +5,7 @@ require "libview"
 class HtmlTbl < Array
   def initialize(odb)
     @odb=odb
-    stat={'time' => ''}.update(odb[:status][:select])
+    stat={'time' => ''}.update(odb[:status][:label])
     @view=View.new(stat).opt('al',odb[:status])
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{@odb['label']}</div>"

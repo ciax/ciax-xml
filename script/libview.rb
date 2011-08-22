@@ -37,7 +37,7 @@ class View < Hash
 
   private
   def add_label
-    if @db
+    if @db && @db.key?(:label)
       self['label']=Hash[@db[:label]]
     end
     self

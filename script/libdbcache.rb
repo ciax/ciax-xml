@@ -19,6 +19,7 @@ class DbCache < Db
     if !test(?e,@fmar)
       @v.msg{"MAR file not exist"}
       refresh
+      save
     elsif test(?<,@fxml,@fmar)
       hash=Marshal.load(IO.read(@fmar))
       update hash
@@ -26,6 +27,7 @@ class DbCache < Db
     else
       @v.msg{["XML file updated",@fmar,@fxml]}
       refresh
+      save
     end
   end
 

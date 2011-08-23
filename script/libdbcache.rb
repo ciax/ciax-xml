@@ -7,25 +7,28 @@ class DbCache < Db
   VarDir="#{ENV['HOME']}/.var/cache"
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def initialize(type,id)
+    @base="#{type}-#{id}"
     @type=type
-    @id=id
-    @fmar=VarDir+"/#{type}-#{id}.mar"
-    @fxml=XmlDir+"/#{type}-#{id}.xml"
+    @id=id || raise(SelectID)
+    @fmar=VarDir+"/#{@base}.mar"
+    @fxml=XmlDir+"/#{@base}.xml"
     @v=Verbose.new("cache",2)
     load
   end
 
   def load
     if !test(?e,@fmar)
-      @v.msg{"MAR file not exist"}
+      @v.msg{"MAR file(#{@base}) not exist"}
       refresh
       save
-    elsif test(?<,@fxml,@fmar)
+    elsif !test(?e,@fxml) || test(?<,@fxml,@fmar)
       hash=Marshal.load(IO.read(@fmar))
       update hash
-      @v.msg{"Loaded"}
+      @v.msg{"Loaded(#{@base})"}
     else
-      @v.msg{["XML file updated",@fmar,@fxml]}
+      @v.msg{["XML file(#{@base}) updated",
+              "cache=#{File::Stat.new(@fmar).mtime}",
+              "xml=#{File::Stat.new(@fxml).mtime}"]}
       refresh
       save
     end

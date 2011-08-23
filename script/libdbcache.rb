@@ -7,12 +7,12 @@ class DbCache < Db
   VarDir="#{ENV['HOME']}/.var/cache"
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def initialize(type,id)
+    @v=Verbose.new("cache",2)
     @base="#{type}-#{id}"
     @type=type
-    @id=id || raise(SelectID)
+    @id=id || refresh
     @fmar=VarDir+"/#{@base}.mar"
     @fxml=XmlDir+"/#{@base}.xml"
-    @v=Verbose.new("cache",2)
     load
   end
 

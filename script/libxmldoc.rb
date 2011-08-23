@@ -7,7 +7,6 @@ class XmlDoc < Hash
   def initialize(dbname = nil,id = nil)
     @v=Verbose.new("Doc/#{dbname}",4)
     @domain={}
-    raise SelectID,'' unless id
     readxml(dbname,id){|e|
       @top=e
       update(e.to_h)
@@ -15,9 +14,8 @@ class XmlDoc < Hash
         @domain[e1.name]=e1 unless e.ns == e1.ns
       }
       @v.msg{"Domain registerd:#{@domain.keys}"}
-    }
-    raise SelectID,'' unless @top
-  rescue SelectID
+    } if id
+    return if @top
     list={}
     readxml(dbname){|e| list[e['id']]=e['label'] }
     raise SelectID,@v.add(list).to_s

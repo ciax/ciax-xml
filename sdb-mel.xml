@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <symbol id="mel">
+  <symbol id="mel" label="Cart PLC">
     <table id="ecode" label="ExitCode" type="string">
       <case class="hide" msg="OK">0000</case>
       <case class="alarm" msg="RW Region Error">0002</case>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <symbol id="oma">
+  <symbol id="oma" label="Stand-by Flange PLC">
     <table id="pres" type="range">
       <case class="alarm" msg="HH">110:</case>
       <case class="warn" msg="H">105:&lt;110</case>

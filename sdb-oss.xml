@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <symbol id="oss">
+  <symbol id="oss" label="TSC Control">
     <table id="bl" type="string">
       <case class="warn" msg="MID">00</case>
       <case class="normal" msg="UP">10</case>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <symbol id="mma">
+  <symbol id="mma" label="MOIRCS Arm">
     <table id="err" type="string">
       <case class="hide" msg="No Error">0</case>
       <case class="alarm" msg="Could not burn flash successfully">1</case>

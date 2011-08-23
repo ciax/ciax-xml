@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-  <symbol id="tpg">
+  <symbol id="tpg" label="MOIRCS Vacuum Pressure">
     <table id="stat" type="string">
       <case class="hide" msg="Measurment data okay">0</case>
       <case class="warn" msg="Underrange">1</case>

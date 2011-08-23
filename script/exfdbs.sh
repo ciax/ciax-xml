@@ -1,6 +1,7 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 [[ "$1" == -* ]] && { opt=$1;shift; }
+[ "$opt" ] && rm ~/.var/cache/*
 getstat(){
     cmd="$*"
     echo "${C3}process $id for $cmd$C0"

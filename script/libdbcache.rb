@@ -4,7 +4,7 @@ require "libxmldoc"
 require "libdb"
 
 class DbCache < Db
-  VarDir="#{ENV['HOME']}/.var"
+  VarDir="#{ENV['HOME']}/.var/cache"
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def initialize(type,id)
     @type=type

@@ -82,7 +82,8 @@ class Verbose
   end
 
   def to_s
-    [$!.to_s,*@list].grep(/./).join("\n")
+    @list.unshift($!.to_s) if $!
+    @list.grep(/./).join("\n")
   end
 
   def list

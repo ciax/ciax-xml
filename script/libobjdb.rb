@@ -29,8 +29,7 @@ if __FILE__ == $0
   end
   if cls
     require "libclsdb"
-    db=ClsDb.new(cls)
-    odb=odb.cover(db)
+    odb >> ClsDb.new(cls)
   end
   puts odb
 end

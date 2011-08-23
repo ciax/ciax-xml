@@ -8,8 +8,7 @@ abort "Usage: jsdb [obj] [class]" if ARGV.size < 2
 
 obj=ARGV.shift
 cls=ARGV.shift
-cdb=ClsDb.new(cls)
-odb=ObjDb.new(obj).cover(cdb)
+odb=ClsDb.new(cls) << ObjDb.new(obj)
 sdb=SymDb.new(cls)
 puts 'OBJ="'+obj+'";'
 puts "SDB="+JSON.dump(sdb)+";"

@@ -6,14 +6,18 @@ class Db < Hash
     Verbose.view_struct(self)
   end
 
-  def cover(hash) # override with hash
-    Db[rec_merge(self,hash)]
+  def >>(hash) # overwrite hash
+    replace(rec_merge(hash,self))
+  end
+
+  def <<(hash) # overwritten by hash
+    replace(rec_merge(self,hash))
   end
 
   private
-  def rec_merge(me,oth)
-    me.merge(oth){|k,s,h|
-      Hash === h ? rec_merge(s,h) : s
+  def rec_merge(i,o)
+    i.merge(o){|k,a,b|
+      Hash === b ? rec_merge(a,b) : b
     }
   end
 end

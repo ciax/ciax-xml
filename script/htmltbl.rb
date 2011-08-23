@@ -7,6 +7,5 @@ abort "Usage: htmltbl [obj] [class]" if ARGV.size < 2
 
 obj=ARGV.shift
 cls=ARGV.shift
-cdb=ClsDb.new(cls)
-odb=ObjDb.new(obj).cover(cdb)
+odb=ClsDb.new(cls) << ObjDb.new(obj)
 puts HtmlTbl.new(odb)

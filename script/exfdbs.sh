@@ -12,11 +12,12 @@ getstat(){
     fi
 }
 
+[ "$1" ] && { setfld $1 || _usage_key "(-ls)"; }
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2|sort -u`};shift
 par="$*"
 ver=$VER;unset VER
 for id in $devices; do
-    setfld $id || _usage_key "(-ls)"
+    setfld $id || continue
     echo "$C2#### $dev($id) ####$C0"
     input="$HOME/.var/device_${id}_*.log"
     output="$HOME/.var/field_${id}.json"

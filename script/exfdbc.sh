@@ -1,8 +1,9 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
+[ "$1" ] && { setfld $1 || _usage_key; }
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
 for id in $devices; do
-    setfld $id || _usage_key
+    setfld $id || continue
     [ "$dev" ] || continue
     echo "$C2#### $dev($id) ####$C0"
     input="$HOME/.var/field_$id.json"

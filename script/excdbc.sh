@@ -1,8 +1,9 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
+[ "$1" ] && { setfld $1 || _usage_key; }
 objects=${1:-`lookup all id`};shift
 for id in $objects; do
-    setfld $id || _usage_key
+    setfld $id || continue
     [ "$cls" ] || continue
     echo "$C2#### $id ####$C0"
     if [ "$1" ] ; then

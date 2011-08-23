@@ -27,7 +27,7 @@ class View < Hash
     self['list'].each{|k,v|
       v['val']=@stat[k]
     }
-    @sdb.convert(self) if @sdb
+    @sdb.convert(self,@db[:symbol]) if @sdb
     self
   end
 
@@ -51,9 +51,9 @@ class View < Hash
   end
 
   def init_sym
-    if @db
-      require "libsymbols"
-      @sdb=Symbols.new(@db)
+    if @db && @db.key?(:symbol)
+      require "libsymdb"
+      @sdb=SymDb.new.update(SymDb.new(self['class']))
     end
     self
   end

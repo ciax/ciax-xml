@@ -2,7 +2,7 @@
 require "json"
 require "libclsdb"
 require "libobjdb"
-require "libsymbols"
+require "libsymdb"
 
 abort "Usage: jsdb [obj] [class]" if ARGV.size < 2
 
@@ -10,7 +10,7 @@ obj=ARGV.shift
 cls=ARGV.shift
 cdb=ClsDb.new(cls)
 odb=ObjDb.new(obj).cover(cdb)
-sdb=Symbols.new(odb[:status])
+sdb=SymDb.new(cls)
 puts 'OBJ="'+obj+'";'
 puts "SDB="+JSON.dump(sdb)+";"
-puts "SYM="+JSON.dump(sdb.ref)+";"
+puts "SYM="+JSON.dump(odb[:status][:symbol])+";"

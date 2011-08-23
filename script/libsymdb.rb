@@ -1,23 +1,16 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libxmldoc"
+require "libdbcache"
 require "librerange"
 
-class Symbols < Hash
-  attr_reader :ref
-  def initialize(sdb={})
-    raise "Sym have to be given Hash" unless sdb.kind_of?(Hash)
+class SymDb < DbCache
+  def initialize(id='all')
+    super('sdb',id)
     @v=Verbose.new("Symbol",6)
-    if sdb.key?(:symbol)
-      @ref=sdb[:symbol]
-    else
-      @ref={}
-    end
-    add(sdb['table']) if sdb.key?('table')
-    add('all')
   end
 
-  def convert(view)
+  def convert(view,ref=nil)
+    @ref=ref||@ref
     view['list'].each{|k,v|
       val=v['val']
       next if val == ''
@@ -53,36 +46,31 @@ class Symbols < Hash
     self
   end
 
-  def to_s
-    Verbose.view_struct(self,"Tables")+Verbose.view_struct(@ref,"Symbol")
-  end
-
-  private
-  def add(type)
-    doc=XmlDoc.new('sdb',type)
+  def refresh
+    doc=super
     doc.top.each{|e1|
       row=e1.to_h
       id=row.delete('id')
+      label=row['label']
       rc=row[:record]={}
       e1.each{|e2| # case
         key=e2.text||"default"
         rc[key]=e2.to_h
       }
       self[id]=row
-      @v.msg{"Symbol Table:#{id} : #{row}"}
+      @v.msg{"Symbol Table:#{id} : #{label}"}
     }
     self
   rescue SelectID
-    abort "USAGE: #{$0} [id]\n#{$!}" if __FILE__ == $0
+    @v.list if __FILE__ == $0
   end
 end
 
 if __FILE__ == $0
-  require 'libclsdb'
   begin
-    cdb=ClsDb.new(ARGV.shift)
+    sdb=SymDb.new(ARGV.shift)
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end
-  puts Symbols.new(cdb[:status])
+  puts sdb
 end

@@ -11,10 +11,14 @@ conds.each{|s|
 }
 cmd=cmds.join(" ")
 ARGV.clear
-begin
   str=gets(nil) || exit
   stat=JSON.load(str)
+begin
+warn stat
   cdb=ClsDb.new(stat['class'])
+rescue SelectID
+  abort $!.to_s
+end
   watch=Watch.new(cdb,stat.update(hash))
   watch.update
   puts watch.to_s
@@ -28,6 +32,4 @@ begin
   p watch.issue
   print "Interrupt : "
   p watch.interrupt
-rescue RuntimeError
-  abort $!.to_s
-end
+

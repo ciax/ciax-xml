@@ -9,7 +9,8 @@ class FrmCmd
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
-    @fdbc=fdb[:frame][:command].dup
+    @fdbc=fdb[:frame][:command]
+    @sel=Hash[@fdbc]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
     @par=Param.new(fdb[:command])
   end
@@ -17,7 +18,7 @@ class FrmCmd
   def setcmd(cmd) # return = response select
     id=cmd.first
     @par.setpar(cmd).check_id
-    @fdbc[:select]=@fdbc[:select][id]
+    @sel[:select]=@fdbc[:select][id]
     @v.msg{"Attr of Param:#{@par}"}
     @cid=cmd.join(':')
     @cid << ':*' if /true|1/ === @par[:nocache]
@@ -26,12 +27,12 @@ class FrmCmd
   end
 
   def getframe
-    return unless @fdbc[:select]
+    return unless @sel[:select]
     if frame=@cache[@cid]
       @v.msg{"Cmd cache found [#{@cid}]"}
     else
       mk_frame(:select)
-      if @fdbc.key?(:ccrange)
+      if @sel.key?(:ccrange)
         @frame.mark
         mk_frame(:ccrange)
         @field['cc']=@frame.checkcode
@@ -45,7 +46,7 @@ class FrmCmd
   private
   def mk_frame(domain)
     @frame.set
-    @fdbc[domain].each{|a|
+    @sel[domain].each{|a|
       case a
       when Hash
         @field.subst(@par.subst(a['val'],a['valid'])).split(',').each{|s|

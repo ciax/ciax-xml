@@ -9,7 +9,8 @@ class FrmRsp
     @field=field
     @v=Verbose.new("#{fdb['id']}/rsp",3)
     @field['frame']=fdb['id']
-    @fdbs=fdb[:frame][:status].dup
+    @fdbs=fdb[:frame][:status]
+    @sel=Hash[@fdbs]
     @par=Param.new(fdb[:command])
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
@@ -17,30 +18,30 @@ class FrmRsp
   # Block accepts [time,frame]
   def setrsp(cmd)
     if rid=@par.setpar(cmd).check_id[:response]
-      @fdbs[:select]=@fdbs[:select][rid] || @v.err("No such response id [#{rid}]")
+      @sel[:select]=@fdbs[:select][rid] || @v.err("No such response id [#{rid}]")
       @v.msg{"Set Statement #{cmd}"}
       time,frame=yield
       @v.err("No Response") unless frame
       @field['time']="%.3f" % time.to_f
-      if tm=@fdbs['terminator']
+      if tm=@sel['terminator']
         frame.chomp!(eval('"'+tm+'"'))
         @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
       end
-      if dm=@fdbs['delimiter']
+      if dm=@sel['delimiter']
         @fary=frame.split(eval('"'+dm+'"'))
         @v.msg{"Split:[#{frame}] by [#{dm}]" }
       else
         @fary=[frame]
       end
       @frame.set(@fary.shift)
-      getfield_rec(@fdbs[:main])
+      getfield_rec(@sel[:main])
       if cc=@field.delete('cc')
         cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
     else
       @v.msg{"Send Only"}
-      @fdbs[:select]=nil
+      @sel[:select]=nil
     end
   end
 
@@ -97,7 +98,7 @@ class FrmRsp
         begin
           @v.msg(1){"Entering Ceck Code Node"}
           @frame.mark
-          getfield_rec(@fdbs[:ccrange])
+          getfield_rec(@sel[:ccrange])
           @cc = @frame.checkcode
         ensure
           @v.msg(-1){"Exitting Ceck Code Node"}
@@ -105,7 +106,7 @@ class FrmRsp
       when 'select'
         begin
           @v.msg(1){"Entering Selected Node"}
-          getfield_rec(@fdbs[:select])
+          getfield_rec(@sel[:select])
         ensure
           @v.msg(-1){"Exitting Selected Node"}
         end

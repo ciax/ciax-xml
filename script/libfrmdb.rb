@@ -10,6 +10,7 @@ class FrmDb < DbCache
 
   def refresh
     doc=super
+    update(doc)
     frame=self[:frame]={}
     self[:status]={}
     domc=doc.domain('cmdframe')

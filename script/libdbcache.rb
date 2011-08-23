@@ -40,8 +40,6 @@ class DbCache < Db
 
   def refresh
     @v.msg{"Refresh"}
-    doc=XmlDoc.new(@type,@id)
-    update(doc)
-    doc
+    XmlDoc.new(@type,@id)
   end
 end

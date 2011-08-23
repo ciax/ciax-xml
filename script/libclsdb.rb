@@ -11,6 +11,7 @@ class ClsDb < DbCache
 
   def refresh
     doc=super
+    update(doc)
     self[:structure]={:command => {}, :status => {}}
     init_command(doc.domain('commands'))
     status=doc.domain('status')

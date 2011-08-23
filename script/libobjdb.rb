@@ -17,14 +17,16 @@ class ObjDb < DbCache
     doc.domain('status').each('title'){|e0|
       e0.attr2db(self[:status]||={},'ref')
     }
-  rescue SelectID
-    abort ("USAGE: #{$0} [obj] [cls]\n#{$!}") if __FILE__ == $0
   end
 end
 
 if __FILE__ == $0
   obj,cls=ARGV
-  odb=ObjDb.new(obj)
+  begin
+    odb=ObjDb.new(obj)
+  rescue SelectID
+    abort ("USAGE: #{$0} [obj] [cls]\n#{$!}")
+  end
   if cls
     require "libclsdb"
     db=ClsDb.new(cls)

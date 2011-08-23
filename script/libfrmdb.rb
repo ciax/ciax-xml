@@ -3,9 +3,9 @@ require "librepeat"
 require "libdbcache"
 
 class FrmDb < DbCache
-  attr_reader :frame
   def initialize(frm)
     super('fdb',frm)
+    self[:frame].freeze
   end
 
   def refresh

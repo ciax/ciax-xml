@@ -6,6 +6,7 @@ require "libdbcache"
 class ClsDb < DbCache
   def initialize(cls)
     super('cdb',cls)
+    self[:structure].freeze
   end
 
   def refresh

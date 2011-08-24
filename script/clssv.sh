@@ -11,11 +11,10 @@ echo "Connect to [$iodst]" | tee -a $errlog >&2
 if [ "$dmy" ] ; then
     export NOLOG=1
     iocmd="frmsim $id"
-else
-    iocmd="socat - $iodst"
 fi
-clsint $cls $id "$iocmd" $port >> $errlog 2>&1 &
+psg -k "clsint -s $id"
+clsint -s $id "$iocmd">> $errlog 2>&1 &
 client $id
 echo
 cat $errlog
-psg -k "$cls $id"
+psg -k "clsint -s $id"

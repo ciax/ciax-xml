@@ -14,21 +14,21 @@ require "libiostat"
 require "libinteract"
 
 opt,arg = ARGV.partition{|s| /^-/ === s}
-opt= opt.empty? ? 'als' : opt.join('')
-cls,obj,iocmd,port=arg
+optstr=opt.join('')
+obj,iocmd=arg
 
 begin
   odb=ObjDb.new(obj)
-  odb >> ClsDb.new(cls)
+  odb >> ClsDb.new(odb['class'])
   fdb=FrmDb.new(odb['frame'])
 rescue SelectID
-  abort "Usage: clsint (-als) [cls] [obj] [iocmd] (port)\n#{$!}"
+  abort "Usage: clsint (-s) [obj] (iocmd)\n#{$!}"
 end
 
 stat=IoStat.new(obj,'json/status')
 field=IoStat.new(obj,'field')
 
-io=IoCmd.new(iocmd,obj,fdb['wait'],1)
+io=IoCmd.new(odb['client'],obj,fdb['wait'],1)
 fobj=FrmObj.new(fdb,field,io)
 
 cobj=ClsObj.new(odb,stat,field){|cmd|
@@ -36,8 +36,10 @@ cobj=ClsObj.new(odb,stat,field){|cmd|
 }
 
 al=Alias.new(odb)
-view=View.new(stat).opt(opt,odb[:status])
+view=View.new(stat).opt('als',odb[:status])
 prt=Print.new(view)
+
+port=optstr.include?('s') ? odb["port"] : nil
 
 Interact.new(port||cobj.prompt){|line|
   cobj.dispatch(line){|cmd| al.alias(cmd)}||\

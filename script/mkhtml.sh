@@ -2,11 +2,16 @@
 . ~/lib/libcsv.sh
 src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json
+
+symout(){
+    sdb=symbol_$1.js
+    jsdb $1 $2 > $dir/$sdb
+}
+
 for id; do
     setfld $id || _usage_key
     file=$dir/$id.html
-    sdb=symbol_$obj.js
-    jsdb $obj $cls > $dir/$sdb
+    symout $obj $cls
     ln -sf $src/* $dir/
     cat > $file <<EOF
 <html>
@@ -15,6 +20,7 @@ for id; do
 <link rel="stylesheet" type="text/css" href="ciax-xml.css" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="text/javascript" src="$sdb"></script>
+<script type="text/javascript" src="symbol_all.js"></script>
 <script type="text/javascript" src="symconv.js"></script>
 <body onload="update();">
 EOF
@@ -25,3 +31,4 @@ cat >> $file <<EOF
 EOF
 echo "$file created"
 done
+symout all

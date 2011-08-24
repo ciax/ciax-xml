@@ -4,12 +4,17 @@ require "libclsdb"
 require "libobjdb"
 require "libsymdb"
 
-abort "Usage: jsdb [obj] [class]" if ARGV.size < 2
-
 obj=ARGV.shift
 cls=ARGV.shift
-odb=ClsDb.new(cls) << ObjDb.new(obj)
-sdb=SymDb.new(cls)
-puts 'OBJ="'+obj+'";'
-puts "SDB="+JSON.dump(sdb)+";"
-puts "SYM="+JSON.dump(odb[:status][:symbol])+";"
+if obj == 'all'
+  puts "SDB=jQuery.extend(SDB,"+JSON.dump(SymDb.new)+");"
+else
+  begin
+    odb=ObjDb.new(obj) >> ClsDb.new(cls)
+  rescue SelectID
+    abort "Usage: jsdb [obj] [class]\n#{$!}"
+  end
+  puts 'OBJ="'+obj+'";'
+  puts "SDB="+JSON.dump(SymDb.new(cls))+";"
+  puts "SYM="+JSON.dump(odb[:status][:symbol])+";"
+end

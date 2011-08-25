@@ -1,20 +1,23 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
-[ "$1" = "-d" ] && { dmy=1;shift; }
-id="$1"
-setfld $id || _usage_key "(-d)"
-[ "$iodst" ] || _die "No entry in iodst field"
+while getopts "d" opt; do
+    case $opt in
+        d) export NOLOG=1;dmy=1;;
+        *);;
+    esac
+done
+shift $(( $OPTIND -1 ))
+id=$1;shift
 errlog="$HOME/.var/err-$id.log"
 date > $errlog
-echo "Listen port [udp:$port]" | tee -a $errlog >&2
-echo "Connect to [$iodst]" | tee -a $errlog >&2
+psg -k -q "clsint -s $id"
 if [ "$dmy" ] ; then
-    export NOLOG=1
-    iocmd="frmsim $id"
+    VER=client,server clsint -s $id "frmsim $id" >> $errlog 2>&1 &
+else
+    VER=client,server clsint -s $id >> $errlog 2>&1 &
 fi
-psg -k "clsint -s $id"
-clsint -s $id "$iocmd">> $errlog 2>&1 &
 client $id
 echo
 cat $errlog
 psg -k "clsint -s $id"
+

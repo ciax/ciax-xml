@@ -3,8 +3,9 @@ require "socket"
 require "libverbose"
 
 class Server
-  def initialize(port)
+  def initialize(prom,port)
     @v=Verbose.new("UDPS")
+    @v.msg{"Server:#{port}"}
     @v.msg{"Prompt:#{prom.inspect}"}
     @v.add("interrupt" => "Interrupt")
     UDPSocket.open{ |udp|
@@ -14,7 +15,7 @@ class Server
         line,addr=udp.recvfrom(1024)
         @v.msg{"Recv:#{line} is #{line.class}"}
         begin
-          msg=yield(/interrupt/ === line ? nil : line.chomp)
+          msg=yield(/interrupt/ === line ? nil : line.chomp).to_s
         rescue SelectID
           msg=@v.to_s
         rescue RuntimeError
@@ -22,7 +23,8 @@ class Server
           warn msg
         end
         @v.msg{"Send:#{msg},#{prom}"}
-        udp.send(msg.to_s+"\n",0,addr[2],addr[1])
+        msg << "\n"+prom.join('')
+        udp.send(msg,0,addr[2],addr[1])
       }
     }
   end

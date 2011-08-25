@@ -16,7 +16,7 @@ require "libinteract"
 
 opt={}
 OptionParser.new{|op|
-  op.on('s'){|v| opt[:s]=v}
+  op.on('-s'){|v| opt[:s]=v}
   op.parse!(ARGV)
 }
 obj,iocmd=ARGV
@@ -45,7 +45,7 @@ prt=Print.new(view)
 
 port=opt[:s] ? odb["port"] : nil
 
-Interact.new(port||cobj.prompt){|line|
+Interact.new(cobj.prompt,port){|line|
   cobj.dispatch(line){|cmd| al.alias(cmd)}||\
   (port ? stat.to_j : prt.upd)
 }

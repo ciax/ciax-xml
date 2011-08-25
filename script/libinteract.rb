@@ -1,13 +1,12 @@
 #!/usr/bin/ruby
 class Interact
-  def initialize(what)
-    case what
-    when Array
-      require 'libshell'
-      Shell.new(what){|line| yield line}
-    when String
+  def initialize(prom,port=nil)
+    if port
       require 'libserver'
-      Server.new(what.to_i){|line| yield line}
+      Server.new(prom,port.to_i){|line| yield line}
+    else
+      require 'libshell'
+      Shell.new(prom){|line| yield line}
     end
   end
 end

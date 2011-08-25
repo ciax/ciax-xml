@@ -32,7 +32,7 @@ end
 stat=IoStat.new(obj,'json/status')
 field=IoStat.new(obj,'field')
 
-io=IoCmd.new(iocmd.empty? ? odb['client'] : iocmd,obj,fdb['wait'],1)
+io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
 fobj=FrmObj.new(fdb,field,io)
 
 cobj=ClsObj.new(odb,stat,field){|cmd|

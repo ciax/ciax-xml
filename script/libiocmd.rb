@@ -12,7 +12,7 @@ class IoCmd
     end
     @f=IO.popen(@iocmd,'r+')
     @v=Verbose.new('IOCMD',1)
-    @v.msg{iocmd}
+    @v.msg{"CLIENT:#{iocmd}"}
     @timeout=timeout
     @wait=wait.to_f
     @v.msg{"Init"}

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
-  <class frame="srm" id="srm" label="CsEtr Controller">
+  <app frame="srm" id="srm" label="CsEtr Controller">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
@@ -95,5 +95,5 @@
         </value>
       </row>
     </status>
-  </class>
+  </app>
 </cdb>

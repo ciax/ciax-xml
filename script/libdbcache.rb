@@ -16,6 +16,7 @@ class DbCache < Db
     load
   end
 
+  private
   def load
     if !test(?e,@fmar)
       @v.msg{"MAR file(#{@base}) not exist"}

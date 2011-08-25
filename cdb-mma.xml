@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
-  <class frame="slo" id="mma" label="MOIRCS Arm">
+  <app frame="slo" id="mma" label="MOIRCS Arm">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
@@ -118,5 +118,5 @@
         </command>
       </onchange>
     </watch>
-  </class>
+  </app>
 </cdb>

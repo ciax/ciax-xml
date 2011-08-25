@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
-  <class frame="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
+  <app frame="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
@@ -28,5 +28,5 @@
         </repeat>
       </row>
     </status>
-  </class>
+  </app>
 </cdb>

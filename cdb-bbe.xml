@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
-  <class frame="bbe" id="bbe" label="Helium Compressor">
+  <app frame="bbe" id="bbe" label="Helium Compressor">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
@@ -134,5 +134,5 @@
         </group>
       </repeat>
     </status>
-  </class>
+  </app>
 </cdb>

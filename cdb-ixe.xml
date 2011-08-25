@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
-  <class frame="ixe" id="ixe" label="MOIRCS Turret">
+  <app frame="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
@@ -201,5 +201,5 @@
         </while>
       </repeat>
     </watch>
-  </class>
+  </app>
 </cdb>

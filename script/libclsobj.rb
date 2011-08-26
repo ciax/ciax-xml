@@ -2,7 +2,7 @@
 require "libverbose"
 require "libiostat"
 require "libbuffer"
-require "libclscmd"
+require "libappcmd"
 require "libclsstat"
 require "libwatch"
 require "thread"

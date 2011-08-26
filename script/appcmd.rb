@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libclsdb"
-require "libclscmd"
+require "libappcmd"
 
 cls,*cmd=ARGV
 begin
@@ -8,5 +8,5 @@ begin
   cc=ClsCmd.new(cdb)
   cc.setcmd(cmd).cmdset.each{|cmd| p cmd}
 rescue UserError
-  abort "Usage: clscmd [class] [cmd] (par)\n#{$!}"
+  abort "Usage: appcmd [class] [cmd] (par)\n#{$!}"
 end

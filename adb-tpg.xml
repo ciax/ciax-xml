@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="tpg" id="tpg" label="MOIRCS Pressure">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <cmdset id="upd" label="Update Status">
         <command name="reqstat" />
         <command name="getstat" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="tpg">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="tpg">
       <row>
         <value id="st1" label="Turbo Pump Stat" symbol="stat">
           <string ref="st1" />
@@ -26,4 +26,4 @@
       </row>
     </status>
   </app>
-</cdb>
+</adb>

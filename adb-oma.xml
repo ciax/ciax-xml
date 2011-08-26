@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="oma" id="oma" label="Compressed Air Pressure at MOIRCS">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="oma">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="oma">
       <row label="Group">
         <value id="pres" label="Air Pressure (Psi)" symbol="pres">
           <float format="%4.2f" ref="stat" />
@@ -19,4 +19,4 @@
       </periodic>
     </watch>
   </app>
-</cdb>
+</adb>

@@ -15,7 +15,7 @@ ascpck: exe should be reset
 mcr:inter lock error log is  really needed
 
 ***CHECK NEED
-verify on motion: cdb-oss
+verify on motion: adb-oss
 watch: multicondition
 
 ***UPGRADE
@@ -34,7 +34,7 @@ debug:VER=all getilk dsi fhook - makes Socket error [4/21]
 XML to DB: using libfrmdb, libclsdb[5/9]
   ruby bug: segmentation fault inside of xmllib2 -> xml process description moves to hash at initialize
     -> Purge xml access from operational method(getstat)
-    --> Purge xml access from cdb stat [4/10]
+    --> Purge xml access from adb stat [4/10]
     --> Purge xml access from fdb stat [4/20]
 labeling: use the lib*cmd.rb -> use lib*db.rb
 symboling: symbol reference will move to status/value@symbol

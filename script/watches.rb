@@ -15,11 +15,11 @@ ARGV.clear
   stat=JSON.load(str)
 begin
 warn stat
-  cdb=AppDb.new(stat['app_type'])
+  adb=AppDb.new(stat['app_type'])
 rescue SelectID
   abort $!.to_s
 end
-  watch=Watch.new(cdb,stat.update(hash))
+  watch=Watch.new(adb,stat.update(hash))
   watch.update
   puts watch.to_s
   print "Active? : "

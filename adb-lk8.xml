@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="lk8" id="lk8" label="MOIRCS LakeShore">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
         <command name="htrstat" />
         <command name="spstat" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">
         <repeat from="0" to="3">
           <value id="ch%d" label="CH %d">
@@ -33,4 +33,4 @@
       </row>
     </status>
   </app>
-</cdb>
+</adb>

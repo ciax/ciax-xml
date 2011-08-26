@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <cmdset id="upd" label="Regular status update">
         <command name="getstat" />
         <command name="geterr" />
@@ -273,7 +273,7 @@
         <command name="geterr" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="cj2">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cj2">
       <group id="g1" label="MAIN">
         <row label="General">
           <value id="ctl" label="CONTROL" symbol="ctl">
@@ -498,4 +498,4 @@
       </onchange>
     </watch>
   </app>
-</cdb>
+</adb>

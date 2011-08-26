@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="psp" id="psp" label="MOIRCS Ext Heater">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
       </cmdset>
@@ -30,7 +30,7 @@
         <command name="getstat" />
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">
         <value id="vol" label="OUTPUT (V)">
           <float ref="v" format="%3.2f" />
@@ -77,4 +77,4 @@
       </row>
     </status>
   </app>
-</cdb>
+</adb>

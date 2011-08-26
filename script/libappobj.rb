@@ -9,16 +9,16 @@ require "thread"
 
 class AppObj
   attr_reader :prompt
-  def initialize(cdb,stat,field)
-    @prompt=[cdb['id']]
+  def initialize(adb,stat,field)
+    @prompt=[adb['id']]
     @v=Verbose.new("ctl",6)
     @stat=stat
-    @ac=AppCmd.new(cdb)
-    @as=AppStat.new(cdb,field,@stat)
+    @ac=AppCmd.new(adb)
+    @as=AppStat.new(adb,field,@stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
-    @interval=(cdb['interval']||1).to_i
-    @event=Watch.new(cdb,@stat)
+    @interval=(adb['interval']||1).to_i
+    @event=Watch.new(adb,@stat)
     @watch=watch_thread
     @main=cmdset_thread{|buf| yield buf}
     @v.add("== Internal Command ==")

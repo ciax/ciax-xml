@@ -11,7 +11,7 @@ VER=string1,string2... for set sum
 VER=string1:strint2..  for set intersection
 
 ## String restriction ##
-cdb//cmdset@id -> never use ':'
+adb//cmdset@id -> never use ':'
 
 ### Substitution Strings (implicit conversion) ###
  ## Process order: repeat -> parameter -> status -> formula -> format(w/eval)
@@ -20,17 +20,17 @@ cdb//cmdset@id -> never use ':'
     description : substitute sequence number(in repeat)
     usable: fdb//cmdframe/repeat/code
             --
-            cdb//cmdset/repeat/command/argv
-            cdb//status/repeat/value/*@ref
-            cdb//status/repeat/value/binary@bit
-            cdb//watch/repeat//argv
+            adb//cmdset/repeat/command/argv
+            adb//status/repeat/value/*@ref
+            adb//status/repeat/value/binary@bit
+            adb//watch/repeat//argv
 
  $1..9
     description : substitute parameters, sould be numerical
     usable: fdb//cmdframe/code
             fdb//response/array/index
             --
-            cdb//cmdset/command/argv (eval if @format exists)
+            adb//cmdset/command/argv (eval if @format exists)
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
@@ -40,16 +40,16 @@ cdb//cmdset@id -> never use ':'
 
  $#
     description : formula parameter
-    usable: cdb//status/value/float@formula
+    usable: adb//status/value/float@formula
 
  %? (Format string)
     description : sprintf with sequence number array (in repeat)
-            cdb//status/repeat/value@id
-            cdb//status/repeat/value@label
-            cdb//status/repeat/value@group
-            cdb//watch/repeat/*/@ref
-            cdb//watch/repeat/*/@label
-            cdb//watch/repeat/*/@blocking
+            adb//status/repeat/value@id
+            adb//status/repeat/value@label
+            adb//status/repeat/value@group
+            adb//watch/repeat/*/@ref
+            adb//watch/repeat/*/@label
+            adb//watch/repeat/*/@blocking
             --
             sdb//symbol/repeat/case@id
 
@@ -64,9 +64,9 @@ cdb//cmdset@id -> never use ':'
  format
     usable: fdb//code
             --
-            cdb//command/argv
-            cdb//status/value/float
-            cdb//status/value/int
+            adb//command/argv
+            adb//status/value/float
+            adb//status/value/int
 
  decode
     usable: fdb//response/field
@@ -80,13 +80,13 @@ cdb//cmdset@id -> never use ':'
     example: "0:<10,98,99"
     usable: fdb//code
             --
-            cdb//command/argv
+            adb//command/argv
  
 ### Reference Content ###
   fdb//cmdframe//command@response <= fdb//rspframe//response@id
-  cdb//(commands|watch)//command@name <= fdb//command@id
-  cdb//watch/interrupt@name <= fdb//command@id
-  cdb//watch//condition/value@ref <= cdb//value@id
+  adb//(commands|watch)//command@name <= fdb//command@id
+  adb//watch/interrupt@name <= fdb//command@id
+  adb//watch//condition/value@ref <= adb//value@id
   *@symbol <= *//symbol/table@id
 
 

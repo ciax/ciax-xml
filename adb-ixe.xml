@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="ixe" id="ixe" label="MOIRCS Turret">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
         <repeat from="1" to="6">
@@ -119,7 +119,7 @@
         </command>
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">
         <value id="rdy" label="Comm Ready" symbol="off-warn">
           <binary bit="0" ref="stat" />
@@ -202,4 +202,4 @@
       </repeat>
     </watch>
   </app>
-</cdb>
+</adb>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <cmdset id="upd" label="Regular status update">
         <command name="getstat" />
       </cmdset>
@@ -107,7 +107,7 @@
         </command>
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="mel">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
       <group id="g1" label="Main">
         <row>
           <value id="rdy" label="READY" symbol="normal">
@@ -223,4 +223,4 @@
       </while>
     </watch>
   </app>
-</cdb>
+</adb>

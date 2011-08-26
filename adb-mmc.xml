@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="slo" id="mmc" label="MOIRCS Carrousel">
-    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />
         <command name="bs" />
@@ -62,7 +62,7 @@
         </command>
       </cmdset>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbs" table="mmc">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mmc">
       <row label="Group">
         <value id="bs" label="Moter Moving" symbol="warn">
           <string ref="bs" />
@@ -102,4 +102,4 @@
       </while>
     </watch>
   </app>
-</cdb>
+</adb>

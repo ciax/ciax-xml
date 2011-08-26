@@ -5,7 +5,7 @@ require "libdbcache"
 
 class AppDb < DbCache
   def initialize(app)
-    super('cdb',app)
+    super('adb',app)
     self[:structure].freeze
   end
 
@@ -26,9 +26,9 @@ class AppDb < DbCache
   end
 
   private
-  def init_command(cdb)
+  def init_command(adb)
     self[:command]={}
-    cdb.each{|e0|
+    adb.each{|e0|
       id=e0.attr2db(self[:command])
       list=[]
       Repeat.new.each(e0){|e1,rep|

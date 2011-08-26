@@ -4,10 +4,10 @@ require "libverbose"
 
 class AppCmd
 
-  def initialize(cdb)
-    @v=Verbose.new("#{cdb['id']}/cmd",2)
-    @cdb=cdb[:structure][:command]
-    @par=Param.new(cdb[:command])
+  def initialize(adb)
+    @v=Verbose.new("#{adb['id']}/cmd",2)
+    @adb=adb[:structure][:command]
+    @par=Param.new(adb[:command])
   end
 
   def setcmd(ssn)
@@ -19,7 +19,7 @@ class AppCmd
   def cmdset
     @v.msg{"Exec(CDB):#{@id}"}
     cmdset=[]
-    @cdb[@id].each{|e1|
+    @adb[@id].each{|e1|
       cmd=[]
       @v.msg(1){"GetCmd(DDB):#{e1.first}"}
       begin

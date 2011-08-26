@@ -4,11 +4,11 @@ require "libappdb"
 
 class AppStat
   attr_reader :stat
-  def initialize(cdb,field,stat={})
+  def initialize(adb,field,stat={})
     @field=field
     @stat=stat
-    @cdbs=cdb[:structure][:status]
-    app=cdb['app_type']||cdb['id']
+    @adbs=adb[:structure][:status]
+    app=adb['app_type']||adb['id']
     @stat.update({'time' => Time.now.to_s,'app_type' => app})
     @v=Verbose.new("#{app}/stat",2)
     upd
@@ -16,7 +16,7 @@ class AppStat
 
   public
   def upd
-    @cdbs.each{|id,fields|
+    @adbs.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
         @stat[id]=get_val(fields)

@@ -2,7 +2,7 @@
 require "libparam"
 require "libverbose"
 
-class ClsCmd
+class AppCmd
 
   def initialize(cdb)
     @v=Verbose.new("#{cdb['id']}/cmd",2)

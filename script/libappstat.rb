@@ -2,7 +2,7 @@
 require "libverbose"
 require "libclsdb"
 
-class ClsStat
+class AppStat
   attr_reader :stat
   def initialize(cdb,field,stat={})
     @field=field

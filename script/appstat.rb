@@ -7,10 +7,10 @@ cls=ARGV.shift
 ARGV.clear
 
 begin
-  cdb=ClsDb.new(cls)
+  cdb=AppDb.new(cls)
   str=gets(nil) || exit
   field=Stat.new(str)
-  cs=ClsStat.new(cdb,field,Stat.new)
+  cs=AppStat.new(cdb,field,Stat.new)
   print cs.stat.to_j
 rescue RuntimeError
   abort "Usage: appstat [class] < field_file\n#{$!}"

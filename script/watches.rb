@@ -15,7 +15,7 @@ ARGV.clear
   stat=JSON.load(str)
 begin
 warn stat
-  cdb=ClsDb.new(stat['app_type'])
+  cdb=AppDb.new(stat['app_type'])
 rescue SelectID
   abort $!.to_s
 end

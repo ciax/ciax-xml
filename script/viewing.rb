@@ -16,7 +16,7 @@ while STDIN.gets
   elsif type=stat['app_type']
     require "libclsdb"
     require "libobjdb"
-    db=ClsDb.new(type) << ObjDb.new(obj)
+    db=AppDb.new(type) << ObjDb.new(obj)
   else
     raise "NO Type ID in View"
   end

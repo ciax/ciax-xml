@@ -29,7 +29,7 @@ if __FILE__ == $0
   end
   if cls
     require "libclsdb"
-    odb >> ClsDb.new(cls)
+    odb >> AppDb.new(cls)
   end
   puts odb
 end

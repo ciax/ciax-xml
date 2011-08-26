@@ -7,14 +7,14 @@ require "libappstat"
 require "libwatch"
 require "thread"
 
-class ClsObj
+class AppObj
   attr_reader :prompt
   def initialize(cdb,stat,field)
     @prompt=[cdb['id']]
     @v=Verbose.new("ctl",6)
     @stat=stat
-    @cc=ClsCmd.new(cdb)
-    @cs=ClsStat.new(cdb,field,@stat)
+    @cc=AppCmd.new(cdb)
+    @cs=AppStat.new(cdb,field,@stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(cdb['interval']||1).to_i

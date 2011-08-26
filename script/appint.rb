@@ -23,7 +23,7 @@ obj,iocmd=ARGV
 
 begin
   odb=ObjDb.new(obj)
-  odb >> ClsDb.new(odb['app_type'])
+  odb >> AppDb.new(odb['app_type'])
   fdb=FrmDb.new(odb['frm_type'])
 rescue SelectID
   abort "Usage: appint (-s) [obj] (iocmd)\n#{$!}"
@@ -35,7 +35,7 @@ field=IoStat.new(obj,'field')
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
 fobj=FrmObj.new(fdb,field,io)
 
-cobj=ClsObj.new(odb,stat,field){|cmd|
+cobj=AppObj.new(odb,stat,field){|cmd|
   fobj.request(cmd)
 }
 

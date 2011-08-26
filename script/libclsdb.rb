@@ -3,7 +3,7 @@ require "libcircular"
 require "librepeat"
 require "libdbcache"
 
-class ClsDb < DbCache
+class AppDb < DbCache
   def initialize(cls)
     super('cdb',cls)
     self[:structure].freeze
@@ -135,7 +135,7 @@ end
 
 if __FILE__ == $0
   begin
-    db=ClsDb.new(ARGV.shift)
+    db=AppDb.new(ARGV.shift)
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end

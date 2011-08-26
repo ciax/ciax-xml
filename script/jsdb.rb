@@ -10,7 +10,7 @@ if obj == 'all'
   puts "SDB=jQuery.extend(SDB,"+JSON.dump(SymDb.new)+");"
 else
   begin
-    odb=ObjDb.new(obj) >> ClsDb.new(cls)
+    odb=ObjDb.new(obj) >> AppDb.new(cls)
   rescue SelectID
     abort "Usage: jsdb [obj] [class]\n#{$!}"
   end

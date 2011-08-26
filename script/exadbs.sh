@@ -9,7 +9,9 @@ for id in $devices; do
     setfld $id || continue
     echo "$C2#### $app($id) ####$C0"
     file=$HOME/.var/field_$id.json
-    appstat $app < $file | viewing $opt $obj | if [ "$opt" ]
+    stat=$HOME/.var/json/status_$id.json
+    appstat $app < $file > $stat
+    <$stat viewing $opt $obj | if [ "$opt" ]
     then
         v2s
     else

@@ -14,7 +14,7 @@ while STDIN.gets
     require "libfrmdb"
     db=FrmDb.new(type)
   elsif type=stat['app_type']
-    require "libclsdb"
+    require "libappdb"
     require "libobjdb"
     db=AppDb.new(type) << ObjDb.new(obj)
   else

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libhtmltbl"
-require "libclsdb"
+require "libappdb"
 require "libobjdb"
 
 abort "Usage: htmltbl [obj] [app]" if ARGV.size < 2

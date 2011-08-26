@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libclsdb"
+require "libappdb"
 require "libappcmd"
 
 cls,*cmd=ARGV

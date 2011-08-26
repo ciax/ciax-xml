@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "json"
-require "libclsdb"
+require "libappdb"
 require "libwatch"
 abort "Usage: watches (test conditions (key=val)..) < [file]" if STDIN.tty?
 hash={}

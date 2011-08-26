@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libobjdb"
-require "libclsdb"
+require "libappdb"
 require "libfrmdb"
 require "libfrmobj"
 require "libiocmd"

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libclsdb"
+require "libappdb"
 
 class AppStat
   attr_reader :stat

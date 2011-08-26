@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "json"
-require "libclsdb"
+require "libappdb"
 require "libobjdb"
 require "libsymdb"
 

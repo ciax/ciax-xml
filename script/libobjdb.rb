@@ -28,7 +28,7 @@ if __FILE__ == $0
     abort ("USAGE: #{$0} [obj] [cls]\n#{$!}")
   end
   if cls
-    require "libclsdb"
+    require "libappdb"
     odb >> AppDb.new(cls)
   end
   puts odb

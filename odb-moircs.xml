@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
-  <object id="mfp" label="MOIRCS Pneumatic Actuator" class="cfp" client="socat - tcp:celaeno:4001" port="24101"></object>
-  <object id="map" label="MOIRCS Air Pressure" class="oma" client="socat - tcp:celaeno:4002" port="24102"></object>
-  <object id="mma" label="MOIRCS Extension Arm" class="mma" client="socat - tcp:celaeno:4003" port="24103"></object>
-  <object id="mmc" label="MOIRCS Carrousel" class="mmc" client="socat - tcp:celaeno:4004" port="24104"></object>
-  <object id="mix" label="MOIRCS Turret" class="ixe" client="socat - tcp:celaeno:4007" port="24107"></object>
-  <object id="mva" label="MOIRCS Pumping" class="var" client="socat - tcp:celaeno:4008" port="24108"></object>
-  <object id="mft" label="MOIRCS Hall Effect Sensor" class="fpa" client="socat - tcp:celaeno:4012" port="24112"></object>
-  <object id="mh1" label="MOIRCS Main/Carrousel Heater" class="psp" client="socat - tcp:merope:59999" port="24201"></object>
-  <object id="mh2" label="MOIRCS Main Heater" class="psp" client="socat - tcp:atlas:59999" port="24202"></object>
+  <object id="mfp" label="MOIRCS Pneumatic Actuator" app_type="cfp" client="socat - tcp:celaeno:4001" port="24101"></object>
+  <object id="map" label="MOIRCS Air Pressure" app_type="oma" client="socat - tcp:celaeno:4002" port="24102"></object>
+  <object id="mma" label="MOIRCS Extension Arm" app_type="mma" client="socat - tcp:celaeno:4003" port="24103"></object>
+  <object id="mmc" label="MOIRCS Carrousel" app_type="mmc" client="socat - tcp:celaeno:4004" port="24104"></object>
+  <object id="mix" label="MOIRCS Turret" app_type="ixe" client="socat - tcp:celaeno:4007" port="24107"></object>
+  <object id="mva" label="MOIRCS Pumping" app_type="var" client="socat - tcp:celaeno:4008" port="24108"></object>
+  <object id="mft" label="MOIRCS Hall Effect Sensor" app_type="fpa" client="socat - tcp:celaeno:4012" port="24112"></object>
+  <object id="mh1" label="MOIRCS Main/Carrousel Heater" app_type="psp" client="socat - tcp:merope:59999" port="24201"></object>
+  <object id="mh2" label="MOIRCS Main Heater" app_type="psp" client="socat - tcp:atlas:59999" port="24202"></object>
 </odb>

@@ -13,7 +13,7 @@ while STDIN.gets
   if type=stat['frame']
     require "libfrmdb"
     db=FrmDb.new(type)
-  elsif type=stat['class']
+  elsif type=stat['app_type']
     require "libclsdb"
     require "libobjdb"
     db=ClsDb.new(type) << ObjDb.new(obj)

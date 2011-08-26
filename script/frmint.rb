@@ -16,7 +16,7 @@ OptionParser.new{|op|
 obj,iocmd=ARGV
 begin
   odb=ObjDb.new(obj)
-  odb >> ClsDb.new(odb['class'])
+  odb >> ClsDb.new(odb['app_type'])
   fdb=FrmDb.new(odb['frame'])
   field=IoStat.new(obj,'field')
   io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)

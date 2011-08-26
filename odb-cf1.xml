@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
-  <object id="cf1" label="S1 Helium Compressor Coolant Flow" class="k3n" client="socat - tcp:ltt-o:4001" port="45601">
+  <object id="cf1" label="S1 Helium Compressor Coolant Flow" app_type="k3n" client="socat - tcp:ltt-o:4001" port="45601">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
     </status>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
-  <object id="cci" label="IR Helium Compressor Control" class="bbe" client="socat - tcp:ltc-i:4002" port="25105">
+  <object id="cci" label="IR Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-i:4002" port="25105">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/odbc">
       <alias id="upd" label="Update Status" ref="upd" />
       <alias id="c2on" label="CAS2(S1) ON" ref="x0on" />

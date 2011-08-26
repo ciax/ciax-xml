@@ -7,7 +7,7 @@ class View < Hash
     hash=self['list']={}
     stat.each{|k,v|
       case k
-      when 'id','frame','class'
+      when 'id','frame','app_type'
         self[k]=v
       else
         hash[k]={'val'=>v}
@@ -53,7 +53,7 @@ class View < Hash
   def init_sym
     if @db && @db.key?(:symbol)
       require "libsymdb"
-      @sdb=SymDb.new.update(SymDb.new(self['class']))
+      @sdb=SymDb.new.update(SymDb.new(self['app_type']))
     end
     self
   end

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:odb="http://ciax.sum.naoj.org/ciax-xml/odb" xmlns:odbc="http://ciax.sum.naoj.org/ciax-xml/odbc" xmlns:odbs="http://ciax.sum.naoj.org/ciax-xml/odbs" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:import schemaLocation="odbc.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/odbc" />
   <xsd:import schemaLocation="odbs.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/odbs" />
@@ -19,12 +19,9 @@
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-      <xsd:attribute name="class" use="required" type="xsd:NCName" />
+      <xsd:attribute name="app_type" use="required" type="xsd:NCName" />
       <xsd:attribute name="client" type="xsd:token" />
       <xsd:attribute name="port" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="class" type="xsd:NCName"></xsd:element>
-  <xsd:element name="client" type="xsd:token"></xsd:element>
-  <xsd:element name="server" type="xsd:token" />
 </xsd:schema>

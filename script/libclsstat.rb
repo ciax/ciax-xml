@@ -8,8 +8,8 @@ class ClsStat
     @field=field
     @stat=stat
     @cdbs=cdb[:structure][:status]
-    cls=cdb['id']
-    @stat.update({'time' => Time.now.to_s,'class' => cls})
+    cls=cdb['app_type']||cdb['id']
+    @stat.update({'time' => Time.now.to_s,'app_type' => cls})
     @v=Verbose.new("#{cls}/stat",2)
     upd
   end

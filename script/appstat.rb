@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libclsdb"
-require "libclsstat"
+require "libappstat"
 require "libstat"
 
 cls=ARGV.shift
@@ -13,5 +13,5 @@ begin
   cs=ClsStat.new(cdb,field,Stat.new)
   print cs.stat.to_j
 rescue RuntimeError
-  abort "Usage: clsstat [class] < field_file\n#{$!}"
+  abort "Usage: appstat [class] < field_file\n#{$!}"
 end

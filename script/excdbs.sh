@@ -9,7 +9,7 @@ for id in $devices; do
     setfld $id || continue
     echo "$C2#### $cls($id) ####$C0"
     file=$HOME/.var/field_$id.json
-    clsstat $cls < $file | viewing $opt $obj | if [ "$opt" ]
+    appstat $cls < $file | viewing $opt $obj | if [ "$opt" ]
     then
         v2s
     else

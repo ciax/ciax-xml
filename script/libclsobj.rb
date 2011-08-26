@@ -3,7 +3,7 @@ require "libverbose"
 require "libiostat"
 require "libbuffer"
 require "libappcmd"
-require "libclsstat"
+require "libappstat"
 require "libwatch"
 require "thread"
 

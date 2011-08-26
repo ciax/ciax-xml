@@ -10,8 +10,8 @@ begin
   cdb=AppDb.new(cls)
   str=gets(nil) || exit
   field=Stat.new(str)
-  cs=AppStat.new(cdb,field,Stat.new)
-  print cs.stat.to_j
+  as=AppStat.new(cdb,field,Stat.new)
+  print as.stat.to_j
 rescue RuntimeError
-  abort "Usage: appstat [class] < field_file\n#{$!}"
+  abort "Usage: appstat [app] < field_file\n#{$!}"
 end

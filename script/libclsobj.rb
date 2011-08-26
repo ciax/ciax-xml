@@ -13,8 +13,8 @@ class AppObj
     @prompt=[cdb['id']]
     @v=Verbose.new("ctl",6)
     @stat=stat
-    @cc=AppCmd.new(cdb)
-    @cs=AppStat.new(cdb,field,@stat)
+    @ac=AppCmd.new(cdb)
+    @as=AppStat.new(cdb,field,@stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(cdb['interval']||1).to_i
@@ -40,7 +40,7 @@ class AppObj
     when 'waitfor'
       @buf.wait_for(10){ @stat.get(ssn[0]) == ssn[1] }
     else
-      @buf.send{@cc.setcmd(ssn).cmdset}
+      @buf.send{@ac.setcmd(ssn).cmdset}
     end
     upd
     "ISSUED"
@@ -77,7 +77,7 @@ class AppObj
       begin
         loop{
           yield @buf.recv
-          @cs.upd
+          @as.upd
           @stat.save
         }
       rescue UserError

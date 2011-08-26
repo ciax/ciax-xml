@@ -5,8 +5,8 @@ require "libappcmd"
 cls,*cmd=ARGV
 begin
   cdb=AppDb.new(cls)
-  cc=AppCmd.new(cdb)
-  cc.setcmd(cmd).cmdset.each{|cmd| p cmd}
+  ac=AppCmd.new(cdb)
+  ac.setcmd(cmd).cmdset.each{|cmd| p cmd}
 rescue UserError
-  abort "Usage: appcmd [class] [cmd] (par)\n#{$!}"
+  abort "Usage: appcmd [app] [cmd] (par)\n#{$!}"
 end

@@ -12,7 +12,7 @@ else
   begin
     odb=ObjDb.new(obj) >> AppDb.new(cls)
   rescue SelectID
-    abort "Usage: jsdb [obj] [class]\n#{$!}"
+    abort "Usage: jsdb [obj] [app]\n#{$!}"
   end
   puts 'OBJ="'+obj+'";'
   puts "SDB="+JSON.dump(SymDb.new(cls))+";"

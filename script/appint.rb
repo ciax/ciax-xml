@@ -26,7 +26,7 @@ begin
   odb >> ClsDb.new(odb['app_type'])
   fdb=FrmDb.new(odb['frm_type'])
 rescue SelectID
-  abort "Usage: clsint (-s) [obj] (iocmd)\n#{$!}"
+  abort "Usage: appint (-s) [obj] (iocmd)\n#{$!}"
 end
 
 stat=IoStat.new(obj,'json/status')

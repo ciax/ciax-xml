@@ -10,14 +10,14 @@ shift $(( $OPTIND -1 ))
 id=$1;shift
 errlog="$HOME/.var/err-$id.log"
 date > $errlog
-psg -k -q "clsint -s $id"
+psg -k -q "appint -s $id"
 if [ "$dmy" ] ; then
-    VER=client,server clsint -s $id "frmsim $id" >> $errlog 2>&1 &
+    VER=client,server appint -s $id "frmsim $id" >> $errlog 2>&1 &
 else
-    VER=client,server clsint -s $id >> $errlog 2>&1 &
+    VER=client,server appint -s $id >> $errlog 2>&1 &
 fi
 client $id
 echo
 cat $errlog
-psg -k "clsint -s $id"
+psg -k "appint -s $id"
 

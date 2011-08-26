@@ -24,7 +24,7 @@ obj,iocmd=ARGV
 begin
   odb=ObjDb.new(obj)
   odb >> ClsDb.new(odb['app_type'])
-  fdb=FrmDb.new(odb['frame'])
+  fdb=FrmDb.new(odb['frm_type'])
 rescue SelectID
   abort "Usage: clsint (-s) [obj] (iocmd)\n#{$!}"
 end

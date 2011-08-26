@@ -7,7 +7,7 @@ class View < Hash
     hash=self['list']={}
     stat.each{|k,v|
       case k
-      when 'id','frame','app_type'
+      when 'id','frm_type','app_type'
         self[k]=v
       else
         hash[k]={'val'=>v}

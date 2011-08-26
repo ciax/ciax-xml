@@ -17,7 +17,7 @@ obj,iocmd=ARGV
 begin
   odb=ObjDb.new(obj)
   odb >> ClsDb.new(odb['app_type'])
-  fdb=FrmDb.new(odb['frame'])
+  fdb=FrmDb.new(odb['frm_type'])
   field=IoStat.new(obj,'field')
   io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
   fobj=FrmObj.new(fdb,field,io)

@@ -10,7 +10,7 @@ obj=arg.first
 
 while STDIN.gets
   stat=JSON.load($_)
-  if type=stat['frame']
+  if type=stat['frm_type']
     require "libfrmdb"
     db=FrmDb.new(type)
   elsif type=stat['app_type']

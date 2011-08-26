@@ -8,7 +8,7 @@ class FrmRsp
     @fdb=fdb
     @field=field
     @v=Verbose.new("#{fdb['id']}/rsp",3)
-    @field['frame']=fdb['id']
+    @field['frm_type']=fdb['id']
     @fdbs=fdb[:frame][:status]
     @sel=Hash[@fdbs]
     @par=Param.new(fdb[:command])

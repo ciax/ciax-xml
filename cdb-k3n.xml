@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
-  <app frame="k3n" id="k3n" label="Helium Compressor Coolant Flow">
+  <app frm_type="k3n" id="k3n" label="Helium Compressor Coolant Flow">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <cmdset id="upd" label="Update Status">
         <command name="getstat" />

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
-  <app frame="cj2" id="cj2" label="Stand-by Flange PLC">
+  <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/cdbc">
       <cmdset id="upd" label="Regular status update">
         <command name="getstat" />

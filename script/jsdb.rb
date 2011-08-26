@@ -5,16 +5,16 @@ require "libobjdb"
 require "libsymdb"
 
 obj=ARGV.shift
-cls=ARGV.shift
+app=ARGV.shift
 if obj == 'all'
   puts "SDB=jQuery.extend(SDB,"+JSON.dump(SymDb.new)+");"
 else
   begin
-    odb=ObjDb.new(obj) >> AppDb.new(cls)
+    odb=ObjDb.new(obj) >> AppDb.new(app)
   rescue SelectID
     abort "Usage: jsdb [obj] [app]\n#{$!}"
   end
   puts 'OBJ="'+obj+'";'
-  puts "SDB="+JSON.dump(SymDb.new(cls))+";"
+  puts "SDB="+JSON.dump(SymDb.new(app))+";"
   puts "SYM="+JSON.dump(odb[:status][:symbol])+";"
 end

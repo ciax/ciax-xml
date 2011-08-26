@@ -11,7 +11,7 @@ symout(){
 for id; do
     setfld $id || _usage_key
     file=$dir/$id.html
-    symout $obj $cls
+    symout $obj $app
     ln -sf $src/* $dir/
     cat > $file <<EOF
 <html>
@@ -24,7 +24,7 @@ for id; do
 <script type="text/javascript" src="symconv.js"></script>
 <body onload="update();">
 EOF
->>$file htmltbl $obj $cls
+>>$file htmltbl $obj $app
 cat >> $file <<EOF
 </body>
 </html>

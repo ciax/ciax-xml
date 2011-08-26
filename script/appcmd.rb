@@ -2,9 +2,9 @@
 require "libappdb"
 require "libappcmd"
 
-cls,*cmd=ARGV
+app,*cmd=ARGV
 begin
-  cdb=AppDb.new(cls)
+  cdb=AppDb.new(app)
   ac=AppCmd.new(cdb)
   ac.setcmd(cmd).cmdset.each{|cmd| p cmd}
 rescue UserError

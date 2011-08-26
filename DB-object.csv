@@ -1,4 +1,4 @@
-!id,obj,cls,dev,iodst,host,port
+!id,obj,app,dev,iodst,host,port
 crt,crt,mel,mel,udp:cart3:5000,ciax,25101
 dsi,dsi,cj2,cj2,udp:cst-i:9600,cxws2,25102
 dso,dso,cj2,cj2,udp:cst-o:9600,cxws2,25103

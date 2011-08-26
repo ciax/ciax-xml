@@ -6,6 +6,6 @@ require "libobjdb"
 abort "Usage: htmltbl [obj] [app]" if ARGV.size < 2
 
 obj=ARGV.shift
-cls=ARGV.shift
-odb=AppDb.new(cls) << ObjDb.new(obj)
+app=ARGV.shift
+odb=AppDb.new(app) << ObjDb.new(obj)
 puts HtmlTbl.new(odb)

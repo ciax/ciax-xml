@@ -21,15 +21,15 @@ class ObjDb < DbCache
 end
 
 if __FILE__ == $0
-  obj,cls=ARGV
+  obj,app=ARGV
   begin
     odb=ObjDb.new(obj)
   rescue SelectID
-    abort ("USAGE: #{$0} [obj] [cls]\n#{$!}")
+    abort ("USAGE: #{$0} [obj] [app]\n#{$!}")
   end
-  if cls
+  if app
     require "libappdb"
-    odb >> AppDb.new(cls)
+    odb >> AppDb.new(app)
   end
   puts odb
 end

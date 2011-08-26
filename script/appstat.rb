@@ -3,11 +3,11 @@ require "libappdb"
 require "libappstat"
 require "libstat"
 
-cls=ARGV.shift
+app=ARGV.shift
 ARGV.clear
 
 begin
-  cdb=AppDb.new(cls)
+  cdb=AppDb.new(app)
   str=gets(nil) || exit
   field=Stat.new(str)
   as=AppStat.new(cdb,field,Stat.new)

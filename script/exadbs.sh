@@ -7,9 +7,9 @@ devices=${1:-`ls ~/.var/field_???.json|cut -d_ -f2|cut -d. -f1`};shift
 par="$*"
 for id in $devices; do
     setfld $id || continue
-    echo "$C2#### $cls($id) ####$C0"
+    echo "$C2#### $app($id) ####$C0"
     file=$HOME/.var/field_$id.json
-    appstat $cls < $file | viewing $opt $obj | if [ "$opt" ]
+    appstat $app < $file | viewing $opt $obj | if [ "$opt" ]
     then
         v2s
     else

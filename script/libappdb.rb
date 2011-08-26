@@ -4,8 +4,8 @@ require "librepeat"
 require "libdbcache"
 
 class AppDb < DbCache
-  def initialize(cls)
-    super('cdb',cls)
+  def initialize(app)
+    super('cdb',app)
     self[:structure].freeze
   end
 

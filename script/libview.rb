@@ -1,8 +1,11 @@
 #!/usr/bin/ruby
 require "libverbose"
+require "libmodio"
 # Status to View (String with attributes)
 class View < Hash
+  include ModIo
   def initialize(stat)
+    @v=Verbose.new("view",6)
     @stat=stat
     hash=self['list']={}
     stat.each{|k,v|
@@ -13,6 +16,7 @@ class View < Hash
         hash[k]={'val'=>v}
       end
     }
+    @type="view_#{self['id']}"
   end
 
   def opt(opt,db=nil)

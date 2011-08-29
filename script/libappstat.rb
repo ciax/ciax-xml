@@ -4,36 +4,34 @@ require "libappdb"
 
 class AppStat
   attr_reader :stat
-  def initialize(adb,field,stat={})
-    @field=field
+  def initialize(adb,stat={})
     @stat=stat
     @adbs=adb[:structure][:status]
     app=adb['app_type']||adb['id']
     @stat.update({'time' => Time.now.to_s,'app_type' => app})
     @v=Verbose.new("#{app}/stat",2)
-    upd
   end
 
   public
-  def upd
+  def upd(field)
     @adbs.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
-        @stat[id]=get_val(fields)
+        @stat[id]=get_val(fields,field)
       ensure
         @v.msg(-1){"STAT:GetStatus:#{id}=[#{@stat[id]}]"}
       end
     }
-    @stat['time']=Time.at(@field['time'].to_f).to_s
+    @stat['time']=Time.at(field['time'].to_f).to_s
     self
   end
 
   private
-  def get_val(fields)
+  def get_val(fields,field)
     str=''
     fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || @v.abort("No field Key")
-      data=@v.check(@field.get(fld)){"No field Value[#{fld}]"}
+      data=@v.check(field.get(fld)){"No field Value[#{fld}]"}
       case e1[:type]
       when 'binary'
         str << binary(e1,data)

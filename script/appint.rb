@@ -35,8 +35,9 @@ field=IoStat.new(obj,'field')
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
 fobj=FrmObj.new(fdb,field,io)
 
-cobj=AppObj.new(odb,stat,field){|cmd|
+cobj=AppObj.new(odb,stat){|cmd|
   fobj.request(cmd)
+  field
 }
 
 al=Alias.new(odb)

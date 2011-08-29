@@ -2,7 +2,7 @@
 
 module ModIo
   VarDir="#{ENV['HOME']}/.var"
-  attr_writer :type
+  attr_writer :type,:v
 
   def load(tag=nil)
     base=[@type,tag].compact.join('_')

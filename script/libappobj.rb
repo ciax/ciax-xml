@@ -9,12 +9,12 @@ require "thread"
 
 class AppObj
   attr_reader :prompt
-  def initialize(adb,stat,field)
+  def initialize(adb,stat)
     @prompt=[adb['id']]
     @v=Verbose.new("ctl",6)
     @stat=stat
     @ac=AppCmd.new(adb)
-    @as=AppStat.new(adb,field,@stat)
+    @as=AppStat.new(adb,@stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
@@ -76,8 +76,7 @@ class AppObj
       Thread.pass
       begin
         loop{
-          yield @buf.recv
-          @as.upd
+          @as.upd(yield @buf.recv)
           @stat.save
         }
       rescue UserError

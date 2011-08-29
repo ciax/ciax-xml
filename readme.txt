@@ -114,16 +114,16 @@ adb//cmdset@id -> never use ':'
 ### Struct of Db ###
   FrmDb
     ::command
-      :select
-         id=>[ {data1},{data2} ..]
-         ...
       :label
          id=>Label String
          ...
-    ::status
-      :select
-         id=>[ {val1},{val2} ..]
+      :response
+         ref=> Status ID
          ...
+      :nocache
+         id=> true or false
+         ...         
+    ::status
       :label
          id=>Label String
          ...
@@ -134,43 +134,52 @@ adb//cmdset@id -> never use ':'
       :command
          :main=>[ {data1},{data2} ..]
          :ccrange=>[ {data1},{data2} ..]
+         :select
+           id=>[ {data1},{data2} ..]
+           ...
       :status
          :main=>[ {val1},{val2} ..]
          :ccrange=>[ {val1},{val2} ..]
+         :select
+           id=>[ {val1},{val2} ..]
+           ...
     ::symbol (Tables)
        table1=>{table}
        table2=>{table}
 
-  ClsDb
+  AppDb
     { "id" ,"frame", "label", "interval }
-    ::command
-      :select => {}
+    :structure
+      :command
         id => [ statement,.. ]
            statement=["cmd",{arg1},{arg2}..]
         ...
-      :label => {}
-        id => Label String
-    ::status
-      :select => {}
+      :status
         id => [ { :type, "ref" .. },... ]
         ...
+    :command
+      :label => {}
+        id => Label String
+    :status
+      "talbe"=> Symbol Table
+      :label => {}
+        id => Label String
       :group => []
         [ Title, [ id1, id2,.. ] ]
         ...
-      :label => {}
-        id => Label String
       :symbol => {}
         id => Symbol Table ID
         ..
-    ::table (Symbol Table)
-        id => { label, type, :record}
-          :record => {}
-            val=>{ class,msg }
-            ...
-    ::watch => []
+    :watch => []
         {:type, :var=>{variable},.. }
           :period => second
           :condition => {:operator, :ary => [ {:ref,:val},.. ] }
           :command => [ [statement],.. ]
           :blocking => regexp
           :interrupt => [ [statement],..]
+
+  SymDb
+     id => { label, type, :record}
+       :record => {}
+         id=>{ class,msg }
+         ...

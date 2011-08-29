@@ -32,9 +32,8 @@ class FrmObj
     when 'save'
       save(cmd[1],cmd[2])
     else
-      @cmd.setcmd(cmd)
       cid=cmd.join(':')
-      @ic.snd(@cmd.getframe,'snd:'+cid)
+      @ic.snd(@cmd.getframe(cmd),'snd:'+cid)
       @rsp.setrsp(cmd){@ic.rcv('rcv:'+cid)}
       @field.save
       'OK'

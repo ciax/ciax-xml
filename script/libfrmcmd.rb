@@ -4,7 +4,6 @@ require "libparam"
 # Cmd Methods
 class FrmCmd
   def initialize(fdb,field)
-    @fdb=fdb
     @field=field
     @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
@@ -15,21 +14,16 @@ class FrmCmd
     @par=Param.new(fdb[:command])
   end
 
-  def setcmd(cmd) # return = response select
+  def getframe(cmd) # return = response select
     id=cmd.first
     @par.setpar(cmd).check_id
-    @sel[:select]=@fdbc[:select][id]
+    return unless @sel[:select]=@fdbc[:select][id]
     @v.msg{"Attr of Param:#{@par}"}
-    @cid=cmd.join(':')
-    @cid << ':*' if /true|1/ === @par[:nocache]
-    @v.msg{"Select:#{@par[:label]}(#{@cid})"}
-    self
-  end
-
-  def getframe
-    return unless @sel[:select]
-    if frame=@cache[@cid]
-      @v.msg{"Cmd cache found [#{@cid}]"}
+    cid=cmd.join(':')
+    cid << ':*' if /true|1/ === @par[:nocache]
+    @v.msg{"Select:#{@par[:label]}(#{cid})"}
+    if frame=@cache[cid]
+      @v.msg{"Cmd cache found [#{cid}]"}
     else
       mk_frame(:select)
       if @sel.key?(:ccrange)
@@ -38,7 +32,7 @@ class FrmCmd
         @field['cc']=@frame.checkcode
       end
       frame=mk_frame(:main)
-      @cache[@cid]=frame unless /\*/ === @cid
+      @cache[cid]=frame unless /\*/ === cid
     end
     frame
   end

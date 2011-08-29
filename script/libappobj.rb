@@ -35,9 +35,9 @@ class AppObj
     ssn=line.split(' ')
     case ssn[0]
     when 'sleep'
-      @buf.wait_for(ssn[0].to_i){}
+      @buf.wait_for(ssn[1].to_i){}
     when 'waitfor'
-      @buf.wait_for(10){ @as.stat.get(ssn[0]) == ssn[1] }
+      @buf.wait_for(10){ @as.stat.get(ssn[1]) == ssn[2] }
     else
       @buf.send{@ac.setcmd(ssn).cmdset}
     end

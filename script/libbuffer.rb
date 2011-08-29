@@ -85,15 +85,10 @@ class Buffer
     Thread.new{
       Thread.pass
       loop{
-        proc=@proc.shift
+        cond=@proc.shift
         dl=Time.now+@wait
-        while @wait
-          sleep 1
-          if proc.call || dl < Time.now
-            flush
-            break
-          end
-        end
+        sleep 1 until cond.call || dl < Time.now
+        @wait=false
       }
     }
   end

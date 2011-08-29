@@ -26,6 +26,6 @@ rescue SelectID
 end
 port=opt[:s] ? odb["port"] : nil
 Interact.new([odb['frame'],'>'],port){|line|
-  (line && fobj.request(line.split(' ')))||\
+  (line && fobj.request(line.split(' ')).to_s)||\
   (port ? field.to_j : field)
 }

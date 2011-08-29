@@ -4,6 +4,7 @@ require "libfrmcmd"
 require "libfrmrsp"
 
 class FrmObj
+  attr_reader :field
   def initialize(fdb,field,iocmd)
     raise "Field is not Stat" unless field.is_a?(IoStat)
     @field=field
@@ -20,27 +21,35 @@ class FrmObj
   end
 
   def request(cmd) #Should be array
-    return if cmd.empty?
-    @v.msg{"Receive #{cmd}"}
-    case cmd[0]
-    when 'set'
-      set(cmd[1..-1]).inspect
-    when 'unset'
-      @field.delete(cmd[1]).inspect
-    when 'load'
-      load(cmd[1])
-    when 'save'
-      save(cmd[1],cmd[2])
+    if cmd.empty?
+      @res=nil
     else
-      cid=cmd.join(':')
-      @ic.snd(@cmd.getframe(cmd),'snd:'+cid)
-      @rsp.setrsp(cmd){@ic.rcv('rcv:'+cid)}
-      @field.save
-      'OK'
+      @v.msg{"Receive #{cmd}"}
+      case cmd[0]
+      when 'set'
+        @res=set(cmd[1..-1]).inspect
+      when 'unset'
+        @res=@field.delete(cmd[1]).inspect
+      when 'load'
+        @res=load(cmd[1])
+      when 'save'
+        @res=save(cmd[1],cmd[2])
+      else
+        cid=cmd.join(':')
+        @ic.snd(@cmd.getframe(cmd),'snd:'+cid)
+        @rsp.setrsp(cmd){@ic.rcv('rcv:'+cid)}
+        @field.save
+        @res='OK'
+      end
     end
+    self
   rescue SelectID
     @v.add("No such command '#{cmd}'")
     @v.list
+  end
+
+  def to_s
+    @res
   end
 
   private

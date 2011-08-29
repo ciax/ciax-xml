@@ -30,14 +30,12 @@ rescue SelectID
 end
 
 stat=IoStat.new(obj,'json/status')
-field=IoStat.new(obj,'field')
 
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
-fobj=FrmObj.new(fdb,field,io)
+fobj=FrmObj.new(fdb,IoStat.new(obj,'field'),io)
 
 cobj=AppObj.new(odb,stat){|cmd|
-  fobj.request(cmd)
-  field
+  fobj.request(cmd).field
 }
 
 al=Alias.new(odb)

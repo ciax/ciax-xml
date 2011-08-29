@@ -12,13 +12,12 @@ class AppObj
   def initialize(adb,stat)
     @prompt=[adb['id']]
     @v=Verbose.new("ctl",6)
-    @stat=stat
     @ac=AppCmd.new(adb)
-    @as=AppStat.new(adb,@stat)
+    @as=AppStat.new(adb,stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
-    @event=Watch.new(adb,@stat)
+    @event=Watch.new(adb,stat)
     @watch=watch_thread
     @main=cmdset_thread{|buf| yield buf}
     @v.add("== Internal Command ==")
@@ -38,7 +37,7 @@ class AppObj
     when 'sleep'
       @buf.wait_for(ssn[0].to_i){}
     when 'waitfor'
-      @buf.wait_for(10){ @stat.get(ssn[0]) == ssn[1] }
+      @buf.wait_for(10){ @as.stat.get(ssn[0]) == ssn[1] }
     else
       @buf.send{@ac.setcmd(ssn).cmdset}
     end
@@ -66,7 +65,7 @@ class AppObj
 
   private
   def upd_elem(flg,key,idx,sym=nil,sym2='')
-    @stat[key]= flg ? '1' : '0' if key
+    @as.stat[key]= flg ? '1' : '0' if key
     @prompt[idx]= flg ? sym : sym2 if idx
     flg
   end
@@ -76,8 +75,7 @@ class AppObj
       Thread.pass
       begin
         loop{
-          @as.upd(yield @buf.recv)
-          @stat.save
+          @as.upd(yield @buf.recv).stat.save
         }
       rescue UserError
         @v.alert(" in Command Thread")

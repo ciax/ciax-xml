@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'json'
 require 'libverbose'
-class Stat < Hash
+class Field < Hash
   def initialize(str=nil)
     @v=Verbose.new("stat",5)
     update_j(str) if str

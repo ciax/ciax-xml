@@ -6,7 +6,7 @@ require "libfrmrsp"
 class FrmObj
   attr_reader :field
   def initialize(fdb,field,iocmd)
-    raise "Field is not Stat" unless field.is_a?(IoStat)
+    raise "Field is not Field" unless field.is_a?(IoField)
     @field=field
     raise "Command is not IoCmd" unless iocmd.is_a?(IoCmd)
     @ic=iocmd

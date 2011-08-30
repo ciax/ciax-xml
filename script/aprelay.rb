@@ -7,7 +7,7 @@ require "libinteract"
 id,iocmd,port=ARGV
 
 begin
-  @stat=Stat.new
+  @stat=Field.new
   @io=IoCmd.new(iocmd)
   @ap=AscPck.new(id,@stat)
 rescue SelectID

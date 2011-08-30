@@ -3,7 +3,7 @@ require 'libverbose'
 require 'libstat'
 require 'libmodio'
 
-class IoStat < Stat
+class IoField < Field
   include ModIo
   def initialize(id,type)
     @v=Verbose.new("stat",5)

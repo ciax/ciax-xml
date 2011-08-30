@@ -29,10 +29,10 @@ rescue SelectID
   abort "Usage: appint (-s) [obj] (iocmd)\n#{$!}"
 end
 
-stat=IoStat.new(obj,'json/status')
+stat=IoField.new(obj,'json/status')
 
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
-fobj=FrmObj.new(fdb,IoStat.new(obj,'field'),io)
+fobj=FrmObj.new(fdb,IoField.new(obj,'field'),io)
 
 cobj=AppObj.new(odb,stat){|cmd|
   fobj.request(cmd).field

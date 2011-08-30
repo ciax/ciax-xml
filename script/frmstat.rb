@@ -10,7 +10,7 @@ ARGV.clear
 
 begin
   fdb=FrmDb.new(dev)
-  field=Stat.new
+  field=Field.new
   r=FrmRsp.new(fdb,field)
   str=gets(nil) || exit
   ary=str.split("\t")

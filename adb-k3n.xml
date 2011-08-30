@@ -8,10 +8,14 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="k3n">
       <row label="Group">
-        <value id="err" label="STAT" symbol="err">
+        <value id="rcode" label="Return Code" symbol="rcode">
           <string ref="rcode" />
+        </value>
+        <value id="ecode" label="Error Code" symbol="ecode">
           <string ref="ecode" />
         </value>
+      </row>
+      <row label="Group">
         <value id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="flow">
           <float format="%4.2f" ref="stat" formula="$#/100" />
         </value>

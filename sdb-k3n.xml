@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="k3n" label="Helium Compressor Coolant Flow">
-    <table id="err" type="regexp">
-      <case class="hide" msg="OK">000000</case>
-      <case class="alarm" msg="Error" />
-    </table>
     <table id="flow" type="range">
       <case class="alarm" msg="HH">6:</case>
       <case class="warn" msg="H">5:&lt;6</case>

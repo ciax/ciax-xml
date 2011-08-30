@@ -16,7 +16,6 @@
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
           <xsd:attributeGroup ref="fdbr:rsp_attr" />
-          <xsd:attribute name="symbol" type="xsd:NCName" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

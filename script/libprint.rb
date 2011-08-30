@@ -3,7 +3,9 @@ class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(view)
     @view=view
-    @group = @view['group'] || @view['list'].keys
+    @group = @view['group'] || [[@view['stat'].keys]]
+    @symbol=@view['symbol'] || {}
+    @label=@view['label'] || {}
     get_group
   end
 
@@ -18,7 +20,7 @@ class Print < Array
     @group.each{|g|
       arys,ids = g.partition{|e| Array === e}
       unless ids.empty?
-        cap=@view['label'][ids.first] || next
+        cap=@label[ids.first] || next
         push " ***"+color(2,cap)+"***"
       end
       arys.each{|a|
@@ -31,10 +33,11 @@ class Print < Array
   def get_element(ids,col=6)
     da=[]
     ids.each{|id|
-      next unless @view['list'].key?(id)
-      item=@view['list'][id]
-      label=@view['label'][id] || id.upcase
-      da << prt(item,label)
+      next unless @view['stat'].key?(id)
+      val=@view['stat'][id]
+      symbol=@symbol[id]||{}
+      label=@label[id] || id.upcase
+      da << prt(symbol,label,val)
     }
     da.each_slice(col){|a|
       push "  "+a.join(" ")
@@ -42,17 +45,17 @@ class Print < Array
     self
   end
 
-  def prt(item,label)
+  def prt(symbol,label,val)
     str='['
     str << color(6,label)
     str << ':'
-    msg=item['msg']
-    c=CM[item['class']]
-    case v=item['val']
-    when Numeric
-      str << color(c,"#{v}(#{msg})")
+    msg=symbol['msg']
+    c=CM[symbol['class']]
+    case v=symbol['type']
+    when 'num'
+      str << color(c,"#{val}(#{msg})")
     else
-      str << color(c,msg||v)
+      str << color(c,msg||val)
     end
     str << "]"
   end

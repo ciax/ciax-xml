@@ -3,15 +3,15 @@ require "optparse"
 require "json"
 require "libobjdb"
 require "libappdb"
+require "libview"
+require "libfield"
+require "libiocmd"
 require "libfrmdb"
 require "libfrmobj"
 require "libappdb"
 require "libappobj"
 require "libalias"
-require "libview"
 require "libprint"
-require "libiocmd"
-require "libiofield"
 require "libinteract"
 
 opt={}
@@ -23,28 +23,29 @@ obj,iocmd=ARGV
 
 begin
   odb=ObjDb.new(obj)
-  odb >> AppDb.new(odb['app_type'])
+  app=odb['app_type']
+  odb >> AppDb.new(app)
   fdb=FrmDb.new(odb['frm_type'])
 rescue SelectID
   abort "Usage: appint (-s) [obj] (iocmd)\n#{$!}"
 end
 
-stat=IoField.new(obj,'json/status')
-
+view=View.new(obj).load
+view.opt('als',odb[:status]).upd
+view['app_type']=app
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
-fobj=FrmObj.new(fdb,IoField.new(obj,'field'),io)
+fobj=FrmObj.new(fdb,Field.new(obj),io)
 
-cobj=AppObj.new(odb,stat){|cmd|
+cobj=AppObj.new(odb,view){|cmd|
   fobj.request(cmd).field
 }
 
 al=Alias.new(odb)
-view=View.new(stat).opt('als',odb[:status])
 prt=Print.new(view)
 
 port=opt[:s] ? odb["port"] : nil
 
 Interact.new(cobj.prompt,port){|line|
   cobj.dispatch(line){|cmd| al.alias(cmd)}||\
-  (port ? stat.to_j : prt.upd)
+  (port ? view.to_j : prt.upd)
 }

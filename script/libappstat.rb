@@ -7,9 +7,7 @@ class AppStat
   def initialize(adb,stat={})
     @stat=stat
     @adbs=adb[:structure][:status]
-    app=adb['app_type']||adb['id']
-    @stat.update({'time' => Time.now.to_s,'app_type' => app})
-    @v=Verbose.new("#{app}/stat",2)
+    @v=Verbose.new("stat",2)
   end
 
   public

@@ -11,8 +11,8 @@ class SymDb < DbCache
 
   def convert(view,ref=nil)
     @ref=ref||@ref
-    view['list'].each{|k,v|
-      val=v['val']
+    view['symbol']||={}
+    view['stat'].each{|k,val|
       next if val == ''
       next unless sid=@ref[k]
       unless key?(sid)
@@ -25,8 +25,7 @@ class SymDb < DbCache
       when 'range'
         tbl.each{|match,hash|
           next unless ReRange.new(match) == val
-          v['val']=val.to_f
-          v.update(hash)
+          view['symbol'][k]={'type' => 'num'}.update(hash)
           @v.msg{"VIEW:Range:[#{match}] and [#{val}]"}
           break
         }
@@ -34,12 +33,12 @@ class SymDb < DbCache
         tbl.each{|match,hash|
           @v.msg{"VIEW:Regexp:[#{match}] and [#{val}]"}
           next unless /#{match}/ === val || val == 'default'
-          v.update(hash)
+          view['symbol'][k]={'type' => 'str'}.update(hash)
           break
         }
       when 'string'
         val='default' unless tbl.key?(val)
-        v.update(tbl[val])
+        view['symbol'][k]={'type' => 'str'}.update(tbl[val])
         @v.msg{"VIEW:String:[#{val}](#{tbl[val]['msg']})"}
       end
     }

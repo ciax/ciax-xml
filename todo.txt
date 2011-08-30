@@ -9,6 +9,7 @@ crt: jack table edit interface (sql+web)
 client: add view function
 status_??: update with clsobj
 objdb: using objdb to get iocmd instead of DB-object
+dbchache: make it module
 
 ***LACK FUNCTION
 ascpck: exe should be reset

@@ -4,19 +4,10 @@ require "libmodio"
 # Status to View (String with attributes)
 class View < Hash
   include ModIo
-  def initialize(stat)
+  def initialize(id=nil)
     @v=Verbose.new("view",6)
-    @stat=stat
-    hash=self['list']={}
-    stat.each{|k,v|
-      case k
-      when 'id','frm_type','app_type'
-        self[k]=v
-      else
-        hash[k]={'val'=>v}
-      end
-    }
-    @type="view_#{self['id']}"
+    @type="json/status_#{id}" if id
+    self['stat']={}
   end
 
   def opt(opt,db=nil)
@@ -28,15 +19,8 @@ class View < Hash
   end
 
   def upd
-    self['list'].each{|k,v|
-      v['val']=@stat[k]
-    }
     @sdb.convert(self,@db[:symbol]) if @sdb
     self
-  end
-
-  def to_s
-    Verbose.view_struct(self)
   end
 
   private

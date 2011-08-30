@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libiofield"
 require "libbuffer"
 require "libappcmd"
 require "libappstat"
@@ -9,15 +8,16 @@ require "thread"
 
 class AppObj
   attr_reader :prompt
-  def initialize(adb,stat)
+  def initialize(adb,view)
+    @view=view
     @prompt=[adb['id']]
     @v=Verbose.new("ctl",6)
     @ac=AppCmd.new(adb)
-    @as=AppStat.new(adb,stat)
+    @as=AppStat.new(adb,view['stat'])
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
-    @event=Watch.new(adb,stat)
+    @event=Watch.new(adb,view['stat'])
     @watch=watch_thread
     @main=cmdset_thread{|buf| yield buf}
     @v.add("== Internal Command ==")
@@ -75,7 +75,8 @@ class AppObj
       Thread.pass
       begin
         loop{
-          @as.upd(yield @buf.recv).stat.save
+          @as.upd(yield @buf.recv)
+          @view.save
         }
       rescue UserError
         @v.alert(" in Command Thread")

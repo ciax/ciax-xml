@@ -11,25 +11,24 @@ conds.each{|s|
 }
 cmd=cmds.join(" ")
 ARGV.clear
-  str=gets(nil) || exit
-  stat=JSON.load(str)
+str=gets(nil) || exit
+view=JSON.load(str)
 begin
-warn stat
-  adb=AppDb.new(stat['app_type'])
+  adb=AppDb.new(view['app_type'])
 rescue SelectID
   abort $!.to_s
 end
-  watch=Watch.new(adb,stat.update(hash))
-  watch.update
-  puts watch.to_s
-  print "Active? : "
-  p watch.active?
-  print "Block Pattern : "
-  p watch.block_pattern
-  print "Blocking? (#{cmd}) : "
-  p watch.blocking?(cmd)
-  print "Issue Commands : "
-  p watch.issue
-  print "Interrupt : "
-  p watch.interrupt
+watch=Watch.new(adb,view['stat'].update(hash))
+watch.update
+puts watch.to_s
+print "Active? : "
+p watch.active?
+print "Block Pattern : "
+p watch.block_pattern
+print "Blocking? (#{cmd}) : "
+p watch.blocking?(cmd)
+print "Issue Commands : "
+p watch.issue
+print "Interrupt : "
+p watch.interrupt
 

@@ -2,6 +2,7 @@
 require "libappdb"
 require "libappstat"
 require "libfield"
+require "libview"
 
 app=ARGV.shift
 ARGV.clear
@@ -9,9 +10,10 @@ ARGV.clear
 begin
   adb=AppDb.new(app)
   str=gets(nil) || exit
-  field=Field.new(str)
-  as=AppStat.new(adb,Field.new).upd(field)
-  print as.stat.to_j
+  field=Field.new.update_j(str)
+  view=View.new.update({'app_type' => app })
+  as=AppStat.new(adb,view['stat']).upd(field)
+  print view.to_j
 rescue RuntimeError
   abort "Usage: appstat [app] < field_file\n#{$!}"
 end

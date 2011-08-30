@@ -41,7 +41,7 @@ class View < Hash
   def init_sym
     if @db && @db.key?(:symbol)
       require "libsymdb"
-      @sdb=SymDb.new.update(SymDb.new(self['app_type']))
+      @sdb=SymDb.new.update(SymDb.new(@db['table']))
     end
     self
   end

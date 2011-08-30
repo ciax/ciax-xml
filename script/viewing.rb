@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 require "json"
 require "libview"
+require "libappdb"
+require "libobjdb"
 
 abort "Usage: viewing (-als) (obj) < [status_file]" if STDIN.tty?
 
@@ -10,12 +12,7 @@ obj=arg.first
 
 while STDIN.gets
   stat=JSON.load($_)
-  if type=stat['frm_type']
-    require "libfrmdb"
-    db=FrmDb.new(type)
-  elsif type=stat['app_type']
-    require "libappdb"
-    require "libobjdb"
+  if type=stat['app_type']
     db=AppDb.new(type) << ObjDb.new(obj)
   else
     raise "NO Type ID in View"

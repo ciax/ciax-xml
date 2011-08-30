@@ -31,6 +31,6 @@ for id in $devices; do
             getstat $cmd
         done
     fi
-    < $output viewing $opt | v2s
+    < $output v2s
     read -t 0 && break
 done

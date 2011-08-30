@@ -1,8 +1,21 @@
 #!/usr/bin/ruby
+require 'json'
 
 module ModIo
   VarDir="#{ENV['HOME']}/.var"
   attr_writer :type,:v
+
+  def to_s
+    Verbose.view_struct(self)
+  end
+
+  def to_j
+    JSON.dump(Hash[self])
+  end
+
+  def update_j(str)
+    update(JSON.load(str))
+  end
 
   def load(tag=nil)
     return unless @type
@@ -64,3 +77,5 @@ module ModIo
     "Tag=#{list}"
   end
 end
+
+

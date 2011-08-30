@@ -10,22 +10,6 @@ class Field < Hash
     @type="field_#{id}" if id
   end
 
-  def to_j
-    JSON.dump(to_h)
-  end
-
-  def update_j(str)
-    update(JSON.load(str))
-  end
-
-  def to_h
-    Hash[self]
-  end
-
-  def to_s
-    Verbose.view_struct(self)
-  end
-
   def subst(str)
     return str unless /\$\{/ === str
     @v.msg(1){"Substitute from [#{str}]"}

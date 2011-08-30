@@ -1,10 +1,13 @@
 #!/usr/bin/ruby
 require 'json'
 require 'libverbose'
+require 'libmodio'
+
 class Field < Hash
-  def initialize(str=nil)
+  include ModIo
+  def initialize(id=nil)
     @v=Verbose.new("stat",5)
-    update_j(str) if str
+    @type="field_#{id}" if id
   end
 
   def to_j
@@ -60,4 +63,11 @@ class Field < Hash
     get(key).replace(subst(val).to_s)
     self
   end
+end
+#!/usr/bin/ruby
+require 'libverbose'
+require 'libfield'
+
+class IoField < Field
+
 end

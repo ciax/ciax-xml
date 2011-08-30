@@ -5,7 +5,7 @@ require "libappdb"
 require "libfrmdb"
 require "libfrmobj"
 require "libiocmd"
-require "libiofield"
+require "libfield"
 require "libinteract"
 
 opt={}
@@ -18,7 +18,7 @@ begin
   odb=ObjDb.new(obj)
   odb >> AppDb.new(odb['app_type'])
   fdb=FrmDb.new(odb['frm_type'])
-  field=IoField.new(obj,'field')
+  field=Field.new(obj).load
   io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
   fobj=FrmObj.new(fdb,field,io)
 rescue SelectID

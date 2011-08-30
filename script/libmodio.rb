@@ -5,6 +5,7 @@ module ModIo
   attr_writer :type,:v
 
   def load(tag=nil)
+    return unless @type
     base=[@type,tag].compact.join('_')
     @v.msg{"Status Loading for [#{base}]"}
     fname=VarDir+"/#{base}.json"
@@ -20,6 +21,7 @@ module ModIo
   end
 
   def save(tag=nil,keylist=nil)
+    return unless @type
     base=[@type,tag].compact.join('_')
     fname=VarDir+"/#{base}.json"
     if keylist

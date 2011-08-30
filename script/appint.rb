@@ -31,8 +31,8 @@ rescue SelectID
 end
 
 view=View.new(obj).load
-view.opt('als',odb[:status]).upd
 view['app_type']=app
+view.opt('als',odb[:status]).upd
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
 fobj=FrmObj.new(fdb,Field.new(obj),io)
 

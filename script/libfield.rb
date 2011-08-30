@@ -48,10 +48,3 @@ class Field < Hash
     self
   end
 end
-#!/usr/bin/ruby
-require 'libverbose'
-require 'libfield'
-
-class IoField < Field
-
-end

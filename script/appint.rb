@@ -11,7 +11,7 @@ require "libalias"
 require "libview"
 require "libprint"
 require "libiocmd"
-require "libiostat"
+require "libiofield"
 require "libinteract"
 
 opt={}

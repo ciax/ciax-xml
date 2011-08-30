@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libverbose'
-require 'libstat'
+require 'libfield'
 require 'libmodio'
 
 class IoField < Field

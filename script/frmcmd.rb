@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libstat"
+require "libfield"
 require "libfrmcmd"
 require "libfrmdb"
 

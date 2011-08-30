@@ -5,7 +5,7 @@ require "libappdb"
 require "libfrmdb"
 require "libfrmobj"
 require "libiocmd"
-require "libiostat"
+require "libiofield"
 require "libinteract"
 
 opt={}

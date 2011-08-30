@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libappdb"
 require "libappstat"
-require "libstat"
+require "libfield"
 
 app=ARGV.shift
 ARGV.clear

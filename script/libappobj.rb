@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libiostat"
+require "libiofield"
 require "libbuffer"
 require "libappcmd"
 require "libappstat"

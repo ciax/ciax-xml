@@ -8,10 +8,15 @@ module ModIo
     base=[@type,tag].compact.join('_')
     @v.msg{"Status Loading for [#{base}]"}
     fname=VarDir+"/#{base}.json"
-    raise SelectID,list_stat unless !tag || FileTest.exist?(fname)
-    stat=JSON.load(IO.read(fname))
-    raise "No status in File" unless stat
-    update(stat)
+    if FileTest.exist?(fname)
+      stat=JSON.load(IO.read(fname))
+      raise "No status in File" unless stat
+      update(stat)
+    elsif tag
+      raise SelectID,list_stat
+    else
+      @v.warn("----- No #{base}.json")
+    end
   end
 
   def save(tag=nil,keylist=nil)

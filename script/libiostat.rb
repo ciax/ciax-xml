@@ -9,10 +9,6 @@ class IoStat < Stat
     @v=Verbose.new("stat",5)
     raise SelectID," No ID" unless id
     @type=type+"_#{id}"
-    begin
-      load
-    rescue
-      @v.warn("----- No #{@type}.json")
-    end
+    load
   end
 end

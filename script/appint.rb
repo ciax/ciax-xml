@@ -47,5 +47,5 @@ port=opt[:s] ? odb["port"] : nil
 
 Interact.new(cobj.prompt,port){|line|
   cobj.dispatch(line){|cmd| al.alias(cmd)}||\
-  (port ? view.to_j : prt.upd)
+  (port ? view.to_j('stat','symbol') : prt.upd)
 }

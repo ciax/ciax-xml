@@ -9,8 +9,13 @@ module ModIo
     Verbose.view_struct(self)
   end
 
-  def to_j
-    JSON.dump(Hash[self])
+  def to_j(*klist)
+    if klist.empty?
+      hash=Hash[self]
+    else
+      hash=pick(klist)
+    end
+    JSON.dump(hash)
   end
 
   def update_j(str)

@@ -1,8 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
   <object id="crt" label="CART 3" app_type="mel" client="socat - udp:cart3:5000" port="25101"></object>
-  <object id="dsi" label="IR Stand-by Flange" app_type="cj2" client="socat - udp:cst-i:9600" port="25102"></object>
-  <object id="dso" label="OPT Stand-by Flange" app_type="cj2" client="socat - udp:cst-o:9600" port="25103"></object>
+  <object id="dsi" label="IR Stand-by Flange" app_type="cj2" client="socat - udp:cst-i:9600" port="25102">
+    <init xmlns="http://ciax.sum.naoj.org/ciax-xml/odbf">
+      <field id="ipl" length="1">1</field>
+      <field id="ipr" length="1">33</field>
+    </init>
+  </object>
+  <object id="dso" label="OPT Stand-by Flange" app_type="cj2" client="socat - udp:cst-o:9600" port="25103">
+    <init xmlns="http://ciax.sum.naoj.org/ciax-xml/odbf">
+      <field id="ipl" length="1">1</field>
+      <field id="ipr" length="1">32</field>
+    </init>
+  </object>
   <object id="det" label="CsEtr Control" app_type="srm" client="socat - tcp:ltc-c:4001" port="25104"></object>
   <object id="dts" label="TSC Control" app_type="oss" client="socat - tcp:cxws2:9999" port="25105"></object>
 </odb>

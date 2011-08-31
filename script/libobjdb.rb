@@ -11,6 +11,10 @@ class ObjDb < DbCache
   def refresh
     doc=super
     update(doc)
+    doc.domain('init').each('field'){|e0|
+      self[:field]||={}
+      self[:field].update(e0.node2db('id'))
+    }
     doc.domain('command').each('alias'){|e0|
       e0.attr2db(self[:alias]||={})
     }

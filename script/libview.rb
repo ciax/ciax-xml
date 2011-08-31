@@ -6,7 +6,10 @@ class View < Hash
   include ModIo
   def initialize(id=nil)
     @v=Verbose.new("view",6)
-    @type="json/status_#{id}" if id
+    if id
+      @type="json/status_#{id}"
+      self['id']=id
+    end
     self['stat']={}
   end
 

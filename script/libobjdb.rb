@@ -9,7 +9,6 @@ class ObjDb < DbCache
   end
 
   def refresh
-    doc=super
     update(doc)
     doc.domain('init').each('field'){|e0|
       self[:field]||={}

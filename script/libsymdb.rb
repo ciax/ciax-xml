@@ -46,7 +46,6 @@ class SymDb < DbCache
   end
 
   def refresh
-    doc=super
     doc.top.each{|e1|
       row=e1.to_h
       id=row.delete('id')

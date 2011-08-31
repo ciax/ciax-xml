@@ -10,7 +10,6 @@ class AppDb < DbCache
   end
 
   def refresh
-    doc=super
     update(doc)
     self[:structure]={:command => {}, :status => {}}
     init_command(doc.domain('commands'))

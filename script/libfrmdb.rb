@@ -9,7 +9,6 @@ class FrmDb < DbCache
   end
 
   def refresh
-    doc=super
     update(doc)
     frame=self[:frame]={}
     self[:status]={}

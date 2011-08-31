@@ -1,6 +1,11 @@
 #!/usr/bin/ruby
 require "libverbose"
+require "libxmldoc"
 class Db < Hash
+  def initialize(type,id)
+    @type=type
+    @id=id
+  end
 
   def to_s
     Verbose.view_struct(self)
@@ -12,6 +17,10 @@ class Db < Hash
 
   def <<(hash) # overwritten by hash
     replace(rec_merge(self,hash))
+  end
+
+  def doc
+    XmlDoc.new(@type,@id)
   end
 
   private

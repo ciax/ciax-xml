@@ -7,10 +7,10 @@ class DbCache < Db
   VarDir="#{ENV['HOME']}/.var/cache"
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def initialize(type,id)
+    super
     @v=Verbose.new("cache",2)
     @base="#{type}-#{id}"
-    @type=type
-    @id=id || refresh
+    refresh unless id
     @fmar=VarDir+"/#{@base}.mar"
     @fxml=XmlDir+"/#{@base}.xml"
     load
@@ -40,10 +40,5 @@ class DbCache < Db
       f << Marshal.dump(Hash[self])
       @v.msg{"Saved"}
     }
-  end
-
-  def refresh
-    @v.msg{"Refresh"}
-    XmlDoc.new(@type,@id)
   end
 end

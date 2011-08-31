@@ -20,17 +20,20 @@ class ObjDb < DbCache
     doc.domain('status').each('title'){|e0|
       e0.attr2db(self[:status]||={},'ref')
     }
+    save
   end
 end
 
 if __FILE__ == $0
   obj,app=ARGV
   begin
-    odb=ObjDb.new(obj)
+    odb=ObjDb.new(obj).refresh
   rescue SelectID
     abort ("USAGE: #{$0} [obj] (-)\n#{$!}")
   end
-  require "libappdb"
-  odb >> AppDb.new(odb['app_type']) if app
+  if app
+    require "libappdb"
+    odb >> AppDb.new(odb['app_type'])
+  end
   puts odb
 end

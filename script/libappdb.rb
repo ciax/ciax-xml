@@ -22,6 +22,7 @@ class AppDb < DbCache
       @stat.keys.map{|k| "Structure:status:#{k} #{@stat[k]}"}
     }
     self[:watch]=init_watch(doc.domain('watch'))
+    save
   end
 
   private
@@ -134,7 +135,7 @@ end
 
 if __FILE__ == $0
   begin
-    db=AppDb.new(ARGV.shift)
+    db=AppDb.new(ARGV.shift).refresh
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end

@@ -58,7 +58,7 @@ class SymDb < DbCache
       self[id]=row
       @v.msg{"Symbol Table:#{id} : #{label}"}
     }
-    self
+    save
   rescue SelectID
     @v.list if __FILE__ == $0
   end
@@ -66,7 +66,7 @@ end
 
 if __FILE__ == $0
   begin
-    sdb=SymDb.new(ARGV.shift)
+    sdb=SymDb.new(ARGV.shift).refresh
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end

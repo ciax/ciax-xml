@@ -21,6 +21,7 @@ class FrmDb < DbCache
     @v.msg{"Structure:command:#{self[:command]}"}
     init_sel(domr,'response',:status){|e| init_stat(e)}
     @v.msg{"Structure:status:#{self[:status]}"}
+    save
   end
 
   private
@@ -130,7 +131,7 @@ end
 
 if __FILE__ == $0
   begin
-    db=FrmDb.new(ARGV.shift)
+    db=FrmDb.new(ARGV.shift).refresh
   rescue SelectID
     abort("USAGE: #{$0} [id]\n#{$!}")
   end

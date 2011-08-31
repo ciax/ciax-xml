@@ -29,7 +29,7 @@ class AppStat
     str=''
     fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || @v.abort("No field Key")
-      data=@v.check(field.get(fld)){"No field Value[#{fld}]"}
+      data=@v.check(field.get(fld)){"No field Value[#{fld}]"}||''
       case e1[:type]
       when 'binary'
         str << binary(e1,data)

@@ -22,7 +22,7 @@ class AppDb < Db
              @hash[:watch]=init_watch(doc.domain('watch'))
              @hash
            })
-    @hash[:structure].freeze
+    self[:structure].freeze
   end
 
   private

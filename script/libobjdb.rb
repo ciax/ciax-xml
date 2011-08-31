@@ -25,9 +25,9 @@ if __FILE__ == $0
   begin
     odb=ObjDb.new(obj)
   rescue SelectID
-    abort ("USAGE: #{$0} [obj]\n#{$!}")
+    abort ("USAGE: #{$0} [obj] (-)\n#{$!}")
   end
   require "libappdb"
-  odb >> AppDb.new(odb['app_type'])
+  odb >> AppDb.new(odb['app_type']) if app
   puts odb
 end

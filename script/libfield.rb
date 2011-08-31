@@ -7,7 +7,10 @@ class Field < Hash
   include ModIo
   def initialize(id=nil)
     @v=Verbose.new("stat",5)
-    @type="field_#{id}" if id
+    if id
+      @type="field_#{id}"
+      self["id"]=id
+    end
   end
 
   def subst(str)

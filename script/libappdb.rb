@@ -59,7 +59,7 @@ class AppDb < DbCache
         @stat[:label][id]=r0.subst(e0['label'])
         init_stat(e0,r0)
       elsif e0.name == 'row'
-        @stat[:group] << [] if @stat[:group].empty?
+        @stat[:group] << [] if @stat[:group].size < 2
         @stat[:group].last << []
         init_stat(e0,r0)
       else

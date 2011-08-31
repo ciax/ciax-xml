@@ -13,7 +13,7 @@ class ObjDb < DbCache
     update(doc)
     doc.domain('init').each('field'){|e0|
       self[:field]||={}
-      self[:field].update(e0.node2db('id'))
+      self[:field][e0['id']]=e0.text
     }
     doc.domain('command').each('alias'){|e0|
       e0.attr2db(self[:alias]||={})

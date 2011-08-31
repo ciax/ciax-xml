@@ -34,7 +34,7 @@ view=View.new(obj).load
 view['app_type']=app
 view.opt('als',odb[:status]).upd
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
-fobj=FrmObj.new(fdb,Field.new(obj),io)
+fobj=FrmObj.new(fdb,Field.new(obj).load,io)
 
 cobj=AppObj.new(odb,view){|cmd|
   fobj.request(cmd).field

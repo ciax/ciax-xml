@@ -3,15 +3,9 @@
 src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json
 
-symout(){
-    sdb=symbol_$1.js
-    jsdb $1 $2 > $dir/$sdb
-}
-
 for id; do
     setfld $id || _usage_key
     file=$dir/$id.html
-    symout $obj $app
     ln -sf $src/* $dir/
     cat > $file <<EOF
 <html>
@@ -19,9 +13,27 @@ for id; do
 <title>CIAX-XML</title>
 <link rel="stylesheet" type="text/css" href="ciax-xml.css" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script type="text/javascript" src="$sdb"></script>
-<script type="text/javascript" src="symbol_all.js"></script>
-<script type="text/javascript" src="symconv.js"></script>
+<script type="text/javascript">
+function update(){
+    jQuery.ajax({
+        url : "status_$id.json",
+        dataType : 'json',
+        cache : false,
+        success : function(view){
+            for (var id in view.stat){
+                var val=view.stat[id];
+                if(view.symbol && view.symbol[id]){
+                    var hash=view.symbol[id];
+                    jQuery("#"+id).addClass(hash.class);
+                    val=hash.msg;
+                }
+                jQuery("#"+id).text(val);
+            }
+        }
+    })
+}
+jQuery(document).ready(setInterval(update,3000));
+</script>
 <body onload="update();">
 EOF
 >>$file htmltbl $obj $app
@@ -31,4 +43,3 @@ cat >> $file <<EOF
 EOF
 echo "$file created"
 done
-symout all

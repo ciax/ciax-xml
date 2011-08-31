@@ -33,6 +33,7 @@ class DbCache < Db
       refresh
       save
     end
+    self
   end
 
   def save
@@ -40,5 +41,6 @@ class DbCache < Db
       f << Marshal.dump(Hash[self])
       @v.msg{"Saved"}
     }
+    self
   end
 end

@@ -10,12 +10,12 @@ for id in $devices; do
     echo "$C2#### $app($id) ####$C0"
     file=$HOME/.var/field_$id.json
     stat=$HOME/.var/json/status_$id.json
-    appstat $app < $file |viewing -s > $stat
-    <$stat viewing $opt $obj | if [ "$opt" ]
+    appstat $app < $file > $stat
+    if [ "$opt" ]
     then
-        v2s
+        v2s <$stat
     else
-        stprint
+        stprint <$stat
     fi
     read -t 0 && break
 done

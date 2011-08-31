@@ -76,7 +76,7 @@ class AppObj
       begin
         loop{
           @as.upd(yield @buf.recv)
-          @view.save(nil,['app_type','stat','symbol'])
+          @view.save
         }
       rescue UserError
         @v.alert(" in Command Thread")

@@ -30,22 +30,21 @@ rescue SelectID
   abort "Usage: appint (-s) [obj] (iocmd)\n#{$!}"
 end
 
-view=View.new(obj).load
-view['app_type']=app
-view.opt('als',odb[:status]).upd
+stat=View.new(obj,odb[:status]).load.upd
+stat['app_type']=app
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
 fobj=FrmObj.new(fdb,Field.new(obj).load,io)
 
-cobj=AppObj.new(odb,view){|cmd|
+cobj=AppObj.new(odb,stat){|cmd|
   fobj.request(cmd).field
 }
 
 al=Alias.new(odb)
-prt=Print.new(view)
+prt=Print.new(odb[:status],stat)
 
 port=opt[:s] ? odb["port"] : nil
 
 Interact.new(cobj.prompt,port){|line|
   cobj.dispatch(line){|cmd| al.alias(cmd)}||\
-  (port ? view.to_j('app_type','stat','symbol') : prt.upd)
+  (port ? stat.to_j : prt.upd)
 }

@@ -88,4 +88,15 @@ class Xml
     }
     key
   end
+
+  def node2db(id=nil)
+    hash=to_h
+    hash['val'] = text if text
+    if id
+      key=hash.delete(id)
+      { key => hash }
+    else
+      hash
+    end
+  end
 end

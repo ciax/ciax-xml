@@ -79,9 +79,9 @@ class FrmDb < DbCache
   def init_cmd(e,rep=nil)
     case e.name
     when 'code','string'
-      attr=e.to_h
+      attr=e.node2db
       label=attr.delete('label')
-      attr['val']=rep ? rep.subst(e.text) : e.text
+      attr['val']=rep.subst(attr['val']) if rep
       @v.msg{"Data:#{label}[#{attr}]"}
       attr
     else
@@ -92,8 +92,7 @@ class FrmDb < DbCache
   def init_stat(e)
     case e.name
     when 'field'
-      attr=e.to_h
-      attr['val']=e.text
+      attr=e.node2db
       if id=attr['assign']
         [:symbol,:label,:arrange].each{|k|
           self[:status][k]={} unless self[:status].key?(k)
@@ -107,7 +106,6 @@ class FrmDb < DbCache
       attr
     when 'array'
       attr=e.to_h
-      id=attr['assign']
       idx=attr[:index]=[]
       e.each{|e1|
         idx << e1.to_h

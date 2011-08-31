@@ -5,11 +5,10 @@ require "libview"
 class HtmlTbl < Array
   def initialize(odb)
     @odb=odb
-    stat={'time' => ''}.update(odb[:status][:label])
-    @view=View.new(stat).opt('al',odb[:status])
+    @view=View.new.opt('al',odb[:status])
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{@odb['label']}</div>"
-    group = @view['group'] || @view['list'].keys
+    group = @view['group'] || @view['stat'].keys
     get_group(group)
     push "</div>"
   end
@@ -35,8 +34,8 @@ class HtmlTbl < Array
     ary.each_slice(col){|da|
       push "<tr>"
       da.each{|id|
-        next unless @view['list'].key?(id)
-        item=@view['list'][id]
+        next unless @view['label'].key?(id)
+        item=@view['stat'][id]
         label=@view['label'][id]||id.upcase
         push "<td class=\"item\">"
         push "<span class=\"label\">#{label}</span>"

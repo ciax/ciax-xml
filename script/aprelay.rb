@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "json"
 require "libfield"
 require "libiocmd"
 require "libascpck"
@@ -13,13 +14,11 @@ begin
 rescue SelectID
   abort "Usage: aprelay [obj] [iocmd] (port)\n#{$!}"
 end
-
-Interact.new(port||['>']){|line|
+prom=['>']
+Interact.new(prom,port){|line|
   case line
   when nil
-    puts
-    line='interrupt'
-    @ap.issue
+    break
   when ''
     line='stat'
   else
@@ -27,8 +26,10 @@ Interact.new(port||['>']){|line|
   end
   @io.snd(line)
   time,str=@io.rcv
+  json,prom[0]=str.split("\n")
   begin
-    @stat.update_j(str)
+    view=JSON.load(json)
+    @stat.update(view['stat'])
   rescue
   end
   @ap.upd

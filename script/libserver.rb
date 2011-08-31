@@ -12,7 +12,7 @@ class Server
       udp.bind("0.0.0.0",port)
       loop {
         select([udp])
-        line,addr=udp.recvfrom(1024)
+        line,addr=udp.recvfrom(4096)
         @v.msg{"Recv:#{line} is #{line.class}"}
         begin
           msg=yield(/interrupt/ === line ? nil : line.chomp).to_s

@@ -38,7 +38,7 @@ class IoCmd
     int=1
     begin
       select([@f],nil,nil,@timeout) || return
-      str=@f.sysread(1024)
+      str=@f.sysread(4096)
     rescue
       @f=IO.popen(@iocmd,'r+')
       sleep int*=2

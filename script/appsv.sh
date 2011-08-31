@@ -1,5 +1,4 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
 while getopts "d" opt; do
     case $opt in
         d) export NOLOG=1;dmy=1;;

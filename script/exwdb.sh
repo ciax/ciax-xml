@@ -1,5 +1,4 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
 n=${1:-*}
 file=$HOME/.var/json/status_$n.json
 for i in $file ; do

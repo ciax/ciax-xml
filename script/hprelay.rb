@@ -2,7 +2,7 @@
 require "json"
 require "libfield"
 require "libiocmd"
-require "libascpck"
+require "libhexpack"
 require "libinteract"
 
 id,iocmd,port=ARGV
@@ -12,7 +12,7 @@ begin
   @io=IoCmd.new(iocmd)
   @ap=AscPck.new(id,@stat)
 rescue SelectID
-  abort "Usage: aprelay [obj] [iocmd] (port)\n#{$!}"
+  abort "Usage: hprelay [obj] [iocmd] (port)\n#{$!}"
 end
 prom=['>']
 Interact.new(prom,port){|line|

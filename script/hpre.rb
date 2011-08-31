@@ -8,10 +8,10 @@ echo "Connect to [$iodst]" >&2
 iocmd="socat - $iodst"
 if [ "$daemon" ] ; then
     echo "Listen port [udp:$port]" >&2
-    aprelay $obj "$iocmd" $port &
+    hprelay $obj "$iocmd" $port &
     client $id
     echo
     psg -k "$iocmd"
 else
-    aprelay $obj "$iocmd"
+    hprelay $obj "$iocmd"
 fi

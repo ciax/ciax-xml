@@ -79,7 +79,7 @@ class Watch < Array
   end
 
   def condition(e,var)
-    val=@stat[e[:ref]]
+    val=@stat[e[:ref]]||return
     if org=e[:val]
       flg=(/#{org}/ === val)
     else

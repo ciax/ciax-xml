@@ -1,27 +1,27 @@
 #!/usr/bin/ruby
 require "librepeat"
-require "libdbcache"
+require "libdb"
+require "libcache"
 
-class FrmDb < DbCache
-  def initialize(frm)
-    super('fdb',frm)
+class FrmDb < Db
+  def initialize(frm,nocache=nil)
+    @v=Verbose.new('fdb',5)
+    update(Cache.new('fdb',frm,nocache){|doc|
+             @hash=Hash[doc]
+             frame=@hash[:frame]={}
+             @hash[:status]={}
+             domc=doc.domain('cmdframe')
+             domr=doc.domain('rspframe')
+             frame[:command]=init_main(domc){|e,r| init_cmd(e,r)}
+             frame[:status]=init_main(domr){|e| init_stat(e)}
+             @v.msg{"Structure:frame:#{@hash[:frame]}"}
+             init_sel(domc,'command',:command){|e,r| init_cmd(e,r)}
+             @v.msg{"Structure:command:#{@hash[:command]}"}
+             init_sel(domr,'response',:status){|e| init_stat(e)}
+             @v.msg{"Structure:status:#{@hash[:status]}"}
+             @hash
+           })
     self[:frame].freeze
-  end
-
-  def refresh
-    update(doc)
-    frame=self[:frame]={}
-    self[:status]={}
-    domc=doc.domain('cmdframe')
-    domr=doc.domain('rspframe')
-    frame[:command]=init_main(domc){|e,r| init_cmd(e,r)}
-    frame[:status]=init_main(domr){|e| init_stat(e)}
-    @v.msg{"Structure:frame:#{self[:frame]}"}
-    init_sel(domc,'command',:command){|e,r| init_cmd(e,r)}
-    @v.msg{"Structure:command:#{self[:command]}"}
-    init_sel(domr,'response',:status){|e| init_stat(e)}
-    @v.msg{"Structure:status:#{self[:status]}"}
-    save
   end
 
   private
@@ -55,8 +55,8 @@ class FrmDb < DbCache
   end
 
   def init_sel(domain,select,key)
-    selh=self[key]=domain.to_h
-    list=self[:frame][key][:select]={}
+    selh=@hash[key]=domain.to_h
+    list=@hash[:frame][key][:select]={}
     domain.each(select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}
@@ -73,7 +73,7 @@ class FrmDb < DbCache
         @v.msg(-1){"-> INIT:Select Frame"}
       end
     }
-    self
+    @hash
   end
 
   def init_cmd(e,rep=nil)
@@ -95,9 +95,9 @@ class FrmDb < DbCache
       attr=e.node2db
       if id=attr['assign']
         [:symbol,:label,:arrange].each{|k|
-          self[:status][k]={} unless self[:status].key?(k)
+          @hash[:status][k]={} unless @hash[:status].key?(k)
           if d=attr.delete(k.to_s)
-            self[:status][k][id]=d
+            @hash[:status][k][id]=d
             @v.msg{k.to_s.upcase+":[#{id}] : #{d}"}
           end
         }
@@ -131,7 +131,7 @@ end
 
 if __FILE__ == $0
   begin
-    db=FrmDb.new(ARGV.shift).refresh
+    db=FrmDb.new(ARGV.shift,true)
   rescue SelectID
     abort("USAGE: #{$0} [id]\n#{$!}")
   end

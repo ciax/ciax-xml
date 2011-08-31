@@ -1,33 +1,33 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libdbcache"
+require "libdb"
+require "libcache"
 
-class ObjDb < DbCache
-  def initialize(obj)
-    super("odb",obj)
+class ObjDb < Db
+  def initialize(obj,nocache=nil)
+    @v=Verbose.new('odb',5)
     self['id']=obj
-  end
-
-  def refresh
-    update(doc)
-    doc.domain('init').each('field'){|e0|
-      self[:field]||={}
-      self[:field][e0['id']]=e0.text
-    }
-    doc.domain('command').each('alias'){|e0|
-      e0.attr2db(self[:alias]||={})
-    }
-    doc.domain('status').each('title'){|e0|
-      e0.attr2db(self[:status]||={},'ref')
-    }
-    save
+    update(Cache.new('odb',obj,nocache){|doc|
+             hash=Hash[doc]
+             doc.domain('init').each('field'){|e0|
+               hash[:field]||={}
+               hash[:field][e0['id']]=e0.text
+             }
+             doc.domain('command').each('alias'){|e0|
+               e0.attr2db(hash[:alias]||={})
+             }
+             doc.domain('status').each('title'){|e0|
+               e0.attr2db(hash[:status]||={},'ref')
+             }
+             hash
+           })
   end
 end
 
 if __FILE__ == $0
   obj,app=ARGV
   begin
-    odb=ObjDb.new(obj).refresh
+    odb=ObjDb.new(obj,true)
   rescue SelectID
     abort ("USAGE: #{$0} [obj] (-)\n#{$!}")
   end

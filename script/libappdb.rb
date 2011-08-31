@@ -1,35 +1,35 @@
 #!/usr/bin/ruby
 require "libcircular"
 require "librepeat"
-require "libdbcache"
+require "libdb"
+require "libcache"
 
-class AppDb < DbCache
-  def initialize(app)
-    super('adb',app)
-    self[:structure].freeze
-  end
-
-  def refresh
-    update(doc)
-    self[:structure]={:command => {}, :status => {}}
-    init_command(doc.domain('commands'))
-    status=doc.domain('status')
-    @stat=self[:status]=status.to_h
-    @stat[:label]={'time' => 'TIMESTAMP'}
-    @stat[:group]=[[['time']]]
-    init_stat(status,Repeat.new)
-    @v.msg{
-      @stat.keys.map{|k| "Structure:status:#{k} #{@stat[k]}"}
-    }
-    self[:watch]=init_watch(doc.domain('watch'))
-    save
+class AppDb < Db
+  def initialize(app,nocache=nil)
+    @v=Verbose.new('adb',5)
+    update(Cache.new('adb',app,nocache){|doc|
+             @hash=Hash[doc]
+             @hash[:structure]={:command => {}, :status => {}}
+             init_command(doc.domain('commands'))
+             status=doc.domain('status')
+             @stat=@hash[:status]=status.to_h
+             @stat[:label]={'time' => 'TIMESTAMP'}
+             @stat[:group]=[[['time']]]
+             init_stat(status,Repeat.new)
+             @v.msg{
+               @stat.keys.map{|k| "Structure:status:#{k} #{@stat[k]}"}
+             }
+             @hash[:watch]=init_watch(doc.domain('watch'))
+             @hash
+           })
+    @hash[:structure].freeze
   end
 
   private
   def init_command(adb)
-    self[:command]={}
+    @hash[:command]={}
     adb.each{|e0|
-      id=e0.attr2db(self[:command])
+      id=e0.attr2db(@hash[:command])
       list=[]
       Repeat.new.each(e0){|e1,rep|
         command=[e1['name']]
@@ -40,15 +40,15 @@ class AppDb < DbCache
         }
         list << command.freeze
       }
-      self[:structure][:command][id]=list
+      @hash[:structure][:command][id]=list
       @v.msg{"COMMAND:[#{id}] #{list}"}
     }
     @v.msg{
-      self[:command].keys.map{|k|
-        "Structure:command:#{k} #{self[:command][k]}"
+      @hash[:command].keys.map{|k|
+        "Structure:command:#{k} #{@hash[:command][k]}"
       }
     }
-    self
+    @hash
   end
 
   def init_stat(e,rep)
@@ -72,17 +72,17 @@ class AppDb < DbCache
           }
           fields << st
         }
-        self[:structure][:status][id]=fields
+        @hash[:structure][:status][id]=fields
         @stat[:group].last.last << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }
-    self
+    @hash
   end
 
   def init_watch(wdb)
     return [] unless wdb
-    update(wdb.to_h)
+    @hash.update(wdb.to_h)
     line=[]
     period=nil
     Repeat.new.each(wdb){|e0,r0|
@@ -126,7 +126,8 @@ class AppDb < DbCache
   def rec_cond(e,rep)
     case e.name
     when 'condition'
-      {:operator => (e['operator']||'and'),:ary => e.map{|e1| rec_cond(e1,rep) }}
+      {:operator => (e['operator']||'and'),
+        :ary => e.map{|e1| rec_cond(e1,rep) }}
     else
       {:ref => rep.format(e['ref']),:val => e.text}
     end
@@ -135,7 +136,7 @@ end
 
 if __FILE__ == $0
   begin
-    db=AppDb.new(ARGV.shift).refresh
+    db=AppDb.new(ARGV.shift,true)
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end

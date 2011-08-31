@@ -36,6 +36,7 @@ module ModIo
     else
       @v.warn("----- No #{base}.json")
     end
+    self
   end
 
   def save(tag=nil,keylist=nil)

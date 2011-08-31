@@ -34,10 +34,15 @@ class Field < Hash
     @v.abort("No Key") unless key
     vname=[]
     key.split(':').inject(self){|h,i|
-      begin
-        i=eval(i) if Array === h
-      rescue SyntaxError
-        @v.abort("#{i} is not number")
+      case h
+      when Array
+        begin
+          i=eval(i)
+        rescue SyntaxError
+          @v.abort("#{i} is not number")
+        end
+      when nil
+        break
       end
       vname << i
       @v.msg{"Type[#{h.class}] Name[#{i}]"}

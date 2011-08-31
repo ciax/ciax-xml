@@ -1,16 +1,16 @@
 #!/usr/bin/ruby
 class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
-  def initialize(view)
-    @view=view
-    @group = @view['group'] || [[@view['stat'].keys]]
-    @symbol=@view['symbol'] || {}
-    @label=@view['label'] || {}
+  def initialize(db,stat)
+    @stat=stat
+    @group=db[:group] || [[db[:structure][:status].keys]]
+    @symbol=stat["symbol"] || {}
+    @label=db[:label] || {}
     get_group
   end
 
   def upd
-    @view.upd
+    @stat.upd
     clear
     get_group
   end
@@ -33,8 +33,8 @@ class Print < Array
   def get_element(ids,col=6)
     da=[]
     ids.each{|id|
-      next unless @view['stat'].key?(id)
-      val=@view['stat'][id]
+      next unless @stat['stat'].key?(id)
+      val=@stat['stat'][id]
       symbol=@symbol[id]||{}
       label=@label[id] || id.upcase
       da << prt(symbol,label,val)

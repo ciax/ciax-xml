@@ -7,7 +7,7 @@ while getopts "d" opt; do
 done
 shift $(( $OPTIND -1 ))
 if [ "$dmy" ] ; then
-    VER=iocmd:client frmint $1 "frmsim $1"
+    VER=$VER,iocmd:client frmint $1 "frmsim $1"
 else
-    VER=iocmd:client frmint $1
+    VER=$VER,iocmd:client frmint $1
 fi

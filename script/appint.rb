@@ -32,8 +32,11 @@ end
 
 stat=View.new(obj,odb[:status]).load.upd
 stat['app_type']=app
+field=Field.new(obj).load
+field.update(odb[:field]) if odb.key?(:field)
+
 io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
-fobj=FrmObj.new(fdb,Field.new(obj).load,io)
+fobj=FrmObj.new(fdb,field,io)
 
 cobj=AppObj.new(odb,stat){|cmd|
   fobj.request(cmd).field

@@ -19,6 +19,7 @@ begin
   odb >> AppDb.new(odb['app_type'])
   fdb=FrmDb.new(odb['frm_type'])
   field=Field.new(obj).load
+  field.update(odb[:field]) if odb.key?(:field)
   io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
   fobj=FrmObj.new(fdb,field,io)
 rescue SelectID

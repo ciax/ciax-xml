@@ -124,7 +124,13 @@ class Verbose
     return '' unless data
     str=''
     if title
-      str << "  " * indent + ("%-4s :\n" % title.inspect)
+      case title
+      when Numeric
+        title="[#{title}]"
+      else
+        title=title.inspect
+      end
+      str << "  " * indent + ("%-4s :\n" % title)
       indent+=1
     end
     case data

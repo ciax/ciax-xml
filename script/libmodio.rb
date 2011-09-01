@@ -9,28 +9,22 @@ module ModIo
     Verbose.view_struct(self)
   end
 
-  def to_j(*klist)
-    if klist.empty?
-      hash=Hash[self]
-    else
-      hash=pick(klist)
-    end
-    JSON.dump(hash)
+  def to_j(hash=nil)
+    JSON.dump(hash||Hash[self])
   end
 
   def update_j(str)
+    raise "No status in File" unless str
     update(JSON.load(str))
   end
 
   def load(tag=nil)
-    raise "No File Name"  unless @type
+    raise "No Cache File Name"  unless @type
     base=[@type,tag].compact.join('_')
     @v.msg{"Status Loading for [#{base}]"}
     fname=VarDir+"/#{base}.json"
     if FileTest.exist?(fname)
-      stat=JSON.load(IO.read(fname))
-      raise "No status in File" unless stat
-      update(stat)
+      update_j(IO.read(fname))
     elsif tag
       raise SelectID,list_stat
     else
@@ -39,32 +33,18 @@ module ModIo
     self
   end
 
-  def save(tag=nil,keylist=nil)
-    raise "No File Name"  unless @type
+  def save(tag=nil,hash=nil)
+    raise "No Cache File Name"  unless @type
     base=[@type,tag].compact.join('_')
     fname=VarDir+"/#{base}.json"
-    if keylist
-      json=JSON.dump(pick(keylist))
-    else
-      json=to_j
-    end
-    open(fname,'w') {|f|
-      @v.msg{"Status Saving for [#{base}]"}
-      f << json
-    }
+    json=to_j(hash)
+    @v.msg{"Status Saving for [#{base}]"}
+    open(fname,'w') {|f| f << json }
     mklink(fname,tag)
     self
   end
 
   private
-  def pick(ary)
-    stat={}
-    ary.each{|k|
-      stat[k]=self[k] if key?(k)
-    }
-    stat
-  end
-
   def mklink(fname,tag)
     return unless tag
     sbase=[@type,'latest'].compact.join('_')

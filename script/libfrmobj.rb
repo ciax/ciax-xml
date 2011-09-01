@@ -72,8 +72,16 @@ class FrmObj
       raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.keys}"
     end
     tag=Time.now.strftime('%y%m%d-%H%M%S') unless tag
-    @field.save(tag,keys.split(','))
-    "[#{tag}] saved\n"
+    hash={}
+    keys.split(',').compact.each{|k|
+      hash[k]=@field[k] if @field.key?(k)
+    }
+    if hash.empty?
+      "Key Empty"
+    else
+      @field.save(tag,hash)
+      "[#{tag}](#{hash.keys.join(',')}) saved\n"
+    end
   end
 
   def load(tag)

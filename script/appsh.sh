@@ -6,8 +6,9 @@ while getopts "d" opt; do
     esac
 done
 shift $(( $OPTIND -1 ))
+ver=iocmd:client${VER:+,$VER}
 if [ "$dmy" ] ; then
-    VER=$VER,iocmd:client appint $1 "frmsim $1"
+    VER=$ver $1 "frmsim $1"
 else
-    VER=$VER,iocmd:client appint $1
+    VER=$ver appint $1
 fi

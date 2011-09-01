@@ -10,10 +10,11 @@ id=$1;shift
 errlog="$HOME/.var/err-$id.log"
 date > $errlog
 psg -k -q "appint -s $id"
+ver=client,server${VER:+,$VER}
 if [ "$dmy" ] ; then
-    VER=$VER,client,server appint -s $id "frmsim $id" >> $errlog 2>&1 &
+    VER=$ver appint -s $id "frmsim $id" >> $errlog 2>&1 &
 else
-    VER=$VER,client,server appint -s $id >> $errlog 2>&1 &
+    VER=$ver appint -s $id >> $errlog 2>&1 &
 fi
 client $id
 echo

@@ -9,14 +9,14 @@ class ObjDb < Db
     self['id']=obj
     update(Cache.new('odb',obj,nocache){|doc|
              hash=Hash[doc]
-             doc.domain('init').each('field'){|e0|
+             doc.domain('init').each{|e0|
                hash[:field]||={}
                hash[:field][e0['id']]=e0.text
              }
-             doc.domain('command').each('alias'){|e0|
+             doc.domain('command').each{|e0|
                e0.attr2db(hash[:alias]||={})
              }
-             doc.domain('status').each('title'){|e0|
+             doc.domain('status').each{|e0|
                e0.attr2db(hash[:status]||={},'ref')
              }
              hash

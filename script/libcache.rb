@@ -23,8 +23,10 @@ class Cache < Hash
         return
       end
     end
+    hash=yield XmlDoc.new(type,id)
     open(fmar,'w') {|f|
-      f << Marshal.dump(update(yield XmlDoc.new(type,id)))
+      f << Marshal.dump(hash)
+      update(hash)
       @v.msg{"Saved(#{base})"}
     }
   end

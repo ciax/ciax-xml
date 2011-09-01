@@ -8,7 +8,7 @@ for id in $devices; do
     echo "$C2#### $dev($id) ####$C0"
     input="$HOME/.var/field_$id.json"
     if [ "$1" ] ; then
-        frmcmd $dev $* | visi
+        frmcmd $dev $* < $input | visi
     else
         frmcmd $dev 2>&1 |grep " : "| while read cmd dmy
         do

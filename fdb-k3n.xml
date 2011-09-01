@@ -22,7 +22,7 @@
       </ccrange>
       <code length="1">${cc}</code>
     </cmdframe>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" table="k3n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="Prefix" length="1">2</field>
       <ccrange>
         <field label="Node" length="4">0000</field>

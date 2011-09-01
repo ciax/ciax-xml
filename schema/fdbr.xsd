@@ -78,7 +78,6 @@
       </xsd:choice>
       <xsd:attribute name="terminator" type="xsd:token" />
       <xsd:attribute name="delimiter" type="xsd:token" />
-      <xsd:attribute name="table" type="xsd:NCName" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

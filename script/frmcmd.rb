@@ -13,5 +13,5 @@ begin
   c=FrmCmd.new(fdb,st)
   print c.getframe(cmd)
 rescue UserError
-  abort "Usage: frmcmd [dev] [cmd] (par) < statfile \n#{$!}"
+  abort "Usage: frmcmd [dev] [cmd] (par) < field_file \n#{$!}"
 end

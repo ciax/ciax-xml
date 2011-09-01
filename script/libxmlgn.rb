@@ -51,13 +51,13 @@ class Xml
     if xpath
       @v.msg{"FindXpath:#{xpath}"}
       @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-        @v.msg(1){"<#{e.name}>"}
+        @v.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
         yield Xml.new(e)
         @v.msg(-1){"</#{e.name}>"}
       }
     else
       @e.each_element{|e|
-        @v.msg(1){"<#{e.name}>"}
+        @v.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
         yield Xml.new(e)
         @v.msg(-1){"</#{e.name}>"}
       }

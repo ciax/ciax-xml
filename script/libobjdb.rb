@@ -7,20 +7,21 @@ class ObjDb < Db
   def initialize(obj,nocache=nil)
     @v=Verbose.new('odb',5)
     self['id']=obj
-    update(Cache.new('odb',obj,nocache){|doc|
-             hash=Hash[doc]
-             doc.domain('init').each{|e0|
-               hash[:field]||={}
-               hash[:field][e0['id']]=e0.text
-             }
-             doc.domain('command').each{|e0|
-               e0.attr2db(hash[:alias]||={})
-             }
-             doc.domain('status').each{|e0|
-               e0.attr2db(hash[:status]||={},'ref')
-             }
-             hash
-           })
+    odb=Cache.new('odb',obj,nocache){|doc|
+      hash=Hash[doc]
+      doc.domain('init').each{|e0|
+        hash[:field]||={}
+        hash[:field][e0['id']]=e0.text
+      }
+      doc.domain('command').each{|e0|
+        e0.attr2db(hash[:alias]||={})
+      }
+      doc.domain('status').each{|e0|
+        e0.attr2db(hash[:status]||={},'ref')
+      }
+      hash
+    }
+    update(odb)
   end
 end
 

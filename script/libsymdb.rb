@@ -7,22 +7,23 @@ require "librerange"
 class SymDb < Db
   def initialize(id='all',nocache=nil)
     @v=Verbose.new("Symbol",6)
-    update(Cache.new('sdb',id,nocache){|doc|
-             hash=Hash[doc]
-             doc.top.each{|e1|
-               row=e1.to_h
-               id=row.delete('id')
-               label=row['label']
-               rc=row[:record]={}
-               e1.each{|e2| # case
-                 key=e2.text||"default"
-                 rc[key]=e2.to_h
-               }
-               hash[id]=row
-               @v.msg{"Symbol Table:#{id} : #{label}"}
-             }
-             hash
-           })
+    sdb=Cache.new('sdb',id,nocache){|doc|
+      hash=Hash[doc]
+      doc.top.each{|e1|
+        row=e1.to_h
+        id=row.delete('id')
+        label=row['label']
+        rc=row[:record]={}
+        e1.each{|e2| # case
+          key=e2.text||"default"
+          rc[key]=e2.to_h
+        }
+        hash[id]=row
+        @v.msg{"Symbol Table:#{id} : #{label}"}
+      }
+      hash
+    }
+    update(sdb)
   rescue SelectID
     @v.list if __FILE__ == $0
   end
@@ -61,9 +62,6 @@ class SymDb < Db
       end
     }
     self
-  end
-
-  def refresh
   end
 end
 

@@ -7,29 +7,32 @@ require "libcache"
 class AppDb < Db
   def initialize(app,nocache=nil)
     @v=Verbose.new('adb',5)
-    update(Cache.new('adb',app,nocache){|doc|
-             @hash=Hash[doc]
-             @hash[:structure]={:command => {}, :status => {}}
-             init_command(doc.domain('commands'))
-             status=doc.domain('status')
-             @stat=@hash[:status]=status.to_h
-             @stat[:label]={'time' => 'TIMESTAMP'}
-             @stat[:group]=[[['time']]]
-             init_stat(status,Repeat.new)
-             @v.msg{
-               @stat.keys.map{|k| "Structure:status:#{k} #{@stat[k]}"}
-             }
-             @hash[:watch]=init_watch(doc.domain('watch'))
-             @hash
-           })
+    adb=Cache.new('adb',app,nocache){|doc|
+      hash=Hash[doc]
+      struct=hash[:structure]={}
+      # Command DB
+      cdb=doc.domain('commands')
+      cmd=hash[:command]=cdb.to_h
+      struct[:command]=init_command(cdb,cmd)
+      # Status DB
+      sdb=doc.domain('status')
+      stat=hash[:status]=sdb.to_h
+      struct[:status]=init_stat(sdb,stat,Repeat.new)
+      # Watch DB
+      wdb=doc.domain('watch')
+      hash.update(wdb.to_h)
+      hash[:watch]=init_watch(wdb)
+      hash
+    }
+    update(adb)
     self[:structure].freeze
   end
 
   private
-  def init_command(adb)
-    @hash[:command]={}
+  def init_command(adb,hash)
+    struct={}
     adb.each{|e0|
-      id=e0.attr2db(@hash[:command])
+      id=e0.attr2db(hash)
       list=[]
       Repeat.new.each(e0){|e1,rep|
         command=[e1['name']]
@@ -40,30 +43,28 @@ class AppDb < Db
         }
         list << command.freeze
       }
-      @hash[:structure][:command][id]=list
+      struct[id]=list
       @v.msg{"COMMAND:[#{id}] #{list}"}
     }
-    @v.msg{
-      @hash[:command].keys.map{|k|
-        "Structure:command:#{k} #{@hash[:command][k]}"
-      }
-    }
-    @hash
+    struct
   end
 
-  def init_stat(e,rep)
+  def init_stat(e,stat,rep)
+    struct={}
+    label=(stat[:label]||={'time' => 'TIMESTAMP'})
+    group=(stat[:group]||=[[['time']]])
     rep.each(e){|e0,r0|
       if e0.name == 'group'
         id=r0.subst(e0['id'])
-        @stat[:group] << [id]
-        @stat[:label][id]=r0.subst(e0['label'])
-        init_stat(e0,r0)
+        group << [id]
+        label[id]=r0.subst(e0['label'])
+        struct.update(init_stat(e0,stat,r0))
       elsif e0.name == 'row'
-        @stat[:group] << [] if @stat[:group].size < 2
-        @stat[:group].last << []
-        init_stat(e0,r0)
+        group << [] if group.size < 2
+        group.last << []
+        struct.update(init_stat(e0,stat,r0))
       else
-        id=e0.attr2db(@stat){|v|r0.format(v)}
+        id=e0.attr2db(stat){|v|r0.format(v)}
         fields=[]
         e0.each{|e1|
           st={:type => e1.name}
@@ -72,17 +73,16 @@ class AppDb < Db
           }
           fields << st
         }
-        @hash[:structure][:status][id]=fields
-        @stat[:group].last.last << id
+        struct[id]=fields
+        group.last.last << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end
     }
-    @hash
+    struct
   end
 
   def init_watch(wdb)
     return [] unless wdb
-    @hash.update(wdb.to_h)
     line=[]
     period=nil
     Repeat.new.each(wdb){|e0,r0|

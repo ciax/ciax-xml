@@ -6,21 +6,22 @@ require "libcache"
 class FrmDb < Db
   def initialize(frm,nocache=nil)
     @v=Verbose.new('fdb',5)
-    update(Cache.new('fdb',frm,nocache){|doc|
-             @hash=Hash[doc]
-             frame=@hash[:frame]={}
-             @hash[:status]={}
-             domc=doc.domain('cmdframe')
-             domr=doc.domain('rspframe')
-             frame[:command]=init_main(domc){|e,r| init_cmd(e,r)}
-             frame[:status]=init_main(domr){|e| init_stat(e)}
-             @v.msg{"Structure:frame:#{@hash[:frame]}"}
-             init_sel(domc,'command',:command){|e,r| init_cmd(e,r)}
-             @v.msg{"Structure:command:#{@hash[:command]}"}
-             init_sel(domr,'response',:status){|e| init_stat(e)}
-             @v.msg{"Structure:status:#{@hash[:status]}"}
-             @hash
-           })
+    fdb=Cache.new('fdb',frm,nocache){|doc|
+      hash=Hash[doc]
+      frame=hash[:frame]={}
+      stat=hash[:status]={}
+      dc=doc.domain('cmdframe')
+      dr=doc.domain('rspframe')
+      fc=frame[:command]=init_main(dc){|e,r| init_cmd(e,r)}
+      fs=frame[:status]=init_main(dr){|e| init_stat(e,stat)}
+      @v.msg{"Structure:frame:#{hash[:frame]}"}
+      hash[:command]=init_sel(dc,'command',fc){|e,r| init_cmd(e,r)}
+      @v.msg{"Structure:command:#{hash[:command]}"}
+      stat.update(init_sel(dr,'response',fs){|e| init_stat(e,stat)})
+      @v.msg{"Structure:status:#{hash[:status]}"}
+      hash
+    }
+    update(fdb)
     self[:frame].freeze
   end
 
@@ -54,9 +55,9 @@ class FrmDb < Db
     hash
   end
 
-  def init_sel(domain,select,key)
-    selh=@hash[key]=domain.to_h
-    list=@hash[:frame][key][:select]={}
+  def init_sel(domain,select,frame)
+    selh=domain.to_h
+    list=frame[:select]={}
     domain.each(select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}
@@ -67,13 +68,13 @@ class FrmDb < Db
           e=yield(e1,r1) || next
           frame << e
         }
-        list[id]=frame.freeze 
+        list[id]=frame.freeze
         @v.msg{"InitSelFrame(#{id}):#{frame}"}
       ensure
         @v.msg(-1){"-> INIT:Select Frame"}
       end
     }
-    @hash
+    selh
   end
 
   def init_cmd(e,rep=nil)
@@ -89,18 +90,16 @@ class FrmDb < Db
     end
   end
 
-  def init_stat(e)
+  def init_stat(e,stat)
     case e.name
     when 'field'
       attr=e.node2db
       if id=attr['assign']
-        [:symbol,:label,:arrange].each{|k|
-          @hash[:status][k]={} unless @hash[:status].key?(k)
-          if d=attr.delete(k.to_s)
-            @hash[:status][k][id]=d
-            @v.msg{k.to_s.upcase+":[#{id}] : #{d}"}
-          end
-        }
+        stat[:label]||={}
+        if lv=attr.delete('label')
+          stat[:label][id]=lv
+          @v.msg{"LABEL:[#{id}] : #{d}"}
+        end
       end
       @v.msg{"InitElement: #{attr}"}
       attr

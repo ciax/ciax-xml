@@ -98,7 +98,7 @@ class FrmDb < Db
         stat[:label]||={}
         if lv=attr.delete('label')
           stat[:label][id]=lv
-          @v.msg{"LABEL:[#{id}] : #{d}"}
+          @v.msg{"LABEL:[#{id}] : #{lv}"}
         end
       end
       @v.msg{"InitElement: #{attr}"}

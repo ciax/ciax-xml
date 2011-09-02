@@ -32,12 +32,13 @@ class XmlDoc < Hash
   private
   def readxml(dbname,id=nil)
     pre="#{ENV['XMLPATH']}/#{dbname}"
-    path="#{pre}-*.xml"
-    xpath=id ? "*[@id='#{id}']" : nil
-    Dir.glob(path).each{|p|
-      Xml.new(p).find(xpath){|e| # Second level
-        yield e
-      }
+    Dir.glob("#{pre}-*.xml").each{|p|
+      x=Xml.new(p)
+      if id
+        x.find("*[@id='#{id}']"){|e| yield e}
+      else
+        x.each{|e| yield e}
+      end
     }
   end
 end

@@ -10,7 +10,6 @@ class Print < Array
   end
 
   def upd
-    @stat.upd
     clear
     get_group
   end

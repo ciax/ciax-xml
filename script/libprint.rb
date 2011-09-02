@@ -9,9 +9,10 @@ class Print < Array
     get_group
   end
 
-  def upd
+  def to_s
     clear
     get_group
+    super
   end
 
   private

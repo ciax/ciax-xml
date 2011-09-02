@@ -35,7 +35,7 @@ class XmlDoc < Hash
     path="#{pre}-*.xml"
     xpath=id ? "*[@id='#{id}']" : nil
     Dir.glob(path).each{|p|
-      Xml.new(p).each(xpath){|e| # Second level
+      Xml.new(p).find(xpath){|e| # Second level
         yield e
       }
     }

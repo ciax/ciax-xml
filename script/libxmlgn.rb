@@ -47,21 +47,22 @@ class Xml
     nil
   end
 
-  def each(xpath=nil)
-    if xpath
-      @v.msg{"FindXpath:#{xpath}"}
-      @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-        @v.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
-        yield Xml.new(e)
-        @v.msg(-1){"</#{e.name}>"}
-      }
-    else
-      @e.each_element{|e|
-        @v.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
-        yield Xml.new(e)
-        @v.msg(-1){"</#{e.name}>"}
-      }
-    end
+  # pick same ns nodes even if it is in another tree
+  def find(xpath)
+    @v.msg{"FindXpath:#{xpath}"}
+    @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
+      @v.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
+      yield Xml.new(e)
+      @v.msg(-1){"</#{e.name}>"}
+    }
+  end
+
+  def each
+    @e.each_element{|e|
+      @v.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
+      yield Xml.new(e)
+      @v.msg(-1){"</#{e.name}>"}
+    }
   end
 
   def map

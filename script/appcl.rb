@@ -7,10 +7,11 @@ require "libiocmd"
 require "libshell"
 require "libprint"
 require "libview"
+require "open-uri"
 
 id=ARGV.shift
 host=ARGV.shift||'localhost'
-
+url="http://#{host}/json/status_#{id}.json"
 begin
   odb=ObjDb.new(id)
   odb >> AppDb.new(odb['app_type'])
@@ -25,17 +26,15 @@ Shell.new(prom){|line|
   when nil
     break
   when ''
-    line='stat'
+    open(url){|f|
+      pr.upd(JSON.load(f.read))
+    }
+    pr
+  else
+    @io.snd(line)
+    time,str=@io.rcv
+    ary=str.split("\n")
+    prom[0]=ary.pop
+    ary
   end
-  @io.snd(line)
-  time,str=@io.rcv
-  ary=str.split("\n")
-  prom[0]=ary.pop
-  ary.map{|row|
-    if /^\{.*\}$/ === row
-      pr.upd(JSON.load(row))
-    else
-      row
-    end
-  }
 }

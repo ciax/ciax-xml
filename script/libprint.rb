@@ -7,11 +7,12 @@ class Print < Array
   end
 
   def upd(stat)
+    clear
     @stat=stat["stat"] || {}
     @symbol=stat["symbol"] || {}
     get_group
     self
-  end    
+  end
 
   def to_s
     join("\n")

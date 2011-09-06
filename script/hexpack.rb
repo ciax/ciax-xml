@@ -2,6 +2,7 @@
 require "json"
 require "libhexpack"
 
-id=ARGV.shift || abort("Usage: hexpack [id] < [status file]")
+abort("Usage: hexpack < [status file]") if STDIN.tty? && ARGV.size < 1
 view=JSON.load(gets(nil))
+id=view['id']
 puts AscPck.new(id,view['stat']).upd

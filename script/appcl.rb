@@ -29,6 +29,13 @@ Shell.new(prom){|line|
   end
   @io.snd(line)
   time,str=@io.rcv
-  json,prom[0]=str.split("\n")
-  pr.upd(JSON.load(json))
+  ary=str.split("\n")
+  prom[0]=ary.pop
+  ary.map{|row|
+    if /^\{.*\}$/ === row
+      pr.upd(JSON.load(row))
+    else
+      row
+    end
+  }
 }

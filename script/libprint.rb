@@ -1,18 +1,20 @@
 #!/usr/bin/ruby
 class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
-  def initialize(db,stat)
-    @stat=stat
+  def initialize(db,stat={})
     @group=db[:group] || [[db[:structure][:status].keys]]
-    @symbol=stat["symbol"] || {}
     @label=db[:label] || {}
-    get_group
   end
 
-  def to_s
-    clear
+  def upd(stat)
+    @stat=stat["stat"] || {}
+    @symbol=stat["symbol"] || {}
     get_group
-    super
+    self
+  end    
+
+  def to_s
+    join("\n")
   end
 
   private
@@ -33,8 +35,8 @@ class Print < Array
   def get_element(ids,col=6)
     da=[]
     ids.each{|id|
-      next unless @stat['stat'].key?(id)
-      val=@stat['stat'][id]
+      next unless @stat.key?(id)
+      val=@stat[id]
       symbol=@symbol[id]||{}
       label=@label[id] || id.upcase
       da << prt(symbol,label,val)

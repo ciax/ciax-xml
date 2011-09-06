@@ -18,8 +18,7 @@ begin
 rescue SelectID
   abort "Usage: appcl [id] (host)\n#{$!}"
 end
-view=View.new
-pr=Print.new(odb[:status],view)
+pr=Print.new(odb[:status])
 prom=['>']
 Shell.new(prom){|line|
   case line
@@ -31,6 +30,5 @@ Shell.new(prom){|line|
   @io.snd(line)
   time,str=@io.rcv
   json,prom[0]=str.split("\n")
-  view.update(JSON.load(json)).upd
-  pr
+  pr.upd(JSON.load(json))
 }

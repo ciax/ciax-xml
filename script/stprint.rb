@@ -10,5 +10,5 @@ while gets
   app=stat['app_type']
   db=AppDb.new(app)
   db << ObjDb.new(stat['id'])
-  puts Print.new(db[:status],stat)
+  puts Print.new(db[:status]).upd(stat)
 end

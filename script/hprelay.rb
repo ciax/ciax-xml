@@ -6,6 +6,7 @@ require "libfield"
 require "libiocmd"
 require "libhexpack"
 require "libinteract"
+require "open-uri"
 
 opt={}
 OptionParser.new{|op|
@@ -14,7 +15,7 @@ OptionParser.new{|op|
 }
 id=ARGV.shift
 host=ARGV.shift||'localhost'
-
+url="http://#{host}/json/status_#{id}.json"
 begin
   odb=ObjDb.new(id)
   port=odb['port']
@@ -26,22 +27,21 @@ rescue SelectID
 end
 port=opt[:s] ? port.to_i+1000 : nil
 prom=['>']
+json='{}'
 Interact.new(prom,port){|line|
   case line
   when nil
     break
   when ''
-    line='stat'
+    open(url){|f|
+      json=JSON.load(f.read)
+    }
+    @hp.upd(json['stat'])
   else
     @hp.issue
+    @io.snd(line)
+    time,str=@io.rcv
+    prom.replace(str.split("\n"))
   end
-  @io.snd(line)
-  time,str=@io.rcv
-  json,prom[0]=str.split("\n")
-  begin
-    view=JSON.load(json)
-    @stat.update(view['stat'])
-  rescue
-  end
-  @hp.upd(@stat)
+  @hp
 }

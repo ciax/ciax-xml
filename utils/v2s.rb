@@ -2,7 +2,7 @@
 require "json"
 require "libverbose"
 
-abort "Usage: v2s < json_file" if STDIN.tty?
+abort "Usage: v2s json_file" if STDIN.tty? && ARGV.size < 1
 
 str=gets(nil) || exit
 puts Verbose.view_struct(JSON.load(str))

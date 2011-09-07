@@ -16,7 +16,7 @@ if [ "$dmy" ] ; then
 else
     VER=$ver appint -s $id >> $errlog 2>&1 &
 fi
-client $id
+appcl $id
 echo
 cat $errlog
 psg -k "appint -s $id"

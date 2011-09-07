@@ -19,9 +19,9 @@ class HexPack
     }
   end
 
-  def issue(s=self)
+  def issue
     @isu='1'
-    s
+    self
   end
 
   def upd(stat)

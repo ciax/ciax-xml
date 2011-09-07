@@ -30,7 +30,7 @@ class AppObj
     upd
     return interrupt unless line
     return if /^(stat|)$/ === line
-    return "Blocking" if @event.blocking?(line)
+    return "Blocking\n" if @event.blocking?(line)
     line=yield line if defined? yield
     ssn=line.split(' ')
     case ssn[0]
@@ -42,7 +42,7 @@ class AppObj
       @buf.send{@ac.setcmd(ssn).cmdset}
     end
     upd
-    "ISSUED"
+    "ISSUED\n"
   rescue SelectID
     @v.list
   end
@@ -60,7 +60,7 @@ class AppObj
   def interrupt
     stop=@event.interrupt
     @buf.interrupt{stop} unless stop.empty?
-    "Interrupt #{stop}"
+    "Interrupt #{stop}\n"
   end
 
   private

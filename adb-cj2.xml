@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -8,7 +8,7 @@
         <command name="geterr" />
         <command name="getzlen" />
       </cmdset>
-      <cmdset id="clr" label="ClearBit">
+      <cmdset id="reset" label="ResetBit">
         <command name="clrbit" />
         <command name="getcmd" />
       </cmdset>
@@ -33,7 +33,7 @@
         </command>
         <command name="getstat" />
       </cmdset>
-      <cmdset id="reset" label="Reset Error">
+      <cmdset id="clear" label="Clear Error">
         <command name="setbit">
           <argv>0</argv>
           <argv>11</argv>

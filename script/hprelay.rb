@@ -20,7 +20,7 @@ begin
   port=odb['port']
   @io=IoCmd.new("socat - udp:#{host}:#{port}")
   @stat=Field.new
-  @ap=AscPck.new(id,@stat)
+  @hp=HexPack.new(id)
 rescue SelectID
   abort "Usage: hprelay (-s) [id] (host)\n#{$!}"
 end
@@ -33,7 +33,7 @@ Interact.new(prom,port){|line|
   when ''
     line='stat'
   else
-    @ap.issue
+    @hp.issue
   end
   @io.snd(line)
   time,str=@io.rcv
@@ -43,5 +43,5 @@ Interact.new(prom,port){|line|
     @stat.update(view['stat'])
   rescue
   end
-  @ap.upd
+  @hp.upd(@stat)
 }

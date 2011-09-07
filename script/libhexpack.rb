@@ -3,10 +3,8 @@
 class HexPack
   def initialize(id)
     file="/home/ciax/config/sdb_#{id}.txt"
-    @id=id
-    @isu='0'
+    @res=["%",id,'_','0','0','_','']
     @list=[]
-    @res=''
     open(file){|f|
       while line=f.gets
         key=line.split(',').first
@@ -20,15 +18,17 @@ class HexPack
   end
 
   def issue
-    @isu='1'
+    @res[4]='1'
     self
   end
 
   def upd(stat)
-    @res="%#{@id}_#{stat['run']}#{@isu}_"
+    @res[3]=stat['run']
+    @res[4]=stat['isu']
+    @res[6]=''
     @list.each{|key|
       if val=stat[key]
-        @res << val
+        @res[6] << val
       else
         warn "NO key(#{key}) in Status"
       end
@@ -37,6 +37,6 @@ class HexPack
   end
 
   def to_s
-    @res
+    @res.join('')
   end
 end

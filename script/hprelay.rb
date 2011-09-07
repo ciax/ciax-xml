@@ -26,9 +26,8 @@ rescue SelectID
   abort "Usage: hprelay (-s) [id] (host)\n#{$!}"
 end
 port=opt[:s] ? port.to_i+1000 : nil
-prom=['>']
 json='{}'
-Interact.new(prom,port){|line|
+Interact.new([],port){|line|
   case line
   when nil
     break
@@ -41,7 +40,6 @@ Interact.new(prom,port){|line|
     @hp.issue
     @io.snd(line)
     time,str=@io.rcv
-    prom.replace(str.split("\n"))
   end
   @hp
 }

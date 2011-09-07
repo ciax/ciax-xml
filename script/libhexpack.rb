@@ -17,14 +17,13 @@ class HexPack
     }
   end
 
-  def issue
-    @res[4]='1'
+  def issue(flg)
+    @res[4]= flg ? '1' : '0'
     self
   end
 
   def upd(stat)
     @res[3]=stat['run']
-    @res[4]=stat['isu']
     @res[6]=''
     @list.each{|key|
       if val=stat[key]

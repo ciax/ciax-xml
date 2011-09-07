@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "json"
 require "libobjdb"
 require "libappdb"
 require "libfield"
@@ -7,11 +6,11 @@ require "libiocmd"
 require "libshell"
 require "libprint"
 require "libview"
-require "open-uri"
+require "liburlstat"
 
 id=ARGV.shift
 host=ARGV.shift||'localhost'
-url="http://#{host}/json/status_#{id}.json"
+st=UrlStat.new(id,host)
 begin
   odb=ObjDb.new(id)
   odb >> AppDb.new(odb['app_type'])
@@ -22,19 +21,10 @@ end
 pr=Print.new(odb[:status])
 prom=['>']
 Shell.new(prom){|line|
-  case line
-  when nil
-    break
-  when ''
-    open(url){|f|
-      pr.upd(JSON.load(f.read))
-    }
-    pr
-  else
-    @io.snd(line)
-    time,str=@io.rcv
-    ary=str.split("\n")
-    prom[0]=ary.pop
-    ary
-  end
+  break unless line
+  @io.snd(line.empty? ? 'stat' : line)
+  time,str=@io.rcv
+  ary=str.split("\n")
+  prom[0]=ary.pop
+  ary.empty? ? pr.upd(st.get) : ary
 }

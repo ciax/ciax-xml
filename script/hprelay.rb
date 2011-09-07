@@ -1,12 +1,11 @@
 #!/usr/bin/ruby
 require "optparse"
-require "json"
 require "libobjdb"
 require "libfield"
 require "libiocmd"
 require "libhexpack"
 require "libinteract"
-require "open-uri"
+require "liburlstat"
 
 opt={}
 OptionParser.new{|op|
@@ -15,7 +14,7 @@ OptionParser.new{|op|
 }
 id=ARGV.shift
 host=ARGV.shift||'localhost'
-url="http://#{host}/json/status_#{id}.json"
+st=UrlStat.new(id,host)
 begin
   odb=ObjDb.new(id)
   port=odb['port']
@@ -29,9 +28,7 @@ port=opt[:s] ? port.to_i+1000 : nil
 json='{}'
 Interact.new([],port){|line|
   break unless line
-  open(url){|f|
-   @hp.upd(JSON.load(f.read)['stat'])
-  }
+  @hp.upd(st.get['stat'])
   @io.snd(line.empty? ? 'stat' : line)
   time,str=@io.rcv
   @hp.issue(str.include?("*"))

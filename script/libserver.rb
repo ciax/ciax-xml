@@ -17,13 +17,14 @@ class Server
         begin
           msg=yield(/interrupt/ === line ? nil : line.chomp).to_s
         rescue SelectID
-          msg=@v.to_s
+          msg="NO CMD"
         rescue RuntimeError
-          msg=$!.to_s
+          msg="ERROR"
           warn msg
         end
         @v.msg{"Send:#{msg},#{prom}"}
-        msg << "\n"+prom.join('')
+        msg << "\n" unless msg.empty?
+        msg << prom.join('')
         udp.send(msg,0,addr[2],addr[1])
       }
     }

@@ -11,7 +11,7 @@ class Alias
   end
 
   def alias(str)
-    return str unless @odb
+    return str unless @odb && @odb.key?(:alias)
     @v.list if str.empty?
     @v.msg{"Command:#{str}"}
     rel=str.dup

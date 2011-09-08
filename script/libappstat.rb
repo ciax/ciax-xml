@@ -7,7 +7,7 @@ class AppStat
   def initialize(adb,stat={})
     @stat=stat
     @adbs=adb[:structure]
-    @v=Msg.new("stat",2)
+    @v=Msg::Ver.new("stat",2)
   end
 
   public

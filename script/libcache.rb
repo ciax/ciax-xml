@@ -6,7 +6,7 @@ module Cache
   VarDir="#{ENV['HOME']}/.var/cache"
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def cache(type,id,nocache=nil)
-    @v=Msg.new("cache",2)
+    @v=Msg::Ver.new("cache",2)
     base="#{type}-#{id}"
     fmar=VarDir+"/#{base}.mar"
     fxml=XmlDir+"/#{base}.xml"
@@ -36,7 +36,7 @@ module Cache
   def mklist
     if key?(:command)
       cmd=self[:command]
-      @cv=CmdList.new("== Command List ==").add(cmd[:label])
+      @cv=Msg::List.new("== Command List ==").add(cmd[:label])
     end
     self
   end

@@ -3,7 +3,7 @@ class Watch < Array
   def initialize(adb,stat)
     push(*adb[:watch])
     @stat=stat
-    @v=Msg.new("WATCH",3)
+    @v=Msg::Ver.new("WATCH",3)
   end
 
   public

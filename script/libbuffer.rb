@@ -7,7 +7,7 @@ class Buffer
     @inbuf=[[],[],[]]
     @outbuf=[[],[],[]]
     @q=Queue.new
-    @v=Msg.new("BUF",5)
+    @v=Msg::Ver.new("BUF",5)
     @issue=@wait=false
     @proc=Queue.new
     @st=delay

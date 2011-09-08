@@ -5,7 +5,7 @@ require "libcache"
 class ObjDb < Hash
   include Cache
   def initialize(obj,nocache=nil)
-    @v=Msg.new('odb',5)
+    @v=Msg::Ver.new('odb',5)
     self['id']=obj
     cache('odb',obj,nocache){|doc|
       hash=Hash[doc]

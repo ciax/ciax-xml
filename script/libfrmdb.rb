@@ -5,7 +5,7 @@ require "libcache"
 class FrmDb < Hash
   include Cache
   def initialize(frm,nocache=nil)
-    @v=Msg.new('fdb',5)
+    @v=Msg::Ver.new('fdb',5)
     cache('fdb',frm,nocache){|doc|
       hash=Hash[doc]
       frame=hash[:frame]={}

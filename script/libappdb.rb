@@ -6,7 +6,7 @@ require "libcache"
 class AppDb < Hash
   include Cache
   def initialize(app,nocache=nil)
-    @v=Msg.new('adb',5)
+    @v=Msg::Ver.new('adb',5)
     cache('adb',app,nocache){|doc|
       hash=Hash[doc]
       # Command DB

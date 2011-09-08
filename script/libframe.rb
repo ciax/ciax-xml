@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 class Frame
   def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
-    @v=Msg.new("fdb/frm".upcase,6)
+    @v=Msg::Ver.new("fdb/frm".upcase,6)
     @endian=endian
     @method=ccmethod
     @frame=''

@@ -4,7 +4,7 @@ require "libmsg"
 
 class Server
   def initialize(prom,port)
-    @v=Msg.new("UDPS")
+    @v=Msg::Ver.new("UDPS")
     @v.msg{"Server:#{port}"}
     @v.msg{"Prompt:#{prom.inspect}"}
     UDPSocket.open{ |udp|

@@ -7,7 +7,7 @@ class FrmRsp
   def initialize(fdb,field)
     @fdb=fdb
     @field=field
-    @v=Msg.new("#{fdb['id']}/rsp",3)
+    @v=Msg::Ver.new("#{fdb['id']}/rsp",3)
     @field['frm_type']=fdb['id']
     @fdbs=fdb[:frame][:status]
     @sel=Hash[@fdbs]

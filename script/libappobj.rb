@@ -11,7 +11,7 @@ class AppObj
   def initialize(adb,view)
     @view=view
     @prompt=[adb['id']]
-    @v=Msg.new("ctl",6)
+    @v=Msg::Ver.new("ctl",6)
     @ac=AppCmd.new(adb[:command])
     @as=AppStat.new(adb[:status],view['stat'])
     Thread.abort_on_exception=true
@@ -20,7 +20,7 @@ class AppObj
     @event=Watch.new(adb,view['stat'])
     @watch=watch_thread
     @main=cmdset_thread{|buf| yield buf}
-    @cl=CmdList.new("== Internal Command ==")
+    @cl=Msg::List.new("== Internal Command ==")
     @cl.add('sleep'=>"sleep [sec]")
     @cl.add('waitfor'=>"[key] [val] (timeout=10)")
     upd

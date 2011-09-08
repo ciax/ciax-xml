@@ -5,7 +5,7 @@ include REXML
 
 class Xml
   def initialize(f=nil)
-    @v=Msg.new("Xml",4)
+    @v=Msg::Ver.new("Xml",4)
     case f
     when String
       test(?r,f) || raise(SelectID)

@@ -5,10 +5,10 @@ require 'librerange'
 # Parameter must be numerical
 class Param < Hash
   def initialize(db) # command db
-    @v=Msg.new("PARAM",5)
+    @v=Msg::Ver.new("PARAM",5)
     @db=db
     @label=db[:label]
-    @cl=CmdList.new("== Command List==").add(@label)
+    @cl=Msg::List.new("== Command List==").add(@label)
   end
 
   def setpar(cmd)

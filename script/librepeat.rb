@@ -2,7 +2,7 @@
 require 'libmsg'
 class Repeat
   def initialize
-    @v=Msg.new("Repeat",5)
+    @v=Msg::Ver.new("Repeat",5)
     @counter={}
     @rep=[]
   end

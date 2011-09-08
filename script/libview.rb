@@ -5,7 +5,7 @@ require "libmodio"
 class View < Hash
   include ModIo
   def initialize(id=nil,db=nil)
-    @v=Msg.new("view",6)
+    @v=Msg::Ver.new("view",6)
     @db=db
     if id
       @type="json/status_#{id}"

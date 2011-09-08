@@ -6,7 +6,7 @@ require 'libmodio'
 class Field < Hash
   include ModIo
   def initialize(id=nil)
-    @v=Msg.new("stat",5)
+    @v=Msg::Ver.new("stat",5)
     if id
       @type="field_#{id}"
       self["id"]=id

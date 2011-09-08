@@ -4,51 +4,87 @@ class UserError < RuntimeError; end
 class SelectID < UserError; end
 
 class Msg
-  Start_time=Time.now
-  @@base=1
-  def initialize(prefix='',color=2)
-    @prefix=prefix.upcase
-    @color=color
-    @ind=1
-    @list=[]
-    msg{"Initialize Messaging"}
-  end
+  class Ver
+    Start_time=Time.now
+    @@base=1
+    def initialize(prefix='',color=2)
+      @prefix=prefix.upcase
+      @color=color
+      @ind=1
+      @list=[]
+      msg{"Initialize Messaging"}
+    end
 
-  # Public Method
-  def msg(add=0)
-    # block takes array (shown by each line)
-    # Description of values
-    #   [val] -> taken from  xml (criteria)
-    #   <val> -> taken from status (incoming)
-    #   (val) -> calcurated from status
-    return unless ENV['VER']
-    @ind=@@base
-    @@base+=add
-    @ind=@@base if add < 0
-    [*yield].each{|str|
-      msg=mkmsg(str)
-      Kernel.warn msg if condition(msg)
-    }
-    self
-  end
-
-  # Private Method
-  private
-  def mkmsg(text)
-    return unless text
-    pass=sprintf("%5.4f",Time.now-Start_time)
-    ts= STDERR.tty? ? '' : "[#{pass}]"
-    ts+'  '*@ind+Msg.color("#{@prefix}:",@color)+text.inspect
-  end
-
-  def condition(msg) # VER= makes setenv "" to VER otherwise nil
-    return true if ENV['VER'] == ''
-    ENV['VER'].upcase.split(',').any?{|s|
-      s.split(':').all?{|e|
-        msg.upcase.include?(e)
+    # Public Method
+    def msg(add=0)
+      # block takes array (shown by each line)
+      # Description of values
+      #   [val] -> taken from  xml (criteria)
+      #   <val> -> taken from status (incoming)
+      #   (val) -> calcurated from status
+      return unless ENV['VER']
+      @ind=@@base
+      @@base+=add
+      @ind=@@base if add < 0
+      [*yield].each{|str|
+        msg=mkmsg(str)
+        Kernel.warn msg if condition(msg)
       }
-    }
+      self
+    end
+
+    # Private Method
+    private
+    def mkmsg(text)
+      return unless text
+      pass=sprintf("%5.4f",Time.now-Start_time)
+      ts= STDERR.tty? ? '' : "[#{pass}]"
+      ts+'  '*@ind+Msg.color("#{@prefix}:",@color)+text.inspect
+    end
+
+    def condition(msg) # VER= makes setenv "" to VER otherwise nil
+      return true if ENV['VER'] == ''
+      ENV['VER'].upcase.split(',').any?{|s|
+        s.split(':').all?{|e|
+          msg.upcase.include?(e)
+        }
+      }
+    end
   end
+
+  class List
+    def initialize(title='')
+      @list=[title]
+    end
+
+    def add(list)
+      case list
+      when String
+        @list << Msg.color(list,2)
+      when Hash
+        list.each{|key,val|
+          case val
+          when String
+            label=val
+          when Hash,Xml
+            label=val['label']
+          end
+          @list << Msg.color(" %-10s" % key,3)+": #{label}" if label
+        }
+      end
+      self
+    end
+
+    def to_s
+      @list.unshift($!.to_s) if $!
+      @list.grep(/./).join("\n")
+    end
+
+    def exit
+      raise SelectID,to_s
+    end
+  end
+
 end
 
 class << Msg
@@ -124,35 +160,3 @@ class << Msg
   end
 end
 
-class CmdList
-  def initialize(title='')
-    @list=[title]
-  end
-
-  def add(list)
-    case list
-    when String
-      @list << Msg.color(list,2)
-    when Hash
-      list.each{|key,val|
-        case val
-        when String
-          label=val
-        when Hash,Xml
-          label=val['label']
-        end
-        @list << Msg.color(" %-10s" % key,3)+": #{label}" if label
-      }
-    end
-    self
-  end
-
-  def to_s
-    @list.unshift($!.to_s) if $!
-    @list.grep(/./).join("\n")
-  end
-
-  def exit
-    raise SelectID,to_s
-  end
-end

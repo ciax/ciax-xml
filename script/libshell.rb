@@ -5,7 +5,7 @@ require "readline"
 # Prompt should be Array
 class Shell
   def initialize(prompt=[])
-    cl=CmdList.new("== Shell Command ==")
+    cl=Msg::List.new("== Shell Command ==")
     cl.add('q'=>"Quit",'D^'=>"Interrupt")
     Msg.assert(Array === prompt)
     loop {

@@ -6,7 +6,7 @@ require "librerange"
 class SymDb < Hash
   include Cache
   def initialize(id='all',nocache=nil)
-    @v=Msg.new("Symbol",6)
+    @v=Msg::Ver.new("Symbol",6)
     cache('sdb',id,nocache){|doc|
       hash=Hash[doc]
       doc.top.each{|e1|

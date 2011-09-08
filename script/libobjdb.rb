@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libdb"
 require "libcache"
 
-class ObjDb < Db
+class ObjDb < Hash
   def initialize(obj,nocache=nil)
     @v=Verbose.new('odb',5)
     self['id']=obj
@@ -22,6 +21,20 @@ class ObjDb < Db
       hash
     }
     update(odb)
+  end
+
+  def >>(hash) # overwrite hash
+    if self[:command] && al=self[:command][:label]
+      hash[:command].delete(:label)
+    end
+    replace(rec_merge(hash,self))
+  end
+
+  private
+  def rec_merge(i,o)
+    i.merge(o){|k,a,b|
+      Hash === b ? rec_merge(a,b) : b
+    }
   end
 end
 

@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libobjdb"
-require "libappdb"
 require "libfrmdb"
 require "libfrmobj"
 require "libiocmd"
@@ -15,8 +14,7 @@ OptionParser.new{|op|
 }
 obj,iocmd=ARGV
 begin
-  odb=ObjDb.new(obj)
-  odb >> AppDb.new(odb['app_type'])
+  odb=ObjDb.new(obj).cover_app
   fdb=FrmDb.new(odb['frm_type'])
   field=Field.new(obj).load
   field.update(odb[:field]) if odb.key?(:field)

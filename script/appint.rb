@@ -2,7 +2,6 @@
 require "optparse"
 require "json"
 require "libobjdb"
-require "libappdb"
 require "libview"
 require "libfield"
 require "libiocmd"
@@ -22,16 +21,14 @@ OptionParser.new{|op|
 obj,iocmd=ARGV
 
 begin
-  odb=ObjDb.new(obj)
-  app=odb['app_type']
-  odb >> AppDb.new(app)
+  odb=ObjDb.new(obj).cover_app
   fdb=FrmDb.new(odb['frm_type'])
 rescue SelectID
   abort "Usage: appint (-s) [obj] (iocmd)\n#{$!}"
 end
 
 stat=View.new(obj,odb[:status]).load.upd
-stat['app_type']=app
+stat['app_type']=odb['app_type']
 field=Field.new(obj).load
 field.update(odb[:field]) if odb.key?(:field)
 

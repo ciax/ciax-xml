@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libobjdb"
-require "libappdb"
 require "libfield"
 require "libiocmd"
 require "libshell"
@@ -12,8 +11,7 @@ id=ARGV.shift
 host=ARGV.shift||'localhost'
 st=UrlStat.new(id,host)
 begin
-  odb=ObjDb.new(id)
-  odb >> AppDb.new(odb['app_type'])
+  odb=ObjDb.new(id).cover_app
   @io=IoCmd.new("socat - udp:#{host}:#{odb['port']}")
 rescue SelectID
   abort "Usage: appcl [id] (host)\n#{$!}"

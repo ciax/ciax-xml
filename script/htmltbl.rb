@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
 require "libhtmltbl"
-require "libappdb"
 require "libobjdb"
 
 abort "Usage: htmltbl [obj]" if ARGV.size < 1
 
 obj=ARGV.shift
 app=ARGV.shift
-odb=ObjDb.new(obj)
-odb >> AppDb.new(odb['app_type'])
+odb=ObjDb.new(obj).cover_app
 puts HtmlTbl.new(odb)

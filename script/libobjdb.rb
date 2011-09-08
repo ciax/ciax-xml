@@ -23,11 +23,13 @@ class ObjDb < Hash
     update(odb)
   end
 
-  def >>(hash) # overwrite hash
+  def cover_app # overwrite AppDb
+    require "libappdb"
+    app=AppDb.new(self['app_type'])
     if self[:command] && al=self[:command][:label]
-      hash[:command].delete(:label)
+      app[:command].delete(:label)
     end
-    replace(rec_merge(hash,self))
+    replace(rec_merge(app,self))
   end
 
   private
@@ -46,8 +48,7 @@ if __FILE__ == $0
     abort ("USAGE: #{$0} [obj] (-)\n#{$!}")
   end
   if app
-    require "libappdb"
-    odb >> AppDb.new(odb['app_type'])
+    odb.cover_app
   end
   puts Verbose.view_struct(odb)
 end

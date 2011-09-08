@@ -7,8 +7,6 @@ require "libprint"
 abort "Usage: stprint < [stat_file]" if STDIN.tty?
 while gets
   stat=JSON.load($_)
-  app=stat['app_type']
-  db=AppDb.new(app)
-  db << ObjDb.new(stat['id'])
+  db=ObjDb.new(stat['id']).cover_app
   puts Print.new(db[:status]).upd(stat)
 end

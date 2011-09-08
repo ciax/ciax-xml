@@ -36,5 +36,5 @@ if __FILE__ == $0
     require "libappdb"
     odb >> AppDb.new(odb['app_type'])
   end
-  puts odb
+  puts Verbose.view_struct(odb)
 end

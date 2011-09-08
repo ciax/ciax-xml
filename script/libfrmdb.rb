@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 require "librepeat"
-require "libdb"
 require "libcache"
 
-class FrmDb < Db
+class FrmDb < Hash
   def initialize(frm,nocache=nil)
     @v=Verbose.new('fdb',5)
     fdb=Cache.new('fdb',frm,nocache){|doc|
@@ -134,5 +133,5 @@ if __FILE__ == $0
   rescue SelectID
     abort("USAGE: #{$0} [id]\n#{$!}")
   end
-  puts db
+  puts Verbose.view_struct(db)
 end

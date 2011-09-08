@@ -1,10 +1,9 @@
 #!/usr/bin/ruby
 require "libcircular"
 require "librepeat"
-require "libdb"
 require "libcache"
 
-class AppDb < Db
+class AppDb < Hash
   def initialize(app,nocache=nil)
     @v=Verbose.new('adb',5)
     adb=Cache.new('adb',app,nocache){|doc|
@@ -140,5 +139,6 @@ if __FILE__ == $0
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end
-  puts db
+  puts Verbose.view_struct(db)
 end
+

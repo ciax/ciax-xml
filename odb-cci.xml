@@ -25,22 +25,6 @@
       <title ref="g1" label="CAS1(S2)(MOIRCS/MAIN)" />
       <title ref="g2" label="MOIRCS/CR(S8)" />
       <title ref="g3" label="MOIRCS/MAIN(S9)" />
-      <title ref="xsw0" symbol="off-warn" label="SWITCH" />
-      <title ref="xdr0" symbol="off-warn" label="DRIVE" />
-      <title ref="xtm0" symbol="alarm" label="TEMP" />
-      <title ref="xpr0" symbol="alarm" label="PRESSURE" />
-      <title ref="xsw1" symbol="off-warn" label="SWITCH" />
-      <title ref="xdr1" symbol="off-warn" label="DRIVE" />
-      <title ref="xtm1" symbol="alarm" label="TEMP" />
-      <title ref="xpr1" symbol="alarm" label="PRESSURE" />
-      <title ref="xsw2" symbol="off-warn" label="SWITCH" />
-      <title ref="xdr2" symbol="off-warn" label="DRIVE" />
-      <title ref="xtm2" symbol="alarm" label="TEMP" />
-      <title ref="xpr2" symbol="alarm" label="PRESSURE" />
-      <title ref="xsw3" symbol="off-warn" label="SWITCH" />
-      <title ref="xdr3" symbol="off-warn" label="DRIVE" />
-      <title ref="xtm3" symbol="alarm" label="TEMP" />
-      <title ref="xpr3" symbol="alarm" label="PRESSURE" />
     </status>
   </object>
 </odb>

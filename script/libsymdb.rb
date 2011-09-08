@@ -1,10 +1,9 @@
 #!/usr/bin/ruby
 require "libverbose"
-require "libdb"
 require "libcache"
 require "librerange"
 
-class SymDb < Db
+class SymDb < Hash
   def initialize(id='all',nocache=nil)
     @v=Verbose.new("Symbol",6)
     sdb=Cache.new('sdb',id,nocache){|doc|
@@ -71,5 +70,6 @@ if __FILE__ == $0
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end
-  puts sdb
+  puts Verbose.view_struct(sdb)
 end
+

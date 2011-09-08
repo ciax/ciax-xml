@@ -10,18 +10,18 @@ class FrmDb < Hash
       hash=Hash[doc]
       frame=hash[:frame]={}
       stat=hash[:status]={}
+      cmd=hash[:command]={}
       dc=doc.domain('cmdframe')
       dr=doc.domain('rspframe')
       fc=frame[:command]=init_main(dc){|e,r| init_cmd(e,r)}
       fs=frame[:status]=init_main(dr){|e| init_stat(e,stat)}
       @v.msg{"Structure:frame:#{hash[:frame]}"}
-      hash[:command]=init_sel(dc,'command',fc){|e,r| init_cmd(e,r)}
+      cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
       @v.msg{"Structure:command:#{hash[:command]}"}
       stat.update(init_sel(dr,'response',fs){|e| init_stat(e,stat)})
       @v.msg{"Structure:status:#{hash[:status]}"}
       hash
     }
-    self[:frame].freeze
   end
 
   private

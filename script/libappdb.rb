@@ -4,9 +4,10 @@ require "librepeat"
 require "libcache"
 
 class AppDb < Hash
+  include Cache
   def initialize(app,nocache=nil)
     @v=Verbose.new('adb',5)
-    adb=Cache.new('adb',app,nocache){|doc|
+    cache('adb',app,nocache){|doc|
       hash=Hash[doc]
       struct=hash[:structure]={}
       # Command DB
@@ -23,7 +24,6 @@ class AppDb < Hash
       hash[:watch]=init_watch(wdb)
       hash
     }
-    update(adb)
     self[:structure].freeze
   end
 

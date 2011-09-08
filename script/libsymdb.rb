@@ -4,9 +4,10 @@ require "libcache"
 require "librerange"
 
 class SymDb < Hash
+  include Cache
   def initialize(id='all',nocache=nil)
     @v=Verbose.new("Symbol",6)
-    sdb=Cache.new('sdb',id,nocache){|doc|
+    cache('sdb',id,nocache){|doc|
       hash=Hash[doc]
       doc.top.each{|e1|
         row=e1.to_h
@@ -22,7 +23,6 @@ class SymDb < Hash
       }
       hash
     }
-    update(sdb)
   rescue SelectID
     @v.list if __FILE__ == $0
   end

@@ -3,10 +3,11 @@ require "libverbose"
 require "libcache"
 
 class ObjDb < Hash
+  include Cache
   def initialize(obj,nocache=nil)
     @v=Verbose.new('odb',5)
     self['id']=obj
-    odb=Cache.new('odb',obj,nocache){|doc|
+    cache('odb',obj,nocache){|doc|
       hash=Hash[doc]
       doc.domain('init').each{|e0|
         hash[:field]||={}
@@ -20,7 +21,6 @@ class ObjDb < Hash
       }
       hash
     }
-    update(odb)
   end
 
   def cover_app # overwrite AppDb
@@ -35,12 +35,8 @@ class ObjDb < Hash
       cmd.delete(:alias)
     end
     replace(rec_merge(app,self))
-    @v.add("== Command List ==").add(self[:command][:label])
+    mklist
     self
-  end
-
-  def list
-    @v
   end
 
   private
@@ -62,5 +58,4 @@ if __FILE__ == $0
     odb.cover_app
   end
   puts Verbose.view_struct(odb)
-  puts odb.list
 end

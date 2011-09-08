@@ -17,7 +17,7 @@ rescue SelectID
   abort "Usage: appcl [id] (host)\n#{$!}"
 end
 pr=Print.new(odb[:status])
-prom=['>']
+prom=['']
 Shell.new(prom){|line|
   break unless line
   @io.snd(line.empty? ? 'stat' : line)
@@ -27,6 +27,6 @@ Shell.new(prom){|line|
   if ary.empty?
     pr.upd(st.get)
   elsif /CMD/ === ary.first
-    odb.list
+    odb
   end
 }

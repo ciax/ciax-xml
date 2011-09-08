@@ -3,9 +3,10 @@ require "librepeat"
 require "libcache"
 
 class FrmDb < Hash
+  include Cache
   def initialize(frm,nocache=nil)
     @v=Verbose.new('fdb',5)
-    fdb=Cache.new('fdb',frm,nocache){|doc|
+    cache('fdb',frm,nocache){|doc|
       hash=Hash[doc]
       frame=hash[:frame]={}
       stat=hash[:status]={}
@@ -20,7 +21,6 @@ class FrmDb < Hash
       @v.msg{"Structure:status:#{hash[:status]}"}
       hash
     }
-    update(fdb)
     self[:frame].freeze
   end
 

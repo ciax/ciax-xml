@@ -14,7 +14,7 @@ class Shell
       begin
         puts yield line
       rescue SelectID
-        puts v
+        puts cl
       rescue UserError
         puts $!.to_s
       end

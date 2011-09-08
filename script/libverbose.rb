@@ -142,7 +142,6 @@ class Verbose
         return str
       end
     when Hash
-      data=Hash[data]
       if data.values.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
         data.each{|k,v|
           str << view_struct(v,k,indent)

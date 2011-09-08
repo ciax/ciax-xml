@@ -24,5 +24,9 @@ Shell.new(prom){|line|
   time,str=@io.rcv
   ary=str.split("\n")
   prom[0]=ary.pop
-  ary.empty? ? pr.upd(st.get) : ary
+  if ary.empty?
+    pr.upd(st.get)
+  elsif /CMD/ === ary.first
+    odb.list
+  end
 }

@@ -35,6 +35,12 @@ class ObjDb < Hash
       cmd.delete(:alias)
     end
     replace(rec_merge(app,self))
+    @v.add("== Command List ==").add(self[:command][:label])
+    self
+  end
+
+  def list
+    @v
   end
 
   private
@@ -56,4 +62,5 @@ if __FILE__ == $0
     odb.cover_app
   end
   puts Verbose.view_struct(odb)
+  puts odb.list
 end

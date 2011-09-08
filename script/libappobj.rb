@@ -12,8 +12,8 @@ class AppObj
     @view=view
     @prompt=[adb['id']]
     @v=Verbose.new("ctl",6)
-    @ac=AppCmd.new(adb)
-    @as=AppStat.new(adb,view['stat'])
+    @ac=AppCmd.new(adb[:command])
+    @as=AppStat.new(adb[:status],view['stat'])
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i

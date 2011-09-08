@@ -6,7 +6,7 @@ class AppStat
   attr_reader :stat
   def initialize(adb,stat={})
     @stat=stat
-    @adbs=adb[:structure][:status]
+    @adbs=adb[:structure]
     @v=Verbose.new("stat",2)
   end
 

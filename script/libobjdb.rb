@@ -23,13 +23,13 @@ class ObjDb < Hash
     }
   end
 
-  def cover_app # overwrite AppDb
+  def cover_app(nocache=nil) # overwrite AppDb
     require "libappdb"
-    app=AppDb.new(self['app_type'])
+    app=AppDb.new(self['app_type'],nocache)
     if cmd=self[:command]
       app[:command].delete(:label)
-      st=app[:structure][:command]
-      self[:command][:alias].each{|k,v|
+      st=app[:command][:structure]
+      cmd[:alias].each{|k,v|
         st[k]=st.delete(v)
       }
       cmd.delete(:alias)
@@ -55,7 +55,7 @@ if __FILE__ == $0
     abort ("USAGE: #{$0} [obj] (-)\n#{$!}")
   end
   if app
-    odb.cover_app
+    odb.cover_app(true)
   end
   puts Verbose.view_struct(odb)
 end

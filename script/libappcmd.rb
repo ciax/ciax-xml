@@ -6,8 +6,8 @@ class AppCmd
 
   def initialize(adb)
     @v=Verbose.new("#{adb['id']}/cmd",2)
-    @adb=adb[:structure][:command]
-    @par=Param.new(adb[:command])
+    @adb=adb[:structure]
+    @par=Param.new(adb)
   end
 
   def setcmd(ssn)

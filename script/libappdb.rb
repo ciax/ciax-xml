@@ -9,22 +9,20 @@ class AppDb < Hash
     @v=Verbose.new('adb',5)
     cache('adb',app,nocache){|doc|
       hash=Hash[doc]
-      struct=hash[:structure]={}
       # Command DB
       cdb=doc.domain('commands')
       cmd=hash[:command]=cdb.to_h
-      struct[:command]=init_command(cdb,cmd)
+      cmd[:structure]=init_command(cdb,cmd)
       # Status DB
       sdb=doc.domain('status')
       stat=hash[:status]=sdb.to_h
-      struct[:status]=init_stat(sdb,stat,Repeat.new)
+      stat[:structure]=init_stat(sdb,stat,Repeat.new)
       # Watch DB
       wdb=doc.domain('watch')
       hash.update(wdb.to_h)
       hash[:watch]=init_watch(wdb)
       hash
     }
-    self[:structure].freeze
   end
 
   private

@@ -8,10 +8,10 @@ app=ARGV.shift
 ARGV.clear
 
 begin
-  adb=AppDb.new(app)
+  adb=AppDb.new(app,true)[:status]
   str=gets(nil) || exit
   field=Field.new.update_j(str)
-  view=View.new(field['id'],adb[:status]).update({'app_type' => app })
+  view=View.new(field['id'],adb).update({'app_type' => app })
   as=AppStat.new(adb,view['stat']).upd(field)
   print view.upd.to_j
 rescue RuntimeError

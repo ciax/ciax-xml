@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
   <object id="cco" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4002" port="25106">
-    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/odbc">
-      <alias id="upd" label="Update Status" ref="upd" />
-      <alias id="f2on" label="CIAO(S6) ON" ref="x0on" />
-      <alias id="f2off" label="CIAO(S6) OFF" ref="x0off" />
-      <alias id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
-      <alias id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
-      <alias id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
-      <alias id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
-      <alias id="maon" label="COMICS BOTH ON" ref="x23on" />
-      <alias id="maoff" label="COMICS BOTH OFF" ref="x23off" />
-    </command>
+    <select xmlns="http://ciax.sum.naoj.org/ciax-xml/odbc">
+      <command id="upd" label="Update Status" alias="upd" />
+      <command id="f2on" label="CIAO(S6) ON" alias="x0on" />
+      <command id="f2off" label="CIAO(S6) OFF" alias="x0off" />
+      <command id="m1on" label="COMICS IMG(S4) ON" alias="x2on" />
+      <command id="m1off" label="COMICS IMG(S4) OFF" alias="x2off" />
+      <command id="m2on" label="COMICS SPEC(S5) ON" alias="x3on" />
+      <command id="m2off" label="COMICS SPEC(S5) OFF" alias="x3off" />
+      <command id="maon" label="COMICS BOTH ON" alias="x23on" />
+      <command id="maoff" label="COMICS BOTH OFF" alias="x23off" />
+    </select>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
       <title ref="g0" label="CIAO(S6) SWITCH" />
       <title ref="g2" label="COMICS IMG(S4)" />

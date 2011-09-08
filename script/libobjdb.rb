@@ -13,8 +13,8 @@ class ObjDb < Db
         hash[:field]||={}
         hash[:field][e0['id']]=e0.text
       }
-      doc.domain('command').each{|e0|
-        e0.attr2db(hash[:alias]||={})
+      doc.domain('select').each{|e0|
+        e0.attr2db(hash[:command]||={})
       }
       doc.domain('status').each{|e0|
         e0.attr2db(hash[:status]||={},'ref')

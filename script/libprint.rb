@@ -2,7 +2,7 @@
 class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(db,stat={})
-    @group=db[:group] || [[db[:structure][:status].keys]]
+    @group=db[:group] || [[db[:structure].keys]]
     @label=db[:label] || {}
   end
 

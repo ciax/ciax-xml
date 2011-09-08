@@ -43,5 +43,5 @@ prt=Print.new(odb[:status])
 port=opt[:s] ? odb["port"] : nil
 
 Interact.new(cobj.prompt,port){|line|
-  cobj.dispatch(line)||(port ? nil : prt.upd(stat))
+  cobj.dispatch(line){port ? nil : prt.upd(stat)}
 }

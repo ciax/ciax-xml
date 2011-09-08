@@ -29,9 +29,8 @@ class AppObj
   def dispatch(line)
     upd
     return interrupt unless line
-    return if /^(stat|)$/ === line
+    return yield if /^(stat|)$/ === line
     return "Blocking\n" if @event.blocking?(line)
-    line=yield line if defined? yield
     ssn=line.split(' ')
     case ssn[0]
     when 'sleep'

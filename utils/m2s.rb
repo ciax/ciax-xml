@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 
 abort "Usage: m2s marshal_file" if STDIN.tty? && ARGV.size < 1
 
-puts Verbose.view_struct(Marshal.load(gets(nil)))
+puts Msg.view_struct(Marshal.load(gets(nil)))

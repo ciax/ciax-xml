@@ -7,23 +7,14 @@ class Param < Hash
   def initialize(db,al=nil) # command,alias
     @v=Verbose.new("PARAM",5)
     @db=db
-    if al
-      @label=al[:label]
-      @alias=al[:ref]
-     else
-      @label=db[:label]
-      @alias={}
-      @label.each{|k,v|
-        @alias[k]=k
-      }
-    end
+    @label=db[:label]
     @v.add("== Command List==").add(@label)
   end
 
   def setpar(cmd)
     @v.msg{"SetPar: #{cmd}"}
     @cmd=cmd.dup
-    self[:id]=@alias[cmd.first]
+    self[:id]=cmd.first
     self
   end
 

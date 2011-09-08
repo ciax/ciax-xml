@@ -2,33 +2,33 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="psp" id="psp" label="MOIRCS Ext Heater">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <cmdset id="upd" label="Update Status">
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="setlmt" label="Set Limit 20V/5A/100W">
-        <command name="setvl">
+      <command id="upd" label="Update Status">
+        <frmcmd name="getstat" />
+      </command>
+      <command id="setlmt" label="Set Limit 20V/5A/100W">
+        <frmcmd name="setvl">
           <argv>20</argv>
-        </command>
-        <command name="setal">
+        </frmcmd>
+        <frmcmd name="setal">
           <argv>5</argv>
-        </command>
-        <command name="setpl">
+        </frmcmd>
+        <frmcmd name="setpl">
           <argv>100</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="setv" label="Set Voltage 0-50[V]">
-        <command name="setv">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="setv" label="Set Voltage 0-50[V]">
+        <frmcmd name="setv">
           <argv valid="0:50">$1</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="setp" label="Set Power 0-100[W]">
-        <command name="setv">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="setp" label="Set Power 0-100[W]">
+        <frmcmd name="setv">
           <argv format="%5.2f" valid="0:100">Math.sqrt($1*26)</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">

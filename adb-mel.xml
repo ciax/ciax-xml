@@ -2,110 +2,110 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <cmdset id="upd" label="Regular status update">
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="run" label="Run to Destination Tag [1-12]">
-        <command name="set_tag">
+      <command id="upd" label="Regular status update">
+        <frmcmd name="getstat" />
+      </command>
+      <command id="run" label="Run to Destination Tag [1-12]">
+        <frmcmd name="set_tag">
           <argv valid="1:12">$1</argv>
-        </command>
-        <command name="start">
+        </frmcmd>
+        <frmcmd name="start">
           <argv>0</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="fwd" label="Run Forward">
-        <command name="set_tag">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="fwd" label="Run Forward">
+        <frmcmd name="set_tag">
           <argv>98</argv>
-        </command>
-        <command name="start">
+        </frmcmd>
+        <frmcmd name="start">
           <argv>0</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="bak" label="Run Backword">
-        <command name="set_tag">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="bak" label="Run Backword">
+        <frmcmd name="set_tag">
           <argv>99</argv>
-        </command>
-        <command name="start">
+        </frmcmd>
+        <frmcmd name="start">
           <argv>0</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="lift" label="Lift Jack Level [0-3]">
-        <command name="set_pos">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="lift" label="Lift Jack Level [0-3]">
+        <frmcmd name="set_pos">
           <argv valid="0:3">$1</argv>
-        </command>
-        <command name="start">
+        </frmcmd>
+        <frmcmd name="start">
           <argv>8</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="chgon" label="Start Charging">
-        <command name="start">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="chgon" label="Start Charging">
+        <frmcmd name="start">
           <argv>15</argv>
-        </command>
-        <command name="clear" />
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="chgoff" label="Stop Charging">
-        <command name="stop">
+        </frmcmd>
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
+      </command>
+      <command id="chgoff" label="Stop Charging">
+        <frmcmd name="stop">
           <argv format="%d">3</argv>
-        </command>
-        <command name="getstat" />
-        <command name="clear" />
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="pause" label="Pause">
-        <command name="stop">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
+      </command>
+      <command id="pause" label="Pause">
+        <frmcmd name="stop">
           <argv>0</argv>
-        </command>
-        <command name="clear" />
-      </cmdset>
-      <cmdset id="emstop" label="Emergency Stop">
-        <command name="stop">
+        </frmcmd>
+        <frmcmd name="clear" />
+      </command>
+      <command id="emstop" label="Emergency Stop">
+        <frmcmd name="stop">
           <argv>1</argv>
-        </command>
-        <command name="clear" />
-      </cmdset>
-      <cmdset id="resume" label="Resume from Pause">
-        <command name="stop">
+        </frmcmd>
+        <frmcmd name="clear" />
+      </command>
+      <command id="resume" label="Resume from Pause">
+        <frmcmd name="stop">
           <argv>5</argv>
-        </command>
-        <command name="clear" />
-      </cmdset>
-      <cmdset id="cancel" label="Command Cancel">
-        <command name="stop">
+        </frmcmd>
+        <frmcmd name="clear" />
+      </command>
+      <command id="cancel" label="Command Cancel">
+        <frmcmd name="stop">
           <argv>4</argv>
-        </command>
-        <command name="clear" />
-      </cmdset>
-      <cmdset id="get_tbl" label="Get Jack Table">
-        <command name="rw_tbl">
+        </frmcmd>
+        <frmcmd name="clear" />
+      </command>
+      <command id="get_tbl" label="Get Jack Table">
+        <frmcmd name="rw_tbl">
           <argv>1</argv>
-        </command>
+        </frmcmd>
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
-            <command name="get_tbl">
+            <frmcmd name="get_tbl">
               <argv>$t</argv>
               <argv>$j</argv>
-            </command>
+            </frmcmd>
           </repeat>
         </repeat>
-      </cmdset>
-      <cmdset id="set_tbl" label="Set Jack Table">
+      </command>
+      <command id="set_tbl" label="Set Jack Table">
         <repeat counter="t" from="0" to="5">
           <repeat counter="j" from="0" to="3">
-            <command name="set_tbl">
+            <frmcmd name="set_tbl">
               <argv>$t</argv>
               <argv>$j</argv>
-            </command>
+            </frmcmd>
           </repeat>
         </repeat>
-        <command name="rw_tbl">
+        <frmcmd name="rw_tbl">
           <argv>0</argv>
-        </command>
-      </cmdset>
+        </frmcmd>
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
       <group id="g1" label="Main">
@@ -204,13 +204,13 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <periodic period="3600">
-        <command name="getstat" />
+        <frmcmd name="getstat" />
       </periodic>
       <onchange label="CMD ACCEPT">
         <condition>
           <value ref="acp">00</value>
         </condition>
-        <command name="clear" />
+        <frmcmd name="clear" />
       </onchange>
       <while blocking="run|jak|charge">
         <condition>
@@ -219,7 +219,7 @@
         <interrupt name="stop">
           <argv>0</argv>
         </interrupt>
-        <command name="getstat" />
+        <frmcmd name="getstat" />
       </while>
     </watch>
   </app>

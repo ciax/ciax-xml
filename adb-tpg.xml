@@ -2,10 +2,10 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="tpg" id="tpg" label="MOIRCS Pressure">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <cmdset id="upd" label="Update Status">
-        <command name="reqstat" />
-        <command name="getstat" />
-      </cmdset>
+      <command id="upd" label="Update Status">
+        <frmcmd name="reqstat" />
+        <frmcmd name="getstat" />
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="tpg">
       <row>

@@ -1,66 +1,66 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="slo" id="mmc" label="MOIRCS Carrousel">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <cmdset id="upd" label="Update Status">
-        <command name="getstat" />
-        <command name="bs" />
-        <command name="p" />
-        <command name="spd" />
+      <command id="upd" label="Update Status">
+        <frmcmd name="getstat" />
+        <frmcmd name="bs" />
+        <frmcmd name="p" />
+        <frmcmd name="spd" />
         <repeat from="1" to="5">
-          <command name="in">
+          <frmcmd name="in">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </repeat>
-      </cmdset>
-      <cmdset id="reset" label="Reset">
-        <command name="reset" />
-      </cmdset>
-      <cmdset id="defcon" label="Default Config">
-        <command name="hl">
+      </command>
+      <command id="reset" label="Reset">
+        <frmcmd name="reset" />
+      </command>
+      <command id="defcon" label="Default Config">
+        <frmcmd name="hl">
           <argv>0</argv>
-        </command>
-        <command name="e1">
+        </frmcmd>
+        <frmcmd name="e1">
           <argv>0</argv>
-        </command>
-        <command name="e2">
+        </frmcmd>
+        <frmcmd name="e2">
           <argv>0</argv>
-        </command>
-        <command name="setspd">
+        </frmcmd>
+        <frmcmd name="setspd">
           <argv>0.2</argv>
-        </command>
-      </cmdset>
-      <cmdset id="cwini" label="Goto CW Limit">
-        <command name="jp" />
-      </cmdset>
-      <cmdset id="cwhome" label="Goto Home from CW Limit">
-        <command name="mi">
+        </frmcmd>
+      </command>
+      <command id="cwini" label="Goto CW Limit">
+        <frmcmd name="jp" />
+      </command>
+      <command id="cwhome" label="Goto Home from CW Limit">
+        <frmcmd name="mi">
           <argv>-0.41</argv>
-        </command>
-      </cmdset>
-      <cmdset id="cwset0" label="Set 0 at S00">
-        <command name="set0" />
-      </cmdset>
-      <cmdset id="cw" label="Move CW [1-5]">
-        <command name="mi">
+        </frmcmd>
+      </command>
+      <command id="cwset0" label="Set 0 at S00">
+        <frmcmd name="set0" />
+      </command>
+      <command id="cw" label="Move CW [1-5]">
+        <frmcmd name="mi">
           <argv valid="1:5">$1</argv>
-        </command>
-      </cmdset>
-      <cmdset id="ccw" label="Move CCW [1-5]">
-        <command name="mi">
+        </frmcmd>
+      </command>
+      <command id="ccw" label="Move CCW [1-5]">
+        <frmcmd name="mi">
           <argv valid="1:5">-$1</argv>
-        </command>
-      </cmdset>
-      <cmdset id="slot" label="Move to Slot [0-23]">
-        <command name="ma">
+        </frmcmd>
+      </command>
+      <command id="slot" label="Move to Slot [0-23]">
+        <frmcmd name="ma">
           <argv valid="0:23">-$1</argv>
-        </command>
-      </cmdset>
-      <cmdset id="access" label="Move to Access [0-23]">
-        <command name="ma">
+        </frmcmd>
+      </command>
+      <command id="access" label="Move to Access [0-23]">
+        <frmcmd name="ma">
           <argv format="%d" valid="0:23">$1&gt;18?-$1+18:-$1-6</argv>
-        </command>
-      </cmdset>
+        </frmcmd>
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mmc">
       <row label="Group">
@@ -95,10 +95,10 @@
           <value ref="bs">1</value>
         </condition>
         <interrupt name="stop" />
-        <command name="p"></command>
-        <command name="in">
+        <frmcmd name="p"></frmcmd>
+        <frmcmd name="in">
           <argv>1</argv>
-        </command>
+        </frmcmd>
       </while>
     </watch>
   </app>

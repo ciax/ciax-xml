@@ -1,79 +1,79 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="oss" id="oss" label="TSC Control">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <cmdset id="upd" label="Update Status">
-        <command name="logstat" />
-        <command name="getstat" />
-        <command name="iststat" />
-        <command name="jakstat" />
-        <command name="inrstat" />
-      </cmdset>
-      <cmdset id="login" label="Login">
-        <command name="login" />
-        <command name="logstat" />
-      </cmdset>
-      <cmdset id="logout" label="Logout">
-        <command name="logout" />
-        <command name="logstat" />
-      </cmdset>
-      <cmdset id="init" label="Start TCP Status Request">
-        <command name="init" />
-      </cmdset>
-      <cmdset id="startup" label="Start Up CIAX operation">
-        <command name="login" />
-        <command name="tsconly" label="TSC Only Mode(CIAX Mode)" />
-        <command name="ron" />
-        <command name="jon" />
-      </cmdset>
-      <cmdset id="shutdown" label="Shutdown CIAX operation">
-        <command name="joff" />
-        <command name="roff" />
-        <command name="tscpri" label="TSC Primaly Mode" />
-        <command name="logout" />
-      </cmdset>
-      <cmdset id="rhook" label="InR Hook">
-        <command name="rhook" />
-        <command name="inrstat" />
-      </cmdset>
-      <cmdset id="runhk" label="InR UnHook">
-        <command name="runhk" />
-        <command name="inrstat" />
-      </cmdset>
-      <cmdset id="rstop" label="InR Stop">
-        <command name="rstop" />
-        <command name="inrstat" />
-      </cmdset>
-      <cmdset id="jup" label="All EJB Up">
-        <command name="ajup" />
-        <command name="jakstat" />
-      </cmdset>
-      <cmdset id="jdw" label="All EJB Down">
-        <command name="ajdw" />
-        <command name="jakstat" />
-      </cmdset>
-      <cmdset id="jstop" label="All EJB Stop">
-        <command name="jstop" />
-        <command name="jakstat" />
-      </cmdset>
-      <cmdset id="moircs" label="Set IID MOIRCS">
-        <command name="setinst">
+      <command id="upd" label="Update Status">
+        <frmcmd name="logstat" />
+        <frmcmd name="getstat" />
+        <frmcmd name="iststat" />
+        <frmcmd name="jakstat" />
+        <frmcmd name="inrstat" />
+      </command>
+      <command id="login" label="Login">
+        <frmcmd name="login" />
+        <frmcmd name="logstat" />
+      </command>
+      <command id="logout" label="Logout">
+        <frmcmd name="logout" />
+        <frmcmd name="logstat" />
+      </command>
+      <command id="init" label="Start TCP Status Request">
+        <frmcmd name="init" />
+      </command>
+      <command id="startup" label="Start Up CIAX operation">
+        <frmcmd name="login" />
+        <frmcmd name="tsconly" label="TSC Only Mode(CIAX Mode)" />
+        <frmcmd name="ron" />
+        <frmcmd name="jon" />
+      </command>
+      <command id="shutdown" label="Shutdown CIAX operation">
+        <frmcmd name="joff" />
+        <frmcmd name="roff" />
+        <frmcmd name="tscpri" label="TSC Primaly Mode" />
+        <frmcmd name="logout" />
+      </command>
+      <command id="rhook" label="InR Hook">
+        <frmcmd name="rhook" />
+        <frmcmd name="inrstat" />
+      </command>
+      <command id="runhk" label="InR UnHook">
+        <frmcmd name="runhk" />
+        <frmcmd name="inrstat" />
+      </command>
+      <command id="rstop" label="InR Stop">
+        <frmcmd name="rstop" />
+        <frmcmd name="inrstat" />
+      </command>
+      <command id="jup" label="All EJB Up">
+        <frmcmd name="ajup" />
+        <frmcmd name="jakstat" />
+      </command>
+      <command id="jdw" label="All EJB Down">
+        <frmcmd name="ajdw" />
+        <frmcmd name="jakstat" />
+      </command>
+      <command id="jstop" label="All EJB Stop">
+        <frmcmd name="jstop" />
+        <frmcmd name="jakstat" />
+      </command>
+      <command id="moircs" label="Set IID MOIRCS">
+        <frmcmd name="setinst">
           <argv>12</argv>
-        </command>
-        <command name="iststat" />
-      </cmdset>
-      <cmdset id="focas" label="Set IID FOCAS">
-        <command name="setinst">
+        </frmcmd>
+        <frmcmd name="iststat" />
+      </command>
+      <command id="focas" label="Set IID FOCAS">
+        <frmcmd name="setinst">
           <argv>5</argv>
-        </command>
-        <command name="iststat" />
-      </cmdset>
-      <cmdset id="comics" label="Set IID COMICS">
-        <command name="setinst">
+        </frmcmd>
+        <frmcmd name="iststat" />
+      </command>
+      <command id="comics" label="Set IID COMICS">
+        <frmcmd name="setinst">
           <argv>7</argv>
-        </command>
-        <command name="iststat" />
-      </cmdset>
+        </frmcmd>
+        <frmcmd name="iststat" />
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="oss">
       <group id="g1" label="Main">
@@ -190,18 +190,18 @@
           <value ref="abm">1</value>
         </condition>
         <interrupt name="jstop" />
-        <command name="jakstat" />
-        <command name="getexit" />
-        <command name="getpid" />
+        <frmcmd name="jakstat" />
+        <frmcmd name="getexit" />
+        <frmcmd name="getpid" />
       </while>
       <onchange label="Moving InR" blocking="rhook|runhk">
         <condition>
           <value ref="iang"></value>
         </condition>
         <interrupt name="rstop" />
-        <command name="inrstat" />
-        <command name="getexit" />
-        <command name="getpid" />
+        <frmcmd name="inrstat" />
+        <frmcmd name="getexit" />
+        <frmcmd name="getpid" />
       </onchange>
     </watch>
   </app>

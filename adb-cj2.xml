@@ -2,277 +2,277 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <cmdset id="upd" label="Regular status update">
-        <command name="getstat" />
-        <command name="getcmd" />
-        <command name="geterr" />
-        <command name="getzlen" />
-      </cmdset>
-      <cmdset id="reset" label="ResetBit">
-        <command name="clrbit" />
-        <command name="getcmd" />
-      </cmdset>
-      <cmdset id="stop" label="Emergency Stop">
-        <command name="setbit">
+      <command id="upd" label="Regular status update">
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd" />
+        <frmcmd name="geterr" />
+        <frmcmd name="getzlen" />
+      </command>
+      <command id="reset" label="ResetBit">
+        <frmcmd name="clrbit" />
+        <frmcmd name="getcmd" />
+      </command>
+      <command id="stop" label="Emergency Stop">
+        <frmcmd name="setbit">
           <argv>0</argv>
           <argv>0</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="pause" label="Pause">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="pause" label="Pause">
+        <frmcmd name="setbit">
           <argv>0</argv>
           <argv>1</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="resume" label="Resume Pause">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="resume" label="Resume Pause">
+        <frmcmd name="setbit">
           <argv>0</argv>
           <argv>10</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="clear" label="Clear Error">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="clear" label="Clear Error">
+        <frmcmd name="setbit">
           <argv>0</argv>
           <argv>11</argv>
-        </command>
-        <command name="geterr" />
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="ready" label="Drive Ready">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="geterr" />
+        <frmcmd name="getstat" />
+      </command>
+      <command id="ready" label="Drive Ready">
+        <frmcmd name="setbit">
           <argv>0</argv>
           <argv>3</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="fhook" label="Fix Flange Hook">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="fhook" label="Fix Flange Hook">
+        <frmcmd name="setbit">
           <argv>1</argv>
           <argv>0</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="funhk" label="Fix Flange UnHook">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="funhk" label="Fix Flange UnHook">
+        <frmcmd name="setbit">
           <argv>1</argv>
           <argv>1</argv>
-        </command>
-        <command name="getstat"></command>
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="fjup" label="Fix Flange Jack Up">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat"></frmcmd>
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="fjup" label="Fix Flange Jack Up">
+        <frmcmd name="setbit">
           <argv>1</argv>
           <argv>4</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="fjdw" label="Fix Flange Jack Down">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="fjdw" label="Fix Flange Jack Down">
+        <frmcmd name="setbit">
           <argv>1</argv>
           <argv>5</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="chgfw" label="Charging Plug Forward">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="chgfw" label="Charging Plug Forward">
+        <frmcmd name="setbit">
           <argv>1</argv>
           <argv>6</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="chgbk" label="Charging Plug Backward">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="chgbk" label="Charging Plug Backward">
+        <frmcmd name="setbit">
           <argv>1</argv>
           <argv>7</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="pwoff" label="Outlet Power Off">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="pwoff" label="Outlet Power Off">
+        <frmcmd name="setbit">
           <argv>1</argv>
           <argv>8</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="mhook" label="Movable Flange Hook">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="mhook" label="Movable Flange Hook">
+        <frmcmd name="setbit">
           <argv>2</argv>
           <argv>0</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr"></command>
-      </cmdset>
-      <cmdset id="munhk" label="Movable Flange UnHook">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr"></frmcmd>
+      </command>
+      <command id="munhk" label="Movable Flange UnHook">
+        <frmcmd name="setbit">
           <argv>2</argv>
           <argv>1</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr"></command>
-      </cmdset>
-      <cmdset id="mrotout" label="Movable Flange Rotation for Loading">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr"></frmcmd>
+      </command>
+      <command id="mrotout" label="Movable Flange Rotation for Loading">
+        <frmcmd name="setbit">
           <argv>2</argv>
           <argv>2</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr"></command>
-      </cmdset>
-      <cmdset id="mrotin" label="Movable Flange Rotation for Storing">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr"></frmcmd>
+      </command>
+      <command id="mrotin" label="Movable Flange Rotation for Storing">
+        <frmcmd name="setbit">
           <argv>2</argv>
           <argv>3</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="mjup" label="Movable Flange Jack Up">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="mjup" label="Movable Flange Jack Up">
+        <frmcmd name="setbit">
           <argv>2</argv>
           <argv>4</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="mjdw" label="Movable Flange Jack Down">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="mjdw" label="Movable Flange Jack Down">
+        <frmcmd name="setbit">
           <argv>2</argv>
           <argv>5</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="trout" label="Movable Flange Transer Out">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="trout" label="Movable Flange Transer Out">
+        <frmcmd name="setbit">
           <argv>2</argv>
           <argv>6</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="trin" label="Movable Flange Transer In">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="trin" label="Movable Flange Transer In">
+        <frmcmd name="setbit">
           <argv>2</argv>
           <argv>7</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="dopen" label="Door Open">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="dopen" label="Door Open">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>0</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="dclose" label="Door Close">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="dclose" label="Door Close">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>1</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="fpwon" label="Fix Flange Instrument Power On">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="fpwon" label="Fix Flange Instrument Power On">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>2</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="fpwoff" label="Fix Flange Instrument Power Off">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="fpwoff" label="Fix Flange Instrument Power Off">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>3</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="mpwon" label="Movable Flange Instrument Power On">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="mpwon" label="Movable Flange Instrument Power On">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>4</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="mpwoff" label="Movable Flange Instrument Power Off">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="mpwoff" label="Movable Flange Instrument Power Off">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>5</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="fccdon" label="Fix Flange CCD Power On">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="fccdon" label="Fix Flange CCD Power On">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>8</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="fccdoff" label="Fix Flange CCD Power Off">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="fccdoff" label="Fix Flange CCD Power Off">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>9</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="fccdtoff" label="Fix Flange CCD Timer Off">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="fccdtoff" label="Fix Flange CCD Timer Off">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>10</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
-      <cmdset id="mccdon" label="Movable Flange CCD Power On">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
+      <command id="mccdon" label="Movable Flange CCD Power On">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>12</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="mccdoff" label="Movable Flange CCD Power Off">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="mccdoff" label="Movable Flange CCD Power Off">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>13</argv>
-        </command>
-        <command name="getstat" />
-      </cmdset>
-      <cmdset id="mccdtoff" label="Movable Flange CCD Timer Off">
-        <command name="setbit">
+        </frmcmd>
+        <frmcmd name="getstat" />
+      </command>
+      <command id="mccdtoff" label="Movable Flange CCD Timer Off">
+        <frmcmd name="setbit">
           <argv>3</argv>
           <argv>14</argv>
-        </command>
-        <command name="getstat" />
-        <command name="getcmd"></command>
-        <command name="geterr" />
-      </cmdset>
+        </frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="geterr" />
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cj2">
       <group id="g1" label="MAIN">
@@ -432,9 +432,9 @@
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <periodic label="Regular" period="300">
-        <command name="getstat"></command>
-        <command name="geterr"></command>
-        <command name="getzlen"></command>
+        <frmcmd name="getstat"></frmcmd>
+        <frmcmd name="geterr"></frmcmd>
+        <frmcmd name="getzlen"></frmcmd>
       </periodic>
       <while label="On Motion" blocking="^[fmtd].+">
         <condition>
@@ -445,57 +445,57 @@
           <argv>0</argv>
           <argv>1</argv>
         </interrupt>
-        <command name="getstat" />
+        <frmcmd name="getstat" />
       </while>
       <onchange label="On Completion">
         <condition>
           <value ref="cmp">1</value>
         </condition>
-        <command name="clrbit" />
-        <command name="getstat" />
-        <command name="getcmd" />
+        <frmcmd name="clrbit" />
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd" />
       </onchange>
       <onchange label="On ErrReset">
         <condition>
           <value ref="err">0</value>
         </condition>
-        <command name="clrbit" />
-        <command name="geterr" />
+        <frmcmd name="clrbit" />
+        <frmcmd name="geterr" />
       </onchange>
       <onchange label="On Error">
         <condition>
           <value ref="err">[^0]</value>
         </condition>
-        <command name="set">
+        <frmcmd name="set">
           <argv>exe</argv>
           <argv>0</argv>
-        </command>
+        </frmcmd>
       </onchange>
       <onchange label="On Emergency">
         <condition>
           <value ref="emg">1</value>
         </condition>
-        <command name="clrbit" />
-        <command name="getstat" />
+        <frmcmd name="clrbit" />
+        <frmcmd name="getstat" />
       </onchange>
       <onchange label="On Pause">
         <condition>
           <value ref="pse">1</value>
         </condition>
-        <command name="clrbit" />
-        <command name="setbit">
+        <frmcmd name="clrbit" />
+        <frmcmd name="setbit">
           <!--resetp-->
           <argv>0</argv>
           <argv>10</argv>
-        </command>
-        <command name="getstat" />
+        </frmcmd>
+        <frmcmd name="getstat" />
       </onchange>
       <onchange label="Off Pause">
         <condition>
           <value ref="pse">0</value>
         </condition>
-        <command name="clrbit" />
-        <command name="getstat" />
+        <frmcmd name="clrbit" />
+        <frmcmd name="getstat" />
       </onchange>
     </watch>
   </app>

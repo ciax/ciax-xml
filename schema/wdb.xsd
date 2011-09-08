@@ -32,7 +32,7 @@
   <xsd:element name="periodic">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="wdb:command" maxOccurs="unbounded" />
+        <xsd:element ref="wdb:frmcmd" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="period" use="required" type="xsd:int"></xsd:attribute>
       <xsd:attribute name="label" type="xsd:token" />
@@ -45,18 +45,18 @@
     <xsd:sequence>
       <xsd:element ref="wdb:condition" minOccurs="1" maxOccurs="1" />
       <xsd:element ref="wdb:interrupt" minOccurs="0" />
-      <xsd:element ref="wdb:command" maxOccurs="unbounded" />
+      <xsd:element ref="wdb:frmcmd" maxOccurs="unbounded" />
     </xsd:sequence>
     <xsd:attributeGroup ref="wdb:condition" />
   </xsd:complexType>
   <!--command-->
-  <xsd:complexType name="command">
+  <xsd:complexType name="frmcmd">
     <xsd:sequence>
       <xsd:element ref="wdb:argv" minOccurs="0" maxOccurs="unbounded" />
     </xsd:sequence>
     <xsd:attribute name="name" type="xsd:token" use="required" />
   </xsd:complexType>
-  <xsd:element name="interrupt" type="wdb:command"></xsd:element>
-  <xsd:element name="command" type="wdb:command"></xsd:element>
+  <xsd:element name="interrupt" type="wdb:frmcmd"></xsd:element>
+  <xsd:element name="frmcmd" type="wdb:frmcmd"></xsd:element>
   <xsd:element name="argv" type="xsd:token"></xsd:element>
 </xsd:schema>

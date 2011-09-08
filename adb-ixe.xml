@@ -2,122 +2,122 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <cmdset id="upd" label="Update Status">
-        <command name="getstat" />
+      <command id="upd" label="Update Status">
+        <frmcmd name="getstat" />
         <repeat from="1" to="6">
-          <command name="chkrun">
+          <frmcmd name="chkrun">
             <argv>$_</argv>
-          </command>
-          <command name="getp">
+          </frmcmd>
+          <frmcmd name="getp">
             <argv>$_</argv>
-          </command>
-          <command name="getspd">
+          </frmcmd>
+          <frmcmd name="getspd">
             <argv>$_</argv>
-          </command>
-          <command name="getrmp">
+          </frmcmd>
+          <frmcmd name="getrmp">
             <argv>$_</argv>
-          </command>
-          <command name="getofs">
+          </frmcmd>
+          <frmcmd name="getofs">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </repeat>
-      </cmdset>
-      <cmdset id="sysinit" label="System Initialize">
-        <command name="initrot" />
-        <command name="initunit" />
-        <command name="initfactor" />
-      </cmdset>
-      <cmdset id="posinit" label="Position Initialize">
+      </command>
+      <command id="sysinit" label="System Initialize">
+        <frmcmd name="initrot" />
+        <frmcmd name="initunit" />
+        <frmcmd name="initfactor" />
+      </command>
+      <command id="posinit" label="Position Initialize">
         <repeat from="1" to="6">
-          <command name="init">
+          <frmcmd name="init">
             <argv>$_</argv>
-          </command>
-          <command name="chkrun">
+          </frmcmd>
+          <frmcmd name="chkrun">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </repeat>
-      </cmdset>
-      <cmdset id="speed" label="Set Speed [25-800]">
+      </command>
+      <command id="speed" label="Set Speed [25-800]">
         <repeat from="1" to="6">
-          <command name="set">
+          <frmcmd name="set">
             <argv format="spd:%d">$_-1</argv>
             <argv valid="25:800">$1</argv>
-          </command>
-          <command name="setspd">
+          </frmcmd>
+          <frmcmd name="setspd">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </repeat>
-      </cmdset>
-      <cmdset id="ramp" label="Set ramp [200-800]">
+      </command>
+      <command id="ramp" label="Set ramp [200-800]">
         <repeat from="1" to="6">
-          <command name="set">
+          <frmcmd name="set">
             <argv format="rmp:%d">$_-1</argv>
             <argv valid="200:800">$1</argv>
-          </command>
-          <command name="setrmp">
+          </frmcmd>
+          <frmcmd name="setrmp">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </repeat>
-      </cmdset>
-      <cmdset id="resetp" label="Set 0 Pulses">
+      </command>
+      <command id="resetp" label="Set 0 Pulses">
         <repeat from="1" to="6">
-          <command name="set">
+          <frmcmd name="set">
             <argv format="p:%d">$_-1</argv>
             <argv>0</argv>
-          </command>
-          <command name="setp">
+          </frmcmd>
+          <frmcmd name="setp">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </repeat>
-      </cmdset>
-      <cmdset id="backup" label="Backup Pulse,Speed,Offset">
-        <command name="save">
+      </command>
+      <command id="backup" label="Backup Pulse,Speed,Offset">
+        <frmcmd name="save">
           <argv>p,spd,ofs</argv>
-        </command>
-        <command name="deact" />
-      </cmdset>
-      <cmdset id="restore" label="Restore Pulse,Speed,Offset">
-        <command name="act" />
-        <command name="load" />
+        </frmcmd>
+        <frmcmd name="deact" />
+      </command>
+      <command id="restore" label="Restore Pulse,Speed,Offset">
+        <frmcmd name="act" />
+        <frmcmd name="load" />
         <repeat from="1" to="6">
-          <command name="setp">
+          <frmcmd name="setp">
             <argv>$_</argv>
-          </command>
-          <command name="setspd">
+          </frmcmd>
+          <frmcmd name="setspd">
             <argv>$_</argv>
-          </command>
-          <command name="setofs">
+          </frmcmd>
+          <frmcmd name="setofs">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </repeat>
-      </cmdset>
-      <cmdset id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
-        <command name="fw">
+      </command>
+      <command id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
+        <frmcmd name="fw">
           <argv valid="1:6">$1</argv>
           <argv valid="1:" format="%d">$2 * 8000</argv>
-        </command>
-        <command name="chkrun">
+        </frmcmd>
+        <frmcmd name="chkrun">
           <argv>$1</argv>
-        </command>
-      </cmdset>
-      <cmdset id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
-        <command name="bk">
+        </frmcmd>
+      </command>
+      <command id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
+        <frmcmd name="bk">
           <argv valid="1:6">$1</argv>
           <argv format="%d" valid="1:">$2 * 8000</argv>
-        </command>
-        <command name="chkrun">
+        </frmcmd>
+        <frmcmd name="chkrun">
           <argv>$1</argv>
-        </command>
-      </cmdset>
-      <cmdset id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
-        <command name="abs">
+        </frmcmd>
+      </command>
+      <command id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
+        <frmcmd name="abs">
           <argv valid="1:6">$1</argv>
           <argv format="%d" valid="0:48">$2 * 8000</argv>
-        </command>
-        <command name="chkrun">
+        </frmcmd>
+        <frmcmd name="chkrun">
           <argv>$1</argv>
-        </command>
-      </cmdset>
+        </frmcmd>
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">
@@ -171,19 +171,19 @@
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <repeat from="1" to="6">
         <periodic label="Update Status" period="3600">
-          <command name="getstat" />
-          <command name="chkrun">
+          <frmcmd name="getstat" />
+          <frmcmd name="chkrun">
             <argv>$_</argv>
-          </command>
-          <command name="getp">
+          </frmcmd>
+          <frmcmd name="getp">
             <argv>$_</argv>
-          </command>
-          <command name="getspd">
+          </frmcmd>
+          <frmcmd name="getspd">
             <argv>$_</argv>
-          </command>
-          <command name="getofs">
+          </frmcmd>
+          <frmcmd name="getofs">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </periodic>
         <while label="Moving %d" blocking="(fw|bk|abs) %d">
           <condition operator="and">
@@ -192,12 +192,12 @@
           <interrupt name="stop">
             <argv>$_</argv>
           </interrupt>
-          <command name="chkrun">
+          <frmcmd name="chkrun">
             <argv>$_</argv>
-          </command>
-          <command name="getp">
+          </frmcmd>
+          <frmcmd name="getp">
             <argv>$_</argv>
-          </command>
+          </frmcmd>
         </while>
       </repeat>
     </watch>

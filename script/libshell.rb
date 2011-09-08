@@ -5,10 +5,9 @@ require "readline"
 # Prompt should be Array
 class Shell
   def initialize(prompt=[])
-    v=Verbose.new("shell")
-    v.add("== Shell Command ==")
-    v.add('q'=>"Quit",'D^'=>"Interrupt")
-    v.assert(Array === prompt)
+    cl=CmdList.new("== Shell Command ==")
+    cl.add('q'=>"Quit",'D^'=>"Interrupt")
+    Msg.assert(Array === prompt)
     loop {
       line=Readline.readline(prompt.join(''),true)
       break if /^q/ === line

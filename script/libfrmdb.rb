@@ -5,7 +5,7 @@ require "libcache"
 class FrmDb < Hash
   include Cache
   def initialize(frm,nocache=nil)
-    @v=Verbose.new('fdb',5)
+    @v=Msg.new('fdb',5)
     cache('fdb',frm,nocache){|doc|
       hash=Hash[doc]
       frame=hash[:frame]={}
@@ -133,5 +133,5 @@ if __FILE__ == $0
   rescue SelectID
     abort("USAGE: #{$0} [id]\n#{$!}")
   end
-  puts Verbose.view_struct(db)
+  puts Msg.view_struct(db)
 end

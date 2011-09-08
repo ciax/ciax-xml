@@ -5,7 +5,7 @@ require "libparam"
 class FrmCmd
   def initialize(fdb,field)
     @field=field
-    @v=Verbose.new("#{fdb['id']}/cmd".upcase,3)
+    @v=Msg.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
     @fdbc=fdb[:frame][:command]

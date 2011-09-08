@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 require "rexml/document"
 include REXML
 
 class Xml
   def initialize(f=nil)
-    @v=Verbose.new("Xml",4)
+    @v=Msg.new("Xml",4)
     case f
     when String
       test(?r,f) || raise(SelectID)

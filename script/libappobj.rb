@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 require "libbuffer"
 require "libappcmd"
 require "libappstat"
@@ -11,7 +11,7 @@ class AppObj
   def initialize(adb,view)
     @view=view
     @prompt=[adb['id']]
-    @v=Verbose.new("ctl",6)
+    @v=Msg.new("ctl",6)
     @ac=AppCmd.new(adb[:command])
     @as=AppStat.new(adb[:status],view['stat'])
     Thread.abort_on_exception=true
@@ -20,9 +20,9 @@ class AppObj
     @event=Watch.new(adb,view['stat'])
     @watch=watch_thread
     @main=cmdset_thread{|buf| yield buf}
-    @v.add("== Internal Command ==")
-    @v.add('sleep'=>"sleep [sec]")
-    @v.add('waitfor'=>"[key] [val] (timeout=10)")
+    @cl=CmdList.new("== Internal Command ==")
+    @cl.add('sleep'=>"sleep [sec]")
+    @cl.add('waitfor'=>"[key] [val] (timeout=10)")
     upd
   end
 
@@ -43,7 +43,7 @@ class AppObj
     upd
     "ISSUED\n"
   rescue SelectID
-    @v.list
+    @cl.exit
   end
 
   def upd
@@ -78,7 +78,7 @@ class AppObj
           @view.upd.save
         }
       rescue UserError
-        @v.alert(" in Command Thread")
+        Msg.alert(" in Command Thread")
       end
     }
   end

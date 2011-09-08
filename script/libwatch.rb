@@ -3,12 +3,12 @@ class Watch < Array
   def initialize(adb,stat)
     push(*adb[:watch])
     @stat=stat
-    @v=Verbose.new("WATCH",3)
+    @v=Msg.new("WATCH",3)
   end
 
   public
   def to_s
-    Verbose.view_struct(self,Watch)
+    Msg.view_struct(self,Watch)
   end
 
   def active?

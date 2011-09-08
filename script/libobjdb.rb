@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 require "libcache"
 
 class ObjDb < Hash
   include Cache
   def initialize(obj,nocache=nil)
-    @v=Verbose.new('odb',5)
+    @v=Msg.new('odb',5)
     self['id']=obj
     cache('odb',obj,nocache){|doc|
       hash=Hash[doc]
@@ -57,5 +57,5 @@ if __FILE__ == $0
   if app
     odb.cover_app(true)
   end
-  puts Verbose.view_struct(odb)
+  puts Msg.view_struct(odb)
 end

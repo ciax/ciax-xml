@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libparam"
-require "libverbose"
+require "libmsg"
 
 class AppCmd
 
   def initialize(adb)
-    @v=Verbose.new("#{adb['id']}/cmd",2)
+    @v=Msg.new("#{adb['id']}/cmd",2)
     @adb=adb[:structure]
     @par=Param.new(adb)
   end

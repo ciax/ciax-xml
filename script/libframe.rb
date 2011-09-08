@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 class Frame
   def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
-    @v=Verbose.new("fdb/frm".upcase,6)
+    @v=Msg.new("fdb/frm".upcase,6)
     @endian=endian
     @method=ccmethod
     @frame=''
@@ -55,7 +55,7 @@ class Frame
     if val=e0['val']
       val=eval(val).to_s if e0['decode']
       @v.msg{"Verify:[#{val}] and <#{str}>"}
-      val == str || @v.err("Verify Mismatch <#{str}> != [#{val}]")
+      val == str || Msg.err("Verify Mismatch <#{str}> != [#{val}]")
     end
     str
   end
@@ -72,7 +72,7 @@ class Frame
       @ccrange.each_byte {|c| chk += c }
       chk%=256
     else
-      @v.err("No such CC method #{@method}")
+      Msg.err("No such CC method #{@method}")
     end
     @v.msg{"Calc:CC [#{@method.upcase}] -> (#{chk})"}
     @ccrange=nil

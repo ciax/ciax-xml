@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
 require "xml"
-require "libverbose"
+require "libmsg"
 
 class Xml
   def initialize(f=nil)
-    @v=Verbose.new("Xml",4)
+    @v=Msg.new("Xml",4)
     case f
     when String
       test(?r,f) || raise(SelectID)
@@ -16,7 +16,7 @@ class Xml
       doc=XML::Document.new
       @e=doc.root=XML::Node.new('blank')
     else
-      @v.err("Parameter shoud be String or Node")
+      Msg.err("Parameter shoud be String or Node")
     end
   end
 

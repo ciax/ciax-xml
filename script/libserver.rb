@@ -1,13 +1,12 @@
 #!/usr/bin/ruby
 require "socket"
-require "libverbose"
+require "libmsg"
 
 class Server
   def initialize(prom,port)
-    @v=Verbose.new("UDPS")
+    @v=Msg.new("UDPS")
     @v.msg{"Server:#{port}"}
     @v.msg{"Prompt:#{prom.inspect}"}
-    @v.add("interrupt" => "Interrupt")
     UDPSocket.open{ |udp|
       udp.bind("0.0.0.0",port)
       loop {

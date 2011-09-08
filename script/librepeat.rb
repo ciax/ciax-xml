@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require 'libverbose'
+require 'libmsg'
 class Repeat
   def initialize
-    @v=Verbose.new("Repeat",5)
+    @v=Msg.new("Repeat",5)
     @counter={}
     @rep=[]
   end

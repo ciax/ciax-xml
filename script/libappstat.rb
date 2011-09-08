@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 require "libappdb"
 
 class AppStat
@@ -7,7 +7,7 @@ class AppStat
   def initialize(adb,stat={})
     @stat=stat
     @adbs=adb[:structure]
-    @v=Verbose.new("stat",2)
+    @v=Msg.new("stat",2)
   end
 
   public
@@ -28,8 +28,8 @@ class AppStat
   def get_val(fields,field)
     str=''
     fields.each{|e1| #element(split and concat)
-      fld=e1['ref'] || @v.abort("No field Key")
-      data=@v.check(field.get(fld)){"No field Value[#{fld}]"}||''
+      fld=e1['ref'] || Msg.abort("No field Key")
+      data=Msg.check(field.get(fld)){"No field Value[#{fld}]"}||''
       case e1[:type]
       when 'binary'
         str << binary(e1,data)

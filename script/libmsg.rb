@@ -3,10 +3,10 @@
 class UserError < RuntimeError; end
 class SelectID < UserError; end
 
-class Verbose
+class Msg
   Start_time=Time.now
   @@base=1
-  def initialize(prefix='',color=7)
+  def initialize(prefix='',color=2)
     @prefix=prefix.upcase
     @color=color
     @ind=1
@@ -30,6 +30,59 @@ class Verbose
       Kernel.warn msg if condition(msg)
     }
     self
+  end
+
+  # Private Method
+  private
+  def mkmsg(text)
+    return unless text
+    pass=sprintf("%5.4f",Time.now-Start_time)
+    ts= STDERR.tty? ? '' : "[#{pass}]"
+    ts+'  '*@ind+Msg.color("#{@prefix}:",@color)+text.inspect
+  end
+
+  def condition(msg) # VER= makes setenv "" to VER otherwise nil
+    return true if ENV['VER'] == ''
+    ENV['VER'].upcase.split(',').any?{|s|
+      s.split(':').all?{|e|
+        msg.upcase.include?(e)
+      }
+    }
+  end
+end
+
+class << Msg
+  # Class method
+  def view_struct(data,title=nil,indent=0)
+    return '' unless data
+    str=''
+    if title
+      case title
+      when Numeric
+        title="[#{title}]"
+      else
+        title=title.inspect
+      end
+      str << "  " * indent + ("%-4s :\n" % title)
+      indent+=1
+    end
+    case data
+    when Array
+      unless data.all?{|v| v.kind_of?(Comparable)}
+        data.each_with_index{|v,i|
+          str << view_struct(v,i,indent)
+        }
+        return str
+      end
+    when Hash
+      if data.values.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
+        data.each{|k,v|
+          str << view_struct(v,k,indent)
+        }
+        return str
+      end
+    end
+    str.chomp + " #{data.inspect}\n"
   end
 
   def warn(msg='warning') # Display only
@@ -63,10 +116,23 @@ class Verbose
     exp
   end
 
+  # 1=red,2=green,4=blue,8=bright
+  def color(text,c=7)
+    return '' if text == ''
+    return text unless STDERR.tty?
+    "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
+  end
+end
+
+class CmdList
+  def initialize(title='')
+    @list=[title]
+  end
+
   def add(list)
     case list
     when String
-      @list << color(list,2)
+      @list << Msg.color(list,2)
     when Hash
       list.each{|key,val|
         case val
@@ -75,7 +141,7 @@ class Verbose
         when Hash,Xml
           label=val['label']
         end
-        @list << color(" %-10s" % key,3)+": #{label}" if label
+        @list << Msg.color(" %-10s" % key,3)+": #{label}" if label
       }
     end
     self
@@ -86,69 +152,7 @@ class Verbose
     @list.grep(/./).join("\n")
   end
 
-  def list
+  def exit
     raise SelectID,to_s
-  end
-
-  # Private Method
-  private
-  # 1=red,2=green,4=blue,8=bright
-  def color(text,c=@color)
-    return '' if text == ''
-    return text unless STDERR.tty?
-    "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
-  end
-
-  def mkmsg(text)
-    return unless text
-    pass=sprintf("%5.4f",Time.now-Start_time)
-    ts= STDERR.tty? ? '' : "[#{pass}]"
-    ts+'  '*@ind+color("#{@prefix}:",@color)+text.inspect
-  end
-
-  def condition(msg) # VER= makes setenv "" to VER otherwise nil
-    case ENV['VER']
-    when ''
-      true
-    else
-      ENV['VER'].upcase.split(',').any?{|s|
-        s.split(':').all?{|e|
-          msg.upcase.include?(e)
-        }
-      }
-    end
-  end
-
-  # Class method
-  def self.view_struct(data,title=nil,indent=0)
-    return '' unless data
-    str=''
-    if title
-      case title
-      when Numeric
-        title="[#{title}]"
-      else
-        title=title.inspect
-      end
-      str << "  " * indent + ("%-4s :\n" % title)
-      indent+=1
-    end
-    case data
-    when Array
-      unless data.all?{|v| v.kind_of?(Comparable)}
-        data.each_with_index{|v,i|
-          str << view_struct(v,i,indent)
-        }
-        return str
-      end
-    when Hash
-      if data.values.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
-        data.each{|k,v|
-          str << view_struct(v,k,indent)
-        }
-        return str
-      end
-    end
-    str.chomp + " #{data.inspect}\n"
   end
 end

@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 require "libcache"
 require "librerange"
 
 class SymDb < Hash
   include Cache
   def initialize(id='all',nocache=nil)
-    @v=Verbose.new("Symbol",6)
+    @v=Msg.new("Symbol",6)
     cache('sdb',id,nocache){|doc|
       hash=Hash[doc]
       doc.top.each{|e1|
@@ -24,7 +24,7 @@ class SymDb < Hash
       hash
     }
   rescue SelectID
-    @v.list if __FILE__ == $0
+    @cl.exit if __FILE__ == $0
   end
 
   def convert(view,ref=nil)
@@ -34,7 +34,7 @@ class SymDb < Hash
       next if val == ''
       next unless sid=@ref[k]
       unless key?(sid)
-        @v.warn("Table[#{sid}] not exist")
+        Msg.warn("Table[#{sid}] not exist")
         next
       end
       @v.msg{"ID=#{k},ref=#{sid}"}
@@ -70,6 +70,6 @@ if __FILE__ == $0
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end
-  puts Verbose.view_struct(sdb)
+  puts Msg.view_struct(sdb)
 end
 

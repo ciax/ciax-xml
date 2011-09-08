@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 
 class Circular
   attr_reader :max
@@ -7,7 +7,7 @@ class Circular
     @limit=limit
     @counter=0
     @max=0
-    @v=Verbose.new("Circ",6)
+    @v=Msg.new("Circ",6)
   end
 
   def reset

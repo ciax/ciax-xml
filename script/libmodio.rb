@@ -6,7 +6,7 @@ module ModIo
   attr_writer :type,:v
 
   def to_s
-    Verbose.view_struct(self)
+    Msg.view_struct(self)
   end
 
   def to_j(hash=nil)
@@ -28,7 +28,7 @@ module ModIo
     elsif tag
       raise SelectID,list_stat
     else
-      @v.warn("----- No #{base}.json")
+      Msg.warn("----- No #{base}.json")
     end
     self
   end

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 
 class IoCmd
   VarDir=""
@@ -11,7 +11,7 @@ class IoCmd
       @logfile << Time.now.year.to_s+".log"
     end
     @f=IO.popen(@iocmd,'r+')
-    @v=Verbose.new('IOCMD',1)
+    @v=Msg.new('IOCMD',1)
     @v.msg{"CLIENT:#{iocmd}"}
     @timeout=timeout
     @wait=wait.to_f

@@ -12,12 +12,12 @@ class FrmObj
     @ic=iocmd
     @cmd=FrmCmd.new(fdb,field)
     @rsp=FrmRsp.new(fdb,field)
-    @v=Verbose.new("fdb".upcase)
-    @v.add("== Internal Command ==")
-    @v.add('set'=>"Set Value  [key(:idx)] (val)")
-    @v.add('unset'=>"Remove Value  [key]")
-    @v.add('load'=>"Load Field (tag)")
-    @v.add('save'=>"Save Field [key,key...] (tag)")
+    @v=Msg.new("fdb".upcase)
+    @cl=CmdList.new("== Internal Command ==")
+    @cl.add('set'=>"Set Value  [key(:idx)] (val)")
+    @cl.add('unset'=>"Remove Value  [key]")
+    @cl.add('load'=>"Load Field (tag)")
+    @cl.add('save'=>"Save Field [key,key...] (tag)")
   end
 
   def request(cmd) #Should be array
@@ -44,8 +44,8 @@ class FrmObj
     end
     self
   rescue SelectID
-    @v.add("No such command '#{cmd}'")
-    @v.list
+    @cl.add("No such command '#{cmd}'")
+    @cl.exit
   end
 
   def to_s

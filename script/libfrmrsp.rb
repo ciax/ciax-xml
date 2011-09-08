@@ -7,7 +7,7 @@ class FrmRsp
   def initialize(fdb,field)
     @fdb=fdb
     @field=field
-    @v=Verbose.new("#{fdb['id']}/rsp",3)
+    @v=Msg.new("#{fdb['id']}/rsp",3)
     @field['frm_type']=fdb['id']
     @fdbs=fdb[:frame][:status]
     @sel=Hash[@fdbs]
@@ -18,10 +18,10 @@ class FrmRsp
   # Block accepts [time,frame]
   def setrsp(cmd)
     if rid=@par.setpar(cmd).check_id[:response]
-      @sel[:select]=@fdbs[:select][rid] || @v.err("No such response id [#{rid}]")
+      @sel[:select]=@fdbs[:select][rid] || Msg.err("No such response id [#{rid}]")
       @v.msg{"Set Statement #{cmd}"}
       time,frame=yield
-      @v.err("No Response") unless frame
+      Msg.err("No Response") unless frame
       @field['time']="%.3f" % time.to_f
       if tm=@sel['terminator']
         frame.chomp!(eval('"'+tm+'"'))
@@ -36,7 +36,7 @@ class FrmRsp
       @frame.set(@fary.shift)
       getfield_rec(@sel[:main])
       if cc=@field.delete('cc')
-        cc == @cc || @v.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
+        cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
     else
@@ -67,7 +67,7 @@ class FrmRsp
     @v.msg(1){"Field:#{e0['label']}"}
     if e0[:index]
       # Array
-      key=e0['assign'] || @v.err("No key for Array")
+      key=e0['assign'] || Msg.err("No key for Array")
       # Insert range depends on command param
       idxs=e0[:index].map{|e1|
         @par.subst(e1['range'])

@@ -5,7 +5,7 @@ require "libxmlgn"
 class XmlDoc < Hash
   attr_reader :top
   def initialize(dbname = nil,id = nil)
-    @v=Verbose.new("Doc/#{dbname}",4)
+    @v=Msg.new("Doc/#{dbname}",4)
     @domain={}
     readxml(dbname,id){|e|
       @top=e
@@ -18,7 +18,7 @@ class XmlDoc < Hash
     return if @top
     list={}
     readxml(dbname){|e| list[e['id']]=e['label'] }
-    raise SelectID,@v.add(list).to_s
+    raise SelectID,CmdList.new.add(list).to_s
   end
 
   def domain(domain)

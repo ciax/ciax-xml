@@ -6,7 +6,7 @@ require "libcache"
 class AppDb < Hash
   include Cache
   def initialize(app,nocache=nil)
-    @v=Verbose.new('adb',5)
+    @v=Msg.new('adb',5)
     cache('adb',app,nocache){|doc|
       hash=Hash[doc]
       # Command DB
@@ -137,6 +137,6 @@ if __FILE__ == $0
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end
-  puts Verbose.view_struct(db)
+  puts Msg.view_struct(db)
 end
 

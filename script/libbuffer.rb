@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 require "thread"
 
 class Buffer
@@ -7,7 +7,7 @@ class Buffer
     @inbuf=[[],[],[]]
     @outbuf=[[],[],[]]
     @q=Queue.new
-    @v=Verbose.new("BUF",5)
+    @v=Msg.new("BUF",5)
     @issue=@wait=false
     @proc=Queue.new
     @st=delay

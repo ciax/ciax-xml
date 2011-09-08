@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require "libverbose"
+require "libmsg"
 require "libmodio"
 # Status to View (String with attributes)
 class View < Hash
   include ModIo
   def initialize(id=nil,db=nil)
-    @v=Verbose.new("view",6)
+    @v=Msg.new("view",6)
     @db=db
     if id
       @type="json/status_#{id}"

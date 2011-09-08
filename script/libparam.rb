@@ -1,14 +1,14 @@
 #!/usr/bin/ruby
-require 'libverbose'
+require 'libmsg'
 require 'librerange'
 
 # Parameter must be numerical
 class Param < Hash
   def initialize(db) # command db
-    @v=Verbose.new("PARAM",5)
+    @v=Msg.new("PARAM",5)
     @db=db
     @label=db[:label]
-    @v.add("== Command List==").add(@label)
+    @cl=CmdList.new("== Command List==").add(@label)
   end
 
   def setpar(cmd)
@@ -20,7 +20,7 @@ class Param < Hash
 
   def check_id
     id=@cmd.first
-    @v.list unless @label.key?(id)
+    @cl.exit unless @label.key?(id)
     id=self[:id]
     @db.each{|k,v|
       self[k]=v[id]
@@ -37,7 +37,7 @@ class Param < Hash
         @v.msg{"Param No.#{i} = [#{@cmd[i]}]"}
         i > 0 ? validate(range,@cmd[i]) : self[:id]
       }
-      @v.err("Nil string") if str == ''
+      Msg.err("Nil string") if str == ''
       str
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
@@ -46,13 +46,13 @@ class Param < Hash
 
   private
   def validate(range,str)
-    str || @v.err(" Short of Parameters")
+    str || Msg.err(" Short of Parameters")
     return(str) unless range
     label=range.tr(':','-')
     @v.msg{"Validate: [#{str}] Match? [#{range}]"}
     range.split(',').each{|r|
       return(str) if ReRange.new(r) == str
     }
-    @v.err(" Parameter invalid(#{label})")
+    Msg.err(" Parameter invalid(#{label})")
   end
 end

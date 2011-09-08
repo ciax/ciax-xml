@@ -9,7 +9,6 @@ require "libfrmdb"
 require "libfrmobj"
 require "libappdb"
 require "libappobj"
-require "libalias"
 require "libprint"
 require "libinteract"
 
@@ -39,12 +38,10 @@ cobj=AppObj.new(odb,stat){|cmd|
   fobj.request(cmd).field
 }
 
-al=Alias.new(odb)
 prt=Print.new(odb[:status])
 
 port=opt[:s] ? odb["port"] : nil
 
 Interact.new(cobj.prompt,port){|line|
-  cobj.dispatch(line){|cmd| al.alias(cmd)}||\
-  (port ? nil : prt.upd(stat))
+  cobj.dispatch(line)||(port ? nil : prt.upd(stat))
 }

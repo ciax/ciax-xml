@@ -26,8 +26,13 @@ class ObjDb < Hash
   def cover_app # overwrite AppDb
     require "libappdb"
     app=AppDb.new(self['app_type'])
-    if self[:command] && al=self[:command][:label]
+    if cmd=self[:command]
       app[:command].delete(:label)
+      st=app[:structure][:command]
+      self[:command][:alias].each{|k,v|
+        st[k]=st.delete(v)
+      }
+      cmd.delete(:alias)
     end
     replace(rec_merge(app,self))
   end

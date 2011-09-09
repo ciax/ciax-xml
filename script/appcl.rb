@@ -5,11 +5,11 @@ require "libiocmd"
 require "libshell"
 require "libprint"
 require "libview"
-require "liburlstat"
+require "liburiview"
 
 id=ARGV.shift
 host=ARGV.shift||'localhost'
-st=UrlStat.new(id,host)
+st=UriView.new(id,host)
 begin
   odb=ObjDb.new(id).cover_app
   @io=IoCmd.new("socat - udp:#{host}:#{odb['port']}")

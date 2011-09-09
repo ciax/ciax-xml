@@ -5,7 +5,7 @@ require "libfield"
 require "libiocmd"
 require "libhexpack"
 require "libinteract"
-require "liburlstat"
+require "liburiview"
 
 opt={}
 OptionParser.new{|op|
@@ -14,7 +14,7 @@ OptionParser.new{|op|
 }
 id=ARGV.shift
 host=ARGV.shift||'localhost'
-st=UrlStat.new(id,host)
+st=UriView.new(id,host)
 begin
   odb=ObjDb.new(id)
   port=odb['port']

@@ -6,10 +6,10 @@ class Print < Array
     @label=db[:label] || {}
   end
 
-  def upd(stat)
+  def upd(view)
     clear
-    @stat=stat["stat"] || {}
-    @symbol=stat["symbol"] || {}
+    @stat=view["stat"] || {}
+    @symbol=view["symbol"] || {}
     get_group
     self
   end

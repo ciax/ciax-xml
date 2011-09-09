@@ -37,7 +37,7 @@ class AppObj
     when 'sleep'
       @buf.wait_for(ssn[1].to_i){}
     when 'waitfor'
-      @buf.wait_for(10){ @stat.get(ssn[1]) == ssn[2] }
+      @buf.wait_for(10){ @stat[ssn[1]] == ssn[2] }
     else
       @buf.send{@ac.setcmd(ssn).cmdset}
     end

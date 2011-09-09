@@ -2,17 +2,17 @@
 require "json"
 require "open-uri"
 
-class UrlStat
+class UriView
   def initialize(id,host=nil)
     host||='localhost'
-    @url="http://#{host}/json/status_#{id}.json"
+    @uri="http://#{host}/json/status_#{id}.json"
   end
 
   def get
-    stat={}
-    open(@url){|f|
-      stat=JSON.load(f.read)
+    view={}
+    open(@uri){|f|
+      view=JSON.load(f.read)
     }
-    stat
+    view
   end
 end

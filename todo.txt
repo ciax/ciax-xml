@@ -1,3 +1,4 @@
+========================== Issue =============================
 ***DEBUG
 dso:fix jack bolt stack after interrupt(8/15)
 aso:need reset function for executing flag
@@ -10,7 +11,6 @@ mcr:inter lock error log is  really needed
 
 ***UPDATE
 crt: jack table edit interface (sql+web)
-client,hprelay:using http for display status
 
 ***CHECK NEED
 verify on motion: adb-oss
@@ -20,6 +20,7 @@ watch: multicondition
 using sqlite for logging stat
 sql: using sqlite for symboling, labeling as cache
 
+========================== Result =============================
 ***SOLVED
 debug:error "no such command 'exe'" in dsi
 station:OPT side = charging can be on under auto mode
@@ -51,6 +52,7 @@ dts:status update works but appears incorrect status [4/17]
 dbchache: make it module -> independent class[9/1]
 objdb: using objdb to get iocmd instead of DB-object[9/1]
 status_??: update with clsobj -> save in cmd_thread of AppObj[9/1]
+client,hprelay:using http for display status[9/8]
 
 ***DISCARD
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain

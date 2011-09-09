@@ -101,15 +101,11 @@ adb//cmdset@id -> never use ':'
         "id" => ID
         "class" => class
         "frame" => frame
-        "list" =>[]
-           id => {"val","class","msg"}
+        "stat" => {}
+           id => val
+        "symbol" =>{}
+           id => {"type","class","msg"}
            ...
-        "label" => { id => label }
-           ...
-        "group" =>[]
-           [ Title, [ id1, id2,.. ] ]
-           ...
-
 
 ### Struct of Db ###
   FrmDb
@@ -149,19 +145,18 @@ adb//cmdset@id -> never use ':'
 
   AppDb
     { "id" ,"frame", "label", "interval }
-    :structure
-      :command
+    :command
+      :structure
         id => [ statement,.. ]
            statement=["cmd",{arg1},{arg2}..]
         ...
-      :status
-        id => [ { :type, "ref" .. },... ]
-        ...
-    :command
       :label => {}
         id => Label String
     :status
       "talbe"=> Symbol Table
+      :structure
+        id => [ { :type, "ref" .. },... ]
+        ...
       :label => {}
         id => Label String
       :group => []

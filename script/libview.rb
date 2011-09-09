@@ -18,7 +18,8 @@ class View < Hash
     self['stat']={}
   end
 
-  def upd
+  def upd(stat)
+    self['stat'].update(stat)
     @sdb.convert(self,@db[:symbol]) if @sdb
     self
   end

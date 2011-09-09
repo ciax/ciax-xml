@@ -26,7 +26,7 @@ rescue SelectID
   abort "Usage: appint (-s) [obj] (iocmd)\n#{$!}"
 end
 
-stat=View.new(obj,odb[:status]).load.upd
+stat=View.new(obj,odb[:status]).load
 stat['app_type']=odb['app_type']
 field=Field.new(obj).load
 field.update(odb[:field]) if odb.key?(:field)

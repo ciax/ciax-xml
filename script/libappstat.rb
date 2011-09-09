@@ -3,25 +3,23 @@ require "libmsg"
 require "libappdb"
 
 class AppStat
-  attr_reader :stat
-  def initialize(adb,stat={})
-    @stat=stat
+  def initialize(adb)
     @adbs=adb[:structure]
     @v=Msg::Ver.new("stat",2)
   end
 
-  public
-  def upd(field)
+  def conv(field)
+    stat={}
     @adbs.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
-        @stat[id]=get_val(fields,field)
+        stat[id]=get_val(fields,field)
       ensure
-        @v.msg(-1){"STAT:GetStatus:#{id}=[#{@stat[id]}]"}
+        @v.msg(-1){"STAT:GetStatus:#{id}=[#{stat[id]}]"}
       end
     }
-    @stat['time']=Time.at(field['time'].to_f).to_s
-    self
+    stat['time']=Time.at(field['time'].to_f).to_s
+    stat
   end
 
   private

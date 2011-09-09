@@ -12,8 +12,9 @@ begin
   str=gets(nil) || exit
   field=Field.new.update_j(str)
   view=View.new(field['id'],adb).update({'app_type' => app })
-  as=AppStat.new(adb,view['stat']).upd(field)
-  print view.upd.to_j
+  as=AppStat.new(adb)
+  view.upd(as.conv(field))
+  print view.to_j
 rescue RuntimeError
   abort "Usage: appstat [app] < field_file\n#{$!}"
 end

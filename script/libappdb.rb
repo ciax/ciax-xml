@@ -133,10 +133,10 @@ end
 
 if __FILE__ == $0
   begin
-    db=AppDb.new(ARGV.shift,true)
+    adb=AppDb.new(ARGV.shift,true)
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end
-  puts Msg.view_struct(db)
+  puts adb
 end
 

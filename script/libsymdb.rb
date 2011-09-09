@@ -24,7 +24,7 @@ class SymDb < Hash
       hash
     }
   rescue SelectID
-    @cl.exit if __FILE__ == $0
+    raise $! if __FILE__ == $0
   end
 
   def convert(view,ref=nil)
@@ -70,6 +70,5 @@ if __FILE__ == $0
   rescue SelectID
     abort "USAGE: #{$0} [id]\n#{$!}"
   end
-  puts Msg.view_struct(sdb)
+  puts sdb
 end
-

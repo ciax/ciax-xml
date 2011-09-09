@@ -35,7 +35,6 @@ class EntDb < Hash
       cmd.delete(:alias)
     end
     replace(rec_merge(app,self))
-    mklist
     self
   end
 
@@ -57,5 +56,5 @@ if __FILE__ == $0
   if app
     edb.cover_app(true)
   end
-  puts Msg.view_struct(edb)
+  puts edb
 end

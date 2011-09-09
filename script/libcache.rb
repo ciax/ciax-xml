@@ -29,19 +29,10 @@ module Cache
       update(hash)
       @v.msg{"Saved(#{base})"}
     }
-    mklist
-    self
-  end
-
-  def mklist
-    if key?(:command)
-      cmd=self[:command]
-      @cv=Msg::List.new("== Command List ==").add(cmd[:label])
-    end
     self
   end
 
   def to_s
-    @cv.to_s
+    Msg.view_struct(self)
   end
 end

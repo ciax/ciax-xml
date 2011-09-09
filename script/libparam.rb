@@ -4,11 +4,12 @@ require 'librerange'
 
 # Parameter must be numerical
 class Param < Hash
+  attr_reader :list
   def initialize(db) # command db
     @v=Msg::Ver.new("PARAM",5)
     @db=db
     @label=db[:label]
-    @cl=Msg::List.new("== Command List==").add(@label)
+    @list=Msg::List.new("== Command List==").add(@label)
   end
 
   def setpar(cmd)
@@ -20,7 +21,7 @@ class Param < Hash
 
   def check_id
     id=@cmd.first
-    @cl.exit unless @label.key?(id)
+    @list.exit unless @label.key?(id)
     id=self[:id]
     @db.each{|k,v|
       self[k]=v[id]

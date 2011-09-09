@@ -4,6 +4,7 @@ require "libfield"
 require "libiocmd"
 require "libshell"
 require "libprint"
+require "libparam"
 require "libview"
 require "liburiview"
 
@@ -17,6 +18,7 @@ rescue SelectID
   abort "Usage: appcl [id] (host)\n#{$!}"
 end
 pr=Print.new(edb[:status])
+par=Param.new(edb[:command])
 prom=['']
 Shell.new(prom){|line|
   break unless line
@@ -27,6 +29,6 @@ Shell.new(prom){|line|
   if ary.empty?
     pr.upd(st.get)
   elsif /CMD/ === ary.first
-    edb
+    par.list
   end
 }

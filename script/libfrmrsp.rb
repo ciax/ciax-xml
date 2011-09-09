@@ -17,7 +17,7 @@ class FrmRsp
 
   # Block accepts [time,frame]
   def setrsp(cmd)
-    if rid=@par.setpar(cmd).check_id[:response]
+    if rid=@par.set(cmd)[:response]
       @sel[:select]=@fdbs[:select][rid] || Msg.err("No such response id [#{rid}]")
       @v.msg{"Set Statement #{cmd}"}
       time,frame=yield

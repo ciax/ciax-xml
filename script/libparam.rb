@@ -12,17 +12,11 @@ class Param < Hash
     @list=Msg::List.new("== Command List==").add(@label)
   end
 
-  def setpar(cmd)
-    @v.msg{"SetPar: #{cmd}"}
-    @cmd=cmd.dup
-    self[:id]=cmd.first
-    self
-  end
-
-  def check_id
-    id=@cmd.first
-    @list.exit unless @label.key?(id)
-    id=self[:id]
+  def set(cmdary)
+    @list.exit unless @label.key?(id=cmdary.first)
+    @v.msg{"SetPar: #{cmdary}"}
+    @cmdary=cmdary.dup
+    self[:id]=id
     @db.each{|k,v|
       self[k]=v[id]
     }
@@ -35,8 +29,8 @@ class Param < Hash
     begin
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        @v.msg{"Param No.#{i} = [#{@cmd[i]}]"}
-        i > 0 ? validate(range,@cmd[i]) : self[:id]
+        @v.msg{"Param No.#{i} = [#{@cmdary[i]}]"}
+        i > 0 ? validate(range,@cmdary[i]) : self[:id]
       }
       Msg.err("Nil string") if str == ''
       str

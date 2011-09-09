@@ -3,7 +3,6 @@ require "libparam"
 require "libmsg"
 
 class AppCmd
-
   def initialize(adb)
     @v=Msg::Ver.new("#{adb['id']}/cmd",2)
     @adb=adb[:structure]
@@ -12,7 +11,7 @@ class AppCmd
 
   def setcmd(ssn)
     @id=ssn.first
-    @par.setpar(ssn).check_id
+    @par.set(ssn)
     self
   end
 

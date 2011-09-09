@@ -16,7 +16,7 @@ class FrmCmd
 
   def getframe(cmd) # return = response select
     id=cmd.first
-    @par.setpar(cmd).check_id
+    @par.set(cmd)
     return unless @sel[:select]=@fdbc[:select][id]
     @v.msg{"Attr of Param:#{@par}"}
     cid=cmd.join(':')

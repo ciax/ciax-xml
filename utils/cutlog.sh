@@ -7,7 +7,7 @@ if [ "$1" = '-' ] ; then
     else
         st=$(date +%s)
     fi
-    awk "\$1 < $st && /rcv:getstat/ { print }"|tail -1
+    awk "\$1 < $st && /rcv:/ { print }"|tail -1
 else
     st=$(date -d "$1" +%s) || exit
     cond="\$1 > $st"
@@ -15,8 +15,8 @@ else
     if [ "$1" ] ; then
         st=$(date -d "$1" +%s)|| exit
         cond="$cond && \$1 < $st"
-        awk "$cond && /rcv:getstat/ { print }"
+        awk "$cond && /rcv:/ { print }"
     else
-        awk "$cond && /rcv:getstat/ { print }"|head -1
+        awk "$cond && /rcv:/ { print }"|head -1
     fi
 fi

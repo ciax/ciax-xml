@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
+<edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
   <object id="mt2" label="MOIRCS Pressure Main" app_type="tpg" client="socat - tcp:celaeno:4010" port="24110">
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/edbs">
       <title ref="st1" label="Throat Stat" />
       <title ref="ch1" label="Throat (Torr)" />
     </status>
   </object>
-</odb>
+</edb>

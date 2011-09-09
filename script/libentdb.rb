@@ -7,7 +7,7 @@ class EntDb < Hash
   def initialize(id,nocache=nil)
     @v=Msg::Ver.new('edb',5)
     self['id']=id
-    cache('odb',id,nocache){|doc|
+    cache('edb',id,nocache){|doc|
       hash=Hash[doc]
       doc.domain('init').each{|e0|
         hash[:field]||={}

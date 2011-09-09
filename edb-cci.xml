@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
+  <object id="cci" label="IR Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-i:4002" port="25105">
+    <select xmlns="http://ciax.sum.naoj.org/ciax-xml/edbc">
+      <command id="upd" label="Update Status" alias="upd" />
+      <command id="c2on" label="CAS2(S1) ON" alias="x0on" />
+      <command id="c2off" label="CAS2(S1) OFF" alias="x0off" />
+      <command id="c1on" label="CAS1(S2) ON" alias="x1on" />
+      <command id="c1off" label="CAS1(S2) OFF" alias="x1off" />
+      <command id="m2on" label="MOIRCS CR(S8) ON" alias="x2on" />
+      <command id="m2off" label="MOIRCS CR(S8) OFF" alias="x2off" />
+      <command id="m1on" label="MOIRCS MAIN(S9) ON" alias="x3on" />
+      <command id="m1off" label="MOIRCS MAIN(S9) OFF" alias="x3off" />
+      <command id="cmon" label="CAS MOIRCS/MAIN ON" alias="x0on" />
+      <command id="cmoff" label="CAS MOIRCS/MAIN OFF" alias="x0off" />
+      <command id="ccon" label="CAS MOIRCS/CR ON" alias="x1on" />
+      <command id="ccoff" label="CAS MOIRCS/CR OFF" alias="x1off" />
+      <command id="caon" label="CAS BOTH HC ON" alias="x01on" />
+      <command id="caoff" label="CAS BOTH HC OFF" alias="x01off" />
+      <command id="maon" label="MOIRCS BOTH ON" alias="x23on" />
+      <command id="maoff" label="MOIRCS BOTH OFF" alias="x23off" />
+    </select>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/edbs">
+      <title ref="g0" label="CAS2(S1)(CIAO)" />
+      <title ref="g1" label="CAS1(S2)(MOIRCS/MAIN)" />
+      <title ref="g2" label="MOIRCS/CR(S8)" />
+      <title ref="g3" label="MOIRCS/MAIN(S9)" />
+    </status>
+  </object>
+</edb>

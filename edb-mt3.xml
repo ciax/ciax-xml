@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
+<edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
   <object id="mt3" label="MOIRCS Pressure Pump" app_type="tpg" client="socat - tcp:celaeno:4011" port="24111">
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/edbs">
       <title ref="st1" label="Turbo Pump Stat" />
       <title ref="ch1" label="Turbo Pump (Torr)" />
       <title ref="st2" label="Scroll Pump Stat" />
       <title ref="ch2" label="Scroll Pump (Torr)" />
     </status>
   </object>
-</odb>
+</edb>

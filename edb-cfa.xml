@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
+<edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
   <object id="cfa" label="S10 Helium Compressor Coolant Flow" app_type="k3n" client="socat - tcp:ltt-i:4015" port="45610">
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/odbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/edbs">
       <title ref="flow" label="FMOS-K(S10) Coolant Flow" />
     </status>
   </object>
-</odb>
+</edb>

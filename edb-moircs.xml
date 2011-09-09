@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<odb xmlns="http://ciax.sum.naoj.org/ciax-xml/odb">
+<edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
   <object id="mfp" label="MOIRCS Pneumatic Actuator" app_type="cfp" client="socat - tcp:celaeno:4001" port="24101"></object>
   <object id="map" label="MOIRCS Air Pressure" app_type="oma" client="socat - tcp:celaeno:4002" port="24102"></object>
   <object id="mma" label="MOIRCS Extension Arm" app_type="mma" client="socat - tcp:celaeno:4003" port="24103"></object>
@@ -9,4 +9,4 @@
   <object id="mft" label="MOIRCS Hall Effect Sensor" app_type="fpa" client="socat - tcp:celaeno:4012" port="24112"></object>
   <object id="mh1" label="MOIRCS Main/Carrousel Heater" app_type="psp" client="socat - tcp:merope:59999" port="24201"></object>
   <object id="mh2" label="MOIRCS Main Heater" app_type="psp" client="socat - tcp:atlas:59999" port="24202"></object>
-</odb>
+</edb>

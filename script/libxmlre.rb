@@ -1,9 +1,11 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libmodxml"
 require "rexml/document"
 include REXML
 
 class Xml
+  include ModXml
   def initialize(f=nil)
     @v=Msg::Ver.new("Xml",4)
     case f
@@ -34,50 +36,20 @@ class Xml
     @e.text
   end
 
-  def each(xpath=nil)
+  def find(xpath)
     xpath=".//"+xpath if xpath
     @e.each_element(xpath){|e|
-      @v.msg(1){"<#{e.name}>"}
+      @v.msg(1){"<#{e.name} #{e.attributes}>"}
       yield Xml.new(e)
       @v.msg(-1){"</#{e.name}>"}
     }
   end
 
-  # Common with LIBXML,REXML
-  def to_s
-    @e.to_s
-  end
-
-  def [](key)
-    @e.attributes[key]
-  end
-
-  def name
-    @e.name
-  end
-
-  def map
-    ary=[]
-    each{|e|
-      ary << (yield e)
+  def each
+    @e.each_element{|e|
+      @v.msg(1){"<#{e.name} #{e.attributes}>"}
+      yield Xml.new(e)
+      @v.msg(-1){"</#{e.name}>"}
     }
-    ary
-  end
-
-  def attr2db(db,id='id')
-    # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
-    raise "Param should be Hash" unless Hash === db
-    attr={}
-    to_h.each{|k,v|
-      attr[k] = defined?(yield) ? (yield v) : v
-    }
-    key=attr.delete(id) || return
-    attr.each{|str,v|
-      sym=str.to_sym
-      db[sym]={} unless db.key?(sym)
-      db[sym][key]=v
-      @v.msg{"ATTRDB:"+str.upcase+":[#{key}] : #{v}"}
-    }
-    key
   end
 end

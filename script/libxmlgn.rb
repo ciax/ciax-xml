@@ -1,8 +1,11 @@
 #!/usr/bin/ruby
+require "libmsg"
+require "libmodxml"
 require "xml"
 require "libmsg"
 
 class Xml
+  include ModXml
   def initialize(f=nil)
     @v=Msg::Ver.new("Xml",4)
     case f
@@ -20,24 +23,12 @@ class Xml
     end
   end
 
-  def to_s
-    @e.to_s
-  end
-
   def ns
     @e.namespaces.default
   end
 
-  def [](key)
-    @e.attributes[key]
-  end
-
   def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
     @e.attributes.to_h
-  end
-
-  def name
-    @e.name
   end
 
   def text
@@ -63,41 +54,5 @@ class Xml
       yield Xml.new(e)
       @v.msg(-1){"</#{e.name}>"}
     }
-  end
-
-  def map
-    ary=[]
-    each{|e|
-      ary << (yield e)
-    }
-    ary
-  end
-
-  def attr2db(db,id='id')
-    # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
-    raise "Param should be Hash" unless Hash === db
-    attr={}
-    to_h.each{|k,v|
-      attr[k] = defined?(yield) ? (yield v) : v
-    }
-    key=attr.delete(id) || return
-    attr.each{|str,v|
-      sym=str.to_sym
-      db[sym]={} unless db.key?(sym)
-      db[sym][key]=v
-      @v.msg{"ATTRDB:"+str.upcase+":[#{key}] : #{v}"}
-    }
-    key
-  end
-
-  def node2db(id=nil)
-    hash=to_h
-    hash['val'] = text if text
-    if id
-      key=hash.delete(id)
-      { key => hash }
-    else
-      hash
-    end
   end
 end

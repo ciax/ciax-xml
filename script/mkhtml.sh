@@ -36,7 +36,7 @@ jQuery(document).ready(setInterval(update,3000));
 </script>
 <body onload="update();">
 EOF
->>$file htmltbl $obj $app
+>>$file htmltbl $id $app
 cat >> $file <<EOF
 </body>
 </html>

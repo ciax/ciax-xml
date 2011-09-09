@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "optparse"
-require "libobjdb"
+require "libentdb"
 require "libfrmdb"
 require "libfrmobj"
 require "libiocmd"
@@ -12,19 +12,19 @@ OptionParser.new{|op|
   op.on('-s'){|v| opt[:s]=v}
   op.parse!(ARGV)
 }
-obj,iocmd=ARGV
+id,iocmd=ARGV
 begin
-  odb=ObjDb.new(obj).cover_app
-  fdb=FrmDb.new(odb['frm_type'])
-  field=Field.new(obj).load
-  field.update(odb[:field]) if odb.key?(:field)
-  io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
+  edb=EntDb.new(id).cover_app
+  fdb=FrmDb.new(edb['frm_type'])
+  field=Field.new(id).load
+  field.update(edb[:field]) if edb.key?(:field)
+  io=IoCmd.new(iocmd||edb['client'],id,fdb['wait'],1)
   fobj=FrmObj.new(fdb,field,io)
 rescue SelectID
-  abort "Usage: frmint (-s) [obj] (iocmd)\n#{$!}"
+  abort "Usage: frmint (-s) [id] (iocmd)\n#{$!}"
 end
-port=opt[:s] ? odb["port"] : nil
-Interact.new([odb['frame'],'>'],port){|line|
+port=opt[:s] ? edb["port"] : nil
+Interact.new([edb['frame'],'>'],port){|line|
   (line && fobj.request(line.split(' ')).to_s)||\
   (port ? field.to_j : field)
 }

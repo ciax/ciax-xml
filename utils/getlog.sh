@@ -1,8 +1,8 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
-obj=$1;shift
-setfld $obj || _usage_key '' "[date_from|-] (date_to)"
-file=$HOME/.var/device_${obj}_2010.log
+id=$1;shift
+setfld $id || _usage_key '' "[date_from|-] (date_to)"
+file=$HOME/.var/device_${id}_2010.log
 if [ "$1" ] ; then
     par="$*"
 else
@@ -10,5 +10,5 @@ else
 fi
 cutlog $par < $file|\
     while read -r line ; do
-    echo "$line"|frmstat $dev $obj|clsstat $cls|objstat
+    echo "$line"|frmstat $dev $id|appstat $app
     done

@@ -3,11 +3,11 @@ require "json"
 require "libview"
 
 class HtmlTbl < Array
-  def initialize(odb)
-    @label = odb[:status][:label]
+  def initialize(edb)
+    @label = edb[:status][:label]
     push "<div class=\"outline\">"
-    push "<div class=\"title\">#{odb['label']}</div>"
-    group = odb[:status][:group] || odb[:structure][:status].keys
+    push "<div class=\"title\">#{edb['label']}</div>"
+    group = edb[:status][:group] || edb[:structure][:status].keys
     get_group(group)
     push "</div>"
   end

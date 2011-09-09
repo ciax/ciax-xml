@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libobjdb"
+require "libentdb"
 require "libfield"
 require "libiocmd"
 require "libshell"
@@ -11,12 +11,12 @@ id=ARGV.shift
 host=ARGV.shift||'localhost'
 st=UriView.new(id,host)
 begin
-  odb=ObjDb.new(id).cover_app
-  @io=IoCmd.new("socat - udp:#{host}:#{odb['port']}")
+  edb=EntDb.new(id).cover_app
+  @io=IoCmd.new("socat - udp:#{host}:#{edb['port']}")
 rescue SelectID
   abort "Usage: appcl [id] (host)\n#{$!}"
 end
-pr=Print.new(odb[:status])
+pr=Print.new(edb[:status])
 prom=['']
 Shell.new(prom){|line|
   break unless line
@@ -27,6 +27,6 @@ Shell.new(prom){|line|
   if ary.empty?
     pr.upd(st.get)
   elsif /CMD/ === ary.first
-    odb
+    edb
   end
 }

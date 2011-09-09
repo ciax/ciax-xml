@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
 require "libhtmltbl"
-require "libobjdb"
+require "libentdb"
 
-abort "Usage: htmltbl [obj]" if ARGV.size < 1
+abort "Usage: htmltbl [id]" if ARGV.size < 1
 
-obj=ARGV.shift
+id=ARGV.shift
 app=ARGV.shift
-odb=ObjDb.new(obj).cover_app
-puts HtmlTbl.new(odb)
+edb=EntDb.new(id).cover_app
+puts HtmlTbl.new(edb)

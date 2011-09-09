@@ -1,7 +1,7 @@
 #!/bin/bash
-for obj in ${*:-mma mmc mix crt ml1 dts} ; do
-    exfdbc $obj getstat
-    case $obj in
+for id in ${*:-mma mmc mix crt ml1 dts} ; do
+    exfdbc $id getstat
+    case $id in
         mma)
             for i in 1 2 3 4 5; do
                 exfdbs mma in $i
@@ -28,11 +28,11 @@ for obj in ${*:-mma mmc mix crt ml1 dts} ; do
                 exfdbs dts ${i}stat
             done;;
         ds*)
-            exfdbs $obj getzerr
-            exfdbs $obj getzlen
+            exfdbs $id getzerr
+            exfdbs $id getzlen
             ;;
         *)
-            exfdbs $obj;;
+            exfdbs $id;;
     esac
     read -t 0 && break
 done

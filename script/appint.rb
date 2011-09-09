@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "json"
-require "libobjdb"
+require "libentdb"
 require "libview"
 require "libfield"
 require "libiocmd"
@@ -17,31 +17,31 @@ OptionParser.new{|op|
   op.on('-s'){|v| opt[:s]=v}
   op.parse!(ARGV)
 }
-obj,iocmd=ARGV
+id,iocmd=ARGV
 
 begin
-  odb=ObjDb.new(obj).cover_app
-  fdb=FrmDb.new(odb['frm_type'])
+  edb=EntDb.new(id).cover_app
+  fdb=FrmDb.new(edb['frm_type'])
 rescue SelectID
-  abort "Usage: appint (-s) [obj] (iocmd)\n#{$!}"
+  abort "Usage: appint (-s) [id] (iocmd)\n#{$!}"
 end
 
-stat=View.new(obj,odb[:status]).load
-stat['app_type']=odb['app_type']
-field=Field.new(obj).load
-field.update(odb[:field]) if odb.key?(:field)
+stat=View.new(id,edb[:status]).load
+stat['app_type']=edb['app_type']
+field=Field.new(id).load
+field.update(edb[:field]) if edb.key?(:field)
 
-io=IoCmd.new(iocmd||odb['client'],obj,fdb['wait'],1)
+io=IoCmd.new(iocmd||edb['client'],id,fdb['wait'],1)
 fobj=FrmObj.new(fdb,field,io)
 
-cobj=AppObj.new(odb,stat){|cmd|
+aobj=AppObj.new(edb,stat){|cmd|
   fobj.request(cmd).field
 }
 
-prt=Print.new(odb[:status])
+prt=Print.new(edb[:status])
 
-port=opt[:s] ? odb["port"] : nil
+port=opt[:s] ? edb["port"] : nil
 
-Interact.new(cobj.prompt,port){|line|
-  cobj.dispatch(line){port ? nil : prt.upd(stat)}
+Interact.new(aobj.prompt,port){|line|
+  aobj.dispatch(line){port ? nil : prt.upd(stat)}
 }

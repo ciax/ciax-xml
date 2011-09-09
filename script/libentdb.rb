@@ -2,12 +2,12 @@
 require "libmsg"
 require "libcache"
 
-class ObjDb < Hash
+class EntDb < Hash
   include Cache
-  def initialize(obj,nocache=nil)
-    @v=Msg::Ver.new('odb',5)
-    self['id']=obj
-    cache('odb',obj,nocache){|doc|
+  def initialize(id,nocache=nil)
+    @v=Msg::Ver.new('edb',5)
+    self['id']=id
+    cache('odb',id,nocache){|doc|
       hash=Hash[doc]
       doc.domain('init').each{|e0|
         hash[:field]||={}
@@ -48,14 +48,14 @@ class ObjDb < Hash
 end
 
 if __FILE__ == $0
-  obj,app=ARGV
+  id,app=ARGV
   begin
-    odb=ObjDb.new(obj,true)
+    edb=EntDb.new(id,true)
   rescue SelectID
-    abort ("USAGE: #{$0} [obj] (-)\n#{$!}")
+    abort ("USAGE: #{$0} [id] (-)\n#{$!}")
   end
   if app
-    odb.cover_app(true)
+    edb.cover_app(true)
   end
-  puts Msg.view_struct(odb)
+  puts Msg.view_struct(edb)
 end

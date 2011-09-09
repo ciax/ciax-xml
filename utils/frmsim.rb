@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-abort "Usage: frmsim [obj]" if ARGV.size < 1
-obj=ARGV.shift
+abort "Usage: frmsim [id]" if ARGV.size < 1
+id=ARGV.shift
 ARGV.clear
 begin
-  open(ENV['HOME']+"/.var/device_#{obj}_2011.log"){|fd|
+  open(ENV['HOME']+"/.var/device_#{id}_2011.log"){|fd|
     loop{
       select([STDIN])
       input=STDIN.sysread(1024)

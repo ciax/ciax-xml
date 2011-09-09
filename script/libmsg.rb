@@ -53,8 +53,8 @@ class Msg
   end
 
   class List
-    def initialize(title='')
-      @list=[title]
+    def initialize(title=nil)
+      @list= title ? [Msg.color(title,2)] : []
     end
 
     def add(list)

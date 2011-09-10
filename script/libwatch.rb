@@ -16,7 +16,8 @@ class Watch < Array
   end
 
   def block_pattern
-    get_active(:blocking).join('|')
+    str=get_active(:blocking).join('|')
+    Regexp.new(str) unless str.empty?
   end
 
   def blocking?(cmd)

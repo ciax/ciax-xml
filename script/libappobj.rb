@@ -6,7 +6,7 @@ require "libappstat"
 require "libwatch"
 require "thread"
 
-class AppObj
+class AppObj < String
   attr_reader :prompt
   def initialize(adb,view)
     @view=view
@@ -20,29 +20,34 @@ class AppObj
     @interval=(adb['interval']||1).to_i
     @event=Watch.new(adb,@stat)
     @watch=watch_thread
-    @main=cmdset_thread{|buf| yield buf}
+    @main=command_thread{|buf| yield buf}
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('sleep'=>"sleep [sec]")
-    @cl.add('waitfor'=>"[key] [val] (timeout=10)")
+    @cl.add('waitfor'=>"[key=val] (timeout=10)")
     upd
   end
 
   def dispatch(line)
-    upd
-    return interrupt unless line
-    return yield if /^(stat|)$/ === line
-    return "Blocking\n" if @event.blocking?(line)
-    ssn=line.split(' ')
-    case ssn[0]
-    when 'sleep'
-      @buf.wait_for(ssn[1].to_i){}
-    when 'waitfor'
-      @buf.wait_for(10){ @stat[ssn[1]] == ssn[2] }
+    case line
+    when nil
+      replace interrupt
+    when /^(stat|)$/
+      replace yield.to_s
+    when @event.block_pattern
+      replace "Blocking(#{@event.block_pattern.inspect})\n"
+    when /^sleep */
+      @buf.wait_for($'.to_i){}
+      replace "Sleeping\n"
+    when /^waitfor */
+      k,v=$'.split('=')
+      @buf.wait_for(10){ @stat[k] == v }
+      replace "Waiting\n"
     else
-      @buf.send{@ac.setcmd(ssn).cmdset}
+      @buf.send{@ac.setcmd(line.split(' ')).cmdset}
+      replace "ISSUED\n"
     end
     upd
-    "ISSUED\n"
+    self
   rescue SelectID
     @cl.exit
   end
@@ -70,7 +75,7 @@ class AppObj
     flg
   end
 
-  def cmdset_thread
+  def command_thread
     Thread.new{
       Thread.pass
       begin

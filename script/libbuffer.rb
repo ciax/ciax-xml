@@ -3,14 +3,14 @@ require "libmsg"
 require "thread"
 
 class Buffer
+  attr_reader :issue,:wait
   def initialize
-    @inbuf=[[],[],[]]
-    @outbuf=[[],[],[]]
     @q=Queue.new
     @v=Msg::Ver.new("BUF",5)
     @issue=@wait=false
     @proc=Queue.new
     @st=delay
+    clear  
   end
 
   def send
@@ -34,6 +34,11 @@ class Buffer
     self
   end
 
+  def clear
+    @inbuf=[[],[],[]]
+    @outbuf=[[],[],[]]
+  end
+
   def interrupt
     @v.msg{"MAIN:Stopped"}
     @issue=@wait=false
@@ -49,14 +54,6 @@ class Buffer
     @wait=timeout.to_i
     @proc.push(proc)
     self
-  end
-
-  def issue?
-    @issue
-  end
-
-  def wait?
-    @wait
   end
 
   # For cmdset thread

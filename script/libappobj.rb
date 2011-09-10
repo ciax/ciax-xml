@@ -56,8 +56,8 @@ class AppObj < String
     i=0
     upd_elem(@watch.alive?,'wach',i+=1,'@')
     upd_elem(@event.active?,'evet',i+=1,'&')
-    upd_elem(@buf.issue?,'isu',i+=1,'*')
-    upd_elem(@buf.wait?,'wait',i+=1,'#')
+    upd_elem(@buf.issue,'isu',i+=1,'*')
+    upd_elem(@buf.wait,'wait',i+=1,'#')
     upd_elem(@main.alive?,nil,i+=1,'>','X')
     self
   end
@@ -78,13 +78,14 @@ class AppObj < String
   def command_thread
     Thread.new{
       Thread.pass
-      begin
-        loop{
+      loop{
+        begin
           @view.upd(@as.conv(yield @buf.recv)).save
-        }
-      rescue UserError
-        Msg.alert(" in Command Thread")
-      end
+        rescue UserError
+          Msg.alert(" in Command Thread")
+          @buf.clear
+        end
+      }
     }
   end
 

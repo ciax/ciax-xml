@@ -52,15 +52,15 @@ class Msg
     end
   end
 
-  class List
+  class List < Array
     def initialize(title=nil)
-      @list= title ? [Msg.color(title,2)] : []
+      push(Msg.color(title,2)) if title
     end
 
     def add(list)
       case list
       when String
-        @list << Msg.color(list,2)
+        push(Msg.color(list,2))
       when Hash
         list.each{|key,val|
           case val
@@ -69,15 +69,14 @@ class Msg
           when Hash,Xml
             label=val['label']
           end
-          @list << Msg.color(" %-10s" % key,3)+": #{label}" if label
+          push(Msg.color(" %-10s" % key,3)+": #{label}") if label
         }
       end
       self
     end
 
     def to_s
-      @list.unshift($!.to_s) if $!
-      @list.grep(/./).join("\n")
+      [$!.to_s,*self].grep(/./).join("\n")
     end
 
     def exit

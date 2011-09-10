@@ -54,7 +54,7 @@ class Msg
 
   class List < Array
     def initialize(title=nil)
-      push(Msg.color(title,2)) if title
+      @title=Msg.color(title,2) if title
     end
 
     def add(list)
@@ -76,7 +76,7 @@ class Msg
     end
 
     def to_s
-      [$!.to_s,*self].grep(/./).join("\n")
+      [$!.to_s,@title,*sort].grep(/./).join("\n")
     end
 
     def exit

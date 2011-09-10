@@ -30,7 +30,9 @@ class AppObj < String
   def dispatch(line)
     case line
     when nil
-      replace interrupt
+      stop=@event.interrupt
+      @buf.interrupt{stop}
+      replace "Interrupt #{stop}\n"
     when /^(stat|)$/
       replace yield.to_s
     when @event.block_pattern
@@ -60,12 +62,6 @@ class AppObj < String
     upd_elem(@buf.wait,'wait',i+=1,'#')
     upd_elem(@main.alive?,nil,i+=1,'>','X')
     self
-  end
-
-  def interrupt
-    stop=@event.interrupt
-    @buf.interrupt{stop} unless stop.empty?
-    "Interrupt #{stop}\n"
   end
 
   private

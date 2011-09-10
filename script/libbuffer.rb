@@ -7,10 +7,16 @@ class Buffer
   def initialize
     @q=Queue.new
     @v=Msg::Ver.new("BUF",5)
-    @issue=@wait=false
     @proc=Queue.new
     @st=delay
-    clear  
+    clear
+  end
+
+  def clear
+    @issue=@wait=false
+    @inbuf=[[],[],[]]
+    @outbuf=[[],[],[]]
+    @q.clear
   end
 
   def send
@@ -34,18 +40,12 @@ class Buffer
     self
   end
 
-  def clear
-    @inbuf=[[],[],[]]
-    @outbuf=[[],[],[]]
-  end
-
   def interrupt
     @v.msg{"MAIN:Stopped"}
-    @issue=@wait=false
-    @q.clear
-    @v.msg{"MAIN:Issued #{cmd}"}
+    clear
     yield.each{|cmd|
       @inbuf[0].push(cmd)
+      @v.msg{"MAIN:Issued #{cmd}"}
     }
     flush(0)
   end

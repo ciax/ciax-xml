@@ -55,22 +55,16 @@ class AppObj < String
   end
 
   def upd
-    i=0
-    upd_elem(@watch.alive?,'wach',i+=1,'@')
-    upd_elem(@event.active?,'evet',i+=1,'&')
-    upd_elem(@buf.issue,'isu',i+=1,'*')
-    upd_elem(@buf.wait,'wait',i+=1,'#')
-    upd_elem(@main.alive?,nil,i+=1,'>','X')
+    @prompt.slice!(1..-1)
+    @prompt << '@' if @watch.alive?
+    @prompt << '&' if @event.active?
+    @prompt << '*' if @buf.issue
+    @prompt << '#' if @buf.wait
+    @prompt << (@main.alive? ? '>' : 'X')
     self
   end
 
   private
-  def upd_elem(flg,key,idx,sym=nil,sym2='')
-    @stat[key]= flg ? '1' : '0' if key
-    @prompt[idx]= flg ? sym : sym2 if idx
-    flg
-  end
-
   def command_thread
     Thread.new{
       Thread.pass

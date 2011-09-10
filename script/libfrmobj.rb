@@ -3,7 +3,7 @@ require "libiocmd"
 require "libfrmcmd"
 require "libfrmrsp"
 
-class FrmObj
+class FrmObj < String
   attr_reader :field
   def initialize(fdb,field,iocmd)
     raise "Input is not Field" unless field.is_a?(Field)
@@ -22,34 +22,29 @@ class FrmObj
 
   def request(cmd) #Should be array
     if cmd.empty?
-      @res=nil
+      replace yield.to_s
     else
       @v.msg{"Receive #{cmd}"}
       case cmd[0]
       when 'set'
-        @res=set(cmd[1..-1]).inspect
+        replace set(cmd[1..-1]).inspect
       when 'unset'
-        @res=@field.delete(cmd[1]).inspect
+        replace @field.delete(cmd[1]).inspect
       when 'load'
-        @res=load(cmd[1])
+        replace load(cmd[1])
       when 'save'
-        @res=save(cmd[1],cmd[2])
+        replace save(cmd[1],cmd[2])
       else
         cid=cmd.join(':')
         @ic.snd(@cmd.getframe(cmd),'snd:'+cid)
         @rsp.setrsp(cmd){@ic.rcv('rcv:'+cid)}
         @field.save
-        @res='OK'
+        replace 'OK'
       end
     end
     self
   rescue SelectID
-    @cl.add("No such command '#{cmd}'")
     @cl.exit
-  end
-
-  def to_s
-    @res
   end
 
   private

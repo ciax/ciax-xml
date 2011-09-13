@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
 require 'json'
 require 'libmsg'
-require 'libmodio'
+require 'libmodfile'
 
 class Field < Hash
-  include ModIo
+  include ModFile
   def initialize(id=nil)
     @v=Msg::Ver.new("stat",5)
     if id

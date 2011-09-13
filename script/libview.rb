@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libmodio"
+require "libmodfile"
 # Status to View (String with attributes)
 class View < Hash
-  include ModIo
+  include ModFile
   def initialize(id=nil,db=nil)
     @v=Msg::Ver.new("view",6)
     @db=db

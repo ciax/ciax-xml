@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'json'
 
-module ModIo
+module ModFile
   VarDir="#{ENV['HOME']}/.var"
   attr_writer :type,:v
 

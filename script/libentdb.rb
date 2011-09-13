@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libcache"
+require "libmodcache"
 
 class EntDb < Hash
-  include Cache
+  include ModCache
   def initialize(id,nocache=nil)
     @v=Msg::Ver.new('edb',5)
     self['id']=id

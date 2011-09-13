@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libcache"
+require "libmodcache"
 require "librerange"
 
 class SymDb < Hash
-  include Cache
+  include ModCache
   def initialize(id='all',nocache=nil)
     @v=Msg::Ver.new("Symbol",6)
     cache('sdb',id,nocache){|doc|

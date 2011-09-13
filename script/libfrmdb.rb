@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 require "librepeat"
-require "libcache"
+require "libmodcache"
 
 class FrmDb < Hash
-  include Cache
+  include ModCache
   def initialize(frm,nocache=nil)
     @v=Msg::Ver.new('fdb',5)
     cache('fdb',frm,nocache){|doc|

@@ -2,7 +2,7 @@
 require "libmsg"
 require "libxmldoc"
 
-module Cache
+module ModCache
   VarDir="#{ENV['HOME']}/.var/cache"
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def cache(type,id,nocache=nil)

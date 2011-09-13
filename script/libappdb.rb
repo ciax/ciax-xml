@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
 require "libcircular"
 require "librepeat"
-require "libcache"
+require "libmodcache"
 
 class AppDb < Hash
-  include Cache
+  include ModCache
   def initialize(app,nocache=nil)
     @v=Msg::Ver.new('adb',5)
     cache('adb',app,nocache){|doc|

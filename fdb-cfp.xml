@@ -7,17 +7,22 @@
       <ccrange>
         <select>
           <!--String Length must be <32-->
-          <command id="getstat" label="Get status 1" response="getstat" type="stat">
+          <command id="getstat" label="Get output status" response="getstat" type="stat">
             <string>02!J</string>
           </command>
-          <command id="getstat2" label="Get status 2" response="getstat2" type="stat">
+          <command id="getstat2" label="Get input status" response="getstat2" type="stat">
             <string>03!J</string>
           </command>
           <!---->
-          <command id="set" label="Write Discrete [Mask(4)] [Data(4)]" response="default" type="config">
-            <string>!L</string>
+          <command id="putdata" label="Write Discrete [Mask(4)] [Data(4)]" response="default" type="config">
+            <string>02!L</string>
             <string valid="0:65535" format="%04X">$1</string>
             <string valid="0:65535" format="%04X">$2</string>
+          </command>
+          <command id="putfield" label="Write from Output Field" response="default" type="config">
+            <string>02!L</string>
+            <string>FFFF</string>
+            <string format="%04X">${output}</string>
           </command>
         </select>
       </ccrange>
@@ -30,10 +35,10 @@
       <ccrange>
         <select>
           <response id="getstat">
-            <field assign="stat0" decode="hexstr" label="Status" length="4"></field>
+            <field assign="output" decode="hexstr" label="Status" length="4"></field>
           </response>
           <response id="getstat2">
-            <field assign="stat1" decode="hexstr" label="Status" length="4"></field>
+            <field assign="input" decode="hexstr" label="Status" length="4"></field>
           </response>
           <response id="default"></response>
         </select>

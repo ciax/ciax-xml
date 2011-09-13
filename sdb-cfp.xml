@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <symbol id="cfp" label="MOIRCS Field Point">
+    <table id="rot" type="string">
+      <case class="normal" msg="Horizontal">10</case>
+      <case class="warn" msg="Vertical">01</case>
+      <case class="alarm" msg="N/A"></case>
+    </table>
+    <table id="oc" type="string">
+      <case class="warn" msg="OPEN">01</case>
+      <case class="normal" msg="CLOSE">10</case>
+      <case class="alarm" msg="N/A"></case>
+    </table>
+  </symbol>
+</sdb>

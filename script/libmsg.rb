@@ -76,7 +76,7 @@ class Msg
     end
 
     def to_s
-      [$!.to_s,@title,*sort].grep(/./).join("\n")
+      [$!.to_s,@title,*self].grep(/./).join("\n")
     end
 
     def exit

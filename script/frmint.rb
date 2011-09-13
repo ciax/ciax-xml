@@ -14,8 +14,8 @@ OptionParser.new{|op|
 }
 id,iocmd=ARGV
 begin
-  edb=EntDb.new(id).cover_app
-  fdb=FrmDb.new(edb['frm_type'])
+  edb=EntDb.new(id)
+  fdb=FrmDb.new(edb['frm_type']||edb['app_type'])
   field=Field.new(id).load
   field.update(edb[:field]) if edb.key?(:field)
   io=IoCmd.new(iocmd||edb['client'],id,fdb['wait'],1)

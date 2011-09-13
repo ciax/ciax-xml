@@ -1,149 +1,110 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<mdb xmlns="http://ciax.sum.naoj.org/ciax-xml">
-  <macro_group class="crt" id="crt" label="Cart Macro">
+<mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
+  <group id="crt" app="crt" label="Cart Macro">
     <macro id="runf" label="Run Forward to Tag">
-      <break label="On Tag?">
-        <item field="val" stat="cpos">^0</item>
-      </break>
-      <pass label="Ready?">
-        <item field="val" stat="rdy">1</item>
-      </pass>
-      <session>
+      <check false="break">
+        <stat label="On Tag?" ref="cpos" inv="true">0</stat>
+      </check>
+      <check false="exit" retry="5">
+        <stat label="Ready?" ref="rdy">OK</stat>
+      </check>
+      <exec>
         <text>set_fwd</text>
-      </session>
-      <session>
+      </exec>
+      <exec>
         <text>start_run</text>
-      </session>
-      <wait timeout="1">
-        <break>
-          <item field="val" stat="run">1</item>
-        </break>
-        <session>
-          <text>upd</text>
-        </session>
-      </wait>
-      <session>
+      </exec>
+      <check false="exit" retry="3">
+        <stat ref="run">ON</stat>
+      </check>
+      <exec>
         <text>clear_trg</text>
-      </session>
-      <wait abort="pause" timeout="40">
-        <break>
-          <item field="val" stat="run">0</item>
-        </break>
-        <session>
-          <text>upd</text>
-        </session>
-      </wait>
-      <pass>
-        <item field="val" stat="cpos">^0</item>
-      </pass>
+      </exec>
+      <check false="exit" retry="40">
+        <stat ref="run">OFF
+</stat>
+      </check>
+      <check false="exit">
+        <stat ref="cpos" inv="true">0</stat>
+      </check>
     </macro>
     <macro id="run1" label="Run to Tag 1">
-      <break label="On Tag1 ?">
-        <item field="val" stat="cpos">1</item>
-      </break>
-      <pass label="Ready?">
-        <item field="val" stat="rdy">1</item>
-      </pass>
-      <session>
+      <check false="break">
+        <stat label="On Tag1 ?" ref="cpos" inv="true">1</stat>
+      </check>
+      <check false="exit">
+        <stat label="Ready?" ref="rdy">1</stat>
+      </check>
+      <exec>
         <text>set_tag1</text>
-      </session>
-      <session>
+      </exec>
+      <exec>
         <text>start_run</text>
-      </session>
-      <wait label="Start Run?" timeout="1">
-        <break>
-          <item field="val" stat="run_start">1</item>
-        </break>
-        <session>
-          <text>upd</text>
-        </session>
-      </wait>
-      <session>
+      </exec>
+      <check false="exit" retry="3">
+        <stat label="Start Run?" ref="run_start">1</stat>
+      </check>
+      <exec>
         <text>clear_trg</text>
-      </session>
-      <wait abort="pause" label="Running" timeout="40">
-        <break>
-          <item field="val" stat="running">0</item>
-        </break>
-        <session>
-          <text>upd</text>
-        </session>
-      </wait>
-      <pass label="On Tag1 ?">
-        <item field="val" stat="cpos">1</item>
-      </pass>
+      </exec>
+      <check false="exit" retry="40">
+        <stat label="Running" ref="running">ON</stat>
+      </check>
+      <check label="On Tag1 ?" false="exit">
+        <stat ref="cpos">1</stat>
+      </check>
     </macro>
     <macro id="jak1" label="Jack UP Level 1">
-      <break label="On Level 1?">
-        <item field="val" stat="jpos">1</item>
-      </break>
-      <pass label="Ready?">
-        <item field="val" stat="rdy">1</item>
-      </pass>
-      <session>
+      <check label="On Level 1?" false="break">
+        <stat ref="jpos">1</stat>
+      </check>
+      <check label="Ready?" false="exit">
+        <stat ref="rdy">1</stat>
+      </check>
+      <exec>
         <text>set_jak1</text>
-      </session>
-      <session>
+      </exec>
+      <exec>
         <text>start_jak</text>
-      </session>
-      <wait label="Start Jak?" timeout="1">
-        <break>
-          <item field="val" stat="jak_start">1</item>
-        </break>
-        <session>
-          <text>upd</text>
-        </session>
-      </wait>
-      <session>
+      </exec>
+      <check label="Start Jak?" retry="3" false="exit">
+        <stat ref="jak_start">1</stat>
+      </check>
+      <exec>
         <text>clear_trg</text>
-      </session>
-      <wait abort="pause" label="Jacking" timeout="40">
-        <break>
-          <item field="val" stat="jaking">0</item>
-        </break>
-        <session>
-          <text>upd</text>
-        </session>
-      </wait>
-      <pass label="On Level 1?">
-        <item field="val" stat="jpos">1</item>
-      </pass>
+      </exec>
+      <check false="exit" label="Jacking" retry="40">
+        <stat ref="jaking">0</stat>
+      </check>
+      <check label="On Level 1?">
+        <stat ref="jpos">1</stat>
+      </check>
     </macro>
     <macro argc="1" id="runto" label="Run to Tag">
-      <break label="On Tag?">
-        <item field="val" ref="par" stat="cpos" />
-      </break>
-      <pass label="Ready?">
-        <item field="val" stat="rdy">1</item>
-      </pass>
-      <session>
+      <check label="On Tag?" false="break">
+        <stat inv="true" ref="cpos">0</stat>
+      </check>
+      <check label="Ready?" false="exit">
+        <stat ref="rdy">1</stat>
+      </check>
+      <exec>
         <text>set_tag1</text>
-      </session>
-      <session>
+      </exec>
+      <exec>
         <text>start_run</text>
-      </session>
-      <wait label="Start Run?" timeout="1">
-        <break>
-          <item field="val" stat="run_start">1</item>
-        </break>
-        <session>
-          <text>upd</text>
-        </session>
-      </wait>
-      <session>
+      </exec>
+      <check label="Start Run?" retry="3" false="exit">
+        <stat ref="run_start">1</stat>
+      </check>
+      <exec>
         <text>clear_trg</text>
-      </session>
-      <wait abort="pause" label="Running" timeout="40">
-        <break>
-          <item field="val" stat="running">0</item>
-        </break>
-        <session>
-          <text>upd</text>
-        </session>
-      </wait>
-      <pass label="On Tag1 ?">
-        <item field="val" stat="cpos">1</item>
-      </pass>
+      </exec>
+      <check false="exit" label="Running" retry="40">
+        <stat ref="running">0</stat>
+      </check>
+      <check label="On Tag1 ?" false="exit">
+        <stat ref="cpos">1</stat>
+      </check>
     </macro>
-  </macro_group>
+  </group>
 </mdb>

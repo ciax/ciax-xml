@@ -24,7 +24,7 @@ cf1,k3n,k3n,tcp:ltt-i:4003,ciax,45601
 #cf9,k3n,k3n,tcp:ltt-i:4011,ciax,45609
 cfa,k3n,k3n,tcp:ltt-i:4015,ciax,45610
 #MOIRCS
-#mfp,cfp,cfp,tcp:celaeno:4001,ciax,24101
+mfp,cfp,cfp,tcp:celaeno:4001,ciax,24101
 map,oma,oma,tcp:celaeno:4002,ciax,24102
 mma,mma,slo,tcp:celaeno:4003,ciax,24103
 mmc,mmc,slo,tcp:celaeno:4004,ciax,24104

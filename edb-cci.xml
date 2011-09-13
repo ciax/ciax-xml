@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
-  <object id="cci" label="IR Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-i:4002" port="25105">
+  <entity id="cci" label="IR Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-i:4002" port="25105">
     <select xmlns="http://ciax.sum.naoj.org/ciax-xml/edbc">
       <command id="upd" label="Update Status" alias="upd" />
       <command id="c2on" label="CAS2(S1) ON" alias="x0on" />
@@ -26,5 +26,5 @@
       <title ref="g2" label="MOIRCS/CR(S8)" />
       <title ref="g3" label="MOIRCS/MAIN(S9)" />
     </status>
-  </object>
+  </entity>
 </edb>

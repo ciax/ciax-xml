@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
-  <object id="mt1" label="MOIRCS Pressure Main" app_type="tpg" client="socat - tcp:celaeno:4009" port="24109">
+  <entity id="mt1" label="MOIRCS Pressure Main" app_type="tpg" client="socat - tcp:celaeno:4009" port="24109">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/edbs">
       <title ref="st1" label="Main Dewar Stat" />
       <title ref="ch1" label="Main Dewar (Torr)" />
     </status>
-  </object>
+  </entity>
 </edb>

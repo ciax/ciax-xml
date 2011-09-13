@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
-  <object id="cri" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4003" port="25106">
+  <entity id="cri" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4003" port="25106">
     <select xmlns="http://ciax.sum.naoj.org/ciax-xml/edbc">
       <command id="upd" label="Update Status" alias="upd" />
       <command id="f1on" label="FMOS/IRS1(S10)ON" alias="x0on" />
@@ -12,5 +12,5 @@
       <title ref="g0" label="FMOS/IRS1(S10)" />
       <title ref="g2" label="FMOS/IRS2(S11)" />
     </status>
-  </object>
+  </entity>
 </edb>

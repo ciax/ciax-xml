@@ -26,7 +26,7 @@
       </ccrange>
       <string format="%02X">${cc}</string>
       <string label="Suffix">*</string>
-      <code length="1" label="Delimiter">0xd</code>
+      <char length="1" label="Delimiter">0xd</char>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <ccrange>

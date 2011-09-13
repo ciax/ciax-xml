@@ -10,11 +10,11 @@
         </command>
         <command id="output" label="OUTPUT [DDDDD]" type="action">
           <string>SO</string>
-          <code length="2" valid="0:65535">$1</code>
+          <char length="2" valid="0:65535">$1</char>
         </command>
         <command id="outfld" label="OUTPUT from Field" nocache="true" type="action">
           <string>SO</string>
-          <code length="2">${stat}</code>
+          <char length="2">${stat}</char>
         </command>
       </select>
     </cmdframe>

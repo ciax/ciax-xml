@@ -111,7 +111,7 @@
           <string format="%02d" valid="1:12">$1</string>
         </command>
       </select>
-      <code length="1" label="Suffix">0xa</code>
+      <char length="1" label="Suffix">0xa</char>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="\n">
       <select>

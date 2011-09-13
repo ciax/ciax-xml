@@ -29,8 +29,8 @@
         </command>
       </select>
       <string>??</string>
-      <code length="1">13</code>
-      <code length="1">10</code>
+      <char length="1">13</char>
+      <char length="1">10</char>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>

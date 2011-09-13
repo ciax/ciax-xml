@@ -3,7 +3,7 @@
   <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" wait="0.2">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <code length="1" label="Prefix">2</code>
+      <char length="1" label="Prefix">2</char>
       <select>
         <!--String Length must be <32-->
         <command id="getstat" label="Get status" response="getstat" type="stat">
@@ -111,9 +111,9 @@
           <string valid="0:384000">$2</string>
         </command>
       </select>
-      <code length="1" label="Suffix">3</code>
-      <code length="1">13</code>
-      <code length="1">10</code>
+      <char length="1" label="Suffix">3</char>
+      <char length="1">13</char>
+      <char length="1">10</char>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="Prefix" length="1">2</field>

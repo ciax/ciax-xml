@@ -14,7 +14,7 @@
           <string>*Z02</string>
         </command>
       </select>
-      <code length="1">13</code>
+      <char length="1">13</char>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <select>

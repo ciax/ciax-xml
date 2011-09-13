@@ -3,7 +3,7 @@
   <frame id="k3n" label="OMRON K3NR" ccmethod="bcc" wait="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <code length="1" label="Prefix">2</code>
+      <char length="1" label="Prefix">2</char>
       <ccrange>
         <select>
           <command id="getstat" label="Get Status" response="getstat" type="stat">
@@ -18,9 +18,9 @@
             <string label="Number of element">0001</string>
           </command>
         </select>
-        <code length="1" label="Suffix">3</code>
+        <char length="1" label="Suffix">3</char>
       </ccrange>
-      <code length="1">${cc}</code>
+      <char length="1">${cc}</char>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="Prefix" length="1">2</field>

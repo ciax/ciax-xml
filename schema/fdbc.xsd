@@ -6,11 +6,11 @@
   <!--Command Elements-->
   <xsd:group name="data">
     <xsd:choice>
-      <xsd:element ref="fdbc:code"></xsd:element>
+      <xsd:element ref="fdbc:char"></xsd:element>
       <xsd:element ref="fdbc:string"></xsd:element>
     </xsd:choice>
   </xsd:group>
-  <xsd:element name="code">
+  <xsd:element name="char">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">

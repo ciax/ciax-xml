@@ -30,7 +30,7 @@
           <string>KOD</string>
         </command>
       </select>
-      <code length="1">0xd</code>
+      <char length="1">0xd</char>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <select>

@@ -78,7 +78,7 @@ class FrmDb < Hash
 
   def init_cmd(e,rep=nil)
     case e.name
-    when 'code','string'
+    when 'char','string'
       attr=e.node2db
       label=attr.delete('label')
       attr['val']=rep.subst(attr['val']) if rep

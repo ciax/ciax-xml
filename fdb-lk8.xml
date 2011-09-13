@@ -21,7 +21,7 @@
           <string>SETP? 1</string>
         </command>
       </select>
-      <code length="2" label="Suffix">0x0d0a</code>
+      <char length="2" label="Suffix">0x0d0a</char>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
       <select>

@@ -26,9 +26,12 @@ Shell.new(prom){|line|
   time,str=@io.rcv
   ary=str.split("\n")
   prom[0]=ary.pop
-  if ary.empty?
+  case ary.first
+  when nil
     pr.upd(st.get)
-  elsif /CMD/ === ary.first
+  when /CMD/
     par.list
+  else
+    ary.first
   end
 }

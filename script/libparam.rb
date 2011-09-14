@@ -2,7 +2,6 @@
 require 'libmsg'
 require 'librerange'
 
-# Parameter must be numerical
 class Param < Hash
   attr_reader :list
   def initialize(db) # command db

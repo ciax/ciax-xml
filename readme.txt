@@ -18,7 +18,7 @@ adb//cmdset@id -> never use ':'
 
  $_ $a..z
     description : substitute sequence number(in repeat)
-    usable: fdb//cmdframe/repeat/code
+    usable: fdb//cmdframe/repeat/char
             --
             adb//cmdset/repeat/command/argv
             adb//status/repeat/value/*@ref
@@ -27,7 +27,7 @@ adb//cmdset@id -> never use ':'
 
  $1..9
     description : substitute parameters, sould be numerical
-    usable: fdb//cmdframe/code
+    usable: fdb//cmdframe/char
             fdb//response/array/index
             --
             adb//cmdset/command/argv (eval if @format exists)
@@ -36,7 +36,7 @@ adb//cmdset@id -> never use ':'
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
                   content should be numerical expression or of csv array
                   idx can be equation (i.e. $_+1 )
-    usable: fdb//cmdframe/code
+    usable: fdb//cmdframe/char
 
  $#
     description : formula parameter
@@ -53,7 +53,6 @@ adb//cmdset@id -> never use ':'
             --
             sdb//symbol/repeat/case@id
 
-
  \?
     description : convert escape characters
     usable: fdb//rspframe@terminator
@@ -62,7 +61,7 @@ adb//cmdset@id -> never use ':'
 ### Explicit conversion by Attributes ###
 
  format
-    usable: fdb//code
+    usable: fdb//string
             --
             adb//command/argv
             adb//status/value/float
@@ -72,19 +71,16 @@ adb//cmdset@id -> never use ':'
     usable: fdb//response/field
             fdb//response/array
 
- encode
-    usable: fdb//code
-
  range
     description: To validate parameters
     example: "0:<10,98,99"
-    usable: fdb//code
+    usable: fdb//char
             --
             adb//command/argv
  
 ### Reference Content ###
   fdb//cmdframe//command@response <= fdb//rspframe//response@id
-  adb//(commands|watch)//command@name <= fdb//command@id
+  adb//(commands|watch)//frmcmd@name <= fdb//command@id
   adb//watch/interrupt@name <= fdb//command@id
   adb//watch//condition/value@ref <= adb//value@id
   *@symbol <= *//symbol/table@id

@@ -3,6 +3,7 @@ require "libparam"
 require "libmsg"
 
 class AppCmd
+  include Math
   def initialize(adb)
     @v=Msg::Ver.new("#{adb['id']}/cmd",2)
     @adb=adb[:structure]

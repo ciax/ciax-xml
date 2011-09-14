@@ -30,7 +30,7 @@ adb//cmdset@id -> never use ':'
     usable: fdb//cmdframe/char
             fdb//response/array/index
             --
-            adb//cmdset/command/argv (eval if @format exists)
+            adb//cmdset/command/argv (eval if @format exists, Math included)
 
  ${*:*}
     description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
@@ -57,6 +57,16 @@ adb//cmdset@id -> never use ':'
     description : convert escape characters
     usable: fdb//rspframe@terminator
             fdb//rspframe@delimiter
+
+### Valid Data ###
+
+ numerical (i.e. '1234','0012','0xab','1+2'..)
+    fdb//cmdframe/char
+    fdb//cmdframe/string (with @format)
+    --   
+    adb//cmdset/command/argv (with @format, including Math functions)
+   
+
 
 ### Explicit conversion by Attributes ###
 

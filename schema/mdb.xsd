@@ -3,21 +3,21 @@
   <xsd:element name="mdb">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="mdb:group" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+        <xsd:element ref="mdb:macro" minOccurs="1" maxOccurs="unbounded"></xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="group">
+  <xsd:element name="macro">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="mdb:macro" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+        <xsd:element ref="mdb:command" minOccurs="1" maxOccurs="unbounded"></xsd:element>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:token" use="required" />
       <xsd:attribute name="app" type="xsd:token" use="required" />
       <xsd:attribute name="label" type="xsd:token" use="optional" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="macro">
+  <xsd:element name="command">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="mdb:check" minOccurs="0" maxOccurs="unbounded" />

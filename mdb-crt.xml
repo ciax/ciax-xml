@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <group id="crt" app="crt" label="Cart Macro">
-    <macro id="runf" label="Run Forward to Tag">
+  <macro id="crt" app="crt" label="Cart Macro">
+    <command id="runf" label="Run Forward to Tag">
       <check false="break">
         <stat label="On Tag?" ref="cpos" inv="true">0</stat>
       </check>
@@ -27,8 +27,8 @@
       <check false="exit">
         <stat ref="cpos" inv="true">0</stat>
       </check>
-    </macro>
-    <macro id="run1" label="Run to Tag 1">
+    </command>
+    <command id="run1" label="Run to Tag 1">
       <check false="break">
         <stat label="On Tag1 ?" ref="cpos" inv="true">1</stat>
       </check>
@@ -53,8 +53,8 @@
       <check label="On Tag1 ?" false="exit">
         <stat ref="cpos">1</stat>
       </check>
-    </macro>
-    <macro id="jak1" label="Jack UP Level 1">
+    </command>
+    <command id="jak1" label="Jack UP Level 1">
       <check label="On Level 1?" false="break">
         <stat ref="jpos">1</stat>
       </check>
@@ -79,8 +79,8 @@
       <check label="On Level 1?">
         <stat ref="jpos">1</stat>
       </check>
-    </macro>
-    <macro argc="1" id="runto" label="Run to Tag">
+    </command>
+    <command argc="1" id="runto" label="Run to Tag">
       <check label="On Tag?" false="break">
         <stat inv="true" ref="cpos">0</stat>
       </check>
@@ -105,6 +105,6 @@
       <check label="On Tag1 ?" false="exit">
         <stat ref="cpos">1</stat>
       </check>
-    </macro>
-  </group>
+    </command>
+  </macro>
 </mdb>

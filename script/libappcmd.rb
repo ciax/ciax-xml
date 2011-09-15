@@ -1,9 +1,11 @@
 #!/usr/bin/ruby
-require "libparam"
 require "libmsg"
+require "libparam"
+require "libmodconv"
 
 class AppCmd
   include Math
+  include ModConv
   def initialize(adb)
     @v=Msg::Ver.new("#{adb['id']}/cmd",2)
     @adb=adb[:structure]
@@ -28,8 +30,8 @@ class AppCmd
           when String
             cmd << e2
           when Hash
-            str=@par.subst(e2['val'],e2['valid'])
-            str = e2['format'] % eval(str) if e2['format']
+            str=@par.subst(e2['val'])
+            str = conv(e2,str)
             @v.msg{"Calculated [#{str}]"}
             cmd << str
           end

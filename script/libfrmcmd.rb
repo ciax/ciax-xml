@@ -43,7 +43,7 @@ class FrmCmd
     @sel[domain].each{|a|
       case a
       when Hash
-        @field.subst(@par.subst(a['val'],a['valid'])).split(',').each{|s|
+        @field.subst(@par.subst(a['val'])).split(',').each{|s|
           @frame.add(s,a)
         }
       else # ccrange,select,..

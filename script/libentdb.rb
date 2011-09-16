@@ -10,8 +10,7 @@ class EntDb < Hash
     cache('edb',id,nocache){|doc|
       hash=Hash[doc]
       doc.domain('init').each{|e0|
-        hash[:field]||={}
-        hash[:field][e0['id']]=e0.text
+        (hash[:field]||={})[e0['id']]=e0.text
       }
       doc.domain('select').each{|e0|
         e0.attr2db(hash[:command]||={})

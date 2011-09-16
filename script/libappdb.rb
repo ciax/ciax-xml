@@ -27,16 +27,12 @@ class AppDb < Hash
 
   private
   def init_command(adb,hash)
-    struct=hash[:structure]={}
     adb.each{|e0|
       id=e0.attr2db(hash)
-      list=struct[id]=[]
       Repeat.new.each(e0){|e1,rep|
         case e1.name
         when 'par'
-          hash[:parameter]||={}
-          hash[:parameter][id]||=[]
-          hash[:parameter][id] << e1.text
+          ((hash[:parameter]||={})[id]||=[]) << e1.text
         when 'frmcmd'
           command=[e1['name']]
           e1.each{|e2|
@@ -44,7 +40,7 @@ class AppDb < Hash
             argv['val'] = rep.subst(e2.text)
             command << argv.freeze
           }
-          list << command.freeze
+          ((hash[:structure]||={})[id]||=[]) << command.freeze
         end
       }
       @v.msg{"COMMAND:[#{id}] #{list}"}

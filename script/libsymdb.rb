@@ -13,10 +13,9 @@ class SymDb < Hash
         row=e1.to_h
         id=row.delete('id')
         label=row['label']
-        rc=row[:record]={}
         e1.each{|e2| # case
           key=e2.text||"default"
-          rc[key]=e2.to_h
+          (row[:record]||={})[key]=e2.to_h
         }
         hash[id]=row
         @v.msg{"Symbol Table:#{id} : #{label}"}
@@ -29,7 +28,7 @@ class SymDb < Hash
 
   def convert(view,ref=nil)
     @ref=ref||@ref
-    view['symbol']||={}
+    vs=view['symbol']||={}
     view['stat'].each{|k,val|
       next if val == ''
       next unless sid=@ref[k]
@@ -43,7 +42,7 @@ class SymDb < Hash
       when 'range'
         tbl.each{|match,hash|
           next unless ReRange.new(match) == val
-          view['symbol'][k]={'type' => 'num'}.update(hash)
+          vs[k]={'type' => 'num'}.update(hash)
           @v.msg{"VIEW:Range:[#{match}] and [#{val}]"}
           break
         }
@@ -51,12 +50,12 @@ class SymDb < Hash
         tbl.each{|match,hash|
           @v.msg{"VIEW:Regexp:[#{match}] and [#{val}]"}
           next unless /#{match}/ === val || val == 'default'
-          view['symbol'][k]={'type' => 'str'}.update(hash)
+          vs[k]={'type' => 'str'}.update(hash)
           break
         }
       when 'string'
         val='default' unless tbl.key?(val)
-        view['symbol'][k]={'type' => 'str'}.update(tbl[val])
+        vs[k]={'type' => 'str'}.update(tbl[val])
         @v.msg{"VIEW:String:[#{val}](#{tbl[val]['msg']})"}
       end
     }

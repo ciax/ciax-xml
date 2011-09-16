@@ -56,25 +56,20 @@ class FrmDb < Hash
 
   def init_sel(domain,select,frame)
     selh=domain.to_h
-    list=frame[:select]={}
     domain.find(select){|e0|
       begin
         @v.msg(1){"INIT:Select Frame <-"}
         id=e0.attr2db(selh)
         @v.msg{"InitSelHash(#{id}):#{selh}"}
-        frame=[]
         Repeat.new.each(e0){|e1,r1|
           case e1.name
           when 'par'
-            selh[:parameter]||={}
-            selh[:parameter][id]||=[]
-            selh[:parameter][id] << e1.text
+            ((selh[:parameter]||={})[id]||=[]) << e1.text
           else
             e=yield(e1,r1) || next
-            frame << e
+            ((frame[:select]||={})[id]||=[]) << e
           end
         }
-        list[id]=frame.freeze
         @v.msg{"InitSelFrame(#{id}):#{frame}"}
       ensure
         @v.msg(-1){"-> INIT:Select Frame"}

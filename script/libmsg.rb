@@ -130,8 +130,9 @@ class << Msg
     self
   end
 
-  def err(msg='error') # Raise User error (Invalid User input)
-    raise UserError,$!.to_s+color(msg,1)
+  def err(*msg) # Raise User error (Invalid User input)
+    msg[0]=color(msg[0],1)
+    raise UserError,$!.to_s+msg.join("\n")
   end
 
   def abort(msg='abort')

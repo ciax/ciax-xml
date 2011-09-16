@@ -7,7 +7,9 @@ class Param < Hash
   def initialize(db) # command db
     @v=Msg::Ver.new("PARAM",5)
     @db=db
-    @label=db[:label].reject{|k,v| /true|1/ === db[:hidden][k] }
+    @label=db[:label].reject{|k,v|
+      /true|1/ === db[:hidden][k] if db.key?(:hidden)
+    }
     @list=Msg::List.new("== Command List==").add(@label)
   end
 

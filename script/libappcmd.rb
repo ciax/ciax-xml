@@ -2,7 +2,7 @@
 require "libmsg"
 require "libparam"
 
-class AppCmd
+class AppCmd < Array
   include Math
   def initialize(adb)
     @v=Msg::Ver.new("#{adb['id']}/cmd",2)
@@ -13,12 +13,8 @@ class AppCmd
   def setcmd(ssn)
     @id=ssn.first
     @par.set(ssn)
-    self
-  end
-
-  def cmdset
     @v.msg{"Exec(CDB):#{@id}"}
-    cmdset=[]
+    clear
     @adb[@id].each{|e1|
       cmd=[]
       @v.msg(1){"GetCmd(DDB):#{e1.first}"}
@@ -34,11 +30,11 @@ class AppCmd
             cmd << str
           end
         }
-        cmdset << cmd
+        push cmd
       ensure
         @v.msg(-1){"Exec(DDB):#{cmd}"}
       end
     }
-    cmdset
+    self
   end
 end

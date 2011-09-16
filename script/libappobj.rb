@@ -45,7 +45,7 @@ class AppObj < String
       @buf.wait_for(10){ @stat[k] == v }
       replace "Waiting\n"
     else
-      @buf.send{@ac.setcmd(line.split(' ')).cmdset}
+      @buf.send{@ac.setcmd(line.split(' '))}
       replace "ISSUED\n"
     end
     upd

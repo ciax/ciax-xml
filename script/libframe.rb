@@ -1,8 +1,7 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libmodconv'
+
 class Frame
-  include ModConv
   def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
     @v=Msg::Ver.new("fdb/frm".upcase,6)
     @endian=endian
@@ -106,7 +105,7 @@ class Frame
   end
 
   def encode(e,str) # Num -> Chr
-    str=conv(e,str)
+    str=e['format'] % eval(str) if e['format']
     if len=e['length']
       code=''
       num=eval(str)

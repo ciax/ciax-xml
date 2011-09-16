@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libmodconv'
+require 'librerange'
 
 class Param < Hash
-  include ModConv
   attr_reader :list
   def initialize(db) # command db
     @v=Msg::Ver.new("PARAM",5)
@@ -46,5 +45,19 @@ class Param < Hash
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end
+  end
+
+  private
+  def validate(str,va=nil)
+    if va
+      Msg.err("No Parameter") unless str
+      num=eval(str)
+      @v.msg{"Validate: [#{num}] Match? [#{va}]"}
+      va.split(',').each{|r|
+        break if ReRange.new(r) == num
+      } && Msg.err(" Parameter invalid (#{num}) for [#{va.tr(':','-')}]")
+      str=num.to_s
+    end
+    str
   end
 end

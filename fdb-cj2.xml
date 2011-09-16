@@ -54,12 +54,14 @@
           <char length="1" label="FINS Param:Data Length (L)">0x0A</char>
         </command>
         <command id="setbit" label="Set Bit" response="cmdrsp" type="stat">
+          <par>0:3</par>
+          <par>0:15</par>
           <char length="1" label="FINS Command:MRC">0x01</char>
           <char length="1" label="FINS Command:SRC">0x02</char>
           <char length="1" label="FINS Param:Memory type(W)">0x31</char>
           <char length="1" label="FINS Param:Start Address(H)">0x00</char>
-          <char length="1" label="FINS Param:Start Address(L)" valid="0:3">$1</char>
-          <char length="1" label="FINS Param:Bit Number" valid="0:15">$2</char>
+          <char length="1" label="FINS Param:Start Address(L)">$1</char>
+          <char length="1" label="FINS Param:Bit Number">$2</char>
           <char length="1" label="FINS Param:Bit Data Length (H)">0x00</char>
           <char length="1" label="FINS Param:Bit Data Length (L)">0x01</char>
           <char length="1" label="FINS Param:Bit Data">0x01</char>

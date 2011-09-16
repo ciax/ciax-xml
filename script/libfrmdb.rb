@@ -64,8 +64,15 @@ class FrmDb < Hash
         @v.msg{"InitSelHash(#{id}):#{selh}"}
         frame=[]
         Repeat.new.each(e0){|e1,r1|
-          e=yield(e1,r1) || next
-          frame << e
+          case e1.name
+          when 'par'
+            selh[:parameter]||={}
+            selh[:parameter][id]||=[]
+            selh[:parameter][id] << e1.text
+          else
+            e=yield(e1,r1) || next
+            frame << e
+          end
         }
         list[id]=frame.freeze
         @v.msg{"InitSelFrame(#{id}):#{frame}"}

@@ -16,11 +16,12 @@
             <string label="length">0001</string>
           </command>
           <command id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
+            <par>0:500000</par>
             <string label="Header Code">FK</string>
             <string label="Operand">CIO </string>
             <string label="Channel">0000</string>
             <!--[000..04(5)]-->
-            <string format="%016d" valid="0:500000">$1</string>
+            <string format="%016d">$1</string>
           </command>
         </select>
       </ccrange>

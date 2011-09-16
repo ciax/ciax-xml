@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc">
   <!--Device database-->
   <xsd:include schemaLocation="repeat.xsd" />
@@ -14,9 +14,8 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="length" type="xsd:int" use="required"></xsd:attribute>
           <xsd:attribute name="label" type="xsd:token" />
-          <xsd:attribute name="valid" type="fdbc:rerange"></xsd:attribute>
+          <xsd:attribute name="length" type="xsd:int" use="required"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -27,11 +26,11 @@
         <xsd:extension base="xsd:token">
           <xsd:attribute name="label" type="xsd:token" />
           <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
-          <xsd:attribute name="valid" type="fdbc:rerange"></xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="par" type="fdbc:rerange"></xsd:element>
   <!--Command Select-->
   <xsd:element name="select">
     <xsd:complexType>
@@ -47,6 +46,7 @@
   <xsd:element name="command">
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element ref="fdbc:par" minOccurs="0" maxOccurs="unbounded" />
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="fdbc:repeat" />
           <xsd:group ref="fdbc:data" />

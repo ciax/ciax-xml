@@ -16,7 +16,6 @@ module ModConv
   end
 
   def conv(e,str) # Num -> Chr
-    str=validate(str,e['valid'])
     if fmt=e['format']
       @v.msg{"Formatted code(#{fmt}) [#{str}]"}
       code=fmt % eval(str)

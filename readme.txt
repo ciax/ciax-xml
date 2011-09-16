@@ -84,9 +84,9 @@ adb//cmdset@id -> never use ':'
  range
     description: To validate parameters
     example: "0:<10,98,99"
-    usable: fdb//char
+    usable: fdb//command/par
             --
-            adb//command/argv
+            adb//command/par
  
 ### Reference Content ###
   fdb//cmdframe//command@response <= fdb//rspframe//response@id
@@ -94,7 +94,6 @@ adb//cmdset@id -> never use ':'
   adb//watch/interrupt@name <= fdb//command@id
   adb//watch//condition/value@ref <= adb//value@id
   *@symbol <= *//symbol/table@id
-
 
 ### Structure of Data ###
   FIELD:

@@ -11,8 +11,9 @@
           <string>bs</string>
         </command>
         <command id="in" label="Input Status (1-5)" response="in" type="stat">
+          <par>1:5</par>
           <string>in</string>
-          <string format="(%d)" valid="1:5">$1</string>
+          <string format="(%d)">$1</string>
         </command>
         <command id="p" label="Pulse Number" response="p" type="stat">
           <string>p</string>
@@ -24,27 +25,32 @@
           <string>reset</string>
         </command>
         <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
+          <par>0:1</par>
           <string>hl</string>
-          <string valid="0:1">$1</string>
+          <string>$1</string>
         </command>
         <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
+          <par>0:1</par>
           <string>e1=</string>
-          <string valid="0:1">$1</string>
+          <string>$1</string>
         </command>
         <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
+          <par>0:1</par>
           <string>e2=</string>
-          <string valid="0:1">$1</string>
+          <string>$1</string>
         </command>
         <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
           <string>abspos=0</string>
         </command>
         <command id="setp" label="Set Pulse Number" response="default" type="config">
+          <par>0:999</par>
           <string>p=</string>
-          <string format="%5.2f" valid="0:999">$1</string>
+          <string format="%5.2f">$1</string>
         </command>
         <command id="setspd" label="Set Speed Number" response="default" type="config">
+          <par>0:999</par>
           <string>spd=</string>
-          <string format="%5.2f" valid="0:999">$1</string>
+          <string format="%5.2f">$1</string>
         </command>
         <command id="stop" label="Stop Running" response="default" type="action">
           <string>stop</string>
@@ -56,12 +62,14 @@
           <string>j=-1</string>
         </command>
         <command id="ma" label="Move Absolute Position" response="default" type="action">
+          <par>0:999</par>
           <string>ma=</string>
-          <string format="%3.1f" valid="0:999">$1</string>
+          <string format="%3.1f">$1</string>
         </command>
         <command id="mi" label="Move Incremental" response="default" type="action">
+          <par>-999:999</par>
           <string>mi=</string>
-          <string format="%3.1f" valid="-999:999">$1</string>
+          <string format="%3.1f">$1</string>
         </command>
         <command id="mhn" label="Move To e2 Sensor Negative" response="default" type="action">
           <string>mh=-1</string>

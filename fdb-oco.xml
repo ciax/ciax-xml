@@ -9,8 +9,9 @@
           <string>1RD</string>
         </command>
         <command id="i" label="Set Current by argv [DD.DD]" type="action">
+          <par>0:99</par>
           <string>1AO+000</string>
-          <string format="%05.2f" valid="0:99">$1</string>
+          <string format="%05.2f">$1</string>
         </command>
       </select>
       <char length="1" label="Suffix">0xd</char>

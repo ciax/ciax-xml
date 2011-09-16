@@ -39,6 +39,7 @@ module ModXml
   end
 
   def node2db(id=nil)
+    # <xml id='x'>text</xml> => {id => {'val' => text}}
     hash=to_h
     hash['val'] = text if text
     if id

@@ -28,50 +28,61 @@
           </repeat>
         </command>
         <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>=N</string>
         </command>
         <command id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>=E</string>
         </command>
         <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>=H</string>
         </command>
         <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>P21R</string>
         </command>
         <command id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>P21S</string>
           <string>${p:$1-1}</string>
         </command>
         <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>P14R</string>
         </command>
         <command id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>P14S</string>
           <string>${spd:$1-1}</string>
         </command>
         <command id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>P15R</string>
         </command>
         <command id="setrmp" label="Set ramp from buffer [1-6]" nocache="true" response="default" type="config">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>P15S</string>
           <string>${rmp:$1-1}</string>
         </command>
         <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>P12R</string>
         </command>
         <command id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>P12S</string>
           <string>${ofs:$1-1}</string>
         </command>
@@ -88,27 +99,35 @@
           </repeat>
         </command>
         <command id="stop" label="Stop Moving [1-6]" response="default" type="action">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>S</string>
         </command>
         <command id="init" label="Initialize [1-6]" response="default" type="action">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <string>$1</string>
           <string>0</string>
         </command>
         <command id="fw" label="Move forward [T] [H}(8000/hole)" response="default" type="action">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <par>0:</par>
+          <string>$1</string>
           <string>+</string>
-          <string valid="0:">$2</string>
+          <string>$2</string>
         </command>
         <command id="bk" label="Move backward [T] [H](8000/hole)" response="default" type="action">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <par>0:</par>
+          <string>$1</string>
           <string>-</string>
-          <string valid="0:">$2</string>
+          <string>$2</string>
         </command>
         <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
-          <string valid="1:6">$1</string>
+          <par>1:6</par>
+          <par>0:384000</par>
+          <string>$1</string>
           <string>A</string>
-          <string valid="0:384000">$2</string>
+          <string>$2</string>
         </command>
       </select>
       <char length="1" label="Suffix">3</char>

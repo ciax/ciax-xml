@@ -37,6 +37,7 @@
         </xsd:choice>
       </xsd:sequence>
       <xsd:attributeGroup ref="adbc:id_attr" />
+      <xsd:attribute name="hidden" type="xsd:boolean"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <!--command statement-->

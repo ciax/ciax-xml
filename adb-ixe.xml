@@ -22,6 +22,15 @@
           </frmcmd>
         </repeat>
       </command>
+      <command id="chkmov" label="Update Moving Status [1-6]" hidden="true">
+        <par>1:6</par>
+        <frmcmd name="chkrun">
+          <argv>$1</argv>
+        </frmcmd>
+        <frmcmd name="getp">
+          <argv>$1</argv>
+        </frmcmd>
+      </command>
       <command id="sysinit" label="System Initialize">
         <frmcmd name="initrot" />
         <frmcmd name="initunit" />

@@ -389,14 +389,14 @@
         <row>
           <repeat from="1" to="4">
             <value id="fz%d" label="Fix %d">
-              <float format="%.2f" ref="d:($_-1)" formula="$#/100" />
+              <float format="%.2f" ref="d" index="$_-1" formula="$#/100" />
             </value>
           </repeat>
         </row>
         <row>
           <repeat from="1" to="4">
             <value id="mz%d" label="Mov %d">
-              <float format="%.2f" ref="d:($_+3)" formula="$#/100" />
+              <float format="%.2f" ref="d" index="$_+3" formula="$#/100" />
             </value>
           </repeat>
         </row>

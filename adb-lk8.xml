@@ -12,14 +12,14 @@
       <row label="Group">
         <repeat from="0" to="3">
           <value id="ch%d" label="CH %d">
-            <float ref="ch:$_" format="%3.2f" />
+            <float ref="ch" index="$_" format="%3.2f" />
           </value>
         </repeat>
       </row>
       <row label="Group">
         <repeat from="4" to="7">
           <value id="ch%d" label="CH %d">
-            <float ref="ch:$_" format="%3.2f" />
+            <float ref="ch" index="$_" format="%3.2f" />
           </value>
         </repeat>
       </row>

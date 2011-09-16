@@ -159,19 +159,19 @@
       <repeat from="1" to="6">
         <row label="Group">
           <value id="r%d" label="Running %d">
-            <string ref="run:$_-1" />
+            <string ref="run" index="$_-1" />
           </value>
           <value id="p%d" label="Pulse %d">
-            <int ref="p:$_-1" />
+            <int ref="p" index="$_-1" />
           </value>
           <value id="spd%d" label="Speed %d">
-            <int ref="spd:$_-1" />
+            <int ref="spd" index="$_-1" />
           </value>
           <value id="rmp%d" label="Ramp %d">
-            <int ref="spd:$_-1" />
+            <int ref="spd" index="$_-1" />
           </value>
           <value id="ofs%d" label="Offset %d">
-            <int ref="ofs:$_-1" />
+            <int ref="ofs" index="$_-1" />
           </value>
         </row>
       </repeat>

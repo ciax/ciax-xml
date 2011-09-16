@@ -54,9 +54,8 @@ class AppDb < Hash
     group=(stat[:group]||=[[['time']]])
     rep.each(e){|e0,r0|
       if e0.name == 'group'
-        id=r0.subst(e0['id'])
+        id=e0.attr2db(stat){|v|r0.format(v)}
         group << [id]
-        label[id]=r0.subst(e0['label'])
         struct.update(init_stat(e0,stat,r0))
       elsif e0.name == 'row'
         group << [] if group.size < 2
@@ -64,15 +63,22 @@ class AppDb < Hash
         struct.update(init_stat(e0,stat,r0))
       else
         id=e0.attr2db(stat){|v|r0.format(v)}
-        fields=[]
+        struct[id]=[]
         e0.each{|e1|
           st={:type => e1.name}
           e1.to_h.each{|k,v|
-            st[k] = r0.subst(v)
+            case k
+            when 'bit','index'
+              st[k] = eval(r0.subst(v))
+            else
+              st[k] = v
+            end
           }
-          fields << st
+          if i=st.delete('index')
+            st['ref']+=":#{i}"
+          end
+          struct[id] << st
         }
-        struct[id]=fields
         group.last.last << id
         @v.msg{"STATUS:[#{id}] : #{fields}"}
       end

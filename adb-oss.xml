@@ -149,27 +149,27 @@
         </row>
         <repeat from="1" to="16">
           <row label="JACK EACH">
-            <!--Order:2,1,4,3,6,5...-->
+            <!--Order:1,0;3,2;5,4;7,6;...-->
             <value id="bm%02d" label="%02d" symbol="warn">
-              <binary ref="bs" index="$_-2-($_%2)*2" bit="2" inv="true" />
+              <binary ref="bs" index="$_-($_+1)%2*2" bit="2" inv="true" />
             </value>
             <value id="bs%02d" label="%02d">
-              <binary ref="bs" index="$_-2-($_%2)*2" bit="0" />
-              <binary ref="bs" index="$_-2-($_%2)*2" bit="4" />
+              <binary ref="bs" index="$_-($_+1)%2*2" bit="0" />
+              <binary ref="bs" bit="4" index="$_-($_+1)%2*2" />
             </value>
             <value id="bl%02d" label="%02d" symbol="bl">
-              <binary ref="bl" index="$_-2-($_%2)*2" bit="1" />
-              <binary ref="bl" index="$_-2-($_%2)*2" bit="2" />
+              <binary ref="bl" index="$_-($_+1)%2*2" bit="1" />
+              <binary ref="bl" bit="2" index="$_-($_+1)%2*2" />
             </value>
             <value id="jk%02d" label="%02d">
-              <float ref="jk" index="$_-2-($_%2)*2" formula="$#/100" format="%5.2f" />
+              <float ref="jk" index="$_-($_+1)%2*2" formula="$#/100" format="%5.2f" />
             </value>
             <value id="cl%02d" label="%02d" symbol="normal">
               <binary ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
             </value>
             <value id="ba%02d" label="%02d" symbol="ba">
-              <binary ref="bl" index="$_-2-($_%2)*2" bit="0"></binary>
-              <binary ref="bl" index="$_-2-($_%2)*2" bit="4" />
+              <binary ref="bl" index="$_-($_+1)%2*2" bit="0"></binary>
+              <binary ref="bl" index="$_-($_+1)%2*2" bit="4" />
             </value>
           </row>
         </repeat>

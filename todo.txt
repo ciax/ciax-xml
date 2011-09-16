@@ -15,6 +15,7 @@ crt: jack table edit interface (sql+web)
 ***CHECK NEED
 verify on motion: adb-oss
 watch: multicondition
+verify: oss jack num corresponding
 
 ***UPGRADE
 using sqlite for logging stat

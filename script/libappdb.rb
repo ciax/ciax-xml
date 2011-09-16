@@ -69,7 +69,7 @@ class AppDb < Hash
           e1.to_h.each{|k,v|
             case k
             when 'bit','index'
-              st[k] = eval(r0.subst(v))
+              st[k] = eval(r0.subst(v)).to_s
             else
               st[k] = v
             end

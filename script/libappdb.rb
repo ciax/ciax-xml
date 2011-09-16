@@ -12,7 +12,7 @@ class AppDb < Hash
       # Command DB
       cdb=doc.domain('commands')
       cmd=hash[:command]=cdb.to_h
-      cmd[:structure]=init_command(cdb,cmd)
+      init_command(cdb,cmd)
       # Status DB
       sdb=doc.domain('status')
       stat=hash[:status]=sdb.to_h
@@ -27,23 +27,29 @@ class AppDb < Hash
 
   private
   def init_command(adb,hash)
-    struct={}
+    struct=hash[:structure]={}
+    param=hash[:parameter]={}
     adb.each{|e0|
       id=e0.attr2db(hash)
-      list=[]
+      par=param[id]=[]
+      list=struct[id]=[]
       Repeat.new.each(e0){|e1,rep|
-        command=[e1['name']]
-        e1.each{|e2|
-          argv=e2.to_h
-          argv['val'] = rep.subst(e2.text)
-          command << argv.freeze
-        }
-        list << command.freeze
+        case e1.name
+        when 'par'
+          par << e1.text
+        when 'frmcmd'
+          command=[e1['name']]
+          e1.each{|e2|
+            argv=e2.to_h
+            argv['val'] = rep.subst(e2.text)
+            command << argv.freeze
+          }
+          list << command.freeze
+        end
       }
-      struct[id]=list
       @v.msg{"COMMAND:[#{id}] #{list}"}
     }
-    struct
+    self
   end
 
   def init_stat(e,stat,rep)

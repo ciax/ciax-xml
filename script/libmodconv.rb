@@ -2,8 +2,9 @@
 require 'libmsg'
 require 'librerange'
 module ModConv
-  def conv(e,str) # Num -> Chr
-    if va=e['valid']
+  def validate(str,va=nil)
+    if va
+      Msg.err("No Parameter") unless str
       num=eval(str)
       @v.msg{"Validate: [#{num}] Match? [#{va}]"}
       va.split(',').each{|r|
@@ -11,6 +12,11 @@ module ModConv
       } && Msg.err(" Parameter invalid (#{num}) for [#{va.tr(':','-')}]")
       str=num.to_s
     end
+    str
+  end
+
+  def conv(e,str) # Num -> Chr
+    str=validate(str,e['valid'])
     if fmt=e['format']
       @v.msg{"Formatted code(#{fmt}) [#{str}]"}
       code=fmt % eval(str)

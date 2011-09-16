@@ -5,9 +5,9 @@ require "librerange"
 
 class SymDb < Hash
   include ModCache
-  def initialize(id='all',nocache=nil)
+  def initialize(gid='all',nocache=nil) # gid = Table Group ID
     @v=Msg::Ver.new("Symbol",6)
-    cache('sdb',id,nocache){|doc|
+    cache('sdb',gid,nocache){|doc|
       hash=Hash[doc]
       doc.top.each{|e1|
         row=e1.to_h

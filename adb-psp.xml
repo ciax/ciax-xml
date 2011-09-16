@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="psp" id="psp" label="MOIRCS Ext Heater">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -18,14 +18,16 @@
         <frmcmd name="getstat" />
       </command>
       <command id="setv" label="Set Voltage 0-50[V]">
+        <par>0:50</par>
         <frmcmd name="setv">
-          <argv valid="0:50">$1</argv>
+          <argv>$1</argv>
         </frmcmd>
         <frmcmd name="getstat" />
       </command>
       <command id="setp" label="Set Power 0-100[W]">
+        <par>0:100</par>
         <frmcmd name="setv">
-          <argv format="%5.2f" valid="0:100">sqrt($1*26)</argv>
+          <argv format="%5.2f">sqrt($1*26)</argv>
         </frmcmd>
         <frmcmd name="getstat" />
       </command>

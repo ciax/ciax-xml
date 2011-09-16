@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'librerange'
+require 'libmodconv'
 
 class Param < Hash
+  include ModConv
   attr_reader :list
   def initialize(db) # command db
     @v=Msg::Ver.new("PARAM",5)
@@ -19,6 +20,15 @@ class Param < Hash
     @db.each{|k,v|
       self[k]=v[id]
     }
+    if par=self[:parameter]
+      unless par.size < cmdary.size
+        Msg.err("Parameter shortage","#{id} : #{@label[id]}")
+      end
+      ary=cmdary[1..-1]
+      par.each{|r|
+        validate(ary.shift,r)
+      }
+    end
     self
   end
 
@@ -29,7 +39,7 @@ class Param < Hash
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
         @v.msg{"Param No.#{i} = [#{@cmdary[i]}]"}
-        @cmdary[i] || Msg.err(" Short of Parameters")
+        @cmdary[i] || Msg.err(" No substitute data ($#{i})")
       }
       Msg.err("Nil string") if str == ''
       str

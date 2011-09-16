@@ -6,8 +6,9 @@
         <frmcmd name="getstat" />
       </command>
       <command id="run" label="Run to Destination Tag [1-12]">
+        <par>1:12</par>
         <frmcmd name="set_tag">
-          <argv valid="1:12">$1</argv>
+          <argv>$1</argv>
         </frmcmd>
         <frmcmd name="start">
           <argv>0</argv>
@@ -33,8 +34,9 @@
         <frmcmd name="getstat" />
       </command>
       <command id="lift" label="Lift Jack Level [0-3]">
+        <par>0:3</par>
         <frmcmd name="set_pos">
-          <argv valid="0:3">$1</argv>
+          <argv>$1</argv>
         </frmcmd>
         <frmcmd name="start">
           <argv>8</argv>

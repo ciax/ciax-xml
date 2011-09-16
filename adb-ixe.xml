@@ -38,10 +38,11 @@
         </repeat>
       </command>
       <command id="speed" label="Set Speed [25-800]">
+        <par>25:800</par>
         <repeat from="1" to="6">
           <frmcmd name="set">
             <argv format="spd:%d">$_-1</argv>
-            <argv valid="25:800">$1</argv>
+            <argv>$1</argv>
           </frmcmd>
           <frmcmd name="setspd">
             <argv>$_</argv>
@@ -49,10 +50,11 @@
         </repeat>
       </command>
       <command id="ramp" label="Set ramp [200-800]">
+        <par>200:800</par>
         <repeat from="1" to="6">
           <frmcmd name="set">
             <argv format="rmp:%d">$_-1</argv>
-            <argv valid="200:800">$1</argv>
+            <argv>$1</argv>
           </frmcmd>
           <frmcmd name="setrmp">
             <argv>$_</argv>
@@ -92,27 +94,33 @@
         </repeat>
       </command>
       <command id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
+        <par>1:6</par>
+        <par>1:</par>
         <frmcmd name="fw">
-          <argv valid="1:6">$1</argv>
-          <argv valid="1:" format="%d">$2 * 8000</argv>
+          <argv>$1</argv>
+          <argv format="%d">$2 * 8000</argv>
         </frmcmd>
         <frmcmd name="chkrun">
           <argv>$1</argv>
         </frmcmd>
       </command>
       <command id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
+        <par>1:6</par>
+        <par>1:</par>
         <frmcmd name="bk">
-          <argv valid="1:6">$1</argv>
-          <argv format="%d" valid="1:">$2 * 8000</argv>
+          <argv>$1</argv>
+          <argv format="%d">$2 * 8000</argv>
         </frmcmd>
         <frmcmd name="chkrun">
           <argv>$1</argv>
         </frmcmd>
       </command>
       <command id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
+        <par>1:6</par>
+        <par>0:48</par>
         <frmcmd name="abs">
-          <argv valid="1:6">$1</argv>
-          <argv format="%d" valid="0:48">$2 * 8000</argv>
+          <argv>$1</argv>
+          <argv format="%d">$2 * 8000</argv>
         </frmcmd>
         <frmcmd name="chkrun">
           <argv>$1</argv>

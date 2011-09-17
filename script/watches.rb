@@ -19,14 +19,12 @@ rescue SelectID
   abort $!.to_s
 end
 watch=Watch.new(adb,view['stat'].update(hash))
-watch.update
+watch.upd
 puts watch.to_s
 print "Active? : "
 p watch.active?
 print "Block Pattern : "
 p watch.block_pattern
-print "Blocking? (#{cmd}) : "
-p watch.blocking?(cmd)
 print "Issue Commands : "
 p watch.issue
 print "Interrupt : "

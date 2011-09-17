@@ -88,54 +88,27 @@ class AppDb < Hash
 
   def init_watch(wdb)
     return [] unless wdb
-    line=[]
-    period=nil
+    hash={}
     Repeat.new.each(wdb){|e0,r0|
-      case name=e0.name
-      when 'periodic'
-        unless period
-          period={:type => 'periodic'}
-          period[:var] = {:next => Time.at(0)}
-          line << period
-        end
-        bg=period
-      else
-        bg={:type => e0.name, :var => {}}
-        line << bg
-      end
-      e0.to_h.each{|a,v|
-        bg[a.to_sym]=r0.format(v)
+      ['trig','label','block'].each{|k|
+        (hash[k.to_sym]||=[]) << (e0[k] ? r0.format(e0[k]) : nil)
       }
-      @v.msg(1){"WATCH:#{bg[:type]}:#{bg['label']}"}
+      @v.msg(1){"WATCH:#{hash[:trig]}:#{hash[:label]}"}
+      bg={}
       e0.each{ |e1|
         case name=e1.name.to_sym
-        when :interrupt,:command
-          bg[name]||=[]
-          ssn=[e1['name']]
-          e1.each{|e2|
-            ssn << r0.subst(e2.text)
-          }
-          bg[name] << ssn.freeze unless bg[name].include? ssn
-          @v.msg{"WATCH:"+e1.name.capitalize+":#{ssn}"}
-        when :condition
-          bg[name]||={}
-          bg[name]=rec_cond(e1,r0)
+        when :stat
+          (bg[name]||=[]) << e1.to_h.update({'val' => e1.text})
+        when :exec
+          (bg[name]||=[]) << e1.text
         end
       }
-      @v.msg(-1){"WATCH:#{bg[:type]}"}
+      [:stat,:exec].each{|k|
+        (hash[k]||=[]) << bg[k]
+      }
     }
-    @v.msg{"Structure:watch #{line}"}
-    line
-  end
-
-  def rec_cond(e,rep)
-    case e.name
-    when 'condition'
-      {:operator => (e['operator']||'and'),
-        :ary => e.map{|e1| rec_cond(e1,rep) }}
-    else
-      {:ref => rep.format(e['ref']),:val => e.text}
-    end
+    @v.msg{"Structure:watch #{hash}"}
+    hash
   end
 end
 

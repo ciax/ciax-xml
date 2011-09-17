@@ -9,10 +9,6 @@
       <xsd:attributeGroup ref="wdb:repeat" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:attributeGroup name="condition">
-    <xsd:attribute name="label" type="xsd:token" />
-    <xsd:attribute name="blocking" type="xsd:token" />
-  </xsd:attributeGroup>
   <!--watch events-->
   <xsd:element name="watch">
     <xsd:complexType>
@@ -23,40 +19,38 @@
   <xsd:group name="event">
     <xsd:choice>
       <xsd:element ref="wdb:repeat" />
-      <xsd:element ref="wdb:onchange" />
-      <xsd:element ref="wdb:while" />
-      <xsd:element ref="wdb:periodic" />
+      <xsd:element ref="wdb:event" />
     </xsd:choice>
   </xsd:group>
-  <!--discrete-->
-  <xsd:element name="periodic">
+  <!--continuing-->
+  <xsd:element name="event">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="wdb:frmcmd" maxOccurs="unbounded" />
+        <xsd:element ref="wdb:stat" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="wdb:exec" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attribute name="period" use="required" type="xsd:int"></xsd:attribute>
       <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="trig" type="xsd:token" />
+      <xsd:attribute name="block" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
-  <!--continuing-->
-  <xsd:element name="onchange" type="wdb:onexec"></xsd:element>
-  <xsd:element name="while" type="wdb:onexec"></xsd:element>
-  <xsd:complexType name="onexec">
-    <xsd:sequence>
-      <xsd:element ref="wdb:condition" minOccurs="1" maxOccurs="1" />
-      <xsd:element ref="wdb:interrupt" minOccurs="0" />
-      <xsd:element ref="wdb:frmcmd" maxOccurs="unbounded" />
-    </xsd:sequence>
-    <xsd:attributeGroup ref="wdb:condition" />
-  </xsd:complexType>
   <!--command-->
-  <xsd:complexType name="frmcmd">
-    <xsd:sequence>
-      <xsd:element ref="wdb:argv" minOccurs="0" maxOccurs="unbounded" />
-    </xsd:sequence>
-    <xsd:attribute name="name" type="xsd:token" use="required" />
-  </xsd:complexType>
-  <xsd:element name="interrupt" type="wdb:frmcmd"></xsd:element>
-  <xsd:element name="frmcmd" type="wdb:frmcmd"></xsd:element>
-  <xsd:element name="argv" type="xsd:token"></xsd:element>
+  <xsd:element name="stat">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="ref" type="xsd:token" use="required" />
+          <xsd:attribute name="type">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:token">
+                <xsd:enumeration value="regexp" />
+                <xsd:enumeration value="range" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="exec" type="xsd:token"></xsd:element>
 </xsd:schema>

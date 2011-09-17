@@ -57,12 +57,11 @@ class Watch < Hash
       c=h['val']
       case h['type']
       when 'regexp'
-        Regexp.new(c) === v
+        c=Regexp.new(c)
       when 'range'
-        ReRange.new(c) == v
-      else
-        c == v
+        c=ReRange.new(c)
       end
+        c === v
     }
   end
 end

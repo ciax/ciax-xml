@@ -81,7 +81,7 @@ class FrmDb < Hash
   def init_cmd(e,rep=nil)
     case e.name
     when 'char','string'
-      attr=e.node2db
+      attr=e.to_h
       label=attr.delete('label')
       attr['val']=rep.subst(attr['val']) if rep
       @v.msg{"Data:#{label}[#{attr}]"}
@@ -94,7 +94,7 @@ class FrmDb < Hash
   def init_stat(e,stat)
     case e.name
     when 'field'
-      attr=e.node2db
+      attr=e.to_h
       if id=attr['assign']
         stat[:label]||={}
         if lv=attr.delete('label')

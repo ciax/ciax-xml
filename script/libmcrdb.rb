@@ -24,9 +24,7 @@ class McrDb < Hash
         when 'break','check'
           stat={:type => e1.name,:cond => []}
           e1.each{|e2|
-            attr=e2.to_h
-            attr['val'] = e2.text
-            stat[:cond] << attr.freeze
+            stat[:cond] << e2.to_h
           }
           ((hash[:sequence]||={})[id]||=[]) << stat
         when 'exec'

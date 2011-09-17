@@ -27,13 +27,17 @@ class Xml
     @e.namespaces.default
   end
 
-  def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"})
-    @e.attributes.to_h
+  def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"}) 
+    h=@e.attributes.to_h
+    if t=text
+      h['val']=t 
+    end
+    h
   end
 
   def text
     @e.each{|n|
-      return n.content if n.text?
+      return n.content if n.text? && /[\S]/ === n.content
     }
     nil
   end

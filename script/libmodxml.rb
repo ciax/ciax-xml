@@ -37,16 +37,4 @@ module ModXml
     }
     key
   end
-
-  def node2db(id=nil)
-    # <xml id='x'>text</xml> => {id => {'val' => text}}
-    hash=to_h
-    hash['val'] = text if text
-    if id
-      key=hash.delete(id)
-      { key => hash }
-    else
-      hash
-    end
-  end
 end

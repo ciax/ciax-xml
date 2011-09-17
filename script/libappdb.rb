@@ -98,7 +98,7 @@ class AppDb < Hash
       e0.each{ |e1|
         case name=e1.name.to_sym
         when :stat
-          (bg[name]||=[]) << e1.to_h.update({'val' => e1.text})
+          (bg[name]||=[]) << e1.to_h
         when :exec
           (bg[name]||=[]) << e1.text
         end

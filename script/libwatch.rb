@@ -48,6 +48,7 @@ class Watch < Hash
       end
       self[:active] << i if check(i) 
     }
+    self
   end
 
   private

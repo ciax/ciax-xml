@@ -13,11 +13,11 @@ class AppCmd < Array
   def setcmd(ssn)
     @id=ssn.first
     @par.set(ssn)
-    @v.msg{"Exec(CDB):#{@id}"}
+    @v.msg{"Exec(ADB):#{@id}"}
     clear
     @adb[@id].each{|e1|
       cmd=[]
-      @v.msg(1){"GetCmd(DDB):#{e1.first}"}
+      @v.msg(1){"GetCmd(FDB):#{e1.first}"}
       begin
         e1.each{|e2| # //argv
           case e2
@@ -32,7 +32,7 @@ class AppCmd < Array
         }
         push cmd
       ensure
-        @v.msg(-1){"Exec(DDB):#{cmd}"}
+        @v.msg(-1){"Exec(FDB):#{cmd}"}
       end
     }
     self

@@ -83,8 +83,11 @@ class AppObj < String
     Thread.new{
       Thread.pass
       until(@event.empty?)
-        @event.update
-        @buf.auto{@event.issue}
+        @buf.auto{
+          @event.upd.issue.map{|line|
+            @ac.setcmd(line.split(" "))
+          }.flatten(1)
+        }
         sleep @interval
       end
     }

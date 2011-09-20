@@ -2,19 +2,6 @@
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="range.xsd" />
-  <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:NCName" use="required" />
-    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-  </xsd:attributeGroup>
-  <xsd:element name="repeat">
-    <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbc:repeat" />
-        <xsd:element ref="adbc:frmcmd"></xsd:element>
-      </xsd:choice>
-      <xsd:attributeGroup ref="adbc:repeat" />
-    </xsd:complexType>
-  </xsd:element>
   <!--command select-->
   <xsd:element name="commands">
     <xsd:complexType>
@@ -36,8 +23,20 @@
       <xsd:attribute name="hidden" type="xsd:boolean"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
+  <xsd:attributeGroup name="id_attr">
+    <xsd:attribute name="id" type="xsd:NCName" use="required" />
+    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
+  </xsd:attributeGroup>
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbc:repeat" />
+        <xsd:element ref="adbc:frmcmd"></xsd:element>
+      </xsd:choice>
+      <xsd:attributeGroup ref="adbc:repeat" />
+    </xsd:complexType>
+  </xsd:element>
   <!--command statement-->
-  <xsd:element name="par" type="adbc:rerange"></xsd:element>
   <xsd:element name="frmcmd">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
@@ -47,6 +46,7 @@
       <xsd:attribute name="name" type="xsd:NCName" use="required"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="par" type="adbc:rerange"></xsd:element>
   <xsd:element name="argv">
     <xsd:complexType>
       <xsd:simpleContent>

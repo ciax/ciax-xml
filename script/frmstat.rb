@@ -9,7 +9,7 @@ dev=args.shift.first
 ARGV.clear
 
 begin
-  fdb=FrmDb.new(dev)
+  fdb=FrmDb.new(dev,true)
   field=Field.new
   r=FrmRsp.new(fdb,field)
   str=gets(nil) || exit

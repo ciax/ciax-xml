@@ -4,7 +4,7 @@ require "libappcmd"
 
 app,*cmd=ARGV
 begin
-  adb=AppDb.new(app)
+  adb=AppDb.new(app,true)
   ac=AppCmd.new(adb[:command])
   ac.setcmd(cmd).each{|cmd| p cmd}
 rescue UserError

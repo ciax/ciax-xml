@@ -5,7 +5,7 @@ require "libfrmdb"
 
 dev,*cmd=ARGV
 begin
-  fdb=FrmDb.new(dev)
+  fdb=FrmDb.new(dev,true)
   st=Field.new
   if ! STDIN.tty? && str=STDIN.gets(nil)
     st.update_j(str)

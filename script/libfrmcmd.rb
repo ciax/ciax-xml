@@ -11,7 +11,7 @@ class FrmCmd
     @fdbc=fdb[:frame][:command]
     @sel=Hash[@fdbc]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
-    @par=Param.new(fdb[:command])
+    @par=Param.new(fdb[:command],@fdbc[:select])
   end
 
   def getframe(cmd) # return = response select

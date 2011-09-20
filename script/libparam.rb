@@ -4,17 +4,19 @@ require 'librerange'
 
 class Param < Hash
   attr_reader :list
-  def initialize(db) # command db
+  def initialize(db,listdb) # command db
     @v=Msg::Ver.new("PARAM",5)
     @db=db
-    @label=db[:label].reject{|k,v|
+    @keys=listdb
+    label=db[:label].reject{|k,v|
       /true|1/ === db[:hidden][k] if db.key?(:hidden)
     }
-    @list=Msg::List.new("== Command List==").add(@label)
+    @list=Msg::List.new("== Command List==").add(label)
   end
 
   def set(cmdary)
-    @list.exit(cmdary.first) unless @label.key?(id=cmdary.first)
+    id=cmdary.first
+    @list.exit(id) unless @keys.key?(id)
     @v.msg{"SetPar: #{cmdary}"}
     @cmdary=cmdary.dup
     self[:id]=id
@@ -23,7 +25,7 @@ class Param < Hash
     }
     if par=self[:parameter]
       unless par.size < cmdary.size
-        Msg.err("Parameter shortage","#{id} : #{@label[id]}")
+        Msg.err("Parameter shortage",@list[id])
       end
       ary=cmdary[1..-1]
       par.each{|r|

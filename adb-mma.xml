@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="slo" id="mma" label="MOIRCS Arm">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -65,6 +65,18 @@
           <argv>123</argv>
         </frmcmd>
       </command>
+      <command id="updp" label="Update Pulse" hidden="true">
+        <frmcmd name="p" />
+        <frmcmd name="in">
+          <argv>5</argv>
+        </frmcmd>
+        <frmcmd name="in">
+          <argv>3</argv>
+        </frmcmd>
+      </command>
+      <command id="stop" label="Stop Run" hidden="true">
+        <frmcmd name="stop" />
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mma">
       <row label="Group">
@@ -91,32 +103,22 @@
       </row>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <periodic period="300">
-        <frmcmd name="getstat" />
-        <frmcmd name="bs" />
-        <frmcmd name="p" />
-      </periodic>
-      <while blocking="g.">
-        <condition>
-          <value ref="bs">1</value>
-        </condition>
-        <interrupt name="stop" />
-        <frmcmd name="p"></frmcmd>
-        <frmcmd name="in">
-          <argv>5</argv>
-        </frmcmd>
-        <frmcmd name="in">
-          <argv>3</argv>
-        </frmcmd>
-      </while>
-      <onchange>
-        <condition>
-          <value ref="bs">0</value>
-        </condition>
-        <frmcmd name="e2">
-          <argv>0</argv>
-        </frmcmd>
-      </onchange>
+      <event>
+        <stat ref="elapse" type="range">300:</stat>
+        <exec>upd</exec>
+      </event>
+      <event block="g.">
+        <stat ref="bs">1</stat>
+        <exec>updp</exec>
+      </event>
+      <event onchange="bs">
+        <stat ref="bs">0</stat>
+        <exec>defcon</exec>
+      </event>
+      <event interrupt="true">
+        <stat ref="bs">1</stat>
+        <exec>stop</exec>
+      </event>
     </watch>
   </app>
 </adb>

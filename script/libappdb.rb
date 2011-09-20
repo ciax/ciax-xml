@@ -43,7 +43,7 @@ class AppDb < Hash
           ((hash[:structure]||={})[id]||=[]) << command.freeze
         end
       }
-      @v.msg{"COMMAND:[#{id}] #{list}"}
+      @v.msg{"COMMAND:[#{id}]"}
     }
     self
   end
@@ -80,7 +80,7 @@ class AppDb < Hash
           struct[id] << st
         }
         group.last.last << id
-        @v.msg{"STATUS:[#{id}] : #{fields}"}
+        @v.msg{"STATUS:[#{id}]"}
       end
     }
     struct
@@ -100,9 +100,11 @@ class AppDb < Hash
       e0.each{ |e1|
         case name=e1.name.to_sym
         when :stat
-          (bg[name]||=[]) << e1.to_h
+          h=e1.to_h
+          h.each_value{|v| v.replace(r0.format(v))}
+          (bg[name]||=[]) << h
         when :exec
-          (bg[name]||=[]) << e1.text
+          (bg[name]||=[]) << r0.subst(e1.text)
         end
       }
       [:stat,:exec].each{|k|

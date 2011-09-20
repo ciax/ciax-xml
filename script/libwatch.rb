@@ -63,6 +63,7 @@ class Watch < Hash
       when 'range'
         c=ReRange.new(c)
       end
+      @v.msg{"Result #{c === v}"}
         c === v
     }
   end

@@ -65,6 +65,15 @@
           <argv format="%d">$1&gt;18?-$1+18:-$1-6</argv>
         </frmcmd>
       </command>
+      <command id="updp" label="Update Pulse" hidden="true">
+        <frmcmd name="p" />
+        <frmcmd name="in">
+          <argv>1</argv>
+        </frmcmd>
+      </command>
+      <command id="stop" label="Stop Run" hidden="true">
+        <frmcmd name="stop" />
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mmc">
       <row label="Group">
@@ -94,16 +103,18 @@
       </row>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <while blocking="cw">
-        <condition>
-          <value ref="bs">1</value>
-        </condition>
-        <interrupt name="stop" />
-        <frmcmd name="p"></frmcmd>
-        <frmcmd name="in">
-          <argv>1</argv>
-        </frmcmd>
-      </while>
+      <event>
+        <stat ref="elapse" type="range">300:</stat>
+        <exec>upd</exec>
+      </event>
+      <event block="cw">
+        <stat ref="bs">1</stat>
+        <exec>updp</exec>
+      </event>
+      <event interrupt="true">
+        <stat ref="bs">1</stat>
+        <exec>stop</exec>
+      </event>
     </watch>
   </app>
 </adb>

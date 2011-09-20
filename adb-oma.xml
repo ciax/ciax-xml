@@ -14,9 +14,10 @@
       </row>
     </status>
     <watch interval="2" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <periodic label="Update" period="10">
-        <frmcmd name="getstat" />
-      </periodic>
+      <event label="Update">
+        <stat ref="elapse" type="range">10:</stat>
+        <exec>upd</exec>
+      </event>
     </watch>
   </app>
 </adb>

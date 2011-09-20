@@ -273,6 +273,26 @@
         <frmcmd name="getcmd"></frmcmd>
         <frmcmd name="geterr" />
       </command>
+      <command id="upds" hidden="true">
+        <frmcmd name="getstat" />
+      </command>
+      <command id="rcmd" hidden="true">
+        <frmcmd name="clrbit" />
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd" />
+      </command>
+      <command id="rerr" hidden="true">
+        <frmcmd name="clrbit" />
+        <frmcmd name="getstat" />
+        <frmcmd name="geterr" />
+      </command>
+      <command id="resetexe" hidden="true">
+        <frmcmd name="set">
+          <argv>exe</argv>
+          <argv>0</argv>
+        </frmcmd>
+        <frmcmd name="clrbit" />
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cj2">
       <group id="g1" label="MAIN">
@@ -431,72 +451,43 @@
       </group>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <periodic label="Regular" period="300">
-        <frmcmd name="getstat"></frmcmd>
-        <frmcmd name="geterr"></frmcmd>
-        <frmcmd name="getzlen"></frmcmd>
-      </periodic>
-      <while label="On Motion" blocking="^[fmtd].+">
-        <condition>
-          <value ref="run">1</value>
-        </condition>
-        <interrupt name="setbit">
-          <!--pause-->
-          <argv>0</argv>
-          <argv>1</argv>
-        </interrupt>
-        <frmcmd name="getstat" />
-      </while>
-      <onchange label="On Completion">
-        <condition>
-          <value ref="cmp">1</value>
-        </condition>
-        <frmcmd name="clrbit" />
-        <frmcmd name="getstat" />
-        <frmcmd name="getcmd" />
-      </onchange>
-      <onchange label="On ErrReset">
-        <condition>
-          <value ref="err">0</value>
-        </condition>
-        <frmcmd name="clrbit" />
-        <frmcmd name="geterr" />
-      </onchange>
-      <onchange label="On Error">
-        <condition>
-          <value ref="err">[^0]</value>
-        </condition>
-        <frmcmd name="set">
-          <argv>exe</argv>
-          <argv>0</argv>
-        </frmcmd>
-      </onchange>
-      <onchange label="On Emergency">
-        <condition>
-          <value ref="emg">1</value>
-        </condition>
-        <frmcmd name="clrbit" />
-        <frmcmd name="getstat" />
-      </onchange>
-      <onchange label="On Pause">
-        <condition>
-          <value ref="pse">1</value>
-        </condition>
-        <frmcmd name="clrbit" />
-        <frmcmd name="setbit">
-          <!--resetp-->
-          <argv>0</argv>
-          <argv>10</argv>
-        </frmcmd>
-        <frmcmd name="getstat" />
-      </onchange>
-      <onchange label="Off Pause">
-        <condition>
-          <value ref="pse">0</value>
-        </condition>
-        <frmcmd name="clrbit" />
-        <frmcmd name="getstat" />
-      </onchange>
+      <event>
+        <stat ref="elapse" type="range">300:</stat>
+        <exec>upd</exec>
+      </event>
+      <event label="On Motion" block="^[fmtd].+">
+        <stat ref="run">1</stat>
+        <exec>upds</exec>
+      </event>
+      <event interrupt="true">
+        <stat ref="run">1</stat>
+        <exec>pause</exec>
+      </event>
+      <event label="On Completion" onchange="cmp">
+        <stat ref="cmp">1</stat>
+        <exec>rcmd</exec>
+      </event>
+      <event label="On ErrReset" onchange="err">
+        <stat ref="err">0</stat>
+        <exec>rerr</exec>
+      </event>
+      <event label="On Error" onchange="err">
+        <stat ref="err">[^0]</stat>
+        <exec>resetexe</exec>
+      </event>
+      <event label="On Emergency" onchange="emg">
+        <stat ref="emg">1</stat>
+        <exec>reset</exec>
+      </event>
+      <event label="On Pause" onchange="pse">
+        <stat ref="pse">1</stat>
+        <exec>reset</exec>
+        <exec>resume</exec>
+      </event>
+      <event label="Off Pause" onchange="pse">
+        <stat ref="pse">0</stat>
+        <exec>reset</exec>
+      </event>
     </watch>
   </app>
 </adb>

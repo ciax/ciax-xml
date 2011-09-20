@@ -135,6 +135,15 @@
           <argv>$1</argv>
         </frmcmd>
       </command>
+      <command id="updp" label="Update Pulse" hidden="true">
+        <par>1:6</par>
+        <frmcmd name="chkrun">
+          <argv>$1</argv>
+        </frmcmd>
+        <frmcmd name="getp">
+          <argv>$1</argv>
+        </frmcmd>
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">
@@ -186,36 +195,19 @@
       </repeat>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <event label="Update Status">
+        <stat ref="elapse" type="range">3600:</stat>
+        <exec>upd</exec>
+      </event>
       <repeat from="1" to="6">
-        <periodic label="Update Status" period="3600">
-          <frmcmd name="getstat" />
-          <frmcmd name="chkrun">
-            <argv>$_</argv>
-          </frmcmd>
-          <frmcmd name="getp">
-            <argv>$_</argv>
-          </frmcmd>
-          <frmcmd name="getspd">
-            <argv>$_</argv>
-          </frmcmd>
-          <frmcmd name="getofs">
-            <argv>$_</argv>
-          </frmcmd>
-        </periodic>
-        <while label="Moving %d" blocking="(fw|bk|abs) %d">
-          <condition operator="and">
-            <value ref="r%d">N</value>
-          </condition>
-          <interrupt name="stop">
-            <argv>$_</argv>
-          </interrupt>
-          <frmcmd name="chkrun">
-            <argv>$_</argv>
-          </frmcmd>
-          <frmcmd name="getp">
-            <argv>$_</argv>
-          </frmcmd>
-        </while>
+        <event label="Moving %d" block="(fw|bk|abs) %d">
+          <stat ref="r%d">N</stat>
+          <exec>updp $_</exec>
+        </event>
+        <event interrupt="true">
+          <stat ref="r%d">N</stat>
+          <exec>stop $_</exec>
+        </event>
       </repeat>
     </watch>
   </app>

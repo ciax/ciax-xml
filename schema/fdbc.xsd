@@ -3,35 +3,25 @@
   <!--Device database-->
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="range.xsd" />
-  <!--Command Elements-->
-  <xsd:group name="data">
-    <xsd:choice>
-      <xsd:element ref="fdbc:char"></xsd:element>
-      <xsd:element ref="fdbc:string"></xsd:element>
-    </xsd:choice>
-  </xsd:group>
-  <xsd:element name="char">
+  <!--Command frame-->
+  <xsd:element name="cmdframe">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:token">
-          <xsd:attribute name="label" type="xsd:token" />
-          <xsd:attribute name="length" type="xsd:int" use="required"></xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="fdbc:data" />
+        <xsd:element ref="fdbc:select" />
+        <xsd:element ref="fdbc:ccrange" />
+      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="string">
+  <!--Command CC-->
+  <xsd:element name="ccrange">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:token">
-          <xsd:attribute name="label" type="xsd:token" />
-          <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="fdbc:select" />
+        <xsd:group ref="fdbc:data" />
+      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="par" type="fdbc:rerange"></xsd:element>
-  <!--Command Select-->
   <xsd:element name="select">
     <xsd:complexType>
       <xsd:sequence>
@@ -72,23 +62,33 @@
       <xsd:attribute name="delimiter" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
-  <!--Command CC-->
-  <xsd:element name="ccrange">
+  <!--Command Elements-->
+  <xsd:element name="par" type="fdbc:rerange"></xsd:element>
+  <xsd:group name="data">
+    <xsd:choice>
+      <xsd:element ref="fdbc:char"></xsd:element>
+      <xsd:element ref="fdbc:string"></xsd:element>
+    </xsd:choice>
+  </xsd:group>
+  <xsd:element name="char">
     <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbc:select" />
-        <xsd:group ref="fdbc:data" />
-      </xsd:choice>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="label" type="xsd:token" />
+          <xsd:attribute name="length" type="xsd:int" use="required"></xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <!--Command frame-->
-  <xsd:element name="cmdframe">
+  <xsd:element name="string">
     <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="fdbc:data" />
-        <xsd:element ref="fdbc:select" />
-        <xsd:element ref="fdbc:ccrange" />
-      </xsd:choice>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="label" type="xsd:token" />
+          <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  <!--Command Select-->
 </xsd:schema>

@@ -22,10 +22,6 @@
         <xsd:element ref="adbc:command" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
-    <xsd:key name="ccmd">
-      <xsd:selector xpath="command" />
-      <xsd:field xpath="@id" />
-    </xsd:key>
   </xsd:element>
   <xsd:element name="command">
     <xsd:complexType>

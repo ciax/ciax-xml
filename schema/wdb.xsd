@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="condition.xsd" />
   <!--Share-->
@@ -26,11 +26,12 @@
   <xsd:element name="event">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="wdb:stat" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="wdb:stat" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="wdb:exec" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:token" />
-      <xsd:attribute name="trig" type="xsd:token" />
+      <xsd:attribute name="interrupt" type="xsd:boolean" />
+      <xsd:attribute name="onchange" type="xsd:token" />
       <xsd:attribute name="block" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>

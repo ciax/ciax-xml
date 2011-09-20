@@ -26,36 +26,37 @@ class Watch < Hash
   end
 
   def issue
-    self[:active].map{|i|
+    (self[:active] - self[:interrupt]).map{|i|
       self[:exec][i]
     }.compact.flatten(1).uniq
   end
 
   def interrupt
-    self[:last]['int']=true
-    upd
-    issue
+    (self[:active] & self[:interrupt]).map{|i|
+      self[:exec][i]
+    }.compact.flatten(1).uniq
   end
 
   def upd
     self[:active].clear
-    self[:trig].each_with_index{|t,i|
-      if !t
-      elsif @stat[t] != self[:last][t]
-        self[:last][t]=@stat[t]
-      else
-        next
-      end
-      self[:active] << i if check(i) 
+    self[:onchange].each_with_index{|c,i|
+      next if c && @stat[c] == self[:last][c]
+      self[:active] << i if check(i)
+    }
+    self[:onchange].compact.each{|c|
+      self[:last][c]=@stat[c]
     }
     self
   end
 
+
   private
   def check(i)
+    return true unless self[:stat][i]
     self[:stat][i].all?{|h|
       v=@stat[h['ref']]
       c=h['val']
+      @v.msg{"Checking [#{c}] vs <#{v}>"}
       case h['type']
       when 'regexp'
         c=Regexp.new(c)

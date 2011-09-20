@@ -88,12 +88,14 @@ class AppDb < Hash
 
   def init_watch(wdb)
     return [] unless wdb
-    hash={}
+    i=0
+    hash={:interrupt => []}
     Repeat.new.each(wdb){|e0,r0|
-      ['trig','label','block'].each{|k|
+      ['onchange','label','block'].each{|k|
         (hash[k.to_sym]||=[]) << (e0[k] ? r0.format(e0[k]) : nil)
       }
-      @v.msg(1){"WATCH:#{hash[:trig]}:#{hash[:label]}"}
+      hash[:interrupt] << i if /true|1/ === e0['interrupt']
+      @v.msg(1){"WATCH:#{hash[:onchange]}:#{hash[:label]}"}
       bg={}
       e0.each{ |e1|
         case name=e1.name.to_sym
@@ -106,6 +108,7 @@ class AppDb < Hash
       [:stat,:exec].each{|k|
         (hash[k]||=[]) << bg[k]
       }
+      i+=1
     }
     @v.msg{"Structure:watch #{hash}"}
     hash

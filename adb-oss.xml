@@ -74,6 +74,16 @@
         </frmcmd>
         <frmcmd name="iststat" />
       </command>
+      <command id="updjak" label="Update Jak Status" hidden="true">
+        <frmcmd name="jakstat" />
+        <frmcmd name="getexit" />
+        <frmcmd name="getpid" />
+      </command>
+      <command id="updinr" label="Update Inr Status" hidden="true">
+        <frmcmd name="inrstat" />
+        <frmcmd name="getexit" />
+        <frmcmd name="getpid" />
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="oss">
       <group id="g1" label="Main">
@@ -185,24 +195,20 @@
       </group>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <while label="Moving Jack" blocking="jup|jdw">
-        <condition>
-          <value ref="abm">1</value>
-        </condition>
-        <interrupt name="jstop" />
-        <frmcmd name="jakstat" />
-        <frmcmd name="getexit" />
-        <frmcmd name="getpid" />
-      </while>
-      <onchange label="Moving InR" blocking="rhook|runhk">
-        <condition>
-          <value ref="iang"></value>
-        </condition>
-        <interrupt name="rstop" />
-        <frmcmd name="inrstat" />
-        <frmcmd name="getexit" />
-        <frmcmd name="getpid" />
-      </onchange>
+      <event label="Moving Jack" block="jup|jdw">
+        <stat ref="abm">1</stat>
+        <exec>updjak</exec>
+      </event>
+      <event label="Moving InR" block="rhook|runhk" onchange="iang">
+        <exec>updinr</exec>
+      </event>
+      <event label="Stop Jack" interrupt="true">
+        <stat ref="abm">1</stat>
+        <exec>jstop</exec>
+      </event>
+      <event label="Stop InR" interrupt="true" onchange="iang">
+        <exec>rstop</exec>
+      </event>
     </watch>
   </app>
 </adb>

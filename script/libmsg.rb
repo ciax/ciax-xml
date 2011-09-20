@@ -79,8 +79,9 @@ class Msg
       [$!.to_s,@title,*self].grep(/./).join("\n")
     end
 
-    def exit
-      raise SelectID,to_s
+    def exit(id=nil)
+      msg= id ? "No such cmd [#{id}]\n"+to_s : to_s
+      raise SelectID,msg
     end
   end
 

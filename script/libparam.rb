@@ -14,7 +14,7 @@ class Param < Hash
   end
 
   def set(cmdary)
-    @list.exit unless @label.key?(id=cmdary.first)
+    @list.exit(cmdary.first) unless @label.key?(id=cmdary.first)
     @v.msg{"SetPar: #{cmdary}"}
     @cmdary=cmdary.dup
     self[:id]=id

@@ -11,7 +11,7 @@ class FrmRsp
     @field['frm_type']=fdb['id']
     @fdbs=fdb[:frame][:status]
     @sel=Hash[@fdbs]
-    @par=Param.new(fdb[:command])
+    @par=Param.new(fdb[:command],fdb[:frame][:command][:select])
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 

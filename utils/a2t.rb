@@ -6,7 +6,8 @@ include XML
 if ARGV.size < 3
   abort <<EOF
 Usage: a2t (-r) [xpath] [attr] (ns) < xml
-       //xpath@attr <-> //xpath.text()
+       //(xpath)@(attr) <-> //xpath.text()
+       http://ciax.sum.naoj.org/ciax-xml/(ns)
 EOF
 end
 opt= ARGV[0] == '-r' ? ARGV.shift : nil

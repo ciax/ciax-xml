@@ -12,8 +12,8 @@ class AppCmd < Array
 
   def setcmd(ssn)
     @id=ssn.first
-    @par.set(ssn)
     @v.msg{"Exec(ADB):#{@id}"}
+    @par.set(ssn)
     clear
     @adb[@id].each{|e1|
       cmd=[]

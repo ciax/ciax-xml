@@ -52,31 +52,34 @@ class Msg
     end
   end
 
-  class List < Array
+  class List < Hash
     def initialize(title=nil)
       @title=Msg.color(title,2) if title
     end
 
-    def add(list)
-      case list
-      when String
-        push(Msg.color(list,2))
-      when Hash
-        list.each{|key,val|
-          case val
-          when String
-            label=val
-          when Hash,Xml
-            label=val['label']
-          end
-          push(Msg.color(" %-10s" % key,3)+": #{label}") if label
-        }
-      end
+    def add(hash)
+      hash.each{|key,val|
+        case val
+        when String
+          label=val
+        when Hash,Xml
+          label=val['label']
+        end
+        self[key]=Msg.color(" %-10s" % key,3)+": #{label}" if label
+      }
       self
     end
 
+    def sort! # For ver 1.9 or more
+      hash={}
+      keys.sort.each{|k|
+        hash[k]=self[k]
+      }
+      replace(hash)
+    end
+
     def to_s
-      [$!.to_s,@title,*self].grep(/./).join("\n")
+      [$!.to_s,@title,*values].grep(/./).join("\n")
     end
 
     def exit(id=nil)

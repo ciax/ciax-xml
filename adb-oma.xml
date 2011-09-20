@@ -15,8 +15,8 @@
     </status>
     <watch interval="2" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Update">
-        <stat ref="elapse" type="range">10:</stat>
-        <exec>upd</exec>
+        <range ref="elapse">10:</range>
+        <exec name="upd"></exec>
       </event>
     </watch>
   </app>

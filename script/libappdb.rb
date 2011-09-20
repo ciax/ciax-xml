@@ -99,12 +99,17 @@ class AppDb < Hash
       bg={}
       e0.each{ |e1|
         case name=e1.name.to_sym
-        when :stat
+        when :exec
+          cmd=[e1['name']]
+          e1.each{|e2|
+            cmd << r0.subst(e2.text)
+          }
+          (bg[name]||=[]) << cmd
+        else
           h=e1.to_h
           h.each_value{|v| v.replace(r0.format(v))}
-          (bg[name]||=[]) << h
-        when :exec
-          (bg[name]||=[]) << r0.subst(e1.text)
+          h['type']=e1.name
+          (bg[:stat]||=[]) << h
         end
       }
       [:stat,:exec].each{|k|

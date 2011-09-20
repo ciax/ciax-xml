@@ -54,7 +54,7 @@
           <argv>0</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="funhk" label="Fix Flange UnHook">
@@ -62,8 +62,8 @@
           <argv>1</argv>
           <argv>1</argv>
         </frmcmd>
-        <frmcmd name="getstat"></frmcmd>
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getstat" />
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="fjup" label="Fix Flange Jack Up">
@@ -72,7 +72,7 @@
           <argv>4</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="fjdw" label="Fix Flange Jack Down">
@@ -81,7 +81,7 @@
           <argv>5</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="chgfw" label="Charging Plug Forward">
@@ -90,7 +90,7 @@
           <argv>6</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="chgbk" label="Charging Plug Backward">
@@ -99,7 +99,7 @@
           <argv>7</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="pwoff" label="Outlet Power Off">
@@ -115,8 +115,8 @@
           <argv>0</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
-        <frmcmd name="geterr"></frmcmd>
+        <frmcmd name="getcmd" />
+        <frmcmd name="geterr" />
       </command>
       <command id="munhk" label="Movable Flange UnHook">
         <frmcmd name="setbit">
@@ -124,8 +124,8 @@
           <argv>1</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
-        <frmcmd name="geterr"></frmcmd>
+        <frmcmd name="getcmd" />
+        <frmcmd name="geterr" />
       </command>
       <command id="mrotout" label="Movable Flange Rotation for Loading">
         <frmcmd name="setbit">
@@ -133,8 +133,8 @@
           <argv>2</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
-        <frmcmd name="geterr"></frmcmd>
+        <frmcmd name="getcmd" />
+        <frmcmd name="geterr" />
       </command>
       <command id="mrotin" label="Movable Flange Rotation for Storing">
         <frmcmd name="setbit">
@@ -142,7 +142,7 @@
           <argv>3</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="mjup" label="Movable Flange Jack Up">
@@ -151,7 +151,7 @@
           <argv>4</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="mjdw" label="Movable Flange Jack Down">
@@ -160,7 +160,7 @@
           <argv>5</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="trout" label="Movable Flange Transer Out">
@@ -169,7 +169,7 @@
           <argv>6</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="trin" label="Movable Flange Transer In">
@@ -178,7 +178,7 @@
           <argv>7</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="dopen" label="Door Open">
@@ -187,7 +187,7 @@
           <argv>0</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="dclose" label="Door Close">
@@ -196,7 +196,7 @@
           <argv>1</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="fpwon" label="Fix Flange Instrument Power On">
@@ -247,7 +247,7 @@
           <argv>10</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="mccdon" label="Movable Flange CCD Power On">
@@ -270,7 +270,7 @@
           <argv>14</argv>
         </frmcmd>
         <frmcmd name="getstat" />
-        <frmcmd name="getcmd"></frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
       <command id="upds" hidden="true">
@@ -286,7 +286,7 @@
         <frmcmd name="getstat" />
         <frmcmd name="geterr" />
       </command>
-      <command id="resetexe" hidden="true">
+      <command id="rexe" hidden="true">
         <frmcmd name="set">
           <argv>exe</argv>
           <argv>0</argv>
@@ -450,43 +450,43 @@
         </row>
       </group>
     </status>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event>
-        <stat ref="elapse" type="range">300:</stat>
-        <exec>upd</exec>
+        <range ref="elapse">300:</range>
+        <exec name="upd"></exec>
       </event>
       <event label="On Motion" block="^[fmtd].+">
-        <stat ref="run">1</stat>
-        <exec>upds</exec>
+        <pattern ref="run">1</pattern>
+        <exec name="upds"></exec>
       </event>
       <event interrupt="true">
-        <stat ref="run">1</stat>
-        <exec>pause</exec>
+        <pattern ref="run">1</pattern>
+        <exec name="pause"></exec>
       </event>
       <event label="On Completion" onchange="cmp">
-        <stat ref="cmp">1</stat>
-        <exec>rcmd</exec>
+        <pattern ref="cmp">1</pattern>
+        <exec name="rcmd"></exec>
       </event>
       <event label="On ErrReset" onchange="err">
-        <stat ref="err">0</stat>
-        <exec>rerr</exec>
+        <pattern ref="err">0</pattern>
+        <exec name="rerr"></exec>
       </event>
       <event label="On Error" onchange="err">
-        <stat ref="err">[^0]</stat>
-        <exec>resetexe</exec>
+        <pattern ref="err">[^0]</pattern>
+        <exec name="rexe"></exec>
       </event>
       <event label="On Emergency" onchange="emg">
-        <stat ref="emg">1</stat>
-        <exec>reset</exec>
+        <pattern ref="emg">1</pattern>
+        <exec name="reset"></exec>
       </event>
       <event label="On Pause" onchange="pse">
-        <stat ref="pse">1</stat>
-        <exec>reset</exec>
-        <exec>resume</exec>
+        <pattern ref="pse">1</pattern>
+        <exec name="reset"></exec>
+        <exec name="resume"></exec>
       </event>
       <event label="Off Pause" onchange="pse">
-        <stat ref="pse">0</stat>
-        <exec>reset</exec>
+        <pattern ref="pse">0</pattern>
+        <exec name="reset"></exec>
       </event>
     </watch>
   </app>

@@ -209,20 +209,20 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="Periodic">
-        <stat ref="elapse" type="range">3600:</stat>
-        <exec>upd</exec>
+        <range ref="elapse">3600:</range>
+        <exec name="upd"></exec>
       </event>
       <event label="CMD ACCEPT" onchange="acp">
-        <stat ref="acp">00</stat>
-        <exec>clear</exec>
+        <pattern ref="acp">00</pattern>
+        <exec name="clear"></exec>
       </event>
       <event label="During Motion" block="run|jak|charge">
-        <stat ref="acp">00</stat>
-        <exec>upd</exec>
+        <pattern ref="acp">00</pattern>
+        <exec name="upd"></exec>
       </event>
       <event label="Interrupt During Motion" interrupt="true">
-        <stat ref="acp">00</stat>
-        <exec>pause</exec>
+        <pattern ref="acp">00</pattern>
+        <exec name="pause"></exec>
       </event>
     </watch>
   </app>

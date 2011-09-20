@@ -144,6 +144,12 @@
           <argv>$1</argv>
         </frmcmd>
       </command>
+      <command id="stop" label="Stop Run [1-6]" hidden="true">
+        <par>1:6</par>
+        <frmcmd name="stop">
+          <argv>$1</argv>
+        </frmcmd>
+      </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">
@@ -196,17 +202,21 @@
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Update Status">
-        <stat ref="elapse" type="range">3600:</stat>
-        <exec>upd</exec>
+        <range ref="elapse">3600:</range>
+        <exec name="upd"></exec>
       </event>
       <repeat from="1" to="6">
         <event label="Moving %d" block="(fw|bk|abs) %d">
-          <stat ref="r%d">N</stat>
-          <exec>updp $_</exec>
+          <pattern ref="r%d">N</pattern>
+          <exec name="updp">
+            <argv>$_</argv>
+          </exec>
         </event>
         <event interrupt="true">
-          <stat ref="r%d">N</stat>
-          <exec>stop $_</exec>
+          <pattern ref="r%d">N</pattern>
+          <exec name="stop">
+            <argv>$_</argv>
+          </exec>
         </event>
       </repeat>
     </watch>

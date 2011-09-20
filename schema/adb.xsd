@@ -32,7 +32,7 @@
     </xsd:key>
     <xsd:keyref name="event_id" refer="adb:command_id">
       <xsd:selector xpath=".//wdb:exec" />
-      <xsd:field xpath="." />
+      <xsd:field xpath="@name" />
     </xsd:keyref>
   </xsd:element>
 </xsd:schema>

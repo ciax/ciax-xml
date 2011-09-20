@@ -1,14 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb">
   <xsd:include schemaLocation="repeat.xsd" />
-  <xsd:include schemaLocation="condition.xsd" />
-  <!--Share-->
-  <xsd:element name="repeat">
-    <xsd:complexType>
-      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="wdb:event"></xsd:group>
-      <xsd:attributeGroup ref="wdb:repeat" />
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:include schemaLocation="range.xsd" />
   <!--watch events-->
   <xsd:element name="watch">
     <xsd:complexType>
@@ -22,11 +15,19 @@
       <xsd:element ref="wdb:event" />
     </xsd:choice>
   </xsd:group>
-  <!--continuing-->
+  <xsd:element name="repeat">
+    <xsd:complexType>
+      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="wdb:event"></xsd:group>
+      <xsd:attributeGroup ref="wdb:repeat" />
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="event">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="wdb:stat" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:element ref="wdb:range" />
+          <xsd:element ref="wdb:pattern" />
+        </xsd:choice>
         <xsd:element ref="wdb:exec" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:token" />
@@ -36,22 +37,32 @@
     </xsd:complexType>
   </xsd:element>
   <!--command-->
-  <xsd:element name="stat">
+  <xsd:element name="range">
     <xsd:complexType>
       <xsd:simpleContent>
-        <xsd:extension base="xsd:token">
+        <xsd:extension base="wdb:rerange">
           <xsd:attribute name="ref" type="xsd:token" use="required" />
-          <xsd:attribute name="type">
-            <xsd:simpleType>
-              <xsd:restriction base="xsd:token">
-                <xsd:enumeration value="regexp" />
-                <xsd:enumeration value="range" />
-              </xsd:restriction>
-            </xsd:simpleType>
-          </xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="exec" type="xsd:token"></xsd:element>
+  <xsd:element name="pattern">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="ref" type="xsd:token" use="required" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="exec">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="wdb:argv" />
+      </xsd:choice>
+      <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
+      <xsd:attribute name="name" type="xsd:NCName" use="required"></xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="argv" type="xsd:token"></xsd:element>
 </xsd:schema>

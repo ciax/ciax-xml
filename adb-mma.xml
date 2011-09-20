@@ -104,20 +104,20 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event>
-        <stat ref="elapse" type="range">300:</stat>
-        <exec>upd</exec>
+        <range ref="elapse">300:</range>
+        <exec name="upd"></exec>
       </event>
       <event block="g.">
-        <stat ref="bs">1</stat>
-        <exec>updp</exec>
+        <pattern ref="bs">1</pattern>
+        <exec name="updp"></exec>
       </event>
       <event onchange="bs">
-        <stat ref="bs">0</stat>
-        <exec>defcon</exec>
+        <pattern ref="bs">0</pattern>
+        <exec name="defcon"></exec>
       </event>
       <event interrupt="true">
-        <stat ref="bs">1</stat>
-        <exec>stop</exec>
+        <pattern ref="bs">1</pattern>
+        <exec name="stop"></exec>
       </event>
     </watch>
   </app>

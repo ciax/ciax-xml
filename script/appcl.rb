@@ -18,7 +18,7 @@ rescue SelectID
   abort "Usage: appcl [id] (host)\n#{$!}"
 end
 pr=Print.new(edb[:status])
-par=Param.new(edb[:command],edb[:command][:structure])
+par=Param.new(edb[:command],:structure)
 prom=['']
 Shell.new(prom){|line|
   break unless line

@@ -4,10 +4,10 @@ require 'librerange'
 
 class Param < Hash
   attr_reader :list
-  def initialize(db,listdb) # command db
+  def initialize(db,path) # command db
     @v=Msg::Ver.new("PARAM",5)
     @db=db
-    @keys=listdb
+    @keys=db[path]
     label=db[:label].reject{|k,v|
       /true|1/ === db[:hidden][k] if db.key?(:hidden)
     }

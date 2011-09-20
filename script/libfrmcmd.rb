@@ -8,16 +8,15 @@ class FrmCmd
     @v=Msg::Ver.new("#{fdb['id']}/cmd".upcase,3)
     @cache={}
     @fstr={}
-    @fdbc=fdb[:frame][:command]
-    @sel=Hash[@fdbc]
+    @sel=Hash[fdb[:frame][:command]]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
-    @par=Param.new(fdb[:command],@fdbc[:select])
+    @par=Param.new(fdb[:command],:frame)
   end
 
   def getframe(cmd) # return = response select
     id=cmd.first
     @par.set(cmd)
-    return unless @sel[:select]=@fdbc[:select][id]
+    return unless @sel[:select]=@par[:frame]
     @v.msg{"Attr of Param:#{@par}"}
     cid=cmd.join(':')
     cid << ':*' if /true|1/ === @par[:nocache]

@@ -9,16 +9,15 @@ class FrmRsp
     @field=field
     @v=Msg::Ver.new("#{fdb['id']}/rsp",3)
     @field['frm_type']=fdb['id']
-    @fdbs=fdb[:frame][:status]
-    @sel=Hash[@fdbs]
-    @par=Param.new(fdb[:command],fdb[:frame][:command][:select])
+    @sel=Hash[fdb[:frame][:status]]
+    @par=Param.new(fdb[:command],:frame)
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
   # Block accepts [time,frame]
   def setrsp(cmd)
     if rid=@par.set(cmd)[:response]
-      @sel[:select]=@fdbs[:select][rid] || Msg.err("No such response id [#{rid}]")
+      @sel[:select]=@par[:frame]|| Msg.err("No such response id [#{rid}]")
       @v.msg{"Set Statement #{cmd}"}
       time,frame=yield
       Msg.err("No Response") unless frame

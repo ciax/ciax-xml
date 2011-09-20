@@ -6,7 +6,7 @@ class AppCmd < Array
   include Math
   def initialize(adb)
     @v=Msg::Ver.new("#{adb['id']}/cmd",2)
-    @par=Param.new(adb,adb[:structure])
+    @par=Param.new(adb,:structure)
   end
 
   def setcmd(ssn)

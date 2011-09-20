@@ -67,7 +67,7 @@ class FrmDb < Hash
             ((selh[:parameter]||={})[id]||=[]) << e1.text
           else
             e=yield(e1,r1) || next
-            ((frame[:select]||={})[id]||=[]) << e
+            ((selh[:frame]||={})[id]||=[]) << e
           end
         }
         @v.msg{"InitSelFrame(#{id}):#{frame}"}

@@ -23,7 +23,7 @@ rescue RuntimeError
   if opt.include?('q')
     exit 1
   else
-    abort "Usage: frmstat [frame] < logline\n#{$!}"
+    abort "Usage: frmstat (-q) [frame] < logline\n#{$!}"
   end
 end
 

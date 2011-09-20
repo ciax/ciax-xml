@@ -23,7 +23,7 @@ for id in $devices; do
     output="$HOME/.var/field_${id}.json"
     [ "$clear" ] && [ -e $output ] && rm $output
     if [ "$par" ] ; then
-        frmcmd $dev $par > /dev/null || continue
+        frmcmd $dev 2>&1 |grep -q $par || continue
         getstat $par
     else
         frmcmd $dev 2>&1 |grep ' : '|while read cmd dmy

@@ -6,4 +6,4 @@ output="$HOME/.var/field_${id}.json"
 merging $output <<EOF
 {"id":"$id"}
 EOF
-frmstat -q $dev | merging $output
+~/lib/libfrmrsp.rb -q $dev | merging $output

@@ -115,3 +115,31 @@ class FrmRsp
     }
   end
 end
+
+if __FILE__ == $0
+  require "libfield"
+  require "libfrmdb"
+  args=ARGV.partition{|s| /^-/ === s}
+  opt=args.shift.join('')
+  dev=args.shift.first
+  ARGV.clear
+  begin
+    fdb=FrmDb.new(dev,true)
+    field=Field.new
+    r=FrmRsp.new(fdb,field)
+    str=gets(nil) || exit
+    ary=str.split("\t")
+    time=Time.at(ary.shift.to_f)
+    stm=ary.shift.split(':')
+    abort ("Logline:Not response") unless /rcv/ === stm.shift
+    r.setrsp(stm){[time,eval(ary.shift)]}
+    puts field.to_j
+  rescue RuntimeError
+    if opt.include?('q')
+      exit 1
+    else
+      abort "Usage: #{$0} (-q) [frame] < logline\n#{$!}"
+    end
+  end
+end
+

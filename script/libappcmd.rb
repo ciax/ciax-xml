@@ -36,3 +36,16 @@ class AppCmd < Array
     self
   end
 end
+
+if __FILE__ == $0
+  require "libappdb"
+
+  app,*cmd=ARGV
+  begin
+    adb=AppDb.new(app,true)
+    ac=AppCmd.new(adb[:command])
+    ac.setcmd(cmd).each{|cmd| p cmd}
+  rescue UserError
+    abort "Usage: appcmd [app] [cmd] (par)\n#{$!}"
+  end
+end

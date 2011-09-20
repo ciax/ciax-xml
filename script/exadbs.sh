@@ -10,7 +10,7 @@ for id in $devices; do
     echo "$C2#### $app($id) ####$C0"
     file=$HOME/.var/field_$id.json
     stat=$HOME/.var/json/status_$id.json
-    appstat $app < $file > $stat
+    ~/lib/libappstat.rb $app < $file > $stat
     if [ "$opt" ]
     then
         v2s <$stat

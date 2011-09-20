@@ -84,3 +84,23 @@ class AppStat
     fmt % data
   end
 end
+
+if __FILE__ == $0
+  require "libappdb"
+  require "libfield"
+  require "libview"
+
+  app=ARGV.shift
+  ARGV.clear
+  begin
+    adb=AppDb.new(app,true)[:status]
+    str=gets(nil) || exit
+    field=Field.new.update_j(str)
+    view=View.new(field['id'],adb).update({'app_type' => app })
+    as=AppStat.new(adb)
+    view.upd(as.conv(field))
+    print view.to_j
+  rescue RuntimeError
+    abort "Usage: #{$0} [app] < field_file\n#{$!}"
+  end
+end

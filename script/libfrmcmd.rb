@@ -67,6 +67,6 @@ if __FILE__ == $0
     c=FrmCmd.new(fdb,st)
     print c.getframe(cmd)
   rescue UserError
-    abort "Usage: frmcmd [dev] [cmd] (par) < field_file \n#{$!}"
+    abort "Usage: #{$0} [dev] [cmd] (par) < field_file \n#{$!}"
   end
 end

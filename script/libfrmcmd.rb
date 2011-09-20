@@ -52,3 +52,21 @@ class FrmCmd
     @fstr[domain]=@frame.copy
   end
 end
+
+if __FILE__ == $0
+  require "libfield"
+  require "libfrmdb"
+
+  dev,*cmd=ARGV
+  begin
+    fdb=FrmDb.new(dev,true)
+    st=Field.new
+    if ! STDIN.tty? && str=STDIN.gets(nil)
+      st.update_j(str)
+    end
+    c=FrmCmd.new(fdb,st)
+    print c.getframe(cmd)
+  rescue UserError
+    abort "Usage: frmcmd [dev] [cmd] (par) < field_file \n#{$!}"
+  end
+end

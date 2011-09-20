@@ -1,5 +1,6 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
+frmcmd=~/lib/libfrmcmd.rb
 [ "$1" ] && { setfld $1 || _usage_key; }
 devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
 for id in $devices; do
@@ -8,11 +9,11 @@ for id in $devices; do
     echo "$C2#### $dev($id) ####$C0"
     input="$HOME/.var/field_$id.json"
     if [ "$1" ] ; then
-        frmcmd $dev $* < $input | visi
+        $frmcmd $dev $* < $input | visi
     else
-        frmcmd $dev 2>&1 |grep " : "| while read cmd dmy
+        $frmcmd $dev 2>&1 |grep " : "| while read cmd dmy
         do
-            echo -n "   $C3$cmd$C0 ";frmcmd $dev $cmd 1 0 < $input| visi
+            echo -n "   $C3$cmd$C0 ";$frmcmd $dev $cmd 1 0 < $input| visi
         done
     fi
     read -t 0 && break

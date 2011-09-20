@@ -1,5 +1,6 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
+frmcmd=~/lib/libfrmcmd.rb
 [[ "$1" == -* ]] && { opt=$1;shift; }
 [ "$opt" ] && rm ~/.var/cache/* ~/.var/field_???.json
 getstat(){
@@ -23,10 +24,10 @@ for id in $devices; do
     output="$HOME/.var/field_${id}.json"
     [ "$clear" ] && [ -e $output ] && rm $output
     if [ "$par" ] ; then
-        frmcmd $dev 2>&1 |grep -q $par || continue
+        $frmcmd $dev 2>&1 |grep -q $par || continue
         getstat $par
     else
-        frmcmd $dev 2>&1 |grep ' : '|while read cmd dmy
+        $frmcmd $dev 2>&1 |grep ' : '|while read cmd dmy
         do
             getstat $cmd
         done

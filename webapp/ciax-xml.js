@@ -1,3 +1,10 @@
+function time(ms){
+    var utc=new Date(ms).toUTCString();
+    return ''+utc.match(/[0-9:]{8}/);
+}
+function days(ms){
+    return Math.floor(ms/8640000)/10+"days";
+}
 function update(){
     jQuery.ajax({
         url : File,
@@ -14,8 +21,8 @@ function update(){
                 }
                 jQuery("#"+id).text(val);
             }
-            var d=new Date(new Date()-new Date(stat.time));
-            str=""+d.toUTCString().match(/[0-9]{2}:[0-9]{2}:[0-9]{2}/);
+            var ms=new Date()-new Date(stat.time);
+            var str = (ms > 86400000) ? days(ms) : time(ms);
             jQuery("#elapse").text(str);
         }
     })

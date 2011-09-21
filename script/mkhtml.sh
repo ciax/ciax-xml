@@ -12,28 +12,9 @@ for id; do
 <head>
 <title>CIAX-XML</title>
 <link rel="stylesheet" type="text/css" href="ciax-xml.css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script type="text/javascript">
-function update(){
-    jQuery.ajax({
-        url : "status_$id.json",
-        dataType : 'json',
-        cache : false,
-        success : function(view){
-            for (var id in view.stat){
-                var val=view.stat[id];
-                if(view.symbol && view.symbol[id]){
-                    var hash=view.symbol[id];
-                    jQuery("#"+id).addClass(hash.class);
-                    val=hash.msg;
-                }
-                jQuery("#"+id).text(val);
-            }
-        }
-    })
-}
-jQuery(document).ready(setInterval(update,3000));
-</script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"></script>
+<script type="text/javascript">var ID="$id";</script>
+<script type="text/javascript" src="ciax-xml.js"></script>
 <body onload="update();">
 EOF
 >>$file htmltbl $id $app

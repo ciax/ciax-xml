@@ -37,7 +37,12 @@ class Print < Array
     da=[]
     ids.each{|id|
       next unless @stat.key?(id)
-      val=@stat[id]
+      case id
+      when 'time'
+        val=Time.at(@stat[id].to_i).to_s
+      else
+        val=@stat[id]
+      end
       symbol=@symbol[id]||{}
       label=@label[id] || id.upcase
       da << prt(symbol,label,val)

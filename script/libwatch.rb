@@ -40,6 +40,7 @@ class Watch < Hash
   end
 
   def upd
+    @stat['elapse']=(Time.now.to_i-@stat['time'].to_i)
     self[:active].clear
     self[:onchange].each_with_index{|c,i|
       next if c && @stat[c] == self[:last][c]

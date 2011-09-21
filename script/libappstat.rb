@@ -18,9 +18,7 @@ class AppStat
         @v.msg(-1){"STAT:GetStatus:#{id}=[#{stat[id]}]"}
       end
     }
-    last=Time.at(field['time'].to_f)
-    stat['time']=last.to_s
-    stat['elapse']=(Time.now-last).to_i
+    stat['time']=field['time']
     stat
   end
 

@@ -11,13 +11,14 @@ class FrmRsp
     @field['frm_type']=fdb['id']
     @sel=Hash[fdb[:frame][:status]]
     @par=Param.new(fdb[:command],:frame)
+    @fdbs=fdb[:status][:frame]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
   # Block accepts [time,frame]
   def setrsp(cmd)
     if rid=@par.set(cmd)[:response]
-      @sel[:select]=@par[:frame]|| Msg.err("No such response id [#{rid}]")
+      @sel[:select]=@fdbs[rid]|| Msg.err("No such response id [#{rid}]")
       @v.msg{"Set Statement #{cmd}"}
       time,frame=yield
       Msg.err("No Response") unless frame

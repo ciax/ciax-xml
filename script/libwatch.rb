@@ -4,8 +4,10 @@ class Watch < Hash
   def initialize(adb,stat)
     update(adb[:watch])
     @stat=stat
+    [:interrupt,:block,:onchange,:active,:exec,:stat].each{|i|
+      self[i]||=[]
+    }
     self[:last]={}
-    self[:active]=[]
     @v=Msg::Ver.new("WATCH",3)
   end
 
@@ -67,4 +69,35 @@ class Watch < Hash
         c === v
     }
   end
+end
+
+if __FILE__ == $0
+  require "json"
+  require "libappdb"
+  abort "Usage: #{$0} (test conditions (key=val)..) < [file]" if STDIN.tty?
+  hash={}
+  conds,cmds=ARGV.partition{|i| i.include?("=")}
+  conds.each{|s|
+    k,v=s.split("=")
+    hash[k]=v
+  }
+  cmd=cmds.join(" ")
+  ARGV.clear
+  str=gets(nil) || exit
+  view=JSON.load(str)
+  begin
+    adb=AppDb.new(view['app_type'])
+  rescue SelectID
+    abort $!.to_s
+  end
+  watch=Watch.new(adb,view['stat'].update(hash)).upd
+  puts watch.to_s
+  print "Active? : "
+  p watch.active?
+  print "Block Pattern : "
+  p watch.block_pattern
+  print "Issue Commands : "
+  p watch.issue
+  print "Interrupt : "
+  p watch.interrupt
 end

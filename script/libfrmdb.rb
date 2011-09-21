@@ -82,9 +82,8 @@ class FrmDb < Hash
     case e.name
     when 'char','string'
       attr=e.to_h
-      label=attr.delete('label')
       attr['val']=rep.subst(attr['val']) if rep
-      @v.msg{"Data:#{label}[#{attr}]"}
+      @v.msg{"Data:[#{attr}]"}
       attr
     else
       e.name
@@ -97,7 +96,7 @@ class FrmDb < Hash
       attr=e.to_h
       if id=attr['assign']
         stat[:label]||={}
-        if lv=attr.delete('label')
+        if lv=attr['label']
           stat[:label][id]=lv
           @v.msg{"LABEL:[#{id}] : #{lv}"}
         end

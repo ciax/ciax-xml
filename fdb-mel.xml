@@ -115,7 +115,7 @@
       <ccrange>
         <field assign="ecode" decode="unsigned" label="Error Code" length="2">0</field>
         <select>
-          <response id="getstat">
+          <response id="getstat" label="get status">
             <array assign="x" decode="signed" label="Status" length="2">
               <index range="0:51" size="52" />
             </array>

@@ -56,8 +56,8 @@ class Frame
     # Verify
     if val=e0['val']
       val=eval(val).to_s if e0['decode']
-      @v.msg{"Verify:[#{val}] and <#{str}>"}
-      val == str || Msg.err("Verify Mismatch <#{str}> != [#{val}]")
+      @v.msg{"Verify:(#{e0['label']}) [#{val}] and <#{str}>"}
+      val == str || Msg.err("Verify Mismatch(#{e0['label']}) <#{str}> != [#{val}]")
     end
     str
   end

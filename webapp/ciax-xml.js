@@ -1,22 +1,15 @@
 function update(){
     jQuery.ajax({
-        url : "status_"+ID+".json",
+        url : File,
         dataType : 'json',
         cache : false,
         success : function(view){
             var stat=view.stat
             for (var id in stat){
                 var val=stat[id];
-                switch(id){
-                case "time":
-                    var d1=new Date(stat.time*1000);
-                    val=d1.toString;
-                    break;
-                case "elapse":
-                    var d=new Date().getTime()/1000-stat.time;
-                    val=Math.round(d+0.5);
-                    break;
-                default:;
+                if(id == "elapse"){
+                    var d=new Date()-new Date(stat.time);
+                    val=Math.round(d/1000+0.5);
                 }
                 if(view.symbol && view.symbol[id]){
                     var hash=view.symbol[id];
@@ -28,4 +21,4 @@ function update(){
         }
     })
 }
-jQuery(document).ready(setInterval(update,3000));
+jQuery(document).ready(setInterval(update,1000));

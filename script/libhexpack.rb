@@ -39,3 +39,11 @@ class HexPack
     @res.join('')
   end
 end
+
+if __FILE__ == $0
+  require "json"
+  abort("Usage: #{$0} [status file]") if STDIN.tty? && ARGV.size < 1
+  view=JSON.load(gets(nil))
+  id=view['id']
+  puts HexPack.new(id).upd(view['stat'])
+end

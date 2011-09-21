@@ -50,7 +50,7 @@ class AppDb < Hash
 
   def init_stat(e,stat,rep)
     struct={}
-    label=(stat[:label]||={'time' => 'TIMESTAMP','elapse' => 'FROM LAST'})
+    label=(stat[:label]||={'time' => 'TIMESTAMP','elapse' => 'PAST UPD'})
     group=(stat[:group]||=[[['time','elapse']]])
     rep.each(e){|e0,r0|
       if e0.name == 'group'

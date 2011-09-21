@@ -18,7 +18,7 @@ class AppStat
         @v.msg(-1){"STAT:GetStatus:#{id}=[#{stat[id]}]"}
       end
     }
-    stat['time']=field['time']
+    stat['time']=Time.at(field['time'].to_f).to_s
     stat
   end
 

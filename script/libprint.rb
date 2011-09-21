@@ -38,8 +38,8 @@ class Print < Array
     ids.each{|id|
       next unless @stat.key?(id)
       case id
-      when 'time'
-        val=Time.at(@stat[id].to_i).to_s
+      when 'elapse'
+        val=Time.at(@stat[id].to_i).utc.strftime("%T")
       else
         val=@stat[id]
       end

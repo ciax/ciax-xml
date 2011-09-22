@@ -77,7 +77,6 @@ end
 
 if __FILE__ == $0
   require "json"
-  require "libappdb"
   require "libentdb"
   abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
   while gets

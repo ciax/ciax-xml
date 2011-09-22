@@ -12,7 +12,7 @@ class UriView < Hash
   def upd
     open(@uri){|f|
       replace(JSON.load(f.read))
-    }
+    } rescue
     self
   end
 

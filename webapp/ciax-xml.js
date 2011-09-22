@@ -1,9 +1,12 @@
-function time(ms){
-    var utc=new Date(ms).toUTCString();
-    return ''+utc.match(/[0-9:]{8}/);
-}
-function days(ms){
-    return Math.floor(ms/8640000)/10+"days";
+function period(ms){
+    var t=new Date(ms);
+    if (ms > 86400000){
+        return Math.floor(ms/8640000)/10+" days";
+    }else if(ms > 3600000){
+        return t.getHours()+"h "+t.getMinutes()+'m';
+    }else{
+        return t.getMinutes()+"'"+t.getSeconds()+'"';
+    }
 }
 function update(){
     jQuery.ajax({
@@ -22,8 +25,7 @@ function update(){
                 jQuery("#"+id).text(val);
             }
             var ms=new Date()-new Date(stat.time);
-            var str = (ms > 86400000) ? days(ms) : time(ms);
-            jQuery("#elapse").text(str);
+            jQuery("#elapse").text(period(ms));
         }
     })
 }

@@ -1,5 +1,5 @@
-function period(){
-    var time=jQuery("#time").text();
+function elapse(){
+    var time=$("#time").text();
     var ms=new Date()-new Date(time);
     var t=new Date(ms);
     var str;
@@ -10,26 +10,30 @@ function period(){
     }else{
         str=t.getMinutes()+"'"+t.getSeconds()+'"';
     }
-    jQuery("#elapse").text(str);
+    $("#elapse").text(str);
 }
 function update(){
-    jQuery.ajax({
+    $.ajax({
         url : File,
         dataType : 'json',
-        cache : false,
+        cache : true,
         success : function(view){
             var stat=view.stat
             for (var id in stat){
                 var val=stat[id];
                 if(view.symbol && view.symbol[id]){
                     var hash=view.symbol[id];
-                    jQuery("#"+id).addClass(hash.class);
+                    $("#"+id).addClass(hash.class);
                     val=hash.msg;
                 }
-                jQuery("#"+id).text(val);
+                $("#"+id).text(val);
             }
         }
     })
+    elapse();
 }
-jQuery(document).ready(setInterval(update,10000));
-jQuery(document).ready(setInterval(period,1000));
+function init(){
+    update();
+    setInterval(update,1000);
+}
+$(document).ready(init());

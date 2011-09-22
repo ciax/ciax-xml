@@ -8,32 +8,28 @@ function elapse(){
     }else if(ms > 3600000){
         str=t.getHours()+"h "+t.getMinutes()+'m';
     }else{
-        str=t.getMinutes()+"'"+t.getSeconds()+'"';
+        str=t.getMinutes()+"' "+t.getSeconds()+'"';
     }
     $("#elapse").text(str);
 }
-function update(){
-    $.ajax({
-        url : File,
-        dataType : 'json',
-        cache : true,
-        success : function(view){
-            var stat=view.stat
-            for (var id in stat){
-                var val=stat[id];
-                if(view.symbol && view.symbol[id]){
-                    var hash=view.symbol[id];
-                    $("#"+id).addClass(hash.class);
-                    val=hash.msg;
-                }
-                $("#"+id).text(val);
-            }
+function conv(view){
+    var stat=view.stat
+    for (var id in stat){
+        var val=stat[id];
+        if(view.symbol && view.symbol[id]){
+            var hash=view.symbol[id];
+            $("#"+id).addClass(hash.class);
+            val=hash.msg;
         }
-    })
+        $("#"+id).text(val);
+    }
+}
+function update(){
+    $.get(File,null,conv,'json');
     elapse();
 }
 function init(){
     update();
     setInterval(update,1000);
 }
-$(document).ready(init());
+$(document).ready(init);

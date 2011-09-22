@@ -38,6 +38,9 @@ class AppDb < Hash
           e1.each{|e2|
             argv=e2.to_h
             argv['val'] = rep.subst(e2.text)
+            if /\$/ !~ argv['val'] && fmt=argv.delete('format')
+              argv['val']=fmt % eval(argv['val'])
+            end
             command << argv.freeze
           }
           ((hash[:structure]||={})[id]||=[]) << command.freeze

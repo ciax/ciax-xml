@@ -56,10 +56,9 @@ end
 if __FILE__ == $0
   require "libfield"
   require "libfrmdb"
-
   dev,*cmd=ARGV
   begin
-    fdb=FrmDb.new(dev,true)
+    fdb=FrmDb.new(dev,cmd.empty?)
     st=Field.new
     if ! STDIN.tty? && str=STDIN.gets(nil)
       st.update_j(str)

@@ -87,11 +87,10 @@ if __FILE__ == $0
   require "libappdb"
   require "libfield"
   require "libview"
-
   app=ARGV.shift
   ARGV.clear
   begin
-    adb=AppDb.new(app,true)[:status]
+    adb=AppDb.new(app)[:status]
     str=gets(nil) || exit
     field=Field.new.update_j(str)
     view=View.new(field['id'],adb).update({'app_type' => app })

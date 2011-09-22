@@ -39,10 +39,9 @@ end
 
 if __FILE__ == $0
   require "libappdb"
-
   app,*cmd=ARGV
   begin
-    adb=AppDb.new(app,true)
+    adb=AppDb.new(app,cmd.empty?)
     ac=AppCmd.new(adb[:command])
     ac.setcmd(cmd).each{|cmd| p cmd}
   rescue UserError

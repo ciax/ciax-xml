@@ -125,7 +125,7 @@ if __FILE__ == $0
   dev=args.shift.first
   ARGV.clear
   begin
-    fdb=FrmDb.new(dev,true)
+    fdb=FrmDb.new(dev)
     field=Field.new
     r=FrmRsp.new(fdb,field)
     str=gets(nil) || exit

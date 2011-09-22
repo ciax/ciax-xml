@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'time'
+require 'libelapse'
 class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(db,stat={})
@@ -10,6 +10,7 @@ class Print < Array
   def upd(view)
     clear
     @stat=view["stat"] || {}
+    @elapse=Elapse.new(@stat)
     @symbol=view["symbol"] || {}
     get_group
     self
@@ -39,12 +40,7 @@ class Print < Array
     ids.each{|id|
       case id
       when 'elapse'
-        sec=Time.now-Time.parse(@stat['time'])
-        if (sec > 86400)
-          val="%.1f days" % (sec/86400)
-        else
-          val=Time.at(sec).utc.strftime("%T")
-        end
+        val=@elapse.to_s
       else
         val=@stat[id]
       end

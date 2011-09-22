@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'librerange'
-require 'time'
+require 'libelapse'
 class Watch < Hash
   def initialize(adb,stat)
     update(adb[:watch])
@@ -9,6 +9,7 @@ class Watch < Hash
       self[i]||=[]
     }
     self[:last]={}
+    @elapse=Elapse.new(stat)
     @v=Msg::Ver.new("WATCH",3)
   end
 
@@ -59,7 +60,7 @@ class Watch < Hash
     self[:stat][i].all?{|h|
       case k=h['ref']
       when 'elapse'
-        v=(Time.now-Time.parse(@stat['time'])).to_i
+        v=@elapse.to_i
       else
         v=@stat[k]
       end

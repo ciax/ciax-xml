@@ -41,7 +41,6 @@ class Watch < Hash
   end
 
   def upd
-    @stat['elapse']=(Time.now-Time.parse(@stat['time'])).to_i
     self[:active].clear
     self[:onchange].each_with_index{|c,i|
       next if c && @stat[c] == self[:last][c]
@@ -58,7 +57,12 @@ class Watch < Hash
   def check(i)
     return true unless self[:stat][i]
     self[:stat][i].all?{|h|
-      v=@stat[h['ref']]
+      case k=h['ref']
+      when 'elapse'
+        v=(Time.now-Time.parse(@stat['time'])).to_i
+      else
+        v=@stat[k]
+      end
       c=h['val']
       @v.msg{"Checking [#{c}] vs <#{v}>"}
       case h['type']

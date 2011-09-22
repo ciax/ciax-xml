@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'time'
 class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(db,stat={})
@@ -36,10 +37,9 @@ class Print < Array
   def get_element(ids,col=6)
     da=[]
     ids.each{|id|
-      next unless @stat.key?(id)
       case id
       when 'elapse'
-        sec=@stat[id].to_f
+        sec=Time.now-Time.parse(@stat['time'])
         if (sec > 86400)
           val="%.1f days" % (sec/86400)
         else

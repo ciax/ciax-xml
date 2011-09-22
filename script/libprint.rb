@@ -73,3 +73,15 @@ class Print < Array
     "\e[1;3#{c}m#{msg}\e[0m"
   end
 end
+
+if __FILE__ == $0
+  require "json"
+  require "libappdb"
+  require "libentdb"
+  abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
+  while gets
+    view=JSON.load($_)
+    db=EntDb.new(view['id']).cover_app
+    puts Print.new(db[:status]).upd(view)
+  end
+end

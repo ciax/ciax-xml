@@ -15,7 +15,7 @@ for id in $devices; do
     then
         v2s <$stat
     else
-        stprint <$stat
+        ~/lib/libprint.rb $stat
     fi
     read -t 0 && break
 done

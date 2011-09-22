@@ -14,7 +14,7 @@ OptionParser.new{|op|
 }
 id=ARGV.shift
 host=ARGV.shift||'localhost'
-st=UriView.new(id,host)
+view=UriView.new(id,host)
 begin
   edb=EntDb.new(id)
   port=edb['port']
@@ -28,7 +28,7 @@ port=opt[:s] ? port.to_i+1000 : nil
 json='{}'
 Interact.new([],port){|line|
   break unless line
-  @hp.upd(st.get['stat'])
+  @hp.upd(view.upd['stat'])
   @io.snd(line.empty? ? 'stat' : line)
   time,str=@io.rcv
   @hp.issue(str.include?("*"))

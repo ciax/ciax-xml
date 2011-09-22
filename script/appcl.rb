@@ -10,14 +10,14 @@ require "liburiview"
 
 id=ARGV.shift
 host=ARGV.shift||'localhost'
-st=UriView.new(id,host)
+view=UriView.new(id,host)
 begin
   edb=EntDb.new(id).cover_app
   @io=IoCmd.new("socat - udp:#{host}:#{edb['port']}")
 rescue SelectID
   abort "Usage: appcl [id] (host)\n#{$!}"
 end
-pr=Print.new(edb[:status])
+pr=Print.new(edb[:status],view)
 par=Param.new(edb[:command],:structure)
 prom=['']
 Shell.new(prom){|line|
@@ -28,7 +28,8 @@ Shell.new(prom){|line|
   prom[0]=ary.pop
   case ary.first
   when nil
-    pr.upd(st.get)
+    view.upd
+    pr.upd
   when /CMD/
     par.list
   else

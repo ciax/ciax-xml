@@ -26,22 +26,22 @@ rescue SelectID
   abort "Usage: appint (-s) [id] (iocmd)\n#{$!}"
 end
 
-stat=View.new(id,edb[:status]).load
-stat['app_type']=edb['app_type']
+view=View.new(id,edb[:status]).load
+view['app_type']=edb['app_type']
 field=Field.new(id).load
 field.update(edb[:field]) if edb.key?(:field)
 
 io=IoCmd.new(iocmd||edb['client'],id,fdb['wait'],1)
 fobj=FrmObj.new(fdb,field,io)
 
-aobj=AppObj.new(edb,stat){|cmd|
+aobj=AppObj.new(edb,view){|cmd|
   fobj.request(cmd).field
 }
 
-prt=Print.new(edb[:status])
+prt=Print.new(edb[:status],view)
 
 port=opt[:s] ? edb["port"] : nil
 
 Interact.new(aobj.prompt,port){|line|
-  aobj.dispatch(line){port ? nil : prt.upd(stat)}
+  aobj.dispatch(line){port ? nil : prt.upd}
 }

@@ -2,16 +2,17 @@
 require 'libelapse'
 class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
-  def initialize(db,stat={})
+  def initialize(db,view)
+    @view=view
+    view['stat']||= {}
+    view['symbol']||= {}
+    @elapse=Elapse.new(view['stat'])
     @group=db[:group] || [[db[:structure].keys]]
     @label=db[:label] || {}
   end
 
-  def upd(view)
+  def upd
     clear
-    @stat=view["stat"] || {}
-    @elapse=Elapse.new(@stat)
-    @symbol=view["symbol"] || {}
     get_group
     self
   end
@@ -42,9 +43,9 @@ class Print < Array
       when 'elapse'
         val=@elapse.to_s
       else
-        val=@stat[id]
+        val=@view['stat'][id]
       end
-      symbol=@symbol[id]||{}
+      symbol=@view['symbol'][id]||{}
       label=@label[id] || id.upcase
       da << prt(symbol,label,val)
     }
@@ -82,6 +83,6 @@ if __FILE__ == $0
   while gets
     view=JSON.load($_)
     db=EntDb.new(view['id']).cover_app
-    puts Print.new(db[:status]).upd(view)
+    puts Print.new(db[:status],view).upd
   end
 end

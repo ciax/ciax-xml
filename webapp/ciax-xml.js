@@ -1,5 +1,6 @@
 function elapse(){
     var time=$("#time").text();
+    if(time.match(/\*+/)) return;
     var ms=new Date()-new Date(time);
     var t=new Date(ms);
     var str;

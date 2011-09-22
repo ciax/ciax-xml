@@ -63,5 +63,3 @@ module ModFile
     "Tag=#{list}"
   end
 end
-
-

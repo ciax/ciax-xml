@@ -2,11 +2,15 @@
 . ~/lib/libcsv.sh
 src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json
-
+[[ $1 == '-i' ]] && { opt=$1; shift; }
 for id; do
-    setfld $id || _usage_key
+    setfld $id || _usage_key "(-i)"
     file=$dir/$id.html
-    ln -sf $src/* $dir/
+    if [ "$opt" ] ; then
+	install $src/* $dir/
+    else
+	ln -sf  $src/* $dir/
+    fi
     cat > $file <<EOF
 <html>
 <head>

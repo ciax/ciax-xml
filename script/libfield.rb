@@ -56,3 +56,16 @@ class Field < Hash
     self
   end
 end
+
+if __FILE__ == $0
+  f=Field.new
+  puts f.update({"a"=>[["0"],"1"]})
+  if s=ARGV.shift
+    k,v=s.split('=')
+    if v
+      puts f.set(k,v)
+    else
+      puts f.get(s)
+    end
+  end
+end

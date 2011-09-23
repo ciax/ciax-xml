@@ -1,17 +1,25 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 appcmd=~/lib/libappcmd.rb
-[ "$1" ] && { $appcmd $1 upd > /dev/null || exit; }
-apps=${1:-`$appcmd 2>&1 | grep ' :' | cut -d ':' -f 1`};shift
-for id in $apps; do
-    echo "$C2#### $id ####$C0"
-    if [ "$1" ] ; then
-        $appcmd $id $*
-    else
-        while read cmd dmy; do
+list(){
+    $appcmd $1 2>&1 | grep "^ "| cut -d ':' -f 1
+}
+show(){
+    for id ;do
+        echo "$C2#### $id ####$C0"
+        list $id|while read cmd; do
             echo "$C3$cmd$C0"
             $appcmd $id $cmd 1 1
-        done < <( $appcmd $id 2>&1 |grep " : " )
-    fi
-    read -t 0 && break
-done
+        done
+        read -t 0 && break
+    done
+}
+out=`mktemp`
+$appcmd $* >$out 2>&1
+case "$?$2:$1" in
+    1:) show `list`;;
+    2:*) show $1;;
+    0*) cat $out;;
+    *) $appcmd $*;;
+esac
+rm $out

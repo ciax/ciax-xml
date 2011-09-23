@@ -1,20 +1,35 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 frmcmd=~/lib/libfrmcmd.rb
-[ "$1" ] && { setfld $1 || _usage_key; }
-devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2`};shift
-for id in $devices; do
-    setfld $id || continue
-    [ "$dev" ] || continue
-    echo "$C2#### $dev($id) ####$C0"
-    input="$HOME/.var/field_$id.json"
-    if [ "$1" ] ; then
-        $frmcmd $dev $* < $input | visi
-    else
-        $frmcmd $dev 2>&1 |grep " : "| while read cmd dmy
-        do
-            echo -n "   $C3$cmd$C0 ";$frmcmd $dev $cmd 1 0 < $input| visi
+list(){
+    $frmcmd $1 2>&1 | grep "^ "| cut -d ':' -f 1
+}
+show(){
+    for id ;do
+        echo "$C2#### $id ####$C0"
+        list $id|while read cmd; do
+            echo "$C3$cmd$C0"
+            <$inp $frmcmd $id $cmd 1 1 | visi
         done
-    fi
-    read -t 0 && break
-done
+        read -t 0 && break
+    done
+}
+out=`mktemp`
+inp=`mktemp`
+cat > $inp <<EOF
+{
+"stat":"1",
+"output":"1",
+"ipr":"1","ipl":"1",
+"p":["0"],"spd":["0"],"rmp":["0"],"ofs":["0"],
+"t":[[],[[],["0"]]]
+}
+EOF
+trap "rm $out $inp" EXIT
+$frmcmd $* >$out 2>&1
+case "$?$2:$1" in
+    1:) show `list`;;
+    2:*) show $1;;
+    0*) visi $out;;
+    *) $frmcmd $*;;
+esac

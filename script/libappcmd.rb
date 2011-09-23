@@ -46,7 +46,7 @@ if __FILE__ == $0
     ac.setcmd(cmd).each{|cmd| p cmd}
   rescue SelectCMD
     Msg.exit(2)
-  rescue SelectID
+  rescue UserError
     warn "Usage: #{$0} [app] [cmd] (par)"
     Msg.exit
   end

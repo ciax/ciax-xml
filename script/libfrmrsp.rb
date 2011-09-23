@@ -135,7 +135,7 @@ if __FILE__ == $0
     abort ("Logline:Not response") unless /rcv/ === stm.shift
     r.setrsp(stm){[time,eval(ary.shift)]}
     puts field.to_j
-  rescue RuntimeError
+  rescue UserError
     if opt.include?('q')
       exit 1
     else

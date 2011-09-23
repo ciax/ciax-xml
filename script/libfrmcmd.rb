@@ -67,7 +67,7 @@ if __FILE__ == $0
     print c.getframe(cmd)
   rescue SelectCMD
     Msg.exit(2)
-  rescue SelectID
+  rescue UserError
     warn "Usage: #{$0} [dev] [cmd] (par) < field_file"
     Msg.exit
   end

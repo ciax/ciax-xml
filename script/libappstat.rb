@@ -97,7 +97,7 @@ if __FILE__ == $0
     as=AppStat.new(adb)
     view.upd(as.conv(field))
     print view.to_j
-  rescue RuntimeError
+  rescue UserError
     abort "Usage: #{$0} [app] < field_file\n#{$!}"
   end
 end

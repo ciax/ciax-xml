@@ -2,6 +2,7 @@
 
 class UserError < RuntimeError; end
 class SelectID < UserError; end
+class SelectCMD < SelectID; end
 
 class Msg
   class Ver
@@ -81,11 +82,6 @@ class Msg
     def to_s
       [$!.to_s,@title,*values].grep(/./).join("\n")
     end
-
-    def exit(id=nil)
-      msg= id ? "No such cmd [#{id}]\n"+to_s : to_s
-      raise SelectID,msg
-    end
   end
 
 end
@@ -140,7 +136,12 @@ class << Msg
   end
 
   def abort(msg='abort')
-    Kernel.abort color(msg,1)
+    Kernel.abort([color(msg,1),$!.to_s].join("\n"))
+  end
+
+  def exit(code=1)
+    Kernel.warn($!.to_s)
+    Kernel.exit(code)
   end
 
   def assert(exp)

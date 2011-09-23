@@ -13,7 +13,7 @@ class Shell
       break if /^q/ === line
       begin
         puts yield line
-      rescue SelectID
+      rescue SelectCMD
         puts cl.to_s
       rescue UserError
         puts $!.to_s

@@ -15,7 +15,8 @@ begin
   edb=EntDb.new(id).cover_app
   @io=IoCmd.new("socat - udp:#{host}:#{edb['port']}")
 rescue SelectID
-  abort "Usage: appcl [id] (host)\n#{$!}"
+  warn "Usage: appcl [id] (host)"
+  Msg.exit
 end
 pr=Print.new(edb[:status],view)
 par=Param.new(edb[:command],:structure)

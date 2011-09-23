@@ -23,7 +23,8 @@ begin
   edb=EntDb.new(id).cover_app
   fdb=FrmDb.new(edb['frm_type'])
 rescue SelectID
-  abort "Usage: appint (-s) [id] (iocmd)\n#{$!}"
+  warn "Usage: appint (-s) [id] (iocmd)"
+  Msg.exit
 end
 
 view=View.new(id,edb[:status]).load

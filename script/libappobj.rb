@@ -50,8 +50,8 @@ class AppObj < String
     end
     upd
     self
-  rescue SelectID
-    @cl.exit
+  rescue SelectCMD
+    raise SelectCMD,@cl.to_s
   end
 
   def upd

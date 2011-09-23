@@ -95,7 +95,7 @@ if __FILE__ == $0
   begin
     adb=AppDb.new(view['app_type'])
   rescue SelectID
-    abort $!.to_s
+    Msg.exit
   end
   watch=Watch.new(adb,view['stat'].update(hash)).upd
   puts watch.to_s

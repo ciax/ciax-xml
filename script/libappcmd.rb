@@ -44,7 +44,10 @@ if __FILE__ == $0
     adb=AppDb.new(app,cmd.empty?)
     ac=AppCmd.new(adb[:command])
     ac.setcmd(cmd).each{|cmd| p cmd}
-  rescue UserError
-    abort "Usage: #{$0} [app] [cmd] (par)\n#{$!}"
+  rescue SelectCMD
+    Msg.exit(2)
+  rescue SelectID
+    warn "Usage: #{$0} [app] [cmd] (par)"
+    Msg.exit
   end
 end

@@ -21,7 +21,8 @@ begin
   io=IoCmd.new(iocmd||edb['client'],id,fdb['wait'],1)
   fobj=FrmObj.new(fdb,field,io)
 rescue SelectID
-  abort "Usage: frmint (-s) [id] (iocmd)\n#{$!}"
+  warn "Usage: frmint (-s) [id] (iocmd)"
+  Msg.exit
 end
 port=opt[:s] ? edb["port"] : nil
 Interact.new([edb['frame'],'>'],port){|line|

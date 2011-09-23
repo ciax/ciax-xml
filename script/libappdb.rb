@@ -129,7 +129,8 @@ if __FILE__ == $0
   begin
     adb=AppDb.new(ARGV.shift,true)
   rescue SelectID
-    abort "USAGE: #{$0} [id]\n#{$!}"
+    warn "USAGE: #{$0} [id]"
+    Msg.exit
   end
   puts adb
 end

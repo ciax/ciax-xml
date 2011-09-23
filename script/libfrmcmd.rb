@@ -65,7 +65,10 @@ if __FILE__ == $0
     end
     c=FrmCmd.new(fdb,st)
     print c.getframe(cmd)
-  rescue UserError
-    abort "Usage: #{$0} [dev] [cmd] (par) < field_file \n#{$!}"
+  rescue SelectCMD
+    Msg.exit(2)
+  rescue SelectID
+    warn "Usage: #{$0} [dev] [cmd] (par) < field_file"
+    Msg.exit
   end
 end

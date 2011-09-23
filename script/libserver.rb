@@ -15,7 +15,7 @@ class Server
         @v.msg{"Recv:#{line} is #{line.class}"}
         begin
           msg=yield(/interrupt/ === line ? nil : line.chomp).to_s
-        rescue SelectID
+        rescue SelectCMD
           msg="NO CMD\n"
         rescue RuntimeError
           msg="ERROR\n"

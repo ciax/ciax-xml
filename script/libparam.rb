@@ -16,7 +16,7 @@ class Param < Hash
 
   def set(cmdary)
     id=cmdary.first
-    @list.exit(id) unless @keys.key?(id)
+    raise SelectCMD,("No such CMD [#{id}]\n"+@list.to_s) unless @keys.key?(id)
     @v.msg{"SetPar: #{cmdary}"}
     @cmdary=cmdary.dup
     self[:id]=id

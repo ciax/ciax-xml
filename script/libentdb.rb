@@ -50,7 +50,8 @@ if __FILE__ == $0
   begin
     edb=EntDb.new(id,true)
   rescue SelectID
-    abort ("USAGE: #{$0} [id] (-)\n#{$!}")
+    warn "USAGE: #{$0} [id] (-)"
+    Msg.exit
   end
   if app
     edb.cover_app(true)

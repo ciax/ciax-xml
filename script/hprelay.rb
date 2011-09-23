@@ -22,7 +22,8 @@ begin
   @stat=Field.new
   @hp=HexPack.new(id)
 rescue SelectID
-  abort "Usage: hprelay (-s) [id] (host)\n#{$!}"
+  warn "Usage: hprelay (-s) [id] (host)"
+  Msg.exit
 end
 port=opt[:s] ? port.to_i+1000 : nil
 json='{}'

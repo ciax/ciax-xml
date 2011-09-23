@@ -132,7 +132,8 @@ if __FILE__ == $0
   begin
     fdb=FrmDb.new(ARGV.shift,true)
   rescue SelectID
-    abort("USAGE: #{$0} [id]\n#{$!}")
+    warn "USAGE: #{$0} [id]"
+    Msg.exit
   end
   puts fdb
 end

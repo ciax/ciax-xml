@@ -43,8 +43,8 @@ class FrmObj < String
       end
     end
     self
-  rescue SelectID
-    @cl.exit
+  rescue SelectCMD
+    raise SelectCMD,@cl.to_s
   end
 
   private
@@ -83,7 +83,7 @@ class FrmObj < String
     tag='' unless tag
     @field.load(tag)
     "[#{tag}] loaded"
-  rescue SelectID
+  rescue UserError
     raise UserError,"Usage: load (tag)\n #{$!}"
   end
 end

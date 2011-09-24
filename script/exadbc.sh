@@ -15,6 +15,7 @@ show(){
     done
 }
 out=`mktemp`
+trap "rm $out" EXIT
 $appcmd $* >$out 2>&1
 case "$?$2:$1" in
     1:) show `list`;;
@@ -22,4 +23,3 @@ case "$?$2:$1" in
     0*) cat $out;;
     *) $appcmd $*;;
 esac
-rm $out

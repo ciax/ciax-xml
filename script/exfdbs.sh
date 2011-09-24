@@ -1,37 +1,32 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
-frmcmd=~/lib/libfrmcmd.rb
-[[ "$1" == -* ]] && { opt=$1;shift; }
-[ "$opt" ] && rm ~/.var/cache/* ~/.var/field_???.json
-getstat(){
-    cmd="$*"
-    echo "${C3}process $id for $cmd$C0"
-    logline $id $cmd | if [ "$ver" ] ; then
-        VER=$ver frmupd $id
-    else
-        frmupd $id
-    fi
+id2dev(){
+    dev=`~/lib/libentdb.rb $1 - | grep 'frm_type'` || return 1
+    echo $dev|cut -d: -f2|tr -d ' "'
 }
-
-[ "$1" ] && { setfld $1 || _usage_key "(-ls)"; }
-devices=${1:-`ls ~/.var/device_???_*|cut -d_ -f2|sort -u`};shift
-par="$*"
+getid(){
+    ls ~/.var/device_???_*|cut -d_ -f2|sort -u
+}
+getcmd(){
+    $frmcmd $1 2>&1 |grep "^ "|cut -d: -f1
+}
+frmcmd=~/lib/libfrmcmd.rb
+frmrsp=~/lib/libfrmrsp.rb
 ver=$VER;unset VER
-for id in $devices; do
-    setfld $id || continue
+i=$1;shift
+for id in ${i:-`getid`}; do
+    dev=`id2dev $id` || continue
     echo "$C2#### $dev($id) ####$C0"
-    input="$HOME/.var/device_${id}_*.log"
     output="$HOME/.var/field_${id}.json"
-    [ "$clear" ] && [ -e $output ] && rm $output
-    if [ "$par" ] ; then
-        $frmcmd $dev 2>&1 |grep -q $par || continue
-        getstat $par
-    else
-        $frmcmd $dev 2>&1 |grep ' : '|while read cmd dmy
-        do
-            getstat $cmd
-        done
-    fi
-    < $output v2s
+    echo -n "{'id':'$id'}"|merging $output
+    i=$1;shift
+    for cmd in ${i:-`getcmd $dev`}; do
+        echo "${C3}process $cmd $*$C0"
+        [ "$ver" ] && VER=$ver
+        logline $id $cmd $* | $frmrsp -q $dev|merging $output
+        unset VER
+    done
+    v2s $output
     read -t 0 && break
 done
+

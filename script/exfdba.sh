@@ -1,27 +1,24 @@
 #!/bin/bash
+rep(){
+    dev=$1;shift
+    for i in $c;do
+        for cmd in $*;do
+            exfdbs $dev $cmd $i
+            read -t 0 && break
+        done
+    done
+}
 for id in ${*:-mma mmc mix crt ml1 dts} ; do
-    exfdbc $id getstat
     case $id in
         mma)
-            for i in 1 2 3 4 5; do
-                exfdbs mma in $i
-            done;;
+            c='1 2 3 4 5' rep mma in;;
         mmc)
-            for i in 1 2 3 4 5; do
-                exfdbs mmc in $i
-            done;;
+            c='1 2 3 4 5' rep mmc in;;
         mix)
-            for i in 1 2 3 4 5 6; do
-                exfdbs mix chkrun $i
-                exfdbs mix getp $i
-                exfdbs mix getspd $i
-                exfdbs mix getofs $i
-            done;;
+            c='1 2 3 4 5' rep mix chkrun getp getspd getofs;;
         crt)
             for i in 0 1 2 3 4 5; do
-                for j in 0 1 2 3; do
-                    exfdbs crt get_tbl $i $j
-                done
+                c='0 1 2 3' rep crt get_tbl:$i
             done;;
         dts)
             for i in get ist jak inr log; do

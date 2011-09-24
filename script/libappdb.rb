@@ -68,7 +68,7 @@ class AppDb < Hash
         id=e0.attr2db(stat){|v|r0.format(v)}
         struct[id]=[]
         e0.each{|e1|
-          st={:type => e1.name}
+          st={'type' => e1.name}
           e1.to_h.each{|k,v|
             case k
             when 'bit','index'

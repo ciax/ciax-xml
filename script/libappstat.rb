@@ -28,7 +28,7 @@ class AppStat
     fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || Msg.abort("No field Key")
       data=Msg.check(field.get(fld)){"No field Value[#{fld}]"}||''
-      case e1[:type]
+      case e1['type']
       when 'binary'
         str << binary(e1,data)
       when 'float'
@@ -90,7 +90,7 @@ if __FILE__ == $0
   app=ARGV.shift
   ARGV.clear
   begin
-    adb=AppDb.new(app)[:status]
+    adb=AppDb.new(app,true)[:status]
     str=gets(nil) || exit
     field=Field.new.update_j(str)
     view=View.new(field['id'],adb).update({'app_type' => app })

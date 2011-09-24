@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
   <entity id="crt" label="CART 3" app_type="mel" client="socat - udp:cart3:5000" port="25101"></entity>
   <entity id="dsi" label="IR Stand-by Flange" app_type="cj2" client="socat - udp:cst-i:9600" port="25102">
@@ -15,4 +15,6 @@
   </entity>
   <entity id="det" label="CsEtr Control" app_type="srm" client="socat - tcp:ltc-c:4001" port="25104"></entity>
   <entity id="dts" label="TSC Control" app_type="oss" client="socat - tcp:cxws2:9999" port="25105"></entity>
+  <entity id="cro" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4003" port="25108">
+  </entity>
 </edb>

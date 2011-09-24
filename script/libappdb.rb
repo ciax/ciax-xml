@@ -92,12 +92,11 @@ class AppDb < Hash
   def init_watch(wdb)
     return [] unless wdb
     i=0
-    hash={:interrupt => []}
+    hash={}
     Repeat.new.each(wdb){|e0,r0|
-      ['onchange','label','block'].each{|k|
+      ['label','block'].each{|k|
         (hash[k.to_sym]||=[]) << (e0[k] ? r0.format(e0[k]) : nil)
       }
-      hash[:interrupt] << i if /true|1/ === e0['interrupt']
       @v.msg(1){"WATCH:#{hash[:onchange]}:#{hash[:label]}"}
       bg={}
       e0.each{ |e1|
@@ -129,9 +128,9 @@ if __FILE__ == $0
   begin
     adb=AppDb.new(ARGV.shift,true)
   rescue SelectID
-    warn "USAGE: #{$0} [id]"
+    warn "USAGE: #{$0} [id] (key) .."
     Msg.exit
   end
-  puts adb
+  db=ARGV.inject(adb){|d,s| d[s.to_sym]}
+  puts Msg.view_struct(db)
 end
-

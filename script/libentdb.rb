@@ -46,15 +46,14 @@ class EntDb < Hash
 end
 
 if __FILE__ == $0
-  id,app=ARGV
+  id=ARGV.shift
   begin
     edb=EntDb.new(id,true)
   rescue SelectID
-    warn "USAGE: #{$0} [id] (-)"
+    warn "USAGE: #{$0} [id] (-) (key) .."
     Msg.exit
   end
-  if app
-    edb.cover_app(true)
-  end
-  puts edb
+  edb.cover_app(true) if ARGV.shift
+  db=ARGV.inject(edb){|d,s| d[s.to_sym]}
+  puts Msg.view_struct(db)
 end

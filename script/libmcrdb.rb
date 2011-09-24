@@ -39,11 +39,12 @@ end
 
 if __FILE__ == $0
   begin
-    adb=McrDb.new(ARGV.shift,true)
+    mdb=McrDb.new(ARGV.shift,true)
   rescue SelectID
-    warn "USAGE: #{$0} [id]"
+    warn "USAGE: #{$0} [id] (key) .."
     Msg.exit
   end
-  puts adb
+  db=ARGV.inject(mdb){|d,s| d[s.to_sym]}
+  puts Msg.view_struct(db)
 end
 

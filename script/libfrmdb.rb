@@ -60,14 +60,15 @@ class FrmDb < Hash
       begin
         @v.msg(1){"INIT:Select Frame <-"}
         id=e0.attr2db(selh)
+        (selh[:frame]||={})[id]||=[]
         @v.msg{"InitSelHash(#{id}):#{selh}"}
         Repeat.new.each(e0){|e1,r1|
           case e1.name
           when 'par'
             ((selh[:parameter]||={})[id]||=[]) << e1.text
           else
-            e=yield(e1,r1) || next
-            ((selh[:frame]||={})[id]||=[]) << e
+            e=yield(e1,r1)||next
+            selh[:frame][id] << e
           end
         }
         @v.msg{"InitSelFrame(#{id}):#{frame}"}

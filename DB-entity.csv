@@ -11,7 +11,7 @@ aso,,,udp:cxws2:25103,cxws2,26103
 cci,bbe,bbe,tcp:ltc-i:4002,ciax,25105
 cco,bbe,bbe,tcp:ltc-o:4002,ciax,25106
 cri,bbe,bbe,tcp:ltc-i:4003,ciax,25107
-#cro,bbe,bbe,tcp:ltc-o:4003,ciax,25108
+cro,bbe,bbe,tcp:ltc-o:4003,ciax,25108
 #Telemetory
 cf1,k3n,k3n,tcp:ltt-i:4003,ciax,45601
 #cf2,k3n,k3n,tcp:ltt-i:4001,ciax,45602

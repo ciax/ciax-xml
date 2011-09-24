@@ -120,12 +120,9 @@ end
 if __FILE__ == $0
   require "libfield"
   require "libfrmdb"
-  args=ARGV.partition{|s| /^-/ === s}
-  opt=args.shift.join('')
-  dev=args.shift.first
-  ARGV.clear
+  fid=ARGV.shift
   begin
-    fdb=FrmDb.new(dev)
+    fdb=FrmDb.new(fid)
     field=Field.new
     r=FrmRsp.new(fdb,field)
     str=gets(nil) || exit
@@ -136,11 +133,8 @@ if __FILE__ == $0
     r.setrsp(stm){[time,eval(ary.shift)]}
     puts field.to_j
   rescue UserError
-    if opt.include?('q')
-      exit 1
-    else
-      abort "Usage: #{$0} (-q) [frame] < logline\n#{$!}"
-    end
+    warn "Usage: #{$0} [frameID] < logline"
+    Msg.exit
   end
 end
 

@@ -9,6 +9,11 @@ class Watch < Hash
       self[i]||=[]
     }
     self[:last]={}
+    self[:stat].flatten.select{|h|
+      h['type'] == 'onchange'
+    }.map{|h| h['ref']}.each{|i|
+      self[:last][i]=''
+    }
     @elapse=Elapse.new(stat)
     @v=Msg::Ver.new("WATCH",3)
   end
@@ -67,14 +72,12 @@ class Watch < Hash
       @v.msg{"Checking [#{c}] vs <#{v}>"}
       case h['type']
       when 'onchange'
-        c=self[:last][k]
+        self[:last][k] != v
       when 'regexp'
-        c=Regexp.new(c)
+        Regexp.new(c) === v
       when 'range'
-        c=ReRange.new(c)
+        ReRange.new(c) == v
       end
-      @v.msg{"Result #{c === v}"}
-        c === v
     }
   end
 end
@@ -84,12 +87,10 @@ if __FILE__ == $0
   require "libappdb"
   abort "Usage: #{$0} (test conditions (key=val)..) < [file]" if STDIN.tty?
   hash={}
-  conds,cmds=ARGV.partition{|i| i.include?("=")}
-  conds.each{|s|
+  ARGV.each{|s|
     k,v=s.split("=")
     hash[k]=v
   }
-  cmd=cmds.join(" ")
   ARGV.clear
   str=gets(nil) || exit
   view=JSON.load(str)
@@ -98,8 +99,10 @@ if __FILE__ == $0
   rescue SelectID
     Msg.exit
   end
-  watch=Watch.new(adb,view['stat'].update(hash)).upd
-  puts watch.to_s
+  stat=view['stat']
+  watch=Watch.new(adb,stat).upd
+  stat.update(hash)
+  puts watch.upd.to_s
   print "Active? : "
   p watch.active?
   print "Block Pattern : "

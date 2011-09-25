@@ -212,7 +212,8 @@
         <range ref="elapse">300:</range>
         <exec name="upd"></exec>
       </event>
-      <event label="CMD ACCEPT" onchange="acp">
+      <event label="CMD ACCEPT">
+        <onchange ref="acp"></onchange>
         <pattern ref="acp">00</pattern>
         <exec name="clear"></exec>
       </event>
@@ -220,7 +221,8 @@
         <pattern ref="acp">00</pattern>
         <exec name="upd"></exec>
       </event>
-      <event label="Interrupt During Motion" interrupt="true">
+      <event label="Interrupt During Motion">
+        <onchange ref="int"></onchange>
         <pattern ref="acp">00</pattern>
         <exec name="pause"></exec>
       </event>

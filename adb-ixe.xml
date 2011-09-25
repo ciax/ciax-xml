@@ -212,7 +212,8 @@
             <argv>$_</argv>
           </exec>
         </event>
-        <event interrupt="true">
+        <event>
+          <onchange ref="int"></onchange>
           <pattern ref="r%d">N</pattern>
           <exec name="stop">
             <argv>$_</argv>

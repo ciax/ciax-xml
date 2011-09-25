@@ -459,32 +459,39 @@
         <pattern ref="run">1</pattern>
         <exec name="upds"></exec>
       </event>
-      <event interrupt="true">
+      <event>
+        <onchange ref="int"></onchange>
         <pattern ref="run">1</pattern>
         <exec name="pause"></exec>
       </event>
-      <event label="On Completion" onchange="cmp">
+      <event label="On Completion">
+        <onchange ref="cmp"></onchange>
         <pattern ref="cmp">1</pattern>
         <exec name="rcmd"></exec>
       </event>
-      <event label="On ErrReset" onchange="err">
+      <event label="On ErrReset">
+        <onchange ref="err" />
         <pattern ref="err">0</pattern>
         <exec name="rerr"></exec>
       </event>
-      <event label="On Error" onchange="err">
+      <event label="On Error">
+        <onchange ref="err" />
         <pattern ref="err">[^0]</pattern>
         <exec name="rexe"></exec>
       </event>
-      <event label="On Emergency" onchange="emg">
+      <event label="On Emergency">
+        <onchange ref="emg" />
         <pattern ref="emg">1</pattern>
         <exec name="reset"></exec>
       </event>
-      <event label="On Pause" onchange="pse">
+      <event label="On Pause">
+        <onchange ref="pse" />
         <pattern ref="pse">1</pattern>
         <exec name="reset"></exec>
         <exec name="resume"></exec>
       </event>
-      <event label="Off Pause" onchange="pse">
+      <event label="Off Pause">
+        <onchange ref="pse" />
         <pattern ref="pse">0</pattern>
         <exec name="reset"></exec>
       </event>

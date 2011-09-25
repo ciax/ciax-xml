@@ -200,17 +200,17 @@
         <exec name="updjak"></exec>
       </event>
       <event label="Moving InR" block="rhook|runhk">
-        <onchange>iang</onchange>
+        <onchange ref="iang"></onchange>
         <exec name="updinr"></exec>
       </event>
       <event label="Stop Jack">
-        <onchange>int</onchange>
+        <onchange ref="int"></onchange>
         <pattern ref="abm">1</pattern>
         <exec name="jstop"></exec>
       </event>
       <event label="Stop InR">
-        <onchange>int</onchange>
-        <onchange>iang</onchange>
+        <onchange ref="int"></onchange>
+        <onchange ref="iang"></onchange>
         <exec name="rstop"></exec>
       </event>
     </watch>

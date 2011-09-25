@@ -111,7 +111,8 @@
         <pattern ref="bs">1</pattern>
         <exec name="updp"></exec>
       </event>
-      <event interrupt="true">
+      <event>
+        <onchange ref="int"></onchange>
         <pattern ref="bs">1</pattern>
         <exec name="stop"></exec>
       </event>

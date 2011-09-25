@@ -36,7 +36,7 @@
     </xsd:complexType>
   </xsd:element>
   <!--command-->
-  <xsd:element name="onchange" type="xsd:token">
+  <xsd:element name="onchange">
     <xsd:complexType>
       <xsd:attribute name="ref" type="xsd:token" use="required" />
     </xsd:complexType>

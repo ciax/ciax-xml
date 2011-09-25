@@ -111,11 +111,13 @@
         <pattern ref="bs">1</pattern>
         <exec name="updp"></exec>
       </event>
-      <event onchange="bs">
+      <event>
+        <onchange ref="bs"></onchange>
         <pattern ref="bs">0</pattern>
         <exec name="defcon"></exec>
       </event>
-      <event interrupt="true">
+      <event>
+        <onchange ref="int"></onchange>
         <pattern ref="bs">1</pattern>
         <exec name="stop"></exec>
       </event>

@@ -5,7 +5,7 @@ class Watch < Hash
   def initialize(adb,stat)
     update(adb[:watch])
     @stat=stat
-    [:interrupt,:block,:onchange,:active,:exec,:stat].each{|i|
+    [:block,:active,:exec,:stat].each{|i|
       self[i]||=[]
     }
     self[:last]={}
@@ -30,25 +30,24 @@ class Watch < Hash
   end
 
   def issue
-    (self[:active] - self[:interrupt]).map{|i|
+    self[:active].map{|i|
       self[:exec][i]
     }.compact.flatten(1).uniq
   end
 
   def interrupt
-    (self[:active] & self[:interrupt]).map{|i|
-      self[:exec][i]
-    }.compact.flatten(1).uniq
+    self[:last]['int']=1
+    upd
+    issue
   end
 
   def upd
     self[:active].clear
-    self[:onchange].each_with_index{|c,i|
-      next if c && @stat[c] == self[:last][c]
+    self[:stat].size.times{|i|
       self[:active] << i if check(i)
     }
-    self[:onchange].compact.each{|c|
-      self[:last][c]=@stat[c]
+    self[:last].keys.each{|k|
+      self[:last][k]=@stat[k]
     }
     self
   end
@@ -67,6 +66,8 @@ class Watch < Hash
       c=h['val']
       @v.msg{"Checking [#{c}] vs <#{v}>"}
       case h['type']
+      when 'onchange'
+        c=self[:last][k]
       when 'regexp'
         c=Regexp.new(c)
       when 'range'

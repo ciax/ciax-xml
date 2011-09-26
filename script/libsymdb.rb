@@ -32,15 +32,8 @@ class SymDb < Hash
     view['stat'].each{|k,val|
       next if val == ''
       next unless sid=@ref[k]
-      unless key?(sid)
-        Msg.warn("Table[#{sid}] not exist")
-        next
-      end
+      tbl=table(sid) || next
       @v.msg{"ID=#{k},ref=#{sid}"}
-      tbl=(self[sid][:record]||={})
-      unless tbl.key?('default')
-        tbl['default']={'class' => 'alarm','msg' => 'N/A'}
-      end
       case self[sid]['type']
       when 'range'
         tbl.each{|match,hash|
@@ -63,6 +56,20 @@ class SymDb < Hash
       end
     }
     self
+  end
+
+  private
+  def table(id)
+    if key?(id)
+      tbl=(self[id][:record]||={})
+      unless tbl.key?('default')
+        tbl['default']={'class' => 'alarm','msg' => 'N/A'}
+      end
+      tbl
+    else
+      Msg.warn("Table[#{id}] not exist")
+      false
+    end
   end
 end
 

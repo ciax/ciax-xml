@@ -7,33 +7,26 @@ class McrDb < Hash
   def initialize(mcr,nocache=nil)
     @v=Msg::Ver.new('mdb',5)
     cache('mdb',mcr,nocache){|doc|
-      hash=Hash[doc]
-      init_command(doc.top,hash)
-      hash
-    }
-  end
-
-  private
-  def init_command(mdb,hash)
-    mdb.each{|e0|
-      id=e0.attr2db(hash)
-      e0.each{|e1,rep|
-        case e1.name
-        when 'par'
-          ((hash[:parameter]||={})[id]||=[]) << e1.text
-        when 'break','check'
-          stat={:type => e1.name,:cond => []}
-          e1.each{|e2|
-            stat[:cond] << e2.to_h
-          }
-          ((hash[:sequence]||={})[id]||=[]) << stat
-        when 'exec'
-          ((hash[:sequence]||={})[id]||=[]) << e1.text
-          @v.msg{"COMMAND:[#{id}] #{e1.text}"}
-        end
+      update(doc)
+      doc.top.each{|e0|
+        id=e0.attr2db(self)
+        e0.each{|e1,rep|
+          case e1.name
+          when 'par'
+            ((self[:parameter]||={})[id]||=[]) << e1.text
+          when 'break','check'
+            stat={:type => e1.name,:cond => []}
+            e1.each{|e2|
+              stat[:cond] << e2.to_h
+            }
+            ((self[:sequence]||={})[id]||=[]) << stat
+          when 'exec'
+            ((self[:sequence]||={})[id]||=[]) << e1.text
+            @v.msg{"COMMAND:[#{id}] #{e1.text}"}
+          end
+        }
       }
     }
-    self
   end
 end
 

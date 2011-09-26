@@ -23,10 +23,9 @@ module ModCache
         return self
       end
     end
-    hash=yield XmlDoc.new(type,id)
+    yield XmlDoc.new(type,id)
     open(fmar,'w') {|f|
-      f << Marshal.dump(hash)
-      update(hash)
+      f << Marshal.dump(Hash[self])
       @v.msg{"Saved(#{base})"}
     }
     self

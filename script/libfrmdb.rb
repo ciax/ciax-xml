@@ -7,20 +7,19 @@ class FrmDb < Hash
   def initialize(frm,nocache=nil)
     @v=Msg::Ver.new('fdb',5)
     cache('fdb',frm,nocache){|doc|
-      hash=Hash[doc]
-      frame=hash[:frame]={}
-      stat=hash[:status]={}
-      cmd=hash[:command]={}
+      update(doc)
+      frame=self[:frame]={}
+      stat=self[:status]={}
+      cmd=self[:command]={}
       dc=doc.domain('cmdframe')
       dr=doc.domain('rspframe')
       fc=frame[:command]=init_main(dc){|e,r| init_cmd(e,r)}
       fs=frame[:status]=init_main(dr){|e| init_stat(e,stat)}
-      @v.msg{"Structure:frame:#{hash[:frame]}"}
+      @v.msg{"Structure:frame:#{self[:frame]}"}
       cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
-      @v.msg{"Structure:command:#{hash[:command]}"}
+      @v.msg{"Structure:command:#{self[:command]}"}
       stat.update(init_sel(dr,'response',fs){|e| init_stat(e,stat)})
-      @v.msg{"Structure:status:#{hash[:status]}"}
-      hash
+      @v.msg{"Structure:status:#{self[:status]}"}
     }
   end
 

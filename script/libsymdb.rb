@@ -10,19 +10,16 @@ class SymDb < Hash
     @nocache=nocache
   end
 
-  def add(gid) # gid = Table Group ID
-    return self unless gid
+  def add(gid=nil) # gid = Table Group ID
     cache('sdb',gid,@nocache){|doc|
-      hash={}
       doc.top.each{|e1|
         id=e1['id']
         label=e1['label']
         e1.each{|e2| # case
-          (hash[id]||=[]) << e2.to_h.update({'type' => e1['type']})
+          (self[id]||=[]) << e2.to_h.update({'type' => e1['type']})
         }
         @v.msg{"Symbol Table:#{id} : #{label}"}
       }
-      hash
     }
     self
   rescue SelectID
@@ -70,9 +67,9 @@ if __FILE__ == $0
     sdb=SymDb.new(true)
     ARGV.each{|id|
       sdb.add(id)
-    }.empty? && raise(SelectID)
+    }.empty? && sdb.add
   rescue SelectID
-    warn "USAGE: #{$0} [id]"
+    warn "USAGE: #{$0} [id] ..."
     Msg.exit
   end
   puts sdb

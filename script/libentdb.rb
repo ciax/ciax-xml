@@ -8,17 +8,16 @@ class EntDb < Hash
     @v=Msg::Ver.new('edb',5)
     self['id']=id
     cache('edb',id,nocache){|doc|
-      hash=Hash[doc]
+      update(doc)
       doc.domain('init').each{|e0|
-        (hash[:field]||={})[e0['id']]=e0.text
+        (self[:field]||={})[e0['id']]=e0.text
       }
       doc.domain('select').each{|e0|
-        e0.attr2db(hash[:command]||={})
+        e0.attr2db(self[:command]||={})
       }
       doc.domain('status').each{|e0|
-        e0.attr2db(hash[:status]||={},'ref')
+        e0.attr2db(self[:status]||={},'ref')
       }
-      hash
     }
   end
 

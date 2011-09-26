@@ -9,11 +9,6 @@ class Watch < Hash
       self[i]||=[]
     }
     self[:last]={}
-    self[:stat].flatten.select{|h|
-      h['type'] == 'onchange'
-    }.map{|h| h['ref']}.each{|i|
-      self[:last][i]=''
-    }
     @elapse=Elapse.new(stat)
     @v=Msg::Ver.new("WATCH",3)
   end
@@ -51,9 +46,7 @@ class Watch < Hash
     self[:stat].size.times{|i|
       self[:active] << i if check(i)
     }
-    self[:last].keys.each{|k|
-      self[:last][k]=@stat[k]
-    }
+    self[:last].replace(@stat)
     self
   end
 

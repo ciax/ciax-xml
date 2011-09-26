@@ -37,13 +37,16 @@ class SymDb < Hash
         next
       end
       @v.msg{"ID=#{k},ref=#{sid}"}
-      tbl=self[sid][:record]
+      tbl=(self[sid][:record]||={})
+      unless tbl.key?('default')
+        tbl['default']={'class' => 'alarm','msg' => 'N/A'}
+      end
       case self[sid]['type']
       when 'range'
         tbl.each{|match,hash|
           next unless ReRange.new(match) == val
-          vs[k]={'type' => 'num'}.update(hash)
           @v.msg{"VIEW:Range:[#{match}] and [#{val}]"}
+          vs[k]={'type' => 'num'}.update(hash)
           break
         }
       when 'regexp'
@@ -55,8 +58,8 @@ class SymDb < Hash
         }
       when 'string'
         val='default' unless tbl.key?(val)
-        vs[k]={'type' => 'str'}.update(tbl[val])
         @v.msg{"VIEW:String:[#{val}](#{tbl[val]['msg']})"}
+        vs[k]={'type' => 'str'}.update(tbl[val])
       end
     }
     self

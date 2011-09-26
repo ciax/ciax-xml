@@ -14,8 +14,12 @@ module ModFile
   end
 
   def update_j(str)
-    raise "No status in File" unless str
-    update(JSON.load(str))
+    if str && !str.empty?
+      update(JSON.load(str))
+    else
+      Msg.warn "No status in File"
+    end
+    self
   end
 
   def load(tag=nil)

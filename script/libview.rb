@@ -13,7 +13,7 @@ class View < Hash
     end
     if @db && @db.key?(:symbol)
       require "libsymdb"
-      @sdb=SymDb.new.update(SymDb.new(@db['table']))
+      @sdb=SymDb.new.add('all').add(@db['table'])
     end
     self['stat']={}
   end

@@ -20,7 +20,7 @@ module ModCache
       else
         update(Marshal.load(IO.read(fmar)))
         @v.msg{"Loaded(#{base})"}
-        return
+        return self
       end
     end
     hash=yield XmlDoc.new(type,id)

@@ -5,69 +5,61 @@ require "librerange"
 
 class SymDb < Hash
   include ModCache
-  def initialize(gid='all',nocache=nil) # gid = Table Group ID
+  def initialize(nocache=nil)
     @v=Msg::Ver.new("Symbol",6)
-    cache('sdb',gid,nocache){|doc|
-      hash=Hash[doc]
+    @nocache=nocache
+  end
+
+  def add(gid) # gid = Table Group ID
+    return self unless gid
+    cache('sdb',gid,@nocache){|doc|
+      hash={}
       doc.top.each{|e1|
-        row=e1.to_h
-        id=row.delete('id')
-        label=row['label']
+        id=e1['id']
+        label=e1['label']
         e1.each{|e2| # case
-          key=e2.text||"default"
-          (row[:record]||={})[key]=e2.to_h
+          (hash[id]||=[]) << e2.to_h.update({'type' => e1['type']})
         }
-        hash[id]=row
         @v.msg{"Symbol Table:#{id} : #{label}"}
       }
       hash
     }
+    self
   rescue SelectID
     raise $! if __FILE__ == $0
   end
 
-  def convert(view,ref=nil)
-    @ref=ref||@ref
+  def convert(view,tid=nil)
+    @tid=tid||@tid
     vs=view['symbol']||={}
-    view['stat'].each{|k,val|
+    view['stat'].each{|key,val|
       next if val == ''
-      next unless sid=@ref[k]
-      tbl=table(sid) || next
-      @v.msg{"ID=#{k},ref=#{sid}"}
-      case self[sid]['type']
-      when 'range'
-        tbl.each{|match,hash|
-          next unless ReRange.new(match) == val
-          @v.msg{"VIEW:Range:[#{match}] and [#{val}]"}
-          vs[k]={'type' => 'num'}.update(hash)
-          break
-        }
-      when 'regexp'
-        tbl.each{|match,hash|
-          @v.msg{"VIEW:Regexp:[#{match}] and [#{val}]"}
-          next unless /#{match}/ === val || val == 'default'
-          vs[k]={'type' => 'str'}.update(hash)
-          break
-        }
-      when 'string'
-        val='default' unless tbl.key?(val)
-        @v.msg{"VIEW:String:[#{val}](#{tbl[val]['msg']})"}
-        vs[k]={'type' => 'str'}.update(tbl[val])
-      end
+      tbl=table(sid=@tid[key]) || next
+      @v.msg{"ID=#{key},table=#{sid}"}
+      tbl.each{|hash|
+        case hash['type']
+        when 'range'
+          next unless ReRange.new(hash['val']) == val
+          @v.msg{"VIEW:Range:[#{hash['val']}] and [#{val}]"}
+          vs[key]={'type' => 'num'}.update(hash)
+        when 'regexp','string'
+          next unless /#{hash['val']}/ === val || val == 'default'
+          @v.msg{"VIEW:Regexp:[#{hash['val']}] and [#{val}]"}
+          vs[key]={'type' => 'str'}.update(hash)
+        end
+        break
+      }
     }
     self
   end
 
   private
   def table(id)
-    if key?(id)
-      tbl=(self[id][:record]||={})
-      unless tbl.key?('default')
-        tbl['default']={'class' => 'alarm','msg' => 'N/A'}
-      end
-      tbl
+    if id && key?(id)
+      tbl=(self[id]||=[])
+      tbl << {'class' => 'alarm','msg' => 'N/A','val' => 'default'}
     else
-      Msg.warn("Table[#{id}] not exist")
+      Msg.warn("Table[#{id}] not exist") if id
       false
     end
   end
@@ -75,7 +67,10 @@ end
 
 if __FILE__ == $0
   begin
-    sdb=SymDb.new(ARGV.shift,true)
+    sdb=SymDb.new(true)
+    ARGV.each{|id|
+      sdb.add(id)
+    }.empty? && raise(SelectID)
   rescue SelectID
     warn "USAGE: #{$0} [id]"
     Msg.exit

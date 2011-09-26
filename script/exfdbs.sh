@@ -12,14 +12,18 @@ getcmd(){
 }
 getstat(){
     for cmd; do
-        echo "${C3}process $cmd $par$C0"
+        echo -ne "${C3}process $cmd $par$C0\t"
         [ "$ver" ] && VER=$ver
-        logline $id $cmd $par | tee >($frmrsp $frm|merging $output)
+        logline $id $cmd $par > $temp
+        < $temp $frmrsp $frm|merging $output
+        cut -f3 $temp|grep . || echo
         unset VER
     done
 }
 frmcmd=~/lib/libfrmcmd.rb
 frmrsp=~/lib/libfrmrsp.rb
+temp=`mktemp`
+trap "rm $temp" EXIT
 ver=$VER;unset VER
 ids=$1;shift
 cmds=$1;shift

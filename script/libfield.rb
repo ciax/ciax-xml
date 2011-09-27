@@ -6,7 +6,7 @@ require 'libmodfile'
 class Field < Hash
   include ModFile
   def initialize(id=nil)
-    @v=Msg::Ver.new("stat",5)
+    @v=Msg::Ver.new("field",6)
     if id
       @type="field_#{id}"
       self["id"]=id

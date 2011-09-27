@@ -10,7 +10,7 @@ class Watch < Hash
     }
     self[:last]={}
     @elapse=Elapse.new(stat)
-    @v=Msg::Ver.new("WATCH",3)
+    @v=Msg::Ver.new("watch",12)
   end
 
   public

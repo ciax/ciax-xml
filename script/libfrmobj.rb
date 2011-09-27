@@ -12,7 +12,7 @@ class FrmObj < String
     @ic=iocmd
     @cmd=FrmCmd.new(fdb,field)
     @rsp=FrmRsp.new(fdb,field)
-    @v=Msg::Ver.new("fdb".upcase)
+    @v=Msg::Ver.new("frmobj",3)
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"Set Value  [key(:idx)] (val)")
     @cl.add('unset'=>"Remove Value  [key]")

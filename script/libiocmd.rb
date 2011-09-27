@@ -7,7 +7,7 @@ class IoCmd
     abort " No IO command" unless iocmd
     @iocmd=iocmd.split(' ')
     @f=IO.popen(@iocmd,'r+')
-    @v=Msg::Ver.new('IOCMD',1)
+    @v=Msg::Ver.new('iocmd',1)
     @v.msg{"Init-CLIENT:#{iocmd}"}
     @timeout=timeout
     @wait=wait.to_f

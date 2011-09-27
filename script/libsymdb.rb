@@ -6,7 +6,7 @@ require "librerange"
 class SymDb < Hash
   include ModCache
   def initialize(nocache=nil)
-    @v=Msg::Ver.new("Symbol",6)
+    @v=Msg::Ver.new("sdb",5)
     @nocache=nocache
   end
 

@@ -7,7 +7,7 @@ class Circular
     @limit=limit
     @counter=0
     @max=0
-    @v=Msg::Ver.new("Circ",6)
+    @v=Msg::Ver.new("circ",6)
   end
 
   def reset

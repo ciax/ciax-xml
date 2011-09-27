@@ -164,4 +164,3 @@ class << Msg
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end
 end
-

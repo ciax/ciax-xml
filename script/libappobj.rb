@@ -12,7 +12,7 @@ class AppObj < String
     @view=view
     @stat=view['stat']
     @prompt=[adb['id']]
-    @v=Msg::Ver.new("ctl",6)
+    @v=Msg::Ver.new("appobj",9)
     @ac=AppCmd.new(adb[:command])
     @as=AppStat.new(adb[:status])
     Thread.abort_on_exception=true

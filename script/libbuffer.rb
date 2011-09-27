@@ -6,7 +6,7 @@ class Buffer
   attr_reader :issue,:wait
   def initialize
     @q=Queue.new
-    @v=Msg::Ver.new("BUF",5)
+    @v=Msg::Ver.new("buffer",2)
     @proc=Queue.new
     @st=delay
     clear

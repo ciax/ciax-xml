@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "optparse"
 require "libmsg"
 require "libmodcache"
 
@@ -45,13 +46,15 @@ class EntDb < Hash
 end
 
 if __FILE__ == $0
-  id=ARGV.shift
+  opt=nil
   begin
+    opt=ARGV.getopts("c")
+    id=ARGV.shift
     edb=EntDb.new(id,true)
-  rescue SelectID
-    warn "USAGE: #{$0} [id] (-) (key) .."
+  rescue StandardError
+    warn "USAGE: #{$0} (-c) [id] (key) .."
     Msg.exit
   end
-  edb.cover_app(true) if ARGV.shift
+  edb.cover_app(true) if opt["c"]
   puts edb.select(ARGV)
 end

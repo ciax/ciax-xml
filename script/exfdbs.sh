@@ -1,7 +1,7 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 id2frm(){
-    frm=`~/lib/libentdb.rb $1 - | grep 'frm_type'` || return 1
+    frm=`~/lib/libentdb.rb -c $1 | grep 'frm_type'` || return 1
     echo $frm|cut -d: -f2|tr -d ' "'
 }
 getid(){

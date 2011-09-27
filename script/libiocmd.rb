@@ -6,16 +6,16 @@ class IoCmd
   def initialize(iocmd,id=nil,wait=0,timeout=nil)
     abort " No IO command" unless iocmd
     @iocmd=iocmd.split(' ')
+    @f=IO.popen(@iocmd,'r+')
+    @v=Msg::Ver.new('IOCMD',1)
+    @v.msg{"Init-CLIENT:#{iocmd}"}
+    @timeout=timeout
+    @wait=wait.to_f
     if id && ! ENV.key?('NOLOG')
       @logfile=ENV['HOME']+"/.var/device_#{id}_"
       @logfile << Time.now.year.to_s+".log"
+      @v.msg{"Init-Logging Start"}
     end
-    @f=IO.popen(@iocmd,'r+')
-    @v=Msg::Ver.new('IOCMD',1)
-    @v.msg{"CLIENT:#{iocmd}"}
-    @timeout=timeout
-    @wait=wait.to_f
-    @v.msg{"Init"}
   end
 
   def snd(str,id=nil)

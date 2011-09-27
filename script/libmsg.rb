@@ -44,7 +44,7 @@ class Msg
     end
 
     def condition(msg) # VER= makes setenv "" to VER otherwise nil
-      return true if ENV['VER'] == '*'
+      return true if /\*/ === ENV['VER']
       ENV['VER'].upcase.split(',').any?{|s|
         s.split(':').all?{|e|
           msg.upcase.include?(e)

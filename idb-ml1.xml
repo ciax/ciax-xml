@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edb xmlns="http://ciax.sum.naoj.org/ciax-xml/edb">
+<idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <entity id="ml1" label="MOIRCS Temperature 1" app_type="lk8" client="socat - tcp:celaeno:4005" port="24105">
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/edbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <title ref="ch0" label="MosCold2" />
       <title ref="ch1" label="MosCold1" />
       <title ref="ch2" label="Mask" />
@@ -14,4 +14,4 @@
       <title ref="htr" label="HeaterPower1(%%)" />
     </status>
   </entity>
-</edb>
+</idb>

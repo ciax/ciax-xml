@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/edbc" xmlns:edbc="http://ciax.sum.naoj.org/ciax-xml/edbc">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idbc" xmlns:idbc="http://ciax.sum.naoj.org/ciax-xml/idbc">
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="id" type="xsd:NCName" use="required" />
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
@@ -9,13 +9,13 @@
   <xsd:element name="select">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="edbc:command" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="idbc:command" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="command">
     <xsd:complexType>
-      <xsd:attributeGroup ref="edbc:id_attr"></xsd:attributeGroup>
+      <xsd:attributeGroup ref="idbc:id_attr"></xsd:attributeGroup>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/edbs" xmlns:edbs="http://ciax.sum.naoj.org/ciax-xml/edbs">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idbs" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs">
   <xsd:include schemaLocation="repeat.xsd" />
   <!--status-->
   <xsd:group name="titles">
     <xsd:choice>
-      <xsd:element ref="edbs:title"></xsd:element>
-      <xsd:element ref="edbs:repeat"></xsd:element>
+      <xsd:element ref="idbs:title"></xsd:element>
+      <xsd:element ref="idbs:repeat"></xsd:element>
     </xsd:choice>
   </xsd:group>
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="edbs:titles" />
+      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="idbs:titles" />
       <xsd:attribute name="ref" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="repeat">
     <xsd:complexType>
-      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="edbs:titles" />
-      <xsd:attributeGroup ref="edbs:repeat" />
+      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="idbs:titles" />
+      <xsd:attributeGroup ref="idbs:repeat" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="title">

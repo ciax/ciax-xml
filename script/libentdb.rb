@@ -6,9 +6,9 @@ require "libmodcache"
 class EntDb < Hash
   include ModCache
   def initialize(id,nocache=nil)
-    @v=Msg::Ver.new('edb',5)
+    @v=Msg::Ver.new('idb',5)
     self['id']=id
-    cache('edb',id,nocache){|doc|
+    cache('idb',id,nocache){|doc|
       update(doc)
       doc.domain('init').each{|e0|
         (self[:field]||={})[e0['id']]=e0.text
@@ -49,11 +49,11 @@ if __FILE__ == $0
   begin
     opt=ARGV.getopts("c")
     id=ARGV.shift
-    edb=EntDb.new(id,true)
+    idb=EntDb.new(id,true)
   rescue
     warn "USAGE: #{$0} (-c) [id] (key) .."
     Msg.exit
   end
-  edb.cover_app(true) if opt["c"]
-  puts edb.select(ARGV)
+  idb.cover_app(true) if opt["c"]
+  puts idb.select(ARGV)
 end

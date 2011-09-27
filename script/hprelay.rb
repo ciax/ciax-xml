@@ -12,8 +12,8 @@ begin
   id=ARGV.shift
   host=ARGV.shift||'localhost'
   view=UriView.new(id,host)
-  edb=EntDb.new(id)
-  port=edb['port']
+  idb=EntDb.new(id)
+  port=idb['port']
   @io=IoCmd.new("socat - udp:#{host}:#{port}")
   @stat=Field.new
   @hp=HexPack.new(id)

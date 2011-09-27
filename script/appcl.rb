@@ -12,14 +12,14 @@ id=ARGV.shift
 host=ARGV.shift||'localhost'
 view=UriView.new(id,host)
 begin
-  edb=EntDb.new(id).cover_app
-  @io=IoCmd.new("socat - udp:#{host}:#{edb['port']}")
+  idb=EntDb.new(id).cover_app
+  @io=IoCmd.new("socat - udp:#{host}:#{idb['port']}")
 rescue SelectID
   warn "Usage: appcl [id] (host)"
   Msg.exit
 end
-pr=Print.new(edb[:status],view)
-par=Param.new(edb[:command],:structure)
+pr=Print.new(idb[:status],view)
+par=Param.new(idb[:command],:structure)
 prom=['']
 Shell.new(prom){|line|
   break unless line

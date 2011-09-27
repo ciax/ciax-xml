@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/edbf" xmlns:edbf="http://ciax.sum.naoj.org/ciax-xml/edbf">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idbf" xmlns:idbf="http://ciax.sum.naoj.org/ciax-xml/idbf">
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:simpleContent>
@@ -13,7 +13,7 @@
   <xsd:element name="init">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="edbf:field" />
+        <xsd:element ref="idbf:field" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>

@@ -6,7 +6,7 @@ class Elapse
   end
 
   def to_i
-    Time.now-Time.parse(@stat['time']) rescue 0
+    (Time.now-Time.parse(@stat['time'])).to_i rescue 0
   end
 
   def to_s

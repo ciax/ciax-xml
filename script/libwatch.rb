@@ -26,13 +26,16 @@ class Watch < Hash
     str=self[:active].map{|i|
       self[:block][i]
     }.compact.join('|')
+    @v.msg{"BLOCKING:#{str}"} unless str.empty?
     Regexp.new(str) unless str.empty?
   end
 
   def issue
-    self[:active].map{|i|
+    cmds=self[:active].map{|i|
       self[:exec][i]
     }.compact.flatten(1).uniq
+    @v.msg{"ISSUED:#{cmds}"}
+    cmds
   end
 
   def interrupt
@@ -54,6 +57,7 @@ class Watch < Hash
   private
   def check(i)
     return true unless self[:stat][i]
+    @v.msg{"Check: <#{self[:label][i]}>"}
     self[:stat][i].all?{|h|
       case k=h['ref']
       when 'elapse'
@@ -62,15 +66,19 @@ class Watch < Hash
         v=@stat[k]
       end
       c=h['val']
-      @v.msg{"Checking [#{c}] vs <#{v}>"}
       case h['type']
       when 'onchange'
-        self[:last][k] != v
-      when 'regexp'
-        Regexp.new(c) === v
+        c=self[:last][k]
+        res=(c != v)
+        @v.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
+      when 'pattern'
+        res=(Regexp.new(c) === v)
+        @v.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'range'
-        ReRange.new(c) == v
+        res=(ReRange.new(c) == v)
+        @v.msg{"  Range(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       end
+      res
     }
   end
 end

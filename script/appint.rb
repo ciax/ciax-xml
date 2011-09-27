@@ -12,17 +12,13 @@ require "libappobj"
 require "libprint"
 require "libinteract"
 
-opt={}
-OptionParser.new{|op|
-  op.on('-s'){|v| opt[:s]=v}
-  op.parse!(ARGV)
-}
-id,iocmd=ARGV
 
 begin
+  opt=ARGV.getopts("s")
+  id,iocmd=ARGV
   edb=EntDb.new(id).cover_app
   fdb=FrmDb.new(edb['frm_type'])
-rescue SelectID
+rescue
   warn "Usage: appint (-s) [id] (iocmd)"
   Msg.exit
 end
@@ -41,7 +37,7 @@ aobj=AppObj.new(edb,view){|cmd|
 
 prt=Print.new(edb[:status],view)
 
-port=opt[:s] ? edb["port"] : nil
+port=opt["s"] ? edb["port"] : nil
 
 Interact.new(aobj.prompt,port){|line|
   aobj.dispatch(line){port ? nil : prt.upd}

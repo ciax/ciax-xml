@@ -46,12 +46,11 @@ class EntDb < Hash
 end
 
 if __FILE__ == $0
-  opt=nil
   begin
     opt=ARGV.getopts("c")
     id=ARGV.shift
     edb=EntDb.new(id,true)
-  rescue StandardError
+  rescue
     warn "USAGE: #{$0} (-c) [id] (key) .."
     Msg.exit
   end

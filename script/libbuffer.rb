@@ -5,8 +5,8 @@ require "thread"
 class Buffer
   attr_reader :issue,:wait
   def initialize
-    @q=Queue.new
     @v=Msg::Ver.new("buffer",2)
+    @q=Queue.new
     @proc=Queue.new
     @st=delay
     clear

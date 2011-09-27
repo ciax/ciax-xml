@@ -4,10 +4,10 @@ require "libmsg"
 class IoCmd
   VarDir=""
   def initialize(iocmd,id=nil,wait=0,timeout=nil)
+    @v=Msg::Ver.new('iocmd',1)
     abort " No IO command" unless iocmd
     @iocmd=iocmd.split(' ')
     @f=IO.popen(@iocmd,'r+')
-    @v=Msg::Ver.new('iocmd',1)
     @v.msg{"Init-CLIENT:#{iocmd}"}
     @timeout=timeout
     @wait=wait.to_f

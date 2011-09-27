@@ -4,10 +4,10 @@ require "libmsg"
 class Circular
   attr_reader :max
   def initialize(limit=2)
+    @v=Msg::Ver.new("circ",6)
     @limit=limit
     @counter=0
     @max=0
-    @v=Msg::Ver.new("circ",6)
   end
 
   def reset

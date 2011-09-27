@@ -5,10 +5,10 @@ require "libparam"
 # Rsp Methods
 class FrmRsp
   def initialize(fdb,par,field)
+    @v=Msg::Ver.new("frm/rsp",3)
     @fdb=fdb
     @par=par
     @field=field
-    @v=Msg::Ver.new("frm/rsp",3)
     @field['frm_type']=fdb['id']
     @sel=Hash[fdb[:frame][:status]]
     @fdbs=fdb[:status][:frame]

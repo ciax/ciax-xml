@@ -6,6 +6,7 @@ require "libfrmrsp"
 class FrmObj < String
   attr_reader :field
   def initialize(fdb,field,iocmd)
+    @v=Msg::Ver.new("frmobj",3)
     raise "Input is not Field" unless field.is_a?(Field)
     @field=field
     raise "Command is not IoCmd" unless iocmd.is_a?(IoCmd)
@@ -13,7 +14,6 @@ class FrmObj < String
     par=Param.new(fdb[:command],:frame)
     @cmd=FrmCmd.new(fdb,par,field)
     @rsp=FrmRsp.new(fdb,par,field)
-    @v=Msg::Ver.new("frmobj",3)
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"Set Value  [key(:idx)] (val)")
     @cl.add('unset'=>"Remove Value  [key]")

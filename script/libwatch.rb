@@ -3,6 +3,7 @@ require 'librerange'
 require 'libelapse'
 class Watch < Hash
   def initialize(adb,stat)
+    @v=Msg::Ver.new("watch",12)
     update(adb[:watch])
     @stat=stat
     [:block,:active,:exec,:stat].each{|i|
@@ -10,7 +11,6 @@ class Watch < Hash
     }
     self[:last]={}
     @elapse=Elapse.new(stat)
-    @v=Msg::Ver.new("watch",12)
   end
 
   public

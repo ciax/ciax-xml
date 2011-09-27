@@ -4,9 +4,9 @@ require "libparam"
 # Cmd Methods
 class FrmCmd
   def initialize(fdb,par,field)
+    @v=Msg::Ver.new("frm/cmd",3)
     @field=field
     @par=par
-    @v=Msg::Ver.new("frm/cmd".upcase,3)
     @cache={}
     @fstr={}
     @sel=Hash[fdb[:frame][:command]]

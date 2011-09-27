@@ -130,6 +130,5 @@ if __FILE__ == $0
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit
   end
-  db=ARGV.inject(adb){|d,s| d[s.to_sym]}
-  puts Msg.view_struct(db)
+  puts adb.select(ARGV)
 end

@@ -37,7 +37,6 @@ if __FILE__ == $0
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit
   end
-  db=ARGV.inject(mdb){|d,s| d[s.to_sym]}
-  puts Msg.view_struct(db)
+  puts mdb.select(ARGV)
 end
 

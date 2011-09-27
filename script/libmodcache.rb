@@ -34,4 +34,10 @@ module ModCache
   def to_s
     Msg.view_struct(self)
   end
+
+  def select(ary)
+    db=ary.inject(self){|d,s| d[s.to_sym]}
+    db.extend(ModCache)
+  end
 end
+

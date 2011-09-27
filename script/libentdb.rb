@@ -53,6 +53,5 @@ if __FILE__ == $0
     Msg.exit
   end
   edb.cover_app(true) if ARGV.shift
-  db=ARGV.inject(edb){|d,s| d[s.to_sym]}
-  puts Msg.view_struct(db)
+  puts edb.select(ARGV)
 end

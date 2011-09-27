@@ -23,7 +23,7 @@ class Msg
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
-      return unless ENV['VER']
+      return unless ENV['VER'] && ! ENV['VER'].empty?
       @ind=@@base
       @@base+=add
       @ind=@@base if add < 0
@@ -44,7 +44,7 @@ class Msg
     end
 
     def condition(msg) # VER= makes setenv "" to VER otherwise nil
-      return true if ENV['VER'] == ''
+      return true if ENV['VER'] == '*'
       ENV['VER'].upcase.split(',').any?{|s|
         s.split(':').all?{|e|
           msg.upcase.include?(e)

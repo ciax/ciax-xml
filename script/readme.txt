@@ -6,9 +6,9 @@
  libsqlite3-ruby1.9.1
 coreutils:
  grep,cut,tail
- 
 
 ## Verbose mode ##
-set VER environment
-VER=string1,string2... for set sum
-VER=string1:strint2..  for set intersection
+ set VER environment
+ VER=string1,string2... for set sum
+ VER=string1:strint2..  for set intersection
+ VER=* for All

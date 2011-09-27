@@ -1,0 +1,87 @@
+### Structure of Data ###
+  FIELD: {}
+        id => data 
+        ...
+
+  VIEW: {}
+        "id" => ID
+        "class" => class
+        "frame" => frame
+        "stat" => {}
+           id => val
+        "symbol" =>{}
+           id => {"type","class","msg"}
+           ...
+
+  WATCH: {}
+
+
+### Struct of Db ###
+  FrmDb
+    ::command
+      :label
+         id=>Label String
+         ...
+      :response
+         ref=> Status ID
+         ...
+      :nocache
+         id=> true or false
+         ...         
+    ::status
+      :label
+         id=>Label String
+         ...
+      :symbol
+         id=>Table ID
+         ...
+    ::frame (Common part)
+      :command
+         :main=>[ {data1},{data2} ..]
+         :ccrange=>[ {data1},{data2} ..]
+         :select
+           id=>[ {data1},{data2} ..]
+           ...
+      :status
+         :main=>[ {val1},{val2} ..]
+         :ccrange=>[ {val1},{val2} ..]
+         :select
+           id=>[ {val1},{val2} ..]
+           ...
+    ::symbol (Tables)
+       table1=>{table}
+       table2=>{table}
+
+  AppDb
+    { "id" ,"frame", "label", "interval }
+    :command
+      :structure
+        id => [ statement,.. ]
+           statement=["cmd",{arg1},{arg2}..]
+        ...
+      :label => {}
+        id => Label String
+    :status
+      "talbe"=> Symbol Table
+      :structure
+        id => [ { :type, "ref" .. },... ]
+        ...
+      :label => {}
+        id => Label String
+      :group => []
+        [ Title, [ id1, id2,.. ] ]
+        ...
+      :symbol => {}
+        id => Symbol Table ID
+        ..
+    :watch => []
+        {:type, :var=>{variable},.. }
+          :period => second
+          :condition => {:operator, :ary => [ {:ref,:val},.. ] }
+          :command => [ [statement],.. ]
+          :blocking => regexp
+          :interrupt => [ [statement],..]
+
+  SymDb
+     id => { label, type(pattern|range), class(normal|warn..), msg}
+        ...

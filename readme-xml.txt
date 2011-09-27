@@ -1,14 +1,26 @@
-## Install required (Debian squeeze) ##
-ruby1.9.1 (for using JSON)
-libxml-ruby1.9.1 (XML instead of REXML)
-libxml2-utils (xmllint)
-socat
-libsqlite3-ruby1.9.1
+## Layer description ##
+  frm: Frame layer
+       classified by frame format
+       transaction: sync
+  app: Application layer
+       classified by application
+       transaction: async
+  ins: Instance layer
+       classified by individuality or identity
+       function: aliasing, symboling and labeling over adb items
 
-## Verbose mode ##
-set VER environment
-VER=string1,string2... for set sum
-VER=string1:strint2..  for set intersection
+## DB description ##
+  fdb: Frame DB
+    fdbc: Command DB
+    fdbs: Status DB
+  adb: Apprication DB
+    adbc: Command DB
+    adbs: Status DB
+  idb: Instance DB
+  sdb: Symbol DB
+      used by adb or idb
+  wdb: Watch DB
+      included in adb      
 
 ## String restriction ##
 adb//cmdset@id -> never use ':'
@@ -33,7 +45,7 @@ adb//cmdset@id -> never use ':'
             adb//cmdset/command/argv (eval if @format exists, Math included)
 
  ${*:*}
-    description : substitute status ${k1:k2:idx} => var[k1][k2][idx]
+    description : substitute status ${key:idx:idx} => var[key][idx][idx]
                   content should be numerical expression or of csv array
                   idx can be equation (i.e. $_+1 )
     usable: fdb//cmdframe/char
@@ -42,7 +54,7 @@ adb//cmdset@id -> never use ':'
     description : formula parameter
     usable: adb//status/value/float@formula
 
- %? (Format string)
+ %d,%f (Format string)
     description : sprintf with sequence number array (in repeat)
             adb//status/repeat/value@id
             adb//status/repeat/value@label
@@ -65,8 +77,6 @@ adb//cmdset@id -> never use ':'
     fdb//cmdframe/string (with @format)
     --   
     adb//cmdset/command/argv (with @format, including Math functions)
-   
-
 
 ### Explicit conversion by Attributes ###
 
@@ -94,92 +104,3 @@ adb//cmdset@id -> never use ':'
   adb//watch/interrupt@name <= fdb//command@id
   adb//watch//condition/value@ref <= adb//value@id
   *@symbol <= *//symbol/table@id
-
-### Structure of Data ###
-  FIELD:
-
-  STAT: {}
-        id => data 
-        ...
-
-  VIEW: {}
-        "id" => ID
-        "class" => class
-        "frame" => frame
-        "stat" => {}
-           id => val
-        "symbol" =>{}
-           id => {"type","class","msg"}
-           ...
-
-### Struct of Db ###
-  FrmDb
-    ::command
-      :label
-         id=>Label String
-         ...
-      :response
-         ref=> Status ID
-         ...
-      :nocache
-         id=> true or false
-         ...         
-    ::status
-      :label
-         id=>Label String
-         ...
-      :symbol
-         id=>Table ID
-         ...
-    ::frame (Common part)
-      :command
-         :main=>[ {data1},{data2} ..]
-         :ccrange=>[ {data1},{data2} ..]
-         :select
-           id=>[ {data1},{data2} ..]
-           ...
-      :status
-         :main=>[ {val1},{val2} ..]
-         :ccrange=>[ {val1},{val2} ..]
-         :select
-           id=>[ {val1},{val2} ..]
-           ...
-    ::symbol (Tables)
-       table1=>{table}
-       table2=>{table}
-
-  AppDb
-    { "id" ,"frame", "label", "interval }
-    :command
-      :structure
-        id => [ statement,.. ]
-           statement=["cmd",{arg1},{arg2}..]
-        ...
-      :label => {}
-        id => Label String
-    :status
-      "talbe"=> Symbol Table
-      :structure
-        id => [ { :type, "ref" .. },... ]
-        ...
-      :label => {}
-        id => Label String
-      :group => []
-        [ Title, [ id1, id2,.. ] ]
-        ...
-      :symbol => {}
-        id => Symbol Table ID
-        ..
-    :watch => []
-        {:type, :var=>{variable},.. }
-          :period => second
-          :condition => {:operator, :ary => [ {:ref,:val},.. ] }
-          :command => [ [statement],.. ]
-          :blocking => regexp
-          :interrupt => [ [statement],..]
-
-  SymDb
-     id => { label, type, :record}
-       :record => {}
-         id=>{ class,msg }
-         ...

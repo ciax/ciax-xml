@@ -1,12 +1,12 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 [[ "$1" == -* ]] && { opt=$1; shift; }
-[ "$opt" ] && rm ~/.var/cache/* ~/.var/json/status*
-[ "$1" ] && { setfld $1 || _usage_key "(-lgsc)"; }
+[ "$opt" ] && rm ~/.var/json/status*
 devices=${1:-`ls ~/.var/field_???.json|cut -d_ -f2|cut -d. -f1`};shift
 par="$*"
 for id in $devices; do
-    setfld $id || continue
+    aline=`~/lib/libentdb.rb $id|tr -d '"'|grep app` || continue
+    app=${aline#*:}
     echo "$C2#### $app($id) ####$C0"
     file=$HOME/.var/field_$id.json
     stat=$HOME/.var/json/status_$id.json

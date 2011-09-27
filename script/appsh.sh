@@ -8,7 +8,7 @@ done
 shift $(( $OPTIND -1 ))
 ver=iocmd:client${VER:+,$VER}
 if [ "$dmy" ] ; then
-    VER=$ver $1 "frmsim $1"
+    VER=$ver appint $1 "frmsim $1"
 else
     VER=$ver appint $1
 fi

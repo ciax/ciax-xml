@@ -1,53 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="all" label="Shared">
-    <table id="iid_tsc" label="Instrument ID by TSC" type="string">
-      <case class="warn" msg="NONE">0</case>
-      <case class="normal" msg="IRCS">1</case>
-      <case class="normal" msg="CIAO">3</case>
-      <case class="normal" msg="FOCAS">5</case>
-      <case class="normal" msg="COMICS">7</case>
-      <case class="normal" msg="K3D">10</case>
-      <case class="normal" msg="MOIRCS">12</case>
-      <case class="normal" msg="CIAX3">13</case>
-      <case class="warn" msg="N/A" />
+    <table id="iid_tsc" label="Instrument ID by TSC">
+      <pattern class="warn" msg="NONE">^0$</pattern>
+      <pattern class="normal" msg="IRCS">^1$</pattern>
+      <pattern class="normal" msg="CIAO">^3$</pattern>
+      <pattern class="normal" msg="FOCAS">5</pattern>
+      <pattern class="normal" msg="COMICS">7</pattern>
+      <pattern class="normal" msg="K3D">10</pattern>
+      <pattern class="normal" msg="MOIRCS">12</pattern>
+      <pattern class="normal" msg="CIAX3">13</pattern>
+      <pattern class="warn" msg="N/A" />
     </table>
-    <table id="iid_ac" label="Instrument ID by Auto Connector" type="string">
-      <case class="warn" msg="NONE">0</case>
-      <case class="normal" msg="CIAX3">1</case>
-      <case class="normal" msg="COMICS">2</case>
-      <case class="normal" msg="CIAO">3</case>
-      <case class="normal" msg="FOCAS">4</case>
-      <case class="normal" msg="IRCS">5</case>
-      <case class="normal" msg="N/A">6</case>
-      <case class="normal" msg="MOIRCS">7</case>
-      <case class="normal" msg="MP-CS1">8</case>
-      <case class="normal" msg="MP-CS2">9</case>
-      <case class="warn" msg="OTHER" />
+    <table id="iid_ac" label="Instrument ID by Auto Connector">
+      <pattern class="warn" msg="NONE">0</pattern>
+      <pattern class="normal" msg="CIAX3">1</pattern>
+      <pattern class="normal" msg="COMICS">2</pattern>
+      <pattern class="normal" msg="CIAO">3</pattern>
+      <pattern class="normal" msg="FOCAS">4</pattern>
+      <pattern class="normal" msg="IRCS">5</pattern>
+      <pattern class="normal" msg="N/A">6</pattern>
+      <pattern class="normal" msg="MOIRCS">7</pattern>
+      <pattern class="normal" msg="MP-CS1">8</pattern>
+      <pattern class="normal" msg="MP-CS2">9</pattern>
+      <pattern class="warn" msg="OTHER" />
     </table>
-    <table id="normal" type="string">
-      <case class="normal" msg="ON">1</case>
-      <case class="normal" msg="OFF">0</case>
+    <table id="normal">
+      <pattern class="normal" msg="ON">1</pattern>
+      <pattern class="normal" msg="OFF">0</pattern>
     </table>
-    <table id="warn" type="string">
-      <case class="warn" msg="ON">1</case>
-      <case class="normal" msg="OFF">0</case>
+    <table id="warn">
+      <pattern class="warn" msg="ON">1</pattern>
+      <pattern class="normal" msg="OFF">0</pattern>
     </table>
-    <table id="off-warn" type="string">
-      <case class="normal" msg="ON">1</case>
-      <case class="warn" msg="OFF">0</case>
+    <table id="off-warn">
+      <pattern class="normal" msg="ON">1</pattern>
+      <pattern class="warn" msg="OFF">0</pattern>
     </table>
-    <table id="alarm" type="string">
-      <case class="alarm" msg="ON">1</case>
-      <case class="hide" msg="OFF">0</case>
+    <table id="alarm">
+      <pattern class="alarm" msg="ON">1</pattern>
+      <pattern class="hide" msg="OFF">0</pattern>
     </table>
-    <table id="off-alarm" type="string">
-      <case class="hide" msg="ON">1</case>
-      <case class="alarm" msg="OFF">0</case>
+    <table id="off-alarm">
+      <pattern class="hide" msg="ON">1</pattern>
+      <pattern class="alarm" msg="OFF">0</pattern>
     </table>
-    <table id="hide" type="string">
-      <case class="hide" msg="ON">1</case>
-      <case class="hide" msg="OFF">0</case>
+    <table id="hide">
+      <pattern class="hide" msg="ON">1</pattern>
+      <pattern class="hide" msg="OFF">0</pattern>
     </table>
   </symbol>
 </sdb>

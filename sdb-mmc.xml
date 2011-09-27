@@ -1,39 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="mmc" label="MOIRCS Carrousel">
-    <table id="err" type="string">
-      <case class="hide" msg="No Error">0</case>
-      <case class="alarm" msg="Could not burn flash successfully">1</case>
-      <case class="alarm" msg="Could not download file">2</case>
-      <case class="alarm" msg="Not enough memory to execute user program">3</case>
-      <case class="alarm" msg="Attempt to access a non-existent array element">4</case>
-      <case class="alarm" msg="Unknown Error" />
+    <table id="err">
+      <pattern class="hide" msg="No Error">0</pattern>
+      <pattern class="alarm" msg="Could not burn flash successfully">1</pattern>
+      <pattern class="alarm" msg="Could not download file">2</pattern>
+      <pattern class="alarm" msg="Not enough memory to execute user program">3</pattern>
+      <pattern class="alarm" msg="Attempt to access a non-existent array element">4</pattern>
+      <pattern class="alarm" msg="Unknown Error" />
     </table>
-    <table id="abs" type="range">
-      <case class="warn" msg="S00/A06">0</case>
-      <case class="warn" msg="S01/A07">-1</case>
-      <case class="warn" msg="S02/A08">-2</case>
-      <case class="warn" msg="S03/A09">-3</case>
-      <case class="warn" msg="S04/A10">-4</case>
-      <case class="warn" msg="S05/A11">-5</case>
-      <case class="warn" msg="S06/A12">-6</case>
-      <case class="warn" msg="S07/A13">-7</case>
-      <case class="warn" msg="S08/A14">-8</case>
-      <case class="warn" msg="S09/A15">-9</case>
-      <case class="warn" msg="S10/A16">-10</case>
-      <case class="warn" msg="S11/A17">-11</case>
-      <case class="warn" msg="S12/A18">-12</case>
-      <case class="warn" msg="S13/H19">-13</case>
-      <case class="warn" msg="S14/H20">-14</case>
-      <case class="warn" msg="S15/H21">-15</case>
-      <case class="warn" msg="S16/H22">-16</case>
-      <case class="warn" msg="S17/X23">-17</case>
-      <case class="warn" msg="S18/A00">-18</case>
-      <case class="warn" msg="S19/A01">-19</case>
-      <case class="warn" msg="S20/A02">-20</case>
-      <case class="warn" msg="S21/A03">-21</case>
-      <case class="warn" msg="X22/A04">-22</case>
-      <case class="warn" msg="X23(Sensor)/A05">-23</case>
+    <table id="abs">
+      <range class="warn" msg="S00/A06">0</range>
+      <range class="warn" msg="S01/A07">-1</range>
+      <range class="warn" msg="S02/A08">-2</range>
+      <range class="warn" msg="S03/A09">-3</range>
+      <range class="warn" msg="S04/A10">-4</range>
+      <range class="warn" msg="S05/A11">-5</range>
+      <range class="warn" msg="S06/A12">-6</range>
+      <range class="warn" msg="S07/A13">-7</range>
+      <range class="warn" msg="S08/A14">-8</range>
+      <range class="warn" msg="S09/A15">-9</range>
+      <range class="warn" msg="S10/A16">-10</range>
+      <range class="warn" msg="S11/A17">-11</range>
+      <range class="warn" msg="S12/A18">-12</range>
+      <range class="warn" msg="S13/H19">-13</range>
+      <range class="warn" msg="S14/H20">-14</range>
+      <range class="warn" msg="S15/H21">-15</range>
+      <range class="warn" msg="S16/H22">-16</range>
+      <range class="warn" msg="S17/X23">-17</range>
+      <range class="warn" msg="S18/A00">-18</range>
+      <range class="warn" msg="S19/A01">-19</range>
+      <range class="warn" msg="S20/A02">-20</range>
+      <range class="warn" msg="S21/A03">-21</range>
+      <range class="warn" msg="X22/A04">-22</range>
+      <range class="warn" msg="X23(Sensor)/A05">-23</range>
     </table>
   </symbol>
 </sdb>

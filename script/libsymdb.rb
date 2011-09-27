@@ -16,7 +16,7 @@ class SymDb < Hash
         id=e1['id']
         label=e1['label']
         e1.each{|e2| # case
-          (self[id]||=[]) << e2.to_h.update({'type' => e1['type']})
+          (self[id]||=[]) << e2.to_h.update({'type' => e2.name})
         }
         @v.msg{"Symbol Table:#{id} : #{label}"}
       }
@@ -39,7 +39,7 @@ class SymDb < Hash
           next unless ReRange.new(hash['val']) == val
           @v.msg{"VIEW:Range:[#{hash['val']}] and [#{val}]"}
           vs[key]={'type' => 'num'}.update(hash)
-        when 'regexp','string'
+        when 'pattern'
           next unless /#{hash['val']}/ === val || val == 'default'
           @v.msg{"VIEW:Regexp:[#{hash['val']}] and [#{val}]"}
           vs[key]={'type' => 'str'}.update(hash)

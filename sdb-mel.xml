@@ -1,39 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="mel" label="Cart PLC">
-    <table id="ecode" label="ExitCode" type="string">
-      <case class="hide" msg="OK">0000</case>
-      <case class="alarm" msg="RW Region Error">0002</case>
-      <case class="alarm" msg="CMD Code Error">0050</case>
-      <case class="alarm" msg="Devide Num Error">0056</case>
-      <case class="alarm" msg="Communication Error">005B</case>
-      <case class="alarm" msg="CPU Watch timeout Error">0060</case>
-      <case class="alarm" msg="Unknown" />
+    <table id="ecode" label="ExitCode">
+      <pattern class="hide" msg="OK">0000</pattern>
+      <pattern class="alarm" msg="RW Region Error">0002</pattern>
+      <pattern class="alarm" msg="CMD Code Error">0050</pattern>
+      <pattern class="alarm" msg="Devide Num Error">0056</pattern>
+      <pattern class="alarm" msg="Communication Error">005B</pattern>
+      <pattern class="alarm" msg="CPU Watch timeout Error">0060</pattern>
+      <pattern class="alarm" msg="Unknown" />
     </table>
-    <table id="motor" type="range">
-      <case class="alarm" msg="LOW">:10</case>
-      <case class="normal" msg="OK">10&lt;:30</case>
-      <case class="alarm" msg="HIGH">30&lt;:</case>
+    <table id="ist">
+      <pattern class="normal" msg="MOIRCS">2</pattern>
+      <pattern class="normal" msg="CIAO">3</pattern>
+      <pattern class="warn" msg="N/A" />
     </table>
-    <table id="bvl" type="range">
-      <case class="alarm" msg="LOW">:20</case>
-      <case class="warn" msg="LESS">20&lt;:22</case>
-      <case class="normal" msg="OK">22&lt;:26</case>
-      <case class="warn" msg="FULL">26&lt;:28</case>
-      <case class="alarm" msg="HIGH">28&lt;:</case>
+    <table id="jpos">
+      <pattern class="normal" msg="D">0</pattern>
+      <pattern class="normal" msg="1(L)">1</pattern>
+      <pattern class="normal" msg="2(M)">2</pattern>
+      <pattern class="normal" msg="3(H)">3</pattern>
+      <pattern class="normal" msg="CHG">4</pattern>
+      <pattern class="warn" msg="N/A" />
     </table>
-    <table id="ist" type="string">
-      <case class="normal" msg="MOIRCS">2</case>
-      <case class="normal" msg="CIAO">3</case>
-      <case class="warn" msg="N/A" />
+    <table id="motor">
+      <range class="alarm" msg="LOW">:10</range>
+      <range class="normal" msg="OK">10&lt;:30</range>
+      <range class="alarm" msg="HIGH">30&lt;:</range>
     </table>
-    <table id="jpos" type="string">
-      <case class="normal" msg="D">0</case>
-      <case class="normal" msg="1(L)">1</case>
-      <case class="normal" msg="2(M)">2</case>
-      <case class="normal" msg="3(H)">3</case>
-      <case class="normal" msg="CHG">4</case>
-      <case class="warn" msg="N/A" />
+    <table id="bvl">
+      <range class="alarm" msg="LOW">:20</range>
+      <range class="warn" msg="LESS">20&lt;:22</range>
+      <range class="normal" msg="OK">22&lt;:26</range>
+      <range class="warn" msg="FULL">26&lt;:28</range>
+      <range class="alarm" msg="HIGH">28&lt;:</range>
     </table>
   </symbol>
 </sdb>

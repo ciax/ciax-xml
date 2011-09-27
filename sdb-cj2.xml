@@ -1,91 +1,91 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="cj2" label="Stand-by Flange PLC">
-    <table id="exe" type="string">
-      <case class="normal" msg="OFF">0000</case>
-      <case class="warn" msg="ON" />
+    <table id="exe">
+      <pattern class="normal" msg="OFF">0000</pattern>
+      <pattern class="warn" msg="ON" />
     </table>
-    <table id="rst" type="string">
-      <case class="normal" msg="OK">111</case>
-      <case class="normal" msg="OFF">000</case>
-      <case class="alarm" msg="BAD" />
+    <table id="rst">
+      <pattern class="normal" msg="OK">111</pattern>
+      <pattern class="normal" msg="OFF">000</pattern>
+      <pattern class="alarm" msg="BAD" />
     </table>
-    <table id="ist" type="string">
-      <case class="normal" msg="ON ">1111</case>
-      <case class="warn" msg="OFF">0000</case>
-      <case class="alarm" msg="N/A" />
+    <table id="ist">
+      <pattern class="normal" msg="ON ">1111</pattern>
+      <pattern class="warn" msg="OFF">0000</pattern>
+      <pattern class="alarm" msg="N/A" />
     </table>
-    <table id="hook" type="string">
-      <case class="normal" msg="HOOK">10</case>
-      <case class="normal" msg="UNHK">01</case>
-      <case class="alarm" msg="N/A">00</case>
+    <table id="hook">
+      <pattern class="normal" msg="HOOK">10</pattern>
+      <pattern class="normal" msg="UNHK">01</pattern>
+      <pattern class="alarm" msg="N/A">00</pattern>
     </table>
-    <table id="jack" type="string">
-      <case class="normal" msg="UP">10</case>
-      <case class="normal" msg="DW">01</case>
-      <case class="alarm" msg="N/A">00</case>
+    <table id="jack">
+      <pattern class="normal" msg="UP">10</pattern>
+      <pattern class="normal" msg="DW">01</pattern>
+      <pattern class="alarm" msg="N/A">00</pattern>
     </table>
-    <table id="ctl" type="string">
-      <case class="normal" msg="AUTO">10</case>
-      <case class="normal" msg="MANUAL">01</case>
-      <case class="alarm" msg="N/A">00</case>
+    <table id="ctl">
+      <pattern class="normal" msg="AUTO">10</pattern>
+      <pattern class="normal" msg="MANUAL">01</pattern>
+      <pattern class="alarm" msg="N/A">00</pattern>
     </table>
-    <table id="mov" type="string">
-      <case class="normal" msg="FW">10</case>
-      <case class="normal" msg="BK">01</case>
-      <case class="alarm" msg="N/A">00</case>
+    <table id="mov">
+      <pattern class="normal" msg="FW">10</pattern>
+      <pattern class="normal" msg="BK">01</pattern>
+      <pattern class="alarm" msg="N/A">00</pattern>
     </table>
-    <table id="rot" type="string">
-      <case class="normal" msg="LOAD">10</case>
-      <case class="normal" msg="STORE">01</case>
-      <case class="alarm" msg="N/A">00</case>
+    <table id="rot">
+      <pattern class="normal" msg="LOAD">10</pattern>
+      <pattern class="normal" msg="STORE">01</pattern>
+      <pattern class="alarm" msg="N/A">00</pattern>
     </table>
-    <table id="dor" type="string">
-      <case class="normal" msg="OPEN">10</case>
-      <case class="normal" msg="CLOSE">01</case>
-      <case class="alarm" msg="N/A">00</case>
+    <table id="dor">
+      <pattern class="normal" msg="OPEN">10</pattern>
+      <pattern class="normal" msg="CLOSE">01</pattern>
+      <pattern class="alarm" msg="N/A">00</pattern>
     </table>
-    <table id="err" type="string">
-      <case class="normal" msg="OK">0</case>
-      <case class="alarm" msg="PLC Failure">2</case>
-      <case class="alarm" msg="Emg Stop">3</case>
-      <case class="alarm" msg="FIX Hook operation">17</case>
-      <case class="alarm" msg="FIX UnHook operation">18</case>
-      <case class="alarm" msg="FIX EJB1 operation">21</case>
-      <case class="alarm" msg="FIX EJB2 operation">22</case>
-      <case class="alarm" msg="FIX EJB3 operation">23</case>
-      <case class="alarm" msg="FIX EJB4 operation">24</case>
-      <case class="alarm" msg="FIX EJB1 servo">25</case>
-      <case class="alarm" msg="FIX EJB2 servo">26</case>
-      <case class="alarm" msg="FIX EJB3 servo">27</case>
-      <case class="alarm" msg="FIX EJB4 servo">28</case>
-      <case class="alarm" msg="FIX Plug forward operation">33</case>
-      <case class="alarm" msg="FIX Plug backward operation">34</case>
-      <case class="alarm" msg="FIX Plug contact">35</case>
-      <case class="alarm" msg="MOV Hook operation">49</case>
-      <case class="alarm" msg="MOV UnHook operation">50</case>
-      <case class="alarm" msg="MOV Flange R operation">51</case>
-      <case class="alarm" msg="MOV Flange L operation">52</case>
-      <case class="alarm" msg="MOV EJB5 operation">53</case>
-      <case class="alarm" msg="MOV EJB6 operation">54</case>
-      <case class="alarm" msg="MOV EJB7 operation">55</case>
-      <case class="alarm" msg="MOV EJB8 operation">56</case>
-      <case class="alarm" msg="MOV EJB5 servo">57</case>
-      <case class="alarm" msg="MOV EJB6 servo">58</case>
-      <case class="alarm" msg="MOV EJB7 servo">59</case>
-      <case class="alarm" msg="MOV EJB8 servo">60</case>
-      <case class="alarm" msg="MOV Transer forward operation">65</case>
-      <case class="alarm" msg="MOV Transer backward operation">66</case>
-      <case class="alarm" msg="MOV Transer inverter">67</case>
-      <case class="alarm" msg="FIX Power Balance R-S">81</case>
-      <case class="alarm" msg="FIX Power Balance S-T">82</case>
-      <case class="alarm" msg="FIX Power Balance T-R">83</case>
-      <case class="alarm" msg="MOV Power Balance R-S">89</case>
-      <case class="alarm" msg="MOV Power Balance S-T">90</case>
-      <case class="alarm" msg="MOV Power Balance T-R">91</case>
-      <case class="alarm" msg="Shutter up operation">97</case>
-      <case class="alarm" msg="Shutter down operation">98</case>
-      <case class="alarm" msg="Failure" />
+    <table id="err">
+      <pattern class="normal" msg="OK">^0$</pattern>
+      <pattern class="alarm" msg="PLC Failure">^2$</pattern>
+      <pattern class="alarm" msg="Emg Stop">^3$</pattern>
+      <pattern class="alarm" msg="FIX Hook operation">17</pattern>
+      <pattern class="alarm" msg="FIX UnHook operation">18</pattern>
+      <pattern class="alarm" msg="FIX EJB1 operation">21</pattern>
+      <pattern class="alarm" msg="FIX EJB2 operation">22</pattern>
+      <pattern class="alarm" msg="FIX EJB3 operation">23</pattern>
+      <pattern class="alarm" msg="FIX EJB4 operation">24</pattern>
+      <pattern class="alarm" msg="FIX EJB1 servo">25</pattern>
+      <pattern class="alarm" msg="FIX EJB2 servo">26</pattern>
+      <pattern class="alarm" msg="FIX EJB3 servo">27</pattern>
+      <pattern class="alarm" msg="FIX EJB4 servo">28</pattern>
+      <pattern class="alarm" msg="FIX Plug forward operation">33</pattern>
+      <pattern class="alarm" msg="FIX Plug backward operation">34</pattern>
+      <pattern class="alarm" msg="FIX Plug contact">35</pattern>
+      <pattern class="alarm" msg="MOV Hook operation">49</pattern>
+      <pattern class="alarm" msg="MOV UnHook operation">50</pattern>
+      <pattern class="alarm" msg="MOV Flange R operation">51</pattern>
+      <pattern class="alarm" msg="MOV Flange L operation">52</pattern>
+      <pattern class="alarm" msg="MOV EJB5 operation">53</pattern>
+      <pattern class="alarm" msg="MOV EJB6 operation">54</pattern>
+      <pattern class="alarm" msg="MOV EJB7 operation">55</pattern>
+      <pattern class="alarm" msg="MOV EJB8 operation">56</pattern>
+      <pattern class="alarm" msg="MOV EJB5 servo">57</pattern>
+      <pattern class="alarm" msg="MOV EJB6 servo">58</pattern>
+      <pattern class="alarm" msg="MOV EJB7 servo">59</pattern>
+      <pattern class="alarm" msg="MOV EJB8 servo">60</pattern>
+      <pattern class="alarm" msg="MOV Transer forward operation">65</pattern>
+      <pattern class="alarm" msg="MOV Transer backward operation">66</pattern>
+      <pattern class="alarm" msg="MOV Transer inverter">67</pattern>
+      <pattern class="alarm" msg="FIX Power Balance R-S">81</pattern>
+      <pattern class="alarm" msg="FIX Power Balance S-T">82</pattern>
+      <pattern class="alarm" msg="FIX Power Balance T-R">83</pattern>
+      <pattern class="alarm" msg="MOV Power Balance R-S">89</pattern>
+      <pattern class="alarm" msg="MOV Power Balance S-T">90</pattern>
+      <pattern class="alarm" msg="MOV Power Balance T-R">91</pattern>
+      <pattern class="alarm" msg="Shutter up operation">97</pattern>
+      <pattern class="alarm" msg="Shutter down operation">98</pattern>
+      <pattern class="alarm" msg="Failure" />
     </table>
   </symbol>
 </sdb>

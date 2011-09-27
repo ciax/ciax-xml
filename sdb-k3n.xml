@@ -1,34 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="k3n" label="Helium Compressor Coolant Flow">
-    <table id="flow" type="range">
-      <case class="alarm" msg="HH">6:</case>
-      <case class="warn" msg="H">5:&lt;6</case>
-      <case class="normal" msg="M">4:&lt;5</case>
-      <case class="warn" msg="L">3:&lt;4</case>
-      <case class="alarm" msg="LL">:&lt;3</case>
+    <table id="rcode" label="Response Code">
+      <pattern class="normal" msg="OK">0000</pattern>
+      <pattern class="alarm" msg="Cmd Length Over">1001</pattern>
+      <pattern class="alarm" msg="Cmd Length Short">1002</pattern>
+      <pattern class="alarm" msg="Parameter Error">1100</pattern>
+      <pattern class="alarm" msg="Area Error">1101</pattern>
+      <pattern class="alarm" msg="Start Address Error">1103</pattern>
+      <pattern class="alarm" msg="Action Error">2203</pattern>
+      <pattern class="alarm" msg="ResponseCode Error" />
     </table>
-    <table id="rcode" label="Response Code" type="string" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case class="normal" msg="OK">0000</case>
-      <case class="alarm" msg="Cmd Length Over">1001</case>
-      <case class="alarm" msg="Cmd Length Short">1002</case>
-      <case class="alarm" msg="Parameter Error">1100</case>
-      <case class="alarm" msg="Area Error">1101</case>
-      <case class="alarm" msg="Start Address Error">1103</case>
-      <case class="alarm" msg="Action Error">2203</case>
-      <case class="alarm" msg="ResponseCode Error" />
+    <table id="ecode" label="ExitCode">
+      <pattern class="normal" msg="OK">00</pattern>
+      <pattern class="alarm" msg="CMD Error">0F</pattern>
+      <pattern class="alarm" msg="Parity Error">10</pattern>
+      <pattern class="alarm" msg="Fleming Error">11</pattern>
+      <pattern class="alarm" msg="Over Run Error">12</pattern>
+      <pattern class="alarm" msg="BCC Error">13</pattern>
+      <pattern class="alarm" msg="Format Error">14</pattern>
+      <pattern class="alarm" msg="Sub Address Error">16</pattern>
+      <pattern class="alarm" msg="Frame Length Error">18</pattern>
+      <pattern class="alarm" msg="Unknown" />
     </table>
-    <table id="ecode" label="ExitCode" type="string" xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
-      <case class="normal" msg="OK">00</case>
-      <case class="alarm" msg="CMD Error">0F</case>
-      <case class="alarm" msg="Parity Error">10</case>
-      <case class="alarm" msg="Fleming Error">11</case>
-      <case class="alarm" msg="Over Run Error">12</case>
-      <case class="alarm" msg="BCC Error">13</case>
-      <case class="alarm" msg="Format Error">14</case>
-      <case class="alarm" msg="Sub Address Error">16</case>
-      <case class="alarm" msg="Frame Length Error">18</case>
-      <case class="alarm" msg="Unknown" />
+    <table id="flow">
+      <range class="alarm" msg="HH">6:</range>
+      <range class="warn" msg="H">5:&lt;6</range>
+      <range class="normal" msg="M">4:&lt;5</range>
+      <range class="warn" msg="L">3:&lt;4</range>
+      <range class="alarm" msg="LL">:&lt;3</range>
     </table>
   </symbol>
 </sdb>

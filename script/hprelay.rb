@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "optparse"
-require "libentdb"
+require "libinsdb"
 require "libfield"
 require "libiocmd"
 require "libhexpack"
@@ -12,7 +12,7 @@ begin
   id=ARGV.shift
   host=ARGV.shift||'localhost'
   view=UriView.new(id,host)
-  idb=EntDb.new(id)
+  idb=InsDb.new(id)
   port=idb['port']
   @io=IoCmd.new("socat - udp:#{host}:#{port}")
   @stat=Field.new

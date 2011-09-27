@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "optparse"
-require "libentdb"
+require "libinsdb"
 require "libfrmdb"
 require "libfrmobj"
 require "libiocmd"
@@ -10,7 +10,7 @@ require "libinteract"
 begin
   opt=ARGV.getopts("s")
   id,iocmd=ARGV
-  idb=EntDb.new(id)
+  idb=InsDb.new(id)
   fdb=FrmDb.new(idb['frm_type']||idb['app_type'])
   field=Field.new(id).load
   field.update(idb[:field]) if idb.key?(:field)

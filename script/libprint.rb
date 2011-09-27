@@ -77,11 +77,11 @@ end
 
 if __FILE__ == $0
   require "json"
-  require "libentdb"
+  require "libinsdb"
   abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
   while gets
     view=JSON.load($_)
-    db=EntDb.new(view['id']).cover_app
+    db=InsDb.new(view['id']).cover_app
     puts Print.new(db[:status],view).upd
   end
 end

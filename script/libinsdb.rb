@@ -3,7 +3,7 @@ require "optparse"
 require "libmsg"
 require "libmodcache"
 
-class EntDb < Hash
+class InsDb < Hash
   include ModCache
   def initialize(id,nocache=nil)
     @v=Msg::Ver.new('idb',5)
@@ -49,7 +49,7 @@ if __FILE__ == $0
   begin
     opt=ARGV.getopts("c")
     id=ARGV.shift
-    idb=EntDb.new(id,true)
+    idb=InsDb.new(id,true)
   rescue
     warn "USAGE: #{$0} (-c) [id] (key) .."
     Msg.exit

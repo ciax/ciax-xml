@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "json"
-require "libentdb"
+require "libinsdb"
 require "libview"
 require "libfield"
 require "libiocmd"
@@ -16,7 +16,7 @@ require "libinteract"
 begin
   opt=ARGV.getopts("s")
   id,iocmd=ARGV
-  idb=EntDb.new(id).cover_app
+  idb=InsDb.new(id).cover_app
   fdb=FrmDb.new(idb['frm_type'])
 rescue
   warn "Usage: appint (-s) [id] (iocmd)"

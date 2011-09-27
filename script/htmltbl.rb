@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 require "libhtmltbl"
-require "libentdb"
+require "libinsdb"
 
 
 id=ARGV.shift
 app=ARGV.shift
 begin
-  idb=EntDb.new(id).cover_app
+  idb=InsDb.new(id).cover_app
 rescue SelectID
   warn "Usage: htmltbl [id]"
   Msg.exit

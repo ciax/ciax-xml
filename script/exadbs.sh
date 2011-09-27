@@ -5,7 +5,7 @@
 devices=${1:-`ls ~/.var/field_???.json|cut -d_ -f2|cut -d. -f1`};shift
 par="$*"
 for id in $devices; do
-    aline=`~/lib/libentdb.rb $id|tr -d '"'|grep app` || continue
+    aline=`~/lib/libinsdb.rb $id|tr -d '"'|grep app` || continue
     app=${aline#*:}
     echo "$C2#### $app($id) ####$C0"
     file=$HOME/.var/field_$id.json

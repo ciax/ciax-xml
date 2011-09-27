@@ -4,7 +4,7 @@ require 'librerange'
 
 class Param < Hash
   attr_reader :list
-  def initialize(db,path) # command db
+  def initialize(db,path) # command db, command list path
     @v=Msg::Ver.new("param",2)
     @db=db
     @keys=db[path]

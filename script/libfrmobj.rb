@@ -10,8 +10,9 @@ class FrmObj < String
     @field=field
     raise "Command is not IoCmd" unless iocmd.is_a?(IoCmd)
     @ic=iocmd
-    @cmd=FrmCmd.new(fdb,field)
-    @rsp=FrmRsp.new(fdb,field)
+    par=Param.new(fdb[:command],:frame)
+    @cmd=FrmCmd.new(fdb,par,field)
+    @rsp=FrmRsp.new(fdb,par,field)
     @v=Msg::Ver.new("frmobj",3)
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"Set Value  [key(:idx)] (val)")

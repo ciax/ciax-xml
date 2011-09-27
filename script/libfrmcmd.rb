@@ -3,14 +3,14 @@ require "libframe"
 require "libparam"
 # Cmd Methods
 class FrmCmd
-  def initialize(fdb,field)
+  def initialize(fdb,par,field)
     @field=field
+    @par=par
     @v=Msg::Ver.new("frm/cmd".upcase,3)
     @cache={}
     @fstr={}
     @sel=Hash[fdb[:frame][:command]]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
-    @par=Param.new(fdb[:command],:frame)
   end
 
   def getframe(cmd) # return = response select
@@ -59,12 +59,13 @@ if __FILE__ == $0
   dev,*cmd=ARGV
   begin
     fdb=FrmDb.new(dev,cmd.empty?)
-    st=Field.new
+    par=Param.new(fdb[:command],:frame)
+    field=Field.new
+    fc=FrmCmd.new(fdb,par,field)
     if ! STDIN.tty? && str=STDIN.gets(nil)
-      st.update_j(str)
+      field.update_j(str)
     end
-    c=FrmCmd.new(fdb,st)
-    print c.getframe(cmd)
+    print fc.getframe(cmd)
   rescue SelectCMD
     Msg.exit(2)
   rescue UserError

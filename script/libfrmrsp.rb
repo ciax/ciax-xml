@@ -4,13 +4,13 @@ require "libparam"
 
 # Rsp Methods
 class FrmRsp
-  def initialize(fdb,field)
+  def initialize(fdb,par,field)
     @fdb=fdb
+    @par=par
     @field=field
     @v=Msg::Ver.new("frm/rsp",3)
     @field['frm_type']=fdb['id']
     @sel=Hash[fdb[:frame][:status]]
-    @par=Param.new(fdb[:command],:frame)
     @fdbs=fdb[:status][:frame]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
@@ -123,18 +123,18 @@ if __FILE__ == $0
   fid=ARGV.shift
   begin
     fdb=FrmDb.new(fid)
+    par=Param.new(fdb[:command],:frame)
     field=Field.new
-    r=FrmRsp.new(fdb,field)
+    fr=FrmRsp.new(fdb,par,field)
     str=gets(nil) || exit
     ary=str.split("\t")
     time=Time.at(ary.shift.to_f)
-    stm=ary.shift.split(':')
-    abort ("Logline:Not response") unless /rcv/ === stm.shift
-    r.setrsp(stm){[time,eval(ary.shift)]}
+    cmd=ary.shift.split(':')
+    abort ("Logline:Not response") unless /rcv/ === cmd.shift
+    fr.setrsp(cmd){[time,eval(ary.shift)]}
     puts field.to_j
   rescue UserError
     warn "Usage: #{$0} [frameID] < logline"
     Msg.exit
   end
 end
-

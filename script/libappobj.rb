@@ -19,7 +19,7 @@ class AppObj < String
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
     @event=Watch.new(adb,@stat)
-    @watch=watch_thread
+    @watch=watch_thread unless @event[:stat].empty?
     @main=command_thread{|buf| yield buf}
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('sleep'=>"sleep [sec]")
@@ -56,7 +56,7 @@ class AppObj < String
 
   def upd
     @prompt.slice!(1..-1)
-    @prompt << '@' if @watch.alive?
+    @prompt << '@' if @watch && @watch.alive?
     @prompt << '&' if @event.active?
     @prompt << '*' if @buf.issue
     @prompt << '#' if @buf.wait
@@ -82,7 +82,7 @@ class AppObj < String
   def watch_thread
     Thread.new{
       Thread.pass
-      until(@event.empty?)
+      loop{
         begin
           @buf.auto{
             @event.upd.issue.map{|cmd|
@@ -93,7 +93,7 @@ class AppObj < String
           Msg.warn($!)
         end
         sleep @interval
-      end
+      }
     }
   end
 end

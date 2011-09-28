@@ -1,5 +1,5 @@
 #!/bin/bash
-[ "$1" ] || { echo "Usage: cutlog [id] [date_from|-] (date_to)"; exit 1; }
+[ "$1" ] || { echo "Usage: logcut [id] [date_from|-] (date_to)"; exit 1; }
 files="$HOME/.var/device_$1_*.log";shift
 if [ "$1" = '-' ] ; then
     shift

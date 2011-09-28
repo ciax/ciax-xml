@@ -55,5 +55,5 @@ if __FILE__ == $0
     Msg.exit
   end
   idb.cover_app(true) if opt["c"]
-  puts idb.select(ARGV)
+  puts idb.path(ARGV)
 end

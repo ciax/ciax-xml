@@ -37,6 +37,6 @@ if __FILE__ == $0
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit
   end
-  puts mdb.select(ARGV)
+  puts mdb.path(ARGV)
 end
 

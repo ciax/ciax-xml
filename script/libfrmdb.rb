@@ -135,6 +135,6 @@ if __FILE__ == $0
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit
   end
-  puts fdb.select(ARGV)
+  puts fdb.path(ARGV)
 end
 

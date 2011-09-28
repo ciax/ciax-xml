@@ -130,5 +130,5 @@ if __FILE__ == $0
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit
   end
-  puts adb.select(ARGV)
+  puts adb.path(ARGV)
 end

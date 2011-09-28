@@ -31,9 +31,8 @@ module ModCache
     self
   end
 
-  def select(ary)
-    db=ary.inject(self){|d,s| d[s.to_sym]}
-    db.extend(ModCache)
+  def path(ary)
+    ary.inject(self){|d,s| d[s.to_sym]}
   end
 end
 

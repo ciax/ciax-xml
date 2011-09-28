@@ -1,1 +1,1 @@
-sqlite3 $HOME/.var/ciax.sq3
+sqlite3 $HOME/.var/ciax.sq3 $*

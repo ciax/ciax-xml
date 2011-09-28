@@ -5,10 +5,6 @@ module ModFile
   VarDir="#{ENV['HOME']}/.var"
   attr_writer :type,:v
 
-  def to_s
-    Msg.view_struct(self)
-  end
-
   def to_j(hash=nil)
     JSON.dump(hash||Hash[self])
   end

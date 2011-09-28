@@ -16,10 +16,6 @@ class UriView < Hash
     } rescue
     self
   end
-
-  def to_s
-    Msg.view_struct(self,"URL")
-  end
 end
 
 if __FILE__ == $0

@@ -13,11 +13,6 @@ class Watch < Hash
     @elapse=Elapse.new(stat)
   end
 
-  public
-  def to_s
-    Msg.view_struct(self,Watch)
-  end
-
   def active?
     !self[:active].empty?
   end

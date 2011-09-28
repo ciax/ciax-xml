@@ -164,3 +164,9 @@ class << Msg
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end
 end
+
+class Hash
+  def to_s
+    Msg.view_struct(self)
+  end
+end

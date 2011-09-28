@@ -8,18 +8,17 @@ class FrmDb < Hash
     @v=Msg::Ver.new('fdb',5)
     cache('fdb',frm,nocache){|doc|
       update(doc)
-      frame=self[:frame]={}
-      stat=self[:response]={}
       cmd=self[:command]={}
+      rsp=self[:response]={}
       dc=doc.domain('cmdframe')
       dr=doc.domain('rspframe')
-      fc=frame[:command]=init_main(dc){|e,r| init_cmd(e,r)}
-      fs=frame[:response]=init_main(dr){|e| init_stat(e,stat)}
+      fc=cmd[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
+      fr=rsp[:frame]=init_main(dr){|e| init_rsp(e,rsp)}
       @v.msg{"Structure:frame:#{self[:frame]}"}
       cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
       @v.msg{"Structure:command:#{self[:command]}"}
-      stat.update(init_sel(dr,'response',fs){|e| init_stat(e,stat)})
-      @v.msg{"Structure:status:#{self[:response]}"}
+      rsp.update(init_sel(dr,'response',fr){|e| init_rsp(e,rsp)})
+      @v.msg{"Structure:response:#{self[:response]}"}
     }
   end
 
@@ -59,7 +58,7 @@ class FrmDb < Hash
       begin
         @v.msg(1){"INIT:Select Frame <-"}
         id=e0.attr2db(selh)
-        (selh[:frame]||={})[id]||=[]
+        (selh[:select]||={})[id]||=[]
         @v.msg{"InitSelHash(#{id}):#{selh}"}
         Repeat.new.each(e0){|e1,r1|
           case e1.name
@@ -67,7 +66,7 @@ class FrmDb < Hash
             ((selh[:parameter]||={})[id]||=[]) << e1.text
           else
             e=yield(e1,r1)||next
-            selh[:frame][id] << e
+            selh[:select][id] << e
           end
         }
         @v.msg{"InitSelFrame(#{id}):#{frame}"}
@@ -90,7 +89,7 @@ class FrmDb < Hash
     end
   end
 
-  def init_stat(e,stat)
+  def init_rsp(e,stat)
     case e.name
     when 'field'
       attr=e.to_h

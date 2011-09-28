@@ -26,6 +26,9 @@
          ref=> Status ID
          ...
       :frame
+         :main=>[ {data1},{data2} ..]
+         :ccrange=>[ {data1},{data2} ..]
+      :select
          id=>[ {data1},{data2} ..]
          ...
       :parameter
@@ -39,19 +42,11 @@
          id=>Label String
          ...
       :frame
-         id=>[ {val1},{val2} ..]
-         ...
-    ::frame (Common part)
-      :command
-         :main=>[ {data1},{data2} ..]
-         :ccrange=>[ {data1},{data2} ..]
-           ...
-      :response
          :main=>[ {val1},{val2} ..]
          :ccrange=>[ {val1},{val2} ..]
-    ::symbol (Tables)
-       table1=>{table}
-       table2=>{table}
+      :select
+         id=>[ {val1},{val2} ..]
+         ...
 
   AppDb
     { "id" ,"frame", "label", "interval }

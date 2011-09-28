@@ -11,7 +11,7 @@ class FrmObj < String
     @field=field
     raise "Command is not IoCmd" unless iocmd.is_a?(IoCmd)
     @ic=iocmd
-    @par=Param.new(fdb[:command],:frame)
+    @par=Param.new(fdb[:command],:select)
     @cmd=FrmCmd.new(fdb,@par,field)
     @rsp=FrmRsp.new(fdb,@par,field)
     @cl=Msg::List.new("== Internal Command ==")

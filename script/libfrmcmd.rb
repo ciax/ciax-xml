@@ -9,12 +9,12 @@ class FrmCmd
     @par=par
     @cache={}
     @fstr={}
-    @sel=Hash[fdb[:frame][:command]]
+    @sel=Hash[fdb[:command][:frame]]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
   def getframe # return = response select
-    return unless @sel[:select]=@par[:frame]
+    return unless @sel[:select]=@par[:select]
     @v.msg{"Attr of Param:#{@par}"}
     cid=@par[:command]
     cid+=':*' if /true|1/ === @par[:nocache]
@@ -57,7 +57,7 @@ if __FILE__ == $0
   dev,*cmd=ARGV
   begin
     fdb=FrmDb.new(dev,cmd.empty?)
-    par=Param.new(fdb[:command],:frame)
+    par=Param.new(fdb[:command],:select)
     field=Field.new
     fc=FrmCmd.new(fdb,par,field)
     if ! STDIN.tty? && str=STDIN.gets(nil)

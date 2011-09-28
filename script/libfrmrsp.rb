@@ -10,8 +10,8 @@ class FrmRsp
     @par=par
     @field=field
     @field['frm_type']=fdb['id']
-    @sel=Hash[fdb[:frame][:response]]
-    @fdbs=fdb[:response][:frame]
+    @sel=Hash[fdb[:response][:frame]]
+    @fdbs=fdb[:response][:select]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
@@ -122,7 +122,7 @@ if __FILE__ == $0
   fid=ARGV.shift
   begin
     fdb=FrmDb.new(fid)
-    par=Param.new(fdb[:command],:frame)
+    par=Param.new(fdb[:command],:select)
     field=Field.new
     fr=FrmRsp.new(fdb,par,field)
     str=gets(nil) || exit

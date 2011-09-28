@@ -15,7 +15,7 @@ require "libinteract"
 
 begin
   opt=ARGV.getopts("s")
-  id,iocmd=ARGV
+  id,*iocmd=ARGV
   idb=InsDb.new(id).cover_app
   fdb=FrmDb.new(idb['frm_type'])
 rescue
@@ -27,8 +27,12 @@ view=View.new(id,idb[:status]).load
 view['app_type']=idb['app_type']
 field=Field.new(id).load
 field.update(idb[:field]) if idb.key?(:field)
-
-io=IoCmd.new(iocmd||idb['client'],id,fdb['wait'],1)
+if iocmd.empty?
+  iocmd=idb['client'].split(' ')
+else
+  id=nil
+end
+io=IoCmd.new(iocmd,fdb['wait'],1,id)
 fobj=FrmObj.new(fdb,field,io)
 
 aobj=AppObj.new(idb,view){|cmd|

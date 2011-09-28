@@ -3,14 +3,15 @@ require "libmsg"
 
 class IoCmd
   VarDir=""
-  def initialize(iocmd,id=nil,wait=0,timeout=nil)
+  # iocmd should be array
+  def initialize(iocmd,wait=0,timeout=nil,id=nil)
     @v=Msg::Ver.new('iocmd',1)
-    abort " No IO command" unless iocmd
-    @iocmd=iocmd.split(' ')
+    abort " No IO command" unless iocmd && !iocmd.empty?
+    @iocmd=iocmd
     @f=IO.popen(@iocmd,'r+')
-    @v.msg{"Init/Client:#{iocmd}"}
-    @timeout=timeout
+    @v.msg{"Init/Client:#{iocmd.join(' ')}"}
     @wait=wait.to_f
+    @timeout=timeout
     if id && ! ENV.key?('NOLOG')
       @logfile=ENV['HOME']+"/.var/device_#{id}_"
       @logfile << Time.now.year.to_s+".log"

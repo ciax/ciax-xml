@@ -13,7 +13,7 @@ host=ARGV.shift||'localhost'
 view=UriView.new(id,host)
 begin
   idb=InsDb.new(id).cover_app
-  @io=IoCmd.new("socat - udp:#{host}:#{idb['port']}")
+  @io=IoCmd.new(["socat","-","udp:#{host}:#{idb['port']}"])
 rescue SelectID
   warn "Usage: appcl [id] (host)"
   Msg.exit

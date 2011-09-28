@@ -3,6 +3,7 @@ require "optparse"
 require "xml"
 include XML
 
+opt=ARGV.getopts("r")
 if ARGV.size < 3
   abort <<EOF
 Usage: a2t (-r) [xpath] [attr] (ns) < xml
@@ -10,7 +11,6 @@ Usage: a2t (-r) [xpath] [attr] (ns) < xml
        http://ciax.sum.naoj.org/ciax-xml/(ns)
 EOF
 end
-opt= ARGV[0] == '-r' ? ARGV.shift : nil
 xpath=ARGV.shift
 attr=ARGV.shift || abort("No attr")
 doc=Document.io(STDIN)
@@ -22,7 +22,7 @@ else
 end
 
 nodes.each {|e|
-  if opt == '-r'
+  if opt["r"]
     e[attr]=e.content
     e.content=''
   else

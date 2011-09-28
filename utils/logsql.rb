@@ -1,17 +1,18 @@
 #!/usr/bin/ruby
+require "optparse"
 require "json"
 
 abort "Usage: logsql (-c) [id] < [status_file]" if STDIN.tty?
-str=STDIN.gets(nil) || exit
-stat=JSON.load(str)
-cls=stat.delete('class')
+opt=ARGV.getopts("c")
 id = ARGV.shift
-cre=(/-c/ === id)
-id = ARGV.shift if cre
-id||=cls
+
+str=STDIN.gets(nil) || exit
+view=JSON.load(str)
+stat=view['stat']
+
 keys=stat.keys.join(',')
 vals=stat.values.map{|s| "\"#{s}\""}.join(',')
-if cre
+if opt['c']
   puts "create table #{id} (#{keys},primary key(time));"
 else
   puts "insert into #{id} (#{keys}) values (#{vals});"

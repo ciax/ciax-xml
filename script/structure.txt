@@ -25,29 +25,30 @@
       :response
          ref=> Status ID
          ...
+      :frame
+         id=>[ {data1},{data2} ..]
+         ...
+      :parameter
+         id=>Range
+         ...
       :nocache
          id=> true or false
          ...         
-    ::status
+    ::response
       :label
          id=>Label String
          ...
-      :symbol
-         id=>Table ID
+      :frame
+         id=>[ {val1},{val2} ..]
          ...
     ::frame (Common part)
       :command
          :main=>[ {data1},{data2} ..]
          :ccrange=>[ {data1},{data2} ..]
-         :select
-           id=>[ {data1},{data2} ..]
            ...
-      :status
+      :response
          :main=>[ {val1},{val2} ..]
          :ccrange=>[ {val1},{val2} ..]
-         :select
-           id=>[ {val1},{val2} ..]
-           ...
     ::symbol (Tables)
        table1=>{table}
        table2=>{table}

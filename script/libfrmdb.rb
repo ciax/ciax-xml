@@ -9,17 +9,17 @@ class FrmDb < Hash
     cache('fdb',frm,nocache){|doc|
       update(doc)
       frame=self[:frame]={}
-      stat=self[:status]={}
+      stat=self[:response]={}
       cmd=self[:command]={}
       dc=doc.domain('cmdframe')
       dr=doc.domain('rspframe')
       fc=frame[:command]=init_main(dc){|e,r| init_cmd(e,r)}
-      fs=frame[:status]=init_main(dr){|e| init_stat(e,stat)}
+      fs=frame[:response]=init_main(dr){|e| init_stat(e,stat)}
       @v.msg{"Structure:frame:#{self[:frame]}"}
       cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
       @v.msg{"Structure:command:#{self[:command]}"}
       stat.update(init_sel(dr,'response',fs){|e| init_stat(e,stat)})
-      @v.msg{"Structure:status:#{self[:status]}"}
+      @v.msg{"Structure:status:#{self[:response]}"}
     }
   end
 

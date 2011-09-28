@@ -10,8 +10,8 @@ class FrmRsp
     @par=par
     @field=field
     @field['frm_type']=fdb['id']
-    @sel=Hash[fdb[:frame][:status]]
-    @fdbs=fdb[:status][:frame]
+    @sel=Hash[fdb[:frame][:response]]
+    @fdbs=fdb[:response][:frame]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 

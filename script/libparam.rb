@@ -19,7 +19,8 @@ class Param < Hash
     raise SelectCMD,("No such CMD [#{id}]\n"+@list.to_s) unless @keys.key?(id)
     @v.msg{"SetPar: #{cmdary}"}
     @cmdary=cmdary.dup
-    self[:id]=id
+    self[:command]=id
+    self[:cid]=cmdary.join(':')
     @db.each{|k,v|
       self[k]=v[id]
     }

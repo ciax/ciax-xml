@@ -13,13 +13,11 @@ class FrmCmd
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
-  def getframe(cmd) # return = response select
-    id=cmd.first
-    @par.set(cmd)
+  def getframe # return = response select
     return unless @sel[:select]=@par[:frame]
     @v.msg{"Attr of Param:#{@par}"}
-    cid=cmd.join(':')
-    cid << ':*' if /true|1/ === @par[:nocache]
+    cid=@par[:command]
+    cid+=':*' if /true|1/ === @par[:nocache]
     @v.msg{"Select:#{@par[:label]}(#{cid})"}
     if frame=@cache[cid]
       @v.msg{"Cmd cache found [#{cid}]"}
@@ -65,7 +63,8 @@ if __FILE__ == $0
     if ! STDIN.tty? && str=STDIN.gets(nil)
       field.update_j(str)
     end
-    print fc.getframe(cmd)
+    par.set(cmd)
+    print fc.getframe
   rescue SelectCMD
     Msg.exit(2)
   rescue UserError

@@ -16,10 +16,9 @@ class FrmRsp
   end
 
   # Block accepts [time,frame]
-  def setrsp(cmd)
-    if rid=@par.set(cmd)[:response]
+  def setrsp
+    if rid=@par[:response]
       @sel[:select]=@fdbs[rid]|| Msg.err("No such response id [#{rid}]")
-      @v.msg{"Set Statement #{cmd}"}
       time,frame=yield
       Msg.err("No Response") unless frame
       @field['time']="%.3f" % time.to_f
@@ -131,7 +130,8 @@ if __FILE__ == $0
     time=Time.at(ary.shift.to_f)
     cmd=ary.shift.split(':')
     abort ("Logline:Not response") unless /rcv/ === cmd.shift
-    fr.setrsp(cmd){[time,eval(ary.shift)]}
+    par.set(cmd)
+    fr.setrsp{[time,eval(ary.shift)]}
     puts field.to_j
   rescue UserError
     warn "Usage: #{$0} [frameID] < logline"

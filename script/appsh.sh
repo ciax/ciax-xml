@@ -7,7 +7,7 @@ while getopts "d" opt; do
 done
 shift $(( $OPTIND -1 ))
 if [ "$dmy" ] ; then
-    VER=${VER:-init-} appint $1 "frmsim $1"
+    VER=${VER:-init/} appint $1 "frmsim $1"
 else
-    VER=${VER:-init-} appint $1
+    VER=${VER:-init/} appint $1
 fi

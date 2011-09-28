@@ -8,13 +8,13 @@ class IoCmd
     abort " No IO command" unless iocmd
     @iocmd=iocmd.split(' ')
     @f=IO.popen(@iocmd,'r+')
-    @v.msg{"Init-CLIENT:#{iocmd}"}
+    @v.msg{"Init/Client:#{iocmd}"}
     @timeout=timeout
     @wait=wait.to_f
     if id && ! ENV.key?('NOLOG')
       @logfile=ENV['HOME']+"/.var/device_#{id}_"
       @logfile << Time.now.year.to_s+".log"
-      @v.msg{"Init-Logging Start"}
+      @v.msg{"Init/Logging Start"}
     end
   end
 

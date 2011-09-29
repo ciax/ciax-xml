@@ -9,7 +9,6 @@ class FrmRsp
     @fdb=fdb
     @par=par
     @field=field
-    @field['frm_type']=fdb['id']
     @sel=Hash[fdb[:rspframe][:frame]]
     @fdbs=fdb[:rspframe][:select]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
@@ -123,7 +122,7 @@ if __FILE__ == $0
   begin
     fdb=FrmDb.new(fid)
     par=Param.new(fdb[:cmdframe])
-    field=Field.new
+    field=Field.new(ARGV.shift)
     fr=FrmRsp.new(fdb,par,field)
     str=gets(nil) || exit
     ary=str.split("\t")
@@ -134,7 +133,7 @@ if __FILE__ == $0
     fr.setrsp{[time,eval(ary.shift)]}
     puts field.to_j
   rescue UserError
-    warn "Usage: #{$0} [frameID] < logline"
+    warn "Usage: #{$0} [frameID] (id) < logline"
     Msg.exit
   end
 end

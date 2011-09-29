@@ -1,7 +1,7 @@
 #!/bin/bash
 . ~/lib/libcsv.sh
 id2frm(){
-    frm=`~/lib/libinsdb.rb -c $1 | grep 'frm_type'` || return 1
+    frm=`~/lib/libinsdb.rb -a $1 | grep 'frm_type'` || return 1
     echo $frm|cut -d: -f2|tr -d ' "'
 }
 getid(){
@@ -14,7 +14,7 @@ getstat(){
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
         logline $id $cmd $par > $temp
-        VER=$ver < $temp $frmrsp $frm|merging $output
+        VER=$ver < $temp $frmrsp $frm $id|merging $output
         cut -f3 $temp|grep . || echo
     done
 }

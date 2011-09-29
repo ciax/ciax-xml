@@ -15,8 +15,7 @@ require "libinteract"
 begin
   opt=ARGV.getopts("s")
   id,*iocmd=ARGV
-  idb=InsDb.new(id).cover_app
-  fdb=FrmDb.new(idb['frm_type'])
+  idb=InsDb.new(id).cover_app.cover_frm
 rescue
   warn "Usage: appint (-s) [id] (iocmd)"
   Msg.exit
@@ -31,8 +30,8 @@ if iocmd.empty?
 else
   id=nil
 end
-io=IoCmd.new(iocmd,fdb['wait'],1,id)
-fobj=FrmObj.new(fdb,field,io)
+io=IoCmd.new(iocmd,idb['wait'],1,id)
+fobj=FrmObj.new(idb,field,io)
 
 aobj=AppObj.new(idb,view){|cmd|
   fobj.request(cmd).field

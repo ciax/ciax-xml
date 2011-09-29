@@ -22,7 +22,6 @@ rescue
 end
 
 view=View.new(id,idb[:status]).load
-view['app_type']=idb['app_type']
 field=Field.new(id).load
 field.update(idb[:field]) if idb.key?(:field)
 if iocmd.empty?

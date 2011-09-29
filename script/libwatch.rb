@@ -80,7 +80,7 @@ end
 
 if __FILE__ == $0
   require "json"
-  require "libappdb"
+  require "libinsdb"
   abort "Usage: #{$0} (test conditions (key=val)..) < [file]" if STDIN.tty?
   hash={}
   ARGV.each{|s|
@@ -91,12 +91,12 @@ if __FILE__ == $0
   str=gets(nil) || exit
   view=JSON.load(str)
   begin
-    adb=AppDb.new(view['app_type'])
+    idb=InsDb.new(view['id']).cover_app
   rescue SelectID
     Msg.exit
   end
   stat=view['stat']
-  watch=Watch.new(adb,stat).upd
+  watch=Watch.new(idb,stat).upd
   stat.update(hash)
   puts watch.upd.to_s
   print "Active? : "

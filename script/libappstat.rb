@@ -93,7 +93,7 @@ if __FILE__ == $0
     adb=AppDb.new(app,true)[:status]
     str=gets(nil) || exit
     field=Field.new.update_j(str)
-    view=View.new(field['id'],adb).update({'app_type' => app })
+    view=View.new(field['id'],adb)
     as=AppStat.new(adb)
     view.upd(as.conv(field))
     print view.to_j

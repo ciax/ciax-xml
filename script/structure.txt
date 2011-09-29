@@ -51,7 +51,7 @@
   AppDb
     { "id" ,"frame", "label", "interval }
     :command
-      :structure
+      :select
         id => [ statement,.. ]
            statement=["cmd",{arg1},{arg2}..]
         ...
@@ -59,7 +59,7 @@
         id => Label String
     :status
       "talbe"=> Symbol Table
-      :structure
+      :select
         id => [ { :type, "ref" .. },... ]
         ...
       :label => {}

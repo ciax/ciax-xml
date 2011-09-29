@@ -27,7 +27,7 @@ class InsDb < Hash
     app=AppDb.new(self['app_type'],nocache)
     if cmd=self[:command]
       app[:command].delete(:label)
-      st=app[:command][:structure]
+      st=app[:command][:select]
       cmd[:alias].each{|k,v|
         st[k]=st.delete(v)
       }

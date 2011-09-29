@@ -7,7 +7,7 @@ class HtmlTbl < Array
     @label = idb[:status][:label]
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{idb['label']}</div>"
-    group = idb[:status][:group] || idb[:structure][:status].keys
+    group = idb[:status][:group] || idb[:status][:select].keys
     get_group(group)
     push "</div>"
   end

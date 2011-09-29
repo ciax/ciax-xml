@@ -19,7 +19,7 @@ rescue SelectID
   Msg.exit
 end
 pr=Print.new(idb[:status],view)
-par=Param.new(idb[:command],:structure)
+par=Param.new(idb[:command],:select)
 prom=['']
 Shell.new(prom){|line|
   break unless line

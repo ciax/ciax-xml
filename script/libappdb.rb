@@ -16,7 +16,7 @@ class AppDb < Hash
       # Status DB
       sdb=doc.domain('status')
       stat=self[:status]=sdb.to_h
-      stat[:structure]=init_stat(sdb,stat,Repeat.new)
+      stat[:select]=init_stat(sdb,stat,Repeat.new)
       # Watch DB
       wdb=doc.domain('watch')
       update(wdb.to_h)
@@ -42,7 +42,7 @@ class AppDb < Hash
             end
             command << argv.freeze
           }
-          ((hash[:structure]||={})[id]||=[]) << command.freeze
+          ((hash[:select]||={})[id]||=[]) << command.freeze
         end
       }
       @v.msg{"COMMAND:[#{id}]"}

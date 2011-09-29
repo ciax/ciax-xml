@@ -5,7 +5,7 @@ require "libappdb"
 class AppStat
   def initialize(adb)
     @v=Msg::Ver.new("app/stat",9)
-    @adbs=adb[:structure]
+    @adbs=adb[:select]
   end
 
   def conv(field)

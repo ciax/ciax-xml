@@ -6,14 +6,14 @@ class AppCmd < Array
   include Math
   def initialize(adb)
     @v=Msg::Ver.new("app/cmd",9)
-    @par=Param.new(adb,:structure)
+    @par=Param.new(adb,:select)
   end
 
   def setcmd(ssn)
     @v.msg{"Exec(ADB):#{ssn.first}"}
     @par.set(ssn)
     clear
-    @par[:structure].each{|e1|
+    @par[:select].each{|e1|
       cmd=[]
       @v.msg(1){"GetCmd(FDB):#{e1.first}"}
       begin

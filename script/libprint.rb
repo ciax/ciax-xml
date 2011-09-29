@@ -7,7 +7,7 @@ class Print < Array
     view['stat']||= {}
     view['symbol']||= {}
     @elapse=Elapse.new(view['stat'])
-    @group=db[:group] || [[db[:structure].keys]]
+    @group=db[:group] || [[db[:select].keys]]
     @label=db[:label] || {}
   end
 

@@ -57,7 +57,7 @@ if __FILE__ == $0
   dev,*cmd=ARGV
   begin
     fdb=FrmDb.new(dev,cmd.empty?)
-    par=Param.new(fdb[:cmdframe],:select)
+    par=Param.new(fdb[:cmdframe])
     field=Field.new
     fc=FrmCmd.new(fdb,par,field)
     if ! STDIN.tty? && str=STDIN.gets(nil)

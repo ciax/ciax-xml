@@ -4,10 +4,9 @@ require 'librerange'
 
 class Param < Hash
   attr_reader :list
-  def initialize(db,path) # command db, command list path
+  def initialize(db) # command db
     @v=Msg::Ver.new("param",2)
     @db=db
-    @keys=db[path]
     label=db[:label].reject{|k,v|
       /true|1/ === db[:hidden][k] if db.key?(:hidden)
     }
@@ -16,7 +15,9 @@ class Param < Hash
 
   def set(cmdary)
     id=cmdary.first
-    raise SelectCMD,("No such CMD [#{id}]\n"+@list.to_s) unless @keys.key?(id)
+    unless @db[:select].key?(id)
+      raise SelectCMD,("No such CMD [#{id}]\n"+@list.to_s)
+    end
     @v.msg{"SetPar: #{cmdary}"}
     @cmdary=cmdary.dup
     self[:command]=id

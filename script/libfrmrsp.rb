@@ -122,7 +122,7 @@ if __FILE__ == $0
   fid=ARGV.shift
   begin
     fdb=FrmDb.new(fid)
-    par=Param.new(fdb[:cmdframe],:select)
+    par=Param.new(fdb[:cmdframe])
     field=Field.new
     fr=FrmRsp.new(fdb,par,field)
     str=gets(nil) || exit

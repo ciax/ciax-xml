@@ -45,3 +45,16 @@ class HtmlTbl < Array
     self
   end
 end
+
+if __FILE__ == $0
+  require "libinsdb"
+  id=ARGV.shift
+  app=ARGV.shift
+  begin
+    idb=InsDb.new(id).cover_app
+  rescue SelectID
+    warn "Usage: #{$0} [id]"
+    Msg.exit
+  end
+  puts HtmlTbl.new(idb)
+end

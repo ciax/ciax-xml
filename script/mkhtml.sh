@@ -21,7 +21,7 @@ for id; do
 <script type="text/javascript" src="ciax-xml.js"></script>
 <body>
 EOF
->>$file htmltbl $id $app
+>>$file ~/lib/libhtmltbl.rb $id $app
 cat >> $file <<EOF
 </body>
 </html>

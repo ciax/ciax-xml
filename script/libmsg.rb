@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+VarDir="#{ENV['HOME']}/.var"
 
 class UserError < RuntimeError; end
 class SelectID < UserError; end

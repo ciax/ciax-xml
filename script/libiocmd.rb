@@ -2,7 +2,6 @@
 require "libmsg"
 
 class IoCmd
-  VarDir=""
   # iocmd should be array
   def initialize(iocmd,wait=0,timeout=nil,id=nil)
     @v=Msg::Ver.new('iocmd',1)
@@ -13,7 +12,7 @@ class IoCmd
     @wait=wait.to_f
     @timeout=timeout
     if id && ! ENV.key?('NOLOG')
-      @logfile=ENV['HOME']+"/.var/device_#{id}_"
+      @logfile=VarDir+"/device_#{id}_"
       @logfile << Time.now.year.to_s+".log"
       @v.msg{"Init/Logging Start"}
     end

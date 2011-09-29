@@ -3,12 +3,11 @@ require "libmsg"
 require "libxmldoc"
 
 module ModCache
-  VarDir="#{ENV['HOME']}/.var/cache"
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def cache(type,id,nocache=nil)
     @v||=Msg::Ver.new("cache",2)
     base="#{type}-#{id}"
-    fmar=VarDir+"/#{base}.mar"
+    fmar=VarDir+"/cache/#{base}.mar"
     fxml=XmlDir+"/#{base}.xml"
     unless nocache
       if !test(?e,fmar)

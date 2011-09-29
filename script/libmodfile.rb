@@ -2,9 +2,7 @@
 require 'json'
 
 module ModFile
-  VarDir="#{ENV['HOME']}/.var"
   attr_writer :type,:v
-
   def to_j(hash=nil)
     JSON.dump(hash||Hash[self])
   end

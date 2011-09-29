@@ -9,7 +9,7 @@ class FrmCmd
     @par=par
     @cache={}
     @fstr={}
-    @sel=Hash[fdb[:command][:frame]]
+    @sel=Hash[fdb[:cmdframe][:frame]]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
   end
 
@@ -57,7 +57,7 @@ if __FILE__ == $0
   dev,*cmd=ARGV
   begin
     fdb=FrmDb.new(dev,cmd.empty?)
-    par=Param.new(fdb[:command],:select)
+    par=Param.new(fdb[:cmdframe],:select)
     field=Field.new
     fc=FrmCmd.new(fdb,par,field)
     if ! STDIN.tty? && str=STDIN.gets(nil)

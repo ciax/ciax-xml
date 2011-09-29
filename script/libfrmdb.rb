@@ -8,17 +8,16 @@ class FrmDb < Hash
     @v=Msg::Ver.new('fdb',5)
     cache('fdb',frm,nocache){|doc|
       update(doc)
-      cmd=self[:command]={}
-      rsp=self[:response]={}
+      cmd=self[:cmdframe]={}
+      rsp=self[:rspframe]={}
       dc=doc.domain('cmdframe')
       dr=doc.domain('rspframe')
       fc=cmd[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
       fr=rsp[:frame]=init_main(dr){|e| init_rsp(e,rsp)}
-      @v.msg{"Structure:frame:#{self[:frame]}"}
       cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
-      @v.msg{"Structure:command:#{self[:command]}"}
+      @v.msg{"Structure:cmdframe:#{self[:cmdframe]}"}
       rsp.update(init_sel(dr,'response',fr){|e| init_rsp(e,rsp)})
-      @v.msg{"Structure:response:#{self[:response]}"}
+      @v.msg{"Structure:rspframe:#{self[:rspframe]}"}
     }
   end
 

@@ -12,7 +12,6 @@ begin
   id,*iocmd=ARGV
   idb=InsDb.new(id).cover_app.cover_frm
   field=Field.new(id).load
-  field.update(idb[:id])
   if iocmd.empty?
     iocmd=idb['client'].split(' ')
   else

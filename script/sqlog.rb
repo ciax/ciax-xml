@@ -13,7 +13,7 @@ begin
   field=Field.new(id)
   fr=FrmRsp.new(idb,par,field)
   as=AppStat.new(idb[:status],field,stat={})
-  sql=Sql.new(id)
+  sql=Sql.new(id,stat)
 rescue UserError
   warn "Usage: #{$0} [id] < logfile"
   Msg.exit
@@ -28,7 +28,7 @@ STDIN.readlines.grep(/rcv/).each{|str|
     par.set(cmd)
     fr.upd{[time,eval(ary.shift)]}
     as.upd
-    sql.upd(stat)
+    sql.upd
     $stderr.print "."
   rescue
     next

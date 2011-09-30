@@ -1,21 +1,22 @@
 #!/usr/bin/ruby
 require "libmsg"
 class Sql < Array
-  def initialize(id)
+  def initialize(id,stat)
     @v=Msg::Ver.new("sql",6)
     @id=id
+    @stat=stat
     @sql=["sqlite3",VarDir+"/ciax.sq3"]
   end
 
-  def create(keyary)
-    key=keyary.join(',')
+  def create
+    key=stat.keys.join(',')
     push "create table #{@id} (#{key},primary key(time));"
   end
 
-  def upd(stat)
+  def upd
     @v.msg{"Update:[#{@id}]"}
-    key=stat.keys.join(',')
-    val=stat.values.map{|s| "\"#{s}\""}.join(',')
+    key=@stat.keys.join(',')
+    val=@stat.values.map{|s| "\"#{s}\""}.join(',')
     push "insert into #{@id} (#{key}) values (#{val});"
   end
 
@@ -37,6 +38,6 @@ if __FILE__ == $0
   require "json"
   abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
   view=JSON.load(gets(nil))
-  sql=Sql.new(view['id']).upd(view['stat'])
+  sql=Sql.new(view['id'],view['stat']).upd
   puts sql.to_s
 end

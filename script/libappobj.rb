@@ -13,15 +13,15 @@ class AppObj < String
   def initialize(adb,view,field)
     @v=Msg::Ver.new("appobj",9)
     @view=view
-    @stat=view['stat']
-    @sql=Sql.new(view['id'])
+    stat=view['stat']
     @prompt=[adb['id']]
     @ac=AppCmd.new(adb[:command])
-    @as=AppStat.new(adb[:status],field,@stat)
+    @as=AppStat.new(adb[:status],field,stat)
+    @sql=Sql.new(view['id'],stat)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
-    @event=Watch.new(adb,@stat)
+    @event=Watch.new(adb,stat)
     @watch=watch_thread unless @event[:stat].empty?
     @main=command_thread{|buf| yield buf}
     @cl=Msg::List.new("== Internal Command ==")
@@ -45,7 +45,7 @@ class AppObj < String
       replace "Sleeping\n"
     when /^waitfor */
       k,v=$'.split('=')
-      @buf.wait_for(10){ @stat[k] == v }
+      @buf.wait_for(10){ @view['stat'][k] == v }
       replace "Waiting\n"
     else
       @buf.send{@ac.setcmd(line.split(' '))}
@@ -76,7 +76,7 @@ class AppObj < String
           yield @buf.recv
           @as.upd
           @view.upd.save
-          @sql.upd(@stat).flush
+          @sql.upd.flush
         rescue UserError
           Msg.alert(" in Command Thread")
           @buf.clear

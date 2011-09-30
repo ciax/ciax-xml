@@ -9,7 +9,7 @@ class Sql < Array
   end
 
   def create
-    key=stat.keys.join(',')
+    key=@stat.keys.join(',')
     push "create table #{@id} (#{key},primary key(time));"
   end
 

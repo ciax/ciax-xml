@@ -14,7 +14,7 @@ class AppObj < String
     @v=Msg::Ver.new("appobj",9)
     @view=view
     @stat=view['stat']
-    @sql=Sql.new(view)
+    @sql=Sql.new(view['id'],@stat)
     @prompt=[adb['id']]
     @ac=AppCmd.new(adb[:command])
     @as=AppStat.new(adb[:status])

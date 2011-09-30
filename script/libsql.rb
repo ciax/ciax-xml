@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libmsg"
 class Sql < Array
-  def initialize(view)
+  def initialize(id,stat)
     @v=Msg::Ver.new("sql",6)
-    @stat=view['stat']
+    @id=id
+    @stat=stat
     @keys=@stat.keys.join(',')
-    @id=view['id']
     @sql=["sqlite3",VarDir+"/ciax.sq3"]
   end
 
@@ -35,6 +35,6 @@ if __FILE__ == $0
   require "json"
   abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
   view=JSON.load(gets(nil))
-  sql=Sql.new(view).upd
+  sql=Sql.new(view['id'],view['stat']).upd
   puts sql
 end

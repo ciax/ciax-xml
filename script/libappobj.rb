@@ -10,9 +10,10 @@ require "thread"
 
 class AppObj < String
   attr_reader :prompt
-  def initialize(adb,view)
+  def initialize(adb,view,field)
     @v=Msg::Ver.new("appobj",9)
     @view=view
+    @field=field
     @stat=view['stat']
     @sql=Sql.new(view['id'])
     @prompt=[adb['id']]
@@ -73,7 +74,8 @@ class AppObj < String
       Thread.pass
       loop{
         begin
-          @view.upd(@as.upd(yield @buf.recv)).save
+          yield @buf.recv
+          @view.upd(@as.upd(@field)).save
           @sql.upd(@stat).flush
         rescue UserError
           Msg.alert(" in Command Thread")

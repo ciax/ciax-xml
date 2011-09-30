@@ -9,6 +9,7 @@ class AppStat
   end
 
   def upd(field)
+    raise "Input is not Field" unless field.is_a?(Field)
     stat={}
     @adbs.each{|id,fields|
       begin

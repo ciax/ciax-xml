@@ -23,7 +23,6 @@ end
 
 view=View.new(id,idb[:status]).load
 field=Field.new(id).load
-field.update(idb[:field]) if idb.key?(:field)
 if iocmd.empty?
   iocmd=idb['client'].split(' ')
 else
@@ -32,8 +31,8 @@ end
 io=IoCmd.new(iocmd,idb['wait'],1,id)
 fobj=FrmObj.new(idb,field,io)
 
-aobj=AppObj.new(idb,view){|cmd|
-  fobj.request(cmd).field
+aobj=AppObj.new(idb,view,field){|cmd|
+  fobj.request(cmd)
 }
 
 prt=Print.new(idb[:status],view)

@@ -123,12 +123,10 @@ class << Msg
 
   def warn(msg='warning') # Display only
     Kernel.warn color(msg,3)
-    self
   end
 
   def alert(msg='alert') # Display only
     Kernel.warn $!.to_s+color(msg,1)
-    self
   end
 
   def err(*msg) # Raise User error (Invalid User input)
@@ -145,17 +143,9 @@ class << Msg
     Kernel.exit(code)
   end
 
-  def assert(exp)
-    return exp if exp
-    msg=defined?(yield) ? yield : "Assert exception"
-    raise(color(msg,1))
-  end
-
-  def check(exp)
-    return exp if exp
-    msg=defined?(yield) ? yield : "Nil Data detected"
-    Kernel.warn color(msg,5)
-    exp
+  def type?(name,mod,nul=false)
+    return name if (nul && name.nil?) || name.is_a?(mod)
+    raise "Parameter type error (#{mod.to_s})"
   end
 
   # 1=red,2=green,4=blue,8=bright

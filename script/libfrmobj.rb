@@ -7,10 +7,8 @@ class FrmObj < String
   attr_reader :field
   def initialize(fdb,field,iocmd)
     @v=Msg::Ver.new("frmobj",3)
-    raise "Input is not Field" unless field.is_a?(Field)
-    @field=field
-    raise "Command is not IoCmd" unless iocmd.is_a?(IoCmd)
-    @ic=iocmd
+    @field=Msg.type?(field,Field)
+    @ic=Msg.type?(iocmd,IoCmd)
     @par=Param.new(fdb[:cmdframe])
     @fc=FrmCmd.new(fdb,@par,field)
     @fr=FrmRsp.new(fdb,@par,field)

@@ -7,7 +7,7 @@ class Shell
   def initialize(prompt=[])
     cl=Msg::List.new("== Shell Command ==")
     cl.add('q'=>"Quit",'D^'=>"Interrupt")
-    Msg.assert(Array === prompt)
+    Msg.type?(prompt,Array)
     loop {
       line=Readline.readline(prompt.join(''),true)
       break if /^q/ === line

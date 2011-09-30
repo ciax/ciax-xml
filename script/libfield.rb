@@ -47,7 +47,7 @@ class Field < Hash
       vname << i
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
       @v.msg{"Content[#{h[i]}]"}
-      Msg.check(h[i]){"No such Value [#{vname.join(':')}]"}
+      h[i] || Msg.warn("No such Value [#{vname.join(':')}]")
     }
   end
 

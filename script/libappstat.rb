@@ -6,8 +6,7 @@ class AppStat
   def initialize(adb,field,stat)
     @v=Msg::Ver.new("app/stat",9)
     @adbs=adb[:select]
-    raise "Input is not Field" unless field.is_a?(Field)
-    @field=field
+    @field=Msg.type?(field,Field)
     @stat=stat
   end
 
@@ -29,7 +28,7 @@ class AppStat
     str=''
     fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || Msg.abort("No field Key")
-      data=Msg.check(@field.get(fld)){"No field Value[#{fld}]"}||''
+      data=@field.get(fld)||''
       case e1['type']
       when 'binary'
         str << binary(e1,data)

@@ -15,7 +15,7 @@ class Sql < Array
   def upd(stat)
     @v.msg{"Update:[#{@id}]"}
     key=stat.keys.join(',')
-    val=@stat.values.map{|s| "\"#{s}\""}.join(',')
+    val=stat.values.map{|s| "\"#{s}\""}.join(',')
     push "insert into #{@id} (#{key}) values (#{val});"
   end
 

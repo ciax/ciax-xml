@@ -19,7 +19,7 @@ class AppObj < String
     @fobj=FrmObj.new(adb,field,io)
     @ac=AppCmd.new(adb[:command])
     @as=AppStat.new(adb[:status],field,stat)
-    @sql=Sql.new(view['id'],stat)
+    @sql=Sql.new(stat,view['id'])
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i

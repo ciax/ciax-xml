@@ -13,7 +13,7 @@ begin
   field=Field.new(id)
   fr=FrmRsp.new(idb,par,field)
   as=AppStat.new(idb[:status],field,stat={})
-  sql=Sql.new(id,stat)
+  sql=Sql.new(stat,id)
 rescue UserError
   warn "Usage: #{$0} [id] < logfile"
   Msg.exit

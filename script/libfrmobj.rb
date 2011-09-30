@@ -12,8 +12,8 @@ class FrmObj < String
     raise "Command is not IoCmd" unless iocmd.is_a?(IoCmd)
     @ic=iocmd
     @par=Param.new(fdb[:cmdframe])
-    @cmd=FrmCmd.new(fdb,@par,field)
-    @rsp=FrmRsp.new(fdb,@par,field)
+    @fc=FrmCmd.new(fdb,@par,field)
+    @fr=FrmRsp.new(fdb,@par,field)
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"Set Value  [key(:idx)] (val)")
     @cl.add('unset'=>"Remove Value  [key]")
@@ -37,8 +37,8 @@ class FrmObj < String
         replace save(cmd[1],cmd[2])
       else
         cid=@par.set(cmd)[:cid]
-        @ic.snd(@cmd.getframe,'snd:'+cid)
-        @rsp.setrsp{@ic.rcv('rcv:'+cid)}
+        @ic.snd(@fc.getframe,'snd:'+cid)
+        @fr.upd{@ic.rcv('rcv:'+cid)}
         @field.save
         replace 'OK'
       end

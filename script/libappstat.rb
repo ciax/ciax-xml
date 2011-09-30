@@ -8,7 +8,7 @@ class AppStat
     @adbs=adb[:select]
   end
 
-  def conv(field)
+  def upd(field)
     stat={}
     @adbs.each{|id,fields|
       begin
@@ -95,7 +95,7 @@ if __FILE__ == $0
     field=Field.new.update_j(str)
     view=View.new(field['id'],adb)
     as=AppStat.new(adb)
-    view.upd(as.conv(field))
+    view.upd(as.upd(field))
     print view.to_j
   rescue UserError
     abort "Usage: #{$0} [app] < field_file\n#{$!}"

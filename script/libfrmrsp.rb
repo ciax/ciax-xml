@@ -15,7 +15,7 @@ class FrmRsp
   end
 
   # Block accepts [time,frame]
-  def setrsp
+  def upd
     if rid=@par[:response]
       @sel[:select]=@fdbs[rid]|| Msg.err("No such response id [#{rid}]")
       time,frame=yield
@@ -130,7 +130,7 @@ if __FILE__ == $0
     cmd=ary.shift.split(':')
     abort ("Logline:Not response") unless /rcv/ === cmd.shift
     par.set(cmd)
-    fr.setrsp{[time,eval(ary.shift)]}
+    fr.upd{[time,eval(ary.shift)]}
     puts field.to_j
   rescue UserError
     warn "Usage: #{$0} [frameID] (id) < logline"

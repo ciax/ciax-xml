@@ -26,8 +26,8 @@ STDIN.readlines.grep(/rcv/).each{|str|
   cmd.shift
   begin
     par.set(cmd)
-    fr.setrsp{[time,eval(ary.shift)]}
-    sql.upd(as.conv(field))
+    fr.upd{[time,eval(ary.shift)]}
+    sql.upd(as.upd(field))
     $stderr.print "."
   rescue
     next

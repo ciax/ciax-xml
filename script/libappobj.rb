@@ -73,7 +73,7 @@ class AppObj < String
       Thread.pass
       loop{
         begin
-          @view.upd(@as.conv(yield @buf.recv)).save
+          @view.upd(@as.upd(yield @buf.recv)).save
           @sql.upd(@stat).flush
         rescue UserError
           Msg.alert(" in Command Thread")

@@ -4,7 +4,9 @@ require "libbuffer"
 require "libappcmd"
 require "libappstat"
 require "libwatch"
+require "libsql"
 require "thread"
+
 
 class AppObj < String
   attr_reader :prompt
@@ -12,6 +14,7 @@ class AppObj < String
     @v=Msg::Ver.new("appobj",9)
     @view=view
     @stat=view['stat']
+    @sql=Sql.new(view)
     @prompt=[adb['id']]
     @ac=AppCmd.new(adb[:command])
     @as=AppStat.new(adb[:status])
@@ -71,6 +74,7 @@ class AppObj < String
       loop{
         begin
           @view.upd(@as.conv(yield @buf.recv)).save
+          @sql.upd.flush
         rescue UserError
           Msg.alert(" in Command Thread")
           @buf.clear

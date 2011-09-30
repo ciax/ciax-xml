@@ -1,19 +1,20 @@
 #!/usr/bin/ruby
 require "libmsg"
 class Sql < Array
-  def initialize(stat)
+  def initialize(view)
     @v=Msg::Ver.new("sql",6)
-    @stat=stat
-    @keys=stat.keys.join(',')
-    @id=@stat['id']
+    @stat=view['stat']
+    @keys=@stat.keys.join(',')
+    @id=view['id']
     @sql=["sqlite3",VarDir+"/ciax.sq3"]
   end
 
-  def to_ini
+  def create
     push "create table #{@id} (#{@keys},primary key(time));"
   end
 
-  def to_ins
+  def upd
+    @v.msg{"Update:[#{@id}]"}
     vals=@stat.values.map{|s| "\"#{s}\""}.join(',')
     push "insert into #{@id} (#{@keys}) values (#{vals});"
   end
@@ -24,5 +25,16 @@ class Sql < Array
       f.puts self
       f.puts "commit;"
     }
+    clear
+  rescue
+    Ver.err(" in SQL")
   end
+end
+
+if __FILE__ == $0
+  require "json"
+  abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
+  view=JSON.load(gets(nil))
+  sql=Sql.new(view).upd
+  puts sql
 end

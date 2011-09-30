@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libbuffer"
+require "libfrmobj"
 require "libappcmd"
 require "libappstat"
 require "libwatch"
@@ -10,11 +11,12 @@ require "thread"
 
 class AppObj < String
   attr_reader :prompt
-  def initialize(adb,view,field)
+  def initialize(adb,view,field,io)
     @v=Msg::Ver.new("appobj",9)
     @view=view
     stat=view['stat']
     @prompt=[adb['id']]
+    @fobj=FrmObj.new(adb,field,io)
     @ac=AppCmd.new(adb[:command])
     @as=AppStat.new(adb[:status],field,stat)
     @sql=Sql.new(view['id'],stat)
@@ -23,7 +25,7 @@ class AppObj < String
     @interval=(adb['interval']||1).to_i
     @event=Watch.new(adb,stat)
     @watch=watch_thread unless @event[:stat].empty?
-    @main=command_thread{|buf| yield buf}
+    @main=command_thread
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('sleep'=>"sleep [sec]")
     @cl.add('waitfor'=>"[key=val] (timeout=10)")
@@ -73,7 +75,7 @@ class AppObj < String
       Thread.pass
       loop{
         begin
-          yield @buf.recv
+          @fobj.request(@buf.recv)
           @as.upd
           @view.upd.save
           @sql.upd.flush

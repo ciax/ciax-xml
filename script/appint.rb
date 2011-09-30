@@ -1,12 +1,9 @@
 #!/usr/bin/ruby
 require "optparse"
-require "json"
 require "libinsdb"
 require "libview"
 require "libfield"
 require "libiocmd"
-require "libfrmdb"
-require "libfrmobj"
 require "libappobj"
 require "libprint"
 require "libinteract"
@@ -29,11 +26,7 @@ else
   id=nil
 end
 io=IoCmd.new(iocmd,idb['wait'],1,id)
-fobj=FrmObj.new(idb,field,io)
-
-aobj=AppObj.new(idb,view,field){|cmd|
-  fobj.request(cmd)
-}
+aobj=AppObj.new(idb,view,field,io)
 
 prt=Print.new(idb[:status],view)
 

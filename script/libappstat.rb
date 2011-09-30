@@ -3,32 +3,33 @@ require "libmsg"
 require "libappdb"
 
 class AppStat
-  def initialize(adb)
+  def initialize(adb,field)
     @v=Msg::Ver.new("app/stat",9)
     @adbs=adb[:select]
+    raise "Input is not Field" unless field.is_a?(Field)
+    @field=field
   end
 
-  def upd(field)
-    raise "Input is not Field" unless field.is_a?(Field)
+  def upd
     stat={}
     @adbs.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
-        stat[id]=get_val(fields,field)
+        stat[id]=get_val(fields)
       ensure
         @v.msg(-1){"STAT:GetStatus:#{id}=[#{stat[id]}]"}
       end
     }
-    stat['time']=Time.at(field['time'].to_f).to_s
+    stat['time']=Time.at(@field['time'].to_f).to_s
     stat
   end
 
   private
-  def get_val(fields,field)
+  def get_val(fields)
     str=''
     fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || Msg.abort("No field Key")
-      data=Msg.check(field.get(fld)){"No field Value[#{fld}]"}||''
+      data=Msg.check(@field.get(fld)){"No field Value[#{fld}]"}||''
       case e1['type']
       when 'binary'
         str << binary(e1,data)
@@ -95,8 +96,8 @@ if __FILE__ == $0
     str=gets(nil) || exit
     field=Field.new.update_j(str)
     view=View.new(field['id'],adb)
-    as=AppStat.new(adb)
-    view.upd(as.upd(field))
+    as=AppStat.new(adb,field)
+    view.upd(as.upd)
     print view.to_j
   rescue UserError
     abort "Usage: #{$0} [app] < field_file\n#{$!}"

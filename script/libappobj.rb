@@ -13,12 +13,11 @@ class AppObj < String
   def initialize(adb,view,field)
     @v=Msg::Ver.new("appobj",9)
     @view=view
-    @field=field
     @stat=view['stat']
     @sql=Sql.new(view['id'])
     @prompt=[adb['id']]
     @ac=AppCmd.new(adb[:command])
-    @as=AppStat.new(adb[:status])
+    @as=AppStat.new(adb[:status],field)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
@@ -75,7 +74,7 @@ class AppObj < String
       loop{
         begin
           yield @buf.recv
-          @view.upd(@as.upd(@field)).save
+          @view.upd(@as.upd).save
           @sql.upd(@stat).flush
         rescue UserError
           Msg.alert(" in Command Thread")

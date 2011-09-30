@@ -3,25 +3,25 @@ require "libmsg"
 require "libappdb"
 
 class AppStat
-  def initialize(adb,field)
+  def initialize(adb,field,stat)
     @v=Msg::Ver.new("app/stat",9)
     @adbs=adb[:select]
     raise "Input is not Field" unless field.is_a?(Field)
     @field=field
+    @stat=stat
   end
 
   def upd
-    stat={}
     @adbs.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
-        stat[id]=get_val(fields)
+        @stat[id]=get_val(fields)
       ensure
-        @v.msg(-1){"STAT:GetStatus:#{id}=[#{stat[id]}]"}
+        @v.msg(-1){"STAT:GetStatus:#{id}=[#{@stat[id]}]"}
       end
     }
-    stat['time']=Time.at(@field['time'].to_f).to_s
-    stat
+    @stat['time']=Time.at(@field['time'].to_f).to_s
+    self
   end
 
   private
@@ -96,9 +96,8 @@ if __FILE__ == $0
     str=gets(nil) || exit
     field=Field.new.update_j(str)
     view=View.new(field['id'],adbs)
-    as=AppStat.new(adbs,field)
-    view.upd(as.upd)
-    print view.to_j
+    AppStat.new(adbs,field,view['stat']).upd
+    print view.upd.to_j
   rescue UserError
     abort "Usage: #{$0} [app] < field_file\n#{$!}"
   end

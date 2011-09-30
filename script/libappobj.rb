@@ -14,7 +14,7 @@ class AppObj < String
     @v=Msg::Ver.new("appobj",9)
     @view=view
     @stat=view['stat']
-    @sql=Sql.new(view['id'],@stat)
+    @sql=Sql.new(view['id'])
     @prompt=[adb['id']]
     @ac=AppCmd.new(adb[:command])
     @as=AppStat.new(adb[:status])
@@ -74,7 +74,7 @@ class AppObj < String
       loop{
         begin
           @view.upd(@as.conv(yield @buf.recv)).save
-          @sql.upd.flush
+          @sql.upd(@stat).flush
         rescue UserError
           Msg.alert(" in Command Thread")
           @buf.clear

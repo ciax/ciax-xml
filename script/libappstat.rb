@@ -92,11 +92,11 @@ if __FILE__ == $0
   app=ARGV.shift
   ARGV.clear
   begin
-    adb=AppDb.new(app,true)[:status]
+    adbs=AppDb.new(app,true)[:status]
     str=gets(nil) || exit
     field=Field.new.update_j(str)
-    view=View.new(field['id'],adb)
-    as=AppStat.new(adb,field)
+    view=View.new(field['id'],adbs)
+    as=AppStat.new(adbs,field)
     view.upd(as.upd)
     print view.to_j
   rescue UserError

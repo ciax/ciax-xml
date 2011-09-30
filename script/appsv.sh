@@ -1,23 +1,13 @@
 #!/bin/bash
-while getopts "d" opt; do
+while getopts "kd" opt; do
     case $opt in
-        d) export NOLOG=1;dmy=1;;
+        d) iocmd="frmsim %id";;
+        k) psg -k appint;;
         *);;
     esac
 done
 shift $(( $OPTIND -1 ))
-id=$1;shift
-errlog="$HOME/.var/err-$id.log"
-date > $errlog
-psg -k -q "appint -s $id"
-ver=client,server${VER:+,$VER}
-if [ "$dmy" ] ; then
-    VER=$ver appint -s $id "frmsim $id" >> $errlog 2>&1 &
-else
-    VER=$ver appint -s $id >> $errlog 2>&1 &
-fi
-appcl $id
-echo
-cat $errlog
-psg -k "appint -s $id"
-
+[ "$1" ] || psg appint
+for id; do
+    d -r -t $id appint -s $id ${iocmd/%id/$id}
+done

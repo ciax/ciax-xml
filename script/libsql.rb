@@ -9,9 +9,9 @@ class Sql < Array
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
   end
 
-  def create
-    key=@stat.keys.join(',')
-    push "create table #{@table} (#{key},primary key(time));"
+  def create(keyary)
+    key=keyary.join(',')
+    push "create table #{@table} (time,#{key},primary key(time));"
   end
 
   def upd

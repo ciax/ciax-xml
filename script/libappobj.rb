@@ -13,7 +13,7 @@ class AppObj < String
   attr_reader :prompt
   def initialize(adb,view,field,io)
     @v=Msg::Ver.new("appobj",9)
-    @view=view
+    @view=Msg.type?(view,View)
     stat=view['stat']
     @prompt=[adb['id']]
     @fobj=FrmObj.new(adb,field,io)

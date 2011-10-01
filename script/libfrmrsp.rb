@@ -7,8 +7,8 @@ class FrmRsp
   def initialize(fdb,par,field)
     @v=Msg::Ver.new("frm/rsp",3)
     @fdb=fdb
-    @par=par
-    @field=field
+    @par=Msg.type?(par,Param)
+    @field=Msg.type?(field,Hash)
     @sel=Hash[fdb[:rspframe][:frame]]
     @fdbs=fdb[:rspframe][:select]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])

@@ -5,9 +5,9 @@ require "libappdb"
 class AppStat
   def initialize(adb,field,stat)
     @v=Msg::Ver.new("app/stat",9)
-    @adbs=adb[:select]
     @field=Msg.type?(field,Field)
-    @stat=stat
+    @adbs=adb[:select]
+    @stat=Msg.type?(stat,Hash)
   end
 
   def upd

@@ -9,9 +9,13 @@ class FrmRsp
     @fdb=fdb
     @par=Msg.type?(par,Param)
     @field=Msg.type?(field,Hash)
-    @sel=Hash[fdb[:rspframe][:frame]]
-    @fdbs=fdb[:rspframe][:select]
+    rsp=fdb[:rspframe]
+    @sel=Hash[rsp[:frame]]
+    @fdbs=rsp[:select]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
+    rsp[:assign].each{|k,v|
+      @field[k]||=v
+    }
   end
 
   # Block accepts [time,frame]

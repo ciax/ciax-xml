@@ -8,6 +8,9 @@ class AppStat
     @field=Msg.type?(field,Field)
     @adbs=adb[:select]
     @stat=Msg.type?(stat,Hash)
+    @adbs.keys.each{|k|
+      @stat[k]||=''
+    }
   end
 
   def upd

@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 require "libcircular"
 require "librepeat"
-require "libmodcache"
-class McrDb < Hash
-  include ModCache
+require "libdb"
+
+class McrDb < Db
   def initialize(mcr,nocache=nil)
-    @v=Msg::Ver.new('mdb',5)
-    cache('mdb',mcr,nocache){|doc|
+    super('mdb')
+    cache(mcr,nocache){|doc|
       update(doc)
       doc.top.each{|e0|
         id=e0.attr2db(self)

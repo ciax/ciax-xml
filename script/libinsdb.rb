@@ -1,14 +1,11 @@
 #!/usr/bin/ruby
-require "optparse"
-require "libmsg"
-require "libmodcache"
+require "libdb"
 
-class InsDb < Hash
-  include ModCache
+class InsDb < Db
   def initialize(id,nocache=nil)
-    @v=Msg::Ver.new('idb',5)
+    super('idb')
     self['id']=id
-    cache('idb',id,nocache){|doc|
+    cache(id,nocache){|doc|
       update(doc)
       doc.domain('init').each{|e0|
         (self[:field]||={})[e0['id']]=e0.text
@@ -53,6 +50,7 @@ class InsDb < Hash
 end
 
 if __FILE__ == $0
+  require "optparse"
   begin
     opt=ARGV.getopts("af")
     id=ARGV.shift

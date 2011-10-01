@@ -1,13 +1,12 @@
 #!/usr/bin/ruby
 require "libcircular"
 require "librepeat"
-require "libmodcache"
+require "libdb"
 
-class AppDb < Hash
-  include ModCache
+class AppDb < Db
   def initialize(app,nocache=nil)
-    @v=Msg::Ver.new('adb',5)
-    cache('adb',app,nocache){|doc|
+    super('adb')
+    cache(app,nocache){|doc|
       update(doc)
       # Command DB
       cdb=doc.domain('commands')

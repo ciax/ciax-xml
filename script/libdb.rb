@@ -2,11 +2,15 @@
 require "libmsg"
 require "libxmldoc"
 
-module ModCache
+class Db < Hash
   XmlDir="#{ENV['HOME']}/ciax-xml"
-  def cache(type,id,nocache=nil)
-    @v||=Msg::Ver.new("cache",2)
-    base="#{type}-#{id}"
+  def initialize(type)
+    @v=Msg::Ver.new(type,5)
+    @type=type
+  end
+
+  def cache(id,nocache=nil)
+    base="#{@type}-#{id}"
     fmar=VarDir+"/cache/#{base}.mar"
     fxml=XmlDir+"/#{base}.xml"
     unless nocache
@@ -22,7 +26,7 @@ module ModCache
         return self
       end
     end
-    yield XmlDoc.new(type,id)
+    yield XmlDoc.new(@type,id)
     open(fmar,'w') {|f|
       f << Marshal.dump(Hash[self])
       @v.msg{"CACHE:Saved(#{base})"}
@@ -34,4 +38,3 @@ module ModCache
     ary.inject(self){|d,s| d[s.to_sym]}
   end
 end
-

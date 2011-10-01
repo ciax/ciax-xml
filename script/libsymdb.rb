@@ -1,17 +1,15 @@
 #!/usr/bin/ruby
-require "libmsg"
-require "libmodcache"
 require "librerange"
+require "libdb"
 
-class SymDb < Hash
-  include ModCache
+class SymDb < Db
   def initialize(nocache=nil)
-    @v=Msg::Ver.new("sdb",5)
+    super("sdb")
     @nocache=nocache
   end
 
   def add(gid=nil) # gid = Table Group ID
-    cache('sdb',gid,@nocache){|doc|
+    cache(gid,@nocache){|doc|
       doc.top.each{|e1|
         id=e1['id']
         label=e1['label']

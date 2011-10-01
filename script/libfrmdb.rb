@@ -1,12 +1,11 @@
 #!/usr/bin/ruby
 require "librepeat"
-require "libmodcache"
+require "libdb"
 
-class FrmDb < Hash
-  include ModCache
+class FrmDb < Db
   def initialize(frm,nocache=nil)
-    @v=Msg::Ver.new('fdb',5)
-    cache('fdb',frm,nocache){|doc|
+    super('fdb')
+    cache(frm,nocache){|doc|
       update(doc)
       cmd=self[:cmdframe]={}
       rsp=self[:rspframe]={}

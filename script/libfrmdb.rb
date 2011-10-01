@@ -8,7 +8,7 @@ class FrmDb < Db
     cache(frm,nocache){|doc|
       update(doc)
       cmd=self[:cmdframe]={}
-      rsp=self[:rspframe]={}
+      rsp=self[:rspframe]={:assign => {}}
       dc=doc.domain('cmdframe')
       dr=doc.domain('rspframe')
       fc=cmd[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
@@ -92,7 +92,7 @@ class FrmDb < Db
     when 'field'
       attr=e.to_h
       if id=attr['assign']
-        (stat[:assign]||={})[id]=''
+        stat[:assign][id]=''
         stat[:label]||={}
         if lv=attr['label']
           stat[:label][id]=lv
@@ -103,12 +103,11 @@ class FrmDb < Db
       attr
     when 'array'
       attr=e.to_h
-      (stat[:assign]||={})[attr['assign']]=[]
       idx=attr[:index]=[]
       e.each{|e1|
         idx << e1.to_h
       }
-      init_array(idx.map{|h| h['size']}){'0'}
+      stat[:assign][attr['assign']]=init_array(idx.map{|h| h['size']}){0}
       attr
     when 'ccrange','select'
       e.name

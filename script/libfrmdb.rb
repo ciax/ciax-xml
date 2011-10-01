@@ -92,6 +92,7 @@ class FrmDb < Db
     when 'field'
       attr=e.to_h
       if id=attr['assign']
+        (stat[:assign]||={})[id]=''
         stat[:label]||={}
         if lv=attr['label']
           stat[:label][id]=lv
@@ -102,6 +103,7 @@ class FrmDb < Db
       attr
     when 'array'
       attr=e.to_h
+      (stat[:assign]||={})[attr['assign']]=[]
       idx=attr[:index]=[]
       e.each{|e1|
         idx << e1.to_h

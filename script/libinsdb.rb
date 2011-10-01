@@ -8,7 +8,7 @@ class InsDb < Db
     cache(id,nocache){|doc|
       update(doc)
       doc.domain('init').each{|e0|
-        (self[:field]||={})[e0['id']]=e0.text
+        ((self[:rspframe]||={})[:assign]||={})[e0['id']]=e0.text
       }
       doc.domain('select').each{|e0|
         e0.attr2db(self[:command]||={})

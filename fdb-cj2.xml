@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="cj2" label="OMRON CJ2M-CPU33" endian="big">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -125,7 +125,7 @@
           <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
           <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
           <array assign="d" decode="signed" label="Status" length="2">
-            <index range="0:9" size="8" />
+            <index range="0:9" size="10" />
           </array>
         </response>
         <response id="cmdrsp" label="command resp">

@@ -6,7 +6,7 @@ class Param < Hash
   attr_reader :list
   def initialize(db) # command db
     @v=Msg::Ver.new("param",2)
-    @db=db
+    @db=Msg.type?(db,Hash)
     label=db[:label].reject{|k,v|
       /true|1/ === db[:hidden][k] if db.key?(:hidden)
     }

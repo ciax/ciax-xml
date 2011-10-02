@@ -22,41 +22,7 @@ class SymDb < Db
     self
   rescue SelectID
     raise $! if __FILE__ == $0
-  end
-
-  def convert(view,tid=nil)
-    @tid=tid||@tid
-    vs=view['symbol']||={}
-    view['stat'].each{|key,val|
-      next if val == ''
-      tbl=table(sid=@tid[key]) || next
-      @v.msg{"ID=#{key},table=#{sid}"}
-      tbl.each{|hash|
-        case hash['type']
-        when 'range'
-          next unless ReRange.new(hash['val']) == val
-          @v.msg{"VIEW:Range:[#{hash['val']}] and [#{val}]"}
-          vs[key]={'type' => 'num'}.update(hash)
-        when 'pattern'
-          next unless /#{hash['val']}/ === val || val == 'default'
-          @v.msg{"VIEW:Regexp:[#{hash['val']}] and [#{val}]"}
-          vs[key]={'type' => 'str'}.update(hash)
-        end
-        break
-      }
-    }
     self
-  end
-
-  private
-  def table(id)
-    if id && key?(id)
-      tbl=(self[id]||=[])
-      tbl << {'class' => 'alarm','msg' => 'N/A','val' => 'default'}
-    else
-      Msg.warn("Table[#{id}] not exist") if id
-      false
-    end
   end
 end
 

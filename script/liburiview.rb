@@ -6,7 +6,7 @@ require "open-uri"
 class UriView < Hash
   def initialize(id,host=nil)
     host||='localhost'
-    @uri="http://#{host}/json/status_#{id}.json"
+    @uri="http://#{host}/json/view_#{id}.json"
     upd
   end
 

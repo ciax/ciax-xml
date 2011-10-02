@@ -1,16 +1,11 @@
 #!/usr/bin/ruby
 require 'json'
 require 'libmsg'
-require 'libmodfile'
+require 'libstat'
 
-class Field < Hash
-  include ModFile
+class Field < Stat
   def initialize(id=nil)
-    @v=Msg::Ver.new("field",6)
-    if id
-      @type="field_#{id}"
-      self["id"]=id
-    end
+    super("field",id)
   end
 
   def subst(str)

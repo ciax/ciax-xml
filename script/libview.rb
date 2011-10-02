@@ -1,16 +1,11 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libmodfile"
+require "libstat"
 # Status to View (String with attributes)
-class View < Hash
-  include ModFile
+class View < Stat
   def initialize(id=nil,db=nil)
-    @v=Msg::Ver.new("view",6)
+    super('view',id)
     @db=db
-    if id
-      @type="json/status_#{id}"
-      self['id']=id
-    end
     if @db && @db.key?(:symbol)
       require "libsymdb"
       @sdb=SymDb.new.add('all')

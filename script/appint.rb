@@ -17,21 +17,19 @@ rescue
   warn "Usage: appint (-s) [id] (iocmd)"
   Msg.exit
 end
-
-view=View.new(id,idb[:status]).load
-field=Field.new(id).load
 if iocmd.empty?
   iocmd=idb['client'].split(' ')
 else
   id=nil
 end
 io=IoCmd.new(iocmd,idb['wait'],1,id)
+
+field=Field.new(id).load
+view=View.new(id,idb[:status])
 aobj=AppObj.new(idb,view,field,io)
-
+view.load
 prt=Print.new(idb[:status],view)
-
 port=opt["s"] ? idb["port"] : nil
-
 Interact.new(aobj.prompt,port){|line|
   aobj.dispatch(line){port ? nil : prt.upd}
 }

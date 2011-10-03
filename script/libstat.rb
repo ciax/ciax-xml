@@ -18,7 +18,7 @@ class Stat < ExHash
 
   def update_j(str)
     if str && !str.empty?
-      update(JSON.load(str))
+      deep_update(JSON.load(str))
     else
       Msg.warn "No status in File"
     end

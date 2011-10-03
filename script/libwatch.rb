@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
+require 'libmsg'
 require 'librerange'
 require 'libelapse'
-class Watch < Hash
+class Watch < ExHash
   def initialize(adb,stat)
     @v=Msg::Ver.new("watch",12)
     update(adb[:watch])

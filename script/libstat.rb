@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
+require 'libmsg'
 require 'json'
 
-class Stat < Hash
+class Stat < ExHash
   def initialize(type,id=nil)
     @v=Msg::Ver.new(type,6)
     @type=type

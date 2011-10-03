@@ -14,16 +14,15 @@ class AppObj < String
   def initialize(adb,view,field,io)
     @v=Msg::Ver.new("appobj",9)
     @view=Msg.type?(view,View)
-    stat=view['stat']
     @prompt=[adb['id']]
     @fobj=FrmObj.new(adb,field,io)
     @ac=AppCmd.new(adb[:command])
-    @as=AppStat.new(adb[:status],field,stat)
-    @sql=Sql.new(stat,view['id'])
+    @as=view['stat']=AppStat.new(adb[:status],field)
+    @sql=Sql.new(@as,view['id'])
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
-    @event=Watch.new(adb,stat)
+    @event=Watch.new(adb,@as)
     @watch=watch_thread unless @event[:stat].empty?
     @main=command_thread
     @cl=Msg::List.new("== Internal Command ==")

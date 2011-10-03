@@ -3,7 +3,7 @@ require "libmsg"
 require "json"
 require "open-uri"
 
-class UriView < Hash
+class UriView < ExHash
   def initialize(id,host=nil)
     host||='localhost'
     @uri="http://#{host}/json/view_#{id}.json"

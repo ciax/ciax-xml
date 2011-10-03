@@ -155,8 +155,32 @@ class << Msg
   end
 end
 
-class Hash
+class ExHash < Hash
   def to_s
     Msg.view_struct(self)
+  end
+
+  def deep_update(hash)
+    exmarge(hash,self)
+    self
+  end
+
+  private
+  def exmarge(a,b)
+    case a
+    when Hash
+      b||={}
+      a.keys.each{|k|
+        b[k]=exmarge(a[k],b[k])
+      }
+    when Array
+      b||=[]
+      a.size.times{|i|
+        b[i]=exmarge(a[i],b[i])
+      }
+    else
+      b=a||b
+    end
+    b
   end
 end

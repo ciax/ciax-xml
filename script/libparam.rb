@@ -2,7 +2,7 @@
 require 'libmsg'
 require 'librerange'
 
-class Param < Hash
+class Param < ExHash
   attr_reader :list
   def initialize(db) # command db
     @v=Msg::Ver.new("param",2)

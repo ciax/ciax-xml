@@ -2,7 +2,6 @@
 require "libmsg"
 require "libmodxml"
 require "xml"
-require "libmsg"
 
 class Xml
   include ModXml

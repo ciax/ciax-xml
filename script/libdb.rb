@@ -2,7 +2,7 @@
 require "libmsg"
 require "libxmldoc"
 
-class Db < Hash
+class Db < ExHash
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def initialize(type)
     @v=Msg::Ver.new(type,5)

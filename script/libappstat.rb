@@ -1,15 +1,13 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libappdb"
 
-class AppStat
-  def initialize(adb,field,stat)
+class AppStat < ExHash
+  def initialize(adb,field)
     @v=Msg::Ver.new("app/stat",9)
     @field=Msg.type?(field,Field)
     @adbs=adb[:select]
-    @stat=Msg.type?(stat,Hash)
     @adbs.keys.each{|k|
-      @stat[k]||=''
+      self[k]||=''
     }
   end
 
@@ -17,12 +15,12 @@ class AppStat
     @adbs.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
-        @stat[id]=get_val(fields)
+        self[id]=get_val(fields)
       ensure
-        @v.msg(-1){"STAT:GetStatus:#{id}=[#{@stat[id]}]"}
+        @v.msg(-1){"STAT:GetStatus:#{id}=[#{self[id]}]"}
       end
     }
-    @stat['time']=Time.at(@field['time'].to_f).to_s
+    self['time']=Time.at(@field['time'].to_f).to_s
     self
   end
 
@@ -98,7 +96,7 @@ if __FILE__ == $0
     str=gets(nil) || exit
     field=Field.new.update_j(str)
     view=View.new(field['id'],adbs)
-    AppStat.new(adbs,field,view['stat']).upd
+    view['stat']=AppStat.new(adbs,field).upd
     print view.upd.to_j
   rescue UserError
     abort "Usage: #{$0} [app] < field_file\n#{$!}"

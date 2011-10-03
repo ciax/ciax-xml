@@ -107,7 +107,7 @@ class FrmDb < Db
       e.each{|e1|
         idx << e1.to_h
       }
-      stat[:assign][attr['assign']]=init_array(idx.map{|h| h['size']}){nil}
+      stat[:assign][attr['assign']]=init_array(idx.map{|h| h['size']})
       attr
     when 'ccrange','select'
       e.name
@@ -117,10 +117,10 @@ class FrmDb < Db
   end
 
   def init_array(sary,field=nil)
-    return yield if sary.empty?
+    return if sary.empty?
     a=field||[]
     sary[0].to_i.times{|i|
-      a[i]=init_array(sary[1..-1],a[i]){yield}
+      a[i]=init_array(sary[1..-1],a[i])
     }
     a
   end

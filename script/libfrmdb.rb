@@ -107,7 +107,7 @@ class FrmDb < Db
       e.each{|e1|
         idx << e1.to_h
       }
-      stat[:assign][attr['assign']]=init_array(idx.map{|h| h['size']}){0}
+      stat[:assign][attr['assign']]=init_array(idx.map{|h| h['size']}){nil}
       attr
     when 'ccrange','select'
       e.name

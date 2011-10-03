@@ -5,12 +5,12 @@ def merge(a,b)
   case a
   when Hash
     b||={}
-    a.each_key{|k|
+    a.keys.each{|k|
       b[k]=merge(a[k],b[k])
     }
   when Array
     b||=[]
-    a.each_index{|i|
+    a.size.times{|i|
       b[i]=merge(a[i],b[i])
     }
   else

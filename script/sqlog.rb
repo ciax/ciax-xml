@@ -34,8 +34,10 @@ else
       sql.upd
       $stderr.print "."
     rescue
+      $stderr.print "x"
       next
     end
   }
+  $stderr.puts
 end
 puts sql.to_s

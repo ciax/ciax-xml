@@ -90,7 +90,6 @@ end
 class << Msg
   # Class method
   def view_struct(data,title=nil,indent=0)
-    return '' unless data
     str=''
     if title
       case title

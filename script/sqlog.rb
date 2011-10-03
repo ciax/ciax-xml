@@ -13,14 +13,14 @@ begin
   par=Param.new(idb[:cmdframe])
   field=Field.new(id)
   fr=FrmRsp.new(idb,par,field)
-  as=AppStat.new(idb[:status],field,stat={})
-  sql=Sql.new(stat,id)
+  as=AppStat.new(idb[:status],field)
+  sql=Sql.new(as,id)
 rescue UserError
   warn "Usage: #{$0} (-i) [id] < logfile"
   Msg.exit
 end
 if opt['i']
-  sql.create(idb[:status][:select].keys)
+  sql.create
 else
   STDIN.readlines.grep(/rcv/).each{|str|
     ary=str.split("\t")

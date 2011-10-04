@@ -19,9 +19,9 @@ class McrDb < Db
             e1.each{|e2|
               stat[:cond] << e2.to_h
             }
-            ((self[:sequence]||={})[id]||=[]) << stat
+            ((self[:select]||={})[id]||=[]) << stat
           when 'exec'
-            ((self[:sequence]||={})[id]||=[]) << e1.text
+            ((self[:select]||={})[id]||=[]) << e1.text
             @v.msg{"COMMAND:[#{id}] #{e1.text}"}
           end
         }

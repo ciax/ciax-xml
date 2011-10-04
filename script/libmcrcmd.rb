@@ -25,7 +25,7 @@ class McrCmd
           key=h['ref']
           cri=@par.subst(h['val'])
           val=@view['stat'][key]
-          @v.msg{"Condition:[#{key}] of [#{cri}] vs <#{val}>"}
+          Msg.msg("Condition[#{key}]:<#{val}> for [#{cri}]")
           cri == val
         }
         case e1[:type]

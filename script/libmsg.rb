@@ -120,6 +120,10 @@ class << Msg
     str.chomp + " #{data.inspect}\n"
   end
 
+  def msg(msg='message') # Display only
+    Kernel.warn color(msg,2)
+  end
+
   def warn(msg='warning') # Display only
     Kernel.warn color(msg,3)
   end

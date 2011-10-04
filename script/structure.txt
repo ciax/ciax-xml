@@ -5,8 +5,8 @@
 
   VIEW: {}
         "id" => ID
-        "class" => class
-        "frame" => frame
+        "app_type" => application
+        "frm_type" => frame
         "stat" => {}
            id => val
         "symbol" =>{}

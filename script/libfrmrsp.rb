@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libframe"
-require "libparam"
 
 # Rsp Methods
 class FrmRsp
@@ -120,8 +119,9 @@ class FrmRsp
 end
 
 if __FILE__ == $0
-  require "libfield"
   require "libfrmdb"
+  require "libparam"
+  require "libfield"
   fid=ARGV.shift
   begin
     fdb=FrmDb.new(fid)

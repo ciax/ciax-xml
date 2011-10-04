@@ -24,9 +24,8 @@ else
 end
 io=IoCmd.new(iocmd,idb['wait'],1,id)
 
-field=Field.new(id).load
 view=View.new(id,idb[:status])
-aobj=AppObj.new(idb,view,field,io)
+aobj=AppObj.new(idb,view,io)
 view.load
 prt=Print.new(idb[:status],view)
 port=opt["s"] ? idb["port"] : nil

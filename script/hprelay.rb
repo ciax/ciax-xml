@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libfield"
 require "libiocmd"
 require "libhexpack"
 require "libinteract"
@@ -15,7 +14,6 @@ begin
   idb=InsDb.new(id)
   port=idb['port']
   @io=IoCmd.new("socat - udp:#{host}:#{port}")
-  @stat=Field.new
   @hp=HexPack.new(id)
 rescue
   warn "Usage: hprelay (-s) [id] (host)"

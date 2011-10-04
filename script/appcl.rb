@@ -1,12 +1,10 @@
 #!/usr/bin/ruby
+require "liburiview"
 require "libinsdb"
-require "libfield"
 require "libiocmd"
-require "libshell"
 require "libprint"
 require "libparam"
-require "libview"
-require "liburiview"
+require "libshell"
 
 id=ARGV.shift
 host=ARGV.shift||'localhost'

@@ -4,4 +4,6 @@ id=$1;shift
 IFS=':' cmd="$*"
 setfld $id || _usage_key '' "[cmd]"
 input="$HOME/.var/device_${id}_*.log"
-egrep -h "rcv:$cmd" $input|tail -1
+for i in $input;do
+    egrep -h "rcv:$cmd" $i
+done | tail -1 | grep .

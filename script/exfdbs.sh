@@ -13,7 +13,7 @@ getcmd(){
 getstat(){
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
-        logline $id $cmd $par > $temp
+        logline $id $cmd $par > $temp || { echo; continue; }
         VER=$ver < $temp $frmrsp $frm $id|merging $output
         cut -f3 $temp|grep . || echo
     done
@@ -32,7 +32,7 @@ for id in ${ids:-`getid`}; do
     output="$HOME/.var/json/field_${id}.json"
     echo -n "{'id':'$id'}"|merging $output
     getstat ${cmds:-`getcmd $frm`}
-    v2s $output
+    [ -e $output ] && v2s $output
     read -t 0 && break
 done
 

@@ -15,9 +15,10 @@ class McrDb < Db
           when 'par'
             ((self[:parameter]||={})[id]||=[]) << e1.text
           when 'break','check'
-            stat={:type => e1.name,:cond => []}
+            stat=e1.to_h
+            stat['type'] = e1.name
             e1.each{|e2|
-              stat[:cond] << e2.to_h
+              (stat['cond']||=[]) << e2.to_h
             }
             ((self[:select]||={})[id]||=[]) << stat
           when 'exec'

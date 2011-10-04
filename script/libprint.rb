@@ -4,8 +4,9 @@ class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(db,view)
     @view=view
-    view['stat']||= {}
-    view['symbol']||= {}
+    ['stat','type','class','msg'].each{|key|
+      view[key]||={}
+    }
     @elapse=Elapse.new(view['stat'])
     @group=db[:group] || [[db[:select].keys]]
     @label=db[:label] || {}
@@ -45,9 +46,7 @@ class Print < Array
       else
         val=@view['stat'][id]
       end
-      symbol=@view['symbol'][id]||{}
-      label=@label[id] || id.upcase
-      da << prt(symbol,label,val)
+      da << prt(id,val)
     }
     da.each_slice(col){|a|
       push "  "+a.join(" ")
@@ -55,13 +54,13 @@ class Print < Array
     self
   end
 
-  def prt(symbol,label,val)
+  def prt(id,val)
     str='['
-    str << color(6,label)
+    str << color(6,@label[id] || id.upcase)
     str << ':'
-    msg=symbol['msg']
-    c=CM[symbol['class']]
-    case v=symbol['type']
+    msg=@view['msg'][id]
+    c=CM[@view['class'][id]]
+    case v=@view['type'][id]
     when 'num'
       str << color(c,"#{val}(#{msg})")
     else

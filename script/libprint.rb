@@ -12,13 +12,9 @@ class Print < Array
     @label=db[:label] || {}
   end
 
-  def upd
+  def to_s
     clear
     get_group
-    self
-  end
-
-  def to_s
     join("\n")
   end
 
@@ -76,6 +72,6 @@ if __FILE__ == $0
   while gets
     view=JSON.load($_)
     db=InsDb.new(view['id']).cover_app
-    puts Print.new(db[:status],view).upd
+    puts Print.new(db[:status],view)
   end
 end

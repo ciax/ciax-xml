@@ -30,5 +30,5 @@ view.load
 prt=Print.new(idb[:status],view)
 port=opt["s"] ? idb["port"] : nil
 Interact.new(aobj.prompt,port){|line|
-  aobj.dispatch(line){port ? nil : prt.upd}
+  aobj.dispatch(line){port ? nil : prt}
 }

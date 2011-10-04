@@ -20,7 +20,7 @@ class UriView < ExHash
 
   def upd
     open(@uri){|f|
-      replace(JSON.load(f.read))
+      deep_update(JSON.load(f.read))
     } rescue
     self
   end

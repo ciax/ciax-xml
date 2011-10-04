@@ -3,7 +3,7 @@ require 'libelapse'
 class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(db,view)
-    @view=view
+    @view=Msg.type?(view,Hash)
     ['stat','class','msg'].each{|key|
       view[key]||={}
     }

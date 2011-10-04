@@ -21,11 +21,7 @@ function conv(view){
                 $("#"+id).addClass(view.class[id]);
         }
         if(view.msg && view.msg[id]){
-            if(view.type && view.type[id]){
-                val=view.msg[id]+'('+val+')'
-            }else{
-                val=view.msg[id]
-            }
+            val=view.msg[id]
         }
         $("#"+id).text(val);
     }

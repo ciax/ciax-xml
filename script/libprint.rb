@@ -4,7 +4,7 @@ class Print < Array
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(db,view)
     @view=view
-    ['stat','type','class','msg'].each{|key|
+    ['stat','class','msg'].each{|key|
       view[key]||={}
     }
     @elapse=Elapse.new(view['stat'])
@@ -60,12 +60,7 @@ class Print < Array
     str << ':'
     msg=@view['msg'][id]
     c=CM[@view['class'][id]]
-    case v=@view['type'][id]
-    when 'num'
-      str << color(c,"#{val}(#{msg})")
-    else
-      str << color(c,msg||val)
-    end
+    str << color(c,msg||val)
     str << "]"
   end
 

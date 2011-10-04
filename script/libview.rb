@@ -20,7 +20,7 @@ class View < Stat
         next
       end
       @v.msg{"ID=#{key},table=#{sid}"}
-      {'type' => 'str','class' => 'alarm','msg' => 'N/A'}.each{|k,v|
+      {'class' => 'alarm','msg' => 'N/A'}.each{|k,v|
         (self[k]||={})[key]=v
       }
       tbl.each{|hash|
@@ -28,14 +28,13 @@ class View < Stat
         when 'range'
           next unless ReRange.new(hash['val']) == val
           @v.msg{"VIEW:Range:[#{hash['val']}] and [#{val}]"}
-          self['type'][key] = 'num'
+          self['msg'][key]=hash['msg']+"(#{val})"
         when 'pattern'
           next unless /#{hash['val']}/ === val || val == 'default'
           @v.msg{"VIEW:Regexp:[#{hash['val']}] and [#{val}]"}
-          self['type'][key] = 'str'
+          self['msg'][key]=hash['msg']
         end
         self['class'][key]=hash['class']
-        self['msg'][key]=hash['msg']
         break
       }
     }

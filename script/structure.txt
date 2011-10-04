@@ -9,8 +9,12 @@
         "frm_type" => frame
         "stat" => {}
            id => val
-        "symbol" =>{}
-           id => {"type","class","msg"}
+        "type" =>{}
+           id => val
+        "class" =>{}
+           id => val
+        "msg" =>{}
+           id => val
            ...
 
   WATCH: {}

@@ -19,18 +19,21 @@ class View < Stat
         Msg.warn("Table[#{sid}] not exist")
         next
       end
-      tbl+=[{'class' => 'alarm','msg' => 'N/A','val' => 'default'}]
       @v.msg{"ID=#{key},table=#{sid}"}
+      default={'class' => 'alarm','msg' => 'N/A','val' => 'default'}
+      sym=((self['symbol']||={})[key]||=default)
       tbl.each{|hash|
         case hash['type']
         when 'range'
           next unless ReRange.new(hash['val']) == val
           @v.msg{"VIEW:Range:[#{hash['val']}] and [#{val}]"}
-          (self['symbol']||={})[key]={'type' => 'num'}.update(hash)
+          sym.update(hash)
+          sym['type'] = 'num'
         when 'pattern'
           next unless /#{hash['val']}/ === val || val == 'default'
           @v.msg{"VIEW:Regexp:[#{hash['val']}] and [#{val}]"}
-          (self['symbol']||={})[key]={'type' => 'str'}.update(hash)
+          sym.update(hash)
+          sym['type'] = 'str'
         end
         break
       }

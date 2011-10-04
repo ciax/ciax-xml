@@ -20,21 +20,21 @@ class View < Stat
         next
       end
       @v.msg{"ID=#{key},table=#{sid}"}
-      default={'class' => 'alarm','msg' => 'N/A','val' => 'default'}
+      default={'class' => 'alarm','msg' => 'N/A'}
       sym=((self['symbol']||={})[key]||=default)
       tbl.each{|hash|
         case hash['type']
         when 'range'
           next unless ReRange.new(hash['val']) == val
           @v.msg{"VIEW:Range:[#{hash['val']}] and [#{val}]"}
-          sym.update(hash)
           sym['type'] = 'num'
         when 'pattern'
           next unless /#{hash['val']}/ === val || val == 'default'
           @v.msg{"VIEW:Regexp:[#{hash['val']}] and [#{val}]"}
-          sym.update(hash)
           sym['type'] = 'str'
         end
+        sym['class']=hash['class']
+        sym['msg']=hash['msg']
         break
       }
     }

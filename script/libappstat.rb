@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libexhash"
 
 class AppStat < ExHash
   def initialize(adb,field)

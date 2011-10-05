@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libxmlgn"
+require "libexhash"
 
 # Domain is the top node of each name spaces
 class XmlDoc < ExHash

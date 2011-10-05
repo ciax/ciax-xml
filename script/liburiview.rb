@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "json"
+require "libexhash"
 require "open-uri"
 require "time"
 
@@ -20,7 +20,7 @@ class UriView < ExHash
 
   def upd
     open(@uri){|f|
-      deep_update(JSON.load(f.read))
+      update_j(f.read)
     } rescue
     self
   end

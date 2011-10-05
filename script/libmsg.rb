@@ -89,37 +89,6 @@ end
 
 class << Msg
   # Class method
-  def view_struct(data,title=nil,indent=0)
-    str=''
-    if title
-      case title
-      when Numeric
-        title="[#{title}]"
-      else
-        title=title.inspect
-      end
-      str << "  " * indent + ("%-4s :\n" % title)
-      indent+=1
-    end
-    case data
-    when Array
-      unless data.all?{|v| v.kind_of?(Comparable)}
-        data.each_with_index{|v,i|
-          str << view_struct(v,i,indent)
-        }
-        return str
-      end
-    when Hash
-      if data.values.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
-        data.each{|k,v|
-          str << view_struct(v,k,indent)
-        }
-        return str
-      end
-    end
-    str.chomp + " #{data.inspect}\n"
-  end
-
   def msg(msg='message') # Display only
     Kernel.warn color(msg,2)
   end
@@ -156,35 +125,5 @@ class << Msg
     return '' if text == ''
     return text unless STDERR.tty?
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
-  end
-end
-
-class ExHash < Hash
-  def to_s
-    Msg.view_struct(self)
-  end
-
-  def deep_update(hash)
-    exmarge(hash,self)
-    self
-  end
-
-  private
-  def exmarge(a,b)
-    case a
-    when Hash
-      b||={}
-      a.keys.each{|k|
-        b[k]=exmarge(a[k],b[k])
-      }
-    when Array
-      b||=[]
-      a.size.times{|i|
-        b[i]=exmarge(a[i],b[i])
-      }
-    else
-      b=a||b
-    end
-    b
   end
 end

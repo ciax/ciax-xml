@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'json'
+require 'libexhash'
 
 class Stat < ExHash
   def initialize(type,id=nil)
@@ -10,19 +10,6 @@ class Stat < ExHash
       @base=VarDir+"/json/#{type}_#{id}"
       self['id']=id
     end
-  end
-
-  def to_j
-    JSON.dump(Hash[self])
-  end
-
-  def update_j(str)
-    if str && !str.empty?
-      deep_update(JSON.load(str))
-    else
-      Msg.warn "No status in File"
-    end
-    self
   end
 
   # N/A unless id
@@ -41,12 +28,12 @@ class Stat < ExHash
     self
   end
 
-  def save(tag=nil,hash=Hash[self])
+  def save(tag=nil,hash=self)
     Msg.err("No File Name")  unless @base
     tbase=[@base,tag].compact.join('_')
     fname="#{tbase}.json"
     @v.msg{"Status Saving for [#{tbase}]"}
-    open(fname,'w') {|f| f << JSON.dump(hash) }
+    open(fname,'w') {|f| f << ExHash[hash].to_j }
     mklink(fname,tag)
     self
   end

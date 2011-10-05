@@ -27,7 +27,7 @@ class Stat < ExHash
 
   # N/A unless id
   def load(tag=nil)
-    raise "No Cache File Name"  unless @base
+    Msg.err("No File Name")  unless @base
     tbase=[@base,tag].compact.join('_')
     @v.msg{"Status Loading for [#{tbase}]"}
     fname="#{tbase}.json"
@@ -42,7 +42,7 @@ class Stat < ExHash
   end
 
   def save(tag=nil,hash=Hash[self])
-    raise "No File Name"  unless @base
+    Msg.err("No File Name")  unless @base
     tbase=[@base,tag].compact.join('_')
     fname="#{tbase}.json"
     @v.msg{"Status Saving for [#{tbase}]"}

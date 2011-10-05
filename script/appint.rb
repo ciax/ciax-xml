@@ -9,9 +9,9 @@ require "libprint"
 require "libinteract"
 
 
+opt=ARGV.getopts("s")
+id,*iocmd=ARGV
 begin
-  opt=ARGV.getopts("s")
-  id,*iocmd=ARGV
   idb=InsDb.new(id).cover_app.cover_frm
 rescue
   warn "Usage: appint (-s) [id] (iocmd)"
@@ -23,12 +23,10 @@ else
   id=nil
 end
 io=IoCmd.new(iocmd,idb['wait'],1,id)
-
 view=View.new(id,idb[:status])
 aobj=AppObj.new(idb,view,io)
-view.load
-prt=Print.new(idb[:status],view)
+prt=Print.new(idb[:status],view.load)
 port=opt["s"] ? idb["port"] : nil
 Interact.new(aobj.prompt,port){|line|
-  aobj.dispatch(line){port ? nil : prt}
+  aobj.upd(line) || (prt unless port)
 }

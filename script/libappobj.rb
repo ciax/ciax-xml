@@ -30,37 +30,39 @@ class AppObj < String
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('sleep'=>"sleep [sec]")
     @cl.add('waitfor'=>"[key=val] (timeout=10)")
-    upd
+    upd_prompt
   end
 
-  def dispatch(line)
+  def upd(line)
+    res=nil
     case line
     when nil
       stop=@event.interrupt
       @buf.interrupt{stop}
-      replace "Interrupt #{stop}\n"
+      res="Interrupt #{stop}\n"
     when /^(stat|)$/
-      replace yield.to_s
+      nil
     when @event.block_pattern
-      replace "Blocking(#{@event.block_pattern.inspect})\n"
+      res="Blocking(#{@event.block_pattern.inspect})\n"
     when /^sleep */
       @buf.wait_for($'.to_i){}
-      replace "Sleeping\n"
+      res="Sleeping\n"
     when /^waitfor */
       k,v=$'.split('=')
       @buf.wait_for(10){ @view['stat'][k] == v }
-      replace "Waiting\n"
+      res="Waiting\n"
     else
       @buf.send{@ac.setcmd(line.split(' '))}
-      replace "ISSUED\n"
+      res="ISSUED\n"
     end
-    upd
-    self
+    upd_prompt
+    res
   rescue SelectCMD
     raise SelectCMD,@cl.to_s
   end
 
-  def upd
+  private
+  def upd_prompt
     @prompt.slice!(1..-1)
     @prompt << '@' if @watch && @watch.alive?
     @prompt << '&' if @event.active?
@@ -70,7 +72,6 @@ class AppObj < String
     self
   end
 
-  private
   def command_thread
     Thread.new{
       Thread.pass

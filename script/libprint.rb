@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libelapse'
-class Print < Array
+class Print
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(db,view)
     @view=Msg.type?(view,Hash)
@@ -10,12 +10,13 @@ class Print < Array
     @elapse=Elapse.new(view['stat'])
     @group=db[:group] || [[db[:select].keys]]
     @label=db[:label] || {}
+    @line=[]
   end
 
   def to_s
-    clear
+    @line.clear
     get_group
-    join("\n")
+    @line.join("\n")
   end
 
   private
@@ -24,7 +25,7 @@ class Print < Array
       arys,ids = g.partition{|e| Array === e}
       unless ids.empty?
         cap=@label[ids.first] || next
-        push " ***"+color(2,cap)+"***"
+        @line << " ***"+color(2,cap)+"***"
       end
       arys.each{|a|
         get_element(a)
@@ -45,7 +46,7 @@ class Print < Array
       da << prt(id,val)
     }
     da.each_slice(col){|a|
-      push "  "+a.join(" ")
+      @line << "  "+a.join(" ")
     }
     self
   end

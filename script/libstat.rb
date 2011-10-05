@@ -28,13 +28,30 @@ class Stat < ExHash
     self
   end
 
-  def save(tag=nil,hash=self)
+  def save(keylist=nil,tag=nil)
     Msg.err("No File Name")  unless @base
-    tbase=[@base,tag].compact.join('_')
-    fname="#{tbase}.json"
-    @v.msg{"Status Saving for [#{tbase}]"}
-    open(fname,'w') {|f| f << ExHash[hash].to_j }
-    mklink(fname,tag)
+    if keylist
+      hash=ExHash.new
+      keylist.each{|k|
+        if key?(k)
+          hash[k]=self[k]
+        else
+          Msg.warn("No such Key [#{k}]")
+        end
+      }
+    else
+      hash=self
+    end
+    if hash.empty?
+      Msg.warn("No Keys")
+    else
+      tag||=Time.now.strftime('%y%m%d-%H%M%S')
+      tbase=[@base,tag].compact.join('_')
+      fname="#{tbase}.json"
+      @v.msg{"Status Saving for [#{tbase}]"}
+      open(fname,'w') {|f| f << hash.to_j }
+      mklink(fname,tag)
+    end
     self
   end
 

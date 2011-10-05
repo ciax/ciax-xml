@@ -7,7 +7,7 @@ class FrmRsp
     @v=Msg::Ver.new("frm/rsp",3)
     @fdb=fdb
     @par=Msg.type?(par,Param)
-    @field=Msg.type?(field,Hash)
+    @field=Msg.type?(field,Field)
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
     @fdbs=rsp[:select]

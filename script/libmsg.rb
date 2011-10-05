@@ -148,7 +148,7 @@ class << Msg
 
   def type?(name,mod,nul=false)
     return name if (nul && name.nil?) || name.is_a?(mod)
-    raise "Parameter type error (#{mod.to_s})"
+    raise "Parameter type error <#{name.class}> for (#{mod.to_s})"
   end
 
   # 1=red,2=green,4=blue,8=bright

@@ -14,15 +14,11 @@ id,*iocmd=ARGV
 begin
   idb=InsDb.new(id).cover_app.cover_frm
 rescue
-  warn "Usage: appint (-s) [id] (iocmd)"
+  warn 'Usage: appint (-s) [id] ("iocmd")'
   Msg.exit
 end
-if iocmd.empty?
-  iocmd=idb['client'].split(' ')
-else
-  id=nil
-end
-io=IoCmd.new(iocmd,idb['wait'],1,id)
+io=IoCmd.new(iocmd.empty? ? idb['client'].split(' ') : iocmd,idb['wait'],1)
+io.startlog(id) if iocmd.empty?
 view=View.new(id,idb[:status])
 aobj=AppObj.new(idb,view,io)
 prt=Print.new(idb[:status],view.load)

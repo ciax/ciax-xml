@@ -13,7 +13,7 @@ begin
   view=UriView.new(id,host)
   idb=InsDb.new(id)
   port=idb['port']
-  @io=IoCmd.new("socat - udp:#{host}:#{port}")
+  @io=IoCmd.new(["socat","-","udp:#{host}:#{port}"])
   @hp=HexPack.new(id)
 rescue
   warn "Usage: hprelay (-s) [id] (host)"

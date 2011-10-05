@@ -14,7 +14,7 @@ class Client
   end
 
   def upd(line)
-    Msg.err("No Input") unless line
+    line='interrupt' unless line
     line='stat' if line.empty?
     @io.snd(line)
     time,str=@io.rcv
@@ -22,6 +22,6 @@ class Client
     @prompt.clear << ary.pop
     @view.upd
     res=ary.first
-    /CMD/ === res ? @par.list : res
+    /CMD/ === res ? @par.set([line]) : res
   end
 end

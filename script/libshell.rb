@@ -12,7 +12,7 @@ class Shell
       line=Readline.readline(prompt.join(''),true)
       break if /^q/ === line
       begin
-        puts yield line
+        puts (yield line).to_s
       rescue SelectCMD
         puts cl.to_s
       rescue UserError

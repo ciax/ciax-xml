@@ -13,8 +13,7 @@ rescue SelectID
   warn "Usage: appcl [id] (host)"
   Msg.exit
 end
-pr=Print.new(idb[:status],cli.view)
+prt=Print.new(idb[:status],cli.view)
 Shell.new(cli.prompt){|line|
-  break unless line
-  cli.upd(line) || pr
+  cli.upd(line) || prt
 }

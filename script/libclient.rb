@@ -6,7 +6,6 @@ require "libparam"
 class Client
   attr_reader :view,:prompt
   def initialize(idb,host='localhost')
-    Msg.type?(idb,InsDb).cover_app
     @view=UriView.new(idb['id'],host)
     @io=IoCmd.new(["socat","-","udp:#{host}:#{idb['port']}"])
     @par=Param.new(idb[:command])

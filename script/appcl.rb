@@ -7,7 +7,7 @@ require "libshell"
 id=ARGV.shift
 host=ARGV.shift||'localhost'
 begin
-  idb=InsDb.new(id)
+  idb=InsDb.new(id).cover_app
   cli=Client.new(idb,host)
 rescue SelectID
   warn "Usage: appcl [id] (host)"

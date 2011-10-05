@@ -14,11 +14,9 @@ rescue
   warn "Usage: hprelay (-s) [id] (host)"
   Msg.exit
 end
-cli=Client.new(idb,host)
-
+cli=Client.new(idb,host).cover_app
 hp=HexPack.new(cli.view,cli.prompt)
 port=opt["s"] ? idb['port'].to_i+1000 : nil
-
 Interact.new([],port){|line|
   break unless line
   cli.upd(line)

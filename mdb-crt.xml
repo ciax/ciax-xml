@@ -31,6 +31,9 @@
         <stat label="Ready?" ref="rdy">ON</stat>
       </check>
       <exec>run $1</exec>
+      <check retry="5">
+        <stat label="Running" ref="run">ON</stat>
+      </check>
       <check retry="120">
         <stat label="Running" ref="run">OFF</stat>
       </check>

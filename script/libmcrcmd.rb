@@ -1,10 +1,8 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libparam"
-require "liburiview"
 
 class McrCmd
-  include Math
   def initialize(mdb,view)
     @v=Msg::Ver.new("mcr",9)
     @mdb=mdb
@@ -37,7 +35,7 @@ class McrCmd
           retr.times{
             break if judge(e1['cond'])
             sleep 1
-          } && Msg.err("Interlock:[#{id}]")
+          } && Msg.err(retr > 1 ? "Timeout:[#{id}]" : "Interlock:[#{id}]")
         end
       else
         Msg.warn("  EXEC:#{@par.subst(e1)}")
@@ -64,14 +62,16 @@ class McrCmd
 end
 
 if __FILE__ == $0
+  require "libinsdb"
   require "libmcrdb"
-  require "liburiview"
+  require "libclient"
   mcr,*cmd=ARGV
   ARGV.clear
   begin
     mdb=McrDb.new(mcr,cmd.empty?)
-    view=UriView.new(mcr)
-    ac=McrCmd.new(mdb,view)
+    idb=InsDb.new(mcr).cover_app
+    cli=Client.new(idb)
+    ac=McrCmd.new(mdb,cli.view)
     ac.setcmd(cmd)
     ac.getcmd
   rescue SelectCMD

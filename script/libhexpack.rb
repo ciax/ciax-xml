@@ -1,7 +1,11 @@
 #!/usr/bin/ruby
 # Ascii Pack
+require "libmsg"
 class HexPack
-  def initialize(id)
+  def initialize(view,prompt=[''])
+    @stat=Msg.type?(view['stat'],Hash)
+    id=view['id']||raise
+    @prompt=Msg.type?(prompt,Array)
     file="/home/ciax/config/sdb_#{id}.txt"
     @res=["%",id,'_','0','0','_','']
     @list=[]
@@ -17,16 +21,12 @@ class HexPack
     }
   end
 
-  def issue(flg)
-    @res[4]= flg ? '1' : '0'
-    self
-  end
-
-  def upd(stat)
-    @res[3]=stat['run']
+  def upd
+    @res[3]=@stat['run']
+    @res[4]= @prompt.first.include?('*') ? '1' : '0'
     @res[6]=''
     @list.each{|key|
-      if val=stat[key]
+      if val=@stat[key]
         @res[6] << val
       else
         warn "NO key(#{key}) in Status"
@@ -44,6 +44,5 @@ if __FILE__ == $0
   require "json"
   abort("Usage: #{$0} [status file]") if STDIN.tty? && ARGV.size < 1
   view=JSON.load(gets(nil))
-  id=view['id']
-  puts HexPack.new(id).upd(view['stat'])
+  puts HexPack.new(view).upd
 end

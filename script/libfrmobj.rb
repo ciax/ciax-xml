@@ -3,7 +3,7 @@ require "libiocmd"
 require "libfrmcmd"
 require "libfrmrsp"
 
-class FrmObj < String
+class FrmObj
   attr_reader :field
   def initialize(fdb,field,iocmd)
     @v=Msg::Ver.new("frmobj",3)
@@ -19,29 +19,25 @@ class FrmObj < String
     @cl.add('save'=>"Save Field [key,key...] (tag)")
   end
 
-  def request(cmd) #Should be array
-    if cmd.empty?
-      replace yield.to_s
+  def upd(cmd) #Should be array
+    return if cmd.empty?
+    @v.msg{"Receive #{cmd}"}
+    case cmd[0]
+    when 'set'
+      set(cmd[1..-1]).inspect
+    when 'unset'
+      @field.delete(cmd[1]).inspect
+    when 'load'
+      load(cmd[1])
+    when 'save'
+      save(cmd[1],cmd[2])
     else
-      @v.msg{"Receive #{cmd}"}
-      case cmd[0]
-      when 'set'
-        replace set(cmd[1..-1]).inspect
-      when 'unset'
-        replace @field.delete(cmd[1]).inspect
-      when 'load'
-        replace load(cmd[1])
-      when 'save'
-        replace save(cmd[1],cmd[2])
-      else
-        cid=@par.set(cmd)[:cid]
-        @ic.snd(@fc.getframe,'snd:'+cid)
-        @fr.upd{@ic.rcv('rcv:'+cid)}
-        @field.save
-        replace 'OK'
-      end
+      cid=@par.set(cmd)[:cid]
+      @ic.snd(@fc.getframe,'snd:'+cid)
+      @fr.upd{@ic.rcv('rcv:'+cid)}
+      @field.save
+      'OK'
     end
-    self
   rescue SelectCMD
     raise SelectCMD,@cl.to_s
   end

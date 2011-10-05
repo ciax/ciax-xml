@@ -25,5 +25,6 @@ rescue
 end
 port=opt["s"] ? idb["port"] : nil
 Interact.new([idb['frame'],'>'],port){|line|
-  fobj.request(line.split(' ')){port ? field.to_j : field} if line
+  break unless line
+  fobj.upd(line.split(' ')) || (port ? field.to_j : field)
 }

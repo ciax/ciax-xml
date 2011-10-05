@@ -77,7 +77,7 @@ class AppObj < String
       Thread.pass
       loop{
         begin
-          @fobj.request(@buf.recv)
+          @fobj.upd(@buf.recv)
           @as.upd
           @view.upd.save
           @sql.upd.flush

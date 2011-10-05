@@ -2,12 +2,14 @@
 require "libmsg"
 require "libparam"
 
-class McrCmd
-  def initialize(mdb,view)
+class McrObj
+  attr_reader :line
+  def initialize(mdb,cli)
     @v=Msg::Ver.new("mcr",9)
     @mdb=mdb
     @par=Param.new(mdb)
-    @view=Msg.type?(view,UriView)
+    @cli=Msg.type?(cli,Client)
+    @line=[]
   end
 
   def setcmd(ssn)
@@ -16,42 +18,50 @@ class McrCmd
 
   def getcmd
     id=@par[:command]
-    Msg.msg("Exec(MDB):#{id}")
+    @line << "Exec(MDB):#{id}"
     @par[:select].each{|e1|
       case e1
       when Hash
         case e1['type']
         when 'break'
-          Msg.warn("  Check Skip:[#{e1['label']}#{id}]")
+          @line << "  Check Skip:[#{e1['label']}#{id}]"
           if judge(e1['cond'])
-            Msg.warn("  Skip:[#{id}]")
+            @line << "  Skip:[#{id}]"
             return
           else
-            Msg.warn("  Proceed:[#{id}]")
+            @line << "  Proceed:[#{id}]"
           end
         when 'check'
           retr=(e1['retry']||1).to_i
-          Msg.warn("  Check Interlock:[#{e1['label']}#{id}] (#{retr})")
-          retr.times{
-            break if judge(e1['cond'])
-            sleep 1
-          } && Msg.err(retr > 1 ? "Timeout:[#{id}]" : "Interlock:[#{id}]")
+          @line << "  Check Interlock:[#{e1['label']}#{id}] (#{retr})"
+          if retr.times{|n|
+              break if judge(e1['cond'],n)
+              sleep 1
+            }
+          then
+            @line << (retr > 1 ? "Timeout:[#{id}]" : "Interlock:[#{id}]")
+            return self
+          end
         end
       else
-        Msg.warn("  EXEC:#{@par.subst(e1)}")
+        @line << "  EXEC:#{@par.subst(e1)}"
       end
     }
     self
   end
 
   private
-  def judge(conds)
-    @view.upd
+  def judge(conds,n=0)
+    @cli.view.upd
     conds.all?{|h|
       key=h['ref']
       cri=@par.subst(h['val'])
-      val=@view['msg'][key]||@view['stat'][key]
-      Msg.msg("   #{h['label']}(#{key}):<#{val}> for [#{cri}]")
+      val=@cli.view['msg'][key]||@cli.view['stat'][key]
+      if n==0
+        @line << "   #{h['label']}(#{key}):<#{val}> for [#{cri}]"
+      else
+        @line.last << "."
+      end
       if /[a-zA-Z]/ === cri
         /#{cri}/ === val
       else
@@ -71,13 +81,16 @@ if __FILE__ == $0
     mdb=McrDb.new(mcr,cmd.empty?)
     idb=InsDb.new(mcr).cover_app
     cli=Client.new(idb)
-    ac=McrCmd.new(mdb,cli.view)
+    ac=McrObj.new(mdb,cli)
     ac.setcmd(cmd)
     ac.getcmd
+    puts ac.line
   rescue SelectCMD
     Msg.exit(2)
-  rescue UserError
+  rescue SelectID
     warn "Usage: #{$0} [mcr] [cmd] (par)"
     Msg.exit
+  rescue UserError
+    Msg.exit(3)
   end
 end

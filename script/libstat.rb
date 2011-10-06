@@ -39,13 +39,13 @@ class Stat < ExHash
           Msg.warn("No such Key [#{k}]")
         end
       }
+      tag||=Time.now.strftime('%y%m%d-%H%M%S')
     else
       hash=self
     end
     if hash.empty?
       Msg.warn("No Keys")
     else
-      tag||=Time.now.strftime('%y%m%d-%H%M%S')
       tbase=[@base,tag].compact.join('_')
       fname="#{tbase}.json"
       @v.msg{"Status Saving for [#{tbase}]"}

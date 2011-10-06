@@ -76,8 +76,8 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(mcr,cmd.empty?)
-    idb=InsDb.new(mcr).cover_app
-    cli=Client.new(idb)
+    adb=InsDb.new(mcr).cover_app
+    cli=Client.new(adb)
     ac=McrObj.new(mdb,cli)
     ac.exe(cmd)
     puts ac.line

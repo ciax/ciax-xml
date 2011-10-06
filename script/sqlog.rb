@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
+require "libparam"
 require "libfield"
 require "libfrmrsp"
 require "libappstat"
@@ -9,11 +10,12 @@ require "libsql"
 opt=ARGV.getopts("i")
 id = ARGV.shift
 begin
-  idb=InsDb.new(id).cover_app.cover_frm
-  par=Param.new(idb[:cmdframe])
+  adb=InsDb.new(id).cover_app
+  fdb=adb.cover_frm
+  par=Param.new(fdb[:cmdframe])
   field=Field.new(id)
-  fr=FrmRsp.new(idb,par,field)
-  as=AppStat.new(idb[:status],field)
+  fr=FrmRsp.new(fdb,par,field)
+  as=AppStat.new(adb,field)
   sql=Sql.new(as,id)
 rescue UserError
   warn "Usage: #{$0} (-i) [id] < logfile"

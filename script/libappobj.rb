@@ -17,7 +17,7 @@ class AppObj < String
     id=adb['id']
     @prompt=[id]
     field=Field.new(id).load
-    @fobj=FrmObj.new(adb,field,io)
+    @fobj=FrmObj.new(adb.cover_frm,field,io)
     @ac=AppCmd.new(adb)
     @as=view['stat']=AppStat.new(adb,field)
     @sql=Sql.new(@as,id)

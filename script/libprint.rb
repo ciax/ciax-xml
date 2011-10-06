@@ -72,7 +72,7 @@ if __FILE__ == $0
   abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
   while gets
     view=JSON.load($_)
-    db=InsDb.new(view['id']).cover_app
-    puts Print.new(db[:status],view)
+    adb=InsDb.new(view['id']).cover_app
+    puts Print.new(adb[:status],view)
   end
 end

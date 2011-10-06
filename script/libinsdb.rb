@@ -30,22 +30,7 @@ class InsDb < Db
       }
       cmd.delete(:alias)
     end
-    replace(rec_merge(app,self))
-    self
-  end
-
-  def cover_frm(nocache=nil)
-    require "libfrmdb"
-    frm=FrmDb.new(self['frm_type'],nocache)
-    replace(rec_merge(frm,self))
-    self
-  end
-
-  private
-  def rec_merge(i,o)
-    i.merge(o){|k,a,b|
-      Hash === b ? rec_merge(a,b) : b
-    }
+    app.deep_update(self)
   end
 end
 

@@ -3,11 +3,11 @@ require "json"
 require "libview"
 
 class HtmlTbl < Array
-  def initialize(idb)
-    @label = idb[:status][:label]
+  def initialize(adb)
+    @label = adb[:status][:label]
     push "<div class=\"outline\">"
-    push "<div class=\"title\">#{idb['label']}</div>"
-    group = idb[:status][:group] || idb[:status][:select].keys
+    push "<div class=\"title\">#{adb['label']}</div>"
+    group = adb[:status][:group] || adb[:status][:select].keys
     get_group(group)
     push "</div>"
   end
@@ -51,10 +51,10 @@ if __FILE__ == $0
   id=ARGV.shift
   app=ARGV.shift
   begin
-    idb=InsDb.new(id).cover_app
+    adb=InsDb.new(id).cover_app
   rescue SelectID
     warn "Usage: #{$0} [id]"
     Msg.exit
   end
-  puts HtmlTbl.new(idb)
+  puts HtmlTbl.new(adb)
 end

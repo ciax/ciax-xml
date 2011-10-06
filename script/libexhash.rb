@@ -19,22 +19,22 @@ class ExHash < Hash
   end
 
   def deep_update(hash)
-    exmarge(hash,self)
+    rec_merge(hash,self)
     self
   end
 
   private
-  def exmarge(a,b)
+  def rec_merge(a,b)
     case a
     when Hash
       b||={}
       a.keys.each{|k|
-        b[k]=exmarge(a[k],b[k])
+        b[k]=rec_merge(a[k],b[k])
       }
     when Array
       b||=[]
       a.size.times{|i|
-        b[i]=exmarge(a[i],b[i])
+        b[i]=rec_merge(a[i],b[i])
       }
     else
       b=a||b

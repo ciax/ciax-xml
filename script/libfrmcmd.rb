@@ -17,7 +17,7 @@ class FrmCmd
   def getframe # return = response select
     return unless @sel[:select]=@par[:select]
     @v.msg{"Attr of Param:#{@par}"}
-    cid=@par[:command]
+    cid=@par[:id]
     cid+=':*' if /true|1/ === @par[:nocache]
     @v.msg{"Select:#{@par[:label]}(#{cid})"}
     if frame=@cache[cid]

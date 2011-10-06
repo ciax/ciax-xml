@@ -10,17 +10,17 @@ require "libinteract"
 opt=ARGV.getopts("s")
 id,*iocmd=ARGV
 begin
-  idb=InsDb.new(id).cover_app.cover_frm
+  fdb=InsDb.new(id).cover_app.cover_frm
 rescue
   warn "Usage: frmint (-s) [id] (iocmd)"
   Msg.exit
 end
 field=Field.new(id).load
-io=IoCmd.new(iocmd.empty? ? idb['client'].split(' ') : iocmd,idb['wait'],1)
+io=IoCmd.new(iocmd.empty? ? fdb['client'].split(' ') : iocmd,fdb['wait'],1)
 io.startlog(id) if iocmd.empty?
-fobj=FrmObj.new(idb,field,io)
-port=opt["s"] ? idb["port"] : nil
-Interact.new([idb['frame'],'>'],port){|line|
+fobj=FrmObj.new(fdb,field,io)
+port=opt["s"] ? fdb["port"] : nil
+Interact.new([fdb['frame'],'>'],port){|line|
   break unless line
   fobj.upd(line.split(' ')) || (port ? field.to_j : field)
 }

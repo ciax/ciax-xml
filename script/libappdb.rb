@@ -23,6 +23,12 @@ class AppDb < Db
     }
   end
 
+  def cover_frm(nocache=nil)
+    require "libfrmdb"
+    frm=FrmDb.new(self['frm_type'],nocache)
+    frm.deep_update(self)
+  end
+
   private
   def init_command(adb,hash)
     adb.each{|e0|

@@ -93,12 +93,12 @@ if __FILE__ == $0
   str=gets(nil) || exit
   view=JSON.load(str)
   begin
-    idb=InsDb.new(view['id']).cover_app
+    adb=InsDb.new(view['id']).cover_app
   rescue SelectID
     Msg.exit
   end
   stat=view['stat']
-  watch=Watch.new(idb,stat).upd
+  watch=Watch.new(adb,stat).upd
   stat.update(hash)
   puts watch.upd.to_s
   print "Active? : "

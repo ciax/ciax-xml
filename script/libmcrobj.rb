@@ -9,6 +9,7 @@ class McrObj
     @mdb=mdb
     @par=Param.new(mdb)
     @cli=Msg.type?(cli,Client)
+    @view=cli.view
     @line=[]
   end
 
@@ -49,11 +50,11 @@ class McrObj
 
   private
   def judge(conds,n=0)
-    @cli.view.upd
+    @view.upd
     conds.all?{|h|
       key=h['ref']
       cri=@par.subst(h['val'])
-      val=@cli.view['msg'][key]||@cli.view['stat'][key]
+      val=@view['msg'][key]||@view['stat'][key]
       if n==0
         @line << "   #{h['label']}(#{key}):<#{val}> for [#{cri}]"
       else

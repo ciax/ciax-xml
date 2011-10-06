@@ -1,14 +1,16 @@
 #!/usr/bin/ruby
+require "libmsg"
 require "librview"
 require "libiocmd"
 require "libparam"
 
 class Client
   attr_reader :view,:prompt
-  def initialize(idb,host='localhost')
-    @view=Rview.new(idb['id'],host)
-    @io=IoCmd.new(["socat","-","udp:#{host}:#{idb['port']}"])
-    @par=Param.new(idb[:command])
+  def initialize(adb,host='localhost')
+    Msg.type?(adb,AppDb)
+    @view=Rview.new(adb['id'],host)
+    @io=IoCmd.new(["socat","-","udp:#{host}:#{adb['port']}"])
+    @par=Param.new(adb[:command])
     @prompt=['>']
   end
 

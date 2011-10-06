@@ -27,15 +27,11 @@ class ExHash < Hash
   def rec_merge(a,b)
     case a
     when Hash
-      b||={}
-      a.keys.each{|k|
-        b[k]=rec_merge(a[k],b[k])
-      }
+      b= b.is_a?(Hash) ? b : {}
+      a.keys.each{|i| b[i]=rec_merge(a[i],b[i])}
     when Array
-      b||=[]
-      a.size.times{|i|
-        b[i]=rec_merge(a[i],b[i])
-      }
+      b= b.is_a?(Array) ? b : []
+      a.size.times{|i| b[i]=rec_merge(a[i],b[i])}
     else
       b=a||b
     end
@@ -56,16 +52,20 @@ class ExHash < Hash
     end
     case data
     when Array
-      unless data.all?{|v| v.kind_of?(Comparable)}
-        data.each_with_index{|v,i|
-          str << view_struct(v,i,indent)
+      vary=data
+      idx=data.size.times
+      if vary.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
+        idx.each{|i|
+          str << view_struct(data[i],i,indent)
         }
         return str
       end
     when Hash
-      if data.values.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
-        data.each{|k,v|
-          str << view_struct(v,k,indent)
+      vary=data.values
+      idx=data.keys
+      if vary.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
+        idx.each{|i|
+          str << view_struct(data[i],i,indent)
         }
         return str
       end

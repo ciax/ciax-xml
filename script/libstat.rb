@@ -13,7 +13,7 @@ class Stat < ExHash
   end
 
   # N/A unless id
-  def load(tag=nil)
+  def loadkey(tag=nil)
     Msg.err("No File Name")  unless @base
     tbase=[@base,tag].compact.join('_')
     @v.msg{"Status Loading for [#{tbase}]"}
@@ -28,30 +28,35 @@ class Stat < ExHash
     self
   end
 
-  def save(keylist=nil,tag=nil)
+  def savekey(keylist,tag=nil)
     Msg.err("No File Name")  unless @base
-    if keylist
-      hash=ExHash.new
-      keylist.each{|k|
-        if key?(k)
-          hash[k]=self[k]
-        else
-          Msg.warn("No such Key [#{k}]")
-        end
-      }
-      tag||=Time.now.strftime('%y%m%d-%H%M%S')
-    else
-      hash=self
-    end
+    hash=ExHash.new
+    keylist.each{|k|
+      if key?(k)
+        hash[k]=self[k]
+      else
+        Msg.warn("No such Key [#{k}]")
+      end
+    }
     if hash.empty?
       Msg.warn("No Keys")
     else
+      tag||=Time.now.strftime('%y%m%d-%H%M%S')
       tbase=[@base,tag].compact.join('_')
       fname="#{tbase}.json"
       @v.msg{"Status Saving for [#{tbase}]"}
       open(fname,'w') {|f| f << hash.to_j }
       mklink(fname,tag)
     end
+    self
+  end
+
+  def load
+      update_j(IO.read(@base+".json"))
+  end
+
+  def save
+    open(@base+".json",'w') {|f| f << self.to_j }
     self
   end
 

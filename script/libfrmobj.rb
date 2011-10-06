@@ -62,13 +62,13 @@ class FrmObj
     unless keys
       raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.keys}"
     end
-    @field.save(keys.split(','),tag)
+    @field.savekey(keys.split(','),tag)
     "[#{tag}](#{keys}) saved\n"
   end
 
   def load(tag)
     tag='' unless tag
-    @field.load(tag)
+    @field.loadkey(tag)
     "[#{tag}] loaded"
   rescue UserError
     raise UserError,"Usage: load (tag)\n #{$!}"

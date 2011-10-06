@@ -8,15 +8,16 @@ class Param < ExHash
   def initialize(db) # command db
     @v=Msg::Ver.new("param",2)
     @db=Msg.type?(db,Hash)
-    label=db[:label].reject{|k,v|
-      /true|1/ === db[:hidden][k] if db.key?(:hidden)
-    }
+    label=db[:label].reject{|k,v| /true|1/ === (db[:hidden]||{})[k] }
+    @alias=db[:alias]||{}
+    @alias.each{|k,v| label[k]=label.delete(v) }
+    db[:select].each{|k,v| @alias[k]=k} unless db.key?(:alias)
     @list=Msg::List.new("== Command List==").add(label)
   end
 
   def set(cmdary)
     id=cmdary.first
-    unless @db[:select].key?(id)
+    unless @alias.key?(id)
       raise SelectCMD,("No such CMD [#{id}]\n"+@list.to_s)
     end
     @v.msg{"SetPar: #{cmdary}"}
@@ -24,7 +25,7 @@ class Param < ExHash
     self[:command]=id
     self[:cid]=cmdary.join(':')
     @db.each{|k,v|
-      self[k]=v[id]
+      self[k]=v[@alias[id]]
     }
     if par=self[:parameter]
       unless par.size < cmdary.size

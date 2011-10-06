@@ -6,7 +6,7 @@ class AppCmd < Array
   include Math
   def initialize(adb)
     @v=Msg::Ver.new("app/cmd",9)
-    @par=Param.new(adb)
+    @par=Param.new(adb[:command])
   end
 
   def setcmd(ssn)
@@ -42,7 +42,7 @@ if __FILE__ == $0
   app,*cmd=ARGV
   begin
     adb=AppDb.new(app,cmd.empty?)
-    ac=AppCmd.new(adb[:command])
+    ac=AppCmd.new(adb)
     ac.setcmd(cmd).each{|cmd| p cmd}
   rescue SelectCMD
     Msg.exit(2)

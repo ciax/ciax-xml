@@ -6,14 +6,14 @@ class AppStat < ExHash
   def initialize(adb,field)
     @v=Msg::Ver.new("app/stat",9)
     @field=Msg.type?(field,Field)
-    @adbs=adb[:select]
-    @adbs.keys.each{|k|
+    @ads=adb[:status][:select]
+    @ads.keys.each{|k|
       self[k]||=''
     }
   end
 
   def upd
-    @adbs.each{|id,fields|
+    @ads.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
         self[id]=get_val(fields)
@@ -93,11 +93,11 @@ if __FILE__ == $0
   app=ARGV.shift
   ARGV.clear
   begin
-    adbs=AppDb.new(app,true)[:status]
+    adb=AppDb.new(app,true)
     str=gets(nil) || exit
     field=Field.new.update_j(str)
-    view=View.new(field['id'],adbs)
-    view['stat']=AppStat.new(adbs,field).upd
+    view=View.new(field['id'],adb[:status])
+    view['stat']=AppStat.new(adb,field).upd
     print view.upd.to_j
   rescue UserError
     abort "Usage: #{$0} [app] < field_file\n#{$!}"

@@ -18,8 +18,8 @@ class AppObj < String
     @prompt=[id]
     field=Field.new(id).load
     @fobj=FrmObj.new(adb,field,io)
-    @ac=AppCmd.new(adb[:command])
-    @as=view['stat']=AppStat.new(adb[:status],field)
+    @ac=AppCmd.new(adb)
+    @as=view['stat']=AppStat.new(adb,field)
     @sql=Sql.new(@as,id)
     Thread.abort_on_exception=true
     @buf=Buffer.new

@@ -12,12 +12,9 @@ class McrObj
     @line=[]
   end
 
-  def setcmd(ssn)
+  def exe(ssn)
     @par.set(ssn)
-  end
-
-  def getcmd
-    id=@par[:command]
+    id=@par[:id]
     @line << "Exec(MDB):#{id}"
     @par[:select].each{|e1|
       case e1
@@ -82,8 +79,7 @@ if __FILE__ == $0
     idb=InsDb.new(mcr).cover_app
     cli=Client.new(idb)
     ac=McrObj.new(mdb,cli)
-    ac.setcmd(cmd)
-    ac.getcmd
+    ac.exe(cmd)
     puts ac.line
   rescue SelectCMD
     Msg.exit(2)

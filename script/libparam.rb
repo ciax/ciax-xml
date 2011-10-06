@@ -22,7 +22,7 @@ class Param < ExHash
     end
     @v.msg{"SetPar: #{cmdary}"}
     @cmdary=cmdary.dup
-    self[:command]=id
+    self[:id]=id
     self[:cid]=cmdary.join(':')
     @db.each{|k,v|
       self[k]=v[@alias[id]]

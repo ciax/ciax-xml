@@ -5,6 +5,7 @@ require "libparam"
 class AppCmd < Array
   include Math
   def initialize(adb)
+    Msg.type?(adb,AppDb)
     @v=Msg::Ver.new("app/cmd",9)
     @par=Param.new(adb[:command])
   end

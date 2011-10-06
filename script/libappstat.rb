@@ -5,6 +5,7 @@ require "libexhash"
 class AppStat < ExHash
   def initialize(adb,field)
     @v=Msg::Ver.new("app/stat",9)
+    Msg.type?(adb,AppDb)
     @field=Msg.type?(field,Field)
     @ads=adb[:status][:select]
     @ads.keys.each{|k|

@@ -5,12 +5,12 @@ require "libframe"
 class FrmRsp
   def initialize(fdb,par,field)
     @v=Msg::Ver.new("frm/rsp",3)
-    @fdb=fdb
+    @fdb=Msg.type?(fdb,FrmDb)
     @par=Msg.type?(par,Param)
     @field=Msg.type?(field,Field)
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
-    @fdbs=rsp[:select]
+    @fds=rsp[:select]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
     rsp[:assign].each{|k,v|
       @field[k]||=v
@@ -20,7 +20,7 @@ class FrmRsp
   # Block accepts [time,frame]
   def upd
     if rid=@par[:response]
-      @sel[:select]=@fdbs[rid]|| Msg.err("No such response id [#{rid}]")
+      @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
       time,frame=yield
       Msg.err("No Response") unless frame
       @field['time']="%.3f" % time.to_f

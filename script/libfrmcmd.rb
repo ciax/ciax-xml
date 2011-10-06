@@ -5,8 +5,9 @@ require "libparam"
 class FrmCmd
   def initialize(fdb,par,field)
     @v=Msg::Ver.new("frm/cmd",3)
-    @field=field
-    @par=par
+    Msg.type?(fdb,FrmDb)
+    @par=Msg.type?(par,Param)
+    @field=Msg.type?(field,Field)
     @cache={}
     @fstr={}
     @sel=Hash[fdb[:cmdframe][:frame]]

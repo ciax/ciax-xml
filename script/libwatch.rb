@@ -6,6 +6,7 @@ require 'libelapse'
 class Watch < ExHash
   def initialize(adb,stat)
     @v=Msg::Ver.new("watch",12)
+    Msg.type?(adb,AppDb)
     update(adb[:watch])
     @stat=stat
     [:block,:active,:exec,:stat].each{|i|

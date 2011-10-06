@@ -7,6 +7,7 @@ class FrmObj
   attr_reader :field
   def initialize(fdb,field,iocmd)
     @v=Msg::Ver.new("frmobj",3)
+    Msg.type?(fdb,FrmDb)
     @field=Msg.type?(field,Field)
     @ic=Msg.type?(iocmd,IoCmd)
     @par=Param.new(fdb[:cmdframe])

@@ -4,6 +4,7 @@ require "libview"
 
 class HtmlTbl < Array
   def initialize(adb)
+    Msg.type?(adb,AppDb)
     @label = adb[:status][:label]
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{adb['label']}</div>"

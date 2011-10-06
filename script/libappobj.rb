@@ -13,6 +13,7 @@ class AppObj < String
   attr_reader :prompt
   def initialize(adb,view,io)
     @v=Msg::Ver.new("appobj",9)
+    Msg.type?(adb,AppDb)
     @view=Msg.type?(view,View)
     id=adb['id']
     @prompt=[id]

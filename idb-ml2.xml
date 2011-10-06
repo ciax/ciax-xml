@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <entity id="ml2" label="MOIRCS Temperature 2" app_type="lk8" client="socat - tcp:celaeno:4006" port="24106">
+  <instance id="ml2" label="MOIRCS Temperature 2" app_type="lk8" client="socat - tcp:celaeno:4006" port="24106">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <title ref="ch0" label="Robohand" />
       <title ref="ch1" label="CollBench" />
@@ -13,5 +13,5 @@
       <title ref="sp" label="SetPoint2 (K)" />
       <title ref="htr" label="HeaterPower2(%%)" />
     </status>
-  </entity>
+  </instance>
 </idb>

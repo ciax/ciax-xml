@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <entity id="cco" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4002" port="25106">
+  <instance id="cco" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4002" port="25106">
     <select xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <command id="upd" label="Update Status" alias="upd" />
       <command id="f2on" label="CIAO(S6) ON" alias="x0on" />
@@ -17,5 +17,5 @@
       <title ref="g2" label="COMICS IMG(S4)" />
       <title ref="g3" label="COMICS SPEC(S5)" />
     </status>
-  </entity>
+  </instance>
 </idb>

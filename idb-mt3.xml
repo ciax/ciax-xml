@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <entity id="mt3" label="MOIRCS Pressure Pump" app_type="tpg" client="socat - tcp:celaeno:4011" port="24111">
+  <instance id="mt3" label="MOIRCS Pressure Pump" app_type="tpg" client="socat - tcp:celaeno:4011" port="24111">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <title ref="st1" label="Turbo Pump Stat" />
       <title ref="ch1" label="Turbo Pump (Torr)" />
       <title ref="st2" label="Scroll Pump Stat" />
       <title ref="ch2" label="Scroll Pump (Torr)" />
     </status>
-  </entity>
+  </instance>
 </idb>

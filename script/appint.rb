@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libview"
+require "libwview"
 require "libfield"
 require "libiocmd"
 require "libappobj"
@@ -19,7 +19,7 @@ rescue
 end
 io=IoCmd.new(iocmd.empty? ? adb['client'].split(' ') : iocmd,adb['wait'],1)
 io.startlog(id) if iocmd.empty?
-view=View.new(id,adb[:status])
+view=Wview.new(id,adb[:status])
 aobj=AppObj.new(adb,view,io)
 prt=Print.new(adb[:status],view.load)
 port=opt["s"] ? adb["port"] : nil

@@ -2,8 +2,8 @@
 require "libmsg"
 require "libstat"
 require "libsymdb"
-# Status to View (String with attributes)
-class View < Stat
+# Status to Wview (String with attributes)
+class Wview < Stat
   def initialize(id=nil,adb={})
     super('view',id)
     @symbol=adb[:symbol]||{}

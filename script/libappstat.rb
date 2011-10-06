@@ -90,14 +90,14 @@ end
 if __FILE__ == $0
   require "libappdb"
   require "libfield"
-  require "libview"
+  require "libwview"
   app=ARGV.shift
   ARGV.clear
   begin
     adb=AppDb.new(app,true)
     str=gets(nil) || exit
     field=Field.new.update_j(str)
-    view=View.new(field['id'],adb[:status])
+    view=Wview.new(field['id'],adb[:status])
     view['stat']=AppStat.new(adb,field).upd
     print view.upd.to_j
   rescue UserError

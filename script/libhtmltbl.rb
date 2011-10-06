@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "json"
-require "libview"
+require "libwview"
 
 class HtmlTbl < Array
   def initialize(adb)

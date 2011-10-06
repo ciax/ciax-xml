@@ -39,12 +39,12 @@ if __FILE__ == $0
   begin
     opt=ARGV.getopts("af")
     id=ARGV.shift
-    idb=InsDb.new(id,true)
+    db=InsDb.new(id,true)
   rescue
     warn "USAGE: #{$0} (-af) [id] (key) .."
     Msg.exit
   end
-  idb.cover_app(true) if opt["a"]
-  idb.cover_frm(true) if opt["f"]
-  puts idb.path(ARGV)
+  db=db.cover_app(true) if opt["a"]
+  db=db.cover_app(true).cover_frm(true) if opt["f"]
+  puts db.path(ARGV)
 end

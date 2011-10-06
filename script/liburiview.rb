@@ -6,8 +6,12 @@ require "time"
 
 class UriView < ExHash
   def initialize(id,host=nil)
-    host||='localhost'
-    @uri="http://#{host}/json/view_#{id}.json"
+    base="/json/view_#{id}.json"
+    if host
+      @uri="http://"+host+base
+    else
+      @uri=VarDir+base
+    end
     upd
   end
 

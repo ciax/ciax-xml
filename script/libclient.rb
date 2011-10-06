@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
-require "liburiview"
+require "librview"
 require "libiocmd"
 require "libparam"
 
 class Client
   attr_reader :view,:prompt
   def initialize(idb,host='localhost')
-    @view=UriView.new(idb['id'],host)
+    @view=Rview.new(idb['id'],host)
     @io=IoCmd.new(["socat","-","udp:#{host}:#{idb['port']}"])
     @par=Param.new(idb[:command])
     @prompt=['>']

@@ -4,7 +4,7 @@ require "libexhash"
 require "open-uri"
 require "time"
 
-class UriView < ExHash
+class Rview < ExHash
   def initialize(id,host=nil)
     base="/json/view_#{id}.json"
     if host
@@ -32,5 +32,5 @@ end
 
 if __FILE__ == $0
   abort "Usage: #{$0} [id] (host)" if ARGV.size < 1
-  puts UriView.new(*ARGV)
+  puts Rview.new(*ARGV)
 end

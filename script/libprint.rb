@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
 require 'libelapse'
+require 'librview'
 class Print
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(db,view)
-    @view=Msg.type?(view,Hash)
+    @view=Msg.type?(view,Rview)
     ['stat','class','msg'].each{|key|
       view[key]||={}
     }
@@ -15,6 +16,7 @@ class Print
 
   def to_s
     @line.clear
+    @view.upd
     get_group
     @line.join("\n")
   end

@@ -4,11 +4,11 @@ require 'libexhash'
 require 'librerange'
 require 'libelapse'
 class Watch < ExHash
-  def initialize(adb,stat)
+  def initialize(adb,view)
     @v=Msg::Ver.new("watch",12)
     Msg.type?(adb,AppDb)
     update(adb[:watch])
-    @stat=stat
+    @stat=Msg.type?(view,Rview)['stat']
     [:block,:active,:exec,:stat].each{|i|
       self[i]||=[]
     }
@@ -92,9 +92,8 @@ if __FILE__ == $0
   rescue SelectID
     Msg.exit
   end
-  stat=view['stat']
-  watch=Watch.new(adb,stat).upd
-  stat.update(hash)
+  watch=Watch.new(adb,view).upd
+  view['stat'].update(hash)
   puts watch.upd.to_s
   print "Active? : "
   p watch.active?

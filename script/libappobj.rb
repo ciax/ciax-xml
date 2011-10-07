@@ -25,7 +25,7 @@ class AppObj < String
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
-    @event=Watch.new(adb,@as)
+    @event=Watch.new(adb,@view)
     @watch=watch_thread unless @event[:stat].empty?
     @main=command_thread
     @cl=Msg::List.new("== Internal Command ==")

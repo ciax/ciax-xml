@@ -11,16 +11,16 @@ require "thread"
 
 class AppObj < String
   attr_reader :prompt
-  def initialize(adb,view,io)
+  def initialize(adb,io)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
-    @view=Msg.type?(view,Wview)
     id=adb['id']
+    @view=Wview.new(id,adb)
     @prompt=[id]
     field=Field.new(id).load
     @fobj=FrmObj.new(adb.cover_frm,field,io)
     @ac=AppCmd.new(adb)
-    @as=view['stat']=AppStat.new(adb,field)
+    @as=@view['stat']=AppStat.new(adb,field)
     @sql=Sql.new(@as,id)
     Thread.abort_on_exception=true
     @buf=Buffer.new

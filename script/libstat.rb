@@ -3,13 +3,11 @@ require 'libmsg'
 require 'libexhash'
 
 class Stat < ExHash
-  def initialize(type,id=nil)
+  def initialize(type,id)
     @v=Msg::Ver.new(type,6)
     @type=type
-    if id
-      @base=VarDir+"/json/#{type}_#{id}"
-      self['id']=id
-    end
+    @base=VarDir+"/json/#{type}_#{id}"
+    self['id']=id
   end
 
   # N/A unless id

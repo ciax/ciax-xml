@@ -1,14 +1,17 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libstat"
+require "libexhash"
 require "libsymdb"
 # Status to Wview (String with attributes)
-class Wview < Stat
-  def initialize(id=nil,adb={})
-    super('view',id)
-    @symbol=adb[:symbol]||{}
-    @sdb=SymDb.new.add('all').add(adb['table'])
+class Wview < ExHash
+  def initialize(id,adb)
+    @v=Msg::Ver.new('view',6)
+    ads=Msg.type?(adb,AppDb)[:status]
+    @symbol=ads[:symbol]||{}
+    @sdb=SymDb.new.add('all').add(ads['table'])
+    self['id']=id
     self['stat']={}
+    @fname=VarDir+"/json/view_#{id}.json"
   end
 
   def upd
@@ -38,6 +41,11 @@ class Wview < Stat
         break
       }
     }
+    self
+  end
+
+  def save
+    open(@fname,'w'){|f| f << self.to_j }
     self
   end
 end

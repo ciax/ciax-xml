@@ -20,8 +20,7 @@ rescue
 end
 io=IoCmd.new(iocmd.empty? ? adb['client'].split(' ') : iocmd,adb['wait'],1)
 io.startlog(id) if iocmd.empty?
-view=Wview.new(id,adb[:status])
-aobj=AppObj.new(adb,view,io)
+aobj=AppObj.new(adb,io)
 prt=Print.new(adb[:status],Rview.new(id))
 port=opt["s"] ? adb["port"] : nil
 Interact.new(aobj.prompt,port){|line|

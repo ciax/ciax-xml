@@ -13,7 +13,7 @@ class ExHash < Hash
     if str && !str.empty?
       deep_update(JSON.load(str))
     else
-      warn "No status in File"
+      warn "No status at ExHash::update_j()"
     end
     self
   end

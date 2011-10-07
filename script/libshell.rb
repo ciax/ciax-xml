@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "json"
 require "readline"
 
 # Prompt should be Array

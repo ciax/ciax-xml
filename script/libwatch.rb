@@ -13,7 +13,6 @@ class Watch < ExHash
       self[i]||=[]
     }
     self[:last]={}
-    @elapse=Elapse.new(stat)
   end
 
   def active?
@@ -57,12 +56,8 @@ class Watch < ExHash
     return true unless self[:stat][i]
     @v.msg{"Check: <#{self[:label][i]}>"}
     self[:stat][i].all?{|h|
-      case k=h['ref']
-      when 'elapse'
-        v=@elapse.to_i
-      else
-        v=@stat[k]
-      end
+      k=h['ref']
+      v=@stat[k]
       c=h['val']
       case h['type']
       when 'onchange'
@@ -91,7 +86,7 @@ if __FILE__ == $0
     hash[k]=v
   }
   ARGV.clear
-  view=Rview.new
+  view=Rview.new.upd
   begin
     adb=InsDb.new(view['id']).cover_app
   rescue SelectID

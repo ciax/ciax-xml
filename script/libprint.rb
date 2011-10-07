@@ -41,13 +41,7 @@ class Print
   def get_element(ids,col=6)
     da=[]
     ids.each{|id|
-      case id
-      when 'elapse'
-        val=@view.elapse.to_s
-      else
-        val=@view['stat'][id]
-      end
-      da << prt(id,val)
+      da << prt(id,@view['stat'][id])
     }
     da.each_slice(col){|a|
       @line << "  "+a.join(" ")

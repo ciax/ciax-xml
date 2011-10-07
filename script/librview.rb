@@ -16,7 +16,8 @@ class Rview < ExHash
       end
       upd
     end
-    @elapse=Elapse.new(self['stat']||={})
+    self['stat']||={}
+    self['stat']['elapse']=Elapse.new(self['stat'])
   end
 
   def upd

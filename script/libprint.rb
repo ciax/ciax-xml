@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libelapse'
 require 'librview'
 class Print
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
@@ -8,15 +7,18 @@ class Print
     ['stat','class','msg'].each{|key|
       view[key]||={}
     }
-    @elapse=Elapse.new(view['stat'])
     @group=db[:group] || [[db[:select].keys]]
     @label=db[:label] || {}
     @line=[]
   end
 
+  def upd
+    @view.upd
+    self
+  end
+
   def to_s
     @line.clear
-    @view.upd
     get_group
     @line.join("\n")
   end
@@ -41,7 +43,7 @@ class Print
     ids.each{|id|
       case id
       when 'elapse'
-        val=@elapse.to_s
+        val=@view.elapse.to_s
       else
         val=@view['stat'][id]
       end
@@ -69,12 +71,9 @@ class Print
 end
 
 if __FILE__ == $0
-  require "json"
   require "libinsdb"
   abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
-  while gets
-    view=JSON.load($_)
-    adb=InsDb.new(view['id']).cover_app
-    puts Print.new(adb[:status],view)
-  end
+  view=Rview.new
+  adb=InsDb.new(view['id']).cover_app
+  puts Print.new(adb[:status],view)
 end

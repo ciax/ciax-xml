@@ -25,5 +25,5 @@ aobj=AppObj.new(adb,view,io)
 prt=Print.new(adb[:status],Rview.new(id))
 port=opt["s"] ? adb["port"] : nil
 Interact.new(aobj.prompt,port){|line|
-  aobj.upd(line) || (prt unless port)
+  aobj.upd(line) || (prt.upd unless port)
 }

@@ -1,31 +1,29 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libexhash"
-require "open-uri"
-require "time"
+require "libelapse"
 
 class Rview < ExHash
-  def initialize(id,host=nil)
-    base="/json/view_#{id}.json"
-    if host
-      @uri="http://"+host+base
+  attr_reader :elapse
+  def initialize(id=nil,host=nil)
+    if id
+      base="/json/view_#{id}.json"
+      if host
+        require "open-uri"
+        @uri="http://"+host+base
+      else
+        @uri=VarDir+base
+      end
+      load
     else
-      @uri=VarDir+base
+      update_j($stdin.read)
     end
-    upd
-  end
-
-  def latest?
-    now=Time.parse(self['time'])
-    return if @last == now
-    @last=now
-    self
+    @elapse=Elapse.new(self['stat'])
   end
 
   def upd
-    open(@uri){|f|
-      update_j(f.read)
-    } rescue
+    return self unless @uri
+    open(@uri){|f| update_j(f.read) }
     self
   end
 end

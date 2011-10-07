@@ -15,7 +15,7 @@ for id in $ids; do
     then
         v2s <$stat
     else
-        ~/lib/libprint.rb $stat
+        ~/lib/libprint.rb < $stat
     fi
     read -t 0 && break
 done

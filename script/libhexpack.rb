@@ -41,8 +41,8 @@ class HexPack
 end
 
 if __FILE__ == $0
-  require "json"
+  require "librview"
   abort("Usage: #{$0} [status file]") if STDIN.tty? && ARGV.size < 1
-  view=JSON.load(gets(nil))
+  view=Rview.new.update_j(gets(nil))
   puts HexPack.new(view).upd
 end

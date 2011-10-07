@@ -82,7 +82,7 @@ class Watch < ExHash
 end
 
 if __FILE__ == $0
-  require "json"
+  require "librview"
   require "libinsdb"
   abort "Usage: #{$0} (test conditions (key=val)..) < [file]" if STDIN.tty?
   hash={}
@@ -91,8 +91,7 @@ if __FILE__ == $0
     hash[k]=v
   }
   ARGV.clear
-  str=gets(nil) || exit
-  view=JSON.load(str)
+  view=Rview.new.update_j(gets(nil))
   begin
     adb=InsDb.new(view['id']).cover_app
   rescue SelectID

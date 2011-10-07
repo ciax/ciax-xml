@@ -4,7 +4,6 @@ require "libexhash"
 require "libelapse"
 
 class Rview < ExHash
-  attr_reader :elapse
   def initialize(id=nil,host=nil)
     if id
       base="/json/view_#{id}.json"

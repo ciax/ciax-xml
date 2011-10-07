@@ -1,7 +1,5 @@
 #!/usr/bin/ruby
-require "json"
-require "libwview"
-
+require 'libmsg'
 class HtmlTbl < Array
   def initialize(adb)
     Msg.type?(adb,AppDb)

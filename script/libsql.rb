@@ -38,7 +38,7 @@ end
 if __FILE__ == $0
   require "librview"
   abort "Usage: #{$0} [view_file]" if STDIN.tty? && ARGV.size < 1
-  view=Rview.new.update_j(gets(nil))
-  sql=Sql.new(view['stat'],view['id']).upd
-  puts sql.to_s
+  view=Rview.new
+  sql=Sql.new(view['stat'],view['id'])
+  puts sql.upd.to_s
 end

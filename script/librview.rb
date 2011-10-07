@@ -13,15 +13,18 @@ class Rview < ExHash
       else
         @uri=VarDir+base
       end
-      upd
     end
+    upd
     self['stat']||={}
     self['stat']['elapse']=Elapse.new(self['stat'])
   end
 
   def upd
-    return self unless @uri
-    open(@uri){|f| update_j(f.read) }
+    if @uri
+      open(@uri){|f| update_j(f.read) }
+    else
+      update_j(gets)
+    end
     self
   end
 end

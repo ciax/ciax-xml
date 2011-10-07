@@ -47,7 +47,7 @@ class Watch < ExHash
     self[:stat].size.times{|i|
       self[:active] << i if check(i)
     }
-    self[:last].replace(@stat)
+    self[:last]=Hash[@stat]
     self
   end
 
@@ -91,7 +91,7 @@ if __FILE__ == $0
     hash[k]=v
   }
   ARGV.clear
-  view=Rview.new.update_j(gets(nil))
+  view=Rview.new
   begin
     adb=InsDb.new(view['id']).cover_app
   rescue SelectID

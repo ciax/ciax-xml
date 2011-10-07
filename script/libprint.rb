@@ -66,8 +66,8 @@ end
 
 if __FILE__ == $0
   require "libinsdb"
-  abort "Usage: #{$0} [status_file]" if STDIN.tty? && ARGV.size < 1
-  view=Rview.new.update_j(gets(nil))
+  abort "Usage: #{$0} [view_file]" if STDIN.tty? && ARGV.size < 1
+  view=Rview.new
   adb=InsDb.new(view['id']).cover_app
   puts Print.new(adb[:status],view)
 end

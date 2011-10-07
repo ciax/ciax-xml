@@ -15,6 +15,10 @@ class Elapse
     (Time.now-Time.parse(@stat['time'])).to_i rescue 0
   end
 
+  def inspect
+    '"'+to_s+'"'
+  end
+
   def to_s
     sec=to_i
     if sec > 86400

@@ -8,7 +8,7 @@ class Watch < ExHash
     @v=Msg::Ver.new("watch",12)
     Msg.type?(adb,AppDb)
     update(adb[:watch])
-    @stat=Msg.type?(view,Rview)['stat']
+    @view=Msg.type?(view,Rview)
     [:block,:active,:exec,:stat].each{|i|
       self[i]||=[]
     }
@@ -46,7 +46,7 @@ class Watch < ExHash
     self[:stat].size.times{|i|
       self[:active] << i if check(i)
     }
-    self[:last]=Hash[@stat]
+    self[:last]=@view['stat'].dup
     self
   end
 
@@ -57,7 +57,7 @@ class Watch < ExHash
     @v.msg{"Check: <#{self[:label][i]}>"}
     self[:stat][i].all?{|h|
       k=h['ref']
-      v=@stat[k]
+      v=@view.stat(k)
       c=h['val']
       case h['type']
       when 'onchange'
@@ -69,7 +69,7 @@ class Watch < ExHash
         @v.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'range'
         res=(ReRange.new(c) == v)
-        @v.msg{"  Range(#{k}): [#{c}] vs <#{v}> =>#{res}"}
+        @v.msg{"  Range(#{k}): [#{c}] vs <#{v.to_i}> =>#{res}"}
       end
       res
     }

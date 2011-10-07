@@ -97,8 +97,8 @@ if __FILE__ == $0
     adb=AppDb.new(app,true)
     str=gets(nil) || exit
     field=Field.new.update_j(str)
-    view=Wview.new(field['id'],adb)
-    view['stat']=AppStat.new(adb,field).upd
+    as=AppStat.new(adb,field).upd
+    view=Wview.new(field['id'],adb,as)
     print view.upd.to_j
   rescue UserError
     abort "Usage: #{$0} [app] < field_file\n#{$!}"

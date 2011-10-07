@@ -4,17 +4,16 @@ require "librview"
 require "libsymdb"
 # Status to Wview (String with attributes)
 class Wview < Rview
-  def initialize(id,adb)
+  def initialize(id,adb,stat)
     super(id)
     ads=Msg.type?(adb,AppDb)[:status]
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.new.add('all').add(ads['table'])
+    self['stat'].update(stat)
   end
 
   def upd
-    self['stat'].each{|key,val|
-      next if val == ''
-      next unless sid=@symbol[key]
+    @symbol.each{|key,sid|
       unless tbl=@sdb[sid]
         Msg.warn("Table[#{sid}] not exist")
         next
@@ -23,6 +22,7 @@ class Wview < Rview
       {'class' => 'alarm','msg' => 'N/A'}.each{|k,v|
         (self[k]||={})[key]=v
       }
+      val=self['stat'][key]
       tbl.each{|hash|
         case hash['type']
         when 'range'
@@ -42,7 +42,7 @@ class Wview < Rview
   end
 
   def save
-    open(@uri,'w'){|f| f << self.to_j }
+    open(@uri,'w'){|f| f << to_j }
     self
   end
 end

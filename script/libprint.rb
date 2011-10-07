@@ -41,7 +41,7 @@ class Print
   def get_element(ids,col=6)
     da=[]
     ids.each{|id|
-      da << prt(id,@view['stat'][id])
+      da << prt(id,@view.stat(id))
     }
     da.each_slice(col){|a|
       @line << "  "+a.join(" ")

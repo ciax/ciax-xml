@@ -16,8 +16,13 @@ class Rview < ExHash
         @uri=VarDir+base
       end
     end
-    self['stat']||={}
-    self['stat']['elapse']=Elapse.new(self['stat'])
+    self['stat']=ExHash.new
+    @shadow={}
+    @shadow['elapse']=Elapse.new(self['stat'])
+  end
+
+  def stat(id)
+    self['stat'][id]||@shadow[id]
   end
 
   def upd

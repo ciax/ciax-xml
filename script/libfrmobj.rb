@@ -63,7 +63,8 @@ class FrmObj
       raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.keys}"
     end
     @field.savekey(keys.split(','),tag)
-    "[#{tag}](#{keys}) saved\n"
+    tag="[#{tag}]" if tag
+    "#{tag}(#{keys}) saved\n"
   end
 
   def load(tag)

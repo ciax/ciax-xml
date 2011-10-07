@@ -1,11 +1,13 @@
 #!/usr/bin/ruby
-require 'json'
 require 'libmsg'
-require 'libstat'
+require 'libexhash'
 
-class Field < Stat
+class Field < ExHash
   def initialize(id=nil)
-    super("field",id)
+    @v=Msg::Ver.new('field',6)
+    return unless id
+    @base=VarDir+"/json/field_#{id}"
+    self['id']=id
   end
 
   def subst(str)
@@ -49,6 +51,73 @@ class Field < Stat
   def set(key,val)
     get(key).replace(subst(val).to_s)
     self
+  end
+
+  def load
+    Msg.err("No File Name")  unless @base
+    update_j(IO.read(@base+".json"))
+  end
+
+  def save
+    Msg.err("No File Name")  unless @base
+    open(@base+".json",'w') {|f| f << to_j }
+    self
+  end
+
+  def loadkey(tag=nil)
+    Msg.err("No File Name")  unless @base
+    tbase=[@base,tag].compact.join('_')
+    @v.msg{"Status Loading for [#{tbase}]"}
+    fname="#{tbase}.json"
+    if FileTest.exist?(fname)
+      update_j(IO.read(fname))
+    elsif tag
+      raise SelectID,list_stat
+    else
+      Msg.warn("----- No #{tbase}.json")
+    end
+    self
+  end
+
+  def savekey(keylist,tag=nil)
+    Msg.err("No File Name")  unless @base
+    hash=ExHash.new
+    keylist.each{|k|
+      if key?(k)
+        hash[k]=self[k]
+      else
+        Msg.warn("No such Key [#{k}]")
+      end
+    }
+    if hash.empty?
+      Msg.warn("No Keys")
+    else
+      tag||=Time.now.strftime('%y%m%d-%H%M%S')
+      tbase=[@base,tag].compact.join('_')
+      fname="#{tbase}.json"
+      @v.msg{"Status Saving for [#{tbase}]"}
+      open(fname,'w') {|f| f << hash.to_j }
+      mklink(fname,tag)
+    end
+    self
+  end
+
+  private
+  def mklink(fname,tag)
+    return unless tag
+    sname="#{@base}_latest.json"
+    File.unlink(sname) if File.exist?(sname)
+    File.symlink(fname,sname)
+    @v.msg{"Symboliclink to [#{sname}]"}
+  end
+
+  def list_stat
+    list=[]
+    Dir.glob("#{@base}_*.json"){|f|
+      tag=f.slice(/#{@base}_(.+)\.json/,1)
+      list << tag
+    }
+    "Tag=#{list}"
   end
 end
 

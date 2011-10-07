@@ -43,6 +43,6 @@ end
 if __FILE__ == $0
   require "librview"
   abort("Usage: #{$0} [view_file]") if STDIN.tty? && ARGV.size < 1
-  view=Rview.new
+  view=Rview.new.upd
   puts HexPack.new(view)
 end

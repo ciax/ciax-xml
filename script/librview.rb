@@ -5,8 +5,10 @@ require "libelapse"
 
 class Rview < ExHash
   def initialize(id=nil,host=nil)
+    @v=Msg::Ver.new('view',6)
     if id
       base="/json/view_#{id}.json"
+      self['id']=id
       if host
         require "open-uri"
         @uri="http://"+host+base
@@ -14,7 +16,6 @@ class Rview < ExHash
         @uri=VarDir+base
       end
     end
-    upd
     self['stat']||={}
     self['stat']['elapse']=Elapse.new(self['stat'])
   end
@@ -31,5 +32,5 @@ end
 
 if __FILE__ == $0
   abort "Usage: #{$0} [id] (host)" if ARGV.size < 1
-  puts Rview.new(*ARGV)
+  puts Rview.new(*ARGV).upd
 end

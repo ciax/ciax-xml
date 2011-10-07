@@ -38,7 +38,7 @@ class ReRange
     elsif /^-?[0-9]+(\.[0-9]+)?$/ === str
       str.to_f
     else
-      raise("Not Number [#{str}]")
+      str.to_i
     end
   end
 end

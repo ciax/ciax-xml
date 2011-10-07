@@ -14,11 +14,9 @@ class Rview < ExHash
       else
         @uri=VarDir+base
       end
-      load
-    else
-      update_j($stdin.read)
+      upd
     end
-    @elapse=Elapse.new(self['stat'])
+    @elapse=Elapse.new(self['stat']||={})
   end
 
   def upd

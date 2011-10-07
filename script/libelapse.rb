@@ -5,6 +5,12 @@ class Elapse
     @stat=stat
   end
 
+  def update?
+    return if @last == @stat['time']
+    @last=@stat['time']
+    self
+  end
+
   def to_i
     (Time.now-Time.parse(@stat['time'])).to_i rescue 0
   end

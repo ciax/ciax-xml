@@ -3,7 +3,7 @@ require "libmsg"
 require "libbuffer"
 require "libfrmobj"
 require "libappcmd"
-require "libappstat"
+require "libwview"
 require "libwatch"
 require "libsql"
 require "thread"
@@ -20,8 +20,7 @@ class AppObj < String
     @fobj=FrmObj.new(adb.cover_frm,field,io)
     @ac=AppCmd.new(adb)
     @as=AppStat.new(adb,field).upd
-    @view=Wview.new(id,adb,@as)
-    @sql=Sql.new(@as,id)
+    @view=Wview.new(id,adb,field)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
@@ -79,9 +78,7 @@ class AppObj < String
       loop{
         begin
           @fobj.upd(@buf.recv)
-          @as.upd
           @view.upd.save
-          @sql.upd.flush
           @v.msg{"Status Updated"}
         rescue UserError
           Msg.alert(" in Command Thread")

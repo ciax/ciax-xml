@@ -1,39 +1,44 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "librview"
+require "libappstat"
 require "libsymstat"
+require "libsql"
 # Status to Wview (String with attributes)
 class Wview < Rview
-  def initialize(id,adb,stat)
+  attr_reader :sql
+  def initialize(id,adb,field)
     super(id)
+    self['stat']=AppStat.new(adb,field)
     @sym=SymStat.new(adb)
-    self['stat']=Msg.type?(stat,AppStat)
+    @sql=Sql.new(self['stat'],id)
   end
 
   def upd
+    self['stat'].upd
     update(@sym.mksym(self['stat']))
+    @sql.upd
+    self
   end
 
   def save
     open(@uri,'w'){|f| f << to_j }
+    @sql.flush
     self
   end
 end
 
 if __FILE__ == $0
-  require "libappdb"
+  require "libinsdb"
   require "libfield"
-  require "libappstat"
-  app=ARGV.shift
+  id=ARGV.shift
   ARGV.clear
   begin
-    adb=AppDb.new(app,true)
-    str=gets(nil) || exit
-    field=Field.new.update_j(str)
-    as=AppStat.new(adb,field).upd
-    view=Wview.new(field['id'],adb,as)
+    idb=InsDb.new(id,true).cover_app
+    field=Field.new(id).load
+    view=Wview.new(id,idb,field)
     print view.upd.to_j
   rescue UserError
-    abort "Usage: #{$0} [app] < field_file\n#{$!}"
+    abort "Usage: #{$0} [id]\n#{$!}"
   end
 end

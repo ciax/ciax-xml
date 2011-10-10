@@ -9,13 +9,6 @@ for id in $ids; do
     app=${aline#*:}
     echo "$C2#### $app($id) ####$C0"
     file=$HOME/.var/json/field_$id.json
-    stat=$HOME/.var/json/view_$id.json
-    ~/lib/libappstat.rb $app < $file > $stat
-    if [ "$opt" ]
-    then
-        v2s <$stat
-    else
-        ~/lib/libprint.rb < $stat
-    fi
+    ~/lib/libappstat.rb $app < $file
     read -t 0 && break
 done

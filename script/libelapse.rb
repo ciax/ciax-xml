@@ -2,7 +2,7 @@
 require 'time'
 class Elapse
   def initialize(stat)
-    @stat=stat
+    @stat=Msg.type?(stat,Hash)
   end
 
   def update?

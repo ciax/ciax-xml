@@ -82,6 +82,7 @@ class AppObj < String
           @as.upd
           @view.upd.save
           @sql.upd.flush
+          @v.msg{"Status Updated"}
         rescue UserError
           Msg.alert(" in Command Thread")
           @buf.clear

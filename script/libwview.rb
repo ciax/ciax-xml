@@ -9,7 +9,7 @@ class Wview < Rview
     ads=Msg.type?(adb,AppDb)[:status]
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.new.add('all').add(ads['table'])
-    self['stat'].update(stat)
+    self['stat']=stat
   end
 
   def upd

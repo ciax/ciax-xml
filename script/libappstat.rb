@@ -90,7 +90,6 @@ end
 if __FILE__ == $0
   require "libappdb"
   require "libfield"
-  require "libwview"
   app=ARGV.shift
   ARGV.clear
   begin

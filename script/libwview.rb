@@ -15,7 +15,7 @@ class Wview < Rview
   end
 
   def upd
-    self['stat'].deep_update(@as.upd)
+    super(@as.upd)
     @sym.upd
     @sql.upd
     self

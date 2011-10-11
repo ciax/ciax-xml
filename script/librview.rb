@@ -25,8 +25,10 @@ class Rview < ExHash
     self['stat'][id]||@shadow[id]
   end
 
-  def upd
-    if @uri
+  def upd(stat=nil)
+    if stat
+      self['stat'].deep_update(stat)
+    elsif @uri
       open(@uri){|f| update_j(f.read) }
     else
       update_j(gets)

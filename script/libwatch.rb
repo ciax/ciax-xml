@@ -93,7 +93,7 @@ if __FILE__ == $0
     Msg.exit
   end
   watch=Watch.new(adb,view).upd
-  view['stat'].update(hash)
+  view.upd(hash)
   puts watch.upd.to_s
   print "Active? : "
   p watch.active?

@@ -9,13 +9,14 @@ class Wview < Rview
   attr_reader :sql
   def initialize(id,adb,field)
     super(id)
-    self['stat']=AppStat.new(adb,field)
+    @as=AppStat.new(adb,field)
     @sym=SymStat.new(adb)
     @sql=Sql.new(self['stat'],id)
   end
 
   def upd
-    self['stat'].upd
+    @as.upd
+    self['stat'].deep_update(@as)
     update(@sym.mksym(self['stat']))
     @sql.upd
     self

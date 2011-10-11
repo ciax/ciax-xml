@@ -19,8 +19,7 @@ class AppObj < String
     field=Field.new(id).load
     @fobj=FrmObj.new(adb.cover_frm,field,io)
     @ac=AppCmd.new(adb)
-    @as=AppStat.new(adb,field).upd
-    @view=Wview.new(id,adb,field)
+    @view=Wview.new(id,adb,field).upd
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i

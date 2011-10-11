@@ -18,7 +18,6 @@ class Rview < ExHash
     end
     self['stat']=ExHash.new
     @shadow={}
-    @shadow['elapse']=Elapse.new(self['stat'])
   end
 
   def stat(id)
@@ -33,6 +32,7 @@ class Rview < ExHash
     else
       update_j(gets)
     end
+    @shadow['elapse']=Elapse.new(self['stat']['time'])
     self
   end
 end

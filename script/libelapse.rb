@@ -17,18 +17,17 @@ class Interval < Time
 end
 
 class Elapse < Interval
-  def initialize(stat)
-    @stat=Msg.type?(stat,Hash)
+  def initialize(num)
+    @at=Time.at(num.to_f)
   end
 
   def update?
-    return if @last == @stat['time']
-    @last=@stat['time']
+    return if @last == @at
+    @last=@at
     self
   end
 
   def to_i
-    return 0 if @stat['time'].to_s.empty?
-    (Time.now-Time.at(@stat['time'].to_f)).to_i
+    (Time.now-@at).to_i
   end
 end

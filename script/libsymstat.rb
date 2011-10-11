@@ -3,13 +3,15 @@ require "libmsg"
 require "libsymdb"
 require "libappstat"
 # Status to Wview (String with attributes)
-class SymStat
-  def initialize(adb,view)
+class SymStat < ExHash
+  def initialize(adb,stat)
     @v=Msg::Ver.new('symbol',2)
     ads=Msg.type?(adb,AppDb)[:status]
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.new.add('all').add(ads['table'])
-    @view=Msg.type?(view,Rview)
+    self['stat']=Msg.type?(stat,AppStat)
+    self['class']={'time' => 'normal'}
+    self['msg']={}
   end
 
   def upd
@@ -20,26 +22,25 @@ class SymStat
       end
       @v.msg{"ID=#{key},table=#{sid}"}
       {'class' => 'alarm','msg' => 'N/A'}.each{|k,v|
-        (@view[k]||={})[key]=v
+        self[k][key]=v
       }
-      val=@view['stat'][key]
+      val=self['stat'][key]
       tbl.each{|sym|
         case sym['type']
         when 'range'
           next unless ReRange.new(sym['val']) == val
           @v.msg{"VIEW:Range:[#{sym['val']}] and [#{val}]"}
-          @view['msg'][key]=sym['msg']+"(#{val})"
+          self['msg'][key]=sym['msg']+"(#{val})"
         when 'pattern'
           next unless /#{sym['val']}/ === val || val == 'default'
           @v.msg{"VIEW:Regexp:[#{sym['val']}] and [#{val}]"}
-          @view['msg'][key]=sym['msg']
+          self['msg'][key]=sym['msg']
         end
-        @view['class'][key]=sym['class']
+        self['class'][key]=sym['class']
         break
       }
     }
-    @view['class']['time']='normal'
-    @view['msg']['time']=Time.at(@view['stat']['time'].to_f).to_s
+    self['msg']['time']=Time.at(self['stat']['time'].to_f).to_s
     self
   end
 end

@@ -10,8 +10,11 @@ class Wview < Rview
   def initialize(id,adb,field)
     super(id)
     @as=AppStat.new(adb,field)
-    @sym=SymStat.new(adb,self)
     @sql=Sql.new(id,@as)
+    @sym=SymStat.new(adb,@as)
+    ['msg','class'].each{|k|
+      self[k]=@sym[k]
+    }
   end
 
   def upd
@@ -22,7 +25,7 @@ class Wview < Rview
   end
 
   def save
-    open(@uri,'w'){|f| f << to_j }
+    open(@uri,'w'){|f| f << @sym.to_j }
     @sql.flush
     self
   end

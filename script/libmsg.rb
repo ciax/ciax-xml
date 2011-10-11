@@ -24,7 +24,7 @@ class Msg
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
-      return unless ENV['VER'] && ! ENV['VER'].empty?
+      return if ENV['VER'].to_s.empty?
       @ind=@@base
       @@base+=add
       @ind=@@base if add < 0

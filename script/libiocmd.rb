@@ -5,7 +5,7 @@ class IoCmd
   # iocmd should be array
   def initialize(iocmd,wait=0,timeout=nil)
     @v=Msg::Ver.new('iocmd',1)
-    abort " No IO command" unless iocmd && !iocmd.empty?
+    abort " No IO command" if iocmd.to_a.empty?
     @iocmd=Msg.type?(iocmd,Array)
     @f=IO.popen(@iocmd,'r+')
     @v.msg{"Init/Client:#{iocmd.join(' ')}"}
@@ -28,7 +28,7 @@ class IoCmd
   end
 
   def snd(str,id=nil)
-    return unless str && !str.empty?
+    return if str.to_s.empty?
     log_frame(str,id)
     int=1
     begin

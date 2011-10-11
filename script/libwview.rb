@@ -11,12 +11,11 @@ class Wview < Rview
     super(id)
     @as=AppStat.new(adb,field)
     @sym=SymStat.new(adb)
-    @sql=Sql.new(self['stat'],id)
+    @sql=Sql.new(id,@as)
   end
 
   def upd
-    @as.upd
-    self['stat'].deep_update(@as)
+    self['stat'].deep_update(@as.upd)
     update(@sym.mksym(self['stat']))
     @sql.upd
     self

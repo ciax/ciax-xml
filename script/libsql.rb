@@ -1,24 +1,24 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libappstat"
 class Sql < Array
-  # Sql.new(Hash,String,String)
-  def initialize(stat,table,dbname='ciax')
+  def initialize(table_id,stat,dbname='ciax')
     @v=Msg::Ver.new("sql",6)
-    @stat=stat
-    @table=table
+    @tid=table_id
+    @stat=Msg.type?(stat,AppStat)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
   end
 
   def create
     key=@stat.keys.join(',')
-    push "create table #{@table} (time,#{key},primary key(time));"
+    push "create table #{@tid} (time,#{key},primary key(time));"
   end
 
   def upd
-    @v.msg{"Update:[#{@table}]"}
+    @v.msg{"Update:[#{@tid}]"}
     key=@stat.keys.join(',')
     val=@stat.values.map{|s| "'#{s}'"}.join(',')
-    push "insert into #{@table} (#{key}) values (#{val});"
+    push "insert into #{@tid} (#{key}) values (#{val});"
   end
 
   def to_s

@@ -16,7 +16,7 @@ begin
   field=Field.new(id)
   fr=FrmRsp.new(fdb,par,field)
   as=AppStat.new(adb,field)
-  sql=Sql.new(as,id)
+  sql=Sql.new(id,as)
 rescue UserError
   warn "Usage: #{$0} (-i) [id] < logfile"
   Msg.exit

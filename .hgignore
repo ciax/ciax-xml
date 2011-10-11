@@ -1,0 +1,11 @@
+syntax: glob
+*~
+*.o
+*.class
+*.orig
+
+sytax: re
+^CVS/
+/CVS/
+^\.svn/
+/\.svn/

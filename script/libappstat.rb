@@ -22,7 +22,7 @@ class AppStat < ExHash
         @v.msg(-1){"STAT:GetStatus:#{id}=[#{self[id]}]"}
       end
     }
-    self['time']=Time.at(@field['time'].to_f).to_s
+    self['time']=@field['time']
     self
   end
 

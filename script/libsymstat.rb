@@ -38,6 +38,8 @@ class SymStat
         break
       }
     }
+    @view['class']['time']='normal'
+    @view['msg']['time']=Time.at(@view['stat']['time'].to_f).to_s
     self
   end
 end

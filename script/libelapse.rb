@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'time'
 class Interval < Time
   def inspect
     '"'+to_s+'"'
@@ -30,6 +29,6 @@ class Elapse < Interval
 
   def to_i
     return 0 if @stat['time'].to_s.empty?
-    (Time.now-Time.parse(@stat['time'])).to_i
+    (Time.now-Time.at(@stat['time'].to_f)).to_i
   end
 end

@@ -12,7 +12,6 @@ class Watch < ExHash
     [:block,:active,:exec,:stat].each{|i|
       self[i]||=[]
     }
-    self[:last]={}
   end
 
   def active?
@@ -36,7 +35,7 @@ class Watch < ExHash
   end
 
   def interrupt
-    self[:last]['int']=1
+    @view.last['int']=1
     upd
     issue
   end
@@ -46,10 +45,8 @@ class Watch < ExHash
     self[:stat].size.times{|i|
       self[:active] << i if check(i)
     }
-    self[:last]=@view['stat'].dup
     self
   end
-
 
   private
   def check(i)
@@ -57,12 +54,11 @@ class Watch < ExHash
     @v.msg{"Check: <#{self[:label][i]}>"}
     self[:stat][i].all?{|h|
       k=h['ref']
-      v=@view.stat(k)
+      v=@view['stat'][k]
       c=h['val']
       case h['type']
       when 'onchange'
-        c=self[:last][k]
-        res=(c != v)
+        res=@view.change?(k)
         @v.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'pattern'
         res=(Regexp.new(c) === v)

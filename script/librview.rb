@@ -4,6 +4,7 @@ require "libexhash"
 require "libelapse"
 
 class Rview < ExHash
+  attr_reader :last
   def initialize(id=nil,host=nil)
     @v=Msg::Ver.new('view',6)
     if id
@@ -16,23 +17,26 @@ class Rview < ExHash
         @uri=VarDir+base
       end
     end
-    self['stat']=ExHash.new
-    @shadow={}
+    @stat=self['stat']=ExHash.new
+    @last=ExHash.new
   end
 
-  def stat(id)
-    self['stat'][id]||@shadow[id]
+  def change?(id)
+    @stat[id] != @last[id]
   end
 
   def upd(stat=nil)
     if stat
-      self['stat'].deep_update(stat)
+      @stat.deep_update(stat)
     elsif @uri
       open(@uri){|f| update_j(f.read) }
     else
       update_j(gets)
     end
-    @shadow['elapse']=Elapse.new(self['stat']['time'])
+    if change?('time')
+      @last.deep_update(@stat)
+      @stat['elapse']=Elapse.new(@stat['time'])
+    end
     self
   end
 end

@@ -65,7 +65,7 @@ class Watch < ExHash
         @v.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'range'
         res=(ReRange.new(c) == v)
-        @v.msg{"  Range(#{k}): [#{c}] vs <#{v.to_i}> =>#{res}"}
+        @v.msg{"  Range(#{k}): [#{c}] vs <#{v.to_i}>(#{v.class}) =>#{res}"}
       end
       res
     }

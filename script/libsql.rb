@@ -11,13 +11,14 @@ class Sql < Array
 
   def create
     key=@stat.keys.join(',')
+    @v.msg{"create (#{key})"}
     push "create table #{@tid} (time,#{key},primary key(time));"
   end
 
   def upd
-    @v.msg{"Update:[#{@tid}]"}
     key=@stat.keys.join(',')
     val=@stat.values.map{|s| "'#{s}'"}.join(',')
+    @v.msg{"Update:[#{@tid}] (#{@stat['time']})"}
     push "insert into #{@tid} (#{key}) values (#{val});"
   end
 

@@ -19,11 +19,11 @@ class AppObj < String
     field=Field.new(id).load
     @fobj=FrmObj.new(adb.cover_frm,field,io)
     @ac=AppCmd.new(adb)
-    @view=Wview.new(id,adb,field).upd
+    @view=Wview.new(id,adb,field)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
-    @event=Watch.new(adb,@view.upd)
+    @event=Watch.new(adb,@view)
     @watch=watch_thread unless @event[:stat].empty?
     @main=command_thread
     @cl=Msg::List.new("== Internal Command ==")

@@ -9,8 +9,8 @@ require "libsql"
 require "thread"
 
 
-class AppObj < String
-  attr_reader :prompt
+class AppObj
+  attr_reader :prompt,:view
   def initialize(adb,io)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
@@ -77,8 +77,9 @@ class AppObj < String
       loop{
         begin
           @fobj.upd(@buf.recv)
-          @view.upd.save
-          @v.msg{"Status Updated"}
+          @v.msg{"Field Updated(#{@fobj.field['time']})"}
+          @view.upd
+          @v.msg{"Status Updated(#{@view['stat']['time']})"}
         rescue UserError
           Msg.alert(" in Command Thread")
           @buf.clear

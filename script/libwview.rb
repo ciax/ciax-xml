@@ -6,28 +6,27 @@ require "libsymstat"
 require "libsql"
 # Status to Wview (String with attributes)
 class Wview < Rview
-  attr_reader :sql
   def initialize(id,adb,field)
     super(id)
     @as=AppStat.new(adb,field)
+    @stat.update(@as.upd)
+    @sym=SymStat.new(adb,@as).upd
     @sql=Sql.new(id,@as)
-    @sym=SymStat.new(adb,@as)
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }
+    update?
   end
 
   def upd
-    super(@as.upd)
-    @sym.upd
-    @sql.upd
-    self
-  end
-
-  def save
-    open(@uri,'w'){|f| f << @sym.to_j }
-    @sql.flush
-    self
+    @v.msg{"Status update"}
+    @stat.update(@as.upd)
+    if update?
+      @sym.upd
+      open(@uri,'w'){|f| f << @sym.to_j }
+      @sql.upd.flush
+    end
+   self
   end
 end
 

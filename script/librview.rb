@@ -22,6 +22,7 @@ class Rview < ExHash
   end
 
   def change?(id)
+    @v.msg{"Compare(#{id}) current=[#{@stat[id]}] vs last=[#{@last[id]}]"}
     @stat[id] != @last[id]
   end
 
@@ -33,11 +34,15 @@ class Rview < ExHash
     else
       update_j(gets)
     end
+    self
+  end
+
+  def update?
     if change?('time')
+      @v.msg{"Status Updated"}
       @last.deep_update(@stat)
       @stat['elapse']=Elapse.new(@stat['time'])
     end
-    self
   end
 end
 

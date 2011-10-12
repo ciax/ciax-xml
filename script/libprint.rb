@@ -12,11 +12,6 @@ class Print
     @line=[]
   end
 
-  def upd
-    @view.upd
-    self
-  end
-
   def to_s
     @line.clear
     get_group

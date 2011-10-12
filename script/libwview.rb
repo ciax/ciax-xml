@@ -15,7 +15,6 @@ class Wview < Rview
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }
-    update?
   end
 
   def upd

@@ -19,6 +19,7 @@ class Rview < ExHash
     end
     @stat=self['stat']=ExHash.new
     @last=ExHash.new
+    @stat['elapse']=Elapse.new(@stat)
   end
 
   def change?(id)
@@ -41,7 +42,6 @@ class Rview < ExHash
     if change?('time')
       @v.msg{"Status Updated"}
       @last.deep_update(@stat)
-      @stat['elapse']=Elapse.new(@stat['time'])
     end
   end
 end

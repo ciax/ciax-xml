@@ -11,7 +11,7 @@ host=ARGV.shift||'localhost'
 begin
   adb=InsDb.new(id).cover_app
 rescue
-  warn "Usage: hprelay (-s) [id] (host)"
+  warn "Usage: hexint (-s) [id] (host)"
   Msg.exit
 end
 cli=Client.new(adb,host)

@@ -1,10 +1,9 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libfrmdb"
-require "libfrmobj"
-require "libiocmd"
 require "libfield"
+require "libiocmd"
+require "libfrmobj"
 require "libinteract"
 
 opt=ARGV.getopts("s")

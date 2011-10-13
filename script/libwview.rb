@@ -20,9 +20,13 @@ class Wview < Rview
   def upd
     @v.msg{"Status update"}
     @stat.update(@as.upd)
+    self
+  end
+
+  def save
     if update?
       @sym.upd
-      open(@uri,'w'){|f| f << @sym.to_j }
+      open(@uri,'w'){|f| f << to_j }
       @sql.upd.flush
     end
    self

@@ -8,7 +8,6 @@ require "libwatch"
 require "libsql"
 require "thread"
 
-
 class AppObj
   attr_reader :prompt,:view
   def initialize(adb,io)
@@ -78,7 +77,7 @@ class AppObj
         begin
           @fobj.upd(@buf.recv)
           @v.msg{"Field Updated(#{@fobj.field['time']})"}
-          @view.upd
+          @view.upd.save
           @v.msg{"Status Updated(#{@view['stat']['time']})"}
         rescue UserError
           Msg.alert(" in Command Thread")

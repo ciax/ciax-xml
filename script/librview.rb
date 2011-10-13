@@ -1,22 +1,13 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libexhash"
+require "liburi"
 require "libelapse"
 
-class Rview < ExHash
+class Rview < Uri
   attr_reader :last
   def initialize(id=nil,host=nil)
     @v=Msg::Ver.new('view',6)
-    if id
-      base="/json/view_#{id}.json"
-      self['id']=id
-      if host
-        require "open-uri"
-        @uri="http://"+host+base
-      else
-        @uri=VarDir+base
-      end
-    end
+    super('view',id,host)
     @stat=self['stat']=ExHash.new
     @last=ExHash.new
     @stat['elapse']=Elapse.new(@stat)
@@ -30,10 +21,8 @@ class Rview < ExHash
   def upd(stat=nil)
     if stat
       @stat.deep_update(stat)
-    elsif @uri
-      open(@uri){|f| update_j(f.read) }
     else
-      update_j(gets)
+      load
     end
     self
   end

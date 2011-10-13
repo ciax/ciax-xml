@@ -26,7 +26,7 @@ class Wview < Rview
   def save
     if update?
       @sym.upd
-      open(@uri,'w'){|f| f << to_j }
+      super
       @sql.upd.flush
     end
    self

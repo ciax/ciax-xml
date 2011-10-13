@@ -89,8 +89,10 @@ if __FILE__ == $0
     Msg.exit
   end
   watch=Watch.new(adb,view).upd
+  # For on change
   view.upd(hash)
-  puts watch.upd.to_s
+  # Print Wdb
+  watch.upd
   print "Active? : "
   p watch.active?
   print "Block Pattern : "

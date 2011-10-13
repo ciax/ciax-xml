@@ -92,7 +92,7 @@ class FrmDb < Db
     when 'field'
       attr=e.to_h
       if id=attr['assign']
-        stat[:assign][id]=''
+        stat[:assign][id]=nil
         stat[:label]||={}
         if lv=attr['label']
           stat[:label][id]=lv

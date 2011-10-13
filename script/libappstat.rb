@@ -29,11 +29,13 @@ class AppStat < ExHash
   private
   def get_val(fields)
     str=''
+    bin=false
     fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || Msg.abort("No field Key")
       data=@field.get(fld)||''
       case e1['type']
       when 'binary'
+        bin=true
         str << binary(e1,data)
       when 'float'
         str << float(e1,data)
@@ -43,7 +45,7 @@ class AppStat < ExHash
         str << data
       end
     }
-    str
+    bin ? str.to_i(2).to_s : str
   end
 
   def binary(e1,data)

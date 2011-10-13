@@ -214,16 +214,16 @@
       </event>
       <event label="CMD ACCEPT">
         <onchange ref="acp"></onchange>
-        <pattern ref="acp">00</pattern>
+        <pattern ref="acp">0</pattern>
         <exec name="clear"></exec>
       </event>
       <event label="During Motion" block="run|jak|charge">
-        <pattern ref="acp">00</pattern>
+        <pattern ref="acp">0</pattern>
         <exec name="upd"></exec>
       </event>
       <event label="Interrupt During Motion">
         <onchange ref="int"></onchange>
-        <pattern ref="acp">00</pattern>
+        <pattern ref="acp">0</pattern>
         <exec name="pause"></exec>
       </event>
     </watch>

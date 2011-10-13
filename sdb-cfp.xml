@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="cfp" label="MOIRCS Field Point">
     <table id="rot">
-      <pattern class="normal" msg="Horizontal">10</pattern>
-      <pattern class="warn" msg="Vertical">01</pattern>
+      <pattern class="normal" msg="Horizontal">2</pattern>
+      <pattern class="warn" msg="Vertical">1</pattern>
       <pattern class="alarm" msg="N/A"></pattern>
     </table>
     <table id="oc">
-      <pattern class="warn" msg="OPEN">01</pattern>
-      <pattern class="normal" msg="CLOSE">10</pattern>
+      <pattern class="warn" msg="OPEN">1</pattern>
+      <pattern class="normal" msg="CLOSE">2</pattern>
       <pattern class="alarm" msg="N/A"></pattern>
     </table>
   </symbol>

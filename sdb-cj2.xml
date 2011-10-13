@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="cj2" label="Stand-by Flange PLC">
     <table id="exe">
@@ -6,44 +6,44 @@
       <pattern class="warn" msg="ON" />
     </table>
     <table id="rst">
-      <pattern class="normal" msg="OK">111</pattern>
-      <pattern class="normal" msg="OFF">000</pattern>
+      <pattern class="normal" msg="OK">7</pattern>
+      <pattern class="normal" msg="OFF">0</pattern>
       <pattern class="alarm" msg="BAD" />
     </table>
     <table id="ist">
-      <pattern class="normal" msg="ON ">1111</pattern>
-      <pattern class="warn" msg="OFF">0000</pattern>
+      <pattern class="normal" msg="ON ">15</pattern>
+      <pattern class="warn" msg="OFF">0</pattern>
       <pattern class="alarm" msg="N/A" />
     </table>
     <table id="hook">
-      <pattern class="normal" msg="HOOK">10</pattern>
-      <pattern class="normal" msg="UNHK">01</pattern>
-      <pattern class="alarm" msg="N/A">00</pattern>
+      <pattern class="normal" msg="HOOK">2</pattern>
+      <pattern class="normal" msg="UNHK">1</pattern>
+      <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="jack">
-      <pattern class="normal" msg="UP">10</pattern>
-      <pattern class="normal" msg="DW">01</pattern>
-      <pattern class="alarm" msg="N/A">00</pattern>
+      <pattern class="normal" msg="UP">2</pattern>
+      <pattern class="normal" msg="DW">1</pattern>
+      <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="ctl">
-      <pattern class="normal" msg="AUTO">10</pattern>
-      <pattern class="normal" msg="MANUAL">01</pattern>
-      <pattern class="alarm" msg="N/A">00</pattern>
+      <pattern class="normal" msg="AUTO">2</pattern>
+      <pattern class="normal" msg="MANUAL">1</pattern>
+      <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="mov">
-      <pattern class="normal" msg="FW">10</pattern>
-      <pattern class="normal" msg="BK">01</pattern>
-      <pattern class="alarm" msg="N/A">00</pattern>
+      <pattern class="normal" msg="FW">2</pattern>
+      <pattern class="normal" msg="BK">1</pattern>
+      <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="rot">
-      <pattern class="normal" msg="LOAD">10</pattern>
-      <pattern class="normal" msg="STORE">01</pattern>
-      <pattern class="alarm" msg="N/A">00</pattern>
+      <pattern class="normal" msg="LOAD">2</pattern>
+      <pattern class="normal" msg="STORE">1</pattern>
+      <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="dor">
-      <pattern class="normal" msg="OPEN">10</pattern>
-      <pattern class="normal" msg="CLOSE">01</pattern>
-      <pattern class="alarm" msg="N/A">00</pattern>
+      <pattern class="normal" msg="OPEN">2</pattern>
+      <pattern class="normal" msg="CLOSE">1</pattern>
+      <pattern class="warn" msg="Half">0</pattern>
     </table>
     <table id="err">
       <pattern class="normal" msg="OK">^0$</pattern>

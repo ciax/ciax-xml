@@ -476,7 +476,7 @@
       </event>
       <event label="On Error">
         <onchange ref="err" />
-        <pattern ref="err">[^0]</pattern>
+        <pattern ref="err">0</pattern>
         <exec name="rexe"></exec>
       </event>
       <event label="On Emergency">

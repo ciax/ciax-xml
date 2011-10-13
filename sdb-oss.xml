@@ -2,12 +2,12 @@
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="oss" label="TSC Control">
     <table id="bl">
-      <pattern class="warn" msg="MID">00</pattern>
-      <pattern class="normal" msg="UP">10</pattern>
-      <pattern class="normal" msg="DW">01</pattern>
+      <pattern class="warn" msg="MID">0</pattern>
+      <pattern class="normal" msg="UP">2</pattern>
+      <pattern class="normal" msg="DW">1</pattern>
     </table>
     <table id="ba">
-      <pattern class="hide" msg="OK">00</pattern>
+      <pattern class="hide" msg="OK">0</pattern>
       <pattern class="alarm" msg="ON" />
     </table>
     <table id="rts">
@@ -39,15 +39,15 @@
       <pattern class="normal" msg="OFF">2</pattern>
     </table>
     <table id="rps">
-      <pattern class="alarm" msg="OFF">11</pattern>
-      <pattern class="normal" msg="0DEG">10</pattern>
-      <pattern class="normal" msg="-4DEG">01</pattern>
+      <pattern class="alarm" msg="OFF">3</pattern>
+      <pattern class="normal" msg="0DEG">2</pattern>
+      <pattern class="normal" msg="-4DEG">1</pattern>
       <pattern class="alarm" msg="N/A" />
     </table>
     <table id="drv">
-      <pattern class="alarm" msg="ON">101</pattern>
-      <pattern class="normal" msg="OFF">011</pattern>
-      <pattern class="normal" msg="RDY">001</pattern>
+      <pattern class="alarm" msg="ON">5</pattern>
+      <pattern class="normal" msg="OFF">3</pattern>
+      <pattern class="normal" msg="RDY">1</pattern>
       <pattern class="alarm" msg="N/A" />
     </table>
   </symbol>

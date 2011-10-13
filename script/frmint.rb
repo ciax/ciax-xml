@@ -18,7 +18,7 @@ field=Field.new(id).load
 io=IoCmd.new(iocmd.empty? ? fdb['client'].split(' ') : iocmd,fdb['wait'],1)
 io.startlog(id) if iocmd.empty?
 fobj=FrmObj.new(fdb,field,io)
-port=opt["s"] ? fdb["port"] : nil
+port=opt["s"] ? fdb["port"].to_i-1000 : nil
 Interact.new([fdb['frame'],'>'],port){|line|
   break unless line
   fobj.upd(line.split(' ')) || (port ? field.to_j : field)

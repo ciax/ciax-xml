@@ -16,37 +16,45 @@ class McrObj
   def exe(ssn)
     @par.set(ssn)
     id=@par[:id]
-    @line << "Exec(MDB):#{id}"
-    @par[:select].each{|e1|
-      case e1
-      when Hash
-        case e1['type']
-        when 'break'
-          @line << "  Check Skip:[#{e1['label']}#{id}]"
-          if judge(e1['cond'])
-            @line << "  Skip:[#{id}]"
-            return
-          else
-            @line << "  Proceed:[#{id}]"
+    p Thread.new{
+      Thread.pass
+      @line << "Exec(MDB):#{id}"
+      @par[:select].each{|e1|
+        case e1
+        when Hash
+          case e1['type']
+          when 'break'
+            @line << "  Check Skip:[#{e1['label']}#{id}]"
+            if judge(e1['cond'])
+              @line << "  Skip:[#{id}]"
+              return
+            else
+              @line << "  Proceed:[#{id}]"
+            end
+          when 'check'
+            retr=(e1['retry']||1).to_i
+            @line << "  Check Interlock:[#{e1['label']}#{id}] (#{retr})"
+            if retr.times{|n|
+                break if judge(e1['cond'],n)
+                sleep 1
+              }
+            then
+              @line << (retr > 1 ? "Timeout:[#{id}]" : "Interlock:[#{id}]")
+              return self
+            end
           end
-        when 'check'
-          retr=(e1['retry']||1).to_i
-          @line << "  Check Interlock:[#{e1['label']}#{id}] (#{retr})"
-          if retr.times{|n|
-              break if judge(e1['cond'],n)
-              sleep 1
-            }
-          then
-            @line << (retr > 1 ? "Timeout:[#{id}]" : "Interlock:[#{id}]")
-            return self
-          end
+        else
+          @line << "  EXEC:#{@par.subst(e1)}"
         end
-      else
-        @line << "  EXEC:#{@par.subst(e1)}"
-      end
+      }
     }
     self
   end
+
+  def to_s
+    @line.join("\n")
+  end
+
 
   private
   def judge(conds,n=0)
@@ -73,6 +81,7 @@ if __FILE__ == $0
   require "libinsdb"
   require "libmcrdb"
   require "libclient"
+  require "libshell"
   mcr,*cmd=ARGV
   ARGV.clear
   begin
@@ -80,8 +89,6 @@ if __FILE__ == $0
     adb=InsDb.new(mcr).cover_app
     cli=Client.new(adb)
     ac=McrObj.new(mdb,cli)
-    ac.exe(cmd)
-    puts ac.line
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
@@ -90,4 +97,8 @@ if __FILE__ == $0
   rescue UserError
     Msg.exit(3)
   end
+  Shell.new(["mcr>"]){|line|
+    ac.exe(line.split(' ')) unless line.empty?
+    ac.to_s
+  }
 end

@@ -19,14 +19,13 @@ class Server
         begin
           msg=yield(cmd).message.to_s
         rescue SelectCMD
-          msg="NO CMD\n"
+          msg="NO CMD"
         rescue RuntimeError
-          msg="ERROR\n"
+          msg="ERROR"
           warn msg
         end
         @v.msg{"Send:#{msg},#{prom}"}
-        msg << prom
-        udp.send(msg,0,addr[2],addr[1])
+        udp.send([msg,prom].join("\n"),0,addr[2],addr[1])
       }
     }
   end

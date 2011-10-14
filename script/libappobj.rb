@@ -38,20 +38,20 @@ class AppObj
     when 'interrupt'
       stop=@event.interrupt
       @buf.interrupt{stop}
-      @message="Interrupt #{stop}\n"
+      @message="Interrupt #{stop}"
     when 'sleep'
       @buf.wait_for(cmd[1].to_i){}
-      @message="Sleeping\n"
+      @message="Sleeping"
     when 'waitfor'
       k,v=cmd[1].split('=')
       @buf.wait_for(10){ @view['stat'][k] == v }
-      @message="Waiting\n"
+      @message="Waiting"
     else
       if @event.block_pattern === cmd.join(' ')
-        @message="Blocking(#{@event.block_pattern.inspect})\n"
+        @message="Blocking(#{@event.block_pattern.inspect})"
       else
         @buf.send{@ac.setcmd(cmd)}
-        @message="ISSUED\n"
+        @message="ISSUED"
       end
     end
     upd_prompt

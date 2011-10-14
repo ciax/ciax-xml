@@ -4,7 +4,6 @@ require "libinsdb"
 require "libiocmd"
 require "libfrmobj"
 require "libappobj"
-require "libprint"
 require "libinteract"
 
 
@@ -22,8 +21,8 @@ io=IoCmd.new(iocmd,adb['wait'],1)
 io.startlog(id) if ary.empty?
 fobj=FrmObj.new(fdb,io)
 aobj=AppObj.new(adb,fobj)
-prt=Print.new(adb[:status],aobj.view)
 port=opt["s"] ? adb["port"] : nil
 Interact.new(aobj.prompt,port){|line|
-  aobj.upd(line) || (prt unless port)
+  str=aobj.upd(line)
+  str unless port
 }

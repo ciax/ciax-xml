@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libbuffer"
-require "libfrmobj"
 require "libappcmd"
 require "libwview"
 require "libwatch"
@@ -10,12 +9,12 @@ require "thread"
 
 class AppObj
   attr_reader :prompt,:view
-  def initialize(adb,io)
+  def initialize(adb,frmobj)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
     id=adb['id']
     @prompt=[id]
-    @fobj=FrmObj.new(adb.cover_frm,id,io)
+    @fobj=frmobj
     @ac=AppCmd.new(adb)
     @view=Wview.new(id,adb,@fobj.field)
     Thread.abort_on_exception=true

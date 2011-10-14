@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "librview"
-require "libwview"
 require "libiocmd"
+require "libfrmobj"
 require "libappobj"
 require "libprint"
 require "libinteract"
@@ -19,7 +18,8 @@ rescue
 end
 io=IoCmd.new(iocmd.empty? ? adb['client'].split(' ') : iocmd,adb['wait'],1)
 io.startlog(id) if iocmd.empty?
-aobj=AppObj.new(adb,io)
+fobj=FrmObj.new(adb.cover_frm,id,io)
+aobj=AppObj.new(adb,fobj)
 prt=Print.new(adb[:status],aobj.view)
 port=opt["s"] ? adb["port"] : nil
 Interact.new(aobj.prompt,port){|line|

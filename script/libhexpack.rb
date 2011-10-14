@@ -2,10 +2,10 @@
 # Ascii Pack
 require "libmsg"
 class HexPack
-  def initialize(view,prompt=[''])
+  def initialize(view,prompt='')
     @stat=Msg.type?(view,Rview)['stat']
     id=view['id']||raise
-    @prompt=Msg.type?(prompt,Array)
+    @prompt=prompt
     file="/home/ciax/config/sdb_#{id}.txt"
     @res=["%",id,'_','0','0','_','']
     @list=[]
@@ -23,7 +23,7 @@ class HexPack
 
   def upd
     @res[3]=@stat['run']
-    @res[4]= @prompt.first.include?('*') ? '1' : '0'
+    @res[4]= @prompt.include?('*') ? '1' : '0'
     @res[6]=''
     @list.each{|key|
       if val=@stat[key]

@@ -2,6 +2,7 @@
 require "socket"
 require "libmsg"
 
+# block return object should have message()
 class Server
   def initialize(prom,port)
     @v=Msg::Ver.new("server",1)
@@ -14,7 +15,7 @@ class Server
         line,addr=udp.recvfrom(4096)
         @v.msg{"Recv:#{line} is #{line.class}"}
         begin
-          msg=yield line.chomp.to_s
+          msg=yield(line.chomp.to_s).message.to_s
         rescue SelectCMD
           msg="NO CMD\n"
         rescue RuntimeError

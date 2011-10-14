@@ -3,12 +3,11 @@ require "readline"
 
 # Prompt should be Array
 class Shell
-  def initialize(prompt=[])
+  def initialize(prompt='')
     cl=Msg::List.new("== Shell Command ==")
     cl.add('q'=>"Quit",'D^'=>"Interrupt")
-    Msg.type?(prompt,Array)
     loop {
-      line=Readline.readline(prompt.join(''),true)||'interrupt'
+      line=Readline.readline(prompt,true)||'interrupt'
       break if /^q/ === line
       begin
         puts (yield line).to_s

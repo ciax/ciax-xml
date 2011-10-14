@@ -22,7 +22,7 @@ class Server
           warn msg
         end
         @v.msg{"Send:#{msg},#{prom}"}
-        msg << prom.join('')
+        msg << prom
         udp.send(msg,0,addr[2],addr[1])
       }
     }

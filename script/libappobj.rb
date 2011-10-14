@@ -9,15 +9,15 @@ require "libsql"
 require "thread"
 
 class AppObj
-  attr_reader :prompt,:view,:to_s
+  attr_reader :prompt,:view,:message
   def initialize(adb,frmobj)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
-    id=adb['id']
+    @prompt=''
+    @id=adb['id']
     @fobj=frmobj
     @ac=AppCmd.new(adb)
-    @view=Wview.new(id,adb,@fobj.field)
-    @prompt=@view['prompt']=[id]
+    @view=Wview.new(@id,adb,@fobj.field)
     @prt=Print.new(adb[:status],@view)
     Thread.abort_on_exception=true
     @buf=Buffer.new
@@ -34,23 +34,23 @@ class AppObj
   def upd(line)
     case line
     when /^(stat|)$/
-      @view['message']=nil
+      @message=nil
     when /^interrupt$/
       stop=@event.interrupt
       @buf.interrupt{stop}
-      @view['message']="Interrupt #{stop}\n"
+      @message="Interrupt #{stop}\n"
     when @event.block_pattern
-      @view['message']="Blocking(#{@event.block_pattern.inspect})\n"
+      @message="Blocking(#{@event.block_pattern.inspect})\n"
     when /^sleep */
       @buf.wait_for($'.to_i){}
-      @view['message']="Sleeping\n"
+      @message="Sleeping\n"
     when /^waitfor */
       k,v=$'.split('=')
       @buf.wait_for(10){ @view['stat'][k] == v }
-      @view['message']="Waiting\n"
+      @message="Waiting\n"
     else
       @buf.send{@ac.setcmd(line.split(' '))}
-      @view['message']="ISSUED\n"
+      @message="ISSUED\n"
     end
     upd_prompt
     self
@@ -59,17 +59,18 @@ class AppObj
   end
 
   def to_s
-    @view['message']||@prt
+    @message||@prt
   end
 
   private
   def upd_prompt
-    @prompt.slice!(1..-1)
-    @prompt << '@' if @watch && @watch.alive?
-    @prompt << '&' if @event.active?
-    @prompt << '*' if @buf.issue
-    @prompt << '#' if @buf.wait
-    @prompt << (@main.alive? ? '>' : 'X')
+    pr =[@id]
+    pr << '@' if @watch && @watch.alive?
+    pr << '&' if @event.active?
+    pr << '*' if @buf.issue
+    pr << '#' if @buf.wait
+    pr << (@main.alive? ? '>' : 'X')
+    @prompt.replace(pr.join(''))
     self
   end
 

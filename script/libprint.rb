@@ -9,39 +9,36 @@ class Print
     }
     @group=db[:group] || [[db[:select].keys]]
     @label=db[:label] || {}
-    @line=[]
   end
 
   def to_s
-    @line.clear
-    get_group
-    @line.join("\n")
+    get_group.join("\n")
   end
 
   private
   def get_group
+    line=[]
     @group.each{|g|
       arys,ids = g.partition{|e| Array === e}
       unless ids.empty?
         cap=@label[ids.first] || next
-        @line << " ***"+color(2,cap)+"***"
+        line << " ***"+color(2,cap)+"***"
       end
       arys.each{|a|
-        get_element(a)
+        line.concat get_element(a)
       }
     }
-    self
+    line
   end
 
   def get_element(ids,col=6)
-    da=[]
-    ids.each{|id|
-      da << prt(id,@view['stat'][id])
+    line=[]
+    ids.map{|id|
+      prt(id,@view['stat'][id])
+    }.each_slice(col){|a|
+      line << "  "+a.join(" ")
     }
-    da.each_slice(col){|a|
-      @line << "  "+a.join(" ")
-    }
-    self
+    line
   end
 
   def prt(id,val)

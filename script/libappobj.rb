@@ -64,13 +64,12 @@ class AppObj
 
   private
   def upd_prompt
-    pr =[@id]
-    pr << '@' if @watch && @watch.alive?
-    pr << '&' if @event.active?
-    pr << '*' if @buf.issue
-    pr << '#' if @buf.wait
-    pr << (@main.alive? ? '>' : 'X')
-    @prompt.replace(pr.join(''))
+    @prompt.replace(@id)
+    @prompt << '@' if @watch && @watch.alive?
+    @prompt << '&' if @event.active?
+    @prompt << '*' if @buf.issue
+    @prompt << '#' if @buf.wait
+    @prompt << (@main.alive? ? '>' : 'X')
     self
   end
 

@@ -21,6 +21,7 @@ class FrmObj
   end
 
   def upd(cmd) #Should be array
+    Msg.type?(cmd,Array)
     @v.msg{"Receive #{cmd}"}
     case cmd[0]
     when nil

@@ -5,7 +5,7 @@ class Sql < Array
   def initialize(table_id,stat,dbname='ciax')
     @v=Msg::Ver.new("sql",6)
     @tid=table_id
-    @stat=Msg.type?(stat,AppStat)
+    @stat=Msg.type?(stat,ExHash)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
   end
 
@@ -40,6 +40,6 @@ if __FILE__ == $0
   require "librview"
   abort "Usage: #{$0} [view_file]" if STDIN.tty? && ARGV.size < 1
   view=Rview.new.upd
-  sql=Sql.new(view['stat'],view['id'])
+  sql=Sql.new(view['id'],view['stat'])
   puts sql.upd.to_s
 end

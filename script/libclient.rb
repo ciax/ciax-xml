@@ -11,7 +11,7 @@ class Client
     @view=Rview.new(adb['id'],host)
     @io=IoCmd.new(["socat","-","udp:#{host}:#{adb['port']}"])
     @par=Param.new(adb[:command])
-    @prompt=['>']
+    @prompt='>'
   end
 
   def upd(line)
@@ -20,7 +20,7 @@ class Client
     @io.snd(line)
     time,str=@io.rcv
     ary=str.split("\n")
-    @prompt.clear << ary.pop
+    @prompt.replace(ary.pop)
     @view.upd
     res=ary.first
     /CMD/ === res ? @par.set([line]) : res

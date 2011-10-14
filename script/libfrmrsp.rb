@@ -126,7 +126,7 @@ if __FILE__ == $0
   begin
     fdb=FrmDb.new(fid)
     par=Param.new(fdb[:cmdframe])
-    field=Field.new(ARGV.shift)
+    field=Field.new
     fr=FrmRsp.new(fdb,par,field)
     str=gets(nil) || exit
     ary=str.split("\t")
@@ -137,7 +137,7 @@ if __FILE__ == $0
     fr.upd{[time,eval(ary.shift)]}
     puts field.to_j
   rescue UserError
-    warn "Usage: #{$0} [frameID] (id) < logline"
+    warn "Usage: #{$0} [frameID] < logline"
     Msg.exit
   end
 end

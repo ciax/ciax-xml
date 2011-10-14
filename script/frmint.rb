@@ -14,9 +14,9 @@ rescue
   warn "Usage: frmint (-s) [id] (iocmd)"
   Msg.exit
 end
-field=Field.new(id).load
 io=IoCmd.new(iocmd.empty? ? fdb['client'].split(' ') : iocmd,fdb['wait'],1)
 io.startlog(id) if iocmd.empty?
+field=Field.new(id).load
 fobj=FrmObj.new(fdb,field,io)
 port=opt["s"] ? fdb["port"].to_i-1000 : nil
 Interact.new([fdb['frame'],'>'],port){|line|

@@ -23,6 +23,5 @@ fobj=FrmObj.new(fdb,io)
 aobj=AppObj.new(adb,fobj)
 port=opt["s"] ? adb["port"] : nil
 Interact.new(aobj.prompt,port){|line|
-  str=aobj.upd(line)
-  str unless port
+  aobj.upd(line)
 }

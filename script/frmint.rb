@@ -19,7 +19,5 @@ fobj=FrmObj.new(fdb,io)
 field=fobj.field.load
 port=opt["s"] ? fdb["port"].to_i-1000 : nil
 Interact.new(fdb['id']+'>',port){|line|
-  break unless line
-  str=fobj.upd(line.split(' '))
-  str unless port
+  fobj.upd(line.split(' '))
 }

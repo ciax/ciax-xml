@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libmsg"
 class Interval < Time
   def inspect
     '"'+to_s+'"'
@@ -18,10 +19,12 @@ end
 
 class Elapse < Interval
   def initialize(stat)
+    @v=Msg::Ver.new('elapse',5)
     @stat=stat
   end
 
   def to_i
+    @v.msg{"Elapse update"}
     (Time.now-Time.at(@stat['time'].to_f)).to_i
   end
 end

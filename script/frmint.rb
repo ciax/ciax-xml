@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libfield"
 require "libiocmd"
 require "libfrmobj"
 require "libinteract"
@@ -16,8 +15,8 @@ rescue
 end
 io=IoCmd.new(iocmd.empty? ? fdb['client'].split(' ') : iocmd,fdb['wait'],1)
 io.startlog(id) if iocmd.empty?
-field=Field.new(id).load
-fobj=FrmObj.new(fdb,field,io)
+fobj=FrmObj.new(fdb,id,io)
+field=fobj.field.load
 port=opt["s"] ? fdb["port"].to_i-1000 : nil
 Interact.new([fdb['frame'],'>'],port){|line|
   break unless line

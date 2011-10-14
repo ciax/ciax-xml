@@ -15,10 +15,9 @@ class AppObj
     Msg.type?(adb,AppDb)
     id=adb['id']
     @prompt=[id]
-    field=Field.new(id).load
-    @fobj=FrmObj.new(adb.cover_frm,field,io)
+    @fobj=FrmObj.new(adb.cover_frm,id,io)
     @ac=AppCmd.new(adb)
-    @view=Wview.new(id,adb,field)
+    @view=Wview.new(id,adb,@fobj.field)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i

@@ -1,13 +1,15 @@
 #!/usr/bin/ruby
+require "libfield"
 require "libframe"
 
 # Rsp Methods
 class FrmRsp
-  def initialize(fdb,par,field)
+  attr_reader :field
+  def initialize(fdb,par,id=nil)
     @v=Msg::Ver.new("frm/rsp",3)
     @fdb=Msg.type?(fdb,FrmDb)
     @par=Msg.type?(par,Param)
-    @field=Msg.type?(field,Field)
+    @field=Field.new(id)
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
     @fds=rsp[:select]
@@ -126,8 +128,7 @@ if __FILE__ == $0
   begin
     fdb=FrmDb.new(fid)
     par=Param.new(fdb[:cmdframe])
-    field=Field.new
-    fr=FrmRsp.new(fdb,par,field)
+    fr=FrmRsp.new(fdb,par)
     str=gets(nil) || exit
     ary=str.split("\t")
     time=Time.at(ary.shift.to_f)
@@ -135,7 +136,7 @@ if __FILE__ == $0
     abort ("Logline:Not response") unless /rcv/ === cmd.shift
     par.set(cmd)
     fr.upd{[time,eval(ary.shift)]}
-    puts field.to_j
+    puts fr.field.to_j
   rescue UserError
     warn "Usage: #{$0} [frameID] < logline"
     Msg.exit

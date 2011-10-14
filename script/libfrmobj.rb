@@ -5,14 +5,14 @@ require "libfrmrsp"
 
 class FrmObj
   attr_reader :field
-  def initialize(fdb,field,iocmd)
+  def initialize(fdb,id,iocmd)
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
-    @field=Msg.type?(field,Field)
     @ic=Msg.type?(iocmd,IoCmd)
     @par=Param.new(fdb[:cmdframe])
-    @fc=FrmCmd.new(fdb,@par,field)
-    @fr=FrmRsp.new(fdb,@par,field)
+    @fr=FrmRsp.new(fdb,@par,id)
+    @field=@fr.field.load
+    @fc=FrmCmd.new(fdb,@par,@field)
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"Set Value  [key(:idx)] (val)")
     @cl.add('unset'=>"Remove Value  [key]")
@@ -36,7 +36,7 @@ class FrmObj
       cid=@par.set(cmd)[:cid]
       @ic.snd(@fc.getframe,'snd:'+cid)
       @fr.upd{@ic.rcv('rcv:'+cid)}
-      @field.save
+      @fr.field.save
       'OK'
     end
   rescue SelectCMD

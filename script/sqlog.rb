@@ -2,7 +2,6 @@
 require "optparse"
 require "libinsdb"
 require "libparam"
-require "libfield"
 require "libfrmrsp"
 require "libappstat"
 require "libsql"
@@ -13,9 +12,8 @@ begin
   adb=InsDb.new(id).cover_app
   fdb=adb.cover_frm
   par=Param.new(fdb[:cmdframe])
-  field=Field.new(id)
-  fr=FrmRsp.new(fdb,par,field)
-  as=AppStat.new(adb,field)
+  fr=FrmRsp.new(fdb,par,id)
+  as=AppStat.new(adb,fr.field)
   sql=Sql.new(id,as)
 rescue UserError
   warn "Usage: #{$0} (-i) [id] < logfile"

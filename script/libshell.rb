@@ -8,7 +8,7 @@ class Shell
     cl.add('q'=>"Quit",'D^'=>"Interrupt")
     Msg.type?(prompt,Array)
     loop {
-      line=Readline.readline(prompt.join(''),true)
+      line=Readline.readline(prompt.join(''),true)||'interrupt'
       break if /^q/ === line
       begin
         puts (yield line).to_s

@@ -33,12 +33,11 @@ class AppObj
   def upd(line)
     res=nil
     case line
-    when nil
+    when /^(stat|)$/
+    when /^interrupt$/
       stop=@event.interrupt
       @buf.interrupt{stop}
       res="Interrupt #{stop}\n"
-    when /^(stat|)$/
-      nil
     when @event.block_pattern
       res="Blocking(#{@event.block_pattern.inspect})\n"
     when /^sleep */

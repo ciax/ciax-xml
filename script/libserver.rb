@@ -14,7 +14,7 @@ class Server
         line,addr=udp.recvfrom(4096)
         @v.msg{"Recv:#{line} is #{line.class}"}
         begin
-          msg=yield(/interrupt/ === line ? nil : line.chomp).to_s
+          msg=yield line.chomp.to_s
         rescue SelectCMD
           msg="NO CMD\n"
         rescue RuntimeError

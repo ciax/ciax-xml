@@ -9,16 +9,18 @@ require "libinteract"
 
 
 opt=ARGV.getopts("s")
-id,*iocmd=ARGV
+id,*ary=ARGV
 begin
   adb=InsDb.new(id).cover_app
 rescue
   warn 'Usage: appint (-s) [id] ("iocmd")'
   Msg.exit
 end
-io=IoCmd.new(iocmd.empty? ? adb['client'].split(' ') : iocmd,adb['wait'],1)
-io.startlog(id) if iocmd.empty?
-fobj=FrmObj.new(adb.cover_frm,io)
+fdb=adb.cover_frm
+iocmd=ary.empty? ? adb['client'].split(' ') : ary
+io=IoCmd.new(iocmd,adb['wait'],1)
+io.startlog(id) if ary.empty?
+fobj=FrmObj.new(fdb,io)
 aobj=AppObj.new(adb,fobj)
 prt=Print.new(adb[:status],aobj.view)
 port=opt["s"] ? adb["port"] : nil

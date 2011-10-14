@@ -1,13 +1,11 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libexhash'
+require 'liburi'
 
-class Field < ExHash
+class Field < Uri
   def initialize(id=nil)
-    @v=Msg::Ver.new('field',6)
-    return unless id
-    @base=VarDir+"/json/field_#{id}"
-    self['id']=id
+    super('field',id)
+    @base=@uri.split('.').first if @uri
   end
 
   def subst(str)
@@ -50,17 +48,6 @@ class Field < ExHash
 
   def set(key,val)
     get(key).replace(subst(val).to_s)
-    self
-  end
-
-  def load
-    Msg.err("No File Name")  unless @base
-    update_j(IO.read(@base+".json"))
-  end
-
-  def save
-    Msg.err("No File Name")  unless @base
-    open(@base+".json",'w') {|f| f << to_j }
     self
   end
 

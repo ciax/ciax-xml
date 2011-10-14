@@ -6,7 +6,6 @@ require "libelapse"
 class Rview < Uri
   attr_reader :last
   def initialize(id=nil,host=nil)
-    @v=Msg::Ver.new('view',6)
     super('view',id,host)
     @stat=self['stat']=ExHash.new
     @last=ExHash.new

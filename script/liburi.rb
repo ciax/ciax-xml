@@ -4,7 +4,7 @@ require "libexhash"
 
 class Uri < ExHash
   def initialize(type,id=nil,host=nil)
-    @v=Msg::Ver.new('uri',6)
+    @v=Msg::Ver.new(type,6)
     if id
       base="/json/#{type}_#{id}.json"
       if host
@@ -20,14 +20,14 @@ class Uri < ExHash
   def load
     if @uri
       open(@uri){|f| update_j(f.read) }
-   else
+    else
       update_j(gets)
     end
     self
   end
 
   def save
-    open(@uri,'w'){|f| f << to_j}
+    open(@uri,'w'){|f| f << to_j} if @uri
     self
   end
 end

@@ -2,7 +2,7 @@
 require "libmsg"
 require "libexhash"
 
-class Uri < ExHash
+class IoFile < ExHash
   def initialize(type,id=nil,host=nil)
     @v=Msg::Ver.new(type,6)
     if id

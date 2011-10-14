@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'liburi'
+require 'libiofile'
 
-class Field < Uri
+class Field < IoFile
   def initialize(id=nil)
     super('field',id)
     @base=@uri.split('.').first if @uri

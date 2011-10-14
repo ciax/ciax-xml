@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "liburi"
+require "libiofile"
 require "libelapse"
 
-class Rview < Uri
+class Rview < IoFile
   attr_reader :last
   def initialize(id=nil,host=nil)
     super('view',id,host)

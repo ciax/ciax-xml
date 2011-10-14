@@ -14,6 +14,6 @@ rescue SelectID
   Msg.exit
 end
 prt=Print.new(adb[:status],cli.view)
-Shell.new(cli.prompt){|line|
-  cli.upd(line) || prt
+Shell.new(cli.prompt){|cmd|
+  cli.upd(cmd) || prt
 }

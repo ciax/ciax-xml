@@ -14,8 +14,8 @@ class Client
     @prompt='>'
   end
 
-  def upd(line)
-    line='interrupt' unless line
+  def upd(cmd)
+    line=cmd.join(' ')
     line='stat' if line.empty?
     @io.snd(line)
     time,str=@io.rcv
@@ -23,6 +23,6 @@ class Client
     @prompt.replace(ary.pop)
     @view.upd
     res=ary.first
-    /CMD/ === res ? @par.set([line]) : res
+    /CMD/ === res ? @par.set(cmd) : res
   end
 end

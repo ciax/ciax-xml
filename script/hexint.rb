@@ -17,8 +17,7 @@ end
 cli=Client.new(adb,host)
 hp=HexPack.new(cli.view,cli.prompt)
 port=opt["s"] ? adb['port'].to_i+1000 : nil
-Interact.new('',port){|line|
-  break unless line
-  cli.upd(line)
+Interact.new('',port){|cmd|
+  cli.upd(cmd)
   hp.upd
 }

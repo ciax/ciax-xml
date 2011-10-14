@@ -13,8 +13,8 @@ class McrObj
     @line=[]
   end
 
-  def exe(ssn)
-    @par.set(ssn)
+  def exe(cmd)
+    @par.set(cmd)
     id=@par[:id]
     p Thread.new{
       Thread.pass
@@ -97,8 +97,8 @@ if __FILE__ == $0
   rescue UserError
     Msg.exit(3)
   end
-  Shell.new(["mcr>"]){|line|
-    ac.exe(line.split(' ')) unless line.empty?
+  Shell.new(["mcr>"]){|cmd|
+    ac.exe(cmd) unless cmd.empty?
     ac.to_s
   }
 end

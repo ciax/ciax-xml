@@ -5,12 +5,12 @@ require "libfrmrsp"
 
 class FrmObj
   attr_reader :field
-  def initialize(fdb,id,iocmd)
+  def initialize(fdb,iocmd)
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
     @ic=Msg.type?(iocmd,IoCmd)
     @par=Param.new(fdb[:cmdframe])
-    @fr=FrmRsp.new(fdb,@par,id)
+    @fr=FrmRsp.new(fdb,@par)
     @field=@fr.field.load
     @fc=FrmCmd.new(fdb,@par,@field)
     @cl=Msg::List.new("== Internal Command ==")

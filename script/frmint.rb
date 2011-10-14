@@ -15,7 +15,7 @@ rescue
 end
 io=IoCmd.new(iocmd.empty? ? fdb['client'].split(' ') : iocmd,fdb['wait'],1)
 io.startlog(id) if iocmd.empty?
-fobj=FrmObj.new(fdb,id,io)
+fobj=FrmObj.new(fdb,io)
 field=fobj.field.load
 port=opt["s"] ? fdb["port"].to_i-1000 : nil
 Interact.new([fdb['frame'],'>'],port){|line|

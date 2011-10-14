@@ -12,7 +12,7 @@ begin
   adb=InsDb.new(id).cover_app
   fdb=adb.cover_frm
   par=Param.new(fdb[:cmdframe])
-  fr=FrmRsp.new(fdb,par,id)
+  fr=FrmRsp.new(fdb,par)
   as=AppStat.new(adb,fr.field)
   sql=Sql.new(id,as)
 rescue UserError

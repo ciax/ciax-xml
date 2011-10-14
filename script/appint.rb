@@ -18,7 +18,7 @@ rescue
 end
 io=IoCmd.new(iocmd.empty? ? adb['client'].split(' ') : iocmd,adb['wait'],1)
 io.startlog(id) if iocmd.empty?
-fobj=FrmObj.new(adb.cover_frm,id,io)
+fobj=FrmObj.new(adb.cover_frm,io)
 aobj=AppObj.new(adb,fobj)
 prt=Print.new(adb[:status],aobj.view)
 port=opt["s"] ? adb["port"] : nil

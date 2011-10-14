@@ -5,11 +5,11 @@ require "libframe"
 # Rsp Methods
 class FrmRsp
   attr_reader :field
-  def initialize(fdb,par,id=nil)
+  def initialize(fdb,par)
     @v=Msg::Ver.new("frm/rsp",3)
     @fdb=Msg.type?(fdb,FrmDb)
     @par=Msg.type?(par,Param)
-    @field=Field.new(id)
+    @field=Field.new(fdb['id'])
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
     @fds=rsp[:select]

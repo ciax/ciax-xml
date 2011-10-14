@@ -56,14 +56,13 @@ if __FILE__ == $0
   require "libfield"
   require "libfrmdb"
   dev,*cmd=ARGV
+  ARGV.clear
   begin
     fdb=FrmDb.new(dev,cmd.empty?)
     par=Param.new(fdb[:cmdframe])
     field=Field.new
     fc=FrmCmd.new(fdb,par,field)
-    if ! STDIN.tty? && str=STDIN.gets(nil)
-      field.update_j(str)
-    end
+    field.load unless STDIN.tty?
     par.set(cmd)
     print fc.getframe
   rescue SelectCMD

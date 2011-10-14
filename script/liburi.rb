@@ -21,7 +21,8 @@ class Uri < ExHash
     if @uri
       open(@uri){|f| update_j(f.read) }
     else
-      update_j(gets)
+      str=gets(nil)
+      update_j(str) unless str.empty?
     end
     self
   end

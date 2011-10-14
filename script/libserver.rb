@@ -14,8 +14,10 @@ class Server
         select([udp])
         line,addr=udp.recvfrom(4096)
         @v.msg{"Recv:#{line} is #{line.class}"}
+        line='' if /^stat/ === line
+        cmd=line.chomp.split(' ')
         begin
-          msg=yield(line.chomp.to_s).message.to_s
+          msg=yield(cmd).message.to_s
         rescue SelectCMD
           msg="NO CMD\n"
         rescue RuntimeError

@@ -31,26 +31,28 @@ class AppObj
     upd_prompt
   end
 
-  def upd(line)
-    case line
-    when /^(stat|)$/
+  def upd(cmd)
+    case cmd.first
+    when nil
       @message=nil
-    when /^interrupt$/
+    when 'interrupt'
       stop=@event.interrupt
       @buf.interrupt{stop}
       @message="Interrupt #{stop}\n"
-    when @event.block_pattern
-      @message="Blocking(#{@event.block_pattern.inspect})\n"
-    when /^sleep */
-      @buf.wait_for($'.to_i){}
+    when 'sleep'
+      @buf.wait_for(cmd[1].to_i){}
       @message="Sleeping\n"
-    when /^waitfor */
-      k,v=$'.split('=')
+    when 'waitfor'
+      k,v=cmd[1].split('=')
       @buf.wait_for(10){ @view['stat'][k] == v }
       @message="Waiting\n"
     else
-      @buf.send{@ac.setcmd(line.split(' '))}
-      @message="ISSUED\n"
+      if @event.block_pattern === cmd.join(' ')
+        @message="Blocking(#{@event.block_pattern.inspect})\n"
+      else
+        @buf.send{@ac.setcmd(cmd)}
+        @message="ISSUED\n"
+      end
     end
     upd_prompt
     self

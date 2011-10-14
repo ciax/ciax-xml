@@ -54,7 +54,7 @@ class Watch < ExHash
     @v.msg{"Check: <#{self[:label][i]}>"}
     self[:stat][i].all?{|h|
       k=h['ref']
-      v=@view['stat'][k]
+      v=@view.stat(k)
       c=h['val']
       case h['type']
       when 'onchange'

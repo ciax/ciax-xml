@@ -34,7 +34,7 @@ class Print
   def get_element(ids,col=6)
     line=[]
     ids.map{|id|
-      prt(id,@view['stat'][id])
+      prt(id,@view.stat(id))
     }.each_slice(col){|a|
       line << "  "+a.join(" ")
     }

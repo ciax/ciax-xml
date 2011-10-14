@@ -9,12 +9,16 @@ class Rview < Uri
     super('view',id,host)
     @stat=self['stat']=ExHash.new
     @last=ExHash.new
-    @stat['elapse']=Elapse.new(@stat)
+    @elapse=Elapse.new(@stat)
   end
 
   def change?(id)
     @v.msg{"Compare(#{id}) current=[#{@stat[id]}] vs last=[#{@last[id]}]"}
     @stat[id] != @last[id]
+  end
+
+  def stat(id)
+    id == 'elapse' ? @elapse : @stat[id]
   end
 
   def upd(stat=nil)

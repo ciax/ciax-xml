@@ -54,16 +54,21 @@ class ExHash < Hash
     when Array
       vary=data
       idx=data.size.times
-      if vary.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
+      if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
           str << view_struct(data[i],i,indent)
+        }
+        return str
+      elsif  data.size > 11
+        vary.each_slice(11){|a|
+          str << "  " * indent + "#{a.inspect}\n"
         }
         return str
       end
     when Hash
       vary=data.values
       idx=data.keys
-      if vary.any?{|v| ! v.kind_of?(Comparable)} || data.size > 4
+      if vary.any?{|v| v.kind_of?(Enumerable)} || data.size > 4
         idx.each{|i|
           str << view_struct(data[i],i,indent)
         }

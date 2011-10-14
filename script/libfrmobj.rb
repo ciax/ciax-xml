@@ -4,7 +4,7 @@ require "libfrmcmd"
 require "libfrmrsp"
 
 class FrmObj
-  attr_reader :field
+  attr_reader :field,:message
   def initialize(fdb,iocmd)
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
@@ -21,26 +21,32 @@ class FrmObj
   end
 
   def upd(cmd) #Should be array
-    return if cmd.empty?
     @v.msg{"Receive #{cmd}"}
     case cmd[0]
+    when nil
+      @message=nil
     when 'set'
-      set(cmd[1..-1]).inspect
+      @message=set(cmd[1..-1]).inspect
     when 'unset'
-      @field.delete(cmd[1]).inspect
+      @message=@field.delete(cmd[1]).inspect
     when 'load'
-      load(cmd[1])
+      @message=load(cmd[1])
     when 'save'
-      save(cmd[1],cmd[2])
+      @message=save(cmd[1],cmd[2])
     else
       cid=@par.set(cmd)[:cid]
       @ic.snd(@fc.getframe,'snd:'+cid)
       @fr.upd{@ic.rcv('rcv:'+cid)}
       @fr.field.save
-      'OK'
+      @message='OK'
     end
+    self
   rescue SelectCMD
     raise SelectCMD,@cl.to_s
+  end
+
+  def to_s
+    @message||@field
   end
 
   private

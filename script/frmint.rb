@@ -18,7 +18,8 @@ io.startlog(id) if iocmd.empty?
 fobj=FrmObj.new(fdb,io)
 field=fobj.field.load
 port=opt["s"] ? fdb["port"].to_i-1000 : nil
-Interact.new([fdb['frame'],'>'],port){|line|
+Interact.new(fdb['id']+'>',port){|line|
   break unless line
-  fobj.upd(line.split(' ')) || (port ? field.to_j : field)
+  str=fobj.upd(line.split(' '))
+  str unless port
 }

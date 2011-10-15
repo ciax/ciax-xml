@@ -8,7 +8,7 @@ class FrmObj
   def initialize(fdb,iocmd=[])
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
-    client= iocmd.empty? ? fdb['client'] : iocmd.join(' ')
+    client= iocmd.empty? ? fdb['client'].split(' ') : iocmd
     @io=IoCmd.new(client,fdb['wait'],1)
     @io.startlog(fdb['id']) if iocmd.empty?
     @par=Param.new(fdb[:cmdframe])

@@ -5,7 +5,7 @@ require "libiocmd"
 class Client
   attr_reader :prompt,:message
   def initialize(id,port,host='localhost')
-    @io=IoCmd.new("socat - udp:#{host}:#{port}")
+    @io=IoCmd.new(["socat","-","udp:#{host}:#{port}"])
     @prompt="#{id}>"
   end
 

@@ -2,10 +2,9 @@
 # Ascii Pack
 require "libmsg"
 class HexPack
-  def initialize(view,prompt='')
+  def initialize(view)
     @stat=Msg.type?(view,Rview)['stat']
     id=view['id']||raise
-    @prompt=prompt
     file="/home/ciax/config/sdb_#{id}.txt"
     @res=["%",id,'_','0','0','_','']
     @list=[]
@@ -21,9 +20,9 @@ class HexPack
     }
   end
 
-  def upd
+  def upd(prompt='')
     @res[3]=@stat['run']
-    @res[4]= @prompt.include?('*') ? '1' : '0'
+    @res[4]= prompt.include?('*') ? '1' : '0'
     @res[6]=''
     @list.each{|key|
       if val=@stat[key]
@@ -44,5 +43,5 @@ if __FILE__ == $0
   require "librview"
   abort("Usage: #{$0} [view_file]") if STDIN.tty? && ARGV.size < 1
   view=Rview.new.upd
-  puts HexPack.new(view)
+  puts HexPack.new(view).upd
 end

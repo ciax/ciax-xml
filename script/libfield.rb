@@ -3,8 +3,8 @@ require 'libmsg'
 require 'libiofile'
 
 class Field < IoFile
-  def initialize(id=nil)
-    super('field',id)
+  def initialize(id=nil,host=nil)
+    super('field',id,host)
     @base=@uri.split('.').first if @uri
   end
 

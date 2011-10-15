@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libinsdb"
 require "libclient"
 require "libfield"
 require "libparam"

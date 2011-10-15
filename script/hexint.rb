@@ -15,8 +15,9 @@ rescue
   Msg.exit
 end
 cli=AppCl.new(adb,host)
-hp=HexPack.new(cli.view)
+hp=HexPack.new(cli.view,cli.prompt)
 port=opt["s"] ? adb['port'].to_i+1000 : nil
 Interact.new('',port){|cmd|
-  hp.upd(cli.upd(cmd).prompt)
+  cli.upd(cmd)
+  hp.upd
 }

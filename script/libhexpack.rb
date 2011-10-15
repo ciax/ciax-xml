@@ -3,9 +3,10 @@
 require "libmsg"
 class HexPack
   attr_reader :message
-  def initialize(view)
+  def initialize(view,prompt='')
     @stat=Msg.type?(view,Rview)['stat']
     id=view['id']||raise
+    @prompt=prompt
     file="/home/ciax/config/sdb_#{id}.txt"
     @res=["%",id,'_','0','0','_','']
     @list=[]
@@ -21,9 +22,9 @@ class HexPack
     }
   end
 
-  def upd(prompt='')
+  def upd
     @res[3]=@stat['run']
-    @res[4]= prompt.include?('*') ? '1' : '0'
+    @res[4]= @prompt.include?('*') ? '1' : '0'
     @res[6]=''
     @list.each{|key|
       if val=@stat[key]

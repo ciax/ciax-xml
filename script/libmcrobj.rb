@@ -4,12 +4,12 @@ require "libparam"
 
 class McrObj
   attr_reader :line
-  def initialize(mdb,cli)
+  def initialize(mdb,cli,view)
     @v=Msg::Ver.new("mcr",9)
     @mdb=mdb
     @par=Param.new(mdb)
     @cli=Msg.type?(cli,Client)
-    @view=cli.view
+    @view=Msg.type?(view,Rview)
     @line=[]
   end
 
@@ -81,14 +81,16 @@ if __FILE__ == $0
   require "libinsdb"
   require "libmcrdb"
   require "libclient"
+  require "librview"
   require "libshell"
-  mcr,*cmd=ARGV
+  id,*cmd=ARGV
   ARGV.clear
   begin
-    mdb=McrDb.new(mcr,cmd.empty?)
-    adb=InsDb.new(mcr).cover_app
-    cli=Client.new(mcr,adb['port'])
-    ac=McrObj.new(mdb,cli)
+    mdb=McrDb.new(id,cmd.empty?)
+    adb=InsDb.new(id).cover_app
+    cli=Client.new(id,adb['port'])
+    view=Rview.new(id)
+    ac=McrObj.new(mdb,cli,view)
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
@@ -97,7 +99,7 @@ if __FILE__ == $0
   rescue UserError
     Msg.exit(3)
   end
-  Shell.new(["mcr>"]){|cmd|
+  Shell.new("mcr>"){|cmd|
     ac.exe(cmd) unless cmd.empty?
     ac.to_s
   }

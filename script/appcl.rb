@@ -1,6 +1,9 @@
 #!/usr/bin/ruby
-require "libclient"
 require "libinsdb"
+require "libclient"
+require "librview"
+require "libprint"
+require "libparam"
 require "libshell"
 
 id=ARGV.shift
@@ -12,12 +15,14 @@ rescue SelectID
   Msg.exit
 end
 cli=Client.new(id,adb['port'],host)
-pr=Print.new(adb[:status],cli.view)
+view=Rview.new(id,host)
+prt=Print.new(adb[:status],view)
 par=Param.new(adb[:command])
 Shell.new(cli.prompt){|cmd|
   case msg=cli.upd(cmd).message
   when nil
-    pr
+    view.upd
+    prt
   when /CMD/
     par.set(cmd)
   else

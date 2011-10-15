@@ -1,16 +1,12 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "librview"
 require "libiocmd"
-require "libparam"
-require "libprint"
 
 class Client
-  attr_reader :view,:prompt,:message
+  attr_reader :prompt,:message
   def initialize(id,port,host='localhost')
-    @view=Rview.new(id,host)
     @io=IoCmd.new(["socat","-","udp:#{host}:#{port}"])
-    @prompt='>'
+    @prompt="#{id}>"
   end
 
   def upd(cmd)
@@ -20,7 +16,6 @@ class Client
     ary=@io.rcv.split("\n")
     @prompt.replace(ary.pop)
     @message=ary.first
-    @view.upd
     self
   end
 

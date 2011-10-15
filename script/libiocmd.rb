@@ -5,10 +5,10 @@ class IoCmd
   attr_reader :time
   def initialize(iocmd,wait=0,timeout=nil)
     @v=Msg::Ver.new('iocmd',1)
-    abort " No IO command" if iocmd.to_a.empty?
-    @iocmd=Msg.type?(iocmd,Array)
+    abort " No IO command" if iocmd.to_s.empty?
+    @iocmd=Msg.type?(iocmd,String).split(' ')
     @f=IO.popen(@iocmd,'r+')
-    @v.msg{"Init/Client:#{iocmd.join(' ')}"}
+    @v.msg{"Init/Client:#{iocmd}"}
     @wait=wait.to_f
     @timeout=timeout
   end

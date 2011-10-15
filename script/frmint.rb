@@ -13,7 +13,7 @@ rescue
   warn "Usage: frmint (-s) [id] (iocmd)"
   Msg.exit
 end
-io=IoCmd.new(iocmd.empty? ? fdb['client'].split(' ') : iocmd,fdb['wait'],1)
+io=IoCmd.new(iocmd.empty? ? fdb['client'] : iocmd.join(' '),fdb['wait'],1)
 io.startlog(id) if iocmd.empty?
 fobj=FrmObj.new(fdb,io)
 field=fobj.field.load

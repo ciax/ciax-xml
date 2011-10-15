@@ -16,7 +16,7 @@ rescue
   Msg.exit
 end
 fdb=adb.cover_frm
-iocmd=ary.empty? ? adb['client'].split(' ') : ary
+iocmd=ary.empty? ? adb['client'] : ary.join(' ')
 io=IoCmd.new(iocmd,adb['wait'],1)
 io.startlog(id) if ary.empty?
 fobj=FrmObj.new(fdb,io)

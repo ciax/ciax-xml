@@ -17,7 +17,7 @@ class Server
         line='' if /^stat/ === line
         cmd=line.chomp.split(' ')
         begin
-          msg=yield(cmd).message.to_s
+          msg=yield(cmd).message
         rescue SelectCMD
           msg="NO CMD"
         rescue RuntimeError
@@ -25,7 +25,7 @@ class Server
           warn msg
         end
         @v.msg{"Send:#{msg},#{prom}"}
-        udp.send([msg,prom].join("\n"),0,addr[2],addr[1])
+        udp.send([msg,prom].compact.join("\n"),0,addr[2],addr[1])
       }
     }
   end

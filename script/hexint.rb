@@ -14,7 +14,7 @@ rescue
   warn "Usage: hexint (-s) [id] (host)"
   Msg.exit
 end
-cli=Client.new(adb,host)
+cli=Client.new(id,adb['port'],host)
 hp=HexPack.new(cli.view)
 port=opt["s"] ? adb['port'].to_i+1000 : nil
 Interact.new('',port){|cmd|

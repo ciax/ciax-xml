@@ -7,12 +7,9 @@ require "libprint"
 
 class Client
   attr_reader :view,:prompt,:message
-  def initialize(adb,host='localhost')
-    Msg.type?(adb,AppDb)
-    @view=Rview.new(adb['id'],host)
-    @io=IoCmd.new(["socat","-","udp:#{host}:#{adb['port']}"])
-    @par=Param.new(adb[:command])
-    @prt=Print.new(adb[:status],@view)
+  def initialize(id,port,host='localhost')
+    @view=Rview.new(id,host)
+    @io=IoCmd.new(["socat","-","udp:#{host}:#{port}"])
     @prompt='>'
   end
 
@@ -28,6 +25,6 @@ class Client
   end
 
   def to_s
-    @message||@prt
+    @message.to_s
   end
 end

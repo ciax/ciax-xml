@@ -87,7 +87,7 @@ if __FILE__ == $0
   begin
     mdb=McrDb.new(mcr,cmd.empty?)
     adb=InsDb.new(mcr).cover_app
-    cli=Client.new(adb)
+    cli=Client.new(mcr,adb['port'])
     ac=McrObj.new(mdb,cli)
   rescue SelectCMD
     Msg.exit(2)

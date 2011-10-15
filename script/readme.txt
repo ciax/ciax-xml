@@ -12,3 +12,10 @@ coreutils:
  VER=string1,string2... for set sum
  VER=string1:strint2..  for set intersection
  VER=* for All
+
+## udp communicaton ##
+ no command:
+   "" : (cmdline) -> "stat":(udp comm) -> "" : (AppObject)
+ interrupt:
+   ^D : (cmdline) -> nil : (readline) -> "interrupt" : (udp comm)
+  

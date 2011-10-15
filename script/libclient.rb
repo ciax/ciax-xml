@@ -22,8 +22,8 @@ class Client
     @io.snd(line)
     ary=@io.rcv.split("\n")
     @prompt.replace(ary.pop)
-    @view.upd
     @message=ary.first
+    @view.upd
     self
   end
 

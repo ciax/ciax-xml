@@ -5,10 +5,12 @@ require "libfrmrsp"
 
 class FrmObj
   attr_reader :field,:message
-  def initialize(fdb,iocmd)
+  def initialize(fdb,iocmd=[])
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
-    @io=Msg.type?(iocmd,IoCmd)
+    client= iocmd.empty? ? fdb['client'] : iocmd.join(' ')
+    @io=IoCmd.new(client,fdb['wait'],1)
+    @io.startlog(fdb['id']) if iocmd.empty?
     @par=Param.new(fdb[:cmdframe])
     @fr=FrmRsp.new(fdb,@par)
     @field=@fr.field.load

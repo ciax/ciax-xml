@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libiocmd"
 require "libfrmobj"
 require "libinteract"
 
@@ -13,9 +12,7 @@ rescue
   warn "Usage: frmint (-s) [id] (iocmd)"
   Msg.exit
 end
-io=IoCmd.new(iocmd.empty? ? fdb['client'] : iocmd.join(' '),fdb['wait'],1)
-io.startlog(id) if iocmd.empty?
-fobj=FrmObj.new(fdb,io)
+fobj=FrmObj.new(fdb,iocmd)
 field=fobj.field.load
 port=opt["s"] ? fdb["port"].to_i-1000 : nil
 Interact.new(fdb['id']+'>',port){|line|

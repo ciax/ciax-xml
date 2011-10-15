@@ -8,7 +8,7 @@ require "libinteract"
 
 
 opt=ARGV.getopts("s")
-id,*ary=ARGV
+id,*iocmd=ARGV
 begin
   adb=InsDb.new(id).cover_app
 rescue
@@ -16,10 +16,7 @@ rescue
   Msg.exit
 end
 fdb=adb.cover_frm
-iocmd=ary.empty? ? adb['client'] : ary.join(' ')
-io=IoCmd.new(iocmd,adb['wait'],1)
-io.startlog(id) if ary.empty?
-fobj=FrmObj.new(fdb,io)
+fobj=FrmObj.new(fdb,iocmd)
 aobj=AppObj.new(adb,fobj)
 port=opt["s"] ? adb["port"] : nil
 Interact.new(aobj.prompt,port){|line|

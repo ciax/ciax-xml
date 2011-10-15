@@ -20,8 +20,7 @@ class Client
     line=cmd.join(' ')
     line='stat' if line.empty?
     @io.snd(line)
-    str=@io.rcv[1]
-    ary=str.split("\n")
+    ary=@io.rcv.split("\n")
     @prompt.replace(ary.pop)
     @view.upd
     @message=ary.first

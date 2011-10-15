@@ -2,7 +2,7 @@
 require "libmsg"
 
 class IoCmd
-  # iocmd should be array
+  attr_reader :time
   def initialize(iocmd,wait=0,timeout=nil)
     @v=Msg::Ver.new('iocmd',1)
     abort " No IO command" if iocmd.to_a.empty?
@@ -40,7 +40,7 @@ class IoCmd
     end
     @v.msg{"Send #{str.dump}"}
     sleep @wait
-    str
+    self
   end
 
   def rcv(id=nil)
@@ -54,16 +54,16 @@ class IoCmd
       retry
     end
     @v.msg{"Recv #{str.dump}"}
-    time=Time.now
-    log_frame(str,id,time)
+    @time="%.3f" % Time.now.to_f
+    log_frame(str,id)
     sleep @wait
-    [time,str]
+    str
   end
 
   private
-  def log_frame(frame,id=nil,time=Time.now)
+  def log_frame(frame,id=nil)
     return unless @logfile
-    line=["%.3f" % time.to_f,id,frame.dump].compact.join("\t")
+    line=[@time,id,frame.dump].compact.join("\t")
     open(@logfile,'a') {|f|
       @v.msg{"Frame Logging for [#{id}]"}
       f << line+"\n"

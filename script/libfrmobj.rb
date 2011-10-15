@@ -8,7 +8,7 @@ class FrmObj
   def initialize(fdb,iocmd)
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
-    @ic=Msg.type?(iocmd,IoCmd)
+    @io=Msg.type?(iocmd,IoCmd)
     @par=Param.new(fdb[:cmdframe])
     @fr=FrmRsp.new(fdb,@par)
     @field=@fr.field.load
@@ -36,8 +36,8 @@ class FrmObj
       @message=save(cmd[1],cmd[2])
     else
       cid=@par.set(cmd)[:cid]
-      @ic.snd(@fc.getframe,'snd:'+cid)
-      @fr.upd{@ic.rcv('rcv:'+cid)}
+      @io.snd(@fc.getframe,'snd:'+cid)
+      @fr.upd{[@io.rcv('rcv:'+cid),@io.time]}
       @fr.field.save
       @message='OK'
     end

@@ -23,9 +23,8 @@ class FrmRsp
   def upd
     if rid=@par[:response]
       @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
-      time,frame=yield
+      frame,@field['time']=yield
       Msg.err("No Response") unless frame
-      @field['time']="%.3f" % time.to_f
       if tm=@sel['terminator']
         frame.chomp!(eval('"'+tm+'"'))
         @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
@@ -46,6 +45,7 @@ class FrmRsp
       @v.msg{"Send Only"}
       @sel[:select]=nil
     end
+    self
   end
 
   private

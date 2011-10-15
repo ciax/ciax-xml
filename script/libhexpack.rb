@@ -2,6 +2,7 @@
 # Ascii Pack
 require "libmsg"
 class HexPack
+  attr_reader :message
   def initialize(view)
     @stat=Msg.type?(view,Rview)['stat']
     id=view['id']||raise

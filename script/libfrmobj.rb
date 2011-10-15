@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
+require "libmsg"
 require "libiocmd"
-require "libfrmcmd"
+require "libparam"
 require "libfrmrsp"
+require "libfrmcmd"
 
 class FrmObj
   attr_reader :field,:message

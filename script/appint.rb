@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libiocmd"
 require "libfrmobj"
 require "libappobj"
 require "libinteract"

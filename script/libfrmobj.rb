@@ -51,7 +51,7 @@ class FrmObj
   end
 
   def to_s
-    @message||@field
+    [@message,">"].compact.join("\n")
   end
 
   private

@@ -18,7 +18,6 @@ class AppObj
     @fobj=frmobj
     @ac=AppCmd.new(adb)
     @view=Wview.new(@id,adb,@fobj.field)
-    @prt=Print.new(adb[:status],@view)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
@@ -61,7 +60,7 @@ class AppObj
   end
 
   def to_s
-    @message||@prt
+    [@message,@prompt].compact.join("\n")
   end
 
   private

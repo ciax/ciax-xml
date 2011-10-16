@@ -80,17 +80,15 @@ end
 if __FILE__ == $0
   require "libinsdb"
   require "libmcrdb"
-  require "libclient"
-  require "librview"
+  require "libappcl"
   require "libshell"
   id,*cmd=ARGV
   ARGV.clear
   begin
     mdb=McrDb.new(id,cmd.empty?)
     adb=InsDb.new(id).cover_app
-    cli=Client.new(id,adb['port'])
-    view=Rview.new(id)
-    ac=McrObj.new(mdb,cli,view)
+    cli=AppCl.new(adb)
+    ac=McrObj.new(mdb,cli,cli.view)
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

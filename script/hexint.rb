@@ -16,8 +16,15 @@ rescue
 end
 cli=AppCl.new(adb,host)
 hp=HexPack.new(cli.view,cli.prompt)
-port=opt["s"] ? adb['port'].to_i+1000 : nil
-Interact.new('',port){|cmd|
-  cli.upd(cmd)
-  hp.upd
-}
+if opt["s"]
+  require 'libserver'
+  Server.new(adb["port"].to_i+1000){|line|
+    cli.upd(line)
+    hp.upd
+  }
+else
+  require 'libshell'
+  Shell.new(cli.prompt){|line|
+    cli.upd(line).message||hp.upd
+  }
+end

@@ -3,7 +3,6 @@ require "optparse"
 require "libinsdb"
 require "libappcl"
 require "libhexpack"
-require "libinteract"
 
 opt=ARGV.getopts("s")
 id=ARGV.shift

@@ -11,11 +11,11 @@ class HexPack
     @list=[]
     open(file){|f|
       while line=f.gets
-        key=line.split(',').first
-        case key
+        ary=line.split(',')
+        case line
         when /^[%#]/,/^$/
         else
-          @list << key
+          @list << [ary[0],ary[2]]
         end
       end
     }
@@ -25,9 +25,9 @@ class HexPack
     @res[3]=@stat['run']
     @res[4]= @prompt.include?('*') ? '1' : '0'
     @res[6]=''
-    @list.each{|key|
+    @list.each{|key,len|
       if val=@stat[key]
-        @res[6] << val
+        @res[6] << (len=='1' ? val : ("%0#{len}b" % val.to_i))
       else
         warn "NO key(#{key}) in Status"
       end

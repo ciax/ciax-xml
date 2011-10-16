@@ -1,27 +1,20 @@
 #!/usr/bin/ruby
 require "libclient"
 require "librview"
-require "libprint"
 require "libparam"
 
-class AppCl
-  attr_reader :view,:prompt
+class AppCl < Client
+  attr_reader :view
   def initialize(adb,host)
     id=adb['id']
-    @cli=Client.new(id,adb['port'],host)
-    @prompt=@cli.prompt
+    super(id,adb['port'],host)
     @view=Rview.new(id,host).load
-    @prt=Print.new(adb[:status],@view)
     @par=Param.new(adb[:command])
   end
 
   def upd(cmd)
-    @par.set(cmd) if @cli.upd(cmd).message
+    @par.set(cmd) if super(cmd).message
     @view.load
     self
-  end
-
-  def to_s
-    @cli.message||@prt.to_s
   end
 end

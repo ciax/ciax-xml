@@ -3,21 +3,18 @@ require "libclient"
 require "libfield"
 require "libparam"
 
-class FrmCl
+class FrmCl < Client
   attr_reader :field
   def initialize(fdb,host='localhost')
-    @cli=Client.new(fdb['id'],fdb['port'].to_i-1000,host)
-    @field=Field.new(fdb['id'],host).load
+    id=fdb['id']
+    super(id,fdb['port'].to_i-1000,host)
+    @field=Field.new(id,host).load
     @par=Param.new(fdb[:cmdframe])
   end
 
   def upd(cmd)
-    @par.set(cmd) if @cli.upd(cmd).message
+    @par.set(cmd) if super(cmd).message
     @field.load
     self
-  end
-
-  def to_s
-    @cli.message||@field
   end
 end

@@ -20,6 +20,6 @@ class Client
   end
 
   def to_s
-    @message.to_s
+    [@message,@prompt].compact.join("\n")
   end
 end

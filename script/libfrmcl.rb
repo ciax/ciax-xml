@@ -5,7 +5,7 @@ require "libparam"
 
 class FrmCl < Client
   attr_reader :field
-  def initialize(fdb,host='localhost')
+  def initialize(fdb,host=nil)
     id=fdb['id']
     super(id,fdb['port'].to_i-1000,host)
     @field=Field.new(id,host).load

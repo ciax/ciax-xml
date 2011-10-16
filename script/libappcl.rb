@@ -5,7 +5,7 @@ require "libparam"
 
 class AppCl < Client
   attr_reader :view
-  def initialize(adb,host)
+  def initialize(adb,host=nil)
     id=adb['id']
     super(id,adb['port'],host)
     @view=Rview.new(id,host).load

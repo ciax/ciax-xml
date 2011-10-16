@@ -1,8 +1,6 @@
 #!/usr/bin/ruby
 require "libinsdb"
 require "libfrmcl"
-require "libiofile"
-require "libparam"
 require "libshell"
 
 id=ARGV.shift
@@ -15,5 +13,5 @@ rescue SelectID
 end
 cli=FrmCl.new(fdb,host)
 Shell.new("#{id}>"){|cmd|
-  cli.upd(cmd).message||cli.view
+  cli.upd(cmd).message||cli.field
 }

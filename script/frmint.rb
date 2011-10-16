@@ -13,8 +13,14 @@ rescue
   Msg.exit
 end
 fobj=FrmObj.new(fdb,iocmd)
-field=fobj.field.load
-port=opt["s"] ? fdb["port"].to_i-1000 : nil
-Interact.new(fdb['id']+'>',port){|line|
-  fobj.upd(line)
-}
+if opt["s"]
+  require 'libserver'
+  Server.new(adb["port"].to_i-1000){|line|
+    fobj.upd(line)
+  }
+else
+  require 'libshell'
+  Shell.new(aobj.prompt){|line|
+    fobj.upd(line).message||fobj.field
+  }
+end

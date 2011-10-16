@@ -4,7 +4,6 @@ require "libinsdb"
 require "libappobj"
 require "libinteract"
 
-
 opt=ARGV.getopts("sc")
 id,*iocmd=ARGV
 begin
@@ -22,7 +21,15 @@ else
   fobj=FrmObj.new(fdb,iocmd)
 end
 aobj=AppObj.new(adb,fobj)
-port=opt["s"] ? adb["port"] : nil
-Interact.new(aobj.prompt,port){|line|
-  aobj.upd(line)
-}
+prt=Print.new(adb[:status],aobj.view)
+if opt["s"]
+  require 'libserver'
+  Server.new(adb["port"].to_i){|line|
+    aobj.upd(line)
+  }
+else
+  require 'libshell'
+  Shell.new(aobj.prompt){|line|
+    aobj.upd(line).message||prt
+  }
+end

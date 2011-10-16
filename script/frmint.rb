@@ -2,7 +2,6 @@
 require "optparse"
 require "libinsdb"
 require "libfrmobj"
-require "libinteract"
 
 opt=ARGV.getopts("s")
 id,*iocmd=ARGV

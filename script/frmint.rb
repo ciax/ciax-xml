@@ -15,12 +15,12 @@ end
 fobj=FrmObj.new(fdb,iocmd)
 if opt["s"]
   require 'libserver'
-  Server.new(adb["port"].to_i-1000){|line|
+  Server.new(fdb["port"].to_i-1000){|line|
     fobj.upd(line)
   }
 else
   require 'libshell'
-  Shell.new(aobj.prompt){|line|
+  Shell.new("#{id}>"){|line|
     fobj.upd(line).message||fobj.field
   }
 end

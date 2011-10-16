@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libinsdb"
 require "libappcl"
+require "libprint"
 require "libshell"
 
 id=ARGV.shift
@@ -12,6 +13,7 @@ rescue SelectID
   Msg.exit
 end
 cli=AppCl.new(adb,host)
+pri=Print.new(adb[:status],cli.view)
 Shell.new(cli.prompt){|cmd|
-  cli.upd(cmd)
+  cli.upd(cmd).message||pri
 }

@@ -13,8 +13,7 @@ class Client
   def upd(cmd)
     line=cmd.join(' ')
     line='stat' if line.empty?
-    @io.snd(line)
-    ary=@io.rcv.split("\n")
+    ary=@io.snd(line).rcv.split("\n")
     @prompt.replace(ary.pop)
     @message=ary.first
     self

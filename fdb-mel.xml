@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="mel" label="MELSEC Q Series" endian="little" ccmethod="len">
+  <frame id="mel" version="2" label="MELSEC Q Series" endian="little" ccmethod="len">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="2" label="SubHeader: Prefix">0x54</char>
       <string label="SubHeader: Serial Number">XX</string>
@@ -20,6 +20,13 @@
             <char length="2" label="Start Address">0</char>
             <char length="2" label="Device Code">0xB400</char>
             <char length="2" label="Data Length">52</char>
+          </command>
+          <command id="getcmd" label="Get cmd status" response="getcmd" type="stat">
+            <char length="2" label="Read region command">0x401</char>
+            <char length="2" label="Read region subcommand">0</char>
+            <char length="2" label="Start Address">0x100</char>
+            <char length="2" label="Device Code">0xB400</char>
+            <char length="2" label="Data Length">5</char>
           </command>
           <command id="set_tag" label="Set Tag to Run [1-12,98,99]" response="cmdrsp" type="config">
             <par>1:12,98,99</par>
@@ -118,6 +125,11 @@
           <response id="getstat" label="get status">
             <array assign="x" decode="signed" label="Status" length="2">
               <index range="0:51" size="52" />
+            </array>
+          </response>
+          <response id="getcmd" label="get cmd status">
+            <array assign="c" decode="signed" label="Status" length="2">
+              <index range="0:4" size="5" />
             </array>
           </response>
           <response id="cmdrsp" label="command resp" />

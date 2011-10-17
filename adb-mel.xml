@@ -4,6 +4,7 @@
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <command id="upd" label="Regular status update">
         <frmcmd name="getstat" />
+        <frmcmd name="getcmd" />
       </command>
       <command id="run" label="Run to Destination Tag [1-12]">
         <par>1:12</par>
@@ -13,6 +14,7 @@
         <frmcmd name="start">
           <argv>0</argv>
         </frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="getstat" />
       </command>
       <command id="fwd" label="Run Forward">
@@ -22,6 +24,7 @@
         <frmcmd name="start">
           <argv>0</argv>
         </frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="getstat" />
       </command>
       <command id="bak" label="Run Backword">
@@ -31,6 +34,7 @@
         <frmcmd name="start">
           <argv>0</argv>
         </frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="getstat" />
       </command>
       <command id="lift" label="Lift Jack Level [0-3]">
@@ -41,6 +45,7 @@
         <frmcmd name="start">
           <argv>8</argv>
         </frmcmd>
+        <frmcmd name="getcmd" />
         <frmcmd name="getstat" />
       </command>
       <command id="chgon" label="Start Charging">
@@ -118,9 +123,9 @@
           <value id="rdy" label="READY" symbol="normal">
             <binary bit="0" ref="x:0" />
           </value>
-          <value id="acp" label="CMD ACCEPT">
-            <binary bit="6" ref="x:0" />
-            <binary bit="0" ref="x:32" />
+          <value id="acp" label="CMD ACCEPT" symbol="acp">
+            <binary label="Charging" bit="6" ref="x:0"></binary>
+            <binary label="Command Receive Enable" bit="0" ref="x:32" />
           </value>
         </row>
         <row>
@@ -145,14 +150,17 @@
       </group>
       <group id="g2" label="Action">
         <row>
-          <value id="run" label="RUNNING" symbol="normal">
+          <value id="run" label="RUNNING" symbol="exec">
             <binary bit="4" ref="x:0" />
+            <binary bit="0" ref="c:2" />
           </value>
-          <value id="jak" label="JACKING" symbol="normal">
+          <value id="jak" label="JACKING" symbol="exec">
             <binary bit="5" ref="x:0" />
+            <binary bit="8" ref="c:2" />
           </value>
-          <value id="con" label="CHARGING" symbol="normal">
+          <value id="con" label="CHARGING" symbol="exec">
             <binary bit="6" ref="x:0" />
+            <binary bit="15" ref="c:2" />
           </value>
         </row>
       </group>

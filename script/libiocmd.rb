@@ -25,7 +25,7 @@ module IoLog
 
   # return array
   def rcv(id)
-    log_frame(super,'rcv:'+id)
+    log_frame(super(),'rcv:'+id)
   end
 
   private

@@ -19,11 +19,11 @@ if opt["s"]
   require 'libserver'
   Server.new(adb["port"].to_i+1000){|line|
     cli.upd(line)
-    hp.upd
+    hp
   }
 else
   require 'libshell'
   Shell.new(cli.prompt){|line|
-    cli.upd(line).message||hp.upd
+    cli.upd(line).message||hp
   }
 end

@@ -21,7 +21,7 @@ class HexPack
     }
   end
 
-  def upd
+  def to_s
     @res[3]=@stat['run']
     @res[4]= @prompt.include?('*') ? '1' : '0'
     @res[6]=''
@@ -32,10 +32,6 @@ class HexPack
         warn "NO key(#{key}) in Status"
       end
     }
-    self
-  end
-
-  def to_s
     @res.join('')
   end
 end
@@ -44,5 +40,5 @@ if __FILE__ == $0
   require "librview"
   abort("Usage: #{$0} [view_file]") if STDIN.tty? && ARGV.size < 1
   view=Rview.new.upd
-  puts HexPack.new(view).upd
+  puts HexPack.new(view)
 end

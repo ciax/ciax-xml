@@ -20,7 +20,7 @@ else
   fobj=FrmObj.new(fdb,iocmd)
 end
 aobj=AppObj.new(adb,fobj)
-prt=Print.new(adb[:status],aobj.view)
+prt=Print.new(adb,aobj.view)
 if opt["s"]
   require 'libserver'
   Server.new(adb["port"].to_i){|line|

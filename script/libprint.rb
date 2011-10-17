@@ -2,13 +2,14 @@
 require 'librview'
 class Print
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
-  def initialize(db,view)
+  def initialize(adb,view)
+    sdb=Msg.type?(adb,AppDb)[:status]
     @view=Msg.type?(view,Rview)
     ['stat','class','msg'].each{|key|
       view[key]||={}
     }
-    @group=db[:group] || [[db[:select].keys]]
-    @label=db[:label] || {}
+    @group=sdb[:group] || [[sdb[:select].keys]]
+    @label=sdb[:label] || {}
   end
 
   def to_s
@@ -61,5 +62,5 @@ if __FILE__ == $0
   abort "Usage: #{$0} [view_file]" if STDIN.tty? && ARGV.size < 1
   view=Rview.new.upd
   adb=InsDb.new(view['id']).cover_app
-  puts Print.new(adb[:status],view)
+  puts Print.new(adb,view)
 end

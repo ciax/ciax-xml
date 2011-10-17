@@ -13,7 +13,7 @@ rescue SelectID
   Msg.exit
 end
 cli=AppCl.new(adb,host)
-pri=Print.new(adb[:status],cli.view)
+pri=Print.new(adb,cli.view)
 Shell.new(cli.prompt){|cmd|
   cli.upd(cmd).message||pri
 }

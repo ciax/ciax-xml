@@ -25,6 +25,7 @@
       </xsd:sequence>
       <xsd:attributeGroup ref="adb:id_attr" />
       <xsd:attribute name="frm_type" type="xsd:NCName" use="required" />
+      <xsd:attribute name="version" type="xsd:int" />
     </xsd:complexType>
     <xsd:key name="command_id">
       <xsd:selector xpath=".//adbc:command" />

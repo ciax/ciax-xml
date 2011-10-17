@@ -3,11 +3,10 @@ require "libmsg"
 
 module IoLog
   # need @v
-  def startlog(id)
+  def startlog(id,ver=0)
     if id && ! ENV.key?('NOLOG')
-      @logfile=VarDir+"/device_#{id}_"
-      @logfile << Time.now.year.to_s+".log"
-      @v.msg{"Init/Logging Start"}
+      @logfile=VarDir+"/device_#{id}_v#{ver.to_i}.log"
+      @v.msg{"Init/Logging Start (#{id}),Ver #{ver.to_i}"}
     end
     self
   end

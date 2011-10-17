@@ -23,6 +23,7 @@
         <xsd:element ref="fdbr:rspframe" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="version" type="xsd:int" />
       <xsd:attribute name="label" type="xsd:token" />
       <xsd:attribute name="reference" type="xsd:anyURI" />
       <xsd:attribute name="wait" type="xsd:float"></xsd:attribute>

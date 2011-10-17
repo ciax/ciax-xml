@@ -29,7 +29,7 @@ else
     cmd.shift
     begin
       par.set(cmd)
-      fr.upd{[time,eval(ary.shift)]}
+      fr.upd{[eval(ary.shift),time]}
       as.upd
       sql.upd
       $stderr.print "."

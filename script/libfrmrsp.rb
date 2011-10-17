@@ -49,21 +49,30 @@ class FrmRsp
   end
 
   private
-  def cut(e)
-    @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
-  end
-
-  def mk_array(idx,field)
-    # make multidimensional array
-    # i.e. idxary=[0,0:10,0] -> field[0][0][0] .. field[0][10][0]
-    return yield if idx.empty?
-    fld=field||[]
-    f,l=idx[0].split(':').map{|i| eval(i)}
-    Range.new(f,l||f).each{|i|
-      fld[i] = mk_array(idx[1..-1],fld[i]){yield}
-      @v.msg{"Array:Index[#{i}]=#{fld[i]}"}
+  # Process Frame to Field
+  def getfield_rec(e0)
+    e0.each{|e1|
+      case e1
+      when 'ccrange'
+        begin
+          @v.msg(1){"Entering Ceck Code Node"}
+          @frame.mark
+          getfield_rec(@sel[:ccrange])
+          @cc = @frame.checkcode
+        ensure
+          @v.msg(-1){"Exitting Ceck Code Node"}
+        end
+      when 'select'
+        begin
+          @v.msg(1){"Entering Selected Node"}
+          getfield_rec(@sel[:select])
+        ensure
+          @v.msg(-1){"Exitting Selected Node"}
+        end
+      when Hash
+        frame_to_field(e1){ cut(e1) }
+      end
     }
-    fld
   end
 
   def frame_to_field(e0)
@@ -93,30 +102,21 @@ class FrmRsp
     @v.msg(-1){"Field:End"}
   end
 
-  # Process Frame to Field
-  def getfield_rec(e0)
-    e0.each{|e1|
-      case e1
-      when 'ccrange'
-        begin
-          @v.msg(1){"Entering Ceck Code Node"}
-          @frame.mark
-          getfield_rec(@sel[:ccrange])
-          @cc = @frame.checkcode
-        ensure
-          @v.msg(-1){"Exitting Ceck Code Node"}
-        end
-      when 'select'
-        begin
-          @v.msg(1){"Entering Selected Node"}
-          getfield_rec(@sel[:select])
-        ensure
-          @v.msg(-1){"Exitting Selected Node"}
-        end
-      when Hash
-        frame_to_field(e1){ cut(e1) }
-      end
+  def mk_array(idx,field)
+    # make multidimensional array
+    # i.e. idxary=[0,0:10,0] -> field[0][0][0] .. field[0][10][0]
+    return yield if idx.empty?
+    fld=field||[]
+    f,l=idx[0].split(':').map{|i| eval(i)}
+    Range.new(f,l||f).each{|i|
+      fld[i] = mk_array(idx[1..-1],fld[i]){yield}
+      @v.msg{"Array:Index[#{i}]=#{fld[i]}"}
     }
+    fld
+  end
+
+  def cut(e)
+    @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
   end
 end
 
@@ -135,7 +135,7 @@ if __FILE__ == $0
     cmd=ary.shift.split(':')
     abort ("Logline:Not response") unless /rcv/ === cmd.shift
     par.set(cmd)
-    fr.upd{[time,eval(ary.shift)]}
+    fr.upd{[eval(ary.shift),time]}
     puts fr.field.to_j
   rescue UserError
     warn "Usage: #{$0} [frameID] < logline"

@@ -12,7 +12,7 @@ class FrmObj
     Msg.type?(fdb,FrmDb)
     client= iocmd.empty? ? fdb['client'].split(' ') : iocmd
     @io=IoCmd.new(client,fdb['wait'],1)
-    @io.startlog(fdb['id']) if iocmd.empty?
+    @io.extend(IoLog).startlog(fdb['id']) if iocmd.empty?
     @par=Param.new(fdb[:cmdframe])
     @fr=FrmRsp.new(fdb,@par)
     @field=@fr.field.load

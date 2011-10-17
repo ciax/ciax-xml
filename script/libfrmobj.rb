@@ -11,8 +11,8 @@ class FrmObj
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
     client= iocmd.empty? ? fdb['client'].split(' ') : iocmd
-    @io=IoCmd.new(client,fdb['wait'],1)
-    @io.extend(IoLog).startlog(fdb['id']) if iocmd.empty?
+    @io=IoCmd.new(client,fdb['wait'],1).extend(IoLog)
+    @io.startlog(fdb['id']) if iocmd.empty?
     @par=Param.new(fdb[:cmdframe])
     @fr=FrmRsp.new(fdb,@par)
     @field=@fr.field.load
@@ -40,8 +40,8 @@ class FrmObj
       @message=save(cmd[1],cmd[2])
     else
       cid=@par.set(cmd)[:cid]
-      @io.snd(@fc.getframe,'snd:'+cid)
-      @fr.upd{[@io.rcv('rcv:'+cid),@io.time]}
+      @io.snd(@fc.getframe,cid)
+      @fr.upd{@io.rcv(cid)}
       @fr.field.save
       @message='OK'
     end

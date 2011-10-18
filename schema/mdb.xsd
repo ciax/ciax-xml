@@ -14,7 +14,7 @@
         <xsd:element ref="mdb:command" minOccurs="1" maxOccurs="unbounded"></xsd:element>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:token" use="required" />
-      <xsd:attribute name="app" type="xsd:token" use="required" />
+      <xsd:attribute name="version" type="xsd:int" />
       <xsd:attribute name="label" type="xsd:token" use="optional" />
     </xsd:complexType>
   </xsd:element>
@@ -66,12 +66,22 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="ref" type="xsd:token" />
+          <xsd:attribute name="ins" type="xsd:token" use="required" />
+          <xsd:attribute name="ref" type="xsd:token" use="required" />
           <xsd:attribute name="inv" type="xsd:boolean" />
-          <xsd:attribute name="label" type="xsd:token" use="optional" />
+          <xsd:attribute name="label" type="xsd:token" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="exec" type="xsd:token"></xsd:element>
+  <xsd:element name="exec">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="ins" type="xsd:token" use="required" />
+          <xsd:attribute name="label" type="xsd:token" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
 </xsd:schema>

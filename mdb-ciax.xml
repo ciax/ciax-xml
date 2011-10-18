@@ -1,53 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="crt" app="crt" label="Cart Macro">
+  <macro id="ciax" version="1" label="Cart Macro">
     <command id="runf" label="Run Forward to Tag">
       <break>
-        <stat label="On Tag?" ref="cpos" inv="true">0</stat>
+        <stat label="On Tag?" ins="crt" ref="cpos" inv="true">0</stat>
       </break>
       <check retry="5">
-        <stat label="Ready?" ref="rdy">OK</stat>
+        <stat label="Ready?" ref="rdy" ins="crt">OK</stat>
       </check>
-      <exec>set_fwd</exec>
-      <exec>start_run</exec>
+      <exec ins="crt">set_fwd</exec>
+      <exec ins="crt">start_run</exec>
       <check retry="40">
-        <stat ref="run">OFF
+        <stat ref="run" ins="crt">OFF
 </stat>
       </check>
       <check>
-        <stat ref="cpos" inv="true">0</stat>
+        <stat ref="cpos" inv="true" ins="crt">0</stat>
       </check>
     </command>
     <command id="run" label="Run to Tag [1-12]">
       <par>1:12</par>
       <break>
-        <stat label="On Destination Tag?" ref="cpos">$1</stat>
+        <stat label="On Destination Tag?" ref="cpos" ins="crt">$1</stat>
       </break>
       <check>
-        <stat label="Ready?" ref="rdy">ON</stat>
+        <stat label="Ready?" ref="rdy" ins="crt">ON</stat>
       </check>
-      <exec>run $1</exec>
+      <exec ins="crt">run $1</exec>
       <check retry="120">
-        <stat label="Running" ref="run">OFF</stat>
+        <stat label="Running" ref="run" ins="crt">OFF</stat>
       </check>
       <check label="On Destination Tag ?">
-        <stat ref="cpos">$1</stat>
+        <stat ref="cpos" ins="crt">$1</stat>
       </check>
     </command>
     <command id="lift" label="Jack UP Level [1-4]">
       <par>1:4</par>
       <break label="On Destination Level?">
-        <stat ref="jpos">$1</stat>
+        <stat ref="jpos" ins="crt">$1</stat>
       </break>
       <check label="Ready?">
-        <stat ref="rdy">ON</stat>
+        <stat ref="rdy" ins="crt">ON</stat>
       </check>
-      <exec>lift $1</exec>
+      <exec ins="crt">lift $1</exec>
       <check label="Jacking" retry="40">
-        <stat ref="jak">OFF</stat>
+        <stat ref="jak" ins="crt">OFF</stat>
       </check>
       <check label="On Destination Level?">
-        <stat ref="jpos">$1</stat>
+        <stat ref="jpos" ins="crt">$1</stat>
       </check>
     </command>
   </macro>

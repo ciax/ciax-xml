@@ -1,94 +1,93 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libmcrdb"
 require "libparam"
+require "libinsdb"
+require "librview"
 
 class McrObj
   attr_reader :line
-  def initialize(mdb,cli)
+  def initialize(id)
     @v=Msg::Ver.new("mcr",9)
-    @mdb=mdb
-    @par=Param.new(mdb)
-    @cli=Msg.type?(cli,AppCl)
-    @view=@cli.view
-    @line=[]
+    @par=Param.new(McrDb.new(id))
+    @view={}
   end
 
   def exe(cmd)
     @par.set(cmd)
     id=@par[:id]
-    p Thread.new{
-      Thread.pass
-      @line.clear << "Exec(MDB):#{id}"
-      @par[:select].each{|e1|
-        case e1
-        when Hash
-          case e1['type']
-          when 'break'
-            @line << "  Check Skip:[#{e1['label']}]"
-            if judge(e1['cond'])
-              @line << "  Skip:[#{id}]"
-              return
-            else
-              @line << "  Proceed:[#{id}]"
-            end
-          when 'check'
-            retr=(e1['retry']||1).to_i
-            @line << "  Check Interlock:[#{e1['label']}] (#{retr})"
-            if retr.times{|n|
-                break if judge(e1['cond'],n)
-                sleep 1
-              }
-            then
-              @line << (retr > 1 ? "Timeout:[#{id}]" : "Interlock:[#{id}]")
-              return self
-            end
+    puts "Exec(MDB):#{id}"
+    @par[:select].each{|e1|
+      case e1
+      when Hash
+        case e1['type']
+        when 'break'
+          puts "  Skip?:[#{e1['label']}]"
+          if judge(e1['cond'])
+            puts "  Skip:[#{id}]"
+            return
+          else
+            puts "  Proceed:[#{id}]"
           end
-        else
-          @line << "  EXEC:#{@par.subst(e1)}"
+        when 'check'
+          retr=(e1['retry']||1).to_i
+          if retr > 1
+            puts "  Waiting for:#{e1['label']} (#{retr})"
+          else
+            puts "  Check:#{e1['label']} (#{retr})"
+          end
+          if retr.times{|n|
+              break if judge(e1['cond'],n)
+              sleep 1
+            }
+            puts (retr > 1 ? "\nTimeout:[#{id}]" : "NG:[#{id}]")
+            return self
+          end
         end
-      }
+      else
+        puts "  EXEC:#{@par.subst(e1)}"
+      end
     }
     self
   end
 
-  def to_s
-    @line.join("\n")
-  end
-
-
   private
   def judge(conds,n=0)
-    @view.upd
+    m=0
     conds.all?{|h|
+      ins=h['ins']
       key=h['ref']
-      cri=@par.subst(h['val'])
-      val=@view['msg'][key]||@view['stat'][key]
+      crt=@par.subst(h['val'])
+      val=getstat(ins,key)
       if n==0
-        @line << "   #{h['label']}(#{key}):<#{val}> for [#{cri}]"
-      else
-        @line.last << "."
+        puts "   #{key}:<#{val}> for [#{crt}]"
+      elsif n==1 && m==0
+        print "    Waiting"
+      elsif m==0
+        print  "."
       end
-      if /[a-zA-Z]/ === cri
-        /#{cri}/ === val
+      m+=1
+      if /[a-zA-Z]/ === crt
+        /#{crt}/ === val
       else
-        cri == val
+        crt == val
       end
     }
+  end
+
+  def getstat(ins,id)
+    @view[ins]||=Rview.new(ins)
+    view=@view[ins].upd
+    view['msg'][id]||view['stat'][id]
   end
 end
 
 if __FILE__ == $0
-  require "libinsdb"
-  require "libmcrdb"
-  require "libappcl"
-  require "libshell"
   id,*cmd=ARGV
   ARGV.clear
   begin
-    mdb=McrDb.new(id,cmd.empty?)
-    adb=InsDb.new(id).cover_app
-    cli=AppCl.new(adb)
-    ac=McrObj.new(mdb,cli)
+    ac=McrObj.new(id)
+    ac.exe(cmd)
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
@@ -97,8 +96,4 @@ if __FILE__ == $0
   rescue UserError
     Msg.exit(3)
   end
-  Shell.new("mcr>"){|cmd|
-    ac.exe(cmd) unless cmd.empty?
-    ac.to_s
-  }
 end

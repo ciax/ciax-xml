@@ -5,16 +5,14 @@
       <break>
         <stat label="On Tag?" ins="crt" ref="cpos" inv="true">0</stat>
       </break>
-      <check retry="5">
-        <stat label="Ready?" ref="rdy" ins="crt">OK</stat>
+      <check retry="5" label="Ready?">
+        <stat ref="rdy" ins="crt">ON</stat>
       </check>
-      <exec ins="crt">set_fwd</exec>
-      <exec ins="crt">start_run</exec>
-      <check retry="40">
-        <stat ref="run" ins="crt">OFF
-</stat>
+      <exec ins="crt">runf</exec>
+      <check retry="40" label="Running?">
+        <stat ref="run" ins="crt">OFF</stat>
       </check>
-      <check>
+      <check label="Destination?">
         <stat ref="cpos" inv="true" ins="crt">0</stat>
       </check>
     </command>
@@ -27,7 +25,7 @@
         <stat label="Ready?" ref="rdy" ins="crt">ON</stat>
       </check>
       <exec ins="crt">run $1</exec>
-      <check retry="120">
+      <check retry="120" label="Running?">
         <stat label="Running" ref="run" ins="crt">OFF</stat>
       </check>
       <check label="On Destination Tag ?">

@@ -4,12 +4,12 @@ require "libparam"
 
 class McrObj
   attr_reader :line
-  def initialize(mdb,cli,view)
+  def initialize(mdb,cli)
     @v=Msg::Ver.new("mcr",9)
     @mdb=mdb
     @par=Param.new(mdb)
-    @cli=Msg.type?(cli,Client)
-    @view=Msg.type?(view,Rview)
+    @cli=Msg.type?(cli,AppCl)
+    @view=@cli.view
     @line=[]
   end
 
@@ -18,13 +18,13 @@ class McrObj
     id=@par[:id]
     p Thread.new{
       Thread.pass
-      @line << "Exec(MDB):#{id}"
+      @line.clear << "Exec(MDB):#{id}"
       @par[:select].each{|e1|
         case e1
         when Hash
           case e1['type']
           when 'break'
-            @line << "  Check Skip:[#{e1['label']}#{id}]"
+            @line << "  Check Skip:[#{e1['label']}]"
             if judge(e1['cond'])
               @line << "  Skip:[#{id}]"
               return
@@ -33,7 +33,7 @@ class McrObj
             end
           when 'check'
             retr=(e1['retry']||1).to_i
-            @line << "  Check Interlock:[#{e1['label']}#{id}] (#{retr})"
+            @line << "  Check Interlock:[#{e1['label']}] (#{retr})"
             if retr.times{|n|
                 break if judge(e1['cond'],n)
                 sleep 1
@@ -88,7 +88,7 @@ if __FILE__ == $0
     mdb=McrDb.new(id,cmd.empty?)
     adb=InsDb.new(id).cover_app
     cli=AppCl.new(adb)
-    ac=McrObj.new(mdb,cli,cli.view)
+    ac=McrObj.new(mdb,cli)
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

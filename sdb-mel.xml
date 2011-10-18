@@ -26,9 +26,9 @@
     </table>
     <table id="jpos">
       <pattern class="normal" msg="D">0</pattern>
-      <pattern class="normal" msg="1(L)">1</pattern>
-      <pattern class="normal" msg="2(M)">2</pattern>
-      <pattern class="normal" msg="3(H)">3</pattern>
+      <pattern class="normal" msg="L">1</pattern>
+      <pattern class="normal" msg="M">2</pattern>
+      <pattern class="normal" msg="H">3</pattern>
       <pattern class="normal" msg="CHG">4</pattern>
       <pattern class="warn" msg="N/A" />
     </table>

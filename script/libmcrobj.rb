@@ -16,45 +16,43 @@ class McrObj
 
   def exe(cmd)
     @par.set(cmd)
-    id=@par[:id]
-    puts "Exec(MDB):#{id}"
+    puts "Exec(MDB):#{@par[:id]}"
     @par[:select].each{|e1|
       case e1
       when Hash
         case e1['type']
         when 'break'
-          puts "  Skip?:[#{e1['label']}]"
+          caption(["Proceed?",":[#{e1['label']}]"],1)
           if !@dmy && judge(e1['cond'])
-            puts "  ->  Skip:[#{id}]"
-            return
-          else
-            puts "  ->  Proceed:[#{id}]"
+            puts "  ->  Skip"
+            return self
           end
         when 'check'
           retr=(e1['retry']||1).to_i
-          if retr > 1
-            puts "  Waiting for:#{e1['label']} (#{retr})"
-          else
-            puts "  Check:#{e1['label']} (#{retr})"
-          end
+          line=[retr > 1 ? "Waiting for" : "Check"]
+          line << ":#{e1['label']} (#{retr})"
+          caption(line,1)
           if !@dmy && retr.times{|n|
               break if judge(e1['cond'],n)
               sleep 1
             }
-            puts (retr > 1 ? "\n  -> Timeout:[#{id}]" : "  -> NG:[#{id}]")
+            Msg.alert(retr > 1 ? "\n  -> Timeout" : "  -> NG")
             return self
-          else
-            puts "  -> OK"
           end
         end
+        Msg.msg("-> OK",1)
       else
-        puts "  EXEC:#{@par.subst(e1)}"
+        puts "  "+Msg.color("EXEC",3)+":#{@par.subst(e1)}"
       end
     }
     self
   end
 
   private
+  def caption(msgary,ind=0)
+    puts "  "*ind+Msg.color(msgary.shift,6)+msgary.shift
+  end
+
   def judge(conds,n=0)
     m=0
     conds.all?{|h|

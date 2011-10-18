@@ -16,7 +16,7 @@ class Param < ExHash
   end
 
   def set(cmdary)
-    id=cmdary.first
+    id=Msg.type?(cmdary,Array).first
     unless @alias.key?(id)
       raise SelectCMD,("No such CMD [#{id}]\n"+@list.to_s)
     end

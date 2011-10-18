@@ -50,7 +50,8 @@ class AppObj
       if @event.block_pattern === cmd.join(' ')
         @message="Blocking(#{@event.block_pattern.inspect})"
       else
-        @buf.send{@par.set(cmd);@ac.getcmd}
+        @par.set(cmd)
+        @buf.send(@ac.getcmd)
         @message="ISSUED"
       end
     end

@@ -16,7 +16,8 @@ class AppObj
     @prompt=''
     @id=adb['id']
     @fobj=frmobj
-    @ac=AppCmd.new(adb)
+    @par=Param.new(adb[:command])
+    @ac=AppCmd.new(@par)
     @view=Wview.new(@id,adb,@fobj.field)
     Thread.abort_on_exception=true
     @buf=Buffer.new
@@ -49,7 +50,7 @@ class AppObj
       if @event.block_pattern === cmd.join(' ')
         @message="Blocking(#{@event.block_pattern.inspect})"
       else
-        @buf.send{@ac.setcmd(cmd)}
+        @buf.send{@par.set(cmd);@ac.getcmd}
         @message="ISSUED"
       end
     end
@@ -98,7 +99,8 @@ class AppObj
         begin
           @buf.auto{
             @event.upd.issue.map{|cmd|
-              @ac.setcmd(cmd)
+              @par.set(cmd)
+              @ac.getcmd
             }.flatten(1)
           }
         rescue SelectID

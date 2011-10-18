@@ -4,15 +4,12 @@ require "libparam"
 
 class AppCmd < Array
   include Math
-  def initialize(adb)
-    Msg.type?(adb,AppDb)
+  def initialize(par)
     @v=Msg::Ver.new("app/cmd",9)
-    @par=Param.new(adb[:command])
+    @par=Msg.type?(par,Param)
   end
 
-  def setcmd(ssn)
-    @v.msg{"Exec(ADB):#{ssn.first}"}
-    @par.set(ssn)
+  def getcmd
     clear
     @par[:select].each{|e1|
       cmd=[]
@@ -43,8 +40,10 @@ if __FILE__ == $0
   app,*cmd=ARGV
   begin
     adb=AppDb.new(app,cmd.empty?)
-    ac=AppCmd.new(adb)
-    ac.setcmd(cmd).each{|cmd| p cmd}
+    par=Param.new(adb[:command])
+    ac=AppCmd.new(par)
+    par.set(cmd)
+    ac.getcmd.each{|cmd| p cmd}
   rescue SelectCMD
     Msg.exit(2)
   rescue UserError

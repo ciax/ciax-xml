@@ -2,14 +2,14 @@
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro">
     <command id="runf" label="Run Forward to Tag">
-      <break>
-        <stat label="On Tag?" ins="crt" ref="cpos" inv="true">0</stat>
+      <break label="On Tag?">
+        <stat ins="crt" ref="cpos" inv="true">0</stat>
       </break>
       <check retry="5" label="Ready?">
         <stat ref="rdy" ins="crt">ON</stat>
       </check>
       <exec ins="crt">runf</exec>
-      <check retry="40" label="Running?">
+      <check retry="40" label="Run end?">
         <stat ref="run" ins="crt">OFF</stat>
       </check>
       <check label="Destination?">

@@ -7,9 +7,10 @@ require "librview"
 
 class McrObj
   attr_reader :line
-  def initialize(id)
+  def initialize(id,dmy=nil)
     @v=Msg::Ver.new("mcr",9)
     @par=Param.new(McrDb.new(id))
+    @dmy=dmy
     @view={}
   end
 
@@ -23,11 +24,11 @@ class McrObj
         case e1['type']
         when 'break'
           puts "  Skip?:[#{e1['label']}]"
-          if judge(e1['cond'])
-            puts "  Skip:[#{id}]"
+          if !@dmy && judge(e1['cond'])
+            puts "  ->  Skip:[#{id}]"
             return
           else
-            puts "  Proceed:[#{id}]"
+            puts "  ->  Proceed:[#{id}]"
           end
         when 'check'
           retr=(e1['retry']||1).to_i
@@ -36,12 +37,14 @@ class McrObj
           else
             puts "  Check:#{e1['label']} (#{retr})"
           end
-          if retr.times{|n|
+          if !@dmy && retr.times{|n|
               break if judge(e1['cond'],n)
               sleep 1
             }
-            puts (retr > 1 ? "\nTimeout:[#{id}]" : "NG:[#{id}]")
+            puts (retr > 1 ? "\n  -> Timeout:[#{id}]" : "  -> NG:[#{id}]")
             return self
+          else
+            puts "  -> OK"
           end
         end
       else

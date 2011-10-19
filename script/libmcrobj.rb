@@ -36,11 +36,11 @@ class McrObj
               break if judge(e1['cond'],n)
               sleep 1
             }
-            Msg.alert(retr > 1 ? "\n  -> Timeout" : "  -> NG")
+            result(retr)
             return self
           end
         end
-        Msg.msg("-> OK",1)
+        result(0)
       else
         puts "  "+Msg.color("EXEC",3)+":#{@par.subst(e1)}"
       end
@@ -51,6 +51,19 @@ class McrObj
   private
   def caption(msgary,ind=0)
     puts "  "*ind+Msg.color(msgary.shift,6)+msgary.shift
+  end
+
+  def result(code,ind=1)
+    str="  "*ind
+    case code
+    when 0
+      str << Msg.color("-> OK",2)
+    when 1
+      str << Msg.color("-> NG",1)
+    else
+      str = "\n" + str + Msg.color("-> Timeout",1)
+    end
+    puts str
   end
 
   def judge(conds,n=0)

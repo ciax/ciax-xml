@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="command">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element ref="argv" />
+    </xsd:choice>
+    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
+    <xsd:attribute name="name" type="xsd:NCName" use="required"></xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="argv">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="format" type="xsd:token"></xsd:attribute>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+    <!--evaluated if format exists-->
+  </xsd:element>
+</xsd:schema>

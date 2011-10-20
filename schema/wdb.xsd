@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="range.xsd" />
+  <xsd:include schemaLocation="command.xsd" />
   <!--watch events-->
   <xsd:element name="watch">
     <xsd:complexType>
@@ -59,14 +60,5 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="exec">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="wdb:argv" />
-      </xsd:choice>
-      <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-      <xsd:attribute name="name" type="xsd:NCName" use="required"></xsd:attribute>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="argv" type="xsd:token"></xsd:element>
+  <xsd:element name="exec" type="wdb:command"></xsd:element>
 </xsd:schema>

@@ -25,6 +25,7 @@ class Wview < Rview
 
   def save
     if update?
+      refresh
       @sym.upd
       super
       @sql.upd.flush

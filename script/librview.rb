@@ -17,6 +17,10 @@ class Rview < IoFile
     @stat[id] != @last[id]
   end
 
+  def update?
+    change?('time')
+  end
+
   def stat(id)
     id == 'elapse' ? @elapse : @stat[id]
   end
@@ -30,8 +34,8 @@ class Rview < IoFile
     self
   end
 
-  def update?
-    if change?('time')
+  def refresh
+    if update?
       @v.msg{"Status Updated"}
       @last.deep_update(@stat)
     end

@@ -9,13 +9,14 @@ class McrObj
   def initialize(id)
     @v=Msg::Ver.new("mcr",9)
     @par=Param.new(McrDb.new(id))
+    @ind=0
     @msg=[]
     @view={}
   end
 
   def exe(cmd)
     @par.set(cmd)
-    puts Msg.color("Exec(MDB):#{@par[:id]}",5)
+    title
     @par[:select].each{|e1|
       case e1
       when Hash
@@ -41,11 +42,18 @@ class McrObj
       end
     }
     self
+  ensure
+    @ind-=1
   end
 
   private
+  def title
+    puts "  "*@ind+Msg.color("Exec(MDB)",5)+":"+@par[:id]
+    @ind+=1
+  end
+
   def caption(msgary)
-    print "  "+Msg.color(msgary.shift,6)+msgary.join('')+" "
+    print "  "*@ind+Msg.color(msgary.shift,6)+msgary.join('')+" "
   end
 
   def result(code)

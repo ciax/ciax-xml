@@ -7,10 +7,10 @@ require "librview"
 
 class McrObj
   attr_reader :line
-  def initialize(id,dmy=nil)
+  def initialize(id)
     @v=Msg::Ver.new("mcr",9)
     @par=Param.new(McrDb.new(id))
-    @dmy=dmy
+    @msg=[]
     @view={}
   end
 
@@ -23,7 +23,7 @@ class McrObj
         case e1['type']
         when 'break'
           caption(["Proceed?",":[#{e1['label']}]"],1)
-          if !@dmy && judge(e1['cond'])
+          if judge(e1['cond'])
             puts "  ->  Skip"
             return self
           end
@@ -32,10 +32,7 @@ class McrObj
           line=[retr > 1 ? "Waiting for" : "Check"]
           line << ":#{e1['label']} (#{retr})"
           caption(line,1)
-          if !@dmy && retr.times{|n|
-              break if judge(e1['cond'],n)
-              sleep 1
-            }
+          unless judge(e1['cond'],retr)
             result(retr)
             return self
           end
@@ -53,45 +50,56 @@ class McrObj
     puts "  "*ind+Msg.color(msgary.shift,6)+msgary.shift
   end
 
+  def condition(msg)
+    if @msg.include?(msg)
+      print "."
+    else
+      @msg << msg
+      print msg
+    end
+  end
+
   def result(code,ind=1)
-    str="  "*ind
+    str="\n"+"  "*ind
     case code
     when 0
       str << Msg.color("-> OK",2)
     when 1
       str << Msg.color("-> NG",1)
     else
-      str = "\n" + str + Msg.color("-> Timeout",1)
+      str << Msg.color("-> Timeout",1)
     end
     puts str
   end
 
-  def judge(conds,n=0)
-    m=0
-    conds.all?{|h|
-      ins=h['ins']
-      key=h['ref']
-      crt=@par.subst(h['val'])
-      val=getstat(ins,key)
-      if n==0
-        puts "   #{key}:<#{val}> for [#{crt}]"
-      elsif n==1 && m==0
-        print "    Waiting"
-      elsif m==0
-        print  "."
-      end
-      m+=1
-      if /[a-zA-Z]/ === crt
-        /#{crt}/ === val
-      else
-        crt == val
-      end
-    }
+  def judge(conds,retr=1)
+    res=retr.times{|n|
+      sleep 1 if n > 0
+      conds.all?{|h|
+          ins=h['ins']
+          key=h['ref']
+          crt=@par.subst(h['val'])
+          if val=getstat(ins,key)
+            condition("   #{ins}:#{key} / <#{val}> for [#{crt}]")
+            if /[a-zA-Z]/ === crt
+              /#{crt}/ === val
+            else
+              crt == val
+            end
+          else
+            puts "   #{ins} is not updated"
+            false
+          end
+      } && break
+    }.nil?
+    @msg.clear
+    res
   end
 
   def getstat(ins,id)
     @view[ins]||=Rview.new(ins)
     view=@view[ins].upd
+    return unless view.update?
     view['msg'][id]||view['stat'][id]
   end
 end

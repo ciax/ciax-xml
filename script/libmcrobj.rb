@@ -2,7 +2,6 @@
 require "libmsg"
 require "libmcrdb"
 require "libparam"
-require "libinsdb"
 require "librview"
 
 class McrObj
@@ -16,22 +15,21 @@ class McrObj
 
   def exe(cmd)
     @par.set(cmd)
-    puts "Exec(MDB):#{@par[:id]}"
+    puts Msg.color("Exec(MDB):#{@par[:id]}",5)
     @par[:select].each{|e1|
       case e1
       when Hash
         case e1['type']
         when 'break'
-          caption(["Proceed?",":[#{e1['label']}]"],1)
+          caption(["Proceed?",":#{e1['label']}"])
           if judge(e1['cond'])
-            puts "  ->  Skip"
+            result(-1)
             return self
           end
         when 'check'
           retr=(e1['retry']||1).to_i
-          line=[retr > 1 ? "Waiting for" : "Check"]
-          line << ":#{e1['label']} (#{retr})"
-          caption(line,1)
+          line=[retr > 1 ? "Waiting(#{retr})" : "Check",":#{e1['label']}"]
+          caption(line)
           unless judge(e1['cond'],retr)
             result(retr)
             return self
@@ -46,22 +44,15 @@ class McrObj
   end
 
   private
-  def caption(msgary,ind=0)
-    puts "  "*ind+Msg.color(msgary.shift,6)+msgary.shift
+  def caption(msgary)
+    print "  "+Msg.color(msgary.shift,6)+msgary.join('')+" "
   end
 
-  def condition(msg)
-    if @msg.include?(msg)
-      print "."
-    else
-      @msg << msg
-      print msg
-    end
-  end
-
-  def result(code,ind=1)
-    str="\n"+"  "*ind
+  def result(code)
+    str=" "
     case code
+    when -1
+      str << Msg.color("-> SKIP",3)
     when 0
       str << Msg.color("-> OK",2)
     when 1
@@ -73,14 +64,20 @@ class McrObj
   end
 
   def judge(conds,retr=1)
-    res=retr.times{|n|
+    @msg.clear
+    retr.times{|n|
       sleep 1 if n > 0
       conds.all?{|h|
           ins=h['ins']
           key=h['ref']
           crt=@par.subst(h['val'])
           if val=getstat(ins,key)
-            condition("   #{ins}:#{key} / <#{val}> for [#{crt}]")
+            msg="#{ins}:#{key} / <#{val}> for [#{crt}]"
+            if @msg.include?(msg)
+              print "."
+            else
+              @msg << msg
+            end
             if /[a-zA-Z]/ === crt
               /#{crt}/ === val
             else
@@ -92,8 +89,6 @@ class McrObj
           end
       } && break
     }.nil?
-    @msg.clear
-    res
   end
 
   def getstat(ins,id)

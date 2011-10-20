@@ -10,6 +10,7 @@ class McrDb < Db
       update(doc)
       doc.top.each{|e0|
         id=e0.attr2db(self)
+        select=((self[:select]||={})[id]||=[])
         e0.each{|e1,rep|
           case e1.name
           when 'par'
@@ -20,9 +21,13 @@ class McrDb < Db
             e1.each{|e2|
               (stat['cond']||=[]) << e2.to_h
             }
-            ((self[:select]||={})[id]||=[]) << stat
+            select << stat
           when 'exec'
-            ((self[:select]||={})[id]||=[]) << e1.to_h
+            cmd=[e1['name']]
+            e1.each{|e2|
+              cmd << e2.text
+            }
+            select << {'ins' => e1['ins'], 'cmd' => cmd}
             @v.msg{"COMMAND:[#{id}] #{e1.text}"}
           end
         }

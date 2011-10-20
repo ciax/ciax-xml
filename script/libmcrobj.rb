@@ -36,7 +36,9 @@ class McrObj
         end
         result(0)
       else
-        puts "  "+Msg.color("EXEC",3)+":#{@par.subst(e1['val'])}(#{e1['ins']})"
+        ins=e1['ins']
+        cmd=e1['cmd'].map{|v| @par.subst(v)}
+        puts "  "+Msg.color("EXEC",3)+":#{cmd}(#{ins})"
       end
     }
     self

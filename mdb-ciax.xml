@@ -8,7 +8,7 @@
       <check retry="5" label="Ready?">
         <stat ref="rdy" ins="crt">ON</stat>
       </check>
-      <exec ins="crt">runf</exec>
+      <exec ins="crt" name="runf"></exec>
       <check retry="40" label="Run end?">
         <stat ref="run" ins="crt">OFF</stat>
       </check>
@@ -24,7 +24,9 @@
       <check>
         <stat label="Ready?" ref="rdy" ins="crt">ON</stat>
       </check>
-      <exec ins="crt">run $1</exec>
+      <exec ins="crt" name="run">
+        <argv>$1</argv>
+      </exec>
       <check retry="120" label="Running?">
         <stat label="Running" ref="run" ins="crt">OFF</stat>
       </check>
@@ -40,7 +42,9 @@
       <check label="Ready?">
         <stat ref="rdy" ins="crt">ON</stat>
       </check>
-      <exec ins="crt">lift $1</exec>
+      <exec ins="crt" name="lift">
+        <argv>$1</argv>
+      </exec>
       <check label="Jacking" retry="40">
         <stat ref="jak" ins="crt">OFF</stat>
       </check>

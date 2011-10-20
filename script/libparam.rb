@@ -5,7 +5,8 @@ require 'librerange'
 
 class Param < ExHash
   attr_reader :list
-  def initialize(db) # command db
+  # command db (:label,:hidden,:alias,:select,:parameter)
+  def initialize(db)
     @v=Msg::Ver.new("param",2)
     @db=Msg.type?(db,Hash)
     label=db[:label].reject{|k,v| /true|1/ === (db[:hidden]||{})[k] }

@@ -18,27 +18,25 @@ class McrObj
     @par.set(cmd)
     title
     @par[:select].each{|e1|
-      case e1
-      when Hash
-        case e1['type']
-        when 'break'
-          caption(["Proceed?",":#{e1['label']}"])
-          if judge(e1['cond'])
-            result(-1)
-            return self
-          end
-        when 'check'
-          retr=(e1['retry']||1).to_i
-          line=[retr > 1 ? "Waiting(#{retr})" : "Check",":#{e1['label']}"]
-          caption(line)
-          unless judge(e1['cond'],retr)
-            result(retr)
-            return self
-          end
+      case e1['type']
+      when 'break'
+        caption(["Proceed?",":#{e1['label']}"])
+        if judge(e1['cond'])
+          result(-1)
+          return self
+        end
+        result(0)
+      when 'check'
+        retr=(e1['retry']||1).to_i
+        line=[retr > 1 ? "Waiting(#{retr})" : "Check",":#{e1['label']}"]
+        caption(line)
+        unless judge(e1['cond'],retr)
+          result(retr)
+          return self
         end
         result(0)
       else
-        puts "  "+Msg.color("EXEC",3)+":#{@par.subst(e1)}"
+        puts "  "+Msg.color("EXEC",3)+":#{@par.subst(e1['val'])}(#{e1['ins']})"
       end
     }
     self

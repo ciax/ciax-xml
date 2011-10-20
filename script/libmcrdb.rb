@@ -22,7 +22,7 @@ class McrDb < Db
             }
             ((self[:select]||={})[id]||=[]) << stat
           when 'exec'
-            ((self[:select]||={})[id]||=[]) << e1.text
+            ((self[:select]||={})[id]||=[]) << e1.to_h
             @v.msg{"COMMAND:[#{id}] #{e1.text}"}
           end
         }

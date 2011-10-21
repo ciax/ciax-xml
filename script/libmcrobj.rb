@@ -32,14 +32,14 @@ class McrObj
         caption(line)
         unless judge(e1['cond'],par,retr)
           result(retr)
-          return self
+          return
         end
         result(0)
       else
         cmd=e1['cmd'].map{|v| par.subst(v)}
         case ins=e1['ins']
         when 'mcr'
-          mcr(cmd)
+          mcr(cmd)||return
         else
           puts "  "*@ind+Msg.color("EXEC",3)+":#{cmd}(#{ins})"
         end
@@ -63,16 +63,20 @@ class McrObj
   def result(code)
     case code
     when -1
-      ary=[Msg.color("-> SKIP",3)]
+      puts Msg.color("-> SKIP",3)
     when 0
-      ary=[Msg.color("-> OK",2)]
+      puts Msg.color("-> OK",2)
     when 1
-      ary=@msg+[Msg.color("-> NG",1)]
+      puts Msg.color("-> NG",1)
+      prtc
     else
-      ary=@msg+[Msg.color("-> Timeout",1)]
+      puts Msg.color("-> Timeout",1)
+      prtc
     end
-    puts
-    puts ary.map{|s| "  "*(@ind+1)+s }.join("\n")
+  end
+
+  def prtc
+    puts @msg.map{|s| "  "*(@ind+1)+s }.join("\n")
   end
 
   def judge(conds,par,retr=1)

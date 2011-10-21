@@ -16,7 +16,8 @@ class McrObj
 
   def mcr(cmd)
     par=Param.new(@mdb).set(cmd)
-    title(par[:id])
+    title(cmd,'mcr')
+    @ind+=1
     par[:select].each{|e1|
       case e1['type']
       when 'break'
@@ -42,19 +43,17 @@ class McrObj
         when 'mcr'
           mcr(cmd)||return
         else
-          puts "  "*@ind+Msg.color("EXEC",3)+":#{cmd}(#{ins})"
+          title(cmd,ins)
         end
       end
     }
-    self
-  ensure
     @ind-=1
+    self
   end
 
   private
-  def title(id)
-    puts "  "*@ind+Msg.color("Exec(MDB)",5)+":#{id}"
-    @ind+=1
+  def title(cmd,ins)
+    puts "  "*@ind+Msg.color("EXEC",3)+":#{cmd.join(' ')}(#{ins})"
   end
 
   def caption(msgary)

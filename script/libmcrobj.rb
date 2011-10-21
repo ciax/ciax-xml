@@ -57,18 +57,18 @@ class McrObj
   end
 
   def result(code)
-    str=" "
     case code
     when -1
-      str << Msg.color("-> SKIP",3)
+      ary=[Msg.color("-> SKIP",3)]
     when 0
-      str << Msg.color("-> OK",2)
+      ary=[Msg.color("-> OK",2)]
     when 1
-      str << Msg.color("-> NG",1)
+      ary=@msg+[Msg.color("-> NG",1)]
     else
-      str << Msg.color("-> Timeout",1)
+      ary=@msg+[Msg.color("-> Timeout",1)]
     end
-    puts str
+    puts
+    puts ary.map{|s| "  "*(@ind+1)+s }.join("\n")
   end
 
   def judge(conds,retr=1)
@@ -80,7 +80,7 @@ class McrObj
           key=h['ref']
           crt=@par.subst(h['val'])
           if val=getstat(ins,key)
-            msg="#{ins}:#{key} / <#{val}> for [#{crt}]"
+            msg=Msg.color("#{ins}:#{key} / <#{val}> for [#{crt}]",11)
             if @msg.include?(msg)
               print "."
             else

@@ -86,6 +86,7 @@ class AppObj
           @view.upd.save
           @v.msg{"Status Updated(#{@view['stat']['time']})"}
         rescue UserError
+          warn $!
           Msg.alert(" in Command Thread")
           @buf.clear
         end

@@ -98,12 +98,12 @@ class << Msg
   end
 
   def alert(msg='alert') # Display only
-    Kernel.warn $!.to_s+color(msg,1)
+    Kernel.warn color(msg,1)
   end
 
   def err(*msg) # Raise User error (Invalid User input)
     msg[0]=color(msg[0],1)
-    raise UserError,$!.to_s+msg.join("\n")
+    raise UserError,msg.join("\n")
   end
 
   def abort(msg='abort')

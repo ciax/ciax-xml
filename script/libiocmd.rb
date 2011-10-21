@@ -6,7 +6,7 @@ module IoLog
   def startlog(id,ver=0)
     if id && ! ENV.key?('NOLOG')
       @logfile=VarDir+"/device_#{id}_v#{ver.to_i}.log"
-      @v.msg{"Init/Logging Start (#{id}),Ver #{ver.to_i}"}
+      @v.msg{"Init/Logging Start (#{id}/Ver.#{ver.to_i})"}
     end
     self
   end

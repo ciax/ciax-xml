@@ -36,6 +36,7 @@ class McrObj
         end
         result(0)
       else
+        @view.each{|k,v| v.refresh }
         cmd=e1['cmd'].map{|v| par.subst(v)}
         case ins=e1['ins']
         when 'mcr'
@@ -70,7 +71,7 @@ class McrObj
       puts Msg.color("-> NG",1)
       prtc
     else
-      puts Msg.color("-> Timeout",1)
+      puts Msg.color(" -> Timeout",1)
       prtc
     end
   end
@@ -89,22 +90,26 @@ class McrObj
           crt=par.subst(h['val'])
           if val=getstat(ins,key)
             msg=Msg.color("#{ins}:#{key} / <#{val}> for [#{crt}]",11)
-            if @msg.include?(msg)
-              print "."
-            else
-              @msg << msg
-            end
+            waiting(msg)
             if /[a-zA-Z]/ === crt
               /#{crt}/ === val
             else
               crt == val
             end
           else
-            puts "   #{ins} is not updated"
+            waiting(Msg.color("#{ins} is not updated",11))
             false
           end
       } && break
     }.nil?
+  end
+
+  def waiting(msg)
+    if @msg.include?(msg)
+      print "."
+    else
+      @msg << msg
+    end
   end
 
   def getstat(ins,id)

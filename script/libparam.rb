@@ -60,7 +60,11 @@ class Param < ExHash
   def validate(str,va=nil)
     if va
       Msg.err("No Parameter") unless str
-      num=eval(str)
+      begin
+        num=eval(str)
+      rescue SyntaxError
+        Msg.err("Parameter is not number")
+      end
       @v.msg{"Validate: [#{num}] Match? [#{va}]"}
       va.split(',').each{|r|
         break if ReRange.new(r) == num

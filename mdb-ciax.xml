@@ -18,16 +18,17 @@
     </command>
     <command id="run" label="Run to Tag [1-12]">
       <par>1:12</par>
-      <break>
-        <stat label="On Destination Tag?" ref="cpos" ins="crt">$1</stat>
+      <break label="On Destination Tag?">
+        <stat ref="cpos" ins="crt">$1</stat>
       </break>
-      <check>
-        <stat label="Ready?" ref="rdy" ins="crt">ON</stat>
+      <check label="Ready?">
+        <stat ref="rdy" ins="crt">ON</stat>
       </check>
       <exec ins="crt" name="run">
         <argv>$1</argv>
       </exec>
-      <check retry="120" label="Running?">
+      <exec ins="mcr" name="runf"></exec>
+      <check retry="120" label="Run end?">
         <stat label="Running" ref="run" ins="crt">OFF</stat>
       </check>
       <check label="On Destination Tag ?">

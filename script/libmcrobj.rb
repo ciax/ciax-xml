@@ -8,20 +8,20 @@ class McrObj
   attr_reader :line
   def initialize(id)
     @v=Msg::Ver.new("mcr",9)
-    @par=Param.new(McrDb.new(id))
+    @mdb=McrDb.new(id)
     @ind=0
     @msg=[]
     @view={}
   end
 
-  def exe(cmd)
-    @par.set(cmd)
-    title
-    @par[:select].each{|e1|
+  def mcr(cmd)
+    par=Param.new(@mdb).set(cmd)
+    title(par[:id])
+    par[:select].each{|e1|
       case e1['type']
       when 'break'
         caption(["Proceed?",":#{e1['label']}"])
-        if judge(e1['cond'])
+        if judge(e1['cond'],par)
           result(-1)
           return self
         end
@@ -30,15 +30,19 @@ class McrObj
         retr=(e1['retry']||1).to_i
         line=[retr > 1 ? "Waiting(#{retr})" : "Check",":#{e1['label']}"]
         caption(line)
-        unless judge(e1['cond'],retr)
+        unless judge(e1['cond'],par,retr)
           result(retr)
           return self
         end
         result(0)
       else
-        ins=e1['ins']
-        cmd=e1['cmd'].map{|v| @par.subst(v)}
-        puts "  "+Msg.color("EXEC",3)+":#{cmd}(#{ins})"
+        cmd=e1['cmd'].map{|v| par.subst(v)}
+        case ins=e1['ins']
+        when 'mcr'
+          mcr(cmd)
+        else
+          puts "  "*@ind+Msg.color("EXEC",3)+":#{cmd}(#{ins})"
+        end
       end
     }
     self
@@ -47,8 +51,8 @@ class McrObj
   end
 
   private
-  def title
-    puts "  "*@ind+Msg.color("Exec(MDB)",5)+":"+@par[:id]
+  def title(id)
+    puts "  "*@ind+Msg.color("Exec(MDB)",5)+":#{id}"
     @ind+=1
   end
 
@@ -71,14 +75,14 @@ class McrObj
     puts ary.map{|s| "  "*(@ind+1)+s }.join("\n")
   end
 
-  def judge(conds,retr=1)
+  def judge(conds,par,retr=1)
     @msg.clear
     retr.times{|n|
       sleep 1 if n > 0
       conds.all?{|h|
           ins=h['ins']
           key=h['ref']
-          crt=@par.subst(h['val'])
+          crt=par.subst(h['val'])
           if val=getstat(ins,key)
             msg=Msg.color("#{ins}:#{key} / <#{val}> for [#{crt}]",11)
             if @msg.include?(msg)
@@ -112,7 +116,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     ac=McrObj.new(id)
-    ac.exe(cmd)
+    ac.mcr(cmd)
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

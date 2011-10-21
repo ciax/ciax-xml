@@ -26,6 +26,7 @@ class AppObj
     @watch=watch_thread unless @event[:stat].empty?
     @main=command_thread
     @cl=Msg::List.new("== Internal Command ==")
+    @cl.add('st'=>"show row stat")
     @cl.add('sleep'=>"sleep [sec]")
     @cl.add('waitfor'=>"[key=val] (timeout=10)")
     upd_prompt
@@ -46,6 +47,8 @@ class AppObj
       k,v=cmd[1].split('=')
       @buf.wait_for(10){ @view['stat'][k] == v }
       @message="Waiting"
+    when 'st'
+      @message=@view['stat']
     else
       if @event.block_pattern === cmd.join(' ')
         @message="Blocking(#{@event.block_pattern.inspect})"

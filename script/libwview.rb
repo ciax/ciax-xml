@@ -7,11 +7,11 @@ require "libsql"
 # Status to Wview (String with attributes)
 class Wview < Rview
   def initialize(id,adb,field)
-    @as=AppStat.new(adb,field)
+    @stat=AppStat.new(adb,field)
     super(id)
     upd
-    @sym=SymStat.new(adb,@as).upd
-    @sql=Sql.new(id,@as)
+    @sym=SymStat.new(adb,@stat).upd
+    @sql=Sql.new(id,@stat)
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }
@@ -19,7 +19,7 @@ class Wview < Rview
 
   def upd
     @v.msg{"Status update"}
-    @stat.update(@as.upd)
+    @stat.upd
     self
   end
 

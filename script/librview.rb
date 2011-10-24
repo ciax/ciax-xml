@@ -7,7 +7,8 @@ class Rview < IoFile
   attr_reader :last
   def initialize(id=nil,host=nil)
     super('view',id,host)
-    @stat=self['stat']=ExHash.new
+    @stat||=ExHash.new
+    self['stat']=@stat
     @last=ExHash.new
     @elapse=Elapse.new(@stat)
   end

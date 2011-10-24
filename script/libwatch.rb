@@ -82,7 +82,7 @@ if __FILE__ == $0
     hash[k]=v
   }
   ARGV.clear
-  view=Rview.new.upd
+  view=Rview.new.load
   begin
     adb=InsDb.new(view['id']).cover_app
   rescue SelectID
@@ -90,7 +90,7 @@ if __FILE__ == $0
   end
   watch=Watch.new(adb,view).upd
   # For on change
-  view.upd(hash)
+  view['stat'].update(hash)
   # Print Wdb
   watch.upd
   print "Active? : "

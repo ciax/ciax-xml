@@ -113,7 +113,7 @@ class McrObj
 
   def getstat(ins,id)
     @view[ins]||=Rview.new(ins)
-    view=@view[ins].upd
+    view=@view[ins].load
     return unless view.update?
     view['msg'][id]||view['stat'][id]
   end

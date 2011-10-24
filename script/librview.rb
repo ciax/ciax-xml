@@ -26,15 +26,6 @@ class Rview < IoFile
     id == 'elapse' ? @elapse : @stat[id]
   end
 
-  def upd(stat=nil)
-    if stat
-      @stat.deep_update(stat)
-    else
-      load
-    end
-    self
-  end
-
   def refresh
     if update?
       @v.msg{"Status Updated"}
@@ -45,5 +36,5 @@ end
 
 if __FILE__ == $0
   abort "Usage: #{$0} [id] (host)" if ARGV.size < 1
-  puts Rview.new(*ARGV).upd
+  puts Rview.new(*ARGV).load
 end

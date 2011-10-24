@@ -24,10 +24,14 @@ class Wview < Rview
   end
 
   def save
+    @sym.upd
+    super
+  end
+
+  def flush
     if update?
       refresh
-      @sym.upd
-      super
+      save
       @sql.upd.flush
     end
    self

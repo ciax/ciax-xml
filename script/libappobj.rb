@@ -51,6 +51,7 @@ class AppObj
     when 'set'
       k,v=cmd[1..2]
       @view['stat'][k]=v
+      @view['stat']['time']="%.3f" % Time.now.to_f
       @view.save
       @message="Set #{k} = #{v}"
     when 'row'

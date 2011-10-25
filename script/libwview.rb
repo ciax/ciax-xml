@@ -9,8 +9,8 @@ class Wview < Rview
   def initialize(id,adb,field)
     @stat=AppStat.new(adb,field)
     super(id)
-    upd
     @sym=SymStat.new(adb,@stat).upd
+    upd
     @sql=Sql.new(id,@stat)
     ['msg','class'].each{|k|
       self[k]=@sym[k]

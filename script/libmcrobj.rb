@@ -46,13 +46,9 @@ class McrObj
         result(0)
       when 'mcr'
         cmd=e1['cmd'].map{|v| par.subst(v)}
-        if /true|1/ === e1['async']
-          (@threads[mid]||=[]) << Thread.new{
-            mcr(cmd)||return
-          }
-        else
+        recursive(mid,e1['async']){
           mcr(cmd)||return
-        end
+        }
       when 'exec'
         @view.each{|k,v| v.refresh }
         cmd=e1['cmd'].map{|v| par.subst(v)}
@@ -65,6 +61,16 @@ class McrObj
   end
 
   private
+  def recursive(mid,async)
+    if /true|1/ === async
+      (@threads[mid]||=[]) << Thread.new{
+        yield
+      }
+    else
+      yield
+    end
+  end
+
   def title(cmd,ins)
     puts "  "*@ind+Msg.color("EXEC",5)+":#{cmd.join(' ')}(#{ins})"
   end

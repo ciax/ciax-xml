@@ -84,21 +84,22 @@ class McrObj
     retr.times{|n|
       sleep 1 if n > 0
       conds.all?{|h|
-          ins=h['ins']
-          key=h['ref']
-          crt=par.subst(h['val'])
-          if val=getstat(ins,key)
-            msg=Msg.color("#{ins}:#{key} / <#{val}> for [#{crt}]",11)
-            waiting(msg)
-            if /[a-zA-Z]/ === crt
-              /#{crt}/ === val
-            else
-              crt == val
-            end
+        ins=h['ins']
+        key=h['ref']
+        inv=/true|1/ === h['inv'] ? '!' : false
+        crt=par.subst(h['val'])
+        if val=getstat(ins,key)
+          msg=Msg.color("#{ins}:#{key} / #{inv}<#{val}> for [#{crt}]",11)
+          waiting(msg)
+          if /[a-zA-Z]/ === crt
+            (/#{crt}/ === val) ^ inv
           else
-            waiting(Msg.color("#{ins} is not updated",11))
-            false
+            (crt == val) ^ inv
           end
+        else
+          waiting(Msg.color("#{ins} is not updated",11))
+          false
+        end
       } && break
     }.nil?
   end

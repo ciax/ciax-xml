@@ -13,6 +13,16 @@ class Rview < IoFile
     @elapse=Elapse.new(@stat)
   end
 
+  def stat(id)
+    id == 'elapse' ? @elapse : @stat[id]
+  end
+
+  def set(hash)
+    @stat.update(hash)
+    @stat['time']="%.3f" % Time.now.to_f
+    self
+  end
+
   def change?(id)
     @v.msg{"Compare(#{id}) current=[#{@stat[id]}] vs last=[#{@last[id]}]"}
     @stat[id] != @last[id]
@@ -20,10 +30,6 @@ class Rview < IoFile
 
   def update?
     change?('time')
-  end
-
-  def stat(id)
-    id == 'elapse' ? @elapse : @stat[id]
   end
 
   def refresh

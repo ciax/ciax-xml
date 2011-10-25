@@ -26,7 +26,7 @@ class AppObj
     @watch=watch_thread unless @event[:stat].empty?
     @main=command_thread
     @cl=Msg::List.new("== Internal Command ==")
-    @cl.add('set'=>"set value")
+    @cl.add('set'=>"[key=val] ..")
     @cl.add('row'=>"show row stat")
     @cl.add('sleep'=>"sleep [sec]")
     @cl.add('waitfor'=>"[key=val] (timeout=10)")
@@ -46,14 +46,16 @@ class AppObj
       @message="Sleeping"
     when 'waitfor'
       k,v=cmd[1].split('=')
-      @buf.wait_for(10){ @view['stat'][k] == v }
+      @buf.wait_for(10){ @view.stat(k) == v }
       @message="Waiting"
     when 'set'
-      k,v=cmd[1..2]
-      @view['stat'][k]=v
-      @view['stat']['time']="%.3f" % Time.now.to_f
-      @view.save
-      @message="Set #{k} = #{v}"
+      hash={}
+      cmd[1..-1].each{|s|
+        k,v=s.split('=')
+        hash[k]=v
+      }
+      @view.set(hash).save
+      @message="Set #{hash}"
     when 'row'
       @message=@view['stat']
     else

@@ -24,6 +24,12 @@ class Wview < Rview
     self
   end
 
+  def set(hash)
+    super
+    @sym.upd
+    self
+  end
+
   def flush
     if update?
       refresh
@@ -48,3 +54,4 @@ if __FILE__ == $0
     abort "Usage: #{$0} [id]\n#{$!}"
   end
 end
+

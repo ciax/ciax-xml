@@ -90,7 +90,7 @@ if __FILE__ == $0
   end
   watch=Watch.new(adb,view).upd
   # For on change
-  view['stat'].update(hash)
+  view.set(hash)
   # Print Wdb
   watch.upd
   print "Active? : "

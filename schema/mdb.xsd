@@ -26,6 +26,7 @@
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="mdb:break" />
           <xsd:element ref="mdb:check" />
+          <xsd:element ref="mdb:mcr" />
           <xsd:element ref="mdb:exec" />
         </xsd:choice>
       </xsd:sequence>
@@ -75,6 +76,7 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="mcr" type="mdb:command"></xsd:element>
   <xsd:element name="exec">
     <xsd:complexType>
       <xsd:complexContent>

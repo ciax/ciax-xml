@@ -10,30 +10,39 @@ class McrDb < Db
       update(doc)
       doc.top.each{|e0|
         id=e0.attr2db(self)
+        @v.msg{"MACRO:[#{id}]"}
         select=((self[:select]||={})[id]||=[])
         e0.each{|e1,rep|
+          attr=e1.to_h
+          attr['type'] = e1.name
           case e1.name
           when 'par'
             ((self[:parameter]||={})[id]||=[]) << e1.text
           when 'break','check'
-            stat=e1.to_h
-            stat['type'] = e1.name
             e1.each{|e2|
-              (stat['cond']||=[]) << e2.to_h
+              (attr['cond']||=[]) << e2.to_h
             }
-            select << stat
-          when 'exec'
-            cmd=[e1['name']]
-            e1.each{|e2|
-              cmd << e2.text
-            }
-            select << {'ins' => e1['ins'], 'cmd' => cmd}
-            @v.msg{"COMMAND:[#{id}] #{e1.text}"}
+            select << attr
+          when 'mcr','exec'
+            attr['cmd']=getcmd(e1)
+            attr.delete('name')
+            select << attr
+            @v.msg{"COMMAND:[#{e1['name']}]"}
           end
         }
       }
     }
   end
+
+  private
+  def getcmd(e1)
+    cmd=[e1['name']]
+    e1.each{|e2|
+      cmd << e2.text
+    }
+    cmd
+  end
+
 end
 
 if __FILE__ == $0

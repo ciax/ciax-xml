@@ -27,7 +27,7 @@
       <exec ins="crt" name="run">
         <argv>$1</argv>
       </exec>
-      <exec ins="mcr" name="runf"></exec>
+      <mcr name="runf" />
       <check retry="120" label="Run end?">
         <stat label="Running" ref="run" ins="crt">OFF</stat>
       </check>

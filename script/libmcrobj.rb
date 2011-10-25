@@ -36,15 +36,13 @@ class McrObj
           return
         end
         result(0)
-      else
+      when 'mcr'
+        cmd=e1['cmd'].map{|v| par.subst(v)}
+        mcr(cmd)||return
+      when 'exec'
         @view.each{|k,v| v.refresh }
         cmd=e1['cmd'].map{|v| par.subst(v)}
-        case ins=e1['ins']
-        when 'mcr'
-          mcr(cmd)||return
-        else
-          title(cmd,ins)
-        end
+        title(cmd,e1['ins'])
       end
     }
     @ind-=1
@@ -53,7 +51,7 @@ class McrObj
 
   private
   def title(cmd,ins)
-    puts "  "*@ind+Msg.color("EXEC",3)+":#{cmd.join(' ')}(#{ins})"
+    puts "  "*@ind+Msg.color("EXEC",5)+":#{cmd.join(' ')}(#{ins})"
   end
 
   def caption(msgary)

@@ -5,17 +5,19 @@ require "libparam"
 require "librview"
 
 class McrObj
-  attr_reader :line
   def initialize(mdb)
     @v=Msg::Ver.new("mcr",9)
     @mdb=Msg.type?(mdb,McrDb)
     @ind=0
+    @line=[]
     @msg=[]
     @view={}
     @threads={}
   end
 
   def mcr(mcmd)
+    return self if mcmd.empty?
+    @line.clear
     par=Param.new(@mdb).set(mcmd)
     title(mcmd,'mcr')
     mid=mcmd.join(':')
@@ -59,43 +61,48 @@ class McrObj
         title(cmd,e1['ins'])
       end
     }
-    @ind-=1
     @threads[mid].each{|t| t.join}
     self
+  ensure
+    @ind-=1
+  end
+
+  def to_s
+    @line.join("\n")
   end
 
   private
   def title(cmd,ins)
-    puts "  "*@ind+Msg.color("EXEC",5)+":#{cmd.join(' ')}(#{ins})"
+    @line << "  "*@ind+Msg.color("EXEC",5)+":#{cmd.join(' ')}(#{ins})"
   end
 
   def caption(msgary)
-    print "  "*@ind+Msg.color(msgary.shift,6)+msgary.join('')+" "
+    @line << "  "*@ind+Msg.color(msgary.shift,6)+msgary.join('')+" "
   end
 
   def result(code)
     case code
     when -1
-      puts Msg.color("-> SKIP",3)
+      @line.last << Msg.color("-> SKIP",3)
     when 0
-      puts Msg.color("-> OK",2)
+      @line.last << Msg.color("-> OK",2)
     when 1
-      puts Msg.color("-> NG",1)
+      @line.last << Msg.color("-> NG",1)
       prtc
     else
-      puts Msg.color(" -> Timeout",1)
+      @line.last << Msg.color(" -> Timeout",1)
       prtc
     end
   end
 
   def prtc
-    puts @msg.map{|s| "  "*(@ind+1)+s }.join("\n")
+    @msg.each{|s| @line << "  "*(@ind+1)+s }
   end
 
   def judge(conds,par,retr=1)
     @msg.clear
     retr.times{|n|
-      sleep 1 if n > 0
+      sleep 0.1 if n > 0
       conds.all?{|h|
         ins=h['ins']
         key=h['ref']
@@ -119,7 +126,7 @@ class McrObj
 
   def waiting(msg)
     if @msg.include?(msg)
-      print "."
+      @line.last << "."
     else
       @msg << msg
     end
@@ -140,6 +147,7 @@ if __FILE__ == $0
     mdb=McrDb.new(id)
     ac=McrObj.new(mdb)
     ac.mcr(cmd)
+    puts ac
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

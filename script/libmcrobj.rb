@@ -30,9 +30,15 @@ class McrObj
         end
         result(0)
       when 'check'
+        caption(["Check",":#{e1['label']}"])
+        unless judge(e1['cond'],par)
+          result(1)
+          return self
+        end
+        result(0)
+      when 'wait'
         retr=(e1['retry']||1).to_i
-        line=[retr > 1 ? "Waiting(#{retr})" : "Check",":#{e1['label']}"]
-        caption(line)
+        caption(["Waiting(#{retr})"])
         unless judge(e1['cond'],par,retr)
           result(retr)
           return

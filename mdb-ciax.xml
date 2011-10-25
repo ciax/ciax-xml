@@ -5,13 +5,13 @@
       <break label="On Tag?">
         <stat ins="crt" ref="cpos" inv="true">0</stat>
       </break>
-      <check retry="5" label="Ready?">
+      <wait retry="5" label="Ready?">
         <stat ref="rdy" ins="crt">ON</stat>
-      </check>
+      </wait>
       <exec ins="crt" name="runf"></exec>
-      <check retry="40" label="Run end?">
+      <wait retry="40" label="Run end?">
         <stat ref="run" ins="crt">OFF</stat>
-      </check>
+      </wait>
       <check label="Destination?">
         <stat ref="cpos" inv="true" ins="crt">0</stat>
       </check>
@@ -28,9 +28,9 @@
         <argv>$1</argv>
       </exec>
       <mcr name="runf" async="true" />
-      <check retry="120" label="Run end?">
+      <wait retry="120" label="Run end?">
         <stat label="Running" ref="run" ins="crt">OFF</stat>
-      </check>
+      </wait>
       <check label="On Destination Tag ?">
         <stat ref="cpos" ins="crt">$1</stat>
       </check>
@@ -46,9 +46,9 @@
       <exec ins="crt" name="lift">
         <argv>$1</argv>
       </exec>
-      <check label="Jacking" retry="40">
+      <wait label="Jacking" retry="40">
         <stat ref="jak" ins="crt">OFF</stat>
-      </check>
+      </wait>
       <check label="On Destination Level?">
         <stat ref="jpos" ins="crt">$1</stat>
       </check>

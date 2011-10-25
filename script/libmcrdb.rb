@@ -18,7 +18,7 @@ class McrDb < Db
           case e1.name
           when 'par'
             ((self[:parameter]||={})[id]||=[]) << e1.text
-          when 'break','check'
+          when 'break','check','wait'
             e1.each{|e2|
               (attr['cond']||=[]) << e2.to_h
             }

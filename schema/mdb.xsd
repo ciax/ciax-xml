@@ -26,6 +26,7 @@
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="mdb:break" />
           <xsd:element ref="mdb:check" />
+          <xsd:element ref="mdb:wait" />
           <xsd:element ref="mdb:mcr" />
           <xsd:element ref="mdb:exec" />
         </xsd:choice>
@@ -35,7 +36,7 @@
       <xsd:attribute name="argc" type="xsd:int" use="optional" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:attributeGroup name="stat">
+  <xsd:attributeGroup name="attr_stat">
     <xsd:attribute name="label" type="xsd:token" use="optional" />
     <xsd:attribute name="join">
       <xsd:simpleType>
@@ -52,7 +53,7 @@
       <xsd:sequence>
         <xsd:element ref="mdb:stat" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attributeGroup ref="mdb:stat" />
+      <xsd:attributeGroup ref="mdb:attr_stat" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="check">
@@ -60,7 +61,15 @@
       <xsd:sequence>
         <xsd:element ref="mdb:stat" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
-      <xsd:attributeGroup ref="mdb:stat" />
+      <xsd:attributeGroup ref="mdb:attr_stat" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="wait">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="mdb:stat" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+      <xsd:attributeGroup ref="mdb:attr_stat" />
       <xsd:attribute name="retry" type="xsd:int" use="optional" />
     </xsd:complexType>
   </xsd:element>

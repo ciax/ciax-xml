@@ -6,9 +6,9 @@ require "librview"
 
 class McrObj
   attr_reader :line
-  def initialize(id)
+  def initialize(mdb)
     @v=Msg::Ver.new("mcr",9)
-    @mdb=McrDb.new(id)
+    @mdb=Msg.type?(mdb,McrDb)
     @ind=0
     @msg=[]
     @view={}
@@ -46,9 +46,13 @@ class McrObj
         result(0)
       when 'mcr'
         cmd=e1['cmd'].map{|v| par.subst(v)}
-        recursive(mid,e1['async']){
+        if /true|1/ === e1['async']
+          (@threads[mid]||=[]) << Thread.new{
+            McrObj.new(@mdb).mcr(cmd)||return
+          }
+        else
           mcr(cmd)||return
-        }
+        end
       when 'exec'
         @view.each{|k,v| v.refresh }
         cmd=e1['cmd'].map{|v| par.subst(v)}
@@ -61,16 +65,6 @@ class McrObj
   end
 
   private
-  def recursive(mid,async)
-    if /true|1/ === async
-      (@threads[mid]||=[]) << Thread.new{
-        yield
-      }
-    else
-      yield
-    end
-  end
-
   def title(cmd,ins)
     puts "  "*@ind+Msg.color("EXEC",5)+":#{cmd.join(' ')}(#{ins})"
   end
@@ -143,7 +137,8 @@ if __FILE__ == $0
   id,*cmd=ARGV
   ARGV.clear
   begin
-    ac=McrObj.new(id)
+    mdb=McrDb.new(id)
+    ac=McrObj.new(mdb)
     ac.mcr(cmd)
   rescue SelectCMD
     Msg.exit(2)

@@ -20,12 +20,8 @@ class Wview < Rview
   def upd
     @v.msg{"Status update"}
     @stat.upd
-    self
-  end
-
-  def save
     @sym.upd
-    super
+    self
   end
 
   def flush

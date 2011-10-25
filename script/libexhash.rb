@@ -68,9 +68,18 @@ class ExHash < Hash
     when Hash
       vary=data.values
       idx=data.keys
-      if vary.any?{|v| v.kind_of?(Enumerable)} || data.size > 4
+      if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
           str << view_struct(data[i],i,indent)
+        }
+        return str
+      elsif  data.size > 2
+        idx.each_slice(2){|a|
+          line=""
+          a.each{|k|
+            line << "#{k.inspect}:#{data[k].inspect}\t"
+          }
+          str << "  " * indent + line + "\n"
         }
         return str
       end

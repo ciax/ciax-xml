@@ -12,11 +12,13 @@ class McrObj
     @ind=0
     @msg=[]
     @view={}
+    @threads={}
   end
 
-  def mcr(cmd)
-    par=Param.new(@mdb).set(cmd)
-    title(cmd,'mcr')
+  def mcr(mcmd)
+    par=Param.new(@mdb).set(mcmd)
+    title(mcmd,'mcr')
+    mid=mcmd.join(':')
     @ind+=1
     par[:select].each{|e1|
       case e1['type']
@@ -38,7 +40,13 @@ class McrObj
         result(0)
       when 'mcr'
         cmd=e1['cmd'].map{|v| par.subst(v)}
-        mcr(cmd)||return
+        if /true|1/ === e1['async']
+          (@threads[mid]||=[]) << Thread.new{
+            mcr(cmd)||return
+          }
+        else
+          mcr(cmd)||return
+        end
       when 'exec'
         @view.each{|k,v| v.refresh }
         cmd=e1['cmd'].map{|v| par.subst(v)}
@@ -46,6 +54,7 @@ class McrObj
       end
     }
     @ind-=1
+    @threads[mid].each{|t| t.join}
     self
   end
 

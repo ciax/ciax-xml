@@ -76,7 +76,15 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="mcr" type="mdb:command"></xsd:element>
+  <xsd:element name="mcr">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="mdb:command">
+          <xsd:attribute name="async" type="xsd:boolean" />
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="exec">
     <xsd:complexType>
       <xsd:complexContent>

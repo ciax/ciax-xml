@@ -27,33 +27,16 @@ class McrObj
   end
 
   def submcr(par,stat=nil)
-    mtitle(par[:cid],stat)
+    mtitle(par[:cmd],stat)
     @ind+=1
     par[:select].each{|e1|
       case e1['type']
       when 'break'
-        caption(["Proceed?",":#{e1['label']}"])
-        if judge(e1['cond'],par)
-          result(-1)
-          break
-        else
-          result(0)
-        end
+        judge("Proceed?",e1,par) && (ok("SKIP");break) || ok
       when 'check'
-        caption(["Check",":#{e1['label']}"])
-        if judge(e1['cond'],par)
-          result(0)
-        else
-          result(1)
-        end
+        judge("Check",e1,par) && ok || ng("NG")
       when 'wait'
-        retr=(e1['retry']||1).to_i
-        caption(["Waiting(#{retr})",":#{e1['label']}"])
-        if judge(e1['cond'],par,retr)
-          result(0)
-        else
-          result(retr)
-        end
+        judge("Waiting",e1,par) && ok || ng("Timeout")
       when 'mcr'
         sp=par.dup.set(e1['cmd'].map{|v| par.subst(v)})
         if /true|1/ === e1['async']
@@ -63,10 +46,10 @@ class McrObj
         end
       when 'exec'
         @view.each{|k,v| v.refresh }
-        sp=par.dup.set(e1['cmd'].map{|v| par.subst(v)})
-        title(sp[:cid],e1['ins'])
+        cmd=e1['cmd'].map{|v| par.subst(v)}
+        title(cmd,e1['ins'])
         @prompt.replace("mcr>Proceed?(Y/N)")
-        Thread.stop
+        Thread.stop if @int > 0
       end
     }
     self
@@ -92,58 +75,44 @@ class McrObj
   end
 
   private
-  def mtitle(cid,stat)
-    @line << "  "*@ind+Msg.color("MACRO",5)+":#{cid}"
+  def mtitle(cmd,stat)
+    @line << "  "*@ind+Msg.color("MACRO",3)+":#{cmd.join(' ')}"
     @line.last << "(#{stat})" if stat
   end
 
-  def title(cid,ins)
-    @line << "  "*@ind+Msg.color("EXEC",5)+":#{cid}(#{ins})"
+  def title(cmd,ins)
+    @line << "  "*@ind+Msg.color("EXEC",13)+":#{cmd.join(' ')}(#{ins})"
   end
 
-  def caption(msgary)
-    @line << "  "*@ind+Msg.color(msgary.shift,6)+msgary.join('')+" "
+  def ok(str="OK")
+    @line.last << Msg.color("-> "+str,2)
   end
 
-  def result(code)
-    case code
-    when -1
-      @line.last << Msg.color("-> SKIP",3)
-    when 0
-      @line.last << Msg.color("-> OK",2)
-    when 1
-      @line.last << Msg.color("-> NG",1)
-      prtc
-    else
-      @line.last << Msg.color(" -> Timeout",1)
-      prtc
-    end
-  end
-
-  def prtc
+  def ng(str)
+    @line.last << Msg.color("-> "+str,1)
     @msg.each{|s| @line << "  "*(@ind+1)+s }
     raise UserError,@line.join("\n")
   end
 
-  def judge(conds,par,retr=1)
+  def judge(msg,e,par)
+    @line << "  "*@ind+Msg.color(msg,6)+":#{e['label']} "
     @msg.clear
-    retr.times{|n|
+    (e['retry']||1).to_i.times{|n|
       sleep @int if n > 0
-      conds.all?{|h|
+      e['cond'].all?{|h|
         ins=h['ins']
         key=h['ref']
         inv=/true|1/ === h['inv'] ? '!' : false
         crt=par.subst(h['val'])
         if val=getstat(ins,key)
-          msg=Msg.color("#{ins}:#{key} / #{inv}<#{val}> for [#{crt}]",11)
-          waiting(msg)
+          waiting("#{ins}:#{key} / #{inv}<#{val}> for [#{crt}]")
           if /[a-zA-Z]/ === crt
             (/#{crt}/ === val) ^ inv
           else
             (crt == val) ^ inv
           end
         else
-          waiting(Msg.color("#{ins} is not updated",11))
+          waiting("#{ins} status has not been updated")
           false
         end
       } && break
@@ -151,8 +120,10 @@ class McrObj
   end
 
   def waiting(msg)
+    msg=Msg.color(msg,11)
     if @msg.include?(msg)
       @line.last << "."
+      @line.last.gsub!("..........","*")
     else
       @msg << msg
     end

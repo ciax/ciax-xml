@@ -24,8 +24,8 @@ class McrObj
     self
   end
 
-  def submcr(par)
-    title(par[:cid],'mcr')
+  def submcr(par,stat=nil)
+    mtitle(par[:cid],stat)
     @ind+=1
     par[:select].each{|e1|
       case e1['type']
@@ -53,18 +53,16 @@ class McrObj
           result(retr)
         end
       when 'mcr'
-        cmd=e1['cmd'].map{|v| par.subst(v)}
-        #        if /true|1/ === e1['async']
-        #          (@threads[mid]||=[]) << Thread.new{
-        #            McrObj.new(@mdb).mcr(cmd)
-        #          }
-        #        else
-        submcr(par.dup.set(cmd))
-        #        end
+        sp=par.dup.set(e1['cmd'].map{|v| par.subst(v)})
+        if /true|1/ === e1['async']
+          submcr(sp,'async')
+        else
+          submcr(sp)
+        end
       when 'exec'
         @view.each{|k,v| v.refresh }
-        cmd=e1['cmd'].map{|v| par.subst(v)}
-        title(cmd,e1['ins'])
+        sp=par.dup.set(e1['cmd'].map{|v| par.subst(v)})
+        title(sp[:cid],e1['ins'])
       end
     }
     self
@@ -82,6 +80,11 @@ class McrObj
   end
 
   private
+  def mtitle(cid,stat)
+    @line << "  "*@ind+Msg.color("MACRO",5)+":#{cid}"
+    @line.last << "(#{stat})" if stat
+  end
+
   def title(cid,ins)
     @line << "  "*@ind+Msg.color("EXEC",5)+":#{cid}(#{ins})"
   end

@@ -15,7 +15,11 @@ end
 Shell.new('mcr>'){|cmd|
   Thread.new{
     Thread.pass
-    ac.mcr(cmd)
+    begin
+      ac.mcr(cmd)
+    rescue
+      puts $!
+    end
   } unless cmd.empty?
   ac
 }

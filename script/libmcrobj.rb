@@ -5,9 +5,10 @@ require "libparam"
 require "librview"
 
 class McrObj
-  def initialize(mdb)
+  def initialize(mdb,int=1)
     @v=Msg::Ver.new("mcr",9)
     @mdb=Msg.type?(mdb,McrDb)
+    @int=int
     @ind=0
     @line=[]
     @msg=[]
@@ -16,7 +17,6 @@ class McrObj
   end
 
   def mcr(mcmd)
-    return self if mcmd.empty?
     @line.clear
     par=Param.new(@mdb).set(mcmd)
     title(mcmd,'mcr')
@@ -29,31 +29,32 @@ class McrObj
         if judge(e1['cond'],par)
           result(-1)
           return self
+        else
+          result(0)
         end
-        result(0)
       when 'check'
         caption(["Check",":#{e1['label']}"])
-        unless judge(e1['cond'],par)
+        if judge(e1['cond'],par)
+          result(0)
+        else
           result(1)
-          return self
         end
-        result(0)
       when 'wait'
         retr=(e1['retry']||1).to_i
-        caption(["Waiting(#{retr})"])
-        unless judge(e1['cond'],par,retr)
+        caption(["Waiting(#{retr})",":#{e1['label']}"])
+        if judge(e1['cond'],par,retr)
+          result(0)
+        else
           result(retr)
-          return
         end
-        result(0)
       when 'mcr'
         cmd=e1['cmd'].map{|v| par.subst(v)}
         if /true|1/ === e1['async']
           (@threads[mid]||=[]) << Thread.new{
-            McrObj.new(@mdb).mcr(cmd)||return
+            McrObj.new(@mdb).mcr(cmd)
           }
         else
-          mcr(cmd)||return
+          mcr(cmd)
         end
       when 'exec'
         @view.each{|k,v| v.refresh }
@@ -97,12 +98,13 @@ class McrObj
 
   def prtc
     @msg.each{|s| @line << "  "*(@ind+1)+s }
+    raise UserError,@line.join("\n")
   end
 
   def judge(conds,par,retr=1)
     @msg.clear
     retr.times{|n|
-      sleep 0.1 if n > 0
+      sleep @int if n > 0
       conds.all?{|h|
         ins=h['ins']
         key=h['ref']
@@ -145,9 +147,8 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    ac=McrObj.new(mdb)
-    ac.mcr(cmd)
-    puts ac
+    ac=McrObj.new(mdb,0)
+    puts ac.mcr(cmd).to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

@@ -12,11 +12,19 @@ class McrObj
     @line=[]
     @msg=[]
     @view={}
-    @threads={}
+    @threads=[]
   end
 
   def mcr(par)
     @line.clear
+    @threads << Thread.new{
+      Thread.pass
+      submcr(par)
+    }
+    self
+  end
+
+  def submcr(par)
     title(par[:cid],'mcr')
     @ind+=1
     par[:select].each{|e1|
@@ -25,7 +33,7 @@ class McrObj
         caption(["Proceed?",":#{e1['label']}"])
         if judge(e1['cond'],par)
           result(-1)
-          return self
+          break
         else
           result(0)
         end
@@ -46,20 +54,19 @@ class McrObj
         end
       when 'mcr'
         cmd=e1['cmd'].map{|v| par.subst(v)}
-#        if /true|1/ === e1['async']
-#          (@threads[mid]||=[]) << Thread.new{
-#            McrObj.new(@mdb).mcr(cmd)
-#          }
-#        else
-          mcr(par.dup.set(cmd))
-#        end
+        #        if /true|1/ === e1['async']
+        #          (@threads[mid]||=[]) << Thread.new{
+        #            McrObj.new(@mdb).mcr(cmd)
+        #          }
+        #        else
+        submcr(par.dup.set(cmd))
+        #        end
       when 'exec'
         @view.each{|k,v| v.refresh }
         cmd=e1['cmd'].map{|v| par.subst(v)}
         title(cmd,e1['ins'])
       end
     }
-#    @threads[mid].each{|t| t.join}
     self
   ensure
     @ind-=1
@@ -67,6 +74,11 @@ class McrObj
 
   def to_s
     @line.join("\n")
+  end
+
+  def join
+    @threads.each{|t| t.join}
+    self
   end
 
   private
@@ -146,7 +158,7 @@ if __FILE__ == $0
     mdb=McrDb.new(id)
     ac=McrObj.new(0)
     par=Param.new(mdb).set(cmd)
-    puts ac.mcr(par).to_s
+    puts ac.mcr(par).join.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

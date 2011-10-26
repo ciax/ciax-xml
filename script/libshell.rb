@@ -10,7 +10,8 @@ class Shell
       line=Readline.readline(prompt,true)||'interrupt'
       break if /^q/ === line
       begin
-        puts (yield line.split(' ')).to_s
+        str=(yield line.split(' ')).to_s
+        puts str unless str.empty?
       rescue SelectCMD
         puts cl.to_s
       rescue UserError

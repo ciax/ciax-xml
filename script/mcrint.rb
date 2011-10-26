@@ -13,13 +13,13 @@ rescue SelectID
   warn "Usage: #{$0} [mcr]"
   Msg.exit
 end
-Shell.new('mcr>'){|cmd|
-  unless cmd.empty?
+Shell.new(ac.prompt){|cmd|
+  if /Y|y/ === cmd[0]
+    ac.proceed
+  elsif cmd.empty?
+  else
     par.set(cmd)
-    Thread.new{
-      Thread.pass
-      ac.mcr(par)
-    }
+    ac.mcr(par)
   end
   ac
 }

@@ -5,6 +5,7 @@ require "libparam"
 require "librview"
 
 class McrObj
+  attr_reader :prompt
   def initialize(int=1)
     @v=Msg::Ver.new("mcr",9)
     @int=int
@@ -13,6 +14,7 @@ class McrObj
     @msg=[]
     @view={}
     @threads=[]
+    @prompt='mcr>'
   end
 
   def mcr(par)
@@ -63,6 +65,8 @@ class McrObj
         @view.each{|k,v| v.refresh }
         sp=par.dup.set(e1['cmd'].map{|v| par.subst(v)})
         title(sp[:cid],e1['ins'])
+        @prompt.replace("mcr>Proceed?(Y/N)")
+        Thread.stop
       end
     }
     self
@@ -75,7 +79,15 @@ class McrObj
   end
 
   def join
+    @threads.select!{|t| t.alive?}
     @threads.each{|t| t.join}
+    self
+  end
+
+  def proceed
+    @threads.select!{|t| t.alive?}
+    @threads.each{|t| t.run}
+    @prompt.replace "mcr>"
     self
   end
 
@@ -161,7 +173,7 @@ if __FILE__ == $0
     mdb=McrDb.new(id)
     ac=McrObj.new(0)
     par=Param.new(mdb).set(cmd)
-    puts ac.mcr(par).join.to_s
+    puts ac.mcr(par).proceed.join.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

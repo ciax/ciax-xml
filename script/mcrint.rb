@@ -6,20 +6,20 @@ require 'libshell'
 id=ARGV.shift
 ARGV.clear
 begin
+  ac=McrObj.new
   mdb=McrDb.new(id)
-  ac=McrObj.new(mdb)
+  par=Param.new(mdb)
 rescue SelectID
   warn "Usage: #{$0} [mcr]"
   Msg.exit
 end
 Shell.new('mcr>'){|cmd|
-  Thread.new{
-    Thread.pass
-    begin
-      ac.mcr(cmd)
-    rescue
-      puts $!
-    end
-  } unless cmd.empty?
+  unless cmd.empty?
+    par.set(cmd)
+    Thread.new{
+      Thread.pass
+      ac.mcr(par)
+    }
+  end
   ac
 }

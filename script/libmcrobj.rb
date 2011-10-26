@@ -5,9 +5,8 @@ require "libparam"
 require "librview"
 
 class McrObj
-  def initialize(mdb,int=1)
+  def initialize(int=1)
     @v=Msg::Ver.new("mcr",9)
-    @mdb=Msg.type?(mdb,McrDb)
     @int=int
     @ind=0
     @line=[]
@@ -16,11 +15,9 @@ class McrObj
     @threads={}
   end
 
-  def mcr(mcmd)
+  def mcr(par)
     @line.clear
-    par=Param.new(@mdb).set(mcmd)
-    title(mcmd,'mcr')
-    mid=mcmd.join(':')
+    title(par[:cid],'mcr')
     @ind+=1
     par[:select].each{|e1|
       case e1['type']
@@ -49,20 +46,20 @@ class McrObj
         end
       when 'mcr'
         cmd=e1['cmd'].map{|v| par.subst(v)}
-        if /true|1/ === e1['async']
-          (@threads[mid]||=[]) << Thread.new{
-            McrObj.new(@mdb).mcr(cmd)
-          }
-        else
-          mcr(cmd)
-        end
+#        if /true|1/ === e1['async']
+#          (@threads[mid]||=[]) << Thread.new{
+#            McrObj.new(@mdb).mcr(cmd)
+#          }
+#        else
+          mcr(par.dup.set(cmd))
+#        end
       when 'exec'
         @view.each{|k,v| v.refresh }
         cmd=e1['cmd'].map{|v| par.subst(v)}
         title(cmd,e1['ins'])
       end
     }
-    @threads[mid].each{|t| t.join}
+#    @threads[mid].each{|t| t.join}
     self
   ensure
     @ind-=1
@@ -73,8 +70,8 @@ class McrObj
   end
 
   private
-  def title(cmd,ins)
-    @line << "  "*@ind+Msg.color("EXEC",5)+":#{cmd.join(' ')}(#{ins})"
+  def title(cid,ins)
+    @line << "  "*@ind+Msg.color("EXEC",5)+":#{cid}(#{ins})"
   end
 
   def caption(msgary)
@@ -147,8 +144,9 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    ac=McrObj.new(mdb,0)
-    puts ac.mcr(cmd).to_s
+    ac=McrObj.new(0)
+    par=Param.new(mdb).set(cmd)
+    puts ac.mcr(par).to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

@@ -16,23 +16,23 @@ class Param < ExHash
     @list=Msg::List.new("== Command List==").add(label)
   end
 
-  def set(cmdary)
-    id=Msg.type?(cmdary,Array).first
+  def set(cmd)
+    id=Msg.type?(cmd,Array).first
     unless @alias.key?(id)
       raise SelectCMD,("No such CMD [#{id}]\n"+@list.to_s)
     end
-    @v.msg{"SetPar: #{cmdary}"}
-    @cmdary=cmdary.dup
+    @v.msg{"SetPar: #{cmd}"}
     self[:id]=id
-    self[:cid]=cmdary.join(':')
+    self[:cmd]=cmd.dup
+    self[:cid]=cmd.join(':')
     @db.each{|k,v|
       self[k]=v[@alias[id]]
     }
     if par=self[:parameter]
-      unless par.size < cmdary.size
+      unless par.size < cmd.size
         Msg.err("Parameter shortage",@list[id])
       end
-      ary=cmdary[1..-1]
+      ary=cmd[1..-1]
       par.each{|r|
         validate(ary.shift,r)
       }
@@ -46,8 +46,8 @@ class Param < ExHash
     begin
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        @v.msg{"Param No.#{i} = [#{@cmdary[i]}]"}
-        @cmdary[i] || Msg.err(" No substitute data ($#{i})")
+        @v.msg{"Param No.#{i} = [#{self[:cmd][i]}]"}
+        self[:cmd][i] || Msg.err(" No substitute data ($#{i})")
       }
       Msg.err("Nil string") if str == ''
       str

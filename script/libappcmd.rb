@@ -20,7 +20,7 @@ class AppCmd < Array
           when String
             cmd << e2
           when Hash
-            str=@par.subst(e2['val'])
+            str=e2['val']
             str = e2['format'] % eval(str) if e2['format']
             @v.msg{"Calculated [#{str}]"}
             cmd << str

@@ -99,24 +99,30 @@ class McrObj
     @msg.clear
     (e['retry']||1).to_i.times{|n|
       sleep @int if n > 0
-      e['cond'].all?{|h|
-        ins=h['ins']
-        key=h['ref']
-        inv=/true|1/ === h['inv'] ? '!' : false
-        crt=par.subst(h['val'])
-        if val=getstat(ins,key)
-          waiting("#{ins}:#{key} / #{inv}<#{val}> for [#{crt}]")
-          if /[a-zA-Z]/ === crt
-            (/#{crt}/ === val) ^ inv
-          else
-            (crt == val) ^ inv
-          end
-        else
-          waiting("#{ins} status has not been updated")
-          false
-        end
-      } && break
+      if c=e['any']
+        c.any?{|h| condition(h,par)} && break
+      elsif c=e['all']
+        c.all?{|h| condition(h,par)} && break
+      end
     }.nil?
+  end
+
+  def condition(h,par)
+    ins=h['ins']
+    key=h['ref']
+    inv=/true|1/ === h['inv'] ? '!' : false
+    crt=par.subst(h['val'])
+    if val=getstat(ins,key)
+      waiting("#{ins}:#{key} / #{inv}<#{val}> for [#{crt}]")
+      if /[a-zA-Z]/ === crt
+        (/#{crt}/ === val) ^ inv
+      else
+        (crt == val) ^ inv
+      end
+    else
+      waiting("#{ins} status has not been updated")
+      false
+    end
   end
 
   def waiting(msg)
@@ -143,7 +149,7 @@ if __FILE__ == $0
   begin
     mdb=McrDb.new(id)
     ac=McrObj.new(0)
-    par=Param.new(mdb).set(cmd)
+    puts par=Param.new(mdb).set(cmd)
     puts ac.mcr(par).proceed.join.to_s
   rescue SelectCMD
     Msg.exit(2)

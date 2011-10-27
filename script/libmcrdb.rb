@@ -19,8 +19,9 @@ class McrDb < Db
           when 'par'
             ((self[:parameter]||={})[id]||=[]) << e1.text
           when 'break','check','wait'
+            join=e1['join']||'all'
             e1.each{|e2|
-              (attr['cond']||=[]) << e2.to_h
+              (attr[join]||=[]) << e2.to_h
             }
             select << attr
           when 'mcr','exec'

@@ -32,13 +32,13 @@ class McrObj
     par[:select].each{|e1|
       case e1['type']
       when 'break'
-        judge("Proceed?",e1,par) && (ok("SKIP");break) || ok
+        judge("Proceed?",e1) && (ok("SKIP");break) || ok
       when 'check'
-        judge("Check",e1,par) && ok || ng("NG")
+        judge("Check",e1) && ok || ng("NG")
       when 'wait'
-        judge("Waiting",e1,par) && ok || ng("Timeout")
+        judge("Waiting",e1) && ok || ng("Timeout")
       when 'mcr'
-        sp=par.dup.set(e1['cmd'].map{|v| par.subst(v)})
+        sp=par.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
           submcr(sp,'async')
         else
@@ -46,8 +46,7 @@ class McrObj
         end
       when 'exec'
         @view.each{|k,v| v.refresh }
-        cmd=e1['cmd'].map{|v| par.subst(v)}
-        title(cmd,e1['ins'])
+        title(e1['cmd'],e1['ins'])
         @prompt.replace("mcr>Proceed?(Y/N)")
         Thread.stop if @int > 0
       end
@@ -94,24 +93,24 @@ class McrObj
     raise UserError,@line.join("\n")
   end
 
-  def judge(msg,e,par)
+  def judge(msg,e)
     @line << "  "*@ind+Msg.color(msg,6)+":#{e['label']} "
     @msg.clear
     (e['retry']||1).to_i.times{|n|
       sleep @int if n > 0
       if c=e['any']
-        c.any?{|h| condition(h,par)} && break
+        c.any?{|h| condition(h)} && break
       elsif c=e['all']
-        c.all?{|h| condition(h,par)} && break
+        c.all?{|h| condition(h)} && break
       end
     }.nil?
   end
 
-  def condition(h,par)
+  def condition(h)
     ins=h['ins']
     key=h['ref']
     inv=/true|1/ === h['inv'] ? '!' : false
-    crt=par.subst(h['val'])
+    crt=h['val']
     if val=getstat(ins,key)
       waiting("#{ins}:#{key} / #{inv}<#{val}> for [#{crt}]")
       if /[a-zA-Z]/ === crt

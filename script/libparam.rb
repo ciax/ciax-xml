@@ -74,3 +74,14 @@ class Param < ExHash
     str
   end
 end
+
+if __FILE__ == $0
+  require 'libinsdb'
+  begin
+    db=InsDb.new(ARGV.shift).cover_app
+    puts Param.new(db[:command]).set(ARGV)
+  rescue
+    warn "USAGE: #{$0} [ins]"
+    Msg.exit
+  end
+end

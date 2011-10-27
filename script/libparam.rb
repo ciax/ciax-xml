@@ -12,7 +12,7 @@ class Param < ExHash
     label=db[:label].reject{|k,v| /true|1/ === (db[:hidden]||{})[k] }
     @alias=db[:alias]||{}
     @alias.each{|k,v| label[k]=label.delete(v) }
-    db[:select].each{|k,v| @alias[k]=k} unless db.key?(:alias)
+    db[:select].keys.each{|k| @alias[k]=k} unless db.key?(:alias)
     @list=Msg::List.new("== Command List==").add(label)
   end
 
@@ -25,9 +25,10 @@ class Param < ExHash
     self[:id]=id
     self[:cmd]=cmd.dup
     self[:cid]=cmd.join(':')
-    @db.each{|k,v|
-      self[k]=v[@alias[id]] if Symbol === k
+    [:label,:parameter].each{|k,v|
+      self[k]=@db[k][@alias[id]] if @db.key?(k)
     }
+    self[:select]=deep_subst(@db[:select][@alias[id]])
     if par=self[:parameter]
       unless par.size < cmd.size
         Msg.err("Parameter shortage",@list[id])
@@ -54,6 +55,24 @@ class Param < ExHash
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end
+  end
+
+  def deep_subst(data)
+    case data
+    when Array
+      res=[]
+      data.each{|v|
+        res << deep_subst(v)
+      }
+    when Hash
+      res={}
+      data.each{|k,v|
+        res[k]=deep_subst(v)
+      }
+    else
+      res=subst(data)
+    end
+    res
   end
 
   private

@@ -26,7 +26,7 @@ class Param < ExHash
     self[:cmd]=cmd.dup
     self[:cid]=cmd.join(':')
     @db.each{|k,v|
-      self[k]=v[@alias[id]]
+      self[k]=v[@alias[id]] if Symbol === k
     }
     if par=self[:parameter]
       unless par.size < cmd.size

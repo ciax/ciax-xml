@@ -25,14 +25,12 @@ class Param < ExHash
     self[:id]=id
     self[:cmd]=cmd.dup
     self[:cid]=cmd.join(':')
-    [:label,:parameter].each{|k,v|
-      self[k]=@db[k][@alias[id]] if @db.key?(k)
+    org=@alias[id]
+    [:label,:select].each{|k,v|
+      self[k]=deep_subst(@db[k][org])
     }
-    self[:select]=deep_subst(@db[:select][@alias[id]])
-    if par=self[:parameter]
-      unless par.size < cmd.size
-        Msg.err("Parameter shortage",@list[id])
-      end
+    if @db.key?(:parameter) && par=@db[:parameter][org]
+      Msg.err("Parameter shortage",@list[id]) unless par.size < cmd.size
       ary=cmd[1..-1]
       par.each{|r|
         validate(ary.shift,r)
@@ -57,6 +55,7 @@ class Param < ExHash
     end
   end
 
+  private
   def deep_subst(data)
     case data
     when Array
@@ -75,7 +74,6 @@ class Param < ExHash
     res
   end
 
-  private
   def validate(str,va=nil)
     if va
       Msg.err("No Parameter") unless str
@@ -98,9 +96,16 @@ if __FILE__ == $0
   require 'libinsdb'
   begin
     db=InsDb.new(ARGV.shift).cover_app
-    puts Param.new(db[:command]).set(ARGV)
+    case ARGV.shift
+    when 'app'
+      puts Param.new(db[:command]).set(ARGV)
+    when 'frm'
+      puts Param.new(db.cover_frm[:cmdframe]).set(ARGV)
+    else
+      raise "No type selected (app|frm)"
+    end
   rescue
-    warn "USAGE: #{$0} [ins]"
+    warn "USAGE: #{$0} [id] [app|frm] [cmd] (par)"
     Msg.exit
   end
 end

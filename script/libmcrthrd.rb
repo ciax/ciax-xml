@@ -11,27 +11,30 @@ class McrMan
     @view=[]
     @prompt="#{id}>"
     @id=id
-    @current=nil
+    @current=0
+    @threads=[]
   end
 
   def exec(cmd)
-    threads=Thread.list
     case cmd[0]
     when nil
       return self
     when 'list'
-      raise UserError,"#{Thread.list}"
-    when /^[0-9]+$/ && threads.size > cmd[0].to_i
-      @current=threads[cmd[0].to_i]
+      raise UserError,"#{@threads}"
+    when /^[0-9]+$/
+      @current=cmd[0].to_i
     else
-      @current=McrThrd.new(@view,@par.set(cmd))
+      @threads << McrThrd.new(@view,@par.set(cmd))
+      @current=@threads.size
     end
-    @prompt.replace(@id+':'+@current.prompt)
+    th=@threads[@current]
+    stat= th ? "(#{th.status})" : "(end)"
+    @prompt.replace(@id+":[#@current]"+stat+">")
     self
   end
 
   def to_s
-    @current.to_s
+    @threads[@current-1].to_s
   end
 end
 
@@ -42,10 +45,10 @@ class McrThrd < Thread
     Msg.type?(par,Param)
     @int=int
     @ind=0
-    @line=[]
+    @line=self[:line]=[]
     @msg=[]
     @view=view
-    @prompt='mcr>'
+    @prompt=self[:prompt]=par[:cid]+'>'
     super(par.dup){|par|submcr(par)}
   end
 
@@ -71,7 +74,7 @@ class McrThrd < Thread
       when 'exec'
         @view.each{|k,v| v.refresh }
         title(e1['cmd'],e1['ins'])
-        @prompt.replace("mcr>Proceed?(Y/N)")
+        @prompt.replace(par[:cid]+">Proceed?(Y/N)")
         Thread.stop if @int > 0
       end
     }

@@ -9,8 +9,8 @@ class McrMan
   def initialize(id)
     @par=Param.new(McrDb.new(id))
     @view={}
-    @prompt="#{id}>"
     @id=id
+    @prompt="#@id>"
     @current=0
     @threads=[]
   end
@@ -22,17 +22,34 @@ class McrMan
       raise UserError,"#{@threads}"
     when /^[0-9]+$/
       i=cmd[0].to_i
-      raise(UserError,"No Thread") if @threads.size < i
+      raise(UserError,"No Thread") if @threads.size < i || i < 1
       @current=i
     else
-      @threads << McrThrd.new(@view,@par.set(cmd))
-      @current=@threads.size
+      if alive?
+        query(cmd[0])
+      else
+        @threads << McrThrd.new(@view,@par.set(cmd))
+        @current=@threads.size
+      end
     end
     if @current > 0
-      stat=current.alive? ? current.prompt : "(done)>"
+      stat=alive? ? current.prompt : "(done)>"
       @prompt.replace("#@id[#@current]#{stat}")
     end
     self
+  end
+
+  def query(str)
+    case str
+    when /^y/i
+      current.run
+    when /^n/i
+      current.kill
+    end
+  end
+
+  def alive?
+    current && current.alive?
   end
 
   def current
@@ -117,8 +134,8 @@ class McrThrd < Thread
 
   def query
     return if @int == 0
-    prom=@prompt
-    @prompt.replace(">"+Msg.color("Proceed?(y/n)",9))
+    prom=@prompt.dup
+    @prompt << Msg.color("Proceed?(y/n)",9)
     Thread.stop
     @prompt.replace prom
   end

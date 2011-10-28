@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'json'
-class ExHash < Hash
+module ModExh
+  # module which includes this should be Hash
   def to_s
     view_struct(self)
   end
@@ -13,7 +14,7 @@ class ExHash < Hash
     if str && !str.empty?
       deep_update(JSON.load(str))
     else
-      warn "No status at ExHash::update_j()"
+      warn "No status at ModExH::update_j()"
     end
     self
   end

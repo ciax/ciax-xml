@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libexhash'
+require 'libmodexh'
 require 'librerange'
 
-class Param < ExHash
+class Param < Hash
+  include ModExh
   attr_reader :list
   # command db (:label,:select,:parameter)
   # app command db (:alias,:hidden)

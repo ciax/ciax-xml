@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libexhash"
+require "libmodexh"
 require "libxmldoc"
 
-class Db < ExHash
+class Db < Hash
+  include ModExh
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def initialize(type)
     @v=Msg::Ver.new(type,5)

@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libexhash"
+require "libmodexh"
 
-class IoFile < ExHash
+class IoFile < Hash
+  include ModExh
   def initialize(type,id=nil,host=nil)
     @v=Msg::Ver.new(type,6)
     if id

@@ -1,9 +1,11 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libmodexh"
 require "libsymdb"
 require "libappstat"
 # Status to Wview (String with attributes)
-class SymStat < ExHash
+class SymStat < Hash
+  include ModExh
   def initialize(adb,stat)
     @v=Msg::Ver.new('symbol',2)
     ads=Msg.type?(adb,AppDb)[:status]

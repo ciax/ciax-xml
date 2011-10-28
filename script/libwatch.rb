@@ -1,10 +1,8 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libmodexh'
 require 'librerange'
 require 'libelapse'
 class Watch < Hash
-  include ModExh
   def initialize(adb,view)
     @v=Msg::Ver.new("watch",12)
     Msg.type?(adb,AppDb)

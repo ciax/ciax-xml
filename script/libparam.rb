@@ -1,10 +1,8 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libmodexh'
 require 'librerange'
 
 class Param < Hash
-  include ModExh
   attr_reader :list
   # command db (:label,:select,:parameter)
   # app command db (:alias,:hidden)

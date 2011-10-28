@@ -9,7 +9,7 @@ class Rview < IoFile
     super('view',id,host)
     @stat||={}
     self['stat']=@stat
-    @last=Hash.new.extend(ModExh)
+    @last={}
     @elapse=Elapse.new(@stat)
   end
 
@@ -35,7 +35,7 @@ class Rview < IoFile
   def refresh
     if update?
       @v.msg{"Status Updated"}
-      @last.deep_update(@stat)
+      @last.update(@stat)
     end
   end
 end

@@ -1,9 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libmodexh"
 
 class AppStat < Hash
-  include ModExh
   def initialize(adb,field)
     @v=Msg::Ver.new("app/stat",9)
     Msg.type?(adb,AppDb)

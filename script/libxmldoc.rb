@@ -1,10 +1,8 @@
 #!/usr/bin/ruby
 require "libxmlgn"
-require "libmodexh"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  include ModExh
   attr_reader :top
   def initialize(dbname = nil,id = nil)
     @v=Msg::Ver.new("xmldoc",4)

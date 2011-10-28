@@ -5,7 +5,7 @@ class Sql < Array
   def initialize(table_id,stat,dbname='ciax')
     @v=Msg::Ver.new("sql",6)
     @tid=table_id
-    @stat=Msg.type?(stat,ModExh)
+    @stat=Msg.type?(stat,Hash)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
   end
 

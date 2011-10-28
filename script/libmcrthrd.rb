@@ -95,33 +95,36 @@ class McrThrd < Thread
 
   private
   def mtitle(cmd,stat=nil)
-    @line << "  "*@ind+Msg.color("MACRO",3)+":#{cmd.join(' ')}"
-    @line.last << "(#{stat})" if stat
+    push Msg.color("MACRO",3)+":#{cmd.join(' ')}"
+    add "(#{stat})" if stat
   end
 
   def title(cmd,ins)
-    @line << "  "*@ind+Msg.color("EXEC",13)+":#{cmd.join(' ')}(#{ins})"
+    push Msg.color("EXEC",13)+":#{cmd.join(' ')}(#{ins})"
   end
 
   def ok(str="OK")
-    @line.last << Msg.color("-> "+str,2)
+    add Msg.color("-> "+str,2)
   end
 
   def ng(str)
-    @line.last << Msg.color("-> "+str,1)
-    @msg.each{|s| @line << "  "*(@ind+1)+s }
-    raise UserError,@line.join("\n")
+    add Msg.color("-> "+str,1)
+    @ind+=1
+    @msg.each{|s| push s }
+    @ind-=1
+    raise UserError,to_s
   end
 
   def query
+    return if @int == 0
     prom=@prompt
     @prompt.replace(">"+Msg.color("Proceed?(y/n)",9))
-    Thread.stop if @int > 0
+    Thread.stop
     @prompt.replace prom
   end
 
   def judge(msg,e)
-    @line << "  "*@ind+Msg.color(msg,6)+":#{e['label']} "
+    push Msg.color(msg,6)+":#{e['label']} "
     @msg.clear
     (e['retry']||1).to_i.times{|n|
       sleep @int if n > 0
@@ -154,7 +157,7 @@ class McrThrd < Thread
   def waiting(msg)
     msg=Msg.color(msg,11)
     if @msg.include?(msg)
-      @line.last << "."
+      add "."
       @line.last.gsub!("..........","*")
     else
       @msg << msg
@@ -166,6 +169,14 @@ class McrThrd < Thread
     view=@view[ins].load
     return unless view.update?
     view['msg'][id]||view['stat'][id]
+  end
+
+  def push(str)
+    @line << "  "*@ind+str
+  end
+
+  def add(str)
+    @line.last << str
   end
 end
 

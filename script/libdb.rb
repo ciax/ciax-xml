@@ -37,6 +37,6 @@ class Db < Hash
   end
 
   def path(ary)
-    ary.inject(self){|d,s| d[s.to_sym]}
+    ary.inject(self){|d,s| d[s.to_sym]}.extend(ModExh)
   end
 end

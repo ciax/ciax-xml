@@ -9,7 +9,7 @@ class Rview < IoFile
     super('view',id,host)
     @stat||={}
     self['stat']=@stat
-    @last={}.extend(ModExh)
+    @last=Hash.new.extend(ModExh)
     @elapse=Elapse.new(@stat)
   end
 

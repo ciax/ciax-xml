@@ -68,7 +68,7 @@ class Field < IoFile
 
   def savekey(keylist,tag=nil)
     Msg.err("No File Name")  unless @base
-    hash={}.extend(ModExh)
+    hash=Hash.new.extend(ModExh)
     keylist.each{|k|
       if key?(k)
         hash[k]=self[k]

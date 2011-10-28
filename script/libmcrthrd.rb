@@ -18,23 +18,29 @@ class McrMan
   def exec(cmd)
     case cmd[0]
     when nil
-      return self
     when 'list'
       raise UserError,"#{@threads}"
     when /^[0-9]+$/
-      @current=cmd[0].to_i
+      i=cmd[0].to_i
+      raise(UserError,"No Thread") if @threads.size < i
+      @current=i
     else
       @threads << McrThrd.new(@view,@par.set(cmd))
       @current=@threads.size
     end
-    th=@threads[@current]
-    stat= th ? "(#{th.status})" : "(end)"
-    @prompt.replace(@id+":[#@current]"+stat+">")
+    if @current > 0
+      stat=current.alive? ? current.prompt : "(done)>"
+      @prompt.replace("#@id[#@current]#{stat}")
+    end
     self
   end
 
+  def current
+    @threads[@current-1]
+  end
+
   def to_s
-    @threads[@current-1].to_s
+    current.to_s
   end
 end
 
@@ -44,7 +50,7 @@ class McrThrd < Thread
     @v=Msg::Ver.new("mcr",9)
     @view=Msg.type?(view,Hash)
     Msg.type?(par,Param)
-    Thread.abort_on_exception=true
+    #Thread.abort_on_exception=true
     @int=int
     @ind=0
     @line=self[:line]=[]
@@ -75,8 +81,7 @@ class McrThrd < Thread
       when 'exec'
         @view.each{|k,v| v.refresh }
         title(e1['cmd'],e1['ins'])
-        @prompt.replace(par[:cid]+">Proceed?(Y/N)")
-        Thread.stop if @int > 0
+        query
       end
     }
     self
@@ -106,6 +111,13 @@ class McrThrd < Thread
     @line.last << Msg.color("-> "+str,1)
     @msg.each{|s| @line << "  "*(@ind+1)+s }
     raise UserError,@line.join("\n")
+  end
+
+  def query
+    prom=@prompt
+    @prompt.replace(">"+Msg.color("Proceed?(y/n)",9))
+    Thread.stop if @int > 0
+    @prompt.replace prom
   end
 
   def judge(msg,e)

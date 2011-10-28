@@ -8,7 +8,7 @@ class McrMan
   attr_reader :prompt
   def initialize(id)
     @par=Param.new(McrDb.new(id))
-    @view=[]
+    @view={}
     @prompt="#{id}>"
     @id=id
     @current=0
@@ -42,12 +42,13 @@ class McrThrd < Thread
   attr_reader :prompt
   def initialize(view,par,int=1)
     @v=Msg::Ver.new("mcr",9)
+    @view=Msg.type?(view,Hash)
     Msg.type?(par,Param)
+    Thread.abort_on_exception=true
     @int=int
     @ind=0
     @line=self[:line]=[]
     @msg=[]
-    @view=view
     @prompt=self[:prompt]=par[:cid]+'>'
     super(par.dup){|par|submcr(par)}
   end

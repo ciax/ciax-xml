@@ -28,7 +28,7 @@ class McrMan
       if alive?
         query(cmd[0])
       else
-        @threads << McrThrd.new(@view,@par.set(cmd))
+        McrThrd.new(@threads,@view,@par.set(cmd))
         @current=@threads.size
       end
     end
@@ -63,8 +63,9 @@ end
 
 class McrThrd < Thread
   attr_reader :prompt
-  def initialize(view,par,int=1)
+  def initialize(threads,view,par,int=1)
     @v=Msg::Ver.new("mcr",9)
+    @threads=Msg.type?(threads,Array)
     @view=Msg.type?(view,Hash)
     Msg.type?(par,Param)
     #Thread.abort_on_exception=true
@@ -74,6 +75,7 @@ class McrThrd < Thread
     @msg=[]
     @prompt=self[:prompt]=par[:cid]+'>'
     super(par.dup){|par|submcr(par)}
+    @threads << self
   end
 
   def submcr(par)
@@ -91,7 +93,7 @@ class McrThrd < Thread
         sp=par.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
           mtitle(e1['cmd'],'async')
-          submcr(sp)
+          McrThrd.new(@threads,@view,sp)
         else
           submcr(sp)
         end

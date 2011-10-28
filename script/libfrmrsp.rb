@@ -45,6 +45,7 @@ class FrmRsp
       @v.msg{"Send Only"}
       @sel[:select]=nil
     end
+    @v.msg{"Update at #{@field['time']}"}
     self
   end
 

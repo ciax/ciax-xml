@@ -5,7 +5,9 @@ require 'librerange'
 
 class Param < ExHash
   attr_reader :list
-  # command db (:label,:hidden,:alias,:select,:parameter)
+  # command db (:label,:select,:parameter)
+  # app command db (:alias,:hidden)
+  # frm command db (:nocache,:response)
   def initialize(db)
     @v=Msg::Ver.new("param",2)
     @db=Msg.type?(db,Hash)
@@ -26,8 +28,8 @@ class Param < ExHash
     self[:cmd]=cmd.dup
     self[:cid]=cmd.join(':')
     org=@alias[id]
-    [:label,:select].each{|k,v|
-      self[k]=deep_subst(@db[k][org])
+    [:label,:select,:nocache,:response].each{|k,v|
+      self[k]=deep_subst(@db[k][org]) if @db.key?(k)
     }
     if @db.key?(:parameter) && par=@db[:parameter][org]
       Msg.err("Parameter shortage",@cl[id]) unless par.size < cmd.size

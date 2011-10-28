@@ -8,7 +8,6 @@ class McrMan
   attr_reader :prompt
   def initialize(id)
     @par=Param.new(McrDb.new(id))
-    @view={}
     @id=id
     @prompt="#@id>"
     @current=0
@@ -28,7 +27,7 @@ class McrMan
       if alive?
         query(cmd[0])
       else
-        McrThrd.new(@threads,@view,@par.set(cmd))
+        McrThrd.new(@threads,@par.set(cmd))
         @current=@threads.size
       end
     end
@@ -63,10 +62,10 @@ end
 
 class McrThrd < Thread
   attr_reader :prompt
-  def initialize(threads,view,par,int=1)
+  @@view={}
+  def initialize(threads,par,int=1)
     @v=Msg::Ver.new("mcr",9)
     @threads=Msg.type?(threads,Array)
-    @view=Msg.type?(view,Hash)
     Msg.type?(par,Param)
     #Thread.abort_on_exception=true
     @int=int
@@ -93,12 +92,12 @@ class McrThrd < Thread
         sp=par.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
           mtitle(e1['cmd'],'async')
-          McrThrd.new(@threads,@view,sp)
+          McrThrd.new(@threads,sp)
         else
           submcr(sp)
         end
       when 'exec'
-        @view.each{|k,v| v.refresh }
+        @@view.each{|k,v| v.refresh }
         title(e1['cmd'],e1['ins'])
         query
       end
@@ -184,8 +183,8 @@ class McrThrd < Thread
   end
 
   def getstat(ins,id)
-    @view[ins]||=Rview.new(ins)
-    view=@view[ins].load
+    @@view[ins]||=Rview.new(ins)
+    view=@@view[ins].load
     return unless view.update?
     view['msg'][id]||view['stat'][id]
   end
@@ -205,7 +204,7 @@ if __FILE__ == $0
   begin
     mdb=McrDb.new(id)
     par=Param.new(mdb).set(cmd)
-    puts McrThrd.new({},par,0).run.join.to_s
+    puts McrThrd.new([],par,0).run.join.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

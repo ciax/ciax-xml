@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrthrd"
+require "libmcrman"
 require 'libshell'
 
 id=ARGV.shift

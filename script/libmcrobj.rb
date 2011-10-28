@@ -1,33 +1,27 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libmcrdb"
 require "libparam"
 require "librview"
 
-class McrObj
+class McrObj < Thread
   attr_reader :prompt
-  def initialize(int=1)
+  @@view={}
+  @@threads=[]
+  def initialize(par,int=1)
     @v=Msg::Ver.new("mcr",9)
+    Msg.type?(par,Param)
+    #Thread.abort_on_exception=true
     @int=int
     @ind=0
-    @line=[]
+    @line=self[:line]=[]
     @msg=[]
-    @view={}
-    @threads=[]
-    @prompt='mcr>'
+    @prompt=self[:prompt]=par[:cid]+'>'
+    super(par.dup){|par|submcr(par)}
+    @@threads << self
   end
 
-  def mcr(par)
-    @line.clear
-    @threads << Thread.new{
-      Thread.pass
-      submcr(par)
-    }
-    self
-  end
-
-  def submcr(par,stat=nil)
-    mtitle(par[:cmd],stat)
+  def submcr(par)
+    mtitle(par[:cmd])
     @ind+=1
     par[:select].each{|e1|
       case e1['type']
@@ -40,15 +34,15 @@ class McrObj
       when 'mcr'
         sp=par.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
-          submcr(sp,'async')
+          mtitle(e1['cmd'],'async')
+          McrObj.new(sp)
         else
           submcr(sp)
         end
       when 'exec'
-        @view.each{|k,v| v.refresh }
+        @@view.each{|k,v| v.refresh }
         title(e1['cmd'],e1['ins'])
-        @prompt.replace("mcr>Proceed?(Y/N)")
-        Thread.stop if @int > 0
+        query
       end
     }
     self
@@ -60,41 +54,41 @@ class McrObj
     @line.join("\n")
   end
 
-  def join
-    @threads.select!{|t| t.alive?}
-    @threads.each{|t| t.join}
-    self
+  def self.threads
+    @@threads
   end
-
-  def proceed
-    @threads.select!{|t| t.alive?}
-    @threads.each{|t| t.run}
-    @prompt.replace "mcr>"
-    self
-  end
-
   private
-  def mtitle(cmd,stat)
-    @line << "  "*@ind+Msg.color("MACRO",3)+":#{cmd.join(' ')}"
-    @line.last << "(#{stat})" if stat
+  def mtitle(cmd,stat=nil)
+    push Msg.color("MACRO",3)+":#{cmd.join(' ')}"
+    add "(#{stat})" if stat
   end
 
   def title(cmd,ins)
-    @line << "  "*@ind+Msg.color("EXEC",13)+":#{cmd.join(' ')}(#{ins})"
+    push Msg.color("EXEC",13)+":#{cmd.join(' ')}(#{ins})"
   end
 
   def ok(str="OK")
-    @line.last << Msg.color("-> "+str,2)
+    add Msg.color("-> "+str,2)
   end
 
   def ng(str)
-    @line.last << Msg.color("-> "+str,1)
-    @msg.each{|s| @line << "  "*(@ind+1)+s }
-    raise UserError,@line.join("\n")
+    add Msg.color("-> "+str,1)
+    @ind+=1
+    @msg.each{|s| push s }
+    @ind-=1
+    raise UserError,to_s
+  end
+
+  def query
+    return if @int == 0
+    prom=@prompt.dup
+    @prompt << Msg.color("Proceed?(y/n)",9)
+    Thread.stop
+    @prompt.replace prom
   end
 
   def judge(msg,e)
-    @line << "  "*@ind+Msg.color(msg,6)+":#{e['label']} "
+    push Msg.color(msg,6)+":#{e['label']} "
     @msg.clear
     (e['retry']||1).to_i.times{|n|
       sleep @int if n > 0
@@ -127,7 +121,7 @@ class McrObj
   def waiting(msg)
     msg=Msg.color(msg,11)
     if @msg.include?(msg)
-      @line.last << "."
+      add "."
       @line.last.gsub!("..........","*")
     else
       @msg << msg
@@ -135,21 +129,29 @@ class McrObj
   end
 
   def getstat(ins,id)
-    @view[ins]||=Rview.new(ins)
-    view=@view[ins].load
+    @@view[ins]||=Rview.new(ins)
+    view=@@view[ins].load
     return unless view.update?
     view['msg'][id]||view['stat'][id]
+  end
+
+  def push(str)
+    @line << "  "*@ind+str
+  end
+
+  def add(str)
+    @line.last << str
   end
 end
 
 if __FILE__ == $0
+  require "libmcrdb"
   id,*cmd=ARGV
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    ac=McrObj.new(0)
-    puts par=Param.new(mdb).set(cmd)
-    puts ac.mcr(par).proceed.join.to_s
+    par=Param.new(mdb).set(cmd)
+    puts McrObj.new(par,0).run.join.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

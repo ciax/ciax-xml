@@ -30,6 +30,8 @@ class McrMan
     else
       if @current > 0
         query(cmd[0]) 
+      elsif Thread.list.size > 1
+        Msg.err("Another mcr still running")
       else
         McrObj.new(@par.set(cmd))
         @current=@threads.size
@@ -61,7 +63,7 @@ class McrMan
   def upd_prompt
     if @current > 0
       stat=alive? ? current.prompt : "(done)>"
-      @prompt.replace("#@id[#@current]#{stat}")
+      @prompt.replace("#@id[#@current/#{@threads.size}]#{stat}")
     else
       @prompt.replace("#@id>")
     end

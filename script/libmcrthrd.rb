@@ -11,7 +11,7 @@ class McrMan
     @id=id
     @prompt="#@id>"
     @current=0
-    @threads=[]
+    @threads=McrThrd.threads
   end
 
   def exec(cmd)
@@ -27,7 +27,7 @@ class McrMan
       if alive?
         query(cmd[0])
       else
-        McrThrd.new(@threads,@par.set(cmd))
+        McrThrd.new(@par.set(cmd))
         @current=@threads.size
       end
     end
@@ -63,9 +63,9 @@ end
 class McrThrd < Thread
   attr_reader :prompt
   @@view={}
-  def initialize(threads,par,int=1)
+  @@threads=[]
+  def initialize(par,int=1)
     @v=Msg::Ver.new("mcr",9)
-    @threads=Msg.type?(threads,Array)
     Msg.type?(par,Param)
     #Thread.abort_on_exception=true
     @int=int
@@ -74,7 +74,7 @@ class McrThrd < Thread
     @msg=[]
     @prompt=self[:prompt]=par[:cid]+'>'
     super(par.dup){|par|submcr(par)}
-    @threads << self
+    @@threads << self
   end
 
   def submcr(par)
@@ -92,7 +92,7 @@ class McrThrd < Thread
         sp=par.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
           mtitle(e1['cmd'],'async')
-          McrThrd.new(@threads,sp)
+          McrThrd.new(@@threads,sp)
         else
           submcr(sp)
         end
@@ -111,6 +111,9 @@ class McrThrd < Thread
     @line.join("\n")
   end
 
+  def self.threads
+    @@threads
+  end
   private
   def mtitle(cmd,stat=nil)
     push Msg.color("MACRO",3)+":#{cmd.join(' ')}"

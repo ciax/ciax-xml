@@ -13,7 +13,6 @@ class Msg
       @prefix=prefix.upcase
       @color=color
       @ind=1
-      @list=[]
       msg{"Initialize Messaging"}
     end
 

@@ -13,13 +13,13 @@ class Param < ExHash
     @alias=db[:alias]||{}
     @alias.each{|k,v| label[k]=label.delete(v) }
     db[:select].keys.each{|k| @alias[k]=k} unless db.key?(:alias)
-    @list=Msg::List.new("== Command List==").add(label)
+    @cl=Msg::List.new("== Command List==").add(label)
   end
 
   def set(cmd)
     id=Msg.type?(cmd,Array).first
     unless @alias.key?(id)
-      @list.error("No such CMD [#{id}]")
+      @cl.error("No such CMD [#{id}]")
     end
     @v.msg{"SetPar: #{cmd}"}
     self[:id]=id
@@ -30,7 +30,7 @@ class Param < ExHash
       self[k]=deep_subst(@db[k][org])
     }
     if @db.key?(:parameter) && par=@db[:parameter][org]
-      Msg.err("Parameter shortage",@list[id]) unless par.size < cmd.size
+      Msg.err("Parameter shortage",@cl[id]) unless par.size < cmd.size
       ary=cmd[1..-1]
       par.each{|r|
         validate(ary.shift,r)

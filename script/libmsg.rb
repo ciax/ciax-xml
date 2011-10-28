@@ -67,7 +67,7 @@ class Msg
         when Hash,Xml
           label=val['label']
         end
-        self[key]=Msg.color(" %-10s" % key,3)+": #{label}" if label
+        self[key]=Msg.color("  %-10s" % key,3)+": #{label}" if label
       }
       self
     end
@@ -82,6 +82,11 @@ class Msg
 
     def to_s
       [$!.to_s,@title,*values].grep(/./).join("\n")
+    end
+
+    def error(str=nil)
+      str= str ? str+"\n" : ''
+      raise SelectCMD,str+to_s
     end
   end
 

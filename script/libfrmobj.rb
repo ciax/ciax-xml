@@ -47,7 +47,7 @@ class FrmObj
     end
     self
   rescue SelectCMD
-    raise SelectCMD,@cl.to_s
+    @cl.error
   end
 
   def to_s

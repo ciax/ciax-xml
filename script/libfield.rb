@@ -59,7 +59,7 @@ class Field < IoFile
     if FileTest.exist?(fname)
       update_j(IO.read(fname))
     elsif tag
-      raise SelectID,list_stat
+      raise UserError,list_stat
     else
       Msg.warn("----- No #{tbase}.json")
     end

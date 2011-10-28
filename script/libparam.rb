@@ -19,7 +19,7 @@ class Param < ExHash
   def set(cmd)
     id=Msg.type?(cmd,Array).first
     unless @alias.key?(id)
-      raise SelectCMD,("No such CMD [#{id}]\n"+@list.to_s)
+      @list.error("No such CMD [#{id}]")
     end
     @v.msg{"SetPar: #{cmd}"}
     self[:id]=id

@@ -6,6 +6,7 @@ require "libmcrobj"
 
 class McrMan
   attr_reader :prompt
+  # @current=0: macro mode; @current > 0 sub macro mode(accepts y or n)
   def initialize(id)
     @par=Param.new(McrDb.new(id))
     @id=id
@@ -21,11 +22,11 @@ class McrMan
       raise UserError,"#{@threads}"
     when /^[0-9]+$/
       i=cmd[0].to_i
-      raise(UserError,"No Thread") if @threads.size < i || i < 1
+      raise(UserError,"No Thread") if @threads.size < i || i < 0
       @current=i
     else
-      if alive?
-        query(cmd[0])
+      if @current > 0
+        query(cmd[0]) if alive?
       else
         McrObj.new(@par.set(cmd))
         @current=@threads.size
@@ -34,6 +35,8 @@ class McrMan
     if @current > 0
       stat=alive? ? current.prompt : "(done)>"
       @prompt.replace("#@id[#@current]#{stat}")
+    else
+      @prompt.replace("#@id>")
     end
     self
   end
@@ -52,7 +55,7 @@ class McrMan
   end
 
   def current
-    @threads[@current-1]
+    @threads[@current-1] if @current > 0
   end
 
   def to_s

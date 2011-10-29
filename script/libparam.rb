@@ -80,7 +80,7 @@ class Param < Hash
       Msg.err("No Parameter") unless str
       begin
         num=eval(str)
-      rescue SyntaxError
+      rescue Exception
         Msg.err("Parameter is not number")
       end
       @v.msg{"Validate: [#{num}] Match? [#{va}]"}

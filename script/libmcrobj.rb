@@ -3,8 +3,9 @@ require "libmsg"
 require "libparam"
 require "librview"
 
+class Broken < RuntimeError;end
+
 class McrObj < Thread
-  attr_reader :prompt
   @@view={}
   @@threads=[]
   def initialize(par,int=1)
@@ -13,10 +14,20 @@ class McrObj < Thread
     #Thread.abort_on_exception=true
     @int=int
     @ind=0
-    @line=self[:line]=[]
     @msg=[]
-    @prompt=self[:prompt]=par[:cid]+'>'
-    super(par.dup){|par|submcr(par)}
+    @line=self[:line]=[]
+    self[:stat]="run"
+    self[:cid]=par[:cid]
+    super(par.dup){|par|
+      begin
+        submcr(par)
+        self[:stat]="done"
+      rescue UserError
+        self[:stat]="error"
+      rescue Broken
+        self[:stat]="broken"
+      end
+    }
     @@threads << self
   end
 
@@ -57,6 +68,7 @@ class McrObj < Thread
   def self.threads
     @@threads
   end
+
   private
   def mtitle(cmd,stat=nil)
     push Msg.color("MACRO",3)+":#{cmd.join(' ')}"
@@ -81,10 +93,9 @@ class McrObj < Thread
 
   def query
     return if @int == 0
-    prom=@prompt.dup
-    @prompt << Msg.color("Proceed?(y/n)",9)
+    self[:stat]="wait"
     Thread.stop
-    @prompt.replace prom
+    self[:stat]="run"
   end
 
   def judge(msg,e)

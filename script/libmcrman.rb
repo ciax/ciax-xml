@@ -6,12 +6,12 @@ require "libmcrobj"
 
 class McrMan
   attr_reader :prompt
-  # @current=0: macro mode; @current > 0 sub macro mode(accepts y or n)
+  # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
   def initialize(id)
     @par=Param.new(McrDb.new(id))
     @id=id
     @prompt="#@id>"
-    @current=0
+    @index=0
     @threads=McrObj.threads
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add("[0-9]"=>"Switch Mode")
@@ -26,15 +26,15 @@ class McrMan
     when /^[0-9]+$/
       i=cmd[0].to_i
       Msg.err("No Thread") if @threads.size < i || i < 0
-      @current=i
+      @index=i
     else
-      if @current > 0
+      if @index > 0
         query(cmd[0]) 
       elsif Thread.list.size > 1
-        Msg.err("Another mcr still running")
+        Msg.err("  Another mcr is still running")
       else
         McrObj.new(@par.set(cmd))
-        @current=@threads.size
+        @index=@threads.size
       end
     end
     upd_prompt
@@ -44,7 +44,7 @@ class McrMan
   end
 
   def to_s
-    current.to_s
+    cth.to_s
   end
 
   private
@@ -52,28 +52,31 @@ class McrMan
     case str
     when nil
     when /^y/i
-      current.run if alive?
+      cth.run if alive?
     when /^[s|n]/i
-      current.kill if alive?
+      if alive?
+        cth.raise(Broken)
+      end
     else
-      raise SelectCMD,"No such cmd [#{str}]"
+      raise SelectCMD,"Can't accept [#{str}]"
     end
   end
 
   def upd_prompt
-    if @current > 0
-      stat=alive? ? current.prompt : "(done)>"
-      @prompt.replace("#@id[#@current/#{@threads.size}]#{stat}")
+    if @index > 0
+      str="#@id[#@index/#{@threads.size}]#{cth[:cid]}(#{cth[:stat]})>"
+      str << Msg.color("Proceed?(y/n)",9) if /wait/ === cth[:stat]
+      @prompt.replace(str)
     else
       @prompt.replace("#@id>")
     end
   end
 
   def alive?
-    current && current.alive?
+    @index > 0 && cth.alive?
   end
 
-  def current
-    @threads[@current-1] if @current > 0
+  def cth #current thread
+    @threads[@index-1] if @index > 0
   end
 end

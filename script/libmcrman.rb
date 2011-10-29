@@ -22,7 +22,8 @@ class McrMan
     case cmd[0]
     when nil
     when 'list'
-      raise UserError,"#{@threads}"
+      list=@threads.map{|t| t[:cid]+'('+t[:stat]+')' }
+      raise UserError,"#{list}"
     when /^[0-9]+$/
       i=cmd[0].to_i
       Msg.err("No Thread") if @threads.size < i || i < 0

@@ -36,6 +36,7 @@ class McrMan
       elsif Thread.list.size > 1
         Msg.err("  Another mcr is still running")
       else
+        @threads.clear
         McrObj.new(@par.set(cmd))
         @index=@threads.size
       end
@@ -66,8 +67,13 @@ class McrMan
   def upd_prompt
     size=@threads.size
     if @index > 0
-      str="#{cth[:cid]}[#@index/#{size}](#{cth[:stat]})>"
-      str << Msg.color("Proceed?(y/n)",9) if /wait/ === cth[:stat]
+      str=Msg.color(cth[:cid],5)+"[#@index/#{size}](#{cth[:stat]})>"
+      case cth[:stat]
+      when /wait/
+        str << Msg.color("Proceed?(y/n)",9)
+      when /run/
+        str << Msg.color("('s' for stop)",9)
+      end
       @prompt.replace(str)
     else
       @prompt.replace("#@id[#{size}]>")

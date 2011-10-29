@@ -29,7 +29,7 @@ module IoLog
 
   private
   def log_frame(str,id)
-    time="%.3f" % Time.now.to_f
+    time=Msg.now
     if @logfile
       @v.msg{"Frame Logging for [#{id}]"}
       open(@logfile,'a') {|f|

@@ -19,7 +19,7 @@ class Rview < IoFile
 
   def set(hash)
     @stat.update(hash)
-    @stat['time']="%.3f" % Time.now.to_f
+    @stat['time']=Msg.now
     self
   end
 

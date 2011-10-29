@@ -91,8 +91,12 @@ class Msg
 
 end
 
+# Class method
 class << Msg
-  # Class method
+  def now
+    "%.3f" % Time.now.to_f
+  end
+
   def msg(msg='message') # Display only
     Kernel.warn color(msg,2)
   end

@@ -10,7 +10,7 @@ class McrMan
   def initialize(id)
     @par=Param.new(McrDb.new(id))
     @id=id
-    @prompt="#@id>"
+    @prompt="#@id[0]>"
     @index=0
     @threads=McrObj.threads
     @cl=Msg::List.new("== Internal Command ==")
@@ -28,9 +28,11 @@ class McrMan
       i=cmd[0].to_i
       Msg.err("No Thread") if @threads.size < i || i < 0
       @index=i
+    when /^\./
+      @index=0
     else
       if @index > 0
-        query(cmd[0]) 
+        query(cmd[0])
       elsif Thread.list.size > 1
         Msg.err("  Another mcr is still running")
       else
@@ -55,21 +57,20 @@ class McrMan
     when /^y/i
       cth.run if alive?
     when /^[s|n]/i
-      if alive?
-        cth.raise(Broken)
-      end
+      cth.raise(Broken) if alive?
     else
       raise SelectCMD,"Can't accept [#{str}]"
     end
   end
 
   def upd_prompt
+    size=@threads.size
     if @index > 0
-      str="#@id[#@index/#{@threads.size}]#{cth[:cid]}(#{cth[:stat]})>"
+      str="#{cth[:cid]}[#@index/#{size}](#{cth[:stat]})>"
       str << Msg.color("Proceed?(y/n)",9) if /wait/ === cth[:stat]
       @prompt.replace(str)
     else
-      @prompt.replace("#@id>")
+      @prompt.replace("#@id[#{size}]>")
     end
   end
 

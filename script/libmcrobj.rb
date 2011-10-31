@@ -8,14 +8,17 @@ class Broken < RuntimeError;end
 class McrObj < Thread
   @@view={}
   @@threads=[]
-  def initialize(par,int=1)
+  attr_reader :line
+  def initialize(par,interval=1)
     @v=Msg::Ver.new("mcr",9)
     Msg.type?(par,Param)
     #Thread.abort_on_exception=true
-    @int=int
-    @ind=0
-    @msg=[]
-    @line=self[:line]=[]
+    self[:id]=Time.now.to_i
+    @interval=interval
+    @depth=0
+    @condition=[]
+    @line=[]
+    self[:line]=[]
     self[:stat]="run"
     self[:cid]=par[:cid]
     super(par.dup){|par|
@@ -33,7 +36,7 @@ class McrObj < Thread
 
   def submcr(par)
     mtitle(par[:cmd])
-    @ind+=1
+    @depth+=1
     par[:select].each{|e1|
       case e1['type']
       when 'break'
@@ -58,11 +61,11 @@ class McrObj < Thread
     }
     self
   ensure
-    @ind-=1
+    @depth-=1
   end
 
   def to_s
-    @line.join("\n")
+    self[:line].join("\n")
   end
 
   def self.threads
@@ -85,14 +88,14 @@ class McrObj < Thread
 
   def ng(str)
     add Msg.color("-> "+str,1)
-    @ind+=1
-    @msg.each{|s| push s }
-    @ind-=1
+    @depth+=1
+    pushmsg
+    @depth-=1
     raise UserError,to_s
   end
 
   def query
-    return if @int == 0
+    return if @interval == 0
     self[:stat]="wait"
     Thread.stop
     self[:stat]="run"
@@ -100,9 +103,9 @@ class McrObj < Thread
 
   def judge(msg,e)
     push Msg.color(msg,6)+":#{e['label']} "
-    @msg.clear
+    @condition.clear
     (e['retry']||1).to_i.times{|n|
-      sleep @int if n > 0
+      sleep @interval if n > 0
       if c=e['any']
         c.any?{|h| condition(h)} && break
       elsif c=e['all']
@@ -131,11 +134,11 @@ class McrObj < Thread
 
   def waiting(msg)
     msg=Msg.color(msg,11)
-    if @msg.include?(msg)
+    if @condition.include?(msg)
       add "."
-      @line.last.gsub!("..........","*")
+      self[:line].last.gsub!("..........","*")
     else
-      @msg << msg
+      @condition << msg
     end
   end
 
@@ -147,11 +150,25 @@ class McrObj < Thread
   end
 
   def push(str)
-    @line << "  "*@ind+str
+    @line << stat(str)
+    self[:line] << "  "*@depth+str
   end
 
   def add(str)
     @line.last << str
+    self[:line].last << str
+  end
+
+  def pushmsg
+    @condition.each{|s| stat(s) }
+  end
+
+  def stat(str)
+    "#{self[:parent]},#{elapse},#{self[:cid]},"+str
+  end
+
+  def elapse
+    "%.4f" % (Time.now-self[:id]).to_f
   end
 end
 

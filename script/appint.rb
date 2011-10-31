@@ -23,8 +23,8 @@ aobj=AppObj.new(adb,fobj)
 prt=Print.new(adb,aobj.view)
 if opt["s"]
   require 'libserver'
-  Server.new(adb["port"].to_i){|cmd|
-    aobj.upd(cmd)
+  Server.new(adb["port"].to_i,aobj.prompt){|cmd|
+    aobj.upd(cmd).message
   }
 else
   require 'libshell'

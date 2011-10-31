@@ -73,10 +73,6 @@ class AppObj
     @cl.error
   end
 
-  def to_s
-    [@message,@prompt].compact.join("\n")
-  end
-
   private
   def upd_prompt
     @prompt.replace(@id)

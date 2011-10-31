@@ -14,8 +14,8 @@ end
 fobj=FrmObj.new(fdb,iocmd)
 if opt["s"]
   require 'libserver'
-  Server.new(fdb["port"].to_i-1000){|line|
-    fobj.upd(line)
+  Server.new(fdb["port"].to_i-1000,"#{id}>"){|line|
+    fobj.upd(line).message
   }
 else
   require 'libshell'

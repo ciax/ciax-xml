@@ -50,10 +50,6 @@ class FrmObj
     @cl.error
   end
 
-  def to_s
-    [@message,">"].compact.join("\n")
-  end
-
   private
   def set(cmd)
     if cmd.empty?

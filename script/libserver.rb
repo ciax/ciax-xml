@@ -3,7 +3,7 @@ require "libmsg"
 require "socket"
 
 class Server
-  def initialize(port)
+  def initialize(port,prompt=nil)
     @v=Msg::Ver.new("server",1)
     @v.msg{"Init/Server:#{port}"}
     UDPSocket.open{ |udp|
@@ -23,7 +23,7 @@ class Server
           warn msg
         end
         @v.msg{"Send:#{msg}"}
-        udp.send(msg.to_s,0,addr[2],addr[1])
+        udp.send([msg,prompt].compact.join("\n"),0,addr[2],addr[1])
       }
     }
   end

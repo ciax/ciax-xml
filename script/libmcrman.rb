@@ -48,7 +48,32 @@ class McrMan
   end
 
   def to_s
-    cth.to_s
+    return '' unless cth
+    cth[:line].map{|h|
+      msg='  '*h['depth']
+      case h['type']
+      when 'break'
+        msg << Msg.color('Proceed?',6)+":#{h['label']} ->"
+        msg << Msg.color(h['result'] ? "SKIP" : "OK",2)
+      when 'check'
+        msg << Msg.color('Check',6)+":#{h['label']} ->"
+        msg << (h['result'] ? Msg.color("OK",2) : Msg.color("NG",1))
+      when 'wait'
+        msg << Msg.color('Waiting',6)+":#{h['label']} ->"
+        if h['result'].nil?
+          ret=h['retry'].to_i
+          msg << '*'*(ret/10)+'.'*(ret % 10)
+        else
+          msg << (h['result'] ? Msg.color("OK",2) : Msg.color("Timeout(#{h['retry']})",1))
+        end
+      when 'mcr'
+        msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
+        msg << "(async)" if h['async']
+      when 'exec'
+        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['ins']})"
+      end
+      msg
+    }.join("\n")
   end
 
   private

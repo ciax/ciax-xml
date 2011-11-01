@@ -48,8 +48,8 @@ class McrMan
   end
 
   def to_s
-    return '' unless cth
-    cth[:line].map{|h|
+    return '' unless current
+    current[:line].map{|h|
       msg='  '*h['depth']
       case h['type']
       when 'break'
@@ -76,14 +76,17 @@ class McrMan
     }.join("\n")
   end
 
+  def current #current thread
+    @threads[@index-1] if @index > 0
+  end
   private
   def query(str)
     case str
     when nil
     when /^y/i
-      cth.run if alive?
+      current.run if alive?
     when /^[s|n]/i
-      cth.raise(Broken) if alive?
+      current.raise(Broken) if alive?
     else
       raise SelectCMD,"Can't accept [#{str}]"
     end
@@ -92,8 +95,8 @@ class McrMan
   def upd_prompt
     size=@threads.size
     if @index > 0
-      str=Msg.color(cth[:cid],5)+"[#@index/#{size}](#{cth[:stat]})>"
-      case cth[:stat]
+      str=Msg.color(current[:cid],5)+"[#@index/#{size}](#{current[:stat]})>"
+      case current[:stat]
       when /wait/
         str << Msg.color("Proceed?(y/n)",9)
       when /run/
@@ -106,10 +109,6 @@ class McrMan
   end
 
   def alive?
-    @index > 0 && cth.alive?
-  end
-
-  def cth #current thread
-    @threads[@index-1] if @index > 0
+    @index > 0 && current.alive?
   end
 end

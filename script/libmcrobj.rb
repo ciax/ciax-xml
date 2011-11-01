@@ -2,6 +2,7 @@
 require "libmsg"
 require "libparam"
 require "librview"
+require "yaml"
 
 class Broken < RuntimeError;end
 
@@ -66,6 +67,10 @@ class McrObj < Thread
 
   def self.threads
     @@threads
+  end
+
+  def to_s
+    YAML.dump(self[:line])
   end
 
   private

@@ -16,7 +16,7 @@ end
 hp=HexPack.new(cli.view,cli.prompt)
 if opt["s"]
   require 'libserver'
-  Server.new(adb["port"].to_i+1000){|line|
+  Server.new(cli.port.to_i+1000){|line|
     cli.upd(line)
     hp
   }

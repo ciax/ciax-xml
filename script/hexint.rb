@@ -6,14 +6,13 @@ require "libhexpack"
 
 opt=ARGV.getopts("s")
 id=ARGV.shift
-host=ARGV.shift||'localhost'
+host=ARGV.shift
 begin
-  adb=InsDb.new(id).cover_app
+  cli=AppCl.new(id,host)
 rescue
   warn "Usage: hexint (-s) [id] (host)"
   Msg.exit
 end
-cli=AppCl.new(adb,host)
 hp=HexPack.new(cli.view,cli.prompt)
 if opt["s"]
   require 'libserver'

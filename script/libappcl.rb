@@ -1,16 +1,16 @@
 #!/usr/bin/ruby
+require "libinsdb"
 require "libclient"
 require "librview"
 require "libparam"
 
 class AppCl < Client
-  attr_reader :view
-  def initialize(adb,host=nil)
-    id=adb['id']
-    host||=adb['host']
-    super(id,adb['port'],host)
-    @view=Rview.new(id,host).load
-    @par=Param.new(adb[:command])
+  attr_reader :view,:adb
+  def initialize(id,host=nil)
+    @adb=InsDb.new(id).cover_app
+    super(id,@adb['port'],host||@adb['host'])
+    @view=Rview.new(id,@host).load
+    @par=Param.new(@adb[:command])
   end
 
   def upd(cmd)

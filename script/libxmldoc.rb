@@ -3,11 +3,11 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  attr_reader :top
+  attr_reader :top,:file
   def initialize(dbname = nil,id = nil)
     @v=Msg::Ver.new("xmldoc",4)
     @domain={}
-    readxml(dbname,id){|e|
+    @file=readxml(dbname,id){|e|
       @top=e
       update(e.to_h)
       e.each{|e1|
@@ -35,7 +35,10 @@ class XmlDoc < Hash
     Dir.glob("#{pre}-*.xml").each{|p|
       x=Xml.new(p)
       if id
-        x.find("*[@id='#{id}']"){|e| yield e}
+        x.find("*[@id='#{id}']"){|e|
+          yield e
+          return p
+        }
       else
         x.each{|e| yield e}
       end

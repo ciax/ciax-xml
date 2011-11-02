@@ -6,10 +6,13 @@ cart:attach at tag11 gives overload error by corn load unbalance [4/17]
   -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
 
 ***LACK FUNCTION
-hprelay: exe should be reset[9/6]
 mcr:inter lock error log is  really needed
 
 ***UPDATE
+mcr: macro log
+wdb: show watch status in shell
+wdb: watch status log
+shell: toggle status display mode(view,stat,watch)
 crt: jack table edit interface (sql+web)
 
 ***CHECK NEED
@@ -54,6 +57,7 @@ dbchache: make it module -> independent class[9/1]
 objdb: using objdb to get iocmd instead of DB-object[9/1]
 status_??: update with clsobj -> save in cmd_thread of AppObj[9/1]
 client,hprelay:using http for display status[9/8]
+hprelay: exe should be reset[9/6]
 
 ***DISCARD
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain

@@ -56,8 +56,9 @@ class McrObj < Thread
           submcr(sp)
         end
       when 'exec'
-        @@client.each{|k,v| v.view.refresh }
         query
+        @@client[e1['ins']].upd(e1['cmd'])
+        @@client.each{|k,v| v.view.refresh }
       end
     }
     self

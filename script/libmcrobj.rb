@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libparam"
-require "librview"
+require "libappcl"
 require "yaml"
 
 class Broken < RuntimeError;end
 
 class McrObj < Thread
-  @@view={}
+  @@client={}
   @@threads=[]
   attr_reader :line
   def initialize(par,interval=1)
@@ -56,7 +56,7 @@ class McrObj < Thread
           submcr(sp)
         end
       when 'exec'
-        @@view.each{|k,v| v.refresh }
+        @@client.each{|k,v| v.view.refresh }
         query
       end
     }
@@ -106,8 +106,8 @@ class McrObj < Thread
   end
 
   def getstat(ins,id)
-    @@view[ins]||=Rview.new(ins)
-    view=@@view[ins].load
+    @@client[ins]||=AppCl.new(ins)
+    view=@@client[ins].view.load
     if @current['update']=view.update?
       view['msg'][id]||view['stat'][id]
     end

@@ -3,9 +3,10 @@ require "libmsg"
 require "libiocmd"
 
 class Client
-  attr_reader :prompt,:message
+  attr_reader :prompt,:message,:port,:host
   def initialize(id,port,host=nil)
-    host||='localhost'
+    @port=port
+    @host||='localhost'
     @io=IoCmd.new(["socat","-","udp:#{host}:#{port}"])
     @prompt="#{id}>"
   end

@@ -13,7 +13,7 @@ class Client
 
   def upd(cmd)
     line=cmd.join(' ')
-    line='stat' if line.empty?
+    line='strobe' if line.empty?
     ary=@io.snd(line).rcv.split("\n")
     @prompt.replace(ary.pop)
     @message=ary.first

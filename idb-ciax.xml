@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="crt" label="CART 3" app_type="mel" client="socat - udp:cart3:5000" port="25101"></instance>
-  <instance id="dsi" label="IR Stand-by Flange" app_type="cj2" client="socat - udp:cst-i:9600" port="25102">
+  <instance id="dsi" label="IR Stand-by Flange" app_type="cj2" client="socat - udp:cst-i:9600" port="25102" host="cxws2">
     <init xmlns="http://ciax.sum.naoj.org/ciax-xml/idbf">
       <field id="ipl">1</field>
       <field id="ipr">33</field>
     </init>
   </instance>
-  <instance id="dso" label="OPT Stand-by Flange" app_type="cj2" client="socat - udp:cst-o:9600" port="25103">
+  <instance id="dso" label="OPT Stand-by Flange" app_type="cj2" client="socat - udp:cst-o:9600" port="25103" host="cxws2">
     <init xmlns="http://ciax.sum.naoj.org/ciax-xml/idbf">
       <field id="ipl">1</field>
       <field id="ipr">32</field>

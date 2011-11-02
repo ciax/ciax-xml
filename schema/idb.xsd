@@ -21,6 +21,7 @@
       <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
       <xsd:attribute name="app_type" use="required" type="xsd:NCName" />
       <xsd:attribute name="client" type="xsd:token" />
+      <xsd:attribute name="host" type="xsd:token" />
       <xsd:attribute name="port" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>

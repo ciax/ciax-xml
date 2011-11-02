@@ -5,7 +5,7 @@ require "libprint"
 require "libshell"
 
 id=ARGV.shift
-host=ARGV.shift||'localhost'
+host=ARGV.shift
 begin
   adb=InsDb.new(id).cover_app
 rescue SelectID

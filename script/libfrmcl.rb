@@ -7,6 +7,7 @@ class FrmCl < Client
   attr_reader :field
   def initialize(fdb,host=nil)
     id=fdb['id']
+    host||=fdb['host']
     super(id,fdb['port'].to_i-1000,host)
     @field=Field.new(id,host).load
     @par=Param.new(fdb[:cmdframe])

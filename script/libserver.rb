@@ -12,7 +12,7 @@ class Server
         select([udp])
         line,addr=udp.recvfrom(4096)
         @v.msg{"Recv:#{line} is #{line.class}"}
-        line='' if /^strobe/ === line
+        line='' if /^(strobe|stat)/ === line
         cmd=line.chomp.split(' ')
         begin
           msg=yield(cmd)

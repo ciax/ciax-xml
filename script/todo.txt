@@ -1,14 +1,17 @@
 ========================== Issue =============================
 ***DEBUG
+dso: doesn't work(11/2)
 dso:fix jack bolt stack after interrupt(8/15)
 aso:need reset function for executing flag
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]
   -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
+cart:doesn't work on test run with appsh(11/2)
 
 ***LACK FUNCTION
 mcr:inter lock error log is  really needed
 
 ***UPDATE
+exadbc:need to verify frame commands
 mcr: macro log
 wdb: show watch status in shell
 wdb: watch status log

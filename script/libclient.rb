@@ -1,20 +1,19 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libiocmd"
+require "socket"
 
 class Client
   attr_reader :prompt,:message,:port,:host
   def initialize(id,port,host=nil)
-    @port=port
-    @host||='localhost'
-    @io=IoCmd.new(["socat","-","udp:#{host}:#{port}"])
+    @udp=UDPSocket.open()
+    @addr=Socket.pack_sockaddr_in(port,host||='localhost')
     @prompt="#{id}>"
   end
 
   def upd(cmd)
-    line=cmd.join(' ')
-    line='strobe' if line.empty?
-    ary=@io.snd(line).rcv.split("\n")
+    line=cmd.empty? ? 'strobe' : cmd.join(' ')
+    @udp.send(line,0,@addr)
+    ary=@udp.recv(1024).split("\n")
     @prompt.replace(ary.pop)
     @message=ary.first
     self

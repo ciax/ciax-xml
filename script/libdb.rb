@@ -37,6 +37,15 @@ class Db < Hash
   end
 
   def path(ary)
-    ary.inject(self){|d,s| d[s.to_sym]}.extend(ModExh)
+    hash=ary.inject(self){|prev,a|
+      prev[a.to_sym]
+    }
+    hash.each{|k,v|
+      case v
+      when Hash
+        hash[k]='HASH'
+      end
+    } if Hash === hash
+    Msg.view_struct(hash)
   end
 end

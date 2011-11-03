@@ -13,6 +13,7 @@ cart:need clear tag command for reset manually on app mode
 mcr:inter lock error log is  really needed
 
 ***UPDATE
+Client: use socket instead of IoCmd
 exadbc:need to verify frame commands
 mcr: macro log
 wdb: show watch status in shell

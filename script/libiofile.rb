@@ -28,7 +28,7 @@ class IoFile < Hash
     if @fname
       open(@fname){|f| deep_update(JSON.load(f.read)) }
     else
-      deep_update(JSON.load(gets(nil))
+      deep_update(JSON.load(gets(nil)))
     end
     self
   end

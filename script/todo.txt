@@ -13,7 +13,6 @@ cart:need clear tag command for reset manually on app mode
 mcr:inter lock error log is  really needed
 
 ***UPDATE
-Client: use socket instead of IoCmd
 exadbc:need to verify frame commands
 mcr: macro log
 wdb: show watch status in shell
@@ -64,6 +63,7 @@ objdb: using objdb to get iocmd instead of DB-object[9/1]
 status_??: update with clsobj -> save in cmd_thread of AppObj[9/1]
 client,hprelay:using http for display status[9/8]
 hprelay: exe should be reset[9/6]
+Client: use socket instead of IoCmd(11/3)
 
 ***DISCARD
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain

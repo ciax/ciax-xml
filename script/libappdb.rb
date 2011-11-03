@@ -8,6 +8,7 @@ class AppDb < Db
     super('adb')
     cache(app,nocache){|doc|
       update(doc)
+      delete('id')
       # Command DB
       cdb=doc.domain('commands')
       cmd=self[:command]=cdb.to_h

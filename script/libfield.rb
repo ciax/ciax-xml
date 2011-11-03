@@ -5,7 +5,6 @@ require 'libiofile'
 class Field < IoFile
   def initialize(id=nil,host=nil)
     super('field',id,host)
-    @base=@uri.split('.').first if @uri
   end
 
   def subst(str)
@@ -53,22 +52,23 @@ class Field < IoFile
 
   def loadkey(tag=nil)
     Msg.err("No File Name")  unless @base
-    tbase=[@base,tag].compact.join('_')
-    @v.msg{"Status Loading for [#{tbase}]"}
-    fname="#{tbase}.json"
-    if FileTest.exist?(fname)
-      update_j(IO.read(fname))
-    elsif tag
-      raise UserError,list_stat
-    else
-      Msg.warn("----- No #{tbase}.json")
+    fn=settag(tag)
+    @v.msg{"Status Loading for [#{fn}]"}
+    begin
+      load
+    rescue
+      if tag
+        raise UserError,list_stat
+      else
+        Msg.warn("----- No #{fn}")
+      end
     end
     self
   end
 
   def savekey(keylist,tag=nil)
     Msg.err("No File Name")  unless @base
-    hash=Hash.new.extend(ModExh)
+    hash={}
     keylist.each{|k|
       if key?(k)
         hash[k]=self[k]
@@ -80,11 +80,10 @@ class Field < IoFile
       Msg.warn("No Keys")
     else
       tag||=Time.now.strftime('%y%m%d-%H%M%S')
-      tbase=[@base,tag].compact.join('_')
-      fname="#{tbase}.json"
-      @v.msg{"Status Saving for [#{tbase}]"}
-      open(fname,'w') {|f| f << hash.to_j }
-      mklink(fname,tag)
+      fn=settag(tag)
+      @v.msg{"Status Saving for [#{fn}]"}
+      save(hash)
+      mklink(fn,tag)
     end
     self
   end

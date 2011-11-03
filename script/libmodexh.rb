@@ -11,15 +11,6 @@ module ModExh
     JSON.dump(Hash[self])
   end
 
-  def update_j(str)
-    if str && !str.empty?
-      deep_update(JSON.load(str))
-    else
-      warn "No status at ModExH::update_j()"
-    end
-    self
-  end
-
   def deep_update(hash)
     rec_merge(hash,self)
     self

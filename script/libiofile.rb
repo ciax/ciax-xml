@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "json"
 require "libmodexh"
 
 class IoFile < Hash
@@ -25,16 +26,19 @@ class IoFile < Hash
 
   def load
     if @fname
-      open(@fname){|f| update_j(f.read) }
+      open(@fname){|f| deep_update(JSON.load(f.read)) }
     else
-      str=gets(nil)
-      update_j(str) unless str.empty?
+      deep_update(JSON.load(gets(nil))
     end
     self
   end
 
   def save(data=nil)
-    open(@fname,'w'){|f| f << JSON.dump(data||to_h)} if @fname
+    if @fname
+      open(@fname,'w'){|f| f << JSON.dump(data||to_h)}
+    else
+      puts JSON.dump(data||to_h)
+    end
     self
   end
 end

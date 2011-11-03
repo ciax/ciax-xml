@@ -25,6 +25,10 @@ class AppStat < Hash
     self
   end
 
+  def to_s
+    Msg.view_struct(self)
+  end
+
   private
   def get_val(fields)
     str=''
@@ -95,8 +99,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     adb=AppDb.new(app,true)
-    str=gets(nil) || exit
-    field=Field.new.update_j(str)
+    field=Field.new.load
     puts AppStat.new(adb,field).upd
   rescue UserError
     abort "Usage: #{$0} [app] < field_file\n#{$!}"

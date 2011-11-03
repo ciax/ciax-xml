@@ -49,6 +49,12 @@ class FrmRsp
     self
   end
 
+  def upd_logline(str)
+    ary=@field.set_logline(str)
+    @par.set(ary.shift)
+    upd{ary}
+  end
+
   private
   # Process Frame to Field
   def getfield_rec(e0)
@@ -131,12 +137,7 @@ if __FILE__ == $0
     par=Param.new(fdb[:cmdframe])
     fr=FrmRsp.new(fdb,par)
     str=gets(nil) || exit
-    ary=str.split("\t")
-    time=Time.at(ary.shift.to_f)
-    cmd=ary.shift.split(':')
-    abort ("Logline:Not response") unless /rcv/ === cmd.shift
-    par.set(cmd)
-    fr.upd{[eval(ary.shift),time]}
+    fr.upd_logline(str)
     puts fr.field.to_j
   rescue UserError
     warn "Usage: #{$0} [frameID] < logline"

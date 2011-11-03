@@ -27,6 +27,14 @@ module IoLog
     log_frame(super(),'rcv:'+id)
   end
 
+  def set_logline(str)
+    ary=str.split("\t")
+    time=Time.at(ary.shift.to_f)
+    cmd=ary.shift.split(':')
+    abort ("Logline:Not response") unless /rcv/ === cmd.shift
+    [cmd,eval(ary.shift),time]
+  end
+
   private
   def log_frame(str,id)
     time=Msg.now

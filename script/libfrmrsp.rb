@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libfield"
 require "libframe"
+require "libiocmd"
 
 # Rsp Methods
 class FrmRsp
@@ -50,9 +51,9 @@ class FrmRsp
   end
 
   def upd_logline(str)
-    ary=@field.set_logline(str)
-    @par.set(ary.shift)
-    upd{ary}
+    cmd,res=IoLog.set_logline(str)
+    @par.set(cmd)
+    upd{res}
   end
 
   private

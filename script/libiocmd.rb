@@ -18,25 +18,25 @@ module IoLog
 
   def snd(str,id)
     super(str)
-    log_frame(str,'snd:'+id)
+    append(str,'snd:'+id)
     self
   end
 
   # return array
   def rcv(id)
-    log_frame(super(),'rcv:'+id)
+    append(super(),'rcv:'+id)
   end
 
-  def set_logline(str)
+  def self.set_logline(str)
     ary=str.split("\t")
     time=Time.at(ary.shift.to_f)
     cmd=ary.shift.split(':')
     abort ("Logline:Not response") unless /rcv/ === cmd.shift
-    [cmd,eval(ary.shift),time]
+    [cmd,[eval(ary.shift),time]]
   end
 
   private
-  def log_frame(str,id)
+  def append(str,id)
     time=Msg.now
     if @logfile
       @v.msg{"Frame Logging for [#{id}]"}

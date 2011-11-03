@@ -23,13 +23,8 @@ if opt['i']
   sql.create
 else
   STDIN.readlines.grep(/rcv/).each{|str|
-    ary=str.split("\t")
-    time=Time.at(ary.shift.to_f)
-    cmd=ary.shift.split(':')
-    cmd.shift
     begin
-      par.set(cmd)
-      fr.upd{[eval(ary.shift),time]}
+      fr.upd_logline(str)
       as.upd
       sql.upd
       $stderr.print "."

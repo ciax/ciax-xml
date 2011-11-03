@@ -1,14 +1,9 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'json'
 module ModExh
   # module which includes this should be Hash
   def to_s
     Msg.view_struct(self)
-  end
-
-  def to_j
-    JSON.dump(Hash[self])
   end
 
   def deep_update(hash)

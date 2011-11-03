@@ -41,4 +41,8 @@ class IoFile < Hash
     end
     self
   end
+
+  def to_j
+    JSON.dump(to_h)
+  end
 end

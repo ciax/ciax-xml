@@ -35,14 +35,14 @@ class IoFile < Hash
 
   def save(data=nil)
     if @fname
-      open(@fname,'w'){|f| f << JSON.dump(data||to_h)}
+      open(@fname,'w'){|f| f << JSON.dump(data||to_hash)}
     else
-      puts JSON.dump(data||to_h)
+      puts JSON.dump(data||to_hash)
     end
     self
   end
 
   def to_j
-    JSON.dump(to_h)
+    JSON.dump(to_hash)
   end
 end

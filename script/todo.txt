@@ -1,5 +1,6 @@
 ========================== Issue =============================
 ***DEBUG
+mcr:remove door open interlock(11/2)
 dso: doesn't work(11/2)
 dso:fix jack bolt stack after interrupt(8/15)
 aso:need reset function for executing flag

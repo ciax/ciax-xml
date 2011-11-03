@@ -134,4 +134,52 @@ class << Msg
     return text unless STDERR.tty?
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end
+
+  def view_struct(data,title=nil,indent=0)
+    str=''
+    if title
+      case title
+      when Numeric
+        title="[#{title}]"
+      else
+        title=title.inspect
+      end
+      str << "  " * indent + ("%-4s :\n" % title)
+      indent+=1
+    end
+    case data
+    when Array
+      vary=data
+      idx=data.size.times
+      if vary.any?{|v| v.kind_of?(Enumerable)}
+        idx.each{|i|
+          str << view_struct(data[i],i,indent)
+        }
+        return str
+      elsif  data.size > 11
+        vary.each_slice(11){|a|
+          str << "  " * indent + "#{a.inspect}\n"
+        }
+        return str
+      end
+    when Hash
+      vary=data.values
+      idx=data.keys
+      if vary.any?{|v| v.kind_of?(Enumerable)}
+        idx.each{|i|
+          str << view_struct(data[i],i,indent)
+        }
+        return str
+      elsif data.size > 2
+        idx.each_slice(title ? 2 : 1){|a|
+          line=a.map{|k|
+            "#{k.inspect}:#{data[k].inspect}"
+          }.join("\t")
+          str << "  " * indent + line + "\n"
+        }
+        return str
+      end
+    end
+    str.chomp + " #{data.inspect}\n"
+  end
 end

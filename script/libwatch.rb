@@ -57,8 +57,7 @@ class Watch < Hash
     str="  "+Msg.color("Last update",5)+":#{@elapse}\n"
     @conds.size.times{|i|
       res=self[:active].include?(i)
-      str << "  "+Msg.color(self[:label][i],6)
-      str << ":#{self[:active][i]}"
+      str << "  "+Msg.color(self[:label][i],6)+':'
       str << show_res(res)+"\n"
       if res
         str << "    Block:/#{self[:block][i]}/\n" if self[:block][i]

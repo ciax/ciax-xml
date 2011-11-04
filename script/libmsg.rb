@@ -144,7 +144,7 @@ class << Msg
       else
         title=title.inspect
       end
-      str << "  " * indent + ("%-4s :\n" % title)
+      str << "  " * indent + color("%-6s" % title,5)+" :\n"
       indent+=1
     end
     case data
@@ -173,7 +173,7 @@ class << Msg
       elsif data.size > 2
         idx.each_slice(title ? 2 : 1){|a|
           line=a.map{|k|
-            "#{k.inspect}:#{data[k].inspect}"
+            color("%-8s" % k.inspect,3)+(": %-10s" % data[k].inspect)
           }.join("\t")
           str << "  " * indent + line + "\n"
         }

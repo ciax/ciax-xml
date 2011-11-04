@@ -53,13 +53,13 @@ class Watch < Hash
     str=''
     @conds.size.times{|i|
       res=self[:active].include?(i)
-      str << Msg.color(self[:label][i],6)
+      str << "  "+Msg.color(self[:label][i],6)
       str << ":#{self[:active][i]}"
       str << show_res(res)+"\n"
       if res
-        str << "   Block:/#{self[:block][i]}/\n" if self[:block][i]
+        str << "    Block:/#{self[:block][i]}/\n" if self[:block][i]
         self[:exec][i].each{|k|
-          str << "   Cmd:#{k}\n"
+          str << "    Cmd:#{k}\n"
         }
       else
         @conds[i].each{|n|

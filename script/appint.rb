@@ -21,6 +21,7 @@ else
 end
 aobj=AppObj.new(adb,fobj)
 prt=Print.new(adb,aobj.view)
+mode='view'
 if opt["s"]
   require 'libserver'
   Server.new(adb["port"].to_i,aobj.prompt){|cmd|
@@ -29,6 +30,22 @@ if opt["s"]
 else
   require 'libshell'
   Shell.new(aobj.prompt){|cmd|
-    aobj.upd(cmd).message||prt
+    case cmd[0]
+    when 'view','stat','watch'
+      mode=cmd[0]
+      cmd.clear
+    end
+    if msg=aobj.upd(cmd).message
+      msg
+    else
+      case mode
+      when 'view'
+        prt
+      when 'stat'
+        Msg.view_struct(aobj.view['stat'],'stat')
+      when 'watch'
+        aobj.watch
+      end
+    end
   }
 end

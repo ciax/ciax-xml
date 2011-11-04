@@ -14,7 +14,6 @@ mcr:inter lock error log is  really needed
 
 ***UPDATE
 mcr: macro log
-wdb: show watch status in shell
 wdb: watch status log
 shell: toggle status display mode(view,stat,watch)
 crt: jack table edit interface (sql+web)
@@ -64,6 +63,7 @@ client,hprelay:using http for display status[9/8]
 hprelay: exe should be reset[9/6]
 Client: use socket instead of IoCmd(11/3)
 exadbc:need to verify frame commands(11/3)
+wdb: show watch status in shell(11/3)
 
 ***DISCARD
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain

@@ -64,7 +64,7 @@ class Watch < Hash
       if res
         str << "    Block:/#{self[:block][i]}/\n" if self[:block][i]
         self[:exec][i].each{|k|
-          str << "    Cmd:#{k}\n"
+          str << "    Issued:#{k}\n"
         }
       else
         self[:stat][i].each{|n|
@@ -99,7 +99,7 @@ class Watch < Hash
         res=(Regexp.new(c) === v)
         @v.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'range'
-        f="%.3f" % v.to_f
+        f=h['act']="%.3f" % v.to_f
         res=(ReRange.new(c) == f)
         @v.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
       end

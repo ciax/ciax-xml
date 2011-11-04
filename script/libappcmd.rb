@@ -40,10 +40,12 @@ if __FILE__ == $0
   app,*cmd=ARGV
   begin
     adb=AppDb.new(app,cmd.empty?)
-    par=Param.new(adb[:command])
-    ac=AppCmd.new(par)
-    par.set(cmd)
-    ac.getcmd.each{|cmd| p cmd}
+    fp=Param.new(adb.cover_frm[:cmdframe])
+    ap=Param.new(adb[:command]).set(cmd)
+    AppCmd.new(ap).getcmd.each{|fcmd|
+      fp.set(fcmd) if /set|unset|load|save/ !~ fcmd.first
+      p fcmd
+    }
   rescue SelectCMD
     Msg.exit(2)
   rescue UserError

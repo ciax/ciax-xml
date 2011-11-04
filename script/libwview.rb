@@ -7,10 +7,9 @@ require "libsql"
 # Status to Wview (String with attributes)
 class Wview < Rview
   def initialize(id,adb,field)
-    @stat=AppStat.new(adb,field)
+    @stat=AppStat.new(adb,field).upd
     super(id)
     @sym=SymStat.new(adb,@stat).upd
-    upd
     @sql=Sql.new(id,@stat)
     ['msg','class'].each{|k|
       self[k]=@sym[k]

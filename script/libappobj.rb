@@ -102,7 +102,7 @@ class AppObj
         begin
           @fobj.upd(@buf.recv)
           @v.msg{"Field Updated(#{@fobj.field['time']})"}
-          @view.upd.flush
+          @view.upd.save
           @v.msg{"Status Updated(#{@view['stat']['time']})"}
         rescue UserError
           warn $!

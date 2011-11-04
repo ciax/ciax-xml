@@ -60,19 +60,24 @@ class Watch < Hash
     str="  "+Msg.color("Last update",5)+":#{@elapse}\n"
     self[:stat].size.times{|i|
       res=self[:active].include?(i)
-      str << "  "+Msg.color(self[:label][i],6)+':'
+      str << "  "+Msg.color(self[:label][i],6)+': '
       str << show_res(res)+"\n"
       if res
-        str << "    Block:/#{self[:block][i]}/\n" if self[:block][i]
+        if self[:block][i]
+          str << "    "+Msg.color("Block",3)
+          str << ": /#{self[:block][i]}/\n"
+        end
         self[:exec][i].each{|k|
-          str << "    Issued:#{k}\n"
+          str << "    "+Msg.color("Issued",3)+": #{k}\n"
         }
       else
         self[:stat][i].each{|n|
           str << "    "+show_res(n['res'],'o','x')+' '
           str << Msg.color(n['ref'],3)
-          str << "(#{n['type']}"
-          str << "/#{n['val']}" if n['type'] != 'onchange'
+          str << " (#{n['type']}"
+          if n['type'] != 'onchange'
+            str << "=#{n['val'].inspect},actual=#{n['act'].inspect}"
+          end
           str << ")\n"
         }
       end

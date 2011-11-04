@@ -27,9 +27,11 @@ class AppObj
     @cth=command_thread
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"[key=val] ..")
-    @cl.add('row'=>"show row stat")
     @cl.add('sleep'=>"sleep [sec]")
     @cl.add('waitfor'=>"[key=val] (timeout=10)")
+    @cl.add('view'=>"View display mode")
+    @cl.add('stat'=>"Stat display mode")
+    @cl.add('watch'=>"Watch display mode")
     upd_prompt
   end
 
@@ -56,8 +58,6 @@ class AppObj
       }
       @view.set(hash).save
       @message="Set #{hash}"
-    when 'row'
-      @message=@view['stat']
     else
       if @watch.block_pattern === cmd.join(' ')
         @message="Blocking(#{@watch.block_pattern.inspect})"

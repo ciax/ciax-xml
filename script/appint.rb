@@ -42,7 +42,7 @@ else
       when 'view'
         prt
       when 'stat'
-        Msg.view_struct(aobj.view['stat'],'stat')
+        aobj.view['stat']
       when 'watch'
         aobj.watch
       end

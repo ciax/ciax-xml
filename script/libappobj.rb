@@ -30,9 +30,9 @@ class AppObj
     @cl.add('set'=>"[key=val] ..")
     @cl.add('sleep'=>"sleep [sec]")
     @cl.add('waitfor'=>"[key=val] (timeout=10)")
-    @cl.add('view'=>"View display mode")
-    @cl.add('stat'=>"Stat display mode")
-    @cl.add('watch'=>"Watch display mode")
+    @cl.add('view'=>"View mode")
+    @cl.add('raw'=>"Raw Stat mode")
+    @cl.add('watch'=>"Watch mode")
     upd_prompt
   end
 
@@ -42,7 +42,7 @@ class AppObj
     when nil
     when 'view'
       @output=@print
-    when 'stat'
+    when 'raw'
       @output=@view['stat']
     when 'watch'
       @output=@watch

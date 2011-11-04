@@ -1,12 +1,16 @@
 #!/usr/bin/ruby
 require 'libmsg'
+require 'libmodexh'
 require 'librerange'
 require 'libelapse'
+require 'yaml'
+
 class Watch < Hash
+  include ModExh
   def initialize(adb,view)
     @v=Msg::Ver.new("watch",12)
     Msg.type?(adb,AppDb)
-    update(adb[:watch])
+    deep_update(adb[:watch])
     @view=Msg.type?(view,Rview)
     [:block,:active,:exec,:stat].each{|i|
       self[i]||=[]
@@ -123,6 +127,6 @@ if __FILE__ == $0
   # For on change
   view.set(hash)
   # Print Wdb
-  #  puts Msg.view_struct(watch)
+  puts YAML.dump(watch[:stat])
   puts watch.upd
 end

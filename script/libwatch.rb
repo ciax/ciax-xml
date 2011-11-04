@@ -99,8 +99,9 @@ class Watch < Hash
         res=(Regexp.new(c) === v)
         @v.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'range'
-        res=(ReRange.new(c) == v)
-        @v.msg{"  Range(#{k}): [#{c}] vs <#{v.to_i}>(#{v.class}) =>#{res}"}
+        f="%.3f" % v.to_f
+        res=(ReRange.new(c) == f)
+        @v.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
       end
       h['res']=res
     }

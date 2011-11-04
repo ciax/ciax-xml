@@ -27,7 +27,7 @@ class Elapse < Interval
 
   def to_f
     diff=(Time.now-Time.at(@stat['time'].to_f)).to_f
-    @v.msg{"Elapse update diff #{diff} from #{@stat['time']}"}
+    @v.msg{"Elapse update diff #{'%.3f' % diff} from #{@stat['time']}"}
     diff
   end
 end

@@ -11,6 +11,7 @@ class Watch < Hash
     [:block,:active,:exec,:stat].each{|i|
       self[i]||=[]
     }
+    @conds=[]
   end
 
   def active?
@@ -29,7 +30,7 @@ class Watch < Hash
     cmds=self[:active].map{|i|
       self[:exec][i]
     }.compact.flatten(1).uniq
-    @v.msg{"ISSUED:#{cmds}"}
+    @v.msg{"ISSUED:#{cmds}"} unless cmds.empty?
     cmds
   end
 
@@ -40,6 +41,7 @@ class Watch < Hash
   end
 
   def upd
+    @conds.clear
     self[:active].clear
     self[:stat].size.times{|i|
       self[:active] << i if check(i)
@@ -47,10 +49,40 @@ class Watch < Hash
     self
   end
 
+  def to_s
+    str=''
+    @conds.size.times{|i|
+      res=self[:active].include?(i)
+      str << Msg.color(self[:label][i],6)
+      str << ":#{self[:active][i]}"
+      str << show_res(res)+"\n"
+      if res
+        str << "   Block:/#{self[:block][i]}/\n" if self[:block][i]
+        self[:exec][i].each{|k|
+          str << "   Cmd:#{k}\n"
+        }
+      else
+        @conds[i].each{|n|
+          str << "    "+show_res(n['res'],'o','x')+' '
+          str << Msg.color(n['ref'],3)
+          str << "(#{n['type']}"
+          str << "/#{n['val']}" if n['type'] != 'onchange'
+          str << ")\n"
+        }
+      end
+    }
+    str
+  end
+
   private
+  def show_res(res,t=nil,f=nil)
+    res ? Msg.color(t||res,2) : Msg.color(f||res,1)
+  end
+
   def check(i)
     return true unless self[:stat][i]
     @v.msg{"Check: <#{self[:label][i]}>"}
+    @conds << []
     self[:stat][i].all?{|h|
       k=h['ref']
       v=@view.stat(k)
@@ -66,6 +98,7 @@ class Watch < Hash
         res=(ReRange.new(c) == v)
         @v.msg{"  Range(#{k}): [#{c}] vs <#{v.to_i}>(#{v.class}) =>#{res}"}
       end
+      @conds.last << {'act'=>v,'res'=>res}.update(h)
       res
     }
   end
@@ -91,13 +124,5 @@ if __FILE__ == $0
   # For on change
   view.set(hash)
   # Print Wdb
-  watch.upd
-  print "Active? : "
-  p watch.active?
-  print "Block Pattern : "
-  p watch.block_pattern
-  print "Issue Commands : "
-  p watch.issue
-  print "Interrupt : "
-  p watch.interrupt
+  puts watch.upd
 end

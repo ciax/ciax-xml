@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -212,7 +212,7 @@
             <argv>$_</argv>
           </exec>
         </event>
-        <event>
+        <event label="Interrupt %d">
           <onchange ref="int"></onchange>
           <pattern ref="r%d">N</pattern>
           <exec name="stop">

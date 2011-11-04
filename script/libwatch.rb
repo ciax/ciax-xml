@@ -11,7 +11,6 @@ class Watch < Hash
     [:block,:active,:exec,:stat].each{|i|
       self[i]||=[]
     }
-    @conds=[]
     self['time']=Time.now.to_i
     @elapse=Elapse.new(self)
   end
@@ -44,7 +43,6 @@ class Watch < Hash
   end
 
   def upd
-    @conds.clear
     self['time']=Time.now.to_f
     self[:active].clear
     self[:stat].size.times{|i|
@@ -55,7 +53,7 @@ class Watch < Hash
 
   def to_s
     str="  "+Msg.color("Last update",5)+":#{@elapse}\n"
-    @conds.size.times{|i|
+    self[:stat].size.times{|i|
       res=self[:active].include?(i)
       str << "  "+Msg.color(self[:label][i],6)+':'
       str << show_res(res)+"\n"
@@ -65,7 +63,7 @@ class Watch < Hash
           str << "    Cmd:#{k}\n"
         }
       else
-        @conds[i].each{|n|
+        self[:stat][i].each{|n|
           str << "    "+show_res(n['res'],'o','x')+' '
           str << Msg.color(n['ref'],3)
           str << "(#{n['type']}"
@@ -85,11 +83,10 @@ class Watch < Hash
   def check(i)
     return true unless self[:stat][i]
     @v.msg{"Check: <#{self[:label][i]}>"}
-    @conds << []
     self[:stat][i].all?{|h|
       k=h['ref']
-      v=@view.stat(k)
       c=h['val']
+      v=h['act']=@view.stat(k)
       case h['type']
       when 'onchange'
         res=@view.change?(k)
@@ -101,8 +98,7 @@ class Watch < Hash
         res=(ReRange.new(c) == v)
         @v.msg{"  Range(#{k}): [#{c}] vs <#{v.to_i}>(#{v.class}) =>#{res}"}
       end
-      @conds.last << {'act'=>v,'res'=>res}.update(h)
-      res
+      h['res']=res
     }
   end
 end
@@ -127,5 +123,6 @@ if __FILE__ == $0
   # For on change
   view.set(hash)
   # Print Wdb
+  #  puts Msg.view_struct(watch)
   puts watch.upd
 end

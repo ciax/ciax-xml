@@ -45,7 +45,7 @@ class Watch < Hash
 
   def upd
     @conds.clear
-    self['time']=Time.now.to_i
+    self['time']=Time.now.to_f
     self[:active].clear
     self[:stat].size.times{|i|
       self[:active] << i if check(i)

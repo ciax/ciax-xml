@@ -12,6 +12,8 @@ class Watch < Hash
       self[i]||=[]
     }
     @conds=[]
+    self['time']=Time.now.to_i
+    @elapse=Elapse.new(self)
   end
 
   def active?
@@ -37,11 +39,13 @@ class Watch < Hash
   def interrupt
     @view.last['int']=1
     upd
+    @view.last['int']=nil
     issue
   end
 
   def upd
     @conds.clear
+    self['time']=Time.now.to_i
     self[:active].clear
     self[:stat].size.times{|i|
       self[:active] << i if check(i)
@@ -50,7 +54,7 @@ class Watch < Hash
   end
 
   def to_s
-    str=''
+    str="  "+Msg.color("Last update",5)+":#{@elapse}\n"
     @conds.size.times{|i|
       res=self[:active].include?(i)
       str << "  "+Msg.color(self[:label][i],6)

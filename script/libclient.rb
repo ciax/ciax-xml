@@ -6,7 +6,9 @@ class Client
   attr_reader :prompt,:message,:port,:host
   def initialize(id,port,host=nil)
     @udp=UDPSocket.open()
-    @addr=Socket.pack_sockaddr_in(port,host||='localhost')
+    @port=port
+    @host=host||='localhost'
+    @addr=Socket.pack_sockaddr_in(@port,@host)
     @prompt="#{id}>"
   end
 

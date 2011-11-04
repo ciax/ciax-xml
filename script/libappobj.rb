@@ -9,7 +9,7 @@ require "libsql"
 require "thread"
 
 class AppObj
-  attr_reader :prompt,:view,:message
+  attr_reader :prompt,:view,:message,:watch
   def initialize(adb,frmobj)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
@@ -22,9 +22,9 @@ class AppObj
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
-    @event=Watch.new(adb,@view)
-    @watch=watch_thread unless @event[:stat].empty?
-    @main=command_thread
+    @watch=Watch.new(adb,@view)
+    @wth=watch_thread unless @watch[:stat].empty?
+    @cth=command_thread
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"[key=val] ..")
     @cl.add('row'=>"show row stat")
@@ -38,7 +38,7 @@ class AppObj
     when nil
       @message=nil
     when 'interrupt'
-      stop=@event.interrupt
+      stop=@watch.interrupt
       @buf.interrupt{stop}
       @message="Interrupt #{stop}"
     when 'sleep'
@@ -59,8 +59,8 @@ class AppObj
     when 'row'
       @message=@view['stat']
     else
-      if @event.block_pattern === cmd.join(' ')
-        @message="Blocking(#{@event.block_pattern.inspect})"
+      if @watch.block_pattern === cmd.join(' ')
+        @message="Blocking(#{@watch.block_pattern.inspect})"
       else
         @par.set(cmd)
         @buf.send(@ac.getcmd)
@@ -76,11 +76,11 @@ class AppObj
   private
   def upd_prompt
     @prompt.replace(@id)
-    @prompt << '@' if @watch && @watch.alive?
-    @prompt << '&' if @event.active?
+    @prompt << '@' if @wth && @wth.alive?
+    @prompt << '&' if @watch.active?
     @prompt << '*' if @buf.issue
     @prompt << '#' if @buf.wait
-    @prompt << (@main.alive? ? '>' : 'X')
+    @prompt << (@cth.alive? ? '>' : 'X')
     self
   end
 
@@ -108,7 +108,7 @@ class AppObj
       loop{
         begin
           @buf.auto{
-            @event.upd.issue.map{|cmd|
+            @watch.upd.issue.map{|cmd|
               @par.set(cmd)
               @ac.getcmd
             }.flatten(1)

@@ -13,8 +13,15 @@ class Rview < IoFile
     @elapse=Elapse.new(@stat)
   end
 
-  def stat(id)
-    id == 'elapse' ? @elapse : @stat[id]
+  def stat(id=nil)
+    case id
+    when nil
+      @stat
+    when 'elapse'
+      @elapse
+    else
+      @stat[id]
+    end
   end
 
   def set(hash)
@@ -33,10 +40,8 @@ class Rview < IoFile
   end
 
   def refresh
-    if update?
-      @v.msg{"Status Updated"}
-      @last.update(@stat)
-    end
+    @v.msg{"Status Updated"}
+    @last.update(@stat)
   end
 end
 

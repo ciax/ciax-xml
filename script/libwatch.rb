@@ -52,6 +52,7 @@ class Watch < Hash
     self[:stat].size.times{|i|
       self[:active] << i if check(i)
     }
+    @view.refresh
     self
   end
 

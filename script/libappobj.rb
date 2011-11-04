@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libbuffer"
+require "libparam"
 require "libappcmd"
 require "libwview"
 require "libprint"
+require "libbuffer"
 require "libwatch"
-require "libsql"
 require "thread"
 
 class AppObj
-  attr_reader :prompt,:view,:message,:watch
+  attr_reader :prompt,:message
   def initialize(adb,frmobj)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
@@ -19,6 +19,7 @@ class AppObj
     @par=Param.new(adb[:command])
     @ac=AppCmd.new(@par)
     @view=Wview.new(@id,adb,@fobj.field)
+    @output=@print=Print.new(adb,@view)
     Thread.abort_on_exception=true
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
@@ -36,9 +37,15 @@ class AppObj
   end
 
   def upd(cmd)
+    @message=nil
     case cmd.first
     when nil
-      @message=nil
+    when 'view'
+      @output=@print
+    when 'stat'
+      @output=@view['stat']
+    when 'watch'
+      @output=@watch
     when 'interrupt'
       stop=@watch.interrupt
       @buf.interrupt{stop}
@@ -71,6 +78,10 @@ class AppObj
     self
   rescue SelectCMD
     @cl.error
+  end
+
+  def to_s
+    @output.to_s
   end
 
   private

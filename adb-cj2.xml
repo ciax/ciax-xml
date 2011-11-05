@@ -33,7 +33,7 @@
         </frmcmd>
         <frmcmd name="getstat" />
       </command>
-      <command id="clear" label="Clear Error">
+      <command id="reserr" label="Reset Error">
         <frmcmd name="setbit">
           <argv>0</argv>
           <argv>11</argv>
@@ -109,7 +109,7 @@
         </frmcmd>
         <frmcmd name="getstat" />
       </command>
-      <command id="mhook" label="Movable Flange Hook">
+      <command id="mhook" label="Mov Flange Hook">
         <frmcmd name="setbit">
           <argv>2</argv>
           <argv>0</argv>
@@ -118,7 +118,7 @@
         <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
-      <command id="munhk" label="Movable Flange UnHook">
+      <command id="munhk" label="Mov Flange UnHook">
         <frmcmd name="setbit">
           <argv>2</argv>
           <argv>1</argv>
@@ -127,7 +127,7 @@
         <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
-      <command id="mrotout" label="Movable Flange Rotation for Loading">
+      <command id="mrotout" label="Mov Flange Rotation for Loading">
         <frmcmd name="setbit">
           <argv>2</argv>
           <argv>2</argv>
@@ -136,7 +136,7 @@
         <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
-      <command id="mrotin" label="Movable Flange Rotation for Storing">
+      <command id="mrotin" label="Mov Flange Rotation for Storing">
         <frmcmd name="setbit">
           <argv>2</argv>
           <argv>3</argv>
@@ -145,7 +145,7 @@
         <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
-      <command id="mjup" label="Movable Flange Jack Up">
+      <command id="mjup" label="Mov Flange Jack Up">
         <frmcmd name="setbit">
           <argv>2</argv>
           <argv>4</argv>
@@ -154,7 +154,7 @@
         <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
-      <command id="mjdw" label="Movable Flange Jack Down">
+      <command id="mjdw" label="Mov Flange Jack Down">
         <frmcmd name="setbit">
           <argv>2</argv>
           <argv>5</argv>
@@ -163,7 +163,7 @@
         <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
-      <command id="trout" label="Movable Flange Transer Out">
+      <command id="trout" label="Mov Flange Transer Out">
         <frmcmd name="setbit">
           <argv>2</argv>
           <argv>6</argv>
@@ -172,7 +172,7 @@
         <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
-      <command id="trin" label="Movable Flange Transer In">
+      <command id="trin" label="Mov Flange Transer In">
         <frmcmd name="setbit">
           <argv>2</argv>
           <argv>7</argv>
@@ -213,14 +213,14 @@
         </frmcmd>
         <frmcmd name="getstat" />
       </command>
-      <command id="mpwon" label="Movable Flange Instrument Power On">
+      <command id="mpwon" label="Mov Flange Instrument Power On">
         <frmcmd name="setbit">
           <argv>3</argv>
           <argv>4</argv>
         </frmcmd>
         <frmcmd name="getstat" />
       </command>
-      <command id="mpwoff" label="Movable Flange Instrument Power Off">
+      <command id="mpwoff" label="Mov Flange Instrument Power Off">
         <frmcmd name="setbit">
           <argv>3</argv>
           <argv>5</argv>
@@ -250,21 +250,21 @@
         <frmcmd name="getcmd" />
         <frmcmd name="geterr" />
       </command>
-      <command id="mccdon" label="Movable Flange CCD Power On">
+      <command id="mccdon" label="Mov Flange CCD Power On">
         <frmcmd name="setbit">
           <argv>3</argv>
           <argv>12</argv>
         </frmcmd>
         <frmcmd name="getstat" />
       </command>
-      <command id="mccdoff" label="Movable Flange CCD Power Off">
+      <command id="mccdoff" label="Mov Flange CCD Power Off">
         <frmcmd name="setbit">
           <argv>3</argv>
           <argv>13</argv>
         </frmcmd>
         <frmcmd name="getstat" />
       </command>
-      <command id="mccdtoff" label="Movable Flange CCD Timer Off">
+      <command id="mccdtoff" label="Mov Flange CCD Timer Off">
         <frmcmd name="setbit">
           <argv>3</argv>
           <argv>14</argv>

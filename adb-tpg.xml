@@ -12,16 +12,16 @@
         <value id="st1" label="Turbo Pump Stat" symbol="stat">
           <string ref="st1" />
         </value>
-        <value id="ch1" label="Turbo Pump (Torr)">
-          <float format="%4.2e" ref="ch1" />
+        <value id="ch1" label="Turbo Pump (Torr)" format="%4.2e">
+          <float ref="ch1" />
         </value>
       </row>
       <row>
         <value id="st2" label="Scroll Pump Stat" symbol="stat">
           <string ref="st2" />
         </value>
-        <value id="ch2" label="Scroll Pump (Torr)">
-          <float format="%4.2e" ref="ch2" />
+        <value id="ch2" label="Scroll Pump (Torr)" format="%4.2e">
+          <float ref="ch2" />
         </value>
       </row>
     </status>

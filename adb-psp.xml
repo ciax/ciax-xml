@@ -34,25 +34,25 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">
-        <value id="vol" label="OUTPUT (V)">
-          <float ref="v" format="%3.2f" />
+        <value id="vol" label="OUTPUT (V)" format="%3.2f">
+          <float ref="v" />
         </value>
-        <value id="amp" label="OUTPUT (A)">
-          <float ref="a" format="%3.2f" />
+        <value id="amp" label="OUTPUT (A)" format="%3.2f">
+          <float ref="a" />
         </value>
-        <value id="wat" label="OUTPUT (W)">
-          <float ref="w" format="%3.2f" />
+        <value id="wat" label="OUTPUT (W)" format="%3.2f">
+          <float ref="w" />
         </value>
       </row>
       <row label="Group">
-        <value id="vl" label="Limit (V)">
-          <float ref="u" format="%3.2f" />
+        <value id="vl" label="Limit (V)" format="%3.2f">
+          <float ref="u" />
         </value>
-        <value id="il" label="Limit (A)">
-          <float ref="i" format="%3.2f" />
+        <value id="il" label="Limit (A)" format="%3.2f">
+          <float ref="i" />
         </value>
-        <value id="pl" label="Limit (W)">
-          <float ref="p" format="%3.2f" />
+        <value id="pl" label="Limit (W)" format="%3.2f">
+          <float ref="p" />
         </value>
       </row>
       <row label="Group">

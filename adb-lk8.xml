@@ -11,24 +11,24 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <row label="Group">
         <repeat from="0" to="3">
-          <value id="ch%d" label="CH %d">
-            <float ref="ch" index="$_" format="%3.2f" />
+          <value id="ch%d" label="CH %d" format="%3.2f">
+            <float ref="ch" index="$_" />
           </value>
         </repeat>
       </row>
       <row label="Group">
         <repeat from="4" to="7">
-          <value id="ch%d" label="CH %d">
-            <float ref="ch" index="$_" format="%3.2f" />
+          <value id="ch%d" label="CH %d" format="%3.2f">
+            <float ref="ch" index="$_" />
           </value>
         </repeat>
       </row>
       <row label="Group">
-        <value id="sp" label="SetPoint1 (K)">
-          <float ref="sp" format="%3.2f" />
+        <value id="sp" label="SetPoint1 (K)" format="%3.2f">
+          <float ref="sp" />
         </value>
-        <value id="htr" label="HeaterPower1(percent)">
-          <float ref="htr" format="%3.2f" />
+        <value id="htr" label="HeaterPower1(percent)" format="%3.2f">
+          <float ref="htr" />
         </value>
       </row>
     </status>

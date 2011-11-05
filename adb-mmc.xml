@@ -83,8 +83,8 @@
         <value id="con" label="Contact Sensor" symbol="normal">
           <string ref="in:1" />
         </value>
-        <value id="spd" label="Speed">
-          <float ref="spd" format="%.2f" />
+        <value id="spd" label="Speed" format="%.2f">
+          <float ref="spd" />
         </value>
         <value id="err" label="Error Code" symbol="err">
           <int ref="err" />
@@ -97,8 +97,8 @@
         <value id="lccw" label="CCW Limit" symbol="normal">
           <string ref="in:4" />
         </value>
-        <value id="abs" label="ABS position" symbol="abs">
-          <float ref="p" format="%.2f" />
+        <value id="abs" label="ABS position" symbol="abs" format="%.2f">
+          <float ref="p" />
         </value>
       </row>
     </status>

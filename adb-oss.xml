@@ -135,15 +135,15 @@
           <value id="stw" label="EL STOW" symbol="off-warn">
             <binary bit="2" ref="stow_1" />
           </value>
-          <value id="elv" label="EL">
-            <float ref="el" format="%.3f" />
+          <value id="elv" label="EL" format="%.3f">
+            <float ref="el" />
           </value>
           <value id="rps" label="ROT SENSOR" symbol="rps">
             <binary bit="4" ref="bstat" />
             <binary bit="5" ref="bstat" />
           </value>
-          <value id="iang" label="InR">
-            <float ref="iang" format="%.3f" />
+          <value id="iang" label="InR" format="%.3f">
+            <float ref="iang" />
           </value>
         </row>
       </group>
@@ -171,8 +171,8 @@
               <binary ref="bl" index="$_-($_+1)%2*2" bit="1" />
               <binary ref="bl" bit="2" index="$_-($_+1)%2*2" />
             </value>
-            <value id="jk%02d" label="%02d">
-              <float ref="jk" index="$_-($_+1)%2*2" formula="$#/100" format="%5.2f" />
+            <value id="jk%02d" label="%02d" format="%5.2f">
+              <float ref="jk" index="$_-($_+1)%2*2" formula="$#/100" />
             </value>
             <value id="cl%02d" label="%02d" symbol="normal">
               <binary ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
@@ -187,8 +187,8 @@
       <group id="g5" label="[Z Sensor Len]">
         <row>
           <repeat from="1" to="4">
-            <value id="z%d" label="%d">
-              <float ref="zp" index="$_-1" formula="$#/100" format="%5.2f" />
+            <value id="z%d" label="%d" format="%5.2f">
+              <float ref="zp" index="$_-1" formula="$#/100" />
             </value>
           </repeat>
         </row>

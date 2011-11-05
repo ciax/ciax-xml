@@ -16,8 +16,8 @@
         </value>
       </row>
       <row label="Group">
-        <value id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="flow">
-          <float format="%4.2f" ref="stat" formula="$#/100" />
+        <value id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="flow" format="%4.2f">
+          <float ref="stat" formula="$#/100" />
         </value>
       </row>
     </status>

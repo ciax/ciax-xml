@@ -67,11 +67,12 @@
       <xsd:choice minOccurs="0">
         <xsd:element ref="adbs:binary" maxOccurs="unbounded" />
         <xsd:element ref="adbs:string" maxOccurs="unbounded" />
-        <xsd:element ref="adbs:float" />
-        <xsd:element ref="adbs:int" />
+        <xsd:element ref="adbs:float" maxOccurs="unbounded" />
+        <xsd:element ref="adbs:int" maxOccurs="unbounded" />
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:id_attr"></xsd:attributeGroup>
       <xsd:attribute name="symbol" type="xsd:NCName" />
+      <xsd:attribute name="format" type="xsd:token" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in value-->
@@ -85,14 +86,12 @@
   <xsd:element name="float">
     <xsd:complexType>
       <xsd:attributeGroup ref="adbs:ref_attr" />
-      <xsd:attribute name="format" type="xsd:token" use="optional" />
       <xsd:attribute name="formula" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="int">
     <xsd:complexType>
       <xsd:attributeGroup ref="adbs:ref_attr" />
-      <xsd:attribute name="format" type="xsd:token" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="string">

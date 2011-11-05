@@ -26,7 +26,11 @@ module ModXml
     raise "Param should be Hash" unless Hash === db
     attr={}
     to_h.each{|k,v|
-      attr[k] = defined?(yield) ? (yield v) : v
+      if defined?(yield) && k != 'format'
+        attr[k] = yield v
+      else
+        attr[k] = v
+      end
     }
     key=attr.delete(id) || return
     attr.each{|str,v|

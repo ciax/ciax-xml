@@ -7,6 +7,7 @@ class AppStat < Hash
     Msg.type?(adb,AppDb)
     @field=Msg.type?(field,Field)
     @ads=adb[:status][:select]
+    @fmt=adb[:status][:format]||{}
     @ads.keys.each{|k|
       self[k]||=''
     }
@@ -16,7 +17,9 @@ class AppStat < Hash
     @ads.each{|id,fields|
       begin
         @v.msg(1){"STAT:GetStatus:[#{id}]"}
-        self[id]=get_val(fields)
+        data=get_val(fields)
+        data = @fmt[id] % data if @fmt.key?(id)
+        self[id]=data.to_s
       ensure
         @v.msg(-1){"STAT:GetStatus:#{id}=[#{self[id]}]"}
       end
@@ -31,24 +34,24 @@ class AppStat < Hash
 
   private
   def get_val(fields)
+    num=0
     str=''
-    bin=false
     fields.each{|e1| #element(split and concat)
       fld=e1['ref'] || Msg.abort("No field Key")
       data=@field.get(fld)||''
       case e1['type']
       when 'binary'
-        bin=true
-        str << binary(e1,data)
+        num << 1
+        num+=binary(e1,data)
       when 'float'
-        str << float(e1,data)
+        num+=float(e1,data)
       when 'int'
-        str << int(e1,data)
+        num+=int(e1,data)
       else
         str << data
       end
     }
-    bin ? str.to_i(2).to_s : str
+    str.empty? ? num : str
   end
 
   def binary(e1,data)
@@ -56,7 +59,7 @@ class AppStat < Hash
     bit=(data.to_i >> loc & 1)
     bit = -(bit-1) if /true|1/ === e1['inv']
     @v.msg{"GetBit[#{bit}]"}
-    bit.to_s
+    bit
   end
 
   def float(e1,data)
@@ -78,8 +81,7 @@ class AppStat < Hash
       data=eval(f)
       @v.msg{"Formula:#{f}(#{data})"}
     end
-    fmt=e1['format'] || "%f"
-    fmt % data
+    data
   end
 
   def int(e1,data)
@@ -87,8 +89,7 @@ class AppStat < Hash
     if /true|1/ === e1['signed']
       data= data > 0x7fff ? data - 0x10000 : data
     end
-    fmt=e1['format'] || "%d"
-    fmt % data
+    data
   end
 end
 

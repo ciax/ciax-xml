@@ -8,8 +8,8 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="oma">
       <row label="Group">
-        <value id="pres" label="Air Pressure (Psi)" symbol="pres">
-          <float format="%4.2f" ref="stat" />
+        <value id="pres" label="Air Pressure (Psi)" symbol="pres" format="%4.2f">
+          <float ref="stat" />
         </value>
       </row>
     </status>

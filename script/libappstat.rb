@@ -41,7 +41,7 @@ class AppStat < Hash
       data=@field.get(fld)||''
       case e1['type']
       when 'binary'
-        num << 1
+        num <<= 1
         num+=binary(e1,data)
       when 'float'
         num+=float(e1,data)

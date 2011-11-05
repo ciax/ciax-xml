@@ -2,7 +2,7 @@
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="cj2" label="Stand-by Flange PLC">
     <table id="exe">
-      <pattern class="normal" msg="OFF">0000</pattern>
+      <pattern class="normal" msg="OFF">0</pattern>
       <pattern class="warn" msg="ON" />
     </table>
     <table id="rst">

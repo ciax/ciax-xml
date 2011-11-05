@@ -320,10 +320,10 @@
       <group id="g2" label="ACTION STAT">
         <row>
           <value id="exe" label="EXECUTING" symbol="exe">
-            <string ref="c:0" />
-            <string ref="c:1" />
-            <string ref="c:2" />
-            <string ref="c:3" />
+            <int ref="c:0" />
+            <int ref="c:1" />
+            <int ref="c:2" />
+            <int ref="c:3" />
           </value>
           <value id="run" label="RUNNING" symbol="warn">
             <binary bit="15" ref="w:0" />

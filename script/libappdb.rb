@@ -62,7 +62,7 @@ class AppDb < Db
     group=(stat[:group]||=[[['time','elapse']]])
     rep.each(e){|e0,r0|
       if e0.name == 'group'
-        id=e0.attr2db(stat){|v|r0.format(v)}
+        id=e0.attr2db(stat){|k,v| r0.format(v)}
         group << [id]
         struct.update(init_stat(e0,stat,r0))
       elsif e0.name == 'row'
@@ -70,7 +70,7 @@ class AppDb < Db
         group.last << []
         struct.update(init_stat(e0,stat,r0))
       else
-        id=e0.attr2db(stat){|v|r0.format(v)}
+        id=e0.attr2db(stat){|k,v| k == 'format' ? v : r0.format(v)}
         struct[id]=[]
         e0.each{|e1|
           st={'type' => e1.name}

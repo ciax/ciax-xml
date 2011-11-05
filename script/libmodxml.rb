@@ -26,8 +26,8 @@ module ModXml
     raise "Param should be Hash" unless Hash === db
     attr={}
     to_h.each{|k,v|
-      if defined?(yield) && k != 'format'
-        attr[k] = yield v
+      if defined?(yield)
+        attr[k] = yield k,v
       else
         attr[k] = v
       end

@@ -72,9 +72,9 @@ class IoCmd
   def rcv
     sleep @wait
     str=reopen{
-      select([@f],nil,nil,@timeout) || return
+      select([@f],nil,nil,@timeout) || next
       @f.sysread(4096)
-    }
+    }||Msg.err("No string")
     @v.msg{"Recieved #{str.dump}"}
     str
   end
@@ -84,7 +84,7 @@ class IoCmd
     begin
       str=yield
     rescue
-      raise $! if int > 128
+      Msg.err("IO error") if int > 8
       @f=IO.popen(@iocmd,'r+')
       sleep int*=2
       retry

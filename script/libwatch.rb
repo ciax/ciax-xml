@@ -12,7 +12,7 @@ class Watch < Hash
     @wdb=Msg.type?(adb,AppDb)[:watch]
     @wst=@wdb[:stat]||[]
     @view=Msg.type?(view,Rview)
-    [:active,:stat].each{|i|
+    [:active,:stat,:exec,:block].each{|i|
       self[i]||=[]
     }
     self['time']=Time.now.to_i
@@ -24,17 +24,13 @@ class Watch < Hash
   end
 
   def block_pattern
-    str=self[:active].map{|i|
-      @wdb[:block][i]
-    }.compact.join('|')
+    str=self[:block]
     @v.msg{"BLOCKING:#{str}"} unless str.empty?
     Regexp.new(str) unless str.empty?
   end
 
   def issue
-    cmds=self[:active].map{|i|
-      @wdb[:exec][i]
-    }.compact.flatten(1).uniq
+    cmds=self[:exec]
     @v.msg{"ISSUED:#{cmds}"} unless cmds.empty?
     cmds
   end
@@ -49,9 +45,19 @@ class Watch < Hash
   def upd
     self['time']=Time.now.to_f
     self[:active].clear
+    exec=[]
+    block=[]
     @wst.size.times{|i|
-      self[:active] << i if check(i)
+      if check(i)
+        self[:active] << i
+        n=@wdb[:exec][i]
+        exec << n if n && !exec.include?(n)
+        n=@wdb[:block][i]
+        block << n if n && !block.include?(n)
+      end
     }
+    self[:exec]=exec.flatten(1).uniq
+    self[:block]=block.join('|')
     @view.refresh
     self
   end
@@ -62,32 +68,24 @@ class Watch < Hash
       res=self[:active].include?(i)
       str << "  "+Msg.color(@wdb[:label][i],6)+': '
       str << show_res(res)+"\n"
-      if res
-        if @wdb[:block][i]
-          str << "    "+Msg.color("Block",3)
-          str << ": /#{@wdb[:block][i]}/\n"
+      n=@wst[i]
+      m=self[:stat][i]
+      n.size.times{|j|
+        str << "    "+show_res(m[j]['res'],'o','x')+' '
+        str << Msg.color(n[j]['ref'],3)
+        str << " (#{n[j]['type']}/"
+        if n[j]['type'] == 'onchange'
+          str << "last=#{m[j]['last'].inspect},"
+          str << "now=#{m[j]['val'].inspect}"
+        else
+          str << "expected=#{n[j]['val'].inspect},"
+          str << "actual=#{m[j]['val'].inspect}"
         end
-        @wdb[:exec][i].each{|k|
-          str << "    "+Msg.color("Issued",3)+": #{k}\n"
-        }
-      else
-        n=@wst[i]
-        m=self[:stat][i]
-        n.size.times{|j|
-          str << "    "+show_res(m[j]['res'],'o','x')+' '
-          str << Msg.color(n[j]['ref'],3)
-          str << " (#{n[j]['type']}/"
-          if n[j]['type'] == 'onchange'
-            str << "last=#{m[j]['last'].inspect},"
-            str << "now=#{m[j]['val'].inspect}"
-          else
-            str << "expected=#{n[j]['val'].inspect},"
-            str << "actual=#{m[j]['val'].inspect}"
-          end
-          str << ")\n"
-        }
-      end
+        str << ")\n"
+      }
     }
+    str << "  "+Msg.color("Block",5)+": /#{self[:block]}/\n"
+    str << "  "+Msg.color("Issued",5)+": #{self[:exec]}\n"
     str
   end
 

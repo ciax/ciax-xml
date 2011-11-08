@@ -75,9 +75,13 @@ class Watch < Hash
         n.size.times{|j|
           str << "    "+show_res(m[j]['res'],'o','x')+' '
           str << Msg.color(n[j]['ref'],3)
-          str << " (#{n[j]['type']}"
-          if n[j]['type'] != 'onchange'
-            str << "=#{n[j]['val'].inspect},actual=#{m[j]['act'].inspect}"
+          str << " (#{n[j]['type']}/"
+          if n[j]['type'] == 'onchange'
+            str << "last=#{m[j]['last'].inspect},"
+            str << "now=#{m[j]['val'].inspect}"
+          else
+            str << "expected=#{n[j]['val'].inspect},"
+            str << "actual=#{m[j]['val'].inspect}"
           end
           str << ")\n"
         }
@@ -99,16 +103,18 @@ class Watch < Hash
     rary=[]
     n.size.times{|j|
       k=n[j]['ref']
-      c=n[j]['val']
-      v=(m[j]||={})['act']=@view.stat(k)
+      v=(m[j]||={})['val']=@view.stat(k)
       case n[j]['type']
       when 'onchange'
-        res=@view.change?(k)
+        c=m[j]['last']=@view.last[k]
+        res=(c != v)
         @v.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'pattern'
+        c=n[j]['val']
         res=(Regexp.new(c) === v)
         @v.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'range'
+        c=n[j]['val']
         f=m[j]['val']="%.3f" % v.to_f
         res=(ReRange.new(c) == f)
         @v.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}

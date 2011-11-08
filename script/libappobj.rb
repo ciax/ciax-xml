@@ -24,7 +24,7 @@ class AppObj
     @buf=Buffer.new
     @interval=(adb['interval']||1).to_i
     @watch=Watch.new(adb,@view)
-    @wth=watch_thread unless @watch[:stat].empty?
+    @wth=watch_thread unless adb[:watch].empty?
     @cth=command_thread
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"[key=val] ..")

@@ -26,7 +26,18 @@ class IoFile < Hash
 
   def load
     if @fname
-      open(@fname){|f| deep_update(JSON.load(f.read)) }
+      if File.exist?(@fname)
+        open(@fname){|f|
+          str=f.read
+          if str.empty?
+            Msg.warn(" -- json file is empty")
+          else
+            deep_update(JSON.load(str))
+          end
+        }
+      else
+        Msg.warn("  -- no json file")
+      end
     else
       deep_update(JSON.load(gets(nil)))
     end

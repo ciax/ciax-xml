@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="mel" id="mel" label="Cart PLC">
+  <app frm_type="mel" id="mel" label="Cart PLC" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <command id="upd" label="Regular status update">
         <frmcmd name="getstat" />
@@ -123,12 +123,6 @@
           <value id="rdy" label="READY" symbol="normal">
             <binary bit="0" ref="x:0" />
           </value>
-          <value id="acp" label="CMD ACCEPT" symbol="acp">
-            <binary label="Charging" bit="6" ref="x:0"></binary>
-            <binary label="Command Receive Enable" bit="0" ref="x:32" />
-          </value>
-        </row>
-        <row>
           <value id="pse" label="PAUSE" symbol="warn">
             <binary bit="1" ref="x:0" />
           </value>
@@ -150,6 +144,9 @@
       </group>
       <group id="g2" label="Action">
         <row>
+          <value id="acp" label="ACCEPT" symbol="acp">
+            <binary label="Command Receive Enable" bit="0" ref="x:32" />
+          </value>
           <value id="run" label="RUNNING" symbol="exec">
             <binary bit="4" ref="x:0" />
             <binary bit="0" ref="c:2" />
@@ -220,13 +217,20 @@
         <range ref="elapse">300:</range>
         <exec name="upd"></exec>
       </event>
-      <event label="Command Accept">
+      <event label="Action Accept">
         <onchange ref="acp"></onchange>
         <pattern ref="acp">0</pattern>
         <exec name="clear"></exec>
       </event>
-      <event label="During Motion" block="run|jak|charge">
-        <pattern ref="acp">0</pattern>
+      <event label="During Charge" block="run|jak">
+        <pattern ref="con">1</pattern>
+      </event>
+      <event label="While Running" block="run|jak|charge">
+        <pattern ref="run">1</pattern>
+        <exec name="upd"></exec>
+      </event>
+      <event label="While Jacking" block="run|jak|charge">
+        <pattern ref="jak">1</pattern>
         <exec name="upd"></exec>
       </event>
       <event label="Interrupt During Motion">

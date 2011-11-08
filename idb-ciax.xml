@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="crt" label="CART 3" app_type="mel" client="socat - udp:cart3:5000" port="25101"></instance>
+  <instance id="cr2" label="CART 2" app_type="mel" client="socat - udp:cart2:5000" port="27101"></instance>
   <instance id="dsi" label="IR Stand-by Flange" app_type="cj2" client="socat - udp:cst-i:9600" port="25102" host="cxws2">
     <init xmlns="http://ciax.sum.naoj.org/ciax-xml/idbf">
       <field id="ipl">1</field>
@@ -15,6 +16,5 @@
   </instance>
   <instance id="det" label="CsEtr Control" app_type="srm" client="socat - tcp:ltc-c:4001" port="25104"></instance>
   <instance id="dts" label="TSC Control" app_type="oss" client="socat - tcp:cxws2:9999" port="25105"></instance>
-  <instance id="cro" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4003" port="25108">
-  </instance>
+  <instance id="cro" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4003" port="25108"></instance>
 </idb>

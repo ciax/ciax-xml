@@ -10,6 +10,7 @@ class Watch < Hash
   def initialize(adb,view)
     @v=Msg::Ver.new("watch",12)
     @wdb=Msg.type?(adb,AppDb)[:watch]
+    @wst=@wdb[:stat]||[]
     @view=Msg.type?(view,Rview)
     [:active,:stat].each{|i|
       self[i]||=[]
@@ -48,7 +49,7 @@ class Watch < Hash
   def upd
     self['time']=Time.now.to_f
     self[:active].clear
-    @wdb[:stat].size.times{|i|
+    @wst.size.times{|i|
       self[:active] << i if check(i)
     }
     @view.refresh
@@ -57,7 +58,7 @@ class Watch < Hash
 
   def to_s
     str="  "+Msg.color("Last update",5)+":#{@elapse}\n"
-    @wdb[:stat].size.times{|i|
+    @wst.size.times{|i|
       res=self[:active].include?(i)
       str << "  "+Msg.color(@wdb[:label][i],6)+': '
       str << show_res(res)+"\n"
@@ -70,7 +71,7 @@ class Watch < Hash
           str << "    "+Msg.color("Issued",3)+": #{k}\n"
         }
       else
-        n=@wdb[:stat][i]
+        n=@wst[i]
         m=self[:stat][i]
         n.size.times{|j|
           str << "    "+show_res(m[j]['res'],'o','x')+' '
@@ -96,9 +97,9 @@ class Watch < Hash
   end
 
   def check(i)
-    return true unless @wdb[:stat][i]
+    return true unless @wst[i]
     @v.msg{"Check: <#{@wdb[:label][i]}>"}
-    n=@wdb[:stat][i]
+    n=@wst[i]
     m=(self[:stat][i]||=[])
     rary=[]
     n.size.times{|j|

@@ -206,8 +206,17 @@
         <exec name="upd"></exec>
       </event>
       <repeat from="1" to="6">
-        <event label="Moving %d" block="(fw|bk|abs) %d">
+        <event label="Moving %d">
           <pattern ref="r%d">N</pattern>
+          <block name="fw">
+            <argv>$_</argv>
+          </block>
+          <block name="bk">
+            <argv>$_</argv>
+          </block>
+          <block name="abs">
+            <argv>$_</argv>
+          </block>
           <exec name="updp">
             <argv>$_</argv>
           </exec>

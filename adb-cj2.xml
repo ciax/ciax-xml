@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -460,8 +460,20 @@
         <range ref="elapse">300:</range>
         <exec name="upd"></exec>
       </event>
-      <event label="On Motion" block="^[fmtd].+">
+      <event label="On Motion">
         <pattern ref="run">1</pattern>
+        <block name="fhook"></block>
+        <block name="funhk"></block>
+        <block name="fjup"></block>
+        <block name="fjdw"></block>
+        <block name="mhook"></block>
+        <block name="munhk"></block>
+        <block name="mjup"></block>
+        <block name="mjdw"></block>
+        <block name="trin"></block>
+        <block name="trout"></block>
+        <block name="dopen"></block>
+        <block name="dclose"></block>
         <exec name="upds"></exec>
       </event>
       <event label="Interrupt">

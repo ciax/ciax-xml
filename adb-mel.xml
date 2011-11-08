@@ -222,15 +222,26 @@
         <pattern ref="acp">0</pattern>
         <exec name="clear"></exec>
       </event>
-      <event label="During Charge" block="run|jak">
+      <event label="During Charge">
         <pattern ref="con">1</pattern>
+        <block name="run"/>
+        <block name="jak"/>
+        <block name="chgon"/>
       </event>
-      <event label="While Running" block="run|jak|charge">
+      <event label="While Running">
         <pattern ref="run">1</pattern>
+        <block name="run"/>
+        <block name="jak"/>
+        <block name="chgon"/>
+        <block name="chgoff"/>
         <exec name="upd"></exec>
       </event>
-      <event label="While Jacking" block="run|jak|charge">
+      <event label="While Jacking">
         <pattern ref="jak">1</pattern>
+        <block name="run"/>
+        <block name="jak"/>
+        <block name="chgon"/>
+        <block name="chgoff"/>
         <exec name="upd"></exec>
       </event>
       <event label="Interrupt During Motion">

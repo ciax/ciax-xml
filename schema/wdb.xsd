@@ -30,10 +30,10 @@
           <xsd:element ref="wdb:range" />
           <xsd:element ref="wdb:pattern" />
         </xsd:choice>
+        <xsd:element ref="wdb:block" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="wdb:exec" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:token" />
-      <xsd:attribute name="block" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <!--command-->
@@ -60,5 +60,6 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  <xsd:element name="block" type="wdb:command"></xsd:element>
   <xsd:element name="exec" type="wdb:command"></xsd:element>
 </xsd:schema>

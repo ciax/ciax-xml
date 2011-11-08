@@ -48,13 +48,14 @@ class Watch < Hash
     exec=[]
     block=[]
     @wst.size.times{|i|
-      if check(i)
-        self[:active] << i
-        n=@wdb[:exec][i]
-        exec << n if n && !exec.include?(n)
-        n=@wdb[:block][i]
-        block << n if n && !block.include?(n)
-      end
+      next unless check(i)
+      self[:active] << i
+      n=@wdb[:exec][i]
+      exec << n if n && !exec.include?(n)
+      n=@wdb[:block][i]||next
+      block << n.map{|cmd|
+        cmd.join(' ')
+      }.join('|')
     }
     self[:exec]=exec.flatten(1).uniq
     self[:block]=block.join('|')

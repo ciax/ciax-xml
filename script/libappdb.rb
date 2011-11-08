@@ -99,14 +99,12 @@ class AppDb < Db
     i=0
     hash={}
     Repeat.new.each(wdb){|e0,r0|
-      ['label','block'].each{|k|
-        (hash[k.to_sym]||=[]) << (e0[k] ? r0.format(e0[k]) : nil)
-      }
+      (hash[:label]||=[]) << (e0['label'] ? r0.format(e0['label']) : nil)
       @v.msg(1){"WATCH:#{hash[:onchange]}:#{hash[:label]}"}
       bg={}
       e0.each{ |e1|
         case name=e1.name.to_sym
-        when :exec
+        when :exec,:block
           cmd=[e1['name']]
           e1.each{|e2|
             cmd << r0.subst(e2.text)
@@ -119,7 +117,7 @@ class AppDb < Db
           (bg[:stat]||=[]) << h
         end
       }
-      [:stat,:exec].each{|k|
+      [:stat,:exec,:block].each{|k|
         (hash[k]||=[]) << bg[k]
       }
       i+=1

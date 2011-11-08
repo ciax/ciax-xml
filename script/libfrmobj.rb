@@ -15,13 +15,16 @@ class FrmObj
     @io.startlog(fdb['id'],fdb['version']) if iocmd.empty?
     @par=Param.new(fdb[:cmdframe])
     @fr=FrmRsp.new(fdb,@par)
-    @field=@fr.field.load
+    @field=@fr.field
     @fc=FrmCmd.new(fdb,@par,@field)
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"Set Value  [key(:idx)] (val)")
     @cl.add('unset'=>"Remove Value  [key]")
     @cl.add('load'=>"Load Field (tag)")
     @cl.add('save'=>"Save Field [key,key...] (tag)")
+    @field.load
+  rescue Errno::ENOENT
+    Msg.warn(" --- no json file")
   end
 
   def upd(cmd) #Should be array

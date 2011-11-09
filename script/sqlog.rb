@@ -6,7 +6,7 @@ require "libfrmrsp"
 require "libappstat"
 require "libsql"
 
-opt=ARGV.getopts("i")
+opt=ARGV.getopts("ia:d:")
 id = ARGV.shift
 begin
   adb=InsDb.new(id).cover_app
@@ -16,11 +16,15 @@ begin
   as=AppStat.new(adb,fr.field)
   sql=Sql.new(id,as)
 rescue UserError
-  warn "Usage: #{$0} (-i) [id] < logfile"
+  warn "Usage: #{$0} (-i) (-a|d key,key) [id] < logfile"
   Msg.exit
 end
 if opt['i']
   sql.create
+elsif keys=opt['a']
+  sql.add(keys)
+elsif keys=opt['d']
+  sql.del(keys)
 else
   STDIN.readlines.grep(/rcv/).each{|str|
     begin

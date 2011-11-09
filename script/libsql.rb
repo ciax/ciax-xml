@@ -15,6 +15,14 @@ class Sql < Array
     push "create table #{@tid} (time,#{key},primary key(time));"
   end
 
+  def add(keys)
+    push "alter table #{@tid} add (#{keys});"
+  end
+
+  def del(keys)
+    push "alter table #{@tid} drop (#{keys});"
+  end
+
   def upd
     key=@stat.keys.join(',')
     val=@stat.values.map{|s| "'#{s}'"}.join(',')

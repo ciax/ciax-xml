@@ -53,6 +53,10 @@ class FrmObj
     @cl.error
   end
 
+  def to_s
+    @field.to_s
+  end
+
   def commands
     @par.commands+@cl.keys
   end

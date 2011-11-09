@@ -3,7 +3,6 @@ require 'libmsg'
 require 'librerange'
 
 class Param < Hash
-  attr_reader :list
   # command db (:label,:select,:parameter)
   # app command db (:alias,:hidden)
   # frm command db (:nocache,:response)
@@ -54,6 +53,10 @@ class Param < Hash
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end
+  end
+
+  def commands
+    @alias.keys
   end
 
   private

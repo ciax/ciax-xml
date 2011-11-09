@@ -19,7 +19,7 @@ if opt["s"]
   }
 else
   require 'libshell'
-  Shell.new("#{id}>"){|line|
-    fobj.upd(line).message||fobj.field
+  Shell.new("#{id}>",fobj.commands){|line|
+    fobj.upd(line).message||fobj
   }
 end

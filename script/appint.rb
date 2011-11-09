@@ -27,7 +27,7 @@ if opt["s"]
   }
 else
   require 'libshell'
-  Shell.new(aobj.prompt){|cmd|
+  Shell.new(aobj.prompt,aobj.commands){|cmd|
     aobj.upd(cmd).message||aobj
   }
 end

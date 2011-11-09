@@ -66,8 +66,8 @@ class AppObj
       @view.set(hash).save
       @message="Set #{hash}"
     else
-      if @watch.block_pattern === cmd.join(' ')
-        @message="Blocking(#{@watch.block_pattern.inspect})"
+      if @watch.block?(cmd)
+        @message="Blocking(#{cmd})"
       else
         @par.set(cmd)
         @buf.send(@ac.getcmd)

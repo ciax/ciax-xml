@@ -23,10 +23,10 @@ class Watch < Hash
     !self[:active].empty?
   end
 
-  def block_pattern
-    str=self[:block]
-    @v.msg{"BLOCKING:#{str}"} unless str.empty?
-    Regexp.new(str) unless str.empty?
+  def block?(cmd)
+    cmds=self[:block]
+    @v.msg{"BLOCKING:#{cmd}"} unless cmds.empty?
+    cmds.include?(cmd)
   end
 
   def issue
@@ -54,14 +54,12 @@ class Watch < Hash
       int << n if n && !int.include?(n)
       n=@wdb[:exec][i]
       exec << n if n && !exec.include?(n)
-      n=@wdb[:block][i]||next
-      block << n.map{|cmd|
-        cmd.join(' ')
-      }.join('|')
+      n=@wdb[:block][i]
+      block << n if n && !block.include?(n)
     }
     self[:int]=int.flatten(1).uniq
     self[:exec]=exec.flatten(1).uniq
-    self[:block]=block.join('|')
+    self[:block]=block.flatten(1).uniq
     @view.refresh
     self
   end
@@ -88,7 +86,7 @@ class Watch < Hash
         str << ")\n"
       }
     }
-    str << "  "+Msg.color("Block",5)+": /#{self[:block]}/\n"
+    str << "  "+Msg.color("Block",5)+": #{self[:block]}\n"
     str << "  "+Msg.color("Interrupt",5)+": #{self[:int]}\n"
     str << "  "+Msg.color("Issuing",5)+": #{self[:exec]}\n"
     str

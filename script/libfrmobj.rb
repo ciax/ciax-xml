@@ -53,6 +53,10 @@ class FrmObj
     @cl.error
   end
 
+  def commands
+    @par.commands+@cl.keys
+  end
+
   private
   def set(cmd)
     if cmd.empty?

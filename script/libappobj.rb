@@ -84,6 +84,10 @@ class AppObj
     @output.to_s
   end
 
+  def commands
+    @par.commands+@cl.keys
+  end
+
   private
   def upd_prompt
     @prompt.replace(@id)

@@ -4,19 +4,18 @@ require "libframe"
 require "libiocmd"
 
 # Rsp Methods
-class FrmRsp
-  attr_reader :field
+class FrmRsp < Field
   def initialize(fdb,par)
     @v=Msg::Ver.new("frm/rsp",3)
     @fdb=Msg.type?(fdb,FrmDb)
     @par=Msg.type?(par,Param)
-    @field=Field.new(fdb['id'])
+    super(fdb['id'])
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
     @fds=rsp[:select]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
     rsp[:assign].each{|k,v|
-      @field[k]||=v
+      self[k]||=v
     }
   end
 
@@ -24,7 +23,7 @@ class FrmRsp
   def upd
     if rid=@par[:response]
       @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
-      frame,@field['time']=yield
+      frame,self['time']=yield
       Msg.err("No Response") unless frame
       if tm=@sel['terminator']
         frame.chomp!(eval('"'+tm+'"'))
@@ -38,7 +37,7 @@ class FrmRsp
       end
       @frame.set(@fary.shift)
       getfield_rec(@sel[:main])
-      if cc=@field.delete('cc')
+      if cc=delete('cc') # self.delete
         cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
@@ -46,7 +45,7 @@ class FrmRsp
       @v.msg{"Send Only"}
       @sel[:select]=nil
     end
-    @v.msg{"Update at #{@field['time']}"}
+    @v.msg{"Update at #{self['time']}"}
     self
   end
 
@@ -94,7 +93,7 @@ class FrmRsp
       }
       begin
         @v.msg(1){"Array:[#{key}]:Range#{idxs}"}
-        @field[key]=mk_array(idxs,@field[key]){yield}
+        self[key]=mk_array(idxs,self[key]){yield}
       ensure
         @v.msg(-1){"Array:Assign[#{key}]"}
       end
@@ -102,7 +101,7 @@ class FrmRsp
       #Field
       data=yield
       if key=e0['assign']
-        @field[key]=data
+        self[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
       end
     end
@@ -131,15 +130,14 @@ end
 if __FILE__ == $0
   require "libfrmdb"
   require "libparam"
-  require "libfield"
   fid=ARGV.shift
   begin
     fdb=FrmDb.new(fid)
     par=Param.new(fdb[:cmdframe])
-    fr=FrmRsp.new(fdb,par)
+    field=FrmRsp.new(fdb,par)
     str=gets(nil) || exit
-    fr.upd_logline(str)
-    puts fr.field.to_j
+    field.upd_logline(str)
+    puts field.to_j
   rescue UserError
     warn "Usage: #{$0} [frameID] < logline"
     Msg.exit

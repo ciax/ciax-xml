@@ -22,8 +22,8 @@ else
   adb=idb.cover_app
   fdb=adb.cover_frm
   par=Param.new(fdb[:cmdframe])
-  fr=FrmRsp.new(fdb,par)
-  stat=AppStat.new(adb,fr.field)
+  field=FrmRsp.new(fdb,par)
+  stat=AppStat.new(adb,field)
   sql=Sql.new(id,stat)
   if opt['i']
     sql.ini
@@ -32,8 +32,8 @@ else
   else
     STDIN.readlines.grep(/rcv/).each{|str|
       begin
-        fr.upd_logline(str)
-        as.upd
+        field.upd_logline(str)
+        stat.upd
         sql.upd
         $stderr.print "."
       rescue

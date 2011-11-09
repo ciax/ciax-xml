@@ -14,8 +14,7 @@ class FrmObj
     @io=IoCmd.new(client,fdb['wait'],1).extend(IoLog)
     @io.startlog(fdb['id'],fdb['version']) if iocmd.empty?
     @par=Param.new(fdb[:cmdframe])
-    @fr=FrmRsp.new(fdb,@par)
-    @field=@fr.field
+    @field=FrmRsp.new(fdb,@par)
     @fc=FrmCmd.new(fdb,@par,@field)
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"Set Value  [key(:idx)] (val)")
@@ -44,8 +43,7 @@ class FrmObj
     else
       cid=@par.set(cmd)[:cid]
       @io.snd(@fc.getframe,cid)
-      @fr.upd{@io.rcv(cid)}
-      @fr.field.save
+      @field.upd{@io.rcv(cid)}.save
       @message='OK'
     end
     self

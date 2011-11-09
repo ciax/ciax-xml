@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# For sqlite3
 require "libmsg"
 require "libappstat"
 class Sql < Array
@@ -15,12 +16,8 @@ class Sql < Array
     push "create table #{@tid} (time,#{key},primary key(time));"
   end
 
-  def add(keys)
-    push "alter table #{@tid} add (#{keys});"
-  end
-
-  def del(keys)
-    push "alter table #{@tid} drop (#{keys});"
+  def add(key)
+    push "alter table #{@tid} add column #{key};"
   end
 
   def upd

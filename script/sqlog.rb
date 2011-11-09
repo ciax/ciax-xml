@@ -7,12 +7,12 @@ require "libappstat"
 require 'librview'
 require "libsql"
 
-opt=ARGV.getopts("isa:d:")
+opt=ARGV.getopts("isa:")
 id = ARGV.shift
 begin
   idb=InsDb.new(id)
 rescue UserError
-  warn "Usage: #{$0} (-is) (-a|d key,key) [id] < logfile"
+  warn "Usage: #{$0} (-is) (-a key) [id] < logfile"
   Msg.exit
 end
 if opt['s']
@@ -27,10 +27,8 @@ else
   sql=Sql.new(id,stat)
   if opt['i']
     sql.ini
-  elsif keys=opt['a']
-    sql.add(keys)
-  elsif keys=opt['d']
-    sql.del(keys)
+  elsif key=opt['a']
+    sql.add(key)
   else
     STDIN.readlines.grep(/rcv/).each{|str|
       begin

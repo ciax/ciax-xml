@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -15,7 +15,6 @@
           <argv>0</argv>
         </frmcmd>
         <frmcmd name="getcmd" />
-        <frmcmd name="getstat" />
       </command>
       <command id="fwd" label="Run Forward">
         <frmcmd name="set_tag">
@@ -25,7 +24,6 @@
           <argv>0</argv>
         </frmcmd>
         <frmcmd name="getcmd" />
-        <frmcmd name="getstat" />
       </command>
       <command id="bak" label="Run Backword">
         <frmcmd name="set_tag">
@@ -35,7 +33,6 @@
           <argv>0</argv>
         </frmcmd>
         <frmcmd name="getcmd" />
-        <frmcmd name="getstat" />
       </command>
       <command id="lift" label="Lift Jack Level [0-3]">
         <par>0:3</par>
@@ -46,46 +43,42 @@
           <argv>8</argv>
         </frmcmd>
         <frmcmd name="getcmd" />
-        <frmcmd name="getstat" />
       </command>
       <command id="chgon" label="Start Charging">
         <frmcmd name="start">
           <argv>15</argv>
         </frmcmd>
-        <frmcmd name="clear" />
-        <frmcmd name="getstat" />
+        <frmcmd name="getcmd" />
       </command>
       <command id="chgoff" label="Stop Charging">
         <frmcmd name="stop">
           <argv format="%d">3</argv>
         </frmcmd>
-        <frmcmd name="getstat" />
-        <frmcmd name="clear" />
-        <frmcmd name="getstat" />
+        <frmcmd name="getcmd" />
       </command>
       <command id="pause" label="Pause">
         <frmcmd name="stop">
           <argv>0</argv>
         </frmcmd>
-        <frmcmd name="clear" />
+        <frmcmd name="getcmd" />
       </command>
       <command id="emstop" label="Emergency Stop">
         <frmcmd name="stop">
           <argv>1</argv>
         </frmcmd>
-        <frmcmd name="clear" />
+        <frmcmd name="getcmd" />
       </command>
       <command id="resume" label="Resume from Pause">
         <frmcmd name="stop">
           <argv>5</argv>
         </frmcmd>
-        <frmcmd name="clear" />
+        <frmcmd name="getcmd" />
       </command>
       <command id="cancel" label="Command Cancel">
         <frmcmd name="stop">
           <argv>4</argv>
         </frmcmd>
-        <frmcmd name="clear" />
+        <frmcmd name="getcmd" />
       </command>
       <command id="get_tbl" label="Get Jack Table">
         <frmcmd name="rw_tbl">
@@ -129,6 +122,9 @@
           <value id="stp" label="STOP" symbol="warn">
             <binary bit="3" ref="x:0" />
           </value>
+          <value id="isu" label="ISSUED" symbol="warn">
+            <int ref="c:2" />
+          </value>
         </row>
         <row>
           <value id="ecode" label="EXIT CODE" symbol="ecode" format="%04X">
@@ -149,15 +145,12 @@
           </value>
           <value id="run" label="RUNNING" symbol="exec">
             <binary bit="4" ref="x:0" />
-            <binary bit="0" ref="c:2" />
           </value>
           <value id="jak" label="JACKING" symbol="exec">
             <binary bit="5" ref="x:0" />
-            <binary bit="8" ref="c:2" />
           </value>
           <value id="con" label="CHARGING" symbol="exec">
             <binary bit="6" ref="x:0" />
-            <binary bit="15" ref="c:2" />
           </value>
         </row>
       </group>
@@ -217,31 +210,39 @@
         <range ref="elapse">300:</range>
         <exec name="upd"></exec>
       </event>
-      <event label="Action Accept">
+      <event label="During Issued">
+        <range ref="isu">0&lt;:</range>
+        <block name="run" />
+        <block name="jak" />
+        <block name="chgon" />
+        <exec name="upd"></exec>
+      </event>
+      <event label="Command Receive">
         <onchange ref="acp"></onchange>
         <pattern ref="acp">0</pattern>
         <exec name="clear"></exec>
+        <exec name="upd"></exec>
       </event>
       <event label="During Charge">
         <pattern ref="con">1</pattern>
-        <block name="run"/>
-        <block name="jak"/>
-        <block name="chgon"/>
+        <block name="run" />
+        <block name="jak" />
+        <block name="chgon" />
       </event>
       <event label="While Running">
         <pattern ref="run">1</pattern>
-        <block name="run"/>
-        <block name="jak"/>
-        <block name="chgon"/>
-        <block name="chgoff"/>
+        <block name="run" />
+        <block name="jak" />
+        <block name="chgon" />
+        <block name="chgoff" />
         <exec name="upd"></exec>
       </event>
       <event label="While Jacking">
         <pattern ref="jak">1</pattern>
-        <block name="run"/>
-        <block name="jak"/>
-        <block name="chgon"/>
-        <block name="chgoff"/>
+        <block name="run" />
+        <block name="jak" />
+        <block name="chgon" />
+        <block name="chgoff" />
         <exec name="upd"></exec>
       </event>
       <event label="Interrupt During Motion">

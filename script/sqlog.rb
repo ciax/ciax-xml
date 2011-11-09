@@ -19,7 +19,8 @@ if opt['s']
   stat=Rview.new(id).load['stat']
   sql=Sql.new(id,stat).upd
 else
-  fdb=idb.cover_app.cover_frm
+  adb=idb.cover_app
+  fdb=adb.cover_frm
   par=Param.new(fdb[:cmdframe])
   fr=FrmRsp.new(fdb,par)
   stat=AppStat.new(adb,fr.field)

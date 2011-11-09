@@ -44,22 +44,18 @@ class Watch < Hash
   def upd
     self['time']=Time.now.to_f
     self[:active].clear
-    exec=[]
-    block=[]
-    int=[]
+    hash={:int =>[],:exec =>[],:block =>[]}
     @wst.size.times{|i|
       next unless check(i)
       self[:active] << i
-      n=@wdb[:int][i]
-      int << n if n && !int.include?(n)
-      n=@wdb[:exec][i]
-      exec << n if n && !exec.include?(n)
-      n=@wdb[:block][i]
-      block << n if n && !block.include?(n)
+      hash.each{|k,a|
+        n=@wdb[k][i]
+        a << n if n && !a.include?(n)
+      }
     }
-    self[:int]=int.flatten(1).uniq
-    self[:exec]=exec.flatten(1).uniq
-    self[:block]=block.flatten(1).uniq
+    hash.each{|k,a|
+      self[k]=a.flatten(1).uniq
+    }
     @view.refresh
     self
   end

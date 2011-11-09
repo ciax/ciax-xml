@@ -235,6 +235,7 @@
         <block name="jak" />
         <block name="chgon" />
         <block name="chgoff" />
+        <int name="pause" />
         <exec name="upd"></exec>
       </event>
       <event label="While Jacking">
@@ -243,12 +244,8 @@
         <block name="jak" />
         <block name="chgon" />
         <block name="chgoff" />
-        <exec name="upd"></exec>
-      </event>
-      <event label="Interrupt During Motion">
-        <onchange ref="int"></onchange>
-        <pattern ref="acp">0</pattern>
-        <exec name="pause"></exec>
+        <int name="pause" />
+        <exec name="upd" />
       </event>
     </watch>
   </app>

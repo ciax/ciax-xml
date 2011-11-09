@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="range.xsd" />
@@ -31,6 +31,7 @@
           <xsd:element ref="wdb:pattern" />
         </xsd:choice>
         <xsd:element ref="wdb:block" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:element ref="wdb:int" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="wdb:exec" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
       <xsd:attribute name="label" type="xsd:token" />
@@ -61,5 +62,6 @@
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="block" type="wdb:command"></xsd:element>
+  <xsd:element name="int" type="wdb:command"></xsd:element>
   <xsd:element name="exec" type="wdb:command"></xsd:element>
 </xsd:schema>

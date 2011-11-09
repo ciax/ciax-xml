@@ -104,7 +104,7 @@ class AppDb < Db
       bg={}
       e0.each{ |e1|
         case name=e1.name.to_sym
-        when :exec,:block
+        when :block,:int,:exec
           cmd=[e1['name']]
           e1.each{|e2|
             cmd << r0.subst(e2.text)
@@ -117,7 +117,7 @@ class AppDb < Db
           (bg[:stat]||=[]) << h
         end
       }
-      [:stat,:exec,:block].each{|k|
+      [:stat,:exec,:int,:block].each{|k|
         (hash[k]||=[]) << bg[k]
       }
       i+=1

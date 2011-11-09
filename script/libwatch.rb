@@ -12,7 +12,7 @@ class Watch < Hash
     @wdb=Msg.type?(adb,AppDb)[:watch]
     @wst=@wdb[:stat]||[]
     @view=Msg.type?(view,Rview)
-    [:active,:stat,:exec,:block].each{|i|
+    [:active,:stat,:exec,:block,:int].each{|i|
       self[i]||=[]
     }
     self['time']=Time.now.to_i
@@ -36,10 +36,9 @@ class Watch < Hash
   end
 
   def interrupt
-    @view.last['int']=1
-    upd
-    @view.last['int']=nil
-    issue
+    cmds=self[:int]
+    @v.msg{"ISSUED:#{cmds}"} unless cmds.empty?
+    cmds
   end
 
   def upd
@@ -47,9 +46,12 @@ class Watch < Hash
     self[:active].clear
     exec=[]
     block=[]
+    int=[]
     @wst.size.times{|i|
       next unless check(i)
       self[:active] << i
+      n=@wdb[:int][i]
+      int << n if n && !int.include?(n)
       n=@wdb[:exec][i]
       exec << n if n && !exec.include?(n)
       n=@wdb[:block][i]||next
@@ -57,6 +59,7 @@ class Watch < Hash
         cmd.join(' ')
       }.join('|')
     }
+    self[:int]=int.flatten(1).uniq
     self[:exec]=exec.flatten(1).uniq
     self[:block]=block.join('|')
     @view.refresh
@@ -86,7 +89,8 @@ class Watch < Hash
       }
     }
     str << "  "+Msg.color("Block",5)+": /#{self[:block]}/\n"
-    str << "  "+Msg.color("Issued",5)+": #{self[:exec]}\n"
+    str << "  "+Msg.color("Interrupt",5)+": #{self[:int]}\n"
+    str << "  "+Msg.color("Issuing",5)+": #{self[:exec]}\n"
     str
   end
 

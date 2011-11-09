@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="slo" id="mmc" label="MOIRCS Carrousel">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -103,19 +103,15 @@
       </row>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <event>
+      <event label="Update Status">
         <range ref="elapse">300:</range>
         <exec name="upd"></exec>
       </event>
-      <event>
+      <event label="On Motion">
         <pattern ref="bs">1</pattern>
-        <block name="cw"/>
+        <block name="cw" />
+        <int name="stop" />
         <exec name="updp"></exec>
-      </event>
-      <event>
-        <onchange ref="int"></onchange>
-        <pattern ref="bs">1</pattern>
-        <exec name="stop"></exec>
       </event>
     </watch>
   </app>

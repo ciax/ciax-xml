@@ -9,7 +9,7 @@ class Sql < Array
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
   end
 
-  def create
+  def ini
     key=@stat.keys.join(',')
     @v.msg{"create (#{key})"}
     push "create table #{@tid} (time,#{key},primary key(time));"

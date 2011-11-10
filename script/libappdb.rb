@@ -16,6 +16,9 @@ class AppDb < Db
       # Status DB
       sdb=doc.domain('status')
       stat=self[:status]=sdb.to_h
+      stat[:label]={'g0' => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
+      stat[:group]={'g0' => [['time','elapse']]}
+      @gid='g0'
       stat[:select]=init_stat(sdb,stat,Repeat.new)
       # Watch DB
       wdb=doc.domain('watch')
@@ -58,16 +61,15 @@ class AppDb < Db
 
   def init_stat(e,stat,rep)
     struct={}
-    label=(stat[:label]||={'time' => 'TIMESTAMP','elapse' => 'ELAPSED'})
-    group=(stat[:group]||=[[['time','elapse']]])
+    label=stat[:label]
+    group=stat[:group]
     rep.each(e){|e0,r0|
       if e0.name == 'group'
-        id=e0.attr2db(stat){|k,v| r0.format(v)}
-        group << [id]
+        @gid=e0.attr2db(stat){|k,v| r0.format(v)}
+        group[@gid]=[]
         struct.update(init_stat(e0,stat,r0))
       elsif e0.name == 'row'
-        group << [] if group.size < 2
-        group.last << []
+        group[@gid] << []
         struct.update(init_stat(e0,stat,r0))
       else
         id=e0.attr2db(stat){|k,v| k == 'format' ? v : r0.format(v)}
@@ -87,7 +89,7 @@ class AppDb < Db
           end
           struct[id] << st
         }
-        group.last.last << id
+        group[@gid].last << id
         @v.msg{"STATUS:[#{id}]"}
       end
     }

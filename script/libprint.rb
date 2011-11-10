@@ -19,13 +19,10 @@ class Print
   private
   def get_group
     line=[]
-    @group.each{|g|
-      arys,ids = g.partition{|e| Array === e}
-      unless ids.empty?
-        cap=@label[ids.first] || next
-        line << " ***"+color(2,cap)+"***"
-      end
-      arys.each{|a|
+    @group.each{|k,v|
+      cap=@label[k] || next
+      line << " ***"+color(2,cap)+"***" unless cap.empty?
+      v.each{|a|
         line.concat get_element(a)
       }
     }

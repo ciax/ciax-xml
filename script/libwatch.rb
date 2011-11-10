@@ -71,14 +71,14 @@ class Watch < Hash
       n.size.times{|j|
         str << "    "+show_res(m[j]['res'],'o','x')+' '
         str << Msg.color(n[j]['ref'],3)
-        str << " ("
+        str << "  "
         str << "!" if /true|1/ === n[j]['inv']
-        str << "#{n[j]['type']}/"
+        str << "(#{n[j]['type']}"
         if n[j]['type'] == 'onchange'
-          str << "last=#{m[j]['last'].inspect},"
+          str << "/last=#{m[j]['last'].inspect},"
           str << "now=#{m[j]['val'].inspect}"
         else
-          str << "expected=#{n[j]['val'].inspect},"
+          str << "=#{n[j]['val'].inspect},"
           str << "actual=#{m[j]['val'].inspect}"
         end
         str << ")\n"

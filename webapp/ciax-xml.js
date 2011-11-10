@@ -1,7 +1,7 @@
+var last;
 function elapse(){
-    var time=$("#time").text();
-    if(time.match(/\*+/)) return;
-    var ms=new Date()-new Date(time);
+    var now=new Date()
+    var ms=now.getTime()-last;
     var t=new Date(ms);
     var str;
     if (ms > 86400000){
@@ -25,6 +25,7 @@ function conv(view){
         }
         $("#"+id).text(val);
     }
+    last=stat.time*1000;
 }
 function update(){
     $.get(File,null,conv,'json');

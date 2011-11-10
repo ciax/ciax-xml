@@ -48,6 +48,7 @@
       <xsd:simpleContent>
         <xsd:extension base="wdb:rerange">
           <xsd:attribute name="ref" type="xsd:token" use="required" />
+          <xsd:attribute name="inv" type="xsd:boolean" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -57,6 +58,7 @@
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
           <xsd:attribute name="ref" type="xsd:token" use="required" />
+          <xsd:attribute name="inv" type="xsd:boolean" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>

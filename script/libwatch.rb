@@ -71,7 +71,9 @@ class Watch < Hash
       n.size.times{|j|
         str << "    "+show_res(m[j]['res'],'o','x')+' '
         str << Msg.color(n[j]['ref'],3)
-        str << " (#{n[j]['type']}/"
+        str << " ("
+        str << "!" if /true|1/ === n[j]['inv']
+        str << "#{n[j]['type']}/"
         if n[j]['type'] == 'onchange'
           str << "last=#{m[j]['last'].inspect},"
           str << "now=#{m[j]['val'].inspect}"
@@ -117,6 +119,7 @@ class Watch < Hash
         res=(ReRange.new(c) == f)
         @v.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
       end
+      res=!res if /true|1/ === n[j]['inv']
       rary << m[j]['res']=res
     }
     rary.all?

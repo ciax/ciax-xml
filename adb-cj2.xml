@@ -269,7 +269,7 @@
       </group>
       <group id="g2" label="ACTION STAT">
         <row>
-          <value id="exe" label="EXECUTING" symbol="exe">
+          <value id="exe" label="EXECUTING" symbol="nonzero">
             <int ref="c:0" />
             <int ref="c:1" />
             <int ref="c:2" />
@@ -406,7 +406,7 @@
         <exec name="upd"></exec>
       </event>
       <event label="On Motion">
-        <range ref="exe">0&lt;:</range>
+        <pattern ref="exe" inv="true">0</pattern>
         <block name="fhook"></block>
         <block name="funhk"></block>
         <block name="fjup"></block>

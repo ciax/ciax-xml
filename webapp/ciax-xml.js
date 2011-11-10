@@ -17,10 +17,10 @@ function conv(view){
     var stat=view.stat
     for (var id in stat){
         var val=stat[id];
-        if(view.class && view.class[id]){
-                $("#"+id).addClass(view.class[id]);
+        if("class" in view && id in view["class"]){
+                $("#"+id).addClass(view["class"][id]);
         }
-        if(view.msg && view.msg[id]){
+        if("msg" in view && id in view["msg"]){
             val=view.msg[id]
         }
         $("#"+id).text(val);

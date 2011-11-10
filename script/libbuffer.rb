@@ -3,7 +3,7 @@ require "libmsg"
 require "thread"
 
 class Buffer
-  attr_reader :issue,:wait
+  attr_reader :issue
   def initialize
     @v=Msg::Ver.new("buffer",2)
     @q=Queue.new
@@ -23,10 +23,15 @@ class Buffer
     self
   end
 
-  def wait_for(timeout=10) # Need Block of boolean
+  def wait(timeout=10) # Need Block of boolean
     @wait=timeout.to_i
-    @proc.push(proc)
+    prc=defined?(yield) ? Proc.new : Proc.new{}
+    @proc.push(prc)
     self
+  end
+
+  def wait?
+    @wait
   end
 
   # For cmdset thread

@@ -54,11 +54,11 @@ class AppObj
       @buf.send(0){frmcmds(int)}
       @message="Interrupt #{int}"
     when 'sleep'
-      @buf.wait_for(cmd[1].to_i){}
+      @buf.wait(cmd[1].to_i)
       @message="Sleeping"
     when 'waitfor'
       k,v=cmd[1].split('=')
-      @buf.wait_for(10){ @view.stat(k) == v }
+      @buf.wait(10){ @view.stat(k) == v }
       @message="Waiting"
     when 'set'
       hash={}
@@ -96,7 +96,7 @@ class AppObj
     @prompt << '@' if @watch.alive?
     @prompt << '&' if @watch.active?
     @prompt << '*' if @buf.issue
-    @prompt << '#' if @buf.wait
+    @prompt << '#' if @buf.wait?
     @prompt << (@buf.alive? ? '>' : 'X')
     self
   end

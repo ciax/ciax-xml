@@ -1,17 +1,18 @@
 #!/usr/bin/ruby
 class ReRange
   include Comparable
-  # Range format "X","X:Y","X<:Y","X:<Y","X<:",":Y"
+  # Range format (limit) "X","X:",":X","X<","<X"
+  # Range format (between) "X:Y","X<Y","X<:Y","X:<Y"
   def initialize(str)
     @eq=@max=@min=@min_ex=@max_ex=nil
-    if /:/ === str
-      min,max=str.split(':')
+    if /[:<]+/ === str
+      min,ope,max=$`,$&,$'
       if min != ''
-        @min_ex=true if min.sub!(/<$/,'')
+        @min_ex=true if /^</ === ope
         @min=s2f(min)
       end
-      if max
-        @max_ex=true if max.sub!(/^</,'')
+      if max != ''
+        @max_ex=true if /<$/ === ope
         @max=s2f(max)
       end
     else

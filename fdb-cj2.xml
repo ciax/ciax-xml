@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="cj2" label="OMRON CJ2M-CPU33" endian="big">
+  <frame id="cj2" label="OMRON CJ2M-CPU33" endian="big" version="1">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="FINS Header:ICF">0x80</char>
       <char length="1" label="FINS Header:RSV">0x00</char>
@@ -78,6 +78,17 @@
           <char length="2" label="FINS Param:Bit Data">0x00</char>
           <char length="2" label="FINS Param:Bit Data">0x00</char>
           <char length="2" label="FINS Param:Bit Data">0x00</char>
+          <char length="2" label="FINS Param:Bit Data">0x00</char>
+        </command>
+        <command id="clrint" label="Clear Interrupt Bit" response="cmdrsp" type="stat">
+          <char length="1" label="FINS Command:MRC">0x01</char>
+          <char length="1" label="FINS Command:SRC">0x02</char>
+          <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
+          <char length="1" label="FINS Param:Start Address(H)">0x00</char>
+          <char length="1" label="FINS Param:Start Address(L)">0x00</char>
+          <char length="1" label="FINS Param:Bit Number">0x00</char>
+          <char length="1" label="FINS Param:Data Length (H)">0x00</char>
+          <char length="1" label="FINS Param:Data Length (L)">0x01</char>
           <char length="2" label="FINS Param:Bit Data">0x00</char>
         </command>
       </select>

@@ -92,7 +92,7 @@ class AppObj
   private
   def upd_prompt
     @prompt.replace(@id)
-    @prompt << '@' if @watch['tid'] && @watch['tid'].alive?
+    @prompt << '@' if @watch.alive?
     @prompt << '&' if @watch.active?
     @prompt << '*' if @buf.issue
     @prompt << '#' if @buf.wait

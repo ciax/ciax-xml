@@ -23,6 +23,10 @@ class Watch < Hash
     !self[:active].empty?
   end
 
+  def alive?
+    @tid && @tid.alive?
+  end
+
   def block?(cmd)
     cmds=self[:block]
     @v.msg{"BLOCKING:#{cmd}"} unless cmds.empty?
@@ -61,7 +65,7 @@ class Watch < Hash
   end
 
   def thread
-    self['tid']=Thread.new{
+    @tid=Thread.new{
       Thread.pass
       int=(@wdb['interval']||1).to_i
       loop{

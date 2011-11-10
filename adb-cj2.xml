@@ -18,7 +18,7 @@
           <argv>0</argv>
           <argv>0</argv>
         </frmcmd>
-        <frmcmd name="clrbit" />
+        <frmcmd name="clrint" />
         <frmcmd name="getstat" />
       </command>
       <command id="pause" label="Pause">
@@ -26,7 +26,7 @@
           <argv>0</argv>
           <argv>1</argv>
         </frmcmd>
-        <frmcmd name="clrbit" />
+        <frmcmd name="clrint" />
         <frmcmd name="getstat" />
       </command>
       <command id="resume" label="Resume Pause">
@@ -34,7 +34,7 @@
           <argv>0</argv>
           <argv>10</argv>
         </frmcmd>
-        <frmcmd name="clrbit" />
+        <frmcmd name="clrint" />
         <frmcmd name="getstat" />
       </command>
       <command id="reserr" label="Reset Error">
@@ -42,7 +42,7 @@
           <argv>0</argv>
           <argv>11</argv>
         </frmcmd>
-        <frmcmd name="clrbit" />
+        <frmcmd name="clrint" />
         <frmcmd name="getstat" />
         <frmcmd name="geterr" />
       </command>
@@ -51,7 +51,7 @@
           <argv>0</argv>
           <argv>3</argv>
         </frmcmd>
-        <frmcmd name="clrbit" />
+        <frmcmd name="clrint" />
         <frmcmd name="getstat" />
       </command>
       <command id="fhook" label="Fix Flange Hook">

@@ -19,9 +19,8 @@ class Buffer
     @q.clear
   end
 
-  def send(cmdset)
-    Msg.type?(cmdset,Array)
-    cmdset.each{|cmd|
+  def send
+    yield.each{|cmd|
       @inbuf[1].push(cmd)
       @v.msg{"MAIN:Issued [#{cmd}] with priority [normal]"}
     }

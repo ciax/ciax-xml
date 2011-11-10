@@ -23,7 +23,7 @@
       included in adb      
 
 ## String restriction ##
-adb//cmdset@id -> never use ':'
+adb//command@id -> never use ':'
 
 ### Substitution Strings (implicit conversion) ###
  ## Process order: repeat -> parameter -> status -> formula -> format(w/eval)
@@ -32,23 +32,23 @@ adb//cmdset@id -> never use ':'
     description : substitute sequence number(in repeat)
     usable: fdb//cmdframe/repeat/char
             --
-            adb//cmdset/repeat/command/argv
+            adb//commands/repeat/command/argv
             adb//status/repeat/value/*@ref
             adb//status/repeat/value/binary@bit
             adb//watch/repeat//argv
 
  $1..9
     description : substitute parameters, sould be numerical
-    usable: fdb//cmdframe/char
+    usable: fdb//command/char
             fdb//response/array/index
             --
-            adb//cmdset/command/argv (eval if @format exists, Math included)
+            adb//command/argv (eval if @format exists, Math included)
 
  ${*:*}
     description : substitute status ${key:idx:idx} => var[key][idx][idx]
                   content should be numerical expression or of csv array
                   idx can be equation (i.e. $_+1 )
-    usable: fdb//cmdframe/char
+    usable: fdb//command/char
 
  $#
     description : formula parameter
@@ -73,10 +73,10 @@ adb//cmdset@id -> never use ':'
 ### Valid Data ###
 
  numerical (i.e. '1234','0012','0xab','1+2'..)
-    fdb//cmdframe/char
-    fdb//cmdframe/string (with @format)
+    fdb//char
+    fdb//string (with @format)
     --   
-    adb//cmdset/command/argv (with @format, including Math functions)
+    adb//command/argv (with @format, including Math functions)
 
 ### Explicit conversion by Attributes ###
 
@@ -84,8 +84,7 @@ adb//cmdset@id -> never use ':'
     usable: fdb//string
             --
             adb//command/argv
-            adb//status/value/float
-            adb//status/value/int
+            adb//status/value
 
  decode
     usable: fdb//response/field
@@ -97,10 +96,11 @@ adb//cmdset@id -> never use ':'
     usable: fdb//command/par
             --
             adb//command/par
+            adb//event/range
  
 ### Reference Content ###
-  fdb//cmdframe//command@response <= fdb//rspframe//response@id
-  adb//(commands|watch)//frmcmd@name <= fdb//command@id
-  adb//watch/interrupt@name <= fdb//command@id
-  adb//watch//condition/value@ref <= adb//value@id
+  fdb//command@response <= fdb//rspframe//response@id
+  adb//frmcmd@name <= fdb//command@id
+  adb//event/(int,exec,block)@name <= adb//commands/command@id
+  adb//event/(onchange,pattern,range)@ref <= adb//status/value@id
   *@symbol <= *//symbol/table@id

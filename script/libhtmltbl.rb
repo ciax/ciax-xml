@@ -13,14 +13,11 @@ class HtmlTbl < Array
 
   private
   def get_group(group)
-    group.each{|g|
-      arys,ids=g.partition{|e| Array === e}
-      unless ids.empty?
-        cap=@label[ids.first] || next
-      end
+    group.each{|k,g|
+      cap=@label[k] || next
       push "<table><tbody>"
-      push  "<tr><th colspan=\"6\">#{cap}</th></tr>" if cap
-      arys.each{|a|
+      push  "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
+      g.each{|a|
         get_element(a)
       }
       push "</tbody></table>"

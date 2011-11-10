@@ -70,7 +70,7 @@ class Watch < Hash
       int=(@wdb['interval']||1).to_i
       loop{
         begin
-          yield self
+          yield upd.issue
         rescue SelectID
           Msg.warn($!)
         end

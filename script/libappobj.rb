@@ -21,12 +21,13 @@ class AppObj
     @view=Wview.new(@id,adb,@fobj.field)
     @output=@print=Print.new(adb,@view)
     Thread.abort_on_exception=true
-    @buf=Buffer.new
-    @cth=command_thread
-    @watch=Watch.new(adb,@view).thread{|me|
-      @buf.auto{
-        frmcmds(me.upd.issue)
-      }
+    @buf=Buffer.new.thread{|cmd|
+      @fobj.upd(cmd)
+      @view.upd.save
+      @v.msg{"Status Updated(#{@view['stat']['time']})"}
+    }
+    @watch=Watch.new(adb,@view).thread{|cmd|
+      @buf.send(2){frmcmds(cmd)}
     }
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"[key=val] ..")
@@ -50,7 +51,7 @@ class AppObj
       @output=@watch
     when 'interrupt'
       int=@watch.interrupt
-      @buf.interrupt{frmcmds(int)}
+      @buf.send(0){frmcmds(int)}
       @message="Interrupt #{int}"
     when 'sleep'
       @buf.wait_for(cmd[1].to_i){}
@@ -96,26 +97,8 @@ class AppObj
     @prompt << '&' if @watch.active?
     @prompt << '*' if @buf.issue
     @prompt << '#' if @buf.wait
-    @prompt << (@cth.alive? ? '>' : 'X')
+    @prompt << (@buf.alive? ? '>' : 'X')
     self
-  end
-
-  def command_thread
-    Thread.new{
-      Thread.pass
-      loop{
-        begin
-          @fobj.upd(@buf.recv)
-          @v.msg{"Field Updated(#{@fobj.field['time']})"}
-          @view.upd.save
-          @v.msg{"Status Updated(#{@view['stat']['time']})"}
-        rescue UserError
-          warn $!
-          Msg.alert(" in Command Thread")
-          @buf.clear
-        end
-      }
-    }
   end
 
   def frmcmds(ary)

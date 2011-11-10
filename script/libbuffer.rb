@@ -12,40 +12,15 @@ class Buffer
     clear
   end
 
-  def clear
-    @issue=@wait=false
-    @inbuf=[[],[],[]]
-    @outbuf=[[],[],[]]
-    @q.clear
-  end
-
-  def send
+  def send(n=1)
+    return self if  n > 1 && !@q.empty?
+    clear if n == 0
     yield.each{|cmd|
-      @inbuf[1].push(cmd)
-      @v.msg{"MAIN:Issued [#{cmd}] with priority [normal]"}
+      @inbuf[n].push(cmd)
+      @v.msg{"MAIN:Issued [#{cmd}] with priority [#{n}]"}
     }
-    flush(1) unless @wait
+    flush(n) unless @wait
     self
-  end
-
-  def auto
-    if @q.empty?
-      yield.each{|cmd|
-        @inbuf[2].push(cmd)
-      }
-      flush(2)
-    end
-    self
-  end
-
-  def interrupt
-    @v.msg{"MAIN:Stopped"}
-    clear
-    yield.each{|cmd|
-      @inbuf[0].push(cmd)
-      @v.msg{"MAIN:Issued #{cmd}"}
-    }
-    flush(0)
   end
 
   def wait_for(timeout=10) # Need Block of boolean
@@ -74,6 +49,26 @@ class Buffer
     }
   end
 
+  def thread
+    @tid=Thread.new{
+      Thread.pass
+      loop{
+        begin
+          yield recv
+        rescue UserError
+          warn $!
+          Msg.alert(" in Buffer Thread")
+          clear
+        end
+      }
+    }
+    self
+  end
+
+  def alive?
+    @tid && @tid.alive?
+  end
+
   # Internal command
   private
   def delay
@@ -97,5 +92,12 @@ class Buffer
       @inbuf[pri]=[]
     end
     self
+  end
+
+  def clear
+    @issue=@wait=false
+    @inbuf=[[],[],[]]
+    @outbuf=[[],[],[]]
+    @q.clear
   end
 end

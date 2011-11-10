@@ -47,9 +47,9 @@ class AppObj
     when 'watch'
       @output=@watch
     when 'interrupt'
-      stop=@watch.interrupt
-      @buf.interrupt{stop}
-      @message="Interrupt #{stop}"
+      int=@watch.interrupt
+      @buf.interrupt{frmcmds(int)}
+      @message="Interrupt #{int}"
     when 'sleep'
       @buf.wait_for(cmd[1].to_i){}
       @message="Sleeping"
@@ -69,8 +69,7 @@ class AppObj
       if @watch.block?(cmd)
         @message="Blocking(#{cmd})"
       else
-        @par.set(cmd)
-        @buf.send(@ac.getcmd)
+        @buf.send{frmcmds([cmd])}
         @message="ISSUED"
       end
     end
@@ -123,10 +122,7 @@ class AppObj
       loop{
         begin
           @buf.auto{
-            @watch.upd.issue.map{|cmd|
-              @par.set(cmd)
-              @ac.getcmd
-            }.flatten(1)
+            frmcmds(@watch.upd.issue)
           }
         rescue SelectID
           Msg.warn($!)
@@ -134,5 +130,12 @@ class AppObj
         sleep @interval
       }
     }
+  end
+
+  def frmcmds(ary)
+    ary.map{|cmd|
+      @par.set(cmd)
+      @ac.getcmd
+    }.flatten(1)
   end
 end

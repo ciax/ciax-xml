@@ -11,20 +11,15 @@
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
   </xsd:attributeGroup>
   <!--status & group-->
-  <xsd:group name="group">
-    <xsd:choice>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:row"></xsd:element>
-        <xsd:element ref="adbs:repeat"></xsd:element>
-      </xsd:choice>
-      <xsd:sequence maxOccurs="unbounded">
-        <xsd:element ref="adbs:group"></xsd:element>
-      </xsd:sequence>
-    </xsd:choice>
-  </xsd:group>
   <xsd:element name="status">
     <xsd:complexType>
-      <xsd:group ref="adbs:group" />
+      <xsd:choice>
+        <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="adbs:group"></xsd:element>
+          <xsd:element ref="adbs:row"></xsd:element>
+          <xsd:element ref="adbs:repeat"></xsd:element>
+        </xsd:choice>
+      </xsd:choice>
       <xsd:attribute name="table" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
@@ -52,12 +47,10 @@
     <xsd:complexType>
       <xsd:choice>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
+          <xsd:element ref="adbs:group"></xsd:element>
           <xsd:element ref="adbs:row"></xsd:element>
           <xsd:element ref="adbs:value"></xsd:element>
         </xsd:choice>
-        <xsd:sequence maxOccurs="unbounded">
-          <xsd:element ref="adbs:group"></xsd:element>
-        </xsd:sequence>
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:repeat" />
     </xsd:complexType>

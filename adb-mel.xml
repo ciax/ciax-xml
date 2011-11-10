@@ -6,6 +6,48 @@
         <frmcmd name="getstat" />
         <frmcmd name="getcmd" />
       </command>
+      <command id="pause" label="Pause">
+        <frmcmd name="stop">
+          <argv>0</argv>
+        </frmcmd>
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
+      </command>
+      <command id="emstop" label="Emergency Stop">
+        <frmcmd name="stop">
+          <argv>1</argv>
+        </frmcmd>
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
+      </command>
+      <command id="cancel" label="Command Cancel">
+        <frmcmd name="stop">
+          <argv>4</argv>
+        </frmcmd>
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
+      </command>
+      <command id="resume" label="Resume from Pause">
+        <frmcmd name="stop">
+          <argv>5</argv>
+        </frmcmd>
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
+      </command>
+      <command id="ready" label="Ready mode">
+        <frmcmd name="stop">
+          <argv>6</argv>
+        </frmcmd>
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
+      </command>
+      <command id="cstop" label="Stop Next Tag">
+        <frmcmd name="stop">
+          <argv>7</argv>
+        </frmcmd>
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
+      </command>
       <command id="run" label="Run to Destination Tag [1-12]">
         <par>1:12</par>
         <frmcmd name="set_tag">
@@ -53,34 +95,6 @@
       <command id="chgoff" label="Stop Charging">
         <frmcmd name="stop">
           <argv format="%d">3</argv>
-        </frmcmd>
-        <frmcmd name="clear" />
-        <frmcmd name="getstat" />
-      </command>
-      <command id="pause" label="Pause">
-        <frmcmd name="stop">
-          <argv>0</argv>
-        </frmcmd>
-        <frmcmd name="clear" />
-        <frmcmd name="getstat" />
-      </command>
-      <command id="emstop" label="Emergency Stop">
-        <frmcmd name="stop">
-          <argv>1</argv>
-        </frmcmd>
-        <frmcmd name="clear" />
-        <frmcmd name="getstat" />
-      </command>
-      <command id="resume" label="Resume from Pause">
-        <frmcmd name="stop">
-          <argv>5</argv>
-        </frmcmd>
-        <frmcmd name="clear" />
-        <frmcmd name="getstat" />
-      </command>
-      <command id="cancel" label="Command Cancel">
-        <frmcmd name="stop">
-          <argv>4</argv>
         </frmcmd>
         <frmcmd name="clear" />
         <frmcmd name="getstat" />

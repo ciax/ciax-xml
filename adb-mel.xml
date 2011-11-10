@@ -54,31 +54,36 @@
         <frmcmd name="stop">
           <argv format="%d">3</argv>
         </frmcmd>
-        <frmcmd name="getcmd" />
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
       </command>
       <command id="pause" label="Pause">
         <frmcmd name="stop">
           <argv>0</argv>
         </frmcmd>
-        <frmcmd name="getcmd" />
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
       </command>
       <command id="emstop" label="Emergency Stop">
         <frmcmd name="stop">
           <argv>1</argv>
         </frmcmd>
-        <frmcmd name="getcmd" />
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
       </command>
       <command id="resume" label="Resume from Pause">
         <frmcmd name="stop">
           <argv>5</argv>
         </frmcmd>
-        <frmcmd name="getcmd" />
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
       </command>
       <command id="cancel" label="Command Cancel">
         <frmcmd name="stop">
           <argv>4</argv>
         </frmcmd>
-        <frmcmd name="getcmd" />
+        <frmcmd name="clear" />
+        <frmcmd name="getstat" />
       </command>
       <command id="get_tbl" label="Get Jack Table">
         <frmcmd name="rw_tbl">
@@ -108,6 +113,7 @@
       </command>
       <command id="clear" label="Clear Cmd Flag" hidden="true">
         <frmcmd name="clear" />
+        <frmcmd name="getcmd" />
       </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
@@ -122,8 +128,10 @@
           <value id="stp" label="STOP" symbol="warn">
             <binary bit="3" ref="x:0" />
           </value>
-          <value id="isu" label="ISSUED" symbol="warn">
-            <int ref="c:2" />
+          <value id="isu" label="ISSUED" symbol="nonzero">
+            <binary ref="c:2" bit="0" />
+            <binary ref="c:2" bit="8" />
+            <binary ref="c:2" bit="15" />
           </value>
         </row>
         <row>
@@ -211,7 +219,7 @@
         <exec name="upd"></exec>
       </event>
       <event label="During Issued">
-        <range ref="isu">0&lt;:</range>
+        <pattern ref="isu" inv="1">0</pattern>
         <block name="run" />
         <block name="jak" />
         <block name="chgon" />

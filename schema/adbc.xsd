@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="range.xsd" />
@@ -6,9 +6,18 @@
   <!--command select-->
   <xsd:element name="commands">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="adbc:command" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbc:group" />
+        <xsd:element ref="adbc:command" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbc:command" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="adbc:id_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="command">

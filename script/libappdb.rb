@@ -6,25 +6,40 @@ require "libdb"
 module ModAdbc
   def init_command(adb)
     hash=adb.to_h
-    adb.each{|e0|
+    hash[:group]={}
+    hash[:parameter]={}
+    hash[:select]={}
+    hash[:hidden]={}
+    arc_command(adb,hash,'g0')
+  end
+
+  def arc_command(e,hash,gid)
+    e.each{|e0|
       id=e0.attr2db(hash)
-      Repeat.new.each(e0){|e1,rep|
-        case e1.name
-        when 'par'
-          ((hash[:parameter]||={})[id]||=[]) << e1.text
-        when 'frmcmd'
-          command=[e1['name']]
-          e1.each{|e2|
-            argv=e2.to_h
-            argv['val'] = rep.subst(e2.text)
-            if /\$/ !~ argv['val'] && fmt=argv.delete('format')
-              argv['val']=fmt % eval(argv['val'])
-            end
-            command << argv.freeze
-          }
-          ((hash[:select]||={})[id]||=[]) << command.freeze
-        end
-      }
+      case e0.name
+      when 'group'
+        hash[:hidden][id]='true'
+        arc_command(e0,hash,id)
+      else
+        (hash[:group][gid]||=[]) << id
+        Repeat.new.each(e0){|e1,rep|
+          case e1.name
+          when 'par'
+            (hash[:parameter][id]||=[]) << e1.text
+          when 'frmcmd'
+            command=[e1['name']]
+            e1.each{|e2|
+              argv=e2.to_h
+              argv['val'] = rep.subst(e2.text)
+              if /\$/ !~ argv['val'] && fmt=argv.delete('format')
+                argv['val']=fmt % eval(argv['val'])
+              end
+              command << argv.freeze
+            }
+            (hash[:select][id]||=[]) << command.freeze
+          end
+        }
+      end
     }
     hash
   end

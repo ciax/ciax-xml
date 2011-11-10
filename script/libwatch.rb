@@ -60,33 +60,51 @@ class Watch < Hash
     self
   end
 
-  def to_s
-    str="  "+Msg.color("Last update",5)+":#{@elapse}\n"
-    @wst.size.times{|i|
-      res=self[:active].include?(i)
-      str << "  "+Msg.color(@wdb[:label][i],6)+': '
-      str << show_res(res)+"\n"
-      n=@wst[i]
-      m=self[:stat][i]
-      n.size.times{|j|
-        str << "    "+show_res(m[j]['res'],'o','x')+' '
-        str << Msg.color(n[j]['ref'],3)
-        str << "  "
-        str << "!" if /true|1/ === n[j]['inv']
-        str << "(#{n[j]['type']}"
-        if n[j]['type'] == 'onchange'
-          str << "/last=#{m[j]['last'].inspect},"
-          str << "now=#{m[j]['val'].inspect}"
-        else
-          str << "=#{n[j]['val'].inspect},"
-          str << "actual=#{m[j]['val'].inspect}"
+  def thread
+    self['tid']=Thread.new{
+      Thread.pass
+      int=(@wdb['interval']||1).to_i
+      loop{
+        begin
+          yield self
+        rescue SelectID
+          Msg.warn($!)
         end
-        str << ")\n"
+        sleep int
       }
-    }
-    str << "  "+Msg.color("Block",5)+": #{self[:block]}\n"
-    str << "  "+Msg.color("Interrupt",5)+": #{self[:int]}\n"
-    str << "  "+Msg.color("Issuing",5)+": #{self[:exec]}\n"
+    } unless @wst.empty?
+    self
+  end
+
+  def to_s
+    str=''
+    if @wst.size.times{|i|
+        res=self[:active].include?(i)
+        str << "  "+Msg.color(@wdb[:label][i],6)+': '
+        str << show_res(res)+"\n"
+        n=@wst[i]
+        m=self[:stat][i]
+        n.size.times{|j|
+          str << "    "+show_res(m[j]['res'],'o','x')+' '
+          str << Msg.color(n[j]['ref'],3)
+          str << "  "
+          str << "!" if /true|1/ === n[j]['inv']
+          str << "(#{n[j]['type']}"
+          if n[j]['type'] == 'onchange'
+            str << "/last=#{m[j]['last'].inspect},"
+            str << "now=#{m[j]['val'].inspect}"
+          else
+            str << "=#{n[j]['val'].inspect},"
+            str << "actual=#{m[j]['val'].inspect}"
+          end
+          str << ")\n"
+        }
+      } > 0
+      str << "  "+Msg.color("Last update",5)+":#{@elapse}\n"
+      str << "  "+Msg.color("Block",5)+": #{self[:block]}\n"
+      str << "  "+Msg.color("Interrupt",5)+": #{self[:int]}\n"
+      str << "  "+Msg.color("Issuing",5)+": #{self[:exec]}\n"
+    end
     str
   end
 

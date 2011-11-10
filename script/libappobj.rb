@@ -22,10 +22,12 @@ class AppObj
     @output=@print=Print.new(adb,@view)
     Thread.abort_on_exception=true
     @buf=Buffer.new
-    @interval=(adb['interval']||1).to_i
-    @watch=Watch.new(adb,@view)
-    @wth=watch_thread unless adb[:watch].empty?
     @cth=command_thread
+    @watch=Watch.new(adb,@view).thread{|me|
+      @buf.auto{
+        frmcmds(me.upd.issue)
+      }
+    }
     @cl=Msg::List.new("== Internal Command ==")
     @cl.add('set'=>"[key=val] ..")
     @cl.add('sleep'=>"sleep [sec]")
@@ -90,7 +92,7 @@ class AppObj
   private
   def upd_prompt
     @prompt.replace(@id)
-    @prompt << '@' if @wth && @wth.alive?
+    @prompt << '@' if @watch['tid'] && @watch['tid'].alive?
     @prompt << '&' if @watch.active?
     @prompt << '*' if @buf.issue
     @prompt << '#' if @buf.wait
@@ -112,22 +114,6 @@ class AppObj
           Msg.alert(" in Command Thread")
           @buf.clear
         end
-      }
-    }
-  end
-
-  def watch_thread
-    Thread.new{
-      Thread.pass
-      loop{
-        begin
-          @buf.auto{
-            frmcmds(@watch.upd.issue)
-          }
-        rescue SelectID
-          Msg.warn($!)
-        end
-        sleep @interval
       }
     }
   end

@@ -120,9 +120,7 @@ class AppDb < Db
       # Status DB
       self[:status]=init_stat(doc.domain('status'))
       # Watch DB
-      wdb=doc.domain('watch')
-      update(wdb.to_h)
-      self[:watch]=init_watch(wdb)
+      self[:watch]=init_watch(doc.domain('watch'))
     }
   end
 

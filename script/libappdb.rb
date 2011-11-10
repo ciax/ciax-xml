@@ -3,38 +3,9 @@ require "libcircular"
 require "librepeat"
 require "libdb"
 
-class AppDb < Db
-  def initialize(app,nocache=nil)
-    super('adb')
-    cache(app,nocache){|doc|
-      update(doc)
-      delete('id')
-      # Command DB
-      cdb=doc.domain('commands')
-      cmd=self[:command]=cdb.to_h
-      init_command(cdb,cmd)
-      # Status DB
-      sdb=doc.domain('status')
-      stat=self[:status]=sdb.to_h
-      stat[:label]={'g0' => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
-      stat[:group]={'g0' => [['time','elapse']]}
-      @gid='g0'
-      stat[:select]=init_stat(sdb,stat,Repeat.new)
-      # Watch DB
-      wdb=doc.domain('watch')
-      update(wdb.to_h)
-      self[:watch]=init_watch(wdb)
-    }
-  end
-
-  def cover_frm(nocache=nil)
-    require "libfrmdb"
-    frm=FrmDb.new(self['frm_type'],nocache)
-    frm.deep_update(self)
-  end
-
-  private
-  def init_command(adb,hash)
+module ModAdbc
+  def init_command(adb)
+    hash=adb.to_h
     adb.each{|e0|
       id=e0.attr2db(hash)
       Repeat.new.each(e0){|e1,rep|
@@ -54,25 +25,33 @@ class AppDb < Db
           ((hash[:select]||={})[id]||=[]) << command.freeze
         end
       }
-      @v.msg{"COMMAND:[#{id}]"}
     }
-    self
+    hash
+  end
+end
+
+module ModAdbs
+  private
+  def init_stat(sdb)
+    hash=sdb.to_h
+    hash[:label]={'g0' => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
+    hash[:group]={'g0' => [['time','elapse']]}
+    hash[:select]=rec_stat(sdb,hash,'g0',Repeat.new)
+    hash
   end
 
-  def init_stat(e,stat,rep)
+  def rec_stat(e,hash,gid,rep)
     struct={}
-    label=stat[:label]
-    group=stat[:group]
     rep.each(e){|e0,r0|
       if e0.name == 'group'
-        @gid=e0.attr2db(stat){|k,v| r0.format(v)}
-        group[@gid]=[]
-        struct.update(init_stat(e0,stat,r0))
+        gid=e0.attr2db(hash){|k,v| r0.format(v)}
+        hash[:group][gid]=[]
+        struct.update(rec_stat(e0,hash,gid,r0))
       elsif e0.name == 'row'
-        group[@gid] << []
-        struct.update(init_stat(e0,stat,r0))
+        hash[:group][gid] << []
+        struct.update(rec_stat(e0,hash,gid,r0))
       else
-        id=e0.attr2db(stat){|k,v| k == 'format' ? v : r0.format(v)}
+        id=e0.attr2db(hash){|k,v| k == 'format' ? v : r0.format(v)}
         struct[id]=[]
         e0.each{|e1|
           st={'type' => e1.name}
@@ -89,20 +68,19 @@ class AppDb < Db
           end
           struct[id] << st
         }
-        group[@gid].last << id
-        @v.msg{"STATUS:[#{id}]"}
+        hash[:group][gid].last << id
       end
     }
     struct
   end
+end
 
+module ModWdb
   def init_watch(wdb)
     return [] unless wdb
-    i=0
-    hash={}
+    hash=wdb.to_h
     Repeat.new.each(wdb){|e0,r0|
       (hash[:label]||=[]) << (e0['label'] ? r0.format(e0['label']) : nil)
-      @v.msg(1){"WATCH:#{hash[:onchange]}:#{hash[:label]}"}
       bg={}
       e0.each{ |e1|
         case name=e1.name.to_sym
@@ -122,10 +100,36 @@ class AppDb < Db
       [:stat,:exec,:int,:block].each{|k|
         (hash[k]||=[]) << bg[k]
       }
-      i+=1
     }
-    @v.msg{"Structure:watch #{hash}"}
     hash
+  end
+end
+
+
+class AppDb < Db
+  include ModAdbc
+  include ModAdbs
+  include ModWdb
+  def initialize(app,nocache=nil)
+    super('adb')
+    cache(app,nocache){|doc|
+      update(doc)
+      delete('id')
+      # Command DB
+      self[:command]=init_command(doc.domain('commands'))
+      # Status DB
+      self[:status]=init_stat(doc.domain('status'))
+      # Watch DB
+      wdb=doc.domain('watch')
+      update(wdb.to_h)
+      self[:watch]=init_watch(wdb)
+    }
+  end
+
+  def cover_frm(nocache=nil)
+    require "libfrmdb"
+    frm=FrmDb.new(self['frm_type'],nocache)
+    frm.deep_update(self)
   end
 end
 

@@ -54,8 +54,9 @@ class Msg
   end
 
   class List < Hash
-    def initialize(title=nil)
+    def initialize(title=nil,col=1)
       @title='==== '+Msg.color(title,2)+' ====' if title
+      @col=col
     end
 
     def add(hash)
@@ -80,7 +81,11 @@ class Msg
     end
 
     def to_s
-      [$!.to_s,@title,*values].grep(/./).join("\n")
+      all=[$!.to_s,@title].grep(/./)
+      values.each_slice(@col){|a|
+        all << a.join("\t")
+      }
+      all.join("\n")
     end
 
     def error(str=nil)
@@ -92,12 +97,13 @@ class Msg
   class Lists < Array
     def initialize(cdb)
       if cdb.key?(:group)
-        cdb[:group].each{|k,ary|
+        cdb[:group].each{|key,ary|
           hash={}
-          ary.each{|key|
-            hash[key]=cdb[:label][key]
+          ary.reject{|k| /true|1/ === (cdb[:hidden]||{})[k] }.each{|k|
+            hash[k]=cdb[:label][k]
           }
-          push List.new(cdb[:label][k]||"Command List").add(hash)
+          col=(cdb.key?(:column) && cdb[:column][key]) || 1
+          push List.new(cdb[:label][key]||"Command List",col.to_i).add(hash)
         }
       else
         push List.new("Command List").add(cdb[:label])

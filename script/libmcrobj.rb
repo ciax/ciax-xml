@@ -9,7 +9,6 @@ class Broken < RuntimeError;end
 class McrObj < Thread
   @@client={}
   @@threads=[]
-  attr_reader :line
   def initialize(par,interval=1)
     @v=Msg::Ver.new("mcr",9)
     Msg.type?(par,Param)
@@ -18,7 +17,7 @@ class McrObj < Thread
     @interval=interval
     @depth=0
     @condition=[]
-    @line=[]
+    @seq=0
     self[:line]=[]
     self[:stat]="run"
     self[:cid]=par[:cid]
@@ -38,8 +37,10 @@ class McrObj < Thread
   def submcr(par)
     @depth+=1
     par[:select].each{|e1|
-      @current={'tid'=>self[:id],'cid'=>par[:cid],'depth'=>@depth}
+      @current={'tid'=>self[:id],'cid'=>par[:cid],'seq' => @seq}
+      @current['depth']=@depth
       @current.update(e1)
+      @seq+=1
       self[:line] << @current
       case e1['type']
       when 'break'
@@ -57,8 +58,8 @@ class McrObj < Thread
         end
       when 'exec'
         query
-        @@client[e1['ins']].upd(e1['cmd'])
-        @@client.each{|k,v| v.view.refresh }
+#        @@client[e1['ins']].upd(e1['cmd'])
+#        @@client.each{|k,v| v.view.refresh }
       end
     }
     self

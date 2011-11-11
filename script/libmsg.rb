@@ -97,7 +97,7 @@ class Msg
           ary.each{|key|
             hash[key]=cdb[:label][key]
           }
-          push List.new(cdb[:label][k]).add(hash)
+          push List.new(cdb[:label][k]||"Command List").add(hash)
         }
       else
         push List.new("Command List").add(cdb[:label])

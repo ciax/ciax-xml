@@ -60,12 +60,10 @@ module ModAdbs
   def rec_stat(e,hash,gid,rep)
     struct={}
     rep.each(e){|e0,r0|
-      if e0.name == 'group'
+      case e0.name
+      when 'group'
         gid=e0.attr2db(hash){|k,v| r0.format(v)}
         hash[:group][gid]=[]
-        struct.update(rec_stat(e0,hash,gid,r0))
-      elsif e0.name == 'row'
-        hash[:group][gid] << []
         struct.update(rec_stat(e0,hash,gid,r0))
       else
         id=e0.attr2db(hash){|k,v| k == 'format' ? v : r0.format(v)}
@@ -85,7 +83,7 @@ module ModAdbs
           end
           struct[id] << st
         }
-        hash[:group][gid].last << id
+        hash[:group][gid] << id
       end
     }
     struct

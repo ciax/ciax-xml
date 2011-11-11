@@ -3,13 +3,11 @@ require 'librview'
 class Print
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(adb,view)
-    sdb=Msg.type?(adb,AppDb)[:status]
+    @sdb=Msg.type?(adb,AppDb)[:status]
     @view=Msg.type?(view,Rview)
     ['stat','class','msg'].each{|key|
       view[key]||={}
     }
-    @group=sdb[:group] || [[sdb[:select].keys]]
-    @label=sdb[:label] || {}
   end
 
   def to_s
@@ -19,29 +17,26 @@ class Print
   private
   def get_group
     line=[]
-    @group.each{|k,v|
-      cap=@label[k] || next
+    @sdb[:group].each{|k,v|
+      cap=@sdb[:caption][k] || next
       line << " ***"+color(2,cap)+"***" unless cap.empty?
-      v.each{|a|
-        line.concat get_element(a)
+      col=@sdb[:column][k]||1
+      v.each_slice(col.to_i){|ids|
+        line << "  "+get_element(ids)
       }
     }
     line
   end
 
-  def get_element(ids,col=6)
-    line=[]
+  def get_element(ids)
     ids.map{|id|
       prt(id,@view.stat(id))
-    }.each_slice(col){|a|
-      line << "  "+a.join(" ")
-    }
-    line
+    }.join(" ")
   end
 
   def prt(id,val)
     str='['
-    str << color(6,@label[id] || id.upcase)
+    str << color(6,@sdb[:label][id] || id.upcase)
     str << ':'
     msg=@view['msg'][id]
     c=CM[@view['class'][id]]

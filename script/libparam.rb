@@ -4,7 +4,6 @@ require 'librerange'
 
 class Param < Hash
   # command db (:label,:select,:parameter)
-  # app command db (:hidden)
   # frm command db (:nocache,:response)
   def initialize(db)
     @v=Msg::Ver.new("param",2)

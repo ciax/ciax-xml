@@ -103,7 +103,7 @@ class Msg
             hash[k]=cdb[:label][k] unless /true|1/ === (cdb[:hidden]||{})[k]
           }
           col=(cdb[:column]||{})[key] || 1
-          push List.new(cdb[:label][key]||"Command List",col.to_i).add(hash)
+          push List.new(cdb[:caption][key]||"Command List",col.to_i).add(hash)
         }
       else
         push List.new("Command List").add(cdb[:label])

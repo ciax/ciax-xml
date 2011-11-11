@@ -54,9 +54,9 @@ class Msg
   end
 
   class List < Hash
-    def initialize(title=nil,col=1)
+    def initialize(title=nil,col=nil)
       @title='==== '+Msg.color(title,2)+' ====' if title
-      @col=col
+      @col=col||1
     end
 
     def add(hash)
@@ -96,18 +96,14 @@ class Msg
 
   class Lists < Array
     def initialize(cdb)
-      if cdb.key?(:group)
-        cdb[:group].each{|key,ary|
-          hash={}
-          ary.reject{|k| /true|1/ === (cdb[:hidden]||{})[k] }.each{|k|
-            hash[k]=cdb[:label][k]
-          }
-          col=(cdb.key?(:column) && cdb[:column][key]) || 1
-          push List.new(cdb[:label][key]||"Command List",col.to_i).add(hash)
+      (cdb[:group]||[]).each{|key,ary|
+        hash={}
+        ary.each{|k|
+          hash[k]=cdb[:label][k] unless /true|1/ === (cdb[:hidden]||{})[k]
         }
-      else
-        push List.new("Command List").add(cdb[:label])
-      end
+        col=(cdb[:column]||{})[key] || 1
+        push List.new(cdb[:label][key]||"Command List",col.to_i).add(hash)
+      }
     end
 
     def to_s

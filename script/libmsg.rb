@@ -96,14 +96,18 @@ class Msg
 
   class Lists < Array
     def initialize(cdb)
-      (cdb[:group]||[]).each{|key,ary|
-        hash={}
-        ary.each{|k|
-          hash[k]=cdb[:label][k] unless /true|1/ === (cdb[:hidden]||{})[k]
+      if cdb.key?(:group)
+        cdb[:group].each{|key,ary|
+          hash={}
+          ary.each{|k|
+            hash[k]=cdb[:label][k] unless /true|1/ === (cdb[:hidden]||{})[k]
+          }
+          col=(cdb[:column]||{})[key] || 1
+          push List.new(cdb[:label][key]||"Command List",col.to_i).add(hash)
         }
-        col=(cdb[:column]||{})[key] || 1
-        push List.new(cdb[:label][key]||"Command List",col.to_i).add(hash)
-      }
+      else
+        push List.new("Command List").add(cdb[:label])
+      end
     end
 
     def to_s

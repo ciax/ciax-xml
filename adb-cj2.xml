@@ -176,14 +176,7 @@
           <frmcmd name="getcmd" />
         </command>
       </group>
-      <group id="gccd" label="Other Power Control">
-        <command id="pwoff" label="Outlet Power Off">
-          <frmcmd name="setbit">
-            <argv>1</argv>
-            <argv>8</argv>
-          </frmcmd>
-          <frmcmd name="getstat" />
-        </command>
+      <group id="gccd" label="Other Power Control" column="3">
         <command id="fccdon" label="Fix Flange CCD Power On">
           <frmcmd name="setbit">
             <argv>3</argv>
@@ -225,6 +218,13 @@
             <argv>14</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
+        </command>
+        <command id="pwoff" label="Outlet Power Off">
+          <frmcmd name="setbit">
+            <argv>1</argv>
+            <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="getstat" />
         </command>
       </group>
       <group id="getc" label="Other Controls">

@@ -18,6 +18,7 @@
         <xsd:element ref="adbc:command" />
       </xsd:choice>
       <xsd:attributeGroup ref="adbc:id_attr" />
+      <xsd:attribute name="column" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="command">

@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="gint" label="Interrpt Commands" column="2">
+      <group id="gint" caption="Interrpt Commands" column="2">
         <command id="upd" label="Status update">
           <frmcmd name="getstat" />
           <frmcmd name="getcmd" />
@@ -56,7 +56,7 @@
           <frmcmd name="getstat" />
         </command>
       </group>
-      <group id="gfix" label="Fix Frange Control" column="2">
+      <group id="gfix" caption="Fix Frange Control" column="2">
         <command id="fhook" label="Fix Flange Hook">
           <frmcmd name="setbit">
             <argv>1</argv>
@@ -86,7 +86,7 @@
           <frmcmd name="getcmd" />
         </command>
       </group>
-      <group id="gmov" label="Mov Frange Control" column="2">
+      <group id="gmov" caption="Mov Frange Control" column="2">
         <command id="mhook" label="Mov Flange Hook">
           <frmcmd name="setbit">
             <argv>2</argv>
@@ -116,7 +116,7 @@
           <frmcmd name="getcmd" />
         </command>
       </group>
-      <group id="gtr" label="Transer Control" column="2">
+      <group id="gtr" caption="Transer Control" column="2">
         <command id="rotout" label="Rotate Loading">
           <frmcmd name="setbit">
             <argv>2</argv>
@@ -146,7 +146,7 @@
           <frmcmd name="getcmd" />
         </command>
       </group>
-      <group id="gipw" label="Instrument Power Supply" column="2">
+      <group id="gipw" caption="Instrument Power Supply" column="2">
         <command id="fpwon" label="Fix IPW On">
           <frmcmd name="setbit">
             <argv>3</argv>
@@ -176,7 +176,7 @@
           <frmcmd name="getcmd" />
         </command>
       </group>
-      <group id="gccd" label="Other Power Control" column="2">
+      <group id="gccd" caption="Other Power Control" column="2">
         <command id="fccdon" label="Fix CCD Power On">
           <frmcmd name="setbit">
             <argv>3</argv>
@@ -227,7 +227,7 @@
           <frmcmd name="getstat" />
         </command>
       </group>
-      <group id="getc" label="Other Controls" column="2">
+      <group id="getc" caption="Other Controls" column="2">
         <command id="chgfw" label="Chg Plug Forward">
           <frmcmd name="setbit">
             <argv>1</argv>

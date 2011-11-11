@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="range.xsd" />
@@ -17,7 +17,8 @@
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="adbc:command" />
       </xsd:choice>
-      <xsd:attributeGroup ref="adbc:id_attr" />
+      <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="caption" type="xsd:token" use="optional" />
       <xsd:attribute name="column" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>
@@ -30,14 +31,11 @@
           <xsd:element ref="adbc:repeat" />
         </xsd:choice>
       </xsd:sequence>
-      <xsd:attributeGroup ref="adbc:id_attr" />
-      <xsd:attribute name="hidden" type="xsd:boolean"></xsd:attribute>
+      <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="label" type="xsd:token" use="optional" />
+      <xsd:attribute name="hidden" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:attributeGroup name="id_attr">
-    <xsd:attribute name="id" type="xsd:NCName" use="required" />
-    <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-  </xsd:attributeGroup>
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">

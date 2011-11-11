@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="gint" label="Interrupt Commands">
+      <group id="gint" caption="Interrupt Commands">
         <command id="upd" label="Regular status update">
           <frmcmd name="getstat" />
           <frmcmd name="getcmd" />
@@ -54,7 +54,7 @@
           <frmcmd name="getcmd" />
         </command>
       </group>
-      <group id="gmov" label="Moving Commands">
+      <group id="gmov" caption="Moving Commands">
         <command id="run" label="Run to Destination Tag [1-12]">
           <par>1:12</par>
           <frmcmd name="set_tag">
@@ -94,7 +94,7 @@
           <frmcmd name="getcmd" />
         </command>
       </group>
-      <group id="gchg" label="Charging Commands">
+      <group id="gchg" caption="Charging Commands">
         <command id="chgon" label="Start Charging">
           <frmcmd name="start">
             <argv>15</argv>
@@ -109,7 +109,7 @@
           <frmcmd name="getstat" />
         </command>
       </group>
-      <group id="gmtn" label="Maintenance Commands">
+      <group id="gmtn" caption="Maintenance Commands">
         <command id="get_tbl" label="Get Jack Table">
           <frmcmd name="rw_tbl">
             <argv>1</argv>

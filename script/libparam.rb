@@ -4,32 +4,27 @@ require 'librerange'
 
 class Param < Hash
   # command db (:label,:select,:parameter)
-  # app command db (:alias,:hidden)
+  # app command db (:hidden)
   # frm command db (:nocache,:response)
   def initialize(db)
     @v=Msg::Ver.new("param",2)
     @db=Msg.type?(db,Hash)
-    label=db[:label].reject{|k,v| /true|1/ === (db[:hidden]||{})[k] }
-    @alias=db[:alias]||{}
-    @alias.each{|k,v| label[k]=label.delete(v) }
-    db[:select].keys.each{|k| @alias[k]=k} unless db.key?(:alias)
     @cl=Msg::Lists.new(db)
   end
 
   def set(cmd)
     id=Msg.type?(cmd,Array).first
-    unless @alias.key?(id)
+    unless @db[:select].key?(id)
       @cl.error("No such CMD [#{id}]")
     end
     @v.msg{"SetPar: #{cmd}"}
     self[:id]=id
     self[:cmd]=cmd.dup
     self[:cid]=cmd.join(':')
-    org=@alias[id]
     [:label,:select,:nocache,:response].each{|k,v|
-      self[k]=deep_subst(@db[k][org]) if @db.key?(k)
+      self[k]=deep_subst(@db[k][id]) if @db.key?(k)
     }
-    if @db.key?(:parameter) && par=@db[:parameter][org]
+    if @db.key?(:parameter) && par=@db[:parameter][id]
       Msg.err("Parameter shortage",@cl[id]) unless par.size < cmd.size
       ary=cmd[1..-1]
       par.each{|r|
@@ -56,7 +51,7 @@ class Param < Hash
   end
 
   def commands
-    @alias.keys
+    @db[:select].keys
   end
 
   private

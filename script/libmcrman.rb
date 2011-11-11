@@ -13,7 +13,7 @@ class McrMan
     @prompt="#@id[0]>"
     @index=0
     @threads=McrObj.threads
-    @cl=Msg::List.new("== Internal Command ==")
+    @cl=Msg::List.new("Internal Command")
     @cl.add("[0-9]"=>"Switch Mode")
     @cl.add("list"=>"Thread list")
   end

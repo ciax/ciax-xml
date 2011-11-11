@@ -13,7 +13,7 @@ class Param < Hash
     @alias=db[:alias]||{}
     @alias.each{|k,v| label[k]=label.delete(v) }
     db[:select].keys.each{|k| @alias[k]=k} unless db.key?(:alias)
-    @cl=Msg::List.new("== Command List==").add(label)
+    @cl=Msg::Lists.new(db)
   end
 
   def set(cmd)

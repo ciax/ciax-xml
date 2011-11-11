@@ -29,7 +29,7 @@ class AppObj
     @watch=Watch.new(adb,@view).thread{|cmd|
       @buf.send(2){frmcmds(cmd)}
     }
-    @cl=Msg::List.new("== Internal Command ==")
+    @cl=Msg::List.new("Internal Command")
     @cl.add('set'=>"[key=val] ..")
     @cl.add('sleep'=>"sleep [sec]")
     @cl.add('waitfor'=>"[key=val] (timeout=10)")

@@ -55,7 +55,7 @@ class Msg
 
   class List < Hash
     def initialize(title=nil)
-      @title=Msg.color(title,2) if title
+      @title='==== '+Msg.color(title,2)+' ====' if title
     end
 
     def add(hash)
@@ -89,6 +89,30 @@ class Msg
     end
   end
 
+  class Lists < Array
+    def initialize(cdb)
+      if cdb.key?(:group)
+        cdb[:group].each{|k,ary|
+          hash={}
+          ary.each{|key|
+            hash[key]=cdb[:label][key]
+          }
+          push List.new(cdb[:label][k]).add(hash)
+        }
+      else
+        push List.new("Command List").add(cdb[:label])
+      end
+    end
+
+    def to_s
+      join("\n")
+    end
+
+    def error(str=nil)
+      str= str ? str+"\n" : ''
+      raise SelectCMD,str+to_s
+    end
+  end
 end
 
 # Class method

@@ -7,7 +7,7 @@ class Shell
     Readline.completion_proc= proc{|word|
       commands.grep(/^#{word}/)
     } unless commands.empty?
-    cl=Msg::List.new("== Shell Command ==")
+    cl=Msg::List.new("Shell Command")
     cl.add('q'=>"Quit",'D^'=>"Interrupt")
     loop {
       line=Readline.readline(prompt,true)||'interrupt'

@@ -16,7 +16,7 @@ class FrmObj
     @par=Param.new(fdb[:cmdframe])
     @field=FrmRsp.new(fdb,@par)
     @fc=FrmCmd.new(fdb,@par,@field)
-    @cl=Msg::List.new("== Internal Command ==")
+    @cl=Msg::List.new("Internal Command")
     @cl.add('set'=>"Set Value  [key(:idx)] (val)")
     @cl.add('unset'=>"Remove Value  [key]")
     @cl.add('load'=>"Load Field (tag)")

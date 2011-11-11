@@ -23,8 +23,12 @@ class InsDb < Db
     require "libappdb"
     app=AppDb.new(self['app_type'],nocache)
     if cmd=self[:command]
-      app[:command].delete(:label)
-      st=app[:command][:select]
+      apc=app[:command]
+      apc.delete(:label)
+      apc[:group].each{|k,v|
+        v.map!{|i| cmd[:alias].key(i)}
+      }
+      st=apc[:select]
       cmd[:alias].each{|k,v|
         st[k]=st.delete(v)
       }

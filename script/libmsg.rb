@@ -100,7 +100,7 @@ class Msg
         cdb[:group].each{|key,ary|
           hash={}
           ary.each{|k|
-            hash[k]=cdb[:label][k] unless /true|1/ === (cdb[:hidden]||{})[k]
+            hash[k]=cdb[:label][k]
           }
           col=(cdb[:column]||{})[key] || 1
           cap=(cdb[:caption]||{})[key]||"Command List"

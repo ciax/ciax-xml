@@ -7,21 +7,23 @@ module ModAdbc
   def init_command(adb)
     hash=adb.to_h
     hash[:group]={}
+    hash[:caption]={}
     hash[:parameter]={}
     hash[:select]={}
-    hash[:hidden]={}
+    hash[:label]={}
     arc_command(adb,hash,'g0')
   end
 
   def arc_command(e,hash,gid)
     e.each{|e0|
-      id=e0.attr2db(hash)
       case e0.name
       when 'group'
-        hash[:hidden][id]='true'
+        id=e0.attr2db(hash)
         arc_command(e0,hash,id)
       else
+        id=e0['id']
         (hash[:group][gid]||=[]) << id
+        hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
         Repeat.new.each(e0){|e1,rep|
           case e1.name
           when 'par'

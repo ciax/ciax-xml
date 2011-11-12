@@ -99,6 +99,7 @@ class Msg
       if cdb.key?(:group)
         cdb[:group].each{|key,ary|
           hash={}
+          ary.map!{|k| cdb[:alias].key(k) }.compact! if cdb.key?(:alias)
           ary.each{|k|
             hash[k]=cdb[:label][k]
           }

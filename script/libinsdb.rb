@@ -22,18 +22,6 @@ class InsDb < Db
   def cover_app(nocache=nil) # overwrite AppDb
     require "libappdb"
     app=AppDb.new(self['app_type'],nocache)
-    if cmd=self[:command]
-      apc=app[:command]
-      apc.delete(:label)
-      apc[:group].each{|k,v|
-        v.map!{|i| cmd[:alias].key(i)}
-      }
-      st=apc[:select]
-      cmd[:alias].each{|k,v|
-        st[k]=st.delete(v)
-      }
-      cmd.delete(:alias)
-    end
     app.deep_update(self)
   end
 end

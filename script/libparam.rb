@@ -1,8 +1,10 @@
 #!/usr/bin/ruby
+require 'libmodexh'
 require 'libmsg'
 require 'librerange'
 
 class Param < Hash
+  include ModExh
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
   def initialize(db)
@@ -13,21 +15,22 @@ class Param < Hash
 
   def set(cmd)
     id=Msg.type?(cmd,Array).first
+    id=(@db[:alias]||={})[id]||id
     unless @db[:select].key?(id)
       @cl.error("No such CMD [#{id}]")
     end
     @v.msg{"SetPar: #{cmd}"}
     self[:id]=id
-    self[:cmd]=cmd.dup
-    self[:cid]=cmd.join(':')
-    [:label,:select,:nocache,:response].each{|k,v|
-      self[k]=deep_subst(@db[k][id]) if @db.key?(k)
+    @param=cmd[1..-1]
+    self[:cid]=cmd.join(':') # Used by macro
+    self[:select]=deep_subst(@db[:select][id])
+    [:label,:nocache,:response].each{|k,v|
+      self[k]=@db[k][id] if @db.key?(k)
     }
     if @db.key?(:parameter) && par=@db[:parameter][id]
       Msg.err("Parameter shortage",@cl[id]) unless par.size < cmd.size
-      ary=cmd[1..-1]
-      par.each{|r|
-        validate(ary.shift,r)
+      par.size.times{|i|
+        validate(@param[i],par[i])
       }
     end
     self
@@ -39,8 +42,8 @@ class Param < Hash
     begin
       str=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        @v.msg{"Param No.#{i} = [#{self[:cmd][i]}]"}
-        self[:cmd][i] || Msg.err(" No substitute data ($#{i})")
+        @v.msg{"Param No.#{i} = [#{@param[i-1]}]"}
+        @param[i-1] || Msg.err(" No substitute data ($#{i})")
       }
       Msg.err("Nil string") if str == ''
       str
@@ -50,7 +53,7 @@ class Param < Hash
   end
 
   def commands
-    @db[:select].keys
+    @db.key?(:alias) ? @db[:alias].keys : @db[:select].keys
   end
 
   private
@@ -91,19 +94,18 @@ class Param < Hash
 end
 
 if __FILE__ == $0
+  require "optparse"
   require 'libinsdb'
+  opt=ARGV.getopts("af")
   begin
-    db=InsDb.new(ARGV.shift).cover_app
-    case ARGV.shift
-    when 'app'
-      puts Param.new(db[:command]).set(ARGV)
-    when 'frm'
-      puts Param.new(db.cover_frm[:cmdframe]).set(ARGV)
+    adb=InsDb.new(ARGV.shift,true).cover_app(true)
+    if opt["f"]
+      puts Param.new(adb.cover_frm(true)[:cmdframe]).set(ARGV)
     else
-      raise "No type selected (app|frm)"
+      puts Param.new(adb[:command]).set(ARGV)
     end
   rescue
-    warn "USAGE: #{$0} [id] [app|frm] [cmd] (par)"
+    warn "USAGE: #{$0} (-f) [id] [cmd] (par)"
     Msg.exit
   end
 end

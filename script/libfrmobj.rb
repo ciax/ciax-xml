@@ -16,11 +16,12 @@ class FrmObj
     @par=Param.new(fdb[:cmdframe])
     @field=FrmRsp.new(fdb,@par)
     @fc=FrmCmd.new(fdb,@par,@field)
-    @cl=Msg::List.new("Internal Command")
-    @cl.add('set'=>"Set Value  [key(:idx)] (val)")
-    @cl.add('unset'=>"Remove Value  [key]")
-    @cl.add('load'=>"Load Field (tag)")
-    @cl.add('save'=>"Save Field [key,key...] (tag)")
+    cl=Msg::List.new("Internal Command")
+    cl.add('set'=>"Set Value  [key(:idx)] (val)")
+    cl.add('unset'=>"Remove Value  [key]")
+    cl.add('load'=>"Load Field (tag)")
+    cl.add('save'=>"Save Field [key,key...] (tag)")
+    @par.cl.push(cl)
     @field.load
   rescue Errno::ENOENT
     Msg.warn(" --- no json file")
@@ -47,8 +48,6 @@ class FrmObj
       @message='OK'
     end
     self
-  rescue SelectCMD
-    @cl.error
   end
 
   def to_s
@@ -56,7 +55,7 @@ class FrmObj
   end
 
   def commands
-    @par.commands+@cl.keys
+    @par.cl.keys
   end
 
   private

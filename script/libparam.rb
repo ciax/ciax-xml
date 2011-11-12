@@ -5,6 +5,7 @@ require 'librerange'
 
 class Param < Hash
   include ModExh
+  attr_reader :cl
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
   def initialize(db)
@@ -52,10 +53,6 @@ class Param < Hash
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end
-  end
-
-  def commands
-    @db.key?(:alias) ? @db[:alias].keys : @db[:select].keys
   end
 
   private

@@ -29,13 +29,14 @@ class AppObj
     @watch=Watch.new(adb,@view).thread{|cmd|
       @buf.send(2){frmcmds(cmd)}
     }
-    @cl=Msg::List.new("Internal Command")
-    @cl.add('set'=>"[key=val] ..")
-    @cl.add('sleep'=>"sleep [sec]")
-    @cl.add('waitfor'=>"[key=val] (timeout=10)")
-    @cl.add('view'=>"View mode")
-    @cl.add('raw'=>"Raw Stat mode")
-    @cl.add('watch'=>"Watch mode")
+    cl=Msg::List.new("Internal Command")
+    cl.add('set'=>"[key=val] ..")
+    cl.add('sleep'=>"sleep [sec]")
+    cl.add('waitfor'=>"[key=val] (timeout=10)")
+    cl.add('view'=>"View mode")
+    cl.add('raw'=>"Raw Stat mode")
+    cl.add('watch'=>"Watch mode")
+    @par.cl.push(cl)
     upd_prompt
   end
 
@@ -78,8 +79,6 @@ class AppObj
     end
     upd_prompt
     self
-  rescue SelectCMD
-    @cl.error
   end
 
   def to_s
@@ -87,7 +86,7 @@ class AppObj
   end
 
   def commands
-    @par.commands+@cl.keys
+    @par.cl.keys
   end
 
   private

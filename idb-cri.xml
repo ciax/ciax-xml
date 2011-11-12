@@ -9,8 +9,8 @@
       <command id="f2off" label="FMOS/IRS2(S11)OFF" alias="x2off" />
     </select>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-      <title ref="g0" label="FMOS/IRS1(S10)" />
-      <title ref="g2" label="FMOS/IRS2(S11)" />
+      <title ref="g0" caption="FMOS/IRS1(S10)" />
+      <title ref="g2" caption="FMOS/IRS2(S11)" />
     </status>
   </instance>
 </idb>

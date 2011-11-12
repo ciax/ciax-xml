@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="cco" label="OPT Helium Compressor Control" app_type="bbe" client="socat - tcp:ltc-o:4002" port="25106">
     <select xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
@@ -13,9 +13,9 @@
       <command id="maoff" label="COMICS BOTH OFF" alias="x23off" />
     </select>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-      <title ref="g0" label="CIAO(S6) SWITCH" />
-      <title ref="g2" label="COMICS IMG(S4)" />
-      <title ref="g3" label="COMICS SPEC(S5)" />
+      <title ref="g0" caption="CIAO(S6) SWITCH" />
+      <title ref="g2" caption="COMICS IMG(S4)" />
+      <title ref="g3" caption="COMICS SPEC(S5)" />
     </status>
   </instance>
 </idb>

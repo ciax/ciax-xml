@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idbs" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs">
   <xsd:include schemaLocation="repeat.xsd" />
   <!--status-->
@@ -25,6 +25,7 @@
       <xsd:attribute name="ref" type="xsd:NCName" use="required" />
       <xsd:attribute name="symbol" type="xsd:NCName" />
       <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="caption" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

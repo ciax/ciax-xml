@@ -116,6 +116,8 @@ class Msg
 
     def push(list)
       @line << list
+      update(list)
+      self
     end
 
     def to_s

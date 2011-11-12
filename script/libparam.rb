@@ -23,16 +23,18 @@ class Param < Hash
     self[:id]=id
     @param=cmd[1..-1]
     self[:cid]=cmd.join(':') # Used by macro
-    self[:select]=deep_subst(@db[:select][id])
     [:label,:nocache,:response].each{|k,v|
       self[k]=@db[k][id] if @db.key?(k)
     }
     if @db.key?(:parameter) && par=@db[:parameter][id]
-      Msg.err("Parameter shortage",@cl[id]) unless par.size < cmd.size
+      unless par.size < cmd.size
+        Msg.err("Parameter shortage (#{par.size})",@cl[id])
+      end
       par.size.times{|i|
         validate(@param[i],par[i])
       }
     end
+    self[:select]=deep_subst(@db[:select][id])
     self
   end
 

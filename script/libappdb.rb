@@ -6,11 +6,9 @@ require "libdb"
 module ModAdbc
   def init_command(adb)
     hash=adb.to_h
-    hash[:group]={}
-    hash[:caption]={}
-    hash[:parameter]={}
-    hash[:select]={}
-    hash[:label]={}
+    [:group,:caption,:parameter,:select,:label].each{|k|
+      hash[k]={}
+    }
     arc_command(adb,hash,'g0')
   end
 
@@ -51,9 +49,12 @@ module ModAdbs
   private
   def init_stat(sdb)
     hash=sdb.to_h
-    hash[:label]={'g0' => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
-    hash[:group]={'g0' => [['time','elapse']]}
-    hash[:select]=rec_stat(sdb,hash,'g0',Repeat.new)
+    group='g0'
+    hash[:label]={group => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
+    hash[:group]={group => ['time','elapse']}
+    hash[:caption]={group => '' }
+    hash[:column]={group => 2 }
+    hash[:select]=rec_stat(sdb,hash,group,Repeat.new)
     hash
   end
 

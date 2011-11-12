@@ -13,9 +13,10 @@ class McrMan
     @prompt="#@id[0]>"
     @index=0
     @threads=McrObj.threads
-    @cl=Msg::List.new("Internal Command")
-    @cl.add("[0-9]"=>"Switch Mode")
-    @cl.add("list"=>"Thread list")
+    cl=Msg::List.new("Internal Command")
+    cl.add("[0-9]"=>"Switch Mode")
+    cl.add("list"=>"Thread list")
+    @par.cl.push(cl)
   end
 
   def exec(cmd)
@@ -43,8 +44,6 @@ class McrMan
     end
     upd_prompt
     self
-  rescue SelectCMD
-    @cl.error
   end
 
   def to_s
@@ -78,6 +77,10 @@ class McrMan
 
   def current #current thread
     @threads[@index-1] if @index > 0
+  end
+
+  def commands
+    @par.cl.keys
   end
   private
   def query(str)

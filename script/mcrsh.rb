@@ -10,6 +10,6 @@ rescue SelectID
   warn "Usage: #{$0} [mcr]"
   Msg.exit
 end
-Shell.new(mm.prompt){|cmd|
+Shell.new(mm.prompt,mm.commands){|cmd|
   mm.exec(cmd)
 }

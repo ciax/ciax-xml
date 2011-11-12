@@ -79,7 +79,7 @@
       </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mma">
-      <row label="Group">
+      <group id="g1" caption="" column="3">
         <value id="bs" label="Moter Moving" symbol="warn">
           <string ref="bs" />
         </value>
@@ -89,8 +89,6 @@
         <value id="err" label="Error Code" symbol="err">
           <int ref="err" />
         </value>
-      </row>
-      <row label="Group">
         <value id="pos" label="Arm Position" symbol="pos">
           <string ref="in:0" />
           <string ref="in:1" />
@@ -100,7 +98,7 @@
         <value id="abs" label="ABS position" symbol="abs">
           <float ref="p" />
         </value>
-      </row>
+      </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="Update Status">

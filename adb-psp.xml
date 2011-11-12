@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="psp" id="psp" label="MOIRCS Ext Heater">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -33,7 +33,7 @@
       </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
-      <row label="Group">
+      <group id="g1" caption="" column="3" >
         <value id="vol" label="OUTPUT (V)" format="%3.2f">
           <float ref="v" />
         </value>
@@ -43,8 +43,6 @@
         <value id="wat" label="OUTPUT (W)" format="%3.2f">
           <float ref="w" />
         </value>
-      </row>
-      <row label="Group">
         <value id="vl" label="Limit (V)" format="%3.2f">
           <float ref="u" />
         </value>
@@ -54,8 +52,6 @@
         <value id="pl" label="Limit (W)" format="%3.2f">
           <float ref="p" />
         </value>
-      </row>
-      <row label="Group">
         <value id="sw" label="OUTPUT ON/OFF" symbol="warn">
           <string ref="f1" />
         </value>
@@ -68,15 +64,13 @@
         <value id="kn2" label="Wheel Knov Unlock" symbol="normal">
           <string ref="f4" />
         </value>
-      </row>
-      <row label="Group">
         <value id="rem" label="REMOTE" symbol="normal">
           <string ref="f5" />
         </value>
         <value id="loc" label="Local Lock" symbol="normal">
           <string ref="f6" />
         </value>
-      </row>
+      </group>
     </status>
   </app>
 </adb>

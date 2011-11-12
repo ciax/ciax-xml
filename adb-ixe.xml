@@ -152,7 +152,7 @@
       </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
-      <row label="Group">
+      <group id="g1" caption="Stat" column="3">
         <value id="rdy" label="Comm Ready" symbol="off-warn">
           <binary bit="0" ref="stat" />
         </value>
@@ -171,17 +171,17 @@
         <value id="ees" label="EXT EM Stop" symbol="alarm">
           <binary bit="6" ref="stat" />
         </value>
-      </row>
-      <row label="Group">
+      </group>
+      <group caption="" id="g2" column="2">
         <value id="trm" label="Terminal Mode" symbol="off-warn">
           <binary bit="2" ref="stat" />
         </value>
         <value id="cmd" label="Computer Mode" symbol="off-warn">
           <binary bit="7" ref="stat" />
         </value>
-      </row>
-      <repeat from="1" to="6">
-        <row label="Group">
+      </group>
+      <group id="g3" caption="" column="6">
+        <repeat from="1" to="6">
           <value id="r%d" label="Running %d">
             <string ref="run" index="$_-1" />
           </value>
@@ -197,8 +197,8 @@
           <value id="ofs%d" label="Offset %d">
             <int ref="ofs" index="$_-1" />
           </value>
-        </row>
-      </repeat>
+        </repeat>
+      </group>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Update Status">

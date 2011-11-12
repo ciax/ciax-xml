@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="tpg" id="tpg" label="MOIRCS Pressure">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -8,22 +8,20 @@
       </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="tpg">
-      <row>
+      <group id="g1" caption=""  column="2">
         <value id="st1" label="Turbo Pump Stat" symbol="stat">
           <string ref="st1" />
         </value>
         <value id="ch1" label="Turbo Pump (Torr)" format="%4.2e">
           <float ref="ch1" />
         </value>
-      </row>
-      <row>
         <value id="st2" label="Scroll Pump Stat" symbol="stat">
           <string ref="st2" />
         </value>
         <value id="ch2" label="Scroll Pump (Torr)" format="%4.2e">
           <float ref="ch2" />
         </value>
-      </row>
+      </group>
     </status>
   </app>
 </adb>

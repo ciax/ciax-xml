@@ -73,65 +73,53 @@
       </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cfp">
-      <group label="Output" id="g1">
-        <row>
-          <value id="ao" label="Arm Gripper(out)" symbol="oc">
-            <binary bit="10" ref="output" />
-            <binary bit="11" ref="output" />
-          </value>
-          <value id="hr" label="Arm Rotation(out)" symbol="rot">
-            <binary bit="12" ref="output" />
-            <binary bit="13" ref="output" />
-          </value>
-        </row>
-        <row>
-          <value id="rao" label="Robohand A(out)" symbol="oc">
-            <binary bit="2" ref="output" />
-            <binary bit="3" ref="output" />
-          </value>
-          <value id="rbo" label="Robohand B(out)" symbol="oc">
-            <binary bit="4" ref="output" />
-            <binary bit="5" ref="output" />
-          </value>
-        </row>
-        <row>
-          <value id="go" label="Gate Valve(out)" symbol="oc">
-            <binary bit="6" ref="output" />
-            <binary bit="7" ref="output" />
-          </value>
-        </row>
+      <group caption="Output" id="g1" column="2">
+        <value id="ao" label="Arm Gripper(out)" symbol="oc">
+          <binary bit="10" ref="output" />
+          <binary bit="11" ref="output" />
+        </value>
+        <value id="hr" label="Arm Rotation(out)" symbol="rot">
+          <binary bit="12" ref="output" />
+          <binary bit="13" ref="output" />
+        </value>
+        <value id="rao" label="Robohand A(out)" symbol="oc">
+          <binary bit="2" ref="output" />
+          <binary bit="3" ref="output" />
+        </value>
+        <value id="rbo" label="Robohand B(out)" symbol="oc">
+          <binary bit="4" ref="output" />
+          <binary bit="5" ref="output" />
+        </value>
+        <value id="go" label="Gate Valve(out)" symbol="oc">
+          <binary bit="6" ref="output" />
+          <binary bit="7" ref="output" />
+        </value>
       </group>
-      <group label="Input" id="g2">
-        <row>
-          <value id="rh1" label="RoboHand 1(in)" symbol="oc">
-            <binary bit="4" ref="input" />
-            <binary bit="5" ref="input" />
-          </value>
-          <value id="rh2" label="RoboHand 2(in)" symbol="oc">
-            <binary bit="6" ref="input" />
-            <binary bit="7" ref="input" />
-          </value>
-        </row>
-        <row>
-          <value id="rh3" label="RoboHand 3(in)" symbol="oc">
-            <binary bit="8" ref="input" />
-            <binary bit="9" ref="input" />
-          </value>
-          <value id="rh4" label="RoboHand 4(in)" symbol="oc">
-            <binary bit="10" ref="input" />
-            <binary bit="11" ref="input" />
-          </value>
-        </row>
-        <row>
-          <value id="gv" label="Gate Valve(in)" symbol="oc">
-            <binary bit="0" ref="input" />
-            <binary bit="1" ref="input" />
-          </value>
-          <value id="hv" label="Arm Rotation(in)" symbol="rot">
-            <binary bit="2" ref="input" />
-            <binary bit="3" ref="input" />
-          </value>
-        </row>
+      <group caption="Input" id="g2" column="2">
+        <value id="rh1" label="RoboHand 1(in)" symbol="oc">
+          <binary bit="4" ref="input" />
+          <binary bit="5" ref="input" />
+        </value>
+        <value id="rh2" label="RoboHand 2(in)" symbol="oc">
+          <binary bit="6" ref="input" />
+          <binary bit="7" ref="input" />
+        </value>
+        <value id="rh3" label="RoboHand 3(in)" symbol="oc">
+          <binary bit="8" ref="input" />
+          <binary bit="9" ref="input" />
+        </value>
+        <value id="rh4" label="RoboHand 4(in)" symbol="oc">
+          <binary bit="10" ref="input" />
+          <binary bit="11" ref="input" />
+        </value>
+        <value id="gv" label="Gate Valve(in)" symbol="oc">
+          <binary bit="0" ref="input" />
+          <binary bit="1" ref="input" />
+        </value>
+        <value id="hv" label="Arm Rotation(in)" symbol="rot">
+          <binary bit="2" ref="input" />
+          <binary bit="3" ref="input" />
+        </value>
       </group>
     </status>
   </app>

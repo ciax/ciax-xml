@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="srm" id="srm" label="CsEtr Controller">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -67,15 +67,13 @@
       </command>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
-      <row>
+      <group id="g1" caption="" column="3">
         <value id="iid" label="CAS INST ID" symbol="iid_ac">
           <string ref="c1d2" />
         </value>
         <value id="ipw" label="CAS IPW" symbol="off-warn">
           <binary bit="0" ref="c1d1" />
         </value>
-      </row>
-      <row>
         <value id="stp" label="STOW PIN" symbol="warn">
           <binary bit="1" ref="c1d1" />
         </value>
@@ -85,15 +83,13 @@
         <value id="lan" label="CAS LAN PW" symbol="hide">
           <binary bit="3" ref="c1d0" />
         </value>
-      </row>
-      <row>
         <value id="c3p" label="CIAX3 PW" symbol="hide">
           <binary bit="0" ref="c1d0" />
         </value>
         <value id="c3e" label="CIAX3 EMG" symbol="alarm">
           <binary bit="1" ref="c1d0" />
         </value>
-      </row>
+      </group>
     </status>
   </app>
 </adb>

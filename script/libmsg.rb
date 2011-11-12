@@ -94,8 +94,9 @@ class Msg
     end
   end
 
-  class Lists < Array
+  class Lists < Hash
     def initialize(cdb)
+      @line=[]
       if cdb.key?(:group)
         cdb[:group].each{|key,ary|
           hash={}
@@ -105,15 +106,20 @@ class Msg
           }
           col=(cdb[:column]||{})[key] || 1
           cap=(cdb[:caption]||{})[key]||"Command List"
-          push List.new(cap,col.to_i).add(hash)
+          @line << List.new(cap,col.to_i).add(hash)
         }
       else
-        push List.new("Command List").add(cdb[:label])
+        @line << List.new("Command List").add(cdb[:label])
       end
+      @line.each{|h| update(h)}
+    end
+
+    def push(list)
+      @line << list
     end
 
     def to_s
-      join("\n")
+      @line.join("\n")
     end
 
     def error(str=nil)

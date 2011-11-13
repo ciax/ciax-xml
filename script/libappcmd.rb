@@ -2,16 +2,16 @@
 require "libmsg"
 require "libparam"
 
-class AppCmd < Array
+class AppCmd < Param
   include Math
-  def initialize(par)
+  def initialize(db)
+    super
     @v=Msg::Ver.new("app/cmd",9)
-    @par=Msg.type?(par,Param)
   end
 
-  def getcmd
-    clear
-    @par[:select].each{|e1|
+  def get
+    frmcmd=[]
+    self[:select].each{|e1|
       cmd=[]
       @v.msg(1){"GetCmd(FDB):#{e1.first}"}
       begin
@@ -26,12 +26,12 @@ class AppCmd < Array
             cmd << str
           end
         }
-        push cmd
+        frmcmd.push cmd
       ensure
         @v.msg(-1){"Exec(FDB):#{cmd}"}
       end
     }
-    self
+    frmcmd
   end
 end
 
@@ -41,8 +41,7 @@ if __FILE__ == $0
   begin
     adb=AppDb.new(app,cmd.empty?)
     fp=Param.new(adb.cover_frm[:cmdframe])
-    ap=Param.new(adb[:command]).set(cmd)
-    AppCmd.new(ap).getcmd.each{|fcmd|
+    AppCmd.new(adb[:command]).set(cmd).get.each{|fcmd|
       fp.set(fcmd) if /set|unset|load|save/ !~ fcmd.first
       p fcmd
     }

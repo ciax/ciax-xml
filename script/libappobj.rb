@@ -16,8 +16,7 @@ class AppObj
     @prompt=''
     @id=adb['id']
     @fobj=frmobj
-    @par=Param.new(adb[:command])
-    @ac=AppCmd.new(@par)
+    @ac=AppCmd.new(adb[:command])
     @view=Wview.new(@id,adb,@fobj.field)
     @output=@print=Print.new(adb,@view)
     Thread.abort_on_exception=true
@@ -36,7 +35,7 @@ class AppObj
     cl.add('view'=>"View mode")
     cl.add('raw'=>"Raw Stat mode")
     cl.add('watch'=>"Watch mode")
-    @par.cl.push(cl)
+    @ac.cl.push(cl)
     upd_prompt
   end
 
@@ -86,7 +85,7 @@ class AppObj
   end
 
   def commands
-    @par.cl.keys
+    @ac.cl.keys
   end
 
   private
@@ -102,8 +101,7 @@ class AppObj
 
   def frmcmds(ary)
     ary.map{|cmd|
-      @par.set(cmd)
-      @ac.getcmd
+      @ac.set(cmd).get
     }.flatten(1)
   end
 end

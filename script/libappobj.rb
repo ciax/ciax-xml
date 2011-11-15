@@ -49,6 +49,8 @@ class AppObj
       @output=@view['stat']
     when 'watch'
       @output=@watch
+    when 'frame'
+      @output=@fobj
     when 'interrupt'
       int=@watch.interrupt
       @buf.send(0){frmcmds(int)}

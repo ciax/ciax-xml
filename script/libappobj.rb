@@ -28,13 +28,14 @@ class AppObj
     @watch=Watch.new(adb,@view).thread{|cmd|
       @buf.send(2){frmcmds(cmd)}
     }
-    cl=Msg::List.new("Internal Command")
-    cl.add('set'=>"[key=val] ..")
-    cl.add('sleep'=>"sleep [sec]")
-    cl.add('waitfor'=>"[key=val] (timeout=10)")
-    cl.add('view'=>"View mode")
-    cl.add('raw'=>"Raw Stat mode")
+    cl=Msg::List.new("Internal Command",2)
+    cl.add('view'=>"View Stat mode")
+    cl.add('stat'=>"Raw Stat mode")
+    cl.add('field'=>"Field Stat mode")
     cl.add('watch'=>"Watch mode")
+    cl.add('set'=>"[key=val] ..")
+    cl.add('waitfor'=>"[key=val] (timeout=10)")
+    cl.add('sleep'=>"sleep [sec]")
     @ac.cl.push(cl)
     upd_prompt
   end
@@ -45,11 +46,11 @@ class AppObj
     when nil
     when 'view'
       @output=@print
-    when 'raw'
+    when 'stat'
       @output=@view['stat']
     when 'watch'
       @output=@watch
-    when 'frame'
+    when 'field'
       @output=@fobj
     when 'interrupt'
       int=@watch.interrupt

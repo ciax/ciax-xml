@@ -25,8 +25,11 @@ class Buffer
   def send(n=1)
     return self if  n > 1 && !@q.empty?
     clear if n == 0
-    @issue=true
-    @q.push([n,yield])
+    inp=yield
+    unless inp.empty?
+      @issue=true
+      @q.push([n,inp])
+    end
     self
   end
 

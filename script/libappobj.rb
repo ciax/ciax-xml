@@ -34,8 +34,6 @@ class AppObj
     cl.add('field'=>"Field Stat mode")
     cl.add('watch'=>"Watch mode")
     cl.add('set'=>"[key=val] ..")
-    cl.add('waitfor'=>"[key=val] (timeout=10)")
-    cl.add('sleep'=>"sleep [sec]")
     @ac.cl.push(cl)
     upd_prompt
   end
@@ -56,13 +54,6 @@ class AppObj
       int=@watch.interrupt
       @buf.send(0){frmcmds(int)}
       @message="Interrupt #{int}"
-    when 'sleep'
-      @buf.wait(cmd[1].to_i)
-      @message="Sleeping"
-    when 'waitfor'
-      k,v=cmd[1].split('=')
-      @buf.wait(10){ @view.stat(k) == v }
-      @message="Waiting"
     when 'set'
       hash={}
       cmd[1..-1].each{|s|
@@ -97,7 +88,6 @@ class AppObj
     @prompt << '@' if @watch.alive?
     @prompt << '&' if @watch.active?
     @prompt << '*' if @buf.issue
-    @prompt << '#' if @buf.wait?
     @prompt << (@buf.alive? ? '>' : 'X')
     self
   end

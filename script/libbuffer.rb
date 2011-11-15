@@ -2,6 +2,18 @@
 require "libmsg"
 require "thread"
 
+# Command stream(Send)
+# send() takes frame cmds in block
+# -> Inbuf[priority]
+# -> Accept or Reject
+# -> flush -> Queue
+#
+# Command stream(Recieve)
+# recv()
+# Queue -> Outbuf until Queue is empty
+# -> provide single frmcmd as it is called
+# (stack if Queue is empty)
+
 class Buffer
   attr_reader :issue
   def initialize
@@ -17,9 +29,9 @@ class Buffer
     clear if n == 0
     yield.each{|cmd|
       @inbuf[n].push(cmd)
-      @v.msg{"MAIN:Issued [#{cmd}] with priority [#{n}]"}
+      @v.msg{"MAIN:Issued frmcmd [#{cmd}] with priority [#{n}]"}
     }
-    flush(n) unless @wait
+    flush(n)
     self
   end
 
@@ -39,18 +51,28 @@ class Buffer
     @issue=false
     loop{
       if @q.empty?
-        @outbuf.each{|buf|
-          next if ! buf || buf.empty?
-          cmd=buf.shift
-          @v.msg{"SUB:Exec [#{cmd}]"}
-          return cmd
+        cmd=nil
+        @outbuf.size.times{|i|
+          if cmd
+            @outbuf[i].delete(cmd)
+          else
+            cmd=@outbuf[i].shift
+          end
         }
+        if cmd
+          @v.msg{"SUB:Exec [#{cmd}]"}
+          if cmd[0] == 'sleep'
+            sleep cmd[1].to_i
+            redo
+          else
+            return cmd
+          end
+        end
         @v.msg{"SUB:Waiting"}
       end
       p,cmd=@q.shift
       @v.msg{"SUB:Recieve [#{cmd}] with priority[#{p}]"}
-      @outbuf[p] ||= []
-      @outbuf[p].push(cmd)
+      (@outbuf[p]||=[]).push(cmd)
     }
   end
 
@@ -104,5 +126,6 @@ class Buffer
     @inbuf=[[],[],[]]
     @outbuf=[[],[],[]]
     @q.clear
+    @tid && @tid.run
   end
 end

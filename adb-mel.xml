@@ -11,11 +11,17 @@
           <frmcmd name="stop">
             <argv>6</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
           <frmcmd name="getstat" />
         </command>
         <command id="emstop" label="Emergency Stop">
           <frmcmd name="stop">
+            <argv>1</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="clear" />
@@ -25,12 +31,18 @@
           <frmcmd name="stop">
             <argv>0</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="clear" />
           <frmcmd name="getstat" />
         </command>
-        <command id="resume" label="Resume from Pause">
+        <command id="reset" label="Reset Error or Pause">
           <frmcmd name="stop">
             <argv>5</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="clear" />
           <frmcmd name="getstat" />
@@ -39,12 +51,18 @@
           <frmcmd name="stop">
             <argv>4</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="clear" />
           <frmcmd name="getstat" />
         </command>
-        <command id="cstop" label="Stop Next Tag">
+        <command id="cstop" label="Stop at Next Tag">
           <frmcmd name="stop">
             <argv>7</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="clear" />
           <frmcmd name="getstat" />
@@ -227,12 +245,6 @@
         <block name="run" />
         <block name="jak" />
         <block name="chgon" />
-        <exec name="upd"></exec>
-      </event>
-      <event label="Ready">
-        <onchange ref="rdy"></onchange>
-        <pattern ref="rdy">1</pattern>
-        <exec name="clear"></exec>
         <exec name="upd"></exec>
       </event>
       <event label="Command Receive">

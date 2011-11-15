@@ -25,42 +25,21 @@ class Buffer
   def send(n=1)
     return self if  n > 1 && !@q.empty?
     clear if n == 0
-    yield.each{|cmd|
-      @issue=true
-      @q.push([n,cmd])
-      @v.msg{"MAIN:Issued frmcmd [#{cmd}] with priority [#{n}]"}
-    }
+    @issue=true
+    @q.push([n,yield])
     self
   end
 
   # For cmdset thread
   def recv
     @issue=false
-    loop{
-      if @q.empty?
-        cmd=nil
-        @outbuf.size.times{|i|
-          if cmd
-            @outbuf[i].delete(cmd)
-          else
-            cmd=@outbuf[i].shift
-          end
-        }
-        if cmd
-          @v.msg{"SUB:Exec [#{cmd}]"}
-          if cmd[0] == 'sleep'
-            sleep cmd[1].to_i
-            redo
-          else
-            return cmd
-          end
-        end
-        @v.msg{"SUB:Waiting"}
-      end
-      p,cmd=@q.shift
-      @v.msg{"SUB:Recieve [#{cmd}] with priority[#{p}]"}
-      (@outbuf[p]||=[]).push(cmd)
-    }
+    until out=pick
+      @v.msg{"SUB:Waiting"}
+      p,inp=@q.shift
+      @v.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
+      (@outbuf[p]||=[]).concat(inp)
+    end
+    out
   end
 
   def thread
@@ -85,8 +64,16 @@ class Buffer
 
   # Internal command
   private
-  def flush(pri)
-    self
+  def pick
+    cmd=nil
+    @outbuf.size.times{|i|
+      if cmd
+        @outbuf[i].delete(cmd)
+      else
+        cmd=@outbuf[i].shift
+      end
+    }
+    cmd
   end
 
   def clear

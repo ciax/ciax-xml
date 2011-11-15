@@ -17,10 +17,11 @@ class FrmObj
     @field=FrmRsp.new(fdb,@par)
     @fc=FrmCmd.new(fdb,@par,@field)
     cl=Msg::List.new("Internal Command")
-    cl.add('set'=>"Set Value  [key(:idx)] (val)")
-    cl.add('unset'=>"Remove Value  [key]")
+    cl.add('set'=>"Set Value [key(:idx)] (val)")
+    cl.add('unset'=>"Remove Value [key]")
     cl.add('load'=>"Load Field (tag)")
     cl.add('save'=>"Save Field [key,key...] (tag)")
+    cl.add('sleep'=>"Sleep [n] sec")
     @par.cl.push(cl)
     @field.load
   rescue Errno::ENOENT
@@ -40,6 +41,9 @@ class FrmObj
       @message=load(cmd[1])
     when 'save'
       @message=save(cmd[1],cmd[2])
+    when 'sleep'
+      @message='Done'
+      sleep cmd[1].to_i
     else
       cid=@par.set(cmd)[:cid]
       @v.msg{"Issue[#{cid}]"}

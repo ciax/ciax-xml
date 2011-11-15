@@ -42,7 +42,7 @@ if __FILE__ == $0
     adb=AppDb.new(app,cmd.empty?)
     fp=Param.new(adb.cover_frm[:cmdframe])
     AppCmd.new(adb[:command]).set(cmd).get.each{|fcmd|
-      fp.set(fcmd) if /set|unset|load|save/ !~ fcmd.first
+      fp.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
       p fcmd
     }
   rescue SelectCMD

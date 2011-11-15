@@ -29,7 +29,6 @@ class FrmObj
 
   def upd(cmd) #Should be array
     Msg.type?(cmd,Array)
-    @v.msg{"Receive #{cmd}"}
     case cmd[0]
     when nil
       @message=nil
@@ -43,6 +42,7 @@ class FrmObj
       @message=save(cmd[1],cmd[2])
     else
       cid=@par.set(cmd)[:cid]
+      @v.msg{"Issue[#{cid}]"}
       @io.snd(@fc.getframe,cid)
       @field.upd{@io.rcv(cid)}.save
       @message='OK'

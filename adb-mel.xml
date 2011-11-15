@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -11,7 +11,7 @@
           <frmcmd name="stop">
             <argv>6</argv>
           </frmcmd>
-          <frmcmd name="clear" />
+          <frmcmd name="getcmd" />
           <frmcmd name="getstat" />
         </command>
         <command id="emstop" label="Emergency Stop">
@@ -165,7 +165,7 @@
         </value>
       </group>
       <group id="g2" caption="Action" column="4">
-        <value id="acp" label="ACCEPT" symbol="acp">
+        <value id="acp" label="CMD RDY" symbol="acp">
           <binary label="Command Receive Enable" bit="0" ref="x:32" />
         </value>
         <value id="run" label="RUNNING" symbol="exec">
@@ -227,6 +227,12 @@
         <block name="run" />
         <block name="jak" />
         <block name="chgon" />
+        <exec name="upd"></exec>
+      </event>
+      <event label="Ready">
+        <onchange ref="rdy"></onchange>
+        <pattern ref="rdy">1</pattern>
+        <exec name="clear"></exec>
         <exec name="upd"></exec>
       </event>
       <event label="Command Receive">

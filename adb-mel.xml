@@ -11,7 +11,7 @@
           <frmcmd name="stop">
             <argv>6</argv>
           </frmcmd>
-          <frmcmd name="clear" />
+          <frmcmd name="getcmd" />
           <frmcmd name="getstat" />
         </command>
         <command id="emstop" label="Emergency Stop">
@@ -227,6 +227,12 @@
         <block name="run" />
         <block name="jak" />
         <block name="chgon" />
+        <exec name="upd"></exec>
+      </event>
+      <event label="Ready">
+        <onchange ref="rdy"></onchange>
+        <pattern ref="rdy">1</pattern>
+        <exec name="clear"></exec>
         <exec name="upd"></exec>
       </event>
       <event label="Command Receive">

@@ -53,7 +53,7 @@
             <char length="2" label="Start Address">0x104</char>
             <char length="2" label="Device Code">0xB400</char>
             <char length="2" label="Data Length">1</char>
-            <char length="2">1 &lt;&lt; $1</char>
+            <char length="2">$1</char>
           </command>
           <command id="start" label="Start Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
             <par>0,8,15</par>

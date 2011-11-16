@@ -11,6 +11,10 @@
         <xsd:element ref="adbc:command" />
       </xsd:choice>
     </xsd:complexType>
+    <xsd:key name="group_id">
+      <xsd:selector xpath="adbc:group" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
@@ -21,6 +25,10 @@
       <xsd:attribute name="caption" type="xsd:token" use="optional" />
       <xsd:attribute name="column" type="xsd:int" />
     </xsd:complexType>
+    <xsd:key name="command_id">
+      <xsd:selector xpath="adbc:command" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
   </xsd:element>
   <xsd:element name="command">
     <xsd:complexType>

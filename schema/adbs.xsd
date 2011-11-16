@@ -21,6 +21,10 @@
       </xsd:choice>
       <xsd:attribute name="table" type="xsd:NCName" use="optional" />
     </xsd:complexType>
+    <xsd:key name="group_id">
+      <xsd:selector xpath="adbs:group" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
@@ -32,6 +36,10 @@
       <xsd:attribute name="caption" type="xsd:token" use="optional" />
       <xsd:attribute name="column" type="xsd:int" use="optional" />
     </xsd:complexType>
+    <xsd:key name="value_id">
+      <xsd:selector xpath="adbs:value" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
   </xsd:element>
   <!--values-->
   <xsd:element name="repeat">

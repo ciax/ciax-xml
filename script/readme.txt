@@ -4,6 +4,7 @@
  libxml2-utils (xmllint)
  socat
  libsqlite3-ruby1.9.1
+ libxml-xpath-perl (xpath command)
 coreutils:
  grep,cut,tail
 

@@ -6,8 +6,9 @@
   <!--watch events-->
   <xsd:element name="watch">
     <xsd:complexType>
-      <xsd:group minOccurs="1" maxOccurs="unbounded" ref="wdb:event"></xsd:group>
+      <xsd:group minOccurs="0" maxOccurs="unbounded" ref="wdb:event"></xsd:group>
       <xsd:attribute name="interval" type="xsd:int" use="required"></xsd:attribute>
+      <xsd:attribute name="period" type="xsd:int"></xsd:attribute>
     </xsd:complexType>
   </xsd:element>
   <xsd:group name="event">

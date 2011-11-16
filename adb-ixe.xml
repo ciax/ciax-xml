@@ -200,11 +200,7 @@
         </repeat>
       </group>
     </status>
-    <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <event label="Update Status">
-        <range ref="elapse">3600:</range>
-        <exec name="upd"></exec>
-      </event>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1" period="3600">
       <repeat from="1" to="6">
         <event label="Moving %d">
           <pattern ref="r%d">N</pattern>

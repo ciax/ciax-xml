@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="oma" id="oma" label="Compressed Air Pressure at MOIRCS">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -13,11 +13,6 @@
         </value>
       </group>
     </status>
-    <watch interval="2" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <event label="Update">
-        <range ref="elapse">60:</range>
-        <exec name="upd"></exec>
-      </event>
-    </watch>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="2" period="60"></watch>
   </app>
 </adb>

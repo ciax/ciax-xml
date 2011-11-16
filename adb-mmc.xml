@@ -101,10 +101,6 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <event label="Update Status">
-        <range ref="elapse">300:</range>
-        <exec name="upd"></exec>
-      </event>
       <event label="On Motion">
         <pattern ref="bs">1</pattern>
         <block name="cw" />

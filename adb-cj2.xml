@@ -391,10 +391,6 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <event label="Regular">
-        <range ref="elapse">300:</range>
-        <exec name="upd"></exec>
-      </event>
       <event label="On Motion">
         <pattern ref="exe" inv="true">0</pattern>
         <block name="fhook"></block>

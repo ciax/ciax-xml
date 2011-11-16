@@ -250,10 +250,6 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <event label="Periodic">
-        <range ref="elapse">300:</range>
-        <exec name="upd"></exec>
-      </event>
       <event label="During Issued">
         <pattern ref="isu" inv="1">0</pattern>
         <block name="run" />

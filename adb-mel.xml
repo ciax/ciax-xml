@@ -257,7 +257,7 @@
       <event label="During Issued">
         <pattern ref="isu" inv="1">0</pattern>
         <block name="run" />
-        <block name="jak" />
+        <block name="lift" />
         <block name="chgon" />
         <exec name="upd"></exec>
       </event>
@@ -270,7 +270,7 @@
       <event label="While Running">
         <pattern ref="run">1</pattern>
         <block name="run" />
-        <block name="jak" />
+        <block name="lift" />
         <block name="chgon" />
         <block name="chgoff" />
         <int name="pause" />
@@ -279,7 +279,7 @@
       <event label="While Jacking">
         <pattern ref="jak">1</pattern>
         <block name="run" />
-        <block name="jak" />
+        <block name="lift" />
         <block name="chgon" />
         <block name="chgoff" />
         <int name="pause" />

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adb="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:adbs="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/adbc" schemaLocation="adbc.xsd" />
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/wdb" schemaLocation="wdb.xsd" />
@@ -31,9 +31,17 @@
       <xsd:selector xpath=".//adbc:command" />
       <xsd:field xpath="@id" />
     </xsd:key>
-    <xsd:keyref name="event_id" refer="adb:command_id">
-      <xsd:selector xpath=".//wdb:exec" />
+    <xsd:keyref name="event_exec" refer="adb:command_id">
+      <xsd:selector xpath=".//wdb:event/*" />
       <xsd:field xpath="@name" />
+    </xsd:keyref>
+    <xsd:key name="value_id">
+      <xsd:selector xpath=".//adbs:value" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
+    <xsd:keyref name="event_pat" refer="adb:value_id">
+      <xsd:selector xpath=".//wdb:event/*" />
+      <xsd:field xpath="@ref" />
     </xsd:keyref>
   </xsd:element>
 </xsd:schema>

@@ -34,7 +34,7 @@ class AppObj
     cl.add('field'=>"Field Stat mode")
     cl.add('watch'=>"Watch mode")
     cl.add('set'=>"[key=val] ..")
-    @ac.cl.push(cl)
+    @ac.list.push(cl)
     upd_prompt
   end
 
@@ -79,7 +79,7 @@ class AppObj
   end
 
   def commands
-    @ac.cl.keys
+    @ac.list.keys
   end
 
   private

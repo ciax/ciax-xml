@@ -5,20 +5,20 @@ require 'librerange'
 
 class Param < Hash
   include ModExh
-  attr_reader :cl
+  attr_reader :list
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
   def initialize(db)
     @v=Msg::Ver.new("param",2)
     @db=Msg.type?(db,Hash)
-    @cl=Msg::Lists.new(db)
+    @list=Msg::Lists.new(db)
   end
 
   def set(cmd)
     id=Msg.type?(cmd,Array).first
     id=(@db[:alias]||={})[id]||id
     unless @db[:select].key?(id)
-      @cl.error("No such CMD [#{id}]")
+      @list.error("No such CMD [#{id}]")
     end
     @v.msg{"SetPar: #{cmd}"}
     self[:id]=id
@@ -29,7 +29,7 @@ class Param < Hash
     }
     if @db.key?(:parameter) && par=@db[:parameter][id]
       unless par.size < cmd.size
-        Msg.err("Parameter shortage (#{par.size})",@cl[id])
+        Msg.err("Parameter shortage (#{par.size})",@list[id])
       end
       par.size.times{|i|
         validate(@param[i],par[i])

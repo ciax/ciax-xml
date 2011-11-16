@@ -22,7 +22,7 @@ class FrmObj
     cl.add('load'=>"Load Field (tag)")
     cl.add('save'=>"Save Field [key,key...] (tag)")
     cl.add('sleep'=>"Sleep [n] sec")
-    @par.cl.push(cl)
+    @par.list.push(cl)
     @field.load
   rescue Errno::ENOENT
     Msg.warn(" --- no json file")
@@ -59,7 +59,7 @@ class FrmObj
   end
 
   def commands
-    @par.cl.keys
+    @par.list.keys
   end
 
   private

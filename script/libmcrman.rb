@@ -16,7 +16,7 @@ class McrMan
     cl=Msg::List.new("Internal Command")
     cl.add("[0-9]"=>"Switch Mode")
     cl.add("list"=>"Thread list")
-    @par.cl.push(cl)
+    @par.list.push(cl)
   end
 
   def exec(cmd)
@@ -80,7 +80,7 @@ class McrMan
   end
 
   def commands
-    @par.cl.keys
+    @par.list.keys
   end
   private
   def query(str)

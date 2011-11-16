@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -110,6 +110,20 @@
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
+        </command>
+      </group>
+      <group id="gins" caption="Instrument Assign">
+        <command id="moircs" label="MOIRCS">
+          <frmcmd name="set_ins">
+            <argv>2</argv>
+          </frmcmd>
+          <frmcmd name="getstat" />
+        </command>
+        <command id="ciao" label="CIAO">
+          <frmcmd name="set_ins">
+            <argv>3</argv>
+          </frmcmd>
+          <frmcmd name="getstat" />
         </command>
       </group>
       <group id="gchg" caption="Charging Commands">

@@ -115,7 +115,7 @@ class Msg
     end
 
     def push(list)
-      @line << list
+      @line << Msg.type?(list,List)
       update(list)
       self
     end

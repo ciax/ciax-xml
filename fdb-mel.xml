@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="mel" version="2" label="MELSEC Q Series" endian="little" ccmethod="len">
+  <frame id="mel" version="3" label="MELSEC Q Series" endian="little" ccmethod="len">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="2" label="SubHeader: Prefix">0x54</char>
       <string label="SubHeader: Serial Number">XX</string>
@@ -42,6 +42,15 @@
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="2" label="Start Address">0x103</char>
+            <char length="2" label="Device Code">0xB400</char>
+            <char length="2" label="Data Length">1</char>
+            <char length="2">1 &lt;&lt; $1</char>
+          </command>
+          <command id="set_ins" label="Set Instrument ID" response="cmdrsp" type="config">
+            <par>0:10</par>
+            <char length="2" label="Write region command">0x1401</char>
+            <char length="2" label="Write region subcommand">0</char>
+            <char length="2" label="Start Address">0x104</char>
             <char length="2" label="Device Code">0xB400</char>
             <char length="2" label="Data Length">1</char>
             <char length="2">1 &lt;&lt; $1</char>

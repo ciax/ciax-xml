@@ -94,10 +94,11 @@ end
 module ModWdb
   def init_watch(wdb)
     return [] unless wdb
-    hash=wdb.to_h
+    hash=init_period(wdb.to_h)
+    idx=0
     Repeat.new.each(wdb){|e0,r0|
-      (hash[:label]||=[]) << (e0['label'] ? r0.format(e0['label']) : nil)
-      bg={}
+      idx+=1
+      hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
       e0.each{ |e1|
         case name=e1.name.to_sym
         when :block,:int,:exec
@@ -105,18 +106,26 @@ module ModWdb
           e1.each{|e2|
             cmd << r0.subst(e2.text)
           }
-          (bg[name]||=[]) << cmd
+          (hash[name][idx]||=[]) << cmd
         else
           h=e1.to_h
           h.each_value{|v| v.replace(r0.format(v))}
           h['type']=e1.name
-          (bg[:stat]||=[]) << h
+          (hash[:stat][idx]||=[]) << h
         end
       }
-      [:stat,:exec,:int,:block].each{|k|
-        (hash[k]||=[]) << bg[k]
-      }
     }
+    hash
+  end
+
+  private
+  def init_period(hash)
+    hash[:label]=['Periodic']
+    hash[:exec]=[[['upd']]]
+    ref={'ref'=>'elapse','type'=>'range'}
+    ref['val']=(hash['period']||'300')+':'
+    hash[:stat]=[[ref]]
+    [:int,:block].each{|k| hash[k]=[nil]}
     hash
   end
 end

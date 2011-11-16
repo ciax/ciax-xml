@@ -253,12 +253,6 @@
         <exec name="clear"></exec>
         <exec name="upd"></exec>
       </event>
-      <event label="During Charge">
-        <pattern ref="con">1</pattern>
-        <block name="run" />
-        <block name="jak" />
-        <block name="chgon" />
-      </event>
       <event label="While Running">
         <pattern ref="run">1</pattern>
         <block name="run" />

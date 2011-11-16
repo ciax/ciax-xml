@@ -29,8 +29,8 @@ class AppObj
       @buf.send(2){frmcmds(cmd)}
     }
     cl=Msg::List.new("Internal Command",2)
-    cl.add('view'=>"View Stat mode")
-    cl.add('stat'=>"Raw Stat mode")
+    cl.add('print'=>"Print mode")
+    cl.add('stat'=>"Stat mode")
     cl.add('field'=>"Field Stat mode")
     cl.add('watch'=>"Watch mode")
     cl.add('set'=>"[key=val] ..")
@@ -42,7 +42,7 @@ class AppObj
     @message=nil
     case cmd.first
     when nil
-    when 'view'
+    when 'print'
       @output=@print
     when 'stat'
       @output=@view['stat']

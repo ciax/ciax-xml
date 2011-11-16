@@ -29,7 +29,8 @@ adb//command@id -> never use ':'
  ## Process order: repeat -> parameter -> status -> formula -> format(w/eval)
 
  $_ $a..z
-    description : substitute sequence number(in repeat)
+    description : substitute and eval(splitted by ':')
+                  sequence number(in repeat)
     usable: fdb//cmdframe/repeat/char
             --
             adb//commands/repeat/command/argv

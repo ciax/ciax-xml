@@ -25,7 +25,10 @@ class Repeat
   def subst(str)
     return str unless /\$[_a-z]/ === str
     # Sub $key => @counter[key]
-    res=str.gsub(/\$([_a-z])/){ @counter[$1] || $1 }
+    res=str.split(':').map{|e|
+      conv=e.gsub(/\$([_a-z])/){ @counter[$1] || $1 }
+      e == conv ? e : eval(conv).to_s
+    }.join(':')
     raise if res == ''
     @v.msg{"Substitute [#{str}] to [#{res}]"}
     res

@@ -14,12 +14,7 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" column="3">
-        <repeat from="1" to="3">
-          <value id="v%d" label="OUTPUT%d (V)" format="%3.2f">
-            <float ref="stat" index="$_+1" formula="($#-2048)/4096" />
-          </value>
-        </repeat>
-        <repeat from="4" to="6">
+        <repeat from="1" to="6">
           <value id="v%d" label="OUTPUT%d (V)" format="%3.2f">
             <float ref="stat" index="$_+1" formula="($#-2048)/4096" />
           </value>

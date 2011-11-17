@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="mel" label="Cart PLC">
     <table id="acp" label="Command Accepting">
@@ -20,8 +20,11 @@
       <pattern class="alarm" msg="Unknown" />
     </table>
     <table id="ist">
-      <pattern class="normal" msg="MOIRCS">2</pattern>
-      <pattern class="normal" msg="CIAO">3</pattern>
+      <pattern class="normal" msg="COMICS">1</pattern>
+      <pattern class="normal" msg="CIAO">2</pattern>
+      <pattern class="normal" msg="FOCAS">3</pattern>
+      <pattern class="normal" msg="MOIRCS">4</pattern>
+      <pattern class="normal" msg="MP-CS1">5</pattern>
       <pattern class="warn" msg="N/A" />
     </table>
     <table id="corn">

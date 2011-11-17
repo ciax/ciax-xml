@@ -21,7 +21,7 @@
       <pattern class="normal" msg="IRCS">5</pattern>
       <pattern class="normal" msg="N/A">6</pattern>
       <pattern class="normal" msg="MOIRCS">7</pattern>
-      <pattern class="normal" msg="MP-CS1">8</pattern>
+      <pattern class="normal" msg="K3D">8</pattern>
       <pattern class="normal" msg="MP-CS2">9</pattern>
       <pattern class="warn" msg="OTHER" />
     </table>

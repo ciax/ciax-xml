@@ -24,7 +24,7 @@
       <pattern class="normal" msg="CIAO">2</pattern>
       <pattern class="normal" msg="FOCAS">3</pattern>
       <pattern class="normal" msg="MOIRCS">4</pattern>
-      <pattern class="normal" msg="MP-CS1">5</pattern>
+      <pattern class="normal" msg="K3D">5</pattern>
       <pattern class="warn" msg="N/A" />
     </table>
     <table id="corn">

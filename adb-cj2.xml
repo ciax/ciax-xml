@@ -306,17 +306,6 @@
           <binary bit="14" ref="w:1" />
           <binary bit="15" ref="w:1" />
         </value>
-        <value id="fpw" label="Inst Power" symbol="off-warn">
-          <binary bit="8" ref="w:9" />
-        </value>
-        <value id="fph" label="PW Phase" symbol="rst">
-          <binary bit="0" ref="w:10" />
-          <binary bit="1" ref="w:10" />
-          <binary bit="2" ref="w:10" />
-        </value>
-        <value id="fcc" label="CCD Power" symbol="off-warn">
-          <binary bit="10" ref="w:9" />
-        </value>
       </group>
       <group id="g4" caption="MOV Flange" column="3">
         <value id="mis" label="Attach" symbol="ist">
@@ -333,7 +322,28 @@
           <binary bit="14" ref="w:5" />
           <binary bit="15" ref="w:5" />
         </value>
-        <value id="mpw" label="Inst Power" symbol="off-warn">
+        <value id="mrt" label="Rotation" symbol="rot">
+          <binary bit="2" ref="w:5" />
+          <binary bit="3" ref="w:5" />
+        </value>
+        <value id="mtr" label="Transer" symbol="mov">
+          <binary bit="8" ref="w:6" />
+          <binary bit="6" ref="w:6" />
+        </value>
+      </group>
+      <group id="gp" caption="Power Status" column="3">
+        <value id="fpw" label="Fix Inst Power" symbol="off-warn">
+          <binary bit="8" ref="w:9" />
+        </value>
+        <value id="fph" label="PW Phase" symbol="rst">
+          <binary bit="0" ref="w:10" />
+          <binary bit="1" ref="w:10" />
+          <binary bit="2" ref="w:10" />
+        </value>
+        <value id="fcc" label="CCD Power" symbol="off-warn">
+          <binary bit="10" ref="w:9" />
+        </value>
+        <value id="mpw" label="Mov Inst Power" symbol="off-warn">
           <binary bit="9" ref="w:9" />
         </value>
         <value id="mph" label="PW Phase" symbol="rst">
@@ -343,14 +353,6 @@
         </value>
         <value id="mcc" label="CCD Power" symbol="off-warn">
           <binary bit="11" ref="w:9" />
-        </value>
-        <value id="mrt" label="Rotation" symbol="rot">
-          <binary bit="2" ref="w:5" />
-          <binary bit="3" ref="w:5" />
-        </value>
-        <value id="mtr" label="Transer" symbol="mov">
-          <binary bit="8" ref="w:6" />
-          <binary bit="6" ref="w:6" />
         </value>
       </group>
       <group id="g5" caption="Z Sensor" column="4">

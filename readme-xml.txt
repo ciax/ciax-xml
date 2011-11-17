@@ -29,19 +29,18 @@ adb//command@id -> never use ':'
  ## Process order: repeat -> parameter -> status -> formula -> format(w/eval)
 
  $_ $a..z
-    description : substitute and eval(splitted by ':')
-                  sequence number(in repeat)
-    usable: fdb//cmdframe/repeat/char
+    description : substitute sequence number(in repeat)
+    usable: fdb//cmdframe/repeat/[char,string]
             --
             adb//commands/repeat/command/argv
-            adb//status/repeat/value/*@ref
+            adb//status/repeat/value/[int,float,binary]@index
             adb//status/repeat/value/binary@bit
             adb//watch/repeat//argv
 
  $1..9
     description : substitute parameters, sould be numerical
-    usable: fdb//command/char
-            fdb//response/array/index
+    usable: fdb//command/[char,string]
+            fdb//response/array/index@range
             --
             adb//command/argv (eval if @format exists, Math included)
 
@@ -49,7 +48,7 @@ adb//command@id -> never use ':'
     description : substitute status ${key:idx:idx} => var[key][idx][idx]
                   content should be numerical expression or of csv array
                   idx can be equation (i.e. $_+1 )
-    usable: fdb//command/char
+    usable: fdb//command/[char,string]
 
  $#
     description : formula parameter

@@ -17,8 +17,7 @@ class FrmCmd
   def getframe # return = response select
     return unless @sel[:select]=@par[:select]
     @v.msg{"Attr of Param:#{@par}"}
-    cid=@par[:id]
-    cid+=':*' if /true|1/ === @par[:nocache]
+    cid=@par[:cid]
     @v.msg{"Select:#{@par[:label]}(#{cid})"}
     if frame=@cache[cid]
       @v.msg{"Cmd cache found [#{cid}]"}
@@ -30,7 +29,7 @@ class FrmCmd
         @field['cc']=@frame.checkcode
       end
       frame=mk_frame(:main)
-      @cache[cid]=frame unless /\*/ === cid
+      @cache[cid]=frame
     end
     frame
   end

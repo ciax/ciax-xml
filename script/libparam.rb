@@ -42,7 +42,6 @@ class Param < Hash
   end
 
   def subst(str) # par={ val,range,format } or String
-    return str unless /\$[\d]+/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
       str=keyconv('0-9',str){|k|

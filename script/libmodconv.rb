@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 module ModConv
   def keyconv(reg,str) # Key with index
+    return str unless /\$([#{reg}]+)/ === str
     str.gsub(/({)?([^}{]+)(})?/){
       pre,main,suf=$1,$2,$3
       pre.to_s+main.split(':').map{|e|

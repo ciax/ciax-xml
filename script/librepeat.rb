@@ -25,10 +25,9 @@ class Repeat
   end
 
   def subst(str)
-    return str unless /\$[_a-z]/ === str
     # Sub $key => @counter[key]
     res=keyconv('_a-z',str){|k| @counter[k]}
-    raise if res == ''
+    Msg.err("Empty String") if res == ''
     @v.msg{"Substitute [#{str}] to [#{res}]"}
     res
   end

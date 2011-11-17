@@ -10,7 +10,7 @@ class McrMan
   def initialize(id)
     @par=Param.new(McrDb.new(id))
     @id=id
-    @prompt="#@id[0]>"
+    @prompt="#@id[]>"
     @index=0
     @threads=McrObj.threads
     cl=Msg::List.new("Internal Command")
@@ -107,7 +107,19 @@ class McrMan
       end
       @prompt.replace(str)
     else
-      @prompt.replace("#@id[#{size}]>")
+      flg=@threads.map{|t|
+        case t[:stat]
+        when /wait/
+          '?'
+        when /run/
+          '&'
+        when /error/
+          '!'
+        else
+          '.'
+        end
+      }.join('')
+      @prompt.replace("#@id[#{flg}]>")
     end
   end
 

@@ -58,8 +58,10 @@ class McrObj < Thread
         end
       when 'exec'
         query
-#        @@client[e1['ins']].upd(e1['cmd'])
-#        @@client.each{|k,v| v.view.refresh }
+        if ENV['ACT']
+          @@client[e1['ins']].upd(e1['cmd'])
+          @@client.each{|k,v| v.view.refresh }
+        end
       end
     }
     self

@@ -15,9 +15,7 @@ class FrmDb < Db
       fc=cmd[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
       fr=rsp[:frame]=init_main(dr){|e| init_rsp(e,rsp)}
       cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
-      @v.msg{"Structure:cmdframe:#{self[:cmdframe]}"}
       rsp.update(init_sel(dr,'response',fr){|e| init_rsp(e,rsp)})
-      @v.msg{"Structure:rspframe:#{self[:rspframe]}"}
     }
   end
 
@@ -58,7 +56,7 @@ class FrmDb < Db
         @v.msg(1){"INIT:Select Frame <-"}
         id=e0.attr2db(selh)
         (selh[:select]||={})[id]||=[]
-        @v.msg{"InitSelHash(#{id}):#{selh}"}
+        @v.msg{"InitSelHash(#{id})"}
         Repeat.new.each(e0){|e1,r1|
           case e1.name
           when 'par'
@@ -68,7 +66,7 @@ class FrmDb < Db
             selh[:select][id] << e
           end
         }
-        @v.msg{"InitSelFrame(#{id}):#{frame}"}
+        @v.msg{"InitSelFrame(#{id})"}
       ensure
         @v.msg(-1){"-> INIT:Select Frame"}
       end

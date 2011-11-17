@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 module ModConv
+  include Math
   def keyconv(reg,str) # Key with index
     return str unless /\$([#{reg}]+)/ === str
     str.gsub(/({)?([^}{]+)(})?/){

@@ -11,12 +11,14 @@ class IoFile < Hash
       base="/json/#{type}_#{id}"
       if host
         require "open-uri"
-        @url="http://"+host+base+'.json'
+        @base="http://"+host+base
+        @type='url'
       else
         @base=VarDir+base
-        @fname=@base+'.json'
+        @type='file'
       end
       self['id']=id
+      @fname=@base+'.json'
     end
   end
 
@@ -25,14 +27,15 @@ class IoFile < Hash
   end
 
   def load
-    if @fname
+    case @type
+    when 'file'
       if File.exist?(@fname)
         load_uri(@fname)
       else
         Msg.warn("  -- no json file")
       end
-    elsif @url
-      load_uri(@url)
+    when 'url'
+      load_uri(@fname)
     else
       deep_update(JSON.load(gets(nil)))
     end
@@ -40,7 +43,8 @@ class IoFile < Hash
   end
 
   def save(data=nil)
-    if @fname
+    case @type
+    when 'file'
       open(@fname,'w'){|f| f << JSON.dump(data||to_hash)}
     else
       puts JSON.dump(data||to_hash)

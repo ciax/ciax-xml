@@ -1,8 +1,6 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libmodconv'
 class Repeat
-  include ModConv
   def initialize
     @v=Msg::Ver.new("repeat",5)
     @counter={}
@@ -24,9 +22,10 @@ class Repeat
     } if e0
   end
 
-  def subst(str)
-    # Sub $key => @counter[key]
-    res=keyconv('_a-z',str){|k| @counter[k]}
+  def subst(str) # Sub $key => @counter[key]
+    return str unless /\$([_a-z]+)/ === str
+    res=str.gsub(/\$([_a-z]+)/){ @counter[$1] }
+    res=eval(res).to_s unless /\$/ === res
     Msg.err("Empty String") if res == ''
     @v.msg{"Substitute [#{str}] to [#{res}]"}
     res

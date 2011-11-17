@@ -44,17 +44,14 @@ class Param < Hash
     return str unless /\$([\d]+)/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
-      str=str.gsub(/({)?([^}{]+)(})?/){
-        ary=[$1,$2,$3]
-        ary[1].gsub!(/\$([\d]+)/){
-          i=$1.to_i
-          @v.msg{"Param No.#{i} = [#{@param[i-1]}]"}
-          @param[i-1] || Msg.err(" No substitute data ($#{i})")
-        } && ary[1]=eval(ary[1]).to_s
-        ary.join('')
+      res=str.gsub(/\$([\d]+)/){
+        i=$1.to_i
+        @v.msg{"Param No.#{i} = [#{@param[i-1]}]"}
+        @param[i-1] || Msg.err(" No substitute data ($#{i})")
       }
-      Msg.err("Nil string") if str == ''
-      str
+      res=eval(res).to_s unless /\$/ === res
+      Msg.err("Nil string") if res == ''
+      res
     ensure
       @v.msg(-1){"Substitute to [#{str}]"}
     end

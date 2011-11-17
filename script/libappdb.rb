@@ -73,7 +73,7 @@ module ModAdbs
           st={'type' => e1.name}
           e1.to_h.each{|k,v|
             case k
-            when 'bit','index','ref'
+            when 'bit','index'
               st[k] = r0.subst(v)
             else
               st[k] = v

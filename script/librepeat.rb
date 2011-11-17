@@ -25,10 +25,7 @@ class Repeat
   def subst(str)
     return str unless /\$[_a-z]/ === str
     # Sub $key => @counter[key]
-    res=str.split(':').map{|e|
-      conv=e.gsub(/\$([_a-z])/){ @counter[$1] || $1 }
-      e == conv ? e : eval(conv).to_s
-    }.join(':')
+    res=keyconv(str){|k| @counter[k]}
     raise if res == ''
     @v.msg{"Substitute [#{str}] to [#{res}]"}
     res
@@ -63,5 +60,14 @@ class Repeat
     ensure
       @v.msg(-1){"End"}
     end
+  end
+
+  def keyconv(str) # Key with index
+    str.gsub(/(\$\{)?([^\}\{]+)(\})?/){
+      $1.to_s+$2.split(':').map{|e|
+        conv=e.gsub(/\$([_a-z])/){ yield $1 }
+        (conv == e || /\$/ === conv) ? e : eval(conv).to_s
+      }.join(':')+$3.to_s
+    }
   end
 end

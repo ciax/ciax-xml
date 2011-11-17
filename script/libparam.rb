@@ -2,11 +2,10 @@
 require 'libmodexh'
 require 'libmsg'
 require 'librerange'
-require 'libmodconv'
 
 class Param < Hash
+  include Math
   include ModExh
-  include ModConv
   attr_reader :list
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
@@ -42,12 +41,17 @@ class Param < Hash
   end
 
   def subst(str) # par={ val,range,format } or String
+    return str unless /\$([\d]+)/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
-      str=keyconv('0-9',str){|k|
-        i=k.to_i
-        @v.msg{"Param No.#{i} = [#{@param[i-1]}]"}
-        @param[i-1] || Msg.err(" No substitute data ($#{i})")
+      str=str.gsub(/({)?([^}{]+)(})?/){
+        ary=[$1,$2,$3]
+        ary[1].gsub!(/\$([\d]+)/){
+          i=$1.to_i
+          @v.msg{"Param No.#{i} = [#{@param[i-1]}]"}
+          @param[i-1] || Msg.err(" No substitute data ($#{i})")
+        } && ary[1]=eval(ary[1]).to_s
+        ary.join('')
       }
       Msg.err("Nil string") if str == ''
       str

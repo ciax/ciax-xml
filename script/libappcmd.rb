@@ -21,7 +21,7 @@ class AppCmd < Param
             cmd << e2
           when Hash
             str=e2['val']
-            str = e2['format'] % eval(str) if e2['format']
+            str = e2['format'] % str if e2['format']
             @v.msg{"Calculated [#{str}]"}
             cmd << str
           end

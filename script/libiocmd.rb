@@ -62,7 +62,7 @@ class IoCmd
   def snd(str)
     return if str.to_s.empty?
     sleep @wait
-    @v.msg{"Sending #{str[0..5].dump}..."}
+    @v.msg{"Sending #{str.size} byte"}
     reopen{
       @f.syswrite(str)
     }
@@ -75,7 +75,7 @@ class IoCmd
       select([@f],nil,nil,@timeout) || next
       @f.sysread(4096)
     }||Msg.err("No string")
-    @v.msg{"Recieved #{str[0..5].dump}..."}
+    @v.msg{"Recieved #{str.size} byte"}
     str
   end
 

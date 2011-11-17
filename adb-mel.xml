@@ -137,7 +137,7 @@
           </frmcmd>
           <frmcmd name="getstat" />
         </command>
-        <command id="mp-cs1" label="MP-CS1(Kyoto 3D)">
+        <command id="k3d" label="Kyoto 3D">
           <frmcmd name="set_ins">
             <argv>5</argv>
           </frmcmd>

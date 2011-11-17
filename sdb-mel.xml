@@ -24,6 +24,11 @@
       <pattern class="normal" msg="CIAO">3</pattern>
       <pattern class="warn" msg="N/A" />
     </table>
+    <table id="corn">
+      <pattern class="normal" msg="OFF">0</pattern>
+      <pattern class="normal" msg="ON">15</pattern>
+      <pattern class="warn" msg="N/A" />
+    </table>
     <table id="jpos">
       <pattern class="normal" msg="D">0</pattern>
       <pattern class="normal" msg="L">1</pattern>

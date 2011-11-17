@@ -219,7 +219,7 @@
         <value id="jpos" label="Level" symbol="jpos">
           <int ref="x:27" />
         </value>
-        <value id="corn" label="Corn">
+        <value id="corn" label="Corn" symbol="corn">
           <binary bit="5" ref="x:19" />
           <binary bit="13" ref="x:19" />
           <binary bit="5" ref="x:20" />
@@ -227,7 +227,7 @@
         </value>
       </group>
       <group id="gc" caption="Charging" column="4">
-        <value id="bvl" label="Battery Voltage" symbol="bvl" format="%2.2f">
+        <value id="bvl" label="Battery(V)" symbol="bvl" format="%2.2f">
           <float ref="x:22" formula="$#/100" />
         </value>
         <value id="con" label="CHARGING" symbol="exec">

@@ -53,5 +53,85 @@
         <stat ref="jpos" ins="crt">$1</stat>
       </check>
     </command>
+    <!--Jack Command-->
+    <command id="ju0d" label="InR0 Jkup at FIX.IR">
+      <break label="Jack DW?">
+        <stat ins="dsi" ref="fjb">DW</stat>
+      </break>
+      <check label="HOOK?">
+        <stat ins="dsi" ref="fis">ON</stat>
+        <stat ins="dsi" ref="fhk">HOOK</stat>
+      </check>
+      <exec ins="dsi" name="fjdw"></exec>
+      <wait label="Jacking" retry="40">
+        <stat ins="dsi" ref="exe">OFF</stat>
+      </wait>
+      <check label="Jack DW?">
+        <stat ins="dsi" ref="fjb">DW</stat>
+      </check>
+    </command>
+    <command id="jd0d" label="InR0 Jkdw at FIX.IR">
+      <break label="Instrument ON?">
+        <stat ins="dsi" ref="fis">ON</stat>
+      </break>
+      <check label="HOOK?">
+        <stat ins="dsi" ref="fhk">HOOK</stat>
+      </check>
+      <exec ins="dsi" name="fjup"></exec>
+      <wait label="Jacking" retry="40">
+        <stat ins="dsi" ref="exe">OFF</stat>
+      </wait>
+      <check label="Jack UP?">
+        <stat ins="dsi" ref="fjb">UP</stat>
+      </check>
+    </command>
+    <command id="ju4d" label="InR4 Jkup at FIX.IR">
+      <break label="Jack Up?">
+        <stat ins="dsi" ref="fjb">UP</stat>
+      </break>
+      <check label="UNHOOK?">
+        <stat ins="dsi" ref="fhk">UNHK</stat>
+      </check>
+      <exec ins="dsi" name="fjup"></exec>
+      <wait label="Jacking" retry="40">
+        <stat ins="dsi" ref="exe">OFF</stat>
+      </wait>
+      <check label="Jack UP?">
+        <stat ins="dsi" ref="fjb">UP</stat>
+      </check>
+    </command>
+    <command id="jd4d" label="InR4 Jkdw at FIX.IR">
+      <break label="Jack Dw?">
+        <stat ins="dsi" ref="fjb">DW</stat>
+      </break>
+      <check label="UNHOOK?">
+        <stat ins="dsi" ref="fhk">UNHK</stat>
+      </check>
+      <exec ins="dsi" name="fjdw"></exec>
+      <wait label="Jacking" retry="40">
+        <stat ins="dsi" ref="exe">OFF</stat>
+      </wait>
+      <check label="Jack DW?">
+        <stat ins="dsi" ref="fjb">DW</stat>
+      </check>
+    </command>
+    <!--Jack & Rotate-->
+    <command id="jupd" label="HookUp at FIX.IR">
+      <break label="Instrument ON?">
+        <stat ins="dsi" ref="fis">ON</stat>
+      </break>
+      <check label="CART ON TAG?">
+        <stat ins="crt" ref="cps">12</stat>
+        <stat ins="crt" ref="jlv">H</stat>
+      </check>
+      <exec ins="dsi" name="fhook"></exec>
+      <wait label="Jacking" retry="40">
+        <stat ins="dsi" ref="exe">OFF</stat>
+      </wait>
+      <mcr name="ju0d" />
+      <check label="Instrument ON?">
+        <stat ins="dsi" ref="fis">ON</stat>
+      </check>
+    </command>
   </macro>
 </mdb>

@@ -2,16 +2,16 @@
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="ml2" label="MOIRCS Temperature 2" app_type="lk8" client="socat - tcp:celaeno:4006" port="24106">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-      <title ref="ch0" label="Robohand" />
-      <title ref="ch1" label="CollBench" />
-      <title ref="ch2" label="BulkHead" />
-      <title ref="ch3" label="HeatPath" />
-      <title ref="ch4" label="D1(NONE)" />
-      <title ref="ch5" label="D2(NONE)" />
-      <title ref="ch6" label="ChipBox2" />
-      <title ref="ch7" label="Det2" />
-      <title ref="sp" label="SetPoint2 (K)" />
-      <title ref="htr" label="HeaterPower2(%%)" />
+      <value ref="ch0" label="Robohand" />
+      <value ref="ch1" label="CollBench" />
+      <value ref="ch2" label="BulkHead" />
+      <value ref="ch3" label="HeatPath" />
+      <value ref="ch4" label="D1(NONE)" />
+      <value ref="ch5" label="D2(NONE)" />
+      <value ref="ch6" label="ChipBox2" />
+      <value ref="ch7" label="Det2" />
+      <value ref="sp" label="SetPoint2 (K)" />
+      <value ref="htr" label="HeaterPower2(%%)" />
     </status>
   </instance>
 </idb>

@@ -2,7 +2,7 @@
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="cf1" label="S1 Helium Compressor Coolant Flow" app_type="k3n" client="socat - tcp:ltt-o:4001" port="45601">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-      <title ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
+      <value ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
     </status>
   </instance>
 </idb>

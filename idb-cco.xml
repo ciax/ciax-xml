@@ -13,9 +13,9 @@
       <command id="maoff" label="COMICS BOTH OFF" alias="x23off" />
     </select>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-      <title ref="g0" caption="CIAO(S6) SWITCH" />
-      <title ref="g2" caption="COMICS IMG(S4)" />
-      <title ref="g3" caption="COMICS SPEC(S5)" />
+      <group ref="g0" caption="CIAO(S6) SWITCH" />
+      <group ref="g2" caption="COMICS IMG(S4)" />
+      <group ref="g3" caption="COMICS SPEC(S5)" />
     </status>
   </instance>
 </idb>

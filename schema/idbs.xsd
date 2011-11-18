@@ -4,7 +4,8 @@
   <!--status-->
   <xsd:group name="titles">
     <xsd:choice>
-      <xsd:element ref="idbs:title"></xsd:element>
+      <xsd:element ref="idbs:value"></xsd:element>
+      <xsd:element ref="idbs:group"></xsd:element>
       <xsd:element ref="idbs:repeat"></xsd:element>
     </xsd:choice>
   </xsd:group>
@@ -20,12 +21,17 @@
       <xsd:attributeGroup ref="idbs:repeat" />
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="title">
+  <xsd:element name="group">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required" />
+      <xsd:attribute name="caption" type="xsd:token" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="value">
     <xsd:complexType>
       <xsd:attribute name="ref" type="xsd:NCName" use="required" />
       <xsd:attribute name="symbol" type="xsd:NCName" />
       <xsd:attribute name="label" type="xsd:token" />
-      <xsd:attribute name="caption" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

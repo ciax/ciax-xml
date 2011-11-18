@@ -21,10 +21,10 @@
       <command id="maoff" label="MOIRCS BOTH OFF" alias="x23off" />
     </select>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
-      <title ref="g0" caption="CAS2(S1)(CIAO)" />
-      <title ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)" />
-      <title ref="g2" caption="MOIRCS/CR(S8)" />
-      <title ref="g3" caption="MOIRCS/MAIN(S9)" />
+      <group ref="g0" caption="CAS2(S1)(CIAO)" />
+      <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)" />
+      <group ref="g2" caption="MOIRCS/CR(S8)" />
+      <group ref="g3" caption="MOIRCS/MAIN(S9)" />
     </status>
   </instance>
 </idb>

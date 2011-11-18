@@ -46,9 +46,9 @@ class McrObj < Thread
       when 'break'
         judge("Proceed?",e1) && break
       when 'check'
-        judge("Check",e1) || raise(UserError)
+        judge("Check",e1) || !ENV['ACT'] || raise(UserError)
       when 'wait'
-        judge("Waiting",e1) || raise(UserError)
+        judge("Waiting",e1) || !ENV['ACT'] || raise(UserError)
       when 'mcr'
         sp=par.dup.set(e1['cmd'])
         if /true|1/ === e1['async']

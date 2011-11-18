@@ -22,25 +22,29 @@ class FrmCmd
     if frame=@cache[cid]
       @v.msg{"Cmd cache found [#{cid}]"}
     else
-      mk_frame(:select)
+      mk_frame(:select) && cid=nil
       if @sel.key?(:ccrange)
         @frame.mark
         mk_frame(:ccrange)
         @field['cc']=@frame.checkcode
       end
-      frame=mk_frame(:main)
-      @cache[cid]=frame
+      mk_frame(:main)
+      frame=@fstr[:main]
+      @cache[cid]=frame if cid
     end
     frame
   end
 
   private
   def mk_frame(domain)
+    convert=nil
     @frame.set
     @sel[domain].each{|a|
       case a
       when Hash
-        @field.subst(a['val']).split(',').each{|s|
+        frame=@field.subst(a['val'])
+        convert=true if frame != a['val']
+        frame.split(',').each{|s|
           @frame.add(s,a)
         }
       else # ccrange,select,..
@@ -48,6 +52,7 @@ class FrmCmd
       end
     }
     @fstr[domain]=@frame.copy
+    convert
   end
 end
 

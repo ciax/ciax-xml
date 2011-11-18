@@ -121,8 +121,8 @@
         <stat ins="dsi" ref="fis">ON</stat>
       </break>
       <check label="CART ON TAG?">
-        <stat ins="crt" ref="cps">12</stat>
-        <stat ins="crt" ref="jlv">H</stat>
+        <stat ins="crt" ref="cpos">12</stat>
+        <stat ins="crt" ref="jpos">H</stat>
       </check>
       <exec ins="dsi" name="fhook"></exec>
       <wait label="Jacking" retry="40">

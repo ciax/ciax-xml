@@ -63,18 +63,17 @@ class FrmObj
   end
 
   private
-  def set(cmd)
-    if cmd.empty?
+  def set(par)
+    if par.empty?
       raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
     end
-    @v.msg{"CMD:set#{cmd}"}
-    case cmd[0]
+    case par[0]
     when /:/
-      @field.set(cmd[0],cmd[1])
+      @field.set(par[0],par[1])
     else
-      @field[cmd[0]]=@field.subst(cmd[1])
+      @field[par[0]]=@field.subst(par[1])
     end
-    "[#{cmd}] set\n"
+    "[#{par}] set\n"
   end
 
   def save(keys,tag=nil)

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mdb="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="range.xsd" />
   <xsd:include schemaLocation="command.xsd" />
@@ -18,6 +18,14 @@
       <xsd:attribute name="version" type="xsd:int" />
       <xsd:attribute name="label" type="xsd:token" use="optional" />
     </xsd:complexType>
+    <xsd:key name="macro_id">
+      <xsd:selector xpath=".//mdb:command" />
+      <xsd:field xpath="@id" />
+    </xsd:key>
+    <xsd:keyref name="sub_macro" refer="mdb:macro_id">
+      <xsd:selector xpath=".//mdb:mcr" />
+      <xsd:field xpath="@name" />
+    </xsd:keyref>
   </xsd:element>
   <xsd:element name="command">
     <xsd:complexType>

@@ -37,7 +37,7 @@ class McrObj < Thread
   def submcr(par)
     @depth+=1
     par[:select].each{|e1|
-      @current={'tid'=>self[:id],'cid'=>par[:cid],'seq' => @seq}
+      @current={'cid'=>par[:cid],'seq' => @seq}
       @current['depth']=@depth
       @current.update(e1)
       @seq+=1

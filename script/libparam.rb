@@ -22,7 +22,6 @@ class Param < Hash
       @list.error("No such CMD [#{id}]")
     end
     @v.msg{"SetPar: #{cmd}"}
-    self[:id]=id
     @param=cmd[1..-1]
     self[:cid]=cmd.join(':') # Used by macro
     [:label,:nocache,:response].each{|k,v|

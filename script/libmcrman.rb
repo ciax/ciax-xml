@@ -19,7 +19,7 @@ class McrMan
     @par.list.push(cl)
   end
 
-  def exec(cmd)
+  def upd(cmd)
     case cmd[0]
     when nil
     when 'list'

@@ -11,5 +11,5 @@ rescue SelectID
   Msg.exit
 end
 Shell.new(mm.prompt,mm.commands){|cmd|
-  mm.exec(cmd)
+  mm.upd(cmd)
 }

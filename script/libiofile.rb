@@ -58,6 +58,7 @@ class IoFile < Hash
 
   private
   def load_uri(uri)
+    @v.msg{"Loading URL #{uri}"}
     open(uri){|f|
       str=f.read
       if str.empty?

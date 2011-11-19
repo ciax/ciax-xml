@@ -83,8 +83,8 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
-        <command id="lift" label="Lift Jack Level [0-3]">
-          <par>0:3</par>
+        <command id="lift" label="Lift Jack Level [0-4]">
+          <par>0:4</par>
           <frmcmd name="set_pos">
             <argv>$1</argv>
           </frmcmd>

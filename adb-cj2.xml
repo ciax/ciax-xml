@@ -256,6 +256,13 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
+        <command id="chgon" label="Chg Power ON">
+          <frmcmd name="setbit">
+            <argv>1</argv>
+            <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cj2">

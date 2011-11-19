@@ -14,7 +14,12 @@ module McrPrt
         msg << Msg.color(h['result'] ? "SKIP" : "OK",2)
       when 'check'
         msg << Msg.color('Check',6)+":#{h['label']} ->"
-        msg << (h['result'] ? Msg.color("OK",2) : Msg.color("NG",1))
+        if h['result']
+          msg << Msg.color("OK",2)
+        else
+          msg << Msg.color("NG",1)+"\n"
+          msg << getcond(h)
+        end
       when 'wait'
         msg << Msg.color('Waiting',6)+":#{h['label']} ->"
         case h['result']
@@ -34,6 +39,13 @@ module McrPrt
       end
       msg
     }.join("\n")
+  end
+
+  private
+  def getcond(h)
+    msg='  '*(h['depth']+1)
+    c=h['all'].last
+    msg << Msg.color("#{c['ins']}:#{c['ref']}",3)+" is not #{c['val']}"
   end
 end
 
@@ -114,8 +126,9 @@ class McrSub < Array
     end
   end
 
+  # client is forced to be localhost
   def getstat(ins,id)
-    @@client[ins]||=AppCl.new(ins)
+    @@client[ins]||=AppCl.new(ins,'localhost')
     view=@@client[ins].view.load
     if last['update']=view.update?
       view['msg'][id]||view['stat'][id]

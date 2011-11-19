@@ -3,7 +3,39 @@ require "libmsg"
 require "libparam"
 require "libappcl"
 
-class Broken < RuntimeError;end
+module McrPrt
+  def to_s
+    return '' if empty?
+    map{|h|
+      msg='  '*h['depth']
+      case h['type']
+      when 'break'
+        msg << Msg.color('Proceed?',6)+":#{h['label']} ->"
+        msg << Msg.color(h['result'] ? "SKIP" : "OK",2)
+      when 'check'
+        msg << Msg.color('Check',6)+":#{h['label']} ->"
+        msg << (h['result'] ? Msg.color("OK",2) : Msg.color("NG",1))
+      when 'wait'
+        msg << Msg.color('Waiting',6)+":#{h['label']} ->"
+        case h['result']
+        when nil
+          ret=h['retry'].to_i
+          msg << '*'*(ret/10)+'.'*(ret % 10)
+        when false
+          msg << Msg.color("Timeout(#{h['retry']})",1)
+        else
+          msg << Msg.color("OK",2)
+        end
+      when 'mcr'
+        msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
+        msg << "(async)" if h['async']
+      when 'exec'
+        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['ins']})"
+      end
+      msg
+    }.join("\n")
+  end
+end
 
 class McrSub < Array
   @@client={}
@@ -93,16 +125,21 @@ end
 
 if __FILE__ == $0
   require "libmcrdb"
+  require "optparse"
+
+  opt=ARGV.getopts("v")
   id,*cmd=ARGV
   ARGV.clear
   begin
     mdb=McrDb.new(id)
     par=Param.new(mdb).set(cmd)
-    puts McrSub.new(par,0).to_s
+    mcr=McrSub.new(par,0)
+    mcr.extend(McrPrt) if opt['v']
+    puts mcr.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
-    warn "Usage: #{$0} [mcr] [cmd] (par)"
+    warn "Usage: #{$0} (-v) [mcr] [cmd] (par)"
     Msg.exit
   rescue UserError
     Msg.exit(3)

@@ -49,7 +49,7 @@ module ModAdbs
   private
   def init_stat(sdb)
     hash=sdb.to_h
-    group='g0'
+    group='gtime'
     hash[:label]={group => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
     hash[:group]={group => ['time','elapse']}
     hash[:caption]={group => '' }

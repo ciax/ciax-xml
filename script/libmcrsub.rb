@@ -3,59 +3,14 @@ require "libmsg"
 require "libparam"
 require "libappcl"
 
-module McrPrt
-  def to_s
-    return '' if empty?
-    map{|h|
-      msg='  '*h['depth']
-      case h['type']
-      when 'break'
-        msg << Msg.color('Proceed?',6)+":#{h['label']} ->"
-        msg << Msg.color(h['result'] ? "SKIP" : "OK",2)
-      when 'check'
-        msg << Msg.color('Check',6)+":#{h['label']} ->"
-        if h['result']
-          msg << Msg.color("OK",2)
-        else
-          msg << Msg.color("NG",1)+"\n"
-          msg << getcond(h)
-        end
-      when 'wait'
-        msg << Msg.color('Waiting',6)+":#{h['label']} ->"
-        case h['result']
-        when nil
-          ret=h['retry'].to_i
-          msg << '*'*(ret/10)+'.'*(ret % 10)
-        when false
-          msg << Msg.color("Timeout(#{h['retry']})",1)
-        else
-          msg << Msg.color("OK",2)
-        end
-      when 'mcr'
-        msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
-        msg << "(async)" if h['async']
-      when 'exec'
-        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['ins']})"
-      end
-      msg
-    }.join("\n")
-  end
-
-  private
-  def getcond(h)
-    msg='  '*(h['depth']+1)
-    c=h['all'].last
-    msg << Msg.color("#{c['ins']}:#{c['ref']}",3)+" is not #{c['val']}"
-  end
-end
-
 class McrSub < Array
   @@client={}
-  def initialize(par,interval=1)
+  def initialize(par,test=nil)
     @v=Msg::Ver.new("mcr",9)
     Msg.type?(par,Param)
     #Thread.abort_on_exception=true
-    @interval=interval
+    @interval=test ? 0 : 1
+    @host='localhost' if test
     @seq=0
     submacro(par,0)
   end
@@ -128,7 +83,7 @@ class McrSub < Array
 
   # client is forced to be localhost
   def getstat(ins,id)
-    @@client[ins]||=AppCl.new(ins,'localhost')
+    @@client[ins]||=AppCl.new(ins,@host)
     view=@@client[ins].view.load
     if last['update']=view.update?
       view['msg'][id]||view['stat'][id]
@@ -137,22 +92,23 @@ class McrSub < Array
 end
 
 if __FILE__ == $0
-  require "libmcrdb"
   require "optparse"
+  require "libmcrdb"
+  require "libmcrprt"
 
-  opt=ARGV.getopts("v")
+  opt=ARGV.getopts("rt")
   id,*cmd=ARGV
   ARGV.clear
   begin
     mdb=McrDb.new(id)
     par=Param.new(mdb).set(cmd)
-    mcr=McrSub.new(par,0)
-    mcr.extend(McrPrt) if opt['v']
+    mcr=McrSub.new(par,opt['t'])
+    mcr.extend(McrPrt) unless opt['r']
     puts mcr.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
-    warn "Usage: #{$0} (-v) [mcr] [cmd] (par)"
+    warn "Usage: #{$0} (-rt) [mcr] [cmd] (par)"
     Msg.exit
   rescue UserError
     Msg.exit(3)

@@ -5,16 +5,16 @@ require "libappcl"
 
 class McrSub < Array
   @@client={}
-  attr_reader :stat
+  attr_accessor :stat
   def initialize(par,test=nil)
     @v=Msg::Ver.new("mcr",9)
     Msg.type?(par,Param)
     #Thread.abort_on_exception=true
     @test=test
-    @interval=test ? 0 : 1
     @seq=0
     @stat='run'
     submacro(par,0)
+    @stat='done'
   end
 
   def submacro(par,depth)
@@ -26,9 +26,9 @@ class McrSub < Array
       when 'break'
         judge("Proceed?",e1) && break
       when 'check'
-        judge("Check",e1) || !ENV['ACT'] || raise(UserError)
+        judge("Check",e1) || error
       when 'wait'
-        judge("Waiting",e1) || !ENV['ACT'] || raise(UserError)
+        judge("Waiting",e1) || error
       when 'mcr'
         sp=par.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
@@ -98,6 +98,12 @@ class McrSub < Array
     else
       Kernel.sleep
     end
+  end
+
+  def error
+    return unless ENV['ACT']
+    @stat='error'
+    raise(UserError)
   end
 end
 

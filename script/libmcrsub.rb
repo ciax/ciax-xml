@@ -5,13 +5,15 @@ require "libappcl"
 
 class McrSub < Array
   @@client={}
+  attr_reader :stat
   def initialize(par,test=nil)
     @v=Msg::Ver.new("mcr",9)
     Msg.type?(par,Param)
     #Thread.abort_on_exception=true
+    @test=test
     @interval=test ? 0 : 1
-    @host='localhost' if test
     @seq=0
+    @stat='run'
     submacro(par,0)
   end
 
@@ -51,15 +53,14 @@ class McrSub < Array
 
   private
   def query
-    return if @interval == 0
-    self[:stat]="wait"
+    @stat="wait"
     sleep
-    self[:stat]="run"
+    @stat="run"
   end
 
   def judge(msg,e)
     last['result']=(e['retry']||1).to_i.times{|n|
-      sleep @interval if n > 0
+      sleep 1 if n > 0
       last['retry']=n
       if c=e['any']
         c.any?{|h| condition(h)} && break
@@ -83,10 +84,19 @@ class McrSub < Array
 
   # client is forced to be localhost
   def getstat(ins,id)
-    @@client[ins]||=AppCl.new(ins,@host)
+    @@client[ins]||=AppCl.new(ins,('localhost' if @test))
     view=@@client[ins].view.load
     if last['update']=view.update?
       view['msg'][id]||view['stat'][id]
+    end
+  end
+
+  def sleep(n=nil)
+    return n if @test
+    if n
+      Kernel.sleep n
+    else
+      Kernel.sleep
     end
   end
 end

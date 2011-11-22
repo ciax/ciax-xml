@@ -22,7 +22,7 @@ r:prompt
 r:commands
 exe()
 
-# FrmObj
+# FrmSv
 o:to_s
 r:field
 r:prompt

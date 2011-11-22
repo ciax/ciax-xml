@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libfrmobj"
+require "libfrmsv"
 
 opt=ARGV.getopts("s")
 id,*iocmd=ARGV
@@ -11,7 +11,7 @@ rescue
   warn "Usage: frmint (-s) [id] (iocmd)"
   Msg.exit
 end
-fobj=FrmObj.new(fdb,iocmd)
+fobj=FrmSv.new(fdb,iocmd)
 if opt["s"]
   require 'libserver'
   Server.new(fdb["port"].to_i-1000,"#{id}>"){|line|

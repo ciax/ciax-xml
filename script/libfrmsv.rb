@@ -5,7 +5,7 @@ require "libparam"
 require "libfrmrsp"
 require "libfrmcmd"
 
-class FrmObj
+class FrmSv
   attr_reader :field,:commands
   def initialize(fdb,iocmd=[])
     @v=Msg::Ver.new("frmobj",3)

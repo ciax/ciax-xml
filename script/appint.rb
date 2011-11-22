@@ -16,8 +16,8 @@ if opt['c']
   require "libfrmcl"
   fobj=FrmCl.new(fdb)
 else
-  require "libfrmobj"
-  fobj=FrmObj.new(fdb,iocmd)
+  require "libfrmsv"
+  fobj=FrmSv.new(fdb,iocmd)
 end
 aobj=AppObj.new(adb,fobj)
 if opt["s"]

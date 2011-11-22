@@ -23,11 +23,11 @@ aobj=AppObj.new(adb,fobj)
 if opt["s"]
   require 'libserver'
   Server.new(adb["port"].to_i,aobj.prompt){|cmd|
-    aobj.upd(cmd).message
+    aobj.exe(cmd)
   }
 else
   require 'libshell'
   Shell.new(aobj.prompt,aobj.commands){|cmd|
-    aobj.upd(cmd).message||aobj
+    aobj.exe(cmd)||aobj
   }
 end

@@ -39,7 +39,7 @@ class McrSub < Array
       when 'exec'
         query
         if ENV['ACT']
-          @@client[e1['ins']].upd(e1['cmd'])
+          @@client[e1['ins']].exe(e1['cmd'])
           @@client.each{|k,v| v.view.refresh }
         end
       end

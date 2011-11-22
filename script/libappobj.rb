@@ -9,7 +9,7 @@ require "libwatch"
 require "thread"
 
 class AppObj
-  attr_reader :prompt,:message
+  attr_reader :prompt
   def initialize(adb,frmobj)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
@@ -21,7 +21,7 @@ class AppObj
     @output=@print=Print.new(adb,@view)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|cmd|
-      @fobj.upd(cmd)
+      @fobj.exe(cmd)
       @view.upd.save
       @v.msg{"Status Updated(#{@view['stat']['time']})"}
     }
@@ -38,8 +38,8 @@ class AppObj
     upd_prompt
   end
 
-  def upd(cmd)
-    @message=nil
+  def exe(cmd)
+    msg=nil
     case cmd.first
     when nil
     when 'print'
@@ -53,7 +53,7 @@ class AppObj
     when 'interrupt'
       int=@watch.interrupt
       @buf.send(0){frmcmds(int)}
-      @message="Interrupt #{int}"
+      msg="Interrupt #{int}"
     when 'set'
       hash={}
       cmd[1..-1].each{|s|
@@ -61,17 +61,18 @@ class AppObj
         hash[k]=v
       }
       @view.set(hash).save
-      @message="Set #{hash}"
+      msg="Set #{hash}"
     else
       if @watch.block?(cmd)
-        @message="Blocking(#{cmd})"
+        msg="Blocking(#{cmd})"
       else
         @buf.send{frmcmds([cmd])}
-        @message="ISSUED"
+        msg="ISSUED"
       end
     end
     upd_prompt
     self
+    msg
   end
 
   def to_s

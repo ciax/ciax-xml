@@ -6,7 +6,7 @@ require "libfrmrsp"
 require "libfrmcmd"
 
 class FrmObj
-  attr_reader :field,:message
+  attr_reader :field
   def initialize(fdb,iocmd=[])
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
@@ -28,30 +28,30 @@ class FrmObj
     Msg.warn(" --- no json file")
   end
 
-  def upd(cmd) #Should be array
+  def exe(cmd) #Should be array
     Msg.type?(cmd,Array)
     case cmd[0]
     when nil
-      @message=nil
+      msg=nil
     when 'set'
-      @message=set(cmd[1..-1]).inspect
+      msg=set(cmd[1..-1]).inspect
     when 'unset'
-      @message=@field.delete(cmd[1]).inspect
+      msg=@field.delete(cmd[1]).inspect
     when 'load'
-      @message=load(cmd[1])
+      msg=load(cmd[1])
     when 'save'
-      @message=save(cmd[1],cmd[2])
+      msg=save(cmd[1],cmd[2])
     when 'sleep'
-      @message='Done'
+      msg='Done'
       sleep cmd[1].to_i
     else
       cid=@par.set(cmd)[:cid]
       @v.msg{"Issue[#{cid}]"}
       @io.snd(@fc.getframe,cid)
       @field.upd{@io.rcv(cid)}.save
-      @message='OK'
+      msg='OK'
     end
-    self
+    msg
   end
 
   def to_s

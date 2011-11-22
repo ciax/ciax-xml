@@ -12,6 +12,6 @@ rescue SelectID
   Msg.exit
 end
 cli=FrmCl.new(fdb,host)
-Shell.new("#{id}>"){|cmd|
+Shell.new("#{id}>",cli.commands){|cmd|
   cli.exe(cmd)||cli.field
 }

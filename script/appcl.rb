@@ -13,6 +13,6 @@ rescue SelectID
   Msg.exit
 end
 pri=Print.new(cli.adb,cli.view)
-Shell.new(cli.prompt){|cmd|
+Shell.new(cli.prompt,cli.commands){|cmd|
   cli.exe(cmd)||pri
 }

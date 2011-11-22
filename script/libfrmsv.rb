@@ -1,19 +1,18 @@
 #!/usr/bin/ruby
+require "libfrmint"
 require "libmsg"
 require "libiocmd"
 require "libparam"
 require "libfrmrsp"
 require "libfrmcmd"
 
-class FrmSv
-  attr_reader :field,:commands
+class FrmSv < FrmInt
   def initialize(fdb,iocmd=[])
+    super(fdb)
     @v=Msg::Ver.new("frmobj",3)
-    Msg.type?(fdb,FrmDb)
     client= iocmd.empty? ? fdb['client'].split(' ') : iocmd
     @io=IoCmd.new(client,fdb['wait'],1).extend(IoLog)
     @io.startlog(fdb['id'],fdb['version']) if iocmd.empty?
-    @par=Param.new(fdb[:cmdframe])
     @field=FrmRsp.new(fdb,@par)
     @fc=FrmCmd.new(fdb,@par,@field)
     cl=Msg::List.new("Internal Command")
@@ -22,7 +21,7 @@ class FrmSv
     cl.add('load'=>"Load Field (tag)")
     cl.add('save'=>"Save Field [key,key...] (tag)")
     cl.add('sleep'=>"Sleep [n] sec")
-    @commands=@par.list.push(cl).keys
+    @par.list.push(cl)
     @field.load
   rescue Errno::ENOENT
     Msg.warn(" --- no json file")
@@ -45,17 +44,13 @@ class FrmSv
       msg='Done'
       sleep cmd[1].to_i
     else
-      cid=@par.set(cmd)[:cid]
+      msg=super
+      cid=@par[:cid]
       @v.msg{"Issue[#{cid}]"}
       @io.snd(@fc.getframe,cid)
       @field.upd{@io.rcv(cid)}.save
-      msg='OK'
     end
     msg
-  end
-
-  def to_s
-    @field.to_s
   end
 
   private

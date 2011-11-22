@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libfrmint"
+require "libfrmcl"
+require "libfrmsv"
 
 opt=ARGV.getopts("sc")
 id,*iocmd=ARGV
@@ -11,16 +12,22 @@ rescue
   warn "Usage: frmint (-sc) [id] (host|iocmd)"
   Msg.exit
 end
-par=opt["c"] ? iocmd.first : iocmd
-fobj=FrmInt.new(fdb,par)
-if opt["s"]
+if opt["c"]
+  require 'libshell'
+  fint=FrmCl.new(fdb,iocmd.first)
+  Shell.new(fint.prompt,fint.commands){|line|
+    fint.exe(line)||fint
+  }
+elsif opt["s"]
   require 'libserver'
+  fint=FrmSv.new(fdb,iocmd)
   Server.new(fdb["port"].to_i-1000,"#{id}>"){|line|
-    fobj.exe(line)
+    fint.exe(line)
   }
 else
   require 'libshell'
-  Shell.new(fobj.prompt,fobj.commands){|line|
-    fobj.exe(line)||fobj
+  fint=FrmSv.new(fdb,iocmd)
+  Shell.new(fint.prompt,fint.commands){|line|
+    fint.exe(line)||fint
   }
 end

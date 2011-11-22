@@ -1,21 +1,20 @@
 #!/usr/bin/ruby
+require "libfrmint"
 require "libclient"
 require "libfield"
 require "libparam"
 
-class FrmCl < Client
-  attr_reader :field,:commands
+class FrmCl < FrmInt
   def initialize(fdb,host=nil)
+    super(fdb)
     id=fdb['id']
     host||=fdb['host']
-    super(id,fdb['port'].to_i-1000,host)
+    @cl=Client.new(id,fdb['port'].to_i-1000,host)
     @field=Field.new(id,host).load
-    @par=Param.new(fdb[:cmdframe])
-    @commands=@par.list.keys
   end
 
   def exe(cmd)
-    @par.set(cmd) if msg=super(cmd)
+    super if  msg=@cl.exe(cmd)
     @field.load
     msg
   end

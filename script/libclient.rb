@@ -8,7 +8,7 @@ class Client
     @v=Msg::Ver.new('client',1)
     @udp=UDPSocket.open()
     @port=port
-    @host=host||='localhost'
+    @host=host||'localhost'
     @addr=Socket.pack_sockaddr_in(@port,@host)
     @v.msg{"Connect to #{@host}:#{@port}"}
     @prompt="#{id}>"

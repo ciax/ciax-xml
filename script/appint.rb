@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
+require "libmodapp"
 
 opt=ARGV.getopts("sc")
 id,*iocmd=ARGV
@@ -15,9 +16,9 @@ if opt["c"]
   require "libprint"
   require 'libshell'
   aint=AppCl.new(adb,iocmd.first)
-  pri=Print.new(adb,aint.view)
+  aint.extend(ModApp).init(adb)
   Shell.new(aint.prompt,aint.commands){|cmd|
-    aint.exe(cmd)||pri
+    aint.exe(cmd)||aint
   }
 else
   require "libfrmsv"
@@ -31,6 +32,7 @@ else
     }
   else
     require 'libshell'
+    aint.extend(ModApp).init(adb)
     Shell.new(aint.prompt,aint.commands){|cmd|
       aint.exe(cmd)||aint
     }

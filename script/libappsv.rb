@@ -4,7 +4,6 @@ require "libmsg"
 require "libparam"
 require "libappcmd"
 require "libwview"
-require "libprint"
 require "libbuffer"
 require "libwatch"
 require "thread"
@@ -17,7 +16,6 @@ class AppSv < AppInt
     @fint=Msg.type?(fint,FrmInt)
     @par=AppCmd.new(adb[:command])
     @view=Wview.new(adb,@fint.field)
-    @output=@print=Print.new(adb,@view)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|cmd|
       @fint.exe(cmd)
@@ -28,10 +26,6 @@ class AppSv < AppInt
       @buf.send(2){frmcmds(cmd)}
     }
     cl=Msg::List.new("Internal Command",2)
-    cl.add('print'=>"Print mode")
-    cl.add('stat'=>"Stat mode")
-    cl.add('field'=>"Field Stat mode")
-    cl.add('watch'=>"Watch mode")
     cl.add('set'=>"[key=val] ..")
     @par.list.push(cl)
     upd_prompt
@@ -41,14 +35,6 @@ class AppSv < AppInt
     msg=nil
     case cmd.first
     when nil
-    when 'print'
-      @output=@print
-    when 'stat'
-      @output=@view['stat']
-    when 'watch'
-      @output=@watch
-    when 'field'
-      @output=@fint
     when 'interrupt'
       int=@watch.interrupt
       @buf.send(0){frmcmds(int)}
@@ -70,12 +56,7 @@ class AppSv < AppInt
       end
     end
     upd_prompt
-    self
     msg
-  end
-
-  def to_s
-    @output.to_s
   end
 
   private

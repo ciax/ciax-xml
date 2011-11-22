@@ -7,7 +7,7 @@ class Server
     @v=Msg::Ver.new("server",1)
     @v.msg{"Init/Server:#{port}"}
     UDPSocket.open{ |udp|
-      udp.bind("0.0.0.0",port)
+      udp.bind("0.0.0.0",port.to_i)
       loop {
         select([udp])
         line,addr=udp.recvfrom(4096)

@@ -27,7 +27,7 @@ else
   aint=AppSv.new(adb,fint)
   if opt["s"]
     require 'libserver'
-    Server.new(adb["port"].to_i,aint.prompt){|cmd|
+    Server.new(adb["port"],aint.prompt){|cmd|
       aint.exe(cmd)
     }
   else

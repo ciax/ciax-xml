@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libparam'
 class FrmInt
   attr_reader :field,:prompt
   def initialize(fdb)

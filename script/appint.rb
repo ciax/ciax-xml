@@ -3,12 +3,12 @@ require "optparse"
 require "libinsdb"
 require "libmodapp"
 
-opt=ARGV.getopts("sc")
+opt=ARGV.getopts("scf")
 id,*iocmd=ARGV
 begin
   adb=InsDb.new(id).cover_app
 rescue
-  warn 'Usage: appint (-sc) [id] (host|iocmd)'
+  warn 'Usage: appint (-scf) [id] (host|iocmd)'
   Msg.exit
 end
 if opt["c"]
@@ -21,9 +21,15 @@ if opt["c"]
     aint.exe(cmd)||aint
   }
 else
-  require "libfrmsv"
+  fdb=adb.cover_frm
+  if opt["f"]
+    require "libfrmcl"
+    fint=FrmCl.new(fdb,iocmd.first)
+  else
+    require "libfrmsv"
+    fint=FrmSv.new(fdb,iocmd)
+  end
   require "libappsv"
-  fint=FrmSv.new(adb.cover_frm,iocmd)
   aint=AppSv.new(adb,fint)
   if opt["s"]
     require 'libserver'

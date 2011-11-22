@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
+require "libfrmint"
 require "libappsv"
 
 opt=ARGV.getopts("sc")
@@ -12,13 +13,7 @@ rescue
   Msg.exit
 end
 fdb=adb.cover_frm
-if opt['c']
-  require "libfrmcl"
-  fobj=FrmCl.new(fdb)
-else
-  require "libfrmsv"
-  fobj=FrmSv.new(fdb,iocmd)
-end
+fobj=FrmInt.new(fdb,opt['c'] ? nil : iocmd)
 aobj=AppSv.new(adb,fobj)
 if opt["s"]
   require 'libserver'

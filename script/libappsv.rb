@@ -15,7 +15,7 @@ class AppSv
     Msg.type?(adb,AppDb)
     @prompt=''
     @id=adb['id']
-    @fobj=Msg.type?(fobj,FrmSv)
+    @fobj=Msg.type?(fobj,FrmInt)
     @ac=AppCmd.new(adb[:command])
     @view=Wview.new(adb,@fobj.field)
     @output=@print=Print.new(adb,@view)

@@ -9,7 +9,7 @@ require "libwatch"
 require "thread"
 
 class AppObj
-  attr_reader :prompt
+  attr_reader :prompt,:commands
   def initialize(adb,frmobj)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
@@ -34,7 +34,7 @@ class AppObj
     cl.add('field'=>"Field Stat mode")
     cl.add('watch'=>"Watch mode")
     cl.add('set'=>"[key=val] ..")
-    @ac.list.push(cl)
+    @commands=@ac.list.push(cl).keys
     upd_prompt
   end
 
@@ -77,10 +77,6 @@ class AppObj
 
   def to_s
     @output.to_s
-  end
-
-  def commands
-    @ac.list.keys
   end
 
   private

@@ -6,7 +6,7 @@ require "libfrmrsp"
 require "libfrmcmd"
 
 class FrmObj
-  attr_reader :field
+  attr_reader :field,:commands
   def initialize(fdb,iocmd=[])
     @v=Msg::Ver.new("frmobj",3)
     Msg.type?(fdb,FrmDb)
@@ -22,7 +22,7 @@ class FrmObj
     cl.add('load'=>"Load Field (tag)")
     cl.add('save'=>"Save Field [key,key...] (tag)")
     cl.add('sleep'=>"Sleep [n] sec")
-    @par.list.push(cl)
+    @commands=@par.list.push(cl).keys
     @field.load
   rescue Errno::ENOENT
     Msg.warn(" --- no json file")
@@ -56,10 +56,6 @@ class FrmObj
 
   def to_s
     @field.to_s
-  end
-
-  def commands
-    @par.list.keys
   end
 
   private

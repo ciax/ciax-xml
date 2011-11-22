@@ -58,7 +58,7 @@ crt:clssh crt gives error
 dts:status update works but appears incorrect status [4/17]
 dbchache: make it module -> independent class[9/1]
 objdb: using objdb to get iocmd instead of DB-object[9/1]
-status_??: update with clsobj -> save in cmd_thread of AppObj[9/1]
+status_??: update with clsobj -> save in cmd_thread of AppSv[9/1]
 client,hprelay:using http for display status[9/8]
 hprelay: exe should be reset[9/6]
 Client: use socket instead of IoCmd(11/3)

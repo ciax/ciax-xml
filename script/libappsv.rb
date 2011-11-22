@@ -8,7 +8,7 @@ require "libbuffer"
 require "libwatch"
 require "thread"
 
-class AppObj
+class AppSv
   attr_reader :prompt,:commands
   def initialize(adb,fobj)
     @v=Msg::Ver.new("appobj",9)

@@ -16,7 +16,7 @@ o:exe()
 
 ## Obj
 
-# AppObj
+# AppSv
 o:to_s()
 r:prompt
 r:commands

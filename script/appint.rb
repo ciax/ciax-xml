@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libappobj"
+require "libappsv"
 
 opt=ARGV.getopts("sc")
 id,*iocmd=ARGV
@@ -19,7 +19,7 @@ else
   require "libfrmsv"
   fobj=FrmSv.new(fdb,iocmd)
 end
-aobj=AppObj.new(adb,fobj)
+aobj=AppSv.new(adb,fobj)
 if opt["s"]
   require 'libserver'
   Server.new(adb["port"].to_i,aobj.prompt){|cmd|

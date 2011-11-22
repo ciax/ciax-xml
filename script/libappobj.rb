@@ -10,12 +10,12 @@ require "thread"
 
 class AppObj
   attr_reader :prompt,:commands
-  def initialize(adb,frmobj)
+  def initialize(adb,fobj)
     @v=Msg::Ver.new("appobj",9)
     Msg.type?(adb,AppDb)
     @prompt=''
     @id=adb['id']
-    @fobj=frmobj
+    @fobj=Msg.type?(fobj,FrmObj)
     @ac=AppCmd.new(adb[:command])
     @view=Wview.new(adb,@fobj.field)
     @output=@print=Print.new(adb,@view)

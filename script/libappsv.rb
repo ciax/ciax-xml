@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libappint"
 require "libmsg"
 require "libparam"
 require "libappcmd"
@@ -8,20 +9,18 @@ require "libbuffer"
 require "libwatch"
 require "thread"
 
-class AppSv
-  attr_reader :prompt,:commands
-  def initialize(adb,fobj)
+class AppSv < AppInt
+  def initialize(adb,fint)
+    super(adb)
     @v=Msg::Ver.new("appobj",9)
-    Msg.type?(adb,AppDb)
-    @prompt=''
     @id=adb['id']
-    @fobj=Msg.type?(fobj,FrmInt)
-    @ac=AppCmd.new(adb[:command])
-    @view=Wview.new(adb,@fobj.field)
+    @fint=Msg.type?(fint,FrmInt)
+    @par=AppCmd.new(adb[:command])
+    @view=Wview.new(adb,@fint.field)
     @output=@print=Print.new(adb,@view)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|cmd|
-      @fobj.exe(cmd)
+      @fint.exe(cmd)
       @view.upd.save
       @v.msg{"Status Updated(#{@view['stat']['time']})"}
     }
@@ -34,7 +33,7 @@ class AppSv
     cl.add('field'=>"Field Stat mode")
     cl.add('watch'=>"Watch mode")
     cl.add('set'=>"[key=val] ..")
-    @commands=@ac.list.push(cl).keys
+    @par.list.push(cl)
     upd_prompt
   end
 
@@ -49,7 +48,7 @@ class AppSv
     when 'watch'
       @output=@watch
     when 'field'
-      @output=@fobj
+      @output=@fint
     when 'interrupt'
       int=@watch.interrupt
       @buf.send(0){frmcmds(int)}
@@ -91,7 +90,7 @@ class AppSv
 
   def frmcmds(ary)
     ary.map{|cmd|
-      @ac.set(cmd).get
+      @par.set(cmd).get
     }.flatten(1)
   end
 end

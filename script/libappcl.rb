@@ -12,7 +12,7 @@ class AppCl < AppInt
   end
 
   def exe(cmd)
-    super if msg=@cl.exe(cmd,@prompt)
+    @par.set(cmd) if msg=@cl.exe(cmd,@prompt)
     @view.load
     msg
   end

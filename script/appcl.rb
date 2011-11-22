@@ -7,12 +7,13 @@ require "libshell"
 id=ARGV.shift
 host=ARGV.shift
 begin
-  cli=AppCl.new(id,host)
+  adb=InsDb.new(id).cover_app
+  ac=AppCl.new(adb,host)
 rescue SelectID
   warn "Usage: appcl [id] (host)"
   Msg.exit
 end
-pri=Print.new(cli.adb,cli.view)
-Shell.new(cli.prompt,cli.commands){|cmd|
-  cli.exe(cmd)||pri
+pri=Print.new(adb,ac.view)
+Shell.new(ac.prompt,ac.commands){|cmd|
+  ac.exe(cmd)||pri
 }

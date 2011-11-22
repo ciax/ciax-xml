@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libparam"
+require "libinsdb"
 require "libappcl"
 
 class McrSub < Array
@@ -83,11 +84,15 @@ class McrSub < Array
   end
 
   # client is forced to be localhost
-  def getstat(ins,id)
-    @@client[ins]||=AppCl.new(ins,('localhost' if @test))
+  def getstat(ins,ref)
+    unless @@client.key?(ins)
+      adb=InsDb.new(ins).cover_app
+      host=@test ? 'localhost' : nil
+      @@client[ins]=AppCl.new(adb,host)
+    end
     view=@@client[ins].view.load
     if last['update']=view.update?
-      view['msg'][id]||view['stat'][id]
+      view['msg'][ref]||view['stat'][ref]
     end
   end
 

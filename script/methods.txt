@@ -1,0 +1,30 @@
+## Clinet
+o:to_s()
+r:port
+r:host
+r:prompt
+r:commands
+exe()
+
+# FrmCL
+r:field
+o:exe()
+
+# AppCL
+r:view
+o:exe()
+
+## Obj
+
+# AppObj
+o:to_s()
+r:prompt
+r:commands
+exe()
+
+# FrmObj
+o:to_s
+r:field
+r:prompt
+r:commands
+exe()

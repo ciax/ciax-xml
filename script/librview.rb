@@ -11,6 +11,9 @@ class Rview < IoFile
     self['stat']=@stat
     @last={}
     @elapse=Elapse.new(@stat)
+    def @stat.to_s
+      Msg.view_struct(self,'stat')
+    end
   end
 
   def stat(id=nil)

@@ -22,8 +22,8 @@ class HexPack
   end
 
   def to_s
-    @res[3]=@stat['run']
-    @res[4]= @prompt.include?('*') ? '1' : '0'
+    @res[3]=b2i(['run','jak'].any?{|r| @stat[r] == '1'})
+    @res[4]=b2i(@prompt.include?('*'))
     @res[6]=''
     @list.each{|key,len|
       if val=@stat[key]
@@ -33,6 +33,11 @@ class HexPack
       end
     }
     @res.join('')
+  end
+
+  private
+  def b2i(b) #Boolean to Integer (1,0)
+    b ? '1' : '0'
   end
 end
 

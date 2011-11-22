@@ -14,8 +14,8 @@ class FrmCl < Client
   end
 
   def upd(cmd)
-    @par.set(cmd) if super(cmd).message
+    @par.set(cmd) if msg=super(cmd)
     @field.load
-    self
+    msg
   end
 end

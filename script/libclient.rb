@@ -3,7 +3,7 @@ require "libmsg"
 require "socket"
 
 class Client
-  attr_reader :prompt,:message,:port,:host
+  attr_reader :prompt,:port,:host
   def initialize(id,port,host=nil)
     @v=Msg::Ver.new('client',1)
     @udp=UDPSocket.open()
@@ -20,9 +20,8 @@ class Client
     @v.msg{"Send [#{line}]"}
     ary=@udp.recv(1024).split("\n")
     @prompt.replace(ary.pop)
-    @message=ary.first
     @v.msg{"Recv #{ary}"}
-    self
+    ary.first
   end
 
   def to_s

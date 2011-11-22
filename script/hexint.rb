@@ -23,6 +23,6 @@ if opt["s"]
 else
   require 'libshell'
   Shell.new(cli.prompt){|line|
-    cli.upd(line).message||hp
+    cli.upd(line)||hp
   }
 end

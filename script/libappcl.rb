@@ -14,8 +14,8 @@ class AppCl < Client
   end
 
   def upd(cmd)
-    @par.set(cmd) if super(cmd).message
+    @par.set(cmd) if msg=super(cmd)
     @view.load
-    self
+    msg
   end
 end

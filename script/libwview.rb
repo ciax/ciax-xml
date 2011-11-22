@@ -6,9 +6,11 @@ require "libsymstat"
 require "libsql"
 # Status to Wview (String with attributes)
 class Wview < Rview
-  def initialize(id,adb,field)
+  def initialize(adb,field)
+    Msg.type?(adb,AppDb)
+    Msg.error("No ID in ADB") unless adb.key?('id')
     @stat=AppStat.new(adb,field).upd
-    super(id)
+    super(id=adb['id'])
     @sym=SymStat.new(adb,@stat).upd
     @sql=Sql.new(id,@stat)
     ['msg','class'].each{|k|
@@ -44,7 +46,7 @@ if __FILE__ == $0
   begin
     idb=InsDb.new(id,true).cover_app
     field=Field.new(id).load
-    view=Wview.new(id,idb,field)
+    view=Wview.new(idb,field)
     print view.upd.to_j
   rescue UserError
     abort "Usage: #{$0} [id]\n#{$!}"

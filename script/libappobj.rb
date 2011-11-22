@@ -17,7 +17,7 @@ class AppObj
     @id=adb['id']
     @fobj=frmobj
     @ac=AppCmd.new(adb[:command])
-    @view=Wview.new(@id,adb,@fobj.field)
+    @view=Wview.new(adb,@fobj.field)
     @output=@print=Print.new(adb,@view)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|cmd|

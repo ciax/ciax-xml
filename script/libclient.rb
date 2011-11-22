@@ -3,28 +3,23 @@ require "libmsg"
 require "socket"
 
 class Client
-  attr_reader :prompt,:port,:host
-  def initialize(id,port,host=nil)
+  attr_reader :port,:host
+  def initialize(port,host=nil)
     @v=Msg::Ver.new('client',1)
     @udp=UDPSocket.open()
     @port=port
     @host=host||'localhost'
     @addr=Socket.pack_sockaddr_in(@port,@host)
     @v.msg{"Connect to #{@host}:#{@port}"}
-    @prompt="#{id}>"
   end
 
-  def exe(cmd)
+  def exe(cmd,prompt)
     line=cmd.empty? ? 'strobe' : cmd.join(' ')
     @udp.send(line,0,@addr)
     @v.msg{"Send [#{line}]"}
     ary=@udp.recv(1024).split("\n")
-    @prompt.replace(ary.pop)
+    prompt.replace(ary.pop)
     @v.msg{"Recv #{ary}"}
     ary.first
-  end
-
-  def to_s
-    [@message,@prompt].compact.join("\n")
   end
 end

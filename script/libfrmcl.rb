@@ -2,19 +2,17 @@
 require "libfrmint"
 require "libclient"
 require "libfield"
-require "libparam"
 
 class FrmCl < FrmInt
   def initialize(fdb,host=nil)
     super(fdb)
-    id=fdb['id']
     host||=fdb['host']
-    @cl=Client.new(id,fdb['port'].to_i-1000,host)
-    @field=Field.new(id,host).load
+    @cl=Client.new(fdb['port'].to_i-1000,host)
+    @field=Field.new(fdb['id'],host).load
   end
 
   def exe(cmd)
-    super if  msg=@cl.exe(cmd)
+    super if  msg=@cl.exe(cmd,@prompt)
     @field.load
     msg
   end

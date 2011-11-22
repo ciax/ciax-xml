@@ -7,11 +7,6 @@ class FrmInt
     @prompt=fdb['id']+'>'
   end
 
-  def exe(cmd)
-    @par.set(cmd)
-    'OK'
-  end
-
   def commands
     @par.list.keys
   end

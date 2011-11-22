@@ -44,11 +44,11 @@ class FrmSv < FrmInt
       msg='Done'
       sleep cmd[1].to_i
     else
-      msg=super
-      cid=@par[:cid]
+      cid=@par.set(cmd)[:cid]
       @v.msg{"Issue[#{cid}]"}
       @io.snd(@fc.getframe,cid)
       @field.upd{@io.rcv(cid)}.save
+      msg='OK'
     end
     msg
   end

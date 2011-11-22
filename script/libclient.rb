@@ -14,7 +14,7 @@ class Client
     @prompt="#{id}>"
   end
 
-  def upd(cmd)
+  def exe(cmd)
     line=cmd.empty? ? 'strobe' : cmd.join(' ')
     @udp.send(line,0,@addr)
     @v.msg{"Send [#{line}]"}

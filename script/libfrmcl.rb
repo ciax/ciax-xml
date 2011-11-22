@@ -13,7 +13,7 @@ class FrmCl < Client
     @par=Param.new(fdb[:cmdframe])
   end
 
-  def upd(cmd)
+  def exe(cmd)
     @par.set(cmd) if msg=super(cmd)
     @field.load
     msg

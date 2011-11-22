@@ -13,7 +13,7 @@ class AppCl < Client
     @par=Param.new(@adb[:command])
   end
 
-  def upd(cmd)
+  def exe(cmd)
     @par.set(cmd) if msg=super(cmd)
     @view.load
     msg

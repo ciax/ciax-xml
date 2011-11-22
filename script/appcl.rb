@@ -14,5 +14,5 @@ rescue SelectID
 end
 pri=Print.new(cli.adb,cli.view)
 Shell.new(cli.prompt){|cmd|
-  cli.upd(cmd)||pri
+  cli.exe(cmd)||pri
 }

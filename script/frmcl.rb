@@ -13,5 +13,5 @@ rescue SelectID
 end
 cli=FrmCl.new(fdb,host)
 Shell.new("#{id}>"){|cmd|
-  cli.upd(cmd)||cli.field
+  cli.exe(cmd)||cli.field
 }

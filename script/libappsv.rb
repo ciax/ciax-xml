@@ -27,6 +27,7 @@ class AppSv < App
     }
     cl=Msg::List.new("Internal Command",2)
     cl.add('set'=>"[key=val] ..")
+    cl.add('flush'=>"Flush Status")
     @par.list.push(cl)
     upd_prompt
   end
@@ -39,6 +40,9 @@ class AppSv < App
       int=@watch.interrupt
       @buf.send(0){frmcmds(int)}
       msg="Interrupt #{int}"
+    when 'flush'
+      @fint.field.load
+      @view.upd.save
     when 'set'
       hash={}
       cmd[1..-1].each{|s|

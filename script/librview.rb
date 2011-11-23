@@ -27,7 +27,7 @@ class Rview < IoFile
     end
   end
 
-  def set(hash)
+  def set(hash) #For Watch test
     @stat.update(hash)
     @stat['time']=Msg.now
     self

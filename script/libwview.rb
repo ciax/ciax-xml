@@ -13,6 +13,7 @@ class Wview < Rview
     super(id=adb['id'])
     @sym=SymStat.new(adb,@stat).upd
     @sql=Sql.new(id,@stat)
+    @sql.check_table||@sql.ini.flush
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }

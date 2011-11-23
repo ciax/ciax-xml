@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'librview'
-class Print
+class AppPrt
   CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
   def initialize(adb,view)
     @sdb=Msg.type?(adb,AppDb)[:status]
@@ -54,5 +54,5 @@ if __FILE__ == $0
   abort "Usage: #{$0} [view_file]" if STDIN.tty? && ARGV.size < 1
   view=Rview.new.load
   adb=InsDb.new(view['id']).cover_app
-  puts Print.new(adb,view)
+  puts AppPrt.new(adb,view)
 end

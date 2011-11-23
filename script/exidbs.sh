@@ -12,7 +12,7 @@ for id in $ids; do
     then
         v2s <$view
     else
-        ~/lib/libprint.rb < $view
+        ~/lib/libappprt.rb < $view
     fi
     read -t 0 && break
 done

@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libprint"
+require "libappprt"
 
 module ModApp
   def init(adb)
-    @output=@print=Print.new(adb,@view)
+    @output=@print=AppPrt.new(adb,@view)
     cl=Msg::List.new("Change Mode",2)
     @par.list.push(cl)
     cl.add('print'=>"Print mode")

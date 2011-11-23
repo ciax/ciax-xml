@@ -46,7 +46,7 @@ labeling: use the lib*cmd.rb -> use lib*db.rb
 symboling: symbol reference will move to status/value@symbol
 symboling&labeling: should be commutative
 interrupt: interrupt handling (add new error class)[5/23]
-grouping: sort function, move circular from libprint[5/31]
+grouping: sort function, move circular from libappprt[5/31]
 mcr: cart run1 at tag 9 with comics gives error with "No such key 'n'" [4/17]
     -> mcr converted %r to n/a came from "ion"
    --> ion symbol changed (0=OFF f=ON DEF=N/A -> DEF=ON) [4/21] 

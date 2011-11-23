@@ -1,33 +1,30 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libfrmcl"
-require "libfrmsv"
+require "libfrmints"
 
 opt=ARGV.getopts("sc")
 id,*par=ARGV
+fint=FrmInts.new
 begin
-  fdb=InsDb.new(id).cover_app.cover_frm
+  if opt["c"]
+    f=fint.add(id,par.first)[id]
+  else
+    f=fint.add(id,par)[id]
+  end
 rescue
   warn "Usage: frmint (-sc) [id] (host|iocmd)"
   Msg.exit
 end
-if opt["c"]
-  require 'libshell'
-  fint=FrmCl.new(fdb,par.first)
-  Shell.new(fint.prompt,fint.commands){|line|
-    fint.exe(line)||fint
-  }
-elsif opt["s"]
+
+if opt["s"]
   require 'libserver'
-  fint=FrmSv.new(fdb,par)
-  Server.new(fdb["port"].to_i-1000,"#{id}>"){|line|
-    fint.exe(line)
+  Server.new(f.port.to_i-1000,"#{id}>"){|line|
+    f.exe(line)
   }
 else
   require 'libshell'
-  fint=FrmSv.new(fdb,par)
-  Shell.new(fint.prompt,fint.commands){|line|
-    fint.exe(line)||fint
+  Shell.new(f.prompt,f.commands){|line|
+    f.exe(line)||f
   }
 end

@@ -1,10 +1,12 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
+require "libfrmints"
+require "libmodapp"
 
 class AppInts < Hash
   def initialize(par=[])
-    super{|h,k| add(k,par)}
+    super(){|h,k| add(k,par)}
   end
 
   def add(id,par=[])
@@ -18,5 +20,6 @@ class AppInts < Hash
       require "libappcl"
       self[id]=AppCl.new(adb,par.first)
     end
+    self[id].extend(ModApp).init(adb)
   end
 end

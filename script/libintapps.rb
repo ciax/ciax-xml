@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libfrmints"
+require "libintfrms"
 require "libmodapp"
 
 class IntApps < Hash
@@ -18,7 +18,7 @@ class IntApps < Hash
     adb=InsDb.new(id).cover_app
     case par
     when Array
-      fint=FrmInts.new.add(id,par)[id]
+      fint=IntFrms.new.add(id,par)[id]
       require "libappsv"
       aint=AppSv.new(adb,fint)
     else

@@ -2,7 +2,7 @@
 require "optparse"
 require "libinsdb"
 
-class FrmInts < Hash
+class IntFrms < Hash
   def initialize(par=[])
     super(){|h,k| h[k]=int(k,par)}
   end

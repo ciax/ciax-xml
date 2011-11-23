@@ -6,4 +6,4 @@ while getopts "d" opt; do
     esac
 done
 shift $(( $OPTIND -1 ))
-VER=${VER:-init/} frmint $1 $iocmd
+VER=${VER:-init/} intfrm $1 $iocmd

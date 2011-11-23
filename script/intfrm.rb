@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libfrmints"
+require "libintfrms"
 
 opt=ARGV.getopts("sc")
 id,*par=ARGV
 par=par.first if opt["c"]
 begin
-  fint=FrmInts.new(par)[id]
+  fint=IntFrms.new(par)[id]
 rescue UserError
-  warn "Usage: frmint (-sc) [id] (host|iocmd)"
+  warn "Usage: intfrm (-sc) [id] (host|iocmd)"
   Msg.exit
 end
 

@@ -6,9 +6,8 @@ require "libintapps"
 
 opt=ARGV.getopts("sc")
 id,*par=ARGV
-par=par.first if opt['c']
 begin
-  aint=IntApps.new(par)[id]
+  aint=IntApps.new.add(id,opt,par)[id]
 rescue UserError
   warn "Usage: inthex (-sc) [id] (host|iocmd)"
   Msg.exit

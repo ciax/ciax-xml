@@ -60,7 +60,6 @@ class Watch < Hash
     hash.each{|k,a|
       self[k]=a.flatten(1).uniq
     }
-    @view.refresh
     self
   end
 
@@ -128,8 +127,9 @@ class Watch < Hash
       v=(m[j]||={})['val']=@view.stat(k)
       case n[j]['type']
       when 'onchange'
-        c=m[j]['last']=@view.last[k]
+        c=(m[j]['last']||='')
         res=(c != v)
+        c.replace(v)
         @v.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'pattern'
         c=n[j]['val']

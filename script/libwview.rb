@@ -16,6 +16,7 @@ class Wview < Rview
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }
+    @lastsave=0
   end
 
   def upd
@@ -32,9 +33,13 @@ class Wview < Rview
   end
 
   def save
-    super
-    @sql.upd.flush
-   self
+    time=@stat['time'].to_f
+    if time > @lastsave
+      super
+      @sql.upd.flush
+      @lastsave=time
+    end
+    self
   end
 end
 

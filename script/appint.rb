@@ -2,9 +2,10 @@
 require "optparse"
 require "libinsdb"
 require "libmodapp"
+require "libfrmints"
 
 opt=ARGV.getopts("scf")
-id,*iocmd=ARGV
+id,*par=ARGV
 begin
   adb=InsDb.new(id).cover_app
 rescue
@@ -13,22 +14,15 @@ rescue
 end
 if opt["c"]
   require "libappcl"
-  require "libprint"
   require 'libshell'
-  aint=AppCl.new(adb,iocmd.first)
+  aint=AppCl.new(adb,par.first)
   aint.extend(ModApp).init(adb)
   Shell.new(aint.prompt,aint.commands){|cmd|
     aint.exe(cmd)||aint
   }
 else
-  fdb=adb.cover_frm
-  if opt["f"]
-    require "libfrmcl"
-    fint=FrmCl.new(fdb,iocmd.first)
-  else
-    require "libfrmsv"
-    fint=FrmSv.new(fdb,iocmd)
-  end
+  par=par.first if opt["f"]
+  fint=FrmInts.new.add(id,par)[id]
   require "libappsv"
   aint=AppSv.new(adb,fint)
   if opt["s"]

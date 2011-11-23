@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libappints"
+require "libintapps"
 
 opt=ARGV.getopts("sc")
 id,*par=ARGV
 par=par.first if opt["c"]
 begin
-  aint=AppInts.new(par)[id]
+  aint=IntApps.new(par)[id]
 rescue UserError
-  warn 'Usage: appint (-sc) [id] (host|iocmd)'
+  warn 'Usage: intapp (-sc) [id] (host|iocmd)'
   Msg.exit
 end
 if opt["s"]

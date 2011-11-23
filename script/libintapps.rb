@@ -4,7 +4,7 @@ require "libinsdb"
 require "libfrmints"
 require "libmodapp"
 
-class AppInts < Hash
+class IntApps < Hash
   def initialize(par=[])
     super(){|h,k| h[k]=int(k,par)}
   end

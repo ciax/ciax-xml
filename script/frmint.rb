@@ -6,12 +6,12 @@ require "libfrmints"
 opt=ARGV.getopts("sc")
 id,*par=ARGV
 par=par.first if opt["c"]
-#begin
+begin
   fint=FrmInts.new.add(id,par)[id]
-#rescue
-#  warn "Usage: frmint (-sc) [id] (host|iocmd)"
-#  Msg.exit
-#end
+rescue UserError
+  warn "Usage: frmint (-sc) [id] (host|iocmd)"
+  Msg.exit
+end
 
 if opt["s"]
   require 'libserver'

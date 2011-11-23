@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
-require "libfrmint"
+require "libfrm"
 require "libmsg"
 require "libiocmd"
 require "libparam"
 require "libfrmrsp"
 require "libfrmcmd"
 
-class FrmSv < FrmInt
+class FrmSv < Frm
   def initialize(fdb,iocmd=[])
     super(fdb)
     @v=Msg::Ver.new("frmobj",3)

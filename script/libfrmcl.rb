@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libfrmint"
+require "libfrm"
 require "libclient"
 require "libfield"
 
-class FrmCl < FrmInt
+class FrmCl < Frm
   def initialize(fdb,host=nil)
     super(fdb)
     host||=fdb['host']

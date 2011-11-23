@@ -13,7 +13,7 @@ class AppSv < AppInt
     super(adb)
     @v=Msg::Ver.new("appobj",9)
     @id=adb['id']
-    @fint=Msg.type?(fint,FrmInt)
+    @fint=Msg.type?(fint,Frm)
     @par=AppCmd.new(adb[:command])
     @view=Wview.new(adb,@fint.field)
     Thread.abort_on_exception=true

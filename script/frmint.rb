@@ -7,7 +7,7 @@ opt=ARGV.getopts("sc")
 id,*par=ARGV
 par=par.first if opt["c"]
 begin
-  fint=FrmInts.new.add(id,par)[id]
+  fint=FrmInts.new(par)[id]
 rescue UserError
   warn "Usage: frmint (-sc) [id] (host|iocmd)"
   Msg.exit

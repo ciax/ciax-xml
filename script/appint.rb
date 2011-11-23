@@ -3,13 +3,13 @@ require "optparse"
 require "libinsdb"
 require "libappints"
 
-opt=ARGV.getopts("scf")
+opt=ARGV.getopts("sc")
 id,*par=ARGV
 par=par.first if opt["c"]
 begin
   aint=AppInts.new(par)[id]
-rescue
-  warn 'Usage: appint (-scf) [id] (host|iocmd)'
+rescue UserError
+  warn 'Usage: appint (-sc) [id] (host|iocmd)'
   Msg.exit
 end
 if opt["s"]

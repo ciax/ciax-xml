@@ -8,6 +8,5 @@ done
 shift $(( $OPTIND -1 ))
 [ "$1" ] || psg inthex
 for id; do
-    appsv $id
-    d -r -t $id inthex -sc $id
+    d -r -t $id inthex -s $id
 done

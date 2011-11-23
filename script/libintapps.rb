@@ -15,14 +15,13 @@ class IntApps < Hash
   end
 
   private
-  def int(id,opt,par=[])
+  def int(id,opt={},par=[])
     adb=InsDb.new(id).cover_app
     if opt['a']
       require "libappcl"
       aint=AppCl.new(adb,par.first)
     else
-      par=par.first if opt['f']
-      fint=IntFrms.new.add(id,par)[id]
+      fint=IntFrms.new.add(id,opt,par)[id]
       require "libappsv"
       aint=AppSv.new(adb,fint)
     end

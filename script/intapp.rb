@@ -3,13 +3,12 @@ require "optparse"
 require "libinsdb"
 require "libintapps"
 
-opt=ARGV.getopts("sc")
+opt=ARGV.getopts("saf")
 id,*par=ARGV
-par=par.first if opt["c"]
 begin
-  aint=IntApps.new(par)[id]
+  aint=IntApps.new.add(id,opt,par)[id]
 rescue UserError
-  warn 'Usage: intapp (-sc) [id] (host|iocmd)'
+  warn 'Usage: intapp (-saf) [id] (host|iocmd)'
   Msg.exit
 end
 if opt["s"]

@@ -5,25 +5,26 @@ require "libintfrms"
 require "libmodapp"
 
 class IntApps < Hash
-  def initialize(par=[])
-    super(){|h,k| h[k]=int(k,par)}
+  def initialize(opt={},par=[]) #opt is client level, 'a'=app, 'f'=frm
+    super(){|h,k| h[k]=int(k,opt,par)}
   end
 
-  def add(id,par=[])
-    self[id]=int(id,par)
+  def add(id,opt={},par=[])
+    self[id]=int(id,opt,par)
+    self
   end
 
   private
-  def int(id,par=[])
+  def int(id,opt,par=[])
     adb=InsDb.new(id).cover_app
-    case par
-    when Array
+    if opt['a']
+      require "libappcl"
+      aint=AppCl.new(adb,par.first)
+    else
+      par=par.first if opt['f']
       fint=IntFrms.new.add(id,par)[id]
       require "libappsv"
       aint=AppSv.new(adb,fint)
-    else
-      require "libappcl"
-      aint=AppCl.new(adb,par)
     end
     aint.extend(ModApp).init(adb)
     aint

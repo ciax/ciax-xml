@@ -4,7 +4,7 @@ require "libinsdb"
 
 class FrmInts < Hash
   def initialize(par=[])
-    super{|h,k| add(k,par)}
+    super(){|h,k| add(k,par)}
   end
 
   def add(id,par=[])

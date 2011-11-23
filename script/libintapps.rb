@@ -1,11 +1,10 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libintfrms"
 require "libmodapp"
 
 class IntApps < Hash
-  def initialize(opt={},par=[]) #opt is client level, 'a'=app, 'f'=frm
+  def initialize(opt={},par=[]) #opt 'c' is client, 'd' is for frm
     super(){|h,k| h[k]=int(k,opt,par)}
   end
 
@@ -17,13 +16,18 @@ class IntApps < Hash
   private
   def int(id,opt={},par=[])
     adb=InsDb.new(id).cover_app
-    if opt['a']
+    if opt['c']
       require "libappcl"
       aint=AppCl.new(adb,par.first)
     else
-      fint=IntFrms.new.add(id,opt,par)[id]
+      require "libintfrms"
       require "libappsv"
+      require 'libserver'
+      fint=IntFrms.new.add(id,opt,par)[id]
       aint=AppSv.new(adb,fint)
+      Server.new(aint.port,aint.prompt){|line|
+        aint.exe(line)
+      } if opt['s']
     end
     aint.extend(ModApp).init(adb)
     aint

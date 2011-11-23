@@ -3,12 +3,12 @@ require "optparse"
 require "libinsdb"
 require "libintfrms"
 
-opt=ARGV.getopts("sf")
+opt=ARGV.getopts("ds")
 id,*par=ARGV
 begin
   fint=IntFrms.new.add(id,opt,par)[id]
 rescue UserError
-  warn "Usage: intfrm (-sf) [id] (host|iocmd)"
+  warn "Usage: intfrm (-ds) [id] (host|iocmd) # -d:client, -s:server"
   Msg.exit
 end
 sleep if opt["s"]

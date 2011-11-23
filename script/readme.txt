@@ -20,3 +20,6 @@ coreutils:
  interrupt:
    ^D : (cmdline) -> nil : (readline) -> "interrupt" : (udp comm)
   
+## Excecution ##
+Do not run "intfrm","intapp" and "inthex" simultaneously with option -s
+frmsh (intfrm -t)/ used when running site is different from intapp

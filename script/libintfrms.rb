@@ -23,10 +23,8 @@ class IntFrms < Hash
       require "libfrmsv"
       require 'libserver'
       fint=FrmSv.new(fdb,par)
-      fint[:thread]=Thread.new{
-        Server.new(fint.port,fint.prompt){|line|
-          fint.exe(line)
-        }
+      fint[:thread]=Server.new(fint.port,fint.prompt){|line|
+        fint.exe(line)
       }
     end
     fint

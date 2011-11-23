@@ -15,7 +15,7 @@ if opt["s"]
   require 'libserver'
   Server.new(aint.port,aint.prompt){|cmd|
     aint.exe(cmd)
-  }
+  }.join
 else
   require 'libshell'
   Shell.new(aint.prompt,aint.commands){|cmd|

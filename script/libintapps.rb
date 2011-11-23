@@ -4,7 +4,7 @@ require "libinsdb"
 require "libmodapp"
 
 class IntApps < Hash
-  def initialize(opt={},par=[]) #opt 'c' is client, 'd' is for frm
+  def initialize(opt={},par=[]) #opt 'c' is client, 's' is server
     super(){|h,k| h[k]=int(k,opt,par)}
   end
 

@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 
 class IntFrms < Hash
-  def initialize(opt={},par=[]) # opt 'd' is client, 's' is server
+  def initialize(opt={},par=[]) # opt 'c' is client, 's' is server
     super(){|h,k| h[k]=int(k,opt,par)}
   end
 
@@ -15,8 +15,7 @@ class IntFrms < Hash
   private
   def int(id,opt={},par=[])
     fdb=InsDb.new(id).cover_app.cover_frm
-    fint=nil
-    if opt['d']
+    if opt['c']
       require "libfrmcl"
       fint=FrmCl.new(fdb,par.first)
     else

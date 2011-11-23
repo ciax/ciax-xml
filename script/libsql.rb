@@ -39,6 +39,18 @@ class Sql < Array
   rescue
     Ver.err(" in SQL")
   end
+
+  def internal(str)
+    IO.popen(@sql,'r+'){|f|
+      f.puts ".#{str}"
+      str=f.gets
+    }
+    str
+  end
+
+  def check_table
+    internal("tables").split(' ').include?(@tid)
+  end
 end
 
 if __FILE__ == $0

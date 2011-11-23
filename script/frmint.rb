@@ -5,13 +5,9 @@ require "libfrmints"
 
 opt=ARGV.getopts("sc")
 id,*par=ARGV
-fint=FrmInts.new
+par=par.first if opt["c"]
 begin
-  if opt["c"]
-    f=fint.add(id,par.first)[id]
-  else
-    f=fint.add(id,par)[id]
-  end
+  f=FrmInts.new.add(id,par)[id]
 rescue
   warn "Usage: frmint (-sc) [id] (host|iocmd)"
   Msg.exit

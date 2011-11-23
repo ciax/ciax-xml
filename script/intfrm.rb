@@ -11,12 +11,8 @@ rescue UserError
   warn "Usage: intfrm (-sf) [id] (host|iocmd)"
   Msg.exit
 end
-
-if opt["s"]
-  fint[:thread].join
-else
-  require 'libshell'
-  Shell.new(fint.prompt,fint.commands){|line|
-    fint.exe(line)||fint
-  }
-end
+sleep if opt["s"]
+require 'libshell'
+Shell.new(fint.prompt,fint.commands){|line|
+  fint.exe(line)||fint
+}

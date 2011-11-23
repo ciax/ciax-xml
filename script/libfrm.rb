@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libparam'
-class Frm
+class Frm < Hash
   attr_reader :field,:prompt,:port
   def initialize(fdb)
     Msg.type?(fdb,FrmDb)

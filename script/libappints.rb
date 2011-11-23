@@ -6,20 +6,26 @@ require "libmodapp"
 
 class AppInts < Hash
   def initialize(par=[])
-    super(){|h,k| add(k,par)}
+    super(){|h,k| h[k]=int(k,par)}
   end
 
   def add(id,par=[])
+    self[id]=int(id,par)
+  end
+
+  private
+  def int(id,par=[])
     adb=InsDb.new(id).cover_app
     case par
     when Array
       fint=FrmInts.new.add(id,par)[id]
       require "libappsv"
-      self[id]=AppSv.new(adb,fint)
+      aint=AppSv.new(adb,fint)
     else
       require "libappcl"
-      self[id]=AppCl.new(adb,par.first)
+      aint=AppCl.new(adb,par)
     end
-    self[id].extend(ModApp).init(adb)
+    aint.extend(ModApp).init(adb)
+    aint
   end
 end

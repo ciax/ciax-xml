@@ -15,7 +15,7 @@ par=par.first if opt["c"]
 
 if opt["s"]
   require 'libserver'
-  Server.new(fint.port.to_i-1000,"#{id}>"){|line|
+  Server.new(fint.port,fint.prompt){|line|
     fint.exe(line)
   }
 else

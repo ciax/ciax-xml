@@ -7,6 +7,7 @@ class Server < Thread
     @v=Msg::Ver.new("server",1)
     @v.msg{"Init/Server:#{port}"}
     super{
+      Thread.pass
       UDPSocket.open{ |udp|
         udp.bind("0.0.0.0",port.to_i)
         loop {

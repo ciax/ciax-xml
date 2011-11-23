@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappint"
+require "libapp"
 require "libmsg"
 require "libparam"
 require "libappcmd"
@@ -8,7 +8,7 @@ require "libbuffer"
 require "libwatch"
 require "thread"
 
-class AppSv < AppInt
+class AppSv < App
   def initialize(adb,fint)
     super(adb)
     @v=Msg::Ver.new("appobj",9)

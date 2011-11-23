@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libparam"
-class AppInt
+class App
   attr_reader :view,:prompt
   def initialize(adb)
     Msg.type?(adb,AppDb)

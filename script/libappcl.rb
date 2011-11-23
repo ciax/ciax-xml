@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libappint"
+require "libapp"
 require "libclient"
 require "librview"
 
-class AppCl < AppInt
+class AppCl < App
   def initialize(adb,host=nil)
     super(adb)
     host||=adb['host']

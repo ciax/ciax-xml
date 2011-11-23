@@ -13,10 +13,7 @@ rescue UserError
 end
 
 if opt["s"]
-  require 'libserver'
-  Server.new(fint.port,fint.prompt){|line|
-    fint.exe(line)
-  }
+  fint[:thread].join
 else
   require 'libshell'
   Shell.new(fint.prompt,fint.commands){|line|

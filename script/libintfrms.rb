@@ -3,25 +3,24 @@ require "optparse"
 require "libinsdb"
 
 class IntFrms < Hash
-  def initialize(par=[])
-    super(){|h,k| h[k]=int(k,par)}
+  def initialize(opt={},par=[]) # opt 'f' is client
+    super(){|h,k| h[k]=int(k,opt,par)}
   end
 
-  def add(id,par=[])
-    self[id]=int(id,par)
+  def add(id,opt={},par=[])
+    self[id]=int(id,opt,par)
     self
   end
 
   private
-  def int(id,par=[])
+  def int(id,opt={},par=[])
     fdb=InsDb.new(id).cover_app.cover_frm
-    case par
-    when Array
+    if opt['f']
+      require "libfrmcl"
+      fint=FrmCl.new(fdb,par.first)
+    else
       require "libfrmsv"
       fint=FrmSv.new(fdb,par)
-    else
-      require "libfrmcl"
-      fint=FrmCl.new(fdb,par)
     end
     fint
   end

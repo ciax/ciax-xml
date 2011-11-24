@@ -219,7 +219,7 @@
           <binary ref="c:2" bit="15" />
         </value>
       </group>
-      <group id="gr" caption="Running" column="4">
+      <group id="grun" caption="Running" column="4">
         <value id="run" label="Motion" symbol="exec">
           <binary bit="4" ref="x:0" />
         </value>
@@ -230,7 +230,7 @@
           <int ref="x:26" />
         </value>
       </group>
-      <group id="gj" caption="Jacking" column="4">
+      <group id="gjak" caption="Jacking" column="4">
         <value id="jak" label="Motion" symbol="exec">
           <binary bit="5" ref="x:0" />
         </value>
@@ -244,7 +244,7 @@
           <binary bit="13" ref="x:20" />
         </value>
       </group>
-      <group id="gc" caption="Charging" column="4">
+      <group id="gchg" caption="Charging" column="4">
         <value id="bvl" label="Battery(V)" symbol="bvl" format="%2.2f">
           <float ref="x:22" formula="$#/100" />
         </value>
@@ -252,7 +252,7 @@
           <binary bit="6" ref="x:0" />
         </value>
       </group>
-      <group id="g3" caption="Traveling Motor Stat" column="2">
+      <group id="gmot" caption="Traveling Motor Stat" column="2">
         <value id="msr" label="Right Servo" symbol="normal">
           <binary bit="8" inv="true" ref="x:0" />
         </value>
@@ -266,21 +266,21 @@
           <int ref="x:8" />
         </value>
       </group>
-      <group id="gl" caption="Load Cell" column="4">
+      <group id="glc" caption="Load Cell" column="4">
         <repeat from="1" to="4">
           <value id="ldc%d" label="C%d">
             <float ref="x" index="$_+47" />
           </value>
         </repeat>
       </group>
-      <group id="g4" caption="Jacking Motor Servo" column="4">
+      <group id="gjm" caption="Jacking Motor Servo" column="4">
         <repeat from="1" to="4">
           <value id="jd%d" label="J%d" symbol="normal">
             <binary ref="x" index="0" bit="9+$_" inv="true" />
           </value>
         </repeat>
       </group>
-      <group id="g5" caption="Etc" column="2">
+      <group id="gins" caption="Etc" column="2">
         <value id="ist" label="Instrument" symbol="ist">
           <int ref="x:23" />
         </value>

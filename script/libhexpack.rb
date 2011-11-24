@@ -29,7 +29,7 @@ class HexPack
       if val=@stat[key]
         @res[6] << (len=='1' ? val : ("%0#{len}b" % val.to_i))
       else
-        warn "NO key(#{key}) in Status"
+        @res[6] << '*' * len.to_i
       end
     }
     @res.join('')

@@ -45,6 +45,7 @@ class IoFile < Hash
   def save(data=nil)
     case @type
     when 'file'
+      @v.msg{"Saving #{self['id']} file"}
       open(@fname,'w'){|f| f << JSON.dump(data||to_hash)}
     else
       puts JSON.dump(data||to_hash)

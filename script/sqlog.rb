@@ -15,7 +15,7 @@ rescue UserError
   warn "Usage: #{$0} (-is) (-a key) [id] < logfile"
   Msg.exit
 end
-if opt['s']
+if opt['s'] # From remote
   stat=Rview.new(id).load['stat']
   sql=Sql.new(id,stat).upd
 else
@@ -25,9 +25,9 @@ else
   field=FrmRsp.new(fdb,par)
   stat=AppStat.new(adb,field)
   sql=Sql.new(id,stat)
-  if opt['i']
+  if opt['i'] # Initial
     sql.ini
-  elsif key=opt['a']
+  elsif key=opt['a'] # Alter
     sql.add(key)
   else
     STDIN.readlines.grep(/rcv/).each{|str|

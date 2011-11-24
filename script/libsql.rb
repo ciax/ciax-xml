@@ -4,16 +4,16 @@ require "libmsg"
 require "libappstat"
 
 class Sql < Array
-  def initialize(table_id,stat,dbname='ciax')
+  def initialize(table_id,stat)
     @v=Msg::Ver.new("sql",6)
     @tid=table_id
     @stat=Msg.type?(stat,Hash)
   end
 
   def ini
-    key=@stat.keys.join(',')
+    key=['time',*@stat.keys].uniq.join(',')
     @v.msg{"create (#{key})"}
-    push "create table #{@tid} (time,#{key},primary key(time));"
+    push "create table #{@tid} (#{key},primary key(time));"
   end
 
   def add(key)
@@ -36,7 +36,10 @@ class SqlExe < Sql
   def initialize(table_id,stat,dbname='ciax')
     super(table_id,stat)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
-    check_table||ini.flush
+    unless check_table
+      ini.flush
+      @v.msg{"Init/SQL table is created"}
+    end
     @v.msg{"Init/Logging Start"}
   end
 
@@ -45,11 +48,8 @@ class SqlExe < Sql
   end
 
   def internal(str)
-    IO.popen(@sql,'r+'){|f|
-      f.puts ".#{str}"
-      str=f.gets
-    }
-    str
+    cmd=@sql.join(' ')+" ."+str
+    `#{cmd}`
   end
 
   def flush
@@ -58,7 +58,7 @@ class SqlExe < Sql
     }
     clear
   rescue
-    Ver.err(" in SQL")
+    Msg.err(" in SQL")
   end
 end
 

@@ -29,7 +29,7 @@ module IoLog
 
   def self.set_logline(str)
     ary=str.split("\t")
-    time=Time.at(ary.shift.to_f)
+    time=ary.shift
     cmd=ary.shift.split(':')
     abort("Logline:Not response") unless /rcv/ === cmd.shift
     [cmd,[eval(ary.shift),time]]

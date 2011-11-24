@@ -2,12 +2,12 @@
 # For sqlite3
 require "libmsg"
 require "libappstat"
+
 class Sql < Array
   def initialize(table_id,stat,dbname='ciax')
     @v=Msg::Ver.new("sql",6)
     @tid=table_id
     @stat=Msg.type?(stat,Hash)
-    @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
   end
 
   def ini
@@ -30,14 +30,18 @@ class Sql < Array
   def to_s
     (["begin;"]+self+["commit;"]).join("\n")
   end
+end
 
-  def flush
-    IO.popen(@sql,'w'){|f|
-      f.puts to_s
-    }
-    clear
-  rescue
-    Ver.err(" in SQL")
+class SqlExe < Sql
+  def initialize(table_id,stat,dbname='ciax')
+    super(table_id,stat)
+    @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
+    check_table||ini.flush
+    @v.msg{"Init/Logging Start"}
+  end
+
+  def check_table
+    internal("tables").split(' ').include?(@tid)
   end
 
   def internal(str)
@@ -48,8 +52,13 @@ class Sql < Array
     str
   end
 
-  def check_table
-    internal("tables").split(' ').include?(@tid)
+  def flush
+    IO.popen(@sql,'w'){|f|
+      f.puts to_s
+    }
+    clear
+  rescue
+    Ver.err(" in SQL")
   end
 end
 

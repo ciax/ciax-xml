@@ -19,6 +19,7 @@ class Buffer
   def initialize
     @v=Msg::Ver.new("buffer",2)
     @q=Queue.new
+    @tid=nil
     clear
   end
 

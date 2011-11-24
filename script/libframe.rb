@@ -5,6 +5,7 @@ class Frame
   def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
     @v=Msg::Ver.new("frame".upcase,6)
     @endian=endian
+    @ccrange=nil
     @method=ccmethod
     @frame=''
   end

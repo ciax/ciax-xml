@@ -13,6 +13,7 @@ class Param < Hash
     @v=Msg::Ver.new("param",2)
     @db=Msg.type?(db,Hash)
     @list=Msg::Lists.new(db)
+    @ary=[]
   end
 
   def set(cmd)
@@ -22,7 +23,7 @@ class Param < Hash
       @list.error("No such CMD [#{id}]")
     end
     @v.msg{"SetPar: #{cmd}"}
-    @param=cmd[1..-1]
+    self[:param]=cmd[1..-1]
     self[:cid]=cmd.join(':') # Used by macro
     [:label,:nocache,:response].each{|k,v|
       self[k]=@db[k][id] if @db.key?(k)
@@ -32,11 +33,21 @@ class Param < Hash
         Msg.err("Parameter shortage (#{par.size})",@list[id])
       end
       par.size.times{|i|
-        validate(@param[i],par[i])
+        validate(self[:param][i],par[i])
       }
     end
     self[:select]=deep_subst(@db[:select][id])
     self
+  end
+
+  def push(cmd)
+    @ary << to_hash
+    set(cmd)
+  end
+
+  def pop
+    clear
+    update(@ary.pop)
   end
 
   def subst(str) # par={ val,range,format } or String
@@ -45,8 +56,8 @@ class Param < Hash
     begin
       res=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        @v.msg{"Param No.#{i} = [#{@param[i-1]}]"}
-        @param[i-1] || Msg.err(" No substitute data ($#{i})")
+        @v.msg{"Param No.#{i} = [#{self[:param][i-1]}]"}
+        self[:param][i-1] || Msg.err(" No substitute data ($#{i})")
       }
       res=eval(res).to_s unless /\$/ === res
       Msg.err("Nil string") if res == ''

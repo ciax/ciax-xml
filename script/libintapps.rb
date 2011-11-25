@@ -3,12 +3,13 @@ require "optparse"
 require "libinsdb"
 require "libmodapp"
 
+#opt 'c' is client, 's' is server
 class IntApps < Hash
-  def initialize(opt={},par=[]) #opt 'c' is client, 's' is server
-    super(){|h,k| h[k]=int(k,opt,par)}
+  def initialize
+    super(){|h,k| h[k]=int(k,{},["frmsim",k])}
   end
 
-  def add(id,opt={},par=[])
+  def add(id,opt={'c'=>true},par=['localhost'])
     self[id]=int(id,opt,par)
     self
   end

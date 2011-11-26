@@ -1,17 +1,15 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libparam"
-require "libinsdb"
-require "libappcl"
+require "libintapps"
 
 class McrSub < Array
-  @@client={}
   attr_accessor :stat
-  def initialize(par,test=nil)
+  def initialize(par,client)
     @v=Msg::Ver.new("mcr",9)
-    Msg.type?(par,Param)
+    @par=Msg.type?(par,Param)
     #Thread.abort_on_exception=true
-    @test=test
+    @client=Msg.type?(client,IntApps)
     @seq=0
     @stat='run'
     submacro(par,0)
@@ -40,8 +38,8 @@ class McrSub < Array
       when 'exec'
         query
         if ENV['ACT']
-          @@client[e1['ins']].exe(e1['cmd'])
-          @@client.each{|k,v| v.view.refresh }
+          @client[e1['ins']].exe(e1['cmd'])
+          @client.each{|k,v| v.view.refresh }
         end
       end
     }
@@ -85,19 +83,14 @@ class McrSub < Array
 
   # client is forced to be localhost
   def getstat(ins,ref)
-    unless @@client.key?(ins)
-      adb=InsDb.new(ins).cover_app
-      host=@test ? 'localhost' : nil
-      @@client[ins]=AppCl.new(adb,host)
-    end
-    view=@@client[ins].view.load
+    view=@client[ins].view.load
     if last['update']=view.update?
       view['msg'][ref]||view['stat'][ref]
     end
   end
 
   def sleep(n=nil)
-    return n if @test
+    return n unless ENV['ACT']
     if n
       Kernel.sleep n
     else
@@ -117,19 +110,20 @@ if __FILE__ == $0
   require "libmcrdb"
   require "libmcrprt"
 
-  opt=ARGV.getopts("rt")
+  opt=ARGV.getopts("r")
   id,*cmd=ARGV
   ARGV.clear
   begin
     mdb=McrDb.new(id)
     par=Param.new(mdb).set(cmd)
-    mcr=McrSub.new(par,opt['t'])
+    int=IntApps.new
+    mcr=McrSub.new(par,int)
     mcr.extend(McrPrt) unless opt['r']
     puts mcr.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
-    warn "Usage: #{$0} (-rt) [mcr] [cmd] (par)"
+    warn "Usage: #{$0} (-r) [mcr] [cmd] (par)"
     Msg.exit
   rescue UserError
     Msg.exit(3)

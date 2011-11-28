@@ -21,8 +21,8 @@ if opt['s'] # From remote
 else
   adb=idb.cover_app
   fdb=adb.cover_frm
-  par=Command.new(fdb[:cmdframe])
-  field=FrmRsp.new(fdb,par)
+  cobj=Command.new(fdb[:cmdframe])
+  field=FrmRsp.new(fdb,cobj)
   stat=AppStat.new(adb,field)
   sql=Sql.new(id,stat)
   if opt['i'] # Initial

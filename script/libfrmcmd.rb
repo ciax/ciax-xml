@@ -63,11 +63,11 @@ if __FILE__ == $0
   ARGV.clear
   begin
     fdb=FrmDb.new(dev,cmd.empty?)
-    par=Command.new(fdb[:cmdframe])
+    cobj=Command.new(fdb[:cmdframe])
     field=Field.new
-    fc=FrmCmd.new(fdb,par,field)
+    fc=FrmCmd.new(fdb,cobj,field)
     field.load unless STDIN.tty?
-    par.set(cmd)
+    cobj.set(cmd)
     print fc.getframe
   rescue SelectCMD
     Msg.exit(2)

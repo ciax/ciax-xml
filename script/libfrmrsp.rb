@@ -133,8 +133,8 @@ if __FILE__ == $0
   fid=ARGV.shift
   begin
     fdb=FrmDb.new(fid)
-    par=Command.new(fdb[:cmdframe])
-    field=FrmRsp.new(fdb,par)
+    cobj=Command.new(fdb[:cmdframe])
+    field=FrmRsp.new(fdb,cobj)
     str=gets(nil) || exit
     field.upd_logline(str)
     puts field.to_j

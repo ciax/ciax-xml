@@ -124,8 +124,8 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    par=Command.new(mdb).set(cmd)
-    puts McrObj.new(par,0).run.join.to_s
+     cobj=Command.new(mdb).set(cmd)
+    puts McrObj.new( cobj,0).run.join.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

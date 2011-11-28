@@ -10,6 +10,7 @@ class McrSub < Array
     @par=Msg.type?(par,Param)
     #Thread.abort_on_exception=true
     @client=Msg.type?(client,IntApps)
+    @tid=Msg.now
     @seq=0
     @stat='run'
     submacro
@@ -18,7 +19,7 @@ class McrSub < Array
 
   def submacro
     @par[:select].each{|e1|
-      push({'cid'=>@par[:cid],'seq' => @seq,'depth'=>@par.depth})
+      push({'tid'=>@tid,'cid'=>@par[:cid],'seq' => @seq,'depth'=>@par.depth})
       last.update(e1)
       @seq+=1
       case e1['type']
@@ -63,9 +64,9 @@ class McrSub < Array
       sleep 1 if n > 0
       last['retry']=n
       if c=e['any']
-        c.any?{|h| condition(h)} && break
+        c.any?{|h| h['res']=condition(h)} && break
       elsif c=e['all']
-        c.all?{|h| condition(h)} && break
+        c.all?{|h| h['res']=condition(h)} && break
       end
     }.nil?
   end

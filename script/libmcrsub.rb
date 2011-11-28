@@ -5,19 +5,28 @@ require "libintapps"
 
 class McrSub < Array
   attr_accessor :stat
-  def initialize(par,client)
+  def initialize(mdb,client)
     @v=Msg::Ver.new("mcr",9)
-    @par=Msg.type?(par,Param)
+    @par=Param.new(mdb)
     #Thread.abort_on_exception=true
     @client=Msg.type?(client,IntApps)
-    @tid=Time.now.to_i
-    @stat='run'
-    submacro
-    @stat='done'
   end
 
-  def submacro
-    @par[:select].each{|e1|
+  def macro(cmd)
+    @tid=Time.now.to_i
+    @stat='run'
+    submacro(cmd){|c| yield c}
+    @stat='done'
+    self
+  end
+
+  def to_s
+    Msg.view_struct(self)
+  end
+
+  private
+  def submacro(cmd)
+    @par.push(cmd)[:select].each{|e1|
       line={'tid'=>@tid,'cid'=>@par[:cid],'depth'=>@par.depth}
       line.update(e1)
       push(line)
@@ -29,13 +38,11 @@ class McrSub < Array
       when 'wait'
         judge("Waiting",e1) || error
       when 'mcr'
-        @par.push(e1['cmd'])
         if /true|1/ === e1['async']
-          yield @par.dup
+          yield(e1['cmd'])
         else
-          submacro
+          submacro(e1['cmd'])
         end
-        @par.pop
       when 'exec'
         query
         if ENV['ACT']
@@ -44,14 +51,10 @@ class McrSub < Array
         end
       end
     }
+    @par.pop
     self
   end
 
-  def to_s
-    Msg.view_struct(self)
-  end
-
-  private
   def query
     @stat="wait"
     sleep
@@ -116,11 +119,10 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    par=Param.new(mdb).set(cmd)
     int=IntApps.new
-    mcr=McrSub.new(par,int)
+    mcr=McrSub.new(mdb,int)
     mcr.extend(McrPrt) unless opt['r']
-    puts mcr.to_s
+    puts mcr.macro(cmd).to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

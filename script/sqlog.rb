@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libparam"
+require "libcommand"
 require "libfrmrsp"
 require "libappstat"
 require 'librview'
@@ -21,7 +21,7 @@ if opt['s'] # From remote
 else
   adb=idb.cover_app
   fdb=adb.cover_frm
-  par=Param.new(fdb[:cmdframe])
+  par=Command.new(fdb[:cmdframe])
   field=FrmRsp.new(fdb,par)
   stat=AppStat.new(adb,field)
   sql=Sql.new(id,stat)

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libparam"
+require "libcommand"
 require "libappcl"
 require "yaml"
 
@@ -11,7 +11,7 @@ class McrObj < Thread
   @@threads=[]
   def initialize(par,interval=1)
     @v=Msg::Ver.new("mcr",9)
-    Msg.type?(par,Param)
+    Msg.type?(par,Command)
     #Thread.abort_on_exception=true
     self[:id]=Time.now.to_i
     @interval=interval
@@ -124,7 +124,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    par=Param.new(mdb).set(cmd)
+    par=Command.new(mdb).set(cmd)
     puts McrObj.new(par,0).run.join.to_s
   rescue SelectCMD
     Msg.exit(2)

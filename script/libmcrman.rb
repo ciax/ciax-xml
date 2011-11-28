@@ -1,14 +1,14 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libmcrdb"
-require "libparam"
+require "libcommand"
 require "libmcrobj"
 
 class McrMan
   attr_reader :prompt
   # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
   def initialize(id)
-    @par=Param.new(McrDb.new(id))
+    @par=Command.new(McrDb.new(id))
     @id=id
     @prompt="#@id[]>"
     @index=0

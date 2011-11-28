@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 require "libframe"
-require "libparam"
+require "libcommand"
 # Cmd Methods
 class FrmCmd
   def initialize(fdb,par,field)
     @v=Msg::Ver.new("frm/cmd",3)
     Msg.type?(fdb,FrmDb)
-    @par=Msg.type?(par,Param)
+    @par=Msg.type?(par,Command)
     @field=Msg.type?(field,Field)
     @cache={}
     @fstr={}
@@ -16,7 +16,7 @@ class FrmCmd
 
   def getframe # return = response select
     return unless @sel[:select]=@par[:select]
-    @v.msg{"Attr of Param:#{@par}"}
+    @v.msg{"Attr of Command:#{@par}"}
     cid=@par[:cid]
     @v.msg{"Select:#{@par[:label]}(#{cid})"}
     if frame=@cache[cid]
@@ -63,7 +63,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     fdb=FrmDb.new(dev,cmd.empty?)
-    par=Param.new(fdb[:cmdframe])
+    par=Command.new(fdb[:cmdframe])
     field=Field.new
     fc=FrmCmd.new(fdb,par,field)
     field.load unless STDIN.tty?

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libapp"
 require "libmsg"
-require "libparam"
+require "libcommand"
 require "libappcmd"
 require "libwview"
 require "libbuffer"

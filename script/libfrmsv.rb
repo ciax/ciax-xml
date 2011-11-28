@@ -2,7 +2,7 @@
 require "libfrm"
 require "libmsg"
 require "libiocmd"
-require "libparam"
+require "libcommand"
 require "libfrmrsp"
 require "libfrmcmd"
 

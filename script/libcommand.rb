@@ -3,13 +3,13 @@ require 'libexhash'
 require 'libmsg'
 require 'librerange'
 
-class Param < ExHash
+class Command < ExHash
   include Math
   attr_reader :list
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
   def initialize(db)
-    @v=Msg::Ver.new("param",2)
+    @v=Msg::Ver.new("command",2)
     @db=Msg.type?(db,Hash)
     @list=Msg::Lists.new(db)
     @ary=[]
@@ -113,9 +113,9 @@ if __FILE__ == $0
   begin
     adb=InsDb.new(ARGV.shift,true).cover_app(true)
     if opt["f"]
-      puts Param.new(adb.cover_frm(true)[:cmdframe]).set(ARGV)
+      puts Command.new(adb.cover_frm(true)[:cmdframe]).set(ARGV)
     else
-      puts Param.new(adb[:command]).set(ARGV)
+      puts Command.new(adb[:command]).set(ARGV)
     end
   rescue
     warn "USAGE: #{$0} (-f) [id] [cmd] (par)"

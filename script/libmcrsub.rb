@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libparam"
+require "libcommand"
 require "libintapps"
 
 class McrSub < Array
   attr_accessor :stat
   def initialize(mdb,client)
     @v=Msg::Ver.new("mcr",9)
-    @par=Param.new(mdb)
+    @par=Command.new(mdb)
     #Thread.abort_on_exception=true
     @client=Msg.type?(client,IntApps)
   end

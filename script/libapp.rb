@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require "libparam"
+require "libcommand"
 class App
   attr_reader :view,:prompt,:port
   def initialize(adb)
     Msg.type?(adb,AppDb)
-    @par=Param.new(adb[:command])
+    @par=Command.new(adb[:command])
     @prompt=adb['id']+'>'
     @port=adb['port']
   end

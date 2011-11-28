@@ -8,7 +8,7 @@ class FrmRsp < Field
   def initialize(fdb,par)
     @v=Msg::Ver.new("frm/rsp",3)
     @fdb=Msg.type?(fdb,FrmDb)
-    @par=Msg.type?(par,Param)
+    @par=Msg.type?(par,Command)
     super(fdb['id'])
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
@@ -129,11 +129,11 @@ end
 
 if __FILE__ == $0
   require "libfrmdb"
-  require "libparam"
+  require "libcommand"
   fid=ARGV.shift
   begin
     fdb=FrmDb.new(fid)
-    par=Param.new(fdb[:cmdframe])
+    par=Command.new(fdb[:cmdframe])
     field=FrmRsp.new(fdb,par)
     str=gets(nil) || exit
     field.upd_logline(str)

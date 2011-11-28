@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libappprt"
 
-module ModApp
+module ModPrt
   def init(adb)
     @output=@print=AppPrt.new(adb,@view)
     cl=Msg::List.new("Change Mode",2)

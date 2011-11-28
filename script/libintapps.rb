@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libmodapp"
+require "libmodprt"
 
 #opt 'c' is client, 's' is server
 class IntApps < Hash
@@ -30,7 +30,7 @@ class IntApps < Hash
         aint.exe(line)
       } if opt['s']
     end
-    aint.extend(ModApp).init(adb)
+    aint.extend(ModPrt).init(adb)
     aint
   end
 end

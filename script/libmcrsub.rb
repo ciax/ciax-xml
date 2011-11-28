@@ -12,13 +12,13 @@ class McrSub < Array
     @client=Msg.type?(client,IntApps)
     @seq=0
     @stat='run'
-    submacro(par,0)
+    submacro(0)
     @stat='done'
   end
 
-  def submacro(par,depth)
-    par[:select].each{|e1|
-      push({'cid'=>par[:cid],'seq' => @seq,'depth'=>depth})
+  def submacro(depth)
+    @par[:select].each{|e1|
+      push({'cid'=>@par[:cid],'seq' => @seq,'depth'=>depth})
       last.update(e1)
       @seq+=1
       case e1['type']
@@ -29,12 +29,13 @@ class McrSub < Array
       when 'wait'
         judge("Waiting",e1) || error
       when 'mcr'
-        sp=par.dup.set(e1['cmd'])
+        @par.push(e1['cmd'])
         if /true|1/ === e1['async']
-          yield sp
+          yield @par
         else
-          submacro(sp,depth+1)
+          submacro(depth+1)
         end
+        @par.pop
       when 'exec'
         query
         if ENV['ACT']

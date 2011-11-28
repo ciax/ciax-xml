@@ -3,9 +3,8 @@ require 'libmodexh'
 require 'libmsg'
 require 'librerange'
 
-class Param < Hash
+class Param < Exh
   include Math
-  include ModExh
   attr_reader :list
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
@@ -41,13 +40,12 @@ class Param < Hash
   end
 
   def push(cmd)
-    @ary << to_hash
+    @ary << Exh.new.deep_update(self)
     set(cmd)
   end
 
   def pop
-    clear
-    update(@ary.pop)
+    deep_update(@ary.pop)
   end
 
   def depth

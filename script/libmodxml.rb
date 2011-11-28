@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require 'libmsg'
 module ModXml
   # Common with LIBXML,REXML
   def to_s
@@ -23,7 +24,7 @@ module ModXml
 
   def attr2db(db,id='id')
     # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
-    raise "Param should be Hash" unless Hash === db
+    Msg.type?(db,Hash)
     attr={}
     to_h.each{|k,v|
       if defined?(yield)

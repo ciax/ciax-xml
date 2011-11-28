@@ -21,7 +21,7 @@ class Param < ExHash
     unless @db[:select].key?(id)
       @list.error("No such CMD [#{id}]")
     end
-    @v.msg{"SetPar: #{cmd}"}
+    @v.msg{"SetCMD: #{cmd}"}
     self[:param]=cmd[1..-1]
     self[:cid]=cmd.join(':') # Used by macro
     [:label,:nocache,:response].each{|k,v|
@@ -58,7 +58,7 @@ class Param < ExHash
     begin
       res=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        @v.msg{"Param No.#{i} = [#{self[:param][i-1]}]"}
+        @v.msg{"Parameter No.#{i} = [#{self[:param][i-1]}]"}
         self[:param][i-1] || Msg.err(" No substitute data ($#{i})")
       }
       res=eval(res).to_s unless /\$/ === res

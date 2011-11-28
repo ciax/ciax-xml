@@ -10,8 +10,7 @@ class McrSub < Array
     @par=Msg.type?(par,Param)
     #Thread.abort_on_exception=true
     @client=Msg.type?(client,IntApps)
-    @tid=Msg.now
-    @seq=0
+    @tid=Time.now.to_i
     @stat='run'
     submacro
     @stat='done'
@@ -19,9 +18,9 @@ class McrSub < Array
 
   def submacro
     @par[:select].each{|e1|
-      push({'tid'=>@tid,'cid'=>@par[:cid],'seq' => @seq,'depth'=>@par.depth})
-      last.update(e1)
-      @seq+=1
+      line={'tid'=>@tid,'cid'=>@par[:cid],'depth'=>@par.depth}
+      line.update(e1)
+      push(line)
       case e1['type']
       when 'break'
         judge("Proceed?",e1) && break
@@ -32,7 +31,7 @@ class McrSub < Array
       when 'mcr'
         @par.push(e1['cmd'])
         if /true|1/ === e1['async']
-          yield @par
+          yield @par.dup
         else
           submacro
         end

@@ -12,13 +12,13 @@ class McrSub < Array
     @client=Msg.type?(client,IntApps)
     @seq=0
     @stat='run'
-    submacro(0)
+    submacro
     @stat='done'
   end
 
-  def submacro(depth)
+  def submacro
     @par[:select].each{|e1|
-      push({'cid'=>@par[:cid],'seq' => @seq,'depth'=>depth})
+      push({'cid'=>@par[:cid],'seq' => @seq,'depth'=>@par.depth})
       last.update(e1)
       @seq+=1
       case e1['type']
@@ -33,7 +33,7 @@ class McrSub < Array
         if /true|1/ === e1['async']
           yield @par
         else
-          submacro(depth+1)
+          submacro
         end
         @par.pop
       when 'exec'

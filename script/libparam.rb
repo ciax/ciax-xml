@@ -50,6 +50,10 @@ class Param < Hash
     update(@ary.pop)
   end
 
+  def depth
+    @ary.size
+  end
+
   def subst(str) # par={ val,range,format } or String
     return str unless /\$([\d]+)/ === str
     @v.msg(1){"Substitute from [#{str}]"}

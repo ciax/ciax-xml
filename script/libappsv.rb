@@ -14,7 +14,7 @@ class AppSv < App
     @v=Msg::Ver.new("appobj",9)
     @id=adb['id']
     @fint=Msg.type?(fint,Frm)
-    @par=AppCmd.new(adb[:command])
+    @cobj=AppCmd.new(adb[:command])
     @view=Wview.new(adb,@fint.field)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|cmd|
@@ -28,7 +28,7 @@ class AppSv < App
     cl=Msg::List.new("Internal Command",2)
     cl.add('set'=>"[key=val] ..")
     cl.add('flush'=>"Flush Status")
-    @par.list.push(cl)
+    @cobj.list.push(cl)
     upd_prompt
   end
 
@@ -75,7 +75,7 @@ class AppSv < App
 
   def frmcmds(ary)
     ary.map{|cmd|
-      @par.set(cmd).get
+      @cobj.set(cmd).get
     }.flatten(1)
   end
 end

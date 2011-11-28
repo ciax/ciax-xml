@@ -5,7 +5,7 @@ module ModPrt
   def init(adb)
     @output=@print=AppPrt.new(adb,@view)
     cl=Msg::List.new("Change Mode",2)
-    @par.list.push(cl)
+    @cobj.list.push(cl)
     cl.add('print'=>"Print mode")
     cl.add('stat'=>"Stat mode")
     cl.add('field'=>"Field mode") if @fint

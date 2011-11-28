@@ -4,13 +4,13 @@ class App
   attr_reader :view,:prompt,:port
   def initialize(adb)
     Msg.type?(adb,AppDb)
-    @par=Command.new(adb[:command])
+    @cobj=Command.new(adb[:command])
     @prompt=adb['id']+'>'
     @port=adb['port']
   end
 
   def commands
-    @par.list.keys
+    @cobj.list.keys
   end
 
   def to_s

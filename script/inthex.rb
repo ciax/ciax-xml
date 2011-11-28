@@ -5,9 +5,9 @@ require "libhexpack"
 require "libintapps"
 
 opt=ARGV.getopts("sc")
-id,*par=ARGV
+id,*cobj=ARGV
 begin
-  aint=IntApps.new.add(id,opt,par)[id]
+  aint=IntApps.new.add(id,opt,cobj)[id]
 rescue UserError
   warn "Usage: inthex (-sc) [id] (host|iocmd)"
   Msg.exit

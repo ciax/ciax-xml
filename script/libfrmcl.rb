@@ -14,7 +14,7 @@ class FrmCl < Frm
   end
 
   def exe(cmd)
-    @par.set(cmd) if msg=@cl.exe(cmd,@prompt)
+    @cobj.set(cmd) if msg=@cl.exe(cmd,@prompt)
     @field.load
     msg
   end

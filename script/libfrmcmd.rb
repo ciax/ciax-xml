@@ -6,7 +6,7 @@ class FrmCmd
   def initialize(fdb,par,field)
     @v=Msg::Ver.new("frm/cmd",3)
     Msg.type?(fdb,FrmDb)
-    @par=Msg.type?(par,Command)
+    @cobj=Msg.type?(par,Command)
     @field=Msg.type?(field,Field)
     @cache={}
     @fstr={}
@@ -15,10 +15,10 @@ class FrmCmd
   end
 
   def getframe # return = response select
-    return unless @sel[:select]=@par[:select]
-    @v.msg{"Attr of Command:#{@par}"}
-    cid=@par[:cid]
-    @v.msg{"Select:#{@par[:label]}(#{cid})"}
+    return unless @sel[:select]=@cobj[:select]
+    @v.msg{"Attr of Command:#{@cobj}"}
+    cid=@cobj[:cid]
+    @v.msg{"Select:#{@cobj[:label]}(#{cid})"}
     if frame=@cache[cid]
       @v.msg{"Cmd cache found [#{cid}]"}
     else

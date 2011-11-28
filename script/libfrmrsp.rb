@@ -8,7 +8,7 @@ class FrmRsp < Field
   def initialize(fdb,par)
     @v=Msg::Ver.new("frm/rsp",3)
     @fdb=Msg.type?(fdb,FrmDb)
-    @par=Msg.type?(par,Command)
+    @cobj=Msg.type?(par,Command)
     super(fdb['id'])
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
@@ -21,7 +21,7 @@ class FrmRsp < Field
 
   # Block accepts [time,frame]
   def upd
-    if rid=@par[:response]
+    if rid=@cobj[:response]
       @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
       frame,self['time']=yield
       Msg.err("No Response") unless frame
@@ -51,7 +51,7 @@ class FrmRsp < Field
 
   def upd_logline(str)
     cmd,res=IoLog.set_logline(str)
-    @par.set(cmd)
+    @cobj.set(cmd)
     upd{res}
   end
 
@@ -89,7 +89,7 @@ class FrmRsp < Field
       key=e0['assign'] || Msg.err("No key for Array")
       # Insert range depends on command param
       idxs=e0[:index].map{|e1|
-        @par.subst(e1['range'])
+        @cobj.subst(e1['range'])
       }
       begin
         @v.msg(1){"Array:[#{key}]:Range#{idxs}"}

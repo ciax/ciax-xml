@@ -8,7 +8,7 @@ class McrMan
   attr_reader :prompt
   # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
   def initialize(id)
-    @par=Command.new(McrDb.new(id))
+    @cobj=Command.new(McrDb.new(id))
     @id=id
     @prompt="#@id[]>"
     @index=0
@@ -16,7 +16,7 @@ class McrMan
     cl=Msg::List.new("Internal Command")
     cl.add("[0-9]"=>"Switch Mode")
     cl.add("list"=>"Thread list")
-    @par.list.push(cl)
+    @cobj.list.push(cl)
   end
 
   def upd(cmd)
@@ -38,7 +38,7 @@ class McrMan
         Msg.err("  Another mcr is still running")
       else
         @threads.clear
-        McrObj.new(@par.set(cmd))
+        McrObj.new(@cobj.set(cmd))
         @index=@threads.size
       end
     end
@@ -80,7 +80,7 @@ class McrMan
   end
 
   def commands
-    @par.list.keys
+    @cobj.list.keys
   end
   private
   def query(str)

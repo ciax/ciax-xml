@@ -4,9 +4,9 @@ require "libinsdb"
 require "libintfrms"
 
 opt=ARGV.getopts("cs")
-id,*par=ARGV
+id,*cobj=ARGV
 begin
-  fint=IntFrms.new.add(id,opt,par)[id]
+  fint=IntFrms.new.add(id,opt,cobj)[id]
 rescue UserError
   warn "Usage: intfrm (-cs) [id] (host|iocmd) # -c:client, -s:server"
   Msg.exit

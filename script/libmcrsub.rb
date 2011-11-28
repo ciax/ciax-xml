@@ -7,7 +7,7 @@ class McrSub < Array
   attr_accessor :stat
   def initialize(mdb,client)
     @v=Msg::Ver.new("mcr",9)
-    @par=Command.new(mdb)
+    @cobj=Command.new(mdb)
     #Thread.abort_on_exception=true
     @client=Msg.type?(client,IntApps)
   end
@@ -26,8 +26,8 @@ class McrSub < Array
 
   private
   def submacro(cmd)
-    @par.push(cmd)[:select].each{|e1|
-      line={'tid'=>@tid,'cid'=>@par[:cid],'depth'=>@par.depth}
+    @cobj.push(cmd)[:select].each{|e1|
+      line={'tid'=>@tid,'cid'=>@cobj[:cid],'depth'=>@cobj.depth}
       line.update(e1)
       push(line)
       case e1['type']
@@ -51,7 +51,7 @@ class McrSub < Array
         end
       end
     }
-    @par.pop
+    @cobj.pop
     self
   end
 

@@ -25,5 +25,9 @@ module ModExh
     end
     b
   end
-
 end
+
+class Exh < Hash
+  include ModExh
+end
+

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libmsg'
-module ModExh
-  # module which includes this should be Hash
+#Extened Hash
+class ExHash < Hash
   def to_s
     Msg.view_struct(self)
   end
@@ -26,8 +26,3 @@ module ModExh
     b
   end
 end
-
-class Exh < Hash
-  include ModExh
-end
-

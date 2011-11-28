@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require 'libmodexh'
+require 'libexhash'
 require 'libmsg'
 require 'librerange'
 
-class Param < Exh
+class Param < ExHash
   include Math
   attr_reader :list
   # command db (:label,:select,:parameter)
@@ -40,7 +40,7 @@ class Param < Exh
   end
 
   def push(cmd)
-    @ary << Exh.new.deep_update(self)
+    @ary << ExHash.new.deep_update(self)
     set(cmd)
   end
 

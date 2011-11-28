@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libmodexh'
+require 'libexhash'
 require 'librerange'
 require 'libelapse'
 require 'yaml'
 
-class Watch < Exh
+class Watch < ExHash
   def initialize(adb,view)
     @v=Msg::Ver.new("watch",12)
     @wdb=Msg.type?(adb,AppDb)[:watch]

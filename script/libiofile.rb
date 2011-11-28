@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "json"
-require "libmodexh"
+require "libexhash"
 
-class IoFile < Exh
+class IoFile < ExHash
   def initialize(type,id=nil,host=nil)
     @v=Msg::Ver.new(type,6)
     if id

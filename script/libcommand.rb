@@ -12,7 +12,6 @@ class Command < ExHash
     @v=Msg::Ver.new("command",2)
     @db=Msg.type?(db,Hash)
     @list=Msg::Lists.new(db)
-    @ary=[]
   end
 
   def set(cmd)
@@ -37,19 +36,6 @@ class Command < ExHash
     end
     self[:select]=deep_subst(@db[:select][id])
     self
-  end
-
-  def push(cmd)
-    @ary << ExHash.new.deep_update(self)
-    set(cmd)
-  end
-
-  def pop
-    deep_update(@ary.pop)
-  end
-
-  def depth
-    @ary.size
   end
 
   def subst(str) # par={ val,range,format } or String

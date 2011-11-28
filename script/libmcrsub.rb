@@ -15,7 +15,7 @@ class McrSub < Array
   def macro(cmd)
     @tid=Time.now.to_i
     @stat='run'
-    submacro(cmd){|c| yield c}
+    submacro(cmd,0){|c| yield c}
     @stat='done'
     self
   end
@@ -24,10 +24,15 @@ class McrSub < Array
     Msg.view_struct(self)
   end
 
+  def list
+    @cobj.list
+  end
+
   private
-  def submacro(cmd)
-    @cobj.push(cmd)[:select].each{|e1|
-      line={'tid'=>@tid,'cid'=>@cobj[:cid],'depth'=>@cobj.depth}
+  def submacro(cmd,depth)
+    cobj=@cobj.dup.set(cmd)
+    cobj[:select].each{|e1|
+      line={'tid'=>@tid,'cid'=>cobj[:cid],'depth'=>depth}
       line.update(e1)
       push(line)
       case e1['type']
@@ -41,7 +46,7 @@ class McrSub < Array
         if /true|1/ === e1['async']
           yield(e1['cmd'])
         else
-          submacro(e1['cmd'])
+          submacro(e1['cmd'],depth+1)
         end
       when 'exec'
         query
@@ -51,7 +56,6 @@ class McrSub < Array
         end
       end
     }
-    @cobj.pop
     self
   end
 

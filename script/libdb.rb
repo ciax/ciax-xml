@@ -3,8 +3,7 @@ require "libmsg"
 require "libmodexh"
 require "libxmldoc"
 
-class Db < Hash
-  include ModExh
+class Db < Exh
   XmlDir="#{ENV['HOME']}/ciax-xml"
   def initialize(type)
     @v=Msg::Ver.new(type,5)

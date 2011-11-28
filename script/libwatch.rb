@@ -5,8 +5,7 @@ require 'librerange'
 require 'libelapse'
 require 'yaml'
 
-class Watch < Hash
-  include ModExh
+class Watch < Exh
   def initialize(adb,view)
     @v=Msg::Ver.new("watch",12)
     @wdb=Msg.type?(adb,AppDb)[:watch]

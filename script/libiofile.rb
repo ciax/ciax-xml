@@ -3,8 +3,7 @@ require "libmsg"
 require "json"
 require "libmodexh"
 
-class IoFile < Hash
-  include ModExh
+class IoFile < Exh
   def initialize(type,id=nil,host=nil)
     @v=Msg::Ver.new(type,6)
     if id

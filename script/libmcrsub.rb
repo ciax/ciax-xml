@@ -5,9 +5,9 @@ require "libintapps"
 
 class McrSub < Array
   attr_accessor :stat
-  def initialize(mdb,client)
+  def initialize(cobj,client)
     @v=Msg::Ver.new("mcr",9)
-    @cobj=Command.new(mdb)
+    @cobj=Msg.type?(cobj,Command)
     #Thread.abort_on_exception=true
     @client=Msg.type?(client,IntApps)
   end
@@ -44,7 +44,8 @@ class McrSub < Array
         judge("Waiting",e1) || error
       when 'mcr'
         if /true|1/ === e1['async']
-          yield(e1['cmd'])
+          mobj=McrSub.new(@cobj,@client)
+          yield(mobj.macro(e1['cmd']))
         else
           submacro(e1['cmd'],depth+1)
         end
@@ -123,8 +124,9 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
+    cobj=Command.new(mdb)
     int=IntApps.new
-    mcr=McrSub.new(mdb,int)
+    mcr=McrSub.new(cobj,int)
     mcr.extend(McrPrt) unless opt['r']
     puts mcr.macro(cmd).to_s
   rescue SelectCMD

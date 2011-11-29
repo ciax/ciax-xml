@@ -6,16 +6,15 @@ require "libmodprt"
 #opt 'c' is client, 's' is server
 class IntApps < Hash
   def initialize
-    super(){|h,k| h[k]=int(k,{},["frmsim",k])}
+    super(){|h,k| h[k]=add(k,{},["frmsim",k])}
   end
 
-  def add(id,opt={'c'=>true},par=['localhost'])
-    self[id]=int(id,opt,par)
+  def default(id)
+    self[nil]=self[id]
     self
   end
 
-  private
-  def int(id,opt={},par=[])
+  def add(id,opt={'c'=>true},par=['localhost'])
     adb=InsDb.new(id).cover_app
     if opt['c']
       require "libappcl"
@@ -30,7 +29,6 @@ class IntApps < Hash
         aint.exe(line)
       } if opt['s']
     end
-    aint.extend(ModPrt).init(adb)
-    aint
+    self[id]=aint.extend(ModPrt).init(adb)
   end
 end

@@ -10,6 +10,7 @@ module ModPrt
     cl.add('stat'=>"Stat mode")
     cl.add('field'=>"Field mode") if @fint
     cl.add('watch'=>"Watch mode") if @watch
+    self
   end
 
   def exe(cmd)

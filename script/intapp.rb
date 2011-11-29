@@ -6,7 +6,7 @@ require "libintapps"
 opt=ARGV.getopts("sc")
 id,*cobj=ARGV
 begin
-  aint=IntApps.new.add(id,opt,cobj)[id]
+  aint=IntApps.new.add(id,opt,cobj)
 rescue UserError
   warn 'Usage: intapp (-sc) [id] (host|iocmd) # -s:server, -c:client'
   Msg.exit

@@ -6,11 +6,11 @@ require "libmodprt"
 #opt 'c' is client, 's' is server
 class IntApps < Hash
   def initialize
-    super(){|h,k| h[k]=add(k,{},["frmsim",k])}
+    super{|h,k| add(k,{},["frmsim",k]) }
   end
 
-  def default(id)
-    self[nil]=self[id]
+  def setdef(id)
+    self[nil]=self[id] if key?(id)
     self
   end
 
@@ -29,6 +29,13 @@ class IntApps < Hash
         aint.exe(line)
       } if opt['s']
     end
-    self[id]=aint.extend(ModPrt).init(adb)
+    aint.extend(ModPrt).init(adb)
+    self[id]=aint
   end
+end
+
+if __FILE__ == $0
+  id=ARGV.shift
+  ary=IntApps.new
+  puts ary[id]
 end

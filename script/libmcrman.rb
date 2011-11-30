@@ -2,7 +2,8 @@
 require "libmsg"
 require "libmcrdb"
 require "libcommand"
-require "libmcrobj"
+require "libmcrsub"
+require "libmcrprt"
 
 class McrMan
   attr_reader :prompt
@@ -12,7 +13,7 @@ class McrMan
     @id=id
     @prompt="#@id[]>"
     @index=0
-    @threads=McrObj.threads
+    @threads=[]
     cl=Msg::List.new("Internal Command")
     cl.add("[0-9]"=>"Switch Mode")
     cl.add("list"=>"Thread list")
@@ -38,8 +39,10 @@ class McrMan
         Msg.err("  Another mcr is still running")
       else
         @threads.clear
-        McrObj.new(@cobj.set(cmd))
-        @index=@threads.size
+        Thread.new(@cobj.dup.set(cmd),@threads){|c,tary|
+          McrSub.new(c,tary).extend(McrPrt)
+          @index=1
+        }
       end
     end
     upd_prompt
@@ -48,31 +51,7 @@ class McrMan
 
   def to_s
     return '' unless current
-    current[:line].map{|h|
-      msg='  '*h['depth']
-      case h['type']
-      when 'break'
-        msg << Msg.color('Proceed?',6)+":#{h['label']} ->"
-        msg << Msg.color(h['result'] ? "SKIP" : "OK",2)
-      when 'check'
-        msg << Msg.color('Check',6)+":#{h['label']} ->"
-        msg << (h['result'] ? Msg.color("OK",2) : Msg.color("NG",1))
-      when 'wait'
-        msg << Msg.color('Waiting',6)+":#{h['label']} ->"
-        if h['result'].nil?
-          ret=h['retry'].to_i
-          msg << '*'*(ret/10)+'.'*(ret % 10)
-        else
-          msg << (h['result'] ? Msg.color("OK",2) : Msg.color("Timeout(#{h['retry']})",1))
-        end
-      when 'mcr'
-        msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
-        msg << "(async)" if h['async']
-      when 'exec'
-        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['ins']})"
-      end
-      msg
-    }.join("\n")
+    current[:obj].to_s
   end
 
   def current #current thread
@@ -82,6 +61,7 @@ class McrMan
   def commands
     @cobj.list.keys
   end
+
   private
   def query(str)
     case str

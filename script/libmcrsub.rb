@@ -11,13 +11,16 @@ class McrSub < Array
   def initialize(cobj,threads=[])
     @v=Msg::Ver.new("mcr",9)
     Msg.type?(cobj,Command)
+    @threads=Msg.type?(threads,Array)
     #Thread.abort_on_exception=true
     @current=Thread.current
-    @threads=Msg.type?(threads,Array)
+    @threads << @current
+    @current[:obj]=self
+    Thread.pass
     @tid=Time.now.to_i
     @current[:cid]=cobj[:cid]
     @current[:stat]='run'
-    submacro(cobj.dup,0)
+    submacro(cobj.dup,1)
     @current[:stat]='done'
   rescue UserError
     @current[:stat]="error"
@@ -45,9 +48,8 @@ class McrSub < Array
       when 'mcr'
         subc=cobj.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
-          @threads << Thread.new(subc){|c|
-            Thread.pass
-            McrSub.new(c,@threads)
+          Thread.new(subc,@threads){|c,tary|
+            McrSub.new(c,tary)
           }
         else
           submacro(subc,depth+1)

@@ -1,12 +1,13 @@
 #!/usr/bin/ruby
-require "optparse"
+require "libmsg"
 require "libinsdb"
 require "libmodprt"
 
 #opt 'c' is client, 's' is server
 class IntApps < Hash
-  def initialize
-    super{|h,k| add(k,{},["frmsim",k]) }
+  def initialize(par=[])
+    Msg.type?(par,Array)
+    super(){|h,k| add(k,{'c'=>true},par) }
   end
 
   def setdef(id)
@@ -15,6 +16,8 @@ class IntApps < Hash
   end
 
   def add(id,opt={'c'=>true},par=['localhost'])
+    Msg.type?(opt,Hash)
+    Msg.type?(par,Array)
     adb=InsDb.new(id).cover_app
     if opt['c']
       require "libappcl"

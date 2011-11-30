@@ -10,7 +10,7 @@ class FrmSv < Frm
   def initialize(fdb,iocmd=[])
     super(fdb)
     @v=Msg::Ver.new("frmobj",3)
-    client= iocmd.empty? ? fdb['iocmd'].split(' ') : iocmd
+    client= Msg.type?(iocmd,Array).empty? ? fdb['iocmd'].split(' ') : iocmd
     @io=IoCmd.new(client,fdb['wait'],1).extend(IoLog)
     @io.startlog(fdb['id'],fdb['version']) if iocmd.empty?
     @field=FrmRsp.new(fdb,@cobj)

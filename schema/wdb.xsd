@@ -10,6 +10,10 @@
       <xsd:attribute name="interval" type="xsd:int" use="required"></xsd:attribute>
       <xsd:attribute name="period" type="xsd:int"></xsd:attribute>
     </xsd:complexType>
+    <xsd:unique name="onchange-ref">
+      <xsd:selector xpath="*/wdb:onchange" />
+      <xsd:field xpath="@ref" />
+    </xsd:unique>
   </xsd:element>
   <xsd:group name="event">
     <xsd:choice>

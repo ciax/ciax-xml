@@ -50,7 +50,7 @@ class McrSub < Array
       push(line)
       case e1['type']
       when 'break'
-        judge("Proceed?",e1) && break
+        judge("Proceed?",e1) && ENV['ACT'] && break
       when 'check'
         judge("Check",e1) || error
       when 'wait'

@@ -4,19 +4,18 @@ require "libcommand"
 require "libintapps"
 
 class McrSub < Array
-  attr_accessor :stat
-  def initialize(cobj,client)
-    @v=Msg::Ver.new("mcr",9)
-    @cobj=Msg.type?(cobj,Command)
-    #Thread.abort_on_exception=true
-    @client=Msg.type?(client,IntApps)
-  end
+  @@client=IntApps.new
 
-  def macro(cmd)
+  def initialize(cobj,threads=[])
+    @v=Msg::Ver.new("mcr",9)
+    Msg.type?(cobj,Command)
+    #Thread.abort_on_exception=true
+    @current=Thread.current
+    @threads=Msg.type?(threads,Array)
     @tid=Time.now.to_i
-    @stat='run'
-    submacro(cmd,0){|c| yield c}
-    @stat='done'
+    @current[:stat]='run'
+    submacro(cobj.dup,0)
+    @current[:stat]='done'
     self
   end
 
@@ -24,13 +23,8 @@ class McrSub < Array
     Msg.view_struct(self)
   end
 
-  def list
-    @cobj.list
-  end
-
   private
-  def submacro(cmd,depth)
-    cobj=@cobj.dup.set(cmd)
+  def submacro(cobj,depth)
     cobj[:select].each{|e1|
       line={'tid'=>@tid,'cid'=>cobj[:cid],'depth'=>depth}
       line.update(e1)
@@ -43,17 +37,20 @@ class McrSub < Array
       when 'wait'
         judge("Waiting",e1) || error
       when 'mcr'
+        subc=cobj.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
-          mobj=McrSub.new(@cobj,@client)
-          yield(mobj.macro(e1['cmd']))
+          @threads << Thread.new(subc){|c|
+            Thread.pass
+            McrSub.new(c,@threads)
+          }
         else
-          submacro(e1['cmd'],depth+1)
+          submacro(subc,depth+1)
         end
       when 'exec'
         query
         if ENV['ACT']
-          @client[e1['ins']].exe(e1['cmd'])
-          @client.each{|k,v| v.view.refresh }
+          @@client[e1['ins']].exe(e1['cmd'])
+          @@client.each{|k,v| v.view.refresh }
         end
       end
     }
@@ -61,9 +58,9 @@ class McrSub < Array
   end
 
   def query
-    @stat="wait"
+    @current[:stat]="wait"
     sleep
-    @stat="run"
+    @current[:stat]="run"
   end
 
   def judge(msg,e)
@@ -92,7 +89,7 @@ class McrSub < Array
 
   # client is forced to be localhost
   def getstat(ins,ref)
-    view=@client[ins].view.load
+    view=@@client[ins].view.load
     if last['update']=view.update?
       view['msg'][ref]||view['stat'][ref]
     end
@@ -109,7 +106,7 @@ class McrSub < Array
 
   def error
     return unless ENV['ACT']
-    @stat='error'
+    @current[:stat]='error'
     raise(UserError)
   end
 end
@@ -124,11 +121,10 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    cobj=Command.new(mdb)
-    int=IntApps.new
-    mcr=McrSub.new(cobj,int)
+    cobj=Command.new(mdb).set(cmd)
+    mcr=McrSub.new(cobj)
     mcr.extend(McrPrt) unless opt['r']
-    puts mcr.macro(cmd).to_s
+    puts mcr.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID

@@ -3,6 +3,8 @@ require "libmsg"
 require "libcommand"
 require "libintapps"
 
+class Broken < RuntimeError;end
+
 class McrSub < Array
   @@client=IntApps.new
 
@@ -13,10 +15,14 @@ class McrSub < Array
     @current=Thread.current
     @threads=Msg.type?(threads,Array)
     @tid=Time.now.to_i
+    @current[:cid]=cobj[:cid]
     @current[:stat]='run'
     submacro(cobj.dup,0)
     @current[:stat]='done'
-    self
+  rescue UserError
+    @current[:stat]="error"
+  rescue Broken
+    @current[:stat]="broken"
   end
 
   def to_s

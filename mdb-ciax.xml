@@ -132,5 +132,49 @@
         <stat ins="dsi" ref="fis">ON</stat>
       </check>
     </command>
+    <!--Transer-->
+    <command id="trsi" label="MOV.IR Trans Backward w/INST">
+      <break label="Transer Stored?">
+        <stat ins="dsi" ref="mtr">BK</stat>
+      </break>
+      <check label="CART CLEAR?">
+        <stat ins="crt" ref="cpos" inv="true">12</stat>
+        <stat ins="crt" ref="cpos" inv="true">11</stat>
+      </check>
+      <exec ins="dsi" name="rotin"></exec>
+      <wait label="Rotating" retry="20">
+        <stat ins="dsi" ref="exe">OFF</stat>
+      </wait>
+      <exec ins="dsi" name="trin"></exec>
+      <wait label="Moving" retry="60">
+        <stat ins="dsi" ref="exe">OFF</stat>
+      </wait>
+      <check label="Transer Stored?">
+        <stat ins="dsi" ref="mtr">BK</stat>
+      </check>
+    </command>
+    <!--Run & Transer-->
+    <command id="lv08to" label="Leave IR from Tag 8 to [2-7]">
+      <par>2:7</par>
+      <break label="Leave Cart and Transer Stored?">
+        <stat ins="crt" ref="cpos" inv="true">8</stat>
+        <stat ins="dsi" ref="mtr">BK</stat>
+      </break>
+      <check label="CART CLEAR?">
+        <stat ins="crt" ref="cpos">8</stat>
+        <stat ins="crt" ref="ion">OFF</stat>
+      </check>
+      <exec ins="crt" name="run">
+        <argv>$1</argv>
+      </exec>
+      <mcr async="true" name="trsi" />
+      <wait retry="120" label="Run end?">
+        <stat label="Running" ref="run" ins="crt">OFF</stat>
+      </wait>
+      <check label="Leave Cart and Transer Stored?">
+        <stat ins="crt" ref="cpos" inv="true">8</stat>
+        <stat ins="dsi" ref="mtr">BK</stat>
+      </check>
+    </command>
   </macro>
 </mdb>

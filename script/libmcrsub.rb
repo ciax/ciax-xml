@@ -10,22 +10,32 @@ class McrSub < Array
 
   def initialize(cobj,threads=[])
     @v=Msg::Ver.new("mcr",9)
-    Msg.type?(cobj,Command)
+    @cobj=Msg.type?(cobj,Command)
     @threads=Msg.type?(threads,Array)
+  end
+
+  def macro(cmd,clr=nil)
+    cobj=@cobj.dup.set(cmd)
+    @threads.clear if clr
+    clear
     #Thread.abort_on_exception=true
-    @current=Thread.current
-    @threads << @current
-    @current[:obj]=self
-    Thread.pass
-    @tid=Time.now.to_i
-    @current[:cid]=cobj[:cid]
-    @current[:stat]='run'
-    submacro(cobj.dup,1)
-    @current[:stat]='done'
-  rescue UserError
-    @current[:stat]="error"
-  rescue Broken
-    @current[:stat]="broken"
+    @threads << Thread.new(cobj){|c|
+      @crnt=Thread.current
+      @crnt[:obj]=self
+      Thread.pass
+      @tid=Time.now.to_i
+      @crnt[:cid]=cobj[:cid]
+      begin
+        @crnt[:stat]='run'
+        submacro(cobj,1)
+        @crnt[:stat]='done'
+      rescue UserError
+        @crnt[:stat]="error"
+      rescue Broken
+        @crnt[:stat]="broken"
+      end
+    }
+    self
   end
 
   def to_s
@@ -46,12 +56,10 @@ class McrSub < Array
       when 'wait'
         judge("Waiting",e1) || error
       when 'mcr'
-        subc=cobj.dup.set(e1['cmd'])
         if /true|1/ === e1['async']
-          Thread.new(subc,@threads){|c,tary|
-            McrSub.new(c,tary)
-          }
+          clone.clear.macro(e1['cmd'])
         else
+          subc=cobj.dup.set(e1['cmd'])
           submacro(subc,depth+1)
         end
       when 'exec'
@@ -66,9 +74,9 @@ class McrSub < Array
   end
 
   def query
-    @current[:stat]="wait"
+    @crnt[:stat]="wait"
     sleep
-    @current[:stat]="run"
+    @crnt[:stat]="run"
   end
 
   def judge(msg,e)
@@ -114,7 +122,6 @@ class McrSub < Array
 
   def error
     return unless ENV['ACT']
-    @current[:stat]='error'
     raise(UserError)
   end
 end
@@ -129,9 +136,11 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    cobj=Command.new(mdb).set(cmd)
-    mcr=McrSub.new(cobj)
+    cobj=Command.new(mdb)
+    mcr=McrSub.new(cobj,th=[])
     mcr.extend(McrPrt) unless opt['r']
+    mcr.macro(cmd)
+    th.each{|t| t.join }
     puts mcr.to_s
   rescue SelectCMD
     Msg.exit(2)

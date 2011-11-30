@@ -15,10 +15,7 @@ class McrMan
     @prompt="#@id[]>"
     @index=0
     @threads=[]
-    cl=Msg::List.new("Internal Command")
-    cl.add("[0-9]"=>"Switch Mode")
-    cl.add("list"=>"Thread list")
-    @cobj.list.push(cl)
+    @mcr=McrSub.new(@cobj,@threads).extend(McrPrt)
   end
 
   def upd(cmd)
@@ -39,15 +36,17 @@ class McrMan
       elsif Thread.list.size > 1
         Msg.err("  Another mcr is still running")
       else
-        @threads.clear
-        Thread.new(@cobj.dup.set(cmd),@threads){|c,tary|
-          McrSub.new(c,tary).extend(McrPrt)
-          @index=1
-        }
+        @mcr.macro(cmd,true)
+        @index=1
       end
     end
     upd_prompt
     self
+  rescue SelectCMD
+    cl=Msg::List.new("Internal Command")
+    cl.add("[0-9]"=>"Switch Mode")
+    cl.add("list"=>"Thread list")
+    cl.error
   end
 
   def to_s

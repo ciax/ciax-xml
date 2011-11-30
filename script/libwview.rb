@@ -54,7 +54,7 @@ if __FILE__ == $0
     view=Wview.new(idb,field)
     print view.upd.to_j
   rescue UserError
-    abort "Usage: #{$0} [id]\n#{$!}"
+    Msg.usage "[id]"
   end
 end
 

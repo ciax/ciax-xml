@@ -49,6 +49,6 @@ class Rview < IoFile
 end
 
 if __FILE__ == $0
-  abort "Usage: #{$0} [id] (host)" if ARGV.size < 1
+  Msg.usage "[id] (host)" if ARGV.size < 1
   puts Rview.new(*ARGV).load
 end

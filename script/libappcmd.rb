@@ -48,7 +48,6 @@ if __FILE__ == $0
   rescue SelectCMD
     Msg.exit(2)
   rescue UserError
-    warn "Usage: #{$0} [app] [cmd] (par)"
-    Msg.exit
+    Msg.usage("[app] [cmd] (par)")
   end
 end

@@ -72,7 +72,6 @@ if __FILE__ == $0
   rescue SelectCMD
     Msg.exit(2)
   rescue UserError
-    warn "Usage: #{$0} [dev] [cmd] (par) < field_file"
-    Msg.exit
+    Msg.usage "[dev] [cmd] (par) < field_file"
   end
 end

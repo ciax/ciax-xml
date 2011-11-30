@@ -7,8 +7,7 @@ ARGV.clear
 begin
   mm=McrMan.new(id)
 rescue SelectID
-  warn "Usage:(ACT=1)  #{$0.split('/').last} [mcr]"
-  Msg.exit
+  Msg.usage("[mcr] # (ACT=n)")
 end
 Shell.new(mm.prompt,mm.commands){|cmd|
   mm.upd(cmd)

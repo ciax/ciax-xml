@@ -8,8 +8,7 @@ id,*cobj=ARGV
 begin
   fint=IntFrms.new.add(id,opt,cobj)[id]
 rescue UserError
-  warn "Usage: intfrm (-cs) [id] (host|iocmd) # -c:client, -s:server"
-  Msg.exit
+  Msg.usage("(-cs) [id] (host|iocmd)","-s:server, -c:client")
 end
 sleep if opt["s"]
 require 'libshell'

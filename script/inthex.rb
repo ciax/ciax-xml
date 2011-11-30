@@ -9,8 +9,7 @@ id,*cobj=ARGV
 begin
   aint=IntApps.new.add(id,opt,cobj)
 rescue UserError
-  warn "Usage: inthex (-sc) [id] (host|iocmd)"
-  Msg.exit
+  Msg.usage("(-sc) [id] (host|iocmd)")
 end
 hp=HexPack.new(aint.view,aint.prompt)
 if opt["s"]

@@ -139,7 +139,6 @@ if __FILE__ == $0
     field.upd_logline(str)
     puts field.to_j
   rescue UserError
-    warn "Usage: #{$0} [frameID] < logline"
-    Msg.exit
+    Msg.usage "[frameID] < logline"
   end
 end

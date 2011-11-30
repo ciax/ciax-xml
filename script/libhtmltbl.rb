@@ -49,8 +49,7 @@ if __FILE__ == $0
   begin
     adb=InsDb.new(id).cover_app
   rescue SelectID
-    warn "Usage: #{$0} [id]"
-    Msg.exit
+    Msg.usage "[id]"
   end
   puts HtmlTbl.new(adb)
 end

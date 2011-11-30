@@ -158,8 +158,16 @@ class << Msg
     Kernel.abort([color(msg,1),$!.to_s].join("\n"))
   end
 
+  def usage(str,*opt)
+    Kernel.warn("Usage: #{$0.split('/').last} #{str}")
+    opt.each{|s|
+      Kernel.warn(" "*6+s)
+    }
+    exit
+  end
+
   def exit(code=1)
-    Kernel.warn($!.to_s)
+    Kernel.warn($!.to_s) if $!
     Kernel.exit(code)
   end
 

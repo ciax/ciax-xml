@@ -103,6 +103,6 @@ if __FILE__ == $0
     field=Field.new.load
     puts AppStat.new(adb,field).upd
   rescue UserError
-    abort "Usage: #{$0} [app] < field_file\n#{$!}"
+    Msg.usage "[app] < field_file\n#{$!}"
   end
 end

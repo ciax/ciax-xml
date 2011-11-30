@@ -150,7 +150,8 @@ end
 if __FILE__ == $0
   require "librview"
   require "libinsdb"
-  abort "Usage: #{$0} (test conditions (key=val)..) < [file]" if STDIN.tty?
+
+  Msg.usage "(test conditions (key=val)..) < [file]" if STDIN.tty?
   hash={}
   ARGV.each{|s|
     k,v=s.split("=")

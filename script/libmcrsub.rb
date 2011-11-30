@@ -145,8 +145,7 @@ if __FILE__ == $0
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
-    warn "Usage: #{$0} (-r) [mcr] [cmd] (par)"
-    Msg.exit
+    Msg.usage "(-r) [mcr] [cmd] (par)"
   rescue UserError
     Msg.exit(3)
   end

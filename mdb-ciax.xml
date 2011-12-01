@@ -3,7 +3,7 @@
   <macro id="ciax" version="1" label="Cart Macro">
     <command id="runf" label="Run Forward to Tag">
       <goal label="On Tag?">
-        <stat ins="crt" ref="cpos" inv="true">0</stat>
+        <stat ins="crt" ref="cps" inv="true">0</stat>
       </goal>
       <wait retry="5" label="Ready?">
         <stat ref="rdy" ins="crt">ON</stat>
@@ -16,7 +16,7 @@
     <command id="run" label="Run to Tag [1-12]">
       <par>1:12</par>
       <goal label="On Destination Tag?">
-        <stat ref="cpos" ins="crt">$1</stat>
+        <stat ref="cps" ins="crt">$1</stat>
       </goal>
       <check label="Ready?">
         <stat ref="rdy" ins="crt">ON</stat>
@@ -31,7 +31,7 @@
     <command id="lift" label="Jack UP Level [1-4]">
       <par>1:4</par>
       <goal label="On Destination Level?">
-        <stat ref="jpos" ins="crt">$1</stat>
+        <stat ref="jlv" ins="crt">$1</stat>
       </goal>
       <check label="Ready?">
         <stat ref="rdy" ins="crt">ON</stat>
@@ -99,8 +99,8 @@
         <stat ins="dsi" ref="fis">ON</stat>
       </goal>
       <check label="CART ON TAG?">
-        <stat ins="crt" ref="cpos">12</stat>
-        <stat ins="crt" ref="jpos">H</stat>
+        <stat ins="crt" ref="cps">12</stat>
+        <stat ins="crt" ref="jlv">H</stat>
       </check>
       <exec ins="dsi" name="fhook"></exec>
       <wait label="Jacking" retry="40">
@@ -114,8 +114,8 @@
         <stat ins="dsi" ref="mtr">BK</stat>
       </goal>
       <check label="CART CLEAR?">
-        <stat ins="crt" ref="cpos" inv="true">12</stat>
-        <stat ins="crt" ref="cpos" inv="true">11</stat>
+        <stat ins="crt" ref="cps" inv="true">12</stat>
+        <stat ins="crt" ref="cps" inv="true">11</stat>
       </check>
       <exec ins="dsi" name="rotin"></exec>
       <wait label="Rotating" retry="20">
@@ -130,11 +130,11 @@
     <command id="lv08to" label="Leave IR from Tag 8 to [2-7]">
       <par>2:7</par>
       <goal label="Leave Cart and Transer Stored?">
-        <stat ins="crt" ref="cpos" inv="true">8</stat>
+        <stat ins="crt" ref="cps" inv="true">8</stat>
         <stat ins="dsi" ref="mtr">BK</stat>
       </goal>
       <check label="CART CLEAR?">
-        <stat ins="crt" ref="cpos">8</stat>
+        <stat ins="crt" ref="cps">8</stat>
         <stat ins="crt" ref="ion">OFF</stat>
       </check>
       <exec ins="crt" name="run">

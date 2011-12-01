@@ -32,7 +32,7 @@
       <pattern class="normal" msg="ON">15</pattern>
       <pattern class="warn" msg="N/A" />
     </table>
-    <table id="jpos">
+    <table id="jlv">
       <pattern class="normal" msg="D">0</pattern>
       <pattern class="normal" msg="L">1</pattern>
       <pattern class="normal" msg="M">2</pattern>

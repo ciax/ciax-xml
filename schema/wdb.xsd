@@ -35,7 +35,10 @@
           <xsd:element ref="wdb:range" />
           <xsd:element ref="wdb:pattern" />
         </xsd:choice>
-        <xsd:element ref="wdb:block" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+          <xsd:element ref="wdb:block" />
+          <xsd:element ref="wdb:block_grp" />
+        </xsd:choice>
         <xsd:element ref="wdb:int" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="wdb:exec" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
@@ -45,14 +48,14 @@
   <!--command-->
   <xsd:element name="onchange">
     <xsd:complexType>
-      <xsd:attribute name="ref" type="xsd:token" use="required" />
+      <xsd:attribute name="var" type="xsd:token" use="required" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="range">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="wdb:rerange">
-          <xsd:attribute name="ref" type="xsd:token" use="required" />
+          <xsd:attribute name="var" type="xsd:token" use="required" />
           <xsd:attribute name="inv" type="xsd:boolean" />
         </xsd:extension>
       </xsd:simpleContent>
@@ -62,13 +65,18 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="ref" type="xsd:token" use="required" />
+          <xsd:attribute name="var" type="xsd:token" use="required" />
           <xsd:attribute name="inv" type="xsd:boolean" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="block" type="wdb:command"></xsd:element>
+  <xsd:element name="block_grp">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:token" use="required" />
+    </xsd:complexType>
+  </xsd:element>
   <xsd:element name="int" type="wdb:command"></xsd:element>
   <xsd:element name="exec" type="wdb:command"></xsd:element>
 </xsd:schema>

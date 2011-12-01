@@ -72,7 +72,7 @@
           <frmcmd name="getcmd" />
         </command>
       </group>
-      <group id="gmov" caption="Moving Commands" column="2">
+      <group id="grun" caption="Run Commands" column="2">
         <command id="run" label="Run to Tag [1-12]">
           <par>1:12</par>
           <frmcmd name="set_tag">
@@ -83,17 +83,7 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
-        <command id="lift" label="Lift Jack Level [0-4]">
-          <par>0:4</par>
-          <frmcmd name="set_pos">
-            <argv>$1</argv>
-          </frmcmd>
-          <frmcmd name="start">
-            <argv>8</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </command>
-        <command id="fwd" label="Run Forward">
+        <command id="runf" label="Run Forward">
           <frmcmd name="set_tag">
             <argv>98</argv>
           </frmcmd>
@@ -102,12 +92,59 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
-        <command id="bak" label="Run Backword">
+        <command id="runb" label="Run Backword">
           <frmcmd name="set_tag">
             <argv>99</argv>
           </frmcmd>
           <frmcmd name="start">
             <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+      </group>
+      <group id="gjak" caption="Jak Commands" column="2">
+        <command id="liftdw" label="Lift Down">
+          <frmcmd name="set_pos">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="liftchg" label="Lift Charge Level">
+          <frmcmd name="set_pos">
+            <argv>4</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="lift1" label="Lift Low Level">
+          <frmcmd name="set_pos">
+            <argv>1</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="lift2" label="Lift Mid Level">
+          <frmcmd name="set_pos">
+            <argv>2</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="lift3" label="Lift High Level">
+          <frmcmd name="set_pos">
+            <argv>3</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
@@ -296,33 +333,31 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="During Issued">
-        <pattern ref="isu" inv="1">0</pattern>
-        <block name="run" />
-        <block name="lift" />
-        <block name="chgon" />
+        <pattern var="isu" inv="1">0</pattern>
+        <block_grp ref="grun" />
+        <block_grp ref="gjak" />
+        <block_grp ref="gchg" />
         <exec name="upd"></exec>
       </event>
       <event label="Command Receive">
-        <onchange ref="acp"></onchange>
-        <pattern ref="acp">0</pattern>
+        <onchange var="acp"></onchange>
+        <pattern var="acp">0</pattern>
         <exec name="clear"></exec>
         <exec name="upd"></exec>
       </event>
       <event label="While Running">
-        <pattern ref="run">1</pattern>
-        <block name="run" />
-        <block name="lift" />
-        <block name="chgon" />
-        <block name="chgoff" />
+        <pattern var="run">1</pattern>
+        <block_grp ref="grun" />
+        <block_grp ref="gjak" />
+        <block_grp ref="gchg" />
         <int name="pause" />
         <exec name="upd"></exec>
       </event>
       <event label="While Jacking">
-        <pattern ref="jak">1</pattern>
-        <block name="run" />
-        <block name="lift" />
-        <block name="chgon" />
-        <block name="chgoff" />
+        <pattern var="jak">1</pattern>
+        <block_grp ref="grun" />
+        <block_grp ref="gjak" />
+        <block_grp ref="gchg" />
         <int name="pause" />
         <exec name="upd" />
       </event>

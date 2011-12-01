@@ -107,6 +107,10 @@ module ModWdb
             cmd << r0.subst(e2.text)
           }
           (hash[name][idx]||=[]) << cmd
+        when :block_grp
+          self[:command][:group][e1['ref']].each{|grp|
+            (hash[:block][idx]||=[]) << [grp]
+          }
         else
           h=e1.to_h
           h.each_value{|v| v.replace(r0.format(v))}

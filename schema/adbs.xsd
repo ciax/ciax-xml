@@ -6,7 +6,7 @@
     <xsd:attribute name="label" type="xsd:token" use="optional" />
   </xsd:attributeGroup>
   <xsd:attributeGroup name="ref_attr">
-    <xsd:attribute name="ref" type="xsd:token" use="required" />
+    <xsd:attribute name="ref" type="xsd:NCName" use="required" />
     <xsd:attribute name="index" type="xsd:token" use="optional" />
     <xsd:attribute name="label" type="xsd:token" use="optional" />
   </xsd:attributeGroup>

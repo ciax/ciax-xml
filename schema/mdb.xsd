@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mdb="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="range.xsd" />
   <xsd:include schemaLocation="command.xsd" />
@@ -31,8 +31,8 @@
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="mdb:par" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+        <xsd:element ref="mdb:goal" minOccurs="0" maxOccurs="1" />
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
-          <xsd:element ref="mdb:break" />
           <xsd:element ref="mdb:check" />
           <xsd:element ref="mdb:wait" />
           <xsd:element ref="mdb:mcr" />
@@ -56,7 +56,7 @@
     </xsd:attribute>
   </xsd:attributeGroup>
   <xsd:element name="par" type="xsd:string"></xsd:element>
-  <xsd:element name="break">
+  <xsd:element name="goal">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="mdb:stat" minOccurs="0" maxOccurs="unbounded" />

@@ -37,6 +37,7 @@ class McrMan
         Msg.err("  Another mcr is still running")
       else
         @mcr.macro(cmd,true)
+        Thread.pass
         @index=1
       end
     end
@@ -78,7 +79,8 @@ class McrMan
   def upd_prompt
     size=@threads.size
     if @index > 0
-      str=Msg.color(current[:cid],5)+"[#@index/#{size}](#{current[:stat]})>"
+      str=Msg.color(current[:cid],5)
+      str << "[#@index/#{size}](#{current[:stat]})>"
       case current[:stat]
       when /wait/
         str << Msg.color("Proceed?(y/n)",9)

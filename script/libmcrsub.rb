@@ -22,7 +22,6 @@ class McrSub < Array
     @threads << Thread.new(cobj){|c|
       @crnt=Thread.current
       @crnt[:obj]=self
-      Thread.pass
       @tid=Time.now.to_i
       @crnt[:cid]=cobj[:cid]
       begin

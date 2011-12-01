@@ -64,10 +64,8 @@ class McrSub < Array
         end
       when 'exec'
         query
-        if ENV['ACT'].to_i > 1
-          @@client[e1['ins']].exe(e1['cmd'])
-          @@client.each{|k,v| v.view.refresh }
-        end
+        @@client.each{|k,v| v.view.refresh }
+        @@client[e1['ins']].exe(e1['cmd']) if ENV['ACT'].to_i > 1
       end
     }
     self

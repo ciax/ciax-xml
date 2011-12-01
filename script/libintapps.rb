@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libinsdb"
-require "libmodprt"
+require "libshprt"
 
 #opt 'c' is client, 's' is server
 class IntApps < Hash
@@ -32,7 +32,7 @@ class IntApps < Hash
         aint.exe(line)
       } if opt['s']
     end
-    aint.extend(ModPrt).init(adb)
+    aint.extend(ShPrt).init(adb)
     self[id]=aint
   end
 end

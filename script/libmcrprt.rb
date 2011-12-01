@@ -8,10 +8,10 @@ module McrPrt
       msg='  '*h['depth']
       case h['type']
       when 'break'
-        msg << Msg.color('Proceed?',6)+":#{h['label']} ->"
+        msg << Msg.color('Proceed?',6)+":#{h['label']} -> "
         msg << Msg.color(h['result'] ? "SKIP" : "OK",2)
       when 'check'
-        msg << Msg.color('Check',6)+":#{h['label']} ->"
+        msg << Msg.color('Check',6)+":#{h['label']} -> "
         if h['result']
           msg << Msg.color("OK",2)
         else
@@ -19,7 +19,7 @@ module McrPrt
           msg << getcond(h)
         end
       when 'wait'
-        msg << Msg.color('Waiting',6)+":#{h['label']} ->"
+        msg << Msg.color('Waiting',6)+":#{h['label']} -> "
         case h['result']
         when nil
           ret=h['retry'].to_i

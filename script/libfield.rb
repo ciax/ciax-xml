@@ -32,7 +32,7 @@ class Field < IoFile
       when Array
         begin
           i=eval(i)
-        rescue SyntaxError
+        rescue SyntaxError,NoMethodError
           Msg.abort("#{i} is not number")
         end
       when nil

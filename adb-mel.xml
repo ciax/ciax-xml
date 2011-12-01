@@ -271,15 +271,14 @@
           <value id="js%d" label="Servo %d" symbol="normal">
             <binary ref="x" index="0" bit="9+$_" inv="true" />
           </value>
-          <value id="jh%d" label="Height %d">
-            <float ref="x" index="8+2*$_" />
-            <float ref="x" index="9+2*$_" formula="$#*65536" />
+          <value id="jh%d" label="High(mm) %d">
+            <float ref="x" index="8+2*$_" formula="$#/100" />
           </value>
           <value id="cn%d" label="Land %d" symbol="warn">
             <binary ref="x" index="19+($_-1)/2" bit="13-($_%2)*8" />
           </value>
-          <value id="lc%d" label="Load %d">
-            <float ref="x" index="$_+47" />
+          <value id="lc%d" label="Load(Kgf) %d">
+            <int ref="x" index="$_+47" />
           </value>
         </repeat>
       </group>

@@ -15,7 +15,7 @@ class HexPack
         case line
         when /^[%#]/,/^$/
         else
-          @list << [ary[0],ary[2]]
+          @list << [ary[0],ary[2],ary[3]]
         end
       end
     }
@@ -25,9 +25,13 @@ class HexPack
     @res[3]=b2i(['run','jak'].any?{|r| @stat[r] == '1'})
     @res[4]=b2i(@prompt.include?('*'))
     @res[6]=''
-    @list.each{|key,len|
+    @list.each{|key,len,type|
       if val=@stat[key]
-        @res[6] << (len=='1' ? val : ("%0#{len}b" % val.to_i))
+        if /FLOAT|INT/ === type || len == '1'
+          @res[6] << val
+        else
+          @res[6] << ("%0#{len}b" % val.to_i)
+        end
       else
         @res[6] << '*' * len.to_i
       end

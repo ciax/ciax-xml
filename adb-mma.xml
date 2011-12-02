@@ -84,16 +84,16 @@
           <string ref="bs" />
         </value>
         <value id="con" label="Contact Sensor" symbol="normal">
-          <string ref="in:4" />
+          <string ref="in" index="4" />
         </value>
         <value id="err" label="Error Code" symbol="err">
           <int ref="err" />
         </value>
         <value id="pos" label="Arm Position" symbol="pos">
-          <string ref="in:0" />
-          <string ref="in:1" />
-          <string ref="in:2" />
-          <string ref="in:3" />
+          <string ref="in" index="0" />
+          <string ref="in" index="1" />
+          <string ref="in" index="2" />
+          <string ref="in" index="3" />
         </value>
         <value id="abs" label="ABS position" symbol="abs">
           <float ref="p" />
@@ -102,7 +102,7 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="On Motion">
-        <pattern ref="bs">1</pattern>
+        <pattern var="bs">1</pattern>
         <block name="gf" />
         <block name="gr" />
         <block name="gw" />
@@ -111,8 +111,8 @@
         <exec name="updp"></exec>
       </event>
       <event label="Reset Config">
-        <onchange ref="bs"></onchange>
-        <pattern ref="bs">0</pattern>
+        <onchange var="bs"></onchange>
+        <pattern var="bs">0</pattern>
         <exec name="defcon"></exec>
       </event>
     </watch>

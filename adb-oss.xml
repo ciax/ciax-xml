@@ -182,14 +182,14 @@
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Moving Jack">
-        <pattern ref="abm">1</pattern>
+        <pattern var="abm">1</pattern>
         <block name="jup"></block>
         <block name="jdw"></block>
         <int name="jstop" />
         <exec name="updjak"></exec>
       </event>
       <event label="Moving InR">
-        <onchange ref="iang"></onchange>
+        <onchange var="iang"></onchange>
         <block name="rhook"></block>
         <block name="runhk"></block>
         <int name="rstop" />

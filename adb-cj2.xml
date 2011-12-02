@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -268,98 +268,98 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cj2">
       <group id="g1" caption="MAIN" column="3">
         <value id="ctl" label="CONTROL" symbol="ctl">
-          <binary bit="6" ref="w:0" />
-          <binary bit="7" ref="w:0" />
+          <binary ref="w" index="0" bit="6" />
+          <binary ref="w" index="0" bit="7" />
         </value>
         <value id="pse" label="PAUSE" symbol="warn">
-          <binary bit="1" ref="w:0" />
+          <binary ref="w" index="0" bit="1" />
         </value>
         <value id="rdy" label="READY" symbol="off-warn">
-          <binary bit="3" ref="w:0" />
+          <binary ref="w" index="0" bit="3" />
         </value>
         <value id="err" label="ERROR CODE" symbol="err">
           <int ref="err" />
         </value>
         <value id="emg" label="EMG STOP" symbol="alarm">
-          <binary bit="0" ref="w:0" />
+          <binary ref="w" index="0" bit="0" />
         </value>
       </group>
       <group id="g2" caption="ACTION STAT" column="3">
         <value id="exe" label="EXECUTING" symbol="nonzero">
-          <int ref="c:0" />
-          <int ref="c:1" />
-          <int ref="c:2" />
-          <int ref="c:3" />
+          <int ref="c" index="0" />
+          <int ref="c" index="1" />
+          <int ref="c" index="2" />
+          <int ref="c" index="3" />
         </value>
         <value id="run" label="RUNNING" symbol="warn">
-          <binary bit="15" ref="w:0" />
+          <binary ref="w" index="0" bit="15" />
         </value>
         <value id="cmp" label="COMPLETE" symbol="warn">
-          <binary bit="14" ref="w:0" />
+          <binary ref="w" index="0" bit="14" />
         </value>
       </group>
       <group id="g3" caption="FIX Flange" column="3">
         <value id="fis" label="Attach" symbol="ist">
-          <binary bit="0" ref="w:2" />
-          <binary bit="1" ref="w:2" />
-          <binary bit="2" ref="w:2" />
-          <binary bit="3" ref="w:2" />
+          <binary ref="w" index="2" bit="0" />
+          <binary ref="w" index="2" bit="1" />
+          <binary ref="w" index="2" bit="2" />
+          <binary ref="w" index="2" bit="3" />
         </value>
         <value id="fhk" label="Hook" symbol="hook">
-          <binary bit="0" ref="w:1" />
-          <binary bit="1" ref="w:1" />
+          <binary ref="w" index="1" bit="0" />
+          <binary ref="w" index="1" bit="1" />
         </value>
         <value id="fjb" label="Jack Bolt" symbol="jack">
-          <binary bit="14" ref="w:1" />
-          <binary bit="15" ref="w:1" />
+          <binary ref="w" index="1" bit="14" />
+          <binary ref="w" index="1" bit="15" />
         </value>
       </group>
       <group id="g4" caption="MOV Flange" column="3">
         <value id="mis" label="Attach" symbol="ist">
-          <binary bit="0" ref="w:6" />
-          <binary bit="1" ref="w:6" />
-          <binary bit="2" ref="w:6" />
-          <binary bit="3" ref="w:6" />
+          <binary ref="w" index="6" bit="0" />
+          <binary ref="w" index="6" bit="1" />
+          <binary ref="w" index="6" bit="2" />
+          <binary ref="w" index="6" bit="3" />
         </value>
         <value id="mhk" label="Hook" symbol="hook">
-          <binary bit="0" ref="w:5" />
-          <binary bit="1" ref="w:5" />
+          <binary ref="w" index="5" bit="0" />
+          <binary ref="w" index="5" bit="1" />
         </value>
         <value id="mjb" label="Jack Bolt" symbol="jack">
-          <binary bit="14" ref="w:5" />
-          <binary bit="15" ref="w:5" />
+          <binary ref="w" index="5" bit="14" />
+          <binary ref="w" index="5" bit="15" />
         </value>
         <value id="mrt" label="Rotation" symbol="rot">
-          <binary bit="2" ref="w:5" />
-          <binary bit="3" ref="w:5" />
+          <binary ref="w" index="5" bit="2" />
+          <binary ref="w" index="5" bit="3" />
         </value>
         <value id="mtr" label="Transer" symbol="mov">
-          <binary bit="8" ref="w:6" />
-          <binary bit="6" ref="w:6" />
+          <binary ref="w" index="6" bit="8" />
+          <binary ref="w" index="6" bit="6" />
         </value>
       </group>
       <group id="gp" caption="Power Status" column="3">
         <value id="fpw" label="Fix Inst Power" symbol="off-warn">
-          <binary bit="8" ref="w:9" />
+          <binary ref="w" index="9" bit="8" />
         </value>
         <value id="fph" label="PW Phase" symbol="rst">
-          <binary bit="0" ref="w:10" />
-          <binary bit="1" ref="w:10" />
-          <binary bit="2" ref="w:10" />
+          <binary ref="w" index="10" bit="0" />
+          <binary ref="w" index="10" bit="1" />
+          <binary ref="w" index="10" bit="2" />
         </value>
         <value id="fcc" label="CCD Power" symbol="off-warn">
-          <binary bit="10" ref="w:9" />
+          <binary ref="w" index="9" bit="10" />
         </value>
         <value id="mpw" label="Mov Inst Power" symbol="off-warn">
-          <binary bit="9" ref="w:9" />
+          <binary ref="w" index="9" bit="9" />
         </value>
         <value id="mph" label="PW Phase" symbol="rst">
-          <binary bit="8" ref="w:10" />
-          <binary bit="9" ref="w:10" />
-          <binary bit="10" ref="w:10" />
+          <binary ref="w" index="10" bit="8" />
+          <binary ref="w" index="10" bit="9" />
+          <binary ref="w" index="10" bit="10" />
         </value>
         <value id="mcc" label="CCD Power" symbol="off-warn">
-          <binary bit="11" ref="w:9" />
+          <binary ref="w" index="9" bit="11" />
         </value>
       </group>
       <group id="g5" caption="Z Sensor" column="4">
@@ -376,32 +376,32 @@
       </group>
       <group id="g6" caption="Instrument" column="2">
         <value id="fid" label="Fix Instrument ID" symbol="iid_ac">
-          <int ref="d:8" />
+          <int ref="d" index="8" />
         </value>
         <value id="mid" label="Mov Instrument ID" symbol="iid_ac">
-          <int ref="d:9" />
+          <int ref="d" index="9" />
         </value>
       </group>
       <group id="g7" caption="Charging" column="4">
         <value id="chg" label="CHG Plug" symbol="mov">
-          <binary bit="6" ref="w:2" />
-          <binary bit="7" ref="w:2" />
+          <binary ref="w" index="2" bit="6" />
+          <binary ref="w" index="2" bit="7" />
         </value>
         <value id="ccn" label="CHG Connect" symbol="off-warn">
-          <binary bit="8" ref="w:4" />
+          <binary ref="w" index="4" bit="8" />
         </value>
         <value id="cpw" label="CHG Power" symbol="off-warn">
-          <binary bit="12" ref="w:4" />
+          <binary ref="w" index="4" bit="12" />
         </value>
         <value id="dor" label="Door" symbol="dor">
-          <binary bit="0" ref="w:9" />
-          <binary bit="1" ref="w:9" />
+          <binary ref="w" index="9" bit="0" />
+          <binary ref="w" index="9" bit="1" />
         </value>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="On Motion">
-        <pattern ref="exe" inv="true">0</pattern>
+        <pattern var="exe" inv="true">0</pattern>
         <block name="fhook"></block>
         <block name="funhk"></block>
         <block name="fjup"></block>
@@ -418,8 +418,8 @@
         <exec name="upd"></exec>
       </event>
       <event label="On Completion">
-        <onchange ref="cmp"></onchange>
-        <pattern ref="cmp">1</pattern>
+        <onchange var="cmp"></onchange>
+        <pattern var="cmp">1</pattern>
         <exec name="clear"></exec>
       </event>
     </watch>

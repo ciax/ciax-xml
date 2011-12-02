@@ -88,7 +88,7 @@ class Watch < ExHash
         m=self[:stat][i]
         n.size.times{|j|
           str << "    "+show_res(m[j]['res'],'o','x')+' '
-          str << Msg.color(n[j]['ref'],3)
+          str << Msg.color(n[j]['var'],3)
           str << "  "
           str << "!" if /true|1/ === n[j]['inv']
           str << "(#{n[j]['type']}"
@@ -122,7 +122,7 @@ class Watch < ExHash
     m=(self[:stat][i]||=[])
     rary=[]
     n.size.times{|j|
-      k=n[j]['ref']
+      k=n[j]['var']
       v=(m[j]||={})['val']=@view.stat(k)
       case n[j]['type']
       when 'onchange'

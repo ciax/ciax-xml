@@ -203,7 +203,7 @@
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1" period="3600">
       <repeat from="1" to="6">
         <event label="Moving %d">
-          <pattern ref="r%d">N</pattern>
+          <pattern var="r%d">N</pattern>
           <block name="fw">
             <argv>$_</argv>
           </block>

@@ -126,7 +126,7 @@ module ModWdb
   def init_period(hash)
     hash[:label]=['Periodic']
     hash[:exec]=[[['upd']]]
-    ref={'ref'=>'elapse','type'=>'range'}
+    ref={'var'=>'elapse','type'=>'range'}
     ref['val']=(hash['period']||'300')+':'
     hash[:stat]=[[ref]]
     [:int,:block].each{|k| hash[k]=[nil]}

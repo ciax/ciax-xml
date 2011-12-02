@@ -91,7 +91,7 @@ class McrSub < Array
   def condition(h)
     inv=/true|1/ === h['inv'] ? '!' : false
     crt=h['val']
-    if val=getstat(h['ins'],h['ref'])
+    if val=getstat(h['ins'],h['var'])
       if /[a-zA-Z]/ === crt
         (/#{crt}/ === val) ^ inv
       else
@@ -101,10 +101,10 @@ class McrSub < Array
   end
 
   # client is forced to be localhost
-  def getstat(ins,ref)
+  def getstat(ins,var)
     view=@@client[ins].view.load
     if last['update']=view.update?
-      view['msg'][ref]||view['stat'][ref]
+      view['msg'][var]||view['stat'][var]
     end
   end
 

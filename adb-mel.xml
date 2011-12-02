@@ -103,7 +103,7 @@
         </command>
       </group>
       <group id="gjak" caption="Jak Commands" column="2">
-        <command id="liftdw" label="Lift Down">
+        <command id="liftdw" label="Lift Down Level">
           <frmcmd name="set_pos">
             <argv>0</argv>
           </frmcmd>

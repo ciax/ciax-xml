@@ -6,6 +6,7 @@ require "libintapps"
 class Broken < RuntimeError;end
 
 class McrSub < Array
+  ACT=ENV['ACT'].to_i
   @@client=IntApps.new
 
   def initialize(cobj,threads=[])
@@ -64,7 +65,7 @@ class McrSub < Array
       when 'exec'
         query
         @@client.each{|k,v| v.view.refresh }
-        @@client[e1['ins']].exe(e1['cmd']) if ENV['ACT'].to_i > 1
+        @@client[e1['ins']].exe(e1['cmd']) if ACT > 1
       end
     }
     self
@@ -72,13 +73,13 @@ class McrSub < Array
 
   def query
     @crnt[:stat]="wait"
-    sleep
+    sleep if ENV['ACT'] && ACT < 3
     @crnt[:stat]="run"
   end
 
   def judge(msg,e)
     last['result']=(e['retry']||1).to_i.times{|n|
-      sleep 1 if n > 0
+      sleep 1 if ACT > 0 && n > 0
       last['retry']=n
       if c=e['any']
         c.any?{|h| h['res']=condition(h)} && break
@@ -108,17 +109,8 @@ class McrSub < Array
     end
   end
 
-  def sleep(n=nil)
-    return n unless ENV['ACT']
-    if n
-      Kernel.sleep n
-    else
-      Kernel.sleep
-    end
-  end
-
   def error
-    return unless ENV['ACT']
+    return unless ACT > 1
     raise(UserError)
   end
 end

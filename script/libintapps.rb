@@ -3,11 +3,10 @@ require "libmsg"
 require "libinsdb"
 require "libshprt"
 
-#opt 'c' is client, 's' is server
+#opt 'c' is client, 's' is server, 'd' is dummy (frmsim)
 class IntApps < Hash
-  def initialize(par=[])
-    Msg.type?(par,Array)
-    super(){|h,k| add(k,{'c'=>true},par) }
+  def initialize(host=nil)
+    super(){|h,k| add(k,{'c'=>true},host) }
   end
 
   def setdef(id)
@@ -15,18 +14,17 @@ class IntApps < Hash
     self
   end
 
-  def add(id,opt={'c'=>true},par=['localhost'])
+  def add(id,opt={'c'=>true},host='localhost')
     Msg.type?(opt,Hash)
-    Msg.type?(par,Array)
     adb=InsDb.new(id).cover_app
     if opt['c']
       require "libappcl"
-      aint=AppCl.new(adb,par.first)
+      aint=AppCl.new(adb,host)
     else
       require "libintfrms"
       require "libappsv"
       require 'libserver'
-      fint=IntFrms.new.add(id,opt,par)[id]
+      fint=IntFrms.new.add(id,opt,host)[id]
       aint=AppSv.new(adb,fint)
       Server.new(aint.port,aint.prompt){|line|
         aint.exe(line)

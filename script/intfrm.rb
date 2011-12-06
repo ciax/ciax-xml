@@ -3,12 +3,12 @@ require "optparse"
 require "libinsdb"
 require "libintfrms"
 
-opt=ARGV.getopts("cs")
-id,*cobj=ARGV
+opt=ARGV.getopts("cds")
+id,host=ARGV
 begin
-  fint=IntFrms.new.add(id,opt,cobj)[id]
+  fint=IntFrms.new.add(id,opt,host)[id]
 rescue UserError
-  Msg.usage("(-cs) [id] (host|iocmd)","-s:server, -c:client")
+  Msg.usage("(-csd) [id] (host)","-s:server, -c:client, -d:dummy")
 end
 sleep if opt["s"]
 require 'libshell'

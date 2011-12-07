@@ -65,7 +65,7 @@ class McrSub < Array
       when 'exec'
         query
         @@client.each{|k,v| v.view.refresh }
-        @@client[e1['ins']].exe(e1['cmd']) if ACT > 1
+        @@client[e1['ins']].exe(e1['cmd'])
       end
     }
     self
@@ -103,7 +103,19 @@ class McrSub < Array
 
   # client is forced to be localhost
   def getstat(ins,var)
-    view=@@client[ins].view.load
+    if @@client.key?(ins)
+      view=@@client[ins].view.load
+    else
+      case ACT
+      when 0
+        int=@@client.add(ins,{'t'=>1})
+      when 1
+        int=@@client.add(ins,{'d'=>1})
+      else
+        int=@@client
+      end
+      view=int[ins].view.load
+    end
     if last['update']=view.update?
       view['msg'][var]||view['stat'][var]
     end

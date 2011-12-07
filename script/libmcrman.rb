@@ -10,7 +10,7 @@ class McrMan
   # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
   def initialize(id)
     @cobj=Command.new(McrDb.new(id))
-    flg=['test','local','exe'][ENV['ACT'].to_i]
+    flg=['test','sim','exe'][ENV['ACT'].to_i]
     @id="#{id}(#{flg})"
     @prompt="#@id[]>"
     @index=0

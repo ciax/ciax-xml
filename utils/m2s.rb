@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
-require "libmodexh"
-
+require "libmsg"
 abort "Usage: m2s marshal_file" if STDIN.tty? && ARGV.size < 1
 
-puts Marshal.load(gets(nil)).extend(ModExh)
+puts Msg.view_struct(Marshal.load(gets(nil)))

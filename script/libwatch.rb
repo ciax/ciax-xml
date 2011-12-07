@@ -3,7 +3,70 @@ require 'libmsg'
 require 'libexhash'
 require 'librerange'
 require 'libelapse'
-require 'yaml'
+require 'json'
+
+module WatchPrt
+  def to_s
+    str=''
+    if @wst.size.times{|i|
+        res=self[:active].include?(i)
+        str << "  "+Msg.color(@wdb[:label][i],6)+"\t: "
+        str << show_res(res)+"\n"
+        n=@wst[i]
+        m=self[:stat][i]
+        n.size.times{|j|
+          str << "    "+show_res(m[j]['res'],'o','x')+' '
+          str << Msg.color(n[j]['var'],3)
+          str << "  "
+          str << "!" if /true|1/ === n[j]['inv']
+          str << "(#{n[j]['type']}"
+          if n[j]['type'] == 'onchange'
+            str << "/last=#{m[j]['last'].inspect},"
+            str << "now=#{m[j]['val'].inspect}"
+          else
+            str << "=#{n[j]['val'].inspect},"
+            str << "actual=#{m[j]['val'].inspect}"
+          end
+          str << ")\n"
+        }
+      } > 0
+      str << "  "+Msg.color("Last update",2)+"\t: #{@elapse}\n"
+      str << "  "+Msg.color("Blocked",2)+"\t: #{self[:block]}\n"
+      str << "  "+Msg.color("Interrupt",2)+"\t: #{self[:int]}\n"
+      str << "  "+Msg.color("Issuing",2)+"\t: #{self[:exec]}\n"
+    end
+    str
+  end
+end
+
+module WatchLog
+  def startlog(id,ver=0)
+    if id && ! ENV.key?('NOLOG')
+      @logfile=VarDir+"/watch_#{id}_v#{ver.to_i}.log"
+      @v.msg{"Init/WatchLog Start (#{id}/Ver.#{ver.to_i})"}
+      @last=[]
+    end
+    self
+  end
+
+  def stoplog
+    @logfile=nil
+    self
+  end
+
+  def upd
+    super
+    if @logfile
+      @v.msg{"Watch Logging"}
+      unless @last == self[:active]
+        @last=self[:active].dup
+        line="#{self['time']}\t#{JSON.dump(@last)}\n"
+        open(@logfile,'a') {|f| f << line }
+      end
+    end
+    self
+  end
+end
 
 class Watch < ExHash
   def initialize(adb,view)
@@ -78,38 +141,6 @@ class Watch < ExHash
     self
   end
 
-  def to_s
-    str=''
-    if @wst.size.times{|i|
-        res=self[:active].include?(i)
-        str << "  "+Msg.color(@wdb[:label][i],6)+': '
-        str << show_res(res)+"\n"
-        n=@wst[i]
-        m=self[:stat][i]
-        n.size.times{|j|
-          str << "    "+show_res(m[j]['res'],'o','x')+' '
-          str << Msg.color(n[j]['var'],3)
-          str << "  "
-          str << "!" if /true|1/ === n[j]['inv']
-          str << "(#{n[j]['type']}"
-          if n[j]['type'] == 'onchange'
-            str << "/last=#{m[j]['last'].inspect},"
-            str << "now=#{m[j]['val'].inspect}"
-          else
-            str << "=#{n[j]['val'].inspect},"
-            str << "actual=#{m[j]['val'].inspect}"
-          end
-          str << ")\n"
-        }
-      } > 0
-      str << "  "+Msg.color("Last update",5)+":#{@elapse}\n"
-      str << "  "+Msg.color("Block",5)+": #{self[:block]}\n"
-      str << "  "+Msg.color("Interrupt",5)+": #{self[:int]}\n"
-      str << "  "+Msg.color("Issuing",5)+": #{self[:exec]}\n"
-    end
-    str
-  end
-
   private
   def show_res(res,t=nil,f=nil)
     res ? Msg.color(t||res,2) : Msg.color(f||res,1)
@@ -168,6 +199,6 @@ if __FILE__ == $0
   # For on change
   view.set(hash)
   # Print Wdb
-  puts Msg.view_struct(watch.upd)
-  puts watch
+  puts watch.upd
+  puts watch.extend(WatchPrt)
 end

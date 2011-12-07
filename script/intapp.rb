@@ -4,9 +4,9 @@ require "libinsdb"
 require "libintapps"
 
 opt=ARGV.getopts("scd")
-id,*cobj=ARGV
+id,host=ARGV
 begin
-  aint=IntApps.new.add(id,opt,cobj)
+  aint=IntApps.new.add(id,opt,host)[id]
 rescue UserError
   Msg.usage('(-scd) [id] (host)','-s:server, -c:client, -d:dummy')
 end

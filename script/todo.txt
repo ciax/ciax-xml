@@ -15,7 +15,6 @@ mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
 mcr: macro log
-wdb: watch status log
 crt: jack table edit interface (sql+web)
 
 ***UPGRADE
@@ -66,6 +65,7 @@ exadbc:need to verify frame commands(11/3)
 wdb: show watch status in shell(11/3)
 shell: toggle status display mode(view,stat,watch)(11/3)
 using sqlite for logging stat
+wdb: watch status log[12/7]
 
 ***DISCARD
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain

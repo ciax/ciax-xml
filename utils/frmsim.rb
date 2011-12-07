@@ -2,24 +2,39 @@
 abort "Usage: frmsim [id]" if ARGV.size < 1
 id=ARGV.shift
 ARGV.clear
+
+def find_snd(fd,input,fname)
+  while line=fd.gets
+    snd=line.split("\t")
+    begin
+      str=eval(snd[2])
+    rescue Exception
+      next
+    end
+    if str == input
+      STDERR.print "#{fname}:snd(#{fd.lineno})"
+      rcv=fd.gets.split("\t")
+      if /rcv/ === rcv[1]
+        STDERR.print ":rcv(#{fd.lineno})"
+        sleep rcv[0].to_i-snd[0].to_i
+        STDOUT.syswrite(eval(rcv[2]))
+      end
+      STDERR.puts
+      break 1
+    end
+  end
+end
+
 begin
-  open(ENV['HOME']+"/.var/device_#{id}_2011.log"){|fd|
-    loop{
-      select([STDIN])
-      input=STDIN.sysread(1024)
-      while line=fd.gets
-        cl=line.split("\t")
-        if eval(cl[2]) == input
-          nl=fd.gets.split("\t")
-          if /rcv/ === nl[1]
-            sleep nl[0].to_i-cl[0].to_i
-            STDOUT.syswrite(eval(nl[2]))
-          end
-          break 1
-        end
-      end || fd.rewind
+  10.times{
+    Dir.glob(ENV['HOME']+"/.var/device_#{id}*.log").each{|fname|
+      /#{id}[^\.]*/ =~ fname
+      base=$&
+      open(fname){|fd|
+        select([STDIN]) while find_snd(fd,STDIN.sysread(1024),base)
+        warn "no more line"
+      }
     }
   }
-rescue Exception
-  exit
+rescue EOFError
 end

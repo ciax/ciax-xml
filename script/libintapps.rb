@@ -3,10 +3,11 @@ require "libmsg"
 require "libinsdb"
 require "libshprt"
 
-#opt 'c' is client, 's' is server, 'd' is dummy (frmsim)
+#opt 'c' is client, 's' is server
+# 'd' is dummy (frmsim), 't' is check cmd only
 class IntApps < Hash
-  def initialize(host=nil)
-    super(){|h,k| add(k,{'c'=>true},host) }
+  def initialize
+    super(){|h,k| int(k,{'c'=>true}) }
   end
 
   def setdef(id)
@@ -14,10 +15,19 @@ class IntApps < Hash
     self
   end
 
-  def add(id,opt={'c'=>true},host='localhost')
+  def add(id,opt={'t'=>true},host=nil)
     Msg.type?(opt,Hash)
+    self[id]=int(id,opt,host)
+    self
+  end
+
+  private
+  def int(id,opt,host)
     adb=InsDb.new(id).cover_app
-    if opt['c']
+    if opt['t']
+      require "libapp"
+      aint=App.new(adb)
+    elsif opt['c']
       require "libappcl"
       aint=AppCl.new(adb,host)
     else
@@ -31,7 +41,6 @@ class IntApps < Hash
       } if opt['s']
     end
     aint.extend(ShPrt).init(adb)
-    self[id]=aint
   end
 end
 

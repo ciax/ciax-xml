@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libcommand"
+require "librview"
 class App
   attr_reader :view,:prompt,:port
   def initialize(adb)
@@ -7,6 +8,11 @@ class App
     @cobj=Command.new(adb[:command])
     @prompt=adb['id']+'>'
     @port=adb['port']
+    @view=Rview.new(adb['id']).load
+  end
+
+  def exe(cmd)
+    @cobj.set(cmd) unless cmd.empty?
   end
 
   def commands

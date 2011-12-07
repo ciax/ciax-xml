@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 require "libintapps"
 
-opt=ARGV.getopts("scd")
+opt=ARGV.getopts("scdt")
 id,host=ARGV
 begin
   aint=IntApps.new.add(id,opt,host)[id]

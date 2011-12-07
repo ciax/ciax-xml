@@ -12,7 +12,7 @@ class Wview < Rview
     @stat=AppStat.new(adb,field).upd
     super(id=adb['id'])
     @sym=SymStat.new(adb,@stat).upd
-    @sql=SqlExe.new(id,@stat)
+    @sql=SqlExe.new(id,@stat) unless field.key?('dmy')
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }
@@ -36,7 +36,7 @@ class Wview < Rview
     time=@stat['time'].to_f
     if time > @lastsave
       super
-      @sql.upd.flush
+      @sql.upd.flush if @sql
       @lastsave=time
     end
     self
@@ -57,4 +57,3 @@ if __FILE__ == $0
     Msg.usage "[id]"
   end
 end
-

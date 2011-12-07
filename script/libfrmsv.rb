@@ -10,10 +10,15 @@ class FrmSv < Frm
   def initialize(fdb,iocmd=[])
     super(fdb)
     @v=Msg::Ver.new("frmobj",3)
+    @field=FrmRsp.new(fdb,@cobj).load
     client= Msg.type?(iocmd,Array).empty? ? fdb['iocmd'].split(' ') : iocmd
     @io=IoCmd.new(client,fdb['wait'],1).extend(IoLog)
-    @io.startlog(fdb['id'],fdb['version']) if iocmd.empty?
-    @field=FrmRsp.new(fdb,@cobj)
+    if iocmd.empty?
+      @io.startlog(fdb['id'],fdb['version'])
+      @field.delete('dmy')
+    else
+      @field['dmy']=true
+    end
     @fc=FrmCmd.new(fdb,@cobj,@field)
     cl=Msg::List.new("Internal Command")
     cl.add('set'=>"Set Value [key(:idx)] (val)")
@@ -22,7 +27,6 @@ class FrmSv < Frm
     cl.add('save'=>"Save Field [key,key...] (tag)")
     cl.add('sleep'=>"Sleep [n] sec")
     @cobj.list.push(cl)
-    @field.load
   rescue Errno::ENOENT
     Msg.warn(" --- no json file")
   end

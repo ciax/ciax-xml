@@ -48,7 +48,7 @@ class FrmSv < Frm
       msg='Done'
       sleep cmd[1].to_i
     else
-      cid=@cobj.set(cmd)[:cid]
+      cid=super[:cid]
       @v.msg{"Issue[#{cid}]"}
       @io.snd(@fc.getframe,cid)
       @field.upd{@io.rcv(cid)}.save

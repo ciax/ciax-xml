@@ -32,7 +32,7 @@ class Sql < Array
   end
 end
 
-class SqlExe < Sql
+class SqLog < Sql
   def initialize(id,ver,stat,dbname='ciax')
     super(id,ver,stat)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]

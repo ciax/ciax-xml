@@ -24,7 +24,8 @@ class AppSv < App
     }
     @watch=Watch.new(adb,@view).thread{|cmd|
       @buf.send(2){frmcmds(cmd)}
-    }.extend(WatchPrt).extend(WatchLog).startlog(@id,adb['version'])
+    }.extend(WatchPrt)
+    @watch.extend(WatchLog).startlog(@id,@view['ver']) if @view.key?('ver')
     cl=Msg::List.new("Internal Command",2)
     cl.add('set'=>"[key=val] ..")
     cl.add('flush'=>"Flush Status")

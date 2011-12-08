@@ -11,13 +11,12 @@ class FrmSv < Frm
     super(fdb)
     @v=Msg::Ver.new("frmobj",3)
     @field=FrmRsp.new(fdb,@cobj).load
-    client= Msg.type?(iocmd,Array).empty? ? fdb['iocmd'].split(' ') : iocmd
-    @io=IoCmd.new(client,fdb['wait'],1).extend(IoLog)
-    if iocmd.empty?
-      @io.startlog(fdb['id'],fdb['version'])
-      @field.delete('dmy')
+    if Msg.type?(iocmd,Array).empty?
+      @io=IoCmd.new(fdb['iocmd'].split(' '),fdb['wait'],1)
+      @io.extend(IoLog).startlog(fdb['id'],fdb['version'])
     else
-      @field['dmy']=true
+      @io=IoCmd.new(iocmd,fdb['wait'],1)
+      @field.delete('ver')
     end
     @fc=FrmCmd.new(fdb,@cobj,@field)
     cl=Msg::List.new("Internal Command")

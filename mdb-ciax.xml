@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro">
     <command id="runf" label="Run Forward to Tag">
@@ -127,7 +127,7 @@
       </wait>
     </command>
     <!--Run & Transer-->
-    <command id="lv08to" label="Leave IR from Tag 8 to [2-7]">
+    <command id="r08to" label="Leave IR from Tag 8 to [2-7]">
       <par>2:7</par>
       <goal label="Leave Cart and Transer Stored?">
         <stat ins="crt" var="cps" inv="true">8</stat>

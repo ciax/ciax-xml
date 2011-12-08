@@ -157,10 +157,7 @@ class AppDb < Db
   def cover_frm(nocache=nil)
     require "libfrmdb"
     frm=FrmDb.new(self['frm_type'],nocache)
-    keys.each{|k|
-      frm[k]=self[k] unless Symbol === k
-    }
-    frm
+    frm.deep_update(self)
   end
 end
 

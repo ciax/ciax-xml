@@ -16,14 +16,14 @@ rescue UserError
 end
 if opt['s'] # From remote
   stat=Rview.new(id).load['stat']
-  sql=Sql.new(id,stat).upd
+  sql=Sql.new(id,idb['version'],stat).upd
 else
   adb=idb.cover_app
   fdb=adb.cover_frm
   cobj=Command.new(fdb[:cmdframe])
   field=FrmRsp.new(fdb,cobj)
   stat=AppStat.new(adb,field)
-  sql=Sql.new(id,stat)
+  sql=Sql.new(id,adb['version'],stat)
   if opt['i'] # Initial
     sql.ini
   elsif key=opt['a'] # Alter

@@ -23,7 +23,7 @@ else
   cobj=Command.new(fdb[:cmdframe])
   field=FrmRsp.new(fdb,cobj)
   stat=AppStat.new(adb,field)
-  sql=Sql.new(id,adb['version'],stat)
+  sql=Sql.new(id,adb['app_ver'],stat)
   if opt['i'] # Initial
     sql.ini
   elsif key=opt['a'] # Alter

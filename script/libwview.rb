@@ -9,7 +9,7 @@ class Wview < Rview
   def initialize(adb,field)
     Msg.type?(adb,AppDb)
     Msg.error("No ID in ADB") unless adb.key?('id')
-    self['ver']=adb['version'].to_i if field.key?('ver')
+    self['ver']=adb['app_ver'].to_i if field.key?('ver')
     @stat=AppStat.new(adb,field).upd
     super(id=adb['id'])
     @sym=SymStat.new(adb,@stat).upd

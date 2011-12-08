@@ -8,6 +8,7 @@ class FrmDb < Db
     cache(frm,nocache){|doc|
       update(doc)
       delete('id')
+      self['frm_ver']=delete('version')
       cmd=self[:cmdframe]={}
       rsp=self[:rspframe]={:assign => {}}
       dc=doc.domain('cmdframe')

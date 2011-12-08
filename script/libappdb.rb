@@ -144,6 +144,7 @@ class AppDb < Db
     cache(app,nocache){|doc|
       update(doc)
       delete('id')
+      self['app_ver']=delete('version')
       # Command DB
       self[:command]=init_command(doc.domain('commands'))
       # Status DB
@@ -156,16 +157,22 @@ class AppDb < Db
   def cover_frm(nocache=nil)
     require "libfrmdb"
     frm=FrmDb.new(self['frm_type'],nocache)
-    frm.deep_update(self)
+    keys.each{|k|
+      frm[k]=self[k] unless Symbol === k
+    }
+    frm
   end
 end
 
 if __FILE__ == $0
+  require "optparse"
   begin
-    adb=AppDb.new(ARGV.shift,true)
+    opt=ARGV.getopts("f")
+    db=AppDb.new(ARGV.shift,true)
   rescue SelectID
-    warn "USAGE: #{$0} [id] (key) .."
+    warn "USAGE: #{$0} (-f) [id] (key) .."
     Msg.exit
   end
-  puts adb.path(ARGV)
+  db=db.cover_frm(true) if opt["f"]
+  puts db.path(ARGV)
 end

@@ -13,7 +13,7 @@ class FrmSv < Frm
     @field=FrmRsp.new(fdb,@cobj).load
     if Msg.type?(iocmd,Array).empty?
       @io=IoCmd.new(fdb['iocmd'].split(' '),fdb['wait'],1)
-      @io.extend(IoLog).startlog(fdb['id'],fdb['version'])
+      @io.extend(IoLog).startlog(fdb['id'],fdb['frm_ver'])
     else
       @io=IoCmd.new(iocmd,fdb['wait'],1)
       @field.delete('ver')

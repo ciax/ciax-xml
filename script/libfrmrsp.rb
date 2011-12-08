@@ -10,6 +10,7 @@ class FrmRsp < Field
     @fdb=Msg.type?(fdb,FrmDb)
     @cobj=Msg.type?(par,Command)
     super(fdb['id'])
+    self['ver']=fdb['version']
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
     @fds=rsp[:select]

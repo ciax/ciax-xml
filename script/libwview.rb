@@ -9,10 +9,11 @@ class Wview < Rview
   def initialize(adb,field)
     Msg.type?(adb,AppDb)
     Msg.error("No ID in ADB") unless adb.key?('id')
+    self['ver']=adb['version']
     @stat=AppStat.new(adb,field).upd
     super(id=adb['id'])
     @sym=SymStat.new(adb,@stat).upd
-    @sql=SqlExe.new(id,@stat) unless field.key?('dmy')
+    @sql=SqlExe.new(id,adb['version'],@stat) unless field.key?('dmy')
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }

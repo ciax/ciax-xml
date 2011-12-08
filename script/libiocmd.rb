@@ -17,14 +17,14 @@ module IoLog
   end
 
   def snd(str,id)
-    super(str)
+    super
     append(str,'snd:'+id)
     self
   end
 
   # return array
   def rcv(id)
-    append(super(),'rcv:'+id)
+    append(super,'rcv:'+id)
   end
 
   def self.set_logline(str)
@@ -59,7 +59,7 @@ class IoCmd
     @timeout=timeout
   end
 
-  def snd(str)
+  def snd(str,dmy=nil)
     return if str.to_s.empty?
     sleep @wait
     @v.msg{"Sending #{str.size} byte"}
@@ -69,7 +69,7 @@ class IoCmd
     self
   end
 
-  def rcv
+  def rcv(dmy=nil)
     sleep @wait
     str=reopen{
       select([@f],nil,nil,@timeout) || next

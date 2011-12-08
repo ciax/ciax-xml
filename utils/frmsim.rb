@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
-abort "Usage: frmsim [id]" if ARGV.size < 1
+abort "Usage: frmsim [id] (ver)" if ARGV.size < 1
 id=ARGV.shift
+ver=ARGV.shift
 ARGV.clear
 
 def find_snd(fd,input,fname)
@@ -25,9 +26,10 @@ def find_snd(fd,input,fname)
   end
 end
 
+ver=ver ? "_v#{ver}" : '*'
 begin
   10.times{
-    Dir.glob(ENV['HOME']+"/.var/device_#{id}*.log").each{|fname|
+    Dir.glob(ENV['HOME']+"/.var/device_#{id}#{ver}.log").each{|fname|
       /#{id}[^\.]*/ =~ fname
       base=$&
       open(fname){|fd|

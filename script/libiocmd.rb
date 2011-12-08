@@ -53,8 +53,8 @@ class IoCmd
     @v=Msg::Ver.new(self,1)
     abort " No IO command" if iocmd.to_a.empty?
     @iocmd=Msg.type?(iocmd,Array)
-    @f=IO.popen(@iocmd,'r+')
     @v.msg{"Init/Client:#{iocmd.join(' ')}"}
+    @f=IO.popen(@iocmd,'r+')
     @wait=wait.to_f
     @timeout=timeout
   end

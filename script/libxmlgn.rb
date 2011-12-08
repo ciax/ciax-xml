@@ -6,7 +6,7 @@ require "xml"
 class Xml
   include ModXml
   def initialize(f=nil)
-    @v=Msg::Ver.new("Xml",4)
+    @v=Msg::Ver.new(self,4)
     case f
     when String
       test(?r,f) || raise(SelectID)

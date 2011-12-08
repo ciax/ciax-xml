@@ -6,7 +6,7 @@ require "libiocmd"
 # Rsp Methods
 class FrmRsp < Field
   def initialize(fdb,par)
-    @v=Msg::Ver.new("frm/rsp",3)
+    @v=Msg::Ver.new(self,3)
     @fdb=Msg.type?(fdb,FrmDb)
     @cobj=Msg.type?(par,Command)
     super(fdb['id'])

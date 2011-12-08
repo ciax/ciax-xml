@@ -21,7 +21,7 @@ end
 
 class Elapse < Interval
   def initialize(stat)
-    @v=Msg::Ver.new('elapse',5)
+    @v=Msg::Ver.new(self,5)
     @stat=stat
   end
 

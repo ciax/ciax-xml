@@ -4,7 +4,7 @@ require "socket"
 
 class Server < Thread
   def initialize(port,prompt=nil)
-    @v=Msg::Ver.new("server",1)
+    @v=Msg::Ver.new(self,1)
     @v.msg{"Init/Server:#{port}"}
     super{
       Thread.pass

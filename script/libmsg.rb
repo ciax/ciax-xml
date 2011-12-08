@@ -10,7 +10,11 @@ class Msg
     Start_time=Time.now
     @@base=1
     def initialize(prefix='',color=2)
-      @prefix=prefix.upcase
+      if prefix.instance_of?(String)
+        @prefix=prefix.upcase
+      else
+        @prefix=prefix.class.name
+      end
       @color=color
       @ind=1
       msg{"Initialize Messaging"}

@@ -3,7 +3,7 @@ require "libmsg"
 
 class AppStat < Hash
   def initialize(adb,field)
-    @v=Msg::Ver.new("app/stat",9)
+    @v=Msg::Ver.new(self,9)
     Msg.type?(adb,AppDb)
     @field=Msg.type?(field,Field)
     @ads=adb[:status][:select]

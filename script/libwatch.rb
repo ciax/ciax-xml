@@ -70,7 +70,7 @@ end
 
 class Watch < ExHash
   def initialize(adb,view)
-    @v=Msg::Ver.new("watch",12)
+    @v=Msg::Ver.new(self,12)
     @wdb=Msg.type?(adb,AppDb)[:watch]
     @wst=@wdb[:stat]||[]
     @view=Msg.type?(view,Rview)

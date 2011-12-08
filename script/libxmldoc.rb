@@ -5,7 +5,7 @@ require "libxmlgn"
 class XmlDoc < Hash
   attr_reader :top,:file
   def initialize(dbname = nil,id = nil)
-    @v=Msg::Ver.new("xmldoc",4)
+    @v=Msg::Ver.new(self,4)
     @domain={}
     @file=readxml(dbname,id){|e|
       @top=e

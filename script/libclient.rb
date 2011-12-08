@@ -5,7 +5,7 @@ require "socket"
 class Client
   attr_reader :port,:host
   def initialize(port,host=nil)
-    @v=Msg::Ver.new('client',1)
+    @v=Msg::Ver.new(self,1)
     @udp=UDPSocket.open()
     @port=port
     @host=host||'localhost'

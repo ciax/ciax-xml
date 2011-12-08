@@ -11,7 +11,7 @@ require "thread"
 class AppSv < App
   def initialize(adb,fint)
     super(adb)
-    @v=Msg::Ver.new("appobj",9)
+    @v=Msg::Ver.new(self,9)
     @id=adb['id']
     @fint=Msg.type?(fint,Frm)
     @cobj=AppCmd.new(adb[:command])

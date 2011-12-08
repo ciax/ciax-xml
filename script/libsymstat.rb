@@ -5,7 +5,7 @@ require "libappstat"
 # Status to Wview (String with attributes)
 class SymStat < Hash
   def initialize(adb,stat)
-    @v=Msg::Ver.new('symbol',2)
+    @v=Msg::Ver.new(self,2)
     ads=Msg.type?(adb,AppDb)[:status]
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.new.add('all').add(ads['table'])

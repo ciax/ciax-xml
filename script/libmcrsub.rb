@@ -10,7 +10,7 @@ class McrSub < Array
   @@client=IntApps.new
 
   def initialize(cobj,threads=[])
-    @v=Msg::Ver.new("mcr",9)
+    @v=Msg::Ver.new(self,9)
     @cobj=Msg.type?(cobj,Command)
     @threads=Msg.type?(threads,Array)
   end

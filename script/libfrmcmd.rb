@@ -4,7 +4,7 @@ require "libcommand"
 # Cmd Methods
 class FrmCmd
   def initialize(fdb,par,field)
-    @v=Msg::Ver.new("frm/cmd",3)
+    @v=Msg::Ver.new(self,3)
     Msg.type?(fdb,FrmDb)
     @cobj=Msg.type?(par,Command)
     @field=Msg.type?(field,Field)

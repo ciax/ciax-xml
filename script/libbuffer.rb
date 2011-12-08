@@ -17,7 +17,7 @@ require "thread"
 class Buffer
   attr_reader :issue
   def initialize
-    @v=Msg::Ver.new("buffer",2)
+    @v=Msg::Ver.new(self,2)
     @q=Queue.new
     @tid=nil
     clear

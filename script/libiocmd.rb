@@ -50,7 +50,7 @@ end
 
 class IoCmd
   def initialize(iocmd,wait=0,timeout=nil)
-    @v=Msg::Ver.new('iocmd',1)
+    @v=Msg::Ver.new(self,1)
     abort " No IO command" if iocmd.to_a.empty?
     @iocmd=Msg.type?(iocmd,Array)
     @f=IO.popen(@iocmd,'r+')

@@ -6,7 +6,7 @@ class AppCmd < Command
   include Math
   def initialize(db)
     super
-    @v=Msg::Ver.new("app/cmd",9)
+    @v=Msg::Ver.new(self,9)
   end
 
   def get

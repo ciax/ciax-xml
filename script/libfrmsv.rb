@@ -9,7 +9,7 @@ require "libfrmcmd"
 class FrmSv < Frm
   def initialize(fdb,iocmd=[])
     super(fdb)
-    @v=Msg::Ver.new("frmobj",3)
+    @v=Msg::Ver.new(self,3)
     @field=FrmRsp.new(fdb,@cobj).load
     if Msg.type?(iocmd,Array).empty?
       @io=IoCmd.new(fdb['iocmd'].split(' '),fdb['wait'],1)

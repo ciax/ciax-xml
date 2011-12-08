@@ -5,7 +5,7 @@ require "libappstat"
 
 class Sql < Array
   def initialize(id,ver,stat)
-    @v=Msg::Ver.new(self.class.to_s,6)
+    @v=Msg::Ver.new(self,6)
     @tid="#{id}_v#{ver}"
     @stat=Msg.type?(stat,Hash)
   end

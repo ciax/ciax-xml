@@ -4,9 +4,9 @@ require "libmsg"
 require "libappstat"
 
 class Sql < Array
-  def initialize(table_id,stat)
-    @v=Msg::Ver.new("sql",6)
-    @tid=table_id
+  def initialize(id,ver,stat)
+    @v=Msg::Ver.new(class,6)
+    @tid="#{id}_v#{ver}"
     @stat=Msg.type?(stat,Hash)
   end
 
@@ -33,8 +33,8 @@ class Sql < Array
 end
 
 class SqlExe < Sql
-  def initialize(table_id,stat,dbname='ciax')
-    super(table_id,stat)
+  def initialize(id,ver,stat,dbname='ciax')
+    super(id,ver,stat)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
     unless check_table
       ini.flush
@@ -66,6 +66,6 @@ if __FILE__ == $0
   require "librview"
   Msg.usage "[view_file]" if STDIN.tty? && ARGV.size < 1
   view=Rview.new.load
-  sql=Sql.new(view['id'],view['stat'])
+  sql=Sql.new(view['id'],view['ver'],view['stat'])
   puts sql.upd.to_s
 end

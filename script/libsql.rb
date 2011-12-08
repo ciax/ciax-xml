@@ -5,7 +5,7 @@ require "libappstat"
 
 class Sql < Array
   def initialize(id,ver,stat)
-    @v=Msg::Ver.new(class,6)
+    @v=Msg::Ver.new(self.class.to_s,6)
     @tid="#{id}_v#{ver}"
     @stat=Msg.type?(stat,Hash)
   end
@@ -40,7 +40,7 @@ class SqlExe < Sql
       ini.flush
       @v.msg{"Init/SQL table is created"}
     end
-    @v.msg{"Init/Logging Start"}
+    @v.msg{"Init/Logging Start (#{id}/Ver.#{ver})"}
   end
 
   def check_table

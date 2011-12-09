@@ -21,18 +21,18 @@ class McrSub < Array
     clear
     #Thread.abort_on_exception=true
     @threads << Thread.new(cobj){|c|
-      @crnt=Thread.current
-      @crnt[:obj]=self
-      @tid=Time.now.to_i
-      @crnt[:cid]=c[:cid]
+      crnt=Thread.current
+      crnt[:obj]=self
+      crnt[:tid]=Time.now.to_i
+      crnt[:cid]=c[:cid]
       begin
-        @crnt[:stat]='run'
+        crnt[:stat]='run'
         submacro(c,1)
-        @crnt[:stat]='done'
+        crnt[:stat]='done'
       rescue UserError
-        @crnt[:stat]="error"
+        crnt[:stat]="error"
       rescue Broken
-        @crnt[:stat]="broken"
+        crnt[:stat]="broken"
       end
     }
     self
@@ -45,7 +45,7 @@ class McrSub < Array
   private
   def submacro(cobj,depth,ins=nil)
     cobj[:select].each{|e1|
-      line={'tid'=>@tid,'cid'=>cobj[:cid],'depth'=>depth}
+      line={'tid'=>cobj[:tid],'cid'=>cobj[:cid],'depth'=>depth}
       line.update(e1).delete('stat')
       line['ins']||=ins
       push(line)
@@ -88,7 +88,8 @@ class McrSub < Array
   def condition(h)
     inv=/true|1/ === h['inv'] ? '!' : false
     crt=h['val']
-    if val=h['res']=getstat(h['ins'],h['var'])
+    if val=getstat(h['ins'],h['var'])
+      h['res']=val
       if /[a-zA-Z]/ === crt
         (/#{crt}/ === val) ^ inv
       else
@@ -118,9 +119,9 @@ class McrSub < Array
   end
 
   def exe(cmd)
-    @crnt[:stat]="wait"
+    Thread.current[:stat]="wait"
     sleep if ENV['ACT'] && ACT < 3
-    @crnt[:stat]="run"
+    Thread.current[:stat]="run"
     @@client.each{|k,v| v.view.refresh }
     @@client[last['ins']].exe(cmd)
   end

@@ -24,10 +24,10 @@ class McrSub < Array
       @crnt=Thread.current
       @crnt[:obj]=self
       @tid=Time.now.to_i
-      @crnt[:cid]=cobj[:cid]
+      @crnt[:cid]=c[:cid]
       begin
         @crnt[:stat]='run'
-        submacro(cobj,1)
+        submacro(c,1)
         @crnt[:stat]='done'
       rescue UserError
         @crnt[:stat]="error"
@@ -43,10 +43,11 @@ class McrSub < Array
   end
 
   private
-  def submacro(cobj,depth)
+  def submacro(cobj,depth,ins=nil)
     cobj[:select].each{|e1|
       line={'tid'=>@tid,'cid'=>cobj[:cid],'depth'=>depth}
-      line.update(e1)
+      line.update(e1).delete('stat')
+      line['ins']||=ins
       push(line)
       case e1['type']
       when 'break'
@@ -60,44 +61,40 @@ class McrSub < Array
           clone.clear.macro(e1['cmd'])
         else
           subc=cobj.dup.set(e1['cmd'])
-          submacro(subc,depth+1)
+          submacro(subc,depth+1,line['ins'])
         end
       when 'exec'
-        query
-        @@client.each{|k,v| v.view.refresh }
-        @@client[e1['ins']].exe(e1['cmd'])
+        exe(e1['cmd'])
       end
     }
     self
-  end
-
-  def query
-    @crnt[:stat]="wait"
-    sleep if ENV['ACT'] && ACT < 3
-    @crnt[:stat]="run"
   end
 
   def judge(msg,e)
     last['result']=(e['retry']||1).to_i.times{|n|
       sleep 1 if ACT > 0 && n > 0
       last['retry']=n
-      if c=e['any']
-        c.any?{|h| h['res']=condition(h)} && break
-      elsif c=e['all']
-        c.all?{|h| h['res']=condition(h)} && break
-      end
+      fault={}
+      e['stat'].all?{|h|
+        ['var','ins','val'].each{|k|
+          fault[k]=h[k]||last[k]
+        }
+        condition(fault)
+      } && break
+      last['fault']=fault
     }.nil?
   end
 
   def condition(h)
     inv=/true|1/ === h['inv'] ? '!' : false
     crt=h['val']
-    if val=getstat(h['ins'],h['var'])
+    if val=h['res']=getstat(h['ins'],h['var'])
       if /[a-zA-Z]/ === crt
         (/#{crt}/ === val) ^ inv
       else
         (crt == val) ^ inv
       end
+    else
     end
   end
 
@@ -119,6 +116,14 @@ class McrSub < Array
     if last['update']=view.update?
       view['msg'][var]||view['stat'][var]
     end
+  end
+
+  def exe(cmd)
+    @crnt[:stat]="wait"
+    sleep if ENV['ACT'] && ACT < 3
+    @crnt[:stat]="run"
+    @@client.each{|k,v| v.view.refresh }
+    @@client[last['ins']].exe(cmd)
   end
 
   def error

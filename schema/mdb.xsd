@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mdb="http://ciax.sum.naoj.org/ciax-xml/mdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="range.xsd" />
   <xsd:include schemaLocation="command.xsd" />
@@ -85,7 +85,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="ins" type="xsd:token" use="required" />
+          <xsd:attribute name="ins" type="xsd:token" />
           <xsd:attribute name="var" type="xsd:token" use="required" />
           <xsd:attribute name="inv" type="xsd:boolean" />
           <xsd:attribute name="label" type="xsd:token" />
@@ -98,6 +98,7 @@
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
           <xsd:attribute name="async" type="xsd:boolean" />
+          <xsd:attribute name="ins" type="xsd:token" />
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
@@ -106,7 +107,7 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
-          <xsd:attribute name="ins" type="xsd:token" use="required" />
+          <xsd:attribute name="ins" type="xsd:token" />
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>

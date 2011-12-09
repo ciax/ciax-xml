@@ -44,53 +44,53 @@
       </wait>
     </command>
     <!--Jack Command-->
-    <command id="ju0d" label="InR0 Jkup at FIX.IR">
+    <command id="fju0" label="InR0 Jkup at FIX">
       <goal label="Jack DW?">
-        <stat ins="dsi" var="fjb">DW</stat>
+        <stat var="fjb">DW</stat>
       </goal>
       <check label="HOOK?">
-        <stat ins="dsi" var="fis">ON</stat>
-        <stat ins="dsi" var="fhk">HOOK</stat>
+        <stat var="fis">ON</stat>
+        <stat var="fhk">HOOK</stat>
       </check>
-      <exec ins="dsi" name="fjdw"></exec>
+      <exec name="fjdw"></exec>
       <wait label="Jacking" retry="40">
-        <stat ins="dsi" var="exe">OFF</stat>
+        <stat var="exe">OFF</stat>
       </wait>
     </command>
-    <command id="jd0d" label="InR0 Jkdw at FIX.IR">
+    <command id="fjd0" label="InR0 Jkdw at FIX">
       <goal label="Instrument ON?">
-        <stat ins="dsi" var="fis">ON</stat>
+        <stat var="fis">ON</stat>
       </goal>
       <check label="HOOK?">
-        <stat ins="dsi" var="fhk">HOOK</stat>
+        <stat var="fhk">HOOK</stat>
       </check>
-      <exec ins="dsi" name="fjup"></exec>
+      <exec name="fjup"></exec>
       <wait label="Jacking" retry="40">
-        <stat ins="dsi" var="exe">OFF</stat>
+        <stat var="exe">OFF</stat>
       </wait>
     </command>
-    <command id="ju4d" label="InR4 Jkup at FIX.IR">
+    <command id="fju4" label="InR4 Jkup at FIX.IR">
       <goal label="Jack Up?">
-        <stat ins="dsi" var="fjb">UP</stat>
+        <stat var="fjb">UP</stat>
       </goal>
       <check label="UNHOOK?">
-        <stat ins="dsi" var="fhk">UNHK</stat>
+        <stat var="fhk">UNHK</stat>
       </check>
-      <exec ins="dsi" name="fjup"></exec>
+      <exec name="fjup"></exec>
       <wait label="Jacking" retry="40">
-        <stat ins="dsi" var="exe">OFF</stat>
+        <stat var="exe">OFF</stat>
       </wait>
     </command>
-    <command id="jd4d" label="InR4 Jkdw at FIX.IR">
+    <command id="fjd4" label="InR4 Jkdw at FIX.IR">
       <goal label="Jack Dw?">
-        <stat ins="dsi" var="fjb">DW</stat>
+        <stat var="fjb">DW</stat>
       </goal>
       <check label="UNHOOK?">
-        <stat ins="dsi" var="fhk">UNHK</stat>
+        <stat var="fhk">UNHK</stat>
       </check>
-      <exec ins="dsi" name="fjdw"></exec>
+      <exec name="fjdw"></exec>
       <wait label="Jacking" retry="40">
-        <stat ins="dsi" var="exe">OFF</stat>
+        <stat var="exe">OFF</stat>
       </wait>
     </command>
     <!--Jack & Rotate-->
@@ -106,7 +106,7 @@
       <wait label="Jacking" retry="40">
         <stat ins="dsi" var="exe">OFF</stat>
       </wait>
-      <mcr name="ju0d" />
+      <mcr ins="dsi" name="fju0" />
     </command>
     <!--Transer-->
     <command id="trsi" label="MOV.IR Trans Backward w/INST">

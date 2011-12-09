@@ -42,8 +42,8 @@ module McrPrt
 
   private
   def getcond(h)
+    c=h['fault']
     msg='  '*(h['depth']+1)
-    c=h['all'].last
     msg << Msg.color("#{c['ins']}:#{c['var']}",3)+" is not #{c['val']}"
   end
 end

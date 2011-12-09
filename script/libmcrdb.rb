@@ -40,9 +40,8 @@ class McrDb < Db
 
   private
   def mkcond(e1,attr)
-    join=e1['join']||'all'
     e1.each{|e2|
-      (attr[join]||=[]) << e2.to_h
+      (attr['stat']||=[]) << e2.to_h
     }
     attr
   end

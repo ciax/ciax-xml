@@ -23,12 +23,12 @@
       included in adb      
 
 ## String restriction ##
-adb//command@id -> never use ':'
+  adb//command@id -> never use ':'
 
 ### Substitution Strings (implicit conversion) ###
  ## Process order: repeat -> parameter -> status -> formula -> format(w/eval)
 
- $_ $a..z
+ $_ $` $a..z
     description : substitute sequence number(in repeat)
     usable: fdb//cmdframe/repeat/[char,string]
             --

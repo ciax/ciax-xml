@@ -25,7 +25,9 @@ Do not run "intfrm","intapp" and "inthex" simultaneously with option -s
 frmsh (intfrm -t)/ used when running site is different from intapp
 
 ## Combination of Server/Clients ##
+  =========================================
   Client    App        Frm       IoCmd
+  =========================================
   -         -          Shell     simulation
   -         -          Shell     socat
   -         Shell      -         simulation
@@ -40,7 +42,9 @@ frmsh (intfrm -t)/ used when running site is different from intapp
 
 ## Action mode in Macro ##
   set ACT environment with number [0-3]
+  =============================================
   ACT   Command    Status    Quely   Check  Log
+  =============================================
   nil   check      file      -       -      -
   0     check      file      o       -      -
   1     simu       file      o       o      -

@@ -44,6 +44,6 @@ module McrPrt
   def getcond(h)
     msg='  '*(h['depth']+1)
     c=h['all'].last
-    msg << Msg.color("#{c['ins']}:#{c['ref']}",3)+" is not #{c['val']}"
+    msg << Msg.color("#{c['ins']}:#{c['var']}",3)+" is not #{c['val']}"
   end
 end

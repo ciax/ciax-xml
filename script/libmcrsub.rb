@@ -94,7 +94,6 @@ class McrSub < Array
       else
         (crt == val) ^ inv
       end
-    else
     end
   end
 

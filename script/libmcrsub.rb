@@ -9,8 +9,9 @@ class McrSub < Array
   ACT=ENV['ACT'].to_i
   @@client=IntApps.new
 
-  def initialize(cobj,threads=[])
+  def initialize(cobj,threads=[],int=nil)
     @v=Msg::Ver.new(self,9)
+    @int=int
     @cobj=Msg.type?(cobj,Command)
     @threads=Msg.type?(threads,Array)
   end
@@ -118,7 +119,7 @@ class McrSub < Array
 
   def exe(cmd,ins)
     Thread.current[:stat]="wait"
-    sleep if ACT > 0
+    sleep if @int
     Thread.current[:stat]="run"
     @@client.each{|k,v| v.view.refresh }
     @@client[ins].exe(cmd)

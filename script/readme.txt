@@ -42,10 +42,10 @@ frmsh (intfrm -t)/ used when running site is different from intapp
 
 ## Action mode in Macro ##
   set ACT environment with number [0-3]
-  =============================================
-  ACT   Command    Status    Check   Quely  Log
-  =============================================
-  nil   check      file      -       -      -
-  0     check      file      o       -      -
-  1     simu       file      o       o      -
-  2     exec       remote    o       o      o
+  ==================================
+  ACT   Exec    Source   Check   Log
+  ==================================
+  nil   check   file     -       -  
+  0     check   file     o       -  
+  1     simu    file     o       -  
+  2     exec    remote   o       o  

@@ -15,7 +15,7 @@ class McrMan
     @prompt="#@id[]>"
     @index=0
     @threads=[]
-    @mcr=McrSub.new(@cobj,@threads).extend(McrPrt)
+    @mcr=McrSub.new(@cobj,@threads,1).extend(McrPrt)
   end
 
   def upd(cmd)

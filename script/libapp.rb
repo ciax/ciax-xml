@@ -7,7 +7,7 @@ class App
     Msg.type?(adb,AppDb)
     @cobj=Command.new(adb[:command])
     @prompt=adb['id']+'>'
-    @port=adb['port']
+    @port=adb['port'].to_i
     @view=Rview.new(adb['id']).load
   end
 

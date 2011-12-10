@@ -7,8 +7,8 @@ class Client
   def initialize(port,host=nil)
     @v=Msg::Ver.new(self,1)
     @udp=UDPSocket.open()
-    @port=port
-    @host=host||'localhost'
+    @port=Msg.type?(port,Integer)
+    @host=Msg.type?(host||'localhost',String)
     @addr=Socket.pack_sockaddr_in(@port,@host)
     @v.msg{"Connect to #{@host}:#{@port}"}
   end

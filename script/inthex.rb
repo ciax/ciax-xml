@@ -5,11 +5,12 @@ require "libhexpack"
 require "libintapps"
 
 opt=ARGV.getopts("sc")
-id,*cobj=ARGV
+id,host=ARGV
+ARGV.clear
 begin
-  aint=IntApps.new.add(id,opt,cobj)
+  aint=IntApps.new.add(id,opt,host)[id]
 rescue UserError
-  Msg.usage("(-sc) [id] (host|iocmd)")
+  Msg.usage("(-sc) [id] (host)")
 end
 hp=HexPack.new(aint.view,aint.prompt)
 if opt["s"]

@@ -1,13 +1,24 @@
 #!/usr/bin/ruby
 require 'libmsg'
 #Extened Hash
-class ExHash < Hash
+module ExEnum
   def to_s
     Msg.view_struct(self)
   end
 
-  def deep_update(hash)
-    rec_merge(hash,self)
+  def attr_update(obj)
+    case obj
+    when Hash
+      ary=obj.keys
+    when Array
+      ary=obj.size.times
+    end
+    ary.each{|i| self[i]=obj[i] if Comparable === obj[i]}
+    self
+  end
+
+  def deep_update(obj)
+    rec_merge(obj,self)
     self
   end
 
@@ -25,4 +36,12 @@ class ExHash < Hash
     end
     b
   end
+end
+
+class ExHash < Hash
+  include ExEnum
+end
+
+class ExArray < Array
+  include ExEnum
 end

@@ -49,9 +49,12 @@ class McrSub < Array
   private
   def submacro(cobj,depth,ins=nil)
     cobj[:select].each{|e1|
-      @last={'tid'=>Thread.current[:tid],'cid'=>cobj[:cid],'depth'=>depth}
+      @last=ExHash.new
       @line.push(@last)
-      @last.update(e1).delete('stat')
+      @last['tid']=Thread.current[:tid]
+      @last['cid']=cobj[:cid]
+      @last['depth']=depth
+      @last.attr_update(e1)
       case e1['type']
       when 'break'
         !fault?(e1,ins) && ENV['ACT'] && break

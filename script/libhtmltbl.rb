@@ -2,29 +2,21 @@
 require 'libmsg'
 class HtmlTbl < Array
   def initialize(adb)
-    Msg.type?(adb,AppDb)
-    @label = adb[:status][:label]
+    sdb=Msg.type?(adb,AppDb)[:status]
+    @label = sdb[:label]
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{adb['label']}</div>"
-    group = adb[:status][:group] || adb[:status][:select].keys
-    get_group(group)
+    sdb[:group].each{|k,g|
+      cap=sdb[:caption][k] || next
+      push "<table><tbody>"
+      push  "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
+      get_element(g,sdb[:column][k].to_i)
+      push "</tbody></table>"
+    }
     push "</div>"
   end
 
   private
-  def get_group(group)
-    group.each{|k,g|
-      cap=@label[k] || next
-      push "<table><tbody>"
-      push  "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
-      g.each{|a|
-        get_element(a)
-      }
-      push "</tbody></table>"
-    }
-    self
-  end
-
   def get_element(ary,col=6)
     ary.each_slice(col){|da|
       push "<tr>"

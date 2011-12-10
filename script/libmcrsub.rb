@@ -43,6 +43,10 @@ class McrSub < Array
     Msg.view_struct(@line)
   end
 
+  def join
+    each{|t| t.join}
+  end
+
   private
   def submacro(cobj,depth,ins=nil)
     cobj[:select].each{|e1|
@@ -149,7 +153,7 @@ if __FILE__ == $0
     cobj=Command.new(mdb)
     mcr=McrSub.new(cobj)
     mcr.extend(McrPrt) unless opt['r']
-    mcr.macro(cmd).each{|t| t.join }
+    mcr.macro(cmd).join
     puts mcr.to_s
   rescue SelectCMD
     Msg.exit(2)

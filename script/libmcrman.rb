@@ -14,19 +14,18 @@ class McrMan
     @id="#{id}(#{flg})"
     @prompt="#@id[]>"
     @index=0
-    @threads=[]
-    @mcr=McrSub.new(@cobj,@threads,1).extend(McrPrt)
+    @mcr=McrSub.new(@cobj,1).extend(McrPrt)
   end
 
   def upd(cmd)
     case cmd[0]
     when nil
     when 'list'
-      list=@threads.map{|t| t[:cid]+'('+t[:stat]+')' }
+      list=@mcr.map{|t| t[:cid]+'('+t[:stat]+')' }
       raise UserError,"#{list}"
     when /^[0-9]+$/
       i=cmd[0].to_i
-      Msg.err("No Thread") if @threads.size < i || i < 0
+      Msg.err("No Thread") if @mcr.size < i || i < 0
       @index=i
     when /^\./
       @index=0
@@ -56,7 +55,7 @@ class McrMan
   end
 
   def current #current thread
-    @threads[@index-1] if @index > 0
+    @mcr[@index-1] if @index > 0
   end
 
   def commands
@@ -77,7 +76,7 @@ class McrMan
   end
 
   def upd_prompt
-    size=@threads.size
+    size=@mcr.size
     if @index > 0
       str=Msg.color(current[:cid],5)
       str << "[#@index/#{size}](#{current[:stat]})>"
@@ -89,7 +88,7 @@ class McrMan
       end
       @prompt.replace(str)
     else
-      flg=@threads.map{|t|
+      flg=@mcr.map{|t|
         case t[:stat]
         when /wait/
           '?'

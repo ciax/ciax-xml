@@ -9,19 +9,19 @@ class McrSub < Array
   ACT=ENV['ACT'].to_i
   @@client=IntApps.new
 
-  def initialize(cobj,threads=[],int=nil)
+  def initialize(cobj,int=nil)
     @v=Msg::Ver.new(self,9)
     @int=int
     @cobj=Msg.type?(cobj,Command)
-    @threads=Msg.type?(threads,Array)
+    @line=[]
   end
 
   def macro(cmd,clr=nil)
     cobj=@cobj.dup.set(cmd)
-    @threads.clear if clr
-    clear
+    clear if clr
+    @line.clear
     #Thread.abort_on_exception=true
-    @threads << Thread.new(cobj){|c|
+    push Thread.new(cobj){|c|
       crnt=Thread.current
       crnt[:obj]=self
       crnt[:tid]=Time.now.to_i
@@ -40,14 +40,15 @@ class McrSub < Array
   end
 
   def to_s
-    Msg.view_struct(self)
+    Msg.view_struct(@line)
   end
 
   private
   def submacro(cobj,depth,ins=nil)
     cobj[:select].each{|e1|
-      push({'tid'=>Thread.current[:tid],'cid'=>cobj[:cid],'depth'=>depth})
-      last.update(e1).delete('stat')
+      @last={'tid'=>Thread.current[:tid],'cid'=>cobj[:cid],'depth'=>depth}
+      @line.push(@last)
+      @last.update(e1).delete('stat')
       case e1['type']
       when 'break'
         !fault?(e1,ins) && ENV['ACT'] && break
@@ -56,13 +57,13 @@ class McrSub < Array
       when 'wait'
         if e1['retry'].to_i.times{|n|
           sleep 1 if ACT > 0 && n > 0
-          last['retry']=n
+          @last['retry']=n
           fault?(e1,ins) || break
         }
-          last['timeout']=true
+          @last['timeout']=true
           ENV['ACT'] && raise(UserError)
         else
-          last.delete('fault')
+          @last.delete('fault')
         end
       when 'mcr'
         if /true|1/ === e1['async']
@@ -88,7 +89,7 @@ class McrSub < Array
         flt['res']=res
         flt['upd'] && comp(res,flt['val'],flt['inv'])
       end
-    } && last['fault']=flt
+    } && @last['fault']=flt
   end
 
   # client is forced to be localhost
@@ -146,10 +147,9 @@ if __FILE__ == $0
   begin
     mdb=McrDb.new(id)
     cobj=Command.new(mdb)
-    mcr=McrSub.new(cobj,th=[])
+    mcr=McrSub.new(cobj)
     mcr.extend(McrPrt) unless opt['r']
-    mcr.macro(cmd)
-    th.each{|t| t.join }
+    mcr.macro(cmd).each{|t| t.join }
     puts mcr.to_s
   rescue SelectCMD
     Msg.exit(2)

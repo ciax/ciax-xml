@@ -3,8 +3,7 @@
 
 module McrPrt
   def to_s
-    return '' if empty?
-    map{|h|
+    @line.map{|h|
       msg='  '*h['depth']
       case h['type']
       when 'break'

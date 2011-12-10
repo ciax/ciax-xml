@@ -15,6 +15,8 @@ mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
 mcr: macro log
+mcr: batch mode w/showing progress
+mcr: attach/detach w/o location param
 crt: jack table edit interface (sql+web)
 
 ***UPGRADE

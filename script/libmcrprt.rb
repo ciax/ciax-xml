@@ -9,24 +9,23 @@ module McrPrt
       case h['type']
       when 'break'
         msg << Msg.color('Proceed?',6)+":#{h['label']} -> "
-        msg << Msg.color(h['result'] ? "SKIP" : "OK",2)
+        msg << Msg.color(h['fault'] ? "OK": "SKIP",2)
       when 'check'
         msg << Msg.color('Check',6)+":#{h['label']} -> "
-        if h['result']
-          msg << Msg.color("OK",2)
-        else
+        if h['fault']
           msg << Msg.color("NG",1)+"\n"
           msg << getcond(h)
+        else
+          msg << Msg.color("OK",2)
         end
       when 'wait'
         msg << Msg.color('Waiting',6)+":#{h['label']} -> "
-        case h['result']
-        when nil
-          ret=h['retry'].to_i
-          msg << '*'*(ret/10)+'.'*(ret % 10)
-        when false
+        if h['timeout']
           msg << Msg.color("Timeout(#{h['retry']})",1)+"\n"
           msg << getcond(h)
+        elsif h['fault']
+          ret=h['retry'].to_i
+          msg << '*'*(ret/10)+'.'*(ret % 10)
         else
           msg << Msg.color("OK",2)
         end
@@ -42,8 +41,13 @@ module McrPrt
 
   private
   def getcond(h)
-    c=h['fault']
     msg='  '*(h['depth']+1)
-    msg << Msg.color("#{c['ins']}:#{c['var']}",3)+" is not #{c['val']}"
+    c=h['fault']
+    if c['upd']
+      msg << Msg.color("#{c['ins']}:#{c['var']}",3)+" is not #{c['val']}"
+    else
+      msg << Msg.color("#{c['ins']}",3)+" is not updated"
+    end
+    msg
   end
 end

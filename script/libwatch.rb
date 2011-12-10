@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libexhash'
+require 'libexenum'
 require 'librerange'
 require 'libelapse'
 require 'json'

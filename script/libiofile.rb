@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "json"
-require "libexhash"
+require "libexenum"
 
 class IoFile < ExHash
   def initialize(type,id=nil,host=nil)

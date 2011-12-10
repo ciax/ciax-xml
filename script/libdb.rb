@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libexhash"
+require "libexenum"
 require "libxmldoc"
 
 class Db < ExHash

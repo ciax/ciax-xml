@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libexhash'
+require 'libexenum'
 require 'libmsg'
 require 'librerange'
 

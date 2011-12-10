@@ -35,7 +35,7 @@ class McrMan
       elsif Thread.list.size > 1
         Msg.err("  Another mcr is still running")
       else
-        @mcr.macro(cmd,true)
+        @mcr.clear.macro(cmd)
         Thread.pass
         @index=1
       end

@@ -16,9 +16,8 @@ class McrSub < Array
     @line=[]
   end
 
-  def macro(cmd,clr=nil)
+  def macro(cmd)
     cobj=@cobj.dup.set(cmd)
-    clear if clr
     @line.clear
     #Thread.abort_on_exception=true
     push Thread.new(cobj){|c|

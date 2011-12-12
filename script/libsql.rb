@@ -24,7 +24,7 @@ class Sql < Array
     key=@stat.keys.join(',')
     val=@stat.values.map{|s| "'#{s}'"}.join(',')
     @v.msg{"Update:[#{@tid}] (#{@stat['time']})"}
-    push "insert into #{@tid} (#{key}) values (#{val});"
+    push "insert or ignore into #{@tid} (#{key}) values (#{val});"
   end
 
   def to_s
@@ -33,7 +33,7 @@ class Sql < Array
 end
 
 class SqLog < Sql
-  def initialize(id,ver,stat,dbname='ciax')
+  def initialize(id,ver,stat,dbname='ciax_stat')
     super(id,ver,stat)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
     unless check_table

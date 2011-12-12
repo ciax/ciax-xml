@@ -12,7 +12,7 @@ id = ARGV.shift
 begin
   idb=InsDb.new(id)
 rescue UserError
-  Msg.usage "(-is) (-a key) [id] < logfile"
+  Msg.usage("(-is) (-a key) [id] < logfile","-i:init table","-s:get from remote")
 end
 if opt['s'] # From remote
   stat=Rview.new(id).load['stat']

@@ -26,6 +26,7 @@ class Field < IoFile
   # For multiple dimention (content should be numerical)
   def get(key) # ${key1:key2:idx} => hash[key1][key2][idx]
     Msg.abort("No Key") unless key
+    return self[key] if key?(key)
     vname=[]
     key.split(':').inject(self){|h,i|
       case h

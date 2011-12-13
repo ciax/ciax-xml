@@ -83,6 +83,87 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
+        <command id="run1" label="Run to Tag 1">
+          <frmcmd name="set_tag">
+            <argv>1</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="run2" label="Run to Tag 2">
+          <frmcmd name="set_tag">
+            <argv>2</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="run3" label="Run to Tag 3">
+          <frmcmd name="set_tag">
+            <argv>3</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="run7" label="Run to Tag 7">
+          <frmcmd name="set_tag">
+            <argv>7</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="run8" label="Run to Tag 8">
+          <frmcmd name="set_tag">
+            <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="run9" label="Run to Tag 9">
+          <frmcmd name="set_tag">
+            <argv>9</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="run10" label="Run to Tag 10">
+          <frmcmd name="set_tag">
+            <argv>10</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="run11" label="Run to Tag 11">
+          <frmcmd name="set_tag">
+            <argv>11</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="run12" label="Run to Tag 12">
+          <frmcmd name="set_tag">
+            <argv>12</argv>
+          </frmcmd>
+          <frmcmd name="start">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
         <command id="runf" label="Run Forward">
           <frmcmd name="set_tag">
             <argv>98</argv>

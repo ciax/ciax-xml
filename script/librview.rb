@@ -17,6 +17,7 @@ class Rview < IoFile
   end
 
   def stat(id=nil)
+    @v.msg{"getting status of #{id}"}
     case id
     when nil
       @stat

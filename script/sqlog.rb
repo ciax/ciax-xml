@@ -7,32 +7,48 @@ require "libappstat"
 require 'librview'
 require "libsql"
 
-opt=ARGV.getopts("isa:")
+opt=ARGV.getopts("ia")
 id = ARGV.shift
 begin
   idb=InsDb.new(id)
-rescue UserError
-  Msg.usage("(-is) (-a key) [id] < logfile","-i:init table","-s:get from remote")
-end
-if opt['s'] # From remote
-  stat=Rview.new(id).load['stat']
-  sql=Sql.new(id,idb['version'],stat).upd
-else
   adb=idb.cover_app
-  fdb=adb.cover_frm
-  cobj=Command.new(fdb[:cmdframe])
-  field=FrmRsp.new(fdb,cobj)
+rescue UserError
+  Msg.usage("(-ai) [id] (logfile)","-i:init table","-a:app stat")
+end
+if opt['a']
+  field=Field.new
   stat=AppStat.new(adb,field)
   sql=Sql.new(id,adb['app_ver'],stat)
   if opt['i'] # Initial
     sql.ini
-  elsif key=opt['a'] # Alter
-    sql.add(key)
   else
-    STDIN.readlines.grep(/rcv/).each{|str|
+    readlines.each{|str|
+      if /^$/ =~ str
+        begin
+          stat.upd
+          sql.upd
+          $stderr.print "."
+        rescue
+          $stderr.print "x"
+          next
+        end
+      else
+        k,v=str.split("=").map{|i| i.strip}
+        field[k]=v
+      end
+    }
+  end
+else
+  fdb=adb.cover_frm
+  cobj=Command.new(fdb[:cmdframe])
+  field=FrmRsp.new(fdb,cobj)
+  sql=Sql.new(id,adb['frm_ver'],field)
+  if opt['i'] # Initial
+    sql.ini
+  else
+    readlines.grep(/rcv/).each{|str|
       begin
         field.upd_logline(str)
-        stat.upd
         sql.upd
         $stderr.print "."
       rescue

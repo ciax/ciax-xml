@@ -17,12 +17,13 @@ mcr-old:remove door open interlock(11/2)
 mcr: macro log
 mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param
-crt: jack table edit interface (sql+web)
+frame log format(add version, data->base64)
 command log (app level)
-rdb field log
+rdb field log(ciax_field.sq3)
 
 ***UPGRADE
 sql: using sqlite for symboling, labeling as cache
+crt: jack table edit interface (sql+web)
 
 ***CHECK NEED
 verify on motion: adb-oss

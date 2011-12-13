@@ -11,9 +11,9 @@ class Sql < Array
   end
 
   def ini
-    key=['time',*@stat.keys].uniq.join(',')
-    @v.msg{"create (#{key})"}
-    push "create table #{@tid} (#{key},primary key(time));"
+    key=['time',*expand.keys].uniq.join("','")
+    @v.msg{"create ('#{key}')"}
+    push "create table #{@tid} ('#{key}',primary key(time));"
   end
 
   def add(key)
@@ -21,19 +21,46 @@ class Sql < Array
   end
 
   def upd
-    key=@stat.keys.join(',')
-    val=@stat.values.map{|s| "'#{s}'"}.join(',')
+    stat=expand
+    key=stat.keys.join("','")
+    val=stat.values.join("','")
     @v.msg{"Update:[#{@tid}] (#{@stat['time']})"}
-    push "insert or ignore into #{@tid} (#{key}) values (#{val});"
+    push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
   end
 
   def to_s
     (["begin;"]+self+["commit;"]).join("\n")
   end
+
+  private
+  def expand
+    stat={}
+    @stat.each{|k,v|
+      case v
+      when Array
+        rec_expand(k,v,stat)
+      else
+        stat[k]=v
+      end
+    }
+    stat
+  end
+
+  def rec_expand(k,v,stat)
+    v.size.times{|i|
+      case v[i]
+      when Enumerable
+        rec_expand("#{k}:#{i}",v[i],stat)
+      else
+        stat["#{k}:#{i}"]=v[i]
+      end
+    }
+    stat
+  end
 end
 
 class SqLog < Sql
-  def initialize(id,ver,stat,dbname='ciax_stat')
+  def initialize(id,ver,stat,dbname='statlog')
     super(id,ver,stat)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
     unless check_table

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="2">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -103,7 +103,7 @@
         </command>
       </group>
       <group id="gjak" caption="Jak Commands" column="2">
-        <command id="liftdw" label="Lift Down Level">
+        <command id="lftdw" label="Lift Down Level">
           <frmcmd name="set_pos">
             <argv>0</argv>
           </frmcmd>
@@ -112,7 +112,7 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
-        <command id="liftchg" label="Lift Charge Level">
+        <command id="lftchg" label="Lift Charge Level">
           <frmcmd name="set_pos">
             <argv>4</argv>
           </frmcmd>
@@ -121,7 +121,7 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
-        <command id="lift1" label="Lift Low Level">
+        <command id="lftup1" label="Lift Low Level">
           <frmcmd name="set_pos">
             <argv>1</argv>
           </frmcmd>
@@ -130,7 +130,7 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
-        <command id="lift2" label="Lift Mid Level">
+        <command id="lftup2" label="Lift Mid Level">
           <frmcmd name="set_pos">
             <argv>2</argv>
           </frmcmd>
@@ -139,7 +139,7 @@
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
-        <command id="lift3" label="Lift High Level">
+        <command id="lftup3" label="Lift High Level">
           <frmcmd name="set_pos">
             <argv>3</argv>
           </frmcmd>

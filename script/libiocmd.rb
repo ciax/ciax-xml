@@ -5,8 +5,9 @@ module IoLog
   # need @v
   def startlog(id,ver=0)
     if id && ! ENV.key?('NOLOG')
-      @logfile=VarDir+"/device_#{id}_v#{ver.to_i}.log"
+      @logfile=VarDir+"/device_#{id}_#{Time.now.year}.log"
       @v.msg{"Init/Logging Start (#{id}/Ver.#{ver.to_i})"}
+      @ver=ver
     end
     self
   end
@@ -18,13 +19,13 @@ module IoLog
 
   def snd(str,id)
     super
-    append(str,'snd:'+id)
+    append(str,['snd',@ver,id].join(':'))
     self
   end
 
   # return array
   def rcv(id)
-    append(super,'rcv:'+id)
+    append(super,['rcv',@ver,id].join(':'))
   end
 
   def self.set_logline(str)

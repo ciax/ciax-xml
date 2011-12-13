@@ -19,7 +19,6 @@ mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param
 frame log format(add version, data->base64)
 command log (app level)
-rdb field log(ciax_field.sq3)
 
 ***UPGRADE
 sql: using sqlite for symboling, labeling as cache
@@ -32,6 +31,9 @@ verify: oss jack num corresponding
 crt: actual motion
 
 ========================== Result =============================
+***DISCARD
+field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain
+
 ***SOLVED
 debug:error "no such command 'exe'" in dsi
 station:OPT side = charging can be on under auto mode
@@ -71,6 +73,4 @@ wdb: show watch status in shell(11/3)
 shell: toggle status display mode(view,stat,watch)(11/3)
 using sqlite for logging stat
 wdb: watch status log[12/7]
-
-***DISCARD
-field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain
+rdb field log(fieldlog.sq3)[12/12]

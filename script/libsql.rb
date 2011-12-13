@@ -6,7 +6,7 @@ require "libappstat"
 class Sql < Array
   def initialize(id,ver,stat)
     @v=Msg::Ver.new(self,6)
-    @tid="#{id}_v#{ver}"
+    @tid="#{id}_#{ver.to_i}"
     @stat=Msg.type?(stat,Hash)
   end
 
@@ -60,14 +60,14 @@ class Sql < Array
 end
 
 class SqLog < Sql
-  def initialize(id,ver,stat,dbname='statlog')
+  def initialize(id,ver,stat,dbname='temp')
     super(id,ver,stat)
     @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
     unless check_table
       ini.flush
-      @v.msg{"Init/SQL table is created"}
+      @v.msg{"Init/Table '#{@tid}' is created in #{dbname}"}
     end
-    @v.msg{"Init/Logging Start (#{id}/Ver.#{ver})"}
+    @v.msg{"Init/Start '#{dbname}' (#{id}/Ver.#{ver})"}
   end
 
   def check_table

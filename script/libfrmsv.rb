@@ -13,7 +13,9 @@ class FrmSv < Frm
     @field=FrmRsp.new(fdb,@cobj).load
     if Msg.type?(iocmd,Array).empty?
       @io=IoCmd.new(fdb['iocmd'].split(' '),fdb['wait'],1)
-      @io.extend(IoLog).startlog(fdb['id'],fdb['frm_ver'])
+      id=fdb['id'];ver=fdb['frm_ver']
+      @io.extend(IoLog).startlog(id,ver)
+      @sql=SqLog.new(id,ver,@field,'fieldlog')
     else
       @io=IoCmd.new(iocmd,fdb['wait'],1)
       @field.delete('ver')
@@ -51,6 +53,7 @@ class FrmSv < Frm
       @v.msg{"Issue[#{cid}]"}
       @io.snd(@fc.getframe,cid)
       @field.upd{@io.rcv(cid)}.save
+      @sql.upd.flush if @sql
       msg='OK'
     end
     msg

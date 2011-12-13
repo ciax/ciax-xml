@@ -5,7 +5,7 @@ day=$1;shift
 setfld $id || _usage_key '' '(date)'
 appstat=~/lib/libappstat.rb
 frmrsp=~/lib/libfrmrsp.rb
-input="$HOME/.var/device_${id}_*.log"
+input="$HOME/.var/frame_${id}_*.log"
 field="$HOME/.var/field_${id}.json"
 rdb="$HOME/.var/ciax.sq3"
 sql="sqlite3 $rdb"

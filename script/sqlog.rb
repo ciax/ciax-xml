@@ -42,11 +42,12 @@ else
   fdb=adb.cover_frm
   cobj=Command.new(fdb[:cmdframe])
   field=FrmRsp.new(fdb,cobj)
-  sql=Sql.new(id,adb['frm_ver'],field)
+  ver=adb['frm_ver']
+  sql=Sql.new(id,ver,field)
   if opt['i'] # Initial
     sql.ini
   else
-    readlines.grep(/rcv/).each{|str|
+    readlines.grep(/rcv:#{ver}:/).each{|str|
       begin
         field.upd_logline(str)
         sql.upd

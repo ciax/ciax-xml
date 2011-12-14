@@ -67,7 +67,7 @@ class SqLog < Sql
       ini.flush
       @v.msg{"Init/Table '#{@tid}' is created in #{dbname}"}
     end
-    @v.msg{"Init/Start '#{dbname}' (#{id}/Ver.#{ver})"}
+    @v.msg{"Init/Start '#{dbname}' (#{id}/Ver.#{ver.to_i})"}
   end
 
   def check_table

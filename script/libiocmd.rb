@@ -5,9 +5,9 @@ module IoLog
   # need @v
   def startlog(id,ver=0)
     if id && ! ENV.key?('NOLOG')
+      @ver=ver.to_i
       @logfile=VarDir+"/frame_#{id}_#{Time.now.year}.log"
-      @v.msg{"Init/Logging Start (#{id}/Ver.#{ver.to_i})"}
-      @ver=ver
+      @v.msg{"Init/Logging Start (#{id}/Ver.#{@ver})"}
     end
     self
   end

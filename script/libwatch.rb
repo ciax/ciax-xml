@@ -42,7 +42,8 @@ end
 module WatchLog
   def startlog(id,ver=0)
     if id && ! ENV.key?('NOLOG')
-      @logfile=VarDir+"/watch_#{id}_v#{ver.to_i}.log"
+      @ver=ver.to_i
+      @logfile=VarDir+"/watch_#{id}.log"
       @v.msg{"Init/WatchLog Start (#{id}/Ver.#{ver.to_i})"}
       @last=[]
     end
@@ -60,8 +61,8 @@ module WatchLog
       @v.msg{"Watch Logging"}
       unless @last == self[:active]
         @last=self[:active].dup
-        line="#{self['time']}\t#{JSON.dump(@last)}\n"
-        open(@logfile,'a') {|f| f << line }
+        line=[self['time'],@ver,JSON.dump(@last)].join("\t")
+        open(@logfile,'a') {|f| f.puts line }
       end
     end
     self
@@ -108,7 +109,7 @@ class Watch < ExHash
   end
 
   def upd
-    self['time']=Time.now.to_f
+    self['time']=Time.now.to_i
     self[:active].clear
     hash={:int =>[],:exec =>[],:block =>[]}
     @wst.size.times{|i|

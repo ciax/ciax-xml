@@ -40,11 +40,10 @@ module WatchPrt
 end
 
 module WatchLog
-  def startlog(id,ver=0)
+  def startlog(id)
     if id && ! ENV.key?('NOLOG')
-      @ver=ver.to_i
       @logfile=VarDir+"/watch_#{id}.log"
-      @v.msg{"Init/WatchLog Start (#{id}/Ver.#{ver.to_i})"}
+      @v.msg{"Init/WatchLog Start (#{id}/Ver.#{self['ver']})"}
       @last=[]
     end
     self
@@ -61,8 +60,10 @@ module WatchLog
       @v.msg{"Watch Logging"}
       unless @last == self[:active]
         @last=self[:active].dup
-        line=[self['time'],@ver,JSON.dump(@last)].join("\t")
-        open(@logfile,'a') {|f| f.puts line }
+        ary=[self['time'],self['ver']]
+        ary << JSON.dump(@last)
+        ary << JSON.dump(self[:exec])
+        open(@logfile,'a') {|f| f.puts ary.join("\t") }
       end
     end
     self
@@ -79,6 +80,7 @@ class Watch < ExHash
       self[i]||=[]
     }
     self['time']=Time.now.to_i
+    self['ver']=adb['app_ver'].to_i
     @elapse=Elapse.new(self)
   end
 

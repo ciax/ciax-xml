@@ -27,17 +27,21 @@
       <pattern class="normal" msg="K3D">5</pattern>
       <pattern class="warn" msg="N/A" />
     </table>
-    <table id="corn">
+    <table id="corn" label="all corn">
       <pattern class="normal" msg="OFF">0</pattern>
       <pattern class="normal" msg="ON">15</pattern>
       <pattern class="warn" msg="N/A" />
     </table>
+    <table id="con">
+      <pattern class="normal" msg="OFF">0</pattern>
+      <pattern class="normal" msg="ON"/>
+    </table>
     <table id="jlv">
-      <pattern class="normal" msg="D">0</pattern>
-      <pattern class="normal" msg="L">1</pattern>
-      <pattern class="normal" msg="M">2</pattern>
-      <pattern class="normal" msg="H">3</pattern>
-      <pattern class="normal" msg="CHG">4</pattern>
+      <pattern class="normal" msg="D">1</pattern>
+      <pattern class="normal" msg="L">2</pattern>
+      <pattern class="normal" msg="M">4</pattern>
+      <pattern class="normal" msg="H">8</pattern>
+      <pattern class="normal" msg="CHG">16</pattern>
       <pattern class="warn" msg="N/A" />
     </table>
     <table id="motor">

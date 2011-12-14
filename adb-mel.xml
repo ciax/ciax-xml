@@ -399,7 +399,7 @@
           <value id="jh%d" label="H(mm) %d">
             <float ref="x" index="8+2*$_" formula="$#/100" />
           </value>
-          <value id="cn%d" label="Corn %d" symbol="warn">
+          <value id="cn%d" label="Corn %d" symbol="con">
             <binary ref="x" index="19+($_-1)/2" bit="13-($_%2)*8" />
           </value>
           <value id="ld%d" label="LD(Kgf) %d">

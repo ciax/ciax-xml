@@ -186,16 +186,7 @@
       <group id="gjak" caption="Jak Commands" column="2">
         <command id="lftdw" label="Lift Down Level">
           <frmcmd name="set_pos">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="start">
-            <argv>8</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
-        </command>
-        <command id="lftchg" label="Lift Charge Level">
-          <frmcmd name="set_pos">
-            <argv>16</argv>
+            <argv>0</argv>
           </frmcmd>
           <frmcmd name="start">
             <argv>8</argv>
@@ -204,7 +195,7 @@
         </command>
         <command id="lftup1" label="Lift Low Level">
           <frmcmd name="set_pos">
-            <argv>2</argv>
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="start">
             <argv>8</argv>
@@ -213,7 +204,7 @@
         </command>
         <command id="lftup2" label="Lift Mid Level">
           <frmcmd name="set_pos">
-            <argv>4</argv>
+            <argv>2</argv>
           </frmcmd>
           <frmcmd name="start">
             <argv>8</argv>
@@ -222,7 +213,16 @@
         </command>
         <command id="lftup3" label="Lift High Level">
           <frmcmd name="set_pos">
+            <argv>3</argv>
+          </frmcmd>
+          <frmcmd name="start">
             <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+        </command>
+        <command id="lftchg" label="Lift Charge Level">
+          <frmcmd name="set_pos">
+            <argv>4</argv>
           </frmcmd>
           <frmcmd name="start">
             <argv>8</argv>

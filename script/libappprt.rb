@@ -30,7 +30,7 @@ class AppPrt
 
   def get_element(ids)
     ids.map{|id|
-      prt(id,@view.stat(id))
+      prt(id,@view.get(id))
     }.join(" ")
   end
 

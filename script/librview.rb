@@ -4,7 +4,7 @@ require "libiofile"
 require "libelapse"
 
 class Rview < IoFile
-  attr_reader :last
+  attr_reader :last,:stat
   def initialize(id=nil,host=nil)
     super('view',id,host)
     @stat||={}
@@ -16,11 +16,9 @@ class Rview < IoFile
     end
   end
 
-  def stat(id=nil)
+  def get(id)
     @v.msg{"getting status of #{id}"}
     case id
-    when nil
-      @stat
     when 'elapse'
       @elapse
     else

@@ -154,7 +154,7 @@ class Watch < ExHash
     rary=[]
     n.size.times{|j|
       k=n[j]['var']
-      v=(m[j]||={})['val']=@view.stat(k)
+      v=(m[j]||={})['val']=@view.get(k)
       case n[j]['type']
       when 'onchange'
         c=(m[j]['last']||='')

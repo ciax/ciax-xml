@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'librview'
 class AppPrt
-  CM=Hash.new('2').update({'alarm' =>'1','warn' =>'3','hide' =>'0'})
+  CM=Hash.new(2).update({'caution'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
   def initialize(adb,view)
     @sdb=Msg.type?(adb,AppDb)[:status]
     @view=Msg.type?(view,Rview)

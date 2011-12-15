@@ -17,12 +17,18 @@ module ModLog
     self
   end
 
-  def append(data,title=nil,time=nil)
+  def append(data,id=nil,time=nil)
     time||=Msg.now
     if @logfile
-      id=["##@ver",title].compact.join(':')
+      tag=["##@ver",id].flatten(1).compact.join(':')
+      case data
+      when Enumerable
+        str=JSON.dump(data)
+      else
+        str=data.dump
+      end
       open(@logfile,'a') {|f|
-        f.puts [time,id,JSON.dump(data)].join("\t")
+        f.puts [time,tag,str].join("\t")
       }
     end
     [data,time]

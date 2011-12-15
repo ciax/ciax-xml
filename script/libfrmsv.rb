@@ -5,6 +5,7 @@ require "libiocmd"
 require "libcommand"
 require "libfrmrsp"
 require "libfrmcmd"
+require "libsql"
 
 class FrmSv < Frm
   def initialize(fdb,iocmd=[])

@@ -1,31 +1,24 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libmodlog"
 
 module IoLog
+  include ModLog
   # need @v
   def startlog(id,ver=0)
-    if id && ! ENV.key?('NOLOG')
-      @ver=ver.to_i
-      @logfile=VarDir+"/frame_#{id}_#{Time.now.year}.log"
-      @v.msg{"Init/Start Log 'frame' (#{id}/Ver.#{@ver})"}
-    end
-    self
-  end
-
-  def stoplog
-    @logfile=nil
+    super('frame',id,ver)
     self
   end
 
   def snd(str,id)
     super
-    append(str,['snd',@ver,id].join(':'))
+    append(str,['snd',id].join(':'))
     self
   end
 
   # return array
   def rcv(id)
-    append(super,['rcv',@ver,id].join(':'))
+    append(super,['rcv',id].join(':'))
   end
 
   def self.set_logline(str)
@@ -34,18 +27,6 @@ module IoLog
     cmd=ary.shift.split(':')
     abort("Logline:Not response") unless /rcv/ === cmd.shift
     [cmd,[eval(ary.shift),time]]
-  end
-
-  private
-  def append(str,id)
-    time=Msg.now
-    if @logfile
-      @v.msg{"Frame Logging for [#{id}]"}
-      open(@logfile,'a') {|f|
-        f << [time,id,str.dump].compact.join("\t")+"\n"
-      }
-    end
-    [str,time]
   end
 end
 

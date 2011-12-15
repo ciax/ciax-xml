@@ -27,10 +27,15 @@ class HexPack
     @res[6]=''
     @list.each{|key,len,type|
       if val=@stat[key]
-        if /FLOAT|INT/ === type || len == '1'
-          @res[6] << val
-        else
+        case type
+        when /FLOAT/
+          @res[6] << ("%0#{len}.2f" % val.to_f)
+        when /INT/
+          @res[6] << ("%0#{len}d" % val.to_i)
+        when /BINARY/
           @res[6] << ("%0#{len}b" % val.to_i)
+        else
+          @res[6] << ("%#{len}s" % val)
         end
       else
         @res[6] << '*' * len.to_i

@@ -7,6 +7,7 @@ require "libwview"
 require "libbuffer"
 require "libwatch"
 require "thread"
+require "libmodlog"
 
 class AppSv < App
   def initialize(adb,fint)
@@ -25,7 +26,7 @@ class AppSv < App
     @watch=Watch.new(adb,@view).thread{|cmd|
       @buf.send(2){frmcmds(cmd)}
     }.extend(WatchPrt)
-    @watch.extend(WatchLog).startlog(@id) if @view.key?('ver')
+    extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
     cl=Msg::List.new("Internal Command",2)
     cl.add('set'=>"[key=val] ..")
     cl.add('flush'=>"Flush Status")
@@ -76,6 +77,9 @@ class AppSv < App
 
   def frmcmds(ary)
     ary.map{|cmd|
+      if @view.key?('ver')
+        append(@watch[:active],cmd.join(':'))
+      end
       @cobj.set(cmd).get
     }.flatten(1)
   end

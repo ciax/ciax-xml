@@ -4,6 +4,7 @@ require 'libexenum'
 require 'librerange'
 require 'libelapse'
 require 'json'
+require 'libmodlog'
 
 module WatchPrt
   def to_s
@@ -36,37 +37,6 @@ module WatchPrt
       str << "  "+Msg.color("Issuing",2)+"\t: #{self[:exec]}\n"
     end
     str
-  end
-end
-
-module WatchLog
-  def startlog(id)
-    if id && ! ENV.key?('NOLOG')
-      @logfile=VarDir+"/watch_#{id}.log"
-      @v.msg{"Init/WatchLog Start (#{id}/Ver.#{self['ver']})"}
-      @last=[]
-    end
-    self
-  end
-
-  def stoplog
-    @logfile=nil
-    self
-  end
-
-  def upd
-    super
-    if @logfile
-      @v.msg{"Watch Logging"}
-      unless @last == self[:active]
-        @last=self[:active].dup
-        ary=[self['time'],self['ver']]
-        ary << JSON.dump(@last)
-        ary << JSON.dump(self[:exec])
-        open(@logfile,'a') {|f| f.puts ary.join("\t") }
-      end
-    end
-    self
   end
 end
 

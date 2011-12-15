@@ -7,7 +7,7 @@ module IoLog
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i
       @logfile=VarDir+"/frame_#{id}_#{Time.now.year}.log"
-      @v.msg{"Init/Logging Start (#{id}/Ver.#{@ver})"}
+      @v.msg{"Init/Start Log 'frame' (#{id}/Ver.#{@ver})"}
     end
     self
   end

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="2">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -308,13 +308,13 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
       <group id="gs" caption="Status" column="3">
-        <value id="rdy" label="READY" symbol="normal">
+        <value id="rdy" label="READY" symbol="off-alarm">
           <binary ref="x" index="0" bit="0" />
         </value>
-        <value id="stp" label="STOPPING" symbol="warn">
+        <value id="stp" label="STOPPING" symbol="off-warn">
           <binary ref="x" index="0" bit="3" />
         </value>
-        <value id="pse" label="PAUSE" symbol="warn">
+        <value id="pse" label="PAUSE" symbol="action">
           <binary ref="x" index="0" bit="1" />
         </value>
         <value id="emg" label="ENERGENCY" symbol="alarm">
@@ -349,7 +349,7 @@
         </value>
       </group>
       <group id="gact" caption="Motion Status" column="3">
-        <value id="run" label="RUNNING" symbol="exec">
+        <value id="run" label="RUNNING" symbol="action">
           <binary ref="x" index="0" bit="4" />
         </value>
         <value id="cps" label="Current Tag" format="%02d">
@@ -358,7 +358,7 @@
         <value id="dps" label="Destination Tag" format="%02d">
           <int ref="x" index="26" />
         </value>
-        <value id="jak" label="JACKING" symbol="exec">
+        <value id="jak" label="JACKING" symbol="action">
           <binary ref="x" index="0" bit="5" />
         </value>
         <value id="jlv" label="Jack Level" symbol="jlv">
@@ -370,7 +370,7 @@
           <binary ref="x" index="20" bit="5" />
           <binary ref="x" index="20" bit="13" />
         </value>
-        <value id="chg" label="CHARGING" symbol="exec">
+        <value id="chg" label="CHARGING" symbol="action">
           <binary ref="x" index="0" bit="6" />
         </value>
         <value id="vol" label="Battery(V)" symbol="bvl" format="%02.2f">
@@ -378,22 +378,22 @@
         </value>
       </group>
       <group id="gmot" caption="Running Motor Stat" column="2">
-        <value id="msr" label="Servo R" symbol="normal">
+        <value id="msr" label="Servo R" symbol="action">
           <binary ref="x" index="0" bit="8" inv="true" />
         </value>
-        <value id="mdr" label="D/A R" symbol="motor">
-          <int ref="x" index="7" />
+        <value id="mdr" label="D/A R">
+          <float ref="x" index="7" formula="-$#" />
         </value>
-        <value id="msl" label="Servo L" symbol="normal">
+        <value id="msl" label="Servo L" symbol="action">
           <binary ref="x" index="0" bit="9" inv="true" />
         </value>
-        <value id="mdl" label="D/A L" symbol="motor">
-          <int ref="x" index="8" />
+        <value id="mdl" label="D/A L">
+          <float ref="x" index="8" />
         </value>
       </group>
       <group id="gjm" caption="Jacking Motor Stat" column="5">
         <repeat from="1" to="4">
-          <value id="js%d" label="SV %d" symbol="normal">
+          <value id="js%d" label="SV %d" symbol="action">
             <binary ref="x" index="0" bit="9+$_" inv="true" />
           </value>
           <value id="jh%d" label="H(mm) %d">
@@ -405,7 +405,7 @@
           <value id="ld%d" label="LD(Kgf) %d">
             <int ref="x" index="$_+47" />
           </value>
-          <value id="lc%d" label="LD(S) %d">
+          <value id="lc%d" label="LD(S) %d" symbol="load">
             <binary ref="x" index="19+($_-1)/2" bit="8-($_%2)*8" />
             <binary ref="x" index="19+($_-1)/2" bit="9-($_%2)*8" />
             <binary ref="x" index="19+($_-1)/2" bit="10-($_%2)*8" />

@@ -1,14 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="mel" label="Cart PLC">
     <table id="acp" label="Command Accepting">
       <pattern class="normal" msg="OFF">2</pattern>
       <pattern class="warn" msg="ON">1</pattern>
       <pattern class="normal" msg="OFF" />
-    </table>
-    <table id="exec" label="Executing">
-      <pattern class="normal" msg="OFF">0</pattern>
-      <pattern class="warn" msg="ON"></pattern>
     </table>
     <table id="ecode" label="ExitCode">
       <pattern class="hide" msg="OK">0000</pattern>
@@ -34,7 +30,7 @@
     </table>
     <table id="con">
       <pattern class="normal" msg="OFF">0</pattern>
-      <pattern class="normal" msg="ON"/>
+      <pattern class="normal" msg="ON" />
     </table>
     <table id="jlv">
       <pattern class="normal" msg="D">1</pattern>
@@ -44,17 +40,20 @@
       <pattern class="normal" msg="CHG">16</pattern>
       <pattern class="warn" msg="N/A" />
     </table>
-    <table id="motor">
-      <range class="alarm" msg="LOW">:10</range>
-      <range class="normal" msg="OK">10&lt;:30</range>
-      <range class="alarm" msg="HIGH">30&lt;:</range>
-    </table>
     <table id="bvl">
       <range class="alarm" msg="LOW">:20</range>
       <range class="warn" msg="LESS">20&lt;:22</range>
       <range class="normal" msg="OK">22&lt;:26</range>
       <range class="warn" msg="FULL">26&lt;:28</range>
       <range class="alarm" msg="HIGH">28&lt;:</range>
+    </table>
+    <table id="load" label="Load Cell">
+      <pattern class="alarm" msg="HH">1</pattern>
+      <pattern class="warn" msg="H">2</pattern>
+      <pattern class="normal" msg="M">4</pattern>
+      <pattern class="warn" msg="L">8</pattern>
+      <pattern class="alarm" msg="LL">16</pattern>
+      <pattern class="alarm" msg="N/A"></pattern>
     </table>
   </symbol>
 </sdb>

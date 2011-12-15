@@ -1,7 +1,7 @@
 ========================== Issue =============================
 ***DEBUG
-crt: doesn't work(11/2)
-dso: doesn't work(11/2)
+hexpack:crt:no exe stat just after command issued 12/14
+hexpack:crt:status is not correct 12/14
 dso:fix jack bolt stack after interrupt(8/15)
 aso:need reset function for executing flag
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="cj2" label="Stand-by Flange PLC">
     <table id="rst">
@@ -13,31 +13,31 @@
     </table>
     <table id="hook">
       <pattern class="normal" msg="HOOK">2</pattern>
-      <pattern class="normal" msg="UNHK">1</pattern>
+      <pattern class="warn" msg="UNHK">1</pattern>
       <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="jack">
       <pattern class="normal" msg="UP">2</pattern>
-      <pattern class="normal" msg="DW">1</pattern>
+      <pattern class="warn" msg="DW">1</pattern>
       <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="ctl">
       <pattern class="normal" msg="AUTO">2</pattern>
-      <pattern class="normal" msg="MANUAL">1</pattern>
+      <pattern class="caution" msg="MANUAL">1</pattern>
       <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="mov">
-      <pattern class="normal" msg="FW">2</pattern>
+      <pattern class="warn" msg="FW">2</pattern>
       <pattern class="normal" msg="BK">1</pattern>
       <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="rot">
-      <pattern class="normal" msg="LOAD">2</pattern>
+      <pattern class="warn" msg="LOAD">2</pattern>
       <pattern class="normal" msg="STORE">1</pattern>
       <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="dor">
-      <pattern class="normal" msg="OPEN">2</pattern>
+      <pattern class="warn" msg="OPEN">2</pattern>
       <pattern class="normal" msg="CLOSE">1</pattern>
       <pattern class="warn" msg="Half">0</pattern>
     </table>

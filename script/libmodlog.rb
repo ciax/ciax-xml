@@ -6,6 +6,7 @@ module ModLog
   def startlog(type,id,ver=0)
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i
+      @id=id
       @logfile=VarDir+"/"+type+"_#{id}_#{Time.now.year}.log"
       @v.msg{"Init/Start Log '#{type}' (#{id}/Ver.#{@ver})"}
     end
@@ -17,10 +18,10 @@ module ModLog
     self
   end
 
-  def append(data,id=nil,time=nil)
+  def append(data,*cid)
     time||=Msg.now
     if @logfile
-      tag=["##@ver",id].flatten(1).compact.join(':')
+      tag=([@id,@ver]+cid).compact.join(':')
       case data
       when Enumerable
         str=JSON.dump(data)

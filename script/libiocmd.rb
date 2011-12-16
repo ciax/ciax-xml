@@ -10,15 +10,15 @@ module IoLog
     self
   end
 
-  def snd(str,id)
+  def snd(str,cid)
     super
-    append(str,['snd',id].join(':'))
+    append(str,'snd',cid)
     self
   end
 
   # return array
-  def rcv(id)
-    append(super,['rcv',id].join(':'))
+  def rcv(cid)
+    append(super,'rcv',cid)
   end
 
   def self.set_logline(str)

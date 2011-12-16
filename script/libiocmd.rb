@@ -25,6 +25,7 @@ module IoLog
     ary=str.split("\t")
     time=ary.shift
     cmd=ary.shift.split(':')
+    ver=cmd.shift
     abort("Logline:Not response") unless /rcv/ === cmd.shift
     [cmd,[eval(ary.shift),time]]
   end

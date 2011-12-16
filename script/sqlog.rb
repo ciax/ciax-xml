@@ -13,7 +13,7 @@ begin
   idb=InsDb.new(id)
   adb=idb.cover_app
 rescue UserError
-  Msg.usage("(-ai) [id] (logfile)","-i:init table","-a:app stat")
+  Msg.usage("(-ai) [id] (logfile) ( < sqlite3 -line id)","-i:init table","-a:app stat")
 end
 if opt['a']
   field=Field.new
@@ -42,12 +42,12 @@ else
   fdb=adb.cover_frm
   cobj=Command.new(fdb[:cmdframe])
   field=FrmRsp.new(fdb,cobj)
-  ver=adb['frm_ver']
+  ver=fdb['frm_ver']
   sql=Sql.new(id,ver,field)
   if opt['i'] # Initial
     sql.ini
   else
-    readlines.grep(/rcv:#{ver}:/).each{|str|
+    readlines.grep(/##{ver}:rcv/).each{|str|
       begin
         field.upd_logline(str)
         sql.upd

@@ -1,13 +1,9 @@
 ========================== Issue =============================
 ***DEBUG
 hexpack:crt:no exe stat just after command issued 12/14
-hexpack:crt:status is not correct 12/14
-dso:fix jack bolt stack after interrupt(8/15)
-aso:need reset function for executing flag
+dso:jack bolt stack after interrupt(8/15)
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]
   -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
-cart:doesn't work on test run with appsh(11/2)
-cart:need clear tag command for reset manually on app mode
 
 ***REQUEST
 mcr-old:interlock error log
@@ -18,7 +14,6 @@ mcr: macro log
 mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param
 frame log format(add version, data->base64)
-command log (app level)
 
 ***UPGRADE
 sql: using sqlite for symboling, labeling as cache
@@ -26,13 +21,12 @@ crt: jack table edit interface (sql+web)
 
 ***CHECK NEED
 verify on motion: adb-oss
-watch: multicondition
 verify: oss jack num corresponding
-crt: actual motion
 
 ========================== Result =============================
 ***DISCARD
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain
+aso:need reset function for executing flag
 
 ***SOLVED
 debug:error "no such command 'exe'" in dsi
@@ -74,3 +68,9 @@ shell: toggle status display mode(view,stat,watch)(11/3)
 using sqlite for logging stat
 wdb: watch status log[12/7]
 rdb field log(fieldlog.sq3)[12/12]
+hexpack:crt:status is not correct 12/14
+cart:doesn't work on test run with appsh(11/2)
+cart:need clear tag command for reset manually on app mode
+command log (app level) 12/14
+crt: actual motion
+watch: multicondition

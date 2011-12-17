@@ -19,8 +19,7 @@ module IoLog
   # return array
   def rcv
     str=super
-    append(str.dump,'rcv',@cid)
-    str
+    [str,append(str.dump,'rcv',@cid)]
   end
 
   def self.set_logline(str)

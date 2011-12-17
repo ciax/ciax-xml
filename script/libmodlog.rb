@@ -19,12 +19,13 @@ module ModLog
   end
 
   def append(str,*cid)
+    time=Msg.now
     if @logfile
       tag=([@id,@ver]+cid).compact.join(':')
       open(@logfile,'a') {|f|
-        f.puts [Msg.now,tag,str].join("\t")
+        f.puts [time,tag,str].join("\t")
       }
     end
-    self
+    time
   end
 end

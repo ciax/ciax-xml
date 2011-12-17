@@ -20,7 +20,7 @@ class FrmRsp < Field
     }
   end
 
-  # Block accepts [time,frame]
+  # Block accepts [frame,time]
   def upd
     if rid=@cobj[:response]
       @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")

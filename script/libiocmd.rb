@@ -10,16 +10,16 @@ module IoLog
     self
   end
 
-  def snd(str,cid)
+  def snd(str)
     super
-    append(str.dump,'snd',cid)
+    append(str.dump,'snd',@cid)
     self
   end
 
   # return array
-  def rcv(cid)
+  def rcv
     str=super
-    append(str.dump,'rcv',cid)
+    append(str.dump,'rcv',@cid)
     str
   end
 
@@ -33,6 +33,7 @@ module IoLog
 end
 
 class IoCmd
+  attr_accessor :cid
   def initialize(iocmd,wait=0,timeout=nil)
     @v=Msg::Ver.new(self,1)
     abort " No IO command" if iocmd.to_a.empty?
@@ -41,9 +42,10 @@ class IoCmd
     @f=IO.popen(@iocmd,'r+')
     @wait=wait.to_f
     @timeout=timeout
+    @cid=''
   end
 
-  def snd(str,dmy=nil)
+  def snd(str)
     return if str.to_s.empty?
     sleep @wait
     @v.msg{"Sending #{str.size} byte"}
@@ -53,7 +55,7 @@ class IoCmd
     self
   end
 
-  def rcv(dmy=nil)
+  def rcv
     sleep @wait
     str=reopen{
       select([@f],nil,nil,@timeout) || next

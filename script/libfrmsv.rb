@@ -50,10 +50,10 @@ class FrmSv < Frm
       msg='Done'
       sleep cmd[1].to_i
     else
-      cid=super[:cid]
-      @v.msg{"Issue[#{cid}]"}
-      @io.snd(@fc.getframe,cid)
-      @field.upd{@io.rcv(cid)}.save
+      @io.cid=super[:cid]
+      @v.msg{"Issue[#{@io.cid}]"}
+      @io.snd(@fc.getframe)
+      @field.upd{@io.rcv}.save
       @sql.upd.flush if @sql
       msg='OK'
     end

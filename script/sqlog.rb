@@ -47,7 +47,7 @@ else
   if opt['i'] # Initial
     sql.ini
   else
-    readlines.grep(/##{ver}:rcv/).each{|str|
+    readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
       begin
         field.upd_logline(str)
         sql.upd

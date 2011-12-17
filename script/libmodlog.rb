@@ -22,16 +22,34 @@ module ModLog
     time||=Msg.now
     if @logfile
       tag=([@id,@ver]+cid).compact.join(':')
-      case data
-      when Enumerable
-        str=JSON.dump(data)
-      else
-        str=data.dump
-      end
+      str=ModLog.encode(data)
       open(@logfile,'a') {|f|
         f.puts [time,tag,str].join("\t")
       }
     end
     [data,time]
   end
+
+  def self.encode(data)
+    case data
+    when Enumerable
+      str=JSON.dump(data)
+    else
+      str=data.dump
+    end
+    str
+  end
+
+  def self.decode(str)
+    case str
+    when /^(\[.*\]|{.*})$/
+      data=JSON.load(str)
+    when /".*"/
+      data=eval(str)
+    else
+      data=''
+    end
+    data
+  end
+
 end

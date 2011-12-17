@@ -24,10 +24,9 @@ module IoLog
   def self.set_logline(str)
     ary=str.split("\t")
     time=ary.shift
-    cmd=ary.shift.split(':')
-    ver=cmd.shift
-    abort("Logline:Not response") unless /rcv/ === cmd.shift
-    [cmd,[eval(ary.shift),time]]
+    id,ver,dir,*cmd=ary.shift.split(':')
+    abort("Logline:Not response") unless /rcv/ === dir
+    [cmd,[ModLog.decode(ary.shift),time]]
   end
 end
 

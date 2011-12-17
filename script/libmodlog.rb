@@ -23,7 +23,7 @@ module ModLog
     if @logfile
       tag=([@id,@ver]+cid).compact.join(':')
       open(@logfile,'a') {|f|
-        f.puts [time,tag,str].join("\t")
+        f.puts [time,tag,str].compact.join("\t")
       }
     end
     time

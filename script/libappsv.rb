@@ -25,7 +25,7 @@ class AppSv < App
       @v.msg{"Status Updated(#{@view['stat']['time']})"}
     }
     @watch=Watch.new(adb,@view).thread{|cmd|
-      @buf.send(2){frmcmds(cmd)}
+      sendfrm(cmd,2)
     }.extend(WatchPrt)
     extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
     cl=Msg::List.new("Internal Command",2)
@@ -41,7 +41,7 @@ class AppSv < App
     when nil
     when 'interrupt'
       int=@watch.interrupt
-      @buf.send(0){frmcmds(int)}
+      sendfrm(int,0)
       msg="Interrupt #{int}"
     when 'flush'
       @fint.field.load
@@ -58,7 +58,7 @@ class AppSv < App
       if @watch.block?(cmd)
         msg="Blocking(#{cmd})"
       else
-        @buf.send{frmcmds([cmd])}
+        sendfrm([cmd])
         msg="ISSUED"
       end
     end
@@ -76,12 +76,16 @@ class AppSv < App
     self
   end
 
-  def frmcmds(ary)
-    ary.map{|cmd|
-      if @view.key?('ver')
-        append(JSON.dump(@watch[:active]),cmd)
-      end
-      @cobj.set(cmd).get
-    }.flatten(1)
+  def sendfrm(ary,pri=1)
+    @buf.send(pri){
+      ary.map{|cmd|
+        @cobj.set(cmd)
+        if @view.key?('ver')
+          str= pri > 1 ? JSON.dump(@watch[:active]) : nil
+          append(str,cmd)
+        end
+        @cobj.get
+      }.flatten(1)
+    }
   end
 end

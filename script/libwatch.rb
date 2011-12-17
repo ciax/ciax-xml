@@ -3,7 +3,6 @@ require 'libmsg'
 require 'libexenum'
 require 'librerange'
 require 'libelapse'
-require 'json'
 require 'libmodlog'
 
 module WatchPrt

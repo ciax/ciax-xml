@@ -8,6 +8,7 @@ require "libbuffer"
 require "libwatch"
 require "thread"
 require "libmodlog"
+require "json"
 
 class AppSv < App
   def initialize(adb,fint)
@@ -78,7 +79,7 @@ class AppSv < App
   def frmcmds(ary)
     ary.map{|cmd|
       if @view.key?('ver')
-        append(@watch[:active],cmd)
+        append(JSON.dump(@watch[:active]),cmd)
       end
       @cobj.set(cmd).get
     }.flatten(1)

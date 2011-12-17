@@ -12,13 +12,15 @@ module IoLog
 
   def snd(str,cid)
     super
-    append(IoLog.encode(str),'snd',cid)
+    append(str.dump,'snd',cid)
     self
   end
 
   # return array
   def rcv(cid)
-    append(IoLog.encode(super),'rcv',cid)
+    str=super
+    append(str.dump,'rcv',cid)
+    str
   end
 
   def self.set_logline(str)
@@ -26,15 +28,7 @@ module IoLog
     time=ary.shift
     id,ver,dir,*cmd=ary.shift.split(':')
     abort("Logline:Not response") unless /rcv/ === dir
-    [cmd,[IoLog.decode(ary.shift),time]]
-  end
-
-  def self.encode(data)
-    data.dump
-  end
-
-  def self.decode(str)
-    eval(str)
+    [cmd,[eval(ary.shift),time]]
   end
 end
 

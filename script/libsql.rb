@@ -3,6 +3,7 @@
 require "libmsg"
 require "libappstat"
 
+# Generate SQL command string
 class Sql < Array
   def initialize(id,ver,stat)
     @v=Msg::Ver.new(self,6)
@@ -59,6 +60,7 @@ class Sql < Array
   end
 end
 
+# Execute Sql Command to sqlite3
 class SqLog < Sql
   def initialize(id,ver,stat,dbname='temp')
     super(id,ver,stat)
@@ -70,15 +72,18 @@ class SqLog < Sql
     @v.msg{"Init/Start Log '#{dbname}' (#{id}/Ver.#{ver.to_i})"}
   end
 
+  # Check table existence
   def check_table
     internal("tables").split(' ').include?(@tid)
   end
 
+  # Issue internal command
   def internal(str)
     cmd=@sql.join(' ')+" ."+str
     `#{cmd}`
   end
 
+  # Do a transaction
   def flush
     IO.popen(@sql,'w'){|f|
       f.puts to_s

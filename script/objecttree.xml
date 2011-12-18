@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<objecttree>
+  <module>
+    <IoLog include="ModLog"></IoLog>
+  </module>
+  <class>
+    <Exception>
+      <StandardError>
+        <RuntimeError>
+          <Broken />
+          <UserError>
+            <SelectID>
+              <SelectCMD />
+            </SelectID>
+          </UserError>
+        </RuntimeError>
+      </StandardError>
+    </Exception>
+    <Hash include="Enumerable">
+      <ExHash include="ExEnum">
+        <Command Math="">
+          <AppCmd></AppCmd>
+        </Command>
+        <Db>
+          <AppDb></AppDb>
+          <FrmDb />
+          <InsDb />
+          <McrDb />
+          <SymDb />
+        </Db>
+        <IoFile>
+          <Field>
+            <FrmRsp />
+          </Field>
+          <Rview>
+            <Wview />
+          </Rview>
+        </IoFile>
+      </ExHash>
+      <AppStat />
+      <IntApps />
+      <IntFrms />
+      <Msg.List />
+      <Msg.Lists />
+      <SymStat />
+      <Watch />
+      <XmlDoc />
+    </Hash>
+    <Array include="Enumerable">
+      <ExArray include="ExEnum"></ExArray>
+      <Sql>
+        <SqLog />
+      </Sql>
+      <HtmlTbl />
+      <McrSub />
+    </Array>
+    <Time>
+      <Interval>
+        <Elapse />
+      </Interval>
+    </Time>
+    <Thread>
+      <Server />
+    </Thread>
+    <App>
+      <AppCl />
+      <AppSv />
+    </App>
+    <Frm>
+      <FrmCl />
+      <FrmSv />
+    </Frm>
+    <AppPrt />
+    <FrmCmd />
+    <Buffer />
+    <Circular />
+    <Client />
+    <Frame />
+    <HexPack />
+    <IoCmd />
+    <McrMan />
+    <Msg />
+    <Shell />
+    <ReRange Comparable="" />
+    <Repeat />
+    <Xml include="ModXml" />
+  </class>
+</objecttree>

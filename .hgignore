@@ -3,9 +3,10 @@ syntax: glob
 *.o
 *.class
 *.orig
+script/doc
 
-sytax: re
-^CVS/
+sytax: regexp
+^CVS/.*
 /CVS/
 ^\.svn/
 /\.svn/

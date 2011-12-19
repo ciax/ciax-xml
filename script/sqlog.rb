@@ -13,7 +13,10 @@ begin
   idb=InsDb.new(id)
   adb=idb.cover_app
 rescue UserError
-  Msg.usage("(-aiv) [id] (logfile) ( < sqlite3 -line id)","-i:init table","-a:app stat")
+  Msg.usage("(-aiv) [id] (logfile|sql output)",
+            "-v:verbose",
+            "-i:init table",
+            "-a:app stat, need -line option in sqlite3")
 end
 if opt['a']
   field=Field.new

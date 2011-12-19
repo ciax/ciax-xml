@@ -18,7 +18,7 @@ end
 if opt['a']
   field=Field.new
   stat=AppStat.new(adb,field)
-  sql=Sql.new(id,adb['app_ver'],stat)
+  sql=Sql.new('stat',id,adb['app_ver'],stat)
   if opt['i'] # Initial
     sql.ini
   else
@@ -43,7 +43,7 @@ else
   cobj=Command.new(fdb[:cmdframe])
   field=FrmRsp.new(fdb,cobj)
   ver=fdb['frm_ver']
-  sql=Sql.new(id,ver,field)
+  sql=Sql.new('field',id,ver,field)
   if opt['i'] # Initial
     sql.ini
   else

@@ -18,7 +18,7 @@ class FrmSv < Frm
       @io=IoCmd.new(fdb['iocmd'].split(' '),fdb['wait'],1)
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(IoLog).startlog(id,ver)
-      @sql=SqLog.new(id,ver,@field,'fieldlog')
+      @sql=SqLog.new('field',id,ver,@field)
       @updlist << proc{ @sql.upd.flush }
     else
       @io=IoCmd.new(iocmd,fdb['wait'],1)

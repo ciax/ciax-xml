@@ -13,7 +13,7 @@ class Wview < Rview
     @stat=AppStat.new(adb,field).upd
     super(id=adb['id'])
     @sym=SymStat.new(adb,@stat).upd
-    @sql=SqLog.new(id,self['ver'],@stat,'statlog') if key?('ver')
+    @sql=SqLog.new('stat',id,self['ver'],@stat) if key?('ver')
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }

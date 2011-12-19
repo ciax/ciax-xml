@@ -5,8 +5,9 @@ require "libappstat"
 
 # Generate SQL command string
 class Sql < Array
-  def initialize(id,ver,stat)
+  def initialize(type,id,ver,stat)
     @v=Msg::Ver.new(self,6)
+    @type=type
     @tid="#{id}_#{ver.to_i}"
     @stat=Msg.type?(stat,Hash)
   end
@@ -25,7 +26,7 @@ class Sql < Array
     stat=expand
     key=stat.keys.join("','")
     val=stat.values.join("','")
-    @v.msg{"Update:[#{@tid}] (#{@stat['time']})"}
+    @v.msg{"Update:[#{@type}/#{@tid}] (#{@stat['time']})"}
     push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
   end
 
@@ -62,14 +63,14 @@ end
 
 # Execute Sql Command to sqlite3
 class SqLog < Sql
-  def initialize(id,ver,stat,dbname='temp')
-    super(id,ver,stat)
-    @sql=["sqlite3",VarDir+"/"+dbname+".sq3"]
+  def initialize(type,id,ver,stat)
+    super
+    @sql=["sqlite3",VarDir+"/"+type+".sq3"]
     unless check_table
       ini.flush
-      @v.msg{"Init/Table '#{@tid}' is created in #{dbname}"}
+      @v.msg{"Init/Table '#{@tid}' is created in #{type}"}
     end
-    @v.msg{"Init/Start Log '#{dbname}' (#{id}/Ver.#{ver.to_i})"}
+    @v.msg{"Init/Start Log '#{type}' (#{id}/Ver.#{ver.to_i})"}
   end
 
   # Check table existence
@@ -88,6 +89,7 @@ class SqLog < Sql
     IO.popen(@sql,'w'){|f|
       f.puts to_s
     }
+    @v.msg{"Transaction complete (#{@type})"}
     clear
   rescue
     Msg.err(" in SQL")
@@ -98,6 +100,6 @@ if __FILE__ == $0
   require "librview"
   Msg.usage "[view_file]" if STDIN.tty? && ARGV.size < 1
   view=Rview.new.load
-  sql=Sql.new(view['id'],view['ver'],view['stat'])
+  sql=Sql.new('stat',view['id'],view['ver'],view['stat'])
   puts sql.upd.to_s
 end

@@ -18,15 +18,16 @@ end
 if opt['a']
   field=Field.new
   stat=AppStat.new(adb,field)
+  field.updlist << proc{ stat.upd }
   sql=Sql.new('stat',id,adb['app_ver'],stat)
+  field.updlist << proc{ sql.upd }
   if opt['i'] # Initial
     sql.ini
   else
     readlines.each{|str|
       if /^$/ =~ str
         begin
-          stat.upd
-          sql.upd
+          field.upd
           $stderr.print "."
         rescue
           $stderr.print $! if opt['v']
@@ -41,17 +42,17 @@ if opt['a']
   end
 else
   fdb=adb.cover_frm
+  ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
   field=FrmRsp.new(fdb,cobj)
-  ver=fdb['frm_ver']
   sql=Sql.new('field',id,ver,field)
+  field.updlist << proc{ sql.upd }
   if opt['i'] # Initial
     sql.ini
   else
     readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
       begin
         field.upd_logline(str)
-        sql.upd
         $stderr.print "."
       rescue
         $stderr.print $! if opt['v']

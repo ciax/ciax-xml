@@ -18,10 +18,10 @@ class AppSv < App
     @fint=Msg.type?(fint,Frm)
     @cobj=AppCmd.new(adb[:command])
     @view=Wview.new(adb,@fint.field)
+    @fint.field.updlist << proc{ @view.upd.save}
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|cmd|
       @fint.exe(cmd)
-      @view.upd.save
       @v.msg{"Status Updated(#{@view['stat']['time']})"}
     }
     @watch=Watch.new(adb,@view).thread{|cmd|

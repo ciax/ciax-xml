@@ -9,7 +9,6 @@ require "libsql"
 
 class FrmSv < Frm
   def initialize(fdb,iocmd=[])
-    attr_reader :updlist
     super(fdb)
     @v=Msg::Ver.new(self,3)
     @field=FrmRsp.new(fdb,@cobj).load
@@ -19,7 +18,7 @@ class FrmSv < Frm
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(IoLog).startlog(id,ver)
       @sql=SqLog.new('field',id,ver,@field)
-      @updlist << proc{ @sql.upd.flush }
+      @field.updlist << proc{ @sql.upd.flush }
     else
       @io=IoCmd.new(iocmd,fdb['wait'],1)
       @field.delete('ver')

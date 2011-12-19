@@ -3,8 +3,16 @@ require 'libmsg'
 require 'libiofile'
 
 class Field < IoFile
+  # pdoc array incidentally executed at upd()
+  attr_reader :updlist
   def initialize(id=nil,host=nil)
     super('field',id,host)
+    @updlist=[]
+  end
+
+  def upd
+    @updlist.each{|p| p.call }
+    self
   end
 
   def subst(str)

@@ -7,13 +7,13 @@ require "libappstat"
 require 'librview'
 require "libsql"
 
-opt=ARGV.getopts("ia")
+opt=ARGV.getopts("iav")
 id = ARGV.shift
 begin
   idb=InsDb.new(id)
   adb=idb.cover_app
 rescue UserError
-  Msg.usage("(-ai) [id] (logfile) ( < sqlite3 -line id)","-i:init table","-a:app stat")
+  Msg.usage("(-aiv) [id] (logfile) ( < sqlite3 -line id)","-i:init table","-a:app stat")
 end
 if opt['a']
   field=Field.new
@@ -29,6 +29,7 @@ if opt['a']
           sql.upd
           $stderr.print "."
         rescue
+          $stderr.print $! if opt['v']
           $stderr.print "x"
           next
         end
@@ -53,6 +54,7 @@ else
         sql.upd
         $stderr.print "."
       rescue
+        $stderr.print $! if opt['v']
         $stderr.print "x"
         next
       end

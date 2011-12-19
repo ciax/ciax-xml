@@ -1,1 +1,1 @@
-sqlite3 $HOME/.var/statlog.sq3 $*
+sqlite3 $HOME/.var/stat.sq3 $*

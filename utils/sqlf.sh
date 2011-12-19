@@ -1,1 +1,1 @@
-sqlite3 -line $HOME/.var/fieldlog.sq3 $*
+sqlite3 -line $HOME/.var/field.sq3 $*

@@ -8,15 +8,18 @@ require "libfrmcmd"
 require "libsql"
 
 class FrmSv < Frm
+  attr_accessor :updlist
   def initialize(fdb,iocmd=[])
     super(fdb)
     @v=Msg::Ver.new(self,3)
     @field=FrmRsp.new(fdb,@cobj).load
+    @updlist=[]
     if Msg.type?(iocmd,Array).empty?
       @io=IoCmd.new(fdb['iocmd'].split(' '),fdb['wait'],1)
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(IoLog).startlog(id,ver)
       @sql=SqLog.new(id,ver,@field,'fieldlog')
+      @updlist << proc{ @sql.upd.flush }
     else
       @io=IoCmd.new(iocmd,fdb['wait'],1)
       @field.delete('ver')
@@ -54,7 +57,7 @@ class FrmSv < Frm
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
       @field.upd{@io.rcv}.save
-      @sql.upd.flush if @sql
+      @updlist.each{|p| p.call }
       msg='OK'
     end
     msg

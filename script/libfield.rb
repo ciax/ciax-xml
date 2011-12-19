@@ -3,23 +3,26 @@ require 'libmsg'
 require 'libiofile'
 
 class Field < IoFile
-  # pdoc array incidentally executed at upd()
+  # pdoc array executed in upd()
   attr_reader :updlist
   def initialize(id=nil,host=nil)
     super('field',id,host)
     @updlist=[]
   end
 
+  # Update Field
   def upd
     @updlist.each{|p| p.call }
     self
   end
 
+  # Substitute str by Field data
+  # - str format: ${key}
+  # - output csv if array
   def subst(str)
     return str unless /\$\{/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin
-      # output csv if array
       str=str.gsub(/\$\{(.+)\}/) {
         ary=[*get($1)].map!{|i| eval(i)}
         Msg.abort("No value for subst [#{$1}]") if ary.empty?
@@ -31,8 +34,10 @@ class Field < IoFile
     end
   end
 
-  # For multiple dimention (content should be numerical)
-  def get(key) # ${key1:key2:idx} => hash[key1][key2][idx]
+  # Get value for key with multiple dimention
+  # - index should be numerical or formula
+  # - ${key:idx1:idx2} => hash[key][idx1][idx2]
+  def get(key)
     Msg.abort("No Key") unless key
     return self[key] if key?(key)
     vname=[]
@@ -54,11 +59,13 @@ class Field < IoFile
     }
   end
 
+  # Set value with mixed key
   def set(key,val)
     get(key).replace(subst(val).to_s)
     self
   end
 
+  # Loading data with tag
   def loadkey(tag=nil)
     Msg.err("No File Name")  unless @base
     fn=settag(tag)
@@ -75,6 +82,7 @@ class Field < IoFile
     self
   end
 
+  # Saving data of specified keys with tag
   def savekey(keylist,tag=nil)
     Msg.err("No File Name")  unless @base
     hash={}

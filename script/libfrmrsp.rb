@@ -5,11 +5,13 @@ require "libiocmd"
 
 # Rsp Methods
 class FrmRsp < Field
+  attr_reader :updlist
   def initialize(fdb,par)
     @v=Msg::Ver.new(self,3)
     @fdb=Msg.type?(fdb,FrmDb)
     @cobj=Msg.type?(par,Command)
     super(fdb['id'])
+    @updlist=[]
     self['ver']=fdb['frm_ver'].to_i
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
@@ -42,6 +44,7 @@ class FrmRsp < Field
         cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
+      @updlist.each{|p| p.call }
     else
       @v.msg{"Send Only"}
       @sel[:select]=nil

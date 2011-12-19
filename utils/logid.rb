@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'optparse'
-
+# Convert Frame LogID format (cid) -> ins:ver:(snd,rcv):cmd:param:..
 def filter(fname,output)
   type,id,sfx=fname.split('_')
   /v([0-9])\.log/ =~ sfx

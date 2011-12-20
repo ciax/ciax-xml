@@ -4,6 +4,7 @@ require "libmsg"
 class HexPack
   def initialize(view,prompt='')
     @stat=Msg.type?(view,Rview)['stat']
+    @v=Msg::Ver.new(self,6)
     id=view['id']||raise
     @prompt=prompt
     file="/home/ciax/config/sdb_#{id}.txt"
@@ -15,7 +16,7 @@ class HexPack
         case line
         when /^[%#]/,/^$/
         else
-          @list << [ary[0],ary[2],ary[3]]
+          @list << ary
         end
       end
     }
@@ -25,21 +26,23 @@ class HexPack
     @res[3]=b2i(['isu','exc','run','jak'].any?{|r| @stat[r].to_i > 0})
     @res[4]=b2i(@prompt.include?('*'))
     @res[6]=''
-    @list.each{|key,len,type|
+    @list.each{|key,title,len,type|
       if val=@stat[key]
         case type
         when /FLOAT/
-          @res[6] << ("%0#{len}.2f" % val.to_f)
+          str=("%0#{len}.2f" % val.to_f)
         when /INT/
-          @res[6] << ("%0#{len}d" % val.to_i)
+          str=("%0#{len}d" % val.to_i)
         when /BINARY/
-          @res[6] << ("%0#{len}b" % val.to_i)
-        else
-          @res[6] << ("%#{len}s" % val)
-        end
+          str=("%0#{len}b" % val.to_i)
+         else
+          str=("%#{len}s" % val)
+         end
+        @v.msg{"#{title}/#{type}(#{len}) = #{str}"}
       else
-        @res[6] << '*' * len.to_i
+        str='*' * len.to_i
       end
+      @res[6] << str
     }
     @res.join('')
   end

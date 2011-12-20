@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="mel" id="mel" label="Cart PLC" version="2">
+  <app frm_type="mel" id="mel" label="Cart PLC" version="3">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
         <command id="upd" label="Status update">
@@ -8,37 +8,37 @@
           <frmcmd name="getcmd" />
         </command>
         <command id="emstop" label="Emergency Stop">
-          <frmcmd name="stop">
+          <frmcmd name="int">
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="sleep">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="clear" />
+          <frmcmd name="clr_int" />
           <frmcmd name="getstat" />
         </command>
         <command id="pause" label="Pause Action">
-          <frmcmd name="stop">
+          <frmcmd name="int">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="sleep">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="clear" />
+          <frmcmd name="clr_int" />
           <frmcmd name="getstat" />
         </command>
         <command id="reset" label="Reset Error or Pause">
-          <frmcmd name="stop">
+          <frmcmd name="int">
             <argv>5</argv>
           </frmcmd>
           <frmcmd name="sleep">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="clear" />
+          <frmcmd name="clr_int" />
           <frmcmd name="getstat" />
         </command>
         <command id="ready" label="Ready mode">
-          <frmcmd name="stop">
+          <frmcmd name="int">
             <argv>6</argv>
           </frmcmd>
           <frmcmd name="sleep">
@@ -48,27 +48,27 @@
           <frmcmd name="getstat" />
         </command>
         <command id="cancel" label="Command Cancel">
-          <frmcmd name="stop">
+          <frmcmd name="int">
             <argv>4</argv>
           </frmcmd>
           <frmcmd name="sleep">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="clear" />
+          <frmcmd name="clr_int" />
           <frmcmd name="getstat" />
         </command>
         <command id="cstop" label="Stop at Next Tag">
-          <frmcmd name="stop">
+          <frmcmd name="int">
             <argv>7</argv>
           </frmcmd>
           <frmcmd name="sleep">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="clear" />
+          <frmcmd name="clr_int" />
           <frmcmd name="getstat" />
         </command>
         <command id="clear" label="Clear Cmd Flag" hidden="true">
-          <frmcmd name="clear" />
+          <frmcmd name="clr_act" />
           <frmcmd name="getcmd" />
         </command>
       </group>
@@ -78,7 +78,7 @@
           <frmcmd name="set_tag">
             <argv>$1</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -87,7 +87,7 @@
           <frmcmd name="set_tag">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -96,7 +96,7 @@
           <frmcmd name="set_tag">
             <argv>2</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -105,7 +105,7 @@
           <frmcmd name="set_tag">
             <argv>3</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -114,7 +114,7 @@
           <frmcmd name="set_tag">
             <argv>7</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -123,7 +123,7 @@
           <frmcmd name="set_tag">
             <argv>8</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -132,7 +132,7 @@
           <frmcmd name="set_tag">
             <argv>9</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -141,7 +141,7 @@
           <frmcmd name="set_tag">
             <argv>10</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -150,7 +150,7 @@
           <frmcmd name="set_tag">
             <argv>11</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -159,7 +159,7 @@
           <frmcmd name="set_tag">
             <argv>12</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -168,7 +168,7 @@
           <frmcmd name="set_tag">
             <argv>98</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -177,7 +177,7 @@
           <frmcmd name="set_tag">
             <argv>99</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -188,7 +188,7 @@
           <frmcmd name="set_pos">
             <argv>0</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -197,7 +197,7 @@
           <frmcmd name="set_pos">
             <argv>1</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -206,7 +206,7 @@
           <frmcmd name="set_pos">
             <argv>2</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -215,7 +215,7 @@
           <frmcmd name="set_pos">
             <argv>3</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -224,7 +224,7 @@
           <frmcmd name="set_pos">
             <argv>4</argv>
           </frmcmd>
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -264,7 +264,7 @@
       </group>
       <group id="gchg" caption="Charging Commands" column="2">
         <command id="chgon" label="Start Charging">
-          <frmcmd name="start">
+          <frmcmd name="act">
             <argv>15</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
@@ -273,7 +273,7 @@
           <frmcmd name="stop">
             <argv format="%d">3</argv>
           </frmcmd>
-          <frmcmd name="clear" />
+          <frmcmd name="clr_int" />
           <frmcmd name="getstat" />
         </command>
       </group>

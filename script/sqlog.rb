@@ -6,6 +6,7 @@ require "libfrmrsp"
 require "libappstat"
 require 'librview'
 require "libsql"
+require 'json'
 
 opt=ARGV.getopts("iav")
 id = ARGV.shift
@@ -13,10 +14,10 @@ begin
   idb=InsDb.new(id)
   adb=idb.cover_app
 rescue UserError
-  Msg.usage("(-aiv) [id] (logfile|sql output)",
+  Msg.usage("(-aiv) [id] (logfile|jsonlog)",
             "-v:verbose",
             "-i:init table",
-            "-a:app stat, need -line option in sqlite3")
+            "-a:app stat")
 end
 if opt['a']
   field=Field.new
@@ -28,18 +29,12 @@ if opt['a']
     sql.ini
   else
     readlines.each{|str|
-      if /^$/ =~ str
-        begin
-          field.upd
-          $stderr.print "."
-        rescue
-          $stderr.print $! if opt['v']
-          $stderr.print "x"
-          next
-        end
-      else
-        k,v=str.split("=").map{|i| i.strip}
-        field[k]=v
+      begin
+        field.update(JSON.load(str))
+        $stderr.print "."
+      rescue
+        $stderr.print $! if opt['v']
+        $stderr.print "x"
       end
     }
   end

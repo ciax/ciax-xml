@@ -270,7 +270,7 @@
           <frmcmd name="getcmd" />
         </command>
         <command id="chgoff" label="Stop Charging">
-          <frmcmd name="stop">
+          <frmcmd name="int">
             <argv format="%d">3</argv>
           </frmcmd>
           <frmcmd name="clr_int" />

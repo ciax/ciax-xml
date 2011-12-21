@@ -7,18 +7,15 @@ ARGV.clear
 def find_snd(fd,input,fname)
   while line=fd.gets
     snd=line.split("\t")
-    begin
-      str=eval(snd[2])
-    rescue Exception
-      next
-    end
-    if str == input
+    rec=snd[2].chomp
+    inp=[input].pack("m").split("\n").join('')
+    if rec == inp
       STDERR.print "#{fname}:snd(#{fd.lineno})"
       rcv=fd.gets.split("\t")
       if /rcv/ === rcv[1]
         STDERR.print ":rcv(#{fd.lineno})"
         sleep rcv[0].to_i-snd[0].to_i
-        STDOUT.syswrite(eval(rcv[2]))
+        STDOUT.syswrite(rcv[2].unpack("m").first)
       end
       STDERR.puts
       break 1

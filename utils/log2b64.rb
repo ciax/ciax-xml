@@ -4,6 +4,8 @@ readlines.each{|line|
   next if line.to_s.empty?
   tm,cid,str=line.split("\t")
   next if str.to_s.empty?
-  str=[eval(str)].pack("m").split("\n") * ''
+  if /^".*"$/ =~ str
+    str=[eval(str)].pack("m").split("\n") * ''
+  end
   puts [tm,cid,str].join("\t")
 }

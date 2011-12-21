@@ -32,11 +32,13 @@ module IoLog
 
   private
   def encode(str)
-    str.dump
+    #str.dump
+    [str].pack("m").split("\n").join('')
   end
 
   def self.decode(data)
-    eval(data)
+    #eval(data)
+    data.unpack("m").first
   end
 end
 

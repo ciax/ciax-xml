@@ -139,9 +139,9 @@ class AppDb < Db
   include ModAdbc
   include ModAdbs
   include ModWdb
-  def initialize(app,nocache=nil)
+  def initialize(app)
     super('adb')
-    cache(app,nocache){|doc|
+    cache(app){|doc|
       update(doc)
       delete('id')
       self['app_ver']=delete('version')
@@ -154,9 +154,9 @@ class AppDb < Db
     }
   end
 
-  def cover_frm(nocache=nil)
+  def cover_frm
     require "libfrmdb"
-    frm=FrmDb.new(self['frm_type'],nocache)
+    frm=FrmDb.new(self['frm_type'])
     frm.deep_update(self)
   end
 end
@@ -165,11 +165,11 @@ if __FILE__ == $0
   require "optparse"
   begin
     opt=ARGV.getopts("f")
-    db=AppDb.new(ARGV.shift,true)
+    db=AppDb.new(ARGV.shift)
   rescue SelectID
     warn "USAGE: #{$0} (-f) [id] (key) .."
     Msg.exit
   end
-  db=db.cover_frm(true) if opt["f"]
+  db=db.cover_frm if opt["f"]
   puts db.path(ARGV)
 end

@@ -3,9 +3,9 @@ require "librepeat"
 require "libdb"
 
 class FrmDb < Db
-  def initialize(frm,nocache=nil)
+  def initialize(frm)
     super('fdb')
-    cache(frm,nocache){|doc|
+    cache(frm){|doc|
       update(doc)
       delete('id')
       self['frm_ver']=delete('version')
@@ -128,7 +128,7 @@ end
 
 if __FILE__ == $0
   begin
-    fdb=FrmDb.new(ARGV.shift,true)
+    fdb=FrmDb.new(ARGV.shift)
   rescue SelectID
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit

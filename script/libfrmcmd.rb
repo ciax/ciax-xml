@@ -62,7 +62,7 @@ if __FILE__ == $0
   dev,*cmd=ARGV
   ARGV.clear
   begin
-    fdb=FrmDb.new(dev,cmd.empty?)
+    fdb=FrmDb.new(dev)
     cobj=Command.new(fdb[:cmdframe])
     field=Field.new
     fc=FrmCmd.new(fdb,cobj,field)

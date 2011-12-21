@@ -2,10 +2,10 @@
 require "libdb"
 
 class InsDb < Db
-  def initialize(id,nocache=nil)
+  def initialize(id)
     super('idb')
     self['id']=id
-    cache(id,nocache){|doc|
+    cache(id){|doc|
       update(doc)
       doc.domain('init').each{|e0|
         ((self[:rspframe]||={})[:assign]||={})[e0['id']]=e0.text
@@ -19,9 +19,10 @@ class InsDb < Db
     }
   end
 
-  def cover_app(nocache=nil) # overwrite AppDb
+  # overwrite AppDb
+  def cover_app
     require "libappdb"
-    app=AppDb.new(self['app_type'],nocache)
+    app=AppDb.new(self['app_type'])
     app.deep_update(self)
   end
 end
@@ -31,12 +32,12 @@ if __FILE__ == $0
   begin
     opt=ARGV.getopts("af")
     id=ARGV.shift
-    db=InsDb.new(id,true)
+    db=InsDb.new(id)
   rescue
     warn "USAGE: #{$0} (-af) [id] (key) .."
     Msg.exit
   end
-  db=db.cover_app(true) if opt["a"]
-  db=db.cover_app(true).cover_frm(true) if opt["f"]
+  db=db.cover_app if opt["a"]
+  db=db.cover_app.cover_frm if opt["f"]
   puts db.path(ARGV)
 end

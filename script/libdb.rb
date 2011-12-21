@@ -2,6 +2,7 @@
 require "libmsg"
 require "libexenum"
 require "libxmldoc"
+require "find"
 
 class Db < ExHash
   XmlDir="#{ENV['HOME']}/ciax-xml"
@@ -10,22 +11,21 @@ class Db < ExHash
     @type=type
   end
 
-  def cache(id,nocache=nil)
+  def cache(id)
     base="#{@type}-#{id}"
     fmar=VarDir+"/cache/#{base}.mar"
-    fxml=XmlDir+"/#{base}.xml"
-    unless nocache
-      if !test(?e,fmar)
-        @v.msg{"CACHE:MAR file(#{base}) not exist"}
-      elsif test(?e,fxml) && test(?>,fxml,fmar)
-        @v.msg{["CACHE:XML file(#{base}) updated",
-                "cache=#{File::Stat.new(fmar).mtime}",
-                "xml=#{File::Stat.new(fxml).mtime}"]}
-      else
-        update(Marshal.load(IO.read(fmar)))
-        @v.msg{"CACHE:Loaded(#{base})"}
-        return self
-      end
+    if !test(?e,fmar)
+      @v.msg{"CACHE:MAR file(#{base}) not exist"}
+    elsif newer=Find.find(XmlDir+'/'){|f|
+        break f if File.file?(f) && test(?>,f,fmar)
+      }
+      @v.msg{["CACHE:File(#{newer}) is newer than cache",
+              "CACHE:cache=#{File::Stat.new(fmar).mtime}",
+              "CACHE:file=#{File::Stat.new(newer).mtime}"]}
+    else
+      update(Marshal.load(IO.read(fmar)))
+      @v.msg{"CACHE:Loaded(#{base})"}
+      return self
     end
     yield XmlDoc.new(@type,id)
     open(fmar,'w') {|f|

@@ -50,7 +50,7 @@ if __FILE__ == $0
   id=ARGV.shift
   ARGV.clear
   begin
-    idb=InsDb.new(id,true).cover_app
+    idb=InsDb.new(id).cover_app
     field=Field.new(id).load
     view=Wview.new(idb,field)
     print view.upd.to_j

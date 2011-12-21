@@ -39,7 +39,7 @@ if __FILE__ == $0
   require "libappdb"
   app,*cmd=ARGV
   begin
-    adb=AppDb.new(app,cmd.empty?)
+    adb=AppDb.new(app)
     fp=Command.new(adb.cover_frm[:cmdframe])
     AppCmd.new(adb[:command]).set(cmd).get.each{|fcmd|
       fp.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first

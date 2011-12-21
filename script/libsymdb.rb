@@ -3,13 +3,12 @@ require "librerange"
 require "libdb"
 
 class SymDb < Db
-  def initialize(nocache=nil)
+  def initialize
     super("sdb")
-    @nocache=nocache
   end
 
   def add(gid=nil) # gid = Table Group ID
-    cache(gid,@nocache){|doc|
+    cache(gid){|doc|
       doc.top.each{|e1|
         id=e1['id']
         label=e1['label']
@@ -28,7 +27,7 @@ end
 
 if __FILE__ == $0
   begin
-    sdb=SymDb.new(true)
+    sdb=SymDb.new
     ARGV.each{|id|
       sdb.add(id)
     }.empty? && sdb.add

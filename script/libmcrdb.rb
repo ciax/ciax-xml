@@ -4,9 +4,9 @@ require "librepeat"
 require "libdb"
 
 class McrDb < Db
-  def initialize(mcr,nocache=nil)
+  def initialize(mcr)
     super('mdb')
-    cache(mcr,nocache){|doc|
+    cache(mcr){|doc|
       update(doc)
       doc.top.each{|e0|
         id=e0.attr2db(self)
@@ -57,7 +57,7 @@ end
 
 if __FILE__ == $0
   begin
-    mdb=McrDb.new(ARGV.shift,true)
+    mdb=McrDb.new(ARGV.shift)
   rescue SelectID
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit

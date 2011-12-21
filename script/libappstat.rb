@@ -99,7 +99,7 @@ if __FILE__ == $0
   app=ARGV.shift
   ARGV.clear
   begin
-    adb=AppDb.new(app,true)
+    adb=AppDb.new(app)
     field=Field.new.load
     puts AppStat.new(adb,field).upd
   rescue UserError

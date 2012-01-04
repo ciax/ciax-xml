@@ -31,7 +31,7 @@ class IoFile < ExHash
       if File.exist?(@fname)
         load_uri(@fname)
       else
-        Msg.warn("  -- no json file")
+        Msg.warn("  -- no json file (#{@fname})")
       end
     when 'url'
       load_uri(@fname)

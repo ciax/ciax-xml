@@ -8,7 +8,7 @@ require 'librview'
 require "libsql"
 require 'json'
 
-opt=ARGV.getopts("iav")
+opt=ARGV.getopts("iafv")
 id = ARGV.shift
 begin
   idb=InsDb.new(id)
@@ -17,7 +17,8 @@ rescue UserError
   Msg.usage("(-aiv) [id] (logfile|jsonlog)",
             "-v:verbose",
             "-i:init table",
-            "-a:app stat")
+            "-f:frm level(default)",
+            "-a:app level")
 end
 if opt['a']
   field=Field.new

@@ -7,25 +7,30 @@ module ModLog
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i
       @id=id
-      @logfile=VarDir+"/"+type+"_#{id}_#{Time.now.year}.log"
+      @loghead=VarDir+"/"+type+"_#{id}"
       @v.msg{"Init/Start Log '#{type}' (#{id}/Ver.#{@ver})"}
     end
     self
   end
 
   def stoplog
-    @logfile=nil
+    @loghead=nil
     self
   end
 
   def append(str,*cid)
     time=Msg.now
-    if @logfile
+    if @loghead
       tag=([@id,@ver]+cid).compact.join(':')
-      open(@logfile,'a') {|f|
+      open(logfile,'a') {|f|
         f.puts [time,tag,str].compact.join("\t")
       }
     end
     time
+  end
+
+  private
+  def logfile
+    @loghead+"_#{Time.now.year}.log"
   end
 end

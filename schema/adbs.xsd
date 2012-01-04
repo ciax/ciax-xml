@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbs="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:attributeGroup name="id_attr">
@@ -47,6 +47,7 @@
       <xsd:choice>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="adbs:group"></xsd:element>
+          <xsd:element ref="adbs:repeat"></xsd:element>
           <xsd:element ref="adbs:value"></xsd:element>
         </xsd:choice>
       </xsd:choice>

@@ -3,12 +3,12 @@ require "optparse"
 require "libinsdb"
 require "libintapps"
 
-opt=ARGV.getopts("scdt")
+opt=ARGV.getopts("scdtf")
 id,host=ARGV
 begin
   aint=IntApps.new.add(id,opt,host)[id]
 rescue UserError
-  Msg.usage('(-scd) [id] (host)','-s:server, -c:client, -d:dummy')
+  Msg.usage('(-scfd) [id] (host)','-s:server, -c:client,-f:client on frm, -d:dummy')
 end
 sleep if opt["s"]
 require 'libshell'

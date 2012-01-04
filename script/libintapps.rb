@@ -3,7 +3,8 @@ require "libmsg"
 require "libinsdb"
 require "libshprt"
 
-#opt 'c' is client, 's' is server
+#opt 'f' is client of frm server
+# 'c' is client, 's' is server
 # 'd' is dummy (frmsim), 't' is check cmd only
 class IntApps < Hash
   def initialize
@@ -31,6 +32,7 @@ class IntApps < Hash
       require "libappcl"
       aint=AppCl.new(adb,host)
     else
+      opt['c']=true if opt['f']
       require "libintfrms"
       require "libappsv"
       require 'libserver'

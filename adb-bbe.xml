@@ -116,7 +116,7 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <repeat from="0" to="3">
-        <group id="g%d" column="4">
+        <group id="id%d" column="4">
           <value id="xsw%d" label="SWITCH" symbol="off-warn">
             <binary bit="$_*4" ref="stat" />
           </value>

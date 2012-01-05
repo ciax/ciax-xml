@@ -189,6 +189,7 @@ class << Msg
 
   def view_struct(data,title=nil,indent=0)
     str=''
+    col=4
     if title
       case title
       when Numeric
@@ -208,10 +209,13 @@ class << Msg
           str << view_struct(data[i],i,indent)
         }
         return str
-      elsif  data.size > 11
-        vary.each_slice(11){|a|
-          str << "  " * indent + "#{a.inspect}\n"
+      elsif  data.size > col
+        str << "  "* indent + "["
+        line=[]
+        vary.each_slice(col){|a|
+          line << a.map{|v| v.inspect}.join(",")
         }
+        str << line.join(",\n "+"  " * indent)+"]\n"
         return str
       end
     when Hash

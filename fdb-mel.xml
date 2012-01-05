@@ -95,7 +95,7 @@
             <char length="2" label="Read region command">0x401</char>
             <char length="2" label="Read region subcommand">0</char>
             <!--Jack 0=JK1,1=JK2,2=JK3,3=JK4-->
-            <char label="Jack Num" length="1">$2 * 4</char>
+            <char label="Jack Num" length="1">$2 * 64</char>
             <!--Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm-->
             <char label="Tag Num" length="1">$1 + 2</char>
             <char length="2" label="Device Code">0xB400</char>
@@ -112,8 +112,8 @@
             <char length="2" label="Data Length">0x2c</char>
             <char length="2">${t:$1:$2}</char>
           </command>
-          <command id="rw_tbl" label="Read/Write Jack Table [1=Read,2=Write]" response="cmdrsp" type="config">
-            <par>1:2</par>
+          <command id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
+            <par>0:2</par>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="2" label="Start Address">0x7ff</char>

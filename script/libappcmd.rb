@@ -40,9 +40,9 @@ if __FILE__ == $0
   app,*cmd=ARGV
   begin
     adb=AppDb.new(app)
-    fp=Command.new(adb.cover_frm[:cmdframe])
+    fcobj=Command.new(adb.cover_frm[:cmdframe])
     AppCmd.new(adb[:command]).set(cmd).get.each{|fcmd|
-      fp.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
+      fcobj.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
       p fcmd
     }
   rescue SelectCMD

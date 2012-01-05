@@ -1,11 +1,10 @@
 #!/usr/bin/ruby
 require "libfrm"
 require "libmsg"
-require "libiocmd"
-require "libcommand"
 require "libfrmrsp"
-require "libfrmcmd"
+require "libiocmd"
 require "libsql"
+require "libfrmcmd"
 
 class FrmSv < Frm
   def initialize(fdb,iocmd=[])

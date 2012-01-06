@@ -3,10 +3,10 @@ require "libframe"
 require "libcommand"
 # Cmd Methods
 class FrmCmd
-  def initialize(fdb,par,field)
+  def initialize(fdb,cobj,field)
     @v=Msg::Ver.new(self,3)
     Msg.type?(fdb,FrmDb)
-    @cobj=Msg.type?(par,Command)
+    @cobj=Msg.type?(cobj,Command)
     @field=Msg.type?(field,Field)
     @cache={}
     @fstr={}

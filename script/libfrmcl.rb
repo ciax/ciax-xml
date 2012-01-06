@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libfrm"
+require "libfrmobj"
 require "libclient"
 require "libfield"
 
-class FrmCl < Frm
+class FrmCl < FrmObj
   attr_reader :host
   def initialize(fdb,host=nil)
     super(fdb)

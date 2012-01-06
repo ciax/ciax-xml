@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libcommand'
 require 'libfield'
-class Frm
+class FrmObj
   attr_reader :field,:prompt,:port
   def initialize(fdb)
     Msg.type?(fdb,FrmDb)

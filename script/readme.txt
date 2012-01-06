@@ -34,10 +34,12 @@ frmsh (intfrm -t)/ used when running site is different from intapp
   -         Shell      -         socat
   Shell     -          Server    simulation
   Shell     -          Server    socat
-  -         Shell(-c)  Server    simulation
-  -         Shell(-c)  Server    socat
-  Shell     Server     (Server)  simulation
-  Shell     Server     (Server)  socat
+  -         Shell(-f)  Server    simulation
+  -         Shell(-f)  Server    socat
+  Shell     Server     -         simulation
+  Shell     Server     -         socat
+  Shell     Server(-f) Server    simulation
+  Shell     Server(-f) Server    socat
 
 
 ## Action mode in Macro ##

@@ -15,7 +15,7 @@ class AppSv < App
     super(adb)
     @v=Msg::Ver.new(self,9)
     @id=adb['id']
-    @fint=Msg.type?(fint,Frm)
+    @fint=Msg.type?(fint,FrmObj)
     @cobj=AppCmd.new(adb[:command])
     @view=Wview.new(adb,@fint.field)
     @fint.field.updlist << proc{ @view.upd.save}

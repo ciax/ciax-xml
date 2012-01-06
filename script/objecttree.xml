@@ -62,10 +62,10 @@
     <Thread>
       <Server />
     </Thread>
-    <App>
+    <AppObj>
       <AppCl />
       <AppSv />
-    </App>
+    </AppObj>
     <FrmObj>
       <FrmCl />
       <FrmSv />

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libapp"
+require "libappobj"
 require "libmsg"
 require "libcommand"
 require "libappcmd"
@@ -10,7 +10,7 @@ require "thread"
 require "libmodlog"
 require "json"
 
-class AppSv < App
+class AppSv < AppObj
   def initialize(adb,fint)
     super(adb)
     @v=Msg::Ver.new(self,9)

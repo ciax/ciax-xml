@@ -26,8 +26,8 @@ class IntApps < Hash
   def int(id,opt,host)
     adb=InsDb.new(id).cover_app
     if opt['t']
-      require "libapp"
-      aint=App.new(adb)
+      require "libappobj"
+      aint=AppObj.new(adb)
     elsif opt['c']
       require "libappcl"
       aint=AppCl.new(adb,host)

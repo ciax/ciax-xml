@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libapp"
+require "libappobj"
 require "libclient"
 require "librview"
 
-class AppCl < App
+class AppCl < AppObj
   attr_reader :host
   def initialize(adb,host=nil)
     super(adb)

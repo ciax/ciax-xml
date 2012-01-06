@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libcommand"
 require "librview"
-class App
+class AppObj
   attr_reader :view,:prompt,:port
   def initialize(adb)
     Msg.type?(adb,AppDb)

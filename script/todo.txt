@@ -15,7 +15,6 @@ mcr-old:remove door open interlock(11/2)
 mcr: macro log
 mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param
-frame log format(add version, data->base64)
 
 ***UPGRADE
 sql: using sqlite for symboling, labeling as cache
@@ -78,3 +77,4 @@ crt: actual motion
 watch: multicondition
 inthex: update upper level status even if frame level(applevel) is manipulated(12/19)
 hexpack:crt:no exe stat just after command issued 12/14-(12/10 checked)
+frame log format(add version, data->base64)

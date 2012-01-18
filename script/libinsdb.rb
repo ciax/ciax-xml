@@ -22,8 +22,7 @@ class InsDb < Db
   # overwrite AppDb
   def cover_app
     require "libappdb"
-    app=AppDb.new(self['app_type']).dup
-    app.deep_update(self).freeze
+    cover(AppDb.new(self['app_type']))
   end
 end
 

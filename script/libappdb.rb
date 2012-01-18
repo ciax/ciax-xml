@@ -156,8 +156,7 @@ class AppDb < Db
 
   def cover_frm
     require "libfrmdb"
-    frm=FrmDb.new(self['frm_type']).dup
-    frm.deep_update(self).freeze
+    cover(FrmDb.new(self['frm_type']))
   end
 end
 

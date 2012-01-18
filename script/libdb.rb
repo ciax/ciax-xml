@@ -50,4 +50,8 @@ class Db < ExHash
     freeze
   end
 
+  def cover(db)
+    Msg.type?(db,Db)
+    db.dup.deep_update(self).freeze
+  end
 end

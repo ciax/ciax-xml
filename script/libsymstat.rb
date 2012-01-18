@@ -8,7 +8,7 @@ class SymStat < Hash
     @v=Msg::Ver.new(self,2)
     ads=Msg.type?(adb,AppDb)[:status]
     @symbol=ads[:symbol]||{}
-    @sdb=SymDb.new.add('all').add(ads['table'])
+    @sdb=['all',ads['table']].inject({}){|h,k| h.update(SymDb.new(k))}
     self['stat']=Msg.type?(stat,AppStat)
     self['class']={'time' => 'normal'}
     self['msg']={}

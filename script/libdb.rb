@@ -11,6 +11,21 @@ class Db < ExHash
     @type=type
   end
 
+  def path(ary=[])
+    hash=ary.inject(self){|prev,a|
+      prev[a.to_sym]
+    }
+    view=hash.dup
+    view.each{|k,v|
+      case v
+      when Hash
+        view[k]='HASH'
+      end
+    } if Hash === view
+    Msg.view_struct(view)
+  end
+
+  private
   def cache(id)
     base="#{@type}-#{id}"
     fmar=VarDir+"/cache/#{base}.mar"
@@ -32,20 +47,7 @@ class Db < ExHash
       f << Marshal.dump(Hash[self])
       @v.msg{"CACHE:Saved(#{base})"}
     }
-    self
+    freeze
   end
 
-  def path(ary)
-    hash=ary.inject(self){|prev,a|
-      prev[a.to_sym]
-    }
-    view=hash.dup
-    view.each{|k,v|
-      case v
-      when Hash
-        view[k]='HASH'
-      end
-    } if Hash === view
-    Msg.view_struct(view)
-  end
 end

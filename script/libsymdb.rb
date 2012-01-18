@@ -2,12 +2,10 @@
 require "librerange"
 require "libdb"
 
+# gid = Table Group ID
 class SymDb < Db
-  def initialize
+  def initialize(gid=nil)
     super("sdb")
-  end
-
-  def add(gid=nil) # gid = Table Group ID
     cache(gid){|doc|
       doc.top.each{|e1|
         id=e1['id']
@@ -27,13 +25,13 @@ end
 
 if __FILE__ == $0
   begin
-    sdb=SymDb.new
-    ARGV.each{|id|
-      sdb.add(id)
-    }.empty? && sdb.add
+    sdb=ARGV.inject(Db.new('sdb')){|h,k|
+      h.update(SymDb.new(k))
+    }
+    sdb=SymDb.new if sdb.empty?
   rescue SelectID
     warn "USAGE: #{$0} [id] ..."
     Msg.exit
   end
-  puts sdb
+  puts sdb.path
 end

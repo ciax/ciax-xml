@@ -21,14 +21,19 @@ class SymDb < Db
     raise $! if __FILE__ == $0
     self
   end
+
+  def self.pack(ary=[])
+    sdb=Db.new('sdb')
+    ary.each{|k|
+      sdb.update(new(k))
+    }.empty? && new
+    sdb
+  end
 end
 
 if __FILE__ == $0
   begin
-    sdb=ARGV.inject(Db.new('sdb')){|h,k|
-      h.update(SymDb.new(k))
-    }
-    sdb=SymDb.new if sdb.empty?
+    sdb=SymDb.pack(ARGV)
   rescue SelectID
     warn "USAGE: #{$0} [id] ..."
     Msg.exit

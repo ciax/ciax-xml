@@ -25,7 +25,7 @@ class Db < ExHash
     else
       update(Marshal.load(IO.read(fmar)))
       @v.msg{"CACHE:Loaded(#{base})"}
-      return self
+      return freeze
     end
     yield XmlDoc.new(@type,id)
     open(fmar,'w') {|f|
@@ -39,12 +39,13 @@ class Db < ExHash
     hash=ary.inject(self){|prev,a|
       prev[a.to_sym]
     }
-    hash.each{|k,v|
+    view=hash.dup
+    view.each{|k,v|
       case v
       when Hash
-        hash[k]='HASH'
+        view[k]='HASH'
       end
-    } if Hash === hash
-    Msg.view_struct(hash)
+    } if Hash === view
+    Msg.view_struct(view)
   end
 end

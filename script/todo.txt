@@ -13,6 +13,8 @@ mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
+frmcl,appcl: client should accept internal commands
+  -> validate internal commands in FrmObj or AppObj
 mcr: macro log
 mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param

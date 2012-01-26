@@ -1,15 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="mel" id="mel" label="Cart PLC" version="3">
+  <app frm_type="mel" id="mel" label="Cart PLC" version="4">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
         <command id="upd" label="Status update">
           <frmcmd name="getstat" />
           <frmcmd name="getcmd" />
         </command>
+        <command id="ready" label="Ready mode">
+          <frmcmd name="int">
+            <argv>6</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
+          <frmcmd name="getcmd" />
+          <frmcmd name="getstat" />
+        </command>
         <command id="emstop" label="Emergency Stop">
           <frmcmd name="int">
             <argv>1</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
+          <frmcmd name="clr_int" />
+          <frmcmd name="getstat" />
+        </command>
+        <command id="clear" label="Clear Error">
+          <frmcmd name="int">
+            <argv>5</argv>
           </frmcmd>
           <frmcmd name="sleep">
             <argv>1</argv>
@@ -25,9 +45,11 @@
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="clr_int" />
+          <frmcmd name="clr_act" />
+          <frmcmd name="getcmd" />
           <frmcmd name="getstat" />
         </command>
-        <command id="reset" label="Reset Error or Pause">
+        <command id="resume" label="Resume from Pause">
           <frmcmd name="int">
             <argv>5</argv>
           </frmcmd>
@@ -35,16 +57,6 @@
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="clr_int" />
-          <frmcmd name="getstat" />
-        </command>
-        <command id="ready" label="Ready mode">
-          <frmcmd name="int">
-            <argv>6</argv>
-          </frmcmd>
-          <frmcmd name="sleep">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="getcmd" />
           <frmcmd name="getstat" />
         </command>
         <command id="cancel" label="Command Cancel">
@@ -67,7 +79,7 @@
           <frmcmd name="clr_int" />
           <frmcmd name="getstat" />
         </command>
-        <command id="clear" label="Clear Cmd Flag" hidden="true">
+        <command id="reset" label="Reset Cmd Flag" hidden="true">
           <frmcmd name="clr_act" />
           <frmcmd name="getcmd" />
         </command>
@@ -426,7 +438,7 @@
       <event label="Command Receive">
         <onchange var="acp"></onchange>
         <pattern var="acp">0</pattern>
-        <exec name="clear"></exec>
+        <exec name="reset"></exec>
         <exec name="upd"></exec>
       </event>
       <event label="While Running">

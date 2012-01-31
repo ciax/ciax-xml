@@ -13,6 +13,7 @@ class FrmCl < FrmObj
     @host=@cl.host
   end
 
+  # Error if msg is shown besides prompt
   def exe(cmd)
     @cobj.set(cmd) if msg=@cl.exe(cmd,@prompt)
     @field.load

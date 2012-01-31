@@ -23,18 +23,12 @@ class FrmSv < FrmObj
       @field.delete('ver')
     end
     @fc=FrmCmd.new(fdb,@cobj,@field)
-    cl=Msg::List.new("Internal Command")
-    cl.add('set'=>"Set Value [key(:idx)] (val)")
-    cl.add('unset'=>"Remove Value [key]")
-    cl.add('load'=>"Load Field (tag)")
-    cl.add('save'=>"Save Field [key,key...] (tag)")
-    cl.add('sleep'=>"Sleep [n] sec")
-    @cobj.list.push(cl)
   rescue Errno::ENOENT
     Msg.warn(" --- no json file")
   end
 
-  def exe(cmd) #Should be array
+  #Cmd should be array
+  def exe(cmd)
     Msg.type?(cmd,Array)
     case cmd[0]
     when nil

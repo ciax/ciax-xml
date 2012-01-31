@@ -9,6 +9,13 @@ class FrmObj
     @prompt=fdb['id']+'>'
     @port=fdb['port'].to_i-1000
     @field=Field.new(fdb['id']).load
+    cl=Msg::List.new("Internal Command")
+    cl.add('set'=>"Set Value [key(:idx)] (val)")
+    cl.add('unset'=>"Remove Value [key]")
+    cl.add('load'=>"Load Field (tag)")
+    cl.add('save'=>"Save Field [key,key...] (tag)")
+    cl.add('sleep'=>"Sleep [n] sec")
+    @cobj.list.push(cl)
   end
 
   def exe(cmd)

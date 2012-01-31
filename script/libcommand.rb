@@ -3,6 +3,7 @@ require 'libexenum'
 require 'libmsg'
 require 'librerange'
 
+# Keep current command and parameters
 class Command < ExHash
   include Math
   attr_reader :list
@@ -14,6 +15,7 @@ class Command < ExHash
     @list=Msg::Lists.new(db)
   end
 
+  # Validate command and parameters
   def set(cmd)
     id=Msg.type?(cmd,Array).first
     id=(@db[:alias]||={})[id]||id
@@ -38,7 +40,9 @@ class Command < ExHash
     self
   end
 
-  def subst(str) # par={ val,range,format } or String
+  # Substitute string($+number) with parameters
+  # par={ val,range,format } or String
+  def subst(str)
     return str unless /\$([\d]+)/ === str
     @v.msg(1){"Substitute from [#{str}]"}
     begin

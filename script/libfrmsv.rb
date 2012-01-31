@@ -57,12 +57,7 @@ class FrmSv < FrmObj
     if par.empty?
       raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
     end
-    case par[0]
-    when /:/
-      @field.set(par[0],par[1])
-    else
-      @field[par[0]]=@field.subst(par[1])
-    end
+    @field.set(par[0],par[1])
   end
 
   def save(keys,tag=nil)

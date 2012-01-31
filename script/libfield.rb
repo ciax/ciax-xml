@@ -39,9 +39,9 @@ class Field < IoFile
   # - ${key:idx1:idx2} => hash[key][idx1][idx2]
   def get(key)
     Msg.abort("No Key") unless key
-    return self[key] if key?(key)
+#    return self[key] if key?(key) && Comparable === self[key]
     vname=[]
-    key.split(':').inject(self){|h,i|
+    data=key.split(':').inject(self){|h,i|
       case h
       when Array
         begin
@@ -55,8 +55,10 @@ class Field < IoFile
       vname << i
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
       @v.msg{"Content[#{h[i]}]"}
-      h[i] || Msg.warn("No such Value [#{vname.join(':')}]")
+      h[i] || Msg.err("No such Value [#{vname.join(':')}]")
     }
+    Msg.err("Short Index [#{vname.join(':')}]") unless Comparable === data
+    data
   end
 
   # Set value with mixed key

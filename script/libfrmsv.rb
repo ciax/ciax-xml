@@ -32,26 +32,24 @@ class FrmSv < FrmObj
     Msg.type?(cmd,Array)
     case cmd[0]
     when nil
-      msg=nil
+      return
     when 'set'
-      msg=set(cmd[1..-1]).inspect
+      set(cmd[1..-1])
     when 'unset'
-      msg=@field.delete(cmd[1]).inspect
+      @field.delete(cmd[1])
     when 'load'
-      msg=load(cmd[1])
+      load(cmd[1])
     when 'save'
-      msg=save(cmd[1],cmd[2])
+      save(cmd[1],cmd[2])
     when 'sleep'
-      msg='Done'
       sleep cmd[1].to_i
     else
       @io.cid=super[:cid]
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
       @field.upd{@io.rcv}.save
-      msg='OK'
     end
-    msg
+    'OK'
   end
 
   private
@@ -65,7 +63,6 @@ class FrmSv < FrmObj
     else
       @field[par[0]]=@field.subst(par[1])
     end
-    "[#{par}] set\n"
   end
 
   def save(keys,tag=nil)
@@ -73,14 +70,11 @@ class FrmSv < FrmObj
       raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.keys}"
     end
     @field.savekey(keys.split(','),tag)
-    tag="[#{tag}]" if tag
-    "#{tag}(#{keys}) saved\n"
   end
 
   def load(tag)
     tag='' unless tag
     @field.loadkey(tag)
-    "[#{tag}] loaded"
   rescue UserError
     raise UserError,"Usage: load (tag)\n #{$!}"
   end

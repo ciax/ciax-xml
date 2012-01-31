@@ -1,6 +1,8 @@
 ========================== Issue =============================
 ***DEBUG
 **crt/hexint:return after command issued  without exe flag(12/1/6)
+*dso/hexint:reset doesn't work(1/31)
+crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]
   -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]

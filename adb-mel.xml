@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="4">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -93,6 +93,9 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="run1" label="Run to Tag 1">
@@ -101,6 +104,9 @@
           </frmcmd>
           <frmcmd name="act">
             <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
@@ -111,6 +117,9 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="run3" label="Run to Tag 3">
@@ -119,6 +128,9 @@
           </frmcmd>
           <frmcmd name="act">
             <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
@@ -129,6 +141,9 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="run8" label="Run to Tag 8">
@@ -137,6 +152,9 @@
           </frmcmd>
           <frmcmd name="act">
             <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
@@ -147,6 +165,9 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="run10" label="Run to Tag 10">
@@ -155,6 +176,9 @@
           </frmcmd>
           <frmcmd name="act">
             <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
@@ -165,6 +189,9 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="run12" label="Run to Tag 12">
@@ -173,6 +200,9 @@
           </frmcmd>
           <frmcmd name="act">
             <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
@@ -183,6 +213,9 @@
           <frmcmd name="act">
             <argv>0</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="runb" label="Run Backword">
@@ -191,6 +224,9 @@
           </frmcmd>
           <frmcmd name="act">
             <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
@@ -203,6 +239,9 @@
           <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="lftup1" label="Lift Low Level">
@@ -211,6 +250,9 @@
           </frmcmd>
           <frmcmd name="act">
             <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>
@@ -221,6 +263,9 @@
           <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="lftup3" label="Lift High Level">
@@ -230,6 +275,9 @@
           <frmcmd name="act">
             <argv>8</argv>
           </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
+          </frmcmd>
           <frmcmd name="getcmd" />
         </command>
         <command id="lftchg" label="Lift Charge Level">
@@ -238,6 +286,9 @@
           </frmcmd>
           <frmcmd name="act">
             <argv>8</argv>
+          </frmcmd>
+          <frmcmd name="sleep">
+            <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
         </command>

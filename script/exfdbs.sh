@@ -15,7 +15,7 @@ getstat(){
         echo -ne "${C3}process $cmd $par$C0\t"
         logline $id $cmd $par > $temp || { echo; continue; }
         VER=$ver < $temp $frmrsp $frm|merging $output
-        cut -f3 $temp|grep . || echo
+        cut -f3 $temp|grep .|base64 -d|visi || echo
     done
 }
 frmcmd=~/lib/libfrmcmd.rb

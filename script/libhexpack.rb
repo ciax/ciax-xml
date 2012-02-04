@@ -23,7 +23,7 @@ class HexPack
   end
 
   def to_s
-    @res[3]=b2i(['isu','exc','run','jak'].any?{|r| @stat[r].to_i > 0})
+    @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat[r].to_i > 0})
     @res[4]=b2i(@prompt.include?('*'))
     @res[6]=''
     @list.each{|key,title,len,type|

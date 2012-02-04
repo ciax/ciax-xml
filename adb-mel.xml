@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="mel" id="mel" label="Cart PLC" version="4">
+  <app frm_type="mel" id="mel" label="Cart PLC" version="5">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
         <command id="upd" label="Status update">
@@ -330,7 +330,7 @@
           <frmcmd name="act">
             <argv>15</argv>
           </frmcmd>
-          <frmcmd name="getcmd" />
+          <frmcmd name="getcmd"></frmcmd>
         </command>
         <command id="chgoff" label="Stop Charging">
           <frmcmd name="int">
@@ -487,7 +487,7 @@
         <exec name="upd"></exec>
       </event>
       <event label="Command Receive">
-        <onchange var="acp"></onchange>
+        <pattern var="isu" inv="true">0</pattern>
         <pattern var="acp">0</pattern>
         <exec name="reset"></exec>
         <exec name="upd"></exec>

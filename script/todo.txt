@@ -1,7 +1,6 @@
 ========================== Issue =============================
 ***DEBUG
 **crt/hexint:return after command issued  without exe flag(12/1/6)
-*dso/hexint:reset doesn't work(1/31)
 *dso/hexint:return immediately after pnumatic command isued (1/31)
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)
@@ -84,3 +83,5 @@ inthex: update upper level status even if frame level(applevel) is manipulated(1
 hexpack:crt:no exe stat just after command issued 12/14-(12/10 checked)
 frame log format(add version, data->base64)
 crt/hexint:reset doesn't work(1/23/12) [1/26]
+dso/hexint:reset doesn't work(1/31)[2/3]
+

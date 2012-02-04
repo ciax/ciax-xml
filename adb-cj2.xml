@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC">
+  <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrpt Commands" column="2">
         <command id="upd" label="Status update">
@@ -50,7 +50,7 @@
           <frmcmd name="getstat" />
           <frmcmd name="geterr" />
         </command>
-        <command id="clear" label="ClearBit">
+        <command id="reset" label="ResetBit">
           <frmcmd name="clrbit" />
           <frmcmd name="getcmd" />
           <frmcmd name="getstat" />
@@ -420,7 +420,7 @@
       <event label="On Completion">
         <onchange var="cmp"></onchange>
         <pattern var="cmp">1</pattern>
-        <exec name="clear"></exec>
+        <exec name="reset"></exec>
       </event>
     </watch>
   </app>

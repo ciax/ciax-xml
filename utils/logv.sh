@@ -1,6 +1,14 @@
 #!/bin/bash
-while read time id data; do
-    time=`date -d @$time +"%F %X"`
-    echo "$time [$id] "
-    echo $data|base64 -d|hd
+while read ; do
+    case $REPLY in
+        1*)
+            set - $REPLY
+            time=`date -d @$1 +"%F %X"`
+            echo "$time [$2] "
+            echo $3|base64 -d|hd
+            ;;
+        *)
+            echo $REPLY
+            ;;
+    esac
 done

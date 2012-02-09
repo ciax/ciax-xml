@@ -17,23 +17,23 @@
           <command id="getstat" label="Get all status" response="getstat" type="stat">
             <char length="2" label="Read region command">0x401</char>
             <char length="2" label="Read region subcommand">0</char>
-            <char length="2" label="Start Address">0</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">52</char>
           </command>
           <command id="getcmd" label="Get cmd status" response="getcmd" type="stat">
             <char length="2" label="Read region command">0x401</char>
             <char length="2" label="Read region subcommand">0</char>
-            <char length="2" label="Start Address">0x100</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x100</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">5</char>
           </command>
           <command id="set_tag" label="Set Tag to Run [1-12,98,99]" response="cmdrsp" type="config">
             <par>1:12,98,99</par>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
-            <char length="2" label="Start Address">0x101</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x101</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">1</char>
             <char length="2">$1</char>
           </command>
@@ -41,8 +41,8 @@
             <par>0:4</par>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
-            <char length="2" label="Start Address">0x103</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x103</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">1</char>
             <char length="2">1 &lt;&lt; $1</char>
           </command>
@@ -50,8 +50,8 @@
             <par>0:10</par>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
-            <char length="2" label="Start Address">0x104</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x104</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">1</char>
             <char length="2">$1</char>
           </command>
@@ -59,8 +59,8 @@
             <par>0,8,15</par>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
-            <char length="2" label="Start Address">0x102</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x102</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">1</char>
             <char length="2">1 &lt;&lt; $1</char>
           </command>
@@ -68,24 +68,24 @@
             <par>0:7</par>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
-            <char length="2" label="Start Address">0x100</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x100</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">1</char>
             <char length="2">1 &lt;&lt; $1</char>
           </command>
           <command id="clr_act" label="Clear Action Flags" response="cmdrsp" type="config">
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
-            <char length="2" label="Start Address">0x102</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x102</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">1</char>
             <char length="2" label="Data">0</char>
           </command>
           <command id="clr_int" label="Clear Interrupt Flags" response="cmdrsp" type="config">
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
-            <char length="2" label="Start Address">0x100</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x100</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">1</char>
             <char length="2" label="Data">0</char>
           </command>
@@ -98,7 +98,8 @@
             <char label="Jack Num" length="1">$2 * 64</char>
             <!--Tag 0=Tag1,1=Tag9,2=Tag10,3=Tag11,4=Tag12,5=Opsm-->
             <char label="Tag Num" length="1">$1 + 2</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="1" label="Address MSB">0</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">0x2c</char>
           </command>
           <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
@@ -108,7 +109,8 @@
             <char length="2" label="Write region subcommand">0</char>
             <char length="1" label="Jack Num">$2 * 4</char>
             <char length="1" label="Tag Num">$1 + 2</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="1" label="Address MSB">0</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">0x2c</char>
             <char length="2">${t:$1:$2}</char>
           </command>
@@ -116,8 +118,8 @@
             <par>0:2</par>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
-            <char length="2" label="Start Address">0x7ff</char>
-            <char length="2" label="Device Code">0xB400</char>
+            <char length="3" label="Start Address">0x7ff</char>
+            <char length="1" label="Device Code">0xB4</char>
             <char length="2" label="Data Length">1</char>
             <char length="2" label="Parameter">$1</char>
           </command>

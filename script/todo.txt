@@ -1,7 +1,6 @@
 ========================== Issue =============================
 ***DEBUG
 **crt/hexint:return after command issued  without exe flag(12/1/6)
-*dso/hexint:return immediately after pnumatic command isued (1/31)
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]
@@ -84,4 +83,5 @@ hexpack:crt:no exe stat just after command issued 12/14-(12/10 checked)
 frame log format(add version, data->base64)
 crt/hexint:reset doesn't work(1/23/12) [1/26]
 dso/hexint:reset doesn't work(1/31)[2/3]
+dso/hexint:return immediately after pnumatic command isued (1/31)[2/8]
 

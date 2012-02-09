@@ -3,7 +3,7 @@ require "libmsg"
 require "libinsdb"
 
 class IntFrms < Hash
-  # opt 'c' is client, 's' is server, 'd' is dummy(from log)
+  # opt 'f' is client, 's' is server, 'd' is dummy(from log)
   def initialize(opt={},host=nil)
     Msg.type?(opt,Hash)
     super(){|h,k| h[k]=int(k,opt,host)}
@@ -19,7 +19,7 @@ class IntFrms < Hash
   def int(id,opt={},host=nil)
     Msg.type?(opt,Hash)
     fdb=InsDb.new(id).cover_app.cover_frm
-    if opt['c']
+    if opt['f']
       require "libfrmcl"
       return FrmCl.new(fdb,host)
     elsif opt['d']

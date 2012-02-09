@@ -3,12 +3,11 @@ require "libmsg"
 require "libinsdb"
 require "libshprt"
 
-#opt 'f' is client of frm server
-# 'c' is client, 's' is server
-# 'd' is dummy (frmsim), 't' is check cmd only
+# 'f' is client of frm server, 'a' is client of app server
+# 's' is server, 'd' is dummy (frmsim), 't' is check cmd only
 class IntApps < Hash
   def initialize
-    super(){|h,k| int(k,{'c'=>true}) }
+    super(){|h,k| int(k,{'a'=>true}) }
   end
 
   def setdef(id)
@@ -28,11 +27,10 @@ class IntApps < Hash
     if opt['t']
       require "libappobj"
       aint=AppObj.new(adb)
-    elsif opt['c']
+    elsif opt['a']
       require "libappcl"
       aint=AppCl.new(adb,host)
     else
-      opt['c']=true if opt['f']
       require "libintfrms"
       require "libappsv"
       require 'libserver'

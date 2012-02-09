@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC" version="1">
+  <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC" version="2">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrpt Commands" column="2">
         <command id="upd" label="Status update">
@@ -420,6 +420,11 @@
       <event label="On Completion">
         <onchange var="cmp"></onchange>
         <pattern var="cmp">1</pattern>
+        <exec name="reset"></exec>
+      </event>
+      <event label="On Error">
+        <onchange var="err"></onchange>
+        <pattern var="err" inv="true">0</pattern>
         <exec name="reset"></exec>
       </event>
     </watch>

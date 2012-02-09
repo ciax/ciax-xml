@@ -28,10 +28,6 @@ class AppSv < AppObj
       sendfrm(cmd,2)
     }.extend(WatchPrt)
     extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
-    cl=Msg::List.new("Internal Command",2)
-    cl.add('set'=>"[key=val] ..")
-    cl.add('flush'=>"Flush Status")
-    @cobj.list.push(cl)
     upd_prompt
   end
 

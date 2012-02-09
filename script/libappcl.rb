@@ -14,7 +14,8 @@ class AppCl < AppObj
   end
 
   def exe(cmd)
-    @cobj.set(cmd) if msg=@cl.exe(cmd,@prompt)
+    msg=@cl.exe(cmd,@prompt)
+    @cobj.set(cmd) if /ERROR/ =~ msg
     @view.load
     msg
   end

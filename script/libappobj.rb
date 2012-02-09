@@ -9,6 +9,10 @@ class AppObj
     @prompt=adb['id']+'>'
     @port=adb['port'].to_i
     @view=Rview.new(adb['id']).load
+    cl=Msg::List.new("Internal Command",2)
+    cl.add('set'=>"[key=val] ..")
+    cl.add('flush'=>"Flush Status")
+    @cobj.list.push(cl)
   end
 
   def exe(cmd)

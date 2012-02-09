@@ -15,7 +15,8 @@ class FrmCl < FrmObj
 
   # Error if msg is shown besides prompt
   def exe(cmd)
-    @cobj.set(cmd) if msg=@cl.exe(cmd,@prompt)
+    msg=@cl.exe(cmd,@prompt)
+    @cobj.set(cmd) if /ERROR/ =~ msg
     @field.load
     msg
   end

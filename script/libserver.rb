@@ -18,8 +18,6 @@ class Server < Thread
           cmd=line.chomp.split(' ')
           begin
             msg=yield(cmd)
-          rescue SelectCMD
-            msg="NO CMD"
           rescue RuntimeError
             msg="ERROR"
             warn msg

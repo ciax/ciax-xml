@@ -9,6 +9,7 @@ class AppCmd < Command
     @v=Msg::Ver.new(self,9)
   end
 
+  #frmcmd is ary of ary
   def get
     frmcmd=[]
     self[:select].each{|e1|

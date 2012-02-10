@@ -32,6 +32,7 @@ class AppSv < AppObj
     upd_prompt
   end
 
+  #cmd is array
   def exe(cmd)
     msg=nil
     case cmd.first
@@ -73,8 +74,10 @@ class AppSv < AppObj
     self
   end
 
+  # ary is bunch of appcmd array (ary of ary)
   def sendfrm(ary,pri=1)
     @buf.send(pri){
+      # Making bunch of frmcmd array (ary of ary)
       ary.map{|cmd|
         @cobj.set(cmd)
         # Logging if version number exists

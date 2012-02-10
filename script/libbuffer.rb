@@ -2,17 +2,18 @@
 require "libmsg"
 require "thread"
 
-# Command stream(Send)
-# send() takes frame cmds in block
-# -> Inbuf[priority]
-# -> Accept or Reject
-# -> flush -> Queue
+# SubModule for AppSv
+# *Command stream(Send)
+#  send() takes frame cmds in block
+#  -> Inbuf[priority]
+#  -> Accept or Reject
+#  -> flush -> Queue
 #
-# Command stream(Recieve)
-# recv()
-# Queue -> Outbuf until Queue is empty
-# -> provide single frmcmd as it is called
-# (stack if Queue is empty)
+# *Command stream(Recieve)
+#  recv()
+#  Queue -> Outbuf until Queue is empty
+#  -> provide single frmcmd as it is called
+#  (stack if Queue is empty)
 
 class Buffer
   attr_reader :issue
@@ -23,12 +24,13 @@ class Buffer
     clear
   end
 
+  # Send bunch of frmcmd array (ary of ary)
   def send(n=1)
     return self if  n > 1 && !@q.empty?
     clear if n == 0
     inp=yield
+    #inp is frmcmd array (ary of ary)
     unless inp.empty?
-      @issue=true
       @q.push([n,inp])
     end
     self
@@ -36,10 +38,12 @@ class Buffer
 
   # For cmdset thread
   def recv
-    @issue=false
     until out=pick
       @v.msg{"SUB:Waiting"}
+      @issue=false
+      #inp is frmcmd array (ary of ary)
       p,inp=@q.shift
+      @issue=true
       @v.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
       (@outbuf[p]||=[]).concat(inp)
     end
@@ -66,8 +70,8 @@ class Buffer
     @tid && @tid.alive?
   end
 
-  # Internal command
   private
+  # Remove duplicated commands and pop one
   def pick
     cmd=nil
     @outbuf.size.times{|i|

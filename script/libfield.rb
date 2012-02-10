@@ -64,6 +64,7 @@ class Field < IoFile
   # Set value with mixed key
   def set(key,val)
     get(key).replace(subst(val).to_s)
+    upd
     self
   end
 
@@ -74,6 +75,7 @@ class Field < IoFile
     @v.msg{"Status Loading for [#{fn}]"}
     begin
       load
+      upd
     rescue
       if tag
         raise UserError,list_stat

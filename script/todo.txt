@@ -1,6 +1,5 @@
 ========================== Issue =============================
 ***DEBUG
-**crt/hexint:return after command issued  without exe flag(12/1/6)
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)
 crt: not clear command trigger after running command issued(12/1/6) 
@@ -21,6 +20,7 @@ crt: jack table edit interface (sql+web)
 ***CHECK NEED
 verify on motion: adb-oss
 verify: oss jack num corresponding
+crt/hexint:return after command issued  without exe flag(12/1/6)
 
 ========================== Result =============================
 ***DISCARD

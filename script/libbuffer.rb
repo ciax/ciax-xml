@@ -19,6 +19,7 @@ class Buffer
   attr_reader :issue
   def initialize
     @v=Msg::Ver.new(self,2)
+    #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
     clear

@@ -10,10 +10,10 @@ def find_snd(fd,input,fname)
     rec=snd[2].chomp
     inp=[input].pack("m").split("\n").join('')
     if rec == inp
-      STDERR.print "#{fname}:snd(#{fd.lineno})"
+      STDERR.print "#{fname}:#{snd[1]}(#{fd.lineno})"
       rcv=fd.gets.split("\t")
       if /rcv/ === rcv[1]
-        STDERR.print ":rcv(#{fd.lineno})"
+        STDERR.print " -> rcv(#{fd.lineno})"
         sleep rcv[0].to_i-snd[0].to_i
         STDOUT.syswrite(rcv[2].unpack("m").first)
       end

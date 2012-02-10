@@ -27,6 +27,7 @@ class AppSv < AppObj
     @watch=Watch.new(adb,@view).thread{|cmd|
       sendfrm(cmd,2)
     }.extend(WatchPrt)
+    # Logging if version number exists
     extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
     upd_prompt
   end
@@ -76,6 +77,7 @@ class AppSv < AppObj
     @buf.send(pri){
       ary.map{|cmd|
         @cobj.set(cmd)
+        # Logging if version number exists
         if @view.key?('ver')
           str= pri > 1 ? JSON.dump(@watch[:active]) : nil
           append(str,cmd)

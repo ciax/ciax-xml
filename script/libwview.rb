@@ -13,6 +13,7 @@ class Wview < Rview
     @stat=AppStat.new(adb,field).upd
     super(id=adb['id'])
     @sym=SymStat.new(adb,@stat).upd
+    # Logging if version number exists
     @sql=SqLog.new('stat',id,self['ver'],@stat) if key?('ver')
     ['msg','class'].each{|k|
       self[k]=@sym[k]

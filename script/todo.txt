@@ -3,9 +3,6 @@
 **crt/hexint:return after command issued  without exe flag(12/1/6)
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)
-cart:attach at tag11 gives overload error by corn load unbalance [4/17]
-  -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
-crt: tag_table readout(12/1/6)
 crt: not clear command trigger after running command issued(12/1/6) 
 
 ***REQUEST
@@ -13,11 +10,9 @@ mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
-frmcl,appcl: client should accept internal commands
-  -> validate internal commands in FrmObj or AppObj
 mcr: macro log
 mcr: batch mode w/showing progress
-mcr: attach/detach w/o location param
+mcr: attach/detach w/o location param (cmdstr subst by tag)
 
 ***UPGRADE
 sql: using sqlite for symboling, labeling as cache
@@ -81,7 +76,13 @@ watch: multicondition
 inthex: update upper level status even if frame level(applevel) is manipulated(12/19)
 hexpack:crt:no exe stat just after command issued 12/14-(12/10 checked)
 frame log format(add version, data->base64)
+crt: tag_table readout(12/1/6) fixed by watanabe[1/20]
 crt/hexint:reset doesn't work(1/23/12) [1/26]
 dso/hexint:reset doesn't work(1/31)[2/3]
 dso/hexint:return immediately after pnumatic command isued (1/31)[2/8]
-
+frmcl,appcl: client should accept internal commands 
+ xx -> validate internal commands in FrmObj or AppObj
+ -> no validation in client [2/9/12] 
+cart:attach at tag11 gives overload error by corn load unbalance [4/17]
+  -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
+  -> Lv1 height is set that is little bit higher than grounding[12/1/?]

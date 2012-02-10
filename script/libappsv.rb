@@ -20,8 +20,8 @@ class AppSv < AppObj
     @view=Wview.new(adb,@fint.field)
     @fint.field.updlist << proc{ @view.upd.save}
     Thread.abort_on_exception=true
-    @buf=Buffer.new.thread{|cmd|
-      @fint.exe(cmd)
+    @buf=Buffer.new.thread{|fcmd|
+      @fint.exe(fcmd)
       @v.msg{"Status Updated(#{@view['stat']['time']})"}
     }
     @watch=Watch.new(adb,@view).thread{|cmd|
@@ -80,13 +80,13 @@ class AppSv < AppObj
       # Making bunch of frmcmd array (ary of ary)
       ary.map{|cmd|
         @cobj.set(cmd)
-        # Logging if version number exists
-        if @view.key?('ver')
-          str= pri > 1 ? JSON.dump(@watch[:active]) : nil
-          append(str,cmd)
-        end
+        logging(cmd)
         @cobj.get
       }.flatten(1)
     }
+  end
+
+  def logging(cmd)
+    append(JSON.dump(@watch[:active]),cmd) if is_a?(ModLog)
   end
 end

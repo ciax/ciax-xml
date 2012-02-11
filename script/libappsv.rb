@@ -18,7 +18,6 @@ class AppSv < AppObj
     @fint=Msg.type?(fint,FrmObj)
     @cobj=AppCmd.new(adb[:command])
     @view=Wview.new(adb,@fint.field)
-    @fint.field.updlist << proc{ @view.upd.save}
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd|
       @fint.exe(fcmd)
@@ -42,8 +41,7 @@ class AppSv < AppObj
       sendfrm(int,0)
       msg="Interrupt #{int}"
     when 'flush'
-      @fint.field.load
-      @view.upd.save
+      @fint.field.load.upd
     when 'set'
       hash={}
       cmd[1..-1].each{|s|

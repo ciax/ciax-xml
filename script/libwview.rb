@@ -19,6 +19,7 @@ class Wview < Rview
       self[k]=@sym[k]
     }
     @lastsave=0
+    field.updlist << proc{ upd.save}
   end
 
   def upd

@@ -29,9 +29,7 @@
           <SymDb />
         </Db>
         <IoFile>
-          <Field>
-            <FrmRsp />
-          </Field>
+          <Field/>
           <Rview>
             <Wview />
           </Rview>
@@ -72,6 +70,7 @@
     </FrmObj>
     <AppPrt />
     <FrmCmd />
+    <FrmRsp />
     <Buffer />
     <Circular />
     <Client />

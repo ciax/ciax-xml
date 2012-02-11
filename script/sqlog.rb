@@ -13,6 +13,7 @@ id = ARGV.shift
 begin
   idb=InsDb.new(id)
   adb=idb.cover_app
+  field=Field.new
 rescue UserError
   Msg.usage("(-aiv) [id] (logfile|jsonlog)",
             "-v:verbose",
@@ -21,7 +22,6 @@ rescue UserError
             "-a:app level")
 end
 if opt['a']
-  field=Field.new
   stat=AppStat.new(adb,field)
   field.updlist << proc{ stat.upd }
   sql=Sql.new('stat',id,adb['app_ver'],stat)
@@ -43,7 +43,7 @@ else
   fdb=adb.cover_frm
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
-  field=FrmRsp.new(fdb,cobj)
+  fr=FrmRsp.new(fdb,cobj,field)
   sql=Sql.new('field',id,ver,field)
   field.updlist << proc{ sql.upd }
   if opt['i'] # Initial
@@ -51,7 +51,7 @@ else
   else
     readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
       begin
-        field.upd_logline(str)
+        fr.upd_logline(str)
         $stderr.print "."
       rescue
         $stderr.print $! if opt['v']

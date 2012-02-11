@@ -4,19 +4,19 @@ require "libframe"
 require "libiocmd"
 
 # Rsp Methods
-class FrmRsp < Field
-  def initialize(fdb,cobj)
+class FrmRsp
+  def initialize(fdb,cobj,field)
     @v=Msg::Ver.new(self,3)
     @fdb=Msg.type?(fdb,FrmDb)
     @cobj=Msg.type?(cobj,Command)
-    super(fdb['id'])
-    self['ver']=fdb['frm_ver'].to_i
+    @field=Msg.type?(field,Field)
+    @field['ver']=fdb['frm_ver'].to_i
     rsp=fdb[:rspframe]
     @sel=Hash[rsp[:frame]]
     @fds=rsp[:select]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
     rsp[:assign].each{|k,v|
-      self[k]||=v
+      @field[k]||=v
     }
   end
 
@@ -24,7 +24,7 @@ class FrmRsp < Field
   def upd
     if rid=@cobj[:response]
       @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
-      frame,self['time']=yield
+      frame,@field['time']=yield
       Msg.err("No Response") unless frame
       if tm=@sel['terminator']
         frame.chomp!(eval('"'+tm+'"'))
@@ -38,16 +38,16 @@ class FrmRsp < Field
       end
       @frame.set(@fary.shift)
       getfield_rec(@sel[:main])
-      if cc=delete('cc') # self.delete
+      if cc=@field.delete('cc')
         cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
-      super
+      @field.upd.save
     else
       @v.msg{"Send Only"}
       @sel[:select]=nil
     end
-    @v.msg{"Update at #{self['time']}"}
+    @v.msg{"Update at #{@field['time']}"}
     self
   end
 
@@ -95,7 +95,7 @@ class FrmRsp < Field
       }
       begin
         @v.msg(1){"Array:[#{key}]:Range#{idxs}"}
-        self[key]=mk_array(idxs,self[key]){yield}
+        @field[key]=mk_array(idxs,@field[key]){yield}
       ensure
         @v.msg(-1){"Array:Assign[#{key}]"}
       end
@@ -103,7 +103,7 @@ class FrmRsp < Field
       #Field
       data=yield
       if key=e0['assign']
-        self[key]=data
+        @field[key]=data
         @v.msg{"Assign:[#{key}] <- <#{data}>"}
       end
     end
@@ -136,9 +136,10 @@ if __FILE__ == $0
   begin
     fdb=FrmDb.new(fid)
     cobj=Command.new(fdb[:cmdframe])
-    field=FrmRsp.new(fdb,cobj)
+    field=Field.new(fdb['id'])
+    fr=FrmRsp.new(fdb,cobj,field)
     str=gets(nil) || exit
-    field.upd_logline(str)
+    fr.upd_logline(str)
     puts field.to_j
   rescue UserError
     Msg.usage "[frameID] < logline"

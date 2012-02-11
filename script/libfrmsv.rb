@@ -10,8 +10,7 @@ class FrmSv < FrmObj
   def initialize(fdb,iocmd=[])
     super(fdb)
     @v=Msg::Ver.new(self,3)
-    @field=FrmRsp.new(fdb,@cobj).load
-    @updlist=@field.updlist
+    @fr=FrmRsp.new(fdb,@cobj,@field)
     if Msg.type?(iocmd,Array).empty?
       @io=IoCmd.new(fdb['iocmd'].split(' '),fdb['wait'],1)
       id=fdb['id'];ver=fdb['frm_ver']
@@ -47,7 +46,7 @@ class FrmSv < FrmObj
       @io.cid=super[:cid]
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
-      @field.upd{@io.rcv}.save
+      @fr.upd{@io.rcv}
     end
     'OK'
   end
@@ -57,7 +56,7 @@ class FrmSv < FrmObj
     if par.empty?
       raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
     end
-    @field.set(par[0],par[1])
+    @field.set(par[0],par[1]).upd
   end
 
   def save(keys,tag=nil)
@@ -69,7 +68,7 @@ class FrmSv < FrmObj
 
   def load(tag)
     tag='' unless tag
-    @field.loadkey(tag)
+    @field.loadkey(tag).upd
   rescue UserError
     raise UserError,"Usage: load (tag)\n #{$!}"
   end

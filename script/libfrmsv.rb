@@ -56,7 +56,7 @@ class FrmSv < FrmObj
     if par.empty?
       raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
     end
-    @field.set(par[0],par[1]).upd
+    @field.set(par[0],par[1]).upd.save
   end
 
   def save(keys,tag=nil)
@@ -68,7 +68,7 @@ class FrmSv < FrmObj
 
   def load(tag)
     tag='' unless tag
-    @field.loadkey(tag).upd
+    @field.loadkey(tag).upd.save
   rescue UserError
     raise UserError,"Usage: load (tag)\n #{$!}"
   end

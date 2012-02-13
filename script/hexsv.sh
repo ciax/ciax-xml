@@ -6,7 +6,10 @@ while getopts "k" opt; do
     esac
 done
 shift $(( $OPTIND -1 ))
-[ "$1" ] || psg inthex
-for id; do
-    d -r -t $id inthex -s $id
-done
+if [ "$1" ] ; then
+    for id; do
+        d -r -t $id inthex -s $id
+    done
+    sleep 1
+fi
+psg inthex

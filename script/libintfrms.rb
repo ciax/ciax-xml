@@ -32,7 +32,7 @@ class IntFrms < Hash
     fint=FrmSv.new(fdb,par)
     Server.new(fint.port,fint.prompt){|line|
       fint.exe(line)
-    } if opt['s']
+    }
     fint
   end
 end

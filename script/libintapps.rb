@@ -38,7 +38,7 @@ class IntApps < Hash
       aint=AppSv.new(adb,fint)
       Server.new(aint.port,aint.prompt){|line|
         aint.exe(line)
-      } if opt['s']
+      }
     end
     aint.extend(ShPrt).init(adb)
   end

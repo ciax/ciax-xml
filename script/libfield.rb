@@ -3,16 +3,13 @@ require 'libmsg'
 require 'libiofile'
 
 class Field < IoFile
-  # pdoc array executed in upd()
-  attr_reader :updlist
   def initialize(id=nil,host=nil)
     super('field',id,host)
-    @updlist=[]
   end
 
   # Update Field
   def upd
-    @updlist.each{|p| p.call }
+    @updlist.upd
     self
   end
 
@@ -64,7 +61,7 @@ class Field < IoFile
   # Set value with mixed key
   def set(key,val)
     get(key).replace(subst(val).to_s)
-    upd
+    @updlist.upd
     self
   end
 
@@ -75,7 +72,6 @@ class Field < IoFile
     @v.msg{"Status Loading for [#{fn}]"}
     begin
       load
-      upd
     rescue
       if tag
         raise UserError,list_stat

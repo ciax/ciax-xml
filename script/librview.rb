@@ -7,7 +7,6 @@ class Rview < IoFile
   attr_reader :last,:stat
   def initialize(id=nil,host=nil)
     super('view',id,host)
-    @updlist=[]
     @stat||={}
     self['stat']=@stat
     @last={}
@@ -15,12 +14,6 @@ class Rview < IoFile
     def @stat.to_s
       Msg.view_struct(self,'stat')
     end
-  end
-
-  def updall
-    @v.msg{"Status update"}
-    @updlist.each{|p| p.call }
-    self
   end
 
   def get(id)
@@ -36,7 +29,7 @@ class Rview < IoFile
   def set(hash) #For Watch test
     @stat.update(hash)
     @stat['time']=Msg.now
-    updall
+    @updlist.upd
     self
   end
 

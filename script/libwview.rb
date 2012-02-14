@@ -25,7 +25,8 @@ class Wview < Rview
 
   def upd
     @stat.upd
-    updall
+    @updlist.upd
+    self
   end
 
   def save

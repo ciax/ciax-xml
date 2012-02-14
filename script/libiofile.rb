@@ -3,7 +3,15 @@ require "libmsg"
 require "json"
 require "libexenum"
 
+class Update < Array
+  def upd
+    each{|p| p.call }
+    self
+  end
+end
+
 class IoFile < ExHash
+  attr_reader :updlist
   def initialize(type,id=nil,host=nil)
     @v=Msg::Ver.new(type,6)
     if id
@@ -19,6 +27,7 @@ class IoFile < ExHash
       self['id']=id
       @fname=@base+'.json'
     end
+    @updlist=Update.new
   end
 
   def settag(tag)
@@ -38,6 +47,7 @@ class IoFile < ExHash
     else
       deep_update(JSON.load(gets(nil)))
     end
+    @updlist.upd
     self
   end
 

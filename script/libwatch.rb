@@ -4,6 +4,7 @@ require 'libexenum'
 require 'librerange'
 require 'libelapse'
 require 'libmodlog'
+require 'libiofile'
 
 module WatchPrt
   def to_s
@@ -39,8 +40,9 @@ module WatchPrt
   end
 end
 
-class Watch < ExHash
+class Watch < IoFile
   def initialize(adb,view)
+    super('watch',adb['id'])
     @v=Msg::Ver.new(self,12)
     @wdb=Msg.type?(adb,AppDb)[:watch]
     @wst=@wdb[:stat]||[]
@@ -51,6 +53,7 @@ class Watch < ExHash
     self['time']=Time.now.to_i
     self['ver']=adb['app_ver'].to_i
     @elapse=Elapse.new(self)
+    view.updlist << proc{ upd.save }
   end
 
   def active?
@@ -171,6 +174,5 @@ if __FILE__ == $0
   # For on change
   view.set(hash)
   # Print Wdb
-  puts watch.upd
   puts watch.extend(WatchPrt)
 end

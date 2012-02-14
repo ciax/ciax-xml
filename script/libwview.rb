@@ -19,20 +19,13 @@ class Wview < Rview
       self[k]=@sym[k]
     }
     @lastsave=0
+    @updlist << proc{ @sym.upd }
     field.updlist << proc{ upd.save}
   end
 
   def upd
-    @v.msg{"Status update"}
     @stat.upd
-    @sym.upd
-    self
-  end
-
-  def set(hash)
-    super
-    @sym.upd
-    self
+    updall
   end
 
   def save

@@ -3,9 +3,9 @@ require "libmsg"
 require "socket"
 
 class Server < Thread
-  def initialize(port,prompt=nil)
+  def initialize(type,port,prompt=nil)
     @v=Msg::Ver.new(self,1)
-    @v.msg{"Init/Server:#{port}"}
+    @v.msg{"Init/Server:#{port}(#{type})"}
     super{
       Thread.pass
       UDPSocket.open{ |udp|

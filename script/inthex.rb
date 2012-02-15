@@ -15,7 +15,7 @@ end
 hp=HexPack.new(aint.view,aint.prompt)
 if opt["s"]
   require 'libserver'
-  Server.new(aint.port.to_i+1000){|line|
+  Server.new('hexpack',aint.port.to_i+1000){|line|
     aint.exe(line)
     hp
   }.join

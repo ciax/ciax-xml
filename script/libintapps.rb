@@ -36,7 +36,7 @@ class IntApps < Hash
       require 'libserver'
       fint=IntFrms.new.add(id,opt,host)[id]
       aint=AppSv.new(adb,fint)
-      Server.new(aint.port,aint.prompt){|line|
+      Server.new('app',aint.port,aint.prompt){|line|
         aint.exe(line)
       }
     end

@@ -6,31 +6,30 @@ require "libsymstat"
 require "libsql"
 # Status to Wview (String with attributes)
 class Wview < Rview
-  def initialize(adb,field)
-    Msg.type?(adb,AppDb)
-    Msg.error("No ID in ADB") unless adb.key?('id')
-    self['ver']=adb['app_ver'].to_i if field.key?('ver')
-    @stat=AppStat.new(adb,field).upd
-    super(id=adb['id'])
-    @sym=SymStat.new(adb,@stat).upd
+  def initialize(adb,stat,logging=nil)
+    id=Msg.type?(adb,AppDb)['id'] || Msg.error("No ID in ADB")
+    self['stat']=Msg.type?(stat,AppStat)
+    super(id)
+    self['ver']=adb['app_ver'].to_i
+    @sym=SymStat.new(adb,stat).upd
     # Logging if version number exists
-    @sql=SqLog.new('stat',id,self['ver'],@stat) if key?('ver')
+    @sql=SqLog.new('stat',id,self['ver'],stat) if logging
     ['msg','class'].each{|k|
       self[k]=@sym[k]
     }
     @lastsave=0
-    @updlist << proc{ @sym.upd }
-    field.updlist << proc{ upd.save}
   end
 
   def upd
-    @stat.upd
-    @updlist.upd
+    self['stat'].upd
+    @sym.upd
+    @sql.upd if @sql
+    @updlist.upd # for watch.upd
     self
   end
 
   def save
-    time=@stat['time'].to_f
+    time=self['stat']['time'].to_f
     if time > @lastsave
       super
       @sql.upd.flush if @sql

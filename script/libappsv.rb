@@ -17,7 +17,9 @@ class AppSv < AppObj
     @id=adb['id']
     @fint=Msg.type?(fint,FrmObj)
     @cobj=AppCmd.new(adb[:command])
-    @view=Wview.new(adb,@fint.field)
+    stat=AppStat.new(adb,@fint.field).upd
+    @view=Wview.new(adb,stat,@fint.field.key?('ver'))
+    @fint.field.updlist << proc{ @view.upd }
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd|
       @fint.exe(fcmd)

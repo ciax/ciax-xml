@@ -11,6 +11,7 @@ class AppStat < Hash
     @ads.keys.each{|k|
       self[k]||=''
     }
+    field.updlist << proc{ upd }
   end
 
   def upd

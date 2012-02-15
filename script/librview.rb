@@ -4,14 +4,12 @@ require "libiofile"
 require "libelapse"
 
 class Rview < IoFile
-  attr_reader :last,:stat
   def initialize(id=nil,host=nil)
     super('view',id,host)
-    @stat||={}
-    self['stat']=@stat
+    stat=self['stat']||={}
     @last={}
-    @elapse=Elapse.new(@stat)
-    def @stat.to_s
+    @elapse=Elapse.new(self['stat'])
+    def stat.to_s
       Msg.view_struct(self,'stat')
     end
   end
@@ -22,20 +20,20 @@ class Rview < IoFile
     when 'elapse'
       @elapse
     else
-      @stat[id]
+      self['stat'][id]
     end
   end
 
   def set(hash) #For Watch test
-    @stat.update(hash)
-    @stat['time']=Msg.now
+    self['stat'].update(hash)
+    self['stat']['time']=Msg.now
     @updlist.upd
     self
   end
 
   def change?(id)
-    @v.msg{"Compare(#{id}) current=[#{@stat[id]}] vs last=[#{@last[id]}]"}
-    @stat[id] != @last[id]
+    @v.msg{"Compare(#{id}) current=[#{self['stat'][id]}] vs last=[#{@last[id]}]"}
+    self['stat'][id] != @last[id]
   end
 
   def update?
@@ -44,7 +42,7 @@ class Rview < IoFile
 
   def refresh
     @v.msg{"Status Updated"}
-    @last.update(@stat)
+    @last.update(self['stat'])
   end
 end
 

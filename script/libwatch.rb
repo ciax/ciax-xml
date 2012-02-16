@@ -129,7 +129,7 @@ class Watch < IoFile
     rary=[]
     n.size.times{|j|
       k=n[j]['var']
-      v=(m[j]||={})['val']=@view.get(k)
+      v=(m[j]||={})['val']=@view.get(k).to_s
       case n[j]['type']
       when 'onchange'
         c=(m[j]['last']||='')

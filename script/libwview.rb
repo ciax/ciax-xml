@@ -14,9 +14,7 @@ class Wview < Rview
     @sym=SymStat.new(adb,stat).upd
     # Logging if version number exists
     @sql=SqLog.new('stat',id,self['ver'],stat) if logging
-    ['msg','class'].each{|k|
-      self[k]=@sym[k]
-    }
+    ['msg','class'].each{|k| self[k]=@sym[k] }
     @lastsave=0
   end
 

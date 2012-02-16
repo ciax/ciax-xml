@@ -8,7 +8,6 @@ class Rview < IoFile
     super('view',id,host)
     stat=self['stat']||={}
     @last={}
-    @elapse=Elapse.new(self['stat'])
     def stat.to_s
       Msg.view_struct(self,'stat')
     end
@@ -22,7 +21,7 @@ class Rview < IoFile
     else
       self['stat'][id]
     end
-  end
+9  end
 
   def set(hash) #For Watch test
     self['stat'].update(hash)

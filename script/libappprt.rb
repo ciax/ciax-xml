@@ -8,6 +8,7 @@ class AppPrt
     ['stat','class','msg'].each{|key|
       view[key]||={}
     }
+    @elapse=Elapse.new(view['stat'])
   end
 
   def to_s
@@ -30,7 +31,13 @@ class AppPrt
 
   def get_element(ids)
     ids.map{|id|
-      prt(id,@view.get(id))
+      case id
+      when 'elapse'
+        str=@elapse
+      else
+        str=@view['stat'][id]
+      end
+      prt(id,str)
     }.join(" ")
   end
 

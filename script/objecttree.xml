@@ -18,11 +18,11 @@
     </Exception>
     <Hash include="Enumerable">
       <ExHash include="ExEnum">
-        <Command Math="">
-          <AppCmd></AppCmd>
+        <Command include="Math">
+          <AppCmd />
         </Command>
         <Db>
-          <AppDb></AppDb>
+          <AppDb />
           <FrmDb />
           <InsDb />
           <McrDb />

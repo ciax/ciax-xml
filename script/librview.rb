@@ -21,7 +21,7 @@ class Rview < IoFile
     else
       self['stat'][id]
     end
-9  end
+  end
 
   def set(hash) #For Watch test
     self['stat'].update(hash)

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="all" label="Shared">
     <table id="iid_tsc" label="Instrument ID by TSC">
@@ -46,7 +46,7 @@
       <pattern class="alarm" msg="OFF">0</pattern>
     </table>
     <table id="action">
-      <pattern class="caution" msg="ON">1</pattern>
+      <pattern class="active" msg="ON">1</pattern>
       <pattern class="normal" msg="OFF">0</pattern>
     </table>
     <table id="hide">

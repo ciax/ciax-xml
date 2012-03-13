@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="cj2" label="Stand-by Flange PLC">
     <table id="rst">
@@ -23,7 +23,7 @@
     </table>
     <table id="ctl">
       <pattern class="normal" msg="AUTO">2</pattern>
-      <pattern class="caution" msg="MANUAL">1</pattern>
+      <pattern class="alarm" msg="MANUAL">1</pattern>
       <pattern class="alarm" msg="N/A">0</pattern>
     </table>
     <table id="mov">

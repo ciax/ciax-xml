@@ -73,8 +73,9 @@ class Watch < IoFile
 
   def issue
     cmds=self[:exec]
-    @v.msg{"ISSUED:#{cmds}"} unless cmds.empty?
-    sleep 1
+    return [] if cmds.empty?
+    @v.msg{"ISSUED:#{cmds}"}
+    sleep (@wdb['interval']||1).to_i
     cmds
   end
 
@@ -105,8 +106,7 @@ class Watch < IoFile
   def auto
     @tid=Thread.new{
       Thread.pass
-#      int=(@wdb['interval']||300).to_i
-      int=300
+      int=(@wdb['period']||300).to_i
       loop{
         begin
           @auto.upd

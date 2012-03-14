@@ -92,12 +92,13 @@ module ModAdbs
 end
 
 module ModWdb
+  #structure of exec=[cond1,2,...]; cond=[cmd1,2,..]; cmd1=['str','arg1',..]
   def init_watch(wdb)
     return [] unless wdb
-    hash=init_period(wdb.to_h)
+    hash=wdb.to_h
+    [:label,:exec,:stat,:int,:block].each{|k| hash[k]=[]}
     idx=0
     Repeat.new.each(wdb){|e0,r0|
-      idx+=1
       hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
       e0.each{ |e1|
         case name=e1.name.to_sym
@@ -118,18 +119,8 @@ module ModWdb
           (hash[:stat][idx]||=[]) << h
         end
       }
+      idx+=1
     }
-    hash
-  end
-
-  private
-  def init_period(hash)
-    hash[:label]=['Periodic']
-    hash[:exec]=[[['upd']]]
-    ref={'var'=>'elapse','type'=>'range'}
-    ref['val']=(hash['period']||'300')+':'
-    hash[:stat]=[[ref]]
-    [:int,:block].each{|k| hash[k]=[nil]}
     hash
   end
 end

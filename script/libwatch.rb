@@ -53,7 +53,8 @@ class Watch < IoFile
     self['time']=Time.now.to_i
     self['ver']=adb['app_ver'].to_i
     @elapse=Elapse.new(self)
-    view.updlist << proc{ upd.save }
+    view.updlist << proc{ yield upd.save.issue }
+    @auto=Update.new([proc{ yield [['upd']] }])
   end
 
   def active?
@@ -73,6 +74,7 @@ class Watch < IoFile
   def issue
     cmds=self[:exec]
     @v.msg{"ISSUED:#{cmds}"} unless cmds.empty?
+    sleep 1
     cmds
   end
 
@@ -100,13 +102,14 @@ class Watch < IoFile
     self
   end
 
-  def thread
+  def auto
     @tid=Thread.new{
       Thread.pass
-      int=(@wdb['interval']||1).to_i
+#      int=(@wdb['interval']||300).to_i
+      int=300
       loop{
         begin
-          yield upd.issue
+          @auto.upd
         rescue SelectID
           Msg.warn($!)
         end

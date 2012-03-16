@@ -56,7 +56,7 @@ class Watch < ExHash
     hash.each{|k,a|
       self[k]=a.flatten(1).uniq
     }
-    @v.msg{"Updated"}
+    @v.msg{"Updated(#{@view['stat']['time']})"}
     self
   end
 

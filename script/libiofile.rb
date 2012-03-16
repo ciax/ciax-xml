@@ -11,7 +11,6 @@ class Update < Array
   def upd
     each{|p|
       p.call
-      @v.msg{"#{p} called"}
     }
     self
   end

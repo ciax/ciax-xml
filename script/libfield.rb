@@ -9,6 +9,7 @@ class Field < IoFile
 
   # Update Field
   def upd
+    @v.msg{"Update(#{self['time']})"}
     @updlist.upd
     self
   end

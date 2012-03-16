@@ -26,7 +26,7 @@ class Sql < Array
     stat=expand
     key=stat.keys.join("','")
     val=stat.values.join("','")
-    @v.msg{"Update:[#{@type}/#{@tid}] (#{@stat['time']})"}
+    @v.msg{"Update(#{@stat['time']}):[#{@type}/#{@tid}]"}
     push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
   end
 

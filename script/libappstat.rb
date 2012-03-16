@@ -26,6 +26,7 @@ class AppStat < Hash
       end
     }
     self['time']=@field['time']
+    @v.msg{"Update(#{self['time']})"}
     self
   end
 

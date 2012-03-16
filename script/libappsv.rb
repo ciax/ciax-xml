@@ -21,7 +21,7 @@ class AppSv < AppObj
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd|
       @fint.exe(fcmd)
-      @v.msg{"Status Updated(#{@view['stat']['time']})"}
+      @v.msg{"Update(#{@view['stat']['time']})"}
     }
     @buf.upd_on_end << proc{
       @view.upd.save
@@ -102,7 +102,7 @@ class AppSv < AppObj
         rescue SelectID
           Msg.warn($!)
         end
-        @v.msg{"Auto Updated"}
+        @v.msg{"Auto Update(#{@view['stat']['time']})"}
         sleep int
       }
     }

@@ -6,10 +6,9 @@ require 'libelapse'
 require 'libmodlog'
 require 'libiofile'
 
-class Watch < IoFile
+class Watch < ExHash
   attr_reader :period
   def initialize(adb,view)
-    super('watch',adb['id'])
     @v=Msg::Ver.new(self,12)
     @wdb=Msg.type?(adb,AppDb)[:watch]
     @period=(@wdb['period']||300).to_i
@@ -18,8 +17,6 @@ class Watch < IoFile
     [:active,:stat,:exec,:block,:int].each{|i|
       self[i]||=[]
     }
-    self['time']=Time.now.to_i
-    self['ver']=adb['app_ver'].to_i
   end
 
   def active?
@@ -47,7 +44,6 @@ class Watch < IoFile
   end
 
   def upd
-    self['time']=Time.now.to_i
     self[:active].clear
     hash={:int =>[],:exec =>[],:block =>[]}
     @wst.size.times{|i|
@@ -103,11 +99,6 @@ class Watch < IoFile
 end
 
 module WatchPrt
-  def init
-    @elapse=Elapse.new(self)
-    self
-  end
-
   def to_s
     str=''
     if @wst.size.times{|i|
@@ -132,7 +123,6 @@ module WatchPrt
           str << ")\n"
         }
       } > 0
-      str << "  "+Msg.color("Last update",2)+"\t: #{@elapse}\n"
       str << "  "+Msg.color("Blocked",2)+"\t: #{self[:block]}\n"
       str << "  "+Msg.color("Interrupt",2)+"\t: #{self[:int]}\n"
       str << "  "+Msg.color("Issuing",2)+"\t: #{self[:exec]}\n"

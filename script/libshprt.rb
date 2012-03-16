@@ -4,6 +4,7 @@ require "libappprt"
 module ShPrt
   def init(adb)
     @output=@print=AppPrt.new(adb,@view)
+    @watch=@view['watch'].extend(WatchPrt).init
     cl=Msg::List.new("Change Mode",2)
     @cobj.list.push(cl)
     cl.add('print'=>"Print mode")
@@ -20,7 +21,7 @@ module ShPrt
     when 'stat'
       @output=@view['stat']
     when 'watch'
-      @output=@watch if @watch
+      @output=@watch
     when 'field'
       @output=@fint if @fint
     else

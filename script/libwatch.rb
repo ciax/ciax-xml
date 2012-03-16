@@ -61,6 +61,7 @@ class Watch < IoFile
     hash.each{|k,a|
       self[k]=a.flatten(1).uniq
     }
+    @v.msg{"Updated"}
     self
   end
 

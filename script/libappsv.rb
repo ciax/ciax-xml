@@ -5,7 +5,6 @@ require "libcommand"
 require "libappcmd"
 require "libwview"
 require "libbuffer"
-require "libwatch"
 require "thread"
 require "libmodlog"
 require "json"
@@ -19,14 +18,12 @@ class AppSv < AppObj
     @cobj=AppCmd.new(adb[:command])
     stat=AppStat.new(adb,@fint.field).upd
     @view=Wview.new(adb,stat,@fint.field.key?('ver'))
-    @fint.field.updlist << proc{ @view.upd }
+    @fint.field.updlist << proc{ @view.upd.save }
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd|
       @fint.exe(fcmd)
       @v.msg{"Status Updated(#{@view['stat']['time']})"}
     }
-    @watch=Watch.new(adb,@view).extend(WatchPrt).init
-    @fint.field.updlist << proc{ sendfrm(@watch.upd.save.issue,2) }
     # Logging if version number exists
     extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
     auto
@@ -39,7 +36,7 @@ class AppSv < AppObj
     case cmd.first
     when nil
     when 'interrupt'
-      int=@watch.interrupt
+      int=@view['watch'].interrupt
       sendfrm(int,0)
       msg="Interrupt #{int}"
     when 'flush'
@@ -53,7 +50,7 @@ class AppSv < AppObj
       @view.set(hash).save
       msg="Set #{hash}"
     else
-      if @watch.block?(cmd)
+      if @view['watch'].block?(cmd)
         msg="Blocking(#{cmd})"
       else
         sendfrm([cmd])
@@ -68,7 +65,7 @@ class AppSv < AppObj
   def upd_prompt
     @prompt.replace(@id)
     @prompt << '@' if @tid && @tid.alive?
-    @prompt << '&' if @watch.active?
+    @prompt << '&' if @view['watch'].active?
     @prompt << '*' if @buf.issue
     @prompt << (@buf.alive? ? '>' : 'X')
     self
@@ -87,13 +84,13 @@ class AppSv < AppObj
   end
 
   def logging(cmd)
-    append(JSON.dump(@watch[:active]),cmd) if is_a?(ModLog)
+    append(JSON.dump(@view['watch'][:active]),cmd) if is_a?(ModLog)
   end
 
   def auto
     @tid=Thread.new{
       Thread.pass
-      int=(@watch.period||300).to_i
+      int=(@view['watch'].period||300).to_i
       cmd=[['upd']]
       loop{
         begin
@@ -101,6 +98,7 @@ class AppSv < AppObj
         rescue SelectID
           Msg.warn($!)
         end
+        @v.msg{"Auto Updated"}
         sleep int
       }
     }

@@ -4,6 +4,8 @@ require "librview"
 require "libappstat"
 require "libsymstat"
 require "libsql"
+require "libwatch"
+
 # Status to Wview (String with attributes)
 class Wview < Rview
   def initialize(adb,stat,logging=nil)
@@ -16,13 +18,14 @@ class Wview < Rview
     @sql=SqLog.new('stat',id,self['ver'],stat) if logging
     ['msg','class'].each{|k| self[k]=@sym[k] }
     @lastsave=0
+    self['watch']=Watch.new(adb,self)
   end
 
   def upd
     self['stat'].upd
     @sym.upd
     @sql.upd if @sql
-    @updlist.upd # for watch.upd
+    self['watch'].upd
     self
   end
 

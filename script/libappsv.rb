@@ -26,7 +26,7 @@ class AppSv < AppObj
     }
     # Logging if version number exists
     extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
-    auto
+    auto_update
     upd_prompt
   end
 
@@ -87,7 +87,7 @@ class AppSv < AppObj
     append(JSON.dump(@view['watch'][:active]),cmd) if is_a?(ModLog)
   end
 
-  def auto
+  def auto_update
     @tid=Thread.new{
       Thread.pass
       int=(@view['watch'].period||300).to_i

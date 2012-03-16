@@ -50,7 +50,7 @@ class Watch < ExHash
       next unless check(i)
       self['active'] << i
       hash.each{|k,a|
-        n=@wdb[k][i]
+        n=@wdb[k.to_sym][i]
         a << n if n && !a.include?(n)
       }
     }

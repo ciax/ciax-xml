@@ -41,10 +41,12 @@ module WatchPrt
 end
 
 class Watch < IoFile
+  attr_reader :period
   def initialize(adb,view)
     super('watch',adb['id'])
     @v=Msg::Ver.new(self,12)
     @wdb=Msg.type?(adb,AppDb)[:watch]
+    @period=(@wdb['period']||300).to_i
     @wst=@wdb[:stat]||[]
     @view=Msg.type?(view,Rview)
     [:active,:stat,:exec,:block,:int].each{|i|
@@ -54,15 +56,10 @@ class Watch < IoFile
     self['ver']=adb['app_ver'].to_i
     @elapse=Elapse.new(self)
     view.updlist << proc{ yield upd.save.issue }
-    @auto=Update.new([proc{ yield [['upd']] }])
   end
 
   def active?
     !self[:active].empty?
-  end
-
-  def alive?
-    @tid && @tid.alive?
   end
 
   def block?(cmd)
@@ -100,22 +97,6 @@ class Watch < IoFile
     hash.each{|k,a|
       self[k]=a.flatten(1).uniq
     }
-    self
-  end
-
-  def auto
-    @tid=Thread.new{
-      Thread.pass
-      int=(@wdb['period']||300).to_i
-      loop{
-        begin
-          @auto.upd
-        rescue SelectID
-          Msg.warn($!)
-        end
-        sleep int
-      }
-    } unless @wst.empty?
     self
   end
 

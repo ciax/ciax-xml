@@ -27,9 +27,10 @@ class AppSv < AppObj
     }
     @watch=Watch.new(adb,@view){|cmd|
       sendfrm(cmd,2)
-    }.auto.extend(WatchPrt)
+    }.extend(WatchPrt)
     # Logging if version number exists
     extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
+    auto
     upd_prompt
   end
 
@@ -67,7 +68,7 @@ class AppSv < AppObj
   private
   def upd_prompt
     @prompt.replace(@id)
-    @prompt << '@' if @watch.alive?
+    @prompt << '@' if @tid && @tid.alive?
     @prompt << '&' if @watch.active?
     @prompt << '*' if @buf.issue
     @prompt << (@buf.alive? ? '>' : 'X')
@@ -88,5 +89,22 @@ class AppSv < AppObj
 
   def logging(cmd)
     append(JSON.dump(@watch[:active]),cmd) if is_a?(ModLog)
+  end
+
+  def auto
+    @tid=Thread.new{
+      Thread.pass
+      int=(@watch.period||300).to_i
+      cmd=[['upd']]
+      loop{
+        begin
+          sendfrm(cmd,2)
+        rescue SelectID
+          Msg.warn($!)
+        end
+        sleep int
+      }
+    }
+    self
   end
 end

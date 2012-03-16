@@ -16,7 +16,7 @@ class FrmCmd
 
   def getframe # return = response select
     return unless @sel[:select]=@cobj[:select]
-    @v.msg{"Attr of Command:#{@cobj}"}
+#    @v.msg{"Attr of Command:#{@cobj}"}
     cid=@cobj[:cid]
     @v.msg{"Select:#{@cobj[:label]}(#{cid})"}
     if frame=@cache[cid]

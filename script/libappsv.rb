@@ -18,7 +18,9 @@ class AppSv < AppObj
     @cobj=AppCmd.new(adb[:command])
     stat=AppStat.new(adb,@fint.field).upd
     @view=Wview.new(adb,stat,@fint.field.key?('ver'))
-    @fint.field.updlist << proc{ @view.upd.save }
+    @fint.field.updlist << proc{
+      sendfrm(@view.upd.save['watch'].issue,2)
+    }
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd|
       @fint.exe(fcmd)

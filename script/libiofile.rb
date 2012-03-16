@@ -4,8 +4,15 @@ require "json"
 require "libexenum"
 
 class Update < Array
+  def initialize
+    @v=Msg::Ver.new(self,5)
+  end
+
   def upd
-    each{|p| p.call }
+    each{|p|
+      p.call
+      @v.msg{"#{p} called"}
+    }
     self
   end
 end

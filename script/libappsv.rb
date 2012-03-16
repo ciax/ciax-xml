@@ -84,7 +84,7 @@ class AppSv < AppObj
   end
 
   def logging(cmd)
-    append(JSON.dump(@view['watch'][:active]),cmd) if is_a?(ModLog)
+    append(JSON.dump(@view['watch']['active']),cmd) if is_a?(ModLog)
   end
 
   def auto_update

@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
 require "libappprt"
+require "libwatchprt"
 
 module ShPrt
   def init(adb)
     @output=@print=AppPrt.new(adb,@view)
-    @watch=@view['watch'].extend(WatchPrt)
+    @watch=WatchPrt.new(adb,@view)
     cl=Msg::List.new("Change Mode",2)
     @cobj.list.push(cl)
     cl.add('print'=>"Print mode")
@@ -24,6 +25,8 @@ module ShPrt
       @output=@watch
     when 'field'
       @output=@fint if @fint
+    when 'all'
+      @output=@view
     else
       return super
     end

@@ -25,9 +25,8 @@ class AppSv < AppObj
       @fint.exe(fcmd)
       @v.msg{"Status Updated(#{@view['stat']['time']})"}
     }
-    @watch=Watch.new(adb,@view){|cmd|
-      sendfrm(cmd,2)
-    }.extend(WatchPrt)
+    @watch=Watch.new(adb,@view).extend(WatchPrt).init
+    @fint.field.updlist << proc{ sendfrm(@watch.upd.save.issue,2) }
     # Logging if version number exists
     extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
     auto

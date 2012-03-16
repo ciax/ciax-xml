@@ -6,40 +6,6 @@ require 'libelapse'
 require 'libmodlog'
 require 'libiofile'
 
-module WatchPrt
-  def to_s
-    str=''
-    if @wst.size.times{|i|
-        res=self[:active].include?(i)
-        str << "  "+Msg.color(@wdb[:label][i],6)+"\t: "
-        str << show_res(res)+"\n"
-        n=@wst[i]
-        m=self[:stat][i]
-        n.size.times{|j|
-          str << "    "+show_res(m[j]['res'],'o','x')+' '
-          str << Msg.color(n[j]['var'],3)
-          str << "  "
-          str << "!" if /true|1/ === n[j]['inv']
-          str << "(#{n[j]['type']}"
-          if n[j]['type'] == 'onchange'
-            str << "/last=#{m[j]['last'].inspect},"
-            str << "now=#{m[j]['val'].inspect}"
-          else
-            str << "=#{n[j]['val'].inspect},"
-            str << "actual=#{m[j]['val'].inspect}"
-          end
-          str << ")\n"
-        }
-      } > 0
-      str << "  "+Msg.color("Last update",2)+"\t: #{@elapse}\n"
-      str << "  "+Msg.color("Blocked",2)+"\t: #{self[:block]}\n"
-      str << "  "+Msg.color("Interrupt",2)+"\t: #{self[:int]}\n"
-      str << "  "+Msg.color("Issuing",2)+"\t: #{self[:exec]}\n"
-    end
-    str
-  end
-end
-
 class Watch < IoFile
   attr_reader :period
   def initialize(adb,view)
@@ -54,8 +20,6 @@ class Watch < IoFile
     }
     self['time']=Time.now.to_i
     self['ver']=adb['app_ver'].to_i
-    @elapse=Elapse.new(self)
-    view.updlist << proc{ yield upd.save.issue }
   end
 
   def active?
@@ -137,6 +101,45 @@ class Watch < IoFile
   end
 end
 
+module WatchPrt
+  def init
+    @elapse=Elapse.new(self)
+    self
+  end
+
+  def to_s
+    str=''
+    if @wst.size.times{|i|
+        res=self[:active].include?(i)
+        str << "  "+Msg.color(@wdb[:label][i],6)+"\t: "
+        str << show_res(res)+"\n"
+        n=@wst[i]
+        m=self[:stat][i]
+        n.size.times{|j|
+          str << "    "+show_res(m[j]['res'],'o','x')+' '
+          str << Msg.color(n[j]['var'],3)
+          str << "  "
+          str << "!" if /true|1/ === n[j]['inv']
+          str << "(#{n[j]['type']}"
+          if n[j]['type'] == 'onchange'
+            str << "/last=#{m[j]['last'].inspect},"
+            str << "now=#{m[j]['val'].inspect}"
+          else
+            str << "=#{n[j]['val'].inspect},"
+            str << "actual=#{m[j]['val'].inspect}"
+          end
+          str << ")\n"
+        }
+      } > 0
+      str << "  "+Msg.color("Last update",2)+"\t: #{@elapse}\n"
+      str << "  "+Msg.color("Blocked",2)+"\t: #{self[:block]}\n"
+      str << "  "+Msg.color("Interrupt",2)+"\t: #{self[:int]}\n"
+      str << "  "+Msg.color("Issuing",2)+"\t: #{self[:exec]}\n"
+    end
+    str
+  end
+end
+
 if __FILE__ == $0
   require "librview"
   require "libinsdb"
@@ -158,5 +161,5 @@ if __FILE__ == $0
   # For on change
   view.set(hash)
   # Print Wdb
-  puts watch.extend(WatchPrt)
+  puts watch.extend(WatchPrt).init
 end

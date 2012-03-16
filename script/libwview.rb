@@ -34,7 +34,7 @@ class Wview < Rview
     time=self['stat']['time'].to_f
     if time > @lastsave
       super
-      @sql.upd.flush if @sql
+      @sql.flush if @sql
       @lastsave=time
     end
     self

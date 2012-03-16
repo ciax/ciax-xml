@@ -16,12 +16,13 @@ require "thread"
 #  (stack if Queue is empty)
 
 class Buffer
-  attr_reader :issue
+  attr_reader :issue,:upd_on_end
   def initialize
     @v=Msg::Ver.new(self,2)
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
+    @upd_on_end=[]
     clear
   end
 
@@ -42,6 +43,7 @@ class Buffer
     until out=pick
       @v.msg{"SUB:Waiting"}
       @issue=false
+      @upd_on_end.each{|p| p.call}
       #inp is frmcmd array (ary of ary)
       p,inp=@q.shift
       @issue=true

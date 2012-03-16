@@ -18,13 +18,15 @@ class AppSv < AppObj
     @cobj=AppCmd.new(adb[:command])
     stat=AppStat.new(adb,@fint.field).upd
     @view=Wview.new(adb,stat,@fint.field.key?('ver'))
-    @fint.field.updlist << proc{
-      sendfrm(@view.upd.save['watch'].issue,2)
-    }
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd|
       @fint.exe(fcmd)
       @v.msg{"Status Updated(#{@view['stat']['time']})"}
+    }
+    @buf.upd_on_end << proc{
+      @view.upd.save
+      sleep (@view['watch']['interval']||1).to_i
+      sendfrm(@view['watch'].issue,2)
     }
     # Logging if version number exists
     extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')

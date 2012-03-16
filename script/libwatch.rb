@@ -33,7 +33,6 @@ class Watch < ExHash
     cmds=self['exec']
     return [] if cmds.empty?
     @v.msg{"ISSUED:#{cmds}"}
-    sleep (@wdb['interval']||1).to_i
     cmds
   end
 

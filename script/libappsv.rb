@@ -19,12 +19,10 @@ class AppSv < AppObj
     stat=AppStat.new(adb,@fint.field).upd
     @view=Wview.new(adb,stat,@fint.field.key?('ver'))
     Thread.abort_on_exception=true
-    @buf=Buffer.new.thread{|fcmd|
-      @fint.exe(fcmd)
-    }
+    @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
     @buf.upd_on_end << proc{
       @view.upd.save
-      sleep (@view['watch']['interval']||1).to_i
+      sleep (@view['watch']['interval']||1).to_f/10
       sendfrm(@view['watch'].issue,2)
     }
     # Logging if version number exists

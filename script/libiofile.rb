@@ -57,17 +57,6 @@ class IoFile < ExHash
     self
   end
 
-  def save(data=nil)
-    case @type
-    when 'file'
-      @v.msg{"Saving #{self['id']} file"}
-      open(@fname,'w'){|f| f << JSON.dump(data||to_hash)}
-    else
-      puts JSON.dump(data||to_hash)
-    end
-    self
-  end
-
   def to_j
     JSON.dump(to_hash)
   end
@@ -83,5 +72,18 @@ class IoFile < ExHash
         deep_update(JSON.load(str))
       end
     }
+  end
+end
+
+module Writable
+  def save(data=nil)
+    case @type
+    when 'file'
+      @v.msg{"Saving #{self['id']} file"}
+      open(@fname,'w'){|f| f << JSON.dump(data||to_hash)}
+    else
+      puts JSON.dump(data||to_hash)
+    end
+    self
   end
 end

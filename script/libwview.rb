@@ -8,6 +8,7 @@ require "libwatch"
 
 # Status to Wview (String with attributes)
 class Wview < Rview
+  include Writable
   def initialize(adb,stat,logging=nil)
     id=Msg.type?(adb,AppDb)['id'] || Msg.error("No ID in ADB")
     self['stat']=Msg.type?(stat,AppStat)

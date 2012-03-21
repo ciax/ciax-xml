@@ -3,6 +3,7 @@ require 'libmsg'
 require 'libiofile'
 
 class Field < IoFile
+  include Writable
   def initialize(id=nil,host=nil)
     super('field',id,host)
   end

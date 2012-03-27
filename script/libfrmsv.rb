@@ -16,7 +16,7 @@ class FrmSv < FrmObj
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(IoLog).startlog(id,ver)
       @sql=SqLog.new('field',id,ver,@field)
-      @field.updlist << proc{ @sql.upd.flush }
+      @field.at_save << proc{ @sql.upd.flush }
     else
       @io=IoCmd.new(iocmd,fdb['wait'],1)
       @field.delete('ver')
@@ -56,7 +56,7 @@ class FrmSv < FrmObj
     if par.empty?
       raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
     end
-    @field.set(par[0],par[1]).upd.save
+    @field.set(par[0],par[1]).save
   end
 
   def unset(par)
@@ -75,7 +75,7 @@ class FrmSv < FrmObj
 
   def load(tag)
     tag='' unless tag
-    @field.loadkey(tag).upd
+    @field.loadkey(tag)
   rescue UserError
     raise UserError,"Usage: load (tag)\n #{$!}"
   end

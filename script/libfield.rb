@@ -5,10 +5,10 @@ require 'libupdate'
 
 class Field < IoFile
   include Writable
-  attr_reader :updlist
+  attr_reader :at_save
   def initialize(id=nil,host=nil)
     super('field',id,host)
-    @updlist=Update.new
+    @at_save=Update.new
   end
 
   # Substitute str by Field data
@@ -82,7 +82,7 @@ class Field < IoFile
 
   def save
     super
-    @updlist.upd
+    @at_save.upd
     self
   end
 

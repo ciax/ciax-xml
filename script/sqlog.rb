@@ -23,9 +23,9 @@ rescue UserError
 end
 if opt['a']
   stat=AppStat.new(adb,field)
-  field.updlist << proc{ stat.upd }
+  field.at_save << proc{ stat.upd }
   sql=Sql.new('stat',id,adb['app_ver'],stat)
-  field.updlist << proc{ sql.upd }
+  field.at_save << proc{ sql.upd }
   if opt['i'] # Initial
     sql.ini
   else
@@ -45,7 +45,7 @@ else
   cobj=Command.new(fdb[:cmdframe])
   fr=FrmRsp.new(fdb,cobj,field)
   sql=Sql.new('field',id,ver,field)
-  field.updlist << proc{ sql.upd }
+  field.at_save << proc{ sql.upd }
   if opt['i'] # Initial
     sql.ini
   else

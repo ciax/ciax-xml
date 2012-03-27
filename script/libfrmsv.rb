@@ -35,7 +35,7 @@ class FrmSv < FrmObj
     when 'set'
       set(cmd[1..-1])
     when 'unset'
-      @field.delete(cmd[1])
+      unset(cmd[1])
     when 'load'
       load(cmd[1])
     when 'save'
@@ -59,6 +59,13 @@ class FrmSv < FrmObj
     @field.set(par[0],par[1]).upd.save
   end
 
+  def unset(par)
+    unless par
+      raise UserError,"Usage: unset [key(:idx)]\n key=#{@field.keys}"
+    end
+    @field.delete(par)
+  end
+
   def save(keys,tag=nil)
     unless keys
       raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.keys}"
@@ -68,7 +75,7 @@ class FrmSv < FrmObj
 
   def load(tag)
     tag='' unless tag
-    @field.loadkey(tag).upd.save
+    @field.loadkey(tag).upd
   rescue UserError
     raise UserError,"Usage: load (tag)\n #{$!}"
   end

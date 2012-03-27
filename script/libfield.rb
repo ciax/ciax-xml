@@ -63,6 +63,7 @@ class Field < IoFile
   # Set value with mixed key
   def set(key,val)
     get(key).replace(subst(val).to_s)
+    self['time'].replace(Msg::now)
     @updlist.upd
     self
   end

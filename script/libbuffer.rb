@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "thread"
+require "libupdate"
 
 # SubModule for AppSv
 # *Command stream(Send)
@@ -22,7 +23,7 @@ class Buffer
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
-    @upd_on_end=[]
+    @upd_on_end=Update.new
     clear
   end
 
@@ -43,7 +44,7 @@ class Buffer
     until out=pick
       @v.msg{"SUB:Waiting"}
       @issue=false
-      @upd_on_end.each{|p| p.call}
+      @upd_on_end.upd
       #inp is frmcmd array (ary of ary)
       p,inp=@q.shift
       @issue=true

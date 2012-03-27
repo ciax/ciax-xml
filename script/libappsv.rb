@@ -20,7 +20,7 @@ class AppSv < AppObj
     @view=Wview.new(adb,stat,@fint.field.key?('ver'))
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
-    @buf.upd_on_end << proc{
+    @buf.at_flush << proc{
       @view.upd.save
       sleep (@view['watch']['interval']||1).to_f/10
       sendfrm(@view['watch'].issue,2)
@@ -41,7 +41,7 @@ class AppSv < AppObj
       sendfrm(int,0)
       msg="Interrupt #{int}"
     when 'flush'
-      @fint.field.load.upd
+      @fint.field.load
     when 'set'
       hash={}
       cmd[1..-1].each{|s|

@@ -42,6 +42,7 @@ class AppSv < AppObj
       msg="Interrupt #{int}"
     when 'flush'
       @fint.field.load
+      @buf.at_flush.upd
     when 'set'
       hash={}
       cmd[1..-1].each{|s|

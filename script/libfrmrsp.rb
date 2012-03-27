@@ -42,7 +42,7 @@ class FrmRsp
         cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
-      @field.upd.save
+      @field.save
     else
       @v.msg{"Send Only"}
       @sel[:select]=nil

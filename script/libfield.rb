@@ -1,18 +1,14 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'libiofile'
+require 'libupdate'
 
 class Field < IoFile
   include Writable
+  attr_reader :updlist
   def initialize(id=nil,host=nil)
     super('field',id,host)
-  end
-
-  # Update Field
-  def upd
-    @v.msg{"Update(#{self['time']})"}
-    @updlist.upd
-    self
+    @updlist=Update.new
   end
 
   # Substitute str by Field data
@@ -64,7 +60,6 @@ class Field < IoFile
   def set(key,val)
     get(key).replace(subst(val).to_s)
     self['time'].replace(Msg::now)
-    @updlist.upd
     self
   end
 
@@ -82,6 +77,12 @@ class Field < IoFile
         Msg.warn("----- No #{fn}")
       end
     end
+    self
+  end
+
+  def save
+    super
+    @updlist.upd
     self
   end
 

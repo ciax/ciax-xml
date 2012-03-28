@@ -4,6 +4,10 @@ require "json"
 require "libexenum"
 
 class IoFile < ExHash
+  # ID : Host : Type
+  # _  :  *   : StdIO
+  # v  :  _   : File
+  # v  :  v   : URL
   def initialize(type,id=nil,host=nil)
     @v=Msg::Ver.new(type,6)
     if id

@@ -157,7 +157,7 @@ if __FILE__ == $0
     opt=ARGV.getopts("f")
     db=AppDb.new(ARGV.shift)
   rescue SelectID
-    warn "USAGE: #{$0} (-f) [id] (key) .."
+    Msg.usage("(-f) [id] (key) ..","-f:make fdb")
     Msg.exit
   end
   db=db.cover_frm if opt["f"]

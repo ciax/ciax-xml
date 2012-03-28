@@ -4,13 +4,13 @@ require "libinsdb"
 require "libhexpack"
 require "libintapps"
 
-opt=ARGV.getopts("sc")
+opt=ARGV.getopts("s")
 id,host=ARGV
 ARGV.clear
 begin
   aint=IntApps.new.add(id,opt,host)[id]
 rescue UserError
-  Msg.usage("(-sc) [id] (host)")
+  Msg.usage("(-s) [id] (host)","-s:server")
 end
 hp=HexPack.new(aint.view,aint.prompt)
 if opt["s"]

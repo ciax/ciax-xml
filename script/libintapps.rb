@@ -3,8 +3,11 @@ require "libmsg"
 require "libinsdb"
 require "libshprt"
 
-# 'f' is client of frm server, 'a' is client of app server
-# 's' is server, 'd' is dummy (frmsim), 't' is check cmd only
+# 'a' is client of app server
+# 'f' is client of frm server
+# 's' is server
+# 'd' is dummy (frmsim)
+# 't' is check cmd only
 class IntApps < Hash
   def initialize
     super(){|h,k| int(k,{'a'=>true}) }

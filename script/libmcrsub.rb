@@ -157,7 +157,7 @@ if __FILE__ == $0
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
-    Msg.usage "(-r) [mcr] [cmd] (par)"
+    Msg.usage("(-r) [mcr] [cmd] (par)","-r:print raw data")
   rescue UserError
     Msg.exit(3)
   end

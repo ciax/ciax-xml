@@ -108,7 +108,7 @@ if __FILE__ == $0
       puts Command.new(adb[:command]).set(ARGV)
     end
   rescue
-    warn "USAGE: #{$0} (-f) [id] [cmd] (par)"
+    Msg::usage("(-fa) [id] [cmd] (par)","-f:frm","-a:app")
     Msg.exit
   end
 end

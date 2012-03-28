@@ -33,7 +33,7 @@ if __FILE__ == $0
     id=ARGV.shift
     db=InsDb.new(id)
   rescue
-    warn "USAGE: #{$0} (-af) [id] (key) .."
+    Msg.usage("(-af) [id] (key) ..","-a:make adb","-f:make fdb")
     Msg.exit
   end
   db=db.cover_app if opt["a"]

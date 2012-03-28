@@ -8,7 +8,7 @@ id,host=ARGV
 begin
   aint=IntApps.new.add(id,opt,host)[id]
 rescue UserError
-  Msg.usage('(-scfd) [id] (host)','-s:server, -a:client,-f:client on frm, -d:dummy')
+  Msg.usage('(-fsd) [id] (host)','-a:client on app','-f:client on frm','-s:server','-d:dummy')
 end
 sleep if opt["s"]
 require 'libshell'

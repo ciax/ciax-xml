@@ -39,21 +39,6 @@ class Buffer
     self
   end
 
-  # For cmdset thread
-  def recv
-    until out=pick
-      @v.msg{"SUB:Waiting"}
-      @issue=false
-      @at_flush.upd
-      #inp is frmcmd array (ary of ary)
-      p,inp=@q.shift
-      @issue=true
-      @v.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
-      (@outbuf[p]||=[]).concat(inp)
-    end
-    out
-  end
-
   def thread
     @tid=Thread.new{
       Thread.pass
@@ -75,6 +60,25 @@ class Buffer
   end
 
   private
+  # For cmdset thread
+  def recv
+    until out=pick
+      flush
+      #inp is frmcmd array (ary of ary)
+      p,inp=@q.shift
+      @issue=true
+      @v.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
+      (@outbuf[p]||=[]).concat(inp)
+    end
+    out
+  end
+
+  def flush
+    @v.msg{"SUB:Waiting"}
+    @issue=false
+    @at_flush.upd
+  end
+
   # Remove duplicated commands and pop one
   def pick
     cmd=nil

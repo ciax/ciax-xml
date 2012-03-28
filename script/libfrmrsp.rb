@@ -132,15 +132,17 @@ end
 if __FILE__ == $0
   require "libfrmdb"
   require "libcommand"
+  require "optparse"
+  opt=ARGV.getopts('m')
   fid=ARGV.shift
   begin
     fdb=FrmDb.new(fid)
     cobj=Command.new(fdb[:cmdframe])
-    field=Field.new(fdb['id'])
+    field=Field.new(opt['m']&&fid)
     fr=FrmRsp.new(fdb,cobj,field)
     str=gets(nil) || exit
     fr.upd_logline(str)
   rescue UserError
-    Msg.usage "[frameID] < logline"
+    Msg.usage "(-m) [id] < logline","-m:merge file"
   end
 end

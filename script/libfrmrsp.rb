@@ -140,7 +140,6 @@ if __FILE__ == $0
     fr=FrmRsp.new(fdb,cobj,field)
     str=gets(nil) || exit
     fr.upd_logline(str)
-    puts field.to_j
   rescue UserError
     Msg.usage "[frameID] < logline"
   end

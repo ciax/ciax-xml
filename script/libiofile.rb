@@ -12,12 +12,16 @@ class IoFile < ExHash
         require "open-uri"
         @base="http://"+host+base
         @type='url'
+        @v.msg{"Type:URL"}
       else
         @base=VarDir+base
         @type='file'
+        @v.msg{"Type:FileIO"}
       end
       self['id']=id
       @fname=@base+'.json'
+    else
+      @v.msg{"Type:StdIO"}
     end
   end
 

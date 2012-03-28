@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
+. ~/lib/libdb.sh entity
 id=$1;shift
 setfld $id || _usage_key
 output="$HOME/.var/json/field_${id}.json"

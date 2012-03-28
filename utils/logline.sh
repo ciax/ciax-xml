@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
+. ~/lib/libdb.sh entity
 id=$1;shift
 IFS=':' cmd="$*"
 setfld $id || _usage_key '' "[cmd]"

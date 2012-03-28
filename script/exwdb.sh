@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
+. ~/lib/libdb.sh entity
 n=${1:-*};shift
 file=$HOME/.var/json/view_$n.json
 for i in $file ; do

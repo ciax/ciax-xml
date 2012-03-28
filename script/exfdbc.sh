@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
+. ~/lib/libdb.sh entity
 frmcmd=~/lib/libfrmcmd.rb
 list(){
     $frmcmd $1 2>&1 | grep "^ "| cut -d ':' -f 1

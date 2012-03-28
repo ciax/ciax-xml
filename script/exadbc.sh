@@ -1,6 +1,6 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
-appcmd=~/lib/libappcmd.rb
+. ~/lib/libdb.sh entity
+yappcmd=~/lib/libappcmd.rb
 list(){
     $appcmd $1 2>&1 | grep "^ "| cut -d ':' -f 1
 }

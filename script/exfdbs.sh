@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
+. ~/lib/libdb.sh entity
 id2frm(){
     frm=`~/lib/libinsdb.rb -a $1 | grep 'frm_type'` || return 1
     echo $frm|cut -d: -f2|tr -d ' "'

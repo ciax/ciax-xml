@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
+. ~/lib/libdb.sh entity
 while getopts "fh" opt; do
     case $opt in
         f) offset="-1000";;

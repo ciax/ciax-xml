@@ -1,5 +1,5 @@
 #!/bin/bash
-. ~/lib/libcsv.sh
+. ~/lib/libdb.sh entity
 [[ $1 == '-i' ]] && { opt=$1; shift; }
 src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json

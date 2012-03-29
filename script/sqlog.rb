@@ -15,11 +15,11 @@ begin
   adb=idb.cover_app
   field=Field.new
 rescue UserError
-  Msg.usage("(-aiv) [id] (logfile|jsonlog)",
+  Msg.usage("(-aiv) [id] (frmlog|fldlog)",
             "-v:verbose",
             "-i:init table",
             "-f:frm level(default)",
-            "-a:app level")
+            "-a:app level(input format 'sqlite3 -header')")
 end
 if opt['a']
   stat=AppStat.new(adb,field)
@@ -27,15 +27,25 @@ if opt['a']
   if opt['i'] # Initial
     sql.ini
   else
+    index=nil
     readlines.each{|str|
-      begin
-        field.update(JSON.load(str))
-        stat.upd
-        sql.upd
-        $stderr.print "."
-      rescue
-        $stderr.print $! if opt['v']
-        $stderr.print "x"
+      ary=str.split('|')
+      if /^time/ =~ str
+        index=ary
+      else
+        hash={}
+        begin
+          index.each{|i|
+            hash[i]=ary.shift
+          }
+          field.update(hash)
+          stat.upd
+          sql.upd
+          $stderr.print "."
+        rescue
+          $stderr.print $! if opt['v']
+          $stderr.print "x"
+        end
       end
     }
   end

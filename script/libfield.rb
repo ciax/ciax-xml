@@ -1,14 +1,11 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'libiofile'
-require 'libupdate'
 
 class Field < IoFile
   include Writable
-  attr_reader :at_save
   def initialize(id=nil,host=nil)
     super('field',id,host)
-    @at_save=Update.new
   end
 
   # Substitute str by Field data
@@ -77,12 +74,6 @@ class Field < IoFile
         Msg.warn("----- No #{fn}")
       end
     end
-    self
-  end
-
-  def save
-    super
-    @at_save.upd
     self
   end
 

@@ -23,15 +23,15 @@ rescue UserError
 end
 if opt['a']
   stat=AppStat.new(adb,field)
-  field.at_save << proc{ stat.upd }
   sql=Sql.new('stat',id,adb['app_ver'],stat)
-  field.at_save << proc{ sql.upd }
   if opt['i'] # Initial
     sql.ini
   else
     readlines.each{|str|
       begin
         field.update(JSON.load(str))
+        stat.upd
+        sql.upd
         $stderr.print "."
       rescue
         $stderr.print $! if opt['v']

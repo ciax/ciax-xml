@@ -45,13 +45,12 @@ else
   cobj=Command.new(fdb[:cmdframe])
   fr=FrmRsp.new(fdb,cobj,field)
   sql=Sql.new('field',id,ver,field)
-  field.at_save << proc{ sql.upd }
   if opt['i'] # Initial
     sql.ini
   else
     readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
       begin
-        fr.upd_logline(str)
+        fr.upd_logline(str) && sql.upd
         $stderr.print "."
       rescue
         $stderr.print $! if opt['v']

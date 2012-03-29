@@ -3,6 +3,7 @@ require "libmsg"
 require "json"
 require "libexenum"
 
+# Read/Write JSON file
 class IoFile < ExHash
   # ID : Host : Type
   # _  :  *   : StdIO

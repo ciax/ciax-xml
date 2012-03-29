@@ -2,9 +2,10 @@
 require "libfield"
 require "libframe"
 require "libiocmd"
-require "libupdate"
 
 # Rsp Methods
+# Input  : upd block(frame,time)
+# Output : Field
 class FrmRsp
   def initialize(fdb,cobj,field)
     @v=Msg::Ver.new(self,3)
@@ -19,7 +20,6 @@ class FrmRsp
     rsp[:assign].each{|k,v|
       @field[k]||=v
     }
-    @at_upd=Update.new
   end
 
   # Block accepts [frame,time]
@@ -46,8 +46,6 @@ class FrmRsp
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
       @v.msg{"Update(#{@field['time']})"}
-      @field.save
-      @at_upd.upd
       true
     else
       @v.msg{"Send Only"}
@@ -147,6 +145,7 @@ if __FILE__ == $0
     fr=FrmRsp.new(fdb,cobj,field)
     str=gets(nil) || exit
     fr.upd_logline(str)
+    field.save
   rescue UserError
     Msg.usage "(-m) [id] < logline","-m:merge file"
   end

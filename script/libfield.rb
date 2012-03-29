@@ -26,12 +26,13 @@ class Field < IoFile
     end
   end
 
+  # First key is taken as is (key:x:y) or ..
   # Get value for key with multiple dimention
   # - index should be numerical or formula
   # - ${key:idx1:idx2} => hash[key][idx1][idx2]
   def get(key)
     Msg.abort("No Key") unless key
-#    return self[key] if key?(key) && Comparable === self[key]
+    return self[key] if key?(key)
     vname=[]
     data=key.split(':').inject(self){|h,i|
       case h

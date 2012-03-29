@@ -139,7 +139,7 @@
           <field assign="bsa" label="BOLT SUM ALM(B0)" length="2" decode="hexstr"></field>
           <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" decode="hexstr"></field>
           <!--Order:2,1,4,3..-->
-          <array assign="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="1" decode="hexstr">
+          <array assign="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1" decode="hexstr">
             <index range="0:15" size="16"></index>
           </array>
           <array assign="bl" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1" decode="hexstr">

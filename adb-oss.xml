@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="oss" id="oss" label="TSC Control">
+  <app frm_type="oss" id="oss" label="TSC Control" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <command id="upd" label="Update Status">
         <frmcmd name="logstat" />
@@ -134,27 +134,31 @@
         <value id="iang" label="InR" format="%.3f">
           <float ref="iang" />
         </value>
+        <value id="abs" label="JACK STOP" symbol="warn">
+          <binary ref="abs" bit="2" />
+        </value>
+        <value id="abc" label="JACK CLMP" symbol="warn">
+          <binary ref="abs" bit="0" />
+        </value>
+        <value id="abr" label="JACK RDY" symbol="warn">
+          <binary ref="abs" bit="4" />
+        </value>
         <value id="rps" label="ROT SENSOR" symbol="rps">
           <binary bit="4" ref="bstat" />
           <binary bit="5" ref="bstat" />
         </value>
-        <value id="abm" label="JACK MOVING" symbol="warn">
-          <binary ref="abs" bit="2" inv="true" />
-        </value>
-        <value id="abs" label="JACK POS">
-          <binary ref="abs" bit="0" />
-          <binary ref="abs" bit="4" />
-        </value>
       </group>
-      <group id="g4" caption="[Moving] [Stat(Anc,Rdy)] [Pos] [Jack Len]  [Clnt Lmt] [Alm]" column="6">
+      <group id="g4" caption="[Stop] [Clmp] [Rdy] [Pos] [Jack Len]  [Clnt Lmt] [Alm]" column="7">
         <repeat from="1" to="16">
           <!--Order:1,0;3,2;5,4;7,6;...-->
-          <value id="bm%02d" label="%02d" symbol="warn">
-            <binary ref="bs" index="$_-($_+1)%2*2" bit="2" inv="true" />
+          <value id="bs%02d" label="%02d" symbol="warn">
+            <binary ref="bs" index="$_-($_+1)%2*2" bit="2" />
           </value>
-          <value id="bs%02d" label="%02d">
+          <value id="bc%02d" label="%02d" symbol="warn">
             <binary ref="bs" index="$_-($_+1)%2*2" bit="0" />
-            <binary ref="bs" bit="4" index="$_-($_+1)%2*2" />
+          </value>
+          <value id="br%02d" label="%02d" symbol="warn">
+            <binary ref="bs" bit="3" index="$_-($_+1)%2*2" />
           </value>
           <value id="bl%02d" label="%02d" symbol="bl">
             <binary ref="bl" index="$_-($_+1)%2*2" bit="1" />
@@ -182,7 +186,7 @@
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Moving Jack">
-        <pattern var="abm">1</pattern>
+        <pattern var="abs">X</pattern>
         <block name="jup"></block>
         <block name="jdw"></block>
         <int name="jstop" />

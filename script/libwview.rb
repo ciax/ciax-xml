@@ -23,8 +23,8 @@ class Wview < Rview
   end
 
   def upd
-    @v.msg{"Update(#{self['stat']['time']})"}
     self['stat'].upd
+    @v.msg{"Update(#{self['stat']['time']})"}
     @sym.upd
     @sql.upd if @sql
     self['watch'].upd

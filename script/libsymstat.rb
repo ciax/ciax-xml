@@ -40,7 +40,9 @@ class SymStat < Hash
         break
       }
     }
-    self['msg']['time']=Time.at(self['stat']['time'].to_f).to_s
+    stime=self['stat']['time'].to_f
+    self['msg']['time']=Time.at(stime).to_s
+    @v.msg{"Update(#{stime})"}
     self
   end
 end

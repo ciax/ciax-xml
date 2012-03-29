@@ -10,7 +10,7 @@ class IoFile < ExHash
   # v  :  _   : File
   # v  :  v   : URL
   def initialize(type,id=nil,host=nil)
-    @v=Msg::Ver.new(type,6)
+    @v=Msg::Ver.new(self,6)
     if id
       base="/json/#{type}_#{id}"
       if host

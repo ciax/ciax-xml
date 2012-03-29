@@ -47,11 +47,21 @@ class Db < ExHash
       f << Marshal.dump(Hash[self])
       @v.msg{"CACHE:Saved(#{base})"}
     }
-    freeze
+    deep_freeze(self)
   end
 
   def cover(db)
     Msg.type?(db,Db)
-    db.dup.deep_update(self).freeze
+    deep_freeze(db.dup.deep_update(self))
+  end
+
+  def deep_freeze(db)
+    case db
+    when Hash
+      db.keys.each{|i| deep_freeze(db[i])}
+    when Array
+      db.size.times{|i| deep_freeze(db[i])}
+    end
+    db.freeze
   end
 end

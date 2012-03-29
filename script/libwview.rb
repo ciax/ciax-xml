@@ -49,10 +49,11 @@ if __FILE__ == $0
   ARGV.clear
   begin
     idb=InsDb.new(id).cover_app
-    field=Field.new(id).load
-    view=Wview.new(idb,field)
+    field=Field.new.load
+    stat=AppStat.new(idb,field)
+    view=Wview.new(idb,stat)
     print view.upd.to_j
   rescue UserError
-    Msg.usage "[id]"
+    Msg.usage "[id] < field_file"
   end
 end

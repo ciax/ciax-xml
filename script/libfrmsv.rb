@@ -45,7 +45,7 @@ class FrmSv < FrmObj
       @io.cid=super[:cid]
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
-      @fr.upd{@io.rcv} && @sql.upd.flush
+      @fr.upd{@io.rcv} && (@sql.upd.flush;@field.save)
     end
     'OK'
   end

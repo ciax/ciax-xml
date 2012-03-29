@@ -16,7 +16,6 @@ class FrmSv < FrmObj
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(IoLog).startlog(id,ver)
       @sql=SqLog.new('field',id,ver,@field)
-      @field.at_save << proc{ @sql.upd.flush }
     else
       @io=IoCmd.new(iocmd,fdb['wait'],1)
       @field.delete('ver')
@@ -46,7 +45,7 @@ class FrmSv < FrmObj
       @io.cid=super[:cid]
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
-      @fr.upd{@io.rcv}
+      @fr.upd{@io.rcv} && @sql.upd.flush
     end
     'OK'
   end

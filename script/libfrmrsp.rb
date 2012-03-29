@@ -2,6 +2,7 @@
 require "libfield"
 require "libframe"
 require "libiocmd"
+require "libupdate"
 
 # Rsp Methods
 class FrmRsp
@@ -18,9 +19,11 @@ class FrmRsp
     rsp[:assign].each{|k,v|
       @field[k]||=v
     }
+    @at_upd=Update.new
   end
 
   # Block accepts [frame,time]
+  # Result : executed block or not
   def upd
     if rid=@cobj[:response]
       @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
@@ -42,13 +45,15 @@ class FrmRsp
         cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
+      @v.msg{"Update(#{@field['time']})"}
       @field.save
+      @at_upd.upd
+      true
     else
       @v.msg{"Send Only"}
       @sel[:select]=nil
+      false
     end
-    @v.msg{"Update(#{@field['time']})"}
-    self
   end
 
   def upd_logline(str)

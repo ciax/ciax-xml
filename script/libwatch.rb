@@ -13,7 +13,7 @@ class Watch < ExHash
     @wdb=Msg.type?(adb,AppDb)[:watch] || return
     @period=(@wdb['period']||300).to_i
     @wst=@wdb[:stat]||[]
-    @stat=Msg.type?(stat,Rview)
+    @stat=Msg.type?(stat,Stat)
     ['active','stat','exec','block','int'].each{|i|
       self[i]||=[]
     }
@@ -94,7 +94,7 @@ class Watch < ExHash
 end
 
 if __FILE__ == $0
-  require "librview"
+  require "libstat"
   require "libinsdb"
   require "libwatchprt"
 
@@ -105,7 +105,7 @@ if __FILE__ == $0
     hash[k]=v
   }
   ARGV.clear
-  stat=Rview.new.load
+  stat=Stat.new.load
   begin
     adb=InsDb.new(stat['id']).cover_app
   rescue SelectID

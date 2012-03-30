@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libappobj"
 require "libclient"
-require "librview"
+require "libstat"
 
 class AppCl < AppObj
   attr_reader :host
@@ -9,7 +9,7 @@ class AppCl < AppObj
     super(adb)
     host=Msg.type?(host||adb['host'],String)
     @cl=Client.new(@port,host)
-    @stat=Rview.new(adb['id'],host).load
+    @stat=Stat.new(adb['id'],host).load
     @host=@cl.host
   end
 

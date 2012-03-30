@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "librview"
+require "libstat"
 require "libappstat"
 require "libsymstat"
 require "libsql"
 require "libwatch"
 
 # Status to Wview (String with attributes)
-class Wview < Rview
+class Wview < Stat
   include Writable
   def initialize(adb,val,logging=nil)
     id=Msg.type?(adb,AppDb)['id'] || Msg.error("No ID in ADB")

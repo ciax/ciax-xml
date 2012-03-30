@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libcommand"
-require "librview"
+require "libstat"
 class AppObj
   attr_reader :stat,:prompt,:port
   def initialize(adb)
@@ -8,7 +8,7 @@ class AppObj
     @cobj=Command.new(adb[:command])
     @prompt=adb['id']+'>'
     @port=adb['port'].to_i
-    @stat=Rview.new(adb['id']).load
+    @stat=Stat.new(adb['id']).load
     cl=Msg::List.new("Internal Command",2)
     cl.add('set'=>"[key=val] ..")
     cl.add('flush'=>"Flush Status")

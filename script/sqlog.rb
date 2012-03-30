@@ -4,7 +4,7 @@ require "libinsdb"
 require "libcommand"
 require "libfrmrsp"
 require "libappstat"
-require 'librview'
+require 'libstat'
 require "libsql"
 require 'json'
 

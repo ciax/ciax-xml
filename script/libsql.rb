@@ -97,9 +97,9 @@ class SqLog < Sql
 end
 
 if __FILE__ == $0
-  require "librview"
+  require "libstat"
   Msg.usage "[stat_file]" if STDIN.tty? && ARGV.size < 1
-  stat=Rview.new.load
+  stat=Stat.new.load
   sql=Sql.new('value',stat['id'],stat['ver'],stat['val'])
   puts sql.upd.to_s
 end

@@ -30,9 +30,9 @@
         </Db>
         <IoFile>
           <Field/>
-          <Rview>
+          <Stat>
             <Wview />
-          </Rview>
+          </Stat>
         </IoFile>
       </ExHash>
       <AppStat />

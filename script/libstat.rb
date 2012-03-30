@@ -3,7 +3,7 @@ require "libmsg"
 require "libiofile"
 require "libelapse"
 
-class Rview < IoFile
+class Stat < IoFile
   def initialize(id=nil,host=nil)
     super('view',id,host)
     val=self['val']||={}
@@ -46,5 +46,5 @@ end
 
 if __FILE__ == $0
   Msg.usage "[id] (host)" if ARGV.size < 1
-  puts Rview.new(*ARGV).load
+  puts Stat.new(*ARGV).load
 end

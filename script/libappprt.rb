@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require 'librview'
+require 'libstat'
 class AppPrt
   CM=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
   def initialize(adb,stat)
     @sdb=Msg.type?(adb,AppDb)[:status]
-    @stat=Msg.type?(stat,Rview)
+    @stat=Msg.type?(stat,Stat)
     ['val','class','msg'].each{|key|
       stat[key]||={}
     }
@@ -59,7 +59,7 @@ end
 if __FILE__ == $0
   require "libinsdb"
   Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-  stat=Rview.new.load
+  stat=Stat.new.load
   adb=InsDb.new(stat['id']).cover_app
   puts AppPrt.new(adb,stat)
 end

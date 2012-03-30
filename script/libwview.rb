@@ -9,14 +9,14 @@ require "libwatch"
 # Status to Wview (String with attributes)
 class Wview < Rview
   include Writable
-  def initialize(adb,stat,logging=nil)
+  def initialize(adb,val,logging=nil)
     id=Msg.type?(adb,AppDb)['id'] || Msg.error("No ID in ADB")
-    self['stat']=Msg.type?(stat,AppStat)
+    self['stat']=Msg.type?(val,AppStat)
     super(id)
     self['ver']=adb['app_ver'].to_i
-    @sym=SymStat.new(adb,stat).upd
+    @sym=SymStat.new(adb,val).upd
     # Logging if version number exists
-    @sql=SqLog.new('stat',id,self['ver'],stat) if logging
+    @sql=SqLog.new('stat',id,self['ver'],val) if logging
     ['msg','class'].each{|k| self[k]=@sym[k] }
     @lastsave=0
     self['watch']=Watch.new(adb,self)
@@ -50,8 +50,8 @@ if __FILE__ == $0
   begin
     idb=InsDb.new(id).cover_app
     field=Field.new.load
-    stat=AppStat.new(idb,field)
-    view=Wview.new(idb,stat)
+    val=AppStat.new(idb,field)
+    view=Wview.new(idb,val)
     print view.upd.to_j
   rescue UserError
     Msg.usage "[id] < field_file"

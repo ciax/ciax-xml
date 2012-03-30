@@ -22,8 +22,8 @@ rescue UserError
             "-a:app level(input format 'sqlite3 -header')")
 end
 if opt['a']
-  stat=AppStat.new(adb,field)
-  sql=Sql.new('stat',id,adb['app_ver'],stat)
+  val=AppStat.new(adb,field)
+  sql=Sql.new('stat',id,adb['app_ver'],val)
   if opt['i'] # Initial
     sql.ini
   else
@@ -39,7 +39,7 @@ if opt['a']
             hash[i]=ary.shift
           }
           field.update(hash)
-          stat.upd
+          val.upd
           sql.upd
           $stderr.print "."
         rescue

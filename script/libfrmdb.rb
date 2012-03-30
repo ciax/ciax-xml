@@ -88,15 +88,15 @@ class FrmDb < Db
     end
   end
 
-  def init_rsp(e,stat)
+  def init_rsp(e,val)
     case e.name
     when 'field'
       attr=e.to_h
       if id=attr['assign']
-        stat[:assign][id]=nil
-        stat[:label]||={}
+        val[:assign][id]=nil
+        val[:label]||={}
         if lv=attr['label']
-          stat[:label][id]=lv
+          val[:label][id]=lv
           @v.msg{"LABEL:[#{id}] : #{lv}"}
         end
       end
@@ -108,7 +108,7 @@ class FrmDb < Db
       e.each{|e1|
         idx << e1.to_h
       }
-      stat[:assign][attr['assign']]=init_array(idx.map{|h| h['size']})
+      val[:assign][attr['assign']]=init_array(idx.map{|h| h['size']})
       attr
     when 'ccrange','select'
       e.name

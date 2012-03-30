@@ -6,9 +6,9 @@ require "libelapse"
 class Rview < IoFile
   def initialize(id=nil,host=nil)
     super('view',id,host)
-    stat=self['stat']||={}
+    val=self['stat']||={}
     @last={}
-    def stat.to_s
+    def val.to_s
       Msg.view_struct(self,'stat')
     end
   end

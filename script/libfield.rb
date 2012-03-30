@@ -70,7 +70,7 @@ class Field < IoFile
       load
     rescue
       if tag
-        raise UserError,list_stat
+        raise UserError,list_tags
       else
         Msg.warn("----- No #{fn}")
       end
@@ -110,7 +110,7 @@ class Field < IoFile
     @v.msg{"Symboliclink to [#{sname}]"}
   end
 
-  def list_stat
+  def list_tags
     list=[]
     Dir.glob("#{@base}_*.json"){|f|
       tag=f.slice(/#{@base}_(.+)\.json/,1)

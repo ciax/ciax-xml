@@ -4,12 +4,12 @@ require "libsymdb"
 require "libappstat"
 # Status to Wview (String with attributes)
 class SymStat < Hash
-  def initialize(adb,stat)
+  def initialize(adb,val)
     @v=Msg::Ver.new(self,2)
     ads=Msg.type?(adb,AppDb)[:status]
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.pack(['all',ads['table']])
-    self['stat']=Msg.type?(stat,AppStat)
+    self['stat']=Msg.type?(val,AppStat)
     self['class']={'time' => 'normal'}
     self['msg']={}
   end

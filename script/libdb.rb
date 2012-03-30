@@ -29,7 +29,9 @@ class Db < ExHash
   def cache(id)
     base="#{@type}-#{id}"
     fmar=VarDir+"/cache/#{base}.mar"
-    if !test(?e,fmar)
+    if ENV['NOCACHE']
+      @v.msg{"CACHE:ENV NOCACHE is set"}
+    elsif !test(?e,fmar)
       @v.msg{"CACHE:MAR file(#{base}) not exist"}
     elsif newer=Find.find(XmlDir+'/'){|f|
         break f if File.file?(f) && test(?>,f,fmar)
@@ -40,28 +42,18 @@ class Db < ExHash
     else
       update(Marshal.load(IO.read(fmar)))
       @v.msg{"CACHE:Loaded(#{base})"}
-      return freeze
+      return deep_freeze
     end
     yield XmlDoc.new(@type,id)
     open(fmar,'w') {|f|
       f << Marshal.dump(Hash[self])
       @v.msg{"CACHE:Saved(#{base})"}
     }
-    deep_freeze(self)
+    deep_freeze
   end
 
   def cover(db)
     Msg.type?(db,Db)
-    deep_freeze(db.dup.deep_update(self))
-  end
-
-  def deep_freeze(db)
-    case db
-    when Hash
-      db.keys.each{|i| deep_freeze(db[i])}
-    when Array
-      db.size.times{|i| deep_freeze(db[i])}
-    end
-    db.freeze
+    db.deep_copy.deep_update(self).deep_freeze
   end
 end

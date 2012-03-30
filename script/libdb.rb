@@ -15,14 +15,14 @@ class Db < ExHash
     hash=ary.inject(self){|prev,a|
       prev[a.to_sym]
     }
-    view=hash.dup
-    view.each{|k,v|
+    stat=hash.dup
+    stat.each{|k,v|
       case v
       when Hash
-        view[k]='HASH'
+        stat[k]='HASH'
       end
-    } if Hash === view
-    Msg.view_struct(view)
+    } if Hash === stat
+    Msg.view_struct(stat)
   end
 
   private

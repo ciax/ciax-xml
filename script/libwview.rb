@@ -51,8 +51,8 @@ if __FILE__ == $0
     idb=InsDb.new(id).cover_app
     field=Field.new.load
     val=AppStat.new(idb,field)
-    view=Wview.new(idb,val)
-    print view.upd.to_j
+    stat=Wview.new(idb,val)
+    print stat.upd.to_j
   rescue UserError
     Msg.usage "[id] < field_file"
   end

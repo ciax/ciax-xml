@@ -2,13 +2,13 @@
 require 'librview'
 class AppPrt
   CM=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
-  def initialize(adb,view)
+  def initialize(adb,stat)
     @sdb=Msg.type?(adb,AppDb)[:status]
-    @stat=Msg.type?(view,Rview)
+    @stat=Msg.type?(stat,Rview)
     ['val','class','msg'].each{|key|
-      view[key]||={}
+      stat[key]||={}
     }
-    @elapse=Elapse.new(view['val'])
+    @elapse=Elapse.new(stat['val'])
   end
 
   def to_s
@@ -58,8 +58,8 @@ end
 
 if __FILE__ == $0
   require "libinsdb"
-  Msg.usage("[view_file]") if STDIN.tty? && ARGV.size < 1
-  view=Rview.new.load
-  adb=InsDb.new(view['id']).cover_app
-  puts AppPrt.new(adb,view)
+  Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
+  stat=Rview.new.load
+  adb=InsDb.new(stat['id']).cover_app
+  puts AppPrt.new(adb,stat)
 end

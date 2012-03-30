@@ -8,12 +8,12 @@ require 'libiofile'
 
 class Watch < ExHash
   attr_reader :period
-  def initialize(adb,view)
+  def initialize(adb,stat)
     @v=Msg::Ver.new(self,12)
     @wdb=Msg.type?(adb,AppDb)[:watch] || return
     @period=(@wdb['period']||300).to_i
     @wst=@wdb[:stat]||[]
-    @stat=Msg.type?(view,Rview)
+    @stat=Msg.type?(stat,Rview)
     ['active','stat','exec','block','int'].each{|i|
       self[i]||=[]
     }
@@ -105,16 +105,16 @@ if __FILE__ == $0
     hash[k]=v
   }
   ARGV.clear
-  view=Rview.new.load
+  stat=Rview.new.load
   begin
-    adb=InsDb.new(view['id']).cover_app
+    adb=InsDb.new(stat['id']).cover_app
   rescue SelectID
     Msg.exit
   end
-  watch=Watch.new(adb,view).upd
-  wprt=WatchPrt.new(adb,view)
+  watch=Watch.new(adb,stat).upd
+  wprt=WatchPrt.new(adb,stat)
   # For on change
-  view.set(hash)
+  stat.set(hash)
   watch.upd
   # Print Wdb
   puts wprt

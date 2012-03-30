@@ -98,7 +98,7 @@ class McrSub < Array
   # client is forced to be localhost
   def update?(ins)
     if @@client.key?(ins)
-      view=@@client[ins].view.load
+      stat=@@client[ins].stat.load
     else
       case ACT
       when 0
@@ -108,16 +108,16 @@ class McrSub < Array
       else
         int=@@client
       end
-      view=int[ins].view.load
+      stat=int[ins].stat.load
     end
-    view.update?
+    stat.update?
   end
 
   def getstat(ins,var)
-    view=@@client[ins].view
-    res=view['msg'][var]||view['stat'][var]
+    stat=@@client[ins].stat
+    res=stat['msg'][var]||stat['val'][var]
     @v.msg{"ins=#{ins},var=#{var},res=#{res}"}
-    @v.msg{view['stat']}
+    @v.msg{stat['val']}
     res
   end
 
@@ -125,7 +125,7 @@ class McrSub < Array
     Thread.current[:stat]="wait"
     sleep if @int
     Thread.current[:stat]="run"
-    @@client.each{|k,v| v.view.refresh }
+    @@client.each{|k,v| v.stat.refresh }
     @@client[ins].exe(cmd)
   end
 

@@ -2,9 +2,9 @@
 require 'libmsg'
 
 class WatchPrt
-  def initialize(adb,view)
+  def initialize(adb,stat)
     @wdb=Msg.type?(adb,AppDb)[:watch]
-    @wst=Msg.type?(view,Rview)['watch']
+    @wst=Msg.type?(stat,Rview)['watch']
   end
 
   def to_s
@@ -47,8 +47,8 @@ end
 if __FILE__ == $0
   require "libinsdb"
   require "librview"
-  Msg.usage("[view_file]") if STDIN.tty? && ARGV.size < 1
-  view=Rview.new.load
-  adb=InsDb.new(view['id']).cover_app
-  puts WatchPrt.new(adb,view)
+  Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
+  stat=Rview.new.load
+  adb=InsDb.new(stat['id']).cover_app
+  puts WatchPrt.new(adb,stat)
 end

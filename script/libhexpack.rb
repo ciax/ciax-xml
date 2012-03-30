@@ -3,7 +3,7 @@
 require "libmsg"
 class HexPack
   def initialize(view,prompt='')
-    @stat=Msg.type?(view,Rview)['stat']
+    @val=Msg.type?(view,Rview)['stat']
     @v=Msg::Ver.new(self,6)
     id=view['id']||raise
     @prompt=prompt
@@ -23,11 +23,11 @@ class HexPack
   end
 
   def to_s
-    @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat[r].to_i > 0})
+    @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @val[r].to_i > 0})
     @res[4]=b2i(@prompt.include?('*'))
     @res[6]=''
     @list.each{|key,title,len,type|
-      if val=@stat[key]
+      if val=@val[key]
         case type
         when /FLOAT/
           str=("%0#{len}.2f" % val.to_f)

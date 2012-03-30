@@ -5,11 +5,11 @@ require "libappstat"
 
 # Generate SQL command string
 class Sql < Array
-  def initialize(type,id,ver,stat)
+  def initialize(type,id,ver,val)
     @v=Msg::Ver.new(self,6)
     @type=type
     @tid="#{id}_#{ver.to_i}"
-    @stat=Msg.type?(stat,Hash)
+    @val=Msg.type?(val,Hash)
   end
 
   def ini
@@ -23,10 +23,10 @@ class Sql < Array
   end
 
   def upd
-    stat=expand
-    key=stat.keys.join("','")
-    val=stat.values.join("','")
-    @v.msg{"Update(#{@stat['time']}):[#{@type}/#{@tid}]"}
+    val=expand
+    key=val.keys.join("','")
+    val=val.values.join("','")
+    @v.msg{"Update(#{@val['time']}):[#{@type}/#{@tid}]"}
     push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
   end
 
@@ -36,34 +36,34 @@ class Sql < Array
 
   private
   def expand
-    stat={}
-    @stat.each{|k,v|
+    val={}
+    @val.each{|k,v|
       case v
       when Array
-        rec_expand(k,v,stat)
+        rec_expand(k,v,val)
       else
-        stat[k]=v
+        val[k]=v
       end
     }
-    stat
+    val
   end
 
-  def rec_expand(k,v,stat)
+  def rec_expand(k,v,val)
     v.size.times{|i|
       case v[i]
       when Enumerable
-        rec_expand("#{k}:#{i}",v[i],stat)
+        rec_expand("#{k}:#{i}",v[i],val)
       else
-        stat["#{k}:#{i}"]=v[i]
+        val["#{k}:#{i}"]=v[i]
       end
     }
-    stat
+    val
   end
 end
 
 # Execute Sql Command to sqlite3
 class SqLog < Sql
-  def initialize(type,id,ver,stat)
+  def initialize(type,id,ver,val)
     super
     @sql=["sqlite3",VarDir+"/"+type+".sq3"]
     unless check_table

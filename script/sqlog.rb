@@ -23,7 +23,7 @@ rescue UserError
 end
 if opt['a']
   val=AppStat.new(adb,field)
-  sql=Sql.new('stat',id,adb['app_ver'],val)
+  sql=Sql.new('value',id,adb['app_ver'],val)
   if opt['i'] # Initial
     sql.ini
   else

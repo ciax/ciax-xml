@@ -16,7 +16,7 @@ class Wview < Rview
     self['ver']=adb['app_ver'].to_i
     @sym=SymStat.new(adb,val).upd
     # Logging if version number exists
-    @sql=SqLog.new('stat',id,self['ver'],val) if logging
+    @sql=SqLog.new('value',id,self['ver'],val) if logging
     ['msg','class'].each{|k| self[k]=@sym[k] }
     @lastsave=0
     self['watch']=Watch.new(adb,self)

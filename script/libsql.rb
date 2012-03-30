@@ -100,6 +100,6 @@ if __FILE__ == $0
   require "librview"
   Msg.usage "[view_file]" if STDIN.tty? && ARGV.size < 1
   view=Rview.new.load
-  sql=Sql.new('stat',view['id'],view['ver'],view['stat'])
+  sql=Sql.new('value',view['id'],view['ver'],view['stat'])
   puts sql.upd.to_s
 end

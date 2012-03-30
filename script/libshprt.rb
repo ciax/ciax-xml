@@ -9,7 +9,7 @@ module ShPrt
     cl=Msg::List.new("Change Mode",2)
     @cobj.list.push(cl)
     cl.add('print'=>"Print mode")
-    cl.add('stat'=>"Stat mode")
+    cl.add('value'=>"Value mode")
     cl.add('field'=>"Field mode") if @fint
     cl.add('watch'=>"Watch mode") if @watch
     self
@@ -19,7 +19,7 @@ module ShPrt
     case cmd.first
     when 'print'
       @output=@print
-    when 'stat'
+    when 'value'
       @output=@view['stat']
     when 'watch'
       @output=@watch

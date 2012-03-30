@@ -7,7 +7,7 @@
         "id" => ID
         "app_type" => application
         "frm_type" => frame
-        "stat" => {}
+        "val" => {}
            id => val
         "type" =>{}
            id => val

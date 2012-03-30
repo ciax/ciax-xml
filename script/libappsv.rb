@@ -100,7 +100,7 @@ class AppSv < AppObj
         rescue SelectID
           Msg.warn($!)
         end
-        @v.msg{"Auto Update(#{@view['stat']['time']})"}
+        @v.msg{"Auto Update(#{@view['val']['time']})"}
         sleep int
       }
     }

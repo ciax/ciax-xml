@@ -11,7 +11,7 @@ class Wview < Rview
   include Writable
   def initialize(adb,val,logging=nil)
     id=Msg.type?(adb,AppDb)['id'] || Msg.error("No ID in ADB")
-    self['stat']=Msg.type?(val,AppStat)
+    self['val']=Msg.type?(val,AppStat)
     super(id)
     self['ver']=adb['app_ver'].to_i
     @sym=SymStat.new(adb,val).upd
@@ -23,8 +23,8 @@ class Wview < Rview
   end
 
   def upd
-    self['stat'].upd
-    @v.msg{"Update(#{self['stat']['time']})"}
+    self['val'].upd
+    @v.msg{"Update(#{self['val']['time']})"}
     @sym.upd
     @sql.upd if @sql
     self['watch'].upd
@@ -32,7 +32,7 @@ class Wview < Rview
   end
 
   def save
-    time=self['stat']['time'].to_f
+    time=self['val']['time'].to_f
     if time > @lastsave
       super
       @sql.flush if @sql

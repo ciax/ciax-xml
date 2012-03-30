@@ -30,7 +30,7 @@ class AppStat < Hash
   end
 
   def to_s
-    Msg.view_struct(self,'stat')
+    Msg.view_struct(self,'val')
   end
 
   private

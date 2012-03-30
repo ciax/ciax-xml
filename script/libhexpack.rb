@@ -3,7 +3,7 @@
 require "libmsg"
 class HexPack
   def initialize(view,prompt='')
-    @val=Msg.type?(view,Rview)['stat']
+    @val=Msg.type?(view,Rview)['val']
     @v=Msg::Ver.new(self,6)
     id=view['id']||raise
     @prompt=prompt

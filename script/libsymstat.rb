@@ -9,7 +9,7 @@ class SymStat < Hash
     ads=Msg.type?(adb,AppDb)[:status]
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.pack(['all',ads['table']])
-    self['stat']=Msg.type?(val,AppStat)
+    self['val']=Msg.type?(val,AppStat)
     self['class']={'time' => 'normal'}
     self['msg']={}
   end
@@ -24,7 +24,7 @@ class SymStat < Hash
       {'class' => 'alarm','msg' => 'N/A'}.each{|k,v|
         self[k][key]=v
       }
-      val=self['stat'][key]
+      val=self['val'][key]
       tbl.each{|sym|
         case sym['type']
         when 'range'
@@ -40,7 +40,7 @@ class SymStat < Hash
         break
       }
     }
-    stime=self['stat']['time'].to_f
+    stime=self['val']['time'].to_f
     self['msg']['time']=Time.at(stime).to_s
     @v.msg{"Update(#{stime})"}
     self

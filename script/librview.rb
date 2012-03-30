@@ -6,10 +6,10 @@ require "libelapse"
 class Rview < IoFile
   def initialize(id=nil,host=nil)
     super('view',id,host)
-    val=self['stat']||={}
+    val=self['val']||={}
     @last={}
     def val.to_s
-      Msg.view_struct(self,'stat')
+      Msg.view_struct(self,'val')
     end
   end
 
@@ -19,19 +19,19 @@ class Rview < IoFile
     when 'elapse'
       @elapse
     else
-      self['stat'][id]
+      self['val'][id]
     end
   end
 
   def set(hash) #For Watch test
-    self['stat'].update(hash)
-    self['stat']['time']=Msg.now
+    self['val'].update(hash)
+    self['val']['time']=Msg.now
     self
   end
 
   def change?(id)
-    @v.msg{"Compare(#{id}) current=[#{self['stat'][id]}] vs last=[#{@last[id]}]"}
-    self['stat'][id] != @last[id]
+    @v.msg{"Compare(#{id}) current=[#{self['val'][id]}] vs last=[#{@last[id]}]"}
+    self['val'][id] != @last[id]
   end
 
   def update?
@@ -40,7 +40,7 @@ class Rview < IoFile
 
   def refresh
     @v.msg{"Status Updated"}
-    @last.update(self['stat'])
+    @last.update(self['val'])
   end
 end
 

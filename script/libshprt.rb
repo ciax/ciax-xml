@@ -20,7 +20,7 @@ module ShPrt
     when 'print'
       @output=@print
     when 'value'
-      @output=@view['stat']
+      @output=@view['val']
     when 'watch'
       @output=@watch
     when 'field'

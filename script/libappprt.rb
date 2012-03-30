@@ -5,10 +5,10 @@ class AppPrt
   def initialize(adb,view)
     @sdb=Msg.type?(adb,AppDb)[:status]
     @view=Msg.type?(view,Rview)
-    ['stat','class','msg'].each{|key|
+    ['val','class','msg'].each{|key|
       view[key]||={}
     }
-    @elapse=Elapse.new(view['stat'])
+    @elapse=Elapse.new(view['val'])
   end
 
   def to_s
@@ -35,7 +35,7 @@ class AppPrt
       when 'elapse'
         str=@elapse
       else
-        str=@view['stat'][id]
+        str=@view['val'][id]
       end
       prt(id,str)
     }.join(" ")

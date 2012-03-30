@@ -104,8 +104,9 @@ class Msg
       if cdb.key?(:group)
         cdb[:group].each{|key,ary|
           hash={}
-          ary.map!{|k| cdb[:alias].key(k) }.compact! if cdb.key?(:alias)
-          ary.each{|k|
+          (cdb.key?(:alias) ? ary.map{|k|
+             cdb[:alias].key(k)
+           }.compact : ary).each{|k|
             hash[k]=cdb[:label][k]
           }
           col=(cdb[:column]||{})[key] || 1

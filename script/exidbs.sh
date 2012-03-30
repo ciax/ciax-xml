@@ -1,18 +1,18 @@
 #!/bin/bash
 . ~/lib/libdb.sh entity
 [[ "$1" == -* ]] && { opt=$1; shift; }
-[ "$opt" ] && rm ~/.var/json/view*
+[ "$opt" ] && rm ~/.var/json/stat_*
 ids=${1:-`ls ~/.var/json/field_???.json|cut -d_ -f2|cut -d. -f1`};shift
 par="$*"
 for id in $ids; do
-    view=$HOME/.var/json/view_$id.json
-    [ -e $view ] || continue
+    stat=$HOME/.var/json/stat_$id.json
+    [ -e $stat ] || continue
     echo "$C2#### $id ####$C0"
     if [ "$opt" ]
     then
-        v2s <$view
+        v2s <$stat
     else
-        ~/lib/libappprt.rb < $view
+        ~/lib/libappprt.rb < $stat
     fi
     read -t 0 && break
 done

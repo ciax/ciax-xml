@@ -17,6 +17,10 @@ module ExEnum
     self
   end
 
+  def deep_copy
+    Marshal.load(Marshal.dump(self))
+  end
+
   # Freeze one level deepth or more
   def deep_freeze
     rec_proc(self){|i| i.freeze }

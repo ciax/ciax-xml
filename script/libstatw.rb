@@ -7,26 +7,22 @@ require "libsql"
 require "libwatch"
 
 # Status to StatW (String with attributes)
-class StatW < Stat
+module StatW
   include Writable
-  def initialize(adb,val,logging=nil)
-    id=Msg.type?(adb,AppDb)['id'] || Msg.error("No ID in ADB")
+  def init(adb,val)
+    Msg.type?(adb,AppDb)
     self['val']=Msg.type?(val,AppStat)
-    super(id)
     self['ver']=adb['app_ver'].to_i
     @sym=SymStat.new(adb,val).upd
-    # Logging if version number exists
-    @sql=SqLog.new('value',id,self['ver'],val) if logging
     ['msg','class'].each{|k| self[k]=@sym[k] }
     @lastsave=0
     self['watch']=Watch.new(adb,self)
+    self
   end
 
   def upd
     self['val'].upd
-    @v.msg{"Update(#{self['val']['time']})"}
     @sym.upd
-    @sql.upd if @sql
     self['watch'].upd
     self
   end
@@ -42,6 +38,19 @@ class StatW < Stat
   end
 end
 
+module StatLog
+  def init
+    # Logging if version number exists
+    @sql=SqLog.new('value',self['id'],self['ver'],self['val'])
+  end
+
+  def upd
+    super
+    @sql.upd
+    self
+  end
+end
+
 if __FILE__ == $0
   require "libinsdb"
   require "libfield"
@@ -51,7 +60,7 @@ if __FILE__ == $0
     idb=InsDb.new(id).cover_app
     field=Field.new.load
     val=AppStat.new(idb,field)
-    stat=StatW.new(idb,val)
+    stat=Stat.new(idb['id']).extend(StatW).init(idb,val)
     print stat.upd.to_j
   rescue UserError
     Msg.usage "[id] < field_file"

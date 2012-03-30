@@ -6,11 +6,7 @@ require "libelapse"
 class Stat < IoFile
   def initialize(id=nil,host=nil)
     super('stat',id,host)
-    val=self['val']||={}
     @last={}
-    def val.to_s
-      Msg.view_struct(self,'val')
-    end
   end
 
   def get(id)

@@ -6,8 +6,8 @@ require "libsymstat"
 require "libsql"
 require "libwatch"
 
-# Status to Wview (String with attributes)
-class Wview < Stat
+# Status to StatW (String with attributes)
+class StatW < Stat
   include Writable
   def initialize(adb,val,logging=nil)
     id=Msg.type?(adb,AppDb)['id'] || Msg.error("No ID in ADB")
@@ -51,7 +51,7 @@ if __FILE__ == $0
     idb=InsDb.new(id).cover_app
     field=Field.new.load
     val=AppStat.new(idb,field)
-    stat=Wview.new(idb,val)
+    stat=StatW.new(idb,val)
     print stat.upd.to_j
   rescue UserError
     Msg.usage "[id] < field_file"

@@ -2,7 +2,7 @@
 require "libmsg"
 require "libsymdb"
 require "libappstat"
-# Status to Wview (String with attributes)
+# Status to StatW (String with attributes)
 class SymStat < Hash
   def initialize(adb,val)
     @v=Msg::Ver.new(self,2)

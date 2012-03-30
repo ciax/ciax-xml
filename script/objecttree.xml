@@ -31,7 +31,7 @@
         <IoFile>
           <Field/>
           <Stat>
-            <Wview />
+            <StatW />
           </Stat>
         </IoFile>
       </ExHash>

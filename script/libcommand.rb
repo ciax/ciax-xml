@@ -18,7 +18,7 @@ class Command < ExHash
   # Validate command and parameters
   def set(cmd)
     id=Msg.type?(cmd,Array).first
-    id=(@db[:alias]||={})[id]||id
+    id=(@db.key?(:alias) && @db[:alias][id])||id
     unless @db[:select].key?(id)
       @list.error("No such CMD [#{id}]")
     end

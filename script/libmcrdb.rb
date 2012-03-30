@@ -4,20 +4,21 @@ require "librepeat"
 require "libdb"
 
 class McrDb < Db
-  def initialize(mcr)
+  def initialize(id)
     super('mdb')
-    cache(mcr){|doc|
+    cache(id){|doc|
       update(doc)
+      mdb=(self[:macro]||={})
       doc.top.each{|e0|
-        id=e0.attr2db(self)
+        id=e0.attr2db(mdb)
         @v.msg{"MACRO:[#{id}]"}
-        select=((self[:select]||={})[id]||=[])
+        select=((mdb[:select]||={})[id]||=[])
         final={}
         e0.each{|e1,rep|
           attr=e1.to_h
           case e1.name
           when 'par'
-            ((self[:parameter]||={})[id]||=[]) << e1.text
+            ((mdb[:parameter]||={})[id]||=[]) << e1.text
           when 'check','wait'
             attr['type'] = e1.name
             select << mkcond(e1,attr)

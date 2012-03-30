@@ -149,7 +149,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=McrDb.new(id)
-    cobj=Command.new(mdb)
+    cobj=Command.new(mdb[:macro])
     mcr=McrSub.new(cobj)
     mcr.extend(McrPrt) unless opt['r']
     mcr.macro(cmd).join

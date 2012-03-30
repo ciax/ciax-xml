@@ -1,6 +1,7 @@
 #!/bin/bash
 . ~/lib/libdb.sh entity
 [[ $1 == '-i' ]] && { opt=$1; shift; }
+[ "$1" ] || _usage_key "(-i)"
 src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json
 if [ "$opt" ] ; then

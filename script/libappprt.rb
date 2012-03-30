@@ -4,7 +4,7 @@ class AppPrt
   CM=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
   def initialize(adb,view)
     @sdb=Msg.type?(adb,AppDb)[:status]
-    @view=Msg.type?(view,Rview)
+    @stat=Msg.type?(view,Rview)
     ['val','class','msg'].each{|key|
       view[key]||={}
     }
@@ -35,7 +35,7 @@ class AppPrt
       when 'elapse'
         str=@elapse
       else
-        str=@view['val'][id]
+        str=@stat['val'][id]
       end
       prt(id,str)
     }.join(" ")
@@ -45,8 +45,8 @@ class AppPrt
     str='['
     str << color(6,@sdb[:label][id] || id.upcase)
     str << ':'
-    msg=@view['msg'][id]
-    c=CM[@view['class'][id]]
+    msg=@stat['msg'][id]
+    c=CM[@stat['class'][id]]
     str << color(c,msg||val)
     str << "]"
   end

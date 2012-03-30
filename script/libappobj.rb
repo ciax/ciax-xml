@@ -2,13 +2,13 @@
 require "libcommand"
 require "librview"
 class AppObj
-  attr_reader :view,:prompt,:port
+  attr_reader :stat,:prompt,:port
   def initialize(adb)
     Msg.type?(adb,AppDb)
     @cobj=Command.new(adb[:command])
     @prompt=adb['id']+'>'
     @port=adb['port'].to_i
-    @view=Rview.new(adb['id']).load
+    @stat=Rview.new(adb['id']).load
     cl=Msg::List.new("Internal Command",2)
     cl.add('set'=>"[key=val] ..")
     cl.add('flush'=>"Flush Status")
@@ -24,6 +24,6 @@ class AppObj
   end
 
   def to_s
-    @view.to_s
+    @stat.to_s
   end
 end

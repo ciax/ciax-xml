@@ -13,7 +13,7 @@ class Watch < ExHash
     @wdb=Msg.type?(adb,AppDb)[:watch] || return
     @period=(@wdb['period']||300).to_i
     @wst=@wdb[:stat]||[]
-    @view=Msg.type?(view,Rview)
+    @stat=Msg.type?(view,Rview)
     ['active','stat','exec','block','int'].each{|i|
       self[i]||=[]
     }
@@ -56,7 +56,7 @@ class Watch < ExHash
     hash.each{|k,a|
       self[k]=a.flatten(1).uniq
     }
-    @v.msg{"Updated(#{@view['val']['time']})"}
+    @v.msg{"Updated(#{@stat['val']['time']})"}
     self
   end
 
@@ -69,7 +69,7 @@ class Watch < ExHash
     rary=[]
     n.size.times{|j|
       k=n[j]['var']
-      v=(m[j]||={})['val']=@view.get(k).to_s
+      v=(m[j]||={})['val']=@stat.get(k).to_s
       case n[j]['type']
       when 'onchange'
         c=(m[j]['last']||='')

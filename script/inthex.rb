@@ -12,7 +12,7 @@ begin
 rescue UserError
   Msg.usage("(-s) [id] (host)","-s:server")
 end
-hp=HexPack.new(aint.view,aint.prompt)
+hp=HexPack.new(aint.stat,aint.prompt)
 if opt["s"]
   require 'libserver'
   Server.new('hexpack',aint.port.to_i+1000){|line|

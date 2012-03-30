@@ -17,16 +17,16 @@ class AppSv < AppObj
     @fint=Msg.type?(fint,FrmObj)
     @cobj=AppCmd.new(adb[:command])
     val=AppStat.new(adb,@fint.field).upd
-    @view=Wview.new(adb,val,@fint.field.key?('ver'))
+    @stat=Wview.new(adb,val,@fint.field.key?('ver'))
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
     @buf.at_flush << proc{
-      @view.upd.save
-      sleep (@view['watch']['interval']||1).to_f/10
-      sendfrm(@view['watch'].issue,2)
+      @stat.upd.save
+      sleep (@stat['watch']['interval']||1).to_f/10
+      sendfrm(@stat['watch'].issue,2)
     }
     # Logging if version number exists
-    extend(ModLog).startlog('appcmd',@id,@view['ver']) if @view.key?('ver')
+    extend(ModLog).startlog('appcmd',@id,@stat['ver']) if @stat.key?('ver')
     auto_update
     upd_prompt
   end
@@ -37,7 +37,7 @@ class AppSv < AppObj
     case cmd.first
     when nil
     when 'interrupt'
-      int=@view['watch'].interrupt
+      int=@stat['watch'].interrupt
       sendfrm(int,0)
       msg="Interrupt #{int}"
     when 'flush'
@@ -49,10 +49,10 @@ class AppSv < AppObj
         k,v=s.split('=')
         hash[k]=v
       }
-      @view.set(hash).save
+      @stat.set(hash).save
       msg="Set #{hash}"
     else
-      if @view['watch'].block?(cmd)
+      if @stat['watch'].block?(cmd)
         msg="Blocking(#{cmd})"
       else
         sendfrm([cmd])
@@ -67,7 +67,7 @@ class AppSv < AppObj
   def upd_prompt
     @prompt.replace(@id)
     @prompt << '@' if @tid && @tid.alive?
-    @prompt << '&' if @view['watch'].active?
+    @prompt << '&' if @stat['watch'].active?
     @prompt << '*' if @buf.issue
     @prompt << (@buf.alive? ? '>' : 'X')
     self
@@ -86,13 +86,13 @@ class AppSv < AppObj
   end
 
   def logging(cmd)
-    append(JSON.dump(@view['watch']['active']),cmd) if is_a?(ModLog)
+    append(JSON.dump(@stat['watch']['active']),cmd) if is_a?(ModLog)
   end
 
   def auto_update
     @tid=Thread.new{
       Thread.pass
-      int=(@view['watch'].period||300).to_i
+      int=(@stat['watch'].period||300).to_i
       cmd=[['upd']]
       loop{
         begin
@@ -100,7 +100,7 @@ class AppSv < AppObj
         rescue SelectID
           Msg.warn($!)
         end
-        @v.msg{"Auto Update(#{@view['val']['time']})"}
+        @v.msg{"Auto Update(#{@stat['val']['time']})"}
         sleep int
       }
     }

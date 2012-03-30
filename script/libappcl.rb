@@ -9,14 +9,14 @@ class AppCl < AppObj
     super(adb)
     host=Msg.type?(host||adb['host'],String)
     @cl=Client.new(@port,host)
-    @view=Rview.new(adb['id'],host).load
+    @stat=Rview.new(adb['id'],host).load
     @host=@cl.host
   end
 
   def exe(cmd)
     msg=@cl.exe(cmd,@prompt)
     @cobj.set(cmd) if /ERROR/ =~ msg
-    @view.load
+    @stat.load
     msg
   end
 end

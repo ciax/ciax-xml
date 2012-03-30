@@ -9,6 +9,7 @@ class FrmDb < Db
       update(doc)
       delete('id')
       self['frm_ver']=delete('version')
+      self['frm_label']=delete('label')
       cmd=self[:cmdframe]={}
       rsp=self[:rspframe]={:assign => {}}
       dc=doc.domain('cmdframe')

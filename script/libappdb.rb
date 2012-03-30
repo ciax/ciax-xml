@@ -136,6 +136,7 @@ class AppDb < Db
       update(doc)
       delete('id')
       self['app_ver']=delete('version')
+      self['app_label']=delete('label')
       # Command DB
       self[:command]=init_command(doc.domain('commands'))
       # Status DB

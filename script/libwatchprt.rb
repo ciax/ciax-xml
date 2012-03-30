@@ -43,3 +43,12 @@ class WatchPrt
     res ? Msg.color(t||res,2) : Msg.color(f||res,1)
   end
 end
+
+if __FILE__ == $0
+  require "libinsdb"
+  require "librview"
+  Msg.usage("[view_file]") if STDIN.tty? && ARGV.size < 1
+  view=Rview.new.load
+  adb=InsDb.new(view['id']).cover_app
+  puts WatchPrt.new(adb,view)
+end

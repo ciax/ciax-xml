@@ -7,13 +7,9 @@ module ExEnum
   end
 
   def attr_update(obj)
-    case obj
-    when Hash
-      ary=obj.keys
-    when Array
-      ary=obj.size.times
-    end
-    ary.each{|i| self[i]=obj[i] if Comparable === obj[i]}
+    each_idx(obj){|i|
+      self[i]=obj[i] if Comparable === obj[i]
+    }
     self
   end
 
@@ -23,7 +19,9 @@ module ExEnum
 
   # Freeze one level deepth or more
   def deep_freeze
-    rec_proc(self){|i| i.freeze }
+    rec_proc(self){|i|
+      i.freeze
+    }
     self
   end
 
@@ -36,27 +34,29 @@ module ExEnum
   private
   # a will be merged to b (b is changed)
   def rec_merge(a,b)
-    case a
-    when Hash
-      b= b.is_a?(Hash) ? b : {}
-      a.keys.each{|i| b[i]=rec_merge(a[i],b[i]) }
-    when Array
-      b= b.is_a?(Array) ? b : []
-      a.size.times{|i| b[i]=rec_merge(a[i],b[i]) }
-    else
-      b=a||b
-    end
+    each_idx(a){|i,cls|
+      b=cls.new unless cls === b
+      b[i]=rec_merge(a[i],b[i])
+    } || (b=a||b)
     b
   end
 
   def rec_proc(db)
-    case db
-    when Hash
-      db.keys.each{|i| rec_proc(db[i]){|i| yield i} }
-    when Array
-      db.size.times{|i| rec_proc(db[i]){|i| yield i} }
-    end
+    each_idx(db){|i|
+      rec_proc(db[i]){|i| yield i}
+    }
     yield db
+  end
+
+  def each_idx(obj)
+    case obj
+    when Hash
+      obj.keys.each{|i| yield i,Hash}
+    when Array
+      obj.size.times{|i| yield i,Array}
+    else
+      nil
+    end
   end
 end
 

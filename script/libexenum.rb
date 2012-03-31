@@ -37,8 +37,7 @@ module ExEnum
     each_idx(a){|i,cls|
       b=cls.new unless cls === b
       b[i]=rec_merge(a[i],b[i])
-    } || (b=a||b)
-    b
+    } || b
   end
 
   def rec_proc(db)
@@ -51,11 +50,11 @@ module ExEnum
   def each_idx(obj)
     case obj
     when Hash
-      obj.keys.each{|i| yield i,Hash}
+      obj.each{|k,v| yield k,Hash}
     when Array
-      obj.size.times{|i| yield i,Array}
+      obj.each_index{|i| yield i,Array}
     else
-      nil
+      obj
     end
   end
 end
@@ -66,4 +65,14 @@ end
 
 class ExArray < Array
   include ExEnum
+end
+
+if __FILE__ == $0
+  a=ExHash.new
+  a[:a] = []
+  a[:b] = {}
+  a[:c] = 1
+  b=ExHash.new
+  b.deep_update a
+  p b
 end

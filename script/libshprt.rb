@@ -1,10 +1,11 @@
 #!/usr/bin/ruby
-require "libappprt"
+require "libviewprt"
 require "libwatchprt"
 
 module ShPrt
   def init(adb)
-    @output=@print=AppPrt.new(adb,@stat)
+    view=View.new(adb,@stat)
+    @output=@print=ViewPrt.new(view)
     @watch=WatchPrt.new(adb,@stat)
     cl=Msg::List.new("Change Mode",2)
     @cobj.list.push(cl)

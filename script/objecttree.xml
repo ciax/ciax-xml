@@ -68,7 +68,7 @@
       <FrmCl />
       <FrmSv />
     </FrmObj>
-    <AppPrt />
+    <ViewPrt />
     <FrmCmd />
     <FrmRsp />
     <Buffer />

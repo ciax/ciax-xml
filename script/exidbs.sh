@@ -12,7 +12,7 @@ for id in $ids; do
     then
         v2s <$stat
     else
-        ~/lib/libviewprt.rb < $stat
+        ~/lib/libview.rb < $stat
     fi
     read -t 0 && break
 done

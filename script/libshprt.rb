@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libviewprt"
+require "libview"
 require "libwatchprt"
 
 module ShPrt

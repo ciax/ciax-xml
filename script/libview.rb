@@ -13,30 +13,24 @@ class View < ExHash
       self[k]={'caption' => cap,'lines'=>[]}
       col=@sdb[:column][k]||1
       v.each_slice(col.to_i){|ids|
-        self[k]['lines'] << get_element(ids)
+        hash={}
+        ids.each{|id|
+          h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
+          case id
+          when 'elapse'
+            h['msg']=Elapse.new(@stat['val'])
+          else
+            h['msg']=@stat['msg'][id]||@stat['val'][id]
+          end
+          set(h,'class',id)
+        }
+        self[k]['lines'] << hash
       }
     }
     self
   end
 
   private
-  def get_element(ids)
-    hash={}
-    ids.each{|id|
-      case id
-      when 'elapse'
-        str=Elapse.new(@stat['val'])
-      else
-        str=@stat['val'][id]
-      end
-      h=hash[id]={'val'=>str}
-      h['label']=@sdb[:label][id]
-      set(h,'msg',id)
-      set(h,'class',id)
-    }
-    hash
-  end
-
   def set(hash,key,id)
     hash[key]=@stat[key][id] if @stat[key].key?(id)
   end

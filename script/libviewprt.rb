@@ -26,14 +26,8 @@ class ViewPrt
   def get_element(ele)
     line=[]
     ele.each{|id,val|
-      str='['
-      str << color(6,val['label'] || id.upcase)
-      str << ':'
-      msg=val['msg']||val['val']
       c=CM[val['class']]
-      str << color(c,msg)
-      str << "]"
-      line << str
+      line << '['+color(6,val['label'])+':'+color(c,val['msg'])+"]"
     }
     line.join(" ")
   end

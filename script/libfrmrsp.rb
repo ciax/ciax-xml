@@ -13,10 +13,11 @@ class FrmRsp
     @cobj=Msg.type?(cobj,Command)
     @field=Msg.type?(field,Field)
     @field['ver']=fdb['frm_ver'].to_i
-    rsp=fdb[:rspframe]
+    rsp=fdb.deep_copy[:rspframe]
     @sel=Hash[rsp[:frame]]
     @fds=rsp[:select]
     @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
+    # Field Initialize
     rsp[:assign].each{|k,v|
       @field[k]||=v
     }

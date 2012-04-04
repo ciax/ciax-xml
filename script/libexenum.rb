@@ -37,8 +37,7 @@ module ExEnum
     each_idx(a){|i,cls|
       b=cls.new unless cls === b
       b[i]=rec_merge(a[i],b[i])
-    } || b=a||b
-    b
+    } || a||b
   end
 
   def rec_proc(db)
@@ -77,7 +76,6 @@ if __FILE__ == $0
   puts "a="
   p a
   b=ExHash.new
-  b[:a] = [1]
   b[:b]={:i => 'i'}
   b[:d] = {:y => 2}
   puts "b="

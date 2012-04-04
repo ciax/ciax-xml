@@ -32,12 +32,13 @@ module ExEnum
   end
 
   private
-  # a will be merged to b (b is changed)
-  def rec_merge(a,b)
-    each_idx(a){|i,cls|
-      b=cls.new unless cls === b
-      b[i]=rec_merge(a[i],b[i])
-    } || a||b
+  # r will be merged to w (w is changed)
+  def rec_merge(r,w)
+    each_idx(r){|i,cls|
+      w=cls.new unless cls === w
+      w[i]=rec_merge(r[i],w[i])
+      w
+    }
   end
 
   def rec_proc(db)
@@ -48,14 +49,14 @@ module ExEnum
   end
 
   def each_idx(obj)
+    res=obj
     case obj
     when Hash
-      obj.each_key{|k| yield k,Hash}
+      obj.each_key{|k| res=yield k,Hash}
     when Array
-      obj.each_index{|i| yield i,Array}
-    else
-      nil
+      obj.each_index{|i| res=yield i,Array}
     end
+    res
   end
 end
 
@@ -68,20 +69,31 @@ class ExArray < Array
 end
 
 if __FILE__ == $0
-  a=ExHash.new
-  a[:a] = []
-  a[:b] = {}
-  a[:c] = {:m => {:n => {:l => '*'}}}
-  a[:d] = {:x => 1}
-  puts "a="
-  p a
-  b=ExHash.new
-  b[:b]={:i => 'i'}
-  b[:d] = {:y => 2}
-  puts "b="
-  p b
-  puts "b <- a(over write)"
+  w=ExHash.new
+  w[:a]=1
+  w[:c] = []
+  print "w="
+  p w
+  r=ExHash.new
+  r[:b]=2
+  r[:d] = {}
+  print "r="
+  p r
+  w.deep_update r
+  puts "w <- r(over write)"
+  p w
   puts
-  b.deep_update a
-  p b
+  r=ExHash.new
+  r[:c] = {:m => 'm'}
+  r[:d] = [1]
+  print "r="
+  p r
+  w=ExHash.new
+  w[:c]= {:i => 'i'}
+  w[:d] = [2,3]
+  print "w="
+  p w
+  w.deep_update r
+  puts "w <- r(over write)"
+  p w
 end

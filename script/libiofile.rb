@@ -12,38 +12,40 @@ class IoFile < ExHash
   def initialize(type,id=nil,host=nil)
     @v=Msg::Ver.new(self,6)
     if id
-      base="/json/#{type}_#{id}"
+      @base="#{type}_#{id}"
+      @suffix='.json'
       if host
         require "open-uri"
-        @base="http://"+host+base
+        @prefix="http://"+host+"/json/"
         @type='url'
         @v.msg{"Type:URL"}
       else
-        @base=VarDir+base
+        @prefix=VarDir+"/json/"
         @type='file'
         @v.msg{"Type:FileIO"}
       end
       self['id']=id
-      @fname=@base+'.json'
     else
       @v.msg{"Type:StdIO"}
     end
   end
 
   def settag(tag)
-    @fname=@base+"_#{tag}.json" if @base
+    @suffix="_#{tag}.json" if @base
+    self
   end
 
   def load
+    fname=@prefix+@base+@suffix
     case @type
     when 'file'
-      if File.exist?(@fname)
-        load_uri(@fname)
+      if File.exist?(fname)
+        load_uri(fname)
       else
-        Msg.warn("  -- no json file (#{@fname})")
+        Msg.warn("  -- no json file (#{fname})")
       end
     when 'url'
-      load_uri(@fname)
+      load_uri(fname)
     else
       deep_update(JSON.load(gets(nil)))
     end
@@ -72,8 +74,8 @@ module Writable
   def save(data=nil)
     case @type
     when 'file'
-      @v.msg{"Saving #{self['id']} file"}
-      open(@fname,'w'){|f| f << JSON.dump(data||to_hash)}
+      @v.msg{"Saving #{@base+@suffix} file"}
+      open(@prefix+@base+@suffix,'w'){|f| f << JSON.dump(data||to_hash)}
     else
       puts JSON.dump(data||to_hash)
     end

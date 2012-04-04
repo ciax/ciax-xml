@@ -43,7 +43,7 @@ module ExEnum
 
   def rec_proc(db)
     each_idx(db){|i|
-      rec_proc(db[i]){|i| yield i}
+      rec_proc(db[i]){|d| yield d}
     }
     yield db
   end
@@ -51,7 +51,7 @@ module ExEnum
   def each_idx(obj)
     case obj
     when Hash
-      obj.each{|k,v| yield k,Hash}
+      obj.each_key{|k| yield k,Hash}
     when Array
       obj.each_index{|i| yield i,Array}
     else

@@ -3,7 +3,7 @@ require 'libmsg'
 
 class WatchPrt
   def initialize(adb,stat)
-    @wdb=Msg.type?(adb,AppDb)[:watch]
+    @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
     @wst=Msg.type?(stat,Stat)['watch']
   end
 

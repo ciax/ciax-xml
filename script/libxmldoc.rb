@@ -21,9 +21,13 @@ class XmlDoc < Hash
     raise SelectID,Msg::List.new("[id]").add(list).sort!.to_s
   end
 
-  def domain(domain)
-    if @domain.key?(domain)
-      @domain[domain]
+  def domain?(id)
+    @domain.key?(id)
+  end
+
+  def domain(id)
+    if domain?(id)
+      @domain[id]
     else
       Xml.new
     end

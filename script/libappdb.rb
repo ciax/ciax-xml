@@ -142,7 +142,7 @@ class AppDb < Db
       # Status DB
       self[:status]=init_stat(doc.domain('status'))
       # Watch DB
-      self[:watch]=init_watch(doc.domain('watch'))
+      doc.domain?('watch') && self[:watch]=init_watch(doc.domain('watch'))
     }
   end
 

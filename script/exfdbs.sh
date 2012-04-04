@@ -14,12 +14,12 @@ getstat(){
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
         logline $id $cmd $par > $temp || { echo; continue; }
-        VER=$ver < $temp $frmrsp $frm|merging $output
+        VER=$ver < $temp $frmrsp $frm || return 1
         cut -f3 $temp|grep .|base64 -d|visi || echo
     done
 }
-frmcmd=~/lib/libfrmcmd.rb
-frmrsp=~/lib/libfrmrsp.rb
+frmcmd="$HOME/lib/libfrmcmd.rb"
+frmrsp="$HOME/lib/libfrmrsp.rb -m"
 temp=`mktemp`
 trap "rm $temp" EXIT
 ver=$VER;unset VER
@@ -33,7 +33,7 @@ for id in ${ids:-`getid`}; do
     merging $output <<EOF
 {"id":"$id"}
 EOF
-    getstat ${cmds:-`getcmd $frm`}
+    getstat ${cmds:-`getcmd $frm`} || break
     [ -e $output ] && v2s $output
     read -t 0 && break
 done

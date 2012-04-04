@@ -14,12 +14,12 @@ getstat(){
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
         logline $id $cmd $par > $temp || { echo; continue; }
-        VER=$ver < $temp $frmrsp $frm || return 1
+        VER=$ver < $temp $frmrsp -m || return 1
         cut -f3 $temp|grep .|base64 -d|visi || echo
     done
 }
 frmcmd="$HOME/lib/libfrmcmd.rb"
-frmrsp="$HOME/lib/libfrmrsp.rb -m"
+frmrsp="$HOME/lib/libfrmrsp.rb"
 temp=`mktemp`
 trap "rm $temp" EXIT
 ver=$VER;unset VER

@@ -136,20 +136,20 @@ class FrmRsp
 end
 
 if __FILE__ == $0
-  require "libfrmdb"
+  require "libinsdb"
   require "libcommand"
   require "optparse"
   opt=ARGV.getopts('m')
-  fid=ARGV.shift
   begin
-    fdb=FrmDb.new(fid)
-    cobj=Command.new(fdb[:cmdframe])
-    field=Field.new(opt['m']&&fid)
-    fr=FrmRsp.new(fdb,cobj,field)
     str=gets(nil) || exit
+    id=IoLog.set_logline(str)[:id]
+    fdb=InsDb.new(id).cover_app.cover_frm
+    cobj=Command.new(fdb[:cmdframe])
+    field=Field.new(opt['m']&&id)
+    fr=FrmRsp.new(fdb,cobj,field)
     fr.upd_logline(str)
     field.save
   rescue UserError
-    Msg.usage "(-m) [id] < logline","-m:merge file"
+    Msg.usage "(-m) < logline","-m:merge file"
   end
 end

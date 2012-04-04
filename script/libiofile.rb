@@ -36,7 +36,6 @@ class IoFile < ExHash
   end
 
   def load
-    fname=@prefix+@base+@suffix
     case @type
     when 'file'
       if File.exist?(fname)
@@ -68,6 +67,10 @@ class IoFile < ExHash
       end
     }
   end
+
+  def fname
+    @prefix+@base+@suffix
+  end
 end
 
 module Writable
@@ -75,7 +78,7 @@ module Writable
     case @type
     when 'file'
       @v.msg{"Saving #{@base+@suffix} file"}
-      open(@prefix+@base+@suffix,'w'){|f| f << JSON.dump(data||to_hash)}
+      open(fname,'w'){|f| f << JSON.dump(data||to_hash)}
     else
       puts JSON.dump(data||to_hash)
     end

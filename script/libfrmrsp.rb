@@ -139,17 +139,14 @@ if __FILE__ == $0
   require "libinsdb"
   require "libcommand"
   require "optparse"
+  Msg.usage "(-m) < logline","-m:merge file" if STDIN.tty? && ARGV.size < 1
   opt=ARGV.getopts('m')
-  begin
-    str=gets(nil) || exit
-    id=IoLog.set_logline(str)[:id]
-    fdb=InsDb.new(id).cover_app.cover_frm
-    cobj=Command.new(fdb[:cmdframe])
-    field=Field.new(opt['m']&&id)
-    fr=FrmRsp.new(fdb,cobj,field)
-    fr.upd_logline(str)
-    field.save
-  rescue UserError
-    Msg.usage "(-m) < logline","-m:merge file"
-  end
+  str=gets(nil) || exit
+  id=IoLog.set_logline(str)[:id]
+  fdb=InsDb.new(id).cover_app.cover_frm
+  cobj=Command.new(fdb[:cmdframe])
+  field=Field.new(opt['m']&&id)
+  fr=FrmRsp.new(fdb,cobj,field)
+  fr.upd_logline(str)
+  field.save
 end

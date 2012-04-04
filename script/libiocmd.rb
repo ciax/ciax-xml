@@ -16,18 +16,19 @@ module IoLog
     self
   end
 
-  # return array
+  # return hash (:data,:time
   def rcv
     str=super
-    [str,append(encode(str),'rcv',@cid)]
+    {:data => str,:time => append(encode(str),'rcv',@cid)}
   end
 
   def self.set_logline(str)
     ary=str.split("\t")
-    time=ary.shift
-    id,ver,dir,*cmd=ary.shift.split(':')
+    h={:time => ary.shift}
+    h[:id],h[:ver],dir,*h[:cmd]=ary.shift.split(':')
     abort("Logline:Not response") unless /rcv/ === dir
-    [cmd,[decode(ary.shift),time]]
+    h[:data]=decode(ary.shift)
+    h
   end
 
   private

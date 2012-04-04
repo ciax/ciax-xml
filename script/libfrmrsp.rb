@@ -28,7 +28,9 @@ class FrmRsp
   def upd
     if rid=@cobj[:response]
       @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
-      frame,@field['time']=yield
+      hash=yield
+      frame=hash[:data]
+      @field['time']=hash[:time]
       Msg.err("No Response") unless frame
       if tm=@sel['terminator']
         frame.chomp!(eval('"'+tm+'"'))
@@ -56,8 +58,8 @@ class FrmRsp
   end
 
   def upd_logline(str)
-    cmd,res=IoLog.set_logline(str)
-    @cobj.set(cmd)
+    res=IoLog.set_logline(str)
+    @cobj.set(res[:cmd])
     upd{res}
   end
 

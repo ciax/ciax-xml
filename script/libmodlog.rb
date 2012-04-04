@@ -18,6 +18,7 @@ module ModLog
     self
   end
 
+  # Return Time
   def append(str,*cid)
     time=Msg.now
     if @loghead

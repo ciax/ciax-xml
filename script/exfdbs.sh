@@ -34,7 +34,7 @@ for id in ${ids:-`getid`}; do
 {"id":"$id"}
 EOF
     getstat ${cmds:-`getcmd $frm`} || break
-    [ -e $output ] && v2s $output
+    [ -e $output ] && j2s $output
     read -t 0 && break
 done
 

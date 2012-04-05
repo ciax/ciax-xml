@@ -10,7 +10,7 @@ for id in $ids; do
     echo "$C2#### $id ####$C0"
     if [ "$opt" ]
     then
-        v2s <$stat
+        j2s <$stat
     else
         ~/lib/libview.rb < $stat
     fi

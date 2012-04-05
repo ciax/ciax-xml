@@ -11,20 +11,6 @@ class Db < ExHash
     @type=type
   end
 
-  def path(ary=[])
-    hash=ary.inject(self){|prev,a|
-      prev[a.to_sym]
-    }
-    stat=hash.dup
-    stat.each{|k,v|
-      case v
-      when Hash
-        stat[k]='HASH'
-      end
-    } if Hash === stat
-    Msg.view_struct(stat)
-  end
-
   private
   def cache(id)
     base="#{@type}-#{id}"

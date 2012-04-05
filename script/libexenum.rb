@@ -6,9 +6,20 @@ module ExEnum
     Msg.view_struct(self)
   end
 
-  def attr_update(obj)
-    each_idx(obj){|i|
-      self[i]=obj[i] if Comparable === obj[i]
+  def path(ary=[])
+    enum=ary.inject(self){|prev,a|
+      prev[a.to_sym]||prev[a]
+    }
+    stat=enum.dup
+    stat.each{|k,v|
+      stat[k]=v.class.to_s if Enumerable === v
+    } if Hash === stat
+    Msg.view_struct(stat)
+  end
+
+  def attr_update(src)
+    each_idx(src){|i|
+      self[i]=src[i] if Comparable === obj[i]
     }
     self
   end
@@ -25,14 +36,14 @@ module ExEnum
     self
   end
 
-  # Merge self to obj
-  def deep_update(obj)
-    rec_merge(obj,self)
+  # Merge self to ope
+  def deep_update(ope)
+    rec_merge(ope,self)
     self
   end
 
   private
-  # r will be merged to w (w is changed)
+  # r(operand) will be merged to w (w is changed)
   def rec_merge(r,w)
     each_idx(r){|i,cls|
       w=cls.new unless cls === w
@@ -48,13 +59,13 @@ module ExEnum
     yield db
   end
 
-  def each_idx(obj)
-    res=obj
-    case obj
+  def each_idx(ope)
+    res=ope
+    case ope
     when Hash
-      obj.each_key{|k| res=yield k,Hash}
+      ope.each_key{|k| res=yield k,Hash}
     when Array
-      obj.each_index{|i| res=yield i,Array}
+      ope.each_index{|i| res=yield i,Array}
     end
     res
   end

@@ -45,10 +45,9 @@ module ExEnum
   private
   # r(operand) will be merged to w (w is changed)
   def rec_merge(r,w)
-    each_idx(r){|i,cls|
+    each_idx(r,w){|i,cls|
       w=cls.new unless cls === w
       w[i]=rec_merge(r[i],w[i])
-      w
     }
   end
 
@@ -59,15 +58,19 @@ module ExEnum
     yield db
   end
 
-  def each_idx(ope)
-    res=ope
+  def each_idx(ope,res=nil)
     case ope
     when Hash
-      ope.each_key{|k| res=yield k,Hash}
+      ope.each_key{|k| yield k,Hash}
+      res
     when Array
-      ope.each_index{|i| res=yield i,Array}
+      ope.each_index{|i| yield i,Array}
+      res
+    when String
+      ope.dup
+    else
+      ope
     end
-    res
   end
 end
 

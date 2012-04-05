@@ -64,7 +64,7 @@ if __FILE__ == $0
   require "optparse"
   require "libinsdb"
   opt=ARGV.getopts('r')
-  Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
+  Msg.usage("(-r) [stat_file]") if STDIN.tty? && ARGV.size < 1
   stat=Stat.new.load
   adb=InsDb.new(stat['id']).cover_app
   view=View.new(adb,stat)

@@ -62,10 +62,10 @@ module ExEnum
     case ope
     when Hash
       ope.each_key{|k| yield k,Hash}
-      res
+      res||ope.dup
     when Array
       ope.each_index{|i| yield i,Array}
-      res
+      res||ope.dup
     when String
       ope.dup
     else
@@ -86,11 +86,13 @@ if __FILE__ == $0
   w=ExHash.new
   w[:a]=1
   w[:c] = []
+  w[:e] = {:x => 1}
   print "w="
   p w
   r=ExHash.new
   r[:b]=2
   r[:d] = {}
+  r[:f] = [1]
   print "r="
   p r
   w.deep_update r

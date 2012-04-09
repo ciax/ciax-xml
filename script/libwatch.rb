@@ -8,12 +8,12 @@ require 'libiofile'
 
 class Watch < ExHash
   attr_reader :period
-  def initialize(adb,stat)
+  def initialize(adb,val)
     @v=Msg::Ver.new(self,12)
     @wdb=Msg.type?(adb,AppDb)[:watch] || return
     @period=(@wdb['period']||300).to_i
     @wst=@wdb[:stat]||[]
-    @stat=Msg.type?(stat,Stat)
+    @val=Msg.type?(val,Hash)
     ['active','stat','exec','block','int'].each{|i|
       self[i]||=[]
     }
@@ -56,7 +56,7 @@ class Watch < ExHash
     hash.each{|k,a|
       self[k]=a.flatten(1).uniq
     }
-    @v.msg{"Updated(#{@stat['val']['time']})"}
+    @v.msg{"Updated(#{@val['time']})"}
     self
   end
 
@@ -69,7 +69,7 @@ class Watch < ExHash
     rary=[]
     n.size.times{|j|
       k=n[j]['var']
-      v=(m[j]||={})['val']=@stat.get(k).to_s
+      v=(m[j]||={})['val']=@val[k]
       case n[j]['type']
       when 'onchange'
         c=(m[j]['last']||='')
@@ -94,9 +94,7 @@ class Watch < ExHash
 end
 
 if __FILE__ == $0
-  require "libstat"
   require "libinsdb"
-  require "libwatchprt"
 
   Msg.usage "(test conditions (key=val)..) < [file]" if STDIN.tty?
   hash={}
@@ -105,17 +103,17 @@ if __FILE__ == $0
     hash[k]=v
   }
   ARGV.clear
-  stat=Stat.new.load
+  stat=IoFile.new('stat').load
+  val=stat['val']
   begin
     adb=InsDb.new(stat['id']).cover_app
   rescue SelectID
     Msg.exit
   end
-  watch=Watch.new(adb,stat).upd
-  wprt=WatchPrt.new(adb,stat)
+  watch=Watch.new(adb,val).upd
   # For on change
-  stat.set(hash)
+  val.update(hash)
   watch.upd
   # Print Wdb
-  puts wprt
+  puts watch
 end

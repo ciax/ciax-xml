@@ -53,7 +53,7 @@ module StatW
     @sym=SymStat.new(adb,val).upd
     ['msg','class'].each{|k| self[k]=@sym[k] }
     @lastsave=0
-    self['watch']=Watch.new(adb,self)
+    self['watch']=Watch.new(adb,val)
     self
   end
 

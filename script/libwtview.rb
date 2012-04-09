@@ -40,7 +40,7 @@ end
 module WtViewPrt
   def to_s
     str=''
-    self[:stat].each{|i|
+    unless self[:stat].each{|i|
       str << "  "+Msg.color(i[:label],6)+"\t: "
       str << show_res(i[:active])+"\n"
       i[:cond].each{|j|
@@ -56,10 +56,13 @@ module WtViewPrt
         end
         str << ")\n"
       }
-    }
+    }.empty?
     str << "  "+Msg.color("Blocked",2)+"\t: #{self[:block]}\n"
     str << "  "+Msg.color("Interrupt",2)+"\t: #{self[:int]}\n"
     str << "  "+Msg.color("Issuing",2)+"\t: #{self[:exec]}\n"
+    else
+      ''
+    end
   end
 
   private

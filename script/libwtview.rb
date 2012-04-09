@@ -72,10 +72,14 @@ module WtViewPrt
 end
 
 if __FILE__ == $0
+  require "optparse"
   require "libinsdb"
   require "libstat"
-  Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
+  opt=ARGV.getopts('r')
+  Msg.usage("(-r) [stat_file]") if STDIN.tty? && ARGV.size < 1
   stat=Stat.new.load
   adb=InsDb.new(stat['id']).cover_app
-  puts WtView.new(adb,stat).extend(WtViewPrt)
+  wview=WtView.new(adb,stat)
+  wview.extend(WtViewPrt) unless opt['r']
+  puts wview
 end

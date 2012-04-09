@@ -41,7 +41,7 @@
       <Msg.List />
       <Msg.Lists />
       <SymStat />
-      <Watch />
+      <WtStat />
       <XmlDoc />
     </Hash>
     <Array include="Enumerable">

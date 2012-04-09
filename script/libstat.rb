@@ -44,7 +44,7 @@ end
 module StatW
   require "libappstat"
   require "libsymstat"
-  require "libwatch"
+  require "libwtstat"
   include Writable
   def init(adb,val)
     Msg.type?(adb,AppDb)
@@ -53,7 +53,7 @@ module StatW
     @sym=SymStat.new(adb,val).upd
     ['msg','class'].each{|k| self[k]=@sym[k] }
     @lastsave=0
-    self['watch']=Watch.new(adb,val)
+    self['watch']=WtStat.new(adb,val)
     self
   end
 

@@ -6,7 +6,7 @@ require 'libelapse'
 require 'libmodlog'
 require 'libiofile'
 
-class Watch < ExHash
+class WtStat < ExHash
   attr_reader :period
   def initialize(adb,val)
     @v=Msg::Ver.new(self,12)
@@ -110,7 +110,7 @@ if __FILE__ == $0
   rescue SelectID
     Msg.exit
   end
-  watch=Watch.new(adb,val).upd
+  watch=WtStat.new(adb,val).upd
   # For on change
   val.update(hash)
   watch.upd

@@ -1,26 +1,28 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libexenum'
+require 'libiofile'
 require 'librerange'
 require 'libelapse'
 require 'libmodlog'
-require 'libiofile'
 
-class WtStat < ExHash
-  attr_reader :period
-  def initialize(adb,val)
-    @v=Msg::Ver.new(self,12)
-    @wdb=Msg.type?(adb,AppDb)[:watch] || return
-    @period=(@wdb['period']||300).to_i
-    @wst=@wdb[:stat]||[]
-    @val=Msg.type?(val,Hash)
-    ['active','stat','exec','block','int'].each{|i|
+class WtStat < IoFile
+  def initialize(id=nil,host=nil)
+    super('watch',id,host)
+    ['stat','exec','block','int'].each{|i|
       self[i]||=[]
     }
   end
 
   def active?
-    !self['active'].empty?
+    self['stat'].any?{|s|
+      s['active']
+    }
+  end
+
+  def act_list
+    self['stat'].select{|s|
+      s['active']
+    }
   end
 
   def block?(cmd)
@@ -41,13 +43,23 @@ class WtStat < ExHash
     @v.msg{"ISSUED:#{cmds}"} unless cmds.empty?
     cmds
   end
+end
+
+module WtStatW
+  include Writable
+  attr_reader :period
+  def init(adb,val)
+    @wdb=Msg.type?(adb,AppDb)[:watch] || return
+    @period=(@wdb['period']||300).to_i
+    @wst=@wdb[:stat]||[]
+    @val=Msg.type?(val,Hash)
+    self
+  end
 
   def upd
-    self['active'].clear
     hash={'int' =>[],'exec' =>[],'block' =>[]}
-    @wdb[:stat].size.times{|i|
+    @wdb[:stat].each_index{|i|
       next unless check(i)
-      self['active'] << i
       hash.each{|k,a|
         n=@wdb[k.to_sym][i]
         a << n if n && !a.include?(n)
@@ -65,14 +77,15 @@ class WtStat < ExHash
     return true unless @wdb[:stat][i]
     @v.msg{"Check: <#{@wdb[:label][i]}>"}
     n=@wdb[:stat][i]
-    m=(self['stat'][i]||=[])
+    m=(self['stat'][i]||={'cond' => [],'active' => false})
+    cond=m['cond']
     rary=[]
-    n.size.times{|j|
+    n.each_index{|j|
       k=n[j]['var']
-      v=(m[j]||={})['val']=@val[k]
+      v=(cond[j]||={})['val']=@val[k]
       case n[j]['type']
       when 'onchange'
-        c=(m[j]['last']||='')
+        c=(cond[j]['last']||='')
         res=(c != v)
         c.replace(v)
         @v.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
@@ -82,35 +95,35 @@ class WtStat < ExHash
         @v.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
       when 'range'
         c=n[j]['val']
-        f=m[j]['val']="%.3f" % v.to_f
+        f=cond[j]['val']="%.3f" % v.to_f
         res=(ReRange.new(c) == f)
         @v.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
       end
       res=!res if /true|1/ === n[j]['inv']
-      rary << m[j]['res']=res
+      rary << cond[j]['res']=res
     }
-    rary.all?
+    m['active']=rary.all?
   end
 end
 
 if __FILE__ == $0
+  require "libstat"
   require "libinsdb"
-
-  Msg.usage "(test conditions (key=val)..) < [file]" if STDIN.tty?
+  id=ARGV.shift
   hash={}
   ARGV.each{|s|
     k,v=s.split("=")
     hash[k]=v
   }
   ARGV.clear
-  stat=IoFile.new('stat').load
-  val=stat['val']
   begin
-    adb=InsDb.new(stat['id']).cover_app
+    adb=InsDb.new(id).cover_app
   rescue SelectID
-    Msg.exit
+    Msg.usage "[id] (test conditions (key=val)..)"
   end
-  watch=WtStat.new(adb,val).upd
+  stat=Stat.new(id).load
+  val=stat['val']
+  watch=WtStat.new(id).extend(WtStatW).init(adb,val).upd.save
   # For on change
   val.update(hash)
   watch.upd

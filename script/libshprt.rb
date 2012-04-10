@@ -5,7 +5,7 @@ require "libwtview"
 module ShPrt
   def init(adb)
     @output=@print=View.new(adb,@stat).extend(ViewPrt)
-    @watch=WtView.new(adb,@stat).extend(WtViewPrt)
+    @watch.extend(WtView).init(adb).extend(WtViewPrt)
     cl=Msg::List.new("Change Mode",2)
     @cobj.list.push(cl)
     cl.add('print'=>"Print mode")

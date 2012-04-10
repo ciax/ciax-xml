@@ -17,14 +17,16 @@ class AppSv < AppObj
     @fint=Msg.type?(fint,FrmObj)
     @cobj=AppCmd.new(adb[:command])
     val=AppStat.new(adb,@fint.field).upd
-    @stat=Stat.new(@id).extend(StatW).init(adb,val)
+    @stat.extend(StatW).init(adb,val)
     @stat.extend(StatLog).init if @fint.field.key?('ver')
+    @watch.extend(WtStatW).init(adb,val)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
     @buf.at_flush << proc{
       @stat.upd.save
-      sleep (@stat['watch']['interval']||1).to_f/10
-      sendfrm(@stat['watch'].issue,2)
+      @watch.upd
+      sleep (@watch['interval']||1).to_f/10
+      sendfrm(@watch.issue,2)
     }
     # Logging if version number exists
     extend(ModLog).startlog('appcmd',@id,@stat['ver']) if @stat.key?('ver')
@@ -38,7 +40,7 @@ class AppSv < AppObj
     case cmd.first
     when nil
     when 'interrupt'
-      int=@stat['watch'].interrupt
+      int=@watch.interrupt
       sendfrm(int,0)
       msg="Interrupt #{int}"
     when 'flush'
@@ -51,9 +53,10 @@ class AppSv < AppObj
         hash[k]=v
       }
       @stat.set(hash).save
+      @watch.upd
       msg="Set #{hash}"
     else
-      if @stat['watch'].block?(cmd)
+      if @watch.block?(cmd)
         msg="Blocking(#{cmd})"
       else
         sendfrm([cmd])
@@ -68,7 +71,7 @@ class AppSv < AppObj
   def upd_prompt
     @prompt.replace(@id)
     @prompt << '@' if @tid && @tid.alive?
-    @prompt << '&' if @stat['watch'].active?
+    @prompt << '&' if @watch.active?
     @prompt << '*' if @buf.issue
     @prompt << (@buf.alive? ? '>' : 'X')
     self
@@ -87,13 +90,13 @@ class AppSv < AppObj
   end
 
   def logging(cmd)
-    append(JSON.dump(@stat['watch']['active']),cmd) if is_a?(ModLog)
+    append(JSON.dump(@watch.act_list),cmd) if is_a?(ModLog)
   end
 
   def auto_update
     @tid=Thread.new{
       Thread.pass
-      int=(@stat['watch'].period||300).to_i
+      int=(@watch.period||300).to_i
       cmd=[['upd']]
       loop{
         begin

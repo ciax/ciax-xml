@@ -6,10 +6,11 @@ require "libstat"
 class AppCl < AppObj
   attr_reader :host
   def initialize(adb,host=nil)
-    super(adb)
+    super
     host=Msg.type?(host||adb['host'],String)
     @cl=Client.new(@port,host)
     @stat=Stat.new(adb['id'],host).load
+    @watch=WtStat.new(adb['id'],host).load
     @host=@cl.host
   end
 

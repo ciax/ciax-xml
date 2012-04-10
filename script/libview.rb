@@ -34,29 +34,28 @@ class View < ExHash
   def set(hash,key,id)
     hash[key]=@stat[key][id] if @stat[key].key?(id)
   end
-end
 
-module ViewPrt
-  CM=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
-
-  def to_s
-    lines=[]
-    each{|k,v|
-      cap=v['caption']
-      lines << " ***"+color(2,cap)+"***" unless cap.empty?
-      lines+=v['lines'].map{|ele|
-        "  "+ele.map{|id,val|
-          c=CM[val['class']]
-          '['+color(6,val['label'])+':'+color(c,val['msg'])+"]"
-        }.join(' ')
+  module Print
+    def to_s
+      cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
+      lines=[]
+      each{|k,v|
+        cap=v['caption']
+        lines << " ***"+color(2,cap)+"***" unless cap.empty?
+        lines+=v['lines'].map{|ele|
+          "  "+ele.map{|id,val|
+            c=cm[val['class']]
+            '['+color(6,val['label'])+':'+color(c,val['msg'])+"]"
+          }.join(' ')
+        }
       }
-    }
-    lines.join("\n")
-  end
+      lines.join("\n")
+    end
 
-  private
-  def color(c,msg)
-    "\e[1;3#{c}m#{msg}\e[0m"
+    private
+    def color(c,msg)
+      "\e[1;3#{c}m#{msg}\e[0m"
+    end
   end
 end
 
@@ -68,6 +67,6 @@ if __FILE__ == $0
   stat=Stat::Read.new.load
   adb=InsDb.new(stat['id']).cover_app
   view=View.new(adb,stat)
-  view.extend(ViewPrt) unless opt['r']
+  view.extend(View::Print) unless opt['r']
   puts view
 end

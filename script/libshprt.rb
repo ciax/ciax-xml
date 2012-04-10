@@ -4,7 +4,7 @@ require "libwatch"
 
 module ShPrt
   def init(adb)
-    @output=@print=View.new(adb,@stat).extend(ViewPrt)
+    @output=@print=View.new(adb,@stat).extend(View::Print)
     @watch.extend(Watch::View).init(adb).extend(Watch::Print)
     cl=Msg::List.new("Change Mode",2)
     @cobj.list.push(cl)

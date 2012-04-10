@@ -49,10 +49,11 @@ end
 
 module WtStatW
   include Writable
-  attr_reader :period
+  attr_reader :period,:interval
   def init(adb,val)
     @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
     @period=(@wdb['period']||300).to_i
+    @interval=(@wdb['interval']||1).to_f/10
     @val=Msg.type?(val,Hash)
     self
   end

@@ -25,7 +25,7 @@ class AppSv < AppObj
     @buf.at_flush << proc{
       @stat.upd.save
       @watch.upd.save
-      sleep (@watch['interval']||1).to_f/10
+      sleep (@watch.interval||0.1)
       sendfrm(@watch.issue,2)
     }
     # Logging if version number exists

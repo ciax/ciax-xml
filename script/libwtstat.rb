@@ -51,9 +51,8 @@ module WtStatW
   include Writable
   attr_reader :period
   def init(adb,val)
-    @wdb=Msg.type?(adb,AppDb)[:watch] || return
+    @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
     @period=(@wdb['period']||300).to_i
-    @wst=@wdb[:stat]||[]
     @val=Msg.type?(val,Hash)
     self
   end

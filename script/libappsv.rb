@@ -24,7 +24,7 @@ class AppSv < AppObj
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
     @buf.at_flush << proc{
       @stat.upd.save
-      @watch.upd
+      @watch.upd.save
       sleep (@watch['interval']||1).to_f/10
       sendfrm(@watch.issue,2)
     }
@@ -53,7 +53,7 @@ class AppSv < AppObj
         hash[k]=v
       }
       @stat.set(hash).save
-      @watch.upd
+      @watch.upd.save
       msg="Set #{hash}"
     else
       if @watch.block?(cmd)

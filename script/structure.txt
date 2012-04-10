@@ -3,7 +3,7 @@
         id => data 
         ...
 
-  VIEW: {}
+  STAT: {}
         "id" => ID
         "app_type" => application
         "frm_type" => frame
@@ -18,6 +18,10 @@
            ...
 
   WATCH: {}
+        "cond" => []
+	"block" => []
+	"exec" => []
+	"interrupt" => []
 
 
 ### Struct of Db ###

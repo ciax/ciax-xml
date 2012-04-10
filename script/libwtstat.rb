@@ -20,9 +20,11 @@ class WtStat < IoFile
   end
 
   def act_list
-    self['stat'].select{|s|
-      s['active']
+    ary=[]
+    self['stat'].each_with_index{|s,i|
+      ary << i if s['active']
     }
+    ary
   end
 
   def block?(cmd)

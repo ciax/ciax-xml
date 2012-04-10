@@ -1,9 +1,11 @@
 #!/bin/bash
 . ~/lib/libdb.sh entity
 n=${1:-*};shift
-file=$HOME/.var/json/stat_$n.json
+file=$HOME/.var/json/watch_$n.json
 for i in $file ; do
-    basename $i
-    ~/lib/libwtview.rb $* < $i
+    j=${i#*_}
+    k=${j%.*}
+    echo "### $k ###"
+    ~/lib/libwtview.rb $k
     read -t 0 && break
 done

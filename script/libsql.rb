@@ -3,8 +3,9 @@
 require "libmsg"
 require "libappval"
 
+module Sql
 # Generate SQL command string
-class Sql < Array
+class Command < Array
   def initialize(type,id,ver,val)
     @v=Msg::Ver.new(self,6)
     @type=type
@@ -62,7 +63,7 @@ class Sql < Array
 end
 
 # Execute Sql Command to sqlite3
-class SqLog < Sql
+class Logging < Command
   def initialize(type,id,ver,val)
     super
     @sql=["sqlite3",VarDir+"/"+type+".sq3"]
@@ -95,11 +96,12 @@ class SqLog < Sql
     Msg.err(" in SQL")
   end
 end
+end
 
 if __FILE__ == $0
   require "libstat"
   Msg.usage "[stat_file]" if STDIN.tty? && ARGV.size < 1
   stat=Stat.new.load
-  sql=Sql.new('value',stat['id'],stat['ver'],stat['val'])
+  sql=Sql::CmdStr.new('value',stat['id'],stat['ver'],stat['val'])
   puts sql.upd.to_s
 end

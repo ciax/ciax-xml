@@ -76,7 +76,7 @@ module StatLog
   require "libsql"
   def init
     # Logging if version number exists
-    @sql=SqLog.new('value',self['id'],self['ver'],self['val'])
+    @sql=Sql::Logging.new('value',self['id'],self['ver'],self['val'])
   end
 
   def upd

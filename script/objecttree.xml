@@ -47,7 +47,7 @@
     <Array include="Enumerable">
       <ExArray include="ExEnum"></ExArray>
       <Sql>
-        <SqLog />
+        <Sql::Logging />
       </Sql>
       <HtmlTbl />
       <McrSub />

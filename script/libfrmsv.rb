@@ -15,7 +15,7 @@ class FrmSv < FrmObj
       @io=Stream::Io.new(fdb['iocmd'].split(' '),fdb['wait'],1)
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(Stream::Logging).startlog(id,ver)
-      @sql=SqLog.new('field',id,ver,@field)
+      @sql=Sql::Logging.new('field',id,ver,@field)
     else
       @io=Stream::Io.new(iocmd,fdb['wait'],1)
       @field.delete('ver')

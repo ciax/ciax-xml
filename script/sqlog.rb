@@ -23,7 +23,7 @@ rescue UserError
 end
 if opt['a']
   val=AppVal.new(adb,field)
-  sql=Sql.new('value',id,adb['app_ver'],val)
+  sql=Sql::CmdStr.new('value',id,adb['app_ver'],val)
   if opt['i'] # Initial
     sql.ini
   else
@@ -54,7 +54,7 @@ else
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
   fr=FrmRsp.new(fdb,cobj,field)
-  sql=Sql.new('field',id,ver,field)
+  sql=Sql::CmdStr.new('field',id,ver,field)
   if opt['i'] # Initial
     sql.ini
   else

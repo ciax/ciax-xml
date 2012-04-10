@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libview"
-require "libwtstat"
+require "libwatch"
 
 module ShPrt
   def init(adb)

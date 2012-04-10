@@ -30,9 +30,9 @@
         </Db>
         <IoFile::Read>
           <Field/>
-          <Stat>
-            <StatW />
-          </Stat>
+          <Stat::Read>
+            <Stat::Writable />
+          </Stat::Read>
         </IoFile::Read>
       </ExHash>
       <AppVal />

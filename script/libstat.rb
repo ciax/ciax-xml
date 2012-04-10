@@ -3,7 +3,8 @@ require "libmsg"
 require "libiofile"
 require "libelapse"
 
-class Stat < IoFile::Read
+module Stat
+class Read < IoFile::Read
   def initialize(id=nil,host=nil)
     super('stat',id,host)
     @last={}
@@ -40,8 +41,8 @@ class Stat < IoFile::Read
   end
 end
 
-# Status to StatW (String with attributes)
-module StatW
+# Status to Stat::Writable (String with attributes)
+module Writable
   require "libappval"
   require "libsymstat"
   include IoFile::Writable
@@ -72,7 +73,7 @@ module StatW
   end
 end
 
-module StatLog
+module Logging
   require "libsql"
   def init
     # Logging if version number exists
@@ -85,6 +86,7 @@ module StatLog
     self
   end
 end
+end
 
 if __FILE__ == $0
   require "libinsdb"
@@ -95,11 +97,11 @@ if __FILE__ == $0
     ARGV.clear
     idb=InsDb.new(id).cover_app
     if STDIN.tty?
-      puts Stat.new(id,host).load
+      puts Stat::Read.new(id,host).load
     else
       field=Field.new.load
       val=AppVal.new(idb,field)
-      stat=Stat.new(idb['id']).extend(StatW).init(idb,val)
+      stat=Stat::Read.new(idb['id']).extend(Stat::Writable).init(idb,val)
       print stat.upd.to_j
     end
   rescue UserError

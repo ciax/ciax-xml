@@ -4,7 +4,7 @@ require 'libstat'
 class View < ExHash
   def initialize(adb,stat)
     @sdb=Msg.type?(adb,AppDb)[:status]
-    @stat=Msg.type?(stat,Stat)
+    @stat=Msg.type?(stat,Stat::Read)
     ['val','class','msg'].each{|key|
       stat[key]||={}
     }
@@ -65,7 +65,7 @@ if __FILE__ == $0
   require "libinsdb"
   opt=ARGV.getopts('r')
   Msg.usage("(-r) [stat_file]") if STDIN.tty? && ARGV.size < 1
-  stat=Stat.new.load
+  stat=Stat::Read.new.load
   adb=InsDb.new(stat['id']).cover_app
   view=View.new(adb,stat)
   view.extend(ViewPrt) unless opt['r']

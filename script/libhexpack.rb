@@ -3,7 +3,7 @@
 require "libmsg"
 class HexPack
   def initialize(stat,prompt='')
-    @val=Msg.type?(stat,Stat)['val']
+    @val=Msg.type?(stat,Stat::Read)['val']
     @v=Msg::Ver.new(self,6)
     id=stat['id']||raise
     @prompt=prompt
@@ -56,6 +56,6 @@ end
 if __FILE__ == $0
   require "libstat"
   Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-  stat=Stat.new.load
+  stat=Stat::Read.new.load
   puts HexPack.new(stat)
 end

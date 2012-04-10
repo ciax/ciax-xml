@@ -17,8 +17,8 @@ class AppSv < AppObj
     @fint=Msg.type?(fint,FrmObj)
     @cobj=AppCmd.new(adb[:command])
     val=AppVal.new(adb,@fint.field).upd
-    @stat.extend(StatW).init(adb,val)
-    @stat.extend(StatLog).init if @fint.field.key?('ver')
+    @stat.extend(Stat::Writable).init(adb,val)
+    @stat.extend(Stat::Logging).init if @fint.field.key?('ver')
     @watch.extend(Watch::Writable).init(adb,val)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }

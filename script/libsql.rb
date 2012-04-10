@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # For sqlite3
 require "libmsg"
-require "libappstat"
+require "libappval"
 
 # Generate SQL command string
 class Sql < Array

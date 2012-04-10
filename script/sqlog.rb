@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 require "libcommand"
 require "libfrmrsp"
-require "libappstat"
+require "libappval"
 require 'libstat'
 require "libsql"
 require 'json'
@@ -22,7 +22,7 @@ rescue UserError
             "-a:app level(input format 'sqlite3 -header')")
 end
 if opt['a']
-  val=AppStat.new(adb,field)
+  val=AppVal.new(adb,field)
   sql=Sql.new('value',id,adb['app_ver'],val)
   if opt['i'] # Initial
     sql.ini

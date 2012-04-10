@@ -42,12 +42,12 @@ end
 
 # Status to StatW (String with attributes)
 module StatW
-  require "libappstat"
+  require "libappval"
   require "libsymstat"
   include Writable
   def init(adb,val)
     Msg.type?(adb,AppDb)
-    self['val']=Msg.type?(val,AppStat)
+    self['val']=Msg.type?(val,AppVal)
     self['ver']=adb['app_ver'].to_i
     @sym=SymStat.new(adb,val).upd
     ['msg','class'].each{|k| self[k]=@sym[k] }
@@ -98,7 +98,7 @@ if __FILE__ == $0
       puts Stat.new(id,host).load
     else
       field=Field.new.load
-      val=AppStat.new(idb,field)
+      val=AppVal.new(idb,field)
       stat=Stat.new(idb['id']).extend(StatW).init(idb,val)
       print stat.upd.to_j
     end

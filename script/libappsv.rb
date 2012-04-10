@@ -16,7 +16,7 @@ class AppSv < AppObj
     @id=adb['id']
     @fint=Msg.type?(fint,FrmObj)
     @cobj=AppCmd.new(adb[:command])
-    val=AppStat.new(adb,@fint.field).upd
+    val=AppVal.new(adb,@fint.field).upd
     @stat.extend(StatW).init(adb,val)
     @stat.extend(StatLog).init if @fint.field.key?('ver')
     @watch.extend(WtStatW).init(adb,val)

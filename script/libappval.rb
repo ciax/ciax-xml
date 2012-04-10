@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 
-class AppStat < Hash
+class AppVal < Hash
   def initialize(adb,field)
     @v=Msg::Ver.new(self,9)
     Msg.type?(adb,AppDb)
@@ -102,7 +102,7 @@ if __FILE__ == $0
   begin
     adb=AppDb.new(app)
     field=Field.new.load
-    puts AppStat.new(adb,field).upd
+    puts AppVal.new(adb,field).upd
   rescue UserError
     Msg.usage "[app] < field_file\n#{$!}"
   end

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libsymdb"
-require "libappstat"
+require "libappval"
 # Status to StatW (String with attributes)
 class SymStat < Hash
   def initialize(adb,val)
@@ -9,7 +9,7 @@ class SymStat < Hash
     ads=Msg.type?(adb,AppDb)[:status]
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.pack(['all',ads['table']])
-    self['val']=Msg.type?(val,AppStat)
+    self['val']=Msg.type?(val,AppVal)
     self['class']={'time' => 'normal'}
     self['msg']={}
   end

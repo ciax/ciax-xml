@@ -12,12 +12,12 @@ class FrmSv < FrmObj
     @v=Msg::Ver.new(self,3)
     @fr=FrmRsp.new(fdb,@cobj,@field)
     if Msg.type?(iocmd,Array).empty?
-      @io=Stream::Command.new(fdb['iocmd'].split(' '),fdb['wait'],1)
+      @io=Stream::Io.new(fdb['iocmd'].split(' '),fdb['wait'],1)
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(Stream::Logging).startlog(id,ver)
       @sql=SqLog.new('field',id,ver,@field)
     else
-      @io=Stream::Command.new(iocmd,fdb['wait'],1)
+      @io=Stream::Io.new(iocmd,fdb['wait'],1)
       @field.delete('ver')
     end
     @fc=FrmCmd.new(fdb,@cobj,@field)

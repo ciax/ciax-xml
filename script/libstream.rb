@@ -3,7 +3,7 @@ require "libmsg"
 require "libmodlog"
 
 module Stream
-  class Command
+  class Io
     attr_accessor :cid
     def initialize(iocmd,wait=0,timeout=nil)
       @v=Msg::Ver.new(self,1)

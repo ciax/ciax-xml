@@ -5,7 +5,7 @@ require "libappval"
 
 module Sql
 # Generate SQL command string
-class Command < Array
+class CmdStr < Array
   def initialize(type,id,ver,val)
     @v=Msg::Ver.new(self,6)
     @type=type

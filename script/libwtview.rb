@@ -25,12 +25,13 @@ end
 
 module WtViewPrt
   def to_s
-    str=''
-    unless self['stat'].each{|i|
-      str << "  "+Msg.color(i['label'],6)+"\t: "
+    return '' if self['stat'].empty?
+    str="  "+Msg.color("Conditions",2)+"\t:\n"
+    self['stat'].each{|i|
+      str << "    "+Msg.color(i['label'],6)+"\t: "
       str << show_res(i['active'])+"\n"
       i['cond'].each{|j|
-        str << "    "+show_res(j['res'],'o','x')+' '
+        str << "      "+show_res(j['res'],'o','x')+' '
         str << Msg.color(j['var'],3)
         str << "  "
         str << "!" if j['inv']
@@ -46,9 +47,6 @@ module WtViewPrt
     str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
     str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
     str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
-    else
-      ''
-    end
   end
 
   private

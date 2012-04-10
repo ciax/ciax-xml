@@ -4,7 +4,7 @@ require "libiofile"
 require "libelapse"
 
 module Stat
-  class Read < IoFile::Read
+  class Read < IoFile
     def initialize(id=nil,host=nil)
       super('stat',id,host)
       @last={}

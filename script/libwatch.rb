@@ -6,7 +6,7 @@ require 'libelapse'
 require 'libmodlog'
 
 module Watch
-  class Stat < IoFile::Read
+  class Stat < IoFile
     def initialize(id=nil,host=nil)
       super('watch',id,host)
       ['stat','exec','block','int'].each{|i|

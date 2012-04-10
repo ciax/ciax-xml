@@ -4,86 +4,84 @@ require "json"
 require "libexenum"
 
 # Read/Write JSON file
-module IoFile
-  class Read < ExHash
-    # ID : Host : Type
-    # _  :  *   : StdIO
-    # v  :  _   : File
-    # v  :  v   : URL
-    def initialize(type,id=nil,host=nil)
-      @v=Msg::Ver.new(self,6)
-      if id
-        @base="#{type}_#{id}"
-        @suffix='.json'
-        if host
-          require "open-uri"
-          @prefix="http://"+host+"/json/"
-          @type='url'
-          @v.msg{"Type:URL"}
-        else
-          @prefix=VarDir+"/json/"
-          @type='file'
-          @v.msg{"Type:FileIO"}
-        end
-        self['id']=id
+class IoFile < ExHash
+  # ID : Host : Type
+  # _  :  *   : StdIO
+  # v  :  _   : File
+  # v  :  v   : URL
+  def initialize(type,id=nil,host=nil)
+    @v=Msg::Ver.new(self,6)
+    if id
+      @base="#{type}_#{id}"
+      @suffix='.json'
+      if host
+        require "open-uri"
+        @prefix="http://"+host+"/json/"
+        @type='url'
+        @v.msg{"Type:URL"}
       else
-        @v.msg{"Type:StdIO"}
+        @prefix=VarDir+"/json/"
+        @type='file'
+        @v.msg{"Type:FileIO"}
       end
-    end
-
-    def settag(tag)
-      @suffix="_#{tag}.json" if @base
-      self
-    end
-
-    def load
-      case @type
-      when 'file'
-        if File.exist?(fname)
-          load_uri(fname)
-        else
-          Msg.warn("  -- no json file (#{fname})")
-        end
-      when 'url'
-        load_uri(fname)
-      else
-        deep_update(JSON.load(gets(nil)))
-      end
-      self
-    end
-
-    def to_j
-      JSON.dump(to_hash)
-    end
-
-    private
-    def load_uri(uri)
-      @v.msg{"Loading URL #{uri}"}
-      open(uri){|f|
-        str=f.read
-        if str.empty?
-          Msg.warn(" -- json file is empty")
-        else
-          deep_update(JSON.load(str))
-        end
-      }
-    end
-
-    def fname
-      @prefix+@base+@suffix
+      self['id']=id
+    else
+      @v.msg{"Type:StdIO"}
     end
   end
 
-  module IoFile::Writable
-    def save(data=nil)
-      case @type
-      when 'file'
-        @v.msg{"Saving #{@base+@suffix} file"}
-        open(fname,'w'){|f| f << JSON.dump(data||to_hash)}
+  def settag(tag)
+    @suffix="_#{tag}.json" if @base
+    self
+  end
+
+  def load
+    case @type
+    when 'file'
+      if File.exist?(fname)
+        load_uri(fname)
       else
-        puts JSON.dump(data||to_hash)
+        Msg.warn("  -- no json file (#{fname})")
       end
-      self
+    when 'url'
+      load_uri(fname)
+    else
+      deep_update(JSON.load(gets(nil)))
     end
+    self
+  end
+
+  def to_j
+    JSON.dump(to_hash)
+  end
+
+  private
+  def load_uri(uri)
+    @v.msg{"Loading URL #{uri}"}
+    open(uri){|f|
+      str=f.read
+      if str.empty?
+        Msg.warn(" -- json file is empty")
+      else
+        deep_update(JSON.load(str))
+      end
+    }
+  end
+
+  def fname
+    @prefix+@base+@suffix
+  end
+end
+
+module IoFile::Writable
+  def save(data=nil)
+    case @type
+    when 'file'
+      @v.msg{"Saving #{@base+@suffix} file"}
+      open(fname,'w'){|f| f << JSON.dump(data||to_hash)}
+    else
+      puts JSON.dump(data||to_hash)
+    end
+    self
   end
 end

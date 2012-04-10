@@ -2,7 +2,7 @@
 require 'libmsg'
 require 'libiofile'
 
-class Field < IoFile::Read
+class Field < IoFile
   include IoFile::Writable
   def initialize(id=nil,host=nil)
     super('field',id,host)

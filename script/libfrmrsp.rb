@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libfield"
 require "libframe"
-require "libiocmd"
+require "libstream"
 
 # Rsp Methods
 # Input  : upd block(frame,time)
@@ -58,7 +58,7 @@ class FrmRsp
   end
 
   def upd_logline(str)
-    res=IoLog.set_logline(str)
+    res=Stream::Logging.set_logline(str)
     @cobj.set(res[:cmd])
     upd{res}
   end
@@ -142,7 +142,7 @@ if __FILE__ == $0
   Msg.usage "(-m) < logline","-m:merge file" if STDIN.tty? && ARGV.size < 1
   opt=ARGV.getopts('m')
   str=gets(nil) || exit
-  id=IoLog.set_logline(str)[:id]
+  id=Stream::Logging.set_logline(str)[:id]
   fdb=InsDb.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
   field= opt['m'] ? Field.new(id).load : Field.new

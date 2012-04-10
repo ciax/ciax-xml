@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <objecttree>
   <module>
-    <IoLog include="ModLog"></IoLog>
+    <Stream::Logging include="ModLog"></Stream::Logging>
   </module>
   <class>
     <Exception>
@@ -76,7 +76,7 @@
     <Client />
     <Frame />
     <HexPack />
-    <IoCmd />
+    <Stream::Command />
     <McrMan />
     <Msg />
     <Shell />

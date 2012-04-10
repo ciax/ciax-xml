@@ -6,6 +6,7 @@ module ExEnum
     Msg.view_struct(self)
   end
 
+  # Show branch (omit lower tree of Hash/Array with sym key)
   def path(ary=[])
     enum=ary.inject(self){|prev,a|
       prev[a.to_sym]||prev[a]
@@ -17,9 +18,11 @@ module ExEnum
     Msg.view_struct(stat)
   end
 
-  def attr_update(src)
-    each_idx(src){|i|
-      self[i]=src[i] if Comparable === obj[i]
+  # Update with str (key=val,key=val,..)
+  def str_update(str)
+    str.split(',').each{|i|
+      k,v=i.split('=')
+      self[k]=v
     }
     self
   end
@@ -75,10 +78,6 @@ module ExEnum
 end
 
 class ExHash < Hash
-  include ExEnum
-end
-
-class ExArray < Array
   include ExEnum
 end
 

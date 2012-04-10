@@ -45,7 +45,6 @@
       <XmlDoc />
     </Hash>
     <Array include="Enumerable">
-      <ExArray include="ExEnum"></ExArray>
       <Sql>
         <Sql::Logging />
       </Sql>

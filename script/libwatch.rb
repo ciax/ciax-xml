@@ -184,11 +184,7 @@ if __FILE__ == $0
     end
   end
   if t=opt['t']
-    val={}
-    t.split(',').each{|i|
-      k,v=i.split('=')
-      val[k]=v
-    }
+    val=ExHash.new.str_update(t)
     wstat.extend(Watch::Writable).init(adb,val).upd
   end
   puts wstat

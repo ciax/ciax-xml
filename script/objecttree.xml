@@ -75,7 +75,7 @@
     <Client />
     <Frame />
     <HexPack />
-    <Stream::Io />
+    <Stream />
     <McrMan />
     <Msg />
     <Shell />

@@ -26,7 +26,7 @@ frmsh (intfrm -t)/ used when running site is different from intapp
 
 ## Combination of Server/Clients ##
   =========================================
-  Client    App        Frm       Stream::Io
+  Client    App        Frm       Stream
   =========================================
   -         -          Shell     simulation
   -         -          Shell     socat

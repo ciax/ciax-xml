@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libview"
-require "libwtview"
+require "libwtstat"
 
 module ShPrt
   def init(adb)
     @output=@print=View.new(adb,@stat).extend(ViewPrt)
-    @watch.extend(WtView).init(adb).extend(WtViewPrt)
+    @watch.extend(Watch::View).init(adb).extend(Watch::Print)
     cl=Msg::List.new("Change Mode",2)
     @cobj.list.push(cl)
     cl.add('print'=>"Print mode")

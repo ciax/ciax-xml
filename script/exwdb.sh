@@ -6,6 +6,6 @@ for i in $file ; do
     j=${i#*_}
     k=${j%.*}
     echo "### $k ###"
-    ~/lib/libwtview.rb $k
+    ~/lib/libwtstat.rb $k
     read -t 0 && break
 done

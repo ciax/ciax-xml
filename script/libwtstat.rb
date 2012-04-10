@@ -108,29 +108,88 @@ module Watch
       m['active']=rary.all?
     end
   end
+
+  module View
+    def init(adb)
+      wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
+      wdb[:stat].size.times{|i|
+        hash=(self['stat'][i]||={})
+        hash['label']=wdb[:label][i]
+        n=wdb[:stat][i]
+        m=(hash['cond']||=[])
+        n.size.times{|j|
+          m[j]||={}
+          m[j]['type']=n[j]['type']
+          m[j]['var']=n[j]['var']
+          if n[j]['type'] != 'onchange'
+            m[j]['cmp']=n[j]['val'].inspect
+          end
+        }
+      }
+      self
+    end
+  end
+
+  module Print
+    def to_s
+      return '' if self['stat'].empty?
+      str="  "+Msg.color("Conditions",2)+"\t:\n"
+      self['stat'].each{|i|
+        str << "    "+Msg.color(i['label'],6)+"\t: "
+        str << show_res(i['active'])+"\n"
+        i['cond'].each{|j|
+          str << "      "+show_res(j['res'],'o','x')+' '
+          str << Msg.color(j['var'],3)
+          str << "  "
+          str << "!" if j['inv']
+          str << "(#{j['type']}"
+          if j['type'] == 'onchange'
+            str << "/last=#{j['last']},now=#{j['val']}"
+          else
+            str << "=#{j['cmp']},actual=#{j['val']}"
+          end
+          str << ")\n"
+        }
+      }.empty?
+      str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
+      str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
+      str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
+    end
+
+    private
+    def show_res(res,t=nil,f=nil)
+      res ? Msg.color(t||res,2) : Msg.color(f||res,1)
+    end
+  end
 end
 
 if __FILE__ == $0
-  require "libstat"
+  require "optparse"
   require "libinsdb"
+  require "libstat"
+  opt=ARGV.getopts('rvt:')
   id=ARGV.shift
-  hash={}
-  ARGV.each{|s|
-    k,v=s.split("=")
-    hash[k]=v
-  }
-  ARGV.clear
   begin
     adb=InsDb.new(id).cover_app
   rescue SelectID
-    Msg.usage "[id] (test conditions (key=val)..)"
+    Msg.usage("(-t key=val,..) (-rv) [id]",
+              "-t:test conditions(key=val,..)",
+              "-r:raw data","-v:view data")
   end
-  stat=Stat.new(id).load
-  val=stat['val']
-  watch=Watch::Stat.new(id).extend(Watch::Writable).init(adb,val).upd.save
-  # For on change
-  val.update(hash)
-  watch.upd
-  # Print Wdb
-  puts watch
+  wstat=Watch::Stat.new(id).load
+  unless opt['r']
+    wstat.extend(Watch::View).init(adb)
+    unless opt['v']
+      wstat.extend(Watch::Print)
+    end
+  end
+  if t=opt['t']
+    val={}
+    t.split(',').each{|i|
+      k,v=i.split('=')
+      val[k]=v
+    }
+    wstat.extend(Watch::Writable).init(adb,val).upd
+  end
+  puts wstat
 end

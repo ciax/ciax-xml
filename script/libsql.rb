@@ -4,98 +4,98 @@ require "libmsg"
 require "libappval"
 
 module Sql
-# Generate SQL command string
-class CmdStr < Array
-  def initialize(type,id,ver,val)
-    @v=Msg::Ver.new(self,6)
-    @type=type
-    @tid="#{id}_#{ver.to_i}"
-    @val=Msg.type?(val,Hash)
-  end
-
-  def ini
-    key=['time',*expand.keys].uniq.join("','")
-    @v.msg{"create ('#{key}')"}
-    push "create table #{@tid} ('#{key}',primary key(time));"
-  end
-
-  def add(key)
-    push "alter table #{@tid} add column #{key};"
-  end
-
-  def upd
-    val=expand
-    key=val.keys.join("','")
-    val=val.values.join("','")
-    @v.msg{"Update(#{@val['time']}):[#{@type}/#{@tid}]"}
-    push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
-  end
-
-  def to_s
-    (["begin;"]+self+["commit;"]).join("\n")
-  end
-
-  private
-  def expand
-    val={}
-    @val.each{|k,v|
-      case v
-      when Array
-        rec_expand(k,v,val)
-      else
-        val[k]=v
-      end
-    }
-    val
-  end
-
-  def rec_expand(k,v,val)
-    v.size.times{|i|
-      case v[i]
-      when Enumerable
-        rec_expand("#{k}:#{i}",v[i],val)
-      else
-        val["#{k}:#{i}"]=v[i]
-      end
-    }
-    val
-  end
-end
-
-# Execute Sql Command to sqlite3
-class Logging < Command
-  def initialize(type,id,ver,val)
-    super
-    @sql=["sqlite3",VarDir+"/"+type+".sq3"]
-    unless check_table
-      ini.flush
-      @v.msg{"Init/Table '#{@tid}' is created in #{type}"}
+  # Generate SQL command string
+  class CmdStr < Array
+    def initialize(type,id,ver,val)
+      @v=Msg::Ver.new(self,6)
+      @type=type
+      @tid="#{id}_#{ver.to_i}"
+      @val=Msg.type?(val,Hash)
     end
-    @v.msg{"Init/Start Log '#{type}' (#{id}/Ver.#{ver.to_i})"}
+
+    def ini
+      key=['time',*expand.keys].uniq.join("','")
+      @v.msg{"create ('#{key}')"}
+      push "create table #{@tid} ('#{key}',primary key(time));"
+    end
+
+    def add(key)
+      push "alter table #{@tid} add column #{key};"
+    end
+
+    def upd
+      val=expand
+      key=val.keys.join("','")
+      val=val.values.join("','")
+      @v.msg{"Update(#{@val['time']}):[#{@type}/#{@tid}]"}
+      push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
+    end
+
+    def to_s
+      (["begin;"]+self+["commit;"]).join("\n")
+    end
+
+    private
+    def expand
+      val={}
+      @val.each{|k,v|
+        case v
+        when Array
+          rec_expand(k,v,val)
+        else
+          val[k]=v
+        end
+      }
+      val
+    end
+
+    def rec_expand(k,v,val)
+      v.size.times{|i|
+        case v[i]
+        when Enumerable
+          rec_expand("#{k}:#{i}",v[i],val)
+        else
+          val["#{k}:#{i}"]=v[i]
+        end
+      }
+      val
+    end
   end
 
-  # Check table existence
-  def check_table
-    internal("tables").split(' ').include?(@tid)
-  end
+  # Execute Sql Command to sqlite3
+  class Logging < CmdStr
+    def initialize(type,id,ver,val)
+      super
+      @sql=["sqlite3",VarDir+"/"+type+".sq3"]
+      unless check_table
+        ini.flush
+        @v.msg{"Init/Table '#{@tid}' is created in #{type}"}
+      end
+      @v.msg{"Init/Start Log '#{type}' (#{id}/Ver.#{ver.to_i})"}
+    end
 
-  # Issue internal command
-  def internal(str)
-    cmd=@sql.join(' ')+" ."+str
-    `#{cmd}`
-  end
+    # Check table existence
+    def check_table
+      internal("tables").split(' ').include?(@tid)
+    end
 
-  # Do a transaction
-  def flush
-    IO.popen(@sql,'w'){|f|
-      f.puts to_s
-    }
-    @v.msg{"Transaction complete (#{@type})"}
-    clear
-  rescue
-    Msg.err(" in SQL")
+    # Issue internal command
+    def internal(str)
+      cmd=@sql.join(' ')+" ."+str
+      `#{cmd}`
+    end
+
+    # Do a transaction
+    def flush
+      IO.popen(@sql,'w'){|f|
+        f.puts to_s
+      }
+      @v.msg{"Transaction complete (#{@type})"}
+      clear
+    rescue
+      Msg.err(" in SQL")
+    end
   end
-end
 end
 
 if __FILE__ == $0

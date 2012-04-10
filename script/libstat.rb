@@ -3,7 +3,7 @@ require "libmsg"
 require "libiofile"
 require "libelapse"
 
-class Stat < IoFile
+class Stat < IoFile::Read
   def initialize(id=nil,host=nil)
     super('stat',id,host)
     @last={}
@@ -44,7 +44,7 @@ end
 module StatW
   require "libappval"
   require "libsymstat"
-  include Writable
+  include IoFile::Writable
   def init(adb,val)
     Msg.type?(adb,AppDb)
     self['val']=Msg.type?(val,AppVal)

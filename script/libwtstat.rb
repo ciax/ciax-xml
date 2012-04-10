@@ -5,7 +5,7 @@ require 'librerange'
 require 'libelapse'
 require 'libmodlog'
 
-class WtStat < IoFile
+class WtStat < IoFile::Read
   def initialize(id=nil,host=nil)
     super('watch',id,host)
     ['stat','exec','block','int'].each{|i|
@@ -48,7 +48,7 @@ class WtStat < IoFile
 end
 
 module WtStatW
-  include Writable
+  include IoFile::Writable
   attr_reader :period,:interval
   def init(adb,val)
     @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}

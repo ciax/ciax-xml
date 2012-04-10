@@ -28,12 +28,12 @@
           <McrDb />
           <SymDb />
         </Db>
-        <IoFile>
+        <IoFile::Read>
           <Field/>
           <Stat>
             <StatW />
           </Stat>
-        </IoFile>
+        </IoFile::Read>
       </ExHash>
       <AppVal />
       <IntApps />

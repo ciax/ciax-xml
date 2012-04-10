@@ -66,7 +66,7 @@ if __FILE__ == $0
   rescue SelectID
     Msg.usage("(-r) [id]")
   end
-  wstat=WtStat.new(id).load.extend(WtView).init(adb)
+  wstat=Watch::Stat.new(id).load.extend(WtView).init(adb)
   wstat.extend(WtViewPrt) unless opt['r']
   puts wstat
 end

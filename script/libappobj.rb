@@ -9,7 +9,7 @@ class AppObj
     @prompt=adb['id']+'>'
     @port=adb['port'].to_i
     @stat=Stat.new(adb['id'],host).load
-    @watch=WtStat.new(adb['id'],host).load
+    @watch=Watch::Stat.new(adb['id'],host).load
     cl=Msg::List.new("Internal Command",2)
     cl.add('set'=>"[key=val] ..")
     cl.add('flush'=>"Flush Status")

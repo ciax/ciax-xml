@@ -19,7 +19,7 @@ class AppSv < AppObj
     val=AppVal.new(adb,@fint.field).upd
     @stat.extend(StatW).init(adb,val)
     @stat.extend(StatLog).init if @fint.field.key?('ver')
-    @watch.extend(WtStatW).init(adb,val)
+    @watch.extend(Watch::Writable).init(adb,val)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
     @buf.at_flush << proc{

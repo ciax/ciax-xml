@@ -4,7 +4,7 @@ require 'libstat'
 class View < ExHash
   def initialize(adb,stat)
     @sdb=Msg.type?(adb,AppDb)[:status]
-    @stat=Msg.type?(stat,Stat::Read)
+    @stat=Msg.type?(stat,Stat)
     ['val','class','msg'].each{|key|
       stat[key]||={}
     }
@@ -34,28 +34,28 @@ class View < ExHash
   def set(hash,key,id)
     hash[key]=@stat[key][id] if @stat[key].key?(id)
   end
+end
 
-  module Print
-    def to_s
-      cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
-      lines=[]
-      each{|k,v|
-        cap=v['caption']
-        lines << " ***"+color(2,cap)+"***" unless cap.empty?
-        lines+=v['lines'].map{|ele|
-          "  "+ele.map{|id,val|
-            c=cm[val['class']]
-            '['+color(6,val['label'])+':'+color(c,val['msg'])+"]"
-          }.join(' ')
-        }
+module View::Print
+  def to_s
+    cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
+    lines=[]
+    each{|k,v|
+      cap=v['caption']
+      lines << " ***"+color(2,cap)+"***" unless cap.empty?
+      lines+=v['lines'].map{|ele|
+        "  "+ele.map{|id,val|
+          c=cm[val['class']]
+          '['+color(6,val['label'])+':'+color(c,val['msg'])+"]"
+        }.join(' ')
       }
-      lines.join("\n")
-    end
+    }
+    lines.join("\n")
+  end
 
-    private
-    def color(c,msg)
-      "\e[1;3#{c}m#{msg}\e[0m"
-    end
+  private
+  def color(c,msg)
+    "\e[1;3#{c}m#{msg}\e[0m"
   end
 end
 
@@ -64,7 +64,7 @@ if __FILE__ == $0
   require "libinsdb"
   opt=ARGV.getopts('r')
   Msg.usage("(-r) [stat_file]") if STDIN.tty? && ARGV.size < 1
-  stat=Stat::Read.new.load
+  stat=Stat.new.load
   adb=InsDb.new(stat['id']).cover_app
   view=View.new(adb,stat)
   view.extend(View::Print) unless opt['r']

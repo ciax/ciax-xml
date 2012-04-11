@@ -101,7 +101,7 @@ end
 if __FILE__ == $0
   require "libstat"
   Msg.usage "[stat_file]" if STDIN.tty? && ARGV.size < 1
-  stat=Stat::Read.new.load
+  stat=Stat.new.load
   sql=Sql::CmdStr.new('value',stat['id'],stat['ver'],stat['val'])
   puts sql.upd.to_s
 end

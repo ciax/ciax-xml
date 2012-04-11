@@ -65,10 +65,9 @@ module Stat::Writable
     time=self['val']['time'].to_f
     if time > @lastsave
       super
-      @sql.flush if @sql
       @lastsave=time
+      true
     end
-    self
   end
 end
 
@@ -83,6 +82,10 @@ module Stat::Logging
     super
     @sql.upd
     self
+  end
+
+  def save
+    super && @sql.flush
   end
 end
 

@@ -3,6 +3,9 @@
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)
 crt:cart charging status is '4'(12/2/16)
+dts:joff,roff,rstop/ no responding(12/3/12)
+dts:need more time to detect motion after moving command issue(12/3/12)
+dts:need rotate drive on to resume ^D stop(12/3/12)
 
 ***REQUEST
 mcr-old:need interlock for dso/dsi manual or auto
@@ -23,6 +26,7 @@ crt: jack table edit interface (sql+web)
 verify on motion: adb-oss
 verify: oss jack num corresponding
 crt/hexint:return after command issued  without exe flag(12/1/6)
+dts:jack stop test(12/3/12)
 
 ========================== Result =============================
 ***DISCARD

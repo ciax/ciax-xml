@@ -6,9 +6,10 @@ require 'libelapse'
 require 'libmodlog'
 
 module Watch
-  class Stat < IoFile
-    def initialize(id=nil,host=nil)
-      super('watch',id,host)
+  class Stat < ExHash
+    def initialize
+      super
+      self['type']='watch'
       ['stat','exec','block','int'].each{|i|
         self[i]||=[]
       }
@@ -48,8 +49,7 @@ module Watch
     end
   end
 
-  module Writable
-    include IoFile::Writable
+  module Convert
     attr_reader :period,:interval
     def init(adb,val)
       @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
@@ -166,7 +166,6 @@ end
 if __FILE__ == $0
   require "optparse"
   require "libinsdb"
-  require "libstat"
   opt=ARGV.getopts('rvt:')
   id=ARGV.shift
   begin
@@ -176,7 +175,7 @@ if __FILE__ == $0
               "-t:test conditions(key=val,..)",
               "-r:raw data","-v:view data")
   end
-  wstat=Watch::Stat.new(id).load
+  wstat=Watch::Stat.new.extend(IoFile).init(id).load
   unless opt['r']
     wstat.extend(Watch::View).init(adb)
     unless opt['v']
@@ -185,7 +184,7 @@ if __FILE__ == $0
   end
   if t=opt['t']
     val=ExHash.new.str_update(t)
-    wstat.extend(Watch::Writable).init(adb,val).upd
+    wstat.extend(Watch::Convert).init(adb,val).upd
   end
   puts wstat
 end

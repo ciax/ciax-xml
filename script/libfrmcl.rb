@@ -9,7 +9,7 @@ class FrmCl < FrmObj
     super(fdb)
     host||=fdb['host']
     @cl=Client.new(@port,host)
-    @field=Field.new(fdb['id'],host).load
+    @field.extend(IoUrl).init(fdb['id'],host).load
     @host=@cl.host
   end
 

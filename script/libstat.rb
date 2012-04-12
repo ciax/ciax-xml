@@ -3,9 +3,10 @@ require "libmsg"
 require "libiofile"
 require "libelapse"
 
-class Stat < IoFile
-  def initialize(id=nil,host=nil)
-    super('stat',id,host)
+class Stat < ExHash
+  def initialize
+    super
+    self['type']='stat'
     @last={}
   end
 
@@ -40,12 +41,13 @@ class Stat < IoFile
   end
 end
 
-# Status to Stat::Writable (String with attributes)
-module Stat::Writable
+# Status to Stat::Convert (String with attributes)
+module Stat::Convert
   require "libappval"
   require "libsymstat"
-  include IoFile::Writable
+  include IoFile
   def init(adb,val)
+    super(adb['id'])
     Msg.type?(adb,AppDb)
     self['val']=Msg.type?(val,AppVal)
     self['ver']=adb['app_ver'].to_i
@@ -76,6 +78,7 @@ module Stat::Logging
   def init
     # Logging if version number exists
     @sql=Sql::Logging.new('value',self['id'],self['ver'],self['val'])
+    self
   end
 
   def upd
@@ -98,11 +101,15 @@ if __FILE__ == $0
     ARGV.clear
     idb=InsDb.new(id).cover_app
     if STDIN.tty?
-      puts Stat.new(id,host).load
+      if host
+        puts Stat.new.extend(IoUrl).init(id,host).load
+      else
+        puts Stat.new.extend(IoFile).init(id).load
+      end
     else
       field=Field.new.load
       val=AppVal.new(idb,field)
-      stat=Stat.new(idb['id']).extend(Stat::Writable).init(idb,val)
+      stat=Stat.new.extend(Stat::Convert).init(idb,val)
       print stat.upd.to_j
     end
   rescue UserError

@@ -2,10 +2,10 @@
 require 'libmsg'
 require 'libiofile'
 
-class Field < IoFile
-  include IoFile::Writable
-  def initialize(id=nil,host=nil)
-    super('field',id,host)
+class Field < ExHash
+  def initialize
+    super
+    self['type']='field'
   end
 
   # Substitute str by Field data
@@ -60,6 +60,10 @@ class Field < IoFile
     self['time'].replace(Msg::now)
     self
   end
+end
+
+module Field::IoFile
+  include IoFile
 
   # Loading data with tag
   def loadkey(tag=nil)

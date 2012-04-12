@@ -6,6 +6,10 @@ module ExEnum
     Msg.view_struct(self)
   end
 
+  def to_j
+    JSON.dump(to_hash)
+  end
+
   # Show branch (omit lower tree of Hash/Array with sym key)
   def path(ary=[])
     enum=ary.inject(self){|prev,a|
@@ -83,6 +87,10 @@ end
 
 class ExHash < Hash
   include ExEnum
+  def initialize
+    super
+    @v=Msg::Ver.new(self,6)
+  end
 end
 
 if __FILE__ == $0

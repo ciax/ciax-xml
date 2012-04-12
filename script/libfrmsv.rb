@@ -10,6 +10,7 @@ class FrmSv < FrmObj
   def initialize(fdb,iocmd=[])
     super(fdb)
     @v=Msg::Ver.new(self,3)
+    @field.extend(Field::IoFile).init(fdb['id']).load
     @fr=FrmRsp.new(fdb,@cobj,@field)
     if Msg.type?(iocmd,Array).empty?
       @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)

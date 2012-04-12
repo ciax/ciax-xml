@@ -8,7 +8,7 @@ class FrmObj
     @cobj=Command.new(fdb[:cmdframe])
     @prompt=fdb['id']+'>'
     @port=fdb['port'].to_i-1000
-    @field=Field.new(fdb['id']).load
+    @field=Field.new
     cl=Msg::List.new("Internal Command")
     cl.add('set'=>"Set Value [key(:idx)] (val)")
     cl.add('unset'=>"Remove Value [key]")

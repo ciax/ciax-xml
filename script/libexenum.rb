@@ -45,6 +45,10 @@ module ExEnum
     self
   end
 
+  def load
+    deep_update(JSON.load(gets(nil)))
+  end
+
   private
   # r(operand) will be merged to w (w is changed)
   def rec_merge(r,w)

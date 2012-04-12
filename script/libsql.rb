@@ -39,6 +39,7 @@ module Sql
     def expand
       val={}
       @val.each{|k,v|
+        next if /type/ =~ k
         case v
         when Array
           rec_expand(k,v,val)

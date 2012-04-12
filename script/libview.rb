@@ -8,6 +8,9 @@ class View < ExHash
     ['val','class','msg'].each{|key|
       stat[key]||={}
     }
+  end
+
+  def to_s
     @sdb[:group].each{|k,v|
       cap=@sdb[:caption][k] || next
       self[k]={'caption' => cap,'lines'=>[]}
@@ -27,7 +30,7 @@ class View < ExHash
         self[k]['lines'] << hash
       }
     }
-    self
+    super
   end
 
   private
@@ -38,6 +41,7 @@ end
 
 module View::Print
   def to_s
+    super
     cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
     lines=[]
     each{|k,v|

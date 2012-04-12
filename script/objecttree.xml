@@ -45,9 +45,9 @@
       <XmlDoc />
     </Hash>
     <Array include="Enumerable">
-      <Sql>
-        <Sql::Logging />
-      </Sql>
+      <SqLog>
+        <SqLog::Logging />
+      </SqLog>
       <HtmlTbl />
       <McrSub />
     </Array>

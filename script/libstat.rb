@@ -74,10 +74,10 @@ module Stat::Convert
 end
 
 module Stat::Logging
-  require "libsql"
+  require "libsqlog"
   def init
     # Logging if version number exists
-    @sql=Sql::Logging.new('value',self['id'],self['ver'],self['val'])
+    @sql=SqLog::Logging.new('value',self['id'],self['ver'],self['val'])
     self
   end
 

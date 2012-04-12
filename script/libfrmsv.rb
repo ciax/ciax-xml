@@ -3,7 +3,7 @@ require "libfrmobj"
 require "libmsg"
 require "libfrmrsp"
 require "libstream"
-require "libsql"
+require "libsqlog"
 require "libfrmcmd"
 
 class FrmSv < FrmObj
@@ -16,7 +16,7 @@ class FrmSv < FrmObj
       @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(Stream::Logging).startlog(id,ver)
-      @sql=Sql::Logging.new('field',id,ver,@field)
+      @sql=SqLog::Logging.new('field',id,ver,@field)
     else
       @io=Stream.new(iocmd,fdb['wait'],1)
       @field.delete('ver')

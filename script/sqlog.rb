@@ -5,7 +5,7 @@ require "libcommand"
 require "libfrmrsp"
 require "libappval"
 require 'libstat'
-require "libsql"
+require "libsqlog"
 require 'json'
 
 opt=ARGV.getopts("iafv")
@@ -23,7 +23,7 @@ rescue UserError
 end
 if opt['a']
   val=AppVal.new(adb,field)
-  sql=Sql::CmdStr.new('value',id,adb['app_ver'],val)
+  sql=SqLog::CmdStr.new('value',id,adb['app_ver'],val)
   if opt['i'] # Initial
     sql.ini
   else
@@ -54,7 +54,7 @@ else
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
   fr=FrmRsp.new(fdb,cobj,field)
-  sql=Sql::CmdStr.new('field',id,ver,field)
+  sql=SqLog::CmdStr.new('field',id,ver,field)
   if opt['i'] # Initial
     sql.ini
   else

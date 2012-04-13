@@ -8,6 +8,7 @@ class Interact
     @v=Msg::Ver.new(self,1)
     @cobj=Msg::type?(cobj,Command)
     @prompt='>'
+    @port=0
     @ic=Msg::List.new("Internal Command",2)
   end
 
@@ -15,12 +16,12 @@ class Interact
     @cobj.set(cmd) unless cmd.empty?
   end
 
-  def socket(type,port)
-    @v.msg{"Init/Server:#{port}(#{type})"}
+  def server(type)
+    @v.msg{"Init/Server:#{@port}(#{type})"}
     Thread.new{
       Thread.pass
       UDPSocket.open{ |udp|
-        udp.bind("0.0.0.0",port.to_i)
+        udp.bind("0.0.0.0",@port.to_i)
         loop {
           select([udp])
           line,addr=udp.recvfrom(4096)

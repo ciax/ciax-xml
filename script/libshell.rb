@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "readline"
 
-# Prompt should be Array
+# commands is command list for completion
 class Shell
   def initialize(prompt='',commands=[])
     Readline.completion_proc= proc{|word|

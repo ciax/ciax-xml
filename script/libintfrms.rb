@@ -30,7 +30,7 @@ class IntFrms < Hash
     require "libfrmsv"
     require 'libserver'
     fint=FrmSv.new(fdb,par)
-    Server.new('frm',fint.port,fint.prompt){|line|
+    fint.server('frm'){|line|
       fint.exe(line)
     }
     fint

@@ -12,6 +12,6 @@ rescue UserError
 end
 sleep if opt["s"]
 require 'libshell'
-Shell.new(fint.prompt,fint.commands){|line|
+fint.shell{|line|
   fint.exe(line)||fint
 }

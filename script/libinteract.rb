@@ -10,6 +10,7 @@ class Interact
     @prompt='>'
     @port=0
     @ic=Msg::List.new("Internal Command",2)
+    @cobj.list.push(@ic)
   end
 
   def exe(cmd)

@@ -15,13 +15,13 @@ end
 hp=HexPack.new(aint.stat,aint.prompt)
 if opt["s"]
   require 'libserver'
-  Server.new('hexpack',aint.port.to_i+1000){|line|
+  aint.server('hexpack',1000){|line|
     aint.exe(line)
     hp
   }.join
 else
   require 'libshell'
-  Shell.new(aint.prompt){|line|
+  aint.shell{|line|
     aint.exe(line)||hp
   }
 end

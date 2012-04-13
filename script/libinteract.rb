@@ -17,7 +17,8 @@ class Interact
     @cobj.set(cmd) unless cmd.empty?
   end
 
-  def server(type)
+  def server(type,port_offset=0)
+    @port+=port_offset
     @v.msg{"Init/Server:#{@port}(#{type})"}
     Thread.new{
       Thread.pass

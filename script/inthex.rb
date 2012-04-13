@@ -14,13 +14,11 @@ rescue UserError
 end
 hp=HexPack.new(aint.stat,aint.prompt)
 if opt["s"]
-  require 'libserver'
   aint.server('hexpack',1000){|line|
     aint.exe(line)
     hp
   }.join
 else
-  require 'libshell'
   aint.shell{|line|
     aint.exe(line)||hp
   }

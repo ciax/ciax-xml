@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libmcrman"
-require 'libshell'
 
 id=ARGV.shift
 ARGV.clear

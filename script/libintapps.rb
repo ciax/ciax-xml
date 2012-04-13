@@ -36,7 +36,6 @@ class IntApps < Hash
     else
       require "libintfrms"
       require "libappsv"
-      require 'libserver'
       fint=IntFrms.new.add(id,opt,host)[id]
       aint=AppSv.new(adb,fint)
       aint.server('app'){|line|

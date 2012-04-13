@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "socket"
+require "readline"
 require "libcommand"
 
 class Interact

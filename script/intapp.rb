@@ -14,7 +14,6 @@ rescue UserError
             '-s:server','-d:dummy')
 end
 sleep if opt["s"]
-require 'libshell'
 aint.shell{|cmd|
   aint.exe(cmd)||aint
 }

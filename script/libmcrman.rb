@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libmcrdb"
-require "libcommand"
+require "libinteract"
 require "libmcrsub"
 require "libmcrprt"
 
-class McrMan
+class McrMan < Interact
   attr_reader :prompt
   # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
   def initialize(id)
-    @cobj=Command.new(McrDb.new(id)[:macro])
+    super(Command.new(McrDb.new(id)[:macro]))
     flg=['test','sim','exe'][ENV['ACT'].to_i]
     @id="#{id}(#{flg})"
     @prompt="#@id[]>"
@@ -17,7 +17,7 @@ class McrMan
     @mcr=McrSub.new(@cobj,1).extend(McrPrt)
   end
 
-  def upd(cmd)
+  def exe(cmd)
     case cmd[0]
     when nil
     when 'list'
@@ -56,10 +56,6 @@ class McrMan
 
   def current #current thread
     @mcr[@index-1] if @index > 0
-  end
-
-  def commands
-    @cobj.list.keys
   end
 
   private

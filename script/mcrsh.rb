@@ -9,6 +9,6 @@ begin
 rescue SelectID
   Msg.usage("[mcr] # (ACT=n)")
 end
-Shell.new(mm.prompt,mm.commands){|cmd|
-  mm.upd(cmd)
+mm.shell{|cmd|
+  mm.exe(cmd)
 }

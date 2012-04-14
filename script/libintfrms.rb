@@ -29,9 +29,7 @@ class IntFrms < Hash
     end
     require "libfrmsv"
     fint=FrmSv.new(fdb,par)
-    fint.server('frm'){|line|
-      fint.exe(line)
-    }
+    fint.server('frm')
     fint
   end
 end

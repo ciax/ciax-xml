@@ -32,7 +32,8 @@ class Interact
           line='' if /^(strobe|stat)/ === line
           cmd=line.chomp.split(' ')
           begin
-            msg=yield(cmd)
+            msg=exe(cmd)
+            msg=yield msg if defined? yield
           rescue RuntimeError
             msg="ERROR"
             warn msg
@@ -56,8 +57,10 @@ class Interact
       line=Readline.readline(@prompt,true)||'interrupt'
       break if /^q/ === line
       begin
-        str=(yield line.split(' ')).to_s
-        puts str unless str.empty?
+        cmd=line.split(' ')
+        msg=exe(cmd)
+        msg=yield msg if defined? yield
+        puts msg unless msg.to_s.empty?
       rescue SelectCMD
         puts cl.to_s
       rescue UserError

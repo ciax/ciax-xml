@@ -14,12 +14,7 @@ rescue UserError
 end
 hp=HexPack.new(aint.stat,aint.prompt)
 if opt["s"]
-  aint.server('hexpack',1000){|line|
-    aint.exe(line)
-    hp
-  }.join
+  aint.server('hexpack',1000){ hp}.join
 else
-  aint.shell{|line|
-    aint.exe(line)||hp
-  }
+  aint.shell{|msg| msg||hp}
 end

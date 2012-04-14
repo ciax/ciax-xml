@@ -8,6 +8,4 @@ begin
 rescue SelectID
   Msg.usage("[mcr] # (ACT=n)")
 end
-mm.shell{|cmd|
-  mm.exe(cmd)
-}
+mm.shell

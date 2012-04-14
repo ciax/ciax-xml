@@ -14,7 +14,4 @@ rescue UserError
             '-s:server','-d:dummy')
 end
 sleep if opt["s"]
-aint.shell{|cmd|
-  aint.exe(cmd)||aint
-}
-
+aint.shell{|msg| msg||aint}

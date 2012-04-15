@@ -13,6 +13,7 @@ mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
+prompt: will be object
 hexint: will be module
 mcr: macro log
 mcr: batch mode w/showing progress

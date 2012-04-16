@@ -40,6 +40,7 @@ class Interact
         }
       }
     }
+    self
   end
 
   # commands is command list for completion
@@ -64,6 +65,7 @@ class Interact
         puts $!.to_s
       end
     }
+    self
   end
 
   def exe(cmd)

@@ -40,7 +40,7 @@ class IntApps < Hash
       aint=AppSv.new(adb,fint)
       aint.server('app')
     end
-    aint.extend(ShPrt).init(adb)
+    aint.extend(ShPrt).init
   end
 end
 

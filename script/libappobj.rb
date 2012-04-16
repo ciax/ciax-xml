@@ -4,7 +4,7 @@ require "libstat"
 class AppObj < Interact
   attr_reader :stat,:prompt,:port
   def initialize(adb)
-    Msg.type?(adb,AppDb)
+    @adb=Msg.type?(adb,AppDb)
     super(Command.new(adb[:command]))
     @prompt=adb['id']+'>'
     @port=adb['port'].to_i

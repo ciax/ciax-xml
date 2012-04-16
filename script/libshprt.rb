@@ -2,10 +2,11 @@
 require "libview"
 require "libwatch"
 
+# Should be Included AppObj
 module ShPrt
-  def init(adb)
-    @output=@print=View.new(adb,@stat).extend(View::Print)
-    @watch.extend(Watch::View).init(adb).extend(Watch::Print)
+  def init
+    @output=@print=View.new(@adb,@stat).extend(View::Print)
+    @watch.extend(Watch::View).init(@adb).extend(Watch::Print)
     cl=Msg::List.new("Change Mode",2)
     @cobj.list.push(cl)
     cl.add('print'=>"Print mode")

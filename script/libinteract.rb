@@ -5,17 +5,14 @@ require "readline"
 require "libcommand"
 
 class Interact
-  def initialize(cobj)
+  def initialize(cobj,host=nil)
     @v=Msg::Ver.new(self,1)
     @cobj=Msg::type?(cobj,Command)
     @prompt='>'
     @port=0
+    @host=host
     @ic=Msg::List.new("Internal Command",2)
     @cobj.list.push(@ic)
-  end
-
-  def exe(cmd)
-    @cobj.set(cmd) unless cmd.empty?
   end
 
   def server(type,port_offset=0)
@@ -67,5 +64,29 @@ class Interact
         puts $!.to_s
       end
     }
+  end
+
+  def exe(cmd)
+    init_client
+    line=cmd.empty? ? 'strobe' : cmd.join(' ')
+    @udp.send(line,0,@addr)
+    @v.msg{"Send [#{line}]"}
+    ary=@udp.recv(1024).split("\n")
+    @prompt.replace(ary.pop)
+    @v.msg{"Recv #{ary}"}
+    msg=ary.first
+    # Error message
+    @cobj.set(cmd) if /ERROR/ =~ msg
+    msg
+  end
+
+  private
+  def init_client
+    return self if @udp
+    @udp=UDPSocket.open()
+    @host||='localhost'
+    @addr=Socket.pack_sockaddr_in(@port,@host)
+    @v.msg{"Connect to #{@host}:#{@port}"}
+    self
   end
 end

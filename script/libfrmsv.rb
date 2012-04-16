@@ -43,7 +43,7 @@ class FrmSv < FrmObj
     when 'sleep'
       sleep cmd[1].to_i
     else
-      @io.cid=super[:cid]
+      @io.cid=@cobj.set(cmd)[:cid]
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
       @fr.upd{@io.rcv} && (@sql.upd.flush;@field.save)

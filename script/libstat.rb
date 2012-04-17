@@ -8,6 +8,10 @@ class Stat < ExHash
     super
     self['type']='stat'
     @last={}
+    val=self['val']={}
+    def val.to_s
+      Msg.view_struct(self,'val')
+    end
   end
 
   def get(id)

@@ -17,7 +17,7 @@ class Interact
   end
 
   def exe(cmd)
-    @cobj.set(cmd)
+    @cobj.set(cmd) unless cmd.empty?
     self
   end
 

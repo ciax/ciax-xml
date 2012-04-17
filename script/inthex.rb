@@ -12,9 +12,9 @@ begin
 rescue UserError
   Msg.usage("(-s) [id] (host)","-s:server")
 end
-hp=HexPack.new(aint.stat,aint.prompt)
+aint.extend(HexPack).init
 if $opt["s"]
-  aint.server('hexpack',1000){ hp}.join
+  aint.server('hexpack',1000)
 else
-  aint.shell{|msg| msg||hp}
+  aint.shell
 end

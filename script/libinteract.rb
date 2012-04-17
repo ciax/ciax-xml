@@ -18,7 +18,6 @@ class Interact
 
   def exe(cmd)
     @cobj.set(cmd) unless cmd.empty?
-    self
   end
 
   def server(type,port_offset=0)
@@ -36,7 +35,6 @@ class Interact
           cmd=line.chomp.split(' ')
           begin
             msg=exe(cmd)
-            msg=yield msg if defined? yield
           rescue RuntimeError
             msg="ERROR"
             warn msg
@@ -62,9 +60,7 @@ class Interact
       break if /^q/ === line
       begin
         cmd=line.split(' ')
-        msg=exe(cmd)
-        msg=yield msg if defined? yield
-        puts msg unless msg.to_s.empty?
+        puts exe(cmd)||to_s
       rescue SelectCMD
         puts cl.to_s
       rescue UserError

@@ -14,4 +14,4 @@ rescue UserError
             '-s:server','-d:dummy')
 end
 sleep if $opt["s"]
-aint.shell{|msg| msg||aint}
+aint.shell

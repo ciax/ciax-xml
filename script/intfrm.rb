@@ -11,4 +11,4 @@ rescue UserError
   Msg.usage("(-sfd) [id] (host)","-s:server","-f:client","-d:dummy")
 end
 sleep if $opt["s"]
-fint.shell{|msg| msg||fint}
+fint.shell

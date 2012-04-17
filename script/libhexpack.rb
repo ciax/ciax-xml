@@ -1,12 +1,11 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libmsg"
-class HexPack
-  def initialize(stat,prompt='')
-    @val=Msg.type?(stat,Stat)['val']
-    @v=Msg::Ver.new(self,6)
-    id=stat['id']||raise
-    @prompt=prompt
+
+# included in AppObj
+module HexPack
+  def init
+    id=@stat['id'] || raise("NO ID in Stat")
     file="/home/ciax/config/sdb_#{id}.txt"
     @res=["%",id,'_','0','0','_','']
     @list=[]
@@ -20,14 +19,15 @@ class HexPack
         end
       end
     }
+    self
   end
 
   def to_s
-    @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @val[r].to_i > 0})
+    @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat['val'][r].to_i > 0})
     @res[4]=b2i(@prompt.include?('*'))
     @res[6]=''
     @list.each{|key,title,len,type|
-      if val=@val[key]
+      if val=@stat['val'][key]
         case type
         when /FLOAT/
           str=("%0#{len}.2f" % val.to_f)
@@ -55,7 +55,16 @@ end
 
 if __FILE__ == $0
   require "libstat"
+  class TestHex
+    include HexPack
+    def initialize
+      @v=Msg::Ver.new(self,6)
+      @stat=Stat.new.load
+      @prompt=''
+      init
+    end
+  end
   Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-  stat=Stat.new.load
-  puts HexPack.new(stat)
+  int=TestHex.new
+  puts int
 end

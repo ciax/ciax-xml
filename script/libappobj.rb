@@ -2,7 +2,7 @@
 require "libinteract"
 require "libstat"
 class AppObj < Interact
-  attr_reader :stat,:prompt,:port
+  attr_reader :stat,:prompt
   def initialize(adb)
     @adb=Msg.type?(adb,AppDb)
     super(Command.new(adb[:command]))
@@ -12,10 +12,6 @@ class AppObj < Interact
     @watch=Watch::Stat.new
     @ic.add('set'=>"[key=val] ..")
     @ic.add('flush'=>"Flush Status")
-  end
-
-  def commands
-    @cobj.list.keys
   end
 
   def to_s

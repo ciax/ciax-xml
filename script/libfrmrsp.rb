@@ -145,7 +145,7 @@ if __FILE__ == $0
   id=Stream::Logging.set_logline(str)[:id]
   fdb=InsDb.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
-  field= opt['m'] ? Field.new(id).load : Field.new
+  field= opt['m'] ? Field.new.extend(Field::IoFile).init(id).load : Field.new
   fr=FrmRsp.new(fdb,cobj,field)
   fr.upd_logline(str)
   field.save

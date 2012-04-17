@@ -8,9 +8,11 @@ require "libshprt"
 # 's' is server
 # 'd' is dummy (frmsim)
 # 't' is check cmd only
+# 'h' is specified host
 class IntApps < Hash
   def initialize
-    super(){|h,k| int(k,{'a'=>true}) }
+    $opt||={'a'=>true}
+    super(){|h,id| init(id) }
   end
 
   def setdef(id)
@@ -18,25 +20,19 @@ class IntApps < Hash
     self
   end
 
-  def add(id,opt={'t'=>true},host=nil)
-    Msg.type?(opt,Hash)
-    self[id]=int(id,opt,host)
-    self
-  end
-
   private
-  def int(id,opt,host)
+  def init(id)
     adb=InsDb.new(id).cover_app
-    if opt['t']
+    if $opt['t']
       require "libappobj"
       aint=AppObj.new(adb)
-    elsif opt['a']
+    elsif $opt['a']
       require "libappcl"
-      aint=AppCl.new(adb,host)
+      aint=AppCl.new(adb,$opt['h'])
     else
       require "libintfrms"
       require "libappsv"
-      fint=IntFrms.new.add(id,opt,host)[id]
+      fint=IntFrms.new.add(id,$opt,$opt['h'])[id]
       aint=AppSv.new(adb,fint)
       aint.server('app')
     end

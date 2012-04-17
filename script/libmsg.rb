@@ -5,7 +5,7 @@ class UserError < RuntimeError; end
 class SelectID < UserError; end
 class SelectCMD < SelectID; end
 
-class Msg
+module Msg
   class Ver
     Start_time=Time.now
     @@base=1
@@ -134,10 +134,9 @@ class Msg
       raise SelectCMD,str+to_s
     end
   end
-end
 
-# Class method
-class << Msg
+  # Class method
+  module_function
   def now
     "%.3f" % Time.now.to_f
   end

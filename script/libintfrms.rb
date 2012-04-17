@@ -2,27 +2,23 @@
 require "libmsg"
 require "libinsdb"
 
+# 'f' is client
+# 's' is server
+# 'd' is dummy(from log)
+# 'h' is specified host
 class IntFrms < Hash
-  # opt 'f' is client, 's' is server, 'd' is dummy(from log)
-  def initialize(opt={},host=nil)
-    Msg.type?(opt,Hash)
-    super(){|h,k| h[k]=int(k,opt,host)}
-  end
-
-  def add(id,opt={},host='localhost')
-    Msg.type?(opt,Hash)
-    self[id]=int(id,opt,host)
-    self
+  def initialize
+    $opt||={}
+    super(){|h,id| init(id)}
   end
 
   private
-  def int(id,opt={},host=nil)
-    Msg.type?(opt,Hash)
+  def init(id)
     fdb=InsDb.new(id).cover_app.cover_frm
-    if opt['f']
+    if $opt['f']
       require "libfrmcl"
-      return FrmCl.new(fdb,host)
-    elsif opt['d']
+      return FrmCl.new(fdb,$opt['h'])
+    elsif $opt['d']
       par=['frmsim',id]
     else
       par=[]

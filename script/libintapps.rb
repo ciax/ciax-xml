@@ -32,7 +32,7 @@ class IntApps < Hash
     else
       require "libintfrms"
       require "libappsv"
-      fint=IntFrms.new.add(id,$opt,$opt['h'])[id]
+      fint=IntFrms.new[id]
       aint=AppSv.new(adb,fint)
       aint.server('app')
     end

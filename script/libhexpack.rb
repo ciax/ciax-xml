@@ -24,7 +24,7 @@ module HexPack
 
   def to_s
     @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat['val'][r].to_i > 0})
-    @res[4]=b2i(@prompt.include?('*'))
+    @res[4]=b2i(@prompt['isu'])
     @res[6]=''
     @list.each{|key,title,len,type|
       if val=@stat['val'][key]
@@ -60,7 +60,7 @@ if __FILE__ == $0
     def initialize
       @v=Msg::Ver.new(self,6)
       @stat=Stat.new.load
-      @prompt=''
+      @prompt={}
       init
     end
   end

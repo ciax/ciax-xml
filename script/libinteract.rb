@@ -9,7 +9,7 @@ class Interact
   def initialize(cobj,host=nil)
     @v=Msg::Ver.new(self,1)
     @cobj=Msg::type?(cobj,Command)
-    @prompt='>'
+    @prompt=ExHash.new
     @port=0
     @host=host
     @ic=Msg::List.new("Internal Command",2)
@@ -40,7 +40,8 @@ class Interact
             warn msg
           end
           @v.msg{"Send:#{msg}"}
-          udp.send([msg,@prompt].compact.join("\n"),0,addr[2],addr[1])
+          @prompt['msg']=msg
+          udp.send(@prompt.to_j,0,addr[2],addr[1])
         }
       }
     }
@@ -56,7 +57,7 @@ class Interact
     cl=Msg::List.new("Shell Command")
     cl.add('q'=>"Quit",'D^'=>"Interrupt")
     loop {
-      line=Readline.readline(@prompt,true)||'interrupt'
+      line=Readline.readline(@prompt.to_s,true)||'interrupt'
       break if /^q/ === line
       begin
         cmd=line.split(' ')
@@ -76,14 +77,13 @@ module Client
     line=cmd.empty? ? 'strobe' : cmd.join(' ')
     @udp.send(line,0,@addr)
     @v.msg{"Send [#{line}]"}
-    ary=@udp.recv(1024).split("\n")
-    @prompt.replace(ary.pop)
+    input=@udp.recv(1024)
+    @prompt.load(input)
     @v.msg{"Recv #{ary}"}
-    msg=ary.first
     # Error message
-    @cobj.set(cmd) if /ERROR/ =~ msg
+    @cobj.set(cmd) if /ERROR/ =~ @prompt['msg']
     @updlist.upd
-    msg
+    @prompt['msg']
   end
 
   private

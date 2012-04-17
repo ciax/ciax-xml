@@ -3,6 +3,7 @@ require "libmsg"
 require "socket"
 require "readline"
 require "libcommand"
+require "libupdate"
 
 class Interact
   def initialize(cobj,host=nil)
@@ -13,6 +14,11 @@ class Interact
     @host=host
     @ic=Msg::List.new("Internal Command",2)
     @cobj.list.push(@ic)
+  end
+
+  def exe(cmd)
+    @cobj.set(cmd)
+    self
   end
 
   def server(type,port_offset=0)
@@ -67,9 +73,10 @@ class Interact
     }
     self
   end
+end
 
+module Client
   def exe(cmd)
-    init_client
     line=cmd.empty? ? 'strobe' : cmd.join(' ')
     @udp.send(line,0,@addr)
     @v.msg{"Send [#{line}]"}
@@ -79,12 +86,13 @@ class Interact
     msg=ary.first
     # Error message
     @cobj.set(cmd) if /ERROR/ =~ msg
+    @updlist.upd
     msg
   end
 
   private
   def init_client
-    return self if @udp
+    @updlist=Update.new << proc{ yield }
     @udp=UDPSocket.open()
     @host||='localhost'
     @addr=Socket.pack_sockaddr_in(@port,@host)

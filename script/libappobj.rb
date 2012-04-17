@@ -17,7 +17,7 @@ class AppObj < Interact
       str << '@' if self['auto']
       str << '&' if self['watch']
       str << '*' if self['isu']
-      str << (self['auto'] ? '>' : 'X')
+      str << (self['buff'] ? '>' : 'X')
       str
     end
   end

@@ -59,7 +59,7 @@ module Msg
   end
 
   # Structure /CommandID/Msg w/@title,@col
-  class List < Hash
+  class CmdList < Hash
     def initialize(title=nil,col=nil)
       @title='==== '+Msg.color(title,2)+' ====' if title
       @col=col||1
@@ -102,7 +102,7 @@ module Msg
   end
 
   # Structure /GroupID/List
-  class CmdLists < Hash
+  class GroupList < Hash
     def initialize(cdb)
       if cdb.key?(:group)
         cdb[:group].each{|key,ary|
@@ -114,10 +114,10 @@ module Msg
           }
           col=(cdb[:column]||{})[key] || 1
           cap=(cdb[:caption]||{})[key]||"Command List"
-          self[key]=List.new(cap,col.to_i).add(hash)
+          self[key]=CmdList.new(cap,col.to_i).add(hash)
         }
       else
-        self['cmd']=List.new("Command List").add(cdb[:label])
+        self['cmd']=CmdList.new("Command List").add(cdb[:label])
       end
     end
 

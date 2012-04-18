@@ -38,8 +38,8 @@
       <AppVal />
       <IntApps />
       <IntFrms />
-      <Msg.List />
-      <Msg.CmdLists />
+      <Msg::CmdList />
+      <Msg::GroupList />
       <SymStat />
       <Watch::Stat />
       <XmlDoc />

@@ -28,7 +28,7 @@ class Interact
     @prompt=Prompt.new
     @port=0
     @host=host
-    @ic=Msg::List.new("Internal Command",2)
+    @ic=Mst::CmdList.new("Internal Command",2)
     @cobj.list['int']=@ic
   end
 
@@ -74,7 +74,7 @@ class Interact
     Readline.completion_proc= proc{|word|
       cmds.grep(/^#{word}/)
     } unless cmds.empty?
-    cl=Msg::List.new("Shell Command")
+    cl=Mst::CmdList.new("Shell Command")
     cl.add('q'=>"Quit",'D^'=>"Interrupt")
     loop {
       line=Readline.readline(@prompt.to_s,true)||'interrupt'

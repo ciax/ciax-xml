@@ -12,7 +12,7 @@ class Command < ExHash
   def initialize(db)
     @v=Msg::Ver.new(self,2)
     @db=Msg.type?(db,Hash)
-    @list=Msg::Lists.new(db)
+    @list=Msg::CmdLists.new(db)
   end
 
   # Validate command and parameters

@@ -98,7 +98,7 @@ module Msg
     end
   end
 
-  class Lists < Hash
+  class CmdLists < Hash
     def initialize(cdb)
       @line=[]
       if cdb.key?(:group)

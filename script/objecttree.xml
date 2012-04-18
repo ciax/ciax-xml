@@ -39,7 +39,7 @@
       <IntApps />
       <IntFrms />
       <Msg.List />
-      <Msg.Lists />
+      <Msg.CmdLists />
       <SymStat />
       <Watch::Stat />
       <XmlDoc />

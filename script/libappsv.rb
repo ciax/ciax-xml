@@ -10,6 +10,7 @@ require "libmodlog"
 require "json"
 
 class AppSv < AppObj
+  attr_reader :fint
   def initialize(adb,fint)
     super(adb)
     @v=Msg::Ver.new(self,9)

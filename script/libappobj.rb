@@ -11,7 +11,7 @@ class AppObj < Interact
     @watch=Watch::Stat.new
     @ic.add('set'=>"[key=val] ..")
     @ic.add('flush'=>"Flush Status")
-    @prompt.set({'auto' => '@','watch' => '&', 'isu' => '*','na' => 'X' })
+    @prompt.table={'auto' => '@','watch' => '&', 'isu' => '*','na' => 'X' }
   end
 
   def to_s

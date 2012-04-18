@@ -6,12 +6,9 @@ require "libcommand"
 require "libupdate"
 
 class Prompt < ExHash
+  attr_accessor :table
   def initialize
     @table={}
-  end
-
-  def set(hash)
-    @table=hash
   end
 
   def to_s

@@ -13,8 +13,6 @@ mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
-prompt: will be object
-hexint: will be module
 mcr: macro log
 mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param (cmdstr subst by tag)
@@ -97,3 +95,5 @@ crt: not clear command trigger after running command issued(12/1/6)
 crt:too short timeout for cart unnint (tag11-3) 1->12 OK
 AppPrt: make @view with item,label,caption etc. -> data name is pending
 Shell,Server: will become module and every int object will have this feature[4/14]
+prompt: will be object
+hexint: will be module

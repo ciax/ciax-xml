@@ -36,6 +36,8 @@ class Interact
     @cobj.set(cmd) unless cmd.empty?
   end
 
+  # JSON expression of @prompt will be sent.
+  # Or, block contents will be sent if block added.
   def server(type,port_offset=0)
     @port+=port_offset
     @v.msg{"Init/Server:#{@port}(#{type})"}
@@ -65,7 +67,6 @@ class Interact
     self
   end
 
-  # commands is command list for completion
   def shell
     cmds=@cobj.list.keys
     Readline.completion_proc= proc{|word|

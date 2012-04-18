@@ -47,7 +47,8 @@ module Msg
       ts+'  '*@ind+Msg.color("#{@prefix}:",@color)+text.inspect
     end
 
-    def condition(msg) # VER= makes setenv "" to VER otherwise nil
+    # VER= makes setenv "" to VER otherwise nil
+    def condition(msg)
       return true if /\*/ === ENV['VER']
       ENV['VER'].upcase.split(',').any?{|s|
         s.split(':').all?{|e|
@@ -57,6 +58,7 @@ module Msg
     end
   end
 
+  # Structure /CommandID/Msg w/@title,@col
   class List < Hash
     def initialize(title=nil,col=nil)
       @title='==== '+Msg.color(title,2)+' ====' if title
@@ -76,7 +78,8 @@ module Msg
       self
     end
 
-    def sort! # For ver 1.9 or more
+    # For ver 1.9 or more
+    def sort!
       hash={}
       keys.sort.each{|k|
         hash[k]=self[k]
@@ -98,9 +101,9 @@ module Msg
     end
   end
 
+  # Structure /GroupID/List
   class CmdLists < Hash
     def initialize(cdb)
-      @line=[]
       if cdb.key?(:group)
         cdb[:group].each{|key,ary|
           hash={}
@@ -111,22 +114,23 @@ module Msg
           }
           col=(cdb[:column]||{})[key] || 1
           cap=(cdb[:caption]||{})[key]||"Command List"
-          @line << List.new(cap,col.to_i).add(hash)
+          self[key]=List.new(cap,col.to_i).add(hash)
         }
       else
-        @line << List.new("Command List").add(cdb[:label])
+        self['cmd']=List.new("Command List").add(cdb[:label])
       end
-      @line.each{|h| update(h)}
     end
 
-    def push(list)
-      @line << Msg.type?(list,List)
-      update(list)
-      self
+    # search msg of each command
+    def get(id)
+      each{|k,v|
+        return v[id] if v.key?(id)
+      }
+      nil
     end
 
     def to_s
-      @line.join("\n")
+      values.map{|v| v.to_s}.join("\n")
     end
 
     def error(str=nil)
@@ -135,7 +139,7 @@ module Msg
     end
   end
 
-  # Class method
+  ### Class method ###
   module_function
   def now
     "%.3f" % Time.now.to_f

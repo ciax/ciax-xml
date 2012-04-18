@@ -29,7 +29,7 @@ class Interact
     @port=0
     @host=host
     @ic=Msg::List.new("Internal Command",2)
-    @cobj.list.push(@ic)
+    @cobj.list['int']=@ic
   end
 
   def exe(cmd)

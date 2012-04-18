@@ -7,7 +7,7 @@ module ShPrt
   def init
     @output=@print=View.new(@adb,@stat).extend(View::Print)
     @watch.extend(Watch::View).init(@adb).extend(Watch::Print)
-    cl=Mst::CmdList.new("Change Mode",2)
+    cl=Msg::CmdList.new("Change Mode",2)
     @cobj.list['mode']=cl
     cl.add('print'=>"Print mode")
     cl.add('value'=>"Value mode")

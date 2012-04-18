@@ -43,7 +43,7 @@ class McrMan < Interact
     upd_prompt
     self
   rescue SelectCMD
-    cl=Mst::CmdList.new("Internal Command")
+    cl=Msg::CmdList.new("Internal Command")
     cl.add("[0-9]"=>"Switch Mode")
     cl.add("list"=>"Thread list")
     cl.error

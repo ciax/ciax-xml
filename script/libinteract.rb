@@ -17,6 +17,7 @@ class Prompt < ExHash
   def to_s
     str=''
     each{|k,v|
+      next if /msg/ === k
       str << (@table[k]||v) if v
     }
     str+'>'
@@ -97,7 +98,7 @@ module Client
     @v.msg{"Send [#{line}]"}
     input=@udp.recv(1024)
     @prompt.load(input)
-    @v.msg{"Recv #{ary}"}
+    @v.msg{"Recv #{input}"}
     # Error message
     @cobj.set(cmd) if /ERROR/ =~ @prompt['msg']
     @updlist.upd

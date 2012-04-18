@@ -57,7 +57,8 @@ class Interact
           end
           @v.msg{"Send:#{msg}"}
           @prompt['msg']=msg
-          udp.send(@prompt.to_j,0,addr[2],addr[1])
+          str=defined?(yield) ? yield : @prompt.to_j
+          udp.send(str,0,addr[2],addr[1])
         }
       }
     }

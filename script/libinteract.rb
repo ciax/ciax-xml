@@ -5,11 +5,29 @@ require "readline"
 require "libcommand"
 require "libupdate"
 
+class Prompt < ExHash
+  def initialize
+    @table={}
+  end
+
+  def set(hash)
+    @table=hash
+  end
+
+  def to_s
+    str=''
+    each{|k,v|
+      str << (@table[k]||v) if v
+    }
+    str+'>'
+  end
+end
+
 class Interact
   def initialize(cobj,host=nil)
     @v=Msg::Ver.new(self,1)
     @cobj=Msg::type?(cobj,Command)
-    @prompt=ExHash.new
+    @prompt=Prompt.new
     @port=0
     @host=host
     @ic=Msg::List.new("Internal Command",2)

@@ -6,7 +6,7 @@ class FrmObj < Interact
   def initialize(fdb)
     Msg.type?(fdb,FrmDb)
     super(Command.new(fdb[:cmdframe]))
-    @prompt=fdb['id']+'>'
+    @prompt['id']=fdb['id']
     @port=fdb['port'].to_i-1000
     @field=Field.new
     @ic.add('set'=>"Set Value [key(:idx)] (val)")

@@ -69,10 +69,10 @@ class AppSv < AppObj
 
   private
   def upd_prompt
-    @prompt['auto']= @tid && @tid.alive?
-    @prompt['watch']= @watch.active?
-    @prompt['isu']=@buf.issue
-    @prompt['buff']=@buf.alive?
+    @prompt['auto'] = @tid && @tid.alive?
+    @prompt['watch'] = @watch.active?
+    @prompt['isu'] = @buf.issue
+    @prompt['na'] = !@buf.alive?
     self
   end
 

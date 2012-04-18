@@ -11,15 +11,7 @@ class AppObj < Interact
     @watch=Watch::Stat.new
     @ic.add('set'=>"[key=val] ..")
     @ic.add('flush'=>"Flush Status")
-    def @prompt.to_s
-      str=''
-      str << self['id']
-      str << '@' if self['auto']
-      str << '&' if self['watch']
-      str << '*' if self['isu']
-      str << (self['buff'] ? '>' : 'X')
-      str
-    end
+    @prompt.set({'auto' => '@','watch' => '&', 'isu' => '*','na' => 'X' })
   end
 
   def to_s

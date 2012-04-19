@@ -68,8 +68,9 @@ class Interact
   end
 
   # 'q' gives exit break (loop returns nil)
-  # listed cmd gives special break (loop returns 1)
-  def shell(list=[])
+  # mode gives special break (loop returns mode)
+  def shell(modes={})
+    @cobj.list['mode'].update(modes)
     cmds=@cobj.list.all
     Readline.completion_proc= proc{|word|
       cmds.grep(/^#{word}/)
@@ -81,7 +82,7 @@ class Interact
     loop {
       line=Readline.readline(@prompt.to_s,true)||'interrupt'
       break if /^q/ === line
-      break line if list.include?(line)
+      break line if modes.key?(line)
       begin
         cmd=line.split(' ')
         puts exe(cmd)||to_s

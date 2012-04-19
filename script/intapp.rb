@@ -14,14 +14,14 @@ rescue UserError
             '-s:server','-d:dummy')
 end
 sleep if $opt["s"]
-modes=['frm','app']
+modes={'frm' => "Frm mode",'app' => "App mode"}
 id='app'
 loop{
   case id
   when 'app'
     id=aint.shell(modes)
   when 'frm'
-    id=aint.fint.shell(['app'])
+    id=aint.fint.shell(modes)
   else
     break
   end

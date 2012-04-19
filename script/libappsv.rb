@@ -67,6 +67,21 @@ class AppSv < AppObj
     msg
   end
 
+  def shell
+    modes={'frm' => "Frm mode",'app' => "App mode"}
+    id='app'
+    loop{
+      case id
+      when 'app'
+        id=super(modes)
+      when 'frm'
+        id=fint.shell(modes)
+      else
+        break
+      end
+    }
+  end
+
   private
   def upd_prompt
     @prompt['auto'] = @tid && @tid.alive?

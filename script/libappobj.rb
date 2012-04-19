@@ -12,7 +12,11 @@ class AppObj < Interact
     ic=@cobj.list['internal']
     ic['set']="[key=val] .."
     ic['flush']="Flush Status"
-    @prompt.table={'auto' => '@','watch' => '&', 'isu' => '*','na' => 'X' }
+    tbl=@prompt.table
+    tbl['auto']='@'
+    tbl['watch']='&'
+    tbl['isu']='*'
+    tbl['na']='X'
     @fint=nil
   end
 

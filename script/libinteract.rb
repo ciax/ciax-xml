@@ -110,7 +110,7 @@ module Client
 end
 
 class Prompt < ExHash
-  attr_accessor :table
+  attr_reader :table
   def initialize
     @table={}
   end

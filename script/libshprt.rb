@@ -8,10 +8,10 @@ module ShPrt
     @output=@print=View.new(@adb,@stat).extend(View::Print)
     @watch.extend(Watch::View).init(@adb).extend(Watch::Print)
     cm=@cobj.list['mode']
-    cm.add('print'=>"Print mode")
-    cm.add('value'=>"Value mode")
-    cm.add('field'=>"Field mode") if @fint
-    cm.add('watch'=>"Watch mode") if @watch
+    cm['print']="Print mode"
+    cm['value']="Value mode"
+    cm['field']="Field mode" if @fint
+    cm['watch']="Watch mode" if @watch
     self
   end
 

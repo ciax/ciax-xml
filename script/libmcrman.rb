@@ -44,8 +44,8 @@ class McrMan < Interact
     self
   rescue SelectCMD
     cl=Msg::CmdList.new("Internal Command")
-    cl.add("[0-9]"=>"Switch Mode")
-    cl.add("list"=>"Thread list")
+    cl["[0-9]"]="Switch Mode"
+    cl["list"]="Thread list"
     cl.error
   end
 

@@ -18,7 +18,7 @@ class XmlDoc < Hash
     return if @top
     list={}
     readxml(dbname){|e| list[e['id']]=e['label'] }
-    raise SelectID,Msg::CmdList.new("[id]").add(list).sort!.to_s
+    raise SelectID,Msg::CmdList.new("[id]").update(list).sort!.to_s
   end
 
   def domain?(id)

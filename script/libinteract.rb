@@ -75,7 +75,8 @@ class Interact
       cmds.grep(/^#{word}/)
     } unless cmds.empty?
     cl=Msg::CmdList.new("Shell Command")
-    cl.add('q'=>"Quit",'D^'=>"Interrupt")
+    cl['q']="Quit"
+    cl['D^']="Interrupt"
     @cobj.list['shell']=cl
     loop {
       line=Readline.readline(@prompt.to_s,true)||'interrupt'

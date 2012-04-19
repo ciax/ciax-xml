@@ -65,19 +65,6 @@ module Msg
       @col=col||1
     end
 
-    def add(hash)
-      hash.each{|key,val|
-        case val
-        when String
-          label=val
-        when Hash,Xml
-          label=val['label']
-        end
-        self[key]=Msg.color("  %-10s" % key,3)+": #{label}" if label
-      }
-      self
-    end
-
     # For ver 1.9 or more
     def sort!
       hash={}
@@ -89,8 +76,10 @@ module Msg
 
     def to_s
       all=[$!.to_s,@title].grep(/./)
-      values.each_slice(@col){|a|
-        all << a.join("\t")
+      keys.each_slice(@col){|a|
+        all << a.map{|key|
+          Msg.color("  %-10s" % key,3)+": #{self[key]}"
+        }.join("\t")
       }
       all.join("\n")
     end
@@ -114,10 +103,10 @@ module Msg
           }
           col=(cdb[:column]||{})[key] || 1
           cap=(cdb[:caption]||{})[key]||"Command List"
-          self[key]=CmdList.new(cap,col.to_i).add(hash)
+          self[key]=CmdList.new(cap,col.to_i).update(hash)
         }
       else
-        self['cmd']=CmdList.new("Command List").add(cdb[:label])
+        self['cmd']=CmdList.new("Command List").update(cdb[:label])
       end
     end
 

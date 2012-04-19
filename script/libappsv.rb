@@ -28,6 +28,10 @@ class AppSv < AppObj
       sleep (@watch.interval||0.1)
       sendfrm(@watch.issue,2)
     }
+    @fint.updlist << proc {
+      @stat.upd.save
+      @watch.upd.save
+    }
     # Logging if version number exists
     extend(ModLog).startlog('appcmd',id,@stat['ver']) if @stat.key?('ver')
     auto_update

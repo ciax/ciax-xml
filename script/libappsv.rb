@@ -67,8 +67,8 @@ class AppSv < AppObj
     msg
   end
 
-  def server(type='app',port_offset=0)
-    super{yield}
+  def server(type='app')
+    super
   end
 
   private

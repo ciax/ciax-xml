@@ -20,37 +20,6 @@ class Interact
     @cobj.set(cmd) unless cmd.empty?
   end
 
-  # JSON expression of @prompt will be sent.
-  # Or, block contents will be sent if block added.
-  def server(type,port_offset=0)
-    @port+=port_offset
-    @v.msg{"Init/Server:#{@port}(#{type})"}
-    Thread.new{
-      Thread.pass
-      UDPSocket.open{ |udp|
-        udp.bind("0.0.0.0",@port.to_i)
-        loop {
-          select([udp])
-          line,addr=udp.recvfrom(4096)
-          @v.msg{"Recv:#{line} is #{line.class}"}
-          line='' if /^(strobe|stat)/ === line
-          cmd=line.chomp.split(' ')
-          begin
-            msg=exe(cmd)
-          rescue RuntimeError
-            msg="ERROR"
-            warn msg
-          end
-          @v.msg{"Send:#{msg}"}
-          @prompt['msg']=msg
-          str=defined?(yield) ? yield : @prompt.to_j
-          udp.send(str,0,addr[2],addr[1])
-        }
-      }
-    }
-    self
-  end
-
   # 'q' gives exit break (loop returns nil)
   # mode gives special break (loop returns mode)
   def shell(modes={})
@@ -75,6 +44,41 @@ class Interact
       end
     }
   end
+
+  # JSON expression of @prompt will be sent.
+  # Or, block contents will be sent if block added.
+  def server(type)
+    @v.msg{"Init/Server:#{@port}(#{type})"}
+    Thread.new{
+      Thread.pass
+      UDPSocket.open{ |udp|
+        udp.bind("0.0.0.0",@port.to_i)
+        loop {
+          select([udp])
+          line,addr=udp.recvfrom(4096)
+          @v.msg{"Recv:#{line} is #{line.class}"}
+          line='' if /^(strobe|stat)/ === line
+          cmd=line.chomp.split(' ')
+          begin
+            msg=exe(cmd)
+          rescue RuntimeError
+            msg="ERROR"
+            warn msg
+          end
+          @v.msg{"Send:#{msg}"}
+          @prompt['msg']=msg
+          udp.send(sndmsg,0,addr[2],addr[1])
+        }
+      }
+    }
+    self
+  end
+
+  private
+  def sendmsg
+    @prompt.to_j
+  end
+
 end
 
 module Client

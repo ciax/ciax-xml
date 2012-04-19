@@ -23,7 +23,8 @@ module HexPack
   end
 
   def server
-    super('hexpack',1000){ to_s }
+    @port+=1000
+    super('hexpack')
   end
 
   def to_s
@@ -54,6 +55,10 @@ module HexPack
   private
   def b2i(b) #Boolean to Integer (1,0)
     b ? '1' : '0'
+  end
+
+  def sendmsg
+    to_s
   end
 end
 

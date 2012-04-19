@@ -13,14 +13,12 @@ class IntFrms < Hash
       fdb=InsDb.new(id).cover_app.cover_frm
       if $opt['f']
         require "libfrmcl"
-        return FrmCl.new(fdb,$opt['h'])
-      elsif $opt['d']
-        par=['frmsim',id]
+        FrmCl.new(fdb,$opt['h'])
       else
-        par=[]
+          par=$opt['d'] ? ['frmsim',id] : []
+        require "libfrmsv"
+        FrmSv.new(fdb,par).server
       end
-      require "libfrmsv"
-      FrmSv.new(fdb,par).server
     }
   end
 end

@@ -2,7 +2,7 @@
 require 'libinteract'
 require 'libfield'
 class FrmObj < Interact
-  attr_reader :field,:prompt,:port
+  attr_reader :field
   def initialize(fdb)
     Msg.type?(fdb,FrmDb)
     super(Command.new(fdb[:cmdframe]))

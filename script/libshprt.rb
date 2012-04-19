@@ -10,7 +10,6 @@ module ShPrt
     cm=@cobj.list['mode']
     cm['print']="Print mode"
     cm['value']="Value mode"
-    cm['field']="Field mode" if @fint
     cm['watch']="Watch mode" if @watch
     self
   end
@@ -23,8 +22,6 @@ module ShPrt
       @output=@stat['val']
     when 'watch'
       @output=@watch
-    when 'field'
-      @output=@fint if @fint
     when 'all'
       @output=@stat
     else

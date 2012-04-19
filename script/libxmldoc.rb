@@ -3,7 +3,7 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  attr_reader :top,:file
+  attr_reader :top
   def initialize(dbname = nil,id = nil)
     @v=Msg::Ver.new(self,4)
     @domain={}

@@ -1,11 +1,13 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'libiofile'
+require 'libupdate'
 
 class Field < ExHash
   def initialize
     super
     self['type']='field'
+    @at_save=Update.new
   end
 
   # Substitute str by Field data
@@ -64,6 +66,13 @@ end
 
 module Field::IoFile
   include IoFile
+  attr_reader :at_save
+
+  def save(data=nil)
+    super
+    @at_save.upd
+    self
+  end
 
   # Loading data with tag
   def loadkey(tag=nil)

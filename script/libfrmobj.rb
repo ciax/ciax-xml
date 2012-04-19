@@ -9,11 +9,12 @@ class FrmObj < Interact
     @prompt['id']=fdb['id']
     @port=fdb['port'].to_i-1000
     @field=Field.new
-    @ic.add('set'=>"Set Value [key(:idx)] (val)")
-    @ic.add('unset'=>"Remove Value [key]")
-    @ic.add('load'=>"Load Field (tag)")
-    @ic.add('save'=>"Save Field [key,key...] (tag)")
-    @ic.add('sleep'=>"Sleep [n] sec")
+    ic=@cobj.list['internal']
+    ic.add('set'=>"Set Value [key(:idx)] (val)")
+    ic.add('unset'=>"Remove Value [key]")
+    ic.add('load'=>"Load Field (tag)")
+    ic.add('save'=>"Save Field [key,key...] (tag)")
+    ic.add('sleep'=>"Sleep [n] sec")
   end
 
   def to_s

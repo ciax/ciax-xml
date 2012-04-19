@@ -129,6 +129,15 @@ module Msg
       nil
     end
 
+    # all command list
+    def all
+      list=[]
+      each{|k,v|
+        list+=v.keys
+      }
+      list
+    end
+
     def to_s
       values.map{|v| v.to_s}.join("\n")
     end

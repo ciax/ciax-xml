@@ -2,17 +2,16 @@
 require "libview"
 require "libwatch"
 
-# Should be Included AppObj
+# Should be included in AppObj
 module ShPrt
   def init
     @output=@print=View.new(@adb,@stat).extend(View::Print)
     @watch.extend(Watch::View).init(@adb).extend(Watch::Print)
-    cl=Msg::CmdList.new("Change Mode",2)
-    @cobj.list['mode']=cl
-    cl.add('print'=>"Print mode")
-    cl.add('value'=>"Value mode")
-    cl.add('field'=>"Field mode") if @fint
-    cl.add('watch'=>"Watch mode") if @watch
+    cm=@cobj.list['mode']
+    cm.add('print'=>"Print mode")
+    cm.add('value'=>"Value mode")
+    cm.add('field'=>"Field mode") if @fint
+    cm.add('watch'=>"Watch mode") if @watch
     self
   end
 

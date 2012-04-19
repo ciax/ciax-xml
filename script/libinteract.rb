@@ -28,8 +28,8 @@ class Interact
     @prompt=Prompt.new
     @port=0
     @host=host
-    @ic=Msg::CmdList.new("Internal Command",2)
-    @cobj.list['int']=@ic
+    @cobj.list['internal']=Msg::CmdList.new("Internal Command",2)
+    @cobj.list['mode']=Msg::CmdList.new("Change Mode",2)
   end
 
   def exe(cmd)
@@ -70,12 +70,13 @@ class Interact
   # 'q' gives exit break (loop returns nil)
   # listed cmd gives special break (loop returns 1)
   def shell(list=[])
-    cmds=@cobj.list.keys
+    cmds=@cobj.list.all
     Readline.completion_proc= proc{|word|
       cmds.grep(/^#{word}/)
     } unless cmds.empty?
     cl=Msg::CmdList.new("Shell Command")
     cl.add('q'=>"Quit",'D^'=>"Interrupt")
+    @cobj.list['shell']=cl
     loop {
       line=Readline.readline(@prompt.to_s,true)||'interrupt'
       break if /^q/ === line
@@ -83,8 +84,6 @@ class Interact
       begin
         cmd=line.split(' ')
         puts exe(cmd)||to_s
-      rescue SelectCMD
-        puts cl.to_s
       rescue UserError
         puts $!.to_s
       end

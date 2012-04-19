@@ -13,6 +13,26 @@ class AppObj < Interact
     ic['set']="[key=val] .."
     ic['flush']="Flush Status"
     @prompt.table={'auto' => '@','watch' => '&', 'isu' => '*','na' => 'X' }
+    @fint=nil
+  end
+
+  def shell
+    if @fint
+      modes={'frm' => "Frm mode",'app' => "App mode"}
+      id='app'
+      loop{
+        case id
+        when 'app'
+          id=super(modes)
+        when 'frm'
+          id=@fint.shell(modes)
+        else
+          break
+        end
+      }
+    else
+      super
+    end
   end
 
   def to_s

@@ -16,13 +16,13 @@ module ShPrt
 
   def exe(cmd)
     case cmd.first
-    when 'pri'
+    when /^pri/
       @output=@print
-    when 'val'
+    when /^val/
       @output=@stat['val']
-    when 'wat'
+    when /^wat/
       @output=@watch
-    when 'all'
+    when /^all/
       @output=@stat
     else
       return super

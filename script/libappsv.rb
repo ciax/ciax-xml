@@ -40,7 +40,7 @@ class AppSv < AppObj
 
   #cmd is array
   def exe(cmd)
-    msg=nil
+    msg=''
     case cmd.first
     when nil
     when 'interrupt'

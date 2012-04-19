@@ -20,6 +20,7 @@ class Interact
 
   def exe(cmd)
     @cobj.set(cmd) unless cmd.empty?
+    ''
   end
 
   # 'q' gives exit break (loop returns nil)
@@ -40,8 +41,13 @@ class Interact
       break line if modes.key?(line)
       begin
         cmd=line.split(' ')
-        puts exe(cmd)||to_s
-        @updlist.upd
+        msg=exe(cmd)
+        if msg.empty?
+          msg=to_s
+        else
+          @updlist.upd
+        end
+        puts msg
       rescue UserError
         puts $!.to_s
       end
@@ -64,7 +70,7 @@ class Interact
           cmd=line.chomp.split(' ')
           begin
             msg=exe(cmd)
-            @updlist.upd
+            @updlist.upd unless msg.empty?
           rescue RuntimeError
             msg="ERROR"
             warn msg

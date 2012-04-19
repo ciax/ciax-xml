@@ -31,7 +31,7 @@ class FrmSv < FrmObj
     Msg.type?(cmd,Array)
     case cmd[0]
     when nil
-      return
+      return ''
     when 'set'
       set(cmd[1..-1])
     when 'unset'

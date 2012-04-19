@@ -12,8 +12,8 @@ class FrmObj < Interact
     ic=@cobj.list['internal']
     ic['set']="Set Value [key(:idx)] (val)"
     ic['unset']="Remove Value [key]"
-    ic['load']="Load Field (tag)"
     ic['save']="Save Field [key,key...] (tag)"
+    ic['load']="Load Field (tag)"
     ic['sleep']="Sleep [n] sec"
   end
 

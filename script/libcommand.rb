@@ -30,7 +30,7 @@ class Command < ExHash
     }
     if @db.key?(:parameter) && par=@db[:parameter][id]
       unless par.size < cmd.size
-        Msg.err("Parameter shortage (#{par.size})",@list.get(id))
+        Msg.err("Parameter shortage (#{par.size})",@list.item(id))
       end
       par.size.times{|i|
         validate(self[:param][i],par[i])

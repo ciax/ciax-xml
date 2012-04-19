@@ -75,18 +75,16 @@ module Msg
     end
 
     def to_s
-      all=[$!.to_s,@title].grep(/./)
-      keys.each_slice(@col){|a|
-        all << a.map{|key|
-          Msg.color("  %-10s" % key,3)+": #{self[key]}"
-        }.join("\t")
-      }
+      all=[$!.to_s].grep(/./)
+      unless empty?
+        all << @title
+        keys.each_slice(@col){|a|
+          all << a.map{|key|
+            Msg.item(key,self[key])
+          }.join("\t")
+        }
+      end
       all.join("\n")
-    end
-
-    def error(str=nil)
-      str= str ? str+"\n" : ''
-      raise SelectCMD,str+to_s
     end
   end
 
@@ -111,9 +109,9 @@ module Msg
     end
 
     # search msg of each command
-    def get(id)
+    def item(id)
       each{|k,v|
-        return v[id] if v.key?(id)
+        return Msg.item(id,v[id]) if v.key?(id)
       }
       nil
     end
@@ -128,7 +126,7 @@ module Msg
     end
 
     def to_s
-      values.map{|v| v.to_s}.join("\n")
+      values.map{|v| v.to_s}.grep(/./).join("\n")
     end
 
     def error(str=nil)
@@ -187,6 +185,10 @@ module Msg
     return '' if text == ''
     return text unless STDERR.tty?
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
+  end
+
+  def item(key,val)
+    Msg.color("  %-10s" % key,3)+": #{val}"
   end
 
   def view_struct(data,title=nil,indent=0)

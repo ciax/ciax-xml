@@ -9,12 +9,16 @@ class McrMan < Interact
   attr_reader :prompt
   # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
   def initialize(id)
-    super(Command.new(McrDb.new(id)[:macro]))
+    cobj=Command.new(McrDb.new(id)[:macro])
+    super(cobj)
     flg=['test','sim','exe'][ENV['ACT'].to_i]
     @id="#{id}(#{flg})"
     @prompt="#@id[]>"
     @index=0
     @mcr=McrSub.new(@cobj,1).extend(McrPrt)
+    cl=cobj.list['internal']
+    cl["[0-9]"]="Switch Mode"
+    cl["list"]="Thread list"
   end
 
   def exe(cmd)
@@ -42,11 +46,6 @@ class McrMan < Interact
     end
     upd_prompt
     self
-  rescue SelectCMD
-    cl=Msg::CmdList.new("Internal Command")
-    cl["[0-9]"]="Switch Mode"
-    cl["list"]="Thread list"
-    cl.error
   end
 
   def to_s

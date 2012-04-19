@@ -12,6 +12,7 @@ class AppCl < AppObj
     @stat.extend(IoUrl).init(adb['id'],@host).load
     @watch.extend(IoUrl).init(adb['id'],@host).load
     @fint=FrmCl.new(adb.cover_frm,@host)
-    init_client{ @stat.load }
+    @updlist << proc{ @stat.load }
+    init_client
   end
 end

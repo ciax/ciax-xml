@@ -8,6 +8,7 @@ class FrmCl < FrmObj
     super(fdb)
     @host=Msg.type?(host||fdb['host'],String)
     @field.extend(IoUrl).init(fdb['id'],@host).load
-    init_client{ @field.load }
+    @updlist << proc{ @field.load }
+    init_client
   end
 end

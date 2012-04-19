@@ -6,10 +6,12 @@ require "libcommand"
 require "libupdate"
 
 class Interact
+  attr_reader :updlist
   def initialize(cobj,host=nil)
     @v=Msg::Ver.new(self,1)
     @cobj=Msg::type?(cobj,Command)
     @prompt=Prompt.new
+    @updlist=Update.new
     @port=0
     @host=host
     @cobj.list['internal']=Msg::CmdList.new("Internal Command",2)
@@ -39,6 +41,7 @@ class Interact
       begin
         cmd=line.split(' ')
         puts exe(cmd)||to_s
+        @updlist.upd
       rescue UserError
         puts $!.to_s
       end
@@ -61,6 +64,7 @@ class Interact
           cmd=line.chomp.split(' ')
           begin
             msg=exe(cmd)
+            @updlist.upd
           rescue RuntimeError
             msg="ERROR"
             warn msg
@@ -97,7 +101,6 @@ module Client
 
   private
   def init_client
-    @updlist=Update.new << proc{ yield }
     @udp=UDPSocket.open()
     @host||='localhost'
     @addr=Socket.pack_sockaddr_in(@port,@host)

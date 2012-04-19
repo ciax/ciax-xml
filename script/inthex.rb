@@ -14,7 +14,7 @@ rescue UserError
 end
 aint.extend(HexPack).init
 if $opt["s"]
-  aint.server('hexpack',1000){ aint.to_s }
+  aint.server
   sleep
 else
   aint.shell

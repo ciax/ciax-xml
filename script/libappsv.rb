@@ -67,6 +67,10 @@ class AppSv < AppObj
     msg
   end
 
+  def server(type='app',port_offset=0)
+    super{yield}
+  end
+
   private
   def upd_prompt
     @prompt['auto'] = @tid && @tid.alive?

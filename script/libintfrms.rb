@@ -24,6 +24,6 @@ class IntFrms < Hash
       par=[]
     end
     require "libfrmsv"
-    FrmSv.new(fdb,par).server('frm')
+    FrmSv.new(fdb,par).server
   end
 end

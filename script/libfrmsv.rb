@@ -46,9 +46,16 @@ class FrmSv < FrmObj
       @io.cid=@cobj.set(cmd)[:cid]
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
-      @fr.upd{@io.rcv} && (@sql.upd.flush;@field.save)
+      if @fr.upd{@io.rcv}
+        @sql.upd.flush
+        @field.save
+      end
     end
     'OK'
+  end
+
+  def server
+    super('frm')
   end
 
   private

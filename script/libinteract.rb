@@ -5,22 +5,6 @@ require "readline"
 require "libcommand"
 require "libupdate"
 
-class Prompt < ExHash
-  attr_accessor :table
-  def initialize
-    @table={}
-  end
-
-  def to_s
-    str=''
-    each{|k,v|
-      next if /msg/ === k
-      str << (@table[k]||v) if v
-    }
-    str+'>'
-  end
-end
-
 class Interact
   def initialize(cobj,host=nil)
     @v=Msg::Ver.new(self,1)
@@ -115,5 +99,21 @@ module Client
     @addr=Socket.pack_sockaddr_in(@port,@host)
     @v.msg{"Connect to #{@host}:#{@port}"}
     self
+  end
+end
+
+class Prompt < ExHash
+  attr_accessor :table
+  def initialize
+    @table={}
+  end
+
+  def to_s
+    str=''
+    each{|k,v|
+      next if /msg/ === k
+      str << (@table[k]||v) if v
+    }
+    str+'>'
   end
 end

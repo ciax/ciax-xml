@@ -67,7 +67,7 @@ class Interact
           end
           @v.msg{"Send:#{msg}"}
           @prompt['msg']=msg
-          udp.send(sndmsg,0,addr[2],addr[1])
+          udp.send(sendmsg,0,addr[2],addr[1])
         }
       }
     }

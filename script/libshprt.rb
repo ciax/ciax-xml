@@ -8,19 +8,19 @@ module ShPrt
     @output=@print=View.new(@adb,@stat).extend(View::Print)
     @watch.extend(Watch::View).init(@adb).extend(Watch::Print)
     cm=@cobj.list['mode']
-    cm['print']="Print mode"
-    cm['value']="Value mode"
-    cm['watch']="Watch mode" if @watch
+    cm['pri']="Print mode"
+    cm['val']="Value mode"
+    cm['wat']="Watch mode" if @watch
     self
   end
 
   def exe(cmd)
     case cmd.first
-    when 'print'
+    when 'pri'
       @output=@print
-    when 'value'
+    when 'val'
       @output=@stat['val']
-    when 'watch'
+    when 'wat'
       @output=@watch
     when 'all'
       @output=@stat

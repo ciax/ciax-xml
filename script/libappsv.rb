@@ -13,14 +13,13 @@ class AppSv < AppObj
   attr_reader :fint
   def initialize(adb,fint)
     super(adb)
-    @v=Msg::Ver.new(self,9)
-    @id=adb['id']
+    id=adb['id']
     @fint=Msg.type?(fint,FrmObj)
-    @cobj=AppCmd.new(adb[:command])
+    @ac=AppCmd.new(@cobj)
     val=AppVal.new(adb,@fint.field).upd
     @stat.extend(Stat::Convert).init(adb,val)
     @stat.extend(Stat::Logging).init if @fint.field.key?('ver')
-    @watch.extend(Watch::Convert).init(adb,val).extend(IoFile).init(@id)
+    @watch.extend(Watch::Convert).init(adb,val).extend(IoFile).init(id)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
     @buf.at_flush << proc{
@@ -30,7 +29,7 @@ class AppSv < AppObj
       sendfrm(@watch.issue,2)
     }
     # Logging if version number exists
-    extend(ModLog).startlog('appcmd',@id,@stat['ver']) if @stat.key?('ver')
+    extend(ModLog).startlog('appcmd',id,@stat['ver']) if @stat.key?('ver')
     auto_update
     upd_prompt
   end
@@ -84,7 +83,7 @@ class AppSv < AppObj
       ary.map{|cmd|
         @cobj.set(cmd)
         logging(cmd)
-        @cobj.get
+        @ac.get
       }.flatten(1)
     }
   end

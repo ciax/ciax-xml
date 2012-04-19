@@ -2,17 +2,17 @@
 require "libmsg"
 require "libcommand"
 
-class AppCmd < Command
+class AppCmd
   include Math
-  def initialize(db)
-    super
+  def initialize(cobj)
     @v=Msg::Ver.new(self,9)
+    @cobj=Msg.type?(cobj,Command)
   end
 
   #frmcmd is ary of ary
   def get
     frmcmd=[]
-    self[:select].each{|e1|
+    @cobj[:select].each{|e1|
       cmd=[]
       @v.msg(1){"GetCmd(FDB):#{e1.first}"}
       begin
@@ -42,7 +42,8 @@ if __FILE__ == $0
   begin
     adb=AppDb.new(app)
     fcobj=Command.new(adb.cover_frm[:cmdframe])
-    AppCmd.new(adb[:command]).set(cmd).get.each{|fcmd|
+    acobj=Command.new(adb[:command]).set(cmd)
+    AppCmd.new(acobj).get.each{|fcmd|
       fcobj.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
       p fcmd
     }

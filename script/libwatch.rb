@@ -50,6 +50,10 @@ module Watch
 
   module Convert
     attr_reader :period,:interval
+    def self.extended(obj)
+      Msg.type?(obj,Stat)
+    end
+
     def init(adb,val)
       @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
       @period=(@wdb['period']||300).to_i
@@ -109,6 +113,10 @@ module Watch
   end
 
   module View
+    def self.extended(obj)
+      Msg.type?(obj,Stat)
+    end
+
     def init(adb)
       wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
       wdb[:stat].size.times{|i|
@@ -130,6 +138,10 @@ module Watch
   end
 
   module Print
+    def self.extended(obj)
+      Msg.type?(obj,View)
+    end
+
     def to_s
       return '' if self['stat'].empty?
       str="  "+Msg.color("Conditions",2)+"\t:\n"

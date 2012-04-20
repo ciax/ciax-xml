@@ -15,7 +15,7 @@ done
 shift $(( $OPTIND -1 ))
 if [ "$1" -o "$ID" ] ; then
     for id in $ID $*; do
-        [ "$KILL" ] && psg -t -q inthex.+$id
+        [ "$KILL" ] && psg -t -f inthex.+$id
         d -r -t $id inthex -s $id
     done
     sleep 1

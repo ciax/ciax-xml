@@ -67,7 +67,7 @@ class AppSv < AppObj
     msg
   end
 
-  def socket(type='app')
+  def socket(type='app',json=true)
     super
   end
 

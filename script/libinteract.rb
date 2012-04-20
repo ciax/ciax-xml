@@ -20,7 +20,7 @@ class Interact
 
   def exe(cmd)
     @cobj.set(cmd) unless cmd.empty?
-    ''
+    'OK'
   end
 
   # 'q' gives exit break (loop returns nil)
@@ -58,7 +58,7 @@ class Interact
 
   # JSON expression of @prompt will be sent.
   # Or, block contents will be sent if block added.
-  def socket(type)
+  def socket(type,json=true)
     @v.msg{"Init/Server:#{@port}(#{type})"}
     Thread.new{
       Thread.pass
@@ -79,18 +79,12 @@ class Interact
           end
           @v.msg{"Send:#{msg}"}
           @prompt['msg']=msg
-          udp.send(sendmsg,0,addr[2],addr[1])
+          udp.send(json ? @prompt.to_j : to_s,0,addr[2],addr[1])
         }
       }
     }
     self
   end
-
-  private
-  def sendmsg
-    @prompt.to_j
-  end
-
 end
 
 module Client

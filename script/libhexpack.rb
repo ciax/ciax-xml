@@ -28,7 +28,7 @@ module HexPack
 
   def socket
     @port+=1000
-    super('hexpack')
+    super('hexpack',false)
   end
 
   def to_s
@@ -59,10 +59,6 @@ module HexPack
   private
   def b2i(b) #Boolean to Integer (1,0)
     b ? '1' : '0'
-  end
-
-  def sendmsg
-    to_s
   end
 end
 

@@ -12,7 +12,7 @@ begin
 rescue UserError
   Msg.usage("(-s) [id] (host)","-s:server")
 end
-aint.extend(HexPack).init
+aint.extend(HexPack)
 if $opt["s"]
   aint.socket
   sleep

@@ -4,6 +4,10 @@ require "libmsg"
 
 # included in AppObj
 module HexPack
+  def self.extended(obj)
+    Msg.type?(obj,AppObj).init
+  end
+
   def init
     id=@stat['id'] || raise("NO ID in Stat")
     file="/home/ciax/config/sdb_#{id}.txt"

@@ -27,7 +27,7 @@ class IntApps < Hash
         aint=AppSv.new(adb,fint)
         aint.socket
       end
-      aint.extend(ShPrt).init
+      aint.extend(ShPrt)
     }
   end
 

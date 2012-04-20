@@ -4,6 +4,11 @@ require "libwatch"
 
 # Should be included in AppObj
 module ShPrt
+  def self.extended(obj)
+    Msg.type?(obj,AppObj)
+    obj.init
+  end
+
   def init
     @output=@print=View.new(@adb,@stat).extend(View::Print)
     @watch.extend(Watch::View).init(@adb).extend(Watch::Print)

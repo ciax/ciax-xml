@@ -29,7 +29,12 @@ module Logging
     time=Msg.now
     if @logging
       str=yield
-      str=JSON.dump(str) if Enumerable === str
+      case str
+      when Enumerable
+        str=JSON.dump(str)
+      when String
+        str=encode(str)
+      end
       tag=([@id,@ver]+cid).compact.join(':')
       open(logfile,'a') {|f|
         f.puts [time,tag,str].compact.join("\t")
@@ -38,8 +43,27 @@ module Logging
     time
   end
 
+  def self.set_logline(str)
+    ary=str.split("\t")
+    h={:time => ary.shift}
+    h[:id],h[:ver],dir,*h[:cmd]=ary.shift.split(':')
+    abort("Logline:Not response") unless /rcv/ === dir
+    h[:data]=decode(ary.shift)
+    h
+  end
+
+  def self.decode(data)
+    #eval(data)
+    data.unpack("m").first
+  end
+
   private
   def logfile
     @loghead+"_#{Time.now.year}.log"
+  end
+
+  def encode(str)
+    #str.dump
+    [str].pack("m").split("\n").join('')
   end
 end

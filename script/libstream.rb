@@ -59,33 +59,13 @@ module Stream::Logging
 
   def snd(str)
     super
-    append('snd',@cid){encode(str)}
+    append('snd',@cid){str}
     self
   end
 
   # return hash (:data,:time
   def rcv
     str=super
-    {:data => str,:time => append('rcv',@cid){encode(str)}}
-  end
-
-  def self.set_logline(str)
-    ary=str.split("\t")
-    h={:time => ary.shift}
-    h[:id],h[:ver],dir,*h[:cmd]=ary.shift.split(':')
-    abort("Logline:Not response") unless /rcv/ === dir
-    h[:data]=decode(ary.shift)
-    h
-  end
-
-  private
-  def encode(str)
-    #str.dump
-    [str].pack("m").split("\n").join('')
-  end
-
-  def self.decode(data)
-    #eval(data)
-    data.unpack("m").first
+    {:data => str,:time => append('rcv',@cid){str}}
   end
 end

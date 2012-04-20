@@ -3,7 +3,6 @@ require "libappobj"
 require "libappcmd"
 require "libbuffer"
 require "thread"
-require "json"
 require "liblogging"
 
 class AppSv < AppObj

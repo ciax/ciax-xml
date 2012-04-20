@@ -8,6 +8,10 @@ require "libexenum"
 # Read/Write JSON file
 # Need self['type']
 module IoUrl
+  def self.extended(obj)
+    Msg.type?(obj,ExHash)
+  end
+
   def init(id,host='')
     self['id']=id
     @dir="/json/"

@@ -79,6 +79,10 @@ end
 
 module Stat::Logging
   require "libsqlog"
+  def self.extended(obj)
+    Msg.type?(obj,Stat::Convert).init
+  end
+
   def init
     # Logging if version number exists
     @sql=SqLog::Logging.new('value',self['id'],self['ver'],self['val'])

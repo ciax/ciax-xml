@@ -18,7 +18,7 @@ class AppSv < AppObj
     @ac=AppCmd.new(@cobj)
     val=AppVal.new(adb,@fint.field).upd
     @stat.extend(Stat::Convert).init(adb,val)
-    @stat.extend(Stat::Logging).init if @fint.field.key?('ver')
+    @stat.extend(Stat::Logging) if @fint.field.key?('ver')
     @watch.extend(Watch::Convert).init(adb,val).extend(IoFile).init(id)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }

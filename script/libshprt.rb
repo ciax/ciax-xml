@@ -5,8 +5,7 @@ require "libwatch"
 # Should be included in AppObj
 module ShPrt
   def self.extended(obj)
-    Msg.type?(obj,AppObj)
-    obj.init
+    Msg.type?(obj,AppObj).init
   end
 
   def init

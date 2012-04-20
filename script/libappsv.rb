@@ -4,7 +4,7 @@ require "libappcmd"
 require "libbuffer"
 require "thread"
 require "json"
-require "libmodlog"
+require "liblogging"
 
 class AppSv < AppObj
   attr_reader :fint

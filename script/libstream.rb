@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libmodlog"
+require "liblogging"
 
 class Stream
   attr_accessor :cid

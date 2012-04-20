@@ -1,13 +1,10 @@
 #!/usr/bin/ruby
 require "libappobj"
-require "libmsg"
-require "libcommand"
 require "libappcmd"
-require "libstat"
 require "libbuffer"
 require "thread"
-require "libmodlog"
 require "json"
+require "libmodlog"
 
 class AppSv < AppObj
   attr_reader :fint
@@ -33,7 +30,7 @@ class AppSv < AppObj
       @watch.upd.save
     }
     # Logging if version number exists
-    extend(ModLog).startlog('appcmd',id,@stat['ver']) if @stat.key?('ver')
+    extend(Logging).init('appcmd',id,@stat['ver']) if @stat.key?('ver')
     auto_update
     upd_prompt
   end
@@ -90,15 +87,13 @@ class AppSv < AppObj
       # Making bunch of frmcmd array (ary of ary)
       ary.map{|cmd|
         @cobj.set(cmd)
-        logging(cmd)
+        append(cmd){@watch.act_list}
         @ac.get
       }.flatten(1)
     }
   end
 
-  def logging(cmd)
-    append(JSON.dump(@watch.act_list),cmd) if is_a?(ModLog)
-  end
+  def append(cmd);end
 
   def auto_update
     @tid=Thread.new{

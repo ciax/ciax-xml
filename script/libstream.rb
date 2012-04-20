@@ -50,23 +50,23 @@ class Stream
 end
 
 module Stream::Logging
-  include ModLog
+  include Logging
   # need @v
-  def startlog(id,ver=0)
+  def init(id,ver=0)
     super('frame',id,ver)
     self
   end
 
   def snd(str)
     super
-    append(encode(str),'snd',@cid)
+    append('snd',@cid){encode(str)}
     self
   end
 
   # return hash (:data,:time
   def rcv
     str=super
-    {:data => str,:time => append(encode(str),'rcv',@cid)}
+    {:data => str,:time => append('rcv',@cid){encode(str)}}
   end
 
   def self.set_logline(str)

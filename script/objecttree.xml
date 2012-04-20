@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <objecttree>
   <module>
-    <Stream::Logging include="ModLog"></Stream::Logging>
+    <Stream::Logging include="Logging"></Stream::Logging>
   </module>
   <class>
     <Exception>

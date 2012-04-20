@@ -49,9 +49,9 @@ class Field < ExHash
       vname << i
       @v.msg{"Type[#{h.class}] Name[#{i}]"}
       @v.msg{"Content[#{h[i]}]"}
-      h[i] || Msg.err("No such Value [#{vname.join(':')}]")
+      h[i] || Msg.warn("No such Value [#{vname.join(':')}]")
     }
-    Msg.err("Short Index [#{vname.join(':')}]") unless Comparable === data
+    Msg.warn("Short Index [#{vname.join(':')}]") unless Comparable === data
     data
   end
 

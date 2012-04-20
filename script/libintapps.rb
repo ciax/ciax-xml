@@ -25,7 +25,7 @@ class IntApps < Hash
         require "libappsv"
         fint=IntFrms.new[id]
         aint=AppSv.new(adb,fint)
-        aint.server
+        aint.socket
       end
       aint.extend(ShPrt).init
     }

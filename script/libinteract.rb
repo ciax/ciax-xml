@@ -41,6 +41,8 @@ class Interact
       break line if modes.key?(line)
       begin
         cmd=line.split(' ')
+        # exe() includes status update when being Client
+        # need to be executed even if cmd is empty or being Server
         msg=exe(cmd)
         if msg.empty?
           msg=to_s
@@ -56,7 +58,7 @@ class Interact
 
   # JSON expression of @prompt will be sent.
   # Or, block contents will be sent if block added.
-  def server(type)
+  def socket(type)
     @v.msg{"Init/Server:#{@port}(#{type})"}
     Thread.new{
       Thread.pass

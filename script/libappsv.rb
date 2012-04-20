@@ -71,7 +71,7 @@ class AppSv < AppObj
     msg
   end
 
-  def server(type='app')
+  def socket(type='app')
     super
   end
 

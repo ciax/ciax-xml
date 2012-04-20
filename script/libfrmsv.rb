@@ -54,7 +54,7 @@ class FrmSv < FrmObj
     'OK'
   end
 
-  def server
+  def socket
     super('frm')
   end
 

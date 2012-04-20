@@ -17,7 +17,7 @@ class IntFrms < Hash
       else
           par=$opt['d'] ? ['frmsim',id] : []
         require "libfrmsv"
-        FrmSv.new(fdb,par).server
+        FrmSv.new(fdb,par).socket
       end
     }
   end

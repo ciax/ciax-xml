@@ -6,20 +6,18 @@ while getopts "kr" opt; do
             exit
             ;;
         r)
-            KILL=1
             ID=`psg inthex|sed 's/^.*-s //'`
+            [ "$ID" ] && RES=1 || exit 1;;
+        *)
+            echo "hexsv -k(kill),-r(restart) [id]..."
             ;;
-        *)  ;;
     esac
 done
 shift $(( $OPTIND -1 ))
-if [ "$1" -o "$ID" ] ; then
-    for id in $ID $*; do
-        [ "$KILL" ] && psg -t -f inthex.+$id
-        d -r -t $id inthex -s $id
-    done
+if [ "$1" -o "$RES" ] ; then
+    while read id; do
+        daemon -r -t $id inthex -s $id
+    done < <( { for i in $ID $*;do echo $i;done; }|sort -u )
     sleep 1
-else
-    echo "hexsv -k(kill),-r(restart) [id]..."
 fi
 psg inthex

@@ -13,6 +13,7 @@ mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
+field,stat: format standardize
 mcr: macro log
 mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param (cmdstr subst by tag)

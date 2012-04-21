@@ -87,7 +87,7 @@ module SqLog
     end
 
     # Do a transaction
-    def flush
+    def save
       IO.popen(@sql,'w'){|f|
         f.puts to_s
       }

@@ -96,7 +96,7 @@ module Stat::Logging
   end
 
   def save
-    super && @sql.flush
+    super && @sql.save
   end
 end
 

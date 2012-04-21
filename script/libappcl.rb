@@ -9,8 +9,8 @@ class AppCl < AppObj
     super(adb)
     host||=adb['host']
     @host=Msg.type?(host||adb['host'],String)
-    @stat.extend(IoUrl).init(adb['id'],@host).load
-    @watch.extend(IoUrl).init(adb['id'],@host).load
+    @stat.extend(InUrl).init(adb['id'],@host).load
+    @watch.extend(InUrl).init(adb['id'],@host).load
     @fint=FrmCl.new(adb.cover_frm,@host)
     @updlist << proc{ @stat.load }
     init_client

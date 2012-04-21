@@ -7,17 +7,33 @@ require "libexenum"
 # Should be included ExHash object
 # Read/Write JSON file
 # Need self['type']
-module IoUrl
+module InFile
   def self.extended(obj)
     Msg.type?(obj,ExHash)
   end
 
-  def init(id,host='')
+  def init(id)
     self['id']=id
     @dir="/json/"
     @base=self['type']+"_"+id
     @suffix='.json'
-    @prefix="http://"+host
+    @prefix=VarDir
+    self
+  end
+
+  def load
+    begin
+      open(fname){|f|
+        str=f.read
+        if str.empty?
+          Msg.warn(" -- json file is empty")
+        else
+          deep_update(JSON.load(str))
+        end
+      }
+    rescue
+      Msg.warn("  -- no json file (#{fname})")
+    end
     self
   end
 
@@ -26,40 +42,23 @@ module IoUrl
     self
   end
 
-  def load
-    open(fname){|f|
-      str=f.read
-      if str.empty?
-        Msg.warn(" -- json file is empty")
-      else
-        deep_update(JSON.load(str))
-      end
-    }
-  end
-
   private
   def fname
     @prefix+@dir+@base+@suffix
   end
 end
 
-module IoFile
-  include IoUrl
-  def init(id)
+module InUrl
+  include InFile
+  def init(id,host='')
     super(id)
-    @prefix=VarDir
+    @prefix="http://"+host
     self
   end
+end
 
-  def load
-    if File.exist?(fname)
-      super
-    else
-      Msg.warn("  -- no json file (#{fname})")
-    end
-    self
-  end
-
+module IoFile
+  include InFile
   def save(data=nil)
     open(fname,'w'){|f| f << JSON.dump(data||to_hash)}
     self

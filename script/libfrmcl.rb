@@ -7,7 +7,7 @@ class FrmCl < FrmObj
   def initialize(fdb,host=nil)
     super(fdb)
     @host=Msg.type?(host||fdb['host'],String)
-    @field.extend(IoUrl).init(fdb['id'],@host).load
+    @field.extend(InUrl).init(fdb['id'],@host).load
     @updlist << proc{ @field.load }
     init_client
   end

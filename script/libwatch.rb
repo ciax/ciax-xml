@@ -186,7 +186,7 @@ if __FILE__ == $0
               "-t:test conditions(key=val,..)",
               "-r:raw data","-v:view data")
   end
-  wstat=Watch::Stat.new.extend(IoFile).init(id).load
+  wstat=Watch::Stat.new.extend(InFile).init(id).load
   unless opt['r']
     wstat.extend(Watch::View).init(adb)
     unless opt['v']

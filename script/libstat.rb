@@ -110,9 +110,9 @@ if __FILE__ == $0
     idb=InsDb.new(id).cover_app
     if STDIN.tty?
       if host
-        puts Stat.new.extend(IoUrl).init(id,host).load
+        puts Stat.new.extend(InUrl).init(id,host).load
       else
-        puts Stat.new.extend(IoFile).init(id).load
+        puts Stat.new.extend(InFile).init(id).load
       end
     else
       field=Field.new.load

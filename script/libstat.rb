@@ -1,36 +1,30 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libiofile"
-require "libelapse"
+require "libval"
 
 class Stat < ExHash
-  class Val < ExHash
-    def to_s
-      Msg.view_struct(self,'val')
-    end
-  end
-
+  attr_reader :val
   def initialize
     super
     self['type']='stat'
+    self['val']=@val=Val.new
     @last={}
-    @val=self['val']=Val.new
   end
 
   def get(id)
     @v.msg{"getting status of #{id}"}
-    self['val'][id]
+    @val[id]
   end
 
   def set(hash) #For Watch test
-    self['val'].update(hash)
-    self['val']['time']=Msg.now
+    @val.update(hash)
     self
   end
 
   def change?(id)
-    @v.msg{"Compare(#{id}) current=[#{self['val'][id]}] vs last=[#{@last[id]}]"}
-    self['val'][id] != @last[id]
+    @v.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
+    @val[id] != @last[id]
   end
 
   def update?
@@ -39,7 +33,7 @@ class Stat < ExHash
 
   def refresh
     @v.msg{"Status Updated"}
-    @last.update(self['val'])
+    @last.update(@val)
   end
 end
 
@@ -51,7 +45,7 @@ module Stat::Convert
   def init(adb,val)
     super(adb['id'])
     Msg.type?(adb,AppDb)
-    self['val']=Msg.type?(val,AppVal)
+    self['val']=@val=Msg.type?(val,AppVal)
     self['ver']=adb['app_ver'].to_i
     @sym=SymStat.new(adb,val).upd
     ['msg','class'].each{|k| self[k]=@sym[k] }
@@ -60,13 +54,13 @@ module Stat::Convert
   end
 
   def upd
-    self['val'].upd
+    @val.upd
     @sym.upd
     self
   end
 
   def save
-    time=self['val']['time'].to_f
+    time=@val['time'].to_f
     if time > @lastsave
       super
       @lastsave=time
@@ -83,7 +77,7 @@ module Stat::Logging
 
   def init
     # Logging if version number exists
-    @sql=SqLog::Logging.new('value',self['id'],self['ver'],self['val'])
+    @sql=SqLog::Logging.new('value',self['id'],self['ver'],@val)
     self
   end
 

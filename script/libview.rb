@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libstat'
+require 'libelapse'
 
 class View < ExHash
   def initialize(adb,stat)
@@ -21,7 +22,7 @@ class View < ExHash
           h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
           case id
           when 'elapse'
-            h['msg']=Elapse.new(@stat['val'])
+            h['msg']=Elapse.new(@stat.val)
           else
             h['msg']=@stat['msg'][id]||@stat['val'][id]
           end

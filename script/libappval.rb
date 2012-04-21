@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libval"
 
-class AppVal < Hash
+class AppVal < Val
   def initialize(adb,field)
     @v=Msg::Ver.new(self,9)
     Msg.type?(adb,AppDb)
@@ -27,10 +28,6 @@ class AppVal < Hash
     self['time']=@field['time']
     @v.msg{"Update(#{self['time']})"}
     self
-  end
-
-  def to_s
-    Msg.view_struct(self,'val')
   end
 
   private

@@ -2,7 +2,6 @@
 require 'libmsg'
 require 'libiofile'
 require 'librerange'
-require 'libelapse'
 
 module Watch
   class Stat < ExHash

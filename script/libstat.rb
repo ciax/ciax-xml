@@ -4,24 +4,22 @@ require "libiofile"
 require "libelapse"
 
 class Stat < ExHash
-  def initialize
-    super
-    self['type']='stat'
-    @last={}
-    val=self['val']={}
-    def val.to_s
+  class Val < ExHash
+    def to_s
       Msg.view_struct(self,'val')
     end
   end
 
+  def initialize
+    super
+    self['type']='stat'
+    @last={}
+    @val=self['val']=Val.new
+  end
+
   def get(id)
     @v.msg{"getting status of #{id}"}
-    case id
-    when 'elapse'
-      @elapse
-    else
-      self['val'][id]
-    end
+    self['val'][id]
   end
 
   def set(hash) #For Watch test

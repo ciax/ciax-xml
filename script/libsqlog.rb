@@ -69,7 +69,7 @@ module SqLog
       super
       @sql=["sqlite3",VarDir+"/"+type+".sq3"]
       unless check_table
-        ini.flush
+        ini.save
         @v.msg{"Init/Table '#{@tid}' is created in #{type}"}
       end
       @v.msg{"Init/Start Log '#{type}' (#{id}/Ver.#{ver.to_i})"}

@@ -53,7 +53,7 @@
         <frmcmd name="jakstat" />
       </command>
       <command id="jstop" label="All EJB Stop">
-        <frmcmd name="jstop" />
+        <frmcmd name="ajstop" />
         <frmcmd name="jakstat" />
       </command>
       <command id="moircs" label="Set IID MOIRCS">

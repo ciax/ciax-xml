@@ -31,7 +31,7 @@ module ShPrt
     else
       return super
     end
-    nil
+    ''
   end
 
   def to_s

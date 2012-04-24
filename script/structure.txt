@@ -19,9 +19,9 @@
 
   WATCH: {}
         "cond" => []
-	"block" => []
-	"exec" => []
-	"interrupt" => []
+	"block" => [appcmds]
+	"exec" => [appcmds]
+	"interrupt" => [frmcmds]
 
 
 ### Struct of Db ###

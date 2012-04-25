@@ -115,9 +115,9 @@ class McrSub < Array
 
   def getstat(ins,var)
     stat=@@client[ins].stat
-    res=stat['msg'][var]||stat['val'][var]
+    res=stat['msg'][var]||stat.val[var]
     @v.msg{"ins=#{ins},var=#{var},res=#{res}"}
-    @v.msg{stat['val']}
+    @v.msg{stat.val}
     res
   end
 

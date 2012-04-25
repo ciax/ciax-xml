@@ -32,11 +32,11 @@ module HexPack
   end
 
   def to_s
-    @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat['val'][r].to_i > 0})
+    @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat.val[r].to_i > 0})
     @res[4]=b2i(@prompt['isu'])
     @res[6]=''
     @list.each{|key,title,len,type|
-      if val=@stat['val'][key]
+      if val=@stat.val[key]
         case type
         when /FLOAT/
           str=("%0#{len}.2f" % val.to_f)

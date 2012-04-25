@@ -23,7 +23,7 @@ module ShPrt
     when /^pri/
       @output=@print
     when /^val/
-      @output=@stat['val']
+      @output=@stat.val
     when /^wat/
       @output=@watch
     when /^all/

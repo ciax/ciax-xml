@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="oss" label="OSS Command line">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -92,7 +92,7 @@
           <string>osscmd -b 932002</string>
         </command>
         <command id="ajstop" label="All EJB Stop" response="exit" type="action">
-          <string>osscmd 104011</string>
+          <string>osscmd 932003</string>
         </command>
         <command id="jup" label="EJB Up [#]" response="exit" type="action">
           <par>1:16</par>

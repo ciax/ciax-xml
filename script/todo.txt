@@ -27,7 +27,7 @@ crt: jack table edit interface (sql+web)
 verify on motion: adb-oss
 verify: oss jack num corresponding
 crt/hexint:return after command issued  without exe flag(12/1/6)
-dts:jack stop test(12/3/12)
+dts:jack stop test(12/4/26)
 
 ========================== Result =============================
 ***DISCARD

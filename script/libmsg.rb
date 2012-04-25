@@ -79,12 +79,13 @@ module Msg
       unless empty?
         all << @title
         keys.each_slice(@col){|a|
-          all << a.map{|key|
-            Msg.item(key,self[key])
-          }.join("\t")
+          l=a.map{|key|
+            Msg.item(key,self[key]) if self[key]
+          }.compact
+          all << l.join("\t") unless l.empty?
         }
       end
-      all.join("\n")
+      all.compact.join("\n")
     end
   end
 

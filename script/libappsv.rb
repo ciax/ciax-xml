@@ -105,7 +105,7 @@ class AppSv < AppObj
         rescue SelectID
           Msg.warn($!)
         end
-        @v.msg{"Auto Update(#{@stat.val['time']})"}
+        @v.msg{"Auto Update(#{@stat.time})"}
         sleep int
       }
     }

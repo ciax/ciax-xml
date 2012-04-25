@@ -24,7 +24,7 @@ class View < ExHash
           when 'elapse'
             h['msg']=Elapse.new(@stat.val)
           else
-            h['msg']=@stat['msg'][id]||@stat.val[id]
+            h['msg']=@stat['msg'][id]||@stat.get(id)
           end
           set(h,'class',id)
         }

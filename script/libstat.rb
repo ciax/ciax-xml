@@ -1,14 +1,11 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libiofile"
-require "libval"
+require "libvar"
 
-class Stat < ExHash
-  attr_reader :val
+class Stat < Var
   def initialize
-    super
-    self['type']='stat'
-    self['val']=@val=Val.new
+    super('stat')
     @last={}
   end
 
@@ -45,7 +42,7 @@ module Stat::Convert
   def init(adb,val)
     super(adb['id'])
     Msg.type?(adb,AppDb)
-    self['val']=@val=Msg.type?(val,AppVal)
+    self.val=Msg.type?(val,AppVal)
     self['ver']=adb['app_ver'].to_i
     @sym=SymStat.new(adb,val).upd
     ['msg','class'].each{|k| self[k]=@sym[k] }

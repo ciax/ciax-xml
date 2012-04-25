@@ -1,8 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libval"
 
-class AppVal < Val
+class AppVal < Hash
   def initialize(adb,field)
     @v=Msg::Ver.new(self,9)
     Msg.type?(adb,AppDb)

@@ -32,7 +32,7 @@ module InFile
       }
     rescue
       if tag
-        raise UserError,list_tags
+        raise UserError,"Tag=#{taglist}"
       else
         Msg.warn("  -- no json file (#{fname})")
       end
@@ -46,11 +46,10 @@ module InFile
     @prefix+@dir+base+".json"
   end
 
-  def list_tags
-    list=Dir.glob(fname('*')).map{|f|
+  def taglist
+    Dir.glob(fname('*')).map{|f|
         f.slice(/.+_(.+)\.json/,1)
-      }
-    "Tag=#{list}"
+    }
   end
 end
 

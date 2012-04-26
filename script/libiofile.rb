@@ -49,7 +49,7 @@ module InFile
   def taglist
     Dir.glob(fname('*')).map{|f|
         f.slice(/.+_(.+)\.json/,1)
-    }
+    }.sort
   end
 end
 
@@ -72,7 +72,7 @@ module IoFile
     if tag
       # Making 'latest' tag link
       sname=fname('latest')
-      File.unlink(sname) if File.exist?(sname)
+      File.unlink(sname) if File.symlink?(sname)
       File.symlink(fname(tag),sname)
       @v.msg{"Symboliclink to [#{sname}]"}
     end

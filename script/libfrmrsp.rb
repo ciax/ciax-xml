@@ -12,7 +12,7 @@ class FrmRsp
     @fdb=Msg.type?(fdb,FrmDb)
     @cobj=Msg.type?(cobj,Command)
     @field=Msg.type?(field,Field)
-    @field['ver']=fdb['frm_ver'].to_i
+    @field.ver=fdb['frm_ver'].to_i
     rsp=fdb.deep_copy[:rspframe]
     @sel=Hash[rsp[:frame]]
     @fds=rsp[:select]
@@ -119,7 +119,7 @@ class FrmRsp
 
   def mk_array(idx,field)
     # make multidimensional array
-    # i.e. idxary=[0,0:10,0] -> field[0][0][0] .. field[0][10][0]
+    # i.e. idxary=[0,0:10,0] -> @field.val[0][0][0] .. @field.val[0][10][0]
     return yield if idx.empty?
     fld=field||[]
     f,l=idx[0].split(':').map{|i| eval(i)}

@@ -9,10 +9,10 @@ module Val
 end
 
 class Var < ExHash
-  attr_reader :val,:time
+  attr_reader :type,:id,:ver,:val,:time
   def initialize(type)
     super()
-    self['type']=type
+    self['type']=@type=type
     self.val=Hash.new
     self.time=Msg.now
   end
@@ -23,6 +23,15 @@ class Var < ExHash
 
   def unset(key)
     @val.delete(key)
+  end
+
+  def id=(id)
+    @val['id']=@id=id
+  end
+
+  # Version Number
+  def ver=(ver)
+    @val['ver']=@ver=ver
   end
 
   def val=(val)

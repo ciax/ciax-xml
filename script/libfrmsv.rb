@@ -19,7 +19,6 @@ class FrmSv < FrmObj
       @field.extend(Field::SqLog).init(id,ver)
     else
       @io=Stream.new(iocmd,fdb['wait'],1)
-      @field.delete('ver')
     end
     @fc=FrmCmd.new(fdb,@cobj,@field)
   rescue Errno::ENOENT

@@ -9,7 +9,7 @@ module HexPack
   end
 
   def init
-    id=@stat['id'] || raise("NO ID in Stat")
+    id=@stat.id || raise("NO ID in Stat")
     file="/home/ciax/config/sdb_#{id}.txt"
     @res=["%",id,'_','0','0','_','']
     @list=[]

@@ -32,7 +32,7 @@ class AppSv < AppObj
       @watch.upd.save
     }
     # Logging if version number exists
-    extend(Logging).init('appcmd',id,@stat['ver']) if @stat.key?('ver')
+    extend(Logging).init('appcmd',id,@stat.ver) if @stat.ver
     auto_update
     upd_prompt
   end

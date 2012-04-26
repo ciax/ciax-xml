@@ -15,11 +15,11 @@ module ExEnum
     enum=ary.inject(self){|prev,a|
       prev[a.to_sym]||prev[a]
     }
-    stat=enum.dup
-    stat.each{|k,v|
-      stat[k]=v.class.to_s if Enumerable === v
-    } if Hash === stat
-    Msg.view_struct(stat)
+    data=enum.dup
+    data.each{|k,v|
+      data[k]=v.class.to_s if Enumerable === v
+    } if Hash === data
+    Msg.view_struct(data)
   end
 
   # Update with str (key=val,key=val,..)

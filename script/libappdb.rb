@@ -96,9 +96,9 @@ module ModWdb
   def init_watch(wdb)
     return [] unless wdb
     hash=wdb.to_h
-    [:label,:exec,:stat,:int,:block].each{|k| hash[k]=[]}
-    idx=0
+    [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
     Repeat.new.each(wdb){|e0,r0|
+      idx=e0['id']
       hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
       e0.each{ |e1|
         case name=e1.name.to_sym
@@ -119,7 +119,6 @@ module ModWdb
           (hash[:stat][idx]||=[]) << h
         end
       }
-      idx+=1
     }
     hash
   end

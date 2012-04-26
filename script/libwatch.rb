@@ -8,23 +8,17 @@ module Watch
     def initialize
       super
       self['type']='watch'
-      ['stat','exec','block','int'].each{|i|
+      ['exec','block','int'].each{|i|
         self[i]||=[]
       }
     end
 
     def active?
-      self['stat'].any?{|s|
-        s['active']
-      }
+      ! self['active'].empty?
     end
 
     def act_list
-      ary=[]
-      self['stat'].each_with_index{|s,i|
-        ary << i if s['active']
-      }
-      ary
+      self['active']
     end
 
     def block?(cmd)
@@ -54,12 +48,12 @@ module Watch
     end
 
     def init(adb,val)
-      @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
+      @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => {}}
       @period=(@wdb['period']||300).to_i
       @interval=(@wdb['interval']||1).to_f/10
       @val=Msg.type?(val,Hash)
       # Pick usable val
-      @list=@wdb[:stat].flatten(1).map{|h|
+      @list=@wdb[:stat].values.flatten(1).map{|h|
         h['var']
       }.uniq
       @list.unshift('time')
@@ -72,8 +66,10 @@ module Watch
 
     def upd
       hash={'int' =>[],'exec' =>[],'block' =>[]}
-      @wdb[:stat].each_index{|i|
-        next unless @act[i]=check(i)
+      @act.clear
+      @wdb[:stat].each{|i,v|
+        next unless check(i)
+        @act << i
         hash.each{|k,a|
           n=@wdb[k.to_sym][i]
           a << n if n && !a.include?(n)
@@ -102,15 +98,13 @@ module Watch
       return true unless @wdb[:stat][i]
       @v.msg{"Check: <#{@wdb[:label][i]}>"}
       n=@wdb[:stat][i]
-      m=(self['stat'][i]||={'cond' => [],'active' => false})
-      cond=m['cond']
       rary=[]
       n.each_index{|j|
         k=n[j]['var']
-        v=(cond[j]||={})['val']=@val[k]
+        v=@val[k]
         case n[j]['type']
         when 'onchange'
-          c=(cond[j]['last']||='')
+          c=@last[k]
           res=(c != v)
           c.replace(v)
           @v.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
@@ -126,9 +120,9 @@ module Watch
         end
         res=!res if /true|1/ === n[j]['inv']
         @res["#{i}:#{j}"]=res
-        rary << cond[j]['res']=res
+        rary << res
       }
-      m['active']=rary.all?
+      rary.all?
     end
   end
 

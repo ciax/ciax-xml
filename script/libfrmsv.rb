@@ -81,8 +81,7 @@ class FrmSv < FrmObj
   end
 
   def load(tag)
-    tag='' unless tag
-    @field.loadkey(tag)
+    @field.load(tag||'')
   rescue UserError
     raise UserError,"Usage: load (tag)\n #{$!}"
   end

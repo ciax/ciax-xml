@@ -59,10 +59,10 @@ class Field < Var
   def set(key,val)
     if p=get(key)
       p.replace(subst(val).to_s)
-      self.time=Msg::now
     else
       @val[key]=val
     end
+    self.time=Msg::now
     self
   end
 end
@@ -70,26 +70,9 @@ end
 module Field::IoFile
   include IoFile
 
-  # Loading data with tag
-  def loadkey(tag=nil)
-    Msg.err("No File Name")  unless @base
-    fn=settag(tag)
-    @v.msg{"Status Loading for [#{fn}]"}
-    begin
-      load
-    rescue
-      if tag
-        raise UserError,list_tags
-      else
-        Msg.warn("----- No #{fn}")
-      end
-    end
-    self
-  end
-
   # Saving data of specified keys with tag
   def savekey(keylist,tag=nil)
-    Msg.err("No File Name")  unless @base
+    Msg.err("No File") unless @base
     hash={}
     keylist.each{|k|
       if @val.key?(k)
@@ -99,33 +82,13 @@ module Field::IoFile
       end
     }
     if hash.empty?
-      Msg.warn("No Keys")
+      Msg.err("No Keys")
     else
-      tag||=Time.now.strftime('%y%m%d-%H%M%S')
-      fn=settag(tag)
-      @v.msg{"Status Saving for [#{fn}]"}
-      save(hash)
-      mklink(fn,tag)
+      tag||=(taglist.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
+      Msg.msg("Status Saving for [#{tag}]")
+      save({'val'=>hash},tag)
     end
     self
-  end
-
-  private
-  def mklink(fname,tag)
-    return unless tag
-    sname="#{@base}_latest.json"
-    File.unlink(sname) if File.exist?(sname)
-    File.symlink(fname,sname)
-    @v.msg{"Symboliclink to [#{sname}]"}
-  end
-
-  def list_tags
-    list=[]
-    Dir.glob("#{@base}_*.json"){|f|
-      tag=f.slice(/#{@base}_(.+)\.json/,1)
-      list << tag
-    }
-    "Tag=#{list}"
   end
 end
 

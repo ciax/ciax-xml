@@ -58,13 +58,22 @@ module Watch
       @period=(@wdb['period']||300).to_i
       @interval=(@wdb['interval']||1).to_f/10
       @val=Msg.type?(val,Hash)
+      # Pick usable val
+      @list=@wdb[:stat].flatten(1).map{|h|
+        h['var']
+      }.uniq
+      @list.unshift('time')
+      self['val']=@crnt={}
+      self['last']=@last=upd_crnt
+      self['res']=@res={}
+      self['active']=@act=[]
       self
     end
 
     def upd
       hash={'int' =>[],'exec' =>[],'block' =>[]}
       @wdb[:stat].each_index{|i|
-        next unless check(i)
+        next unless @act[i]=check(i)
         hash.each{|k,a|
           n=@wdb[k.to_sym][i]
           a << n if n && !a.include?(n)
@@ -73,11 +82,22 @@ module Watch
       hash.each{|k,a|
         self[k]=a.flatten(1).uniq
       }
+      if @crnt['time'] != @val['time']
+        self['last']=@last=@crnt.dup
+        upd_crnt
+      end
       @v.msg{"Updated(#{@val['time']})"}
       self
     end
 
     private
+    def upd_crnt
+      @list.each{|k|
+        @crnt[k]=@val[k]
+      }
+      @crnt
+    end
+
     def check(i)
       return true unless @wdb[:stat][i]
       @v.msg{"Check: <#{@wdb[:label][i]}>"}
@@ -105,6 +125,7 @@ module Watch
           @v.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
         end
         res=!res if /true|1/ === n[j]['inv']
+        @res["#{i}:#{j}"]=res
         rary << cond[j]['res']=res
       }
       m['active']=rary.all?

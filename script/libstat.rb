@@ -29,17 +29,16 @@ class Stat < Var
   end
 end
 
-# Status to Stat::Convert (String with attributes)
-module Stat::Convert
+# Status to Stat::Sym (String with attributes)
+module Stat::Sym
   require "libappval"
   require "libsymstat"
   include IoFile
-  def init(adb,val)
+  def init(adb)
     super(adb['id'])
     Msg.type?(adb,AppDb)
-    self.val=Msg.type?(val,AppVal)
     self['ver']=adb['app_ver'].to_i
-    @sym=SymStat.new(adb,val).upd
+    @sym=SymStat.new(adb,@val).upd
     self['msg']=@sym.msg
     self['class']=@sym.cls
     @lastsave=0
@@ -47,7 +46,6 @@ module Stat::Convert
   end
 
   def upd
-    @val.upd
     @sym.upd
     self
   end
@@ -65,7 +63,7 @@ end
 module Stat::Logging
   require "libsqlog"
   def self.extended(obj)
-    Msg.type?(obj,Stat::Convert).init
+    Msg.type?(obj,Stat::Sym).init
   end
 
   def init
@@ -100,9 +98,9 @@ if __FILE__ == $0
         puts Stat.new.extend(InFile).init(id).load
       end
     else
+      stat=Stat.new.extend(Stat::Sym).init(idb)
       field=Field.new.load
-      val=AppVal.new(idb,field)
-      stat=Stat.new.extend(Stat::Convert).init(idb,val)
+      stat.val=AppVal.new(idb,field)
       print stat.upd.to_j
     end
   rescue UserError

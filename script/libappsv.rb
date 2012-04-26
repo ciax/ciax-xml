@@ -12,19 +12,22 @@ class AppSv < AppObj
     id=adb['id']
     @fint=Msg.type?(fint,FrmObj)
     @ac=AppCmd.new(@cobj)
-    val=AppVal.new(adb,@fint.field).upd
-    @stat.extend(Stat::Convert).init(adb,val)
+    @val=AppVal.new(adb,@fint.field).upd
+    @stat.val=@val
+    @stat.extend(Stat::Sym).init(adb)
     @stat.extend(Stat::Logging) if @fint.field.key?('ver')
-    @watch.extend(Watch::Convert).init(adb,val).extend(IoFile).init(id)
+    @watch.extend(Watch::Convert).init(adb,@val).extend(IoFile).init(id)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
     @buf.at_flush << proc{
+      @val.upd
       @stat.upd.save
       @watch.upd.save
       sleep(@watch.interval||0.1)
       sendfrm(@watch.issue,2)
     }
     @fint.updlist << proc {
+      @val.upd
       @stat.upd.save
       @watch.upd.save
     }
@@ -52,7 +55,7 @@ class AppSv < AppObj
         k,v=s.split('=')
         hash[k]=v
       }
-      @stat.set(hash).save
+      @stat.set(hash).upd.save
       @watch.upd.save
       msg="Set #{hash}"
     else

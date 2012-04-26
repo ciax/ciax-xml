@@ -11,7 +11,7 @@ module InFile
   end
 
   def init(id)
-    self['id']=id
+    self['id']=@id=id
     @dir="/json/"
     @base=self['type']+'_'+id
     @prefix=VarDir

@@ -101,7 +101,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <event label="On Motion">
+      <event id="mot" label="On Motion">
         <pattern var="bs">1</pattern>
         <block name="gf" />
         <block name="gr" />
@@ -110,7 +110,7 @@
         <int name="stop" />
         <exec name="updp"></exec>
       </event>
-      <event label="Reset Config">
+      <event label="Reset Config" id="res">
         <onchange var="bs"></onchange>
         <pattern var="bs">0</pattern>
         <exec name="defcon"></exec>

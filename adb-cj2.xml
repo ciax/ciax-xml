@@ -400,7 +400,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <event label="On Motion">
+      <event label="On Motion" id="mot">
         <pattern var="exe" inv="true">0</pattern>
         <block name="fhook"></block>
         <block name="funhk"></block>
@@ -417,12 +417,12 @@
         <int name="pause" />
         <exec name="upd"></exec>
       </event>
-      <event label="On Completion">
+      <event label="On Completion" id="cmp">
         <onchange var="cmp"></onchange>
         <pattern var="cmp">1</pattern>
         <exec name="reset"></exec>
       </event>
-      <event label="On Error">
+      <event label="On Error" id="err">
         <onchange var="err"></onchange>
         <pattern var="err" inv="true">0</pattern>
         <exec name="reset"></exec>

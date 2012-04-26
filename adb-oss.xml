@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="oss" id="oss" label="TSC Control" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -185,14 +185,14 @@
       </group>
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <event label="Moving Jack">
+      <event label="Moving Jack" id="jak">
         <onchange var="jk01"></onchange>
         <block name="jup"></block>
         <block name="jdw"></block>
         <int name="jstop" />
         <exec name="updjak"></exec>
       </event>
-      <event label="Moving InR">
+      <event label="Moving InR" id="inr">
         <onchange var="iang"></onchange>
         <block name="rhook"></block>
         <block name="runhk"></block>

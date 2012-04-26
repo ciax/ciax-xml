@@ -407,20 +407,20 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
-      <event label="During Issued">
+      <event label="During Issued" id="isu">
         <pattern var="isu" inv="1">0</pattern>
         <block_grp ref="grun" />
         <block_grp ref="gjak" />
         <block_grp ref="gchg" />
         <exec name="upd"></exec>
       </event>
-      <event label="Command Receive">
+      <event label="Command Receive" id="rec">
         <pattern var="isu" inv="true">0</pattern>
         <pattern var="acp">0</pattern>
         <exec name="reset"></exec>
         <exec name="upd"></exec>
       </event>
-      <event label="While Running">
+      <event label="While Running" id="run">
         <pattern var="run">1</pattern>
         <block_grp ref="grun" />
         <block_grp ref="gjak" />
@@ -428,7 +428,7 @@
         <int name="pause" />
         <exec name="upd"></exec>
       </event>
-      <event label="While Jacking">
+      <event label="While Jacking" id="jak">
         <pattern var="jak">1</pattern>
         <block_grp ref="grun" />
         <block_grp ref="gjak" />

@@ -42,6 +42,7 @@
         <xsd:element ref="wdb:int" minOccurs="0" maxOccurs="unbounded" />
         <xsd:element ref="wdb:exec" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:token" use="required" />
       <xsd:attribute name="label" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>

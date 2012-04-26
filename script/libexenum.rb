@@ -49,8 +49,8 @@ module ExEnum
     self
   end
 
-  def load(data=nil)
-    deep_update(JSON.load(data||gets(nil)))
+  def load(json_str=nil)
+    deep_update(JSON.load(json_str||gets(nil)))
   end
 
   private

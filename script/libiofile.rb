@@ -1,7 +1,5 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "json"
-require "open-uri"
 require "libexenum"
 
 # Should be included ExHash object
@@ -23,11 +21,11 @@ module InFile
   def load(tag=nil)
     begin
       open(fname(tag)){|f|
-        str=f.read
-        if str.empty?
+        json_str=f.read
+        if json_str.empty?
           Msg.warn(" -- json file is empty")
         else
-          deep_update(JSON.load(str))
+          super(json_str)
         end
       }
     rescue
@@ -54,6 +52,7 @@ module InFile
 end
 
 module InUrl
+  require "open-uri"
   include InFile
   def init(id,host='')
     super(id)
@@ -67,7 +66,7 @@ module IoFile
   def save(data=nil,tag=nil)
     name=fname(tag)
     open(name,'w'){|f|
-      f << JSON.dump(data||to_hash)
+      f << (data ? JSON.dump(data) : to_j)
     }
     if tag
       # Making 'latest' tag link

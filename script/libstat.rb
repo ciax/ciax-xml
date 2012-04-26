@@ -9,11 +9,6 @@ class Stat < Var
     @last={}
   end
 
-  def get(id)
-    @v.msg{"getting status of #{id}"}
-    @val[id]
-  end
-
   def set(hash) #For Watch test
     @val.update(hash)
     self
@@ -45,7 +40,8 @@ module Stat::Convert
     self.val=Msg.type?(val,AppVal)
     self['ver']=adb['app_ver'].to_i
     @sym=SymStat.new(adb,val).upd
-    ['msg','class'].each{|k| self[k]=@sym[k] }
+    self['msg']=@sym.msg
+    self['class']=@sym.cls
     @lastsave=0
     self
   end

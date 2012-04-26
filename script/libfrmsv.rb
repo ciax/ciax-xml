@@ -16,7 +16,7 @@ class FrmSv < FrmObj
       @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(Stream::Logging).init(id,ver)
-      @sql=SqLog::Logging.new('field',id,ver,@field.val)
+      @field.extend(Field::SqLog).init(id,ver)
     else
       @io=Stream.new(iocmd,fdb['wait'],1)
       @field.delete('ver')
@@ -47,7 +47,6 @@ class FrmSv < FrmObj
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
       if @fr.upd{@io.rcv}
-        @sql.upd.save
         @field.save
       end
     end

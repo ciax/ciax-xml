@@ -92,6 +92,19 @@ module Field::IoFile
   end
 end
 
+module Field::SqLog
+  def init(id,ver)
+    @sql=SqLog::Logging.new('field',id,ver,@val)
+    self
+  end
+
+  def save(data=nil,tag=nil)
+    super
+    @sql.save
+    self
+  end
+end
+
 if __FILE__ == $0
   f=Field.new
   puts f.update({"a"=>[["0"],"1"]})

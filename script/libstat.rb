@@ -29,8 +29,8 @@ class Stat < Var
   end
 end
 
-# Status to Stat::Sym (String with attributes)
-module Stat::Sym
+# Status to Stat::SymConv (String with attributes)
+module Stat::SymConv
   require "libsymdb"
   include IoFile
   def init(adb)
@@ -89,7 +89,7 @@ end
 module Stat::SqLog
   require "libsqlog"
   def self.extended(obj)
-    Msg.type?(obj,Stat::Sym).init
+    Msg.type?(obj,Stat::SymConv).init
   end
 
   def init
@@ -124,7 +124,7 @@ if __FILE__ == $0
         puts Stat.new.extend(InFile).init(id).load
       end
     else
-      stat=Stat.new.extend(Stat::Sym).init(idb)
+      stat=Stat.new.extend(Stat::SymConv).init(idb)
       field=Field.new.load
       stat.val=AppVal.new(idb,field)
       print stat.upd.to_j

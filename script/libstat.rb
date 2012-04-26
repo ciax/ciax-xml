@@ -86,7 +86,7 @@ module Stat::Sym
   end
 end
 
-module Stat::Logging
+module Stat::SqLog
   require "libsqlog"
   def self.extended(obj)
     Msg.type?(obj,Stat::Sym).init

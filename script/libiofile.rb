@@ -15,15 +15,14 @@ module InFile
   def init(id)
     self['id']=id
     @dir="/json/"
-    @base=self['type']+"_"+id
-    @suffix='.json'
+    @base=self['type']+'_'+id
     @prefix=VarDir
     self
   end
 
-  def load
+  def load(tag=nil)
     begin
-      open(fname){|f|
+      open(fname(tag)){|f|
         str=f.read
         if str.empty?
           Msg.warn(" -- json file is empty")
@@ -32,19 +31,26 @@ module InFile
         end
       }
     rescue
-      Msg.warn("  -- no json file (#{fname})")
+      if tag
+        raise UserError,list_tags
+      else
+        Msg.warn("  -- no json file (#{fname})")
+      end
     end
     self
   end
 
-  def settag(tag)
-    @suffix="_#{tag}.json"
-    self
+  private
+  def fname(tag)
+    base=[self['type'],self['id'],tag].compact.join('_')
+    @prefix+@dir+base+".json"
   end
 
-  private
-  def fname
-    @prefix+@dir+@base+@suffix
+  def list_tags
+    list=Dir.glob(fname('*')).map{|f|
+        f.slice(/.+_(.+)\.json/,1)
+      }
+    "Tag=#{list}"
   end
 end
 
@@ -59,8 +65,18 @@ end
 
 module IoFile
   include InFile
-  def save(data=nil)
-    open(fname,'w'){|f| f << JSON.dump(data||to_hash)}
+  def save(data=nil,tag=nil)
+    name=fname(tag)
+    open(name,'w'){|f|
+      f << JSON.dump(data||to_hash)
+    }
+    if tag
+      # Making 'latest' tag link
+      sname=fname('latest')
+      File.unlink(sname) if File.exist?(sname)
+      File.symlink(fname(tag),sname)
+      @v.msg{"Symboliclink to [#{sname}]"}
+    end
     self
   end
 end

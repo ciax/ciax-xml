@@ -21,6 +21,10 @@ class Var < ExHash
     @val[key]
   end
 
+  def unset(key)
+    @val.delete(key)
+  end
+
   def val=(val)
     self['val']=@val=val.extend(Val)
   end

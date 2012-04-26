@@ -2,11 +2,11 @@
 require 'libmsg'
 require 'libiofile'
 require 'libupdate'
+require 'libvar'
 
-class Field < ExHash
+class Field < Var
   def initialize
-    super
-    self['type']='field'
+    super('field')
   end
 
   # Substitute str by Field data
@@ -33,9 +33,9 @@ class Field < ExHash
   # - ${key:idx1:idx2} => hash[key][idx1][idx2]
   def get(key)
     Msg.abort("No Key") unless key
-    return self[key] if key?(key)
+    return super if @val.key?(key)
     vname=[]
-    data=key.split(':').inject(self){|h,i|
+    data=key.split(':').inject(@val){|h,i|
       case h
       when Array
         begin
@@ -57,8 +57,12 @@ class Field < ExHash
 
   # Set value with mixed key
   def set(key,val)
-    get(key).replace(subst(val).to_s)
-    self['time'].replace(Msg::now)
+    if p=get(key)
+      p.replace(subst(val).to_s)
+      self.time=Msg::now
+    else
+      @val[key]=val
+    end
     self
   end
 end
@@ -88,8 +92,8 @@ module Field::IoFile
     Msg.err("No File Name")  unless @base
     hash={}
     keylist.each{|k|
-      if key?(k)
-        hash[k]=self[k]
+      if @val.key?(k)
+        hash[k]=get(k)
       else
         Msg.warn("No such Key [#{k}]")
       end

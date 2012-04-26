@@ -26,7 +26,7 @@ class FrmCmd
       if @sel.key?(:ccrange)
         @frame.mark
         mk_frame(:ccrange)
-        @field['cc']=@frame.checkcode
+        @field.val['cc']=@frame.checkcode
       end
       mk_frame(:main)
       frame=@fstr[:main]

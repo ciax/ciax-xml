@@ -16,7 +16,7 @@ class FrmSv < FrmObj
       @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
       id=fdb['id'];ver=fdb['frm_ver']
       @io.extend(Stream::Logging).init(id,ver)
-      @sql=SqLog::Logging.new('field',id,ver,@field)
+      @sql=SqLog::Logging.new('field',id,ver,@field.val)
     else
       @io=Stream.new(iocmd,fdb['wait'],1)
       @field.delete('ver')
@@ -61,21 +61,21 @@ class FrmSv < FrmObj
   private
   def set(par)
     if par.empty?
-      raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.keys}"
+      raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.val.keys}"
     end
     @field.set(par[0],par[1]).save
   end
 
   def unset(par)
     unless par
-      raise UserError,"Usage: unset [key(:idx)]\n key=#{@field.keys}"
+      raise UserError,"Usage: unset [key(:idx)]\n key=#{@field.val.keys}"
     end
-    @field.delete(par)
+    @field.unset(par)
   end
 
   def save(keys,tag=nil)
     unless keys
-      raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.keys}"
+      raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.val.keys}"
     end
     @field.savekey(keys.split(','),tag)
   end

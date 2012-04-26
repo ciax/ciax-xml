@@ -41,7 +41,7 @@ module InFile
   end
 
   private
-  def fname(tag)
+  def fname(tag=nil)
     base=[self['type'],self['id'],tag].compact.join('_')
     @prefix+@dir+base+".json"
   end

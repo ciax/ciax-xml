@@ -14,7 +14,7 @@ module ExEnum
   def path(ary=[])
     enum=ary.inject(self){|prev,a|
       prev[a.to_sym]||prev[a]
-    }
+    }||Msg.abort("No such key")
     data=enum.dup
     data.each{|k,v|
       data[k]=v.class.to_s if Enumerable === v

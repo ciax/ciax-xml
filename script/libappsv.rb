@@ -50,6 +50,7 @@ class AppSv < AppObj
       @fint.field.load
       @buf.at_flush.upd
     when 'set'
+      cmd[1] || raise(UserError,"usage: set [key=val,..]")
       @stat.str_update(cmd[1]).upd.save
       @watch.upd.save
       msg="Set #{cmd[1]}"

@@ -5,19 +5,17 @@ require 'librerange'
 
 module Watch
   class Stat < Var
+    attr_reader :active
     def initialize
       super('watch')
-      ['exec','block','int'].each{|i|
+      ['active','exec','block','int'].each{|i|
         self[i]||=[]
       }
+      @active=self['active']
     end
 
     def active?
-      ! self['active'].empty?
-    end
-
-    def act_list
-      self['active']
+      ! @active.empty?
     end
 
     def block?(cmd)
@@ -59,16 +57,15 @@ module Watch
       self['val']=@crnt={}
       self['last']=@last=upd_crnt
       self['res']=@res={}
-      self['active']=@act=[]
       self
     end
 
     def upd
       hash={'int' =>[],'exec' =>[],'block' =>[]}
-      @act.clear
+      @active.clear
       @wdb[:stat].each{|i,v|
         next unless check(i)
-        @act << i
+        @active << i
         hash.each{|k,a|
           n=@wdb[k.to_sym][i]
           a << n if n && !a.include?(n)

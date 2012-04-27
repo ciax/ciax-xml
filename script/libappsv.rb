@@ -89,7 +89,7 @@ class AppSv < AppObj
       # Making bunch of frmcmd array (ary of ary)
       ary.map{|cmd|
         @cobj.set(cmd)
-        append(cmd){@watch.act_list}
+        append(cmd){@watch.active}
         @ac.get
       }.flatten(1)
     }

@@ -36,7 +36,7 @@ module Stat::SymConv
   def init(adb)
     super(adb['id'])
     ads=Msg.type?(adb,AppDb)[:status]
-    self['ver']=adb['app_ver'].to_i
+    self.ver=adb['app_ver'].to_i
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.pack(['all',ads['table']])
     self['class']={'time' => 'normal'}

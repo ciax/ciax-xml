@@ -69,7 +69,6 @@ end
 
 module Field::IoFile
   include IoFile
-
   # Saving data of specified keys with tag
   def savekey(keylist,tag=nil)
     Msg.err("No File") unless @base

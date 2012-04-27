@@ -1,19 +1,19 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libexenum"
+require "libvar"
 
 # Should be included ExHash object
 # Read/Write JSON file
-# Need self['type']
+# Need @type
 module InFile
   def self.extended(obj)
-    Msg.type?(obj,ExHash)
+    Msg.type?(obj,Var)
   end
 
   def init(id)
     self['id']=@id=id
     @dir="/json/"
-    @base=self['type']+'_'+id
+    @base=@type+'_'+id
     @prefix=VarDir
     self
   end
@@ -40,7 +40,7 @@ module InFile
 
   private
   def fname(tag=nil)
-    base=[self['type'],self['id'],tag].compact.join('_')
+    base=[@type,@id,tag].compact.join('_')
     @prefix+@dir+base+".json"
   end
 

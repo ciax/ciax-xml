@@ -4,10 +4,9 @@ require 'libiofile'
 require 'librerange'
 
 module Watch
-  class Stat < ExHash
+  class Stat < Var
     def initialize
-      super
-      self['type']='watch'
+      super('watch')
       ['exec','block','int'].each{|i|
         self[i]||=[]
       }

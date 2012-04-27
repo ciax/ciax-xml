@@ -15,7 +15,8 @@ class AppSv < AppObj
     @stat.val=@val
     @stat.extend(Stat::SymConv).init(adb)
     @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
-    @watch.extend(Watch::Convert).init(adb,@val).extend(IoFile).init(id)
+    @watch.val=@val
+    @watch.extend(Watch::Convert).init(adb).extend(IoFile).init(id)
     Thread.abort_on_exception=true
     @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
     @buf.at_flush << proc{

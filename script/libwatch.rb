@@ -44,11 +44,10 @@ module Watch
       Msg.type?(obj,Stat)
     end
 
-    def init(adb,val)
+    def init(adb)
       @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => {}}
       @period=(@wdb['period']||300).to_i
       @interval=(@wdb['interval']||1).to_f/10
-      @val=Msg.type?(val,Hash)
       # Pick usable val
       @list=@wdb[:stat].values.flatten(1).map{|h|
         h['var']
@@ -102,7 +101,6 @@ module Watch
         when 'onchange'
           c=@last[k]
           res=(c != v)
-          c.replace(v)
           @v.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
         when 'pattern'
           c=n[j]['val']
@@ -138,8 +136,9 @@ module Watch
           m[j]||={}
           m[j]['type']=v[j]['type']
           m[j]['var']=v[j]['var']
+          m[j]['inv']=v[j]['inv']
           if v[j]['type'] != 'onchange'
-            m[j]['cmp']=v[j]['val'].inspect
+            m[j]['cmp']=v[j]['val']
           end
         }
       }
@@ -153,7 +152,7 @@ module Watch
           id=h['var']
           h['val']=@watch['val'][id]
           h['res']=@watch['res']["#{k}:#{i}"]
-          h['last']=@watch['last'][id] if h['type'] == 'onchange'
+          h['cmp']=@watch['last'][id] if h['type'] == 'onchange'
         }
         v['active']=@watch['active'].include?(k)
       }
@@ -178,11 +177,11 @@ module Watch
           str << Msg.color(j['var'],3)
           str << "  "
           str << "!" if j['inv']
-          str << "(#{j['type']}"
+          str << "(#{j['type']}: "
           if j['type'] == 'onchange'
-            str << "/last=#{j['last']},now=#{j['val']}"
+            str << "#{j['cmp']} => #{j['val']}"
           else
-            str << "=#{j['cmp']},actual=#{j['val']}"
+            str << "/#{j['cmp']}/ =~ #{j['val']}"
           end
           str << ")\n"
         }
@@ -219,8 +218,9 @@ if __FILE__ == $0
     end
   end
   if t=opt['t']
-    val=ExHash.new.str_update(t)
-    wstat.extend(Watch::Convert).init(adb,val).upd
+    wstat.extend(Watch::Convert).init(adb)
+    wstat.val.str_update(t)
+    wstat.upd
   end
-  puts wstat
+  puts wview||wstat
 end

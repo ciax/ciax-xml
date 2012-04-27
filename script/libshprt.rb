@@ -10,11 +10,11 @@ module ShPrt
 
   def init
     @output=@print=View.new(@adb,@stat).extend(View::Print)
-#    @watch.extend(Watch::View).init(@adb).extend(Watch::Print)
+    @wview=Watch::View.new(@adb,@watch).extend(Watch::Print)
     cm=@cobj.list['mode']
     cm['pri']="Print mode"
     cm['val']="Value mode"
-    cm['wat']="Watch mode" if @watch
+    cm['wat']="Watch mode" if @wview
     self
   end
 
@@ -25,7 +25,7 @@ module ShPrt
     when /^val/
       @output=@stat.val
     when /^wat/
-      @output=@watch
+      @output=@wview
     when /^all/
       @output=@stat
     else

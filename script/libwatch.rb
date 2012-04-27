@@ -126,28 +126,42 @@ module Watch
     end
   end
 
-  module View
-    def self.extended(obj)
-      Msg.type?(obj,Stat)
-    end
-
-    def init(adb)
+  class View < ExHash
+    def initialize(adb,watch)
       wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
-      wdb[:stat].size.times{|i|
-        hash=(self['stat'][i]||={})
-        hash['label']=wdb[:label][i]
-        n=wdb[:stat][i]
+      @watch=Msg.type?(watch,Watch::Stat)
+      ['exec','block','int'].each{|i|
+        self[i]=@watch[i]
+      }
+      self['stat']={}
+      wdb[:stat].each{|k,v|
+        hash=(self['stat'][k]||={})
+        hash['label']=wdb[:label][k]
         m=(hash['cond']||=[])
-        n.size.times{|j|
+        v.size.times{|j|
           m[j]||={}
-          m[j]['type']=n[j]['type']
-          m[j]['var']=n[j]['var']
-          if n[j]['type'] != 'onchange'
-            m[j]['cmp']=n[j]['val'].inspect
+          m[j]['type']=v[j]['type']
+          m[j]['var']=v[j]['var']
+          if v[j]['type'] != 'onchange'
+            m[j]['cmp']=v[j]['val'].inspect
           end
         }
       }
       self
+    end
+
+    def to_s
+      self['stat'].each{|k,v|
+        v['cond'].each_index{|i|
+          h=v['cond'][i]
+          id=h['var']
+          h['val']=@watch['val'][id]
+          h['res']=@watch['res']["#{k}:#{i}"]
+          h['last']=@watch['last'][id] if h['type'] == 'onchange'
+        }
+        v['active']=@watch['active'].include?(k)
+      }
+      super
     end
   end
 
@@ -158,8 +172,9 @@ module Watch
 
     def to_s
       return '' if self['stat'].empty?
+      super
       str="  "+Msg.color("Conditions",2)+"\t:\n"
-      self['stat'].each{|i|
+      self['stat'].each{|k,i|
         str << "    "+Msg.color(i['label'],6)+"\t: "
         str << show_res(i['active'])+"\n"
         i['cond'].each{|j|

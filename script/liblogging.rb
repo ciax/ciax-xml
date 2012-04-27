@@ -8,7 +8,7 @@ module Logging
       @ver=ver.to_i
       @id=id
       @loghead=VarDir+"/"+type+"_#{id}"
-      @v.msg{"Init/Start Log '#{type}' (#{id}/Ver.#{@ver})"}
+      @v.msg{"Init/Logging '#{type}' (#{id}/Ver.#{@ver})"}
       startlog
     end
     self

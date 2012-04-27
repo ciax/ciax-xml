@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libmsg'
+require 'json'
 #Extened Hash
 module ExEnum
   def to_s

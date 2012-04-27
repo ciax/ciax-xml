@@ -45,9 +45,7 @@ class FrmSv < FrmObj
       @io.cid=@cobj.set(cmd)[:cid]
       @v.msg{"Issue[#{@io.cid}]"}
       @io.snd(@fc.getframe)
-      if @fr.upd{@io.rcv}
-        @field.save
-      end
+      @fr.upd{@io.rcv} && @field.save
     end
     'OK'
   end

@@ -31,7 +31,7 @@ class Var < ExHash
 
   # Version Number
   def ver=(ver)
-    @val['ver']=@ver=ver
+    self['ver']=@ver=ver
   end
 
   def val=(val)

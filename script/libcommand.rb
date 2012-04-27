@@ -96,6 +96,27 @@ class Command < ExHash
   end
 end
 
+module Command::Logging
+  require 'liblogging'
+  include Logging
+  def self.extended(obj)
+    Msg.type?(obj,Command)
+  end
+
+  # need @v
+  def init(id,ver=0,&p)
+    super('appcmd',id,ver)
+    @proc=p
+    self
+  end
+
+  def set(cmd)
+    super
+    append(cmd){@proc.call}
+    self
+  end
+end
+
 if __FILE__ == $0
   require "optparse"
   require 'libinsdb'

@@ -3,7 +3,6 @@ require "libappobj"
 require "libappcmd"
 require "libbuffer"
 require "thread"
-require "liblogging"
 
 class AppSv < AppObj
   attr_reader :fint
@@ -32,7 +31,7 @@ class AppSv < AppObj
       @watch.upd.save
     }
     # Logging if version number exists
-    extend(Logging).init('appcmd',id,@stat.ver) if @stat.ver
+    @cobj.extend(Command::Logging).init(id,@stat.ver){@watch.active} if @stat.ver
     auto_update
     upd_prompt
   end
@@ -89,13 +88,10 @@ class AppSv < AppObj
       # Making bunch of frmcmd array (ary of ary)
       ary.map{|cmd|
         @cobj.set(cmd)
-        append(cmd){@watch.active}
         @ac.get
       }.flatten(1)
     }
   end
-
-  def append(cmd);end
 
   def auto_update
     @tid=Thread.new{

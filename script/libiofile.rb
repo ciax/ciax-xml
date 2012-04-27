@@ -32,7 +32,7 @@ module InFile
       if tag
         raise UserError,"Tag=#{taglist}"
       else
-        Msg.warn("  -- no json file (#{fname})")
+        Msg.warn("  -- no json file (#{fname})#{$!}")
       end
     end
     self

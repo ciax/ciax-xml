@@ -213,9 +213,9 @@ if __FILE__ == $0
   end
   wstat=Watch::Stat.new.extend(InFile).init(id).load
   unless opt['r']
-    wstat.extend(Watch::View).init(adb)
+    wview=Watch::View.new(adb,wstat)
     unless opt['v']
-      wstat.extend(Watch::Print)
+      wview.extend(Watch::Print)
     end
   end
   if t=opt['t']

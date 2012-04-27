@@ -50,14 +50,9 @@ class AppSv < AppObj
       @fint.field.load
       @buf.at_flush.upd
     when 'set'
-      hash={}
-      cmd[1..-1].each{|s|
-        k,v=s.split('=')
-        hash[k]=v
-      }
-      @stat.set(hash).upd.save
+      @stat.str_update(cmd[1]).upd.save
       @watch.upd.save
-      msg="Set #{hash}"
+      msg="Set #{cmd[1]}"
     else
       if @watch.block?(cmd)
         msg="Blocking(#{cmd})"

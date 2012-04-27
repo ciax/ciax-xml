@@ -219,8 +219,7 @@ if __FILE__ == $0
   end
   if t=opt['t']
     wstat.extend(Watch::Convert).init(adb)
-    wstat.val.str_update(t)
-    wstat.upd
+    wstat.str_update(t).upd
   end
   puts wview||wstat
 end

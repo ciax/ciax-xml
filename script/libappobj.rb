@@ -10,7 +10,7 @@ class AppObj < Interact
     @stat=Stat.new
     @watch=Watch::Stat.new
     ic=@cobj.list['internal']
-    ic['set']="[key=val] .."
+    ic['set']="[key=val], .."
     ic['flush']="Flush Status"
     tbl=@prompt.table
     tbl['auto']='@'

@@ -23,15 +23,6 @@ module ExEnum
     Msg.view_struct(data)
   end
 
-  # Update with str (key=val,key=val,..)
-  def str_update(str)
-    str.split(',').each{|i|
-      k,v=i.split('=')
-      self[k]=v
-    }
-    self
-  end
-
   def deep_copy
     Marshal.load(Marshal.dump(self))
   end

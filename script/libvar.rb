@@ -3,6 +3,16 @@ require "libmsg"
 require "libexenum"
 
 module Val
+  # Update with str (key=val,key=val,..)
+  def str_update(str)
+    str.split(',').each{|i|
+      k,v=i.split('=')
+      self[k]=v
+    }
+    self['time']=Msg.now
+    self
+  end
+
   def to_s
     Msg.view_struct(self,'val')
   end
@@ -26,7 +36,7 @@ class Var < ExHash
   end
 
   def id=(id)
-    @val['id']=@id=id
+    self['id']=@id=id
   end
 
   # Version Number

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libappobj"
 require "libappcmd"
+require "libappval"
 require "libbuffer"
 require "thread"
 

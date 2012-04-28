@@ -93,7 +93,7 @@ end
 
 module Field::SqLog
   def init(id,ver)
-    @sql=SqLog::Logging.new('field',id,ver,@val)
+    @sql=SqLog.new('field',id,ver,@val).extend(SqLog::Exec)
     self
   end
 

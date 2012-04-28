@@ -94,7 +94,7 @@ module Stat::SqLog
 
   def init
     # Logging if version number exists
-    @sql=SqLog::Logging.new('value',@id,@ver,@val)
+    @sql=SqLog.new('value',@id,@ver,@val).extend(SqLog::Exec)
     self
   end
 

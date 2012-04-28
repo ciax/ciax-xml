@@ -64,8 +64,7 @@ end
 # Execute Sql Command to sqlite3
 module SqLog::Exec
   def self.extended(obj)
-    Msg.type?(obj,SqLog)
-    obj.init
+    Msg.type?(obj,SqLog).init
   end
 
   def init

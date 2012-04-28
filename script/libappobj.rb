@@ -8,7 +8,7 @@ class AppObj < Interact
     @prompt['id']=adb['id']
     @port=adb['port'].to_i
     @stat=Stat.new
-    @watch=Watch::Stat.new
+    @watch=Watch.new
     ic=@cobj.list['internal']
     ic['set']="[key=val], .."
     ic['flush']="Flush Status"

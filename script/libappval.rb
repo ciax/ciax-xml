@@ -24,7 +24,7 @@ class AppVal < Hash
         @v.msg(-1){"STAT:GetStatus:#{id}=[#{self[id]}]"}
       end
     }
-    self['time']=@field.time
+    self['time']=@field.get('time')
     @v.msg{"Update(#{self['time']})"}
     self
   end

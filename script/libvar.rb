@@ -9,12 +9,12 @@ module Val
 end
 
 class Var < ExHash
-  attr_reader :type,:id,:ver,:val,:time
+  attr_reader :type,:id,:ver,:val
   def initialize(type)
     super()
     self['type']=@type=type
     self.val=Hash.new
-    self.time=Msg.now
+    set_time
   end
 
   def get(key)
@@ -28,7 +28,7 @@ class Var < ExHash
       k,v=i.split('=')
       @val[k]=v
     }
-    self.time=Msg.now
+    set_time
     self
   end
 
@@ -49,7 +49,21 @@ class Var < ExHash
     self['val']=@val=val.extend(Val)
   end
 
-  def time=(time)
-    @val['time']=@time=time
+  def set_time(time=nil)
+    @val['time']=time||Msg.now
+    self
+  end
+
+  def load(json_str=nil)
+    super
+    bind_var
+    self
+  end
+
+  private
+  def bind_var
+    ['type','id','ver','val'].each{|k|
+      eval "@#{k}=self['#{k}']"
+    }
   end
 end

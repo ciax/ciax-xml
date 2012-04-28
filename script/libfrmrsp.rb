@@ -30,7 +30,7 @@ class FrmRsp
       @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
       hash=yield
       frame=hash[:data]
-      @field.time=hash[:time]
+      @field.set_time(hash[:time])
       Msg.err("No Response") unless frame
       if tm=@sel['terminator']
         frame.chomp!(eval('"'+tm+'"'))
@@ -48,7 +48,7 @@ class FrmRsp
         cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         @v.msg{"Verify:CC OK <#{cc}>"}
       end
-      @v.msg{"Update(#{@field.time})"}
+      @v.msg{"Update(#{@field.get('time')})"}
       true
     else
       @v.msg{"Send Only"}

@@ -62,7 +62,7 @@ class Field < Var
     else
       @val[key]=val
     end
-    self.time=Msg::now
+    set_time
     self
   end
 end

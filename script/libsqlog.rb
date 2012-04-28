@@ -65,13 +65,17 @@ end
 module SqLog::Exec
   def self.extended(obj)
     Msg.type?(obj,SqLog)
-    @sql=["sqlite3",VarDir+"/"+type+".sq3"]
+    obj.init
+  end
+
+  def init
+    @sql=["sqlite3",VarDir+"/"+@type+".sq3"]
     unless check_table
       ini
       save
-      @v.msg{"Init/Table '#{@tid}' is created in #{type}"}
+      @v.msg{"Init/Table '#{@tid}' is created in #{@type}"}
     end
-    @v.msg{"Init/Start Log '#{type}' (#{id}/Ver.#{ver.to_i})"}
+    @v.msg{"Init/Start Log '#{@type}' (#{@tid})"}
   end
 
   # Check table existence
@@ -100,7 +104,7 @@ end
 if __FILE__ == $0
   require "libstat"
   Msg.usage "[stat_file]" if STDIN.tty? && ARGV.size < 1
-puts  stat=Stat.new.load
-#  sql=SqLog.new('value',stat.id,stat.ver,stat.val)
-#  puts sql.upd
+  stat=Stat.new.load
+  sql=SqLog.new('value',stat.id,stat.ver,stat.val)
+  puts sql.upd
 end

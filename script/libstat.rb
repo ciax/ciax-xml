@@ -35,7 +35,7 @@ module Stat::SymConv
   include IoFile
   def init(adb)
     super(adb['id'])
-    ads=Msg.type?(adb,AppDb)[:status]
+    ads=Msg.type?(adb,App::Db)[:status]
     self.ver=adb['app_ver'].to_i
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.pack(['all',ads['table']])
@@ -126,7 +126,7 @@ if __FILE__ == $0
     else
       stat=Stat.new.extend(Stat::SymConv).init(idb)
       field=Field.new.load
-      stat.val=AppVal.new(idb,field)
+      stat.val=App::Val.new(idb,field)
       print stat.upd.to_j
     end
   rescue UserError

@@ -7,6 +7,7 @@ class Update < Array
   end
 
   def upd
+    @v.msg{"Update procs"}
     each{|p|
       p.call
     }

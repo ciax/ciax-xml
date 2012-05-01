@@ -22,7 +22,7 @@ rescue UserError
             "-a:app level(input format 'sqlite3 -header')")
 end
 if opt['a']
-  val=AppVal.new(adb,field)
+  val=App::Val.new(adb,field)
   sql=SqLog.new('value',id,adb['app_ver'],val)
   if opt['i'] # Initial
     sql.ini

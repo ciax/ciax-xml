@@ -2,7 +2,7 @@
 require 'libmsg'
 class HtmlTbl < Array
   def initialize(adb)
-    sdb=Msg.type?(adb,AppDb)[:status]
+    sdb=Msg.type?(adb,App::Db)[:status]
     @label = sdb[:label]
     push "<div class=\"outline\">"
     push "<div class=\"title\">#{adb['label']}</div>"

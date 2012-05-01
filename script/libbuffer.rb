@@ -3,7 +3,7 @@ require "libmsg"
 require "thread"
 require "libupdate"
 
-# SubModule for AppSv
+# SubModule for App::Sv
 # *Command stream(Send)
 #  send() takes frame cmds in block
 #  -> Inbuf[priority]

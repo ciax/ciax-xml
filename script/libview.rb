@@ -4,7 +4,7 @@ require 'libelapse'
 
 class View < ExHash
   def initialize(adb,stat)
-    @sdb=Msg.type?(adb,AppDb)[:status]
+    @sdb=Msg.type?(adb,App::Db)[:status]
     @stat=Msg.type?(stat,Stat)
     ['val','class','msg'].each{|key|
       stat[key]||={}

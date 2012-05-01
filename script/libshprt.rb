@@ -2,10 +2,10 @@
 require "libview"
 require "libwatch"
 
-# Should be included in AppObj
+# Should be included in App::Int
 module ShPrt
   def self.extended(obj)
-    Msg.type?(obj,AppObj).init
+    Msg.type?(obj,App::Int).init
   end
 
   def init

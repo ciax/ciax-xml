@@ -16,7 +16,7 @@ coreutils:
 
 ## udp communicaton ##
  no command:
-   "" : (cmdline) -> "stat":(udp comm) -> "" : (AppObject)
+   "" : (cmdline) -> "stat":(udp comm) -> "" : (App::Intect)
  interrupt:
    ^D : (cmdline) -> nil : (readline) -> "interrupt" : (udp comm)
   

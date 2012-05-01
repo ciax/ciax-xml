@@ -19,10 +19,10 @@ class InsDb < Db
     }
   end
 
-  # overwrite AppDb
+  # overwrite App::Db
   def cover_app
     require "libappdb"
-    cover(AppDb.new(self['app_type']))
+    cover(App::Db.new(self['app_type']))
   end
 end
 

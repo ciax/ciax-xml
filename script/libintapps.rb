@@ -16,15 +16,15 @@ class IntApps < Hash
       adb=InsDb.new(id).cover_app
       if $opt['t']
         require "libappobj"
-        aint=AppObj.new(adb)
+        aint=App::Int.new(adb)
       elsif $opt['a']
         require "libappcl"
-        aint=AppCl.new(adb,$opt['h'])
+        aint=App::Cl.new(adb,$opt['h'])
       else
         require "libintfrms"
         require "libappsv"
         fint=IntFrms.new[id]
-        aint=AppSv.new(adb,fint)
+        aint=App::Sv.new(adb,fint)
         aint.socket
       end
       aint.extend(ShPrt)

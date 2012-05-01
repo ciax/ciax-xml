@@ -44,7 +44,7 @@ module Watch::Conv
   end
 
   def init(adb)
-    @wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => {}}
+    @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
     @period=(@wdb['period']||300).to_i
     @interval=(@wdb['interval']||1).to_f/10
     # Pick usable val
@@ -121,7 +121,7 @@ end
 
 class Watch::View < ExHash
   def initialize(adb,watch)
-    wdb=Msg.type?(adb,AppDb)[:watch] || {:stat => []}
+    wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => []}
     @watch=Msg.type?(watch,Watch)
     ['exec','block','int'].each{|i|
       self[i]=@watch[i]

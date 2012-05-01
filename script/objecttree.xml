@@ -19,10 +19,10 @@
     <Hash include="Enumerable">
       <ExHash include="ExEnum">
         <Command include="Math">
-          <AppCmd />
+          <App::Cmd />
         </Command>
         <Db>
-          <AppDb />
+          <App::Db />
           <FrmDb />
           <InsDb />
           <McrDb />
@@ -35,7 +35,7 @@
           </Stat>
         </IoFile>
       </ExHash>
-      <AppVal />
+      <App::Val />
       <IntApps />
       <IntFrms />
       <Msg::CmdList />
@@ -59,10 +59,10 @@
     <Thread>
       <Server />
     </Thread>
-    <AppObj>
-      <AppCl />
-      <AppSv />
-    </AppObj>
+    <App::Int>
+      <App::Cl />
+      <App::Sv />
+    </App::Int>
     <FrmObj>
       <FrmCl />
       <FrmSv />

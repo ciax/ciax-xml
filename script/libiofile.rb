@@ -20,6 +20,7 @@ module InFile
 
   def load(tag=nil)
     begin
+      @v.msg{"Loading #{fname(tag)}"}
       open(fname(tag)){|f|
         json_str=f.read
         if json_str.empty?

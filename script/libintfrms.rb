@@ -15,8 +15,8 @@ class IntFrms < Hash
         require "libfrmcl"
         FrmCl.new(fdb,$opt['h'])
       else
-          par=$opt['d'] ? ['frmsim',id] : []
         require "libfrmsv"
+        par=$opt['d'] ? ['frmsim',id] : []
         FrmSv.new(fdb,par).socket
       end
     }

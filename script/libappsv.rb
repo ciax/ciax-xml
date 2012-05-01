@@ -11,7 +11,7 @@ module App
     def initialize(adb,fint)
       super(adb)
       id=adb['id']
-      @fint=Msg.type?(fint,FrmObj)
+      @fint=Msg.type?(fint,Frm::Int)
       @ac=App::Cmd.new(@cobj)
       @val=App::Val.new(adb,@fint.field).upd
       @stat.val=@val

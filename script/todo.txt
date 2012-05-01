@@ -87,7 +87,7 @@ crt/hexint:reset doesn't work(1/23/12) [1/26]
 dso/hexint:reset doesn't work(1/31)[2/3]
 dso/hexint:return immediately after pnumatic command isued (1/31)[2/8]
 frmcl,appcl: client should accept internal commands 
- xx -> validate internal commands in FrmObj or App::Int
+ xx -> validate internal commands in Frm::Int or App::Int
  -> no validation in client [2/9/12] 
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]
   -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]

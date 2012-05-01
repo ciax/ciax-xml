@@ -23,7 +23,7 @@
         </Command>
         <Db>
           <App::Db />
-          <FrmDb />
+          <Frm::Db />
           <InsDb />
           <McrDb />
           <SymDb />
@@ -63,13 +63,13 @@
       <App::Cl />
       <App::Sv />
     </App::Int>
-    <FrmObj>
-      <FrmCl />
-      <FrmSv />
-    </FrmObj>
+    <Frm::Int>
+      <Frm::Cl />
+      <Frm::Sv />
+    </Frm::Int>
     <ViewPrt />
-    <FrmCmd />
-    <FrmRsp />
+    <Frm::Cmd />
+    <Frm::Rsp />
     <Buffer />
     <Circular />
     <Client />

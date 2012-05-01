@@ -2,57 +2,59 @@
 require "libframe"
 require "libcommand"
 # Cmd Methods
-class FrmCmd
-  def initialize(fdb,cobj,field)
-    @v=Msg::Ver.new(self,3)
-    Msg.type?(fdb,FrmDb)
-    @cobj=Msg.type?(cobj,Command)
-    @field=Msg.type?(field,Field)
-    @cache={}
-    @fstr={}
-    @sel=Hash[fdb[:cmdframe][:frame]]
-    @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
-  end
-
-  def getframe # return = response select
-    return unless @sel[:select]=@cobj[:select]
-#    @v.msg{"Attr of Command:#{@cobj}"}
-    cid=@cobj[:cid]
-    @v.msg{"Select:#{@cobj[:label]}(#{cid})"}
-    if frame=@cache[cid]
-      @v.msg{"Cmd cache found [#{cid}]"}
-    else
-      mk_frame(:select) && cid=nil
-      if @sel.key?(:ccrange)
-        @frame.mark
-        mk_frame(:ccrange)
-        @field.val['cc']=@frame.checkcode
-      end
-      mk_frame(:main)
-      frame=@fstr[:main]
-      @cache[cid]=frame if cid
+module Frm
+  class Cmd
+    def initialize(fdb,cobj,field)
+      @v=Msg::Ver.new(self,3)
+      Msg.type?(fdb,Frm::Db)
+      @cobj=Msg.type?(cobj,Command)
+      @field=Msg.type?(field,Field)
+      @cache={}
+      @fstr={}
+      @sel=Hash[fdb[:cmdframe][:frame]]
+      @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
     end
-    frame
-  end
 
-  private
-  def mk_frame(domain)
-    convert=nil
-    @frame.set
-    @sel[domain].each{|a|
-      case a
-      when Hash
-        frame=@field.subst(a['val'])
-        convert=true if frame != a['val']
-        frame.split(',').each{|s|
-          @frame.add(s,a)
-        }
-      else # ccrange,select,..
-        @frame.add(@fstr[a.to_sym])
+    def getframe # return = response select
+      return unless @sel[:select]=@cobj[:select]
+      #    @v.msg{"Attr of Command:#{@cobj}"}
+      cid=@cobj[:cid]
+      @v.msg{"Select:#{@cobj[:label]}(#{cid})"}
+      if frame=@cache[cid]
+        @v.msg{"Cmd cache found [#{cid}]"}
+      else
+        mk_frame(:select) && cid=nil
+        if @sel.key?(:ccrange)
+          @frame.mark
+          mk_frame(:ccrange)
+          @field.val['cc']=@frame.checkcode
+        end
+        mk_frame(:main)
+        frame=@fstr[:main]
+        @cache[cid]=frame if cid
       end
-    }
-    @fstr[domain]=@frame.copy
-    convert
+      frame
+    end
+
+    private
+    def mk_frame(domain)
+      convert=nil
+      @frame.set
+      @sel[domain].each{|a|
+        case a
+        when Hash
+          frame=@field.subst(a['val'])
+          convert=true if frame != a['val']
+          frame.split(',').each{|s|
+            @frame.add(s,a)
+          }
+        else # ccrange,select,..
+          @frame.add(@fstr[a.to_sym])
+        end
+      }
+      @fstr[domain]=@frame.copy
+      convert
+    end
   end
 end
 
@@ -62,10 +64,10 @@ if __FILE__ == $0
   dev,*cmd=ARGV
   ARGV.clear
   begin
-    fdb=FrmDb.new(dev)
+    fdb=Frm::Db.new(dev)
     cobj=Command.new(fdb[:cmdframe])
     field=Field.new
-    fc=FrmCmd.new(fdb,cobj,field)
+    fc=Frm::Cmd.new(fdb,cobj,field)
     field.load unless STDIN.tty?
     cobj.set(cmd)
     print fc.getframe

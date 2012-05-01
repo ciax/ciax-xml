@@ -25,7 +25,7 @@
 
 
 ### Struct of Db ###
-  FrmDb
+  Frm::Db
     ::command
       :label
          id=>Label String

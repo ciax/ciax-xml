@@ -13,11 +13,11 @@ class IntFrms < Hash
       fdb=InsDb.new(id).cover_app.cover_frm
       if $opt['f']
         require "libfrmcl"
-        FrmCl.new(fdb,$opt['h'])
+        Frm::Cl.new(fdb,$opt['h'])
       else
         require "libfrmsv"
         par=$opt['d'] ? ['frmsim',id] : []
-        FrmSv.new(fdb,par).socket
+        Frm::Sv.new(fdb,par).socket
       end
     }
   end

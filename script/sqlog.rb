@@ -53,7 +53,7 @@ else
   fdb=adb.cover_frm
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
-  fr=FrmRsp.new(fdb,cobj,field)
+  fr=Frm::Rsp.new(fdb,cobj,field)
   sql=SqLog.new('field',id,ver,field)
   if opt['i'] # Initial
     sql.ini

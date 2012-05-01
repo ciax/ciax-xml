@@ -147,7 +147,7 @@ module App
 
     def cover_frm
       require "libfrmdb"
-      cover(FrmDb.new(self['frm_type']))
+      cover(Frm::Db.new(self['frm_type']))
     end
   end
 end

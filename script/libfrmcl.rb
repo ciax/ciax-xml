@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libfrmobj"
+require "libfrmint"
 require "libfield"
 
 class FrmCl < FrmObj

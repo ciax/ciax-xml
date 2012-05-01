@@ -9,15 +9,15 @@ require "libinsdb"
 class IntFrms < Hash
   def initialize
     $opt||={}
-    super(){|h,id|
+    super{|h,id|
       fdb=InsDb.new(id).cover_app.cover_frm
       if $opt['f']
         require "libfrmcl"
-        Frm::Cl.new(fdb,$opt['h'])
+        h[id]=Frm::Cl.new(fdb,$opt['h'])
       else
         require "libfrmsv"
         par=$opt['d'] ? ['frmsim',id] : []
-        Frm::Sv.new(fdb,par).socket
+        h[id]=Frm::Sv.new(fdb,par).socket
       end
     }
   end

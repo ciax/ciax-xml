@@ -12,7 +12,8 @@ require "libshprt"
 class IntApps < Hash
   def initialize
     $opt||={'a'=>true}
-    super(){|h,id|
+    super{|h,id|
+#      warn "NO Hash (#{id}) then created"
       adb=InsDb.new(id).cover_app
       if $opt['t']
         require "libappint"
@@ -27,7 +28,7 @@ class IntApps < Hash
         aint=App::Sv.new(adb,fint)
         aint.socket
       end
-      aint.extend(ShPrt)
+      h[id]=aint.extend(ShPrt)
     }
   end
 

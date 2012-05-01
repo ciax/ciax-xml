@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappobj"
+require "libappint"
 require "libstat"
 require "libfrmcl"
 

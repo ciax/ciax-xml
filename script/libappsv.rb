@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappobj"
+require "libappint"
 require "libappcmd"
 require "libappval"
 require "libbuffer"

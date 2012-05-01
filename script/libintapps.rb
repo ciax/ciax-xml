@@ -15,7 +15,7 @@ class IntApps < Hash
     super(){|h,id|
       adb=InsDb.new(id).cover_app
       if $opt['t']
-        require "libappobj"
+        require "libappint"
         aint=App::Int.new(adb)
       elsif $opt['a']
         require "libappcl"

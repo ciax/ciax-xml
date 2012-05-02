@@ -32,7 +32,7 @@ class Stream
       @f.sysread(4096)
     }||Msg.err("No string")
     @v.msg{"Recieved #{str.size} byte"}
-    str
+    {:data => str,:time => Msg.now}
   end
 
   def reopen
@@ -65,7 +65,7 @@ module Stream::Logging
 
   # return hash (:data,:time
   def rcv
-    str=super
+    str=super[:data]
     {:data => str,:time => append('rcv',@cid){str}}
   end
 end

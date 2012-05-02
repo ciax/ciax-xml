@@ -87,6 +87,10 @@ module Msg
       end
       all.compact.join("\n")
     end
+
+    def error
+      raise SelectCMD,$!.to_s+to_s
+    end
   end
 
   # Structure /GroupID/List

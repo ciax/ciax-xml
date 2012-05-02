@@ -47,10 +47,7 @@ class Interact
         end
         puts msg
       rescue SelectID
-        ['mode','layer','dev'].each{|i|
-          next unless @cmdlist.key?(i)
-          return line if @cmdlist[i].key?(line)
-        }
+        return line if cmds.include?(line)
         puts $!.to_s
       rescue UserError
         puts $!.to_s

@@ -9,7 +9,7 @@ require "libshprt"
 # 'd' is dummy (frmsim)
 # 't' is check cmd only
 # 'h' is specified host
-class IntApps < Hash
+class AppList < Hash
   def initialize
     $opt||={'a'=>true}
     super{|h,id|
@@ -40,6 +40,6 @@ end
 
 if __FILE__ == $0
   id=ARGV.shift
-  ary=IntApps.new
+  ary=AppList.new
   puts ary[id]
 end

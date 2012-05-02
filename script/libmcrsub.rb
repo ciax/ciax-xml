@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libcommand"
-require "libintapps"
+require "libapplist"
 
 class Broken < RuntimeError;end
 
 class McrSub < Array
   ACT=ENV['ACT'].to_i
-  @@client=IntApps.new
+  @@client=AppList.new
 
   def initialize(cobj,int=nil)
     @v=Msg::Ver.new(self,9)

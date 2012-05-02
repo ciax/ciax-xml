@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libintapps"
+require "libapplist"
 
 $opt=ARGV.getopts("afdts")
 id,$opt['h']=ARGV
 begin
-  aint=IntApps.new
+  aint=AppList.new
 rescue UserError
   Msg.usage('(-fsd) [id] (host)',
             '-a:client on app',

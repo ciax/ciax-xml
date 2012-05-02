@@ -5,7 +5,6 @@ require "libfrmcl"
 
 module App
   class Cl < Int
-    include Client
     def initialize(adb,host=nil)
       super(adb)
       host||=adb['host']
@@ -14,7 +13,7 @@ module App
       @watch.extend(InUrl).init(adb['id'],@host).load
       @fint=Frm::Cl.new(adb.cover_frm,@host)
       @updlist << proc{ @stat.load }
-      init_client
+      extend(Client)
     end
   end
 end

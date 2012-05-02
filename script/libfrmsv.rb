@@ -10,7 +10,6 @@ module Frm
   class Sv < Int
     def initialize(fdb,iocmd=[])
       super(fdb)
-      @v=Msg::Ver.new(self,3)
       @field.extend(Field::IoFile).init(fdb['id']).load
       @fr=Frm::Rsp.new(fdb,@cobj,@field)
       if Msg.type?(iocmd,Array).empty?

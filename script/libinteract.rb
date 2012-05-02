@@ -8,7 +8,7 @@ require "libupdate"
 class Interact
   attr_reader :updlist,:cmdlist
   def initialize(cobj,host=nil)
-    @v=Msg::Ver.new(self,1)
+    @v=Msg::Ver.new(self,3)
     @cobj=Msg::type?(cobj,Command)
     @cmdlist=@cobj.list
     @prompt=Prompt.new
@@ -87,6 +87,10 @@ class Interact
 end
 
 module Client
+  def self.extended(obj)
+    Msg.type?(obj,Interact).init
+  end
+
   def exe(cmd)
     line=cmd.empty? ? 'strobe' : cmd.join(' ')
     @udp.send(line,0,@addr)
@@ -100,12 +104,11 @@ module Client
     @prompt['msg']
   end
 
-  private
-  def init_client
+  def init
     @udp=UDPSocket.open()
     @host||='localhost'
     @addr=Socket.pack_sockaddr_in(@port,@host)
-    @v.msg{"Connect to #{@host}:#{@port}"}
+    @v.msg{"Init/Client #{@host}:#{@port}"}
     self
   end
 end

@@ -10,7 +10,7 @@ module App
       @port=adb['port'].to_i
       @stat=Stat.new
       @watch=Watch.new
-      ic=@cobj.list['internal']
+      ic=@cmdlist['internal']
       ic['set']="[key=val], .."
       ic['flush']="Flush Status"
       tbl=@prompt.table
@@ -21,16 +21,18 @@ module App
       @fint=nil
     end
 
-    def shell(modes={})
+    def shell
       if @fint
-        modes.update({'frm' => "Frm mode",'app' => "App mode"})
+        cl=Msg::CmdList.new("Change Layer",2)
+        cl.update({'frm' => "Frm mode",'app' => "App mode"})
+        @fint.cmdlist['layer']=@cmdlist['layer']=cl
         id='app'
         loop{
           case id
           when 'app'
             id=super
           when 'frm'
-            id=@fint.shell(modes)
+            id=@fint.shell
           else
             break id
           end

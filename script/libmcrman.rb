@@ -16,7 +16,7 @@ class McrMan < Interact
     @prompt="#@id[]>"
     @index=0
     @mcr=McrSub.new(@cobj,1).extend(McrPrt)
-    cl=cobj.list['internal']
+    cl=@cmdlist['internal']
     cl["[0-9]"]="Switch Mode"
     cl["list"]="Thread list"
   end

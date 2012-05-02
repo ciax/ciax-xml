@@ -10,7 +10,7 @@ module Frm
       @prompt['id']=fdb['id']
       @port=fdb['port'].to_i-1000
       @field=Field.new
-      ic=@cobj.list['internal']
+      ic=@cmdlist['internal']
       ic['set']="Set Value [key(:idx)] (val)"
       ic['unset']="Remove Value [key]"
       ic['save']="Save Field [key,key...] (tag)"

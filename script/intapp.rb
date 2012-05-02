@@ -14,7 +14,10 @@ rescue UserError
             '-s:server','-d:dummy')
 end
 sleep if $opt["s"]
-list={'crt' => "cart",'dsi' => "IR stand-by",'dso' => "OPT stand-by"}
+cl=Msg::CmdList.new("Change Device",2)
+cl.update({'crt' => "cart",'dsi' => "IR stand-by",'dso' => "OPT stand-by"})
 loop{
-  id=aint[id].shell(list)||break
+  int=aint[id]
+  int.cmdlist['dev']=cl
+  id=int.shell||break
 }

@@ -11,7 +11,7 @@ module ShPrt
   def init
     @output=@print=View.new(@adb,@stat).extend(View::Print)
     @wview=Watch::View.new(@adb,@watch).extend(Watch::Print)
-    cm=@cobj.list['mode']
+    cm=@cmdlist['mode']=Msg::CmdList.new("Change View Mode",2)
     cm['pri']="Print mode"
     cm['val']="Value mode"
     cm['wat']="Watch mode" if @wview

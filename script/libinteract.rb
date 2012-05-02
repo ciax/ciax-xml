@@ -7,14 +7,13 @@ require "libupdate"
 
 class Interact
   attr_reader :updlist,:cmdlist
-  def initialize(cobj,host=nil)
+  def initialize(cobj)
     @v=Msg::Ver.new(self,3)
     @cobj=Msg::type?(cobj,Command)
     @cmdlist=@cobj.list
     @prompt=Prompt.new
     @updlist=Update.new
     @port=0
-    @host=host
     @cmdlist['internal']=Msg::CmdList.new("Internal Command",2)
   end
 

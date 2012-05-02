@@ -45,7 +45,7 @@ class Interact
           @updlist.upd
         end
         puts msg
-      rescue SelectID
+      rescue SelectCMD
         return line if cmds.include?(line)
         puts $!.to_s
       rescue UserError

@@ -21,18 +21,18 @@ module App
       @fint=nil
     end
 
-    def shell
+    def shell(modes={})
       if @fint
-        modes={'frm' => "Frm mode",'app' => "App mode"}
+        modes.update({'frm' => "Frm mode",'app' => "App mode"})
         id='app'
         loop{
           case id
           when 'app'
-            id=super(modes)
+            id=super
           when 'frm'
             id=@fint.shell(modes)
           else
-            break
+            break id
           end
         }
       else

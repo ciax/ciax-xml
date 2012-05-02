@@ -8,7 +8,7 @@ def find_snd(fd,input,fname)
   while line=fd.gets
     snd=line.split("\t")
     rec=snd[2].chomp
-    inp=[input].pack("m").split("\n").join('')
+    inp=[input.chomp].pack("m").split("\n").join('')
     if rec == inp
       STDERR.print "#{fname}:#{snd[1]}(#{fd.lineno})"
       rcv=fd.gets.split("\t")

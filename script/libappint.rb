@@ -11,30 +11,38 @@ module App
       @port=adb['port'].to_i
       @stat=Stat.new
       @watch=Watch.new
-      ic=@cmdlist['internal']
-      ic['set']="[key=val], .."
-      ic['flush']="Flush Status"
-      tbl=@prompt.table
-      tbl['auto']='@'
-      tbl['watch']='&'
-      tbl['isu']='*'
-      tbl['na']='X'
+      @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=FrmList.new[adb['id']]
     end
+
+    def exe(cmd)
+      super
+    rescue SelectCMD
+      cl=Msg::CmdList.new("Internal Command",2)
+      cl['set']="[key=val], .."
+      cl['flush']="Flush Status"
+      cl.error
+    end
+
 
     def shell
       cl=Msg::CmdList.new("Change Layer",2)
       cl.update({'frm' => "Frm mode",'app' => "App mode"})
-      @fint.cmdlist['layer']=@cmdlist['layer']=cl
       id='app'
+      default=id
+      estr=''
       loop{
         case id
         when 'app'
-          id=super
+          default=id
+          id,estr=super || break
         when 'frm'
-          id=@fint.shell
+          default=id
+          id,estr=@fint.shell || break
         else
-          break id
+          id=default
+          estr+="\n"+cl.to_s
+          puts estr
         end
       }
     end

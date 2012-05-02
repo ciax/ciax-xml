@@ -18,6 +18,5 @@ cl=Msg::CmdList.new("Change Device",2)
 cl.update({'crt' => "cart",'dsi' => "IR stand-by",'dso' => "OPT stand-by"})
 loop{
   int=aint[id]
-  int.cmdlist['dev']=cl
   id=int.shell||break
 }

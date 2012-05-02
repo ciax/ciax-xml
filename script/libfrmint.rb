@@ -10,12 +10,18 @@ module Frm
       @prompt['id']=fdb['id']
       @port=fdb['port'].to_i-1000
       @field=Field.new
-      ic=@cmdlist['internal']
-      ic['set']="Set Value [key(:idx)] (val)"
-      ic['unset']="Remove Value [key]"
-      ic['save']="Save Field [key,key...] (tag)"
-      ic['load']="Load Field (tag)"
-      ic['sleep']="Sleep [n] sec"
+    end
+
+    def exe(cmd)
+      super
+    rescue
+      cl=Msg::CmdList.new("Internal Command",2)
+      cl['set']="Set Value [key(:idx)] (val)"
+      cl['unset']="Remove Value [key]"
+      cl['save']="Save Field [key,key...] (tag)"
+      cl['load']="Load Field (tag)"
+      cl['sleep']="Sleep [n] sec"
+      cl.error
     end
 
     def to_s

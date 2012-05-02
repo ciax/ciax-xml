@@ -10,11 +10,13 @@ class Interact
   def initialize(cobj)
     @v=Msg::Ver.new(self,3)
     @cobj=Msg::type?(cobj,Command)
-    @cmdlist=@cobj.list
     @prompt=Prompt.new
     @updlist=Update.new
     @port=0
-    @cmdlist['internal']=Msg::CmdList.new("Internal Command",2)
+    @cmdlist=@cobj.list.all
+    Readline.completion_proc= proc{|word|
+      @cmdlist.grep(/^#{word}/)
+    }
   end
 
   def exe(cmd)
@@ -25,17 +27,11 @@ class Interact
   # 'q' gives exit break (loop returns nil)
   # mode gives special break (loop returns mode)
   def shell
-    cmds=@cmdlist.all
-    Readline.completion_proc= proc{|word|
-      cmds.grep(/^#{word}/)
-    } unless cmds.empty?
-    cl=Msg::CmdList.new("Shell Command",2)
-    @cmdlist['shell']=cl.update({'q'=>"Quit",'D^'=>"Interrupt"})
     loop {
       line=Readline.readline(@prompt.to_s,true)||'interrupt'
       break if /^q/ === line
+      cmd=line.split(' ')
       begin
-        cmd=line.split(' ')
         # exe() includes status update when being Client
         # need to be executed even if cmd is empty or being Server
         msg=exe(cmd)
@@ -46,8 +42,9 @@ class Interact
         end
         puts msg
       rescue SelectCMD
-        return line if cmds.include?(line)
-        puts $!.to_s
+        cl=Msg::CmdList.new("Shell Command",2)
+        cl.update({'q'=>"Quit",'D^'=>"Interrupt"})
+        return line,cl.to_s
       rescue UserError
         puts $!.to_s
       end
@@ -98,7 +95,7 @@ module Client
     @prompt.load(input)
     @v.msg{"Recv #{input}"}
     # Error message
-    @cobj.set(cmd) if /ERROR/ =~ @prompt['msg']
+    super if /ERROR/ =~ @prompt['msg']
     @updlist.upd
     @prompt['msg']
   end

@@ -89,7 +89,7 @@ module Msg
     end
 
     def error
-      raise SelectCMD,$!.to_s+to_s
+      raise SelectCMD,to_s
     end
   end
 

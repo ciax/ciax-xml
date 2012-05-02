@@ -6,16 +6,16 @@ require "libcommand"
 require "libupdate"
 
 class Interact
-  attr_reader :updlist
+  attr_reader :updlist,:cmdlist
   def initialize(cobj,host=nil)
     @v=Msg::Ver.new(self,1)
     @cobj=Msg::type?(cobj,Command)
+    @cmdlist=@cobj.list
     @prompt=Prompt.new
     @updlist=Update.new
     @port=0
     @host=host
-    @cobj.list['internal']=Msg::CmdList.new("Internal Command",2)
-    @cobj.list['mode']=Msg::CmdList.new("Change Mode",2)
+    @cmdlist['internal']=Msg::CmdList.new("Internal Command",2)
   end
 
   def exe(cmd)
@@ -25,20 +25,16 @@ class Interact
 
   # 'q' gives exit break (loop returns nil)
   # mode gives special break (loop returns mode)
-  def shell(modes={})
-    @cobj.list['mode'].update(modes)
-    cmds=@cobj.list.all
+  def shell
+    cmds=@cmdlist.all
     Readline.completion_proc= proc{|word|
       cmds.grep(/^#{word}/)
     } unless cmds.empty?
-    cl=Msg::CmdList.new("Shell Command")
-    cl['q']="Quit"
-    cl['D^']="Interrupt"
-    @cobj.list['shell']=cl
+    cl=Msg::CmdList.new("Shell Command",2)
+    @cmdlist['shell']=cl.update({'q'=>"Quit",'D^'=>"Interrupt"})
     loop {
       line=Readline.readline(@prompt.to_s,true)||'interrupt'
       break if /^q/ === line
-      break line if modes.key?(line)
       begin
         cmd=line.split(' ')
         # exe() includes status update when being Client
@@ -50,6 +46,12 @@ class Interact
           @updlist.upd
         end
         puts msg
+      rescue SelectID
+        ['mode','layer','dev'].each{|i|
+          next unless @cmdlist.key?(i)
+          return line if @cmdlist[i].key?(line)
+        }
+        puts $!.to_s
       rescue UserError
         puts $!.to_s
       end

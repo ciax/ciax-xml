@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libinteract"
 require "libstat"
+require "libfrmlist"
 module App
   class Int < Interact
     def initialize(adb)
@@ -18,28 +19,24 @@ module App
       tbl['watch']='&'
       tbl['isu']='*'
       tbl['na']='X'
-      @fint=nil
+      @fint=FrmList.new[adb['id']]
     end
 
     def shell
-      if @fint
-        cl=Msg::CmdList.new("Change Layer",2)
-        cl.update({'frm' => "Frm mode",'app' => "App mode"})
-        @fint.cmdlist['layer']=@cmdlist['layer']=cl
-        id='app'
-        loop{
-          case id
-          when 'app'
-            id=super
-          when 'frm'
-            id=@fint.shell
-          else
-            break id
-          end
-        }
-      else
-        super
-      end
+      cl=Msg::CmdList.new("Change Layer",2)
+      cl.update({'frm' => "Frm mode",'app' => "App mode"})
+      @fint.cmdlist['layer']=@cmdlist['layer']=cl
+      id='app'
+      loop{
+        case id
+        when 'app'
+          id=super
+        when 'frm'
+          id=@fint.shell
+        else
+          break id
+        end
+      }
     end
 
     def to_s

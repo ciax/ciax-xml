@@ -11,7 +11,6 @@ module App
       @host=Msg.type?(host||adb['host'],String)
       @stat.extend(InUrl).init(adb['id'],@host).load
       @watch.extend(InUrl).init(adb['id'],@host).load
-      @fint=Frm::Cl.new(adb.cover_frm,@host)
       @updlist << proc{ @stat.load }
       extend(Client)
     end

@@ -22,9 +22,9 @@ class AppList < Hash
         require "libappcl"
         aint=App::Cl.new(adb,$opt['h'])
       else
-        require "libintfrms"
+        require "libfrmlist"
         require "libappsv"
-        fint=IntFrms.new[id]
+        fint=FrmList.new[id]
         aint=App::Sv.new(adb,fint)
         aint.socket
       end

@@ -6,7 +6,7 @@ require "libinsdb"
 # 's' is server
 # 'd' is dummy(from log)
 # 'h' is specified host
-class IntFrms < Hash
+class FrmList < Hash
   def initialize
     $opt||={}
     super{|h,id|

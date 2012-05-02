@@ -37,7 +37,7 @@
       </ExHash>
       <App::Val />
       <AppList />
-      <IntFrms />
+      <FrmList />
       <Msg::CmdList />
       <Msg::GroupList />
       <SymStat />

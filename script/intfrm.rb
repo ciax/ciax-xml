@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 require "optparse"
 require "libinsdb"
-require "libintfrms"
+require "libfrmlist"
 
 $opt=ARGV.getopts("fds")
 id,$opt['h']=ARGV
 begin
-  fint=IntFrms.new[id]
+  fint=FrmList.new[id]
 rescue UserError
   Msg.usage("(-sfd) [id] (host)","-s:server","-f:client","-d:dummy")
 end

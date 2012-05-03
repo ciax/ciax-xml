@@ -35,10 +35,9 @@ class Db < ExHash
       @v.msg{"CACHE:Loaded(#{base})"}
       return Marshal.load(IO.read(fmar))
     end
-    @doc||=XmlDoc.new(@type)
-    res=Msg.type?(yield(@doc),Hash)
+    res=Msg.type?(yield(XmlDoc.new(@type)),Hash)
     open(fmar,'w') {|f|
-      f << Marshal.dump(Hash[res])
+      f << Marshal.dump(res)
       @v.msg{"CACHE:Saved(#{base})"}
     }
     res

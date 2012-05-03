@@ -95,7 +95,7 @@ module Msg
 
   # Structure /GroupID/List
   class GroupList < Hash
-    def initialize(cdb)
+    def initialize(cdb={})
       if cdb.key?(:group)
         cdb[:group].each{|key,ary|
           hash={}
@@ -108,7 +108,7 @@ module Msg
           cap=(cdb[:caption]||{})[key]||"Command List"
           self[key]=CmdList.new(cap,col.to_i,2).update(hash)
         }
-      else
+      elsif cdb.key?(:label)
         self['cmd']=CmdList.new("Command List",1,2).update(cdb[:label])
       end
     end

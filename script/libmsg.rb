@@ -60,8 +60,8 @@ module Msg
 
   # Structure /CommandID/Msg w/@title,@col
   class CmdList < Hash
-    def initialize(title=nil,col=nil)
-      @title='==== '+Msg.color(title,2)+' ====' if title
+    def initialize(title=nil,col=nil,color=6)
+      @title='==== '+Msg.color(title,color)+' ====' if title
       @col=col||1
     end
 
@@ -106,10 +106,10 @@ module Msg
           }
           col=(cdb[:column]||{})[key] || 1
           cap=(cdb[:caption]||{})[key]||"Command List"
-          self[key]=CmdList.new(cap,col.to_i).update(hash)
+          self[key]=CmdList.new(cap,col.to_i,2).update(hash)
         }
       else
-        self['cmd']=CmdList.new("Command List").update(cdb[:label])
+        self['cmd']=CmdList.new("Command List",1,2).update(cdb[:label])
       end
     end
 

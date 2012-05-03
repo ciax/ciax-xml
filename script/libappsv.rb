@@ -64,7 +64,6 @@ module App
         end
       end
       upd_prompt
-      super
       msg
     end
 

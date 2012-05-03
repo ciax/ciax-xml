@@ -27,6 +27,8 @@ module App
           id=super||break
         when /frm/
           id=@fint.shell||break
+        else
+          return id
         end
       }
     end

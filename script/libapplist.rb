@@ -13,7 +13,6 @@ class AppList < Hash
   def initialize
     $opt||={'a'=>true}
     super{|h,id|
-#      warn "NO Hash (#{id}) then created"
       adb=InsDb.new(id).cover_app
       if $opt['t']
         require "libappint"
@@ -27,6 +26,8 @@ class AppList < Hash
         aint.socket
       end
       h[id]=aint.extend(ShPrt)
+      yield aint if defined? yield
+      h[id]
     }
   end
 

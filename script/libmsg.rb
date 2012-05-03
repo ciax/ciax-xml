@@ -75,7 +75,7 @@ module Msg
     end
 
     def to_s
-      all=[$!.to_s].grep(/./)
+      all=[]
       unless empty?
         all << @title
         keys.each_slice(@col){|a|
@@ -95,7 +95,6 @@ module Msg
 
   # Structure /GroupID/List
   class GroupList < Hash
-    attr_reader :group
     def initialize(cdb={})
       @group={}
       if cdb.key?(:group)
@@ -117,15 +116,14 @@ module Msg
       end
     end
 
-    def add_group(key,title,col=1,color=3)
+    def add_group(key,title,hash={},col=1,color=6)
       @group[key]=CmdList.new(title,col,color)
-      self
+      add_items(key,hash)
     end
 
-    def update_item(id,hash)
-      Msg.err("No such ID (#{id})") unless @group.key?(id)
-      @group[id].update(hash)
-      self
+    def add_items(key,hash)
+      @group[key].update(hash)
+      update(hash)
     end
 
     # search msg of each command
@@ -135,7 +133,7 @@ module Msg
     end
 
     def to_s
-      @group.values.map{|v| v.to_s}.grep(/./).join("\n")
+      ([$!]+@group.values).map{|v| v.to_s}.grep(/./).join("\n")
     end
 
     def error(str=nil)

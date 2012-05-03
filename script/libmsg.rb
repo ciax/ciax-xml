@@ -95,7 +95,9 @@ module Msg
 
   # Structure /GroupID/List
   class GroupList < Hash
+    attr_reader :group
     def initialize(cdb={})
+      @group={}
       if cdb.key?(:group)
         cdb[:group].each{|key,ary|
           hash={}
@@ -106,32 +108,34 @@ module Msg
           }
           col=(cdb[:column]||{})[key] || 1
           cap=(cdb[:caption]||{})[key]||"Command List"
-          self[key]=CmdList.new(cap,col.to_i,2).update(hash)
+          @group[key]=CmdList.new(cap,col.to_i,2).update(hash)
+          update(hash)
         }
       elsif cdb.key?(:label)
-        self['cmd']=CmdList.new("Command List",1,2).update(cdb[:label])
+        @group['cmd']=CmdList.new("Command List",1,2).update(cdb[:label])
+        update(cdb[:label])
       end
+    end
+
+    def add_group(key,title,col=1,color=3)
+      @group[key]=CmdList.new(title,col,color)
+      self
+    end
+
+    def update_item(id,hash)
+      Msg.err("No such ID (#{id})") unless @group.key?(id)
+      @group[id].update(hash)
+      self
     end
 
     # search msg of each command
     def item(id)
-      each{|k,v|
-        return Msg.item(id,v[id]) if v.key?(id)
-      }
+      return Msg.item(id,self[id]) if key?(id)
       nil
     end
 
-    # all command list
-    def all
-      list=[]
-      each{|k,v|
-        list+=v.keys
-      }
-      list
-    end
-
     def to_s
-      values.map{|v| v.to_s}.grep(/./).join("\n")
+      @group.values.map{|v| v.to_s}.grep(/./).join("\n")
     end
 
     def error(str=nil)

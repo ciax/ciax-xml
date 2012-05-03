@@ -11,6 +11,9 @@ module ShPrt
   def init
     @output=@print=View.new(@adb,@stat).extend(View::Print)
     @wview=Watch::View.new(@adb,@watch).extend(Watch::Print)
+    vl={'pri'=>"Print mode",'val'=>"Value mode"}
+    vl['wat']="Watch mode" if @wview
+    @cmdlist.add_group('view',"Change View Mode",vl,2)
     self
   end
 
@@ -28,12 +31,6 @@ module ShPrt
       return super
     end
     ''
-  rescue SelectCMD
-    cm=Msg::CmdList.new("Change View Mode",2)
-    cm['pri']="Print mode"
-    cm['val']="Value mode"
-    cm['wat']="Watch mode" if @wview
-    cm.error
   end
 
   def to_s

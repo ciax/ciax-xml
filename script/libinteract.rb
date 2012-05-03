@@ -13,9 +13,10 @@ class Interact
     @prompt=Prompt.new
     @updlist=Update.new
     @port=0
-    @cmdlist=@cobj.list.all
+    corecmd=@cobj.list.keys
+    @cmdlist=Msg::GroupList.new
     Readline.completion_proc= proc{|word|
-      @cmdlist.grep(/^#{word}/)
+      (corecmd+@cmdlist.keys).grep(/^#{word}/)
     }
   end
 
@@ -27,6 +28,8 @@ class Interact
   # 'q' gives exit break (loop returns nil)
   # mode gives special break (loop returns mode)
   def shell
+    sl={'q'=>"Quit",'D^'=>"Interrupt"}
+    @cmdlist.add_group('sh',"Shell Command",sl,2)
     loop {
       line=Readline.readline(@prompt.to_s,true)||'interrupt'
       break if /^q/ === line
@@ -42,9 +45,8 @@ class Interact
         end
         puts msg
       rescue SelectCMD
-        cl=Msg::CmdList.new("Shell Command",2)
-        cl.update({'q'=>"Quit",'D^'=>"Interrupt"})
-        return line,cl.to_s
+        return line if @cmdlist.include?(line)
+        puts @cmdlist
       rescue UserError
         puts $!.to_s
       end

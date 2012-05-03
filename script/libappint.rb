@@ -13,36 +13,20 @@ module App
       @watch=Watch.new
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=FrmList.new[adb['id']]
+      int={'set'=>"[key=val], ..",'flush'=>"Flush Status"}
+      @cmdlist.add_group('int',"Internal Command",int,2)
     end
-
-    def exe(cmd)
-      super
-    rescue SelectCMD
-      cl=Msg::CmdList.new("Internal Command",2)
-      cl['set']="[key=val], .."
-      cl['flush']="Flush Status"
-      cl.error
-    end
-
 
     def shell
-      cl=Msg::CmdList.new("Change Layer",2)
-      cl.update({'frm' => "Frm mode",'app' => "App mode"})
+      @cmdlist.add_group('lay',"Change Layer",{'frm'=>"Frm mode"},2)
+      @fint.cmdlist.add_group('lay',"Change Layer",{'app'=>"App mode"},2)
       id='app'
-      default=id
-      estr=''
       loop{
         case id
-        when 'app'
-          default=id
-          id,estr=super || break
-        when 'frm'
-          default=id
-          id,estr=@fint.shell || break
-        else
-          id=default
-          estr+="\n"+cl.to_s
-          puts estr
+        when /app/
+          id=super||break
+        when /frm/
+          id=@fint.shell||break
         end
       }
     end

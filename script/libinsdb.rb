@@ -5,17 +5,19 @@ class InsDb < Db
   def initialize(id)
     super('idb')
     self['id']=id
-    cache(id){|doc|
-      update(doc)
+    set(id){|doc|
+      hash={}
+      hash.update(doc)
       doc.domain('init').each{|e0|
-        ((self[:rspframe]||={})[:assign]||={})[e0['id']]=e0.text
+        ((hash[:rspframe]||={})[:assign]||={})[e0['id']]=e0.text
       }
       doc.domain('select').each{|e0|
-        e0.attr2db(self[:command]||={})
+        e0.attr2db(hash[:command]||={})
       }
       doc.domain('status').each{|e0|
-        e0.attr2db(self[:status]||={},'ref')
+        e0.attr2db(hash[:status]||={},'ref')
       }
+      hash
     }
   end
 

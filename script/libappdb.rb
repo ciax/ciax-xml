@@ -94,7 +94,7 @@ module App
 
   module Wdb
     #structure of exec=[cond1,2,...]; cond=[cmd1,2,..]; cmd1=['str','arg1',..]
-    def init_watch(wdb)
+    def init_watch(wdb,cdb)
       return [] unless wdb
       hash=wdb.to_h
       [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
@@ -110,7 +110,7 @@ module App
             }
             (hash[name][idx]||=[]) << cmd
           when :block_grp
-            self[:command][:group][e1['ref']].each{|grp|
+            cdb[:group][e1['ref']].each{|grp|
               (hash[:block][idx]||=[]) << [grp]
             }
           else
@@ -131,17 +131,21 @@ module App
     include Wdb
     def initialize(app)
       super('adb')
-      cache(app){|doc|
-        update(doc)
-        delete('id')
-        self['app_ver']=delete('version')
-        self['app_label']=delete('label')
+      set(app){|doc|
+        hash={}
+        hash.update(doc)
+        hash.delete('id')
+        hash['app_ver']=hash.delete('version')
+        hash['app_label']=hash.delete('label')
         # Command DB
-        self[:command]=init_command(doc.domain('commands'))
+        cdb=hash[:command]=init_command(doc.domain('commands'))
         # Status DB
-        self[:status]=init_stat(doc.domain('status'))
+        hash[:status]=init_stat(doc.domain('status'))
         # Watch DB
-        doc.domain?('watch') && self[:watch]=init_watch(doc.domain('watch'))
+        if doc.domain?('watch')
+          hash[:watch]=init_watch(doc.domain('watch'),cdb)
+        end
+        hash
       }
     end
 

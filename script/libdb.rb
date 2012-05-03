@@ -6,9 +6,15 @@ require "find"
 
 class Db < ExHash
   XmlDir="#{ENV['HOME']}/ciax-xml"
+  attr_reader :list
   def initialize(type)
     @v=Msg::Ver.new(type,5)
     @type=type
+    @list=cache('list'){|doc| doc.list }
+  end
+
+  def set(id)
+    update(cache(id){|doc| yield doc.set(id) }).deep_freeze
   end
 
   private
@@ -26,16 +32,16 @@ class Db < ExHash
               "CACHE:cache=#{File::Stat.new(fmar).mtime}",
               "CACHE:file=#{File::Stat.new(newer).mtime}"]}
     else
-      update(Marshal.load(IO.read(fmar)))
       @v.msg{"CACHE:Loaded(#{base})"}
-      return deep_freeze
+      return Marshal.load(IO.read(fmar))
     end
-    yield XmlDoc.new(@type,id)
+    @doc||=XmlDoc.new(@type)
+    res=Msg.type?(yield(@doc),Hash)
     open(fmar,'w') {|f|
-      f << Marshal.dump(Hash[self])
+      f << Marshal.dump(Hash[res])
       @v.msg{"CACHE:Saved(#{base})"}
     }
-    deep_freeze
+    res
   end
 
   def cover(db)

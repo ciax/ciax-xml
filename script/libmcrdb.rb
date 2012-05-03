@@ -6,9 +6,10 @@ require "libdb"
 class McrDb < Db
   def initialize(id)
     super('mdb')
-    cache(id){|doc|
-      update(doc)
-      mdb=(self[:macro]||={})
+    set(id){|doc|
+      hash={}
+      hash.update(doc)
+      mdb=(hash[:macro]||={})
       doc.top.each{|e0|
         id=e0.attr2db(mdb)
         @v.msg{"MACRO:[#{id}]"}
@@ -36,6 +37,7 @@ class McrDb < Db
         }
         select << final unless final.empty?
       }
+      hash
     }
   end
 

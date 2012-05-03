@@ -3,11 +3,18 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  attr_reader :top
-  def initialize(dbname = nil,id = nil)
+  attr_reader :top,:list
+  def initialize(type)
     @v=Msg::Ver.new(self,4)
+    @type=type||raise("Need DB type")
+    list={}
+    readxml{|e| list[e['id']]=e['label'] }
+    @list=Msg::CmdList.new("[id]").update(list).sort!
     @domain={}
-    @file=readxml(dbname,id){|e|
+  end
+
+  def set(id)
+    @file=readxml(id){|e|
       @top=e
       update(e.to_h)
       e.each{|e1|
@@ -15,10 +22,8 @@ class XmlDoc < Hash
       }
       @v.msg{"Domain registerd:#{@domain.keys}"}
     } if id
-    return if @top
-    list={}
-    readxml(dbname){|e| list[e['id']]=e['label'] }
-    raise SelectID,Msg::CmdList.new("[id]").update(list).sort!.to_s
+    raise SelectID,@list.to_s unless @top
+    self
   end
 
   def domain?(id)
@@ -34,8 +39,8 @@ class XmlDoc < Hash
   end
 
   private
-  def readxml(dbname,id=nil)
-    pre="#{ENV['XMLPATH']}/#{dbname}"
+  def readxml(id=nil)
+    pre="#{ENV['XMLPATH']}/#{@type}"
     Dir.glob("#{pre}-*.xml").each{|p|
       x=Xml.new(p)
       if id
@@ -47,5 +52,15 @@ class XmlDoc < Hash
         x.each{|e| yield e}
       end
     }
+  end
+end
+
+if __FILE__ == $0
+  begin
+    doc=XmlDoc.new(ARGV.shift)
+    puts doc.list
+  rescue
+    Msg.usage("[type]")
+    Msg.exit
   end
 end

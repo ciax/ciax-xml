@@ -6,20 +6,20 @@ require "libdb"
 class SymDb < Db
   def initialize(gid=nil)
     super("sdb")
-    cache(gid){|doc|
+    set(gid){|doc|
+      hash={}
       doc.top.each{|e1|
         id=e1['id']
         label=e1['label']
         e1.each{|e2| # case
-          (self[id]||=[]) << e2.to_h.update({'type' => e2.name})
+          (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
         }
         @v.msg{"Symbol Table:#{id} : #{label}"}
       }
+      hash
     }
-    self
   rescue SelectID
     raise $! if __FILE__ == $0
-    self
   end
 
   def self.pack(ary=[])

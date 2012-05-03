@@ -6,19 +6,21 @@ module Frm
   class Db < Db
     def initialize(frm)
       super('fdb')
-      cache(frm){|doc|
-        update(doc)
-        delete('id')
-        self['frm_ver']=delete('version')
-        self['frm_label']=delete('label')
-        cmd=self[:cmdframe]={}
-        rsp=self[:rspframe]={:assign => {}}
+      set(frm){|doc|
+        hash={}
+        hash.update(doc)
+        hash.delete('id')
+        hash['frm_ver']=hash.delete('version')
+        hash['frm_label']=hash.delete('label')
+        cmd=hash[:cmdframe]={}
+        rsp=hash[:rspframe]={:assign => {}}
         dc=doc.domain('cmdframe')
         dr=doc.domain('rspframe')
         fc=cmd[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
         fr=rsp[:frame]=init_main(dr){|e| init_rsp(e,rsp)}
         cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
         rsp.update(init_sel(dr,'response',fr){|e| init_rsp(e,rsp)})
+        hash
       }
     end
 

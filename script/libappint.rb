@@ -14,7 +14,7 @@ module App
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=FrmList.new[adb['id']]
       int={'set'=>"[key=val], ..",'flush'=>"Flush Status"}
-      @cmdlist.add_group('int',"Internal Command",int,2)
+      @cmdlist.add_group('int',"Internal Command",int,2,2)
       @cmdlist.add_group('lay',"Change Layer",{'frm'=>"Frm mode"},2)
       @fint.cmdlist.add_group('lay',"Change Layer",{'app'=>"App mode"},2)
     end

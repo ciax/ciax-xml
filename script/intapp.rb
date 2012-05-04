@@ -7,7 +7,7 @@ $opt=ARGV.getopts("afdts")
 id,$opt['h']=ARGV
 begin
   aint=AppList.new{|int,devs|
-    int.cmdlist.add_group('dev',"Change Device",devs,2)
+    int.cmdlist.add_group('dev',"Change Device",devs)
   }
   sleep if $opt["s"]
   loop{

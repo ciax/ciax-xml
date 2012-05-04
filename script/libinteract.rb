@@ -13,11 +13,7 @@ class Interact
     @prompt=Prompt.new
     @updlist=Update.new
     @port=0
-    corecmd=@cobj.list.keys
     @cmdlist=Msg::GroupList.new
-    Readline.completion_proc= proc{|word|
-      (corecmd+@cmdlist.keys).grep(/^#{word}/)
-    }
   end
 
   def exe(cmd)
@@ -30,6 +26,9 @@ class Interact
   def shell
     sl={'q'=>"Quit",'D^'=>"Interrupt"}
     @cmdlist.add_group('sh',"Shell Command",sl,2)
+    Readline.completion_proc= proc{|word|
+      (@cobj.list.keys+@cmdlist.keys).grep(/^#{word}/)
+    }
     loop {
       line=Readline.readline(@prompt.to_s,true)||'interrupt'
       break if /^q/ === line

@@ -105,6 +105,8 @@ if __FILE__ == $0
     adb=App::Db.new(app)
     field=Field.new.load
     puts App::Val.new(adb,field).upd
+  rescue SelectID
+    Msg.exit
   rescue UserError
     Msg.usage "[app] < field_file\n#{$!}"
   end

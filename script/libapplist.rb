@@ -40,6 +40,10 @@ end
 
 if __FILE__ == $0
   id=ARGV.shift
-  ary=AppList.new
-  puts ary[id]
+  begin
+    ary=AppList.new
+    puts ary[id]
+  rescue
+    Msg.exit
+  end
 end

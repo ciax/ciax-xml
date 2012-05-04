@@ -64,6 +64,14 @@ end
 
 module IoFile
   include InFile
+  attr_reader :at_save
+
+  def init(id)
+    super
+    @at_save=Update.new
+    self
+  end
+
   def save(data=nil,tag=nil)
     name=fname(tag)
     open(name,'w'){|f|
@@ -76,6 +84,7 @@ module IoFile
       File.symlink(fname(tag),sname)
       @v.msg{"Symboliclink to [#{sname}]"}
     end
+    @at_save.upd
     self
   end
 end

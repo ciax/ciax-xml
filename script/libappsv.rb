@@ -17,19 +17,19 @@ module App
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
       @watch.val=@stat.val
       @watch.extend(Watch::Conv).init(adb).extend(IoFile).init(id)
+      @stat.at_upd << proc{@watch.upd}
+      @stat.at_save << proc{@watch.save}
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.at_flush << proc{
         @stat.val.upd
         @stat.upd.save
-        @watch.upd.save
         sleep(@watch.interval||0.1)
         sendfrm(@watch.issue,2)
       }
       @fint.updlist << proc {
         @stat.val.upd
         @stat.upd.save
-        @watch.upd.save
       }
       # Logging if version number exists
       @cobj.extend(Command::Logging).init(id,@stat.ver){@watch.active} if @stat.ver
@@ -52,7 +52,6 @@ module App
       when 'set'
         cmd[1] || raise(UserError,"usage: set [key=val,..]")
         @stat.str_update(cmd[1]).upd.save
-        @watch.upd.save
         msg="Set #{cmd[1]}"
       else
         if @watch.block?(cmd)

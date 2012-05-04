@@ -8,7 +8,7 @@ class SymDb < Db
     super("sdb",id){|doc|
       hash={}
       doc.top.each{|e1|
-        id=e1['id']
+        id=e1['id'].to_sym
         label=e1['label']
         e1.each{|e2| # case
           (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
@@ -30,10 +30,10 @@ end
 
 if __FILE__ == $0
   begin
-    sdb=SymDb.pack(ARGV)
+    sdb=SymDb.new(ARGV.shift)
   rescue SelectID
     Msg.usage "[id] ..."
     Msg.exit
   end
-  puts sdb.path
+  puts sdb.path(ARGV)
 end

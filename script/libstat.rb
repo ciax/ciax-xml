@@ -47,7 +47,7 @@ module Stat::SymConv
 
   def upd
     @symbol.each{|key,sid|
-      unless tbl=@sdb[sid]
+      unless tbl=@sdb[sid.to_sym]
         Msg.warn("Table[#{sid}] not exist")
         next
       end

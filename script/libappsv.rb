@@ -17,8 +17,8 @@ module App
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
       @watch.val=@stat.val
       @watch.extend(Watch::Conv).init(adb).extend(IoFile).init(id)
-      @stat.at_upd << proc{@watch.upd}
-      @stat.at_save << proc{@watch.save}
+      @stat.post_upd << proc{@watch.upd}
+      @stat.post_save << proc{@watch.save}
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.at_flush << proc{
@@ -27,7 +27,7 @@ module App
         sleep(@watch.interval||0.1)
         sendfrm(@watch.issue,2)
       }
-      @fint.updlist << proc {
+      @fint.post_exe << proc {
         @stat.val.upd
         @stat.upd.save
       }

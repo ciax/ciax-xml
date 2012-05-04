@@ -6,12 +6,12 @@ require "libcommand"
 require "libupdate"
 
 class Interact
-  attr_reader :updlist,:cmdlist
+  attr_reader :post_exe,:cmdlist
   def initialize(cobj)
     @v=Msg::Ver.new(self,3)
     @cobj=Msg::type?(cobj,Command)
     @prompt=Prompt.new
-    @updlist=Update.new
+    @post_exe=Update.new
     @port=0
     @cmdlist=Msg::GroupList.new
   end
@@ -40,7 +40,7 @@ class Interact
         if msg.empty?
           msg=to_s
         else
-          @updlist.upd
+          @post_exe.upd
         end
         puts msg
       rescue SelectCMD
@@ -68,7 +68,7 @@ class Interact
           cmd=line.chomp.split(' ')
           begin
             msg=exe(cmd)
-            @updlist.upd unless msg.empty?
+            @post_exe.upd unless msg.empty?
           rescue RuntimeError
             msg="ERROR"
             warn msg
@@ -97,7 +97,7 @@ module Client
     @v.msg{"Recv #{input}"}
     # Error message
     super if /ERROR/ =~ @prompt['msg']
-    @updlist.upd
+    @post_exe.upd
     @prompt['msg']
   end
 

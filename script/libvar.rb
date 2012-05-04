@@ -10,17 +10,17 @@ module Val
 end
 
 class Var < ExHash
-  attr_reader :type,:id,:ver,:val,:at_upd
+  attr_reader :type,:id,:ver,:val,:post_upd
   def initialize(type)
     super()
     self['type']=@type=type
     self.val=Hash.new
     set_time
-    @at_upd=Update.new
+    @post_upd=Update.new
   end
 
   def upd
-    @at_upd.upd
+    @post_upd.upd
     self
   end
 

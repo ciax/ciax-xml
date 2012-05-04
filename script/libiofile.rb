@@ -64,11 +64,11 @@ end
 
 module IoFile
   include InFile
-  attr_reader :at_save
+  attr_reader :post_save
 
   def init(id)
     super
-    @at_save=Update.new
+    @post_save=Update.new
     self
   end
 
@@ -84,7 +84,7 @@ module IoFile
       File.symlink(fname(tag),sname)
       @v.msg{"Symboliclink to [#{sname}]"}
     end
-    @at_save.upd
+    @post_save.upd
     self
   end
 end

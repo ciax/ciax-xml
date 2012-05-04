@@ -8,7 +8,7 @@ module Frm
       super(fdb)
       @host=Msg.type?(host||fdb['host'],String)
       @field.extend(InUrl).init(fdb['id'],@host).load
-      @updlist << proc{ @field.load }
+      @post_exe << proc{ @field.load }
       extend(Client)
     end
   end

@@ -11,7 +11,7 @@ module App
       @host=Msg.type?(host||adb['host'],String)
       @stat.extend(InUrl).init(adb['id'],@host).load
       @watch.extend(InUrl).init(adb['id'],@host).load
-      @updlist << proc{ @stat.load }
+      @post_exe << proc{ @stat.load }
       extend(Client)
     end
   end

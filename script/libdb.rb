@@ -11,7 +11,7 @@ class Db < ExHash
     @v=Msg::Ver.new(type,5)
     @type=type
     @list=cache('list'){|doc| doc.list }
-    return unless id
+    @list.error unless id
     update(cache(id){|doc| yield doc.set(id) }).deep_freeze
   end
 

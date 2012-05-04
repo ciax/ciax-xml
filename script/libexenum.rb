@@ -14,7 +14,12 @@ module ExEnum
   # Show branch (omit lower tree of Hash/Array with sym key)
   def path(ary=[])
     enum=ary.inject(self){|prev,a|
-      prev[a.to_sym]||prev[a]
+      case prev
+      when Array
+        prev[a.to_i]
+      when Hash
+        prev[a.to_sym]||prev[a.to_s]
+      end
     }||Msg.abort("No such key")
     data=enum.dup
     data.each{|k,v|

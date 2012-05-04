@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libappint"
 require "libappcmd"
-require "libappval"
+require "libapprsp"
 require "libbuffer"
 require "thread"
 
@@ -12,7 +12,7 @@ module App
       super(adb)
       id=adb['id']
       @ac=App::Cmd.new(@cobj)
-      val=App::Val.new(adb,@fint.field).upd
+      val=App::Rsp.new(adb,@fint.field).upd
       @stat.extend(Stat::SymConv).init(adb,val).extend(Stat::IoFile)
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
       @watch.extend(Watch::Conv).init(adb,val).extend(IoFile).init(id)

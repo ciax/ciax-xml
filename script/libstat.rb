@@ -40,7 +40,7 @@ module Stat::SymConv
     @id=adb['id']
     ads=Msg.type?(adb,App::Db)[:status]
     self.ver=adb['app_ver'].to_i
-    self.val=Msg.type?(val,App::Val)
+    self.val=Msg.type?(val,App::Rsp)
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.pack(['all',ads['table']])
     self['class']={'time' => 'normal'}
@@ -136,7 +136,7 @@ if __FILE__ == $0
       end
     else
       field=Field.new.load
-      val=App::Val.new(idb,field)
+      val=App::Rsp.new(idb,field)
       stat.extend(Stat::SymConv).init(idb,val)
       print stat.upd.to_j
     end

@@ -3,7 +3,7 @@ require "libmsg"
 require "libupdate"
 
 module App
-  class Val < Hash
+  class Rsp < Hash
     attr_reader :post_upd
     def initialize(adb,field)
       @v=Msg::Ver.new(self,9)

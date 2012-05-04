@@ -9,6 +9,6 @@ for id in $ids; do
     aline=`~/lib/libinsdb.rb $id|tr -d '"'|grep app` || continue
     app=${aline#*:}
     file=$HOME/.var/json/field_$id.json
-    ~/lib/libappval.rb $app < $file
+    ~/lib/libapprsp.rb $app < $file
     read -t 0 && break
 done

@@ -45,7 +45,7 @@ module Watch::Conv
 
   def init(adb,val)
     @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
-    @val=Msg.type?(val,App::Val)
+    @val=Msg.type?(val,App::Rsp)
     @period=(@wdb['period']||300).to_i
     @interval=(@wdb['interval']||1).to_f/10
     # Pick usable val

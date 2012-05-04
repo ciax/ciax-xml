@@ -12,11 +12,10 @@ module App
       super(adb)
       id=adb['id']
       @ac=App::Cmd.new(@cobj)
-      @stat.val=App::Val.new(adb,@fint.field).upd
-      @stat.extend(Stat::SymConv).init(adb)
+      val=App::Val.new(adb,@fint.field).upd
+      @stat.extend(Stat::SymConv).init(adb,val)
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
-      @watch.val=@stat.val
-      @watch.extend(Watch::Conv).init(adb).extend(IoFile).init(id)
+      @watch.extend(Watch::Conv).init(adb,val).extend(IoFile).init(id)
       @stat.post_upd << proc{@watch.upd}
       @stat.post_save << proc{@watch.save}
       Thread.abort_on_exception=true

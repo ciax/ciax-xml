@@ -33,10 +33,11 @@ end
 module Stat::SymConv
   require "libsymdb"
   include IoFile
-  def init(adb)
+  def init(adb,val)
     super(adb['id'])
     ads=Msg.type?(adb,App::Db)[:status]
     self.ver=adb['app_ver'].to_i
+    self.val=Msg.type?(val,App::Val)
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.pack(['all',ads['table']])
     self['class']={'time' => 'normal'}
@@ -111,16 +112,17 @@ if __FILE__ == $0
     host=ARGV.shift
     ARGV.clear
     idb=InsDb.new(id).cover_app
+    stat=Stat.new
     if STDIN.tty?
       if host
-        puts Stat.new.extend(InUrl).init(id,host).load
+        puts stat.extend(InUrl).init(id,host).load
       else
-        puts Stat.new.extend(InFile).init(id).load
+        puts stat.extend(InFile).init(id).load
       end
     else
-      stat=Stat.new.extend(Stat::SymConv).init(idb)
       field=Field.new.load
-      stat.val=App::Val.new(idb,field)
+      val=App::Val.new(idb,field)
+      stat.extend(Stat::SymConv).init(idb,val)
       print stat.upd.to_j
     end
   rescue UserError

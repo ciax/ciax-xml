@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <instance id="mfp" label="MOIRCS Pneumatic Actuator" app_type="cfp" iocmd="socat - tcp:celaeno:4001" port="24101"></instance>
-  <instance id="map" label="MOIRCS Air Pressure" app_type="oma" iocmd="socat - tcp:celaeno:4002" port="24102"></instance>
-  <instance id="mma" label="MOIRCS Extension Arm" app_type="mma" iocmd="socat - tcp:celaeno:4003" port="24103"></instance>
-  <instance id="mmc" label="MOIRCS Carrousel" app_type="mmc" iocmd="socat - tcp:celaeno:4004" port="24104"></instance>
-  <instance id="mix" label="MOIRCS Turret" app_type="ixe" iocmd="socat - tcp:celaeno:4007" port="24107"></instance>
-  <instance id="mva" label="MOIRCS Pumping" app_type="var" iocmd="socat - tcp:celaeno:4008" port="24108"></instance>
-  <instance id="mft" label="MOIRCS Hall Effect Sensor" app_type="fpa" iocmd="socat - tcp:celaeno:4012" port="24112"></instance>
-  <instance id="mh1" label="MOIRCS Main/Carrousel Heater" app_type="psp" iocmd="socat - tcp:merope:59999" port="24201"></instance>
-  <instance id="mh2" label="MOIRCS Main Heater" app_type="psp" iocmd="socat - tcp:atlas:59999" port="24202"></instance>
+  <instance id="mfp" label="MOIRCS Pneumatic Actuator" app_type="cfp" iocmd="socat - tcp:celaeno:4001" port="25601"></instance>
+  <instance id="map" label="MOIRCS Air Pressure" app_type="oma" iocmd="socat - tcp:celaeno:4002" port="25602"></instance>
+  <instance id="mma" label="MOIRCS Extension Arm" app_type="mma" iocmd="socat - tcp:celaeno:4003" port="25603"></instance>
+  <instance id="mmc" label="MOIRCS Carrousel" app_type="mmc" iocmd="socat - tcp:celaeno:4004" port="25604"></instance>
+  <instance id="mix" label="MOIRCS Turret" app_type="ixe" iocmd="socat - tcp:celaeno:4007" port="25607"></instance>
+  <instance id="mva" label="MOIRCS Pumping" app_type="var" iocmd="socat - tcp:celaeno:4008" port="25608"></instance>
+  <instance id="mft" label="MOIRCS Hall Effect Sensor" app_type="fpa" iocmd="socat - tcp:celaeno:4012" port="25612"></instance>
+  <instance id="mh1" label="MOIRCS Main/Carrousel Heater" app_type="psp" iocmd="socat - tcp:merope:59999" port="25621"></instance>
+  <instance id="mh2" label="MOIRCS Main Heater" app_type="psp" iocmd="socat - tcp:atlas:59999" port="25622"></instance>
 </idb>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <instance id="cco" label="OPT Helium Compressor Control" app_type="bbe" iocmd="socat - tcp:ltc-o:4002" port="25106">
+  <instance id="cco" label="OPT Helium Compressor Control" app_type="bbe" iocmd="socat - tcp:ltc-o:4002" port="25109">
     <select xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <command id="upd" label="Update Status" alias="upd" />
       <command id="f2on" label="CIAO(S6) ON" alias="x0on" />

@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <instance id="cfa" label="S10 Helium Compressor Coolant Flow" app_type="k3n" iocmd="socat - tcp:ltt-i:4015" port="45610">
+  <instance id="cfa" label="S10 Helium Compressor Coolant Flow" app_type="k3n" iocmd="socat - tcp:ltt-i:4015" port="25210">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="flow" label="FMOS-K(S10) Coolant Flow" />
     </status>

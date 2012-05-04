@@ -16,19 +16,18 @@ module App
       @stat.extend(Stat::SymConv).init(adb,val)
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
       @watch.extend(Watch::Conv).init(adb,val).extend(IoFile).init(id)
+      val.post_upd << proc{@stat.upd.save}
       @stat.post_upd << proc{@watch.upd}
       @stat.post_save << proc{@watch.save}
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.post_flush << proc{
-        @stat.val.upd
-        @stat.upd.save
+        val.upd
         sleep(@watch.interval||0.1)
         sendfrm(@watch.issue,2)
       }
       @fint.post_exe << proc {
-        @stat.val.upd
-        @stat.upd.save
+        val.upd
       }
       # Logging if version number exists
       @cobj.extend(Command::Logging).init(id,@stat.ver){@watch.active} if @stat.ver

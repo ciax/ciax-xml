@@ -1,8 +1,10 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libupdate"
 
 module App
   class Val < Hash
+    attr_reader :post_upd
     def initialize(adb,field)
       @v=Msg::Ver.new(self,9)
       Msg.type?(adb,App::Db)
@@ -12,6 +14,7 @@ module App
       @ads.keys.each{|k|
         self[k]||=''
       }
+      @post_upd=Update.new
     end
 
     def upd
@@ -26,6 +29,7 @@ module App
         end
       }
       self['time']=@field.get('time')
+      @post_upd.upd
       @v.msg{"Update(#{self['time']})"}
       self
     end

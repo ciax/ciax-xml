@@ -12,23 +12,22 @@ module App
       super(adb)
       id=adb['id']
       @ac=App::Cmd.new(@cobj)
-      @val=App::Val.new(adb,@fint.field).upd
-      @stat.val=@val
+      @stat.val=App::Val.new(adb,@fint.field).upd
       @stat.extend(Stat::SymConv).init(adb)
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
-      @watch.val=@val
+      @watch.val=@stat.val
       @watch.extend(Watch::Conv).init(adb).extend(IoFile).init(id)
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.at_flush << proc{
-        @val.upd
+        @stat.val.upd
         @stat.upd.save
         @watch.upd.save
         sleep(@watch.interval||0.1)
         sendfrm(@watch.issue,2)
       }
       @fint.updlist << proc {
-        @val.upd
+        @stat.val.upd
         @stat.upd.save
         @watch.upd.save
       }

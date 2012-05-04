@@ -73,7 +73,7 @@ module Stat::SymConv
     stime=@val['time'].to_f
     self['msg']['time']=Time.at(stime).to_s
     @v.msg{"Update(#{stime})"}
-    self
+    super
   end
 
   def save
@@ -95,13 +95,7 @@ module Stat::SqLog
   def init
     # Logging if version number exists
     @sql=SqLog.new('value',@id,@ver,@val).extend(SqLog::Exec)
-    self
-  end
-
-  def upd
-    super
-    @sql.upd
-    self
+    @at_upd << proc {@sql.upd}
   end
 
   def save

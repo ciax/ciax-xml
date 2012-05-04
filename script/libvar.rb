@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libexenum"
+require "libupdate"
 
 module Val
   def to_s
@@ -9,12 +10,18 @@ module Val
 end
 
 class Var < ExHash
-  attr_reader :type,:id,:ver,:val
+  attr_reader :type,:id,:ver,:val,:at_upd
   def initialize(type)
     super()
     self['type']=@type=type
     self.val=Hash.new
     set_time
+    @at_upd=Update.new
+  end
+
+  def upd
+    @at_upd.upd
+    self
   end
 
   def get(key)

@@ -3,9 +3,8 @@ require "libdb"
 
 class InsDb < Db
   def initialize(id)
-    super('idb')
     self['id']=id
-    set(id){|doc|
+    super('idb',id){|doc|
       hash={}
       hash.update(doc)
       doc.domain('init').each{|e0|

@@ -7,13 +7,11 @@ require "find"
 class Db < ExHash
   XmlDir="#{ENV['HOME']}/ciax-xml"
   attr_reader :list
-  def initialize(type)
+  def initialize(type,id=nil)
     @v=Msg::Ver.new(type,5)
     @type=type
     @list=cache('list'){|doc| doc.list }
-  end
-
-  def set(id)
+    return unless id
     update(cache(id){|doc| yield doc.set(id) }).deep_freeze
   end
 

@@ -129,9 +129,8 @@ module App
     include Cdb
     include Sdb
     include Wdb
-    def initialize(app)
-      super('adb')
-      set(app){|doc|
+    def initialize(id)
+      super('adb',id){|doc|
         hash={}
         hash.update(doc)
         hash.delete('id')

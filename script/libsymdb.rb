@@ -5,8 +5,7 @@ require "libdb"
 # gid = Table Group ID
 class SymDb < Db
   def initialize(gid=nil)
-    super("sdb")
-    set(gid){|doc|
+    super("sdb",gid){|doc|
       hash={}
       doc.top.each{|e1|
         id=e1['id']

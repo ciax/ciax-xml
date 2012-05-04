@@ -5,8 +5,7 @@ require "libdb"
 
 class McrDb < Db
   def initialize(id)
-    super('mdb')
-    set(id){|doc|
+    super('mdb',id){|doc|
       hash={}
       hash.update(doc)
       mdb=(hash[:macro]||={})
@@ -62,7 +61,7 @@ if __FILE__ == $0
   begin
     mdb=McrDb.new(ARGV.shift)
   rescue SelectID
-    warn "USAGE: #{$0} [id] (key) .."
+    Msg.usage "[id] (key) .."
     Msg.exit
   end
   puts mdb.path(ARGV)

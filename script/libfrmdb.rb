@@ -4,9 +4,8 @@ require "libdb"
 
 module Frm
   class Db < Db
-    def initialize(frm)
-      super('fdb')
-      set(frm){|doc|
+    def initialize(id)
+      super('fdb',id){|doc|
         hash={}
         hash.update(doc)
         hash.delete('id')

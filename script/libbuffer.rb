@@ -17,13 +17,13 @@ require "libupdate"
 #  (stack if Queue is empty)
 
 class Buffer
-  attr_reader :issue,:at_flush
+  attr_reader :issue,:post_flush
   def initialize
     @v=Msg::Ver.new(self,2)
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
-    @at_flush=Update.new
+    @post_flush=Update.new
     clear
   end
 
@@ -76,7 +76,7 @@ class Buffer
   def flush
     @v.msg{"SUB:Waiting"}
     @issue=false
-    @at_flush.upd
+    @post_flush.upd
   end
 
   # Remove duplicated commands and pop one

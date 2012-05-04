@@ -21,7 +21,7 @@ module App
       @stat.post_save << proc{@watch.save}
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
-      @buf.at_flush << proc{
+      @buf.post_flush << proc{
         @stat.val.upd
         @stat.upd.save
         sleep(@watch.interval||0.1)
@@ -48,7 +48,7 @@ module App
         msg="Interrupt #{int}"
       when 'flush'
         @fint.field.load
-        @buf.at_flush.upd
+        @buf.post_flush.upd
       when 'set'
         cmd[1] || raise(UserError,"usage: set [key=val,..]")
         @stat.str_update(cmd[1]).upd.save

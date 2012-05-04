@@ -104,7 +104,7 @@ if __FILE__ == $0
   begin
     adb=App::Db.new(app)
     field=Field.new.load
-    puts App::Val.new(adb,field).upd
+    puts App::Rsp.new(adb,field).upd
   rescue SelectID
     Msg.exit
   rescue UserError

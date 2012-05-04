@@ -32,9 +32,12 @@ end
 # Status to Stat::SymConv (String with attributes)
 module Stat::SymConv
   require "libsymdb"
-  include IoFile
+  def self.extended(obj)
+    Msg.type?(obj,Stat)
+  end
+
   def init(adb,val)
-    super(adb['id'])
+    @id=adb['id']
     ads=Msg.type?(adb,App::Db)[:status]
     self.ver=adb['app_ver'].to_i
     self.val=Msg.type?(val,App::Val)
@@ -42,7 +45,6 @@ module Stat::SymConv
     @sdb=SymDb.pack(['all',ads['table']])
     self['class']={'time' => 'normal'}
     self['msg']={}
-    @lastsave=0
     self
   end
 
@@ -76,6 +78,19 @@ module Stat::SymConv
     @v.msg{"Update(#{stime})"}
     super
   end
+end
+
+module Stat::IoFile
+  include IoFile
+  def self.extended(obj)
+    Msg.type?(obj,Stat::SymConv).init
+  end
+
+  def init
+    super(@id)
+    @lastsave=0
+    self
+  end
 
   def save
     time=@val['time'].to_f
@@ -90,7 +105,7 @@ end
 module Stat::SqLog
   require "libsqlog"
   def self.extended(obj)
-    Msg.type?(obj,Stat::SymConv).init
+    Msg.type?(obj,Stat::IoFile).init
   end
 
   def init

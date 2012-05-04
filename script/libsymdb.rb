@@ -4,8 +4,8 @@ require "libdb"
 
 # gid = Table Group ID
 class SymDb < Db
-  def initialize(gid=nil)
-    super("sdb",gid){|doc|
+  def initialize(id)
+    super("sdb",id){|doc|
       hash={}
       doc.top.each{|e1|
         id=e1['id']
@@ -22,10 +22,8 @@ class SymDb < Db
   end
 
   def self.pack(ary=[])
-    sdb=Db.new('sdb')
-    ary.each{|k|
-      sdb.update(new(k))
-    }.empty? && new
+    sdb=SymDb.new(ary.shift).dup
+    ary.each{|k| sdb.update(SymDb.new(k)) }
     sdb
   end
 end
@@ -34,7 +32,7 @@ if __FILE__ == $0
   begin
     sdb=SymDb.pack(ARGV)
   rescue SelectID
-    warn "USAGE: #{$0} [id] ..."
+    Msg.usage "[id] ..."
     Msg.exit
   end
   puts sdb.path

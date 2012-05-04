@@ -16,9 +16,8 @@ class McrMan < Interact
     @prompt="#@id[]>"
     @index=0
     @mcr=McrSub.new(@cobj,1).extend(McrPrt)
-    cl=@cmdlist['internal']
-    cl["[0-9]"]="Switch Mode"
-    cl["list"]="Thread list"
+    cl={"[0-9]"=>"Switch Mode","list"=>"Thread list"}
+    @cmdlist.add_group('int',"Internal Command",cl)
   end
 
   def exe(cmd)
@@ -45,7 +44,7 @@ class McrMan < Interact
       end
     end
     upd_prompt
-    self
+    ''
   end
 
   def to_s

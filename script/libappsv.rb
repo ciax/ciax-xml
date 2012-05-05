@@ -13,23 +13,24 @@ module App
       super(adb)
       id=adb['id']
       @ac=App::Cmd.new(@cobj)
-      val=@stat.val=App::Rsp.new(adb,@fint.field).upd
+      @stat.extend(App::Rsp).init(adb,@fint.field).upd
       @stat.extend(SymConv).init(adb).extend(Stat::IoFile)
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv).init(adb)
-      val.post_upd << proc{@stat.upd}
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.post_flush << proc{
-        val.upd
+        @stat.upd
         sleep(@stat.interval||0.1)
         sendfrm(@stat.issue,2)
       }
       @fint.post_exe << proc {
-        val.upd
+        @stat.upd
       }
       # Logging if version number exists
-      @cobj.extend(Command::Logging).init(id,@stat.ver){@stat.active} if @stat.ver
+      if @stat.ver
+        @cobj.extend(Command::Logging).init(id,@stat.ver){@stat.active}
+      end
       auto_update
       upd_prompt
     end

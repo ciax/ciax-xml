@@ -1,20 +1,17 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libstat"
 require "libupdate"
 
 module App
-  class Rsp < Hash
-    attr_reader :post_upd
-    def initialize(adb,field)
-      @v=Msg::Ver.new(self,9)
+  module Rsp
+    def init(adb,field)
       Msg.type?(adb,App::Db)
       @field=Msg.type?(field,Field)
       @ads=adb[:status][:select]
       @fmt=adb[:status][:format]||{}
-      @ads.keys.each{|k|
-        self[k]||=''
-      }
-      @post_upd=Update.new
+      @ads.keys.each{|k| @val[k]||='' }
+      self
     end
 
     def upd
@@ -23,14 +20,13 @@ module App
           @v.msg(1){"STAT:GetStatus:[#{id}]"}
           data=get_val(fields)
           data = @fmt[id] % data if @fmt.key?(id)
-          self[id]=data.to_s
+          @val[id]=data.to_s
         ensure
-          @v.msg(-1){"STAT:GetStatus:#{id}=[#{self[id]}]"}
+          @v.msg(-1){"STAT:GetStatus:#{id}=[#{@val[id]}]"}
         end
       }
-      self['time']=@field.get('time')
-      @post_upd.upd
-      @v.msg{"Update(#{self['time']})"}
+      @val['time']=@field.get('time')
+      @v.msg{"Update(#{@val['time']})"}
       self
     end
 
@@ -104,7 +100,7 @@ if __FILE__ == $0
   begin
     adb=App::Db.new(app)
     field=Field.new.load
-    puts App::Rsp.new(adb,field).upd
+    puts App::Stat.new.extend(App::Rsp).init(adb,field).upd
   rescue SelectID
     Msg.exit
   rescue UserError

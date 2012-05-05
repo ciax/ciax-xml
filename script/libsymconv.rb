@@ -54,20 +54,14 @@ end
 
 if __FILE__ == $0
   require "libinsdb"
-  require "libstat"
-  require "libfield"
-  require "libapprsp"
+
+  id=ARGV.shift
   begin
-    id=ARGV.shift
-    ARGV.clear
-    idb=InsDb.new(id).cover_app
-    raise UserError if STDIN.tty?
-    field=Field.new.load
-    stat=App::Stat.new
-    stat.val=App::Rsp.new(idb,field).upd
-    stat.extend(SymConv).init(idb).upd
+    adb=InsDb.new(id).cover_app
+    stat=App::Stat.new.extend(InFile).init(id).load
+    stat.extend(SymConv).init(adb).upd
     print stat
   rescue UserError
-    Msg.usage "[id] < field_file"
+    Msg.usage "[id]"
   end
 end

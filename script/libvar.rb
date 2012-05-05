@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libexenum"
-require "libupdate"
 
 module Val
   def to_s
@@ -10,17 +9,15 @@ module Val
 end
 
 class Var < ExHash
-  attr_reader :type,:id,:ver,:val,:post_upd
+  attr_reader :type,:id,:ver,:val
   def initialize(type)
     super()
     self['type']=@type=type
     self.val=Hash.new
     set_time
-    @post_upd=Update.new
   end
 
   def upd
-    @post_upd.upd
     self
   end
 

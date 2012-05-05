@@ -13,7 +13,6 @@ module Frm
     end
 
     def init(fdb,cobj)
-      @v=Msg::Ver.new(self,3)
       @fdb=Msg.type?(fdb,Frm::Db)
       @cobj=Msg.type?(cobj,Command)
       self.ver=fdb['frm_ver'].to_i

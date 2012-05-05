@@ -16,22 +16,20 @@ module App
       val=App::Rsp.new(adb,@fint.field).upd
       @stat.extend(SymConv).init(adb,val).extend(Stat::IoFile)
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
-      @watch.extend(Watch::Conv).init(adb,val).extend(IoFile).init(id)
+      @stat.extend(Watch::Conv).init(adb)
       val.post_upd << proc{@stat.upd.save}
-      @stat.post_upd << proc{@watch.upd}
-      @stat.post_save << proc{@watch.save}
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.post_flush << proc{
         val.upd
-        sleep(@watch.interval||0.1)
-        sendfrm(@watch.issue,2)
+        sleep(@stat.interval||0.1)
+        sendfrm(@stat.issue,2)
       }
       @fint.post_exe << proc {
         val.upd
       }
       # Logging if version number exists
-      @cobj.extend(Command::Logging).init(id,@stat.ver){@watch.active} if @stat.ver
+      @cobj.extend(Command::Logging).init(id,@stat.ver){@stat.active} if @stat.ver
       auto_update
       upd_prompt
     end
@@ -42,7 +40,7 @@ module App
       case cmd.first
       when nil
       when 'interrupt'
-        int=@watch.interrupt
+        int=@stat.interrupt
         sendfrm(int,0)
         msg="Interrupt #{int}"
       when 'flush'
@@ -53,7 +51,7 @@ module App
         @stat.str_update(cmd[1]).upd.save
         msg="Set #{cmd[1]}"
       else
-        if @watch.block?(cmd)
+        if @stat.block?(cmd)
           msg="Blocking(#{cmd})"
         else
           sendfrm([cmd])
@@ -71,7 +69,7 @@ module App
     private
     def upd_prompt
       @prompt['auto'] = @tid && @tid.alive?
-      @prompt['watch'] = @watch.active?
+      @prompt['watch'] = @stat.active?
       @prompt['isu'] = @buf.issue
       @prompt['na'] = !@buf.alive?
       self
@@ -91,7 +89,7 @@ module App
     def auto_update
       @tid=Thread.new{
         Thread.pass
-        int=(@watch.period||300).to_i
+        int=(@stat.period||300).to_i
         cmd=[['upd']]
         loop{
           begin

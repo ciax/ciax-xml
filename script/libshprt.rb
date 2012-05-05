@@ -10,7 +10,7 @@ module ShPrt
 
   def init
     @output=@print=View.new(@adb,@stat).extend(View::Print)
-    @wview=Watch::View.new(@adb,@watch).extend(Watch::Print)
+    @wview=Watch::View.new(@adb,@stat).extend(Watch::Print)
     vl={'pri'=>"Print mode",'val'=>"Value mode"}
     vl['wat']="Watch mode" if @wview
     @cmdlist.add_group('view',"Change View Mode",vl,2)

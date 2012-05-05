@@ -43,7 +43,7 @@ module Watch
       cmds
     end
   end
-  # convert by var
+
   module Conv
     def self.extended(obj)
       Msg.type?(obj,Stat)
@@ -168,7 +168,7 @@ module Watch
 
   module Print
     def self.extended(obj)
-      Msg.type?(obj,Watch::View)
+      Msg.type?(obj,View)
     end
 
     def to_s

@@ -17,7 +17,7 @@ module App
       @stat.extend(SymConv).init(adb,val).extend(Stat::IoFile)
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv).init(adb)
-      val.post_upd << proc{@stat.upd.save}
+      val.post_upd << proc{@stat.upd}
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.post_flush << proc{
@@ -48,7 +48,7 @@ module App
         @buf.post_flush.upd
       when 'set'
         cmd[1] || raise(UserError,"usage: set [key=val,..]")
-        @stat.str_update(cmd[1]).upd.save
+        @stat.str_update(cmd[1]).upd
         msg="Set #{cmd[1]}"
       else
         if @stat.block?(cmd)

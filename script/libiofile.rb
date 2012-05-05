@@ -77,6 +77,7 @@ module IoFile
     open(name,'w'){|f|
       f << (data ? JSON.dump(data) : to_j)
     }
+    @v.msg{"[#{@base}] is Saved"}
     if tag
       # Making 'latest' tag link
       sname=fname('latest')

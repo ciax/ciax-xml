@@ -14,7 +14,7 @@ module SymConv
     ads=Msg.type?(adb,App::Db)[:status]
     self.ver=adb['app_ver'].to_i
     @symbol=ads[:symbol]||{}
-    @sdb=SymDb.pack(['all',ads['table']])
+    @sdb=Sym::Db.pack(['all',ads['table']])
     self['class']={'time' => 'normal'}
     self['msg']={}
     self

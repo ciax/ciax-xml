@@ -26,7 +26,7 @@
           <Frm::Db />
           <InsDb />
           <McrDb />
-          <SymDb />
+          <Sym::Db />
         </Db>
         <IoFile>
           <Field/>

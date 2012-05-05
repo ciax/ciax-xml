@@ -86,6 +86,6 @@
           :blocking => regexp
           :interrupt => [ [statement],..]
 
-  SymDb
+  Sym::Db
      id => { label, type(pattern|range), class(normal|warn..), msg}
         ...

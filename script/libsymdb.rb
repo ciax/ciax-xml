@@ -2,35 +2,37 @@
 require "librerange"
 require "libdb"
 
-# gid = Table Group ID
-class SymDb < Db
-  def initialize(id)
-    super("sdb",id){|doc|
-      hash={}
-      doc.top.each{|e1|
-        id=e1['id'].to_sym
-        label=e1['label']
-        e1.each{|e2| # case
-          (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
+# id = Table Group ID
+module Sym
+  class Db < Db
+    def initialize(id)
+      super("sdb",id){|doc|
+        hash={}
+        doc.top.each{|e1|
+          id=e1['id'].to_sym
+          label=e1['label']
+          e1.each{|e2| # case
+            (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
+          }
+          @v.msg{"Symbol Table:#{id} : #{label}"}
         }
-        @v.msg{"Symbol Table:#{id} : #{label}"}
+        hash
       }
-      hash
-    }
-  rescue SelectID
-    raise $! if __FILE__ == $0
-  end
+    rescue SelectID
+      raise $! if __FILE__ == $0
+    end
 
-  def self.pack(ary=[])
-    sdb=SymDb.new(ary.shift).dup
-    ary.each{|k| sdb.update(SymDb.new(k)) }
-    sdb
+    def self.pack(ary=[])
+      sdb=Sym::Db.new(ary.shift).dup
+      ary.each{|k| sdb.update(Sym::Db.new(k)) }
+      sdb
+    end
   end
 end
 
 if __FILE__ == $0
   begin
-    sdb=SymDb.new(ARGV.shift)
+    sdb=Sym::Db.new(ARGV.shift)
   rescue SelectID
     Msg.usage "[id] ..."
     Msg.exit

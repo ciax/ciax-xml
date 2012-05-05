@@ -78,7 +78,7 @@ module SqLog
     def init
       @sqlcmd=["sqlite3",VarDir+"/"+@type+".sq3"]
       unless check_table
-        ini
+        create
         save
         @v.msg{"Init/Table '#{@tid}' is created in #{@type}"}
       end

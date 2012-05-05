@@ -166,4 +166,5 @@ if __FILE__ == $0
   end
   db=db.cover_frm if opt["f"]
   puts db.path(ARGV)
+  exit
 end

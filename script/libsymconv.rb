@@ -54,7 +54,6 @@ end
 
 if __FILE__ == $0
   require "libinsdb"
-
   id=ARGV.shift
   begin
     adb=InsDb.new(id).cover_app

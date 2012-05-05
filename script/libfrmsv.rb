@@ -10,8 +10,8 @@ module Frm
   class Sv < Int
     def initialize(fdb,iocmd=[])
       super(fdb)
+      @field.extend(Frm::Rsp).init(fdb,@cobj)
       @field.extend(Field::IoFile).init(fdb['id']).load
-      @fr=Frm::Rsp.new(fdb,@cobj,@field)
       if Msg.type?(iocmd,Array).empty?
         @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
         id=fdb['id'];ver=fdb['frm_ver']
@@ -45,7 +45,7 @@ module Frm
         @io.cid=@cobj.set(cmd)[:cid]
         @v.msg{"Issue[#{@io.cid}]"}
         @io.snd(@fc.getframe)
-        @fr.upd{@io.rcv} && @field.save
+        @field.upd{@io.rcv} && @field.save
       end
       'OK'
     end

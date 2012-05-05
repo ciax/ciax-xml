@@ -7,20 +7,23 @@ require "libstream"
 # Input  : upd block(frame,time)
 # Output : Field
 module Frm
-  class Rsp
-    def initialize(fdb,cobj,field)
+  module Rsp
+    def self.extended(obj)
+      Msg.type?(obj,Field)
+    end
+
+    def init(fdb,cobj)
       @v=Msg::Ver.new(self,3)
       @fdb=Msg.type?(fdb,Frm::Db)
       @cobj=Msg.type?(cobj,Command)
-      @field=Msg.type?(field,Field)
-      @field.ver=fdb['frm_ver'].to_i
+      self.ver=fdb['frm_ver'].to_i
       rsp=fdb.deep_copy[:rspframe]
       @sel=Hash[rsp[:frame]]
       @fds=rsp[:select]
       @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
       # Field Initialize
       rsp[:assign].each{|k,v|
-        @field.val[k]||=v
+        self.val[k]||=v
       }
     end
 
@@ -31,7 +34,7 @@ module Frm
         @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
         hash=yield
         frame=hash[:data]
-        @field.set_time(hash[:time])
+        set_time(hash[:time]) #Field::set_time
         Msg.err("No Response") unless frame
         if tm=@sel['terminator']
           frame.chomp!(eval('"'+tm+'"'))
@@ -45,11 +48,11 @@ module Frm
         end
         @frame.set(@fary.shift)
         getfield_rec(@sel[:main])
-        if cc=@field.unset('cc')
+        if cc=unset('cc') #Field::unset
           cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
           @v.msg{"Verify:CC OK <#{cc}>"}
         end
-        @v.msg{"Update(#{@field.get('time')})"}
+        @v.msg{"Update(#{get('time')})"} #Field::get
         true
       else
         @v.msg{"Send Only"}
@@ -102,7 +105,7 @@ module Frm
         }
         begin
           @v.msg(1){"Array:[#{key}]:Range#{idxs}"}
-          @field.val[key]=mk_array(idxs,@field.get(key)){yield}
+          @val[key]=mk_array(idxs,get(key)){yield}
         ensure
           @v.msg(-1){"Array:Assign[#{key}]"}
         end
@@ -110,7 +113,7 @@ module Frm
         #Field
         data=yield
         if key=e0['assign']
-          @field.val[key]=data
+          @val[key]=data
           @v.msg{"Assign:[#{key}] <- <#{data}>"}
         end
       end
@@ -148,7 +151,8 @@ if __FILE__ == $0
   fdb=InsDb.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
   field= opt['m'] ? Field.new.extend(Field::IoFile).init(id).load : Field.new
-  fr=Frm::Rsp.new(fdb,cobj,field)
-  fr.upd_logline(str)
-  field.save
+  field.extend(Frm::Rsp).init(fdb,cobj)
+  field.upd_logline(str)
+  puts field
+  exit
 end

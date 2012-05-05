@@ -53,14 +53,14 @@ else
   fdb=adb.cover_frm
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
-  fr=Frm::Rsp.new(fdb,cobj,field)
+  field.extend(Frm::Rsp).init(fdb,cobj)
   field.extend(SqLog::Stat)
   if opt['i'] # Initial
     field.create
   else
     readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
       begin
-        fr.upd_logline(str) && field.upd
+        field.upd_logline(str)
         $stderr.print "."
       rescue
         $stderr.print $! if opt['v']

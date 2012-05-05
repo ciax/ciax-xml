@@ -22,10 +22,10 @@ rescue UserError
             "-a:app level(input format 'sqlite3 -header')")
 end
 if opt['a']
-  val=App::Rsp.new(adb,field)
-  sql=SqLog.new('value',id,adb['app_ver'],val)
+  stat=App::Stat.new.extend(App::Rsp).init(adb,field)
+  stat.extend(SqLog::Stat)
   if opt['i'] # Initial
-    sql.ini
+    stat.create
   else
     index=nil
     readlines.each{|str|
@@ -39,8 +39,7 @@ if opt['a']
             hash[i]=ary.shift
           }
           field.update(hash)
-          val.upd
-          sql.upd
+          stat.upd
           $stderr.print "."
         rescue
           $stderr.print $! if opt['v']
@@ -49,18 +48,19 @@ if opt['a']
       end
     }
   end
+  puts stat.sql
 else
   fdb=adb.cover_frm
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
   fr=Frm::Rsp.new(fdb,cobj,field)
-  sql=SqLog.new('field',id,ver,field)
+  field.extend(SqLog::Stat)
   if opt['i'] # Initial
-    sql.ini
+    field.create
   else
     readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
       begin
-        fr.upd_logline(str) && sql.upd
+        fr.upd_logline(str) && field.upd
         $stderr.print "."
       rescue
         $stderr.print $! if opt['v']
@@ -70,5 +70,5 @@ else
     }
     $stderr.puts
   end
+  puts field.sql
 end
-puts sql.to_s

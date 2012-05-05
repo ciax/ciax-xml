@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libiofile"
 require "libvar"
 
 module App
@@ -31,6 +30,7 @@ module App
   end
 
   module Stat::IoFile
+    require "libiofile"
     include IoFile
     def self.extended(obj)
       Msg.type?(obj,SymConv).init
@@ -61,7 +61,7 @@ module App
   module Stat::SqLog
     require "libsqlog"
     def self.extended(obj)
-      Msg.type?(obj,Stat::IoFile).init
+      Msg.type?(obj,Stat).init
     end
 
     def init
@@ -78,15 +78,12 @@ end
 
 if __FILE__ == $0
   require "libinsdb"
-  require "libfield"
-  require "libapprsp"
-  include App
   begin
     id=ARGV.shift
     host=ARGV.shift
     ARGV.clear
     idb=InsDb.new(id).cover_app
-    stat=Stat.new
+    stat=App::Stat.new
     if STDIN.tty?
       if host
         puts stat.extend(InUrl).init(id,host).load
@@ -94,9 +91,11 @@ if __FILE__ == $0
         puts stat.extend(InFile).init(id).load
       end
     else
+      require "libfield"
+      require "libapprsp"
       field=Field.new.load
-      val=Rsp.new(idb,field).upd
-      print stat.upd
+      stat.extend(App::Rsp).init(idb,field).upd
+      print stat
     end
   rescue UserError
     Msg.usage "[id] (host | < field_file)"

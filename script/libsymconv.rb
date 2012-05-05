@@ -6,7 +6,7 @@ require "libstat"
 module SymConv
   require "libsymdb"
   def self.extended(obj)
-    Msg.type?(obj,Stat)
+    Msg.type?(obj,App::Stat)
   end
 
   def init(adb,val)

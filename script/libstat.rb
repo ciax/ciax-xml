@@ -57,23 +57,6 @@ module App
       end
     end
   end
-
-  module Stat::SqLog
-    require "libsqlog"
-    def self.extended(obj)
-      Msg.type?(obj,Stat).init
-    end
-
-    def init
-      # Logging if version number exists
-      @sql=SqLog.new('value',@id,@ver,@val).extend(SqLog::Exec)
-      @post_upd << proc {@sql.upd}
-    end
-
-    def save
-      super && @sql.save
-    end
-  end
 end
 
 if __FILE__ == $0
@@ -100,4 +83,5 @@ if __FILE__ == $0
   rescue UserError
     Msg.usage "[id] (host | < field_file)"
   end
+  exit
 end

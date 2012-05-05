@@ -91,19 +91,6 @@ module Field::IoFile
   end
 end
 
-module Field::SqLog
-  def init(id,ver)
-    @sql=SqLog.new('field',id,ver,@val).extend(SqLog::Exec)
-    self
-  end
-
-  def save(data=nil,tag=nil)
-    super
-    @sql.save
-    self
-  end
-end
-
 if __FILE__ == $0
   f=Field.new
   puts f.update({"a"=>[["0"],"1"]})
@@ -115,4 +102,5 @@ if __FILE__ == $0
       puts f.get(s)
     end
   end
+  exit
 end

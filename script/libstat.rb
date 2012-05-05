@@ -33,7 +33,7 @@ module App
     require "libiofile"
     include IoFile
     def self.extended(obj)
-      Msg.type?(obj,SymConv).init
+      Msg.type?(obj,Sym::Conv).init
     end
 
     def init

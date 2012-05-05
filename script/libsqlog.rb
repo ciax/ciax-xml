@@ -3,107 +3,131 @@
 require "libmsg"
 
 # Generate SQL command string
-class SqLog < Array
-  def initialize(type,id,ver,val)
-    @v=Msg::Ver.new(self,6)
-    @type=type
-    @tid="#{id}_#{ver.to_i}"
-    @val=Msg.type?(val,Hash)
-  end
-
-  def ini
-    key=['time',*expand.keys].uniq.join("','")
-    @v.msg{"create ('#{key}')"}
-    push "create table #{@tid} ('#{key}',primary key(time));"
-  end
-
-  def add(key)
-    push "alter table #{@tid} add column #{key};"
-  end
-
-  def upd
-    val=expand
-    key=val.keys.join("','")
-    val=val.values.join("','")
-    @v.msg{"Update(#{@val['time']}):[#{@type}/#{@tid}]"}
-    push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
-  end
-
-  def to_s
-    (["begin;"]+self+["commit;"]).join("\n")
-  end
-
-  private
-  def expand
-    val={}
-    @val.each{|k,v|
-      next if /type/ =~ k
-      case v
-      when Array
-        rec_expand(k,v,val)
-      else
-        val[k]=v
-      end
-    }
-    val
-  end
-
-  def rec_expand(k,v,val)
-    v.size.times{|i|
-      case v[i]
-      when Enumerable
-        rec_expand("#{k}:#{i}",v[i],val)
-      else
-        val["#{k}:#{i}"]=v[i]
-      end
-    }
-    val
-  end
-end
-
-# Execute Sql Command to sqlite3
-module SqLog::Exec
-  def self.extended(obj)
-    Msg.type?(obj,SqLog).init
-  end
-
-  def init
-    @sql=["sqlite3",VarDir+"/"+@type+".sq3"]
-    unless check_table
-      ini
-      save
-      @v.msg{"Init/Table '#{@tid}' is created in #{@type}"}
+module SqLog
+  module Stat
+    def self.extended(obj)
+      Msg.type?(obj,Var).init
     end
-    @v.msg{"Init/Start Log '#{@type}' (#{@tid})"}
+
+    def init
+      @log=[]
+      @tid="#{@id}_#{@ver.to_i}"
+      self
+    end
+
+    def create
+      key=['time',*expand.keys].uniq.join("','")
+      @v.msg{"create ('#{key}')"}
+      @log.push "create table #{@tid} ('#{key}',primary key(time));"
+      self
+    end
+
+    def add(key)
+      @log.push "alter table #{@tid} add column #{key};"
+      self
+    end
+
+    def upd
+      super
+      val=expand
+      key=val.keys.join("','")
+      val=val.values.join("','")
+      @v.msg{"Update(#{@val['time']}):[#{@type}/#{@tid}]"}
+      @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
+      self
+    end
+
+    def sql
+      (["begin;"]+@log+["commit;"]).join("\n")
+    end
+
+    private
+    def expand
+      val={}
+      @val.each{|k,v|
+        next if /type/ =~ k
+        case v
+        when Array
+          rec_expand(k,v,val)
+        else
+          val[k]=v
+        end
+      }
+      val
+    end
+
+    def rec_expand(k,v,val)
+      v.size.times{|i|
+        case v[i]
+        when Enumerable
+          rec_expand("#{k}:#{i}",v[i],val)
+        else
+          val["#{k}:#{i}"]=v[i]
+        end
+      }
+      val
+    end
   end
 
-  # Check table existence
-  def check_table
-    internal("tables").split(' ').include?(@tid)
-  end
+  # Execute Sql Command to sqlite3
+  module Exec
+    def self.extended(obj)
+      Msg.type?(obj,Stat).init
+    end
 
-  # Issue internal command
-  def internal(str)
-    cmd=@sql.join(' ')+" ."+str
-    `#{cmd}`
-  end
+    def init
+      @sqlcmd=["sqlite3",VarDir+"/"+@type+".sq3"]
+      unless check_table
+        ini
+        save
+        @v.msg{"Init/Table '#{@tid}' is created in #{@type}"}
+      end
+      @v.msg{"Init/Start SqLog '#{@type}' (#{@tid})"}
+      self
+    end
 
-  # Do a transaction
-  def save
-    IO.popen(@sql,'w'){|f|
-      f.puts to_s
-    }
-    @v.msg{"Transaction complete (#{@type})"}
-    clear
-  rescue
-    Msg.err(" in SQL")
+    # Check table existence
+    def check_table
+      internal("tables").split(' ').include?(@tid)
+    end
+
+    # Issue internal command
+    def internal(str)
+      cmd=@sqlcmd.join(' ')+" ."+str
+      `#{cmd}`
+    end
+
+    def upd
+      super
+      save
+    end
+
+    # Do a transaction
+    def save
+      IO.popen(@sqlcmd,'w'){|f|
+        f.puts sql
+      }
+      @v.msg{"Transaction complete (#{@type})"}
+      @log.clear
+      self
+    rescue
+      Msg.err(" in SQL")
+    end
   end
 end
 
 if __FILE__ == $0
+  require "libinsdb"
   require "libstat"
-  Msg.usage "[stat_file]" if STDIN.tty? && ARGV.size < 1
-  stat=Stat.new.load
-  sql=SqLog.new('value',stat.id,stat.ver,stat.val)
-  puts sql.upd
+  id=ARGV.shift
+  ARGV.clear
+  begin
+    adb=InsDb.new(id).cover_app
+    stat=App::Stat.new.extend(InFile).init(id).load
+    stat.extend(SqLog::Stat).upd
+    puts stat.sql
+  rescue UserError
+    Msg.usage "[id]"
+  end
+  exit
 end

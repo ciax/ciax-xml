@@ -16,7 +16,7 @@ module Frm
         @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
         id=fdb['id'];ver=fdb['frm_ver']
         @io.extend(Stream::Logging).init(id,ver)
-        @field.extend(Field::SqLog).init(id,ver)
+        @field.extend(SqLog::Stat).extend(SqLog::Exec)
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end

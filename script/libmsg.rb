@@ -187,6 +187,11 @@ module Msg
     raise "Parameter type error <#{name.class}> for (#{mod.to_s})"
   end
 
+  def data_type?(data,type)
+    return data if data['type'] == type
+    raise "Data type error <#{name.class}> for (#{mod.to_s})"
+  end
+
   # 1=red,2=green,4=blue,8=bright
   def color(text,c=7)
     return '' if text == ''

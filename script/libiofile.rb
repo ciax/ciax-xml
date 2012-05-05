@@ -72,6 +72,12 @@ module IoFile
     self
   end
 
+  def upd
+    super
+    save
+    self
+  end
+
   def save(data=nil,tag=nil)
     name=fname(tag)
     open(name,'w'){|f|

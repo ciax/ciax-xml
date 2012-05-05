@@ -42,12 +42,6 @@ module App
       self
     end
 
-    def upd
-      super
-      save
-      self
-    end
-
     def save
       time=@val['time'].to_f
       if time > @lastsave

@@ -9,11 +9,10 @@ module SymConv
     Msg.type?(obj,App::Stat)
   end
 
-  def init(adb,val)
+  def init(adb)
     @id=adb['id']
     ads=Msg.type?(adb,App::Db)[:status]
     self.ver=adb['app_ver'].to_i
-    self.val=Msg.type?(val,App::Rsp)
     @symbol=ads[:symbol]||{}
     @sdb=SymDb.pack(['all',ads['table']])
     self['class']={'time' => 'normal'}
@@ -64,9 +63,10 @@ if __FILE__ == $0
     idb=InsDb.new(id).cover_app
     raise UserError if STDIN.tty?
     field=Field.new.load
-    val=App::Rsp.new(idb,field)
-    stat=Stat.new.extend(SymConv).init(idb,val)
-    print stat.upd
+    stat=App::Stat.new
+    stat.val=App::Rsp.new(idb,field).upd
+    stat.extend(SymConv).init(idb).upd
+    print stat
   rescue UserError
     Msg.usage "[id] < field_file"
   end

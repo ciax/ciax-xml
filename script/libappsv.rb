@@ -13,8 +13,8 @@ module App
       super(adb)
       id=adb['id']
       @ac=App::Cmd.new(@cobj)
-      val=App::Rsp.new(adb,@fint.field).upd
-      @stat.extend(SymConv).init(adb,val).extend(Stat::IoFile)
+      val=@stat.val=App::Rsp.new(adb,@fint.field).upd
+      @stat.extend(SymConv).init(adb).extend(Stat::IoFile)
       @stat.extend(Stat::SqLog) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv).init(adb)
       val.post_upd << proc{@stat.upd}

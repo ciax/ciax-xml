@@ -6,7 +6,7 @@ class XmlDoc < Hash
   attr_reader :top,:list
   def initialize(type)
     @v=Msg::Ver.new(self,4)
-    @type=type||raise("Need DB type")
+    @type=type||Msg.err("Need DB type")
     list={}
     readxml{|e| list[e['id']]=e['label'] }
     @list=Msg::CmdList.new("[id]").update(list).sort!
@@ -60,7 +60,7 @@ if __FILE__ == $0
     doc=XmlDoc.new(ARGV.shift)
     puts doc.list
   rescue
-    Msg.usage("[type]")
+    Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
     Msg.exit
   end
 end

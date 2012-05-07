@@ -1,86 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<objecttree>
-  <module>
-    <Stream::Logging include="Logging"></Stream::Logging>
-  </module>
-  <class>
-    <Exception>
-      <StandardError>
-        <RuntimeError>
-          <Broken />
-          <UserError>
-            <SelectID>
-              <SelectCMD />
-            </SelectID>
-          </UserError>
-        </RuntimeError>
-      </StandardError>
-    </Exception>
-    <Hash include="Enumerable">
-      <ExHash include="ExEnum">
-        <Command include="Math">
-          <App::Cmd />
-        </Command>
-        <Db>
-          <App::Db />
-          <Frm::Db />
-          <InsDb />
-          <McrDb />
-          <Sym::Db />
-        </Db>
-        <IoFile>
-          <Field/>
-          <Stat>
-            <Stat::Writable />
-          </Stat>
-        </IoFile>
-      </ExHash>
-      <App::Rsp />
-      <AppList />
-      <FrmList />
-      <Msg::CmdList />
-      <Msg::GroupList />
-      <SymStat />
-      <Watch::Stat />
-      <XmlDoc />
-    </Hash>
-    <Array include="Enumerable">
-      <SqLog>
-        <SqLog::Logging />
-      </SqLog>
-      <HtmlTbl />
-      <McrSub />
-    </Array>
-    <Time>
-      <Interval>
-        <Elapse />
-      </Interval>
-    </Time>
-    <Thread>
-      <Server />
-    </Thread>
-    <App::Int>
-      <App::Cl />
-      <App::Sv />
-    </App::Int>
-    <Frm::Int>
-      <Frm::Cl />
-      <Frm::Sv />
-    </Frm::Int>
-    <ViewPrt />
-    <Frm::Cmd />
-    <Frm::Rsp />
-    <Buffer />
-    <Circular />
-    <Client />
-    <Frame />
-    <HexPack />
-    <Stream />
+<class>
+  <Exception>
+    <StandardError>
+      <RuntimeError>
+        <Broken/>
+        <UserError>
+          <SelectID>
+            <SelectCMD/>
+          </SelectID>
+        </UserError>
+      </RuntimeError>
+    </StandardError>
+  </Exception>
+  <Hash>
+    <ExHash include="ExEnum">
+      <Command include="Math"/>
+      <Db>
+        <App.Db/>
+        <Frm.Db/>
+        <InsDb/>
+        <McrDb/>
+        <Sym.Db/>
+      </Db>
+      <Prompt/>
+      <Var>
+        <Field/>
+        <Status/>
+      </Var>
+      <View/>
+      <Watch.View/>
+    </ExHash>
+    <AppList/>
+    <FrmList/>
+    <Msg.CmdList/>
+    <Msg.GroupList/>
+    <XmlDoc/>
+  </Hash>
+  <Array>
+    <HtmlTbl/>
+    <McrSub/>
+    <Update/>
+  </Array>
+  <Time>
+    <Interval>
+      <Elapse/>
+    </Interval>
+  </Time>
+  <Interact>
+    <App.Int>
+      <App.Cl />
+      <App.Sv />
+    </App.Int>
+    <Frm.Int>
+      <Frm.Cl />
+      <Frm.Sv />
+    </Frm.Int>
     <McrMan />
-    <Msg />
-    <Shell />
-    <ReRange Comparable="" />
-    <Repeat />
-    <Xml include="ModXml" />
-  </class>
-</objecttree>
+  </Interact>
+  <App.Cmd include="Math"/>
+  <Frm.Cmd/>
+  <Msg.Ver/>
+  <Buffer />
+  <Circular />
+  <Frame />
+  <TextHex include="HexPack"/>
+  <Repeat/>
+  <ReRange include="Comparable"/>
+  <Stream />
+  <Xml include="ModXml"/>
+</class>

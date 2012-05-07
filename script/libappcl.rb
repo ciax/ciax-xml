@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libappint"
-require "libstat"
+require "libstatus"
 require "libfrmcl"
 
 module App

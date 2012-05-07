@@ -94,13 +94,13 @@ end
 if __FILE__ == $0
   require "libappdb"
   require "libfield"
-  require "libstat"
+  require "libstatus"
   app=ARGV.shift
   ARGV.clear
   begin
     adb=App::Db.new(app)
     field=Field.new.load
-    puts App::Stat.new.extend(App::Rsp).init(adb,field).upd
+    puts Status.new.extend(App::Rsp).init(adb,field).upd
   rescue UserError
     Msg.usage "[app] < field_file\n#{$!}"
   end

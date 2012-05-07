@@ -118,12 +118,12 @@ end
 
 if __FILE__ == $0
   require "libinsdb"
-  require "libstat"
+  require "libstatus"
   id=ARGV.shift
   ARGV.clear
   begin
     adb=InsDb.new(id).cover_app
-    stat=App::Stat.new.extend(InFile).init(id).load
+    stat=Status.new.extend(InFile).init(id).load
     stat.extend(SqLog::Stat).upd
     puts stat.sql
   rescue UserError

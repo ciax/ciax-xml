@@ -63,12 +63,12 @@ module HexPack
 end
 
 if __FILE__ == $0
-  require "libstat"
+  require "libstatus"
   class TestHex
     include HexPack
     def initialize
       @v=Msg::Ver.new(self,6)
-      @stat=Stat.new.load
+      @stat=Status.new.load
       @prompt={}
       init
     end

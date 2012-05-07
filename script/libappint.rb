@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libinteract"
-require "libstat"
+require "libstatus"
 require "libfrmlist"
 module App
   class Int < Interact
@@ -9,7 +9,7 @@ module App
       super(Command.new(adb[:command]))
       @prompt['id']=adb['id']
       @port=adb['port'].to_i
-      @stat=Stat.new.extend(Watch::Stat)
+      @stat=Status.new.extend(Watch::Stat)
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=FrmList.new[adb['id']]
       int={'set'=>"[key=val], ..",'flush'=>"Flush Status"}

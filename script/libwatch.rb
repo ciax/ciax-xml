@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libstat'
+require 'libstatus'
 require 'librerange'
 
 module Watch
   module Stat
     attr_reader :active,:period,:interval,:watch
     def self.extended(obj)
-      Msg.type?(obj,App::Stat).init
+      Msg.type?(obj,Status).init
     end
 
     def init
@@ -218,7 +218,7 @@ if __FILE__ == $0
               "-t:test conditions(key=val,..)",
               "-r:raw data","-v:view data")
   end
-  stat=App::Stat.new.extend(IoFile).init(id).load
+  stat=Status.new.extend(IoFile).init(id).load
   stat.extend(Watch::Stat)
   unless opt['r']
     wview=Watch::View.new(adb,stat)

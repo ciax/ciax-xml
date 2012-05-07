@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libstat"
+require "libstatus"
 
 # Status to Sym::Conv (String with attributes)
 module Sym
   module Conv
     require "libsymdb"
     def self.extended(obj)
-      Msg.type?(obj,App::Stat)
+      Msg.type?(obj,Status)
     end
 
     def init(adb)
@@ -59,7 +59,7 @@ if __FILE__ == $0
   id=ARGV.shift
   begin
     adb=InsDb.new(id).cover_app
-    stat=App::Stat.new.extend(InFile).init(id).load
+    stat=Status.new.extend(InFile).init(id).load
     stat.extend(Sym::Conv).init(adb).upd
     print stat
   rescue UserError

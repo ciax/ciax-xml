@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <objecttree>
   <class>
-    <Exception>
-      <StandardError>
-        <RuntimeError>
-          <Broken/>
-          <UserError>
-            <SelectID>
-              <SelectCMD/>
-            </SelectID>
-          </UserError>
-        </RuntimeError>
-      </StandardError>
-    </Exception>
+    <RuntimeError>
+      <Broken/>
+      <UserError>
+        <SelectID>
+          <SelectCMD/>
+        </SelectID>
+      </UserError>
+    </RuntimeError>
     <Hash>
       <ExHash include="ExEnum">
         <Command include="Math"/>
         <Db>
-          <App.Db/>
+          <App.Db include="Cdb,Sdb,Wdb"/>
           <Frm.Db/>
           <InsDb/>
           <McrDb/>
@@ -49,7 +45,7 @@
     </Time>
     <Interact>
       <App.Int>
-        <App.Cl />
+        <App.Cl extend="Client"/>
         <App.Sv />
       </App.Int>
       <Frm.Int>
@@ -61,45 +57,45 @@
     <App.Cmd include="Math"/>
     <Frm.Cmd/>
     <Msg.Ver/>
-    <Buffer />
-    <Circular />
-    <Frame />
+    <Buffer/>
+    <Circular/>
+    <Frame/>
     <TextHex include="HexPack"/>
     <Repeat/>
     <ReRange include="Comparable"/>
-    <Stream />
+    <Stream/>
     <Xml include="ModXml"/>
   </class>
   <module>
-    <App>
+    <App type='ns'>
       <Cdb/>
       <Sdb/>
       <Wdb/>
       <Rsp/>
     </App>
-    <Command.Logging/>
+    <Command.Logging include="Logging"/>
     <ExEnum/>
-    <Field.IoFile/>
-    <Frm>
+    <Field.IoFile include="IoFile"/>
+    <Frm type='ns'>
       <Rsp/>
     </Frm>
     <HexPack/>
     <Client/>
     <InFile/>
-    <InUrl/>
-    <IoFile/>
+    <InUrl include="InFile"/>
+    <IoFile include="InFile"/>
     <Logging/>
     <McrPrt/>
     <ModXml/>
     <Msg/>
     <ShPrt/>
-    <SqLog>
+    <SqLog type='ns'>
       <Stat/>
       <Exec/>
     </SqLog>
-    <Status.IoFile/>
-    <Stream.Logging/>
-    <Sym>
+    <Status.IoFile include="IoFile"/>
+    <Stream.Logging include="Logging"/>
+    <Sym type='ns'>
       <Conv/>
     </Sym>
     <Var.Val/>

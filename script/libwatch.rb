@@ -11,7 +11,7 @@ module Watch
     end
 
     def init
-      @watch=(self['watch']||={})
+      @watch=(self['watch']||={}).extend(ExEnum)
       ['active','exec','block','int'].each{|i|
         @watch[i]||=[]
       }
@@ -230,5 +230,5 @@ if __FILE__ == $0
     stat.extend(Watch::Conv).init(adb)
     stat.str_update(t).upd.save
   end
-  puts wview||wstat
+  puts wview||stat['watch']
 end

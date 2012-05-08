@@ -1,71 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class>
-  <Exception>
-    <StandardError>
-      <RuntimeError>
-        <Broken/>
-        <UserError>
-          <SelectID>
-            <SelectCMD/>
-          </SelectID>
-        </UserError>
-      </RuntimeError>
-    </StandardError>
-  </Exception>
-  <Hash>
-    <ExHash include="ExEnum">
-      <Command include="Math"/>
-      <Db>
-        <App.Db/>
-        <Frm.Db/>
-        <InsDb/>
-        <McrDb/>
-        <Sym.Db/>
-      </Db>
-      <Prompt/>
-      <Var>
-        <Field/>
-        <Status/>
-      </Var>
-      <View/>
-      <Watch.View/>
-    </ExHash>
-    <AppList/>
-    <FrmList/>
-    <Msg.CmdList/>
-    <Msg.GroupList/>
-    <XmlDoc/>
-  </Hash>
-  <Array>
-    <HtmlTbl/>
-    <McrSub/>
-    <Update/>
-  </Array>
-  <Time>
-    <Interval>
-      <Elapse/>
-    </Interval>
-  </Time>
-  <Interact>
-    <App.Int>
-      <App.Cl />
-      <App.Sv />
-    </App.Int>
-    <Frm.Int>
-      <Frm.Cl />
-      <Frm.Sv />
-    </Frm.Int>
-    <McrMan />
-  </Interact>
-  <App.Cmd include="Math"/>
-  <Frm.Cmd/>
-  <Msg.Ver/>
-  <Buffer />
-  <Circular />
-  <Frame />
-  <TextHex include="HexPack"/>
-  <Repeat/>
-  <ReRange include="Comparable"/>
-  <Stream />
-  <Xml include="ModXml"/>
-</class>
+<objecttree>
+  <class>
+    <Exception>
+      <StandardError>
+        <RuntimeError>
+          <Broken/>
+          <UserError>
+            <SelectID>
+              <SelectCMD/>
+            </SelectID>
+          </UserError>
+        </RuntimeError>
+      </StandardError>
+    </Exception>
+    <Hash>
+      <ExHash include="ExEnum">
+        <Command include="Math"/>
+        <Db>
+          <App.Db/>
+          <Frm.Db/>
+          <InsDb/>
+          <McrDb/>
+          <Sym.Db/>
+        </Db>
+        <Prompt/>
+        <Var>
+          <Field/>
+          <Status/>
+        </Var>
+        <View/>
+        <Watch.View/>
+      </ExHash>
+      <AppList/>
+      <FrmList/>
+      <Msg.CmdList/>
+      <Msg.GroupList/>
+      <XmlDoc/>
+    </Hash>
+    <Array>
+      <HtmlTbl/>
+      <McrSub/>
+      <Update/>
+    </Array>
+    <Time>
+      <Interval>
+        <Elapse/>
+      </Interval>
+    </Time>
+    <Interact>
+      <App.Int>
+        <App.Cl />
+        <App.Sv />
+      </App.Int>
+      <Frm.Int>
+        <Frm.Cl />
+        <Frm.Sv />
+      </Frm.Int>
+      <McrMan />
+    </Interact>
+    <App.Cmd include="Math"/>
+    <Frm.Cmd/>
+    <Msg.Ver/>
+    <Buffer />
+    <Circular />
+    <Frame />
+    <TextHex include="HexPack"/>
+    <Repeat/>
+    <ReRange include="Comparable"/>
+    <Stream />
+    <Xml include="ModXml"/>
+  </class>
+  <module>
+    <App>
+      <Cdb/>
+      <Sdb/>
+      <Wdb/>
+      <Rsp/>
+    </App>
+    <Command.Logging/>
+    <ExEnum/>
+    <Field.IoFile/>
+    <Frm>
+      <Rsp/>
+    </Frm>
+    <HexPack/>
+    <Client/>
+    <InFile/>
+    <InUrl/>
+    <IoFile/>
+    <Logging/>
+    <McrPrt/>
+    <ModXml/>
+    <Msg/>
+    <ShPrt/>
+    <SqLog>
+      <Stat/>
+      <Exec/>
+    </SqLog>
+    <Status.IoFile/>
+    <Stream.Logging/>
+    <Sym>
+      <Conv/>
+    </Sym>
+    <Var.Val/>
+    <View.Print/>
+    <Watch>
+      <Stat/>
+      <Conv/>
+      <Print/>
+    </Watch>
+  </module>
+</objecttree>

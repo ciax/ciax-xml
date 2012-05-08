@@ -1,4 +1,7 @@
 ========================== Issue =============================
+debug: no status file update(Frm,App)
+update:add ext_???() method including add new method instead of extend(Module)
+
 ***DEBUG
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)

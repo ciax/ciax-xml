@@ -54,7 +54,7 @@
       </Frm.Int>
       <McrMan />
     </Interact>
-    <App.Cmd include="Math"/>
+    <App.Cmd/>
     <Frm.Cmd/>
     <Msg.Ver/>
     <Buffer/>

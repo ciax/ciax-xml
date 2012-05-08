@@ -4,7 +4,6 @@ require "libcommand"
 
 module App
   class Cmd
-    include Math
     def initialize(cobj)
       @v=Msg::Ver.new(self,9)
       @cobj=Msg.type?(cobj,Command)

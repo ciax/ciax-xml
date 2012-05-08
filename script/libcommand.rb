@@ -42,6 +42,7 @@ class Command < ExHash
 
   # Substitute string($+number) with parameters
   # par={ val,range,format } or String
+  # str could include Math functions
   def subst(str)
     return str unless /\$([\d]+)/ === str
     @v.msg(1){"Substitute from [#{str}]"}
@@ -55,7 +56,7 @@ class Command < ExHash
       Msg.err("Nil string") if res == ''
       res
     ensure
-      @v.msg(-1){"Substitute to [#{str}]"}
+      @v.msg(-1){"Substitute to [#{res}]"}
     end
   end
 

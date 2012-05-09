@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libinsdb"
-require "libshprt"
+require "libappprt"
 
 # 'a' is client of app server
 # 'f' is client of frm server
@@ -27,7 +27,7 @@ module App
           aint=Sv.new(adb)
           aint.socket
         end
-        h[id]=aint.extend(ShPrt)
+        h[id]=aint.extend(App::Prt)
         yield(aint,idb.list) if defined? yield
         h[id]
       }

@@ -217,7 +217,7 @@ if __FILE__ == $0
               "-t:test conditions(key=val,..)",
               "-r:raw data","-v:view data")
   end
-  stat=Status.new.ext_iofile(id).load
+  stat=Status.new.ext_save(id).load
   stat.extend(Watch::Stat)
   unless opt['r']
     wview=Watch::View.new(adb,stat)

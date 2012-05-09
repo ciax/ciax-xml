@@ -70,7 +70,7 @@ class Var < ExHash
 
   ## Read/Write JSON file
   public
-  def ext_file(id)
+  def ext_load(id)
     self.id=id
     @dir="/json/"
     @base=@type+'_'+id
@@ -81,13 +81,13 @@ class Var < ExHash
 
   def ext_url(id,host='')
     require "open-uri"
-    ext_file(id)
+    ext_load(id)
     @prefix="http://"+host
     self
   end
 
-  def ext_iofile(id)
-    ext_file(id)
+  def ext_save(id)
+    ext_load(id)
     extend Save
     self
   end

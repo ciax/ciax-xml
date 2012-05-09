@@ -28,7 +28,7 @@ class Status < Var
     self
   end
 
-  def ext_iofile(id)
+  def ext_save(id)
     super
     @lastsave=0
     extend Save
@@ -60,7 +60,7 @@ if __FILE__ == $0
       if host
         puts stat.ext_url(id,host).load
       else
-        puts stat.ext_file(id).load
+        puts stat.ext_load(id).load
       end
     else
       require "libfield"

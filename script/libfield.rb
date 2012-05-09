@@ -65,7 +65,7 @@ class Field < Var
     self
   end
 
-  def ext_iofile(id)
+  def ext_save(id)
     super
     # Saving data of specified keys with tag
     def self.savekey(keylist,tag=nil)

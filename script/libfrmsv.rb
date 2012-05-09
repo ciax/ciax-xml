@@ -12,7 +12,7 @@ module Frm
     def initialize(fdb,iocmd=[])
       super(fdb)
       @field.extend(Frm::Rsp).init(fdb,@cobj)
-      @field.ext_iofile(fdb['id']).load
+      @field.ext_save(fdb['id']).load
       if Msg.type?(iocmd,Array).empty?
         @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
         id=fdb['id'];ver=fdb['frm_ver']

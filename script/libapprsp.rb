@@ -6,7 +6,7 @@ module App
   module Rsp
     def init(adb,field)
       Msg.type?(adb,App::Db)
-      @field=Msg.type?(field,Field::Var)
+      @field=Msg.type?(field,Field)
       @ads=adb[:status][:select]
       @fmt=adb[:status][:format]||{}
       @ads.keys.each{|k| @val[k]||='' }
@@ -99,7 +99,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     adb=App::Db.new(app)
-    field=Field::Var.new.load
+    field=Field.new.load
     puts Status.new.extend(App::Rsp).init(adb,field).upd
   rescue UserError
     Msg.usage "[app] < field_file\n#{$!}"

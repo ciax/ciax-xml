@@ -37,9 +37,7 @@
         <Var parent="Var"/>
         <IoFile extend_for="Field" include="IoFile"/>
       </Field>
-      <Status>
-        <Var parent="Var"/>
-      </Status>
+      <Status parent="Var"/>
       <SqLog>
         <Stat extend_for="Var"/>
         <Exec extend_for="Stat"/>

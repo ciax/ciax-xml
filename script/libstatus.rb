@@ -62,7 +62,7 @@ if __FILE__ == $0
     else
       require "libfield"
       require "libapprsp"
-      field=Field::Var.new.load
+      field=Field.new.load
       stat.extend(App::Rsp).init(idb,field).upd
       print stat
     end

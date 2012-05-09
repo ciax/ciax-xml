@@ -8,6 +8,7 @@ require "thread"
 
 module App
   class Sv < Int
+    include Server
     attr_reader :fint
     def initialize(adb)
       super(adb)

@@ -51,7 +51,12 @@ class Interact
       end
     }
   end
+end
 
+module Server
+  def self.extended(obj)
+    Msg.type?(obj,Interact)
+  end
   # JSON expression of @prompt will be sent.
   # Or, block contents will be sent if block added.
   def socket(type,json=true)
@@ -88,6 +93,14 @@ module Client
     Msg.type?(obj,Interact).init
   end
 
+  def init
+    @udp=UDPSocket.open()
+    @host||='localhost'
+    @addr=Socket.pack_sockaddr_in(@port,@host)
+    @v.msg{"Init/Client #{@host}:#{@port}"}
+    self
+  end
+
   def exe(cmd)
     line=cmd.empty? ? 'strobe' : cmd.join(' ')
     @udp.send(line,0,@addr)
@@ -99,14 +112,6 @@ module Client
     super if /ERROR/ =~ @prompt['msg']
     @post_exe.upd
     @prompt['msg']
-  end
-
-  def init
-    @udp=UDPSocket.open()
-    @host||='localhost'
-    @addr=Socket.pack_sockaddr_in(@port,@host)
-    @v.msg{"Init/Client #{@host}:#{@port}"}
-    self
   end
 end
 

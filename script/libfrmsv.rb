@@ -8,6 +8,7 @@ require "libfrmcmd"
 
 module Frm
   class Sv < Int
+    include Server
     def initialize(fdb,iocmd=[])
       super(fdb)
       @field.extend(Frm::Rsp).init(fdb,@cobj)

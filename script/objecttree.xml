@@ -14,6 +14,7 @@
       <Interval parent="Time"/>
       <Elapse parent="Interval"/>
       <Interact parent="Object"/>
+      <Server extend_for="Interact"/>
       <Client extend_for="Interact"/>
       <Buffer parent="Object"/>
       <Circular parent="Object"/>
@@ -50,7 +51,7 @@
         <Rsp extend_for="Status"/>
         <Int parent="Interact"/>
         <Cl parent="Int" extend="Client"/>
-        <Sv parent="Int"/>
+        <Sv parent="Int" include="Server"/>
         <Prt extend_for="Int"/>
         <List parent="Hash"/>
       </App>
@@ -60,7 +61,7 @@
         <Rsp extend_for="Field"/>
         <Int parent="Interact"/>
         <Cl parent="Int" extend="Client"/>
-        <Sv parent="Int"/>
+        <Sv parent="Int" include="Server"/>
         <List parent="Hash"/>
       </Frm>
       <Ins>

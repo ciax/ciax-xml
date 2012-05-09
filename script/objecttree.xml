@@ -3,16 +3,13 @@
   <module-inclusive>
     <ExHash parent="Hash" include="ExEnum"/>
     <Db parent="ExHash"/>
-    <McrDb parent="Db"/>
     <Prompt parent="ExHash"/>
     <XmlDoc parent="Hash"/>
     <HtmlTbl parent="Array"/>
-    <McrSub parent="Array"/>
     <Update parent="Array"/>
     <Interval parent="Time"/>
     <Elapse parent="Interval"/>
     <Interact parent="Object"/>
-    <McrMan parent="Interact"/>
     <Buffer parent="Object"/>
     <Circular parent="Object"/>
     <Frame parent="Object"/>
@@ -58,7 +55,12 @@
     <InUrl include="InFile"/>
     <IoFile include="InFile"/>
     <Logging/>
-    <McrPrt/>
+    <Mcr>
+      <Db parent="Db"/>
+      <Sub parent="Array"/>
+      <Int parent="Interact"/>
+      <Prt/>
+    </Mcr>
     <ModXml/>
     <Msg>
       <CmdList parent="Hash"/>
@@ -111,7 +113,7 @@
           <App.Db/>
           <Frm.Db/>
           <Ins.Db/>
-          <McrDb/>
+          <Mcr::Db/>
           <Sym.Db/>
         </Db>
         <Prompt/>
@@ -130,7 +132,7 @@
     </Hash>
     <Array>
       <HtmlTbl/>
-      <McrSub/>
+      <Mcr::Sub/>
       <Update/>
     </Array>
     <Time>
@@ -147,7 +149,7 @@
         <Frm.Cl />
         <Frm.Sv />
       </Frm.Int>
-      <McrMan />
+      <Mcr::Int />
     </Interact>
     <App.Cmd/>
     <Frm.Cmd/>

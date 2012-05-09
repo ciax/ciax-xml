@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require "libmcrman"
+require "libmcrint"
 
 id=ARGV.shift
 ARGV.clear
 begin
-  mm=McrMan.new(id)
+  mm=Mcr::Int.new(id)
 rescue SelectID
   Msg.usage("[mcr] # (ACT=n)")
 end

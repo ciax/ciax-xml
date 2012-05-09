@@ -2,12 +2,6 @@
 require "libmsg"
 require "libexenum"
 
-module Val
-  def to_s
-    Msg.view_struct(self,'val')
-  end
-end
-
 class Var < ExHash
   attr_reader :type,:id,:ver,:val
   def initialize(type)
@@ -50,7 +44,10 @@ class Var < ExHash
   end
 
   def val=(val)
-    self['val']=@val=val.extend(Val)
+    self['val']=@val=val
+    def val.to_s
+      Msg.view_struct(self,'val')
+    end
   end
 
   def set_time(time=nil)

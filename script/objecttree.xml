@@ -20,9 +20,7 @@
       <Frame parent="Object"/>
       <Repeat parent="Object"/>
       <ReRange parent="Object" include="Comparable"/>
-      <Var parent="ExHash">
-        <Val extend_for="Var"/>
-      </Var>
+      <Var parent="ExHash"/>
       <XmlDoc parent="Hash"/>
       <ModXml/>
       <Xml parent="Object" include="ModXml"/>

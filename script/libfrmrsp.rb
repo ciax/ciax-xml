@@ -51,7 +51,7 @@ module Frm
           cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
           @v.msg{"Verify:CC OK <#{cc}>"}
         end
-        @v.msg{"Conv/Update(#{get('time')})"} #Field::get
+        @v.msg{"Rsp/Update(#{get('time')})"} #Field::get
         true
       else
         @v.msg{"Send Only"}

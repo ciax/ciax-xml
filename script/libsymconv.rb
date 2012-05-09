@@ -22,6 +22,7 @@ module Sym
     end
 
     def upd
+      super
       @symbol.each{|key,sid|
         unless tbl=@sdb[sid.to_sym]
           Msg.warn("Table[#{sid}] not exist")
@@ -49,7 +50,7 @@ module Sym
       stime=@val['time'].to_f
       self['msg']['time']=Time.at(stime).to_s
       @v.msg{"Sym/Update(#{stime})"}
-      super
+      self
     end
   end
 end

@@ -25,7 +25,7 @@ module App
         end
       }
       @val['time']=@field.get('time')
-      @v.msg{"Conv/Update(#{@val['time']})"}
+      @v.msg{"Rsp/Update(#{@val['time']})"}
       self
     end
 

@@ -33,10 +33,7 @@
       </Msg>
       <Command parent="ExHash" include="Math"/>
       <Stream parent="Object"/>
-      <Field>
-        <Var parent="Var"/>
-        <IoFile extend_for="Field" include="IoFile"/>
-      </Field>
+      <Field parent="Var"/>
       <Status parent="Var"/>
       <SqLog>
         <Stat extend_for="Var"/>

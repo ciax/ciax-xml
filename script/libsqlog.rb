@@ -100,10 +100,12 @@ module SqLog
     def upd
       super
       save
+      self
     end
 
     # Do a transaction
     def save
+      super
       IO.popen(@sqlcmd,'w'){|f|
         f.puts sql
       }

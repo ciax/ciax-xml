@@ -42,6 +42,7 @@ class Status < Var
 
     def save
       time=@val['time'].to_f
+      @v.msg{"Data time #{time} for Save"}
       if time > @lastsave
         super
         @lastsave=time

@@ -116,9 +116,9 @@
       <Sv parent="Int"/>
       <List parent="Hash"/>
     </Frm>
-    <HexPack/>
-    <Client/>
-    <InFile/>
+    <HexPack extend_for="App.Int"/>
+    <Client extend_for="Interact"/>
+    <InFile extend_for="Var"/>
     <InUrl include="InFile"/>
     <IoFile include="InFile"/>
     <Logging/>
@@ -129,10 +129,10 @@
       <GroupList parent="Hash"/>
       <Ver parent="Object"/>
     </Msg>
-    <ShPrt/>
-    <SqLog type='ns'>
-      <Stat/>
-      <Exec/>
+    <ShPrt extend_for="App.Int"/>
+    <SqLog>
+      <Stat extend_for="Var"/>
+      <Exec extend_for="Stat"/>
     </SqLog>
     <Status parent="Var">
       <IoFile include="IoFile"/>
@@ -140,19 +140,19 @@
     <Stream parent="Object">
       <Logging include="Logging"/>
     </Stream>
-    <Sym type='ns'>
+    <Sym>
       <Db parent="Db"/>
-      <Conv/>
+      <Conv extend_for="Status"/>
     </Sym>
     <Var parent="ExHash">
-      <Val/>
+      <Val extend_for="Var"/>
     </Var>
     <View parent="ExHash">
-      <Print/>
+      <Print extend_for="View"/>
     </View>
     <Watch>
-      <Stat/>
-      <Conv/>
+      <Stat extend_for="Status"/>
+      <Conv extend_for="Stat"/>
       <View parent="ExHash"/>
       <Print extend_for="Print"/>
     </Watch>

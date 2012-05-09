@@ -13,7 +13,7 @@ id = ARGV.shift
 begin
   idb=Ins::Db.new(id)
   adb=idb.cover_app
-  field=Field.new
+  field=Field::Var.new
 rescue UserError
   Msg.usage("(-aiv) [id] (frmlog|fldlog)",
             "-v:verbose",

@@ -9,7 +9,7 @@ require "libstream"
 module Frm
   module Rsp
     def self.extended(obj)
-      Msg.type?(obj,Field)
+      Msg.type?(obj,Field::Var)
     end
 
     def init(fdb,cobj)
@@ -149,7 +149,7 @@ if __FILE__ == $0
   id=Logging.set_logline(str)[:id]
   fdb=Ins::Db.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
-  field= opt['m'] ? Field.new.extend(Field::IoFile).init(id).load : Field.new
+  field= opt['m'] ? Field::Var.new.extend(Field::IoFile).init(id).load : Field::Var.new
   field.extend(Frm::Rsp).init(fdb,cobj)
   field.upd_logline(str)
   puts field

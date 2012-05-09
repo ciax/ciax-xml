@@ -66,18 +66,55 @@
     <Stream/>
     <Xml include="ModXml"/>
   </class>
-  <module>
-    <App type='ns'>
+
+  <module_class>
+    <ExHash parent="Hash" include="ExEnum"/>
+    <Db parent="ExHash"/>
+    <InsDb parent="Db"/>
+    <McrDb parent="Db"/>
+    <Prompt parent="ExHash"/>
+    <AppList parent="Hash"/>
+    <FrmList parent="Hash"/>
+    <XmlDoc parent="Hash"/>
+    <HtmlTbl parent="Array"/>
+    <McrSub parent="Array"/>
+    <Update parent="Array"/>
+    <Interval parent="Time"/>
+    <Elapse parent="Interval"/>
+    <Interact parent="Object"/>
+    <McrMan parent="Interact"/>
+    <Buffer parent="Object"/>
+    <Circular parent="Object"/>
+    <Frame parent="Object"/>
+    <TextHex parent="Object" include="HexPack"/>
+    <Repeat parent="Object"/>
+    <ReRange parent="Object" include="Comparable"/>
+    <Xml parent="Object" include="ModXml"/>
+    <App>
       <Cdb/>
       <Sdb/>
       <Wdb/>
-      <Rsp/>
+      <Db parent="Db" include="Cdb,Sdb,Wdb"/>
+      <Cmd parent="Object"/>
+      <Rsp extend_for="Status"/>
+      <Int parent="Interact"/>
+      <Cl parent="Int" extend="Client"/>
+      <Sv parent="Int"/>
     </App>
-    <Command.Logging include="Logging"/>
+    <Command parent="ExHash" include="Math">
+      <Logging extend_for="Command" include="Logging"/>
+    </Command>
     <ExEnum/>
-    <Field.IoFile include="IoFile"/>
-    <Frm type='ns'>
-      <Rsp/>
+    <Field parent="Var">
+      <IoFile extend_for="Field" include="IoFile"/>
+    </Field>
+    <Frm>
+      <Db parent="Db"/>
+      <Cmd parent="Object"/>
+      <Rsp extend_for="Field"/>
+      <Int parent="Interact"/>
+      <Cl parent="Int" extend="Client"/>
+      <Sv parent="Int"/>
     </Frm>
     <HexPack/>
     <Client/>
@@ -87,23 +124,37 @@
     <Logging/>
     <McrPrt/>
     <ModXml/>
-    <Msg/>
+    <Msg>
+      <CmdList parent="Hash"/>
+      <GroupList parent="Hash"/>
+      <Ver parent="Object"/>
+    </Msg>
     <ShPrt/>
     <SqLog type='ns'>
       <Stat/>
       <Exec/>
     </SqLog>
-    <Status.IoFile include="IoFile"/>
-    <Stream.Logging include="Logging"/>
+    <Status parent="Var">
+      <IoFile include="IoFile"/>
+    </Status>
+    <Stream parent="Object">
+      <Logging include="Logging"/>
+    </Stream>
     <Sym type='ns'>
+      <Db parent="Db"/>
       <Conv/>
     </Sym>
-    <Var.Val/>
-    <View.Print/>
+    <Var parent="ExHash">
+      <Val/>
+    </Var>
+    <View parent="ExHash">
+      <Print/>
+    </View>
     <Watch>
       <Stat/>
       <Conv/>
-      <Print/>
+      <View parent="ExHash"/>
+      <Print extend_for="Print"/>
     </Watch>
-  </module>
+  </module_class>
 </objecttree>

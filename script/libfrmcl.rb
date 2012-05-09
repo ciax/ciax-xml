@@ -3,7 +3,7 @@ require "libfrmint"
 require "libfield"
 
 module Frm
-  class Cl < Int
+  class Cl < Sh
     def initialize(fdb,host=nil)
       super(fdb)
       @host=Msg.type?(host||fdb['host'],String)

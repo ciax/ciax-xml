@@ -18,7 +18,7 @@ module App
         adb=idb.cover_app
         if $opt['t']
           require "libappint"
-          aint=Int.new(adb)
+          aint=Sh.new(adb)
         elsif $opt['a']
           require "libappcl"
           aint=Cl.new(adb,$opt['h'])

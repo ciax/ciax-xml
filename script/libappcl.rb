@@ -4,7 +4,7 @@ require "libstatus"
 require "libfrmcl"
 
 module App
-  class Cl < Int
+  class Cl < Sh
     def initialize(adb,host=nil)
       super(adb)
       host||=adb['host']

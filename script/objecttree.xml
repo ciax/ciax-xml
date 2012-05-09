@@ -13,9 +13,6 @@
       <Update parent="Array"/>
       <Interval parent="Time"/>
       <Elapse parent="Interval"/>
-      <Interact parent="Object"/>
-      <Server extend_for="Interact"/>
-      <Client extend_for="Interact"/>
       <Buffer parent="Object"/>
       <Circular parent="Object"/>
       <Frame parent="Object"/>
@@ -36,6 +33,9 @@
       <Stream parent="Object"/>
       <Field parent="Var"/>
       <Status parent="Var"/>
+      <Shell parent="Object"/>
+      <Server extend_for="Shell"/>
+      <Client extend_for="Shell"/>
       <SqLog>
         <Stat extend_for="Var"/>
         <Exec extend_for="Stat"/>
@@ -47,32 +47,32 @@
         <Sdb/>
         <Wdb/>
         <Db parent="Db" include="Cdb,Sdb,Wdb"/>
-        <Cmd parent="Object"/>
-        <Rsp extend_for="Status"/>
-        <Int parent="Interact"/>
-        <Cl parent="Int" extend="Client"/>
-        <Sv parent="Int" include="Server"/>
-        <Prt extend_for="Int"/>
+        <Sh parent="Shell"/>
+        <Cl parent="Sh" extend="Client"/>
+        <Sv parent="Sh" include="Server"/>
+          <Cmd parent="Object"/>
+          <Rsp extend_for="Status"/>
+        <Prt extend_for="Sh"/>
         <List parent="Hash"/>
       </App>
       <Frm>
         <Db parent="Db"/>
-        <Cmd parent="Object"/>
-        <Rsp extend_for="Field"/>
-        <Int parent="Interact"/>
-        <Cl parent="Int" extend="Client"/>
-        <Sv parent="Int" include="Server"/>
+        <Sh parent="Shell"/>
+        <Cl parent="Sh" extend="Client"/>
+        <Sv parent="Sh" include="Server"/>
+          <Cmd parent="Object"/>
+          <Rsp extend_for="Field"/>
         <List parent="Hash"/>
       </Frm>
       <Ins>
         <Db parent="Db"/>
       </Ins>
-      <HexPack extend_for="App.Int"/>
+      <HexPack extend_for="App.Sh"/>
       <HtmlTbl parent="Array"/>
       <Mcr>
         <Db parent="Db"/>
         <Sub parent="Array"/>
-        <Int parent="Interact"/>
+        <Sh parent="Shell"/>
         <Prt/>
       </Mcr>
       <Sym>
@@ -136,17 +136,17 @@
         <Elapse/>
       </Interval>
     </Time>
-    <Interact>
-      <App.Int>
+    <Shell>
+      <App.Sh>
         <App.Cl/>
         <App.Sv />
-      </App.Int>
-      <Frm.Int>
+      </App.Sh>
+      <Frm.Sh>
         <Frm.Cl />
         <Frm.Sv />
-      </Frm.Int>
-      <Mcr.Int />
-    </Interact>
+      </Frm.Sh>
+      <Mcr.Sh />
+    </Shell>
     <App.Cmd/>
     <Frm.Cmd/>
     <Msg.Ver/>

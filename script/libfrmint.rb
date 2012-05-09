@@ -2,7 +2,7 @@
 require 'libinteract'
 require 'libfield'
 module Frm
-  class Int < Interact
+  class Sh < Shell
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)

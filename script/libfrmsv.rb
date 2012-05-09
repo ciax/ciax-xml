@@ -7,7 +7,7 @@ require "libsqlog"
 require "libfrmcmd"
 
 module Frm
-  class Sv < Int
+  class Sv < Sh
     include Server
     def initialize(fdb,iocmd=[])
       super(fdb)

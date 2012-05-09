@@ -5,7 +5,7 @@ require "readline"
 require "libcommand"
 require "libupdate"
 
-class Interact
+class Shell
   attr_reader :post_exe,:cmdlist
   def initialize(cobj)
     @v=Msg::Ver.new(self,3)
@@ -55,7 +55,7 @@ end
 
 module Server
   def self.extended(obj)
-    Msg.type?(obj,Interact)
+    Msg.type?(obj,Shell)
   end
   # JSON expression of @prompt will be sent.
   # Or, block contents will be sent if block added.
@@ -90,7 +90,7 @@ end
 
 module Client
   def self.extended(obj)
-    Msg.type?(obj,Interact).init
+    Msg.type?(obj,Shell).init
   end
 
   def init

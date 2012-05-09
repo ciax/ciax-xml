@@ -6,7 +6,7 @@ require "libmcrsub"
 require "libmcrprt"
 
 module Mcr
-  class Int < Interact
+  class Sh < Shell
     attr_reader :prompt
     # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
     def initialize(id)

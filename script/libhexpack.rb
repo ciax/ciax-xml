@@ -2,10 +2,10 @@
 # Ascii Pack
 require "libmsg"
 
-# included in App::Int
+# included in App::Sh
 module HexPack
   def self.extended(obj)
-    Msg.type?(obj,App::Int).init
+    Msg.type?(obj,App::Sh).init
   end
 
   def init

@@ -3,7 +3,7 @@ require "libinteract"
 require "libstatus"
 require "libfrmlist"
 module App
-  class Int < Interact
+  class Sh < Shell
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
       super(Command.new(adb[:command]))

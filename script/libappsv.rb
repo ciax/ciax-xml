@@ -7,7 +7,7 @@ require "libbuffer"
 require "thread"
 
 module App
-  class Sv < Int
+  class Sv < Sh
     include Server
     attr_reader :fint
     def initialize(adb)

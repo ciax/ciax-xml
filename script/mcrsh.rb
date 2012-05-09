@@ -4,7 +4,7 @@ require "libmcrint"
 id=ARGV.shift
 ARGV.clear
 begin
-  mm=Mcr::Int.new(id)
+  mm=Mcr::Sh.new(id)
 rescue SelectID
   Msg.usage("[mcr] # (ACT=n)")
 end

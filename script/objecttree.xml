@@ -1,98 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <objecttree>
   <module-inclusive>
-    <ExHash parent="Hash" include="ExEnum"/>
-    <Db parent="ExHash"/>
-    <Prompt parent="ExHash"/>
-    <XmlDoc parent="Hash"/>
-    <HtmlTbl parent="Array"/>
-    <Update parent="Array"/>
-    <Interval parent="Time"/>
-    <Elapse parent="Interval"/>
-    <Interact parent="Object"/>
-    <Buffer parent="Object"/>
-    <Circular parent="Object"/>
-    <Frame parent="Object"/>
-    <TextHex parent="Object" include="HexPack"/>
-    <Repeat parent="Object"/>
-    <ReRange parent="Object" include="Comparable"/>
-    <Xml parent="Object" include="ModXml"/>
-    <App>
-      <Cdb/>
-      <Sdb/>
-      <Wdb/>
-      <Db parent="Db" include="Cdb,Sdb,Wdb"/>
-      <Cmd parent="Object"/>
-      <Rsp extend_for="Status"/>
-      <Int parent="Interact"/>
-      <Cl parent="Int" extend="Client"/>
-      <Sv parent="Int"/>
-      <Prt extend_for="Int"/>
-      <List parent="Hash"/>
-    </App>
-    <Command parent="ExHash" include="Math">
-      <Logging extend_for="Command" include="Logging"/>
-    </Command>
-    <Client extend_for="Interact"/>
-    <ExEnum/>
-    <Field parent="Var">
-      <IoFile extend_for="Field" include="IoFile"/>
-    </Field>
-    <Frm>
-      <Db parent="Db"/>
-      <Cmd parent="Object"/>
-      <Rsp extend_for="Field"/>
-      <Int parent="Interact"/>
-      <Cl parent="Int" extend="Client"/>
-      <Sv parent="Int"/>
-      <List parent="Hash"/>
-    </Frm>
-    <HexPack extend_for="App.Int"/>
-    <Ins>
-      <Db parent="Db"/>
-    </Ins>
-    <InFile extend_for="Var"/>
-    <InUrl include="InFile"/>
-    <IoFile include="InFile"/>
-    <Logging/>
-    <Mcr>
-      <Db parent="Db"/>
-      <Sub parent="Array"/>
-      <Int parent="Interact"/>
-      <Prt/>
-    </Mcr>
-    <ModXml/>
-    <Msg>
-      <CmdList parent="Hash"/>
-      <GroupList parent="Hash"/>
-      <Ver parent="Object"/>
-    </Msg>
-    <SqLog>
-      <Stat extend_for="Var"/>
-      <Exec extend_for="Stat"/>
-    </SqLog>
-    <Status parent="Var">
-      <IoFile include="IoFile"/>
-    </Status>
-    <Stream parent="Object">
-      <Logging include="Logging"/>
-    </Stream>
-    <Sym>
-      <Db parent="Db"/>
-      <Conv extend_for="Status"/>
-    </Sym>
-    <Var parent="ExHash">
-      <Val extend_for="Var"/>
-    </Var>
-    <View parent="ExHash">
-      <Print extend_for="View"/>
-    </View>
-    <Watch>
-      <Stat extend_for="Status"/>
-      <Conv extend_for="Stat"/>
-      <View parent="ExHash"/>
-      <Print extend_for="Print"/>
-    </Watch>
+    <basic>
+      <ExEnum/>
+      <ExHash parent="Hash" include="ExEnum"/>
+      <Db parent="ExHash"/>
+      <InFile extend_for="Var"/>
+      <InUrl include="InFile"/>
+      <IoFile include="InFile"/>
+      <Logging/>
+      <Prompt parent="ExHash"/>
+      <Update parent="Array"/>
+      <Interval parent="Time"/>
+      <Elapse parent="Interval"/>
+      <Interact parent="Object"/>
+      <Client extend_for="Interact"/>
+      <Buffer parent="Object"/>
+      <Circular parent="Object"/>
+      <Frame parent="Object"/>
+      <Repeat parent="Object"/>
+      <ReRange parent="Object" include="Comparable"/>
+      <Var parent="ExHash">
+        <Val extend_for="Var"/>
+      </Var>
+      <XmlDoc parent="Hash"/>
+      <ModXml/>
+      <Xml parent="Object" include="ModXml"/>
+    </basic>
+    <shared>
+      <Msg>
+        <CmdList parent="Hash"/>
+        <GroupList parent="Hash"/>
+        <Ver parent="Object"/>
+      </Msg>
+      <Command parent="ExHash" include="Math">
+        <Logging extend_for="Command" include="Logging"/>
+      </Command>
+      <Field parent="Var">
+        <IoFile extend_for="Field" include="IoFile"/>
+      </Field>
+      <Status parent="Var">
+        <IoFile include="IoFile"/>
+      </Status>
+      <Stream parent="Object">
+        <Logging include="Logging"/>
+      </Stream>
+      <SqLog>
+        <Stat extend_for="Var"/>
+        <Exec extend_for="Stat"/>
+      </SqLog>
+    </shared>
+    <local>
+      <App>
+        <Cdb/>
+        <Sdb/>
+        <Wdb/>
+        <Db parent="Db" include="Cdb,Sdb,Wdb"/>
+        <Cmd parent="Object"/>
+        <Rsp extend_for="Status"/>
+        <Int parent="Interact"/>
+        <Cl parent="Int" extend="Client"/>
+        <Sv parent="Int"/>
+        <Prt extend_for="Int"/>
+        <List parent="Hash"/>
+      </App>
+      <Frm>
+        <Db parent="Db"/>
+        <Cmd parent="Object"/>
+        <Rsp extend_for="Field"/>
+        <Int parent="Interact"/>
+        <Cl parent="Int" extend="Client"/>
+        <Sv parent="Int"/>
+        <List parent="Hash"/>
+      </Frm>
+      <Ins>
+        <Db parent="Db"/>
+      </Ins>
+      <HexPack extend_for="App.Int"/>
+      <HtmlTbl parent="Array"/>
+      <Mcr>
+        <Db parent="Db"/>
+        <Sub parent="Array"/>
+        <Int parent="Interact"/>
+        <Prt/>
+      </Mcr>
+      <Sym>
+        <Db parent="Db"/>
+        <Conv extend_for="Status"/>
+      </Sym>
+      <View parent="ExHash">
+        <Print extend_for="View"/>
+      </View>
+      <Watch>
+        <Stat extend_for="Status"/>
+        <Conv extend_for="Stat"/>
+        <View parent="ExHash"/>
+        <Print extend_for="Print"/>
+      </Watch>
+    </local>
   </module-inclusive>
 
 
@@ -113,7 +118,7 @@
           <App.Db/>
           <Frm.Db/>
           <Ins.Db/>
-          <Mcr::Db/>
+          <Mcr.Db/>
           <Sym.Db/>
         </Db>
         <Prompt/>
@@ -132,7 +137,7 @@
     </Hash>
     <Array>
       <HtmlTbl/>
-      <Mcr::Sub/>
+      <Mcr.Sub/>
       <Update/>
     </Array>
     <Time>
@@ -149,7 +154,7 @@
         <Frm.Cl />
         <Frm.Sv />
       </Frm.Int>
-      <Mcr::Int />
+      <Mcr.Int />
     </Interact>
     <App.Cmd/>
     <Frm.Cmd/>
@@ -157,7 +162,6 @@
     <Buffer/>
     <Circular/>
     <Frame/>
-    <TextHex/>
     <Repeat/>
     <ReRange/>
     <Stream/>

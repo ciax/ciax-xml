@@ -2,6 +2,7 @@
 require 'libexenum'
 require 'libmsg'
 require 'librerange'
+require 'liblogging'
 
 # Keep current command and parameters
 class Command < ExHash
@@ -60,6 +61,18 @@ class Command < ExHash
     end
   end
 
+  def ext_logging(id,ver=0)
+    extend Logging
+    init('appcmd',id,ver)
+    @proc=proc{yield}
+    def self.set(cmd)
+      super
+      append(cmd){@proc.call}
+      self
+    end
+    self
+  end
+
   private
   def deep_subst(data)
     case data
@@ -94,27 +107,6 @@ class Command < ExHash
       str=num.to_s
     end
     str
-  end
-end
-
-module Command::Logging
-  require 'liblogging'
-  include Logging
-  def self.extended(obj)
-    Msg.type?(obj,Command)
-  end
-
-  # need @v
-  def init(id,ver=0,&p)
-    super('appcmd',id,ver)
-    @proc=p
-    self
-  end
-
-  def set(cmd)
-    super
-    append(cmd){@proc.call}
-    self
   end
 end
 

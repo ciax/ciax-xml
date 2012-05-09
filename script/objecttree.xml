@@ -31,9 +31,8 @@
         <GroupList parent="Hash"/>
         <Ver parent="Object"/>
       </Msg>
-      <Command parent="ExHash" include="Math">
-        <Logging extend_for="Command" include="Logging"/>
-      </Command>
+      <Command parent="ExHash" include="Math"/>
+      <Stream parent="Object"/>
       <Field>
         <Var parent="Var"/>
         <IoFile extend_for="Field" include="IoFile"/>
@@ -42,7 +41,6 @@
         <Var parent="Var"/>
         <IoFile include="IoFile"/>
       </Status>
-      <Stream parent="Object"/>
       <SqLog>
         <Stat extend_for="Var"/>
         <Exec extend_for="Stat"/>

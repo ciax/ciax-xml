@@ -48,7 +48,6 @@ class Stream
     str
   end
 
-  # need @v
   def ext_logging(id,ver=0)
     extend(Logging)
     init('frame',id,ver)
@@ -57,8 +56,7 @@ class Stream
       append('snd',@cid){str}
       self
     end
-
-    # return hash (:data,:time
+    # return hash (data,time)
     def self.rcv
       str=super[:data]
       {:data => str,:time => append('rcv',@cid){str}}

@@ -29,7 +29,7 @@ module App
       }
       # Logging if version number exists
       if @stat.ver
-        @cobj.extend(Command::Logging).init(id,@stat.ver){@stat.active}
+        @cobj.ext_logging(id,@stat.ver){@stat.active}
       end
       auto_update
       upd_prompt

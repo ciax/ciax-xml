@@ -5,7 +5,7 @@ require 'libelapse'
 class View < ExHash
   def initialize(adb,stat)
     @sdb=Msg.type?(adb,App::Db)[:status]
-    @stat=Msg.type?(stat,Status)
+    @stat=Msg.type?(stat,Status::Var)
     ['val','class','msg'].each{|key|
       stat[key]||={}
     }
@@ -69,7 +69,7 @@ if __FILE__ == $0
   require "libinsdb"
   opt=ARGV.getopts('r')
   Msg.usage("(-r) [stat_file]") if STDIN.tty? && ARGV.size < 1
-  stat=Status.new.load
+  stat=Status::Var.new.load
   adb=Ins::Db.new(stat['id']).cover_app
   view=View.new(adb,stat)
   view.extend(View::Print) unless opt['r']

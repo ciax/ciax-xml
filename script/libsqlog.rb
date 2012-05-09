@@ -125,7 +125,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     adb=Ins::Db.new(id).cover_app
-    stat=Status.new.extend(InFile).init(id).load
+    stat=Status::Var.new.extend(InFile).init(id).load
     stat.extend(SqLog::Stat).upd
     puts stat.sql
   rescue UserError

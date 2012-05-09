@@ -2,29 +2,31 @@
 require "libmsg"
 require "libvar"
 
-class Status < Var
-  def initialize
-    super('stat')
-    @last={}
-  end
+module Status
+  class Var < Object::Var
+    def initialize
+      super('stat')
+      @last={}
+    end
 
-  def set(hash) #For Watch test
-    @val.update(hash)
-    self
-  end
+    def set(hash) #For Watch test
+      @val.update(hash)
+      self
+    end
 
-  def change?(id)
-    @v.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
-    @val[id] != @last[id]
-  end
+    def change?(id)
+      @v.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
+      @val[id] != @last[id]
+    end
 
-  def update?
-    change?('time')
-  end
+    def update?
+      change?('time')
+    end
 
-  def refresh
-    @v.msg{"Status Updated"}
-    @last.update(@val)
+    def refresh
+      @v.msg{"Status Updated"}
+      @last.update(@val)
+    end
   end
 
   module IoFile
@@ -59,7 +61,7 @@ if __FILE__ == $0
     host=ARGV.shift
     ARGV.clear
     idb=Ins::Db.new(id).cover_app
-    stat=Status.new
+    stat=Status::Var.new
     if STDIN.tty?
       if host
         puts stat.extend(InUrl).init(id,host).load

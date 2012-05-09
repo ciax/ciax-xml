@@ -38,7 +38,8 @@
         <Var parent="Var"/>
         <IoFile extend_for="Field" include="IoFile"/>
       </Field>
-      <Status parent="Var">
+      <Status>
+        <Var parent="Var"/>
         <IoFile include="IoFile"/>
       </Status>
       <Stream parent="Object">

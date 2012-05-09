@@ -39,6 +39,7 @@ module Logging
       open(logfile,'a') {|f|
         f.puts [time,tag,str].compact.join("\t")
       }
+      @v.msg{"Logging Done [#{tag}]"}
     end
     time
   end

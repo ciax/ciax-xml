@@ -47,25 +47,22 @@ class Stream
     end
     str
   end
-end
 
-module Stream::Logging
-  include Logging
   # need @v
-  def init(id,ver=0)
-    super('frame',id,ver)
-    self
-  end
+  def ext_logging(id,ver=0)
+    extend(Logging)
+    init('frame',id,ver)
+    def self.snd(str)
+      super
+      append('snd',@cid){str}
+      self
+    end
 
-  def snd(str)
-    super
-    append('snd',@cid){str}
+    # return hash (:data,:time
+    def self.rcv
+      str=super[:data]
+      {:data => str,:time => append('rcv',@cid){str}}
+    end
     self
-  end
-
-  # return hash (:data,:time
-  def rcv
-    str=super[:data]
-    {:data => str,:time => append('rcv',@cid){str}}
   end
 end

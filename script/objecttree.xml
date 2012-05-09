@@ -42,9 +42,7 @@
         <Var parent="Var"/>
         <IoFile include="IoFile"/>
       </Status>
-      <Stream parent="Object">
-        <Logging include="Logging"/>
-      </Stream>
+      <Stream parent="Object"/>
       <SqLog>
         <Stat extend_for="Var"/>
         <Exec extend_for="Stat"/>

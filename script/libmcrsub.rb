@@ -7,7 +7,7 @@ class Broken < RuntimeError;end
 
 class McrSub < Array
   ACT=ENV['ACT'].to_i
-  @@client=AppList.new
+  @@client=App::List.new
 
   def initialize(cobj,int=nil)
     @v=Msg::Ver.new(self,9)

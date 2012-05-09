@@ -11,7 +11,7 @@ module App
       @port=adb['port'].to_i
       @stat=Status.new.extend(Watch::Stat)
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
-      @fint=FrmList.new[adb['id']]
+      @fint=Frm::List.new[adb['id']]
       int={'set'=>"[key=val], ..",'flush'=>"Flush Status"}
       @cmdlist.add_group('int',"Internal Command",int,2,2)
       @cmdlist.add_group('lay',"Change Layer",{'frm'=>"Frm mode"},2)

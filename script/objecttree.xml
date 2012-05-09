@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <objecttree>
-  <class>
+  <class-inheritance>
     <RuntimeError>
       <Broken/>
       <UserError>
@@ -10,10 +10,10 @@
       </UserError>
     </RuntimeError>
     <Hash>
-      <ExHash include="ExEnum">
-        <Command include="Math"/>
+      <ExHash>
+        <Command/>
         <Db>
-          <App.Db include="Cdb,Sdb,Wdb"/>
+          <App.Db/>
           <Frm.Db/>
           <InsDb/>
           <McrDb/>
@@ -27,8 +27,8 @@
         <View/>
         <Watch.View/>
       </ExHash>
-      <AppList/>
-      <FrmList/>
+      <App.List/>
+      <Frm.List/>
       <Msg.CmdList/>
       <Msg.GroupList/>
       <XmlDoc/>
@@ -45,7 +45,7 @@
     </Time>
     <Interact>
       <App.Int>
-        <App.Cl extend="Client"/>
+        <App.Cl/>
         <App.Sv />
       </App.Int>
       <Frm.Int>
@@ -60,21 +60,19 @@
     <Buffer/>
     <Circular/>
     <Frame/>
-    <TextHex include="HexPack"/>
+    <TextHex/>
     <Repeat/>
-    <ReRange include="Comparable"/>
+    <ReRange/>
     <Stream/>
-    <Xml include="ModXml"/>
-  </class>
+    <Xml/>
+  </class-inheritance>
 
-  <module_class>
+  <module-inclusive>
     <ExHash parent="Hash" include="ExEnum"/>
     <Db parent="ExHash"/>
     <InsDb parent="Db"/>
     <McrDb parent="Db"/>
     <Prompt parent="ExHash"/>
-    <AppList parent="Hash"/>
-    <FrmList parent="Hash"/>
     <XmlDoc parent="Hash"/>
     <HtmlTbl parent="Array"/>
     <McrSub parent="Array"/>
@@ -100,6 +98,7 @@
       <Int parent="Interact"/>
       <Cl parent="Int" extend="Client"/>
       <Sv parent="Int"/>
+      <List parent="Hash"/>
     </App>
     <Command parent="ExHash" include="Math">
       <Logging extend_for="Command" include="Logging"/>
@@ -115,6 +114,7 @@
       <Int parent="Interact"/>
       <Cl parent="Int" extend="Client"/>
       <Sv parent="Int"/>
+      <List parent="Hash"/>
     </Frm>
     <HexPack/>
     <Client/>
@@ -156,5 +156,5 @@
       <View parent="ExHash"/>
       <Print extend_for="Print"/>
     </Watch>
-  </module_class>
+  </module-inclusive>
 </objecttree>

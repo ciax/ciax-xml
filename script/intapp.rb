@@ -6,7 +6,7 @@ require "libapplist"
 $opt=ARGV.getopts("afdts")
 id,$opt['h']=ARGV
 begin
-  aint=AppList.new{|int,devs|
+  aint=App::List.new{|int,devs|
     int.cmdlist.add_group('dev',"Change Device",devs)
   }
   sleep if $opt["s"]

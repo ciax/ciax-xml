@@ -8,7 +8,7 @@ $opt=ARGV.getopts("s")
 id,$opt['h']=ARGV
 ARGV.clear
 begin
-  aint=AppList.new[id]
+  aint=App::List.new[id]
 rescue UserError
   Msg.usage("(-s) [id] (host)","-s:server")
 end

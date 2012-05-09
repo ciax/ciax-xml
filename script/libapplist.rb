@@ -9,39 +9,41 @@ require "libshprt"
 # 'd' is dummy (frmsim)
 # 't' is check cmd only
 # 'h' is specified host
-class AppList < Hash
-  def initialize
-    $opt||={'a'=>true}
-    super{|h,id|
-      idb=InsDb.new(id)
-      adb=idb.cover_app
-      if $opt['t']
-        require "libappint"
-        aint=App::Int.new(adb)
-      elsif $opt['a']
-        require "libappcl"
-        aint=App::Cl.new(adb,$opt['h'])
-      else
-        require "libappsv"
-        aint=App::Sv.new(adb)
-        aint.socket
-      end
-      h[id]=aint.extend(ShPrt)
-      yield(aint,idb.list) if defined? yield
-      h[id]
-    }
-  end
+module App
+  class List < Hash
+    def initialize
+      $opt||={'a'=>true}
+      super{|h,id|
+        idb=InsDb.new(id)
+        adb=idb.cover_app
+        if $opt['t']
+          require "libappint"
+          aint=Int.new(adb)
+        elsif $opt['a']
+          require "libappcl"
+          aint=Cl.new(adb,$opt['h'])
+        else
+          require "libappsv"
+          aint=Sv.new(adb)
+          aint.socket
+        end
+        h[id]=aint.extend(ShPrt)
+        yield(aint,idb.list) if defined? yield
+        h[id]
+      }
+    end
 
-  def setdef(id)
-    self[nil]=self[id] if key?(id)
-    self
+    def setdef(id)
+      self[nil]=self[id] if key?(id)
+      self
+    end
   end
 end
 
 if __FILE__ == $0
   id=ARGV.shift
   begin
-    ary=AppList.new
+    ary=App::List.new
     puts ary[id]
   rescue
     Msg.exit

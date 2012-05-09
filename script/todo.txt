@@ -1,5 +1,4 @@
 ========================== Issue =============================
-debug: no status file update(Frm,App)
 update:add ext_???() method including add new method instead of extend(Module)
 
 ***DEBUG

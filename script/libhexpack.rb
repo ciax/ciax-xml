@@ -68,7 +68,7 @@ if __FILE__ == $0
     include HexPack
     def initialize
       @v=Msg::Ver.new(self,6)
-      @stat=Status::Var.new.load
+      @stat=Status.new.load
       @prompt={}
       init
     end

@@ -39,7 +39,6 @@
       </Field>
       <Status>
         <Var parent="Var"/>
-        <IoFile include="IoFile"/>
       </Status>
       <SqLog>
         <Stat extend_for="Var"/>

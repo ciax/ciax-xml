@@ -100,7 +100,7 @@ if __FILE__ == $0
   begin
     adb=App::Db.new(app)
     field=Field::Var.new.load
-    puts Status::Var.new.extend(App::Rsp).init(adb,field).upd
+    puts Status.new.extend(App::Rsp).init(adb,field).upd
   rescue UserError
     Msg.usage "[app] < field_file\n#{$!}"
   end

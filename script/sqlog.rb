@@ -22,7 +22,7 @@ rescue UserError
             "-a:app level(input format 'sqlite3 -header')")
 end
 if opt['a']
-  stat=Status::Var.new.extend(App::Rsp).init(adb,field)
+  stat=Status.new.extend(App::Rsp).init(adb,field)
   stat.extend(SqLog::Stat)
   if opt['i'] # Initial
     stat.create

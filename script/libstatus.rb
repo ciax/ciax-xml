@@ -1,48 +1,38 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libvar"
+require "libiofile"
 
-module Status
-  class Var < Object::Var
-    def initialize
-      super('stat')
-      @last={}
-    end
-
-    def set(hash) #For Watch test
-      @val.update(hash)
-      self
-    end
-
-    def change?(id)
-      @v.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
-      @val[id] != @last[id]
-    end
-
-    def update?
-      change?('time')
-    end
-
-    def refresh
-      @v.msg{"Status Updated"}
-      @last.update(@val)
-    end
+class Status < Var
+  def initialize
+    super('stat')
+    @last={}
   end
 
-  module IoFile
-    require "libiofile"
-    include Object::IoFile
-    def self.extended(obj)
-      Msg.type?(obj,Sym::Conv).init
-    end
+  def set(hash) #For Watch test
+    @val.update(hash)
+    self
+  end
 
-    def init
-      super(@id)
-      @lastsave=0
-      self
-    end
+  def change?(id)
+    @v.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
+    @val[id] != @last[id]
+  end
 
-    def save
+  def update?
+    change?('time')
+  end
+
+  def refresh
+    @v.msg{"Status Updated"}
+    @last.update(@val)
+  end
+
+  def ext_iofile
+    extend IoFile
+    init(@id)
+    @lastsave=0
+    def self.save
       time=@val['time'].to_f
       @v.msg{"Data time #{time} for Save"}
       if time > @lastsave
@@ -51,6 +41,7 @@ module Status
         true
       end
     end
+    self
   end
 end
 
@@ -61,7 +52,7 @@ if __FILE__ == $0
     host=ARGV.shift
     ARGV.clear
     idb=Ins::Db.new(id).cover_app
-    stat=Status::Var.new
+    stat=Status.new
     if STDIN.tty?
       if host
         puts stat.extend(InUrl).init(id,host).load

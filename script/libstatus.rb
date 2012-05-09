@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libvar"
-require "libiofile"
 
 class Status < Var
   def initialize
@@ -26,22 +25,26 @@ class Status < Var
   def refresh
     @v.msg{"Status Updated"}
     @last.update(@val)
+    self
   end
 
-  def ext_iofile
-    extend IoFile
-    init(@id)
+  def ext_iofile(id)
+    super
     @lastsave=0
-    def self.save
+    extend Save
+    self
+  end
+
+  module Save
+    def save
       time=@val['time'].to_f
-#      @v.msg{"Data time #{time} for Save"}
+      @v.msg{"Try Save for #{time}"}
       if time > @lastsave
         super
         @lastsave=time
         true
       end
     end
-    self
   end
 end
 
@@ -55,9 +58,9 @@ if __FILE__ == $0
     stat=Status.new
     if STDIN.tty?
       if host
-        puts stat.extend(InUrl).init(id,host).load
+        puts stat.ext_url(id,host).load
       else
-        puts stat.extend(InFile).init(id).load
+        puts stat.ext_file(id).load
       end
     else
       require "libfield"

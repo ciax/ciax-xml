@@ -67,4 +67,80 @@ class Var < ExHash
       eval "@#{k}=self['#{k}']"
     }
   end
+
+  ## Read/Write JSON file
+  public
+  def ext_file(id)
+    self.id=id
+    @dir="/json/"
+    @base=@type+'_'+id
+    @prefix=VarDir
+    extend Load
+    self
+  end
+
+  def ext_url(id,host='')
+    require "open-uri"
+    ext_file(id)
+    @prefix="http://"+host
+    self
+  end
+
+  def ext_iofile(id)
+    ext_file(id)
+    extend Save
+    self
+  end
+
+  module Load
+    def load(tag=nil)
+      begin
+        @v.msg{"Loading #{fname(tag)}"}
+        open(fname(tag)){|f|
+          json_str=f.read
+          if json_str.empty?
+            Msg.warn(" -- json file is empty")
+          else
+            super(json_str)
+          end
+        }
+      rescue Errno::ENOENT
+        if tag
+          raise UserError,"Tag=#{taglist}"
+        else
+          Msg.warn("  -- no json file (#{fname})")
+        end
+      end
+      self
+    end
+
+    private
+    def fname(tag=nil)
+      base=[@type,@id,tag].compact.join('_')
+      @prefix+@dir+base+".json"
+    end
+    def taglist
+      Dir.glob(fname('*')).map{|f|
+        f.slice(/.+_(.+)\.json/,1)
+      }.sort
+    end
+  end
+
+  module Save
+    def save(data=nil,tag=nil)
+      name=fname(tag)
+      open(name,'w'){|f|
+        f << (data ? JSON.dump(data) : to_j)
+      }
+      @v.msg{"File/[#{@base}] is Saved"}
+      if tag
+        # Making 'latest' tag link
+        sname=fname('latest')
+        File.unlink(sname) if File.symlink?(sname)
+        File.symlink(fname(tag),sname)
+        @v.msg{"Symboliclink to [#{sname}]"}
+      end
+      self
+    end
+  end
 end

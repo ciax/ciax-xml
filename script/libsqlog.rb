@@ -107,7 +107,7 @@ module SqLog
       @log.clear
       self
     rescue
-      Msg.err(" in SQL")
+      Msg.abort("\nSqLog Error")
     end
   end
 end

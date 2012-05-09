@@ -207,7 +207,6 @@ end
 if __FILE__ == $0
   require "optparse"
   require "libinsdb"
-  require 'libiofile'
 
   opt=ARGV.getopts('rvt:')
   id=ARGV.shift
@@ -218,7 +217,7 @@ if __FILE__ == $0
               "-t:test conditions(key=val,..)",
               "-r:raw data","-v:view data")
   end
-  stat=Status.new.extend(IoFile).init(id).load
+  stat=Status.new.ext_iofile(id).load
   stat.extend(Watch::Stat)
   unless opt['r']
     wview=Watch::View.new(adb,stat)

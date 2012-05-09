@@ -4,12 +4,10 @@
     <basic>
       <ExEnum/>
       <ExHash parent="Hash" include="ExEnum"/>
-      <Db parent="ExHash"/>
       <InFile extend_for="Var"/>
       <InUrl include="InFile"/>
       <IoFile include="InFile"/>
       <Logging/>
-      <Prompt parent="ExHash"/>
       <Update parent="Array"/>
       <Interval parent="Time"/>
       <Elapse parent="Interval"/>
@@ -18,7 +16,10 @@
       <Frame parent="Object"/>
       <Repeat parent="Object"/>
       <ReRange parent="Object" include="Comparable"/>
-      <Var parent="ExHash"/>
+      <Var parent="ExHash">
+        <Load/>
+        <Save/>
+      </Var>
       <XmlDoc parent="Hash"/>
       <ModXml/>
       <Xml parent="Object" include="ModXml"/>
@@ -29,14 +30,18 @@
         <GroupList parent="Hash"/>
         <Ver parent="Object"/>
       </Msg>
+      <Db parent="ExHash"/>
       <Command parent="ExHash" include="Math"/>
       <Stream parent="Object"/>
       <Field parent="Var"/>
-      <Status parent="Var"/>
+      <Status parent="Var">
+        <Save/>
+      </Status>
       <Int>
         <Shell parent="Object"/>
         <Server extend_for="Shell"/>
         <Client extend_for="Shell"/>
+        <Prompt parent="ExHash"/>
       </Int>
       <SqLog>
         <Stat extend_for="Var"/>

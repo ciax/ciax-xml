@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require 'libmsg'
-require 'libiofile'
 require 'libupdate'
 require 'libvar'
 
@@ -67,8 +66,7 @@ class Field < Var
   end
 
   def ext_iofile(id)
-    extend IoFile
-    init(id)
+    super
     # Saving data of specified keys with tag
     def self.savekey(keylist,tag=nil)
       Msg.err("No File") unless @base

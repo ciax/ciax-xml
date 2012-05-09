@@ -83,7 +83,7 @@ module Watch
         @watch['last']=@last=@crnt.dup
         upd_crnt
       end
-      @v.msg{"Updated(#{@val['time']})"}
+      @v.msg{"Watch/Updated(#{@val['time']})"}
       self
     end
 

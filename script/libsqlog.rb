@@ -32,7 +32,7 @@ module SqLog
       val=expand
       key=val.keys.join("','")
       val=val.values.join("','")
-      @v.msg{"Update(#{@val['time']}):[#{@type}/#{@tid}]"}
+      @v.msg{"SqLog/Update(#{@val['time']}):[#{@type}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       self
     end
@@ -80,7 +80,7 @@ module SqLog
       unless check_table
         create
         save
-        @v.msg{"Init/Table '#{@tid}' is created in #{@type}"}
+        @v.msg{"Init/Table SqLog '#{@tid}' is created in #{@type}"}
       end
       @v.msg{"Init/Start SqLog '#{@type}' (#{@tid})"}
       self
@@ -97,19 +97,13 @@ module SqLog
       `#{cmd}`
     end
 
-    def upd
-      super
-      save
-      self
-    end
-
     # Do a transaction
     def save
       super
       IO.popen(@sqlcmd,'w'){|f|
         f.puts sql
       }
-      @v.msg{"Transaction complete (#{@type})"}
+      @v.msg{"SqLog/Save complete (#{@type})"}
       @log.clear
       self
     rescue

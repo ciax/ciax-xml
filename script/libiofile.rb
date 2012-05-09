@@ -65,18 +65,12 @@ end
 module IoFile
   include InFile
 
-  def upd
-    super
-    save
-    self
-  end
-
   def save(data=nil,tag=nil)
     name=fname(tag)
     open(name,'w'){|f|
       f << (data ? JSON.dump(data) : to_j)
     }
-    @v.msg{"[#{@base}] is Saved"}
+    @v.msg{"File/[#{@base}] is Saved"}
     if tag
       # Making 'latest' tag link
       sname=fname('latest')

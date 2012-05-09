@@ -20,7 +20,7 @@ module App
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.post_flush << proc{
-        @stat.upd
+        @stat.upd.save
         sleep(@stat.interval||0.1)
         sendfrm(@stat.issue,2)
       }

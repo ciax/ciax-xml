@@ -86,7 +86,7 @@ class ExHash < Hash
   include ExEnum
   def initialize
     super
-    @v=Msg::Ver.new(self,6)
+    @vv=@v=Msg::Ver.new(self,6)
   end
 end
 

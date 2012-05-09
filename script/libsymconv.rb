@@ -48,7 +48,7 @@ module Sym
       }
       stime=@val['time'].to_f
       self['msg']['time']=Time.at(stime).to_s
-      @v.msg{"Update(#{stime})"}
+      @v.msg{"Sym/Update(#{stime})"}
       super
     end
   end

@@ -17,7 +17,7 @@ module App
         idb=Ins::Db.new(id)
         adb=idb.cover_app
         if $opt['t']
-          require "libappint"
+          require "libappsh"
           aint=Sh.new(adb)
         elsif $opt['a']
           require "libappcl"

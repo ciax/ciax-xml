@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappint"
+require "libappsh"
 require "libappcmd"
 require "libapprsp"
 require "libsymconv"
@@ -8,7 +8,7 @@ require "thread"
 
 module App
   class Sv < Sh
-    include Server
+    include Int::Server
     attr_reader :fint
     def initialize(adb)
       super(adb)

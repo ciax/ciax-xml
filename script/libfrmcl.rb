@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libfrmint"
+require "libfrmsh"
 require "libfield"
 
 module Frm
@@ -9,7 +9,7 @@ module Frm
       @host=Msg.type?(host||fdb['host'],String)
       @field.extend(InUrl).init(fdb['id'],@host).load
       @post_exe << proc{ @field.load }
-      extend(Client)
+      extend(Int::Client)
     end
   end
 end

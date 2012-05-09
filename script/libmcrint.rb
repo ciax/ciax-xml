@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libmcrdb"
-require "libinteract"
+require "libint"
 require "libmcrsub"
 require "libmcrprt"
 
 module Mcr
-  class Sh < Shell
+  class Sh < Int::Shell
     attr_reader :prompt
     # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
     def initialize(id)

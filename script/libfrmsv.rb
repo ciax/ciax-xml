@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libfrmint"
+require "libfrmsh"
 require "libmsg"
 require "libfrmrsp"
 require "libstream"
@@ -8,7 +8,7 @@ require "libfrmcmd"
 
 module Frm
   class Sv < Sh
-    include Server
+    include Int::Server
     def initialize(fdb,iocmd=[])
       super(fdb)
       @field.extend(Frm::Rsp).init(fdb,@cobj)

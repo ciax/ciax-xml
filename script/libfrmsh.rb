@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require 'libinteract'
+require 'libint'
 require 'libfield'
 module Frm
-  class Sh < Shell
+  class Sh < Int::Shell
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)

@@ -33,9 +33,11 @@
       <Stream parent="Object"/>
       <Field parent="Var"/>
       <Status parent="Var"/>
-      <Shell parent="Object"/>
-      <Server extend_for="Shell"/>
-      <Client extend_for="Shell"/>
+      <Int>
+        <Shell parent="Object"/>
+        <Server extend_for="Shell"/>
+        <Client extend_for="Shell"/>
+      </Int>
       <SqLog>
         <Stat extend_for="Var"/>
         <Exec extend_for="Stat"/>
@@ -47,21 +49,21 @@
         <Sdb/>
         <Wdb/>
         <Db parent="Db" include="Cdb,Sdb,Wdb"/>
-        <Sh parent="Shell"/>
-        <Cl parent="Sh" extend="Client"/>
-        <Sv parent="Sh" include="Server"/>
-          <Cmd parent="Object"/>
-          <Rsp extend_for="Status"/>
+        <Sh parent="Int.Shell"/>
+        <Cl parent="Sh" extend="Int.Client"/>
+        <Sv parent="Sh" include="Int.Server"/>
+        <Cmd parent="Object"/>
+        <Rsp extend_for="Status"/>
         <Prt extend_for="Sh"/>
         <List parent="Hash"/>
       </App>
       <Frm>
         <Db parent="Db"/>
-        <Sh parent="Shell"/>
-        <Cl parent="Sh" extend="Client"/>
-        <Sv parent="Sh" include="Server"/>
-          <Cmd parent="Object"/>
-          <Rsp extend_for="Field"/>
+        <Sh parent="Int.Shell"/>
+        <Cl parent="Sh" extend="Int.Client"/>
+        <Sv parent="Sh" include="Int.Server"/>
+        <Cmd parent="Object"/>
+        <Rsp extend_for="Field"/>
         <List parent="Hash"/>
       </Frm>
       <Ins>

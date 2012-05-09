@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappint"
+require "libappsh"
 require "libstatus"
 require "libfrmcl"
 
@@ -12,7 +12,7 @@ module App
       @stat.extend(InUrl).init(adb['id'],@host).load
       @watch.extend(InUrl).init(adb['id'],@host).load
       @post_exe << proc{ @stat.load }
-      extend(Client)
+      extend(Int::Client)
     end
   end
 end

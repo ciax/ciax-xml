@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libinteract"
+require "libint"
 require "libstatus"
 require "libfrmlist"
 module App
-  class Sh < Shell
+  class Sh < Int::Shell
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
       super(Command.new(adb[:command]))

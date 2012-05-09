@@ -14,7 +14,7 @@ module App
     def initialize
       $opt||={'a'=>true}
       super{|h,id|
-        idb=InsDb.new(id)
+        idb=Ins::Db.new(id)
         adb=idb.cover_app
         if $opt['t']
           require "libappint"

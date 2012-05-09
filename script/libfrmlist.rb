@@ -11,7 +11,7 @@ module Frm
     def initialize
       $opt||={}
       super{|h,id|
-        fdb=InsDb.new(id).cover_app.cover_frm
+        fdb=Ins::Db.new(id).cover_app.cover_frm
         if $opt['f'] or $opt['a']
           require "libfrmcl"
           h[id]=Cl.new(fdb,$opt['h'])

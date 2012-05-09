@@ -58,7 +58,7 @@ if __FILE__ == $0
     id=ARGV.shift
     host=ARGV.shift
     ARGV.clear
-    idb=InsDb.new(id).cover_app
+    idb=Ins::Db.new(id).cover_app
     stat=Status.new
     if STDIN.tty?
       if host

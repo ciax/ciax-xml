@@ -58,7 +58,7 @@ if __FILE__ == $0
   require "libinsdb"
   id=ARGV.shift
   begin
-    adb=InsDb.new(id).cover_app
+    adb=Ins::Db.new(id).cover_app
     stat=Status.new.extend(InFile).init(id).load
     stat.extend(Sym::Conv).init(adb).upd
     print stat

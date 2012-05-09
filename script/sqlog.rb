@@ -11,7 +11,7 @@ require 'json'
 opt=ARGV.getopts("iafv")
 id = ARGV.shift
 begin
-  idb=InsDb.new(id)
+  idb=Ins::Db.new(id)
   adb=idb.cover_app
   field=Field.new
 rescue UserError

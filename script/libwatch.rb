@@ -212,7 +212,7 @@ if __FILE__ == $0
   opt=ARGV.getopts('rvt:')
   id=ARGV.shift
   begin
-    adb=InsDb.new(id).cover_app
+    adb=Ins::Db.new(id).cover_app
   rescue SelectID
     Msg.usage("(-t key=val,..) (-rv) [id]",
               "-t:test conditions(key=val,..)",

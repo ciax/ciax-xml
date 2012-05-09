@@ -147,7 +147,7 @@ if __FILE__ == $0
   opt=ARGV.getopts('m')
   str=gets(nil) || exit
   id=Logging.set_logline(str)[:id]
-  fdb=InsDb.new(id).cover_app.cover_frm
+  fdb=Ins::Db.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
   field= opt['m'] ? Field.new.extend(Field::IoFile).init(id).load : Field.new
   field.extend(Frm::Rsp).init(fdb,cobj)

@@ -123,7 +123,7 @@ if __FILE__ == $0
   require 'libinsdb'
   opt=ARGV.getopts("af")
   begin
-    adb=InsDb.new(ARGV.shift).cover_app
+    adb=Ins::Db.new(ARGV.shift).cover_app
     if opt["f"]
       puts Command.new(adb.cover_frm[:cmdframe]).set(ARGV)
     else

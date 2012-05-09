@@ -39,7 +39,7 @@ if __FILE__ == $0
   id=ARGV.shift
   app=ARGV.shift
   begin
-    adb=InsDb.new(id).cover_app
+    adb=Ins::Db.new(id).cover_app
   rescue SelectID
     Msg.usage "[id]"
   end

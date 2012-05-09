@@ -70,7 +70,7 @@ if __FILE__ == $0
   opt=ARGV.getopts('r')
   Msg.usage("(-r) [stat_file]") if STDIN.tty? && ARGV.size < 1
   stat=Status.new.load
-  adb=InsDb.new(stat['id']).cover_app
+  adb=Ins::Db.new(stat['id']).cover_app
   view=View.new(adb,stat)
   view.extend(View::Print) unless opt['r']
   puts view

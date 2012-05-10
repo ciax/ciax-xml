@@ -69,8 +69,13 @@ class Field < Var
 
   def ext_save(id)
     super
+    extend Save
+    self
+  end
+
+  module Save
     # Saving data of specified keys with tag
-    def self.savekey(keylist,tag=nil)
+    def savekey(keylist,tag=nil)
       Msg.err("No File") unless @base
       hash={}
       keylist.each{|k|
@@ -89,7 +94,6 @@ class Field < Var
       end
       self
     end
-    self
   end
 end
 

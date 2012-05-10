@@ -38,9 +38,14 @@ class Status < Var
   end
 
   module Save
+    extend Msg::Ver
+    def self.extended(obj)
+      Save.init_ver(obj,4)
+    end
+
     def save
       time=@val['time'].to_f
-      Status.msg{"Try Save for #{time}"}
+      Save.msg{"Try Save for #{time}"}
       if time > @lastsave
         super
         @lastsave=time

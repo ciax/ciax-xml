@@ -6,7 +6,7 @@ module Frm
   class Cmd
     extend Msg::Ver
     def initialize(fdb,cobj,field)
-      Cmd.init_ver(self,9)
+      Cmd.init_ver('frmcmd',9)
       Msg.type?(fdb,Frm::Db)
       @cobj=Msg.type?(cobj,Command)
       @field=Msg.type?(field,Field)

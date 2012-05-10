@@ -6,19 +6,23 @@ class SelectID < UserError; end
 class SelectCMD < SelectID; end
 
 module Msg
+  # Should be extended in module/class
   module Ver
     Start_time=Time.now
     @@base=1
     def extended(obj)
-      obj.class.init_ver
+      @parent=obj.class.name
     end
 
     def init_ver(prefix='',col=2)
       @color=col
       if prefix.instance_of?(String)
-        @prefix=prefix.capitalize
+        raise("Empty Prefix") if prefix.empty?
+        @prefix=prefix % @parent
       elsif prefix
         @prefix=prefix.class.name
+      else
+        raise "No Prefix"
       end
       @ind=1
       msg{"Initialize Messaging (#{self})"}

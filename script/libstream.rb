@@ -49,14 +49,14 @@ class Stream
   end
 
   def ext_logging(id,ver=0)
+    require "liblogging"
+    extend Object::Logging
     extend(Logging)
     init('frame',id,ver)
     self
   end
 
   module Logging
-    require "liblogging"
-    include Object::Logging
     def snd(str)
       super
       append('snd',@cid){str}

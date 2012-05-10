@@ -2,10 +2,11 @@
 require 'libmsg'
 require 'json'
 
+# Should be extend (not include)
 module Logging
   extend Msg::Ver
   def init(type,id,ver=0)
-    Logging.init_ver(self,5)
+    Logging.init_ver('Logging/%s',5)
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i
       @id=id

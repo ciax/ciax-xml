@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "liblogging"
 
 class Stream
   extend Msg::Ver
@@ -52,13 +51,19 @@ class Stream
   def ext_logging(id,ver=0)
     extend(Logging)
     init('frame',id,ver)
-    def self.snd(str)
+    self
+  end
+
+  module Logging
+    require "liblogging"
+    include Object::Logging
+    def snd(str)
       super
       append('snd',@cid){str}
       self
     end
     # return hash (data,time)
-    def self.rcv
+    def rcv
       str=super[:data]
       {:data => str,:time => append('rcv',@cid){str}}
     end

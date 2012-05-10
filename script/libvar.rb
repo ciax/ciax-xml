@@ -96,7 +96,6 @@ class Var < ExHash
   end
 
   module Load
-    extend Msg::Ver
     def load(tag=nil)
       begin
         Var.msg{"Loading #{fname(tag)}"}

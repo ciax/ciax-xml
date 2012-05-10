@@ -57,7 +57,7 @@ module Int
     extend Msg::Ver
     def self.extended(obj)
       Msg.type?(obj,Shell)
-      Server.init_ver('server',3)
+      init_ver('server',3)
     end
     # JSON expression of @prompt will be sent.
     # Or, block contents will be sent if block added.

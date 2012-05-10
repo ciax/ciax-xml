@@ -34,7 +34,7 @@ class Db < ExHash
       Db.msg{"Loaded(#{base})"}
       return Marshal.load(IO.read(fmar))
     end
-    res=Msg.type?(yield(XmlDoc.new(@type)),Hash)
+    res=Msg.type?(yield(Xml::Doc.new(@type)),Hash)
     open(fmar,'w') {|f|
       f << Marshal.dump(res)
       Db.msg{"Saved(#{base})"}

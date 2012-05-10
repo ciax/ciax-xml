@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <objecttree>
   <module-inclusive>
-    <basic>
-      <ExEnum/>
-      <ExHash parent="Hash" include="ExEnum"/>
-      <Logging extend="Msg.Ver"/>
+    <general>
       <Update parent="Array" extend="Msg.Ver"/>
       <Interval parent="Time"/>
       <Elapse parent="Interval" extend="Msg.Ver"/>
-      <Buffer parent="Object" extend="Msg.Ver"/>
       <Circular parent="Object" extend="Msg.Ver"/>
-      <Frame parent="Object" extend="Msg.Ver"/>
       <Repeat parent="Object" extend="Msg.Ver"/>
       <ReRange parent="Object" include="Comparable"/>
+    </general>
+    <special>
+      <Buffer parent="Object" extend="Msg.Ver"/>
+      <Frame parent="Object" extend="Msg.Ver"/>
+    </special>
+    <basic>
+      <ExEnum/>
+      <ExHash parent="Hash" include="ExEnum"/>
       <Var parent="ExHash" extend="Msg.Ver">
         <Load/>
         <Save/>
       </Var>
-      <XmlDoc parent="Hash" extend="Msg.Ver"/>
-      <ModXml/>
-      <Xml parent="Object" extend="Msg.Ver" include="ModXml"/>
     </basic>
     <shared>
       <Msg>
@@ -46,11 +46,14 @@
         <Client extend_for="Shell" extend="Msg.Ver"/>
         <Prompt parent="ExHash"/>
       </Int>
+    </shared>
+    <append>
       <SqLog>
         <Stat extend_for="Var" extend="Msg.Ver"/>
         <Exec extend_for="Stat"/>
       </SqLog>
-    </shared>
+      <Logging extend="Msg.Ver"/>
+    </append>
     <local>
       <App>
         <Cdb/>
@@ -98,10 +101,13 @@
         <View parent="ExHash"/>
         <Print extend_for="Print"/>
       </Watch>
+      <Xml>
+        <Share/>
+        <Doc parent="Hash" extend="Msg.Ver"/>
+        <Gnu parent="Object" extend="Msg.Ver" include="Share"/>
+      </Xml>
     </local>
   </module-inclusive>
-
-
 
   <class-inheritance>
     <RuntimeError>
@@ -134,7 +140,7 @@
       <Frm.List/>
       <Msg.CmdList/>
       <Msg.GroupList/>
-      <XmlDoc/>
+      <Xml::Doc/>
     </Hash>
     <Array>
       <HtmlTbl/>

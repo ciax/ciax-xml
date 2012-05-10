@@ -11,7 +11,7 @@ module Msg
     @@base=1
     def initialize(prefix='',color=2)
       if prefix.instance_of?(String)
-        @prefix=prefix.upcase
+        @prefix=prefix.capitalize
       else
         @prefix=prefix.class.name
       end

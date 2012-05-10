@@ -108,8 +108,6 @@ module SqLog
       Stat.msg{"SqLog/Save complete (#{@type})"}
       @log.clear
       self
-    rescue
-      Msg.abort("\nSqLog Error")
     end
   end
 end
@@ -121,7 +119,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     adb=Ins::Db.new(id).cover_app
-    stat=Status.new.extend(InFile).init(id).load
+    stat=Status.new.ext_load(id).load
     stat.extend(SqLog::Stat).upd
     puts stat.sql
   rescue UserError

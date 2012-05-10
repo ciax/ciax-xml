@@ -2,8 +2,8 @@
 require "libmsg"
 
 class Circular
-  attr_reader :max
   extend Msg::Ver
+  attr_reader :max
   def initialize(limit=2)
     Circular.init_ver(self,6)
     @limit=limit

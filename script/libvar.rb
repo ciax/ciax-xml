@@ -3,8 +3,8 @@ require "libmsg"
 require "libexenum"
 
 class Var < ExHash
-  attr_reader :type,:id,:ver,:val
   extend Msg::Ver
+  attr_reader :type,:id,:ver,:val
 
   def initialize(type)
     Var.init_ver('file',12)

@@ -5,8 +5,8 @@ require "libstatus"
 # Status to Sym::Conv (String with attributes)
 module Sym
   module Conv
-    require "libsymdb"
     extend Msg::Ver
+    require "libsymdb"
     def self.extended(obj)
       Msg.type?(obj,Status)
     end

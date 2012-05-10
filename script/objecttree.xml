@@ -4,25 +4,22 @@
     <basic>
       <ExEnum/>
       <ExHash parent="Hash" include="ExEnum"/>
-      <InFile extend_for="Var"/>
-      <InUrl include="InFile"/>
-      <IoFile include="InFile"/>
-      <Logging/>
-      <Update parent="Array"/>
+      <Logging extend="Msg.Ver"/>
+      <Update parent="Array" extend="Msg.Ver"/>
       <Interval parent="Time"/>
-      <Elapse parent="Interval"/>
-      <Buffer parent="Object"/>
-      <Circular parent="Object"/>
-      <Frame parent="Object"/>
-      <Repeat parent="Object"/>
+      <Elapse parent="Interval" extend="Msg.Ver"/>
+      <Buffer parent="Object" extend="Msg.Ver"/>
+      <Circular parent="Object" extend="Msg.Ver"/>
+      <Frame parent="Object" extend="Msg.Ver"/>
+      <Repeat parent="Object" extend="Msg.Ver"/>
       <ReRange parent="Object" include="Comparable"/>
-      <Var parent="ExHash">
+      <Var parent="ExHash" extend="Msg.Ver">
         <Load/>
         <Save/>
       </Var>
-      <XmlDoc parent="Hash"/>
+      <XmlDoc parent="Hash" extend="Msg.Ver"/>
       <ModXml/>
-      <Xml parent="Object" include="ModXml"/>
+      <Xml parent="Object" extend="Msg.Ver" include="ModXml"/>
     </basic>
     <shared>
       <Msg>
@@ -30,21 +27,27 @@
         <GroupList parent="Hash"/>
         <Ver parent="Object"/>
       </Msg>
-      <Db parent="ExHash"/>
-      <Command parent="ExHash" include="Math"/>
-      <Stream parent="Object"/>
-      <Field parent="Var"/>
-      <Status parent="Var">
+      <Db parent="ExHash" extend="Msg.Ver"/>
+      <Command parent="ExHash" extend="Msg.Ver" include="Math">
+        <Logging extend="Logging"/>
+      </Command>
+      <Stream parent="Object" extend="Msg.Ver">
+        <Logging extend="Logging"/>
+      </Stream>
+      <Field parent="Var" extend="Msg.Ver">
         <Save/>
+      </Field>
+      <Status parent="Var" extend="Msg.Ver">
+        <Save extend="Msg.Ver"/>
       </Status>
       <Int>
         <Shell parent="Object"/>
-        <Server extend_for="Shell"/>
-        <Client extend_for="Shell"/>
+        <Server extend_for="Shell" extend="Msg.Ver"/>
+        <Client extend_for="Shell" extend="Msg.Ver"/>
         <Prompt parent="ExHash"/>
       </Int>
       <SqLog>
-        <Stat extend_for="Var"/>
+        <Stat extend_for="Var" extend="Msg.Ver"/>
         <Exec extend_for="Stat"/>
       </SqLog>
     </shared>
@@ -57,40 +60,40 @@
         <Sh parent="Int.Shell"/>
         <Cl parent="Sh" extend="Int.Client"/>
         <Sv parent="Sh" include="Int.Server"/>
-        <Cmd parent="Object"/>
-        <Rsp extend_for="Status"/>
+        <Cmd parent="Object" extend="Msg.Ver"/>
+        <Rsp extend_for="Status" extend="Msg.Ver"/>
         <Prt extend_for="Sh"/>
         <List parent="Hash"/>
       </App>
       <Frm>
-        <Db parent="Db"/>
+        <Db parent="Db" extend="Msg.Ver"/>
         <Sh parent="Int.Shell"/>
         <Cl parent="Sh" extend="Int.Client"/>
         <Sv parent="Sh" include="Int.Server"/>
-        <Cmd parent="Object"/>
-        <Rsp extend_for="Field"/>
+        <Cmd parent="Object" extend="Msg.Ver"/>
+        <Rsp extend_for="Field" extend="Msg.Ver"/>
         <List parent="Hash"/>
       </Frm>
       <Ins>
         <Db parent="Db"/>
       </Ins>
-      <HexPack extend_for="App.Sh"/>
+      <HexPack extend_for="App.Sh" extend="Msg.Ver"/>
       <HtmlTbl parent="Array"/>
       <Mcr>
-        <Db parent="Db"/>
-        <Sub parent="Array"/>
+        <Db parent="Db" extend="Msg.Ver"/>
+        <Sub parent="Array" extend="Msg.Ver"/>
         <Sh parent="Shell"/>
         <Prt/>
       </Mcr>
       <Sym>
-        <Db parent="Db"/>
-        <Conv extend_for="Status"/>
+        <Db parent="Db" extend="Msg.Ver"/>
+        <Conv extend_for="Status" extend="Msg.Ver"/>
       </Sym>
       <View parent="ExHash">
         <Print extend_for="View"/>
       </View>
       <Watch>
-        <Stat extend_for="Status"/>
+        <Stat extend_for="Status" extend="Msg.Ver"/>
         <Conv extend_for="Stat"/>
         <View parent="ExHash"/>
         <Print extend_for="Print"/>

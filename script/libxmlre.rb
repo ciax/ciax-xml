@@ -5,8 +5,8 @@ require "rexml/document"
 include REXML
 
 class Xml
-  include ModXml
   extend Msg::Ver
+  include ModXml
   def initialize(f=nil)
     Xml.init_ver(self,4)
     case f

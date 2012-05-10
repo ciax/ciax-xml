@@ -69,7 +69,6 @@ if __FILE__ == $0
   class TestHex
     include HexPack
     def initialize
-      @v=Msg::Ver.new(self,6)
       @stat=Status.new.load
       @prompt={}
       init

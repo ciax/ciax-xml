@@ -3,8 +3,8 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
-  attr_reader :top,:list
   extend Msg::Ver
+  attr_reader :top,:list
   def initialize(type)
     XmlDoc.init_ver(self,4)
     @type=type||Msg.err("Need DB type")

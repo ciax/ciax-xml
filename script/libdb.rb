@@ -5,8 +5,8 @@ require "libxmldoc"
 require "find"
 
 class Db < ExHash
-  XmlDir="#{ENV['HOME']}/ciax-xml"
   extend Msg::Ver
+  XmlDir="#{ENV['HOME']}/ciax-xml"
   attr_reader :list
   def initialize(type,id=nil)
     Db.init_ver("cache/#{type}",5)

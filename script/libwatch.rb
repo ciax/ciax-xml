@@ -5,8 +5,8 @@ require 'librerange'
 
 module Watch
   module Stat
-    attr_reader :active,:period,:interval,:watch
     extend Msg::Ver
+    attr_reader :active,:period,:interval,:watch
 
     def self.extended(obj)
       Msg.type?(obj,Status).init

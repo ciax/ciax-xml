@@ -7,9 +7,9 @@ class Broken < RuntimeError;end
 
 module Mcr
   class Sub < Array
+    extend Msg::Ver
     ACT=ENV['ACT'].to_i
     @@client=App::List.new
-    extend Msg::Ver
 
     def initialize(cobj,int=nil)
       Sub.init_ver(self,9)

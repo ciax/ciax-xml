@@ -6,9 +6,9 @@ require 'liblogging'
 
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :list
-  include Math
   extend Msg::Ver
+  include Math
+  attr_reader :list
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
   def initialize(db)

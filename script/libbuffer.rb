@@ -17,8 +17,8 @@ require "libupdate"
 #  (stack if Queue is empty)
 
 class Buffer
-  attr_reader :issue,:post_flush
   extend Msg::Ver
+  attr_reader :issue,:post_flush
   def initialize
     Buffer.init_ver(self,2)
     #element of @q is bunch of frmcmds corresponding an appcmd

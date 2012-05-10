@@ -2,12 +2,13 @@
 require "libmsg"
 
 class Update < Array
+  extend Msg::Ver
   def initialize
-    @v=Msg::Ver.new(self,5)
+    Update.init_ver(self,5)
   end
 
   def upd
-    @v.msg{"Update procs"}
+    Update.msg{"Update procs"}
     each{|p|
       p.call
     }

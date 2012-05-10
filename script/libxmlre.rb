@@ -6,13 +6,14 @@ include REXML
 
 class Xml
   include ModXml
+  extend Msg::Ver
   def initialize(f=nil)
-    @v=Msg::Ver.new(self,4)
+    Xml.init_ver(self,4)
     case f
     when String
       test(?r,f) || raise(SelectID)
       @e=Document.new(open(f)).root
-      @v.msg{ns}
+      Xml.msg{ns}
     when Element
       @e=f
     when nil
@@ -39,17 +40,17 @@ class Xml
   def find(xpath)
     xpath=".//"+xpath if xpath
     @e.each_element(xpath){|e|
-      @v.msg(1){"<#{e.name} #{e.attributes}>"}
+      Xml.msg(1){"<#{e.name} #{e.attributes}>"}
       yield Xml.new(e)
-      @v.msg(-1){"</#{e.name}>"}
+      Xml.msg(-1){"</#{e.name}>"}
     }
   end
 
   def each
     @e.each_element{|e|
-      @v.msg(1){"<#{e.name} #{e.attributes}>"}
+      Xml.msg(1){"<#{e.name} #{e.attributes}>"}
       yield Xml.new(e)
-      @v.msg(-1){"</#{e.name}>"}
+      Xml.msg(-1){"</#{e.name}>"}
     }
   end
 end

@@ -4,11 +4,13 @@ require "libmsg"
 
 # included in App::Sh
 module HexPack
+  extend Msg::Ver
   def self.extended(obj)
     Msg.type?(obj,App::Sh).init
   end
 
   def init
+    HexPack.init_ver(self)
     id=@stat.id || raise("NO ID in Stat")
     file="/home/ciax/config/sdb_#{id}.txt"
     @res=["%",id,'_','0','0','_','']
@@ -47,7 +49,7 @@ module HexPack
          else
           str=("%#{len}s" % val)
          end
-        @v.msg{"#{title}/#{type}(#{len}) = #{str}"}
+        HexPack.msg{"#{title}/#{type}(#{len}) = #{str}"}
       else
         str='*' * len.to_i
       end

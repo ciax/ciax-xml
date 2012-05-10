@@ -2,8 +2,9 @@
 require 'libmsg'
 
 class Frame
+  extend Msg::Ver
   def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
-    @v=Msg::Ver.new(self,6)
+    Frame.init_ver(self,6)
     @endian=endian
     @ccrange=nil
     @method=ccmethod
@@ -12,7 +13,7 @@ class Frame
 
   def set(frame='')
     if frame
-      @v.msg{"Frame set <#{frame}>"}
+      Frame.msg{"Frame set <#{frame}>"}
       @frame=frame
     end
     self
@@ -24,19 +25,19 @@ class Frame
       code=encode(e,frame)
       @frame << code
       @ccrange << code if @ccrange
-      @v.msg{"Frame add <#{frame}>"}
+      Frame.msg{"Frame add <#{frame}>"}
     end
     self
   end
 
   def copy
-    @v.msg{"Copy Frame <#{@frame}>"}
+    Frame.msg{"Copy Frame <#{@frame}>"}
     @frame
   end
 
   # Response
   def mark
-    @v.msg{"Mark CC range" }
+    Frame.msg{"Mark CC range" }
     @ccrange=''
     self
   end
@@ -47,24 +48,24 @@ class Frame
     return if str.empty?
     # Check Code
     @ccrange << str if @ccrange
-    @v.msg{"CutFrame: <#{str}> by size=[#{len}]"}
+    Frame.msg{"CutFrame: <#{str}> by size=[#{len}]"}
     # Pick Part
     if r=e0['slice']
       str=str.slice(*r.split(':').map{|i| i.to_i })
-      @v.msg{"PickFrame: <#{str}> by range=[#{r}]"}
+      Frame.msg{"PickFrame: <#{str}> by range=[#{r}]"}
     end
     str=decode(e0,str)
     # Verify
     if val=e0['val']
       val=eval(val).to_s if e0['decode']
-      @v.msg{"Verify:(#{e0['label']}) [#{val}] and <#{str}>"}
+      Frame.msg{"Verify:(#{e0['label']}) [#{val}] and <#{str}>"}
       val == str || Msg.err("Verify Mismatch(#{e0['label']}) <#{str}> != [#{val}]")
     end
     str
   end
 
   def checkcode
-    @v.msg{"CC Frame <#{@ccrange}>"}
+    Frame.msg{"CC Frame <#{@ccrange}>"}
     chk=0
     case @method
     when 'len'
@@ -77,7 +78,7 @@ class Frame
     else
       Msg.err("No such CC method #{@method}")
     end
-    @v.msg{"Calc:CC [#{@method.upcase}] -> (#{chk})"}
+    Frame.msg{"Calc:CC [#{@method.upcase}] -> (#{chk})"}
     @ccrange=nil
     return chk.to_s
   end
@@ -101,7 +102,7 @@ class Frame
         num = num < p/2 ? num : num - p
       end
     end
-    @v.msg{"Decode:(#{cdc}) [#{code}] -> [#{num}]"}
+    Frame.msg{"Decode:(#{cdc}) [#{code}] -> [#{num}]"}
     num.to_s
   end
 
@@ -115,7 +116,7 @@ class Frame
         num/=256
         code =(@endian == 'little') ? code+c : c+code
       }
-      @v.msg{"Encode:[#{str}](#{len}) -> [#{code}]"}
+      Frame.msg{"Encode:[#{str}](#{len}) -> [#{code}]"}
       str=code
     end
     str

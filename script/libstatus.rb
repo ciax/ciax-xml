@@ -3,7 +3,9 @@ require "libmsg"
 require "libvar"
 
 class Status < Var
+  extend Msg::Ver
   def initialize
+    Status.init_ver('status',6)
     super('stat')
     @last={}
   end
@@ -14,7 +16,7 @@ class Status < Var
   end
 
   def change?(id)
-    @v.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
+    Status.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
     @val[id] != @last[id]
   end
 
@@ -23,7 +25,7 @@ class Status < Var
   end
 
   def refresh
-    @v.msg{"Status Updated"}
+    Status.msg{"Status Updated"}
     @last.update(@val)
     self
   end
@@ -38,7 +40,7 @@ class Status < Var
   module Save
     def save
       time=@val['time'].to_f
-      @v.msg{"Try Save for #{time}"}
+      Status.msg{"Try Save for #{time}"}
       if time > @lastsave
         super
         @lastsave=time

@@ -9,7 +9,6 @@ module Int
   class Shell
     attr_reader :post_exe,:cmdlist
     def initialize(cobj)
-      @v=Msg::Ver.new(self,3)
       @cobj=Msg::type?(cobj,Command)
       @prompt=Prompt.new
       @post_exe=Update.new
@@ -55,13 +54,15 @@ module Int
   end
 
   module Server
+    extend Msg::Ver
     def self.extended(obj)
       Msg.type?(obj,Shell)
+      Server.init_ver('server',3)
     end
     # JSON expression of @prompt will be sent.
     # Or, block contents will be sent if block added.
     def socket(type,json=true)
-      @v.msg{"Init/Server:#{@port}(#{type})"}
+      Server.msg{"Init/Server:#{@port}(#{type})"}
       Thread.new{
         Thread.pass
         UDPSocket.open{ |udp|
@@ -69,7 +70,7 @@ module Int
           loop {
             select([udp])
             line,addr=udp.recvfrom(4096)
-            @v.msg{"Recv:#{line} is #{line.class}"}
+            Server.msg{"Recv:#{line} is #{line.class}"}
             line='' if /^(strobe|stat)/ === line
             cmd=line.chomp.split(' ')
             begin
@@ -79,7 +80,7 @@ module Int
               msg="ERROR"
               warn msg
             end
-            @v.msg{"Send:#{msg}"}
+            Server.msg{"Send:#{msg}"}
             @prompt['msg']=msg
             udp.send(json ? @prompt.to_j : to_s,0,addr[2],addr[1])
           }
@@ -90,25 +91,27 @@ module Int
   end
 
   module Client
+    extend Msg::Ver
     def self.extended(obj)
       Msg.type?(obj,Shell).init
     end
 
     def init
+      Client.init_ver(self,3)
       @udp=UDPSocket.open()
       @host||='localhost'
       @addr=Socket.pack_sockaddr_in(@port,@host)
-      @v.msg{"Init/Client #{@host}:#{@port}"}
+      Client.msg{"Init/Client #{@host}:#{@port}"}
       self
     end
 
     def exe(cmd)
       line=cmd.empty? ? 'strobe' : cmd.join(' ')
       @udp.send(line,0,@addr)
-      @v.msg{"Send [#{line}]"}
+      Client.msg{"Send [#{line}]"}
       input=@udp.recv(1024)
       @prompt.load(input)
-      @v.msg{"Recv #{input}"}
+      Client.msg{"Recv #{input}"}
       # Error message
       super if /ERROR/ =~ @prompt['msg']
       @post_exe.upd

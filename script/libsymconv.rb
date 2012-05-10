@@ -6,11 +6,13 @@ require "libstatus"
 module Sym
   module Conv
     require "libsymdb"
+    extend Msg::Ver
     def self.extended(obj)
       Msg.type?(obj,Status)
     end
 
     def init(adb)
+      Conv.init_ver('symconv')
       @id=adb['id']
       ads=Msg.type?(adb,App::Db)[:status]
       self.ver=adb['app_ver'].to_i
@@ -28,7 +30,7 @@ module Sym
           Msg.warn("Table[#{sid}] not exist")
           next
         end
-        @v.msg{"ID=#{key},table=#{sid}"}
+        Conv.msg{"ID=#{key},table=#{sid}"}
         self['class'][key]='alarm'
         self['msg'][key]='N/A'
         val=@val[key]
@@ -36,11 +38,11 @@ module Sym
           case sym['type']
           when 'range'
             next unless ReRange.new(sym['val']) == val
-            @v.msg{"VIEW:Range:[#{sym['val']}] and [#{val}]"}
+            Conv.msg{"VIEW:Range:[#{sym['val']}] and [#{val}]"}
             self['msg'][key]=sym['msg']+"(#{val})"
           when 'pattern'
             next unless /#{sym['val']}/ === val || val == 'default'
-              @v.msg{"VIEW:Regexp:[#{sym['val']}] and [#{val}]"}
+              Conv.msg{"VIEW:Regexp:[#{sym['val']}] and [#{val}]"}
             self['msg'][key]=sym['msg']
           end
           self['class'][key]=sym['class']
@@ -49,7 +51,7 @@ module Sym
       }
       stime=@val['time'].to_f
       self['msg']['time']=Time.at(stime).to_s
-      @v.msg{"Sym/Update(#{stime})"}
+      Conv.msg{"Sym/Update(#{stime})"}
       self
     end
   end

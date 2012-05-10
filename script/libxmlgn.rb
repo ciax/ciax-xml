@@ -5,13 +5,14 @@ require "xml"
 
 class Xml
   include ModXml
+  extend Msg::Ver
   def initialize(f=nil)
-    @v=Msg::Ver.new(self,4)
+    Xml.init_ver(self,4)
     case f
     when String
       test(?r,f) || raise(SelectID)
       @e=XML::Document.file(f).root
-      @v.msg{@e.namespaces.default}
+      Xml.msg{@e.namespaces.default}
     when XML::Node
       @e=f
     when nil
@@ -43,19 +44,19 @@ class Xml
 
   # pick same ns nodes even if it is in another tree
   def find(xpath)
-    @v.msg{"FindXpath:#{xpath}"}
+    Xml.msg{"FindXpath:#{xpath}"}
     @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-      @v.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
+      Xml.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
       yield Xml.new(e)
-      @v.msg(-1){"</#{e.name}>"}
+      Xml.msg(-1){"</#{e.name}>"}
     }
   end
 
   def each
     @e.each_element{|e|
-      @v.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
+      Xml.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
       yield Xml.new(e)
-      @v.msg(-1){"</#{e.name}>"}
+      Xml.msg(-1){"</#{e.name}>"}
     }
   end
 end

@@ -4,7 +4,10 @@ require "libexenum"
 
 class Var < ExHash
   attr_reader :type,:id,:ver,:val
+  extend Msg::Ver
+
   def initialize(type)
+    Var.init_ver('file',12)
     super()
     self['type']=@type=type
     self.val=Hash.new
@@ -93,9 +96,10 @@ class Var < ExHash
   end
 
   module Load
+    extend Msg::Ver
     def load(tag=nil)
       begin
-        @v.msg{"Loading #{fname(tag)}"}
+        Var.msg{"Loading #{fname(tag)}"}
         open(fname(tag)){|f|
           json_str=f.read
           if json_str.empty?
@@ -132,13 +136,13 @@ class Var < ExHash
       open(name,'w'){|f|
         f << (data ? JSON.dump(data) : to_j)
       }
-      @v.msg{"File/[#{@base}] is Saved"}
+      Var.msg{"File/[#{@base}] is Saved"}
       if tag
         # Making 'latest' tag link
         sname=fname('latest')
         File.unlink(sname) if File.symlink?(sname)
         File.symlink(fname(tag),sname)
-        @v.msg{"Symboliclink to [#{sname}]"}
+        Var.msg{"Symboliclink to [#{sname}]"}
       end
       self
     end

@@ -9,9 +9,10 @@ module Mcr
   class Sub < Array
     ACT=ENV['ACT'].to_i
     @@client=App::List.new
+    extend Msg::Ver
 
     def initialize(cobj,int=nil)
-      @v=Msg::Ver.new(self,9)
+      Sub.init_ver(self,9)
       @int=int
       @cobj=Msg.type?(cobj,Command)
       @line=[]
@@ -117,8 +118,8 @@ module Mcr
     def getstat(ins,var)
       stat=@@client[ins].stat
       res=stat['msg'][var]||stat.val[var]
-      @v.msg{"ins=#{ins},var=#{var},res=#{res}"}
-      @v.msg{stat.val}
+      Sub.msg{"ins=#{ins},var=#{var},res=#{res}"}
+      Sub.msg{stat.val}
       res
     end
 

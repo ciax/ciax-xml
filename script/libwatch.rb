@@ -6,11 +6,14 @@ require 'librerange'
 module Watch
   module Stat
     attr_reader :active,:period,:interval,:watch
+    extend Msg::Ver
+
     def self.extended(obj)
       Msg.type?(obj,Status).init
     end
 
     def init
+      Stat.init_ver('watch',3)
       @watch=(self['watch']||={}).extend(ExEnum)
       ['active','exec','block','int'].each{|i|
         @watch[i]||=[]
@@ -26,20 +29,20 @@ module Watch
 
     def block?(cmd)
       cmds=@watch['block']
-      @v.msg{"BLOCKING:#{cmd}"} unless cmds.empty?
+      Stat.msg{"BLOCKING:#{cmd}"} unless cmds.empty?
       cmds.include?(cmd)
     end
 
     def issue
       cmds=@watch['exec']
       return [] if cmds.empty?
-      @v.msg{"ISSUED:#{cmds}"}
+      Stat.msg{"ISSUED:#{cmds}"}
       cmds
     end
 
     def interrupt
       cmds=@watch['int']
-      @v.msg{"ISSUED:#{cmds}"} unless cmds.empty?
+      Stat.msg{"ISSUED:#{cmds}"} unless cmds.empty?
       cmds
     end
   end
@@ -83,7 +86,7 @@ module Watch
         @watch['last']=@last=@crnt.dup
         upd_crnt
       end
-      @v.msg{"Watch/Updated(#{@val['time']})"}
+      Stat.msg{"Watch/Updated(#{@val['time']})"}
       self
     end
 
@@ -97,7 +100,7 @@ module Watch
 
     def check(i)
       return true unless @wdb[:stat][i]
-      @v.msg{"Check: <#{@wdb[:label][i]}>"}
+      Stat.msg{"Check: <#{@wdb[:label][i]}>"}
       n=@wdb[:stat][i]
       rary=[]
       n.each_index{|j|
@@ -107,16 +110,16 @@ module Watch
         when 'onchange'
           c=@last[k]
           res=(c != v)
-          @v.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
+          Stat.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
         when 'pattern'
           c=n[j]['val']
           res=(Regexp.new(c) === v)
-          @v.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
+          Stat.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
         when 'range'
           c=n[j]['val']
           f=cond[j]['val']="%.3f" % v.to_f
           res=(ReRange.new(c) == f)
-          @v.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
+          Stat.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
         end
         res=!res if /true|1/ === n[j]['inv']
         @res["#{i}:#{j}"]=res

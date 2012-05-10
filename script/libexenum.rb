@@ -84,10 +84,6 @@ end
 
 class ExHash < Hash
   include ExEnum
-  def initialize
-    super
-    @vv=@v=Msg::Ver.new(self,6)
-  end
 end
 
 if __FILE__ == $0

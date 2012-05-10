@@ -4,8 +4,9 @@ require "libcommand"
 
 module App
   class Cmd
+    extend Msg::Ver
     def initialize(cobj)
-      @v=Msg::Ver.new(self,9)
+      Cmd.init_ver('appcmd',9)
       @cobj=Msg.type?(cobj,Command)
     end
 
@@ -14,7 +15,7 @@ module App
       frmcmd=[]
       @cobj[:select].each{|e1|
         cmd=[]
-        @v.msg(1){"GetCmd(FDB):#{e1.first}"}
+        Cmd.msg(1){"GetCmd(FDB):#{e1.first}"}
         begin
           e1.each{|e2| # //argv
             case e2
@@ -23,13 +24,13 @@ module App
             when Hash
               str=e2['val']
               str = e2['format'] % str if e2['format']
-              @v.msg{"Calculated [#{str}]"}
+              Cmd.msg{"Calculated [#{str}]"}
               cmd << str
             end
           }
           frmcmd.push cmd
         ensure
-          @v.msg(-1){"Exec(FDB):#{cmd}"}
+          Cmd.msg(-1){"Exec(FDB):#{cmd}"}
         end
       }
       frmcmd

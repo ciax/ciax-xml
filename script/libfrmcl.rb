@@ -7,7 +7,7 @@ module Frm
     def initialize(fdb,host=nil)
       super(fdb)
       @host=Msg.type?(host||fdb['host'],String)
-      @field.extend(InUrl).init(fdb['id'],@host).load
+      @field.ext_url(fdb['id'],@host).load
       @post_exe << proc{ @field.load }
       extend(Int::Client)
     end

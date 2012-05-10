@@ -5,11 +5,13 @@ require "libmsg"
 # Generate SQL command string
 module SqLog
   module Stat
+    extend Msg::Ver
     def self.extended(obj)
       Msg.type?(obj,Var).init
     end
 
     def init
+      Stat.init_ver('sqlog',9)
       @log=[]
       @tid="#{@id}_#{@ver.to_i}"
       self
@@ -17,7 +19,7 @@ module SqLog
 
     def create
       key=['time',*expand.keys].uniq.join("','")
-      @v.msg{"create ('#{key}')"}
+      Stat.msg{"create ('#{key}')"}
       @log.push "create table #{@tid} ('#{key}',primary key(time));"
       self
     end
@@ -32,7 +34,7 @@ module SqLog
       val=expand
       key=val.keys.join("','")
       val=val.values.join("','")
-      @v.msg{"SqLog/Update(#{@val['time']}):[#{@type}/#{@tid}]"}
+      Stat.msg{"SqLog/Update(#{@val['time']}):[#{@type}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       self
     end
@@ -80,9 +82,9 @@ module SqLog
       unless check_table
         create
         save
-        @v.msg{"Init/Table SqLog '#{@tid}' is created in #{@type}"}
+        Stat.msg{"Init/Table SqLog '#{@tid}' is created in #{@type}"}
       end
-      @v.msg{"Init/Start SqLog '#{@type}' (#{@tid})"}
+      Stat.msg{"Init/Start SqLog '#{@type}' (#{@tid})"}
       self
     end
 
@@ -103,7 +105,7 @@ module SqLog
       IO.popen(@sqlcmd,'w'){|f|
         f.puts sql
       }
-      @v.msg{"SqLog/Save complete (#{@type})"}
+      Stat.msg{"SqLog/Save complete (#{@type})"}
       @log.clear
       self
     rescue

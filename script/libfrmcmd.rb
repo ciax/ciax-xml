@@ -4,8 +4,9 @@ require "libcommand"
 # Cmd Methods
 module Frm
   class Cmd
+    extend Msg::Ver
     def initialize(fdb,cobj,field)
-      @v=Msg::Ver.new(self,9)
+      Cmd.init_ver(self,9)
       Msg.type?(fdb,Frm::Db)
       @cobj=Msg.type?(cobj,Command)
       @field=Msg.type?(field,Field)
@@ -17,11 +18,11 @@ module Frm
 
     def getframe # return = response select
       return unless @sel[:select]=@cobj[:select]
-      #    @v.msg{"Attr of Command:#{@cobj}"}
+      #    Cmd.msg{"Attr of Command:#{@cobj}"}
       cid=@cobj[:cid]
-      @v.msg{"Select:#{@cobj[:label]}(#{cid})"}
+      Cmd.msg{"Select:#{@cobj[:label]}(#{cid})"}
       if frame=@cache[cid]
-        @v.msg{"Cmd cache found [#{cid}]"}
+        Cmd.msg{"Cmd cache found [#{cid}]"}
       else
         mk_frame(:select) && cid=nil
         if @sel.key?(:ccrange)

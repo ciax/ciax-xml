@@ -38,7 +38,7 @@ module ModXml
       sym=str.to_sym
       db[sym]={} unless db.key?(sym)
       db[sym][key]=v
-      @v.msg{"ATTRDB:"+str.upcase+":[#{key}] : #{v}"}
+      self.class.msg{"ATTRDB:"+str.upcase+":[#{key}] : #{v}"}
     }
     key
   end

@@ -6,12 +6,13 @@ require 'liblogging'
 
 # Keep current command and parameters
 class Command < ExHash
-  include Math
   attr_reader :list
+  include Math
+  extend Msg::Ver
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
   def initialize(db)
-    @v=Msg::Ver.new(self,2)
+    Command.init_ver(self,2)
     @db=Msg.type?(db,Hash)
     @list=Msg::GroupList.new(db)
   end
@@ -23,7 +24,7 @@ class Command < ExHash
     unless @db[:select].key?(id)
       @list.error("No such CMD [#{id}]")
     end
-    @v.msg{"SetCMD: #{cmd}"}
+    Command.msg{"SetCMD: #{cmd}"}
     self[:param]=cmd[1..-1]
     self[:cid]=cmd.join(':') # Used by macro
     [:label,:nocache,:response].each{|k,v|
@@ -46,18 +47,18 @@ class Command < ExHash
   # str could include Math functions
   def subst(str)
     return str unless /\$([\d]+)/ === str
-    @v.msg(1){"Substitute from [#{str}]"}
+    Command.msg(1){"Substitute from [#{str}]"}
     begin
       res=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        @v.msg{"Parameter No.#{i} = [#{self[:param][i-1]}]"}
+        Command.msg{"Parameter No.#{i} = [#{self[:param][i-1]}]"}
         self[:param][i-1] || Msg.err(" No substitute data ($#{i})")
       }
       res=eval(res).to_s unless /\$/ === res
       Msg.err("Nil string") if res == ''
       res
     ensure
-      @v.msg(-1){"Substitute to [#{res}]"}
+      Command.msg(-1){"Substitute to [#{res}]"}
     end
   end
 
@@ -100,7 +101,7 @@ class Command < ExHash
       rescue Exception
         Msg.err("Parameter is not number")
       end
-      @v.msg{"Validate: [#{num}] Match? [#{va}]"}
+      Command.msg{"Validate: [#{num}] Match? [#{va}]"}
       va.split(',').each{|r|
         break if ReRange.new(r) == num
       } && Msg.err(" Parameter invalid (#{num}) for [#{va.tr(':','-')}]")

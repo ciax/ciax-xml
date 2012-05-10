@@ -3,12 +3,13 @@ require "libmsg"
 require "liblogging"
 
 class Stream
+  extend Msg::Ver
   attr_accessor :cid
   def initialize(iocmd,wait=0,timeout=nil)
-    @v=Msg::Ver.new(self,1)
+    Stream.init_ver(self,1)
     abort " No IO command" if iocmd.to_a.empty?
     @iocmd=Msg.type?(iocmd,Array)
-    @v.msg{"Init/Client:#{iocmd.join(' ')}"}
+    Stream.msg{"Init/Client:#{iocmd.join(' ')}"}
     @f=IO.popen(@iocmd,'r+')
     @wait=wait.to_f
     @timeout=timeout
@@ -18,7 +19,7 @@ class Stream
   def snd(str)
     return if str.to_s.empty?
     sleep @wait
-    @v.msg{"Sending #{str.size} byte"}
+    Stream.msg{"Sending #{str.size} byte"}
     reopen{
       @f.syswrite(str)
     }
@@ -31,7 +32,7 @@ class Stream
       select([@f],nil,nil,@timeout) || next
       @f.sysread(4096)
     }||Msg.err("No string")
-    @v.msg{"Recieved #{str.size} byte"}
+    Stream.msg{"Recieved #{str.size} byte"}
     {:data => str,:time => Msg.now}
   end
 

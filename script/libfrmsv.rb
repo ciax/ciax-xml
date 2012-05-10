@@ -44,7 +44,6 @@ module Frm
         sleep cmd[1].to_i
       else
         @io.cid=@cobj.set(cmd)[:cid]
-        @v.msg{"Issue[#{@io.cid}]"}
         @io.snd(@fc.getframe)
         @field.upd{@io.rcv} && @field.save
       end

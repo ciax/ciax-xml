@@ -3,12 +3,14 @@ require 'libmsg'
 require 'json'
 
 module Logging
+  extend Msg::Ver
   def init(type,id,ver=0)
+    Logging.init_ver(self,5)
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i
       @id=id
       @loghead=VarDir+"/"+type+"_#{id}"
-      @v.msg{"Init/Logging '#{type}' (#{id}/Ver.#{@ver})"}
+      Logging.msg{"Init/Logging '#{type}' (#{id}/Ver.#{@ver})"}
       startlog
     end
     self
@@ -39,7 +41,7 @@ module Logging
       open(logfile,'a') {|f|
         f.puts [time,tag,str].compact.join("\t")
       }
-      @v.msg{"Logging Done [#{tag}]"}
+      Logging.msg{"Logging Done [#{tag}]"}
     end
     time
   end

@@ -6,18 +6,22 @@ class SelectID < UserError; end
 class SelectCMD < SelectID; end
 
 module Msg
-  class Ver
+  module Ver
     Start_time=Time.now
     @@base=1
-    def initialize(prefix='',color=2)
+    def extended(obj)
+      obj.class.init_ver
+    end
+
+    def init_ver(prefix='',col=2)
+      @color=col
       if prefix.instance_of?(String)
         @prefix=prefix.capitalize
-      else
+      elsif prefix
         @prefix=prefix.class.name
       end
-      @color=color
       @ind=1
-      msg{"Initialize Messaging"}
+      msg{"Initialize Messaging (#{self})"}
     end
 
     # Public Method
@@ -196,6 +200,7 @@ module Msg
   def color(text,c=7)
     return '' if text == ''
     return text unless STDERR.tty?
+    c||=7
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end
 

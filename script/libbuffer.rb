@@ -18,8 +18,9 @@ require "libupdate"
 
 class Buffer
   attr_reader :issue,:post_flush
+  extend Msg::Ver
   def initialize
-    @v=Msg::Ver.new(self,2)
+    Buffer.init_ver(self,2)
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
@@ -67,14 +68,14 @@ class Buffer
       #inp is frmcmd array (ary of ary)
       p,inp=@q.shift
       @issue=true
-      @v.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
+      Buffer.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
       (@outbuf[p]||=[]).concat(inp)
     end
     out
   end
 
   def flush
-    @v.msg{"SUB:Waiting"}
+    Buffer.msg{"SUB:Waiting"}
     @issue=false
     @post_flush.upd
   end

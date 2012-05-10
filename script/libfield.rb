@@ -4,8 +4,10 @@ require 'libupdate'
 require 'libvar'
 
 class Field < Var
+  extend Msg::Ver
   def initialize
     super('field')
+    Field.init_ver(self,6)
   end
 
   # Substitute str by Field data
@@ -13,7 +15,7 @@ class Field < Var
   # - output csv if array
   def subst(str)
     return str unless /\$\{/ === str
-      @v.msg(1){"Substitute from [#{str}]"}
+      Field.msg(1){"Substitute from [#{str}]"}
       begin
         str=str.gsub(/\$\{(.+)\}/) {
           ary=[*get($1)].map!{|i| eval(i)}
@@ -22,7 +24,7 @@ class Field < Var
         }
         str
       ensure
-        @v.msg(-1){"Substitute to [#{str}]"}
+        Field.msg(-1){"Substitute to [#{str}]"}
       end
   end
 
@@ -46,8 +48,8 @@ class Field < Var
         break
       end
       vname << i
-      @v.msg{"Type[#{h.class}] Name[#{i}]"}
-      @v.msg{"Content[#{h[i]}]"}
+      Field.msg{"Type[#{h.class}] Name[#{i}]"}
+      Field.msg{"Content[#{h[i]}]"}
       h[i] || Msg.warn("No such Value [#{vname.join(':')}]")
     }
     Msg.warn("Short Index [#{vname.join(':')}]") unless Comparable === data

@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 require 'libmsg'
 class Repeat
+  extend Msg::Ver
   def initialize
-    @v=Msg::Ver.new(self,5)
+    Repeat.init_ver(self,5)
     @counter={}
     @rep=[]
   end
@@ -27,14 +28,14 @@ class Repeat
     res=str.gsub(/\$([_a-z])/){ @counter[$1] }
     res=res.split(':').map{|i| /\$/ =~ i ? i : eval(i)}.join(':')
     Msg.err("Empty String") if res == ''
-    @v.msg{"Substitute [#{str}] to [#{res}]"}
+    Repeat.msg{"Substitute [#{str}] to [#{res}]"}
     res
   end
 
   def format(str)
     return str unless str.include?('%')
     res = str % @counter.values
-    @v.msg{"Format [#{str}] to [#{res}]"}
+    Repeat.msg{"Format [#{str}] to [#{res}]"}
     res
   end
 
@@ -44,21 +45,21 @@ class Repeat
     fmt=e0['format'] || '%d'
     c=e0['counter'] || '_'
     c.next! while @counter[c]
-    @v.msg(1){"Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"}
+    Repeat.msg(1){"Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"}
     begin
       Range.new(e0['from'],e0['to']).each { |n|
-        @v.msg(1){"Turn Number[#{n}]"}
+        Repeat.msg(1){"Turn Number[#{n}]"}
         @counter[c]=fmt % n
         begin
           @rep.push yield
         ensure
-          @v.msg(-1){"Turn End"}
+          Repeat.msg(-1){"Turn End"}
         end
       }
       @counter.delete(c)
       self
     ensure
-      @v.msg(-1){"End"}
+      Repeat.msg(-1){"End"}
     end
   end
 end

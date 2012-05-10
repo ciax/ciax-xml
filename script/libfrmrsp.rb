@@ -8,11 +8,13 @@ require "libstream"
 # Output : Field
 module Frm
   module Rsp
+    extend Msg::Ver
     def self.extended(obj)
       Msg.type?(obj,Field)
     end
 
     def init(fdb,cobj)
+      Rsp.init_ver('frmrsp',6)
       @fdb=Msg.type?(fdb,Frm::Db)
       @cobj=Msg.type?(cobj,Command)
       self.ver=fdb['frm_ver'].to_i
@@ -37,11 +39,11 @@ module Frm
         Msg.err("No Response") unless frame
         if tm=@sel['terminator']
           frame.chomp!(eval('"'+tm+'"'))
-          @v.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
+          Rsp.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
         end
         if dm=@sel['delimiter']
           @fary=frame.split(eval('"'+dm+'"'))
-          @v.msg{"Split:[#{frame}] by [#{dm}]" }
+          Rsp.msg{"Split:[#{frame}] by [#{dm}]" }
         else
           @fary=[frame]
         end
@@ -49,12 +51,12 @@ module Frm
         getfield_rec(@sel[:main])
         if cc=unset('cc') #Field::unset
           cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
-          @v.msg{"Verify:CC OK <#{cc}>"}
+          Rsp.msg{"Verify:CC OK <#{cc}>"}
         end
-        @v.msg{"Rsp/Update(#{get('time')})"} #Field::get
+        Rsp.msg{"Rsp/Update(#{get('time')})"} #Field::get
         true
       else
-        @v.msg{"Send Only"}
+        Rsp.msg{"Send Only"}
         @sel[:select]=nil
         false
       end
@@ -73,19 +75,19 @@ module Frm
         case e1
         when 'ccrange'
           begin
-            @v.msg(1){"Entering Ceck Code Node"}
+            Rsp.msg(1){"Entering Ceck Code Node"}
             @frame.mark
             getfield_rec(@sel[:ccrange])
             @cc = @frame.checkcode
           ensure
-            @v.msg(-1){"Exitting Ceck Code Node"}
+            Rsp.msg(-1){"Exitting Ceck Code Node"}
           end
         when 'select'
           begin
-            @v.msg(1){"Entering Selected Node"}
+            Rsp.msg(1){"Entering Selected Node"}
             getfield_rec(@sel[:select])
           ensure
-            @v.msg(-1){"Exitting Selected Node"}
+            Rsp.msg(-1){"Exitting Selected Node"}
           end
         when Hash
           frame_to_field(e1){ cut(e1) }
@@ -94,7 +96,7 @@ module Frm
     end
 
     def frame_to_field(e0)
-      @v.msg(1){"Field:#{e0['label']}"}
+      Rsp.msg(1){"Field:#{e0['label']}"}
       if e0[:index]
         # Array
         key=e0['assign'] || Msg.err("No key for Array")
@@ -103,21 +105,21 @@ module Frm
           @cobj.subst(e1['range'])
         }
         begin
-          @v.msg(1){"Array:[#{key}]:Range#{idxs}"}
+          Rsp.msg(1){"Array:[#{key}]:Range#{idxs}"}
           @val[key]=mk_array(idxs,get(key)){yield}
         ensure
-          @v.msg(-1){"Array:Assign[#{key}]"}
+          Rsp.msg(-1){"Array:Assign[#{key}]"}
         end
       else
         #Field
         data=yield
         if key=e0['assign']
           @val[key]=data
-          @v.msg{"Assign:[#{key}] <- <#{data}>"}
+          Rsp.msg{"Assign:[#{key}] <- <#{data}>"}
         end
       end
     ensure
-      @v.msg(-1){"Field:End"}
+      Rsp.msg(-1){"Field:End"}
     end
 
     def mk_array(idx,field)
@@ -128,7 +130,7 @@ module Frm
       f,l=idx[0].split(':').map{|i| eval(i)}
       Range.new(f,l||f).each{|i|
         fld[i] = mk_array(idx[1..-1],fld[i]){yield}
-        @v.msg{"Array:Index[#{i}]=#{fld[i]}"}
+        Rsp.msg{"Array:Index[#{i}]=#{fld[i]}"}
       }
       fld
     end

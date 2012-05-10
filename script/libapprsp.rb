@@ -4,7 +4,9 @@ require "libupdate"
 
 module App
   module Rsp
+    extend Msg::Ver
     def init(adb,field)
+      Rsp.init_ver('apprsp',2)
       Msg.type?(adb,App::Db)
       @field=Msg.type?(field,Field)
       @ads=adb[:status][:select]
@@ -16,16 +18,16 @@ module App
     def upd
       @ads.each{|id,fields|
         begin
-          @v.msg(1){"STAT:GetStatus:[#{id}]"}
+          Rsp.msg(1){"STAT:GetStatus:[#{id}]"}
           data=get_val(fields)
           data = @fmt[id] % data if @fmt.key?(id)
           @val[id]=data.to_s
         ensure
-          @v.msg(-1){"STAT:GetStatus:#{id}=[#{@val[id]}]"}
+          Rsp.msg(-1){"STAT:GetStatus:#{id}=[#{@val[id]}]"}
         end
       }
       @val['time']=@field.get('time')
-      @v.msg{"Rsp/Update(#{@val['time']})"}
+      Rsp.msg{"Rsp/Update(#{@val['time']})"}
       self
     end
 
@@ -55,7 +57,7 @@ module App
       loc=eval(e1['bit'])
       bit=(data.to_i >> loc & 1)
       bit = -(bit-1) if /true|1/ === e1['inv']
-      @v.msg{"GetBit[#{bit}]"}
+      Rsp.msg{"GetBit[#{bit}]"}
       bit
     end
 
@@ -76,7 +78,7 @@ module App
       if e1['formula']
         f=e1['formula'].gsub(/\$#/,data.to_s)
         data=eval(f)
-        @v.msg{"Formula:#{f}(#{data})"}
+        Rsp.msg{"Formula:#{f}(#{data})"}
       end
       data
     end

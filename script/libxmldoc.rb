@@ -4,8 +4,9 @@ require "libxmlgn"
 # Domain is the top node of each name spaces
 class XmlDoc < Hash
   attr_reader :top,:list
+  extend Msg::Ver
   def initialize(type)
-    @v=Msg::Ver.new(self,4)
+    XmlDoc.init_ver(self,4)
     @type=type||Msg.err("Need DB type")
     list={}
     readxml{|e| list[e['id']]=e['label'] }
@@ -20,7 +21,7 @@ class XmlDoc < Hash
       e.each{|e1|
         @domain[e1.name]=e1 unless e.ns == e1.ns
       }
-      @v.msg{"Domain registerd:#{@domain.keys}"}
+      XmlDoc.msg{"Domain registerd:#{@domain.keys}"}
     } if id
     raise SelectID,@list.to_s unless @top
     self
@@ -56,11 +57,11 @@ class XmlDoc < Hash
 end
 
 if __FILE__ == $0
-  begin
+#  begin
     doc=XmlDoc.new(ARGV.shift)
     puts doc.list
-  rescue
-    Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
-    Msg.exit
-  end
+#  rescue
+#    Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
+#    Msg.exit
+#  end
 end

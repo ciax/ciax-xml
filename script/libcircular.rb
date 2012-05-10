@@ -3,8 +3,9 @@ require "libmsg"
 
 class Circular
   attr_reader :max
+  extend Msg::Ver
   def initialize(limit=2)
-    @v=Msg::Ver.new(self,6)
+    Circular.init_ver(self,6)
     @limit=limit
     @counter=0
     @max=0
@@ -17,25 +18,25 @@ class Circular
 
   def next
     @counter+=1
-    @v.msg{"Counter increment [#{@counter}]"}
+    Circular.msg{"Counter increment [#{@counter}]"}
     self
   end
 
   def roundup
     @counter=(row+1)*@limit
-    @v.msg{"Resetted [#{row}]"}
+    Circular.msg{"Resetted [#{row}]"}
     self
   end
 
   def row
     row=@counter/@limit
-    @v.msg{"Row [#{row}]"}
+    Circular.msg{"Row [#{row}]"}
     row
   end
 
   def col
     col=@counter % @limit
-    @v.msg{"Col [#{col}]"}
+    Circular.msg{"Col [#{col}]"}
     @max=col if @max < col
     col
   end

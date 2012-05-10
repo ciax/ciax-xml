@@ -8,7 +8,6 @@ require "thread"
 
 module App
   class Sv < Sh
-    include Int::Server
     attr_reader :fint
     def initialize(adb)
       super(adb)
@@ -34,6 +33,7 @@ module App
       end
       auto_update
       upd_prompt
+      extend(Int::Server)
     end
 
     #cmd is array

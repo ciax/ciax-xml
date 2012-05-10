@@ -8,7 +8,6 @@ require "libfrmcmd"
 
 module Frm
   class Sv < Sh
-    include Int::Server
     def initialize(fdb,iocmd=[])
       super(fdb)
       @field.extend(Frm::Rsp).init(fdb,@cobj)
@@ -22,6 +21,7 @@ module Frm
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
       @fc=Frm::Cmd.new(fdb,@cobj,@field)
+      extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")
     end

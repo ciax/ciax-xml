@@ -7,7 +7,7 @@ class Var < ExHash
   attr_reader :type,:id,:ver,:val
 
   def initialize(type)
-    Var.init_ver('file',12)
+    Var.init_ver('File',12)
     super()
     self['type']=@type=type
     self.val=Hash.new

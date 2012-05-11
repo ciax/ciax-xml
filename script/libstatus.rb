@@ -5,7 +5,7 @@ require "libvar"
 class Status < Var
   extend Msg::Ver
   def initialize
-    Status.init_ver('status',6)
+    Status.init_ver('Status',6)
     super('stat')
     @last={}
   end
@@ -40,7 +40,7 @@ class Status < Var
   module Save
     extend Msg::Ver
     def self.extended(obj)
-      init_ver(obj,4)
+      init_ver(obj,6)
     end
 
     def save

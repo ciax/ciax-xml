@@ -20,7 +20,7 @@ class Buffer
   extend Msg::Ver
   attr_reader :issue,:post_flush
   def initialize
-    Buffer.init_ver(self,2)
+    Buffer.init_ver(self)
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil

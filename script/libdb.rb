@@ -9,7 +9,7 @@ class Db < ExHash
   XmlDir="#{ENV['HOME']}/ciax-xml"
   attr_reader :list
   def initialize(type,id=nil)
-    Db.init_ver("cache/#{type}",5)
+    Db.init_ver("Cache/%s",5,self)
     @type=type
     @list=cache('list'){|doc| doc.list }
     @list.error unless id

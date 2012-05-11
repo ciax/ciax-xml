@@ -7,7 +7,7 @@ module Sym
   class Db < Db
     extend Msg::Ver
     def initialize(id)
-      Db.init_ver('symdb')
+      Db.init_ver('SymDb')
       super("sdb",id){|doc|
         hash={}
         doc.top.each{|e1|

@@ -6,7 +6,7 @@ module App
   class Cmd
     extend Msg::Ver
     def initialize(cobj)
-      Cmd.init_ver('appcmd',9)
+      Cmd.init_ver('AppCmd',9)
       @cobj=Msg.type?(cobj,Command)
     end
 

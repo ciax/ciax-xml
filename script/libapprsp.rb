@@ -6,8 +6,8 @@ module App
   module Rsp
     extend Msg::Ver
     def self.extended(obj)
-      Msg.type?(obj,Status)
       init_ver('AppRsp',2)
+      Msg.type?(obj,Status)
     end
 
     def init(adb,field)

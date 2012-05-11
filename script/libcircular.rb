@@ -5,7 +5,7 @@ class Circular
   extend Msg::Ver
   attr_reader :max
   def initialize(limit=2)
-    Circular.init_ver(self,6)
+    Circular.init_ver(self)
     @limit=limit
     @counter=0
     @max=0

@@ -10,17 +10,13 @@ module Msg
   module Ver
     Start_time=Time.now
     @@base=1
-    def extended(obj)
-      @parent=obj.class.name
-    end
-
-    def init_ver(prefix='',col=2)
+    def init_ver(fmt,col=2,obj=nil)
       @color=col
-      if prefix.instance_of?(String)
-        raise("Empty Prefix") if prefix.empty?
-        @prefix=prefix % @parent
-      elsif prefix
-        @prefix=prefix.class.name
+      if fmt.instance_of?(String)
+        raise("Empty Prefix") if fmt.empty?
+        @prefix=obj ? fmt % obj.class.name : fmt
+      elsif fmt
+        @prefix=fmt.class.name
       else
         raise "No Prefix"
       end

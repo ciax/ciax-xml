@@ -6,7 +6,7 @@ require 'libvar'
 class Field < Var
   extend Msg::Ver
   def initialize
-    Field.init_ver(self,6)
+    Field.init_ver(self,@vc=6)
     super('field')
   end
 

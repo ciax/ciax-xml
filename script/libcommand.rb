@@ -12,7 +12,7 @@ class Command < ExHash
   # command db (:label,:select,:parameter)
   # frm command db (:nocache,:response)
   def initialize(db)
-    Command.init_ver(self,2)
+    Command.init_ver(self)
     @db=Msg.type?(db,Hash)
     @list=Msg::GroupList.new(db)
   end

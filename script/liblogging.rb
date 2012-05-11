@@ -6,7 +6,7 @@ require 'json'
 module Logging
   extend Msg::Ver
   def self.extended(obj)
-    init_ver('Logging/%s',5)
+    init_ver('Logging/%s',5,obj)
   end
 
   def init(type,id,ver=0)

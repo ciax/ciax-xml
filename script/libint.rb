@@ -56,7 +56,7 @@ module Int
   module Server
     extend Msg::Ver
     def self.extended(obj)
-      init_ver('Server',3)
+      init_ver('Server/%s',3,obj)
       Msg.type?(obj,Shell)
     end
     # JSON expression of @prompt will be sent.
@@ -93,7 +93,7 @@ module Int
   module Client
     extend Msg::Ver
     def self.extended(obj)
-      init_ver("Client/#{obj.class.name}",3)
+      init_ver("Client/%s",3,obj)
       Msg.type?(obj,Shell).init
     end
 

@@ -74,11 +74,8 @@ class Var < ExHash
   ## Read/Write JSON file
   public
   def ext_load(id)
-    self.id=id
-    @dir="/json/"
-    @base=@type+'_'+id
-    @prefix=VarDir
     extend Load
+    init(id)
     self
   end
 
@@ -96,6 +93,18 @@ class Var < ExHash
   end
 
   module Load
+    def self.extended(obj)
+      Msg.type?(obj,Var)
+    end
+
+    def init(id)
+      self.id=id
+      @dir="/json/"
+      @base=@type+'_'+id
+      @prefix=VarDir
+      self
+    end
+
     def load(tag=nil)
       begin
         Var.msg{"Loading #{fname(tag)}"}

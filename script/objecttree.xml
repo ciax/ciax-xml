@@ -9,10 +9,6 @@
       <Repeat parent="Object" extend="Msg.Ver"/>
       <ReRange parent="Object" include="Comparable"/>
     </general>
-    <special>
-      <Buffer parent="Object" extend="Msg.Ver"/>
-      <Frame parent="Object" extend="Msg.Ver"/>
-    </special>
     <basic>
       <ExEnum/>
       <ExHash parent="Hash" include="ExEnum"/>
@@ -20,6 +16,7 @@
         <Load/>
         <Save/>
       </Var>
+      <Db parent="ExHash" extend="Msg.Ver"/>
     </basic>
     <shared>
       <Msg>
@@ -27,13 +24,14 @@
         <GroupList parent="Hash"/>
         <Ver parent="Object"/>
       </Msg>
-      <Db parent="ExHash" extend="Msg.Ver"/>
       <Command parent="ExHash" extend="Msg.Ver" include="Math">
         <Logging extend="Logging"/>
       </Command>
       <Stream parent="Object" extend="Msg.Ver">
         <Logging extend="Logging"/>
       </Stream>
+      <Buffer parent="Object" extend="Msg.Ver"/>
+      <Frame parent="Object" extend="Msg.Ver"/>
       <Int>
         <Shell parent="Object"/>
         <Server extend_for="Shell" extend="Msg.Ver"/>

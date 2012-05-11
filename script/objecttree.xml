@@ -65,8 +65,8 @@
         <Sh parent="Int.Shell"/>
         <Cl parent="Sh" extend="Int.Client"/>
         <Sv parent="Sh" include="Int.Server"/>
-        <Cmd parent="Object" extend="Msg.Ver"/>
-        <Rsp extend_for="Field" extend="Msg.Ver"/>
+        <Cmd extend_for="Command" extend="Msg.Ver"/>
+        <Rsp extend_for="Field.Var" extend="Msg.Ver"/>
         <List parent="Hash"/>
       </Frm>
       <Ins>

@@ -3,24 +3,28 @@ require "libframe"
 require "libcommand"
 # Cmd Methods
 module Frm
-  class Cmd
+  module Cmd
     extend Msg::Ver
-    def initialize(fdb,cobj,field)
-      Cmd.init_ver('FrmCmd',9)
+    def self.extended(obj)
+      init_ver('FrmCmd',9)
+      Msg.type?(obj,Command)
+    end
+
+    def init(fdb,field)
       Msg.type?(fdb,Frm::Db)
-      @cobj=Msg.type?(cobj,Command)
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
       @sel=Hash[fdb[:cmdframe][:frame]]
       @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
+      self
     end
 
     def getframe # return = response select
-      return unless @sel[:select]=@cobj[:select]
-      #    Cmd.msg{"Attr of Command:#{@cobj}"}
-      cid=@cobj[:cid]
-      Cmd.msg{"Select:#{@cobj[:label]}(#{cid})"}
+      return unless @sel[:select]=self[:select]
+      #    Cmd.msg{"Attr of Command:#{self}"}
+      cid=self[:cid]
+      Cmd.msg{"Select:#{self[:label]}(#{cid})"}
       if frame=@cache[cid]
         Cmd.msg{"Cmd cache found [#{cid}]"}
       else
@@ -68,12 +72,10 @@ if __FILE__ == $0
     fdb=Frm::Db.new(dev)
     cobj=Command.new(fdb[:cmdframe])
     field=Field::Var.new
-    fc=Frm::Cmd.new(fdb,cobj,field)
+    cobj.extend(Frm::Cmd).init(fdb,field)
     field.load unless STDIN.tty?
     cobj.set(cmd)
-    print fc.getframe
-  rescue SelectCMD
-    Msg.exit(2)
+    print cobj.getframe
   rescue UserError
     Msg.usage "[dev] [cmd] (par) < field_file"
   end

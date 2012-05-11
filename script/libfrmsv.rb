@@ -20,7 +20,7 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @fc=Frm::Cmd.new(fdb,@cobj,@field)
+      @cobj.extend(Frm::Cmd).init(fdb,@field)
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")
@@ -44,7 +44,7 @@ module Frm
         sleep cmd[1].to_i
       else
         @io.cid=@cobj.set(cmd)[:cid]
-        @io.snd(@fc.getframe)
+        @io.snd(@cobj.getframe)
         @field.upd{@io.rcv} && @field.save
       end
       'OK'

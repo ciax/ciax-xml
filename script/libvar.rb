@@ -143,6 +143,7 @@ class Var < ExHash
     def init(host)
       host||='localhost'
       @prefix="http://"+host
+      self
     end
   end
 

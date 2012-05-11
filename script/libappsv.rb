@@ -12,7 +12,7 @@ module App
     def initialize(adb)
       super(adb)
       id=adb['id']
-      @ac=App::Cmd.new(@cobj)
+      @cobj.extend(App::Cmd)
       @stat.extend(App::Rsp).init(adb,@fint.field).upd
       @stat.extend(Sym::Conv).init(adb).ext_save(id)
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
@@ -82,8 +82,7 @@ module App
       @buf.send(pri){
         # Making bunch of frmcmd array (ary of ary)
         ary.map{|cmd|
-        @cobj.set(cmd)
-        @ac.get
+        @cobj.set(cmd).get
       }.flatten(1)
       }
     end

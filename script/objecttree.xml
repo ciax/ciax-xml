@@ -55,7 +55,7 @@
         <Sh parent="Int.Shell"/>
         <Cl parent="Sh" extend="Int.Client"/>
         <Sv parent="Sh" include="Int.Server"/>
-        <Cmd parent="Object" extend="Msg.Ver"/>
+        <Cmd extend_for="Command" extend="Msg.Ver"/>
         <Rsp extend_for="Status.Var" extend="Msg.Ver"/>
         <Prt extend_for="Sh"/>
         <List parent="Hash"/>

@@ -7,7 +7,6 @@ module Watch
   module Var
     extend Msg::Ver
     attr_reader :active,:period,:interval,:watch
-
     def self.extended(obj)
       init_ver('Watch',3)
       Msg.type?(obj,Status::Var).init
@@ -21,6 +20,7 @@ module Watch
       @active=@watch['active']
       @period=300
       @interval=0.1
+      self
     end
 
     def active?

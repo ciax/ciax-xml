@@ -3,17 +3,17 @@ require "libmsg"
 require "libcommand"
 
 module App
-  class Cmd
+  module Cmd
     extend Msg::Ver
-    def initialize(cobj)
-      Cmd.init_ver('AppCmd',9)
-      @cobj=Msg.type?(cobj,Command)
+    def self.extended(obj)
+      init_ver('AppCmd',9)
+      Msg.type?(obj,Command)
     end
 
     #frmcmd is ary of ary
     def get
       frmcmd=[]
-      @cobj[:select].each{|e1|
+      self[:select].each{|e1|
         cmd=[]
         Cmd.msg(1){"GetCmd(FDB):#{e1.first}"}
         begin
@@ -45,7 +45,7 @@ if __FILE__ == $0
     adb=App::Db.new(app)
     fcobj=Command.new(adb.cover_frm[:cmdframe])
     acobj=Command.new(adb[:command]).set(cmd)
-    App::Cmd.new(acobj).get.each{|fcmd|
+    acobj.extend(App::Cmd).get.each{|fcmd|
       fcobj.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
       p fcmd
     }

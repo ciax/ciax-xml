@@ -28,7 +28,7 @@ function conv(stat){
     last=val.time*1000;
 }
 function update(){
-    $.get(File,null,conv,'json');
+    $.getJSON(File,conv);
     elapse();
 }
 function init(){

@@ -1,7 +1,8 @@
 #!/bin/bash
 . ~/lib/libdb.sh entity
+JQUERY=1.7.2
 [[ $1 == '-i' ]] && { opt=$1; shift; }
-[ "$1" ] || _usage_key "(-i)"
+[ "$1" ] || _usage_key "(-i<install>)"
 src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json
 if [ "$opt" ] ; then
@@ -17,7 +18,7 @@ for id; do
 <head>
 <title>CIAX-XML</title>
 <link rel="stylesheet" type="text/css" href="ciax-xml.css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/$JQUERY/jquery.js"></script>
 <script type="text/javascript">var File="stat_$id.json";</script>
 <script type="text/javascript" src="ciax-xml.js"></script>
 <body>

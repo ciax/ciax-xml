@@ -6,7 +6,7 @@ require 'json'
 module Logging
   extend Msg::Ver
   def self.extended(obj)
-    init_ver('Logging',6)
+    init_ver('Logging/%s',6,obj)
   end
 
   def init(type,id,ver=0)
@@ -45,7 +45,7 @@ module Logging
       open(logfile,'a') {|f|
         f.puts [time,tag,str].compact.join("\t")
       }
-      Logging.msg{"Logging Done [#{tag}]"}
+      Logging.msg{"Done [#{tag}]"}
     end
     time
   end

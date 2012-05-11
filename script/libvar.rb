@@ -79,10 +79,10 @@ class Var < ExHash
     self
   end
 
-  def ext_url(id,host='')
-    require "open-uri"
+  def ext_url(id,host=nil)
     ext_load(id)
-    @prefix="http://"+host
+    extend Url
+    init(host)
     self
   end
 
@@ -96,7 +96,6 @@ class Var < ExHash
     def self.extended(obj)
       Msg.type?(obj,Var)
     end
-
     def init(id)
       self.id=id
       @dir="/json/"
@@ -104,7 +103,6 @@ class Var < ExHash
       @prefix=VarDir
       self
     end
-
     def load(tag=nil)
       begin
         Var.msg{"Loading #{fname(tag)}"}
@@ -125,7 +123,6 @@ class Var < ExHash
       end
       self
     end
-
     private
     def fname(tag=nil)
       base=[@type,@id,tag].compact.join('_')
@@ -138,7 +135,21 @@ class Var < ExHash
     end
   end
 
+  module Url
+    require "open-uri"
+    def self.extended(obj)
+      Msg.type?(obj,Load)
+    end
+    def init(host)
+      host||='localhost'
+      @prefix="http://"+host
+    end
+  end
+
   module Save
+    def self.extended(obj)
+      Msg.type?(obj,Load)
+    end
     def save(data=nil,tag=nil)
       name=fname(tag)
       open(name,'w'){|f|

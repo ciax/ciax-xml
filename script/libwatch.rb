@@ -4,7 +4,7 @@ require 'libstatus'
 require 'librerange'
 
 module Watch
-  module Stat
+  module Var
     extend Msg::Ver
     attr_reader :active,:period,:interval,:watch
 
@@ -29,27 +29,27 @@ module Watch
 
     def block?(cmd)
       cmds=@watch['block']
-      Stat.msg{"BLOCKING:#{cmd}"} unless cmds.empty?
+      Var.msg{"BLOCKING:#{cmd}"} unless cmds.empty?
       cmds.include?(cmd)
     end
 
     def issue
       cmds=@watch['exec']
       return [] if cmds.empty?
-      Stat.msg{"ISSUED:#{cmds}"}
+      Var.msg{"ISSUED:#{cmds}"}
       cmds
     end
 
     def interrupt
       cmds=@watch['int']
-      Stat.msg{"ISSUED:#{cmds}"} unless cmds.empty?
+      Var.msg{"ISSUED:#{cmds}"} unless cmds.empty?
       cmds
     end
   end
 
   module Conv
     def self.extended(obj)
-      Msg.type?(obj,Stat)
+      Msg.type?(obj,Var)
     end
 
     def init(adb)
@@ -86,7 +86,7 @@ module Watch
         @watch['last']=@last=@crnt.dup
         upd_crnt
       end
-      Stat.msg{"Watch/Updated(#{@val['time']})"}
+      Var.msg{"Watch/Updated(#{@val['time']})"}
       self
     end
 
@@ -100,7 +100,7 @@ module Watch
 
     def check(i)
       return true unless @wdb[:stat][i]
-      Stat.msg{"Check: <#{@wdb[:label][i]}>"}
+      Var.msg{"Check: <#{@wdb[:label][i]}>"}
       n=@wdb[:stat][i]
       rary=[]
       n.each_index{|j|
@@ -110,16 +110,16 @@ module Watch
         when 'onchange'
           c=@last[k]
           res=(c != v)
-          Stat.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
+          Var.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
         when 'pattern'
           c=n[j]['val']
           res=(Regexp.new(c) === v)
-          Stat.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
+          Var.msg{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
         when 'range'
           c=n[j]['val']
           f=cond[j]['val']="%.3f" % v.to_f
           res=(ReRange.new(c) == f)
-          Stat.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
+          Var.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
         end
         res=!res if /true|1/ === n[j]['inv']
         @res["#{i}:#{j}"]=res
@@ -132,7 +132,7 @@ module Watch
   class View < ExHash
     def initialize(adb,stat)
       wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => []}
-      @watch=Msg.type?(stat,Stat)['watch']
+      @watch=Msg.type?(stat,Var)['watch']
       ['exec','block','int'].each{|i|
         self[i]=@watch[i]
       }
@@ -221,7 +221,7 @@ if __FILE__ == $0
               "-r:raw data","-v:view data")
   end
   stat=Status::Var.new.ext_save(id).load
-  stat.extend(Watch::Stat)
+  stat.extend(Watch::Var)
   unless opt['r']
     wview=Watch::View.new(adb,stat)
     unless opt['v']

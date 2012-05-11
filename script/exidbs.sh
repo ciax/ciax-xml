@@ -12,7 +12,7 @@ for id in $ids; do
     then
         j2s <$stat
     else
-        ~/lib/libview.rb < $stat
+        ~/lib/libstatus.rb < $stat
     fi
     read -t 0 && break
 done

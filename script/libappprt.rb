@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libview"
 require "libwatch"
 
 # Should be included in App::Sh
@@ -10,7 +9,7 @@ module App
     end
 
     def init
-      @output=@print=View.new(@adb,@stat).extend(View::Print)
+      @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@stat).extend(Watch::Print)
       vl={'pri'=>"Print mode",'val'=>"Value mode"}
       vl['wat']="Watch mode" if @wview

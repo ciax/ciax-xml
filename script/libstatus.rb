@@ -1,46 +1,50 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libvar"
+require 'libelapse'
 
-class Status < Var
-  extend Msg::Ver
-  def initialize
-    Status.init_ver('Status',6)
-    super('stat')
-    @last={}
-  end
+module Status
+  class Stat < Var
+    extend Msg::Ver
+    def initialize
+      Stat.init_ver('Status',6)
+      super('stat')
+      @last={}
+    end
 
-  def set(hash) #For Watch test
-    @val.update(hash)
-    self
-  end
+    def set(hash) #For Watch test
+      @val.update(hash)
+      self
+    end
 
-  def change?(id)
-    Status.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
-    @val[id] != @last[id]
-  end
+    def change?(id)
+      Stat.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
+      @val[id] != @last[id]
+    end
 
-  def update?
-    change?('time')
-  end
+    def update?
+      change?('time')
+    end
 
-  def refresh
-    Status.msg{"Status Updated"}
-    @last.update(@val)
-    self
-  end
+    def refresh
+      Stat.msg{"Status Updated"}
+      @last.update(@val)
+      self
+    end
 
-  def ext_save(id)
-    super
-    @lastsave=0
-    extend Save
-    self
+    def ext_save(id)
+      super
+      @lastsave=0
+      extend Save
+      self
+    end
   end
 
   module Save
     extend Msg::Ver
     def self.extended(obj)
       init_ver(obj,6)
+      Msg.type?(obj,Stat)
     end
 
     def save
@@ -55,31 +59,96 @@ class Status < Var
       end
     end
   end
+
+  class View < ExHash
+    def initialize(adb,stat)
+      @sdb=Msg.type?(adb,App::Db)[:status]
+      @stat=Msg.type?(stat,Stat)
+      ['val','class','msg'].each{|key|
+        stat[key]||={}
+      }
+    end
+
+    def to_s
+      @sdb[:group].each{|k,v|
+        cap=@sdb[:caption][k] || next
+        self[k]={'caption' => cap,'lines'=>[]}
+        col=@sdb[:column][k]||1
+        v.each_slice(col.to_i){|ids|
+          hash={}
+          ids.each{|id|
+            h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
+            case id
+            when 'elapse'
+              h['msg']=Elapse.new(@stat.val)
+            else
+              h['msg']=@stat['msg'][id]||@stat.get(id)
+            end
+            set(h,'class',id)
+          }
+          self[k]['lines'] << hash
+        }
+      }
+      super
+    end
+
+    private
+    def set(hash,key,id)
+      hash[key]=@stat[key][id] if @stat[key].key?(id)
+    end
+  end
+
+  module Print
+    def self.extended(obj)
+      Msg.type?(obj,View)
+    end
+
+    def to_s
+      super
+      cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
+      lines=[]
+      each{|k,v|
+        cap=v['caption']
+        lines << " ***"+color(2,cap)+"***" unless cap.empty?
+        lines+=v['lines'].map{|ele|
+          "  "+ele.map{|id,val|
+            c=cm[val['class']]
+            '['+color(6,val['label'])+':'+color(c,val['msg'])+"]"
+          }.join(' ')
+        }
+      }
+      lines.join("\n")
+    end
+
+    private
+    def color(c,msg)
+      "\e[1;3#{c}m#{msg}\e[0m"
+    end
+  end
 end
 
 if __FILE__ == $0
+  require "optparse"
   require "libinsdb"
+  opt=ARGV.getopts('r')
+  id=ARGV.shift
+  host=ARGV.shift
+  stat=Status::Stat.new
   begin
-    id=ARGV.shift
-    host=ARGV.shift
-    ARGV.clear
-    idb=Ins::Db.new(id).cover_app
-    stat=Status.new
-    if STDIN.tty?
-      if host
-        puts stat.ext_url(id,host).load
-      else
-        puts stat.ext_load(id).load
-      end
-    else
-      require "libfield"
-      require "libapprsp"
-      field=Field.new.load
-      stat.extend(App::Rsp).init(idb,field).upd
-      print stat
+    if ! STDIN.tty?
+      stat.load
+      id=stat['id']
+    elsif host && id
+      stat.ext_url(id,host).load
+    elsif id
+      stat.ext_load(id).load
     end
+    adb=Ins::Db.new(id).cover_app
+    view=Status::View.new(adb,stat)
+    view.extend(Status::Print) unless opt['r']
+    puts view
   rescue UserError
-    Msg.usage "[id] (host | < field_file)"
+    Msg.usage "(-r) [id] (host) <(stat_file)"
   end
   exit
 end

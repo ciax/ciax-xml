@@ -9,7 +9,7 @@ module Sym
     require "libsymdb"
     def self.extended(obj)
       init_ver('Symconv')
-      Msg.type?(obj,Status)
+      Msg.type?(obj,Status::Stat)
     end
 
     def init(adb)
@@ -62,7 +62,7 @@ if __FILE__ == $0
   id=ARGV.shift
   begin
     adb=Ins::Db.new(id).cover_app
-    stat=Status.new.ext_load(id).load
+    stat=Status::Stat.new.ext_load(id).load
     stat.extend(Sym::Conv).init(adb).upd
     print stat
   rescue UserError

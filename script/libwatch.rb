@@ -10,7 +10,7 @@ module Watch
 
     def self.extended(obj)
       init_ver('Watch',3)
-      Msg.type?(obj,Status).init
+      Msg.type?(obj,Status::Stat).init
     end
 
     def init
@@ -220,7 +220,7 @@ if __FILE__ == $0
               "-t:test conditions(key=val,..)",
               "-r:raw data","-v:view data")
   end
-  stat=Status.new.ext_save(id).load
+  stat=Status::Stat.new.ext_save(id).load
   stat.extend(Watch::Stat)
   unless opt['r']
     wview=Watch::View.new(adb,stat)

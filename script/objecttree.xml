@@ -37,8 +37,11 @@
       <Field parent="Var" extend="Msg.Ver">
         <Save/>
       </Field>
-      <Status parent="Var" extend="Msg.Ver">
+      <Status>
+        <Stat parent="Var" extend="Msg.Ver"/>
         <Save extend="Msg.Ver"/>
+        <View parent="ExHash"/>
+        <Print extend_for="View"/>
       </Status>
       <Int>
         <Shell parent="Object"/>
@@ -64,7 +67,7 @@
         <Cl parent="Sh" extend="Int.Client"/>
         <Sv parent="Sh" include="Int.Server"/>
         <Cmd parent="Object" extend="Msg.Ver"/>
-        <Rsp extend_for="Status" extend="Msg.Ver"/>
+        <Rsp extend_for="Status.Stat" extend="Msg.Ver"/>
         <Prt extend_for="Sh"/>
         <List parent="Hash"/>
       </App>
@@ -90,13 +93,10 @@
       </Mcr>
       <Sym>
         <Db parent="Db" extend="Msg.Ver"/>
-        <Conv extend_for="Status" extend="Msg.Ver"/>
+        <Conv extend_for="Status.Stat" extend="Msg.Ver"/>
       </Sym>
-      <View parent="ExHash">
-        <Print extend_for="View"/>
-      </View>
       <Watch>
-        <Stat extend_for="Status" extend="Msg.Ver"/>
+        <Stat extend_for="Status.Stat" extend="Msg.Ver"/>
         <Conv extend_for="Stat"/>
         <View parent="ExHash"/>
         <Print extend_for="Print"/>
@@ -128,7 +128,7 @@
           <Mcr.Db/>
           <Sym.Db/>
         </Db>
-        <Prompt/>
+        <Int.Prompt/>
         <Var>
           <Field.Var/>
           <Status/>
@@ -140,7 +140,7 @@
       <Frm.List/>
       <Msg.CmdList/>
       <Msg.GroupList/>
-      <Xml::Doc/>
+      <Xml.Doc/>
     </Hash>
     <Array>
       <HtmlTbl/>
@@ -172,6 +172,6 @@
     <Repeat/>
     <ReRange/>
     <Stream/>
-    <Xml/>
+    <Xml.Gnu/>
   </class-inheritance>
 </objecttree>

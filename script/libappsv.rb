@@ -15,7 +15,7 @@ module App
       @ac=App::Cmd.new(@cobj)
       @stat.extend(App::Rsp).init(adb,@fint.field).upd
       @stat.extend(Sym::Conv).init(adb).ext_save(id)
-      @stat.extend(SqLog::Stat).extend(SqLog::Exec) if @fint.field.key?('ver')
+      @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv).init(adb)
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }

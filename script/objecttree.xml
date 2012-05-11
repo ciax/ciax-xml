@@ -43,8 +43,8 @@
     </shared>
     <append>
       <SqLog>
-        <Stat extend_for="Var" extend="Msg.Ver"/>
-        <Exec extend_for="Stat"/>
+        <Var extend_for="Var" extend="Msg.Ver"/>
+        <Exec extend_for="Var"/>
       </SqLog>
       <Logging extend="Msg.Ver"/>
     </append>

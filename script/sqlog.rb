@@ -23,7 +23,7 @@ rescue UserError
 end
 if opt['a']
   stat=Status::Var.new.extend(App::Rsp).init(adb,field)
-  stat.extend(SqLog::Stat)
+  stat.extend(SqLog::Var)
   if opt['i'] # Initial
     stat.create
   else
@@ -54,7 +54,7 @@ else
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
   field.extend(Frm::Rsp).init(fdb,cobj)
-  field.extend(SqLog::Stat)
+  field.extend(SqLog::Var)
   if opt['i'] # Initial
     field.create
   else

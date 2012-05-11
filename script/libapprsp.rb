@@ -7,7 +7,7 @@ module App
     extend Msg::Ver
     def self.extended(obj)
       init_ver('AppRsp',2)
-      Msg.type?(obj,Status::Stat)
+      Msg.type?(obj,Status::Var)
     end
 
     def init(adb,field)
@@ -106,7 +106,7 @@ if __FILE__ == $0
   begin
     adb=App::Db.new(app)
     field=Field.new.load
-    puts Status::Stat.new.extend(App::Rsp).init(adb,field).upd
+    puts Status::Var.new.extend(App::Rsp).init(adb,field).upd
   rescue UserError
     Msg.usage "[app] < field_file\n#{$!}"
   end

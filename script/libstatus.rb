@@ -4,10 +4,10 @@ require "libvar"
 require 'libelapse'
 
 module Status
-  class Stat < Var
+  class Var < Var
     extend Msg::Ver
     def initialize
-      Stat.init_ver('Status',6)
+      Var.init_ver('Status',6)
       super('stat')
       @last={}
     end
@@ -18,7 +18,7 @@ module Status
     end
 
     def change?(id)
-      Stat.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
+      Var.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
       @val[id] != @last[id]
     end
 
@@ -27,7 +27,7 @@ module Status
     end
 
     def refresh
-      Stat.msg{"Status Updated"}
+      Var.msg{"Status Updated"}
       @last.update(@val)
       self
     end
@@ -44,7 +44,7 @@ module Status
     extend Msg::Ver
     def self.extended(obj)
       init_ver(obj,6)
-      Msg.type?(obj,Stat)
+      Msg.type?(obj,Var)
     end
 
     def save
@@ -63,7 +63,7 @@ module Status
   class View < ExHash
     def initialize(adb,stat)
       @sdb=Msg.type?(adb,App::Db)[:status]
-      @stat=Msg.type?(stat,Stat)
+      @stat=Msg.type?(stat,Var)
       ['val','class','msg'].each{|key|
         stat[key]||={}
       }
@@ -133,7 +133,7 @@ if __FILE__ == $0
   opt=ARGV.getopts('r')
   id=ARGV.shift
   host=ARGV.shift
-  stat=Status::Stat.new
+  stat=Status::Var.new
   begin
     if ! STDIN.tty?
       stat.load

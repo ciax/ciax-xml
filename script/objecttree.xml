@@ -37,12 +37,6 @@
       <Field parent="Var" extend="Msg.Ver">
         <Save/>
       </Field>
-      <Status>
-        <Stat parent="Var" extend="Msg.Ver"/>
-        <Save extend="Msg.Ver"/>
-        <View parent="ExHash"/>
-        <Print extend_for="View"/>
-      </Status>
       <Int>
         <Shell parent="Object"/>
         <Server extend_for="Shell" extend="Msg.Ver"/>
@@ -67,7 +61,7 @@
         <Cl parent="Sh" extend="Int.Client"/>
         <Sv parent="Sh" include="Int.Server"/>
         <Cmd parent="Object" extend="Msg.Ver"/>
-        <Rsp extend_for="Status.Stat" extend="Msg.Ver"/>
+        <Rsp extend_for="Status.Var" extend="Msg.Ver"/>
         <Prt extend_for="Sh"/>
         <List parent="Hash"/>
       </App>
@@ -83,20 +77,26 @@
       <Ins>
         <Db parent="Db"/>
       </Ins>
-      <HexPack extend_for="App.Sh" extend="Msg.Ver"/>
-      <HtmlTbl parent="Array"/>
       <Mcr>
         <Db parent="Db" extend="Msg.Ver"/>
         <Sub parent="Array" extend="Msg.Ver"/>
         <Sh parent="Shell"/>
         <Prt/>
       </Mcr>
+      <HexPack extend_for="App.Sh" extend="Msg.Ver"/>
+      <HtmlTbl parent="Array"/>
       <Sym>
         <Db parent="Db" extend="Msg.Ver"/>
-        <Conv extend_for="Status.Stat" extend="Msg.Ver"/>
+        <Conv extend_for="Status.Var" extend="Msg.Ver"/>
       </Sym>
+      <Status>
+        <Var parent="Var" extend="Msg.Ver"/>
+        <Save extend="Msg.Ver"/>
+        <View parent="ExHash"/>
+        <Print extend_for="View"/>
+      </Status>
       <Watch>
-        <Stat extend_for="Status.Stat" extend="Msg.Ver"/>
+        <Stat extend_for="Status.Var" extend="Msg.Ver"/>
         <Conv extend_for="Stat"/>
         <View parent="ExHash"/>
         <Print extend_for="Print"/>

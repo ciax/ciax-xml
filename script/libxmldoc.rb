@@ -59,11 +59,10 @@ module Xml
 end
 
 if __FILE__ == $0
-  #  begin
-  doc=Xml::Doc.new(ARGV.shift)
-  puts doc.list
-  #  rescue
-  #    Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
-  #    Msg.exit
-  #  end
+  begin
+    doc=Xml::Doc.new(ARGV.shift)
+    puts doc.list
+    rescue
+      Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
+    end
 end

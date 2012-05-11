@@ -49,8 +49,6 @@ if __FILE__ == $0
       fcobj.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
       p fcmd
     }
-  rescue SelectCMD
-    Msg.exit(2)
   rescue UserError
     Msg.usage("[app] [cmd] (par)")
   end

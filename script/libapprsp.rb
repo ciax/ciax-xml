@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libupdate"
 
 module App
   module Rsp
@@ -108,7 +107,7 @@ if __FILE__ == $0
     field=Field::Var.new.load
     puts Status::Var.new.extend(App::Rsp).init(adb,field).upd
   rescue UserError
-    Msg.usage "[app] < field_file\n#{$!}"
+    Msg.usage "[app] < field_file"
   end
   exit
 end

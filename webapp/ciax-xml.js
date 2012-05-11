@@ -13,19 +13,19 @@ function elapse(){
     }
     $("#elapse").text(str);
 }
-function conv(view){
-    var stat=view.stat
-    for (var id in stat){
-        var val=stat[id];
-        if("class" in view && id in view["class"]){
-                $("#"+id).addClass(view["class"][id]);
+function conv(stat){
+    var val=stat.val
+    for (var id in val){
+        var msg=val[id];
+        if("class" in stat && id in stat["class"]){
+                $("#"+id).addClass(stat["class"][id]);
         }
-        if("msg" in view && id in view["msg"]){
-            val=view.msg[id]
+        if("msg" in stat && id in stat["msg"]){
+            msg=stat.msg[id]
         }
-        $("#"+id).text(val);
+        $("#"+id).text(msg);
     }
-    last=stat.time*1000;
+    last=val.time*1000;
 }
 function update(){
     $.get(File,null,conv,'json');

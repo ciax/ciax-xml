@@ -64,13 +64,20 @@ class Command < ExHash
 
   def ext_logging(id,ver=0)
     extend Object::Logging
-    extend Logging
     init('appcmd',id,ver)
-    @proc=proc{yield}
+    extend Logging
+    init{yield}
     self
   end
 
   module Logging
+    def self.extended(obj)
+      Msg.type?(obj,Command)
+    end
+    def init
+      @proc=proc{yield}
+      self
+    end
     def set(cmd)
       super
       append(cmd){@proc.call}

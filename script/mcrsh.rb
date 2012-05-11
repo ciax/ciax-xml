@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrint"
+require "libmcrsh"
 
 id=ARGV.shift
 ARGV.clear

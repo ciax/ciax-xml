@@ -30,7 +30,7 @@ module HexPack
 
   def socket
     @port+=1000
-    super('hexpack',false)
+    super(false)
   end
 
   def to_s

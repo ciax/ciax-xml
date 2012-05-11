@@ -11,7 +11,7 @@ module Frm
     extend Msg::Ver
     def self.extended(obj)
       init_ver('FrmRsp',6)
-      Msg.type?(obj,Field)
+      Msg.type?(obj,Field::Var)
     end
 
     def init(fdb,cobj)
@@ -151,7 +151,7 @@ if __FILE__ == $0
   id=Logging.set_logline(str)[:id]
   fdb=Ins::Db.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
-  field= opt['m'] ? Field.new.ext_save(id).load : Field.new
+  field= opt['m'] ? Field::Var.new.ext_save(id).load : Field::Var.new
   field.extend(Frm::Rsp).init(fdb,cobj)
   field.upd_logline(str)
   puts field

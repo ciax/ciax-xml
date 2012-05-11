@@ -34,9 +34,6 @@
       <Stream parent="Object" extend="Msg.Ver">
         <Logging extend="Logging"/>
       </Stream>
-      <Field parent="Var" extend="Msg.Ver">
-        <Save/>
-      </Field>
       <Int>
         <Shell parent="Object"/>
         <Server extend_for="Shell" extend="Msg.Ver"/>
@@ -85,16 +82,20 @@
       </Mcr>
       <HexPack extend_for="App.Sh" extend="Msg.Ver"/>
       <HtmlTbl parent="Array"/>
-      <Sym>
-        <Db parent="Db" extend="Msg.Ver"/>
-        <Conv extend_for="Status.Var" extend="Msg.Ver"/>
-      </Sym>
+      <Field>
+        <Var parent="Var" extend="Msg.Ver"/>
+        <Save/>
+      </Field>
       <Status>
         <Var parent="Var" extend="Msg.Ver"/>
         <Save extend="Msg.Ver"/>
         <View parent="ExHash"/>
         <Print extend_for="View"/>
       </Status>
+      <Sym>
+        <Db parent="Db" extend="Msg.Ver"/>
+        <Conv extend_for="Status.Var" extend="Msg.Ver"/>
+      </Sym>
       <Watch>
         <Stat extend_for="Status.Var" extend="Msg.Ver"/>
         <Conv extend_for="Stat"/>
@@ -131,9 +132,9 @@
         <Int.Prompt/>
         <Var>
           <Field.Var/>
-          <Status/>
+          <Status.Var/>
         </Var>
-        <View/>
+        <Status.View/>
         <Watch.View/>
       </ExHash>
       <App.List/>

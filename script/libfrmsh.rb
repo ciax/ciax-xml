@@ -9,7 +9,7 @@ module Frm
       super(Command.new(fdb[:cmdframe]))
       @prompt['id']=fdb['id']
       @port=fdb['port'].to_i-1000
-      @field=Field.new
+      @field=Field::Var.new
       cl={}
       cl['set']="Set Value [key(:idx)] (val)"
       cl['unset']="Remove Value [key]"

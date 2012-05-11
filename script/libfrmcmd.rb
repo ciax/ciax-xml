@@ -9,7 +9,7 @@ module Frm
       Cmd.init_ver('FrmCmd',9)
       Msg.type?(fdb,Frm::Db)
       @cobj=Msg.type?(cobj,Command)
-      @field=Msg.type?(field,Field)
+      @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
       @sel=Hash[fdb[:cmdframe][:frame]]
@@ -67,7 +67,7 @@ if __FILE__ == $0
   begin
     fdb=Frm::Db.new(dev)
     cobj=Command.new(fdb[:cmdframe])
-    field=Field.new
+    field=Field::Var.new
     fc=Frm::Cmd.new(fdb,cobj,field)
     field.load unless STDIN.tty?
     cobj.set(cmd)

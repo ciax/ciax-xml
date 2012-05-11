@@ -45,11 +45,13 @@ class Status < Var
 
     def save
       time=@val['time'].to_f
-      Save.msg{"Try Save for #{time}"}
       if time > @lastsave
         super
         @lastsave=time
         true
+      else
+        Save.msg{"Skip Save for #{time}"}
+        false
       end
     end
   end

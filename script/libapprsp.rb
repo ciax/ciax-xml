@@ -5,8 +5,12 @@ require "libupdate"
 module App
   module Rsp
     extend Msg::Ver
+    def self.extended(obj)
+      Msg.type?(obj,Status)
+      init_ver('AppRsp',2)
+    end
+
     def init(adb,field)
-      Rsp.init_ver('apprsp',2)
       Msg.type?(adb,App::Db)
       @field=Msg.type?(field,Field)
       @ads=adb[:status][:select]

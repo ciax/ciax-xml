@@ -5,8 +5,11 @@ require 'json'
 # Should be extend (not include)
 module Logging
   extend Msg::Ver
+  def self.extended(obj)
+    init_ver('Logging/%s',5)
+  end
+
   def init(type,id,ver=0)
-    Logging.init_ver('Logging/%s',5)
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i
       @id=id

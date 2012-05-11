@@ -9,11 +9,11 @@ module Watch
     attr_reader :active,:period,:interval,:watch
 
     def self.extended(obj)
+      init_ver('Watch',3)
       Msg.type?(obj,Status).init
     end
 
     def init
-      Stat.init_ver('watch',3)
       @watch=(self['watch']||={}).extend(ExEnum)
       ['active','exec','block','int'].each{|i|
         @watch[i]||=[]

@@ -8,11 +8,11 @@ module Sym
     extend Msg::Ver
     require "libsymdb"
     def self.extended(obj)
+      init_ver('Symconv')
       Msg.type?(obj,Status)
     end
 
     def init(adb)
-      Conv.init_ver('symconv')
       @id=adb['id']
       ads=Msg.type?(adb,App::Db)[:status]
       self.ver=adb['app_ver'].to_i

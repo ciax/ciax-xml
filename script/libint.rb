@@ -56,13 +56,13 @@ module Int
   module Server
     extend Msg::Ver
     def self.extended(obj)
+      init_ver('Server',3)
       Msg.type?(obj,Shell)
-      init_ver('server',3)
     end
     # JSON expression of @prompt will be sent.
     # Or, block contents will be sent if block added.
-    def socket(type,json=true)
-      Server.msg{"Init/Server:#{@port}(#{type})"}
+    def socket(json=true)
+      Server.msg{"Init/Server:#{@port}"}
       Thread.new{
         Thread.pass
         UDPSocket.open{ |udp|
@@ -93,11 +93,11 @@ module Int
   module Client
     extend Msg::Ver
     def self.extended(obj)
+      init_ver("Client/#{obj.class.name}",3)
       Msg.type?(obj,Shell).init
     end
 
     def init
-      Client.init_ver(self,3)
       @udp=UDPSocket.open()
       @host||='localhost'
       @addr=Socket.pack_sockaddr_in(@port,@host)

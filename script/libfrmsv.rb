@@ -50,10 +50,6 @@ module Frm
       'OK'
     end
 
-    def socket
-      super('frm')
-    end
-
     private
     def set(par)
       if par.empty?

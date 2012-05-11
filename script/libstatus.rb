@@ -40,7 +40,7 @@ class Status < Var
   module Save
     extend Msg::Ver
     def self.extended(obj)
-      Save.init_ver(obj,4)
+      init_ver(obj,4)
     end
 
     def save

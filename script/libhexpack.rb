@@ -6,11 +6,11 @@ require "libmsg"
 module HexPack
   extend Msg::Ver
   def self.extended(obj)
+    init_ver(obj)
     Msg.type?(obj,App::Sh).init
   end
 
   def init
-    HexPack.init_ver(self)
     id=@stat.id || raise("NO ID in Stat")
     file="/home/ciax/config/sdb_#{id}.txt"
     @res=["%",id,'_','0','0','_','']

@@ -10,11 +10,11 @@ module Frm
   module Rsp
     extend Msg::Ver
     def self.extended(obj)
+      init_ver('FrmRsp',6)
       Msg.type?(obj,Field)
     end
 
     def init(fdb,cobj)
-      Rsp.init_ver('frmrsp',6)
       @fdb=Msg.type?(fdb,Frm::Db)
       @cobj=Msg.type?(cobj,Command)
       self.ver=fdb['frm_ver'].to_i

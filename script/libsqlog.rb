@@ -7,11 +7,11 @@ module SqLog
   module Stat
     extend Msg::Ver
     def self.extended(obj)
+      init_ver('SqLog',9)
       Msg.type?(obj,Var).init
     end
 
     def init
-      Stat.init_ver('sqlog',9)
       @log=[]
       @tid="#{@id}_#{@ver.to_i}"
       self

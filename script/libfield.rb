@@ -6,8 +6,8 @@ require 'libvar'
 class Field < Var
   extend Msg::Ver
   def initialize
-    super('field')
     Field.init_ver(self,6)
+    super('field')
   end
 
   # Substitute str by Field data

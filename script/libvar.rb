@@ -76,15 +76,13 @@ class Var < ExHash
     self
   end
 
-  def ext_url(id,host=nil)
-    ext_file(id)
+  def ext_url(host=nil)
     extend Url
     init(host)
     self
   end
 
-  def ext_save(id)
-    ext_file(id)
+  def ext_save
     extend Save
     self
   end

@@ -68,7 +68,7 @@ module Field
       self
     end
 
-    def ext_save(id)
+    def ext_save
       super
       extend Save
       self

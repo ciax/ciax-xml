@@ -151,7 +151,8 @@ if __FILE__ == $0
   id=Logging.set_logline(str)[:id]
   fdb=Ins::Db.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
-  field= opt['m'] ? Field::Var.new.ext_save(id).load : Field::Var.new
+  field=Field::Var.new
+  field.ext_file(id).load if opt['m']
   field.extend(Frm::Rsp).init(fdb,cobj)
   field.upd_logline(str)
   puts field

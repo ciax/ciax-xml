@@ -186,9 +186,12 @@ module Msg
     Kernel.exit(code)
   end
 
-  def type?(name,mod,nul=false)
-    return name if (nul && name.nil?) || name.is_a?(mod)
-    raise "Parameter type error <#{name.class}> for (#{mod.to_s})"
+  def type?(name,*modules)
+    if modules.all?{|mod| name.is_a?(mod) }
+      name
+    else
+      raise "Parameter type error <#{name.class}> for (#{mod.to_s})"
+    end
   end
 
   def data_type?(data,type)

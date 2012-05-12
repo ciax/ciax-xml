@@ -34,7 +34,6 @@ module Status
 
     def ext_save(id)
       super
-      @lastsave=0
       extend Save
       self
     end
@@ -44,9 +43,12 @@ module Status
     extend Msg::Ver
     def self.extended(obj)
       init_ver(obj,6)
-      Msg.type?(obj,Var)
+      Msg.type?(obj,Var).init
     end
-
+    def init
+      @lastsave=0
+      self
+    end
     def save
       time=@val['time'].to_f
       if time > @lastsave

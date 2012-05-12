@@ -143,7 +143,7 @@ if __FILE__ == $0
     elsif host && id
       stat.ext_url(id,host).load
     elsif id
-      stat.ext_load(id).load
+      stat.ext_file(id).load
     end
     adb=Ins::Db.new(id).cover_app
     view=Status::View.new(adb,stat)

@@ -70,21 +70,21 @@ class Var < ExHash
 
   ## Read/Write JSON file
   public
-  def ext_load(id)
+  def ext_file(id)
     extend File
     init(id)
     self
   end
 
   def ext_url(id,host=nil)
-    ext_load(id)
+    ext_file(id)
     extend Url
     init(host)
     self
   end
 
   def ext_save(id)
-    ext_load(id)
+    ext_file(id)
     extend Save
     self
   end

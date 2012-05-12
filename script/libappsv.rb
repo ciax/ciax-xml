@@ -17,7 +17,7 @@ module App
       @stat.extend(App::Rsp).init(@fint.field).upd
       @stat.extend(Sym::Conv).init(adb)
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
-      @stat.extend(Watch::Conv).init(adb)
+      @stat.extend(Watch::Conv)
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @buf.post_flush << proc{

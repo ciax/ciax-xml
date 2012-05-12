@@ -49,11 +49,11 @@ module Watch
 
   module Conv
     def self.extended(obj)
-      Msg.type?(obj,Var)
+      Msg.type?(obj,Var).init
     end
 
-    def init(adb)
-      @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
+    def init
+      @wdb=@db[:watch] || {:stat => {}}
       @period=@wdb['period'].to_i if @wdb.key?('period')
       @interval=@wdb['interval'].to_f/10 if @wdb.key?('interval')
       # Pick usable val
@@ -220,7 +220,7 @@ if __FILE__ == $0
               "-t:test conditions(key=val,..)",
               "-r:raw data","-v:view data")
   end
-  stat=Status::Var.new.ext_save(id).load
+  stat=Status::Var.new.ext_file(adb).load
   stat.extend(Watch::Var)
   unless opt['r']
     wview=Watch::View.new(adb,stat)
@@ -229,8 +229,8 @@ if __FILE__ == $0
     end
   end
   if t=opt['t']
-    stat.extend(Watch::Conv).init(adb)
-    stat.str_update(t).upd.save
+    stat.extend(Watch::Conv)
+    stat.ext_save.str_update(t).upd.save
   end
   puts wview||stat['watch']
 end

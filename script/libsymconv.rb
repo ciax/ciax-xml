@@ -9,13 +9,12 @@ module Sym
     require "libsymdb"
     def self.extended(obj)
       init_ver('Symconv')
-      Msg.type?(obj,Status::Var)
+      Msg.type?(obj,Status::Var,Var::File).init
     end
 
-    def init(adb)
-      @id=adb['id']
-      ads=Msg.type?(adb,App::Db)[:status]
-      self.ver=adb['app_ver'].to_i
+    def init
+      ads=@db[:status]
+      self.ver=@db['app_ver'].to_i
       @symbol=ads[:symbol]||{}
       @sdb=Sym::Db.pack(['all',ads['table']])
       self['class']={'time' => 'normal'}
@@ -63,7 +62,7 @@ if __FILE__ == $0
   begin
     adb=Ins::Db.new(id).cover_app
     stat=Status::Var.new.ext_file(adb).load
-    stat.extend(Sym::Conv).init(adb).upd
+    stat.extend(Sym::Conv).upd
     print stat
   rescue UserError
     Msg.usage "[id]"

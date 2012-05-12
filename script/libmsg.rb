@@ -187,11 +187,12 @@ module Msg
   end
 
   def type?(name,*modules)
-    if modules.all?{|mod| name.is_a?(mod) }
-      name
-    else
-      raise "Parameter type error <#{name.class}> for (#{mod.to_s})"
-    end
+    modules.each{|mod|
+      unless name.is_a?(mod)
+        raise("Parameter type error <#{name.class}> for (#{mod.to_s})")
+      end
+    }
+    name
   end
 
   def data_type?(data,type)

@@ -70,9 +70,9 @@ class Var < ExHash
 
   ## Read/Write JSON file
   public
-  def ext_file(id)
+  def ext_file(db)
     extend File
-    init(id)
+    init(db)
     self
   end
 
@@ -93,8 +93,9 @@ class Var < ExHash
       Msg.type?(obj,Var)
       init_ver('File',12)
     end
-    def init(id)
-      self.id=id
+    def init(db)
+      @db=Msg.type?(db,Db)
+      self.id=db['id']
       @dir="/json/"
       @base=@type+'_'+id
       @prefix=VarDir

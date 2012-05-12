@@ -140,12 +140,16 @@ if __FILE__ == $0
     if ! STDIN.tty?
       stat.load
       id=stat['id']
-    elsif host && id
-      stat.ext_url(id,host).load
-    elsif id
-      stat.ext_file(id).load
+      adb=Ins::Db.new(id).cover_app
+    else
+      adb=Ins::Db.new(id).cover_app
+      stat.ext_file(adb)
+      if host
+        stat.ext_url(host).load
+      else
+        stat.load
+      end
     end
-    adb=Ins::Db.new(id).cover_app
     view=Status::View.new(adb,stat)
     view.extend(Status::Print) unless opt['r']
     puts view

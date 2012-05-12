@@ -152,7 +152,7 @@ if __FILE__ == $0
   fdb=Ins::Db.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
   field=Field::Var.new
-  field.ext_file(id).load if opt['m']
+  field.ext_file(fdb).load if opt['m']
   field.extend(Frm::Rsp).init(fdb,cobj)
   field.upd_logline(str)
   puts field

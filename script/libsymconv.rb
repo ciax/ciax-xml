@@ -62,7 +62,7 @@ if __FILE__ == $0
   id=ARGV.shift
   begin
     adb=Ins::Db.new(id).cover_app
-    stat=Status::Var.new.ext_file(id).load
+    stat=Status::Var.new.ext_file(adb).load
     stat.extend(Sym::Conv).init(adb).upd
     print stat
   rescue UserError

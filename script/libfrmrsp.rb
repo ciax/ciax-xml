@@ -11,17 +11,16 @@ module Frm
     extend Msg::Ver
     def self.extended(obj)
       init_ver('FrmRsp',6)
-      Msg.type?(obj,Field::Var)
+      Msg.type?(obj,Field::Var,Var::File)
     end
 
-    def init(fdb,cobj)
-      @fdb=Msg.type?(fdb,Frm::Db)
+    def init(cobj)
       @cobj=Msg.type?(cobj,Command)
-      self.ver=fdb['frm_ver'].to_i
-      rsp=fdb.deep_copy[:rspframe]
+      self.ver=@db['frm_ver'].to_i
+      rsp=@db.deep_copy[:rspframe]
       @sel=Hash[rsp[:frame]]
       @fds=rsp[:select]
-      @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
+      @frame=Frame.new(@db['endian'],@db['ccmethod'])
       # Field Initialize
       rsp[:assign].each{|k,v|
         self.val[k]||=v
@@ -151,9 +150,9 @@ if __FILE__ == $0
   id=Logging.set_logline(str)[:id]
   fdb=Ins::Db.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
-  field=Field::Var.new
-  field.ext_file(fdb).load if opt['m']
-  field.extend(Frm::Rsp).init(fdb,cobj)
+  field=Field::Var.new.ext_file(fdb)
+  field.load if opt['m']
+  field.extend(Frm::Rsp).init(cobj)
   field.upd_logline(str)
   puts field
   exit

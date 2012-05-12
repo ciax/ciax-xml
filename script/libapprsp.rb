@@ -6,14 +6,13 @@ module App
     extend Msg::Ver
     def self.extended(obj)
       init_ver('AppRsp',2)
-      Msg.type?(obj,Status::Var)
+      Msg.type?(obj,Status::Var,Var::File)
     end
 
-    def init(adb,field)
-      Msg.type?(adb,App::Db)
+    def init(field)
       @field=Msg.type?(field,Field::Var)
-      @ads=adb[:status][:select]
-      @fmt=adb[:status][:format]||{}
+      @ads=@db[:status][:select]
+      @fmt=@db[:status][:format]||{}
       @ads.keys.each{|k| @val[k]||='' }
       self
     end
@@ -97,17 +96,13 @@ module App
 end
 
 if __FILE__ == $0
-  require "libappdb"
+  require "libinsdb"
   require "libfield"
   require "libstatus"
-  app=ARGV.shift
-  ARGV.clear
-  begin
-    adb=App::Db.new(app)
-    field=Field::Var.new.load
-    puts Status::Var.new.extend(App::Rsp).init(adb,field).upd
-  rescue UserError
-    Msg.usage "[app] < field_file"
-  end
+  Msg.usage "< field_file" if STDIN.tty?
+  field=Field::Var.new.load
+  adb=Ins::Db.new(field['id']).cover_app
+  stat=Status::Var.new.ext_file(adb)
+  puts stat.extend(App::Rsp).init(field).upd
   exit
 end

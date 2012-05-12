@@ -13,8 +13,9 @@ module App
       super(adb)
       id=adb['id']
       @cobj.extend(App::Cmd)
-      @stat.extend(App::Rsp).init(adb,@fint.field).upd
-      @stat.extend(Sym::Conv).init(adb).ext_file(adb).ext_save
+      @stat.ext_file(adb).ext_save
+      @stat.extend(App::Rsp).init(@fint.field).upd
+      @stat.extend(Sym::Conv).init(adb)
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv).init(adb)
       Thread.abort_on_exception=true

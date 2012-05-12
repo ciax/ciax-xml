@@ -6,9 +6,7 @@ ids=${1:-`ls ~/.var/json/field_???.json|cut -d_ -f2|cut -d. -f1`};shift
 par="$*"
 for id in $ids; do
     echo "$C2#### $id ####$C0"
-    aline=`~/lib/libinsdb.rb $id|tr -d '"'|grep app` || continue
-    app=${aline#*:}
     file=$HOME/.var/json/field_$id.json
-    ~/lib/libapprsp.rb $app < $file
+    ~/lib/libapprsp.rb < $file
     read -t 0 && break
 done

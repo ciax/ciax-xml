@@ -90,12 +90,12 @@ class Var < ExHash
   module File
     extend Msg::Ver
     def self.extended(obj)
-      Msg.type?(obj,Var)
       init_ver('File',12)
+      Msg.type?(obj,Var)
     end
     def init(db)
       @db=Msg.type?(db,Db)
-      self.id=db['id']
+      self.id=db['id']||Msg.err("No ID")
       @dir="/json/"
       @base=@type+'_'+id
       @prefix=VarDir

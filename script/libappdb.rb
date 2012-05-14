@@ -7,9 +7,10 @@ module App
   module Cdb
     def init_command(adb)
       hash=adb.to_h
-      [:group,:caption,:parameter,:select,:label].each{|k|
+      [:group,:parameter,:select,:label].each{|k|
         hash[k]={}
       }
+      hash[:group]={:caption =>{},:select =>{}}
       arc_command(adb,hash,'g0')
     end
 
@@ -17,11 +18,11 @@ module App
       e.each{|e0|
         case e0.name
         when 'group'
-          id=e0.attr2db(hash)
+          id=e0.attr2db(hash[:group])
           arc_command(e0,hash,id)
         else
           id=e0['id']
-          (hash[:group][gid]||=[]) << id
+          (hash[:group][:select][gid]||=[]) << id
           hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
           Repeat.new.each(e0){|e1,rep|
             case e1.name
@@ -110,7 +111,7 @@ module App
             }
             (hash[name][idx]||=[]) << cmd
           when :block_grp
-            cdb[:group][e1['ref']].each{|grp|
+            cdb[:group][:select][e1['ref']].each{|grp|
               (hash[:block][idx]||=[]) << [grp]
             }
           else

@@ -102,15 +102,16 @@ module Msg
     def initialize(cdb={})
       @group={}
       if cdb.key?(:group)
-        cdb[:group].each{|key,ary|
+        gdb=cdb[:group]
+        gdb[:select].each{|key,ary|
           hash={}
           (cdb.key?(:alias) ? ary.map{|k|
              cdb[:alias].key(k)
            }.compact : ary).each{|k|
             hash[k]=cdb[:label][k]
           }
-          col=(cdb[:column]||{})[key] || 1
-          cap=(cdb[:caption]||{})[key]||"Command List"
+          col=(gdb[:column]||{})[key] || 1
+          cap=(gdb[:caption]||{})[key]||"Command List"
           @group[key]=CmdList.new(cap,col.to_i,2).update(hash)
           update(hash)
         }

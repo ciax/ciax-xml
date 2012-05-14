@@ -57,13 +57,18 @@
     <app_label val="Label"/>
     <command type="Hash">
       <group type="Hash">
-        <Item key="Group ID" type="Array">
-          <List val="Command ID"/>
-        </Item>
+        <select type="Hash">
+          <Item key="Group ID" type="Array">
+            <List val="Command ID"/>
+          </Item>
+        </select>
+        <caption type="Hash">
+          <Item key="Group ID" val="Title"/>
+        </caption>
+        <column type="Hash">
+          <Item key="Group ID" type="Number"/>
+        </column>
       </group>
-      <caption type="Hash">
-        <Item key="Group ID" val="Title"/>
-      </caption>
       <parameter type="Hash">
         <Item key="Command Name" type="Array">
           <List val="Range"/>
@@ -78,17 +83,14 @@
         </Item>
       </select>
       <label copy="Frm/cmdframe/label"/>
-      <column type="Hash">
-        <Item key="Group ID" type="Number"/>
-      </column>
     </command>
     <status type="Hash">
       <table val="Symbol Table ID"/>
       <label copy="Frm/cmdframe/label"/>
       <group type="Hash">
-        <Item key="Group ID" type="Array">
-          <List val="Status ID"/>
-        </Item>
+          <Item key="Group ID" type="Array">
+            <List val="Status ID"/>
+          </Item>
       </group>
       <caption copy="command/caption"/>
       <column copy="command/column"/>

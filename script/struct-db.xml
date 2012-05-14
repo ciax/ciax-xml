@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Db>
+  <Frm>
+    <endian val="big or little"/>
+    <ccmethod val="len or bcc"/>
+    <frm_ver val="Version Number"/>
+    <frm_label val="Label"/>
+    <cmdframe type="Hash">
+      <label type="Hash">
+        <Item key="Command Name" val="Label"/>
+      </label>
+      <response type="Hash">
+        <Item key="Command Name" val="Status ID"/>
+      </response>
+      <frame type="Hash">
+        <main type="Array">
+          <select/>
+          <List type="Hash">
+            <label val="Label"/>
+            <val type="String"/>
+          </List>
+          <List type="Hash">
+            <label val="Label"/>
+            <length type="Number"/>
+            <val type="Number"/>
+          </List>
+        </main>
+        <ccrange type="Array">
+          <List copy="frame/main"/>
+        </ccrange>
+      </frame>
+      <select type="Hash">
+        <Item key="Command Name" type="Array">
+          <List copy="frame/main"/>
+        </Item>
+      </select>
+      <parameter type="Hash">
+        <Item key="Command Name" type="Array">
+          <List val="Range"/>
+        </Item>
+      </parameter>
+      <nocache type="Hash">
+        <Item key="Command Name" type="Boolean"/>
+      </nocache>
+    </cmdframe>
+    <rspframe type="Hash">
+      <label type="Hash">
+        <Item key="Response Name" val="Label"/>
+      </label>
+      <frame copy="cmdframe/frame"/>
+      <select copy="cmdframe/select"/>
+    </rspframe>
+  </Frm>
+  <App>
+    <frm_type val="Frm ID"/>
+    <app_ver val="Version Numnber"/>
+    <app_label val="Label"/>
+    <command type="Hash">
+      <group type="Hash">
+        <Item key="Group ID" type="Array">
+          <List val="Command ID"/>
+        </Item>
+      </group>
+      <caption type="Hash">
+        <Item key="Group ID" val="Title"/>
+      </caption>
+      <parameter type="Hash">
+        <Item key="Command Name" type="Array">
+          <List val="Range"/>
+        </Item>
+      </parameter>
+      <select type="Hash">
+        <Item key="Command Name" type="Array">
+          <List type="Array" label="Frm Statement">
+            <List val="Frm Command Name"/>
+            <List val="Frm Command Param"/>
+          </List>
+        </Item>
+      </select>
+      <label copy="Frm/cmdframe/label"/>
+      <column type="Hash">
+        <Item key="Group ID" type="Number"/>
+      </column>
+    </command>
+    <status type="Hash">
+      <table val="Symbol Table ID"/>
+      <label copy="Frm/cmdframe/label"/>
+      <group type="Hash">
+        <Item key="Group ID" type="Array">
+          <List val="Status ID"/>
+        </Item>
+      </group>
+      <caption copy="command/caption"/>
+      <column copy="command/column"/>
+      <symbol type="Hash">
+        <Item key="Symbol ID"/>
+      </symbol>
+      <format type="Hash">
+        <Item key="Status ID" val="Format String"/>
+      </format>
+      <select type="Hash">
+        <Item key="Status ID" type="Array">
+          <List type="Hash">
+            <type val="Data Type"/>
+            <ref val="Frm Field Address"/>
+            <bit type="Number"/>
+          </List>
+        </Item>
+      </select>
+    </status>
+    <watch type="Hash">
+      <interval type="Number"/>
+      <label copy="Frm/cmdframe/label"/>
+      <exec type="Hash">
+        <Item key="Watch ID" type="Array">
+          <List type="Array" label="App Statement List">
+            <List type="Array" label="App Statement">
+              <List val="App Command"/>
+              <List val="App Parameter"/>
+            </List>
+          </List>
+        </Item>
+      </exec>
+      <stat type="Hash">
+        <Item key="Watch ID" type="Array">
+          <List type="Hash" label="Conditions">
+            <var val="Status ID"/>
+            <inv type="Boolean"/>
+            <val val="Criterion String"/>
+            <type val="Compare Method(pattern,range)"/>
+          </List>
+        </Item>
+      </stat>
+      <int type="Hash" label="Interrupt">
+        <Item copy="exec"/>
+      </int>
+      <block type="Hash">
+        <Item copy="exec"/>
+      </block>
+    </watch>
+  </App>
+  <Sym>
+    <Item key="Symbol Table ID" type="Array">
+      <List type="Hash">
+        <class val="nomar|warn|alarm|hide"/>
+        <msg val="Message"/>
+        <val val="Criterion String"/>
+        <type val="match method(pattern|range)"/>
+      </List>
+    </Item>
+  </Sym>
+</Db>

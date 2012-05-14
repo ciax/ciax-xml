@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class>
+  <RuntimeError>
+    <Broken/>
+    <UserError>
+      <SelectID>
+        <SelectCMD/>
+      </SelectID>
+    </UserError>
+  </RuntimeError>
+  <Hash>
+    <ExHash>
+      <Command/>
+      <Db>
+        <App.Db/>
+        <Frm.Db/>
+        <Ins.Db/>
+        <Mcr.Db/>
+        <Sym.Db/>
+      </Db>
+      <Int.Prompt/>
+      <Var>
+        <Field.Var/>
+        <Status.Var/>
+      </Var>
+      <Status.View/>
+      <Watch.View/>
+    </ExHash>
+    <App.List/>
+    <Frm.List/>
+    <Msg.CmdList/>
+    <Msg.GroupList/>
+    <Xml.Doc/>
+  </Hash>
+  <Array>
+    <HtmlTbl/>
+    <Mcr.Sub/>
+    <Update/>
+  </Array>
+  <Time>
+    <Interval>
+      <Elapse/>
+    </Interval>
+  </Time>
+  <Shell>
+    <App.Sh>
+      <App.Cl/>
+      <App.Sv />
+    </App.Sh>
+    <Frm.Sh>
+      <Frm.Cl />
+      <Frm.Sv />
+    </Frm.Sh>
+    <Mcr.Sh />
+  </Shell>
+  <App.Cmd/>
+  <Frm.Cmd/>
+  <Msg.Ver/>
+  <Buffer/>
+  <Circular/>
+  <Frame/>
+  <Repeat/>
+  <ReRange/>
+  <Stream/>
+  <Xml.Gnu/>
+</class>

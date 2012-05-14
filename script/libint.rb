@@ -61,7 +61,7 @@ module Int
     end
     # JSON expression of @prompt will be sent.
     # Or, block contents will be sent if block added.
-    def socket(json=true)
+    def server(json=true)
       Server.msg{"Init/Server:#{@port}"}
       Thread.new{
         Thread.pass

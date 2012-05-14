@@ -25,7 +25,7 @@ module App
         else
           require "libappsv"
           aint=Sv.new(adb)
-          aint.socket
+          aint.server
         end
         h[id]=aint.extend(App::Prt)
         yield(aint,idb.list) if defined? yield

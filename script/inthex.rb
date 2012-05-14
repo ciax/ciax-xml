@@ -14,7 +14,7 @@ rescue UserError
 end
 aint.extend(HexPack)
 if $opt["s"]
-  aint.socket
+  aint.server
   sleep
 else
   aint.shell

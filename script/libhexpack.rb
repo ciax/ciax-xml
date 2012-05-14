@@ -28,7 +28,7 @@ module HexPack
     self
   end
 
-  def socket
+  def server
     @port+=1000
     super(false)
   end

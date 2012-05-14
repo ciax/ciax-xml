@@ -65,7 +65,7 @@ module App
       msg
     end
 
-    def socket(type='app',json=true)
+    def server(type='app',json=true)
       super
     end
 

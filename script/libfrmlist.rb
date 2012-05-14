@@ -18,7 +18,7 @@ module Frm
         else
           require "libfrmsv"
           par=$opt['d'] ? ['frmsim',id] : []
-          h[id]=Sv.new(fdb,par).socket
+          h[id]=Sv.new(fdb,par).server
         end
       }
     end

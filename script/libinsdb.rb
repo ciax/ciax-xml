@@ -12,14 +12,11 @@ module Ins
           ((hash[:rspframe]||={})[:assign]||={})[e0['id']]=e0.text
         }
         doc.domain('select').each{|e0|
-          e0.attr2db(hash[:command]||={})
+          p=group(e0,hash[:command]||={})
+          e0.attr2db(p)
         }
         doc.domain('status').each{|e0|
-          p=(hash[:status]||={})
-          case e0.name
-          when 'group'
-            p=(p[:group]||={})
-          end
+          p=group(e0,hash[:status]||={})
           e0.attr2db(p,'ref')
         }
         hash
@@ -30,6 +27,15 @@ module Ins
     def cover_app
       require "libappdb"
       cover(App::Db.new(self['app_type']))
+    end
+
+    private
+    def group(e,p)
+      case e.name
+      when 'group'
+        p=(p[:group]||={})
+      end
+      p
     end
   end
 end

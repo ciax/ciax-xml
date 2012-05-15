@@ -24,18 +24,12 @@ module App
           aint=Cl.new(adb,$opt['h'])
         else
           require "libappsv"
-          aint=Sv.new(adb)
-          aint.server
+          aint=Sv.new(adb).server
         end
         h[id]=aint.extend(App::Prt)
         yield(aint,idb.list) if defined? yield
         h[id]
       }
-    end
-
-    def setdef(id)
-      self[nil]=self[id] if key?(id)
-      self
     end
   end
 end

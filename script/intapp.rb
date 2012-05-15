@@ -10,10 +10,9 @@ begin
     int.cmdlist.add_group('dev',"Change Device",devs)
   }
   sleep if $opt["s"]
-  loop{
-    int=aint[id]
-    id=int.shell||break
-  }
+  begin
+  int=aint[id]
+  end while id=int.shell
 rescue UserError
   Msg.usage('(-fsd) [id] (host)',
             '-a:client on app',

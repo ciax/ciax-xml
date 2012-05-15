@@ -5,8 +5,8 @@
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
     <xsd:attribute name="alias" type="xsd:NCName" use="required" />
   </xsd:attributeGroup>
-  <!--command select-->
-  <xsd:element name="select">
+  <!--command list-->
+  <xsd:element name="cmdlist">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="idbc:command" />

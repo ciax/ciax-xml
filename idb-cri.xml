@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="cri" label="IR Helium Compressor Control" app_type="bbe" iocmd="socat - tcp:ltc-i:4003" port="25110">
-    <select xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <command id="upd" label="Update Status" alias="upd" />
       <command id="f1on" label="FMOS/IRS1(S10)ON" alias="x0on" />
       <command id="f1off" label="FMOS/IRS1(S10)OFF" alias="x0off" />
       <command id="f2on" label="FMOS/IRS2(S11)ON" alias="x2on" />
       <command id="f2off" label="FMOS/IRS2(S11)OFF" alias="x2off" />
-    </select>
+    </cmdlist>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="FMOS/IRS1(S10)" />
       <group ref="g2" caption="FMOS/IRS2(S11)" />

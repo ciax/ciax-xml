@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:idb="http://ciax.sum.naoj.org/ciax-xml/idb" xmlns:idbf="http://ciax.sum.naoj.org/ciax-xml/idbf" xmlns:idbc="http://ciax.sum.naoj.org/ciax-xml/idbc" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs">
   <xsd:import schemaLocation="idbf.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/idbf" />
   <xsd:import schemaLocation="idbc.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/idbc" />
@@ -14,7 +14,7 @@
     <xsd:complexType>
       <xsd:sequence minOccurs="0">
         <xsd:element ref="idbf:init" minOccurs="0" maxOccurs="1"></xsd:element>
-        <xsd:element ref="idbc:select" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="idbc:cmdlist" minOccurs="0" maxOccurs="1"></xsd:element>
         <xsd:element ref="idbs:status" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />

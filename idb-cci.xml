@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="cci" label="IR Helium Compressor Control" app_type="bbe" iocmd="socat - tcp:ltc-i:4002" port="25108">
-    <select xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <command id="upd" label="Update Status" alias="upd" />
       <command id="c2on" label="CAS2(S1) ON" alias="x0on" />
       <command id="c2off" label="CAS2(S1) OFF" alias="x0off" />
@@ -19,7 +19,7 @@
       <command id="caoff" label="CAS BOTH HC OFF" alias="x01off" />
       <command id="maon" label="MOIRCS BOTH ON" alias="x23on" />
       <command id="maoff" label="MOIRCS BOTH OFF" alias="x23off" />
-    </select>
+    </cmdlist>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="CAS2(S1)(CIAO)" />
       <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)" />

@@ -11,7 +11,7 @@ module Ins
         doc.domain('init').each{|e0|
           ((hash[:rspframe]||={})[:assign]||={})[e0['id']]=e0.text
         }
-        doc.domain('select').each{|e0|
+        doc.domain('cmdlist').each{|e0|
           p=group(e0,hash[:command]||={})
           e0.attr2db(p)
         }

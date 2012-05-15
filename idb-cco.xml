@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="cco" label="OPT Helium Compressor Control" app_type="bbe" iocmd="socat - tcp:ltc-o:4002" port="25109">
-    <select xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <command id="upd" label="Update Status" alias="upd" />
       <command id="f2on" label="CIAO(S6) ON" alias="x0on" />
       <command id="f2off" label="CIAO(S6) OFF" alias="x0off" />
@@ -11,7 +11,7 @@
       <command id="m2off" label="COMICS SPEC(S5) OFF" alias="x3off" />
       <command id="maon" label="COMICS BOTH ON" alias="x23on" />
       <command id="maoff" label="COMICS BOTH OFF" alias="x23off" />
-    </select>
+    </cmdlist>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="CIAO(S6) SWITCH" />
       <group ref="g2" caption="COMICS IMG(S4)" />

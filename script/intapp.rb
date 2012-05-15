@@ -5,8 +5,8 @@ require "libapplist"
 
 $opt=ARGV.getopts("afdts")
 id,$opt['h']=ARGV
+aint=App::List.new
 begin
-  aint=App::List.new
   begin
   int=aint[id]
   sleep if $opt["s"]

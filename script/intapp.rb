@@ -3,16 +3,16 @@ require "optparse"
 require "libinsdb"
 require "libapplist"
 
-$opt=ARGV.getopts("afdts")
-id,$opt['h']=ARGV
+$opt=ARGV.getopts("afdtsh:")
 aint=App::List.new
+id=ARGV.shift
 begin
-  begin
   int=aint[id]
+  ARGV.each{|i| sleep 0.3;aint[i] }
   sleep if $opt["s"]
-  end while id=int.shell
+  int=aint[id] while id=int.shell
 rescue UserError
-  Msg.usage('(-fsd) [id] (host)',
+  Msg.usage('(-fsd) (-h host) [id] ...',
             '-a:client on app',
             '-f:client on frm',
             '-s:server','-d:dummy')

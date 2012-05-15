@@ -5,11 +5,12 @@ require "libinsdb"
 # 'f' or 'a' is client
 # 's' is server
 # 'd' is dummy(from log)
+# 't' is check cmd only
 # 'h' is specified host
 module Frm
   class List < Hash
     def initialize
-      $opt||={}
+      $opt||={'f'=>true}
       super{|h,id|
         idb=Ins::Db.new(id)
         fdb=idb.cover_app.cover_frm

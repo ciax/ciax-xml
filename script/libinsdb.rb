@@ -15,7 +15,12 @@ module Ins
           e0.attr2db(hash[:command]||={})
         }
         doc.domain('status').each{|e0|
-          e0.attr2db(hash[:status]||={},'ref')
+          p=(hash[:status]||={})
+          case e0.name
+          when 'group'
+            p=(p[:group]||={})
+          end
+          e0.attr2db(p,'ref')
         }
         hash
       }

@@ -30,7 +30,7 @@ class Stream
     str=reopen{
       select([@f],nil,nil,@timeout) || next
       @f.sysread(4096)
-    }||Msg.err("No string")
+    }||Msg.err("Stream:No response")
     Stream.msg{"Recieved #{str.size} byte"}
     {:data => str,:time => Msg.now}
   end

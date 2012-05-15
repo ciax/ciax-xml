@@ -47,7 +47,7 @@ class Buffer
         begin
           yield recv
         rescue UserError
-          warn $!
+          warn $!.to_s.chomp
           Msg.alert(" in Buffer Thread")
           clear
         end

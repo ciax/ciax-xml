@@ -11,16 +11,32 @@ module Frm
     def initialize
       $opt||={}
       super{|h,id|
-        fdb=Ins::Db.new(id).cover_app.cover_frm
-        if $opt['f'] or $opt['a']
+        idb=Ins::Db.new(id)
+        fdb=idb.cover_app.cover_frm
+        if $opt['t']
+          require "libfrmsh"
+          int=Sh.new(fdb)
+        elsif $opt['f'] or $opt['a']
           require "libfrmcl"
-          h[id]=Cl.new(fdb,$opt['h'])
+          int=Cl.new(fdb,$opt['h'])
         else
           require "libfrmsv"
           par=$opt['d'] ? ['frmsim',id] : []
-          h[id]=Sv.new(fdb,par).server
+          int=Sv.new(fdb,par).server
         end
+        yield(int,idb.list) if defined? yield
+        h[id]=int
       }
     end
+  end
+end
+
+if __FILE__ == $0
+  id=ARGV.shift
+  begin
+    ary=Frm::List.new
+    puts ary[id]
+  rescue
+    Msg.exit
   end
 end

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Var>
+  <field type="Hash">
+    <type val="field"/>
+    <id val="Device ID"/>
+    <ver val="Version"/>
+    <val type="Hash">
+      <Item key="Field ID" type="String"/>
+    </val>
+  </field>
+  <status type="Hash">
+    <type val="status"/>
+    <id val="Device ID"/>
+    <ver val="Version"/>
+    <val type="Hash">
+      <Item key="Status ID" type="String"/>
+    </val>
+    <class type="Hash">
+      <Item key="Status ID" type="String"/>
+    </class>
+    <msg type="Hash">
+      <Item key="Status ID" type="String"/>
+    </msg>
+    <watch>
+      <active type="Array">
+        <List val="Condition ID"/>
+      </active>
+      <exec type="Array">
+        <List type="Array" label="Statement">
+          <List val="Command ID"/>
+          <List val="Command ARGS"/>
+        </List>
+      </exec>
+      <block copy="exec"/>
+      <int copy="exec"/>
+      <val type="Hash">
+        <Item key="Status ID" type="String"/>
+      </val>
+      <last copy="val"/>
+      <res type="Hash">
+        <Item key="Condition ID:NUM" type="Boolean"/>
+      </res>
+    </watch>
+  </status>
+</Var>

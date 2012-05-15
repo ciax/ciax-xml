@@ -44,7 +44,7 @@ module Int
           end
           puts msg
         rescue SelectCMD
-          return line if @cmdlist.include?(line)
+          break line if @cmdlist.include?(line)
           puts @cmdlist
         rescue UserError
           puts $!.to_s

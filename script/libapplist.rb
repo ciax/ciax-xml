@@ -26,9 +26,8 @@ module App
           require "libappsv"
           aint=Sv.new(adb).server
         end
+        aint.cmdlist.add_group('dev',"Change Device",idb.list)
         h[id]=aint.extend(App::Prt)
-        yield(aint,idb.list) if defined? yield
-        h[id]
       }
     end
   end

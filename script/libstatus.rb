@@ -72,10 +72,11 @@ module Status
     end
 
     def to_s
-      @sdb[:group].each{|k,v|
-        cap=@sdb[:caption][k] || next
+      gdb=@sdb[:group]
+      gdb[:select].each{|k,v|
+        cap=gdb[:caption][k] || next
         self[k]={'caption' => cap,'lines'=>[]}
-        col=@sdb[:column][k]||1
+        col=gdb[:column][k]||1
         v.each_slice(col.to_i){|ids|
           hash={}
           ids.each{|id|

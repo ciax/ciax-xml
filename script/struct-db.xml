@@ -88,12 +88,14 @@
       <table val="Symbol Table ID"/>
       <label copy="Frm/cmdframe/label"/>
       <group type="Hash">
+        <select type="Hash">
           <Item key="Group ID" type="Array">
             <List val="Status ID"/>
           </Item>
+        </select>
+        <caption copy="command/caption"/>
+        <column copy="command/column"/>
       </group>
-      <caption copy="command/caption"/>
-      <column copy="command/column"/>
       <symbol type="Hash">
         <Item key="Symbol ID"/>
       </symbol>

@@ -40,22 +40,22 @@ module App
     #cmd is array
     def exe(cmd)
       msg=''
-      case cmd.first
-      when nil
-      when 'interrupt'
-        int=@stat.interrupt
-        sendfrm(int,0)
-        msg="Interrupt #{int}"
-      when 'flush'
-        @fint.field.load
-        @buf.post_flush.upd
-      when 'set'
-        cmd[1] || raise(UserError,"usage: set [key=val,..]")
-        @stat.str_update(cmd[1]).upd
-        msg="Set #{cmd[1]}"
+      if @stat.block?(cmd)
+        msg="Blocking(#{cmd})"
       else
-        if @stat.block?(cmd)
-          msg="Blocking(#{cmd})"
+        case cmd.first
+        when nil
+        when 'interrupt'
+          int=@stat.interrupt
+          sendfrm(int,0)
+          msg="Interrupt #{int}"
+        when 'flush'
+          @fint.field.load
+          @buf.post_flush.upd
+        when 'set'
+          cmd[1] || raise(UserError,"usage: set [key=val,..]")
+          @stat.str_update(cmd[1]).upd
+          msg="Set #{cmd[1]}"
         else
           sendfrm([cmd])
           msg="ISSUED"

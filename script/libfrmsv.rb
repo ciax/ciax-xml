@@ -10,7 +10,7 @@ module Frm
   class Sv < Sh
     def initialize(fdb,iocmd=[])
       super(fdb)
-      @field.ext_file(fdb).ext_save.load
+      @field.ext_save.load
       @field.extend(Frm::Rsp).init(@cobj)
       if Msg.type?(iocmd,Array).empty?
         @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)

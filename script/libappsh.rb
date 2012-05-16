@@ -9,7 +9,7 @@ module App
       super(Command.new(adb[:command]))
       @prompt['id']=adb['id']
       @port=adb['port'].to_i
-      @stat=Status::Var.new.extend(Watch::Var)
+      @stat=Status::Var.new.ext_file(adb).extend(Watch::Var)
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=Frm::List.new[adb['id']]
       int={'set'=>"[key=val], ..",'flush'=>"Flush Status"}

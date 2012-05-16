@@ -13,7 +13,7 @@ module App
       super(adb)
       id=adb['id']
       @cobj.extend(App::Cmd)
-      @stat.ext_file(adb).ext_save
+      @stat.ext_save
       @stat.extend(App::Rsp).init(@fint.field).upd
       @stat.extend(Sym::Conv)
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')

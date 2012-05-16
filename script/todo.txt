@@ -1,5 +1,5 @@
 ========================== Issue =============================
-update:add ext_???() method including add new method instead of extend(Module)
+intapp,intfrm/ set command should work at test (-t) mode
 
 ***DEBUG
 crt:cart jack level error in oldmcr(1/31)
@@ -101,3 +101,4 @@ Shell,Server: will become module and every int object will have this feature[4/1
 prompt: will be object
 hexint: will be module
 field,stat: format standardize(4/26/12)
+update:add ext_???() method including add new method instead of extend(Module)

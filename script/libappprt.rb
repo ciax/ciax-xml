@@ -30,7 +30,7 @@ module App
       else
         return super
       end
-      ''
+      to_s
     end
 
     def to_s

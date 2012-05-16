@@ -16,21 +16,30 @@ module Mcr
       @id="#{id}(#{flg})"
       @prompt="#@id[]>"
       @index=0
-      @mcr=Mcr::Sub.new(@cobj,1).extend(Mcr::Prt)
-      cl={"[0-9]"=>"Switch Mode","list"=>"Thread list"}
+      @mcr=Mcr::Sub.new(@cobj,1) #.extend(Mcr::Prt)
+      cl={"[0-9]"=>"Switch Mode","threads"=>"Thread list"}
+      cl["list"] = "list mcr contents"
+      cl["break"] = "[cmd|mcr] set break point"
+      cl["step"] = "step in execution"
+      cl["run"] = "run to break point"
+      cl["continue"] = "continue execution"
+      cl["print"] = "[dev:stat] print variable"
+      cl["set"] = "[dev:stat=val] set variable"
       @cmdlist.add_group('int',"Internal Command",cl)
     end
 
     def exe(cmd)
       case cmd[0]
       when nil
-      when 'list'
+      when 'threads'
         list=@mcr.map{|t| t[:cid]+'('+t[:stat]+')' }
         raise UserError,"#{list}"
       when /^[0-9]+$/
         i=cmd[0].to_i
         Msg.err("No Thread") if @mcr.size < i || i < 0
         @index=i
+      when 'list'
+        puts Msg.view_struct(@cobj)
       when /^\./
         @index=0
       else

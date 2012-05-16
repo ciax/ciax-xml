@@ -19,6 +19,7 @@ module Int
     def exe(cmd)
       return '' if cmd.empty?
       @cobj.set(cmd)
+      @post_exe.upd
       'OK'
     end
 
@@ -37,13 +38,9 @@ module Int
         begin
           # exe() includes status update when being Client
           # need to be executed even if cmd is empty or being Server
-          msg=exe(cmd)
-          if msg.empty?
-            msg=to_s
-          else
-            @post_exe.upd
-          end
+          msg= cmd.empty? ? to_s : exe(cmd)
           puts msg
+          @post_exe.upd
         rescue SelectCMD
           break line if @cmdlist.include?(line)
           puts @cmdlist
@@ -75,8 +72,8 @@ module Int
             line='' if /^(strobe|stat)/ === line
             cmd=line.chomp.split(' ')
             begin
-              msg=exe(cmd)
-              @post_exe.upd unless msg.empty?
+              msg= cmd.empty? ? '' : exe(cmd)
+              @post_exe.upd
             rescue RuntimeError
               msg="ERROR"
               warn msg
@@ -103,20 +100,25 @@ module Int
       @host||='localhost'
       @addr=Socket.pack_sockaddr_in(@port,@host)
       Client.msg{"Init/Client #{@host}:#{@port}"}
+      @post_exe << proc{ send('strobe') }
       self
     end
 
     def exe(cmd)
-      line=cmd.empty? ? 'strobe' : cmd.join(' ')
-      @udp.send(line,0,@addr)
-      Client.msg{"Send [#{line}]"}
+      send(cmd.join(' '))
+      # Error message
+      super if /ERROR/ =~ @prompt['msg']
+      @prompt['msg']
+    end
+
+    private
+    def send(str)
+      @udp.send(str,0,@addr)
+      Client.msg{"Send [#{str}]"}
       input=@udp.recv(1024)
       @prompt.load(input)
       Client.msg{"Recv #{input}"}
-      # Error message
-      super if /ERROR/ =~ @prompt['msg']
-      @post_exe.upd
-      @prompt['msg']
+      self
     end
   end
 

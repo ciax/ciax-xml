@@ -16,6 +16,12 @@ module Mcr
       @int=int
       @cobj=Msg.type?(cobj,Command)
       @line=[]
+      case ACT
+      when 0...1
+        $opt['t']=true
+      when 1...2
+        $opt['d']=true
+      end
     end
 
     def macro(cmd)
@@ -99,19 +105,7 @@ module Mcr
 
     # client is forced to be localhost
     def update?(ins)
-      if @@client.key?(ins)
-        stat=@@client[ins].stat.load
-      else
-        case ACT
-        when 0
-          int=@@client.add(ins,{'t'=>1})
-        when 1
-          int=@@client.add(ins,{'d'=>1})
-        else
-          int=@@client
-        end
-        stat=int[ins].stat.load
-      end
+      stat=@@client[ins].stat.load
       stat.update?
     end
 

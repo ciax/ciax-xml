@@ -4,6 +4,7 @@ require "libstatus"
 require "libfrmlist"
 module App
   class Sh < Int::Shell
+    attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
       super(Command.new(adb[:command]))

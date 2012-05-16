@@ -15,8 +15,7 @@ module App
       @stat.extend(Sym::Conv).load
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=Frm::List.new[adb['id']]
-      int={'set'=>"[key=val], ..",'flush'=>"Flush Status"}
-      @cmdlist.add_group('int',"Internal Command",int,2,2)
+      @cmdlist.add_group('int',"Internal Command",{'set'=>"[key=val], .."},2,2)
       @cmdlist.add_group('lay',"Change Layer",{'frm'=>"Frm mode"},2)
       @fint.cmdlist.add_group('lay',"Change Layer",{'app'=>"App mode"},2)
       @shmode='app'
@@ -27,7 +26,7 @@ module App
       when 'set'
         cmd[1] || raise(UserError,"usage: set [key=val,..]")
         @stat.str_update(cmd[1]).upd
-        msg="Set #{cmd[1]}"
+        "Set #{cmd[1]}"
       else
         super
       end

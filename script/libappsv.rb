@@ -15,7 +15,6 @@ module App
       @cobj.extend(App::Cmd)
       @stat.ext_save
       @stat.extend(App::Rsp).init(@fint.field).upd
-      @stat.extend(Sym::Conv)
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv)
       Thread.abort_on_exception=true
@@ -49,9 +48,6 @@ module App
           int=@stat.interrupt
           sendfrm(int,0)
           msg="Interrupt #{int}"
-        when 'flush'
-          @fint.field.load
-          @buf.post_flush.upd
         when 'set'
           cmd[1] || raise(UserError,"usage: set [key=val,..]")
           @stat.str_update(cmd[1]).upd

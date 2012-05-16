@@ -17,7 +17,8 @@ module Int
     end
 
     def exe(cmd)
-      @cobj.set(cmd) unless cmd.empty?
+      return '' if cmd.empty?
+      @cobj.set(cmd)
       'OK'
     end
 

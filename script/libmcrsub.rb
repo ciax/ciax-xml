@@ -10,7 +10,6 @@ module Mcr
     extend Msg::Ver
     ACT=ENV['ACT'].to_i
     @@client=App::List.new
-
     def initialize(cobj,int=nil)
       Sub.init_ver(self,9)
       @int=int

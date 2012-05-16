@@ -16,18 +16,21 @@ module App
       @cmdlist.add_group('int',"Internal Command",int,2,2)
       @cmdlist.add_group('lay',"Change Layer",{'frm'=>"Frm mode"},2)
       @fint.cmdlist.add_group('lay',"Change Layer",{'app'=>"App mode"},2)
+      @shmode='app'
     end
 
     def shell
-      id='app'
+      id=@shmode
       loop{
         case id
         when /app/
+          @shmode=id
           id=super||break
         when /frm/
+          @shmode=id
           id=@fint.shell||break
         else
-          return id
+          break id
         end
       }
     end

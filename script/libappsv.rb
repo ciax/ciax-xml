@@ -13,8 +13,7 @@ module App
       super(adb)
       id=adb['id']
       @cobj.extend(App::Cmd)
-      @stat.ext_save
-      @stat.extend(App::Rsp).init(@fint.field).upd
+      @stat.ext_save.extend(App::Rsp).init(@fint.field).upd
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv)
       Thread.abort_on_exception=true
@@ -41,21 +40,13 @@ module App
       msg=''
       if @stat.block?(cmd)
         msg="Blocking(#{cmd})"
-      else
-        case cmd.first
-        when nil
-        when 'interrupt'
-          int=@stat.interrupt
-          sendfrm(int,0)
-          msg="Interrupt #{int}"
-        when 'set'
-          cmd[1] || raise(UserError,"usage: set [key=val,..]")
-          @stat.str_update(cmd[1]).upd
-          msg="Set #{cmd[1]}"
-        else
-          sendfrm([cmd])
-          msg="ISSUED"
-        end
+      elsif /interrupt/ === cmd[0]
+        int=@stat.interrupt
+        sendfrm(int,0)
+        msg="Interrupt #{int}"
+      elsif /OK/ === (msg=super)
+        sendfrm([cmd])
+        msg="ISSUED"
       end
       upd_prompt
       msg

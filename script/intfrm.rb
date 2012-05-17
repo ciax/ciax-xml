@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 require "libfrmlist"
 
-$opt=ARGV.getopts("fdtsh:")
+$opt=ARGV.getopts("fltsh:")
 fint=Frm::List.new
 id=ARGV.shift
 begin
@@ -14,5 +14,5 @@ begin
 rescue UserError
   Msg.usage("(-sfd) (-h host) [id] ...",
             "-f:client",
-            "-s:server","-d:dummy")
+            "-s:server","-l:log sim")
 end

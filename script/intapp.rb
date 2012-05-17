@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 require "libapplist"
 
-$opt=ARGV.getopts("afdtsh:")
+$opt=ARGV.getopts("afltsh:")
 aint=App::List.new
 id=ARGV.shift
 begin
@@ -15,5 +15,5 @@ rescue UserError
   Msg.usage('(-fsd) (-h host) [id] ...',
             '-a:client on app',
             '-f:client on frm',
-            '-s:server','-d:dummy')
+            '-s:server','-l:log sim')
 end

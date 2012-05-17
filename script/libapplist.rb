@@ -6,7 +6,7 @@ require "libappprt"
 # 'a' is client of app server
 # 'f' is client of frm server
 # 's' is server
-# 'd' is dummy (frmsim)
+# 'l' is sim by log(frmsim)
 # 't' is check cmd only
 # 'h' is specified host
 module App

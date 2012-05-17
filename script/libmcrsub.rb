@@ -19,7 +19,7 @@ module Mcr
       when 0...1
         $opt['t']=true
       when 1...2
-        $opt['d']=true
+        $opt['l']=true
       end
     end
 

@@ -4,7 +4,7 @@ require "libinsdb"
 
 # 'f' or 'a' is client
 # 's' is server
-# 'd' is dummy(from log)
+# 'l' is sim by log
 # 't' is check cmd only
 # 'h' is specified host
 module Frm
@@ -22,7 +22,7 @@ module Frm
           int=Cl.new(fdb,$opt['h'])
         else
           require "libfrmsv"
-          par=$opt['d'] ? ['frmsim',id] : []
+          par=$opt['l'] ? ['frmsim',id] : []
           int=Sv.new(fdb,par).server
         end
         int.cmdlist.add_group('dev',"Change Device",idb.list)

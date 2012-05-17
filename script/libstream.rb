@@ -49,23 +49,26 @@ class Stream
   end
 
   def ext_logging(id,ver=0)
-    require "liblogging"
-    extend Object::Logging
     extend(Logging)
     init('frame',id,ver)
     self
   end
 
   module Logging
+    require "liblogging"
+    def self.extended(obj)
+      obj.extend Object::Logging
+    end
+
     def snd(str)
       super
-      append('snd',@cid){str}
+      append(['snd',@cid],str)
       self
     end
     # return hash (data,time)
     def rcv
       str=super[:data]
-      {:data => str,:time => append('rcv',@cid){str}}
+      {:data => str,:time => append(['rcv',@cid],str)}
     end
     self
   end

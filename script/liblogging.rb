@@ -15,6 +15,7 @@ module Logging
       @id=id
       @loghead=VarDir+"/"+type+"_#{id}"
       Logging.msg{"Init/Logging '#{type}' (#{id}/Ver.#{@ver})"}
+      @proc=defined?(yield) ? proc{yield} : proc{''}
       startlog
     end
     self
@@ -31,17 +32,19 @@ module Logging
   end
 
   # Return Time
-  def append(*cid)
+  # ida should be Array
+  def append(ida,str=nil)
+    Msg.type?(ida,Array)
     time=Msg.now
     if @logging
-      str=yield
+      str||=@proc.call
       case str
       when Enumerable
         str=JSON.dump(str)
       when String
         str=encode(str)
       end
-      tag=([@id,@ver]+cid).compact.join(':')
+      tag=([@id,@ver]+ida).compact.join(':')
       open(logfile,'a') {|f|
         f.puts [time,tag,str].compact.join("\t")
       }

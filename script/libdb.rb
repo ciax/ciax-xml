@@ -18,32 +18,55 @@ class Db < ExHash
 
   private
   def cache(id)
-    base="#{@type}-#{id}"
-    fmar=VarDir+"/cache/#{base}.mar"
-    if ENV['NOCACHE']
-      Db.msg{"ENV NOCACHE is set"}
-    elsif !test(?e,fmar)
-      Db.msg{"MAR file(#{base}) not exist"}
-    elsif newer=Find.find(XmlDir+'/'){|f|
-        break f if File.file?(f) && test(?>,f,fmar)
-      }
-      Db.msg{["File(#{newer}) is newer than cache",
-              "cache=#{File::Stat.new(fmar).mtime}",
-              "file=#{File::Stat.new(newer).mtime}"]}
+    @base="#{@type}-#{id}"
+    if newest?
+      res=Marshal.load(IO.read(fmar))
+      Db.msg{"Loaded(#{@base})"}
     else
-      Db.msg{"Loaded(#{base})"}
-      return Marshal.load(IO.read(fmar))
+      Db.msg{"Making Db"}
+      res=Msg.type?(yield(Xml::Doc.new(@type)),Hash)
+      open(fmar,'w') {|f|
+        f << Marshal.dump(res)
+        Db.msg{"Saved(#{@base})"}
+      }
     end
-    res=Msg.type?(yield(Xml::Doc.new(@type)),Hash)
-    open(fmar,'w') {|f|
-      f << Marshal.dump(res)
-      Db.msg{"Saved(#{base})"}
-    }
     res
   end
 
   def cover(db)
     Msg.type?(db,Db)
     db.deep_copy.deep_update(self).deep_freeze
+  end
+
+
+  def newest?
+    if ENV['NOCACHE']
+      Db.msg{"ENV NOCACHE is set"}
+    elsif !test(?e,fmar)
+      Db.msg{"MAR file(#{base}) not exist"}
+    elsif newer=compare(caller.map{|l| l.gsub(/:.*$/,'')}.uniq+[fxml])
+      Db.msg{["File(#{newer}) is newer than cache",
+              "cache=#{File::Stat.new(fmar).mtime}",
+              "file=#{File::Stat.new(newer).mtime}"]
+      }
+    else
+      return true
+    end
+    false
+  end
+
+  def compare(ary)
+    ary.each{|f|
+      return f if File.file?(f) && test(?>,f,fmar)
+    }
+    false
+  end
+
+  # Generate File Name
+  def fmar
+    VarDir+"/cache/#{@base}.mar"
+  end
+  def fxml
+    XmlDir+"/#{@base}.xml"
   end
 end

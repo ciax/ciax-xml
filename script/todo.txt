@@ -1,5 +1,6 @@
 ========================== Issue =============================
-intapp,intfrm/ set command should work at test (-t) mode
+Command: should includes procs
+more intelligent chache system with detecting file update like as Makefile
 
 ***DEBUG
 crt:cart jack level error in oldmcr(1/31)
@@ -102,3 +103,4 @@ prompt: will be object
 hexint: will be module
 field,stat: format standardize(4/26/12)
 update:add ext_???() method including add new method instead of extend(Module)
+intapp,intfrm/ set command should work at test (-t) mode

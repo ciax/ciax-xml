@@ -13,6 +13,7 @@ module Xml
       readxml{|e| list[e['id']]=e['label'] }
       @list=Msg::CmdList.new("[id]").update(list).sort!
       @domain={}
+      @top=nil
     end
 
     def set(id)

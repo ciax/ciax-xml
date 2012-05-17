@@ -36,8 +36,7 @@ module Int
         break if /^q/ === line
         cmd=line.split(' ')
         begin
-          # exe() includes status update when being Client
-          # need to be executed even if cmd is empty or being Server
+          # @pust_exe might includes status update when being Client
           msg= cmd.empty? ? to_s : exe(cmd)
           puts msg
           @post_exe.upd

@@ -156,15 +156,14 @@ module App
 end
 
 if __FILE__ == $0
-  require "optparse"
   begin
-    opt=ARGV.getopts("f")
+    Msg.getopts("f")
     db=App::Db.new(ARGV.shift)
   rescue SelectID
-    Msg.usage("(-f) [id] (key) ..","-f:make fdb")
+    Msg.usage("(-f) [id] (key) ..",*$optlist)
     Msg.exit
   end
-  db=db.cover_frm if opt["f"]
+  db=db.cover_frm if $opt["f"]
   puts db.path(ARGV)
   exit
 end

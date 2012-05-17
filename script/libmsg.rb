@@ -149,10 +149,7 @@ module Msg
 
   ### Class method ###
   module_function
-  def now
-    "%.3f" % Time.now.to_f
-  end
-
+  # Messaging methods
   def msg(msg='message') # Display only
     Kernel.warn color(msg,2)
   end
@@ -165,6 +162,7 @@ module Msg
     Kernel.warn color(msg,1)
   end
 
+  # Exception methods
   def err(*msg) # Raise User error (Invalid User input)
     msg[0]=color(msg[0],1)
     raise UserError,msg.join("\n"),caller(1)
@@ -187,6 +185,7 @@ module Msg
     Kernel.exit(code)
   end
 
+  # Assertion
   def type?(name,*modules)
     modules.each{|mod|
       unless name.is_a?(mod)
@@ -201,16 +200,21 @@ module Msg
     raise "Data type error <#{name.class}> for (#{mod.to_s})"
   end
 
-  # 1=red,2=green,4=blue,8=bright
+  # Display methods
+  def item(key,val)
+    Msg.color("  %-10s" % key,3)+": #{val}"
+  end
+
+  def now
+    "%.3f" % Time.now.to_f
+  end
+
+  # Color 1=red,2=green,4=blue,8=bright
   def color(text,c=7)
     return '' if text == ''
     return text unless STDERR.tty?
     c||=7
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
-  end
-
-  def item(key,val)
-    Msg.color("  %-10s" % key,3)+": #{val}"
   end
 
   def view_struct(data,title=nil,indent=0)
@@ -263,5 +267,20 @@ module Msg
       end
     end
     str.chomp + " #{data.inspect}\n"
+  end
+
+  def getopts(str)
+    require 'optparse'
+    optdb={}
+    optdb['a']='App level'
+    optdb['f']='Frm level'
+    optdb['l']='Log sim'
+    optdb['t']='Test mode'
+    optdb['s']='Server'
+    optdb['h']='[host] Host'
+    $optlist=str.split('').map{|c|
+      optdb.key?(c) && "-#{c}:#{optdb[c]}"
+    }.compact
+    $opt=ARGV.getopts(str)
   end
 end

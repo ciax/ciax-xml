@@ -270,9 +270,8 @@ module Msg
   end
 
   # set $opt and $optlist(for usage)
-  def getopts(str)
+  def getopts(str,optdb={})
     require 'optparse'
-    optdb={}
     optdb['a']='app level'
     optdb['f']='frm level'
     optdb['l']='log sim'

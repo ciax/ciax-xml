@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 VarDir="#{ENV['HOME']}/.var"
+ScrDir=File.dirname(__FILE__)
 
 class UserError < RuntimeError; end
 class SelectID < UserError; end

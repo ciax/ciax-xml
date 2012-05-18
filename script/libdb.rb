@@ -20,8 +20,8 @@ class Db < ExHash
   def cache(id)
     @base="#{@type}-#{id}"
     if newest?
+      Db.msg{"Loading(#{@base})"}
       res=Marshal.load(IO.read(fmar))
-      Db.msg{"Loaded(#{@base})"}
     else
       Db.msg{"Making Db"}
       res=Msg.type?(yield(Xml::Doc.new(@type)),Hash)

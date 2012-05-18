@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="oss" id="oss" label="TSC Control" version="1">
+  <app frm_type="oss" id="oss" label="TSC Control" version="2">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <command id="upd" label="Update Status">
         <frmcmd name="logstat" />
@@ -124,7 +124,7 @@
           <binary bit="7" ref="bstat" />
         </value>
       </group>
-      <group id="g3" caption="Position" column="3">
+      <group id="g3" caption="Position" column="4">
         <value id="stw" label="EL STOW" symbol="off-warn">
           <binary bit="2" ref="stow_1" />
         </value>
@@ -133,6 +133,10 @@
         </value>
         <value id="iang" label="InR" format="%.3f">
           <float ref="iang" />
+        </value>
+        <value id="jkm" label="JACK LEN" format="%.3f">
+          <float ref="jk" index="0" formula="$#/100" />
+          <float ref="jk" index="1" formula="$#/100" />
         </value>
         <value id="abs" label="JACK STOP" symbol="warn">
           <binary ref="abs" bit="2" />
@@ -186,7 +190,7 @@
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Moving Jack" id="jak">
-        <onchange var="jk01"></onchange>
+        <onchange var="jkm"></onchange>
         <block name="jup"></block>
         <block name="jdw"></block>
         <int name="jstop" />

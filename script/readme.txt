@@ -5,8 +5,8 @@
  socat
  libsqlite3-ruby1.9.1
  libxml-xpath-perl (xpath command)
-coreutils:
- grep,cut,tail
+ coreutils:
+  grep,cut,tail
 
 ## Verbose mode ##
  set VER environment
@@ -51,3 +51,6 @@ frmsh (intfrm -t)/ used when running site is different from intapp
   0     check   file     o       -  
   1     simu    file     o       -  
   2     exec    remote   o       o  
+
+## Project mode
+  set PROJ to limit Device ID (is in idb-{PROJ}.xml)

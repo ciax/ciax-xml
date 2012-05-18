@@ -7,23 +7,23 @@ class Db < ExHash
   extend Msg::Ver
   XmlDir="#{ENV['HOME']}/ciax-xml"
   attr_reader :list
-  def initialize(type,id=nil)
+  def initialize(type,id=nil,group=nil)
     Db.init_ver("Cache/%s",5,self)
     @type=type
-    @list=cache('list'){|doc| doc.list }
+    @list=cache(group||'list',group){|doc| doc.list }
     @list.error unless id
-    update(cache(id){|doc| yield doc.set(id) }).deep_freeze
+    update(cache(id,group){|doc| yield doc.set(id) }).deep_freeze
   end
 
   private
-  def cache(id)
+  def cache(id,group)
     @base="#{@type}-#{id}"
     if newest?
       Db.msg{"Loading(#{@base})"}
       res=Marshal.load(IO.read(fmar))
     else
       Db.msg{"Making Db"}
-      res=Msg.type?(yield(Xml::Doc.new(@type)),Hash)
+      res=Msg.type?(yield(Xml::Doc.new(@type,group)),Hash)
       open(fmar,'w') {|f|
         f << Marshal.dump(res)
         Db.msg{"Saved(#{@base})"}
@@ -43,7 +43,7 @@ class Db < ExHash
       Db.msg{"ENV NOCACHE is set"}
     elsif !test(?e,fmar)
       Db.msg{"MAR file(#{base}) not exist"}
-    elsif newer=compare($".grep(/#{ScrDir}/)+[fxml])
+    elsif newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))
       Db.msg{["File(#{newer}) is newer than cache",
               "cache=#{File::Stat.new(fmar).mtime}",
               "file=#{File::Stat.new(newer).mtime}"]
@@ -54,7 +54,7 @@ class Db < ExHash
     false
   end
 
-  def compare(ary)
+  def cmp(ary)
     ary.each{|f|
       return f if File.file?(f) && test(?>,f,fmar)
     }
@@ -64,8 +64,5 @@ class Db < ExHash
   # Generate File Name
   def fmar
     VarDir+"/cache/#{@base}.mar"
-  end
-  def fxml
-    XmlDir+"/#{@base}.xml"
   end
 end

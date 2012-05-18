@@ -5,7 +5,7 @@ module Ins
   class Db < Db
     def initialize(id)
       self['id']=id
-      super('idb',id){|doc|
+      super('idb',id,ENV['PROJ']){|doc|
         hash={}
         hash.update(doc)
         doc.domain('init').each{|e0|

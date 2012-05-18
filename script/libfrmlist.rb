@@ -8,6 +8,9 @@ require "libinsdb"
 # 't' is check cmd only
 # 'h' is specified host
 module Frm
+  autoload :Sh,"libfrmsh"
+  autoload :Cl,"libfrmcl"
+  autoload :Sv,"libfrmsv"
   class List < Hash
     def initialize
       $opt||={}
@@ -15,13 +18,10 @@ module Frm
         idb=Ins::Db.new(id)
         fdb=idb.cover_app.cover_frm
         if $opt['t']
-          require "libfrmsh"
           int=Sh.new(fdb)
         elsif $opt['c'] or $opt['f']
-          require "libfrmcl"
           int=Cl.new(fdb,$opt['h'])
         else
-          require "libfrmsv"
           par=$opt['l'] ? ['frmsim',id] : []
           int=Sv.new(fdb,par).server
         end

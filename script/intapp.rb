@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 require "libapplist"
 
-Msg.getopts("cfltsh:")
+Msg.getopts("cfh:lts")
 aint=App::List.new
 id=ARGV.shift
 begin

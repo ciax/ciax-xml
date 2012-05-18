@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 require "libfrmlist"
 
-Msg.getopts("ltsh:")
+Msg.getopts("ch:tls")
 fint=Frm::List.new
 id=ARGV.shift
 begin

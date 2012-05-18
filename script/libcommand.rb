@@ -118,18 +118,17 @@ class Command < ExHash
 end
 
 if __FILE__ == $0
-  require "optparse"
   require 'libinsdb'
-  opt=ARGV.getopts("af")
+  Msg.getopts("af")
   begin
     adb=Ins::Db.new(ARGV.shift).cover_app
-    if opt["f"]
+    if $opt["f"]
       puts Command.new(adb.cover_frm[:cmdframe]).set(ARGV)
     else
       puts Command.new(adb[:command]).set(ARGV)
     end
   rescue
-    Msg::usage("(-fa) [id] [cmd] (par)","-f:frm","-a:app")
+    Msg::usage("(opt) [id] [cmd] (par)",*$optlist)
     Msg.exit
   end
 end

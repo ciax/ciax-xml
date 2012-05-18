@@ -1,16 +1,13 @@
 #!/usr/bin/ruby
-require "optparse"
-require "libinsdb"
-require "libhexpack"
 require "libapplist"
+require "libhexpack"
 
-$opt=ARGV.getopts("s")
-id,$opt['h']=ARGV
-ARGV.clear
+Msg.getopts("h:s")
+id=ARGV.shift
 begin
   aint=App::List.new[id]
 rescue UserError
-  Msg.usage("(-s) [id] (host)","-s:server")
+  Msg.usage("(opt) [id]",*$optlist)
 end
 aint.extend(HexPack)
 if $opt["s"]

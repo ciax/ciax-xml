@@ -1,6 +1,4 @@
 #!/usr/bin/ruby
-require "optparse"
-require "libinsdb"
 require "libapplist"
 
 Msg.getopts("cfh:lts")

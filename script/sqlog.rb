@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "optparse"
 require "libinsdb"
 require "libcommand"
 require "libfrmrsp"
@@ -8,24 +7,21 @@ require 'libstatus'
 require "libsqlog"
 require 'json'
 
-opt=ARGV.getopts("iafv")
+Msg.getopts("ivfa",{"v"=>"verbose","i"=>"init table"})
 id = ARGV.shift
 begin
   idb=Ins::Db.new(id)
   adb=idb.cover_app
   field=Field::Var.new
 rescue UserError
-  Msg.usage("(-aiv) [id] (frmlog|fldlog)",
-            "-v:verbose",
-            "-i:init table",
-            "-f:frm level(default)",
-            "-a:app level(input format 'sqlite3 -header')")
+  Msg.usage("(opt) [id] (frmlog|fldlog)",
+            "* input format 'sqlite3 -header'",*$optlist)
 end
-if opt['a']
+if $opt['a']
   stat=Status::Var.new.ext_file(adb)
   stat.extend(App::Rsp).init(field)
   stat.extend(SqLog::Var)
-  if opt['i'] # Initial
+  if $opt['i'] # Initial
     stat.create
   else
     index=nil
@@ -43,7 +39,7 @@ if opt['a']
           stat.upd
           $stderr.print "."
         rescue
-          $stderr.print $! if opt['v']
+          $stderr.print $! if $opt['v']
           $stderr.print "x"
         end
       end
@@ -52,11 +48,12 @@ if opt['a']
   puts stat.sql
 else
   fdb=adb.cover_frm
+  field.ext_file(fdb)
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
-  field.extend(Frm::Rsp).init(fdb,cobj)
+  field.extend(Frm::Rsp).init(cobj)
   field.extend(SqLog::Var)
-  if opt['i'] # Initial
+  if $opt['i'] # Initial
     field.create
   else
     readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
@@ -64,7 +61,7 @@ else
         field.upd_logline(str)
         $stderr.print "."
       rescue
-        $stderr.print $! if opt['v']
+        $stderr.print $! if $opt['v']
         $stderr.print "x"
         next
       end

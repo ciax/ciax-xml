@@ -1,6 +1,4 @@
 #!/usr/bin/ruby
-require "optparse"
-require "libinsdb"
 require "libfrmlist"
 
 Msg.getopts("ch:tls")

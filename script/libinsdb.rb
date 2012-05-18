@@ -41,16 +41,15 @@ module Ins
 end
 
 if __FILE__ == $0
-  require "optparse"
   begin
-    opt=ARGV.getopts("af")
+    Msg.getopts("af")
     id=ARGV.shift
     db=Ins::Db.new(id)
   rescue
-    Msg.usage("(-af) [id] (key) ..","-a:make adb","-f:make fdb")
+    Msg.usage("(opt) [id] (key) ..",*$optlist)
     Msg.exit
   end
-  db=db.cover_app if opt["a"]
-  db=db.cover_app.cover_frm if opt["f"]
+  db=db.cover_app if $opt["a"] or $opt["f"]
+  db=db.cover_frm if $opt["f"]
   puts db.path(ARGV)
 end

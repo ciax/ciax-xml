@@ -131,9 +131,9 @@ module Status
 end
 
 if __FILE__ == $0
-  require "optparse"
   require "libinsdb"
-  opt=ARGV.getopts('r')
+
+  Msg.getopts('rh:')
   id=ARGV.shift
   host=ARGV.shift
   stat=Status::Var.new
@@ -145,17 +145,17 @@ if __FILE__ == $0
     else
       adb=Ins::Db.new(id).cover_app
       stat.ext_file(adb)
-      if host
+      if host=$opt['h']
         stat.ext_url(host).load
       else
         stat.load
       end
     end
     view=Status::View.new(adb,stat)
-    view.extend(Status::Print) unless opt['r']
+    view.extend(Status::Print) unless $opt['r']
     puts view
   rescue UserError
-    Msg.usage "(-r) [id] (host) <(stat_file)"
+    Msg.usage "(opt) [id] <(stat_file)",*$optlist
   end
   exit
 end

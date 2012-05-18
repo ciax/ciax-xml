@@ -208,27 +208,27 @@ module Watch
 end
 
 if __FILE__ == $0
-  require "optparse"
   require "libinsdb"
 
-  opt=ARGV.getopts('rvt:')
+  Msg.getopts('rvt:',{
+                't'=>'test conditions[key=val,..]',
+                'r'=>"raw data",
+                "v"=>"view data"})
   id=ARGV.shift
   begin
     adb=Ins::Db.new(id).cover_app
   rescue SelectID
-    Msg.usage("(-t key=val,..) (-rv) [id]",
-              "-t:test conditions(key=val,..)",
-              "-r:raw data","-v:view data")
+    Msg.usage("(opt) [id]",*$optlist)
   end
   stat=Status::Var.new.ext_file(adb).load
   stat.extend(Watch::Var)
-  unless opt['r']
+  unless $opt['r']
     wview=Watch::View.new(adb,stat)
-    unless opt['v']
+    unless $opt['v']
       wview.extend(Watch::Print)
     end
   end
-  if t=opt['t']
+  if t=$opt['t']
     stat.extend(Watch::Conv)
     stat.ext_save.str_update(t).upd.save
   end

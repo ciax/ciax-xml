@@ -143,15 +143,14 @@ end
 if __FILE__ == $0
   require "libinsdb"
   require "libcommand"
-  require "optparse"
-  Msg.usage "(-m) < logline","-m:merge file" if STDIN.tty? && ARGV.size < 1
-  opt=ARGV.getopts('m')
+  Msg.getopts("m",{'m' => 'merge file'})
+  Msg.usage "(opt) < logline",*$optlist if STDIN.tty? && ARGV.size < 1
   str=gets(nil) || exit
   id=Logging.set_logline(str)[:id]
   fdb=Ins::Db.new(id).cover_app.cover_frm
   cobj=Command.new(fdb[:cmdframe])
   field=Field::Var.new.ext_file(fdb)
-  field.load if opt['m']
+  field.load if $opt['m']
   field.extend(Frm::Rsp).init(cobj)
   field.upd_logline(str)
   puts field

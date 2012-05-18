@@ -136,24 +136,23 @@ module Mcr
 end
 
 if __FILE__ == $0
-  require "optparse"
   require "libmcrdb"
   require "libmcrprt"
 
-  opt=ARGV.getopts("r")
+  Msg.getopts("r")
   id,*cmd=ARGV
   ARGV.clear
   begin
     mdb=Mcr::Db.new(id)
     cobj=Command.new(mdb[:macro])
     mcr=Mcr::Sub.new(cobj)
-    mcr.extend(Mcr::Prt) unless opt['r']
+    mcr.extend(Mcr::Prt) unless $opt['r']
     mcr.macro(cmd).join
     puts mcr.to_s
   rescue SelectCMD
     Msg.exit(2)
   rescue SelectID
-    Msg.usage("(-r) [mcr] [cmd] (par)","-r:print raw data")
+    Msg.usage("(opt) [mcr] [cmd] (par)",*$optlist)
   rescue UserError
     Msg.exit(3)
   end

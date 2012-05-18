@@ -270,18 +270,25 @@ module Msg
   end
 
   # set $opt and $optlist(for usage)
-  def getopts(str,optdb={})
+  def getopts(str,db={})
     require 'optparse'
+    str << 'd'
+    optdb={}
     optdb['a']='app level'
     optdb['f']='frm level'
-    optdb['l']='log sim'
+    optdb['l']='simulation mode'
     optdb['t']='test mode'
-    optdb['s']='server'
-    optdb['c']='client'
-    optdb['h']='[host]'
+    optdb['s']='server mode'
+    optdb['c']='client mode'
+    optdb['h']='[host] remote url'
+    optdb['r']='raw display mode'
+    optdb['v']='view display mode'
+    optdb['d']='debug mode'
+    optdb.update(db)
     $optlist=str.split('').map{|c|
       optdb.key?(c) && "-#{c}:#{optdb[c]}" || nil
     }.compact
     $opt=ARGV.getopts(str)
+    require 'debug' if $opt['d']
   end
 end

@@ -4,6 +4,12 @@ require "libxmlgn"
 
 # Domain is the top node of each name spaces
 module Xml
+  # xmldoc group will be named after xml filename
+  # default group name is 'all' and all xmldoc will belong to this group
+  # The default group specified at initialize limits the items
+  # to those described in the group named file.
+  # The group named file can conatin referenced item whose entity is
+  # in another file.
   class Doc < Hash
     extend Msg::Ver
     attr_reader :top,:list
@@ -55,12 +61,12 @@ module Xml
             reflist << [fid,ref]
           elsif id=e['id']
             (group[fid]||={})[id]=e if fid != id
-            group['all'][id]=e
+            group['all'][id]=e if fid != 'all'
           end
         }
       }
-      reflist.each{|g,id|
-        group[g][id]=group['all'][id]
+      reflist.each{|fid,id|
+        group[fid][id]=group['all'][id] if fid != 'all'
       }
       group
     end

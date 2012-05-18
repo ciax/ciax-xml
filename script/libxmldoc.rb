@@ -13,11 +13,14 @@ module Xml
   class Doc < Hash
     extend Msg::Ver
     attr_reader :top,:list
+    ALL='all-list'
+    @@root={}
     def initialize(type,group=nil)
       Doc.init_ver(self,4)
       /.+/ =~ type || Msg.err("No Db Type")
-      @group=group||'all'
-      @tree=readxml("#{ENV['XMLPATH']}/#{type}-*.xml")
+      @group=group||ALL
+      Doc.msg{"xmlroot:#{@@root.keys}"}
+      @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))
       list={}
       @tree[@group].each{|id,e|
         list[id]=e['label']
@@ -52,21 +55,23 @@ module Xml
 
     private
     def readxml(glob)
-      group={'all'=>{}}
+      group={ALL=>{}}
       reflist=[]
       Dir.glob(glob).each{|p|
-        fid=File.basename(p,'.xml').gsub(/.+-/,'')
+        base=File.basename(p,'.xml')
+        Doc.msg{"readxml:#{base}"}
+        fid=base.gsub(/.+-/,'')
         Gnu.new(p).each{|e|
           if ref=e['ref']
             reflist << [fid,ref]
           elsif id=e['id']
             (group[fid]||={})[id]=e if fid != id
-            group['all'][id]=e if fid != 'all'
+            group[ALL][id]=e if fid != ALL
           end
         }
       }
       reflist.each{|fid,id|
-        group[fid][id]=group['all'][id] if fid != 'all'
+        group[fid][id]=group[ALL][id] if fid != ALL
       }
       group
     end

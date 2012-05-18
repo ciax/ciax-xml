@@ -19,7 +19,6 @@ module Int
     def exe(cmd)
       return '' if cmd.empty?
       @cobj.set(cmd)
-      @post_exe.upd
       'OK'
     end
 

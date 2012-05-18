@@ -60,7 +60,9 @@ module App
         @stat.str_update(cmd[1]).upd
         "Set #{cmd[1]}"
       else
-        super
+        msg=super
+        @stat.set_time unless msg.empty?
+        msg
       end
     end
   end

@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libmsg"
 require "libxmlgn"
 
 # Domain is the top node of each name spaces
@@ -6,26 +7,28 @@ module Xml
   class Doc < Hash
     extend Msg::Ver
     attr_reader :top,:list
-    def initialize(type)
+    def initialize(type,group=nil)
       Doc.init_ver(self,4)
-      @type=type||Msg.err("Need DB type")
+      /.+/ =~ type || Msg.err("No Db Type")
+      @group=group||'all'
+      @tree=readxml("#{ENV['XMLPATH']}/#{type}-*.xml")
       list={}
-      readxml{|e| list[e['id']]=e['label'] }
+      @tree[@group].each{|id,e|
+        list[id]=e['label']
+      }.empty? && raise(SelectID)
       @list=Msg::CmdList.new("[id]").update(list).sort!
       @domain={}
       @top=nil
     end
 
     def set(id)
-      @file=readxml(id){|e|
-        @top=e
-        update(e.to_h)
-        e.each{|e1|
-          @domain[e1.name]=e1 unless e.ns == e1.ns
-        }
-        Doc.msg{"Domain registerd:#{@domain.keys}"}
-      } if id
-      raise SelectID,@list.to_s unless @top
+      raise SelectID,@list.to_s unless @tree[@group].key?(id)
+      @top=@tree[@group][id]
+      update(@top.to_h)
+      @top.each{|e1|
+        @domain[e1.name]=e1 unless @top.ns == e1.ns
+      }
+      Doc.msg{"Domain registerd:#{@domain.keys}"}
       self
     end
 
@@ -42,19 +45,24 @@ module Xml
     end
 
     private
-    def readxml(id=nil)
-      pre="#{ENV['XMLPATH']}/#{@type}"
-      Dir.glob("#{pre}-*.xml").each{|p|
-        x=Gnu.new(p)
-        if id
-          x.find("*[@id='#{id}']"){|e|
-            yield e
-            return p
-          }
-        else
-          x.each{|e| yield e}
-        end
+    def readxml(glob)
+      group={'all'=>{}}
+      reflist=[]
+      Dir.glob(glob).each{|p|
+        fid=File.basename(p,'.xml').gsub(/.+-/,'')
+        Gnu.new(p).each{|e|
+          if ref=e['ref']
+            reflist << [fid,ref]
+          elsif id=e['id']
+            (group[fid]||={})[id]=e if fid != id
+            group['all'][id]=e
+          end
+        }
       }
+      reflist.each{|g,id|
+        group[g][id]=group['all'][id]
+      }
+      group
     end
   end
 end
@@ -63,7 +71,7 @@ if __FILE__ == $0
   begin
     doc=Xml::Doc.new(ARGV.shift)
     puts doc.list
-  rescue
+  rescue UserError
     Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
   end
 end

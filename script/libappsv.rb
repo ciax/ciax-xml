@@ -2,7 +2,7 @@
 require "libappsh"
 require "libappcmd"
 require "libapprsp"
-require "libsymconv"
+require "libsqlog"
 require "libbuffer"
 require "thread"
 

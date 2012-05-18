@@ -2,6 +2,7 @@
 require "libappsh"
 require "libappcmd"
 require "libapprsp"
+require "libsymconv"
 require "libsqlog"
 require "libbuffer"
 require "thread"
@@ -13,7 +14,7 @@ module App
       super(adb)
       id=adb['id']
       @cobj.extend(App::Cmd)
-      @stat.ext_save.extend(App::Rsp).init(@fint.field).upd
+      @stat.ext_save.extend(App::Rsp).init(@fint.field).extend(Sym::Conv).upd
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv)
       Thread.abort_on_exception=true

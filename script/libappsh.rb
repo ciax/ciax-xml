@@ -2,7 +2,6 @@
 require "libint"
 require "libstatus"
 require "libfrmlist"
-require "libsymconv"
 module App
   class Sh < Int::Shell
     attr_reader :stat
@@ -11,8 +10,7 @@ module App
       super(Command.new(adb[:command]))
       @prompt['id']=adb['id']
       @port=adb['port'].to_i
-      @stat=Status::Var.new.ext_file(adb).extend(Watch::Var)
-      @stat.extend(Sym::Conv).load
+      @stat=Status::Var.new.extend(Watch::Var).ext_file(adb)
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=Frm::List.new[adb['id']]
       @cmdlist.add_group('lay',"Change Layer",{'frm'=>"Frm mode"},2)
@@ -43,12 +41,15 @@ module App
   end
 
   module Test
+    require "libsymconv"
     def self.extended(obj)
       Msg.type?(obj,Sh).init
     end
 
     def init
       @cmdlist.add_group('int',"Internal Command",{'set'=>"[key=val], .."},2)
+      @stat.extend(Sym::Conv).load
+      @post_exe << proc{@stat.upd}
       self
     end
 

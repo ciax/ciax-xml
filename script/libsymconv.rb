@@ -8,7 +8,7 @@ module Sym
     extend Msg::Ver
     require "libsymdb"
     def self.extended(obj)
-      init_ver('Symconv')
+      init_ver('SymConv')
       Msg.type?(obj,Status::Var,Var::File).init
     end
 

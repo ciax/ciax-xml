@@ -102,7 +102,8 @@ if __FILE__ == $0
   Msg.usage "< field_file" if STDIN.tty?
   field=Field::Var.new.load
   adb=Ins::Db.new(field['id']).cover_app
-  stat=Status::Var.new.ext_file(adb)
+  stat=Status::Var.new.ext_file(adb).ext_save
   puts stat.extend(App::Rsp).init(field).upd
+  stat.save
   exit
 end

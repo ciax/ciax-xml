@@ -22,11 +22,19 @@
   wdb: Watch DB
       included in adb      
 
-## String restriction ##
-  adb//command@id -> never use ':'
+### Data Validation ###
 
-### Substitution Strings (implicit conversion) ###
- ## Process order: repeat -> parameter -> status -> formula -> format(w/eval)
+ numerical (i.e. '1234','0012','0xab','1+2'..)
+    fdb//char
+    fdb//string (with @format)
+    --   
+    adb//command/argv (with @format, including Math functions)
+
+ token (never use ':')
+    adb//command@id
+
+### Substitution Strings ###
+ # Process order: repeat -> parameter -> status -> formula -> eval -> format
 
  $_ $` $a..z
     description : substitute sequence number(in repeat)
@@ -70,14 +78,6 @@
     usable: fdb//rspframe@terminator
             fdb//rspframe@delimiter
 
-### Valid Data ###
-
- numerical (i.e. '1234','0012','0xab','1+2'..)
-    fdb//char
-    fdb//string (with @format)
-    --   
-    adb//command/argv (with @format, including Math functions)
-
 ### Explicit conversion by Attributes ###
 
  format
@@ -85,6 +85,9 @@
             --
             adb//command/argv
             adb//status/value
+
+ formula
+    usable: adb//status/value/float
 
  decode
     usable: fdb//response/field
@@ -97,6 +100,15 @@
             --
             adb//command/par
             adb//event/range
+
+### Implicit conversion ###
+  numerical sum
+    adb//status/value/float
+    adb//status/value/int
+    adb//status/value/binary
+
+  concat strings
+    adb//status/value/string
  
 ### Reference Content ###
   fdb//command@response <= fdb//rspframe//response@id

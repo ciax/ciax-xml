@@ -2,7 +2,6 @@
 require "libmsg"
 require "libexenum"
 require "libxmldoc"
-require "find"
 
 class Db < ExHash
   extend Msg::Ver
@@ -44,7 +43,7 @@ class Db < ExHash
       Db.msg{"ENV NOCACHE is set"}
     elsif !test(?e,fmar)
       Db.msg{"MAR file(#{base}) not exist"}
-    elsif newer=compare(caller.map{|l| l.gsub(/:.*$/,'')}.uniq+[fxml])
+    elsif newer=compare($".grep(/#{ScrDir}/)+[fxml])
       Db.msg{["File(#{newer}) is newer than cache",
               "cache=#{File::Stat.new(fmar).mtime}",
               "file=#{File::Stat.new(newer).mtime}"]

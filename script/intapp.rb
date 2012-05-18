@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 require "libapplist"
 
-$opt=ARGV.getopts("afltsh:")
+Msg.getopts("cfltsh:")
 aint=App::List.new
 id=ARGV.shift
 begin
@@ -12,8 +12,5 @@ begin
   sleep if $opt["s"]
   int=aint[id] while id=int.shell
 rescue UserError
-  Msg.usage('(-fsd) (-h host) [id] ...',
-            '-a:client on app',
-            '-f:client on frm',
-            '-s:server','-l:log sim')
+  Msg.usage('(opt) [id] ...',*$optlist)
 end

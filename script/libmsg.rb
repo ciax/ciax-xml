@@ -269,17 +269,19 @@ module Msg
     str.chomp + " #{data.inspect}\n"
   end
 
+  # set $opt and $optlist(for usage)
   def getopts(str)
     require 'optparse'
     optdb={}
-    optdb['a']='App level'
-    optdb['f']='Frm level'
-    optdb['l']='Log sim'
-    optdb['t']='Test mode'
-    optdb['s']='Server'
-    optdb['h']='[host] Host'
+    optdb['a']='app level'
+    optdb['f']='frm level'
+    optdb['l']='log sim'
+    optdb['t']='test mode'
+    optdb['s']='server'
+    optdb['c']='client'
+    optdb['h']='[host]'
     $optlist=str.split('').map{|c|
-      optdb.key?(c) && "-#{c}:#{optdb[c]}"
+      optdb.key?(c) && "-#{c}:#{optdb[c]}" || nil
     }.compact
     $opt=ARGV.getopts(str)
   end

@@ -2,7 +2,7 @@
 require "libmsg"
 require "libinsdb"
 
-# 'f' or 'a' is client
+# 'c' is client
 # 's' is server
 # 'l' is sim by log
 # 't' is check cmd only
@@ -10,14 +10,14 @@ require "libinsdb"
 module Frm
   class List < Hash
     def initialize
-      $opt||={'f'=>true}
+      $opt||={}
       super{|h,id|
         idb=Ins::Db.new(id)
         fdb=idb.cover_app.cover_frm
         if $opt['t']
           require "libfrmsh"
           int=Sh.new(fdb)
-        elsif $opt['f'] or $opt['a']
+        elsif $opt['c'] or $opt['f']
           require "libfrmcl"
           int=Cl.new(fdb,$opt['h'])
         else

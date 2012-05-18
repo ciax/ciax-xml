@@ -3,12 +3,12 @@ require "libmsg"
 require "libinsdb"
 require "libappprt"
 
-# 'a' is client of app server
-# 'f' is client of frm server
+# 'c' is client
+# 'f' is client of frm level(need -c)
+# 'h' is specified host
 # 's' is server
 # 'l' is sim by log(frmsim)
 # 't' is check cmd only
-# 'h' is specified host
 module App
   class List < Hash
     def initialize
@@ -19,7 +19,7 @@ module App
         if $opt['t']
           require "libappsh"
           aint=Sh.new(adb).extend(Test)
-        elsif $opt['a']
+        elsif $opt['c'] or $opt['a']
           require "libappcl"
           aint=Cl.new(adb,$opt['h'])
         else

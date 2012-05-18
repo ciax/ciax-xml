@@ -3,7 +3,7 @@ require "optparse"
 require "libinsdb"
 require "libfrmlist"
 
-$opt=ARGV.getopts("fltsh:")
+Msg.getopts("ltsh:")
 fint=Frm::List.new
 id=ARGV.shift
 begin
@@ -12,7 +12,5 @@ begin
   sleep if $opt["s"]
   int=fint[id] while id=int.shell
 rescue UserError
-  Msg.usage("(-sfd) (-h host) [id] ...",
-            "-f:client",
-            "-s:server","-l:log sim")
+  Msg.usage("(opt) [id] ...",*$optlist)
 end

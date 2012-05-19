@@ -9,4 +9,5 @@
   <instance id="mft" label="MOIRCS Hall Effect Sensor" app_type="fpa" iocmd="socat - tcp:celaeno:4012" port="25612"></instance>
   <instance id="mh1" label="MOIRCS Main/Carrousel Heater" app_type="psp" iocmd="socat - tcp:merope:59999" port="25621"></instance>
   <instance id="mh2" label="MOIRCS Main Heater" app_type="psp" iocmd="socat - tcp:atlas:59999" port="25622"></instance>
+  <instance ref="cci"/>
 </idb>

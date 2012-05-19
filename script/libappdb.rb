@@ -28,12 +28,12 @@ module App
         else
           id=e0.attr2db(hash){|k,v| r0.format(v)}
           struct[id]=[]
-          e0.each{|e1|
+          r0.each(e0){|e1,r1|
             st={'type' => e1.name}
             e1.to_h.each{|k,v|
               case k
               when 'bit','index'
-                st[k] = r0.subst(v)
+                st[k] = r1.subst(v)
               else
                 st[k] = v
               end

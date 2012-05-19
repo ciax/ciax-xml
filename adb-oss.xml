@@ -134,9 +134,10 @@
         <value id="iang" label="InR" format="%.3f">
           <float ref="iang" />
         </value>
-        <value id="jkm" label="JACK LEN" format="%.3f" formula="$#/200">
-          <float ref="jk" index="0" />
-          <float ref="jk" index="1" />
+        <value id="jkm" label="JACK LEN" format="%.3f" formula="$#/1600">
+          <repeat_val from="0" to="15">
+            <float ref="jk" index="$_" />
+          </repeat_val>
         </value>
         <value id="abs" label="JACK STOP" symbol="warn">
           <binary ref="abs" bit="2" />

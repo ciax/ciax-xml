@@ -42,7 +42,7 @@ class Db < ExHash
     if ENV['NOCACHE']
       Db.msg{"ENV NOCACHE is set"}
     elsif !test(?e,fmar)
-      Db.msg{"MAR file(#{base}) not exist"}
+      Db.msg{"MAR file(#{@base}) not exist"}
     elsif newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))
       Db.msg{["File(#{newer}) is newer than cache",
               "cache=#{File::Stat.new(fmar).mtime}",

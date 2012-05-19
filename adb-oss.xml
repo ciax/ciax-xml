@@ -153,28 +153,28 @@
         </value>
       </group>
       <group id="g4" caption="[Stop] [Clmp] [Rdy] [Pos] [Jack Len]  [Clnt Lmt] [Alm]" column="7">
-        <repeat from="1" to="16">
+        <repeat from="1" to="16" format="%02d">
           <!--Order:1,0;3,2;5,4;7,6;...-->
-          <value id="bs%02d" label="%02d" symbol="warn">
+          <value id="bs$_" symbol="warn" label="$_">
             <binary ref="bs" index="$_-($_+1)%2*2" bit="2" />
           </value>
-          <value id="bc%02d" label="%02d" symbol="warn">
+          <value id="bc$_" label="$_" symbol="warn">
             <binary ref="bs" index="$_-($_+1)%2*2" bit="0" />
           </value>
-          <value id="br%02d" label="%02d" symbol="warn">
+          <value id="br$_" label="$_" symbol="warn">
             <binary ref="bs" bit="3" index="$_-($_+1)%2*2" />
           </value>
-          <value id="bl%02d" label="%02d" symbol="bl">
+          <value id="bl$_" label="$_" symbol="bl">
             <binary ref="bl" index="$_-($_+1)%2*2" bit="1" />
             <binary ref="bl" bit="2" index="$_-($_+1)%2*2" />
           </value>
-          <value id="jk%02d" label="%02d" format="%5.2f" formula="$#/100">
+          <value id="jk$_" label="$_" format="%5.2f" formula="$#/100">
             <float ref="jk" index="$_-($_+1)%2*2" />
           </value>
-          <value id="cl%02d" label="%02d" symbol="normal">
+          <value id="cl$_" label="$_" symbol="normal">
             <binary ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
           </value>
-          <value id="ba%02d" label="%02d" symbol="ba">
+          <value id="ba$_" label="$_" symbol="ba">
             <binary ref="bl" index="$_-($_+1)%2*2" bit="0"></binary>
             <binary ref="bl" index="$_-($_+1)%2*2" bit="4" />
           </value>
@@ -182,7 +182,7 @@
       </group>
       <group id="g5" caption="[Z Sensor Len]" column="4">
         <repeat from="1" to="4">
-          <value id="z%d" label="%d" format="%5.2f" formula="$#/100">
+          <value id="z$_" label="$_" format="%5.2f" formula="$#/100">
             <float ref="zp" index="$_-1" />
           </value>
         </repeat>

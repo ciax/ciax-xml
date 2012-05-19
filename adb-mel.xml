@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="5">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -384,19 +384,19 @@
       </group>
       <group id="gjm" caption="Jacking Motor Stat" column="5">
         <repeat from="1" to="4">
-          <value id="js%d" label="SV %d" symbol="action">
+          <value id="js$_" label="SV $_" symbol="action">
             <binary ref="x" index="0" bit="9+$_" inv="true" />
           </value>
-          <value id="jh%d" label="H(mm) %d" formula="$#/100">
+          <value id="jh$_" label="H(mm) $_" formula="$#/100">
             <float ref="x" index="8+2*$_" />
           </value>
-          <value id="cn%d" label="Corn %d" symbol="con">
+          <value id="cn$_" label="Corn $_" symbol="con">
             <binary ref="x" index="19+($_-1)/2" bit="13-($_%2)*8" />
           </value>
-          <value id="ld%d" label="LD(Kgf) %d">
+          <value id="ld$_" label="LD(Kgf) $_">
             <int ref="x" index="$_+47" />
           </value>
-          <value id="lc%d" label="LD(S) %d" symbol="load">
+          <value id="lc$_" label="LD(S) $_" symbol="load">
             <binary ref="x" index="19+($_-1)/2" bit="8-($_%2)*8" />
             <binary ref="x" index="19+($_-1)/2" bit="9-($_%2)*8" />
             <binary ref="x" index="19+($_-1)/2" bit="10-($_%2)*8" />

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="cjk" id="cjk" label="Cart Jack Table" version="0">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -33,11 +33,11 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
       <repeat from="0" to="10" counter="i">
-        <group id="id%d" caption="ID %d" column="4">
+        <group id="id$i" caption="ID $i" column="4">
           <repeat from="0" to="5" counter="t">
             <repeat from="0" to="3" counter="l">
               <repeat from="0" to="3" counter="j">
-                <value id="i%dt%dl%dj%d" label="ID%d,Tag%d,Lev%d,Jak%d" formula="$#/100">
+                <value id="i$it$tl$lj$j" label="ID$i,Tag$t,Lev$l,Jak$j" formula="$#/100">
                   <float ref="t" index="$t:$j:$i*4+$l" />
                 </value>
               </repeat>

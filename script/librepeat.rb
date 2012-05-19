@@ -5,6 +5,7 @@ class Repeat
   def initialize
     Repeat.init_ver(self,5)
     @counter={}
+    @format={}
     @rep=[]
   end
 
@@ -33,8 +34,8 @@ class Repeat
   end
 
   def format(str)
-    return str unless str.include?('%')
-    res = str % @counter.values
+    return str unless /\$([_a-z])/ === str
+    res=str.gsub(/\$([_a-z])/){ @format[$1] % @counter[$1] }
     Repeat.msg{"Format [#{str}] to [#{res}]"}
     res
   end
@@ -42,14 +43,14 @@ class Repeat
   private
   def repeat(e0)
     @rep.clear
-    fmt=e0['format'] || '%d'
     c=e0['counter'] || '_'
     c.next! while @counter[c]
+    @format[c]=e0['format'] || '%d'
     Repeat.msg(1){"Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"}
     begin
       Range.new(e0['from'],e0['to']).each { |n|
         Repeat.msg(1){"Turn Number[#{n}]"}
-        @counter[c]=fmt % n
+        @counter[c]=n
         begin
           @rep.push yield
         ensure

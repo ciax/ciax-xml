@@ -40,12 +40,17 @@
 
  $_ $` $a..z
     description : substitute sequence number(in repeat), expanded in Db
-    usable: fdb//cmdframe/repeat/[char,string]
+      with eval(calc all over the string):
+            fdb//cmdframe/repeat/[char,string]
             --
             adb//commands/repeat/command/argv
             adb//status/repeat/value/[int,float,binary]@index
             adb//status/repeat/value/binary@bit
             adb//watch/repeat//argv
+      with format string;
+            adb//status/repeat/value@[id,label,group]
+            adb//watch/repeat/event@[id,label]
+            adb//watch/repeat/event/pattern@var
 
  $1..9
     description : substitute parameters, sould be numerical
@@ -63,17 +68,6 @@
  $#
     description : formula parameter
     usable: adb//status/value@formula
-
- %d,%f (Format string)
-    description : sprintf with sequence number array (in repeat) ,expaded in Db
-            adb//status/repeat/value@id
-            adb//status/repeat/value@label
-            adb//status/repeat/value@group
-            adb//watch/repeat/*/@ref
-            adb//watch/repeat/*/@label
-            adb//watch/repeat/*/@blocking
-            --
-            sdb//symbol/repeat/case@id
 
  \?
     description : convert escape characters

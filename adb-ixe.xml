@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -182,19 +182,19 @@
       </group>
       <group id="g3" caption="" column="6">
         <repeat from="1" to="6">
-          <value id="r%d" label="Running %d">
+          <value id="r$_" label="Running $_">
             <string ref="run" index="$_-1" />
           </value>
-          <value id="p%d" label="Pulse %d">
+          <value id="p$_" label="Pulse $_">
             <int ref="p" index="$_-1" />
           </value>
-          <value id="spd%d" label="Speed %d">
+          <value id="spd$_" label="Speed $_">
             <int ref="spd" index="$_-1" />
           </value>
-          <value id="rmp%d" label="Ramp %d">
+          <value id="rmp$_" label="Ramp $_">
             <int ref="spd" index="$_-1" />
           </value>
-          <value id="ofs%d" label="Offset %d">
+          <value id="ofs$_" label="Offset $_">
             <int ref="ofs" index="$_-1" />
           </value>
         </repeat>
@@ -202,8 +202,8 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1" period="3600">
       <repeat from="1" to="6">
-        <event id="m%d" label="Moving %d">
-          <pattern var="r%d">N</pattern>
+        <event id="m$_" label="Moving $_">
+          <pattern var="r$_">N</pattern>
           <block name="fw">
             <argv>$_</argv>
           </block>

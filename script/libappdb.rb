@@ -26,7 +26,7 @@ module App
           hash[:group][:select][gid]=[]
           struct.update(rec_stat(e0,hash,gid,r0))
         else
-          id=e0.attr2db(hash){|k,v| k == 'format' ? v : r0.format(v)}
+          id=e0.attr2db(hash){|k,v| r0.format(v)}
           struct[id]=[]
           e0.each{|e1|
             st={'type' => e1.name}
@@ -57,7 +57,8 @@ module App
       hash=wdb.to_h
       [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
       Repeat.new.each(wdb){|e0,r0|
-        idx=e0['id']
+        idx=r0.format(e0['id'])
+warn idx
         hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
         e0.each{ |e1|
           case name=e1.name.to_sym

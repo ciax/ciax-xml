@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="bbe" id="bbe" label="Helium Compressor">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -116,17 +116,17 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <repeat from="0" to="3">
-        <group id="g%d" column="4">
-          <value id="xsw%d" label="SWITCH" symbol="off-warn">
+        <group id="g$_" column="4">
+          <value id="xsw$_" label="SWITCH" symbol="off-warn">
             <binary bit="$_*4" ref="stat" />
           </value>
-          <value id="xdr%d" label="DRIVE" symbol="off-warn">
+          <value id="xdr$_" label="DRIVE" symbol="off-warn">
             <binary bit="$_*4+1" ref="stat" />
           </value>
-          <value id="xtm%d" label="TEMP ALM" symbol="alarm">
+          <value id="xtm$_" label="TEMP ALM" symbol="alarm">
             <binary bit="$_*4+2" ref="stat" />
           </value>
-          <value id="xpr%d" label="PRES ALM" symbol="alarm">
+          <value id="xpr$_" label="PRES ALM" symbol="alarm">
             <binary bit="$_*4+3" ref="stat" />
           </value>
         </group>

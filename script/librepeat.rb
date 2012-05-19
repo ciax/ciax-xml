@@ -44,7 +44,7 @@ class Repeat
   def repeat(e0)
     @rep.clear
     c=e0['counter'] || '_'
-    c.next! while @counter[c]
+    Msg.abort("Repeat:Counter Duplicate") if @counter.key?(c)
     fmt=@format[c]=e0['format'] || '%d'
     Repeat.msg(1){"Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"}
     begin

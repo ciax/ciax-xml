@@ -58,7 +58,6 @@ module App
       [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
       Repeat.new.each(wdb){|e0,r0|
         idx=r0.format(e0['id'])
-warn idx
         hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
         e0.each{ |e1|
           case name=e1.name.to_sym

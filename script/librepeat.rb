@@ -45,7 +45,7 @@ class Repeat
     @rep.clear
     c=e0['counter'] || '_'
     c.next! while @counter[c]
-    @format[c]=e0['format'] || '%d'
+    fmt=@format[c]=e0['format'] || '%d'
     Repeat.msg(1){"Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"}
     begin
       Range.new(e0['from'],e0['to']).each { |n|

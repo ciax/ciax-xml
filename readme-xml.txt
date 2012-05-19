@@ -39,7 +39,7 @@
  # Process order: repeat -> parameter -> status -> formula -> eval -> format
 
  $_ $` $a..z
-    description : substitute sequence number(in repeat)
+    description : substitute sequence number(in repeat), expanded in Db
     usable: fdb//cmdframe/repeat/[char,string]
             --
             adb//commands/repeat/command/argv
@@ -62,10 +62,10 @@
 
  $#
     description : formula parameter
-    usable: adb//status/value/float@formula
+    usable: adb//status/value@formula
 
  %d,%f (Format string)
-    description : sprintf with sequence number array (in repeat)
+    description : sprintf with sequence number array (in repeat) ,expaded in Db
             adb//status/repeat/value@id
             adb//status/repeat/value@label
             adb//status/repeat/value@group

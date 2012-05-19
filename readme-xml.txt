@@ -1,4 +1,5 @@
 ## Layer description ##
+
   frm: Frame layer
        classified by frame format
        transaction: sync
@@ -10,6 +11,7 @@
        function: aliasing, symboling and labeling over adb items
 
 ## DB description ##
+
   fdb: Frame DB
     fdbc: Command DB
     fdbs: Status DB
@@ -102,15 +104,19 @@
             adb//event/range
 
 ### Implicit conversion ###
+
   numerical sum
     adb//status/value/float
     adb//status/value/int
+
+  binary sum (MSB first)
     adb//status/value/binary
 
   concat strings
     adb//status/value/string
  
-### Reference Content ###
+### Reference Key ###
+
   fdb//command@response <= fdb//rspframe//response@id
   adb//frmcmd@name <= fdb//command@id
   adb//event/(int,exec,block)@name <= adb//commands/command@id

@@ -13,6 +13,7 @@ module App
       @field=Msg.type?(field,Field::Var)
       @ads=@db[:status][:select]
       @fmt=@db[:status][:format]||{}
+      @fml=@db[:status][:formula]||{}
       @ads.keys.each{|k| @val[k]||='' }
       self
     end
@@ -22,6 +23,11 @@ module App
         begin
           Rsp.msg(1){"STAT:GetStatus:[#{id}]"}
           data=get_val(fields)
+          if @fml.key?(id)
+            f=@fml[id].gsub(/\$#/,data.to_s)
+            data=eval(f)
+            Rsp.msg{"Formula:#{f}(#{data})"}
+          end
           data = @fmt[id] % data if @fmt.key?(id)
           @val[id]=data.to_s
         ensure
@@ -77,11 +83,6 @@ module App
       data=data.to_f
       # Numerical Data
       data= -data if sign
-      if e1['formula']
-        f=e1['formula'].gsub(/\$#/,data.to_s)
-        data=eval(f)
-        Rsp.msg{"Formula:#{f}(#{data})"}
-      end
       data
     end
 

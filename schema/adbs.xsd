@@ -65,6 +65,7 @@
       <xsd:attributeGroup ref="adbs:id_attr" />
       <xsd:attribute name="symbol" type="xsd:NCName" />
       <xsd:attribute name="format" type="xsd:token" use="optional" />
+      <xsd:attribute name="formula" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in value-->
@@ -78,7 +79,6 @@
   <xsd:element name="float">
     <xsd:complexType>
       <xsd:attributeGroup ref="adbs:ref_attr" />
-      <xsd:attribute name="formula" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="int">

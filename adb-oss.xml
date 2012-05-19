@@ -134,9 +134,9 @@
         <value id="iang" label="InR" format="%.3f">
           <float ref="iang" />
         </value>
-        <value id="jkm" label="JACK LEN" format="%.3f">
-          <float ref="jk" index="0" formula="$#/100" />
-          <float ref="jk" index="1" formula="$#/100" />
+        <value id="jkm" label="JACK LEN" format="%.3f" formula="$#/200">
+          <float ref="jk" index="0" />
+          <float ref="jk" index="1" />
         </value>
         <value id="abs" label="JACK STOP" symbol="warn">
           <binary ref="abs" bit="2" />
@@ -168,8 +168,8 @@
             <binary ref="bl" index="$_-($_+1)%2*2" bit="1" />
             <binary ref="bl" bit="2" index="$_-($_+1)%2*2" />
           </value>
-          <value id="jk%02d" label="%02d" format="%5.2f">
-            <float ref="jk" index="$_-($_+1)%2*2" formula="$#/100" />
+          <value id="jk%02d" label="%02d" format="%5.2f" formula="$#/100">
+            <float ref="jk" index="$_-($_+1)%2*2" />
           </value>
           <value id="cl%02d" label="%02d" symbol="normal">
             <binary ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
@@ -182,8 +182,8 @@
       </group>
       <group id="g5" caption="[Z Sensor Len]" column="4">
         <repeat from="1" to="4">
-          <value id="z%d" label="%d" format="%5.2f">
-            <float ref="zp" index="$_-1" formula="$#/100" />
+          <value id="z%d" label="%d" format="%5.2f" formula="$#/100">
+            <float ref="zp" index="$_-1" />
           </value>
         </repeat>
       </group>

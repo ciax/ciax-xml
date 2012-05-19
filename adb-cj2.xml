@@ -364,13 +364,13 @@
       </group>
       <group id="g5" caption="Z Sensor" column="4">
         <repeat from="1" to="4">
-          <value id="fz%d" label="Fix %d" format="%.2f">
-            <float ref="d" index="$_-1" formula="$#/100" />
+          <value id="fz%d" label="Fix %d" format="%.2f" formula="$#/100">
+            <float ref="d" index="$_-1" />
           </value>
         </repeat>
         <repeat from="1" to="4">
-          <value id="mz%d" label="Mov %d" format="%.2f">
-            <float ref="d" index="$_+3" formula="$#/100" />
+          <value id="mz%d" label="Mov %d" format="%.2f" formula="$#/100">
+            <float ref="d" index="$_+3" />
           </value>
         </repeat>
       </group>

@@ -14,8 +14,8 @@
         <value id="ecode" label="Error Code" symbol="ecode">
           <string ref="ecode" />
         </value>
-        <value id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="flow" format="%4.2f">
-          <float ref="stat" formula="$#/100" />
+        <value id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="flow" format="%4.2f" formula="$#/100">
+          <float ref="stat" />
         </value>
       </group>
     </status>

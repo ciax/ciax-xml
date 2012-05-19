@@ -364,16 +364,16 @@
         <value id="chg" label="CHARGING" symbol="action">
           <binary ref="x" index="0" bit="6" />
         </value>
-        <value id="vol" label="Battery(V)" symbol="bvl" format="%02.2f">
-          <float ref="x" index="22" formula="$#/100" />
+        <value id="vol" label="Battery(V)" symbol="bvl" format="%02.2f" formula="$#/100">
+          <float ref="x" index="22" />
         </value>
       </group>
       <group id="gmot" caption="Running Motor Stat" column="2">
         <value id="msr" label="Servo R" symbol="action">
           <binary ref="x" index="0" bit="8" inv="true" />
         </value>
-        <value id="mdr" label="D/A R">
-          <float ref="x" index="7" formula="-$#" />
+        <value id="mdr" label="D/A R" formula="-$#">
+          <float ref="x" index="7" />
         </value>
         <value id="msl" label="Servo L" symbol="action">
           <binary ref="x" index="0" bit="9" inv="true" />
@@ -387,8 +387,8 @@
           <value id="js%d" label="SV %d" symbol="action">
             <binary ref="x" index="0" bit="9+$_" inv="true" />
           </value>
-          <value id="jh%d" label="H(mm) %d">
-            <float ref="x" index="8+2*$_" formula="$#/100" />
+          <value id="jh%d" label="H(mm) %d" formula="$#/100">
+            <float ref="x" index="8+2*$_" />
           </value>
           <value id="cn%d" label="Corn %d" symbol="con">
             <binary ref="x" index="19+($_-1)/2" bit="13-($_%2)*8" />

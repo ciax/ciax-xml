@@ -3,9 +3,9 @@ require "libdb"
 
 module Ins
   class Db < Db
-    def initialize(id)
+    def initialize(id,proj=nil)
       self['id']=id
-      super('idb',id,ENV['PROJ']){|doc|
+      super('idb',id,proj){|doc|
         hash={}
         hash.update(doc)
         doc.domain('init').each{|e0|

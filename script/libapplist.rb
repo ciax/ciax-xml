@@ -13,10 +13,10 @@ module App
   autoload :Cl,"libappcl"
   autoload :Sv,"libappsv"
   class List < Hash
-    def initialize
-      $opt||={'a'=>true}
-      super{|h,id|
-        idb=Ins::Db.new(id)
+    def initialize(proj=nil)
+      $opt||={}
+      super(){|h,id|
+        idb=Ins::Db.new(id,proj)
         adb=idb.cover_app
         if $opt['t']
           aint=Sh.new(adb).extend(Test)

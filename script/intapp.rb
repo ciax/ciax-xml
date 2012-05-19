@@ -2,7 +2,7 @@
 require "libapplist"
 
 Msg.getopts("cfh:lts")
-aint=App::List.new
+aint=App::List.new(ENV['PROJ'])
 id=ARGV.shift
 begin
   int=aint[id]

@@ -12,7 +12,7 @@ class Repeat
   def each(e0)
     e0.each{|e1|
       case e1.name
-      when 'repeat'
+      when /repeat.*/
         repeat(e1){
           each(e1){|e2|
             yield e2,self

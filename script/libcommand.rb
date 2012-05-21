@@ -9,36 +9,41 @@ class Command < ExHash
   extend Msg::Ver
   include Math
   attr_reader :list
-  # command db (:label,:select,:parameter)
-  # frm command db (:nocache,:response)
+  # mandatory (:select)
+  # optional (:alias,:label,:parameter)
+  # optionalfrm (:nocache,:response)
   def initialize(db)
     Command.init_ver(self)
     @db=Msg.type?(db,Hash)
     @list=Msg::GroupList.new(db)
+    @par=[]
   end
 
   # Validate command and parameters
   def set(cmd)
-    id=Msg.type?(cmd,Array).first
-    id=(@db.key?(:alias) && @db[:alias][id])||id
-    unless @db[:select].key?(id)
-      @list.error("No such CMD [#{id}]")
-    end
-    Command.msg{"SetCMD: #{cmd}"}
-    self[:param]=cmd[1..-1]
-    self[:cid]=cmd.join(':') # Used by macro
-    [:label,:nocache,:response].each{|k,v|
-      self[k]=@db[k][id] if @db.key?(k)
-    }
-    if @db.key?(:parameter) && par=@db[:parameter][id]
-      unless par.size < cmd.size
-        Msg.err("Parameter shortage (#{par.size})",@list.item(id))
+    clear
+    id,*@par=Msg.type?(cmd,Array)
+    [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
+      next unless @db.key?(key) && val=@db[key][id]
+      case key
+      when :alias
+        id=val
+      when :parameter
+        if val.size > @par.size
+          Msg.err("Parameter shortage (#{@par.size})",@list.item(id))
+        end
+        val.size.times{|i|
+          validate(@par[i],val[i])
+        }
+      when :select
+        self[key]=deep_subst(val)
+      else
+        self[key]=val
       end
-      par.size.times{|i|
-        validate(self[:param][i],par[i])
-      }
-    end
-    self[:select]=deep_subst(@db[:select][id])
+    }
+    @list.error("No such CMD [#{id}]") if empty?
+    self[:cid]=cmd.join(':') # Used by macro
+    Command.msg{"SetCMD: #{cmd}"}
     self
   end
 
@@ -52,7 +57,7 @@ class Command < ExHash
       res=str.gsub(/\$([\d]+)/){
         i=$1.to_i
         Command.msg{"Parameter No.#{i} = [#{self[:param][i-1]}]"}
-        self[:param][i-1] || Msg.err(" No substitute data ($#{i})")
+        @par[i-1] || Msg.err(" No substitute data ($#{i})")
       }
       res=eval(res).to_s unless /\$/ === res
       Msg.err("Nil string") if res == ''
@@ -122,8 +127,8 @@ module Command::Exe
     Msg.type?(obj,Command)
   end
 
-  def default
-    @default=proc{ yield self }
+  def init
+    self[:exe]=Hash.new{|h,id| h=yield id }
     self
   end
 

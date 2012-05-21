@@ -17,11 +17,11 @@ class Command < ExHash
     @db=Msg.type?(db,Hash)
     @list=Msg::GroupList.new(db)
     @par=[]
+    self[:select]={}
   end
 
   # Validate command and parameters
   def set(cmd)
-    clear
     @id,*@par=Msg.type?(cmd,Array)
     [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
       next unless @db.key?(key) && val=@db[key][@id]
@@ -129,6 +129,12 @@ module Command::Exe
 
   def init
     @exe=Hash.new{|h,id| h[id]=proc{|pri| yield self,pri } }
+    self
+  end
+
+  def add_proc(id)
+    @exe[id]=proc{ yield }
+    self[:select][id]=:proc
     self
   end
 

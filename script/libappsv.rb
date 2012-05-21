@@ -13,19 +13,27 @@ module App
     def initialize(adb)
       super(adb)
       id=adb['id']
-      @cobj.extend(App::Cmd).extend(Command::Exe).init{|obj,pri|
-        @buf.send(pri){ obj.get }
-        "ISSUED"
-      }
       @stat.ext_save.extend(App::Rsp).init(@fint.field).extend(Sym::Conv).upd
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv)
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
+      @cobj.extend(App::Cmd).extend(Command::Exe).init{|obj,pri|
+        @buf.send(pri){ obj.get }
+        "ISSUED"
+      }
+      @cobj.add_proc('interrupt'){
+        int=@stat.interrupt.each{|cmd|
+          @cobj.exe(cmd,0)
+        }
+        "Interrupt #{int}"
+      }
       @buf.post_flush << proc{
         @stat.upd.save
         sleep(@stat.interval||0.1)
-        sendfrm(@stat.issue,2)
+        @stat.issue.each{|cmd|
+          @cobj.exe(cmd,2)
+        }
       }
       @fint.post_exe << proc {
         @stat.upd
@@ -44,10 +52,6 @@ module App
       msg=''
       if @stat.block?(cmd)
         msg="Blocking(#{cmd})"
-      elsif /interrupt/ === cmd[0]
-        int=@stat.interrupt
-        sendfrm(int,0)
-        msg="Interrupt #{int}"
       elsif /OK/ === (msg=super)
         msg=@cobj.exe(cmd,1)
       end

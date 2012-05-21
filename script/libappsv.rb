@@ -13,7 +13,10 @@ module App
     def initialize(adb)
       super(adb)
       id=adb['id']
-      @cobj.extend(App::Cmd)
+      @cobj.extend(App::Cmd).extend(Command::Exe).init{|obj,pri|
+        @buf.send(pri){ obj.get }
+        "ISSUED"
+      }
       @stat.ext_save.extend(App::Rsp).init(@fint.field).extend(Sym::Conv).upd
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
       @stat.extend(Watch::Conv)
@@ -46,8 +49,7 @@ module App
         sendfrm(int,0)
         msg="Interrupt #{int}"
       elsif /OK/ === (msg=super)
-        sendfrm([cmd])
-        msg="ISSUED"
+        msg=@cobj.exe(cmd,1)
       end
       upd_prompt
       msg
@@ -71,8 +73,8 @@ module App
       @buf.send(pri){
         # Making bunch of frmcmd array (ary of ary)
         ary.map{|cmd|
-        @cobj.set(cmd).get
-      }.flatten(1)
+          @cobj.set(cmd).get
+        }.flatten(1)
       }
     end
 

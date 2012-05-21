@@ -22,15 +22,15 @@ class Command < ExHash
   # Validate command and parameters
   def set(cmd)
     clear
-    id,*@par=Msg.type?(cmd,Array)
+    @id,*@par=Msg.type?(cmd,Array)
     [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
-      next unless @db.key?(key) && val=@db[key][id]
+      next unless @db.key?(key) && val=@db[key][@id]
       case key
       when :alias
-        id=val
+        @id=val
       when :parameter
         if val.size > @par.size
-          Msg.err("Parameter shortage (#{@par.size})",@list.item(id))
+          Msg.err("Parameter shortage (#{@par.size})",@list.item(@id))
         end
         val.size.times{|i|
           validate(@par[i],val[i])
@@ -41,7 +41,7 @@ class Command < ExHash
         self[key]=val
       end
     }
-    @list.error("No such CMD [#{id}]") if empty?
+    @list.error("No such CMD [#{@id}]") if empty?
     self[:cid]=cmd.join(':') # Used by macro
     Command.msg{"SetCMD: #{cmd}"}
     self
@@ -128,19 +128,15 @@ module Command::Exe
   end
 
   def init
-    self[:exe]=Hash.new{|h,id| h=yield id }
+    @exe=Hash.new{|h,id| h[id]=proc{|pri| yield self,pri } }
     self
   end
 
-  def set(cmd)
-    super
-    append(cmd)
-    self
+  def exe(cmd,pri=1)
+    set(cmd)
+    @exe[@id].call(pri)
   end
 end
-
-
-
 
 if __FILE__ == $0
   require 'libinsdb'

@@ -68,18 +68,6 @@ class Command < ExHash
     self
   end
 
-  module Logging
-    def self.extended(obj)
-      Msg.type?(obj,Command)
-      obj.extend Object::Logging
-    end
-    def set(cmd)
-      super
-      append(cmd)
-      self
-    end
-  end
-
   private
   def deep_subst(data)
     case data
@@ -116,6 +104,38 @@ class Command < ExHash
     str
   end
 end
+
+module Command::Logging
+  def self.extended(obj)
+    Msg.type?(obj,Command)
+    obj.extend Object::Logging
+  end
+  def set(cmd)
+    super
+    append(cmd)
+    self
+  end
+end
+
+module Command::Exe
+  def self.extended(obj)
+    Msg.type?(obj,Command)
+  end
+
+  def default
+    @default=proc{ yield self }
+    self
+  end
+
+  def set(cmd)
+    super
+    append(cmd)
+    self
+  end
+end
+
+
+
 
 if __FILE__ == $0
   require 'libinsdb'

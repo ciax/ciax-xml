@@ -21,6 +21,7 @@ class Command < ExHash
   # Validate command and parameters
   def set(cmd)
     clear
+    @list.error("No CMD") if cmd.empty?
     id,*par=Msg.type?(cmd,Array)
     yield id if defined? yield
     [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
@@ -45,7 +46,12 @@ class Command < ExHash
     self[:par]=par
     self[:cid]=cmd.join(':') # Used by macro
     Command.msg{"SetCMD: #{cmd}"}
+    self[:msg]='OK'
     self
+  end
+
+  def to_s
+    self[:msg].to_s
   end
 
   # Substitute string($+number) with parameters
@@ -128,10 +134,11 @@ module Command::Exe
     Msg.type?(obj,Command)
   end
 
+  # content of proc should return String
   def init
     @exe={}
     @db[:select].each{|k,v|
-      @exe[k]=proc{|pri| yield self,pri }
+      @exe[k]=proc{|pri| yield pri }
     }
     Command.msg{"Set Default Proc"}
     @chk=proc{}
@@ -143,6 +150,7 @@ module Command::Exe
     self
   end
 
+  # content of proc should return String
   def add_proc(id,title)
     @list.add_group('int',"Internal Command",{id=>title},2)
     @exe[id]=proc{ yield self[:par] }
@@ -156,7 +164,8 @@ module Command::Exe
   end
 
   def exe(pri=1)
-    self[:exe].call(pri)
+    self[:msg]=self[:exe].call(pri)
+    self
   end
 end
 

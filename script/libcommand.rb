@@ -22,6 +22,7 @@ class Command < ExHash
 
   # Validate command and parameters
   def set(cmd)
+    clear
     @id,*@par=Msg.type?(cmd,Array)
     [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
       next unless @db.key?(key) && val=@db[key][@id]
@@ -124,22 +125,38 @@ end
 
 module Command::Exe
   def self.extended(obj)
-    Msg.type?(obj,Command)
+    Msg.type?(obj,Command).init
   end
 
   def init
+    @exe=Hash.new{|h,id| h[id]=proc{'OK'} }
+    @chk=proc{}
+    self
+  end
+
+  def set(cmd)
+    @chk.call(cmd)
+    super
+  end
+
+  def def_proc
     @exe=Hash.new{|h,id| h[id]=proc{|pri| yield self,pri } }
+    Command.msg{"Proc added"}
     self
   end
 
   def add_proc(id)
-    @exe[id]=proc{ yield }
+    @exe[id]=proc{ yield @par }
     self[:select][id]=:proc
     self
   end
 
-  def exe(cmd,pri=1)
-    set(cmd)
+  def chk_proc
+    @chk=proc{|cmd| yield cmd}
+    self
+  end
+
+  def exe(pri=1)
     @exe[@id].call(pri)
   end
 end

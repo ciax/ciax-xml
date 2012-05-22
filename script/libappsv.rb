@@ -18,15 +18,18 @@ module App
       @stat.extend(Watch::Conv)
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
-      @cobj.extend(App::Cmd).extend(Command::Exe).init{|obj,pri|
+      @cobj.extend(App::Cmd).extend(Command::Exe).def_proc{|obj,pri|
         @buf.send(pri){ obj.get }
-        "ISSUED"
+        "Issued"
       }
       @cobj.add_proc('interrupt'){
         int=@stat.interrupt.each{|cmd|
           @cobj.exe(cmd,0)
         }
         "Interrupt #{int}"
+      }
+      @cobj.chk_proc{|cmd|
+        Msg.err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
       @buf.post_flush << proc{
         @stat.upd.save
@@ -49,11 +52,8 @@ module App
 
     #cmd is array
     def exe(cmd)
-      msg=''
-      if @stat.block?(cmd)
-        msg="Blocking(#{cmd})"
-      elsif /OK/ === (msg=super)
-        msg=@cobj.exe(cmd,1)
+      if obj=super
+        msg=obj.exe(1)
       end
       upd_prompt
       msg

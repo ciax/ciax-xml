@@ -16,10 +16,12 @@ module Int
       @cmdlist=Msg::GroupList.new
     end
 
+    # No command => nil
+    # Bad command => UserError
+    # Accepted => cobj
     def exe(cmd)
-      return '' if cmd.empty?
+      return if cmd.empty?
       @cobj.set(cmd)
-      'OK'
     end
 
     # 'q' gives exit break (loop returns nil)

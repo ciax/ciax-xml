@@ -151,8 +151,8 @@ module Command::Exe
   end
 
   # content of proc should return String
-  def add_proc(id,title)
-    @list.add_group('int',"Internal Command",{id=>title},2)
+  def add_proc(id,title=nil)
+    @list.add_group('int',"Internal Command",{id=>title},2) if title
     @exe[id]=proc{ yield self[:par] }
     Command.msg{"Proc added"}
     self

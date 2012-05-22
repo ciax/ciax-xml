@@ -24,6 +24,7 @@ class Command < ExHash
   def set(cmd)
     clear
     @id,*@par=Msg.type?(cmd,Array)
+    update(yield @id) if defined? yield
     [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
       next unless @db.key?(key) && val=@db[key][@id]
       case key
@@ -37,7 +38,7 @@ class Command < ExHash
           validate(@par[i],val[i])
         }
       when :select
-        self[key]=deep_subst(val)
+        self[:select]=deep_subst(val)
       else
         self[key]=val
       end
@@ -125,29 +126,28 @@ end
 
 module Command::Exe
   def self.extended(obj)
-    Msg.type?(obj,Command).init
+    Msg.type?(obj,Command)
   end
 
   def init
-    @exe=Hash.new{|h,id| h[id]=proc{'OK'} }
+    @exe={}
+    @db[:select].each{|k,v|
+      @exe[k]=proc{|pri| yield self,pri }
+    }
+    Command.msg{"Set Default Proc"}
     @chk=proc{}
     self
   end
 
   def set(cmd)
-    @chk.call(cmd)
-    super
-  end
-
-  def def_proc
-    @exe=Hash.new{|h,id| h[id]=proc{|pri| yield self,pri } }
-    Command.msg{"Proc added"}
+    super{|id| @exe.key?(id) ? {:exe => @exe[id]} : {} }
     self
   end
 
-  def add_proc(id)
+  def add_proc(id,title)
+    @list.add_group('int',"Internal Command",{id=>title},2)
     @exe[id]=proc{ yield @par }
-    self[:select][id]=:proc
+    Command.msg{"Proc added"}
     self
   end
 
@@ -157,7 +157,7 @@ module Command::Exe
   end
 
   def exe(pri=1)
-    @exe[@id].call(pri)
+    self[:exe].call(pri)
   end
 end
 

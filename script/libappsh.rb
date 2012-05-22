@@ -18,7 +18,6 @@ module App
       @shmode='app'
     end
 
-
     def shell
       id=@shmode
       loop{
@@ -47,23 +46,22 @@ module App
     end
 
     def init
-      @cmdlist.add_group('int',"Internal Command",{'set'=>"[key=val], .."},2)
-      @stat.extend(Sym::Conv).load
+      @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
+      @cobj.extend(Command::Exe).init{'OK'}.add_proc('set','[key=val,...]'){|par|
+        Msg.err("Usage: set [key=val,..]") if par.empty?
+        @stat.str_update(par.first).upd
+        "Set #{par}"
+      }
       self
     end
 
     def exe(cmd)
-      case cmd.first
-      when 'set'
-        cmd[1] || raise(UserError,"usage: set [key=val,..]")
-        @stat.str_update(cmd[1]).upd
-        "Set #{cmd[1]}"
-      else
-        msg=super
+      if obj=super
+        msg=obj.exe
         @stat.set_time unless msg.empty?
-        msg
       end
+      msg
     end
   end
 end

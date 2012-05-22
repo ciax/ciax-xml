@@ -16,26 +16,24 @@ class Command < ExHash
     Command.init_ver(self)
     @db=Msg.type?(db,Hash)
     @list=Msg::GroupList.new(db)
-    @par=[]
-    self[:select]={}
   end
 
   # Validate command and parameters
   def set(cmd)
     clear
-    @id,*@par=Msg.type?(cmd,Array)
-    update(yield @id) if defined? yield
+    id,*par=Msg.type?(cmd,Array)
+    yield id if defined? yield
     [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
-      next unless @db.key?(key) && val=@db[key][@id]
+      next unless @db.key?(key) && val=@db[key][id]
       case key
       when :alias
-        @id=val
+        id=val
       when :parameter
-        if val.size > @par.size
-          Msg.err("Parameter shortage (#{@par.size})",@list.item(@id))
+        if val.size > par.size
+          Msg.err("Parameter shortage (#{self[:par].size})",@list.item(id))
         end
         val.size.times{|i|
-          validate(@par[i],val[i])
+          validate(par[i],val[i])
         }
       when :select
         self[:select]=deep_subst(val)
@@ -43,7 +41,8 @@ class Command < ExHash
         self[key]=val
       end
     }
-    @list.error("No such CMD [#{@id}]") if empty?
+    @list.error("No such CMD [#{id}]") if empty?
+    self[:par]=par
     self[:cid]=cmd.join(':') # Used by macro
     Command.msg{"SetCMD: #{cmd}"}
     self
@@ -59,7 +58,7 @@ class Command < ExHash
       res=str.gsub(/\$([\d]+)/){
         i=$1.to_i
         Command.msg{"Parameter No.#{i} = [#{self[:param][i-1]}]"}
-        @par[i-1] || Msg.err(" No substitute data ($#{i})")
+        self[:par][i-1] || Msg.err(" No substitute data ($#{i})")
       }
       res=eval(res).to_s unless /\$/ === res
       Msg.err("Nil string") if res == ''
@@ -140,13 +139,13 @@ module Command::Exe
   end
 
   def set(cmd)
-    super{|id| @exe.key?(id) ? {:exe => @exe[id]} : {} }
+    super{|id| self[:exe]=@exe[id] if @exe.key?(id) }
     self
   end
 
   def add_proc(id,title)
     @list.add_group('int',"Internal Command",{id=>title},2)
-    @exe[id]=proc{ yield @par }
+    @exe[id]=proc{ yield self[:par] }
     Command.msg{"Proc added"}
     self
   end

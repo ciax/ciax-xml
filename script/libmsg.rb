@@ -123,7 +123,7 @@ module Msg
     end
 
     def add_group(key,title,hash={},col=1,color=6)
-      @group[key]=CmdList.new(title,col,color)
+      @group[key]=CmdList.new(title,col,color) unless @group.key?(key)
       add_items(key,hash)
     end
 

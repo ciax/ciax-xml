@@ -48,7 +48,8 @@ module App
     def init
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
-      @cobj.extend(Command::Exe).init{'OK'}.add_proc('set','[key=val,...]'){|par|
+      @cobj.extend(Command::Exe).init{'OK'}
+      @cobj.add_proc('set','[key=val,...]'){|par|
         Msg.err("Usage: set [key=val,..]") if par.empty?
         @stat.str_update(par.first).upd
         "Set #{par}"
@@ -57,10 +58,8 @@ module App
     end
 
     def exe(cmd)
-      if obj=super
-        msg=obj.exe
-        @stat.set_time unless msg.empty?
-      end
+      msg=super.exe
+      @stat.set_time
       msg
     end
   end

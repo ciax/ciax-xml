@@ -16,11 +16,10 @@ module Int
       @cmdlist=Msg::GroupList.new
     end
 
-    # No command => nil
+    # No command => UserError
     # Bad command => UserError
-    # Accepted => cobj
+    # Accepted => Command
     def exe(cmd)
-      return if cmd.empty?
       @cobj.set(cmd)
     end
 

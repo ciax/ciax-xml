@@ -18,8 +18,8 @@ module App
       @stat.extend(Watch::Conv)
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
-      @cobj.extend(App::Cmd).extend(Command::Exe).def_proc{|obj,pri|
-        @buf.send(pri){ obj.get }
+      @cobj.extend(App::Cmd).extend(Command::Exe).init{|pri|
+        @buf.send(pri){ @cobj.get }
         "Issued"
       }
       @cobj.add_proc('interrupt'){
@@ -52,9 +52,7 @@ module App
 
     #cmd is array
     def exe(cmd)
-      if obj=super
-        msg=obj.exe(1)
-      end
+      msg=super.exe(1)
       upd_prompt
       msg
     end

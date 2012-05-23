@@ -58,9 +58,8 @@ module App
     end
 
     def exe(cmd)
-      msg=super.exe
       @stat.set_time
-      msg
+      super.exe
     end
   end
 end

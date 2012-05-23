@@ -1,2 +1,2 @@
 #!/bin/bash
-VER=${VER:-init/} intapp -a $1 $2
+VER=${VER:-init/} intapp -c $1 $2

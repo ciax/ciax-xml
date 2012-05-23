@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libstatus"
 
 module App
   module Rsp
@@ -96,6 +97,12 @@ module App
   end
 end
 
+class Status::Var
+  def ext_rsp(field)
+    extend(App::Rsp).init(field)
+  end
+end
+
 if __FILE__ == $0
   require "libinsdb"
   require "libfield"
@@ -104,7 +111,7 @@ if __FILE__ == $0
   field=Field::Var.new.load
   adb=Ins::Db.new(field['id']).cover_app
   stat=Status::Var.new.ext_file(adb).ext_save
-  puts stat.extend(App::Rsp).init(field).upd
+  puts stat.ext_rsp(field).upd
   stat.save
   exit
 end

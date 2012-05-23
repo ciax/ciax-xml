@@ -10,7 +10,7 @@ module App
       super(Command.new(adb[:command]))
       @prompt['id']=adb['id']
       @port=adb['port'].to_i
-      @stat=Status::Var.new.extend(Watch::Var).ext_file(adb)
+      @stat=Status::Var.new.ext_watch_r.ext_file(adb)
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=Frm::List.new[adb['id']]
       @cmdlist.add_group('lay',"Change Layer",{'frm'=>"Frm mode"},2)

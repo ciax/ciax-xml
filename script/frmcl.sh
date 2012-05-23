@@ -1,2 +1,2 @@
 #!/bin/bash
-VER=${VER:-init/} intfrm -f $1 $2
+VER=${VER:-init/} intfrm -c $1 $2

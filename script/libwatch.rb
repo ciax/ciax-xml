@@ -45,6 +45,10 @@ module Watch
       Var.msg{"ISSUED:#{cmds}"} unless cmds.empty?
       cmds
     end
+
+    def ext_watch_w
+      extend(Conv)
+    end
   end
 
   module Conv
@@ -207,6 +211,12 @@ module Watch
   end
 end
 
+class Status::Var
+  def ext_watch_r
+    extend(Watch::Var)
+  end
+end
+
 if __FILE__ == $0
   require "libinsdb"
 
@@ -220,8 +230,7 @@ if __FILE__ == $0
   rescue SelectID
     Msg.usage("(opt) [id]",*$optlist)
   end
-  stat=Status::Var.new.ext_file(adb).load
-  stat.extend(Watch::Var)
+  stat=Status::Var.new.ext_file(adb).load.ext_watch_r
   unless $opt['r']
     wview=Watch::View.new(adb,stat)
     unless $opt['v']
@@ -229,7 +238,7 @@ if __FILE__ == $0
     end
   end
   if t=$opt['t']
-    stat.extend(Watch::Conv)
+    stat.ext_watch_w
     stat.ext_save.str_update(t).upd.save
   end
   puts wview||stat['watch']

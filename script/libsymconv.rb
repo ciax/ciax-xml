@@ -56,13 +56,19 @@ module Sym
   end
 end
 
+class Status::Var
+  def ext_sym
+    extend Sym::Conv
+  end
+end
+
 if __FILE__ == $0
   require "libinsdb"
   id=ARGV.shift
   begin
     adb=Ins::Db.new(id).cover_app
     stat=Status::Var.new.ext_file(adb).load
-    stat.extend(Sym::Conv).upd.ext_save.save
+    stat.ext_sym.upd.ext_save.save
     print stat
   rescue UserError
     Msg.usage "[id]"

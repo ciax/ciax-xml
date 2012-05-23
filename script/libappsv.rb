@@ -13,9 +13,9 @@ module App
     def initialize(adb)
       super(adb)
       id=adb['id']
-      @stat.ext_save.extend(App::Rsp).init(@fint.field).extend(Sym::Conv).upd
+      @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
-      @stat.extend(Watch::Conv)
+      @stat.ext_watch_w
       Thread.abort_on_exception=true
       @buf=Buffer.new.thread{|fcmd| @fint.exe(fcmd) }
       @cobj.extend(App::Cmd).extend(Command::Exe).init{|pri|

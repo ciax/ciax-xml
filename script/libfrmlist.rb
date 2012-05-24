@@ -12,10 +12,10 @@ module Frm
   autoload :Cl,"libfrmcl"
   autoload :Sv,"libfrmsv"
   class List < Hash
-    def initialize
+    def initialize(proj=nil)
       $opt||={}
-      super{|h,id|
-        idb=Ins::Db.new(id)
+      super(){|h,id|
+        idb=Ins::Db.new(id,proj)
         fdb=idb.cover_app.cover_frm
         if $opt['t']
           int=Sh.new(fdb)

@@ -22,8 +22,7 @@ module Frm
       end
       @cobj.extend(Frm::Cmd).init(fdb,@field)
       @cobj.extend(Frm::Exe).init{|cid,frm|
-        @io.cid=cid
-        @io.snd(frm)
+        @io.snd(frm,cid)
         @field.upd{@io.rcv} && @field.save
       }
       extend(Int::Server)

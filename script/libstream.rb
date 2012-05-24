@@ -3,7 +3,6 @@ require "libmsg"
 
 class Stream
   extend Msg::Ver
-  attr_accessor :cid
   def initialize(iocmd,wait=0,timeout=nil)
     Stream.init_ver(self,1)
     abort " No IO command" if iocmd.to_a.empty?
@@ -12,7 +11,6 @@ class Stream
     @f=IO.popen(@iocmd,'r+')
     @wait=wait.to_f
     @timeout=timeout
-    @cid=''
   end
 
   def snd(str)
@@ -60,8 +58,9 @@ class Stream
       obj.extend Object::Logging
     end
 
-    def snd(str)
-      super
+    def snd(str,cid)
+      @cid=cid
+      super(str)
       append(['snd',@cid],str)
       self
     end

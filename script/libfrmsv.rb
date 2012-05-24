@@ -26,22 +26,19 @@ module Frm
         @field.upd{@io.rcv} && @field.save
       }
       @cobj.add_case('set'){|par|
-        err?(par,"set [key(:idx)] (val)")
         @field.set(par[0],par[1]).save
       }
       @cobj.add_case('unset'){|par|
-        err?(par,"unset [key(:idx)]")
         @field.unset(par.first)
       }
       @cobj.add_case('save'){|par|
-        err?(par,"save [key,key..] (tag)")
         @field.savekey(par[0].split(','),par[1])
       }
       @cobj.add_case('load'){|par|
         begin
           @field.load(par.first||'')
         rescue UserError
-          Msg.err("Usage: load (tag)",$!.to_s)
+          Msg.err("No such tag",$!)
         end
       }
       @cobj.add_case('sleep'){|par| sleep par.first.to_i }
@@ -54,11 +51,6 @@ module Frm
     def exe(cmd)
       super.call
       'OK'
-    end
-
-    private
-    def err?(par,str)
-      Msg.err("Usage: #{str}","key=#{@field.val.keys}") if par.empty?
     end
   end
 end

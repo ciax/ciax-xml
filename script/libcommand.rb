@@ -30,10 +30,7 @@ class Command < ExHash
       when :alias
         id=val
       when :parameter
-        if val.size > @par.size
-          Msg.err("Parameter shortage (#{@par.size})",@list.item(id))
-        end
-        validate(val)
+        num_validate(id,val)
       when :select
         self[:select]=deep_subst(val)
       else
@@ -96,10 +93,8 @@ class Command < ExHash
     res
   end
 
-  def validate(cary)
-    par=@par.dup
-    cary.map{|cri|
-      Msg.err("No Parameter") unless str=par.shift
+  def num_validate(id,cary)
+    validate(id,cary){|str,cri|
       begin
         num=eval(str)
       rescue Exception
@@ -110,6 +105,19 @@ class Command < ExHash
         break if ReRange.new(r) == num
       } && Msg.err(" Parameter invalid (#{num}) for [#{cri.tr(':','-')}]")
       num.to_s
+    }
+  end
+
+  def validate(id,cary)
+    par=@par.dup
+    cary.map{|cri|
+      if str=par.shift
+        yield(str,cri)
+      else
+        
+        Msg.err("Parameter shortage (#{@par.size}/#{cary.size})",
+                @list.item(id)," "*10+"key=(#{cri.tr('|',',')})")
+      end
     }
   end
 end
@@ -129,18 +137,22 @@ end
 
 module Command::Exe
   def self.extended(obj)
-    Msg.type?(obj,Command)
+    Msg.type?(obj,Command).init
+  end
+
+  def init
+    @exe={}
+    @parameter={}
+    @chk=proc{}
+    self
   end
 
   # content of proc should return String
   def def_proc
-    @exe={}
-    @parameter={}
     @db[:select].each{|k,v|
       @exe[k]=proc{|pri| yield pri}
     }
     Command.msg{"Set Default Proc"}
-    @chk=proc{}
     self
   end
 
@@ -148,7 +160,7 @@ module Command::Exe
   def add_case(id,title=nil,*parameter)
     @list.add_group('int',"Internal Command",{id=>title},2) if title
     @parameter[id]=parameter unless parameter.empty?
-    @exe[id]=proc{ yield @par }
+    @exe[id]=defined?(yield) ? proc{ yield @par } : proc{'OK'}
     Command.msg{"Proc added"}
     self
   end
@@ -162,14 +174,23 @@ module Command::Exe
     @chk.call(cmd)
     super{|id|
       self[:exe]=@exe[id] if @exe.key?(id)
-      validate(@parameter[id]) if @parameter.key?(id)
+      str_validate(id,@parameter[id]) if @parameter.key?(id)
     }
     self
   end
 
   def call(pri=1)
-    self[:msg]=self[:exe].call(pri)
+    self[:msg]=self[:exe].call(pri) if key?(:exe)
     self
+  end
+
+  private
+  def str_validate(id,cary)
+    validate(id,cary){|str,cri|
+      Command.msg{"Validate: [#{str}] Match? [#{cri}]"}
+      Msg.err("Parameter Invalid (#{str}) for [#{cri}]") unless /^(#{cri})/ === str
+      str
+    }
   end
 end
 

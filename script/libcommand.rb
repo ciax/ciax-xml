@@ -33,9 +33,7 @@ class Command < ExHash
         if val.size > @par.size
           Msg.err("Parameter shortage (#{@par.size})",@list.item(id))
         end
-        val.size.times{|i|
-          validate(@par[i],val[i])
-        }
+        validate(val)
       when :select
         self[:select]=deep_subst(val)
       else
@@ -98,21 +96,21 @@ class Command < ExHash
     res
   end
 
-  def validate(str,va=nil)
-    if va
-      Msg.err("No Parameter") unless str
+  def validate(cary)
+    par=@par.dup
+    cary.map{|cri|
+      Msg.err("No Parameter") unless str=par.shift
       begin
         num=eval(str)
       rescue Exception
         Msg.err("Parameter is not number")
       end
-      Command.msg{"Validate: [#{num}] Match? [#{va}]"}
-      va.split(',').each{|r|
+      Command.msg{"Validate: [#{num}] Match? [#{cri}]"}
+      cri.split(',').each{|r|
         break if ReRange.new(r) == num
-      } && Msg.err(" Parameter invalid (#{num}) for [#{va.tr(':','-')}]")
-      str=num.to_s
-    end
-    str
+      } && Msg.err(" Parameter invalid (#{num}) for [#{cri.tr(':','-')}]")
+      num.to_s
+    }
   end
 end
 
@@ -137,6 +135,7 @@ module Command::Exe
   # content of proc should return String
   def def_proc
     @exe={}
+    @parameter={}
     @db[:select].each{|k,v|
       @exe[k]=proc{|pri| yield pri}
     }
@@ -146,8 +145,9 @@ module Command::Exe
   end
 
   # content of proc should return String
-  def add_case(id,title=nil)
+  def add_case(id,title=nil,*parameter)
     @list.add_group('int',"Internal Command",{id=>title},2) if title
+    @parameter[id]=parameter unless parameter.empty?
     @exe[id]=proc{ yield @par }
     Command.msg{"Proc added"}
     self
@@ -160,7 +160,10 @@ module Command::Exe
 
   def set(cmd)
     @chk.call(cmd)
-    super{|id| self[:exe]=@exe[id] if @exe.key?(id) }
+    super{|id|
+      self[:exe]=@exe[id] if @exe.key?(id)
+      validate(@parameter[id]) if @parameter.key?(id)
+    }
     self
   end
 

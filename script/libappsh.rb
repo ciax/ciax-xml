@@ -48,7 +48,7 @@ module App
     def init
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
-      @cobj.extend(Command::Exe).init{'OK'}
+      @cobj.extend(Command::Exe).def_proc{'OK'}
       @cobj.add_case('set','[key=val,...]'){|par|
         Msg.err("Usage: set [key=val,..]") if par.empty?
         @stat.str_update(par.first).upd
@@ -59,7 +59,7 @@ module App
 
     def exe(cmd)
       @stat.set_time
-      super.exe
+      super.call
     end
   end
 end

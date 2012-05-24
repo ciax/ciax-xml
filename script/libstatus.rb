@@ -49,7 +49,7 @@ module Status
       @lastsave=0
       self
     end
-    def save
+    def save(data=nil,tag=nil)
       time=@val['time'].to_f
       if time > @lastsave
         super

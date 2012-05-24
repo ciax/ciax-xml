@@ -100,13 +100,15 @@ module SqLog
     end
 
     # Do a transaction
-    def save
+    def save(data=nil,tag=nil)
       super
-      IO.popen(@sqlcmd,'w'){|f|
-        f.puts sql
-      }
-      Var.msg{"SqLog/Save complete (#{@type})"}
-      @log.clear
+      unless data || tag
+        IO.popen(@sqlcmd,'w'){|f|
+          f.puts sql
+        }
+        Var.msg{"SqLog/Save complete (#{@type})"}
+        @log.clear
+      end
       self
     end
   end

@@ -12,10 +12,10 @@ module Frm
       @field=Field::Var.new.ext_file(fdb).load
       reg=@field.val.keys.join('|')
       @cobj.extend(Command::Exe)
-      @cobj.add_case('set',"Set Value [key(:idx)] (val)",reg,'.')
+      @cobj.add_case('set',"Set Value [key(:idx)] (val)",reg)
       @cobj.add_case('unset',"Remove Value [key]",reg)
-      @cobj.add_case('save',"Save Field [key,key...] (tag)",reg,'.')
-      @cobj.add_case('load',"Load Field (tag)",'.')
+      @cobj.add_case('save',"Save Field [key,key...] (tag)",reg)
+      @cobj.add_case('load',"Load Field (tag)")
       @cobj.add_case('sleep',"Sleep [n] sec",'[0-9]')
     end
 

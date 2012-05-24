@@ -166,7 +166,7 @@ module Msg
   # Exception methods
   def err(*msg) # Raise User error (Invalid User input)
     msg[0]=color(msg[0],1)
-    raise UserError,msg.join("\n"),caller(1)
+    raise UserError,msg.join("\n  "),caller(1)
   end
 
   def abort(msg='abort')

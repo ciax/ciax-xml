@@ -51,7 +51,7 @@ module Field
         vname << i
         Var.msg{"Type[#{h.class}] Name[#{i}]"}
         Var.msg{"Content[#{h[i]}]"}
-        h[i] || Msg.warn("No such Value [#{vname.join(':')}]")
+        h[i] || Msg.warn("No such Value [#{vname.join(':')}] in 'val'")
       }
       Msg.warn("Short Index [#{vname.join(':')}]") unless Comparable === data
       data

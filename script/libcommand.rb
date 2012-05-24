@@ -22,7 +22,7 @@ class Command < ExHash
   def set(cmd)
     clear
     @list.error("No CMD") if cmd.empty?
-    id,*par=Msg.type?(cmd,Array)
+    id,*@par=Msg.type?(cmd,Array)
     yield id if defined? yield
     [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
       next unless @db.key?(key) && val=@db[key][id]
@@ -30,11 +30,11 @@ class Command < ExHash
       when :alias
         id=val
       when :parameter
-        if val.size > par.size
-          Msg.err("Parameter shortage (#{self[:par].size})",@list.item(id))
+        if val.size > @par.size
+          Msg.err("Parameter shortage (#{@par.size})",@list.item(id))
         end
         val.size.times{|i|
-          validate(par[i],val[i])
+          validate(@par[i],val[i])
         }
       when :select
         self[:select]=deep_subst(val)
@@ -43,7 +43,6 @@ class Command < ExHash
       end
     }
     @list.error("No such CMD [#{id}]") if empty?
-    self[:par]=par
     self[:cid]=cmd.join(':') # Used by macro
     Command.msg{"SetCMD: #{cmd}"}
     self[:msg]='OK'
@@ -63,8 +62,8 @@ class Command < ExHash
     begin
       res=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        Command.msg{"Parameter No.#{i} = [#{self[:par][i-1]}]"}
-        self[:par][i-1] || Msg.err(" No substitute data ($#{i})")
+        Command.msg{"Parameter No.#{i} = [#{@par[i-1]}]"}
+        @par[i-1] || Msg.err(" No substitute data ($#{i})")
       }
       res=eval(res).to_s unless /\$/ === res
       Msg.err("Nil string") if res == ''
@@ -149,7 +148,7 @@ module Command::Exe
   # content of proc should return String
   def add_case(id,title=nil)
     @list.add_group('int',"Internal Command",{id=>title},2) if title
-    @exe[id]=proc{ yield self[:par] }
+    @exe[id]=proc{ yield @par }
     Command.msg{"Proc added"}
     self
   end

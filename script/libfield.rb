@@ -59,6 +59,7 @@ module Field
 
     # Set value with mixed key
     def set(key,val)
+      Msg.err("No such Key[#{key}] in 'val'") unless @val.key?(key)
       if p=get(key)
         p.replace(subst(val).to_s)
       else

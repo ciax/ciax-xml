@@ -48,7 +48,7 @@ module App
 
     #cmd is array
     def exe(cmd)
-      msg=super(cmd).call(1)
+      msg=super.call(1)
       upd_prompt
       msg
     end

@@ -25,6 +25,26 @@ module Frm
         @io.snd(frm,cid)
         @field.upd{@io.rcv} && @field.save
       }
+      @cobj.add_case('set'){|par|
+        err?(par,"set [key(:idx)] (val)")
+        @field.set(par[0],par[1]).save
+      }
+      @cobj.add_case('unset'){|par|
+        err?(par,"unset [key(:idx)]")
+        @field.unset(par.first)
+      }
+      @cobj.add_case('save'){|par|
+        err?(par,"save [key,key..] (tag)")
+        @field.savekey(par[0].split(','),par[1])
+      }
+      @cobj.add_case('load'){|par|
+        begin
+          @field.load(par.first||'')
+        rescue UserError
+          Msg.err("Usage: load (tag)",$!.to_s)
+        end
+      }
+      @cobj.add_case('sleep'){|par| sleep par.first.to_i }
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")
@@ -32,52 +52,13 @@ module Frm
 
     #Cmd should be array
     def exe(cmd)
-      Msg.type?(cmd,Array)
-      case cmd[0]
-      when nil
-        return ''
-      when 'set'
-        set(cmd[1..-1])
-      when 'unset'
-        unset(cmd[1])
-      when 'load'
-        load(cmd[1])
-      when 'save'
-        save(cmd[1],cmd[2])
-      when 'sleep'
-        sleep cmd[1].to_i
-      else
-        super.call
-      end
+      super.call
       'OK'
     end
 
     private
-    def set(par)
-      if par.empty?
-        raise UserError,"Usage: set [key(:idx)] (val)\n key=#{@field.val.keys}"
-      end
-      @field.set(par[0],par[1]).save
-    end
-
-    def unset(par)
-      unless par
-        raise UserError,"Usage: unset [key(:idx)]\n key=#{@field.val.keys}"
-      end
-      @field.unset(par)
-    end
-
-    def save(keys,tag=nil)
-      unless keys
-        raise UserError,"Usage: save [key,key..] (tag)\n key=#{@field.val.keys}"
-      end
-      @field.savekey(keys.split(','),tag)
-    end
-
-    def load(tag)
-      @field.load(tag||'')
-    rescue UserError
-      raise UserError,"Usage: load (tag)\n #{$!}"
+    def err?(par,str)
+      Msg.err("Usage: #{str}","key=#{@field.val.keys}") if par.empty?
     end
   end
 end

@@ -7,7 +7,7 @@ module App
     extend Msg::Ver
     def self.extended(obj)
       init_ver('AppRsp',2)
-      Msg.type?(obj,Status::Var,Var::File)
+      Msg.type?(obj,Status::Var,Var::Load)
     end
 
     def init(field)

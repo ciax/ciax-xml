@@ -9,7 +9,7 @@ module Sym
     require "libsymdb"
     def self.extended(obj)
       init_ver('SymConv')
-      Msg.type?(obj,Status::Var,Var::File).init
+      Msg.type?(obj,Status::Var,Var::Load).init
     end
 
     def init

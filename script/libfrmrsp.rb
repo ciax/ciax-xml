@@ -11,7 +11,7 @@ module Frm
     extend Msg::Ver
     def self.extended(obj)
       init_ver('FrmRsp',6)
-      Msg.type?(obj,Field::Var,Var::File)
+      Msg.type?(obj,Field::Var,Var::Load)
     end
 
     def init(cobj)

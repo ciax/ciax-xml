@@ -53,7 +53,7 @@ module Watch
 
   module Conv
     def self.extended(obj)
-      Msg.type?(obj,Var,Object::Var::File).init
+      Msg.type?(obj,Var,Object::Var::Load).init
     end
 
     def init

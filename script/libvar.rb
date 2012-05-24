@@ -71,7 +71,7 @@ class Var < ExHash
   ## Read/Write JSON file
   public
   def ext_file(db)
-    extend File
+    extend Load
     init(db)
     self
   end
@@ -87,10 +87,10 @@ class Var < ExHash
     self
   end
 
-  module File
+  module Load
     extend Msg::Ver
     def self.extended(obj)
-      init_ver('File',12)
+      init_ver('Load',12)
       Msg.type?(obj,Var)
     end
     def init(db)
@@ -103,7 +103,7 @@ class Var < ExHash
     end
     def load(tag=nil)
       begin
-        File.msg{"Loading #{fname(tag)}"}
+        Load.msg{"Loading #{fname(tag)}"}
         open(fname(tag)){|f|
           json_str=f.read
           if json_str.empty?
@@ -136,7 +136,7 @@ class Var < ExHash
   module Url
     require "open-uri"
     def self.extended(obj)
-      Msg.type?(obj,File)
+      Msg.type?(obj,Load)
     end
     def init(host)
       host||='localhost'
@@ -146,21 +146,23 @@ class Var < ExHash
   end
 
   module Save
+    extend Msg::Ver
     def self.extended(obj)
-      Msg.type?(obj,File)
+      init_ver('Save',12)
+      Msg.type?(obj,Load)
     end
     def save(data=nil,tag=nil)
       name=fname(tag)
       open(name,'w'){|f|
         f << (data ? JSON.dump(data) : to_j)
       }
-      File.msg{"[#{@base}] is Saved"}
+      Save.msg{"[#{@base}] is Saved"}
       if tag
         # Making 'latest' tag link
         sname=fname('latest')
         File.unlink(sname) if File.symlink?(sname)
         File.symlink(fname(tag),sname)
-        File.msg{"Symboliclink to [#{sname}]"}
+        Save.msg{"Symboliclink to [#{sname}]"}
       end
       self
     end

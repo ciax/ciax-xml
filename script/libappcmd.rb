@@ -41,10 +41,10 @@ module App
   module Exe
     attr_reader :buf
     def self.extended(obj)
-      Msg.type?(obj,Cmd).extend(Command::Exe).init
+      Msg.type?(obj,Cmd).extend(Command::Exe).init_exe
     end
 
-    def init
+    def init_exe
       @buf=Buffer.new
       def_proc{|pri|
           @buf.send(pri){ get }

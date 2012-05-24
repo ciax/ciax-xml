@@ -114,7 +114,6 @@ class Command < ExHash
       if str=par.shift
         yield(str,cri)
       else
-        
         Msg.err("Parameter shortage (#{@par.size}/#{cary.size})",
                 @list.item(id)," "*10+"key=(#{cri.tr('|',',')})")
       end

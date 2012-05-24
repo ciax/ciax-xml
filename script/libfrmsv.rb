@@ -21,6 +21,11 @@ module Frm
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
       @cobj.extend(Frm::Cmd).init(fdb,@field)
+      @cobj.extend(Frm::Exe).init{|cid,frm|
+        @io.cid=cid
+        @io.snd(frm)
+        @field.upd{@io.rcv} && @field.save
+      }
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")
@@ -43,9 +48,7 @@ module Frm
       when 'sleep'
         sleep cmd[1].to_i
       else
-        @io.cid=@cobj.set(cmd)[:cid]
-        @io.snd(@cobj.getframe)
-        @field.upd{@io.rcv} && @field.save
+        super.call
       end
       'OK'
     end

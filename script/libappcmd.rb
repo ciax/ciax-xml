@@ -48,7 +48,7 @@ module App
       @buf=Buffer.new
       def_proc{|pri|
           @buf.send(pri){ get }
-          "IssueD"
+          "Issued"
         }
     end
   end

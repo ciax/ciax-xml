@@ -61,6 +61,20 @@ module Frm
       convert
     end
   end
+
+  module Exe
+    def self.extended(obj)
+      Msg.type?(obj,Cmd).extend(Command::Exe)
+    end
+
+    def init
+      def_proc{
+        yield self[:cid],getframe
+        'OK'
+      }
+      self
+    end
+  end
 end
 
 if __FILE__ == $0

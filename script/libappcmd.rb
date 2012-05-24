@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libcommand"
+require "libbuffer"
 
 module App
   module Cmd
@@ -34,6 +35,21 @@ module App
         end
       }
       frmcmd
+    end
+  end
+
+  module Exe
+    attr_reader :buf
+    def self.extended(obj)
+      Msg.type?(obj,Cmd).extend(Command::Exe).init
+    end
+
+    def init
+      @buf=Buffer.new
+      def_proc{|pri|
+          @buf.send(pri){ get }
+          "IssueD"
+        }
     end
   end
 end

@@ -49,7 +49,7 @@ module App
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
       @cobj.extend(Command::Exe).init{'OK'}
-      @cobj.add_proc('set','[key=val,...]'){|par|
+      @cobj.add_case('set','[key=val,...]'){|par|
         Msg.err("Usage: set [key=val,..]") if par.empty?
         @stat.str_update(par.first).upd
         "Set #{par}"

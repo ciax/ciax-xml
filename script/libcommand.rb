@@ -63,7 +63,7 @@ class Command < ExHash
     begin
       res=str.gsub(/\$([\d]+)/){
         i=$1.to_i
-        Command.msg{"Parameter No.#{i} = [#{self[:param][i-1]}]"}
+        Command.msg{"Parameter No.#{i} = [#{self[:par][i-1]}]"}
         self[:par][i-1] || Msg.err(" No substitute data ($#{i})")
       }
       res=eval(res).to_s unless /\$/ === res
@@ -122,6 +122,7 @@ module Command::Logging
     Msg.type?(obj,Command)
     obj.extend Object::Logging
   end
+
   def set(cmd)
     super
     append(cmd)
@@ -135,35 +136,36 @@ module Command::Exe
   end
 
   # content of proc should return String
-  def init
+  def def_proc
     @exe={}
     @db[:select].each{|k,v|
-      @exe[k]=proc{|pri| yield pri }
+      @exe[k]=proc{|pri| yield pri}
     }
     Command.msg{"Set Default Proc"}
     @chk=proc{}
     self
   end
 
-  def set(cmd)
-    super{|id| self[:exe]=@exe[id] if @exe.key?(id) }
-    self
-  end
-
   # content of proc should return String
-  def add_proc(id,title=nil)
+  def add_case(id,title=nil)
     @list.add_group('int',"Internal Command",{id=>title},2) if title
     @exe[id]=proc{ yield self[:par] }
     Command.msg{"Proc added"}
     self
   end
 
-  def chk_proc
+  def pre_proc
     @chk=proc{|cmd| yield cmd}
     self
   end
 
-  def exe(pri=1)
+  def set(cmd)
+    @chk.call(cmd)
+    super{|id| self[:exe]=@exe[id] if @exe.key?(id) }
+    self
+  end
+
+  def call(pri=1)
     self[:msg]=self[:exe].call(pri)
     self
   end

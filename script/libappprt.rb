@@ -28,7 +28,7 @@ module App
       when /^all/
         @output=@stat
       else
-        return super
+        return super(cmd)
       end
       to_s
     end

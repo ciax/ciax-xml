@@ -25,23 +25,23 @@ module Frm
         @io.snd(frm,cid)
         @field.upd{@io.rcv} && @field.save
       }
-      @cobj.add_case('set'){|par|
+      @cobj.add_case('int','set'){|par|
         @field.set(par[0],par[1]).save
       }
-      @cobj.add_case('unset'){|par|
+      @cobj.add_case('int','unset'){|par|
         @field.unset(par.first)
       }
-      @cobj.add_case('save'){|par|
+      @cobj.add_case('int','save'){|par|
         @field.savekey(par[0].split(','),par[1])
       }
-      @cobj.add_case('load'){|par|
+      @cobj.add_case('int','load'){|par|
         begin
           @field.load(par.first||'')
         rescue UserError
           Msg.err("No such tag",$!)
         end
       }
-      @cobj.add_case('sleep'){|par| sleep par.first.to_i }
+      @cobj.add_case('int','sleep'){|par| sleep par.first.to_i }
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")

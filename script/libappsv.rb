@@ -21,7 +21,8 @@ module App
       @cobj.pre_proc{|cmd|
         Msg.err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
-      @cobj.add_case('interrupt'){
+      @cobj.add_group('int',"Internal Command")
+      @cobj.add_case('int','interrupt'){
         int=@stat.interrupt.each{|cmd|
           @cobj.set(cmd).call(0)
         }

@@ -155,9 +155,15 @@ module Command::Exe
     self
   end
 
+  def add_group(id,title)
+    @list.add_group(id,title,{},2)
+    @defproc[id]=proc{|pri| yield pri} if defined?(yield)
+    self
+  end
+
   # content of proc should return String
-  def add_case(id,title=nil,*parameter)
-    @list.add_group('int',"Internal Command",{id=>title},2) if title
+  def add_case(gid,id,title=nil,*parameter)
+    @list.add_items(gid,{id=>title}) if title
     @parameter[id]=parameter unless parameter.empty?
     @exe[id]=defined?(yield) ? proc{ yield @par } : proc{'OK'}
     Command.msg{"Proc added"}
@@ -187,7 +193,9 @@ module Command::Exe
   def str_validate(id,cary)
     validate(id,cary){|str,cri|
       Command.msg{"Validate: [#{str}] Match? [#{cri}]"}
-      Msg.err("Parameter Invalid (#{str}) for [#{cri}]") unless /^(#{cri})/ === str
+      unless /^(#{cri})/ === str
+        Msg.err("Parameter Invalid (#{str}) for [#{cri}]")
+      end
       str
     }
   end

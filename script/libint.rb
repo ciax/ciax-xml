@@ -7,7 +7,7 @@ require "libupdate"
 
 module Int
   class Shell
-    attr_reader :post_exe,:cmdlist
+    attr_reader :post_exe,:cmdlist,:cobj
     def initialize(cobj)
       @cobj=Msg::type?(cobj,Command)
       @prompt=Prompt.new
@@ -41,8 +41,9 @@ module Int
           puts msg
           @post_exe.upd
         rescue SelectCMD
-          break line if @cmdlist.include?(line)
           puts @cmdlist
+        rescue SelectID
+          break $!.to_s
         rescue UserError
           puts $!.to_s
         end

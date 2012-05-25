@@ -22,22 +22,22 @@ class Command < ExHash
   def set(cmd)
     clear
     @list.error("No CMD") if cmd.empty?
-    id,*@par=Msg.type?(cmd,Array)
-    yield id if defined? yield
+    @id,*@par=Msg.type?(cmd,Array)
+    yield @id if defined? yield
     [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
-      next unless @db.key?(key) && val=@db[key][id]
+      next unless @db.key?(key) && val=@db[key][@id]
       case key
       when :alias
-        id=val
+        @id=val
       when :parameter
-        num_validate(id,val)
+        num_validate(@id,val)
       when :select
         self[:select]=deep_subst(val)
       else
         self[key]=val
       end
     }
-    @list.error("No such CMD [#{id}]") if empty?
+    @list.error("No such CMD [#{@id}]") if empty?
     self[:cid]=cmd.join(':') # Used by macro
     Command.msg{"SetCMD: #{cmd}"}
     self[:msg]='OK'
@@ -156,9 +156,15 @@ module Command::Exe
     self
   end
 
-  def add_group(id,title)
-    @list.add_group(id,title,{},2)
-    @defproc[id]=defined?(yield) ? proc{|pri| yield pri} : proc{'OK'}
+  def add_group(gid,title,hash={})
+    @list.add_group(gid,title,{},2)
+    @defproc[gid]=defined?(yield) ? proc{ yield @id} : proc{'OK'}
+    unless hash.empty?
+      @list.add_items(gid,hash)
+      hash.keys.each{|k|
+        @exe[k]=@defproc[gid]
+      }
+    end
     self
   end
 

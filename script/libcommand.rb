@@ -141,6 +141,7 @@ module Command::Exe
 
   def init
     @exe={}
+    @defproc={}
     @parameter={}
     @chk=proc{}
     self
@@ -157,7 +158,7 @@ module Command::Exe
 
   def add_group(id,title)
     @list.add_group(id,title,{},2)
-    @defproc[id]=proc{|pri| yield pri} if defined?(yield)
+    @defproc[id]=defined?(yield) ? proc{|pri| yield pri} : proc{'OK'}
     self
   end
 
@@ -165,7 +166,7 @@ module Command::Exe
   def add_case(gid,id,title=nil,*parameter)
     @list.add_items(gid,{id=>title}) if title
     @parameter[id]=parameter unless parameter.empty?
-    @exe[id]=defined?(yield) ? proc{ yield @par } : proc{'OK'}
+    @exe[id]=defined?(yield) ? proc{ yield @par } : @defproc[gid]
     Command.msg{"Proc added"}
     self
   end

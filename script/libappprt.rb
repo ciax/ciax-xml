@@ -11,26 +11,12 @@ module App
     def init
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@stat).extend(Watch::Print)
-      vl={'pri'=>"Print mode",'val'=>"Value mode"}
-      vl['wat']="Watch mode" if @wview
-      @cmdlist.add_group('view',"Change View Mode",vl,2)
+      @cobj.add_group('view',"Change View Mode")
+      @cobj.add_case('view','pri',"Print mode"){@output=@print}
+      @cobj.add_case('view','val',"Value mode"){@output=@stat.val}
+      @cobj.add_case('view','wat',"Watch mode"){@output=@wview} if @wview
+      @cobj.add_case('view','raw',"Raw mode"){@output=@stat}
       self
-    end
-
-    def exe(cmd)
-      case cmd.first
-      when /^pri/
-        @output=@print
-      when /^val/
-        @output=@stat.val
-      when /^wat/
-        @output=@wview
-      when /^all/
-        @output=@stat
-      else
-        return super(cmd)
-      end
-      to_s
     end
 
     def to_s

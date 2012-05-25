@@ -13,8 +13,13 @@ module App
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=Frm::List.new[adb['id']]
-      @cmdlist.add_group('lay',"Change Layer",{'frm'=>"Frm mode"},2)
-      @fint.cmdlist.add_group('lay',"Change Layer",{'app'=>"App mode"},2)
+      @cobj.extend(Command::Exe)
+      @cobj.add_group('lay',"Change Layer",{'frm'=>"Frm mode"}){|id|
+        raise SelectID,id
+      }
+      @fint.cobj.add_group('lay',"Change Layer",{'app'=>"App mode"}){|id|
+        raise SelectID,id
+      }
       @shmode='app'
     end
 

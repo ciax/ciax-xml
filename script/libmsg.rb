@@ -2,9 +2,16 @@
 VarDir="#{ENV['HOME']}/.var"
 ScrDir=File.dirname(__FILE__)
 
+# General Error
 class UserError < RuntimeError; end
-class SelectID < UserError; end
+# When invalid Mode
+class SelectMODE < UserError; end
+# When invalid Device
+class SelectID < SelectMODE; end
+# When invalid Command
 class SelectCMD < SelectID; end
+# When invalid Parameter
+class Parameter < SelectCMD; end
 
 module Msg
   # Should be extended in module/class

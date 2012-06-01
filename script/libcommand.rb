@@ -4,48 +4,143 @@ require 'libmsg'
 require 'librerange'
 require 'liblogging'
 
+#Access method(Plan)
+#Command(Hash)
+# Command#new(db,&def_proc)
+# Command#list
+# Command#add_group(key,title,&def_proc)
+# Command#add_item(key,id,title,&local_proc)
+#Command[id]=Command::Item(Hash)
+# Command[id] => {:label,:parameter,...}
+# Command[id]#set_par(par)
+# Command[id]#subst(str)
+# Command[id]#exe => proc{}
+# Command#set(cmd=alias+par) => Command[alias->id]#set_par(par)
+
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  include Math
   attr_reader :list
+  attr_accessor :def_proc
   # mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
-  def initialize(db)
+  def initialize(db,&def_proc)
     Command.init_ver(self)
     @db=Msg.type?(db,Hash)
+    @def_proc=def_proc
     @list=Msg::GroupList.new(db)
+    db[:select].keys.each{|id|
+      self[id]=Item.new(id){def_proc.call}.update(db_pack(db,id))
+    }
+    @group={}
+    if gdb=db[:group]
+      gdb[:select].each{|gid,ary|
+        cap=(gdb[:caption]||{})[gid]
+        col=(gdb[:column]||{})[gid]
+        @group[gid]=Group.new(cap,col,2)
+        ary.each{|id|
+          @group[gid]=self[id]
+        }
+      }
+    else
+      @group['main']=Group.new("Command List",2,2)
+    end
+    @chk=proc{}
   end
 
-  # Validate command and parameters
-  def set(cmd)
-    clear
-    @list.error("No CMD") if cmd.empty?
-    @id,*@par=Msg.type?(cmd,Array)
-    yield @id if defined? yield
-    [:alias,:parameter,:label,:nocache,:response,:select].each{|key|
-      next unless @db.key?(key) && val=@db[key][@id]
-      case key
-      when :alias
-        @id=val
-      when :parameter
-        num_validate(@id,val)
-      when :select
-        self[:select]=deep_subst(val)
-      else
-        self[key]=val
-      end
-    }
-    @list.error("No such CMD [#{@id}]") if empty?
-    self[:cid]=cmd.join(':') # Used by macro
-    Command.msg{"SetCMD: #{cmd}"}
-    self[:msg]='OK'
+  def add_group(gid,title,&def_proc)
+    @group[gid]=Group.new(title,2){def_proc.call}
+  end
+
+  #hash = {:label => 'titile',:parameter => Array}
+  def add_item(gid,id,title=nil,parlist=nil,&local_proc)
+    self[id]=Item.new(id){local_proc.call}
+    self[id][:label]=title if title
+    self[id][:parameter]=parlist if parlist
+    @group[gid]=self[id]
     self
   end
 
-  def to_s
-    self[:msg].to_s
+  def set_pre_proc
+    @chk=proc{|cmd| yield cmd}
+    self
+  end
+
+  def set(cmd)
+    id,*par=cmd
+    id=a2r(id)
+    key?(id) || @list.error
+    self[id].set_par(par)
+  end
+
+  def ext_logging(id,ver=0)
+    extend Logging
+    init('appcmd',id,ver){yield}
+    self
+  end
+
+  private
+  def db_pack(db,id)
+    hash={}
+    db.each{|sym,h|
+      case sym
+      when :group,:alias
+        next
+      else
+        hash[sym]=h[id].dup if h.key?(id)
+      end
+    }
+    hash
+  end
+
+  # alias to real
+  def a2r(id)
+    @db.key?(:alias) ? @db[:alias][id] : id
+  end
+end
+
+class Command::Group < Hash
+  attr_reader :list
+  def initialize(title,col=2,color=6,&def_proc)
+    @list=Msg::CmdList.new(title,col,color)
+    @def_proc=def_proc
+  end
+
+  def add_item(id,hash)
+    self[id]=hash
+    @list.update({id => hash[:label]})
+    self
+  end
+
+  # hash = {id => title,...}
+  def update_items(hash,&local_proc)
+    @list.update(hash)
+    local_proc||=@def_proc
+    hash.each{|id,title|
+      self[id]=Item.new(id){local_proc.call}
+    }
+    self
+  end
+end
+
+# Validate command and parameters
+class Command::Item < Hash
+  include Math
+  attr_accessor :exe
+  def initialize(id,&local_proc)
+    @id=id
+    @exe=local_proc if local_proc
+  end
+
+ def set_par(par)
+    @par=Msg.type?(par,Array)
+    num_validate(par)
+    @select=deep_subst(self[:select])
+    self[:cid]=[@id,*par].join(':') # Used by macro
+    Command.msg{"SetPAR: #{par}"}
+    self[:msg]='OK'
+    self
   end
 
   # Substitute string($+number) with parameters
@@ -68,10 +163,8 @@ class Command < ExHash
     end
   end
 
-  def ext_logging(id,ver=0)
-    extend Logging
-    init('appcmd',id,ver){yield}
-    self
+  def to_s
+    Msg.view_struct(@select)
   end
 
   private
@@ -93,8 +186,18 @@ class Command < ExHash
     res
   end
 
-  def num_validate(id,cary)
-    validate(id,cary){|str,cri|
+  def str_validate(cary)
+    validate(cary){|str,cri|
+      Command.msg{"Validate: [#{str}] Match? [#{cri}]"}
+      unless /^(#{cri})/ === str
+        Msg.err("Parameter Invalid (#{str}) for [#{cri}]")
+      end
+      str
+    }
+  end
+
+  def num_validate(cary)
+    validate(cary){|str,cri|
       begin
         num=eval(str)
       rescue Exception
@@ -108,16 +211,16 @@ class Command < ExHash
     }
   end
 
-  def validate(id,cary)
+  def validate(cary)
     par=@par.dup
-    cary.map{|cri|
+    self[:parameter].map{|cri|
       if str=par.shift
         yield(str,cri)
       else
-        Msg.err("Parameter shortage (#{@par.size}/#{cary.size})",
-                @list.item(id)," "*10+"key=(#{cri.tr('|',',')})")
+        Msg.err("Parameter shortage (#{@par.size}/#{self[:parameter].size})",
+                Msg.item(@id,self[:label])," "*10+"key=(#{cri.tr('|',',')})")
       end
-    }
+    } if key?(:parameter)
   end
 end
 
@@ -134,80 +237,6 @@ module Command::Logging
   end
 end
 
-module Command::Exe
-  def self.extended(obj)
-    Msg.type?(obj,Command).init
-  end
-
-  def init
-    @exe={}
-    @defproc={}
-    @parameter={}
-    @chk=proc{}
-    self
-  end
-
-  # content of proc should return String
-  def def_proc
-    @db[:select].each{|k,v|
-      @exe[k]=proc{|pri| yield pri}
-    }
-    Command.msg{"Set Default Proc"}
-    self
-  end
-
-  def add_group(gid,title,hash={})
-    @list.add_group(gid,title,{},2)
-    @defproc[gid]=defined?(yield) ? proc{ yield @id} : proc{'OK'}
-    unless hash.empty?
-      @list.add_items(gid,hash)
-      hash.keys.each{|k|
-        @exe[k]=@defproc[gid]
-      }
-    end
-    self
-  end
-
-  # content of proc should return String
-  def add_case(gid,id,title=nil,*parameter)
-    @list.add_items(gid,{id=>title}) if title
-    @parameter[id]=parameter unless parameter.empty?
-    @exe[id]=defined?(yield) ? proc{ yield @par } : @defproc[gid]
-    Command.msg{"Proc added"}
-    self
-  end
-
-  def pre_proc
-    @chk=proc{|cmd| yield cmd}
-    self
-  end
-
-  def set(cmd)
-    @chk.call(cmd)
-    super{|id|
-      self[:exe]=@exe[id] if @exe.key?(id)
-      str_validate(id,@parameter[id]) if @parameter.key?(id)
-    }
-    self
-  end
-
-  def call(pri=1)
-    self[:msg]=self[:exe].call(pri) if key?(:exe)
-    self
-  end
-
-  private
-  def str_validate(id,cary)
-    validate(id,cary){|str,cri|
-      Command.msg{"Validate: [#{str}] Match? [#{cri}]"}
-      unless /^(#{cri})/ === str
-        Msg.err("Parameter Invalid (#{str}) for [#{cri}]")
-      end
-      str
-    }
-  end
-end
-
 if __FILE__ == $0
   require 'libinsdb'
   Msg.getopts("af")
@@ -218,7 +247,7 @@ if __FILE__ == $0
     else
       puts Command.new(adb[:command]).set(ARGV)
     end
-  rescue
+  rescue UserError
     Msg::usage("(opt) [id] [cmd] (par)",*$optlist)
     Msg.exit
   end

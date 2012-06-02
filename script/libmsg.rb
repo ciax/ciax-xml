@@ -74,7 +74,7 @@ module Msg
   class CmdList < Hash
     def initialize(title=nil,col=nil,color=6)
       @title='==== '+Msg.color(title,color)+' ====' if title
-      @col=col||1
+      @col=(col||1).to_i
     end
 
     # For ver 1.9 or more
@@ -114,7 +114,7 @@ module Msg
         gdb[:select].each{|key,ary|
           hash={}
           (cdb.key?(:alias) ? ary.map{|k|
-             cdb[:alias].key(k)
+             cdb[:alias].key(k) # if multiple value at key => indefinite
            }.compact : ary).each{|k|
             hash[k]=cdb[:label][k]
           }

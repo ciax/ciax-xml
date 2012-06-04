@@ -29,7 +29,7 @@
             <char length="2" label="Data Length">5</char>
           </command>
           <command id="set_tag" label="Set Tag to Run [1-12,98,99]" response="cmdrsp" type="config">
-            <par>1:12,98,99</par>
+            <par_num>1:12,98,99</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="3" label="Start Address">0x101</char>
@@ -38,7 +38,7 @@
             <char length="2">$1</char>
           </command>
           <command id="set_pos" label="Set Pos to Jack [0-4]" response="cmdrsp" type="config">
-            <par>0:4</par>
+            <par_num>0:4</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="3" label="Start Address">0x103</char>
@@ -47,7 +47,7 @@
             <char length="2">1 &lt;&lt; $1</char>
           </command>
           <command id="set_ins" label="Set Instrument ID" response="cmdrsp" type="config">
-            <par>0:10</par>
+            <par_num>0:10</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="3" label="Start Address">0x104</char>
@@ -56,7 +56,7 @@
             <char length="2">$1</char>
           </command>
           <command id="act" label="Action Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
-            <par>0,8,15</par>
+            <par_num>0,8,15</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="3" label="Start Address">0x102</char>
@@ -65,7 +65,7 @@
             <char length="2">1 &lt;&lt; $1</char>
           </command>
           <command id="int" label="Interrupt Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" response="cmdrsp" type="action">
-            <par>0:7</par>
+            <par_num>0:7</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="3" label="Start Address">0x100</char>
@@ -90,8 +90,8 @@
             <char length="2" label="Data">0</char>
           </command>
           <command id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
-            <par>0:5</par>
-            <par>0:3</par>
+            <par_num>0:5</par_num>
+            <par_num>0:3</par_num>
             <char length="2" label="Read region command">0x401</char>
             <char length="2" label="Read region subcommand">0</char>
             <!--Jack 0=JK1,1=JK2,2=JK3,3=JK4-->
@@ -103,8 +103,8 @@
             <char length="2" label="Data Length">0x2c</char>
           </command>
           <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
-            <par>0:5</par>
-            <par>0:3</par>
+            <par_num>0:5</par_num>
+            <par_num>0:3</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="1" label="Jack Num">$2 * 4</char>
@@ -115,7 +115,7 @@
             <char length="2">${t:$1:$2}</char>
           </command>
           <command id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
-            <par>0:2</par>
+            <par_num>0:2</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="3" label="Start Address">0x7ff</char>

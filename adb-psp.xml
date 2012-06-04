@@ -18,14 +18,14 @@
         <frmcmd name="getstat" />
       </command>
       <command id="setv" label="Set Voltage 0-50[V]">
-        <par>0:50</par>
+        <par_num>0:50</par_num>
         <frmcmd name="setv">
           <argv>$1</argv>
         </frmcmd>
         <frmcmd name="getstat" />
       </command>
       <command id="setp" label="Set Power 0-100[W]">
-        <par>0:100</par>
+        <par_num>0:100</par_num>
         <frmcmd name="setv">
           <argv format="%5.2f">sqrt($1*26)</argv>
         </frmcmd>

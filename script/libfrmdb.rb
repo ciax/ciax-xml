@@ -65,8 +65,12 @@ module Frm
           Db.msg{"InitSelHash(#{id})"}
           Repeat.new.each(e0){|e1,r1|
             case e1.name
-            when 'par'
-              ((selh[:parameter]||={})[id]||=[]) << e1.text
+            when 'par_num'
+              attr={:type => 'num',:val => e1.text}
+              (hash[:parameter][id]||=[]) << attr
+            when 'par_reg'
+              attr={:type => 'reg',:val => e1.text}
+              (hash[:parameter][id]||=[]) << attr
             else
               e=yield(e1,r1)||next
               selh[:select][id] << e

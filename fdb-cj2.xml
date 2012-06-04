@@ -54,8 +54,8 @@
           <char length="1" label="FINS Param:Data Length (L)">0x0A</char>
         </command>
         <command id="setbit" label="Set Bit" response="cmdrsp" type="stat">
-          <par>0:3</par>
-          <par>0:15</par>
+          <par_num>0:3</par_num>
+          <par_num>0:15</par_num>
           <char length="1" label="FINS Command:MRC">0x01</char>
           <char length="1" label="FINS Command:SRC">0x02</char>
           <char length="1" label="FINS Param:Memory type(W)">0x31</char>

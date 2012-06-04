@@ -8,22 +8,22 @@
           <string>L</string>
         </command>
         <command id="setvl" label="Set Voltage Limit [DD]" type="config">
-          <par>0:20</par>
+          <par_num>0:20</par_num>
           <string>SU </string>
           <string format="%02d">$1</string>
         </command>
         <command id="setal" label="Set Current Limit [D.DD]" type="config">
-          <par>0:&lt;10</par>
+          <par_num>0:&lt;10</par_num>
           <string>SI </string>
           <string format="%04.2f">$1</string>
         </command>
         <command id="setpl" label="Set Power Limit [DDD]" type="config">
-          <par>0:&lt;200</par>
+          <par_num>0:&lt;200</par_num>
           <string>SP </string>
           <string format="%03d">$1</string>
         </command>
         <command id="setv" label="Set Voltage [DD.DD]" type="config">
-          <par>0:&lt;100</par>
+          <par_num>0:&lt;100</par_num>
           <string>SV </string>
           <string format="%05.2f">$1</string>
         </command>

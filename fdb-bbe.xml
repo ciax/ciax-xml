@@ -9,7 +9,7 @@
           <string>RD</string>
         </command>
         <command id="output" label="OUTPUT [DDDDD]" type="action">
-          <par>0:65535</par>
+          <par_num>0:65535</par_num>
           <string>SO</string>
           <char length="2">$1</char>
         </command>

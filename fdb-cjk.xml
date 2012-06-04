@@ -15,7 +15,7 @@
         <char length="2" label="Q Header: CPU Watch Timer">1</char>
         <select>
           <command id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
-            <par>0:5</par>
+            <par_num>0:5</par_num>
             <char length="2" label="Read region command">0x401</char>
             <char length="2" label="Read region subcommand">0</char>
             <!--Jack 0=JK1,1=JK2,2=JK3,3=JK4-->
@@ -26,8 +26,8 @@
             <char length="2" label="Data Length">0x100</char>
           </command>
           <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
-            <par>0:5</par>
-            <par>0:3</par>
+            <par_num>0:5</par_num>
+            <par_num>0:3</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="1" label="Jack Num">$2 * 4</char>
@@ -37,7 +37,7 @@
             <char length="2">${t:$1:$2}</char>
           </command>
           <command id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
-            <par>0:2</par>
+            <par_num>0:2</par_num>
             <char length="2" label="Write region command">0x1401</char>
             <char length="2" label="Write region subcommand">0</char>
             <char length="2" label="Start Address">0x7ff</char>

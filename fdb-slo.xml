@@ -11,7 +11,7 @@
           <string>bs</string>
         </command>
         <command id="in" label="Input Status (1-5)" response="in" type="stat">
-          <par>1:5</par>
+          <par_num>1:5</par_num>
           <string>in</string>
           <string format="(%d)">$1</string>
         </command>
@@ -25,17 +25,17 @@
           <string>reset</string>
         </command>
         <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
-          <par>0:1</par>
+          <par_num>0:1</par_num>
           <string>hl</string>
           <string>$1</string>
         </command>
         <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
-          <par>0:1</par>
+          <par_num>0:1</par_num>
           <string>e1=</string>
           <string>$1</string>
         </command>
         <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
-          <par>0:1</par>
+          <par_num>0:1</par_num>
           <string>e2=</string>
           <string>$1</string>
         </command>
@@ -43,12 +43,12 @@
           <string>abspos=0</string>
         </command>
         <command id="setp" label="Set Pulse Number" response="default" type="config">
-          <par>0:999</par>
+          <par_num>0:999</par_num>
           <string>p=</string>
           <string format="%5.2f">$1</string>
         </command>
         <command id="setspd" label="Set Speed Number" response="default" type="config">
-          <par>0:999</par>
+          <par_num>0:999</par_num>
           <string>spd=</string>
           <string format="%5.2f">$1</string>
         </command>
@@ -62,12 +62,12 @@
           <string>j=-1</string>
         </command>
         <command id="ma" label="Move Absolute Position" response="default" type="action">
-          <par>0:999</par>
+          <par_num>0:999</par_num>
           <string>ma=</string>
           <string format="%3.1f">$1</string>
         </command>
         <command id="mi" label="Move Incremental" response="default" type="action">
-          <par>-999:999</par>
+          <par_num>-999:999</par_num>
           <string>mi=</string>
           <string format="%3.1f">$1</string>
         </command>

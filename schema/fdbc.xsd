@@ -2,7 +2,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbc" xmlns:fdbc="http://ciax.sum.naoj.org/ciax-xml/fdbc">
   <!--Device database-->
   <xsd:include schemaLocation="repeat.xsd" />
-  <xsd:include schemaLocation="range.xsd" />
+  <xsd:include schemaLocation="command.xsd" />
   <!--Command frame-->
   <xsd:element name="cmdframe">
     <xsd:complexType>
@@ -32,7 +32,7 @@
   <xsd:element name="command">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="fdbc:par" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:group ref="fdbc:validate" minOccurs="0" maxOccurs="unbounded" />
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
           <xsd:element ref="fdbc:repeat" />
           <xsd:group ref="fdbc:data" />
@@ -63,7 +63,6 @@
     </xsd:complexType>
   </xsd:element>
   <!--Command Elements-->
-  <xsd:element name="par" type="fdbc:rerange"></xsd:element>
   <xsd:group name="data">
     <xsd:choice>
       <xsd:element ref="fdbc:char"></xsd:element>

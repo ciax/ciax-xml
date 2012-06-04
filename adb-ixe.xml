@@ -23,7 +23,7 @@
         </repeat>
       </command>
       <command id="chkmov" label="Update Moving Status [1-6]" hidden="true">
-        <par>1:6</par>
+        <par_num>1:6</par_num>
         <frmcmd name="chkrun">
           <argv>$1</argv>
         </frmcmd>
@@ -47,7 +47,7 @@
         </repeat>
       </command>
       <command id="speed" label="Set Speed [25-800]">
-        <par>25:800</par>
+        <par_num>25:800</par_num>
         <repeat from="1" to="6">
           <frmcmd name="set">
             <argv format="spd:%d">$_-1</argv>
@@ -59,7 +59,7 @@
         </repeat>
       </command>
       <command id="ramp" label="Set ramp [200-800]">
-        <par>200:800</par>
+        <par_num>200:800</par_num>
         <repeat from="1" to="6">
           <frmcmd name="set">
             <argv format="rmp:%d">$_-1</argv>
@@ -103,8 +103,8 @@
         </repeat>
       </command>
       <command id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
-        <par>1:6</par>
-        <par>1:</par>
+        <par_num>1:6</par_num>
+        <par_num>1:</par_num>
         <frmcmd name="fw">
           <argv>$1</argv>
           <argv format="%d">$2 * 8000</argv>
@@ -114,8 +114,8 @@
         </frmcmd>
       </command>
       <command id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
-        <par>1:6</par>
-        <par>1:</par>
+        <par_num>1:6</par_num>
+        <par_num>1:</par_num>
         <frmcmd name="bk">
           <argv>$1</argv>
           <argv format="%d">$2 * 8000</argv>
@@ -125,8 +125,8 @@
         </frmcmd>
       </command>
       <command id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
-        <par>1:6</par>
-        <par>0:48</par>
+        <par_num>1:6</par_num>
+        <par_num>0:48</par_num>
         <frmcmd name="abs">
           <argv>$1</argv>
           <argv format="%d">$2 * 8000</argv>
@@ -136,7 +136,7 @@
         </frmcmd>
       </command>
       <command id="updp" label="Update Pulse" hidden="true">
-        <par>1:6</par>
+        <par_num>1:6</par_num>
         <frmcmd name="chkrun">
           <argv>$1</argv>
         </frmcmd>
@@ -145,7 +145,7 @@
         </frmcmd>
       </command>
       <command id="stop" label="Stop Run [1-6]" hidden="true">
-        <par>1:6</par>
+        <par_num>1:6</par_num>
         <frmcmd name="stop">
           <argv>$1</argv>
         </frmcmd>

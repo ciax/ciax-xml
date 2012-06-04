@@ -16,7 +16,7 @@
             <string label="length">0001</string>
           </command>
           <command id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
-            <par>0:500000</par>
+            <par_num>0:500000</par_num>
             <string label="Header Code">FK</string>
             <string label="Operand">CIO </string>
             <string label="Channel">0000</string>

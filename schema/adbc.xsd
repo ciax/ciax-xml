@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
-  <xsd:include schemaLocation="range.xsd" />
   <xsd:include schemaLocation="command.xsd" />
   <!--command select-->
   <xsd:element name="commands">
@@ -33,7 +32,7 @@
   <xsd:element name="command">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="adbc:par" minOccurs="0" maxOccurs="unbounded" />
+        <xsd:group minOccurs="0" maxOccurs="unbounded" ref="adbc:validate"></xsd:group>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="adbc:frmcmd" />
           <xsd:element ref="adbc:repeat" />
@@ -54,6 +53,5 @@
     </xsd:complexType>
   </xsd:element>
   <!--command statement-->
-  <xsd:element name="par" type="adbc:rerange"></xsd:element>
   <xsd:element name="frmcmd" type="adbc:command"></xsd:element>
 </xsd:schema>

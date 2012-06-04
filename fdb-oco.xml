@@ -9,7 +9,7 @@
           <string>1RD</string>
         </command>
         <command id="i" label="Set Current by argv [DD.DD]" type="action">
-          <par>0:99</par>
+          <par_num>0:99</par_num>
           <string>1AO+000</string>
           <string format="%05.2f">$1</string>
         </command>

@@ -20,8 +20,12 @@ module Mcr
           e0.each{|e1,rep|
             attr=e1.to_h
             case e1.name
-            when 'par'
-              ((mdb[:parameter]||={})[id]||=[]) << e1.text
+            when 'par_num'
+              attr={:type => 'num',:val => e1.text}
+              (hash[:parameter][id]||=[]) << attr
+            when 'par_reg'
+              attr={:type => 'reg',:val => e1.text}
+              (hash[:parameter][id]||=[]) << attr
             when 'check','wait'
               attr['type'] = e1.name
               select << mkcond(e1,attr)

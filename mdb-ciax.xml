@@ -14,7 +14,7 @@
       </wait>
     </command>
     <command id="run" label="Run to Tag [1-12]">
-      <par>1:12</par>
+      <par_num>1:12</par_num>
       <goal label="On Destination Tag?">
         <stat var="cps" ins="crt">$1</stat>
       </goal>
@@ -29,7 +29,7 @@
       </wait>
     </command>
     <command id="lift" label="Jack UP Level [1-4]">
-      <par>1:4</par>
+      <par_num>1:4</par_num>
       <goal label="On Destination Level?">
         <stat var="jlv" ins="crt">$1</stat>
       </goal>
@@ -128,7 +128,7 @@
     </command>
     <!--Run & Transer-->
     <command id="r08to" label="Leave IR from Tag 8 to [2-7]">
-      <par>2:7</par>
+      <par_num>2:7</par_num>
       <goal label="Leave Cart and Transer Stored?">
         <stat ins="crt" var="cps" inv="true">8</stat>
         <stat ins="dsi" var="mtr">BK</stat>

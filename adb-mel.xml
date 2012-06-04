@@ -65,7 +65,7 @@
       </group>
       <group id="grun" caption="Run Commands" column="2">
         <command id="run" label="Run to Tag [1-12]">
-          <par>1:12</par>
+          <par_num>1:12</par_num>
           <frmcmd name="set_tag">
             <argv>$1</argv>
           </frmcmd>

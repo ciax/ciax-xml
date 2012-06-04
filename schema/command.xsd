@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="range.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
   <xsd:complexType name="command">
     <xsd:choice minOccurs="0" maxOccurs="unbounded">
       <xsd:element ref="argv" />
@@ -17,4 +18,12 @@
     </xsd:complexType>
     <!--evaluated if format exists-->
   </xsd:element>
+  <xsd:group name="validate">
+    <xsd:choice>
+      <xsd:element ref="par_num" />
+      <xsd:element ref="par_reg" />
+    </xsd:choice>
+  </xsd:group>
+  <xsd:element name="par_num" type="rerange"></xsd:element>
+  <xsd:element name="par_reg" type="xsd:token"></xsd:element>
 </xsd:schema>

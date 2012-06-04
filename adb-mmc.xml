@@ -42,25 +42,25 @@
         <frmcmd name="set0" />
       </command>
       <command id="cw" label="Move CW [1-5]">
-        <par>1:5</par>
+        <par_num>1:5</par_num>
         <frmcmd name="mi">
           <argv>$1</argv>
         </frmcmd>
       </command>
       <command id="ccw" label="Move CCW [1-5]">
-        <par>1:5</par>
+        <par_num>1:5</par_num>
         <frmcmd name="mi">
           <argv>-$1</argv>
         </frmcmd>
       </command>
       <command id="slot" label="Move to Slot [0-23]">
-        <par>0:23</par>
+        <par_num>0:23</par_num>
         <frmcmd name="ma">
           <argv>-$1</argv>
         </frmcmd>
       </command>
       <command id="access" label="Move to Access [0-23]">
-        <par>0:23</par>
+        <par_num>0:23</par_num>
         <frmcmd name="ma">
           <argv format="%d">$1&gt;18?-$1+18:-$1-6</argv>
         </frmcmd>

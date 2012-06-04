@@ -67,10 +67,10 @@ module Frm
             case e1.name
             when 'par_num'
               attr={:type => 'num',:val => e1.text}
-              (hash[:parameter][id]||=[]) << attr
+              ((selh[:parameter]||={})[id]||=[]) << attr
             when 'par_reg'
               attr={:type => 'reg',:val => e1.text}
-              (hash[:parameter][id]||=[]) << attr
+              ((selh[:parameter]||={})[id]||=[]) << attr
             else
               e=yield(e1,r1)||next
               selh[:select][id] << e

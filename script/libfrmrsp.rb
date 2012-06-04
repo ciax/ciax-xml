@@ -30,7 +30,7 @@ module Frm
     # Block accepts [frame,time]
     # Result : executed block or not
     def upd
-      if rid=@cobj[:response]
+      if rid=@cobj.current[:response]
         @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
         hash=yield
         frame=hash[:data]
@@ -101,7 +101,7 @@ module Frm
         key=e0['assign'] || Msg.err("No key for Array")
         # Insert range depends on command param
         idxs=e0[:index].map{|e1|
-          @cobj.subst(e1['range'])
+          @cobj.current.subst(e1['range'])
         }
         begin
           Rsp.msg(1){"Array:[#{key}]:Range#{idxs}"}

@@ -20,28 +20,29 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @cobj.extend(Frm::Cmd).init(fdb,@field)
-      @cobj.extend(Frm::Exe).init{|cid,frm|
-        @io.snd(frm,cid)
-        @field.upd{@io.rcv} && @field.save
+      @cobj.values.each{|item|
+        item.extend(Frm::Cmd).init(fdb,@field){|cid,frm|
+          @io.snd(frm,cid)
+          @field.upd{@io.rcv} && @field.save
+        }
       }
-      @cobj.add_case('int','set'){|par|
+      @cobj['set'].set_proc{|par|
         @field.set(par[0],par[1]).save
       }
-      @cobj.add_case('int','unset'){|par|
+      @cobj['unset'].set_proc{|par|
         @field.unset(par.first)
       }
-      @cobj.add_case('int','save'){|par|
+      @cobj['save'].set_proc{|par|
         @field.savekey(par[0].split(','),par[1])
       }
-      @cobj.add_case('int','load'){|par|
+      @cobj['load'].set_proc{|par|
         begin
           @field.load(par.first||'')
         rescue UserError
           Msg.err("No such tag",$!)
         end
       }
-      @cobj.add_case('int','sleep'){|par| sleep par.first.to_i }
+      @cobj['sleep'].set_proc{|par| sleep par.first.to_i }
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")
@@ -49,7 +50,7 @@ module Frm
 
     #Cmd should be array
     def exe(cmd)
-      super.call
+      super.exe.call
       'OK'
     end
   end

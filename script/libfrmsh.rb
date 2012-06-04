@@ -10,14 +10,13 @@ module Frm
       @prompt['id']=fdb['id']
       @port=fdb['port'].to_i-1000
       @field=Field::Var.new.ext_file(fdb).load
-      reg=@field.val.keys.join('|')
-      @cobj.extend(Command::Exe)
+      reg={:type =>'reg',:val => @field.val.keys.join('|')}
       @cobj.add_group('int',"Internal Command")
-      @cobj.add_case('int','set',"Set Value [key(:idx)] (val)",reg)
-      @cobj.add_case('int','unset',"Remove Value [key]",reg)
-      @cobj.add_case('int','save',"Save Field [key,key...] (tag)",reg)
-      @cobj.add_case('int','load',"Load Field (tag)")
-      @cobj.add_case('int','sleep',"Sleep [n] sec",'[0-9]')
+      @cobj.add_item('int','set',"Set Value [key(:idx)] (val)",[reg])
+      @cobj.add_item('int','unset',"Remove Value [key]",[reg])
+      @cobj.add_item('int','save',"Save Field [key,key...] (tag)",[reg])
+      @cobj.add_item('int','load',"Load Field (tag)")
+      @cobj.add_item('int','sleep',"Sleep [n] sec",'[0-9]')
     end
 
     def to_s

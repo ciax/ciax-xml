@@ -7,7 +7,7 @@ module Frm
     extend Msg::Ver
     def self.extended(obj)
       init_ver('FrmCmd',9)
-      Msg.type?(obj,Command)
+      Msg.type?(obj,Command::Item)
     end
 
     def init(fdb,field)
@@ -17,11 +17,15 @@ module Frm
       @fstr={}
       @sel=Hash[fdb[:cmdframe][:frame]]
       @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
+      @exe=proc{
+        yield self[:cid],getframe
+        'OK'
+      }
       self
     end
 
     def getframe # return = response select
-      return unless @sel[:select]=self[:select]
+      return unless @sel[:select]=@select
       #    Cmd.msg{"Attr of Command:#{self}"}
       cid=self[:cid]
       Cmd.msg{"Select:#{self[:label]}(#{cid})"}
@@ -61,20 +65,6 @@ module Frm
       convert
     end
   end
-
-  module Exe
-    def self.extended(obj)
-      Msg.type?(obj,Cmd).extend(Command::Exe)
-    end
-
-    def init
-      def_proc{
-        yield self[:cid],getframe
-        'OK'
-      }
-      self
-    end
-  end
 end
 
 if __FILE__ == $0
@@ -84,11 +74,10 @@ if __FILE__ == $0
   ARGV.clear
   begin
     fdb=Frm::Db.new(dev)
-    cobj=Command.new(fdb[:cmdframe])
+    cobj=Command.new(fdb[:cmdframe]).set(cmd)
     field=Field::Var.new
     cobj.extend(Frm::Cmd).init(fdb,field)
     field.load unless STDIN.tty?
-    cobj.set(cmd)
     print cobj.getframe
   rescue UserError
     Msg.usage "[dev] [cmd] (par) < field_file"

@@ -18,7 +18,7 @@ module App
       Thread.abort_on_exception=true
       @cobj.values.each{|item|
         item.extend(App::Cmd).set_proc{
-          @buf.send(1){@cobj.current.get}
+          send(1)
           "Issued"
         }
       }
@@ -32,7 +32,7 @@ module App
       gint.add_item('int','interrupt'){
         int=@stat.interrupt.each{|cmd|
           @cobj.set(cmd)
-          @buf.send(0){@cobj.current.get}
+          send(0)
         }
         "Interrupt #{int}"
       }
@@ -41,7 +41,7 @@ module App
         sleep(@stat.interval||0.1)
         @stat.issue.each{|cmd|
           @cobj.set(cmd)
-          @buf.send(2){@cobj.current.get}
+          send(2)
         }
       }
       @fint.post_exe << proc {
@@ -83,7 +83,7 @@ module App
         loop{
           begin
             @cobj.set(['upd'])
-            @buf.send(2){@cobj.current.get}
+            send(2)
           rescue SelectID
             Msg.warn($!)
           end
@@ -92,6 +92,10 @@ module App
         }
       }
       self
+    end
+
+    def send(pri)
+      @buf.send(2){@cobj.current.get}
     end
   end
 end

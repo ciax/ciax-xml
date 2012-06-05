@@ -10,16 +10,18 @@ require 'libupdate'
 # Command::Item => {:label,:parameter,...}
 #  Command::Item#set_par(par)
 #  Command::Item#subst(str)
-#  Command::Item#exelist=>Update(Array of proc)
+#  Command::Item#add_proc{|id,par|}
 #
 # Command::Group => {id => Command::Item}
-#  Command::Group#add_item(id,title,&local_proc) -> Command::Item
+#  Command::Group#add_item(id,title){|id,par|} -> Command::Item
+#  Command::Group#update_items(list){|id,par|}
 #
 # Command#new(db)
 #  Command#add_group(key,title,&def_proc) -> Command::Group
 #  Command#group[key]=Command::Group
-#  Command[id]=Command::Item
 #  Command#current=Command::Item
+#  Command#pre_exe=Update
+#  Command[id]=Command::Item
 #  Command#set(cmd=alias+par) =>
 #    Command[alias->id]#set_par(par)
 #    Command#current=Command[id]
@@ -51,8 +53,8 @@ class Command < ExHash
     end
   end
 
-  def add_group(gid,title,&def_proc)
-    @group[gid]=Group.new(self,title,2){|id,par| def_proc.call(id,par)}
+  def add_group(gid,title)
+    @group[gid]=Group.new(self,title,2)
   end
 
   def set(cmd)
@@ -120,10 +122,9 @@ class Command < ExHash
 
   class Group < Hash
     attr_reader :list
-    def initialize(index,title,col=2,color=6,&def_proc)
+    def initialize(index,title,col=2,color=6)
       @list=Msg::CmdList.new(title,col,color)
       @index=Msg.type?(index,Command)
-      @def_proc=def_proc
     end
 
     def add_item(id,title=nil,parameter=nil)
@@ -138,8 +139,8 @@ class Command < ExHash
     def update_items(list)
       @list.update(list)
       list.each{|id,title|
-        @index[id]=self[id]=Item.new(@index,id).set_proc{|id,par|
-          @def_proc.call(id,par)
+        @index[id]=self[id]=Item.new(@index,id).add_proc{|id,par|
+          yield(id,par)
         }
       }
       self
@@ -157,7 +158,7 @@ class Command < ExHash
       @exelist=index.pre_exe.dup
     end
 
-    def set_proc
+    def add_proc
       @exelist << proc{yield @id,@par}
       self
     end

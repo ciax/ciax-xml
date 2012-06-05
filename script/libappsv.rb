@@ -17,7 +17,7 @@ module App
       @stat.ext_watch_w
       Thread.abort_on_exception=true
       @cobj.values.each{|item|
-        item.extend(App::Cmd).set_proc{
+        item.extend(App::Cmd).add_proc{
           send(1)
           "Issued"
         }

@@ -93,7 +93,7 @@ class Command < ExHash
 
   # alias to real
   def a2r(id)
-    @db.key?(:alias) ? @db[:alias][id] : id
+    (@db[:alias]||{})[id] || id
   end
 
   # make alias list

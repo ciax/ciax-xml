@@ -26,23 +26,23 @@ module Frm
           @field.upd{@io.rcv} && @field.save
         }
       }
-      @cobj['set'].set_proc{|par|
+      @cobj['set'].set_proc{|id,par|
         @field.set(par[0],par[1]).save
       }
-      @cobj['unset'].set_proc{|par|
+      @cobj['unset'].set_proc{|id,par|
         @field.unset(par.first)
       }
-      @cobj['save'].set_proc{|par|
+      @cobj['save'].set_proc{|id,par|
         @field.savekey(par[0].split(','),par[1])
       }
-      @cobj['load'].set_proc{|par|
+      @cobj['load'].set_proc{|id,par|
         begin
           @field.load(par.first||'')
         rescue UserError
           Msg.err("No such tag",$!)
         end
       }
-      @cobj['sleep'].set_proc{|par| sleep par.first.to_i }
+      @cobj['sleep'].set_proc{|id,par| sleep par.first.to_i }
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")

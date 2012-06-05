@@ -23,6 +23,14 @@ module Int
       @cobj.set(cmd)
     end
 
+    def set_switch(key,title,list)
+      grp=@cobj.add_group(key,title){|id,par|
+        raise SelectID,id
+      }
+      grp.update_items(list)
+      self
+    end
+
     # 'q' gives exit break (loop returns nil)
     # mode gives special break (loop returns mode)
     def shell

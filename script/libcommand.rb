@@ -51,7 +51,7 @@ class Command < ExHash
   end
 
   def add_group(gid,title,&def_proc)
-    @group[gid]=Group.new(self,title,2){def_proc.call}
+    @group[gid]=Group.new(self,title,2){|id,par| def_proc.call(id,par)}
   end
 
   def set(cmd)
@@ -137,7 +137,9 @@ class Command < ExHash
     def update_items(list)
       @list.update(list)
       list.each{|id,title|
-        @index[id]=self[id]=Item.new(id){@def_proc.call}
+        @index[id]=self[id]=Item.new(id).set_proc{|id,par|
+          @def_proc.call(id,par)
+        }
       }
       self
     end
@@ -146,13 +148,14 @@ class Command < ExHash
   # Validate command and parameters
   class Item < ExHash
     include Math
+    attr_reader :id
     def initialize(id)
       @id=id
       @exelist=Update.new
     end
 
     def set_proc
-      @exelist << proc{yield @par}
+      @exelist << proc{yield @id,@par}
       self
     end
 

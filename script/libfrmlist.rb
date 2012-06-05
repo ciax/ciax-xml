@@ -25,7 +25,7 @@ module Frm
           par=$opt['l'] ? ['frmsim',id] : []
           int=Sv.new(fdb,par).server
         end
-        int.cmdlist.add_group('dev',"Change Device",idb.list)
+        grp=int.set_switch('dev',"Change Device",idb.list)
         h[id]=int
       }
     end

@@ -9,7 +9,7 @@ module App
     def init_stat(sdb)
       hash=sdb.to_h
       group=hash[:group]={}
-      group[:select]={'gtime' => ['time','elapse']}
+      group[:items]={'gtime' => ['time','elapse']}
       group[:caption]={'gtime' => '' }
       group[:column]={'gtime' => 2 }
       hash[:label]={'gtime' => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
@@ -23,7 +23,7 @@ module App
         case e0.name
         when 'group'
           gid=e0.attr2db(hash[:group]){|k,v| r0.format(v)}
-          hash[:group][:select][gid]=[]
+          hash[:group][:items][gid]=[]
           struct.update(rec_stat(e0,hash,gid,r0))
         else
           id=e0.attr2db(hash){|k,v| r0.format(v)}
@@ -43,7 +43,7 @@ module App
             end
             struct[id] << st
           }
-          hash[:group][:select][gid] << id
+          hash[:group][:items][gid] << id
         end
       }
       struct
@@ -68,7 +68,7 @@ module App
             }
             (hash[name][idx]||=[]) << cmd
           when :block_grp
-            cdb[:group][:select][e1['ref']].each{|grp|
+            cdb[:group][:items][e1['ref']].each{|grp|
               (hash[:block][idx]||=[]) << [grp]
             }
           else
@@ -117,7 +117,7 @@ module App
       [:group,:parameter,:select,:label].each{|k|
         hash[k]={}
       }
-      hash[:group]={:caption =>{},:select =>{}}
+      hash[:group]={:caption =>{},:items =>{}}
       arc_command(adb,hash,'g0')
     end
 
@@ -129,7 +129,7 @@ module App
           arc_command(e0,hash,id)
         else
           id=e0['id']
-          (hash[:group][:select][gid]||=[]) << id
+          (hash[:group][:items][gid]||=[]) << id
           hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
           Repeat.new.each(e0){|e1,rep|
             case e1.name

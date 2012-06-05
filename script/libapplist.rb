@@ -25,9 +25,7 @@ module App
         else
           aint=Sv.new(adb).server
         end
-        aint.cobj.add_group('dev',"Change Device",idb.list){|id|
-          raise SelectID,id
-        }
+        aint.set_switch('dev',"Change Device",idb.list)
         h[id]=aint.extend(App::Prt)
       }
     end

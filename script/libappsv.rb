@@ -16,23 +16,32 @@ module App
       @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
       @stat.ext_watch_w
       Thread.abort_on_exception=true
-      @cobj.extend(App::Cmd).extend(App::Exe)
-      @cobj.buf.thread{|fcmd| @fint.exe(fcmd) }
-      @cobj.pre_proc{|cmd|
+      @cobj.values.each{|item|
+        item.extend(App::Cmd).set_proc{
+          @buf.send(1){@cobj.current.get}
+          "Issued"
+        }
+      }
+      @buf=Buffer.new
+      @buf.thread{|fcmd| @fint.exe(fcmd) }
+      @cobj.pre_exe << proc{|id,par|
+        cmd=[id]+par
         Msg.err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
-      @cobj.add_group('int',"Internal Command")
-      @cobj.add_case('int','interrupt'){
+      gint=@cobj.add_group('int',"Internal Command")
+      gint.add_item('int','interrupt'){
         int=@stat.interrupt.each{|cmd|
-          @cobj.set(cmd).call(0)
+          @cobj.set(cmd)
+          @buf.send(0){@cobj.current.get}
         }
         "Interrupt #{int}"
       }
-      @cobj.buf.post_flush << proc{
+      @buf.post_flush << proc{
         @stat.upd.save
         sleep(@stat.interval||0.1)
         @stat.issue.each{|cmd|
-          @cobj.set(cmd).call(2)
+          @cobj.set(cmd)
+          @buf.send(2){@cobj.current.get}
         }
       }
       @fint.post_exe << proc {
@@ -49,7 +58,7 @@ module App
 
     #cmd is array
     def exe(cmd)
-      msg=super.call(1)
+      msg=super.current.exe
       upd_prompt
       msg
     end
@@ -62,8 +71,8 @@ module App
     def upd_prompt
       @prompt['auto'] = @tid && @tid.alive?
       @prompt['watch'] = @stat.active?
-      @prompt['isu'] = @cobj.buf.issue
-      @prompt['na'] = !@cobj.buf.alive?
+      @prompt['isu'] = @buf.issue
+      @prompt['na'] = !@buf.alive?
       self
     end
 
@@ -73,7 +82,8 @@ module App
         int=(@stat.period||300).to_i
         loop{
           begin
-            @cobj.set(['upd']).call(2)
+            @cobj.set(['upd'])
+            @buf.send(2){@cobj.current.get}
           rescue SelectID
             Msg.warn($!)
           end

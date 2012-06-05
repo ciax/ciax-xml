@@ -11,11 +11,11 @@ module App
     def init
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@stat).extend(Watch::Print)
-      @cobj.add_group('view',"Change View Mode")
-      @cobj.add_case('view','pri',"Print mode"){@output=@print}
-      @cobj.add_case('view','val',"Value mode"){@output=@stat.val}
-      @cobj.add_case('view','wat',"Watch mode"){@output=@wview} if @wview
-      @cobj.add_case('view','raw',"Raw mode"){@output=@stat}
+      grp=@cobj.add_group('view',"Change View Mode")
+      grp.add_item('pri',"Print mode").set_proc{@output=@print}
+      grp.add_item('val',"Value mode").set_proc{@output=@stat.val}
+      grp.add_item('wat',"Watch mode").set_proc{@output=@wview} if @wview
+      grp.add_item('raw',"Raw mode").set_proc{@output=@stat}
       self
     end
 

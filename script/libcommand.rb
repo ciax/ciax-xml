@@ -27,15 +27,16 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:group
+  attr_reader :current,:group,:pre_exe
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
   def initialize(db)
     Command.init_ver(self)
     @db=Msg.type?(db,Hash)
+    @pre_exe=Update.new
     all=db[:select].keys.each{|id|
-      self[id]=Item.new(id).update(db_pack(db,id))
+      self[id]=Item.new(self,id).update(db_pack(db,id))
     }
     @current=nil
     @group={}
@@ -121,13 +122,13 @@ class Command < ExHash
     attr_reader :list
     def initialize(index,title,col=2,color=6,&def_proc)
       @list=Msg::CmdList.new(title,col,color)
-      @index=Msg.type?(index,Hash)
+      @index=Msg.type?(index,Command)
       @def_proc=def_proc
     end
 
     def add_item(id,title=nil,parameter=nil)
       @list[id]=title
-      @index[id]=self[id]=Item.new(id)
+      @index[id]=self[id]=Item.new(@index,id)
       property={:label => title}
       property[:parameter] = parameter if parameter
       self[id].update(property)
@@ -137,7 +138,7 @@ class Command < ExHash
     def update_items(list)
       @list.update(list)
       list.each{|id,title|
-        @index[id]=self[id]=Item.new(id).set_proc{|id,par|
+        @index[id]=self[id]=Item.new(@index,id).set_proc{|id,par|
           @def_proc.call(id,par)
         }
       }
@@ -149,9 +150,10 @@ class Command < ExHash
   class Item < ExHash
     include Math
     attr_reader :id
-    def initialize(id)
+    def initialize(index,id)
+      @index=Msg.type?(index,Command)
       @id=id
-      @exelist=Update.new
+      @exelist=index.pre_exe.dup
     end
 
     def set_proc
@@ -160,7 +162,7 @@ class Command < ExHash
     end
 
     def exe
-      @exelist.upd
+      @exelist.upd.last
     end
 
     def set_par(par)

@@ -8,13 +8,13 @@ module App
     extend Msg::Ver
     def self.extended(obj)
       init_ver('AppCmd',9)
-      Msg.type?(obj,Command)
+      Msg.type?(obj,Command::Item)
     end
 
     #frmcmd is ary of ary
     def get
       frmcmd=[]
-      self[:select].each{|e1|
+      @select.each{|e1|
         cmd=[]
         Cmd.msg(1){"GetCmd(FDB):#{e1.first}"}
         begin
@@ -35,21 +35,6 @@ module App
         end
       }
       frmcmd
-    end
-  end
-
-  module Exe
-    attr_reader :buf
-    def self.extended(obj)
-      Msg.type?(obj,Cmd).extend(Command::Exe).init_exe
-    end
-
-    def init_exe
-      @buf=Buffer.new
-      def_proc{|pri|
-          @buf.send(pri){ get }
-          "Issued"
-        }
     end
   end
 end

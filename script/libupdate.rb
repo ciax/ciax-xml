@@ -9,9 +9,8 @@ class Update < Array
 
   def upd
     Update.msg{"Update procs"}
-    each{|p|
+    map{|p|
       p.call
     }
-    self
   end
 end

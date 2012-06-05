@@ -13,13 +13,8 @@ module App
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)
       @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=Frm::List.new[adb['id']]
-      @cobj.extend(Command::Exe)
-      @cobj.add_group('lay',"Change Layer",{'frm'=>"Frm mode"}){|id|
-        raise SelectID,id
-      }
-      @fint.cobj.add_group('lay',"Change Layer",{'app'=>"App mode"}){|id|
-        raise SelectID,id
-      }
+      set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
+      @fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
       @shmode='app'
     end
 
@@ -53,9 +48,8 @@ module App
     def init
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
-      @cobj.extend(Command::Exe).def_proc{'OK'}
       @cobj.add_group('int',"Internal Command")
-      @cobj.add_case('int','set','[key=val,...]'){|par|
+      @cobj.add_item('int','set','[key=val,...]'){|par|
         Msg.err("Usage: set [key=val,..]") if par.empty?
         @stat.str_update(par.first).upd
         "Set #{par}"

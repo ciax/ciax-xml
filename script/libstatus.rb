@@ -73,7 +73,7 @@ module Status
 
     def to_s
       gdb=@sdb[:group]
-      gdb[:select].each{|k,v|
+      gdb[:items].each{|k,v|
         cap=gdb[:caption][k] || next
         self[k]={'caption' => cap,'lines'=>[]}
         col=gdb[:column][k]||1

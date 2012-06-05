@@ -93,9 +93,9 @@
  range
     description: To validate parameters
     example: "0:<10,98,99"
-    usable: fdb//command/par
+    usable: fdb//command/par_num
             --
-            adb//command/par
+            adb//command/par_num
             adb//event/range
 
 ### Implicit conversion ###

@@ -25,7 +25,7 @@ module App
       @buf=Buffer.new
       @buf.thread{|fcmd| @fint.exe(fcmd) }
       @cobj.pre_exe << proc{|id,par|
-        cmd=[id]+par
+        cmd=[id,*par]
         Msg.err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
       gint=@cobj.add_group('int',"Internal Command")

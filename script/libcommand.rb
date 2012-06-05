@@ -153,6 +153,7 @@ class Command < ExHash
     def initialize(index,id)
       @index=Msg.type?(index,Command)
       @id=id
+      @par=[]
       @exelist=index.pre_exe.dup
     end
 

@@ -17,7 +17,7 @@ module Frm
       @fstr={}
       @sel=Hash[fdb[:cmdframe][:frame]]
       @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
-      @exe=proc{
+      @exelist << proc{
         yield self[:cid],getframe
         'OK'
       }

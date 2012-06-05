@@ -50,7 +50,7 @@ module Frm
 
     #Cmd should be array
     def exe(cmd)
-      super.exe.call
+      super.exe
       'OK'
     end
   end

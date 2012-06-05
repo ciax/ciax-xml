@@ -11,12 +11,12 @@ module Frm
       @port=fdb['port'].to_i-1000
       @field=Field::Var.new.ext_file(fdb).load
       reg={:type =>'reg',:val => @field.val.keys.join('|')}
-      @cobj.add_group('int',"Internal Command")
-      @cobj.add_item('int','set',"Set Value [key(:idx)] (val)",[reg])
-      @cobj.add_item('int','unset',"Remove Value [key]",[reg])
-      @cobj.add_item('int','save',"Save Field [key,key...] (tag)",[reg])
-      @cobj.add_item('int','load',"Load Field (tag)")
-      @cobj.add_item('int','sleep',"Sleep [n] sec",'[0-9]')
+      grp=@cobj.add_group('int',"Internal Command")
+      grp.add_item('set',"Set Value [key(:idx)] (val)",[reg])
+      grp.add_item('unset',"Remove Value [key]",[reg])
+      grp.add_item('save',"Save Field [key,key...] (tag)",[reg])
+      grp.add_item('load',"Load Field (tag)")
+      grp.add_item('sleep',"Sleep [n] sec",'[0-9]')
     end
 
     def to_s

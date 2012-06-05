@@ -3,21 +3,27 @@ require 'libexenum'
 require 'libmsg'
 require 'librerange'
 require 'liblogging'
+require 'libupdate'
 
 #Access method(Plan)
 #Command(Hash)
+# Command::Item => {:label,:parameter,...}
+#  Command::Item#set_par(par)
+#  Command::Item#subst(str)
+#  Command::Item#exelist=>Update(Array of proc)
+#
+# Command::Group => {id => Command::Item}
+#  Command::Group#add_item(id,title,&local_proc) -> Command::Item
+#
 # Command#new(db)
-# Command#def_proc{}
-# Command#add_group(key,title,&def_proc)
-# Command#add_item(key,id,title,&local_proc)
-#Command[id]=Command::Item(Hash)
-# Command[id] => {:label,:parameter,...}
-# Command[id]#set_par(par)
-# Command[id]#subst(str)
-# Command[id]#exe => proc{}
-# Command#set(cmd=alias+par) => Command[alias->id]#set_par(par)
-# Command#current => Command[id]
-
+#  Command#add_group(key,title,&def_proc) -> Command::Group
+#  Command#group[key]=Command::Group
+#  Command[id]=Command::Item
+#  Command#current=Command::Item
+#  Command#set(cmd=alias+par) =>
+#    Command[alias->id]#set_par(par)
+#    Command#current=Command[id]
+#
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
@@ -34,7 +40,7 @@ class Command < ExHash
     @current=nil
     @group={}
     if gdb=db[:group]
-      gdb[:select].each{|gid,member|
+      gdb[:items].each{|gid,member|
         cap=(gdb[:caption]||{})[gid]
         col=(gdb[:column]||{})[gid]
         def_group(gid,member,cap,col)
@@ -42,26 +48,10 @@ class Command < ExHash
     else
       def_group('main',all,"Command List",1)
     end
-    @chk=proc{}
   end
 
   def add_group(gid,title,&def_proc)
-    @group[gid]=Group.new(title,2){def_proc.call}
-    self
-  end
-
-  #property = {:label => 'titile',:parameter => Array}
-  def add_item(gid,id,title,parameter=nil,&local_proc)
-    property={:label => title}
-    property[:parameter] = parameter if parameter
-    @group[gid].add_item(id,property){local_proc.call}
-    self[id]=@group[gid][id]
-    self
-  end
-
-  def set_pre_proc
-    @chk=proc{|cmd| yield cmd}
-    self
+    @group[gid]=Group.new(self,title,2){def_proc.call}
   end
 
   def set(cmd)
@@ -120,7 +110,7 @@ class Command < ExHash
 
   # Make Default groups (generated from Db)
   def def_group(gid,items,cap,col)
-    @group[gid]=Group.new(cap,col,2)
+    @group[gid]=Group.new(self,cap,col,2)
     items.each{|id|
       @group[gid][id]=self[id]
     }
@@ -129,23 +119,25 @@ class Command < ExHash
 
   class Group < Hash
     attr_reader :list
-    def initialize(title,col=2,color=6,&def_proc)
+    def initialize(index,title,col=2,color=6,&def_proc)
       @list=Msg::CmdList.new(title,col,color)
+      @index=Msg.type?(index,Hash)
       @def_proc=def_proc
     end
 
-    def add_item(id,property,&local_proc)
-      self[id]=Item.new(id){local_proc.call}
+    def add_item(id,title=nil,parameter=nil)
+      @list[id]=title
+      @index[id]=self[id]=Item.new(id)
+      property={:label => title}
+      property[:parameter] = parameter if parameter
       self[id].update(property)
-      @list[id]=property[:label]
-      self
     end
 
-    # list = {id => title,...}
+    #property = {:label => 'titile',:parameter => Array}
     def update_items(list)
       @list.update(list)
       list.each{|id,title|
-        self[id]=Item.new(id){@def_proc.call}
+        @index[id]=self[id]=Item.new(id){@def_proc.call}
       }
       self
     end
@@ -154,15 +146,18 @@ class Command < ExHash
   # Validate command and parameters
   class Item < ExHash
     include Math
-    attr_accessor :exe
-    def initialize(id,&local_proc)
+    def initialize(id)
       @id=id
-      @exe=local_proc if local_proc
+      @exelist=Update.new
     end
 
     def set_proc
-      @exe=proc{yield @par}
+      @exelist << proc{yield @par}
       self
+    end
+
+    def exe
+      @exelist.upd
     end
 
     def set_par(par)

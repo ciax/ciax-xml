@@ -63,7 +63,7 @@
       <xsd:enumeration value="normal" />
       <xsd:enumeration value="warn" />
       <xsd:enumeration value="alarm" />
-      <xsd:enumeration value="caution" />
+      <xsd:enumeration value="active" />
       <xsd:enumeration value="hide" />
     </xsd:restriction>
   </xsd:simpleType>

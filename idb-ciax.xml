@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="crt" label="CIAX CART 3" app_type="mel" iocmd="socat - udp:cart3:5000" port="25101" host="cxws2"></instance>
   <!--
@@ -19,8 +19,8 @@
   </instance>
   <instance id="det" label="CsEtr Control" app_type="srm" iocmd="socat - tcp:ltc-c:4001" port="25104"></instance>
   <instance id="dts" label="TSC Control" app_type="oss" iocmd="socat - tcp:cxws2:9999" port="25105"></instance>
-  <instance ref="cci"/>
-  <instance ref="cco"/>
-  <instance ref="cri"/>
-  <instance ref="cro"/>
+  <alias ref="cci" />
+  <alias ref="cco" />
+  <alias ref="cri" />
+  <alias ref="cro" />
 </idb>

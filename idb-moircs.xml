@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <instance id="mfp" label="MOIRCS Pneumatic Actuator" app_type="cfp" iocmd="socat - tcp:celaeno:4001" port="25601"></instance>
   <instance id="map" label="MOIRCS Air Pressure" app_type="oma" iocmd="socat - tcp:celaeno:4002" port="25602"></instance>
@@ -9,5 +9,5 @@
   <instance id="mft" label="MOIRCS Hall Effect Sensor" app_type="fpa" iocmd="socat - tcp:celaeno:4012" port="25612"></instance>
   <instance id="mh1" label="MOIRCS Main/Carrousel Heater" app_type="psp" iocmd="socat - tcp:merope:59999" port="25621"></instance>
   <instance id="mh2" label="MOIRCS Main Heater" app_type="psp" iocmd="socat - tcp:atlas:59999" port="25622"></instance>
-  <instance ref="cci"/>
+  <alias ref="cci" />
 </idb>

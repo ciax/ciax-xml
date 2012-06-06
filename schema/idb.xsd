@@ -5,9 +5,10 @@
   <xsd:import schemaLocation="idbs.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/idbs" />
   <xsd:element name="idb">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="idb:instance" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="idb:instance" />
+        <xsd:element ref="idb:alias" />
+      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="instance">
@@ -23,6 +24,11 @@
       <xsd:attribute name="iocmd" type="xsd:token" />
       <xsd:attribute name="host" type="xsd:token" />
       <xsd:attribute name="port" type="xsd:int" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="alias">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

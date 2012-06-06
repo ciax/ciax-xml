@@ -25,7 +25,7 @@ module Int
 
     def set_switch(key,title,list)
       grp=@cobj.add_group(key,title)
-      grp.update_items(list){|id,par| raise InvalidDEV,id }
+      grp.update_items(list){|id,par| raise SelectID,id }
       self
     end
 
@@ -48,7 +48,7 @@ module Int
           @post_exe.upd
         rescue InvalidCMD
           puts @cmdlist
-        rescue InvalidDEV
+        rescue SelectID
           break $!.to_s
         rescue UserError
           puts $!.to_s

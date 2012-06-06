@@ -11,7 +11,7 @@ module Xml
       Gnu.init_ver(self,4)
       case f
       when String
-        test(?r,f) || raise(InvalidDEV)
+        test(?r,f) || raise(InvalidID)
         @e=XML::Document.file(f).root
         Gnu.msg{@e.namespaces.default}
       when XML::Node
@@ -31,7 +31,7 @@ module Xml
     def to_h # Don't use Hash[@e.attributes] (=> {"id"=>"id='id'"}) 
       h=@e.attributes.to_h
       if t=text
-        h['val']=t 
+        h['val']=t
       end
       h
     end

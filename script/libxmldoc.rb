@@ -24,14 +24,14 @@ module Xml
       list={}
       @tree[@group].each{|id,e|
         list[id]=e['label']
-      }.empty? && raise(InvalidDEV)
+      }.empty? && raise(InvalidID)
       @list=Msg::CmdList.new("[id]").update(list).sort!
       @domain={}
       @top=nil
     end
 
     def set(id)
-      raise InvalidDEV,@list.to_s unless @tree[@group].key?(id)
+      raise(InvalidID,@list.to_s) unless @tree[@group].key?(id)
       @top=@tree[@group][id]
       update(@top.to_h)
       @top.each{|e1|

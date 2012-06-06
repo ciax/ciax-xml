@@ -40,7 +40,7 @@ if __FILE__ == $0
   app=ARGV.shift
   begin
     adb=Ins::Db.new(id).cover_app
-  rescue InvalidDEV
+  rescue InvalidID
     Msg.usage "[id]"
   end
   puts HtmlTbl.new(adb)

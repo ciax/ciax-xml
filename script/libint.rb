@@ -25,7 +25,7 @@ module Int
 
     def set_switch(key,title,list)
       grp=@cobj.add_group(key,title)
-      grp.update_items(list){|id,par| raise SelectID,id }
+      grp.update_items(list){|id,par| raise(SelectID,id) }
       self
     end
 

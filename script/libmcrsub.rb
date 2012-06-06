@@ -151,7 +151,7 @@ if __FILE__ == $0
     puts mcr.to_s
   rescue InvalidCMD
     Msg.exit(2)
-  rescue InvalidDEV
+  rescue InvalidID
     Msg.usage("(opt) [mcr] [cmd] (par)",*$optlist)
   rescue UserError
     Msg.exit(3)

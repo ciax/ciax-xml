@@ -2,14 +2,13 @@
 VarDir="#{ENV['HOME']}/.var"
 ScrDir=File.dirname(__FILE__)
 
-# General Error
+# General Error(Configuration Error)
 class UserError < RuntimeError; end
-# When invalid Mode
-class InvalidMODE < UserError; end
+
 # When invalid Device, exit from shell/server
-class InvalidDEV < InvalidMODE; end
+class InvalidID < RuntimeError; end
 # When invalid Command, continue in shell/server
-class InvalidCMD < InvalidDEV; end
+class InvalidCMD < InvalidID; end
 # When invalid Parameter, continue in shell/server
 class InvalidPAR < InvalidCMD; end
 

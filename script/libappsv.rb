@@ -85,7 +85,7 @@ module App
           begin
             @cobj.set(['upd'])
             @buf.send(2)
-          rescue InvalidDEV
+          rescue InvalidID
             Msg.warn($!)
           end
           Int::Server.msg{"Auto Update(#{@stat.get('time')})"}

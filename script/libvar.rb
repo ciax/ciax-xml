@@ -114,7 +114,7 @@ class Var < ExHash
         }
       rescue Errno::ENOENT
         if tag
-          raise UserError,"Tag=#{taglist}"
+          Msg.par_err("No such Tag","Tag=#{taglist}")
         else
           Msg.warn("  -- no json file (#{fname})")
         end

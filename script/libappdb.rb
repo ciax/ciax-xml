@@ -163,7 +163,7 @@ if __FILE__ == $0
   begin
     Msg.getopts("f")
     db=App::Db.new(ARGV.shift)
-  rescue InvalidDEV
+  rescue InvalidID
     Msg.usage("(-f) [id] (key) ..",*$optlist)
     Msg.exit
   end

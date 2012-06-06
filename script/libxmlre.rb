@@ -12,7 +12,7 @@ module Xml
       Re.init_ver(self,4)
       case f
       when String
-        test(?r,f) || raise(InvalidDEV)
+        test(?r,f) || raise(InvalidID)
         @e=Document.new(open(f)).root
         Re.msg{ns}
       when Element
@@ -20,7 +20,7 @@ module Xml
       when nil
         @e=Element.new
       else
-        raise "Parameter shoud be String or Element"
+        Msg.err("Parameter shoud be String or Element")
       end
     end
 

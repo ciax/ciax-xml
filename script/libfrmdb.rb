@@ -139,7 +139,7 @@ end
 if __FILE__ == $0
   begin
     fdb=Frm::Db.new(ARGV.shift)
-  rescue InvalidDEV
+  rescue InvalidID
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit
   end

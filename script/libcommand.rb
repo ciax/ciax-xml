@@ -76,7 +76,7 @@ class Command < ExHash
 
   def error(str=nil)
     str= str ? str+"\n" : ''
-    raise InvalidCMD,str+to_s
+    raise(InvalidCMD,str+to_s)
   end
 
   private

@@ -222,7 +222,7 @@ class Command < ExHash
       self[:parameter].map{|par|
         cri=par[:val]
         unless str=pary.shift
-        Msg.err(
+        Msg.par_err(
                 "Parameter shortage (#{pary.size}/#{self[:parameter].size})",
                 Msg.item(@id,self[:label]),
                 " "*10+"key=(#{cri.tr('|',',')})")
@@ -232,17 +232,17 @@ class Command < ExHash
           begin
             num=eval(str)
           rescue Exception
-            Msg.err("Parameter is not number")
+            Msg.par_err("Parameter is not number")
           end
           Command.msg{"Validate: [#{num}] Match? [#{cri}]"}
           cri.split(',').each{|r|
             break if ReRange.new(r) == num
-          } && Msg.err(" Parameter invalid (#{num}) for [#{cri.tr(':','-')}]")
+          } && Msg.par_err(" Parameter invalid (#{num}) for [#{cri.tr(':','-')}]")
           num.to_s
         when 'reg'
           Command.msg{"Validate: [#{str}] Match? [#{cri}]"}
           unless /^(#{cri})/ === str
-            Msg.err("Parameter Invalid (#{str}) for [#{cri}]")
+            Msg.par_err("Parameter Invalid (#{str}) for [#{cri}]")
           end
           str
         end

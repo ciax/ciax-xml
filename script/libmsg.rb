@@ -14,8 +14,7 @@ class InvalidCMD < InvalidDEV; end
 class InvalidPAR < InvalidCMD; end
 
 class ManagedError < RuntimeError; end
-class SelectMODE < ManagedError; end
-class SelectDEV < ManagedError; end
+class SelectID < ManagedError; end
 
 module Msg
   # Should be extended in module/class
@@ -175,6 +174,11 @@ module Msg
   end
 
   # Exception methods
+  def par_err(*msg) # Raise User error (Invalid User input)
+    msg[0]=color(msg[0],1)
+    raise InvalidPAR,msg.join("\n  "),caller(1)
+  end
+
   def err(*msg) # Raise User error (Invalid User input)
     msg[0]=color(msg[0],1)
     raise UserError,msg.join("\n  "),caller(1)

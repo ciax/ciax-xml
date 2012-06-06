@@ -3,7 +3,7 @@
   <instance ref="cci"/>
   <instance ref="cri"/>
   <instance ref="cco"/>
-  <instance id="cro" label="OPT Helium Compressor Control" app_type="bbe" iocmd="socat - tcp:ltc-o:4003" port="25106"></instance>
+  <instance id="cro" label="OPT Helium Compressor" app_type="bbe" iocmd="socat - tcp:ltc-o:4003" port="25106"></instance>
   <instance ref="cf1"/>
   <instance ref="cfa"/>
 </idb>

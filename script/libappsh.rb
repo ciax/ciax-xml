@@ -48,8 +48,8 @@ module App
     def init
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
-      @cobj.add_group('int',"Internal Command")
-      @cobj.add_item('int','set','[key=val,...]'){|par|
+      grp=@cobj.add_group('int',"Internal Command")
+      grp.add_item('int','set','[key=val,...]'){|par|
         Msg.err("Usage: set [key=val,..]") if par.empty?
         @stat.str_update(par.first).upd
         "Set #{par}"

@@ -25,14 +25,20 @@ class Buffer
     @q=Queue.new
     @tid=nil
     @post_flush=Update.new
+    @proc_send=proc{}
     clear
+  end
+
+  def proc_send
+    @proc_send=proc{yield}
+    self
   end
 
   # Send bunch of frmcmd array (ary of ary)
   def send(n=1)
     return self if  n > 1 && !@q.empty?
     clear if n == 0
-    inp=yield
+    inp=@proc_send.call
     #inp is frmcmd array (ary of ary)
     unless inp.empty?
       @q.push([n,inp])
@@ -40,7 +46,7 @@ class Buffer
     self
   end
 
-  def thread
+  def proc_recv
     @tid=Thread.new{
       Thread.pass
       loop{

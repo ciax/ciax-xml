@@ -18,12 +18,13 @@ module App
       Thread.abort_on_exception=true
       @cobj.values.each{|item|
         item.extend(App::Cmd).add_proc{
-          send(1)
+          @buf.send(1)
           "Issued"
         }
       }
       @buf=Buffer.new
-      @buf.thread{|fcmd| @fint.exe(fcmd) }
+      @buf.proc_send{@cobj.current.get}
+      @buf.proc_recv{|fcmd| @fint.exe(fcmd) }
       @cobj.pre_exe << proc{|id,par|
         cmd=[id,*par]
         Msg.err("Blocking(#{cmd})") if @stat.block?(cmd)
@@ -32,7 +33,7 @@ module App
       gint.add_item('int','interrupt'){
         int=@stat.interrupt.each{|cmd|
           @cobj.set(cmd)
-          send(0)
+          @buf.send(0)
         }
         "Interrupt #{int}"
       }
@@ -41,7 +42,7 @@ module App
         sleep(@stat.interval||0.1)
         @stat.issue.each{|cmd|
           @cobj.set(cmd)
-          send(2)
+          @buf.send(2)
         }
       }
       @fint.post_exe << proc {
@@ -83,7 +84,7 @@ module App
         loop{
           begin
             @cobj.set(['upd'])
-            send(2)
+            @buf.send(2)
           rescue SelectID
             Msg.warn($!)
           end
@@ -92,10 +93,6 @@ module App
         }
       }
       self
-    end
-
-    def send(pri)
-      @buf.send(2){@cobj.current.get}
     end
   end
 end

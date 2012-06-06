@@ -11,7 +11,7 @@ module Xml
       Gnu.init_ver(self,4)
       case f
       when String
-        test(?r,f) || raise(SelectID)
+        test(?r,f) || raise(InvalidDEV)
         @e=XML::Document.file(f).root
         Gnu.msg{@e.namespaces.default}
       when XML::Node

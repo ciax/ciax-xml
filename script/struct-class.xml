@@ -3,9 +3,9 @@
   <RuntimeError>
     <Broken/>
     <UserError>
-      <SelectID>
-        <SelectCMD/>
-      </SelectID>
+      <InvalidDEV>
+        <InvalidCMD/>
+      </InvalidDEV>
     </UserError>
   </RuntimeError>
   <Hash>

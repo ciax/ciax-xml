@@ -20,7 +20,7 @@ module Sym
         }
         hash
       }
-    rescue SelectID
+    rescue InvalidDEV
       raise $! if __FILE__ == $0
     end
 
@@ -35,7 +35,7 @@ end
 if __FILE__ == $0
   begin
     sdb=Sym::Db.new(ARGV.shift)
-  rescue SelectID
+  rescue InvalidDEV
     Msg.usage "[id] ..."
     Msg.exit
   end

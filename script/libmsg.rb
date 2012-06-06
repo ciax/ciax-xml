@@ -5,13 +5,17 @@ ScrDir=File.dirname(__FILE__)
 # General Error
 class UserError < RuntimeError; end
 # When invalid Mode
-class SelectMODE < UserError; end
-# When invalid Device
-class SelectID < SelectMODE; end
-# When invalid Command
-class SelectCMD < SelectID; end
-# When invalid Parameter
-class Parameter < SelectCMD; end
+class InvalidMODE < UserError; end
+# When invalid Device, exit from shell/server
+class InvalidDEV < InvalidMODE; end
+# When invalid Command, continue in shell/server
+class InvalidCMD < InvalidDEV; end
+# When invalid Parameter, continue in shell/server
+class InvalidPAR < InvalidCMD; end
+
+class ManagedError < RuntimeError; end
+class SelectMODE < ManagedError; end
+class SelectDEV < ManagedError; end
 
 module Msg
   # Should be extended in module/class
@@ -101,7 +105,7 @@ module Msg
     end
 
     def error
-      raise SelectCMD,to_s
+      raise InvalidCMD,to_s
     end
   end
 
@@ -151,7 +155,7 @@ module Msg
 
     def error(str=nil)
       str= str ? str+"\n" : ''
-      raise SelectCMD,str+to_s
+      raise InvalidCMD,str+to_s
     end
   end
 

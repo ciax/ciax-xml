@@ -227,7 +227,7 @@ if __FILE__ == $0
   id=ARGV.shift
   begin
     adb=Ins::Db.new(id).cover_app
-  rescue SelectID
+  rescue InvalidDEV
     Msg.usage("(opt) [id]",*$optlist)
   end
   stat=Status::Var.new.ext_file(adb).load.ext_watch_r

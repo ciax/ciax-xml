@@ -68,7 +68,7 @@ end
 if __FILE__ == $0
   begin
     mdb=Mcr::Db.new(ARGV.shift)
-  rescue SelectID
+  rescue InvalidDEV
     Msg.usage "[id] (key) .."
     Msg.exit
   end

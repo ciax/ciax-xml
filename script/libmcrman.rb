@@ -75,7 +75,7 @@ module Mcr
       when /^[s|n]/i
         current.raise(Broken) if alive?
       else
-        raise SelectCMD,"Can't accept [#{str}]"
+        raise InvalidCMD,"Can't accept [#{str}]"
       end
     end
 

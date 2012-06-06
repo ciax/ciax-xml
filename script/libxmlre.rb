@@ -12,7 +12,7 @@ module Xml
       Re.init_ver(self,4)
       case f
       when String
-        test(?r,f) || raise(SelectID)
+        test(?r,f) || raise(InvalidDEV)
         @e=Document.new(open(f)).root
         Re.msg{ns}
       when Element

@@ -149,9 +149,9 @@ if __FILE__ == $0
     mcr.extend(Mcr::Prt) unless $opt['r']
     mcr.macro(cmd).join
     puts mcr.to_s
-  rescue SelectCMD
+  rescue InvalidCMD
     Msg.exit(2)
-  rescue SelectID
+  rescue InvalidDEV
     Msg.usage("(opt) [mcr] [cmd] (par)",*$optlist)
   rescue UserError
     Msg.exit(3)

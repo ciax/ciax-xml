@@ -5,7 +5,7 @@ id=ARGV.shift
 ARGV.clear
 begin
   mm=Mcr::Man.new(id)
-rescue SelectID
+rescue InvalidDEV
   Msg.usage("[mcr] # (ACT=n)")
 end
 mm.shell

@@ -90,15 +90,13 @@ module Msg
 
     def to_s
       all=[]
-      unless empty?
-        all << @title
-        keys.each_slice(@col){|a|
-          l=a.map{|key|
-            Msg.item(key,self[key]) if self[key]
-          }.compact
-          all << l.join("\t") unless l.empty?
-        }
-      end
+      keys.each_slice(@col){|a|
+        l=a.map{|key|
+          Msg.item(key,self[key]) if self[key]
+        }.compact
+        all << l.join("\t") unless l.empty?
+      }
+      all.unshift @title unless all.empty?
       all.compact.join("\n")
     end
 

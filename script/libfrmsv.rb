@@ -36,11 +36,7 @@ module Frm
         @field.savekey(par[0].split(','),par[1])
       }
       @cobj['load'].add_proc{|id,par|
-        begin
-          @field.load(par.first||'')
-        rescue UserError
-          Msg.err("No such tag",$!)
-        end
+        @field.load(par.first||'')
       }
       @cobj['sleep'].add_proc{|id,par| sleep par.first.to_i }
       extend(Int::Server)

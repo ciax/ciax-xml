@@ -64,17 +64,9 @@ module Frm
           (selh[:select]||={})[id]||=[]
           Db.msg{"InitSelHash(#{id})"}
           Repeat.new.each(e0){|e1,r1|
-            case e1.name
-            when 'par_num'
-              attr={:type => 'num',:list => e1.text.split(',')}
-              ((selh[:parameter]||={})[id]||=[]) << attr
-            when 'par_str'
-              attr={:type => 'str',:list => e1.text.split(',')}
-              ((selh[:parameter]||={})[id]||=[]) << attr
-            else
-              e=yield(e1,r1)||next
-              selh[:select][id] << e
-            end
+            set_par(e1,id,selh) && next
+            e=yield(e1,r1) || next
+            selh[:select][id] << e
           }
           Db.msg{"InitSelFrame(#{id})"}
         ensure

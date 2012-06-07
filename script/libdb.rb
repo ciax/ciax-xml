@@ -65,4 +65,17 @@ class Db < ExHash
   def fmar
     VarDir+"/cache/#{@base}.mar"
   end
+
+  def set_par(e,id,db)
+    case e.name
+    when 'par_num'
+      attr={:type => 'num',:list => e.text.split(',')}
+      ((db[:parameter]||={})[id]||=[]) << attr
+    when 'par_str'
+      attr={:type => 'str',:list => e1.text.split(',')}
+      ((db[:parameter]||={})[id]||=[]) << attr
+    else
+      nil
+    end
+  end
 end

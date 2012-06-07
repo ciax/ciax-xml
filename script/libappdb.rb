@@ -51,13 +51,8 @@ module App
           (hash[:group][:items][gid]||=[]) << id
           hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
           Repeat.new.each(e0){|e1,rep|
+            set_par(e1,id,hash) && next
             case e1.name
-            when 'par_num'
-              attr={:type => 'num',:list => e1.text.split(',')}
-              (hash[:parameter][id]||=[]) << attr
-            when 'par_str'
-              attr={:type => 'str',:list => e1.text.split(',')}
-              (hash[:parameter][id]||=[]) << attr
             when 'frmcmd'
               command=[e1['name']]
               e1.each{|e2|

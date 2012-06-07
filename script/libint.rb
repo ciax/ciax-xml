@@ -112,7 +112,7 @@ module Int
     def exe(cmd)
       send(cmd.join(' '))
       # Error message
-      super if /ERROR/ =~ @prompt['msg']
+      @cobj.set(cmd) if /ERROR/ =~ @prompt['msg']
       @prompt['msg']
     end
 

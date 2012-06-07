@@ -59,7 +59,7 @@ module App
 
     def exe(cmd)
       @stat.set_time
-      super.exe||'OK'
+      @cobj.set(cmd).exe||'OK'
     end
   end
 end

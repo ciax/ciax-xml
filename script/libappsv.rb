@@ -59,7 +59,7 @@ module App
 
     #cmd is array
     def exe(cmd)
-      msg=super.current.exe
+      msg=@cobj.set(cmd).exe
       upd_prompt
       msg
     end

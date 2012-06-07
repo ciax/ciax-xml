@@ -105,56 +105,6 @@ module Msg
     end
   end
 
-  # Structure /GroupID/List
-  class GroupList < Hash
-    def initialize(cdb={})
-      @group={}
-      if cdb.key?(:group)
-        gdb=cdb[:group]
-        gdb[:select].each{|key,ary|
-          hash={}
-          (cdb.key?(:alias) ? ary.map{|k|
-             cdb[:alias].key(k) # if multiple value at key => indefinite
-           }.compact : ary).each{|k|
-            hash[k]=cdb[:label][k]
-          }
-          col=(gdb[:column]||{})[key] || 1
-          cap=(gdb[:caption]||{})[key]||"Command List"
-          @group[key]=CmdList.new(cap,col.to_i,2).update(hash)
-          update(hash)
-        }
-      elsif cdb.key?(:label)
-        @group['cmd']=CmdList.new("Command List",1,2).update(cdb[:label])
-        update(cdb[:label])
-      end
-    end
-
-    def add_group(key,title,hash={},col=1,color=6)
-      @group[key]=CmdList.new(title,col,color) unless @group.key?(key)
-      add_items(key,hash)
-    end
-
-    def add_items(key,hash)
-      @group[key].update(hash)
-      update(hash)
-    end
-
-    # search msg of each command
-    def item(id)
-      return Msg.item(id,self[id]) if key?(id)
-      nil
-    end
-
-    def to_s
-      ([$!]+@group.values).map{|v| v.to_s}.grep(/./).join("\n")
-    end
-
-    def error(str=nil)
-      str= str ? str+"\n" : ''
-      raise InvalidCMD,str+to_s
-    end
-  end
-
   ### Class method ###
   module_function
   # Messaging methods

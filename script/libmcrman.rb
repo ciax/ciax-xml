@@ -17,15 +17,16 @@ module Mcr
       @prompt="#@id[]>"
       @index=0
       @mcr=Mcr::Sub.new(@cobj,1) #.extend(Mcr::Prt)
-      cl={"[0-9]"=>"Switch Mode","threads"=>"Thread list"}
-      cl["list"] = "list mcr contents"
-      cl["break"] = "[cmd|mcr] set break point"
-      cl["step"] = "step in execution"
-      cl["run"] = "run to break point"
-      cl["continue"] = "continue execution"
-      cl["print"] = "[dev:stat] print variable"
-      cl["set"] = "[dev:stat=val] set variable"
-      @cmdlist.add_group('int',"Internal Command",cl)
+      grp=@cobj.add_group('int',"Internal Command")
+      grp.add_item("[0-9]","Switch Mode")
+      grp.add_item("threads","Thread list")
+      grp.add_item("list","list mcr contents")
+      grp.add_item("break","[cmd|mcr] set break point")
+      grp.add_item("step","step in execution")
+      grp.add_item("run","run to break point")
+      grp.add_item("continue","continue execution")
+      grp.add_item("print","[dev:stat] print variable")
+      grp.add_item("set","[dev:stat=val] set variable")
     end
 
     def exe(cmd)

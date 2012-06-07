@@ -13,7 +13,6 @@ module Int
       @prompt=Prompt.new
       @post_exe=Update.new
       @port=0
-      @cmdlist=Msg::GroupList.new
     end
 
     # No command => UserError
@@ -32,11 +31,11 @@ module Int
     # 'q' gives exit break (loop returns nil)
     # mode gives special break (loop returns mode)
     def shell
-      sl={'q'=>"Quit",'D^'=>"Interrupt"}
-      @cmdlist.add_group('sh',"Shell Command",sl,2)
       Readline.completion_proc= proc{|word|
-        (@cobj.list.keys+@cmdlist.keys).grep(/^#{word}/)
+        @cobj.list.keys.grep(/^#{word}/)
       }
+      grp=@cobj.add_group('sh',"Shell Command")
+      grp.update_items({'q'=>"Quit",'D^'=>"Interrupt"})
       loop {
         line=Readline.readline(@prompt.to_s,true)||'interrupt'
         break if /^q/ === line
@@ -46,10 +45,10 @@ module Int
           msg= cmd.empty? ? to_s : exe(cmd)
           puts msg
           @post_exe.upd
-        rescue InvalidCMD
-          puts @cmdlist
         rescue SelectID
           break $!.to_s
+        rescue InvalidCMD
+          puts $!.to_s
         rescue UserError
           puts $!.to_s
         end

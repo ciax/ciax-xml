@@ -29,7 +29,6 @@
     <App.List/>
     <Frm.List/>
     <Msg.CmdList/>
-    <Msg.GroupList/>
     <Xml.Doc/>
   </Hash>
   <Array>

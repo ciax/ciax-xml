@@ -236,12 +236,18 @@ class Command < ExHash
           end
           Command.msg{"Validate: [#{num}] Match? [#{disp}]"}
           unless par[:list].any?{|r| ReRange.new(r) == num }
-            Msg.par_err(" Parameter invalid (#{num}) for [#{disp}]")
+            Msg.par_err(" Parameter Invalid (#{num}) for [#{disp}]")
           end
           num.to_s
         when 'str'
           Command.msg{"Validate: [#{str}] Match? [#{disp}]"}
           unless par[:list].include?(str)
+            Msg.par_err("Parameter Invalid (#{str}) for [#{disp}]")
+          end
+          str
+        when 'reg'
+          Command.msg{"Validate: [#{str}] Match? [#{disp}]"}
+          unless par[:list].any?{|r| /#{r}/ === str}
             Msg.par_err("Parameter Invalid (#{str}) for [#{disp}]")
           end
           str

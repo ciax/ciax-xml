@@ -49,9 +49,9 @@ module App
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
       grp=@cobj.add_group('int',"Internal Command")
-      grp.add_item('int','set','[key=val,...]'){|par|
+      grp.add_item('set','[key=val,...]').add_proc{|id,par|
         Msg.err("Usage: set [key=val,..]") if par.empty?
-        @stat.str_update(par.first).upd
+        par.each{|exp| @stat.str_update(exp).upd}
         "Set #{par}"
       }
       self
@@ -59,8 +59,7 @@ module App
 
     def exe(cmd)
       @stat.set_time
-      super.exe
-      'OK'
+      super.exe||'OK'
     end
   end
 end

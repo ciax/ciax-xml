@@ -186,10 +186,10 @@ class Command < ExHash
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
           Command.msg{"Parameter No.#{i} = [#{@par[i-1]}]"}
-          @par[i-1] || Msg.err(" No substitute data ($#{i})")
+          @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
         }
         res=eval(res).to_s unless /\$/ === res
-        Msg.err("Nil string") if res == ''
+        Msg.cfg_err("Nil string") if res == ''
         res
       ensure
         Command.msg(-1){"Substitute to [#{res}]"}

@@ -27,7 +27,7 @@ module App
       @buf.proc_recv{|fcmd| @fint.exe(fcmd) }
       @cobj.pre_exe << proc{|id,par|
         cmd=[id,*par]
-        Msg.err("Blocking(#{cmd})") if @stat.block?(cmd)
+        Msg.cmd_err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
       gint=@cobj.add_group('int',"Internal Command")
       gint.add_item('interrupt').add_proc{

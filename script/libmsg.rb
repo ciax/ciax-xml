@@ -2,11 +2,10 @@
 VarDir="#{ENV['HOME']}/.var"
 ScrDir=File.dirname(__FILE__)
 
-# General Error(Configuration Error)
+# User input Error
 class UserError < RuntimeError; end
-
 # When invalid Device, exit from shell/server
-class InvalidID < RuntimeError; end
+class InvalidID < UserError; end
 # When invalid Command, continue in shell/server
 class InvalidCMD < InvalidID; end
 # When invalid Parameter, continue in shell/server
@@ -14,6 +13,12 @@ class InvalidPAR < InvalidCMD; end
 
 class ManagedError < RuntimeError; end
 class SelectID < ManagedError; end
+
+# Communication Error
+class CommError < UserError; end
+# Configuration Error
+class ConfigError < RuntimeError; end
+
 
 module Msg
   # Should be extended in module/class
@@ -121,12 +126,27 @@ module Msg
   end
 
   # Exception methods
+  def cmd_err(*msg) # Raise User error (Invalid User input)
+    msg[0]=color(msg[0],1)
+    raise InvalidCMD,msg.join("\n  "),caller(1)
+  end
+
   def par_err(*msg) # Raise User error (Invalid User input)
     msg[0]=color(msg[0],1)
     raise InvalidPAR,msg.join("\n  "),caller(1)
   end
 
-  def err(*msg) # Raise User error (Invalid User input)
+  def cfg_err(*msg) # Raise User error (Invalid User input)
+    msg[0]=color(msg[0],1)
+    raise ConfigError,msg.join("\n  "),caller(1)
+  end
+
+  def com_err(*msg) # Raise User error (Invalid User input)
+    msg[0]=color(msg[0],1)
+    raise ConfigError,msg.join("\n  "),caller(1)
+  end
+
+  def err(*msg) # Raise User error (Invalid Configuration)
     msg[0]=color(msg[0],1)
     raise UserError,msg.join("\n  "),caller(1)
   end

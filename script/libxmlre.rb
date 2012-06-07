@@ -20,7 +20,7 @@ module Xml
       when nil
         @e=Element.new
       else
-        Msg.err("Parameter shoud be String or Element")
+        Msg.cfg_err("Parameter shoud be String or Element")
       end
     end
 

@@ -95,7 +95,7 @@ class Var < ExHash
     end
     def init(db)
       @db=Msg.type?(db,Db)
-      self.id=db['id']||Msg.err("No ID")
+      self.id=db['id']||Msg.cfg_err("No ID")
       @dir="/json/"
       @base=@type+'_'+id
       @prefix=VarDir

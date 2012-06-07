@@ -59,7 +59,7 @@ module Field
 
     # Set value with mixed key
     def set(key,val)
-      Msg.err("No such Key[#{key}] in 'val'") unless @val.key?(key)
+      Msg.par_err("No such Key[#{key}] in 'val'") unless @val.key?(key)
       if p=get(key)
         p.replace(subst(val).to_s)
       else
@@ -79,7 +79,7 @@ module Field
   module Save
     # Saving data of specified keys with tag
     def savekey(keylist,tag=nil)
-      Msg.err("No File") unless @base
+      Msg.com_err("No File") unless @base
       hash={}
       keylist.each{|k|
         if @val.key?(k)
@@ -89,7 +89,7 @@ module Field
         end
       }
       if hash.empty?
-        Msg.err("No Keys")
+        Msg.par_err("No Keys")
       else
         tag||=(taglist.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
         Msg.msg("Status Saving for [#{tag}]")

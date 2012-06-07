@@ -59,7 +59,7 @@ class Frame
     if val=e0['val']
       val=eval(val).to_s if e0['decode']
       Frame.msg{"Verify:(#{e0['label']}) [#{val}] and <#{str}>"}
-      val == str || Msg.err("Verify Mismatch(#{e0['label']}) <#{str}> != [#{val}]")
+      val == str || Msg.com_err("Verify Mismatch(#{e0['label']}) <#{str}> != [#{val}]")
     end
     str
   end
@@ -76,7 +76,7 @@ class Frame
       @ccrange.each_byte {|c| chk += c }
       chk%=256
     else
-      Msg.err("No such CC method #{@method}")
+      Msg.cfg_err("No such CC method #{@method}")
     end
     Frame.msg{"Calc:CC [#{@method.upcase}] -> (#{chk})"}
     @ccrange=nil

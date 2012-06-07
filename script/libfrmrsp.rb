@@ -31,11 +31,11 @@ module Frm
     # Result : executed block or not
     def upd
       if rid=@cobj.current[:response]
-        @sel[:select]=@fds[rid]|| Msg.err("No such response id [#{rid}]")
+        @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
         hash=yield
         frame=hash[:data]
         set_time(hash[:time]) #Field::set_time
-        Msg.err("No Response") unless frame
+        Msg.com_err("No Response") unless frame
         if tm=@sel['terminator']
           frame.chomp!(eval('"'+tm+'"'))
           Rsp.msg{"Remove terminator:[#{frame}] by [#{tm}]" }
@@ -49,7 +49,7 @@ module Frm
         @frame.set(@fary.shift)
         getfield_rec(@sel[:main])
         if cc=unset('cc') #Field::unset
-          cc == @cc || Msg.err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
+          cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
           Rsp.msg{"Verify:CC OK <#{cc}>"}
         end
         Rsp.msg{"Rsp/Update(#{get('time')})"} #Field::get
@@ -98,7 +98,7 @@ module Frm
       Rsp.msg(1){"Field:#{e0['label']}"}
       if e0[:index]
         # Array
-        key=e0['assign'] || Msg.err("No key for Array")
+        key=e0['assign'] || Msg.cfg_err("No key for Array")
         # Insert range depends on command param
         idxs=e0[:index].map{|e1|
           @cobj.current.subst(e1['range'])

@@ -17,7 +17,7 @@ module Xml
     @@root={}
     def initialize(type,group=nil)
       Doc.init_ver(self,4)
-      /.+/ =~ type || Msg.err("No Db Type")
+      /.+/ =~ type || Msg.cfg_err("No Db Type")
       @group=group||ALL
       Doc.msg{"xmlroot:#{@@root.keys}"}
       @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))

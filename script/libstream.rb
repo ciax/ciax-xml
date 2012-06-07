@@ -5,7 +5,7 @@ class Stream
   extend Msg::Ver
   def initialize(iocmd,wait=0,timeout=nil)
     Stream.init_ver(self,1)
-    abort " No IO command" if iocmd.to_a.empty?
+    Msg.abort(" No IO command") if iocmd.to_a.empty?
     @iocmd=Msg.type?(iocmd,Array)
     Stream.msg{"Init/Client:#{iocmd.join(' ')}"}
     @f=IO.popen(@iocmd,'r+')
@@ -28,7 +28,7 @@ class Stream
     str=reopen{
       select([@f],nil,nil,@timeout) || next
       @f.sysread(4096)
-    }||Msg.err("Stream:No response")
+    }||Msg.com_err("Stream:No response")
     Stream.msg{"Recieved #{str.size} byte"}
     {:data => str,:time => Msg.now}
   end
@@ -38,7 +38,7 @@ class Stream
     begin
       str=yield
     rescue
-      Msg.err("IO error") if int > 8
+      Msg.com_err("IO error") if int > 8
       @f=IO.popen(@iocmd,'r+')
       sleep int*=2
       retry

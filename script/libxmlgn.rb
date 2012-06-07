@@ -20,7 +20,7 @@ module Xml
         doc=XML::Document.new
         @e=doc.root=XML::Node.new('blank')
       else
-        Msg.err("Parameter shoud be String or Node")
+        Msg.cfg_err("Parameter shoud be String or Node")
       end
     end
 

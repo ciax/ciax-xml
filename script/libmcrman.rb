@@ -37,7 +37,7 @@ module Mcr
         raise UserError,"#{list}"
       when /^[0-9]+$/
         i=cmd[0].to_i
-        Msg.err("No Thread") if @mcr.size < i || i < 0
+        Msg.cmd_err("No Thread") if @mcr.size < i || i < 0
         @index=i
       when 'list'
         puts Msg.view_struct(@cobj)
@@ -47,7 +47,7 @@ module Mcr
         if @index > 0
           query(cmd[0])
         elsif Thread.list.size > 1
-          Msg.err("  Another mcr is still running")
+          Msg.cmd_err("  Another mcr is still running")
         else
           @mcr.clear.macro(cmd)
           Thread.pass

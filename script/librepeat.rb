@@ -28,7 +28,7 @@ class Repeat
     return str unless /\$([_a-z])/ === str
     res=str.gsub(/\$([_a-z])/){ @counter[$1] }
     res=res.split(':').map{|i| /\$/ =~ i ? i : eval(i)}.join(':')
-    Msg.err("Empty String") if res == ''
+    Msg.cfg_err("Empty String") if res == ''
     Repeat.msg{"Substitute [#{str}] to [#{res}]"}
     res
   end

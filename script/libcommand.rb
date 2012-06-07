@@ -263,9 +263,9 @@ class Command < ExHash
     end
 
     def set(cmd)
-      super
+      obj=super
       append(cmd)
-      self
+      obj
     end
   end
 end

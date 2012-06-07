@@ -220,12 +220,12 @@ class Command < ExHash
       pary=Msg.type?(pary.dup,Array)
       return pary unless key?(:parameter)
       self[:parameter].map{|par|
-        cri=par[:val]
+        disp=par[:list].join(',')
         unless str=pary.shift
         Msg.par_err(
                 "Parameter shortage (#{pary.size}/#{self[:parameter].size})",
                 Msg.item(@id,self[:label]),
-                " "*10+"key=(#{cri.tr('|',',')})")
+                " "*10+"key=(#{disp})")
         end
         case par[:type]
         when 'num'
@@ -234,15 +234,15 @@ class Command < ExHash
           rescue Exception
             Msg.par_err("Parameter is not number")
           end
-          Command.msg{"Validate: [#{num}] Match? [#{cri}]"}
-          cri.split(',').each{|r|
-            break if ReRange.new(r) == num
-          } && Msg.par_err(" Parameter invalid (#{num}) for [#{cri.tr(':','-')}]")
+          Command.msg{"Validate: [#{num}] Match? [#{disp}]"}
+          unless par[:list].any?{|r| ReRange.new(r) == num }
+            Msg.par_err(" Parameter invalid (#{num}) for [#{disp}]")
+          end
           num.to_s
-        when 'reg'
-          Command.msg{"Validate: [#{str}] Match? [#{cri}]"}
-          unless /^(#{cri})/ === str
-            Msg.par_err("Parameter Invalid (#{str}) for [#{cri}]")
+        when 'str'
+          Command.msg{"Validate: [#{str}] Match? [#{disp}]"}
+          unless par[:list].include?(str)
+            Msg.par_err("Parameter Invalid (#{str}) for [#{disp}]")
           end
           str
         end

@@ -10,11 +10,11 @@ module Frm
       @prompt['id']=fdb['id']
       @port=fdb['port'].to_i-1000
       @field=Field::Var.new.ext_file(fdb).load
-      reg={:type =>'reg',:val => @field.val.keys.join('|')}
+      par={:type =>'str',:list => @field.val.keys}
       grp=@cobj.add_group('int',"Internal Command")
-      grp.add_item('set',"Set Value [key(:idx)] (val)",[reg])
-      grp.add_item('unset',"Remove Value [key]",[reg])
-      grp.add_item('save',"Save Field [key,key...] (tag)",[reg])
+      grp.add_item('set',"Set Value [key(:idx)] (val)",[par])
+      grp.add_item('unset',"Remove Value [key]",[par])
+      grp.add_item('save',"Save Field [key,key...] (tag)",[par])
       grp.add_item('load',"Load Field (tag)")
       grp.add_item('sleep',"Sleep [n] sec",'[0-9]')
     end

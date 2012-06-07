@@ -4,88 +4,7 @@ require "librepeat"
 require "libdb"
 
 module App
-  module Sdb
-    private
-    def init_stat(sdb)
-      hash=sdb.to_h
-      group=hash[:group]={}
-      group[:items]={'gtime' => ['time','elapse']}
-      group[:caption]={'gtime' => '' }
-      group[:column]={'gtime' => 2 }
-      hash[:label]={'gtime' => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
-      hash[:select]=rec_stat(sdb,hash,'gtime',Repeat.new)
-      hash
-    end
-
-    def rec_stat(e,hash,gid,rep)
-      struct={}
-      rep.each(e){|e0,r0|
-        case e0.name
-        when 'group'
-          gid=e0.attr2db(hash[:group]){|k,v| r0.format(v)}
-          hash[:group][:items][gid]=[]
-          struct.update(rec_stat(e0,hash,gid,r0))
-        else
-          id=e0.attr2db(hash){|k,v| r0.format(v)}
-          struct[id]=[]
-          r0.each(e0){|e1,r1|
-            st={'type' => e1.name}
-            e1.to_h.each{|k,v|
-              case k
-              when 'bit','index'
-                st[k] = r1.subst(v)
-              else
-                st[k] = v
-              end
-            }
-            if i=st.delete('index')
-              st['ref']+=":#{i}"
-            end
-            struct[id] << st
-          }
-          hash[:group][:items][gid] << id
-        end
-      }
-      struct
-    end
-  end
-
-  module Wdb
-    #structure of exec=[cond1,2,...]; cond=[cmd1,2,..]; cmd1=['str','arg1',..]
-    def init_watch(wdb,cdb)
-      return [] unless wdb
-      hash=wdb.to_h
-      [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
-      Repeat.new.each(wdb){|e0,r0|
-        idx=r0.format(e0['id'])
-        hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
-        e0.each{ |e1|
-          case name=e1.name.to_sym
-          when :block,:int,:exec
-            cmd=[e1['name']]
-            e1.each{|e2|
-              cmd << r0.subst(e2.text)
-            }
-            (hash[name][idx]||=[]) << cmd
-          when :block_grp
-            cdb[:group][:items][e1['ref']].each{|grp|
-              (hash[:block][idx]||=[]) << [grp]
-            }
-          else
-            h=e1.to_h
-            h.each_value{|v| v.replace(r0.format(v))}
-            h['type']=e1.name
-            (hash[:stat][idx]||=[]) << h
-          end
-        }
-      }
-      hash
-    end
-  end
-
   class Db < Db
-    include Sdb
-    include Wdb
     def initialize(id)
       super('adb',id){|doc|
         hash={}
@@ -134,10 +53,10 @@ module App
           Repeat.new.each(e0){|e1,rep|
             case e1.name
             when 'par_num'
-              attr={:type => 'num',:val => e1.text}
+              attr={:type => 'num',:list => e1.text.split(',')}
               (hash[:parameter][id]||=[]) << attr
-            when 'par_reg'
-              attr={:type => 'reg',:val => e1.text}
+            when 'par_str'
+              attr={:type => 'str',:list => e1.text.split(',')}
               (hash[:parameter][id]||=[]) << attr
             when 'frmcmd'
               command=[e1['name']]
@@ -153,6 +72,82 @@ module App
             end
           }
         end
+      }
+      hash
+    end
+
+    # Status Db
+    def init_stat(sdb)
+      hash=sdb.to_h
+      group=hash[:group]={}
+      group[:items]={'gtime' => ['time','elapse']}
+      group[:caption]={'gtime' => '' }
+      group[:column]={'gtime' => 2 }
+      hash[:label]={'gtime' => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
+      hash[:select]=rec_stat(sdb,hash,'gtime',Repeat.new)
+      hash
+    end
+
+    def rec_stat(e,hash,gid,rep)
+      struct={}
+      rep.each(e){|e0,r0|
+        case e0.name
+        when 'group'
+          gid=e0.attr2db(hash[:group]){|k,v| r0.format(v)}
+          hash[:group][:items][gid]=[]
+          struct.update(rec_stat(e0,hash,gid,r0))
+        else
+          id=e0.attr2db(hash){|k,v| r0.format(v)}
+          struct[id]=[]
+          r0.each(e0){|e1,r1|
+            st={'type' => e1.name}
+            e1.to_h.each{|k,v|
+              case k
+              when 'bit','index'
+                st[k] = r1.subst(v)
+              else
+                st[k] = v
+              end
+            }
+            if i=st.delete('index')
+              st['ref']+=":#{i}"
+            end
+            struct[id] << st
+          }
+          hash[:group][:items][gid] << id
+        end
+      }
+      struct
+    end
+
+    # Watch Db
+    #structure of exec=[cond1,2,...]; cond=[cmd1,2,..]; cmd1=['str','arg1',..]
+    def init_watch(wdb,cdb)
+      return [] unless wdb
+      hash=wdb.to_h
+      [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
+      Repeat.new.each(wdb){|e0,r0|
+        idx=r0.format(e0['id'])
+        hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
+        e0.each{ |e1|
+          case name=e1.name.to_sym
+          when :block,:int,:exec
+            cmd=[e1['name']]
+            e1.each{|e2|
+              cmd << r0.subst(e2.text)
+            }
+            (hash[name][idx]||=[]) << cmd
+          when :block_grp
+            cdb[:group][:items][e1['ref']].each{|grp|
+              (hash[:block][idx]||=[]) << [grp]
+            }
+          else
+            h=e1.to_h
+            h.each_value{|v| v.replace(r0.format(v))}
+            h['type']=e1.name
+            (hash[:stat][idx]||=[]) << h
+          end
+        }
       }
       hash
     end

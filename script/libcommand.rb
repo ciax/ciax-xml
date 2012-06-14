@@ -5,7 +5,7 @@ require 'librerange'
 require 'liblogging'
 require 'libupdate'
 
-#Access method(Plan)
+#Access method
 #Command(Hash)
 # Command::Item => {:label,:parameter,...}
 #  Command::Item#set_par(par)
@@ -18,14 +18,14 @@ require 'libupdate'
 #
 # Command#new(db)
 #  Command#add_group(key,title,&def_proc) -> Command::Group
-#  Command#group[key]=Command::Group
-#  Command#current=Command::Item
-#  Command#pre_exe=Update
-#  Command[id]=Command::Item
-#  Command#set(cmd=alias+par) =>
+#  Command#group[key] -> Command::Group
+#  Command#current -> Command::Item
+#  Command#pre_exe -> Update
+#  Command[id] -> Command::Item
+#  Command#set(cmd=alias+par):{
 #    Command[alias->id]#set_par(par)
-#    Command#current=Command[id]
-#
+#    Command#current -> Command[id]
+#  }
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver

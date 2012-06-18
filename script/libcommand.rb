@@ -21,6 +21,7 @@ require 'libupdate'
 #  Command#group[key] -> Command::Group
 #  Command#current -> Command::Item
 #  Command#pre_exe -> Update
+#  Command#def_proc{|id,par|}
 #  Command[id] -> Command::Item
 #  Command#set(cmd=alias+par):{
 #    Command[alias->id]#set_par(par)
@@ -51,6 +52,13 @@ class Command < ExHash
     else
       def_group('main',all,"Command List",1)
     end
+  end
+
+  def def_proc
+    values.each{|item|
+      item.add_proc{|id,par| yield id,par}
+    }
+    self
   end
 
   def add_group(gid,title)

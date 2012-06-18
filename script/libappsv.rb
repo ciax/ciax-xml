@@ -17,10 +17,11 @@ module App
       @stat.ext_watch_w
       Thread.abort_on_exception=true
       @cobj.values.each{|item|
-        item.extend(App::Cmd).add_proc{
-          @buf.send(1)
-          "Issued"
-        }
+        item.extend(App::Cmd)
+      }
+      @cobj.def_proc{
+        @buf.send(1)
+        "Issued"
       }
       @buf=Buffer.new
       @buf.proc_send{@cobj.current.get}

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libinsdb"
+require "libfrmsh"
 
 # 'c' is client
 # 's' is server
@@ -8,8 +9,6 @@ require "libinsdb"
 # 't' is check cmd only
 # 'h' is specified host
 module Frm
-  autoload :Sh,"libfrmsh"
-  autoload :Cl,"libfrmcl"
   autoload :Sv,"libfrmsv"
   class List < Hash
     def initialize(proj=nil)

@@ -47,7 +47,7 @@ module Frm
 
     #Cmd should be array
     def exe(cmd)
-      @cobj.set(cmd).exe||'OK'
+      super||'OK'
     end
   end
 end

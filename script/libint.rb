@@ -19,7 +19,7 @@ module Int
     # Bad command => UserError
     # Accepted => Command
     def exe(cmd)
-      @cobj.set(cmd)
+      @cobj.set(cmd).exe
     end
 
     def set_switch(key,title,list)
@@ -110,10 +110,6 @@ module Int
         send([id,*par].join(' '))
       }
       self
-    end
-
-    def exe(cmd)
-      @cobj.set(cmd).exe
     end
 
     private

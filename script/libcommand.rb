@@ -30,7 +30,7 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:group,:pre_exe
+  attr_reader :current,:group,:pre_exe,:db
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)

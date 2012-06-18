@@ -15,13 +15,16 @@ module Frm
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
-      @sel=Hash[fdb[:cmdframe][:frame]]
+      @sel=Hash[@index.db[:frame]]
       @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
+      self
+    end
+
+    def add_proc
       @exelist << proc{
         yield self[:cid],getframe
         'OK'
       }
-      self
     end
 
     def getframe # return = response select

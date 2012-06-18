@@ -21,10 +21,11 @@ module Frm
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
       @cobj.values.each{|item|
-        item.extend(Frm::Cmd).init(fdb,@field){|cid,frm|
-          @io.snd(frm,cid)
-          @field.upd{@io.rcv} && @field.save
-        }
+        item.extend(Frm::Cmd).init(fdb,@field)
+      }
+      @cobj.def_proc{|cid,frm|
+        @io.snd(frm,cid)
+        @field.upd{@io.rcv} && @field.save
       }
       @cobj['set'].add_proc{|id,par|
         @field.set(par[0],par[1]).save

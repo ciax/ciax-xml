@@ -17,6 +17,9 @@ module Watch
       ['active','exec','block','int'].each{|i|
         @watch[i]||=[]
       }
+      ['val','last','res'].each{|i|
+        @watch[i]||={}
+      }
       @active=@watch['active']
       @period=300
       @interval=0.1
@@ -133,6 +136,7 @@ module Watch
     end
   end
 
+  # For Client
   class View < ExHash
     def initialize(adb,stat)
       wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => []}
@@ -230,7 +234,7 @@ if __FILE__ == $0
   rescue InvalidID
     Msg.usage("(opt) [id]",*$optlist)
   end
-  stat=Status::Var.new.ext_file(adb).load.ext_watch_r
+  stat=Status::Var.new.ext_file(adb).load.ext_watch_r.ext_watch_w.upd
   unless $opt['r']
     wview=Watch::View.new(adb,stat)
     unless $opt['v']
@@ -238,7 +242,6 @@ if __FILE__ == $0
     end
   end
   if t=$opt['t']
-    stat.ext_watch_w
     stat.ext_save.str_update(t).upd.save
   end
   puts wview||stat['watch']

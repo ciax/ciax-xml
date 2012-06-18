@@ -50,8 +50,7 @@ module App
       @post_exe << proc{@stat.upd}
       grp=@cobj.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
-      grp.add_item('set','[key=val,...]',[cri])
-      grp..add_proc{|id,par|
+      grp.add_item('set','[key=val,...]',[cri]).add_proc{|id,par|
         par.each{|exp| @stat.str_update(exp).upd}
         "Set #{par}"
       }
@@ -61,6 +60,17 @@ module App
     def exe(cmd)
       @stat.set_time
       @cobj.set(cmd).exe||'OK'
+    end
+  end
+
+  class Cl < Sh
+    def initialize(adb,host=nil)
+      super(adb)
+      host||=adb['host']
+      @host=Msg.type?(host||adb['host'],String)
+      @stat.ext_url(@host).load
+      @post_exe << proc{ @stat.load }
+      extend(Int::Client)
     end
   end
 end

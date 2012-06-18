@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libinsdb"
+require "libappsh"
 require "libappprt"
 # 'c' is client
 # 'f' is client of frm level(need -c)
@@ -9,8 +10,6 @@ require "libappprt"
 # 'l' is sim by log(frmsim)
 # 't' is check cmd only
 module App
-  autoload :Sh,"libappsh"
-  autoload :Cl,"libappcl"
   autoload :Sv,"libappsv"
   class List < Hash
     def initialize(proj=nil)

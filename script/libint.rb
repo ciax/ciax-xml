@@ -106,14 +106,16 @@ module Int
       @addr=Socket.pack_sockaddr_in(@port,@host)
       Client.msg{"Init/Client #{@host}:#{@port}"}
       @post_exe << proc{ send('strobe') }
+      @cobj.values.each{|item|
+        item.add_proc{|id,par|
+          send([id,*par].join(' '))
+        }
+      }
       self
     end
 
     def exe(cmd)
-      send(cmd.join(' '))
-      # Error message
-      @cobj.set(cmd) if /ERROR/ =~ @prompt['msg']
-      @prompt['msg']
+      @cobj.set(cmd).exe
     end
 
     private

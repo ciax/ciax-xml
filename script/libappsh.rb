@@ -62,7 +62,7 @@ module App
 
   class Cl < Sh
     def initialize(adb,host=nil)
-      super
+      super(adb)
       host||=adb['host']
       @host=Msg.type?(host||adb['host'],String)
       @stat.ext_url(@host).load

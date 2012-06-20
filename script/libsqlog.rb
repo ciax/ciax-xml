@@ -114,6 +114,13 @@ module SqLog
   end
 end
 
+class Var
+  def ext_sqlog
+    extend(SqLog::Var)
+    extend(SqLog::Exec)
+  end
+end
+
 if __FILE__ == $0
   require "libinsdb"
   require "libstatus"

@@ -13,7 +13,7 @@ module App
       super(adb)
       id=adb['id']
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
-      @stat.extend(SqLog::Var).extend(SqLog::Exec) if @fint.field.key?('ver')
+      @stat.ext_sqlog if @fint.field.key?('ver')
       @stat.ext_watch_w
       Thread.abort_on_exception=true
       @cobj.values.each{|item|

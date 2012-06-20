@@ -10,8 +10,7 @@ module Frm
       Msg.type?(obj,Command::Item)
     end
 
-    def init(fdb,field)
-      Msg.type?(fdb,Frm::Db)
+    def init(field)
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
@@ -70,6 +69,15 @@ module Frm
   end
 end
 
+class Command
+  def ext_frmcmd(field)
+    values.each{|item|
+      item.extend(Frm::Cmd).init(field)
+    }
+    self
+  end
+end
+
 if __FILE__ == $0
   require "libfield"
   require "libfrmdb"
@@ -79,7 +87,7 @@ if __FILE__ == $0
     fdb=Frm::Db.new(dev)
     cobj=Command.new(fdb,:cmdframe).set(cmd)
     field=Field::Var.new
-    cobj.extend(Frm::Cmd).init(fdb,field)
+    cobj.extend(Frm::Cmd).init(field)
     field.load unless STDIN.tty?
     print cobj.getframe
   rescue UserError

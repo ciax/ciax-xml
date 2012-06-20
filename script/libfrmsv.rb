@@ -20,9 +20,7 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @cobj.values.each{|item|
-        item.extend(Frm::Cmd).init(fdb,@field)
-      }
+      @cobj.ext_frmcmd(@field)
       @cobj.def_proc{|cid,frm|
         @io.snd(frm,cid)
         @field.upd{@io.rcv} && @field.save

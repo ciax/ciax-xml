@@ -12,10 +12,10 @@ require "libappprt"
 module App
   autoload :Sv,"libappsv"
   class List < Hash
-    def initialize(proj=nil)
+    def initialize
       $opt||={}
       super(){|h,id|
-        idb=Ins::Db.new(id,proj)
+        idb=Ins::Db.new(id)
         adb=idb.cover_app
         if $opt['t']
           aint=Sh.new(adb).extend(Test)

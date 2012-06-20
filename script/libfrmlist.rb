@@ -11,10 +11,10 @@ require "libfrmsh"
 module Frm
   autoload :Sv,"libfrmsv"
   class List < Hash
-    def initialize(proj=nil)
+    def initialize
       $opt||={}
       super(){|h,id|
-        idb=Ins::Db.new(id,proj)
+        idb=Ins::Db.new(id)
         fdb=idb.cover_app.cover_frm
         if $opt['t']
           int=Sh.new(fdb)

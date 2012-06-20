@@ -2,7 +2,7 @@
 require "libfrmlist"
 
 Msg.getopts("ch:tls")
-fint=Frm::List.new(ENV['PROJ'])
+fint=Frm::List.new
 id=ARGV.shift
 begin
   int=fint[id]

@@ -175,6 +175,10 @@ module Watch
       }
       super
     end
+
+    def ext_prt
+      extend Print
+    end
   end
 
   module Print
@@ -238,7 +242,7 @@ if __FILE__ == $0
   unless $opt['r']
     wview=Watch::View.new(adb,stat)
     unless $opt['v']
-      wview.extend(Watch::Print)
+      wview.ext_prt
     end
   end
   if t=$opt['t']

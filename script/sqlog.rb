@@ -19,7 +19,7 @@ rescue UserError
 end
 if $opt['a']
   stat=Status::Var.new.ext_file(adb)
-  stat.extend(App::Rsp).init(field)
+  stat.ext_rsp(field)
   stat.extend(SqLog::Var)
   if $opt['i'] # Initial
     stat.create
@@ -51,7 +51,7 @@ else
   field.ext_file(fdb)
   ver=fdb['frm_ver']
   cobj=Command.new(fdb[:cmdframe])
-  field.extend(Frm::Rsp).init(cobj)
+  field.ext_rsp(cobj)
   field.extend(SqLog::Var)
   if $opt['i'] # Initial
     field.create

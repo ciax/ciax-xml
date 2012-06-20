@@ -140,6 +140,12 @@ module Frm
   end
 end
 
+class Field::Var
+  def ext_rsp(cobj)
+    extend(Frm::Rsp).init(cobj)
+  end
+end
+
 if __FILE__ == $0
   require "libinsdb"
   require "libcommand"
@@ -151,7 +157,7 @@ if __FILE__ == $0
   cobj=Command.new(fdb[:cmdframe])
   field=Field::Var.new.ext_file(fdb)
   field.load if $opt['m']
-  field.extend(Frm::Rsp).init(cobj)
+  field.ext_rsp(cobj)
   field.upd_logline(str)
   puts field
   exit

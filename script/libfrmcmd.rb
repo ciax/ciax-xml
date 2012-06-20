@@ -85,11 +85,11 @@ if __FILE__ == $0
   ARGV.clear
   begin
     fdb=Frm::Db.new(dev)
-    cobj=Command.new(fdb,:cmdframe).set(cmd)
+    cobj=Command.new(fdb,:cmdframe)
     field=Field::Var.new
-    cobj.extend(Frm::Cmd).init(field)
+    cobj.ext_frmcmd(field)
     field.load unless STDIN.tty?
-    print cobj.getframe
+    print cobj.set(cmd).getframe
   rescue UserError
     Msg.usage "[dev] [cmd] (par) < field_file"
   end

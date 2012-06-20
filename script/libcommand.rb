@@ -40,7 +40,7 @@ class Command < ExHash
     @cdb=db[path]
     @pre_exe=Update.new
     all=@cdb[:select].keys.each{|id|
-      self[id]=Item.new(self,id).update(db_pack(@cdb,id))
+      self[id]=Item.new(self,id).update(db_pack(id))
     }
     @current=nil
     @group={}
@@ -89,9 +89,9 @@ class Command < ExHash
   end
 
   private
-  def db_pack(db,id)
+  def db_pack(id)
     property={}
-    db.each{|sym,h|
+    @cdb.each{|sym,h|
       case sym
       when :group,:alias
         next
@@ -161,7 +161,7 @@ class Command < ExHash
     include Math
     attr_reader :id
     def initialize(index,id)
-      @index=Msg.type?(index,Command)
+      @db=Msg.type?(index,Command).db
       @id=id
       @par=[]
       @exelist=index.pre_exe.dup

@@ -15,8 +15,8 @@ module Frm
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
-      @sel=Hash[@index.db[:cmdframe][:frame]]
-      @frame=Frame.new(@index.db['endian'],@index.db['ccmethod'])
+      @sel=Hash[@db[:cmdframe][:frame]]
+      @frame=Frame.new(@db['endian'],@db['ccmethod'])
       self
     end
 

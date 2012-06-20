@@ -144,7 +144,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     mdb=Mcr::Db.new(id)
-    cobj=Command.new(mdb[:macro])
+    cobj=Command.new(mdb,:macro)
     mcr=Mcr::Sub.new(cobj)
     mcr.extend(Mcr::Prt) unless $opt['r']
     mcr.macro(cmd).join

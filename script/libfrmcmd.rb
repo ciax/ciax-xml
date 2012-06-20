@@ -15,8 +15,8 @@ module Frm
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
-      @sel=Hash[@index.db[:frame]]
-      @frame=Frame.new(fdb['endian'],fdb['ccmethod'])
+      @sel=Hash[@index.db[:cmdframe][:frame]]
+      @frame=Frame.new(@index.db['endian'],@index.db['ccmethod'])
       self
     end
 
@@ -77,7 +77,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     fdb=Frm::Db.new(dev)
-    cobj=Command.new(fdb[:cmdframe]).set(cmd)
+    cobj=Command.new(fdb,:cmdframe).set(cmd)
     field=Field::Var.new
     cobj.extend(Frm::Cmd).init(fdb,field)
     field.load unless STDIN.tty?

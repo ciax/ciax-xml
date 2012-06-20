@@ -50,7 +50,7 @@ else
   fdb=adb.cover_frm
   field.ext_file(fdb)
   ver=fdb['frm_ver']
-  cobj=Command.new(fdb[:cmdframe])
+  cobj=Command.new(fdb,:cmdframe)
   field.ext_rsp(cobj)
   field.extend(SqLog::Var)
   if $opt['i'] # Initial

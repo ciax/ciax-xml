@@ -44,8 +44,8 @@ if __FILE__ == $0
   app,*cmd=ARGV
   begin
     adb=App::Db.new(app)
-    fcobj=Command.new(adb.cover_frm[:cmdframe])
-    acobj=Command.new(adb[:command]).set(cmd)
+    fcobj=Command.new(adb.cover_frm,:cmdframe)
+    acobj=Command.new(adb,:command).set(cmd)
     acobj.extend(App::Cmd).get.each{|fcmd|
       fcobj.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
       p fcmd

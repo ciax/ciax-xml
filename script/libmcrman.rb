@@ -10,7 +10,7 @@ module Mcr
     attr_reader :prompt
     # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
     def initialize(id)
-      cobj=Command.new(Db.new(id)[:macro])
+      cobj=Command.new(Db.new(id),:macro)
       super(cobj)
       flg=['test','sim','exe'][ENV['ACT'].to_i]
       @id="#{id}(#{flg})"

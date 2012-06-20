@@ -34,16 +34,17 @@ class Command < ExHash
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
-  def initialize(db)
+  def initialize(db,path)
     Command.init_ver(self)
-    @db=Msg.type?(db,Hash)
+    @db=Msg.type?(db,Db)
+    @cdb=db[path]
     @pre_exe=Update.new
-    all=db[:select].keys.each{|id|
-      self[id]=Item.new(self,id).update(db_pack(db,id))
+    all=@cdb[:select].keys.each{|id|
+      self[id]=Item.new(self,id).update(db_pack(@cdb,id))
     }
     @current=nil
     @group={}
-    if gdb=db[:group]
+    if gdb=@cdb[:group]
       gdb[:items].each{|gid,member|
         cap=(gdb[:caption]||{})[gid]
         col=(gdb[:column]||{})[gid]
@@ -103,13 +104,13 @@ class Command < ExHash
 
   # alias to real
   def a2r(id)
-    (@db[:alias]||{})[id] || id
+    (@cdb[:alias]||{})[id] || id
   end
 
   # make alias list
   def add_list(list,ary)
-    lh=@db[:label]
-    if alary=@db[:alias]
+    lh=@cdb[:label]
+    if alary=@cdb[:alias]
       alary.each{|a,r|
         list[a]=lh[r] if ary.include?(r)
       }
@@ -284,9 +285,9 @@ if __FILE__ == $0
   begin
     adb=Ins::Db.new(ARGV.shift).cover_app
     if $opt["f"]
-      puts Command.new(adb.cover_frm[:cmdframe]).set(ARGV)
+      puts Command.new(adb.cover_frm,:cmdframe).set(ARGV)
     else
-      puts Command.new(adb[:command]).set(ARGV)
+      puts Command.new(adb,:command).set(ARGV)
     end
   rescue UserError
     Msg::usage("(opt) [id] [cmd] (par)",*$optlist)

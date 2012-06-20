@@ -9,6 +9,7 @@ require "libstream"
 module Frm
   module Rsp
     extend Msg::Ver
+    # Var::Load@db is needed
     def self.extended(obj)
       init_ver('FrmRsp',6)
       Msg.type?(obj,Field::Var,Var::Load)
@@ -154,7 +155,7 @@ if __FILE__ == $0
   str=gets(nil) || exit
   id=Logging.set_logline(str)[:id]
   fdb=Ins::Db.new(id).cover_app.cover_frm
-  cobj=Command.new(fdb[:cmdframe])
+  cobj=Command.new(fdb,:cmdframe)
   field=Field::Var.new.ext_file(fdb)
   field.load if $opt['m']
   field.ext_rsp(cobj)

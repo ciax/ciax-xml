@@ -7,7 +7,7 @@ module App
     attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
-      super(Command.new(adb[:command]))
+      super(Command.new(adb,:command))
       @prompt['id']=adb['id']
       @port=adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)

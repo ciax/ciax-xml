@@ -39,13 +39,10 @@ module App
     end
   end
 
-  module Test
+  class Test < Sh
     require "libsymconv"
-    def self.extended(obj)
-      Msg.type?(obj,Sh).init
-    end
-
-    def init
+    def initialize(adb)
+      super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
       grp=@cobj.add_group('int',"Internal Command")
@@ -65,7 +62,7 @@ module App
 
   class Cl < Sh
     def initialize(adb,host=nil)
-      super(adb)
+      super
       host||=adb['host']
       @host=Msg.type?(host||adb['host'],String)
       @stat.ext_url(@host).load

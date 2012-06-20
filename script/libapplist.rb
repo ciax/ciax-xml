@@ -18,7 +18,7 @@ module App
         idb=Ins::Db.new(id)
         adb=idb.cover_app
         if $opt['t']
-          aint=Sh.new(adb).extend(Test)
+          aint=Test.new(adb)
         elsif $opt['c'] or $opt['a']
           aint=Cl.new(adb,$opt['h'])
         else

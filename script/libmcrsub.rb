@@ -3,8 +3,6 @@ require "libmsg"
 require "libcommand"
 require "libapplist"
 
-class Broken < RuntimeError;end
-
 module Mcr
   class Sub < Array
     extend Msg::Ver

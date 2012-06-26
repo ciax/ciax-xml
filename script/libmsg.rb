@@ -11,8 +11,11 @@ class InvalidCMD < InvalidID; end
 # When invalid Parameter, continue in shell/server
 class InvalidPAR < InvalidCMD; end
 
+# Mangaged Error
 class ManagedError < RuntimeError; end
 class SelectID < ManagedError; end
+# Broken session in Macro
+class Broken < ManagedError; end
 
 # Communication Error
 class CommError < UserError; end

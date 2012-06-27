@@ -1,4 +1,6 @@
 ========================== Issue =============================
+Frm::Cmd,App::Cmd should be separate from Command::Item which doesn't need to have @db
+
 ***DEBUG
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)

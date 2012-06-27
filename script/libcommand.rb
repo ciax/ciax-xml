@@ -6,7 +6,7 @@ require 'liblogging'
 require 'libupdate'
 
 #Access method
-#Command(Hash)
+#Command < Hash
 # Command::Item => {:label,:parameter,...}
 #  Command::Item#set_par(par)
 #  Command::Item#subst(str)
@@ -34,16 +34,19 @@ class Command < ExHash
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
-  def initialize(db,path)
+  def initialize
     Command.init_ver(self)
+    @current=nil
+    @group={}
+    @pre_exe=Update.new
+  end
+
+  def setdb(db,path)
     @db=Msg.type?(db,Db)
     @cdb=db[path]
-    @pre_exe=Update.new
     all=@cdb[:select].keys.each{|id|
       self[id]=Item.new(self,id).update(db_pack(id))
     }
-    @current=nil
-    @group={}
     if gdb=@cdb[:group]
       gdb[:items].each{|gid,member|
         cap=(gdb[:caption]||{})[gid]
@@ -53,6 +56,7 @@ class Command < ExHash
     else
       def_group('main',all,"Command List",1)
     end
+    self
   end
 
   def def_proc
@@ -161,7 +165,7 @@ class Command < ExHash
     include Math
     attr_reader :id
     def initialize(index,id)
-      @db=Msg.type?(index,Command).db
+      @index=Msg.type?(index,Command)
       @id=id
       @par=[]
       @exelist=index.pre_exe.dup
@@ -285,9 +289,9 @@ if __FILE__ == $0
   begin
     adb=Ins::Db.new(ARGV.shift).cover_app
     if $opt["f"]
-      puts Command.new(adb.cover_frm,:cmdframe).set(ARGV)
+      puts Command.new.setdb(adb.cover_frm,:cmdframe).set(ARGV)
     else
-      puts Command.new(adb,:command).set(ARGV)
+      puts Command.new.setdb(adb,:command).set(ARGV)
     end
   rescue UserError
     Msg::usage("(opt) [id] [cmd] (par)",*$optlist)

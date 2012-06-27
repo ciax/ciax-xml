@@ -1,18 +1,15 @@
 #!/usr/bin/ruby
-require "libmsg"
-require "libcommand"
-require "libapplist"
+require "libint"
 
 module Mcr
-  class Sub < Array
-    extend Msg::Ver
+  class Sv < Int::Shell
     ACT=ENV['ACT'].to_i
-    @@client=App::List.new
-    def initialize(cobj,int=nil)
+    def initialize(mdb)
       Sub.init_ver(self,9)
+      @mdb=Msg.type?(mdb,Mcr::Db)
+      super(Command.new.setcb(mdb,:macro))
       @int=int
-      @cobj=Msg.type?(cobj,Command)
-      @line=[]
+      @stat=[]
       case ACT
       when 0...1
         $opt['t']=true
@@ -23,7 +20,7 @@ module Mcr
 
     def macro(cmd)
       cobj=@cobj.dup.set(cmd)
-      @line.clear
+      @stat.clear
       #Thread.abort_on_exception=true
       push Thread.new(cobj){|c|
         crnt=Thread.current
@@ -44,7 +41,7 @@ module Mcr
     end
 
     def to_s
-      Msg.view_struct(@line)
+      Msg.view_struct(@stat)
     end
 
     def join
@@ -55,7 +52,7 @@ module Mcr
     def submacro(cobj,depth,ins=nil)
       cobj[:select].each{|e1|
         @last={'tid'=>Thread.current[:tid],'cid'=>cobj[:cid],'depth'=>depth}
-        @line.push(@last)
+        @stat.push(@last)
         @last.update(e1).delete('stat')
         case e1['type']
         when 'break'

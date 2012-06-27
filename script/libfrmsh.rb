@@ -6,7 +6,7 @@ module Frm
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
-      super(Command.new(fdb,:cmdframe))
+      super(Command.new.setdb(fdb,:cmdframe))
       @prompt['id']=fdb['id']
       @port=fdb['port'].to_i-1000
       @field=Field::Var.new.ext_file(fdb).load

@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libint"
 require "libstatus"
-require "libfrmlist"
+
 module Mcr
   class Sh < Int::Shell
     attr_reader :stat

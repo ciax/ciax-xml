@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-require "libint"
+require "libmcrsh"
 
 module Mcr
-  class Sv < Int::Shell
+  class Sv < Sh
     ACT=ENV['ACT'].to_i
     def initialize(mdb)
       Sub.init_ver(self,9)

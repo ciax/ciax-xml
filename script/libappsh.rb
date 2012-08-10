@@ -8,10 +8,10 @@ module App
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
       super(Command.new.setdb(adb,:command))
-      @prompt['id']=adb['id']
+      self['id']=adb['id']
       @port=adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)
-      @prompt.table.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+      @pconv.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=Frm::List.new[adb['id']]
       set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
       @fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})

@@ -8,10 +8,10 @@ module Mcr
     def initialize(citm)
       @citm=Msg.type?(citm,Command::Item)
       super(Command.new)
-      @prompt['id']=mdb['id']
+      self['id']=mdb['id']
       @port=mdb['port'].to_i
       @stat=[]
-      @prompt.table.update({'active'=>'*','wait'=>'?'})
+      @pconv.update({'active'=>'*','wait'=>'?'})
       grp=@cobj.add_group('int',"Internal Command")
       grp.add_item("[0-9]","Switch Mode")
       grp.add_item("threads","Thread list")

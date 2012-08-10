@@ -6,11 +6,11 @@ require "libcommand"
 require "libupdate"
 
 module Int
-  class Shell
+  class Shell < ExHash
     attr_reader :post_exe,:cmdlist,:cobj
     def initialize(cobj)
       @cobj=Msg::type?(cobj,Command)
-      @prompt=Prompt.new
+      @pconv={} #prompt convert table (j2s)
       @post_exe=Update.new
       @port=0
     end
@@ -37,7 +37,7 @@ module Int
       grp=@cobj.add_group('sh',"Shell Command")
       grp.update_items({'q'=>"Quit",'D^'=>"Interrupt"})
       loop {
-        line=Readline.readline(@prompt.to_s,true)||'interrupt'
+        line=Readline.readline(prompt,true)||'interrupt'
         break if /^q/ === line
         cmd=line.split(' ')
         begin
@@ -54,6 +54,16 @@ module Int
         end
       }
     end
+
+    private
+    def prompt
+      str=''
+      each{|k,v|
+        next if /msg/ === k
+        str << (@pconv[k]||v) if v
+      }
+      str+'>'
+    end
   end
 
   module Server
@@ -62,7 +72,7 @@ module Int
       init_ver('Server/%s',3,obj)
       Msg.type?(obj,Shell)
     end
-    # JSON expression of @prompt will be sent.
+    # JSON expression of server stat will be sent.
     # Or, block contents will be sent if block added.
     def server(json=true)
       Server.msg{"Init/Server:#{@port}"}
@@ -71,7 +81,7 @@ module Int
         UDPSocket.open{ |udp|
           udp.bind("0.0.0.0",@port.to_i)
           loop {
-            select([udp])
+            IO.select([udp])
             line,addr=udp.recvfrom(4096)
             Server.msg{"Recv:#{line} is #{line.class}"}
             line='' if /^(strobe|stat)/ === line
@@ -84,8 +94,8 @@ module Int
               warn msg
             end
             Server.msg{"Send:#{msg}"}
-            @prompt['msg']=msg
-            udp.send(json ? @prompt.to_j : to_s,0,addr[2],addr[1])
+            self['msg']=msg
+            udp.send(json ? to_j : to_s,0,addr[2],addr[1]) #self.to_j
           }
         }
       }
@@ -117,25 +127,9 @@ module Int
       @udp.send(str,0,@addr)
       Client.msg{"Send [#{str}]"}
       input=@udp.recv(1024)
-      @prompt.load(input)
+      load(input) #self.load
       Client.msg{"Recv #{input}"}
       self
-    end
-  end
-
-  class Prompt < ExHash
-    attr_reader :table
-    def initialize
-      @table={}
-    end
-
-    def to_s
-      str=''
-      each{|k,v|
-        next if /msg/ === k
-        str << (@table[k]||v) if v
-      }
-      str+'>'
     end
   end
 end

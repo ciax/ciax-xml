@@ -7,14 +7,13 @@ require "libmcrprt"
 
 module Mcr
   class Man < Int::Shell
-    attr_reader :prompt
     # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
     def initialize(id)
       cobj=Command.new.setdb(Db.new(id),:macro)
       super(cobj)
       flg=['test','sim','exe'][ENV['ACT'].to_i]
       @id="#{id}(#{flg})"
-      @prompt="#@id[]>"
+      self['id']="#@id[]"
       @index=0
       @mcr=Mcr::Sub.new(@cobj,1) #.extend(Mcr::Prt)
       grp=@cobj.add_group('int',"Internal Command")
@@ -84,14 +83,14 @@ module Mcr
       size=@mcr.size
       if @index > 0
         str=Msg.color(current[:cid],5)
-        str << "[#@index/#{size}](#{current[:stat]})>"
+        str << "[#@index/#{size}](#{current[:stat]})"
         case current[:stat]
         when /wait/
           str << Msg.color("Proceed?(y/n)",9)
         when /run/
           str << Msg.color("('s' for stop)",9)
         end
-        @prompt.replace(str)
+        self['id']=str
       else
         flg=@mcr.map{|t|
           case t[:stat]
@@ -105,7 +104,7 @@ module Mcr
             '.'
           end
         }.join('')
-        @prompt.replace("#@id[#{flg}]>")
+        self['id']="#@id[#{flg}]"
       end
     end
 

@@ -7,7 +7,7 @@ module Frm
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
       super(Command.new.setdb(fdb,:cmdframe))
-      @prompt['id']=fdb['id']
+      self['id']=fdb['id']
       @port=fdb['port'].to_i-1000
       @field=Field::Var.new.ext_file(fdb).load
       par={:type =>'str',:list => @field.val.keys}

@@ -71,10 +71,10 @@ module App
 
     private
     def upd_prompt
-      @prompt['auto'] = @tid && @tid.alive?
-      @prompt['watch'] = @stat.active?
-      @prompt['isu'] = @buf.issue
-      @prompt['na'] = !@buf.alive?
+      self['auto'] = @tid && @tid.alive?
+      self['watch'] = @stat.active?
+      self['isu'] = @buf.issue
+      self['na'] = !@buf.alive?
       self
     end
 

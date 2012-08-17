@@ -1,93 +1,74 @@
 #!/usr/bin/ruby
 require "libmcrsh"
+require "libapplist"
 
 module Mcr
   class Sv < Sh
+    extend Msg::Ver
     ACT=ENV['ACT'].to_i
-    def initialize(mdb)
-      Sub.init_ver(self,9)
-      @mdb=Msg.type?(mdb,Mcr::Db)
-      super(Command.new.setcb(mdb,:macro))
-      @int=int
-      @stat=[]
+    def initialize(client,mitm)
+      super(mitm) #@mitm
+      @client=Msg.type?(client,App::List)
+      @index=0
+      @logline=[]
       case ACT
       when 0...1
         $opt['t']=true
       when 1...2
         $opt['l']=true
       end
-    end
-
-    def macro(cmd)
-      cobj=@cobj.dup.set(cmd)
-      @stat.clear
-      #Thread.abort_on_exception=true
-      push Thread.new(cobj){|c|
-        crnt=Thread.current
-        crnt[:obj]=self
-        crnt[:tid]=Time.now.to_i
-        crnt[:cid]=c[:cid]
-        begin
-          crnt[:stat]='run'
-          submacro(c,1)
-          crnt[:stat]='done'
-        rescue UserError
-          crnt[:stat]="error"
-        rescue Broken
-          crnt[:stat]="broken"
-        end
-      }
-      self
+      @tid=Time.now.to_i
+      self[:cid]=@mitm[:cid]
+      @cobj['run'].add_proc{macro}
     end
 
     def to_s
-      Msg.view_struct(@stat)
+      Msg.view_struct(@logline)
     end
 
-    def join
-      each{|t| t.join}
-    end
-
-    private
-    def submacro(cobj,depth,ins=nil)
-      cobj[:select].each{|e1|
-        @last={'tid'=>Thread.current[:tid],'cid'=>cobj[:cid],'depth'=>depth}
-        @stat.push(@last)
+    def macro
+      self[:stat]='(run)'
+      loop{
+        unless e1=@mitm.select[@index]
+          self[:stat]='(done)'
+          return 'done'
+        end
+        @index+=1
+        @last={'tid'=>@tid,'cid'=>self[:cid]}
+        @logline.push(@last)
         @last.update(e1).delete('stat')
         case e1['type']
         when 'break'
-          !fault?(e1,ins) && ENV['ACT'] && break
+          !fault?(e1) && ENV['ACT'] && break
         when 'check'
-          fault?(e1,ins) && ENV['ACT'] && raise(UserError)
+          fault?(e1) && ENV['ACT'] && raise(UserError)
         when 'wait'
           if e1['retry'].to_i.times{|n|
             sleep 1 if ACT > 0 && n > 0
             @last['retry']=n
-            fault?(e1,ins) || break
+            fault?(e1) || break
           }
           @last['timeout']=true
           ENV['ACT'] && raise(UserError)
           else
             @last.delete('fault')
           end
-        when 'mcr'
-          if /true|1/ === e1['async']
-            clone.clear.macro(e1['cmd'])
-          else
-            subc=cobj.dup.set(e1['cmd'])
-            submacro(subc,depth+1,e1['ins']||ins)
-          end
-        when 'exec'
-          exe(e1['cmd'],e1['ins']||ins)
+        when 'mcr','exec'
+          self[:stat]="(wait)"
+          return e1
         end
       }
-      self
+    rescue UserError
+      self[:stat]="(error)"
+    rescue Broken
+      self[:stat]="(broken)"
     end
 
-    def fault?(e,ins)
+    private
+    def fault?(e)
       flt={}
       !e['stat'].all?{|h|
-        flt['ins']=h['ins']||ins
+        flt['ins']=h['ins']
         break unless flt['upd']=update?(flt['ins'])
         ['var','val','inv'].each{|k| flt[k]=h[k] }
         if res=getstat(flt['ins'],flt['var'])
@@ -99,24 +80,16 @@ module Mcr
 
     # client is forced to be localhost
     def update?(ins)
-      stat=@@client[ins].stat.load
+      stat=@client[ins].stat.load
       stat.update?
     end
 
     def getstat(ins,var)
-      stat=@@client[ins].stat
+      stat=@client[ins].stat
       res=stat['msg'][var]||stat.val[var]
-      Sub.msg{"ins=#{ins},var=#{var},res=#{res}"}
-      Sub.msg{stat.val}
+      Sv.msg{"ins=#{ins},var=#{var},res=#{res}"}
+      Sv.msg{stat.val}
       res
-    end
-
-    def exe(cmd,ins)
-      Thread.current[:stat]="wait"
-      sleep if @int
-      Thread.current[:stat]="run"
-      @@client.each{|k,v| v.stat.refresh }
-      @@client[ins].exe(cmd)
     end
 
     def comp(res,val,inv)
@@ -134,20 +107,18 @@ if __FILE__ == $0
   require "libmcrdb"
   require "libmcrprt"
 
-  Msg.getopts("r")
   id,*cmd=ARGV
   ARGV.clear
   begin
+    app=App::List.new
     mdb=Mcr::Db.new(id)
     cobj=Command.new.setdb(mdb,:macro)
-    mcr=Mcr::Sub.new(cobj)
-    mcr.extend(Mcr::Prt) unless $opt['r']
-    mcr.macro(cmd).join
-    puts mcr.to_s
+    mcr=Mcr::Sv.new(app,cobj.set(cmd))
+    mcr.shell
   rescue InvalidCMD
     Msg.exit(2)
   rescue InvalidID
-    Msg.usage("(opt) [mcr] [cmd] (par)",*$optlist)
+    Msg.usage("[mcr] [cmd] (par)",*$optlist)
   rescue UserError
     Msg.exit(3)
   end

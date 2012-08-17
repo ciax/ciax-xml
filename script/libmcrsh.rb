@@ -5,11 +5,9 @@ require "libstatus"
 module Mcr
   class Sh < Int::Shell
     attr_reader :stat
-    def initialize(citm)
-      @citm=Msg.type?(citm,Command::Item)
+    def initialize(mitm)
+      @mitm=Msg.type?(mitm,Command::Item)
       super(Command.new)
-      self['id']=mdb['id']
-      @port=mdb['port'].to_i
       @stat=[]
       @pconv.update({'active'=>'*','wait'=>'?'})
       grp=@cobj.add_group('int',"Internal Command")

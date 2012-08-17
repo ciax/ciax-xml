@@ -39,6 +39,7 @@ class Command < ExHash
     @current=nil
     @group={}
     @pre_exe=Update.new
+    @cdb={}
   end
 
   def setdb(db,path)
@@ -163,12 +164,13 @@ class Command < ExHash
   # Validate command and parameters
   class Item < ExHash
     include Math
-    attr_reader :id
+    attr_reader :id,:select
     def initialize(index,id)
       @index=Msg.type?(index,Command)
       @id=id
       @par=[]
       @exelist=index.pre_exe.dup
+      @select={} #destroyable
     end
 
     def add_proc

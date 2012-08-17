@@ -1,13 +1,13 @@
 ## Layer description ##
 
   frm: Frame layer
-       classified by frame format
+       classified by communication protocol (frame format)
        transaction: sync
   app: Application layer
-       classified by application
+       classified by model number (application)
        transaction: async
   ins: Instance layer
-       classified by individuality or identity
+       classified by serial number (individuality or identity)
        function: aliasing, symboling and labeling over adb items
 
 ## DB description ##

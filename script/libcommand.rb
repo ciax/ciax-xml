@@ -10,7 +10,7 @@ require 'libupdate'
 # Command::Item => {:label,:parameter,...}
 #  Command::Item#set_par(par)
 #  Command::Item#subst(str)
-#  Command::Item#add_proc{|id,par|}
+#  Command::Item#add_proc{|par,id|}
 #
 # Command::Group => {id => Command::Item}
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
@@ -21,12 +21,12 @@ require 'libupdate'
 #  Command#group[key] -> Command::Group
 #  Command#current -> Command::Item
 #  Command#pre_exe -> Update
-#  Command#def_proc{|id,par|}
+#  Command#def_proc{|par,id|}
 #  Command[id] -> Command::Item
 #  Command#set(cmd=alias+par):{
 #    Command[alias->id]#set_par(par)
 #    Command#current -> Command[id]
-#  }
+#  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
@@ -62,7 +62,7 @@ class Command < ExHash
 
   def def_proc
     values.each{|item|
-      item.add_proc{|id,par| yield id,par}
+      item.add_proc{|par,id| yield par,id}
     }
     self
   end
@@ -172,7 +172,7 @@ class Command < ExHash
     end
 
     def add_proc
-      @exelist << proc{yield @id,@par}
+      @exelist << proc{yield @par,@id}
       self
     end
 

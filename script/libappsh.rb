@@ -47,7 +47,7 @@ module App
       @post_exe << proc{@stat.upd}
       grp=@cobj.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
-      grp.add_item('set','[key=val,...]',[cri]).add_proc{|id,par|
+      grp.add_item('set','[key=val,...]',[cri]).add_proc{|par|
         par.each{|exp| @stat.str_update(exp).upd}
         "Set #{par}"
       }

@@ -21,23 +21,23 @@ module Frm
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
       @cobj.ext_frmcmd(@field)
-      @cobj.def_proc{|cid,frm|
+      @cobj.def_proc{|frm,cid|
         @io.snd(frm,cid)
         @field.upd{@io.rcv} && @field.save
       }
-      @cobj['set'].add_proc{|id,par|
+      @cobj['set'].add_proc{|par|
         @field.set(par[0],par[1]).save
       }
-      @cobj['unset'].add_proc{|id,par|
+      @cobj['unset'].add_proc{|par|
         @field.unset(par.first)
       }
-      @cobj['save'].add_proc{|id,par|
+      @cobj['save'].add_proc{|par|
         @field.savekey(par[0].split(','),par[1])
       }
-      @cobj['load'].add_proc{|id,par|
+      @cobj['load'].add_proc{|par|
         @field.load(par.first||'')
       }
-      @cobj['sleep'].add_proc{|id,par| sleep par.first.to_i }
+      @cobj['sleep'].add_proc{|par| sleep par.first.to_i }
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")

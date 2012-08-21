@@ -21,7 +21,7 @@ module Frm
 
     def add_proc
       @exelist << proc{
-        yield self[:cid],getframe
+        yield getframe,self[:cid]
         'OK'
       }
     end

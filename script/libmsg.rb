@@ -16,6 +16,7 @@ class ManagedError < RuntimeError; end
 class SelectID < ManagedError; end
 # Broken session in Macro
 class Broken < ManagedError; end
+class Quit < ManagedError; end
 
 # Communication Error
 class CommError < UserError; end

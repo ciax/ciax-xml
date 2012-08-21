@@ -14,7 +14,7 @@ require 'libupdate'
 #
 # Command::Group => {id => Command::Item}
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
-#  Command::Group#update_items(list){|id,par|}
+#  Command::Group#update_items(list)
 #
 # Command#new(db)
 #  Command#add_group(key,title,&def_proc) -> Command::Group
@@ -153,9 +153,7 @@ class Command < ExHash
     def update_items(list)
       @list.update(list)
       list.each{|id,title|
-        @index[id]=self[id]=Item.new(@index,id).add_proc{|id,par|
-          yield(id,par)
-        }
+        @index[id]=self[id]=Item.new(@index,id).add_jump
       }
       self
     end
@@ -175,6 +173,11 @@ class Command < ExHash
 
     def add_proc
       @exelist << proc{yield @id,@par}
+      self
+    end
+
+    def add_jump
+      @exelist << proc{ raise(SelectID,@id) }
       self
     end
 

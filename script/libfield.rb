@@ -59,11 +59,19 @@ module Field
 
     # Set value with mixed key
     def set(key,val)
-      Msg.par_err("No such Key[#{key}] in 'val'") unless @val.key?(key)
+      unless @val.key?(key.split(':').first)
+        Msg.par_err("No such Key[#{key}] in 'val'")
+      end
       if p=get(key)
-        p.replace(subst(val).to_s)
+        conv=subst(val).to_s
+        case p
+        when Array
+          p.replace(conv.split(','))
+        when String
+          p.replace(conv)
+        end
       else
-        @val[key]=val
+        Msg.par_err("Index is out of range")
       end
       set_time
       self

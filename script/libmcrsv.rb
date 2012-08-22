@@ -43,6 +43,7 @@ module Mcr
         when 'check'
           fault?(e1) && ENV['ACT'] && raise(UserError)
         when 'wait'
+          self[:stat]="(wait)"
           if e1['retry'].to_i.times{|n|
             sleep 1 if ACT > 0 && n > 0
             @last['retry']=n
@@ -54,7 +55,7 @@ module Mcr
             @last.delete('fault')
           end
         when 'mcr','exec'
-          self[:stat]="(wait)"
+          self[:stat]="(stop)"
           return e1
         end
       }

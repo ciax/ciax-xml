@@ -13,10 +13,10 @@ class Stream
     @timeout=timeout
   end
 
-  def snd(str)
+  def snd(str,cid)
     return if str.to_s.empty?
     sleep @wait
-    Stream.msg{"Sending #{str.size} byte"}
+    Stream.msg{"Sending #{str.size} byte on #{cid}"}
     reopen{
       @f.syswrite(str)
     }
@@ -60,7 +60,7 @@ class Stream
 
     def snd(str,cid)
       @cid=cid
-      super(str)
+      super
       append(['snd',@cid],str)
       self
     end

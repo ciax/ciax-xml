@@ -10,12 +10,12 @@ module Frm
       Msg.type?(obj,Command::Item)
     end
 
-    def init(field)
+    def init(field,db)
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
-      @sel=Hash[@index.db[:cmdframe][:frame]]
-      @frame=Frame.new(@index.db['endian'],@index.db['ccmethod'])
+      @sel=Hash[db[:cmdframe][:frame]]
+      @frame=Frame.new(db['endian'],db['ccmethod'])
       self
     end
 
@@ -69,10 +69,11 @@ module Frm
   end
 end
 
-class Command
-  def ext_frmcmd(field)
+class Command::Domain
+  def ext_frmcmd(id,path,field)
+    ext_setdb(id,path)
     values.each{|item|
-      item.extend(Frm::Cmd).init(field)
+      item.extend(Frm::Cmd).init(field,@db)
     }
     self
   end
@@ -85,9 +86,9 @@ if __FILE__ == $0
   ARGV.clear
   begin
     fdb=Frm::Db.new(dev)
-    cobj=Command.new.setdb(fdb,:cmdframe)
     field=Field::Var.new
-    cobj.ext_frmcmd(field)
+    cobj=Command.new
+    dom=cobj.add_domain('ext').ext_frmcmd(fdb,:cmdframe,field)
     field.load unless STDIN.tty?
     print cobj.set(cmd).getframe
   rescue UserError

@@ -39,14 +39,27 @@ module App
   end
 end
 
+class Command::Domain
+  def ext_appcmd(db,path)
+    ext_setdb(db,path)
+    values.each{|item|
+      item.extend(App::Cmd)
+    }
+    self
+  end
+end
+
 if __FILE__ == $0
   require "libappdb"
   app,*cmd=ARGV
   begin
     adb=App::Db.new(app)
-    fcobj=Command.new.setdb(adb.cover_frm,:cmdframe)
-    acobj=Command.new.setdb(adb,:command).set(cmd)
-    acobj.extend(App::Cmd).get.each{|fcmd|
+    fcobj=Command.new
+    fcobj.add_domain('ext').ext_setdb(adb.cover_frm,:cmdframe)
+    acobj=Command.new
+    acobj.add_domain('ext').ext_appcmd(adb,:command)
+    acobj.set(cmd).get.each{|fcmd|
+      #Validate frmcmds
       fcobj.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
       p fcmd
     }

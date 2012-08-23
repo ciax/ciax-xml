@@ -18,11 +18,13 @@ out=`mktemp`
 inp=`mktemp`
 cat > $inp <<EOF
 {
+"val":{
+"ipr":"1","ipl":"1",
 "stat":"1",
 "output":"1",
-"ipr":"1","ipl":"1",
 "p":["0"],"spd":["0"],"rmp":["0"],"ofs":["0"],
 "t":[[],[[],["0"]]]
+}
 }
 EOF
 trap "rm $out $inp" EXIT

@@ -15,14 +15,18 @@ require 'libupdate'
 # Command::Group => {id => Command::Item}
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
 #  Command::Group#update_items(list)
+#  Command::Group#list -> Msg::CmdList
 #
-# Command#new(db)
-#  Command#add_group(key,title,&def_proc) -> Command::Group
-#  Command#group[key] -> Command::Group
+# Command::Domain => {id => Command::Item}
+#  Command::Domain#add_group(key,title) -> Command::Group
+#  Command::Domain#group[key] -> Command::Group
+#  Command::Domain#def_proc{|par,id|}
+#
+# Command#new(db) => {id => Command::Item}
+#  Command#add_domain(key,title) -> Command::Domain
+#  Command#domain[key] -> Command::Domain
 #  Command#current -> Command::Item
 #  Command#pre_exe -> Update
-#  Command#def_proc{|par,id|}
-#  Command[id] -> Command::Item
 #  Command#set(cmd=alias+par):{
 #    Command[alias->id]#set_par(par)
 #    Command#current -> Command[id]
@@ -30,52 +34,37 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:group,:pre_exe,:db
+  attr_reader :current,:alias,:pre_exe
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
   def initialize
     Command.init_ver(self)
     @current=nil
-    @group={}
+    @domain={}
+    @alias={}
     @pre_exe=Update.new
     @cdb={}
   end
 
-  def setdb(db,path)
-    @db=Msg.type?(db,Db)
-    @cdb=db[path]
-    all=@cdb[:select].keys.each{|id|
-      self[id]=Item.new(self,id).update(db_pack(id))
-    }
-    if gdb=@cdb[:group]
-      gdb[:items].each{|gid,member|
-        cap=(gdb[:caption]||{})[gid]
-        col=(gdb[:column]||{})[gid]
-        def_group(gid,member,cap,col)
-      }
-    else
-      def_group('main',all,"Command List",1)
-    end
-    self
-  end
-
-  def def_proc
-    values.each{|item|
-      item.add_proc{|par,id| yield par,id}
-    }
-    self
-  end
-
-  def add_group(gid,title)
-    @group[gid]=Group.new(self,title,2)
+  def add_domain(did,color=2)
+    @domain[did]=Domain.new(self,color)
   end
 
   def set(cmd)
     id,*par=cmd
-    id=a2r(id)
+    id=@alias[id] || id
     key?(id) || error
     @current=self[id].set_par(par)
+  end
+
+  def to_s
+    @domain.values.map{|dom| dom.to_s}.grep(/./).join("\n")
+  end
+
+  def error(str=nil)
+    str= str ? str+"\n" : ''
+    raise(InvalidCMD,str+to_s)
   end
 
   def ext_logging(id,ver=0)
@@ -84,54 +73,36 @@ class Command < ExHash
     self
   end
 
-  def to_s
-    @group.values.map{|v| v.list.to_s}.grep(/./).join("\n")
-  end
-
-  def error(str=nil)
-    str= str ? str+"\n" : ''
-    raise(InvalidCMD,str+to_s)
-  end
-
-  private
-  def db_pack(id)
-    property={}
-    @cdb.each{|sym,h|
-      case sym
-      when :group,:alias
-        next
-      else
-        property[sym]=h[id].dup if h.key?(id)
-      end
-    }
-    property
-  end
-
-  # alias to real
-  def a2r(id)
-    (@cdb[:alias]||{})[id] || id
-  end
-
-  # make alias list
-  def add_list(list,ary)
-    lh=@cdb[:label]
-    if alary=@cdb[:alias]
-      alary.each{|a,r|
-        list[a]=lh[r] if ary.include?(r)
-      }
-    else
-      ary.each{|i| list[i]=lh[i] }
+  class Domain < Hash
+    attr_reader :group
+    def initialize(index,color=6)
+      @index=Msg.type?(index,Command)
+      @group={}
+      @color=color
     end
-    list
-  end
 
-  # Make Default groups (generated from Db)
-  def def_group(gid,items,cap,col)
-    @group[gid]=Group.new(self,cap,col,2)
-    items.each{|id|
-      @group[gid][id]=self[id]
-    }
-    add_list(@group[gid].list,items)
+    def add_group(gid,title)
+      @group[gid]=Group.new(@index,title,2,@color)
+    end
+
+    def def_proc
+      @group.values.each{|grp|
+        grp.values.each{|item|
+          item.add_proc{|par,id| yield par,id}
+        }
+      }
+      self
+    end
+
+    def to_s
+      @group.values.map{|grp| grp.to_s}.grep(/./).join("\n")
+    end
+
+    def ext_setdb(db,path)
+      extend SetDb
+      init(db,path)
+      self
+    end
   end
 
   class Group < Hash
@@ -157,120 +128,70 @@ class Command < ExHash
       }
       self
     end
+
+    def to_s
+      @list.to_s
+    end
   end
 
-  # Validate command and parameters
-  class Item < ExHash
-    include Math
-    attr_reader :id,:select
-    def initialize(index,id)
-      @index=Msg.type?(index,Command)
-      @id=id
-      @par=[]
-      @exelist=index.pre_exe.dup
-      @select={} #destroyable
+  module SetDb
+    def self.extended(obj)
+      Msg.type?(obj,Domain)
     end
 
-    def add_proc
-      @exelist << proc{yield @par,@id}
-      self
-    end
-
-    def add_jump
-      @exelist << proc{ raise(SelectID,@id) }
-      self
-    end
-
-    def exe
-      @exelist.upd.last
-    end
-
-    def set_par(par)
-      @par=validate(Msg.type?(par,Array))
-      @select=deep_subst(self[:select])
-      self[:cid]=[@id,*par].join(':') # Used by macro
-      Command.msg{"SetPAR: #{par}"}
-      self[:msg]='OK'
-      self
-    end
-
-    # Substitute string($+number) with parameters
-    # par={ val,range,format } or String
-    # str could include Math functions
-    def subst(str)
-      return str unless /\$([\d]+)/ === str
-      Command.msg(1){"Substitute from [#{str}]"}
-      begin
-        res=str.gsub(/\$([\d]+)/){
-          i=$1.to_i
-          Command.msg{"Parameter No.#{i} = [#{@par[i-1]}]"}
-          @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
+    def init(db,path)
+      @db=Msg.type?(db,Db)
+      @cdb=db[path]
+      @index.alias.update(@cdb[:alias]||{})
+      all=@cdb[:select].keys.each{|id|
+        @index[id]=self[id]=Item.new(@index,id).update(db_pack(id))
+      }
+      if gdb=@cdb[:group]
+        gdb[:items].each{|gid,member|
+          cap=(gdb[:caption]||{})[gid]
+          col=(gdb[:column]||{})[gid]
+          def_group(gid,member,cap,col)
         }
-        res=eval(res).to_s unless /\$/ === res
-        Msg.cfg_err("Nil string") if res == ''
-        res
-      ensure
-        Command.msg(-1){"Substitute to [#{res}]"}
+      else
+        def_group('main',all,"Command List",1)
       end
+      self
     end
 
     private
-    def deep_subst(data)
-      case data
-      when Array
-        res=[]
-        data.each{|v|
-          res << deep_subst(v)
-        }
-      when Hash
-        res={}
-        data.each{|k,v|
-          res[k]=deep_subst(v)
-        }
-      else
-        res=subst(data)
-      end
-      res
-    end
-
-    # Parameter structure {:type,:val}
-    def validate(pary)
-      pary=Msg.type?(pary.dup,Array)
-      return pary unless key?(:parameter)
-      self[:parameter].map{|par|
-        disp=par[:list].join(',')
-        unless str=pary.shift
-        Msg.par_err(
-                "Parameter shortage (#{pary.size}/#{self[:parameter].size})",
-                Msg.item(@id,self[:label]),
-                " "*10+"key=(#{disp})")
-        end
-        case par[:type]
-        when 'num'
-          begin
-            num=eval(str)
-          rescue Exception
-            Msg.par_err("Parameter is not number")
-          end
-          Command.msg{"Validate: [#{num}] Match? [#{disp}]"}
-          unless par[:list].any?{|r| ReRange.new(r) == num }
-            Msg.par_err("Out of range (#{num}) for [#{disp}]")
-          end
-          num.to_s
-        when 'str'
-          Command.msg{"Validate: [#{str}] Match? [#{disp}]"}
-          unless par[:list].include?(str)
-            Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
-          end
-          str
-        when 'reg'
-          Command.msg{"Validate: [#{str}] Match? [#{disp}]"}
-          unless par[:list].any?{|r| /#{r}/ === str}
-            Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
-          end
-          str
+    def db_pack(id)
+      property={}
+      @cdb.each{|sym,h|
+        case sym
+        when :group,:alias
+          next
+        else
+          property[sym]=h[id].dup if h.key?(id)
         end
       }
+      property
+    end
+
+    # Make Default groups (generated from Db)
+    def def_group(gid,items,cap,col)
+      @group[gid]=Group.new(@index,cap,col,2)
+      items.each{|id|
+        @group[gid][id]=@index[id]
+      }
+      add_list(@group[gid].list,items)
+    end
+
+    # make alias list
+    def add_list(list,ary)
+      lh=@cdb[:label]
+      if alary=@cdb[:alias]
+        alary.each{|a,r|
+          list[a]=lh[r] if ary.include?(r)
+        }
+      else
+        ary.each{|i| list[i]=lh[i] }
+      end
+      list
     end
   end
 
@@ -287,17 +208,21 @@ class Command < ExHash
     end
   end
 end
+require 'libcmditem'
 
 if __FILE__ == $0
   require 'libinsdb'
   Msg.getopts("af")
   begin
     adb=Ins::Db.new(ARGV.shift).cover_app
+    cobj=Command.new
+    dom=cobj.add_domain('ext',6)
     if $opt["f"]
-      puts Command.new.setdb(adb.cover_frm,:cmdframe).set(ARGV)
+      dom.ext_setdb(adb.cover_frm,:cmdframe)
     else
-      puts Command.new.setdb(adb,:command).set(ARGV)
+      dom.ext_setdb(adb,:command)
     end
+    puts cobj.set(ARGV)
   rescue UserError
     Msg::usage("(opt) [id] [cmd] (par)",*$optlist)
     Msg.exit

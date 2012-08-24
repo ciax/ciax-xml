@@ -7,7 +7,7 @@ module App
     attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
-      super(Command.new)
+      super()
       @cobj.add_ext(adb,:command)
       self['id']=adb['id']
       @port=adb['port'].to_i

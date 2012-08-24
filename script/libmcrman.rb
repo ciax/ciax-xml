@@ -9,7 +9,7 @@ module Mcr
   class Man < Int::Shell
     # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
     def initialize(id)
-      super(Command.new)
+      super()
       @cobj.add_ext(Db.new(id),:macro)
       flg=['test','sim','exe'][ENV['ACT'].to_i]
       @id="#{id}(#{flg})"

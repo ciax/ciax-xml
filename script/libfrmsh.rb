@@ -6,7 +6,7 @@ module Frm
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
-      super(Command.new)
+      super()
       @cobj.add_ext(fdb,:cmdframe)
       self['id']=fdb['id']
       @port=fdb['port'].to_i-1000

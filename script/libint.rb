@@ -8,8 +8,8 @@ require "libupdate"
 module Int
   class Shell < ExHash
     attr_reader :post_exe,:cmdlist,:cobj
-    def initialize(cobj)
-      @cobj=Msg::type?(cobj,Command)
+    def initialize
+      @cobj=Command.new
       @pconv={} #prompt convert table (j2s)
       @post_exe=Update.new
       @port=0

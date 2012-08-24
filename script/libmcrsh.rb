@@ -7,7 +7,7 @@ module Mcr
     attr_reader :stat
     def initialize(mitm)
       @mitm=Msg.type?(mitm,Command::Item)
-      super(Command.new)
+      super()
       @stat=[]
       @pconv.update({'active'=>'*','wait'=>'?'})
       grp=@cobj.int.add_group('int',"Internal Command")

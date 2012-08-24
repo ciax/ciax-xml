@@ -113,7 +113,8 @@ if __FILE__ == $0
   begin
     app=App::List.new
     mdb=Mcr::Db.new(id)
-    cobj=Command.new.setdb(mdb,:macro)
+    cobj=Command.new
+    cobj.add_ext(mdb,:macro)
     mcr=Mcr::Sv.new(app,cobj.set(cmd))
     mcr.shell
   rescue InvalidCMD

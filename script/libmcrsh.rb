@@ -10,7 +10,7 @@ module Mcr
       super(Command.new)
       @stat=[]
       @pconv.update({'active'=>'*','wait'=>'?'})
-      grp=@cobj.add_group('int',"Internal Command")
+      grp=@cobj.int.add_group('int',"Internal Command")
       grp.add_item("[0-9]","Switch Mode")
       grp.add_item("threads","Thread list")
       grp.add_item("list","list mcr contents")

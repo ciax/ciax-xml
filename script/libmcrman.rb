@@ -9,14 +9,14 @@ module Mcr
   class Man < Int::Shell
     # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
     def initialize(id)
-      cobj=Command.new.setdb(Db.new(id),:macro)
-      super(cobj)
+      super(Command.new)
+      @cobj.add_ext(Db.new(id),:macro)
       flg=['test','sim','exe'][ENV['ACT'].to_i]
       @id="#{id}(#{flg})"
       self['id']="#@id[]"
       @index=0
       @mcr=Mcr::Sub.new(@cobj,1) #.extend(Mcr::Prt)
-      grp=@cobj.add_group('int',"Internal Command")
+      grp=@cobj.int.add_group('int',"Internal Command")
       grp.add_item("[0-9]","Switch Mode")
       grp.add_item("threads","Thread list")
       grp.add_item("list","list mcr contents")

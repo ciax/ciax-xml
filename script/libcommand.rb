@@ -7,11 +7,6 @@ require 'libupdate'
 
 #Access method
 #Command < Hash
-# Command::Item => {:label,:parameter,...}
-#  Command::Item#set_par(par)
-#  Command::Item#subst(str)
-#  Command::Item#add_proc{|par,id|}
-#
 # Command::Group => {id => Command::Item}
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
 #  Command::Group#update_items(list)
@@ -25,6 +20,7 @@ require 'libupdate'
 # Command#new(db) => {id => Command::Item}
 #  Command#add_domain(key,title) -> Command::Domain
 #  Command#domain[key] -> Command::Domain
+#   Command#int -> Command::Domain['int']
 #  Command#current -> Command::Item
 #  Command#pre_exe -> Update
 #  Command#set(cmd=alias+par):{
@@ -34,7 +30,7 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:alias,:pre_exe
+  attr_reader :current,:alias,:domain,:pre_exe,:int,:ext
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -44,7 +40,7 @@ class Command < ExHash
     @domain={}
     @alias={}
     @pre_exe=Update.new
-    @cdb={}
+    @int=add_domain('int')
   end
 
   def add_domain(did,color=2)
@@ -65,6 +61,10 @@ class Command < ExHash
   def error(str=nil)
     str= str ? str+"\n" : ''
     raise(InvalidCMD,str+to_s)
+  end
+
+  def add_ext(db,path)
+    @ext=add_domain('ext',4).ext_setdb(db,path)
   end
 
   def ext_logging(id,ver=0)
@@ -216,11 +216,10 @@ if __FILE__ == $0
   begin
     adb=Ins::Db.new(ARGV.shift).cover_app
     cobj=Command.new
-    dom=cobj.add_domain('ext',6)
     if $opt["f"]
-      dom.ext_setdb(adb.cover_frm,:cmdframe)
+      cobj.add_ext(adb.cover_frm,:cmdframe)
     else
-      dom.ext_setdb(adb,:command)
+      cobj.add_ext(adb,:command)
     end
     puts cobj.set(ARGV)
   rescue UserError

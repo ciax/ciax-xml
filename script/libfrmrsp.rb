@@ -155,7 +155,8 @@ if __FILE__ == $0
   str=gets(nil) || exit
   id=Logging.set_logline(str)[:id]
   fdb=Ins::Db.new(id).cover_app.cover_frm
-  cobj=Command.new.setdb(fdb,:cmdframe)
+  cobj=Command.new
+  cobj.add_ext(fdb,:cmdframe)
   field=Field::Var.new.ext_file(fdb)
   field.load if $opt['m']
   field.ext_rsp(cobj)

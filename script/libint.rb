@@ -23,7 +23,7 @@ module Int
     end
 
     def set_switch(key,title,list)
-      grp=@cobj.add_group(key,title)
+      grp=@cobj.int.add_group(key,title)
       grp.update_items(list)
       self
     end
@@ -34,7 +34,7 @@ module Int
       Readline.completion_proc= proc{|word|
         @cobj.list.keys.grep(/^#{word}/)
       }
-      grp=@cobj.add_group('sh',"Shell Command")
+      grp=@cobj.int.add_group('sh',"Shell Command")
       grp.update_items({'q'=>"Quit",'D^'=>"Interrupt"})
       loop {
         line=Readline.readline(prompt,true)||'interrupt'

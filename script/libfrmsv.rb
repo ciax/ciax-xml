@@ -34,8 +34,7 @@ module Frm
       }
       @cobj['sleep'].add_proc{|par| sleep par.first.to_i }
       # add_proc is changed from here
-      @cobj.ext_frmcmd(@field)
-      @cobj.def_proc{|frm,cid|
+      @cobj.ext.ext_frmcmd(@field).def_proc{|frm,cid|
         @io.snd(frm,cid)
         @field.upd{@io.rcv} && @field.save
       }

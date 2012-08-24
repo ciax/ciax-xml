@@ -11,7 +11,7 @@ module App
     def init
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@stat).ext_prt
-      grp=@cobj.add_group('view',"Change View Mode")
+      grp=@cobj.int.add_group('view',"Change View Mode")
       grp.add_item('pri',"Print mode").add_proc{@output=@print}
       grp.add_item('val',"Value mode").add_proc{@output=@stat.val}
       grp.add_item('wat',"Watch mode").add_proc{@output=@wview} if @wview

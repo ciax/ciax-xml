@@ -7,7 +7,8 @@ module App
     attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
-      super(Command.new.setdb(adb,:command))
+      super(Command.new)
+      @cobj.add_ext(adb,:command)
       self['id']=adb['id']
       @port=adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)
@@ -45,7 +46,7 @@ module App
       super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       @post_exe << proc{@stat.upd}
-      grp=@cobj.add_group('int',"Internal Command")
+      grp=@cobj.int.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).add_proc{|par|
         par.each{|exp| @stat.str_update(exp).upd}

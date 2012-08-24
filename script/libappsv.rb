@@ -19,7 +19,7 @@ module App
       @cobj.values.each{|item|
         item.extend(App::Cmd)
       }
-      @cobj.def_proc{
+      @cobj.ext.def_proc{
         @buf.send(1)
         "Issued"
       }
@@ -30,7 +30,7 @@ module App
         cmd=[id,*par]
         Msg.cmd_err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
-      gint=@cobj.add_group('int',"Internal Command")
+      gint=@cobj.int.add_group('int',"Internal Command")
       gint.add_item('interrupt').add_proc{
         int=@stat.interrupt.each{|cmd|
           @cobj.set(cmd)

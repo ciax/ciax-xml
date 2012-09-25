@@ -64,7 +64,7 @@ class Command < ExHash
   end
 
   def add_ext(db,path)
-    @ext=add_domain('ext',4).ext_setdb(db,path)
+    @ext=add_domain('ext',6).ext_setdb(db,path)
   end
 
   def ext_logging(id,ver=0)

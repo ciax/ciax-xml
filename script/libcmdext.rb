@@ -44,7 +44,7 @@ class Command
 
     # Make Default groups (generated from Db)
     def def_group(gid,items,cap,col)
-      @group[gid]=Group.new(@index,cap,col,2)
+      @group[gid]=Group.new(@index,cap,col,@color,@def_proc)
       items.each{|id|
         @group[gid][id]=@index[id]
       }

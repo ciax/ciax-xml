@@ -75,7 +75,7 @@ class Command < ExHash
 
   class Domain < Hash
     attr_reader :group,:def_proc
-    def initialize(index,color=6)
+    def initialize(index,color=2)
       @index=Msg.type?(index,Command)
       @group={}
       @color=color
@@ -93,7 +93,7 @@ class Command < ExHash
 
   class Group < Hash
     attr_reader :list,:def_proc
-    def initialize(index,title,col=2,color=6,def_proc=[])
+    def initialize(index,title,col=2,color=2,def_proc=[])
       @list=Msg::CmdList.new(title,col,color)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,Array)

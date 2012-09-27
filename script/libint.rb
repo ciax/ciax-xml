@@ -34,7 +34,7 @@ module Int
       Readline.completion_proc= proc{|word|
         @cobj.list.keys.grep(/^#{word}/)
       }
-      grp=@cobj.int.add_group('sh',"Shell Command")
+      grp=@cobj.add_domain('sh',5).add_group('sh',"Shell Command")
       grp.update_items({'q'=>"Quit",'D^'=>"Interrupt"})
       loop {
         line=Readline.readline(prompt,true)||'interrupt'

@@ -2,7 +2,7 @@
 require "libmsg"
 require "socket"
 require "readline"
-require "libcommand"
+require "libcmdext"
 require "libupdate"
 
 module Int

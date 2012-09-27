@@ -149,7 +149,7 @@ end
 
 if __FILE__ == $0
   require "libinsdb"
-  require "libcommand"
+  require "libcmdext"
   Msg.getopts("m",{'m' => 'merge file'})
   Msg.usage "(opt) < logline",*$optlist if STDIN.tty? && ARGV.size < 1
   str=gets(nil) || exit

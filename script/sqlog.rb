@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libinsdb"
-require "libcommand"
+require "libcmdext"
 require "libfrmrsp"
 require "libapprsp"
 require 'libstatus'

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libframe"
-require "libcommand"
+require "libcmdext"
 # Cmd Methods
 module Frm
   module Cmd

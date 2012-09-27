@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libcommand"
+require "libcmdext"
 require "libbuffer"
 
 module App

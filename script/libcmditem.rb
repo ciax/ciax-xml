@@ -10,31 +10,34 @@ require 'libupdate'
 # Command::Item => {:label,:parameter,...}
 #  Command::Item#set_par(par)
 #  Command::Item#subst(str)
-#  Command::Item#add_proc{|par,id|}
+#  Command::Item#set_proc{|par,id|}
 class Command
   class Item < ExHash
     include Math
     attr_reader :id,:select
-    def initialize(index,id)
-      @index=Msg.type?(index,Command)
+    def initialize(id,index,def_proc=[])
       @id=id
+      @index=Msg.type?(index,Command)
       @par=[]
-      @exelist=index.pre_exe.dup
       @select={} #destroyable
+      @def_proc=Msg.type?(def_proc,Array)
     end
 
-    def add_proc
-      @exelist << proc{yield @par,@id}
+    def set_proc
+      @def_proc=[proc{yield @par,@id}]
       self
     end
 
-    def add_jump
-      @exelist << proc{ raise(SelectID,@id) }
+    def set_jump
+      @def_proc=[ proc{ raise(SelectID,@id) } ]
       self
     end
 
     def exe
-      @exelist.upd.last
+      plist=@index.pre_proc+@def_proc+@index.post_proc
+      plist.map{|pr|
+        pr.call(@par,@id)
+      }.last
     end
 
     def set_par(par)

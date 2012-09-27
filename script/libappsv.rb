@@ -19,19 +19,19 @@ module App
       @cobj.values.each{|item|
         item.extend(App::Cmd)
       }
-      @cobj.ext.def_proc{
+      @cobj.ext.def_proc << proc{
         @buf.send(1)
         "Issued"
       }
       @buf=Buffer.new
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fint.exe(fcmd) }
-      @cobj.pre_exe << proc{|id,par|
+      @cobj.pre_proc << proc{|id,par|
         cmd=[id,*par]
         Msg.cmd_err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
       gint=@cobj.int.add_group('int',"Internal Command")
-      gint.add_item('interrupt').add_proc{
+      gint.add_item('interrupt').set_proc{
         int=@stat.interrupt.each{|cmd|
           @cobj.set(cmd)
           @buf.send(0)

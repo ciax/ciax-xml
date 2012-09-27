@@ -20,24 +20,24 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @cobj['set'].add_proc{|par|
-        @field.set(par[0],par[1]).save
-      }
-      @cobj['unset'].add_proc{|par|
-        @field.unset(par.first)
-      }
-      @cobj['save'].add_proc{|par|
-        @field.savekey(par[0].split(','),par[1])
-      }
-      @cobj['load'].add_proc{|par|
-        @field.load(par.first||'')
-      }
-      @cobj['sleep'].add_proc{|par| sleep par.first.to_i }
-      # add_proc is changed from here
-      @cobj.ext.ext_frmcmd(@field).def_proc{|frm,cid|
+      ext=@cobj.ext.ext_frmcmd(@field)
+      ext.def_proc << proc{|frm,cid|
         @io.snd(frm,cid)
         @field.upd{@io.rcv} && @field.save
       }
+      @cobj['set'].set_proc{|par|
+        @field.set(par[0],par[1]).save
+      }
+      @cobj['unset'].set_proc{|par|
+        @field.unset(par.first)
+      }
+      @cobj['save'].set_proc{|par|
+        @field.savekey(par[0].split(','),par[1])
+      }
+      @cobj['load'].set_proc{|par|
+        @field.load(par.first||'')
+      }
+      @cobj['sleep'].set_proc{|par| sleep par.first.to_i }
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")

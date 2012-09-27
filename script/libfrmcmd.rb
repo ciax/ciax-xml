@@ -8,6 +8,7 @@ module Frm
     def self.extended(obj)
       init_ver('FrmCmd',9)
       Msg.type?(obj,Command::Item)
+      Cmd.msg{"Extending Command by Frm::Cmd"}
     end
 
     def init(field,db)
@@ -19,12 +20,13 @@ module Frm
       self
     end
 
-    def add_proc
-      @exelist << proc{
-        yield getframe,self[:cid]
-        'OK'
-      }
+    def exe
+      plist=@index.pre_proc+@def_proc+@index.post_proc
+      plist.map{|pr|
+        pr.call(getframe,self[:cid])
+      }.last
     end
+
 
     def getframe # return = response select
       return unless @sel[:select]=@select

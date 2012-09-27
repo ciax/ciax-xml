@@ -11,18 +11,21 @@ require 'libupdate'
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
 #  Command::Group#update_items(list)
 #  Command::Group#list -> Msg::CmdList
+#  Command::Group#def_proc ->[{|par,id|},..]
 #
 # Command::Domain => {id => Command::Item}
 #  Command::Domain#add_group(key,title) -> Command::Group
 #  Command::Domain#group[key] -> Command::Group
-#  Command::Domain#def_proc{|par,id|}
+#  Command::Domain#def_proc ->[{|par,id|},..]
 #
 # Command#new(db) => {id => Command::Item}
 #  Command#add_domain(key,title) -> Command::Domain
 #  Command#domain[key] -> Command::Domain
 #   Command#int -> Command::Domain['int']
 #  Command#current -> Command::Item
-#  Command#pre_exe -> Update
+#  Command#pre_proc -> [{|par,id|},..]
+#  Command#def_proc ->[{|par,id|},..]
+#  Command#post_proc -> [{|par,id|},..]
 #  Command#set(cmd=alias+par):{
 #    Command[alias->id]#set_par(par)
 #    Command#current -> Command[id]
@@ -30,7 +33,7 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:alias,:domain,:pre_exe,:int,:ext
+  attr_reader :current,:alias,:domain,:pre_proc,:post_proc,:int,:ext
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -39,7 +42,8 @@ class Command < ExHash
     @current=nil
     @domain={}
     @alias={}
-    @pre_exe=Update.new
+    @pre_proc=[]
+    @post_proc=[]
     @int=add_domain('int')
   end
 
@@ -74,24 +78,16 @@ class Command < ExHash
   end
 
   class Domain < Hash
-    attr_reader :group
+    attr_reader :group,:def_proc
     def initialize(index,color=6)
       @index=Msg.type?(index,Command)
       @group={}
       @color=color
+      @def_proc=[]
     end
 
     def add_group(gid,title)
-      @group[gid]=Group.new(@index,title,2,@color)
-    end
-
-    def def_proc
-      @group.values.each{|grp|
-        grp.values.each{|item|
-          item.add_proc{|par,id| yield par,id}
-        }
-      }
-      self
+      @group[gid]=Group.new(@index,title,2,@color,@def_proc)
     end
 
     def to_s
@@ -106,15 +102,16 @@ class Command < ExHash
   end
 
   class Group < Hash
-    attr_reader :list
-    def initialize(index,title,col=2,color=6)
+    attr_reader :list,:def_proc
+    def initialize(index,title,col=2,color=6,def_proc=[])
       @list=Msg::CmdList.new(title,col,color)
       @index=Msg.type?(index,Command)
+      @def_proc=Msg.type?(def_proc,Array)
     end
 
     def add_item(id,title=nil,parameter=nil)
       @list[id]=title
-      @index[id]=self[id]=Item.new(@index,id)
+      item=@index[id]=self[id]=Item.new(id,@index,@def_proc)
       property={:label => title}
       property[:parameter] = parameter if parameter
       self[id].update(property)
@@ -124,7 +121,7 @@ class Command < ExHash
     def update_items(list)
       @list.update(list)
       list.each{|id,title|
-        @index[id]=self[id]=Item.new(@index,id).add_jump
+        @index[id]=self[id]=Item.new(id,@index).set_jump
       }
       self
     end
@@ -144,7 +141,7 @@ class Command < ExHash
       @cdb=db[path]
       @index.alias.update(@cdb[:alias]||{})
       all=@cdb[:select].keys.each{|id|
-        @index[id]=self[id]=Item.new(@index,id).update(db_pack(id))
+        @index[id]=self[id]=Item.new(id,@index,@def_proc).update(db_pack(id))
       }
       if gdb=@cdb[:group]
         gdb[:items].each{|gid,member|

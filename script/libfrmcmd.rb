@@ -24,9 +24,9 @@ module Frm
       plist=@index.pre_proc+@def_proc+@index.post_proc
       plist.map{|pr|
         pr.call(getframe,self[:cid])
-      }.last
+      }
+      'OK'
     end
-
 
     def getframe # return = response select
       return unless @sel[:select]=@select

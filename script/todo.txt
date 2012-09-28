@@ -8,6 +8,7 @@ crt:cart charging status is '4'(12/2/16) - hexpack bug
 dts:joff,roff,rstop/ no responding(12/3/12)
 dts:need more time to detect motion after moving command issue(12/3/12)
 dts:need rotate drive on to resume ^D stop(12/3/12)
+hexpack: too short return on exec (12/9/27)
 
 ***REQUEST
 mcr-old:need interlock for dso/dsi manual or auto

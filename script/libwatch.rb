@@ -87,7 +87,7 @@ module Watch
         }
       }
       hash.each{|k,a|
-        @watch[k]=a.flatten(1).uniq
+        @watch[k].replace a.flatten(1).uniq
       }
       if @crnt['time'] != @val['time']
         @watch['last']=@last=@crnt.dup

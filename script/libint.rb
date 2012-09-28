@@ -7,11 +7,11 @@ require "libupdate"
 
 module Int
   class Shell < ExHash
-    attr_reader :post_exe,:cmdlist,:cobj
+    attr_reader :upd_proc,:cmdlist,:cobj
     def initialize
       @cobj=Command.new
       @pconv={} #prompt convert table (j2s)
-      @post_exe=Update.new
+      @upd_proc=Update.new
       @port=0
     end
 
@@ -44,7 +44,7 @@ module Int
           # @pust_exe might includes status update when being Client
           msg= cmd.empty? ? to_s : exe(cmd)
           puts msg
-          @post_exe.upd
+          @upd_proc.upd
         rescue SelectID
           break $!.to_s
         rescue InvalidCMD
@@ -88,7 +88,7 @@ module Int
             cmd=line.chomp.split(' ')
             begin
               msg= cmd.empty? ? '' : exe(cmd)
-              @post_exe.upd
+              @upd_proc.upd
             rescue RuntimeError
               msg="ERROR"
               warn msg
@@ -115,11 +115,11 @@ module Int
       @host||='localhost'
       @addr=Socket.pack_sockaddr_in(@port,@host)
       Client.msg{"Init/Client #{@host}:#{@port}"}
-      @post_exe << proc{ send('strobe') }
+      @upd_proc << proc{ send('strobe') }
       dp=proc{|par,id|
         send([id,*par].join(' '))
       }
-      @cobj.pre_proc << dp
+      @cobj.filter_proc << dp
       self
     end
 

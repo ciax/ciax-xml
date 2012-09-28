@@ -26,7 +26,7 @@ module App
       @buf=Buffer.new
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fint.exe(fcmd) }
-      @cobj.pre_proc << proc{|par,id|
+      @cobj.filter_proc << proc{|par,id|
         cmd=[id,*par]
         Msg.cmd_err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
@@ -46,14 +46,14 @@ module App
           @buf.send(2)
         }
       }
-      @fint.post_exe << proc {
+      @fint.upd_proc << proc {
         @stat.upd
       }
       # Logging if version number exists
       if @stat.ver
         @cobj.ext_logging(id,@stat.ver){@stat.active}
       end
-      @post_exe << proc{upd_prompt}
+      @upd_proc << proc{upd_prompt}
       auto_update
       upd_prompt
       extend(Int::Server)

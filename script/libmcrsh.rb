@@ -28,7 +28,7 @@ module Mcr
     def initialize(mdb)
       super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
-      @post_exe << proc{@stat.upd}
+      @upd_proc << proc{@stat.upd}
       grp=@cobj.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).set_proc{|par|
@@ -50,7 +50,7 @@ module Mcr
       host||=mdb['host']
       @host=Msg.type?(host||mdb['host'],String)
       @stat.ext_url(@host).load
-      @post_exe << proc{ @stat.load }
+      @upd_proc << proc{ @stat.load }
       extend(Int::Client)
     end
   end

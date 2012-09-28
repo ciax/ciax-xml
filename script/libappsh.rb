@@ -45,7 +45,7 @@ module App
     def initialize(adb)
       super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
-      @post_exe << proc{@stat.upd}
+      @upd_proc << proc{@stat.upd}
       grp=@cobj.int.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).set_proc{|par|
@@ -67,7 +67,7 @@ module App
       host||=adb['host']
       @host=Msg.type?(host||adb['host'],String)
       @stat.ext_url(@host).load
-      @post_exe << proc{ @stat.load }
+      @upd_proc << proc{ @stat.load }
       extend(Int::Client)
     end
   end

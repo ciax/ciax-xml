@@ -2,6 +2,7 @@
 Frm::Cmd,App::Cmd should be separate from Command::Item which doesn't need to have @db
 
 ***DEBUG
+watch: no command issued by auto(reset at dsi command end) (9/27)
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)
 crt:cart charging status is '4'(12/2/16) - hexpack bug

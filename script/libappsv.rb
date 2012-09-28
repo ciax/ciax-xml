@@ -53,6 +53,7 @@ module App
       if @stat.ver
         @cobj.ext_logging(id,@stat.ver){@stat.active}
       end
+      @post_exe << proc{upd_prompt}
       auto_update
       upd_prompt
       extend(Int::Server)

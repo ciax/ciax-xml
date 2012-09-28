@@ -116,9 +116,10 @@ module Int
       @addr=Socket.pack_sockaddr_in(@port,@host)
       Client.msg{"Init/Client #{@host}:#{@port}"}
       @post_exe << proc{ send('strobe') }
-      @cobj.domain['ext'].def_proc << proc{|par,id|
+      dp=proc{|par,id|
         send([id,*par].join(' '))
       }
+      @cobj.pre_proc << dp
       self
     end
 

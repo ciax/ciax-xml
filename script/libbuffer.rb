@@ -36,7 +36,6 @@ class Buffer
 
   # Send bunch of frmcmd array (ary of ary)
   def send(n=1)
-    return self if  n > 1 && !@q.empty?
     clear if n == 0
     inp=@proc_send.call
     #inp is frmcmd array (ary of ary)
@@ -76,6 +75,11 @@ class Buffer
       @issue=true
       Buffer.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
       (@outbuf[p]||=[]).concat(inp)
+      Buffer.msg{i=-1;
+        @outbuf.map{|o|
+          "SUB:Outbuf(#{i+=1}) is [#{o}]\n"
+        }
+      }
     end
     out
   end

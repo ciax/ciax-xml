@@ -68,14 +68,21 @@ module Watch
         h['var']
       }.uniq
       @list.unshift('time')
+      # @val(all) = @crnt(picked) > @last
+      # upd() => @last<-@crnt => @crnt<-@val => check(@crnt <> @last?)
       @watch['val']=@crnt={}
-      @watch['last']=@last=upd_crnt
+      @watch['last']=@last={}
       @watch['res']=@res={}
+      upd_last
       self
     end
 
+    # Stat no changed -> clear exec, no eval
     def upd
       super
+      @watch['exec'].clear
+      return self if @crnt['time'] == @val['time']
+      upd_last
       hash={'int' =>[],'exec' =>[],'block' =>[]}
       @active.clear
       @wdb[:stat].each{|i,v|
@@ -89,20 +96,16 @@ module Watch
       hash.each{|k,a|
         @watch[k].replace a.flatten(1).uniq
       }
-      if @crnt['time'] != @val['time']
-        @watch['last']=@last=@crnt.dup
-        upd_crnt
-      end
       Var.msg{"Watch/Updated(#{@val['time']})"}
       self
     end
 
     private
-    def upd_crnt
+    def upd_last
       @list.each{|k|
+        @last[k]=@crnt[k]
         @crnt[k]=@val[k]
       }
-      @crnt
     end
 
     def check(i)
@@ -112,7 +115,7 @@ module Watch
       rary=[]
       n.each_index{|j|
         k=n[j]['var']
-        v=@val[k]
+        v=@crnt[k]
         case n[j]['type']
         when 'onchange'
           c=@last[k]

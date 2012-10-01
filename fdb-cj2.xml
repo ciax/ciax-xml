@@ -23,7 +23,7 @@
           <char length="1" label="FINS Param:Data Length (H)">0x00</char>
           <char length="1" label="FINS Param:Data Length (L)">0x13</char>
         </command>
-        <command id="getcmd" label="Get issued command" response="getcmd" type="stat">
+        <command id="getcmd" label="Get command bit" response="getcmd" type="stat">
           <char length="1" label="FINS Command:MRC">0x01</char>
           <char length="1" label="FINS Command:SRC">0x01</char>
           <char length="1" label="FINS Param:Memory type(W)">0xB1</char>

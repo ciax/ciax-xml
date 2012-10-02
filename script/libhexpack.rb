@@ -38,6 +38,7 @@ module HexPack
     @res[4]=b2i(self['isu'])
     @res[6]=''
     @list.each{|key,title,len,type|
+      len=len.to_i
       if val=@stat.get(key)
         case type
         when /FLOAT/
@@ -51,9 +52,10 @@ module HexPack
          end
         HexPack.msg{"#{title}/#{type}(#{len}) = #{str}"}
       else
-        str='*' * len.to_i
+        str='*' * len
       end
-      @res[6] << str
+      # str can exceed specified length
+      @res[6] << str[-len,len]
     }
     @res.join('')
   end

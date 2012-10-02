@@ -60,9 +60,28 @@ module HexPack
     @res.join('')
   end
 
+  def ext_logging(id,ver=0)
+    extend(HexLog)
+    init('hexpack',id,ver)
+    self
+  end
+
   private
   def b2i(b) #Boolean to Integer (1,0)
     b ? '1' : '0'
+  end
+end
+
+module HexLog
+  def self.extended(obj)
+    Msg.type?(obj,HexPack)
+    obj.extend Object::Logging
+  end
+
+  def to_s
+    str=super
+    append([],str)
+    str
   end
 end
 

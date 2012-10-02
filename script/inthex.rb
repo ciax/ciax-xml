@@ -9,7 +9,7 @@ begin
 rescue UserError
   Msg.usage("(opt) [id]",*$optlist)
 end
-aint.extend(HexPack)
+aint.extend(HexPack).ext_logging(id)
 if $opt["s"]
   aint.server
   sleep

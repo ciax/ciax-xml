@@ -9,6 +9,7 @@ module Logging
     init_ver('Logging/%s',6,obj)
   end
 
+  # append() uses param str or @proc generated data
   def init(type,id,ver=0)
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i

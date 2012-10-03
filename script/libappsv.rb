@@ -56,20 +56,19 @@ module App
       extend(Int::Server)
     end
 
-    def upd
-      super
-      self['auto'] = @tid && @tid.alive?
-      self['watch'] = @stat.active?
-      self['isu'] = @buf.issue
-      self['na'] = !@buf.alive?
-      self
-    end
-
     def server(type='app',json=true)
       super
     end
 
     private
+    def prompt
+      self['auto'] = @tid && @tid.alive?
+      self['watch'] = @stat.active?
+      self['isu'] = @buf.issue
+      self['na'] = !@buf.alive?
+      super
+    end
+
     def auto_update
       @tid=Thread.new{
         Thread.pass

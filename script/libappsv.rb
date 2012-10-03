@@ -46,11 +46,7 @@ module App
           @buf.send(2)
         }
       }
-      def @fint.upd
-        super
-        @stat.upd
-        self
-      end
+      @fint.upd_proc << proc{@stat.upd}
       # Logging if version number exists
       if @stat.ver
         @cobj.ext_logging(id,@stat.ver){@stat.active}

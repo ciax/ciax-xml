@@ -7,10 +7,9 @@ require "libupdate"
 
 module Int
   class Shell < ExHash
-    attr_reader :upd_proc,:cmdlist,:cobj
+    attr_reader :cmdlist,:cobj
     def initialize
       @cobj=Command.new
-      @upd_proc=Update.new
       @pconv={} #prompt convert table (j2s)
       @port=0
     end
@@ -24,7 +23,6 @@ module Int
     end
 
     def upd
-      @upd_proc.upd
       self
     end
 

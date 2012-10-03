@@ -41,12 +41,14 @@ module App
       @buf.post_flush << proc{
         @stat.upd.save
         sleep(@stat.interval||0.1)
+        # Auto issue by watch
         @stat.issue.each{|cmd|
           @cobj.set(cmd)
           @buf.send(2)
         }
       }
-      @fint.upd_proc << proc{@stat.upd}
+      # Update for Frm level manipulation
+      @fint.cobj.post_proc << proc{@stat.upd}
       # Logging if version number exists
       if @stat.ver
         @cobj.ext_logging(id,@stat.ver){@stat.active}

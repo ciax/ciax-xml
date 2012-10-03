@@ -32,7 +32,7 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:alias,:domain,:filter_proc,:int
+  attr_reader :current,:alias,:domain,:filter_proc,:post_proc,:int
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -42,6 +42,7 @@ class Command < ExHash
     @domain={}
     @alias={}
     @filter_proc=[]
+    @post_proc=[]
     @int=add_domain('int')
   end
 

@@ -138,7 +138,7 @@ module Int
       @udp.send(str,0,@addr)
       Client.msg{"Send [#{str}]"}
       input=@udp.recv(1024)
-      load(input) # ExHash#load
+      load(input) # ExHash#load -> Server Status
       Client.msg{"Recv #{input}"}
       self
     end

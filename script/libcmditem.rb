@@ -34,7 +34,7 @@ class Command
     end
 
     def exe
-      plist=@index.filter_proc+@def_proc
+      plist=@index.filter_proc+@def_proc+@index.post_proc
       plist.map{|pr|
         pr.call(@par,@id)
       }.last

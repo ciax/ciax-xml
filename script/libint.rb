@@ -121,23 +121,24 @@ module Int
       @host||='localhost'
       @addr=Socket.pack_sockaddr_in(@port,@host)
       Client.msg{"Init/Client #{@host}:#{@port}"}
-      dp=proc{|par,id|
-        send([id,*par].join(' '))
-      }
-      @cobj.filter_proc << dp
-      self
     end
 
-    def upd
-      send('strobe')
+    def exe(cmd)
+      super # Check only
+      send(cmd.join(' '))['msg']
     end
 
     private
+    def prompt
+      send('strobe')
+      super
+    end
+
     def send(str)
       @udp.send(str,0,@addr)
       Client.msg{"Send [#{str}]"}
       input=@udp.recv(1024)
-      load(input) #self.load
+      load(input) # ExHash#load
       Client.msg{"Recv #{input}"}
       self
     end

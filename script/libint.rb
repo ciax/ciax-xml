@@ -19,11 +19,7 @@ module Int
     # Accepted => Command
     # cmd is Array
     def exe(cmd)
-      @cobj.set(cmd).exe
-    end
-
-    def upd
-      self
+      self['msg']=@cobj.set(cmd).exe
     end
 
     def set_switch(key,title,list)
@@ -45,10 +41,7 @@ module Int
         break if /^q/ === line
         cmd=line.split(' ')
         begin
-          # @pust_exe might includes status update when being Client
-          msg= cmd.empty? ? to_s : exe(cmd)
-          puts msg
-          upd
+          puts cmd.empty? ? self : exe(cmd)
         rescue SelectID
           break $!.to_s
         rescue InvalidCMD
@@ -88,17 +81,14 @@ module Int
             IO.select([udp])
             line,addr=udp.recvfrom(4096)
             Server.msg{"Recv:#{line} is #{line.class}"}
-            line='' if /^(strobe|stat)/ === line
+            line='' 
             cmd=line.chomp.split(' ')
             begin
-              msg= cmd.empty? ? '' : exe(cmd)
-              upd
+              exe(cmd) unless /^(strobe|stat)/ === line
             rescue RuntimeError
-              msg="ERROR"
-              warn msg
+              warn(self['msg']="ERROR")
             end
-            Server.msg{"Send:#{msg}"}
-            self['msg']=msg
+            Server.msg{"Send:#{self['msg']}"}
             udp.send(json ? to_j : to_s,0,addr[2],addr[1]) #self.to_j
           }
         }

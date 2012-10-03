@@ -34,10 +34,8 @@ module Frm
       extend(Int::Client)
     end
 
-    def upd
-      super
-      @field.load
-      self
+    def to_s
+      @field.load.to_s
     end
   end
 end

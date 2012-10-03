@@ -54,7 +54,6 @@ module App
         @cobj.ext_logging(id,@stat.ver){@stat.active}
       end
       auto_update
-      upd
       extend(Int::Server)
     end
 

@@ -58,12 +58,6 @@ module App
       @stat.set_time
       super||'OK'
     end
-
-    def upd
-      super
-      @stat.upd
-      self
-    end
   end
 
   class Cl < Sh
@@ -75,10 +69,8 @@ module App
       extend(Int::Client)
     end
 
-    def upd
-      super
-      @stat.load
-      self
+    def to_s
+      @stat.load.to_s
     end
   end
 end

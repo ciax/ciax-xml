@@ -20,6 +20,7 @@ module App
     end
 
     def to_s
+      super
       @output.to_s
     end
   end

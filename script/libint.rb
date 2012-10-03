@@ -81,7 +81,6 @@ module Int
             IO.select([udp])
             line,addr=udp.recvfrom(4096)
             Server.msg{"Recv:#{line} is #{line.class}"}
-            line='' 
             cmd=line.chomp.split(' ')
             begin
               exe(cmd) unless /^(strobe|stat)/ === line

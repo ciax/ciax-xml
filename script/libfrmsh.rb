@@ -31,8 +31,13 @@ module Frm
       super(fdb)
       @host=Msg.type?(host||fdb['host'],String)
       @field.ext_url(@host).load
-      @upd_proc << proc{ @field.load }
       extend(Int::Client)
+    end
+
+    def upd
+      super
+      @field.load
+      self
     end
   end
 end

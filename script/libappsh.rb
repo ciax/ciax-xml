@@ -45,7 +45,6 @@ module App
     def initialize(adb)
       super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
-      @upd_proc << proc{@stat.upd}
       grp=@cobj.int.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).set_proc{|par|
@@ -59,6 +58,12 @@ module App
       @stat.set_time
       super||'OK'
     end
+
+    def upd
+      super
+      @stat.upd
+      self
+    end
   end
 
   class Cl < Sh
@@ -67,8 +72,13 @@ module App
       host||=adb['host']
       @host=Msg.type?(host||adb['host'],String)
       @stat.ext_url(@host).load
-      @upd_proc << proc{ @stat.load }
       extend(Int::Client)
+    end
+
+    def upd
+      super
+      @stat.load
+      self
     end
   end
 end

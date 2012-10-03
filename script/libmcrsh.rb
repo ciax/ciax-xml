@@ -28,7 +28,6 @@ module Mcr
     def initialize(mdb)
       super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
-      @upd_proc << proc{@stat.upd}
       grp=@cobj.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).set_proc{|par|
@@ -42,6 +41,12 @@ module Mcr
       @stat.set_time
       super||'OK'
     end
+
+    def upd
+      super
+      @stat.upd
+      self
+    end
   end
 
   class Cl < Sh
@@ -50,8 +55,13 @@ module Mcr
       host||=mdb['host']
       @host=Msg.type?(host||mdb['host'],String)
       @stat.ext_url(@host).load
-      @upd_proc << proc{ @stat.load }
       extend(Int::Client)
+    end
+
+    def upd
+      super
+      @stat.load
+      self
     end
   end
 end

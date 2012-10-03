@@ -46,32 +46,22 @@ module App
           @buf.send(2)
         }
       }
-      @fint.upd_proc << proc {
+      def @fint.upd
+        super
         @stat.upd
-      }
+        self
+      end
       # Logging if version number exists
       if @stat.ver
         @cobj.ext_logging(id,@stat.ver){@stat.active}
       end
-      @upd_proc << proc{upd_prompt}
       auto_update
-      upd_prompt
+      upd
       extend(Int::Server)
     end
 
-    #cmd is array
-    def exe(cmd)
-      msg=super
-      upd_prompt
-      msg
-    end
-
-    def server(type='app',json=true)
+    def upd
       super
-    end
-
-    private
-    def upd_prompt
       self['auto'] = @tid && @tid.alive?
       self['watch'] = @stat.active?
       self['isu'] = @buf.issue
@@ -79,6 +69,11 @@ module App
       self
     end
 
+    def server(type='app',json=true)
+      super
+    end
+
+    private
     def auto_update
       @tid=Thread.new{
         Thread.pass

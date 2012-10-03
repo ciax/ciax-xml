@@ -21,7 +21,7 @@ module Frm
     end
 
     def exe
-      plist=@index.filter_proc+@def_proc
+      plist=@index.pre_proc+@def_proc
       plist.map{|pr|
         pr.call(getframe,self[:cid])
       }

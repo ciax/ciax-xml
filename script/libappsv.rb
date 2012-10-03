@@ -26,7 +26,7 @@ module App
       @buf=Buffer.new
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fint.exe(fcmd) }
-      @cobj.filter_proc << proc{|par,id|
+      @cobj.pre_proc << proc{|par,id|
         cmd=[id,*par]
         Msg.cmd_err("Blocking(#{cmd})") if @stat.block?(cmd)
       }

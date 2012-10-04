@@ -7,10 +7,10 @@ require "libupdate"
 
 module Int
   class Shell < ExHash
-    attr_reader :cmdlist,:mp_proc
+    attr_reader :cmdlist,:int_proc
     def initialize
       @cobj=Command.new
-      @mp_proc=Update.new
+      @int_proc=Update.new # Proc for Interactive Operation
       @pconv={} #prompt convert table (j2s)
       @port=0
     end
@@ -45,7 +45,7 @@ module Int
             puts self
           else
             puts exe(line.split(' '))
-            @mp_proc.upd
+            @int_proc.upd
           end
         rescue SelectID
           break $!.to_s
@@ -89,7 +89,7 @@ module Int
             begin
               unless /^(strobe|stat)/ === line
                 exe(line.chomp.split(' '))
-                @mp_proc.upd
+                @int_proc.upd
               end
             rescue RuntimeError
               warn(self['msg']="ERROR")

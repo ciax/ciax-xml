@@ -10,7 +10,7 @@ module Int
     attr_reader :cmdlist,:post_proc
     def initialize
       @cobj=Command.new
-      @post_proc=@cobj.post_proc
+      @post_proc=Update.new
       @pconv={} #prompt convert table (j2s)
       @port=0
     end
@@ -40,9 +40,13 @@ module Int
       loop {
         line=Readline.readline(prompt,true)||'interrupt'
         break if /^q/ === line
-        cmd=line.split(' ')
         begin
-          puts cmd.empty? ? self : exe(cmd)
+          if line.empty?
+            puts self
+          else
+            puts exe(line.split(' '))
+            @post_proc.upd
+          end
         rescue SelectID
           break $!.to_s
         rescue InvalidCMD
@@ -82,9 +86,11 @@ module Int
             IO.select([udp])
             line,addr=udp.recvfrom(4096)
             Server.msg{"Recv:#{line} is #{line.class}"}
-            cmd=line.chomp.split(' ')
             begin
-              exe(cmd) unless /^(strobe|stat)/ === line
+              unless /^(strobe|stat)/ === line
+                exe(line.chomp.split(' '))
+                @post_proc.upd
+              end
             rescue RuntimeError
               warn(self['msg']="ERROR")
             end

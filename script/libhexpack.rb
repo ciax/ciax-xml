@@ -56,7 +56,7 @@ module HexPack
         str='*' * len
       end
       # str can exceed specified length
-      @res[6] << str[-len,len]
+      @res[6] << str[0,len]
     }
     @res.join('')
   end

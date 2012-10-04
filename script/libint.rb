@@ -10,6 +10,7 @@ module Int
     attr_reader :cmdlist,:int_proc
     def initialize
       @cobj=Command.new
+      @shcmd=@cobj.add_domain('sh',5)
       @int_proc=Update.new # Proc for Interactive Operation
       @pconv={} #prompt convert table (j2s)
       @port=0
@@ -25,7 +26,7 @@ module Int
     end
 
     def set_switch(key,title,list)
-      grp=@cobj.int.add_group(key,title)
+      grp=@shcmd.add_group(key,title)
       grp.update_items(list)
       self
     end
@@ -36,7 +37,7 @@ module Int
       Readline.completion_proc= proc{|word|
         @cobj.list.keys.grep(/^#{word}/)
       }
-      grp=@cobj.add_domain('sh',5).add_group('sh',"Shell Command")
+      grp=@shcmd.add_group('sh',"Shell Command")
       grp.update_items({'q'=>"Quit",'D^'=>"Interrupt"})
       loop {
         line=Readline.readline(prompt,true)||'interrupt'

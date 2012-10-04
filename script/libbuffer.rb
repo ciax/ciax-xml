@@ -88,7 +88,8 @@ class Buffer
   def flush
     Buffer.msg{"SUB:Waiting"}
     @post_flush.upd
-    @svst['isu']=false
+    # @q can not be empty depending on @post_flush
+    @svst['isu']=false if @q.empty?
   end
 
   # Remove duplicated commands and pop one

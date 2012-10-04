@@ -18,9 +18,10 @@ require "libupdate"
 
 class Buffer
   extend Msg::Ver
-  attr_reader :issue,:post_flush
-  def initialize
+  attr_reader :post_flush
+  def initialize(svst=[])
     Buffer.init_ver(self)
+    @svst=Msg.type?(svst,Hash)
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
@@ -40,7 +41,7 @@ class Buffer
     inp=@proc_send.call
     #inp is frmcmd array (ary of ary)
     unless inp.empty?
-      @issue=true
+      @svst['isu']=true
       @q.push([n,inp])
     end
     self
@@ -87,7 +88,7 @@ class Buffer
   def flush
     Buffer.msg{"SUB:Waiting"}
     @post_flush.upd
-    @issue=false
+    @svst['isu']=false
   end
 
   # Remove duplicated commands and pop one

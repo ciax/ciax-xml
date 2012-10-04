@@ -11,6 +11,7 @@ module App
     attr_reader :fint
     def initialize(adb)
       super(adb)
+      update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       id=adb['id']
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
       @stat.ext_sqlog if @fint.field.key?('ver')
@@ -19,13 +20,13 @@ module App
       @cobj.values.each{|item|
         item.extend(App::Cmd)
       }
+      @buf=Buffer.new(self)
+      @buf.proc_send{@cobj.current.get}
+      @buf.proc_recv{|fcmd| @fint.exe(fcmd) }
       @cobj.ext.def_proc << proc{
         @buf.send(1)
         "Issued"
       }
-      @buf=Buffer.new
-      @buf.proc_send{@cobj.current.get}
-      @buf.proc_recv{|fcmd| @fint.exe(fcmd) }
       @cobj.pre_proc << proc{|par,id|
         cmd=[id,*par]
         Msg.cmd_err("Blocking(#{cmd})") if @stat.block?(cmd)
@@ -65,7 +66,6 @@ module App
     def prompt
       self['auto'] = @tid && @tid.alive?
       self['watch'] = @stat.active?
-      self['isu'] = @buf.issue
       self['na'] = !@buf.alive?
       super
     end

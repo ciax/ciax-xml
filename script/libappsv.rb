@@ -25,7 +25,7 @@ module App
       @buf.proc_recv{|fcmd| @fint.exe(fcmd) }
       @cobj.ext.def_proc << proc{
         @buf.send(1)
-        "Issued"
+        self['msg']="Issued"
       }
       @cobj.pre_proc << proc{|par,id|
         cmd=[id,*par]
@@ -37,7 +37,7 @@ module App
           @cobj.set(cmd)
           @buf.send(0)
         }
-        "Interrupt #{int}"
+        self['msg']="Interrupt #{int}"
       }
       @buf.post_flush << proc{
         @stat.upd.save

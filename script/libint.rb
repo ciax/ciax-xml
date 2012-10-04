@@ -20,7 +20,8 @@ module Int
     # Accepted => Command
     # cmd is Array
     def exe(cmd)
-      self['msg']=@cobj.set(cmd).exe
+      @cobj.set(cmd).exe
+      self
     end
 
     def set_switch(key,title,list)
@@ -40,12 +41,14 @@ module Int
       loop {
         line=Readline.readline(prompt,true)||'interrupt'
         break if /^q/ === line
+        self['msg']='OK'
         begin
           if line.empty?
             puts self
           else
-            puts exe(line.split(' '))
+            exe(line.split(' '))
             @int_proc.upd
+            puts self['msg']
           end
         rescue SelectID
           break $!.to_s
@@ -87,6 +90,7 @@ module Int
             line,addr=udp.recvfrom(4096)
             Server.msg{"Recv:#{line} is #{line.class}"}
             begin
+              self['msg']='OK'
               unless /^(strobe|stat)/ === line
                 exe(line.chomp.split(' '))
                 @int_proc.upd
@@ -133,8 +137,8 @@ module Int
       @udp.send(str,0,@addr)
       Client.msg{"Send [#{str}]"}
       input=@udp.recv(1024)
-      load(input) # ExHash#load -> Server Status
       Client.msg{"Recv #{input}"}
+      load(input) # ExHash#load -> Server Status
       self
     end
   end

@@ -34,6 +34,7 @@ module HexPack
   end
 
   def to_s
+    super
     @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat.get(r).to_i > 0})
     @res[4]=b2i(self['isu'])
     @res[6]=''

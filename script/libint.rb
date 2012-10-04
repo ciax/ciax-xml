@@ -95,6 +95,7 @@ module Int
               warn(self['msg']="ERROR")
             end
             Server.msg{"Send:#{self['msg']}"}
+            prompt
             udp.send(json ? to_j : to_s,0,addr[2],addr[1]) #self.to_j
           }
         }

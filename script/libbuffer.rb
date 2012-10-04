@@ -40,6 +40,7 @@ class Buffer
     inp=@proc_send.call
     #inp is frmcmd array (ary of ary)
     unless inp.empty?
+      @issue=true
       @q.push([n,inp])
     end
     self
@@ -72,7 +73,6 @@ class Buffer
       flush
       #inp is frmcmd array (ary of ary)
       p,inp=@q.shift
-      @issue=true
       Buffer.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
       (@outbuf[p]||=[]).concat(inp)
       Buffer.msg{i=-1;
@@ -86,8 +86,8 @@ class Buffer
 
   def flush
     Buffer.msg{"SUB:Waiting"}
-    @issue=false
     @post_flush.upd
+    @issue=false
   end
 
   # Remove duplicated commands and pop one

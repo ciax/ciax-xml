@@ -7,7 +7,7 @@ require 'libupdate'
 
 #Access method
 #Command < Hash
-# Command::Item => {:label,:parameter,...}
+# Command::Item => {:label,:parameter,:select,:cid,:msg}
 #  Command::Item#set_par(par)
 #  Command::Item#subst(str)
 #  Command::Item#set_proc{|par,id|}
@@ -37,10 +37,12 @@ class Command
       plist=@index.pre_proc+@def_proc+@index.post_proc
       plist.map{|pr|
         pr.call(@par,@id)
-      }.last
+      }
+      self
     end
 
     def set_par(par)
+      self[:msg]=''
       @par=validate(Msg.type?(par,Array))
       @select=deep_subst(self[:select])
       self[:cid]=[@id,*par].join(':') # Used by macro

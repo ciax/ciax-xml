@@ -7,9 +7,10 @@ require "libupdate"
 
 module Int
   class Shell < ExHash
-    attr_reader :cmdlist,:cobj
+    attr_reader :cmdlist,:post_proc
     def initialize
       @cobj=Command.new
+      @post_proc=@cobj.post_proc
       @pconv={} #prompt convert table (j2s)
       @port=0
     end

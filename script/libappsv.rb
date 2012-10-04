@@ -49,7 +49,7 @@ module App
         }
       }
       # Update for Frm level manipulation
-      @fint.cobj.post_proc << proc{@stat.upd}
+      @fint.post_proc << proc{@stat.upd}
       # Logging if version number exists
       if @stat.ver
         @cobj.ext_logging(id,@stat.ver){@stat.active}

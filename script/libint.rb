@@ -97,7 +97,7 @@ module Int
                 @int_proc.upd
               end
             rescue RuntimeError
-              warn(self['msg']="ERROR")
+              warn(self['msg']=$!.to_s)
             end
             Server.msg{"Send:#{self['msg']}"}
             prompt

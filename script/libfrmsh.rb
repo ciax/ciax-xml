@@ -18,7 +18,6 @@ module Frm
       grp.add_item('unset',"Remove Value [key]",[idx])
       grp.add_item('save',"Save Field [key,key...] (tag)",[any])
       grp.add_item('load',"Load Field (tag)")
-      grp.add_item('sleep',"Sleep [n] sec",'[0-9]')
     end
 
     def to_s

@@ -37,7 +37,6 @@ module Frm
       @cobj['load'].set_proc{|par|
         @field.load(par.first||'')
       }
-      @cobj['sleep'].set_proc{|par| sleep par.first.to_i }
       extend(Int::Server)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")

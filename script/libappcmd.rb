@@ -60,7 +60,7 @@ if __FILE__ == $0
     acobj.add_domain('ext').ext_appcmd(adb,:command)
     acobj.set(cmd).get.each{|fcmd|
       #Validate frmcmds
-      fcobj.set(fcmd) if /set|unset|load|save|sleep/ !~ fcmd.first
+      fcobj.set(fcmd) if /set|unset|load|save/ !~ fcmd.first
       p fcmd
     }
   rescue UserError

@@ -11,6 +11,7 @@ module Int
     def initialize
       @cobj=Command.new
       @shcmd=@cobj.add_domain('sh',5)
+      @intcmd=@cobj.add_domain('int',2)
       @int_proc=Update.new # Proc for Interactive Operation
       @pconv={} #prompt convert table (j2s)
       @port=0

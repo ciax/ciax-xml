@@ -31,7 +31,7 @@ module App
         cmd=[id,*par]
         Msg.cmd_err("Blocking(#{cmd})") if @stat.block?(cmd)
       }
-      gint=@cobj.int.add_group('int',"Internal Command")
+      gint=@intcmd.add_group('int',"Internal Command")
       gint.add_item('interrupt').set_proc{
         int=@stat.interrupt.each{|cmd|
           @cobj.set(cmd)

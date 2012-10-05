@@ -13,7 +13,7 @@ module Frm
       @field=Field::Var.new.ext_file(fdb).load
       idx={:type =>'str',:list => @field.val.keys}
       any={:type =>'reg',:list => ["."]}
-      grp=@cobj.int.add_group('int',"Internal Command")
+      grp=@intcmd.add_group('int',"Internal Command")
       grp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
       grp.add_item('unset',"Remove Value [key]",[idx])
       grp.add_item('save',"Save Field [key,key...] (tag)",[any])

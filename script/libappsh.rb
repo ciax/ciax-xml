@@ -45,7 +45,7 @@ module App
     def initialize(adb)
       super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
-      grp=@cobj.int.add_group('int',"Internal Command")
+      grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).set_proc{|par|
         par.each{|exp| @stat.str_update(exp).upd}

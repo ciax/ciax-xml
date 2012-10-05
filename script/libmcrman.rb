@@ -16,7 +16,7 @@ module Mcr
       self['id']="#@id[]"
       @index=0
       @mcr=Mcr::Sub.new(@cobj,1) #.extend(Mcr::Prt)
-      grp=@cobj.int.add_group('int',"Internal Command")
+      grp=@shcmd.add_group('int',"Internal Command")
       grp.add_item("[0-9]","Switch Mode")
       grp.add_item("threads","Thread list")
       grp.add_item("list","list mcr contents")

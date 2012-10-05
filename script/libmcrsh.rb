@@ -10,7 +10,7 @@ module Mcr
       super()
       @stat=[]
       @pconv.update({'active'=>'*','wait'=>'?'})
-      grp=@cobj.int.add_group('int',"Internal Command")
+      grp=@shcmd.add_group('int',"Internal Command")
       grp.add_item("[0-9]","Switch Mode")
       grp.add_item("threads","Thread list")
       grp.add_item("list","list mcr contents")
@@ -28,7 +28,7 @@ module Mcr
     def initialize(mdb)
       super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
-      grp=@cobj.add_group('int',"Internal Command")
+      grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).set_proc{|par|
         par.each{|exp| @stat.str_update(exp).upd}

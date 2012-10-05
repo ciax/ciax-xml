@@ -33,7 +33,7 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:alias,:domain,:pre_proc,:post_proc,:int
+  attr_reader :current,:alias,:domain,:pre_proc,:post_proc
   # CDB: mandatory (:select)
   # optional (:alias,:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -44,7 +44,6 @@ class Command < ExHash
     @alias={}
     @pre_proc=[]
     @post_proc=[]
-    @int=add_domain('int')
   end
 
   def add_domain(did,color=2)
@@ -59,7 +58,7 @@ class Command < ExHash
   end
 
   def to_s
-    @domain.values.map{|dom| dom.to_s}.grep(/./).join("\n")
+    @domain.values.reverse.map{|dom| dom.to_s}.grep(/./).join("\n")
   end
 
   def error(str=nil)

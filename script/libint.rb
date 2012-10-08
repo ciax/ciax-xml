@@ -97,6 +97,8 @@ module Int
                 exe(line.chomp.split(' '))
                 @int_proc.upd
               end
+            rescue InvalidCMD
+              self['msg']="INVALID"
             rescue RuntimeError
               warn(self['msg']=$!.to_s)
             end

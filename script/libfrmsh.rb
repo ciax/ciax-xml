@@ -9,7 +9,7 @@ module Frm
       super()
       @cobj.add_ext(fdb,:cmdframe)
       self['id']=fdb['id']
-      @port=fdb['port'].to_i-1000
+      @port=fdb['fport'] ? fdb['fport'].to_i : fdb['aport'].to_i-1000
       @field=Field::Var.new.ext_file(fdb).load
       idx={:type =>'str',:list => @field.val.keys}
       any={:type =>'reg',:list => ["."]}

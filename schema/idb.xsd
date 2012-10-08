@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:idb="http://ciax.sum.naoj.org/ciax-xml/idb" xmlns:idbf="http://ciax.sum.naoj.org/ciax-xml/idbf" xmlns:idbc="http://ciax.sum.naoj.org/ciax-xml/idbc" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs">
   <xsd:import schemaLocation="idbf.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/idbf" />
   <xsd:import schemaLocation="idbc.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/idbc" />
@@ -23,7 +23,8 @@
       <xsd:attribute name="app_type" use="required" type="xsd:NCName" />
       <xsd:attribute name="iocmd" type="xsd:token" />
       <xsd:attribute name="host" type="xsd:token" />
-      <xsd:attribute name="port" type="xsd:int" />
+      <xsd:attribute name="fport" type="xsd:int" />
+      <xsd:attribute name="aport" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="alias">

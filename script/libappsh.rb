@@ -10,7 +10,7 @@ module App
       super()
       @cobj.add_ext(adb,:command)
       self['id']=adb['id']
-      @port=adb['port'].to_i
+      @port=adb['aport'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)
       @pconv.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @fint=Frm::List.new[adb['id']]

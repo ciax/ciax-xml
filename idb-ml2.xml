@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <instance id="ml2" label="MOIRCS Temperature 2" app_type="lk8" iocmd="socat - tcp:celaeno:4006" port="25606">
+  <instance id="ml2" label="MOIRCS Temperature 2" app_type="lk8" iocmd="socat - tcp:celaeno:4006" aport="25606">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="ch0" label="Robohand" />
       <value ref="ch1" label="CollBench" />

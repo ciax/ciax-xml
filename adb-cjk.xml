@@ -33,17 +33,17 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
       <repeat from="0" to="10" counter="i">
-        <group id="id$i" caption="ID $i" column="4">
-          <repeat from="0" to="5" counter="t">
+        <repeat from="0" to="5" counter="t">
+          <group id="id$it$t" caption="ID $i,TAG $t" column="4">
             <repeat from="0" to="3" counter="l">
               <repeat from="0" to="3" counter="j">
-                <value id="i$it$tl$lj$j" label="ID$i,Tag$t,Lev$l,Jak$j" formula="$#/100">
+                <value id="i$it$tl$lj$j" label="Lev$l,Jak$j" formula="$#/100">
                   <float ref="t" index="$t:$j:$i*4+$l" />
                 </value>
               </repeat>
             </repeat>
-          </repeat>
-        </group>
+          </group>
+        </repeat>
       </repeat>
     </status>
   </app>

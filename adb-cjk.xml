@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="crt" id="cjk" label="Cart Jack Table" version="0">
+  <app frm_type="mel" id="cjk" label="Cart Jack Table" version="0">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gmtn" caption="Maintenance Commands" column="2">
         <command id="get_tbl" label="Get Jack Table">

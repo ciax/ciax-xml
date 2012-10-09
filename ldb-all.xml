@@ -1,34 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ldb xmlns="http://ciax.sum.naoj.org/ciax-xml/ldb">
   <site id="crt" label="CIAX CART 3">
-    <app type="mel" port="25101" host="cxws2"/>
-    <frm port="24101" iocmd="socat - udp:cart3:5000"/>
+    <app type="mel" port="25101" host="cxws2" />
+    <frm port="24101" iocmd="socat - udp:cart3:5000" />
   </site>
   <site id="cjk" label="CART 3 Jack Setting">
-    <app type="cjk" port="25501" host="cxws2"/>
+    <app type="cjk" port="25501" host="cxws2" />
+    <frm ref="sct" />
   </site>
   <site id="cr2" label="CIAX CART 2">
-    <app type="mel" port="25502" host="cxws2"/>
-    <frm port="24502" iocmd="socat - udp:cart2:5000"/>
+    <app type="mel" port="25502" host="cxws2" />
+    <frm port="24502" iocmd="socat - udp:cart2:5000" />
   </site>
   <site id="cci" label="IR Helium Compressor">
-    <app type="bbe" port="25108"/>
-    <frm iocmd="socat - tcp:ltc-i:4002"/>
+    <app type="bbe" port="25108" />
+    <frm iocmd="socat - tcp:ltc-i:4002" />
   </site>
   <site id="cco" label="OPT Helium Compressor">
-    <app type="bbe" port="25109"/>
-    <frm iocmd="socat - tcp:ltc-o:4002"/>
+    <app type="bbe" port="25109" />
+    <frm iocmd="socat - tcp:ltc-o:4002" />
   </site>
   <site id="cf1" label="S1 Helium Compressor Coolant Flow">
-    <app type="k3n" port="25201"/>
-    <frm iocmd="socat - tcp:ltt-o:4001"/>
+    <app type="k3n" port="25201" />
+    <frm iocmd="socat - tcp:ltt-o:4001" />
   </site>
   <site id="cfa" label="S10 Helium Compressor Coolant Flow">
-    <app type="k3n" port="25210"/>
-    <frm iocmd="socat - tcp:ltt-i:4015"/>
+    <app type="k3n" port="25210" />
+    <frm iocmd="socat - tcp:ltt-i:4015" />
   </site>
   <site id="dsi" label="IR Stand-by">
-    <app type="cj2" port="25102" host="cxws2"/>
+    <app type="cj2" port="25102" host="cxws2" />
     <frm port="24102" iocmd="socat - udp:cst-i:9600">
       <init xmlns="http://ciax.sum.naoj.org/ciax-xml/idbf">
         <field id="ipl">1</field>
@@ -37,7 +38,7 @@
     </frm>
   </site>
   <site id="dso" label="OPT Stand-by">
-    <app type="cj2" port="25103" host="cxws2"/>
+    <app type="cj2" port="25103" host="cxws2" />
     <frm iocmd="socat - udp:cst-o:9600">
       <init xmlns="http://ciax.sum.naoj.org/ciax-xml/idbf">
         <field id="ipl">1</field>
@@ -46,75 +47,75 @@
     </frm>
   </site>
   <site id="det" label="CsEtr Control">
-    <app type="srm" port="25104"/>
-    <frm iocmd="socat - tcp:ltc-c:4001"/>
+    <app type="srm" port="25104" />
+    <frm iocmd="socat - tcp:ltc-c:4001" />
   </site>
   <site id="dts" label="TSC Control">
-    <app type="oss" port="25105"/>
-    <frm iocmd="socat - tcp:cxws2:9999"/>
+    <app type="oss" port="25105" />
+    <frm iocmd="socat - tcp:cxws2:9999" />
   </site>
   <site id="cri" label="IR Helium Compressor">
-    <app type="bbe" port="25110"/>
-    <frm iocmd="socat - tcp:ltc-i:4003"/>
+    <app type="bbe" port="25110" />
+    <frm iocmd="socat - tcp:ltc-i:4003" />
   </site>
   <site id="cro" label="OPT Helium Compressor">
-    <app type="bbe" port="25106"/>
-    <frm iocmd="socat - tcp:ltc-o:4003"/>
+    <app type="bbe" port="25106" />
+    <frm iocmd="socat - tcp:ltc-o:4003" />
   </site>
   <site id="ml1" label="MOIRCS Temperature 1">
-    <app type="lk8" port="25605"/>
-    <frm iocmd="socat - tcp:celaeno:4005"/>
+    <app type="lk8" port="25605" />
+    <frm iocmd="socat - tcp:celaeno:4005" />
   </site>
   <site id="ml2" label="MOIRCS Temperature 2">
-    <app type="lk8" port="25606"/>
-    <frm iocmd="socat - tcp:celaeno:4006"/>
+    <app type="lk8" port="25606" />
+    <frm iocmd="socat - tcp:celaeno:4006" />
   </site>
   <site id="mfp" label="MOIRCS Pneumatic Actuator">
-    <app type="cfp" port="25601"/>
-    <frm iocmd="socat - tcp:celaeno:4001"/>
+    <app type="cfp" port="25601" />
+    <frm iocmd="socat - tcp:celaeno:4001" />
   </site>
   <site id="map" label="MOIRCS Air Pressure">
-    <app type="oma" port="25602"/>
-    <frm iocmd="socat - tcp:celaeno:4002"/>
+    <app type="oma" port="25602" />
+    <frm iocmd="socat - tcp:celaeno:4002" />
   </site>
   <site id="mma" label="MOIRCS Extension Arm">
-    <app type="mma" port="25603"/>
-    <frm iocmd="socat - tcp:celaeno:4003"/>
+    <app type="mma" port="25603" />
+    <frm iocmd="socat - tcp:celaeno:4003" />
   </site>
   <site id="mmc" label="MOIRCS Carrousel">
-    <app type="mmc" port="25604"/>
-    <frm iocmd="socat - tcp:celaeno:4004"/>
+    <app type="mmc" port="25604" />
+    <frm iocmd="socat - tcp:celaeno:4004" />
   </site>
   <site id="mix" label="MOIRCS Turret">
-    <app type="ixe" port="25607"/>
-    <frm iocmd="socat - tcp:celaeno:4007"/>
+    <app type="ixe" port="25607" />
+    <frm iocmd="socat - tcp:celaeno:4007" />
   </site>
   <site id="mva" label="MOIRCS Pumping">
-    <app type="var" port="25608"/>
-    <frm iocmd="socat - tcp:celaeno:4008"/>
+    <app type="var" port="25608" />
+    <frm iocmd="socat - tcp:celaeno:4008" />
   </site>
   <site id="mft" label="MOIRCS Hall Effect Sensor">
-    <app type="fpa" port="25612"/>
-    <frm iocmd="socat - tcp:celaeno:4012"/>
+    <app type="fpa" port="25612" />
+    <frm iocmd="socat - tcp:celaeno:4012" />
   </site>
   <site id="mh1" label="MOIRCS Main/Carrousel Heater">
-    <app type="psp" port="25621"/>
-    <frm iocmd="socat - tcp:merope:59999"/>
+    <app type="psp" port="25621" />
+    <frm iocmd="socat - tcp:merope:59999" />
   </site>
   <site id="mh2" label="MOIRCS Main Heater">
-    <app type="psp" port="25622"/>
-    <frm iocmd="socat - tcp:atlas:59999"/>
+    <app type="psp" port="25622" />
+    <frm iocmd="socat - tcp:atlas:59999" />
   </site>
   <site id="mt1" label="MOIRCS Pressure Main">
-    <app type="tpg" port="25609"/>
-    <frm iocmd="socat - tcp:celaeno:4009"/>
+    <app type="tpg" port="25609" />
+    <frm iocmd="socat - tcp:celaeno:4009" />
   </site>
   <site id="mt2" label="MOIRCS Pressure Throat">
-    <app type="tpg" port="25610"/>
-    <frm iocmd="socat - tcp:celaeno:4010"/>
+    <app type="tpg" port="25610" />
+    <frm iocmd="socat - tcp:celaeno:4010" />
   </site>
   <site id="mt3" label="MOIRCS Pressure Pump">
-    <app type="tpg" port="25611"/>
-    <frm iocmd="socat - tcp:celaeno:4011"/>
+    <app type="tpg" port="25611" />
+    <frm iocmd="socat - tcp:celaeno:4011" />
   </site>
 </ldb>

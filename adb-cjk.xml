@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="mel" id="cjk" label="Cart Jack Table" version="0">
+  <app frm_type="cjk" id="cjk" label="Cart Jack Table" version="0">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gmtn" caption="Maintenance Commands" column="2">
         <command id="get_tbl" label="Get Jack Table">
@@ -38,7 +38,7 @@
             <repeat from="0" to="3" counter="l">
               <repeat from="0" to="3" counter="j">
                 <value id="i$it$tl$lj$j" label="Lev$l,Jak$j" formula="$#/100">
-                  <float ref="t" index="$t:$j:$i*4+$l" />
+                  <float ref="t" format="%.2f" index="$t:$j:$i*4+$l" />
                 </value>
               </repeat>
             </repeat>

@@ -31,19 +31,19 @@
   <site id="dsi" label="IR Stand-by">
     <app type="cj2" port="25102" host="cxws2" />
     <frm port="24102" iocmd="socat - udp:cst-i:9600">
-      <init xmlns="http://ciax.sum.naoj.org/ciax-xml/idbf">
-        <field id="ipl">1</field>
-        <field id="ipr">33</field>
-      </init>
+      <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/ldbf">
+        <field assign="ipl">1</field>
+        <field assign="ipr">33</field>
+      </rspframe>
     </frm>
   </site>
   <site id="dso" label="OPT Stand-by">
     <app type="cj2" port="25103" host="cxws2" />
     <frm iocmd="socat - udp:cst-o:9600">
-      <init xmlns="http://ciax.sum.naoj.org/ciax-xml/idbf">
-        <field id="ipl">1</field>
-        <field id="ipr">32</field>
-      </init>
+      <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/ldbf">
+        <field assign="ipl">1</field>
+        <field assign="ipr">32</field>
+      </rspframe>
     </frm>
   </site>
   <site id="det" label="CsEtr Control">

@@ -22,7 +22,7 @@ class Db < ExHash
       Db.msg{"Loading(#{@base})"}
       res=Marshal.load(IO.read(fmar))
     else
-      Db.msg{"Making Db"}
+      Db.msg{"Refresh Db"}
       res=Msg.type?(yield(Xml::Doc.new(@type,group)),Hash)
       open(fmar,'w') {|f|
         f << Marshal.dump(res)

@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
-require "libdb"
+require "libappdb"
+require "libfrmdb"
 
 module Loc
   class Db < Db
@@ -8,22 +9,18 @@ module Loc
       super('ldb',id){|doc|
         hash={}
         hash.update(doc)
-        rec_db(doc.top,hash)
+        doc.top.each{|e0|
+          case e0.name
+          when 'app'
+            hash[:app]=App::Db.new(hash['app_type'])
+            rec_db(e0,hash[:app])
+          when 'frm'
+            hash[:frm]=Frm::Db.new(hash[:app]['frm_type'])
+            rec_db(e0,hash[:frm])
+          end
+        }
         hash
       }
-    end
-
-    # overwrite App::Db
-    def cover_app
-      require "libappdb"
-      cover(App::Db.new(self[:app]['type']),:app)
-    end
-
-    def cover_frm
-      require "libappdb"
-      require "libfrmdb"
-      frm=App::Db.new(self[:app]['type'])['frm_type']
-      cover(Frm::Db.new(frm),:frm)
     end
 
     private
@@ -43,17 +40,11 @@ end
 
 if __FILE__ == $0
   begin
-    Msg.getopts("af")
     id=ARGV.shift
     db=Loc::Db.new(id)
   rescue
-    Msg.usage("(opt) [id] (key) ..",*$optlist)
+    Msg.usage("(opt) [id] (key) ..")
     Msg.exit
-  end
-  if $opt["a"]
-    db=db.cover_app
-  elsif $opt["f"]
-    db=db.cover_frm
   end
   puts db.path(ARGV)
 end

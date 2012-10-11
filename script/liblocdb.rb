@@ -26,10 +26,11 @@ module Loc
     private
     def rec_db(e,hash={})
       e.each{|e0|
-        if e0.name == 'field'
+        key=e0.name.to_sym
+        if key == :field
           (hash[:assign]||={})[e0['assign']]=e0.text
         else
-          crnt=hash[e0.name.to_sym]=e0.to_h
+          crnt=(hash[key]||={}).update(e0.to_h)
           crnt['val']=e0.text if e0.text
           rec_db(e0,crnt)
         end

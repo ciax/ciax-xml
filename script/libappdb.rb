@@ -61,9 +61,9 @@ module App
                 if /\$/ !~ argv['val'] && fmt=argv.delete('format')
                   argv['val']=fmt % eval(argv['val'])
                 end
-                command << argv.freeze
+                command << argv
               }
-              (hash[:select][id]||=[]) << command.freeze
+              (hash[:select][id]||=[]) << command
             end
           }
         end

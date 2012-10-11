@@ -35,7 +35,7 @@ module Frm
           frame << yield(e1)
         }
         Db.msg{"InitMainFrame:#{frame}"}
-        hash[:main]=frame.freeze
+        hash[:main]=frame
       ensure
         Db.msg(-1){"-> INIT:Main Frame"}
       end
@@ -47,7 +47,7 @@ module Frm
             frame << yield(e1,r1)
           }
           Db.msg{"InitCCFrame:#{frame}"}
-          hash[:ccrange]=frame.freeze
+          hash[:ccrange]=frame
         ensure
           Db.msg(-1){"-> INIT:Ceck Code Frame"}
         end

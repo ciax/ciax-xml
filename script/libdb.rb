@@ -12,7 +12,7 @@ class Db < ExHash
     @type=type
     @list=cache(group||'list',group){|doc| doc.list }
     @list.error unless id
-    update(cache(id,group){|doc| yield doc.set(id) }).deep_freeze
+    update(cache(id,group){|doc| yield doc.set(id) })
   end
 
   private

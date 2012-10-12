@@ -22,7 +22,11 @@ module Loc
 
     def cover_frm
       frm=self[:frm]||{}
-      self[:frm]=Frm::Db.new(self[:app]['frm_type']).deep_update(frm)
+      if ref=frm['ref']
+        self[:frm]=Db.new(ref).cover_app.cover_frm[:frm]
+      else
+        self[:frm]=Frm::Db.new(self[:app]['frm_type']).deep_update(frm)
+      end
       self[:frm]['port']||=self[:app]['port'].to_i+1000
       self
     end

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libinsdb"
+require "liblocdb"
 require "libfrmsh"
 
 # 'c' is client
@@ -14,8 +14,8 @@ module Frm
     def initialize
       $opt||={}
       super(){|h,id|
-        idb=Ins::Db.new(id)
-        fdb=idb.cover_app.cover_frm
+        ldb=Loc::Db.new(id)
+        fdb=ldb.cover_app.cover_frm[:frm]
         if $opt['t']
           int=Sh.new(fdb)
         elsif $opt['c'] or $opt['f']
@@ -24,7 +24,7 @@ module Frm
           par=$opt['l'] ? ['frmsim',id] : []
           int=Sv.new(fdb,par).server
         end
-        grp=int.set_switch('dev',"Change Device",idb.list)
+        grp=int.set_switch('dev',"Change Device",ldb.list)
         h[id]=int
       }
     end

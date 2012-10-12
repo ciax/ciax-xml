@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libinsdb"
+require "liblocdb"
 require "libappsh"
 require "libappprt"
 # 'c' is client
@@ -15,8 +15,8 @@ module App
     def initialize
       $opt||={}
       super(){|h,id|
-        idb=Ins::Db.new(id)
-        adb=idb.cover_app
+        ldb=Loc::Db.new(id)
+        adb=ldb.cover_app[:app]
         if $opt['t']
           aint=Test.new(adb)
         elsif $opt['c'] or $opt['a']
@@ -24,7 +24,7 @@ module App
         else
           aint=Sv.new(adb).server
         end
-        aint.set_switch('dev',"Change Device",idb.list)
+        aint.set_switch('dev',"Change Device",ldb.list)
         h[id]=aint.extend(App::Prt)
       }
     end

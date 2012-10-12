@@ -5,36 +5,41 @@ require "libfrmdb"
 module Loc
   class Db < Db
     def initialize(id)
-      self['id']=id
       super('ldb',id){|doc|
-        hash={}
-        hash.update(doc)
-        doc.top.each{|e0|
-          case e0.name
-          when 'app'
-            hash[:app]=App::Db.new(hash['app_type'])
-            rec_db(e0,hash[:app])
-          when 'frm'
-            hash[:frm]=Frm::Db.new(hash[:app]['frm_type'])
-            rec_db(e0,hash[:frm])
-          end
+        hash=rec_db(doc.top)
+        [:app,:frm].each{|k|
+          hash[k]['id'] = id
         }
         hash
       }
     end
 
+    def cover_app
+      app=self[:app]||{}
+      self[:app]=App::Db.new(self['app_type']).deep_update(app)
+      self
+    end
+
+    def cover_frm
+      frm=self[:frm]||{}
+      self[:frm]=Frm::Db.new(self[:app]['frm_type']).deep_update(frm)
+      self[:frm]['port']||=self[:app]['port'].to_i+1000
+      self
+    end
+
     private
-    def rec_db(e,hash={})
-      e.each{|e0|
-        key=e0.name.to_sym
+    def rec_db(e0,hash={})
+      (hash||={}).update(e0.to_h)
+      e0.each{|e|
+        key=e.name.to_sym
         if key == :field
-          (hash[:assign]||={})[e0['assign']]=e0.text
+          (hash[:assign]||={})[e['assign']]=e.text
         else
-          crnt=(hash[key]||={}).update(e0.to_h)
-          crnt['val']=e0.text if e0.text
-          rec_db(e0,crnt)
+          hash['val']=e.text if e.text
+          rec_db(e,hash[key]||={})
         end
       }
+      hash
     end
   end
 end
@@ -42,7 +47,7 @@ end
 if __FILE__ == $0
   begin
     id=ARGV.shift
-    db=Loc::Db.new(id)
+    db=Loc::Db.new(id).cover_app.cover_frm
   rescue
     Msg.usage("(opt) [id] (key) ..")
     Msg.exit

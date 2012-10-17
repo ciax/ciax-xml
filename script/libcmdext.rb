@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libcommand'
 
+# For External Command Domain
 class Command
   attr_reader :ext
   def add_ext(db,path)

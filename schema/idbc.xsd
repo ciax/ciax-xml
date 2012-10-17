@@ -1,20 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/idbc" xmlns:idbc="http://ciax.sum.naoj.org/ciax-xml/idbc">
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="id" type="xsd:NCName" use="required" />
     <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
-    <xsd:attribute name="alias" type="xsd:NCName" use="required" />
+    <xsd:attribute name="ref" type="xsd:NCName" use="required" />
   </xsd:attributeGroup>
   <!--command list-->
   <xsd:element name="cmdlist">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="idbc:command" />
+        <xsd:element ref="idbc:alias" />
         <xsd:element ref="idbc:group" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="command">
+  <xsd:element name="alias">
     <xsd:complexType>
       <xsd:attributeGroup ref="idbc:id_attr"></xsd:attributeGroup>
     </xsd:complexType>

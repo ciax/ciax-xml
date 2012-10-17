@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
+  <instance id="mt1" label="MOIRCS Pressure Main" site="mt1">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <value ref="st1" label="Main Dewar Stat" />
+      <value ref="ch1" label="Main Dewar (Torr)" />
+    </status>
+  </instance>
+  <instance id="mt2" label="MOIRCS Pressure Main" site="mt2">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <value ref="st1" label="Throat Stat" />
+      <value ref="ch1" label="Throat (Torr)" />
+    </status>
+  </instance>
+  <instance id="mt3" label="MOIRCS Pressure Pump" site="mt3">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <value ref="st1" label="Turbo Pump Stat" />
+      <value ref="ch1" label="Turbo Pump (Torr)" />
+      <value ref="st2" label="Scroll Pump Stat" />
+      <value ref="ch2" label="Scroll Pump (Torr)" />
+    </status>
+  </instance>
+  <instance id="cci" label="IR Helium Compressor" site="cci">
+    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+      <alias id="upd" label="Update Status" ref="upd" />
+      <alias id="c2on" label="CAS2(S1) ON" ref="x0on" />
+      <alias id="c2off" label="CAS2(S1) OFF" ref="x0off" />
+      <alias id="c1on" label="CAS1(S2) ON" ref="x1on" />
+      <alias id="c1off" label="CAS1(S2) OFF" ref="x1off" />
+      <alias id="m2on" label="MOIRCS CR(S8) ON" ref="x2on" />
+      <alias id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off" />
+      <alias id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on" />
+      <alias id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off" />
+      <alias id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on" />
+      <alias id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
+      <alias id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
+      <alias id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
+      <alias id="caon" label="CAS BOTH HC ON" ref="x01on" />
+      <alias id="caoff" label="CAS BOTH HC OFF" ref="x01off" />
+      <alias id="maon" label="MOIRCS BOTH ON" ref="x23on" />
+      <alias id="maoff" label="MOIRCS BOTH OFF" ref="x23off" />
+    </cmdlist>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <group ref="g0" caption="CAS2(S1)(CIAO)" />
+      <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)" />
+      <group ref="g2" caption="MOIRCS/CR(S8)" />
+      <group ref="g3" caption="MOIRCS/MAIN(S9)" />
+    </status>
+  </instance>
+  <instance id="cco" label="OPT Helium Compressor" site="cco">
+    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+      <alias id="upd" label="Update Status" ref="upd" />
+      <alias id="f2on" label="CIAO(S6) ON" ref="x0on" />
+      <alias id="f2off" label="CIAO(S6) OFF" ref="x0off" />
+      <alias id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
+      <alias id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
+      <alias id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
+      <alias id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
+      <alias id="maon" label="COMICS BOTH ON" ref="x23on" />
+      <alias id="maoff" label="COMICS BOTH OFF" ref="x23off" />
+    </cmdlist>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <group ref="g0" caption="CIAO(S6) SWITCH" />
+      <group ref="g2" caption="COMICS IMG(S4)" />
+      <group ref="g3" caption="COMICS SPEC(S5)" />
+    </status>
+  </instance>
+  <instance id="cri" label="IR Helium Compressor" site="cri">
+    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+      <alias id="upd" label="Update Status" ref="upd" />
+      <alias id="f1on" label="FMOS/IRS1(S10)ON" ref="x0on" />
+      <alias id="f1off" label="FMOS/IRS1(S10)OFF" ref="x0off" />
+      <alias id="f2on" label="FMOS/IRS2(S11)ON" ref="x2on" />
+      <alias id="f2off" label="FMOS/IRS2(S11)OFF" ref="x2off" />
+    </cmdlist>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <group ref="g0" caption="FMOS/IRS1(S10)" />
+      <group ref="g2" caption="FMOS/IRS2(S11)" />
+    </status>
+  </instance>
+  <instance id="crt" label="CIAX CART 3" site="crt"/>
+  <instance id="cjk" label="CART 3 Jack Setting" site="cjk"/>
+  <instance id="cr2" label="CIAX CART 2" site="cr2"/>
+  <instance id="cf1" label="S1 Helium Compressor Coolant Flow" site="cf1">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <value ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
+    </status>
+  </instance>
+  <instance id="cfa" label="S10 Helium Compressor Coolant Flow" site="cfa">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <value ref="flow" label="FMOS-K(S10) Coolant Flow" />
+    </status>
+  </instance>
+  <instance id="dsi" label="IR Stand-by" site="dsi"/>
+  <instance id="dso" label="OPT Stand-by" site="dso"/>
+  <instance id="det" label="CsEtr Control" site="det"/>
+  <instance id="dts" label="TSC Control" site="dts"/>
+  <instance id="cro" label="OPT Helium Compressor" site="cro"/>
+  <instance id="ml1" label="MOIRCS Temperature 1" site="ml1">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <value ref="ch0" label="MosCold2" />
+      <value ref="ch1" label="MosCold1" />
+      <value ref="ch2" label="Mask" />
+      <value ref="ch3" label="Wheel" />
+      <value ref="ch4" label="D1(NONE)" />
+      <value ref="ch5" label="D2(NONE)" />
+      <value ref="ch6" label="ChipBox1" />
+      <value ref="ch7" label="Det1" />
+      <value ref="sp" label="SetPoint1 (K)" />
+      <value ref="htr" label="HeaterPower1(%%)" />
+    </status>
+  </instance>
+  <instance id="ml2" label="MOIRCS Temperature 2" site="ml2">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <value ref="ch0" label="Robohand" />
+      <value ref="ch1" label="CollBench" />
+      <value ref="ch2" label="BulkHead" />
+      <value ref="ch3" label="HeatPath" />
+      <value ref="ch4" label="D1(NONE)" />
+      <value ref="ch5" label="D2(NONE)" />
+      <value ref="ch6" label="ChipBox2" />
+      <value ref="ch7" label="Det2" />
+      <value ref="sp" label="SetPoint2 (K)" />
+      <value ref="htr" label="HeaterPower2(%%)" />
+    </status>
+  </instance>
+  <instance id="mfp" label="MOIRCS Pneumatic Actuator" site="mfp"/>
+  <instance id="map" label="MOIRCS Air Pressure" site="map"/>
+  <instance id="mma" label="MOIRCS Extension Arm" site="mma"/>
+  <instance id="mmc" label="MOIRCS Carrousel" site="mmc"/>
+  <instance id="mix" label="MOIRCS Turret" site="mix"/>
+  <instance id="mva" label="MOIRCS Pumping" site="mva"/>
+  <instance id="mft" label="MOIRCS Hall Effect Sensor" site="mft"/>
+  <instance id="mh1" label="MOIRCS Main/Carrousel Heater" site="mh1"/>
+  <instance id="mh2" label="MOIRCS Main Heater" site="mh2"/>
+</idb>

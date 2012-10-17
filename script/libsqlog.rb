@@ -13,7 +13,7 @@ module SqLog
 
     def init
       @log=[]
-      @tid="#{@id}_#{@ver.to_i}"
+      @tid="#{@type}_#{@ver.to_i}"
       self
     end
 
@@ -34,7 +34,7 @@ module SqLog
       val=expand
       key=val.keys.join("','")
       val=val.values.join("','")
-      Var.msg{"SqLog/Update(#{@val['time']}):[#{@type}/#{@tid}]"}
+      Var.msg{"SqLog/Update(#{@val['time']}):[#{@id}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       self
     end
@@ -78,13 +78,13 @@ module SqLog
     end
 
     def init
-      @sqlcmd=["sqlite3",VarDir+"/"+@type+".sq3"]
+      @sqlcmd=["sqlite3",VarDir+"/sqlog_"+@id+".sq3"]
       unless check_table
         create
         save
-        Var.msg{"Init/Table SqLog '#{@tid}' is created in #{@type}"}
+        Var.msg{"Init/Table SqLog '#{@tid}' is created in #{@id}"}
       end
-      Var.msg{"Init/Start SqLog '#{@type}' (#{@tid})"}
+      Var.msg{"Init/Start SqLog '#{@id}' (#{@tid})"}
       self
     end
 
@@ -106,7 +106,7 @@ module SqLog
         IO.popen(@sqlcmd,'w'){|f|
           f.puts sql
         }
-        Var.msg{"SqLog/Save complete (#{@type})"}
+        Var.msg{"SqLog/Save complete (#{@id})"}
         @log.clear
       end
       self

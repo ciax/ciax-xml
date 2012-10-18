@@ -23,7 +23,7 @@ module Ins
     # overwrite Loc::Db
     def cover_loc
       require "liblocdb"
-      cover(Loc::Db.new(self['site']))
+      cover(Loc::Db.new(self['site'])).cover_app.cover_frm
     end
 
     private
@@ -39,7 +39,7 @@ end
 
 if __FILE__ == $0
   begin
-    Msg.getopts("l")
+    Msg.getopts("l",{"l"=>"loc mode"})
     id=ARGV.shift
     db=Ins::Db.new(id)
   rescue InvalidID

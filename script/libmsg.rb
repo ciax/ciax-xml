@@ -256,6 +256,7 @@ module Msg
     str.chomp + " #{data.inspect}\n"
   end
 
+  # Global option
   # set $opt and $optlist(for usage)
   def getopts(str,db={})
     require 'optparse'

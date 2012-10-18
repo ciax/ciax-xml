@@ -41,8 +41,8 @@ module ExEnum
   end
 
   # Merge self to ope
-  def deep_update(ope)
-    rec_merge(ope,self)
+  def deep_update(ope,depth=nil)
+    rec_merge(ope,self,depth)
     self
   end
 
@@ -52,10 +52,15 @@ module ExEnum
 
   private
   # r(operand) will be merged to w (w is changed)
-  def rec_merge(r,w)
+  def rec_merge(r,w,d)
+    d-=1 if d
     each_idx(r,w){|i,cls|
       w=cls.new unless cls === w
-      w[i]=rec_merge(r[i],w[i])
+      if d && d < 1
+        w[i]=r[i]
+      else
+        w[i]=rec_merge(r[i],w[i],d)
+      end
     }
   end
 
@@ -116,4 +121,30 @@ if __FILE__ == $0
   w.deep_update r
   puts "w <- r(over write)"
   p w
+  puts
+  r=ExHash.new
+  r[:c] = {:m => 'm', :n => {:x => 'x'}}
+  r[:d] = [1]
+  r[:e] = 'e'
+  print "r="
+  p r
+  w=ExHash.new
+  w[:c]= {:i => 'i', :n => {:y => 'y'}}
+  w[:d] = [2,3]
+  w[:f] = 'f'
+  w1=w.deep_copy
+  w2=w.deep_copy
+  print "w="
+  p w
+  w.deep_update r
+  puts "w <- r(over write)"
+  p w
+  puts
+  w2.deep_update(r,2)
+  puts "w <- r(over write) Level 2"
+  p w2
+  puts
+  w1.deep_update(r,1)
+  puts "w <- r(over write) Level 1"
+  p w1
 end

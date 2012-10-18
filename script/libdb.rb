@@ -32,12 +32,12 @@ class Db < ExHash
     res
   end
 
-  def cover(db,key=nil)
+  def cover(db,key=nil,depth=nil)
     Msg.type?(db,Db)
     if key
-      self[key]=db.deep_copy.deep_update(self[key]||{})
+      self[key]=db.deep_copy.deep_update(self[key]||{},depth)
     else
-      db.deep_copy.deep_update(self)
+      db.deep_copy.deep_update(self,depth)
     end
   end
 

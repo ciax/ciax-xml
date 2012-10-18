@@ -23,7 +23,7 @@ module Ins
     # overwrite Loc::Db
     def cover_loc
       require "liblocdb"
-      cover(Loc::Db.new(self['site'])).cover_app.cover_frm
+      cover(Loc::Db.new(self['site'])).cover_app(2).cover_frm
     end
 
     private

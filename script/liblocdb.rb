@@ -14,8 +14,8 @@ module Loc
       }
     end
 
-    def cover_app
-      cover(App::Db.new(self['app_type']),:app)
+    def cover_app(depth=nil)
+      cover(App::Db.new(self['app_type']),:app,depth)
       self[:app]['host']||='localhost'
       self
     end

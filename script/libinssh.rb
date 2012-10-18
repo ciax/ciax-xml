@@ -2,8 +2,8 @@
 require "libwatch"
 
 # Should be included in App::Sh
-module App
-  module Prt
+module Ins
+  module Sh
     def self.extended(obj)
       Msg.type?(obj,App::Sh).init
     end
@@ -17,6 +17,11 @@ module App
       grp.add_item('wat',"Watch mode").set_proc{@output=@wview} if @wview
       grp.add_item('raw',"Raw mode").set_proc{@output=@stat}
       self
+    end
+
+    def exe(cmd)
+      cmd[0]=(@adb[:command][:ref]||={})[cmd[0]]||cmd[0]
+      super(cmd)
     end
 
     def to_s

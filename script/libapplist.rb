@@ -2,7 +2,7 @@
 require "libmsg"
 require "liblocdb"
 require "libappsh"
-require "libappprt"
+require "libinssh"
 # 'c' is client
 # 'f' is client of frm level(need -c)
 # 'h' is specified host
@@ -25,7 +25,7 @@ module App
           aint=Sv.new(adb).server
         end
         aint.set_switch('dev',"Change Device",ldb.list)
-        h[id]=aint.extend(App::Prt)
+        h[id]=aint.extend(Ins::Sh)
       }
     end
   end

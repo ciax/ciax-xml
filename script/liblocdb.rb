@@ -15,8 +15,7 @@ module Loc
     end
 
     def cover_app
-      app=self[:app]||{}
-      self[:app]=App::Db.new(self['app_type']).deep_update(app)
+      cover(App::Db.new(self['app_type']),:app)
       self[:app]['host']||='localhost'
       self
     end
@@ -26,7 +25,7 @@ module Loc
       if ref=frm['ref']
         self[:frm]=Db.new(ref).cover_app.cover_frm[:frm]
       else
-        self[:frm]=Frm::Db.new(self[:app]['frm_type']).deep_update(frm)
+        cover(Frm::Db.new(self[:app]['frm_type']),:frm)
       end
       self[:frm]['host']||=self[:app]['host']
       self[:frm]['port']||=self[:app]['port'].to_i+1000

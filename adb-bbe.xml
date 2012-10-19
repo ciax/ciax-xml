@@ -2,6 +2,7 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="bbe" id="bbe" label="Helium Compressor">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+      <group id="g0">
       <command id="upd" label="Update Status">
         <frmcmd name="getstat" />
       </command>
@@ -113,6 +114,7 @@
         <frmcmd name="outfld" />
         <frmcmd name="getstat" />
       </command>
+      </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <repeat from="0" to="3">

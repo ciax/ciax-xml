@@ -2,69 +2,71 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="srm" id="srm" label="CsEtr Controller">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <command id="upd" label="Update Status">
-        <frmcmd name="getstat" />
-      </command>
-      <command id="c3on" label="CIAX3 POWER ON">
-        <frmcmd name="fset" label="Bit 0 on">
-          <argv>5</argv>
-        </frmcmd>
-      </command>
-      <command id="c3off" label="CIAX3 POWER OFF">
-        <frmcmd name="fset" label="Bit 0 OFF">
-          <argv>4</argv>
-        </frmcmd>
-      </command>
-      <command id="emon" label="CIAX3 EMERGENCY ON">
-        <frmcmd name="fset" label="Bit 1 ON">
-          <argv>50</argv>
-        </frmcmd>
-      </command>
-      <command id="emoff" label="CIAX3 EMERGENCY OFF">
-        <frmcmd name="fset" label="Bit 1 OFF">
-          <argv>40</argv>
-        </frmcmd>
-      </command>
-      <command id="ccdon" label="CS CCD ON">
-        <frmcmd name="fset" label="Bit 2 ON">
-          <argv>500</argv>
-        </frmcmd>
-      </command>
-      <command id="ccdoff" label="CS CCD OFF">
-        <frmcmd name="fset" label="Bit 2 OFF">
-          <argv>400</argv>
-        </frmcmd>
-      </command>
-      <command id="lanon" label="CS LAN ON">
-        <frmcmd name="fset" label="Bit 3 ON">
-          <argv>5000</argv>
-        </frmcmd>
-      </command>
-      <command id="lanoff" label="CS LAN OFF">
-        <frmcmd name="fset" label="Bit 3 OFF">
-          <argv>4000</argv>
-        </frmcmd>
-      </command>
-      <command id="ipwon" label="CS IPW ON">
-        <frmcmd name="fset" label="Bit 4 ON">
-          <argv>50000</argv>
-        </frmcmd>
-      </command>
-      <command id="ipwoff" label="CS IPW OFF">
-        <frmcmd name="fset" label="Bit 4 OFF">
-          <argv>40000</argv>
-        </frmcmd>
-      </command>
-      <command id="ston" label="STOW PIN ON">
-        <frmcmd name="fset" label="Bit 5 ON">
-          <argv>500000</argv>
-        </frmcmd>
-      </command>
-      <command id="stoff" label="STOW PIN OFF">
-        <frmcmd name="fset" label="Bit 5 OFF">
-          <argv>400000</argv>
-        </frmcmd>
-      </command>
+      <group id="g0" caption="main">
+        <command id="upd" label="Update Status">
+          <frmcmd name="getstat" />
+        </command>
+        <command id="c3on" label="CIAX3 POWER ON">
+          <frmcmd name="fset" label="Bit 0 on">
+            <argv>5</argv>
+          </frmcmd>
+        </command>
+        <command id="c3off" label="CIAX3 POWER OFF">
+          <frmcmd name="fset" label="Bit 0 OFF">
+            <argv>4</argv>
+          </frmcmd>
+        </command>
+        <command id="emon" label="CIAX3 EMERGENCY ON">
+          <frmcmd name="fset" label="Bit 1 ON">
+            <argv>50</argv>
+          </frmcmd>
+        </command>
+        <command id="emoff" label="CIAX3 EMERGENCY OFF">
+          <frmcmd name="fset" label="Bit 1 OFF">
+            <argv>40</argv>
+          </frmcmd>
+        </command>
+        <command id="ccdon" label="CS CCD ON">
+          <frmcmd name="fset" label="Bit 2 ON">
+            <argv>500</argv>
+          </frmcmd>
+        </command>
+        <command id="ccdoff" label="CS CCD OFF">
+          <frmcmd name="fset" label="Bit 2 OFF">
+            <argv>400</argv>
+          </frmcmd>
+        </command>
+        <command id="lanon" label="CS LAN ON">
+          <frmcmd name="fset" label="Bit 3 ON">
+            <argv>5000</argv>
+          </frmcmd>
+        </command>
+        <command id="lanoff" label="CS LAN OFF">
+          <frmcmd name="fset" label="Bit 3 OFF">
+            <argv>4000</argv>
+          </frmcmd>
+        </command>
+        <command id="ipwon" label="CS IPW ON">
+          <frmcmd name="fset" label="Bit 4 ON">
+            <argv>50000</argv>
+          </frmcmd>
+        </command>
+        <command id="ipwoff" label="CS IPW OFF">
+          <frmcmd name="fset" label="Bit 4 OFF">
+            <argv>40000</argv>
+          </frmcmd>
+        </command>
+        <command id="ston" label="STOW PIN ON">
+          <frmcmd name="fset" label="Bit 5 ON">
+            <argv>500000</argv>
+          </frmcmd>
+        </command>
+        <command id="stoff" label="STOW PIN OFF">
+          <frmcmd name="fset" label="Bit 5 OFF">
+            <argv>400000</argv>
+          </frmcmd>
+        </command>
+      </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="" column="3">

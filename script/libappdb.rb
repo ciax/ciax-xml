@@ -31,42 +31,41 @@ module App
 
     private
     # Command Db
-    def init_command(adb)
-      hash=adb.to_h
+    def init_command(adbc)
+      hash=adbc.to_h
       [:group,:parameter,:select,:label].each{|k|
         hash[k]={}
       }
       hash[:group]={:caption =>{},:items =>{}}
-      arc_command(adb,hash,'g0')
+      adbc.each{|e|
+        Msg.abort("No group in adbc") unless e.name == 'group'
+        gid=e.attr2db(hash[:group])
+        arc_command(e,hash,gid)
+      }
+      hash
     end
 
     def arc_command(e,hash,gid)
       e.each{|e0|
-        case e0.name
-        when 'group'
-          id=e0.attr2db(hash[:group])
-          arc_command(e0,hash,id)
-        else
-          id=e0['id']
-          (hash[:group][:items][gid]||=[]) << id
-          hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
-          Repeat.new.each(e0){|e1,rep|
-            set_par(e1,id,hash) && next
-            case e1.name
-            when 'frmcmd'
-              command=[e1['name']]
-              e1.each{|e2|
-                argv=e2.to_h
-                argv['val'] = rep.subst(e2.text)
-                if /\$/ !~ argv['val'] && fmt=argv.delete('format')
-                  argv['val']=fmt % eval(argv['val'])
-                end
-                command << argv
-              }
-              (hash[:select][id]||=[]) << command
-            end
-          }
-        end
+        id=e0['id']
+        (hash[:group][:items][gid]||=[]) << id
+        hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
+        Repeat.new.each(e0){|e1,rep|
+          set_par(e1,id,hash) && next
+          case e1.name
+          when 'frmcmd'
+            command=[e1['name']]
+            e1.each{|e2|
+              argv=e2.to_h
+              argv['val'] = rep.subst(e2.text)
+              if /\$/ !~ argv['val'] && fmt=argv.delete('format')
+                argv['val']=fmt % eval(argv['val'])
+              end
+              command << argv
+            }
+            (hash[:select][id]||=[]) << command
+          end
+        }
       }
       hash
     end

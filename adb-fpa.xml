@@ -2,15 +2,17 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <command id="upd" label="Update Status">
-        <frmcmd name="getstat" />
-      </command>
-      <command id="set1v" label="Set Range +-1.2V">
-        <frmcmd name="setr1" />
-      </command>
-      <command id="set6v" label="Set Range +-6V">
-        <frmcmd name="setr5" />
-      </command>
+      <group id="g0" caption="main">
+        <command id="upd" label="Update Status">
+          <frmcmd name="getstat" />
+        </command>
+        <command id="set1v" label="Set Range +-1.2V">
+          <frmcmd name="setr1" />
+        </command>
+        <command id="set6v" label="Set Range +-6V">
+          <frmcmd name="setr5" />
+        </command>
+      </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" column="3">

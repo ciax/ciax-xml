@@ -2,9 +2,11 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="k3n" id="k3n" label="Helium Compressor Coolant Flow">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <command id="upd" label="Update Status">
-        <frmcmd name="getstat" />
-      </command>
+      <group id="g0" caption="main">
+        <command id="upd" label="Update Status">
+          <frmcmd name="getstat" />
+        </command>
+      </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="k3n">
       <group id="g1" caption="">

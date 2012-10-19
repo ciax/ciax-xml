@@ -1,82 +1,84 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="slo" id="mma" label="MOIRCS Arm">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <command id="upd" label="Update Status">
-        <frmcmd name="getstat" />
-        <frmcmd name="bs" />
-        <frmcmd name="p" />
-        <repeat from="1" to="5">
-          <frmcmd name="in">
-            <argv>$_</argv>
+      <group id="g0" caption="main">
+        <command id="upd" label="Update Status">
+          <frmcmd name="getstat" />
+          <frmcmd name="bs" />
+          <frmcmd name="p" />
+          <repeat from="1" to="5">
+            <frmcmd name="in">
+              <argv>$_</argv>
           </frmcmd>
-        </repeat>
-      </command>
-      <command id="reset" label="Reset">
-        <frmcmd name="reset" />
-      </command>
-      <command id="defcon" label="Default Config">
-        <frmcmd name="hl">
-          <argv>1</argv>
-        </frmcmd>
-        <frmcmd name="e1">
-          <argv>0</argv>
-        </frmcmd>
-        <frmcmd name="e2">
-          <argv>0</argv>
-        </frmcmd>
-      </command>
-      <command id="set0" label="Set 0 Pulses">
-        <frmcmd name="set0" />
-      </command>
-      <command id="gf" label="Goto Focal Position">
-        <frmcmd name="ma">
-          <argv>12.8</argv>
-        </frmcmd>
-      </command>
-      <command id="gr" label="Goto Rotate Position">
-        <frmcmd name="ma">
-          <argv>123</argv>
-        </frmcmd>
-      </command>
-      <command id="gw" label="Goto Waiting Position">
-        <frmcmd name="ma">
-          <argv>185</argv>
-        </frmcmd>
-      </command>
-      <command id="gs" label="Goto Stock Position">
-        <frmcmd name="ma">
-          <argv>jp</argv>
-        </frmcmd>
-      </command>
-      <command id="sets" label="Set Stock Pos Pulse">
-        <frmcmd name="setp">
-          <argv>200.44</argv>
-        </frmcmd>
-      </command>
-      <command id="rini" label="Init to RP at AV">
-        <frmcmd name="e2">
-          <argv>1</argv>
-        </frmcmd>
-        <frmcmd name="mhn"></frmcmd>
-      </command>
-      <command id="setr" label="Set Rotate Pos Pulse">
-        <frmcmd name="setp">
-          <argv>123</argv>
-        </frmcmd>
-      </command>
-      <command id="updp" label="Update Pulse" hidden="true">
-        <frmcmd name="p" />
-        <frmcmd name="in">
-          <argv>5</argv>
-        </frmcmd>
-        <frmcmd name="in">
-          <argv>3</argv>
-        </frmcmd>
-      </command>
-      <command id="stop" label="Stop Run" hidden="true">
-        <frmcmd name="stop" />
-      </command>
+          </repeat>
+        </command>
+        <command id="reset" label="Reset">
+          <frmcmd name="reset" />
+        </command>
+        <command id="defcon" label="Default Config">
+          <frmcmd name="hl">
+            <argv>1</argv>
+          </frmcmd>
+          <frmcmd name="e1">
+            <argv>0</argv>
+          </frmcmd>
+          <frmcmd name="e2">
+            <argv>0</argv>
+          </frmcmd>
+        </command>
+        <command id="set0" label="Set 0 Pulses">
+          <frmcmd name="set0" />
+        </command>
+        <command id="gf" label="Goto Focal Position">
+          <frmcmd name="ma">
+            <argv>12.8</argv>
+          </frmcmd>
+        </command>
+        <command id="gr" label="Goto Rotate Position">
+          <frmcmd name="ma">
+            <argv>123</argv>
+          </frmcmd>
+        </command>
+        <command id="gw" label="Goto Waiting Position">
+          <frmcmd name="ma">
+            <argv>185</argv>
+          </frmcmd>
+        </command>
+        <command id="gs" label="Goto Stock Position">
+          <frmcmd name="ma">
+            <argv>jp</argv>
+          </frmcmd>
+        </command>
+        <command id="sets" label="Set Stock Pos Pulse">
+          <frmcmd name="setp">
+            <argv>200.44</argv>
+          </frmcmd>
+        </command>
+        <command id="rini" label="Init to RP at AV">
+          <frmcmd name="e2">
+            <argv>1</argv>
+          </frmcmd>
+          <frmcmd name="mhn"></frmcmd>
+        </command>
+        <command id="setr" label="Set Rotate Pos Pulse">
+          <frmcmd name="setp">
+            <argv>123</argv>
+          </frmcmd>
+        </command>
+        <command id="updp" label="Update Pulse" hidden="true">
+          <frmcmd name="p" />
+          <frmcmd name="in">
+            <argv>5</argv>
+          </frmcmd>
+          <frmcmd name="in">
+            <argv>3</argv>
+          </frmcmd>
+        </command>
+        <command id="stop" label="Stop Run" hidden="true">
+          <frmcmd name="stop" />
+        </command>
+      </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mma">
       <group id="g1" caption="" column="3">

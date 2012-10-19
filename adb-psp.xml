@@ -2,35 +2,37 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="psp" id="psp" label="MOIRCS Ext Heater">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <command id="upd" label="Update Status">
-        <frmcmd name="getstat" />
-      </command>
-      <command id="setlmt" label="Set Limit 20V/5A/100W">
-        <frmcmd name="setvl">
-          <argv>20</argv>
-        </frmcmd>
-        <frmcmd name="setal">
-          <argv>5</argv>
-        </frmcmd>
-        <frmcmd name="setpl">
-          <argv>100</argv>
-        </frmcmd>
-        <frmcmd name="getstat" />
-      </command>
-      <command id="setv" label="Set Voltage 0-50[V]">
-        <par_num>0:50</par_num>
-        <frmcmd name="setv">
-          <argv>$1</argv>
-        </frmcmd>
-        <frmcmd name="getstat" />
-      </command>
-      <command id="setp" label="Set Power 0-100[W]">
-        <par_num>0:100</par_num>
-        <frmcmd name="setv">
-          <argv format="%5.2f">sqrt($1*26)</argv>
-        </frmcmd>
-        <frmcmd name="getstat" />
-      </command>
+      <group id="g0" caption="main">
+        <command id="upd" label="Update Status">
+          <frmcmd name="getstat" />
+        </command>
+        <command id="setlmt" label="Set Limit 20V/5A/100W">
+          <frmcmd name="setvl">
+            <argv>20</argv>
+          </frmcmd>
+          <frmcmd name="setal">
+            <argv>5</argv>
+          </frmcmd>
+          <frmcmd name="setpl">
+            <argv>100</argv>
+          </frmcmd>
+          <frmcmd name="getstat" />
+        </command>
+        <command id="setv" label="Set Voltage 0-50[V]">
+          <par_num>0:50</par_num>
+          <frmcmd name="setv">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="getstat" />
+        </command>
+        <command id="setp" label="Set Power 0-100[W]">
+          <par_num>0:100</par_num>
+          <frmcmd name="setv">
+            <argv format="%5.2f">sqrt($1*26)</argv>
+          </frmcmd>
+          <frmcmd name="getstat" />
+        </command>
+      </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="" column="3" >

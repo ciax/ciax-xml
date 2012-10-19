@@ -25,7 +25,7 @@ module App
           aint=Sv.new(adb).server
         end
         aint.set_switch('dev',"Change Device",ldb.list)
-        h[id]=aint.extend(Ins::Sh)
+        h[id]=aint.ext_ins
       }
     end
   end

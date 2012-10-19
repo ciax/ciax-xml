@@ -30,3 +30,9 @@ module Ins
     end
   end
 end
+
+class App::Sh
+  def ext_ins
+    extend(Ins::Sh)
+  end
+end

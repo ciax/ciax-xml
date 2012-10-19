@@ -22,6 +22,7 @@ module Xml
       Doc.msg{"xmlroot:#{@@root.keys}"}
       @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))
       list={}
+      Msg.abort("No XML group for '#{group}' in #{type}") unless @tree.key? @group
       @tree[@group].each{|id,e|
         list[id]=e['label']
       }.empty? && raise(InvalidID)
@@ -69,7 +70,7 @@ module Xml
             group[ALL][id]=e if fid != ALL
           end
         }
-      }
+      }.empty? && Msg.abort("No XML file for #{glob}")
       reflist.each{|fid,id|
         group[fid][id]=group[ALL][id] if fid != ALL
       }

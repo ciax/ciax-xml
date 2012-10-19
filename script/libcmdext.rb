@@ -3,9 +3,9 @@ require 'libcommand'
 
 # For External Command Domain
 class Command
-  attr_reader :ext
+  attr_reader :extcmd
   def add_ext(db,path)
-    @ext=@domain['ext']=ExtDom.new(self,db,path)
+    @extcmd=@domain['ext']=ExtDom.new(self,db,path)
   end
 
   class ExtDom < Domain

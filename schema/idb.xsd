@@ -6,6 +6,7 @@
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="idb:instance" />
+        <xsd:element ref="idb:reference" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -18,6 +19,11 @@
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
       <xsd:attribute name="site" use="required" type="xsd:NCName" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="reference">
+    <xsd:complexType>
+      <xsd:attribute name="ref" type="xsd:NCName" use="required" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

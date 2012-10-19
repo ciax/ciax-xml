@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <instance ref="dsi"/>
-  <instance ref="dso"/>
-  <instance ref="det"/>
-  <instance ref="dts"/>
-  <instance ref="cci" />
-  <instance ref="cco" />
-  <instance ref="cri" />
-  <instance ref="cro" />
-  <instance ref="crt" />
+  <reference ref="dsi"/>
+  <reference ref="dso"/>
+  <reference ref="det"/>
+  <reference ref="dts"/>
+  <reference ref="cci" />
+  <reference ref="cco" />
+  <reference ref="cri" />
+  <reference ref="cro" />
+  <reference ref="crt" />
 </idb>

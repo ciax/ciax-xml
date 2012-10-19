@@ -2,7 +2,7 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="lk8" id="lk8" label="MOIRCS LakeShore">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="g0" caption="main">
+      <group id="g0" caption="Device">
         <command id="upd" label="Update Status">
           <frmcmd name="getstat" />
           <frmcmd name="htrstat" />

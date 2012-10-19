@@ -9,8 +9,14 @@ module Ins
         hash={}
         hash.update(doc)
         doc.domain('cmdlist').each{|e0|
-          p=group(e0,(hash[:app]||={})[:command]||={})
-          e0.attr2db(p)
+          p=((hash[:app]||={})[:command]||={})
+          g=(p[:group]||={:items => {}})
+          e0.attr2db(g)
+          item=(g[:items][e0['id']]||=[])
+          e0.each{|e1|
+            item << e1['id']
+            e1.attr2db(p)
+          }
         }
         doc.domain('status').each{|e0|
           p=group(e0,(hash[:app]||={})[:status]||={})
@@ -23,7 +29,7 @@ module Ins
     # overwrite Loc::Db
     def cover_loc
       require "liblocdb"
-      cover(Loc::Db.new(self['site'])).cover_app(2).cover_frm
+      cover(Loc::Db.new(self['site'])).cover_app.cover_frm
     end
 
     private

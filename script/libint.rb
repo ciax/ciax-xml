@@ -94,7 +94,7 @@ module Int
             begin
               self['msg']='OK'
               unless /^(strobe|stat)/ === line
-                exe(line.chomp.split(' '))
+                @cobj.set(line.chomp.split(' ')).exe
                 @int_proc.upd
               end
             rescue InvalidCMD

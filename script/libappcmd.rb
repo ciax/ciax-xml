@@ -39,9 +39,8 @@ module App
   end
 end
 
-class Command::Domain
-  def ext_appcmd(db,path)
-    ext_setdb(db,path)
+class Command::ExtDom
+  def ext_appcmd
     values.each{|item|
       item.extend(App::Cmd)
     }
@@ -55,9 +54,9 @@ if __FILE__ == $0
   begin
     adb=App::Db.new(app)
     fcobj=Command.new
-    fcobj.add_domain('ext').ext_setdb(adb.cover_frm,:cmdframe)
+    fcobj.add_ext(adb.cover_frm,:cmdframe)
     acobj=Command.new
-    acobj.add_domain('ext').ext_appcmd(adb,:command)
+    acobj.add_ext(adb,:command).ext_appcmd
     acobj.set(cmd).get.each{|fcmd|
       #Validate frmcmds
       fcobj.set(fcmd) if /set|unset|load|save/ !~ fcmd.first

@@ -72,7 +72,7 @@ module Xml
         }
       }.empty? && Msg.abort("No XML file for #{glob}")
       reflist.each{|fid,id|
-        group[fid][id]=group[ALL][id] if fid != ALL
+        (group[fid]||={})[id]=group[ALL][id] if fid != ALL
       }
       group
     end

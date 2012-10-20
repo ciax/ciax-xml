@@ -19,7 +19,8 @@ module Ins
           }
         }
         doc.domain('status').each{|e0|
-          p=group(e0,(hash[:app]||={})[:status]||={})
+          p=((hash[:app]||={})[:status]||={})
+          p=(p[:group]||={}) if e0.name == 'group'
           e0.attr2db(p,'ref')
         }
         hash
@@ -30,15 +31,6 @@ module Ins
     def cover_loc
       require "liblocdb"
       cover(Loc::Db.new(self['site'])).cover_app.cover_frm
-    end
-
-    private
-    def group(e,p)
-      case e.name
-      when 'group'
-        p=(p[:group]||={})
-      end
-      p
     end
   end
 end

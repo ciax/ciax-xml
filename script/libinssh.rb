@@ -20,7 +20,7 @@ module Ins
     end
 
     def exe(cmd)
-      cmd[0]=(@adb[:command][:ref]||={})[cmd[0]]||cmd[0]
+      cmd[0]=(@adb[:command][:alias]||={})[cmd[0]]||cmd[0]
       super(cmd)
     end
 

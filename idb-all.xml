@@ -50,8 +50,7 @@
   </instance>
   <instance id="cco" label="OPT Helium Compressor" site="cco">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Alias">
-        <command id="upd" label="Update Status" alias="upd" />
+      <group id="alias" caption="Alias" column="2">
         <command id="f2on" label="CIAO(S6) ON" alias="x0on" />
         <command id="f2off" label="CIAO(S6) OFF" alias="x0off" />
         <command id="m1on" label="COMICS IMG(S4) ON" alias="x2on" />
@@ -70,8 +69,7 @@
   </instance>
   <instance id="cri" label="IR Helium Compressor" site="cri">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Alias">
-        <command id="upd" label="Update Status" alias="upd" />
+      <group id="alias" caption="Alias" column="2">
         <command id="f1on" label="FMOS/IRS1(S10)ON" alias="x0on" />
         <command id="f1off" label="FMOS/IRS1(S10)OFF" alias="x0off" />
         <command id="f2on" label="FMOS/IRS2(S11)ON" alias="x2on" />

@@ -50,11 +50,12 @@ end
 
 if __FILE__ == $0
   require "libappdb"
+  require "libfrmdb"
   app,*cmd=ARGV
   begin
     adb=App::Db.new(app)
     fcobj=Command.new
-    fcobj.add_ext(adb.cover_frm,:cmdframe)
+    fcobj.add_ext(Frm::Db.new(adb['frm_type']),:cmdframe)
     acobj=Command.new
     acobj.add_ext(adb,:command).ext_appcmd
     acobj.set(cmd).get.each{|fcmd|

@@ -61,12 +61,12 @@ if __FILE__ == $0
   require 'libinsdb'
   Msg.getopts("af")
   begin
-    adb=Ins::Db.new(ARGV.shift).cover_app
+    idb=Ins::Db.new(ARGV.shift).cover_loc
     cobj=Command.new
     if $opt["f"]
-      cobj.add_ext(adb.cover_frm,:cmdframe)
+      cobj.add_ext(idb[:frm],:cmdframe)
     else
-      cobj.add_ext(adb,:command)
+      cobj.add_ext(idb[:app],:command)
     end
     puts cobj.set(ARGV)
   rescue UserError

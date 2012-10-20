@@ -141,9 +141,9 @@ if __FILE__ == $0
     if ! STDIN.tty?
       stat.load
       id=stat['id']
-      adb=Ins::Db.new(id).cover_app
+      adb=Ins::Db.new(id).cover_loc[:app]
     else
-      adb=Ins::Db.new(id).cover_app
+      adb=Ins::Db.new(id).cover_loc[:app]
       stat.ext_file(adb)
       if host=$opt['h']
         stat.ext_url(host).load

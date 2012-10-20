@@ -189,7 +189,7 @@ module Msg
 
   # Display methods
   def item(key,val)
-    Msg.color("  %-10s" % key,3)+": #{val}"
+    Msg.color("  %-6s" % key,3)+": #{val}"
   end
 
   def now

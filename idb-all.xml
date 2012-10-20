@@ -22,8 +22,7 @@
   </instance>
   <instance id="cci" label="IR Helium Compressor" site="cci">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Device">
-        <command id="upd" label="Update Status" alias="upd" />
+      <group id="alias" caption="Alias" column="2">
         <command id="c2on" label="CAS2(S1) ON" alias="x0on" />
         <command id="c2off" label="CAS2(S1) OFF" alias="x0off" />
         <command id="c1on" label="CAS1(S2) ON" alias="x1on" />
@@ -51,7 +50,7 @@
   </instance>
   <instance id="cco" label="OPT Helium Compressor" site="cco">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Device">
+      <group id="alias" caption="Alias">
         <command id="upd" label="Update Status" alias="upd" />
         <command id="f2on" label="CIAO(S6) ON" alias="x0on" />
         <command id="f2off" label="CIAO(S6) OFF" alias="x0off" />
@@ -71,7 +70,7 @@
   </instance>
   <instance id="cri" label="IR Helium Compressor" site="cri">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Device">
+      <group id="alias" caption="Alias">
         <command id="upd" label="Update Status" alias="upd" />
         <command id="f1on" label="FMOS/IRS1(S10)ON" alias="x0on" />
         <command id="f1off" label="FMOS/IRS1(S10)OFF" alias="x0off" />

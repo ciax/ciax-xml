@@ -15,6 +15,7 @@
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="caption" type="xsd:token" />
+      <xsd:attribute name="column" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="command">

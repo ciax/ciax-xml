@@ -13,7 +13,6 @@ class Command
       super(index,6)
       @db=Msg.type?(db,Db)
       @cdb=db[path]
-      @index.alias.update(@cdb[:alias]||{})
       all=@cdb[:select].keys.each{|id|
         @index[id]=self[id]=Item.new(id,@index,@def_proc).update(db_pack(id))
       }
@@ -49,20 +48,9 @@ class Command
       items.each{|id|
         @group[gid][id]=@index[id]
       }
-      add_list(@group[gid].list,items)
-    end
-
-    # make alias list
-    def add_list(list,ary)
-      lh=@cdb[:label]
-      if alary=@cdb[:alias]
-        alary.each{|a,r|
-          list[a]=lh[r] if ary.include?(r)
-        }
-      else
-        ary.each{|i| list[i]=lh[i] }
-      end
-      list
+      items.each{|i|
+        @group[gid].list[i]=@cdb[:label][i]
+      }
     end
   end
 end

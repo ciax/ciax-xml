@@ -26,22 +26,21 @@ require 'libupdate'
 #  Command#pre_proc -> [{|par,id|},..]
 #  Command#def_proc ->[{|par,id|},..]
 #  Command#post_proc -> [{|par,id|},..]
-#  Command#set(cmd=alias+par):{
-#    Command[alias->id]#set_par(par)
+#  Command#set(cmd=id+par):{
+#    Command[id]#set_par(par)
 #    Command#current -> Command[id]
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:alias,:domain,:pre_proc,:post_proc
+  attr_reader :current,:domain,:pre_proc,:post_proc
   # CDB: mandatory (:select)
-  # optional (:alias,:label,:parameter)
+  # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
   def initialize
     Command.init_ver(self)
     @current=nil
     @domain={}
-    @alias={}
     @pre_proc=[]
     @post_proc=[]
   end
@@ -52,7 +51,6 @@ class Command < ExHash
 
   def set(cmd)
     id,*par=cmd
-    id=@alias[id] || id
     key?(id) || error
     @current=self[id].set_par(par)
   end

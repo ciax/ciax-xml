@@ -24,11 +24,6 @@ module App
       }
     end
 
-    def cover_frm
-      require "libfrmdb"
-      cover(Frm::Db.new(self['frm_type']))
-    end
-
     private
     # Command Db
     def init_command(adbc)

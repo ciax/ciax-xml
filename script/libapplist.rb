@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "liblocdb"
 require "libappsh"
 require "libinssh"
+require "libinsdb"
 # 'c' is client
 # 'f' is client of frm level(need -c)
 # 'h' is specified host
@@ -15,8 +15,8 @@ module App
     def initialize
       $opt||={}
       super(){|h,id|
-        ldb=Loc::Db.new(id)
-        adb=ldb.cover_app[:app]
+        idb=Ins::Db.new(id)
+        adb=idb.cover_loc[:app]
         if $opt['t']
           aint=Test.new(adb)
         elsif $opt['c'] or $opt['a']
@@ -24,7 +24,7 @@ module App
         else
           aint=Sv.new(adb).server
         end
-        aint.set_switch('dev',"Change Device",ldb.list)
+        aint.set_switch('dev',"Change Device",idb.list)
         h[id]=aint.ext_ins
       }
     end

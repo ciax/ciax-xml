@@ -91,7 +91,7 @@ class Command < ExHash
   class Group < Hash
     attr_reader :list,:def_proc
     def initialize(index,title,col=2,color=2,def_proc=[])
-      @list=Msg::CmdList.new(title,col,color)
+      @list=Msg::CmdList.new({:caption => title,:column => col,:color => color})
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,Array)
     end

@@ -83,9 +83,12 @@ module Msg
 
   # Structure /CommandID/Msg w/@title,@col
   class CmdList < Hash
-    def initialize(title=nil,col=nil,color=6)
-      @title='==== '+Msg.color(title,color)+' ====' if title
-      @col=(col||1).to_i
+    def initialize(cdb)
+      Msg.type?(cdb,Hash)
+      caption=cdb[:caption]
+      color=(cdb[:color]||6).to_i
+      @col=(cdb[:column]||1).to_i
+      @caption='==== '+Msg.color(caption,color)+' ====' if caption
     end
 
     # For ver 1.9 or more
@@ -105,7 +108,7 @@ module Msg
         }.compact
         all << l.join("\t") unless l.empty?
       }
-      all.unshift @title unless all.empty?
+      all.unshift @caption unless all.empty?
       all.compact.join("\n")
     end
 
@@ -200,7 +203,7 @@ module Msg
   def color(text,c=7)
     return '' if text == ''
     return text unless STDERR.tty?
-    c||=7
+    (c||=7).to_i
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end
 

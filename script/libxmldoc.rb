@@ -26,7 +26,7 @@ module Xml
       @tree[@group].each{|id,e|
         list[id]=e['label']
       }.empty? && raise(InvalidID)
-      @list=Msg::CmdList.new("[id]").update(list).sort!
+      @list=Msg::CmdList.new({:caption => "[id]"}).update(list).sort!
       @domain={}
       @top=nil
     end
@@ -83,7 +83,7 @@ if __FILE__ == $0
   begin
     doc=Xml::Doc.new(ARGV.shift)
     puts doc.list
-  rescue UserError
+  rescue ConfigError
     Msg.usage("[type] (adb,fdb,idb,mdb,sdb)")
   end
 end

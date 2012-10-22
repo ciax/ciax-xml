@@ -43,5 +43,14 @@ module Xml
       }
       key
     end
+
+    def add_item(db,id='id')
+      # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
+      Msg.type?(db,Hash)
+      attr=to_h
+      key=attr.delete(id) || Msg.abort("No such key (#{id})")
+      db[key]=attr
+      key
+    end
   end
 end

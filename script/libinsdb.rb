@@ -20,8 +20,11 @@ module Ins
         }
         doc.domain('status').each{|e0|
           p=((hash[:app]||={})[:status]||={})
-          p=(p[:group]||={}) if e0.name == 'group'
-          e0.attr2db(p,'ref')
+          if e0.name == 'group'
+            e0.add_item(p[:group]||={},'ref')
+          else
+            e0.attr2db(p,'ref')
+          end
         }
         hash
       }

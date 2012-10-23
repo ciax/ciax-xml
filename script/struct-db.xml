@@ -57,17 +57,14 @@
     <app_label val="Label"/>
     <command type="Hash">
       <group type="Hash">
-        <select type="Hash">
-          <Item key="Group ID" type="Array">
+        <Item key="Group ID" type="Hash">
+          <caption val="Caption"/>
+          <column type="Number"/>
+          <color type="Number"/>
+          <list type="Array">
             <List val="Command ID"/>
-          </Item>
-        </select>
-        <caption type="Hash">
-          <Item key="Group ID" val="Title"/>
-        </caption>
-        <column type="Hash">
-          <Item key="Group ID" type="Number"/>
-        </column>
+          </list>
+        </Item>
       </group>
       <parameter type="Hash">
         <Item key="Command Name" type="Array">

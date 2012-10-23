@@ -31,10 +31,10 @@ module App
       [:group,:parameter,:select,:label].each{|k|
         hash[k]={}
       }
-      hash[:group]={:caption =>{},:items =>{}}
+      hash[:group]={}
       adbc.each{|e|
         Msg.abort("No group in adbc") unless e.name == 'group'
-        gid=e.attr2db(hash[:group])
+        gid=e.add_item(hash[:group])
         arc_command(e,hash,gid)
       }
       hash
@@ -43,7 +43,7 @@ module App
     def arc_command(e,hash,gid)
       e.each{|e0|
         id=e0['id']
-        (hash[:group][:items][gid]||=[]) << id
+        (hash[:group][gid][:list]||=[]) << id
         hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
         Repeat.new.each(e0){|e1,rep|
           set_par(e1,id,hash) && next
@@ -127,7 +127,7 @@ module App
             }
             (hash[name][idx]||=[]) << cmd
           when :block_grp
-            cdb[:group][:items][e1['ref']].each{|grp|
+            cdb[:group][e1['ref']].each{|grp|
               (hash[:block][idx]||=[]) << [grp]
             }
           else

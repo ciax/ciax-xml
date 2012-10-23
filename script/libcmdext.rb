@@ -18,10 +18,8 @@ class Command
       }
       dgdb={:color => @color}
       if gdb=@cdb[:group]
-        gdb[:items].each{|gid,member|
-          dgdb[:caption]=(gdb[:caption]||{})[gid]
-          dgdb[:column]=(gdb[:column]||{})[gid]
-          dgdb[:list]=member
+        gdb.each{|gid,hash|
+          dgdb.update(hash)
           def_group(gid,dgdb)
         }
       else

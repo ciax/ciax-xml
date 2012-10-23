@@ -69,10 +69,8 @@ module App
     def init_stat(sdb)
       hash=sdb.to_h
       group=hash[:group]={}
-      group[:items]={'gtime' => ['time','elapse']}
-      group[:caption]={'gtime' => '' }
-      group[:column]={'gtime' => 2 }
-      hash[:label]={'gtime' => '','time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
+      group['gtime']={'caption' =>'','column' => 2,:list =>['time','elapse']}
+      hash[:label]={'time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
       hash[:select]=rec_stat(sdb,hash,'gtime',Repeat.new)
       hash
     end
@@ -82,8 +80,7 @@ module App
       rep.each(e){|e0,r0|
         case e0.name
         when 'group'
-          gid=e0.attr2db(hash[:group]){|k,v| r0.format(v)}
-          hash[:group][:items][gid]=[]
+          gid=e0.add_item(hash[:group]){|k,v| r0.format(v)}
           struct.update(rec_stat(e0,hash,gid,r0))
         else
           id=e0.attr2db(hash){|k,v| r0.format(v)}
@@ -103,7 +100,7 @@ module App
             end
             struct[id] << st
           }
-          hash[:group][:items][gid] << id
+          (hash[:group][gid][:list]||=[]) << id
         end
       }
       struct

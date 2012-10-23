@@ -34,7 +34,7 @@ module Xml
           attr[k] = v
         end
       }
-      key=attr.delete(id) || return
+      key=attr.delete(id) || Msg.abort("No such key (#{id})")
       attr.each{|str,v|
         sym=str.to_sym
         db[sym]={} unless db.key?(sym)
@@ -47,7 +47,14 @@ module Xml
     def add_item(db,id='id')
       # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
       Msg.type?(db,Hash)
-      attr=to_h
+      attr={}
+      to_h.each{|k,v|
+        if defined?(yield)
+          attr[k] = yield k,v
+        else
+          attr[k] = v
+        end
+      }
       key=attr.delete(id) || Msg.abort("No such key (#{id})")
       db[key]=attr
       key

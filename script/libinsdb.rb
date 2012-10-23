@@ -10,9 +10,9 @@ module Ins
         hash.update(doc)
         doc.domain('cmdlist').each{|e0|
           p=((hash[:app]||={})[:command]||={})
-          g=(p[:group]||={:items => {}})
-          e0.attr2db(g)
-          item=(g[:items][e0['id']]||=[])
+          g=(p[:group]||={})
+          key=e0.add_item(g)
+          item=(g[key][:list]||=[])
           e0.each{|e1|
             item << e1['id']
             e1.attr2db(p)

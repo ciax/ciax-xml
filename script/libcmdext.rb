@@ -16,12 +16,12 @@ class Command
       all=@cdb[:select].keys.each{|id|
         @index[id]=self[id]=Item.new(id,@index,@def_proc).update(db_pack(id))
       }
-      attr={"color" => @color}
       if gdb=@cdb[:group]
         gdb.each{|gid,hash|
           def_group(gid,hash)
         }
       else
+        attr={"color" => @color}
         attr["caption"]='Command List'
         attr["column"]=1
         attr[:list]=all

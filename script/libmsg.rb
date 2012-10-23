@@ -81,13 +81,13 @@ module Msg
     end
   end
 
-  # Structure /CommandID/Msg w/@title,@col
+  # Hash of title
   class CmdList < Hash
-    def initialize(cdb)
-      Msg.type?(cdb,Hash)
-      caption=cdb[:caption]
-      color=(cdb[:color]||6).to_i
-      @col=(cdb[:column]||1).to_i
+    def initialize(attr)
+      Msg.type?(attr,Hash)
+      caption=attr["caption"]
+      color=(attr["color"]||6).to_i
+      @col=(attr["column"]||1).to_i
       @caption='==== '+Msg.color(caption,color)+' ====' if caption
     end
 
@@ -101,15 +101,15 @@ module Msg
     end
 
     def to_s
-      all=[]
+      page=[]
       keys.each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact
-        all << l.join("\t") unless l.empty?
+        page << l.join("\t") unless l.empty?
       }
-      all.unshift @caption unless all.empty?
-      all.compact.join("\n")
+      page.unshift @caption unless page.empty?
+      page.compact.join("\n")
     end
 
     def error

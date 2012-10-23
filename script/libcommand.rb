@@ -80,8 +80,8 @@ class Command < ExHash
     end
 
     def add_group(gid,caption)
-      gdb={:caption => caption,:column => 2,:color => @color}
-      @group[gid]=Group.new(@index,gdb,@def_proc)
+      attr={"caption" => caption,"column" => 2,"color" => @color}
+      @group[gid]=Group.new(@index,attr,@def_proc)
     end
 
     def to_s
@@ -91,9 +91,9 @@ class Command < ExHash
 
   class Group < Hash
     attr_reader :list,:def_proc
-    def initialize(index,gdb,def_proc=[])
-      Msg.type?(gdb,Hash)
-      @list=Msg::CmdList.new(gdb)
+    def initialize(index,attr,def_proc=[])
+      Msg.type?(attr,Hash)
+      @list=Msg::CmdList.new(attr)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,Array)
     end

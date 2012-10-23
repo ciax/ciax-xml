@@ -26,7 +26,7 @@ module Xml
       @tree[@group].each{|id,e|
         list[id]=e['label']
       }.empty? && raise(InvalidID)
-      @list=Msg::CmdList.new({:caption => "[id]"}).update(list).sort!
+      @list=Msg::CmdList.new({"caption" => "[id]"}).update(list).sort!
       @domain={}
       @top=nil
     end

@@ -16,17 +16,16 @@ class Command
       all=@cdb[:select].keys.each{|id|
         @index[id]=self[id]=Item.new(id,@index,@def_proc).update(db_pack(id))
       }
-      dgdb={:color => @color}
+      attr={"color" => @color}
       if gdb=@cdb[:group]
         gdb.each{|gid,hash|
-          dgdb.update(hash)
-          def_group(gid,dgdb)
+          def_group(gid,hash)
         }
       else
-        dgdb[:caption]='Command List'
-        dgdb[:column]=1
-        dgdb[:list]=all
-        def_group('main',dgdb)
+        attr["caption"]='Command List'
+        attr["column"]=1
+        attr[:list]=all
+        def_group('main',attr)
       end
       self
     end
@@ -46,13 +45,11 @@ class Command
     end
 
     # Make Default groups (generated from Db)
-    def def_group(gid,gdb)
-      @group[gid]=Group.new(@index,gdb,@def_proc)
-      gdb[:list].each{|id|
-        @group[gid][id]=@index[id]
-      }
-      gdb[:list].each{|i|
-        @group[gid].list[i]=@cdb[:label][i]
+    def def_group(gid,attr)
+      grp=@group[gid]=Group.new(@index,attr,@def_proc)
+      attr[:list].each{|id|
+        grp[id]=@index[id]
+        grp.list[id]=@cdb[:label][id]
       }
     end
   end

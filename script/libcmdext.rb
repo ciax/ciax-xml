@@ -20,16 +20,18 @@ class Command
     end
 
     def add_db(cdb)
-      if gdb=cdb[:group]
-        gdb.each{|gid,hash|
-          def_group(gid,cdb,hash)
-        }
-      else
-        attr={"color" => @color}
-        attr["caption"]='Command List'
-        attr["column"]=1
-        attr[:list]=@list
-        def_group('main',cdb,attr)
+      if cdb
+        if gdb=cdb[:group]
+          gdb.each{|gid,hash|
+            def_group(gid,cdb,hash)
+          }
+        else
+          attr={"color" => @color}
+          attr["caption"]='Command List'
+          attr["column"]=1
+          attr[:list]=@list
+          def_group('main',cdb,attr)
+        end
       end
       self
     end

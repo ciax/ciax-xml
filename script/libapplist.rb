@@ -2,6 +2,7 @@
 require "libmsg"
 require "libappsh"
 require "liblocdb"
+require "libinssh"
 # 'c' is client
 # 'f' is client of frm level(need -c)
 # 'h' is specified host
@@ -26,7 +27,7 @@ module App
         end
         aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
         aint.set_switch('dev',"Change Device",ldb.list)
-        h[id]=aint
+        h[id]=aint.ext_ins(id)
       }
     end
   end

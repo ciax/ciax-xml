@@ -12,28 +12,32 @@ class Command
     def initialize(index,db,path)
       super(index,6)
       @db=Msg.type?(db,Db)
-      @cdb=db[path]
-      all=@cdb[:select].keys.each{|id|
-        @index[id]=self[id]=Item.new(id,@index,@def_proc).update(db_pack(id))
+      cdb=db[path]
+      @list=cdb[:select].keys.each{|id|
+        @index[id]=self[id]=Item.new(id,@index,@def_proc).update(db_pack(id,cdb))
       }
-      if gdb=@cdb[:group]
+      add_db(cdb)
+    end
+
+    def add_db(cdb)
+      if gdb=cdb[:group]
         gdb.each{|gid,hash|
-          def_group(gid,hash)
+          def_group(gid,cdb,hash)
         }
       else
         attr={"color" => @color}
         attr["caption"]='Command List'
         attr["column"]=1
-        attr[:list]=all
-        def_group('main',attr)
+        attr[:list]=@list
+        def_group('main',cdb,attr)
       end
       self
     end
 
     private
-    def db_pack(id)
+    def db_pack(id,cdb)
       property={}
-      @cdb.each{|sym,h|
+      cdb.each{|sym,h|
         case sym
         when :group,:alias
           next
@@ -45,11 +49,11 @@ class Command
     end
 
     # Make Default groups (generated from Db)
-    def def_group(gid,attr)
+    def def_group(gid,cdb,attr)
       grp=@group[gid]=Group.new(@index,attr,@def_proc)
       attr[:list].each{|id|
         grp[id]=@index[id]
-        grp.list[id]=@cdb[:label][id]
+        grp.list[id]=cdb[:label][id]
       }
     end
   end

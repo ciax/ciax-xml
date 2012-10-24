@@ -9,10 +9,11 @@ require "thread"
 module App
   class Sv < Sh
     attr_reader :fint
-    def initialize(adb)
+    def initialize(adb,fdb)
       super(adb)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       id=adb['id']
+      @fint=Frm::Cl.new(fdb)
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
       @stat.ext_sqlog if @fint.field.key?('ver')
       @stat.ext_watch_w

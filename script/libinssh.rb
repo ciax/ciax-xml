@@ -5,7 +5,7 @@ require "libwatch"
 module Ins
   module Sh
     def self.extended(obj)
-      Msg.type?(obj,App::Sh).init
+      Msg.type?(obj,App::Sh)
     end
 
     def init
@@ -33,6 +33,6 @@ end
 
 class App::Sh
   def ext_ins
-    extend(Ins::Sh)
+    extend(Ins::Sh).init
   end
 end

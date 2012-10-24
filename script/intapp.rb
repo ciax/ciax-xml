@@ -13,7 +13,7 @@ def shell(type,id)
     int=@alist[id]
     @flist[id]
   when /frm/
-    int=@alist[id].fint
+    int=@alist[id].fcl
   end
   int.shell
 end

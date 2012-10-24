@@ -5,7 +5,7 @@ require "libwatch"
 require "libfrmlist"
 module App
   class Sh < Int::Shell
-    attr_reader :stat,:fint
+    attr_reader :stat,:fcl
     def initialize(adb,fdb,fhost=nil)
       @adb=Msg.type?(adb,App::Db)
       Msg.type?(fdb,Frm::Db)
@@ -15,7 +15,7 @@ module App
       @port=adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)
       @pconv.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
-      @fint=Frm::Cl.new(fdb,fhost)
+      @fcl=Frm::Cl.new(fdb,fhost)
     end
 
     def to_s

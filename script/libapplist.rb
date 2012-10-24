@@ -25,7 +25,7 @@ module App
         else
           aint=Sv.new(adb,fdb,fhost).server
         end
-        aint.fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+        aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
         aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
         aint.set_switch('dev',"Change Device",ldb.list)
         h[id]=aint.ext_ins(id)

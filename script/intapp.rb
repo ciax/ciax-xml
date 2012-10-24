@@ -4,14 +4,14 @@ require "libfrmlist"
 
 Msg.getopts("cfh:lts")
 @alist=App::List.new('localhost')
-@flist=Frm::List.new
+@flist=Frm::List.new unless $opt["c"]
 id=ARGV.shift
 
 def shell(type,id)
   case type
   when /app/
     int=@alist[id]
-    @flist[id]
+    @flist[id] if @flist
   when /frm/
     int=@alist[id].fcl
   end

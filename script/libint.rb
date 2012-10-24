@@ -128,7 +128,7 @@ module Int
 
     def exe(cmd)
       super # Check only
-      send(cmd.join(' '))['msg']
+      send(cmd.join(' '))
     end
 
     private

@@ -9,7 +9,7 @@ module Ins
         hash={}
         hash.update(doc)
         doc.domain('cmdlist').each{|e0|
-          p=((hash[:app]||={})[:command]||={})
+          p=(hash[:command]||={})
           g=(p[:group]||={})
           key=e0.add_item(g)
           item=(g[key][:list]||=[])
@@ -19,7 +19,7 @@ module Ins
           }
         }
         doc.domain('status').each{|e0|
-          p=((hash[:app]||={})[:status]||={})
+          p=(hash[:status]||={})
           if e0.name == 'group'
             e0.add_item(p[:group]||={},'ref')
           else
@@ -30,23 +30,23 @@ module Ins
       }
     end
 
-    # overwrite Loc::Db
-    def cover_loc
-      require "liblocdb"
-      cover(Loc::Db.new(self['site'])).cover_app.cover_frm
+    # overwrite App::Db
+    def cover_app
+      require "libappdb"
+      cover(App::Db.new(self['app_type']))
     end
   end
 end
 
 if __FILE__ == $0
   begin
-    Msg.getopts("l",{"l"=>"loc mode"})
+    Msg.getopts("a",{"a"=>"app mode"})
     id=ARGV.shift
     db=Ins::Db.new(id)
   rescue InvalidID
     Msg.usage("(opt) [id] (key) ..",*$optlist)
     Msg.exit
   end
-  db=db.cover_loc if $opt["l"]
+  db=db.cover_app if $opt["a"]
   puts db.path(ARGV)
 end

@@ -28,7 +28,7 @@ module Frm
   class Cl < Sh
     def initialize(fdb,host=nil)
       super(fdb)
-      @host=Msg.type?(host||fdb['host'],String)
+      @host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(@host).load
       extend(Int::Client)
     end

@@ -57,10 +57,6 @@ module App
       extend(Int::Server)
     end
 
-    def server(type='app',json=true)
-      super
-    end
-
     private
     def prompt
       self['auto'] = @tid && @tid.alive?

@@ -22,7 +22,7 @@ module Frm
           int=Cl.new(fdb,$opt['h'])
         else
           par=$opt['l'] ? ['frmsim',id] : []
-          int=Sv.new(fdb,par).server
+          int=Sv.new(fdb,par)
         end
         int.set_switch('dev',"Change Device",ldb.list)
         h[id]=int

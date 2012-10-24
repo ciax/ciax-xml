@@ -11,7 +11,6 @@ rescue UserError
 end
 aint.extend(HexPack).ext_logging(id)
 if $opt["s"]
-  aint.server
   sleep
 else
   aint.shell

@@ -23,7 +23,7 @@ module App
         elsif $opt['c'] or $opt['a']
           aint=Cl.new(adb,fdb,fhost,$opt['h'])
         else
-          aint=Sv.new(adb,fdb,fhost).server
+          aint=Sv.new(adb,fdb,fhost)
         end
         aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
         aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})

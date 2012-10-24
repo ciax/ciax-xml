@@ -6,6 +6,7 @@ require "libcmdext"
 require "libupdate"
 
 module Int
+  # Shell has internal status for prompt
   class Shell < ExHash
     attr_reader :cmdlist,:int_proc
     def initialize
@@ -77,11 +78,10 @@ module Int
     extend Msg::Ver
     def self.extended(obj)
       init_ver('Server/%s',5,obj)
-      Msg.type?(obj,Shell)
+      Msg.type?(obj,Shell).init
     end
     # JSON expression of server stat will be sent.
-    # Or, block contents will be sent if block added.
-    def server(json=true)
+    def init
       Server.msg{"Init/Server:#{@port}"}
       Thread.new{
         Thread.pass
@@ -104,7 +104,7 @@ module Int
             end
             Server.msg{"Send:#{self['msg']}"}
             prompt
-            udp.send(json ? to_j : to_s,0,addr[2],addr[1]) #self.to_j
+            udp.send(to_j,0,addr[2],addr[1]) #self.to_j
           }
         }
       }

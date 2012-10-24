@@ -12,19 +12,20 @@ require "libinssh"
 module App
   autoload :Sv,"libappsv"
   class List < Hash
-    def initialize
+    def initialize(fhost=nil)
       $opt||={}
       super(){|h,id|
-        ldb=Loc::Db.new(id).cover_app
-        adb=ldb[:app]
+        ldb=Loc::Db.new(id)
+        adb=ldb.cover_app[:app]
+        fdb=ldb.cover_frm[:frm]
         if $opt['t']
-          aint=Test.new(adb)
+          aint=Test.new(adb,fdb,fhost)
         elsif $opt['c'] or $opt['a']
-          aint=Cl.new(adb,$opt['h'])
+          aint=Cl.new(adb,fdb,fhost,$opt['h'])
         else
-          fdb=ldb.cover_frm[:frm]
-          aint=Sv.new(adb,fdb).server
+          aint=Sv.new(adb,fdb,fhost).server
         end
+        aint.fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
         aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
         aint.set_switch('dev',"Change Device",ldb.list)
         h[id]=aint.ext_ins(id)

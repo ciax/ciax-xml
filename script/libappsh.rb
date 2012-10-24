@@ -5,15 +5,17 @@ require "libwatch"
 require "libfrmlist"
 module App
   class Sh < Int::Shell
-    attr_reader :stat
-    def initialize(adb)
+    attr_reader :stat,:fint
+    def initialize(adb,fdb,fhost=nil)
       @adb=Msg.type?(adb,App::Db)
+      Msg.type?(fdb,Frm::Db)
       super()
       @cobj.add_ext(adb,:command)
       self['id']=adb['id']
       @port=adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)
       @pconv.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+      @fint=Frm::Cl.new(fdb,fhost)
     end
 
     def to_s
@@ -23,8 +25,8 @@ module App
 
   class Test < Sh
     require "libsymconv"
-    def initialize(adb)
-      super
+    def initialize(adb,fdb)
+      super(adb,fdb,'localhost')
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
@@ -42,10 +44,9 @@ module App
   end
 
   class Cl < Sh
-    def initialize(adb,host=nil)
-      super(adb)
-      host||=adb['host']
-      @host=Msg.type?(host||adb['host'],String)
+    def initialize(adb,fdb,fhost=nil,ahost=nil)
+      super(adb,fdb,fhost)
+      @host=Msg.type?(ahost||adb['host']||'localhost',String)
       @stat.ext_url(@host).load
       extend(Int::Client)
     end

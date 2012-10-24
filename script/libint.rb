@@ -76,7 +76,7 @@ module Int
   module Server
     extend Msg::Ver
     def self.extended(obj)
-      init_ver('Server/%s',3,obj)
+      init_ver('Server/%s',5,obj)
       Msg.type?(obj,Shell)
     end
     # JSON expression of server stat will be sent.

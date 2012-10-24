@@ -24,7 +24,6 @@ module Frm
           par=$opt['l'] ? ['frmsim',id] : []
           int=Sv.new(fdb,par).server
         end
-        int.set_switch('lay',"Change Layer",{'app'=>"App mode"})
         int.set_switch('dev',"Change Device",ldb.list)
         h[id]=int
       }

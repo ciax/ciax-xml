@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmcrsh"
-require "libapplist"
+require "libappsl"
 
 module Mcr
   class Sv < Sh
@@ -8,7 +8,7 @@ module Mcr
     ACT=ENV['ACT'].to_i
     def initialize(client,mitm)
       super(mitm) #@mitm
-      @client=Msg.type?(client,App::List)
+      @client=Msg.type?(client,App::Slist)
       @index=0
       @logline=[]
       case ACT
@@ -111,7 +111,7 @@ if __FILE__ == $0
   id,*cmd=ARGV
   ARGV.clear
   begin
-    app=App::List.new
+    app=App::Slist.new
     mdb=Mcr::Db.new(id)
     cobj=Command.new
     cobj.add_ext(mdb,:macro)

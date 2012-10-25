@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require "libapplist"
+require "libappsl"
 require "libhexpack"
 
 Msg.getopts("h:s")
 id=ARGV.shift
 begin
-  aint=App::List.new[id]
+  aint=App::Slist.new[id]
 rescue UserError
   Msg.usage("(opt) [id]",*$optlist)
 end

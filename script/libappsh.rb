@@ -2,7 +2,6 @@
 require "libint"
 require "libstatus"
 require "libwatch"
-require "libfrmlist"
 module App
   class Main < Int::Shell
     attr_reader :stat,:fcl
@@ -41,6 +40,7 @@ module App
   end
 
   class Sh < Main
+    require "libfrmsh"
     def initialize(adb,fdb,fhost=nil)
       Msg.type?(fdb,Frm::Db)
       super(adb)

@@ -61,4 +61,43 @@ module App
       @stat.load.to_s
     end
   end
+
+  class List < Hash
+    require "liblocdb"
+    def initialize
+      $opt||={}
+      super(){|h,id|
+        ldb=Loc::Db.new(id)
+        adb=ldb.cover_app[:app]
+        fdb=ldb.cover_frm[:frm]
+        aint=yield id,adb,fdb
+        aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+        aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
+        aint.set_switch('dev',"Change Device",ldb.list)
+        h[id]=aint
+      }
+    end
+
+    def shell(id)
+      type='app'
+      while cmd=read(type,id)
+        case cmd
+        when 'app','frm'
+          type=cmd
+        else
+          id=cmd
+        end
+      end
+    end
+
+    private
+    def read(type,id)
+      case type
+      when /app/
+        self[id].shell
+      when /frm/
+        self[id].fcl.shell
+      end
+    end
+  end
 end

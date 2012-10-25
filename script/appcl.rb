@@ -2,7 +2,7 @@
 require "libappcl"
 
 ENV['VER']||='init/'
-Msg.getopts("cfh:lts")
+Msg.getopts("h:")
 @alist=App::Clist.new
 id=ARGV.shift
 
@@ -26,6 +26,6 @@ begin
       id=cmd
     end
   end
-  rescue UserError
+rescue UserError
   Msg.usage('(opt) [id]',*$optlist)
 end

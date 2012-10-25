@@ -61,13 +61,12 @@ class Command
   end
 end
 
-require 'libcmditem'
-
 if __FILE__ == $0
   require 'libinsdb'
+  require 'libcmditem'
   Msg.getopts("af")
   begin
-    idb=Ins::Db.new(ARGV.shift).cover_loc
+    idb=Ins::Db.new(ARGV.shift).cover_app
     cobj=Command.new
     if $opt["f"]
       cobj.add_ext(idb[:frm],:cmdframe)

@@ -7,11 +7,13 @@ require "libsqlog"
 require "thread"
 
 module App
+  autoload :Frm,'libfrmsl'
   class Sv < Sh
     def initialize(adb,fdb,fhost=nil)
       super
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       id=adb['id']
+      Frm::Slist.new[id] if fhost=='localhost'
       @stat.ext_save.ext_rsp(@fcl.field).ext_sym.upd
       @stat.ext_sqlog if @fcl.field.key?('ver')
       @stat.ext_watch_w

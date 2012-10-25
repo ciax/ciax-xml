@@ -90,6 +90,18 @@ module App
           id=cmd
         end
       end
+    rescue UserError
+      Msg.usage('(opt) [id] ....',*$optlist)
+    end
+
+    def server(ary)
+      ary.each{|i|
+        sleep 0.3
+        self[i]
+      }.empty? && alist[nil]
+      sleep
+    rescue UserError
+      Msg.usage('(opt) [id] ....',*$optlist)
     end
 
     private

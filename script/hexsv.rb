@@ -1,9 +1,12 @@
 #!/usr/bin/ruby
 require "libappsl"
+require "libhexpack"
 
 ENV['VER']||='init/'
-Msg.getopts("l")
-alist=App::Slist.new
+Msg.getopts("fh:lt")
+alist=App::Slist.new{|obj,id|
+  obj.extend(HexPack).ext_logging(id)
+}
 begin
   ARGV.each{|i|
     sleep 0.3

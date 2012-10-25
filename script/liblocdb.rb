@@ -28,7 +28,7 @@ module Loc
         cover(Frm::Db.new(self[:app]['frm_type']),:frm)
       end
       self[:frm]['host']||=self[:app]['host']
-      self[:frm]['port']||=self[:app]['port'].to_i+1000
+      self[:frm]['port']||=self[:app]['port'].to_i-1000
       self
     end
 

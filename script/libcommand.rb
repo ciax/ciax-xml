@@ -133,3 +133,4 @@ class Command < ExHash
     end
   end
 end
+require 'libcmditem'

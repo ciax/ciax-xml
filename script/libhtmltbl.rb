@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require 'libmsg'
 class HtmlTbl < Array
-  def initialize(idb)
-    sdb=Msg.type?(idb[:app],App::Db)[:status]
+  def initialize(adb)
+    sdb=Msg.type?(adb,App::Db)[:status]
     @label = sdb[:label]
     push "<div class=\"outline\">"
-    push "<div class=\"title\">#{idb['label']}</div>"
+    push "<div class=\"title\">#{adb['label']}</div>"
     gdb=sdb[:group]
     gdb[:items].each{|k,g|
       cap=gdb[:caption][k] || next
@@ -39,9 +39,9 @@ if __FILE__ == $0
   require "libinsdb"
   id=ARGV.shift
   begin
-    idb=Ins::Db.new(id).cover_loc
+    adb=Ins::Db.new(id).cover_app
   rescue InvalidID
     Msg.usage "[id]"
   end
-  puts HtmlTbl.new(idb)
+  puts HtmlTbl.new(adb)
 end

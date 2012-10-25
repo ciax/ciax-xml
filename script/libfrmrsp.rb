@@ -148,13 +148,14 @@ class Field::Var
 end
 
 if __FILE__ == $0
-  require "libinsdb"
+  require "liblocdb"
   require "libcmdext"
   Msg.getopts("m",{'m' => 'merge file'})
   Msg.usage "(opt) < logline",*$optlist if STDIN.tty? && ARGV.size < 1
   str=gets(nil) || exit
-  id=Logging.set_logline(str)[:id]
-  fdb=Ins::Db.new(id).cover_loc[:frm]
+  logdata=Logging.set_logline(str)
+  id=logdata[:id]
+  fdb=Loc::Db.new(id).cover_app.cover_frm[:frm]
   cobj=Command.new
   cobj.add_ext(fdb,:cmdframe)
   field=Field::Var.new.ext_file(fdb)

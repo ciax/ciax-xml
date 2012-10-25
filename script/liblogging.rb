@@ -58,7 +58,7 @@ module Logging
     ary=str.split("\t")
     h={:time => ary.shift}
     h[:id],h[:ver],dir,*h[:cmd]=ary.shift.split(':')
-    abort("Logline:Not response") unless /rcv/ === dir
+    abort("Logline:Line is not rcv") unless /rcv/ === dir
     h[:data]=decode(ary.shift)
     h
   end

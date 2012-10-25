@@ -127,7 +127,7 @@ if __FILE__ == $0
   id=ARGV.shift
   ARGV.clear
   begin
-    adb=Ins::Db.new(id).cover_loc[:app]
+    adb=Ins::Db.new(id).cover_app
     stat=Status::Var.new.ext_file(adb).load
     stat.extend(SqLog::Var).upd
     puts stat.sql

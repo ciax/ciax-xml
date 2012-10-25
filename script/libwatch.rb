@@ -237,7 +237,7 @@ if __FILE__ == $0
                 "v"=>"view data"})
   id=ARGV.shift
   begin
-    adb=Ins::Db.new(id).cover_loc[:app]
+    adb=Ins::Db.new(id).cover_app
   rescue InvalidID
     Msg.usage("(opt) [id]",*$optlist)
   end

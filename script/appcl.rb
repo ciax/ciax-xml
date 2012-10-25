@@ -1,9 +1,12 @@
 #!/usr/bin/ruby
 require "libappcl"
+require "libinssh"
 
 ENV['VER']||='init/'
 Msg.getopts("h:")
-@alist=App::Clist.new
+@alist=App::Clist.new{|obj,id|
+  obj.ext_ins(id)
+}
 id=ARGV.shift
 
 def shell(type,id)

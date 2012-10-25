@@ -98,7 +98,7 @@ module App
       ary.each{|i|
         sleep 0.3
         self[i]
-      }.empty? && alist[nil]
+      }.empty? && self[nil]
       sleep
     rescue UserError
       Msg.usage('(opt) [id] ....',*$optlist)

@@ -43,4 +43,24 @@ module Frm
       @field.load.to_s
     end
   end
+
+  class List < Hash
+    require "liblocdb"
+    def initialize
+      $opt||={}
+      super(){|h,id|
+        ldb=Loc::Db.new(id)
+        fdb=ldb.cover_app.cover_frm[:frm]
+        fint=yield id,fdb
+        fint.set_switch('dev',"Change Device",ldb.list)
+        h[id]=fint
+      }
+    end
+
+    def shell(id)
+      true while id=self[id].shell
+    rescue UserError
+      Msg.usage('(opt) [id] ....',*$optlist)
+    end
+  end
 end

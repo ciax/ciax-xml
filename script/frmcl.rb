@@ -1,14 +1,9 @@
 #!/usr/bin/ruby
-require "libfrmcl"
+require "libfrmsh"
 
 ENV['VER']||='init/'
 Msg.getopts("h:")
-fint=Frm::Clist.new($opt["h"])
 id=ARGV.shift
-begin
-  begin
-    int=fint[id]
-  end while id=int.shell
-rescue UserError
-  Msg.usage("(opt) [id]",*$optlist)
-end
+Frm::List.new{|id,fdb|
+  int=Frm::Cl.new(fdb,$opt["h"])
+}.shell(id)

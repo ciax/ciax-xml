@@ -1,14 +1,14 @@
 #!/usr/bin/ruby
-require "libfrmsl"
+require "libfrmsv"
 
 ENV['VER']||='init/'
 Msg.getopts("tl")
-fint=Frm::Slist.new
 id=ARGV.shift
-begin
-  begin
-    int=fint[id]
-  end while id=int.shell
-rescue UserError
-  Msg.usage("(opt) [id]",*$optlist)
-end
+Frm::List.new{|id,fdb|
+  if $opt['t']
+    int=Frm::Sh.new(fdb)
+  else
+    par=$opt['l'] ? ['frmsim',id] : []
+    int=Frm::Sv.new(fdb,par)
+  end
+}.shell(id)

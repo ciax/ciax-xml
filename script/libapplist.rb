@@ -19,11 +19,13 @@ module App
         adb=ldb.cover_app[:app]
         fdb=ldb.cover_frm[:frm]
         if $opt['t']
-          aint=Test.new(adb,fdb,fhost)
+          aint=Test.new(adb,fdb)
         elsif $opt['c'] or $opt['a']
-          aint=Cl.new(adb,fdb,fhost,$opt['h'])
+          aint=Cl.new(adb,fdb,$opt['h'])
+        elsif $opt['f']
+          aint=Sv.new(adb,fdb)
         else
-          aint=Sv.new(adb,fdb,fhost)
+          aint=Sv.new(adb,fdb,'localhost')
         end
         aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
         aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})

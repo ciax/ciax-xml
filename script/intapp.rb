@@ -3,8 +3,12 @@ require "libapplist"
 require "libfrmlist"
 
 Msg.getopts("cfh:lts")
-@alist=App::List.new('localhost')
-@flist=Frm::List.new unless $opt["c"]
+if $opt['c']||$opt['f']
+  @alist=App::List.new
+else
+  @alist=App::List.new('localhost')
+  @flist=Frm::List.new
+end
 id=ARGV.shift
 
 def shell(type,id)

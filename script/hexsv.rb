@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
-require "libappsl"
+require "libappsv"
 require "libhexpack"
 
 ENV['VER']||='init/'
 Msg.getopts("fh:lt")
-alist=App::Slist.new{|obj,id|
-  obj.extend(HexPack).ext_logging(id)
+alist=App::List.new{|id,adb,fdb|
+  App::Sv.new(adb,fdb,'localhost').extend(HexPack).ext_logging(id)
 }
 begin
   ARGV.each{|i|

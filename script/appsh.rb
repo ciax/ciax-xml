@@ -1,34 +1,22 @@
 #!/usr/bin/ruby
-require "libappsl"
+require "libappsv"
 require "libinssh"
 
 ENV['VER']||='init/'
 Msg.getopts("fh:lt")
-@alist=App::Slist.new{|obj,id|
-  obj.ext_ins(id)
-}
 id=ARGV.shift
 
-def shell(type,id)
-  case type
-  when /app/
-    int=@alist[id]
-  when /frm/
-    int=@alist[id].fcl
-  end
-  int.shell
-end
-
 begin
-  type='app'
-  while cmd=shell(type,id)
-    case cmd
-    when 'app','frm'
-      type=cmd
+  App::List.new{|id,adb,fdb|
+    if $opt['t']
+      aint=App::Test.new(adb)
+    elsif $opt['f']
+      aint=App::Sv.new(adb,fdb)
     else
-      id=cmd
+      aint=App::Sv.new(adb,fdb,'localhost')
     end
-  end
+    aint.ext_ins(id)
+  }.shell(id)
 rescue UserError
   Msg.usage('(opt) [id]',*$optlist)
 end

@@ -71,9 +71,11 @@ module App
         adb=ldb.cover_app[:app]
         fdb=ldb.cover_frm[:frm]
         aint=yield id,adb,fdb
-        aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
-        aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-        aint.set_switch('dev',"Change Device",ldb.list)
+        if aint === Sh
+          aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+          aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
+          aint.set_switch('dev',"Change Device",ldb.list)
+        end
         h[id]=aint
       }
     end

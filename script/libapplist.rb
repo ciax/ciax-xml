@@ -17,19 +17,21 @@ module App
       super(){|h,id|
         ldb=Loc::Db.new(id)
         adb=ldb.cover_app[:app]
-        fdb=ldb.cover_frm[:frm]
         if $opt['t']
-          aint=Test.new(adb,fdb)
-        elsif $opt['c'] or $opt['a']
-          aint=Cl.new(adb,fdb,$opt['h'])
-        elsif $opt['f']
-          aint=Sv.new(adb,fdb)
+          aint=Test.new(adb)
         else
-          aint=Sv.new(adb,fdb,'localhost')
+          fdb=ldb.cover_frm[:frm]
+          if $opt['c'] or $opt['a']
+            aint=Cl.new(adb,fdb,$opt['h'])
+          elsif $opt['f']
+            aint=Sv.new(adb,fdb)
+          else
+            aint=Sv.new(adb,fdb,'localhost')
+          end
+          aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+          aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
+          aint.set_switch('dev',"Change Device",ldb.list)
         end
-        aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
-        aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-        aint.set_switch('dev',"Change Device",ldb.list)
         h[id]=aint.ext_ins(id)
       }
     end

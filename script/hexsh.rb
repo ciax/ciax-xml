@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 require "libappsl"
-require "libinssh"
+require "libhexpack"
 
 ENV['VER']||='init/'
 Msg.getopts("fh:lt")
 @alist=App::Slist.new{|obj,id|
-  obj.ext_ins(id)
+  obj.extend(HexPack).ext_logging(id)
 }
 id=ARGV.shift
 

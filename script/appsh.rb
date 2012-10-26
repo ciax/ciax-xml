@@ -12,7 +12,7 @@ App::List.new{|id,adb,fdb,fsv|
   elsif $opt['f']
     aint=App::Sv.new(adb,fdb)
   else
-    fsv[fdb['id']]
+    fsv[fdb['site']]
     aint=App::Sv.new(adb,fdb,'localhost')
   end
   aint.ext_ins(id)

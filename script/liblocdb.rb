@@ -6,19 +6,18 @@ module Loc
   class Db < Db
     def initialize(id)
       super('ldb',id){|doc| rec_db(doc.top)}
-      cover(App::Db.new(self['app_type']),:app)
+      cover(App::Db.new(delete('app_type')),:app)
       app=self[:app]
+      app['site']=id
       frm=self[:frm]||{}
-      if ref=frm['ref']
-        frm.replace(Db.new(ref)[:frm])
-        frm['id']=ref
+      if ref=frm.delete('ref')
+        frm=cover(Db.new(ref)[:frm],:frm)
       else
-        frm=cover(Frm::Db.new(app['frm_type']),:frm)
+        frm=cover(Frm::Db.new(app.delete('frm_type')),:frm)
+        frm['site']||=id
       end
       frm['host']||=(app['host']||='localhost')
       frm['port']||=app['port'].to_i-1000
-      app['id']=id
-      frm['id']||=id
     end
 
     private

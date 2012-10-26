@@ -93,14 +93,16 @@ class Var < ExHash
       init_ver('Load',12)
       Msg.type?(obj,Var)
     end
+
     def init(db)
       @db=Msg.type?(db,Db)
-      self.id=db['id']||Msg.cfg_err("No ID")
+      self.id=db['site']||Msg.cfg_err("No ID")
       @dir="/json/"
       @base=@type+'_'+id
       @prefix=VarDir
       self
     end
+
     def load(tag=nil)
       begin
         Load.msg{"Loading #{fname(tag)}"}
@@ -121,11 +123,13 @@ class Var < ExHash
       end
       self
     end
+
     private
     def fname(tag=nil)
       base=[@type,@id,tag].compact.join('_')
       @prefix+@dir+base+".json"
     end
+
     def taglist
       Dir.glob(fname('*')).map{|f|
         f.slice(/.+_(.+)\.json/,1)
@@ -138,6 +142,7 @@ class Var < ExHash
     def self.extended(obj)
       Msg.type?(obj,Load)
     end
+
     def init(host)
       host||='localhost'
       @prefix="http://"+host
@@ -151,6 +156,7 @@ class Var < ExHash
       init_ver('Save',12)
       Msg.type?(obj,Load)
     end
+
     def save(data=nil,tag=nil)
       name=fname(tag)
       open(name,'w'){|f|

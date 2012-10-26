@@ -66,12 +66,15 @@ module App
     require "liblocdb"
     def initialize
       $opt||={}
+      @fsv=Frm::List.new{|id,fdb|
+        Frm::Sv.new(fdb)
+      }
       super(){|h,id|
         ldb=Loc::Db.new(id)
         adb=ldb.cover_app[:app]
         fdb=ldb.cover_frm[:frm]
-        aint=yield id,adb,fdb
-        if aint === Sh
+        aint=yield id,adb,fdb,@fsv
+        if aint.is_a? Sh
           aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
           aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
           aint.set_switch('dev',"Change Device",ldb.list)

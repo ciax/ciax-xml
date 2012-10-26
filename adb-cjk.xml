@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="cjk" id="cjk" label="Cart Jack Table" version="0">
+  <app frm_type="mel" id="cjk" label="Cart Jack Table" version="0">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gmtn" caption="Maintenance Commands" column="2">
+        <command id="upd" label="Status update">
+          <frmcmd name="getstat" />
+          <frmcmd name="getcmd" />
+        </command>
         <command id="get_tbl" label="Get Jack Table">
           <frmcmd name="rw_tbl">
             <argv>1</argv>

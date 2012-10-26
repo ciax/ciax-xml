@@ -9,14 +9,10 @@ require "thread"
 module App
   require 'libfrmsv'
   class Sv < Sh
-    @@fsv=Frm::List.new{|id,fdb|
-      Frm::Sv.new(fdb)
-    }
     def initialize(adb,fdb,fhost=nil)
       super
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       id=adb['id']
-      @@fsv[id] if fhost=='localhost'
       @stat.ext_save.ext_rsp(@fcl.field).ext_sym.upd
       @stat.ext_sqlog if @fcl.field.key?('ver')
       @stat.ext_watch_w

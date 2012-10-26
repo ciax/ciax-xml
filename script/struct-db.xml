@@ -3,7 +3,7 @@
   <Frm>
     <endian val="big or little"/>
     <ccmethod val="len or bcc"/>
-    <ver val="Version Number"/>
+    <version val="Version Number"/>
     <label val="Label"/>
     <cmdframe type="Hash">
       <label type="Hash">
@@ -53,7 +53,7 @@
   </Frm>
   <App>
     <frm_type val="Frm ID"/>
-    <ver val="Version Numnber"/>
+    <version val="Version Numnber"/>
     <label val="Label"/>
     <command type="Hash">
       <group type="Hash">

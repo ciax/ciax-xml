@@ -14,7 +14,7 @@ module App
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       id=adb['id']
       @stat.ext_save.ext_rsp(@fcl.field).ext_sym.upd
-      @stat.ext_sqlog if @fcl.field.key?('ver')
+      @stat.ext_sqlog if @fcl.field.key?('version')
       @stat.ext_watch_w
       Thread.abort_on_exception=true
       @cobj.values.each{|item|

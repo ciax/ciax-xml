@@ -11,7 +11,6 @@ module Frm
         hash={}
         hash.update(doc)
         hash['type']=hash.delete('id')
-        hash['ver']=hash.delete('version')
         cmd=hash[:cmdframe]={}
         rsp=hash[:rspframe]={:assign => {}}
         dc=doc.domain('cmdframe')

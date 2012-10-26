@@ -14,7 +14,7 @@ module Sym
 
     def init
       ads=@db[:status]
-      self.ver=@db['ver'].to_i
+      self.ver=@db['version'].to_i
       @symbol=ads[:symbol]||{}
       @sdb=Sym::Db.pack(['all',ads['table']])
       self['class']={'time' => 'normal'}

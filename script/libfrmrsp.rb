@@ -17,7 +17,7 @@ module Frm
 
     def init(cobj)
       @cobj=Msg.type?(cobj,Command)
-      self.ver=@db['ver'].to_i
+      self.ver=@db['version'].to_i
       rsp=@db.deep_copy[:rspframe]
       @sel=Hash[rsp[:frame]]
       @fds=rsp[:select]

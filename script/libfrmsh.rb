@@ -50,8 +50,7 @@ module Frm
       $opt||={}
       super(){|h,id|
         ldb=Loc::Db.new(id)
-        fdb=ldb.cover_app.cover_frm[:frm]
-        fint=yield id,fdb
+        fint=yield id,ldb[:frm]
         fint.set_switch('dev',"Change Device",ldb.list)
         h[id]=fint
       }

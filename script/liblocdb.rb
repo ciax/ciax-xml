@@ -5,31 +5,19 @@ require "libfrmdb"
 module Loc
   class Db < Db
     def initialize(id)
-      super('ldb',id){|doc|
-        hash=rec_db(doc.top)
-        [:app,:frm].each{|k|
-          hash[k]['id'] = id
-        }
-        hash
-      }
-    end
-
-    def cover_app(depth=nil)
-      cover(App::Db.new(self['app_type']),:app,depth)
-      self[:app]['host']||='localhost'
-      self
-    end
-
-    def cover_frm
+      super('ldb',id){|doc| rec_db(doc.top)}
+      cover(App::Db.new(self['app_type']),:app)
+      app=self[:app]
       frm=self[:frm]||{}
       if ref=frm['ref']
-        self[:frm]=Db.new(ref).cover_app.cover_frm[:frm]
+        frm.replace(Db.new(ref)[:frm])
+        frm['id']=ref
       else
-        cover(Frm::Db.new(self[:app]['frm_type']),:frm)
+        cover(Frm::Db.new(app['frm_type']),:frm)
       end
-      self[:frm]['host']||=self[:app]['host']
-      self[:frm]['port']||=self[:app]['port'].to_i-1000
-      self
+      frm['host']||=(app['host']||='localhost')
+      frm['port']||=app['port'].to_i-1000
+      app['id']=id
     end
 
     private
@@ -52,7 +40,7 @@ end
 if __FILE__ == $0
   begin
     id=ARGV.shift
-    db=Loc::Db.new(id).cover_app.cover_frm
+    db=Loc::Db.new(id)
   rescue
     Msg.usage("(opt) [id] (key) ..")
     Msg.exit

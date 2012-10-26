@@ -62,16 +62,16 @@ class Command
 end
 
 if __FILE__ == $0
-  require 'libinsdb'
+  require 'liblocdb'
   require 'libcmditem'
   Msg.getopts("af")
   begin
-    idb=Ins::Db.new(ARGV.shift).cover_app
+    ldb=Loc::Db.new(ARGV.shift)
     cobj=Command.new
     if $opt["f"]
-      cobj.add_ext(idb[:frm],:cmdframe)
+      cobj.add_ext(ldb[:frm],:cmdframe)
     else
-      cobj.add_ext(idb[:app],:command)
+      cobj.add_ext(ldb[:app],:command)
     end
     puts cobj.set(ARGV)
   rescue UserError

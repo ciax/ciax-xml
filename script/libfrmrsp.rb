@@ -155,7 +155,7 @@ if __FILE__ == $0
   str=gets(nil) || exit
   logdata=Logging.set_logline(str)
   id=logdata[:id]
-  fdb=Loc::Db.new(id).cover_app.cover_frm[:frm]
+  fdb=Loc::Db.new(id)[:frm]
   cobj=Command.new
   cobj.add_ext(fdb,:cmdframe)
   field=Field::Var.new.ext_file(fdb)

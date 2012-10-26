@@ -71,9 +71,7 @@ module App
       }
       super(){|h,id|
         ldb=Loc::Db.new(id)
-        adb=ldb.cover_app[:app]
-        fdb=ldb.cover_frm[:frm]
-        aint=yield id,adb,fdb,@fsv
+        aint=yield id,ldb[:app],ldb[:frm],@fsv
         if aint.is_a? Sh
           aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
           aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})

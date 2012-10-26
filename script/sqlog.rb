@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libinsdb"
+require "liblocdb"
 require "libcmdext"
 require "libfrmrsp"
 require "libapprsp"
@@ -10,15 +10,14 @@ require 'json'
 Msg.getopts("ivfa",{"v"=>"verbose","i"=>"init table"})
 id = ARGV.shift
 begin
-  idb=Ins::Db.new(id)
-  adb=idb.cover_app
+  ldb=Loc::Db.new(id)
   field=Field::Var.new
 rescue UserError
   Msg.usage("(opt) [id] (frmlog|fldlog)",
             "* input format 'sqlite3 -header'",*$optlist)
 end
 if $opt['a']
-  stat=Status::Var.new.ext_file(adb)
+  stat=Status::Var.new.ext_file(ldb[:adb])
   stat.ext_rsp(field)
   stat.extend(SqLog::Var)
   if $opt['i'] # Initial
@@ -47,7 +46,7 @@ if $opt['a']
   end
   puts stat.sql
 else
-  fdb=adb.cover_frm
+  fdb=ldb[:frm]
   field.ext_file(fdb)
   ver=fdb['frm_ver']
   cobj=Command.new

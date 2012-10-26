@@ -142,13 +142,11 @@ end
 
 if __FILE__ == $0
   begin
-    Msg.getopts("f")
     db=App::Db.new(ARGV.shift)
   rescue InvalidID
-    Msg.usage("(-f) [id] (key) ..",*$optlist)
+    Msg.usage("[id] (key) ..",*$optlist)
     Msg.exit
   end
-  db=db.cover_frm if $opt["f"]
   puts db.path(ARGV)
   exit
 end

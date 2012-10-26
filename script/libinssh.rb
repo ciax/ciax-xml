@@ -10,9 +10,8 @@ module Ins
     end
 
     def init(id)
-      idb=Ins::Db.new(id)
-      @cobj.extcmd.add_db(idb[:command])
-      @adb=idb.cover_app
+      @adb.ext_ins(id)
+      @cobj.extcmd.add_db(@adb[:command])
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@stat).ext_prt
       grp=@shcmd.add_group('view',"Change View Mode")

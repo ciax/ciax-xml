@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libdb"
+require "libappdb"
 
 module Ins
   class Db < Db
@@ -32,9 +32,15 @@ module Ins
 
     # overwrite App::Db
     def cover_app
-      require "libappdb"
       cover(App::Db.new(self['app_type']))
     end
+  end
+end
+
+class App::Db
+  def ext_ins(id)
+    ins=Ins::Db.new(id)
+    deep_update(ins)
   end
 end
 

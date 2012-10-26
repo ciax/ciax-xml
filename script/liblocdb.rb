@@ -13,11 +13,12 @@ module Loc
         frm.replace(Db.new(ref)[:frm])
         frm['id']=ref
       else
-        cover(Frm::Db.new(app['frm_type']),:frm)
+        frm=cover(Frm::Db.new(app['frm_type']),:frm)
       end
       frm['host']||=(app['host']||='localhost')
       frm['port']||=app['port'].to_i-1000
       app['id']=id
+      frm['id']||=id
     end
 
     private

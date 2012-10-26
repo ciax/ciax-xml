@@ -9,9 +9,8 @@ module App
       super('adb',id){|doc|
         hash={}
         hash.update(doc)
-        hash.delete('id')
-        hash['app_ver']=hash.delete('version')
-        hash['app_label']=hash.delete('label')
+        hash['type']=hash.delete('id')
+        hash['ver']=hash.delete('version')
         # Command DB
         cdb=hash[:command]=init_command(doc.domain('commands'))
         # Status DB

@@ -48,7 +48,7 @@ if $opt['a']
 else
   fdb=ldb[:frm]
   field.ext_file(fdb)
-  ver=fdb['frm_ver']
+  ver=fdb['ver']
   cobj=Command.new
   cobj.add_ext(fdb,:cmdframe)
   field.ext_rsp(cobj)

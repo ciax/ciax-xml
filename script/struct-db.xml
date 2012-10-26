@@ -3,8 +3,8 @@
   <Frm>
     <endian val="big or little"/>
     <ccmethod val="len or bcc"/>
-    <frm_ver val="Version Number"/>
-    <frm_label val="Label"/>
+    <ver val="Version Number"/>
+    <label val="Label"/>
     <cmdframe type="Hash">
       <label type="Hash">
         <Item key="Command Name" val="Label"/>
@@ -53,8 +53,8 @@
   </Frm>
   <App>
     <frm_type val="Frm ID"/>
-    <app_ver val="Version Numnber"/>
-    <app_label val="Label"/>
+    <ver val="Version Numnber"/>
+    <label val="Label"/>
     <command type="Hash">
       <group type="Hash">
         <Item key="Group ID" type="Hash">

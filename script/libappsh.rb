@@ -66,7 +66,7 @@ module App
     require "liblocdb"
     def initialize
       $opt||={}
-      @fsv=Frm::List.new{|id,fdb|
+      @fsv=Frm::List.new{|fdb|
         Frm::Sv.new(fdb)
       }
       super(){|h,id|

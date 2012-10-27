@@ -50,7 +50,7 @@ module Frm
       $opt||={}
       super(){|h,id|
         ldb=Loc::Db.new(id)
-        fint=yield id,ldb[:frm]
+        fint=yield ldb[:frm]
         fint.set_switch('dev',"Change Device",ldb.list)
         h[id]=fint
       }

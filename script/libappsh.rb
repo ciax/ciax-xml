@@ -67,7 +67,8 @@ module App
     def initialize
       $opt||={}
       @fsv=Frm::List.new{|fdb|
-        Frm::Sv.new(fdb)
+        par=$opt['l'] ? ['frmsim',fdb['site']] : []
+        Frm::Sv.new(fdb,par)
       }
       super(){|h,id|
         ldb=Loc::Db.new(id)

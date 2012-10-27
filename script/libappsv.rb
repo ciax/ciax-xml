@@ -9,7 +9,7 @@ require "thread"
 module App
   require 'libfrmsv'
   class Sv < Sh
-    def initialize(ldb,fhost=nil)
+    def initialize(ldb,fhost)
       super
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fcl.field).ext_sym.upd

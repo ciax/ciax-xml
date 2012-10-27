@@ -5,5 +5,5 @@ ENV['VER']||='init/'
 Msg.getopts("h:")
 id=ARGV.shift
 Frm::List.new{|fdb|
-  Frm::Cl.new(fdb,$opt["h"])
+  Frm::Cl.new(fdb,$opt['h'])
 }.shell(id)

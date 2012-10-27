@@ -114,6 +114,7 @@ module SqLog
   end
 end
 
+require "libstatus"
 class Var
   def ext_sqlog
     extend(SqLog::Var)
@@ -122,12 +123,11 @@ class Var
 end
 
 if __FILE__ == $0
-  require "libinsdb"
-  require "libstatus"
+  require "liblocdb"
   id=ARGV.shift
   ARGV.clear
   begin
-    adb=Ins::Db.new(id).cover_app
+    adb=Loc::Db.new(id)[:app]
     stat=Status::Var.new.ext_file(adb).load
     stat.extend(SqLog::Var).upd
     puts stat.sql

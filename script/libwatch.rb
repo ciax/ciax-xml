@@ -229,7 +229,7 @@ class Status::Var
 end
 
 if __FILE__ == $0
-  require "libinsdb"
+  require "liblocdb"
 
   Msg.getopts('rvt:',{
                 't'=>'test conditions[key=val,..]',
@@ -237,7 +237,7 @@ if __FILE__ == $0
                 "v"=>"view data"})
   id=ARGV.shift
   begin
-    adb=Ins::Db.new(id).cover_app
+    adb=Loc::Db.new(id)[:app]
   rescue InvalidID
     Msg.usage("(opt) [id]",*$optlist)
   end

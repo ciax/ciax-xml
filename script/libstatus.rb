@@ -130,7 +130,7 @@ module Status
 end
 
 if __FILE__ == $0
-  require "libinsdb"
+  require "liblocdb"
 
   Msg.getopts('rh:')
   id=ARGV.shift
@@ -140,9 +140,9 @@ if __FILE__ == $0
     if ! STDIN.tty?
       stat.load
       id=stat['id']
-      adb=Ins::Db.new(id).cover_app
+      adb=Loc::Db.new(id)[:app]
     else
-      adb=Ins::Db.new(id).cover_app
+      adb=Loc::Db.new(id)[:app]
       stat.ext_file(adb)
       if host=$opt['h']
         stat.ext_url(host).load

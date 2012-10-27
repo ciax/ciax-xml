@@ -63,10 +63,10 @@ class Status::Var
 end
 
 if __FILE__ == $0
-  require "libinsdb"
+  require "liblocdb"
   id=ARGV.shift
   begin
-    adb=Ins::Db.new(id).cover_app
+    adb=Loc::Db.new(id)[:app]
     stat=Status::Var.new.ext_file(adb).load
     stat.ext_sym.upd.ext_save.save
     print stat

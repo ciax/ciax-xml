@@ -7,7 +7,7 @@ module HexPack
   extend Msg::Ver
   def self.extended(obj)
     init_ver(obj)
-    Msg.type?(obj,App::Sh).init
+    Msg.type?(obj,App::Main).init
   end
 
   def init

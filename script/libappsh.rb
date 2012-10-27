@@ -41,18 +41,18 @@ module App
 
   class Sh < Main
     require "libfrmsh"
-    def initialize(adb,fdb,fhost=nil)
-      Msg.type?(fdb,Frm::Db)
-      super(adb)
+    def initialize(ldb,fhost=nil)
+      fdb=Msg.type?(ldb[:frm],Frm::Db)
+      super(ldb[:app])
       @fcl=Frm::Cl.new(fdb,fhost)
     end
   end
 
 
   class Cl < Sh
-    def initialize(adb,fdb,host=nil)
-      super(adb,fdb,host)
-      @host=Msg.type?(host||adb['host']||'localhost',String)
+    def initialize(ldb,host=nil)
+      super
+      @host=Msg.type?(host||ldb[:app]['host']||'localhost',String)
       @stat.ext_url(@host).load
       extend(Int::Client)
     end
@@ -71,7 +71,7 @@ module App
       }
       super(){|h,id|
         ldb=Loc::Db.new(id)
-        aint=yield id,ldb[:app],ldb[:frm],@fsv
+        aint=yield ldb,@fsv
         if aint.is_a? Sh
           aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
           aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})

@@ -5,6 +5,6 @@ require "libinssh"
 ENV['VER']||='init/'
 Msg.getopts("h:")
 id=ARGV.shift
-App::List.new{|id,adb,fdb|
-  App::Cl.new(adb,fdb,$opt['h']).ext_ins(id)
+App::List.new{|ldb|
+  App::Cl.new(ldb,$opt['h']).ext_ins(ldb['id'])
 }.shell(id)

@@ -4,6 +4,6 @@ require "libhexpack"
 
 ENV['VER']||='init/'
 Msg.getopts("fh:lt")
-App::List.new{|id,adb,fdb|
-  App::Sv.new(adb,fdb,'localhost').extend(HexPack).ext_logging(id)
+App::List.new{|ldb|
+  App::Sv.new(ldb,'localhost').extend(HexPack).ext_logging(ldb['id'])
 }.server(ARGV)

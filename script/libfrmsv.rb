@@ -15,7 +15,7 @@ module Frm
       if Msg.type?(iocmd,Array).empty?
         @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
         @io.ext_logging(fdb['site'],fdb['version'])
-        @field.ext_sqlog
+        # @field.ext_sqlog
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end

@@ -9,12 +9,11 @@ require "thread"
 module App
   require 'libfrmsv'
   class Sv < Sh
-    def initialize(adb,fdb,fhost=nil)
+    def initialize(ldb,fhost=nil)
       super
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-      id=adb['id']
       @stat.ext_save.ext_rsp(@fcl.field).ext_sym.upd
-      @stat.ext_sqlog if @fcl.field.key?('version')
+      @stat.ext_sqlog if @fcl.field.key?('ver')
       @stat.ext_watch_w
       Thread.abort_on_exception=true
       @cobj.values.each{|item|
@@ -52,7 +51,7 @@ module App
       @fcl.int_proc << proc{@stat.upd.save}
       # Logging if version number exists
       if @stat.ver
-        @cobj.ext_logging(id,@stat.ver){@stat.active}
+        @cobj.ext_logging(ldb[:app]['site'],@stat.ver){@stat.active}
       end
       auto_update
       extend(Int::Server)

@@ -3,6 +3,6 @@ require "libappsv"
 
 ENV['VER']||='init/'
 Msg.getopts("l")
-App::List.new{|id,adb,fdb|
-  App::Sv.new(adb,fdb,'localhost')
+App::List.new{|ldb|
+  App::Sv.new(ldb,'localhost')
 }.server(ARGV)

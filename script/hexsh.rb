@@ -6,13 +6,13 @@ ENV['VER']||='init/'
 Msg.getopts("fh:lt")
 id=ARGV.shift
 
-App::List.new{|id,adb,fdb|
+App::List.new{|ldb|
   if $opt['t']
-    aint=App::Test.new(adb)
+    aint=App::Test.new(ldb[:app])
   elsif $opt['f']
-    aint=App::Sv.new(adb,fdb)
+    aint=App::Sv.new(ldb)
   else
-    aint=App::Sv.new(adb,fdb,'localhost')
+    aint=App::Sv.new(ldb,'localhost')
   end
-  aint.extend(HexPack).ext_logging(id)
+  aint.extend(HexPack).ext_logging(ldb['id'])
 }.shell(id)

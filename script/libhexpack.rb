@@ -62,19 +62,19 @@ module HexPack
 
   module Sv
     def self.extended(obj)
-      Msg.type?(obj,App::Sv).init
+      Msg.type?(obj,App::Sv)
       self
     end
 
-    def init
+    def server(id=nil,ver=nil)
       @hex=View.new(self,@stat)
-      super(@port+1000){@hex.to_s}
+      extend(Logging).init('hexpack',id,ver) if id
+      super(@port+1000){to_s}
     end
 
-    def ext_logging(id,ver=0)
-      extend(Logging)
-      init('hexpack',id,ver)
-      self
+    def to_s
+      super
+      @hex.to_s
     end
   end
 
@@ -89,6 +89,12 @@ module HexPack
       append([],str)
       str
     end
+  end
+end
+
+class App::Sv
+  def ext_hex(id=nil,ver=nil)
+    extend(HexPack::Sv).server(id,ver)
   end
 end
 

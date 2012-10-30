@@ -12,5 +12,5 @@ App::List.new{|ldb,fsv|
     fsv[ldb[:frm]['site']]
     aint=App::Sv.new(ldb,'localhost')
   end
-  aint.extend(HexPack::Sv).ext_logging(ldb['id'])
+  aint.ext_hex(ldb['id'])
 }.shell(ARGV.shift)

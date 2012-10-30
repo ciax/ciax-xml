@@ -11,7 +11,7 @@ module HexPack
       @int=Msg.type?(int,Hash)
       @stat=Msg.type?(stat,Status::Var)
       id=stat.id || raise(InvalidID,"NO ID in Stat")
-      file="/home/ciax/config/sdb_#{id}.txt"
+      file=View.sdb(id)
       @res=["%",id,'_','0','0','_','']
       @list=[]
       open(file){|f|
@@ -25,6 +25,11 @@ module HexPack
         end
       }
       self
+    end
+
+    def self.sdb(id)
+      file="/home/ciax/config/sdb_#{id}.txt"
+      test(?r,file) && file
     end
 
     def to_s
@@ -82,6 +87,7 @@ end
 
 class App::Sv
   def ext_hex(id=nil,ver=nil)
+    return self unless HexPack::View.sdb(id)
     extend(HexPack::Sv).server(id,ver)
   end
 end

@@ -63,6 +63,10 @@ module Int
       }
     end
 
+    def ext_server(port)
+      extend(Server).init(port)
+    end
+
     private
     def prompt
       str=''
@@ -78,15 +82,15 @@ module Int
     extend Msg::Ver
     def self.extended(obj)
       init_ver('Server/%s',5,obj)
-      Msg.type?(obj,Shell).init
+      Msg.type?(obj,Shell)
     end
     # JSON expression of server stat will be sent.
-    def init
-      Server.msg{"Init/Server:#{@port}"}
+    def init(port)
+      Server.msg{"Init/Server:#{port}"}
       Thread.new{
         Thread.pass
         UDPSocket.open{ |udp|
-          udp.bind("0.0.0.0",@port.to_i)
+          udp.bind("0.0.0.0",port.to_i)
           loop {
             IO.select([udp])
             line,addr=udp.recvfrom(4096)

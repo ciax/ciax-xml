@@ -73,8 +73,10 @@ module HexPack
 
     def server(id=nil,ver=nil)
       @hex=View.new(self,@stat)
-      extend(Object::Logging).init('hexpack',id,ver) if id
-      @buf.post_flush << proc{append([],to_s)}
+      if id
+        extend(Object::Logging).init('hexpack',id,ver)
+        @buf.post_flush << proc{append([],to_s)}
+      end
       super(@port+1000){to_s}
     end
 

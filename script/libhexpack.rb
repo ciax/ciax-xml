@@ -68,14 +68,8 @@ module HexPack
 
     def init
       @hex=View.new(self,@stat)
-      super(@port+1000)
+      super(@port+1000){@hex.to_s}
     end
-
-    def to_s
-      super
-      @hex.to_s
-    end
-
 
     def ext_logging(id,ver=0)
       extend(Logging)

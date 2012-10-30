@@ -108,7 +108,13 @@ module Int
             end
             Server.msg{"Send:#{self['msg']}"}
             prompt
-            udp.send(to_j,0,addr[2],addr[1]) #self.to_j
+            if defined? yield
+              #For hexpack server
+              res=yield
+            else
+              res=to_j
+            end
+            udp.send(res,0,addr[2],addr[1])
           }
         }
       }

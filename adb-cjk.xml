@@ -38,7 +38,7 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
       <repeat from="0" to="10" counter="i">
         <repeat from="0" to="5" counter="t">
-          <group id="id$it$t" caption="ID $i,TAG $t" column="4">
+          <group id="id$it$t" column="4">
             <repeat from="0" to="3" counter="l">
               <repeat from="0" to="3" counter="j">
                 <value id="i$it$tl$lj$j" label="Lev$l,Jak$j" format="%.2f" formula="$#/100">

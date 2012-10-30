@@ -83,7 +83,19 @@
   </instance>
   <instance id="cro" label="OPT Helium Compressor" app_type="bbe"/>
   <instance id="crt" label="CIAX CART 3" app_type="mel"/>
-  <instance id="cjk" label="CART 3 Jack Setting" app_type="cjk"/>
+  <instance id="cjk" label="CART 3 Jack Setting" app_type="cjk">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <group ref="id0t0" caption="COMICS/CAS" />
+      <group ref="id0t1" caption="COMICS/OPT/MOV" />
+      <group ref="id1t0" caption="CIAO/CAS" />
+      <group ref="id1t2" caption="CIAO/OPT/FIX" />
+      <group ref="id2t0" caption="FOCAS/CAS" />
+      <group ref="id2t4" caption="FOCAS/IR/FIX" />
+      <group ref="id3t0" caption="MOIRCS/CAS" />
+      <group ref="id3t3" caption="MOIRCS/IR/MOV" />
+      <group ref="id4t0" caption="KYOTO3D/CAS" />
+    </status>
+  </instance>
   <instance id="cr2" label="CIAX CART 2" app_type="cr2"/>
   <instance id="cf1" label="S1 Helium Compressor Coolant Flow" app_type="k3n">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

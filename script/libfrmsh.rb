@@ -44,15 +44,10 @@ module Frm
     end
   end
 
-  class List < Hash
-    require "liblocdb"
+  class List < Int::List
     def initialize
-      $opt||={}
-      super(){|h,id|
-        ldb=Loc::Db.new(id)
-        fint=yield ldb[:frm]
-        fint.set_switch('dev',"Change Device",ldb.list)
-        h[id]=fint
+      super(){|ldb|
+        yield ldb[:frm]
       }
     end
 

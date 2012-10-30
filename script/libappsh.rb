@@ -62,23 +62,20 @@ module App
     end
   end
 
-  class List < Hash
-    require "liblocdb"
+  class List < Int::List
     def initialize
       $opt||={}
       @fsv=Frm::List.new{|fdb|
         par=$opt['l'] ? ['frmsim',fdb['site']] : []
         Frm::Sv.new(fdb,par)
       }
-      super(){|h,id|
-        ldb=Loc::Db.new(id)
+      super(){|ldb|
         aint=yield ldb,@fsv
-        if aint.is_a? Sh
+        if aint.is_a? App::Sh
           aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
           aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-          aint.set_switch('dev',"Change Device",ldb.list)
         end
-        h[id]=aint
+        aint
       }
     end
 
@@ -92,16 +89,6 @@ module App
           id=cmd
         end
       end
-    rescue UserError
-      Msg.usage('(opt) [id] ....',*$optlist)
-    end
-
-    def server(ary)
-      ary.each{|i|
-        sleep 0.3
-        self[i]
-      }.empty? && self[nil]
-      sleep
     rescue UserError
       Msg.usage('(opt) [id] ....',*$optlist)
     end

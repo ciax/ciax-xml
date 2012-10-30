@@ -146,4 +146,36 @@ module Int
       self
     end
   end
+
+  class List < Hash
+    require "liblocdb"
+    def initialize
+      ENV['VER']||='init/'
+      $opt||={}
+      super(){|h,id|
+        ldb=Loc::Db.new(id)
+        int=yield ldb
+        if int.is_a? Int::Shell
+          int.set_switch('dev',"Change Device",ldb.list)
+        end
+        h[id]=int
+      }
+    end
+
+    def shell(id)
+      true while id=self[id].shell
+    rescue UserError
+      Msg.usage('(opt) [id] ....',*$optlist)
+    end
+
+    def server(ary)
+      ary.each{|i|
+        sleep 0.3
+        self[i]
+      }.empty? && self[nil]
+      sleep
+    rescue UserError
+      Msg.usage('(opt) [id] ....',*$optlist)
+    end
+  end
 end

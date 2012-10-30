@@ -64,7 +64,7 @@ module Int
     end
 
     def ext_server(port)
-      extend(Server).init(port)
+      extend(Server).server(port){to_j}
     end
 
     private
@@ -85,7 +85,7 @@ module Int
       Msg.type?(obj,Shell)
     end
     # JSON expression of server stat will be sent.
-    def init(port)
+    def server(port)
       Server.msg{"Init/Server:#{port}"}
       Thread.new{
         Thread.pass
@@ -108,13 +108,7 @@ module Int
             end
             Server.msg{"Send:#{self['msg']}"}
             prompt
-            if defined? yield
-              #For hexpack server
-              res=yield
-            else
-              res=to_j
-            end
-            udp.send(res,0,addr[2],addr[1])
+            udp.send(yield,0,addr[2],addr[1])
           }
         }
       }

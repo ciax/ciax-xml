@@ -68,26 +68,14 @@ module HexPack
 
     def server(id=nil,ver=nil)
       @hex=View.new(self,@stat)
-      extend(Logging).init('hexpack',id,ver) if id
+      extend(Object::Logging).init('hexpack',id,ver) if id
+      @buf.post_flush << proc{append([],to_s)}
       super(@port+1000){to_s}
     end
 
     def to_s
       super
       @hex.to_s
-    end
-  end
-
-  module Logging
-    def self.extended(obj)
-      Msg.type?(obj,Sv)
-      obj.extend Object::Logging
-    end
-
-    def to_s
-      str=super
-      append([],str)
-      str
     end
   end
 end

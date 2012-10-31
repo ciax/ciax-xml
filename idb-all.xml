@@ -81,7 +81,20 @@
       <group ref="g2" caption="FMOS/IRS2(S11)" />
     </status>
   </instance>
-  <instance id="cro" label="OPT Helium Compressor" app_type="bbe"/>
+  <instance id="cro" label="OPT Helium Compressor" app_type="bbe">
+    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+      <group id="alias" caption="Alias" column="2">
+        <command id="on" label="X0 ON" alias="x0on" />
+        <command id="off" label="X0 OFF" alias="x0off" />
+      </group>
+    </cmdlist>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
+      <group ref="g0" caption="X0-3" />
+      <group ref="g1" caption="X4-7" />
+      <group ref="g2" caption="X8-11" />
+      <group ref="g3" caption="X12-15" />
+    </status>
+  </instance>
   <instance id="crt" label="CIAX CART 3" app_type="mel"/>
   <instance id="cjk" label="CART 3 Jack Setting" app_type="cjk">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

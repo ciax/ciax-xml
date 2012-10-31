@@ -67,6 +67,9 @@ module App
 
     def auto_update
       @tid=Thread.new{
+        tc=Thread.current
+        tc[:name]="Auto"
+        tc[:color]=4
         Thread.pass
         int=(@stat.period||300).to_i
         loop{

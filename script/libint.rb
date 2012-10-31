@@ -88,6 +88,9 @@ module Int
     def server(port)
       Server.msg{"Init/Server:#{port}"}
       Thread.new{
+        tc=Thread.current
+        tc[:name]="Server"
+        tc[:color]=9
         Thread.pass
         UDPSocket.open{ |udp|
           udp.bind("0.0.0.0",port.to_i)

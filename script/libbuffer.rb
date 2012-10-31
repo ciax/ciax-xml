@@ -50,6 +50,9 @@ class Buffer
 
   def proc_recv
     @tid=Thread.new{
+      tc=Thread.current
+      tc[:name]="Buffer"
+      tc[:color]=10
       Thread.pass
       loop{
         begin

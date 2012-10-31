@@ -68,9 +68,8 @@ module Msg
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       ts << '  '*@ind
-      tn=Thread.current[:name]||'Thread'
-      tc=Thread.current[:color]||7
-      ts << Msg.color("#{tn}:",tc)
+      tc=Thread.current
+      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
       ts << Msg.color("#{@prefix}:",@color)
       ts << text.inspect
     end

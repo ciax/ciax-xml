@@ -31,11 +31,7 @@ module App
         par.each{|exp| @stat.str_update(exp).upd}
         "Set #{par}"
       }
-    end
-
-    def exe(cmd)
-      @stat.set_time
-      super
+      @cobj.add_def_proc{@stat.set_time}
     end
   end
 

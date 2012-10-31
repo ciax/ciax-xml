@@ -64,6 +64,15 @@ class Command < ExHash
     raise(InvalidCMD,str+to_s)
   end
 
+  def add_def_proc
+    # block param is cmd ary
+    @domain.each{|k,v|
+      v.def_proc << proc{|par,id|
+        yield [id,*par]
+      }
+    }
+  end
+
   def ext_logging(id,ver=0)
     extend Logging
     init('appcmd',id,ver){yield}

@@ -29,7 +29,7 @@ class Command
     end
 
     def set_jump
-      @def_proc=[ proc{ raise(SelectID,@id) } ]
+      @def_proc=[proc{raise(SelectID,@id)}]
       self
     end
 

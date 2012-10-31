@@ -31,11 +31,7 @@ module Frm
       @host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(@host).load
       extend(Int::Client)
-    end
-
-    def exe(cmd)
-      super
-      to_s
+      @cobj.add_def_proc{to_s}
     end
 
     def to_s

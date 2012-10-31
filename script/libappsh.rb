@@ -35,7 +35,7 @@ module App
 
     def exe(cmd)
       @stat.set_time
-      super||'OK'
+      super
     end
   end
 

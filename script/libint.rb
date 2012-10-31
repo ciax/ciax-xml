@@ -22,6 +22,7 @@ module Int
     # Bad command => UserError
     # Accepted => Command
     # cmd is Array
+    # Override if alias convert
     def exe(cmd)
       @cobj.set(cmd).exe
       self
@@ -131,11 +132,11 @@ module Int
       @host||='localhost'
       @addr=Socket.pack_sockaddr_in(@port,@host)
       Client.msg{"Init/Client #{@host}:#{@port}"}
-    end
-
-    def exe(cmd)
-      super # Check only
-      send(cmd.join(' '))
+      @cobj.domain.each{|k,v|
+        v.def_proc << proc{|par,id|
+          send([id,*par].join(' '))
+        }
+      }
     end
 
     private

@@ -33,6 +33,11 @@ module Frm
       extend(Int::Client)
     end
 
+    def exe(cmd)
+      super
+      to_s
+    end
+
     def to_s
       @field.load.to_s
     end

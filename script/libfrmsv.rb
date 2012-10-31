@@ -40,10 +40,5 @@ module Frm
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")
     end
-
-    #Cmd should be array
-    def exe(cmd)
-      super||'OK'
-    end
   end
 end

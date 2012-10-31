@@ -67,7 +67,12 @@ module Msg
       return unless text
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
-      ts+'  '*@ind+Msg.color("#{@prefix}:",@color)+text.inspect
+      ts << '  '*@ind
+      tn=Thread.current[:name]||'Thread'
+      tc=Thread.current[:color]||7
+      ts << Msg.color("#{tn}:",tc)
+      ts << Msg.color("#{@prefix}:",@color)
+      ts << text.inspect
     end
 
     # VER= makes setenv "" to VER otherwise nil

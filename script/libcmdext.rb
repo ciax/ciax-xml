@@ -52,6 +52,7 @@ class Command
 
     # Make Default groups (generated from Db)
     def def_group(gid,cdb,attr)
+      return if @group.key?(gid)
       grp=@group[gid]=Group.new(@index,attr,@def_proc)
       attr[:list].each{|id|
         grp[id]=@index[id]

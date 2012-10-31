@@ -19,13 +19,14 @@ require "libupdate"
 class Buffer
   extend Msg::Ver
   attr_reader :post_flush
+  # svst: Server Status
   def initialize(svst=[])
     Buffer.init_ver(self)
     @svst=Msg.type?(svst,Hash)
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
-    @post_flush=Update.new
+    @post_flush=Update.new << proc{Buffer.msg{"Flushing"}}
     @proc_send=proc{}
     clear
   end
@@ -52,7 +53,11 @@ class Buffer
       Thread.pass
       loop{
         begin
-          yield recv
+          sort(*@q.shift)
+          while out=pick
+            yield out
+          end
+          flush
         rescue UserError
           warn $!.to_s.chomp
           Msg.alert(" in Buffer Thread")
@@ -68,28 +73,22 @@ class Buffer
   end
 
   private
-  # For cmdset thread
-  def recv
-    until out=pick
-      flush
-      #inp is frmcmd array (ary of ary)
-      p,inp=@q.shift
-      Buffer.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
-      (@outbuf[p]||=[]).concat(inp)
-      Buffer.msg{i=-1;
-        @outbuf.map{|o|
-          "SUB:Outbuf(#{i+=1}) is [#{o}]\n"
-        }
-      }
-    end
-    out
-  end
-
   def flush
     Buffer.msg{"SUB:Waiting"}
     @post_flush.upd
     # @q can not be empty depending on @post_flush
     @svst['isu']=false if @q.empty?
+  end
+
+  #inp is frmcmd array (ary of ary)
+  def sort(p,inp)
+    Buffer.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
+    (@outbuf[p]||=[]).concat(inp)
+    Buffer.msg{i=-1;
+      @outbuf.map{|o|
+        "SUB:Outbuf(#{i+=1}) is [#{o}]\n"
+      }
+    }
   end
 
   # Remove duplicated commands and pop one

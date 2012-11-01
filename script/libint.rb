@@ -105,6 +105,8 @@ module Int
                 @cobj.set(line.chomp.split(' ')).exe
                 @int_proc.upd
               end
+            rescue InvalidPAR
+              self['msg']=$!.to_s
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError

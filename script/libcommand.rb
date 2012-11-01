@@ -26,6 +26,7 @@ require 'libupdate'
 #  Command#pre_proc -> [{|par,id|},..]
 #  Command#def_proc ->[{|par,id|},..]
 #  Command#post_proc -> [{|par,id|},..]
+#  Command#add_def_proc
 #  Command#set(cmd=id+par):{
 #    Command[id]#set_par(par)
 #    Command#current -> Command[id]
@@ -119,7 +120,7 @@ class Command < ExHash
     def update_items(list)
       @list.update(list)
       list.each{|id,title|
-        @index[id]=self[id]=Item.new(id,@index).set_jump
+        @index[id]=self[id]=Item.new(id,@index).init_proc{raise(SelectID,id)}
       }
       self
     end

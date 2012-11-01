@@ -10,7 +10,7 @@ require 'libupdate'
 # Command::Item => {:label,:parameter,:select,:cid,:msg}
 #  Command::Item#set_par(par)
 #  Command::Item#subst(str)
-#  Command::Item#set_proc{|par,id|}
+#  Command::Item#init_proc{|par,id|}
 class Command
   class Item < ExHash
     include Math
@@ -23,13 +23,8 @@ class Command
       @def_proc=Msg.type?(def_proc,Array)
     end
 
-    def set_proc
+    def init_proc
       @def_proc=[proc{yield @par,@id}]
-      self
-    end
-
-    def set_jump
-      @def_proc=[proc{raise(SelectID,@id)}]
       self
     end
 

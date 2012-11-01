@@ -24,16 +24,16 @@ module Frm
         @io.snd(frm,cid)
         @field.upd{@io.rcv} && @field.save
       }
-      @cobj['set'].set_proc{|par|
+      @cobj['set'].init_proc{|par|
         @field.set(par[0],par[1]).save
       }
-      @cobj['unset'].set_proc{|par|
+      @cobj['unset'].init_proc{|par|
         @field.unset(par.first)
       }
-      @cobj['save'].set_proc{|par|
+      @cobj['save'].init_proc{|par|
         @field.savekey(par[0].split(','),par[1])
       }
-      @cobj['load'].set_proc{|par|
+      @cobj['load'].init_proc{|par|
         @field.load(par.first||'')
       }
       ext_server(@port)

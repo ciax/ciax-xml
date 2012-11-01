@@ -15,10 +15,10 @@ module Ins
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@stat).ext_prt
       grp=@shcmd.add_group('view',"Change View Mode")
-      grp.add_item('pri',"Print mode").set_proc{@output=@print}
-      grp.add_item('val',"Value mode").set_proc{@output=@stat.val}
-      grp.add_item('wat',"Watch mode").set_proc{@output=@wview} if @wview
-      grp.add_item('raw',"Raw mode").set_proc{@output=@stat}
+      grp.add_item('pri',"Print mode").init_proc{@output=@print}
+      grp.add_item('val',"Value mode").init_proc{@output=@stat.val}
+      grp.add_item('wat',"Watch mode").init_proc{@output=@wview} if @wview
+      grp.add_item('raw',"Raw mode").init_proc{@output=@stat}
       self
     end
 

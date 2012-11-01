@@ -19,7 +19,7 @@ module Mcr
       end
       @tid=Time.now.to_i
       self[:cid]=@mitm[:cid]
-      @cobj['run'].set_proc{macro}
+      @cobj['run'].init_proc{macro}
     end
 
     def to_s

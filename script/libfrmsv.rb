@@ -20,21 +20,21 @@ module Frm
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
       ext=@cobj.extcmd.ext_frmcmd(@field)
-      ext.def_proc << proc{|frm,cid|
-        @io.snd(frm,cid)
+      ext.def_proc << proc{|item|
+        @io.snd(item.getframe,item[:cid])
         @field.upd{@io.rcv} && @field.save
       }
-      @cobj['set'].init_proc{|par|
-        @field.set(par[0],par[1]).save
+      @cobj['set'].init_proc{|item|
+        @field.set(item.par[0],item.par[1]).save
       }
-      @cobj['unset'].init_proc{|par|
-        @field.unset(par.first)
+      @cobj['unset'].init_proc{|item|
+        @field.unset(item.par[0])
       }
-      @cobj['save'].init_proc{|par|
-        @field.savekey(par[0].split(','),par[1])
+      @cobj['save'].init_proc{|item|
+        @field.savekey(item.par[0].split(','),item.par[1])
       }
-      @cobj['load'].init_proc{|par|
-        @field.load(par.first||'')
+      @cobj['load'].init_proc{|item|
+        @field.load(item.par[0]||'')
       }
       ext_server(@port)
     rescue Errno::ENOENT

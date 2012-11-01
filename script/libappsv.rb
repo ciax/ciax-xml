@@ -26,9 +26,8 @@ module App
         @buf.send(1)
         self['msg']="Issued"
       }
-      @cobj.pre_proc << proc{|par,id|
-        cmd=[id,*par]
-        Msg.cmd_err("Blocking(#{cmd})") if @stat.block?(cmd)
+      @cobj.pre_proc << proc{|item|
+        Msg.cmd_err("Blocking(#{item[:cid]})") if @stat.block?(item.cmd)
       }
       gint=@intcmd.add_group('int',"Internal Command")
       gint.add_item('interrupt').init_proc{

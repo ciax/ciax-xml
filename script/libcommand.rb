@@ -11,22 +11,22 @@ require 'libupdate'
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
 #  Command::Group#update_items(list)
 #  Command::Group#list -> Msg::CmdList
-#  Command::Group#def_proc ->[{|par,id|},..]
+#  Command::Group#def_proc ->[{|item|},..]
 #
 # Command::Domain => {id => Command::Item}
 #  Command::Domain#add_group(key,title) -> Command::Group
 #  Command::Domain#group[key] -> Command::Group
-#  Command::Domain#def_proc ->[{|par,id|},..]
+#  Command::Domain#def_proc ->[{|item|},..]
 #
 # Command#new(db) => {id => Command::Item}
 #  Command#add_domain(key,title) -> Command::Domain
 #  Command#domain[key] -> Command::Domain
 #   Command#int -> Command::Domain['int']
 #  Command#current -> Command::Item
-#  Command#pre_proc -> [{|par,id|},..]
-#  Command#def_proc ->[{|par,id|},..]
-#  Command#post_proc -> [{|par,id|},..]
-#  Command#add_def_proc
+#  Command#pre_proc -> [{|item|},..]
+#  Command#def_proc ->[{|item|},..]
+#  Command#post_proc -> [{|item|},..]
+#  Command#add_def_proc -> [{|item|},..]
 #  Command#set(cmd=id+par):{
 #    Command[id]#set_par(par)
 #    Command#current -> Command[id]
@@ -68,9 +68,7 @@ class Command < ExHash
   def add_def_proc
     # block param is cmd ary
     @domain.each{|k,v|
-      v.def_proc << proc{|par,id|
-        yield [id,*par]
-      }
+      v.def_proc << proc{|item| yield item }
     }
   end
 

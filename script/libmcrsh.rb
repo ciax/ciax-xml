@@ -30,9 +30,9 @@ module Mcr
       @stat.extend(Sym::Conv).load.extend(Watch::Conv)
       grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
-      grp.add_item('set','[key=val,...]',[cri]).init_proc{|par|
-        par.each{|exp| @stat.str_update(exp).upd}
-        "Set #{par}"
+      grp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
+        item.par.each{|exp| @stat.str_update(exp).upd}
+        "Set #{item.par}"
       }
       self
     end

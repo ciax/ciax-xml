@@ -10,28 +10,29 @@ require 'libupdate'
 # Command::Item => {:label,:parameter,:select,:cid,:msg}
 #  Command::Item#set_par(par)
 #  Command::Item#subst(str)
-#  Command::Item#init_proc{|par,id|}
+#  Command::Item#init_proc{|item|}
 class Command
   class Item < ExHash
     include Math
-    attr_reader :id,:select
+    attr_reader :id,:par,:cmd,:select
     def initialize(id,index,def_proc=[])
       @id=id
       @index=Msg.type?(index,Command)
       @par=[]
+      @cmd=[]
       @select={} #destroyable
       @def_proc=Msg.type?(def_proc,Array)
     end
 
     def init_proc
-      @def_proc=[proc{yield @par,@id}]
+      @def_proc=[proc{yield(self)}]
       self
     end
 
     def exe
       plist=@index.pre_proc+@def_proc+@index.post_proc
       plist.map{|pr|
-        pr.call(@par,@id)
+        pr.call(self)
       }
       self
     end
@@ -40,7 +41,8 @@ class Command
       self[:msg]=''
       @par=validate(Msg.type?(par,Array))
       @select=deep_subst(self[:select])
-      self[:cid]=[@id,*par].join(':') # Used by macro
+      @cmd=[@id,*par]
+      self[:cid]=@cmd.join(':') # Used by macro
       Command.msg{"SetPAR: #{par}"}
       self[:msg]='OK'
       self

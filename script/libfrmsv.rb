@@ -28,13 +28,13 @@ module Frm
         @field.set(item.par[0],item.par[1]).save
       }
       @cobj['unset'].init_proc{|item|
-        @field.unset(item.par[0])
+        @field.unset(item.par[0]).save
       }
       @cobj['save'].init_proc{|item|
         @field.savekey(item.par[0].split(','),item.par[1])
       }
       @cobj['load'].init_proc{|item|
-        @field.load(item.par[0]||'')
+        @field.load(item.par[0]||'').save
       }
       ext_server(@port)
     rescue Errno::ENOENT

@@ -122,9 +122,7 @@ module App
             }
             (hash[name][idx]||=[]) << cmd
           when :block_grp
-            cdb[:group][e1['ref']].each{|grp|
-              (hash[:block][idx]||=[]) << [grp]
-            }
+            (hash[:block][idx]||=[]).concat(cdb[:group][e1['ref']][:list])
           else
             h=e1.to_h
             h.each_value{|v| v.replace(r0.format(v))}

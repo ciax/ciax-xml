@@ -24,12 +24,15 @@ module App
     require "libsymconv"
     def initialize(adb)
       super
-      @stat.extend(Sym::Conv).load.extend(Watch::Conv)
+      @stat.extend(Sym::Conv).load.extend(Watch::Conv).upd
       grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
         item.par.each{|exp| @stat.str_update(exp).upd}
         "Set #{item.par}"
+      }
+      @cobj.extcmd.def_proc << proc{|item|
+        @stat.block?(item.cmd)
       }
       @cobj.add_def_proc{@stat.set_time}
     end

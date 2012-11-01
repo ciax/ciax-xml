@@ -33,7 +33,7 @@ module Watch
     def block?(cmd)
       cmds=@watch['block']
       Var.msg{"BLOCKING:#{cmd}"} unless cmds.empty?
-      cmds.include?(cmd)
+      cmds.include?(cmd[0]) && Msg.cmd_err("Blocking(#{cmd})")
     end
 
     def issue
@@ -81,8 +81,7 @@ module Watch
     def upd
       super
       @watch['exec'].clear
-      return self if @crnt['time'] == @val['time']
-      upd_last
+      upd_last unless @crnt['time'] == @val['time']
       hash={'int' =>[],'exec' =>[],'block' =>[]}
       @active.clear
       @wdb[:stat].each{|i,v|

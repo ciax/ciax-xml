@@ -30,8 +30,7 @@ class Command
     end
 
     def exe
-      plist=@index.pre_proc+@def_proc+@index.post_proc
-      plist.map{|pr|
+      @def_proc.each{|pr|
         pr.call(self)
       }
       self

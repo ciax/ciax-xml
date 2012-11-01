@@ -22,12 +22,13 @@ module App
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fcl.exe(fcmd)}
-      @cobj.extcmd.def_proc << proc{
-        @buf.send(1)
-        self['msg']="Issued"
-      }
-      @cobj.pre_proc << proc{|item|
-        Msg.cmd_err("Blocking(#{item[:cid]})") if @stat.block?(item.cmd)
+      @cobj.extcmd.def_proc << proc{|item|
+        if @stat.block?(item.cmd)
+          Msg.cmd_err("Blocking(#{item[:cid]})")
+        else
+          @buf.send(1)
+          self['msg']="Issued"
+        end
       }
       gint=@intcmd.add_group('int',"Internal Command")
       gint.add_item('interrupt').init_proc{

@@ -23,9 +23,7 @@ require 'libupdate'
 #  Command#domain[key] -> Command::Domain
 #   Command#int -> Command::Domain['int']
 #  Command#current -> Command::Item
-#  Command#pre_proc -> [{|item|},..]
 #  Command#def_proc ->[{|item|},..]
-#  Command#post_proc -> [{|item|},..]
 #  Command#add_def_proc -> [{|item|},..]
 #  Command#set(cmd=id+par):{
 #    Command[id]#set_par(par)
@@ -34,7 +32,7 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:domain,:pre_proc,:post_proc
+  attr_reader :current,:domain
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -42,8 +40,6 @@ class Command < ExHash
     Command.init_ver(self)
     @current=nil
     @domain={}
-    @pre_proc=[]
-    @post_proc=[]
   end
 
   def add_domain(did,color=2)

@@ -52,7 +52,7 @@ module App
 
   class Cl < Sh
     def initialize(ldb,host=nil)
-      super
+      super(ldb,Frm::Cl.new(ldb[:frm],host))
       @host=Msg.type?(host||ldb[:app]['host']||'localhost',String)
       @stat.ext_url(@host).load
       extend(Int::Client)

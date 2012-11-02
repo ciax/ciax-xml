@@ -7,6 +7,7 @@ module Watch
   module Var
     extend Msg::Ver
     attr_reader :active,:period,:interval,:watch
+    attr_writer :proc
     def self.extended(obj)
       init_ver('Watch',3)
       Msg.type?(obj,Status::Var).init
@@ -23,6 +24,7 @@ module Watch
       @active=@watch['active']
       @period=300
       @interval=0.1
+      @proc=proc{}
       self
     end
 
@@ -37,15 +39,22 @@ module Watch
     end
 
     def issue
-      cmds=@watch['exec']
-      return [] if cmds.empty?
-      Var.msg{"ISSUED:#{cmds}"}
+      # block parm = cmd + priority(2)
+      cmds=@watch['exec'].each{|cmd|
+        @proc.call(cmd,2)
+        Var.msg{"ISSUED:#{cmd}"}
+      }.dup
+      @watch['exec'].clear
       cmds
     end
 
     def interrupt
-      cmds=@watch['int']
-      Var.msg{"ISSUED:#{cmds}"} unless cmds.empty?
+      # block parm = cmd + priority(0)
+      cmds=@watch['int'].each{|cmd|
+        @proc.call(cmd,0)
+        Var.msg{"ISSUED:#{cmd}"}
+      }.dup
+      @watch['int'].clear
       cmds
     end
 
@@ -81,7 +90,8 @@ module Watch
     def upd
       super
       @watch['exec'].clear
-      upd_last unless @crnt['time'] == @val['time']
+      return self if @crnt['time'] == @val['time']
+      upd_last 
       hash={'int' =>[],'exec' =>[],'block' =>[]}
       @active.clear
       @wdb[:stat].each{|i,v|

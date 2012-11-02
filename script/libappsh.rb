@@ -34,7 +34,7 @@ module App
       @cobj.extcmd.def_proc << proc{|item|
         @stat.block?(item.cmd)
       }
-      @cobj.add_def_proc{@stat.set_time}
+      @cobj.add_def_proc{@stat.set_time.upd}
     end
   end
 

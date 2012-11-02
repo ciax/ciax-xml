@@ -27,22 +27,20 @@ module App
         @buf.send(1)
         self['msg']="Issued"
       }
+      @stat.proc=proc{|cmd,p|
+          @cobj.set(cmd)
+          @buf.send(p)
+      }
       gint=@intcmd.add_group('int',"Internal Command")
       gint.add_item('interrupt').init_proc{
-        int=@stat.interrupt.each{|cmd|
-          @cobj.set(cmd)
-          @buf.send(0)
-        }
+        int=@stat.interrupt
         self['msg']="Interrupt #{int}"
       }
       @buf.post_flush << proc{
         @stat.upd.save
         sleep(@stat.interval||0.1)
         # Auto issue by watch
-        @stat.issue.each{|cmd|
-          @cobj.set(cmd)
-          @buf.send(2)
-        }
+        @stat.issue
       }
       # Update for Frm level manipulation
       @fcl.int_proc << proc{@stat.upd.save}

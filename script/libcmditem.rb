@@ -14,8 +14,7 @@ require 'libupdate'
 class Command
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:select
-    attr_accessor :def_proc
+    attr_reader :id,:par,:cmd,:select,:def_proc
     def initialize(id,index,def_proc=[])
       @id=id
       @index=Msg.type?(index,Command)
@@ -25,8 +24,8 @@ class Command
       @def_proc=Msg.type?(def_proc,Array)
     end
 
-    def init_proc
-      @def_proc=[proc{yield(self)}]
+    def init_proc(&p)
+      @def_proc=[p]
       self
     end
 

@@ -22,11 +22,11 @@ module App
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fint.exe(fcmd)}
-      @cobj.extcmd.def_proc=[proc{|item|
+      @cobj.extcmd.init_proc{|item|
         @stat.block?(item.cmd)
         @buf.send(1)
         self['msg']="Issued"
-      }]
+      }
       @stat.event_proc=proc{|cmd,p|
           @cobj.set(cmd)
           @buf.send(p)

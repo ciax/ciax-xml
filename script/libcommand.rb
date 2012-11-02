@@ -68,8 +68,7 @@ class Command < ExHash
   end
 
   class Domain < Hash
-    attr_reader :group
-    attr_accessor :def_proc
+    attr_reader :group,:def_proc
     def initialize(index,color=2,def_proc=[])
       @index=Msg.type?(index,Command)
       @group={}
@@ -82,14 +81,20 @@ class Command < ExHash
       @group[gid]=Group.new(@index,attr,@def_proc)
     end
 
+    def init_proc(&p)
+      values.each{|v|
+        v.init_proc(&p)
+      }
+      self
+    end
+
     def to_s
       @group.values.map{|grp| grp.to_s}.grep(/./).join("\n")
     end
   end
 
   class Group < Hash
-    attr_reader :list
-    attr_accessor :def_proc
+    attr_reader :list,:def_proc
     def initialize(index,attr,def_proc=[])
       Msg.type?(attr,Hash)
       @list=Msg::CmdList.new(attr)
@@ -110,6 +115,13 @@ class Command < ExHash
       @list.update(list)
       list.each{|id,title|
         @index[id]=self[id]=Item.new(id,@index).init_proc{raise(SelectID,id)}
+      }
+      self
+    end
+
+    def init_proc(&p)
+      values.each{|v|
+        v.init_proc(&p)
       }
       self
     end

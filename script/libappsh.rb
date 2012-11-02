@@ -28,8 +28,10 @@ module App
       grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
-        item.par.each{|exp| @stat.str_update(exp).upd}
-        "Set #{item.par}"
+        item.par.each{|exp|
+          @stat.str_update(exp).upd
+        }
+        self['msg']="Set #{item.par}"
       }
       @stat.event_proc=proc{|cmd|
         Msg.msg("#{cmd} is issued by event")

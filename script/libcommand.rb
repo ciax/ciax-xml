@@ -42,8 +42,8 @@ class Command < ExHash
     @domain={}
   end
 
-  def add_domain(did,color=2)
-    @domain[did]=Domain.new(self,color)
+  def add_domain(id,color=2)
+    @domain[id]=Domain.new(self,color)
   end
 
   def set(cmd)
@@ -76,11 +76,11 @@ class Command < ExHash
 
   class Domain < Hash
     attr_reader :group,:def_proc
-    def initialize(index,color=2)
+    def initialize(index,color=2,def_proc=[])
       @index=Msg.type?(index,Command)
       @group={}
       @color=color
-      @def_proc=[]
+      @def_proc=Msg.type?(def_proc,Array)
     end
 
     def add_group(gid,caption)

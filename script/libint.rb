@@ -134,7 +134,7 @@ module Int
       @host||='localhost'
       @addr=Socket.pack_sockaddr_in(@port,@host)
       Client.msg{"Init/Client #{@host}:#{@port}"}
-      @cobj.add_def_proc{|item|
+      @cobj.def_proc << proc{|item|
         send(item.cmd.join(' '))
       }
     end

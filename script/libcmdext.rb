@@ -5,12 +5,12 @@ require 'libcommand'
 class Command
   attr_reader :extcmd
   def add_ext(db,path)
-    @extcmd=@domain['ext']=ExtDom.new(self,db,path)
+    @extcmd=@domain['ext']=ExtDom.new(self,db,path,@def_proc)
   end
 
   class ExtDom < Domain
-    def initialize(index,db,path)
-      super(index,6)
+    def initialize(index,db,path,def_proc=[])
+      super(index,6,def_proc)
       @db=Msg.type?(db,Db)
       cdb=db[path]
       @list=cdb[:select].keys.each{|id|

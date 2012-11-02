@@ -15,6 +15,7 @@ class Command
   class Item < ExHash
     include Math
     attr_reader :id,:par,:cmd,:select
+    attr_accessor :def_proc
     def initialize(id,index,def_proc=[])
       @id=id
       @index=Msg.type?(index,Command)

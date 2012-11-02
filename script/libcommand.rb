@@ -24,7 +24,6 @@ require 'libupdate'
 #   Command#int -> Command::Domain['int']
 #  Command#current -> Command::Item
 #  Command#def_proc ->[{|item|},..]
-#  Command#add_def_proc -> [{|item|},..]
 #  Command#set(cmd=id+par):{
 #    Command[id]#set_par(par)
 #    Command#current -> Command[id]
@@ -32,7 +31,7 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:domain
+  attr_reader :current,:domain,:def_proc
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -40,10 +39,11 @@ class Command < ExHash
     Command.init_ver(self)
     @current=nil
     @domain={}
+    @def_proc=[]
   end
 
   def add_domain(id,color=2)
-    @domain[id]=Domain.new(self,color)
+    @domain[id]=Domain.new(self,color,@def_proc)
   end
 
   def set(cmd)
@@ -61,13 +61,6 @@ class Command < ExHash
     raise(InvalidCMD,str+to_s)
   end
 
-  def add_def_proc
-    # block param is cmd ary
-    @domain.each{|k,v|
-      v.def_proc << proc{|item| yield item }
-    }
-  end
-
   def ext_logging(id,ver=0)
     extend Logging
     init('appcmd',id,ver){yield}
@@ -75,7 +68,8 @@ class Command < ExHash
   end
 
   class Domain < Hash
-    attr_reader :group,:def_proc
+    attr_reader :group
+    attr_accessor :def_proc
     def initialize(index,color=2,def_proc=[])
       @index=Msg.type?(index,Command)
       @group={}
@@ -94,7 +88,8 @@ class Command < ExHash
   end
 
   class Group < Hash
-    attr_reader :list,:def_proc
+    attr_reader :list
+    attr_accessor :def_proc
     def initialize(index,attr,def_proc=[])
       Msg.type?(attr,Hash)
       @list=Msg::CmdList.new(attr)

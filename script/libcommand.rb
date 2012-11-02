@@ -52,13 +52,13 @@ class Command < ExHash
     @current=self[id].set_par(par)
   end
 
-  def to_s
-    @domain.values.reverse.map{|dom| dom.to_s}.grep(/./).join("\n")
+  def list
+    @domain.values.reverse.map{|dom| dom.list}.grep(/./).join("\n")
   end
 
   def error(str=nil)
     str= str ? str+"\n" : ''
-    raise(InvalidCMD,str+to_s)
+    raise(InvalidCMD,str+list)
   end
 
   def ext_logging(id,ver=0)
@@ -88,8 +88,8 @@ class Command < ExHash
       self
     end
 
-    def to_s
-      @group.values.map{|grp| grp.to_s}.grep(/./).join("\n")
+    def list
+      @group.values.map{|grp| grp.list.to_s}.grep(/./).join("\n")
     end
   end
 
@@ -124,10 +124,6 @@ class Command < ExHash
         v.init_proc(&p)
       }
       self
-    end
-
-    def to_s
-      @list.to_s
     end
   end
 

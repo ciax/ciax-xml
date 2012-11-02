@@ -27,7 +27,7 @@ module App
         @buf.send(1)
         self['msg']="Issued"
       }
-      @stat.proc=proc{|cmd,p|
+      @stat.event_proc=proc{|cmd,p|
           @cobj.set(cmd)
           @buf.send(p)
       }

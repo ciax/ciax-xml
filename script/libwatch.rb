@@ -7,7 +7,7 @@ module Watch
   module Var
     extend Msg::Ver
     attr_reader :active,:period,:interval,:watch
-    attr_writer :proc
+    attr_writer :event_proc
     def self.extended(obj)
       init_ver('Watch',3)
       Msg.type?(obj,Status::Var).init
@@ -24,7 +24,7 @@ module Watch
       @active=@watch['active']
       @period=300
       @interval=0.1
-      @proc=proc{}
+      @event_proc=proc{}
       self
     end
 
@@ -41,7 +41,7 @@ module Watch
     def issue
       # block parm = cmd + priority(2)
       cmds=@watch['exec'].each{|cmd|
-        @proc.call(cmd,2)
+        @event_proc.call(cmd,2)
         Var.msg{"ISSUED:#{cmd}"}
       }.dup
       @watch['exec'].clear
@@ -51,7 +51,7 @@ module Watch
     def interrupt
       # block parm = cmd + priority(0)
       cmds=@watch['int'].each{|cmd|
-        @proc.call(cmd,0)
+        @event_proc.call(cmd,0)
         Var.msg{"ISSUED:#{cmd}"}
       }.dup
       @watch['int'].clear

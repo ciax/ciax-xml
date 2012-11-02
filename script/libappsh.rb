@@ -31,10 +31,13 @@ module App
         item.par.each{|exp| @stat.str_update(exp).upd}
         "Set #{item.par}"
       }
+      @stat.event_proc=proc{|cmd|
+        Msg.msg("#{cmd} is issued by event")
+      }
       @cobj.extcmd.def_proc << proc{|item|
         @stat.block?(item.cmd)
       }
-      @cobj.add_def_proc{@stat.set_time.upd}
+      @cobj.add_def_proc{@stat.set_time.upd.issue}
     end
   end
 

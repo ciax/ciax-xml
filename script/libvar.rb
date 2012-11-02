@@ -104,22 +104,21 @@ class Var < ExHash
     end
 
     def load(tag=nil)
-      begin
-        Load.msg{"Loading #{fname(tag)}"}
-        open(fname(tag)){|f|
-          json_str=f.read
-          if json_str.empty?
-            Msg.warn(" -- json file is empty")
-          else
-            super(json_str)
-          end
-        }
-      rescue Errno::ENOENT
-        if tag
-          Msg.par_err("No such Tag","Tag=#{taglist}")
+      Load.msg{"Loading #{fname(tag)}"}
+      open(fname(tag)){|f|
+        json_str=f.read
+        if json_str.empty?
+          Msg.warn(" -- json file is empty")
         else
-          Msg.warn("  -- no json file (#{fname})")
+          super(json_str)
         end
+      }
+      self
+    rescue Errno::ENOENT
+      if tag
+        Msg.par_err("No such Tag","Tag=#{taglist}")
+      else
+        Msg.warn("  -- no json file (#{fname})")
       end
       self
     end
@@ -146,6 +145,13 @@ class Var < ExHash
     def init(host)
       host||='localhost'
       @prefix="http://"+host
+      self
+    end
+
+    def load(tag=nil)
+      super
+    rescue OpenURI::HTTPError
+      Msg.warn("  -- no url file (#{fname})")
       self
     end
   end

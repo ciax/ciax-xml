@@ -9,11 +9,11 @@ require "thread"
 module App
   require 'libfrmsv'
   class Sv < Sh
-    def initialize(ldb,fhost)
+    def initialize(ldb,fint)
       super
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-      @stat.ext_save.ext_rsp(@fcl.field).ext_sym.upd
-      @stat.ext_sqlog if @fcl.field.key?('ver')
+      @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
+      @stat.ext_sqlog if @fint.field.key?('ver')
       @stat.ext_watch_w
       Thread.abort_on_exception=true
       @cobj.values.each{|item|
@@ -21,7 +21,7 @@ module App
       }
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
-      @buf.proc_recv{|fcmd| @fcl.exe(fcmd)}
+      @buf.proc_recv{|fcmd| @fint.exe(fcmd)}
       @cobj.extcmd.def_proc << proc{|item|
         @stat.block?(item.cmd)
         @buf.send(1)
@@ -43,7 +43,7 @@ module App
         @stat.issue
       }
       # Update for Frm level manipulation
-      @fcl.int_proc << proc{@stat.upd.save}
+      @fint.int_proc << proc{@stat.upd.save}
       # Logging if version number exists
       if @stat.ver
         @cobj.ext_logging(ldb[:app]['site'],@stat.ver){@stat.active}

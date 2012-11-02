@@ -2,7 +2,6 @@
 require "libappsv"
 
 Msg.getopts("l")
-App::List.new{|ldb,fsv|
-  fsv[ldb[:frm]['site']]
-  App::Sv.new(ldb,'localhost')
+App::List.new{|ldb,fl|
+  App::Sv.new(ldb,fl[ldb[:frm]['site']])
 }.server(ARGV)

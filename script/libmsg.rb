@@ -271,6 +271,7 @@ module Msg
     optdb={}
     optdb['a']='app level'
     optdb['f']='frm level'
+    optdb['i']='isolated'
     optdb['l']='simulation mode'
     optdb['t']='test mode'
     optdb['s']='server mode'

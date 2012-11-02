@@ -4,7 +4,7 @@ require "libstatus"
 require "libwatch"
 module App
   class Main < Int::Shell
-    attr_reader :stat,:fcl
+    attr_reader :stat,:fint
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
       super()
@@ -43,10 +43,9 @@ module App
 
   class Sh < Main
     require "libfrmsh"
-    def initialize(ldb,fhost=nil)
-      fdb=Msg.type?(ldb[:frm],Frm::Db)
+    def initialize(ldb,fint)
+      @fint=Msg.type?(fint,Frm::Sh)
       super(ldb[:app])
-      @fcl=Frm::Cl.new(fdb,fhost)
     end
   end
 
@@ -67,14 +66,14 @@ module App
   class List < Int::List
     def initialize
       $opt||={}
-      @fsv=Frm::List.new{|fdb|
+      @fl=Frm::List.new{|fdb|
         par=$opt['l'] ? ['frmsim',fdb['site']] : []
         Frm::Sv.new(fdb,par)
       }
       super(){|ldb|
-        aint=yield ldb,@fsv
+        aint=yield ldb,@fl
         if aint.is_a? App::Sh
-          aint.fcl.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+          aint.fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
           aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
         end
         aint
@@ -101,7 +100,7 @@ module App
       when /app/
         self[id].shell
       when /frm/
-        self[id].fcl.shell
+        self[id].fint.shell
       end
     end
   end

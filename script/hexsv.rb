@@ -3,7 +3,6 @@ require "libappsv"
 require "libhexpack"
 
 Msg.getopts("l")
-App::List.new{|ldb,fsv|
-  fsv[ldb[:frm]['site']]
-  App::Sv.new(ldb,'localhost').ext_hex(ldb['id'])
+App::List.new{|ldb,fl|
+  App::Sv.new(ldb,fl[ldb[:frm]['site']]).ext_hex(ldb['id'])
 }.server(ARGV)

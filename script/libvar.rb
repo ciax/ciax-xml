@@ -97,7 +97,6 @@ class Var < ExHash
     def init(db)
       @db=Msg.type?(db,Db)
       self.id=db['site']||Msg.cfg_err("No SITE ID")
-      @dir="/json/"
       @base=@type+'_'+id
       @prefix=VarDir
       self
@@ -126,7 +125,7 @@ class Var < ExHash
     private
     def fname(tag=nil)
       base=[@type,@id,tag].compact.join('_')
-      @prefix+@dir+base+".json"
+      @prefix+"/json/"+base+".json"
     end
 
     def taglist

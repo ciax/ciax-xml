@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'libcommand'
+require 'librerange'
 
 # For External Command Domain
 class Command
@@ -14,9 +15,10 @@ class Command
       @db=Msg.type?(db,Db)
       cdb=db[path]
       @list=cdb[:select].keys.each{|id|
-        @index[id]=self[id]=Item.new(id,@index,@def_proc).update(db_pack(id,cdb))
+        self[id]=Item.new(id,@index,@def_proc).ext_item(cdb)
       }
       add_db(cdb)
+      @index.update(self)
     end
 
     def add_db(cdb)
@@ -34,22 +36,9 @@ class Command
         end
       end
       self
-    end
+     end
 
     private
-    def db_pack(id,cdb)
-      property={}
-      cdb.each{|sym,h|
-        case sym
-        when :group,:alias
-          next
-        else
-          property[sym]=h[id].dup if h.key?(id)
-        end
-      }
-      property
-    end
-
     # Make Default groups (generated from Db)
     def def_group(gid,cdb,attr)
       return if @group.key?(gid)
@@ -60,11 +49,81 @@ class Command
       }
     end
   end
+
+  module ExtItem
+    include Math
+    attr_reader :select,:label
+    def self.extended(obj)
+      Msg.type?(obj,Command::Item)
+    end
+
+    def init(cdb)
+      cdb.each{|k,v|
+        if a=v[@id]
+          self[k]=a
+        end
+      }
+      self
+    end
+
+    def set_par(par)
+      super
+      @select=deep_subst(self[:select])
+      self
+    end
+
+    # Substitute string($+number) with parameters
+    # par={ val,range,format } or String
+    # str could include Math functions
+    def subst(str)
+      return str unless /\$([\d]+)/ === str
+      Command.msg(1){"Substitute from [#{str}]"}
+      begin
+        res=str.gsub(/\$([\d]+)/){
+          i=$1.to_i
+          Command.msg{"Parameter No.#{i} = [#{@par[i-1]}]"}
+          @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
+        }
+        res=eval(res).to_s unless /\$/ === res
+        Msg.cfg_err("Nil string") if res == ''
+        res
+      ensure
+        Command.msg(-1){"Substitute to [#{res}]"}
+      end
+    end
+
+    private
+    def deep_subst(data)
+      case data
+      when Array
+        res=[]
+        data.each{|v|
+          res << deep_subst(v)
+        }
+      when Hash
+        res={}
+        data.each{|k,v|
+          res[k]=deep_subst(v)
+        }
+      else
+        res=subst(data)
+      end
+      res
+    end
+  end
+
+  class Item
+    def ext_item(cdb)
+      extend ExtItem
+      init(cdb)
+      self
+    end
+  end
 end
 
 if __FILE__ == $0
   require 'liblocdb'
-  require 'libcmditem'
+
   Msg.getopts("af")
   begin
     ldb=Loc::Db.new(ARGV.shift)

@@ -14,13 +14,12 @@ require 'libupdate'
 class Command
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:select,:def_proc
+    attr_reader :id,:par,:cmd,:def_proc
     def initialize(id,index,def_proc=[])
       @id=id
       @index=Msg.type?(index,Command)
       @par=[]
       @cmd=[]
-      @select={} #destroyable
       @def_proc=Msg.type?(def_proc,Array)
     end
 
@@ -39,7 +38,6 @@ class Command
     def set_par(par)
       self[:msg]=''
       @par=validate(Msg.type?(par,Array))
-      @select=deep_subst(self[:select])
       @cmd=[@id,*par]
       self[:cid]=@cmd.join(':') # Used by macro
       Command.msg{"SetPAR: #{par}"}
@@ -47,49 +45,12 @@ class Command
       self
     end
 
-    # Substitute string($+number) with parameters
-    # par={ val,range,format } or String
-    # str could include Math functions
-    def subst(str)
-      return str unless /\$([\d]+)/ === str
-      Command.msg(1){"Substitute from [#{str}]"}
-      begin
-        res=str.gsub(/\$([\d]+)/){
-          i=$1.to_i
-          Command.msg{"Parameter No.#{i} = [#{@par[i-1]}]"}
-          @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
-        }
-        res=eval(res).to_s unless /\$/ === res
-        Msg.cfg_err("Nil string") if res == ''
-        res
-      ensure
-        Command.msg(-1){"Substitute to [#{res}]"}
-      end
-    end
-
     private
-    def deep_subst(data)
-      case data
-      when Array
-        res=[]
-        data.each{|v|
-          res << deep_subst(v)
-        }
-      when Hash
-        res={}
-        data.each{|k,v|
-          res[k]=deep_subst(v)
-        }
-      else
-        res=subst(data)
-      end
-      res
-    end
-
     # Parameter structure {:type,:val}
     def validate(pary)
       pary=Msg.type?(pary.dup,Array)
-      return pary unless key?(:parameter)
+      return pary unless self[:parameter]
+warn self[:parameter].class
       self[:parameter].map{|par|
         disp=par[:list].join(',')
         unless str=pary.shift

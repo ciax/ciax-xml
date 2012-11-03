@@ -30,7 +30,7 @@ module Int
 
     def set_switch(key,title,list)
       grp=@shcmd.add_group(key,title)
-      grp.update_items(list)
+      grp.update_items(list).init_proc{|item| raise(SelectID,item.id)}
       self
     end
 

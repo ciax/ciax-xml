@@ -8,17 +8,20 @@ require 'libupdate'
 #Access method
 #Command < Hash
 # Command::Group => {id => Command::Item}
+#  Command::Group#list -> Msg::CmdList.to_s
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
-#  Command::Group#update_items(list)
-#  Command::Group#list -> Msg::CmdList
+#  Command::Group#update_items(list){|id|}
 #  Command::Group#def_proc ->[{|item|},..]
 #
 # Command::Domain => {id => Command::Item}
+#  Command::Domain#list -> String
 #  Command::Domain#add_group(key,title) -> Command::Group
 #  Command::Domain#group[key] -> Command::Group
+#  Command::Domain#list -> String
 #  Command::Domain#def_proc ->[{|item|},..]
 #
 # Command#new(db) => {id => Command::Item}
+#  Command#list -> String
 #  Command#add_domain(key,title) -> Command::Domain
 #  Command#domain[key] -> Command::Domain
 #   Command#int -> Command::Domain['int']
@@ -111,11 +114,13 @@ class Command < ExHash
     end
 
     #property = {:label => 'titile',:parameter => Array}
-    def update_items(list)
-      @list.update(list)
-      list.each{|id,title|
-        @index[id]=self[id]=Item.new(id,@index).init_proc{raise(SelectID,id)}
+    def update_items(labels,ary=nil)
+      ary||=labels.keys
+      ary.each{|id|
+        @list[id]=labels[id]
+        self[id]=Item.new(id,@index)
       }
+      @index.update(self)
       self
     end
 

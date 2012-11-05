@@ -80,8 +80,8 @@ class Command < ExHash
     end
 
     def add_group(gid,caption,column=2)
-      attr={"caption" => caption,"column" => column,"color" => @color}
-      @group[gid]=Group.new(@index,attr,@def_proc)
+      gat={"caption" => caption,"column" => column,"color" => @color}
+      @group[gid]=Group.new(@index,gat,@def_proc)
     end
 
     def init_proc(&p)
@@ -92,21 +92,21 @@ class Command < ExHash
     end
 
     def list
-      @group.values.map{|grp| grp.list.to_s}.grep(/./).join("\n")
+      @group.values.map{|grp| grp.list}.grep(/./).join("\n")
     end
   end
 
   class Group < Hash
-    attr_reader :list,:def_proc
+    attr_reader :def_proc
     def initialize(index,gat,def_proc=[])
       @gat=Msg.type?(gat,Hash)
-      @list=Msg::CmdList.new(gat)
+      @labeldb=Msg::CmdList.new(gat)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,Array)
     end
 
     def add_item(id,title=nil,parameter=nil)
-      @list[id]=title
+      @labeldb[id]=title
       self[id]=Item.new(id,@index,@def_proc)
       property={:label => title}
       property[:parameter] = parameter if parameter
@@ -118,7 +118,7 @@ class Command < ExHash
     #property = {:label => 'titile',:parameter => Array}
     def update_items(labels)
       (@gat[:list]||labels.keys).each{|id|
-        @list[id]=labels[id]
+        @labeldb[id]=labels[id]
         self[id]=Item.new(id,@index)
       }
       @index.update(self)
@@ -130,6 +130,10 @@ class Command < ExHash
         v.init_proc(&p)
       }
       self
+    end
+
+    def list
+      @labeldb.to_s
     end
   end
 

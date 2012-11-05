@@ -86,7 +86,7 @@ class Command < ExHash
 
     def init_proc(&p)
       values.each{|v|
-        v.init_proc(&p)
+        v.def_proc=[p]
       }
       self
     end
@@ -97,7 +97,7 @@ class Command < ExHash
   end
 
   class Group < Hash
-    attr_reader :def_proc
+    attr_accessor :def_proc
     def initialize(index,gat,def_proc=[])
       @gat=Msg.type?(gat,Hash)
       @labeldb=Msg::CmdList.new(gat)
@@ -127,7 +127,7 @@ class Command < ExHash
 
     def init_proc(&p)
       values.each{|v|
-        v.init_proc(&p)
+        v.def_proc=[p]
       }
       self
     end

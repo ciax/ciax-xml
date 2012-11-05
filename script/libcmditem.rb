@@ -14,7 +14,8 @@ require 'libupdate'
 class Command
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:def_proc
+    attr_reader :id,:par,:cmd
+    attr_accessor :def_proc
     def initialize(id,index,def_proc=[])
       @id=id
       @index=Msg.type?(index,Command)
@@ -50,7 +51,6 @@ class Command
     def validate(pary)
       pary=Msg.type?(pary.dup,Array)
       return pary unless self[:parameter]
-warn self[:parameter].class
       self[:parameter].map{|par|
         disp=par[:list].join(',')
         unless str=pary.shift

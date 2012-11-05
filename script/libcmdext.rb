@@ -25,13 +25,13 @@ class Command
       if cdb
         labels=cdb[:label]
         if gdb=cdb[:group]
+          #For App Layer
           gdb.each{|gid,gat|
             def_group(gid,labels,gat)
           }
         else
-          gat={"color" => @color}
-          gat["caption"]='Command List'
-          gat["column"]=1
+          #For Frm Layer
+          gat={'color' => @color,'caption' => "Command List"}
           gat[:list]=cdb[:select].keys
           def_group('main',labels,gat)
         end

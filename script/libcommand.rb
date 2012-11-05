@@ -80,7 +80,7 @@ class Command < ExHash
     end
 
     def add_group(gid,caption,column=2)
-      gat={"caption" => caption,"column" => column,"color" => @color}
+      gat={'caption' => caption,'column' => column,'color' => @color}
       @group[gid]=Group.new(@index,gat,@def_proc)
     end
 

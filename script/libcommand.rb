@@ -79,8 +79,8 @@ class Command < ExHash
       @def_proc=Msg.type?(def_proc,Array)
     end
 
-    def add_group(gid,caption)
-      attr={"caption" => caption,"column" => 2,"color" => @color}
+    def add_group(gid,caption,column=2)
+      attr={"caption" => caption,"column" => column,"color" => @color}
       @group[gid]=Group.new(@index,attr,@def_proc)
     end
 
@@ -98,9 +98,9 @@ class Command < ExHash
 
   class Group < Hash
     attr_reader :list,:def_proc
-    def initialize(index,attr,def_proc=[])
-      Msg.type?(attr,Hash)
-      @list=Msg::CmdList.new(attr)
+    def initialize(index,gat,def_proc=[])
+      @gat=Msg.type?(gat,Hash)
+      @list=Msg::CmdList.new(gat)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,Array)
     end
@@ -116,9 +116,8 @@ class Command < ExHash
     end
 
     #property = {:label => 'titile',:parameter => Array}
-    def update_items(labels,ary=nil)
-      ary||=labels.keys
-      ary.each{|id|
+    def update_items(labels)
+      (@gat[:list]||labels.keys).each{|id|
         @list[id]=labels[id]
         self[id]=Item.new(id,@index)
       }

@@ -14,7 +14,7 @@ class Command
       super(index,6,def_proc)
       @db=Msg.type?(db,Db)
       cdb=db[path]
-      @list=cdb[:select].keys.each{|id|
+      cdb[:select].keys.each{|id|
         self[id]=Item.new(id,@index,@def_proc).ext_item(cdb)
       }
       add_db(cdb)
@@ -23,16 +23,17 @@ class Command
 
     def add_db(cdb)
       if cdb
+        labels=cdb[:label]
         if gdb=cdb[:group]
-          gdb.each{|gid,hash|
-            def_group(gid,cdb,hash)
+          gdb.each{|gid,gat|
+            def_group(gid,labels,gat)
           }
         else
-          attr={"color" => @color}
-          attr["caption"]='Command List'
-          attr["column"]=1
-          attr[:list]=@list
-          def_group('main',cdb,attr)
+          gat={"color" => @color}
+          gat["caption"]='Command List'
+          gat["column"]=1
+          gat[:list]=cdb[:select].keys
+          def_group('main',labels,gat)
         end
       end
       self
@@ -40,13 +41,9 @@ class Command
 
     private
     # Make Default groups (generated from Db)
-    def def_group(gid,cdb,attr)
+    def def_group(gid,labels,gat)
       return if @group.key?(gid)
-      grp=@group[gid]=Group.new(@index,attr,@def_proc)
-      attr[:list].each{|id|
-        grp[id]=@index[id]
-        grp.list[id]=cdb[:label][id]
-      }
+      @group[gid]=Group.new(@index,gat,@def_proc).update_items(labels)
     end
   end
 

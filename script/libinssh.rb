@@ -12,7 +12,7 @@ module Ins
     def init(id)
       @adb.ext_ins(id)
       cdb=@adb[:command]
-      @cobj.extcmd.add_db(cdb)
+      @extcmd.add_db(cdb)
       (cdb[:alias]||{}).each{|k,v| @cobj[k]=@cobj[v]}
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@stat).ext_prt

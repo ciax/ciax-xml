@@ -8,7 +8,7 @@ module App
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
       super()
-      @cobj.add_ext(adb,:command)
+      @extcmd=@cobj.add_ext(adb,:command)
       self['id']=adb['site']
       @port=adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)

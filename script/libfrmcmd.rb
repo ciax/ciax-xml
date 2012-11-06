@@ -7,7 +7,7 @@ module Frm
     extend Msg::Ver
     def self.extended(obj)
       init_ver('FrmCmd',9)
-      Msg.type?(obj,Command::Item)
+      Msg.type?(obj,Command::ExtItem)
       Cmd.msg{"Extending Command by Frm::Cmd"}
     end
 

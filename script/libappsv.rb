@@ -22,7 +22,7 @@ module App
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fint.cobj.set(fcmd).exe}
-      @cobj.extcmd.init_proc{|item|
+      @extcmd.init_proc{|item|
         @stat.block?(item.cmd)
         @buf.send(1)
         self['msg']="Issued"

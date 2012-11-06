@@ -4,9 +4,8 @@ require 'librerange'
 
 # For External Command Domain
 class Command
-  attr_reader :extcmd
   def add_ext(db,path)
-    @extcmd=@domain['ext']=ExtDom.new(self,db,path,@def_proc)
+    @domain['ext']=ExtDom.new(self,db,path,@def_proc)
   end
 
   class ExtDom < Domain

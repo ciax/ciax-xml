@@ -7,7 +7,7 @@ module Frm
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
       super()
-      @cobj.add_ext(fdb,:cmdframe)
+      @extcmd=@cobj.add_ext(fdb,:cmdframe)
       self['id']=fdb['site']
       @port=fdb['port'].to_i
       @field=Field::Var.new.ext_file(fdb).load

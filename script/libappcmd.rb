@@ -8,7 +8,7 @@ module App
     extend Msg::Ver
     def self.extended(obj)
       init_ver('AppCmd',9)
-      Msg.type?(obj,Command::Item)
+      Msg.type?(obj,Command::ExtItem)
     end
 
     #frmcmd is ary of ary

@@ -19,8 +19,7 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      ext=@cobj.extcmd.ext_frmcmd(@field)
-      ext.init_proc{|item|
+      @extcmd.ext_frmcmd(@field).init_proc{|item|
         @io.snd(item.getframe,item[:cid])
         @field.upd{@io.rcv} && @field.save
       }

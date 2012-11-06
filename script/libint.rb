@@ -8,7 +8,7 @@ require "libupdate"
 module Int
   # Shell has internal status for prompt
   class Shell < ExHash
-    attr_reader :cmdlist,:int_proc
+    attr_reader :cobj,:int_proc
     def initialize
       @cobj=Command.new
       @shcmd=@cobj.add_domain('sh',5)
@@ -16,16 +16,6 @@ module Int
       @int_proc=Update.new # Proc for Interactive Operation
       @pconv={} #prompt convert table (j2s)
       @port=0
-    end
-
-    # No command => UserError
-    # Bad command => UserError
-    # Accepted => Command
-    # cmd is Array
-    # Override if alias convert
-    def exe(cmd)
-      @cobj.set(cmd).exe
-      self
     end
 
     def set_switch(key,title,list)
@@ -50,7 +40,7 @@ module Int
           if line.empty?
             puts self
           else
-            exe(line.split(' '))
+            @cobj.set(line.split(' ')).exe
             @int_proc.upd
             puts self['msg']
           end

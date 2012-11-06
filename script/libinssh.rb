@@ -11,7 +11,9 @@ module Ins
 
     def init(id)
       @adb.ext_ins(id)
-      @cobj.extcmd.add_db(@adb[:command])
+      cdb=@adb[:command]
+      @cobj.extcmd.add_db(cdb)
+      (cdb[:alias]||{}).each{|k,v| @cobj[k]=@cobj[v]}
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@stat).ext_prt
       grp=@shcmd.add_group('view',"Change View Mode")
@@ -20,11 +22,6 @@ module Ins
       grp.add_item('wat',"Watch mode").init_proc{@output=@wview} if @wview
       grp.add_item('raw',"Raw mode").init_proc{@output=@stat}
       self
-    end
-
-    def exe(cmd)
-      cmd[0]=(@adb[:command][:alias]||={})[cmd[0]]||cmd[0]
-      super(cmd)
     end
 
     def to_s

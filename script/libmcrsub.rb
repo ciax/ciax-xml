@@ -1,13 +1,15 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libcmdext"
-require "libappsl"
+require "libappsh"
 
 module Mcr
   class Sub < Array
     extend Msg::Ver
     ACT=ENV['ACT'].to_i
-    @@client=App::Slist.new
+    @@client=App::List.new{|ldb,fl|
+      App::Test.new(ldb[:app])
+    }
     def initialize(cobj,int=nil)
       Sub.init_ver(self,9)
       @int=int

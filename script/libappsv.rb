@@ -21,7 +21,7 @@ module App
       }
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
-      @buf.proc_recv{|fcmd| @fint.cobj.set(fcmd).exe}
+      @buf.proc_recv{|fcmd| @fint.exe(fcmd)}
       @extcmd.init_proc{|item|
         @stat.block?(item.cmd)
         @buf.send(1)

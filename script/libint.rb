@@ -8,7 +8,7 @@ require "libupdate"
 module Int
   # Shell has internal status for prompt
   class Shell < ExHash
-    attr_reader :cobj,:int_proc
+    attr_reader :int_proc
     def initialize
       @cobj=Command.new
       @shcmd=@cobj.add_domain('sh',5)
@@ -16,6 +16,11 @@ module Int
       @int_proc=Update.new # Proc for Interactive Operation
       @pconv={} #prompt convert table (j2s)
       @port=0
+    end
+
+    def exe(cmd)
+      @cobj.set(cmd).exe
+      self
     end
 
     def set_switch(key,title,list)

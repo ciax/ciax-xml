@@ -56,7 +56,7 @@ class Command < ExHash
   end
 
   def list
-    @domain.values.reverse.map{|dom| dom.list}.grep(/./).join("\n")
+    @domain.values.map{|dom| dom.list}.grep(/./).join("\n")
   end
 
   def error(str=nil)

@@ -8,8 +8,8 @@ require "thread"
 
 module App
   require 'libfrmsv'
-  class Sv < Sh
-    def initialize(adb,fint)
+  class Sv < Exe
+    def initialize(ldb,fint)
       super
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
@@ -46,10 +46,10 @@ module App
       @fint.int_proc << proc{@stat.upd.save}
       # Logging if version number exists
       if @stat.ver
-        @cobj.ext_logging(adb['site'],@stat.ver){@stat.active}
+        @cobj.ext_logging(@adb['site'],@stat.ver){@stat.active}
       end
       auto_update
-      ext_server(adb['port'])
+      ext_server(@adb['port'])
     end
 
     private

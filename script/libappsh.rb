@@ -2,16 +2,26 @@
 require "libint"
 require "libstatus"
 require "libwatch"
+require "libfrmsh"
+
 module App
   class Exe < Int::Exe
     attr_reader :stat,:fint
-    def initialize(adb)
-      @adb=Msg.type?(adb,App::Db)
+    def initialize(ldb,fint=nil)
+      @adb=Msg.type?(ldb,Loc::Db)[:app]
+      @fint=fint||Frm::Exe.new(ldb[:frm])
       super()
-      @extcmd=@cobj.add_ext(adb,:command)
-      self['id']=adb['site']
-      @port=adb['port'].to_i
-      @stat=Status::Var.new.ext_watch_r.ext_file(adb)
+      @extcmd=@cobj.add_ext(@adb,:command)
+      self['id']=@adb['site']
+      @port=@adb['port'].to_i
+      @stat=Status::Var.new.ext_watch_r.ext_file(@adb)
+    end
+
+    def app_shell
+      ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+      set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
+      @fint.ext_shell.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+      self
     end
 
     def to_s
@@ -21,8 +31,8 @@ module App
 
   class Test < Exe
     require "libsymconv"
-    def initialize(adb)
-      super
+    def initialize(ldb)
+      super(ldb)
       @stat.extend(Sym::Conv).load.extend(Watch::Conv).upd
       grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
@@ -43,19 +53,9 @@ module App
     end
   end
 
-  class Sh < Exe
-    require "libfrmsh"
-    def initialize(adb,fint)
-      @fint=Msg.type?(fint,Frm::Sh)
-      super(adb)
-      ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
-    end
-  end
-
-
-  class Cl < Sh
+  class Cl < Exe
     def initialize(ldb,host=nil)
-      super(ldb[:app],Frm::Cl.new(ldb[:frm],host))
+      super(ldb,Frm::Cl.new(ldb[:frm],host))
       @host=Msg.type?(host||ldb[:app]['host']||'localhost',String)
       @stat.ext_url(@host).load
       ext_client(ldb[:app]['port'])
@@ -71,15 +71,10 @@ module App
       $opt||={}
       @fl=Frm::List.new{|fdb|
         par=$opt['l'] ? ['frmsim',fdb['site']] : []
-        Frm::Sv.new(fdb,par)
+        Frm::Sv.new(fdb,par).ext_shell
       }
       super(){|ldb|
-        aint=yield ldb,@fl
-        if aint.is_a? App::Sh
-          aint.fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
-          aint.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-        end
-        aint
+        yield ldb,@fl
       }
     end
 

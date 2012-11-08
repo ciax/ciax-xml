@@ -9,8 +9,9 @@ require "thread"
 module App
   require 'libfrmsv'
   class Sv < Exe
-    def initialize(ldb,fint)
-      super
+    def initialize(adb,fint)
+      super(adb)
+      @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
       @stat.ext_sqlog if @fint.field.key?('ver')
@@ -75,6 +76,11 @@ module App
         sleep int
         }
       }
+      self
+    end
+
+    def app_shell
+      extend(Sh).app_shell(@fint)
       self
     end
   end

@@ -7,19 +7,13 @@ require "libfrmsh"
 module App
   class Exe < Int::Exe
     attr_reader :stat
-    def initialize(ldb,fint=nil)
-      @adb=Msg.type?(ldb,Loc::Db)[:app]
-      @fint=fint||Frm::Exe.new(ldb[:frm])
+    def initialize(adb)
+      @adb=Msg.type?(adb,Db)
       super()
       @extcmd=@cobj.add_ext(@adb,:command)
       self['id']=@adb['site']
       @port=@adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(@adb)
-    end
-
-    def app_shell
-      extend(Sh)
-      self
     end
 
     def to_s
@@ -29,8 +23,8 @@ module App
 
   class Test < Exe
     require "libsymconv"
-    def initialize(ldb)
-      super(ldb)
+    def initialize(adb)
+      super
       @stat.extend(Sym::Conv).load.extend(Watch::Conv).upd
       grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
@@ -53,10 +47,11 @@ module App
 
   module Sh
     def self.extended(obj)
-      Msg.type?(obj,Exe).init
+      Msg.type?(obj,Exe)
     end
 
-    def init
+    def app_shell(fint)
+      @fint=Msg.type?(fint,Frm::Exe)
       ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
       @fint.ext_shell.set_switch('lay',"Change Layer",{'app'=>"App mode"})
@@ -69,11 +64,16 @@ module App
   end
 
   class Cl < Exe
-    def initialize(ldb,host=nil)
-      super(ldb,Frm::Cl.new(ldb[:frm],host))
-      @host=Msg.type?(host||ldb[:app]['host']||'localhost',String)
+    def initialize(adb,host=nil)
+      super(adb)
+      @host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(@host).load
-      ext_client(ldb[:app]['port'])
+      ext_client(adb['port'])
+    end
+
+    def app_shell(fint)
+      extend(Sh).app_shell(fint)
+      self
     end
 
     def to_s

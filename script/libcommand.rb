@@ -107,12 +107,12 @@ class Command < ExHash
 
     def add_item(id,title=nil,parameter=nil)
       @labeldb[id]=title
-      self[id]=Item.new(id,@index,@def_proc)
+      item=self[id]=Item.new(id,@index,@def_proc)
       property={:label => title}
       property[:parameter] = parameter if parameter
-      self[id].update(property)
+      item.update(property)
       @index.update(self)
-      self
+      item
     end
 
     #property = {:label => 'titile',:parameter => Array}

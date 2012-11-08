@@ -39,7 +39,9 @@ module Int
 
   # Shell has internal status for prompt
   module Shell
+    extend Msg::Ver
     def self.extended(obj)
+      init_ver('Shell/%s',2,obj)
       Msg.type?(obj,Exe)
     end
 
@@ -55,6 +57,7 @@ module Int
           end
         }.compact.join('')+'>'
       }
+      Shell.msg{"Init/Shell"}
       self
     end
 

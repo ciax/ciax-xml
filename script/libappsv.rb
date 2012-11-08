@@ -48,16 +48,13 @@ module App
       if @stat.ver
         @cobj.ext_logging(@adb['site'],@stat.ver){@stat.active}
       end
+      @upd_proc << proc{
+        self['auto'] = @tid && @tid.alive?
+        self['watch'] = @stat.active?
+        self['na'] = !@buf.alive?
+      }
       auto_update
       ext_server(@adb['port'])
-    end
-
-    private
-    def prompt
-      self['auto'] = @tid && @tid.alive?
-      self['watch'] = @stat.active?
-      self['na'] = !@buf.alive?
-      super
     end
 
     def auto_update

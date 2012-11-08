@@ -47,6 +47,14 @@ module Int
       #prompt convert table (j2s)
       @pconv=Msg.type?(pconv,Hash)
       @shcmd=@cobj.add_domain('sh',5)
+      @prompt=''
+      @upd_proc << proc{
+        @prompt=keys.map{|k|
+          if k != 'msg' and v=self[k]
+            @pconv[k]||v
+          end
+        }.compact.join('')+'>'
+      }
       self
     end
 
@@ -65,7 +73,7 @@ module Int
       grp=@shcmd.add_group('sh',"Shell Command")
       grp.update_items({'q'=>"Quit",'D^'=>"Interrupt"})
       loop {
-        line=Readline.readline(prompt,true)||'interrupt'
+        line=Readline.readline(@prompt,true)||'interrupt'
         break if /^q/ === line
         self['msg']='OK'
         begin
@@ -85,16 +93,6 @@ module Int
         end
         @upd_proc.upd
       }
-    end
-
-    private
-    def prompt
-      str=''
-      each{|k,v|
-        next if /msg/ === k
-        str << (@pconv[k]||v) if v
-      }
-      str+'>'
     end
   end
 

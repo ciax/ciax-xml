@@ -64,35 +64,44 @@ module Int
       self
     end
 
-    # 'q' gives exit break (loop returns nil)
+    # '^D' gives exit break
     # mode gives special break (loop returns mode)
     def shell
       Readline.completion_proc= proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
       grp=@shcmd.add_group('sh',"Shell Command")
-      grp.update_items({'q'=>"Quit",'D^'=>"Interrupt"})
-      loop {
-        line=Readline.readline(@prompt,true)||'interrupt'
-        break if /^q/ === line
-        self['msg']='OK'
-        begin
-          if line.empty?
+      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+      begin
+        while line=Readline.readline(@prompt,true)
+          case line
+          when /^q/
+            break
+          when ''
             puts self
           else
-            @cobj.set(line.split(' ')).exe
-            @int_proc.upd
-            puts self['msg']
+            sh_exe(line)
           end
-        rescue SelectID
-          break $!.to_s
-        rescue InvalidCMD
-          puts $!.to_s
-        rescue UserError
-          puts $!.to_s
+          @upd_proc.upd
         end
-        @upd_proc.upd
-      }
+      rescue SelectID
+        $!.to_s
+      rescue Interrupt
+        sh_exe('interrupt')
+        retry
+      end
+    end
+
+    private
+    def sh_exe(line)
+      self['msg']='OK'
+      exe(line.split(' '))
+      @int_proc.upd
+      puts self['msg']
+    rescue InvalidCMD
+      puts $!.to_s
+    rescue UserError
+      puts $!.to_s
     end
   end
 
@@ -102,6 +111,7 @@ module Int
       init_ver('Server/%s',5,obj)
       Msg.type?(obj,Exe)
     end
+
     # JSON expression of server stat will be sent.
     def server(port)
       Server.msg{"Init/Server:#{port}"}
@@ -115,20 +125,9 @@ module Int
           loop {
             IO.select([udp])
             line,addr=udp.recvfrom(4096)
+            line.chomp!
             Server.msg{"Recv:#{line} is #{line.class}"}
-            begin
-              self['msg']='OK'
-              unless /^(strobe|stat)/ === line
-                @cobj.set(line.chomp.split(' ')).exe
-                @int_proc.upd
-              end
-            rescue InvalidPAR
-              self['msg']=$!.to_s
-            rescue InvalidCMD
-              self['msg']="INVALID"
-            rescue RuntimeError
-              warn(self['msg']=$!.to_s)
-            end
+            sv_exe(line)
             Server.msg{"Send:#{self['msg']}"}
             @upd_proc.upd
             udp.send(yield,0,addr[2],addr[1])
@@ -136,6 +135,20 @@ module Int
         }
       }
       self
+    end
+
+    private
+    def sv_exe(line)
+      self['msg']='OK'
+      return if /^(strobe|stat)/ === line
+      exe(line.split(' '))
+      @int_proc.upd
+    rescue InvalidPAR
+      self['msg']=$!.to_s
+    rescue InvalidCMD
+      self['msg']="INVALID"
+    rescue RuntimeError
+      warn(self['msg']=$!.to_s)
     end
   end
 

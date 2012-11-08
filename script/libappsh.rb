@@ -86,7 +86,7 @@ module App
       $opt||={}
       @fl=Frm::List.new{|fdb|
         par=$opt['l'] ? ['frmsim',fdb['site']] : []
-        Frm::Sv.new(fdb,par).ext_shell
+        Frm::Sv.new(fdb,par)
       }
       super(){|ldb|
         yield ldb,@fl

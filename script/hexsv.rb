@@ -4,5 +4,5 @@ require "libhexpack"
 
 Msg.getopts("l")
 App::List.new{|ldb,fl|
-  App::Sv.new(ldb,fl[ldb[:frm]['site']]).ext_hex(ldb['id'])
+  App::Sv.new(ldb[:app],fl[ldb[:frm]['site']]).ext_hex(ldb['id'])
 }.server(ARGV)

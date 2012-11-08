@@ -49,7 +49,7 @@ module App
         @cobj.ext_logging(ldb[:app]['site'],@stat.ver){@stat.active}
       end
       auto_update
-      ext_server(@port)
+      ext_server(ldb[:app]['port'])
     end
 
     private

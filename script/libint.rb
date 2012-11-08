@@ -6,20 +6,41 @@ require "libcmdext"
 require "libupdate"
 
 module Int
-  # Shell has internal status for prompt
-  class Shell < ExHash
+  class Exe < ExHash
     attr_reader :int_proc
     def initialize
       @cobj=Command.new
-      @shcmd=@cobj.add_domain('sh',5)
       @intcmd=@cobj.add_domain('int',2)
       @int_proc=Update.new # Proc for Interactive Operation
-      @pconv={} #prompt convert table (j2s)
-      @port=0
     end
 
+    # Sync only (Wait for other thread)
     def exe(cmd)
       @cobj.set(cmd).exe
+      self
+    end
+
+    def ext_server(port)
+      extend(Server).server(port){to_j}
+      self
+    end
+
+    def ext_shell(pconv={})
+      extend(Shell).init(pconv)
+      self
+    end
+  end
+
+  # Shell has internal status for prompt
+  module Shell
+    def self.extended(obj)
+      Msg.type?(obj,Exe)
+    end
+
+    def init(pconv={})
+      #prompt convert table (j2s)
+      @pconv=Msg.type?(pconv,Hash)
+      @shcmd=@cobj.add_domain('sh',5)
       self
     end
 
@@ -59,8 +80,9 @@ module Int
       }
     end
 
-    def ext_server(port)
-      extend(Server).server(port){to_j}
+    def ext_client(port)
+      extend(Client).client(port)
+      self
     end
 
     private
@@ -78,7 +100,7 @@ module Int
     extend Msg::Ver
     def self.extended(obj)
       init_ver('Server/%s',5,obj)
-      Msg.type?(obj,Shell)
+      Msg.type?(obj,Exe)
     end
     # JSON expression of server stat will be sent.
     def server(port)
@@ -121,14 +143,14 @@ module Int
     extend Msg::Ver
     def self.extended(obj)
       init_ver("Client/%s",3,obj)
-      Msg.type?(obj,Shell).init
+      Msg.type?(obj,Shell)
     end
 
-    def init
+    def client(port)
       @udp=UDPSocket.open()
       @host||='localhost'
-      @addr=Socket.pack_sockaddr_in(@port,@host)
-      Client.msg{"Init/Client #{@host}:#{@port}"}
+      @addr=Socket.pack_sockaddr_in(port.to_i,@host)
+      Client.msg{"Init/Client #{@host}:#{port}"}
       @cobj.def_proc << proc{|item|
         send(item.cmd.join(' '))
       }
@@ -165,10 +187,16 @@ module Int
       }
     end
 
+    def exe(stm)
+      self[stm.shift].exe(stm)
+    rescue UserError
+      Msg.usage('(opt) [id] [cmd] [par....]',*$optlist)
+    end
+
     def shell(id)
       true while id=self[id].shell
     rescue UserError
-      Msg.usage('(opt) [id] ....',*$optlist)
+      Msg.usage('(opt) [id]',*$optlist)
     end
 
     def server(ary)

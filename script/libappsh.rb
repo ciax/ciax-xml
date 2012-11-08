@@ -3,7 +3,7 @@ require "libint"
 require "libstatus"
 require "libwatch"
 module App
-  class Main < Int::Shell
+  class Exe < Int::Exe
     attr_reader :stat,:fint
     def initialize(adb)
       @adb=Msg.type?(adb,App::Db)
@@ -12,7 +12,6 @@ module App
       self['id']=adb['site']
       @port=adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(adb)
-      @pconv.update({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
     end
 
     def to_s
@@ -20,7 +19,7 @@ module App
     end
   end
 
-  class Test < Main
+  class Test < Exe
     require "libsymconv"
     def initialize(adb)
       super
@@ -40,24 +39,26 @@ module App
         @stat.block?(item.cmd)
         @stat.set_time.upd.issue
       }
+      ext_shell
     end
   end
 
-  class Sh < Main
+  class Sh < Exe
     require "libfrmsh"
-    def initialize(ldb,fint)
+    def initialize(adb,fint)
       @fint=Msg.type?(fint,Frm::Sh)
-      super(ldb[:app])
+      super(adb)
+      ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
     end
   end
 
 
   class Cl < Sh
     def initialize(ldb,host=nil)
-      super(ldb,Frm::Cl.new(ldb[:frm],host))
+      super(ldb[:app],Frm::Cl.new(ldb[:frm],host))
       @host=Msg.type?(host||ldb[:app]['host']||'localhost',String)
       @stat.ext_url(@host).load
-      extend(Int::Client)
+      ext_client(ldb[:app]['port'])
     end
 
     def to_s

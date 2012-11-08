@@ -35,7 +35,7 @@ module Frm
       @cobj['load'].init_proc{|item|
         @field.load(item.par[0]||'').save
       }
-      ext_server(@port)
+      ext_server(fdb['port'].to_i)
     rescue Errno::ENOENT
       Msg.warn(" --- no json file")
     end

@@ -2,14 +2,13 @@
 require 'libint'
 require 'libfield'
 module Frm
-  class Sh < Int::Shell
+  class Exe < Int::Exe
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
       super()
       @extcmd=@cobj.add_ext(fdb,:cmdframe)
       self['id']=fdb['site']
-      @port=fdb['port'].to_i
       @field=Field::Var.new.ext_file(fdb).load
       idx={:type =>'str',:list => @field.val.keys}
       any={:type =>'reg',:list => ["."]}
@@ -25,13 +24,20 @@ module Frm
     end
   end
 
+  class Sh < Exe
+    def initialize(fdb)
+      super
+      ext_shell
+    end
+  end
+
   class Cl < Sh
     def initialize(fdb,host=nil)
       super(fdb)
       @host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(@host).load
-      extend(Int::Client)
       @cobj.def_proc << proc{to_s}
+      ext_client(fdb['port'])
     end
 
     def to_s

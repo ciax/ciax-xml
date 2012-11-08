@@ -26,7 +26,7 @@ class Buffer
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
-    @post_flush=Update.new << proc{Buffer.msg{"Flushing"}}
+    @post_flush=Update.new.add{Buffer.msg{"Flushing"}}
     @proc_send=proc{}
     clear
   end

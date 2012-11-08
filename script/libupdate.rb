@@ -7,6 +7,10 @@ class Update < Array
     Update.init_ver(self,5)
   end
 
+  def add(&p)
+    push(p)
+  end
+
   def upd
     Update.msg{"Update procs"}
     map{|p|

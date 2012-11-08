@@ -49,14 +49,13 @@ module Int
       #prompt convert table (j2s)
       @pconv=Msg.type?(pconv,Hash)
       @shcmd=@cobj.add_domain('sh',5)
-      @prompt=''
-      @upd_proc << proc{
+      @upd_proc.add{
         @prompt=keys.map{|k|
           if k != 'msg' and v=self[k]
             @pconv[k]||v
           end
         }.compact.join('')+'>'
-      }
+      }.upd
       Shell.msg{"Init/Shell"}
       self
     end
@@ -170,7 +169,7 @@ module Int
       @cobj.def_proc << proc{|item|
         send(item.cmd.join(' '))
       }
-      @upd_proc << proc{send('strobe')}
+      @upd_proc.add{send('strobe')}
     end
 
     def send(str)

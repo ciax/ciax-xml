@@ -37,19 +37,19 @@ module App
         int=@stat.interrupt
         self['msg']="Interrupt #{int}"
       }
-      @buf.post_flush << proc{
+      @buf.post_flush.add{
         @stat.upd.save
         sleep(@stat.interval||0.1)
         # Auto issue by watch
         @stat.issue
       }
       # Update for Frm level manipulation
-      @fint.int_proc << proc{@stat.upd.save}
+      @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
       if @stat.ver
         @cobj.ext_logging(@adb['site'],@stat.ver){@stat.active}
       end
-      @upd_proc << proc{
+      @upd_proc.add{
         self['auto'] = @tid && @tid.alive?
         self['watch'] = @stat.active?
         self['na'] = !@buf.alive?

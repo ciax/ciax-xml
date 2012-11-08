@@ -269,8 +269,8 @@ module Msg
     require 'optparse'
     str << 'd'
     optdb={}
-    optdb['a']='app level'
-    optdb['f']='frm level'
+    optdb['a']='app level client'
+    optdb['f']='frm level client'
     optdb['i']='isolated'
     optdb['l']='simulation mode'
     optdb['t']='test mode'

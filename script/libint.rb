@@ -21,6 +21,11 @@ module Int
       self
     end
 
+    def ext_client(port)
+      extend(Client).client(port)
+      self
+    end
+
     def ext_server(port)
       extend(Server).server(port){to_j}
       self
@@ -82,11 +87,6 @@ module Int
       }
     end
 
-    def ext_client(port)
-      extend(Client).client(port)
-      self
-    end
-
     private
     def prompt
       str=''
@@ -145,7 +145,7 @@ module Int
     extend Msg::Ver
     def self.extended(obj)
       init_ver("Client/%s",3,obj)
-      Msg.type?(obj,Shell)
+      Msg.type?(obj,Exe)
     end
 
     def client(port)

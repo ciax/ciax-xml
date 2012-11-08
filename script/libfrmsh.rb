@@ -24,14 +24,7 @@ module Frm
     end
   end
 
-  class Sh < Exe
-    def initialize(fdb)
-      super
-      ext_shell
-    end
-  end
-
-  class Cl < Sh
+  class Cl < Exe
     def initialize(fdb,host=nil)
       super(fdb)
       @host=Msg.type?(host||fdb['host']||'localhost',String)

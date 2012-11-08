@@ -7,7 +7,7 @@ require "libsqlog"
 require "libfrmcmd"
 
 module Frm
-  class Sv < Sh
+  class Sv < Exe
     def initialize(fdb,iocmd=[])
       super(fdb)
       @field.ext_save.load

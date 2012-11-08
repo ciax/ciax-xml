@@ -12,6 +12,7 @@ module Int
       @cobj=Command.new
       @intcmd=@cobj.add_domain('int',2)
       @int_proc=Update.new # Proc for Interactive Operation
+      @upd_proc=Update.new # Proc for Server Status Update
     end
 
     # Sync only (Wait for other thread)
@@ -77,6 +78,7 @@ module Int
         rescue UserError
           puts $!.to_s
         end
+        @upd_proc.upd
       }
     end
 
@@ -130,7 +132,7 @@ module Int
               warn(self['msg']=$!.to_s)
             end
             Server.msg{"Send:#{self['msg']}"}
-            prompt
+            @upd_proc.upd
             udp.send(yield,0,addr[2],addr[1])
           }
         }
@@ -154,12 +156,7 @@ module Int
       @cobj.def_proc << proc{|item|
         send(item.cmd.join(' '))
       }
-    end
-
-    private
-    def prompt
-      send('strobe')
-      super
+      @upd_proc << proc{send('strobe')}
     end
 
     def send(str)

@@ -68,7 +68,7 @@ module Int
     # mode gives special break (loop returns mode)
     def shell
       Readline.completion_proc= proc{|word|
-        @cobj.list.keys.grep(/^#{word}/)
+        @cobj.keys.grep(/^#{word}/)
       }
       grp=@shcmd.add_group('sh',"Shell Command")
       grp.update_items({'q'=>"Quit",'D^'=>"Interrupt"})

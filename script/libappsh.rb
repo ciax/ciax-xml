@@ -6,7 +6,7 @@ require "libfrmsh"
 
 module App
   class Exe < Int::Exe
-    attr_reader :stat,:fint
+    attr_reader :stat
     def initialize(ldb,fint=nil)
       @adb=Msg.type?(ldb,Loc::Db)[:app]
       @fint=fint||Frm::Exe.new(ldb[:frm])
@@ -18,9 +18,7 @@ module App
     end
 
     def app_shell
-      ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
-      set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-      @fint.ext_shell.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+      extend(Sh)
       self
     end
 
@@ -50,6 +48,23 @@ module App
         @stat.set_time.upd.issue
       }
       ext_shell
+    end
+  end
+
+  module Sh
+    def self.extended(obj)
+      Msg.type?(obj,Exe).init
+    end
+
+    def init
+      ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+      set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
+      @fint.ext_shell.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+      self
+    end
+
+    def frm_shell
+      @fint.shell
     end
   end
 
@@ -98,7 +113,7 @@ module App
       when /app/
         self[id].shell
       when /frm/
-        self[id].fint.shell
+        self[id].frm_shell
       end
     end
   end

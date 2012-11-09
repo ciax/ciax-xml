@@ -37,7 +37,7 @@ module App
       @stat.event_proc=proc{|cmd|
         Msg.msg("#{cmd} is issued by event")
       }
-      @cobj.def_proc << proc{|item|
+      @cobj.def_proc.add{|item|
         @stat.block?(item.cmd)
         @stat.set_time.upd.issue
       }

@@ -29,7 +29,7 @@ module Frm
       super(fdb)
       @host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(@host).load
-      @cobj.def_proc << proc{to_s}
+      @cobj.def_proc.add{to_s}
       ext_client(fdb['port'])
     end
 

@@ -69,7 +69,7 @@ module Int
     # '^D' gives exit break
     # mode gives special break (loop returns mode)
     def shell
-      Readline.completion_proc= proc{|word|
+      Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
       grp=@shcmd.add_group('sh',"Shell Command")
@@ -166,7 +166,7 @@ module Int
       @host||='localhost'
       @addr=Socket.pack_sockaddr_in(port.to_i,@host)
       Client.msg{"Init/Client #{@host}:#{port}"}
-      @cobj.def_proc << proc{|item|
+      @cobj.def_proc.add{|item|
         send(item.cmd.join(' '))
       }
       @upd_proc.add{send('strobe')}

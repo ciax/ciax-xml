@@ -42,7 +42,7 @@ class Command < ExHash
     Command.init_ver(self)
     @current=nil
     @domain={}
-    @def_proc=[]
+    @def_proc=Update.new
   end
 
   def add_domain(id,color=2)
@@ -72,11 +72,11 @@ class Command < ExHash
 
   class Domain < Hash
     attr_reader :group,:def_proc
-    def initialize(index,color=2,def_proc=[])
+    def initialize(index,color=2,def_proc=Update.new)
       @index=Msg.type?(index,Command)
       @group={}
       @color=color
-      @def_proc=Msg.type?(def_proc,Array)
+      @def_proc=Msg.type?(def_proc,Update)
     end
 
     def add_group(gid,caption,column=2)
@@ -86,7 +86,7 @@ class Command < ExHash
 
     def init_proc(&p)
       values.each{|v|
-        v.def_proc=[p]
+        v.def_proc=Update.new << p
       }
       self
     end
@@ -98,11 +98,11 @@ class Command < ExHash
 
   class Group < Hash
     attr_accessor :def_proc
-    def initialize(index,gat,def_proc=[])
+    def initialize(index,gat,def_proc=Update.new)
       @gat=Msg.type?(gat,Hash)
       @labeldb=Msg::CmdList.new(gat)
       @index=Msg.type?(index,Command)
-      @def_proc=Msg.type?(def_proc,Array)
+      @def_proc=Msg.type?(def_proc,Update)
     end
 
     def add_item(id,title=nil,parameter=nil)
@@ -127,7 +127,7 @@ class Command < ExHash
 
     def init_proc(&p)
       values.each{|v|
-        v.def_proc=[p]
+        v.def_proc=Update.new << p
       }
       self
     end

@@ -16,23 +16,21 @@ class Command
     include Math
     attr_reader :id,:par,:cmd
     attr_accessor :def_proc
-    def initialize(id,index,def_proc=[])
+    def initialize(id,index,def_proc=Update.new)
       @id=id
       @index=Msg.type?(index,Command)
       @par=[]
       @cmd=[]
-      @def_proc=Msg.type?(def_proc,Array)
+      @def_proc=Msg.type?(def_proc,Update)
     end
 
     def init_proc(&p)
-      @def_proc=[p]
+      @def_proc=Update.new << p
       self
     end
 
     def exe
-      @def_proc.each{|pr|
-        pr.call(self)
-      }
+      @def_proc.exe(self)
       self
     end
 

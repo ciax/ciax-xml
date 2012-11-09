@@ -11,6 +11,13 @@ class Update < Array
     push(p)
   end
 
+  def exe(par)
+    Update.msg{"Execute procs"}
+    map{|p|
+      p.call(par)
+    }
+  end
+
   def upd
     Update.msg{"Update procs"}
     map{|p|

@@ -3,6 +3,6 @@ require "libappsv"
 require "libhexpack"
 
 Msg.getopts("fh:ilt")
-App::List.new{|ldb,aint|
-  aint.ext_hex(ldb['id'])
+App::List.new{|id,aint|
+  aint.ext_hex(id)
 }.shell(ARGV.shift)

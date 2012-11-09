@@ -2,6 +2,4 @@
 require "libfrmsv"
 
 Msg.getopts("l")
-Frm::List.new{|fdb|
-  Frm::Sv.new(fdb)
-}.server(ARGV)
+Frm::List.new.server(ARGV)

@@ -3,6 +3,6 @@ require "libappsv"
 require "libinssh"
 
 Msg.getopts("afh:ilt")
-App::List.new{|ldb,aint|
-  aint.ext_ins(ldb['id'])
+App::List.new{|id,aint|
+  aint.ext_ins(id)
 }.shell(ARGV.shift)

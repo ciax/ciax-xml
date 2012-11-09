@@ -96,7 +96,7 @@ module App
             aint=App::Sv.new(ldb[:app],fint).app_shell
           end
         end
-        yield ldb,aint if defined? yield
+        yield ldb['id'],aint if defined? yield
         aint
       }
     end

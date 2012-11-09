@@ -45,6 +45,9 @@ module Frm
           fint=Frm::Exe.new(ldb[:frm])
         elsif $opt['f']
           fint=Frm::Cl.new(ldb[:frm],$opt['h'])
+        elsif $opt['i']
+          Frm::Sv.new(ldb[:frm])
+          fint=Frm::Cl.new(ldb[:frm],'localhost')
         else
           par=$opt['l'] ? ['frmsim',ldb[:frm]['site']] : []
           fint=Frm::Sv.new(ldb[:frm],par)

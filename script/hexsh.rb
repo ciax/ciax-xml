@@ -3,16 +3,6 @@ require "libappsv"
 require "libhexpack"
 
 Msg.getopts("fh:ilt")
-App::List.new{|ldb,fl|
-  if $opt['t']
-    aint=App::Test.new(ldb[:app])
-  elsif $opt['f']
-    fcl=Frm::Cl.new(ldb[:frm],$opt['h'])
-    aint=App::Sv.new(ldb[:app],fcl)
-  else
-    fint=fl[ldb[:frm]['site']]
-    fint=Frm::Cl.new(ldb[:frm],'localhost') if $opt['i']
-    aint=App::Sv.new(ldb[:app],fint)
-  end
+App::List.new{|ldb,aint|
   aint.ext_hex(ldb['id'])
 }.shell(ARGV.shift)

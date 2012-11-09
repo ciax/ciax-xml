@@ -41,14 +41,16 @@ module Frm
   class List < Int::List
     def initialize
       super(){|ldb|
-        yield ldb[:frm]
+        if $opt['t']
+          fint=Frm::Exe.new(ldb[:frm])
+        elsif $opt['f']
+          fint=Frm::Cl.new(ldb[:frm],$opt['h'])
+        else
+          par=$opt['l'] ? ['frmsim',ldb[:frm]['site']] : []
+          fint=Frm::Sv.new(ldb[:frm],par)
+        end
+        fint.ext_shell
       }
-    end
-
-    def shell(id)
-      true while id=self[id].shell
-    rescue UserError
-      Msg.usage('(opt) [id] ....',*$optlist)
     end
   end
 end

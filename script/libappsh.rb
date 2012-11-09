@@ -54,7 +54,7 @@ module App
       @fint=Msg.type?(fint,Frm::Exe)
       ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-      @fint.ext_shell.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+      @fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
       self
     end
 
@@ -84,12 +84,19 @@ module App
   class List < Int::List
     def initialize
       $opt||={}
-      @fl=Frm::List.new{|fdb|
-        par=$opt['l'] ? ['frmsim',fdb['site']] : []
-        Frm::Sv.new(fdb,par)
-      }
+      @fl=Frm::List.new
       super(){|ldb|
-        yield ldb,@fl
+        if $opt['t']
+          aint=App::Test.new(ldb[:app])
+        else
+          fint=@fl[ldb[:frm]['site']]
+          if $opt['a']
+            aint=App::Cl.new(ldb[:app],$opt['h']).app_shell(fint)
+          else
+            aint=App::Sv.new(ldb[:app],fint).app_shell
+          end
+        end
+        yield ldb,aint
       }
     end
 

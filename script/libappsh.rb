@@ -15,6 +15,14 @@ module App
       @stat=Status::Var.new.ext_watch_r.ext_file(@adb)
     end
 
+    def exe(cmd)
+      super
+      while self['isu']
+        @upd_proc.upd
+      end
+      self
+    end
+
     def to_s
       @stat.to_s
     end

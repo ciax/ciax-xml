@@ -109,7 +109,7 @@ module Int
     private
     def sh_exe(line)
       self['msg']='OK'
-      exe(line.split(' '))
+      @cobj.set(line.split(' ')).exe
       @int_proc.upd
       puts self['msg']
     rescue InvalidCMD
@@ -155,7 +155,7 @@ module Int
     def sv_exe(line)
       self['msg']='OK'
       return if /^(strobe|stat)/ === line
-      exe(line.split(' '))
+      @cobj.set(line.split(' ')).exe
       @int_proc.upd
     rescue InvalidPAR
       self['msg']=$!.to_s

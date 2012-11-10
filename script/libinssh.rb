@@ -2,11 +2,11 @@
 require "libinsdb"
 require "libwatch"
 
-# Should be included in App::Sh
 module Ins
   module Sh
     def self.extended(obj)
       Msg.type?(obj,App::Exe)
+      Msg.type?(obj,Int::Shell)
     end
 
     def init(id)

@@ -2,7 +2,6 @@
 # Ascii Pack
 require "libmsg"
 
-# included in App::Sh
 module HexPack
   class View
     extend Msg::Ver

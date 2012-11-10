@@ -41,25 +41,6 @@ module App
         @stat.block?(item.cmd)
         @stat.set_time.upd.issue
       }
-      ext_shell
-    end
-  end
-
-  module Sh
-    def self.extended(obj)
-      Msg.type?(obj,Exe)
-    end
-
-    def app_shell(fint)
-      @fint=Msg.type?(fint,Frm::Exe)
-      ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
-      set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-      @fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
-      self
-    end
-
-    def frm_shell
-      @fint.shell
     end
   end
 
@@ -71,11 +52,6 @@ module App
       ext_client(adb['port'])
     end
 
-    def app_shell(fint)
-      extend(Sh).app_shell(fint)
-      self
-    end
-
     def to_s
       @stat.load.to_s
     end
@@ -85,44 +61,53 @@ module App
     def initialize
       $opt||={}
       @fl=Frm::List.new
+      @fint={}
       super(){|ldb|
+        id=ldb['id']
         if $opt['t']
           aint=App::Test.new(ldb[:app])
         else
-          fint=@fl[ldb[:frm]['site']]
+          @fint[id]=@fl[ldb[:frm]['site']]
           if $opt['a']
-            aint=App::Cl.new(ldb[:app],$opt['h']).app_shell(fint)
+            aint=App::Cl.new(ldb[:app],$opt['h'])
           else
-            aint=App::Sv.new(ldb[:app],fint).app_shell
+            aint=App::Sv.new(ldb[:app],@fint[id])
           end
         end
-        yield ldb['id'],aint if defined? yield
         aint
       }
     end
 
-    def shell(id)
-      type='app'
-      while cmd=read(type,id)
-        case cmd
-        when 'app','frm'
-          type=cmd
-        else
-          id=cmd
-        end
-      end
-    rescue UserError
-      Msg.usage('(opt) [id] ....',*$optlist)
+    def init_sh
+      @share_proc.add{|ldb,int|
+        int.ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+        int.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
+        yield ldb['id'],int if defined? yield
+      }
+      @fl.share_proc.add{|ldb,int|
+        int.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+      }
+      self
     end
 
-    private
-    def read(type,id)
-      case type
-      when /app/
-        self[id].shell
-      when /frm/
-        self[id].frm_shell
-      end
+
+    def shell(id)
+      @type='app'
+      @id=id
+      super{|cmd|
+        case cmd
+        when 'app','frm'
+          @type=cmd
+        else
+          @id=cmd
+        end
+        case @type
+        when /app/
+          self[@id]
+        when /frm/
+          @fint[@id]
+        end
+      }
     end
   end
 end

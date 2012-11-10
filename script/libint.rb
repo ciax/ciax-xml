@@ -22,17 +22,29 @@ module Int
     end
 
     def ext_client(port)
-      extend(Client).client(port)
+      if is_a? Client
+        Msg.warn("Multiple Initialize for Client")
+      else
+        extend(Client).client(port)
+      end
       self
     end
 
     def ext_server(port)
-      extend(Server).server(port){to_j}
+      if is_a? Server
+        Msg.warn("Multiple Initialize for Server")
+      else
+        extend(Server).server(port){to_j}
+      end
       self
     end
 
     def ext_shell(pconv={})
-      extend(Shell).init(pconv)
+      if is_a? Shell
+        Msg.warn("Multiple Initialize for Shell")
+      else
+        extend(Shell).init(pconv)
+      end
       self
     end
   end
@@ -184,15 +196,15 @@ module Int
 
   class List < Hash
     require "liblocdb"
+    attr_reader :share_proc
     def initialize
       ENV['VER']||='init/'
       $opt||={}
+      @share_proc=Update.new
       super(){|h,id|
         ldb=Loc::Db.new(id)
         int=yield ldb
-        if int.is_a? Int::Shell
-          int.set_switch('dev',"Change Device",ldb.list)
-        end
+        @share_proc.exe([ldb,int])
         h[id]=int
       }
     end
@@ -204,7 +216,12 @@ module Int
     end
 
     def shell(id)
-      true while id=self[id].shell
+      @share_proc.add{|ldb,int|
+        int.set_switch('dev',"Change Device",ldb.list)
+      }
+      begin
+        int=(defined? yield) ? yield(id) : self[id]
+      end while id=int.shell
     rescue UserError
       Msg.usage('(opt) [id]',*$optlist)
     end

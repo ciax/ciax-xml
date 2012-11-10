@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappsv"
+require "libapplist"
 
 Msg.getopts("l")
 App::List.new.server(ARGV)

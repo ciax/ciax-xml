@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappsv"
+require "libapplist"
 require "libinssh"
 
 Msg.getopts("afh:ilt")

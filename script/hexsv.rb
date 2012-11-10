@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappsv"
+require "libapplist"
 require "libhexpack"
 
 Msg.getopts("l")

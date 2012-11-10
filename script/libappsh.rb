@@ -78,7 +78,7 @@ module App
       }
     end
 
-    def init_sh
+    def shell(id)
       @share_proc.add{|ldb,int|
         int.ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         int.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
@@ -87,11 +87,6 @@ module App
       @fl.share_proc.add{|ldb,int|
         int.set_switch('lay',"Change Layer",{'app'=>"App mode"})
       }
-      self
-    end
-
-
-    def shell(id)
       @type='app'
       @id=id
       super{|cmd|
@@ -108,6 +103,13 @@ module App
           @fint[@id]
         end
       }
+    end
+
+    def server(ary)
+      @share_proc.add{|ldb,int|
+        yield ldb['id'],int if defined? yield
+      }
+      super
     end
   end
 end

@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libappsh"
+require 'libfrmlist'
 require "libappcmd"
 require "libapprsp"
 require "libsymconv"
@@ -7,7 +8,6 @@ require "libsqlog"
 require "thread"
 
 module App
-  require 'libfrmsv'
   class Sv < Exe
     def initialize(adb,fint)
       super(adb)

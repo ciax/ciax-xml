@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libfrmsv"
+require "libfrmlist"
 
 module App
   class List < Int::List

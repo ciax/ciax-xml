@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libfrmsv"
+require "libfrmlist"
 
 Msg.getopts("l")
 Frm::List.new.server(ARGV)

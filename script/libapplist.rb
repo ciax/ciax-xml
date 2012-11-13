@@ -8,8 +8,9 @@ module App
       $opt||={}
       @fl=Frm::List.new
       @fint={}
-      super(){|ldb|
-        id=ldb['id']
+      super(){|id|
+        ldb=Loc::Db.new(id)
+        @list=ldb.list
         if $opt['t']
           aint=App::Test.new(ldb[:app])
         else
@@ -25,16 +26,17 @@ module App
     end
 
     def shell(id)
-      @share_proc.add{|ldb,int|
+      @id=id
+      @type='app'
+      @share_proc.add{|int|
         int.ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+        int.set_switch('dev',"Change Device",@list)
         int.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-        yield ldb['id'],int if defined? yield
+        yield @id,int if defined? yield
       }
-      @fl.share_proc.add{|ldb,int|
+      @fl.share_proc.add{|int|
         int.set_switch('lay',"Change Layer",{'app'=>"App mode"})
       }
-      @type='app'
-      @id=id
       super{|cmd|
         case cmd
         when 'app','frm'
@@ -52,8 +54,8 @@ module App
     end
 
     def server(ary)
-      @share_proc.add{|ldb,int|
-        yield ldb['id'],int if defined? yield
+      @share_proc.add{|int|
+        yield @id,int if defined? yield
       }
       super
     end

@@ -4,17 +4,18 @@ require 'libfrmsv'
 module Frm
   class List < Int::List
     def initialize
-      super(){|ldb|
+      super(){|id|
+        fdb=Loc::Db.new(id)[:frm]
         if $opt['t']
-          fint=Frm::Exe.new(ldb[:frm])
+          fint=Frm::Exe.new(fdb)
         elsif $opt['f']
-          fint=Frm::Cl.new(ldb[:frm],$opt['h'])
+          fint=Frm::Cl.new(fdb,$opt['h'])
         elsif $opt['i']
-          Frm::Sv.new(ldb[:frm])
-          fint=Frm::Cl.new(ldb[:frm],'localhost')
+          Frm::Sv.new(fdb)
+          fint=Frm::Cl.new(fdb,'localhost')
         else
-          par=$opt['l'] ? ['frmsim',ldb[:frm]['site']] : []
-          fint=Frm::Sv.new(ldb[:frm],par)
+          par=$opt['l'] ? ['frmsim',fdb['site']] : []
+          fint=Frm::Sv.new(fdb,par)
         end
         fint.ext_shell
       }
@@ -23,5 +24,6 @@ module Frm
 end
 
 if __FILE__ == $0
+  Msg.getopts('t')
   puts Frm::List.new.exe(ARGV)
 end

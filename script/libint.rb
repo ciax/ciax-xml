@@ -202,9 +202,8 @@ module Int
       $opt||={}
       @share_proc=Update.new
       super(){|h,id|
-        ldb=Loc::Db.new(id)
-        int=yield ldb
-        @share_proc.exe([ldb,int])
+        int=yield id
+        @share_proc.exe(int)
         h[id]=int
       }
     end
@@ -216,9 +215,6 @@ module Int
     end
 
     def shell(id)
-      @share_proc.add{|ldb,int|
-        int.set_switch('dev',"Change Device",ldb.list)
-      }
       begin
         int=(defined? yield) ? yield(id) : self[id]
       end while id=int.shell

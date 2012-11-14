@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrsh"
+require "libmcrexe"
 require "libapplist"
 
 module Mcr

@@ -7,16 +7,15 @@ module Frm
       super(){|id|
         fdb=Loc::Db.new(id)[:frm]
         host='localhost'
-        if $opt['l']
-          par=['frmsim',fdb['site']]
+        if $opt['l'] or $opt['e']
+          par=$opt['l'] ? ['frmsim',fdb['site']] : []
           fint=Frm::Sv.new(fdb,par)
-        elsif $opt['e']
-          fint=Frm::Sv.new(fdb)
+          fint=Frm::Cl.new(fdb,host) if $opt['f']
+        elsif $opt['f'] or $opt['a']
+          fint=Frm::Cl.new(fdb,$opt['h'])
         else
           fint=Frm::Test.new(fdb)
-          host=$opt['h']
         end
-        fint=Frm::Cl.new(fdb,host) if $opt['f']
         fint.ext_shell
       }
     end

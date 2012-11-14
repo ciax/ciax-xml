@@ -28,10 +28,10 @@ module Frm
   class Cl < Exe
     def initialize(fdb,host=nil)
       super(fdb)
-      @host=Msg.type?(host||fdb['host']||'localhost',String)
-      @field.ext_url(@host).load
+      host=Msg.type?(host||fdb['host']||'localhost',String)
+      @field.ext_url(host).load
       @cobj.def_proc.add{to_s}
-      ext_client(fdb['port'])
+      ext_client(host,fdb['port'])
     end
 
     def to_s

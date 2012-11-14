@@ -54,9 +54,9 @@ module App
   class Cl < Exe
     def initialize(adb,host=nil)
       super(adb)
-      @host=Msg.type?(host||adb['host']||'localhost',String)
-      @stat.ext_url(@host).load
-      ext_client(adb['port'])
+      host=Msg.type?(host||adb['host']||'localhost',String)
+      @stat.ext_url(host).load
+      ext_client(host,adb['port'])
     end
 
     def to_s

@@ -58,9 +58,9 @@ module Mcr
     def initialize(mdb,host=nil)
       super(mdb)
       host||=mdb['host']
-      @host=Msg.type?(host||mdb['host'],String)
-      @stat.ext_url(@host).load
-      extend(Int::Client)
+      host=Msg.type?(host||mdb['host'],String)
+      @stat.ext_url(host).load
+      ext_client(host,mdb['port'])
     end
 
     def upd

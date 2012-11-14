@@ -21,11 +21,11 @@ module Int
       self
     end
 
-    def ext_client(port)
+    def ext_client(host,port)
       if is_a? Client
         Msg.warn("Multiple Initialize for Client")
       else
-        extend(Client).client(port)
+        extend(Client).client(host,port)
       end
       self
     end
@@ -173,11 +173,11 @@ module Int
       Msg.type?(obj,Exe)
     end
 
-    def client(port)
+    def client(host,port)
       @udp=UDPSocket.open()
-      @host||='localhost'
-      @addr=Socket.pack_sockaddr_in(port.to_i,@host)
-      Client.msg{"Init/Client #{@host}:#{port}"}
+      host||='localhost'
+      @addr=Socket.pack_sockaddr_in(port.to_i,host)
+      Client.msg{"Init/Client #{host}:#{port}"}
       @cobj.def_proc.add{|item|
         send(item.cmd.join(' '))
       }

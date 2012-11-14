@@ -11,7 +11,6 @@ module App
       super()
       @extcmd=@cobj.add_ext(@adb,:command)
       self['id']=@adb['site']
-      @port=@adb['port'].to_i
       @stat=Status::Var.new.ext_watch_r.ext_file(@adb)
     end
 

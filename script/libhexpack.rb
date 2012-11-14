@@ -76,7 +76,7 @@ module HexPack
         extend(Object::Logging).init('hexpack',id,ver)
         @buf.post_flush.add{append([],to_s)}
       end
-      super(@port+1000){to_s}
+      super(@adb['port'].to_i+1000){to_s}
     end
 
     def to_s

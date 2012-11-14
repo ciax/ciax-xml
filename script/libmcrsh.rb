@@ -3,13 +3,13 @@ require "libint"
 require "libstatus"
 
 module Mcr
-  class Sh < Int::Shell
+  class Sh < Int::Exe
     attr_reader :stat
     def initialize(mitm)
       @mitm=Msg.type?(mitm,Command::Item)
       super()
       @stat=[]
-      @pconv.update({'active'=>'*','wait'=>'?'})
+      ext_shell({'active'=>'*','wait'=>'?'})
       grp=@shcmd.add_group('int',"Internal Command")
       grp.add_item("[0-9]","Switch Mode")
       grp.add_item("threads","Thread list")

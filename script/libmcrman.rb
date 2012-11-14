@@ -6,7 +6,7 @@ require "libmcrsub"
 require "libmcrprt"
 
 module Mcr
-  class Man < Int::Shell
+  class Man < Int::Exe
     # @index=0: macro mode; @index > 0 sub macro mode(accepts y or n)
     def initialize(id)
       super()
@@ -16,6 +16,7 @@ module Mcr
       self['id']="#@id[]"
       @index=0
       @mcr=Mcr::Sub.new(@cobj,1) #.extend(Mcr::Prt)
+      ext_shell
       grp=@shcmd.add_group('int',"Internal Command")
       grp.add_item("[0-9]","Switch Mode")
       grp.add_item("threads","Thread list")

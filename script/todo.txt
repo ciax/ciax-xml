@@ -26,9 +26,10 @@ sql: easy log finder(date -> data)
 sql: using sqlite for symboling, labeling as cache
 crt: jack table edit interface (sql+web)
 
-***CHECK NEED
+***CHECK AT SITE
 verify on motion: adb-oss
 verify: oss jack num corresponding
+verify: stop with ^C
 crt/hexint:return after command issued  without exe flag(12/1/6)
 dts:jack stop test(12/4/26)
 

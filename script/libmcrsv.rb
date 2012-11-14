@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmcrsh"
-require "libappsh"
+require "libapplist"
 
 module Mcr
   class Sv < Sh

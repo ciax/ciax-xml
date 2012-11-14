@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libcmdext"
-require "libappsh"
+require "libapplist"
 
 module Mcr
   class Sub < Array

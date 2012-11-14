@@ -16,7 +16,13 @@ module App
         else
           @fint[id]=@fl[ldb[:frm]['site']]
           if $opt['a']
-            aint=App::Cl.new(ldb[:app],$opt['h'])
+            if $opt['e'] or $opt['l'] or $opt['f']
+              aint=App::Sv.new(ldb[:app],@fint[id])
+              host='localhost'
+            else
+              host=$opt['h']
+            end
+            aint=App::Cl.new(ldb[:app],host)
           else
             aint=App::Sv.new(ldb[:app],@fint[id])
           end

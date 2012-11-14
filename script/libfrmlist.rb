@@ -7,11 +7,11 @@ module Frm
       super(){|id|
         fdb=Loc::Db.new(id)[:frm]
         host='localhost'
-        if $opt['e']
-          fint=Frm::Sv.new(fdb)
-        elsif $opt['l']
+        if $opt['l']
           par=['frmsim',fdb['site']]
           fint=Frm::Sv.new(fdb,par)
+        elsif $opt['e']
+          fint=Frm::Sv.new(fdb)
         else
           fint=Frm::Exe.new(fdb)
           host=$opt['h']

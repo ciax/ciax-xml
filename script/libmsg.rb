@@ -273,6 +273,7 @@ module Msg
     optdb['f']='frm level client'
     optdb['e']='execution mode'
     optdb['l']='simulation mode'
+    optdb['t']='test mode'
     optdb['h']='[host] remote url'
     optdb['r']='raw display mode'
     optdb['v']='view display mode'

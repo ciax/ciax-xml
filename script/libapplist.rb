@@ -63,6 +63,6 @@ module App
 end
 
 if __FILE__ == $0
-  Msg.getopts("t")
+  Msg.getopts("e")
   puts App::List.new.exe(ARGV)
 end

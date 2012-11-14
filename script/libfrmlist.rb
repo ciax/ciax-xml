@@ -6,17 +6,17 @@ module Frm
     def initialize
       super(){|id|
         fdb=Loc::Db.new(id)[:frm]
-        if $opt['t']
-          fint=Frm::Exe.new(fdb)
-        elsif $opt['f']
-          fint=Frm::Cl.new(fdb,$opt['h'])
-        elsif $opt['i']
-          Frm::Sv.new(fdb)
-          fint=Frm::Cl.new(fdb,'localhost')
-        else
-          par=$opt['l'] ? ['frmsim',fdb['site']] : []
+        host='localhost'
+        if $opt['e']
+          fint=Frm::Sv.new(fdb)
+        elsif $opt['l']
+          par=['frmsim',fdb['site']]
           fint=Frm::Sv.new(fdb,par)
+        else
+          fint=Frm::Exe.new(fdb)
+          host=$opt['h']
         end
+        fint=Frm::Cl.new(fdb,host) if $opt['f']
         fint.ext_shell
       }
     end
@@ -24,6 +24,6 @@ module Frm
 end
 
 if __FILE__ == $0
-  Msg.getopts('t')
+  Msg.getopts('e')
   puts Frm::List.new.exe(ARGV)
 end

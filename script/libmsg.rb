@@ -271,11 +271,8 @@ module Msg
     optdb={}
     optdb['a']='app level client'
     optdb['f']='frm level client'
-    optdb['i']='isolated'
+    optdb['e']='execution mode'
     optdb['l']='simulation mode'
-    optdb['t']='test mode'
-    optdb['s']='server mode'
-    optdb['c']='client mode'
     optdb['h']='[host] remote url'
     optdb['r']='raw display mode'
     optdb['v']='view display mode'

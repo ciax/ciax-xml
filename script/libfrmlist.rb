@@ -13,7 +13,7 @@ module Frm
         elsif $opt['e']
           fint=Frm::Sv.new(fdb)
         else
-          fint=Frm::Exe.new(fdb)
+          fint=Frm::Test.new(fdb)
           host=$opt['h']
         end
         fint=Frm::Cl.new(fdb,host) if $opt['f']

@@ -25,6 +25,15 @@ module Frm
     end
   end
 
+  class Test < Exe
+    def initialize(fdb)
+      super
+      @cobj.def_proc.add{|item|
+        @field.set_time
+      }
+    end
+  end
+
   class Cl < Exe
     def initialize(fdb,host=nil)
       super(fdb)

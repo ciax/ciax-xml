@@ -3,13 +3,17 @@ require "libint"
 require "libstatus"
 
 module Mcr
-  class Sh < Int::Exe
-    attr_reader :stat
-    def initialize(mitm)
-      @mitm=Msg.type?(mitm,Command::Item)
+  class Exe < Int::Exe
+    attr_reader :logline
+    def initialize(mdb)
+      @mdb=Msg.type?(mdb,Mcr::Db)
       super()
-      @stat=[]
-      ext_shell({'active'=>'*','wait'=>'?'})
+      @extcmd=@cobj.add_ext(@mdb,:macro)
+      @logline=[]
+    end
+
+    def ext_shell
+      super({'active'=>'*','wait'=>'?'})
       grp=@shcmd.add_group('int',"Internal Command")
       grp.add_item("[0-9]","Switch Mode")
       grp.add_item("threads","Thread list")
@@ -20,10 +24,11 @@ module Mcr
       grp.add_item("continue","continue execution")
       grp.add_item("print","[dev:stat] print variable")
       grp.add_item("set","[dev:stat=val] set variable")
+      self
     end
   end
 
-  class Test < Sh
+  class Test < Exe
     require "libsymconv"
     def initialize(mdb)
       super
@@ -49,7 +54,7 @@ module Mcr
     end
   end
 
-  class Cl < Sh
+  class Cl < Exe
     def initialize(mdb,host=nil)
       super(mdb)
       host||=mdb['host']

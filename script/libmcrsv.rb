@@ -3,33 +3,29 @@ require "libmcrsh"
 require "libapplist"
 
 module Mcr
-  class Sv < Sh
+  class Sv < Exe
     extend Msg::Ver
-    ACT=ENV['ACT'].to_i
-    def initialize(client,mitm)
-      super(mitm) #@mitm
+    def initialize(mdb,client)
+      super(mdb)
+      @act=1
       @client=Msg.type?(client,App::List)
       @index=0
-      @logline=[]
-      case ACT
-      when 0...1
-        $opt['t']=true
-      when 1...2
-        $opt['l']=true
-      end
+      $opt['t']=true
       @tid=Time.now.to_i
-      self[:cid]=@mitm[:cid]
-      @cobj['run'].init_proc{macro}
+      @extcmd.init_proc{|mitm|
+        self[:cid]=mitm[:cid]
+        macro(mitm)
+      }
     end
 
     def to_s
       Msg.view_struct(@logline)
     end
 
-    def macro
+    def macro(mitm)
       self[:stat]='(run)'
       loop{
-        unless e1=@mitm.select[@index]
+        unless e1=mitm.select[@index]
           self[:stat]='(done)'
           return 'done'
         end
@@ -39,18 +35,18 @@ module Mcr
         @last.update(e1).delete('stat')
         case e1['type']
         when 'break'
-          !fault?(e1) && ENV['ACT'] && break
+          !fault?(e1) && @act && break
         when 'check'
-          fault?(e1) && ENV['ACT'] && raise(UserError)
+          fault?(e1) && @act && raise(UserError)
         when 'wait'
           self[:stat]="(wait)"
           if e1['retry'].to_i.times{|n|
-            sleep 1 if ACT > 0 && n > 0
+            sleep 1 if @act > 0 && n > 0
             @last['retry']=n
             fault?(e1) || break
           }
           @last['timeout']=true
-          ENV['ACT'] && raise(UserError)
+          @act && raise(UserError)
           else
             @last.delete('fault')
           end
@@ -115,10 +111,7 @@ if __FILE__ == $0
       App::Test.new(ldb[:app])
     }
     mdb=Mcr::Db.new(id)
-    cobj=Command.new
-    cobj.add_ext(mdb,:macro)
-    mcr=Mcr::Sv.new(app,cobj.set(cmd))
-    mcr.shell
+    puts Mcr::Sv.new(mdb,app).exe(cmd)
   rescue InvalidCMD
     Msg.exit(2)
   rescue InvalidID

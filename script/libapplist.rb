@@ -4,23 +4,22 @@ require "libfrmlist"
 module App
   class List < Int::List
     require "libappsv"
-    def initialize
-      $opt||={}
-      @fl=Frm::List.new
+    def initialize(opt='')
+      @fl=Frm::List.new(opt)
       @fint={}
-      super(){|id|
+      super(opt){|id,opt|
         ldb=Loc::Db.new(id)
         @list=ldb.list
-        if $opt['t']
+        if opt['t']
           aint=App::Test.new(ldb[:app])
         else
           @fint[id]=@fl[ldb[:frm]['site']]
-          if $opt['a']
-            if $opt['e'] or $opt['l'] or $opt['f']
+          if opt['a']
+            if opt['e'] or opt['l'] or opt['f']
               aint=App::Sv.new(ldb[:app],@fint[id])
               host='localhost'
             else
-              host=$opt['h']
+              host=opt['h']
             end
             aint=App::Cl.new(ldb[:app],host)
           else
@@ -69,6 +68,5 @@ module App
 end
 
 if __FILE__ == $0
-  Msg.getopts("e")
-  puts App::List.new.exe(ARGV)
+  puts App::List.new('e').exe(ARGV)
 end

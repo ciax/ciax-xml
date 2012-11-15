@@ -140,8 +140,7 @@ if __FILE__ == $0
   begin
     db=App::Db.new(ARGV.shift)
   rescue InvalidID
-    Msg.usage("[id] (key) ..",*$optlist)
-    Msg.exit
+    Msg.usage("[id] (key) ..")
   end
   puts db.path(ARGV)
   exit

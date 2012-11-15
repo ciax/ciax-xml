@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
 require "libfrmlist"
 
-Msg.getopts("l")
-Frm::List.new.server(ARGV)
+Frm::List.new('e').server(ARGV)

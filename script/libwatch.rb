@@ -240,24 +240,24 @@ end
 if __FILE__ == $0
   require "liblocdb"
 
-  Msg.getopts('rvt:',{
-                't'=>'test conditions[key=val,..]',
-                'r'=>"raw data",
-                "v"=>"view data"})
+  opt=Msg::GetOpts.new('rvt:',{
+                         't'=>'test conditions[key=val,..]',
+                         'r'=>"raw data",
+                         "v"=>"view data"})
   id=ARGV.shift
   begin
     adb=Loc::Db.new(id)[:app]
   rescue InvalidID
-    Msg.usage("(opt) [id]",*$optlist)
+    opt.usage("(opt) [id]")
   end
   stat=Status::Var.new.ext_file(adb).load.ext_watch_r.ext_watch_w.upd
-  unless $opt['r']
+  unless opt['r']
     wview=Watch::View.new(adb,stat)
-    unless $opt['v']
+    unless opt['v']
       wview.ext_prt
     end
   end
-  if t=$opt['t']
+  if t=opt['t']
     stat.ext_save.str_update(t).upd.save
   end
   puts wview||stat['watch']

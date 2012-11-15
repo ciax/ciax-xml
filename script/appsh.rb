@@ -2,7 +2,6 @@
 require "libapplist"
 require "libinssh"
 
-Msg.getopts("afelth:")
-App::List.new.shell(ARGV.shift){|id,int|
+App::List.new("afelth:").shell(ARGV.shift){|id,int|
   int.ext_ins(id)
 }

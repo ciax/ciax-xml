@@ -10,7 +10,6 @@ module Mcr
       @act=1
       @client=Msg.type?(client,App::List)
       @index=0
-      $opt['t']=true
       @tid=Time.now.to_i
       @extcmd.init_proc{|mitm|
         self[:cid]=mitm[:cid]
@@ -115,7 +114,7 @@ if __FILE__ == $0
   rescue InvalidCMD
     Msg.exit(2)
   rescue InvalidID
-    Msg.usage("[mcr] [cmd] (par)",*$optlist)
+    Msg.usage("[mcr] [cmd] (par)")
   rescue UserError
     Msg.exit(3)
   end

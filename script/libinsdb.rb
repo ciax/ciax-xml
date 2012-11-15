@@ -46,13 +46,13 @@ end
 
 if __FILE__ == $0
   begin
-    Msg.getopts("a",{"a"=>"app mode"})
+    opt=Msg::GetOpts.new("a",{"a"=>"app mode"})
     id=ARGV.shift
     db=Ins::Db.new(id)
   rescue InvalidID
-    Msg.usage("(opt) [id] (key) ..",*$optlist)
+    opt.usage("(opt) [id] (key) ..")
     Msg.exit
   end
-  db=db.cover_app if $opt["a"]
+  db=db.cover_app if opt["a"]
   puts db.path(ARGV)
 end

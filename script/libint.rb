@@ -197,12 +197,12 @@ module Int
   class List < Hash
     require "liblocdb"
     attr_reader :share_proc
-    def initialize
+    def initialize(optstr='')
       ENV['VER']||='init/'
-      $opt||={}
+      @opt=Msg::GetOpts.new(optstr)
       @share_proc=Update.new
       super(){|h,id|
-        int=yield id
+        int=yield id,@opt
         @share_proc.exe(int)
         h[id]=int
       }
@@ -211,7 +211,7 @@ module Int
     def exe(stm)
       self[stm.shift].exe(stm)
     rescue UserError
-      Msg.usage('(opt) [id] [cmd] [par....]',*$optlist)
+     @opt.usage('(opt) [id] [cmd] [par....]')
     end
 
     def shell(id)
@@ -219,7 +219,7 @@ module Int
         int=(defined? yield) ? yield(id) : self[id]
       end while id=int.shell
     rescue UserError
-      Msg.usage('(opt) [id]',*$optlist)
+      @opt.usage('(opt) [id]')
     end
 
     def server(ary)
@@ -229,7 +229,7 @@ module Int
       }.empty? && self[nil]
       sleep
     rescue UserError
-      Msg.usage('(opt) [id] ....',*$optlist)
+      @opt.usage('(opt) [id] ....')
     end
   end
 end

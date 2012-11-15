@@ -15,12 +15,6 @@ module Mcr
       @int=int
       @cobj=Msg.type?(cobj,Command)
       @line=[]
-      case ACT
-      when 0...1
-        $opt['t']=true
-      when 1...2
-        $opt['l']=true
-      end
     end
 
     def macro(cmd)
@@ -139,7 +133,7 @@ if __FILE__ == $0
   require "libmcrdb"
   require "libmcrprt"
 
-  Msg.getopts("r")
+  opt=Msg::GetOpts.new("r")
   id,*cmd=ARGV
   ARGV.clear
   begin
@@ -147,13 +141,13 @@ if __FILE__ == $0
     cobj=Command.new
     cobj.add_ext(mdb,:macro)
     mcr=Mcr::Sub.new(cobj)
-    mcr.extend(Mcr::Prt) unless $opt['r']
+    mcr.extend(Mcr::Prt) unless opt['r']
     mcr.macro(cmd).join
     puts mcr.to_s
   rescue InvalidCMD
     Msg.exit(2)
   rescue InvalidID
-    Msg.usage("(opt) [mcr] [cmd] (par)",*$optlist)
+    opt.usage("(opt) [mcr] [cmd] (par)")
   rescue UserError
     Msg.exit(3)
   end

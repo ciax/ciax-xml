@@ -121,6 +121,34 @@ module Msg
     end
   end
 
+  # Global option
+  class GetOpts < Hash
+    def initialize(str='',db={})
+      require 'optparse'
+      Msg.type?(str,String) << 'd'
+      optdb={}
+      optdb['a']='app level client'
+      optdb['f']='frm level client'
+      optdb['e']='execution mode'
+      optdb['l']='simulation mode'
+      optdb['t']='test mode'
+      optdb['h']='[host] remote url'
+      optdb['r']='raw display mode'
+      optdb['v']='view display mode'
+      optdb['d']='debug mode'
+      optdb.update(db)
+      @list=str.split('').map{|c|
+        optdb.key?(c) && "-#{c}:#{optdb[c]}" || nil
+      }.compact
+      update(ARGV.getopts(str))
+      require 'debug' if self['d']
+    end
+
+    def usage(str)
+      Msg.usage(str,*@list)
+    end
+  end
+
   ### Class method ###
   module_function
   # Messaging methods
@@ -261,28 +289,5 @@ module Msg
       end
     end
     str.chomp + " #{data.inspect}\n"
-  end
-
-  # Global option
-  # set $opt and $optlist(for usage)
-  def getopts(str,db={})
-    require 'optparse'
-    str << 'd'
-    optdb={}
-    optdb['a']='app level client'
-    optdb['f']='frm level client'
-    optdb['e']='execution mode'
-    optdb['l']='simulation mode'
-    optdb['t']='test mode'
-    optdb['h']='[host] remote url'
-    optdb['r']='raw display mode'
-    optdb['v']='view display mode'
-    optdb['d']='debug mode'
-    optdb.update(db)
-    $optlist=str.split('').map{|c|
-      optdb.key?(c) && "-#{c}:#{optdb[c]}" || nil
-    }.compact
-    $opt=ARGV.getopts(str)
-    require 'debug' if $opt['d']
   end
 end

@@ -7,20 +7,20 @@ require 'libstatus'
 require "libsqlog"
 require 'json'
 
-Msg.getopts("ivfa",{"v"=>"verbose","i"=>"init table"})
+opt=Msg::GetOpts.new("ivfa",{"v"=>"verbose","i"=>"init table"})
 id = ARGV.shift
 begin
   ldb=Loc::Db.new(id)
   field=Field::Var.new
 rescue UserError
-  Msg.usage("(opt) [id] (frmlog|fldlog)",
-            "* input format 'sqlite3 -header'",*$optlist)
+  opt.usage("(opt) [id] (frmlog|fldlog)")
+  # input format 'sqlite3 -header'
 end
-if $opt['a']
+if opt['a']
   stat=Status::Var.new.ext_file(ldb[:adb])
   stat.ext_rsp(field)
   stat.extend(SqLog::Var)
-  if $opt['i'] # Initial
+  if opt['i'] # Initial
     stat.create
   else
     index=nil
@@ -38,7 +38,7 @@ if $opt['a']
           stat.upd
           $stderr.print "."
         rescue
-          $stderr.print $! if $opt['v']
+          $stderr.print $! if opt['v']
           $stderr.print "x"
         end
       end
@@ -53,7 +53,7 @@ else
   cobj.add_ext(fdb,:cmdframe)
   field.ext_rsp(cobj)
   field.extend(SqLog::Var)
-  if $opt['i'] # Initial
+  if opt['i'] # Initial
     field.create
   else
     readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
@@ -61,7 +61,7 @@ else
         field.upd_logline(str)
         $stderr.print "."
       rescue
-        $stderr.print $! if $opt['v']
+        $stderr.print $! if opt['v']
         $stderr.print "x"
         next
       end

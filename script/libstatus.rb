@@ -132,7 +132,7 @@ end
 if __FILE__ == $0
   require "liblocdb"
 
-  Msg.getopts('rh:')
+  opt=Msg::GetOpts.new('rh:')
   id=ARGV.shift
   host=ARGV.shift
   stat=Status::Var.new
@@ -144,17 +144,17 @@ if __FILE__ == $0
     else
       adb=Loc::Db.new(id)[:app]
       stat.ext_file(adb)
-      if host=$opt['h']
+      if host=opt['h']
         stat.ext_url(host).load
       else
         stat.load
       end
     end
     view=Status::View.new(adb,stat)
-    view.extend(Status::Print) unless $opt['r']
+    view.extend(Status::Print) unless opt['r']
     puts view
   rescue UserError
-    Msg.usage "(opt) [id] <(stat_file)",*$optlist
+    opt.usage "(opt) [id] <(stat_file)"
   end
   exit
 end

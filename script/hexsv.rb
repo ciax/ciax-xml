@@ -2,7 +2,6 @@
 require "libapplist"
 require "libhexpack"
 
-Msg.getopts("l")
-App::List.new.server(ARGV){|id,aint|
+App::List.new('e').server(ARGV){|id,aint|
   aint.ext_hex(id)
 }

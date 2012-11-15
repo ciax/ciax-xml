@@ -150,8 +150,8 @@ end
 if __FILE__ == $0
   require "liblocdb"
   require "libcmdext"
-  Msg.getopts("m",{'m' => 'merge file'})
-  Msg.usage "(opt) < logline",*$optlist if STDIN.tty? && ARGV.size < 1
+  opt=Msg::GetOpts.new("m",{'m' => 'merge file'})
+  opt.usage("(opt) < logline") if STDIN.tty? && ARGV.size < 1
   str=gets(nil) || exit
   logdata=Logging.set_logline(str)
   id=logdata[:id]
@@ -159,7 +159,7 @@ if __FILE__ == $0
   cobj=Command.new
   cobj.add_ext(fdb,:cmdframe)
   field=Field::Var.new.ext_file(fdb)
-  field.load if $opt['m']
+  field.load if opt['m']
   field.ext_rsp(cobj)
   field.upd_logline(str)
   puts field

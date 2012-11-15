@@ -2,6 +2,7 @@
 require "libapplist"
 require "libhexpack"
 
-App::List.new("felh:").shell(ARGV.shift){|id,int|
+opt=Msg::GetOpts.new('felh:')
+App::List.new(opt).shell(ARGV.shift){|id,int|
   int.ext_hex(id)
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 require "libapplist"
 
-App::List.new('e').server(ARGV)
+opt=Msg::GetOpts.new('e')
+App::List.new(opt).server(ARGV)
+
 

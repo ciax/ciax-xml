@@ -3,8 +3,8 @@ require 'libfrmsv'
 
 module Frm
   class List < Int::List
-    def initialize(opt='')
-      super(opt){|id,opt|
+    def initialize(opt=nil)
+      super{|id,opt|
         fdb=Loc::Db.new(id)[:frm]
         host='localhost'
         if opt['l'] or opt['e']
@@ -23,5 +23,6 @@ module Frm
 end
 
 if __FILE__ == $0
-  puts Frm::List.new('e').exe(ARGV)
+  opt=Msg::GetOpts.new('e')
+  puts Frm::List.new(opt).exe(ARGV)
 end

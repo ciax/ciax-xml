@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
 require "libfrmlist"
 
-Frm::List.new('e').server(ARGV)
+opt=Msg::GetOpts.new('e')
+Frm::List.new(opt).server(ARGV)

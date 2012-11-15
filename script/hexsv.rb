@@ -2,6 +2,7 @@
 require "libapplist"
 require "libhexpack"
 
-App::List.new('e').server(ARGV){|id,aint|
+opt=Msg::GetOpts.new('e')
+App::List.new(opt).server(ARGV){|id,aint|
   aint.ext_hex(id)
 }

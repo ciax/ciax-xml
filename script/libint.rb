@@ -197,9 +197,9 @@ module Int
   class List < Hash
     require "liblocdb"
     attr_reader :share_proc
-    def initialize(optstr='')
+    def initialize(opt=nil)
       ENV['VER']||='init/'
-      @opt=Msg::GetOpts.new(optstr)
+      @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
       @share_proc=Update.new
       super(){|h,id|
         int=yield id,@opt

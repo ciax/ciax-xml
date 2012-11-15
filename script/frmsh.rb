@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
 require "libfrmlist"
 
-Frm::List.new("felh:").shell(ARGV.shift)
+opt=Msg::GetOpts.new('felh:')
+Frm::List.new(opt).shell(ARGV.shift)

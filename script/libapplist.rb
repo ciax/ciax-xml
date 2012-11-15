@@ -4,10 +4,10 @@ require "libfrmlist"
 module App
   class List < Int::List
     require "libappsv"
-    def initialize(opt='')
+    def initialize(opt=nil)
       @fl=Frm::List.new(opt)
       @fint={}
-      super(opt){|id,opt|
+      super{|id,opt|
         ldb=Loc::Db.new(id)
         @list=ldb.list
         if opt['t']
@@ -23,7 +23,7 @@ module App
             end
             aint=App::Cl.new(ldb[:app],host)
           else
-            aint=App::Sv.new(ldb[:app],@fint[id])
+            aint=App::Sv.new(ldb[:app],@fint[id],opt['e'])
           end
         end
         aint
@@ -68,5 +68,6 @@ module App
 end
 
 if __FILE__ == $0
-  puts App::List.new('e').exe(ARGV)
+  opt=Msg::GetOpts.new('e')
+  puts App::List.new(opt).exe(ARGV)
 end

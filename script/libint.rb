@@ -68,7 +68,7 @@ module Int
           end
         }.compact.join('')+'>'
       }.upd
-      Shell.msg{"Init/Shell"}
+      Shell.msg{"Init/Shell(#{self['id']})"}
       self
     end
 
@@ -128,7 +128,7 @@ module Int
 
     # JSON expression of server stat will be sent.
     def server(port)
-      Server.msg{"Init/Server:#{port}"}
+      Server.msg{"Init/Server(#{self['id']}):#{port}"}
       Thread.new{
         tc=Thread.current
         tc[:name]="Server"
@@ -177,7 +177,7 @@ module Int
       @udp=UDPSocket.open()
       host||='localhost'
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      Client.msg{"Init/Client #{host}:#{port}"}
+      Client.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
       @cobj.def_proc.add{|item|
         send(item.cmd.join(' '))
       }

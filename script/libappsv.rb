@@ -9,12 +9,12 @@ require "thread"
 
 module App
   class Sv < Exe
-    def initialize(adb,fint)
+    def initialize(adb,fint,logging=nil)
       super(adb)
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
-      @stat.ext_sqlog if @fint.field.key?('ver')
+      @stat.ext_sqlog if logging and @fint.field.key?('ver')
       @stat.ext_watch_w
       Thread.abort_on_exception=true
       @cobj.values.each{|item|
@@ -46,7 +46,7 @@ module App
       # Update for Frm level manipulation
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
-      if @stat.ver
+      if logging and @stat.ver
         @cobj.ext_logging(@adb['site'],@stat.ver){@stat.active}
       end
       @upd_proc.add{

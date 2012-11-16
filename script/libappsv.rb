@@ -12,7 +12,7 @@ module App
     extend Msg::Ver
     def initialize(adb,fint,logging=nil)
       super(adb)
-      Sv.init_ver("AppSv(#{self['id']})",9)
+      Sv.init_ver("AppSv",9)
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
@@ -28,18 +28,18 @@ module App
       @extcmd.init_proc{|item|
         @stat.block?(item.cmd)
         @buf.send(1)
-        Sv.msg{"Issued:#{item.cmd},#{self}"}
+        Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
       @stat.event_proc=proc{|cmd,p|
-        Sv.msg{"Auto(#{p}):#{cmd}"}
+        Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.set(cmd)
         @buf.send(p)
       }
       gint=@intcmd.add_group('int',"Internal Command")
       gint.add_item('interrupt').init_proc{
         int=@stat.interrupt
-        Sv.msg{"Interrupt:#{int}"}
+        Sv.msg{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"
       }
       @buf.post_flush.add{

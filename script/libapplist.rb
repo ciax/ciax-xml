@@ -7,23 +7,24 @@ module App
     def initialize(opt=nil)
       @fl=Frm::List.new(opt)
       @fint={}
-      super{|id,opt|
+      #@< opt,share_proc*
+      super{|id|
         ldb=Loc::Db.new(id)
         @list=ldb.list
-        if opt['t']
+        if @opt['t']
           aint=App::Test.new(ldb[:app])
         else
           @fint[id]=@fl[ldb[:frm]['site']]
-          if opt['a']
-            if opt['e'] or opt['l'] or opt['f']
+          if @opt['a']
+            if @opt['e'] or @opt['l'] or @opt['f']
               aint=App::Sv.new(ldb[:app],@fint[id])
               host='localhost'
             else
-              host=opt['h']
+              host=@opt['h']
             end
             aint=App::Cl.new(ldb[:app],host)
           else
-            aint=App::Sv.new(ldb[:app],@fint[id],opt['e'])
+            aint=App::Sv.new(ldb[:app],@fint[id],@opt['e'])
           end
         end
         aint

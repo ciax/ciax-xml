@@ -36,7 +36,7 @@ class Command
         end
       end
       self
-     end
+    end
 
     private
     # Make Default groups (generated from Db)

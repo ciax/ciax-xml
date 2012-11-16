@@ -81,10 +81,12 @@ module HexPack
   end
 end
 
-class App::Sv
-  def ext_hex(id=nil,ver=nil)
-    return self unless HexPack::View.sdb(id)
-    extend(HexPack::Sv).server(id,ver)
+module App
+  class Sv
+    def ext_hex(id=nil,ver=nil)
+      return self unless HexPack::View.sdb(id)
+      extend(HexPack::Sv).server(id,ver)
+    end
   end
 end
 

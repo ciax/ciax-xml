@@ -97,17 +97,17 @@ class Var < ExHash
     def init(db)
       @db=Msg.type?(db,Db)
       self.id=db['site']||Msg.cfg_err("No SITE ID")
-      @base=@type+'_'+id
+      @base=@type+'_'+id+'.json'
       @prefix=VarDir
       self
     end
 
     def load(tag=nil)
-      Load.msg{"Loading #{fname(tag)}"}
       open(fname(tag)){|f|
+        Load.msg{"Loading #{@base}"}
         json_str=f.read
         if json_str.empty?
-          Msg.warn(" -- json file is empty")
+          Msg.warn(" -- json file (#{@base}) is empty")
         else
           super(json_str)
         end
@@ -117,15 +117,15 @@ class Var < ExHash
       if tag
         Msg.par_err("No such Tag","Tag=#{taglist}")
       else
-        Msg.warn("  -- no json file (#{fname})")
+        Msg.warn("  -- no json file (#{@base})")
       end
       self
     end
 
     private
     def fname(tag=nil)
-      base=[@type,@id,tag].compact.join('_')
-      @prefix+"/json/"+base+".json"
+      @base=[@type,@id,tag].compact.join('_')+'.json'
+      @prefix+"/json/"+@base
     end
 
     def taglist
@@ -166,8 +166,8 @@ class Var < ExHash
       name=fname(tag)
       open(name,'w'){|f|
         f << (data ? JSON.dump(data) : to_j)
+        Save.msg{"[#{@base}] is Saved"}
       }
-      Save.msg{"[#{@base}] is Saved"}
       if tag
         # Making 'latest' tag link
         sname=fname('latest')

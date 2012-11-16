@@ -59,6 +59,7 @@ module Int
 
     def init(pconv={})
       #prompt convert table (j2s)
+      @output=''
       @pconv=Msg.type?(pconv,Hash)
       @shcmd=@cobj.add_domain('sh',5)
       @upd_proc.add{
@@ -92,7 +93,7 @@ module Int
           when /^q/
             break
           when ''
-            puts self
+            puts @output
           else
             sh_exe(line)
           end
@@ -107,6 +108,9 @@ module Int
     end
 
     private
+    def update
+    end
+
     def sh_exe(line)
       self['msg']='OK'
       @cobj.set(line.split(' ')).exe

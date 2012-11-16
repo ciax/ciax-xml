@@ -10,7 +10,7 @@ module Frm
       super()
       @extcmd=@cobj.add_ext(fdb,:cmdframe)
       self['id']=fdb['site']
-      @field=Field::Var.new.ext_file(fdb).load
+      @output=@field=Field::Var.new.ext_file(fdb).load
       idx={:type =>'str',:list => @field.val.keys}
       any={:type =>'reg',:list => ["."]}
       grp=@intcmd.add_group('int',"Internal Command")
@@ -18,10 +18,6 @@ module Frm
       grp.add_item('unset',"Remove Value [key]",[idx])
       grp.add_item('save',"Save Field [key,key...] (tag)",[any])
       grp.add_item('load',"Load Field (tag)")
-    end
-
-    def to_s
-      @field.to_s
     end
   end
 
@@ -41,10 +37,7 @@ module Frm
       @field.ext_url(host).load
       @cobj.def_proc.add{to_s}
       ext_client(host,fdb['port'])
-    end
-
-    def to_s
-      @field.load.to_s
+      @upd_proc.add{@field.load}
     end
   end
 end

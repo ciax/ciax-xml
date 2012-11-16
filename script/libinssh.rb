@@ -23,11 +23,6 @@ module Ins
       grp.add_item('raw',"Raw mode").init_proc{@output=@stat}
       self
     end
-
-    def to_s
-      super
-      @output.to_s
-    end
   end
 end
 

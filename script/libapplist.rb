@@ -31,13 +31,12 @@ module App
     end
 
     def shell(id)
-      @id=id
-      @type='app'
+      type='app'
       @share_proc.add{|int|
         int.ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         int.set_switch('dev',"Change Device",@list)
         int.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-        yield @id,int if defined? yield
+        yield id,int if defined? yield
       }
       @fl.share_proc.add{|int|
         int.set_switch('lay',"Change Layer",{'app'=>"App mode"})
@@ -45,15 +44,15 @@ module App
       super{|cmd|
         case cmd
         when 'app','frm'
-          @type=cmd
+          type=cmd
         else
-          @id=cmd
+          id=cmd
         end
-        case @type
+        case type
         when /app/
-          self[@id]
+          self[id]
         when /frm/
-          @fint[@id]
+          @fint[id]
         end
       }
     end

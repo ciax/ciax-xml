@@ -11,7 +11,7 @@ module App
       super()
       @extcmd=@cobj.add_ext(@adb,:command)
       self['id']=@adb['site']
-      @stat=Status::Var.new.ext_watch_r.ext_file(@adb)
+      @output=@stat=Status::Var.new.ext_watch_r.ext_file(@adb)
     end
 
     def exe(cmd)
@@ -20,10 +20,6 @@ module App
         @upd_proc.upd
       end
       self
-    end
-
-    def to_s
-      @stat.to_s
     end
   end
 
@@ -56,10 +52,7 @@ module App
       host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(host).load
       ext_client(host,adb['port'])
-    end
-
-    def to_s
-      @stat.load.to_s
+      @upd_proc.add{@stat.load}
     end
   end
 end

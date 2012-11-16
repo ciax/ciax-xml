@@ -7,15 +7,17 @@ module Mcr
     extend Msg::Ver
     def initialize(mdb,client,dr=nil)
       super(mdb)
+      #@<< cobj,intcmd,int_proc,upd_proc*
+      #@< mdb,extcmd,logline*
       @dryrun=dr
       @client=Msg.type?(client,App::List)
       @extcmd.init_proc{|mitm|
         @tid=Time.now.to_i
-        @index=0
         @line=[]
         @logline[@tid]={:cid => mitm[:cid], :list => @line}
         self[:cid]=mitm[:cid]
         macro(mitm)
+        # puts Msg.view_struct(@logline)
       }
     end
 
@@ -24,18 +26,25 @@ module Mcr
     end
 
     def macro(mitm,depth=1)
+      Msg.type?(mitm,Command::Item)
       self[:stat]='(run)'
-      while e1=mitm.select[@index]
-        @index+=1
+      while e1=mitm.select.shift
         @last={'depth'=>depth}.extend(ExEnum)
         @line.push(@last)
         @last.update(e1).delete('stat')
         case e1['type']
         when 'break'
-          !fault?(e1) && dryrun('No Skip') && break
+          print title(@last)
+          res=!fault?(e1)
+          puts result(@last)
+          res && dryrun && break
         when 'check'
-          fault?(e1) && dryrun('Force Pass') && raise(UserError)
+          print title(@last)
+          res=fault?(e1)
+          puts result(@last)
+          res && dryrun && raise(UserError)
         when 'wait'
+          print title(@last)
           self[:stat]="(wait)"
           if e1['retry'].to_i.times{|n|
               sleep 1 if n > 0
@@ -43,18 +52,18 @@ module Mcr
               fault?(e1) || break
             } #gives number or nil(if break)
             @last['timeout']=true
-            dryrun('No Timeout') && raise(UserError)
+            dryrun && raise(UserError)
           else
             @last.delete('fault')
           end
+          puts result(@last)
         when 'exec'
-#warn e1['ins']
+          puts title(@last)
           @client[e1['ins']].exe(e1['cmd'])
         when 'mcr'
-#          exe(e1['cmd'])
-warn 'submacro'
+          puts title(@last)
+          macro(@cobj.dup.set(e1['cmd']),depth+1)
         end
-      warn single(@last)
       end
       self[:stat]='(done)'
     rescue UserError
@@ -64,9 +73,9 @@ warn 'submacro'
     end
 
     private
-    def dryrun(str)
+    def dryrun
       if @dryrun
-        Msg.warn('Dryrun:'+str)
+        Msg.warn('Dryrun:Not Break')
         false
       else
         true
@@ -114,7 +123,7 @@ end
 if __FILE__ == $0
   require "libmcrdb"
   require "libmcrprt"
-  ENV['VER']='appsv'
+#  ENV['VER']='appsv'
 
   id,*cmd=ARGV
   ARGV.clear

@@ -5,18 +5,35 @@ module Mcr
   module Prt
     def to_s
       @line.map{|h|
-        single(h)
+        title(h)+result(h)
       }.join("\n")
     end
 
-    def single(h)
+    def title(h)
       msg='  '*h['depth']
       case h['type']
       when 'break'
-        msg << Msg.color('Proceed?',6)+":#{h['label']} -> "
+        msg << Msg.color('Proceed?',6)+":#{h['label']}"
+      when 'check'
+        msg << Msg.color('Check',6)+":#{h['label']}"
+      when 'wait'
+        msg << Msg.color('Waiting',6)+":#{h['label']}"
+      when 'mcr'
+        msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
+          msg << "(async)" if h['async']
+      when 'exec'
+        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['ins']})"
+      end
+      msg
+    end
+
+    def result(h)
+      case h['type']
+      when 'break'
+        msg=' -> '
         msg << Msg.color(h['fault'] ? "OK": "SKIP",2)
       when 'check'
-        msg << Msg.color('Check',6)+":#{h['label']} -> "
+        msg=' -> '
         if h['fault']
           msg << Msg.color("NG",1)+"\n"
           msg << getcond(h)
@@ -24,7 +41,7 @@ module Mcr
           msg << Msg.color("OK",2)
         end
       when 'wait'
-        msg << Msg.color('Waiting',6)+":#{h['label']} -> "
+        msg=' -> '
         if h['timeout']
           msg << Msg.color("Timeout(#{h['retry']})",1)+"\n"
           msg << getcond(h)
@@ -34,11 +51,8 @@ module Mcr
         else
           msg << Msg.color("OK",2)
         end
-      when 'mcr'
-        msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
-          msg << "(async)" if h['async']
-      when 'exec'
-        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['ins']})"
+      else
+        msg=''
       end
       msg
     end

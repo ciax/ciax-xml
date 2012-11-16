@@ -202,11 +202,10 @@ module Int
     require "liblocdb"
     attr_reader :share_proc
     def initialize(opt=nil)
-      ENV['VER']||='init/'
       @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
       @share_proc=Update.new
       super(){|h,id|
-        int=yield id,@opt
+        int=yield id
         @share_proc.exe(int)
         h[id]=int
       }

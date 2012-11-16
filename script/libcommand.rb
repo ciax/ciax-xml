@@ -52,6 +52,7 @@ class Command < ExHash
   def set(cmd)
     id,*par=cmd
     key?(id) || error
+    Command.msg{"SetCMD (#{id},#{par})"}
     @current=self[id].set_par(par)
   end
 

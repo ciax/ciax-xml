@@ -13,6 +13,7 @@ module Int
       @intcmd=@cobj.add_domain('int',2)
       @int_proc=Update.new # Proc for Interactive Operation
       @upd_proc=Update.new # Proc for Server Status Update
+      @output=''
     end
 
     # Sync only (Wait for other thread)
@@ -59,7 +60,6 @@ module Int
 
     def init(pconv={})
       #prompt convert table (j2s)
-      @output=''
       @pconv=Msg.type?(pconv,Hash)
       @shcmd=@cobj.add_domain('sh',5)
       @upd_proc.add{

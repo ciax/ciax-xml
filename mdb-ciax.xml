@@ -1,46 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro">
     <command id="runf" label="Run Forward to Tag">
       <goal label="On Tag?">
-        <stat ins="crt" var="cps" inv="true">0</stat>
+        <stat site="crt" var="cps" inv="true">0</stat>
       </goal>
       <wait retry="5" label="Ready?">
-        <stat var="rdy" ins="crt">ON</stat>
+        <stat var="rdy" site="crt">ON</stat>
       </wait>
-      <exec ins="crt" name="runf"></exec>
+      <exec site="crt" name="runf"></exec>
       <wait retry="40" label="Run end?">
-        <stat var="run" ins="crt">OFF</stat>
+        <stat var="run" site="crt">OFF</stat>
       </wait>
     </command>
     <command id="run" label="Run to Tag [1-12]">
       <par_num>1:12</par_num>
       <goal label="On Destination Tag?">
-        <stat var="cps" ins="crt">$1</stat>
+        <stat var="cps" site="crt">$1</stat>
       </goal>
       <check label="Ready?">
-        <stat var="rdy" ins="crt">ON</stat>
+        <stat var="rdy" site="crt">ON</stat>
       </check>
-      <exec ins="crt" name="run">
+      <exec site="crt" name="run">
         <argv>$1</argv>
       </exec>
       <wait retry="120" label="Run end?">
-        <stat label="Running" var="run" ins="crt">OFF</stat>
+        <stat label="Running" var="run" site="crt">OFF</stat>
       </wait>
     </command>
     <command id="lift" label="Jack UP Level [1-4]">
       <par_num>1:4</par_num>
       <goal label="On Destination Level?">
-        <stat var="jlv" ins="crt">$1</stat>
+        <stat var="jlv" site="crt">$1</stat>
       </goal>
       <check label="Ready?">
-        <stat var="rdy" ins="crt">ON</stat>
+        <stat var="rdy" site="crt">ON</stat>
       </check>
-      <exec ins="crt" name="lift">
+      <exec site="crt" name="lift">
         <argv>$1</argv>
       </exec>
       <wait label="Jacking" retry="40">
-        <stat var="jak" ins="crt">OFF</stat>
+        <stat var="jak" site="crt">OFF</stat>
       </wait>
     </command>
     <!--Jack Command-->
@@ -58,7 +58,7 @@
       </wait>
     </command>
     <command id="fjd0" label="InR0 Jkdw at FIX">
-      <goal label="Instrument ON?">
+      <goal label="Sitetrument ON?">
         <stat var="fis">ON</stat>
       </goal>
       <check label="HOOK?">
@@ -95,54 +95,56 @@
     </command>
     <!--Jack & Rotate-->
     <command id="jupd" label="HookUp at FIX.IR">
-      <goal label="Instrument ON?">
-        <stat ins="dsi" var="fis">ON</stat>
+      <goal label="Sitetrument ON?">
+        <stat site="dsi" var="fis">ON</stat>
       </goal>
       <check label="CART ON TAG?">
-        <stat ins="crt" var="cps">12</stat>
-        <stat ins="crt" var="jlv">H</stat>
+        <stat site="crt" var="cps">12</stat>
+        <stat site="crt" var="jlv">H</stat>
       </check>
-      <exec ins="dsi" name="fhook"></exec>
+      <exec site="dsi" name="fhook"></exec>
       <wait label="Jacking" retry="40">
-        <stat ins="dsi" var="exe">OFF</stat>
+        <stat site="dsi" var="exe">OFF</stat>
       </wait>
-      <mcr ins="dsi" name="fju0" />
+      <mcr name="fju0">
+        <argv>dsi</argv>
+      </mcr>
     </command>
     <!--Transer-->
-    <command id="trsi" label="MOV.IR Trans Backward w/INST">
+    <command id="trsi" label="MOV.IR Trans Backward w/SITET">
       <goal label="Transer Stored?">
-        <stat ins="dsi" var="mtr">BK</stat>
+        <stat site="dsi" var="mtr">BK</stat>
       </goal>
       <check label="CART CLEAR?">
-        <stat ins="crt" var="cps" inv="true">12</stat>
-        <stat ins="crt" var="cps" inv="true">11</stat>
+        <stat site="crt" var="cps" inv="true">12</stat>
+        <stat site="crt" var="cps" inv="true">11</stat>
       </check>
-      <exec ins="dsi" name="rotin"></exec>
+      <exec site="dsi" name="rotin"></exec>
       <wait label="Rotating" retry="20">
-        <stat ins="dsi" var="exe">OFF</stat>
+        <stat site="dsi" var="exe">OFF</stat>
       </wait>
-      <exec ins="dsi" name="trin"></exec>
+      <exec site="dsi" name="trin"></exec>
       <wait label="Moving" retry="60">
-        <stat ins="dsi" var="exe">OFF</stat>
+        <stat site="dsi" var="exe">OFF</stat>
       </wait>
     </command>
     <!--Run & Transer-->
     <command id="r08to" label="Leave IR from Tag 8 to [2-7]">
       <par_num>2:7</par_num>
       <goal label="Leave Cart and Transer Stored?">
-        <stat ins="crt" var="cps" inv="true">8</stat>
-        <stat ins="dsi" var="mtr">BK</stat>
+        <stat site="crt" var="cps" inv="true">8</stat>
+        <stat site="dsi" var="mtr">BK</stat>
       </goal>
       <check label="CART CLEAR?">
-        <stat ins="crt" var="cps">8</stat>
-        <stat ins="crt" var="ion">OFF</stat>
+        <stat site="crt" var="cps">8</stat>
+        <stat site="crt" var="ion">OFF</stat>
       </check>
-      <exec ins="crt" name="run">
+      <exec site="crt" name="run">
         <argv>$1</argv>
       </exec>
       <mcr async="true" name="trsi" />
       <wait retry="120" label="Run end?">
-        <stat label="Running" var="run" ins="crt">OFF</stat>
+        <stat label="Running" var="run" site="crt">OFF</stat>
       </wait>
     </command>
   </macro>

@@ -74,10 +74,10 @@ module Mcr
             clone.clear.macro(e1['cmd'])
           else
             subc=cobj.dup.set(e1['cmd'])
-            submacro(subc,depth+1,e1['ins']||ins)
+            submacro(subc,depth+1,e1['site']||ins)
           end
         when 'exec'
-          exe(e1['cmd'],e1['ins']||ins)
+          exe(e1['cmd'],e1['site']||ins)
         end
       }
       self
@@ -86,10 +86,10 @@ module Mcr
     def fault?(e,ins)
       flt={}
       !e['stat'].all?{|h|
-        flt['ins']=h['ins']||ins
-        break unless flt['upd']=update?(flt['ins'])
+        flt['site']=h['site']||ins
+        break unless flt['upd']=update?(flt['site'])
         ['var','val','inv'].each{|k| flt[k]=h[k] }
-        if res=getstat(flt['ins'],flt['var'])
+        if res=getstat(flt['site'],flt['var'])
           flt['res']=res
           flt['upd'] && comp(res,flt['val'],flt['inv'])
         end

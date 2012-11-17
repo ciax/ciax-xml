@@ -22,7 +22,7 @@ module Mcr
         msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
           msg << "(async)" if h['async']
       when 'exec'
-        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['ins']})"
+        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['site']})"
       end
       msg
     end
@@ -62,9 +62,9 @@ module Mcr
       msg='  '*(h['depth']+1)
       c=h['fault']
       if c['upd']
-        msg << Msg.color("#{c['ins']}:#{c['var']}",3)+" is not #{c['val']}"
+        msg << Msg.color("#{c['site']}:#{c['var']}",3)+" is not #{c['val']}"
       else
-        msg << Msg.color("#{c['ins']}",3)+" is not updated"
+        msg << Msg.color("#{c['site']}",3)+" is not updated"
       end
       msg
     end

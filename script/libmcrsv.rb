@@ -59,7 +59,7 @@ module Mcr
           puts result(@last)
         when 'exec'
           puts title(@last)
-          @client[e1['ins']].exe(e1['cmd'])
+          @client[e1['site']].exe(e1['cmd'])
         when 'mcr'
           puts title(@last)
           macro(@cobj.dup.set(e1['cmd']),depth+1)
@@ -85,10 +85,10 @@ module Mcr
     def fault?(e)
       flt={}
       !e['stat'].all?{|h|
-        flt['ins']=h['ins']
-        break unless flt['upd']=update?(flt['ins'])
+        flt['site']=h['site']
+        break unless flt['upd']=update?(flt['site'])
         ['var','val','inv'].each{|k| flt[k]=h[k] }
-        if res=getstat(flt['ins'],flt['var'])
+        if res=getstat(flt['site'],flt['var'])
           flt['res']=res
           flt['upd'] && comp(res,flt['val'],flt['inv'])
         end

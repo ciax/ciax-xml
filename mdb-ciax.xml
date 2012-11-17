@@ -59,7 +59,7 @@
       </wait>
     </command>
     <command id="fjd0" label="InR0 Jkdw at FIX">
-      <goal label="Sitetrument ON?">
+      <goal label="Instrument ON?">
         <stat site="$1" var="fis">ON</stat>
       </goal>
       <check label="HOOK?">
@@ -96,7 +96,7 @@
     </command>
     <!--Jack & Rotate-->
     <command id="jupd" label="HookUp at FIX.IR">
-      <goal label="Sitetrument ON?">
+      <goal label="Instrument ON?">
         <stat site="dsi" var="fis">ON</stat>
       </goal>
       <check label="CART ON TAG?">

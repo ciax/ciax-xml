@@ -13,7 +13,7 @@ module Mcr
       msg='  '*h['depth']
       case h['type']
       when 'break'
-        msg << Msg.color('Proceed?',6)+":#{h['label']}"
+        msg << Msg.color('Already',6)+":#{h['label']}"
       when 'check'
         msg << Msg.color('Check',6)+":#{h['label']}"
       when 'wait'
@@ -31,7 +31,7 @@ module Mcr
       case h['type']
       when 'break'
         msg=' -> '
-        msg << Msg.color(h['fault'] ? "OK": "SKIP",2)
+        msg << Msg.color(h['fault'] ? "NOT YET": "YES(SKIP)",2)
       when 'check'
         msg=' -> '
         if h['fault']

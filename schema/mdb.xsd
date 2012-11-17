@@ -83,7 +83,7 @@
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
-          <xsd:attribute name="site" type="xsd:token" />
+          <xsd:attribute name="site" type="xsd:token" use="required" />
           <xsd:attribute name="var" type="xsd:token" use="required" />
           <xsd:attribute name="inv" type="xsd:boolean" />
           <xsd:attribute name="label" type="xsd:token" />
@@ -104,7 +104,7 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="mdb:command">
-          <xsd:attribute name="site" type="xsd:token" />
+          <xsd:attribute name="site" type="xsd:token" use="required" />
         </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>

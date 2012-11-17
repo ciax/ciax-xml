@@ -45,52 +45,53 @@
     </command>
     <!--Jack Command-->
     <command id="fju0" label="InR0 Jkup at FIX">
+      <par_reg>...</par_reg>
       <goal label="Jack DW?">
-        <stat var="fjb">DW</stat>
+        <stat site="$1" var="fjb">DW</stat>
       </goal>
       <check label="HOOK?">
-        <stat var="fis">ON</stat>
-        <stat var="fhk">HOOK</stat>
+        <stat site="$1" var="fis">ON</stat>
+        <stat site="$1" var="fhk">HOOK</stat>
       </check>
-      <exec name="fjdw"></exec>
+      <exec site="$1" name="fjdw"></exec>
       <wait label="Jacking" retry="40">
-        <stat var="exe">OFF</stat>
+        <stat site="$1" var="exe">OFF</stat>
       </wait>
     </command>
     <command id="fjd0" label="InR0 Jkdw at FIX">
       <goal label="Sitetrument ON?">
-        <stat var="fis">ON</stat>
+        <stat site="$1" var="fis">ON</stat>
       </goal>
       <check label="HOOK?">
-        <stat var="fhk">HOOK</stat>
+        <stat site="$1" var="fhk">HOOK</stat>
       </check>
-      <exec name="fjup"></exec>
+      <exec site="$1" name="fjup"></exec>
       <wait label="Jacking" retry="40">
-        <stat var="exe">OFF</stat>
+        <stat site="$1" var="exe">OFF</stat>
       </wait>
     </command>
     <command id="fju4" label="InR4 Jkup at FIX.IR">
       <goal label="Jack Up?">
-        <stat var="fjb">UP</stat>
+        <stat site="$1" var="fjb">UP</stat>
       </goal>
       <check label="UNHOOK?">
-        <stat var="fhk">UNHK</stat>
+        <stat site="$1" var="fhk">UNHK</stat>
       </check>
-      <exec name="fjup"></exec>
+      <exec site="$1" name="fjup"></exec>
       <wait label="Jacking" retry="40">
-        <stat var="exe">OFF</stat>
+        <stat site="$1" var="exe">OFF</stat>
       </wait>
     </command>
     <command id="fjd4" label="InR4 Jkdw at FIX.IR">
       <goal label="Jack Dw?">
-        <stat var="fjb">DW</stat>
+        <stat site="$1" var="fjb">DW</stat>
       </goal>
       <check label="UNHOOK?">
-        <stat var="fhk">UNHK</stat>
+        <stat site="$1" var="fhk">UNHK</stat>
       </check>
-      <exec name="fjdw"></exec>
+      <exec site="$1" name="fjdw"></exec>
       <wait label="Jacking" retry="40">
-        <stat var="exe">OFF</stat>
+        <stat site="$1" var="exe">OFF</stat>
       </wait>
     </command>
     <!--Jack & Rotate-->

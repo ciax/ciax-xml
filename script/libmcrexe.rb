@@ -9,7 +9,7 @@ module Mcr
       @mdb=Msg.type?(mdb,Mcr::Db)
       super()
       @extcmd=@cobj.add_ext(@mdb,:macro)
-      @logline={}
+      @logline=ExHash.new
     end
 
     def ext_shell

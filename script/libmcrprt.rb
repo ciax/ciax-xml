@@ -17,7 +17,7 @@ module Mcr
       when 'check'
         msg << Msg.color('Check',6)+":#{h['label']}"
       when 'wait'
-        msg << Msg.color('Waiting',6)+":#{h['label']}"
+        msg << Msg.color('Waiting',6)+":#{h['label']} "
       when 'mcr'
         msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
           msg << "(async)" if h['async']
@@ -59,12 +59,14 @@ module Mcr
 
     private
     def getcond(h)
-      msg='  '*(h['depth']+1)
-      c=h['fault']
-      if c['upd']
-        msg << Msg.color("#{c['site']}:#{c['var']}",3)+" is not #{c['val']}"
-      else
-        msg << Msg.color("#{c['site']}",3)+" is not updated"
+      msg=''
+      if c=h['fault']
+        msg << '  '*(h['depth']+1)
+        if c['upd']
+          msg << Msg.color("#{c['site']}:#{c['var']}",3)+" is not #{c['val']}"
+        else
+          msg << Msg.color("#{c['site']}",3)+" is not updated"
+        end
       end
       msg
     end

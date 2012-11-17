@@ -14,10 +14,9 @@ module Mcr
       @extcmd.init_proc{|mitm|
         @tid=Time.now.to_i
         @line=[]
-        @logline[@tid]={:cid => mitm[:cid], :list => @line}
+        @logline[@tid]={:cid => mitm[:cid], :line => @line}
         self[:cid]=mitm[:cid]
         macro(mitm)
-        # puts Msg.view_struct(@logline)
       }
     end
 
@@ -28,7 +27,7 @@ module Mcr
     def macro(mitm,depth=1)
       Msg.type?(mitm,Command::Item)
       self[:stat]='(run)'
-      while e1=mitm.select.shift
+      mitm.select.each{|e1|
         @last={'depth'=>depth}.extend(ExEnum)
         @line.push(@last)
         @last.update(e1).delete('stat')
@@ -37,22 +36,27 @@ module Mcr
           print title(@last)
           res=!fault?(e1)
           puts result(@last)
-          res && dryrun && break
+          res && dryrun(depth) && break
         when 'check'
           print title(@last)
           res=fault?(e1)
           puts result(@last)
-          res && dryrun && raise(UserError)
+          res && dryrun(depth) && raise(UserError)
         when 'wait'
           print title(@last)
           self[:stat]="(wait)"
           if e1['retry'].to_i.times{|n|
               sleep 1 if n > 0
+              print '.'
               @last['retry']=n
-              fault?(e1) || break
+              if @dryrun
+                break if n > 4
+              else
+                fault?(e1) || break
+              end
             } #gives number or nil(if break)
             @last['timeout']=true
-            dryrun && raise(UserError)
+            dryrun(depth) && raise(UserError)
           else
             @last.delete('fault')
           end
@@ -64,7 +68,7 @@ module Mcr
           puts title(@last)
           macro(@cobj.dup.set(e1['cmd']),depth+1)
         end
-      end
+      }
       self[:stat]='(done)'
     rescue UserError
       self[:stat]="(error)"
@@ -73,9 +77,9 @@ module Mcr
     end
 
     private
-    def dryrun
+    def dryrun(depth)
       if @dryrun
-        Msg.warn('Dryrun:Proceed')
+        warn('  '*depth+Msg.color('Dryrun:Proceed',8))
         false
       else
         true

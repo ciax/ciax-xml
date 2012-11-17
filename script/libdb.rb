@@ -75,8 +75,8 @@ class Db < ExHash
     when 'par_num'
       attr={:type => 'num',:list => e.text.split(',')}
       ((db[:parameter]||={})[id]||=[]) << attr
-    when 'par_str'
-      attr={:type => 'str',:list => e1.text.split(',')}
+    when 'par_reg'
+      attr={:type => 'reg',:list => e.text.split(',')}
       ((db[:parameter]||={})[id]||=[]) << attr
     else
       nil

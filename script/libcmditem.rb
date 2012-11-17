@@ -9,7 +9,6 @@ require 'libupdate'
 #Command < Hash
 # Command::Item => {:label,:parameter,:select,:cid,:msg}
 #  Command::Item#set_par(par)
-#  Command::Item#subst(str)
 #  Command::Item#init_proc{|item|}
 class Command
   class Item < ExHash

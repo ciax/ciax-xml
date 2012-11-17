@@ -75,12 +75,16 @@ class Command
       return str unless /\$([\d]+)/ === str
       Command.msg(1){"Substitute from [#{str}]"}
       begin
+        num=true
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
+          num=false if self[:parameter][i-1][:type] != 'num'
           Command.msg{"Parameter No.#{i} = [#{@par[i-1]}]"}
           @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
         }
-        res=eval(res).to_s unless /\$/ === res
+        if num && /\$/ !~ res
+          res=eval(res).to_s
+        end
         Msg.cfg_err("Nil string") if res == ''
         res
       ensure

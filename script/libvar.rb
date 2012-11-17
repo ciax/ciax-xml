@@ -90,7 +90,7 @@ class Var < ExHash
   module Load
     extend Msg::Ver
     def self.extended(obj)
-      init_ver('Load',12)
+      init_ver('VarLoad',12)
       Msg.type?(obj,Var)
     end
 
@@ -103,15 +103,17 @@ class Var < ExHash
     end
 
     def load(tag=nil)
-      open(fname(tag)){|f|
-        Load.msg{"Loading #{@base}"}
+      name=fname(tag)
+      json_str=''
+      open(name){|f|
+        Load.msg{"Loading [#{@base}](#{f.size})"}
         json_str=f.read
-        if json_str.empty?
-          Msg.warn(" -- json file (#{@base}) is empty")
-        else
-          super(json_str)
-        end
       }
+      if json_str.empty?
+        Msg.warn(" -- json file (#{@base}) is empty")
+      else
+        super(json_str)
+      end
       self
     rescue Errno::ENOENT
       if tag
@@ -158,21 +160,22 @@ class Var < ExHash
   module Save
     extend Msg::Ver
     def self.extended(obj)
-      init_ver('Save',12)
+      init_ver('VarSave',12)
       Msg.type?(obj,Load)
     end
 
     def save(data=nil,tag=nil)
       name=fname(tag)
       open(name,'w'){|f|
+        f.flock(File::LOCK_EX)
         f << (data ? JSON.dump(data) : to_j)
-        Save.msg{"[#{@base}] is Saved"}
+        Save.msg{"[#{@base}](#{f.size}) is Saved"}
       }
       if tag
         # Making 'latest' tag link
         sname=fname('latest')
         File.unlink(sname) if File.symlink?(sname)
-        File.symlink(fname(tag),sname)
+        File.symlink(name,sname)
         Save.msg{"Symboliclink to [#{sname}]"}
       end
       self

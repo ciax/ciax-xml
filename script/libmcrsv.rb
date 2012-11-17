@@ -75,7 +75,7 @@ module Mcr
     private
     def dryrun
       if @dryrun
-        Msg.warn('Dryrun:Not Break')
+        Msg.warn('Dryrun:Proceed')
         false
       else
         true

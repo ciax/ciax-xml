@@ -3,50 +3,52 @@
 
 module Mcr
   module Prt
-    def to_s
-      @line.map{|h|
-        title(h)+result(h)
-      }.join("\n")
+    def self.extended(obj)
+      Msg.type?(obj,Hash)
     end
 
-    def title(h)
-      msg='  '*h['depth']
-      case h['type']
+    def to_s
+      title+result
+    end
+
+    def title
+      msg='  '*self['depth']
+      case self['type']
       when 'break'
-        msg << Msg.color('Already',6)+":#{h['label']}"
+        msg << Msg.color('Already',6)+":#{self['label']}"
       when 'check'
-        msg << Msg.color('Check',6)+":#{h['label']}"
+        msg << Msg.color('Check',6)+":#{self['label']}"
       when 'wait'
-        msg << Msg.color('Waiting',6)+":#{h['label']} "
+        msg << Msg.color('Waiting',6)+":#{self['label']} "
       when 'mcr'
-        msg << Msg.color("MACRO",3)+":#{h['cmd'].join(' ')}"
-          msg << "(async)" if h['async']
+        msg << Msg.color("MACRO",3)+":#{self['cmd'].join(' ')}"
+          msg << "(async)" if self['async']
       when 'exec'
-        msg << Msg.color("EXEC",13)+":#{h['cmd'].join(' ')}(#{h['site']})"
+        msg << Msg.color("EXEC",13)+":#{self['cmd'].join(' ')}(#{self['site']})"
       end
       msg
     end
 
-    def result(h)
-      case h['type']
+    def result
+      case self['type']
       when 'break'
         msg=' -> '
-        msg << Msg.color(h['fault'] ? "NOT YET": "YES(SKIP)",2)
+        msg << Msg.color(self['fault'] ? "NOT YET": "YES(SKIP)",2)
       when 'check'
         msg=' -> '
-        if h['fault']
+        if self['fault']
           msg << Msg.color("NG",1)+"\n"
-          msg << getcond(h)
+          msg << getcond
         else
           msg << Msg.color("OK",2)
         end
       when 'wait'
         msg=' -> '
-        if h['timeout']
-          msg << Msg.color("Timeout(#{h['retry']})",1)+"\n"
-          msg << getcond(h)
-        elsif h['fault']
-          ret=h['retry'].to_i
+        if self['timeout']
+          msg << Msg.color("Timeout(#{self['retry']})",1)+"\n"
+          msg << getcond
+        elsif self['fault']
+          ret=self['retry'].to_i
           msg << '*'*(ret/10)+'.'*(ret % 10)
         else
           msg << Msg.color("OK",2)
@@ -58,10 +60,10 @@ module Mcr
     end
 
     private
-    def getcond(h)
+    def getcond
       msg=''
-      if c=h['fault']
-        msg << '  '*(h['depth']+1)
+      if c=self['fault']
+        msg << '  '*(self['depth']+1)
         if c['upd']
           msg << Msg.color("#{c['site']}:#{c['var']}",3)+" is not #{c['val']}"
         else

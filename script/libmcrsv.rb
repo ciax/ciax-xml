@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmcrexe"
 require "libapplist"
+require "libmcrprt"
 
 module Mcr
   class Sv < Exe
@@ -28,44 +29,42 @@ module Mcr
       Msg.type?(mitm,Command::Item)
       self[:stat]='(run)'
       mitm.select.each{|e1|
-        @last={'depth'=>depth}.extend(ExEnum)
-        @line.push(@last)
-        @last.update(e1).delete('stat')
+        current={'depth'=>depth}.extend(Mcr::Prt)
+        @line.push(current)
+        current.update(e1).delete('stat')
         case e1['type']
         when 'break'
-          print title(@last)
-          res=!fault?(e1)
-          puts result(@last)
+          res=!fault?(e1,current)
+          puts current
           res && dryrun(depth) && break
         when 'check'
-          print title(@last)
-          res=fault?(e1)
-          puts result(@last)
+          res=fault?(e1,current)
+          puts current
           res && dryrun(depth) && raise(UserError)
         when 'wait'
-          print title(@last)
+          print current.title
           self[:stat]="(wait)"
           if e1['retry'].to_i.times{|n|
               sleep 1 if n > 0
               print '.'
-              @last['retry']=n
+              current['retry']=n
               if @dryrun
                 break if n > 4
               else
-                fault?(e1) || break
+                fault?(e1,current) || break
               end
             } #gives number or nil(if break)
-            @last['timeout']=true
+            current['timeout']=true
             dryrun(depth) && raise(UserError)
           else
-            @last.delete('fault')
+            current.delete('fault')
           end
-          puts result(@last)
+          puts current.result
         when 'exec'
-          puts title(@last)
+          puts current.title
           @client[e1['site']].exe(e1['cmd'])
         when 'mcr'
-          puts title(@last)
+          puts current.title
           macro(@cobj.dup.set(e1['cmd']),depth+1)
         end
       }
@@ -86,7 +85,7 @@ module Mcr
       end
     end
 
-    def fault?(e)
+    def fault?(e,current)
       flt={}
       !e['stat'].all?{|h|
         flt['site']=h['site']
@@ -96,7 +95,7 @@ module Mcr
           flt['res']=res
           flt['upd'] && comp(res,flt['val'],flt['inv'])
         end
-      } && @last['fault']=flt
+      } && current['fault']=flt
     end
 
     # client is forced to be localhost
@@ -126,7 +125,6 @@ end
 
 if __FILE__ == $0
   require "libmcrdb"
-  require "libmcrprt"
 #  ENV['VER']='appsv'
 
   id,*cmd=ARGV
@@ -134,7 +132,7 @@ if __FILE__ == $0
   begin
     app=App::List.new
     mdb=Mcr::Db.new(id) #ciax
-    mcr=Mcr::Sv.new(mdb,app,true).extend(Mcr::Prt)
+    mcr=Mcr::Sv.new(mdb,app,true)
     mcr.exe(cmd)
   rescue InvalidCMD
     Msg.exit(2)

@@ -15,7 +15,7 @@ module Mcr
       msg='  '*self['depth']
       case self['type']
       when 'break'
-        msg << Msg.color('Already',6)+":#{self['label']}"
+        msg << Msg.color('Done?',6)+":#{self['label']}"
       when 'check'
         msg << Msg.color('Check',6)+":#{self['label']}"
       when 'wait'

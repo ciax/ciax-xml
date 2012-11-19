@@ -29,50 +29,41 @@ module Mcr
       Msg.type?(mitm,Command::Item)
       self[:stat]='(run)'
       mitm.select.each{|e1|
-        current={'depth'=>depth}.extend(Mcr::Prt)
+        current={'depth'=>depth}.update(e1).extend(Mcr::Prt)
         @line.push(current)
-        current.update(e1).delete('stat')
+        print current.title
         case e1['type']
         when 'break'
-          res=!fault?(e1,current)
-          puts current
-          res && dryrun(depth) && break
+          self[:stat]='(done)' unless fault?(current)
         when 'check'
-          res=fault?(e1,current)
-          puts current
-          res && dryrun(depth) && raise(UserError)
+          self[:stat]="(error)" if fault?(current)
         when 'wait'
-          print current.title
           self[:stat]="(wait)"
           if e1['retry'].to_i.times{|n|
-              sleep 1 if n > 0
-              print '.'
               current['retry']=n
-              if @dryrun
-                break if n > 4
-              else
-                fault?(e1,current) || break
-              end
+              brk=fault?(current)
+              break if @dryrun && n > 4 || brk
+              sleep 1
+              print '.'
             } #gives number or nil(if break)
             current['timeout']=true
-            dryrun(depth) && raise(UserError)
+            self[:stat]='(timeout)'
           else
             current.delete('fault')
           end
-          puts current.result
         when 'exec'
-          puts current.title
+          puts
           @client[e1['site']].exe(e1['cmd'])
+          next
         when 'mcr'
-          puts current.title
+          puts
           macro(@cobj.dup.set(e1['cmd']),depth+1)
+          next
         end
+        current.delete('stat')
+        puts current.result
+        self[:stat] != '(run)' && dryrun(depth) && break
       }
-      self[:stat]='(done)'
-    rescue UserError
-      self[:stat]="(error)"
-    rescue Broken
-      self[:stat]="(broken)"
     end
 
     private
@@ -85,9 +76,9 @@ module Mcr
       end
     end
 
-    def fault?(e,current)
+    def fault?(current)
       flt={}
-      !e['stat'].all?{|h|
+      !current['stat'].all?{|h|
         flt['site']=h['site']
         break unless flt['upd']=update?(flt['site'])
         ['var','val','inv'].each{|k| flt[k]=h[k] }
@@ -133,7 +124,7 @@ if __FILE__ == $0
     app=App::List.new
     mdb=Mcr::Db.new(id) #ciax
     mcr=Mcr::Sv.new(mdb,app,true)
-    mcr.exe(cmd)
+    puts mcr.exe(cmd)
   rescue InvalidCMD
     Msg.exit(2)
   rescue InvalidID

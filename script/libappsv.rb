@@ -23,13 +23,10 @@ module App
       @stat.ext_sqlog if logging and @fint.field.key?('ver')
       @stat.ext_watch_w
       Thread.abort_on_exception=true
-      @cobj.values.each{|item|
-        item.extend(App::Cmd)
-      }
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fint.exe(fcmd)}
-      @extcmd.init_proc{|item|
+      @extcmd.ext_appcmd.init_proc{|item|
         @stat.block?(item.cmd)
         @buf.send(1)
         Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}

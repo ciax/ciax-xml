@@ -6,6 +6,8 @@ require 'libelapse'
 module Status
   class Var < Var
     extend Msg::Ver
+    #@< type*,id*,ver*,val*
+    #@ last
     def initialize
       Var.init_ver('Status',6)
       super('stat')
@@ -41,14 +43,20 @@ module Status
 
   module Save
     extend Msg::Ver
+    #@<< type*,id*,ver*,val*
+    #@< db,base,prefix
+    #@< last
+    #@ lastsave
     def self.extended(obj)
       init_ver(obj,6)
-      Msg.type?(obj,Var).init
+      Msg.type?(obj,Save).init
     end
+
     def init
       @lastsave=0
       self
     end
+
     def save(data=nil,tag=nil)
       time=@val['time'].to_f
       if time > @lastsave

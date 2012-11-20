@@ -3,6 +3,7 @@ require "libmsg"
 require "libexenum"
 
 class Var < ExHash
+  #@ type*,id*,ver*,val*
   attr_reader :type,:id,:ver,:val
   def initialize(type)
     super()
@@ -88,6 +89,8 @@ class Var < ExHash
   end
 
   module Load
+    #@< type*,id*,ver*,val*
+    #@ db,base,prefix
     extend Msg::Ver
     def self.extended(obj)
       init_ver('VarLoad',12)
@@ -139,6 +142,8 @@ class Var < ExHash
 
   module Url
     require "open-uri"
+    #@<< type*,id*,ver*,val*
+    #@< db,base,prefix
     def self.extended(obj)
       Msg.type?(obj,Load)
     end
@@ -159,6 +164,8 @@ class Var < ExHash
 
   module Save
     extend Msg::Ver
+    #@<< type*,id*,ver*,val*
+    #@< db,base,prefix
     def self.extended(obj)
       init_ver('VarSave',12)
       Msg.type?(obj,Load)

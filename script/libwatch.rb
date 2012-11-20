@@ -6,6 +6,9 @@ require 'librerange'
 module Watch
   module Var
     extend Msg::Ver
+    #@<< type*,id*,ver*,val*
+    #@< last
+    #@ watch*,active*,period*,interval*,event_proc*
     attr_reader :active,:period,:interval,:watch
     attr_writer :event_proc
     def self.extended(obj)
@@ -64,6 +67,10 @@ module Watch
   end
 
   module Conv
+    #@<<< type*,id*,ver*,val*
+    #@<< last
+    #@< watch*,active*,period*,interval*,event_proc*
+    #@ wdb,list,crnt,last,res
     def self.extended(obj)
       Msg.type?(obj,Var,Object::Var::Load).init
     end

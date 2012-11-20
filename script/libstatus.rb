@@ -7,7 +7,8 @@ module Status
   class Var < Var
     extend Msg::Ver
     #@< type*,id*,ver*,val*
-    #@ last
+    #@ last*
+    attr_reader :last
     def initialize
       Var.init_ver('Status',6)
       super('stat')

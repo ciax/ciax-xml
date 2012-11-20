@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 VarDir="#{ENV['HOME']}/.var"
 ScrDir=File.dirname(__FILE__)
+Indent='  '
 
 # User input Error
 class UserError < RuntimeError; end
@@ -67,7 +68,7 @@ module Msg
       return unless text
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
-      ts << '  '*@ind
+      ts << Msg.indent(@ind)
       tc=Thread.current
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
       ts << Msg.color("#{@prefix}:",@color)
@@ -152,16 +153,20 @@ module Msg
   ### Class method ###
   module_function
   # Messaging methods
-  def msg(msg='message') # Display only
-    Kernel.warn color(msg,2)
+  def msg(msg='message',ind=0) # Display only
+    Kernel.warn indent(ind)+color(msg,2)
   end
 
-  def warn(msg='warning') # Display only
-    Kernel.warn color(msg,3)
+  def hidden(msg='hidden',ind=0) # Display only
+    Kernel.warn indent(ind)+color(msg,8)
   end
 
-  def alert(msg='alert') # Display only
-    Kernel.warn color(msg,1)
+  def warn(msg='warning',ind=0) # Display only
+    Kernel.warn indent(ind)+color(msg,3)
+  end
+
+  def alert(msg='alert',ind=0) # Display only
+    Kernel.warn indent(ind)+color(msg,1)
   end
 
   # Exception methods
@@ -197,7 +202,7 @@ module Msg
   def usage(str,*opt)
     Kernel.warn("Usage: #{$0.split('/').last} #{str}")
     opt.each{|s|
-      Kernel.warn(" "*6+s)
+      Kernel.warn indent(1)+s
     }
     exit
   end
@@ -224,7 +229,7 @@ module Msg
 
   # Display methods
   def item(key,val)
-    Msg.color("  %-6s" % key,3)+": #{val}"
+    indent(1)+color("%-6s" % key,3)+": #{val}"
   end
 
   def now
@@ -239,7 +244,11 @@ module Msg
     "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end
 
-  def view_struct(data,title=nil,indent=0)
+  def indent(ind=0,str='')
+    Indent*ind+str
+  end
+
+  def view_struct(data,title=nil,ind=0)
     str=''
     col=4
     if title
@@ -249,8 +258,8 @@ module Msg
       else
         title=title.inspect
       end
-      str << "  " * indent + color("%-6s" % title,5)+" :\n"
-      indent+=1
+      str << indent(ind)+color("%-6s" % title,5)+" :\n"
+      ind+=1
     end
     case data
     when Array
@@ -258,16 +267,16 @@ module Msg
       idx=data.size.times
       if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
-          str << view_struct(data[i],i,indent)
+          str << view_struct(data[i],i,ind)
         }
         return str
       elsif  data.size > col
-        str << "  "* indent + "["
+        str << indent(ind)+"["
         line=[]
         vary.each_slice(col){|a|
           line << a.map{|v| v.inspect}.join(",")
         }
-        str << line.join(",\n "+"  " * indent)+"]\n"
+        str << line.join(",\n "+indent(ind))+"]\n"
         return str
       end
     when Hash
@@ -275,7 +284,7 @@ module Msg
       idx=data.keys
       if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
-          str << view_struct(data[i],i,indent)
+          str << view_struct(data[i],i,ind)
         }
         return str
       elsif data.size > 2
@@ -283,7 +292,7 @@ module Msg
           line=a.map{|k|
             color("%-8s" % k.inspect,3)+(": %-10s" % data[k].inspect)
           }.join("\t")
-          str << "  " * indent + line + "\n"
+          str << indent(ind)+line+"\n"
         }
         return str
       end

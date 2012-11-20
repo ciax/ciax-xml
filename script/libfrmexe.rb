@@ -4,6 +4,8 @@ require 'libfield'
 
 module Frm
   class Exe < Int::Exe
+    #@< cobj,output,intcmd,int_proc,upd_proc*
+    #@ extcmd,field*
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)

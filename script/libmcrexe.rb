@@ -4,6 +4,8 @@ require "libstatus"
 
 module Mcr
   class Exe < Int::Exe
+    #@< cobj,output,intcmd,int_proc,upd_proc*
+    #@ mdb,extcmd,logline*
     attr_reader :logline
     def initialize(mdb)
       @mdb=Msg.type?(mdb,Mcr::Db)

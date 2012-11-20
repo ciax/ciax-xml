@@ -10,10 +10,10 @@ module Int
     attr_reader :int_proc
     def initialize
       @cobj=Command.new
+      @output=''
       @intcmd=@cobj.add_domain('int',2)
       @int_proc=Update.new # Proc for Interactive Operation
       @upd_proc=Update.new # Proc for Server Status Update
-      @output=''
     end
 
     # Sync only (Wait for other thread)

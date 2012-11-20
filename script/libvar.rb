@@ -1,18 +1,21 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libexenum"
+require "libupdate"
 
 class Var < ExHash
-  #@ type*,id*,ver*,val*
-  attr_reader :type,:id,:ver,:val
+  #@ type*,id*,ver*,val*,upd_proc*
+  attr_reader :type,:id,:ver,:val,:upd_proc
   def initialize(type)
     super()
     self['type']=@type=type
     self.val=Hash.new
     set_time
+    @upd_proc=Update.new
   end
 
   def upd
+    @upd_proc.upd
     self
   end
 
@@ -117,6 +120,7 @@ class Var < ExHash
       else
         super(json_str)
       end
+      upd
       self
     rescue Errno::ENOENT
       if tag
@@ -173,6 +177,7 @@ class Var < ExHash
 
     def save(data=nil,tag=nil)
       name=fname(tag)
+      upd
       open(name,'w'){|f|
         f.flock(File::LOCK_EX)
         f << (data ? JSON.dump(data) : to_j)

@@ -23,8 +23,9 @@ module Mcr
     def exe
       tid=Time.now.to_f
       mcrlog=@logline[tid.to_i]={:tid => tid,:cid => self[:cid], :line => []}
-      puts ({'type'=>'mcr','depth'=>0,'mcr'=>@cmd,'label'=>self[:label]}.extend(Prt))
-      macro(mcrlog,1)
+      current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}.extend(Prt)
+      puts current
+      macro(mcrlog)
       super
     end
 
@@ -55,7 +56,7 @@ module Mcr
         end
         current.delete('stat')
         current.delete('tid')
-        self[:msg] != '(run)' && dryrun?(depth) && break
+        self[:msg] != '(run)' && live?(depth) && break
       }
     end
 
@@ -64,7 +65,7 @@ module Mcr
       "%.3f" % (Time.now.to_f-base)
     end
 
-    def dryrun?(depth)
+    def live?(depth)
       if @dryrun
         Msg.hidden('Dryrun:Proceed',depth)
       else
@@ -152,8 +153,7 @@ if __FILE__ == $0
     mdb=Mcr::Db.new(id) #ciax
     mcobj=Command.new
     mcobj.add_ext(mdb,:macro).ext_mcrcmd(app,logline,opt['t'])
-    puts mcobj.set(cmd).exe #[:msg]
-    puts logline
+    puts mcobj.set(cmd).exe[:msg]
   rescue InvalidCMD
     Msg.exit(2)
   rescue InvalidID

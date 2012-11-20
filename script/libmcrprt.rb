@@ -12,7 +12,7 @@ module Mcr
     end
 
     def title
-      msg='  '*self['depth']
+      msg=Msg.indent(self['depth']||0)
       case self['type']
       when 'goal'
         msg << Msg.color('Done?',6)+":#{self['label']}"
@@ -65,7 +65,7 @@ module Mcr
     def getcond
       msg=''
       if c=self['fault']
-        msg << '  '*(self['depth']+1)
+        msg << Msg.indent((self['depth']||0)+1)
         if c['upd']
           msg << Msg.color("#{c['site']}:#{c['var']}",3)+" is not #{c['val']}"
         else

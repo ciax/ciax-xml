@@ -6,16 +6,17 @@ require "libmcrprt"
 module Mcr
   module Cmd
     extend Msg::Ver
+    #@<< index,id*,par*,cmd*,def_proc*
+    #@< select*
+    #@ aint,dryrun,logline*
     attr_reader :logline
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
     end
 
-    def init(client,logline,dr=nil)
-      #@<< index,id*,par*,cmd*,def_proc*
-      #@< select*
-      @client=Msg.type?(client,App::List)
+    def init(aint,logline,dr=nil)
+      @aint=Msg.type?(aint,App::List)
       @logline=Msg.type?(logline,Hash)
       @dryrun=dr
     end
@@ -50,7 +51,7 @@ module Mcr
           self[:msg]="(query)"
           #sleep
           self[:msg]='(run)'
-          @client[e1['site']].exe(e1['cmd'])
+          @aint[e1['site']].exe(e1['cmd'])
         when 'mcr'
           puts current
           @index.dup.set(e1['mcr']).macro(mcrlog,depth+1)
@@ -107,14 +108,14 @@ module Mcr
       res
     end
 
-    # client is forced to be localhost
+    # aint is forced to be localhost
     def update?(ins)
-      stat=@client[ins].stat.load
+      stat=@aint[ins].stat.load
       stat.update?
     end
 
     def getstat(ins,var)
-      stat=@client[ins].stat
+      stat=@aint[ins].stat
       res=stat['msg'][var]||stat.val[var]
       Cmd.msg{"ins=#{ins},var=#{var},res=#{res}"}
       Cmd.msg{stat.val}
@@ -133,9 +134,9 @@ module Mcr
 end
 
 class Command::ExtDom
-  def ext_mcrcmd(client,mcrlog={},dr=nil)
+  def ext_mcrcmd(aint,logline={},dr=nil)
     values.each{|item|
-      item.extend(Mcr::Cmd).init(client,mcrlog,dr)
+      item.extend(Mcr::Cmd).init(aint,logline,dr)
     }
     self
   end

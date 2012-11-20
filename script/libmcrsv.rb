@@ -12,11 +12,8 @@ module Mcr
     #@ dryrun,aint
     def initialize(mdb,aint,dr=nil)
       super(mdb)
-      @dryrun=dr
       @aint=Msg.type?(aint,App::List)
-      @cobj.values.each{|item|
-        item.extend(Mcr::Cmd)
-      }
+      @extcmd.ext_mcrcmd(@aint,@logline,dr)
     end
   end
 end
@@ -29,11 +26,10 @@ if __FILE__ == $0
   id,*cmd=ARGV
   ARGV.clear
   begin
-    app=App::List.new
+    aint=App::List.new
     mdb=Mcr::Db.new(id) #ciax
-    mcr=Mcr::Sv.new(mdb,app,opt['t'])
-    puts mcr.exe(cmd)
-    puts mcr[:stat]
+    mcr=Mcr::Sv.new(mdb,aint,opt['t'])
+    mcr.ext_shell.shell
   rescue InvalidCMD
     Msg.exit(2)
   rescue InvalidID

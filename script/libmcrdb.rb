@@ -20,20 +20,23 @@ module Mcr
           e0.each{|e1,rep|
             attr=e1.to_h
             set_par(e1,id,mdb) && next
+            attr['type'] = e1.name
             case e1.name
             when 'check','wait'
-              attr['type'] = e1.name
               select << mkcond(e1,attr)
             when 'goal'
-              attr['type'] = 'break'
               select << mkcond(e1,attr)
               final.update(attr)['type'] = 'check'
-            when 'mcr','exec'
-              attr['type'] = e1.name
+            when 'exec'
               attr['cmd']=getcmd(e1)
               attr.delete('name')
               select << attr
               Db.msg{"COMMAND:[#{e1['name']}]"}
+            when 'mcr'
+              cmd=attr['mcr']=getcmd(e1)
+              attr['label']=mdb[:label][cmd.first]
+              attr.delete('name')
+              select << attr
             end
           }
           select << final unless final.empty?

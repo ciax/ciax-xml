@@ -48,7 +48,7 @@ class Command
 
   module ExtItem
     include Math
-    attr_reader :select,:label
+    attr_reader :select
     def self.extended(obj)
       Msg.type?(obj,Command::Item)
     end

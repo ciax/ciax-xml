@@ -14,24 +14,26 @@ module Mcr
     def title
       msg='  '*self['depth']
       case self['type']
-      when 'break'
+      when 'goal'
         msg << Msg.color('Done?',6)+":#{self['label']}"
       when 'check'
         msg << Msg.color('Check',6)+":#{self['label']}"
       when 'wait'
         msg << Msg.color('Waiting',6)+":#{self['label']} "
       when 'mcr'
-        msg << Msg.color("MACRO",3)+":#{self['cmd'].join(' ')}"
-          msg << "(async)" if self['async']
+        msg << Msg.color("MACRO",3)
+        msg << ":#{self['mcr'].join(' ')}(#{self['label']} )"
+        msg << "(async)" if self['async']
       when 'exec'
-        msg << Msg.color("EXEC",13)+":#{self['cmd'].join(' ')}(#{self['site']})"
+        msg << Msg.color("EXEC",13)
+        msg << ":#{self['cmd'].join(' ')}(#{self['site']})"
       end
       msg
     end
 
     def result
       case self['type']
-      when 'break'
+      when 'goal'
         msg=' -> '
         msg << Msg.color(self['fault'] ? "NOT YET": "YES(SKIP)",2)
       when 'check'

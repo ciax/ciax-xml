@@ -68,9 +68,8 @@ module Msg
       return unless text
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
-      ts << Msg.indent(@ind)
       tc=Thread.current
-      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15)
+      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ind)
       ts << Msg.color("#{@prefix}:",@color)
       ts << text.inspect
     end
@@ -139,14 +138,14 @@ module Msg
       optdb['d']='debug mode'
       optdb.update(db)
       @list=str.split('').map{|c|
-        optdb.key?(c) && "-#{c}:#{optdb[c]}" || nil
+        optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact
       update(ARGV.getopts(str))
       require 'debug' if self['d']
     end
 
     def usage(str)
-      Msg.usage(str,*@list)
+      Msg.usage(str,@list)
     end
   end
 
@@ -154,19 +153,19 @@ module Msg
   module_function
   # Messaging methods
   def msg(msg='message',ind=0) # Display only
-    Kernel.warn indent(ind)+color(msg,2)
+    Kernel.warn color(msg,2,ind)
   end
 
   def hidden(msg='hidden',ind=0) # Display only
-    Kernel.warn indent(ind)+color(msg,8)
+    Kernel.warn color(msg,8,ind)
   end
 
   def warn(msg='warning',ind=0) # Display only
-    Kernel.warn indent(ind)+color(msg,3)
+    Kernel.warn color(msg,3,ind)
   end
 
   def alert(msg='alert',ind=0) # Display only
-    Kernel.warn indent(ind)+color(msg,1)
+    Kernel.warn color(msg,1,ind)
   end
 
   # Exception methods
@@ -199,11 +198,9 @@ module Msg
     Kernel.abort([color(msg,1),$!.to_s].join("\n"))
   end
 
-  def usage(str,*opt)
+  def usage(str,opt=[])
     Kernel.warn("Usage: #{$0.split('/').last} #{str}")
-    opt.each{|s|
-      Kernel.warn indent(1)+s
-    }
+    opt.each{|s| Kernel.warn s}
     exit
   end
 
@@ -237,15 +234,15 @@ module Msg
   end
 
   # Color 1=red,2=green,4=blue,8=bright
-  def color(text,c=7)
+  def color(text,c=7,i=0)
     return '' if text == ''
     return text unless STDERR.tty?
     (c||=7).to_i
-    "\033[#{c>>3};3#{c&7}m#{text}\33[0m"
+    indent(i)+"\033[#{c>>3};3#{c&7}m#{text}\33[0m"
   end
 
-  def indent(ind=0,str='')
-    Indent*ind+str
+  def indent(ind=0)
+    Indent*ind
   end
 
   def view_struct(data,title=nil,ind=0)
@@ -258,7 +255,7 @@ module Msg
       else
         title=title.inspect
       end
-      str << indent(ind)+color("%-6s" % title,5)+" :\n"
+      str << color("%-6s" % title,5,ind)+" :\n"
       ind+=1
     end
     case data

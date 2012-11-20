@@ -4,6 +4,7 @@ require 'libfrmlist'
 require "libappcmd"
 require "libapprsp"
 require "libsymconv"
+require "libbuffer"
 require "libsqlog"
 require "thread"
 

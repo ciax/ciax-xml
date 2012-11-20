@@ -36,19 +36,20 @@ module Mcr
         mcrlog[:line].push(current.extend(Prt))
         case e1['type']
         when 'goal'
-          print current.title
           self[:msg]='(done)' unless fault?(current)
-          puts current.result
+          puts current
         when 'check'
-          print current.title
           self[:msg]="(error)" if fault?(current)
-          puts current.result
+          puts current
         when 'wait'
           print current.title
-          waiting(current)
+          waiting(current){print '.'}
           puts current.result
         when 'exec'
           puts current
+          self[:msg]="(query)"
+          #sleep
+          self[:msg]='(run)'
           @client[e1['site']].exe(e1['cmd'])
         when 'mcr'
           puts current
@@ -81,9 +82,9 @@ module Mcr
           brk=fault?(current)
           break if @dryrun && n > 4 || brk
           sleep 1
-          print '.'
+          yield
         }
-        current['timeout']=true 
+        current['timeout']=true
         self[:msg]='(timeout)'
       else
         current.delete('fault')

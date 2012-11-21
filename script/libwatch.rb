@@ -178,7 +178,7 @@ module Watch
         v['cond'].each_index{|i|
           h=v['cond'][i]
           id=h['var']
-          h['crnt']=@watch['crnt'][id]
+          h['val']=@watch['crnt'][id]
           h['res']=@watch['res']["#{k}:#{i}"]
           h['cmp']=@watch['last'][id] if h['type'] == 'onchange'
         }

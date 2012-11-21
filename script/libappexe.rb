@@ -47,7 +47,10 @@ module App
       @cobj.def_proc.add{|item|
         @watch.block?(item.cmd)
         @stat.set_time.upd
-        @watch.upd.issue
+        @watch.upd
+      }
+      @upd_proc.add{
+        @watch.issue
       }
     end
   end

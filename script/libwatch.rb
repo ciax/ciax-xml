@@ -7,26 +7,24 @@ module Watch
   class Var < Var
     extend Msg::Ver
     #@< type*,id*,ver*,val*,upd_proc*
-    #@ watch*,active*,period*,interval*,event_proc*
-    attr_reader :active,:period,:interval,:watch
+    #@ event_proc*
     attr_writer :event_proc
 
     def initialize
       Var.init_ver('Watch',6)
       super('watch')
+      self['period']=300
+      self['interval']=0.1
       #For Array element
       ['active','exec','block','int'].each{|i| self[i]||=[]}
       #For Hash element
       ['val','last','res'].each{|i| self[i]||={}}
-      @active=self['active']
-      @period=300
-      @interval=0.1
       @event_proc=proc{}
       self
     end
 
     def active?
-      ! @active.empty?
+      ! self['active'].empty?
     end
 
     def block?(cmd)
@@ -62,7 +60,7 @@ module Watch
 
   module Conv
     #@<< type*,id*,ver*,val*,upd_proc*
-    #@< watch*,active*,period*,interval*,(event_proc*)
+    #@< (event_proc*)
     #@ wdb,list,crnt,res
     def self.extended(obj)
       Msg.type?(obj,Var)
@@ -73,8 +71,8 @@ module Watch
       @val=Msg.type?(stat,Status::Var).val
       @last=stat.last
       stat.upd_proc.add{upd}
-      @period=@wdb['period'].to_i if @wdb.key?('period')
-      @interval=@wdb['interval'].to_f/10 if @wdb.key?('interval')
+      self['period']=@wdb['period'].to_i if @wdb.key?('period')
+      self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')
       # Pick usable val
       @list=@wdb[:stat].values.flatten(1).map{|h|
         h['var']
@@ -95,10 +93,10 @@ module Watch
       return self if @crnt['time'] == @val['time']
       upd_last 
       hash={'int' =>[],'exec' =>[],'block' =>[]}
-      @active.clear
+      self['active'].clear
       @wdb[:stat].each{|i,v|
         next unless check(i)
-        @active << i
+        self['active'] << i
         hash.each{|k,a|
           n=@wdb[k.to_sym][i]
           a << n if n && !a.include?(n)

@@ -10,7 +10,7 @@ require "thread"
 
 module App
   #@<< cobj,output,intcmd,int_proc,upd_proc*
-  #@< adb,extcmd,output,stat*
+  #@< adb,extcmd,output,watch,stat*
   #@ fint,buf,tid
   class Sv < Exe
     extend Msg::Ver
@@ -45,7 +45,7 @@ module App
       }
       @buf.post_flush.add{
         @stat.upd.save
-        sleep(@watch.interval||0.1)
+        sleep(@watch['interval']||0.1)
         # Auto issue by watch
         @watch.issue
       }
@@ -53,7 +53,7 @@ module App
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
       if logging and @stat.ver
-        @cobj.ext_logging(@adb['site'],@stat.ver){@watch.active}
+        @cobj.ext_logging(@adb['site'],@stat.ver){@watch['active']}
       end
       @upd_proc.add{
         self['auto'] = @tid && @tid.alive?
@@ -70,7 +70,7 @@ module App
         tc[:name]="Auto"
         tc[:color]=4
         Thread.pass
-        int=(@watch.period||300).to_i
+        int=(@watch['period']||300).to_i
         loop{
           begin
             @cobj.set(['upd'])

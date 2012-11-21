@@ -9,9 +9,9 @@ require "libsqlog"
 require "thread"
 
 module App
-  #@<< cobj,output,intcmd,int_proc,upd_proc*
-  #@< adb,extcmd,output,watch,stat*
-  #@ fint,buf,tid
+  # @<< cobj,output,intcmd,int_proc,upd_proc*
+  # @< adb,extcmd,output,watch,stat*
+  # @ fint,buf,tid
   class Sv < Exe
     extend Msg::Ver
     def initialize(adb,fint,logging=nil)

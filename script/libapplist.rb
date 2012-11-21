@@ -3,11 +3,12 @@ require "libfrmlist"
 
 module App
   class List < Int::List
+    # @< opt,share_proc*
+    # @ fl,fint,list
     require "libappsv"
     def initialize(opt=nil)
       @fl=Frm::List.new(opt)
       @fint={}
-      #@< opt,share_proc*
       super{|id|
         ldb=Loc::Db.new(id)
         @list=ldb.list

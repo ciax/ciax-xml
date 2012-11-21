@@ -6,6 +6,7 @@ require 'libvar'
 module Field
   class Var < Var
     extend Msg::Ver
+    # @< (type*),(id*),(ver*),val*
     def initialize
       Var.init_ver(self,6)
       super('field')
@@ -86,6 +87,7 @@ module Field
 
   module Save
     # Saving data of specified keys with tag
+    # @< (type*),(id*),(ver*),val*
     def savekey(keylist,tag=nil)
       Msg.com_err("No File") unless @base
       hash={}

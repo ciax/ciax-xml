@@ -6,9 +6,9 @@ require "libmcrprt"
 module Mcr
   module Cmd
     extend Msg::Ver
-    #@<< index,id*,par*,cmd*,def_proc*
-    #@< select*
-    #@ aint,dryrun,logline*
+    # @<< (index),(id*),(par*),cmd*,(def_proc*)
+    # @< select*
+    # @ aint,dryrun,logline*
     attr_reader :logline
     def self.extended(obj)
       init_ver('McrCmd',9)

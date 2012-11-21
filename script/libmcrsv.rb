@@ -7,9 +7,9 @@ require "thread"
 module Mcr
   class Sv < Exe
     extend Msg::Ver
-    #@<< cobj,output,intcmd,int_proc,upd_proc*
-    #@< mdb,extcmd,logline*
-    #@ dryrun,aint
+    # @<< cobj,output,intcmd,int_proc,upd_proc*
+    # @< mdb,extcmd,logline*
+    # @ dryrun,aint
     def initialize(mdb,aint,dr=nil)
       super(mdb)
       @aint=Msg.type?(aint,App::List)

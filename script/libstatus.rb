@@ -6,8 +6,8 @@ require 'libelapse'
 module Status
   class Var < Var
     extend Msg::Ver
-    #@< type*,id*,ver*,val*
-    #@ last*
+    # @< (type*),(id*),(ver*),val*
+    # @ last*
     attr_reader :last
     def initialize
       Var.init_ver('Status',6)
@@ -44,10 +44,10 @@ module Status
 
   module Save
     extend Msg::Ver
-    #@<< type*,id*,ver*,val*
-    #@< db,base,prefix
-    #@< last
-    #@ lastsave
+    # @<< (type*),(id*),(ver*),val*
+    # @< (db),(base),(prefix)
+    # @< (last)
+    # @ lastsave
     def self.extended(obj)
       init_ver(obj,6)
       Msg.type?(obj,Save).init

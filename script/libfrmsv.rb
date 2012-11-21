@@ -8,9 +8,9 @@ require "libfrmcmd"
 
 module Frm
   class Sv < Exe
-    #@<< cobj,output,intcmd,int_proc,upd_proc*
-    #@< extcmd,field*
-    #@ io
+    # @<< cobj,(output),(intcmd),(int_proc),(upd_proc*)
+    # @< extcmd,field*
+    # @ io
     def initialize(fdb,iocmd=[])
       super(fdb)
       @field.ext_save.load

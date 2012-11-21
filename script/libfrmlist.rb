@@ -3,8 +3,8 @@ require 'libfrmsv'
 
 module Frm
   class List < Int::List
+    # @< opt,(share_proc*)
     def initialize(opt=nil)
-      #@< opt,share_proc*
       super{|id|
         fdb=Loc::Db.new(id)[:frm]
         host='localhost'

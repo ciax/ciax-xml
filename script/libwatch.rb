@@ -4,27 +4,21 @@ require 'libstatus'
 require 'librerange'
 
 module Watch
-  module Var
+  class Var < Var
     extend Msg::Ver
-    #@<< type*,id*,ver*,val*
-    #@< last
+    #@< type*,id*,ver*,val*,upd_proc*
     #@ watch*,active*,period*,interval*,event_proc*
     attr_reader :active,:period,:interval,:watch
     attr_writer :event_proc
-    def self.extended(obj)
-      init_ver('Watch',3)
-      Msg.type?(obj,Status::Var).init
-    end
 
-    def init
-      @watch=(self['watch']||={}).extend(ExEnum)
-      ['active','exec','block','int'].each{|i|
-        @watch[i]||=[]
-      }
-      ['val','last','res'].each{|i|
-        @watch[i]||={}
-      }
-      @active=@watch['active']
+    def initialize
+      Var.init_ver('Watch',6)
+      super('watch')
+      #For Array element
+      ['active','exec','block','int'].each{|i| self[i]||=[]}
+      #For Hash element
+      ['val','last','res'].each{|i| self[i]||={}}
+      @active=self['active']
       @period=300
       @interval=0.1
       @event_proc=proc{}
@@ -36,47 +30,49 @@ module Watch
     end
 
     def block?(cmd)
-      cmds=@watch['block']
+      cmds=self['block']
       Var.msg{"BLOCKING:#{cmd}"} unless cmds.empty?
       cmds.include?(cmd[0]) && Msg.cmd_err("Blocking(#{cmd})")
     end
 
     def issue
       # block parm = cmd + priority(2)
-      cmds=@watch['exec'].each{|cmd|
+      cmds=self['exec'].each{|cmd|
         @event_proc.call(cmd,2)
         Var.msg{"ISSUED:#{cmd}"}
       }.dup
-      @watch['exec'].clear
+      self['exec'].clear
       cmds
     end
 
     def interrupt
       # block parm = cmd + priority(0)
-      cmds=@watch['int'].each{|cmd|
+      cmds=self['int'].each{|cmd|
         @event_proc.call(cmd,0)
         Var.msg{"ISSUED:#{cmd}"}
       }.dup
-      @watch['int'].clear
+      self['int'].clear
       cmds
     end
 
-    def ext_watch_w
-      extend(Conv)
+    def ext_conv(adb,stat)
+      extend(Conv).init(adb,stat)
     end
   end
 
   module Conv
-    #@<<< type*,id*,ver*,val*
-    #@<< last
-    #@< watch*,active*,period*,interval*,event_proc*
-    #@ wdb,list,crnt,last,res
+    #@<< type*,id*,ver*,val*,upd_proc*
+    #@< watch*,active*,period*,interval*,(event_proc*)
+    #@ wdb,list,crnt,res
     def self.extended(obj)
-      Msg.type?(obj,Var,Object::Var::Load).init
+      Msg.type?(obj,Var)
     end
 
-    def init
-      @wdb=@db[:watch] || {:stat => {}}
+    def init(adb,stat)
+      @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
+      @val=Msg.type?(stat,Status::Var).val
+      @last=stat.last
+      stat.upd_proc.add{upd}
       @period=@wdb['period'].to_i if @wdb.key?('period')
       @interval=@wdb['interval'].to_f/10 if @wdb.key?('interval')
       # Pick usable val
@@ -86,17 +82,16 @@ module Watch
       @list.unshift('time')
       # @val(all) = @crnt(picked) > @last
       # upd() => @last<-@crnt => @crnt<-@val => check(@crnt <> @last?)
-      @watch['val']=@crnt={}
-      @watch['last']=@last={}
-      @watch['res']=@res={}
+      self['val']=@crnt={}
+      self['last']=@last={}
+      self['res']=@res={}
       upd_last
       self
     end
 
     # Stat no changed -> clear exec, no eval
     def upd
-      super
-      @watch['exec'].clear
+      self['exec'].clear
       return self if @crnt['time'] == @val['time']
       upd_last 
       hash={'int' =>[],'exec' =>[],'block' =>[]}
@@ -110,7 +105,7 @@ module Watch
         }
       }
       hash.each{|k,a|
-        @watch[k].replace a.flatten(1).uniq
+        self[k].replace a.flatten(1).uniq
       }
       Var.msg{"Watch/Updated(#{@val['time']})"}
       self
@@ -157,9 +152,9 @@ module Watch
 
   # For Client
   class View < ExHash
-    def initialize(adb,stat)
+    def initialize(adb,watch)
       wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => []}
-      @watch=Msg.type?(stat,Var)['watch']
+      @watch=Msg.type?(watch,Var)
       ['exec','block','int'].each{|i|
         self[i]=@watch[i]
       }
@@ -238,34 +233,31 @@ module Watch
   end
 end
 
-class Status::Var
-  def ext_watch_r
-    extend(Watch::Var)
-  end
-end
-
 if __FILE__ == $0
   require "liblocdb"
 
-  opt=Msg::GetOpts.new('rvt:',{
-                         't'=>'test conditions[key=val,..]',
-                         'r'=>"raw data",
-                         "v"=>"view data"})
+  list={}
+  list['t']='test conditions[key=val,..]'
+  list['r']="raw data"
+  list["v"]="view data"
+  opt=Msg::GetOpts.new('rvt:',list)
   id=ARGV.shift
   begin
     adb=Loc::Db.new(id)[:app]
   rescue InvalidID
     opt.usage("(opt) [id]")
   end
-  stat=Status::Var.new.ext_file(adb).load.ext_watch_r.ext_watch_w.upd
+  stat=Status::Var.new.ext_file(adb).load
+  watch=Watch::Var.new.ext_file(adb).ext_conv(adb,stat).upd
   unless opt['r']
-    wview=Watch::View.new(adb,stat)
+    wview=Watch::View.new(adb,watch)
     unless opt['v']
       wview.ext_prt
     end
   end
   if t=opt['t']
     stat.ext_save.str_update(t).upd.save
+    watch.ext_save.upd.save
   end
-  puts wview||stat['watch']
+  puts wview||watch
 end

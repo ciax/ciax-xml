@@ -21,43 +21,43 @@ module App
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
       @stat.ext_sqlog if logging and @fint.field.key?('ver')
-      @stat.ext_watch_w
+      @watch.ext_conv(adb,@stat).upd
       Thread.abort_on_exception=true
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fint.exe(fcmd)}
       @extcmd.ext_appcmd.init_proc{|item|
-        @stat.block?(item.cmd)
+        @watch.block?(item.cmd)
         @buf.send(1)
         Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      @stat.event_proc=proc{|cmd,p|
+      @watch.event_proc=proc{|cmd,p|
         Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.set(cmd)
         @buf.send(p)
       }
       gint=@intcmd.add_group('int',"Internal Command")
       gint.add_item('interrupt').init_proc{
-        int=@stat.interrupt
+        int=@watch.interrupt
         Sv.msg{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"
       }
       @buf.post_flush.add{
         @stat.upd.save
-        sleep(@stat.interval||0.1)
+        sleep(@watch.interval||0.1)
         # Auto issue by watch
-        @stat.issue
+        @watch.issue
       }
       # Update for Frm level manipulation
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
       if logging and @stat.ver
-        @cobj.ext_logging(@adb['site'],@stat.ver){@stat.active}
+        @cobj.ext_logging(@adb['site'],@stat.ver){@watch.active}
       end
       @upd_proc.add{
         self['auto'] = @tid && @tid.alive?
-        self['watch'] = @stat.active?
+        self['watch'] = @watch.active?
         self['na'] = !@buf.alive?
       }
       auto_update
@@ -70,7 +70,7 @@ module App
         tc[:name]="Auto"
         tc[:color]=4
         Thread.pass
-        int=(@stat.period||300).to_i
+        int=(@watch.period||300).to_i
         loop{
           begin
             @cobj.set(['upd'])

@@ -6,14 +6,15 @@ require "libwatch"
 module App
   class Exe < Int::Exe
     #@< cobj,output,intcmd,int_proc,upd_proc*
-    #@ adb,extcmd,output,stat*
+    #@ adb,extcmd,output,watch,stat*
     attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
       super()
       @extcmd=@cobj.add_ext(@adb,:command)
       self['id']=@adb['site']
-      @output=@stat=Status::Var.new.ext_watch_r.ext_file(@adb)
+      @output=@stat=Status::Var.new.ext_file(@adb)
+      @watch=Watch::Var.new.ext_file(@adb)
     end
 
     def exe(cmd)
@@ -29,7 +30,8 @@ module App
     require "libsymconv"
     def initialize(adb)
       super
-      @stat.extend(Sym::Conv).load.extend(Watch::Conv).upd
+      @stat.extend(Sym::Conv).load
+      @watch.ext_conv(adb,@stat).upd
       grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
@@ -38,11 +40,11 @@ module App
         }
         self['msg']="Set #{item.par}"
       }
-      @stat.event_proc=proc{|cmd|
+      @watch.event_proc=proc{|cmd|
         Msg.msg("#{cmd} is issued by event")
       }
       @cobj.def_proc.add{|item|
-        @stat.block?(item.cmd)
+        @watch.block?(item.cmd)
         @stat.set_time.upd.issue
       }
     end
@@ -53,8 +55,12 @@ module App
       super(adb)
       host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(host).load
+      @watch.ext_url(host).load
       ext_client(host,adb['port'])
-      @upd_proc.add{@stat.load}
+      @upd_proc.add{
+        @stat.load
+        @watch.load
+      }
     end
   end
 end

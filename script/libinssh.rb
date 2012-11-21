@@ -15,7 +15,7 @@ module Ins
       @extcmd.add_db(cdb)
       (cdb[:alias]||{}).each{|k,v| @cobj[k]=@cobj[v]}
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
-      @wview=Watch::View.new(@adb,@stat).ext_prt
+      @wview=Watch::View.new(@adb,@watch).ext_prt
       grp=@shcmd.add_group('view',"Change View Mode")
       grp.add_item('pri',"Print mode").init_proc{@output=@print}
       grp.add_item('val',"Value mode").init_proc{@output=@stat.val}

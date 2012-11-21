@@ -120,7 +120,6 @@ class Var < ExHash
       else
         super(json_str)
       end
-      upd
       self
     rescue Errno::ENOENT
       if tag
@@ -177,7 +176,6 @@ class Var < ExHash
 
     def save(data=nil,tag=nil)
       name=fname(tag)
-      upd
       open(name,'w'){|f|
         f.flock(File::LOCK_EX)
         f << (data ? JSON.dump(data) : to_j)

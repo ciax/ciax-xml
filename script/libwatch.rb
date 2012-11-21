@@ -18,7 +18,7 @@ module Watch
       #For Array element
       ['active','exec','block','int'].each{|i| self[i]||=[]}
       #For Hash element
-      ['val','last','res'].each{|i| self[i]||={}}
+      ['crnt','last','res'].each{|i| self[i]||={}}
       @event_proc=Update.new
       self
     end
@@ -79,7 +79,7 @@ module Watch
       @list.unshift('time')
       # @val(all) = @crnt(picked) > @last
       # upd() => @last<-@crnt => @crnt<-@val => check(@crnt <> @last?)
-      self['val']=@crnt={}
+      self['crnt']=@crnt={}
       self['last']=@last={}
       self['res']=@res={}
       upd_last
@@ -178,7 +178,7 @@ module Watch
         v['cond'].each_index{|i|
           h=v['cond'][i]
           id=h['var']
-          h['val']=@watch['val'][id]
+          h['crnt']=@watch['crnt'][id]
           h['res']=@watch['res']["#{k}:#{i}"]
           h['cmp']=@watch['last'][id] if h['type'] == 'onchange'
         }

@@ -70,7 +70,6 @@ module Watch
       @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
       @val=Msg.type?(stat,Status::Var).val
       @last=stat.last
-      stat.upd_proc.add{upd}
       self['period']=@wdb['period'].to_i if @wdb.key?('period')
       self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')
       # Pick usable val

@@ -21,7 +21,7 @@ module App
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
       @stat.ext_sqlog if logging and @fint.field.key?('ver')
-      @watch.ext_conv(adb,@stat).upd
+      @watch.ext_conv(adb,@stat).ext_save.upd
       Thread.abort_on_exception=true
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
@@ -45,6 +45,7 @@ module App
       }
       @buf.post_flush.add{
         @stat.upd.save
+        @watch.upd.save
         sleep(@watch['interval']||0.1)
         # Auto issue by watch
         @watch.issue

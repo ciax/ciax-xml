@@ -37,6 +37,7 @@ module App
       grp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
         item.par.each{|exp|
           @stat.str_update(exp).upd
+          @watch.upd
         }
         self['msg']="Set #{item.par}"
       }
@@ -45,7 +46,8 @@ module App
       }
       @cobj.def_proc.add{|item|
         @watch.block?(item.cmd)
-        @stat.set_time.upd.issue
+        @stat.set_time.upd
+        @watch.upd.issue
       }
     end
   end

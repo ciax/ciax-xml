@@ -6,6 +6,8 @@ require "libmsg"
 module SqLog
   module Var
     extend Msg::Ver
+    # @< type*,id*,ver*,(val*),(upd_proc*)
+    # @ log,tid
     def self.extended(obj)
       init_ver('SqLog',9)
       Msg.type?(obj,Var).init
@@ -13,7 +15,7 @@ module SqLog
 
     def init
       @log=[]
-      @tid="#{@type}_#{@ver.to_i}"
+      @tid="#{self['type']}_#{@ver.to_i}"
       self
     end
 
@@ -73,6 +75,9 @@ module SqLog
 
   # Execute Sql Command to sqlite3
   module Exec
+    # @<< (type*),id*,(ver*),(val*),(upd_proc*)
+    # @< log,tid
+    # @ sqlcmd
     def self.extended(obj)
       Msg.type?(obj,Var).init
     end

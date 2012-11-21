@@ -4,11 +4,11 @@ require "libexenum"
 require "libupdate"
 
 class Var < ExHash
-  # @ type*,id*,ver*,val*,upd_proc*
-  attr_reader :type,:id,:ver,:val,:upd_proc
+  # @ id*,ver*,val*,upd_proc*
+  attr_reader :id,:ver,:val,:upd_proc
   def initialize(type)
     super()
-    self['type']=@type=type
+    self['type']=type
     self.val=Hash.new
     set_time
     @upd_proc=Update.new
@@ -92,7 +92,7 @@ class Var < ExHash
   end
 
   module Load
-    # @< type*,id*,ver*,val*
+    # @< (type*),id*,ver*,val*
     # @ db,base,prefix
     extend Msg::Ver
     def self.extended(obj)
@@ -103,7 +103,7 @@ class Var < ExHash
     def init(db)
       @db=Msg.type?(db,Db)
       self.id=db['site']||Msg.cfg_err("No SITE ID")
-      @base=@type+'_'+id+'.json'
+      @base=self['type']+'_'+id+'.json'
       @prefix=VarDir
       self
     end
@@ -132,7 +132,7 @@ class Var < ExHash
 
     private
     def fname(tag=nil)
-      @base=[@type,@id,tag].compact.join('_')+'.json'
+      @base=[self['type'],@id,tag].compact.join('_')+'.json'
       @prefix+"/json/"+@base
     end
 

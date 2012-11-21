@@ -32,7 +32,7 @@ module App
         Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      @watch.event_proc=proc{|cmd,p|
+      @watch.event_proc.add{|cmd,p|
         Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.set(cmd)
         @buf.send(p)

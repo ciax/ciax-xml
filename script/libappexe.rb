@@ -41,7 +41,7 @@ module App
         }
         self['msg']="Set #{item.par}"
       }
-      @watch.event_proc=proc{|cmd|
+      @watch.event_proc.add{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
       }
       @cobj.def_proc.add{|item|

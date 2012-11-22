@@ -32,7 +32,7 @@ module Sym
         Conv.msg{"ID=#{key},table=#{sid}"}
         self['class'][key]='alarm'
         self['msg'][key]='N/A'
-        val=@val[key]
+        val=self['val'][key]
         tbl.each{|sym|
           case sym['type']
           when 'range'
@@ -48,7 +48,7 @@ module Sym
           break
         }
       }
-      stime=@val['time'].to_f
+      stime=self['val']['time'].to_f
       self['msg']['time']=Time.at(stime).to_s
       Conv.msg{"Sym/Update(#{stime})"}
       self

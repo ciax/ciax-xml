@@ -104,9 +104,9 @@ module Mcr
 
     def getstat(ins,var)
       stat=@@client[ins].stat
-      res=stat['msg'][var]||stat.val[var]
+      res=stat['msg'][var]||stat['val'][var]
       Sub.msg{"ins=#{ins},var=#{var},res=#{res}"}
-      Sub.msg{stat.val}
+      Sub.msg{stat['val']}
       res
     end
 

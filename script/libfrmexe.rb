@@ -13,7 +13,7 @@ module Frm
       @extcmd=@cobj.add_ext(fdb,:cmdframe)
       self['id']=fdb['site']
       @output=@field=Field::Var.new.ext_file(fdb).load
-      idx={:type =>'str',:list => @field.val.keys}
+      idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
       grp=@intcmd.add_group('int',"Internal Command")
       grp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])

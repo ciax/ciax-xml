@@ -4,12 +4,12 @@ require "libexenum"
 require "libupdate"
 
 class Var < ExHash
-  # @ val*,upd_proc*
-  attr_reader :val,:upd_proc
+  # @ upd_proc*
+  attr_reader :upd_proc
   def initialize(type)
     super()
     self['type']=type
-    self.val=Hash.new
+    self['val']=ExHash.new
     set_time
     @upd_proc=Update.new
   end
@@ -20,7 +20,7 @@ class Var < ExHash
   end
 
   def get(key)
-    @val[key]
+    self['val'][key]
   end
 
   # Update with str (key=val,key=val,..)
@@ -28,39 +28,19 @@ class Var < ExHash
     Msg.type?(str,String)
     str.split(',').each{|i|
       k,v=i.split('=')
-      @val[k]=v
+      self['val'][k]=v
     }
     set_time
     self
   end
 
   def unset(key)
-    @val.delete(key)
-  end
-
-  def val=(val)
-    self['val']=@val=val
-    def val.to_s
-      Msg.view_struct(self,'val')
-    end
+    self['val'].delete(key)
   end
 
   def set_time(time=nil)
-    @val['time']=time||Msg.now
+    self['val']['time']=time||Msg.now
     self
-  end
-
-  def load(json_str=nil)
-    super
-    bind_var
-    self
-  end
-
-  private
-  def bind_var
-    ['val'].each{|k|
-      eval "@#{k}=self['#{k}']"
-    }
   end
 
   ## Read/Write JSON file
@@ -83,7 +63,7 @@ class Var < ExHash
   end
 
   module Load
-    # @< ver*,val*,upd_proc*
+    # @< upd_proc*
     # @ db,base,prefix
     extend Msg::Ver
     def self.extended(obj)
@@ -136,7 +116,7 @@ class Var < ExHash
 
   module Url
     require "open-uri"
-    # @<< ver*,val*
+    # @<< (upd_proc*)
     # @< db,base,prefix
     def self.extended(obj)
       Msg.type?(obj,Load)
@@ -158,7 +138,7 @@ class Var < ExHash
 
   module Save
     extend Msg::Ver
-    # @<< ver*,val*
+    # @<< (upd_proc*)
     # @< db,base,prefix
     def self.extended(obj)
       init_ver('VarSave',12)

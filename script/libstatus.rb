@@ -6,7 +6,7 @@ require 'libelapse'
 module Status
   class Var < Var
     extend Msg::Ver
-    # @< (ver*),val*
+    # @< (upd_proc*)
     # @ last*
     attr_reader :last
     def initialize
@@ -16,13 +16,13 @@ module Status
     end
 
     def set(hash) #For Watch test
-      @val.update(hash)
+      self['val'].update(hash)
       self
     end
 
     def change?(id)
-      Var.msg{"Compare(#{id}) current=[#{@val[id]}] vs last=[#{@last[id]}]"}
-      @val[id] != @last[id]
+      Var.msg{"Compare(#{id}) current=[#{self['val'][id]}] vs last=[#{@last[id]}]"}
+      self['val'][id] != @last[id]
     end
 
     def update?
@@ -31,7 +31,7 @@ module Status
 
     def refresh
       Var.msg{"Status Updated"}
-      @last.update(@val)
+      @last.update(self['val'])
       self
     end
 
@@ -44,7 +44,7 @@ module Status
 
   module Save
     extend Msg::Ver
-    # @<< (ver*),val*
+    # @<< (upd_proc*)
     # @< (db),(base),(prefix)
     # @< (last)
     # @ lastsave
@@ -59,7 +59,7 @@ module Status
     end
 
     def save(data=nil,tag=nil)
-      time=@val['time'].to_f
+      time=self['val']['time'].to_f
       if time > @lastsave
         super
         @lastsave=time
@@ -91,7 +91,7 @@ module Status
             h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
             case id
             when 'elapse'
-              h['msg']=Elapse.new(@stat.val)
+              h['msg']=Elapse.new(@stat['val'])
             else
               h['msg']=@stat['msg'][id]||@stat.get(id)
             end

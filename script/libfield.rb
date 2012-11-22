@@ -6,7 +6,7 @@ require 'libvar'
 module Field
   class Var < Var
     extend Msg::Ver
-    # @< (ver*),val*
+    # @< (upd_proc)
     def initialize
       Var.init_ver(self,6)
       super('field')
@@ -36,9 +36,9 @@ module Field
     # - ${key:idx1:idx2} => hash[key][idx1][idx2]
     def get(key)
       Msg.abort("No Key") unless key
-      return super if @val.key?(key)
+      return super if self['val'].key?(key)
       vname=[]
-      data=key.split(':').inject(@val){|h,i|
+      data=key.split(':').inject(self['val']){|h,i|
         case h
         when Array
           begin
@@ -60,7 +60,7 @@ module Field
 
     # Set value with mixed key
     def set(key,val)
-      unless @val.key?(key.split(':').first)
+      unless self['val'].key?(key.split(':').first)
         Msg.par_err("No such Key[#{key}] in 'val'")
       end
       if p=get(key)
@@ -87,12 +87,12 @@ module Field
 
   module Save
     # Saving data of specified keys with tag
-    # @< (ver*),val*
+    # @<< (upd_proc)
     def savekey(keylist,tag=nil)
       Msg.com_err("No File") unless @base
       hash={}
       keylist.each{|k|
-        if @val.key?(k)
+        if self['val'].key?(k)
           hash[k]=get(k)
         else
           Msg.warn("No such Key [#{k}]")

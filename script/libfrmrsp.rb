@@ -10,7 +10,7 @@ module Frm
   module Rsp
     extend Msg::Ver
     # Var::Load@db is needed
-    # @< (ver*),val*,(upd_proc*)
+    # @<< (upd_proc*)
     # @< db,(base),(prefix)
     # @ cobj,sel,fds,frame,fary,cc
     def self.extended(obj)
@@ -27,7 +27,7 @@ module Frm
       @frame=Frame.new(@db['endian'],@db['ccmethod'])
       # Field Initialize
       rsp[:assign].each{|k,v|
-        self.val[k]||=v
+        self['val'][k]||=v
       }
     end
 
@@ -109,7 +109,7 @@ module Frm
         }
         begin
           Rsp.msg(1){"Array:[#{key}]:Range#{idxs}"}
-          @val[key]=mk_array(idxs,get(key)){yield}
+          self['val'][key]=mk_array(idxs,get(key)){yield}
         ensure
           Rsp.msg(-1){"Array:Assign[#{key}]"}
         end
@@ -117,7 +117,7 @@ module Frm
         #Field
         data=yield
         if key=e0['assign']
-          @val[key]=data
+          self['val'][key]=data
           Rsp.msg{"Assign:[#{key}] <- <#{data}>"}
         end
       end
@@ -127,7 +127,7 @@ module Frm
 
     def mk_array(idx,field)
       # make multidimensional array
-      # i.e. idxary=[0,0:10,0] -> @field.val[0][0][0] .. @field.val[0][10][0]
+      # i.e. idxary=[0,0:10,0] -> @field['val'][0][0][0] .. @field['val'][0][10][0]
       return yield if idx.empty?
       fld=field||[]
       f,l=idx[0].split(':').map{|i| eval(i)}

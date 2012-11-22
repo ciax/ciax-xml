@@ -6,7 +6,7 @@ require "libmsg"
 module SqLog
   module Var
     extend Msg::Ver
-    # @< ver*,(val*),(upd_proc*)
+    # @< (upd_proc*)
     # @ log,tid
     def self.extended(obj)
       init_ver('SqLog',9)
@@ -36,7 +36,7 @@ module SqLog
       val=expand
       key=val.keys.join("','")
       val=val.values.join("','")
-      Var.msg{"SqLog/Update(#{@val['time']}):[#{self['id']}/#{@tid}]"}
+      Var.msg{"SqLog/Update(#{self['val']['time']}):[#{self['id']}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       self
     end
@@ -48,7 +48,7 @@ module SqLog
     private
     def expand
       val={}
-      @val.each{|k,v|
+      self['val'].each{|k,v|
         next if /type/ =~ k
         case v
         when Array
@@ -75,7 +75,7 @@ module SqLog
 
   # Execute Sql Command to sqlite3
   module Exec
-    # @<< (ver*),(val*),(upd_proc*)
+    # @<< (upd_proc*)
     # @< log,tid
     # @ sqlcmd
     def self.extended(obj)

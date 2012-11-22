@@ -5,6 +5,8 @@ require "libstatus"
 module App
   module Rsp
     extend Msg::Ver
+    # @<< (upd_proc*)
+    # @< db,(base),(prefix)
     def self.extended(obj)
       init_ver('AppRsp',2)
       Msg.type?(obj,Status::Var,Var::Load)
@@ -15,7 +17,7 @@ module App
       @ads=@db[:status][:select]
       @fmt=@db[:status][:format]||{}
       @fml=@db[:status][:formula]||{}
-      @ads.keys.each{|k| @val[k]||='' }
+      @ads.keys.each{|k| self['val'][k]||='' }
       self
     end
 
@@ -30,13 +32,13 @@ module App
             Rsp.msg{"Formula:#{f}(#{data})"}
           end
           data = @fmt[id] % data if @fmt.key?(id)
-          @val[id]=data.to_s
+          self['val'][id]=data.to_s
         ensure
-          Rsp.msg(-1){"STAT:GetStatus:#{id}=[#{@val[id]}]"}
+          Rsp.msg(-1){"STAT:GetStatus:#{id}=[#{self['val'][id]}]"}
         end
       }
-      @val['time']=@field.get('time')
-      Rsp.msg{"Rsp/Update(#{@val['time']})"}
+      self['val']['time']=@field.get('time')
+      Rsp.msg{"Rsp/Update(#{self['val']['time']})"}
       self
     end
 

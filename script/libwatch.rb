@@ -6,7 +6,7 @@ require 'librerange'
 module Watch
   class Var < Var
     extend Msg::Ver
-    # @< (ver*),(val*),(upd_proc*)
+    # @< (upd_proc*)
     # @ event_proc*
     attr_reader :event_proc
 
@@ -59,16 +59,16 @@ module Watch
   end
 
   module Conv
-    # @<< (ver*),val*,(upd_proc*)
+    # @<< (upd_proc*)
     # @< (event_proc*)
-    # @ wdb,list,crnt,res
+    # @ wdb,list,crnt,res,val
     def self.extended(obj)
       Msg.type?(obj,Var)
     end
 
     def init(adb,stat)
       @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
-      @val=Msg.type?(stat,Status::Var).val
+      @val=Msg.type?(stat,Status::Var)['val']
       @last=stat.last
       self['period']=@wdb['period'].to_i if @wdb.key?('period')
       self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')

@@ -116,9 +116,9 @@ module Mcr
 
     def getstat(ins,var)
       stat=@aint[ins].stat
-      res=stat['msg'][var]||stat.val[var]
+      res=stat['msg'][var]||stat['val'][var]
       Cmd.msg{"ins=#{ins},var=#{var},res=#{res}"}
-      Cmd.msg{stat.val}
+      Cmd.msg{stat['val']}
       res
     end
 

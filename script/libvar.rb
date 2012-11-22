@@ -4,8 +4,8 @@ require "libexenum"
 require "libupdate"
 
 class Var < ExHash
-  # @ id*,ver*,val*,upd_proc*
-  attr_reader :id,:ver,:val,:upd_proc
+  # @ ver*,val*,upd_proc*
+  attr_reader :ver,:val,:upd_proc
   def initialize(type)
     super()
     self['type']=type
@@ -39,7 +39,7 @@ class Var < ExHash
   end
 
   def id=(id)
-    self['id']=@id=id
+    self['id']=id
   end
 
   # Version Number
@@ -67,7 +67,7 @@ class Var < ExHash
 
   private
   def bind_var
-    ['type','id','ver','val'].each{|k|
+    ['ver','val'].each{|k|
       eval "@#{k}=self['#{k}']"
     }
   end
@@ -92,7 +92,7 @@ class Var < ExHash
   end
 
   module Load
-    # @< (type*),id*,ver*,val*
+    # @< ver*,val*
     # @ db,base,prefix
     extend Msg::Ver
     def self.extended(obj)
@@ -102,8 +102,8 @@ class Var < ExHash
 
     def init(db)
       @db=Msg.type?(db,Db)
-      self.id=db['site']||Msg.cfg_err("No SITE ID")
-      @base=self['type']+'_'+id+'.json'
+      self['id']=db['site']||Msg.cfg_err("No SITE ID")
+      @base=self['type']+'_'+self['id']+'.json'
       @prefix=VarDir
       self
     end
@@ -132,7 +132,7 @@ class Var < ExHash
 
     private
     def fname(tag=nil)
-      @base=[self['type'],@id,tag].compact.join('_')+'.json'
+      @base=[self['type'],self['id'],tag].compact.join('_')+'.json'
       @prefix+"/json/"+@base
     end
 
@@ -145,7 +145,7 @@ class Var < ExHash
 
   module Url
     require "open-uri"
-    # @<< type*,id*,ver*,val*
+    # @<< ver*,val*
     # @< db,base,prefix
     def self.extended(obj)
       Msg.type?(obj,Load)
@@ -167,7 +167,7 @@ class Var < ExHash
 
   module Save
     extend Msg::Ver
-    # @<< type*,id*,ver*,val*
+    # @<< ver*,val*
     # @< db,base,prefix
     def self.extended(obj)
       init_ver('VarSave',12)

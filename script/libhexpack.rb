@@ -9,7 +9,7 @@ module HexPack
       # Server Status
       @int=Msg.type?(int,Hash)
       @stat=Msg.type?(stat,Status::Var)
-      id=stat.id || raise(InvalidID,"NO ID in Stat")
+      id=stat['id'] || raise(InvalidID,"NO ID in Stat")
       file=View.sdb(id)
       @res=["%",id,'_','0','0','_','']
       @list=[]

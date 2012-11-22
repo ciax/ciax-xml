@@ -6,7 +6,7 @@ require "libmsg"
 module SqLog
   module Var
     extend Msg::Ver
-    # @< type*,id*,ver*,(val*),(upd_proc*)
+    # @< ver*,(val*),(upd_proc*)
     # @ log,tid
     def self.extended(obj)
       init_ver('SqLog',9)
@@ -36,7 +36,7 @@ module SqLog
       val=expand
       key=val.keys.join("','")
       val=val.values.join("','")
-      Var.msg{"SqLog/Update(#{@val['time']}):[#{@id}/#{@tid}]"}
+      Var.msg{"SqLog/Update(#{@val['time']}):[#{self['id']}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       self
     end
@@ -75,7 +75,7 @@ module SqLog
 
   # Execute Sql Command to sqlite3
   module Exec
-    # @<< (type*),id*,(ver*),(val*),(upd_proc*)
+    # @<< (ver*),(val*),(upd_proc*)
     # @< log,tid
     # @ sqlcmd
     def self.extended(obj)
@@ -83,13 +83,13 @@ module SqLog
     end
 
     def init
-      @sqlcmd=["sqlite3",VarDir+"/sqlog_"+@id+".sq3"]
+      @sqlcmd=["sqlite3",VarDir+"/sqlog_"+self['id']+".sq3"]
       unless check_table
         create
         save
-        Var.msg{"Init/Table SqLog '#{@tid}' is created in #{@id}"}
+        Var.msg{"Init/Table SqLog '#{@tid}' is created in #{self['id']}"}
       end
-      Var.msg{"Init/Start SqLog '#{@id}' (#{@tid})"}
+      Var.msg{"Init/Start SqLog '#{self['id']}' (#{@tid})"}
       self
     end
 
@@ -111,7 +111,7 @@ module SqLog
         IO.popen(@sqlcmd,'w'){|f|
           f.puts sql
         }
-        Var.msg{"SqLog/Save complete (#{@id})"}
+        Var.msg{"SqLog/Save complete (#{self['id']})"}
         @log.clear
       end
       self

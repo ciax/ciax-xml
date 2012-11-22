@@ -6,7 +6,7 @@ require 'libelapse'
 module Status
   class Var < Var
     extend Msg::Ver
-    # @< (type*),(id*),(ver*),val*
+    # @< (ver*),val*
     # @ last*
     attr_reader :last
     def initialize
@@ -44,7 +44,7 @@ module Status
 
   module Save
     extend Msg::Ver
-    # @<< (type*),(id*),(ver*),val*
+    # @<< (ver*),val*
     # @< (db),(base),(prefix)
     # @< (last)
     # @ lastsave

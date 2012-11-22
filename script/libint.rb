@@ -40,11 +40,11 @@ module Int
       self
     end
 
-    def ext_shell(pconv={})
+    def ext_shell(pconv={},&p)
       if is_a? Shell
         Msg.warn("Multiple Initialize for Shell")
       else
-        extend(Shell).init(pconv)
+        extend(Shell).init(pconv,&p)
       end
       self
     end
@@ -58,7 +58,7 @@ module Int
       Msg.type?(obj,Exe)
     end
 
-    def init(pconv={})
+    def init(pconv={},&p)
       #prompt convert table (j2s)
       @pconv=Msg.type?(pconv,Hash)
       @shcmd=@cobj.add_domain('sh',5)
@@ -69,6 +69,7 @@ module Int
           end
         }.compact.join('')+'>'
       }.upd
+      @lineconv=p if p
       Shell.msg{"Init/Shell(#{self['id']})"}
       self
     end
@@ -108,10 +109,8 @@ module Int
     end
 
     private
-    def update
-    end
-
     def sh_exe(line)
+      line=@lineconv.call(line) if @lineconv
       self['msg']='OK'
       @cobj.set(line.split(' ')).exe
       @int_proc.upd
@@ -120,6 +119,11 @@ module Int
       puts $!.to_s
     rescue UserError
       puts $!.to_s
+    end
+
+    def compset(cmd)
+      return cmd unless /\=/ === cmd[0]
+      cmd.unshift('set')
     end
   end
 

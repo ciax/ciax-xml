@@ -35,7 +35,11 @@ module App
     def shell(id)
       type='app'
       @share_proc.add{|int|
-        int.ext_shell({'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+        pc={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
+        int.ext_shell(pc){|line|
+          line='set '+line if /^[^ ]+\=/ === line
+          line
+        }
         int.set_switch('dev',"Change Device",@list)
         int.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
         yield id,int if defined? yield

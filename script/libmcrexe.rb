@@ -10,6 +10,7 @@ module Mcr
     def initialize(mdb)
       @mdb=Msg.type?(mdb,Mcr::Db)
       super()
+      self['id']=@mdb['id']
       @extcmd=@cobj.add_ext(@mdb,:macro)
       @logline=ExHash.new
     end

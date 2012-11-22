@@ -35,11 +35,17 @@ module App
       grp=@intcmd.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
-        item.par.each{|exp|
-          @stat.str_update(exp).upd
-          @watch.upd
+        @stat.str_update(item.par[0]).upd
+        @watch.upd
+        self['msg']="Set #{item.par[0]}"
+      }
+      grp.add_item('del','[key,...]',[cri]).init_proc{|item|
+        item.par[0].split(',').each{|key|
+          @stat['val'].delete(key)
         }
-        self['msg']="Set #{item.par}"
+        @stat.upd
+        @watch.upd
+        self['msg']="Delete #{item.par[0]}"
       }
       @watch.event_proc.add{|cmd,p|
         Msg.msg("#{cmd} is issued by event")

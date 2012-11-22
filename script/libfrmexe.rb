@@ -16,10 +16,9 @@ module Frm
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
       grp=@intcmd.add_group('int',"Internal Command")
-      grp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
-      grp.add_item('unset',"Remove Value [key]",[idx])
       grp.add_item('save',"Save Field [key,key...] (tag)",[any])
       grp.add_item('load',"Load Field (tag)")
+      grp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
     end
   end
 
@@ -31,9 +30,6 @@ module Frm
       }
       @cobj['set'].init_proc{|item|
         @field.set(*item.par)
-      }
-      @cobj['unset'].init_proc{|item|
-        @field.unset(item.par[0])
       }
     end
   end

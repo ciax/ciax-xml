@@ -29,9 +29,6 @@ module Frm
       @cobj['set'].init_proc{|item|
         @field.set(item.par[0],item.par[1]).save
       }
-      @cobj['unset'].init_proc{|item|
-        @field.unset(item.par[0]).save
-      }
       @cobj['save'].init_proc{|item|
         @field.savekey(item.par[0].split(','),item.par[1])
       }

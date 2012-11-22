@@ -29,6 +29,12 @@ module Frm
       @cobj.def_proc.add{|item|
         @field.set_time
       }
+      @cobj['set'].init_proc{|item|
+        @field.set(*item.par)
+      }
+      @cobj['unset'].init_proc{|item|
+        @field.unset(item.par[0])
+      }
     end
   end
 

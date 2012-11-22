@@ -10,6 +10,9 @@ module Frm
   module Rsp
     extend Msg::Ver
     # Var::Load@db is needed
+    # @< (ver*),val*,(upd_proc*)
+    # @< db,(base),(prefix)
+    # @ cobj,sel,fds,frame,fary,cc
     def self.extended(obj)
       init_ver('FrmRsp',6)
       Msg.type?(obj,Field::Var,Var::Load)
@@ -17,7 +20,7 @@ module Frm
 
     def init(cobj)
       @cobj=Msg.type?(cobj,Command)
-      self.ver=@db['version'].to_i
+      self['ver']=@db['version'].to_i
       rsp=@db.deep_copy[:rspframe]
       @sel=Hash[rsp[:frame]]
       @fds=rsp[:select]

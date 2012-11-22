@@ -15,7 +15,7 @@ module SqLog
 
     def init
       @log=[]
-      @tid="#{self['type']}_#{@ver.to_i}"
+      @tid="#{self['type']}_#{self['ver'].to_i}"
       self
     end
 

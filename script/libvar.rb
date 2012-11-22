@@ -4,8 +4,8 @@ require "libexenum"
 require "libupdate"
 
 class Var < ExHash
-  # @ ver*,val*,upd_proc*
-  attr_reader :ver,:val,:upd_proc
+  # @ val*,upd_proc*
+  attr_reader :val,:upd_proc
   def initialize(type)
     super()
     self['type']=type
@@ -38,15 +38,6 @@ class Var < ExHash
     @val.delete(key)
   end
 
-  def id=(id)
-    self['id']=id
-  end
-
-  # Version Number
-  def ver=(ver)
-    self['ver']=@ver=ver
-  end
-
   def val=(val)
     self['val']=@val=val
     def val.to_s
@@ -67,7 +58,7 @@ class Var < ExHash
 
   private
   def bind_var
-    ['ver','val'].each{|k|
+    ['val'].each{|k|
       eval "@#{k}=self['#{k}']"
     }
   end
@@ -92,7 +83,7 @@ class Var < ExHash
   end
 
   module Load
-    # @< ver*,val*
+    # @< ver*,val*,upd_proc*
     # @ db,base,prefix
     extend Msg::Ver
     def self.extended(obj)

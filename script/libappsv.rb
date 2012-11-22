@@ -53,8 +53,8 @@ module App
       # Update for Frm level manipulation
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
-      if logging and @stat.ver
-        @cobj.ext_logging(@adb['site'],@stat.ver){@watch['active']}
+      if logging and @stat['ver']
+        @cobj.ext_logging(@adb['site'],@stat['ver']){@watch['active']}
       end
       @upd_proc.add{
         self['auto'] = @tid && @tid.alive?

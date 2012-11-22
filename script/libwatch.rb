@@ -61,7 +61,7 @@ module Watch
   module Conv
     # @<< (upd_proc*)
     # @< (event_proc*)
-    # @ wdb,list,crnt,res,val
+    # @ wdb,val
     def self.extended(obj)
       Msg.type?(obj,Var)
     end
@@ -69,7 +69,6 @@ module Watch
     def init(adb,stat)
       @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
       @val=Msg.type?(stat,Status::Var)['val']
-      @last=stat.last
       self['period']=@wdb['period'].to_i if @wdb.key?('period')
       self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')
       # Pick usable val
@@ -77,11 +76,11 @@ module Watch
         h['var']
       }.uniq
       @list.unshift('time')
-      # @val(all) = @crnt(picked) > @last
-      # upd() => @last<-@crnt => @crnt<-@val => check(@crnt <> @last?)
-      self['crnt']=@crnt={}
-      self['last']=@last={}
-      self['res']=@res={}
+      # @val(all) = self['crnt'](picked) > self['last']
+      # upd() => self['last']<-self['crnt']
+      #       => self['crnt']<-@val
+      #       => check(self['crnt'] <> self['last']?)
+      ['crnt','last','res'].each{|k| self[k]={}}
       upd_last
       self
     end
@@ -89,8 +88,8 @@ module Watch
     # Stat no changed -> clear exec, no eval
     def upd
       self['exec'].clear
-      return self if @crnt['time'] == @val['time']
-      upd_last 
+      return self if self['crnt']['time'] == @val['time']
+      upd_last
       hash={'int' =>[],'exec' =>[],'block' =>[]}
       self['active'].clear
       @wdb[:stat].each{|i,v|
@@ -111,8 +110,8 @@ module Watch
     private
     def upd_last
       @list.each{|k|
-        @last[k]=@crnt[k]
-        @crnt[k]=@val[k]
+        self['last'][k]=self['crnt'][k]
+        self['crnt'][k]=@val[k]
       }
     end
 
@@ -123,10 +122,10 @@ module Watch
       rary=[]
       n.each_index{|j|
         k=n[j]['var']
-        v=@crnt[k]
+        v=self['crnt'][k]
         case n[j]['type']
         when 'onchange'
-          c=@last[k]
+          c=self['last'][k]
           res=(c != v)
           Var.msg{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
         when 'pattern'
@@ -140,7 +139,7 @@ module Watch
           Var.msg{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
         end
         res=!res if /true|1/ === n[j]['inv']
-        @res["#{i}:#{j}"]=res
+        self['res']["#{i}:#{j}"]=res
         rary << res
       }
       rary.all?

@@ -6,8 +6,11 @@
   app: Application layer
        classified by model number (application)
        transaction: async
+  loc: Location Layer
+       classified by site id (location)
+       information: host, port
   ins: Instance layer
-       classified by serial number (individuality or identity)
+       classified by serial id (individuality or identity)
        function: aliasing, symboling and labeling over adb items
 
 ## DB description ##
@@ -18,6 +21,7 @@
   adb: Apprication DB
     adbc: Command DB
     adbs: Status DB
+  ldb: Location DB
   idb: Instance DB
   sdb: Symbol DB
       used by adb or idb
@@ -55,7 +59,7 @@
 
  $1..9
     description : substitute parameters, sould be numerical
-    usable: fdb//command/[char,string]
+    available: fdb//command/[char,string]
             fdb//response/array/index@range
             --
             adb//command/argv (eval if @format exists, Math included)
@@ -64,36 +68,36 @@
     description : substitute status ${key:idx:idx} => var[key][idx][idx]
                   content should be numerical expression or of csv array
                   idx can be equation (i.e. $_+1 )
-    usable: fdb//command/[char,string]
+    available: fdb//command/[char,string]
 
  $#
     description : formula parameter
-    usable: adb//status/value@formula
+    available: adb//status/value@formula
 
  \?
     description : convert escape characters
-    usable: fdb//rspframe@terminator
+    available: fdb//rspframe@terminator
             fdb//rspframe@delimiter
 
 ### Explicit conversion by Attributes ###
 
  format
-    usable: fdb//string
+    available: fdb//string
             --
             adb//command/argv
             adb//status/value
 
  formula
-    usable: adb//status/value/float
+    available: adb//status/value/float
 
  decode
-    usable: fdb//response/field
+    available: fdb//response/field
             fdb//response/array
 
  range
     description: To validate parameters
     example: "0:<10,98,99"
-    usable: fdb//command/par_num
+    available: fdb//command/par_num
             --
             adb//command/par_num
             adb//event/range

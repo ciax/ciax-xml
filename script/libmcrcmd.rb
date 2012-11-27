@@ -51,7 +51,7 @@ module Mcr
           self[:msg]="(query)"
           #sleep
           self[:msg]='(run)'
-          @aint[e1['site_id']].exe(e1['cmd'])
+          @aint[e1['site']].exe(e1['cmd'])
         when 'mcr'
           puts current
           @index.dup.set(e1['mcr']).macro(mcrlog,depth+1)
@@ -96,10 +96,10 @@ module Mcr
     def fault?(current)
       flt={}
       res=!current['stat'].all?{|h|
-        flt['site_id']=h['site_id']
-        break unless flt['upd']=update?(flt['site_id'])
+        flt['site']=h['site']
+        break unless flt['upd']=update?(flt['site'])
         ['var','val','inv'].each{|k| flt[k]=h[k] }
-        if res=getstat(flt['site_id'],flt['var'])
+        if res=getstat(flt['site'],flt['var'])
           flt['res']=res
           flt['upd'] && comp(res,flt['val'],flt['inv'])
         end

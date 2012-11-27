@@ -32,7 +32,7 @@ module Ins
 
     # overwrite App::Db
     def cover_app
-      cover(App::Db.new(self['app_type']))
+      cover(App::Db.new(self['app_id']))
     end
   end
 end

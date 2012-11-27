@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="cj2" id="cj2" label="Stand-by Flange PLC" version="2">
+  <app frm_id="cj2" id="cj2" label="Stand-by Flange PLC" version="2">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrpt Commands" column="2">
         <command id="upd" label="Status update">

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
-  <instance id="mt1" label="MOIRCS Pressure Main" app_type="tpg">
+  <instance id="mt1" label="MOIRCS Pressure Main" app_id="tpg">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="st1" label="Main Dewar Stat" />
       <value ref="ch1" label="Main Dewar (Torr)" />
     </status>
   </instance>
-  <instance id="mt2" label="MOIRCS Pressure Main" app_type="tpg">
+  <instance id="mt2" label="MOIRCS Pressure Main" app_id="tpg">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="st1" label="Throat Stat" />
       <value ref="ch1" label="Throat (Torr)" />
     </status>
   </instance>
-  <instance id="mt3" label="MOIRCS Pressure Pump" app_type="tpg">
+  <instance id="mt3" label="MOIRCS Pressure Pump" app_id="tpg">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="st1" label="Turbo Pump Stat" />
       <value ref="ch1" label="Turbo Pump (Torr)" />
@@ -20,7 +20,7 @@
       <value ref="ch2" label="Scroll Pump (Torr)" />
     </status>
   </instance>
-  <instance id="cci" label="IR Helium Compressor" app_type="bbe">
+  <instance id="cci" label="IR Helium Compressor" app_id="bbe">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <group id="alias" caption="Alias" column="2">
         <command id="c2on" label="CAS2(S1) ON" alias="x0on" />
@@ -48,7 +48,7 @@
       <group ref="g3" caption="MOIRCS/MAIN(S9)" />
     </status>
   </instance>
-  <instance id="cco" label="OPT Helium Compressor" app_type="bbe">
+  <instance id="cco" label="OPT Helium Compressor" app_id="bbe">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <group id="alias" caption="Alias" column="2">
         <command id="f2on" label="CIAO(S6) ON" alias="x0on" />
@@ -67,7 +67,7 @@
       <group ref="g3" caption="COMICS SPEC(S5)" />
     </status>
   </instance>
-  <instance id="cri" label="IR Helium Compressor" app_type="bbe">
+  <instance id="cri" label="IR Helium Compressor" app_id="bbe">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <group id="alias" caption="Alias" column="2">
         <command id="f1on" label="FMOS/IRS1(S10)ON" alias="x0on" />
@@ -81,7 +81,7 @@
       <group ref="g2" caption="FMOS/IRS2(S11)" />
     </status>
   </instance>
-  <instance id="cro" label="OPT Helium Compressor" app_type="bbe">
+  <instance id="cro" label="OPT Helium Compressor" app_id="bbe">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <group id="alias" caption="Alias" column="2">
         <command id="on" label="X0 ON" alias="x0on" />
@@ -95,8 +95,8 @@
       <group ref="g3" caption="X12-15" />
     </status>
   </instance>
-  <instance id="crt" label="CIAX CART 3" app_type="mel"/>
-  <instance id="cjk" label="CART 3 Jack Setting" app_type="cjk">
+  <instance id="crt" label="CIAX CART 3" app_id="mel"/>
+  <instance id="cjk" label="CART 3 Jack Setting" app_id="cjk">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="id0t0" caption="COMICS/CAS" />
       <group ref="id0t1" caption="COMICS/OPT/MOV" />
@@ -109,22 +109,22 @@
       <group ref="id4t0" caption="KYOTO3D/CAS" />
     </status>
   </instance>
-  <instance id="cr2" label="CIAX CART 2" app_type="cr2"/>
-  <instance id="cf1" label="S1 Helium Compressor Coolant Flow" app_type="k3n">
+  <instance id="cr2" label="CIAX CART 2" app_id="cr2"/>
+  <instance id="cf1" label="S1 Helium Compressor Coolant Flow" app_id="k3n">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="flow" label="CS-2(S1) Coolant Flow(l/min)" />
     </status>
   </instance>
-  <instance id="cfa" label="S10 Helium Compressor Coolant Flow" app_type="k3n">
+  <instance id="cfa" label="S10 Helium Compressor Coolant Flow" app_id="k3n">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="flow" label="FMOS-K(S10) Coolant Flow" />
     </status>
   </instance>
-  <instance id="dsi" label="IR Stand-by" app_type="cj2"/>
-  <instance id="dso" label="OPT Stand-by" app_type="cj2"/>
-  <instance id="det" label="CsEtr Control" app_type="srm"/>
-  <instance id="dts" label="TSC Control" app_type="oss"/>
-  <instance id="ml1" label="MOIRCS Temperature 1" app_type="lk8">
+  <instance id="dsi" label="IR Stand-by" app_id="cj2"/>
+  <instance id="dso" label="OPT Stand-by" app_id="cj2"/>
+  <instance id="det" label="CsEtr Control" app_id="srm"/>
+  <instance id="dts" label="TSC Control" app_id="oss"/>
+  <instance id="ml1" label="MOIRCS Temperature 1" app_id="lk8">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="ch0" label="MosCold2" />
       <value ref="ch1" label="MosCold1" />
@@ -138,7 +138,7 @@
       <value ref="htr" label="HeaterPower1(%%)" />
     </status>
   </instance>
-  <instance id="ml2" label="MOIRCS Temperature 2" app_type="lk8">
+  <instance id="ml2" label="MOIRCS Temperature 2" app_id="lk8">
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <value ref="ch0" label="Robohand" />
       <value ref="ch1" label="CollBench" />
@@ -152,13 +152,13 @@
       <value ref="htr" label="HeaterPower2(%%)" />
     </status>
   </instance>
-  <instance id="mfp" label="MOIRCS Pneumatic Actuator" app_type="cfp"/>
-  <instance id="map" label="MOIRCS Air Pressure" app_type="oma"/>
-  <instance id="mma" label="MOIRCS Extension Arm" app_type="mma"/>
-  <instance id="mmc" label="MOIRCS Carrousel" app_type="mmc"/>
-  <instance id="mix" label="MOIRCS Turret" app_type="ixe"/>
-  <instance id="mva" label="MOIRCS Pumping" app_type="var"/>
-  <instance id="mft" label="MOIRCS Hall Effect Sensor" app_type="fpa"/>
-  <instance id="mh1" label="MOIRCS Main/Carrousel Heater" app_type="psp"/>
-  <instance id="mh2" label="MOIRCS Main Heater" app_type="psp"/>
+  <instance id="mfp" label="MOIRCS Pneumatic Actuator" app_id="cfp"/>
+  <instance id="map" label="MOIRCS Air Pressure" app_id="oma"/>
+  <instance id="mma" label="MOIRCS Extension Arm" app_id="mma"/>
+  <instance id="mmc" label="MOIRCS Carrousel" app_id="mmc"/>
+  <instance id="mix" label="MOIRCS Turret" app_id="ixe"/>
+  <instance id="mva" label="MOIRCS Pumping" app_id="var"/>
+  <instance id="mft" label="MOIRCS Hall Effect Sensor" app_id="fpa"/>
+  <instance id="mh1" label="MOIRCS Main/Carrousel Heater" app_id="psp"/>
+  <instance id="mh2" label="MOIRCS Main Heater" app_id="psp"/>
 </idb>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="mel" id="mel" label="Cart PLC" version="5">
+  <app frm_id="mel" id="mel" label="Cart PLC" version="5">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
         <command id="upd" label="Status update">

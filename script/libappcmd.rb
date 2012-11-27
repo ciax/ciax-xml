@@ -54,7 +54,7 @@ if __FILE__ == $0
   begin
     adb=App::Db.new(app)
     fcobj=Command.new
-    fcobj.add_ext(Frm::Db.new(adb['frm_type']),:cmdframe)
+    fcobj.add_ext(Frm::Db.new(adb['frm_id']),:cmdframe)
     acobj=Command.new
     acobj.add_ext(adb,:command).ext_appcmd
     acobj.set(cmd).get.each{|fcmd|

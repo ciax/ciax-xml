@@ -52,7 +52,7 @@
     </rspframe>
   </Frm>
   <App>
-    <frm_type val="Frm ID"/>
+    <frm_id val="Frm ID"/>
     <version val="Version Numnber"/>
     <label val="Label"/>
     <command type="Hash">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_type="tpg" id="tpg" label="MOIRCS Pressure">
+  <app frm_id="tpg" id="tpg" label="MOIRCS Pressure">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <command id="upd" label="Update Status">

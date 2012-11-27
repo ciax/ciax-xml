@@ -1,9 +1,6 @@
 #!/usr/bin/ruby
 require "libint"
-require "libstatus"
-require "libapplist"
-require "libmcrcmd"
-require "thread"
+require "libmcrdb"
 
 module Mcr
   class Exe < Int::Exe
@@ -16,25 +13,15 @@ module Mcr
       self['id']=@mdb['id']
       @extcmd=@cobj.add_ext(@mdb,:macro)
       @logline=ExHash.new
-    end
-
-    def ext_shell
-      super({'active'=>'*','wait'=>'?'})
-      grp=@shcmd.add_group('int',"Internal Command")
-      grp.add_item("[0-9]","Switch Mode")
-      grp.add_item("threads","Thread list")
-      grp.add_item("list","list mcr contents")
-      grp.add_item("break","[cmd|mcr] set break point")
-      grp.add_item("step","step in execution")
-      grp.add_item("run","run to break point")
-      grp.add_item("continue","continue execution")
-      grp.add_item("print","[dev:stat] print variable")
-      grp.add_item("set","[dev:stat=val] set variable")
-      self
+      @upd_proc.add{
+        @output=@logline
+      }
     end
   end
 
   class Sv < Exe
+    require "libapplist"
+    require "libmcrcmd"
     extend Msg::Ver
     # @<< cobj,output,intcmd,int_proc,upd_proc*
     # @< mdb,extcmd,logline*
@@ -48,7 +35,6 @@ module Mcr
 end
 
 if __FILE__ == $0
-  require "libmcrdb"
 #  ENV['VER']='appsv'
 
   opt=Msg::GetOpts.new("t")

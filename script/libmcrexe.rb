@@ -44,10 +44,8 @@ if __FILE__ == $0
     aint=App::List.new
     mdb=Mcr::Db.new(id) #ciax
     mcr=Mcr::Sv.new(mdb,aint,opt['t'])
-    mcr.ext_shell.shell
+    mcr.exe(cmd)
   rescue InvalidCMD
-    Msg.exit(2)
-  rescue InvalidID
     opt.usage("[mcr] [cmd] (par)")
   rescue UserError
     Msg.exit(3)

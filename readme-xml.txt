@@ -119,5 +119,5 @@
   fdb//command@response <= fdb//rspframe//response@id
   adb//frmcmd@name <= fdb//command@id
   adb//event/(int,exec,block)@name <= adb//commands/command@id
-  adb//event/(onchange,pattern,range)@ref <= adb//status/value@id
+  adb//event/(onchange,pattern,range)@ref <= adb//status/*@id
   *@symbol <= *//symbol/table@id

@@ -41,9 +41,9 @@
           <group id="id$it$t" column="4">
             <repeat from="0" to="3" counter="l">
               <repeat from="0" to="3" counter="j">
-                <value id="i$it$tl$lj$j" label="Lev$l,Jak$j" format="%.2f" formula="$#/100">
-                  <float ref="t" index="$t:$j:$i*4+$l" />
-                </value>
+                <float id="i$it$tl$lj$j" label="Lev$l,Jak$j" format="%.2f" formula="$#/100">
+                  <field ref="t" index="$t:$j:$i*4+$l" />
+                </float>
               </repeat>
             </repeat>
           </group>

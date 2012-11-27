@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adb="http://ciax.sum.naoj.org/ciax-xml/adb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:adbc="http://ciax.sum.naoj.org/ciax-xml/adbc" xmlns:adbs="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:wdb="http://ciax.sum.naoj.org/ciax-xml/wdb" xmlns:sdb="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/adbc" schemaLocation="adbc.xsd" />
   <xsd:import namespace="http://ciax.sum.naoj.org/ciax-xml/wdb" schemaLocation="wdb.xsd" />
@@ -44,7 +44,7 @@
       <xsd:field xpath="@name" />
     </xsd:keyref>
     <xsd:key name="value_id">
-      <xsd:selector xpath=".//adbs:value" />
+      <xsd:selector xpath=".//adbs:binary|.//adbs:float|.//adbs:integer|.//adbs:string" />
       <xsd:field xpath="@id" />
     </xsd:key>
     <xsd:keyref name="event_pat" refer="adb:value_id">

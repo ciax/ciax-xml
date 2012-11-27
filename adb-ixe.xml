@@ -155,50 +155,50 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="Stat" column="3">
-        <value id="rdy" label="Comm Ready" symbol="off-warn">
-          <binary bit="0" ref="stat" />
-        </value>
-        <value id="srq" label="SRQ" symbol="off-warn">
-          <binary bit="1" ref="stat" />
-        </value>
-        <value id="pme" label="Program Error" symbol="alarm">
-          <binary bit="3" ref="stat" />
-        </value>
-        <value id="pse" label="Power Stage Error" symbol="alarm">
-          <binary bit="4" ref="stat" />
-        </value>
-        <value id="oes" label="ONE EM Stop" symbol="alarm">
-          <binary bit="5" ref="stat" />
-        </value>
-        <value id="ees" label="EXT EM Stop" symbol="alarm">
-          <binary bit="6" ref="stat" />
-        </value>
+        <binary id="rdy" label="Comm Ready" symbol="off-warn">
+          <normal bit="0" ref="stat" />
+        </binary>
+        <binary id="srq" label="SRQ" symbol="off-warn">
+          <normal bit="1" ref="stat" />
+        </binary>
+        <binary id="pme" label="Program Error" symbol="alarm">
+          <normal bit="3" ref="stat" />
+        </binary>
+        <binary id="pse" label="Power Stage Error" symbol="alarm">
+          <normal bit="4" ref="stat" />
+        </binary>
+        <binary id="oes" label="ONE EM Stop" symbol="alarm">
+          <normal bit="5" ref="stat" />
+        </binary>
+        <binary id="ees" label="EXT EM Stop" symbol="alarm">
+          <normal bit="6" ref="stat" />
+        </binary>
       </group>
       <group caption="" id="g2" column="2">
-        <value id="trm" label="Terminal Mode" symbol="off-warn">
-          <binary bit="2" ref="stat" />
-        </value>
-        <value id="cmd" label="Computer Mode" symbol="off-warn">
-          <binary bit="7" ref="stat" />
-        </value>
+        <binary id="trm" label="Terminal Mode" symbol="off-warn">
+          <normal bit="2" ref="stat" />
+        </binary>
+        <binary id="cmd" label="Computer Mode" symbol="off-warn">
+          <normal bit="7" ref="stat" />
+        </binary>
       </group>
       <group id="g3" caption="" column="6">
         <repeat from="1" to="6">
-          <value id="r$_" label="Running $_">
-            <string ref="run" index="$_-1" />
-          </value>
-          <value id="p$_" label="Pulse $_">
-            <int ref="p" index="$_-1" />
-          </value>
-          <value id="spd$_" label="Speed $_">
-            <int ref="spd" index="$_-1" />
-          </value>
-          <value id="rmp$_" label="Ramp $_">
-            <int ref="spd" index="$_-1" />
-          </value>
-          <value id="ofs$_" label="Offset $_">
-            <int ref="ofs" index="$_-1" />
-          </value>
+          <string id="r$_" label="Running $_">
+            <field ref="run" index="$_-1" />
+          </string>
+          <integer id="p$_" label="Pulse $_">
+            <field ref="p" index="$_-1" />
+          </integer>
+          <integer id="spd$_" label="Speed $_">
+            <field ref="spd" index="$_-1" />
+          </integer>
+          <integer id="rmp$_" label="Ramp $_">
+            <field ref="spd" index="$_-1" />
+          </integer>
+          <integer id="ofs$_" label="Offset $_">
+            <field ref="ofs" index="$_-1" />
+          </integer>
         </repeat>
       </group>
     </status>

@@ -89,105 +89,105 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="oss">
       <group id="g1" caption="Main" column="3">
-        <value id="exit" label="Exit Code">
-          <int ref="exit" />
-        </value>
-        <value id="nfb" label="BOLT NFB TRIP">
-          <binary bit="6" ref="bstat" />
-        </value>
-        <value id="login" label="Login Status" symbol="login">
-          <string ref="login0" />
-          <string ref="login1" />
-          <string ref="login2" />
-          <string ref="login3" />
-        </value>
-        <value id="rts" label="ROT SEL" symbol="rts">
-          <int ref="rsel" />
-        </value>
-        <value id="iid" label="CAS INST ID" symbol="iid">
-          <int ref="iid" />
-        </value>
+        <integer id="exit" label="Exit Code">
+          <field ref="exit" />
+        </integer>
+        <binary id="nfb" label="BOLT NFB TRIP">
+          <normal bit="6" ref="bstat" />
+        </binary>
+        <string id="login" label="Login Status" symbol="login">
+          <field ref="login0" />
+          <field ref="login1" />
+          <field ref="login2" />
+          <field ref="login3" />
+        </string>
+        <integer id="rts" label="ROT SEL" symbol="rts">
+          <field ref="rsel" />
+        </integer>
+        <integer id="iid" label="CAS INST ID" symbol="iid">
+          <field ref="iid" />
+        </integer>
       </group>
       <group id="g2" caption="Drive Stat" column="4">
-        <value id="azd" label="AZ" symbol="drv">
-          <binary label="ON" bit="0" ref="teldrive" />
-          <binary label="OFF" bit="1" ref="teldrive" />
-          <binary label="Ready" bit="2" ref="teldrive" />
-        </value>
-        <value id="eld" label="EL" symbol="drv">
-          <binary label="ON" bit="3" ref="teldrive" />
-          <binary label="OFF" bit="4" ref="teldrive" />
-          <binary label="Ready" bit="5" ref="teldrive" />
-        </value>
-        <value id="rpw" label="ROT" symbol="rpw">
-          <int ref="rpw" />
-        </value>
-        <value id="jpw" label="JAK" symbol="warn">
-          <binary bit="7" ref="bstat" />
-        </value>
+        <binary id="azd" label="AZ" symbol="drv">
+          <normal label="ON" bit="0" ref="teldrive" />
+          <normal label="OFF" bit="1" ref="teldrive" />
+          <normal label="Ready" bit="2" ref="teldrive" />
+        </binary>
+        <binary id="eld" label="EL" symbol="drv">
+          <normal label="ON" bit="3" ref="teldrive" />
+          <normal label="OFF" bit="4" ref="teldrive" />
+          <normal label="Ready" bit="5" ref="teldrive" />
+        </binary>
+        <integer id="rpw" label="ROT" symbol="rpw">
+          <field ref="rpw" />
+        </integer>
+        <binary id="jpw" label="JAK" symbol="warn">
+          <normal bit="7" ref="bstat" />
+        </binary>
       </group>
       <group id="g3" caption="Position" column="4">
-        <value id="stw" label="EL STOW" symbol="off-warn">
-          <binary bit="2" ref="stow_1" />
-        </value>
-        <value id="elv" label="EL" format="%.3f">
-          <float ref="el" />
-        </value>
-        <value id="iang" label="InR" format="%.3f">
-          <float ref="iang" />
-        </value>
-        <value id="jkm" label="JACK LEN" format="%.3f" formula="$#/1600">
+        <binary id="stw" label="EL STOW" symbol="off-warn">
+          <normal bit="2" ref="stow_1" />
+        </binary>
+        <float id="elv" label="EL" format="%.3f">
+          <field ref="el" />
+        </float>
+        <float id="iang" label="InR" format="%.3f">
+          <field ref="iang" />
+        </float>
+        <float id="jkm" label="JACK LEN" format="%.3f" formula="$#/1600">
           <repeat_val from="0" to="15">
-            <float ref="jk" index="$_" />
+            <field ref="jk" index="$_" />
           </repeat_val>
-        </value>
-        <value id="abs" label="JACK STOP" symbol="warn">
-          <binary ref="abs" bit="2" />
-        </value>
-        <value id="abc" label="JACK CLMP" symbol="warn">
-          <binary ref="abs" bit="0" />
-        </value>
-        <value id="abr" label="JACK RDY" symbol="warn">
-          <binary ref="abs" bit="4" />
-        </value>
-        <value id="rps" label="ROT SENSOR" symbol="rps">
-          <binary bit="4" ref="bstat" />
-          <binary bit="5" ref="bstat" />
-        </value>
+        </float>
+        <binary id="abs" label="JACK STOP" symbol="warn">
+          <normal ref="abs" bit="2" />
+        </binary>
+        <binary id="abc" label="JACK CLMP" symbol="warn">
+          <normal ref="abs" bit="0" />
+        </binary>
+        <binary id="abr" label="JACK RDY" symbol="warn">
+          <normal ref="abs" bit="4" />
+        </binary>
+        <binary id="rps" label="ROT SENSOR" symbol="rps">
+          <normal bit="4" ref="bstat" />
+          <normal bit="5" ref="bstat" />
+        </binary>
       </group>
       <group id="g4" caption="[Stop] [Clmp] [Rdy] [Pos] [Jack Len]  [Clnt Lmt] [Alm]" column="7">
         <repeat from="1" to="16" format="%02d">
           <!--Order:1,0;3,2;5,4;7,6;...-->
-          <value id="bs$_" symbol="warn" label="$_">
-            <binary ref="bs" index="$_-($_+1)%2*2" bit="2" />
-          </value>
-          <value id="bc$_" label="$_" symbol="warn">
-            <binary ref="bs" index="$_-($_+1)%2*2" bit="0" />
-          </value>
-          <value id="br$_" label="$_" symbol="warn">
-            <binary ref="bs" bit="3" index="$_-($_+1)%2*2" />
-          </value>
-          <value id="bl$_" label="$_" symbol="bl">
-            <binary ref="bl" index="$_-($_+1)%2*2" bit="1" />
-            <binary ref="bl" bit="2" index="$_-($_+1)%2*2" />
-          </value>
-          <value id="jk$_" label="$_" format="%5.2f" formula="$#/100">
-            <float ref="jk" index="$_-($_+1)%2*2" />
-          </value>
-          <value id="cl$_" label="$_" symbol="normal">
-            <binary ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
-          </value>
-          <value id="ba$_" label="$_" symbol="ba">
-            <binary ref="bl" index="$_-($_+1)%2*2" bit="0"></binary>
-            <binary ref="bl" index="$_-($_+1)%2*2" bit="4" />
-          </value>
+          <binary id="bs$_" symbol="warn" label="$_">
+            <normal ref="bs" index="$_-($_+1)%2*2" bit="2" />
+          </binary>
+          <binary id="bc$_" label="$_" symbol="warn">
+            <normal ref="bs" index="$_-($_+1)%2*2" bit="0" />
+          </binary>
+          <binary id="br$_" label="$_" symbol="warn">
+            <normal ref="bs" bit="3" index="$_-($_+1)%2*2" />
+          </binary>
+          <binary id="bl$_" label="$_" symbol="bl">
+            <normal ref="bl" index="$_-($_+1)%2*2" bit="1" />
+            <normal ref="bl" bit="2" index="$_-($_+1)%2*2" />
+          </binary>
+          <float id="jk$_" label="$_" format="%5.2f" formula="$#/100">
+            <field ref="jk" index="$_-($_+1)%2*2" />
+          </float>
+          <binary id="cl$_" label="$_" symbol="normal">
+            <normal ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
+          </binary>
+          <binary id="ba$_" label="$_" symbol="ba">
+            <normal ref="bl" index="$_-($_+1)%2*2" bit="0"></normal>
+            <normal ref="bl" index="$_-($_+1)%2*2" bit="4" />
+          </binary>
         </repeat>
       </group>
       <group id="g5" caption="[Z Sensor Len]" column="4">
         <repeat from="1" to="4">
-          <value id="z$_" label="$_" format="%5.2f" formula="$#/100">
-            <float ref="zp" index="$_-1" />
-          </value>
+          <float id="z$_" label="$_" format="%5.2f" formula="$#/100">
+            <field ref="zp" index="$_-1" />
+          </float>
         </repeat>
       </group>
     </status>

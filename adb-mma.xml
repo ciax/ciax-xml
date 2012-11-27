@@ -82,24 +82,24 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mma">
       <group id="g1" caption="" column="3">
-        <value id="bs" label="Moter Moving" symbol="warn">
-          <string ref="bs" />
-        </value>
-        <value id="con" label="Contact Sensor" symbol="normal">
-          <string ref="in" index="4" />
-        </value>
-        <value id="err" label="Error Code" symbol="err">
-          <int ref="err" />
-        </value>
-        <value id="pos" label="Arm Position" symbol="pos">
-          <string ref="in" index="0" />
-          <string ref="in" index="1" />
-          <string ref="in" index="2" />
-          <string ref="in" index="3" />
-        </value>
-        <value id="abs" label="ABS position" symbol="abs">
-          <float ref="p" />
-        </value>
+        <string id="bs" label="Moter Moving" symbol="warn">
+          <field ref="bs" />
+        </string>
+        <string id="con" label="Contact Sensor" symbol="normal">
+          <field ref="in" index="4" />
+        </string>
+        <integer id="err" label="Error Code" symbol="err">
+          <field ref="err" />
+        </integer>
+        <string id="pos" label="Arm Position" symbol="pos">
+          <field ref="in" index="0" />
+          <field ref="in" index="1" />
+          <field ref="in" index="2" />
+          <field ref="in" index="3" />
+        </string>
+        <float id="abs" label="ABS position" symbol="abs">
+          <field ref="p" />
+        </float>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">

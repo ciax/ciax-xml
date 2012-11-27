@@ -82,9 +82,10 @@ module App
           struct.update(rec_stat(e0,hash,gid,r0))
         else
           id=e0.attr2db(hash){|k,v| r0.format(v)}
-          struct[id]=[]
+          struct[id]={'type' => e0.name, :fields => []}
           r0.each(e0){|e1,r1|
-            st={'type' => e1.name}
+            st={}
+            st['inv']='true' if e1.name == 'invert'
             e1.to_h.each{|k,v|
               case k
               when 'bit','index'
@@ -96,7 +97,7 @@ module App
             if i=st.delete('index')
               st['ref']+=":#{i}"
             end
-            struct[id] << st
+            struct[id][:fields] << st
           }
           (hash[:group][gid][:list]||=[]) << id
         end

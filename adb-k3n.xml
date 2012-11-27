@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="k3n" id="k3n" label="Helium Compressor Coolant Flow">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -10,15 +10,15 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="k3n">
       <group id="g1" caption="">
-        <value id="rcode" label="Return Code" symbol="rcode">
-          <string ref="rcode" />
-        </value>
-        <value id="ecode" label="Error Code" symbol="ecode">
-          <string ref="ecode" />
-        </value>
-        <value id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="flow" format="%4.2f" formula="$#/100">
-          <float ref="stat" />
-        </value>
+        <string id="rcode" label="Return Code" symbol="rcode">
+          <field ref="rcode" />
+        </string>
+        <string id="ecode" label="Error Code" symbol="ecode">
+          <field ref="ecode" />
+        </string>
+        <float id="flow" label="Helium Compressor Coolant Flow(l/min)" symbol="flow" format="%4.2f" formula="$#/100">
+          <field ref="stat" />
+        </float>
       </group>
     </status>
   </app>

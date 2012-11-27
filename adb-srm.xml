@@ -70,27 +70,27 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="" column="3">
-        <value id="iid" label="CAS INST ID" symbol="iid_ac">
-          <string ref="c1d2" />
-        </value>
-        <value id="ipw" label="CAS IPW" symbol="off-warn">
-          <binary bit="0" ref="c1d1" />
-        </value>
-        <value id="stp" label="STOW PIN" symbol="warn">
-          <binary bit="1" ref="c1d1" />
-        </value>
-        <value id="ccd" label="CAS CCD PW" symbol="warn">
-          <binary bit="2" ref="c1d0" />
-        </value>
-        <value id="lan" label="CAS LAN PW" symbol="hide">
-          <binary bit="3" ref="c1d0" />
-        </value>
-        <value id="c3p" label="CIAX3 PW" symbol="hide">
-          <binary bit="0" ref="c1d0" />
-        </value>
-        <value id="c3e" label="CIAX3 EMG" symbol="alarm">
-          <binary bit="1" ref="c1d0" />
-        </value>
+        <string id="iid" label="CAS INST ID" symbol="iid_ac">
+          <field ref="c1d2" />
+        </string>
+        <binary id="ipw" label="CAS IPW" symbol="off-warn">
+          <normal bit="0" ref="c1d1" />
+        </binary>
+        <binary id="stp" label="STOW PIN" symbol="warn">
+          <normal bit="1" ref="c1d1" />
+        </binary>
+        <binary id="ccd" label="CAS CCD PW" symbol="warn">
+          <normal bit="2" ref="c1d0" />
+        </binary>
+        <binary id="lan" label="CAS LAN PW" symbol="hide">
+          <normal bit="3" ref="c1d0" />
+        </binary>
+        <binary id="c3p" label="CIAX3 PW" symbol="hide">
+          <normal bit="0" ref="c1d0" />
+        </binary>
+        <binary id="c3e" label="CIAX3 EMG" symbol="alarm">
+          <normal bit="1" ref="c1d0" />
+        </binary>
       </group>
     </status>
   </app>

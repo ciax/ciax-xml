@@ -17,9 +17,9 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" column="3">
         <repeat from="1" to="6">
-          <value id="v$_" label="OUTPUT$_ (V)" format="%3.2f" formula="($#-2048)/4096">
-            <float ref="stat" index="$_+1" />
-          </value>
+          <float id="v$_" label="OUTPUT$_ (V)" format="%3.2f" formula="($#-2048)/4096">
+            <field ref="stat" index="$_+1" />
+          </float>
         </repeat>
       </group>
     </status>

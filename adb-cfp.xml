@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="cfp" id="cfp" label="MOIRCS Field Point">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -76,52 +76,52 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cfp">
       <group caption="Output" id="g1" column="2">
-        <value id="ao" label="Arm Gripper(out)" symbol="oc">
-          <binary bit="10" ref="output" />
-          <binary bit="11" ref="output" />
-        </value>
-        <value id="hr" label="Arm Rotation(out)" symbol="rot">
-          <binary bit="12" ref="output" />
-          <binary bit="13" ref="output" />
-        </value>
-        <value id="rao" label="Robohand A(out)" symbol="oc">
-          <binary bit="2" ref="output" />
-          <binary bit="3" ref="output" />
-        </value>
-        <value id="rbo" label="Robohand B(out)" symbol="oc">
-          <binary bit="4" ref="output" />
-          <binary bit="5" ref="output" />
-        </value>
-        <value id="go" label="Gate Valve(out)" symbol="oc">
-          <binary bit="6" ref="output" />
-          <binary bit="7" ref="output" />
-        </value>
+        <binary id="ao" label="Arm Gripper(out)" symbol="oc">
+          <normal bit="10" ref="output" />
+          <normal bit="11" ref="output" />
+        </binary>
+        <binary id="hr" label="Arm Rotation(out)" symbol="rot">
+          <normal bit="12" ref="output" />
+          <normal bit="13" ref="output" />
+        </binary>
+        <binary id="rao" label="Robohand A(out)" symbol="oc">
+          <normal bit="2" ref="output" />
+          <normal bit="3" ref="output" />
+        </binary>
+        <binary id="rbo" label="Robohand B(out)" symbol="oc">
+          <normal bit="4" ref="output" />
+          <normal bit="5" ref="output" />
+        </binary>
+        <binary id="go" label="Gate Valve(out)" symbol="oc">
+          <normal bit="6" ref="output" />
+          <normal bit="7" ref="output" />
+        </binary>
       </group>
       <group caption="Input" id="g2" column="2">
-        <value id="rh1" label="RoboHand 1(in)" symbol="oc">
-          <binary bit="4" ref="input" />
-          <binary bit="5" ref="input" />
-        </value>
-        <value id="rh2" label="RoboHand 2(in)" symbol="oc">
-          <binary bit="6" ref="input" />
-          <binary bit="7" ref="input" />
-        </value>
-        <value id="rh3" label="RoboHand 3(in)" symbol="oc">
-          <binary bit="8" ref="input" />
-          <binary bit="9" ref="input" />
-        </value>
-        <value id="rh4" label="RoboHand 4(in)" symbol="oc">
-          <binary bit="10" ref="input" />
-          <binary bit="11" ref="input" />
-        </value>
-        <value id="gv" label="Gate Valve(in)" symbol="oc">
-          <binary bit="0" ref="input" />
-          <binary bit="1" ref="input" />
-        </value>
-        <value id="hv" label="Arm Rotation(in)" symbol="rot">
-          <binary bit="2" ref="input" />
-          <binary bit="3" ref="input" />
-        </value>
+        <binary id="rh1" label="RoboHand 1(in)" symbol="oc">
+          <normal bit="4" ref="input" />
+          <normal bit="5" ref="input" />
+        </binary>
+        <binary id="rh2" label="RoboHand 2(in)" symbol="oc">
+          <normal bit="6" ref="input" />
+          <normal bit="7" ref="input" />
+        </binary>
+        <binary id="rh3" label="RoboHand 3(in)" symbol="oc">
+          <normal bit="8" ref="input" />
+          <normal bit="9" ref="input" />
+        </binary>
+        <binary id="rh4" label="RoboHand 4(in)" symbol="oc">
+          <normal bit="10" ref="input" />
+          <normal bit="11" ref="input" />
+        </binary>
+        <binary id="gv" label="Gate Valve(in)" symbol="oc">
+          <normal bit="0" ref="input" />
+          <normal bit="1" ref="input" />
+        </binary>
+        <binary id="hv" label="Arm Rotation(in)" symbol="rot">
+          <normal bit="2" ref="input" />
+          <normal bit="3" ref="input" />
+        </binary>
       </group>
     </status>
   </app>

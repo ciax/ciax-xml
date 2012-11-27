@@ -1,20 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:adbs="http://ciax.sum.naoj.org/ciax-xml/adbs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema">
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:attributeGroup name="id_attr">
     <xsd:attribute name="id" type="xsd:token" use="required" />
     <xsd:attribute name="label" type="xsd:token" use="optional" />
+    <xsd:attribute name="symbol" type="xsd:NCName" />
   </xsd:attributeGroup>
   <xsd:attributeGroup name="ref_attr">
     <xsd:attribute name="ref" type="xsd:NCName" use="required" />
-    <xsd:attribute name="index" type="xsd:token" use="optional" />
     <xsd:attribute name="label" type="xsd:token" use="optional" />
+    <xsd:attribute name="index" type="xsd:token" use="optional" />
   </xsd:attributeGroup>
   <xsd:group name="value">
     <xsd:choice>
       <xsd:element ref="adbs:binary" maxOccurs="unbounded" />
       <xsd:element ref="adbs:float" maxOccurs="unbounded" />
-      <xsd:element ref="adbs:int" maxOccurs="unbounded" />
+      <xsd:element ref="adbs:integer" maxOccurs="unbounded" />
       <xsd:element ref="adbs:string" maxOccurs="unbounded" />
     </xsd:choice>
   </xsd:group>
@@ -29,25 +30,17 @@
       </xsd:choice>
       <xsd:attribute name="table" type="xsd:NCName" use="optional" />
     </xsd:complexType>
-    <xsd:key name="group_id">
-      <xsd:selector xpath="adbs:group" />
-      <xsd:field xpath="@id" />
-    </xsd:key>
   </xsd:element>
   <xsd:element name="group">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="adbs:repeat"></xsd:element>
-        <xsd:element ref="adbs:value"></xsd:element>
+        <xsd:group ref="adbs:value" />
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:token" use="required" />
       <xsd:attribute name="caption" type="xsd:token" use="optional" />
       <xsd:attribute name="column" type="xsd:int" use="optional" />
     </xsd:complexType>
-    <xsd:key name="value_id">
-      <xsd:selector xpath="adbs:value" />
-      <xsd:field xpath="@id" />
-    </xsd:key>
   </xsd:element>
   <!--values-->
   <xsd:element name="repeat">
@@ -55,52 +48,65 @@
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="adbs:group"></xsd:element>
         <xsd:element ref="adbs:repeat"></xsd:element>
-        <xsd:element ref="adbs:value"></xsd:element>
-      </xsd:choice>
-      <xsd:attributeGroup ref="adbs:repeat" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="value">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0">
-        <xsd:group ref="adbs:value" />
-        <xsd:element ref="adbs:repeat_val" maxOccurs="unbounded" />
-      </xsd:choice>
-      <xsd:attributeGroup ref="adbs:id_attr" />
-      <xsd:attribute name="symbol" type="xsd:NCName" />
-      <xsd:attribute name="format" type="xsd:token" use="optional" />
-      <xsd:attribute name="formula" type="xsd:token" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="repeat_val">
-    <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:group ref="adbs:value" />
       </xsd:choice>
       <xsd:attributeGroup ref="adbs:repeat" />
     </xsd:complexType>
   </xsd:element>
   <!--data type in value-->
+  <xsd:complexType name="numerical">
+    <xsd:choice minOccurs="1" maxOccurs="unbounded">
+      <xsd:element ref="adbs:field" />
+      <xsd:element ref="adbs:repeat_val" maxOccurs="unbounded" />
+    </xsd:choice>
+    <xsd:attributeGroup ref="adbs:id_attr" />
+    <xsd:attribute name="format" type="xsd:token" use="optional" />
+    <xsd:attribute name="formula" type="xsd:token" />
+  </xsd:complexType>
+  <xsd:element name="float" type="adbs:numerical"></xsd:element>
+  <xsd:element name="integer" type="adbs:numerical"></xsd:element>
   <xsd:element name="binary">
     <xsd:complexType>
-      <xsd:attributeGroup ref="adbs:ref_attr" />
-      <xsd:attribute name="bit" type="xsd:token" use="required" />
-      <xsd:attribute name="inv" type="xsd:boolean" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="float">
-    <xsd:complexType>
-      <xsd:attributeGroup ref="adbs:ref_attr" />
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="int">
-    <xsd:complexType>
-      <xsd:attributeGroup ref="adbs:ref_attr" />
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbs:normal" />
+        <xsd:element ref="adbs:invert" />
+        <xsd:element ref="adbs:repeat_val" maxOccurs="unbounded" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="adbs:id_attr" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="string">
     <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbs:field" />
+        <xsd:element ref="adbs:repeat_val" maxOccurs="unbounded" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="adbs:id_attr" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="repeat_val">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbs:field" />
+      </xsd:choice>
+      <xsd:attributeGroup ref="adbs:repeat" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="field">
+    <xsd:complexType>
       <xsd:attributeGroup ref="adbs:ref_attr" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="normal">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="adbs:ref_attr" />
+      <xsd:attribute name="bit" type="xsd:token" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="invert">
+    <xsd:complexType>
+      <xsd:attributeGroup ref="adbs:ref_attr" />
+      <xsd:attribute name="bit" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

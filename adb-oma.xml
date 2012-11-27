@@ -10,9 +10,9 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="oma">
       <group id="g1" caption="">
-        <value id="pres" label="Air Pressure (Psi)" symbol="pres" format="%4.2f">
-          <float ref="stat" />
-        </value>
+        <float id="pres" label="Air Pressure (Psi)" symbol="pres" format="%4.2f">
+          <field ref="stat" />
+        </float>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="2" period="60"></watch>

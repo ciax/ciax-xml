@@ -36,42 +36,42 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="" column="3" >
-        <value id="vol" label="OUTPUT (V)" format="%3.2f">
-          <float ref="v" />
-        </value>
-        <value id="amp" label="OUTPUT (A)" format="%3.2f">
-          <float ref="a" />
-        </value>
-        <value id="wat" label="OUTPUT (W)" format="%3.2f">
-          <float ref="w" />
-        </value>
-        <value id="vl" label="Limit (V)" format="%3.2f">
-          <float ref="u" />
-        </value>
-        <value id="il" label="Limit (A)" format="%3.2f">
-          <float ref="i" />
-        </value>
-        <value id="pl" label="Limit (W)" format="%3.2f">
-          <float ref="p" />
-        </value>
-        <value id="sw" label="OUTPUT ON/OFF" symbol="warn">
-          <string ref="f1" />
-        </value>
-        <value id="tmp" label="OverHeat" symbol="alarm">
-          <string ref="f2" />
-        </value>
-        <value id="kn1" label="Wheel Knov Fine" symbol="normal">
-          <string ref="f3" />
-        </value>
-        <value id="kn2" label="Wheel Knov Unlock" symbol="normal">
-          <string ref="f4" />
-        </value>
-        <value id="rem" label="REMOTE" symbol="normal">
-          <string ref="f5" />
-        </value>
-        <value id="loc" label="Local Lock" symbol="normal">
-          <string ref="f6" />
-        </value>
+        <float id="vol" label="OUTPUT (V)" format="%3.2f">
+          <field ref="v" />
+        </float>
+        <float id="amp" label="OUTPUT (A)" format="%3.2f">
+          <field ref="a" />
+        </float>
+        <float id="wat" label="OUTPUT (W)" format="%3.2f">
+          <field ref="w" />
+        </float>
+        <float id="vl" label="Limit (V)" format="%3.2f">
+          <field ref="u" />
+        </float>
+        <float id="il" label="Limit (A)" format="%3.2f">
+          <field ref="i" />
+        </float>
+        <float id="pl" label="Limit (W)" format="%3.2f">
+          <field ref="p" />
+        </float>
+        <string id="sw" label="OUTPUT ON/OFF" symbol="warn">
+          <field ref="f1" />
+        </string>
+        <string id="tmp" label="OverHeat" symbol="alarm">
+          <field ref="f2" />
+        </string>
+        <string id="kn1" label="Wheel Knov Fine" symbol="normal">
+          <field ref="f3" />
+        </string>
+        <string id="kn2" label="Wheel Knov Unlock" symbol="normal">
+          <field ref="f4" />
+        </string>
+        <string id="rem" label="REMOTE" symbol="normal">
+          <field ref="f5" />
+        </string>
+        <string id="loc" label="Local Lock" symbol="normal">
+          <field ref="f6" />
+        </string>
       </group>
     </status>
   </app>

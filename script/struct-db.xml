@@ -101,12 +101,14 @@
         <Item key="Status ID" val="Format String"/>
       </format>
       <select type="Hash">
-        <Item key="Status ID" type="Array">
-          <List type="Hash">
-            <type val="Data Type"/>
-            <ref val="Frm Field Address"/>
-            <bit type="Number"/>
-          </List>
+        <Item key="Status ID" type="Hash">
+          <type val="Data Type"/>
+          <fields type="Array">
+            <List type="Hash">
+              <ref val="Frm Field Address"/>
+              <bit type="Number"/>
+            </List>
+          </fields>
         </Item>
       </select>
     </status>

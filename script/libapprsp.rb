@@ -22,10 +22,25 @@ module App
     end
 
     def upd
-      @ads.each{|id,fields|
+      @ads.each{|id,select|
+        Rsp.msg(1){"STAT:GetStatus:[#{id}]"}
+        case select['type']
+        when 'binary'
+          data=select[:fields].inject(0){|sum,e1|
+            (sum << 1)+binary(e1)
+          }
+        when 'float'
+          data=select[:fields].inject(0){|sum,e1|
+            sum+float(e1)
+          }
+        when 'integer'
+          data=select[:fields].inject(0){|sum,e1|
+            sum+int(e1)
+          }
+        else
+          data=select[:fields].join('')
+        end
         begin
-          Rsp.msg(1){"STAT:GetStatus:[#{id}]"}
-          data=get_val(fields)
           if @fml.key?(id)
             f=@fml[id].gsub(/\$#/,data.to_s)
             data=eval(f)
@@ -43,6 +58,11 @@ module App
     end
 
     private
+    def get_field(e)
+      fld=e['ref'] || Msg.abort("No field Key")
+      @field.get(fld)||''
+    end
+
     def get_val(fields)
       num=0
       str=''
@@ -64,7 +84,8 @@ module App
       str.empty? ? num : str
     end
 
-    def binary(e1,data)
+    def binary(e1)
+      data=get_field(e1)
       loc=eval(e1['bit'])
       bit=(data.to_i >> loc & 1)
       bit = -(bit-1) if /true|1/ === e1['inv']
@@ -72,7 +93,8 @@ module App
       bit
     end
 
-    def float(e1,data)
+    def float(e1)
+      data=get_field(e1)
       sign=nil
       # For Constant Length Data
       if /true|1/ === e1['signed']
@@ -89,8 +111,8 @@ module App
       data
     end
 
-    def int(e1,data)
-      data=data.to_i
+    def int(e1)
+      data=get_field(e1).to_i
       if /true|1/ === e1['signed']
         data= data > 0x7fff ? data - 0x10000 : data
       end

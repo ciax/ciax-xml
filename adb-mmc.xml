@@ -79,27 +79,27 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mmc">
       <group id="g1" caption="" column="4">
-        <value id="bs" label="Moter Moving" symbol="warn">
-          <string ref="bs" />
-        </value>
-        <value id="con" label="Contact Sensor" symbol="normal">
-          <string ref="in" index="1" />
-        </value>
-        <value id="spd" label="Speed" format="%.2f">
-          <float ref="spd" />
-        </value>
-        <value id="err" label="Error Code" symbol="err">
-          <int ref="err" />
-        </value>
-        <value id="lcw" label="CW Limit" symbol="normal">
-          <string ref="in" index="3" />
-        </value>
-        <value id="lccw" label="CCW Limit" symbol="normal">
-          <string ref="in" index="4" />
-        </value>
-        <value id="abs" label="ABS position" symbol="abs" format="%.2f">
-          <float ref="p" />
-        </value>
+        <string id="bs" label="Moter Moving" symbol="warn">
+          <field ref="bs" />
+        </string>
+        <string id="con" label="Contact Sensor" symbol="normal">
+          <field ref="in" index="1" />
+        </string>
+        <float id="spd" label="Speed" format="%.2f">
+          <field ref="spd" />
+        </float>
+        <integer id="err" label="Error Code" symbol="err">
+          <field ref="err" />
+        </integer>
+        <string id="lcw" label="CW Limit" symbol="normal">
+          <field ref="in" index="3" />
+        </string>
+        <string id="lccw" label="CCW Limit" symbol="normal">
+          <field ref="in" index="4" />
+        </string>
+        <float id="abs" label="ABS position" symbol="abs" format="%.2f">
+          <field ref="p" />
+        </float>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_type="mel" id="mel" label="Cart PLC" version="5">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -299,110 +299,110 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
       <group id="gs" caption="Status" column="3">
-        <value id="rdy" label="READY" symbol="off-alarm">
-          <binary ref="x" index="0" bit="0" />
-        </value>
-        <value id="stp" label="STOPPING" symbol="off-warn">
-          <binary ref="x" index="0" bit="3" />
-        </value>
-        <value id="pse" label="PAUSE" symbol="action">
-          <binary ref="x" index="0" bit="1" />
-        </value>
-        <value id="emg" label="ENERGENCY" symbol="alarm">
-          <binary ref="x" index="0" bit="2" />
-        </value>
-        <value id="exc" label="EXIT CODE" symbol="ecode" format="%04X">
-          <int ref="ecode" />
-        </value>
-        <value id="flt" label="Fault" symbol="alarm">
-          <binary ref="x" index="0" bit="7" />
-        </value>
+        <binary id="rdy" label="READY" symbol="off-alarm">
+          <normal ref="x" index="0" bit="0" />
+        </binary>
+        <binary id="stp" label="STOPPING" symbol="off-warn">
+          <normal ref="x" index="0" bit="3" />
+        </binary>
+        <binary id="pse" label="PAUSE" symbol="action">
+          <normal ref="x" index="0" bit="1" />
+        </binary>
+        <binary id="emg" label="ENERGENCY" symbol="alarm">
+          <normal ref="x" index="0" bit="2" />
+        </binary>
+        <integer id="exc" label="EXIT CODE" symbol="ecode" format="%04X">
+          <field ref="ecode" />
+        </integer>
+        <binary id="flt" label="Fault" symbol="alarm">
+          <normal ref="x" index="0" bit="7" />
+        </binary>
       </group>
       <group id="gt" caption="Trigger" column="4">
-        <value id="acp" label="CMD ENB" symbol="acp">
-          <binary label="Command Receive Enable" ref="x" index="32" bit="0" />
-        </value>
-        <value id="isu" label="ISSUED" symbol="nonzero">
-          <binary ref="c" index="2" bit="0" />
-          <binary ref="c" index="2" bit="8" />
-          <binary ref="c" index="2" bit="15" />
-        </value>
+        <binary id="acp" label="CMD ENB" symbol="acp">
+          <normal label="Command Receive Enable" ref="x" index="32" bit="0" />
+        </binary>
+        <binary id="isu" label="ISSUED" symbol="nonzero">
+          <normal ref="c" index="2" bit="0" />
+          <normal ref="c" index="2" bit="8" />
+          <normal ref="c" index="2" bit="15" />
+        </binary>
       </group>
       <group id="gins" caption="Instrument" column="2">
-        <value id="ist" label="ID" symbol="ist">
-          <int ref="x" index="23" />
-        </value>
-        <value id="ion" label="Loading" symbol="corn">
-          <binary ref="x" index="4" bit="8" />
-          <binary ref="x" index="4" bit="9" />
-          <binary ref="x" index="4" bit="10" />
-          <binary ref="x" index="4" bit="11" />
-        </value>
+        <integer id="ist" label="ID" symbol="ist">
+          <field ref="x" index="23" />
+        </integer>
+        <binary id="ion" label="Loading" symbol="corn">
+          <normal ref="x" index="4" bit="8" />
+          <normal ref="x" index="4" bit="9" />
+          <normal ref="x" index="4" bit="10" />
+          <normal ref="x" index="4" bit="11" />
+        </binary>
       </group>
       <group id="gact" caption="Motion Status" column="3">
-        <value id="run" label="RUNNING" symbol="action">
-          <binary ref="x" index="0" bit="4" />
-        </value>
-        <value id="cps" label="Current Tag" format="%02d">
-          <int ref="x" index="25" />
-        </value>
-        <value id="dps" label="Destination Tag" format="%02d">
-          <int ref="x" index="26" />
-        </value>
-        <value id="jak" label="JACKING" symbol="action">
-          <binary ref="x" index="0" bit="5" />
-        </value>
-        <value id="jlv" label="Jack Level" symbol="jlv">
-          <int ref="x" index="27" />
-        </value>
-        <value id="con" label="Corn" symbol="corn">
-          <binary ref="x" index="19" bit="5" />
-          <binary ref="x" index="19" bit="13" />
-          <binary ref="x" index="20" bit="5" />
-          <binary ref="x" index="20" bit="13" />
-        </value>
-        <value id="chg" label="CHARGING" symbol="action">
-          <binary ref="x" index="0" bit="6" />
-        </value>
-        <value id="vol" label="Battery(V)" symbol="bvl" format="%02.2f" formula="$#/100">
-          <float ref="x" index="22" />
-        </value>
+        <binary id="run" label="RUNNING" symbol="action">
+          <normal ref="x" index="0" bit="4" />
+        </binary>
+        <integer id="cps" label="Current Tag" format="%02d">
+          <field ref="x" index="25" />
+        </integer>
+        <integer id="dps" label="Destination Tag" format="%02d">
+          <field ref="x" index="26" />
+        </integer>
+        <binary id="jak" label="JACKING" symbol="action">
+          <normal ref="x" index="0" bit="5" />
+        </binary>
+        <integer id="jlv" label="Jack Level" symbol="jlv">
+          <field ref="x" index="27" />
+        </integer>
+        <binary id="con" label="Corn" symbol="corn">
+          <normal ref="x" index="19" bit="5" />
+          <normal ref="x" index="19" bit="13" />
+          <normal ref="x" index="20" bit="5" />
+          <normal ref="x" index="20" bit="13" />
+        </binary>
+        <binary id="chg" label="CHARGING" symbol="action">
+          <normal ref="x" index="0" bit="6" />
+        </binary>
+        <float id="vol" label="Battery(V)" symbol="bvl" format="%02.2f" formula="$#/100">
+          <field ref="x" index="22" />
+        </float>
       </group>
       <group id="gmot" caption="Running Motor Stat" column="2">
-        <value id="msr" label="Servo R" symbol="action">
-          <binary ref="x" index="0" bit="8" inv="true" />
-        </value>
-        <value id="mdr" label="D/A R" formula="-$#">
-          <float ref="x" index="7" />
-        </value>
-        <value id="msl" label="Servo L" symbol="action">
-          <binary ref="x" index="0" bit="9" inv="true" />
-        </value>
-        <value id="mdl" label="D/A L">
-          <float ref="x" index="8" />
-        </value>
+        <binary id="msr" label="Servo R" symbol="action">
+          <invert ref="x" index="0" bit="8" />
+        </binary>
+        <float id="mdr" label="D/A R" formula="-$#">
+          <field ref="x" index="7" />
+        </float>
+        <binary id="msl" label="Servo L" symbol="action">
+          <invert ref="x" index="0" bit="9" />
+        </binary>
+        <float id="mdl" label="D/A L">
+          <field ref="x" index="8" />
+        </float>
       </group>
       <group id="gjm" caption="Jacking Motor Stat" column="5">
         <repeat from="1" to="4">
-          <value id="js$_" label="SV $_" symbol="action">
-            <binary ref="x" index="0" bit="9+$_" inv="true" />
-          </value>
-          <value id="jh$_" label="H(mm) $_" formula="$#/100">
-            <float ref="x" index="8+2*$_" />
-          </value>
-          <value id="cn$_" label="Corn $_" symbol="con">
-            <binary ref="x" index="19+($_-1)/2" bit="13-($_%2)*8" />
-          </value>
-          <value id="ld$_" label="LD(Kgf) $_">
-            <int ref="x" index="$_+47" />
-          </value>
-          <value id="lc$_" label="LD(S) $_" symbol="load">
-            <binary ref="x" index="19+($_-1)/2" bit="8-($_%2)*8" />
-            <binary ref="x" index="19+($_-1)/2" bit="9-($_%2)*8" />
-            <binary ref="x" index="19+($_-1)/2" bit="10-($_%2)*8" />
-            <binary ref="x" index="19+($_-1)/2" bit="11-($_%2)*8" />
-            <binary ref="x" index="19+($_-1)/2" bit="12-($_%2)*8" />
-          </value>
+          <binary id="js$_" label="SV $_" symbol="action">
+            <invert ref="x" index="0" bit="9+$_" />
+          </binary>
+          <float id="jh$_" label="H(mm) $_" formula="$#/100">
+            <field ref="x" index="8+2*$_" />
+          </float>
+          <binary id="cn$_" label="Corn $_" symbol="con">
+            <normal ref="x" index="19+($_-1)/2" bit="13-($_%2)*8" />
+          </binary>
+          <integer id="ld$_" label="LD(Kgf) $_">
+            <field ref="x" index="$_+47" />
+          </integer>
+          <binary id="lc$_" label="LD(S) $_" symbol="load">
+            <normal ref="x" index="19+($_-1)/2" bit="8-($_%2)*8" />
+            <normal ref="x" index="19+($_-1)/2" bit="9-($_%2)*8" />
+            <normal ref="x" index="19+($_-1)/2" bit="10-($_%2)*8" />
+            <normal ref="x" index="19+($_-1)/2" bit="11-($_%2)*8" />
+            <normal ref="x" index="19+($_-1)/2" bit="12-($_%2)*8" />
+          </binary>
         </repeat>
       </group>
     </status>

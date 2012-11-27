@@ -9,7 +9,7 @@ module Frm
         fdb=Loc::Db.new(id)[:frm]
         host='localhost'
         if @opt['l'] or @opt['e']
-          par=@opt['l'] ? ['frmsim',fdb['site']] : []
+          par=@opt['l'] ? ['frmsim',fdb['site_id']] : []
           fint=Frm::Sv.new(fdb,par)
           fint=Frm::Cl.new(fdb,host) if @opt['f']
         elsif @opt['f'] or @opt['a']

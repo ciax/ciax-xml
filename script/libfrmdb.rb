@@ -10,7 +10,7 @@ module Frm
       super('fdb',id){|doc|
         hash={}
         hash.update(doc)
-        hash['type']=hash.delete('id')
+        hash['id']=hash.delete('id')
         cmd=hash[:cmdframe]={}
         rsp=hash[:rspframe]={:assign => {}}
         dc=doc.domain('cmdframe')

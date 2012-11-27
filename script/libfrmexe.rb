@@ -11,7 +11,7 @@ module Frm
       Msg.type?(fdb,Frm::Db)
       super()
       @extcmd=@cobj.add_ext(fdb,:cmdframe)
-      self['id']=fdb['site']
+      self['id']=fdb['site_id']
       @output=@field=Field::Var.new.ext_file(fdb).load
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}

@@ -26,7 +26,7 @@ module Mcr
         msg << "(async)" if self['async']
       when 'exec'
         msg << Msg.color("EXEC",13)
-        msg << ":#{self['cmd'].join(' ')}(#{self['site']})"
+        msg << ":#{self['cmd'].join(' ')}(#{self['site_id']})"
       end
       msg
     end
@@ -67,9 +67,9 @@ module Mcr
       if c=self['fault']
         msg << Msg.indent((self['depth']||0)+1)
         if c['upd']
-          msg << Msg.color("#{c['site']}:#{c['var']}",3)+" is not #{c['val']}"
+          msg << Msg.color("#{c['site_id']}:#{c['var']}",3)+" is not #{c['val']}"
         else
-          msg << Msg.color("#{c['site']}",3)+" is not updated"
+          msg << Msg.color("#{c['site_id']}",3)+" is not updated"
         end
       end
       msg

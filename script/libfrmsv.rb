@@ -17,7 +17,7 @@ module Frm
       @field.ext_rsp(@cobj)
       if Msg.type?(iocmd,Array).empty?
         @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
-        @io.ext_logging(fdb['site'],fdb['version'])
+        @io.ext_logging(fdb['site_id'],fdb['version'])
         # @field.ext_sqlog
       else
         @io=Stream.new(iocmd,fdb['wait'],1)

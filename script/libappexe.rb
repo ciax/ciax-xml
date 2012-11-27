@@ -12,7 +12,7 @@ module App
       @adb=Msg.type?(adb,Db)
       super()
       @extcmd=@cobj.add_ext(@adb,:command)
-      self['id']=@adb['site']
+      self['id']=@adb['site_id']
       @output=@stat=Status::Var.new.ext_file(@adb)
       @watch=Watch::Var.new.ext_file(@adb)
     end

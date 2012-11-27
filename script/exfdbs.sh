@@ -1,7 +1,7 @@
 #!/bin/bash
 . ~/lib/libdb.sh entity
 id2frm(){
-    frm=`~/lib/liblocdb.rb $1 app| grep 'frm_id'` || return 1
+    frm=`~/lib/liblocdb.rb $1 frm| grep id` || return 1
     echo $frm|cut -d: -f2|tr -d ' "'
 }
 getid(){

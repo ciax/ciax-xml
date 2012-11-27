@@ -15,7 +15,7 @@ module App
         if @opt['t']
           aint=App::Test.new(ldb[:app])
         else
-          @fint[id]=@fl[ldb[:frm]['site']]
+          @fint[id]=@fl[ldb[:frm]['site_id']]
           if @opt['a']
             if @opt['e'] or @opt['l'] or @opt['f']
               aint=App::Sv.new(ldb[:app],@fint[id])

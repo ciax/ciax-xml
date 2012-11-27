@@ -24,21 +24,24 @@ module App
     def upd
       @ads.each{|id,select|
         Rsp.msg(1){"STAT:GetStatus:[#{id}]"}
-        case select['type']
+        flds=select[:fields]
+        data=case select['type']
         when 'binary'
-          data=select[:fields].inject(0){|sum,e1|
-            (sum << 1)+binary(e1)
+          flds.inject(0){|sum,e|
+            (sum << 1)+binary(e)
           }
         when 'float'
-          data=select[:fields].inject(0){|sum,e1|
-            sum+float(e1)
+          flds.inject(0){|sum,e|
+            sum+float(e)
           }
         when 'integer'
-          data=select[:fields].inject(0){|sum,e1|
-            sum+int(e1)
+          flds.inject(0){|sum,e|
+            sum+int(e)
           }
         else
-          data=select[:fields].join('')
+          flds.inject(''){|sum,e|
+            sum+get_field(e)
+          }
         end
         begin
           if @fml.key?(id)
@@ -61,27 +64,6 @@ module App
     def get_field(e)
       fld=e['ref'] || Msg.abort("No field Key")
       @field.get(fld)||''
-    end
-
-    def get_val(fields)
-      num=0
-      str=''
-      fields.each{|e1| #element(split and concat)
-        fld=e1['ref'] || Msg.abort("No field Key")
-        data=@field.get(fld)||''
-        case e1['type']
-        when 'binary'
-          num <<= 1
-          num+=binary(e1,data)
-        when 'float'
-          num+=float(e1,data)
-        when 'int'
-          num+=int(e1,data)
-        else
-          str << data
-        end
-      }
-      str.empty? ? num : str
     end
 
     def binary(e1)

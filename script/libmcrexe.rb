@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 require "libint"
 require "libmcrdb"
+require "libmcrcmd"
+require "libapplist"
 
 module Mcr
   class Exe < Int::Exe
@@ -20,8 +22,6 @@ module Mcr
   end
 
   class Sv < Exe
-    require "libapplist"
-    require "libmcrcmd"
     extend Msg::Ver
     # @<< cobj,output,intcmd,int_proc,upd_proc*
     # @< mdb,extcmd,logline*
@@ -32,22 +32,24 @@ module Mcr
       @extcmd.ext_mcrcmd(@aint,@logline,dr)
     end
   end
+
+  class List < Int::List
+    # @< opt,share_proc*
+    def initialize(opt=nil)
+      @al=App::List.new(opt)
+      super{|id|
+        mdb=Db.new(id)
+        Sv.new(mdb,@al,@opt['t']).ext_shell
+      }
+    end
+  end
 end
 
 if __FILE__ == $0
-#  ENV['VER']='appsv'
-
-  opt=Msg::GetOpts.new("t")
-  id,*cmd=ARGV
-  ARGV.clear
+  opt=Msg::GetOpts.new('t')
   begin
-    aint=App::List.new
-    mdb=Mcr::Db.new(id) #ciax
-    mcr=Mcr::Sv.new(mdb,aint,opt['t'])
-    mcr.exe(cmd)
+    puts Mcr::List.new(opt)[ARGV.shift].shell
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")
-  rescue UserError
-    Msg.exit(3)
   end
 end

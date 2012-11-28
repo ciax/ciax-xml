@@ -7,13 +7,15 @@ require "libupdate"
 
 module Int
   class Exe < ExHash
+    # @ cobj,output,intcmd,upd_proc,int_proc*
+    # # exe,ext_client,ext_server,ext_shell
     attr_reader :int_proc
     def initialize
       @cobj=Command.new
       @output=''
       @intcmd=@cobj.add_domain('int',2)
-      @int_proc=Update.new # Proc for Interactive Operation
       @upd_proc=Update.new # Proc for Server Status Update
+      @int_proc=Update.new # Proc for Interactive Operation
     end
 
     # Sync only (Wait for other thread)
@@ -53,6 +55,10 @@ module Int
   # Shell has internal status for prompt
   module Shell
     extend Msg::Ver
+    # @< cobj,output,intcmd,upd_proc,int_proc*
+    # #< exe,ext_client,ext_server,ext_shell
+    # @ pconv,shcmd,prompt,lineconv
+    # # set_switch,shell
     def self.extended(obj)
       init_ver('Shell/%s',2,obj)
       Msg.type?(obj,Exe)
@@ -192,6 +198,7 @@ module Int
       @upd_proc.add{send('strobe')}
     end
 
+    private
     def send(str)
       @udp.send(str,0,@addr)
       Client.msg{"Send [#{str}]"}

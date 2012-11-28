@@ -50,6 +50,93 @@ module Int
       end
       self
     end
+
+    private
+    # Async for interactive interface
+    def int_exe(cmd)
+      @cobj.set(cmd).exe
+      self
+    end
+  end
+
+
+  module Server
+    extend Msg::Ver
+    def self.extended(obj)
+      init_ver('Server/%s',5,obj)
+      Msg.type?(obj,Exe)
+    end
+
+    # invoked once
+    # JSON expression of server stat will be sent.
+    def server(port)
+      Server.msg{"Init/Server(#{self['id']}):#{port}"}
+      Thread.new{
+        tc=Thread.current
+        tc[:name]="Server"
+        tc[:color]=9
+        Thread.pass
+        UDPSocket.open{ |udp|
+          udp.bind("0.0.0.0",port.to_i)
+          loop {
+            IO.select([udp])
+            line,addr=udp.recvfrom(4096)
+            line.chomp!
+            Server.msg{"Recv:#{line} is #{line.class}"}
+            sv_exe(line)
+            Server.msg{"Send:#{self['msg']}"}
+            @upd_proc.upd
+            udp.send(yield,0,addr[2],addr[1])
+          }
+        }
+      }
+      self
+    end
+
+    private
+    # For server
+    def sv_exe(line)
+      self['msg']='OK'
+      return if /^(strobe|stat)/ === line
+      int_exe(line.split(' '))
+      @int_proc.upd
+    rescue InvalidPAR
+      self['msg']=$!.to_s
+    rescue InvalidCMD
+      self['msg']="INVALID"
+    rescue RuntimeError
+      warn(self['msg']=$!.to_s)
+    end
+  end
+
+  module Client
+    extend Msg::Ver
+    def self.extended(obj)
+      init_ver("Client/%s",3,obj)
+      Msg.type?(obj,Exe)
+    end
+
+    def client(host,port)
+      host||='localhost'
+      udp=UDPSocket.open()
+      addr=Socket.pack_sockaddr_in(port.to_i,host)
+      Client.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
+      @cobj.def_proc.add{|item|
+        cl_exe(udp,addr,item.cmd.join(' '))
+      }
+      @upd_proc.add{cl_exe(udp,addr,'strobe')}
+    end
+
+    private
+    # For client
+    def cl_exe(udp,addr,str)
+      udp.send(str,0,addr)
+      Client.msg{"Send [#{str}]"}
+      input=udp.recv(1024)
+      Client.msg{"Recv #{input}"}
+      load(input) # ExHash#load -> Server Status
+      self
+    end
   end
 
   # Shell has internal status for prompt
@@ -86,6 +173,7 @@ module Int
       self
     end
 
+    # invoked many times
     # '^D' gives exit break
     # mode gives special break (loop returns mode)
     def shell
@@ -115,10 +203,11 @@ module Int
     end
 
     private
+    # For shell
     def sh_exe(line)
       line=@lineconv.call(line) if @lineconv
       self['msg']='OK'
-      @cobj.set(line.split(' ')).exe
+      int_exe(line.split(' '))
       @int_proc.upd
       puts self['msg']
     rescue InvalidCMD
@@ -130,82 +219,6 @@ module Int
     def compset(cmd)
       return cmd unless /\=/ === cmd[0]
       cmd.unshift('set')
-    end
-  end
-
-  module Server
-    extend Msg::Ver
-    def self.extended(obj)
-      init_ver('Server/%s',5,obj)
-      Msg.type?(obj,Exe)
-    end
-
-    # JSON expression of server stat will be sent.
-    def server(port)
-      Server.msg{"Init/Server(#{self['id']}):#{port}"}
-      Thread.new{
-        tc=Thread.current
-        tc[:name]="Server"
-        tc[:color]=9
-        Thread.pass
-        UDPSocket.open{ |udp|
-          udp.bind("0.0.0.0",port.to_i)
-          loop {
-            IO.select([udp])
-            line,addr=udp.recvfrom(4096)
-            line.chomp!
-            Server.msg{"Recv:#{line} is #{line.class}"}
-            sv_exe(line)
-            Server.msg{"Send:#{self['msg']}"}
-            @upd_proc.upd
-            udp.send(yield,0,addr[2],addr[1])
-          }
-        }
-      }
-      self
-    end
-
-    private
-    def sv_exe(line)
-      self['msg']='OK'
-      return if /^(strobe|stat)/ === line
-      @cobj.set(line.split(' ')).exe
-      @int_proc.upd
-    rescue InvalidPAR
-      self['msg']=$!.to_s
-    rescue InvalidCMD
-      self['msg']="INVALID"
-    rescue RuntimeError
-      warn(self['msg']=$!.to_s)
-    end
-  end
-
-  module Client
-    extend Msg::Ver
-    def self.extended(obj)
-      init_ver("Client/%s",3,obj)
-      Msg.type?(obj,Exe)
-    end
-
-    def client(host,port)
-      @udp=UDPSocket.open()
-      host||='localhost'
-      @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      Client.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
-      @cobj.def_proc.add{|item|
-        send(item.cmd.join(' '))
-      }
-      @upd_proc.add{send('strobe')}
-    end
-
-    private
-    def send(str)
-      @udp.send(str,0,@addr)
-      Client.msg{"Send [#{str}]"}
-      input=@udp.recv(1024)
-      Client.msg{"Recv #{input}"}
-      load(input) # ExHash#load -> Server Status
-      self
     end
   end
 

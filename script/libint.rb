@@ -6,11 +6,13 @@ require "libcmdext"
 require "libupdate"
 
 module Int
+  # @ cobj,output,intcmd,upd_proc,int_proc*
+  # # exe,ext_client,ext_shell
   class Exe < ExHash
-    # @ cobj,output,intcmd,upd_proc,int_proc*
-    # # exe,ext_client,ext_server,ext_shell
+    extend Msg::Ver
     attr_reader :int_proc
     def initialize
+      Exe.init_ver('IntExe',2)
       @cobj=Command.new
       @output=''
       @intcmd=@cobj.add_domain('int',2)
@@ -24,20 +26,37 @@ module Int
       self
     end
 
+    # invoked once
+    # JSON expression of server stat will be sent.
+    def server(port)
+      Exe.msg{"Init/Server(#{self['id']}):#{port}"}
+      Thread.new{
+        tc=Thread.current
+        tc[:name]="Server"
+        tc[:color]=9
+        Thread.pass
+        UDPSocket.open{ |udp|
+          udp.bind("0.0.0.0",port.to_i)
+          loop {
+            IO.select([udp])
+            line,addr=udp.recvfrom(4096)
+            line.chomp!
+            Exe.msg{"Recv:#{line} is #{line.class}"}
+            sv_exe(line)
+            Exe.msg{"Send:#{self['msg']}"}
+            @upd_proc.upd
+            udp.send(yield,0,addr[2],addr[1])
+          }
+        }
+      }
+      self
+    end
+
     def ext_client(host,port)
       if is_a? Client
         Msg.warn("Multiple Initialize for Client")
       else
         extend(Client).client(host,port)
-      end
-      self
-    end
-
-    def ext_server(port)
-      if is_a? Server
-        Msg.warn("Multiple Initialize for Server")
-      else
-        extend(Server).server(port){to_j}
       end
       self
     end
@@ -57,43 +76,7 @@ module Int
       @cobj.set(cmd).exe
       self
     end
-  end
 
-
-  module Server
-    extend Msg::Ver
-    def self.extended(obj)
-      init_ver('Server/%s',5,obj)
-      Msg.type?(obj,Exe)
-    end
-
-    # invoked once
-    # JSON expression of server stat will be sent.
-    def server(port)
-      Server.msg{"Init/Server(#{self['id']}):#{port}"}
-      Thread.new{
-        tc=Thread.current
-        tc[:name]="Server"
-        tc[:color]=9
-        Thread.pass
-        UDPSocket.open{ |udp|
-          udp.bind("0.0.0.0",port.to_i)
-          loop {
-            IO.select([udp])
-            line,addr=udp.recvfrom(4096)
-            line.chomp!
-            Server.msg{"Recv:#{line} is #{line.class}"}
-            sv_exe(line)
-            Server.msg{"Send:#{self['msg']}"}
-            @upd_proc.upd
-            udp.send(yield,0,addr[2],addr[1])
-          }
-        }
-      }
-      self
-    end
-
-    private
     # For server
     def sv_exe(line)
       self['msg']='OK'
@@ -143,7 +126,7 @@ module Int
   module Shell
     extend Msg::Ver
     # @< cobj,output,intcmd,upd_proc,int_proc*
-    # #< exe,ext_client,ext_server,ext_shell
+    # #< exe,ext_client,ext_shell
     # @ pconv,shcmd,prompt,lineconv
     # # set_switch,shell
     def self.extended(obj)

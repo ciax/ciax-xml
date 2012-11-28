@@ -62,7 +62,7 @@ module App
         self['na'] = !@buf.alive?
       }
       auto_update
-      ext_server(@adb['port'])
+      server(@adb['port']){to_j}
     end
 
     def auto_update
@@ -79,7 +79,7 @@ module App
           rescue InvalidID
             Msg.warn($!)
           end
-          Int::Server.msg{"Auto Update(#{@stat.get('time')})"}
+          Int::Exe.msg{"Auto Update(#{@stat.get('time')})"}
         sleep int
         }
       }

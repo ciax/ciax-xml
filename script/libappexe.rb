@@ -67,7 +67,7 @@ module App
       host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(host).load
       @watch.ext_url(host).load
-      ext_client(host,adb['port'])
+      client(host,adb['port'])
       @upd_proc.add{
         @stat.load
         @watch.load

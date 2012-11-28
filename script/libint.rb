@@ -7,12 +7,11 @@ require "libupdate"
 
 module Int
   # @ cobj,output,intcmd,upd_proc,int_proc*
-  # # exe,ext_client,ext_shell
   class Exe < ExHash
     extend Msg::Ver
     attr_reader :int_proc
     def initialize
-      Exe.init_ver('IntExe',2)
+      Exe.init_ver(self,2)
       @cobj=Command.new
       @output=''
       @intcmd=@cobj.add_domain('int',2)
@@ -52,13 +51,15 @@ module Int
       self
     end
 
-    def ext_client(host,port)
-      if is_a? Client
-        Msg.warn("Multiple Initialize for Client")
-      else
-        extend(Client).client(host,port)
-      end
-      self
+    def client(host,port)
+      host||='localhost'
+      udp=UDPSocket.open()
+      addr=Socket.pack_sockaddr_in(port.to_i,host)
+      Exe.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
+      @cobj.def_proc.add{|item|
+        cl_exe(udp,addr,item.cmd.join(' '))
+      }
+      @upd_proc.add{cl_exe(udp,addr,'strobe')}
     end
 
     def ext_shell(pconv={},&p)
@@ -90,33 +91,13 @@ module Int
     rescue RuntimeError
       warn(self['msg']=$!.to_s)
     end
-  end
 
-  module Client
-    extend Msg::Ver
-    def self.extended(obj)
-      init_ver("Client/%s",3,obj)
-      Msg.type?(obj,Exe)
-    end
-
-    def client(host,port)
-      host||='localhost'
-      udp=UDPSocket.open()
-      addr=Socket.pack_sockaddr_in(port.to_i,host)
-      Client.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
-      @cobj.def_proc.add{|item|
-        cl_exe(udp,addr,item.cmd.join(' '))
-      }
-      @upd_proc.add{cl_exe(udp,addr,'strobe')}
-    end
-
-    private
     # For client
     def cl_exe(udp,addr,str)
       udp.send(str,0,addr)
-      Client.msg{"Send [#{str}]"}
+      Exe.msg{"Send [#{str}]"}
       input=udp.recv(1024)
-      Client.msg{"Recv #{input}"}
+      Exe.msg{"Recv #{input}"}
       load(input) # ExHash#load -> Server Status
       self
     end
@@ -126,9 +107,7 @@ module Int
   module Shell
     extend Msg::Ver
     # @< cobj,output,intcmd,upd_proc,int_proc*
-    # #< exe,ext_client,ext_shell
     # @ pconv,shcmd,prompt,lineconv
-    # # set_switch,shell
     def self.extended(obj)
       init_ver('Shell/%s',2,obj)
       Msg.type?(obj,Exe)

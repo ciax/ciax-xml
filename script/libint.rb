@@ -75,6 +75,7 @@ module Int
     # Async for interactive interface
     def int_exe(cmd)
       @cobj.set(cmd).exe
+      @int_proc.upd
       self
     end
 
@@ -83,7 +84,6 @@ module Int
       self['msg']='OK'
       return if /^(strobe|stat)/ === line
       int_exe(line.split(' '))
-      @int_proc.upd
     rescue InvalidPAR
       self['msg']=$!.to_s
     rescue InvalidCMD
@@ -107,7 +107,7 @@ module Int
   module Shell
     extend Msg::Ver
     # @< cobj,output,intcmd,upd_proc,int_proc*
-    # @ pconv,shcmd,prompt,lineconv
+    # @ pconv,shcmd,lineconv
     def self.extended(obj)
       init_ver('Shell/%s',2,obj)
       Msg.type?(obj,Exe)
@@ -117,14 +117,12 @@ module Int
       #prompt convert table (j2s)
       @pconv=Msg.type?(pconv,Hash)
       @shcmd=@cobj.add_domain('sh',5)
-      @upd_proc.add{
-        @prompt=keys.map{|k|
-          if k != 'msg' and v=self[k]
-            @pconv[k]||v
-          end
-        }.compact.join('')+'>'
-      }.upd
       @lineconv=p if p
+      Readline.completion_proc=proc{|word|
+        @cobj.keys.grep(/^#{word}/)
+      }
+      grp=@shcmd.add_group('sh',"Shell Command")
+      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
       Shell.msg{"Init/Shell(#{self['id']})"}
       self
     end
@@ -139,13 +137,8 @@ module Int
     # '^D' gives exit break
     # mode gives special break (loop returns mode)
     def shell
-      Readline.completion_proc=proc{|word|
-        @cobj.keys.grep(/^#{word}/)
-      }
-      grp=@shcmd.add_group('sh',"Shell Command")
-      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
       begin
-        while line=Readline.readline(@prompt,true)
+        while line=Readline.readline(prompt,true)
           case line
           when /^q/
             break
@@ -170,7 +163,6 @@ module Int
       line=@lineconv.call(line) if @lineconv
       self['msg']='OK'
       int_exe(line.split(' '))
-      @int_proc.upd
       puts self['msg']
     rescue InvalidCMD
       puts $!.to_s
@@ -178,9 +170,10 @@ module Int
       puts $!.to_s
     end
 
-    def compset(cmd)
-      return cmd unless /\=/ === cmd[0]
-      cmd.unshift('set')
+    def prompt
+      keys.map{|k|
+        @pconv[k]||self[k] if k != 'msg' and self[k]
+      }.compact.join('')+'>'
     end
   end
 

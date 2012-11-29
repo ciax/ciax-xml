@@ -27,7 +27,7 @@ module Mcr
       @extcmd.ext_mcrcmd(@aint,opt)
       @upd_proc.add{
         if c=@cobj.current
-          @output=c.logline[:line]
+          @output=opt['v'] ? c.logline : c.logline[:line]
         end
       }
     end
@@ -46,7 +46,7 @@ module Mcr
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('t')
+  opt=Msg::GetOpts.new('tv')
   begin
     puts Mcr::List.new(opt)[ARGV.shift].shell
   rescue InvalidCMD

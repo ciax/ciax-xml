@@ -29,7 +29,7 @@ module Mcr
         current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
         @logline[:line]=[current.extend(Prt)]
         ver(current)
-        macro
+        macro(@logline)
         super
       }
       self
@@ -41,11 +41,11 @@ module Mcr
     end
 
     # Should be public for recursive call
-    def macro(depth=1)
+    def macro(logline,depth=1)
       self[:msg]='(run)'
       @select.each{|e1|
         current={'depth'=>depth}.update(e1)
-        @logline[:line].push(current.extend(Prt))
+        logline[:line].push(current.extend(Prt))
         case e1['type']
         when 'goal'
           self[:msg]='(done)' unless fault?(current)
@@ -65,12 +65,13 @@ module Mcr
           @aint[e1['site']].exe(e1['cmd'])
         when 'mcr'
           ver(current)
-          @index.dup.set(e1['mcr']).macro(depth+1)
+          sub=@index.dup.set(e1['mcr']).macro(logline,depth+1)
         end
         current.delete('stat')
-        current.delete('tid')
+        current['elapsed']=elapsed(logline[:tid])
         self[:msg] != '(run)' && live?(depth) && break
       }
+      self
     end
 
     private
@@ -120,7 +121,6 @@ module Mcr
           flt['upd'] && comp(res,flt['val'],flt['inv'])
         end
       } && current['fault']=flt
-      current['elapsed']=elapsed(@logline[:tid])
       res
     end
 

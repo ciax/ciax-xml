@@ -47,7 +47,7 @@ module Mcr
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('tv')
+  opt=Msg::GetOpts.new('tvi')
   begin
     puts Mcr::List.new(opt)[ARGV.shift].shell
   rescue InvalidCMD

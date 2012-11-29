@@ -30,6 +30,7 @@ module Mcr
         @logline[:line]=[current.extend(Prt)]
         ver(current)
         macro(@logline)
+        self[:msg]='(done)'
         super
       }
       self
@@ -60,7 +61,7 @@ module Mcr
         when 'exec'
           ver(current)
           self[:msg]="(query)"
-          #sleep
+          sleep unless @opt['n']
           self[:msg]='(run)'
           @aint[e1['site']].exe(e1['cmd'])
         when 'mcr'
@@ -162,9 +163,10 @@ if __FILE__ == $0
   require "libmcrdb"
 #  ENV['VER']='appsv'
 
-  opt=Msg::GetOpts.new("tv")
+  opt=Msg::GetOpts.new("tn")
   id,*cmd=ARGV
   ARGV.clear
+  opt['v']=true
   begin
     app=App::List.new
     mdb=Mcr::Db.new(id) #ciax

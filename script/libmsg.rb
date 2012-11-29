@@ -133,6 +133,7 @@ module Msg
       optdb['l']='simulation mode'
       optdb['t']='test mode'
       optdb['h']='[host] remote url'
+      optdb['n']='nonstop mode'
       optdb['r']='raw display mode'
       optdb['v']='view display mode'
       optdb['d']='debug mode'

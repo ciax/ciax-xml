@@ -28,6 +28,7 @@ module Mcr
       @upd_proc.add{
         if c=@cobj.current
           @output=opt['v'] ? c.logline : c.logline[:line]
+          self['stat']=c[:msg]
         end
       }
     end

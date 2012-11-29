@@ -58,7 +58,7 @@ module Mcr
       else
         msg=''
       end
-      msg
+      msg+"\n"
     end
 
     private

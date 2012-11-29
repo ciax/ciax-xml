@@ -9,7 +9,7 @@ module Mcr
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
     # @ aint,dryrun
-    attr_reader :log
+    attr_reader :logline
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
@@ -18,16 +18,16 @@ module Mcr
     def init(aint,dr=nil)
       @aint=Msg.type?(aint,App::List)
       @dryrun=dr
-      @log=ExHash.new
+      @logline=ExHash.new
       self
     end
 
     def exe
       @tid=Thread.new{
-        @log=ExHash.new
-        @log[:tid]=Time.new.to_f
+        @logline=ExHash.new
+        @logline[:tid]=Time.new.to_f
         current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
-        @log[:line]=[current.extend(Prt)]
+        @logline[:line]=[current.extend(Prt)]
         puts current
         macro
         super
@@ -45,7 +45,7 @@ module Mcr
       self[:msg]='(run)'
       @select.each{|e1|
         current={'depth'=>depth}.update(e1)
-        @log[:line].push(current.extend(Prt))
+        @logline[:line].push(current.extend(Prt))
         case e1['type']
         when 'goal'
           self[:msg]='(done)' unless fault?(current)
@@ -114,7 +114,7 @@ module Mcr
           flt['upd'] && comp(res,flt['val'],flt['inv'])
         end
       } && current['fault']=flt
-      current['elapsed']=elapsed(@log[:tid])
+      current['elapsed']=elapsed(@logline[:tid])
       res
     end
 
@@ -164,7 +164,7 @@ if __FILE__ == $0
     mdb=Mcr::Db.new(id) #ciax
     mcobj=Command.new
     mcobj.add_ext(mdb,:macro).ext_mcrcmd(app,opt['t'])
-    puts mcobj.set(cmd).exe.join.log
+    puts mcobj.set(cmd).exe.join.logline
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")
   rescue UserError

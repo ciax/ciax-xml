@@ -8,16 +8,16 @@ module Mcr
     extend Msg::Ver
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
-    # @ aint,dryrun
+    # @ aint,opt
     attr_reader :logline
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
     end
 
-    def init(aint,dr=nil)
+    def init(aint,opt={})
       @aint=Msg.type?(aint,App::List)
-      @dryrun=dr
+      @opt=Msg.type?(opt,Hash)
       @logline=ExHash.new
       self
     end
@@ -28,7 +28,7 @@ module Mcr
         @logline[:tid]=Time.new.to_f
         current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
         @logline[:line]=[current.extend(Prt)]
-        puts current
+#        puts current
         macro
         super
       }
@@ -49,22 +49,22 @@ module Mcr
         case e1['type']
         when 'goal'
           self[:msg]='(done)' unless fault?(current)
-          puts current
+          ver(current)
         when 'check'
           self[:msg]="(error)" if fault?(current)
-          puts current
+          ver(current)
         when 'wait'
-          print current.title
-          waiting(current){print '.'}
-          puts current.result
+          ver(current.title)
+          waiting(current){ver('.')}
+          ver(current.result)
         when 'exec'
-          puts current
+          ver(current)
           self[:msg]="(query)"
           #sleep
           self[:msg]='(run)'
           @aint[e1['site']].exe(e1['cmd'])
         when 'mcr'
-          puts current
+          ver(current)
           @index.dup.set(e1['mcr']).macro(depth+1)
         end
         current.delete('stat')
@@ -77,9 +77,14 @@ module Mcr
       "%.3f" % (Time.now.to_f-base)
     end
 
+    def ver(str)
+      print str if @opt['v']
+    end
+
     def live?(depth)
-      if @dryrun
-        Msg.hidden('Dryrun:Proceed',depth)
+      if @opt['t']
+        Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
+        false
       else
         true
       end
@@ -91,7 +96,7 @@ module Mcr
       if current['retry'].to_i.times{|n|
           current['retry']=n
           brk=fault?(current)
-          break if @dryrun && n > 4 || brk
+          break if @opt['t'] && n > 4 || brk
           sleep 1
           yield
         }
@@ -156,14 +161,14 @@ if __FILE__ == $0
   require "libmcrdb"
 #  ENV['VER']='appsv'
 
-  opt=Msg::GetOpts.new("t")
+  opt=Msg::GetOpts.new("tv")
   id,*cmd=ARGV
   ARGV.clear
   begin
     app=App::List.new
     mdb=Mcr::Db.new(id) #ciax
     mcobj=Command.new
-    mcobj.add_ext(mdb,:macro).ext_mcrcmd(app,opt['t'])
+    mcobj.add_ext(mdb,:macro).ext_mcrcmd(app,opt)
     puts mcobj.set(cmd).exe.join.logline
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")

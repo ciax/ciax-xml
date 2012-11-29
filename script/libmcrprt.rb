@@ -45,15 +45,13 @@ module Mcr
           msg << Msg.color("OK",2)
         end
       when 'wait'
-        msg=' -> '
+        ret=self['retry'].to_i
+        msg='*'*(ret/10)+'.'*(ret % 10)
         if self['timeout']
-          msg << Msg.color("Timeout(#{self['retry']})",1)+"\n"
+          msg << ' -> '+Msg.color("Timeout(#{self['retry']})",1)+"\n"
           msg << getcond
-        elsif self['fault']
-          ret=self['retry'].to_i
-          msg << '*'*(ret/10)+'.'*(ret % 10)
-        else
-          msg << Msg.color("OK",2)
+        elsif !key?('stat')
+          msg << ' -> '+Msg.color("OK",2)
         end
       else
         msg=''

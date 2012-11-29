@@ -40,7 +40,7 @@ module Mcr
       self
     end
 
-    private
+    # Should be public for recursive call
     def macro(depth=1)
       self[:msg]='(run)'
       @select.each{|e1|
@@ -73,6 +73,7 @@ module Mcr
       }
     end
 
+    private
     def elapsed(base)
       "%.3f" % (Time.now.to_f-base)
     end

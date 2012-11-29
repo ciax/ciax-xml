@@ -28,7 +28,7 @@ module Mcr
         @logline[:tid]=Time.new.to_f
         current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
         @logline[:line]=[current.extend(Prt)]
-#        puts current
+        ver(current)
         macro
         super
       }

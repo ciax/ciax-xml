@@ -21,13 +21,13 @@ module Mcr
     # @<< (cobj),(output),(intcmd),(int_proc),(upd_proc*)
     # @< (mdb),extcmd
     # @ dryrun,aint
-    def initialize(mdb,aint,dr=nil)
+    def initialize(mdb,aint,opt={})
       super(mdb)
       @aint=Msg.type?(aint,App::List)
-      @extcmd.ext_mcrcmd(@aint,dr)
+      @extcmd.ext_mcrcmd(@aint,opt)
       @upd_proc.add{
         if c=@cobj.current
-          @output=c.logline
+          @output=c.logline[:line]
         end
       }
     end
@@ -39,7 +39,7 @@ module Mcr
       @al=App::List.new(opt)
       super{|id|
         mdb=Db.new(id)
-        Sv.new(mdb,@al,@opt['t']).ext_shell
+        Sv.new(mdb,@al,opt).ext_shell
       }
     end
   end

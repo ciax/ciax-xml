@@ -6,30 +6,30 @@ require "libapplist"
 
 module Mcr
   class Exe < Int::Exe
-    # @< cobj,(output),(intcmd),(int_proc),(upd_proc*)
-    # @ mdb,extcmd,logline*
-    attr_reader :logline
+    # @< cobj,output,(intcmd),(int_proc),upd_proc*
+    # @ mdb,extcmd
     def initialize(mdb)
       @mdb=Msg.type?(mdb,Mcr::Db)
       super()
       self['id']=@mdb['id']
       @extcmd=@cobj.add_ext(@mdb,:macro)
-      @logline=ExHash.new
-      @upd_proc.add{
-        @output=@logline
-      }
     end
   end
 
   class Sv < Exe
     extend Msg::Ver
-    # @<< cobj,output,intcmd,int_proc,upd_proc*
-    # @< mdb,extcmd,logline*
+    # @<< (cobj),(output),(intcmd),(int_proc),(upd_proc*)
+    # @< (mdb),extcmd
     # @ dryrun,aint
     def initialize(mdb,aint,dr=nil)
       super(mdb)
       @aint=Msg.type?(aint,App::List)
-      @extcmd.ext_mcrcmd(@aint,@logline,dr)
+      @extcmd.ext_mcrcmd(@aint,dr)
+      @upd_proc.add{
+        if c=@cobj.current
+          @output=c.logline
+        end
+      }
     end
   end
 

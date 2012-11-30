@@ -53,7 +53,7 @@ class Command
       Msg.type?(obj,Command::Item)
     end
 
-    def init(cdb)
+    def ext_item(cdb)
       cdb.each{|k,v|
         if a=v[@id]
           self[k]=a
@@ -115,7 +115,7 @@ class Command
   class Item
     def ext_item(cdb)
       extend ExtItem
-      init(cdb)
+      ext_item(cdb)
       self
     end
   end

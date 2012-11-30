@@ -47,13 +47,13 @@ class Var < ExHash
   public
   def ext_file(db)
     extend Load
-    init(db)
+    ext_file(db)
     self
   end
 
   def ext_url(host=nil)
     extend Url
-    init(host)
+    ext_url(host)
     self
   end
 
@@ -71,7 +71,7 @@ class Var < ExHash
       Msg.type?(obj,Var)
     end
 
-    def init(db)
+    def ext_file(db)
       @db=Msg.type?(db,Db)
       self['id']=db['site_id']||Msg.cfg_err("No SITE ID")
       @base=self['type']+'_'+self['id']+'.json'
@@ -122,7 +122,7 @@ class Var < ExHash
       Msg.type?(obj,Load)
     end
 
-    def init(host)
+    def ext_url(host)
       host||='localhost'
       @prefix="http://"+host
       self

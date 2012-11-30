@@ -54,7 +54,7 @@ module Watch
     end
 
     def ext_conv(adb,stat)
-      extend(Conv).init(adb,stat)
+      extend(Conv).ext_conv(adb,stat)
     end
   end
 
@@ -66,7 +66,7 @@ module Watch
       Msg.type?(obj,Var)
     end
 
-    def init(adb,stat)
+    def ext_conv(adb,stat)
       @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
       @val=Msg.type?(stat,Status::Var)['val']
       self['period']=@wdb['period'].to_i if @wdb.key?('period')

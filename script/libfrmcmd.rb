@@ -11,7 +11,7 @@ module Frm
       Cmd.msg{"Extending Command by Frm::Cmd"}
     end
 
-    def init(field,db)
+    def ext_frmcmd(field,db)
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
@@ -66,7 +66,7 @@ end
 class Command::Domain
   def ext_frmcmd(field)
     values.each{|item|
-      item.extend(Frm::Cmd).init(field,@db)
+      item.extend(Frm::Cmd).ext_frmcmd(field,@db)
     }
     self
   end

@@ -18,7 +18,7 @@ module Frm
       Msg.type?(obj,Field::Var,Var::Load)
     end
 
-    def init(cobj)
+    def ext_rsp(cobj)
       @cobj=Msg.type?(cobj,Command)
       self['ver']=@db['version'].to_i
       rsp=@db.deep_copy[:rspframe]
@@ -146,7 +146,7 @@ end
 
 class Field::Var
   def ext_rsp(cobj)
-    extend(Frm::Rsp).init(cobj)
+    extend(Frm::Rsp).ext_rsp(cobj)
   end
 end
 

@@ -14,7 +14,7 @@ module Mcr
       Msg.type?(obj,Command::ExtItem)
     end
 
-    def init(aint,logs,opt={})
+    def ext_mcrcmd(aint,logs,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
       @logs=Msg.type?(logs,Array)
@@ -146,7 +146,7 @@ end
 class Command::ExtDom
   def ext_mcrcmd(aint,logs,opt={})
     values.each{|item|
-      item.extend(Mcr::Cmd).init(aint,logs,opt)
+      item.extend(Mcr::Cmd).ext_mcrcmd(aint,logs,opt)
     }
     self
   end

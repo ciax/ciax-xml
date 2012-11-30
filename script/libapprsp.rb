@@ -12,7 +12,7 @@ module App
       Msg.type?(obj,Status::Var,Var::Load)
     end
 
-    def init(field)
+    def ext_rsp(field)
       @field=Msg.type?(field,Field::Var)
       @ads=@db[:status][:select]
       @fmt=@db[:status][:format]||{}
@@ -105,7 +105,7 @@ end
 
 class Status::Var
   def ext_rsp(field)
-    extend(App::Rsp).init(field)
+    extend(App::Rsp).ext_rsp(field)
   end
 end
 

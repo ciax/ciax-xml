@@ -66,7 +66,7 @@ module Int
       if is_a? Shell
         Msg.warn("Multiple Initialize for Shell")
       else
-        extend(Shell).init(pconv,&p)
+        extend(Shell).ext_shell(pconv,&p)
       end
       self
     end
@@ -114,7 +114,7 @@ module Int
       Msg.type?(obj,Exe)
     end
 
-    def init(pconv={},&p)
+    def ext_shell(pconv={},&p)
       #prompt convert table (j2s)
       @pconv=Msg.type?(pconv,Hash)
       @shdom=@cobj.add_domain('sh',5)

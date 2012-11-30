@@ -9,7 +9,7 @@ module Ins
       Msg.type?(obj,Int::Shell)
     end
 
-    def init(id)
+    def ext_ins(id)
       @adb.ext_ins(id)
       cdb=@adb[:command]
       @extdom.add_db(cdb)
@@ -28,6 +28,6 @@ end
 
 class App::Exe
   def ext_ins(id)
-    extend(Ins::Sh).init(id)
+    extend(Ins::Sh).ext_ins(id)
   end
 end

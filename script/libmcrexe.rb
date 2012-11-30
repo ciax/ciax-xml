@@ -28,7 +28,7 @@ module Mcr
       @upd_proc.add{
         if c=@cobj.current
           @output=opt['v'] ? logs.last : logs.last[:line]
-          self['stat']=c[:msg]
+          self['stat']=c[:stat]
         end
       }
     end
@@ -53,7 +53,7 @@ module Mcr
         item=grp.add_item('y','yes')
         item.init_proc{|i|
           lt=@logs.last[:thread]
-          lt.run if lt.alive?
+          lt.wakeup if lt.alive?
         }
       }
       super

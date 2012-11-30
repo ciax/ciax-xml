@@ -28,7 +28,7 @@ module Mcr
         record[:line]=[current.extend(Prt)]
         ver(current)
         macro(record)
-        self[:msg]='(done)'
+        self[:stat]='(done)'
         super
       }
       self
@@ -36,16 +36,16 @@ module Mcr
 
     # Should be public for recursive call
     def macro(record,depth=1)
-      self[:msg]='(run)'
+      self[:stat]='(run)'
       @select.each{|e1|
         current={'depth'=>depth}.update(e1)
         record[:line].push(current.extend(Prt))
         case e1['type']
         when 'goal'
-          self[:msg]='(done)' unless fault?(current)
+          self[:stat]='(done)' unless fault?(current)
           ver(current)
         when 'check'
-          self[:msg]="(error)" if fault?(current)
+          self[:stat]="(error)" if fault?(current)
           ver(current)
         when 'wait'
           ver(current.title)
@@ -53,9 +53,9 @@ module Mcr
           ver(current.result)
         when 'exec'
           ver(current)
-          self[:msg]="(query)"
+          self[:stat]="(query)"
           sleep unless @opt['n']
-          self[:msg]='(run)'
+          self[:stat]='(run)'
           @aint[e1['site']].exe(e1['cmd'])
         when 'mcr'
           ver(current)
@@ -63,7 +63,7 @@ module Mcr
         end
         current.delete('stat')
         current['elapsed']=elapsed(record[:time])
-        self[:msg] != '(run)' && live?(depth) && break
+        self[:stat] != '(run)' && live?(depth) && break
       }
       self
     end
@@ -87,7 +87,7 @@ module Mcr
     end
 
     def waiting(current)
-      self[:msg]="(wait)"
+      self[:stat]="(wait)"
       #gives number or nil(if break)
       if current['retry'].to_i.times{|n|
           current['retry']=n
@@ -97,10 +97,10 @@ module Mcr
           yield
         }
         current['timeout']=true
-        self[:msg]='(timeout)'
+        self[:stat]='(timeout)'
       else
         current.delete('fault')
-        self[:msg]='(run)'
+        self[:stat]='(run)'
       end
     end
 

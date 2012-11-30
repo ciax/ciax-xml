@@ -50,7 +50,7 @@ else
   field.ext_file(fdb)
   ver=fdb['version']
   cobj=Command.new
-  cobj.add_ext(fdb,:cmdframe)
+  cobj.add_extdom(fdb,:cmdframe)
   field.ext_rsp(cobj)
   field.extend(SqLog::Var)
   if opt['i'] # Initial

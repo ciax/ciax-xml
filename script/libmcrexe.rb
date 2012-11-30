@@ -6,25 +6,25 @@ require "libapplist"
 
 module Mcr
   class Exe < Int::Exe
-    # @< cobj,output,(intcmd),(int_proc),upd_proc*
-    # @ mdb,extcmd
+    # @< cobj,output,(intdom),(int_proc),upd_proc*
+    # @ mdb,extdom
     def initialize(mdb)
       @mdb=Msg.type?(mdb,Mcr::Db)
       super()
       self['id']=@mdb['id']
-      @extcmd=@cobj.add_ext(@mdb,:macro)
+      @extdom=@cobj.add_extdom(@mdb,:macro)
     end
   end
 
   class Sv < Exe
     extend Msg::Ver
-    # @<< (cobj),(output),(intcmd),(int_proc),(upd_proc*)
-    # @< (mdb),extcmd
+    # @<< (cobj),(output),(intdom),(int_proc),(upd_proc*)
+    # @< (mdb),extdom
     # @ dryrun,aint
     def initialize(mdb,aint,logs,opt={})
       super(mdb)
       @aint=Msg.type?(aint,App::List)
-      @extcmd.ext_mcrcmd(@aint,logs,opt)
+      @extdom.ext_mcrcmd(@aint,logs,opt)
       @upd_proc.add{
         if c=@cobj.current
           @output=opt['v'] ? logs.last : logs.last[:line]
@@ -49,7 +49,7 @@ module Mcr
     def shell(id)
       @share_proc.add{|int|
         int.ext_shell
-        grp=int.shcmd.add_group('con','Control')
+        grp=int.shdom.add_group('con','Control')
         item=grp.add_item('y','yes')
         item.init_proc{|i|
           lt=@logs.last[:thread]

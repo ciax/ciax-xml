@@ -9,8 +9,8 @@ require "libsqlog"
 require "thread"
 
 module App
-  # @<< cobj,output,intcmd,int_proc,upd_proc*
-  # @< adb,extcmd,output,watch,stat*
+  # @<< cobj,output,intdom,int_proc,upd_proc*
+  # @< adb,extdom,output,watch,stat*
   # @ fint,buf,tid
   class Sv < Exe
     extend Msg::Ver
@@ -26,7 +26,7 @@ module App
       @buf=Buffer.new(self)
       @buf.proc_send{@cobj.current.get}
       @buf.proc_recv{|fcmd| @fint.exe(fcmd)}
-      @extcmd.ext_appcmd.init_proc{|item|
+      @extdom.ext_appcmd.init_proc{|item|
         @watch.block?(item.cmd)
         @buf.send(1)
         Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
@@ -37,7 +37,7 @@ module App
         @cobj.set(cmd)
         @buf.send(p)
       }
-      gint=@intcmd.add_group('int',"Internal Command")
+      gint=@intdom.add_group('int',"Internal Command")
       gint.add_item('interrupt').init_proc{
         int=@watch.interrupt
         Sv.msg{"#{self['id']}/Interrupt:#{int}"}

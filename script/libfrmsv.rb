@@ -8,8 +8,8 @@ require "libfrmcmd"
 
 module Frm
   class Sv < Exe
-    # @<< cobj,(output),(intcmd),(int_proc),(upd_proc*)
-    # @< extcmd,field*
+    # @<< cobj,(output),(intdom),(int_proc),(upd_proc*)
+    # @< extdom,field*
     # @ io
     def initialize(fdb,iocmd=[])
       super(fdb)
@@ -22,7 +22,7 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @extcmd.ext_frmcmd(@field).init_proc{|item|
+      @extdom.ext_frmcmd(@field).init_proc{|item|
         @io.snd(item.getframe,item[:cid])
         @field.upd{@io.rcv} && @field.save
       }

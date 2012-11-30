@@ -160,7 +160,7 @@ if __FILE__ == $0
   id=logdata[:id]
   fdb=Loc::Db.new(id)[:frm]
   cobj=Command.new
-  cobj.add_ext(fdb,:cmdframe)
+  cobj.add_extdom(fdb,:cmdframe)
   field=Field::Var.new.ext_file(fdb)
   field.load if opt['m']
   field.ext_rsp(cobj)

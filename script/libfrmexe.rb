@@ -4,18 +4,18 @@ require 'libfield'
 
 module Frm
   class Exe < Int::Exe
-    # @< cobj,output,intcmd,(int_proc),(upd_proc*)
-    # @ extcmd,field*
+    # @< cobj,output,intdom,(int_proc),(upd_proc*)
+    # @ extdom,field*
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
       super()
-      @extcmd=@cobj.add_ext(fdb,:cmdframe)
+      @extdom=@cobj.add_extdom(fdb,:cmdframe)
       self['id']=fdb['site_id']
       @output=@field=Field::Var.new.ext_file(fdb).load
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
-      grp=@intcmd.add_group('int',"Internal Command")
+      grp=@intdom.add_group('int',"Internal Command")
       grp.add_item('save',"Save Field [key,key...] (tag)",[any])
       grp.add_item('load',"Load Field (tag)")
       grp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])

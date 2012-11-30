@@ -6,7 +6,7 @@ require "libcmdext"
 require "libupdate"
 
 module Int
-  # @ cobj,output,intcmd,upd_proc,int_proc*
+  # @ cobj,output,intdom,upd_proc,int_proc*
   class Exe < ExHash
     extend Msg::Ver
     attr_reader :int_proc
@@ -14,7 +14,7 @@ module Int
       Exe.init_ver(self,2)
       @cobj=Command.new
       @output=''
-      @intcmd=@cobj.add_domain('int',2)
+      @intdom=@cobj.add_domain('int',2)
       @upd_proc=Update.new # Proc for Server Status Update
       @int_proc=Update.new # Proc for Interactive Operation
     end
@@ -106,9 +106,9 @@ module Int
   # Shell has internal status for prompt
   module Shell
     extend Msg::Ver
-    # @< cobj,output,intcmd,upd_proc,int_proc*
-    # @ pconv,shcmd,lineconv
-    attr_reader :shcmd
+    # @< cobj,output,intdom,upd_proc,int_proc*
+    # @ pconv,shdom,lineconv
+    attr_reader :shdom
     def self.extended(obj)
       init_ver('Shell/%s',2,obj)
       Msg.type?(obj,Exe)
@@ -117,19 +117,19 @@ module Int
     def init(pconv={},&p)
       #prompt convert table (j2s)
       @pconv=Msg.type?(pconv,Hash)
-      @shcmd=@cobj.add_domain('sh',5)
+      @shdom=@cobj.add_domain('sh',5)
       @lineconv=p if p
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
-      grp=@shcmd.add_group('sh',"Shell Command")
+      grp=@shdom.add_group('sh',"Shell Command")
       grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
       Shell.msg{"Init/Shell(#{self['id']})"}
       self
     end
 
     def set_switch(key,title,list)
-      grp=@shcmd.add_group(key,title)
+      grp=@shdom.add_group(key,title)
       grp.update_items(list).init_proc{|item| raise(SelectID,item.id)}
       self
     end

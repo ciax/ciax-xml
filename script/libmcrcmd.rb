@@ -165,7 +165,7 @@ if __FILE__ == $0
     app=App::List.new
     mdb=Mcr::Db.new(id) #ciax
     mcobj=Command.new
-    mcobj.add_ext(mdb,:macro).ext_mcrcmd(app,logs,opt)
+    mcobj.add_extdom(mdb,:macro).ext_mcrcmd(app,logs,opt)
     mcobj.set(cmd).exe
     logs.last[:thread].join
     puts Msg.view_struct(logs)

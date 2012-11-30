@@ -4,7 +4,7 @@ require 'librerange'
 
 # For External Command Domain
 class Command
-  def add_ext(db,path)
+  def add_extdom(db,path)
     @domain['ext']=ExtDom.new(self,db,path,@def_proc)
   end
 
@@ -129,9 +129,9 @@ if __FILE__ == $0
     ldb=Loc::Db.new(ARGV.shift)
     cobj=Command.new
     if opt["f"]
-      cobj.add_ext(ldb[:frm],:cmdframe)
+      cobj.add_extdom(ldb[:frm],:cmdframe)
     else
-      cobj.add_ext(ldb[:app],:command)
+      cobj.add_extdom(ldb[:app],:command)
     end
     puts cobj.set(ARGV)
   rescue UserError

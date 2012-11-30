@@ -5,13 +5,13 @@ require "libwatch"
 
 module App
   class Exe < Int::Exe
-    # @< cobj,output,intcmd,int_proc,upd_proc*
-    # @ adb,extcmd,output,watch,stat*
+    # @< cobj,output,intdom,int_proc,upd_proc*
+    # @ adb,extdom,output,watch,stat*
     attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
       super()
-      @extcmd=@cobj.add_ext(@adb,:command)
+      @extdom=@cobj.add_extdom(@adb,:command)
       self['id']=@adb['site_id']
       @output=@stat=Status::Var.new.ext_file(@adb)
       @watch=Watch::Var.new.ext_file(@adb)
@@ -32,7 +32,7 @@ module App
       super
       @stat.extend(Sym::Conv).load
       @watch.ext_conv(adb,@stat).upd
-      grp=@intcmd.add_group('int',"Internal Command")
+      grp=@intdom.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
       grp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
         @stat.str_update(item.par[0]).upd

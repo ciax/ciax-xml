@@ -81,7 +81,7 @@ if __FILE__ == $0
     fdb=Frm::Db.new(dev)
     field=Field::Var.new
     cobj=Command.new
-    cobj.add_ext(fdb,:cmdframe).ext_frmcmd(field)
+    cobj.add_extdom(fdb,:cmdframe).ext_frmcmd(field)
     field.load unless STDIN.tty?
     print cobj.set(cmd).getframe
   rescue UserError

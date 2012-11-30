@@ -9,44 +9,37 @@ module Mcr
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
     # @ aint,opt
-    attr_reader :logline
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
     end
 
-    def init(aint,opt={})
+    def init(aint,logs,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
-      @logline=ExHash.new
+      @logs=Msg.type?(logs,Array)
       self
     end
 
     def exe
-      @tid=Thread.new{
-        @logline=ExHash.new
-        @logline[:tid]=Time.new.to_f
+      @logs << (rec={:time => Time.new.to_f})
+      rec[:thread]=Thread.new(rec){|record|
         current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
-        @logline[:line]=[current.extend(Prt)]
+        record[:line]=[current.extend(Prt)]
         ver(current)
-        macro(@logline)
+        macro(record)
         self[:msg]='(done)'
         super
       }
       self
     end
 
-    def join
-      @tid.join
-      self
-    end
-
     # Should be public for recursive call
-    def macro(logline,depth=1)
+    def macro(record,depth=1)
       self[:msg]='(run)'
       @select.each{|e1|
         current={'depth'=>depth}.update(e1)
-        logline[:line].push(current.extend(Prt))
+        record[:line].push(current.extend(Prt))
         case e1['type']
         when 'goal'
           self[:msg]='(done)' unless fault?(current)
@@ -66,10 +59,10 @@ module Mcr
           @aint[e1['site']].exe(e1['cmd'])
         when 'mcr'
           ver(current)
-          sub=@index.dup.set(e1['mcr']).macro(logline,depth+1)
+          sub=@index.dup.set(e1['mcr']).macro(record,depth+1)
         end
         current.delete('stat')
-        current['elapsed']=elapsed(logline[:tid])
+        current['elapsed']=elapsed(record[:time])
         self[:msg] != '(run)' && live?(depth) && break
       }
       self
@@ -151,9 +144,9 @@ module Mcr
 end
 
 class Command::ExtDom
-  def ext_mcrcmd(aint,dr=nil)
+  def ext_mcrcmd(aint,logs,opt={})
     values.each{|item|
-      item.extend(Mcr::Cmd).init(aint,dr)
+      item.extend(Mcr::Cmd).init(aint,logs,opt)
     }
     self
   end
@@ -168,11 +161,14 @@ if __FILE__ == $0
   ARGV.clear
   opt['v']=true
   begin
+    logs=[]
     app=App::List.new
     mdb=Mcr::Db.new(id) #ciax
     mcobj=Command.new
-    mcobj.add_ext(mdb,:macro).ext_mcrcmd(app,opt)
-    puts mcobj.set(cmd).exe.join.logline
+    mcobj.add_ext(mdb,:macro).ext_mcrcmd(app,logs,opt)
+    mcobj.set(cmd).exe
+    logs.last[:thread].join
+    puts Msg.view_struct(logs)
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")
   rescue UserError

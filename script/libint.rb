@@ -108,6 +108,7 @@ module Int
     extend Msg::Ver
     # @< cobj,output,intcmd,upd_proc,int_proc*
     # @ pconv,shcmd,lineconv
+    attr_reader :shcmd
     def self.extended(obj)
       init_ver('Shell/%s',2,obj)
       Msg.type?(obj,Exe)

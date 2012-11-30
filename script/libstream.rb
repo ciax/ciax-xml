@@ -49,7 +49,7 @@ class Stream
   end
 
   def ext_logging(id,ver=0)
-    extend(Logging).init('frame',id,ver)
+    extend(Logging).ext_logging('frame',id,ver)
     self
   end
 

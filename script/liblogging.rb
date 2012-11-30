@@ -10,7 +10,7 @@ module Logging
   end
 
   # append() uses param str or @proc generated data
-  def init(type,id,ver=0)
+  def ext_logging(type,id,ver=0)
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i
       @id=id
@@ -81,7 +81,7 @@ end
 
 class ExHash
   def ext_logging(type,id,ver=0)
-    extend(Logging).init(type,id,ver){yield}
+    extend(Logging).ext_logging(type,id,ver){yield}
     self
   end
 end

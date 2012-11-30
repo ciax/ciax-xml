@@ -9,14 +9,16 @@ class Stream
     @iocmd=Msg.type?(iocmd,Array)
     Stream.msg{"Init/Client:#{iocmd.join(' ')}"}
     @f=IO.popen(@iocmd,'r+')
+    @cid=''
     @wait=wait.to_f
     @timeout=timeout
   end
 
   def snd(str,cid)
+    @cid=cid
     return if str.to_s.empty?
     sleep @wait
-    Stream.msg{"Sending #{str.size} byte on #{cid}"}
+    Stream.msg{"Sending #{str.size} byte on #{@cid}"}
     reopen{
       @f.syswrite(str)
     }
@@ -29,7 +31,7 @@ class Stream
       select([@f],nil,nil,@timeout) || next
       @f.sysread(4096)
     }||Msg.com_err("Stream:No response")
-    Stream.msg{"Recieved #{str.size} byte"}
+    Stream.msg{"Recieved #{str.size} byte on #{@cid}"}
     {:data => str,:time => Msg.now}
   end
 
@@ -47,8 +49,7 @@ class Stream
   end
 
   def ext_logging(id,ver=0)
-    extend(Logging)
-    init('frame',id,ver)
+    extend(Logging).init('frame',id,ver)
     self
   end
 
@@ -59,16 +60,16 @@ class Stream
     end
 
     def snd(str,cid)
-      @cid=cid
       super
       append(['snd',@cid],str)
       self
     end
+
     # return hash (data,time)
     def rcv
-      str=super[:data]
-      {:data => str,:time => append(['rcv',@cid],str)}
+      h=super
+      h[:time]=append(['rcv',@cid],h[:data])
+      h
     end
-    self
   end
 end

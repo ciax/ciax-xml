@@ -49,7 +49,7 @@ module Logging
       open(logfile,'a') {|f|
         f.puts [time,tag,str].compact.join("\t")
       }
-      Logging.msg{"Done [#{tag}]"}
+      Logging.msg{"Appended [#{tag}]"}
     end
     time
   end
@@ -76,5 +76,12 @@ module Logging
   def encode(str)
     #str.dump
     [str].pack("m").split("\n").join('')
+  end
+end
+
+class ExHash
+  def ext_logging(type,id,ver=0)
+    extend(Logging).init(type,id,ver){yield}
+    self
   end
 end

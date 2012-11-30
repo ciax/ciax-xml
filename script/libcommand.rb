@@ -65,12 +65,6 @@ class Command < ExHash
     raise(InvalidCMD,str+list)
   end
 
-  def ext_logging(id,ver=0)
-    extend Logging
-    init('appcmd',id,ver){yield}
-    self
-  end
-
   class Domain < Hash
     attr_reader :group,:def_proc
     def initialize(index,color=2,def_proc=Update.new)

@@ -10,10 +10,10 @@ module SqLog
     # @ log,tid
     def self.extended(obj)
       init_ver('SqLog',9)
-      Msg.type?(obj,Var).init
+      Msg.type?(obj,Var).ext_var
     end
 
-    def init
+    def ext_var
       @log=[]
       @tid="#{self['type']}_#{self['ver'].to_i}"
       self
@@ -79,10 +79,10 @@ module SqLog
     # @< log,tid
     # @ sqlcmd
     def self.extended(obj)
-      Msg.type?(obj,Var).init
+      Msg.type?(obj,Var).ext_exec
     end
 
-    def init
+    def ext_exec
       @sqlcmd=["sqlite3",VarDir+"/sqlog_"+self['id']+".sq3"]
       unless check_table
         create

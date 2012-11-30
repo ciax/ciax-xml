@@ -50,10 +50,10 @@ module Status
     # @ lastsave
     def self.extended(obj)
       init_ver(obj,6)
-      Msg.type?(obj,Save).init
+      Msg.type?(obj,Save).ext_save
     end
 
-    def init
+    def ext_save
       @lastsave=0
       self
     end

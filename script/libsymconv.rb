@@ -9,10 +9,10 @@ module Sym
     require "libsymdb"
     def self.extended(obj)
       init_ver('SymConv')
-      Msg.type?(obj,Status::Var,Var::Load).init
+      Msg.type?(obj,Status::Var,Var::Load).ext_conv
     end
 
-    def init
+    def ext_conv
       ads=@db[:status]
       self['ver']=@db['version'].to_i
       @symbol=ads[:symbol]||{}

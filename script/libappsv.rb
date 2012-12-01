@@ -68,10 +68,7 @@ module App
 
     def ext_logging(id,ver=0)
       logging=Logging.new('issue',id,ver){
-        h={}
-        h['cid']=@cobj.current[:cid]
-        h['active']=@watch['active']
-        h
+        {'cmd'=>@cobj.current[:cmd],'active'=>@watch['active']}
       }
       @log_proc.add{logging.append}
       self

@@ -23,12 +23,12 @@ module Frm
     def getframe # return = response select
       return unless @sel[:select]=@select
       #    Cmd.msg{"Attr of Command:#{self}"}
-      cid=self[:cid]
-      Cmd.msg{"Select:#{self[:label]}(#{cid})"}
-      if frame=@cache[cid]
-        Cmd.msg{"Cmd cache found [#{cid}]"}
+      cmd=self[:cmd]
+      Cmd.msg{"Select:#{self[:label]}(#{cmd})"}
+      if frame=@cache[cmd]
+        Cmd.msg{"Cmd cache found [#{cmd}]"}
       else
-        mk_frame(:select) && cid=nil
+        mk_frame(:select) && cmd=nil
         if @sel.key?(:ccrange)
           @frame.mark
           mk_frame(:ccrange)
@@ -36,7 +36,7 @@ module Frm
         end
         mk_frame(:main)
         frame=@fstr[:main]
-        @cache[cid]=frame if cid
+        @cache[cmd]=frame if cmd
       end
       frame
     end

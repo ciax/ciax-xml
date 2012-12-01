@@ -31,6 +31,16 @@ class Logging
     time
   end
 
+  #For new format
+  def self.invert(str)
+    ary=str.split("\t")
+    h={'time' => ary.shift}
+    h.update(JSON.load(ary.shift))
+    abort("Logline:Line is not rcv") unless /rcv/ === h['dir']
+    h['data']=decode(h['data'])
+    h
+  end
+
   def self.set_logline(str)
     ary=str.split("\t")
     h={:time => ary.shift}

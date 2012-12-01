@@ -23,7 +23,7 @@ module Frm
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
       @extdom.ext_frmcmd(@field).init_proc{|item|
-        @io.snd(item.getframe,item[:cid])
+        @io.snd(item.getframe,item[:cmd])
         @field.upd{@io.rcv} && @field.save
       }
       @cobj['set'].init_proc{|item|

@@ -13,14 +13,14 @@ class Stream < ExHash
     @wait=wait.to_f
     @timeout=timeout
     @log_proc=Update.new
-    update({:time => Msg.now,:dir => '',:cid => '',:data => ''})
+    update({:time => Msg.now,:dir => '',:cmd => '',:data => ''})
   end
 
-  def snd(str,cid)
-    update({:time => Msg.now,:dir => 'snd',:cid => cid,:data => str})
+  def snd(str,cmd)
+    update({:time => Msg.now,:dir => 'snd',:cmd => cmd,:data => str})
     return if str.to_s.empty?
     sleep @wait
-    Stream.msg{"Sending #{str.size} byte on #{cid}"}
+    Stream.msg{"Sending #{str.size} byte on #{cmd}"}
     reopen{
       @f.syswrite(str)
     }
@@ -34,7 +34,7 @@ class Stream < ExHash
       IO.select([@f],nil,nil,@timeout) || next
       @f.sysread(4096)
     }||Msg.com_err("Stream:No response")
-    Stream.msg{"Recieved #{str.size} byte on #{self[:cid]}"}
+    Stream.msg{"Recieved #{str.size} byte on #{self[:cmd]}"}
     update({:time => Msg.now,:dir => 'rcv',:data => str})
     @log_proc.upd
     self
@@ -55,11 +55,7 @@ class Stream < ExHash
 
   def ext_logging(id,ver=0)
     logging=Logging.new('stream',id,ver){
-      h={}
-      h[:dir]=self[:dir]
-      h[:cid]=self[:cid]
-      h[:data]=encode(self[:data])
-      h
+      {'dir'=>self[:dir],'cmd'=>self[:cmd],'data'=>encode(self[:data])}
     }
     @log_proc.add{logging.append}
     self

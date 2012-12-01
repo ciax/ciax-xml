@@ -10,13 +10,13 @@ module Logging
   end
 
   # append() uses param str or @proc generated data
-  def ext_logging(type,id,ver=0)
+  def ext_logging(type,id,ver=0,&p)
     if id && ! ENV.key?('NOLOG')
       @ver=ver.to_i
       @id=id
       @loghead=VarDir+"/"+type+"_#{id}"
       Logging.msg{"Init/Logging '#{type}' (#{id}/Ver.#{@ver})"}
-      @proc=defined?(yield) ? proc{yield} : proc{''}
+      @proc=p
       startlog
     end
     self
@@ -34,11 +34,11 @@ module Logging
 
   # Return Time
   # ida should be Array
-  def append(ida,str=nil)
+  def append(ida)
     Msg.type?(ida,Array)
     time=Msg.now
     if @logging
-      str||=@proc.call
+      str=@proc.call
       case str
       when Enumerable
         str=JSON.dump(str)
@@ -80,8 +80,8 @@ module Logging
 end
 
 class ExHash
-  def ext_logging(type,id,ver=0)
-    extend(Logging).ext_logging(type,id,ver){yield}
+  def ext_logging(type,id,ver=0,&p)
+    extend(Logging).ext_logging(type,id,ver,&p)
     self
   end
 end

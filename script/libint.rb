@@ -116,7 +116,7 @@ module Int
 
     def ext_shell(pconv={},&p)
       #prompt convert table (j2s)
-      @pconv=Msg.type?(pconv,Hash)
+      @pconv={'id'=>nil}.update(Msg.type?(pconv,Hash))
       @shdom=@cobj.add_domain('sh',5)
       @lineconv=p if p
       Readline.completion_proc=proc{|word|
@@ -172,8 +172,8 @@ module Int
     end
 
     def prompt
-      keys.map{|k|
-        @pconv[k]||self[k] if k != 'msg' and self[k]
+      @pconv.keys.map{|k|
+        @pconv[k]||self[k] if self[k]
       }.compact.join('')+'>'
     end
   end

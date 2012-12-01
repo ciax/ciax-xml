@@ -17,18 +17,8 @@ module Logging
       @loghead=VarDir+"/"+type+"_#{id}"
       Logging.msg{"Init/Logging '#{type}' (#{id}/Ver.#{@ver})"}
       @proc=p
-      startlog
+      @logging=true
     end
-    self
-  end
-
-  def startlog
-    @logging=true
-    self
-  end
-
-  def stoplog
-    @logging=false
     self
   end
 

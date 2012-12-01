@@ -9,11 +9,12 @@ module Logging
     init_ver('Logging/%s',6,obj)
   end
 
-  # append() uses param str or @proc generated data
+  # append() uses @proc(Hash) generated data
   def ext_logging(type,id,ver=0,&p)
     Msg.type?(type,String)
-    @id=Msg.type?(id,String)
-    @ver=ver.to_i
+    Msg.type?(id,String)
+    ver=ver.to_i
+    @header={:id => id,:ver => ver}
     @loghead=VarDir+"/"+type+"_#{id}"
     Logging.msg{"Init/Logging '#{type}' (#{id}/Ver.#{ver})"}
     @proc=p
@@ -22,16 +23,14 @@ module Logging
 
   # Return Time
   # ida should be Array
-  def append(ida)
-    Msg.type?(ida,Array)
+  def append
     time=Msg.now
     unless ENV.key?('NOLOG')
-      str=@proc.call
-      tag=([@id,@ver]+ida).compact.join(':')
+      str=JSON.dump(@header.merge(@proc.call))
       open(logfile,'a') {|f|
-        f.puts [time,tag,str].compact.join("\t")
+        f.puts [time,str].compact.join("\t")
       }
-      Logging.msg{"Appended [#{tag}]"}
+      Logging.msg{"Appended [#{str}]"}
     end
     time
   end

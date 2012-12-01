@@ -73,10 +73,10 @@ module HexPack
     def server(id=nil,ver=nil)
       @output=View.new(self,@stat)
       if id
-        ext_logging('hexpack',id,ver){
-          @output.to_s
+        extend(Object::Logging).ext_logging('hex',id,ver){
+          {:hex => @output.to_s}
         }
-        @buf.post_flush.add{append([])}
+        @buf.post_flush.add{append}
       end
       super(@adb['port'].to_i+1000){@output.to_s}
     end

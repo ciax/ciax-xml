@@ -49,8 +49,12 @@ class Stream < ExHash
   end
 
   def ext_logging(id,ver=0)
-    extend(Logging).ext_logging('frame',id,ver){
-      encode(self[:data])
+    extend(Logging).ext_logging('stream',id,ver){
+      h={}
+      h[:dir]=self[:dir]
+      h[:cid]=self[:cid]
+      h[:data]=encode(self[:data])
+      h
     }
     self
   end
@@ -69,14 +73,14 @@ class Stream < ExHash
 
     def snd(str,cid)
       super
-      append([self[:dir],self[:cid]])
+      append
       self
     end
 
     # return hash (data,time)
     def rcv
       super
-      append([self[:dir],self[:cid]])
+      append
       self
     end
   end

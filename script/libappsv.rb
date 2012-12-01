@@ -54,9 +54,7 @@ module App
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
       if logging and @adb['version']
-        ext_logging(@adb['site_id'],@adb['version']){
-          @watch['active'].to_j
-        }
+        ext_logging(@adb['site_id'],@adb['version'])
       end
       @upd_proc.add{
         self['auto'] = @tid && @tid.alive?
@@ -67,8 +65,13 @@ module App
       server(@adb['port']){to_j}
     end
 
-    def ext_logging(id,ver=0,&p)
-      extend(Logging).ext_logging('appcmd',id,ver,&p)
+    def ext_logging(id,ver=0)
+      extend(Logging).ext_logging('issue',id,ver){
+        h={}
+        h['cid']=@cobj.current[:cid]
+        h['active']=@watch['active']
+        h
+      }
       self
     end
 
@@ -114,7 +117,7 @@ module App
 
     def sendcmd(p)
       super
-      append(@cobj.current.cmd)
+      append
       self
     end
   end

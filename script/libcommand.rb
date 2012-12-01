@@ -131,18 +131,5 @@ class Command < ExHash
       @labeldb.to_s
     end
   end
-
-  module Logging
-    def self.extended(obj)
-      Msg.type?(obj,Command)
-      obj.extend Object::Logging
-    end
-
-    def set(cmd)
-      obj=super
-      append(cmd)
-      obj
-    end
-  end
 end
 require 'libcmditem'

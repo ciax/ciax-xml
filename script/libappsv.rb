@@ -28,14 +28,14 @@ module App
       @buf.proc_recv{|fcmd| @fint.exe(fcmd)}
       @extdom.ext_appcmd.init_proc{|item|
         @watch.block?(item.cmd)
-        @buf.send(1)
+        sendcmd(1)
         Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
       @watch.event_proc.add{|cmd,p|
         Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.set(cmd)
-        @buf.send(p)
+        sendcmd(p)
       }
       gint=@intdom.add_group('int',"Internal Command")
       gint.add_item('interrupt').init_proc{
@@ -53,8 +53,8 @@ module App
       # Update for Frm level manipulation
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
-      if logging and @stat['ver']
-        @cobj.ext_logging('appcmd',@adb['site_id'],@adb['version']){
+      if logging and @adb['version']
+        ext_logging(@adb['site_id'],@adb['version']){
           @watch['active']
         }
       end
@@ -67,6 +67,17 @@ module App
       server(@adb['port']){to_j}
     end
 
+    def ext_logging(id,ver=0,&p)
+      extend(Logging).ext_logging('appcmd',id,ver,&p)
+      self
+    end
+
+    private
+    def sendcmd(p)
+      @buf.send(p)
+      self
+    end
+
     def auto_update
       @tid=Thread.new{
         tc=Thread.current
@@ -77,7 +88,7 @@ module App
         loop{
           begin
             @cobj.set(['upd'])
-            @buf.send(2)
+            sendcmd(2)
           rescue InvalidID
             Msg.warn($!)
           end
@@ -90,6 +101,20 @@ module App
 
     def app_shell
       extend(Sh).app_shell(@fint)
+      self
+    end
+  end
+
+  module Logging
+    require "liblogging"
+    def self.extended(obj)
+      Msg.type?(obj,Sv)
+      obj.extend Object::Logging
+    end
+
+    def sendcmd(p)
+      super
+      append(@cobj.current.cmd)
       self
     end
   end

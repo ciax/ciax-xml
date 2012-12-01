@@ -58,6 +58,7 @@ class Stream < Hash
   module Logging
     require "liblogging"
     def self.extended(obj)
+      Msg.type?(obj,Stream)
       obj.extend Object::Logging
     end
 

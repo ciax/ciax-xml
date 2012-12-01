@@ -11,16 +11,16 @@ class Stream < Hash
     @f=IO.popen(@iocmd,'r+')
     @wait=wait.to_f
     @timeout=timeout
-    update({:time => Msg.now,:cid => '',:data => ''})
+    update({:time => Msg.now,:dir => '',:cid => '',:data => ''})
   end
 
   def snd(str,cid)
-    self[:cid]=cid
+    update({:time => Msg.now,:dir => 'snd',:cid => cid,:data => str})
     return if str.to_s.empty?
     sleep @wait
     Stream.msg{"Sending #{str.size} byte on #{cid}"}
     reopen{
-      @f.syswrite(self[:data]=str)
+      @f.syswrite(str)
     }
     self
   end
@@ -32,7 +32,7 @@ class Stream < Hash
       @f.sysread(4096)
     }||Msg.com_err("Stream:No response")
     Stream.msg{"Recieved #{str.size} byte on #{self[:cid]}"}
-    update({:data => str,:time => Msg.now})
+    update({:time => Msg.now,:dir => 'rcv',:data => str})
   end
 
   def reopen
@@ -61,14 +61,14 @@ class Stream < Hash
 
     def snd(str,cid)
       super
-      append(['snd',self[:cid]],self[:data])
+      append([self[:dir],self[:cid]],self[:data])
       self
     end
 
     # return hash (data,time)
     def rcv
       super
-      append(['rcv',self[:cid]],self[:data])
+      append([self[:dir],self[:cid]],self[:data])
       self
     end
   end

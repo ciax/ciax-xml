@@ -16,7 +16,7 @@ module Watch
       self['period']=300
       self['interval']=0.1
       #For Array element
-      ['active','exec','block','int'].each{|i| self[i]||=[]}
+      ['active','exec','block','int'].each{|i| self[i]||=ExArray.new}
       #For Hash element
       ['crnt','last','res'].each{|i| self[i]||={}}
       @event_proc=Update.new

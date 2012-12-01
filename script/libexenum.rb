@@ -8,7 +8,12 @@ module ExEnum
   end
 
   def to_j
-    JSON.dump(to_hash)
+    case self
+    when Array
+      JSON.dump(to_a)
+    when Hash
+      JSON.dump(to_hash)
+    end
   end
 
   # Show branch (omit lower tree of Hash/Array with sym key)
@@ -88,6 +93,10 @@ module ExEnum
 end
 
 class ExHash < Hash
+  include ExEnum
+end
+
+class ExArray < Array
   include ExEnum
 end
 

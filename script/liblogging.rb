@@ -11,14 +11,12 @@ module Logging
 
   # append() uses param str or @proc generated data
   def ext_logging(type,id,ver=0,&p)
-    if id && ! ENV.key?('NOLOG')
-      @ver=ver.to_i
-      @id=id
-      @loghead=VarDir+"/"+type+"_#{id}"
-      Logging.msg{"Init/Logging '#{type}' (#{id}/Ver.#{@ver})"}
-      @proc=p
-      @logging=true
-    end
+    Msg.type?(type,String)
+    @id=Msg.type?(id,String)
+    @ver=ver.to_i
+    @loghead=VarDir+"/"+type+"_#{id}"
+    Logging.msg{"Init/Logging '#{type}' (#{id}/Ver.#{ver})"}
+    @proc=p
     self
   end
 
@@ -27,7 +25,7 @@ module Logging
   def append(ida)
     Msg.type?(ida,Array)
     time=Msg.now
-    if @logging
+    unless ENV.key?('NOLOG')
       str=@proc.call
       case str
       when Enumerable

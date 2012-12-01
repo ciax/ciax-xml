@@ -77,7 +77,7 @@ module HexPack
           {:data => @output.to_s}
         }
         @log_proc.add{logging.append}
-        @buf.post_flush.add{logging.append}
+        @buf.flush_proc.add{logging.append}
       end
       super(@adb['port'].to_i+1000){@output.to_s}
     end

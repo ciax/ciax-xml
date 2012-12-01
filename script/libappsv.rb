@@ -24,8 +24,8 @@ module App
       @watch.ext_conv(adb,@stat).ext_save.upd
       Thread.abort_on_exception=true
       @buf=Buffer.new(self)
-      @buf.proc_send{@cobj.current.get}
-      @buf.proc_recv{|fcmd| @fint.exe(fcmd)}
+      @buf.send_proc{@cobj.current.get}
+      @buf.recv_proc{|fcmd| @fint.exe(fcmd)}
       @extdom.ext_appcmd.init_proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
@@ -43,7 +43,7 @@ module App
         Sv.msg{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"
       }
-      @buf.post_flush.add{
+      @buf.flush_proc.add{
         @stat.upd.save
         @watch.upd.save
         sleep(@watch['interval']||0.1)

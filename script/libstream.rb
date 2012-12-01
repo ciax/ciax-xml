@@ -49,7 +49,9 @@ class Stream < Hash
   end
 
   def ext_logging(id,ver=0)
-    extend(Logging).ext_logging('frame',id,ver)
+    extend(Logging).ext_logging('frame',id,ver){
+      self[:data]
+    }
     self
   end
 
@@ -61,14 +63,14 @@ class Stream < Hash
 
     def snd(str,cid)
       super
-      append([self[:dir],self[:cid]],self[:data])
+      append([self[:dir],self[:cid]])
       self
     end
 
     # return hash (data,time)
     def rcv
       super
-      append([self[:dir],self[:cid]],self[:data])
+      append([self[:dir],self[:cid]])
       self
     end
   end

@@ -54,7 +54,9 @@ module App
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
       if logging and @stat['ver']
-        @cobj.ext_logging('appcmd',@adb['site_id'],@stat['ver']){@watch['active']}
+        @cobj.ext_logging('appcmd',@adb['site_id'],@adb['version']){
+          @watch['active']
+        }
       end
       @upd_proc.add{
         self['auto'] = @tid && @tid.alive?

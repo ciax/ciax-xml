@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 
-class Stream < Hash
+class Stream < ExHash
   extend Msg::Ver
   def initialize(iocmd,wait=0,timeout=nil)
     Stream.init_ver(self,1)
@@ -50,9 +50,14 @@ class Stream < Hash
 
   def ext_logging(id,ver=0)
     extend(Logging).ext_logging('frame',id,ver){
-      self[:data]
+      encode(self[:data])
     }
     self
+  end
+
+  private
+  def encode(str)
+    [str].pack("m").split("\n").join('')
   end
 
   module Logging

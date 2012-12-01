@@ -27,12 +27,6 @@ module Logging
     time=Msg.now
     unless ENV.key?('NOLOG')
       str=@proc.call
-      case str
-      when Enumerable
-        str=JSON.dump(str)
-      when String
-        str=encode(str)
-      end
       tag=([@id,@ver]+ida).compact.join(':')
       open(logfile,'a') {|f|
         f.puts [time,tag,str].compact.join("\t")

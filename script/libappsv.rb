@@ -55,7 +55,7 @@ module App
       # Logging if version number exists
       if logging and @adb['version']
         ext_logging(@adb['site_id'],@adb['version']){
-          @watch['active']
+          @watch['active'].to_j
         }
       end
       @upd_proc.add{

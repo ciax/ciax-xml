@@ -53,6 +53,7 @@ module App
       # Update for Frm level manipulation
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
+      @log_proc=Update.new
       if logging and @adb['version']
         ext_logging(@adb['site_id'],@adb['version'])
       end
@@ -66,18 +67,20 @@ module App
     end
 
     def ext_logging(id,ver=0)
-      extend(Logging).ext_logging('issue',id,ver){
+      logging=Logging.new('issue',id,ver){
         h={}
         h['cid']=@cobj.current[:cid]
         h['active']=@watch['active']
         h
       }
+      @log_proc.add{logging.append}
       self
     end
 
     private
     def sendcmd(p)
       @buf.send(p)
+      @log_proc.upd
       self
     end
 
@@ -104,20 +107,6 @@ module App
 
     def app_shell
       extend(Sh).app_shell(@fint)
-      self
-    end
-  end
-
-  module Logging
-    require "liblogging"
-    def self.extended(obj)
-      Msg.type?(obj,Sv)
-      obj.extend Object::Logging
-    end
-
-    def sendcmd(p)
-      super
-      append
       self
     end
   end

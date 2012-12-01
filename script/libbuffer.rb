@@ -78,9 +78,9 @@ class Buffer
   private
   def flush
     Buffer.msg{"SUB:Waiting"}
-    @post_flush.upd
     # @q can not be empty depending on @post_flush
     @svst['isu']=false if @q.empty?
+    @post_flush.upd
   end
 
   #inp is frmcmd array (ary of ary)

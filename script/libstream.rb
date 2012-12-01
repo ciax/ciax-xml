@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
+require "libupdate"
 
 class Stream < ExHash
   extend Msg::Ver
@@ -11,6 +12,7 @@ class Stream < ExHash
     @f=IO.popen(@iocmd,'r+')
     @wait=wait.to_f
     @timeout=timeout
+    @log_proc=Update.new
     update({:time => Msg.now,:dir => '',:cid => '',:data => ''})
   end
 
@@ -22,6 +24,7 @@ class Stream < ExHash
     reopen{
       @f.syswrite(str)
     }
+    @log_proc.upd
     self
   end
 
@@ -33,6 +36,8 @@ class Stream < ExHash
     }||Msg.com_err("Stream:No response")
     Stream.msg{"Recieved #{str.size} byte on #{self[:cid]}"}
     update({:time => Msg.now,:dir => 'rcv',:data => str})
+    @log_proc.upd
+    self
   end
 
   def reopen
@@ -49,39 +54,19 @@ class Stream < ExHash
   end
 
   def ext_logging(id,ver=0)
-    extend(Logging).ext_logging('stream',id,ver){
+    logging=Logging.new('stream',id,ver){
       h={}
       h[:dir]=self[:dir]
       h[:cid]=self[:cid]
       h[:data]=encode(self[:data])
       h
     }
+    @log_proc.add{logging.append}
     self
   end
 
   private
   def encode(str)
     [str].pack("m").split("\n").join('')
-  end
-
-  module Logging
-    require "liblogging"
-    def self.extended(obj)
-      Msg.type?(obj,Stream)
-      obj.extend Object::Logging
-    end
-
-    def snd(str,cid)
-      super
-      append
-      self
-    end
-
-    # return hash (data,time)
-    def rcv
-      super
-      append
-      self
-    end
   end
 end

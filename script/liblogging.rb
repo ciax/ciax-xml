@@ -3,15 +3,11 @@ require 'libmsg'
 require 'json'
 
 # Should be extend (not include)
-module Logging
+class Logging
   extend Msg::Ver
-  def self.extended(obj)
-    init_ver('Logging/%s',6,obj)
-  end
-
-  # append() uses @proc(Hash) generated data
-  def ext_logging(type,id,ver=0,&p)
-    Msg.type?(type,String)
+  def initialize(type,id,ver=0,&p)
+    Logging.init_ver(self,6)
+    @type=Msg.type?(type,String)
     Msg.type?(id,String)
     ver=ver.to_i
     @header={:id => id,:ver => ver}
@@ -22,7 +18,7 @@ module Logging
   end
 
   # Return Time
-  # ida should be Array
+  # append() uses @proc(Hash) generated data
   def append
     time=Msg.now
     unless ENV.key?('NOLOG')
@@ -30,7 +26,7 @@ module Logging
       open(logfile,'a') {|f|
         f.puts [time,str].compact.join("\t")
       }
-      Logging.msg{"Appended [#{str}]"}
+      Logging.msg{"#{@type}/Appended #{str.size} byte"}
     end
     time
   end
@@ -57,12 +53,5 @@ module Logging
   def encode(str)
     #str.dump
     [str].pack("m").split("\n").join('')
-  end
-end
-
-class ExHash
-  def ext_logging(type,id,ver=0,&p)
-    extend(Logging).ext_logging(type,id,ver,&p)
-    self
   end
 end

@@ -110,25 +110,25 @@ module Mcr
         site=flt['site']=h['site']
         stat=@aint[site].stat.load
         break unless flt['upd']=stat.update?
-        ['var','val','inv'].each{|k| flt[k]=h[k] }
-        var=h['var']
+        inv=flt['inv']=h['inv']
+        var=flt['var']=h['var']
+        cmp=flt['cmp']=h['val']
         res=stat['msg'][var]||stat['val'][var]
-        Cmd.msg{"ins=#{ins},var=#{var},res=#{res}"}
-        Cmd.msg{stat['val']}
+        Cmd.msg{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}
         if res
           flt['res']=res
-          flt['upd'] && comp(res,flt['val'],flt['inv'])
+          flt['upd'] && comp(res,cmp,flt['inv'])
         end
       } && current['fault']=flt
       flg
     end
 
-    def comp(res,val,inv)
+    def comp(res,cmp,inv)
       i=(/true|1/ === inv)
-      if /[a-zA-Z]/ === val
-        (/#{val}/ === res) ^ i
+      if /[a-zA-Z]/ === cmp
+        (/#{cmp}/ === res) ^ i
       else
-        (val == res) ^ i
+        (cmp == res) ^ i
       end
     end
   end

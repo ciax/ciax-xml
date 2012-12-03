@@ -106,30 +106,21 @@ module Mcr
 
     def fault?(current)
       flt={}
-      res=!current['stat'].all?{|h|
-        flt['site']=h['site']
-        break unless flt['upd']=update?(flt['site'])
+      flg=!current['stat'].all?{|h|
+        site=flt['site']=h['site']
+        stat=@aint[site].stat.load
+        break unless flt['upd']=stat.update?
         ['var','val','inv'].each{|k| flt[k]=h[k] }
-        if res=getstat(flt['site'],flt['var'])
+        var=h['var']
+        res=stat['msg'][var]||stat['val'][var]
+        Cmd.msg{"ins=#{ins},var=#{var},res=#{res}"}
+        Cmd.msg{stat['val']}
+        if res
           flt['res']=res
           flt['upd'] && comp(res,flt['val'],flt['inv'])
         end
       } && current['fault']=flt
-      res
-    end
-
-    # aint is forced to be localhost
-    def update?(ins)
-      stat=@aint[ins].stat.load
-      stat.update?
-    end
-
-    def getstat(ins,var)
-      stat=@aint[ins].stat
-      res=stat['msg'][var]||stat['val'][var]
-      Cmd.msg{"ins=#{ins},var=#{var},res=#{res}"}
-      Cmd.msg{stat['val']}
-      res
+      flg
     end
 
     def comp(res,val,inv)

@@ -11,7 +11,7 @@ require "thread"
 module App
   # @<< cobj,output,intdom,int_proc,upd_proc*
   # @< adb,extdom,output,watch,stat*
-  # @ fint,buf,tid
+  # @ fint,buf,log_proc
   class Sv < Exe
     extend Msg::Ver
     def initialize(adb,fint,logging=nil)
@@ -21,34 +21,24 @@ module App
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
       @stat.ext_sqlog if logging and @fint.field.key?('ver')
-      @watch.ext_conv(adb,@stat).ext_save.upd
+      @watch.ext_conv(adb,@stat).ext_save.upd.event_proc.add{|cmd,p|
+        Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
+        @cobj.set(cmd)
+        sendcmd(p)
+      }
       Thread.abort_on_exception=true
-      @buf=Buffer.new(self)
-      @buf.send_proc{@cobj.current.get}
-      @buf.recv_proc{|fcmd| @fint.exe(fcmd)}
+      @buf=init_buf
       @extdom.ext_appcmd.init_proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
         Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      @watch.event_proc.add{|cmd,p|
-        Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
-        @cobj.set(cmd)
-        sendcmd(p)
-      }
-      gint=@intdom.add_group('int',"Internal Command")
-      gint.add_item('interrupt').init_proc{
+      grp=@intdom.add_group('int',"Internal Command")
+      grp.add_item('interrupt').init_proc{
         int=@watch.interrupt
         Sv.msg{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"
-      }
-      @buf.flush_proc.add{
-        @stat.upd.save
-        @watch.upd.save
-        sleep(@watch['interval']||0.1)
-        # Auto issue by watch
-        @watch.issue
       }
       # Update for Frm level manipulation
       @fint.int_proc.add{@stat.upd.save}
@@ -57,12 +47,12 @@ module App
       if logging and @adb['version']
         ext_logging(@adb['site_id'],@adb['version'])
       end
+      tid_auto=auto_update
       @upd_proc.add{
-        self['auto'] = @tid && @tid.alive?
+        self['auto'] = tid_auto && tid_auto.alive?
         self['watch'] = @watch.active?
         self['na'] = !@buf.alive?
       }
-      auto_update
       server(@adb['port']){to_j}
     end
 
@@ -81,8 +71,22 @@ module App
       self
     end
 
+    def init_buf
+      buf=Buffer.new(self)
+      buf.send_proc{@cobj.current.get}
+      buf.recv_proc{|fcmd| @fint.exe(fcmd)}
+      buf.flush_proc.add{
+        @stat.upd.save
+        @watch.upd.save
+        sleep(@watch['interval']||0.1)
+        # Auto issue by watch
+        @watch.issue
+      }
+      buf
+    end
+
     def auto_update
-      @tid=Thread.new{
+      Thread.new{
         tc=Thread.current
         tc[:name]="Auto"
         tc[:color]=4
@@ -99,7 +103,6 @@ module App
         sleep int
         }
       }
-      self
     end
 
     def app_shell

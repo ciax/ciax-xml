@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro">
     <command id="runf" label="Run Forward to Tag">
@@ -145,7 +145,7 @@
       </exec>
       <mcr async="true" name="trsi" />
       <wait retry="120" label="Run end?">
-        <stat label="Running" var="run" site="crt">OFF</stat>
+        <stat label="Running" site="crt" var="run">OFF</stat>
       </wait>
     </command>
   </macro>

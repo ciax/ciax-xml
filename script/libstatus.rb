@@ -21,8 +21,9 @@ module Status
     end
 
     def change?(id)
-      Var.msg{"Compare(#{id}) current=[#{self['val'][id]}] vs last=[#{@last[id]}]"}
-      self['val'][id] != @last[id]
+      val=self['val']
+      Var.msg{"Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]"}
+      val[id] != @last[id]
     end
 
     def update?

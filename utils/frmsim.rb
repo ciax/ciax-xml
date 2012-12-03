@@ -25,7 +25,7 @@ end
 
 begin
   10.times{
-    Dir.glob(ENV['HOME']+"/.var/frame_#{id}*.log").each{|fname|
+    Dir.glob(ENV['HOME']+"/.var/201?/frame_#{id}*.log").each{|fname|
       /#{id}[^\.]*/ =~ fname
       base=$&
       open(fname){|fd|

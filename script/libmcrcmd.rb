@@ -17,21 +17,18 @@ module Mcr
     def ext_mcrcmd(aint,logs,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
-      @logs=Msg.type?(logs,Array)
       self
     end
 
     def exe
-      @logs << (rec={:time => Time.new.to_f})
-      rec[:thread]=Thread.new(rec){|record|
-        current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
-        record[:line]=[current.extend(Prt)]
-        ver(current)
-        macro(record)
-        self[:stat]='(done)'
-        super
-      }
-      self
+      record={:time => Time.new.to_f}
+      current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
+      record[:line]=[current.extend(Prt)]
+      display(current)
+      macro(record)
+      self[:stat]='(done)'
+      super
+      record
     end
 
     # Should be public for recursive call
@@ -43,22 +40,22 @@ module Mcr
         case e1['type']
         when 'goal'
           self[:stat]='(done)' unless fault?(current)
-          ver(current)
+          display(current)
         when 'check'
           self[:stat]="(error)" if fault?(current)
-          ver(current)
+          display(current)
         when 'wait'
-          ver(current.title)
-          waiting(current){ver('.')}
-          ver(current.result)
+          display(current.title)
+          waiting(current){display('.')}
+          display(current.result)
         when 'exec'
-          ver(current)
+          display(current)
           self[:stat]="(query)"
-          sleep unless @opt['n']
+          query(depth)
           self[:stat]='(run)'
-          @aint[e1['site']].exe(e1['cmd'])
+          @aint[e1['site']].exe(e1['cmd']).stat.refresh
         when 'mcr'
-          ver(current)
+          display(current)
           sub=@index.dup.set(e1['mcr']).macro(record,depth+1)
         end
         current.delete('stat')
@@ -73,9 +70,20 @@ module Mcr
       "%.3f" % (Time.now.to_f-base)
     end
 
-    def ver(str)
+    def display(str)
       print str if @opt['v']
     end
+
+    def query(depth)
+      if @opt['v']
+        prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
+        true while (res=Readline.readline(prompt,true)).empty?
+        Msg.alert("Quit") unless /[Yy]/ === res
+      elsif !@opt['n']
+        sleep
+      end
+    end
+
 
     def live?(depth)
       if @opt['t']
@@ -89,10 +97,14 @@ module Mcr
     def waiting(current)
       self[:stat]="(wait)"
       #gives number or nil(if break)
+      current['max']=current['retry']
       if current['retry'].to_i.times{|n|
           current['retry']=n
-          brk=fault?(current)
-          break if @opt['t'] && n > 4 || brk
+          if @opt['t']
+            break if n > 4
+          else
+            break if fault?(current)
+          end
           sleep 1
           yield
         }
@@ -157,9 +169,8 @@ if __FILE__ == $0
     mdb=Mcr::Db.new(id) #ciax
     mcobj=Command.new
     mcobj.add_extdom(mdb,:macro).ext_mcrcmd(app,logs,opt)
-    mcobj.set(cmd).exe
-    logs.last[:thread].join
-    puts Msg.view_struct(logs)
+    rec=mcobj.set(cmd).exe
+    puts Msg.view_struct(rec)
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")
   rescue UserError

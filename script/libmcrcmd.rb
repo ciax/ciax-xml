@@ -8,7 +8,7 @@ module Mcr
     extend Msg::Ver
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
-    # @ aint,opt
+    # @ aint,opt,begin
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
@@ -17,12 +17,13 @@ module Mcr
     def ext_mcrcmd(aint,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
+      Thread.current[:stat]='(ready)'
       self
     end
 
     def exe
       me=Thread.current
-      me[:time] = Time.new.to_f
+      @begin = Time.new.to_f
       current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
       me[:record]=[current.extend(Prt)]
       display(current)
@@ -61,7 +62,7 @@ module Mcr
           sub=@index.dup.set(e1['mcr']).macro(depth+1)
         end
         current.delete('stat')
-        current['elapsed']=elapsed(me[:time])
+        current['elapsed']=elapsed(@begin)
         me[:stat] != '(run)' && live?(depth) && break
       }
       self

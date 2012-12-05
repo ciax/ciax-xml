@@ -114,6 +114,7 @@ module Int
       Msg.type?(obj,Exe)
     end
 
+    # block gives command line convert
     def ext_shell(pconv={},&p)
       #prompt convert table (j2s)
       @pconv={'id'=>nil}.update(Msg.type?(pconv,Hash))
@@ -144,7 +145,7 @@ module Int
           when /^q/
             break
           when ''
-            puts @output
+            puts @output if @output
           else
             sh_exe(line)
           end

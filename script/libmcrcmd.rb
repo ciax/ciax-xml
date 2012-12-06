@@ -59,7 +59,7 @@ module Mcr
           @aint[e1['site']].exe(e1['cmd']).stat.refresh
         when 'mcr'
           display(current)
-          sub=@index.dup.set(e1['mcr']).macro(base,depth+1)
+          sub=@index.dup.setcmd(e1['mcr']).macro(base,depth+1)
         end
         current.delete('stat')
         current['elapsed']="%.3f" % (Time.now.to_f-base)

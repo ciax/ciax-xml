@@ -57,9 +57,9 @@ if __FILE__ == $0
     fcobj.add_extdom(Frm::Db.new(adb['frm_id']),:cmdframe)
     acobj=Command.new
     acobj.add_extdom(adb,:command).ext_appcmd
-    acobj.set(cmd).getcmd.each{|fcmd|
+    acobj.setcmd(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
-      fcobj.set(fcmd) if /set|unset|load|save/ !~ fcmd.first
+      fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first
       p fcmd
     }
   rescue UserError

@@ -49,7 +49,7 @@ class Command < ExHash
     @domain[id]=Domain.new(self,color,@def_proc)
   end
 
-  def set(cmd)
+  def setcmd(cmd)
     id,*par=cmd
     key?(id) || error
     Command.msg{"SetCMD (#{id},#{par})"}

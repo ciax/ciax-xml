@@ -21,7 +21,7 @@ module Int
 
     # Sync only (Wait for other thread)
     def exe(cmd)
-      @cobj.set(cmd).exe
+      @cobj.setcmd(cmd).exe
       self
     end
 
@@ -74,7 +74,7 @@ module Int
     private
     # Async for interactive interface
     def int_exe(cmd)
-      @cobj.set(cmd).exe
+      @cobj.setcmd(cmd).exe
       @int_proc.upd
       self
     end

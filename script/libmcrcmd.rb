@@ -167,7 +167,7 @@ if __FILE__ == $0
     mdb=Mcr::Db.new(id) #ciax
     mcobj=Command.new
     mcobj.add_extdom(mdb,:macro).ext_mcrcmd(app,opt)
-    mcobj.set(cmd).exe
+    mcobj.setcmd(cmd).exe
     puts Msg.view_struct(Thread.current[:record])
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")

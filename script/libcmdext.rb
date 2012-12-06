@@ -133,7 +133,7 @@ if __FILE__ == $0
     else
       cobj.add_extdom(ldb[:app],:command)
     end
-    puts cobj.set(ARGV)
+    puts cobj.setcmd(ARGV)
   rescue UserError
     opt.usage("(opt) [id] [cmd] (par)")
   end

@@ -23,7 +23,7 @@ module App
       @stat.ext_sqlog if logging and @fint.field.key?('ver')
       @watch.ext_conv(adb,@stat).ext_save.upd.event_proc.add{|cmd,p|
         Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
-        @cobj.set(cmd)
+        @cobj.setcmd(cmd)
         sendcmd(p)
       }
       Thread.abort_on_exception=true
@@ -94,7 +94,7 @@ module App
         int=(@watch['period']||300).to_i
         loop{
           begin
-            @cobj.set(['upd'])
+            @cobj.setcmd(['upd'])
             sendcmd(2)
           rescue InvalidID
             Msg.warn($!)

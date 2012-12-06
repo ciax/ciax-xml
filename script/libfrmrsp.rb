@@ -67,7 +67,7 @@ module Frm
 
     def upd_logline(str)
       res=Logging.set_logline(str)
-      @cobj.set(res[:cmd])
+      @cobj.setcmd(res[:cmd])
       upd{res}
     end
 

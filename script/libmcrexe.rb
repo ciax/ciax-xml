@@ -58,7 +58,7 @@ if __FILE__ == $0
     mdb=Mcr::Db.new('ciax')
     mcobj=Command.new
     mcobj.add_extdom(mdb,:macro).ext_mcrcmd(al,opt)
-    item=mcobj.set(ARGV)
+    item=mcobj.setcmd(ARGV)
     Mcr::Sv.new(item,al,opt).ext_shell.shell
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")

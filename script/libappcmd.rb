@@ -11,7 +11,7 @@ module App
     end
 
     #frmcmd is ary of ary
-    def get
+    def getcmd
       frmcmd=[]
       @select.each{|e1|
         cmd=[]
@@ -57,7 +57,7 @@ if __FILE__ == $0
     fcobj.add_extdom(Frm::Db.new(adb['frm_id']),:cmdframe)
     acobj=Command.new
     acobj.add_extdom(adb,:command).ext_appcmd
-    acobj.set(cmd).get.each{|fcmd|
+    acobj.set(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
       fcobj.set(fcmd) if /set|unset|load|save/ !~ fcmd.first
       p fcmd

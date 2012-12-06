@@ -184,7 +184,7 @@ module Int
     attr_reader :share_proc
     def initialize(opt=nil)
       @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
-      @share_proc=Update.new
+      @share_proc=Update.new # Execute when new key is set
       super(){|h,id|
         int=yield id
         @share_proc.exe(int)

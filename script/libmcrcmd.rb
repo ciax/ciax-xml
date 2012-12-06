@@ -8,7 +8,7 @@ module Mcr
     extend Msg::Ver
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
-    # @ aint,opt,begin
+    # @ aint,opt
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
@@ -23,18 +23,18 @@ module Mcr
 
     def exe
       me=Thread.current
-      @begin = Time.new.to_f
-      current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
+      base=Time.new.to_f
+      current={'base'=>base.to_i,'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
       me[:record]=[current.extend(Prt)]
       display(current)
-      macro
+      macro(base)
       me[:stat]='(done)'
       super
       self
     end
 
     # Should be public for recursive call
-    def macro(depth=1)
+    def macro(base,depth=1)
       me=Thread.current
       me[:stat]='(run)'
       @select.each{|e1|
@@ -59,20 +59,16 @@ module Mcr
           @aint[e1['site']].exe(e1['cmd']).stat.refresh
         when 'mcr'
           display(current)
-          sub=@index.dup.set(e1['mcr']).macro(depth+1)
+          sub=@index.dup.set(e1['mcr']).macro(base,depth+1)
         end
         current.delete('stat')
-        current['elapsed']=elapsed(@begin)
+        current['elapsed']="%.3f" % (Time.now.to_f-base)
         me[:stat] != '(run)' && live?(depth) && break
       }
       self
     end
 
     private
-    def elapsed(base)
-      "%.3f" % (Time.now.to_f-base)
-    end
-
     def display(str)
       print str if @opt['v']
     end

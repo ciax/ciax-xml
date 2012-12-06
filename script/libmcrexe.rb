@@ -8,11 +8,10 @@ module Mcr
   class Exe < Int::Exe
     # @< cobj,output,(intdom),(int_proc),upd_proc*
     # @ mdb,extdom
-    def initialize(mdb)
-      @mdb=Msg.type?(mdb,Mcr::Db)
+    def initialize(item)
+      @item=Msg.type?(item,Mcr::Cmd)
       super()
-      self['id']=@mdb['id']
-      @extdom=@cobj.add_extdom(@mdb,:macro)
+      self['id']=item.id
     end
   end
 
@@ -21,50 +20,46 @@ module Mcr
     # @<< (cobj),(output),(intdom),(int_proc),(upd_proc*)
     # @< (mdb),extdom
     # @ dryrun,aint
-    def initialize(mdb,aint,logs,opt={})
-      super(mdb)
+    attr_reader :crnt
+    def initialize(item,aint,opt={})
+      super(item)
       @aint=Msg.type?(aint,App::List)
-      @extdom.ext_mcrcmd(@aint,logs,opt)
-      @upd_proc.add{
-        if c=@cobj.current
-          @output=opt['v'] ? logs.last : logs.last[:line]
-          self['stat']=c[:stat]
-        end
+      @crnt=Thread.new{
+        item.exe
       }
+      @upd_proc.add{
+        @output=@crnt[:record]
+        self['stat']=@crnt[:stat]
+      }.upd
+    end
+
+    def ext_shell
+      extend(Shell).ext_shell
+      self
     end
   end
 
-  class List < Int::List
-    # @< opt,share_proc*
-    attr_reader :logs
-    def initialize(opt=nil)
-      @al=App::List.new(opt)
-      @logs=[]
-      super{|id|
-        mdb=Db.new(id)
-        Sv.new(mdb,@al,@logs,opt)
+  module Shell
+    include Int::Shell
+    def ext_shell
+      super({'stat' => nil})
+      grp=@shdom.add_group('con','Control')
+      grp.add_item('y','yes').init_proc{|i|
+        @crnt.run if @crnt.alive?
       }
-    end
-
-    def shell(id)
-      @share_proc.add{|int|
-        int.ext_shell
-        grp=int.shdom.add_group('con','Control')
-        item=grp.add_item('y','yes')
-        item.init_proc{|i|
-          lt=@logs.last[:thread]
-          lt.wakeup if lt.alive?
-        }
-      }
-      super
     end
   end
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('tvi')
+  opt=Msg::GetOpts.new('vti')
   begin
-    puts Mcr::List.new(opt).shell('ciax')
+    al=App::List.new(opt)
+    mdb=Mcr::Db.new('ciax')
+    mcobj=Command.new
+    mcobj.add_extdom(mdb,:macro).ext_mcrcmd(al,opt)
+    item=mcobj.set(ARGV)
+    Mcr::Sv.new(item,al,opt).ext_shell.shell
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")
   end

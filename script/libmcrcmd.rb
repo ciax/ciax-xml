@@ -114,6 +114,9 @@ module Mcr
         current.delete('fault')
         me[:stat]='(run)'
       end
+    rescue Broken
+      me[:stat]='(broken)'
+      Thread.exit
     end
 
     def fault?(current)

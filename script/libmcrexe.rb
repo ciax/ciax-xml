@@ -40,6 +40,7 @@ module Mcr
         else
           self['msg']=''
         end
+        @crnt.raise(Broken)
       }
     end
 

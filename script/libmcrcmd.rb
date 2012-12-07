@@ -134,13 +134,13 @@ module Mcr
         Cmd.msg{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}
         if res
           flt['res']=res
-          flt['upd'] && comp(res,cmp,flt['inv'])
+          flt['upd'] && match?(res,cmp,flt['inv'])
         end
       } && current['fault']=flt
       flg
     end
 
-    def comp(res,cmp,inv)
+    def match?(res,cmp,inv)
       i=(/true|1/ === inv)
       if /[a-zA-Z]/ === cmp
         (/#{cmp}/ === res) ^ i

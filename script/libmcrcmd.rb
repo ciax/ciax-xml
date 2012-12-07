@@ -8,7 +8,7 @@ module Mcr
     extend Msg::Ver
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
-    # @ aint,opt
+    # @ aint,opt,exec
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
@@ -17,12 +17,14 @@ module Mcr
     def ext_mcrcmd(aint,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
+      @exec=nil
       self
     end
 
     def exe
       base=Time.new.to_f
-      rec=Thread.current[:record]={:id =>base.to_i,:stat => '(ready)'}
+      rec=(Thread.current[:record]||={})
+      rec.update({:id =>base.to_i,:stat => '(ready)'})
       current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
       rec[:sequence]=[current.extend(Prt)]
       display(current)
@@ -31,6 +33,7 @@ module Mcr
       super
       self
     rescue Broken,Interrupt
+      warn @exec.exe(['interrupt'])['msg'] if @exec
       rec[:stat]='(broken)'
       Thread.exit
     end
@@ -40,8 +43,8 @@ module Mcr
       rec=Thread.current[:record]
       rec[:stat]='(run)'
       @select.each{|e1|
-        current={'depth'=>depth}.update(e1)
-        rec[:sequence].push(current.extend(Prt))
+        current={'depth'=>depth}.update(e1).extend(Prt)
+        rec[:sequence].push(current)
         case e1['type']
         when 'goal'
           rec[:stat]='(done)' unless fault?(current)
@@ -58,7 +61,8 @@ module Mcr
           rec[:stat]="(query)"
           query(depth)
           rec[:stat]='(run)'
-          @aint[e1['site']].exe(e1['cmd']).stat.refresh
+          @exec=@aint[e1['site']].exe(e1['cmd'])
+          @exec.stat.refresh
         when 'mcr'
           display(current)
           sub=@index.dup.setcmd(e1['mcr']).macro(base,depth+1)
@@ -102,7 +106,7 @@ module Mcr
       if current['retry'].to_i.times{|n|
           current['retry']=n
           if @opt['t']
-            break if n > 4
+            break if n > 1
           else
             break if fault?(current)
           end
@@ -174,6 +178,7 @@ if __FILE__ == $0
   rescue UserError
     Msg.exit(3)
   ensure
-    puts Msg.view_struct(Thread.current[:record])
+    rec=Thread.current[:record]
+    puts Msg.view_struct(rec) if rec
   end
 end

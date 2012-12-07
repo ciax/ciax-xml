@@ -105,11 +105,9 @@ module Mcr
       current['max']=current['retry']
       if current['retry'].to_i.times{|n|
           current['retry']=n
-          if @opt['t']
-            break if n > 1
-          else
-            break if fault?(current)
-          end
+          break 1 if n > 3 if @opt['t']
+          break unless fault?(current)
+          refresh(current)
           sleep 1
           yield
         }
@@ -123,9 +121,13 @@ module Mcr
 
     def fault?(current)
       flt={}
+      stats={}
+      current['stat'].map{|h| h['site']}.uniq.each{|site|
+        stats[site]=@aint[site].stat.load
+      }
       flg=!current['stat'].all?{|h|
         site=flt['site']=h['site']
-        stat=@aint[site].stat.load
+        stat=stats[site]
         break unless flt['upd']=stat.update?
         inv=flt['inv']=h['inv']
         var=flt['var']=h['var']
@@ -138,6 +140,13 @@ module Mcr
         end
       } && current['fault']=flt
       flg
+    end
+
+    def refresh(current)
+      current['stat'].map{|h| h['site']}.uniq.each{|site|
+        @aint[site].stat.refresh
+      }
+      self
     end
 
     def match?(res,cmp,inv)

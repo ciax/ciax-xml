@@ -140,6 +140,7 @@ module Int
     # mode gives special break (loop returns mode)
     def shell
       begin
+        @upd_proc.upd
         while line=Readline.readline(prompt,true)
           case line
           when /^q/

@@ -27,10 +27,20 @@ module Mcr
       @crnt=Thread.new{
         item.exe
       }
+      @crnt[:stat]='(ready)'
       @upd_proc.add{
         @output=@crnt[:record]
         self['stat']=@crnt[:stat]
       }.upd
+      grp=@intdom.add_group('int',"Internal Command")
+      grp.add_item('interrupt').init_proc{|i|
+        if @crnt[:int]
+          @aint[@crnt[:int]].exe(['interrupt'])
+          self['msg']="Interrupted"
+        else
+          self['msg']=''
+        end
+      }
     end
 
     def ext_shell
@@ -45,7 +55,10 @@ module Mcr
       super({'stat' => nil})
       grp=@shdom.add_group('con','Control')
       grp.add_item('y','yes').init_proc{|i|
-        @crnt.run if @crnt.alive?
+        if @crnt.alive?
+          @crnt.run
+          self['msg']="Continue"
+        end
       }
     end
   end

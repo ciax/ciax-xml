@@ -73,6 +73,6 @@ module App
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('e')
+  opt=Msg::GetOpts.new('et')
   puts App::List.new(opt).exe(ARGV)
 end

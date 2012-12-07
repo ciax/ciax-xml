@@ -47,6 +47,10 @@ module App
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
+      grp.add_item('interrupt',"Interrupt").init_proc{
+        int=@watch.interrupt
+        self['msg']="Interrupt #{int}"
+      }
       @watch.event_proc.add{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
       }

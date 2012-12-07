@@ -31,6 +31,9 @@ module Mcr
       me[:stat]='(done)'
       super
       self
+    rescue Broken
+      me[:stat]='(broken)'
+      Thread.exit
     end
 
     # Should be public for recursive call
@@ -83,7 +86,6 @@ module Mcr
       end
     end
 
-
     def live?(depth)
       if @opt['t']
         Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
@@ -114,9 +116,6 @@ module Mcr
         current.delete('fault')
         me[:stat]='(run)'
       end
-    rescue Broken
-      me[:stat]='(broken)'
-      Thread.exit
     end
 
     def fault?(current)

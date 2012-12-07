@@ -7,7 +7,7 @@ require 'libupdate'
 
 #Access method
 #Command < Hash
-# Command::Item => {:label,:parameter,:select,:cmd,:msg}
+# Command::Item => {:label,:parameter,:select,:cmd}
 #  Command::Item#set_par(par)
 #  Command::Item#init_proc{|item|}
 class Command
@@ -34,12 +34,10 @@ class Command
     end
 
     def set_par(par)
-      self[:msg]=''
       @par=validate(Msg.type?(par,Array))
       @cmd=[@id,*par]
       self[:cmd]=@cmd.join(':') # Used by macro
       Command.msg{"SetPAR: #{par}"}
-      self[:msg]='OK'
       self
     end
 

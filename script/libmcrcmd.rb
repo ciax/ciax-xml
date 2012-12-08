@@ -25,17 +25,21 @@ module Mcr
       base=Time.new.to_f
       rec=(Thread.current[:record]||={})
       rec.update({:id =>base.to_i,:stat => '(ready)'})
-      current={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
-      rec[:sequence]=[current.extend(Prt)]
-      display(current)
+      crnt={'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]}
+      rec[:sequence]=[crnt.extend(Prt)]
+      display(crnt)
       macro(base)
       rec[:stat]='(done)'
       super
-      self
+    rescue Interlock
+      rec[:stat]='(fail)'
     rescue Broken,Interrupt
       warn @exec.exe(['interrupt'])['msg'] if @exec
       rec[:stat]='(broken)'
       Thread.exit
+    ensure
+      rec[:total]="%.3f" % (Time.now.to_f-base)
+      self
     end
 
     # Should be public for recursive call
@@ -43,32 +47,32 @@ module Mcr
       rec=Thread.current[:record]
       rec[:stat]='(run)'
       @select.each{|e1|
-        current={'depth'=>depth}.update(e1).extend(Prt)
-        rec[:sequence].push(current)
+        crnt={'depth'=>depth}.update(e1).extend(Prt)
+        crnt['elapsed']="%.3f" % (Time.now.to_f-base)
+        rec[:sequence].push(crnt)
         case e1['type']
         when 'goal'
-          rec[:stat]='(done)' unless fault?(current)
-          display(current)
+          rec[:stat]='(done)' if ok?(crnt)
+          display(crnt)
         when 'check'
-          rec[:stat]="(error)" if fault?(current)
-          display(current)
+          rec[:stat]='(fail)' unless ok?(crnt)
+          display(crnt)
         when 'wait'
-          display(current.title)
-          waiting(current){display('.')}
-          display(current.result)
+          display(crnt.title)
+          waiting(crnt){display('.')}
+          display(crnt.result)
+          crnt.delete('stat')
         when 'exec'
-          display(current)
+          display(crnt)
           rec[:stat]="(query)"
           query(depth)
           rec[:stat]='(run)'
           @exec=@aint[e1['site']].exe(e1['cmd'])
           @exec.stat.refresh
         when 'mcr'
-          display(current)
+          display(crnt)
           sub=@index.dup.setcmd(e1['mcr']).macro(base,depth+1)
         end
-        current.delete('stat')
-        current['elapsed']="%.3f" % (Time.now.to_f-base)
         rec[:stat] != '(run)' && live?(depth) && break
       }
       self
@@ -98,55 +102,72 @@ module Mcr
       end
     end
 
-    def waiting(current)
+    def waiting(crnt)
       rec=Thread.current[:record]
       rec[:stat]="(wait)"
       #gives number or nil(if break)
-      current['max']=current['retry']
-      if current['retry'].to_i.times{|n|
-          current['retry']=n
-          break 1 if n > 3 if @opt['t']
-          break unless fault?(current)
-          refresh(current)
+      crnt['max']=crnt['retry']
+      if crnt['retry'].to_i.times{|n|
+          crnt['retry']=n
+          break 1 if  @opt['t'] && n > 3
+          break if ok?(crnt,1)
           sleep 1
           yield
         }
-        current['timeout']=true
+        crnt['timeout']=true
         rec[:stat]='(timeout)'
       else
-        current.delete('fault')
+        crnt.delete('fault')
         rec[:stat]='(run)'
       end
     end
 
-    def fault?(current)
-      flt={}
-      stats={}
-      current['stat'].map{|h| h['site']}.uniq.each{|site|
-        stats[site]=@aint[site].stat.load
-      }
-      flg=!current['stat'].all?{|h|
+    def ok?(crnt,refresh=nil)
+      res=(flt=scan(crnt)).empty?
+      crnt['fault']=flt unless res
+      crnt.delete('stat') if res or !refresh
+      refresh(crnt) if refresh
+      res
+   end
+
+    def scan(crnt)
+      stats=load(crnt)
+      crnt['stat'].map{|h|
+        flt={}
         site=flt['site']=h['site']
         stat=stats[site]
-        break unless flt['upd']=stat.update?
-        inv=flt['inv']=h['inv']
-        var=flt['var']=h['var']
-        cmp=flt['cmp']=h['val']
-        res=stat['msg'][var]||stat['val'][var]
-        Cmd.msg{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}
-        if res
+        if flt['upd']=stat.update?
+          inv=flt['inv']=h['inv']
+          var=flt['var']=h['var']
+          cmp=flt['cmp']=h['val']
+          res=stat['msg'][var]||stat['val'][var]
+          Cmd.msg{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}
+          next unless res
           flt['res']=res
-          flt['upd'] && match?(res,cmp,flt['inv'])
+          match?(res,cmp,flt['inv']) && flt
+        else
+          flt
         end
-      } && current['fault']=flt
-      flg
+      }.compact
     end
 
-    def refresh(current)
-      current['stat'].map{|h| h['site']}.uniq.each{|site|
+    def load(crnt)
+      stats={}
+      sites(crnt).each{|site|
+        stats[site]=@aint[site].stat.load
+      }
+      stats
+    end
+
+    def refresh(crnt)
+      sites(crnt).each{|site|
         @aint[site].stat.refresh
       }
       self
+    end
+
+    def sites(crnt)
+      crnt['stat'].map{|h| h['site']}.uniq
     end
 
     def match?(res,cmp,inv)

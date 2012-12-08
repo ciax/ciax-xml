@@ -63,12 +63,14 @@ module Mcr
     def getcond
       msg=''
       if c=self['fault']
-        msg << Msg.indent((self['depth']||0)+1)
-        if c['upd']
-          msg << Msg.color("#{c['site']}:#{c['var']}",3)+" is not #{c['cmp']}"
-        else
-          msg << Msg.color("#{c['site']}",3)+" is not updated"
-        end
+        c.each{|h|
+          msg << Msg.indent((self['depth']||0)+1)
+          if h['upd']
+            msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
+          else
+            msg << Msg.color("#{h['site']}",3)+" is not updated"
+          end
+        }
       end
       msg
     end

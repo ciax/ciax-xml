@@ -24,8 +24,8 @@ module Mcr
     def initialize(item,aint,opt={})
       super(item)
       @aint=Msg.type?(aint,App::List)
-      @crnt=Thread.new(@rec={:stat => '(ready)'}){|record|
-        Thread.current[:record]=record
+      @rec=item.record
+      @crnt=Thread.new{
         item.exe
       }
       @upd_proc.add{

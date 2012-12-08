@@ -46,10 +46,16 @@ module Mcr
         rec.newline(e1,depth)
         case e1['type']
         when 'goal'
-          rec[:stat]='(done)' if rec.ok?
+          if rec.ok?
+            rec[:stat]='(done)'
+            live?(depth) && break
+          end
           rec.prt
         when 'check'
-          rec[:stat]='(fail)' unless rec.ok?
+          unless rec.ok?
+            rec[:stat]='(fail)'
+            live?(depth) && raise(Interlock)
+          end
           rec.prt
         when 'wait'
           rec.prt(0)
@@ -66,7 +72,6 @@ module Mcr
           rec.prt
           sub=@index.dup.setcmd(e1['mcr']).macro(rec,depth+1)
         end
-        rec[:stat] != '(run)' && live?(depth) && break
       }
       self
     end

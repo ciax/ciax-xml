@@ -24,6 +24,7 @@ module Mcr
     end
 
     def fin
+      self[:stat]='(done)' if self[:stat] == '(run)'
       self[:total]="%.3f" % (Time.now.to_f-@base)
       self
     end
@@ -141,7 +142,6 @@ module Mcr
       @record.newline({'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]})
       @record.prt
       macro(@record)
-      @record[:stat]='(done)'
       super
     rescue Interlock
       @record[:stat]='(fail)'

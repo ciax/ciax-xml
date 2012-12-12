@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libapplist"
 require "libcmdext"
-require "libmcrrec"
+require "libmcrblk"
 
 module Mcr
   module Cmd
@@ -18,14 +18,16 @@ module Mcr
     def ext_mcrcmd(aint,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
-      @record=Record.new(aint,opt)
+      @record=Block.new(aint,opt)
+      @record.load.add{|site| @aint[site].stat.load}
+      @record.refresh.add{|site| @aint[site].stat.refresh}
       @exec=nil
       self
     end
 
     def exe
       @record.newline({'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]})
-      @record.prt
+      @record.crnt.prt
       macro(@record)
       super
     rescue Interlock
@@ -46,30 +48,30 @@ module Mcr
         rec.newline(e1,depth)
         case e1['type']
         when 'goal'
-          if rec.ok?
+          if rec.crnt.ok?
             rec[:stat]='(done)'
             live?(depth) && break
           end
-          rec.prt
+          rec.crnt.prt
         when 'check'
-          unless rec.ok?
+          unless rec.crnt.ok?
             rec[:stat]='(fail)'
             live?(depth) && raise(Interlock)
           end
-          rec.prt
+          rec.crnt.prt
         when 'wait'
-          rec.prt(0)
+          rec.crnt.prt(0)
           rec.waiting{print('.')}
-          rec.prt(1)
+          rec.crnt.prt(1)
         when 'exec'
-          rec.prt
+          rec.crnt.prt
           rec[:stat]="(query)"
           query(depth)
           rec[:stat]='(run)'
           @exec=@aint[e1['site']].exe(e1['cmd'])
           @exec.stat.refresh
         when 'mcr'
-          rec.prt
+          rec.crnt.prt
           sub=@index.dup.setcmd(e1['mcr']).macro(rec,depth+1)
         end
       }

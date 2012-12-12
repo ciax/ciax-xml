@@ -3,8 +3,8 @@ require "libapplist"
 require "libmcrprt"
 
 module Mcr
-  class Record < Hash
-    extend Msg::Ver
+  class Block < Hash
+    attr_reader :crnt,:load,:refresh
     def initialize(aint,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
@@ -12,13 +12,15 @@ module Mcr
       self[:id]=@base.to_i
       self[:stat]='(ready)'
       self[:total]=0
-      self[:sequence]=[]
+      self[:record]=[]
+      @load=Update.new
+      @refresh=Update.new
     end
 
     def newline(db,depth=0)
-      @crnt={'depth' => depth}.update(db).extend(Prt)
+      @crnt=Record.new(db,@load,@refresh,depth,@opt)
       @crnt['elapsed']="%.3f" % (Time.now.to_f-@base)
-      self[:sequence] << @crnt
+      self[:record] << @crnt
       self
     end
 
@@ -28,41 +30,59 @@ module Mcr
       self
     end
 
-    def prt(num=nil)
-      if @opt['v']
-        case num
-        when 0
-          print @crnt.title
-        when 1
-          print @crnt.result
-        else
-          print @crnt
-        end
-      end
-    end
-
-    def waiting
+    def waiting(&p)
       self[:stat]="(wait)"
-      #gives number or nil(if break)
-      @crnt['max']=@crnt['retry']
-      if @crnt['retry'].to_i.times{|n|
-          @crnt['retry']=n
-          break 1 if  @opt['t'] && n > 3
-          break if ok?(1)
-          sleep 1
-          yield if @opt['v']
-        }
-        @crnt['timeout']=true
+      if @crnt.timeout?(&p)
         self[:stat]='(timeout)'
       else
         self[:stat]='(run)'
       end
     end
+  end
+
+  class Record < Hash
+    extend Msg::Ver
+    include Prt
+
+    def initialize(db,load,refresh,depth=0,opt={})
+      @load=Msg.type?(load,Update)
+      @refresh=Msg.type?(refresh,Update)
+      @opt=Msg.type?(opt,Hash)
+      self['depth']=depth
+      update(db)
+    end
+
+    def prt(num=nil)
+      if @opt['v']
+        case num
+        when 0
+          print title
+        when 1
+          print result
+        else
+          print self
+        end
+      end
+    end
+
+    def timeout?
+      #gives number or nil(if break)
+      self['max']=self['retry']
+      if self['retry'].to_i.times{|n|
+          self['retry']=n
+          break 1 if  @opt['t'] && n > 3
+          break if ok?(1)
+          sleep 1
+          yield if @opt['v']
+        }
+        self['timeout']=true
+      end
+    end
 
     def ok?(refr=nil)
       res=(flt=scan).empty?
-      @crnt['fault']=flt unless res
-      @crnt.delete('stat') if res or !refr
+      self['fault']=flt unless res
+      delete('stat') if res or !refr #self.delete
       refresh if refr
       res
     end
@@ -70,7 +90,7 @@ module Mcr
     private
     def scan
       stats=load
-      @crnt['stat'].map{|h|
+      self['stat'].map{|h|
         flt={}
         site=flt['site']=h['site']
         stat=stats[site]
@@ -92,20 +112,20 @@ module Mcr
     def load
       stats={}
       sites.each{|site|
-        stats[site]=@aint[site].stat.load
+        stats[site]=@load.exe(site)
       }
       stats
     end
 
     def refresh
       sites.each{|site|
-        @aint[site].stat.refresh
+        @refresh.exe(site)
       }
-      @crnt
+      self
     end
 
     def sites
-      @crnt['stat'].map{|h| h['site']}.uniq
+      self['stat'].map{|h| h['site']}.uniq
     end
 
     def match?(res,cmp,inv)

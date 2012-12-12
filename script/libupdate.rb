@@ -15,7 +15,7 @@ class Update < Array
     Update.msg{"Execute procs"}
     map{|p|
       p.call(par)
-    }
+    }.last
   end
 
   def upd

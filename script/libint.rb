@@ -5,6 +5,12 @@ require "readline"
 require "libcmdext"
 require "libupdate"
 
+# Provide Server,Client and Shell
+# Integrate Command,Var
+# Generate Internal Command
+# Add External Command to Combine Lower Layer (Stream,Frm,App)
+# Add Shell Command (by Shell extention)
+
 module Int
   # @ cobj,output,intdom,upd_proc,int_proc*
   class Exe < ExHash

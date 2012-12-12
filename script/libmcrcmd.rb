@@ -8,9 +8,9 @@ module Mcr
     extend Msg::Ver
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
-    # @ aint,opt,exec
+    # @ aint,opt,interrupt
     attr_reader :record
-    def @crnt.extended(obj)
+    def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
     end
@@ -19,9 +19,7 @@ module Mcr
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
       @record=Block.new(aint,opt)
-      @record.load.add{|site| @aint[site].stat.load}
-      @record.refresh.add{|site| @aint[site].stat.refresh}
-      @exec=nil
+      @interrupt=Update.new
       self
     end
 
@@ -33,7 +31,7 @@ module Mcr
     rescue Interlock
       @record[:stat]='(fail)'
     rescue Broken,Interrupt
-      warn @exec.exe(['interrupt'])['msg'] if @exec
+      warn @interrupt.exe['msg']
       @record[:stat]='(broken)'
       Thread.exit
     ensure
@@ -68,8 +66,8 @@ module Mcr
           rec[:stat]="(query)"
           query(depth)
           rec[:stat]='(run)'
-          @exec=@aint[e1['site']].exe(e1['cmd'])
-          @exec.stat.refresh
+          exe=@aint[e1['site']].exe(e1['cmd']).stat.refresh
+          @interrupt.clear.add{exe.exe(['interrupt'])}
         when 'mcr'
           rec.crnt.prt
           sub=@index.dup.setcmd(e1['mcr']).macro(rec,depth+1)
@@ -109,6 +107,8 @@ class Command::ExtDom
   def ext_mcrcmd(aint,opt={})
     values.each{|item|
       item.extend(Mcr::Cmd).ext_mcrcmd(aint,opt)
+      item.record.load.add{|site| aint[site].stat.load}
+      item.record.refresh.add{|site| aint[site].stat.refresh}
     }
     self
   end

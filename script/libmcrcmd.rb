@@ -9,16 +9,16 @@ module Mcr
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
     # @ aint,opt,interrupt
-    attr_reader :record
+    attr_reader :record,:exec
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
     end
 
-    def ext_mcrcmd(aint,opt={})
-      @aint=Msg.type?(aint,App::List)
+    def ext_mcrcmd(record,opt={})
       @opt=Msg.type?(opt,Hash)
-      @record=Block.new(aint,opt)
+      @record=Msg.type?(record,Block)
+      @exec=Update.new
       @interrupt=Update.new
       self
     end
@@ -66,7 +66,7 @@ module Mcr
           rec[:stat]="(query)"
           query(depth)
           rec[:stat]='(run)'
-          exe=@aint[e1['site']].exe(e1['cmd']).stat.refresh
+          exe=@exec.exe([e1['site'],e1['cmd']])
           @interrupt.clear.add{exe.exe(['interrupt'])}
         when 'mcr'
           rec.crnt.prt
@@ -106,9 +106,11 @@ end
 class Command::ExtDom
   def ext_mcrcmd(aint,opt={})
     values.each{|item|
-      item.extend(Mcr::Cmd).ext_mcrcmd(aint,opt)
-      item.record.load.add{|site| aint[site].stat.load}
-      item.record.refresh.add{|site| aint[site].stat.refresh}
+      load=Update.new.add{|site| aint[site].stat.load}
+      refresh=Update.new.add{|site| aint[site].stat.refresh}
+      record=Mcr::Block.new(load,refresh,opt)
+      item.extend(Mcr::Cmd).ext_mcrcmd(record,opt)
+      item.exec.add{|site,cmd| aint[site].exe(cmd).stat.refresh}
     }
     self
   end

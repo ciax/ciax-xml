@@ -5,16 +5,15 @@ require "libmcrprt"
 module Mcr
   class Block < Hash
     attr_reader :crnt,:load,:refresh
-    def initialize(aint,opt={})
-      @aint=Msg.type?(aint,App::List)
+    def initialize(load,refresh,opt={})
+      @load=Msg.type?(load,Update)
+      @refresh=Msg.type?(refresh,Update)
       @opt=Msg.type?(opt,Hash)
       @base=Time.new.to_f
       self[:id]=@base.to_i
       self[:stat]='(ready)'
       self[:total]=0
       self[:record]=[]
-      @load=Update.new
-      @refresh=Update.new
     end
 
     def newline(db,depth=0)

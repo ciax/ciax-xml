@@ -6,12 +6,14 @@ require "libwatch"
 module App
   class Exe < Int::Exe
     # @< cobj,output,intdom,int_proc,upd_proc*
-    # @ adb,extdom,output,watch,stat*
+    # @ adb,extdom,intgrp,output,watch,stat*
     attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
       super()
       @extdom=@cobj.add_extdom(@adb,:command)
+      @intgrp=@intdom.add_group('int',"Internal Command")
+      @intgrp.add_item('interrupt')
       self['id']=@adb['site_id']
       @output=@stat=Status::Var.new.ext_file(@adb)
       @watch=Watch::Var.new.ext_file(@adb)
@@ -24,6 +26,11 @@ module App
       end
       self
     end
+
+    def interrupt
+      @cobj['interrupt'].exe
+      self
+    end
   end
 
   class Test < Exe
@@ -32,14 +39,13 @@ module App
       super
       @stat.extend(Sym::Conv).load
       @watch.ext_conv(adb,@stat).upd
-      grp=@intdom.add_group('int',"Internal Command")
       cri={:type => 'reg', :list => ['.']}
-      grp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
+      @intgrp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
         @stat.str_update(item.par[0]).upd
         @watch.upd
         self['msg']="Set #{item.par[0]}"
       }
-      grp.add_item('del','[key,...]',[cri]).init_proc{|item|
+      @intgrp.add_item('del','[key,...]',[cri]).init_proc{|item|
         item.par[0].split(',').each{|key|
           @stat['val'].delete(key)
         }
@@ -47,7 +53,7 @@ module App
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
-      grp.add_item('interrupt',"Interrupt").init_proc{
+      @cobj['interrupt'].init_proc{
         int=@watch.interrupt
         self['msg']="Interrupt #{int}"
       }

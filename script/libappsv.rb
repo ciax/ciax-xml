@@ -34,8 +34,8 @@ module App
         Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      grp=@intdom.add_group('int',"Internal Command")
-      grp.add_item('interrupt').init_proc{
+
+      @cobj['interrupt'].init_proc{
         int=@watch.interrupt
         Sv.msg{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

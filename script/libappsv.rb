@@ -43,7 +43,7 @@ module App
       # Update for Frm level manipulation
       @fint.int_proc.add{@stat.upd.save}
       # Logging if version number exists
-      @log_proc=Update.new
+      @log_proc=UpdProc.new
       if logging and @adb['version']
         ext_logging(@adb['site_id'],@adb['version'])
       end

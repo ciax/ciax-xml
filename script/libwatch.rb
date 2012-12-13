@@ -19,7 +19,7 @@ module Watch
       ['active','exec','block','int'].each{|i| self[i]||=ExArray.new}
       #For Hash element
       ['crnt','last','res'].each{|i| self[i]||={}}
-      @event_proc=Update.new
+      @event_proc=ExeProc.new
       self
     end
 

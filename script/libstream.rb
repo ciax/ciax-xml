@@ -12,7 +12,7 @@ class Stream < ExHash
     @f=IO.popen(@iocmd,'r+')
     @wait=wait.to_f
     @timeout=timeout
-    @log_proc=Update.new
+    @log_proc=UpdProc.new
     update({:time => Msg.now,:dir => '',:cmd => '',:data => ''})
   end
 

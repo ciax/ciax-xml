@@ -21,8 +21,8 @@ module Int
       @cobj=Command.new
       @output=''
       @intdom=@cobj.add_domain('int',2)
-      @upd_proc=Update.new # Proc for Server Status Update
-      @int_proc=Update.new # Proc for Interactive Operation
+      @upd_proc=UpdProc.new # Proc for Server Status Update
+      @int_proc=UpdProc.new # Proc for Interactive Operation
     end
 
     # Sync only (Wait for other thread)
@@ -191,7 +191,7 @@ module Int
     attr_reader :share_proc
     def initialize(opt=nil)
       @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
-      @share_proc=Update.new # Execute when new key is set
+      @share_proc=ExeProc.new # Execute when new key is set
       super(){|h,id|
         int=yield id
         @share_proc.exe(int)

@@ -6,8 +6,8 @@ module Mcr
   class Block < Hash
     attr_reader :crnt,:load,:refresh
     def initialize(load,refresh,opt={})
-      @load=Msg.type?(load,Update)
-      @refresh=Msg.type?(refresh,Update)
+      @load=Msg.type?(load,ExeProc)
+      @refresh=Msg.type?(refresh,ExeProc)
       @opt=Msg.type?(opt,Hash)
       @base=Time.new.to_f
       self[:id]=@base.to_i
@@ -69,8 +69,8 @@ module Mcr
     include Prt
 
     def initialize(db,load,refresh,depth=0,opt={})
-      @load=Msg.type?(load,Update)
-      @refresh=Msg.type?(refresh,Update)
+      @load=Msg.type?(load,ExeProc)
+      @refresh=Msg.type?(refresh,ExeProc)
       @opt=Msg.type?(opt,Hash)
       self['depth']=depth
       update(db)

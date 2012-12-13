@@ -11,7 +11,7 @@ class Var < ExHash
     self['type']=type
     self['val']=ExHash.new
     set_time
-    @upd_proc=Update.new
+    @upd_proc=UpdProc.new
   end
 
   def upd

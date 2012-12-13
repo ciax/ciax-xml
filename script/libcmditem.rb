@@ -15,16 +15,16 @@ class Command
     include Math
     attr_reader :id,:par,:cmd
     attr_accessor :def_proc
-    def initialize(id,index,def_proc=Update.new)
+    def initialize(id,index,def_proc=ExeProc.new)
       @id=id
       @index=Msg.type?(index,Command)
       @par=[]
       @cmd=[]
-      @def_proc=Msg.type?(def_proc,Update)
+      @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
     def init_proc(&p)
-      @def_proc=Update.new << p
+      @def_proc=UpdProc.new << p
       self
     end
 

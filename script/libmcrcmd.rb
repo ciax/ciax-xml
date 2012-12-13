@@ -18,8 +18,8 @@ module Mcr
     def ext_mcrcmd(record,opt={})
       @opt=Msg.type?(opt,Hash)
       @record=Msg.type?(record,Block)
-      @exec=Update.new
-      @interrupt=Update.new
+      @exec=ExeProc.new
+      @interrupt=ExeProc.new
       self
     end
 
@@ -84,8 +84,8 @@ end
 class Command::ExtDom
   def ext_mcrcmd(aint,opt={})
     values.each{|item|
-      load=Update.new.add{|site| aint[site].stat.load}
-      refresh=Update.new.add{|site| aint[site].stat.refresh}
+      load=ExeProc.new.add{|site| aint[site].stat.load}
+      refresh=ExeProc.new.add{|site| aint[site].stat.refresh}
       record=Mcr::Block.new(load,refresh,opt)
       item.extend(Mcr::Cmd).ext_mcrcmd(record,opt)
       item.exec.add{|site,cmd| aint[site].exe(cmd).stat.refresh}

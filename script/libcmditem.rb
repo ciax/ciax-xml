@@ -24,7 +24,7 @@ class Command
     end
 
     def init_proc(&p)
-      @def_proc=UpdProc.new << p
+      @def_proc=ExeProc.new << p
       self
     end
 

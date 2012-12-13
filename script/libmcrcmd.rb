@@ -18,8 +18,7 @@ module Mcr
     def ext_mcrcmd(record,opt={})
       @opt=Msg.type?(opt,Hash)
       @record=Msg.type?(record,Block)
-      @exec=ExeProc.new
-      @interrupt=ExeProc.new
+      @exec=ExeProc.new{|par| par[1]=['interrupt']}
       self
     end
 
@@ -33,7 +32,7 @@ module Mcr
     rescue Interlock
       @record.fin('fail')
     rescue Broken,Interrupt
-      warn @interrupt.exe['msg']
+      @exec.interrupt
       @record.fin('broken')
       Thread.exit
     rescue Quit
@@ -51,7 +50,7 @@ module Mcr
         when 'exec'
           rec.crnt.prt
           query(rec,depth)
-          appexe(e1)
+          @exec.exe([e1['site'],e1['cmd']])
         when 'mcr'
           rec.crnt.prt
           @index.dup.setcmd(e1['mcr']).macro(rec,depth+1)
@@ -71,12 +70,6 @@ module Mcr
         sleep
       end
       rec[:stat]='run'
-    end
-
-    def appexe(db)
-      exe=@exec.exe([db['site'],db['cmd']])
-      @interrupt.clear.add{exe.exe(['interrupt'])}
-      self
     end
   end
 end

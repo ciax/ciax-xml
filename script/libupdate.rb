@@ -20,10 +20,23 @@ class UpdProc < Array
 end
 
 class ExeProc < UpdProc
+  def initialize(&p)
+    ExeProc.init_ver(self,5)
+    @conv=p if p
+  end
+
   def exe(par)
-    UpdProc.msg{"Execute procs"}
+    ExeProc.msg{"Execute procs"}
+    @par=par
     map{|p|
       p.call(par)
     }.last
+  end
+
+  def interrupt
+    if @conv and @par
+      @conv.call(@par)
+      exe(@par)
+    end
   end
 end

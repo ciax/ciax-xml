@@ -29,6 +29,7 @@ module Mcr
       macro(@record)
       super
       @record.fin
+      self
     rescue Interlock
       @record.fin('fail')
     rescue Broken,Interrupt
@@ -45,24 +46,8 @@ module Mcr
     def macro(rec,depth=1)
       rec[:stat]='run'
       @select.each{|e1|
-        rec.newline(e1,depth)
+        next if rec.newline(e1,depth)
         case e1['type']
-        when 'goal'
-          if rec.crnt.ok?
-            rec[:stat]='done'
-            live?(depth) && raise(Quit)
-          end
-          rec.crnt.prt
-        when 'check'
-          unless rec.crnt.ok?
-            rec[:stat]='fail'
-            live?(depth) && raise(Interlock)
-          end
-          rec.crnt.prt
-        when 'wait'
-          rec.crnt.prt(0)
-          rec.waiting{print('.')}
-          rec.crnt.prt(1)
         when 'exec'
           rec.crnt.prt
           rec[:stat]="query"
@@ -79,10 +64,6 @@ module Mcr
     end
 
     private
-    def display(str)
-      print str if @opt['v']
-    end
-
     def query(depth)
       if @opt['v']
         prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
@@ -92,16 +73,6 @@ module Mcr
         sleep
       end
     end
-
-    def live?(depth)
-      if @opt['t']
-        Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
-        false
-      else
-        true
-      end
-    end
-
   end
 end
 

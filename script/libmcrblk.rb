@@ -20,7 +20,31 @@ module Mcr
       @crnt=Record.new(db,@load,@refresh,depth,@opt)
       @crnt['elapsed']="%.3f" % (Time.now.to_f-@base)
       self[:record] << @crnt
-      self
+      case db['type']
+      when 'goal'
+        if @crnt.ok?
+          self[:stat]='done'
+          live?(depth) && raise(Quit)
+        end
+        @crnt.prt
+      when 'check'
+        unless @crnt.ok?
+          self[:stat]='fail'
+          live?(depth) && raise(Interlock)
+        end
+        @crnt.prt
+      when 'wait'
+        @crnt.prt(0)
+        self[:stat]="wait"
+        if @crnt.timeout?{print('.')}
+          self[:stat]='timeout'
+        else
+          self[:stat]='run'
+        end
+        @crnt.prt(1)
+      else
+        nil
+      end
     end
 
     def fin(stat=nil)
@@ -29,12 +53,13 @@ module Mcr
       self
     end
 
-    def waiting(&p)
-      self[:stat]="wait"
-      if @crnt.timeout?(&p)
-        self[:stat]='timeout'
+    private
+    def live?(depth)
+      if @opt['t']
+        Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
+        false
       else
-        self[:stat]='run'
+        true
       end
     end
   end

@@ -18,7 +18,7 @@ module Mcr
     def ext_mcrcmd(record,opt={})
       @opt=Msg.type?(opt,Hash)
       @record=Msg.type?(record,Block)
-      @exec=ExeProc.new{|par| par[1]=['interrupt']}
+      @exec=ExeProc.new.interrupt{|par| par[1]=['interrupt']}
       self
     end
 

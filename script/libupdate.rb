@@ -20,9 +20,8 @@ class UpdProc < Array
 end
 
 class ExeProc < UpdProc
-  def initialize(&p)
+  def initialize
     ExeProc.init_ver(self,5)
-    @conv=p if p
   end
 
   def exe(par)
@@ -33,8 +32,11 @@ class ExeProc < UpdProc
     }.last
   end
 
-  def interrupt
-    if @conv and @par
+  def interrupt(&p)
+    if p
+      @conv=p
+      self
+    elsif @conv and @par
       @conv.call(@par)
       exe(@par)
     end

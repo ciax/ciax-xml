@@ -30,32 +30,32 @@ module Mcr
       super
       @record.fin
     rescue Interlock
-      @record.fin('(fail)')
+      @record.fin('fail')
     rescue Broken,Interrupt
       warn @interrupt.exe['msg']
-      @record.fin('(broken)')
+      @record.fin('broken')
       Thread.exit
     rescue Quit
-      @record.fin('(done)')
+      @record.fin('done')
     ensure
       self
     end
 
     # Should be public for recursive call
     def macro(rec,depth=1)
-      rec[:stat]='(run)'
+      rec[:stat]='run'
       @select.each{|e1|
         rec.newline(e1,depth)
         case e1['type']
         when 'goal'
           if rec.crnt.ok?
-            rec[:stat]='(done)'
+            rec[:stat]='done'
             live?(depth) && raise(Quit)
           end
           rec.crnt.prt
         when 'check'
           unless rec.crnt.ok?
-            rec[:stat]='(fail)'
+            rec[:stat]='fail'
             live?(depth) && raise(Interlock)
           end
           rec.crnt.prt
@@ -65,9 +65,9 @@ module Mcr
           rec.crnt.prt(1)
         when 'exec'
           rec.crnt.prt
-          rec[:stat]="(query)"
+          rec[:stat]="query"
           query(depth)
-          rec[:stat]='(run)'
+          rec[:stat]='run'
           exe=@exec.exe([e1['site'],e1['cmd']])
           @interrupt.clear.add{exe.exe(['interrupt'])}
         when 'mcr'

@@ -11,7 +11,7 @@ module Mcr
       @opt=Msg.type?(opt,Hash)
       @base=Time.new.to_f
       self[:id]=@base.to_i
-      self[:stat]='(ready)'
+      self[:stat]='ready'
       self[:total]=0
       self[:record]=[]
     end
@@ -30,11 +30,11 @@ module Mcr
     end
 
     def waiting(&p)
-      self[:stat]="(wait)"
+      self[:stat]="wait"
       if @crnt.timeout?(&p)
-        self[:stat]='(timeout)'
+        self[:stat]='timeout'
       else
-        self[:stat]='(run)'
+        self[:stat]='run'
       end
     end
   end

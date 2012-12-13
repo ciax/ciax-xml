@@ -48,7 +48,7 @@ module Mcr
   module Shell
     include Int::Shell
     def ext_shell
-      super({'stat' => nil})
+      super({'stat' => "(%s)"})
       grp=@shdom.add_group('con','Control')
       grp.add_item('y','yes').init_proc{|i|
         if @crnt.alive?

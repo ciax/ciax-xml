@@ -181,7 +181,7 @@ module Int
 
     def prompt
       @pconv.keys.map{|k|
-        @pconv[k]||self[k] if self[k]
+        (@pconv[k]||'%s') % self[k] if self[k]
       }.compact.join('')+'>'
     end
   end

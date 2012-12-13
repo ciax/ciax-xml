@@ -34,8 +34,9 @@ module Mcr
       warn @interrupt.exe['msg']
       @record[:stat]='(broken)'
       Thread.exit
-    ensure
+    rescue Quit
       @record.fin
+    ensure
       self
     end
 
@@ -48,7 +49,7 @@ module Mcr
         when 'goal'
           if rec.crnt.ok?
             rec[:stat]='(done)'
-            live?(depth) && break
+            live?(depth) && raise(Quit)
           end
           rec.crnt.prt
         when 'check'

@@ -29,7 +29,7 @@ module Mcr
         item.exe
       }
       @upd_proc.add{
-        @output=@rec[:sequence]
+        @output=@rec[:record]
         self['stat']=@rec[:stat]
       }.upd
       grp=@intdom.add_group('int',"Internal Command")

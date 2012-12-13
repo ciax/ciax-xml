@@ -50,21 +50,19 @@ module Mcr
         case e1['type']
         when 'exec'
           rec.crnt.prt
-          rec[:stat]="query"
-          query(depth)
-          rec[:stat]='run'
-          exe=@exec.exe([e1['site'],e1['cmd']])
-          @interrupt.clear.add{exe.exe(['interrupt'])}
+          query(rec,depth)
+          appexe(e1)
         when 'mcr'
           rec.crnt.prt
-          sub=@index.dup.setcmd(e1['mcr']).macro(rec,depth+1)
+          @index.dup.setcmd(e1['mcr']).macro(rec,depth+1)
         end
       }
       self
     end
 
     private
-    def query(depth)
+    def query(rec,depth)
+      rec[:stat]="query"
       if @opt['v']
         prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
         true while (res=Readline.readline(prompt,true)).empty?
@@ -72,6 +70,13 @@ module Mcr
       elsif !@opt['n']
         sleep
       end
+      rec[:stat]='run'
+    end
+
+    def appexe(db)
+      exe=@exec.exe([db['site'],db['cmd']])
+      @interrupt.clear.add{exe.exe(['interrupt'])}
+      self
     end
   end
 end

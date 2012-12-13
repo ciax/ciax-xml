@@ -24,13 +24,13 @@ module Mcr
     def initialize(item,aint,opt={})
       super(item)
       @aint=Msg.type?(aint,App::List)
-      @rec=item.record
+      @block=item.block
       @crnt=Thread.new{
         item.exe
       }
       @upd_proc.add{
-        @output=@rec[:record]
-        self['stat']=@rec[:stat]
+        @output=@block[:record]
+        self['stat']=@block[:stat]
       }.upd
       grp=@intdom.add_group('int',"Internal Command")
       grp.add_item('interrupt').init_proc{|i|

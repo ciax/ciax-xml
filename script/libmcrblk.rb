@@ -4,10 +4,9 @@ require "libmcrprt"
 
 module Mcr
   class Block < Hash
-    attr_reader :crnt,:load,:refresh
-    def initialize(load,refresh,opt={})
-      @load=Msg.type?(load,ExeProc)
-      @refresh=Msg.type?(refresh,ExeProc)
+    attr_reader :crnt
+    def initialize(aint,opt={})
+      @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
       @base=Time.new.to_f
       self[:id]=@base.to_i
@@ -17,7 +16,7 @@ module Mcr
     end
 
     def newline(db,depth=0)
-      @crnt=Record.new(db,@load,@refresh,depth,@opt)
+      @crnt=Record.new(db,@aint,depth,@opt)
       @crnt['elapsed']="%.3f" % (Time.now.to_f-@base)
       self[:record] << @crnt
       case db['type']
@@ -68,9 +67,8 @@ module Mcr
     extend Msg::Ver
     include Prt
 
-    def initialize(db,load,refresh,depth=0,opt={})
-      @load=Msg.type?(load,ExeProc)
-      @refresh=Msg.type?(refresh,ExeProc)
+    def initialize(db,aint,depth=0,opt={})
+      @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
       self['depth']=depth
       update(db)
@@ -107,13 +105,18 @@ module Mcr
       res=(flt=scan).empty?
       self['fault']=flt unless res
       delete('stat') if res or !refr #self.delete
-      refresh if refr
+      sites.each{|site|
+        getstat(site).refresh
+      } if refr
       res
     end
 
     private
     def scan
-      stats=load
+      stats=sites.inject({}){|hash,site|
+        hash[site]=getstat(site).load
+        hash
+      }
       self['stat'].map{|h|
         flt={}
         site=flt['site']=h['site']
@@ -133,21 +136,6 @@ module Mcr
       }.compact
     end
 
-    def load
-      stats={}
-      sites.each{|site|
-        stats[site]=@load.exe(site)
-      }
-      stats
-    end
-
-    def refresh
-      sites.each{|site|
-        @refresh.exe(site)
-      }
-      self
-    end
-
     def sites
       self['stat'].map{|h| h['site']}.uniq
     end
@@ -159,6 +147,10 @@ module Mcr
       else
         (cmp == res) ^ i
       end
+    end
+
+    def getstat(site)
+      @aint[site].stat
     end
   end
 end

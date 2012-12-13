@@ -9,59 +9,59 @@ module Mcr
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
     # @ aint,opt,interrupt
-    attr_reader :record,:exec
+    attr_reader :block
     def self.extended(obj)
       init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
     end
 
-    def ext_mcrcmd(record,opt={})
+    def ext_mcrcmd(aint,block,opt={})
+      @aint=Msg.type?(aint,App::List)
+      @block=Msg.type?(block,Block)
       @opt=Msg.type?(opt,Hash)
-      @record=Msg.type?(record,Block)
-      @exec=ExeProc.new.interrupt{|par| par[1]=['interrupt']}
       self
     end
 
     def exe
-      @record.newline({'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]})
-      @record.crnt.prt
-      macro(@record)
+      @block.newline({'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]})
+      @block.crnt.prt
+      macro(@block)
       super
-      @record.fin
+      @block.fin
       self
     rescue Interlock
-      @record.fin('fail')
+      @block.fin('fail')
     rescue Broken,Interrupt
-      @exec.interrupt
-      @record.fin('broken')
+      @interrupt.exe if @interrupt
+      @block.fin('broken')
       Thread.exit
     rescue Quit
-      @record.fin('done')
+      @block.fin('done')
     ensure
       self
     end
 
     # Should be public for recursive call
-    def macro(rec,depth=1)
-      rec[:stat]='run'
+    def macro(block,depth=1)
+      block[:stat]='run'
       @select.each{|e1|
-        next if rec.newline(e1,depth)
+        next if block.newline(e1,depth)
         case e1['type']
         when 'exec'
-          rec.crnt.prt
-          query(rec,depth)
-          @exec.exe([e1['site'],e1['cmd']])
+          block.crnt.prt
+          query(block,depth)
+          @interrupt=@aint[e1['site']].exe(e1['cmd']).interrupt
         when 'mcr'
-          rec.crnt.prt
-          @index.dup.setcmd(e1['mcr']).macro(rec,depth+1)
+          block.crnt.prt
+          @index.dup.setcmd(e1['mcr']).macro(block,depth+1)
         end
       }
       self
     end
 
     private
-    def query(rec,depth)
-      rec[:stat]="query"
+    def query(block,depth)
+      block[:stat]="query"
       if @opt['v']
         prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
         true while (res=Readline.readline(prompt,true)).empty?
@@ -69,7 +69,7 @@ module Mcr
       elsif !@opt['n']
         sleep
       end
-      rec[:stat]='run'
+      block[:stat]='run'
     end
   end
 end
@@ -77,11 +77,8 @@ end
 class Command::ExtDom
   def ext_mcrcmd(aint,opt={})
     values.each{|item|
-      load=ExeProc.new.add{|site| aint[site].stat.load}
-      refresh=ExeProc.new.add{|site| aint[site].stat.refresh}
-      record=Mcr::Block.new(load,refresh,opt)
-      item.extend(Mcr::Cmd).ext_mcrcmd(record,opt)
-      item.exec.add{|site,cmd| aint[site].exe(cmd).stat.refresh}
+      block=Mcr::Block.new(aint,opt)
+      item.extend(Mcr::Cmd).ext_mcrcmd(aint,block,opt)
     }
     self
   end
@@ -98,7 +95,7 @@ if __FILE__ == $0
     mcobj=Command.new
     mcobj.add_extdom(mdb,:macro).ext_mcrcmd(app,opt)
     item=mcobj.setcmd(ARGV).exe
-    puts Msg.view_struct(item.record)
+    puts Msg.view_struct(item.block)
   rescue InvalidCMD
     opt.usage("[cmd] (par)")
   rescue UserError

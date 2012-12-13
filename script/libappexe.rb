@@ -28,8 +28,7 @@ module App
     end
 
     def interrupt
-      @cobj['interrupt'].exe
-      self
+      @cobj['interrupt']
     end
   end
 

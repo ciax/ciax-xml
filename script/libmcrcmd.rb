@@ -28,14 +28,15 @@ module Mcr
       @record.crnt.prt
       macro(@record)
       super
+      @record.fin
     rescue Interlock
-      @record[:stat]='(fail)'
+      @record.fin('(fail)')
     rescue Broken,Interrupt
       warn @interrupt.exe['msg']
-      @record[:stat]='(broken)'
+      @record.fin('(broken)')
       Thread.exit
     rescue Quit
-      @record.fin
+      @record.fin('(done)')
     ensure
       self
     end

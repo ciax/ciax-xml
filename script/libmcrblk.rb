@@ -23,8 +23,8 @@ module Mcr
       self
     end
 
-    def fin
-      self[:stat]='(done)' if self[:stat] == '(run)'
+    def fin(stat=nil)
+      self[:stat]=stat if stat
       self[:total]="%.3f" % (Time.now.to_f-@base)
       self
     end

@@ -6,14 +6,12 @@ require "libwatch"
 module App
   class Exe < Int::Exe
     # @< cobj,output,intdom,int_proc,upd_proc*
-    # @ adb,extdom,intgrp,output,watch,stat*
+    # @ adb,extdom,intgrp,interrupt,output,watch,stat*
     attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
       super()
       @extdom=@cobj.add_extdom(@adb,:command)
-      @intgrp=@intdom.add_group('int',"Internal Command")
-      @intgrp.add_item('interrupt')
       self['id']=@adb['site_id']
       @output=@stat=Status::Var.new.ext_file(@adb)
       @watch=Watch::Var.new.ext_file(@adb)
@@ -25,10 +23,6 @@ module App
         @upd_proc.upd
       end
       self
-    end
-
-    def interrupt
-      @cobj['interrupt']
     end
   end
 
@@ -52,7 +46,7 @@ module App
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
-      @cobj['interrupt'].init_proc{
+      @interrupt.init_proc{
         int=@watch.interrupt
         self['msg']="Interrupt #{int}"
       }

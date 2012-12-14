@@ -35,7 +35,7 @@ module App
         self['msg']="Issued"
       }
 
-      @cobj['interrupt'].init_proc{
+      @interrupt.init_proc{
         int=@watch.interrupt
         Sv.msg{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

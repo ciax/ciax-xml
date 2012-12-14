@@ -15,12 +15,14 @@ module Int
   # @ cobj,output,intdom,upd_proc,int_proc*
   class Exe < ExHash
     extend Msg::Ver
-    attr_reader :int_proc
+    attr_reader :int_proc,:interrupt
     def initialize
       Exe.init_ver(self,2)
       @cobj=Command.new
       @output=''
       @intdom=@cobj.add_domain('int',2)
+      @intgrp=@intdom.add_group('int',"Internal Command")
+      @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
       @int_proc=UpdProc.new # Proc for Interactive Operation
     end

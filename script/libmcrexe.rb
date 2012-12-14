@@ -32,8 +32,7 @@ module Mcr
         @output=@block[:record]
         self['stat']=@block[:stat]
       }.upd
-      grp=@intdom.add_group('int',"Internal Command")
-      grp.add_item('interrupt').init_proc{|i|
+      @interrupt.init_proc{|i|
         self['msg']="Interrupted"
         @crnt.raise(Broken)
       }

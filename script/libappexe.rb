@@ -5,8 +5,8 @@ require "libwatch"
 
 module App
   class Exe < Int::Exe
-    # @< cobj,output,intdom,int_proc,upd_proc*
-    # @ adb,extdom,intgrp,interrupt,output,watch,stat*
+    # @< cobj,output,intgrp,interrupt,int_proc,upd_proc*
+    # @ adb,extdom,watch,stat*
     attr_reader :stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)

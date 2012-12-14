@@ -6,7 +6,7 @@ require "libapplist"
 
 module Mcr
   class Exe < Int::Exe
-    # @< cobj,output,(intdom),(int_proc),upd_proc*
+    # @< cobj,output,(intgrp),(interrupt),(int_proc),upd_proc*
     # @ mdb,extdom
     def initialize(item)
       @item=Msg.type?(item,Mcr::Cmd)
@@ -17,7 +17,7 @@ module Mcr
 
   class Sv < Exe
     extend Msg::Ver
-    # @<< (cobj),(output),(intdom),(int_proc),(upd_proc*)
+    # @<< (cobj),(output),(intgrp),interrupt,(int_proc),(upd_proc*)
     # @< (mdb),extdom
     # @ dryrun,aint
     attr_reader :crnt

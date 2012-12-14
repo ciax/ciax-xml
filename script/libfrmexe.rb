@@ -4,7 +4,7 @@ require 'libfield'
 
 module Frm
   class Exe < Int::Exe
-    # @< cobj,output,intdom,(int_proc),(upd_proc*)
+    # @< cobj,output,intgrp,(interrupt),(int_proc),(upd_proc*)
     # @ extdom,field*
     attr_reader :field
     def initialize(fdb)

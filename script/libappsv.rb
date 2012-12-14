@@ -9,8 +9,8 @@ require "libsqlog"
 require "thread"
 
 module App
-  # @<< cobj,output,intdom,int_proc,upd_proc*
-  # @< adb,extdom,output,watch,stat*
+  # @<< cobj,output,intgrp,interrupt,int_proc,upd_proc*
+  # @< adb,extdom,watch,stat*
   # @ fint,buf,log_proc
   class Sv < Exe
     extend Msg::Ver

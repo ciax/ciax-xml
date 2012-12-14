@@ -19,15 +19,20 @@ class UpdProc < Array
   end
 end
 
-class ExeProc < UpdProc
+class ExeProc
+  extend Msg::Ver
   def initialize
     ExeProc.init_ver(self,5)
   end
 
+  def add(&p)
+    abort("DUPLICATE SETTING EXEPROC") if @pr
+    @pr=p
+    self
+  end
+
   def exe(par)
     ExeProc.msg{"Execute procs"}
-    map{|p|
-      p.call(par)
-    }.last
+    @pr.call(par) if @pr
   end
 end

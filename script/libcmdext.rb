@@ -9,7 +9,7 @@ class Command
   end
 
   class ExtDom < Domain
-    def initialize(index,db,path,def_proc=ExeProc.new)
+    def initialize(index,db,path,def_proc=proc{})
       super(index,6,def_proc)
       @db=Msg.type?(db,Db)
       cdb=db[path]

@@ -63,7 +63,7 @@ module Int
       udp=UDPSocket.open()
       addr=Socket.pack_sockaddr_in(port.to_i,host)
       Exe.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
-      @cobj.def_proc.add{|item|
+      @cobj.def_proc=proc{|item|
         cl_exe(udp,addr,item.cmd.join(' '))
       }
       @upd_proc.add{cl_exe(udp,addr,'strobe')}
@@ -189,7 +189,7 @@ module Int
 
   class List < Hash
     require "liblocdb"
-    attr_reader :share_proc
+    attr_accessor :share_proc
     def initialize(opt=nil)
       @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
       @share_proc=ExeProc.new # Execute when new key is set

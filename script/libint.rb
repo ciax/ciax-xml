@@ -192,10 +192,10 @@ module Int
     attr_accessor :share_proc
     def initialize(opt=nil)
       @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
-      @share_proc=ExeProc.new # Execute when new key is set
+      @share_proc=proc{} # Execute when new key is set
       super(){|h,id|
         int=yield id
-        @share_proc.exe(int)
+        @share_proc.call(int)
         h[id]=int
       }
     end

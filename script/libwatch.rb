@@ -8,7 +8,7 @@ module Watch
     extend Msg::Ver
     # @< (upd_proc*)
     # @ event_proc*
-    attr_reader :event_proc
+    attr_accessor :event_proc
 
     def initialize
       Var.init_ver('Watch',6)
@@ -19,7 +19,7 @@ module Watch
       ['active','exec','block','int'].each{|i| self[i]||=ExArray.new}
       #For Hash element
       ['crnt','last','res'].each{|i| self[i]||={}}
-      @event_proc=ExeProc.new
+      @event_proc=proc{}
       self
     end
 
@@ -36,7 +36,7 @@ module Watch
     def issue
       # block parm = cmd + priority(2)
       cmds=self['exec'].each{|cmd|
-        @event_proc.exe([cmd,2])
+        @event_proc.call([cmd,2])
         Var.msg{"ISSUED:#{cmd}"}
       }.dup
       self['exec'].clear
@@ -46,7 +46,7 @@ module Watch
     def interrupt
       # block parm = cmd + priority(0)
       cmds=self['int'].each{|cmd|
-        @event_proc.exe([cmd,0])
+        @event_proc.call([cmd,0])
         Var.msg{"ISSUED:#{cmd}"}
       }.dup
       self['int'].clear

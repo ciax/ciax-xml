@@ -50,7 +50,7 @@ module App
         int=@watch.interrupt
         self['msg']="Interrupt #{int}"
       }
-      @watch.event_proc.add{|cmd,p|
+      @watch.event_proc=proc{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
       }
       @cobj.def_proc.add{|item|

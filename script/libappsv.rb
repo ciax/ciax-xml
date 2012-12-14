@@ -21,7 +21,7 @@ module App
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
       @stat.ext_sqlog if logging and @fint.field.key?('ver')
-      @watch.ext_conv(adb,@stat).ext_save.upd.event_proc.add{|cmd,p|
+      @watch.ext_conv(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
         Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.setcmd(cmd)
         sendcmd(p)

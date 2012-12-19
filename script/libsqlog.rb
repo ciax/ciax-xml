@@ -36,7 +36,7 @@ module SqLog
       val=expand
       key=val.keys.join("','")
       val=val.values.join("','")
-      Var.msg{"SqLog/Update(#{self['val']['time']}):[#{self['id']}/#{@tid}]"}
+      Var.msg{"SqLog/Update(#{self['time']}):[#{self['id']}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       self
     end

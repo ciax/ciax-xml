@@ -56,7 +56,7 @@ module Frm
           cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
           Rsp.msg{"Verify:CC OK <#{cc}>"}
         end
-        Rsp.msg{"Rsp/Update(#{get('time')})"} #Field::get
+        Rsp.msg{"Rsp/Update(#{self['time']})"} #Field::get
         true
       else
         Rsp.msg{"Send Only"}

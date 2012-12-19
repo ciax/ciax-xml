@@ -55,8 +55,8 @@ module App
           Rsp.msg(-1){"STAT:GetStatus:#{id}=[#{self['val'][id]}]"}
         end
       }
-      self['val']['time']=@field.get('time')
-      Rsp.msg{"Rsp/Update(#{self['val']['time']})"}
+      self['time']=@field['time']
+      Rsp.msg{"Rsp/Update(#{self['time']})"}
       self
     end
 

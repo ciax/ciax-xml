@@ -60,7 +60,7 @@ module Status
     end
 
     def save(data=nil,tag=nil)
-      time=self['val']['time'].to_f
+      time=self['time'].to_f
       if time > @lastsave
         super
         @lastsave=time
@@ -92,7 +92,7 @@ module Status
             h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
             case id
             when 'elapse'
-              h['msg']=Elapse.new(@stat['val'])
+              h['msg']=Elapse.new(@stat)
             else
               h['msg']=@stat['msg'][id]||@stat.get(id)
             end

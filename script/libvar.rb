@@ -39,7 +39,7 @@ class Var < ExHash
   end
 
   def set_time(time=nil)
-    self['val']['time']=time||Msg.now
+    self['time']=time||Msg.now
     self
   end
 

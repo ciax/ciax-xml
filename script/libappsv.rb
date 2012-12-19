@@ -99,7 +99,7 @@ module App
           rescue InvalidID
             Msg.warn($!)
           end
-          Int::Exe.msg{"Auto Update(#{@stat.get('time')})"}
+          Int::Exe.msg{"Auto Update(#{@stat['time']})"}
         sleep int
         }
       }

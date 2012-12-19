@@ -48,7 +48,7 @@ module Sym
           break
         }
       }
-      stime=self['val']['time'].to_f
+      stime=self['time'].to_f
       self['msg']['time']=Time.at(stime).to_s
       Conv.msg{"Sym/Update(#{stime})"}
       self

@@ -4,7 +4,7 @@ require "libvar"
 require 'libelapse'
 
 module Status
-  class Var < Var
+  class Var < Var::Val
     extend Msg::Ver
     # @< (upd_proc*)
     # @ last*

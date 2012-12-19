@@ -4,7 +4,7 @@ require 'libupdate'
 require 'libvar'
 
 module Field
-  class Var < Var
+  class Var < Var::Val
     extend Msg::Ver
     # @< (upd_proc)
     def initialize

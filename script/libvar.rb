@@ -9,33 +9,7 @@ class Var < ExHash
   def initialize(type)
     super()
     self['type']=type
-    self['val']=ExHash.new
     set_time
-    @upd_proc=UpdProc.new
-  end
-
-  def upd
-    @upd_proc.upd
-    self
-  end
-
-  def get(key)
-    self['val'][key]
-  end
-
-  # Update with str (key=val,key=val,..)
-  def str_update(str)
-    Msg.type?(str,String)
-    str.split(',').each{|i|
-      k,v=i.split('=')
-      self['val'][k]=v
-    }
-    set_time
-    self
-  end
-
-  def unset(key)
-    self['val'].delete(key)
   end
 
   def set_time(time=nil)
@@ -60,6 +34,38 @@ class Var < ExHash
   def ext_save
     extend Save
     self
+  end
+
+  class Val < Var
+    def initialize(type)
+      super
+      self['val']=ExHash.new
+      @upd_proc=UpdProc.new
+    end
+
+    def upd
+      @upd_proc.upd
+      self
+    end
+
+    def get(key)
+      self['val'][key]
+    end
+
+    # Update with str (key=val,key=val,..)
+    def str_update(str)
+      Msg.type?(str,String)
+      str.split(',').each{|i|
+        k,v=i.split('=')
+        self['val'][k]=v
+      }
+      set_time
+      self
+    end
+
+    def unset(key)
+      self['val'].delete(key)
+    end
   end
 
   module Load

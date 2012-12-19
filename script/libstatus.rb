@@ -13,6 +13,7 @@ module Status
       Var.init_ver('Status',6)
       super('stat')
       @last={}
+      @updated=Time.now
     end
 
     def set(hash) #For Watch test
@@ -23,16 +24,17 @@ module Status
     def change?(id)
       val=self['val']
       Var.msg{"Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]"}
-      val[id] != @last[id]
+      self[id] != @last[id]
     end
 
     def update?
-      change?('time')
+      self['time'] != @updated
     end
 
     def refresh
       Var.msg{"Status Updated"}
       @last.update(self['val'])
+      @updated=self['time']
       self
     end
 
@@ -93,6 +95,8 @@ module Status
             case id
             when 'elapse'
               h['msg']=Elapse.new(@stat)
+            when 'time'
+              h['msg']=Time.at(@stat['time'].to_f).to_s
             else
               h['msg']=@stat['msg'][id]||@stat.get(id)
             end

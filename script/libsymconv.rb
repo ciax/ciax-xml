@@ -17,7 +17,7 @@ module Sym
       self['ver']=@db['version'].to_i
       @symbol=ads[:symbol]||{}
       @sdb=Sym::Db.pack(['all',ads['table']])
-      self['class']={'time' => 'normal'}
+      self['class']={}
       self['msg']={}
       self
     end
@@ -48,9 +48,7 @@ module Sym
           break
         }
       }
-      stime=self['time'].to_f
-      self['msg']['time']=Time.at(stime).to_s
-      Conv.msg{"Sym/Update(#{stime})"}
+      Conv.msg{"Sym/Update(#{self['time'].to_f})"}
       self
     end
   end

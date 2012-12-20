@@ -4,18 +4,11 @@ require "libexenum"
 require "libupdate"
 
 class Var < ExHash
-  # @ upd_proc*
-  attr_reader :upd_proc
   def initialize(type)
     super()
     self['type']=type
-    set_time
   end
 
-  def set_time(time=nil)
-    self['time']=time||Msg.now
-    self
-  end
 
   ## Read/Write JSON file
   public
@@ -37,10 +30,18 @@ class Var < ExHash
   end
 
   class Val < Var
+    # @ upd_proc*
+    attr_reader :upd_proc
     def initialize(type)
       super
+      set_time
       self['val']=ExHash.new
       @upd_proc=UpdProc.new
+    end
+
+    def set_time(time=nil)
+      self['time']=time||Msg.now
+      self
     end
 
     def upd

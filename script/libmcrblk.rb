@@ -9,6 +9,7 @@ module Mcr
     def initialize(aint,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
+      super('mcr')
       @base=Time.new.to_f
       self[:id]=@base.to_i
       self[:stat]='ready'

@@ -95,6 +95,7 @@ if __FILE__ == $0
     mcobj=Command.new
     mcobj.add_extdom(mdb,:macro).ext_mcrcmd(app,opt)
     item=mcobj.setcmd(ARGV).exe
+    item.block.ext_file(item.id).ext_save.save
     puts Msg.view_struct(item.block)
   rescue InvalidCMD
     opt.usage("[cmd] (par)")

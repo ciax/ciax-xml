@@ -68,7 +68,8 @@ module Watch
 
     def ext_conv(adb,stat)
       @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
-      @val=Msg.type?(stat,Status::Var)['val']
+      @stat=Msg.type?(stat,Status::Var)
+      @val=@stat['val']
       self['period']=@wdb['period'].to_i if @wdb.key?('period')
       self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')
       # Pick usable val
@@ -88,7 +89,7 @@ module Watch
     # Stat no changed -> clear exec, no eval
     def upd
       self['exec'].clear
-      return self if self['crnt']['time'] == @val['time']
+      return self if self['crnt']['time'] == @stat['time']
       upd_last
       hash={'int' =>[],'exec' =>[],'block' =>[]}
       self['active'].clear
@@ -103,7 +104,7 @@ module Watch
       hash.each{|k,a|
         self[k].replace a.flatten(1).uniq
       }
-      Var.msg{"Watch/Updated(#{@val['time']})"}
+      Var.msg{"Watch/Updated(#{@stat['time']})"}
       self
     end
 

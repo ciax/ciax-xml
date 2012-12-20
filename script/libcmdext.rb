@@ -11,7 +11,7 @@ class Command
   class ExtDom < Domain
     def initialize(index,db,path,def_proc=proc{})
       super(index,6,def_proc)
-      @db=Msg.type?(db,Db)
+      Msg.type?(db,Db)
       cdb=db[path]
       cdb[:select].keys.each{|id|
         self[id]=Item.new(id,@index,@def_proc).ext_item(cdb)

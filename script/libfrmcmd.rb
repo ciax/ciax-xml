@@ -64,9 +64,9 @@ module Frm
 end
 
 class Command::Domain
-  def ext_frmcmd(field)
+  def ext_frmcmd(field,db)
     values.each{|item|
-      item.extend(Frm::Cmd).ext_frmcmd(field,@db)
+      item.extend(Frm::Cmd).ext_frmcmd(field,db)
     }
     self
   end
@@ -81,7 +81,7 @@ if __FILE__ == $0
     fdb=Frm::Db.new(dev)
     field=Field::Var.new
     cobj=Command.new
-    cobj.add_extdom(fdb,:cmdframe).ext_frmcmd(field)
+    cobj.add_extdom(fdb,:cmdframe).ext_frmcmd(field,fdb)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue UserError

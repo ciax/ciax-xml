@@ -19,7 +19,7 @@ end
 if opt['a']
   adb=ldb[:adb]
   stat=Status::Var.new.ext_file(adb['site_id'])
-  stat.ext_rsp(field,adb)
+  stat.ext_rsp(field,adb[:status])
   stat.extend(SqLog::Var)
   if opt['i'] # Initial
     stat.create

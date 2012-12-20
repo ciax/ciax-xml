@@ -1,7 +1,9 @@
 ========================== Issue =============================
-Frm::Cmd,App::Cmd should be separate from Command::Item which doesn't need to have @db
 
 ***DEBUG
+client doesn't send any command (blank command was assinged to item)(12/12/19)
+
+
 watch: no command issued by auto(reset at dsi command end) (9/27)
 crt:cart jack level error in oldmcr(1/31)
 dso:jack bolt stack after interrupt(8/15)

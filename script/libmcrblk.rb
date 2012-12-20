@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
+require "libvar"
 require "libapplist"
 require "libmcrprt"
 
 module Mcr
-  class Block < Hash
+  class Block < Var
     attr_reader :crnt
     def initialize(aint,opt={})
       @aint=Msg.type?(aint,App::List)

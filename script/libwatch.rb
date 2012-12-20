@@ -243,8 +243,8 @@ if __FILE__ == $0
   rescue InvalidID
     opt.usage("(opt) [id]")
   end
-  stat=Status::Var.new.ext_file(adb).load
-  watch=Watch::Var.new.ext_file(adb).ext_conv(adb,stat).upd
+  stat=Status::Var.new.ext_file(adb['site_id']).load
+  watch=Watch::Var.new.ext_file(adb['site_id']).ext_conv(adb,stat).upd
   unless opt['r']
     wview=Watch::View.new(adb,watch)
     unless opt['v']

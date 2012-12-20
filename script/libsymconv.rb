@@ -9,10 +9,11 @@ module Sym
     require "libsymdb"
     def self.extended(obj)
       init_ver('SymConv')
-      Msg.type?(obj,Status::Var,Var::Load).ext_conv
+      Msg.type?(obj,Status::Var,Var::Load)
     end
 
-    def ext_conv
+    def ext_conv(db)
+      @db=Msg.type?(db,App::Db)
       ads=@db[:status]
       self['ver']=@db['version'].to_i
       @symbol=ads[:symbol]||{}
@@ -55,8 +56,8 @@ module Sym
 end
 
 class Status::Var
-  def ext_sym
-    extend Sym::Conv
+  def ext_sym(adb)
+    extend(Sym::Conv).ext_conv(adb)
   end
 end
 
@@ -65,8 +66,8 @@ if __FILE__ == $0
   id=ARGV.shift
   begin
     adb=Loc::Db.new(id)[:app]
-    stat=Status::Var.new.ext_file(adb).load
-    stat.ext_sym.upd.ext_save.save
+    stat=Status::Var.new.ext_file(adb['site_id']).load
+    stat.ext_sym(adb).upd.ext_save.save
     print stat
   rescue UserError
     Msg.usage "[id]"

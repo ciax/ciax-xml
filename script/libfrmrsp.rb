@@ -18,8 +18,9 @@ module Frm
       Msg.type?(obj,Field::Var,Var::Load)
     end
 
-    def ext_rsp(cobj)
+    def ext_rsp(cobj,db)
       @cobj=Msg.type?(cobj,Command)
+      @db=Msg.type?(db,Db)
       self['ver']=@db['version'].to_i
       rsp=@db.deep_copy[:rspframe]
       @sel=Hash[rsp[:frame]]
@@ -145,8 +146,8 @@ module Frm
 end
 
 class Field::Var
-  def ext_rsp(cobj)
-    extend(Frm::Rsp).ext_rsp(cobj)
+  def ext_rsp(cobj,db)
+    extend(Frm::Rsp).ext_rsp(cobj,db)
   end
 end
 
@@ -161,9 +162,9 @@ if __FILE__ == $0
   fdb=Loc::Db.new(id)[:frm]
   cobj=Command.new
   cobj.add_extdom(fdb,:cmdframe)
-  field=Field::Var.new.ext_file(fdb)
+  field=Field::Var.new.ext_file(fdb['site_id'])
   field.load if opt['m']
-  field.ext_rsp(cobj)
+  field.ext_rsp(cobj,fdb)
   field.upd_logline(str)
   puts field
   exit

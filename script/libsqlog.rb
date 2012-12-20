@@ -133,7 +133,7 @@ if __FILE__ == $0
   ARGV.clear
   begin
     adb=Loc::Db.new(id)[:app]
-    stat=Status::Var.new.ext_file(adb).load
+    stat=Status::Var.new.ext_file(adb['site_id']).load
     stat.extend(SqLog::Var).upd
     puts stat.sql
   rescue UserError

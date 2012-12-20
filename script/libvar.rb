@@ -19,9 +19,9 @@ class Var < ExHash
 
   ## Read/Write JSON file
   public
-  def ext_file(db)
+  def ext_file(id)
     extend Load
-    ext_file(db)
+    ext_file(id)
     self
   end
 
@@ -77,9 +77,8 @@ class Var < ExHash
       Msg.type?(obj,Var)
     end
 
-    def ext_file(db)
-      @db=Msg.type?(db,Db)
-      self['id']=db['site_id']||Msg.cfg_err("No SITE ID")
+    def ext_file(id)
+      self['id']=id||Msg.cfg_err("ID")
       @base=self['type']+'_'+self['id']+'.json'
       @prefix=VarDir
       self

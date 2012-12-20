@@ -19,7 +19,7 @@ module App
       Sv.init_ver("AppSv",9)
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-      @stat.ext_save.ext_rsp(@fint.field).ext_sym.upd
+      @stat.ext_save.ext_rsp(@fint.field,adb).ext_sym(adb).upd
       @stat.ext_sqlog if logging and @fint.field.key?('ver')
       @watch.ext_conv(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
         Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}

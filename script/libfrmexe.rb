@@ -12,7 +12,7 @@ module Frm
       super()
       @extdom=@cobj.add_extdom(fdb,:cmdframe)
       self['id']=fdb['site_id']
-      @output=@field=Field::Var.new.ext_file(fdb).load
+      @output=@field=Field::Var.new.ext_file(fdb['site_id']).load
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any])

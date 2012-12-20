@@ -13,8 +13,8 @@ module App
       super()
       @extdom=@cobj.add_extdom(@adb,:command)
       self['id']=@adb['site_id']
-      @output=@stat=Status::Var.new.ext_file(@adb)
-      @watch=Watch::Var.new.ext_file(@adb)
+      @output=@stat=Status::Var.new.ext_file(@adb['site_id'])
+      @watch=Watch::Var.new.ext_file(@adb['site_id'])
     end
 
     def exe(cmd)

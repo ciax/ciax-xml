@@ -12,8 +12,9 @@ module App
       Msg.type?(obj,Status::Var,Var::Load)
     end
 
-    def ext_rsp(field)
+    def ext_rsp(field,db)
       @field=Msg.type?(field,Field::Var)
+      @db=Msg.type?(db,Db)
       @ads=@db[:status][:select]
       @fmt=@db[:status][:format]||{}
       @fml=@db[:status][:formula]||{}
@@ -104,8 +105,8 @@ module App
 end
 
 class Status::Var
-  def ext_rsp(field)
-    extend(App::Rsp).ext_rsp(field)
+  def ext_rsp(field,db)
+    extend(App::Rsp).ext_rsp(field,db)
   end
 end
 
@@ -116,8 +117,8 @@ if __FILE__ == $0
   Msg.usage "< field_file" if STDIN.tty?
   field=Field::Var.new.load
   adb=Loc::Db.new(field['id'])[:app]
-  stat=Status::Var.new.ext_file(adb).ext_save
-  puts stat.ext_rsp(field).upd
+  stat=Status::Var.new.ext_file(adb['site_id']).ext_save
+  puts stat.ext_rsp(field,adb).upd
   stat.save
   exit
 end

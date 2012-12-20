@@ -17,8 +17,9 @@ rescue UserError
   # input format 'sqlite3 -header'
 end
 if opt['a']
-  stat=Status::Var.new.ext_file(ldb[:adb])
-  stat.ext_rsp(field)
+  adb=ldb[:adb]
+  stat=Status::Var.new.ext_file(adb['site_id'])
+  stat.ext_rsp(field,adb)
   stat.extend(SqLog::Var)
   if opt['i'] # Initial
     stat.create
@@ -47,11 +48,11 @@ if opt['a']
   puts stat.sql
 else
   fdb=ldb[:frm]
-  field.ext_file(fdb)
+  field.ext_file(fdb['site_id'])
   ver=fdb['version']
   cobj=Command.new
   cobj.add_extdom(fdb,:cmdframe)
-  field.ext_rsp(cobj)
+  field.ext_rsp(cobj,fdb)
   field.extend(SqLog::Var)
   if opt['i'] # Initial
     field.create

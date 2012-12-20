@@ -157,7 +157,7 @@ if __FILE__ == $0
       adb=Loc::Db.new(id)[:app]
     else
       adb=Loc::Db.new(id)[:app]
-      stat.ext_file(adb)
+      stat.ext_file(adb['site_id'])
       if host=opt['h']
         stat.ext_url(host).load
       else

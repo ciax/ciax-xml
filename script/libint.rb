@@ -48,7 +48,16 @@ module Int
             line,addr=udp.recvfrom(4096)
             line.chomp!
             Exe.msg{"Recv:#{line} is #{line.class}"}
-            sv_exe(line)
+            begin
+              self['msg']='OK'
+              sv_exe(line)
+            rescue InvalidPAR
+              self['msg']=$!.to_s
+            rescue InvalidCMD
+              self['msg']="INVALID"
+            rescue RuntimeError
+              warn(self['msg']=$!.to_s)
+            end
             Exe.msg{"Send:#{self['msg']}"}
             @upd_proc.upd
             udp.send(yield,0,addr[2],addr[1])
@@ -64,9 +73,9 @@ module Int
       addr=Socket.pack_sockaddr_in(port.to_i,host)
       Exe.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
       @cobj.def_proc=proc{|item|
-        cl_exe(udp,addr,item.cmd.join(' '))
+        cl_exe(udp,addr,item.cmd)
       }
-      @upd_proc.add{cl_exe(udp,addr,'strobe')}
+      @upd_proc.add{cl_exe(udp,addr,[])}
     end
 
     def ext_shell(pconv={},&p)
@@ -88,21 +97,18 @@ module Int
 
     # For server
     def sv_exe(line)
-      self['msg']='OK'
-      return if /^(strobe|stat)/ === line
-      int_exe(line.split(' '))
-    rescue InvalidPAR
-      self['msg']=$!.to_s
-    rescue InvalidCMD
-      self['msg']="INVALID"
-    rescue RuntimeError
-      warn(self['msg']=$!.to_s)
+      cmd=JSON.load(line)
+      return if cmd.empty?
+      int_exe(cmd)
+    rescue JSON::ParserError
+      self['msg']="NOT JSON"
+      self
     end
 
     # For client
-    def cl_exe(udp,addr,str)
-      udp.send(str,0,addr)
-      Exe.msg{"Send [#{str}]"}
+    def cl_exe(udp,addr,cmd)
+      udp.send(JSON.dump(cmd),0,addr)
+      Exe.msg{"Send [#{cmd}]"}
       input=udp.recv(1024)
       Exe.msg{"Recv #{input}"}
       load(input) # ExHash#load -> Server Status

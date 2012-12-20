@@ -81,6 +81,12 @@ module HexPack
       end
       super(@adb['port'].to_i+1000){@output.to_s}
     end
+
+    private
+    def sv_exe(line)
+      return if /^(strobe|stat)/ === line
+      int_exe(line.split(' '))
+    end
   end
 end
 

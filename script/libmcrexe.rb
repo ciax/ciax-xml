@@ -49,12 +49,16 @@ module Mcr
     def ext_shell
       super({'stat' => "(%s)"})
       grp=@shdom.add_group('con','Control')
-      grp.add_item('y','yes').init_proc{|i|
+      grp.add_item('y','Yes').init_proc{|i|
         if @crnt.alive?
           @crnt.run
           self['msg']="Continue"
         end
       }
+      grp.add_item('f','Force Temporaly')
+      grp.add_item('r','Retry Checking')
+      grp.add_item('s','Skip Execution')
+      grp.add_item('i','Ignore and Memory')
     end
   end
 end

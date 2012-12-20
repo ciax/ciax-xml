@@ -6,7 +6,7 @@ module App
   module Rsp
     extend Msg::Ver
     # @<< (upd_proc*)
-    # @< db,(base),(prefix)
+    # @< (base),(prefix)
     def self.extended(obj)
       init_ver('AppRsp',2)
       Msg.type?(obj,Status::Var,Var::Load)

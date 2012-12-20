@@ -9,9 +9,8 @@ require "libstream"
 module Frm
   module Rsp
     extend Msg::Ver
-    # Var::Load@db is needed
     # @<< (upd_proc*)
-    # @< db,(base),(prefix)
+    # @< (base),(prefix)
     # @ cobj,sel,fds,frame,fary,cc
     def self.extended(obj)
       init_ver('FrmRsp',6)
@@ -20,12 +19,12 @@ module Frm
 
     def ext_rsp(cobj,db)
       @cobj=Msg.type?(cobj,Command)
-      @db=Msg.type?(db,Db)
-      self['ver']=@db['version'].to_i
-      rsp=@db.deep_copy[:rspframe]
+      Msg.type?(db,Db)
+      self['ver']=db['version'].to_i
+      rsp=db.deep_copy[:rspframe]
       @sel=Hash[rsp[:frame]]
       @fds=rsp[:select]
-      @frame=Frame.new(@db['endian'],@db['ccmethod'])
+      @frame=Frame.new(db['endian'],db['ccmethod'])
       # Field Initialize
       rsp[:assign].each{|k,v|
         self['val'][k]||=v

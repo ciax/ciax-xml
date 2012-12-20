@@ -122,7 +122,7 @@ class Var < ExHash
   module Url
     require "open-uri"
     # @<< (upd_proc*)
-    # @< db,base,prefix
+    # @< base,prefix
     def self.extended(obj)
       Msg.type?(obj,Load)
     end
@@ -144,7 +144,7 @@ class Var < ExHash
   module Save
     extend Msg::Ver
     # @<< (upd_proc*)
-    # @< db,base,prefix
+    # @< base,prefix
     def self.extended(obj)
       init_ver('VarSave',12)
       Msg.type?(obj,Load)

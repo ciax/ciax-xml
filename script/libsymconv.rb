@@ -13,9 +13,9 @@ module Sym
     end
 
     def ext_conv(db)
-      @db=Msg.type?(db,App::Db)
-      ads=@db[:status]
-      self['ver']=@db['version'].to_i
+      Msg.type?(db,App::Db)
+      ads=db[:status]
+      self['ver']=db['version'].to_i
       @symbol=ads[:symbol]||{}
       @sdb=Sym::Db.pack(['all',ads['table']])
       self['class']={}

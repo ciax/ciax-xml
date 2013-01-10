@@ -55,7 +55,7 @@ class Stream < ExHash
 
   def ext_logging(id,ver=0)
     logging=Logging.new('stream',id,ver){
-      {'dir'=>self[:dir],'cmd'=>self[:cmd],'data'=>encode(self[:data])}
+      {'dir'=>self[:dir],'cmd'=>self[:cmd],'base64'=>encode(self[:data])}
     }
     @log_proc.add{logging.append}
     self

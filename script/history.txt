@@ -1,0 +1,12 @@
+# Stream Log Format
+2010 Ver1-3
+2011-12 Ver4
+Ver   Format
+0     NNNNNNNNNN.NNNNN \t dir:cmd(:par) \t dump
+1     NNNNNNNNNN.NNN \t dir:cmd(:par) \t dump
+2     NNNNNNNNNN.NNN \t id:dir(ver):cmd(:par) \t dump
+3     NNNNNNNNNN.NNN \t id:dir:cmd(:par) \t dump
+4     NNNNNNNNNN.NNN \t id:ver:dir:cmd(:par) \t base64
+5     NNNNNNNNNN.NNN \t JSON{id,ver,dir,cmd:par,base64}
+6     JSON{id,ver,cmd,par,dir,base64}
+

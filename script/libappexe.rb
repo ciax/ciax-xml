@@ -4,17 +4,17 @@ require "libstatus"
 require "libwatch"
 
 module App
-  class Exe < Int::Exe
+  module Exe
     # @< cobj,output,intgrp,interrupt,int_proc,upd_proc*
     # @ adb,extdom,watch,stat*
     attr_reader :stat
-    def initialize(adb)
+    def init(adb)
       @adb=Msg.type?(adb,Db)
-      super()
       @extdom=@cobj.add_extdom(@adb,:command)
       self['id']=@adb['site_id']
       @output=@stat=Status::Var.new.ext_file(@adb['site_id'])
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
+      self
     end
 
     def exe(cmd)
@@ -26,10 +26,11 @@ module App
     end
   end
 
-  class Test < Exe
+  class Test < Int::Exe
     require "libsymconv"
     def initialize(adb)
-      super
+      super()
+      extend(Exe).init(adb)
       @stat.extend(Sym::Conv).load
       @watch.ext_conv(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
@@ -64,9 +65,10 @@ module App
     end
   end
 
-  class Cl < Exe
+  class Cl < Int::Client
     def initialize(adb,host=nil)
-      super(adb)
+      super()
+      extend(Exe).init(adb)
       host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(host).load
       @watch.ext_url(host).load

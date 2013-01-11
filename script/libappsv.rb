@@ -12,10 +12,11 @@ module App
   # @<< cobj,output,intgrp,interrupt,int_proc,upd_proc*
   # @< adb,extdom,watch,stat*
   # @ fint,buf,log_proc
-  class Sv < Exe
+  class Sv < Int::Server
     extend Msg::Ver
     def initialize(adb,fint,logging=nil)
-      super(adb)
+      super()
+      extend(Exe).init(adb)
       Sv.init_ver("AppSv",9)
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})

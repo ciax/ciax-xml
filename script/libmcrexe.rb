@@ -5,24 +5,25 @@ require "libmcrcmd"
 require "libapplist"
 
 module Mcr
-  class Exe < Int::Exe
+  module Exe
     # @< cobj,output,(intgrp),(interrupt),(int_proc),upd_proc*
     # @ mdb,extdom
-    def initialize(item)
+    def init(item)
       @item=Msg.type?(item,Mcr::Cmd)
-      super()
       self['id']=item.id
+      self
     end
   end
 
-  class Sv < Exe
+  class Sv < Int::Server
     extend Msg::Ver
     # @<< (cobj),(output),(intgrp),interrupt,(int_proc),(upd_proc*)
     # @< (mdb),extdom
     # @ dryrun,aint
     attr_reader :crnt
     def initialize(item,aint,opt={})
-      super(item)
+      super()
+      extend(Exe).init(item)
       @aint=Msg.type?(aint,App::List)
       @block=item.block
       @crnt=Thread.new{

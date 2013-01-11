@@ -26,7 +26,7 @@ module Ins
   end
 end
 
-class App::Exe
+module App::Exe
   def ext_ins(id)
     extend(Ins::Sh).ext_ins(id)
   end

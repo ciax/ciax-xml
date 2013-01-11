@@ -7,12 +7,13 @@ require "libsqlog"
 require "libfrmcmd"
 
 module Frm
-  class Sv < Exe
+  class Sv < Int::Server
     # @<< cobj,(output),(intgrp),(interrupt),(int_proc),(upd_proc*)
     # @< extdom,field*
     # @ io
     def initialize(fdb,iocmd=[])
-      super(fdb)
+      super()
+      extend(Exe).init(fdb)
       @field.ext_save.load
       @field.ext_rsp(@cobj,fdb)
       if Msg.type?(iocmd,Array).empty?

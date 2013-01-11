@@ -32,6 +32,25 @@ module Int
       self
     end
 
+    def ext_shell(pconv={},&p)
+      if is_a? Shell
+        Msg.warn("Multiple Initialize for Shell")
+      else
+        extend(Shell).ext_shell(pconv,&p)
+      end
+      self
+    end
+
+    private
+    # Async for interactive interface
+    def int_exe(cmd)
+      @cobj.setcmd(cmd).exe
+      @int_proc.upd
+      self
+    end
+  end
+
+  class Server < Exe
     # invoked once
     # JSON expression of server stat will be sent.
     def server(port)
@@ -67,6 +86,18 @@ module Int
       self
     end
 
+    private
+    def sv_exe(line)
+      cmd=JSON.load(line)
+      return if cmd.empty?
+      int_exe(cmd)
+    rescue JSON::ParserError
+      self['msg']="NOT JSON"
+      self
+    end
+  end
+
+  class Client < Exe
     def client(host,port)
       host||='localhost'
       udp=UDPSocket.open()
@@ -76,35 +107,10 @@ module Int
         cl_exe(udp,addr,item.cmd)
       }
       @upd_proc.add{cl_exe(udp,addr,[])}
-    end
-
-    def ext_shell(pconv={},&p)
-      if is_a? Shell
-        Msg.warn("Multiple Initialize for Shell")
-      else
-        extend(Shell).ext_shell(pconv,&p)
-      end
       self
     end
 
     private
-    # Async for interactive interface
-    def int_exe(cmd)
-      @cobj.setcmd(cmd).exe
-      @int_proc.upd
-      self
-    end
-
-    # For server
-    def sv_exe(line)
-      cmd=JSON.load(line)
-      return if cmd.empty?
-      int_exe(cmd)
-    rescue JSON::ParserError
-      self['msg']="NOT JSON"
-      self
-    end
-
     # For client
     def cl_exe(udp,addr,cmd)
       udp.send(JSON.dump(cmd),0,addr)

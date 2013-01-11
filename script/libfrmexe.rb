@@ -3,13 +3,12 @@ require 'libint'
 require 'libfield'
 
 module Frm
-  class Exe < Int::Exe
+  module Exe
     # @< cobj,output,intgrp,(interrupt),(int_proc),(upd_proc*)
     # @ extdom,field*
     attr_reader :field
-    def initialize(fdb)
+    def init(fdb)
       Msg.type?(fdb,Frm::Db)
-      super()
       @extdom=@cobj.add_extdom(fdb,:cmdframe)
       self['id']=fdb['site_id']
       @output=@field=Field::Var.new.ext_file(fdb['site_id']).load
@@ -18,12 +17,14 @@ module Frm
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any])
       @intgrp.add_item('load',"Load Field (tag)")
       @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
+      self
     end
   end
 
-  class Test < Exe
+  class Test < Int::Exe
     def initialize(fdb)
-      super
+      super()
+      extend(Exe).init(fdb)
       @cobj.def_proc.set{|item|
         @field.set_time
       }
@@ -33,9 +34,10 @@ module Frm
     end
   end
 
-  class Cl < Exe
+  class Cl < Int::Client
     def initialize(fdb,host=nil)
-      super(fdb)
+      super()
+      extend(Exe).init(fdb)
       host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(host).load
       @cobj.def_proc.set{to_s}

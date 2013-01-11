@@ -74,7 +74,7 @@ module HexPack
       @output=View.new(self,@stat)
       if id
         logging=Logging.new('hex',id,ver){
-          {:data => @output.to_s}
+          {'data' => @output.to_s}
         }
         @log_proc.add{logging.append}
         @buf.flush_proc.add{logging.append}

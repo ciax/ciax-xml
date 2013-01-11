@@ -37,8 +37,8 @@ module Frm
       if rid=@cobj.current[:response]
         @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
         hash=yield
-        frame=hash[:data]
-        set_time(hash[:time]) #Field::set_time
+        frame=hash['data']
+        set_time(hash['time']) #Field::set_time
         Msg.com_err("No Response") unless frame
         if tm=@sel['terminator']
           frame.chomp!(eval('"'+tm+'"'))
@@ -67,7 +67,7 @@ module Frm
 
     def upd_logline(str)
       res=Logging.set_logline(str)
-      @cobj.setcmd(res[:cmd])
+      @cobj.setcmd(res['cmd'])
       upd{res}
     end
 
@@ -157,7 +157,7 @@ if __FILE__ == $0
   opt.usage("(opt) < logline") if STDIN.tty? && ARGV.size < 1
   str=gets(nil) || exit
   logdata=Logging.set_logline(str)
-  id=logdata[:id]
+  id=logdata['id']
   fdb=Loc::Db.new(id)[:frm]
   cobj=Command.new
   cobj.add_extdom(fdb,:cmdframe)

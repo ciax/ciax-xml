@@ -35,7 +35,7 @@ class Logging
   def self.set_logline(str)
     h=JSON.load(str)
     abort("Logline:Line is not rcv") unless /rcv/ === h['dir']
-    h['data']=decode(h['data'])
+    h['data']=decode(h['base64'])
     h
   end
 

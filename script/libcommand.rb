@@ -34,8 +34,7 @@ require 'libupdate'
 # Keep current command and parameters
 class Command < ExHash
   extend Msg::Ver
-  attr_reader :current,:domain
-  attr_accessor :def_proc
+  attr_reader :current,:domain,:def_proc
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -43,7 +42,7 @@ class Command < ExHash
     Command.init_ver(self)
     @current=nil
     @domain={}
-    @def_proc=proc{}
+    @def_proc=ExeProc.new
   end
 
   def add_domain(id,color=2)
@@ -67,13 +66,12 @@ class Command < ExHash
   end
 
   class Domain < Hash
-    attr_reader :group
-    attr_accessor :def_proc
-    def initialize(index,color=2,def_proc=proc{})
+    attr_reader :group,:def_proc
+    def initialize(index,color=2,def_proc=ExeProc.new)
       @index=Msg.type?(index,Command)
       @group={}
       @color=color
-      @def_proc=Msg.type?(def_proc,Proc)
+      @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
     def add_group(gid,caption,column=2)
@@ -83,7 +81,7 @@ class Command < ExHash
 
     def init_proc(&p)
       values.each{|v|
-        v.def_proc=p
+        v.def_proc.set &p
       }
       self
     end
@@ -95,11 +93,11 @@ class Command < ExHash
 
   class Group < Hash
     attr_accessor :def_proc
-    def initialize(index,gat,def_proc=proc{})
+    def initialize(index,gat,def_proc=ExeProc.new)
       @gat=Msg.type?(gat,Hash)
       @labeldb=Msg::CmdList.new(gat)
       @index=Msg.type?(index,Command)
-      @def_proc=Msg.type?(def_proc,Proc)
+      @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
     def add_item(id,title=nil,parameter=nil)
@@ -124,7 +122,7 @@ class Command < ExHash
 
     def init_proc(&p)
       values.each{|v|
-        v.def_proc=p
+        v.def_proc.set &p
       }
       self
     end

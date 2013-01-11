@@ -72,7 +72,7 @@ module Int
       udp=UDPSocket.open()
       addr=Socket.pack_sockaddr_in(port.to_i,host)
       Exe.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
-      @cobj.def_proc=proc{|item|
+      @cobj.def_proc.set{|item|
         cl_exe(udp,addr,item.cmd)
       }
       @upd_proc.add{cl_exe(udp,addr,[])}

@@ -13,23 +13,22 @@ require 'libupdate'
 class Command
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd
-    attr_accessor :def_proc
-    def initialize(id,index,def_proc=proc{})
+    attr_reader :id,:par,:cmd,:def_proc
+    def initialize(id,index,def_proc=ExeProc.new)
       @id=id
       @index=Msg.type?(index,Command)
       @par=[]
       @cmd=[]
-      @def_proc=Msg.type?(def_proc,Proc)
+      @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
     def init_proc(&p)
-      @def_proc=p
+      @def_proc=ExeProc.new.set &p
       self
     end
 
     def exe
-      @def_proc.call(self)
+      @def_proc.exe(self)
       self
     end
 

@@ -53,7 +53,7 @@ module App
       @watch.event_proc=proc{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
       }
-      @cobj.def_proc=proc{|item|
+      @cobj.def_proc.set{|item|
         @watch.block?(item.cmd)
         @stat.set_time.upd
         @watch.upd

@@ -18,3 +18,20 @@ class UpdProc < Array
     }
   end
 end
+
+class ExeProc < Array
+  extend Msg::Ver
+  def initialize
+    ExeProc.init_ver(self,5)
+  end
+
+  def set(&p)
+    replace [p]
+  end
+
+  def exe(par)
+    ExeProc.msg{"Exec procs"}
+    first.call(par) unless empty?
+    self
+  end
+end

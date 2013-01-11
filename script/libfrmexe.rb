@@ -24,7 +24,7 @@ module Frm
   class Test < Exe
     def initialize(fdb)
       super
-      @cobj.def_proc=proc{|item|
+      @cobj.def_proc.set{|item|
         @field.set_time
       }
       @cobj['set'].init_proc{|item|
@@ -38,7 +38,7 @@ module Frm
       super(fdb)
       host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(host).load
-      @cobj.def_proc=proc{to_s}
+      @cobj.def_proc.set{to_s}
       client(host,fdb['port'])
       @upd_proc.add{@field.load}
     end

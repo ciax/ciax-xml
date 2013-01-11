@@ -5,7 +5,7 @@ id2frm(){
     echo $frm|cut -d: -f2|tr -d ' "'
 }
 getid(){
-    ls ~/.var/frame_???_*|cut -d_ -f2|sort -u
+    ls ~/.var/stream_???_*|cut -d_ -f2|sort -u
 }
 getcmd(){
     $frmcmd $1 2>&1 |grep "^ "|cut -d: -f1

@@ -2,7 +2,7 @@
 require "libfrmlist"
 
 module App
-  class List < Int::List
+  class List < Interactive::List
     # @< opt,share_proc*
     # @ fl,fint,list
     require "libappsv"

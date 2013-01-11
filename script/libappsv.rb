@@ -12,7 +12,7 @@ module App
   # @<< cobj,output,intgrp,interrupt,int_proc,upd_proc*
   # @< adb,extdom,watch,stat*
   # @ fint,buf,log_proc
-  class Sv < Int::Server
+  class Sv < Interactive::Server
     extend Msg::Ver
     def initialize(adb,fint,logging=nil)
       super()
@@ -100,7 +100,7 @@ module App
           rescue InvalidID
             Msg.warn($!)
           end
-          Int::Exe.msg{"Auto Update(#{@stat['time']})"}
+          Interactive::Exe.msg{"Auto Update(#{@stat['time']})"}
         sleep int
         }
       }

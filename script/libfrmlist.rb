@@ -2,7 +2,7 @@
 require 'libfrmsv'
 
 module Frm
-  class List < Int::List
+  class List < Interactive::List
     # @< opt,(share_proc*)
     def initialize(opt=nil)
       super{|id|

@@ -18,7 +18,7 @@
         <Mcr.Db/>
         <Sym.Db/>
       </Db>
-      <Int.Prompt/>
+      <Interactive.Prompt/>
       <Var>
         <Field.Var/>
         <Status.Var/>
@@ -41,17 +41,21 @@
       <Elapse/>
     </Interval>
   </Time>
-  <Shell>
-    <App.Sh>
+  <Interactive.Exe>
+    <App.Exe/>
+    <Frm.Exe/>
+    <App.Test/>
+    <Frm.Test/>
+    <Interactive.Server>
+      <App.Sv/>
+      <Frm.Sv/>
+      <Mcr.Sv />
+    </Interactive.Server>
+    <Interactive.Client>
       <App.Cl/>
-      <App.Sv />
-    </App.Sh>
-    <Frm.Sh>
       <Frm.Cl />
-      <Frm.Sv />
-    </Frm.Sh>
-    <Mcr.Sh />
-  </Shell>
+    </Interactive.Client>
+  </Interactive.Exe>
   <App.Cmd/>
   <Frm.Cmd/>
   <Msg.Ver/>

@@ -11,7 +11,7 @@ require "libupdate"
 # Add External Command to Combine Lower Layer (Stream,Frm,App)
 # Add Shell Command (by Shell extention)
 
-module Int
+module Interactive
   # @ cobj,output,intgrp,interrupt,upd_proc,int_proc*
   class Exe < ExHash
     extend Msg::Ver

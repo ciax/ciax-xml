@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libint'
+require 'libinteractive'
 require 'libfield'
 
 module Frm
@@ -21,7 +21,7 @@ module Frm
     end
   end
 
-  class Test < Int::Exe
+  class Test < Interactive::Exe
     def initialize(fdb)
       super()
       extend(Exe).init(fdb)
@@ -34,7 +34,7 @@ module Frm
     end
   end
 
-  class Cl < Int::Client
+  class Cl < Interactive::Client
     def initialize(fdb,host=nil)
       super()
       extend(Exe).init(fdb)

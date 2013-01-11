@@ -7,7 +7,7 @@ require "libsqlog"
 require "libfrmcmd"
 
 module Frm
-  class Sv < Int::Server
+  class Sv < Interactive::Server
     # @<< cobj,(output),(intgrp),(interrupt),(int_proc),(upd_proc*)
     # @< extdom,field*
     # @ io

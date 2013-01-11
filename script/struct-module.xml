@@ -30,12 +30,12 @@
     </Stream>
     <Buffer parent="Object" extend="Msg.Ver"/>
     <Frame parent="Object" extend="Msg.Ver"/>
-    <Int>
+    <Interactive>
       <Shell parent="Object"/>
       <Server extend_for="Shell" extend="Msg.Ver"/>
       <Client extend_for="Shell" extend="Msg.Ver"/>
       <Prompt parent="ExHash"/>
-    </Int>
+    </Interactive>
   </shared>
   <append>
     <SqLog>
@@ -50,9 +50,9 @@
       <Sdb/>
       <Wdb/>
       <Db parent="Db" include="Cdb,Sdb,Wdb"/>
-      <Sh parent="Int.Shell"/>
-      <Cl parent="Sh" extend="Int.Client"/>
-      <Sv parent="Sh" include="Int.Server"/>
+      <Sh parent="Interactive.Shell"/>
+      <Cl parent="Sh" extend="Interactive.Client"/>
+      <Sv parent="Sh" include="Interactive.Server"/>
       <Cmd extend_for="Command" extend="Msg.Ver"/>
       <Rsp extend_for="Status.Var" extend="Msg.Ver"/>
       <Prt extend_for="Sh"/>
@@ -60,9 +60,9 @@
     </App>
     <Frm>
       <Db parent="Db" extend="Msg.Ver"/>
-      <Sh parent="Int.Shell"/>
-      <Cl parent="Sh" extend="Int.Client"/>
-      <Sv parent="Sh" include="Int.Server"/>
+      <Sh parent="Interactive.Shell"/>
+      <Cl parent="Sh" extend="Interactive.Client"/>
+      <Sv parent="Sh" include="Interactive.Server"/>
       <Cmd extend_for="Command" extend="Msg.Ver"/>
       <Rsp extend_for="Field.Var" extend="Msg.Ver"/>
       <List parent="Hash"/>

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libint"
+require "libinteractive"
 require "libstatus"
 require "libwatch"
 
@@ -26,7 +26,7 @@ module App
     end
   end
 
-  class Test < Int::Exe
+  class Test < Interactive::Exe
     require "libsymconv"
     def initialize(adb)
       super()
@@ -65,7 +65,7 @@ module App
     end
   end
 
-  class Cl < Int::Client
+  class Cl < Interactive::Client
     def initialize(adb,host=nil)
       super()
       extend(Exe).init(adb)

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libint"
+require "libinteractive"
 require "libmcrdb"
 require "libmcrcmd"
 require "libapplist"
@@ -15,7 +15,7 @@ module Mcr
     end
   end
 
-  class Sv < Int::Server
+  class Sv < Interactive::Server
     extend Msg::Ver
     # @<< (cobj),(output),(intgrp),interrupt,(int_proc),(upd_proc*)
     # @< (mdb),extdom
@@ -46,7 +46,7 @@ module Mcr
   end
 
   module Shell
-    include Int::Shell
+    include Interactive::Shell
     def ext_shell
       super({'stat' => "(%s)"})
       grp=@shdom.add_group('con','Control')

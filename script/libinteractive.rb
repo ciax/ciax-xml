@@ -150,7 +150,7 @@ module Interactive
 
     def set_switch(key,title,list)
       grp=@shdom.add_group(key,title)
-      grp.update_items(list).init_proc{|item| raise(SelectID,item.id)}
+      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
       self
     end
 

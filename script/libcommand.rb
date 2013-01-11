@@ -9,7 +9,7 @@ require 'libupdate'
 #Command < Hash
 # Command::Item => {:label,:parameter,:select,:cmd}
 #  Command::Item#set_par(par)
-#  Command::Item#init_proc{|item|}
+#  Command::Item#reset_proc{|item|}
 #
 # Command::Group => {id => Command::Item}
 #  Command::Group#list -> Msg::CmdList.to_s
@@ -83,7 +83,7 @@ class Command < ExHash
       @group[gid]=Group.new(@index,gat,@def_proc)
     end
 
-    def init_proc(&p)
+    def reset_proc(&p)
       values.each{|v|
         v.def_proc.set &p
       }
@@ -124,7 +124,7 @@ class Command < ExHash
       self
     end
 
-    def init_proc(&p)
+    def reset_proc(&p)
       values.each{|v|
         v.def_proc.set &p
       }
@@ -147,7 +147,7 @@ class Command < ExHash
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
-    def init_proc(&p)
+    def reset_proc(&p)
       @def_proc=ExeProc.new.set &p
       self
     end

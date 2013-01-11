@@ -29,14 +29,14 @@ module App
       }
       Thread.abort_on_exception=true
       @buf=init_buf
-      @extdom.ext_appcmd.init_proc{|item|
+      @extdom.ext_appcmd.reset_proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
         Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
 
-      @interrupt.init_proc{
+      @interrupt.reset_proc{
         int=@watch.interrupt
         Sv.msg{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

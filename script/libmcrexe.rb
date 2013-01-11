@@ -33,7 +33,7 @@ module Mcr
         @output=@block[:record]
         self['stat']=@block[:stat]
       }.upd
-      @interrupt.init_proc{|i|
+      @interrupt.reset_proc{|i|
         self['msg']="Interrupted"
         @crnt.raise(Broken)
       }
@@ -50,7 +50,7 @@ module Mcr
     def ext_shell
       super({'stat' => "(%s)"})
       grp=@shdom.add_group('con','Control')
-      grp.add_item('y','Yes').init_proc{|i|
+      grp.add_item('y','Yes').reset_proc{|i|
         if @crnt.alive?
           @crnt.run
           self['msg']="Continue"

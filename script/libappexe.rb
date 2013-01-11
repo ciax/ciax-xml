@@ -34,12 +34,12 @@ module App
       @stat.extend(Sym::Conv).load
       @watch.ext_conv(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
-      @intgrp.add_item('set','[key=val,...]',[cri]).init_proc{|item|
+      @intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|
         @stat.str_update(item.par[0]).upd
         @watch.upd
         self['msg']="Set #{item.par[0]}"
       }
-      @intgrp.add_item('del','[key,...]',[cri]).init_proc{|item|
+      @intgrp.add_item('del','[key,...]',[cri]).reset_proc{|item|
         item.par[0].split(',').each{|key|
           @stat['val'].delete(key)
         }
@@ -47,7 +47,7 @@ module App
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
-      @interrupt.init_proc{
+      @interrupt.reset_proc{
         int=@watch.interrupt
         self['msg']="Interrupt #{int}"
       }

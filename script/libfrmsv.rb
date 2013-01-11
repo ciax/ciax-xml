@@ -23,17 +23,17 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @extdom.ext_frmcmd(@field,fdb).init_proc{|item|
+      @extdom.ext_frmcmd(@field,fdb).reset_proc{|item|
         @io.snd(item.getframe,item[:cmd])
         @field.upd{@io.rcv} && @field.save
       }
-      @cobj['set'].init_proc{|item|
+      @cobj['set'].reset_proc{|item|
         @field.set(item.par[0],item.par[1]).save
       }
-      @cobj['save'].init_proc{|item|
+      @cobj['save'].reset_proc{|item|
         @field.savekey(item.par[0].split(','),item.par[1])
       }
-      @cobj['load'].init_proc{|item|
+      @cobj['load'].reset_proc{|item|
         @field.load(item.par[0]||'').save
       }
       server(fdb['port'].to_i){to_j}

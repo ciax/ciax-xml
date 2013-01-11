@@ -3,7 +3,7 @@ require "libfrmlist"
 
 module App
   class List < Interactive::List
-    # @< opt,share_proc*
+    # @< opt,init_proc*
     # @ fl,fint,list
     require "libappsv"
     def initialize(opt=nil)
@@ -35,7 +35,7 @@ module App
     # shell and server are exclusive
     def shell(id)
       type='app'
-      @share_proc=proc{|int|
+      @init_proc=proc{|int|
         pc={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
         int.ext_shell(pc){|line|
           line='set '+line if /^[^ ]+\=/ === line
@@ -45,7 +45,7 @@ module App
         int.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
         yield id,int if defined? yield
       }
-      @fl.share_proc=proc{|int|
+      @fl.init_proc=proc{|int|
         int.set_switch('lay',"Change Layer",{'app'=>"App mode"})
       }
       super{|cmd|
@@ -65,7 +65,7 @@ module App
     end
 
     def server(ary)
-      @share_proc=proc{|int|
+      @init_proc=proc{|int|
         yield @id,int if defined? yield
       }
       super

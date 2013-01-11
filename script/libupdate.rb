@@ -23,6 +23,7 @@ class ExeProc < Array
   extend Msg::Ver
   def initialize
     ExeProc.init_ver(self,5)
+    push proc{}
   end
 
   def set(&p)
@@ -31,7 +32,7 @@ class ExeProc < Array
 
   def exe(par)
     ExeProc.msg{"Exec procs"}
-    first.call(par) unless empty?
+    first.call(par)
     self
   end
 end

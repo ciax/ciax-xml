@@ -201,13 +201,13 @@ module Interactive
 
   class List < Hash
     require "liblocdb"
-    attr_accessor :share_proc
+    attr_accessor :init_proc
     def initialize(opt=nil)
       @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
-      @share_proc=proc{} # Execute when new key is set
+      @init_proc=proc{} # Execute when new key is set
       super(){|h,id|
         int=yield id
-        @share_proc.call(int)
+        @init_proc.call(int)
         h[id]=int
       }
     end

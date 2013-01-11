@@ -3,7 +3,7 @@ require 'libfrmsv'
 
 module Frm
   class List < Interactive::List
-    # @< opt,(share_proc*)
+    # @< opt,(init_proc*)
     def initialize(opt=nil)
       super{|id|
         fdb=Loc::Db.new(id)[:frm]

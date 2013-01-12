@@ -54,7 +54,7 @@ module App
         self['watch'] = @watch.active?
         self['na'] = !@buf.alive?
       }
-      server(@adb['port']){to_j}
+      server(@adb['port'])
     end
 
     def ext_logging(id,ver=0)

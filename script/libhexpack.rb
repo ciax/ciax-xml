@@ -74,18 +74,22 @@ module HexPack
       @output=View.new(self,@stat)
       if id
         logging=Logging.new('hex',id,ver){
-          {'data' => @output.to_s}
+          {'hexpack' => @output.to_s}
         }
         @log_proc.add{logging.append}
         @buf.flush_proc.add{logging.append}
       end
-      super(@adb['port'].to_i+1000){@output.to_s}
+      super(@adb['port'].to_i+1000)
     end
 
     private
-    def sv_exe(line)
+    def filter_in(line)
       return if /^(strobe|stat)/ === line
-      int_exe(line.split(' '))
+      line.split(' ')
+    end
+
+    def filter_out
+      @output.to_s
     end
   end
 end

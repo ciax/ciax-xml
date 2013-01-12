@@ -69,7 +69,9 @@ module Interactive
             Exe.msg{"Recv:#{line} is #{line.class}"}
             begin
               self['msg']='OK'
-              sv_exe(line)
+              if cmd=filter_in(line)
+                int_exe(cmd)
+              end
             rescue InvalidPAR
               self['msg']=$!.to_s
             rescue InvalidCMD
@@ -79,7 +81,7 @@ module Interactive
             end
             Exe.msg{"Send:#{self['msg']}"}
             @upd_proc.upd
-            udp.send(yield,0,addr[2],addr[1])
+            udp.send(filter_out,0,addr[2],addr[1])
           }
         }
       }
@@ -87,13 +89,15 @@ module Interactive
     end
 
     private
-    def sv_exe(line)
-      cmd=JSON.load(line)
-      return if cmd.empty?
-      int_exe(cmd)
+    def filter_in(line)
+      JSON.load(line)
     rescue JSON::ParserError
       self['msg']="NOT JSON"
-      self
+      nil
+    end
+
+    def filter_out
+      to_j
     end
   end
 

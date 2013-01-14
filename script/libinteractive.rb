@@ -160,16 +160,15 @@ module Interactive
         while line=Readline.readline(prompt,true)
           break if /^q/ === line
           line=@lineconv.call(line) if @lineconv
-          begin
-            puts exe(line.split(' '))||@output
-          rescue
-            puts self['msg']
-          end
+          puts exe(line.split(' '))
         end
       rescue SelectID
         $!.to_s
       rescue Interrupt
-        sh_exe('interrupt')
+        puts exe(['interrupt'])
+        retry
+      rescue
+        puts $!.to_s
         retry
       end
     end

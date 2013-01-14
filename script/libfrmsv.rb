@@ -8,7 +8,7 @@ require "libfrmcmd"
 
 module Frm
   class Sv < Interactive::Server
-    # @<< cobj,(output),(intgrp),(interrupt),(int_proc),(upd_proc*)
+    # @<< cobj,(output),(intgrp),(interrupt),(upd_proc*)
     # @< extdom,field*
     # @ io
     def initialize(fdb,iocmd=[])

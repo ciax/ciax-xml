@@ -12,10 +12,10 @@ require "libupdate"
 # Add Shell Command (by Shell extention)
 
 module Interactive
-  # @ cobj,output,intgrp,interrupt,upd_proc,int_proc*
+  # @ cobj,output,intgrp,interrupt,upd_proc
   class Exe < ExHash
     extend Msg::Ver
-    attr_reader :int_proc,:interrupt
+    attr_reader :upd_proc,:interrupt
     def initialize
       Exe.init_ver(self,2)
       @cobj=Command.new
@@ -23,13 +23,19 @@ module Interactive
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
-      @int_proc=UpdProc.new # Proc for Interactive Operation
     end
 
     # Sync only (Wait for other thread)
     def exe(cmd)
+      self['msg']='OK'
+      return @output if cmd.empty?
       @cobj.setcmd(cmd).exe
-      self
+      self['msg']
+    rescue
+      self['msg']=$!.to_s
+      raise $!
+    ensure
+      @upd_proc.upd
     end
 
     def ext_shell(pconv={},&p)
@@ -38,14 +44,6 @@ module Interactive
       else
         extend(Shell).ext_shell(pconv,&p)
       end
-      self
-    end
-
-    private
-    # Async for interactive interface
-    def int_exe(cmd)
-      @cobj.setcmd(cmd).exe
-      @int_proc.upd
       self
     end
   end
@@ -68,19 +66,14 @@ module Interactive
             line.chomp!
             Exe.msg{"Recv:#{line} is #{line.class}"}
             begin
-              self['msg']='OK'
-              if cmd=filter_in(line)
-                int_exe(cmd)
-              end
-            rescue InvalidPAR
-              self['msg']=$!.to_s
+              exe(filter_in(line))
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError
-              warn(self['msg']=$!.to_s)
+              warn($!.to_s)
+              self['msg']="ERROR"
             end
             Exe.msg{"Send:#{self['msg']}"}
-            @upd_proc.upd
             udp.send(filter_out,0,addr[2],addr[1])
           }
         }
@@ -129,7 +122,7 @@ module Interactive
   # Shell has internal status for prompt
   module Shell
     extend Msg::Ver
-    # @< cobj,output,(intgrp),(interrupt),upd_proc,int_proc*
+    # @< cobj,output,(intgrp),(interrupt),upd_proc
     # @ pconv,shdom,lineconv
     attr_reader :shdom
     def self.extended(obj)
@@ -165,15 +158,13 @@ module Interactive
       begin
         @upd_proc.upd
         while line=Readline.readline(prompt,true)
-          case line
-          when /^q/
-            break
-          when ''
-            puts @output if @output
-          else
-            sh_exe(line)
+          break if /^q/ === line
+          line=@lineconv.call(line) if @lineconv
+          begin
+            puts exe(line.split(' '))||@output
+          rescue
+            puts self['msg']
           end
-          @upd_proc.upd
         end
       rescue SelectID
         $!.to_s
@@ -184,18 +175,6 @@ module Interactive
     end
 
     private
-    # For shell
-    def sh_exe(line)
-      line=@lineconv.call(line) if @lineconv
-      self['msg']='OK'
-      int_exe(line.split(' '))
-      puts self['msg']
-    rescue InvalidCMD
-      puts $!.to_s
-    rescue UserError
-      puts $!.to_s
-    end
-
     def prompt
       @pconv.keys.map{|k|
         (@pconv[k]||'%s') % self[k] if self[k]

@@ -5,7 +5,7 @@ require "libwatch"
 
 module App
   module Exe
-    # @< cobj,output,intgrp,interrupt,int_proc,upd_proc*
+    # @< cobj,output,intgrp,interrupt,upd_proc*
     # @ adb,extdom,watch,stat*
     attr_reader :stat
     def init(adb)
@@ -14,14 +14,6 @@ module App
       self['id']=@adb['site_id']
       @output=@stat=Status::Var.new.ext_file(@adb['site_id'])
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
-      self
-    end
-
-    def exe(cmd)
-      super
-      while self['isu']
-        @upd_proc.upd
-      end
       self
     end
   end

@@ -6,7 +6,7 @@ require "libapplist"
 
 module Mcr
   module Exe
-    # @< cobj,output,(intgrp),(interrupt),(int_proc),upd_proc*
+    # @< cobj,output,(intgrp),(interrupt),upd_proc*
     # @ mdb,extdom
     def init(item)
       @item=Msg.type?(item,Mcr::Cmd)
@@ -17,7 +17,7 @@ module Mcr
 
   class Sv < Interactive::Server
     extend Msg::Ver
-    # @<< (cobj),(output),(intgrp),interrupt,(int_proc),(upd_proc*)
+    # @<< (cobj),(output),(intgrp),interrupt,(upd_proc*)
     # @< (mdb),extdom
     # @ dryrun,aint
     attr_reader :crnt

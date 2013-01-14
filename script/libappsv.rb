@@ -9,7 +9,7 @@ require "libsqlog"
 require "thread"
 
 module App
-  # @<< cobj,output,intgrp,interrupt,int_proc,upd_proc*
+  # @<< cobj,output,intgrp,interrupt,upd_proc*
   # @< adb,extdom,watch,stat*
   # @ fint,buf,log_proc
   class Sv < Interactive::Server
@@ -42,7 +42,7 @@ module App
         self['msg']="Interrupt #{int}"
       }
       # Update for Frm level manipulation
-      @fint.int_proc.add{@stat.upd.save}
+      @fint.upd_proc.add{@stat.upd.save}
       # Logging if version number exists
       @log_proc=UpdProc.new
       if logging and @adb['version']
@@ -75,7 +75,10 @@ module App
     def init_buf
       buf=Buffer.new(self)
       buf.send_proc{@cobj.current.getcmd}
-      buf.recv_proc{|fcmd| @fint.exe(fcmd)}
+      buf.recv_proc{|fcmd|
+        @fint.exe(fcmd)
+        @fint.upd_proc.upd
+      }
       buf.flush_proc.add{
         @stat.upd.save
         @watch.upd.save

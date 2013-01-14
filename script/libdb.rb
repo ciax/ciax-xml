@@ -20,7 +20,11 @@ class Db < ExHash
     @base="#{@type}-#{id}"
     if newest?
       Db.msg{"Loading(#{@base})"}
-      res=Marshal.load(IO.read(fmar))
+      begin
+        res=Marshal.load(IO.read(fmar))
+      rescue ArgumentError #if empty
+        res={}
+      end
     else
       Db.msg{"Refresh Db"}
       res=Msg.type?(yield(Xml::Doc.new(@type,group)),Hash)

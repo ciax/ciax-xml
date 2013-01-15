@@ -75,10 +75,7 @@ module App
     def init_buf
       buf=Buffer.new(self)
       buf.send_proc{@cobj.current.getcmd}
-      buf.recv_proc{|fcmd|
-        @fint.exe(fcmd)
-        @fint.upd_proc.upd
-      }
+      buf.recv_proc{|fcmd|@fint.exe(fcmd)}
       buf.flush_proc.add{
         @stat.upd.save
         @watch.upd.save
@@ -104,7 +101,7 @@ module App
             Msg.warn($!)
           end
           Interactive::Exe.msg{"Auto Update(#{@stat['time']})"}
-        sleep int
+          sleep int
         }
       }
     end

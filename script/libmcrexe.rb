@@ -25,13 +25,13 @@ module Mcr
       super()
       extend(Exe).init(item)
       @aint=Msg.type?(aint,App::List)
-      @block=item.block
+      @session=item.session
       @crnt=Thread.new{
         item.exe
       }
       @upd_proc.add{
-        @output=@block[:record]
-        self['stat']=@block[:stat]
+        @output=@session[:record]
+        self['stat']=@session[:stat]
       }.upd
       @interrupt.reset_proc{|i|
         self['msg']="Interrupted"

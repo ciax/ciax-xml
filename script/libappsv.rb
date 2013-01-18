@@ -105,10 +105,5 @@ module App
         }
       }
     end
-
-    def app_shell
-      extend(Sh).app_shell(@fint)
-      self
-    end
   end
 end

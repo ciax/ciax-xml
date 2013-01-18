@@ -65,7 +65,9 @@ module HexPack
   end
 
   module Sv
+    extend Msg::Ver
     def self.extended(obj)
+      init_ver('HexPack',9)
       Msg.type?(obj,App::Sv)
       self
     end
@@ -97,8 +99,12 @@ end
 module App
   class Sv
     def ext_hex(id=nil,ver=nil)
-      return self unless HexPack::View.sdb(id)
-      extend(HexPack::Sv).server(id,ver)
+      if HexPack::View.sdb(id)
+        extend(HexPack::Sv).server(id,ver)
+      else
+        Msg.alert("Hexpack/Can't found SDB for #{id}")
+      end
+      self
     end
   end
 end

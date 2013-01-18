@@ -67,15 +67,15 @@ module HexPack
   module Sv
     extend Msg::Ver
     def self.extended(obj)
-      init_ver('HexPack',9)
+      Object::Interactive::Exe.init_ver('HexPack',2)
       Msg.type?(obj,App::Sv)
       self
     end
 
-    def server(id=nil,ver=nil)
+    def server(ver=nil)
       @output=View.new(self,@stat)
-      if id
-        logging=Logging.new('hex',id,ver){
+      if ver
+        logging=Logging.new('hex',self['id'],ver){
           {'hexpack' => @output.to_s}
         }
         @log_proc.add{logging.append}
@@ -98,9 +98,10 @@ end
 
 module App
   class Sv
-    def ext_hex(id=nil,ver=nil)
+    def ext_hex(ver=nil)
+      id=self['id']
       if HexPack::View.sdb(id)
-        extend(HexPack::Sv).server(id,ver)
+        extend(HexPack::Sv).server(ver)
       else
         Msg.alert("Hexpack/Can't found SDB for #{id}")
       end

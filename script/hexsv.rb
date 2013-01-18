@@ -4,6 +4,6 @@ require "libhexpack"
 
 ENV['VER']||='init/'
 opt=Msg::GetOpts.new('e')
-App::List.new(opt).server(ARGV){|id,aint|
-  aint.ext_hex(id)
+App::List.new(opt).server(ARGV){|aint|
+  aint.ext_hex
 }

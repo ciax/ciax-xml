@@ -66,7 +66,7 @@ module App
 
     def server(ary,&prc)
       @init_proc=proc{|int|
-        prc.call(@id,int) if prc
+        prc.call(int) if prc
       }
       super
     end

@@ -71,7 +71,7 @@ module Interactive
               self['msg']="INVALID"
             rescue RuntimeError
               warn($!.to_s)
-              self['msg']="ERROR"
+              self['msg']=$!.to_s
             end
             Exe.msg{"Send:#{self['msg']}"}
             udp.send(filter_out,0,addr[2],addr[1])
@@ -85,8 +85,7 @@ module Interactive
     def filter_in(line)
       JSON.load(line)
     rescue JSON::ParserError
-      self['msg']="NOT JSON"
-      nil
+      raise UserError,"NOT JSON"
     end
 
     def filter_out

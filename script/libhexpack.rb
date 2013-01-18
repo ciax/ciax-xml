@@ -84,7 +84,7 @@ module HexPack
 
     private
     def filter_in(line)
-      return if /^(strobe|stat)/ === line
+      return [] if /^(strobe|stat)/ === line
       line.split(' ')
     end
 

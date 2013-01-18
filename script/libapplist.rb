@@ -6,7 +6,7 @@ module App
     # @< opt,init_proc*
     # @ fl,fint,list
     require "libappsv"
-    def initialize(opt=nil)
+    def initialize(opt=nil,&prc)
       @fl=Frm::List.new(opt)
       @fint={}
       super{|id|
@@ -28,12 +28,12 @@ module App
             aint=App::Sv.new(ldb[:app],@fint[id],@opt['e'])
           end
         end
-        aint
+        prc ? prc.call(aint,ldb[:app]) : aint
       }
     end
 
     # shell and server are exclusive
-    def shell(id)
+    def shell(id,&prc)
       type='app'
       @init_proc=proc{|int|
         pc={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
@@ -43,7 +43,7 @@ module App
         }
         int.set_switch('dev',"Change Device",@list)
         int.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-        yield id,int if defined? yield
+        prc.call(id,int) if prc
       }
       @fl.init_proc=proc{|int|
         int.set_switch('lay',"Change Layer",{'app'=>"App mode"})
@@ -64,9 +64,9 @@ module App
       }
     end
 
-    def server(ary)
+    def server(ary,&prc)
       @init_proc=proc{|int|
-        yield @id,int if defined? yield
+        prc.call(@id,int) if prc
       }
       super
     end

@@ -4,9 +4,10 @@ require "libmsg"
 
 module HexPack
   class View
-    extend Msg::Ver
+    include Msg::Ver
     def initialize(int,stat)
       # Server Status
+      init_ver('HexView',4)
       @int=Msg.type?(int,Hash)
       @stat=Msg.type?(stat,Status::Var)
       id=stat['id'] || raise(InvalidID,"NO ID in Stat")
@@ -48,7 +49,7 @@ module HexPack
           else
             str=("%#{len}s" % val)
           end
-          View.msg{"#{title}/#{type}(#{len}) = #{str}"}
+          verbose{"#{title}/#{type}(#{len}) = #{str}"}
         else
           str='*' * len
         end
@@ -65,9 +66,7 @@ module HexPack
   end
 
   module Sv
-    extend Msg::Ver
     def self.extended(obj)
-      Object::Interactive::Exe.init_ver('HexPack',2)
       Msg.type?(obj,App::Sv)
       self
     end
@@ -101,6 +100,7 @@ module App
     def ext_hex(ver=nil)
       id=self['id']
       if HexPack::View.sdb(id)
+        init_ver('HexPack',2)
         extend(HexPack::Sv).server(ver)
       else
         Msg.alert("Hexpack/Can't found SDB for #{id}")

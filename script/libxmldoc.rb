@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmsg"
+require "libexenum"
 require "libxmlgn"
 
 # Domain is the top node of each name spaces
@@ -10,16 +10,15 @@ module Xml
   # to those described in the group named file.
   # The group named file can conatin referenced item whose entity is
   # in another file.
-  class Doc < Hash
-    extend Msg::Ver
+  class Doc < ExHash
     attr_reader :top,:list
     ALL='all-list'
     @@root={}
     def initialize(type,group=nil)
-      Doc.init_ver(self,4)
+      init_ver(self,4)
       /.+/ =~ type || Msg.cfg_err("No Db Type")
       @group=group||ALL
-      Doc.msg{"xmlroot:#{@@root.keys}"}
+      verbose{"xmlroot:#{@@root.keys}"}
       @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))
       list={}
       Msg.abort("No XML group for '#{group}' in #{type}") unless @tree.key? @group
@@ -38,7 +37,7 @@ module Xml
       @top.each{|e1|
         @domain[e1.name]=e1 unless @top.ns == e1.ns
       }
-      Doc.msg{"Domain registerd:#{@domain.keys}"}
+      verbose{"Domain registerd:#{@domain.keys}"}
       self
     end
 
@@ -60,7 +59,7 @@ module Xml
       reflist=[]
       Dir.glob(glob).each{|p|
         base=File.basename(p,'.xml')
-        Doc.msg{"readxml:#{base}"}
+        verbose{"readxml:#{base}"}
         fid=base.gsub(/.+-/,'')
         Gnu.new(p).each{|e|
           if ref=e['ref']

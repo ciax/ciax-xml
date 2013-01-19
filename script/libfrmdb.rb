@@ -4,9 +4,8 @@ require "libdb"
 
 module Frm
   class Db < Db
-    extend Msg::Ver
     def initialize(id)
-      Db.init_ver('fdb')
+      init_ver('fdb')
       super('fdb',id){|doc|
         hash={}
         hash.update(doc)
@@ -27,27 +26,27 @@ module Frm
     def init_main(domain)
       hash=domain.to_h
       begin
-        Db.msg(1){"INIT:Main Frame <-"}
+        verbose(1){"INIT:Main Frame <-"}
         frame=[]
         domain.each{|e1|
           frame << yield(e1)
         }
-        Db.msg{"InitMainFrame:#{frame}"}
+        verbose{"InitMainFrame:#{frame}"}
         hash[:main]=frame
       ensure
-        Db.msg(-1){"-> INIT:Main Frame"}
+        verbose(-1){"-> INIT:Main Frame"}
       end
       domain.find('ccrange'){|e0|
         begin
-          Db.msg(1){"INIT:Ceck Code Frame <-"}
+          verbose(1){"INIT:Ceck Code Frame <-"}
           frame=[]
           Repeat.new.each(e0){|e1,r1|
             frame << yield(e1,r1)
           }
-          Db.msg{"InitCCFrame:#{frame}"}
+          verbose{"InitCCFrame:#{frame}"}
           hash[:ccrange]=frame
         ensure
-          Db.msg(-1){"-> INIT:Ceck Code Frame"}
+          verbose(-1){"-> INIT:Ceck Code Frame"}
         end
       }
       hash
@@ -57,18 +56,18 @@ module Frm
       selh=domain.to_h
       domain.find(select){|e0|
         begin
-          Db.msg(1){"INIT:Select Frame <-"}
+          verbose(1){"INIT:Select Frame <-"}
           id=e0.attr2db(selh)
           (selh[:select]||={})[id]||=[]
-          Db.msg{"InitSelHash(#{id})"}
+          verbose{"InitSelHash(#{id})"}
           Repeat.new.each(e0){|e1,r1|
             set_par(e1,id,selh) && next
             e=yield(e1,r1) || next
             selh[:select][id] << e
           }
-          Db.msg{"InitSelFrame(#{id})"}
+          verbose{"InitSelFrame(#{id})"}
         ensure
-          Db.msg(-1){"-> INIT:Select Frame"}
+          verbose(-1){"-> INIT:Select Frame"}
         end
       }
       selh
@@ -79,7 +78,7 @@ module Frm
       when 'char','string'
         attr=e.to_h
         attr['val']=rep.subst(attr['val']) if rep
-        Db.msg{"Data:[#{attr}]"}
+        verbose{"Data:[#{attr}]"}
         attr
       else
         e.name
@@ -95,10 +94,10 @@ module Frm
           val[:label]||={}
           if lv=attr['label']
             val[:label][id]=lv
-            Db.msg{"LABEL:[#{id}] : #{lv}"}
+            verbose{"LABEL:[#{id}] : #{lv}"}
           end
         end
-        Db.msg{"InitElement: #{attr}"}
+        verbose{"InitElement: #{attr}"}
         attr
       when 'array'
         attr=e.to_h

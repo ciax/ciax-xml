@@ -4,9 +4,7 @@ require "libcmdext"
 
 module App
   module Cmd
-    extend Msg::Ver
     def self.extended(obj)
-      init_ver('AppCmd',9)
       Msg.type?(obj,Command::ExtItem)
     end
 
@@ -15,7 +13,7 @@ module App
       frmcmd=[]
       @select.each{|e1|
         cmd=[]
-        Cmd.msg(1){"GetCmd(FDB):#{e1.first}"}
+        verbose(1){"GetCmd(FDB):#{e1.first}"}
         begin
           e1.each{|e2| # //argv
             case e2
@@ -24,13 +22,13 @@ module App
             when Hash
               str=e2['val']
               str = e2['format'] % str if e2['format']
-              Cmd.msg{"Calculated [#{str}]"}
+              verbose{"Calculated [#{str}]"}
               cmd << str
             end
           }
           frmcmd.push cmd
         ensure
-          Cmd.msg(-1){"Exec(FDB):#{cmd}"}
+          verbose(-1){"Exec(FDB):#{cmd}"}
         end
       }
       frmcmd
@@ -41,7 +39,7 @@ end
 class Command::ExtDom
   def ext_appcmd
     values.each{|item|
-      item.extend(App::Cmd)
+      item.extend(App::Cmd).init_ver('AppCmd',9)
     }
     self
   end

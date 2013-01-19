@@ -20,15 +20,11 @@ class Interval < Time
 end
 
 class Elapse < Interval
-  extend Msg::Ver
   def initialize(var)
-    Elapse.init_ver(self,5)
     @var=var
   end
 
   def to_f
-    diff=(Time.now-Time.at(@var['time'].to_f)).to_f
-    Elapse.msg{"Elapse update diff #{'%.3f' % diff} from #{@var['time']}"}
-    diff
+    (Time.now-Time.at(@var['time'].to_f)).to_f
   end
 end

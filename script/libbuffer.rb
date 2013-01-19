@@ -17,16 +17,16 @@ require "libupdate"
 #  (stack if Queue is empty)
 
 class Buffer
-  extend Msg::Ver
+  include Msg::Ver
   attr_reader :flush_proc
   # svst: Server Status
   def initialize(svst=[])
-    Buffer.init_ver(self)
+    init_ver(self)
     @svst=Msg.type?(svst,Hash)
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
-    @flush_proc=UpdProc.new.add{Buffer.msg{"Flushing"}}
+    @flush_proc=UpdProc.new.add{verbose{"Flushing"}}
     @send_proc=proc{}
     clear
   end
@@ -77,7 +77,7 @@ class Buffer
 
   private
   def flush
-    Buffer.msg{"SUB:Waiting"}
+    verbose{"SUB:Waiting"}
     # @q can not be empty depending on @flush_proc
     @svst['isu']=false if @q.empty?
     @flush_proc.upd
@@ -85,9 +85,9 @@ class Buffer
 
   #inp is frmcmd array (ary of ary)
   def sort(p,inp)
-    Buffer.msg{"SUB:Recieve [#{inp}] with priority[#{p}]"}
+    verbose{"SUB:Recieve [#{inp}] with priority[#{p}]"}
     (@outbuf[p]||=[]).concat(inp)
-    Buffer.msg{i=-1;
+    verbose{i=-1;
       @outbuf.map{|o|
         "SUB:Outbuf(#{i+=1}) is [#{o}]\n"
       }

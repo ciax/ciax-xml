@@ -2,6 +2,7 @@
 require 'libmsg'
 module Xml
   module Share
+    include Msg::Ver
     # Common with LIBXML,REXML
     def to_s
       @e.to_s
@@ -39,7 +40,7 @@ module Xml
         sym=str.to_sym
         db[sym]={} unless db.key?(sym)
         db[sym][key]=v
-        self.class.msg{"ATTRDB:"+str.upcase+":[#{key}] : #{v}"}
+        verbose{"ATTRDB:"+str.upcase+":[#{key}] : #{v}"}
       }
       key
     end

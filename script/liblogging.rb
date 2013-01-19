@@ -4,15 +4,15 @@ require 'json'
 
 # Should be extend (not include)
 class Logging
-  extend Msg::Ver
+  include Msg::Ver
   def initialize(type,id,ver=0,&p)
-    Logging.init_ver(self,6)
+    init_ver(self,6)
     @type=Msg.type?(type,String)
     Msg.type?(id,String)
     ver=ver.to_i
     @header={'time' => Msg.now,'id' => id,'ver' => ver}
     @loghead=VarDir+"/"+type+"_#{id}"
-    Logging.msg{"Init/Logging '#{type}' (#{id}/Ver.#{ver})"}
+    verbose{"Init/Logging '#{type}' (#{id}/Ver.#{ver})"}
     @proc=p
     self
   end
@@ -26,7 +26,7 @@ class Logging
       open(logfile,'a') {|f|
         f.puts str
       }
-      Logging.msg{"#{@type}/Appended #{str.size} byte"}
+      verbose{"#{@type}/Appended #{str.size} byte"}
     end
     time
   end

@@ -16,7 +16,6 @@ module Mcr
   end
 
   class Sv < Interactive::Server
-    extend Msg::Ver
     # @<< (cobj),(output),(intgrp),interrupt,(upd_proc*)
     # @< (mdb),extdom
     # @ dryrun,aint

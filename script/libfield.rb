@@ -1,14 +1,12 @@
 #!/usr/bin/ruby
-require 'libmsg'
 require 'libupdate'
 require 'libvar'
 
 module Field
   class Var < Var::Val
-    extend Msg::Ver
     # @< (upd_proc)
     def initialize
-      Var.init_ver(self,6)
+      init_ver(self,6)
       super('field')
     end
 
@@ -17,7 +15,7 @@ module Field
     # - output csv if array
     def subst(str)
       return str unless /\$\{/ === str
-        Var.msg(1){"Substitute from [#{str}]"}
+        verbose(1){"Substitute from [#{str}]"}
         begin
           str=str.gsub(/\$\{(.+)\}/) {
             ary=[*get($1)].map!{|i| eval(i)}
@@ -26,7 +24,7 @@ module Field
           }
           str
         ensure
-          Var.msg(-1){"Substitute to [#{str}]"}
+          verbose(-1){"Substitute to [#{str}]"}
         end
     end
 
@@ -50,8 +48,8 @@ module Field
           break
         end
         vname << i
-        Var.msg{"Type[#{h.class}] Name[#{i}]"}
-        Var.msg{"Content[#{h[i]}]"}
+        verbose{"Type[#{h.class}] Name[#{i}]"}
+        verbose{"Content[#{h[i]}]"}
         h[i] || Msg.warn("No such Value [#{vname.join(':')}] in 'val'")
       }
       Msg.warn("Short Index [#{vname.join(':')}]") unless Comparable === data

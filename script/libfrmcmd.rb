@@ -4,14 +4,13 @@ require "libcmdext"
 # Cmd Methods
 module Frm
   module Cmd
-    extend Msg::Ver
     def self.extended(obj)
-      init_ver('FrmCmd',9)
       Msg.type?(obj,Command::ExtItem)
-      Cmd.msg{"Extending Command by Frm::Cmd"}
     end
 
     def ext_frmcmd(field,db)
+      init_ver('FrmCmd',9)
+      verbose{"Extending Command by Frm::Cmd"}
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
@@ -22,11 +21,11 @@ module Frm
 
     def getframe # return = response select
       return unless @sel[:select]=@select
-      #    Cmd.msg{"Attr of Command:#{self}"}
+      #    verbose{"Attr of Command:#{self}"}
       cmd=self[:cmd]
-      Cmd.msg{"Select:#{self[:label]}(#{cmd})"}
+      verbose{"Select:#{self[:label]}(#{cmd})"}
       if frame=@cache[cmd]
-        Cmd.msg{"Cmd cache found [#{cmd}]"}
+        verbose{"Cmd cache found [#{cmd}]"}
       else
         mk_frame(:select) && cmd=nil
         if @sel.key?(:ccrange)

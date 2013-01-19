@@ -73,13 +73,13 @@ class Command
     # str could include Math functions
     def subst(str)
       return str unless /\$([\d]+)/ === str
-      Command.msg(1){"Substitute from [#{str}]"}
+      verbose(1){"Substitute from [#{str}]"}
       begin
         num=true
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
           num=false if self[:parameter][i-1][:type] != 'num'
-          Command.msg{"Parameter No.#{i} = [#{@par[i-1]}]"}
+          verbose{"Parameter No.#{i} = [#{@par[i-1]}]"}
           @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
         }
         if num && /\$/ !~ res
@@ -88,7 +88,7 @@ class Command
         Msg.cfg_err("Nil string") if res == ''
         res
       ensure
-        Command.msg(-1){"Substitute to [#{res}]"}
+        verbose(-1){"Substitute to [#{res}]"}
       end
     end
 

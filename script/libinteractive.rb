@@ -14,10 +14,9 @@ require "libupdate"
 module Interactive
   # @ cobj,output,intgrp,interrupt,upd_proc
   class Exe < ExHash
-    extend Msg::Ver
     attr_reader :upd_proc,:interrupt
     def initialize
-      Exe.init_ver(self,2)
+      init_ver(self,2)
       @cobj=Command.new
       @output=''
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
@@ -52,7 +51,7 @@ module Interactive
     # invoked once
     # JSON expression of server stat will be sent.
     def server(port)
-      Exe.msg{"Init/Server(#{self['id']}):#{port}"}
+      verbose{"Init/Server(#{self['id']}):#{port}"}
       Thread.new{
         tc=Thread.current
         tc[:name]="Server"
@@ -64,7 +63,7 @@ module Interactive
             IO.select([udp])
             line,addr=udp.recvfrom(4096)
             line.chomp!
-            Exe.msg{"Recv:#{line} is #{line.class}"}
+            verbose{"Recv:#{line} is #{line.class}"}
             begin
               exe(filter_in(line))
             rescue InvalidCMD
@@ -73,7 +72,7 @@ module Interactive
               warn($!.to_s)
               self['msg']=$!.to_s
             end
-            Exe.msg{"Send:#{self['msg']}"}
+            verbose{"Send:#{self['msg']}"}
             udp.send(filter_out,0,addr[2],addr[1])
           }
         }
@@ -98,7 +97,7 @@ module Interactive
       host||='localhost'
       udp=UDPSocket.open()
       addr=Socket.pack_sockaddr_in(port.to_i,host)
-      Exe.msg{"Init/Client(#{self['id']})#{host}:#{port}"}
+      verbose{"Init/Client(#{self['id']})#{host}:#{port}"}
       @cobj.def_proc.set{|item|
         cl_exe(udp,addr,item.cmd)
       }
@@ -110,9 +109,9 @@ module Interactive
     # For client
     def cl_exe(udp,addr,cmd)
       udp.send(JSON.dump(cmd),0,addr)
-      Exe.msg{"Send [#{cmd}]"}
+      verbose{"Send [#{cmd}]"}
       input=udp.recv(1024)
-      Exe.msg{"Recv #{input}"}
+      verbose{"Recv #{input}"}
       load(input) # ExHash#load -> Server Status
       self
     end
@@ -120,17 +119,16 @@ module Interactive
 
   # Shell has internal status for prompt
   module Shell
-    extend Msg::Ver
     # @< cobj,output,(intgrp),(interrupt),upd_proc
     # @ pconv,shdom,lineconv
     attr_reader :shdom
     def self.extended(obj)
-      init_ver('Shell/%s',2,obj)
       Msg.type?(obj,Exe)
     end
 
     # block gives command line convert
     def ext_shell(pconv={},&p)
+      init_ver('Shell/%s',2,self)
       #prompt convert table (j2s)
       @pconv={'id'=>nil}.update(Msg.type?(pconv,Hash))
       @shdom=@cobj.add_domain('sh',5)
@@ -140,7 +138,7 @@ module Interactive
       }
       grp=@shdom.add_group('sh',"Shell Command")
       grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
-      Shell.msg{"Init/Shell(#{self['id']})"}
+      verbose{"Init/Shell(#{self['id']})"}
       self
     end
 
@@ -166,9 +164,9 @@ module Interactive
       rescue Interrupt
         puts exe(['interrupt'])
         retry
-      rescue
-        puts $!.to_s
-        retry
+#      rescue
+#        puts $!.to_s
+#        retry
       end
     end
 

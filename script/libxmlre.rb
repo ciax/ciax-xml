@@ -1,20 +1,18 @@
 #!/usr/bin/ruby
-require "libmsg"
 require "libxmlshare"
 require "rexml/document"
 include REXML
 
 module Xml
   class Re
-    extend Msg::Ver
     include Share
     def initialize(f=nil)
-      Re.init_ver(self,4)
+      init_ver(self,4)
       case f
       when String
         test(?r,f) || raise(InvalidID)
         @e=Document.new(open(f)).root
-        Re.msg{ns}
+        verbose{ns}
       when Element
         @e=f
       when nil
@@ -41,17 +39,17 @@ module Xml
     def find(xpath)
       xpath=".//"+xpath if xpath
       @e.each_element(xpath){|e|
-        Re.msg(1){"<#{e.name} #{e.attributes}>"}
+        verbose(1){"<#{e.name} #{e.attributes}>"}
         yield Re.new(e)
-        Re.msg(-1){"</#{e.name}>"}
+        verbose(-1){"</#{e.name}>"}
       }
     end
 
     def each
       @e.each_element{|e|
-        Re.msg(1){"<#{e.name} #{e.attributes}>"}
+        verbose(1){"<#{e.name} #{e.attributes}>"}
         yield Re.new(e)
-        Re.msg(-1){"</#{e.name}>"}
+        verbose(-1){"</#{e.name}>"}
       }
     end
   end

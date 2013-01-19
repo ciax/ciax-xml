@@ -5,16 +5,15 @@ require "libdb"
 
 module Mcr
   class Db < Db
-    extend Msg::Ver
     def initialize(id)
-      Db.init_ver('mdb')
+      init_ver('mdb')
       super('mdb',id){|doc|
         hash={}
         hash.update(doc)
         mdb=(hash[:macro]||={})
         doc.top.each{|e0|
           id=e0.attr2db(mdb)
-          Db.msg{"MACRO:[#{id}]"}
+          verbose{"MACRO:[#{id}]"}
           select=((mdb[:select]||={})[id]||=[])
           final={}
           e0.each{|e1,rep|
@@ -31,7 +30,7 @@ module Mcr
               attr['cmd']=getcmd(e1)
               attr.delete('name')
               select << attr
-              Db.msg{"COMMAND:[#{e1['name']}]"}
+              verbose{"COMMAND:[#{e1['name']}]"}
             when 'mcr'
               cmd=attr['mcr']=getcmd(e1)
               attr['label']=mdb[:label][cmd.first]

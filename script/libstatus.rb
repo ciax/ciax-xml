@@ -5,12 +5,11 @@ require 'libelapse'
 
 module Status
   class Var < Var::Val
-    extend Msg::Ver
     # @< (upd_proc*)
     # @ last*
     attr_reader :last
     def initialize
-      Var.init_ver('Status',6)
+      init_ver('Status',6)
       super('stat')
       @last={}
       @updated=Time.now
@@ -23,7 +22,7 @@ module Status
 
     def change?(id)
       val=self['val']
-      Var.msg{"Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]"}
+      verbose{"Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]"}
       self[id] != @last[id]
     end
 
@@ -32,7 +31,7 @@ module Status
     end
 
     def refresh
-      Var.msg{"Status Updated"}
+      verbose{"Status Updated"}
       @last.update(self['val'])
       @updated=self['time']
       self
@@ -46,17 +45,16 @@ module Status
   end
 
   module Save
-    extend Msg::Ver
     # @<< (upd_proc*)
     # @< (db),(base),(prefix)
     # @< (last)
     # @ lastsave
     def self.extended(obj)
-      init_ver(obj,6)
       Msg.type?(obj,Save).ext_save
     end
 
     def ext_save
+      init_ver(self,6)
       @lastsave=0
       self
     end
@@ -68,7 +66,7 @@ module Status
         @lastsave=time
         true
       else
-        Save.msg{"Skip Save for #{time}"}
+        verbose{"Skip Save for #{time}"}
         false
       end
     end

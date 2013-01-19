@@ -13,17 +13,16 @@ module App
   # @< adb,extdom,watch,stat*
   # @ fint,buf,log_proc
   class Sv < Interactive::Server
-    extend Msg::Ver
     def initialize(adb,fint,logging=nil)
       super()
       extend(Exe).init(adb)
-      Sv.init_ver("AppSv",9)
+      init_ver("AppSv",9)
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field,adb[:status]).ext_sym(adb).upd
       @stat.ext_sqlog if logging and @fint.field.key?('ver')
       @watch.ext_conv(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
-        Sv.msg{"#{self['id']}/Auto(#{p}):#{cmd}"}
+        verbose{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.setcmd(cmd)
         sendcmd(p)
       }
@@ -32,13 +31,13 @@ module App
       @extdom.ext_appcmd.reset_proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
-        Sv.msg{"#{self['id']}/Issued:#{item.cmd},"}
+        verbose{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
 
       @interrupt.reset_proc{
         int=@watch.interrupt
-        Sv.msg{"#{self['id']}/Interrupt:#{int}"}
+        verbose{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"
       }
       # Update for Frm level manipulation
@@ -100,7 +99,7 @@ module App
           rescue InvalidID
             Msg.warn($!)
           end
-          Interactive::Exe.msg{"Auto Update(#{@stat['time']})"}
+          verbose{"Auto Update(#{@stat['time']})"}
           sleep int
         }
       }

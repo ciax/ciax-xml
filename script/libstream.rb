@@ -3,12 +3,12 @@ require "libmsg"
 require "libupdate"
 
 class Stream < ExHash
-  extend Msg::Ver
+  include Msg::Ver
   def initialize(iocmd,wait=0,timeout=nil)
-    Stream.init_ver(self,1)
+    init_ver(self,1)
     Msg.abort(" No IO command") if iocmd.to_a.empty?
     @iocmd=Msg.type?(iocmd,Array)
-    Stream.msg{"Init/Client:#{iocmd.join(' ')}"}
+    verbose{"Init/Client:#{iocmd.join(' ')}"}
     @f=IO.popen(@iocmd,'r+')
     @wait=wait.to_f
     @timeout=timeout
@@ -20,7 +20,7 @@ class Stream < ExHash
     update({'time' => Msg.now,'dir' => 'snd','cmd' => cmd,'data' => str})
     return if str.to_s.empty?
     sleep @wait
-    Stream.msg{"Sending #{str.size} byte on #{cmd}"}
+    verbose{"Sending #{str.size} byte on #{cmd}"}
     reopen{
       @f.syswrite(str)
     }
@@ -34,7 +34,7 @@ class Stream < ExHash
       IO.select([@f],nil,nil,@timeout) || next
       @f.sysread(4096)
     }||Msg.com_err("Stream:No response")
-    Stream.msg{"Recieved #{str.size} byte on #{self['cmd']}"}
+    verbose{"Recieved #{str.size} byte on #{self['cmd']}"}
     update({'time' => Msg.now,'dir' => 'rcv','data' => str})
     @log_proc.upd
     self

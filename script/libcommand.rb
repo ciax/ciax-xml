@@ -37,13 +37,12 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  extend Msg::Ver
   attr_reader :current,:domain,:def_proc
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
   def initialize
-    Command.init_ver(self)
+    init_ver(self)
     @current=nil
     @domain={}
     @def_proc=ExeProc.new
@@ -56,7 +55,7 @@ class Command < ExHash
   def setcmd(cmd)
     id,*par=cmd
     key?(id) || error
-    Command.msg{"SetCMD (#{id},#{par})"}
+    verbose{"SetCMD (#{id},#{par})"}
     @current=self[id].set_par(par)
   end
 
@@ -69,9 +68,10 @@ class Command < ExHash
     raise(InvalidCMD,str+list)
   end
 
-  class Domain < Hash
+  class Domain < ExHash
     attr_reader :group,:def_proc
     def initialize(index,color=2,def_proc=ExeProc.new)
+      init_ver(self)
       @index=Msg.type?(index,Command)
       @group={}
       @color=color
@@ -95,9 +95,10 @@ class Command < ExHash
     end
   end
 
-  class Group < Hash
+  class Group < ExHash
     attr_accessor :def_proc
     def initialize(index,gat,def_proc=ExeProc.new)
+      init_ver(self)
       @gat=Msg.type?(gat,Hash)
       @labeldb=Msg::CmdList.new(gat)
       @index=Msg.type?(index,Command)
@@ -161,7 +162,7 @@ class Command < ExHash
       @par=validate(Msg.type?(par,Array))
       @cmd=[@id,*par]
       self[:cmd]=@cmd.join(':') # Used by macro
-      Command.msg{"SetPAR: #{par}"}
+      verbose{"SetPAR: #{par}"}
       self
     end
 
@@ -185,19 +186,19 @@ class Command < ExHash
           rescue Exception
             Msg.par_err("Parameter is not number")
           end
-          Command.msg{"Validate: [#{num}] Match? [#{disp}]"}
+          verbose{"Validate: [#{num}] Match? [#{disp}]"}
           unless par[:list].any?{|r| ReRange.new(r) == num }
             Msg.par_err("Out of range (#{num}) for [#{disp}]")
           end
           num.to_s
         when 'str'
-          Command.msg{"Validate: [#{str}] Match? [#{disp}]"}
+          verbose{"Validate: [#{str}] Match? [#{disp}]"}
           unless par[:list].include?(str)
             Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
           end
           str
         when 'reg'
-          Command.msg{"Validate: [#{str}] Match? [#{disp}]"}
+          verbose{"Validate: [#{str}] Match? [#{disp}]"}
           unless par[:list].any?{|r| /#{r}/ === str}
             Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
           end

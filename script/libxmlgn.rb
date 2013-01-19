@@ -1,19 +1,17 @@
 #!/usr/bin/ruby
-require "libmsg"
 require "libxmlshare"
 require "xml"
 
 module Xml
   class Gnu
-    extend Msg::Ver
     include Share
     def initialize(f=nil)
-      Gnu.init_ver(self,4)
+      init_ver(self,4)
       case f
       when String
         test(?r,f) || raise(InvalidID)
         @e=XML::Document.file(f).root
-        Gnu.msg{@e.namespaces.default}
+        verbose{@e.namespaces.default}
       when XML::Node
         @e=f
       when nil
@@ -45,19 +43,19 @@ module Xml
 
     # pick same ns nodes even if it is in another tree
     def find(xpath)
-      Gnu.msg{"FindXpath:#{xpath}"}
+      verbose{"FindXpath:#{xpath}"}
       @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-        Gnu.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
+        verbose(1){"<#{e.name} #{e.attributes.to_h}>"}
         yield Gnu.new(e)
-        Gnu.msg(-1){"</#{e.name}>"}
+        verbose(-1){"</#{e.name}>"}
       }
     end
 
     def each
       @e.each_element{|e|
-        Gnu.msg(1){"<#{e.name} #{e.attributes.to_h}>"}
+        verbose(1){"<#{e.name} #{e.attributes.to_h}>"}
         yield Gnu.new(e)
-        Gnu.msg(-1){"</#{e.name}>"}
+        verbose(-1){"</#{e.name}>"}
       }
     end
   end

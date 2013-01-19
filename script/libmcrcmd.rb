@@ -5,13 +5,11 @@ require "libmcrssn"
 
 module Mcr
   module Cmd
-    extend Msg::Ver
     # @<< (index),(id*),(par*),cmd*,(def_proc*)
     # @< select*
     # @ aint,opt,interrupt
     attr_reader :session
     def self.extended(obj)
-      init_ver('McrCmd',9)
       Msg.type?(obj,Command::ExtItem)
     end
 

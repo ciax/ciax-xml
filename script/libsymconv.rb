@@ -5,14 +5,13 @@ require "libstatus"
 # Status to Sym::Conv (String with attributes)
 module Sym
   module Conv
-    extend Msg::Ver
     require "libsymdb"
     def self.extended(obj)
-      init_ver('SymConv')
       Msg.type?(obj,Status::Var,Var::Load)
     end
 
     def ext_conv(db)
+      init_ver('SymConv')
       Msg.type?(db,App::Db)
       ads=db[:status]
       self['ver']=db['version'].to_i
@@ -30,7 +29,7 @@ module Sym
           Msg.warn("Table[#{sid}] not exist")
           next
         end
-        Conv.msg{"ID=#{key},table=#{sid}"}
+        verbose{"ID=#{key},table=#{sid}"}
         self['class'][key]='alarm'
         self['msg'][key]='N/A'
         val=self['val'][key]
@@ -38,18 +37,18 @@ module Sym
           case sym['type']
           when 'range'
             next unless ReRange.new(sym['val']) == val
-            Conv.msg{"VIEW:Range:[#{sym['val']}] and [#{val}]"}
+            verbose{"VIEW:Range:[#{sym['val']}] and [#{val}]"}
             self['msg'][key]=sym['msg']+"(#{val})"
           when 'pattern'
             next unless /#{sym['val']}/ === val || val == 'default'
-              Conv.msg{"VIEW:Regexp:[#{sym['val']}] and [#{val}]"}
+              verbose{"VIEW:Regexp:[#{sym['val']}] and [#{val}]"}
             self['msg'][key]=sym['msg']
           end
           self['class'][key]=sym['class']
           break
         }
       }
-      Conv.msg{"Sym/Update(#{self['time'].to_f})"}
+      verbose{"Sym/Update(#{self['time'].to_f})"}
       self
     end
   end

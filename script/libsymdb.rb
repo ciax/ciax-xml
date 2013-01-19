@@ -5,9 +5,8 @@ require "libdb"
 # id = Table Group ID
 module Sym
   class Db < Db
-    extend Msg::Ver
     def initialize(id)
-      Db.init_ver('SymDb')
+      init_ver('SymDb')
       super("sdb",id){|doc|
         hash={}
         doc.top.each{|e1|
@@ -16,7 +15,7 @@ module Sym
           e1.each{|e2| # case
             (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
           }
-          Db.msg{"Symbol Table:#{id} : #{label}"}
+          verbose{"Symbol Table:#{id} : #{label}"}
         }
         hash
       }

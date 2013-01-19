@@ -32,30 +32,30 @@ module Msg
     Start_time=Time.now
     @@base=1
     def init_ver(fmt,col=2,obj=nil)
-      @color=col
+      @ver_color=col
       if fmt.instance_of?(String)
         raise("Empty Prefix") if fmt.empty?
-        @prefix=obj ? fmt % obj.class.name : fmt
+        @ver_prefix=obj ? fmt % obj.class.name : fmt
       elsif fmt
-        @prefix=fmt.class.name
+        @ver_prefix=fmt.class.name
       else
         raise "No Prefix"
       end
-      @ind=1
-      msg{"Initialize Messaging (#{self})"}
+      @ver_indent=1
+      verbose{"Initialize Messaging (#{self})"}
     end
 
     # Public Method
-    def msg(add=0)
+    def verbose(add=0)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
       return if ENV['VER'].to_s.empty?
-      @ind=@@base
+      @ver_indent=@@base
       @@base+=add
-      @ind=@@base if add < 0
+      @ver_indent=@@base if add < 0
       [*yield].each{|str|
         msg=mkmsg(str)
         Kernel.warn msg if condition(msg)
@@ -70,8 +70,8 @@ module Msg
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
-      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ind)
-      ts << Msg.color("#{@prefix}:",@color)
+      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
+      ts << Msg.color("#{@ver_prefix}:",@ver_color)
       ts << text.inspect
     end
 

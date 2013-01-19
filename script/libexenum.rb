@@ -3,6 +3,7 @@ require 'libmsg'
 require 'json'
 #Extened Hash
 module ExEnum
+  include Msg::Ver
   def to_s
     Msg.view_struct(self)
   end

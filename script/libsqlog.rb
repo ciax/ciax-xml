@@ -5,15 +5,14 @@ require "libmsg"
 # Generate SQL command string
 module SqLog
   module Var
-    extend Msg::Ver
     # @< (upd_proc*)
     # @ log,tid
     def self.extended(obj)
-      init_ver('SqLog',9)
       Msg.type?(obj,Var).ext_var
     end
 
     def ext_var
+      init_ver('SqLog',9)
       @log=[]
       @tid="#{self['type']}_#{self['ver'].to_i}"
       self
@@ -21,7 +20,7 @@ module SqLog
 
     def create
       key=['time',*expand.keys].uniq.join("','")
-      Var.msg{"create ('#{key}')"}
+      verbose{"create ('#{key}')"}
       @log.push "create table #{@tid} ('#{key}',primary key(time));"
       self
     end
@@ -36,7 +35,7 @@ module SqLog
       val=expand
       key=val.keys.join("','")
       val=val.values.join("','")
-      Var.msg{"SqLog/Update(#{self['time']}):[#{self['id']}/#{@tid}]"}
+      verbose{"SqLog/Update(#{self['time']}):[#{self['id']}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       self
     end
@@ -87,9 +86,9 @@ module SqLog
       unless check_table
         create
         save
-        Var.msg{"Init/Table SqLog '#{@tid}' is created in #{self['id']}"}
+        verbose{"Init/Table SqLog '#{@tid}' is created in #{self['id']}"}
       end
-      Var.msg{"Init/Start SqLog '#{self['id']}' (#{@tid})"}
+      verbose{"Init/Start SqLog '#{self['id']}' (#{@tid})"}
       self
     end
 
@@ -111,7 +110,7 @@ module SqLog
         IO.popen(@sqlcmd,'w'){|f|
           f.puts sql
         }
-        Var.msg{"SqLog/Save complete (#{self['id']})"}
+        verbose{"SqLog/Save complete (#{self['id']})"}
         @log.clear
       end
       self

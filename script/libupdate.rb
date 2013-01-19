@@ -2,9 +2,9 @@
 require "libmsg"
 
 class UpdProc < Array
-  extend Msg::Ver
+  include Msg::Ver
   def initialize
-    UpdProc.init_ver(self,5)
+    init_ver(self,5)
   end
 
   def add(&p)
@@ -12,7 +12,7 @@ class UpdProc < Array
   end
 
   def upd
-    UpdProc.msg{"Update procs"}
+    verbose{"Update procs"}
     map{|p|
       p.call
     }
@@ -20,9 +20,9 @@ class UpdProc < Array
 end
 
 class ExeProc < Array
-  extend Msg::Ver
+  include Msg::Ver
   def initialize
-    ExeProc.init_ver(self,5)
+    init_ver(self,5)
     push proc{}
   end
 
@@ -31,7 +31,7 @@ class ExeProc < Array
   end
 
   def exe(par)
-    ExeProc.msg{"Exec procs"}
+    verbose{"Exec procs"}
     first.call(par)
     self
   end

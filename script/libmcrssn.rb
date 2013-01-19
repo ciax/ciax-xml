@@ -65,10 +65,8 @@ module Mcr
     end
   end
 
-  class Record < Hash
-    extend Msg::Ver
+  class Record < ExHash
     include Prt
-
     def initialize(db,aint,depth=0,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
@@ -128,7 +126,7 @@ module Mcr
           var=flt['var']=h['var']
           cmp=flt['cmp']=h['val']
           res=stat['msg'][var]||stat['val'][var]
-          Record.msg{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}
+          verbose{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}
           next unless res
           flt['res']=res
           match?(res,cmp,flt['inv']) && flt || nil

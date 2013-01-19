@@ -4,15 +4,14 @@ require "libstatus"
 
 module App
   module Rsp
-    extend Msg::Ver
     # @<< (upd_proc*)
     # @< (base),(prefix)
     def self.extended(obj)
-      init_ver('AppRsp',2)
       Msg.type?(obj,Status::Var,Var::Load)
     end
 
     def ext_rsp(field,sdb)
+      init_ver('AppRsp',2)
       @field=Msg.type?(field,Field::Var)
       @ads=sdb[:select]
       @fmt=sdb[:format]||{}
@@ -23,7 +22,7 @@ module App
 
     def upd
       @ads.each{|id,select|
-        Rsp.msg(1){"STAT:GetStatus:[#{id}]"}
+        verbose(1){"STAT:GetStatus:[#{id}]"}
         flds=select[:fields]
         data=case select['type']
         when 'binary'
@@ -47,16 +46,16 @@ module App
           if @fml.key?(id)
             f=@fml[id].gsub(/\$#/,data.to_s)
             data=eval(f)
-            Rsp.msg{"Formula:#{f}(#{data})"}
+            verbose{"Formula:#{f}(#{data})"}
           end
           data = @fmt[id] % data if @fmt.key?(id)
           self['val'][id]=data.to_s
         ensure
-          Rsp.msg(-1){"STAT:GetStatus:#{id}=[#{self['val'][id]}]"}
+          verbose(-1){"STAT:GetStatus:#{id}=[#{self['val'][id]}]"}
         end
       }
       self['time']=@field['time']
-      Rsp.msg{"Rsp/Update(#{self['time']})"}
+      verbose{"Rsp/Update(#{self['time']})"}
       self
     end
 
@@ -71,7 +70,7 @@ module App
       loc=eval(e1['bit'])
       bit=(data.to_i >> loc & 1)
       bit = -(bit-1) if /true|1/ === e1['inv']
-      Rsp.msg{"GetBit[#{bit}]"}
+      verbose{"GetBit[#{bit}]"}
       bit
     end
 

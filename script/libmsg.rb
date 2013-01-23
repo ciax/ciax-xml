@@ -188,7 +188,7 @@ module Msg
 
   def com_err(*msg) # Raise User error (Invalid User input)
     msg[0]=color(msg[0],1)
-    raise ConfigError,msg.join("\n  "),caller(1)
+    raise CommError,msg.join("\n  "),caller(1)
   end
 
   def err(*msg) # Raise User error (Invalid Configuration)

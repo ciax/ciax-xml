@@ -128,15 +128,18 @@ module Msg
       require 'optparse'
       Msg.type?(str,String) << 'd'
       optdb={}
-      optdb['a']='app level client'
-      optdb['f']='frm level client'
+      optdb['c']='client'
+      optdb['f']='client at frm'
+      optdb['h']='client for [host]'
+      #Comm to devices
       optdb['e']='execution mode'
-      optdb['l']='simulation mode'
+      optdb['s']='simulation mode'
       optdb['t']='test mode'
-      optdb['h']='[host] remote url'
-      optdb['n']='nonstop mode'
+      #For appearance
       optdb['r']='raw display mode'
       optdb['v']='view display mode'
+      #For Macro
+      optdb['n']='nonstop mode'
       optdb['d']='debug mode'
       optdb.update(db)
       @list=str.split('').map{|c|

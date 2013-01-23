@@ -3,7 +3,7 @@ require "libapplist"
 require "libinssh"
 
 ENV['VER']||='init/'
-opt=Msg::GetOpts.new("afelth:")
+opt=Msg::GetOpts.new("estcfh:")
 App::List.new(opt).shell(ARGV.shift){|id,int|
   int.ext_ins(id)
 }

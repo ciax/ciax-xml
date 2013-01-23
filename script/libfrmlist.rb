@@ -7,13 +7,12 @@ module Frm
     def initialize(opt=nil)
       super{|id|
         fdb=Loc::Db.new(id)[:frm]
-        host='localhost'
-        if @opt['l'] or @opt['e']
-          par=@opt['l'] ? ['frmsim',fdb['site_id']] : []
-          fint=Frm::Sv.new(fdb,par)
-          fint=Frm::Cl.new(fdb,host) if @opt['f']
-        elsif @opt['f'] or @opt['a']
-          fint=Frm::Cl.new(fdb,@opt['h'])
+        if @opt['s'] or @opt['e']
+            par=@opt['s'] ? ['frmsim',fdb['site_id']] : []
+            fint=Frm::Sv.new(fdb,par)
+            fint=Frm::Cl.new(fdb,'localhost') if @opt['c']
+        elsif host=@opt['h'] or @opt['c'] or @opt['f']
+          fint=Frm::Cl.new(fdb,host)
         else
           fint=Frm::Test.new(fdb)
         end

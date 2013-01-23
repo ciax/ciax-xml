@@ -12,21 +12,14 @@ module App
       super{|id|
         ldb=Loc::Db.new(id)
         @list=ldb.list
-        if @opt['t']
-          aint=App::Test.new(ldb[:app])
-        else
+        if @opt['e'] or @opt['s'] or @opt['f']
           @fint[id]=@fl[ldb[:frm]['site_id']]
-          if @opt['a']
-            if @opt['e'] or @opt['l'] or @opt['f']
-              aint=App::Sv.new(ldb[:app],@fint[id])
-              host='localhost'
-            else
-              host=@opt['h']
-            end
-            aint=App::Cl.new(ldb[:app],host)
-          else
-            aint=App::Sv.new(ldb[:app],@fint[id],@opt['e'])
-          end
+          aint=App::Sv.new(ldb[:app],@fint[id],@opt['e'])
+          aint=App::Cl.new(ldb[:app],'localhost') if @opt['c']
+        elsif host=@opt['h'] or @opt['c']
+          aint=App::Cl.new(ldb[:app],host)
+        else
+          aint=App::Test.new(ldb[:app])
         end
         prc ? prc.call(aint,ldb[:app]) : aint
       }

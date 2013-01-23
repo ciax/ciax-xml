@@ -164,9 +164,9 @@ module Interactive
       rescue Interrupt
         puts exe(['interrupt'])
         retry
-#      rescue
-#        puts $!.to_s
-#        retry
+      rescue UserError
+        puts $!.to_s
+        retry
       end
     end
 

@@ -1,25 +1,45 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libmsg"
+require "libapplist"
 require "libhexview"
 
 module Hex
-  module Sv
-    def self.extended(obj)
-      Msg.type?(obj,App::Sv)
+  module Exe
+    def init(adb)
+      @adb=Msg.type?(adb,Db)
+      init_ver('Hex',2)
+      self['id']=@adb['site_id']
+      @extdom=@cobj.add_extdom(@adb,:command)
+      @output=View.new(self,Status::Var.new.ext_file(@adb['site_id']))
       self
     end
+  end
 
-    def server(ver=nil)
-      @output=View.new(self,@stat)
-      if ver
-        logging=Logging.new('hex',self['id'],ver){
+  class Test < Interactive::Exe
+    def initialize(adb)
+      super()
+      extend(Exe).init(adb)
+    end
+  end
+
+  class Sv < Interactive::Server
+    def initialize(adb,aint,logging=nil)
+      super()
+      extend(Exe).init(adb)
+      @output=View.new(self,aint.stat)
+      @log_proc=UpdProc.new
+      @extdom.reset_proc{|item|
+        aint.exe(item.cmd)
+        @log_proc.upd
+      }
+      if logging
+        logging=Logging.new('hex',self['id'],@adb['version']){
           {'hex' => @output.to_s}
         }
         @log_proc.add{logging.append}
-        @buf.flush_proc.add{logging.append}
       end
-      super(@adb['port'].to_i+1000)
+      server(@adb['port'].to_i+1000)
     end
 
     private
@@ -32,19 +52,28 @@ module Hex
       @output.to_s
     end
   end
-end
 
-module App
-  class Sv
-    def ext_hex(ver=nil)
-      id=self['id']
-      if Hex::View.sdb(id)
-        init_ver('Hex',2)
-        extend(Hex::Sv).server(ver)
-      else
-        Msg.alert("Hex/Can't found SDB for #{id}")
-      end
-      self
+  class List < Interactive::List
+    def initialize(opt=nil)
+      @al=App::List.new(opt)
+      @aint={}
+      super{|id|
+        ldb=Loc::Db.new(id)
+        if @opt['e'] or @opt['s'] or @opt['f'] or @opt['h'] or @opt['c']
+          @aint[id]=@al[ldb[:app]['site_id']]
+          hint=Sv.new(ldb[:app],@aint[id],@opt['e'])
+        else
+          hint=Test.new(ldb[:app])
+        end
+        hint
+      }
+    end
+
+    def shell(id)
+      @init_proc=proc{|int|
+        int.ext_shell
+      }
+      super
     end
   end
 end

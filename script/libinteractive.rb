@@ -28,6 +28,7 @@ module Interactive
     def exe(cmd)
       self['msg']='OK'
       return @output if cmd.empty?
+      verbose{"Command #{cmd} recieved"}
       @cobj.setcmd(cmd).exe
       self['msg']
     rescue

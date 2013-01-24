@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="fpa" id="fpa" label="MOIRCS Field Point Analog Input">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -15,7 +15,7 @@
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
-      <group id="g1" column="3">
+      <group id="g1" column="3" caption="Voltage">
         <repeat from="1" to="6">
           <float id="v$_" label="OUTPUT$_ (V)" format="%3.2f" formula="($#-2048)/4096">
             <field ref="stat" index="$_+1" />

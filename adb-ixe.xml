@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
@@ -174,7 +174,7 @@
           <normal bit="6" ref="stat" />
         </binary>
       </group>
-      <group caption="" id="g2" column="2">
+      <group caption="Mode" id="g2" column="2">
         <binary id="trm" label="Terminal Mode" symbol="off-warn">
           <normal bit="2" ref="stat" />
         </binary>
@@ -182,7 +182,7 @@
           <normal bit="7" ref="stat" />
         </binary>
       </group>
-      <group id="g3" caption="" column="6">
+      <group id="g3" caption="Turrets" column="5">
         <repeat from="1" to="6">
           <string id="r$_" label="Running $_">
             <field ref="run" index="$_-1" />

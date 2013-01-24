@@ -42,7 +42,7 @@ module Msg
         raise "No Prefix"
       end
       @ver_indent=1
-      verbose{"Initialize Messaging (#{self})"}
+      verbose{"Initialize Messaging"}
     end
 
     # Public Method

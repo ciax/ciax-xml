@@ -14,12 +14,12 @@ module App
         @list=ldb.list
         if @opt['e'] or @opt['s'] or @opt['f']
           @fint[id]=@fl[ldb[:frm]['site_id']]
-          aint=App::Sv.new(ldb[:app],@fint[id],@opt['e'])
-          aint=App::Cl.new(ldb[:app],'localhost') if @opt['c']
+          aint=Sv.new(ldb[:app],@fint[id],@opt['e'])
+          aint=Cl.new(ldb[:app],'localhost') if @opt['c']
         elsif host=@opt['h'] or @opt['c']
-          aint=App::Cl.new(ldb[:app],host)
+          aint=Cl.new(ldb[:app],host)
         else
-          aint=App::Test.new(ldb[:app])
+          aint=Test.new(ldb[:app])
         end
         prc ? prc.call(aint,ldb[:app]) : aint
       }

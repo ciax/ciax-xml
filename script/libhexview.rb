@@ -11,7 +11,7 @@ module Hex
       @int=Msg.type?(int,Hash)
       @stat=Msg.type?(stat,Status::Var)
       id=stat['id'] || raise(InvalidID,"NO ID in Stat")
-      file=View.sdb(id)
+      file=View.sdb(id) || raise(InvalidID,"Hex/Can't found SDB for #{id}")
       @res=["%",id,'_','0','0','_','']
       @list=[]
       open(file){|f|
@@ -33,6 +33,7 @@ module Hex
     end
 
     def to_s
+      @stat.load
       @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat.get(r).to_i > 0})
       @res[4]=b2i(@int['isu'])
       @res[6]=''
@@ -69,7 +70,7 @@ end
 if __FILE__ == $0
   require "libstatus"
   Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-  stat=Status::Var.new.load
+  stat=Status::Var.new
   int=Hex::View.new({},stat)
   puts int
 end

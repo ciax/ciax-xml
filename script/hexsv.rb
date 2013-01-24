@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libapplist"
-require "libhexpack"
+require "libhexexe"
 
 ENV['VER']||='init/'
 opt=Msg::GetOpts.new('e')

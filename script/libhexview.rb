@@ -2,7 +2,7 @@
 # Ascii Pack
 require "libmsg"
 
-module HexPack
+module Hex
   class View
     include Msg::Ver
     def initialize(int,stat)
@@ -64,56 +64,12 @@ module HexPack
       b ? '1' : '0'
     end
   end
-
-  module Sv
-    def self.extended(obj)
-      Msg.type?(obj,App::Sv)
-      self
-    end
-
-    def server(ver=nil)
-      @output=View.new(self,@stat)
-      if ver
-        logging=Logging.new('hex',self['id'],ver){
-          {'hexpack' => @output.to_s}
-        }
-        @log_proc.add{logging.append}
-        @buf.flush_proc.add{logging.append}
-      end
-      super(@adb['port'].to_i+1000)
-    end
-
-    private
-    def filter_in(line)
-      return [] if /^(strobe|stat)/ === line
-      line.split(' ')
-    end
-
-    def filter_out
-      @output.to_s
-    end
-  end
-end
-
-module App
-  class Sv
-    def ext_hex(ver=nil)
-      id=self['id']
-      if HexPack::View.sdb(id)
-        init_ver('HexPack',2)
-        extend(HexPack::Sv).server(ver)
-      else
-        Msg.alert("Hexpack/Can't found SDB for #{id}")
-      end
-      self
-    end
-  end
 end
 
 if __FILE__ == $0
   require "libstatus"
   Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
   stat=Status::Var.new.load
-  int=HexPack::View.new({},stat)
+  int=Hex::View.new({},stat)
   puts int
 end

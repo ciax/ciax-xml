@@ -34,7 +34,7 @@ module Hex
 
     def to_s
       @stat.load
-      @res[3]=b2i(['isu','exe','run','jak'].any?{|r| @stat.get(r).to_i > 0})
+      @res[3]=b2i(@int['watch'])
       @res[4]=b2i(@int['isu'])
       @res[6]=''
       @list.each{|key,title,len,type|

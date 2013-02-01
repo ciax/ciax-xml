@@ -27,11 +27,14 @@ module Hex
     def initialize(adb,aint,logging=nil)
       super()
       extend(Exe).init(adb)
-      @output=View.new(self,aint.stat)
+      @output=View.new(aint,aint.stat)
       @log_proc=UpdProc.new
       @extdom.reset_proc{|item|
         aint.exe(item.cmd)
         @log_proc.upd
+      }
+      @upd_proc.add{
+        aint.exe([])
       }
       if logging
         logging=Logging.new('hex',self['id'],@adb['version']){

@@ -14,8 +14,7 @@ _getstat(){
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
         logline $id $cmd $par > $temp || { echo; continue; }
-        VER=$ver < $temp $frmrsp -m || return 1
-        cut -f3 $temp|grep .|base64 -d|visi || echo
+        VER=$ver < $temp $frmrsp -ml || return 1
     done
 }
 frmcmd="$HOME/lib/libfrmcmd.rb"

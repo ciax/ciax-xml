@@ -30,32 +30,36 @@ module Frm
       }
     end
 
+    def setframe(frame)
+      Msg.com_err("No Response") unless frame
+      if tm=@sel['terminator']
+        frame.chomp!(eval('"'+tm+'"'))
+        verbose{"Remove terminator:[#{frame}] by [#{tm}]" }
+      end
+      if dm=@sel['delimiter']
+        @fary=frame.split(eval('"'+dm+'"'))
+        verbose{"Split:[#{frame}] by [#{dm}]" }
+      else
+        @fary=[frame]
+      end
+      @frame.set(@fary.shift)
+      getfield_rec(@sel[:main])
+      if cc=unset('cc') #Field::unset
+        cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
+        verbose{"Verify:CC OK <#{cc}>"}
+      end
+      verbose{"Rsp/Update(#{self['time']})"} #Field::get
+      self
+    end
+
     # Block accepts [frame,time]
     # Result : executed block or not
     def upd
       if rid=@cobj.current[:response]
         @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
         hash=yield
-        frame=hash['data']
         set_time(hash['time']) #Field::set_time
-        Msg.com_err("No Response") unless frame
-        if tm=@sel['terminator']
-          frame.chomp!(eval('"'+tm+'"'))
-          verbose{"Remove terminator:[#{frame}] by [#{tm}]" }
-        end
-        if dm=@sel['delimiter']
-          @fary=frame.split(eval('"'+dm+'"'))
-          verbose{"Split:[#{frame}] by [#{dm}]" }
-        else
-          @fary=[frame]
-        end
-        @frame.set(@fary.shift)
-        getfield_rec(@sel[:main])
-        if cc=unset('cc') #Field::unset
-          cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
-          verbose{"Verify:CC OK <#{cc}>"}
-        end
-        verbose{"Rsp/Update(#{self['time']})"} #Field::get
+        setframe(hash['data'])
         true
       else
         verbose{"Send Only"}
@@ -66,7 +70,7 @@ module Frm
 
     def upd_logline(str)
       res=Logging.set_logline(str)
-      @cobj.setcmd(res['cmd'])
+      @cobj.setcmd(res['cmd'].split(':'))
       upd{res}
     end
 
@@ -152,8 +156,8 @@ end
 if __FILE__ == $0
   require "liblocdb"
   require "libcmdext"
-  opt=Msg::GetOpts.new("m",{'m' => 'merge file'})
-  opt.usage("(opt) < logline") if STDIN.tty? && ARGV.size < 1
+  opt=Msg::GetOpts.new("m",{'m' => 'merge file')
+  opt.usage("(opt) [id] < string") if STDIN.tty? && ARGV.size < 1
   str=gets(nil) || exit
   logdata=Logging.set_logline(str)
   id=logdata['id']

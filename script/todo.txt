@@ -1,4 +1,6 @@
 ========================== Issue =============================
+libfrmapp takes raw data -> Stream w/o IO (data+date)
+Var::Val -> Var+module Upd
 
 ***DEBUG
 client doesn't send any command (blank command was assinged to item)(12/12/19)

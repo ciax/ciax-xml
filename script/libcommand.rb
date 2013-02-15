@@ -53,6 +53,7 @@ class Command < ExHash
   end
 
   def setcmd(cmd)
+    Msg.type?(cmd,Array)
     id,*par=cmd
     key?(id) || error
     verbose{"SetCMD (#{id},#{par})"}

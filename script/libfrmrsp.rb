@@ -12,7 +12,7 @@ module Frm
     # @< (base),(prefix)
     # @ cobj,sel,fds,frame,fary,cc
     def self.extended(obj)
-      Msg.type?(obj,Field::Var,Var::Load)
+      Msg.type?(obj,Field::Var,Var::File)
     end
 
     def ext_rsp(cobj,db)

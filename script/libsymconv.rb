@@ -7,7 +7,7 @@ module Sym
   module Conv
     require "libsymdb"
     def self.extended(obj)
-      Msg.type?(obj,Status::Var,Var::Load)
+      Msg.type?(obj,Status::Var,Var::Upd)
     end
 
     def ext_conv(db)

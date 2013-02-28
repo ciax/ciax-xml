@@ -4,13 +4,14 @@ require "libvar"
 require 'libelapse'
 
 module Status
-  class Var < Var::Val
+  class Var < Var
     # @< (upd_proc*)
     # @ last*
     attr_reader :last
     def initialize
       init_ver('Status',6)
       super('stat')
+      ext_upd
       @last={}
       @updated=Time.now
     end

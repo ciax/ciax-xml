@@ -3,11 +3,12 @@ require 'libupdate'
 require 'libvar'
 
 module Field
-  class Var < Var::Val
+  class Var < Var
     # @< (upd_proc)
     def initialize
       init_ver(self,6)
       super('field')
+      ext_upd
     end
 
     # Substitute str by Field data

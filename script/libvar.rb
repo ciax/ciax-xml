@@ -11,8 +11,14 @@ class Var < ExHash
 
   ## Read/Write JSON file
   public
+  def ext_upd
+    extend Upd
+    ext_upd
+    self
+  end
+
   def ext_file(id)
-    extend Load
+    extend File
     ext_file(id)
     self
   end
@@ -28,14 +34,18 @@ class Var < ExHash
     self
   end
 
-  class Val < Var
+  module Upd
     # @ upd_proc*
     attr_reader :upd_proc
-    def initialize(type)
-      super
+    def self.extended(obj)
+      Msg.type?(obj,Var)
+    end
+
+    def ext_upd
       set_time
       self['val']=ExHash.new
       @upd_proc=UpdProc.new
+      self
     end
 
     def set_time(time=nil)
@@ -68,7 +78,7 @@ class Var < ExHash
     end
   end
 
-  module Load
+  module File
     # @< upd_proc*
     # @ db,base,prefix
     def self.extended(obj)
@@ -123,7 +133,7 @@ class Var < ExHash
     # @<< (upd_proc*)
     # @< base,prefix
     def self.extended(obj)
-      Msg.type?(obj,Load)
+      Msg.type?(obj,File)
     end
 
     def ext_url(host)
@@ -144,21 +154,21 @@ class Var < ExHash
     # @<< (upd_proc*)
     # @< base,prefix
     def self.extended(obj)
-      Msg.type?(obj,Load)
+      Msg.type?(obj,File)
     end
 
     def save(data=nil,tag=nil)
       name=fname(tag)
       open(name,'w'){|f|
-        f.flock(File::LOCK_EX)
+        f.flock(Object::File::LOCK_EX)
         f << (data ? JSON.dump(data) : to_j)
         verbose{"[#{@base}](#{f.size}) is Saved"}
       }
       if tag
         # Making 'latest' tag link
         sname=fname('latest')
-        File.unlink(sname) if File.symlink?(sname)
-        File.symlink(name,sname)
+        Object::File.unlink(sname) if Object::File.symlink?(sname)
+        Object::File.symlink(name,sname)
         verbose{"Symboliclink to [#{sname}]"}
       end
       self

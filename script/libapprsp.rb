@@ -7,7 +7,7 @@ module App
     # @<< (upd_proc*)
     # @< (base),(prefix)
     def self.extended(obj)
-      Msg.type?(obj,Status::Var,Var::Load)
+      Msg.type?(obj,Status::Var,Var::File)
     end
 
     def ext_rsp(field,sdb)

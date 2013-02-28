@@ -46,7 +46,7 @@ module SqLog
 
     private
     def expand
-      val={}
+      val={'time'=>self['time']}
       self['val'].each{|k,v|
         next if /type/ =~ k
         case v

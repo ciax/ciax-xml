@@ -20,7 +20,7 @@ module App
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field,adb[:status]).ext_sym(adb).upd
-      @stat.ext_sqlog if logging and @fint.field.key?('ver')
+      @stat.ext_sqlog.ext_exec if logging and @fint.field.key?('ver')
       @watch.ext_conv(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
         verbose{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.setcmd(cmd)

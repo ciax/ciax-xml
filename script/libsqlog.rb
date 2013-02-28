@@ -8,13 +8,14 @@ module SqLog
     # @< (upd_proc*)
     # @ log,tid
     def self.extended(obj)
-      Msg.type?(obj,Var).ext_var
+      Msg.type?(obj,Var)
     end
 
-    def ext_var
+    def ext_sqlog(ver=nil)
       init_ver('SqLog',9)
+      ver||=self['ver'].to_i
       @log=[]
-      @tid="#{self['type']}_#{self['ver'].to_i}"
+      @tid="#{self['type']}_#{ver}"
       self
     end
 
@@ -42,6 +43,10 @@ module SqLog
 
     def sql
       (["begin;"]+@log+["commit;"]).join("\n")
+    end
+
+    def ext_exec
+      extend(SqLog::Exec).ext_exec
     end
 
     private
@@ -120,9 +125,8 @@ end
 
 require "libstatus"
 class Var
-  def ext_sqlog
-    extend(SqLog::Var)
-    extend(SqLog::Exec)
+  def ext_sqlog(ver=nil)
+    extend(SqLog::Var).ext_sqlog(ver)
   end
 end
 
@@ -133,7 +137,7 @@ if __FILE__ == $0
   begin
     adb=Loc::Db.new(id)[:app]
     stat=Status::Var.new.ext_file(adb['site_id']).load
-    stat.extend(SqLog::Var).upd
+    stat.ext_sqlog.upd
     puts stat.sql
   rescue UserError
     Msg.usage "[id]"

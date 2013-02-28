@@ -23,5 +23,13 @@
         </repeat>
       </group>
     </status>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <repeat from="1" to="6">
+        <event id="mv$_" label="Moving$_">
+          <onchange var="v$_" />
+          <exec name="upd" />
+        </event>
+      </repeat>
+    </watch>
   </app>
 </adb>

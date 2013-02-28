@@ -4,7 +4,7 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <select>
         <command id="getstat" label="Get all status" response="getstat" type="stat">
-          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="Status Command">ossprt</string>
           <string label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</string>
           <string label="Stow pin Status"> CXWS.TSCV.STOW_1</string>
           <string label="Shutter Status"> CXWS.TSCV.SHUTTER</string>
@@ -15,21 +15,21 @@
           <string label="BOLT Status"> CXWS.TSCV.0_SENSOR</string>
         </command>
         <command id="iststat" label="Get Instrument ID" response="iststat" type="stat">
-          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="Status Command">ossprt</string>
           <string label="CAS Instrument"> CXWS.TSCV.OBE_INR</string>
         </command>
         <command id="jakstat" label="Jack Bolt Status" response="jakstat" type="stat">
-          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="Status Command">ossprt</string>
           <string label="Bolt Each Status"> CXWS.TSCV.POWER_V1</string>
           <string label="Bolt Each Position"> CXWS.TSCV.POWER_V2</string>
           <string label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</string>
         </command>
         <command id="inrstat" label="Cas InR Status" response="inrstat" type="stat">
-          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="Status Command">ossprt</string>
           <string label="InR Angle(deg)"> CXWS.TSCS.INSROT</string>
         </command>
         <command id="logstat" label="Login Status" response="logstat" type="stat">
-          <string label="Status Command">OSSC_screenPrint -R</string>
+          <string label="Status Command">ossprt</string>
           <string label="LOGIN 0"> TSCV.TSC.LOGIN0</string>
           <string label="LOGIN 1"> TSCV.TSC.LOGIN1</string>
           <string label="LOGIN 2"> TSCV.TSC.LOGIN2</string>

@@ -7,7 +7,7 @@ require 'libstatus'
 require "libsqlog"
 require 'json'
 
-opt=Msg::GetOpts.new("ivfa",{"v"=>"verbose","i"=>"init table"})
+opt=Msg::GetOpts.new("ivfa",{"v"=>"verbose","i"=>"init table","a"=>"app mode"})
 id = ARGV.shift
 begin
   ldb=Loc::Db.new(id)
@@ -17,7 +17,7 @@ rescue UserError
   # input format 'sqlite3 -header'
 end
 if opt['a']
-  adb=ldb[:adb]
+  adb=ldb[:app]
   stat=Status::Var.new.ext_file(adb['site_id'])
   stat.ext_rsp(field,adb[:status])
   stat.extend(SqLog::Var)

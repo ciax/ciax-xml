@@ -1,6 +1,4 @@
 ========================== Issue =============================
-libfrmapp takes raw data -> Stream w/o IO (data+date)
-Var::Val -> Var+module Upd
 
 ***DEBUG
 client doesn't send any command (blank command was assinged to item)(12/12/19)
@@ -114,3 +112,5 @@ update:add ext_???() method including add new method instead of extend(Module)
 intapp,intfrm/ set command should work at test (-t) mode
 more intelligent chache system with detecting file update like as Makefile
 Command: should includes procs
+libfrmrsp takes raw data -> Stream w/o IO (data+date) (2/15/13)
+Var::Val -> Var+module Upd(2/27/13)

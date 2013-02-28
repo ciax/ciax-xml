@@ -10,13 +10,6 @@ class Var < ExHash
   end
 
   ## Read/Write JSON file
-  public
-  def ext_upd
-    extend Upd
-    ext_upd
-    self
-  end
-
   def ext_file(id)
     extend File
     ext_file(id)
@@ -34,18 +27,14 @@ class Var < ExHash
     self
   end
 
-  module Upd
+  class Upd < Var
     # @ upd_proc*
     attr_reader :upd_proc
-    def self.extended(obj)
-      Msg.type?(obj,Var)
-    end
-
-    def ext_upd
+    def initialize(type)
+      super
       set_time
       self['val']=ExHash.new
       @upd_proc=UpdProc.new
-      self
     end
 
     def set_time(time=nil)
@@ -86,7 +75,7 @@ class Var < ExHash
     end
 
     def ext_file(id)
-      init_ver('VarLoad',12)
+      init_ver('VarFile',12)
       self['id']=id||Msg.cfg_err("ID")
       @base=self['type']+'_'+self['id']+'.json'
       @prefix=VarDir

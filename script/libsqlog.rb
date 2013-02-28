@@ -34,7 +34,7 @@ module SqLog
       super
       val=expand
       key=val.keys.join("','")
-      val=val.values.join("','")
+      val=val.values.map{|s| s.inspect}.join("','")
       verbose{"SqLog/Update(#{self['time']}):[#{self['id']}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       self

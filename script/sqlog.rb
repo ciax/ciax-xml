@@ -7,7 +7,7 @@ require 'libstatus'
 require "libsqlog"
 require 'json'
 
-opt=Msg::GetOpts.new("ivfa",{"v"=>"verbose","i"=>"init table","a"=>"app mode"})
+opt=Msg::GetOpts.new("ivfat",{"v"=>"verbose","i"=>"init table","a"=>"app mode","t"=>"test mode"})
 id = ARGV.shift
 begin
   ldb=Loc::Db.new(id)
@@ -20,7 +20,7 @@ if opt['a']
   adb=ldb[:app]
   stat=Status::Var.new.ext_file(adb['site_id'])
   stat.ext_rsp(field,adb[:status])
-  stat.extend(SqLog::Var)
+  stat.ext_sqlog(opt['t']&&"test")
   if opt['i'] # Initial
     stat.create
   else
@@ -53,7 +53,7 @@ else
   cobj=Command.new
   cobj.add_extdom(fdb,:cmdframe)
   field.ext_rsp(cobj,fdb)
-  field.extend(SqLog::Var)
+  stat.ext_sqlog(opt['t']&&"test")
   if opt['i'] # Initial
     field.create
   else

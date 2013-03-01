@@ -83,6 +83,8 @@ if __FILE__ == $0
     cobj.add_extdom(fdb,:cmdframe).ext_frmcmd(field,fdb)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
+  rescue InvalidCMD
+    Msg.usage("[dev] [cmd] (par) < field_file",[],2)
   rescue UserError
     Msg.usage "[dev] [cmd] (par) < field_file"
   end

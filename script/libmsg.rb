@@ -203,10 +203,10 @@ module Msg
     Kernel.abort([color(msg,1),$!.to_s].join("\n"))
   end
 
-  def usage(str,opt=[])
+  def usage(str,opt=[],code=1)
     Kernel.warn("Usage: #{$0.split('/').last} #{str}")
     opt.each{|s| Kernel.warn s}
-    exit
+    exit(code)
   end
 
   def exit(code=1)

@@ -88,8 +88,9 @@ module Msg
 
   # Hash of title
   class CmdList < Hash
-    def initialize(attr)
+    def initialize(attr,errclass=InvalidCMD)
       Msg.type?(attr,Hash)
+      @errclass=Msg.type?(errclass,Class)
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
@@ -118,7 +119,7 @@ module Msg
     end
 
     def error
-      raise InvalidCMD,to_s
+      raise @errclass,to_s
     end
   end
 

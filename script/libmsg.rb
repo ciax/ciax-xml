@@ -136,8 +136,9 @@ module Msg
       optdb['s']='simulation mode'
       optdb['t']='test mode'
       #For appearance
-      optdb['r']='raw display mode'
-      optdb['v']='view display mode'
+      optdb['r']='raw data output'
+      optdb['v']='view data output'
+      optdb['p']='visual output'
       #For Macro
       optdb['n']='nonstop mode'
       optdb['d']='debug mode'

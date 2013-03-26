@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libinteractive"
 require "libmcrdb"
-require "libmcrssn"
+require "libmcrrec"
 require "libcommand"
 require "libapplist"
 
@@ -14,7 +14,6 @@ module Mcr
       @cobj=Command.new
       @cobj.add_extdom(mdb,:macro)
       @select=@cobj.setcmd(cmd).select
-warn @select #
       self['id']=cmd.first
       self
     end
@@ -30,10 +29,11 @@ warn @select #
       extend(Exe).init(mdb,cmd)
       @al=Msg.type?(al,App::List)
       @opt=Msg.type?(opt,Hash)
-      @session=Session.new(al,opt)
+      @record=Record.new(al,opt)
+      @record.newline({'type'=>'mcr','mcr'=>cmd,'label'=>self[:label]})
       @upd_proc.add{
-        @output=@session[:record]
-        self['stat']=@session[:stat]
+        @output=@record[:steps]
+        self['stat']=@record[:stat]
       }.upd
       @interrupt.reset_proc{|i|
         self['msg']="Interrupted"
@@ -41,47 +41,46 @@ warn @select #
     end
 
     def exe
-      @session.newline({'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]})
-      @session.crnt.prt
-      macro(@session)
+      @record.crnt.prt
+      macro(@record)
       super
-      @session.fin
+      @record.fin
       self
     rescue Interlock
-      @session.fin('fail')
+      @record.fin('fail')
       self
     rescue Broken,Interrupt
       @interrupt.exe if @interrupt
-      @session.fin('broken')
+      @record.fin('broken')
       Thread.exit
       self
     rescue Quit
-      @session.fin('done')
+      @record.fin('done')
       self
     end
 
     # Should be public for recursive call
-    def macro(session,depth=1)
-      session[:stat]='run'
+    def macro(record,depth=1)
+      record[:stat]='run'
       @select.each{|e1|
-        next if session.newline(e1,depth)
+        next if record.newline(e1,depth)
         case e1['type']
         when 'exec'
-          session.crnt.prt
-          query(session,depth)
+          record.crnt.prt
+          query(record,depth)
           @al[e1['site']].exe(e1['cmd'])
           @interrupt=@al[e1['site']].interrupt
         when 'mcr'
-          session.crnt.prt
-          @index.dup.setcmd(e1['mcr']).macro(session,depth+1)
+          record.crnt.prt
+          @index.dup.setcmd(e1['mcr']).macro(record,depth+1)
         end
       }
       self
     end
 
     private
-    def query(session,depth)
-      session[:stat]="query"
+    def query(record,depth)
+      record[:stat]="query"
       if @opt['v']
         prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
         true while (res=Readline.readline(prompt,true)).empty?
@@ -89,7 +88,7 @@ warn @select #
       elsif !@opt['n']
         sleep
       end
-      session[:stat]='run'
+      record[:stat]='run'
     end
 
     def ext_shell

@@ -4,7 +4,7 @@ require "libapplist"
 require "libmcrprt"
 
 module Mcr
-  class Session < Var
+  class Record < Var
     attr_reader :crnt
     def initialize(aint,opt={})
       @aint=Msg.type?(aint,App::List)
@@ -14,13 +14,13 @@ module Mcr
       self[:id]=@base.to_i
       self[:stat]='ready'
       self[:total]=0
-      self[:record]=[]
+      self[:steps]=[]
     end
 
     def newline(db,depth=0)
-      @crnt=Record.new(db,@aint,depth,@opt)
+      @crnt=Step.new(db,@aint,depth,@opt)
       @crnt['elapsed']="%.3f" % (Time.now.to_f-@base)
-      self[:record] << @crnt
+      self[:steps] << @crnt
       case db['type']
       when 'goal'
         if @crnt.ok?
@@ -65,7 +65,7 @@ module Mcr
     end
   end
 
-  class Record < ExHash
+  class Step < ExHash
     include Prt
     def initialize(db,aint,depth=0,opt={})
       @aint=Msg.type?(aint,App::List)

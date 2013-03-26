@@ -18,7 +18,6 @@ module Ins
       @wview=Watch::View.new(@adb,@watch).ext_prt
       grp=@shdom.add_group('view',"Change View Mode")
       grp.add_item('pri',"Print mode").reset_proc{@output=@print}
-      grp.add_item('val',"Value mode").reset_proc{@output=@stat['val']}
       grp.add_item('wat',"Watch mode").reset_proc{@output=@wview} if @wview
       grp.add_item('raw',"Raw mode").reset_proc{@output=@stat}
       self

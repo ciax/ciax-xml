@@ -234,9 +234,7 @@ if __FILE__ == $0
 
   list={}
   list['t']='test conditions[key=val,..]'
-  list['r']="raw data"
-  list["v"]="view data"
-  opt=Msg::GetOpts.new('rvt:',list)
+  opt=Msg::GetOpts.new('rt:',list)
   id=ARGV.shift
   begin
     adb=Loc::Db.new(id)[:app]
@@ -245,11 +243,9 @@ if __FILE__ == $0
   end
   stat=Status::Var.new.ext_file(adb['site_id']).load
   watch=Watch::Var.new.ext_file(adb['site_id']).ext_conv(adb,stat).upd
+  wview=Watch::View.new(adb,watch)
   unless opt['r']
-    wview=Watch::View.new(adb,watch)
-    unless opt['v']
-      wview.ext_prt
-    end
+    wview.ext_prt
   end
   if t=opt['t']
     stat.ext_save.str_update(t).upd.save

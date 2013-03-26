@@ -14,7 +14,6 @@ module Mcr
       @cobj=Command.new
       @cobj.add_extdom(mdb,:macro)
       @select=@cobj.setcmd(cmd).select
-warn @select #
       self['id']=cmd.first
       self
     end
@@ -31,6 +30,7 @@ warn @select #
       @al=Msg.type?(al,App::List)
       @opt=Msg.type?(opt,Hash)
       @record=Record.new(al,opt)
+      @record.newline({'type'=>'mcr','mcr'=>cmd,'label'=>self[:label]})
       @upd_proc.add{
         @output=@record[:steps]
         self['stat']=@record[:stat]
@@ -41,7 +41,6 @@ warn @select #
     end
 
     def exe
-      @record.newline({'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]})
       @record.crnt.prt
       macro(@record)
       super

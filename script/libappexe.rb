@@ -23,7 +23,7 @@ module App
     def initialize(adb)
       super()
       extend(Exe).init(adb)
-      @stat.extend(Sym::Conv).load
+      @stat.ext_sym(adb).load
       @watch.ext_conv(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
       @intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|

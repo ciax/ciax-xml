@@ -34,7 +34,7 @@ module Hex
         @log_proc.upd
       }
       @upd_proc.add{
-        aint.exe([])
+        aint.stat.load
       }
       if logging
         logging=Logging.new('hex',self['id'],@adb['version']){

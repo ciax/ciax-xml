@@ -27,6 +27,7 @@ module Mcr
     def initialize(mdb,cmd,al,opt={})
       super()
       extend(Exe).init(mdb,cmd)
+warn self
       @al=Msg.type?(al,App::List)
       @opt=Msg.type?(opt,Hash)
       @record=Record.new(al,opt)
@@ -43,7 +44,6 @@ module Mcr
     def exe
       @record.crnt.prt
       macro(@record)
-      super
       @record.fin
       self
     rescue Interlock

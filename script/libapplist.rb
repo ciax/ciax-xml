@@ -68,5 +68,5 @@ end
 
 if __FILE__ == $0
   opt=Msg::GetOpts.new('et')
-  puts App::List.new(opt).exe(ARGV)
+  puts App::List.new(opt).exe(ARGV).output
 end

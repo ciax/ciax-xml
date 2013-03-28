@@ -14,7 +14,7 @@ require "libupdate"
 module Interactive
   # @ cobj,output,intgrp,interrupt,upd_proc
   class Exe < ExHash
-    attr_reader :upd_proc,:interrupt
+    attr_reader :upd_proc,:interrupt,:output
     def initialize
       init_ver(self,2)
       @cobj=Command.new
@@ -26,11 +26,14 @@ module Interactive
 
     # Sync only (Wait for other thread)
     def exe(cmd)
-      self['msg']='OK'
-      return @output if cmd.empty?
-      verbose{"Command #{cmd} recieved"}
-      @cobj.setcmd(cmd).exe
-      self['msg']
+      if cmd.empty?
+        self['msg']=''
+      else
+        self['msg']='OK'
+        verbose{"Command #{cmd} recieved"}
+        @cobj.setcmd(cmd).exe
+      end
+      self
     rescue
       self['msg']=$!.to_s
       raise $!
@@ -158,12 +161,17 @@ module Interactive
         while line=Readline.readline(prompt,true)
           break if /^q/ === line
           line=@lineconv.call(line) if @lineconv
-          puts exe(line.split(' '))
+          cmd=line.split(' ')
+          if cmd.empty?
+            puts @output
+          else
+            puts exe(cmd)['msg']
+          end
         end
       rescue SelectID
         $!.to_s
       rescue Interrupt
-        puts exe(['interrupt'])
+        puts exe(['interrupt'])['msg']
         retry
       rescue UserError
         puts $!.to_s

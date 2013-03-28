@@ -13,7 +13,7 @@ module Mcr
       @mdb=Msg.type?(mdb,Mcr::Db)
       @cobj=Command.new
       @cobj.add_extdom(mdb,:macro)
-      @select=@cobj.setcmd(cmd).select
+      @citem=@cobj.setcmd(cmd)
       self['id']=cmd.first
       self
     end
@@ -27,11 +27,10 @@ module Mcr
     def initialize(mdb,cmd,al,opt={})
       super()
       extend(Exe).init(mdb,cmd)
-warn self
       @al=Msg.type?(al,App::List)
       @opt=Msg.type?(opt,Hash)
       @record=Record.new(al,opt)
-      @record.newline({'type'=>'mcr','mcr'=>cmd,'label'=>self[:label]})
+      @record.newline({'type'=>'mcr','mcr'=>cmd,'label'=>@citem[:label]})
       @upd_proc.add{
         @output=@record[:steps]
         self['stat']=@record[:stat]
@@ -62,7 +61,7 @@ warn self
     # Should be public for recursive call
     def macro(record,depth=1)
       record[:stat]='run'
-      @select.each{|e1|
+      @citem.select.each{|e1|
         next if record.newline(e1,depth)
         case e1['type']
         when 'exec'

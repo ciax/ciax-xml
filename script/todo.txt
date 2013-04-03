@@ -1,8 +1,12 @@
 ========================== Issue =============================
+***For CIAX-CSV
+mcr:add interlock for CAS/ASYN at initialize
+server(???d) migrate to appsv
+
+
 
 ***DEBUG
 client doesn't send any command (blank command was assinged to item)(12/12/19)
-
 
 watch: no command issued by auto(reset at dsi command end) (9/27)
 crt:cart jack level error in oldmcr(1/31)
@@ -25,6 +29,7 @@ mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param (cmdstr subst by tag)
 sql: easy log finder(date -> data)
 mcr: update site status at startup or retry
+mcr: query should be done at only before action
 
 ***UPGRADE
 sql: using sqlite for symboling, labeling as cache

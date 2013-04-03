@@ -1,61 +1,54 @@
 #!/usr/bin/ruby
 require "libvar"
 require "libapplist"
-require "libmcrprt"
 
 module Mcr
   class Record < Var
     attr_reader :crnt
-    def initialize(aint,opt={})
+    def initialize(aint,mcr,label,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
       super('mcr')
       @base=Time.new.to_f
+      @tc=Thread.current
+      @tc[:stat]='ready'
       self[:id]=@base.to_i
-      self[:stat]='ready'
+      self[:mcr]=mcr
+      self[:label]=label
       self[:total]=0
       self[:steps]=[]
     end
 
     def newline(db,depth=0)
-      @crnt=Step.new(db,@aint,depth,@opt)
-      @crnt['elapsed']="%.3f" % (Time.now.to_f-@base)
+      @crnt=Step.new(db,@aint,@base,depth,@opt)
+      @tc[:stat]='run'
       self[:steps] << @crnt
       case db['type']
       when 'goal'
-        if @crnt.ok?
-          self[:stat]='done'
-          live?(depth) && raise(Quit)
+        if @crnt.skip?
+          dryrun?(depth) || (return @tc[:stat])
         end
-        @crnt.prt
       when 'check'
-        unless @crnt.ok?
-          self[:stat]='fail'
-          live?(depth) && raise(Interlock)
+        if @crnt.fail?
+          dryrun?(depth) || (return @tc[:stat])
         end
-        @crnt.prt
       when 'wait'
-        @crnt.prt(0)
-        self[:stat]="wait"
         if @crnt.timeout?{print('.')}
-          self[:stat]='timeout'
-        else
-          self[:stat]='run'
+          dryrun?(depth) || (return @tc[:stat])
         end
-        @crnt.prt(1)
+      when 'exec'
+        yield @aint[db['site']],db['cmd']
+      when 'mcr'
+        return 'mcr'
       else
         nil
       end
-    end
-
-    def fin(stat=nil)
-      self[:stat]=stat if stat
+    ensure
       self[:total]="%.3f" % (Time.now.to_f-@base)
-      self
     end
 
     private
-    def live?(depth)
+    def dryrun?(depth)
       if @opt['t']
         Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
         false
@@ -66,58 +59,59 @@ module Mcr
   end
 
   class Step < ExHash
-    include Prt
-    def initialize(db,aint,depth=0,opt={})
+    def initialize(db,aint,timebase,depth=0,opt={})
       @aint=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
+      @cs=Thread.current[:stat]
+      self['time']="%.3f" % (Time.now.to_f-timebase)
       self['depth']=depth
+      self['result']='ok'
       update(db)
-    end
-
-    def prt(num=nil)
-      if @opt['v']
-        case num
-        when 0
-          print title
-        when 1
-          print result
-        else
-          print self
-        end
-      end
+      @stat=delete('stat')
     end
 
     def timeout?
       #gives number or nil(if break)
       self['max']=self['retry']
+      @cs.replace('wait')
       if self['retry'].to_i.times{|n|
           self['retry']=n
-          break 1 if  @opt['t'] && n > 3
-          break if ok?(1)
+          break 1 if  ! @opt['e'] && n > 3
+          break if ok?
           sleep 1
           yield if @opt['v']
         }
-        self['timeout']=true
+        setres('timeout')
       end
+    rescue Interrupt
+      setres('broken')
     end
 
-    def ok?(refr=nil)
-      res=(flt=scan).empty?
-      self['fault']=flt unless res
-      delete('stat') if res or !refr #self.delete
-      sites.each{|site|
-        getstat(site).refresh
-      } if refr
-      res
+    def skip?
+      ok? && self['result']='skip'
+    end
+
+    def fail?
+      !ok? && self['result']='failed'
     end
 
     private
+    def ok?
+      sites.each{|site|
+        getstat(site).refresh
+      }
+      res=(flt=scan).empty?
+      self['result']=(res ? 'done' : 'failed')
+      self['fault']=flt unless res
+      res
+    end
+
     def scan
       stats=sites.inject({}){|hash,site|
         hash[site]=getstat(site).load
         hash
       }
-      self['stat'].map{|h|
+      @stat.map{|h|
         flt={}
         site=flt['site']=h['site']
         stat=stats[site]
@@ -137,7 +131,7 @@ module Mcr
     end
 
     def sites
-      self['stat'].map{|h| h['site']}.uniq
+      @stat.map{|h| h['site']}.uniq
     end
 
     def match?(res,cmp,inv)
@@ -151,6 +145,11 @@ module Mcr
 
     def getstat(site)
       @aint[site].stat
+    end
+
+    def setres(str)
+      self['result']=str
+      @cs.replace(str)
     end
   end
 end

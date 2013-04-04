@@ -34,7 +34,6 @@ module Mcr
       @interrupt.reset_proc{|i|
         self['msg']="Interrupted"
       }
-      Thread.current[:stat]="ready"
     end
 
     def start(cmd)
@@ -122,7 +121,6 @@ if __FILE__ == $0
     mdb=Mcr::Db.new('ciax')
     mint=Mcr::Sv.new(mdb,al,opt)
     mint.start(ARGV)
-    puts mint.record
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")
   end

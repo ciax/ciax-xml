@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libvar"
+require "libmcrprt"
 
 module Mcr
   class Record < Var
@@ -42,14 +43,15 @@ module Mcr
       nil
     ensure
       self['total']="%.3f" % (Time.now.to_f-@base)
+      puts @crnt.extend(Prt) if @opt['v']
     end
 
     private
     def dryrun?(depth=0)
-      if @opt['t']
-        Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
+      if ['e','s','t'].any?{|i| @opt[i]}
         false
       else
+        Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
         true
       end
     end
@@ -72,9 +74,10 @@ module Mcr
       self['result']='broken'
       if self['retry'].to_i.times{|n|
           self['retry']=n
-          break 1 if  ! @opt['e'] && n > 3
+          break 1 if !['e','s','t'].any?{|i| @opt[i]}  && n > 3
           break if ok?
           sleep 1
+          print '.' if @opt['v']
         }
         self['result']='timeout'
       else

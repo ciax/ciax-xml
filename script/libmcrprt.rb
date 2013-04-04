@@ -22,7 +22,7 @@ module Mcr
         msg << Msg.color('Waiting',6)+":#{self['label']} "
       when 'mcr'
         msg << Msg.color("MACRO",3)
-        msg << ":#{self['mcr'].join(' ')}(#{self['label']} )"
+        msg << ":#{self['cmd'].join(' ')}(#{self['label']} )"
         msg << "(async)" if self['async']
       when 'exec'
         msg << Msg.color("EXEC",13)

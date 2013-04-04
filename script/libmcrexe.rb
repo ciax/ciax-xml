@@ -122,7 +122,7 @@ module Mcr
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('vti')
+  opt=Msg::GetOpts.new('vst')
   begin
     al=App::List.new(opt)
     mdb=Mcr::Db.new('ciax')

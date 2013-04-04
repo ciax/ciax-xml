@@ -88,6 +88,9 @@ module Mcr
       !ok? && self['result']='failed'
     end
 
+    def title ; end
+    def result ; "\n"+to_s; end
+
     private
     def ok?
       sites.each{|site|

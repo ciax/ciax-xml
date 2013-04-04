@@ -190,8 +190,8 @@ module Interactive
   class List < Hash
     require "liblocdb"
     attr_accessor :init_proc
-    def initialize(opt=nil)
-      @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
+    def initialize
+      $opt||=Msg::GetOpts.new
       @init_proc=proc{} # Execute when new key is set
       super(){|h,id|
         int=yield id
@@ -203,7 +203,7 @@ module Interactive
     def exe(stm)
       self[stm.shift].exe(stm)
     rescue UserError
-     @opt.usage('(opt) [id] [cmd] [par....]')
+     $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
     def shell(id)
@@ -211,7 +211,7 @@ module Interactive
         int=(defined? yield) ? yield(id) : self[id]
       end while id=int.shell
     rescue UserError
-      @opt.usage('(opt) [id]')
+      $opt.usage('(opt) [id]')
     end
 
     def server(ary)
@@ -221,7 +221,7 @@ module Interactive
       }.empty? && self[nil]
       sleep
     rescue UserError
-      @opt.usage('(opt) [id] ....')
+      $opt.usage('(opt) [id] ....')
     end
   end
 end

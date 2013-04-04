@@ -3,20 +3,20 @@ require "libfrmlist"
 
 module App
   class List < Interactive::List
-    # @< opt,init_proc*
+    # @< init_proc*
     # @ fl,fint,list
     require "libappsv"
-    def initialize(opt=nil,&prc)
-      @fl=Frm::List.new(opt)
+    def initialize(&prc)
+      @fl=Frm::List.new
       @fint={}
       super{|id|
         ldb=Loc::Db.new(id)
         @list=ldb.list
-        if @opt['e'] or @opt['s'] or @opt['f']
+        if $opt['e'] or $opt['s'] or $opt['f']
           @fint[id]=@fl[ldb[:frm]['site_id']]
-          aint=Sv.new(ldb[:app],@fint[id],@opt['e'])
-          aint=Cl.new(ldb[:app],'localhost') if @opt['c']
-        elsif host=@opt['h'] or @opt['c']
+          aint=Sv.new(ldb[:app],@fint[id],$opt['e'])
+          aint=Cl.new(ldb[:app],'localhost') if $opt['c']
+        elsif host=$opt['h'] or $opt['c']
           aint=Cl.new(ldb[:app],host)
         else
           aint=Test.new(ldb[:app])
@@ -67,6 +67,6 @@ module App
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('et')
-  puts App::List.new(opt).exe(ARGV).output
+  Msg::GetOpts.new('et')
+  puts App::List.new.exe(ARGV).output
 end

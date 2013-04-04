@@ -147,6 +147,7 @@ module Msg
       }.compact
       update(ARGV.getopts(str))
       require 'debug' if self['d']
+      $opt=self
     end
 
     def usage(str)
@@ -203,9 +204,9 @@ module Msg
     Kernel.abort([color(msg,1),$!.to_s].join("\n"))
   end
 
-  def usage(str,opt=[])
+  def usage(str,optlist=[])
     Kernel.warn("Usage: #{$0.split('/').last} #{str}")
-    opt.each{|s| Kernel.warn s}
+    optlist.each{|s| Kernel.warn s}
     exit
   end
 

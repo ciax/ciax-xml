@@ -22,11 +22,10 @@ module Mcr
     # @< (mdb),extdom
     # @ dryrun,aint
     attr_reader :record
-    def initialize(mdb,al,opt={})
+    def initialize(mdb,al)
       super()
       extend(Exe).init(mdb)
       @al=Msg.type?(al,App::List)
-      @opt=Msg.type?(opt,Hash)
       @record={}
       @upd_proc.add{
         @output=@record[:steps]
@@ -40,7 +39,7 @@ module Mcr
       Thread.current[:stat]="run"
       self['id']=cmd.first
       mitem=@mobj.setcmd(cmd)
-      @record=Record.new(cmd,mitem[:label],@opt)
+      @record=Record.new(cmd,mitem[:label])
       @record.stat_proc=proc{|site| @al[site].stat }
       @record.exe_proc=proc{|site,cmd,depth|
         query(depth)
@@ -49,7 +48,7 @@ module Mcr
         @interrupt=aint.interrupt
       }
       @record.err_proc=proc{|depth|
-        if ['e','s','t'].any?{|i| @opt[i]}
+        if ['e','s','t'].any?{|i| $opt[i]}
           false
         else
           Msg.hidden('Dryrun:Proceed',depth+1) if Msg.fg?
@@ -95,7 +94,7 @@ module Mcr
           Thread.current[:stat]='broken'
           raise(Quit)
         end
-      elsif !@opt['n']
+      elsif !$opt['n']
         sleep
       end
       Thread.current[:stat]='run'
@@ -122,13 +121,13 @@ module Mcr
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('vst')
+  Msg::GetOpts.new('vst')
   begin
-    al=App::List.new(opt)
+    al=App::List.new
     mdb=Mcr::Db.new('ciax')
-    mint=Mcr::Sv.new(mdb,al,opt)
+    mint=Mcr::Sv.new(mdb,al)
     mint.start(ARGV)
   rescue InvalidCMD
-    opt.usage("[mcr] [cmd] (par)")
+    $opt.usage("[mcr] [cmd] (par)")
   end
 end

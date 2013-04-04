@@ -234,20 +234,20 @@ if __FILE__ == $0
 
   list={}
   list['t']='test conditions[key=val,..]'
-  opt=Msg::GetOpts.new('rt:',list)
+  Msg::GetOpts.new('rt:',list)
   id=ARGV.shift
   begin
     adb=Loc::Db.new(id)[:app]
   rescue InvalidID
-    opt.usage("(opt) [id]")
+    $opt.usage("(opt) [id]")
   end
   stat=Status::Var.new.ext_file(adb['site_id']).load
   watch=Watch::Var.new.ext_file(adb['site_id']).ext_conv(adb,stat).upd
   wview=Watch::View.new(adb,watch)
-  unless opt['r']
+  unless $opt['r']
     wview.ext_prt
   end
-  if t=opt['t']
+  if t=$opt['t']
     stat.ext_save.str_update(t).upd.save
     watch.ext_save.upd.save
   end

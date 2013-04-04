@@ -32,7 +32,7 @@ module Mcr
               select << attr
               verbose{"COMMAND:[#{e1['name']}]"}
             when 'mcr'
-              cmd=attr['mcr']=getcmd(e1)
+              cmd=attr['cmd']=getcmd(e1)
               attr['label']=mdb[:label][cmd.first]
               attr.delete('name')
               select << attr

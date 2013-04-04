@@ -1,13 +1,14 @@
 #!/usr/bin/ruby
 require "libvar"
-require "libapplist"
 
 module Mcr
   class Record < Var
+    attr_accessor :stat_proc,:exe_proc
     attr_reader :crnt
-    def initialize(aint,cmd,label,opt={})
-      @al=Msg.type?(aint,App::List)
+    def initialize(cmd,label,opt={})
       @opt=Msg.type?(opt,Hash)
+      @stat_proc=proc{{}}
+      @exe_proc=proc{}
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
@@ -18,7 +19,7 @@ module Mcr
     end
 
     def newline(db,depth=0)
-      @crnt=Step.new(db,@al,@base,depth,@opt)
+      @crnt=Step.new(db,@stat_proc,@base,depth,@opt)
       self['steps'] << @crnt
       case db['type']
       when 'goal'
@@ -27,17 +28,18 @@ module Mcr
         end
       when 'check'
         if @crnt.fail?
-          dryrun?(depth) || return
+          dryrun?(depth) || raise(Interlock)
         end
       when 'wait'
         if @crnt.timeout?
-          dryrun?(depth) || return
+          dryrun?(depth) || raise(Timeout)
         end
       when 'exec'
-        return [@al[db['site']],db['cmd']]
+        @exe_proc.call(db['site'],db['cmd'],depth)
       when 'mcr'
-        return 'mcr'
+        return db['cmd']
       end
+      nil
     ensure
       self['total']="%.3f" % (Time.now.to_f-@base)
     end
@@ -54,8 +56,8 @@ module Mcr
   end
 
   class Step < ExHash
-    def initialize(db,aint,timebase,depth=0,opt={})
-      @al=Msg.type?(aint,App::List)
+    def initialize(db,stat_proc,timebase,depth=0,opt={})
+      @stat_proc=Msg.type?(stat_proc,Proc)
       @opt=Msg.type?(opt,Hash)
       self['time']="%.3f" % (Time.now.to_f-timebase)
       self['depth']=depth
@@ -92,7 +94,7 @@ module Mcr
     private
     def ok?
       sites.each{|site|
-        getstat(site).refresh
+        @stat_proc.call(site).refresh
       }
       res=(flt=scan).empty?
       self['fault']=flt unless res
@@ -101,7 +103,7 @@ module Mcr
 
     def scan
       stats=sites.inject({}){|hash,site|
-        hash[site]=getstat(site).load
+        hash[site]=@stat_proc.call(site).load
         hash
       }
       @stat.map{|h|
@@ -134,10 +136,6 @@ module Mcr
       else
         (cmp == res) ^ i
       end
-    end
-
-    def getstat(site)
-      @al[site].stat
     end
   end
 end

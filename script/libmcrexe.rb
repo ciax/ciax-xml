@@ -41,7 +41,14 @@ module Mcr
       Thread.current[:stat]="run"
       self['id']=cmd.first
       mitem=@mobj.setcmd(cmd)
-      @record=Record.new(@al,cmd,mitem[:label],@opt)
+      @record=Record.new(cmd,mitem[:label],@opt)
+      @record.stat_proc=proc{|site| @al[site].stat }
+      @record.exe_proc=proc{|site,cmd,depth|
+        query(depth)
+        aint=@al[site]
+        #aint.exe(cmd)
+        @interrupt=aint.interrupt
+      }
       macro(cmd)
       self
     rescue Quit
@@ -55,16 +62,11 @@ module Mcr
     def macro(cmd,depth=1)
       @mobj.setcmd(cmd).select.each{|e1|
         Thread.current[:stat]="wait"
-        if res=@record.newline(e1,depth)
-          case res
-          when 'mcr'
-            macro(e1['mcr'],depth+1)
-          when Array
-            query(depth)
-            # aint.exe(cmd)
-            # @interrupt=aint.interrupt
+        begin
+          if mcr=@record.newline(e1,depth)
+            macro(mcr,depth+1)
           end
-        else
+        rescue Timeout,Interlock
           query(depth)
         end
       }

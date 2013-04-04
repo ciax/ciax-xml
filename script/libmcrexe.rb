@@ -48,6 +48,14 @@ module Mcr
         #aint.exe(cmd)
         @interrupt=aint.interrupt
       }
+      @record.err_proc=proc{|depth|
+        if ['e','s','t'].any?{|i| @opt[i]}
+          false
+        else
+          Msg.hidden('Dryrun:Proceed',depth+1) if Msg.fg?
+          true
+        end
+      }
       macro(cmd)
       self
     rescue Quit
@@ -80,7 +88,7 @@ module Mcr
     private
     def query(depth)
       Thread.current[:stat]="query"
-      if @opt['v']
+      if Msg.fg?
         prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
         true while (res=Readline.readline(prompt,true)).empty?
         unless /[Yy]/ === res

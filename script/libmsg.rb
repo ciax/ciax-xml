@@ -230,6 +230,11 @@ module Msg
     raise "Data type error <#{name.class}> for (#{mod.to_s})"
   end
 
+  # Thread is main
+  def fg?
+    Thread.current == Thread.main
+  end
+
   # Display methods
   def item(key,val)
     indent(1)+color("%-6s" % key,3)+": #{val}"

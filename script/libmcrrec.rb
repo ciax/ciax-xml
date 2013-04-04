@@ -4,12 +4,13 @@ require "libmcrprt"
 
 module Mcr
   class Record < Var
-    attr_accessor :stat_proc,:exe_proc
+    attr_accessor :stat_proc,:exe_proc,:err_proc
     attr_reader :crnt
     def initialize(cmd,label,opt={})
       @opt=Msg.type?(opt,Hash)
       @stat_proc=proc{{}}
       @exe_proc=proc{}
+      @err_proc=proc{}
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
@@ -21,39 +22,32 @@ module Mcr
 
     def newline(db,depth=0)
       @crnt=Step.new(db,@stat_proc,@base,depth,@opt)
+      @crnt.extend(Prt) if @opt['v']
       self['steps'] << @crnt
       case db['type']
       when 'goal'
-        if @crnt.skip?
-          dryrun?(depth) || raise(Quit)
-        end
+        res=@crnt.skip?
+        puts @crnt if Msg.fg?
+        res && (@err_proc.call(depth) || raise(Quit))
       when 'check'
-        if @crnt.fail?
-          dryrun?(depth) || raise(Interlock)
-        end
+        res=@crnt.fail?
+        puts @crnt if Msg.fg?
+        res && (@err_proc.call(depth) || raise(Interlock))
       when 'wait'
-        if @crnt.timeout?
-          dryrun?(depth) || raise(Timeout)
-        end
+        print @crnt.title if Msg.fg?
+        res=@crnt.timeout?
+        puts @crnt.result if Msg.fg?
+        res && (@err_proc.call(depth) || raise(Timeout))
       when 'exec'
+        puts @crnt if Msg.fg?
         @exe_proc.call(db['site'],db['cmd'],depth)
       when 'mcr'
+        puts @crnt if Msg.fg?
         return db['cmd']
       end
       nil
     ensure
       self['total']="%.3f" % (Time.now.to_f-@base)
-      puts @crnt.extend(Prt) if @opt['v']
-    end
-
-    private
-    def dryrun?(depth=0)
-      if ['e','s','t'].any?{|i| @opt[i]}
-        false
-      else
-        Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
-        true
-      end
     end
   end
 
@@ -77,7 +71,7 @@ module Mcr
           break 1 if !['e','s','t'].any?{|i| @opt[i]}  && n > 3
           break if ok?
           sleep 1
-          print '.' if @opt['v']
+          print '.' if Msg.fg?
         }
         self['result']='timeout'
       else

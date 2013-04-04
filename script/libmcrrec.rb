@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libvar"
+require "libstatus"
 require "libmcrprt"
 
 module Mcr
@@ -8,9 +9,9 @@ module Mcr
     attr_reader :crnt
     def initialize(cmd,label,opt={})
       @opt=Msg.type?(opt,Hash)
-      @stat_proc=proc{{}}
-      @exe_proc=proc{}
-      @err_proc=proc{}
+      @stat_proc=proc{|site| Status::Var.new}
+      @exe_proc=proc{|site,cmd,depth|}
+      @err_proc=proc{|depth|}
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
@@ -20,24 +21,17 @@ module Mcr
       self['steps']=[]
     end
 
-    def newline(db,depth=0)
+    def nextstep(db,depth=0)
       @crnt=Step.new(db,@stat_proc,@base,depth,@opt)
       @crnt.extend(Prt) if @opt['v']
       self['steps'] << @crnt
       case db['type']
       when 'goal'
-        res=@crnt.skip?
-        puts @crnt if Msg.fg?
-        res && (@err_proc.call(depth) || raise(Quit))
+        @crnt.skip? && (@err_proc.call(depth) || raise(Quit))
       when 'check'
-        res=@crnt.fail?
-        puts @crnt if Msg.fg?
-        res && (@err_proc.call(depth) || raise(Interlock))
+        @crnt.fail? && (@err_proc.call(depth) || raise(Interlock))
       when 'wait'
-        print @crnt.title if Msg.fg?
-        res=@crnt.timeout?
-        puts @crnt.result if Msg.fg?
-        res && (@err_proc.call(depth) || raise(Timeout))
+        @crnt.timeout? && (@err_proc.call(depth) || raise(Timeout))
       when 'exec'
         puts @crnt if Msg.fg?
         @exe_proc.call(db['site'],db['cmd'],depth)
@@ -57,47 +51,51 @@ module Mcr
       @opt=Msg.type?(opt,Hash)
       self['time']="%.3f" % (Time.now.to_f-timebase)
       self['depth']=depth
-      self['result']='ok'
+      self['result']='pass'
       update(db)
       @stat=delete('stat')
     end
 
     def timeout?
       #gives number or nil(if break)
+      print title if Msg.fg?
       self['max']=self['retry']
       self['result']='broken'
-      if self['retry'].to_i.times{|n|
-          self['retry']=n
-          break 1 if !['e','s','t'].any?{|i| @opt[i]}  && n > 3
-          break if ok?
-          sleep 1
-          print '.' if Msg.fg?
-        }
-        self['result']='timeout'
-      else
-        self['result']='ok'
-        false
-      end
+      res=self['retry'].to_i.times{|n|
+        self['retry']=n
+        break 1 if !['e','s','t'].any?{|i| @opt[i]}  && n > 3
+        break if ok?
+        sleep 1
+        print '.' if Msg.fg?
+      }
+      self['result']=(res ? 'timeout' : 'pass')
+      puts result if Msg.fg?
+      res
     end
 
     def skip?
-      ok? && self['result']='skip'
+      res=ok?('skip','pass')
+      puts to_s if Msg.fg?
+      res
     end
 
     def fail?
-      !ok? && self['result']='failed'
+      res=!ok?('pass','failed')
+      puts to_s if Msg.fg?
+      res
     end
 
     def title ; end
     def result ; "\n"+to_s; end
 
     private
-    def ok?
+    def ok?(t=nil,f=nil)
+      res=(flt=scan).empty?
+      self['fault']=flt unless res
+      self['result']=(res ? t : f) if t || f
       sites.each{|site|
         @stat_proc.call(site).refresh
       }
-      res=(flt=scan).empty?
-      self['fault']=flt unless res
       res
     end
 

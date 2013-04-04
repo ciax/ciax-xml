@@ -70,7 +70,7 @@ module Mcr
       @mobj.setcmd(cmd).select.each{|e1|
         Thread.current[:stat]="wait"
         begin
-          if mcr=@record.newline(e1,depth)
+          if mcr=@record.nextstep(e1,depth)
             macro(mcr,depth+1)
           end
         rescue Timeout,Interlock

@@ -47,14 +47,6 @@ module Mcr
         #aint.exe(cmd)
         @interrupt=aint.interrupt
       }
-      @record.err_proc=proc{|depth|
-        if ['e','s','t'].any?{|i| $opt[i]}
-          false
-        else
-          Msg.hidden('Dryrun:Proceed',depth+1) if Msg.fg?
-          true
-        end
-      }
       macro(cmd)
       self
     rescue Quit

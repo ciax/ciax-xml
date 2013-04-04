@@ -5,12 +5,11 @@ require "libmcrprt"
 
 module Mcr
   class Record < Var
-    attr_accessor :stat_proc,:exe_proc,:err_proc
+    attr_accessor :stat_proc,:exe_proc
     attr_reader :crnt
     def initialize(cmd,label)
       @stat_proc=proc{|site| Status::Var.new}
       @exe_proc=proc{|site,cmd,depth|}
-      @err_proc=proc{|depth|}
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
@@ -26,11 +25,11 @@ module Mcr
       self['steps'] << @crnt
       case db['type']
       when 'goal'
-        @crnt.skip? && (@err_proc.call(depth) || raise(Quit))
+        @crnt.skip? && raise(Quit)
       when 'check'
-        @crnt.fail? && (@err_proc.call(depth) || raise(Interlock))
+        @crnt.fail? && raise(Interlock)
       when 'wait'
-        @crnt.timeout? && (@err_proc.call(depth) || raise(Interlock))
+        @crnt.timeout? && raise(Interlock)
       when 'exec'
         puts @crnt if Msg.fg?
         @exe_proc.call(db['site'],db['cmd'],depth)
@@ -42,6 +41,8 @@ module Mcr
     ensure
       self['total']="%.3f" % (Time.now.to_f-@base)
     end
+
+
   end
 
   class Step < ExHash
@@ -49,7 +50,7 @@ module Mcr
       @stat_proc=Msg.type?(stat_proc,Proc)
       self['time']="%.3f" % (Time.now.to_f-timebase)
       self['depth']=depth
-      self['result']='pass'
+      self['result']=''
       update(db)
       @stat=delete('stat')
     end
@@ -58,30 +59,34 @@ module Mcr
       #gives number or nil(if break)
       print title if Msg.fg?
       self['max']=self['retry']
-      self['result']='broken'
       res=self['retry'].to_i.times{|n|
         self['retry']=n
-        break 1 if !['e','s','t'].any?{|i| $opt[i]}  && n > 3
-        break if ok?
+        break if dryrun?  && n > 3
+        return if ok?('pass','broken')
         refresh
         sleep 1
         print '.' if Msg.fg?
       }
-      self['result']=(res ? 'timeout' : 'pass')
-      puts result if Msg.fg?
+      self['result']='timeout'
       res
+    ensure
+      puts result if Msg.fg?
     end
 
     def skip?
       res=ok?('skip','pass')
-      puts to_s if Msg.fg?
+      return if dryrun?
       res
+    ensure
+      puts to_s if Msg.fg?
     end
 
     def fail?
       res=!ok?('pass','failed')
-      puts to_s if Msg.fg?
+      return if dryrun?
       res
+    ensure
+      puts to_s if Msg.fg?
     end
 
     def title ; end
@@ -135,6 +140,12 @@ module Mcr
         (/#{cmp}/ === res) ^ i
       else
         (cmp == res) ^ i
+      end
+    end
+
+    def dryrun?
+      if ! ['e','s','t'].any?{|i| $opt[i]}
+        self['dryrun']=true
       end
     end
   end

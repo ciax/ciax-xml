@@ -12,7 +12,7 @@ module Mcr
     end
 
     def title
-      msg=Msg.indent(self['depth']||0)
+      msg=Msg.indent(self['depth'].to_i)
       case self['type']
       when 'goal'
         msg << Msg.color('Done?',6)+":#{self['label']}"
@@ -47,7 +47,7 @@ module Mcr
       when 'wait'
         ret=self['retry'].to_i
         msg='*'*(ret/10)+'.'*(ret % 10)
-        if self['timeout']
+        if self['result'] == 'timeout'
           msg << ' -> '+Msg.color("Timeout(#{self['retry']})",1)+"\n"
           msg << getcond
         elsif !key?('stat')
@@ -55,6 +55,10 @@ module Mcr
         end
       else
         msg=''
+      end
+      if self['dryrun']
+        msg << "\n"+Msg.indent(self['depth'].to_i+1)
+        msg << Msg.color('Dryrun:Proceed',8)
       end
       msg+"\n"
     end

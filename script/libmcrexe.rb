@@ -9,12 +9,10 @@ module Mcr
   module Exe
     # @< cobj,output,(intgrp),(interrupt),upd_proc*
     # @ mdb,extdom
-    def init(mdb,cmd)
+    def init(mdb)
       @mdb=Msg.type?(mdb,Mcr::Db)
-      mobj=Command.new
-      mobj.add_extdom(mdb,:macro)
-      @mitem=mobj.setcmd(cmd)
-      self['id']=cmd.first
+      @mobj=Command.new
+      @mobj.add_extdom(mdb,:macro)
       self
     end
   end
@@ -24,51 +22,51 @@ module Mcr
     # @< (mdb),extdom
     # @ dryrun,aint
     attr_reader :record
-    def initialize(mdb,cmd,al,opt={})
+    def initialize(mdb,al,opt={})
       super()
-      extend(Exe).init(mdb,cmd)
+      extend(Exe).init(mdb)
       @al=Msg.type?(al,App::List)
       @opt=Msg.type?(opt,Hash)
-      @record=Record.new(al,cmd.join(' '),@mitem[:label],opt)
+      @record=Record.new(al,opt)
       @upd_proc.add{
         @output=@record[:steps]
       }.upd
       @interrupt.reset_proc{|i|
         self['msg']="Interrupted"
       }
+      Thread.current[:stat]="ready"
     end
 
-    def start
-      macro(@record)
+    def start(cmd)
+      Thread.current[:stat]="run"
+      self['id']=cmd.first
+      mitem=@mobj.setcmd(cmd)
+      @record[:mcr]=cmd.join(' ')
+      @record[:label]=mitem[:label]
+      macro(cmd)
       self
     rescue Quit
       self
-    rescue Interlock
-      self
-    rescue Broken,Interrupt
+    rescue Interrupt
       @interrupt.exe if @interrupt
-      Thread.exit
       self
     end
 
     # Should be public for recursive call
-    def macro(record,depth=1)
-      @mitem.select.each{|e1|
-        case record.newline(e1,depth){|aint,cmd|
-            query(record,depth)
+    def macro(cmd,depth=1)
+      @mobj.setcmd(cmd).select.each{|e1|
+        Thread.current[:stat]="wait"
+        if res=@record.newline(e1,depth)
+          case res
+          when 'mcr'
+            macro(e1['mcr'],depth+1)
+          when Array
+            query(depth)
             # aint.exe(cmd)
-            @interrupt=aint.interrupt
-          }
-        when 'done','failed','timeout'
-          return
-        when 'broken'
-          @interrupt.exe if @interrupt
-          return
-        when 'run'
-          puts record.crnt
-        when 'mcr'
-          puts record.crnt
-          @index.dup.setcmd(e1['mcr']).macro(record,depth+1)
+            # @interrupt=aint.interrupt
+          end
+        else
+          query(depth)
         end
       }
       self
@@ -80,14 +78,14 @@ module Mcr
     end
 
     private
-    def query(record,depth)
+    def query(depth)
       Thread.current[:stat]="query"
       if @opt['v']
         prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
         true while (res=Readline.readline(prompt,true)).empty?
         unless /[Yy]/ === res
           Thread.current[:stat]='broken'
-          return
+          raise(Quit)
         end
       elsif !@opt['n']
         sleep
@@ -121,7 +119,8 @@ if __FILE__ == $0
   begin
     al=App::List.new(opt)
     mdb=Mcr::Db.new('ciax')
-    mint=Mcr::Sv.new(mdb,ARGV,al,opt).start
+    mint=Mcr::Sv.new(mdb,al,opt)
+    mint.start(ARGV)
     puts mint.record
   rescue InvalidCMD
     opt.usage("[mcr] [cmd] (par)")

@@ -5,43 +5,36 @@ require "libapplist"
 module Mcr
   class Record < Var
     attr_reader :crnt
-    def initialize(aint,mcr,label,opt={})
-      @aint=Msg.type?(aint,App::List)
+    def initialize(aint,opt={})
+      @al=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
       super('mcr')
       @base=Time.new.to_f
-      @tc=Thread.current
-      @tc[:stat]='ready'
       self[:id]=@base.to_i
-      self[:mcr]=mcr
-      self[:label]=label
       self[:total]=0
       self[:steps]=[]
     end
 
     def newline(db,depth=0)
-      @crnt=Step.new(db,@aint,@base,depth,@opt)
-      @tc[:stat]='run'
+      @crnt=Step.new(db,@al,@base,depth,@opt)
       self[:steps] << @crnt
       case db['type']
       when 'goal'
         if @crnt.skip?
-          dryrun?(depth) || (return @tc[:stat])
+          dryrun?(depth) || raise(Quit)
         end
       when 'check'
         if @crnt.fail?
-          dryrun?(depth) || (return @tc[:stat])
+          dryrun?(depth) || return
         end
       when 'wait'
-        if @crnt.timeout?{print('.')}
-          dryrun?(depth) || (return @tc[:stat])
+        if @crnt.timeout?
+          dryrun?(depth) || return
         end
       when 'exec'
-        yield @aint[db['site']],db['cmd']
+        return [@al[db['site']],db['cmd']]
       when 'mcr'
         return 'mcr'
-      else
-        nil
       end
     ensure
       self[:total]="%.3f" % (Time.now.to_f-@base)
@@ -60,9 +53,8 @@ module Mcr
 
   class Step < ExHash
     def initialize(db,aint,timebase,depth=0,opt={})
-      @aint=Msg.type?(aint,App::List)
+      @al=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
-      @cs=Thread.current[:stat]
       self['time']="%.3f" % (Time.now.to_f-timebase)
       self['depth']=depth
       self['result']='ok'
@@ -73,18 +65,18 @@ module Mcr
     def timeout?
       #gives number or nil(if break)
       self['max']=self['retry']
-      @cs.replace('wait')
+      self['result']='broken'
       if self['retry'].to_i.times{|n|
           self['retry']=n
           break 1 if  ! @opt['e'] && n > 3
           break if ok?
           sleep 1
-          yield if @opt['v']
         }
-        setres('timeout')
+        self['result']='timeout'
+      else
+        self['result']='ok'
+        false
       end
-    rescue Interrupt
-      setres('broken')
     end
 
     def skip?
@@ -101,7 +93,6 @@ module Mcr
         getstat(site).refresh
       }
       res=(flt=scan).empty?
-      self['result']=(res ? 'done' : 'failed')
       self['fault']=flt unless res
       res
     end
@@ -144,12 +135,7 @@ module Mcr
     end
 
     def getstat(site)
-      @aint[site].stat
-    end
-
-    def setres(str)
-      self['result']=str
-      @cs.replace(str)
+      @al[site].stat
     end
   end
 end

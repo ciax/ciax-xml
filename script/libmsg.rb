@@ -15,8 +15,9 @@ class InvalidPAR < InvalidCMD; end
 # Mangaged Error
 class ManagedError < RuntimeError; end
 class SelectID < ManagedError; end
-# Broken session in Macro
+# Macro Broken
 class Broken < ManagedError; end
+class Timeout < ManagedError; end
 class Interlock < ManagedError; end
 class Quit < ManagedError; end
 

@@ -65,6 +65,7 @@ module Mcr
         self['retry']=n
         break 1 if !['e','s','t'].any?{|i| @opt[i]}  && n > 3
         break if ok?
+        refresh
         sleep 1
         print '.' if Msg.fg?
       }
@@ -93,9 +94,6 @@ module Mcr
       res=(flt=scan).empty?
       self['fault']=flt unless res
       self['result']=(res ? t : f) if t || f
-      sites.each{|site|
-        @stat_proc.call(site).refresh
-      }
       res
     end
 
@@ -121,6 +119,12 @@ module Mcr
           flt
         end
       }.compact
+    end
+
+    def refresh
+      sites.each{|site|
+        @stat_proc.call(site).refresh
+      }
     end
 
     def sites

@@ -73,7 +73,7 @@ module Mcr
           if mcr=@record.nextstep(e1,depth)
             macro(mcr,depth+1)
           end
-        rescue Timeout,Interlock
+        rescue Interlock
           query(depth)
         end
       }

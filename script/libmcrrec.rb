@@ -31,7 +31,7 @@ module Mcr
       when 'check'
         @crnt.fail? && (@err_proc.call(depth) || raise(Interlock))
       when 'wait'
-        @crnt.timeout? && (@err_proc.call(depth) || raise(Timeout))
+        @crnt.timeout? && (@err_proc.call(depth) || raise(Interlock))
       when 'exec'
         puts @crnt if Msg.fg?
         @exe_proc.call(db['site'],db['cmd'],depth)

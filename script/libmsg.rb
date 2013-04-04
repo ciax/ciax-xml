@@ -17,7 +17,6 @@ class ManagedError < RuntimeError; end
 class SelectID < ManagedError; end
 # Macro Broken
 class Broken < ManagedError; end
-class Timeout < ManagedError; end
 class Interlock < ManagedError; end
 class Quit < ManagedError; end
 

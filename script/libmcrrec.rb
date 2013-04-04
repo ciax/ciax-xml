@@ -7,8 +7,7 @@ module Mcr
   class Record < Var
     attr_accessor :stat_proc,:exe_proc,:err_proc
     attr_reader :crnt
-    def initialize(cmd,label,opt={})
-      @opt=Msg.type?(opt,Hash)
+    def initialize(cmd,label)
       @stat_proc=proc{|site| Status::Var.new}
       @exe_proc=proc{|site,cmd,depth|}
       @err_proc=proc{|depth|}
@@ -22,8 +21,8 @@ module Mcr
     end
 
     def nextstep(db,depth=0)
-      @crnt=Step.new(db,@stat_proc,@base,depth,@opt)
-      @crnt.extend(Prt) if @opt['v']
+      @crnt=Step.new(db,@stat_proc,@base,depth)
+      @crnt.extend(Prt) if $opt['v']
       self['steps'] << @crnt
       case db['type']
       when 'goal'
@@ -46,9 +45,8 @@ module Mcr
   end
 
   class Step < ExHash
-    def initialize(db,stat_proc,timebase,depth=0,opt={})
+    def initialize(db,stat_proc,timebase,depth=0)
       @stat_proc=Msg.type?(stat_proc,Proc)
-      @opt=Msg.type?(opt,Hash)
       self['time']="%.3f" % (Time.now.to_f-timebase)
       self['depth']=depth
       self['result']='pass'
@@ -63,7 +61,7 @@ module Mcr
       self['result']='broken'
       res=self['retry'].to_i.times{|n|
         self['retry']=n
-        break 1 if !['e','s','t'].any?{|i| @opt[i]}  && n > 3
+        break 1 if !['e','s','t'].any?{|i| $opt[i]}  && n > 3
         break if ok?
         refresh
         sleep 1

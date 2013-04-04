@@ -125,16 +125,16 @@ if __FILE__ == $0
   require 'liblocdb'
 
   begin
-    opt=Msg::GetOpts.new("af")
+    Msg::GetOpts.new("af")
     ldb=Loc::Db.new(ARGV.shift)
     cobj=Command.new
-    if opt["f"]
+    if $opt["f"]
       cobj.add_extdom(ldb[:frm],:cmdframe)
     else
       cobj.add_extdom(ldb[:app],:command)
     end
     puts cobj.setcmd(ARGV)
   rescue UserError
-    opt.usage("(opt) [id] [cmd] (par)")
+    $opt.usage("(opt) [id] [cmd] (par)")
   end
 end

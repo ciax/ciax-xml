@@ -69,7 +69,6 @@ end
 if __FILE__ == $0
   require "libstatus"
   Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-  opt=Msg::GetOpts.new("d")
   stat=Status::Var.new.load
   int=Hex::View.new({},stat)
   puts int

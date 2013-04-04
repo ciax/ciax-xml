@@ -27,7 +27,7 @@ module Mcr
       extend(Exe).init(mdb)
       @al=Msg.type?(al,App::List)
       @opt=Msg.type?(opt,Hash)
-      @record=Record.new(al,opt)
+      @record={}
       @upd_proc.add{
         @output=@record[:steps]
       }.upd
@@ -41,8 +41,7 @@ module Mcr
       Thread.current[:stat]="run"
       self['id']=cmd.first
       mitem=@mobj.setcmd(cmd)
-      @record[:mcr]=cmd.join(' ')
-      @record[:label]=mitem[:label]
+      @record=Record.new(@al,cmd,mitem[:label],@opt)
       macro(cmd)
       self
     rescue Quit

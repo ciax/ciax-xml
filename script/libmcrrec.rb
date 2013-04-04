@@ -5,19 +5,21 @@ require "libapplist"
 module Mcr
   class Record < Var
     attr_reader :crnt
-    def initialize(aint,opt={})
+    def initialize(aint,cmd,label,opt={})
       @al=Msg.type?(aint,App::List)
       @opt=Msg.type?(opt,Hash)
       super('mcr')
       @base=Time.new.to_f
-      self[:id]=@base.to_i
-      self[:total]=0
-      self[:steps]=[]
+      self['id']=@base.to_i
+      self['cmd']=cmd.join(' ')
+      self['label']=label
+      self['total']=0
+      self['steps']=[]
     end
 
     def newline(db,depth=0)
       @crnt=Step.new(db,@al,@base,depth,@opt)
-      self[:steps] << @crnt
+      self['steps'] << @crnt
       case db['type']
       when 'goal'
         if @crnt.skip?
@@ -37,11 +39,11 @@ module Mcr
         return 'mcr'
       end
     ensure
-      self[:total]="%.3f" % (Time.now.to_f-@base)
+      self['total']="%.3f" % (Time.now.to_f-@base)
     end
 
     private
-    def dryrun?(depth)
+    def dryrun?(depth=0)
       if @opt['t']
         Msg.hidden('Dryrun:Proceed',depth) if @opt['v']
         false
@@ -105,10 +107,10 @@ module Mcr
       @stat.map{|h|
         flt={}
         site=flt['site']=h['site']
+        var=flt['var']=h['var']
         stat=stats[site]
         if flt['upd']=stat.update?
           inv=flt['inv']=h['inv']
-          var=flt['var']=h['var']
           cmp=flt['cmp']=h['val']
           res=stat['msg'][var]||stat['val'][var]
           verbose{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}

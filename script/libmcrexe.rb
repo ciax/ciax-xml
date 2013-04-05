@@ -7,20 +7,17 @@ require "libapplist"
 
 module Mcr
   module Exe
-    # @< cobj,output,(intgrp),(interrupt),upd_proc*
-    # @ mdb,extdom
+    # @ mdb
     def init(mdb)
-      @mdb=Msg.type?(mdb,Mcr::Db)
-      @mobj=Command.new
-      @mobj.add_extdom(mdb,:macro)
+      Msg.type?(mdb,Mcr::Db)
+      @cobj.add_extdom(mdb,:macro)
       self
     end
   end
 
   class Sv < Interactive::Server
-    # @<< (cobj),(output),(intgrp),interrupt,(upd_proc*)
-    # @< (mdb),extdom
-    # @ dryrun,aint
+    # @< cobj,output,(intgrp),interrupt,upd_proc*
+    # @ al,record*
     attr_reader :record
     def initialize(mdb,al)
       super()
@@ -38,7 +35,7 @@ module Mcr
     def start(cmd)
       Thread.current[:stat]="run"
       self['id']=cmd.first
-      mitem=@mobj.setcmd(cmd)
+      mitem=@cobj.setcmd(cmd)
       @record=Record.new(cmd,mitem[:label])
       @record.extend(Prt) if $opt['v']
       puts @record if Msg.fg?
@@ -60,7 +57,7 @@ module Mcr
 
     # Should be public for recursive call
     def macro(cmd,depth=1)
-      @mobj.setcmd(cmd).select.each{|e1|
+      @cobj.setcmd(cmd).select.each{|e1|
         Thread.current[:stat]="wait"
         begin
           if mcr=@record.nextstep(e1,depth)

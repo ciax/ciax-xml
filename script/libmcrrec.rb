@@ -13,7 +13,7 @@ module Mcr
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
-      self['cmd']=cmd.join(' ')
+      self['cmd']=cmd
       self['label']=label
       self['total']=0
       self['steps']=[]

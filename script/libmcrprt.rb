@@ -22,7 +22,7 @@ module Mcr
         msg << Msg.color('Waiting',6)+":#{self['label']} "
       when 'mcr'
         msg << Msg.color("MACRO",3)
-        msg << ":#{self['cmd'].join(' ')}(#{self['label']} )"
+        msg << ":#{self['cmd'].join(' ')}(#{self['label']})"
         msg << "(async)" if self['async']
       when 'exec'
         msg << Msg.color("EXEC",13)
@@ -40,7 +40,7 @@ module Mcr
       title=res.capitalize
       title << "(#{ret})" if ret
       color=(res == 'pass') ? 2 : 1
-      msg << Msg.color(title,color)+"\n"
+      msg << Msg.color(title,color)
       msg << getcond
       if self['dryrun']
         msg << "\n"+Msg.indent(self['depth'].to_i+1)
@@ -54,7 +54,7 @@ module Mcr
       msg=''
       if c=self['fault']
         c.each{|h|
-          msg << Msg.indent((self['depth']||0)+1)
+          msg << "\n"+Msg.indent((self['depth']||0)+1)
           if h['upd']
             msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
           else

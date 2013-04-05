@@ -40,6 +40,8 @@ module Mcr
       self['id']=cmd.first
       mitem=@mobj.setcmd(cmd)
       @record=Record.new(cmd,mitem[:label])
+      @record.extend(Prt) if $opt['v']
+      puts @record if Msg.fg?
       @record.stat_proc=proc{|site| @al[site].stat }
       @record.exe_proc=proc{|site,cmd,depth|
         query(depth)

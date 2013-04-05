@@ -6,22 +6,14 @@ require "libcommand"
 require "libapplist"
 
 module Mcr
-  module Exe
-    # @ mdb
-    def init(mdb)
-      Msg.type?(mdb,Mcr::Db)
-      @cobj.add_extdom(mdb,:macro)
-      self
-    end
-  end
-
   class Sv < Interactive::Server
     # @< cobj,output,(intgrp),interrupt,upd_proc*
     # @ al,record*
     attr_reader :record
     def initialize(mdb,al)
+      Msg.type?(mdb,Mcr::Db)
       super()
-      extend(Exe).init(mdb)
+      @cobj.add_extdom(mdb,:macro)
       @al=Msg.type?(al,App::List)
       @record={}
       @upd_proc.add{
@@ -32,7 +24,12 @@ module Mcr
       }
     end
 
-    def start(cmd)
+    def ext_shell
+      extend(Shell).ext_shell
+      self
+    end
+
+    def exe(cmd)
       Thread.current[:stat]="run"
       self['id']=cmd.first
       mitem=@cobj.setcmd(cmd)
@@ -55,7 +52,7 @@ module Mcr
       self
     end
 
-    # Should be public for recursive call
+    private
     def macro(cmd,depth=1)
       @cobj.setcmd(cmd).select.each{|e1|
         Thread.current[:stat]="wait"
@@ -70,12 +67,6 @@ module Mcr
       self
     end
 
-    def ext_shell
-      extend(Shell).ext_shell
-      self
-    end
-
-    private
     def query(depth)
       Thread.current[:stat]="query"
       if Msg.fg?
@@ -117,7 +108,7 @@ if __FILE__ == $0
     al=App::List.new
     mdb=Mcr::Db.new('ciax')
     mint=Mcr::Sv.new(mdb,al)
-    mint.start(ARGV)
+    mint.exe(ARGV)
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")
   end

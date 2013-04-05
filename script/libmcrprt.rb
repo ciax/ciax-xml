@@ -32,30 +32,16 @@ module Mcr
     end
 
     def result
-      case self['type']
-      when 'goal'
-        msg=' -> '
-        msg << Msg.color(self['fault'] ? "NOT YET": "YES(SKIP)",2)
-      when 'check'
-        msg=' -> '
-        if self['fault']
-          msg << Msg.color("NG",1)+"\n"
-          msg << getcond
-        else
-          msg << Msg.color("OK",2)
-        end
-      when 'wait'
-        ret=self['retry'].to_i
-        msg='*'*(ret/10)+'.'*(ret % 10)
-        if self['result'] == 'timeout'
-          msg << ' -> '+Msg.color("Timeout(#{self['retry']})",1)+"\n"
-          msg << getcond
-        elsif !key?('stat')
-          msg << ' -> '+Msg.color("OK",2)
-        end
-      else
-        msg=''
-      end
+      return "\n" unless res=self['result']
+      msg=''
+      ret=self['retry']
+      msg='*'*(ret/10)+'.'*(ret % 10) if ret
+      msg << ' -> '
+      title=res.capitalize
+      title << "(#{ret})" if ret
+      color=(res == 'pass') ? 2 : 1
+      msg << Msg.color(title,color)+"\n"
+      msg << getcond
       if self['dryrun']
         msg << "\n"+Msg.indent(self['depth'].to_i+1)
         msg << Msg.color('Dryrun:Proceed',8)

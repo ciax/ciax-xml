@@ -50,7 +50,6 @@ module Mcr
       @stat_proc=Msg.type?(stat_proc,Proc)
       self['time']="%.3f" % (Time.now.to_f-timebase)
       self['depth']=depth
-      self['result']=''
       update(db)
       @stat=delete('stat')
     end

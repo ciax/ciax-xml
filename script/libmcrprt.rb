@@ -45,7 +45,7 @@ module Mcr
       msg << ' -> '
       title=res.capitalize
       title << "(#{ret})" if ret
-      color=(res == 'pass') ? 2 : 1
+      color=(/pass|wait/ === res) ? 2 : 1
       msg << Msg.color(title,color)
       msg << getcond(obj)
       if obj['dryrun']

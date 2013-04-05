@@ -59,13 +59,16 @@ module Mcr
       res=self['retry'].to_i.times{|n|
         self['retry']=n
         break if dryrun?  && n > 3
-        return if ok?('pass','broken')
+        return if ok?('pass','wait')
         refresh
         sleep 1
         print '.' if Msg.fg?
       }
       self['result']='timeout'
       res
+    rescue Interrupt
+      self['result']='broken'
+      raise Interrupt
     ensure
       puts result if Msg.fg?
     end

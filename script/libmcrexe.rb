@@ -108,15 +108,18 @@ module Mcr
 end
 
 if __FILE__ == $0
-  Msg::GetOpts.new('vst')
+  Msg::GetOpts.new('vnest')
   begin
     al=App::List.new
     mdb=Mcr::Db.new('ciax')
-#    mint=Mcr::Sv.new(mdb,al)
-#    mint.setcmd(ARGV)
-#    mint.exe
-    mint=Mcr::Shell.new(mdb,al)
-    mint.shell(ARGV)
+    if $opt['n']
+      mint=Mcr::Sv.new(mdb,al)
+      mint.setcmd(ARGV)
+      mint.exe
+    else
+      mint=Mcr::Shell.new(mdb,al)
+      mint.shell(ARGV)
+    end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")
   end

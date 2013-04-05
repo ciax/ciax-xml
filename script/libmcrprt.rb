@@ -8,53 +8,59 @@ module Mcr
     end
 
     def to_s
-      title+result
-    end
-
-    def title
-      msg=Msg.indent(self['depth'].to_i)
-      case self['type']
-      when 'goal'
-        msg << Msg.color('Done?',6)+":#{self['label']}"
-      when 'check'
-        msg << Msg.color('Check',6)+":#{self['label']}"
-      when 'wait'
-        msg << Msg.color('Waiting',6)+":#{self['label']} "
-      when 'mcr'
-        msg << Msg.color("MACRO",3)
-        msg << ":#{self['cmd'].join(' ')}(#{self['label']})"
-        msg << "(async)" if self['async']
-      when 'exec'
-        msg << Msg.color("EXEC",13)
-        msg << ":#{self['cmd'].join(' ')}(#{self['site']})"
+      msg=title+result
+      if ary=self['steps']
+        ary.each{|i|
+          msg << title(i)+result(i)
+        }
       end
       msg
     end
 
-    def result
-      return "\n" unless res=self['result']
+    def title(obj=self)
+      msg=Msg.indent(obj['depth'].to_i)
+      case obj['type']
+      when 'goal'
+        msg << Msg.color('Done?',6)+":#{obj['label']}"
+      when 'check'
+        msg << Msg.color('Check',6)+":#{obj['label']}"
+      when 'wait'
+        msg << Msg.color('Waiting',6)+":#{obj['label']} "
+      when 'mcr'
+        msg << Msg.color("MACRO",3)
+        msg << ":#{obj['cmd'].join(' ')}(#{obj['label']})"
+        msg << "(async)" if obj['async']
+      when 'exec'
+        msg << Msg.color("EXEC",13)
+        msg << ":#{obj['cmd'].join(' ')}(#{obj['site']})"
+      end
+      msg
+    end
+
+    def result(obj=self)
+      return "\n" unless res=obj['result']
       msg=''
-      ret=self['retry']
+      ret=obj['retry']
       msg='*'*(ret/10)+'.'*(ret % 10) if ret
       msg << ' -> '
       title=res.capitalize
       title << "(#{ret})" if ret
       color=(res == 'pass') ? 2 : 1
       msg << Msg.color(title,color)
-      msg << getcond
-      if self['dryrun']
-        msg << "\n"+Msg.indent(self['depth'].to_i+1)
+      msg << getcond(obj)
+      if obj['dryrun']
+        msg << "\n"+Msg.indent(obj['depth'].to_i+1)
         msg << Msg.color('Dryrun:Proceed',8)
       end
       msg+"\n"
     end
 
     private
-    def getcond
+    def getcond(obj)
       msg=''
-      if c=self['fault']
+      if c=obj['fault']
         c.each{|h|
-          msg << "\n"+Msg.indent((self['depth']||0)+1)
+          msg << "\n"+Msg.indent((obj['depth']||0)+1)
           if h['upd']
             msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
           else

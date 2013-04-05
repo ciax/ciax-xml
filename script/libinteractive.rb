@@ -134,7 +134,7 @@ module Interactive
     def ext_shell(pconv={},&p)
       init_ver('Shell/%s',2,self)
       #prompt convert table (j2s)
-      @pconv={'id'=>nil}.update(Msg.type?(pconv,Hash))
+      @prompt=Prompt.new({'id'=>nil}.update(pconv),self)
       @shdom=@cobj.add_domain('sh',5)
       @lineconv=p if p
       Readline.completion_proc=proc{|word|
@@ -158,7 +158,7 @@ module Interactive
     def shell
       begin
         @upd_proc.upd
-        while line=Readline.readline(prompt,true)
+        while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
           line=@lineconv.call(line) if @lineconv
           cmd=line.split(' ')
@@ -180,9 +180,17 @@ module Interactive
     end
 
     private
-    def prompt
-      @pconv.keys.map{|k|
-        (@pconv[k]||'%s') % self[k] if self[k]
+  end
+
+  class Prompt
+    def initialize(db,stat)
+      @db=Msg.type?(db,Hash)
+      @stat=Msg.type?(stat,Hash)
+    end
+
+    def to_s
+      @db.keys.map{|k|
+        (@db[k]||'%s') % @stat[k] if @stat[k]
       }.compact.join('')+'>'
     end
   end

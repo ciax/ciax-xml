@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 # For Macro Line (Array)
-
 module Mcr
   module Prt
     def self.extended(obj)
@@ -58,7 +57,7 @@ module Mcr
     private
     def getcond(obj)
       msg=''
-      if c=obj['fault']
+      if c=obj['mismatch']
         c.each{|h|
           msg << "\n"+Msg.indent((obj['depth']||0)+1)
           if h['upd']

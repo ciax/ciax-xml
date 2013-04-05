@@ -95,7 +95,7 @@ module Mcr
     private
     def ok?(t=nil,f=nil)
       res=(flt=scan).empty?
-      self['fault']=flt unless res
+      self['mismatch']=flt unless res
       self['result']=(res ? t : f) if t || f
       res
     end

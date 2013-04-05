@@ -41,11 +41,11 @@ module Interactive
       @upd_proc.upd
     end
 
-    def ext_shell(pconv={},&p)
+    def ext_shell(pconv={},pstat=self,&p)
       if is_a? Shell
         Msg.warn("Multiple Initialize for Shell")
       else
-        extend(Shell).ext_shell(pconv,&p)
+        extend(Shell).ext_shell(pconv,pstat,&p)
       end
       self
     end
@@ -131,10 +131,10 @@ module Interactive
     end
 
     # block gives command line convert
-    def ext_shell(pconv={},&p)
+    def ext_shell(pconv={},pstat=self,&p)
       init_ver('Shell/%s',2,self)
       #prompt convert table (j2s)
-      @prompt=Prompt.new({'id'=>nil}.update(pconv),self)
+      @prompt=Prompt.new({'id'=>nil}.update(pconv),pstat)
       @shdom=@cobj.add_domain('sh',5)
       @lineconv=p if p
       Readline.completion_proc=proc{|word|

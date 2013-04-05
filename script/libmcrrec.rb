@@ -41,8 +41,6 @@ module Mcr
     ensure
       self['total']="%.3f" % (Time.now.to_f-@base)
     end
-
-
   end
 
   class Step < ExHash

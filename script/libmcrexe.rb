@@ -8,7 +8,7 @@ require "libapplist"
 module Mcr
   class Sv < Interactive::Server
     # @< cobj,output,(intgrp),interrupt,upd_proc*
-    # @ al,record*
+    # @ al,item,record*
     attr_reader :record
     def initialize(mdb,al)
       Msg.type?(mdb,Mcr::Db)
@@ -16,26 +16,16 @@ module Mcr
       @cobj.add_extdom(mdb,:macro)
       @al=Msg.type?(al,App::List)
       @record={}
-      @upd_proc.add{
-        @output=@record[:steps]
-      }.upd
       @interrupt.reset_proc{|i|
         self['msg']="Interrupted"
       }
     end
 
-    def ext_shell
-      extend(Shell).ext_shell
-      self
-    end
-
-    def exe(cmd)
-      Thread.current[:stat]="run"
+    def setcmd(cmd)
       self['id']=cmd.first
-      mitem=@cobj.setcmd(cmd)
-      @record=Record.new(cmd,mitem[:label])
+      @item=@cobj.setcmd(cmd)
+      @record=Record.new(cmd,@item[:label])
       @record.extend(Prt) if $opt['v']
-      puts @record if Msg.fg?
       @record.stat_proc=proc{|site| @al[site].stat }
       @record.exe_proc=proc{|site,cmd,depth|
         query(depth)
@@ -43,7 +33,13 @@ module Mcr
         #aint.exe(cmd)
         @interrupt=aint.interrupt
       }
-      macro(cmd)
+      self
+    end
+
+    def exe
+      self['stat']="run"
+      puts @record if Msg.fg?
+      macro(@item)
       self
     rescue Quit
       self
@@ -53,12 +49,12 @@ module Mcr
     end
 
     private
-    def macro(cmd,depth=1)
-      @cobj.setcmd(cmd).select.each{|e1|
-        Thread.current[:stat]="wait"
+    def macro(item,depth=1)
+      Msg.type?(item,Command::Item).select.each{|e1|
+        self['stat']="wait"
         begin
           if mcr=@record.nextstep(e1,depth)
-            macro(mcr,depth+1)
+            macro(@cobj.setcmd(mcr),depth+1)
           end
         rescue Interlock
           query(depth)
@@ -68,36 +64,45 @@ module Mcr
     end
 
     def query(depth)
-      Thread.current[:stat]="query"
+      self['stat']="query"
       if Msg.fg?
         prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
         true while (res=Readline.readline(prompt,true)).empty?
         unless /[Yy]/ === res
-          Thread.current[:stat]='broken'
+          self['stat']='broken'
           raise(Quit)
         end
       elsif !$opt['n']
         sleep
       end
-      Thread.current[:stat]='run'
+      self['stat']='run'
     end
   end
 
-  module Shell
+  class Shell < Interactive::Server
+    # @< cobj,output,intgrp,interrupt,upd_proc*
+    # @ mint
     include Interactive::Shell
-    def ext_shell
-      super({'stat' => "(%s)"})
-      grp=@shdom.add_group('con','Control')
-      grp.add_item('y','Yes').reset_proc{|i|
-        if @crnt.alive?
-          @crnt.run
+    def initialize(mdb,al)
+      @mint=Sv.new(mdb,al)
+      super()
+      ext_shell({'stat' => "(%s)"})
+      @intgrp.add_item('y','Yes').reset_proc{|i|
+        if @th.alive?
+          @th.run
           self['msg']="Continue"
         end
       }
-      grp.add_item('f','Force Temporaly')
-      grp.add_item('r','Retry Checking')
-      grp.add_item('s','Skip Execution')
-      grp.add_item('i','Ignore and Memory')
+      @intgrp.add_item('f','Force Temporaly')
+      @intgrp.add_item('r','Retry Checking')
+      @intgrp.add_item('s','Skip Execution')
+      @intgrp.add_item('i','Ignore and Memory')
+    end
+
+    def shell(cmd)
+      @output=@mint.setcmd(cmd).record
+      @th=Thread.new{ @mint.exe }
+      super()
     end
   end
 end
@@ -107,8 +112,11 @@ if __FILE__ == $0
   begin
     al=App::List.new
     mdb=Mcr::Db.new('ciax')
-    mint=Mcr::Sv.new(mdb,al)
-    mint.exe(ARGV)
+#    mint=Mcr::Sv.new(mdb,al)
+#    mint.setcmd(ARGV)
+#    mint.exe
+    mint=Mcr::Shell.new(mdb,al)
+    mint.shell(ARGV)
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")
   end

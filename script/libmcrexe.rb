@@ -30,7 +30,7 @@ module Mcr
       @record.exe_proc=proc{|site,cmd,depth|
         query(depth)
         aint=@al[site]
-        #aint.exe(cmd)
+        aint.exe(cmd)
         @interrupt=aint.interrupt
       }
       self
@@ -86,7 +86,7 @@ module Mcr
     def initialize(mdb,al)
       @mint=Sv.new(mdb,al)
       super()
-      ext_shell({'stat' => "(%s)"})
+      ext_shell({'stat' => "(%s)"},@mint)
       @intgrp.add_item('y','Yes').reset_proc{|i|
         if @th.alive?
           @th.run

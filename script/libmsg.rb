@@ -15,9 +15,9 @@ class InvalidPAR < InvalidCMD; end
 # Mangaged Error
 class ManagedError < RuntimeError; end
 class SelectID < ManagedError; end
-# Macro Broken
-class Broken < ManagedError; end
+# Macro
 class Interlock < ManagedError; end
+class Retry < ManagedError; end
 class Quit < ManagedError; end
 
 # Communication Error

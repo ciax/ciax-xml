@@ -31,8 +31,7 @@ module Mcr
       when 'wait'
         @crnt.timeout? && raise(Interlock)
       when 'exec'
-        puts @crnt if Msg.fg?
-        @exe_proc.call(db['site'],db['cmd'],depth)
+        @crnt.exec(@exe_proc)
       when 'mcr'
         puts @crnt if Msg.fg?
         return db['cmd']
@@ -50,6 +49,17 @@ module Mcr
       self['depth']=depth
       update(db)
       @stat=delete('stat')
+    end
+
+    def exec(exeproc)
+      puts title if Msg.fg?
+      exeproc.call(self['site'],self['cmd'],self['depth'])
+      self['result']='done'
+    rescue Interrupt
+      self['result']='broken'
+      raise Interrupt
+    ensure
+      puts result if Msg.fg?
     end
 
     def timeout?

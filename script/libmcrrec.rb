@@ -65,17 +65,16 @@ module Mcr
     def timeout?
       #gives number or nil(if break)
       print title if Msg.fg?
-      self['max']=self['retry']
-      res=self['retry'].to_i.times{|n|
+      max=self['max']=self['retry']
+      max = 3 if dryrun?
+      max.to_i.times{|n|
         self['retry']=n
-        break if dryrun?  && n > 3
         return if ok?('pass','wait')
         refresh
         sleep 1
         print '.' if Msg.fg?
       }
       self['result']='timeout'
-      res
     rescue Interrupt
       self['result']='broken'
       raise Interrupt
@@ -92,9 +91,7 @@ module Mcr
     end
 
     def fail?
-      res=!ok?('pass','failed')
-      return if dryrun?
-      res
+      !ok?('pass','failed')
     ensure
       puts to_s if Msg.fg?
     end

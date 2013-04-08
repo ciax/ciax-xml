@@ -182,16 +182,26 @@ module Interactive
     private
   end
 
-  class Prompt
+  class Prompt < Hash
     def initialize(db,stat)
-      @db=Msg.type?(db,Hash)
+      update Msg.type?(db,Hash)
       @stat=Msg.type?(stat,Hash)
     end
 
     def to_s
-      @db.keys.map{|k|
-        (@db[k]||'%s') % @stat[k] if @stat[k]
-      }.compact.join('')+'>'
+      str=''
+      each{|k,cmp|
+        next unless v=@stat[k]
+        case cmp
+        when String
+          str << cmp % v
+        when Hash
+          str << cmp[v]
+        else
+          str << v
+        end
+      }
+      str << '>'
     end
   end
 

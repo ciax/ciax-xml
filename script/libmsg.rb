@@ -138,10 +138,10 @@ module Msg
       #For appearance
       optdb['r']='raw data output'
       optdb['v']='visual output'
-      #For Macro
-      optdb['n']='nonstop mode'
+      #For debug
       optdb['d']='debug mode'
       optdb.update(db)
+      str << db.keys.join('')
       @list=str.split('').map{|c|
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact

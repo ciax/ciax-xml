@@ -111,15 +111,23 @@ module Mcr
       @th=Thread.new{ @mint.exe }
       super()
     end
+
+    private
+    def query(depth,msg,list)
+      self['stat']="query"
+      sleep
+      self['stat']="run"
+    end
+
   end
 end
 
 if __FILE__ == $0
-  Msg::GetOpts.new('vnest')
+  Msg::GetOpts.new('vest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
     al=App::List.new
     mdb=Mcr::Db.new('ciax')
-    if $opt['n']
+    if $opt['i']
       mint=Mcr::Sv.new(mdb,al)
       mint.setcmd(ARGV)
       mint.exe

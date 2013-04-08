@@ -28,10 +28,14 @@ module Mcr
       @record.extend(Prt) if $opt['v']
       @record.stat_proc=proc{|site| @al[site].stat }
       @record.exe_proc=proc{|site,cmd,depth|
-        query(depth)
-        aint=@al[site]
-        aint.exe(cmd)
-        @interrupt=aint.interrupt
+        if query(depth,'Proceed?',['y','s'])
+          aint=@al[site]
+          aint.exe(cmd)
+          @interrupt=aint.interrupt
+          'done'
+        else
+          'skip'
+        end
       }
       self
     end
@@ -42,6 +46,7 @@ module Mcr
       macro(@item)
       self
     rescue Quit
+      self['stat']='broken'
       self
     rescue Interrupt
       @interrupt.exe if @interrupt
@@ -57,25 +62,27 @@ module Mcr
             macro(@cobj.setcmd(mcr),depth+1)
           end
         rescue Interlock
-          query(depth)
+          query(depth,'Error',['f','r']) || retry
         end
       }
       self
     end
 
-    def query(depth)
+    def query(depth,msg,list)
       self['stat']="query"
       if Msg.fg?
-        prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
+        optstr=list.join('/').upcase
+        prompt='  '*depth+Msg.color("#{msg}[#{optstr}/Q]",5)
         true while (res=Readline.readline(prompt,true)).empty?
-        unless /[Yy]/ === res
-          self['stat']='broken'
-          raise(Quit)
-        end
+        list.include?(res) || raise(Quit)
+        self['stat']='run'
+        /[fFyY]/ === res
       elsif !$opt['n']
         sleep
+        self['stat']='run'
       end
-      self['stat']='run'
+    rescue Retry
+      false
     end
   end
 
@@ -93,10 +100,10 @@ module Mcr
           self['msg']="Continue"
         end
       }
-      @intgrp.add_item('f','Force Temporaly')
-      @intgrp.add_item('r','Retry Checking')
-      @intgrp.add_item('s','Skip Execution')
-      @intgrp.add_item('i','Ignore and Memory')
+      @intgrp.add_item('f','Force Temporaly').reset_proc{|i| @th.run }
+      @intgrp.add_item('r','Retry Checking').reset_proc{|i| @th.raise(Retry)}
+      @intgrp.add_item('s','Skip Execution').reset_proc{|i| @th.raise(Retry)}
+      @intgrp.add_item('q','Quit Execution').reset_proc{|i| @th.raise(Quit) }
     end
 
     def shell(cmd)
@@ -108,15 +115,18 @@ module Mcr
 end
 
 if __FILE__ == $0
-  Msg::GetOpts.new('vst')
+  Msg::GetOpts.new('vnest')
   begin
     al=App::List.new
     mdb=Mcr::Db.new('ciax')
-#    mint=Mcr::Sv.new(mdb,al)
-#    mint.setcmd(ARGV)
-#    mint.exe
-    mint=Mcr::Shell.new(mdb,al)
-    mint.shell(ARGV)
+    if $opt['n']
+      mint=Mcr::Sv.new(mdb,al)
+      mint.setcmd(ARGV)
+      mint.exe
+    else
+      mint=Mcr::Shell.new(mdb,al)
+      mint.shell(ARGV)
+    end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")
   end

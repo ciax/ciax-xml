@@ -31,8 +31,7 @@ module Mcr
       when 'wait'
         @crnt.timeout? && raise(Interlock)
       when 'exec'
-        puts @crnt if Msg.fg?
-        @exe_proc.call(db['site'],db['cmd'],depth)
+        @crnt.exec(@exe_proc) || raise(Quit)
       when 'mcr'
         puts @crnt if Msg.fg?
         return db['cmd']
@@ -52,20 +51,29 @@ module Mcr
       @stat=delete('stat')
     end
 
+    def exec(exeproc)
+      puts title if Msg.fg?
+      self['result']=exeproc.call(self['site'],self['cmd'],self['depth'])
+    rescue Quit
+      self['result']='broken'
+      false
+    ensure
+      puts result if Msg.fg?
+    end
+
     def timeout?
       #gives number or nil(if break)
       print title if Msg.fg?
-      self['max']=self['retry']
-      res=self['retry'].to_i.times{|n|
+      max=self['max']=self['retry']
+      max = 3 if dryrun?
+      max.to_i.times{|n|
         self['retry']=n
-        break if dryrun?  && n > 3
         return if ok?('pass','wait')
         refresh
         sleep 1
         print '.' if Msg.fg?
       }
       self['result']='timeout'
-      res
     rescue Interrupt
       self['result']='broken'
       raise Interrupt
@@ -82,9 +90,7 @@ module Mcr
     end
 
     def fail?
-      res=!ok?('pass','failed')
-      return if dryrun?
-      res
+      !ok?('pass','failed')
     ensure
       puts to_s if Msg.fg?
     end
@@ -95,7 +101,7 @@ module Mcr
     private
     def ok?(t=nil,f=nil)
       res=(flt=scan).empty?
-      self['fault']=flt unless res
+      self['mismatch']=flt unless res
       self['result']=(res ? t : f) if t || f
       res
     end

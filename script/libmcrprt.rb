@@ -7,10 +7,10 @@ module Mcr
     end
 
     def to_s
-      msg=[title+result,action].grep(/./).join("\n")
-      if ary=self['steps']
-        ary.each{|i|
-          msg << [title(i)+result(i),action(i)].grep(/./).join("\n")
+      msg=title+result+"\n"
+      if st=self['steps']
+        st.each{|i|
+          msg << title(i)+result(i)+"\n"
         }
       end
       msg
@@ -37,35 +37,20 @@ module Mcr
     end
 
     def result(obj=self)
-      msg=''
+      ary=[]
       if res=obj['result']
         ret=obj['retry']
-        msg='*'*(ret/10)+'.'*(ret % 10) if ret
+        msg=ret ? ('*'*(ret/10)+'.'*(ret % 10)) : ''
         msg << ' -> '
         title=res.capitalize
         title << "(#{ret})" if ret
         color=(/pass|wait/ === res) ? 2 : 1
         msg << Msg.color(title,color)
-        msg=[msg,getcond(obj)].join("\n")
+        ary << msg
       end
-      msg
-    end
-
-    def action(obj=self)
-      msg=''
-      if act=obj['action']
-        msg << Msg.indent(obj['depth'].to_i+1)
-        msg << Msg.color(act.capitalize,8)
-      end
-      msg
-    end
-
-    private
-    def getcond(obj)
-      ary=[]
       if c=obj['mismatch']
         c.each{|h|
-          msg = Msg.indent((obj['depth']||0)+1)
+          msg = Msg.indent(obj['depth'].to_i+1)
           if h['upd']
             msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
           else
@@ -74,7 +59,12 @@ module Mcr
           ary << msg
         }
       end
-      ary
+      if act=obj['action']
+        msg = Msg.indent(obj['depth'].to_i+1)
+        msg << Msg.color(act.capitalize,8)
+        ary << msg
+      end
+      ary.grep(/./).join("\n")
     end
   end
 end

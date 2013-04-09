@@ -10,7 +10,6 @@ module Mcr
     def initialize(cmd,label)
       @stat_proc=proc{|site| Status::Var.new}
       @exe_proc=proc{|site,cmd,depth|}
-      @err_proc=proc{|depth|}
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
@@ -54,12 +53,14 @@ module Mcr
 
     def exec(exeproc)
       puts title if Msg.fg?
-      if query('Proceed?',{'y'=>'done','s'=>'skip'}) && !dryrun?
+      if query('Proceed?',{'y'=>'exec','s'=>'skip'}) && !dryrun?
         exeproc.call(self['site'],self['cmd'],self['depth'])
         self['result']='done'
+      else
+        self['result']='skip'
       end
     ensure
-      puts result+action if Msg.fg?
+      puts to_s if Msg.fg?
     end
 
     def timeout?
@@ -80,8 +81,6 @@ module Mcr
       self['result']='timeout'
       puts result if Msg.fg?
       ! query('Timeout',{'f'=>'force','r'=>'retry'})
-    ensure
-      puts action if Msg.fg?
     end
 
     def skip?
@@ -96,13 +95,10 @@ module Mcr
       return if ok?('pass','failed')
       puts to_s if Msg.fg?
       ! query('Interlock',{'f'=>'force','r'=>'retry'})
-    ensure
-      puts action if Msg.fg?
     end
 
-    def title ; end
+    def title ; self['label']||self['cmd']; end
     def result ; "\n"+to_s; end
-    def action ; end
 
     private
     def ok?(t=nil,f=nil)
@@ -158,6 +154,7 @@ module Mcr
     def dryrun?
       if ! ['e','s','t'].any?{|i| $opt[i]}
         self['action']='dryrun'
+        true
       end
     end
 

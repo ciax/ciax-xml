@@ -53,13 +53,13 @@ module Mcr
     end
 
     def exec(exeproc)
-      print title if Msg.fg?
+      puts title if Msg.fg?
       if query('Proceed?',{'y'=>'done','s'=>'skip'}) && !dryrun?
         exeproc.call(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       end
     ensure
-      puts result if Msg.fg?
+      puts result+action if Msg.fg?
     end
 
     def timeout?
@@ -69,15 +69,19 @@ module Mcr
       max = 3 if dryrun?
       max.to_i.times{|n|
         self['retry']=n
-        return if ok?('pass','wait')
+        if ok?('pass','wait')
+          puts result if Msg.fg?
+          return
+        end
         refresh
         sleep 1
         print '.' if Msg.fg?
       }
       self['result']='timeout'
+      puts result if Msg.fg?
       ! query('Timeout',{'f'=>'force','r'=>'retry'})
     ensure
-      puts result if Msg.fg?
+      puts action if Msg.fg?
     end
 
     def skip?
@@ -90,13 +94,15 @@ module Mcr
 
     def fail?
       return if ok?('pass','failed')
+      puts to_s if Msg.fg?
       ! query('Interlock',{'f'=>'force','r'=>'retry'})
     ensure
-      puts to_s if Msg.fg?
+      puts action if Msg.fg?
     end
 
     def title ; end
     def result ; "\n"+to_s; end
+    def action ; end
 
     private
     def ok?(t=nil,f=nil)

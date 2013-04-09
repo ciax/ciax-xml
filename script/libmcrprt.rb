@@ -32,6 +32,10 @@ module Mcr
       when 'exec'
         msg << Msg.color("EXEC",13)
         msg << ":#{obj['cmd'].join(' ')}(#{obj['site']})"
+        if obj[:query]
+          msg << "\n"+Msg.indent(obj['depth'].to_i+1)
+          msg << Msg.color("[Exec/Skip/Quit]?",5)
+        end
       end
       msg
     end
@@ -58,6 +62,11 @@ module Mcr
           end
           ary << msg
         }
+      end
+      if obj[:query]
+        msg = Msg.indent(obj['depth'].to_i+1)
+        msg << Msg.color("[Quit/Force/Retry]?",5)
+        ary << msg
       end
       if act=obj['action']
         msg = Msg.indent(obj['depth'].to_i+1)

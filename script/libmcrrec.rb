@@ -6,7 +6,7 @@ require "libmcrprt"
 module Mcr
   class Record < Var
     attr_accessor :stat_proc,:exe_proc
-    attr_reader :crnt
+    attr_reader :crnt,:base
     def initialize(cmd,label)
       @stat_proc=proc{|site| Status::Var.new}
       @exe_proc=proc{|site,cmd,depth|}
@@ -20,7 +20,7 @@ module Mcr
     end
 
     def nextstep(db,depth=0)
-      @crnt=Step.new(db,@stat_proc,@base,depth)
+      @crnt=Step.new(db,self,depth)
       @crnt.extend(Prt) unless $opt['r']
       self['steps'] << @crnt
       case db['type']
@@ -43,24 +43,22 @@ module Mcr
   end
 
   class Step < ExHash
-    def initialize(db,stat_proc,timebase,depth=0)
-      @stat_proc=Msg.type?(stat_proc,Proc)
-      self['time']="%.3f" % (Time.now.to_f-timebase)
+    def initialize(db,obj,depth=0)
+      @obj=Msg.type?(obj,Record)
+      @stat_proc=Msg.type?(obj.stat_proc,Proc)
+      self['time']="%.3f" % (Time.now.to_f-obj.base)
       self['depth']=depth
-      update(db)
-      @stat=delete('stat')
+      update(Msg.type?(db,Hash))
+      @condition=delete('stat')
     end
 
     def exec(exeproc)
-      puts title if Msg.fg?
-      if query('Proceed?',{'y'=>'exec','s'=>'skip'}) && !dryrun?
+      if query_exec?
         exeproc.call(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       else
         self['result']='skip'
       end
-    ensure
-      puts to_s if Msg.fg?
     end
 
     def timeout?
@@ -79,8 +77,7 @@ module Mcr
         print '.' if Msg.fg?
       }
       self['result']='timeout'
-      puts result if Msg.fg?
-      ! query('Timeout',{'f'=>'force','r'=>'retry'})
+      query_quit?
     end
 
     def skip?
@@ -93,8 +90,8 @@ module Mcr
 
     def fail?
       return if ok?('pass','failed')
-      puts to_s if Msg.fg?
-      ! query('Interlock',{'f'=>'force','r'=>'retry'})
+      print title if Msg.fg?
+      query_quit?
     end
 
     def title ; self['label']||self['cmd']; end
@@ -113,7 +110,7 @@ module Mcr
         hash[site]=@stat_proc.call(site).load
         hash
       }
-      @stat.map{|h|
+      @condition.map{|h|
         flt={}
         site=flt['site']=h['site']
         var=flt['var']=h['var']
@@ -139,7 +136,7 @@ module Mcr
     end
 
     def sites
-      @stat.map{|h| h['site']}.uniq
+      @condition.map{|h| h['site']}.uniq
     end
 
     def match?(res,cmp,inv)
@@ -152,35 +149,59 @@ module Mcr
     end
 
     def dryrun?
-      if ! ['e','s','t'].any?{|i| $opt[i]}
-        self['action']='dryrun'
-        true
-      end
+      ! ['e','s','t'].any?{|i| $opt[i]}
     end
 
-    def query(msg,db)
+    def query_exec?
       return true if $opt['n']
-      if Msg.fg?
-        db['q']='quit'
-        optstr=db.keys.join('/').upcase
-        prompt='  '*self['depth']+Msg.color("#{msg}[#{optstr}]",5)
-        begin
-          res=Readline.readline(prompt,true)
-        end until db.keys.include?(res)
-        self['action']=db[res]
-        case res
-        when /[rR]/
-          raise(Retry)
-        when /[fFyY]/
-          true
-        when /[qQ]/
+      puts title if Msg.fg?
+      loop{
+        case input(Msg.color("[Exec/Skip/Quit]?",5))
+        when /^[eE]/
+          if dryrun?
+            self['action']='dryrun'
+            return false
+          else
+            self['action']='exec'
+            return true
+          end
+        when /^[sS]/
+          self['action']='skip'
+          return false
+        when /^[qQ]/
+          self['action']='quit'
           raise(Quit)
-        else
-          false
         end
+      }
+    ensure
+        puts result if Msg.fg?
+    end
+
+    def query_quit?
+      return true if $opt['n']
+      puts result if Msg.fg?
+      loop{
+        case input(Msg.color("[Quit/Force/Retry]?",5))
+        when /^[qQ]/
+          self['action']='exit'
+          return true
+        when /^[fF]/
+          self['action']='force'
+          return false
+        when /^[rR]/
+          self['action']='retry'
+          raise(Retry)
+        end
+      }
+    end
+
+    def input(str)
+      if Msg.fg?
+        self[:query]=Readline.readline(str,true)
       else
         sleep
       end
+      delete(:query)
     end
   end
 end

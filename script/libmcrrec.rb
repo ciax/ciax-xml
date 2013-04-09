@@ -17,7 +17,6 @@ module Mcr
       self['cmd']=cmd
       self['label']=label
       self['steps']=[]
-      self['result']='done'
       self['total']=0
     end
 
@@ -54,11 +53,13 @@ module Mcr
     end
 
     def exec(exeproc)
-      puts title if Msg.fg?
+      print title if Msg.fg?
+      return if dryrun?
       if query('Proceed?',{'y'=>'done','s'=>'skip'})
         exeproc.call(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       end
+    ensure
       puts result if Msg.fg?
     end
 

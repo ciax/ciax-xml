@@ -37,19 +37,20 @@ module Mcr
     end
 
     def result(obj=self)
-      return "\n" unless res=obj['result']
       msg=''
-      ret=obj['retry']
-      msg='*'*(ret/10)+'.'*(ret % 10) if ret
-      msg << ' -> '
-      title=res.capitalize
-      title << "(#{ret})" if ret
-      color=(/pass|wait/ === res) ? 2 : 1
-      msg << Msg.color(title,color)
-      msg << getcond(obj)
-      if obj['action'] == 'dryrun'
+      if res=obj['result']
+        ret=obj['retry']
+        msg='*'*(ret/10)+'.'*(ret % 10) if ret
+        msg << ' -> '
+        title=res.capitalize
+        title << "(#{ret})" if ret
+        color=(/pass|wait/ === res) ? 2 : 1
+        msg << Msg.color(title,color)
+        msg << getcond(obj)
+      end
+      if act=obj['action']
         msg << "\n"+Msg.indent(obj['depth'].to_i+1)
-        msg << Msg.color('Dryrun:Proceed',8)
+        msg << Msg.color(act.capitalize,8)
       end
       msg+"\n"
     end

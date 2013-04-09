@@ -28,61 +28,50 @@ module Mcr
       @record.extend(Prt) if $opt['v']
       @record.stat_proc=proc{|site| @al[site].stat }
       @record.exe_proc=proc{|site,cmd,depth|
-        if query(depth,'Proceed?',['y','s'])
-          aint=@al[site]
-          aint.exe(cmd)
-          @interrupt=aint.interrupt
-          'done'
-        else
-          'skip'
-        end
+        aint=@al[site]
+        aint.exe(cmd)
+        @interrupt=aint.interrupt
       }
       self
     end
 
     def exe
-      self['stat']="run"
+      self['msg']='run'
       puts @record if Msg.fg?
       macro(@item)
+      result('done')
       self
     rescue Quit
-      self['stat']='broken'
+      self
+    rescue Interlock
+      result('error')
       self
     rescue Interrupt
       @interrupt.exe if @interrupt
+      result('interrupted')
       self
     end
 
     private
     def macro(item,depth=1)
       Msg.type?(item,Command::Item).select.each{|e1|
-        self['stat']="wait"
+        self['msg']="wait"
         begin
           if mcr=@record.nextstep(e1,depth)
             macro(@cobj.setcmd(mcr),depth+1)
           end
-        rescue Interlock
-          query(depth,'Error',['f','r']) || retry
+        rescue Retry
+          retry
+        rescue Skip
+          return
         end
       }
       self
     end
 
-    def query(depth,msg,list)
-      self['stat']="query"
-      if Msg.fg?
-        optstr=list.join('/').upcase
-        prompt='  '*depth+Msg.color("#{msg}[#{optstr}/Q]",5)
-        true while (res=Readline.readline(prompt,true)).empty?
-        list.include?(res) || raise(Quit)
-        self['stat']='run'
-        /[fFyY]/ === res
-      elsif !$opt['n']
-        sleep
-        self['stat']='run'
-      end
-    rescue Retry
-      false
+    def result(str)
+      self['msg']=str
+      @record['result']=str
     end
   end
 
@@ -93,7 +82,7 @@ module Mcr
     def initialize(mdb,al)
       @mint=Sv.new(mdb,al)
       super()
-      ext_shell({'stat' => "(%s)"},@mint)
+      ext_shell({'msg' => "(%s)"},@mint)
       @intgrp.add_item('y','Yes').reset_proc{|i|
         if @th.alive?
           @th.run
@@ -111,14 +100,6 @@ module Mcr
       @th=Thread.new{ @mint.exe }
       super()
     end
-
-    private
-    def query(depth,msg,list)
-      self['stat']="query"
-      sleep
-      self['stat']="run"
-    end
-
   end
 end
 

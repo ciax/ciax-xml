@@ -18,6 +18,7 @@ class SelectID < ManagedError; end
 # Macro
 class Interlock < ManagedError; end
 class Retry < ManagedError; end
+class Skip < ManagedError; end
 class Quit < ManagedError; end
 
 # Communication Error

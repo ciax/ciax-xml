@@ -47,7 +47,7 @@ module Mcr
       color=(/pass|wait/ === res) ? 2 : 1
       msg << Msg.color(title,color)
       msg << getcond(obj)
-      if obj['dryrun']
+      if obj['action'] == 'dryrun'
         msg << "\n"+Msg.indent(obj['depth'].to_i+1)
         msg << Msg.color('Dryrun:Proceed',8)
       end

@@ -10,13 +10,15 @@ module Mcr
     def initialize(cmd,label)
       @stat_proc=proc{|site| Status::Var.new}
       @exe_proc=proc{|site,cmd,depth|}
+      @err_proc=proc{|depth|}
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
       self['cmd']=cmd
       self['label']=label
-      self['total']=0
       self['steps']=[]
+      self['result']='done'
+      self['total']=0
     end
 
     def nextstep(db,depth=0)
@@ -25,13 +27,13 @@ module Mcr
       self['steps'] << @crnt
       case db['type']
       when 'goal'
-        @crnt.skip? && raise(Quit)
+        @crnt.skip? && raise(Skip)
       when 'check'
         @crnt.fail? && raise(Interlock)
       when 'wait'
         @crnt.timeout? && raise(Interlock)
       when 'exec'
-        @crnt.exec(@exe_proc) || raise(Quit)
+        @crnt.exec(@exe_proc)
       when 'mcr'
         puts @crnt if Msg.fg?
         return db['cmd']
@@ -53,11 +55,10 @@ module Mcr
 
     def exec(exeproc)
       puts title if Msg.fg?
-      self['result']=exeproc.call(self['site'],self['cmd'],self['depth'])
-    rescue Quit
-      self['result']='broken'
-      false
-    ensure
+      if query('Proceed?',{'y'=>'done','s'=>'skip'})
+        exeproc.call(self['site'],self['cmd'],self['depth'])
+        self['result']='done'
+      end
       puts result if Msg.fg?
     end
 
@@ -74,23 +75,24 @@ module Mcr
         print '.' if Msg.fg?
       }
       self['result']='timeout'
-    rescue Interrupt
-      self['result']='broken'
-      raise Interrupt
+      return if dryrun?
+      ! query(depth,'Timeout',{'f'=>'force','r'=>'retry'})
     ensure
       puts result if Msg.fg?
     end
 
     def skip?
-      res=ok?('skip','pass')
+      return true if ok?('skip','pass')
       return if dryrun?
-      res
+      true
     ensure
       puts to_s if Msg.fg?
     end
 
     def fail?
-      !ok?('pass','failed')
+      return if ok?('pass','failed')
+      return if dryrun?
+      ! query(depth,'Interlock',{'f'=>'force','r'=>'retry'})
     ensure
       puts to_s if Msg.fg?
     end
@@ -151,7 +153,31 @@ module Mcr
 
     def dryrun?
       if ! ['e','s','t'].any?{|i| $opt[i]}
-        self['dryrun']=true
+        self['action']='dryrun'
+      end
+    end
+
+    def query(msg,db)
+      return true if $opt['n']
+      if Msg.fg?
+        optstr=db.keys.join('/').upcase
+        prompt='  '*self['depth']+Msg.color("#{msg}[#{optstr}/Q]",5)
+        begin
+          res=Readline.readline(prompt,true)
+        end until db.keys.include?(res)
+        self['action']=db[res]
+        case res
+        when /[rR]/
+          raise(Retry)
+        when /[fFyY]/
+          true
+        when /[qQ]/
+          raise(Quit)
+        else
+          false
+        end
+      else
+        sleep
       end
     end
   end

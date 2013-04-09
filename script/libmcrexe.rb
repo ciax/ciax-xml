@@ -25,7 +25,7 @@ module Mcr
       self['id']=cmd.first
       @item=@cobj.setcmd(cmd)
       @record=Record.new(cmd,@item[:label])
-      @record.extend(Prt) if $opt['v']
+      @record.extend(Prt) unless $opt['r']
       @record.stat_proc=proc{|site| @al[site].stat }
       @record.exe_proc=proc{|site,cmd,depth|
         aint=@al[site]
@@ -104,7 +104,7 @@ module Mcr
 end
 
 if __FILE__ == $0
-  Msg::GetOpts.new('vest',{'n' => 'nonstop mode','i' => 'interactive mode'})
+  Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
     al=App::List.new
     mdb=Mcr::Db.new('ciax')

@@ -23,7 +23,7 @@ module Mcr
 
     def nextstep(db,depth=0)
       @crnt=Step.new(db,@stat_proc,@base,depth)
-      @crnt.extend(Prt) if $opt['v']
+      @crnt.extend(Prt) unless $opt['r']
       self['steps'] << @crnt
       case db['type']
       when 'goal'
@@ -160,8 +160,9 @@ module Mcr
     def query(msg,db)
       return true if $opt['n']
       if Msg.fg?
+        db['q']='quit'
         optstr=db.keys.join('/').upcase
-        prompt='  '*self['depth']+Msg.color("#{msg}[#{optstr}/Q]",5)
+        prompt='  '*self['depth']+Msg.color("#{msg}[#{optstr}]",5)
         begin
           res=Readline.readline(prompt,true)
         end until db.keys.include?(res)

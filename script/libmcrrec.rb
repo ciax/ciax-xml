@@ -54,8 +54,7 @@ module Mcr
 
     def exec(exeproc)
       print title if Msg.fg?
-      return if dryrun?
-      if query('Proceed?',{'y'=>'done','s'=>'skip'})
+      if query('Proceed?',{'y'=>'done','s'=>'skip'}) && !dryrun?
         exeproc.call(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       end
@@ -76,8 +75,7 @@ module Mcr
         print '.' if Msg.fg?
       }
       self['result']='timeout'
-      return if dryrun?
-      ! query(depth,'Timeout',{'f'=>'force','r'=>'retry'})
+      ! query('Timeout',{'f'=>'force','r'=>'retry'})
     ensure
       puts result if Msg.fg?
     end
@@ -92,8 +90,7 @@ module Mcr
 
     def fail?
       return if ok?('pass','failed')
-      return if dryrun?
-      ! query(depth,'Interlock',{'f'=>'force','r'=>'retry'})
+      ! query('Interlock',{'f'=>'force','r'=>'retry'})
     ensure
       puts to_s if Msg.fg?
     end

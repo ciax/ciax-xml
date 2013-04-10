@@ -12,13 +12,13 @@ class InvalidCMD < InvalidID; end
 # When invalid Parameter, continue in shell/server
 class InvalidPAR < InvalidCMD; end
 
-# Mangaged Error
-class ManagedError < RuntimeError; end
-class SelectID < ManagedError; end
+# Mangaged Exception(Long Jump)
+class LongJump < RuntimeError; end
+class SelectID < LongJump; end
 # Macro
-class Interlock < ManagedError; end
-class Retry < ManagedError; end
-class Quit < ManagedError; end
+class Interlock < LongJump; end
+class Retry < LongJump; end
+class Quit < LongJump; end
 
 # Communication Error
 class CommError < UserError; end

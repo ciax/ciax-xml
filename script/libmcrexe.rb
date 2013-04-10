@@ -55,7 +55,6 @@ module Mcr
     private
     def macro(item,depth=1)
       Msg.type?(item,Command::Item).select.each{|e1|
-        self['msg']="wait"
         begin
           if mcr=@record.nextstep(e1,depth)
             macro(@cobj.setcmd(mcr),depth+1)
@@ -83,22 +82,24 @@ module Mcr
       @mint=Sv.new(mdb,al)
       super()
       ext_shell({'msg' => "(%s)"},@mint)
-      @intgrp.add_item('y','Yes').reset_proc{|i|
-        if @th.alive?
-          @th.run
-          self['msg']="Continue"
-        end
-      }
-      @intgrp.add_item('f','Force Temporaly').reset_proc{|i| @th.run }
-      @intgrp.add_item('r','Retry Checking').reset_proc{|i| @th.raise(Retry)}
-      @intgrp.add_item('s','Skip Execution').reset_proc{|i| @th.raise(Retry)}
-      @intgrp.add_item('q','Quit Execution').reset_proc{|i| @th.raise(Quit) }
+      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
+      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
+      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
+      @intgrp.add_item('q','Quit Macro').reset_proc{|i| ans('q')}
     end
 
     def shell(cmd)
       @output=@mint.setcmd(cmd).record
       @th=Thread.new{ @mint.exe }
       super()
+    end
+
+    private
+    def ans(str)
+      return unless @th.alive?
+      @mint.record.crnt[:query]=str
+      @th.run
     end
   end
 end

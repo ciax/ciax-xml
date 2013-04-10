@@ -156,7 +156,7 @@ module Mcr
       return true if $opt['n']
       puts title if Msg.fg?
       loop{
-        case input(Msg.color("[Exec/Skip/Quit]?",5))
+        case input("[Exec/Skip/Quit]?")
         when /^[eE]/
           if dryrun?
             self['action']='dryrun'
@@ -181,12 +181,12 @@ module Mcr
       return true if $opt['n']
       puts result if Msg.fg?
       loop{
-        case input(Msg.color("[Quit/Force/Retry]?",5))
+        case input("[Quit/Force/Retry]?")
         when /^[qQ]/
           self['action']='exit'
           return true
         when /^[fF]/
-          self['action']='force'
+          self['action']='forced'
           return false
         when /^[rR]/
           self['action']='retry'
@@ -197,8 +197,10 @@ module Mcr
 
     def input(str)
       if Msg.fg?
+        str=Msg.indent(self['depth'].to_i+1)+Msg.color(str,5)
         self[:query]=Readline.readline(str,true)
       else
+        self[:query]=str
         sleep
       end
       delete(:query)

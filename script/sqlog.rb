@@ -7,7 +7,7 @@ require 'libstatus'
 require "libsqlog"
 require 'json'
 
-Msg::GetOpts.new("ivfat",{"v"=>"verbose","i"=>"init table","a"=>"app mode","t"=>"test mode"})
+Msg::GetOpts.new("t",{"i"=>"init table","v"=>"verbose","a"=>"app output"})
 id = ARGV.shift
 begin
   ldb=Loc::Db.new(id)

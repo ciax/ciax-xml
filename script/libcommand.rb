@@ -37,7 +37,7 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:domain,:def_proc
+  attr_reader :current,:domain,:def_proc,:excludes
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -46,6 +46,7 @@ class Command < ExHash
     @current=nil
     @domain={}
     @def_proc=ExeProc.new
+    @excludes='^$'
   end
 
   def add_domain(id,color=2)
@@ -56,6 +57,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     key?(id) || error
+    /#@excludes/i === id && error
     verbose{"SetCMD (#{id},#{par})"}
     @current=self[id].set_par(par)
   end
@@ -80,8 +82,8 @@ class Command < ExHash
     end
 
     def add_group(gid,caption,column=2)
-      gat={'caption' => caption,'column' => column,'color' => @color}
-      @group[gid]=Group.new(@index,gat,@def_proc)
+      attr={'caption' => caption,'column' => column,'color' => @color}
+      @group[gid]=Group.new(@index,attr,@def_proc)
     end
 
     def reset_proc(&p)
@@ -98,10 +100,10 @@ class Command < ExHash
 
   class Group < ExHash
     attr_accessor :def_proc
-    def initialize(index,gat,def_proc=ExeProc.new)
+    def initialize(index,attr,def_proc=ExeProc.new)
       init_ver(self)
-      @gat=Msg.type?(gat,Hash)
-      @labeldb=Msg::CmdList.new(gat)
+      @attr=Msg.type?(attr,Hash)
+      @labeldb=Msg::CmdList.new(attr,index.excludes)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
@@ -118,7 +120,7 @@ class Command < ExHash
 
     #property = {:label => 'titile',:parameter => Array}
     def update_items(labels)
-      (@gat[:list]||labels.keys).each{|id|
+      (@attr[:list]||labels.keys).each{|id|
         @labeldb[id]=labels[id]
         self[id]=Item.new(id,@index)
       }
@@ -165,6 +167,10 @@ class Command < ExHash
       self[:cmd]=@cmd.join(':') # Used by macro
       verbose{"SetPAR: #{par}"}
       self
+    end
+
+    def to_s
+      Msg.item(@id,self[:label])
     end
 
     private

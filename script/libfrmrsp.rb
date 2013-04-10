@@ -156,7 +156,7 @@ end
 if __FILE__ == $0
   require "liblocdb"
   require "libcmdext"
-  Msg::GetOpts.new("ml",{'m' => 'merge file','l' => 'get from logline'})
+  Msg::GetOpts.new("",{'m' => 'merge file','l' => 'get from logline'})
   if $opt['l']
     $opt.usage("-l < logline") if STDIN.tty?
     str=gets(nil) || exit

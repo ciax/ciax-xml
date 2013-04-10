@@ -12,14 +12,14 @@ class InvalidCMD < InvalidID; end
 # When invalid Parameter, continue in shell/server
 class InvalidPAR < InvalidCMD; end
 
-# Mangaged Error
-class ManagedError < RuntimeError; end
-class SelectID < ManagedError; end
+# Mangaged Exception(Long Jump)
+class LongJump < RuntimeError; end
+class SelectID < LongJump; end
 # Macro
-class Interlock < ManagedError; end
-class Retry < ManagedError; end
-class Skip < ManagedError; end
-class Quit < ManagedError; end
+class Interlock < LongJump; end
+class Retry < LongJump; end
+class Skip < LongJump; end
+class Quit < LongJump; end
 
 # Communication Error
 class CommError < UserError; end
@@ -89,12 +89,13 @@ module Msg
 
   # Hash of title
   class CmdList < Hash
-    def initialize(attr)
+    def initialize(attr,exclude='^$')
       Msg.type?(attr,Hash)
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
       @caption='==== '+Msg.color(caption,color)+' ====' if caption
+      @exclude=exclude
     end
 
     # For ver 1.9 or more
@@ -108,7 +109,7 @@ module Msg
 
     def to_s
       page=[]
-      keys.each_slice(@col){|a|
+      keys.reject{|s| /#@exclude/i === s}.each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact

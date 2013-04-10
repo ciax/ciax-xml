@@ -97,7 +97,7 @@ module Mcr
 
     private
     def ans(str)
-      return unless @th.alive?
+      return if @th.status != 'sleep'
       @mint.record.crnt[:query]=str
       @th.run
     end

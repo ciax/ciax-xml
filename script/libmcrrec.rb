@@ -43,6 +43,7 @@ module Mcr
   end
 
   class Step < ExHash
+    attr_reader :cmdopt
     def initialize(db,obj,depth=0)
       @obj=Msg.type?(obj,Record)
       @stat_proc=Msg.type?(obj.stat_proc,Proc)
@@ -50,6 +51,7 @@ module Mcr
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')
+      @cmdopt=''
     end
 
     def exec(exeproc)
@@ -60,6 +62,7 @@ module Mcr
       else
         self['result']='skip'
       end
+      puts action if Msg.fg?
     end
 
     def timeout?
@@ -158,8 +161,8 @@ module Mcr
     def query_exec?
       return true if $opt['n']
       loop{
-        case input("[Exec/Skip/Quit]?")
-        when /^[eE]/
+        case input(['Exec','Skip','Quit'])
+        when /^E/i
           if dryrun?
             self['action']='dryrun'
             return false
@@ -167,43 +170,50 @@ module Mcr
             self['action']='exec'
             return true
           end
-        when /^[sS]/
+        when /^S/i
           self['action']='skip'
           return false
-        when /^[qQ]/
+        when /^Q/i
           self['action']='quit'
           raise(Quit)
+        else
+          self[:query]='NG'
         end
+        Thread.pass
       }
-    ensure
-        puts action if Msg.fg?
     end
 
     def query_quit?
       return true if $opt['n']
       loop{
-        case input("[Quit/Force/Retry]?")
-        when /^[qQ]/
+        case input(['Quit','Force','Retry'])
+        when /^Q/i
           self['action']='exit'
           return true
-        when /^[fF]/
+        when /^F/i
           self['action']='forced'
           return false
-        when /^[rR]/
+        when /^R/i
           self['action']='retry'
           raise(Retry)
+        else
+          self[:query]='NG'
         end
+        Thread.pass
       }
     end
 
-    def input(str)
+    def input(cmds)
+      cmdstr='['+cmds.join('/')+']?'
+      @cmdopt=cmds.map{|s| s[0]}.join('')
+      prompt=Msg.indent(self['depth'].to_i+1)+Msg.color(cmdstr,5)
       if Msg.fg?
-        str=Msg.indent(self['depth'].to_i+1)+Msg.color(str,5)
-        self[:query]=Readline.readline(str,true)
+        self[:query]=Readline.readline(prompt,true)
       else
-        self[:query]=str
+        self[:query]=prompt
         sleep
       end
+      @cmdopt=''
       delete(:query)
     end
   end

@@ -53,6 +53,7 @@ module Mcr
     end
 
     def exec(exeproc)
+      puts title if Msg.fg?
       if query_exec?
         exeproc.call(self['site'],self['cmd'],self['depth'])
         self['result']='done'
@@ -77,6 +78,7 @@ module Mcr
         print '.' if Msg.fg?
       }
       self['result']='timeout'
+      puts result if Msg.fg?
       query_quit?
     end
 
@@ -90,12 +92,13 @@ module Mcr
 
     def fail?
       return if ok?('pass','failed')
-      print title if Msg.fg?
+      puts to_s if Msg.fg?
       query_quit?
     end
 
     def title ; self['label']||self['cmd']; end
     def result ; "\n"+to_s; end
+    def action ; "\n"; end
 
     private
     def ok?(t=nil,f=nil)
@@ -154,7 +157,6 @@ module Mcr
 
     def query_exec?
       return true if $opt['n']
-      puts title if Msg.fg?
       loop{
         case input("[Exec/Skip/Quit]?")
         when /^[eE]/
@@ -174,12 +176,11 @@ module Mcr
         end
       }
     ensure
-        puts result if Msg.fg?
+        puts action if Msg.fg?
     end
 
     def query_quit?
       return true if $opt['n']
-      puts result if Msg.fg?
       loop{
         case input("[Quit/Force/Retry]?")
         when /^[qQ]/

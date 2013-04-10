@@ -7,10 +7,10 @@ module Mcr
     end
 
     def to_s
-      msg=title+result+"\n"
+      msg=title+result
       if st=self['steps']
         st.each{|i|
-          msg << title(i)+result(i)+"\n"
+          msg << title(i)+result(i)
         }
       end
       msg
@@ -37,42 +37,38 @@ module Mcr
     end
 
     def result(obj=self)
-      ary=[]
+      msg=''
       if res=obj['result']
-        ret=obj['retry']
-        msg=ret ? ('*'*(ret/10)+'.'*(ret % 10)) : ''
         msg << ' -> '
         title=res.capitalize
-        title << "(#{ret})" if ret
+        title << "(#{obj['retry']}/#{obj['max']})" if obj['retry']
         color=(/pass|wait/ === res) ? 2 : 1
-        msg << Msg.color(title,color)
-        ary << msg
+        msg << Msg.color(title,color)+"\n"
+        if c=obj['mismatch']
+          c.each{|h|
+            msg << Msg.indent(obj['depth'].to_i+1)
+            if h['upd']
+              msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}\n"
+            else
+              msg << Msg.color("#{h['site']}",3)+" is not updated\n"
+            end
+          }
+        end
+      else
+        msg << "\n"
       end
-      if c=obj['mismatch']
-        c.each{|h|
-          msg = Msg.indent(obj['depth'].to_i+1)
-          if h['upd']
-            msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
-          else
-            msg << Msg.color("#{h['site']}",3)+" is not updated"
-          end
-          ary << msg
-        }
+      if obj[:query]
+        msg << Msg.indent(obj['depth'].to_i+1)
+        msg << Msg.color(obj[:query],5)+"\n"
       end
-      ary << query(obj)
-      if act=obj['action']
-        msg = Msg.indent(obj['depth'].to_i+1)
-        msg << Msg.color(act.capitalize,8)
-        ary << msg
-      end
-      ary.grep(/./).join("\n")
+      msg << action(obj)
     end
 
-    def query(obj=self)
+    def action(obj=self)
       msg=''
-      if obj[:query]
-        msg = Msg.indent(obj['depth'].to_i+1)
-        msg << Msg.color(obj[:query],5)
+      if act=obj['action']
+        msg << Msg.indent(obj['depth'].to_i+1)
+        msg << Msg.color(act.capitalize,8)+"\n"
       end
       msg
     end

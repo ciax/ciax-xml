@@ -46,7 +46,7 @@ class Command < ExHash
     @current=nil
     @domain={}
     @def_proc=ExeProc.new
-    @excludes='^$'
+    @excludes=''
   end
 
   def add_domain(id,color=2)
@@ -57,7 +57,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     key?(id) || error
-    /#@excludes/i === id && error
+    /^(#@excludes)$/i === id && error
     verbose{"SetCMD (#{id},#{par})"}
     @current=self[id].set_par(par)
   end

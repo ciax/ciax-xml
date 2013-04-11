@@ -41,8 +41,6 @@ module Mcr
       @record.macro(@item)
       result('done')
       self
-    rescue Quit
-      self
     rescue Interlock
       result('error')
       self

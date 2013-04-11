@@ -19,7 +19,6 @@ class SelectID < LongJump; end
 class Interlock < LongJump; end
 class Retry < LongJump; end
 class Skip < LongJump; end
-class Quit < LongJump; end
 
 # Communication Error
 class CommError < UserError; end

@@ -21,26 +21,34 @@ module Mcr
       @exe_proc=proc{|site,cmd,depth|}
     end
 
-    def nextstep(db,depth=0)
-      @crnt=Step.new(db,self,depth)
-      @crnt.extend(Prt) unless $opt['r']
-      self['steps'] << @crnt
-      case db['type']
-      when 'goal'
-        @crnt.skip? && raise(Skip)
-      when 'check'
-        @crnt.fail? && raise(Interlock)
-      when 'wait'
-        @crnt.timeout? && raise(Interlock)
-      when 'exec'
-        @crnt.exec(@exe_proc)
-      when 'mcr'
-        puts @crnt if Msg.fg?
-        return db['cmd']
-      end
-      nil
-    ensure
-      self['total']="%.3f" % (Time.now.to_f-@base)
+    def macro(item,depth=1)
+      Msg.type?(item,Command::Item).select.each{|e1|
+        begin
+          @crnt=Step.new(e1,self,depth)
+          @crnt.extend(Prt) unless $opt['r']
+          self['steps'] << @crnt
+          case e1['type']
+          when 'goal'
+            @crnt.skip? && raise(Skip)
+          when 'check'
+            @crnt.fail? && raise(Interlock)
+          when 'wait'
+            @crnt.timeout? && raise(Interlock)
+          when 'exec'
+            @crnt.exec(@exe_proc)
+          when 'mcr'
+            puts @crnt if Msg.fg?
+            macro(@item.index.setcmd(e1['cmd']),depth+1)
+          end
+        rescue Retry
+          retry
+        rescue Skip
+          return
+        ensure
+          self['total']="%.3f" % (Time.now.to_f-@base)
+        end
+      }
+      self
     end
   end
 

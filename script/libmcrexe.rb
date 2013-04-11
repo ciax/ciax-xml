@@ -38,7 +38,7 @@ module Mcr
     def exe
       self['msg']='run'
       puts @record if Msg.fg?
-      macro(@item)
+      @record.macro(@item)
       result('done')
       self
     rescue Quit
@@ -49,22 +49,6 @@ module Mcr
     rescue Interrupt
       @interrupt.exe if @interrupt
       result('interrupted')
-      self
-    end
-
-    private
-    def macro(item,depth=1)
-      Msg.type?(item,Command::Item).select.each{|e1|
-        begin
-          if mcr=@record.nextstep(e1,depth)
-            macro(@cobj.setcmd(mcr),depth+1)
-          end
-        rescue Retry
-          retry
-        rescue Skip
-          return
-        end
-      }
       self
     end
 

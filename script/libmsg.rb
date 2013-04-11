@@ -88,13 +88,13 @@ module Msg
 
   # Hash of title
   class CmdList < Hash
-    def initialize(attr,exclude='')
+    def initialize(attr,selection='.*')
       Msg.type?(attr,Hash)
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
       @caption='==== '+Msg.color(caption,color)+' ====' if caption
-      @exclude=exclude
+      @selection=selection
     end
 
     # For ver 1.9 or more
@@ -108,7 +108,7 @@ module Msg
 
     def to_s
       page=[]
-      keys.reject{|s| /^(#@exclude)$/i === s }.each_slice(@col){|a|
+      keys.grep(/^(#@selection)$/i).each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact

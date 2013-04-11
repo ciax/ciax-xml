@@ -72,7 +72,7 @@ class Command < ExHash
   end
 
   class Domain < ExHash
-    attr_reader :group,:def_proc
+    attr_reader :index,:group,:def_proc
     def initialize(index,color=2,def_proc=ExeProc.new)
       init_ver(self)
       @index=Msg.type?(index,Command)
@@ -99,7 +99,7 @@ class Command < ExHash
   end
 
   class Group < ExHash
-    attr_accessor :def_proc
+    attr_accessor :index,:def_proc
     def initialize(index,attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
@@ -142,7 +142,7 @@ class Command < ExHash
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:def_proc
+    attr_reader :index,:id,:par,:cmd,:def_proc
     def initialize(id,index,def_proc=ExeProc.new)
       @id=id
       @index=Msg.type?(index,Command)

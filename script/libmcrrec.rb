@@ -213,8 +213,9 @@ module Mcr
     def input(cmds)
       cmdstr='['+cmds.join('/')+']?'
       @cmdopt=cmds.map{|s| s[0]}.join('')
-      prompt=Msg.indent(self['depth'].to_i+1)+Msg.color(cmdstr,5)
+      prompt=Msg.color(cmdstr,5)
       if Msg.fg?
+        print Msg.indent(self['depth'].to_i+1)
         self[:query]=Readline.readline(prompt,true)
       else
         self[:query]=prompt

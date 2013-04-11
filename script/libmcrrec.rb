@@ -9,7 +9,7 @@ module Mcr
     attr_accessor :stat_proc,:exe_proc
     attr_reader :crnt,:base
     def initialize(item)
-      @item=Msg.type?(item,Command::Item)
+      @cobj=Msg.type?(item.index,Command)
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
@@ -35,10 +35,10 @@ module Mcr
           when 'wait'
             @crnt.timeout? && raise(Interlock)
           when 'exec'
-            @crnt.exec(@exe_proc)
+            @crnt.exec
           when 'mcr'
             puts @crnt if Msg.fg?
-            macro(@item.index.setcmd(e1['cmd']),depth+1)
+            macro(@cobj.setcmd(e1['cmd']),depth+1)
           end
         rescue Retry
           retry
@@ -53,21 +53,20 @@ module Mcr
   end
 
   class Step < ExHash
-    attr_reader :cmdopt
     def initialize(db,obj,depth=0)
       @obj=Msg.type?(obj,Record)
       @stat_proc=Msg.type?(obj.stat_proc,Proc)
+      @exe_proc=Msg.type?(obj.exe_proc,Proc)
       self['time']="%.3f" % (Time.now.to_f-obj.base)
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')
-      @cmdopt=''
     end
 
-    def exec(exeproc)
+    def exec
       puts title if Msg.fg?
       if query_exec?
-        exeproc.call(self['site'],self['cmd'],self['depth'])
+        @exeproc.call(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       else
         self['result']='skip'
@@ -212,7 +211,6 @@ module Mcr
 
     def input(cmds)
       cmdstr='['+cmds.join('/')+']?'
-      @cmdopt=cmds.map{|s| s[0]}.join('')
       prompt=Msg.color(cmdstr,5)
       if Msg.fg?
         print Msg.indent(self['depth'].to_i+1)
@@ -221,7 +219,6 @@ module Mcr
         self[:query]=prompt
         sleep
       end
-      @cmdopt=''
       delete(:query)
     end
   end

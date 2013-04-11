@@ -24,7 +24,7 @@ module Mcr
     def setcmd(cmd)
       self['id']=cmd.first
       @item=@cobj.setcmd(cmd)
-      @record=Record.new(cmd,@item[:label])
+      @record=Record.new(@item)
       @record.extend(Prt) unless $opt['r']
       @record.stat_proc=proc{|site| @al[site].stat }
       @record.exe_proc=proc{|site,cmd,depth|

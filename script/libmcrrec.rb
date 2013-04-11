@@ -1,22 +1,24 @@
 #!/usr/bin/ruby
 require "libvar"
 require "libstatus"
+require "libcommand"
 require "libmcrprt"
 
 module Mcr
   class Record < Var
     attr_accessor :stat_proc,:exe_proc
     attr_reader :crnt,:base
-    def initialize(cmd,label)
-      @stat_proc=proc{|site| Status::Var.new}
-      @exe_proc=proc{|site,cmd,depth|}
+    def initialize(item)
+      @item=Msg.type?(item,Command::Item)
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
-      self['cmd']=cmd
-      self['label']=label
+      self['cmd']=item.cmd
+      self['label']=item[:label]
       self['steps']=[]
       self['total']=0
+      @stat_proc=proc{|site| Status::Var.new}
+      @exe_proc=proc{|site,cmd,depth|}
     end
 
     def nextstep(db,depth=0)

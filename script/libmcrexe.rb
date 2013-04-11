@@ -67,10 +67,10 @@ module Mcr
       super()
       ext_shell({'msg' => "(%s)"},@mint)
       @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
+      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
+      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
       @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
       @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
-      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
-      @intgrp.add_item('q','Quit Macro').reset_proc{|i| ans('q')}
     end
 
     def shell(cmd)

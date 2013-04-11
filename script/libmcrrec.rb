@@ -171,7 +171,7 @@ module Mcr
     def query_exec?
       return true if $opt['n']
       loop{
-        case input(['Exec','Skip','Quit'])
+        case input(['Exec','Skip'])
         when /^E/i
           if dryrun?
             self['action']='dryrun'
@@ -183,9 +183,6 @@ module Mcr
         when /^S/i
           self['action']='skip'
           return false
-        when /^Q/i
-          self['action']='quit'
-          raise(Quit)
         else
           self[:query]='NG'
         end
@@ -196,9 +193,9 @@ module Mcr
     def query_quit?
       return true if $opt['n']
       loop{
-        case input(['Quit','Force','Retry'])
-        when /^Q/i
-          self['action']='exit'
+        case input(['Done','Force','Retry'])
+        when /^D/i
+          self['action']='done'
           return true
         when /^F/i
           self['action']='forced'

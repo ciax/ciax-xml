@@ -88,13 +88,14 @@ module Msg
 
   # Hash of title
   class CmdList < Hash
-    def initialize(attr,selection='.*')
+    attr_accessor :conf
+    def initialize(attr)
       Msg.type?(attr,Hash)
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
       @caption='==== '+Msg.color(caption,color)+' ====' if caption
-      @selection=selection
+      @conf={:exclude => ''}
     end
 
     # For ver 1.9 or more
@@ -108,7 +109,7 @@ module Msg
 
     def to_s
       page=[]
-      keys.grep(/^(#@selection)$/i).each_slice(@col){|a|
+      keys.reject{|i| /^(#{@conf[:exclude]})$/i === i}.each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact

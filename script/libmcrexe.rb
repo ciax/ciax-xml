@@ -72,7 +72,7 @@ module Mcr
     end
 
     def shell(cmd)
-      @output=@mint.setcmd(cmd).record
+      @cobj.conf=@output=@mint.setcmd(cmd).record
       @th=Thread.new{ @mint.exe }
       super()
     end

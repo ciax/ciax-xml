@@ -37,7 +37,8 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:domain,:def_proc,:selection
+  attr_reader :current,:domain,:def_proc
+  attr_accessor :conf
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -46,7 +47,7 @@ class Command < ExHash
     @current=nil
     @domain={}
     @def_proc=ExeProc.new
-    @selection='.*'
+    @conf={:exclude =>''}
   end
 
   def add_domain(id,color=2)
@@ -57,7 +58,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     key?(id) || error
-    /^(#@selection)$/i === id || error
+    /^(#{@conf[:exclude]})$/i === id && error
     verbose{"SetCMD (#{id},#{par})"}
     @current=self[id].set_par(par)
   end
@@ -103,7 +104,7 @@ class Command < ExHash
     def initialize(index,attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
-      @labeldb=Msg::CmdList.new(attr,index.selection)
+      @labeldb=Msg::CmdList.new(attr)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
@@ -136,6 +137,7 @@ class Command < ExHash
     end
 
     def list
+      @labeldb.conf=@index.conf
       @labeldb.to_s
     end
   end

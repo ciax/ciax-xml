@@ -170,7 +170,7 @@ module Mcr
     def query_exec?
       return true if $opt['n']
       loop{
-        case input(['Exec','Skip'])
+        case input(['Exec','Skip'],'[dfr]')
         when /^E/i
           if dryrun?
             self['action']='dryrun'
@@ -182,17 +182,14 @@ module Mcr
         when /^S/i
           self['action']='skip'
           return false
-        else
-          self[:query]='NG'
         end
-        Thread.pass
       }
     end
 
     def query_quit?
       return true if $opt['n']
       loop{
-        case input(['Done','Force','Retry'])
+        case input(['Done','Force','Retry'],'[es]')
         when /^D/i
           self['action']='done'
           return true
@@ -202,16 +199,14 @@ module Mcr
         when /^R/i
           self['action']='retry'
           raise(Retry)
-        else
-          self[:query]='NG'
         end
-        Thread.pass
       }
     end
 
-    def input(cmds)
+    def input(cmds,exc)
       cmdstr='['+cmds.join('/')+']?'
       prompt=Msg.color(cmdstr,5)
+      @obj[:exclude]=exc
       if Msg.fg?
         print Msg.indent(self['depth'].to_i+1)
         self[:query]=Readline.readline(prompt,true)
@@ -219,6 +214,7 @@ module Mcr
         self[:query]=prompt
         sleep
       end
+      @obj.delete(:exclude)
       delete(:query)
     end
   end

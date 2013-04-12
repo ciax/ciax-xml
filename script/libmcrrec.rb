@@ -17,6 +17,7 @@ module Mcr
       self['label']=item[:label]
       self['steps']=[]
       self['total']=0
+      self[:exclude]='[esdfr]'
       @stat_proc=proc{|site| Status::Var.new}
       @exe_proc=proc{|site,cmd,depth|}
     end
@@ -214,7 +215,7 @@ module Mcr
         self[:query]=prompt
         sleep
       end
-      @obj.delete(:exclude)
+      @obj[:exclude]='[esdfr]'
       delete(:query)
     end
   end

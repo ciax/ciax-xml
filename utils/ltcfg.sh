@@ -2,14 +2,19 @@
 # use nc for input to lantronix (i.e. ltcfg id | nc host 23)
 ltf=~/db/DB-ltx.csv
 rsf=~/db/DB-rs.csv
-[ "$1" ] || { echo "Usage:ltcfg [id] (range)"; exit; }
+[ "$1" ] || {
+    echo "Usage:ltcfg [id] (range)"
+    echo -n "   "
+    echo `egrep "^[a-z]" $ltf|cut -d, -f1|sort -u`
+    exit
+}
 host=$1
 range=$2
 IFS=,
 inrange(){
     [ "$range" ] || return 0
     for i in $range; do
-        [ ${i%-*} -le $1 -a ${i#*-} -ge $1 ] && return 0
+        [ "${i%-*}" -le "$1" -a "${i#*-}" -ge "$1" ] && return 0
     done
     return 1
 }

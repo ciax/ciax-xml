@@ -1,0 +1,31 @@
+!id,manufacture,model,description,speed,character,parity,stop,flow
+srm1,Omron,SRM1,,9600,7,EVEN,1,NONE
+c2h,Omron,C200HS,,9600,7,EVEN,2,NONE
+mel,Mitsubishi,MELSEC,,19200,7,ODD,1,NONE
+ltx,Lantronix,ETS16PR,Console,9600,8,NONE,1,NONE
+sv,Startech,SV1110,KVM over IP,115200,8,NONE,1,NONE
+fp,NI,Field Point,,115200,8,NONE,1,NONE
+fpl,NI,Field Point,Low speed,19200,8,NONE,1,NONE
+cfp,NI,Field Point,Check Sum,115200,8,NONE,1,NONE
+bbe,BB Electic,232SDD16,,9600,8,NONE,1,NONE
+slo,Slosyn,SS6000i,,9600,8,NONE,1,NONE
+csg,Sigma,CSG,,9600,8,NONE,1,NONE
+ixe,Phytron,IXEa-A,,9600,8,NONE,1,NONE
+ken,Kenwood,,Power Supply(Serial),9600,7,EVEN,1,NONE
+psp,PowerSupply,PSP-603,Power Supply(Switch),2400,8,NONE,1,NONE
+var,Varian,,Scroll Pump,9600,8,NONE,1,NONE
+k3n,Omron,K3NR,,9600,7,EVEN,2,NONE
+k3n2,Omron,K3NR,,9600,8,NONE,1,NONE
+omg,Omega,,Pressure Sensor,9600,7,ODD,1,NONE
+omh,Omega,,Humidity Sensor,9600,7,ODD,1,NONE
+oma,Omega,,Air Pressure Sensor,9600,8,NONE,1,NONE
+omf,Omega,,Flow Meter,19200,8,NONE,1,NONE
+omo,Omega,D4251,Current Output,300,8,NONE,1,NONE
+omc,Ohmic,,Dew Sensor,9600,8,NONE,1,NONE
+vap,Varian,SenTorr,Vacuum Sensor,9600,8,NONE,1,NONE
+tpg,Pfeiffor,TPG,Vacuum Sensor,9600,8,NONE,1,NONE
+lks,Lakeshore,Model 340,Thermometer,9600,7,ODD,1,NONE
+olk,Lakeshore,,Old,1200,7,ODD,1,NONE
+hof,Hoffer,,Flow Controls,2400,8,NONE,1,NONE
+mlp,Mitsubishi,MLP3,Telescope,9600,7,EVEN,2,NONE
+pul,Pulizzi,,PDU,9600,8,NONE,1,NONE

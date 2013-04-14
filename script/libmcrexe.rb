@@ -22,13 +22,12 @@ module Mcr
         @interrupt=aint.interrupt
       }
       super(record)
-      @output=record
       @interrupt.reset_proc{|i|
         self['msg']="Interrupted"
       }
     end
 
-    def macro
+    def start
       self['stat']='run'
       puts @output if Msg.fg?
       @output.macro(@item)
@@ -71,7 +70,7 @@ module Mcr
     end
 
     def shell
-      @th=Thread.new{ macro }
+      @th=Thread.new{ start }
       super()
     end
 
@@ -94,7 +93,7 @@ if __FILE__ == $0
     mitem=mobj.setcmd(ARGV)
     mint=Mcr::Sv.new(mitem,al)
     if $opt['i']
-      mint.macro
+      mint.start
     else
       mint.ext_shell
       mint.shell

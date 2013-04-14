@@ -56,6 +56,10 @@ module Mcr
 
   module Shell
     include Interactive::Shell
+    def self.extended(obj)
+      Msg.type?(obj,Sv)
+    end
+
     def ext_shell
       super({'stat' => "(%s)"})
       @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}

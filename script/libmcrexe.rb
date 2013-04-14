@@ -10,35 +10,28 @@ module Mcr
     # @< cobj,output,(intgrp),interrupt,upd_proc*
     # @ al,item,record*
     attr_reader :record
-    def initialize(mdb,al)
-      Msg.type?(mdb,Mcr::Db)
-      super()
-      @cobj.add_extdom(mdb,:macro)
-      @al=Msg.type?(al,App::List)
-      @record={}
+    def initialize(item,al)
+      @item=Msg.type?(item,Command::Item)
+      self['id']=@item.id
+      record=Record.new(@item)
+      record.extend(Prt) unless $opt['r']
+      record.stat_proc=proc{|site| al[site].stat }
+      record.exe_proc=proc{|site,cmd,depth|
+        aint=al[site]
+        aint.exe(cmd)
+        @interrupt=aint.interrupt
+      }
+      super(record)
+      @output=record
       @interrupt.reset_proc{|i|
         self['msg']="Interrupted"
       }
     end
 
-    def setcmd(cmd)
-      self['id']=cmd.first
-      @item=@cobj.setcmd(cmd)
-      @record=Record.new(@item)
-      @record.extend(Prt) unless $opt['r']
-      @record.stat_proc=proc{|site| @al[site].stat }
-      @record.exe_proc=proc{|site,cmd,depth|
-        aint=@al[site]
-        aint.exe(cmd)
-        @interrupt=aint.interrupt
-      }
-      self
-    end
-
-    def exe
-      self['msg']='run'
-      puts @record if Msg.fg?
-      @record.macro(@item)
+    def macro
+      self['stat']='run'
+      puts @output if Msg.fg?
+      @output.macro(@item)
       result('done')
       self
     rescue Interlock
@@ -51,36 +44,37 @@ module Mcr
     end
 
     def result(str)
-      self['msg']=str
-      @record['result']=str
+      self['stat']=str
+      @output['result']=str
     end
+
+    def ext_shell
+      extend(Shell).ext_shell
+    end
+
   end
 
-  class Shell < Interactive::Server
-    # @< cobj,output,intgrp,interrupt,upd_proc*
-    # @ mint
+  module Shell
     include Interactive::Shell
-    def initialize(mdb,al)
-      @mint=Sv.new(mdb,al)
-      super()
-      ext_shell({'msg' => "(%s)"},@mint)
+    def ext_shell
+      super({'stat' => "(%s)"})
       @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
       @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
       @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
       @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
       @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      self
     end
 
-    def shell(cmd)
-      @cobj.conf=@output=@mint.setcmd(cmd).record
-      @th=Thread.new{ @mint.exe }
+    def shell
+      @th=Thread.new{ macro }
       super()
     end
 
     private
     def ans(str)
       return if @th.status != 'sleep'
-      @mint.record.crnt[:query]=str
+      @output.crnt[:query]=str
       @th.run
     end
   end
@@ -91,13 +85,15 @@ if __FILE__ == $0
   begin
     al=App::List.new
     mdb=Mcr::Db.new('ciax')
+    mobj=Command.new
+    mobj.add_extdom(mdb,:macro)
+    mitem=mobj.setcmd(ARGV)
+    mint=Mcr::Sv.new(mitem,al)
     if $opt['i']
-      mint=Mcr::Sv.new(mdb,al)
-      mint.setcmd(ARGV)
-      mint.exe
+      mint.macro
     else
-      mint=Mcr::Shell.new(mdb,al)
-      mint.shell(ARGV)
+      mint.ext_shell
+      mint.shell
     end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

@@ -18,7 +18,7 @@ module Interactive
     def initialize(conf={:exclude =>''})
       init_ver(self,2)
       @cobj=Command.new(conf)
-      @output=''
+      @output=conf
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update

@@ -12,15 +12,10 @@ module Mcr
     attr_reader :record
     def initialize(item,al)
       @item=Msg.type?(item,Command::Item)
+      @al=Msg.type?(al,App::List)
       self['id']=@item.id
       record=Record.new(@item)
       record.extend(Prt) unless $opt['r']
-      record.stat_proc=proc{|site| al[site].stat }
-      record.exe_proc=proc{|site,cmd,depth|
-        aint=al[site]
-        aint.exe(cmd)
-        @interrupt=aint.interrupt
-      }
       super(record)
       @interrupt.reset_proc{|i|
         self['msg']="Interrupted"
@@ -40,6 +35,8 @@ module Mcr
       @interrupt.exe if @interrupt
       result('interrupted')
       self
+    ensure
+      @output.fin
     end
 
     def result(str)
@@ -55,7 +52,9 @@ module Mcr
     def macro(item,depth=1)
       item.select.each{|e1|
         begin
-          @crnt=@output.add_step(e1,depth)
+          @crnt=@output.add_step(e1,depth){|site|
+            @al[site].stat
+          }
           case e1['type']
           when 'goal'
             @crnt.skip? && raise(Skip)
@@ -64,7 +63,11 @@ module Mcr
           when 'wait'
             @crnt.timeout? && raise(Interlock)
           when 'exec'
-            @crnt.exec
+            @crnt.exec{|site,cmd,depth|
+              aint=@al[site]
+              aint.exe(cmd)
+              @interrupt=aint.interrupt
+            }
           when 'mcr'
             puts @crnt if Msg.fg?
             macro(@mobj.setcmd(e1['cmd']),depth+1)
@@ -73,8 +76,6 @@ module Mcr
           retry
         rescue Skip
           return
-        ensure
-          @output['total']="%.3f" % (Time.now.to_f-@output.base)
         end
       }
       self

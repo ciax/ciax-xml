@@ -6,10 +6,9 @@ require "libmcrprt"
 
 module Mcr
   class Record < Var
-    attr_accessor :stat_proc,:exe_proc
+    attr_accessor :stat_proc
     attr_reader :crnt,:base
     def initialize(item)
-      @cobj=Msg.type?(item.index,Command)
       super('mcr')
       @base=Time.new.to_f
       self['id']=@base.to_i
@@ -18,23 +17,24 @@ module Mcr
       self['steps']=[]
       self['total']=0
       self[:exclude]='[esdfr]'
-      @stat_proc=proc{|site| Status::Var.new}
-      @exe_proc=proc{|site,cmd,depth|}
     end
 
-    def add_step(db,depth)
-      @crnt=Step.new(db,self,depth)
+    def add_step(db,depth,&p)
+      @crnt=Step.new(db,self,depth,p)
       @crnt.extend(Prt) unless $opt['r']
       self['steps'] << @crnt
       @crnt
     end
+
+    def fin
+      self['total']="%.3f" % (Time.now.to_f-@base)
+    end
   end
 
   class Step < ExHash
-    def initialize(db,obj,depth=0)
+    def initialize(db,obj,depth=0,p)
       @obj=Msg.type?(obj,Record)
-      @stat_proc=Msg.type?(obj.stat_proc,Proc)
-      @exe_proc=Msg.type?(obj.exe_proc,Proc)
+      @stat_proc=Msg.type?(p,Proc)
       self['time']="%.3f" % (Time.now.to_f-obj.base)
       self['depth']=depth
       update(Msg.type?(db,Hash))
@@ -44,7 +44,7 @@ module Mcr
     def exec
       puts title if Msg.fg?
       if query_exec?
-        @exeproc.call(self['site'],self['cmd'],self['depth'])
+        yield(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       else
         self['result']='skip'

@@ -12,12 +12,12 @@ require "libupdate"
 # Add Shell Command (by Shell extention)
 
 module Interactive
-  # @ cobj,output,intgrp,interrupt,upd_proc
+  # @ cobj,output,intgrp,interrupt,upd_proc,conf
   class Exe < ExHash
     attr_reader :upd_proc,:interrupt,:output
-    def initialize
+    def initialize(conf={:exclude =>''})
       init_ver(self,2)
-      @cobj=Command.new
+      @cobj=Command.new(conf)
       @output=''
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')

@@ -37,17 +37,16 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:domain,:def_proc
-  attr_accessor :conf
+  attr_reader :current,:domain,:def_proc,:conf
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
-  def initialize
+  def initialize(conf={:exclude =>''})
     init_ver(self)
     @current=nil
     @domain={}
     @def_proc=ExeProc.new
-    @conf={:exclude =>''}
+    @conf=Msg.type?(conf,Hash)
   end
 
   def add_domain(id,color=2)
@@ -104,7 +103,7 @@ class Command < ExHash
     def initialize(index,attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
-      @labeldb=Msg::CmdList.new(attr)
+      @labeldb=Msg::CmdList.new(attr,index.conf)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
@@ -137,7 +136,6 @@ class Command < ExHash
     end
 
     def list
-      @labeldb.conf=@index.conf
       @labeldb.to_s
     end
   end

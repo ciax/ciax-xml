@@ -89,13 +89,13 @@ module Msg
   # Hash of title
   class CmdList < Hash
     attr_accessor :conf
-    def initialize(attr)
+    def initialize(attr,conf={:exclude =>''})
       Msg.type?(attr,Hash)
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
       @caption='==== '+Msg.color(caption,color)+' ====' if caption
-      @conf={:exclude => ''}
+      @conf=Msg.type?(conf,Hash)
     end
 
     # For ver 1.9 or more

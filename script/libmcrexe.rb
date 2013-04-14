@@ -30,7 +30,7 @@ module Mcr
     def start
       self['stat']='run'
       puts @output if Msg.fg?
-      @output.macro(@item)
+      macro(@item)
       result('done')
       self
     rescue Interlock
@@ -51,6 +51,34 @@ module Mcr
       extend(Shell).ext_shell
     end
 
+    private
+    def macro(item,depth=1)
+      item.select.each{|e1|
+        begin
+          @crnt=@output.add_step(e1,depth)
+          case e1['type']
+          when 'goal'
+            @crnt.skip? && raise(Skip)
+          when 'check'
+            @crnt.fail? && raise(Interlock)
+          when 'wait'
+            @crnt.timeout? && raise(Interlock)
+          when 'exec'
+            @crnt.exec
+          when 'mcr'
+            puts @crnt if Msg.fg?
+            macro(@mobj.setcmd(e1['cmd']),depth+1)
+          end
+        rescue Retry
+          retry
+        rescue Skip
+          return
+        ensure
+          @output['total']="%.3f" % (Time.now.to_f-@output.base)
+        end
+      }
+      self
+    end
   end
 
   module Shell
@@ -77,7 +105,7 @@ module Mcr
     private
     def ans(str)
       return if @th.status != 'sleep'
-      @output.crnt[:query]=str
+      @crnt[:query]=str
       @th.run
     end
   end

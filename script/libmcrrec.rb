@@ -22,34 +22,11 @@ module Mcr
       @exe_proc=proc{|site,cmd,depth|}
     end
 
-    def macro(item,depth=1)
-      Msg.type?(item,Command::Item).select.each{|e1|
-        begin
-          @crnt=Step.new(e1,self,depth)
-          @crnt.extend(Prt) unless $opt['r']
-          self['steps'] << @crnt
-          case e1['type']
-          when 'goal'
-            @crnt.skip? && raise(Skip)
-          when 'check'
-            @crnt.fail? && raise(Interlock)
-          when 'wait'
-            @crnt.timeout? && raise(Interlock)
-          when 'exec'
-            @crnt.exec
-          when 'mcr'
-            puts @crnt if Msg.fg?
-            macro(@cobj.setcmd(e1['cmd']),depth+1)
-          end
-        rescue Retry
-          retry
-        rescue Skip
-          return
-        ensure
-          self['total']="%.3f" % (Time.now.to_f-@base)
-        end
-      }
-      self
+    def add_step(db,depth)
+      @crnt=Step.new(db,self,depth)
+      @crnt.extend(Prt) unless $opt['r']
+      self['steps'] << @crnt
+      @crnt
     end
   end
 

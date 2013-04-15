@@ -11,19 +11,13 @@ rsf=~/db/DB-rs.csv
 host=$1
 range=$2
 IFS=,
-inrange(){
-    [ "$range" ] || return 0
-    for i in $range; do
-        [ "${i%-*}" -le "$1" -a "${i#*-}" -ge "$1" ] && return 0
-    done
-    return 1
-}
-
 echo "s";echo "su";echo "system"
 egrep "^$1" $ltf|while read line; do
     set - $line
-    p=$2 dev=$3
-    inrange $p || continue
+    p=$2;dev=$3
+    for i in $range; do
+        [ "${i%-*}" -le "$p" -a "${i#*-}" -ge "$p" ] && break
+    done || continue
     tcpp=$(( 4000 + $p))
     set - `egrep "^($dev)," $rsf`
     echo "define port $p speed $5"

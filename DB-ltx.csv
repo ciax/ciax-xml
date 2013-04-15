@@ -1,7 +1,7 @@
 ## HOST,PORT,RSNAME
 # Lantro moircs
 !host,port,device
-celaeno,1,fp
+celaeno,1,cfp
 celaeno,2,oma
 celaeno,3,slo
 celaeno,4,slo
@@ -12,6 +12,7 @@ celaeno,8,var
 celaeno,9,tpg
 celaeno,10,tpg
 celaeno,11,tpg
+celaeno,12,fp
 celaeno,13,ken
 celaeno,14,ken
 #celaeno,15,omo

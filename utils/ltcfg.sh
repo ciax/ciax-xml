@@ -24,13 +24,14 @@ egrep "^$1" $ltf|while read line; do
     set - $line
     p=$2 dev=$3
     inrange $p || continue
+    tcpp=$(( 4000 + $p))
     set - `egrep "^($dev)," $rsf`
     echo "define port $p speed $5"
     echo "define port $p character $6"
     echo "define port $p parity $7"
     echo "define port $p stop $8"
     echo "define port $p flow $9"
-    echo "define service rs_$p tcpport 400$p"
+    echo "define service rs_$p tcpport $tcpp"
     echo "define service rs_$p binary en"
     echo "define service rs_$p port $p en"
     echo "define port $p dedicated service rs_$p"

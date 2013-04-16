@@ -14,7 +14,7 @@ module Mcr
       @item=Msg.type?(item,Command::Item)
       @al=Msg.type?(al,App::List)
       self['id']=@item.id
-      record=Record.new(@item)
+      record=Record.new(@item,self)
       record.extend(Prt) unless $opt['r']
       super(record)
       @interrupt.reset_proc{|i|

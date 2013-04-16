@@ -7,35 +7,36 @@ require "libmcrprt"
 module Mcr
   class Record < Var
     attr_accessor :stat_proc
-    attr_reader :crnt,:base
-    def initialize(item)
+    attr_reader :crnt
+    def initialize(item,obj)
       super('mcr')
-      @base=Time.new.to_f
-      self['id']=@base.to_i
+      @obj=Msg.type?(obj,Sv)
+      @obj[:base]=Time.new.to_f
+      @obj[:exclude]='[esdfr]'
+      self['id']=@obj[:base].to_i
       self['cmd']=item.cmd
       self['label']=item[:label]
       self['steps']=[]
       self['total']=0
-      self[:exclude]='[esdfr]'
     end
 
     def add_step(db,depth,&p)
-      @crnt=Step.new(db,self,depth,p)
+      @crnt=Step.new(db,@obj,depth,p)
       @crnt.extend(Prt) unless $opt['r']
       self['steps'] << @crnt
       @crnt
     end
 
     def fin
-      self['total']="%.3f" % (Time.now.to_f-@base)
+      self['total']="%.3f" % (Time.now.to_f-@obj[:base])
     end
   end
 
   class Step < ExHash
     def initialize(db,obj,depth=0,p)
-      @obj=Msg.type?(obj,Record)
+      @obj=Msg.type?(obj,Sv)
       @stat_proc=Msg.type?(p,Proc)
-      self['time']="%.3f" % (Time.now.to_f-obj.base)
+      self['time']="%.3f" % (Time.now.to_f-obj[:base])
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')
@@ -185,6 +186,7 @@ module Mcr
       cmdstr='['+cmds.join('/')+']?'
       prompt=Msg.color(cmdstr,5)
       @obj[:exclude]=exc
+      @obj['stat']='query'
       if Msg.fg?
         print Msg.indent(self['depth'].to_i+1)
         self[:query]=Readline.readline(prompt,true)
@@ -192,6 +194,7 @@ module Mcr
         self[:query]=prompt
         sleep
       end
+      @obj['stat']='run'
       @obj[:exclude]='[esdfr]'
       delete(:query)
     end

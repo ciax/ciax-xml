@@ -8,14 +8,14 @@ module Mcr
   class Record < Var
     attr_accessor :stat_proc
     attr_reader :crnt
-    def initialize(item,obj)
+    def initialize(obj)
       super('mcr')
       @obj=Msg.type?(obj,Sv)
-      @obj[:base]=Time.new.to_f
-      @obj[:exclude]='[esdfr]'
+      obj[:base]=Time.new.to_f
+      obj[:exclude]='[esdfr]'
       self['id']=@obj[:base].to_i
-      self['cmd']=item.cmd
-      self['label']=item[:label]
+      self['cmd']=obj.mobj.current.cmd
+      self['label']=obj.mobj.current[:label]
       self['steps']=[]
       self['total']=0
     end

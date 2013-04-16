@@ -8,13 +8,13 @@ require "libapplist"
 module Mcr
   class Sv < Interactive::Server
     # @< cobj,output,(intgrp),interrupt,upd_proc*
-    # @ al,item,record*
-    attr_reader :record
-    def initialize(item,al)
-      @item=Msg.type?(item,Command::Item)
+    # @ al,mobj*
+    attr_accessor :mobj
+    def initialize(mobj,al)
+      @mobj=Msg.type?(mobj,Command)
       @al=Msg.type?(al,App::List)
-      self['id']=@item.id
-      record=Record.new(@item,self)
+      self['id']=@mobj.current.id
+      record=Record.new(self)
       record.extend(Prt) unless $opt['r']
       super(record)
       @interrupt.reset_proc{|i|
@@ -25,7 +25,7 @@ module Mcr
     def start
       self['stat']='run'
       puts @output if Msg.fg?
-      macro(@item)
+      macro(@mobj.current)
       result('done')
       self
     rescue Interlock
@@ -119,8 +119,8 @@ if __FILE__ == $0
     mdb=Mcr::Db.new('ciax')
     mobj=Command.new
     mobj.add_extdom(mdb,:macro)
-    mitem=mobj.setcmd(ARGV)
-    mint=Mcr::Sv.new(mitem,al)
+    mobj.setcmd(ARGV)
+    mint=Mcr::Sv.new(mobj,al)
     if $opt['i']
       mint.start
     else

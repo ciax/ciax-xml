@@ -39,11 +39,6 @@ module Mcr
       @output.fin
     end
 
-    def result(str)
-      self['stat']=str
-      @output['result']=str
-    end
-
     def ext_shell
       extend(Shell).ext_shell
     end
@@ -79,6 +74,11 @@ module Mcr
         end
       }
       self
+    end
+
+    def result(str)
+      self['stat']=str
+      @output['result']=str
     end
   end
 

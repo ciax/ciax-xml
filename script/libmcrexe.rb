@@ -8,7 +8,7 @@ require "libapplist"
 module Mcr
   class Sv < Interactive::Server
     # @< cobj,output,(intgrp),interrupt,upd_proc*
-    # @ al,mobj*
+    # @ al,appint,mobj*
     attr_accessor :mobj
     def initialize(mobj,al)
       @mobj=Msg.type?(mobj,Command)
@@ -17,9 +17,6 @@ module Mcr
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
       super(record)
-      @interrupt.reset_proc{|i|
-        self['msg']="Interrupted"
-      }
     end
 
     def start
@@ -32,7 +29,7 @@ module Mcr
       result('error')
       self
     rescue Interrupt
-      @interrupt.exe if @interrupt
+      @appint.exe if @appint
       result('interrupted')
       self
     ensure
@@ -61,7 +58,7 @@ module Mcr
             @crnt.exec{|site,cmd,depth|
               aint=@al[site]
               aint.exe(cmd)
-              @interrupt=aint.interrupt
+              @appint=aint.interrupt
             }
           when 'mcr'
             puts @crnt if Msg.fg?
@@ -79,6 +76,7 @@ module Mcr
     def result(str)
       self['stat']=str
       @output['result']=str
+      puts str if Msg.fg?
     end
   end
 
@@ -95,6 +93,7 @@ module Mcr
       @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
       @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
       @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
       self
     end
 

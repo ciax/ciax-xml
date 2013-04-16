@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
+  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" wait="0.2" ccmethod="sum" maxlength="255">
+    <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
+    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <char length="1" label="ENQ">5</char>
+      <ccrange>
+        <select>
+          <command id="getstat" label="Get status" response="getstat" type="stat">
+            <string>#ST3</string>
+          </command>
+          <command id="allon" label="All Output ON" response="default" type="action">
+            <string>#SW1</string>
+          </command>
+        </select>
+        <char length="1" label="ETX">3</char>
+      </ccrange>
+      <string format="%02X">${cc}</string>
+    </cmdframe>
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
+      <field decode="unsigned" label="ACK" length="1">6</field>
+      <select>
+        <response id="getstat">
+          <field assign="stat" label="StatusCode" />
+        </response>
+        <response id="default" />
+      </select>
+    </rspframe>
+  </frame>
+</fdb>

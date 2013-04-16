@@ -74,9 +74,10 @@ module Mcr
     end
 
     def skip?
-      return true if ok?('skip','pass')
-      return if dryrun?
-      true
+      return unless ok?('skip','pass')
+      return true unless dryrun?
+      self['action']='dryrun'
+      false
     ensure
       puts to_s if Msg.fg?
     end

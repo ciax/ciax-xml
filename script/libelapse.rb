@@ -1,5 +1,16 @@
 #!/usr/bin/ruby
 require "libmsg"
+
+class Sec < Time
+  def to_s
+    "%.3f" % to_f
+  end
+
+  def self.parse(str)
+    Sec.at(*str.split('.').map{|i| i.to_i})
+  end
+end
+
 class Elapse < Time
   def initialize(base=Time.now)
     @base=Msg.type?(base,Time)

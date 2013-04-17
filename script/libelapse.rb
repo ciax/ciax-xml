@@ -1,8 +1,16 @@
 #!/usr/bin/ruby
 require "libmsg"
-class Interval < Time
+class Elapse < Time
+  def initialize(base=Time.now)
+    @base=Msg.type?(base,Time)
+  end
+
   def inspect
     '"'+to_s+'"'
+  end
+
+  def to_f
+    (Time.now-@base).to_f
   end
 
   def to_s
@@ -16,15 +24,5 @@ class Interval < Time
     else
       Time.at(sec).utc.strftime("%S\"%L")
     end
-  end
-end
-
-class Elapse < Interval
-  def initialize(var)
-    @var=var
-  end
-
-  def to_f
-    (Time.now-Time.at(@var['time'].to_f)).to_f
   end
 end

@@ -37,9 +37,7 @@
     <Update/>
   </Array>
   <Time>
-    <Interval>
-      <Elapse/>
-    </Interval>
+    <Elapse/>
   </Time>
   <Interactive.Exe>
     <App.Exe/>

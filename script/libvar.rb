@@ -2,6 +2,7 @@
 require "libmsg"
 require "libexenum"
 require "libupdate"
+require "libelapse"
 
 class Var < ExHash
   def initialize(type)
@@ -28,8 +29,8 @@ class Var < ExHash
   end
 
   class Upd < Var
-    # @ upd_proc*
-    attr_reader :upd_proc
+    # @ elapsed,upd_proc*
+    attr_reader :elapsed,:upd_proc
     def initialize(type)
       super
       set_time
@@ -38,7 +39,8 @@ class Var < ExHash
     end
 
     def set_time(time=nil)
-      self['time']=time||Msg.now
+      self['time']=time||Time.new
+      @elapsed=Elapse.new(self['time'])
       self
     end
 

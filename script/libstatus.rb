@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libvar"
-require 'libelapse'
 
 module Status
   class Var < Var::Upd
@@ -92,7 +91,7 @@ module Status
             h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
             case id
             when 'elapse'
-              h['msg']=Elapse.new(@stat)
+              h['msg']=@stat.elapsed
             when 'time'
               h['msg']=Time.at(@stat['time'].to_f).to_s
             else

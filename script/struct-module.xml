@@ -2,8 +2,7 @@
 <module>
   <general>
     <Update parent="Array" extend="Msg.Ver"/>
-    <Interval parent="Time"/>
-    <Elapse parent="Interval" extend="Msg.Ver"/>
+    <Elapse parent="Time" extend="Msg.Ver"/>
     <Circular parent="Object" extend="Msg.Ver"/>
     <Repeat parent="Object" extend="Msg.Ver"/>
     <ReRange parent="Object" include="Comparable"/>

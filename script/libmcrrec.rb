@@ -6,68 +6,47 @@ require "libmcrprt"
 
 module Mcr
   class Record < Var
-    attr_accessor :stat_proc,:exe_proc
-    attr_reader :crnt,:base
-    def initialize(item)
-      @cobj=Msg.type?(item.index,Command)
+    attr_accessor :stat_proc
+    attr_reader :crnt
+    def initialize(obj)
       super('mcr')
-      @base=Time.new.to_f
-      self['id']=@base.to_i
-      self['cmd']=item.cmd
-      self['label']=item[:label]
+      @obj=Msg.type?(obj,Sv)
+      obj[:base]=Time.new.to_f
+      obj[:exclude]='[esdfr]'
+      self['id']=@obj[:base].to_i
+      self['cmd']=obj.mobj.current.cmd
+      self['label']=obj.mobj.current[:label]
       self['steps']=[]
       self['total']=0
-      self[:exclude]='[esdfr]'
-      @stat_proc=proc{|site| Status::Var.new}
-      @exe_proc=proc{|site,cmd,depth|}
     end
 
-    def macro(item,depth=1)
-      Msg.type?(item,Command::Item).select.each{|e1|
-        begin
-          @crnt=Step.new(e1,self,depth)
-          @crnt.extend(Prt) unless $opt['r']
-          self['steps'] << @crnt
-          case e1['type']
-          when 'goal'
-            @crnt.skip? && raise(Skip)
-          when 'check'
-            @crnt.fail? && raise(Interlock)
-          when 'wait'
-            @crnt.timeout? && raise(Interlock)
-          when 'exec'
-            @crnt.exec
-          when 'mcr'
-            puts @crnt if Msg.fg?
-            macro(@cobj.setcmd(e1['cmd']),depth+1)
-          end
-        rescue Retry
-          retry
-        rescue Skip
-          return
-        ensure
-          self['total']="%.3f" % (Time.now.to_f-@base)
-        end
-      }
-      self
+    def add_step(db,depth,&p)
+      @crnt=Step.new(db,@obj,depth,p)
+      @crnt.extend(Prt) unless $opt['r']
+      self['steps'] << @crnt
+      @crnt
+    end
+
+    def fin
+      self['total']="%.3f" % (Time.now.to_f-@obj[:base])
     end
   end
 
   class Step < ExHash
-    def initialize(db,obj,depth=0)
-      @obj=Msg.type?(obj,Record)
-      @stat_proc=Msg.type?(obj.stat_proc,Proc)
-      @exe_proc=Msg.type?(obj.exe_proc,Proc)
-      self['time']="%.3f" % (Time.now.to_f-obj.base)
+    def initialize(db,obj,depth=0,p)
+      @obj=Msg.type?(obj,Sv)
+      @stat_proc=Msg.type?(p,Proc)
+      self['time']="%.3f" % (Time.now.to_f-obj[:base])
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')
+      @query=Query.new(self,obj)
     end
 
     def exec
       puts title if Msg.fg?
-      if query_exec?
-        @exeproc.call(self['site'],self['cmd'],self['depth'])
+      if @query.exec?
+        yield(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       else
         self['result']='skip'
@@ -79,7 +58,7 @@ module Mcr
       #gives number or nil(if break)
       print title if Msg.fg?
       max=self['max']=self['retry']
-      max = 3 if dryrun?
+      max = 3 if @query.dryrun?
       max.to_i.times{|n|
         self['retry']=n
         if ok?('pass','wait')
@@ -92,13 +71,14 @@ module Mcr
       }
       self['result']='timeout'
       puts result if Msg.fg?
-      query_quit?
+      @query.quit?
     end
 
     def skip?
-      return true if ok?('skip','pass')
-      return if dryrun?
-      true
+      return unless ok?('skip','pass')
+      return true unless @query.dryrun?
+      self['action']='dryrun'
+      false
     ensure
       puts to_s if Msg.fg?
     end
@@ -106,7 +86,7 @@ module Mcr
     def fail?
       return if ok?('pass','failed')
       puts to_s if Msg.fg?
-      query_quit?
+      @query.quit?
     end
 
     def title ; self['label']||self['cmd']; end
@@ -163,60 +143,69 @@ module Mcr
         (cmp == res) ^ i
       end
     end
+  end
 
-    def dryrun?
-      ! ['e','s','t'].any?{|i| $opt[i]}
+  class Query
+    def initialize(step,int)
+      @step=Msg.type?(step,Step)
+      @int=Msg.type?(int,Sv)
     end
 
-    def query_exec?
+    def exec?
       return true if $opt['n']
       loop{
-        case input(['Exec','Skip'],'[dfr]')
+        case query(['Exec','Skip'],'[dfr]')
         when /^E/i
           if dryrun?
-            self['action']='dryrun'
+            @step['action']='dryrun'
             return false
           else
-            self['action']='exec'
+            @step['action']='exec'
             return true
           end
         when /^S/i
-          self['action']='skip'
+          @step['action']='skip'
           return false
         end
       }
     end
 
-    def query_quit?
+    def quit?
       return true if $opt['n']
       loop{
-        case input(['Done','Force','Retry'],'[es]')
+        case query(['Done','Force','Retry'],'[es]')
         when /^D/i
-          self['action']='done'
+          @step['action']='done'
           return true
         when /^F/i
-          self['action']='forced'
+          @step['action']='forced'
           return false
         when /^R/i
-          self['action']='retry'
+          @step['action']='retry'
           raise(Retry)
         end
       }
     end
 
-    def input(cmds,exc)
-      cmdstr='['+cmds.join('/')+']?'
-      prompt=Msg.color(cmdstr,5)
-      @obj[:exclude]=exc
+    def dryrun?
+      ! ['e','s','t'].any?{|i| $opt[i]}
+    end
+
+    private
+    def query(cmds,exc)
+      @int[:exclude]=exc
+      @int['stat']='query'
       if Msg.fg?
-        print Msg.indent(self['depth'].to_i+1)
-        self[:query]=Readline.readline(prompt,true)
+        prompt=Msg.color('['+cmds.join('/')+']?',5)
+        print Msg.indent(@step['depth'].to_i+1)
+        res=Readline.readline(prompt,true)
       else
-        self[:query]=prompt
         sleep
+        res=Thread.current[:query]
       end
-      @obj[:exclude]='[esdfr]'
-      delete(:query)
+      @int['stat']='run'
+      @int[:exclude]='[esdfr]'
+      res
     end
   end
 end

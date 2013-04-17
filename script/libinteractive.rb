@@ -15,10 +15,10 @@ module Interactive
   # @ cobj,output,intgrp,interrupt,upd_proc,conf
   class Exe < ExHash
     attr_reader :upd_proc,:interrupt,:output
-    def initialize(conf={:exclude =>''})
+    def initialize(output={})
       init_ver(self,2)
-      @cobj=Command.new(conf)
-      @output=conf
+      @cobj=Command.new(self)
+      @output=output
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update

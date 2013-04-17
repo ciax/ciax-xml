@@ -105,7 +105,7 @@ module Mcr
     private
     def ans(str)
       return if @th.status != 'sleep'
-      @crnt[:query]=str
+      @th[:query]=str
       @th.run
     end
   end

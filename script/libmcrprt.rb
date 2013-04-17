@@ -57,10 +57,6 @@ module Mcr
       else
         msg << "\n"
       end
-      if obj[:query]
-        msg << Msg.indent(obj['depth'].to_i+1)
-        msg << Msg.color(obj[:query],5)+"\n"
-      end
       msg << action(obj)
     end
 

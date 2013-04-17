@@ -193,20 +193,19 @@ module Mcr
 
     private
     def query(cmds,exc)
-        cmdstr='['+cmds.join('/')+']?'
-        prompt=Msg.color(cmdstr,5)
-        @int[:exclude]=exc
-        @int['stat']='query'
-        if Msg.fg?
-          print Msg.indent(@step['depth'].to_i+1)
-          @step[:query]=Readline.readline(prompt,true)
-        else
-          @step[:query]=prompt
-          sleep
-        end
-        @int['stat']='run'
-        @int[:exclude]='[esdfr]'
-        @step.delete(:query)
+      @int[:exclude]=exc
+      @int['stat']='query'
+      if Msg.fg?
+        prompt=Msg.color('['+cmds.join('/')+']?',5)
+        print Msg.indent(@step['depth'].to_i+1)
+        res=Readline.readline(prompt,true)
+      else
+        sleep
+        res=Thread.current[:query]
+      end
+      @int['stat']='run'
+      @int[:exclude]='[esdfr]'
+      res
     end
   end
 end

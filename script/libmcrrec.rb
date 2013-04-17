@@ -28,15 +28,15 @@ module Mcr
     end
 
     def fin
-      self['total']="%.3f" % (Time.now.to_f-@obj[:base])
+      self['total']=Msg.elapsed(@obj[:base])
     end
   end
 
   class Step < ExHash
     def initialize(db,obj,depth=0,p)
-      @obj=Msg.type?(obj,Sv)
+      obj=Msg.type?(obj,Sv)
       @stat_proc=Msg.type?(p,Proc)
-      self['time']="%.3f" % (Time.now.to_f-obj[:base])
+      self['time']=Msg.elapsed(obj[:base])
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')

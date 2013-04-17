@@ -246,6 +246,10 @@ module Msg
     "%.3f" % Time.now.to_f
   end
 
+  def elapsed(time)
+    "%.3f" % (Time.now.to_f-time.to_f)
+  end
+
   # Color 1=red,2=green,4=blue,8=bright
   def color(text,c=7,i=0)
     return '' if text == ''

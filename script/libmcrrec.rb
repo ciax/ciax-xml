@@ -40,11 +40,12 @@ module Mcr
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')
+      @query=Query.new(self,obj)
     end
 
     def exec
       puts title if Msg.fg?
-      if query_exec?
+      if @query.exec?
         yield(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       else
@@ -57,7 +58,7 @@ module Mcr
       #gives number or nil(if break)
       print title if Msg.fg?
       max=self['max']=self['retry']
-      max = 3 if dryrun?
+      max = 3 if @query.dryrun?
       max.to_i.times{|n|
         self['retry']=n
         if ok?('pass','wait')
@@ -70,12 +71,12 @@ module Mcr
       }
       self['result']='timeout'
       puts result if Msg.fg?
-      query_quit?
+      @query.quit?
     end
 
     def skip?
       return unless ok?('skip','pass')
-      return true unless dryrun?
+      return true unless @query.dryrun?
       self['action']='dryrun'
       false
     ensure
@@ -85,7 +86,7 @@ module Mcr
     def fail?
       return if ok?('pass','failed')
       puts to_s if Msg.fg?
-      query_quit?
+      @query.quit?
     end
 
     def title ; self['label']||self['cmd']; end
@@ -142,62 +143,70 @@ module Mcr
         (cmp == res) ^ i
       end
     end
+  end
 
-    def dryrun?
-      ! ['e','s','t'].any?{|i| $opt[i]}
+  class Query
+    def initialize(step,int)
+      @step=Msg.type?(step,Step)
+      @int=Msg.type?(int,Sv)
     end
 
-    def query_exec?
+    def exec?
       return true if $opt['n']
       loop{
-        case input(['Exec','Skip'],'[dfr]')
+        case query(['Exec','Skip'],'[dfr]')
         when /^E/i
           if dryrun?
-            self['action']='dryrun'
+            @step['action']='dryrun'
             return false
           else
-            self['action']='exec'
+            @step['action']='exec'
             return true
           end
         when /^S/i
-          self['action']='skip'
+          @step['action']='skip'
           return false
         end
       }
     end
 
-    def query_quit?
+    def quit?
       return true if $opt['n']
       loop{
-        case input(['Done','Force','Retry'],'[es]')
+        case query(['Done','Force','Retry'],'[es]')
         when /^D/i
-          self['action']='done'
+          @step['action']='done'
           return true
         when /^F/i
-          self['action']='forced'
+          @step['action']='forced'
           return false
         when /^R/i
-          self['action']='retry'
+          @step['action']='retry'
           raise(Retry)
         end
       }
     end
 
-    def input(cmds,exc)
-      cmdstr='['+cmds.join('/')+']?'
-      prompt=Msg.color(cmdstr,5)
-      @obj[:exclude]=exc
-      @obj['stat']='query'
-      if Msg.fg?
-        print Msg.indent(self['depth'].to_i+1)
-        self[:query]=Readline.readline(prompt,true)
-      else
-        self[:query]=prompt
-        sleep
-      end
-      @obj['stat']='run'
-      @obj[:exclude]='[esdfr]'
-      delete(:query)
+    def dryrun?
+      ! ['e','s','t'].any?{|i| $opt[i]}
+    end
+
+    private
+    def query(cmds,exc)
+        cmdstr='['+cmds.join('/')+']?'
+        prompt=Msg.color(cmdstr,5)
+        @int[:exclude]=exc
+        @int['stat']='query'
+        if Msg.fg?
+          print Msg.indent(@step['depth'].to_i+1)
+          @step[:query]=Readline.readline(prompt,true)
+        else
+          @step[:query]=prompt
+          sleep
+        end
+        @int['stat']='run'
+        @int[:exclude]='[esdfr]'
+        @step.delete(:query)
     end
   end
 end

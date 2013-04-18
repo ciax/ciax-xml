@@ -93,7 +93,7 @@ module Status
             when 'elapse'
               h['msg']=@stat.elapsed
             when 'time'
-              h['msg']=Time.at(@stat['time']).to_s
+              h['msg']=@stat['time'].inspect
             else
               h['msg']=@stat['msg'][id]||@stat.get(id)
             end

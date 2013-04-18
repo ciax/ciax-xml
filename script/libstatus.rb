@@ -11,7 +11,7 @@ module Status
       init_ver('Status',6)
       super('stat')
       @last={}
-      @updated=Sec.now
+      @updated=UnixTime.now
     end
 
     def set(hash) #For Watch test
@@ -54,7 +54,7 @@ module Status
 
     def ext_save
       init_ver(self,6)
-      @lastsave=Sec.now
+      @lastsave=UnixTime.now
       self
     end
 

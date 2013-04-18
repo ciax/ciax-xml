@@ -32,7 +32,7 @@ class Var < ExHash
     attr_reader :elapsed,:upd_proc
     def initialize(type)
       super
-      self['time']=Sec.now
+      self['time']=UnixTime.now
       self['val']=ExHash.new
       @upd_proc=UpdProc.new
     end
@@ -53,7 +53,7 @@ class Var < ExHash
         k,v=i.split('=')
         self['val'][k]=v
       }
-      self['time']=Sec.now
+      self['time']=UnixTime.now
       self
     end
 
@@ -88,7 +88,7 @@ class Var < ExHash
         Msg.warn(" -- json file (#{@base}) is empty")
       else
         super(json_str)
-        self['time']=Sec.parse(self['time']) if key?('time')
+        self['time']=UnixTime.parse(self['time']) if key?('time')
       end
       self
     rescue Errno::ENOENT

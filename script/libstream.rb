@@ -14,11 +14,11 @@ class Stream < ExHash
     @wait=wait.to_f
     @timeout=timeout
     @log_proc=UpdProc.new
-    update({'time' => Sec.now,'dir' => '','cmd' => '','data' => ''})
+    update({'time' => UnixTime.now,'dir' => '','cmd' => '','data' => ''})
   end
 
   def snd(str,cmd)
-    update({'time' => Sec.now,'dir' => 'snd','cmd' => cmd,'data' => str})
+    update({'time' => UnixTime.now,'dir' => 'snd','cmd' => cmd,'data' => str})
     return if str.to_s.empty?
     sleep @wait
     verbose{"Sending #{str.size} byte on #{cmd}"}
@@ -36,7 +36,7 @@ class Stream < ExHash
       @f.sysread(4096)
     }||Msg.com_err("Stream:No response")
     verbose{"Recieved #{str.size} byte on #{self['cmd']}"}
-    update({'time' => Sec.now,'dir' => 'rcv','data' => str})
+    update({'time' => UnixTime.now,'dir' => 'rcv','data' => str})
     @log_proc.upd
     self
   end

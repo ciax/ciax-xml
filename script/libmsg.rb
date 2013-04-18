@@ -25,13 +25,13 @@ class CommError < UserError; end
 # Configuration Error
 class ConfigError < RuntimeError; end
 
-class Sec < Time
+class UnixTime < Time
   def to_s
     "%.3f" % to_f
   end
 
   def self.parse(str)
-    Sec.at(*str.split('.').map{|i| i.to_i})
+    UnixTime.at(*str.split('.').map{|i| i.to_i})
   end
 end
 

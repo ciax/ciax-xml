@@ -33,15 +33,9 @@ class Var < ExHash
     attr_reader :elapsed,:upd_proc
     def initialize(type)
       super
-      set_time
+      self['time']=Sec.now
       self['val']=ExHash.new
       @upd_proc=UpdProc.new
-    end
-
-    def set_time(time=nil)
-      self['time']=time||Sec.new
-      @elapsed=Elapse.new(self['time'])
-      self
     end
 
     def upd
@@ -60,7 +54,7 @@ class Var < ExHash
         k,v=i.split('=')
         self['val'][k]=v
       }
-      set_time
+      self['time']=Sec.now
       self
     end
 

@@ -256,10 +256,12 @@ module Msg
   end
 
   def elps_sec(time)
+    return 0 unless time
     "%.3f" % (Time.now.to_f-time.to_f)
   end
 
   def elps_date(time)
+    return 0 unless time
     sec=(Time.now.to_f-time.to_f)
     if sec > 86400
       "%.1f days" % (sec/86400)

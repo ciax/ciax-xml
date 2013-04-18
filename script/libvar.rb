@@ -2,7 +2,6 @@
 require "libmsg"
 require "libexenum"
 require "libupdate"
-require "libelapse"
 
 class Var < ExHash
   def initialize(type)

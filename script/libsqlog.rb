@@ -115,6 +115,7 @@ module SqLog
         IO.popen(@sqlcmd,'w'){|f|
           f.puts sql
         }
+        Msg.abort("Sqlite3 input error") unless $?.success?
         verbose{"SqLog/Save complete (#{self['id']})"}
         @log.clear
       end

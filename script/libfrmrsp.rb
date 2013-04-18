@@ -58,7 +58,7 @@ module Frm
       if rid=@cobj.current[:response]
         @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
         hash=yield
-        set_time(hash['time']) #Field::set_time
+        self['time']=hash['time']
         setframe(hash['data'])
         true
       else

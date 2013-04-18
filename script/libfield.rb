@@ -72,7 +72,7 @@ module Field
       else
         Msg.par_err("Index is out of range")
       end
-      set_time
+      self['time']=Sec.now
       self
     end
 

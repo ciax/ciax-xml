@@ -26,7 +26,7 @@ module Frm
       super()
       extend(Exe).init(fdb)
       @cobj.def_proc.set{|item|
-        @field.set_time
+        @field['time']=Sec.now
       }
       @cobj['set'].reset_proc{|item|
         @field.set(*item.par)

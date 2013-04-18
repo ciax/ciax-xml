@@ -15,6 +15,7 @@ module Watch
       self['period']=300
       self['interval']=0.1
       self['astart']=nil
+      self['alast']=0
       #For Array element
       ['active','exec','block','int'].each{|i| self[i]||=ExArray.new}
       #For Hash element
@@ -102,7 +103,9 @@ module Watch
           a << n if n && !a.include?(n)
         }
       }
+      lstart=self['astart']
       self['astart']=(noact & active?) ? UnixTime.now : nil
+      self['alast']=UnixTime.now-lstart if lstart & !self['astart']
       hash.each{|k,a|
         self[k].replace a.flatten(1).uniq
       }
@@ -154,7 +157,7 @@ module Watch
     def initialize(adb,watch)
       wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => []}
       @watch=Msg.type?(watch,Var)
-      ['exec','block','int','astart'].each{|i|
+      ['exec','block','int','astart','alast'].each{|i|
         self[i]=@watch[i]
       }
       self['stat']={}
@@ -222,6 +225,7 @@ module Watch
       }
       atime=Msg.elps_date(self['atime'])
       str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
+      str << "  "+Msg.color("LastActive",2)+"\t: #{self['alast']}\n"
       str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}"
       str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}"
       str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}"

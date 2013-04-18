@@ -10,17 +10,17 @@ class Logging
     @type=Msg.type?(type,String)
     Msg.type?(id,String)
     ver=ver.to_i
-    @header={'time' => Msg.now,'id' => id,'ver' => ver}
+    @header={'time' => Sec.now,'id' => id,'ver' => ver}
     @loghead=VarDir+"/"+type+"_#{id}"
     verbose{"Init/Logging '#{type}' (#{id}/Ver.#{ver})"}
     @proc=p
     self
   end
 
-  # Return Time
+  # Return Sec
   # append() uses @proc(Hash) generated data
   def append
-    time=@header['time']=Msg.now
+    time=@header['time']=Sec.now
     unless ENV.key?('NOLOG')
       str=JSON.dump(@header.merge(@proc.call))
       open(logfile,'a') {|f|
@@ -36,6 +36,7 @@ class Logging
     h=JSON.load(str)
     abort("Logline:Line is not rcv") unless /rcv/ === h['dir']
     h['data']=decode(h['base64'])
+    h['time']=Sec.parse(h['time'])
     h
   end
 
@@ -46,7 +47,7 @@ class Logging
 
   private
   def logfile
-    @loghead+"_#{Time.now.year}.log"
+    @loghead+"_#{Sec.now.year}.log"
   end
 
   def encode(str)

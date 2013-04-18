@@ -11,7 +11,7 @@ module Status
       init_ver('Status',6)
       super('stat')
       @last={}
-      @updated=Time.now
+      @updated=Sec.now
     end
 
     def set(hash) #For Watch test
@@ -54,12 +54,12 @@ module Status
 
     def ext_save
       init_ver(self,6)
-      @lastsave=0
+      @lastsave=Sec.now
       self
     end
 
     def save(data=nil,tag=nil)
-      time=self['time'].to_f
+      time=self['time']
       if time > @lastsave
         super
         @lastsave=time
@@ -93,7 +93,7 @@ module Status
             when 'elapse'
               h['msg']=@stat.elapsed
             when 'time'
-              h['msg']=Time.at(@stat['time'].to_f).to_s
+              h['msg']=Time.at(@stat['time']).to_s
             else
               h['msg']=@stat['msg'][id]||@stat.get(id)
             end

@@ -169,7 +169,7 @@ if __FILE__ == $0
   else
     id=ARGV.shift
     cmd=ARGV.shift
-    res={'time'=>Time.now}
+    res={'time'=>Sec.now}
     res['data']=gets(nil) || exit
   end
   fdb=Loc::Db.new(id)[:frm]

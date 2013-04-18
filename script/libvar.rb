@@ -39,7 +39,7 @@ class Var < ExHash
     end
 
     def set_time(time=nil)
-      self['time']=time||Time.new
+      self['time']=time||Sec.new
       @elapsed=Elapse.new(self['time'])
       self
     end
@@ -95,6 +95,7 @@ class Var < ExHash
         Msg.warn(" -- json file (#{@base}) is empty")
       else
         super(json_str)
+        self['time']=Sec.parse(self['time']) if key?('time')
       end
       self
     rescue Errno::ENOENT

@@ -34,8 +34,8 @@ module SqLog
     def upd
       super
       val=expand
-      key=val.keys.map{|s| s.inspect}.join(',')
-      val=val.values.map{|s| s.inspect}.join(',')
+      key=val.keys.map{|s| s.to_s}.join(',')
+      val=val.values.map{|s| s.to_s}.join(',')
       verbose{"SqLog/Update(#{self['time']}):[#{self['id']}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} (#{key}) values (#{val});"
       self

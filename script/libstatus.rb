@@ -91,7 +91,7 @@ module Status
             h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
             case id
             when 'elapse'
-              h['msg']=Elapse.new(@stat['time'])
+              h['msg']=Msg.elps_date(@stat['time'])
             when 'time'
               h['msg']=@stat['time'].inspect
             else

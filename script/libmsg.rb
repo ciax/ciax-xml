@@ -246,8 +246,21 @@ module Msg
     "%.3f" % Time.now.to_f
   end
 
-  def elapsed(time)
+  def elps_sec(time)
     "%.3f" % (Time.now.to_f-time.to_f)
+  end
+
+  def elps_date(time)
+    sec=(Time.now.to_f-time.to_f)
+    if sec > 86400
+      "%.1f days" % (sec/86400)
+    elsif sec > 3600
+      Time.at(sec).utc.strftime("%H:%M")
+    elsif sec > 60
+      Time.at(sec).utc.strftime("%M'%S\"")
+    else
+      Time.at(sec).utc.strftime("%S\"%L")
+    end
   end
 
   # Color 1=red,2=green,4=blue,8=bright

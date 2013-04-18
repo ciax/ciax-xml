@@ -28,7 +28,7 @@ module Mcr
     end
 
     def fin
-      self['total']=Msg.elapsed(@obj[:base])
+      self['total']=Msg.elps_sec(@obj[:base])
     end
   end
 
@@ -36,7 +36,7 @@ module Mcr
     def initialize(db,obj,depth=0,p)
       obj=Msg.type?(obj,Sv)
       @stat_proc=Msg.type?(p,Proc)
-      self['time']=Msg.elapsed(obj[:base])
+      self['time']=Msg.elps_sec(obj[:base])
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')

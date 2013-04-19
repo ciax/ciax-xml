@@ -34,6 +34,10 @@ class Var < ExHash # Including 'type'
       self['val']=ExHash.new
     end
 
+    def upd
+      self
+    end
+
     def get(key)
       self['val'][key]
     end

@@ -157,16 +157,11 @@ module Interactive
     # mode gives special break (loop returns mode)
     def shell
       begin
-        @upd_proc.upd
         while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
           line=@lineconv.call(line) if @lineconv
-          cmd=line.split(' ')
-          if cmd.empty?
-            puts @output
-          else
-            puts exe(cmd)['msg']
-          end
+          res=exe(line.split(' '))
+          puts res['msg'].empty? ? @output : res['msg']
         end
       rescue SelectID
         $!.to_s

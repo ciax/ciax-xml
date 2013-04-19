@@ -24,7 +24,7 @@ module App
       super()
       extend(Exe).init(adb)
       @stat.ext_sym(adb).load
-      @watch.ext_conv(adb,@stat).upd
+      @watch.ext_upd(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
       @intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|
         @stat.str_update(item.par[0]).upd

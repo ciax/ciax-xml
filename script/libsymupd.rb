@@ -10,7 +10,7 @@ module Sym
       Msg.type?(obj,Status::Var)
     end
 
-    def ext_conv(db)
+    def ext_upd(db)
       init_ver('SymUpd')
       Msg.type?(db,App::Db)
       ads=db[:status]
@@ -56,7 +56,7 @@ end
 
 class Status::Var
   def ext_sym(adb)
-    extend(Sym::Upd).ext_conv(adb)
+    extend(Sym::Upd).ext_upd(adb)
   end
 end
 

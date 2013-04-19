@@ -103,7 +103,7 @@ module Watch
       }
       lstart=self['astart']
       self['astart']=(noact & active?) ? UnixTime.now : nil
-      self['alast']=UnixTime.now-lstart if lstart & !self['astart']
+      self['alast']=UnixTime.now-lstart if lstart && !self['astart']
       hash.each{|k,a|
         self[k].replace a.flatten(1).uniq
       }

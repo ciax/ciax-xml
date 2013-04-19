@@ -4,7 +4,6 @@ require "libstatus"
 
 module App
   module Rsp
-    # @<< (upd_proc*)
     # @< (base),(prefix)
     def self.extended(obj)
       Msg.type?(obj,Status::Var,Var::File)

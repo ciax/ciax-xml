@@ -8,7 +8,6 @@ require "libstream"
 # Output : Field
 module Frm
   module Rsp
-    # @<< (upd_proc*)
     # @< (base),(prefix)
     # @ cobj,sel,fds,frame,fary,cc
     def self.extended(obj)

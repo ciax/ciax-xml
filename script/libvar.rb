@@ -3,7 +3,7 @@ require "libmsg"
 require "libexenum"
 require "libupdate"
 
-class Var < ExHash
+class Var < ExHash # Including 'type'
   def initialize(type)
     super()
     self['type']=type
@@ -27,23 +27,21 @@ class Var < ExHash
     self
   end
 
-  class Upd < Var
-    # @ elapsed,upd_proc*
-    attr_reader :elapsed,:upd_proc
+  class Upd < Var # Including 'time'
     def initialize(type)
       super
       self['time']=UnixTime.now
       self['val']=ExHash.new
-      @upd_proc=UpdProc.new
-    end
-
-    def upd
-      @upd_proc.upd
-      self
     end
 
     def get(key)
       self['val'][key]
+    end
+
+    def load(json_str=nil)
+      super
+      self['time']=UnixTime.parse(self['time']) if key?('time')
+      self
     end
 
     # Update with str (key=val,key=val,..)
@@ -63,7 +61,6 @@ class Var < ExHash
   end
 
   module File
-    # @< upd_proc*
     # @ db,base,prefix
     def self.extended(obj)
       Msg.type?(obj,Var)
@@ -88,7 +85,6 @@ class Var < ExHash
         Msg.warn(" -- json file (#{@base}) is empty")
       else
         super(json_str)
-        self['time']=UnixTime.parse(self['time']) if key?('time')
       end
       self
     rescue Errno::ENOENT
@@ -115,7 +111,6 @@ class Var < ExHash
 
   module Url
     require "open-uri"
-    # @<< (upd_proc*)
     # @< base,prefix
     def self.extended(obj)
       Msg.type?(obj,File)
@@ -136,7 +131,6 @@ class Var < ExHash
   end
 
   module Save
-    # @<< (upd_proc*)
     # @< base,prefix
     def self.extended(obj)
       Msg.type?(obj,File)

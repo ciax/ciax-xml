@@ -5,7 +5,6 @@ require 'librerange'
 
 module Watch
   class Var < Var
-    # @< (upd_proc*)
     # @ event_proc*
     attr_accessor :event_proc
 
@@ -60,7 +59,6 @@ module Watch
   end
 
   module Conv
-    # @<< (upd_proc*)
     # @< (event_proc*)
     # @ wdb,val
     def self.extended(obj)

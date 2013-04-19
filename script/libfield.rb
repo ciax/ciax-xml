@@ -4,7 +4,6 @@ require 'libvar'
 
 module Field
   class Var < Var::Upd
-    # @< (upd_proc)
     def initialize
       init_ver(self,6)
       super('field')
@@ -85,7 +84,6 @@ module Field
 
   module Save
     # Saving data of specified keys with tag
-    # @<< (upd_proc)
     def savekey(keylist,tag=nil)
       Msg.com_err("No File") unless @base
       hash={}

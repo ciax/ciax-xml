@@ -4,7 +4,6 @@ require "libvar"
 
 module Status
   class Var < Var::Upd
-    # @< (upd_proc*)
     # @ last*
     attr_reader :last
     def initialize
@@ -44,7 +43,6 @@ module Status
   end
 
   module Save
-    # @<< (upd_proc*)
     # @< (db),(base),(prefix)
     # @< (last)
     # @ lastsave

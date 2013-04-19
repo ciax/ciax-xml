@@ -23,7 +23,6 @@ module Sym
     end
 
     def upd
-      super
       @symbol.each{|key,sid|
         unless tbl=@sdb[sid.to_sym]
           Msg.warn("Table[#{sid}] not exist")

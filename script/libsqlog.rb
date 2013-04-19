@@ -5,7 +5,6 @@ require "libmsg"
 # Generate SQL command string
 module SqLog
   module Var
-    # @< (upd_proc*)
     # @ log,tid
     def self.extended(obj)
       Msg.type?(obj,Var)
@@ -79,7 +78,6 @@ module SqLog
 
   # Execute Sql Command to sqlite3
   module Exec
-    # @<< (upd_proc*)
     # @< log,tid
     # @ sqlcmd
     def self.extended(obj)

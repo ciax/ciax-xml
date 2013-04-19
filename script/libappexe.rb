@@ -19,7 +19,7 @@ module App
   end
 
   class Test < Interactive::Exe
-    require "libsymconv"
+    require "libsymupd"
     def initialize(adb)
       super()
       extend(Exe).init(adb)

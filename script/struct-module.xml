@@ -89,11 +89,11 @@
     </Status>
     <Sym>
       <Db parent="Db" extend="Msg.Ver"/>
-      <Conv extend_for="Status.Var" extend="Msg.Ver"/>
+      <Upd extend_for="Status.Var" extend="Msg.Ver"/>
     </Sym>
     <Watch>
       <Stat extend_for="Status.Var" extend="Msg.Ver"/>
-      <Conv extend_for="Stat"/>
+      <Upd extend_for="Stat"/>
       <View parent="ExHash"/>
       <Print extend_for="Print"/>
     </Watch>

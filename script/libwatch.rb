@@ -54,11 +54,11 @@ module Watch
     end
 
     def ext_conv(adb,stat)
-      extend(Conv).ext_conv(adb,stat)
+      extend(Upd).ext_conv(adb,stat)
     end
   end
 
-  module Conv
+  module Upd
     # @< (event_proc*)
     # @ wdb,val
     def self.extended(obj)

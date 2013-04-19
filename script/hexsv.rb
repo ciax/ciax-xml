@@ -2,5 +2,5 @@
 require "libhexexe"
 
 ENV['VER']||='init/'
-opt=Msg::GetOpts.new('e')
-Hex::List.new(opt).server(ARGV)
+Msg::GetOpts.new('e')
+Hex::List.new.server(ARGV)

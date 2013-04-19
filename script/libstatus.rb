@@ -1,18 +1,16 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libvar"
-require 'libelapse'
 
 module Status
   class Var < Var::Upd
-    # @< (upd_proc*)
     # @ last*
     attr_reader :last
     def initialize
       init_ver('Status',6)
       super('stat')
       @last={}
-      @updated=Time.now
+      @updated=UnixTime.now
     end
 
     def set(hash) #For Watch test
@@ -45,7 +43,6 @@ module Status
   end
 
   module Save
-    # @<< (upd_proc*)
     # @< (db),(base),(prefix)
     # @< (last)
     # @ lastsave
@@ -55,12 +52,12 @@ module Status
 
     def ext_save
       init_ver(self,6)
-      @lastsave=0
+      @lastsave=UnixTime.now
       self
     end
 
     def save(data=nil,tag=nil)
-      time=self['time'].to_f
+      time=self['time']
       if time > @lastsave
         super
         @lastsave=time
@@ -92,9 +89,9 @@ module Status
             h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
             case id
             when 'elapse'
-              h['msg']=Elapse.new(@stat)
+              h['msg']=Msg.elps_date(@stat['time'])
             when 'time'
-              h['msg']=Time.at(@stat['time'].to_f).to_s
+              h['msg']=@stat['time'].inspect
             else
               h['msg']=@stat['msg'][id]||@stat.get(id)
             end
@@ -143,8 +140,7 @@ end
 
 if __FILE__ == $0
   require "liblocdb"
-
-  opt=Msg::GetOpts.new('rh:')
+  Msg::GetOpts.new('vh:')
   id=ARGV.shift
   host=ARGV.shift
   stat=Status::Var.new
@@ -156,17 +152,17 @@ if __FILE__ == $0
     else
       adb=Loc::Db.new(id)[:app]
       stat.ext_file(adb['site_id'])
-      if host=opt['h']
+      if host=$opt['h']
         stat.ext_url(host).load
       else
         stat.load
       end
     end
     view=Status::View.new(adb,stat)
-    view.extend(Status::Print) unless opt['r']
+    view.extend(Status::Print) if $opt['v']
     puts view
   rescue UserError
-    opt.usage "(opt) [id] <(stat_file)"
+    $opt.usage "(opt) [id] <(stat_file)"
   end
   exit
 end

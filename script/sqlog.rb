@@ -7,21 +7,21 @@ require 'libstatus'
 require "libsqlog"
 require 'json'
 
-opt=Msg::GetOpts.new("ivfat",{"v"=>"verbose","i"=>"init table","a"=>"app mode","t"=>"test mode"})
+Msg::GetOpts.new("t",{"i"=>"init table","v"=>"verbose","a"=>"app output"})
 id = ARGV.shift
 begin
   ldb=Loc::Db.new(id)
   field=Field::Var.new
 rescue UserError
-  opt.usage("(opt) [id] (frmlog|fldlog)")
+  $opt.usage("(opt) [id] (frmlog|fldlog)")
   # input format 'sqlite3 -header'
 end
-if opt['a']
+if $opt['a']
   adb=ldb[:app]
   stat=Status::Var.new.ext_file(adb['site_id'])
   stat.ext_rsp(field,adb[:status])
-  stat.ext_sqlog(opt['t']&&"test")
-  if opt['i'] # Initial
+  stat.ext_sqlog($opt['t']&&"test")
+  if $opt['i'] # Initial
     stat.create
   else
     index=nil
@@ -39,7 +39,7 @@ if opt['a']
           stat.upd
           $stderr.print "."
         rescue
-          $stderr.print $! if opt['v']
+          $stderr.print $! if $opt['v']
           $stderr.print "x"
         end
       end
@@ -53,8 +53,8 @@ else
   cobj=Command.new
   cobj.add_extdom(fdb,:cmdframe)
   field.ext_rsp(cobj,fdb)
-  stat.ext_sqlog(opt['t']&&"test")
-  if opt['i'] # Initial
+  stat.ext_sqlog($opt['t']&&"test")
+  if $opt['i'] # Initial
     field.create
   else
     readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
@@ -62,7 +62,7 @@ else
         field.upd_logline(str)
         $stderr.print "."
       rescue
-        $stderr.print $! if opt['v']
+        $stderr.print $! if $opt['v']
         $stderr.print "x"
         next
       end

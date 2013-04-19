@@ -1,0 +1,85 @@
+## HOST,PORT,RSNAME
+# Lantro moircs
+!host,port,device
+celaeno,1,cfp
+celaeno,2,oma
+celaeno,3,slo
+celaeno,4,slo
+celaeno,5,lks
+celaeno,6,lks
+celaeno,7,ixe
+celaeno,8,var
+celaeno,9,tpg
+celaeno,10,tpg
+celaeno,11,tpg
+celaeno,12,fp
+celaeno,13,ken
+celaeno,14,ken
+#celaeno,15,omo
+#celaeno,16,k3n
+# Lantro Telemetory Opt
+#ltt-o,1,k3n
+#ltt-o,2,k3n
+#ltt-o,3,k3n
+#ltt-o,4,k3n
+#ltt-o,5,omg
+#ltt-o,6,omg
+#ltt-o,7,omg
+#ltt-o,8,omg
+#ltt-o,9,bbe
+#ltt-o,10,bbe
+#ltt-o,11,omh
+#ltt-o,12,k3n
+#ltt-o,13,k3n
+#ltt-o,14,k3n
+#ltt-o,15,omg
+# Lantro Telemetory Ir
+#ltt-i,1,k3n
+#ltt-i,2,k3n
+#ltt-i,3,k3n
+#ltt-i,4,omg
+#ltt-i,5,omg
+#ltt-i,6,omg
+#ltt-i,7,bbe
+#ltt-i,8,bbe
+#ltt-i,10,omg
+#ltt-i,11,k3n
+#ltt-i,12,omg
+#ltt-i,13,omg
+#ltt-i,14,k3n
+#ltt-i,15,k3n
+#ltt-i,16,omg
+#ltt-i,17,omg
+ltt-i,18,omc
+# Lantro Control CtrRoom
+ltc-c,1,srm1
+ltc-c,2,mlp
+ltc-c,3,mel
+ltc-c,4,ciax
+ltc-c,5,cxws2
+# Lantro OPSM
+lt-opsm,1,omo
+lt-opsm,2,olk
+lt-opsm,3,k3n
+lt-opsm,4,slo
+# Lantro APS
+aps-c,1,pul
+aps-c,2,omo
+aps-c,3,bbe
+aps-c,4,oma
+aps-c,5,oma
+aps-c,6,olk
+# Lantro Stand-by OPT
+lts-o,1,c2h
+lts-o,2,sv
+lts-o,3,c2h
+# Lantro Stand-by IR
+lts-i,1,c2h
+lts-i,2,sv
+lts-i,3,c2h
+# Lantro Compressor Control
+ltc-i,2,bbe
+ltc-i,3,bbe
+ltc-o,2,bbe
+ltc-o,3,bbe
+

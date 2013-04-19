@@ -8,7 +8,6 @@ require "libstream"
 # Output : Field
 module Frm
   module Rsp
-    # @<< (upd_proc*)
     # @< (base),(prefix)
     # @ cobj,sel,fds,frame,fary,cc
     def self.extended(obj)
@@ -30,6 +29,29 @@ module Frm
       }
     end
 
+    # Block accepts [frame,time]
+    # Result : executed block or not
+    def upd
+      if rid=@cobj.current[:response]
+        @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
+        hash=yield
+        self['time']=hash['time']
+        setframe(hash['data'])
+        true
+      else
+        verbose{"Send Only"}
+        @sel[:select]=nil
+        false
+      end
+    end
+
+    def upd_logline(str)
+      res=Logging.set_logline(str)
+      @cobj.setcmd(res['cmd'].split(':'))
+      upd{res}
+    end
+
+    private
     def setframe(frame)
       Msg.com_err("No Response") unless frame
       if tm=@sel['terminator']
@@ -52,29 +74,6 @@ module Frm
       self
     end
 
-    # Block accepts [frame,time]
-    # Result : executed block or not
-    def upd
-      if rid=@cobj.current[:response]
-        @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
-        hash=yield
-        set_time(hash['time']) #Field::set_time
-        setframe(hash['data'])
-        true
-      else
-        verbose{"Send Only"}
-        @sel[:select]=nil
-        false
-      end
-    end
-
-    def upd_logline(str)
-      res=Logging.set_logline(str)
-      @cobj.setcmd(res['cmd'].split(':'))
-      upd{res}
-    end
-
-    private
     # Process Frame to Field
     def getfield_rec(e0)
       e0.each{|e1|
@@ -156,20 +155,20 @@ end
 if __FILE__ == $0
   require "liblocdb"
   require "libcmdext"
-  opt=Msg::GetOpts.new("ml",{'m' => 'merge file','l' => 'get from logline'})
-  if opt['l']
-    opt.usage("-l < logline") if STDIN.tty?
+  Msg::GetOpts.new("",{'m' => 'merge file','l' => 'get from logline'})
+  if $opt['l']
+    $opt.usage("-l < logline") if STDIN.tty?
     str=gets(nil) || exit
     res=Logging.set_logline(str)
     id=res['id']
     cmd=res['cmd']
     frame=res['data']
   elsif STDIN.tty? || ARGV.size < 2
-    opt.usage("(opt) [id] [cmd] < string")
+    $opt.usage("(opt) [id] [cmd] < string")
   else
     id=ARGV.shift
     cmd=ARGV.shift
-    res={'time'=>Time.now}
+    res={'time'=>UnixTime.now}
     res['data']=gets(nil) || exit
   end
   fdb=Loc::Db.new(id)[:frm]
@@ -177,7 +176,7 @@ if __FILE__ == $0
   cobj.add_extdom(fdb,:cmdframe)
   cobj.setcmd(cmd.split(':'))
   field=Field::Var.new.ext_file(fdb['site_id'])
-  field.load if opt['m']
+  field.load if $opt['m']
   field.ext_rsp(cobj,fdb)
   field.upd{res}
   puts field

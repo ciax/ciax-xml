@@ -1,131 +1,132 @@
 #!/usr/bin/ruby
 require "libinteractive"
 require "libmcrdb"
-require "libmcrssn"
+require "libmcrrec"
 require "libcommand"
 require "libapplist"
 
 module Mcr
-  module Exe
-    # @< cobj,output,(intgrp),(interrupt),upd_proc*
-    # @ mdb,extdom
-    def init(mdb,cmd)
-      @mdb=Msg.type?(mdb,Mcr::Db)
-      @cobj=Command.new
-      @cobj.add_extdom(mdb,:macro)
-      @select=@cobj.setcmd(cmd).select
-warn @select #
-      self['id']=cmd.first
-      self
-    end
-  end
-
   class Sv < Interactive::Server
-    # @<< (cobj),(output),(intgrp),interrupt,(upd_proc*)
-    # @< (mdb),extdom
-    # @ dryrun,aint
-    attr_reader :crnt
-    def initialize(mdb,cmd,al,opt={})
-      super()
-      extend(Exe).init(mdb,cmd)
+    # @< cobj,output,(intgrp),interrupt,upd_proc*
+    # @ al,appint,mobj*
+    attr_accessor :mobj
+    def initialize(mobj,al)
+      @mobj=Msg.type?(mobj,Command)
       @al=Msg.type?(al,App::List)
-      @opt=Msg.type?(opt,Hash)
-      @session=Session.new(al,opt)
-      @upd_proc.add{
-        @output=@session[:record]
-        self['stat']=@session[:stat]
-      }.upd
-      @interrupt.reset_proc{|i|
-        self['msg']="Interrupted"
-      }
+      self['id']=@mobj.current.id
+      record=Record.new(self)
+      record.extend(Prt) unless $opt['r']
+      super(record)
     end
 
-    def exe
-      @session.newline({'type'=>'mcr','mcr'=>@cmd,'label'=>self[:label]})
-      @session.crnt.prt
-      macro(@session)
-      super
-      @session.fin
+    def start
+      self['stat']='run'
+      puts @output if Msg.fg?
+      macro(@mobj.current)
+      result('done')
       self
     rescue Interlock
-      @session.fin('fail')
+      result('error')
       self
-    rescue Broken,Interrupt
-      @interrupt.exe if @interrupt
-      @session.fin('broken')
-      Thread.exit
+    rescue Interrupt
+      @appint.exe if @appint
+      result('interrupted')
       self
-    rescue Quit
-      @session.fin('done')
-      self
+    ensure
+      @output.fin
     end
 
-    # Should be public for recursive call
-    def macro(session,depth=1)
-      session[:stat]='run'
-      @select.each{|e1|
-        next if session.newline(e1,depth)
-        case e1['type']
-        when 'exec'
-          session.crnt.prt
-          query(session,depth)
-          @al[e1['site']].exe(e1['cmd'])
-          @interrupt=@al[e1['site']].interrupt
-        when 'mcr'
-          session.crnt.prt
-          @index.dup.setcmd(e1['mcr']).macro(session,depth+1)
+    def ext_shell
+      extend(Shell).ext_shell
+    end
+
+    private
+    def macro(item,depth=1)
+      item.select.each{|e1|
+        begin
+          @crnt=@output.add_step(e1,depth){|site|
+            @al[site].stat
+          }
+          case e1['type']
+          when 'goal'
+            @crnt.skip? && raise(Skip)
+          when 'check'
+            @crnt.fail? && raise(Interlock)
+          when 'wait'
+            @crnt.timeout? && raise(Interlock)
+          when 'exec'
+            @crnt.exec{|site,cmd,depth|
+              aint=@al[site]
+              aint.exe(cmd)
+              @appint=aint.interrupt
+            }
+          when 'mcr'
+            puts @crnt if Msg.fg?
+            macro(@mobj.setcmd(e1['cmd']),depth+1)
+          end
+        rescue Retry
+          retry
+        rescue Skip
+          return
         end
       }
       self
     end
 
-    private
-    def query(session,depth)
-      session[:stat]="query"
-      if @opt['v']
-        prompt='  '*depth+Msg.color("Proceed?[Y/N]",5)
-        true while (res=Readline.readline(prompt,true)).empty?
-        raise Broken unless /[Yy]/ === res
-      elsif !@opt['n']
-        sleep
-      end
-      session[:stat]='run'
-    end
-
-    def ext_shell
-      extend(Shell).ext_shell
-      self
+    def result(str)
+      self['stat']=str
+      @output['result']=str
+      puts str if Msg.fg?
     end
   end
 
   module Shell
     include Interactive::Shell
+    def self.extended(obj)
+      Msg.type?(obj,Sv)
+    end
+
     def ext_shell
       super({'stat' => "(%s)"})
-      grp=@shdom.add_group('con','Control')
-      grp.add_item('y','Yes').reset_proc{|i|
-        if @crnt.alive?
-          @crnt.run
-          self['msg']="Continue"
-        end
-      }
-      grp.add_item('f','Force Temporaly')
-      grp.add_item('r','Retry Checking')
-      grp.add_item('s','Skip Execution')
-      grp.add_item('i','Ignore and Memory')
+      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
+      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
+      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
+      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
+      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
+      self
+    end
+
+    def shell
+      @th=Thread.new{ start }
+      super()
+    end
+
+    private
+    def ans(str)
+      return if @th.status != 'sleep'
+      @th[:query]=str
+      @th.run
     end
   end
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('vti')
-  opt['v']=true
+  Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
-    al=App::List.new(opt)
+    al=App::List.new
     mdb=Mcr::Db.new('ciax')
-    mint=Mcr::Sv.new(mdb,ARGV,al,opt)
-    mint.exe
+    mobj=Command.new
+    mobj.add_extdom(mdb,:macro)
+    mobj.setcmd(ARGV)
+    mint=Mcr::Sv.new(mobj,al)
+    if $opt['i']
+      mint.start
+    else
+      mint.ext_shell
+      mint.shell
+    end
   rescue InvalidCMD
-    opt.usage("[mcr] [cmd] (par)")
+    $opt.usage("[mcr] [cmd] (par)")
   end
 end

@@ -12,13 +12,13 @@ require "libupdate"
 # Add Shell Command (by Shell extention)
 
 module Interactive
-  # @ cobj,output,intgrp,interrupt,upd_proc
+  # @ cobj,output,intgrp,interrupt,upd_proc,conf
   class Exe < ExHash
-    attr_reader :upd_proc,:interrupt
-    def initialize
+    attr_reader :upd_proc,:interrupt,:output
+    def initialize(output={})
       init_ver(self,2)
-      @cobj=Command.new
-      @output=''
+      @cobj=Command.new(self)
+      @output=output
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
@@ -26,11 +26,14 @@ module Interactive
 
     # Sync only (Wait for other thread)
     def exe(cmd)
-      self['msg']='OK'
-      return @output if cmd.empty?
-      verbose{"Command #{cmd} recieved"}
-      @cobj.setcmd(cmd).exe
-      self['msg']
+      if cmd.empty?
+        self['msg']=''
+      else
+        self['msg']='OK'
+        verbose{"Command #{cmd} recieved"}
+        @cobj.setcmd(cmd).exe
+      end
+      self
     rescue
       self['msg']=$!.to_s
       raise $!
@@ -38,11 +41,11 @@ module Interactive
       @upd_proc.upd
     end
 
-    def ext_shell(pconv={},&p)
+    def ext_shell(pconv={},pstat=self,&p)
       if is_a? Shell
         Msg.warn("Multiple Initialize for Shell")
       else
-        extend(Shell).ext_shell(pconv,&p)
+        extend(Shell).ext_shell(pconv,pstat,&p)
       end
       self
     end
@@ -96,25 +99,27 @@ module Interactive
   class Client < Exe
     def client(host,port)
       host||='localhost'
-      udp=UDPSocket.open()
-      addr=Socket.pack_sockaddr_in(port.to_i,host)
+      @udp=UDPSocket.open()
+      @addr=Socket.pack_sockaddr_in(port.to_i,host)
       verbose{"Init/Client(#{self['id']})#{host}:#{port}"}
-      @cobj.def_proc.set{|item|
-        cl_exe(udp,addr,item.cmd)
-      }
-      @upd_proc.add{cl_exe(udp,addr,[])}
       self
     end
 
     private
     # For client
-    def cl_exe(udp,addr,cmd)
-      udp.send(JSON.dump(cmd),0,addr)
+    def exe(cmd)
+      @cobj.setcmd(cmd).exe unless cmd.empty?
+      @udp.send(JSON.dump(cmd),0,@addr)
       verbose{"Send [#{cmd}]"}
-      input=udp.recv(1024)
+      input=@udp.recv(1024)
       verbose{"Recv #{input}"}
       load(input) # ExHash#load -> Server Status
       self
+    rescue
+      self['msg']=$!.to_s
+      raise $!
+    ensure
+      @upd_proc.upd
     end
   end
 
@@ -128,10 +133,10 @@ module Interactive
     end
 
     # block gives command line convert
-    def ext_shell(pconv={},&p)
+    def ext_shell(pconv={},pstat=self,&p)
       init_ver('Shell/%s',2,self)
       #prompt convert table (j2s)
-      @pconv={'id'=>nil}.update(Msg.type?(pconv,Hash))
+      @prompt=Prompt.new({'id'=>nil}.update(pconv),pstat)
       @shdom=@cobj.add_domain('sh',5)
       @lineconv=p if p
       Readline.completion_proc=proc{|word|
@@ -154,16 +159,16 @@ module Interactive
     # mode gives special break (loop returns mode)
     def shell
       begin
-        @upd_proc.upd
-        while line=Readline.readline(prompt,true)
+        while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
           line=@lineconv.call(line) if @lineconv
-          puts exe(line.split(' '))
+          res=exe(line.split(' '))
+          puts res['msg'].empty? ? @output : res['msg']
         end
       rescue SelectID
         $!.to_s
       rescue Interrupt
-        puts exe(['interrupt'])
+        puts exe(['interrupt'])['msg']
         retry
       rescue UserError
         puts $!.to_s
@@ -172,18 +177,36 @@ module Interactive
     end
 
     private
-    def prompt
-      @pconv.keys.map{|k|
-        (@pconv[k]||'%s') % self[k] if self[k]
-      }.compact.join('')+'>'
+  end
+
+  class Prompt < Hash
+    def initialize(db,stat)
+      update Msg.type?(db,Hash)
+      @stat=Msg.type?(stat,Hash)
+    end
+
+    def to_s
+      str=''
+      each{|k,cmp|
+        next unless v=@stat[k]
+        case cmp
+        when String
+          str << cmp % v
+        when Hash
+          str << cmp[v]
+        else
+          str << v
+        end
+      }
+      str << '>'
     end
   end
 
   class List < Hash
     require "liblocdb"
     attr_accessor :init_proc
-    def initialize(opt=nil)
-      @opt=Msg.type?(opt||Msg::GetOpts.new,Msg::GetOpts)
+    def initialize
+      $opt||=Msg::GetOpts.new
       @init_proc=proc{} # Execute when new key is set
       super(){|h,id|
         int=yield id
@@ -195,7 +218,7 @@ module Interactive
     def exe(stm)
       self[stm.shift].exe(stm)
     rescue UserError
-     @opt.usage('(opt) [id] [cmd] [par....]')
+     $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
     def shell(id)
@@ -203,7 +226,7 @@ module Interactive
         int=(defined? yield) ? yield(id) : self[id]
       end while id=int.shell
     rescue UserError
-      @opt.usage('(opt) [id]')
+      $opt.usage('(opt) [id]')
     end
 
     def server(ary)
@@ -213,7 +236,7 @@ module Interactive
       }.empty? && self[nil]
       sleep
     rescue UserError
-      @opt.usage('(opt) [id] ....')
+      $opt.usage('(opt) [id] ....')
     end
   end
 end

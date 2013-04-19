@@ -53,7 +53,8 @@ module ExEnum
   end
 
   def load(json_str=nil)
-    deep_update(JSON.load(json_str||gets(nil)))
+    data=json_str||gets(nil)||Msg.abort("No data in file(#{ARGV})")
+    deep_update(JSON.load(data))
   end
 
   private

@@ -3,15 +3,15 @@ require 'libfrmsv'
 
 module Frm
   class List < Interactive::List
-    # @< opt,(init_proc*)
-    def initialize(opt=nil)
+    # @< (init_proc*)
+    def initialize
       super{|id|
         fdb=Loc::Db.new(id)[:frm]
-        if @opt['s'] or @opt['e']
-            par=@opt['s'] ? ['frmsim',fdb['site_id']] : []
+        if $opt['s'] or $opt['e']
+            par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
             fint=Frm::Sv.new(fdb,par)
-            fint=Frm::Cl.new(fdb,'localhost') if @opt['c']
-        elsif host=@opt['h'] or @opt['c'] or @opt['f']
+            fint=Frm::Cl.new(fdb,'localhost') if $opt['c']
+        elsif host=$opt['h'] or $opt['c'] or $opt['f']
           fint=Frm::Cl.new(fdb,host)
         else
           fint=Frm::Test.new(fdb)
@@ -26,6 +26,6 @@ module Frm
 end
 
 if __FILE__ == $0
-  opt=Msg::GetOpts.new('e')
-  puts Frm::List.new(opt).exe(ARGV)
+  Msg::GetOpts.new('e')
+  puts Frm::List.new.exe(ARGV)
 end

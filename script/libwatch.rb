@@ -5,7 +5,6 @@ require 'librerange'
 
 module Watch
   class Var < Var
-    # @< (upd_proc*)
     # @ event_proc*
     attr_accessor :event_proc
 
@@ -14,6 +13,8 @@ module Watch
       super('watch')
       self['period']=300
       self['interval']=0.1
+      self['astart']=nil
+      self['alast']=0
       #For Array element
       ['active','exec','block','int'].each{|i| self[i]||=ExArray.new}
       #For Hash element
@@ -53,12 +54,11 @@ module Watch
     end
 
     def ext_conv(adb,stat)
-      extend(Conv).ext_conv(adb,stat)
+      extend(Upd).ext_conv(adb,stat)
     end
   end
 
-  module Conv
-    # @<< (upd_proc*)
+  module Upd
     # @< (event_proc*)
     # @ wdb,val
     def self.extended(obj)
@@ -91,6 +91,7 @@ module Watch
       return self if self['crnt']['time'] == @stat['time']
       upd_last
       hash={'int' =>[],'exec' =>[],'block' =>[]}
+      noact=self['active'].empty?
       self['active'].clear
       @wdb[:stat].each{|i,v|
         next unless check(i)
@@ -100,6 +101,9 @@ module Watch
           a << n if n && !a.include?(n)
         }
       }
+      lstart=self['astart']
+      self['astart']=(noact & active?) ? UnixTime.now : nil
+      self['alast']=UnixTime.now-lstart if lstart && !self['astart']
       hash.each{|k,a|
         self[k].replace a.flatten(1).uniq
       }
@@ -151,7 +155,7 @@ module Watch
     def initialize(adb,watch)
       wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => []}
       @watch=Msg.type?(watch,Var)
-      ['exec','block','int'].each{|i|
+      ['exec','block','int','astart','alast'].each{|i|
         self[i]=@watch[i]
       }
       self['stat']={}
@@ -216,10 +220,13 @@ module Watch
           end
           str << ")\n"
         }
-      }.empty?
-      str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
-      str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
-      str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
+      }
+      atime=Msg.elps_date(self['atime'])
+      str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
+      str << "  "+Msg.color("LastActive",2)+"\t: #{self['alast']}\n"
+      str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}"
+      str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}"
+      str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}"
     end
 
     private
@@ -234,24 +241,20 @@ if __FILE__ == $0
 
   list={}
   list['t']='test conditions[key=val,..]'
-  list['r']="raw data"
-  list["v"]="view data"
-  opt=Msg::GetOpts.new('rvt:',list)
+  Msg::GetOpts.new('rt:',list)
   id=ARGV.shift
   begin
     adb=Loc::Db.new(id)[:app]
   rescue InvalidID
-    opt.usage("(opt) [id]")
+    $opt.usage("(opt) [id]")
   end
   stat=Status::Var.new.ext_file(adb['site_id']).load
   watch=Watch::Var.new.ext_file(adb['site_id']).ext_conv(adb,stat).upd
-  unless opt['r']
-    wview=Watch::View.new(adb,watch)
-    unless opt['v']
-      wview.ext_prt
-    end
+  wview=Watch::View.new(adb,watch)
+  unless $opt['r']
+    wview.ext_prt
   end
-  if t=opt['t']
+  if t=$opt['t']
     stat.ext_save.str_update(t).upd.save
     watch.ext_save.upd.save
   end

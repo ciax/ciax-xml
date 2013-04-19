@@ -37,15 +37,16 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:domain,:def_proc
+  attr_reader :current,:domain,:def_proc,:conf
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
-  def initialize
+  def initialize(conf={:exclude =>''})
     init_ver(self)
     @current=nil
     @domain={}
     @def_proc=ExeProc.new
+    @conf=Msg.type?(conf,Hash)
   end
 
   def add_domain(id,color=2)
@@ -56,6 +57,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     key?(id) || error
+    /^(#{@conf[:exclude]})$/i === id && error
     verbose{"SetCMD (#{id},#{par})"}
     @current=self[id].set_par(par)
   end
@@ -70,7 +72,7 @@ class Command < ExHash
   end
 
   class Domain < ExHash
-    attr_reader :group,:def_proc
+    attr_reader :index,:group,:def_proc
     def initialize(index,color=2,def_proc=ExeProc.new)
       init_ver(self)
       @index=Msg.type?(index,Command)
@@ -80,8 +82,8 @@ class Command < ExHash
     end
 
     def add_group(gid,caption,column=2)
-      gat={'caption' => caption,'column' => column,'color' => @color}
-      @group[gid]=Group.new(@index,gat,@def_proc)
+      attr={'caption' => caption,'column' => column,'color' => @color}
+      @group[gid]=Group.new(@index,attr,@def_proc)
     end
 
     def reset_proc(&p)
@@ -97,11 +99,11 @@ class Command < ExHash
   end
 
   class Group < ExHash
-    attr_accessor :def_proc
-    def initialize(index,gat,def_proc=ExeProc.new)
+    attr_accessor :index,:def_proc
+    def initialize(index,attr,def_proc=ExeProc.new)
       init_ver(self)
-      @gat=Msg.type?(gat,Hash)
-      @labeldb=Msg::CmdList.new(gat)
+      @attr=Msg.type?(attr,Hash)
+      @labeldb=Msg::CmdList.new(attr,index.conf)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
@@ -118,7 +120,7 @@ class Command < ExHash
 
     #property = {:label => 'titile',:parameter => Array}
     def update_items(labels)
-      (@gat[:list]||labels.keys).each{|id|
+      (@attr[:list]||labels.keys).each{|id|
         @labeldb[id]=labels[id]
         self[id]=Item.new(id,@index)
       }
@@ -140,7 +142,7 @@ class Command < ExHash
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:def_proc
+    attr_reader :index,:id,:par,:cmd,:def_proc
     def initialize(id,index,def_proc=ExeProc.new)
       @id=id
       @index=Msg.type?(index,Command)
@@ -165,6 +167,10 @@ class Command < ExHash
       self[:cmd]=@cmd.join(':') # Used by macro
       verbose{"SetPAR: #{par}"}
       self
+    end
+
+    def to_s
+      Msg.item(@id,self[:label])
     end
 
     private

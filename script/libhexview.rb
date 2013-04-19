@@ -33,7 +33,6 @@ module Hex
     end
 
     def to_s
-      @stat.load
       @res[3]=b2i(@int['watch'])
       @res[4]=b2i(@int['isu'])
       @res[6]=''
@@ -70,7 +69,7 @@ end
 if __FILE__ == $0
   require "libstatus"
   Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-  stat=Status::Var.new
+  stat=Status::Var.new.load
   int=Hex::View.new({},stat)
   puts int
 end

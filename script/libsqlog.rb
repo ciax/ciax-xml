@@ -5,7 +5,6 @@ require "libmsg"
 # Generate SQL command string
 module SqLog
   module Var
-    # @< (upd_proc*)
     # @ log,tid
     def self.extended(obj)
       Msg.type?(obj,Var)
@@ -34,8 +33,8 @@ module SqLog
     def upd
       super
       val=expand
-      key=val.keys.map{|s| s.inspect}.join(',')
-      val=val.values.map{|s| s.inspect}.join(',')
+      key=val.keys.map{|s| s.to_s}.join(',')
+      val=val.values.map{|s| s.to_s}.join(',')
       verbose{"SqLog/Update(#{self['time']}):[#{self['id']}/#{@tid}]"}
       @log.push "insert or ignore into #{@tid} (#{key}) values (#{val});"
       self
@@ -79,7 +78,6 @@ module SqLog
 
   # Execute Sql Command to sqlite3
   module Exec
-    # @<< (upd_proc*)
     # @< log,tid
     # @ sqlcmd
     def self.extended(obj)
@@ -115,6 +113,7 @@ module SqLog
         IO.popen(@sqlcmd,'w'){|f|
           f.puts sql
         }
+        Msg.abort("Sqlite3 input error") unless $?.success?
         verbose{"SqLog/Save complete (#{self['id']})"}
         @log.clear
       end

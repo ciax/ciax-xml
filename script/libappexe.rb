@@ -19,11 +19,11 @@ module App
   end
 
   class Test < Interactive::Exe
-    require "libsymconv"
+    require "libsymupd"
     def initialize(adb)
       super()
       extend(Exe).init(adb)
-      @stat.extend(Sym::Conv).load
+      @stat.ext_sym(adb).load
       @watch.ext_conv(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
       @intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|
@@ -48,7 +48,7 @@ module App
       }
       @cobj.def_proc.set{|item|
         @watch.block?(item.cmd)
-        @stat.set_time.upd
+        @stat.upd
         @watch.upd
       }
       @upd_proc.add{

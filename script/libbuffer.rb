@@ -79,8 +79,8 @@ class Buffer
   def flush
     verbose{"SUB:Waiting"}
     # @q can not be empty depending on @flush_proc
-    @svst['isu']=false if @q.empty?
     @flush_proc.upd
+    @svst['isu']=false if @q.empty?
   end
 
   #inp is frmcmd array (ary of ary)

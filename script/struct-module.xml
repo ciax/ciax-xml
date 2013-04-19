@@ -2,8 +2,7 @@
 <module>
   <general>
     <Update parent="Array" extend="Msg.Ver"/>
-    <Interval parent="Time"/>
-    <Elapse parent="Interval" extend="Msg.Ver"/>
+    <Elapse parent="Time" extend="Msg.Ver"/>
     <Circular parent="Object" extend="Msg.Ver"/>
     <Repeat parent="Object" extend="Msg.Ver"/>
     <ReRange parent="Object" include="Comparable"/>
@@ -90,11 +89,11 @@
     </Status>
     <Sym>
       <Db parent="Db" extend="Msg.Ver"/>
-      <Conv extend_for="Status.Var" extend="Msg.Ver"/>
+      <Upd extend_for="Status.Var" extend="Msg.Ver"/>
     </Sym>
     <Watch>
       <Stat extend_for="Status.Var" extend="Msg.Ver"/>
-      <Conv extend_for="Stat"/>
+      <Upd extend_for="Stat"/>
       <View parent="ExHash"/>
       <Print extend_for="Print"/>
     </Watch>

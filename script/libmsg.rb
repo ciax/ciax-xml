@@ -12,19 +12,28 @@ class InvalidCMD < InvalidID; end
 # When invalid Parameter, continue in shell/server
 class InvalidPAR < InvalidCMD; end
 
-# Mangaged Error
-class ManagedError < RuntimeError; end
-class SelectID < ManagedError; end
-# Broken session in Macro
-class Broken < ManagedError; end
-class Interlock < ManagedError; end
-class Quit < ManagedError; end
+# Mangaged Exception(Long Jump)
+class LongJump < RuntimeError; end
+class SelectID < LongJump; end
+# Macro
+class Interlock < LongJump; end
+class Retry < LongJump; end
+class Skip < LongJump; end
 
 # Communication Error
 class CommError < UserError; end
 # Configuration Error
 class ConfigError < RuntimeError; end
 
+class UnixTime < Time
+  def to_s
+    "%.3f" % to_f
+  end
+
+  def self.parse(str)
+    UnixTime.at(*str.split('.').map{|i| i.to_i})
+  end
+end
 
 module Msg
   # Should be extended in module/class
@@ -88,13 +97,14 @@ module Msg
 
   # Hash of title
   class CmdList < Hash
-    def initialize(attr,errclass=InvalidCMD)
+    attr_accessor :conf
+    def initialize(attr,conf={:exclude =>''})
       Msg.type?(attr,Hash)
-      @errclass=Msg.type?(errclass,Class)
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
       @caption='==== '+Msg.color(caption,color)+' ====' if caption
+      @conf=Msg.type?(conf,Hash)
     end
 
     # For ver 1.9 or more
@@ -108,7 +118,7 @@ module Msg
 
     def to_s
       page=[]
-      keys.each_slice(@col){|a|
+      keys.reject{|i| /^(#{@conf[:exclude]})$/i === i}.each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact
@@ -119,7 +129,7 @@ module Msg
     end
 
     def error
-      raise @errclass,to_s
+      raise InvalidCMD,to_s
     end
   end
 
@@ -137,17 +147,18 @@ module Msg
       optdb['s']='simulation mode'
       optdb['t']='test mode'
       #For appearance
-      optdb['r']='raw display mode'
-      optdb['v']='view display mode'
-      #For Macro
-      optdb['n']='nonstop mode'
+      optdb['r']='raw data output'
+      optdb['v']='visual output'
+      #For debug
       optdb['d']='debug mode'
       optdb.update(db)
+      str << db.keys.join('')
       @list=str.split('').map{|c|
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact
       update(ARGV.getopts(str))
       require 'debug' if self['d']
+      $opt=self
     end
 
     def usage(str)
@@ -204,10 +215,10 @@ module Msg
     Kernel.abort([color(msg,1),$!.to_s].join("\n"))
   end
 
-  def usage(str,opt=[],code=1)
+  def usage(str,optlist=[])
     Kernel.warn("Usage: #{$0.split('/').last} #{str}")
-    opt.each{|s| Kernel.warn s}
-    exit(code)
+    optlist.each{|s| Kernel.warn s}
+    exit
   end
 
   def exit(code=1)
@@ -230,6 +241,11 @@ module Msg
     raise "Data type error <#{name.class}> for (#{mod.to_s})"
   end
 
+  # Thread is main
+  def fg?
+    Thread.current == Thread.main
+  end
+
   # Display methods
   def item(key,val)
     indent(1)+color("%-6s" % key,3)+": #{val}"
@@ -237,6 +253,25 @@ module Msg
 
   def now
     "%.3f" % Time.now.to_f
+  end
+
+  def elps_sec(time)
+    return 0 unless time
+    "%.3f" % (Time.now.to_f-time.to_f)
+  end
+
+  def elps_date(time)
+    return 0 unless time
+    sec=(Time.now.to_f-time.to_f)
+    if sec > 86400
+      "%.1f days" % (sec/86400)
+    elsif sec > 3600
+      Time.at(sec).utc.strftime("%H:%M")
+    elsif sec > 60
+      Time.at(sec).utc.strftime("%M'%S\"")
+    else
+      Time.at(sec).utc.strftime("%S\"%L")
+    end
   end
 
   # Color 1=red,2=green,4=blue,8=bright

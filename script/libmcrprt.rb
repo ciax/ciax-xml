@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 # For Macro Line (Array)
-
 module Mcr
   module Prt
     def self.extended(obj)
@@ -8,69 +7,64 @@ module Mcr
     end
 
     def to_s
-      title+result
-    end
-
-    def title
-      msg=Msg.indent(self['depth']||0)
-      case self['type']
-      when 'goal'
-        msg << Msg.color('Done?',6)+":#{self['label']}"
-      when 'check'
-        msg << Msg.color('Check',6)+":#{self['label']}"
-      when 'wait'
-        msg << Msg.color('Waiting',6)+":#{self['label']} "
-      when 'mcr'
-        msg << Msg.color("MACRO",3)
-        msg << ":#{self['mcr'].join(' ')}(#{self['label']} )"
-        msg << "(async)" if self['async']
-      when 'exec'
-        msg << Msg.color("EXEC",13)
-        msg << ":#{self['cmd'].join(' ')}(#{self['site']})"
+      msg=title+result
+      if st=self['steps']
+        st.each{|i|
+          msg << title(i)+result(i)
+        }
       end
       msg
     end
 
-    def result
-      case self['type']
+    def title(obj=self)
+      msg=Msg.indent(obj['depth'].to_i)
+      case obj['type']
       when 'goal'
-        msg=' -> '
-        msg << Msg.color(self['fault'] ? "NOT YET": "YES(SKIP)",2)
+        msg << Msg.color('Done?',6)+":#{obj['label']}"
       when 'check'
-        msg=' -> '
-        if self['fault']
-          msg << Msg.color("NG",1)+"\n"
-          msg << getcond
-        else
-          msg << Msg.color("OK",2)
-        end
+        msg << Msg.color('Check',6)+":#{obj['label']}"
       when 'wait'
-        ret=self['retry'].to_i
-        msg='*'*(ret/10)+'.'*(ret % 10)
-        if self['timeout']
-          msg << ' -> '+Msg.color("Timeout(#{self['retry']})",1)+"\n"
-          msg << getcond
-        elsif !key?('stat')
-          msg << ' -> '+Msg.color("OK",2)
-        end
-      else
-        msg=''
+        msg << Msg.color('Waiting',6)+":#{obj['label']} "
+      when 'mcr'
+        msg << Msg.color("MACRO",3)
+        msg << ":#{obj['cmd'].join(' ')}(#{obj['label']})"
+        msg << "(async)" if obj['async']
+      when 'exec'
+        msg << Msg.color("EXEC",13)
+        msg << ":#{obj['cmd'].join(' ')}(#{obj['site']})"
       end
-      msg+"\n"
+      msg
     end
 
-    private
-    def getcond
+    def result(obj=self)
       msg=''
-      if c=self['fault']
-        c.each{|h|
-          msg << Msg.indent((self['depth']||0)+1)
-          if h['upd']
-            msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
-          else
-            msg << Msg.color("#{h['site']}",3)+" is not updated"
-          end
-        }
+      if res=obj['result']
+        msg << ' -> '
+        title=res.capitalize
+        title << "(#{obj['retry']}/#{obj['max']})" if obj['retry']
+        color=(/pass|wait/ === res) ? 2 : 1
+        msg << Msg.color(title,color)+"\n"
+        if c=obj['mismatch']
+          c.each{|h|
+            msg << Msg.indent(obj['depth'].to_i+1)
+            if h['upd']
+              msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}\n"
+            else
+              msg << Msg.color("#{h['site']}",3)+" is not updated\n"
+            end
+          }
+        end
+      else
+        msg << "\n"
+      end
+      msg << action(obj)
+    end
+
+    def action(obj=self)
+      msg=''
+      if act=obj['action']
+        msg << Msg.indent(obj['depth'].to_i+1)
+        msg << Msg.color(act.capitalize,8)+"\n"
       end
       msg
     end

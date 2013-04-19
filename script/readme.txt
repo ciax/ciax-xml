@@ -54,3 +54,9 @@ frmsh (intfrm -t)/ used when running site is different from intapp
 
 ## Project mode
   set PROJ to limit Device ID (is in idb-{PROJ}.xml)
+
+## Source comment legend
+ #@ : instance variable list
+  @< : parent's var (< is added as the number of ancestor generaton) 
+       parenthetic var is not used in the class
+       * is added for exported var

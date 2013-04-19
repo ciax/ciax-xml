@@ -1,9 +1,6 @@
 #!/usr/bin/ruby
 require "libfrmexe"
-require "libmsg"
 require "libfrmrsp"
-require "libstream"
-require "libsqlog"
 require "libfrmcmd"
 
 module Frm

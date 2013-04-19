@@ -34,7 +34,7 @@ module Hex
         @log_proc.upd
       }
       @upd_proc.add{
-        aint.exe([])
+        aint.stat.load
       }
       if logging
         logging=Logging.new('hex',self['id'],@adb['version']){
@@ -57,14 +57,14 @@ module Hex
   end
 
   class List < Interactive::List
-    def initialize(opt=nil)
-      @al=App::List.new(opt)
+    def initialize
+      @al=App::List.new
       @aint={}
       super{|id|
         ldb=Loc::Db.new(id)
-        if @opt['e'] or @opt['s'] or @opt['f'] or @opt['h'] or @opt['c']
+        if ['e','s','f','h','c'].any?{|i| $opt[i]}
           @aint[id]=@al[ldb[:app]['site_id']]
-          hint=Sv.new(ldb[:app],@aint[id],@opt['e'])
+          hint=Sv.new(ldb[:app],@aint[id],$opt['e'])
         else
           hint=Test.new(ldb[:app])
         end

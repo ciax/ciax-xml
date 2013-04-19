@@ -3,7 +3,7 @@ require "libappexe"
 require 'libfrmlist'
 require "libappcmd"
 require "libapprsp"
-require "libsymconv"
+require "libsymupd"
 require "libbuffer"
 require "libsqlog"
 require "thread"

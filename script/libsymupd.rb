@@ -2,16 +2,16 @@
 require "libmsg"
 require "libstatus"
 
-# Status to Sym::Conv (String with attributes)
+# Status to Sym::Upd (String with attributes)
 module Sym
-  module Conv
+  module Upd
     require "libsymdb"
     def self.extended(obj)
-      Msg.type?(obj,Status::Var,Var::Upd)
+      Msg.type?(obj,Status::Var)
     end
 
     def ext_conv(db)
-      init_ver('SymConv')
+      init_ver('SymUpd')
       Msg.type?(db,App::Db)
       ads=db[:status]
       self['ver']=db['version'].to_i
@@ -23,7 +23,7 @@ module Sym
     end
 
     def upd
-      super
+      super # Status#upd
       @symbol.each{|key,sid|
         unless tbl=@sdb[sid.to_sym]
           Msg.warn("Table[#{sid}] not exist")
@@ -56,7 +56,7 @@ end
 
 class Status::Var
   def ext_sym(adb)
-    extend(Sym::Conv).ext_conv(adb)
+    extend(Sym::Upd).ext_conv(adb)
   end
 end
 

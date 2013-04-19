@@ -99,25 +99,27 @@ module Interactive
   class Client < Exe
     def client(host,port)
       host||='localhost'
-      udp=UDPSocket.open()
-      addr=Socket.pack_sockaddr_in(port.to_i,host)
+      @udp=UDPSocket.open()
+      @addr=Socket.pack_sockaddr_in(port.to_i,host)
       verbose{"Init/Client(#{self['id']})#{host}:#{port}"}
-      @cobj.def_proc.set{|item|
-        cl_exe(udp,addr,item.cmd)
-      }
-      @upd_proc.add{cl_exe(udp,addr,[])}
       self
     end
 
     private
     # For client
-    def cl_exe(udp,addr,cmd)
-      udp.send(JSON.dump(cmd),0,addr)
+    def exe(cmd)
+      @cobj.setcmd(cmd).exe unless cmd.empty?
+      @udp.send(JSON.dump(cmd),0,@addr)
       verbose{"Send [#{cmd}]"}
-      input=udp.recv(1024)
+      input=@udp.recv(1024)
       verbose{"Recv #{input}"}
       load(input) # ExHash#load -> Server Status
       self
+    rescue
+      self['msg']=$!.to_s
+      raise $!
+    ensure
+      @upd_proc.upd
     end
   end
 

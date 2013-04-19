@@ -29,28 +29,6 @@ module Frm
       }
     end
 
-    def setframe(frame)
-      Msg.com_err("No Response") unless frame
-      if tm=@sel['terminator']
-        frame.chomp!(eval('"'+tm+'"'))
-        verbose{"Remove terminator:[#{frame}] by [#{tm}]" }
-      end
-      if dm=@sel['delimiter']
-        @fary=frame.split(eval('"'+dm+'"'))
-        verbose{"Split:[#{frame}] by [#{dm}]" }
-      else
-        @fary=[frame]
-      end
-      @frame.set(@fary.shift)
-      getfield_rec(@sel[:main])
-      if cc=unset('cc') #Field::unset
-        cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
-        verbose{"Verify:CC OK <#{cc}>"}
-      end
-      verbose{"Rsp/Update(#{self['time']})"} #Field::get
-      self
-    end
-
     # Block accepts [frame,time]
     # Result : executed block or not
     def upd
@@ -74,6 +52,28 @@ module Frm
     end
 
     private
+    def setframe(frame)
+      Msg.com_err("No Response") unless frame
+      if tm=@sel['terminator']
+        frame.chomp!(eval('"'+tm+'"'))
+        verbose{"Remove terminator:[#{frame}] by [#{tm}]" }
+      end
+      if dm=@sel['delimiter']
+        @fary=frame.split(eval('"'+dm+'"'))
+        verbose{"Split:[#{frame}] by [#{dm}]" }
+      else
+        @fary=[frame]
+      end
+      @frame.set(@fary.shift)
+      getfield_rec(@sel[:main])
+      if cc=unset('cc') #Field::unset
+        cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
+        verbose{"Verify:CC OK <#{cc}>"}
+      end
+      verbose{"Rsp/Update(#{self['time']})"} #Field::get
+      self
+    end
+
     # Process Frame to Field
     def getfield_rec(e0)
       e0.each{|e1|

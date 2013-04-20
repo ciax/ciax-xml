@@ -21,16 +21,8 @@ module App
         else
           aint=Test.new(ldb[:app],fi)
         end
+        aint.set_switch('dev',"Change Device",@list)
       }
-    end
-
-    # shell and server are exclusive
-    def shell(id)
-      type='app'
-      @init_proc=proc{|int|
-        int.set_switch('dev',"Change Device",@list)
-      }
-      super
     end
   end
 end

@@ -5,28 +5,23 @@ require "libapplist"
 require "libhexview"
 
 module Hex
-  module Exe
-    def init(adb)
+  class Exe < Interactive::Exe
+    def initialize(adb)
       @adb=Msg.type?(adb,Db)
       init_ver('Hex',2)
       self['id']=@adb['site_id']
+      stat=Status::Var.new.ext_file(@adb['site_id'])
+      super(View.new(self,stat))
       @extdom=@cobj.add_extdom(@adb,:command)
-      @output=View.new(self,Status::Var.new.ext_file(@adb['site_id']))
       self
     end
   end
 
-  class Test < Interactive::Exe
-    def initialize(adb)
-      super()
-      extend(Exe).init(adb)
-    end
-  end
+  class Test < Exe;end
 
-  class Sv < Interactive::Server
+  class Sv < Exe
     def initialize(adb,aint,logging=nil)
-      super()
-      extend(Exe).init(adb)
+      super(adb)
       @output=View.new(aint,aint.stat)
       @log_proc=UpdProc.new
       @extdom.reset_proc{|item|

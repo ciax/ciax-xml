@@ -215,7 +215,7 @@ module Interactive
 
     def shell(id)
       begin
-        int=(defined? yield) ? yield(id) : self[id]
+        int=self[id]
       end while id=int.shell
     rescue UserError
       $opt.usage('(opt) [id]')

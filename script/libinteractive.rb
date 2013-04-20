@@ -13,7 +13,7 @@ require "libupdate"
 
 module Interactive
   # @ cobj,output,intgrp,interrupt,upd_proc,conf
-  # @ pconv,shdom,lineconv
+  # @ prompt,shdom
   class Exe < ExHash
     attr_reader :upd_proc,:interrupt,:output,:shdom
     # block gives command line convert
@@ -71,7 +71,7 @@ module Interactive
       begin
         while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
-          line=lineconv(line)
+          line=shell_conv(line)
           res=exe(line.split(' '))
           puts res['msg'].empty? ? @output : res['msg']
         end
@@ -103,7 +103,7 @@ module Interactive
             line.chomp!
             verbose{"Recv:#{line} is #{line.class}"}
             begin
-              exe(filter_in(line))
+              exe(server_input(line))
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError
@@ -111,7 +111,7 @@ module Interactive
               self['msg']=$!.to_s
             end
             verbose{"Send:#{self['msg']}"}
-            udp.send(filter_out,0,addr[2],addr[1])
+            udp.send(server_output,0,addr[2],addr[1])
           }
         }
       }
@@ -119,18 +119,18 @@ module Interactive
     end
 
     private
-    def filter_in(line)
+    def server_input(line)
       JSON.load(line)
     rescue JSON::ParserError
       raise UserError,"NOT JSON"
     end
 
-    def filter_out
+    def server_output
       to_j
     end
 
     # For shell
-    def lineconv(line)
+    def shell_conv(line)
       line
     end
   end

@@ -25,7 +25,7 @@ module App
     end
 
     private
-    def lineconv(line)
+    def shell_conv(line)
       line='set '+line if /^[^ ]+\=/ === line
       line
     end

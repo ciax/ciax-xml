@@ -22,7 +22,7 @@ module Frm
     end
 
     private
-    def lineconv(line)
+    def shell_conv(line)
       line='set '+line.tr('=',' ') if /^[^ ]+\=/ === line
       line
     end

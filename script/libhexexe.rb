@@ -41,12 +41,12 @@ module Hex
     end
 
     private
-    def filter_in(line)
+    def server_input(line)
       return [] if /^(strobe|stat)/ === line
       line.split(' ')
     end
 
-    def filter_out
+    def server_output
       @output.to_s
     end
   end

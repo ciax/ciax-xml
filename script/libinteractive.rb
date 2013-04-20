@@ -52,16 +52,6 @@ module Interactive
       @upd_proc.upd
     end
 
-    def ext_client(host,port)
-      extend(Client).ext_client(host,port)
-    end
-
-    def set_switch(key,title,list)
-      grp=@shdom.add_group(key,title)
-      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
-      self
-    end
-
     # invoked many times
     # '^D' gives exit break
     # mode gives special break (loop returns mode)
@@ -115,6 +105,16 @@ module Interactive
           }
         }
       }
+      self
+    end
+
+    def ext_client(host,port)
+      extend(Client).ext_client(host,port)
+    end
+
+    def set_switch(key,title,list)
+      grp=@shdom.add_group(key,title)
+      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
       self
     end
 
@@ -190,14 +190,10 @@ module Interactive
 
   class List < Hash
     require "liblocdb"
-    attr_accessor :init_proc
     def initialize
       $opt||=Msg::GetOpts.new
-      @init_proc=proc{} # Execute when new key is set
       super(){|h,id|
-        int=yield id
-        @init_proc.call(int)
-        h[id]=int
+        h[id]=yield id
       }
     end
 

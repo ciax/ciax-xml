@@ -3,7 +3,6 @@ require "libfrmlist"
 
 module App
   class List < Interactive::List
-    # @< init_proc*
     # @ fl,fint,list
     require "libappsv"
     def initialize

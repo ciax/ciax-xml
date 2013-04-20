@@ -6,7 +6,7 @@ require "libcommand"
 require "libapplist"
 
 module Mcr
-  class Sv < Interactive::Server
+  class Sv < Interactive::Exe
     # @< cobj,output,(intgrp),interrupt,upd_proc*
     # @ al,appint,mobj*
     attr_accessor :mobj

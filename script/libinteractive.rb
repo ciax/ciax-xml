@@ -148,7 +148,6 @@ module Interactive
       self
     end
 
-    private
     # For client
     def exe(cmd)
       @cobj.setcmd(cmd).exe unless cmd.empty?

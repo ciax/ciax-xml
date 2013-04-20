@@ -71,12 +71,5 @@ module Hex
         hint
       }
     end
-
-    def shell(id)
-      @init_proc=proc{|int|
-        int.ext_shell
-      }
-      super
-    end
   end
 end

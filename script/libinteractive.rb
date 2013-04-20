@@ -13,15 +13,26 @@ require "libupdate"
 
 module Interactive
   # @ cobj,output,intgrp,interrupt,upd_proc,conf
+  # @ pconv,shdom,lineconv
   class Exe < ExHash
-    attr_reader :upd_proc,:interrupt,:output
-    def initialize(output={})
+    attr_reader :upd_proc,:interrupt,:output,:shdom
+    # block gives command line convert
+    def initialize(output={},pconv={},pstat=self)
       init_ver(self,2)
       @cobj=Command.new(self)
       @output=output
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
+      # For Shell
+      @prompt=Prompt.new({'id'=>nil}.update(pconv),pstat)
+      @shdom=@cobj.add_domain('sh',5)
+      Readline.completion_proc=proc{|word|
+        @cobj.keys.grep(/^#{word}/)
+      }
+      grp=@shdom.add_group('sh',"Shell Command")
+      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+
     end
 
     # Sync only (Wait for other thread)
@@ -41,17 +52,38 @@ module Interactive
       @upd_proc.upd
     end
 
-    def ext_shell(pconv={},pstat=self,&p)
-      if is_a? Shell
-        Msg.warn("Multiple Initialize for Shell")
-      else
-        extend(Shell).ext_shell(pconv,pstat,&p)
-      end
+    def ext_client(host,port)
+      extend(Client).ext_client(host,port)
+    end
+
+    def set_switch(key,title,list)
+      grp=@shdom.add_group(key,title)
+      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
       self
     end
 
-    def ext_client(host,port)
-      extend(Client).ext_client(host,port)
+    # invoked many times
+    # '^D' gives exit break
+    # mode gives special break (loop returns mode)
+    def shell
+      init_ver('Shell/%s',2,self)
+      verbose{"Init/Shell(#{self['id']})"}
+      begin
+        while line=Readline.readline(@prompt.to_s,true)
+          break if /^q/ === line
+          line=lineconv(line)
+          res=exe(line.split(' '))
+          puts res['msg'].empty? ? @output : res['msg']
+        end
+      rescue SelectID
+        $!.to_s
+      rescue Interrupt
+        puts exe(['interrupt'])['msg']
+        retry
+      rescue UserError
+        puts $!.to_s
+        retry
+      end
     end
 
     # invoked once
@@ -96,6 +128,11 @@ module Interactive
     def filter_out
       to_j
     end
+
+    # For shell
+    def lineconv(line)
+      line
+    end
   end
 
   module Client
@@ -127,62 +164,6 @@ module Interactive
     ensure
       @upd_proc.upd
     end
-  end
-
-  # Shell has internal status for prompt
-  module Shell
-    # @< cobj,output,(intgrp),(interrupt),upd_proc
-    # @ pconv,shdom,lineconv
-    attr_reader :shdom
-    def self.extended(obj)
-      Msg.type?(obj,Exe)
-    end
-
-    # block gives command line convert
-    def ext_shell(pconv={},pstat=self,&p)
-      init_ver('Shell/%s',2,self)
-      #prompt convert table (j2s)
-      @prompt=Prompt.new({'id'=>nil}.update(pconv),pstat)
-      @shdom=@cobj.add_domain('sh',5)
-      @lineconv=p if p
-      Readline.completion_proc=proc{|word|
-        @cobj.keys.grep(/^#{word}/)
-      }
-      grp=@shdom.add_group('sh',"Shell Command")
-      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
-      verbose{"Init/Shell(#{self['id']})"}
-      self
-    end
-
-    def set_switch(key,title,list)
-      grp=@shdom.add_group(key,title)
-      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
-      self
-    end
-
-    # invoked many times
-    # '^D' gives exit break
-    # mode gives special break (loop returns mode)
-    def shell
-      begin
-        while line=Readline.readline(@prompt.to_s,true)
-          break if /^q/ === line
-          line=@lineconv.call(line) if @lineconv
-          res=exe(line.split(' '))
-          puts res['msg'].empty? ? @output : res['msg']
-        end
-      rescue SelectID
-        $!.to_s
-      rescue Interrupt
-        puts exe(['interrupt'])['msg']
-        retry
-      rescue UserError
-        puts $!.to_s
-        retry
-      end
-    end
-
-    private
   end
 
   class Prompt < Hash

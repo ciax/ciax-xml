@@ -16,10 +16,6 @@ module Frm
         else
           fint=Frm::Test.new(fdb)
         end
-        fint.ext_shell{|line|
-          line='set '+line.tr('=',' ') if /^[^ ]+\=/ === line
-          line
-        }
       }
     end
   end

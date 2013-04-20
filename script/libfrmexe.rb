@@ -20,6 +20,12 @@ module Frm
       @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
       self
     end
+
+    private
+    def lineconv(line)
+      line='set '+line.tr('=',' ') if /^[^ ]+\=/ === line
+      line
+    end
   end
 
   class Test < Exe

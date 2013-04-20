@@ -6,7 +6,6 @@ module Ins
   module Sh
     def self.extended(obj)
       Msg.type?(obj,App::Exe)
-      Msg.type?(obj,Interactive::Shell)
     end
 
     def ext_ins(id)

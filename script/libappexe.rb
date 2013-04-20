@@ -17,6 +17,12 @@ module App
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       self
     end
+
+    private
+    def lineconv(line)
+      line='set '+line if /^[^ ]+\=/ === line
+      line
+    end
   end
 
   class Test < Exe

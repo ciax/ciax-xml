@@ -14,7 +14,7 @@ module App
   # @ fint,buf,log_proc
   class Sv < Exe
     def initialize(adb,fint,logging=nil)
-      super(adb)
+      super(adb,fint)
       init_ver("AppSv",9)
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})

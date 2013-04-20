@@ -16,6 +16,7 @@ module Frm
         else
           fint=Frm::Test.new(fdb)
         end
+        fint
       }
     end
   end

@@ -6,56 +6,29 @@ module App
     # @< init_proc*
     # @ fl,fint,list
     require "libappsv"
-    def initialize(&prc)
+    def initialize
       @fl=Frm::List.new
       @fint={}
       super{|id|
         ldb=Loc::Db.new(id)
         @list=ldb.list
+        fi=@fint[id]=@fl[ldb[:frm]['site_id']]
         if $opt['e'] or $opt['s'] or $opt['f']
-          @fint[id]=@fl[ldb[:frm]['site_id']]
-          aint=Sv.new(ldb[:app],@fint[id],$opt['e'])
-          aint=Cl.new(ldb[:app],'localhost') if $opt['c']
+          aint=Sv.new(ldb[:app],fi,$opt['e'])
+          aint=Cl.new(ldb[:app],fi,'localhost') if $opt['c']
         elsif host=$opt['h'] or $opt['c']
-          aint=Cl.new(ldb[:app],host)
+          aint=Cl.new(ldb[:app],fi,host)
         else
-          aint=Test.new(ldb[:app])
+          aint=Test.new(ldb[:app],fi)
         end
-        prc ? prc.call(aint,ldb[:app]) : aint
       }
     end
 
     # shell and server are exclusive
-    def shell(id,&prc)
+    def shell(id)
       type='app'
       @init_proc=proc{|int|
-        pc={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
         int.set_switch('dev',"Change Device",@list)
-        int.set_switch('lay',"Change Layer",{'frm'=>"Frm mode"})
-        prc.call(id,int) if prc
-      }
-      @fl.init_proc=proc{|int|
-        int.set_switch('lay',"Change Layer",{'app'=>"App mode"})
-      }
-      super{|cmd|
-        case cmd
-        when 'app','frm'
-          type=cmd
-        else
-          id=cmd
-        end
-        case type
-        when /app/
-          self[id]
-        when /frm/
-          @fint[id]
-        end
-      }
-    end
-
-    def server(ary,&prc)
-      @init_proc=proc{|int|
-        prc.call(int) if prc
       }
       super
     end

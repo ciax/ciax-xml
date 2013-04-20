@@ -6,15 +6,21 @@ require "libwatch"
 module App
   class Exe < Interactive::Exe
     # @< cobj,output,intgrp,interrupt,upd_proc*
-    # @ adb,extdom,watch,stat*
+    # @ adb,fint,extdom,watch,stat*
     attr_reader :stat
-    def initialize(adb)
+    def initialize(adb,fint)
       @adb=Msg.type?(adb,Db)
       self['id']=@adb['site_id']
+      @fint=Msg.type?(fint,Frm::Exe)
       @stat=Status::Var.new.ext_file(@adb['site_id'])
-      super(@stat)
+      super(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @extdom=@cobj.add_extdom(@adb,:command)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
+      @fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+      grp=@shdom.add_group('lay',"Change Layer")
+      grp.update_items({'frm'=>"Frm mode"}).reset_proc{|item|
+        @fint.shell || exit
+      }
       self
     end
 
@@ -27,7 +33,7 @@ module App
 
   class Test < Exe
     require "libsymupd"
-    def initialize(adb)
+    def initialize(adb,fint)
       super
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
@@ -64,8 +70,8 @@ module App
   end
 
   class Cl < Exe
-    def initialize(adb,host=nil)
-      super(adb)
+    def initialize(adb,fint,host=nil)
+      super(adb,fint)
       host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(host).load
       @watch.ext_url(host).load

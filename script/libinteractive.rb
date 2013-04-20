@@ -203,7 +203,7 @@ module Interactive
     def initialize
       $opt||=Msg::GetOpts.new
       super(){|h,id|
-        h[id]=yield id
+        h[id]=newint(id)
       }
     end
 
@@ -229,6 +229,11 @@ module Interactive
       sleep
     rescue UserError
       $opt.usage('(opt) [id] ....')
+    end
+
+    private
+    def newint(id)
+      Exe.new
     end
   end
 end

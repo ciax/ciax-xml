@@ -17,8 +17,6 @@ module Hex
     end
   end
 
-  class Test < Exe;end
-
   class Sv < Exe
     def initialize(adb,aint,logging=nil)
       super(adb)
@@ -55,16 +53,17 @@ module Hex
     def initialize
       @al=App::List.new
       @aint={}
-      super{|id|
-        ldb=Loc::Db.new(id)
-        if ['e','s','f','h','c'].any?{|i| $opt[i]}
-          @aint[id]=@al[ldb[:app]['site_id']]
-          hint=Sv.new(ldb[:app],@aint[id],$opt['e'])
-        else
-          hint=Test.new(ldb[:app])
-        end
-        hint
-      }
+    end
+
+    def newint(id)
+      ldb=Loc::Db.new(id)
+      if ['e','s','f','h','c'].any?{|i| $opt[i]}
+        @aint[id]=@al[ldb[:app]['site_id']]
+        hint=Sv.new(ldb[:app],@aint[id],$opt['e'])
+      else
+        hint=Exe.new(ldb[:app])
+      end
+      hint
     end
   end
 end

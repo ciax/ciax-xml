@@ -12,11 +12,10 @@ module App
   # @<< cobj,output,intgrp,interrupt,upd_proc*
   # @< adb,extdom,watch,stat*
   # @ fint,buf,log_proc
-  class Sv < Interactive::Server
+  class Sv < Exe
     def initialize(adb,fint,logging=nil)
-      super()
-      extend(Exe).init(adb)
-#      init_ver("AppSv",9)
+      super(adb)
+      init_ver("AppSv",9)
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field,adb[:status]).ext_sym(adb).upd

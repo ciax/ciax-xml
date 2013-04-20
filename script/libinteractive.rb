@@ -49,9 +49,11 @@ module Interactive
       end
       self
     end
-  end
 
-  class Server < Exe
+    def ext_client(host,port)
+      extend(Client).ext_client(host,port)
+    end
+
     # invoked once
     # JSON expression of server stat will be sent.
     def server(port)
@@ -96,8 +98,12 @@ module Interactive
     end
   end
 
-  class Client < Exe
-    def client(host,port)
+  module Client
+    def self.extended(obj)
+      Msg.type?(obj,Exe)
+    end
+
+    def ext_client(host,port)
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)

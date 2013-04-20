@@ -3,15 +3,16 @@ require 'libinteractive'
 require 'libfield'
 
 module Frm
-  module Exe
+  class Exe < Interactive::Exe
     # @< cobj,output,intgrp,(interrupt),(upd_proc*)
     # @ extdom,field*
     attr_reader :field
-    def init(fdb)
+    def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
-      @extdom=@cobj.add_extdom(fdb,:cmdframe)
       self['id']=fdb['site_id']
-      @output=@field=Field::Var.new.ext_file(fdb['site_id']).load
+      @field=Field::Var.new.ext_file(fdb['site_id']).load
+      super(@field)
+      @extdom=@cobj.add_extdom(fdb,:cmdframe)
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any])
@@ -21,10 +22,9 @@ module Frm
     end
   end
 
-  class Test < Interactive::Exe
+  class Test < Exe
     def initialize(fdb)
-      super()
-      extend(Exe).init(fdb)
+      super
       @cobj.def_proc.set{|item|
         @field['time']=UnixTime.now
       }
@@ -34,14 +34,13 @@ module Frm
     end
   end
 
-  class Cl < Interactive::Client
+  class Cl < Exe
     def initialize(fdb,host=nil)
-      super()
-      extend(Exe).init(fdb)
+      super(fdb)
       host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(host).load
       @cobj.def_proc.set{to_s}
-      client(host,fdb['port'])
+      ext_client(host,fdb['port'])
       @upd_proc.add{@field.load}
     end
   end

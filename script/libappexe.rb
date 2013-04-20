@@ -4,25 +4,25 @@ require "libstatus"
 require "libwatch"
 
 module App
-  module Exe
+  class Exe < Interactive::Exe
     # @< cobj,output,intgrp,interrupt,upd_proc*
     # @ adb,extdom,watch,stat*
     attr_reader :stat
-    def init(adb)
+    def initialize(adb)
       @adb=Msg.type?(adb,Db)
-      @extdom=@cobj.add_extdom(@adb,:command)
       self['id']=@adb['site_id']
-      @output=@stat=Status::Var.new.ext_file(@adb['site_id'])
+      @stat=Status::Var.new.ext_file(@adb['site_id'])
+      super(@stat)
+      @extdom=@cobj.add_extdom(@adb,:command)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       self
     end
   end
 
-  class Test < Interactive::Exe
+  class Test < Exe
     require "libsymupd"
     def initialize(adb)
-      super()
-      extend(Exe).init(adb)
+      super
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
@@ -57,14 +57,13 @@ module App
     end
   end
 
-  class Cl < Interactive::Client
+  class Cl < Exe
     def initialize(adb,host=nil)
-      super()
-      extend(Exe).init(adb)
+      super(adb)
       host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(host).load
       @watch.ext_url(host).load
-      client(host,adb['port'])
+      ext_client(host,adb['port'])
       @upd_proc.add{
         @stat.load
         @watch.load

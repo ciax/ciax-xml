@@ -4,13 +4,12 @@ require "libfrmrsp"
 require "libfrmcmd"
 
 module Frm
-  class Sv < Interactive::Server
+  class Sv < Exe
     # @<< cobj,(output),(intgrp),(interrupt),(upd_proc*)
     # @< extdom,field*
     # @ io
     def initialize(fdb,iocmd=[])
-      super()
-      extend(Exe).init(fdb)
+      super(fdb)
       @field.ext_save.load
       @field.ext_rsp(@cobj,fdb)
       if Msg.type?(iocmd,Array).empty?

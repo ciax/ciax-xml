@@ -76,9 +76,34 @@ module Interactive
       end
     end
 
-    # invoked once
+    def ext_client(host,port)
+      extend(Client).ext_client(host,port)
+    end
+
+    def ext_server(port)
+      extend(Server).ext_server(port)
+    end
+
+    def set_switch(key,title,list)
+      grp=@shdom.add_group(key,title)
+      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
+      self
+    end
+
+    private
+    def shell_conv(line)
+      line
+    end
+  end
+
+  module Server
+    def self.extended(obj)
+      Msg.type?(obj,Exe)
+    end
+
     # JSON expression of server stat will be sent.
-    def server(port)
+    def ext_server(port)
+      init_ver('Server/%s',2,self)
       verbose{"Init/Server(#{self['id']}):#{port}"}
       Thread.new{
         tc=Thread.current
@@ -108,16 +133,6 @@ module Interactive
       self
     end
 
-    def ext_client(host,port)
-      extend(Client).ext_client(host,port)
-    end
-
-    def set_switch(key,title,list)
-      grp=@shdom.add_group(key,title)
-      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
-      self
-    end
-
     private
     def server_input(line)
       JSON.load(line)
@@ -127,11 +142,6 @@ module Interactive
 
     def server_output
       to_j
-    end
-
-    # For shell
-    def shell_conv(line)
-      line
     end
   end
 

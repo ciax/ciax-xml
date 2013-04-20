@@ -37,7 +37,7 @@ module Hex
         }
         @log_proc.add{logging.append}
       end
-      server(@adb['port'].to_i+1000)
+      ext_server(@adb['port'].to_i+1000)
     end
 
     private

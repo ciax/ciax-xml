@@ -37,7 +37,7 @@ module Status
 
     def ext_save
       super
-      extend Save
+      extend(Save).ext_save
       self
     end
   end
@@ -47,7 +47,7 @@ module Status
     # @< (last)
     # @ lastsave
     def self.extended(obj)
-      Msg.type?(obj,Save).ext_save
+      Msg.type?(obj,Save)
     end
 
     def ext_save

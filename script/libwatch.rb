@@ -53,8 +53,8 @@ module Watch
       cmds
     end
 
-    def ext_conv(adb,stat)
-      extend(Upd).ext_conv(adb,stat)
+    def ext_upd(adb,stat)
+      extend(Upd).ext_upd(adb,stat)
     end
   end
 
@@ -65,7 +65,7 @@ module Watch
       Msg.type?(obj,Var)
     end
 
-    def ext_conv(adb,stat)
+    def ext_upd(adb,stat)
       @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
       @stat=Msg.type?(stat,Status::Var)
       @val=@stat['val']
@@ -249,7 +249,7 @@ if __FILE__ == $0
     $opt.usage("(opt) [id]")
   end
   stat=Status::Var.new.ext_file(adb['site_id']).load
-  watch=Watch::Var.new.ext_file(adb['site_id']).ext_conv(adb,stat).upd
+  watch=Watch::Var.new.ext_file(adb['site_id']).ext_upd(adb,stat).upd
   wview=Watch::View.new(adb,watch)
   unless $opt['r']
     wview.ext_prt

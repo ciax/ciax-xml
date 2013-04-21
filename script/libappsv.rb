@@ -12,16 +12,15 @@ module App
   # @<< cobj,output,intgrp,interrupt,upd_proc*
   # @< adb,extdom,watch,stat*
   # @ fint,buf,log_proc
-  class Sv < Interactive::Server
+  class Sv < Exe
     def initialize(adb,fint,logging=nil)
-      super()
-      extend(Exe).init(adb)
-#      init_ver("AppSv",9)
+      super(adb,fint)
+      init_ver("AppSv",9)
       @fint=Msg.type?(fint,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fint.field,adb[:status]).ext_sym(adb).upd
       @stat.ext_sqlog.ext_exec if logging and @fint.field.key?('ver')
-      @watch.ext_conv(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
+      @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
         verbose{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.setcmd(cmd)
         sendcmd(p)
@@ -53,7 +52,7 @@ module App
         self['watch'] = @watch.active?
         self['na'] = !@buf.alive?
       }
-      server(@adb['port'])
+      ext_server(@adb['port'])
     end
 
     def ext_logging(id,ver=0)

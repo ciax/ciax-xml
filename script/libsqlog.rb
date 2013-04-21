@@ -81,7 +81,7 @@ module SqLog
     # @< log,tid
     # @ sqlcmd
     def self.extended(obj)
-      Msg.type?(obj,Var).ext_exec
+      Msg.type?(obj,Var)
     end
 
     def ext_exec

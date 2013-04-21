@@ -6,7 +6,7 @@ require "libcommand"
 require "libapplist"
 
 module Mcr
-  class Sv < Interactive::Server
+  class Sv < Interactive::Exe
     # @< cobj,output,(intgrp),interrupt,upd_proc*
     # @ al,appint,mobj*
     attr_accessor :mobj
@@ -16,7 +16,14 @@ module Mcr
       self['id']=@mobj.current.id
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
-      super(record)
+      super(record,{'stat' => "(%s)"})
+      # For shell
+      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
+      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
+      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
+      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
+      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
     end
 
     def start
@@ -36,8 +43,9 @@ module Mcr
       @output.fin
     end
 
-    def ext_shell
-      extend(Shell).ext_shell
+    def shell
+      @th=Thread.new{ start }
+      super()
     end
 
     private
@@ -78,31 +86,7 @@ module Mcr
       @output['result']=str
       puts str if Msg.fg?
     end
-  end
 
-  module Shell
-    include Interactive::Shell
-    def self.extended(obj)
-      Msg.type?(obj,Sv)
-    end
-
-    def ext_shell
-      super({'stat' => "(%s)"})
-      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
-      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
-      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
-      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
-      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
-      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
-      self
-    end
-
-    def shell
-      @th=Thread.new{ start }
-      super()
-    end
-
-    private
     def ans(str)
       return if @th.status != 'sleep'
       @th[:query]=str
@@ -123,7 +107,6 @@ if __FILE__ == $0
     if $opt['i']
       mint.start
     else
-      mint.ext_shell
       mint.shell
     end
   rescue InvalidCMD

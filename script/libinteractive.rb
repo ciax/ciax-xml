@@ -13,15 +13,26 @@ require "libupdate"
 
 module Interactive
   # @ cobj,output,intgrp,interrupt,upd_proc,conf
+  # @ prompt,shdom
   class Exe < ExHash
-    attr_reader :upd_proc,:interrupt,:output
-    def initialize(output={})
+    attr_reader :upd_proc,:interrupt,:output,:shdom
+    # block gives command line convert
+    def initialize(output={},pconv={},pstat=self)
       init_ver(self,2)
       @cobj=Command.new(self)
       @output=output
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
+      # For Shell
+      @prompt=Prompt.new({'id'=>nil}.update(pconv),pstat)
+      @shdom=@cobj.add_domain('sh',5)
+      Readline.completion_proc=proc{|word|
+        @cobj.keys.grep(/^#{word}/)
+      }
+      grp=@shdom.add_group('sh',"Shell Command")
+      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+
     end
 
     # Sync only (Wait for other thread)
@@ -41,20 +52,58 @@ module Interactive
       @upd_proc.upd
     end
 
-    def ext_shell(pconv={},pstat=self,&p)
-      if is_a? Shell
-        Msg.warn("Multiple Initialize for Shell")
-      else
-        extend(Shell).ext_shell(pconv,pstat,&p)
+    # invoked many times
+    # '^D' gives exit break
+    # mode gives special break (loop returns mode)
+    def shell
+      init_ver('Shell/%s',2,self)
+      verbose{"Init/Shell(#{self['id']})"}
+      begin
+        while line=Readline.readline(@prompt.to_s,true)
+          break if /^q/ === line
+          line=shell_conv(line)
+          res=exe(line.split(' '))
+          puts res['msg'].empty? ? @output : res['msg']
+        end
+      rescue SelectID
+        $!.to_s
+      rescue Interrupt
+        puts exe(['interrupt'])['msg']
+        retry
+      rescue UserError
+        puts $!.to_s
+        retry
       end
+    end
+
+    def ext_client(host,port)
+      extend(Client).ext_client(host,port)
+    end
+
+    def ext_server(port)
+      extend(Server).ext_server(port)
+    end
+
+    def set_switch(key,title,list)
+      grp=@shdom.add_group(key,title)
+      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
       self
+    end
+
+    private
+    def shell_conv(line)
+      line
     end
   end
 
-  class Server < Exe
-    # invoked once
+  module Server
+    def self.extended(obj)
+      Msg.type?(obj,Exe)
+    end
+
     # JSON expression of server stat will be sent.
-    def server(port)
+    def ext_server(port)
+      init_ver('Server/%s',2,self)
       verbose{"Init/Server(#{self['id']}):#{port}"}
       Thread.new{
         tc=Thread.current
@@ -69,7 +118,7 @@ module Interactive
             line.chomp!
             verbose{"Recv:#{line} is #{line.class}"}
             begin
-              exe(filter_in(line))
+              exe(server_input(line))
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError
@@ -77,7 +126,7 @@ module Interactive
               self['msg']=$!.to_s
             end
             verbose{"Send:#{self['msg']}"}
-            udp.send(filter_out,0,addr[2],addr[1])
+            udp.send(server_output,0,addr[2],addr[1])
           }
         }
       }
@@ -85,19 +134,23 @@ module Interactive
     end
 
     private
-    def filter_in(line)
+    def server_input(line)
       JSON.load(line)
     rescue JSON::ParserError
       raise UserError,"NOT JSON"
     end
 
-    def filter_out
+    def server_output
       to_j
     end
   end
 
-  class Client < Exe
-    def client(host,port)
+  module Client
+    def self.extended(obj)
+      Msg.type?(obj,Exe)
+    end
+
+    def ext_client(host,port)
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
@@ -105,7 +158,6 @@ module Interactive
       self
     end
 
-    private
     # For client
     def exe(cmd)
       @cobj.setcmd(cmd).exe unless cmd.empty?
@@ -121,62 +173,6 @@ module Interactive
     ensure
       @upd_proc.upd
     end
-  end
-
-  # Shell has internal status for prompt
-  module Shell
-    # @< cobj,output,(intgrp),(interrupt),upd_proc
-    # @ pconv,shdom,lineconv
-    attr_reader :shdom
-    def self.extended(obj)
-      Msg.type?(obj,Exe)
-    end
-
-    # block gives command line convert
-    def ext_shell(pconv={},pstat=self,&p)
-      init_ver('Shell/%s',2,self)
-      #prompt convert table (j2s)
-      @prompt=Prompt.new({'id'=>nil}.update(pconv),pstat)
-      @shdom=@cobj.add_domain('sh',5)
-      @lineconv=p if p
-      Readline.completion_proc=proc{|word|
-        @cobj.keys.grep(/^#{word}/)
-      }
-      grp=@shdom.add_group('sh',"Shell Command")
-      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
-      verbose{"Init/Shell(#{self['id']})"}
-      self
-    end
-
-    def set_switch(key,title,list)
-      grp=@shdom.add_group(key,title)
-      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
-      self
-    end
-
-    # invoked many times
-    # '^D' gives exit break
-    # mode gives special break (loop returns mode)
-    def shell
-      begin
-        while line=Readline.readline(@prompt.to_s,true)
-          break if /^q/ === line
-          line=@lineconv.call(line) if @lineconv
-          res=exe(line.split(' '))
-          puts res['msg'].empty? ? @output : res['msg']
-        end
-      rescue SelectID
-        $!.to_s
-      rescue Interrupt
-        puts exe(['interrupt'])['msg']
-        retry
-      rescue UserError
-        puts $!.to_s
-        retry
-      end
-    end
-
-    private
   end
 
   class Prompt < Hash
@@ -204,14 +200,10 @@ module Interactive
 
   class List < Hash
     require "liblocdb"
-    attr_accessor :init_proc
     def initialize
       $opt||=Msg::GetOpts.new
-      @init_proc=proc{} # Execute when new key is set
       super(){|h,id|
-        int=yield id
-        @init_proc.call(int)
-        h[id]=int
+        h[id]=newint(id)
       }
     end
 
@@ -223,7 +215,7 @@ module Interactive
 
     def shell(id)
       begin
-        int=(defined? yield) ? yield(id) : self[id]
+        int=self[id]
       end while id=int.shell
     rescue UserError
       $opt.usage('(opt) [id]')
@@ -237,6 +229,11 @@ module Interactive
       sleep
     rescue UserError
       $opt.usage('(opt) [id] ....')
+    end
+
+    private
+    def newint(id)
+      Exe.new
     end
   end
 end

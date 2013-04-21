@@ -5,28 +5,21 @@ require "libapplist"
 require "libhexview"
 
 module Hex
-  module Exe
-    def init(adb)
+  class Exe < Interactive::Exe
+    def initialize(adb)
       @adb=Msg.type?(adb,Db)
       init_ver('Hex',2)
       self['id']=@adb['site_id']
+      stat=Status::Var.new.ext_file(@adb['site_id'])
+      super(View.new(self,stat))
       @extdom=@cobj.add_extdom(@adb,:command)
-      @output=View.new(self,Status::Var.new.ext_file(@adb['site_id']))
       self
     end
   end
 
-  class Test < Interactive::Exe
-    def initialize(adb)
-      super()
-      extend(Exe).init(adb)
-    end
-  end
-
-  class Sv < Interactive::Server
+  class Sv < Exe
     def initialize(adb,aint,logging=nil)
-      super()
-      extend(Exe).init(adb)
+      super(adb)
       @output=View.new(aint,aint.stat)
       @log_proc=UpdProc.new
       @extdom.reset_proc{|item|
@@ -42,16 +35,16 @@ module Hex
         }
         @log_proc.add{logging.append}
       end
-      server(@adb['port'].to_i+1000)
+      ext_server(@adb['port'].to_i+1000)
     end
 
     private
-    def filter_in(line)
+    def server_input(line)
       return [] if /^(strobe|stat)/ === line
       line.split(' ')
     end
 
-    def filter_out
+    def server_output
       @output.to_s
     end
   end
@@ -60,23 +53,17 @@ module Hex
     def initialize
       @al=App::List.new
       @aint={}
-      super{|id|
-        ldb=Loc::Db.new(id)
-        if ['e','s','f','h','c'].any?{|i| $opt[i]}
-          @aint[id]=@al[ldb[:app]['site_id']]
-          hint=Sv.new(ldb[:app],@aint[id],$opt['e'])
-        else
-          hint=Test.new(ldb[:app])
-        end
-        hint
-      }
     end
 
-    def shell(id)
-      @init_proc=proc{|int|
-        int.ext_shell
-      }
-      super
+    def newint(id)
+      ldb=Loc::Db.new(id)
+      if ['e','s','f','h','c'].any?{|i| $opt[i]}
+        @aint[id]=@al[ldb[:app]['site_id']]
+        hint=Sv.new(ldb[:app],@aint[id],$opt['e'])
+      else
+        hint=Exe.new(ldb[:app])
+      end
+      hint
     end
   end
 end

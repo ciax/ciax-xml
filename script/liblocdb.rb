@@ -1,12 +1,15 @@
 #!/usr/bin/ruby
 require "libappdb"
 require "libfrmdb"
+require "libinsdb"
 
 module Loc
   class Db < Db
     def initialize(id)
       super('ldb',id){|doc| rec_db(doc.top)}
-      cover(App::Db.new(delete('app_id')),:app)
+      appid=delete('app_id')
+      insid=delete('ins_id')||self['id']
+      cover(App::Db.new(appid),:app).ext_ins(insid)
       app=self[:app]
       app['site_id']=id
       frm=self[:frm]||{}

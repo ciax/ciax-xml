@@ -16,6 +16,18 @@ module App
       super(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       @extdom=@cobj.add_extdom(@adb,:command)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
+      init_layer
+      init_view
+      self
+    end
+
+    private
+    def shell_conv(line)
+      line='set '+line if /^[^ ]+\=/ === line
+      line
+    end
+
+    def init_layer
       @fint.set_switch('lay',"Change Layer",{'app'=>"App mode"})
       grp=@shdom.add_group('lay',"Change Layer")
       grp.update_items({'frm'=>"Frm mode"}).reset_proc{|item|
@@ -24,10 +36,14 @@ module App
       self
     end
 
-    private
-    def shell_conv(line)
-      line='set '+line if /^[^ ]+\=/ === line
-      line
+    def init_view
+      @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
+      @wview=Watch::View.new(@adb,@watch).ext_prt
+      grp=@shdom.add_group('view',"Change View Mode")
+      grp.add_item('pri',"Print mode").reset_proc{@output=@print}
+      grp.add_item('wat',"Watch mode").reset_proc{@output=@wview} if @wview
+      grp.add_item('raw',"Raw mode").reset_proc{@output=@stat}
+      self
     end
   end
 

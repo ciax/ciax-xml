@@ -25,14 +25,15 @@
         <xsd:element ref="ldb:frm" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="label" type="xsd:token" use="optional"></xsd:attribute>
+      <xsd:attribute name="label" type="xsd:token" use="optional" />
       <xsd:attribute name="app_id" use="required" type="xsd:NCName" />
+      <xsd:attribute name="ins_id" type="xsd:NCName" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="app">
     <xsd:complexType>
       <xsd:sequence minOccurs="0">
-        <xsd:element ref="idbc:cmdlist" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="idbc:cmdlist" minOccurs="0" maxOccurs="1" />
         <xsd:element ref="idbs:status" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="host" type="xsd:token" />
@@ -42,7 +43,7 @@
   <xsd:element name="frm">
     <xsd:complexType>
       <xsd:sequence minOccurs="0">
-        <xsd:element ref="ldbf:rspframe" minOccurs="0" maxOccurs="1"></xsd:element>
+        <xsd:element ref="ldbf:rspframe" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="ref" type="xsd:NCName" />
       <xsd:attribute name="type" type="xsd:NCName" />

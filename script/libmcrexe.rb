@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libinteractive"
+require "libsh"
 require "libmcrdb"
 require "libmcrrec"
 require "libcommand"

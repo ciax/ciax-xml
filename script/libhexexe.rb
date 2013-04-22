@@ -53,6 +53,7 @@ module Hex
     def initialize
       @al=App::List.new
       @aint={}
+      super
     end
 
     def newint(id)

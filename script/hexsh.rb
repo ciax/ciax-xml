@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libhexexe"
+require "libhexsh"
 
 ENV['VER']||='init/'
 Msg::GetOpts.new('estcfh:')

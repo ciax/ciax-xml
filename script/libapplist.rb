@@ -3,7 +3,7 @@ require "libfrmlist"
 
 module App
   class List < Sh::List
-    # @ fl
+    attr_reader :fl
     require "libappsv"
     def initialize
       @fl=Frm::List.new
@@ -13,14 +13,14 @@ module App
     def newsh(id)
       ldb=Loc::Db.new(id)
       adb=ldb[:app]
-      fi=@fl[ldb[:frm]['site_id']]
+      fsh=@fl[ldb[:frm]['site_id']]
       if $opt['e'] or $opt['s'] or $opt['f']
-        ash=Sv.new(adb,fi,$opt['e'])
-        ash=Cl.new(adb,fi,'localhost') if $opt['c']
+        ash=Sv.new(adb,fsh,$opt['e'])
+        ash=Cl.new(adb,fsh,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c']
-        ash=Cl.new(adb,fi,host)
+        ash=Cl.new(adb,fsh,host)
       else
-        ash=Test.new(adb,fi)
+        ash=Test.new(adb,fsh)
       end
       ash.switch_menu('dev',"Change Device",ldb.list)
     end

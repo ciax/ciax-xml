@@ -11,15 +11,15 @@ require "thread"
 module App
   # @<< cobj,output,intgrp,interrupt,upd_proc*
   # @< adb,extdom,watch,stat*
-  # @ fint,buf,log_proc
+  # @ fsh,buf,log_proc
   class Sv < Exe
-    def initialize(adb,fint,logging=nil)
-      super(adb,fint)
+    def initialize(adb,fsh,logging=nil)
+      super(adb,fsh)
       init_ver("AppSv",9)
-      @fint=Msg.type?(fint,Frm::Exe)
+      @fsh=Msg.type?(fsh,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-      @stat.ext_save.ext_rsp(@fint.field,adb[:status]).ext_sym(adb).upd
-      @stat.ext_sqlog.ext_exec if logging and @fint.field.key?('ver')
+      @stat.ext_save.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).upd
+      @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
       @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
         verbose{"#{self['id']}/Auto(#{p}):#{cmd}"}
         @cobj.setcmd(cmd)
@@ -40,7 +40,7 @@ module App
         self['msg']="Interrupt #{int}"
       }
       # Update for Frm level manipulation
-      @fint.upd_proc.add{@stat.upd.save}
+      @fsh.upd_proc.add{@stat.upd.save}
       # Logging if version number exists
       @log_proc=UpdProc.new
       if logging and @adb['version']
@@ -73,7 +73,7 @@ module App
     def init_buf
       buf=Buffer.new(self)
       buf.send_proc{@cobj.current.getcmd}
-      buf.recv_proc{|fcmd|@fint.exe(fcmd)}
+      buf.recv_proc{|fcmd|@fsh.exe(fcmd)}
       buf.flush_proc.add{
         @stat.upd.save
         @watch.upd.save

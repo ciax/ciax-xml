@@ -18,16 +18,16 @@ module Hex
   end
 
   class Sv < Exe
-    def initialize(adb,aint,logging=nil)
+    def initialize(adb,ash,logging=nil)
       super(adb)
-      @output=View.new(aint,aint.stat)
+      @output=View.new(ash,ash.stat)
       @log_proc=UpdProc.new
       @extdom.reset_proc{|item|
-        aint.exe(item.cmd)
+        ash.exe(item.cmd)
         @log_proc.upd
       }
       @upd_proc.add{
-        aint.stat.load
+        ash.stat.load
       }
       if logging
         logging=Logging.new('hex',self['id'],@adb['version']){
@@ -52,15 +52,15 @@ module Hex
   class List < Sh::List
     def initialize
       @al=App::List.new
-      @aint={}
+      @ash={}
       super
     end
 
     def newint(id)
       ldb=Loc::Db.new(id)
       if ['e','s','f','h','c'].any?{|i| $opt[i]}
-        @aint[id]=@al[ldb[:app]['site_id']]
-        hint=Sv.new(ldb[:app],@aint[id],$opt['e'])
+        @ash[id]=@al[ldb[:app]['site_id']]
+        hint=Sv.new(ldb[:app],@ash[id],$opt['e'])
       else
         hint=Exe.new(ldb[:app])
       end

@@ -8,14 +8,14 @@ module Frm
       fdb=ldb[:frm]
       if $opt['s'] or $opt['e']
         par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
-        fint=Sv.new(fdb,par)
-        fint=Cl.new(fdb,'localhost') if $opt['c']
+        fsh=Sv.new(fdb,par)
+        fsh=Cl.new(fdb,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c'] or $opt['f']
-        fint=Cl.new(fdb,host)
+        fsh=Cl.new(fdb,host)
       else
-        fint=Test.new(fdb)
+        fsh=Test.new(fdb)
       end
-      fint.set_switch('dev',"Change Device",ldb.list)
+      fsh.set_switch('dev',"Change Device",ldb.list)
     end
   end
 end

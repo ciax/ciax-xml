@@ -3,7 +3,7 @@ require "libfrmlist"
 
 module App
   class List < Sh::List
-    # @ fl,fint,list
+    # @ fl,fsh,list
     require "libappsv"
     def initialize
       @fl=Frm::List.new
@@ -15,14 +15,14 @@ module App
       adb=ldb[:app]
       fi=@fl[ldb[:frm]['site_id']]
       if $opt['e'] or $opt['s'] or $opt['f']
-        aint=Sv.new(adb,fi,$opt['e'])
-        aint=Cl.new(adb,fi,'localhost') if $opt['c']
+        ash=Sv.new(adb,fi,$opt['e'])
+        ash=Cl.new(adb,fi,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c']
-        aint=Cl.new(adb,fi,host)
+        ash=Cl.new(adb,fi,host)
       else
-        aint=Test.new(adb,fi)
+        ash=Test.new(adb,fi)
       end
-      aint.set_switch('dev',"Change Device",ldb.list)
+      ash.set_switch('dev',"Change Device",ldb.list)
     end
   end
 end

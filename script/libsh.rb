@@ -216,8 +216,8 @@ module Sh
 
     def shell(id)
       begin
-        int=self[id]
-      end while id=int.shell
+        sh=self[id]
+      end while id=sh.shell
     rescue UserError
       $opt.usage('(opt) [id]')
     end

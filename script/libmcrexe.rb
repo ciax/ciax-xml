@@ -64,9 +64,9 @@ module Mcr
             @crnt.timeout? && raise(Interlock)
           when 'exec'
             @crnt.exec{|site,cmd,depth|
-              aint=@al[site]
-              aint.exe(cmd)
-              @appint=aint.interrupt
+              ash=@al[site]
+              ash.exe(cmd)
+              @appint=ash.interrupt
             }
           when 'mcr'
             puts @crnt if Msg.fg?
@@ -103,11 +103,11 @@ if __FILE__ == $0
     mobj=Command.new
     mobj.add_extdom(mdb,:macro)
     mobj.setcmd(ARGV)
-    mint=Mcr::Sv.new(mobj,al)
+    msh=Mcr::Sv.new(mobj,al)
     if $opt['i']
-      mint.start
+      msh.start
     else
-      mint.shell
+      msh.shell
     end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

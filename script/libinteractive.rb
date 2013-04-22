@@ -90,9 +90,20 @@ module Interactive
       self
     end
 
+    # Overridable methods(do not set this kind of methods in modules)
     private
     def shell_conv(line)
       line
+    end
+
+    def server_input(line)
+      JSON.load(line)
+    rescue JSON::ParserError
+      raise UserError,"NOT JSON"
+    end
+
+    def server_output
+      to_j
     end
   end
 
@@ -133,16 +144,6 @@ module Interactive
       self
     end
 
-    private
-    def server_input(line)
-      JSON.load(line)
-    rescue JSON::ParserError
-      raise UserError,"NOT JSON"
-    end
-
-    def server_output
-      to_j
-    end
   end
 
   module Client

@@ -3,7 +3,7 @@ require 'libfrmsv'
 
 module Frm
   class List < Sh::List
-    def newint(id)
+    def newsh(id)
       ldb=Loc::Db.new(id)
       fdb=ldb[:frm]
       if $opt['s'] or $opt['e']

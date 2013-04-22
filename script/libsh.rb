@@ -204,7 +204,7 @@ module Sh
     def initialize
       $opt||=Msg::GetOpts.new
       super(){|h,id|
-        h[id]=newint(id)
+        h[id]=newsh(id)
       }
     end
 
@@ -233,7 +233,7 @@ module Sh
     end
 
     private
-    def newint(id)
+    def newsh(id)
       Exe.new
     end
   end

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libappexe"
+require "libappsh"
 require 'libfrmlist'
 require "libappcmd"
 require "libapprsp"

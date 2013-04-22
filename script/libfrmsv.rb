@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libfrmexe"
+require "libfrmsh"
 require "libfrmrsp"
 require "libfrmcmd"
 

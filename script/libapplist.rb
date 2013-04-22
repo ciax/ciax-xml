@@ -3,14 +3,14 @@ require "libfrmlist"
 
 module App
   class List < Sh::List
-    # @ fl,fsh,list
+    # @ fl
     require "libappsv"
     def initialize
       @fl=Frm::List.new
       super
     end
 
-    def newint(id)
+    def newsh(id)
       ldb=Loc::Db.new(id)
       adb=ldb[:app]
       fi=@fl[ldb[:frm]['site_id']]

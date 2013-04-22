@@ -56,7 +56,7 @@ module Hex
       super
     end
 
-    def newint(id)
+    def newsh(id)
       ldb=Loc::Db.new(id)
       if ['e','s','f','h','c'].any?{|i| $opt[i]}
         @ash[id]=@al[ldb[:app]['site_id']]

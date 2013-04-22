@@ -7,23 +7,22 @@ module App
     require "libappsv"
     def initialize
       @fl=Frm::List.new
-      @fint={}
       super
     end
 
     def newint(id)
       ldb=Loc::Db.new(id)
       adb=ldb[:app]
-      fi=@fint[id]=@fl[ldb[:frm]['site_id']]
+      fi=@fl[ldb[:frm]['site_id']]
       if $opt['e'] or $opt['s'] or $opt['f']
-        int=Sv.new(adb,fi,$opt['e'])
-        int=Cl.new(adb,fi,'localhost') if $opt['c']
+        aint=Sv.new(adb,fi,$opt['e'])
+        aint=Cl.new(adb,fi,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c']
-        int=Cl.new(adb,fi,host)
+        aint=Cl.new(adb,fi,host)
       else
-        int=Test.new(adb,fi)
+        aint=Test.new(adb,fi)
       end
-      int.set_switch('dev',"Change Device",ldb.list)
+      aint.set_switch('dev',"Change Device",ldb.list)
     end
   end
 end

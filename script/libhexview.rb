@@ -5,10 +5,10 @@ require "libmsg"
 module Hex
   class View
     include Msg::Ver
-    def initialize(int,stat)
+    def initialize(hint,stat)
       # Server Status
       init_ver('HexView',4)
-      @int=Msg.type?(int,Hash)
+      @hint=Msg.type?(hint,Hash)
       @stat=Msg.type?(stat,Status::Var)
       id=stat['id'] || raise(InvalidID,"NO ID in Stat")
       file=View.sdb(id) || raise(InvalidID,"Hex/Can't found SDB for #{id}")
@@ -33,8 +33,8 @@ module Hex
     end
 
     def to_s
-      @res[3]=b2i(@int['watch'])
-      @res[4]=b2i(@int['isu'])
+      @res[3]=b2i(@hint['watch'])
+      @res[4]=b2i(@hint['isu'])
       @res[6]=''
       @list.each{|key,title,len,type|
         len=len.to_i
@@ -70,6 +70,6 @@ if __FILE__ == $0
   require "libstatus"
   Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
   stat=Status::Var.new.load
-  int=Hex::View.new({},stat)
-  puts int
+  hint=Hex::View.new({},stat)
+  puts hint
 end

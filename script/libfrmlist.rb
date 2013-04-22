@@ -15,7 +15,7 @@ module Frm
       else
         fsh=Test.new(fdb)
       end
-      fsh.set_switch('dev',"Change Device",ldb.list)
+      fsh.switch_menu('dev',"Change Device",ldb.list)
     end
   end
 end

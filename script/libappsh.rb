@@ -31,7 +31,7 @@ module App
     end
 
     def init_layer
-      @fsh.set_switch('lay',"Change Layer",{'app'=>"App mode"})
+      @fsh.switch_menu('lay',"Change Layer",{'app'=>"App mode"})
       grp=@shdom.add_group('lay',"Change Layer")
       grp.update_items({'frm'=>"Frm mode"}).reset_proc{|item|
         @fsh.shell || exit

@@ -22,7 +22,7 @@ module App
       else
         ash=Test.new(adb,fi)
       end
-      ash.set_switch('dev',"Change Device",ldb.list)
+      ash.switch_menu('dev',"Change Device",ldb.list)
     end
   end
 end

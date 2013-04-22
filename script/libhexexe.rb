@@ -5,7 +5,7 @@ require "libapplist"
 require "libhexview"
 
 module Hex
-  class Exe < Interactive::Exe
+  class Exe < Sh::Exe
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
       init_ver('Hex',2)
@@ -49,7 +49,7 @@ module Hex
     end
   end
 
-  class List < Interactive::List
+  class List < Sh::List
     def initialize
       @al=App::List.new
       @aint={}

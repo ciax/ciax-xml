@@ -2,7 +2,7 @@
 require "libfrmlist"
 
 module App
-  class List < Interactive::List
+  class List < Sh::List
     # @ fl,fint,list
     require "libappsv"
     def initialize

@@ -4,7 +4,7 @@ require "libstatus"
 require "libwatch"
 
 module App
-  class Exe < Interactive::Exe
+  class Exe < Sh::Exe
     # @< cobj,output,intgrp,interrupt,upd_proc*
     # @ adb,fint,extdom,watch,stat*
     attr_reader :stat

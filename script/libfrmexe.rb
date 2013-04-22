@@ -3,7 +3,7 @@ require 'libsh'
 require 'libfield'
 
 module Frm
-  class Exe < Interactive::Exe
+  class Exe < Sh::Exe
     # @< cobj,output,intgrp,(interrupt),(upd_proc*)
     # @ extdom,field*
     attr_reader :field

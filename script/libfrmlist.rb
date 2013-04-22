@@ -2,7 +2,7 @@
 require 'libfrmsv'
 
 module Frm
-  class List < Interactive::List
+  class List < Sh::List
     def newint(id)
       ldb=Loc::Db.new(id)
       fdb=ldb[:frm]

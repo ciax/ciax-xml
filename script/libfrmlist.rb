@@ -4,17 +4,18 @@ require 'libfrmsv'
 module Frm
   class List < Interactive::List
     def newint(id)
-      fdb=Loc::Db.new(id)[:frm]
+      ldb=Loc::Db.new(id)
+      fdb=ldb[:frm]
       if $opt['s'] or $opt['e']
         par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
-        fint=Frm::Sv.new(fdb,par)
-        fint=Frm::Cl.new(fdb,'localhost') if $opt['c']
+        int=Sv.new(fdb,par)
+        int=Cl.new(fdb,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c'] or $opt['f']
-        fint=Frm::Cl.new(fdb,host)
+        int=Cl.new(fdb,host)
       else
-        fint=Frm::Test.new(fdb)
+        int=Test.new(fdb)
       end
-      fint
+      int.set_switch('dev',"Change Device",ldb.list)
     end
   end
 end

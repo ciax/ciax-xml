@@ -22,6 +22,7 @@ mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
+list: applist,frmlit-> share db
 app: watch layer will be separated as "Event" including interlock and skip
 mcr: macro log
 mcr: batch mode w/showing progress

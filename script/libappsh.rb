@@ -22,7 +22,6 @@ module App
       if aldb=@adb[:command][:alias]
         aldb.each{|k,v| @cobj[k]=@cobj[v]}
       end
-      switch_menu('lay',"Change Layer",{'frm'=>"Frm mode"},"%s:#{self['id']}")
       init_view
       self
     end

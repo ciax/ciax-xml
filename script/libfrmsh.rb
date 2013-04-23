@@ -20,7 +20,6 @@ module Frm
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any])
       @intgrp.add_item('load',"Load Field (tag)")
       @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
-      switch_menu('lay',"Change Layer",{'app'=>"App mode"},"%s:#{self['id']}")
       self
     end
 

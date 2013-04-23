@@ -20,6 +20,7 @@ module Ins
         else
           sh=App::Test.new(adb,fsh)
         end
+        llist={'frm'=>"Frm mode"}
       when 'frm'
         if $opt['s'] or $opt['e']
           par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
@@ -30,7 +31,9 @@ module Ins
         else
           sh=Frm::Test.new(fdb)
         end
+        llist={'app'=>"App mode"}
       end
+      sh.switch_menu('lay',"Change Layer",llist,"%s:#{sh['id']}")
       sh.switch_menu('dev',"Change Device",ldb.list,"#{layer}:%s")
     end
   end

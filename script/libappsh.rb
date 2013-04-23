@@ -13,7 +13,8 @@ module App
       self['id']=@adb['site_id']
       @fsh=Msg.type?(fsh,Frm::Exe)
       @stat=Status::Var.new.ext_file(@adb['site_id'])
-      prom=Sh::Prompt.new({'id'=>nil,'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'},self)
+      plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
+      prom=Sh::Prompt.new(self,"app",plist)
       super(@stat,prom)
       @extdom=@cobj.add_extdom(@adb,:command)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])

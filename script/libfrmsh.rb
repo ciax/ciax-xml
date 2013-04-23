@@ -11,7 +11,7 @@ module Frm
       Msg.type?(fdb,Frm::Db)
       self['id']=fdb['site_id']
       @field=Field::Var.new.ext_file(fdb['site_id']).load
-      prom=Sh::Prompt.new({'id'=>nil},self)
+      prom=Sh::Prompt.new(self,"frm")
       super(@field,prom)
       @extdom=@cobj.add_extdom(fdb,:cmdframe)
       idx={:type =>'str',:list => @field['val'].keys}

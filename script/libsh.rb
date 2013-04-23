@@ -177,13 +177,15 @@ module Sh
   end
 
   class Prompt < Hash
-    def initialize(db,stat)
-      update Msg.type?(db,Hash)
+    def initialize(stat,prefix='',db={},suffix='>')
       @stat=Msg.type?(stat,Hash)
+      update Msg.type?(db,Hash)
+      @prefix="#{prefix}:#{stat['id']}"
+      @suffix=suffix
     end
 
     def to_s
-      str=''
+      str=@prefix.dup
       each{|k,cmp|
         next unless v=@stat[k]
         case cmp
@@ -195,7 +197,7 @@ module Sh
           str << v
         end
       }
-      str << '>'
+      str << @suffix
     end
   end
 

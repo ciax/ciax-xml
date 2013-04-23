@@ -16,7 +16,7 @@ module Mcr
       self['id']=@mobj.current.id
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
-      prom=Sh::Prompt.new({'id' => nil,'stat' => "(%s)"},self)
+      prom=Sh::Prompt.new(self,"mcr",{'stat' => "(%s)"})
       super(record,prom)
       # For shell
       @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}

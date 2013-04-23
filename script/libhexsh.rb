@@ -9,9 +9,10 @@ module Hex
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
       init_ver('Hex',2)
+      self['layer']='hex'
       self['id']=@adb['site_id']
       stat=Status::Var.new.ext_file(@adb['site_id'])
-      prom=Sh::Prompt.new(self,"hex")
+      prom=Sh::Prompt.new(self)
       super(View.new(self,stat),prom)
       @extdom=@cobj.add_extdom(@adb,:command)
       self

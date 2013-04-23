@@ -9,9 +9,10 @@ module Frm
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
+      self['layer']='frm'
       self['id']=fdb['site_id']
       @field=Field::Var.new.ext_file(fdb['site_id']).load
-      prom=Sh::Prompt.new(self,"frm")
+      prom=Sh::Prompt.new(self)
       super(@field,prom)
       @extdom=@cobj.add_extdom(fdb,:cmdframe)
       idx={:type =>'str',:list => @field['val'].keys}

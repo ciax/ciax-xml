@@ -10,11 +10,12 @@ module App
     attr_reader :stat
     def initialize(adb,fsh)
       @adb=Msg.type?(adb,Db)
+      self['layer']='app'
       self['id']=@adb['site_id']
       @fsh=Msg.type?(fsh,Frm::Exe)
       @stat=Status::Var.new.ext_file(@adb['site_id'])
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
-      prom=Sh::Prompt.new(self,"app",plist)
+      prom=Sh::Prompt.new(self,plist)
       super(@stat,prom)
       @extdom=@cobj.add_extdom(@adb,:command)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])

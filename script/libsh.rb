@@ -17,22 +17,21 @@ module Sh
   class Exe < ExHash
     attr_reader :upd_proc,:interrupt,:output,:shdom
     # block gives command line convert
-    def initialize(output={},prompt={})
+    def initialize(output={},prompt=self)
       init_ver(self,2)
       @cobj=Command.new(self)
       @output=output
-      @prompt=prompt
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
       # For Shell
+      @prompt=prompt
       @shdom=@cobj.add_domain('sh',5)
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
       grp=@shdom.add_group('sh',"Shell Command")
       grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
-
     end
 
     # Sync only (Wait for other thread)
@@ -177,10 +176,10 @@ module Sh
   end
 
   class Prompt < Hash
-    def initialize(stat,layer='',db={})
+    def initialize(stat,db={})
       @stat=Msg.type?(stat,Hash)
       update Msg.type?(db,Hash)
-      @prefix="#{layer}:#{stat['id']}"
+      @prefix="#{stat['layer']}:#{stat['id']}"
     end
 
     def to_s

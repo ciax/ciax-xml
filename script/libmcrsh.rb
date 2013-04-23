@@ -13,10 +13,11 @@ module Mcr
     def initialize(mobj,al)
       @mobj=Msg.type?(mobj,Command)
       @al=Msg.type?(al,App::List)
+      self['layer']='mcr'
       self['id']=@mobj.current.id
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
-      prom=Sh::Prompt.new(self,"mcr",{'stat' => "(%s)"})
+      prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
       # For shell
       @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}

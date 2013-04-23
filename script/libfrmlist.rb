@@ -6,15 +6,7 @@ module Frm
     def newsh(id)
       ldb=Loc::Db.new(id)
       fdb=ldb[:frm]
-      if $opt['s'] or $opt['e']
-        par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
-        fsh=Sv.new(fdb,par)
-        fsh=Cl.new(fdb,'localhost') if $opt['c']
-      elsif host=$opt['h'] or $opt['c'] or $opt['f']
-        fsh=Cl.new(fdb,host)
-      else
-        fsh=Test.new(fdb)
-      end
+      fsh=Frm.new(fdb)
       fsh.switch_menu('dev',"Change Device",ldb.list)
     end
   end

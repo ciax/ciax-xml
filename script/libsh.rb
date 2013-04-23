@@ -83,7 +83,7 @@ module Sh
       extend(Server).ext_server(port)
     end
 
-    def switch_menu(group_key,title,list,fmt)
+    def switch_menu(group_key,title,list,fmt='%s')
       grp=@shdom.add_group(group_key,title)
       grp.update_items(list).reset_proc{|item|
         raise(SelectID,fmt % item.id)

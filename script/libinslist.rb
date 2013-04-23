@@ -10,7 +10,6 @@ module Ins
       ldb=Loc::Db.new(site)
       fdb=ldb[:frm]
       llist={'frm'=>"Frm mode",'app'=>"App mode"}
-      llist.delete(layer)
       case layer
       when 'app'
         fsh=self["#{fdb['site_id']}:frm"]

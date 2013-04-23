@@ -3,16 +3,16 @@ require "libsh"
 require "libmcrdb"
 require "libmcrrec"
 require "libcommand"
-require "libapplist"
+require "libinslist"
 
 module Mcr
   class Sv < Sh::Exe
     # @< cobj,output,(intgrp),interrupt,upd_proc*
     # @ al,appint,mobj*
     attr_accessor :mobj
-    def initialize(mobj,al)
+    def initialize(mobj,il)
       @mobj=Msg.type?(mobj,Command)
-      @al=Msg.type?(al,App::List)
+      @il=Msg.type?(il,Ins::List)
       self['layer']='mcr'
       self['id']=@mobj.current.id
       record=Record.new(self)
@@ -55,7 +55,7 @@ module Mcr
       item.select.each{|e1|
         begin
           @crnt=@output.add_step(e1,depth){|site|
-            @al[site].stat
+            @il["#{site}:app"].stat
           }
           case e1['type']
           when 'goal'
@@ -66,7 +66,7 @@ module Mcr
             @crnt.timeout? && raise(Interlock)
           when 'exec'
             @crnt.exec{|site,cmd,depth|
-              ash=@al[site]
+              ash=@il["#{site}:app"]
               ash.exe(cmd)
               @appint=ash.interrupt
             }
@@ -100,12 +100,12 @@ end
 if __FILE__ == $0
   Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
-    al=App::List.new
+    il=Ins::List.new
     mdb=Mcr::Db.new('ciax')
     mobj=Command.new
     mobj.add_extdom(mdb,:macro)
     mobj.setcmd(ARGV)
-    msh=Mcr::Sv.new(mobj,al)
+    msh=Mcr::Sv.new(mobj,il)
     if $opt['i']
       msh.start
     else

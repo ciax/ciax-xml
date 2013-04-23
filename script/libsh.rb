@@ -85,7 +85,9 @@ module Sh
 
     def switch_menu(key,title,list)
       grp=@shdom.add_group(key,title)
-      grp.update_items(list).reset_proc{|item| raise(SelectID,item.id)}
+      grp.update_items(list).reset_proc{|item|
+warn item[:cmd]
+ raise(SelectID,item.id)}
       self
     end
 

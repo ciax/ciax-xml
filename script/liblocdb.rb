@@ -10,8 +10,7 @@ module Loc
       appid=delete('app_id')
       insid=delete('ins_id')||self['id']
       cover(App::Db.new(appid),:app).ext_ins(insid)
-      app=self[:app]
-      app['site_id']=id
+      app=self[:app].update({'id'=>appid,'ins_id'=>insid,'site_id'=>id})
       frm=self[:frm]||{}
       if ref=frm.delete('ref')
         frm=cover(Db.new(ref)[:frm],:frm)

@@ -5,32 +5,17 @@ require "libfrmsv"
 module Ins
   class List < Sh::List
     def newsh(id)
-      layer,site=id.split(':')
+      layer,site=id.to_s.split(':')
       ldb=Loc::Db.new(site)
       adb=ldb[:app]
       fdb=ldb[:frm]
       case layer
       when 'app'
         fsh=self["frm:#{fdb['site_id']}"]
-        if $opt['e'] or $opt['s'] or $opt['f']
-          sh=App::Sv.new(adb,fsh,$opt['e'])
-          sh=App::Cl.new(adb,fsh,'localhost') if $opt['c']
-        elsif host=$opt['h'] or $opt['c']
-          sh=App::Cl.new(adb,fsh,host)
-        else
-          sh=App::Test.new(adb,fsh)
-        end
+        sh=App.new(adb,fsh)
         llist={'frm'=>"Frm mode"}
       when 'frm'
-        if $opt['s'] or $opt['e']
-          par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
-          sh=Frm::Sv.new(fdb,par)
-          sh=Frm::Cl.new(fdb,'localhost') if $opt['c']
-        elsif host=$opt['h'] or $opt['c'] or $opt['f']
-          sh=Frm::Cl.new(fdb,host)
-        else
-          sh=Frm::Test.new(fdb)
-        end
+        sh=Frm.new(fdb)
         llist={'app'=>"App mode"}
       end
       sh.switch_menu('lay',"Change Layer",llist,"%s:#{sh['id']}")

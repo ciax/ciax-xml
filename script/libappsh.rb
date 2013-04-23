@@ -22,7 +22,7 @@ module App
       if aldb=@adb[:command][:alias]
         aldb.each{|k,v| @cobj[k]=@cobj[v]}
       end
-      init_layer
+      switch_menu('lay',"Change Layer",{'frm'=>"Frm mode"},"%s:#{self['id']}")
       init_view
       self
     end
@@ -31,14 +31,6 @@ module App
     def shell_conv(line)
       line='set '+line if /^[^ ]+\=/ === line
       line
-    end
-
-    def init_layer
-      grp=@shdom.add_group('lay',"Change Layer")
-      grp.update_items({'frm'=>"Frm mode"}).reset_proc{|item|
-        raise(SelectID,"frm:#{self['id']}")
-      }
-      self
     end
 
     def init_view

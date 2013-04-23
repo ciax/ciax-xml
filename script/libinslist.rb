@@ -1,26 +1,37 @@
 #!/usr/bin/ruby
-require "libapplist"
-require "libfrmlist"
+require "libappsv"
+require "libfrmsv"
 
 module Ins
   class List < Sh::List
-    require "libappsv"
-    def initialize
-      @al=App::List.new
-      super
-    end
-
     def newsh(id)
       layer,site=id.split(':')
-      layer=layer.to_sym
       ldb=Loc::Db.new(site)
-      site=ldb[layer]['site_id']
+      adb=ldb[:app]
+      fdb=ldb[:frm]
       case layer
-      when :app
-        @al[site]
-      when :frm
-        @al.fl[site]
+      when 'app'
+        fsh=self["frm:#{fdb['site_id']}"]
+        if $opt['e'] or $opt['s'] or $opt['f']
+          sh=App::Sv.new(adb,fsh,$opt['e'])
+          sh=App::Cl.new(adb,fsh,'localhost') if $opt['c']
+        elsif host=$opt['h'] or $opt['c']
+          sh=App::Cl.new(adb,fsh,host)
+        else
+          sh=App::Test.new(adb,fsh)
+        end
+      when 'frm'
+        if $opt['s'] or $opt['e']
+          par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
+          sh=Frm::Sv.new(fdb,par)
+          sh=Frm::Cl.new(fdb,'localhost') if $opt['c']
+        elsif host=$opt['h'] or $opt['c'] or $opt['f']
+          sh=Frm::Cl.new(fdb,host)
+        else
+          sh=Frm::Test.new(fdb)
+        end
       end
+      sh.switch_menu('dev',"Change Device",ldb.list,"#{layer}:%s")
     end
   end
 end

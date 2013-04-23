@@ -20,7 +20,7 @@ module Frm
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any])
       @intgrp.add_item('load',"Load Field (tag)")
       @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
-      init_layer
+      switch_menu('lay',"Change Layer",{'app'=>"App mode"},"%s:#{self['id']}")
       self
     end
 
@@ -28,14 +28,6 @@ module Frm
     def shell_conv(line)
       line='set '+line.tr('=',' ') if /^[^ ]+\=/ === line
       line
-    end
-
-    def init_layer
-      grp=@shdom.add_group('lay',"Change Layer")
-      grp.update_items({'app'=>"App mode"}).reset_proc{|item|
-        raise(SelectID,"app:#{self['id']}")
-      }
-      self
     end
   end
 

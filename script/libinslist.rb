@@ -5,8 +5,8 @@ require "libfrmsv"
 module Ins
   class List < Sh::List
     def newsh(id)
+      Loc::Db.new(nil) unless /:/ === id
       site,layer=id.to_s.split(':')
-      layer||='app'
       ldb=Loc::Db.new(site)
       fdb=ldb[:frm]
       llist={'frm'=>"Frm mode",'app'=>"App mode"}

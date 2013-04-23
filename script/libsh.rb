@@ -17,15 +17,15 @@ module Sh
   class Exe < ExHash
     attr_reader :upd_proc,:interrupt,:output,:shdom
     # block gives command line convert
-    def initialize(output={},pconv={},pstat=self)
+    def initialize(output={},prompt={})
       init_ver(self,2)
       @cobj=Command.new(self)
       @output=output
+      @prompt=prompt
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
       # For Shell
-      @prompt=Prompt.new({'id'=>nil}.update(pconv),pstat)
       @shdom=@cobj.add_domain('sh',5)
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)

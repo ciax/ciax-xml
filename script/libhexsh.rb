@@ -11,7 +11,8 @@ module Hex
       init_ver('Hex',2)
       self['id']=@adb['site_id']
       stat=Status::Var.new.ext_file(@adb['site_id'])
-      super(View.new(self,stat))
+      prom=Sh::Prompt.new({'id'=>nil},self)
+      super(View.new(self,stat),prom)
       @extdom=@cobj.add_extdom(@adb,:command)
       self
     end

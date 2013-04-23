@@ -1,10 +1,22 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libmsg"
-require "libapplist"
+require "libinslist"
 require "libhexview"
 
 module Hex
+  def self.new(adb,il)
+    Msg.type?(adb,App::Db)
+    Msg.type?(il,Ins::List)
+    if ['e','s','f','h','c'].any?{|i| $opt[i]}
+      ash=il["#{adb['site_id']}:app"]
+      hsh=Hex::Sv.new(adb,ash,$opt['e'])
+    else
+      hsh=Hex::Exe.new(adb)
+    end
+    hsh
+  end
+
   class Exe < Sh::Exe
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
@@ -53,20 +65,13 @@ module Hex
 
   class List < Sh::List
     def initialize
-      @al=App::List.new
-      @ash={}
+      @il=Ins::List.new
       super
     end
 
     def newsh(id)
       ldb=Loc::Db.new(id)
-      if ['e','s','f','h','c'].any?{|i| $opt[i]}
-        @ash[id]=@al[ldb[:app]['site_id']]
-        hint=Sv.new(ldb[:app],@ash[id],$opt['e'])
-      else
-        hint=Exe.new(ldb[:app])
-      end
-      hint
+      Hex.new(ldb[:app],@il)
     end
   end
 end

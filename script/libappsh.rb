@@ -7,14 +7,14 @@ module App
   def self.new(adb,fsh)
     Msg.type?(fsh,Frm::Exe)
     if $opt['e'] or $opt['s'] or $opt['f']
-      sh=App::Sv.new(adb,fsh,$opt['e'])
-      sh=App::Cl.new(adb,fsh,'localhost') if $opt['c']
+      ash=App::Sv.new(adb,fsh,$opt['e'])
+      ash=App::Cl.new(adb,fsh,'localhost') if $opt['c']
     elsif host=$opt['h'] or $opt['c']
-      sh=App::Cl.new(adb,fsh,host)
+      ash=App::Cl.new(adb,fsh,host)
     else
-      sh=App::Test.new(adb,fsh)
+      ash=App::Test.new(adb,fsh)
     end
-    sh
+    ash
   end
 
   class Exe < Sh::Exe

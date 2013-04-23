@@ -5,7 +5,7 @@ require "libdb"
 
 module Mcr
   class Db < Db
-    def initialize(id)
+    def initialize(id=nil)
       init_ver('mdb')
       super('mdb',id){|doc|
         hash={}

@@ -5,7 +5,7 @@ require "libdb"
 
 module App
   class Db < Db
-    def initialize(id)
+    def initialize(id=nil)
       super('adb',id){|doc|
         hash={}
         hash.update(doc)

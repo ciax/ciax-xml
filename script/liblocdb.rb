@@ -5,7 +5,7 @@ require "libinsdb"
 
 module Loc
   class Db < Db
-    def initialize(id)
+    def initialize(id=nil)
       super('ldb',id){|doc| rec_db(doc.top)}
       appid=delete('app_id')
       insid=delete('ins_id')||self['id']

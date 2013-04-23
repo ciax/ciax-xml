@@ -5,7 +5,7 @@ require "libdb"
 # id = Table Group ID
 module Sym
   class Db < Db
-    def initialize(id)
+    def initialize(id=nil)
       init_ver('SymDb')
       super("sdb",id){|doc|
         hash={}

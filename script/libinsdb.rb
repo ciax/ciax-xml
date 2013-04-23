@@ -3,7 +3,7 @@ require "libappdb"
 
 module Ins
   class Db < Db
-    def initialize(id)
+    def initialize(id=nil)
       self['id']=id
       super('idb',id,ENV['PROJ']){|doc|
         hash={}

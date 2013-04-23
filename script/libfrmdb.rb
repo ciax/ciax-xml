@@ -4,7 +4,7 @@ require "libdb"
 
 module Frm
   class Db < Db
-    def initialize(id)
+    def initialize(id=nil)
       init_ver('fdb')
       super('fdb',id){|doc|
         hash={}

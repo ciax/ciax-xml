@@ -177,11 +177,10 @@ module Sh
   end
 
   class Prompt < Hash
-    def initialize(stat,prefix='',db={},suffix='>')
+    def initialize(stat,layer='',db={})
       @stat=Msg.type?(stat,Hash)
       update Msg.type?(db,Hash)
-      @prefix="#{prefix}:#{stat['id']}"
-      @suffix=suffix
+      @prefix="#{layer}:#{stat['id']}"
     end
 
     def to_s
@@ -197,7 +196,7 @@ module Sh
           str << v
         end
       }
-      str << @suffix
+      str << '>'
     end
   end
 

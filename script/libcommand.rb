@@ -87,6 +87,11 @@ class Command < ExHash
       @group[gid]=Group.new(@index,attr,@def_proc)
     end
 
+    def add_dummy(gid,caption,column=2)
+      attr={'caption' => caption,'column' => column,'color' => @color}
+      @group[gid]=Dummy.new(attr)
+    end
+
     def reset_proc(&p)
       values.each{|v|
         v.def_proc.set &p
@@ -96,6 +101,23 @@ class Command < ExHash
 
     def list
       @group.values.map{|grp| grp.list}.grep(/./).join("\n")
+    end
+  end
+
+  class Dummy < ExHash
+    def initialize(attr)
+      @labeldb=Msg::CmdList.new(attr)
+    end
+
+    def update_items(labels)
+      labels.each{|k,v|
+        @labeldb[k]=v
+      }
+      self
+    end
+
+    def list
+      @labeldb.to_s
     end
   end
 

@@ -31,7 +31,7 @@ module Sh
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
-      grp=@shdom.add_group('sh',"Shell Command")
+      grp=@shdom.add_dummy('sh',"Shell Command")
       grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
     end
 

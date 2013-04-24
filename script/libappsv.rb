@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 require "libappsh"
-require 'libfrmlist'
 require "libappcmd"
 require "libapprsp"
 require "libsymupd"

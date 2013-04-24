@@ -14,14 +14,7 @@ module App
       ldb=Loc::Db.new(id)
       adb=ldb[:app]
       fsh=@fl[ldb[:frm]['site_id']]
-      if $opt['e'] or $opt['s'] or $opt['f']
-        ash=Sv.new(adb,fsh,$opt['e'])
-        ash=Cl.new(adb,fsh,'localhost') if $opt['c']
-      elsif host=$opt['h'] or $opt['c']
-        ash=Cl.new(adb,fsh,host)
-      else
-        ash=Test.new(adb,fsh)
-      end
+      ash=App.new(adb,fsh)
       ash.switch_menu('dev',"Change Device",ldb.list)
     end
   end

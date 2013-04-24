@@ -4,6 +4,19 @@ require "libstatus"
 require "libwatch"
 
 module App
+  def self.new(adb,fsh)
+    Msg.type?(fsh,Frm::Exe)
+    if $opt['e'] or $opt['s'] or $opt['f']
+      ash=App::Sv.new(adb,fsh,$opt['e'])
+      ash=App::Cl.new(adb,fsh,'localhost') if $opt['c']
+    elsif host=$opt['h'] or $opt['c']
+      ash=App::Cl.new(adb,fsh,host)
+    else
+      ash=App::Test.new(adb,fsh)
+    end
+    ash
+  end
+
   class Exe < Sh::Exe
     # @< cobj,output,intgrp,interrupt,upd_proc*
     # @ adb,fsh,extdom,watch,stat*
@@ -22,7 +35,6 @@ module App
       if aldb=@adb[:command][:alias]
         aldb.each{|k,v| @cobj[k]=@cobj[v]}
       end
-      init_layer
       init_view
       self
     end
@@ -31,15 +43,6 @@ module App
     def shell_conv(line)
       line='set '+line if /^[^ ]+\=/ === line
       line
-    end
-
-    def init_layer
-      @fsh.switch_menu('lay',"Change Layer",{'app'=>"App mode"})
-      grp=@shdom.add_group('lay',"Change Layer")
-      grp.update_items({'frm'=>"Frm mode"}).reset_proc{|item|
-        @fsh.shell || exit
-      }
-      self
     end
 
     def init_view

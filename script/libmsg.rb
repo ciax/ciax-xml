@@ -98,7 +98,7 @@ module Msg
   # Hash of title
   class CmdList < Hash
     attr_accessor :conf
-    def initialize(attr,conf={:exclude =>''})
+    def initialize(attr,conf={:exclude =>'',:include =>'.*'})
       Msg.type?(attr,Hash)
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
@@ -118,7 +118,11 @@ module Msg
 
     def to_s
       page=[]
-      keys.reject{|i| /^(#{@conf[:exclude]})$/i === i}.each_slice(@col){|a|
+      keys.select{|i|
+        /^(#{@conf[:include]})$/i === i
+      }.reject{|i|
+        /^(#{@conf[:exclude]})$/i === i
+      }.each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact

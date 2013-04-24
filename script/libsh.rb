@@ -19,6 +19,7 @@ module Sh
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
+      update(:exclude =>'',:include =>'.*')
       @cobj=Command.new(self)
       @output=output
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")

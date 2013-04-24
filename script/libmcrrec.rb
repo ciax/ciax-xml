@@ -12,7 +12,7 @@ module Mcr
       super('mcr')
       @obj=Msg.type?(obj,Sv)
       obj[:base]=Time.new.to_f
-      obj[:exclude]='[esdfr]'
+      obj[:include]=''
       self['id']=@obj[:base].to_i
       self['cmd']=obj.mobj.current.cmd
       self['label']=obj.mobj.current[:label]
@@ -154,7 +154,7 @@ module Mcr
     def exec?
       return true if $opt['n']
       loop{
-        case query(['Exec','Skip'],'[dfr]')
+        case query(['Exec','Skip'])
         when /^E/i
           if dryrun?
             @step['action']='dryrun'
@@ -173,7 +173,7 @@ module Mcr
     def done?
       return true if $opt['n']
       loop{
-        case query(['Done','Force','Retry'],'[es]')
+        case query(['Done','Force','Retry'])
         when /^D/i
           @step['action']='done'
           return true
@@ -192,8 +192,9 @@ module Mcr
     end
 
     private
-    def query(cmds,exc)
-      @int[:exclude]=exc
+    def query(cmds)
+      inc=cmds.map{|s| s[0].downcase}.join('')
+      @int[:include]="[#{inc}]"
       @int['stat']='query'
       if Msg.fg?
         prompt=Msg.color('['+cmds.join('/')+']?',5)
@@ -204,7 +205,7 @@ module Mcr
         res=Thread.current[:query]
       end
       @int['stat']='run'
-      @int[:exclude]='[esdfr]'
+      @int[:include]=''
       res
     end
   end

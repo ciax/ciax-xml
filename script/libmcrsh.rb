@@ -46,10 +46,11 @@ module Mcr
     end
 
     def shell
-      self[:exclude]='[sdfr]'
+      self[:include]='e'
       self['stat']='ready'
       @th=Thread.new{
         sleep
+        self[:include]=''
         start
       }
       super()

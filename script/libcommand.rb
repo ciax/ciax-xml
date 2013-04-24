@@ -41,7 +41,7 @@ class Command < ExHash
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
-  def initialize(conf={:exclude =>''})
+  def initialize(conf={:exclude =>'',:include =>'.*'})
     init_ver(self)
     @current=nil
     @domain={}
@@ -57,6 +57,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     key?(id) || error
+    /^(#{@conf[:include]})$/i === id || error
     /^(#{@conf[:exclude]})$/i === id && error
     verbose{"SetCMD (#{id},#{par})"}
     @current=self[id].set_par(par)

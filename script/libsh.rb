@@ -83,10 +83,10 @@ module Sh
       extend(Server).ext_server(port)
     end
 
-    def switch_menu(group_key,title,list,fmt='%s')
+    def switch_menu(group_key,title,list,ary=[])
       grp=@shdom.add_group(group_key,title)
       grp.update_items(list).reset_proc{|item|
-        raise(SelectID,fmt % item.id)
+        raise(SelectID,ary.map{|i| i||item.id})
       }
       self
     end
@@ -203,7 +203,8 @@ module Sh
 
   class List < Hash
     require "liblocdb"
-    def initialize
+    def initialize(layer=nil)
+      @layer=layer
       $opt||=Msg::GetOpts.new
       super(){|h,id|
         h[id]=newsh(id)
@@ -211,15 +212,16 @@ module Sh
     end
 
     def exe(stm)
-      self[stm.shift].exe(stm)
+      getsh(stm.shift).exe(stm)
     rescue UserError
      $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
     def shell(id)
-      begin
+      sh=getsh(id)
+      while id=sh.shell
         sh=self[id]
-      end while id=sh.shell
+      end
     rescue UserError
       $opt.usage('(opt) [id]')
     end
@@ -227,11 +229,15 @@ module Sh
     def server(ary)
       ary.each{|i|
         sleep 0.3
-        self[i]
+        getsh(i)
       }.empty? && self[nil]
       sleep
     rescue UserError
       $opt.usage('(opt) [id] ....')
+    end
+
+    def getsh(id)
+      @layer ? self[[@layer,id]] : self[id]
     end
 
     private

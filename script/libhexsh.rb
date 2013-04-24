@@ -9,7 +9,7 @@ module Hex
     Msg.type?(adb,App::Db)
     Msg.type?(il,Ins::List)
     if ['e','s','f','h','c'].any?{|i| $opt[i]}
-      ash=il["#{adb['site_id']}:app"]
+      ash=il.getsh(adb['site_id'])
       hsh=Hex::Sv.new(adb,ash,$opt['e'])
     else
       hsh=Hex::Exe.new(adb)
@@ -65,7 +65,7 @@ module Hex
 
   class List < Sh::List
     def initialize
-      @il=Ins::List.new
+      @il=Ins::List.new('app')
       super
     end
 

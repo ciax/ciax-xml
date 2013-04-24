@@ -5,25 +5,25 @@ require "libfrmsv"
 module Ins
   class List < Sh::List
     def newsh(id)
-      Loc::Db.new(nil) unless /:/ === id
-      site,layer=id.to_s.split(':')
+      Loc::Db.new unless id
+      layer,site=id
       ldb=Loc::Db.new(site)
       fdb=ldb[:frm]
       llist={'frm'=>"Frm mode",'app'=>"App mode"}
       case layer
       when 'app'
-        fsh=self["#{fdb['site_id']}:frm"]
+        fsh=self[['frm',fdb['site_id']]]
         sh=App.new(ldb[:app],fsh)
       when 'frm'
         sh=Frm.new(fdb)
       end
-      sh.switch_menu('lay',"Change Layer",llist,"#{sh['id']}:%s")
-      sh.switch_menu('dev',"Change Device",ldb.list,"%s:#{layer}")
+      sh.switch_menu('lay',"Change Layer",llist,[nil,sh['id']])
+      sh.switch_menu('dev',"Change Device",ldb.list,[layer,nil])
     end
   end
 end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  puts Ins::List.new.shell(ARGV.shift)
+  puts List.new('app').shell(ARGV.shift)
 end

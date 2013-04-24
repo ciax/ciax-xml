@@ -55,7 +55,7 @@ module Mcr
       item.select.each{|e1|
         begin
           @crnt=@output.add_step(e1,depth){|site|
-            @il["#{site}:app"].stat
+            @il.getsh(site).stat
           }
           case e1['type']
           when 'goal'
@@ -66,7 +66,7 @@ module Mcr
             @crnt.timeout? && raise(Interlock)
           when 'exec'
             @crnt.exec{|site,cmd,depth|
-              ash=@il["#{site}:app"]
+              ash=@il.getsh(site)
               ash.exe(cmd)
               @appint=ash.interrupt
             }
@@ -100,7 +100,7 @@ end
 if __FILE__ == $0
   Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
-    il=Ins::List.new
+    il=Ins::List.new('app')
     mdb=Mcr::Db.new('ciax')
     mobj=Command.new
     mobj.add_extdom(mdb,:macro)

@@ -25,5 +25,5 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  puts List.new('app').shell(ARGV.shift)
+  puts Ins::List.new('app').shell(ARGV.shift)
 end

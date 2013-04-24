@@ -71,7 +71,7 @@ module Mcr
       }
       self['result']='timeout'
       puts result if Msg.fg?
-      @query.quit?
+      @query.done?
     end
 
     def skip?
@@ -86,7 +86,7 @@ module Mcr
     def fail?
       return if ok?('pass','failed')
       puts to_s if Msg.fg?
-      @query.quit?
+      @query.done?
     end
 
     def title ; self['label']||self['cmd']; end
@@ -170,7 +170,7 @@ module Mcr
       }
     end
 
-    def quit?
+    def done?
       return true if $opt['n']
       loop{
         case query(['Done','Force','Retry'],'[es]')

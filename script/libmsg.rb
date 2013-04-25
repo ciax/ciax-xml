@@ -37,18 +37,15 @@ end
 
 class ServerID < Hash #{layer,site}
   def initialize(layer='app',site=nil)
-    self[:layer]=layer
-    self[:site]=site
+    update(:layer =>layer,:site =>site)
   end
 
   def layer(layer)
-    self[:layer]=layer
-    self
+    dup.update(:layer => layer)
   end
 
   def site(site)
-    self[:site]=site
-    self
+    dup.update(:site => site)
   end
 end
 

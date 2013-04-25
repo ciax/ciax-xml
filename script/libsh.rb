@@ -216,7 +216,12 @@ module Sh
     def shell(id)
       sh=getsh(id)
       while sid=sh.shell
-        sh=self[sid]
+        begin
+          sh=self[sid]
+          @sid=sid
+        rescue InvalidID
+          Msg.alert($!.to_s,1)
+        end
       end
     rescue UserError
       $opt.usage('(opt) [id]')

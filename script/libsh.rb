@@ -13,8 +13,7 @@ require "libupdate"
 
 module Sh
   class ServerID < Array #[layer,site]
-    def initialize(sh,layer='app',site=nil)
-      @list=Msg.type?(sh,List)
+    def initialize(layer='app',site=nil)
       replace([layer,site])
     end
 
@@ -36,10 +35,6 @@ module Sh
 
     def fillup(id)
       dup.map!{|i| i||id}
-    end
-
-    def getsh
-      @list[self]
     end
   end
 
@@ -236,7 +231,7 @@ module Sh
 
   class List < Hash
     def initialize(layer=nil)
-      @sid=ServerID.new(self,layer)
+      @sid=ServerID.new(layer)
       $opt||=Msg::GetOpts.new
       super(){|h,id|
         h[id]=newsh(id)
@@ -244,7 +239,7 @@ module Sh
     end
 
     def getsh(id)
-      @sid.site(id).getsh
+      self[@sid.site(id)]
     end
 
     def exe(stm)
@@ -256,7 +251,7 @@ module Sh
     def shell(id)
       sh=getsh(id)
       while sid=sh.shell
-        sh=sid.getsh
+        sh=self[sid]
       end
     rescue UserError
       $opt.usage('(opt) [id]')

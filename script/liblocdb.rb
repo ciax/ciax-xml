@@ -20,6 +20,12 @@ module Loc
       end
       frm['host']||=(app['host']||='localhost')
       frm['port']||=app['port'].to_i-1000
+      freeze
+    end
+
+    def sid(layer)
+      Msg.type?(layer,String)
+      ServerID.new(layer,self[layer.to_sym]['site_id'])
     end
 
     private

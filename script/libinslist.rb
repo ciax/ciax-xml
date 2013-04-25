@@ -8,13 +8,12 @@ module Ins
     def newsh(sid)
       Loc::Db.new unless sid
       ldb=Loc::Db.new(sid[:site])
-      fdb=ldb[:frm]
       case sid[:layer]
       when 'app'
-        fsh=self[{:layer =>'frm',:site =>fdb['site_id']}]
+        fsh=self[ldb.sid('frm')]
         sh=App.new(ldb[:app],fsh)
       when 'frm'
-        sh=Frm.new(fdb)
+        sh=Frm.new(ldb[:frm])
       end
       switch_layer(sh,'lay',"Change Layer",{'frm'=>"Frm mode",'app'=>"App mode"})
       switch_site(sh,'dev',"Change Device",ldb.list)

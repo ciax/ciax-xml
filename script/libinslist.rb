@@ -7,12 +7,11 @@ module Ins
   class List < Sh::List
     def newsh(sid)
       Loc::Db.new unless sid
-      layer,site=sid
-      ldb=Loc::Db.new(site)
+      ldb=Loc::Db.new(sid[:site])
       fdb=ldb[:frm]
-      case layer
+      case sid[:layer]
       when 'app'
-        fsh=self[['frm',fdb['site_id']]]
+        fsh=self[{:layer =>'frm',:site =>fdb['site_id']}]
         sh=App.new(ldb[:app],fsh)
       when 'frm'
         sh=Frm.new(fdb)

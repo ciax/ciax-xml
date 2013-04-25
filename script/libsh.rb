@@ -194,18 +194,19 @@ module Sh
     end
   end
 
-  class ServerID < Array #[layer,site]
+  class ServerID < Hash #{layer,site}
     def initialize(layer='app',site=nil)
-      replace([layer,site])
+      self[:layer]=layer
+      self[:site]=site
     end
 
     def layer(layer)
-      self[0]=layer
+      self[:layer]=layer
       self
     end
 
     def site(site)
-      self[1]=site
+      self[:site]=site
       self
     end
   end

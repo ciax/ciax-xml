@@ -35,6 +35,23 @@ class UnixTime < Time
   end
 end
 
+class ServerID < Hash #{layer,site}
+  def initialize(layer='app',site=nil)
+    self[:layer]=layer
+    self[:site]=site
+  end
+
+  def layer(layer)
+    self[:layer]=layer
+    self
+  end
+
+  def site(site)
+    self[:site]=site
+    self
+  end
+end
+
 module Msg
   # Should be extended in module/class
   module Ver

@@ -61,19 +61,4 @@ module Hex
       @output.to_s
     end
   end
-
-  class List < Sh::List
-    def initialize
-      @al=Ins::List.new('app')
-      super('hex')
-    end
-
-    def newsh(sid)
-      Loc::Db.new unless sid
-      ldb=Loc::Db.new(sid[:site])
-      adb=ldb[:app]
-      ash=@al.getsh(adb['site_id'])
-      Hex.new(adb,ash)
-    end
-  end
 end

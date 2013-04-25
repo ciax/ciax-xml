@@ -249,26 +249,25 @@ module Sh
     end
 
     def switch_layer(sh,gid,title,list)
-      Msg.type?(sh,Sh::Exe)
-      grp=sh.shdom.add_group(gid,title)
-      grp.update_items(list).reset_proc{|item|
-        raise(SelectID,@sid.layer(item.id))
-      }
-      self
+      switch_menu(sh,gid,title,list){|id| @sid.layer(id)}
     end
 
     def switch_site(sh,gid,title,list)
-      Msg.type?(sh,Sh::Exe)
-      grp=sh.shdom.add_group(gid,title)
-      grp.update_items(list).reset_proc{|item|
-        raise(SelectID,@sid.site(item.id))
-      }
-      self
+      switch_menu(sh,gid,title,list){|id| @sid.site(id)}
     end
 
     private
     def newsh(id)
       Exe.new
+    end
+
+    def switch_menu(sh,gid,title,list)
+      Msg.type?(sh,Sh::Exe)
+      grp=sh.shdom.add_group(gid,title)
+      grp.update_items(list).reset_proc{|item|
+        raise(SelectID,yield(item.id))
+      }
+      self
     end
   end
 end

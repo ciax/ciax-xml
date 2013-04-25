@@ -5,12 +5,11 @@ require "libinslist"
 require "libhexview"
 
 module Hex
-  def self.new(adb,il)
+  def self.new(adb,ash)
     Msg.type?(adb,App::Db)
-    Msg.type?(il,Ins::List)
+    Msg.type?(ash,App::Exe)
     if ['e','s','f','h','c'].any?{|i| $opt[i]}
-      ash=il.getsh(adb['site_id'])
-      hsh=Hex::Sv.new(adb,ash,$opt['e'])
+       hsh=Hex::Sv.new(adb,ash,$opt['e'])
     else
       hsh=Hex::Exe.new(adb)
     end
@@ -65,13 +64,17 @@ module Hex
 
   class List < Sh::List
     def initialize
-      @il=Ins::List.new('app')
-      super
+      @al=Ins::List.new('app')
+      super('hex')
     end
 
     def newsh(id)
-      ldb=Loc::Db.new(id)
-      Hex.new(ldb[:app],@il)
+      Loc::Db.new unless id
+      layer,site=id
+      ldb=Loc::Db.new(site)
+      adb=ldb[:app]
+      ash=@al.getsh(adb['site_id'])
+      Hex.new(adb,ash)
     end
   end
 end

@@ -12,6 +12,37 @@ require "libupdate"
 # Add Shell Command (by Shell extention)
 
 module Sh
+  class ServerID < Array #[layer,site]
+    def initialize(sh,layer='app',site=nil)
+      @list=Msg.type?(sh,List)
+      replace([layer,site])
+    end
+
+    def layer(layer)
+      dup.replace([layer,self[1]])
+    end
+
+    def layeronly(layer)
+      dup.replace([layer,nil])
+    end
+
+    def site(site)
+      dup.replace([self[0],site])
+    end
+
+    def siteonly(site)
+      dup.replace([nil,site])
+    end
+
+    def fillup(id)
+      dup.map!{|i| i||id}
+    end
+
+    def getsh
+      @list[self]
+    end
+  end
+
   # @ cobj,output,intgrp,interrupt,upd_proc,conf
   # @ prompt,shdom
   class Exe < ExHash
@@ -84,10 +115,11 @@ module Sh
       extend(Server).ext_server(port)
     end
 
-    def switch_menu(group_key,title,list,ary=[])
+    def switch_menu(group_key,title,list,sid)
+      Msg.type?(sid,ServerID)
       grp=@shdom.add_group(group_key,title)
       grp.update_items(list).reset_proc{|item|
-        raise(SelectID,ary.map{|i| i||item.id})
+        raise(SelectID,sid.fillup(item.id))
       }
       self
     end
@@ -203,9 +235,8 @@ module Sh
   end
 
   class List < Hash
-    require "liblocdb"
     def initialize(layer=nil)
-      @layer=layer
+      @sid=ServerID.new(self,layer)
       $opt||=Msg::GetOpts.new
       super(){|h,id|
         h[id]=newsh(id)
@@ -213,15 +244,15 @@ module Sh
     end
 
     def exe(stm)
-      getsh(stm.shift).exe(stm)
+      @sid.site(stm.shift).getsh.exe(stm)
     rescue UserError
      $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
     def shell(id)
-      sh=getsh(id)
-      while id=sh.shell
-        sh=self[id]
+      sh=@sid.site(id).getsh
+      while sid=sh.shell
+        sh=sid.getsh
       end
     rescue UserError
       $opt.usage('(opt) [id]')
@@ -230,15 +261,11 @@ module Sh
     def server(ary)
       ary.each{|i|
         sleep 0.3
-        getsh(i)
+        @sid.site(i).getsh
       }.empty? && self[nil]
       sleep
     rescue UserError
       $opt.usage('(opt) [id] ....')
-    end
-
-    def getsh(id)
-      @layer ? self[[@layer,id]] : self[id]
     end
 
     private

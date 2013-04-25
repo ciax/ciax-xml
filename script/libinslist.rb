@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "liblocdb"
 require "libappsv"
 require "libfrmsv"
 
@@ -10,15 +11,16 @@ module Ins
       ldb=Loc::Db.new(site)
       fdb=ldb[:frm]
       llist={'frm'=>"Frm mode",'app'=>"App mode"}
+      sid=Sh::ServerID.new(self,'frm',fdb['site_id'])
       case layer
       when 'app'
-        fsh=self[['frm',fdb['site_id']]]
+        fsh=sid.getsh
         sh=App.new(ldb[:app],fsh)
       when 'frm'
         sh=Frm.new(fdb)
       end
-      sh.switch_menu('lay',"Change Layer",llist,[nil,sh['id']])
-      sh.switch_menu('dev',"Change Device",ldb.list,[layer,nil])
+      sh.switch_menu('lay',"Change Layer",llist,sid.siteonly(sh['id']))
+      sh.switch_menu('dev',"Change Device",ldb.list,sid.layeronly(layer))
     end
   end
 end

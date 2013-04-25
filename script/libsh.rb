@@ -214,8 +214,8 @@ module Sh
     def initialize(layer=nil)
       @sid=ServerID.new(layer)
       $opt||=Msg::GetOpts.new
-      super(){|h,id|
-        h[id]=newsh(id)
+      super(){|h,sid|
+        h[sid]=newsh(sid)
       }
     end
 
@@ -257,7 +257,8 @@ module Sh
     end
 
     private
-    def newsh(id)
+    def newsh(sid)
+      Msg.type?(sid,ServerID)
       Exe.new
     end
 

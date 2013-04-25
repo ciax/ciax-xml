@@ -5,12 +5,11 @@ require "libfrmsv"
 
 module Ins
   class List < Sh::List
-    def newsh(id)
-      Loc::Db.new unless id
-      layer,site=id
+    def newsh(sid)
+      Loc::Db.new unless sid
+      layer,site=sid
       ldb=Loc::Db.new(site)
       fdb=ldb[:frm]
-      llist={'frm'=>"Frm mode",'app'=>"App mode"}
       case layer
       when 'app'
         fsh=self[['frm',fdb['site_id']]]
@@ -18,7 +17,7 @@ module Ins
       when 'frm'
         sh=Frm.new(fdb)
       end
-      switch_layer(sh,'lay',"Change Layer",llist)
+      switch_layer(sh,'lay',"Change Layer",{'frm'=>"Frm mode",'app'=>"App mode"})
       switch_site(sh,'dev',"Change Device",ldb.list)
       sh
     end

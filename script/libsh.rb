@@ -12,32 +12,6 @@ require "libupdate"
 # Add Shell Command (by Shell extention)
 
 module Sh
-  class ServerID < Array #[layer,site]
-    def initialize(layer='app',site=nil)
-      replace([layer,site])
-    end
-
-    def layer(layer)
-      dup.replace([layer,self[1]])
-    end
-
-    def layeronly(layer)
-      dup.replace([layer,nil])
-    end
-
-    def site(site)
-      dup.replace([self[0],site])
-    end
-
-    def siteonly(site)
-      dup.replace([nil,site])
-    end
-
-    def fillup(id)
-      dup.map!{|i| i||id}
-    end
-  end
-
   # @ cobj,output,intgrp,interrupt,upd_proc,conf
   # @ prompt,shdom
   class Exe < ExHash
@@ -108,15 +82,6 @@ module Sh
 
     def ext_server(port)
       extend(Server).ext_server(port)
-    end
-
-    def switch_menu(group_key,title,list,sid)
-      Msg.type?(sid,ServerID)
-      grp=@shdom.add_group(group_key,title)
-      grp.update_items(list).reset_proc{|item|
-        raise(SelectID,sid.fillup(item.id))
-      }
-      self
     end
 
     # Overridable methods(do not set this kind of methods in modules)
@@ -229,6 +194,22 @@ module Sh
     end
   end
 
+  class ServerID < Array #[layer,site]
+    def initialize(layer='app',site=nil)
+      replace([layer,site])
+    end
+
+    def layer(layer)
+      self[0]=layer
+      self
+    end
+
+    def site(site)
+      self[1]=site
+      self
+    end
+  end
+
   class List < Hash
     def initialize(layer=nil)
       @sid=ServerID.new(layer)
@@ -245,7 +226,7 @@ module Sh
     def exe(stm)
       getsh(stm.shift).exe(stm)
     rescue UserError
-     $opt.usage('(opt) [id] [cmd] [par....]')
+      $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
     def shell(id)
@@ -265,6 +246,24 @@ module Sh
       sleep
     rescue UserError
       $opt.usage('(opt) [id] ....')
+    end
+
+    def switch_layer(sh,gid,title,list)
+      Msg.type?(sh,Sh::Exe)
+      grp=sh.shdom.add_group(gid,title)
+      grp.update_items(list).reset_proc{|item|
+        raise(SelectID,@sid.layer(item.id))
+      }
+      self
+    end
+
+    def switch_site(sh,gid,title,list)
+      Msg.type?(sh,Sh::Exe)
+      grp=sh.shdom.add_group(gid,title)
+      grp.update_items(list).reset_proc{|item|
+        raise(SelectID,@sid.site(item.id))
+      }
+      self
     end
 
     private

@@ -18,8 +18,9 @@ module Ins
       when 'frm'
         sh=Frm.new(fdb)
       end
-      sh.switch_menu('lay',"Change Layer",llist,@sid.siteonly(sh['id']))
-      sh.switch_menu('dev',"Change Device",ldb.list,@sid.layeronly(layer))
+      switch_layer(sh,'lay',"Change Layer",llist)
+      switch_site(sh,'dev',"Change Device",ldb.list)
+      sh
     end
   end
 end

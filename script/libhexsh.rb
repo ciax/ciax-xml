@@ -68,10 +68,9 @@ module Hex
       super('hex')
     end
 
-    def newsh(id)
-      Loc::Db.new unless id
-      layer,site=id
-      ldb=Loc::Db.new(site)
+    def newsh(sid)
+      Loc::Db.new unless sid
+      ldb=Loc::Db.new(sid[:site])
       adb=ldb[:app]
       ash=@al.getsh(adb['site_id'])
       Hex.new(adb,ash)

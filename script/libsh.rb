@@ -243,14 +243,18 @@ module Sh
       }
     end
 
+    def getsh(id)
+      @sid.site(id).getsh
+    end
+
     def exe(stm)
-      @sid.site(stm.shift).getsh.exe(stm)
+      getsh(stm.shift).exe(stm)
     rescue UserError
      $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
     def shell(id)
-      sh=@sid.site(id).getsh
+      sh=getsh(id)
       while sid=sh.shell
         sh=sid.getsh
       end
@@ -261,7 +265,7 @@ module Sh
     def server(ary)
       ary.each{|i|
         sleep 0.3
-        @sid.site(i).getsh
+        getsh(i)
       }.empty? && self[nil]
       sleep
     rescue UserError

@@ -32,9 +32,6 @@ module App
       super(@stat,prom)
       @extdom=@cobj.add_extdom(@adb,:command)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
-      if aldb=@adb[:command][:alias]
-        aldb.each{|k,v| @cobj[k]=@cobj[v]}
-      end
       init_view
       self
     end

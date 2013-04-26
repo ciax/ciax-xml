@@ -16,6 +16,7 @@ class Command
       cdb[:select].keys.each{|id|
         self[id]=Item.new(id,@index,@def_proc).ext_item(cdb)
       }
+      cdb[:alias].each{|k,v| self[k]=self[v]} if cdb.key?(:alias)
       add_db(cdb)
       @index.update(self)
     end

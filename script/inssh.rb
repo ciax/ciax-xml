@@ -3,4 +3,6 @@ require "libinslist"
 
 ENV['VER']||='init/'
 Msg::GetOpts.new("estcfh:")
-Ins::List.new('app').shell(ARGV.shift)
+id=ARGV.shift
+lyr=ARGV.shift||'app'
+Ins::List.new(lyr).shell(id)

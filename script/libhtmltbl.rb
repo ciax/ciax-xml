@@ -11,7 +11,7 @@ class HtmlTbl < Array
 warn g
       push "<table><tbody>"
       push  "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?
-      get_element(g[:list],g["column"].to_i)
+      get_element(g[:members],g["column"].to_i)
       push "</tbody></table>"
     }
     push "</div>"

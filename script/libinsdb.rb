@@ -12,7 +12,7 @@ module Ins
           p=(hash[:command]||={})
           g=(p[:group]||={})
           key=e0.add_item(g)
-          item=(g[key][:list]||=[])
+          item=(g[key][:members]||=[])
           e0.each{|e1|
             item << e1['id']
             e1.attr2db(p)

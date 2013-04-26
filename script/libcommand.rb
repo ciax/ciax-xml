@@ -126,6 +126,7 @@ class Command < ExHash
 
   class Group < ExHash
     attr_accessor :index,:labeldb,:def_proc
+    #attr = {caption,color,column,:members}
     def initialize(index,attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
@@ -146,7 +147,7 @@ class Command < ExHash
 
     #property = {:label => 'titile',:parameter => Array}
     def update_items(labels)
-      (@attr[:list]||labels.keys).each{|id|
+      (@attr[:members]||labels.keys).each{|id|
         @labeldb[id]=labels[id]
         self[id]=Item.new(id,@index)
       }

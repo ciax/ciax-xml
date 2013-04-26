@@ -83,7 +83,7 @@ module Status
         cap=gdb['caption'] || next
         self[k]={'caption' => cap,'lines'=>[]}
         col=gdb['column']||1
-        gdb[:list].each_slice(col.to_i){|ids|
+        gdb[:members].each_slice(col.to_i){|ids|
           hash={}
           ids.each{|id|
             h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}

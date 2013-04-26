@@ -41,7 +41,7 @@ module App
     def arc_command(e,hash,gid)
       e.each{|e0|
         id=e0['id']
-        (hash[:group][gid][:list]||=[]) << id
+        (hash[:group][gid][:members]||=[]) << id
         hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
         Repeat.new.each(e0){|e1,rep|
           set_par(e1,id,hash) && next
@@ -67,7 +67,7 @@ module App
     def init_stat(sdb)
       hash=sdb.to_h
       group=hash[:group]={}
-      group['gtime']={'caption' =>'','column' => 2,:list =>['time','elapse']}
+      group['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
       hash[:label]={'time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
       hash[:select]=rec_stat(sdb,hash,'gtime',Repeat.new)
       hash
@@ -99,7 +99,7 @@ module App
             end
             struct[id][:fields] << st
           }
-          (hash[:group][gid][:list]||=[]) << id
+          (hash[:group][gid][:members]||=[]) << id
         end
       }
       struct
@@ -123,7 +123,7 @@ module App
             }
             (hash[name][idx]||=[]) << cmd
           when :block_grp
-            (hash[:block][idx]||=[]).concat(cdb[:group][e1['ref']][:list])
+            (hash[:block][idx]||=[]).concat(cdb[:group][e1['ref']][:members])
           else
             h=e1.to_h
             h.each_value{|v| v.replace(r0.format(v))}

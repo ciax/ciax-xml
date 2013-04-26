@@ -32,7 +32,8 @@ class Command
         else
           #For Frm Layer
           gat={'color' => @color,'caption' => "Command List"}
-          gat[:list]=cdb[:select].keys
+          # If no group, use :select for grouplist
+          gat[:members]=cdb[:select].keys
           def_group('main',labels,gat)
         end
       end

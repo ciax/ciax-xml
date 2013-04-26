@@ -23,13 +23,13 @@ module Frm
         @io.snd(item.getframe,item[:cmd])
         @field.upd{@io.rcv} && @field.save
       }
-      @cobj['set'].reset_proc{|item|
+      @intgrp['set'].reset_proc{|item|
         @field.set(item.par[0],item.par[1]).save
       }
-      @cobj['save'].reset_proc{|item|
+      @intgrp['save'].reset_proc{|item|
         @field.savekey(item.par[0].split(','),item.par[1])
       }
-      @cobj['load'].reset_proc{|item|
+      @intgrp['load'].reset_proc{|item|
         @field.load(item.par[0]||'').save
       }
       ext_server(fdb['port'].to_i)

@@ -84,7 +84,7 @@ if __FILE__ == $0
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD
-    Msg.usage("[dev] [cmd] (par) < field_file",[],2)
+    Msg.usage("[dev] [cmd] (par) < field_file",[])
   rescue UserError
     Msg.usage "[dev] [cmd] (par) < field_file"
   end

@@ -31,8 +31,8 @@ module Frm
       @extdom=@cobj.add_extdom(fdb,:cmdframe)
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
-      @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any])
-      @intgrp.add_item('load',"Load Field (tag)")
+      @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
+      @intgrp.add_item('load',"Load Field (tag)",[any])
       @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|
         @field.set(*item.par)
       }

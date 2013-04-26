@@ -11,7 +11,7 @@ module Frm
     elsif host=$opt['h'] or $opt['c'] or $opt['f']
       fsh=Frm::Cl.new(fdb,host)
     else
-      fsh=Frm::Test.new(fdb)
+      fsh=Frm::Exe.new(fdb)
     end
     fsh
   end
@@ -27,12 +27,15 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       prom=Sh::Prompt.new(self)
       super(@field,prom)
+      @cobj.def_proc.set{|item|@field['time']=UnixTime.now}
       @extdom=@cobj.add_extdom(fdb,:cmdframe)
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any])
       @intgrp.add_item('load',"Load Field (tag)")
-      @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
+      @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|
+        @field.set(*item.par)
+      }
       self
     end
 
@@ -40,18 +43,6 @@ module Frm
     def shell_conv(line)
       line='set '+line.tr('=',' ') if /^[^ ]+\=/ === line
       line
-    end
-  end
-
-  class Test < Exe
-    def initialize(fdb)
-      super
-      @cobj.def_proc.set{|item|
-        @field['time']=UnixTime.now
-      }
-      @cobj['set'].reset_proc{|item|
-        @field.set(*item.par)
-      }
     end
   end
 

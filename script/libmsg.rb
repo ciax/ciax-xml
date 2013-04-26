@@ -130,13 +130,21 @@ module Msg
       replace(hash)
     end
 
-    def to_s
-      page=[]
+    def valid_key?(id)
+      valid_keys.include?(id)
+    end
+
+    def valid_keys
       keys.select{|i|
         /^(#{@conf[:include]})$/i === i
       }.reject{|i|
         /^(#{@conf[:exclude]})$/i === i
-      }.each_slice(@col){|a|
+      }
+    end
+
+    def to_s
+      page=[]
+      valid_keys.each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact

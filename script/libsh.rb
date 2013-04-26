@@ -203,8 +203,12 @@ module Sh
       }
     end
 
+    # @sid is rewrite when self[] succeeded
     def getsh(id)
-      self[@sid.site(id)]
+      sid=@sid.site(id)
+      sh=self[sid]
+      @sid=sid
+      sh
     end
 
     def exe(stm)
@@ -224,7 +228,7 @@ module Sh
         end
       end
     rescue UserError
-      $opt.usage('(opt) [id]')
+      $opt.usage('(opt) [id] (layer)')
     end
 
     def server(ary)

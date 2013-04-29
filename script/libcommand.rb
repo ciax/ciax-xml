@@ -58,7 +58,7 @@ class Command < ExHash
     id,*par=cmd
     @domain.values.any?{|dom|
       dom.group.values.any?{|grp|
-        if grp.labeldb.valid_key?(id)
+        if grp.cmdlist.valid_key?(id)
           @current=self[id].set_par(par)
         end
       }
@@ -109,37 +109,37 @@ class Command < ExHash
   end
 
   class Dummy < ExHash
-    attr_reader :labeldb
+    attr_reader :cmdlist
     def initialize(attr)
-      @labeldb=Msg::CmdList.new(attr)
+      @cmdlist=Msg::CmdList.new(attr)
     end
 
     def update_items(labels)
       labels.each{|k,v|
-        @labeldb[k]=v
+        @cmdlist[k]=v
       }
       self
     end
 
     def list
-      @labeldb.to_s
+      @cmdlist.to_s
     end
   end
 
   class Group < ExHash
-    attr_reader :labeldb
+    attr_reader :cmdlist
     attr_accessor :index,:def_proc
     #attr = {caption,color,column,:members}
     def initialize(index,attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
-      @labeldb=Msg::CmdList.new(attr)
+      @cmdlist=Msg::CmdList.new(attr)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
     def add_item(id,title=nil,parameter=nil)
-      @labeldb[id]=title
+      @cmdlist[id]=title
       item=self[id]=Item.new(id,@index,@def_proc)
       property={:label => title}
       property[:parameter] = parameter if parameter
@@ -151,7 +151,7 @@ class Command < ExHash
     #property = {:label => 'titile',:parameter => Array}
     def update_items(labels)
       (@attr[:members]||labels.keys).each{|id|
-        @labeldb[id]=labels[id]
+        @cmdlist[id]=labels[id]
         self[id]=Item.new(id,@index)
       }
       @index.update(self)
@@ -166,7 +166,7 @@ class Command < ExHash
     end
 
     def list
-      @labeldb.to_s
+      @cmdlist.to_s
     end
   end
 

@@ -193,7 +193,7 @@ module Mcr
     private
     def query(cmds)
       inc=cmds.map{|s| s[0].downcase}.join('')
-      @sh.intgrp.labeldb.conf[:include]="[#{inc}]"
+      @sh.intgrp.cmdlist.conf[:include]="[#{inc}]"
       @sh['stat']='query'
       if Msg.fg?
         prompt=Msg.color('['+cmds.join('/')+']?',5)
@@ -204,7 +204,7 @@ module Mcr
         res=Thread.current[:query]
       end
       @sh['stat']='run'
-      @sh.intgrp.labeldb.conf[:include]=''
+      @sh.intgrp.cmdlist.conf[:include]=''
       res
     end
   end

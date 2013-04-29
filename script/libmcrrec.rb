@@ -12,7 +12,6 @@ module Mcr
       super('mcr')
       @obj=Msg.type?(obj,Sv)
       obj[:base]=Time.new.to_f
-      obj[:include]=''
       self['id']=@obj[:base].to_i
       self['cmd']=obj.mobj.current.cmd
       self['label']=obj.mobj.current[:label]
@@ -146,9 +145,9 @@ module Mcr
   end
 
   class Query
-    def initialize(step,int)
+    def initialize(step,sh)
       @step=Msg.type?(step,Step)
-      @int=Msg.type?(int,Sv)
+      @sh=Msg.type?(sh,Sv)
     end
 
     def exec?
@@ -194,8 +193,8 @@ module Mcr
     private
     def query(cmds)
       inc=cmds.map{|s| s[0].downcase}.join('')
-      @int[:include]="[#{inc}]"
-      @int['stat']='query'
+      @sh.intgrp.labeldb.conf[:include]="[#{inc}]"
+      @sh['stat']='query'
       if Msg.fg?
         prompt=Msg.color('['+cmds.join('/')+']?',5)
         print Msg.indent(@step['depth'].to_i+1)
@@ -204,8 +203,8 @@ module Mcr
         sleep
         res=Thread.current[:query]
       end
-      @int['stat']='run'
-      @int[:include]=''
+      @sh['stat']='run'
+      @sh.intgrp.labeldb.conf[:include]=''
       res
     end
   end

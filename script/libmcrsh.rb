@@ -46,11 +46,11 @@ module Mcr
     end
 
     def shell
-      self[:include]='e'
+      @intgrp.labeldb.conf[:include]='e'
       self['stat']='ready'
       @th=Thread.new{
         sleep
-        self[:include]=''
+        @intgrp.labeldb.conf[:include]=''
         start
       }
       super()

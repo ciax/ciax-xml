@@ -15,7 +15,7 @@ module Sh
   # @ cobj,output,intgrp,interrupt,upd_proc,conf
   # @ prompt,shdom
   class Exe < ExHash
-    attr_reader :upd_proc,:interrupt,:output,:shdom
+    attr_reader :upd_proc,:interrupt,:output,:shdom,:intgrp
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)

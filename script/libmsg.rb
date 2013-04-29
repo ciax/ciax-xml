@@ -111,7 +111,7 @@ module Msg
 
   # Hash of title
   class CmdList < Hash
-    attr_accessor :conf
+    attr_reader :conf
     def initialize(attr,conf={:exclude =>'',:include =>'.*'})
       Msg.type?(attr,Hash)
       caption=attr["caption"]

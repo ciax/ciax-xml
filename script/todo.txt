@@ -2,7 +2,7 @@
 ***For CIAX-CSV
 mcr:add interlock for CAS/ASYN at initialize
 server(???d) migrate to appsv
-
+memo to db: cs rot ang for each inst
 
 ***DEBUG
 bug: appsh -cf(4/8/13)
@@ -30,6 +30,7 @@ mcr: attach/detach w/o location param (cmdstr subst by tag)
 sql: easy log finder(date -> data)
 mcr: update site status at startup or retry
 mcr: query should be done at only before action
+oss: add cart number setting command
 
 ***UPGRADE
 sql: using sqlite for symboling, labeling as cache

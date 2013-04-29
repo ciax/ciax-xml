@@ -58,7 +58,9 @@ class Command < ExHash
     id,*par=cmd
     @domain.values.any?{|dom|
       dom.group.values.any?{|grp|
-        grp.labeldb.valid_key?(id) && @current=self[id].set_par(par)
+        if grp.labeldb.valid_key?(id)
+          @current=self[id].set_par(par)
+        end
       }
     } || error
     verbose{"SetCMD (#{id},#{par})"}
@@ -107,7 +109,7 @@ class Command < ExHash
   end
 
   class Dummy < ExHash
-    attr_accessor :labeldb
+    attr_reader :labeldb
     def initialize(attr)
       @labeldb=Msg::CmdList.new(attr)
     end
@@ -125,12 +127,13 @@ class Command < ExHash
   end
 
   class Group < ExHash
-    attr_accessor :index,:labeldb,:def_proc
+    attr_reader :labeldb
+    attr_accessor :index,:def_proc
     #attr = {caption,color,column,:members}
     def initialize(index,attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
-      @labeldb=Msg::CmdList.new(attr,index.conf)
+      @labeldb=Msg::CmdList.new(attr)
       @index=Msg.type?(index,Command)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end

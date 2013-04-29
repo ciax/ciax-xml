@@ -140,7 +140,7 @@ class Command < ExHash
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(id,@index,@def_proc)
+      item=self[id]=Item.new(id,@def_proc)
       property={:label => title}
       property[:parameter] = parameter if parameter
       item.update(property)
@@ -152,7 +152,7 @@ class Command < ExHash
     def update_items(labels)
       (@attr[:members]||labels.keys).each{|id|
         @cmdlist[id]=labels[id]
-        self[id]=Item.new(id,@index)
+        self[id]=Item.new(id)
       }
       @index.update(self)
       self
@@ -172,10 +172,9 @@ class Command < ExHash
 
   class Item < ExHash
     include Math
-    attr_reader :index,:id,:par,:cmd,:def_proc
-    def initialize(id,index,def_proc=ExeProc.new)
+    attr_reader :id,:par,:cmd,:def_proc
+    def initialize(id,def_proc=ExeProc.new)
       @id=id
-      @index=Msg.type?(index,Command)
       @par=[]
       @cmd=[]
       @def_proc=Msg.type?(def_proc,ExeProc)

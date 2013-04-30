@@ -255,9 +255,10 @@ module Msg
 
   # Assertion
   def type?(name,*modules)
+    src=caller(1)
     modules.each{|mod|
       unless name.is_a?(mod)
-        raise("Parameter type error <#{name.class}> for (#{mod.to_s})")
+        raise(RuntimeError,"Parameter type error <#{name.class}> for (#{mod.to_s})",src)
       end
     }
     name

@@ -14,13 +14,14 @@ class Command
       Msg.type?(db,Db)
       cdb=db[path]
       cdb[:select].keys.each{|id|
-        self[id]=Item.new(id,@def_proc).ext_item(cdb)
+        self[id]=ExtItem.new(cdb,id,@def_proc)
       }
       cdb[:alias].each{|k,v| self[k]=self[v]} if cdb.key?(:alias)
       add_db(cdb)
       @index.update(self)
     end
 
+    private
     def add_db(cdb)
       if cdb
         labels=cdb[:label]
@@ -40,7 +41,6 @@ class Command
       self
     end
 
-    private
     # Make Default groups (generated from Db)
     def def_group(gid,labels,gat)
       return if @group.key?(gid)
@@ -48,20 +48,16 @@ class Command
     end
   end
 
-  module ExtItem
+  class ExtItem < Item
     include Math
     attr_reader :select
-    def self.extended(obj)
-      Msg.type?(obj,Command::Item)
-    end
-
-    def ext_item(cdb)
+    def initialize(cdb,id,def_proc)
+      super(id,def_proc)
       cdb.each{|k,v|
         if a=v[@id]
           self[k]=a
         end
       }
-      self
     end
 
     def set_par(par)
@@ -111,14 +107,6 @@ class Command
         res=subst(data)
       end
       res
-    end
-  end
-
-  class Item
-    def ext_item(cdb)
-      extend ExtItem
-      ext_item(cdb)
-      self
     end
   end
 end

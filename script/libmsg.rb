@@ -31,6 +31,7 @@ class UnixTime < Time
   end
 
   def self.parse(str)
+    return str if UnixTime === str
     UnixTime.at(*str.split('.').map{|i| i.to_i})
   end
 end

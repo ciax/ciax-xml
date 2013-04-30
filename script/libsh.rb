@@ -12,15 +12,14 @@ require "libupdate"
 # Add Shell Command (by Shell extention)
 
 module Sh
-  # @ cobj,output,intgrp,interrupt,upd_proc,conf
+  # @ cobj,output,intgrp,interrupt,upd_proc
   # @ prompt,shdom
   class Exe < ExHash
     attr_reader :upd_proc,:interrupt,:output,:shdom,:intgrp
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
-      update(:exclude =>'',:include =>'.*')
-      @cobj=Command.new(self)
+      @cobj=Command.new
       @output=output
       @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')

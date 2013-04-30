@@ -37,16 +37,15 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:domain,:def_proc,:conf
+  attr_reader :current,:domain,:def_proc
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
-  def initialize(conf={:exclude =>'',:include =>'.*'})
+  def initialize
     init_ver(self)
     @current=nil
     @domain={}
     @def_proc=ExeProc.new
-    @conf=Msg.type?(conf,Hash)
   end
 
   def add_domain(id,color=2)

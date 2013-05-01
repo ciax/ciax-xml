@@ -26,7 +26,6 @@ require 'libupdate'
 # Command#new(db) => {id => Command::Domain}
 #  Command#list -> String
 #  Command#add_domain(key,title) -> Command::Domain
-#  Command#index[key] -> Command::Item
 #  Command#current -> Command::Item
 #  Command#def_proc ->[{|item|},..]
 #  Command#setcmd(cmd=[id,*par]):{
@@ -35,19 +34,18 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:index,:def_proc
+  attr_reader :current,:def_proc
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
   def initialize
     init_ver(self)
     @current=nil
-    @index={}
     @def_proc=ExeProc.new
   end
 
   def add_domain(id,color=2)
-    self[id]=Domain.new(@index,color,@def_proc)
+    self[id]=Domain.new(color,@def_proc)
   end
 
   def setcmd(cmd)
@@ -78,17 +76,16 @@ class Command < ExHash
   end
 
   class Domain < ExHash
-    attr_reader :index,:def_proc
-    def initialize(index,color=2,def_proc=ExeProc.new)
+    attr_reader :def_proc
+    def initialize(color=2,def_proc=ExeProc.new)
       init_ver(self)
-      @index=Msg.type?(index,Hash)
       @color=color
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      self[gid]=Group.new(@index,attr,@def_proc)
+      self[gid]=Group.new(attr,@def_proc)
     end
 
     def add_dummy(gid,caption,column=2)
@@ -134,13 +131,12 @@ class Command < ExHash
 
   class Group < ExHash
     attr_reader :cmdlist
-    attr_accessor :index,:def_proc
+    attr_accessor :def_proc
     #attr = {caption,color,column,:members}
-    def initialize(index,attr,def_proc=ExeProc.new)
+    def initialize(attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
       @cmdlist=Msg::CmdList.new(attr)
-      @index=Msg.type?(index,Hash)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
@@ -150,7 +146,6 @@ class Command < ExHash
       property={:label => title}
       property[:parameter] = parameter if parameter
       item.update(property)
-      @index.update(self)
       item
     end
 
@@ -160,7 +155,6 @@ class Command < ExHash
         @cmdlist[id]=labels[id]
         self[id]=Item.new(id)
       }
-      @index.update(self)
       self
     end
 

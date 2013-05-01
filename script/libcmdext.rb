@@ -5,12 +5,12 @@ require 'librerange'
 # For External Command Domain
 class Command
   def add_extdom(db,path)
-    self['ext']=ExtDom.new(@index,db,path,@def_proc)
+    self['ext']=ExtDom.new(db,path,@def_proc)
   end
 
   class ExtDom < Domain
-    def initialize(index,db,path,def_proc=ExeProc.new)
-      super(index,6,def_proc)
+    def initialize(db,path,def_proc=ExeProc.new)
+      super(6,def_proc)
       Msg.type?(db,Db)
       if @cdb=db[path]
         items={}
@@ -35,7 +35,7 @@ class Command
     # Make Default groups (generated from Db)
     def def_group(gid,labels,gat)
       return {} if key?(gid)
-      self[gid]=ExtGrp.new(@index,gat,@def_proc).update_items(@cdb)
+      self[gid]=ExtGrp.new(gat,@def_proc).update_items(@cdb)
     end
   end
 
@@ -45,7 +45,6 @@ class Command
         @cmdlist[id]=cdb[:label][id]
         self[id]=ExtItem.new(cdb,id,@def_proc)
       }
-      @index.update(self)
       self
     end
   end

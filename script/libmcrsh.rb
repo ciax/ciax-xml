@@ -46,11 +46,11 @@ module Mcr
     end
 
     def shell
-      @intgrp.cmdlist.conf[:include]='e'
+      @intgrp.cmdlist.valid_keys.replace(['e'])
       self['stat']='ready'
       @th=Thread.new{
         sleep
-        @intgrp.cmdlist.conf[:include]=''
+        @intgrp.cmdlist.valid_keys.clear
         start
       }
       super()

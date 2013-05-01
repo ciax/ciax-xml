@@ -53,7 +53,9 @@ class Command < ExHash
   def setcmd(cmd)
     Msg.type?(cmd,Array)
     id,*par=cmd
-    @current=item(id) || error
+    grp=group_with_item(id) || error
+    grp.cmdlist.valid_key?(id) || error
+    @current=grp[id]
     verbose{"SetCMD (#{id},#{par})"}
     @current.set_par(par)
   end
@@ -67,10 +69,10 @@ class Command < ExHash
     raise(InvalidCMD,str+list)
   end
 
-  def item(id)
+  def group_with_item(id)
     values.any?{|dom|
-      if itm=dom.item(id)
-        return itm
+      if grp=dom.group_with_item(id)
+        return grp
       end
     }
   end
@@ -105,9 +107,9 @@ class Command < ExHash
       values.map{|grp| grp.list}.grep(/./).join("\n")
     end
 
-    def item(id)
+    def group_with_item(id)
       values.any?{|grp|
-        return grp[id] if grp.cmdlist.valid_key?(id)
+        return grp if grp.key?(id)
       }
     end
   end

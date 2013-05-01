@@ -96,8 +96,8 @@ class Command < ExHash
     end
 
     def reset_proc(&p)
-      values.each{|v|
-        v.def_proc.set &p
+      @group.values.each{|grp|
+        grp.reset_proc &p
       }
       self
     end

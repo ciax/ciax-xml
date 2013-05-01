@@ -13,27 +13,28 @@ class Command
       super(index,6,def_proc)
       Msg.type?(db,Db)
       if @cdb=db[path]
+        items={}
         labels=@cdb[:label]
         if gdb=@cdb[:group]
           #For App Layer
           gdb.each{|gid,gat|
-            def_group(gid,labels,gat)
+            items.update def_group(gid,labels,gat)
           }
         else
           #For Frm Layer
           gat={'color' => @color,'caption' => "Command List"}
           # If no group, use :select for grouplist
           gat[:members]=@cdb[:select].keys
-          def_group('main',labels,gat)
+          items.update def_group('main',labels,gat)
         end
-        @cdb[:alias].each{|k,v| index[k].replace index[v]} if @cdb.key?(:alias)
+        @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
       end
     end
 
     private
     # Make Default groups (generated from Db)
     def def_group(gid,labels,gat)
-      return if key?(gid)
+      return {} if key?(gid)
       self[gid]=ExtGrp.new(@index,gat,@def_proc).update_items(@cdb)
     end
   end

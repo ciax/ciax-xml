@@ -48,7 +48,7 @@
   </site>
   <site id="det" label="CsEtr Control" app_id="srm">
     <app port="25104" />
-    <frm iocmd="socat - tcp:ltc-c:4001" />
+    <frm iocmd="socat - tcp:ltc-c:4003" />
   </site>
   <site id="dts" label="TSC Control" app_id="oss">
     <app port="25105" />

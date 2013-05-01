@@ -29,3 +29,4 @@ olk,Lakeshore,,Old,1200,7,ODD,1,NONE
 hof,Hoffer,,Flow Controls,2400,8,NONE,1,NONE
 mlp,Mitsubishi,MLP3,Telescope,9600,7,EVEN,2,NONE
 pul,Pulizzi,,PDU,9600,8,NONE,1,NONE
+pc,General PC,,,115200,8,NONE,1,NONE

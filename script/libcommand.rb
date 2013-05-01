@@ -20,8 +20,8 @@ require 'libupdate'
 # Command::Domain => {id => Command::Group}
 #  Command::Domain#list -> String
 #  Command::Domain#add_group(key,title) -> Command::Group
-#  Command::Domain#list -> String
 #  Command::Domain#def_proc ->[{|item|},..]
+#  Command::Domain#item(id) -> Command::Item
 #
 # Command#new(db) => {id => Command::Domain}
 #  Command#list -> String
@@ -29,9 +29,9 @@ require 'libupdate'
 #  Command#index[key] -> Command::Item
 #  Command#current -> Command::Item
 #  Command#def_proc ->[{|item|},..]
-#  Command#set(cmd=id+par):{
-#    Command[id]#set_par(par)
-#    Command#current -> Command[id]
+#  Command#setcmd(cmd=[id,*par]):{
+#    Command::Item#set_par(par)
+#    Command#current -> Command::Item
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
@@ -53,15 +53,9 @@ class Command < ExHash
   def setcmd(cmd)
     Msg.type?(cmd,Array)
     id,*par=cmd
-    values.any?{|dom|
-      dom.values.any?{|grp|
-        if grp.cmdlist.valid_key?(id)
-          @current=grp[id].set_par(par)
-        end
-      }
-    } || error
+    @current=item(id) || error
     verbose{"SetCMD (#{id},#{par})"}
-    @current
+    @current.set_par(par)
   end
 
   def list
@@ -71,6 +65,14 @@ class Command < ExHash
   def error(str=nil)
     str= str ? str+"\n" : ''
     raise(InvalidCMD,str+list)
+  end
+
+  def item(id)
+    values.any?{|dom|
+      if itm=dom.item(id)
+        return itm
+      end
+    }
   end
 
   class Domain < ExHash
@@ -101,6 +103,12 @@ class Command < ExHash
 
     def list
       values.map{|grp| grp.list}.grep(/./).join("\n")
+    end
+
+    def item(id)
+      values.any?{|grp|
+        return grp[id] if grp.cmdlist.valid_key?(id)
+      }
     end
   end
 

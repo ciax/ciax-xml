@@ -12,20 +12,9 @@ class Command
     def initialize(index,db,path,def_proc=ExeProc.new)
       super(index,6,def_proc)
       Msg.type?(db,Db)
-      cdb=db[path]
-      cdb[:select].keys.each{|id|
-        self[id]=ExtItem.new(cdb,id,@def_proc)
-      }
-      cdb[:alias].each{|k,v| self[k]=self[v]} if cdb.key?(:alias)
-      add_db(cdb)
-      @index.update(self)
-    end
-
-    private
-    def add_db(cdb)
-      if cdb
-        labels=cdb[:label]
-        if gdb=cdb[:group]
+      if @cdb=db[path]
+        labels=@cdb[:label]
+        if gdb=@cdb[:group]
           #For App Layer
           gdb.each{|gid,gat|
             def_group(gid,labels,gat)
@@ -34,17 +23,29 @@ class Command
           #For Frm Layer
           gat={'color' => @color,'caption' => "Command List"}
           # If no group, use :select for grouplist
-          gat[:members]=cdb[:select].keys
+          gat[:members]=@cdb[:select].keys
           def_group('main',labels,gat)
         end
+        @cdb[:alias].each{|k,v| index[k]=index[v]} if @cdb.key?(:alias)
       end
-      self
     end
 
+    private
     # Make Default groups (generated from Db)
     def def_group(gid,labels,gat)
       return if @group.key?(gid)
-      @group[gid]=Group.new(@index,gat,@def_proc).update_items(labels)
+      @group[gid]=ExtGrp.new(@index,gat,@def_proc).update_items(@cdb)
+    end
+  end
+
+  class ExtGrp < Group
+    def update_items(cdb)
+      @attr[:members].each{|id|
+        @cmdlist[id]=cdb[:label][id]
+        self[id]=ExtItem.new(cdb,id,@def_proc)
+      }
+      @index.update(self)
+      self
     end
   end
 

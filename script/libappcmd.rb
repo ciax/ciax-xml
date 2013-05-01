@@ -38,8 +38,10 @@ end
 
 class Command::ExtDom
   def ext_appcmd
-    values.each{|item|
-      item.extend(App::Cmd).init_ver('AppCmd',9)
+    @group.values.each{|grp|
+      grp.values.each{|item|
+        item.extend(App::Cmd).init_ver('AppCmd',9)
+      }
     }
     self
   end

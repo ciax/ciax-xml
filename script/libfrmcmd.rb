@@ -64,7 +64,7 @@ end
 
 class Command::Domain
   def ext_frmcmd(field,db)
-    @group.values.each{|grp|
+    values.each{|grp|
       grp.values.each{|item|
         item.extend(Frm::Cmd).ext_frmcmd(field,db)
       }

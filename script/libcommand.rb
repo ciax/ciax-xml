@@ -17,10 +17,9 @@ require 'libupdate'
 #  Command::Group#update_items(list){|id|}
 #  Command::Group#def_proc ->[{|item|},..]
 #
-# Command::Domain => {id => Command::Item}
+# Command::Domain => {id => Command::Group}
 #  Command::Domain#list -> String
 #  Command::Domain#add_group(key,title) -> Command::Group
-#  Command::Domain#group[key] -> Command::Group
 #  Command::Domain#list -> String
 #  Command::Domain#def_proc ->[{|item|},..]
 #
@@ -56,7 +55,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     @domain.values.any?{|dom|
-      dom.group.values.any?{|grp|
+      dom.values.any?{|grp|
         if grp.cmdlist.valid_key?(id)
           @current=self[id].set_par(par)
         end
@@ -76,34 +75,33 @@ class Command < ExHash
   end
 
   class Domain < ExHash
-    attr_reader :index,:group,:def_proc
+    attr_reader :index,:def_proc
     def initialize(index,color=2,def_proc=ExeProc.new)
       init_ver(self)
       @index=Msg.type?(index,Command)
-      @group={}
       @color=color
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      @group[gid]=Group.new(@index,attr,@def_proc)
+      self[gid]=Group.new(@index,attr,@def_proc)
     end
 
     def add_dummy(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      @group[gid]=Dummy.new(attr)
+      self[gid]=Dummy.new(attr)
     end
 
     def reset_proc(&p)
-      @group.values.each{|grp|
+      values.each{|grp|
         grp.reset_proc &p
       }
       self
     end
 
     def list
-      @group.values.map{|grp| grp.list}.grep(/./).join("\n")
+      values.map{|grp| grp.list}.grep(/./).join("\n")
     end
   end
 

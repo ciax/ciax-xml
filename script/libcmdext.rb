@@ -33,8 +33,8 @@ class Command
     private
     # Make Default groups (generated from Db)
     def def_group(gid,labels,gat)
-      return if @group.key?(gid)
-      @group[gid]=ExtGrp.new(@index,gat,@def_proc).update_items(@cdb)
+      return if key?(gid)
+      self[gid]=ExtGrp.new(@index,gat,@def_proc).update_items(@cdb)
     end
   end
 

@@ -23,11 +23,10 @@ require 'libupdate'
 #  Command::Domain#list -> String
 #  Command::Domain#def_proc ->[{|item|},..]
 #
-# Command#new(db) => {id => Command::Item}
+# Command#new(db) => {id => Command::Domain}
 #  Command#list -> String
 #  Command#add_domain(key,title) -> Command::Domain
-#  Command#domain[key] -> Command::Domain
-#   Command#int -> Command::Domain['int']
+#  Command#index[key] -> Command::Item
 #  Command#current -> Command::Item
 #  Command#def_proc ->[{|item|},..]
 #  Command#set(cmd=id+par):{
@@ -36,28 +35,28 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:domain,:def_proc
+  attr_reader :current,:index,:def_proc
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
   def initialize
     init_ver(self)
     @current=nil
-    @domain={}
+    @index={}
     @def_proc=ExeProc.new
   end
 
   def add_domain(id,color=2)
-    @domain[id]=Domain.new(self,color,@def_proc)
+    self[id]=Domain.new(@index,color,@def_proc)
   end
 
   def setcmd(cmd)
     Msg.type?(cmd,Array)
     id,*par=cmd
-    @domain.values.any?{|dom|
+    values.any?{|dom|
       dom.values.any?{|grp|
         if grp.cmdlist.valid_key?(id)
-          @current=self[id].set_par(par)
+          @current=grp[id].set_par(par)
         end
       }
     } || error
@@ -66,7 +65,7 @@ class Command < ExHash
   end
 
   def list
-    @domain.values.map{|dom| dom.list}.grep(/./).join("\n")
+    values.map{|dom| dom.list}.grep(/./).join("\n")
   end
 
   def error(str=nil)
@@ -78,7 +77,7 @@ class Command < ExHash
     attr_reader :index,:def_proc
     def initialize(index,color=2,def_proc=ExeProc.new)
       init_ver(self)
-      @index=Msg.type?(index,Command)
+      @index=Msg.type?(index,Hash)
       @color=color
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
@@ -131,7 +130,7 @@ class Command < ExHash
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
       @cmdlist=Msg::CmdList.new(attr)
-      @index=Msg.type?(index,Command)
+      @index=Msg.type?(index,Hash)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 

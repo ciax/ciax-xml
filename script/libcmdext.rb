@@ -5,7 +5,7 @@ require 'librerange'
 # For External Command Domain
 class Command
   def add_extdom(db,path)
-    @domain['ext']=ExtDom.new(self,db,path,@def_proc)
+    self['ext']=ExtDom.new(@index,db,path,@def_proc)
   end
 
   class ExtDom < Domain

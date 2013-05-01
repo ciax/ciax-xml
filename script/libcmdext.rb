@@ -26,7 +26,7 @@ class Command
           gat[:members]=@cdb[:select].keys
           def_group('main',labels,gat)
         end
-        @cdb[:alias].each{|k,v| index[k]=index[v]} if @cdb.key?(:alias)
+        @cdb[:alias].each{|k,v| index[k].replace index[v]} if @cdb.key?(:alias)
       end
     end
 

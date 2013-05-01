@@ -3,6 +3,7 @@
 mcr:add interlock for CAS/ASYN at initialize
 server(???d) migrate to appsv
 memo to db: cs rot ang for each inst
+tsc-table: need update tool
 
 ***DEBUG
 bug: appsh -cf(4/8/13)

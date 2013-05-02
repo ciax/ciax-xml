@@ -12,16 +12,14 @@
           <command id="aon" label="All Output ON" response="default" type="action">
             <string>#SW1</string>
           </command>
+          <command id="ack" label="ACK" noaffix="true">
+            <char length="1" label="ACK">6</char>
+            <string>@</string>
+          </command>
         </select>
         <char length="1" label="ETX">3</char>
       </ccrange>
       <string format="%02X">${cc}</string>
-      <select>
-        <command id="ack" label="ACK">
-          <char length="1" label="ACK">6</char>
-          <string>@</string>
-        </command>
-      </select>
     </cmdframe>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="ACK" length="1">6</field>

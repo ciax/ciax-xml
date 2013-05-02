@@ -14,7 +14,12 @@ module Frm
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
-      @sel=Hash[db[:cmdframe][:frame]]
+      cdb=db[:cmdframe]
+      if cdb.key?(:noaffix) && /true|1/ === cdb[:noaffix][@id]
+        @sel={:main => ["select"]}
+      else
+        @sel=Hash[cdb[:frame]]
+      end
       @frame=Frame.new(db['endian'],db['ccmethod'])
       self
     end

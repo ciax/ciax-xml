@@ -27,7 +27,7 @@ module Frm
       if frame=@cache[cmd]
         verbose{"Cmd cache found [#{cmd}]"}
       else
-        mk_frame(:select) && cmd=nil
+        nocache=mk_frame(:select)
         if @sel.key?(:ccrange)
           @frame.mark
           mk_frame(:ccrange)
@@ -35,7 +35,7 @@ module Frm
         end
         mk_frame(:main)
         frame=@fstr[:main]
-        @cache[cmd]=frame if cmd
+        @cache[cmd]=frame unless nocache
       end
       frame
     end

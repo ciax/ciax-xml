@@ -23,7 +23,7 @@ module Frm
       @fds=db[:response][:select]
       @frame=Frame.new(db['endian'],db['ccmethod'])
       # Field Initialize
-      self['val']=db[:status][:select].deep_copy
+      self['val']=db[:field][:select].deep_copy
       self
     end
 

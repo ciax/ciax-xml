@@ -10,14 +10,14 @@ module Frm
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
-        cmd=hash[:cmdframe]={}
-        rsp=hash[:rspframe]={:assign => {}}
+        cfm=hash[:cmdframe]={}
+        rfm=hash[:rspframe]={:assign => {}}
         dc=doc.domain('cmdframe')
         dr=doc.domain('rspframe')
-        fc=cmd[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
-        fr=rsp[:frame]=init_main(dr){|e| init_rsp(e,rsp)}
-        cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
-        rsp.update(init_sel(dr,'response',fr){|e| init_rsp(e,rsp)})
+        fc=cfm[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
+        fr=rfm[:frame]=init_main(dr){|e| init_rsp(e,rfm)}
+        cfm.update(init_sel(dc,'command'){|e,r| init_cmd(e,r)})
+        rfm.update(init_sel(dr,'response'){|e| init_rsp(e,rfm)})
         hash
       }
     end
@@ -52,7 +52,7 @@ module Frm
       hash
     end
 
-    def init_sel(domain,select,frame)
+    def init_sel(domain,select)
       selh=domain.to_h
       domain.find(select){|e0|
         begin

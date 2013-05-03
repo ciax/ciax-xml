@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
+  <app frm_id="ken" id="ken" label="Kenwood Power Supply">
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+      <group id="g0" caption="Device">
+        <command id="upd" label="Update Status">
+          <frmcmd name="getstat" />
+        </command>
+      </group>
+    </commands>
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="ken">
+      <group id="g1" caption="Stat">
+        <string id="stat" label="Status">
+          <field ref="stat" />
+        </string>
+      </group>
+    </status>
+  </app>
+</adb>

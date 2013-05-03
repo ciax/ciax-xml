@@ -94,18 +94,6 @@
     <app port="25608" />
     <frm iocmd="socat - tcp:celaeno:4008" />
   </site>
-  <site id="mft" label="MOIRCS Hall Effect Sensor" app_id="fpa">
-    <app port="25612" />
-    <frm iocmd="socat - tcp:celaeno:4012" />
-  </site>
-  <site id="mh1" label="MOIRCS Main/Carrousel Heater" app_id="psp">
-    <app port="25621" />
-    <frm iocmd="socat - tcp:merope:59999" />
-  </site>
-  <site id="mh2" label="MOIRCS Main Heater" app_id="psp">
-    <app port="25622" />
-    <frm iocmd="socat - tcp:atlas:59999" />
-  </site>
   <site id="mt1" label="MOIRCS Pressure Main" app_id="tpg">
     <app port="25609" />
     <frm iocmd="socat - tcp:celaeno:4009" />
@@ -117,5 +105,25 @@
   <site id="mt3" label="MOIRCS Pressure Pump" app_id="tpg">
     <app port="25611" />
     <frm iocmd="socat - tcp:celaeno:4011" />
+  </site>
+  <site id="mft" label="MOIRCS Hall Effect Sensor" app_id="fpa">
+    <app port="25612" />
+    <frm iocmd="socat - tcp:celaeno:4012" />
+  </site>
+  <site id="mp2" label="MOIRCS Power Supply 2" app_id="ken">
+    <app port="25613" />
+    <frm iocmd="socat - tcp:celaeno:4013" />
+  </site>
+  <site id="mp1" label="MOIRCS Power Supply 1" app_id="ken">
+    <app port="25613" />
+    <frm iocmd="socat - tcp:celaeno:4014" />
+  </site>
+  <site id="mh1" label="MOIRCS Main/Carrousel Heater" app_id="psp">
+    <app port="25621" />
+    <frm iocmd="socat - tcp:merope:59999" />
+  </site>
+  <site id="mh2" label="MOIRCS Main Heater" app_id="psp">
+    <app port="25622" />
+    <frm iocmd="socat - tcp:atlas:59999" />
   </site>
 </ldb>

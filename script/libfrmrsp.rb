@@ -17,14 +17,14 @@ module Frm
     def ext_rsp(cobj,db)
       init_ver('FrmRsp',6)
       @cobj=Msg.type?(cobj,Command)
-      Msg.type?(db,Db)
+      @db=Msg.type?(db,Db)
       self['ver']=db['version'].to_i
-      rsp=db.deep_copy[:rspframe]
-      @sel=Hash[rsp[:frame]]
-      @fds=rsp[:select]
+      @sel=Hash[db[:rspframe]]
+      @fds=db[:response][:select]
       @frame=Frame.new(db['endian'],db['ccmethod'])
       # Field Initialize
-      rsp[:assign].each{|k,v|
+      db[:status][:select].each{|k,v|
+        v=v.dup if v
         self['val'][k]||=v
       }
     end

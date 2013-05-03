@@ -44,12 +44,25 @@
       </ccrange>
     </cmdframe>
     <rspframe type="Hash">
+      <frame copy="cmdframe/frame"/>
+    </rspframe>
+    <response>
       <label type="Hash">
         <Item key="Response Name" val="Label"/>
       </label>
-      <frame copy="cmdframe/frame"/>
       <select copy="cmdframe/select"/>
-    </rspframe>
+    </response>
+    <status>
+      <label type="Hash">
+        <Item key="Field Name" val="Label"/>
+      </label>
+      <select type="Hash">
+        <Item key="Field Name" type="nil"/>
+        <Item key="Field Name" type="Array">
+          <List type="String/Number"/>
+        </Item>
+      </select>
+    </status>
   </Frm>
   <App>
     <frm_id val="Frm ID"/>

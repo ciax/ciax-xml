@@ -10,13 +10,13 @@ module Frm
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
-        rfm=hash[:rspframe]={:assign => {}}
+        rfm=hash[:status]={:select => {}}
         dc=doc.domain('cmdframe')
         dr=doc.domain('rspframe')
         hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
-        rfm[:frame]=init_main(dr){|e| init_rsp(e,rfm)}
+        hash[:rspframe]=init_main(dr){|e| init_rsp(e,rfm)}
         hash[:command]=init_sel(dc,'command'){|e,r| init_cmd(e,r)}
-        rfm.update(init_sel(dr,'response'){|e| init_rsp(e,rfm)})
+        hash[:response]=init_sel(dr,'response'){|e| init_rsp(e,rfm)}
         hash
       }
     end
@@ -89,12 +89,8 @@ module Frm
       when 'field'
         attr=e.to_h
         if id=attr['assign']
-          val[:assign][id]=nil
-          val[:label]||={}
-          if lv=attr['label']
-            val[:label][id]=lv
-            verbose{"LABEL:[#{id}] : #{lv}"}
-          end
+          val[:select][id]=nil
+          add_label(val,attr,id)
         end
         verbose{"InitElement: #{attr}"}
         attr
@@ -104,7 +100,9 @@ module Frm
         e.each{|e1|
           idx << e1.to_h
         }
-        val[:assign][attr['assign']]=init_array(idx.map{|h| h['size']})
+        id=attr['assign']
+        val[:select][id]=init_array(idx.map{|h| h['size']})
+        add_label(val,attr,id)
         attr
       when 'ccrange','select'
         e.name
@@ -120,6 +118,13 @@ module Frm
         a[i]=init_array(sary[1..-1],a[i])
       }
       a
+    end
+
+    def add_label(val,attr,id)
+      if lv=attr['label']
+        (val[:label]||={})[id]=lv
+        verbose{"LABEL:[#{id}] : #{lv}"}
+      end
     end
   end
 end

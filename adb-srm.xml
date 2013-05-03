@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="srm" id="srm" label="CsEtr Controller">
+  <app frm_id="srm" id="srm" label="CsEtr Controller" version="1">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <command id="upd" label="Update Status">
@@ -68,8 +68,11 @@
         </command>
       </group>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="srm">
       <group id="g1" caption="" column="3">
+        <string id="cod" label="RESPONSE CODE" symbol="cod">
+          <field ref="cod" />
+        </string>
         <string id="iid" label="CAS INST ID" symbol="iid_ac">
           <field ref="c1d2" />
         </string>

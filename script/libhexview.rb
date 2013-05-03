@@ -54,7 +54,9 @@ module Hex
           str='*' * len
         end
         # str can exceed specified length
-        @res[6] << str[0,len]
+        str=str[0,len]
+        verbose{"add '#{str}' as #{key}"}
+        @res[6] << str
       }
       @res.join('')
     end

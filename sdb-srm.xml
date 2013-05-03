@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
+  <symbol id="srm" label="SRM1 Response Codes">
+    <table id="cod" label="Response Code">
+      <pattern class="normal" msg="OK">00</pattern>
+      <pattern class="alarm" msg="RUN Mode">01</pattern>
+      <pattern class="alarm" msg="Monitor Mode">02</pattern>
+      <pattern class="alarm" msg="Address Over">04</pattern>
+      <pattern class="alarm" msg="Program Mode">0B</pattern>
+      <pattern class="alarm" msg="FCS Error">13</pattern>
+      <pattern class="alarm" msg="Format Error">14</pattern>
+      <pattern class="alarm" msg="Wrong Range">15</pattern>
+      <pattern class="alarm" msg="Wrong Command">16</pattern>
+      <pattern class="alarm" msg="Exceed Length">18</pattern>
+      <pattern class="alarm" msg="No IO Command">19</pattern>
+      <pattern class="alarm" msg="Mem Protected">23</pattern>
+      <pattern class="alarm" msg="Abort by FCS">A3</pattern>
+      <pattern class="alarm" msg="Abort by Format">A4</pattern>
+      <pattern class="alarm" msg="Abort by Range">A5</pattern>
+      <pattern class="alarm" msg="Abort by Length">A8</pattern>
+      <pattern class="alarm" msg="Other"></pattern>
+    </table>
+  </symbol>
+</sdb>

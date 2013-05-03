@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="srm" label="OMRON SRM1" ccmethod="bcc" wait="0.3">
+  <frame id="srm" label="OMRON SRM1" ccmethod="bcc" wait="0.3" version="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <ccrange>
@@ -35,12 +35,12 @@
         <select>
           <response id="getmodel">
             <field label="Command Code" length="4">00MM</field>
-            <field label="Response Code" length="2">00</field>
+            <field label="Response Code" length="2" assign="cod"></field>
             <field assign="model" label="Model Number" length="2" />
           </response>
           <response id="getstat">
             <field label="Command Code" length="4">00RR</field>
-            <field label="Response Code" length="2">00</field>
+            <field label="Response Code" length="2" assign="cod"></field>
             <!--Big endian-->
             <field assign="c1d3" label="CH1 bit12-15" length="1" />
             <field assign="c1d2" label="CH1 bit8-11" length="1" />
@@ -49,7 +49,7 @@
           </response>
           <response id="fset">
             <field label="Command Code" length="4">00FK</field>
-            <field label="Exit Code" length="2">00</field>
+            <field label="Exit Code" length="2" assign="cod"></field>
           </response>
         </select>
       </ccrange>

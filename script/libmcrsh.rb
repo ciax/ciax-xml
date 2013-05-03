@@ -109,7 +109,7 @@ if __FILE__ == $0
     il=Ins::List.new('app')
     mdb=Mcr::Db.new('ciax')
     mobj=Command.new
-    mobj.add_extdom(mdb,:command)
+    mobj.add_extdom(mdb)
     mobj.setcmd(ARGV)
     msh=Mcr::Sv.new(mobj,il)
     if $opt['i']

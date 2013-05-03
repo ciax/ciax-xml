@@ -28,7 +28,7 @@ module Frm
       prom=Sh::Prompt.new(self)
       super(@field,prom)
       @cobj.def_proc.set{|item|@field['time']=UnixTime.now}
-      @extdom=@cobj.add_extdom(fdb,:command)
+      @extdom=@cobj.add_extdom(fdb)
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])

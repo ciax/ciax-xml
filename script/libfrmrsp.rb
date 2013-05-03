@@ -173,7 +173,7 @@ if __FILE__ == $0
   end
   fdb=Loc::Db.new(id)[:frm]
   cobj=Command.new
-  cobj.add_extdom(fdb,:command)
+  cobj.add_extdom(fdb)
   cobj.setcmd(cmd.split(':'))
   field=Field::Var.new.ext_file(fdb['site_id'])
   field.load if $opt['m']

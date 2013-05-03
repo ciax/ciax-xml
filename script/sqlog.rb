@@ -51,7 +51,7 @@ else
   field.ext_file(fdb['site_id'])
   ver=fdb['version']
   cobj=Command.new
-  cobj.add_extdom(fdb,:cmdframe)
+  cobj.add_extdom(fdb)
   field.ext_rsp(cobj,fdb)
   stat.ext_sqlog($opt['t']&&"test")
   if $opt['i'] # Initial

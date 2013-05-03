@@ -11,7 +11,7 @@ class Command
   class ExtDom < Domain
     def initialize(db,def_proc=ExeProc.new)
       super(6,def_proc)
-      Msg.type?(db,Db)
+      @db=Msg.type?(db,Db)
       if @cdb=db[:command]
         items={}
         labels=@cdb[:label]

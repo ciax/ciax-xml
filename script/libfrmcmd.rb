@@ -67,11 +67,11 @@ module Frm
   end
 end
 
-class Command::Domain
-  def ext_frmcmd(field,db)
+class Command::ExtDom
+  def ext_frmcmd(field)
     values.each{|grp|
       grp.values.each{|item|
-        item.extend(Frm::Cmd).ext_frmcmd(field,db)
+        item.extend(Frm::Cmd).ext_frmcmd(field,@db)
       }
     }
     self
@@ -87,7 +87,7 @@ if __FILE__ == $0
     fdb=Frm::Db.new(dev)
     field=Field::Var.new
     cobj=Command.new
-    cobj.add_extdom(fdb).ext_frmcmd(field,fdb)
+    cobj.add_extdom(fdb).ext_frmcmd(field)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD

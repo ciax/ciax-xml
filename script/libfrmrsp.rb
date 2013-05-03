@@ -23,10 +23,8 @@ module Frm
       @fds=db[:response][:select]
       @frame=Frame.new(db['endian'],db['ccmethod'])
       # Field Initialize
-      db[:status][:select].each{|k,v|
-        v=v.dup if v
-        self['val'][k]||=v
-      }
+      self['val']=db[:status][:select].deep_copy
+      self
     end
 
     # Block accepts [frame,time]

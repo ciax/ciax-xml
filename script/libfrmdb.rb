@@ -10,7 +10,7 @@ module Frm
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
-        rfm=hash[:status]={:select => {}}
+        rfm=hash[:status]={}
         dc=doc.domain('cmdframe')
         dr=doc.domain('rspframe')
         hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
@@ -85,6 +85,7 @@ module Frm
     end
 
     def init_rsp(e,val)
+      val[:select]||=ExHash.new
       case e.name
       when 'field'
         attr=e.to_h

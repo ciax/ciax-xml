@@ -6,6 +6,7 @@ memo to db: cs rot ang for each inst
 tsc-table: need update tool
 lantronix control by PC
 det,cr?,cc?: configure hexsv
+add hostname to log
 
 ***DEBUG
 bug: appsh -cf(4/8/13)

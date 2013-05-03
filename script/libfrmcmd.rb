@@ -18,7 +18,7 @@ module Frm
       if cdb.key?(:noaffix) && /true|1/ === cdb[:noaffix][@id]
         @sel={:main => ["select"]}
       else
-        @sel=Hash[cdb[:frame]]
+        @sel=Hash[cdb]
       end
       @frame=Frame.new(db['endian'],db['ccmethod'])
       self
@@ -87,7 +87,7 @@ if __FILE__ == $0
     fdb=Frm::Db.new(dev)
     field=Field::Var.new
     cobj=Command.new
-    cobj.add_extdom(fdb,:cmdframe).ext_frmcmd(field,fdb)
+    cobj.add_extdom(fdb,:command).ext_frmcmd(field,fdb)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD

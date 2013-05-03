@@ -120,7 +120,7 @@ if __FILE__ == $0
     ldb=Loc::Db.new(ARGV.shift)
     cobj=Command.new
     if $opt["f"]
-      cobj.add_extdom(ldb[:frm],:cmdframe)
+      cobj.add_extdom(ldb[:frm],:command)
     else
       cobj.add_extdom(ldb[:app],:command)
     end

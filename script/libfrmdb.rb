@@ -10,13 +10,12 @@ module Frm
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
-        cfm=hash[:cmdframe]={}
         rfm=hash[:rspframe]={:assign => {}}
         dc=doc.domain('cmdframe')
         dr=doc.domain('rspframe')
-        fc=cfm[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
-        fr=rfm[:frame]=init_main(dr){|e| init_rsp(e,rfm)}
-        cfm.update(init_sel(dc,'command'){|e,r| init_cmd(e,r)})
+        hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
+        rfm[:frame]=init_main(dr){|e| init_rsp(e,rfm)}
+        hash[:command]=init_sel(dc,'command'){|e,r| init_cmd(e,r)}
         rfm.update(init_sel(dr,'response'){|e| init_rsp(e,rfm)})
         hash
       }

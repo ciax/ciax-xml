@@ -200,7 +200,9 @@ module Mcr
         print Msg.indent(@step['depth'].to_i+1)
         res=Readline.readline(prompt,true)
       else
+        @step['option']=cmds
         sleep
+        @step.delete('option')
         res=Thread.current[:query]
       end
       @sh['stat']='run'

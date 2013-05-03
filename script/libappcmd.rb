@@ -54,9 +54,9 @@ if __FILE__ == $0
   begin
     adb=App::Db.new(app)
     fcobj=Command.new
-    fcobj.add_extdom(Frm::Db.new(adb['frm_id']),:cmdframe)
+    fcobj.add_extdom(Frm::Db.new(adb['frm_id']))
     acobj=Command.new
-    acobj.add_extdom(adb,:command).ext_appcmd
+    acobj.add_extdom(adb).ext_appcmd
     acobj.setcmd(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
       fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first

@@ -57,7 +57,17 @@ module Mcr
       else
         msg << "\n"
       end
+      msg << option(obj)
       msg << action(obj)
+    end
+
+    def option(obj=self)
+      msg=''
+      if opt=obj['option']
+        msg << Msg.indent(obj['depth'].to_i+1)
+        msg << Msg.color('['+opt.join('/')+']?',5)+"\n"
+      end
+      msg
     end
 
     def action(obj=self)

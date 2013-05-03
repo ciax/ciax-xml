@@ -14,7 +14,12 @@ module Frm
       @field=Msg.type?(field,Field::Var)
       @cache={}
       @fstr={}
-      @sel=Hash[db[:cmdframe][:frame]]
+      cdb=db[:cmdframe]
+      if cdb.key?(:noaffix) && /true|1/ === cdb[:noaffix][@id]
+        @sel={:main => ["select"]}
+      else
+        @sel=Hash[cdb]
+      end
       @frame=Frame.new(db['endian'],db['ccmethod'])
       self
     end
@@ -27,7 +32,7 @@ module Frm
       if frame=@cache[cmd]
         verbose{"Cmd cache found [#{cmd}]"}
       else
-        mk_frame(:select) && cmd=nil
+        nocache=mk_frame(:select)
         if @sel.key?(:ccrange)
           @frame.mark
           mk_frame(:ccrange)
@@ -35,7 +40,7 @@ module Frm
         end
         mk_frame(:main)
         frame=@fstr[:main]
-        @cache[cmd]=frame if cmd
+        @cache[cmd]=frame unless nocache
       end
       frame
     end
@@ -62,11 +67,11 @@ module Frm
   end
 end
 
-class Command::Domain
-  def ext_frmcmd(field,db)
+class Command::ExtDom
+  def ext_frmcmd(field)
     values.each{|grp|
       grp.values.each{|item|
-        item.extend(Frm::Cmd).ext_frmcmd(field,db)
+        item.extend(Frm::Cmd).ext_frmcmd(field,@db)
       }
     }
     self
@@ -82,7 +87,7 @@ if __FILE__ == $0
     fdb=Frm::Db.new(dev)
     field=Field::Var.new
     cobj=Command.new
-    cobj.add_extdom(fdb,:cmdframe).ext_frmcmd(field,fdb)
+    cobj.add_extdom(fdb).ext_frmcmd(field)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD

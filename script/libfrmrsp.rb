@@ -17,16 +17,14 @@ module Frm
     def ext_rsp(cobj,db)
       init_ver('FrmRsp',6)
       @cobj=Msg.type?(cobj,Command)
-      Msg.type?(db,Db)
+      @db=Msg.type?(db,Db)
       self['ver']=db['version'].to_i
-      rsp=db.deep_copy[:rspframe]
-      @sel=Hash[rsp[:frame]]
-      @fds=rsp[:select]
+      @sel=Hash[db[:rspframe]]
+      @fds=db[:response][:select]
       @frame=Frame.new(db['endian'],db['ccmethod'])
       # Field Initialize
-      rsp[:assign].each{|k,v|
-        self['val'][k]||=v
-      }
+      self['val']=db[:field][:select].deep_copy
+      self
     end
 
     # Block accepts [frame,time]
@@ -173,7 +171,7 @@ if __FILE__ == $0
   end
   fdb=Loc::Db.new(id)[:frm]
   cobj=Command.new
-  cobj.add_extdom(fdb,:cmdframe)
+  cobj.add_extdom(fdb)
   cobj.setcmd(cmd.split(':'))
   field=Field::Var.new.ext_file(fdb['site_id'])
   field.load if $opt['m']

@@ -161,4 +161,6 @@
   <instance id="mft" label="MOIRCS Hall Effect Sensor" app_id="fpa"/>
   <instance id="mh1" label="MOIRCS Main/Carrousel Heater" app_id="psp"/>
   <instance id="mh2" label="MOIRCS Main Heater" app_id="psp"/>
+  <instance id="mp1" label="MOIRCS Power Supply 1" app_id="ken"/>
+  <instance id="mp2" label="MOIRCS Power Supply 2" app_id="ken"/>
 </idb>

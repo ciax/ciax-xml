@@ -5,30 +5,13 @@
     <ccmethod val="len or bcc"/>
     <version val="Version Number"/>
     <label val="Label"/>
-    <cmdframe type="Hash">
+    <command type="Hash">
       <label type="Hash">
         <Item key="Command Name" val="Label"/>
       </label>
       <response type="Hash">
         <Item key="Command Name" val="Status ID"/>
       </response>
-      <frame type="Hash">
-        <main type="Array">
-          <select/>
-          <List type="Hash">
-            <label val="Label"/>
-            <val type="String"/>
-          </List>
-          <List type="Hash">
-            <label val="Label"/>
-            <length type="Number"/>
-            <val type="Number"/>
-          </List>
-        </main>
-        <ccrange type="Array">
-          <List copy="frame/main"/>
-        </ccrange>
-      </frame>
       <select type="Hash">
         <Item key="Command Name" type="Array">
           <List copy="frame/main"/>
@@ -42,14 +25,44 @@
       <nocache type="Hash">
         <Item key="Command Name" type="Boolean"/>
       </nocache>
+    </command>
+    <cmdframe type="Hash">
+      <main type="Array">
+        <select/>
+        <List type="Hash">
+          <label val="Label"/>
+          <val type="String"/>
+        </List>
+        <List type="Hash">
+          <label val="Label"/>
+          <length type="Number"/>
+          <val type="Number"/>
+        </List>
+      </main>
+      <ccrange type="Array">
+        <List copy="frame/main"/>
+      </ccrange>
     </cmdframe>
     <rspframe type="Hash">
+      <frame copy="cmdframe/frame"/>
+    </rspframe>
+    <response>
       <label type="Hash">
         <Item key="Response Name" val="Label"/>
       </label>
-      <frame copy="cmdframe/frame"/>
       <select copy="cmdframe/select"/>
-    </rspframe>
+    </response>
+    <status>
+      <label type="Hash">
+        <Item key="Field Name" val="Label"/>
+      </label>
+      <select type="Hash">
+        <Item key="Field Name" type="nil"/>
+        <Item key="Field Name" type="Array">
+          <List type="String/Number"/>
+        </Item>
+      </select>
+    </status>
   </Frm>
   <App>
     <frm_id val="Frm ID"/>

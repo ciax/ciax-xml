@@ -4,15 +4,15 @@ require 'librerange'
 
 # For External Command Domain
 class Command
-  def add_extdom(db,path)
-    self['ext']=ExtDom.new(db,path,@def_proc)
+  def add_extdom(db)
+    self['ext']=ExtDom.new(db,@def_proc)
   end
 
   class ExtDom < Domain
-    def initialize(db,path,def_proc=ExeProc.new)
+    def initialize(db,def_proc=ExeProc.new)
       super(6,def_proc)
-      Msg.type?(db,Db)
-      if @cdb=db[path]
+      @db=Msg.type?(db,Db)
+      if @cdb=db[:command]
         items={}
         labels=@cdb[:label]
         if gdb=@cdb[:group]
@@ -120,9 +120,9 @@ if __FILE__ == $0
     ldb=Loc::Db.new(ARGV.shift)
     cobj=Command.new
     if $opt["f"]
-      cobj.add_extdom(ldb[:frm],:cmdframe)
+      cobj.add_extdom(ldb[:frm])
     else
-      cobj.add_extdom(ldb[:app],:command)
+      cobj.add_extdom(ldb[:app])
     end
     puts cobj.setcmd(ARGV)
   rescue UserError

@@ -10,14 +10,13 @@ module Frm
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
-        cmd=hash[:cmdframe]={}
-        rsp=hash[:rspframe]={:assign => {}}
+        rfm=hash[:field]={}
         dc=doc.domain('cmdframe')
         dr=doc.domain('rspframe')
-        fc=cmd[:frame]=init_main(dc){|e,r| init_cmd(e,r)}
-        fr=rsp[:frame]=init_main(dr){|e| init_rsp(e,rsp)}
-        cmd.update(init_sel(dc,'command',fc){|e,r| init_cmd(e,r)})
-        rsp.update(init_sel(dr,'response',fr){|e| init_rsp(e,rsp)})
+        hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
+        hash[:rspframe]=init_main(dr){|e| init_rsp(e,rfm)}
+        hash[:command]=init_sel(dc,'command'){|e,r| init_cmd(e,r)}
+        hash[:response]=init_sel(dr,'response'){|e| init_rsp(e,rfm)}
         hash
       }
     end
@@ -52,7 +51,7 @@ module Frm
       hash
     end
 
-    def init_sel(domain,select,frame)
+    def init_sel(domain,select)
       selh=domain.to_h
       domain.find(select){|e0|
         begin
@@ -86,16 +85,13 @@ module Frm
     end
 
     def init_rsp(e,val)
+      val[:select]||=ExHash.new
       case e.name
       when 'field'
         attr=e.to_h
         if id=attr['assign']
-          val[:assign][id]=nil
-          val[:label]||={}
-          if lv=attr['label']
-            val[:label][id]=lv
-            verbose{"LABEL:[#{id}] : #{lv}"}
-          end
+          val[:select][id]=nil
+          add_label(val,attr,id)
         end
         verbose{"InitElement: #{attr}"}
         attr
@@ -105,7 +101,9 @@ module Frm
         e.each{|e1|
           idx << e1.to_h
         }
-        val[:assign][attr['assign']]=init_array(idx.map{|h| h['size']})
+        id=attr['assign']
+        val[:select][id]=init_array(idx.map{|h| h['size']})
+        add_label(val,attr,id)
         attr
       when 'ccrange','select'
         e.name
@@ -121,6 +119,13 @@ module Frm
         a[i]=init_array(sary[1..-1],a[i])
       }
       a
+    end
+
+    def add_label(val,attr,id)
+      if lv=attr['label']
+        (val[:label]||={})[id]=lv
+        verbose{"LABEL:[#{id}] : #{lv}"}
+      end
     end
   end
 end

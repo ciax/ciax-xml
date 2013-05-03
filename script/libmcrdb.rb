@@ -10,7 +10,7 @@ module Mcr
       super('mdb',id){|doc|
         hash={}
         hash.update(doc)
-        mdb=(hash[:macro]||={})
+        mdb=(hash[:command]||={})
         doc.top.each{|e0|
           id=e0.attr2db(mdb)
           verbose{"MACRO:[#{id}]"}

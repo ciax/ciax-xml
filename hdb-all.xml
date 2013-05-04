@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hdb xmlns="http://ciax.sum.naoj.org/ciax-xml/hdb">
+  <hexpack id="cro" label="OPT Helium Compressor" app_id="bbe">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/hdbs">
+      <pack code="b" length="4">
+        <field id="o00" ref="xsw0" label="Out 5" />
+        <field id="i01" ref="xdr0" label="In 5-1" />
+        <field id="i02" ref="xtm0" label="In 5-2" />
+        <field id="i03" ref="xpr0" label="In 5-3" />
+      </pack>
+      <pack code="b" length="4">
+        <field id="o04" ref="xsw1" label="Out 6" />
+        <field id="i05" ref="xdr1" label="In 6-1" />
+        <field id="i06" ref="xtm1" label="In 6-2" />
+        <field id="i07" ref="xpr1" label="In 6-3" />
+      </pack>
+      <pack code="b" length="4">
+        <field id="o08" ref="xsw2" label="Out 7" />
+        <field id="i09" ref="xdr2" label="In 7-1" />
+        <field id="i10" ref="xtm2" label="In 7-2" />
+        <field id="i11" ref="xpr2" label="In 7-3" />
+      </pack>
+      <pack code="b" length="4">
+        <field id="o12" ref="xsw3" label="Out 8" />
+        <field id="i13" ref="xdr3" label="In 8-1" />
+        <field id="i14" ref="xtm3" label="In 8-2" />
+        <field id="i15" ref="xpr3" label="In 8-3" />
+      </pack>
+    </status>
+  </hexpack>
+  <hexpack id="cco" label="OPT Helium Compressor" app_id="bbe">
+  </hexpack>
+  <hexpack id="cri" label="IR Helium Compressor" app_id="bbe">
+  </hexpack>
+  <hexpack id="cci" label="IR Helium Compressor" app_id="bbe">
+  </hexpack>
+  <hexpack id="crt" label="CIAX CART 3" app_id="mel"/>
+  <hexpack id="det" label="CsEtr Control" app_id="srm"/>
+  <hexpack id="dts" label="TSC Control" app_id="oss"/>
+</hdb>

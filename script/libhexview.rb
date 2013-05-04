@@ -18,7 +18,7 @@ module Hex
         while line=f.gets
           ary=line.split(',')
           case line
-          when /^[%#]/,/^$/
+          when /^[#]/,/^$/
           else
             @list << ary
           end
@@ -39,16 +39,16 @@ module Hex
       pck=0
       bin=0
       @list.each{|key,title,len,type|
+        len=len.to_i
         if key === '%pck'
-          pck=len.to_i
+          pck=len
           bin=0
         elsif pck > 0
-          bin+=val.to_i
+          bin+=@stat.get(key).to_i
           bin << 1
           pck-=1
-          @res[6]='%x' % bin if pck == 0
+          @res[6] << '%x' % bin if pck == 0
         else
-          len=len.to_i
           if val=@stat.get(key)
             str=get_elem(type,len,val)
             verbose{"#{title}/#{type}(#{len}) = #{str}"}

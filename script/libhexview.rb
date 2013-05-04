@@ -36,32 +36,49 @@ module Hex
       @res[3]=b2i(@hint['watch'])
       @res[4]=b2i(@hint['isu'])
       @res[6]=''
+      pck=0
+      bin=0
       @list.each{|key,title,len,type|
-        len=len.to_i
-        if val=@stat.get(key)
-          case type
-          when /FLOAT/
-            str=("%0#{len}.2f" % val.to_f)
-          when /INT/
-            str=("%0#{len}d" % val.to_i)
-          when /BINARY/
-            str=("%0#{len}b" % val.to_i)
-          else
-            str=("%#{len}s" % val)
-          end
-          verbose{"#{title}/#{type}(#{len}) = #{str}"}
+        if key === '%pck'
+          pck=len.to_i
+          bin=0
+        elsif pck > 0
+          bin+=val.to_i
+          bin << 1
+          pck-=1
+          @res[6]='%x' % bin if pck == 0
         else
-          str='*' * len
+          len=len.to_i
+          if val=@stat.get(key)
+            str=get_elem(type,len,val)
+            verbose{"#{title}/#{type}(#{len}) = #{str}"}
+          else
+            str='*' * len
+          end
+          # str can exceed specified length
+          str=str[0,len]
+          verbose{"add '#{str}' as #{key}"}
+          @res[6] << str
         end
-        # str can exceed specified length
-        str=str[0,len]
-        verbose{"add '#{str}' as #{key}"}
-        @res[6] << str
       }
       @res.join('')
     end
 
     private
+    def get_elem(type,len,val)
+      case type
+      when /FLOAT/
+        str=("%0#{len}.2f" % val.to_f)
+      when /INT/
+        str=("%0#{len}d" % val.to_i)
+      when /BINARY/
+        str=("%0#{len}b" % val.to_i)
+      else
+        str=("%#{len}s" % val)
+      end
+      str
+    end
+
     def b2i(b) #Boolean to Integer (1,0)
       b ? '1' : '0'
     end

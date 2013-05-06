@@ -323,6 +323,8 @@ module Msg
       end
       str << color("%-6s" % title,5,ind)+" :\n"
       ind+=1
+    else
+      str << "===\n"
     end
     case data
     when Array

@@ -44,11 +44,15 @@ module Mcr
         title << "(#{obj['retry']}/#{obj['max']})" if obj['retry']
         color=(/pass|wait/ === res) ? 2 : 1
         msg << Msg.color(title,color)+"\n"
-        if c=obj['mismatch']
+        if c=obj['conditions']
           c.each{|h|
             msg << Msg.indent(obj['depth'].to_i+1)
             if h['upd']
-              msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}\n"
+              if h['res']
+                msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}\n"
+              else
+                msg << Msg.color("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}\n"
+              end
             else
               msg << Msg.color("#{h['site']}",3)+" is not updated\n"
             end

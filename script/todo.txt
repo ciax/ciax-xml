@@ -1,24 +1,13 @@
 ========================== Issue =============================
 ***For CIAX-CSV
-mcr:add interlock for CAS/ASYN at initialize
-server(???d) migrate to appsv
-memo to db: cs rot ang for each inst
-tsc-table: need update tool
-lantronix control by PC
 det,cr?,cc?: configure hexsv
-add hostname to log
 
 ***DEBUG
-bug: appsh -cf(4/8/13)
-client doesn't send any command (blank command was assinged to item)(12/12/19)
-watch: no command issued by auto(reset at dsi command end) (9/27)
-crt:cart jack level error in oldmcr(1/31)
-dso:jack bolt stack after interrupt(8/15)
-crt:cart charging status is '4'(12/2/16) - hexpack bug
+watch: no command issued by auto(reset at dsi command end) (12/9/27)
+crt:cart jack level error in oldmcr(12/1/31)
+dso:jack bolt stack after interrupt(12/8/15)
 dts:joff,roff,rstop/ no responding(12/3/12)
-dts:need more time to detect motion after moving command issue(12/3/12)
 dts:need rotate drive on to resume ^D stop(12/3/12)
-hexpack: too short return on exec (12/9/27)
 
 ***REQUEST
 mcr-old:need interlock for dso/dsi manual or auto
@@ -26,31 +15,35 @@ mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
-list: applist,frmlit-> share db
 app: watch layer will be separated as "Event" including interlock and skip
 mcr: macro log
-mcr: batch mode w/showing progress
 mcr: attach/detach w/o location param (cmdstr subst by tag)
-sql: easy log finder(date -> data)
 mcr: update site status at startup or retry
 mcr: query should be done at only before action
 oss: add cart number setting command
+add hostname to log
 
-***UPGRADE
-sql: using sqlite for symboling, labeling as cache
+***Required Status
+mcr:add interlock for CAS/ASYN at initialize
+memo to db: cs rot ang for each inst
+
+***Required Tools
 crt: jack table edit interface (sql+web)
+tsc-table: need update tool
+lantronix control by PC at port1
+sql: easy log finder(date -> data)
 
 ***CHECK AT SITE
 verify on motion: adb-oss
 verify: oss jack num corresponding
 verify: stop with ^C
-crt/hexint:return after command issued  without exe flag(12/1/6)
 dts:jack stop test(12/4/26)
 
 ========================== Result =============================
 ***DISCARD
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain
 aso:need reset function for executing flag
+sql: using sqlite for symboling, labeling as cache
 
 ***SOLVED
 debug:error "no such command 'exe'" in dsi
@@ -124,3 +117,12 @@ more intelligent chache system with detecting file update like as Makefile
 Command: should includes procs
 libfrmrsp takes raw data -> Stream w/o IO (data+date) (2/15/13)
 Var::Val -> Var+module Upd(2/27/13)
+hexpack: too short return on exec (12/9/27)
+crt/hexint:return after command issued  without exe flag(12/1/6)
+bug: appsh -cf(4/8/13)
+server(???d) migrate to appsv
+client doesn't send any command (blank command was assinged to item)(12/12/19) -> send JSON
+crt:cart charging status is '4'(12/2/16) - hexpack bug
+dts:need more time to detect motion after moving command issue(12/3/12)
+mcr: batch mode w/showing progress
+list: applist,frmlit-> share db -> inslist

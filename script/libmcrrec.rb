@@ -94,8 +94,8 @@ module Mcr
 
     private
     def ok?(t=nil,f=nil)
-      res=(flt=scan).empty?
-      self['mismatch']=flt unless res
+      res=(cond=scan).empty?
+      self['conditions']=cond
       self['result']=(res ? t : f) if t || f
       res
     end
@@ -106,20 +106,21 @@ module Mcr
         hash
       }
       @condition.map{|h|
-        flt={}
-        site=flt['site']=h['site']
-        var=flt['var']=h['var']
+        cond={}
+        site=cond['site']=h['site']
+        var=cond['var']=h['var']
         stat=stats[site]
-        if flt['upd']=stat.update?
-          inv=flt['inv']=h['inv']
-          cmp=flt['cmp']=h['val']
-          res=stat['msg'][var]||stat['val'][var]
-          verbose{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}
-          next unless res
-          flt['res']=res
-          match?(res,cmp,flt['inv']) && flt || nil
+        if cond['upd']=stat.update?
+          inv=cond['inv']=h['inv']
+          cmp=cond['cmp']=h['val']
+          act=stat['msg'][var]||stat['val'][var]
+          verbose{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},act=#{act}"}
+          next unless act
+          cond['act']=act
+          res=cond['res']=match?(act,cmp,cond['inv'])
+          res ? cond : nil
         else
-          flt
+          cond
         end
       }.compact
     end
@@ -134,12 +135,12 @@ module Mcr
       @condition.map{|h| h['site']}.uniq
     end
 
-    def match?(res,cmp,inv)
+    def match?(act,cmp,inv)
       i=(/true|1/ === inv)
       if /[a-zA-Z]/ === cmp
-        (/#{cmp}/ === res) ^ i
+        (/#{cmp}/ === act) ^ i
       else
-        (cmp == res) ^ i
+        (cmp == act) ^ i
       end
     end
   end

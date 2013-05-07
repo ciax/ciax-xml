@@ -203,8 +203,9 @@ module Sh
     end
 
     # @sid is rewrite when self[] succeeded
-    def getsh(id)
+    def getsh(id,lyr=nil)
       sid=@sid.site(id)
+      sid[:layer]=lyr if lyr
       sh=self[sid]
       @sid=sid
       sh

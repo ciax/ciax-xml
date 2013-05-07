@@ -8,32 +8,33 @@ module Mcr
       @mdb=Msg.type?(mdb,Db)
       self['layer']='mcr'
       self['id']=@mdb['id']
-      @mid=ServerID.new('mcr','0')
+      self['total']='0'
+      @mid=ServerID.new('mcr',self['total'])
 
-      prom=Sh::Prompt.new(self)
+      prom=Sh::Prompt.new(self,{'total' => "(0/%s)"})
       super({},prom)
 
       @mg=@shdom.add_group('mcr','Switch Macro',2)
 
       m0=@mid.dup
       il[m0]=self
-      @mg.add_item('0','Macro Manager').reset_proc{
+      @mg.add_item(self['total'],'Macro Manager').reset_proc{
         raise(SelectID,m0)
       }
 
       @extdom=@cobj.add_extdom(@mdb).reset_proc{|item|
         mc=@mid.inc
-        num=mc[:site]
+        self['total']=mc[:site]
         msh=il[mc]=Mcr::Sv.new(@cobj,il)
         msh.shdom['mcr']=@mg
-        @mg.add_item(num,"Macro # #{num}").reset_proc{
+        @mg.cmdlist.keep_if{|k,v| k == '0'}
+        @mg.cmdlist["1-#{self['total']}"]='Other Macro Process'
+        @mg.add_item(self['total']).reset_proc{
           raise(SelectID,mc)
         }
         msh.start_bg
         raise(SelectID,mc)
       }
-
-      
     end
   end
 end

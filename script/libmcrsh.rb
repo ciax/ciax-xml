@@ -19,13 +19,6 @@ module Mcr
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
-      # For shell
-      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
-      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
-      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
-      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
-      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
-      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
     end
 
     def start
@@ -45,9 +38,17 @@ module Mcr
       @output.fin
     end
 
-    def start_sh
+    def start_bg
       @th=Thread.new{ start }
-      shell
+      # For shell
+      @intgrp.cmdlist.valid_keys.clear
+      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
+      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
+      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
+      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
+      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
+      @th
     end
 
     private
@@ -55,7 +56,7 @@ module Mcr
       item.select.each{|e1|
         begin
           @crnt=@output.add_step(e1,depth){|site|
-            @il.getsh(site).stat
+            @il.getsh(site,'app').stat
           }
           case e1['type']
           when 'goal'
@@ -66,7 +67,7 @@ module Mcr
             @crnt.timeout? && raise(Interlock)
           when 'exec'
             @crnt.exec{|site,cmd,depth|
-              ash=@il.getsh(site)
+              ash=@il.getsh(site,'app')
               ash.exe(cmd)
               @appint=ash.interrupt
             }
@@ -109,7 +110,8 @@ if __FILE__ == $0
     if $opt['i']
       msh.start
     else
-      msh.start_sh
+      msh.start_bg
+      msh.shell
     end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

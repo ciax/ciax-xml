@@ -8,7 +8,7 @@ require "libinslist"
 module Mcr
   class Sv < Sh::Exe
     # @< cobj,output,(intgrp),interrupt,upd_proc*
-    # @ al,appint,mobj*
+    # @ al,appint,th,mobj*
     attr_accessor :mobj
     def initialize(mobj,il)
       @mobj=Msg.type?(mobj,Command)
@@ -45,15 +45,9 @@ module Mcr
       @output.fin
     end
 
-    def shell
-      @intgrp.cmdlist.valid_keys.replace(['e'])
-      self['stat']='ready'
-      @th=Thread.new{
-        sleep
-        @intgrp.cmdlist.valid_keys.clear
-        start
-      }
-      super()
+    def start_sh
+      @th=Thread.new{ start }
+      shell
     end
 
     private
@@ -115,7 +109,7 @@ if __FILE__ == $0
     if $opt['i']
       msh.start
     else
-      msh.shell
+      msh.start_sh
     end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

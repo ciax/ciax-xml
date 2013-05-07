@@ -37,7 +37,7 @@ class UnixTime < Time
 end
 
 class ServerID < Hash #{layer,site}
-  def initialize(layer='app',site=nil)
+  def initialize(layer='app',site='')
     update(:layer =>layer,:site =>site)
   end
 
@@ -47,6 +47,11 @@ class ServerID < Hash #{layer,site}
 
   def site(site)
     dup.update(:site => site)
+  end
+
+  def inc
+    self[:site]=self[:site].succ
+    dup
   end
 end
 

@@ -25,7 +25,7 @@ module Status
     end
 
     def update?
-      self['time'] != @updated
+      self['time'] > @updated
     end
 
     def refresh

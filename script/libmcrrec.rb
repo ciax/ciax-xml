@@ -94,7 +94,8 @@ module Mcr
 
     private
     def ok?(t=nil,f=nil)
-      res=(cond=scan).empty?
+      cond=scan
+      res=cond.all?{|h| h['upd'] && h['res']}
       self['conditions']=cond
       self['result']=(res ? t : f) if t || f
       res
@@ -117,12 +118,10 @@ module Mcr
           verbose{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},act=#{act}"}
           next unless act
           cond['act']=act
-          res=cond['res']=match?(act,cmp,cond['inv'])
-          res ? cond : nil
-        else
-          cond
+          cond['res']=match?(act,cmp,cond['inv'])
         end
-      }.compact
+        cond
+      }
     end
 
     def refresh

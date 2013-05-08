@@ -7,11 +7,10 @@ require "libappsh"
 module Hex
   def self.new(ash)
     Msg.type?(ash,App::Exe)
-    adb=ash.adb
     if ['e','s','f','h','c'].any?{|i| $opt[i]}
-       hsh=Hex::Sv.new(adb,ash,$opt['e'])
+      hsh=Hex::Sv.new(ash,$opt['e'])
     else
-      hsh=Hex::Exe.new(adb)
+      hsh=Hex::Exe.new(ash.adb)
     end
     hsh
   end
@@ -79,7 +78,6 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  fl=Frm::List.new
-  al=App::List.new(fl)
+  al=App::List.new
   puts Hex::List.new(al).shell(ARGV.shift)
 end

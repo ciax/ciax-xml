@@ -240,11 +240,18 @@ module Sh
     end
 
     def switch_layer(sh,gid,title,list)
-      switch_menu(sh,gid,title,list){|lyr| @sid.layer=lyr;@sid}
+      switch_menu(sh,gid,title,list){|lyr|
+        @sid.layer=lyr
+        @sid
+      }
     end
 
-    def switch_site(sh,gid,title,list)
-      switch_menu(sh,gid,title,list){|id| @sid.id=id;@sid }
+    def switch_id(sh,gid,title,list,lyr=nil)
+      switch_menu(sh,gid,title,list){|id|
+        @sid.id=id
+        @sid.layer=lyr if lyr
+        @sid
+      }
     end
 
     private

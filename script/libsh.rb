@@ -197,18 +197,16 @@ module Sh
     def initialize(layer=nil)
       @sid=ServerID.new(layer)
       $opt||=Msg::GetOpts.new
-      super(){|h,sid|
-        h[sid]=newsh(sid)
+      super(){|h,skey|
+        h[skey]=newsh(skey)
       }
     end
 
     # @sid is rewrite when self[] succeeded
     def getsh(id,lyr=nil)
-      sid=@sid.site(id)
-      sid[:layer]=lyr if lyr
-      sh=self[sid]
-      @sid=sid
-      sh
+      @sid.id=id
+      @sid.layer=lyr if lyr
+      self[@sid.to_s]
     end
 
     def exe(stm)
@@ -219,10 +217,10 @@ module Sh
 
     def shell(id)
       sh=getsh(id)
-      while sid=sh.shell
+      while skey=sh.shell
         begin
-          sh=self[sid]
-          @sid=sid
+          sh=self[skey]
+          @sid.upd(skey)
         rescue InvalidID
           Msg.alert($!.to_s,1)
         end
@@ -242,24 +240,22 @@ module Sh
     end
 
     def switch_layer(sh,gid,title,list)
-      switch_menu(sh,gid,title,list){|id| @sid.layer(id)}
+      switch_menu(sh,gid,title,list){|lyr| @sid.layer=lyr;@sid}
     end
 
     def switch_site(sh,gid,title,list)
-      switch_menu(sh,gid,title,list){|id| @sid.site(id)}
+      switch_menu(sh,gid,title,list){|id| @sid.id=id;@sid }
     end
 
     private
-    def newsh(sid)
-      Msg.type?(sid,ServerID)
-      Exe.new
+    def newsh(skey)
     end
 
     def switch_menu(sh,gid,title,list)
       Msg.type?(sh,Sh::Exe)
       grp=sh.shdom.add_group(gid,title)
       grp.update_items(list).reset_proc{|item|
-        raise(SelectID,yield(item.id))
+        raise(SelectID,yield(item.id).to_s)
       }
       self
     end

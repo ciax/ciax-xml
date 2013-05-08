@@ -6,15 +6,16 @@ require "libhexsh"
 
 module Ins
   class List < Sh::List
-    def newsh(sid)
-      Loc::Db.new unless sid
-      ldb=Loc::Db.new(sid[:site])
-      case sid[:layer]
+    def newsh(skey)
+      Loc::Db.new unless skey
+      sid=ServerID.new.upd(skey)
+      ldb=Loc::Db.new(sid.id)
+      case sid.layer
       when 'hex'
-        ash=self[ldb.sid('app')]
+        ash=self[ldb.sid('app').to_s]
         sh=Hex.new(ldb[:app],ash)
       when 'app'
-        fsh=self[ldb.sid('frm')]
+        fsh=self[ldb.sid('frm').to_s]
         sh=App.new(ldb[:app],fsh)
       when 'frm'
         sh=Frm.new(ldb[:frm])

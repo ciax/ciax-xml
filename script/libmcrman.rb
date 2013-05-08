@@ -18,24 +18,24 @@ module Mcr
       @mg=@shdom.add_group('mcr','Switch Macro',2)
 
       output['[0]']='Macro Manager'
-      m0=@mid.dup
+      m0=@mid.to_s
       il[m0]=self
       @mg.add_item(self['total'],'Macro Manager').reset_proc{
         raise(SelectID,m0)
       }
 
       @extdom=@cobj.add_extdom(@mdb).reset_proc{|item|
-        mc=@mid.inc
-        num=self['total']=mc[:site]
-        msh=il[mc]=Mcr::Sv.new(@cobj,il)
+        num=self['total']=@mid.inc_id.id
+        mkey=@mid.to_s
+        msh=il[mkey]=Mcr::Sv.new(@cobj,il)
         msh.shdom['mcr']=@mg
         upd_mg(num)
         output["[#{num}]"]=msh
         @mg.add_item(num).reset_proc{
-          raise(SelectID,mc)
+          raise(SelectID,mkey)
         }
         msh.start_bg
-        raise(SelectID,mc)
+        raise(SelectID,mkey)
       }
     end
 

@@ -36,22 +36,25 @@ class UnixTime < Time
   end
 end
 
-class ServerID < Hash #{layer,site}
-  def initialize(layer='app',site='')
-    update(:layer =>layer,:site =>site)
+class ServerID
+  attr_accessor :layer,:id
+  def initialize(layer='app',id='')
+    @layer=layer
+    @id=id
   end
 
-  def layer(layer)
-    dup.update(:layer => layer)
+  def inc_id
+    @id=@id.succ
+    self
   end
 
-  def site(site)
-    dup.update(:site => site)
+  def upd(str)
+    @layer,@id=str.split(':')
+    self
   end
 
-  def inc
-    self[:site]=self[:site].succ
-    dup
+  def to_s
+    "#@layer:#@id"
   end
 end
 

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "liblocdb"
-require "libfrmsv"
+require "libfrmsh"
 require "libappsv"
 require "libhexsh"
 

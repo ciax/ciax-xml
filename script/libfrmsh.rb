@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libsh'
 require 'libfield'
+require 'liblocdb'
 
 module Frm
   def self.new(fdb)
@@ -56,4 +57,19 @@ module Frm
       @upd_proc.add{@field.load}
     end
   end
+
+  class List < Sh::List
+    def newsh(id)
+      Loc::Db.new unless id
+      ldb=Loc::Db.new(id)
+      sh=Frm.new(ldb[:frm])
+      switch_id(sh,'dev',"Change Device",ldb.list)
+      sh
+    end
+  end
+end
+
+if __FILE__ == $0
+  Msg::GetOpts.new('et')
+  puts Frm::List.new.shell(ARGV.shift)
 end

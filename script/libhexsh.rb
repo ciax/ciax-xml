@@ -1,13 +1,13 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libmsg"
-require "libinslist"
 require "libhexview"
+require "libappsh"
 
 module Hex
-  def self.new(adb,ash)
-    Msg.type?(adb,App::Db)
+  def self.new(ash)
     Msg.type?(ash,App::Exe)
+    adb=ash.adb
     if ['e','s','f','h','c'].any?{|i| $opt[i]}
        hsh=Hex::Sv.new(adb,ash,$opt['e'])
     else
@@ -31,8 +31,8 @@ module Hex
   end
 
   class Sv < Exe
-    def initialize(adb,ash,logging=nil)
-      super(adb)
+    def initialize(ash,logging=nil)
+      super(ash.adb)
       @output=View.new(ash,ash.stat)
       @log_proc=UpdProc.new
       @extdom.reset_proc{|item|
@@ -61,4 +61,25 @@ module Hex
       @output.to_s
     end
   end
+
+  class List < Sh::List
+    def initialize(al)
+      @al=Msg.type?(al,App::List)
+      super()
+    end
+
+    def newsh(id)
+      ldb=Loc::Db.new(id)
+      sh=Hex.new(@al[id])
+      switch_id(sh,'dev',"Change Device",ldb.list)
+      sh
+    end
+  end
+end
+
+if __FILE__ == $0
+  Msg::GetOpts.new('et')
+  fl=Frm::List.new
+  al=App::List.new(fl)
+  puts Hex::List.new(al).shell(ARGV.shift)
 end

@@ -194,33 +194,28 @@ module Sh
   end
 
   class List < Hash
-    def initialize(layer=nil)
-      @sid=ServerID.new(layer)
+    def initialize
       $opt||=Msg::GetOpts.new
-      super(){|h,skey|
-        h[skey]=newsh(skey)
+      super(){|h,id|
+        h[id]=newsh(id)
       }
     end
 
-    # @sid is rewrite when self[] succeeded
-    def getsh(id,lyr=nil)
-      @sid.id=id
-      @sid.layer=lyr if lyr
-      self[@sid.to_s]
+    def getsh(id)
+      self[id]
     end
 
     def exe(stm)
-      getsh(stm.shift).exe(stm)
+      self[stm.shift].exe(stm)
     rescue UserError
       $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
     def shell(id)
-      sh=getsh(id)
-      while skey=sh.shell
+      sh=self[id]
+      while id=sh.shell
         begin
-          sh=self[skey]
-          @sid.upd(skey)
+          sh=self[id]
         rescue InvalidID
           Msg.alert($!.to_s,1)
         end
@@ -232,39 +227,33 @@ module Sh
     def server(ary)
       ary.each{|i|
         sleep 0.3
-        getsh(i)
+        self[i]
       }.empty? && self[nil]
       sleep
     rescue UserError
       $opt.usage('(opt) [id] ....')
     end
 
+    def switch_id(sh,gid,title,list)
+      Msg.type?(sh,Sh::Exe)
+      grp=sh.shdom.add_group(gid,title)
+      grp.update_items(list).reset_proc{|item|
+        raise(SelectID,item.id)
+      }
+      self
+    end
+
+    private
+    def newsh(id)
+    end
+  end
+
+  class Layers < Hash
     def switch_layer(sh,gid,title,list)
       switch_menu(sh,gid,title,list){|lyr|
         @sid.layer=lyr
         @sid
       }
-    end
-
-    def switch_id(sh,gid,title,list,lyr=nil)
-      switch_menu(sh,gid,title,list){|id|
-        @sid.id=id
-        @sid.layer=lyr if lyr
-        @sid
-      }
-    end
-
-    private
-    def newsh(skey)
-    end
-
-    def switch_menu(sh,gid,title,list)
-      Msg.type?(sh,Sh::Exe)
-      grp=sh.shdom.add_group(gid,title)
-      grp.update_items(list).reset_proc{|item|
-        raise(SelectID,yield(item.id).to_s)
-      }
-      self
     end
   end
 end

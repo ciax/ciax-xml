@@ -2,6 +2,7 @@
 require "libsh"
 require "libstatus"
 require "libwatch"
+require 'libfrmsh'
 
 module App
   def self.new(adb,fsh)
@@ -20,7 +21,7 @@ module App
   class Exe < Sh::Exe
     # @< cobj,output,intgrp,interrupt,upd_proc*
     # @ adb,fsh,extdom,watch,stat*
-    attr_reader :stat
+    attr_reader :adb,:stat
     def initialize(adb,fsh)
       @adb=Msg.type?(adb,Db)
       self['layer']='app'
@@ -104,4 +105,24 @@ module App
       }
     end
   end
+
+  class List < Sh::List
+    def initialize(fl)
+      @fl=Msg.type?(fl,Frm::List)
+      super()
+    end
+
+    def newsh(id)
+      ldb=Loc::Db.new(id)
+      sh=App.new(ldb[:app],@fl[id])
+      switch_id(sh,'dev',"Change Device",ldb.list)
+      sh
+    end
+  end
+end
+
+if __FILE__ == $0
+  Msg::GetOpts.new('et')
+  fl=Frm::List.new
+  puts App::List.new(fl).shell(ARGV.shift)
 end

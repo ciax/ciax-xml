@@ -21,7 +21,7 @@ module Ins
         sh=Frm.new(ldb[:frm])
       end
       switch_layer(sh,'lay',"Change Layer",{'frm'=>"Frm mode",'app'=>"App mode",'hex'=>"Hex mode"})
-      switch_site(sh,'dev',"Change Device",ldb.list)
+      switch_id(sh,'dev',"Change Device",ldb.list)
       sh
     end
   end

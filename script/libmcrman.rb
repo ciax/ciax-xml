@@ -12,7 +12,7 @@ module Mcr
       @mid=ServerID.new('mcr',self['total'])
 
       output=Msg::CmdList.new('caption' => 'Macro List','color' => 2)
-      prom=Sh::Prompt.new(self,{'total' => "(0/%s)"})
+      prom=Sh::Prompt.new(self,{'total' => "[0/%s]"})
       super(output,prom)
 
       @mg=@shdom.add_group('mcr','Switch Macro',2)
@@ -25,9 +25,11 @@ module Mcr
       }
 
       @extdom=@cobj.add_extdom(@mdb).reset_proc{|item|
-        num=self['total']=@mid.inc_id.id
+        num=self['total'].replace @mid.inc_id.id
         mkey=@mid.to_s
         msh=il[mkey]=Mcr::Sv.new(@cobj,il)
+        msh['total']=self['total']
+        msh.prompt['total']="[#{num}/%s]"
         msh.shdom['mcr']=@mg
         upd_mg(num)
         output["[#{num}]"]=msh

@@ -9,7 +9,7 @@ module Mcr
   class Sv < Sh::Exe
     # @< cobj,output,(intgrp),interrupt,upd_proc*
     # @ al,appint,th,item,mobj*
-    attr_accessor :mobj
+    attr_accessor :mobj,:prompt
     def initialize(mobj,il)
       @mobj=Msg.type?(mobj.dup,Command)
       @item=@mobj.current

@@ -12,15 +12,14 @@ require "thread"
 
 
 module App
-  def self.new(adb,fsh)
-    Msg.type?(fsh,Frm::Exe)
-    if $opt['e'] or $opt['s'] or $opt['f']
+  def self.new(adb,fsh=nil)
+    if fsh
       ash=App::Sv.new(adb,fsh,$opt['e'])
-      ash=App::Cl.new(adb,fsh,'localhost') if $opt['c']
+      ash=App::Cl.new(adb,'localhost') if $opt['c']
     elsif host=$opt['h'] or $opt['c']
-      ash=App::Cl.new(adb,fsh,host)
+      ash=App::Cl.new(adb,host)
     else
-      ash=App::Test.new(adb,fsh)
+      ash=App::Test.new(adb)
     end
     ash
   end
@@ -29,11 +28,10 @@ module App
     # @< cobj,output,intgrp,interrupt,upd_proc*
     # @ adb,fsh,extdom,watch,stat*
     attr_reader :adb,:stat
-    def initialize(adb,fsh)
+    def initialize(adb)
       @adb=Msg.type?(adb,Db)
       self['layer']='app'
       self['id']=@adb['site_id']
-      @fsh=Msg.type?(fsh,Frm::Exe)
       @stat=Status::Var.new.ext_file(@adb['site_id'])
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
@@ -63,7 +61,7 @@ module App
 
   class Test < Exe
     require "libsymupd"
-    def initialize(adb,fsh)
+    def initialize(adb)
       super
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
@@ -100,8 +98,8 @@ module App
   end
 
   class Cl < Exe
-    def initialize(adb,fsh,host=nil)
-      super(adb,fsh)
+    def initialize(adb,host=nil)
+      super(adb)
       host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(host).load
       @watch.ext_url(host).load
@@ -118,7 +116,7 @@ module App
   # @ fsh,buf,log_proc
   class Sv < Exe
     def initialize(adb,fsh,logging=nil)
-      super(adb,fsh)
+      super(adb)
       init_ver("AppSv",9)
       @fsh=Msg.type?(fsh,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
@@ -210,8 +208,9 @@ module App
   end
 
   class List < Sh::List
-    def initialize(fl)
-      @fl=Msg.type?(fl,Frm::List)
+    attr_reader :fl
+    def initialize
+      @fl=($opt['e'] or $opt['s'] or $opt['f']) ? Frm::List.new : {}
       super()
     end
 
@@ -226,6 +225,5 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  fl=Frm::List.new
-  puts App::List.new(fl).shell(ARGV.shift)
+  puts App::List.new.shell(ARGV.shift)
 end

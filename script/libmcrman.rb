@@ -41,7 +41,7 @@ module Mcr
 
     private
     def upd_mg(num)
-      @mg.cmdlist.keep_if{|k,v| k == '0'}
+      @mg.cmdlist.delete_if{|k,v| /^1-/ === k}
       @mg.cmdlist["1-#{num}"]='Other Macro Process'
     end
   end

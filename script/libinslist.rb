@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "liblocdb"
 require "libfrmsh"
-require "libappsv"
+require "libappsh"
 require "libhexsh"
 
 module Ins

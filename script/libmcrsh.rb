@@ -8,13 +8,14 @@ require "libinslist"
 module Mcr
   class Sv < Sh::Exe
     # @< cobj,output,(intgrp),interrupt,upd_proc*
-    # @ al,appint,th,mobj*
+    # @ al,appint,th,item,mobj*
     attr_accessor :mobj
     def initialize(mobj,il)
-      @mobj=Msg.type?(mobj,Command)
+      @mobj=Msg.type?(mobj.dup,Command)
+      @item=@mobj.current
       @il=Msg.type?(il,Ins::List)
       self['layer']='mcr'
-      self['id']=@mobj.current.id
+      self['id']=@item.id
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
@@ -24,7 +25,7 @@ module Mcr
     def start
       self['stat']='run'
       puts @output if Msg.fg?
-      macro(@mobj.current)
+      macro(@item)
       result('done')
       self
     rescue Interlock
@@ -49,6 +50,10 @@ module Mcr
       @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
       @interrupt.reset_proc{|i| @th.raise(Interrupt)}
       @th
+    end
+
+    def to_s
+      @mobj.current[:cmd]+'('+self['stat']+')'
     end
 
     private

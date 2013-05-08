@@ -29,15 +29,20 @@ module Mcr
         num=self['total']=mc[:site]
         msh=il[mc]=Mcr::Sv.new(@cobj,il)
         msh.shdom['mcr']=@mg
-        @mg.cmdlist.keep_if{|k,v| k == '0'}
-        @mg.cmdlist["1-#{num}"]='Other Macro Process'
-        output["[#{num}]"]=item[:cmd]
+        upd_mg(num)
+        output["[#{num}]"]=msh
         @mg.add_item(num).reset_proc{
           raise(SelectID,mc)
         }
         msh.start_bg
         raise(SelectID,mc)
       }
+    end
+
+    private
+    def upd_mg(num)
+      @mg.cmdlist.keep_if{|k,v| k == '0'}
+      @mg.cmdlist["1-#{num}"]='Other Macro Process'
     end
   end
 end

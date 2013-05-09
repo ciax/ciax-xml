@@ -194,12 +194,13 @@ module Sh
   end
 
   class List < Hash
-    def initialize(id)
+    attr_reader :id
+    def initialize(iid)
       $opt||=Msg::GetOpts.new
       super(){|h,id|
         h[id]=newsh(id)
       }
-      @crnt=self[id]
+      @id=iid
     rescue UserError
       $opt.usage('(opt) [id] (layer)')
     end
@@ -211,13 +212,9 @@ module Sh
     end
 
     def shell
-      while id=@crnt.shell
-        begin
-          @crnt=self[id]
-        rescue InvalidID
-          Msg.alert($!.to_s,1)
-        end
-      end
+      true while @id=self[@id].shell
+    rescue InvalidID
+      Msg.alert($!.to_s,1)
     end
 
     def server(ary)

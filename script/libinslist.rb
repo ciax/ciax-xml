@@ -14,7 +14,7 @@ module Ins
   class List < Hash
     def initialize(id)
       fl=self['frm']=Frm::List.new(id).extend(Layer)
-      al=self['app']=App::List.new(id).extend(Layer)
+      al=self['app']=App::List.new(fl).extend(Layer)
     end
 
     def shell

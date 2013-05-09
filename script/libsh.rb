@@ -201,10 +201,6 @@ module Sh
       }
     end
 
-    def getsh(id)
-      self[id]
-    end
-
     def exe(stm)
       self[stm.shift].exe(stm)
     rescue UserError
@@ -240,20 +236,20 @@ module Sh
       grp.update_items(list).reset_proc{|item|
         raise(SelectID,item.id)
       }
-      self
+      sh
+    end
+
+    def switch_layer(sh,gid,title,list)
+      Msg.type?(sh,Sh::Exe)
+      grp=sh.shdom.add_group(gid,title)
+      grp.update_items(list).reset_proc{|item|
+        raise(TransLayer,item.id)
+      }
+      sh
     end
 
     private
     def newsh(id)
-    end
-  end
-
-  class Layers < Hash
-    def switch_layer(sh,gid,title,list)
-      switch_menu(sh,gid,title,list){|lyr|
-        @sid.layer=lyr
-        @sid
-      }
     end
   end
 end

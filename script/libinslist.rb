@@ -13,16 +13,20 @@ module Ins
 
   class List < Hash
     def initialize(id)
+      @id=id
       fl=self['frm']=Frm::List.new(id).extend(Layer)
-      al=self['app']=App::List.new(fl).extend(Layer)
+      self['app']=App::List.new(fl).extend(Layer)
     end
 
     def shell
       lyr='app'
       begin
-        true while self[lyr].shell
+        li=self[lyr]
+        li.id=@id
+        li.shell
       rescue TransLayer
         lyr=$!.to_s
+        @id=li.id
         retry
       end
     end

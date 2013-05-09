@@ -194,7 +194,7 @@ module Sh
   end
 
   class List < Hash
-    attr_reader :id
+    attr_accessor :id
     def initialize(iid)
       $opt||=Msg::GetOpts.new
       super(){|h,id|

@@ -100,7 +100,6 @@ module Frm
       ldb=Loc::Db.new(id)
       sh=Frm.new(ldb[:frm])
       switch_id(sh,'dev',"Change Device",ldb.list)
-      sh
     end
   end
 end

@@ -14,7 +14,8 @@ class InvalidPAR < InvalidCMD; end
 
 # Mangaged Exception(Long Jump)
 class LongJump < RuntimeError; end
-class SelectID < LongJump; end
+class TransLayer < LongJump; end
+class SelectID < TransLayer; end
 # Macro
 class Interlock < LongJump; end
 class Retry < LongJump; end

@@ -194,11 +194,14 @@ module Sh
   end
 
   class List < Hash
-    def initialize
+    def initialize(id)
       $opt||=Msg::GetOpts.new
       super(){|h,id|
         h[id]=newsh(id)
       }
+      @crnt=self[id]
+    rescue UserError
+      $opt.usage('(opt) [id] (layer)')
     end
 
     def exe(stm)
@@ -207,17 +210,14 @@ module Sh
       $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
-    def shell(id)
-      sh=self[id]
-      while id=sh.shell
+    def shell
+      while id=@crnt.shell
         begin
-          sh=self[id]
+          @crnt=self[id]
         rescue InvalidID
           Msg.alert($!.to_s,1)
         end
       end
-    rescue UserError
-      $opt.usage('(opt) [id] (layer)')
     end
 
     def server(ary)

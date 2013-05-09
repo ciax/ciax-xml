@@ -63,9 +63,9 @@ module Hex
 
   class List < Sh::List
     attr_reader :al
-    def initialize
-      @al=App::List.new
-      super()
+    def initialize(id)
+      @al=App::List.new(id)
+      super
     end
 
     def newsh(id)
@@ -78,5 +78,5 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  puts Hex::List.new.shell(ARGV.shift)
+  puts Hex::List.new(ARGV.shift).shell
 end

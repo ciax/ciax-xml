@@ -209,9 +209,9 @@ module App
 
   class List < Sh::List
     attr_reader :fl
-    def initialize
-      @fl=($opt['e'] or $opt['s'] or $opt['f']) ? Frm::List.new : {}
-      super()
+    def initialize(id)
+      @fl=($opt['e'] or $opt['s'] or $opt['f']) ? Frm::List.new(id) : {}
+      super
     end
 
     def newsh(id)
@@ -224,5 +224,5 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  puts App::List.new.shell(ARGV.shift)
+  puts App::List.new(ARGV.shift).shell
 end

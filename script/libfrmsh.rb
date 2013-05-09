@@ -106,5 +106,5 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  puts Frm::List.new.shell(ARGV.shift)
+  puts Frm::List.new(ARGV.shift).shell
 end

@@ -65,7 +65,7 @@ module Hex
     attr_reader :al
     def initialize(id)
       @al=App::List.new(id)
-      super
+      super(id,Loc::Db.new(id).list)
     end
 
     def newsh(id)

@@ -95,6 +95,10 @@ module Frm
   end
 
   class List < Sh::List
+    def initialize(id)
+      super(id,Loc::Db.new(id).list)
+    end
+
     def newsh(id)
       Loc::Db.new unless id
       ldb=Loc::Db.new(id)

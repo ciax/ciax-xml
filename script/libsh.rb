@@ -192,13 +192,17 @@ module Sh
   end
 
   class List < Hash
-    attr_accessor :id
-    def initialize(iid)
+    attr_accessor :id,:shdom
+    def initialize(iid,list)
       $opt||=Msg::GetOpts.new
+      @shdom=Command::Domain.new(5)
+      @shdom.add_group('id','Switch ID').update_items(list).reset_proc{|item|
+        raise(SelectID,item.id)
+      }
+      @shdom.add_dummy('sh',"Shell Command").update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
       super(){|h,id|
         sh=h[id]=newsh(id)
-        grp=sh.shdom.add_dummy('sh',"Shell Command")
-        grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+        sh.shdom.update @shdom
         sh
       }
       @id=iid

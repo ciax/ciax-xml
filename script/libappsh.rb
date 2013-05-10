@@ -10,7 +10,6 @@ require "libbuffer"
 require "libsqlog"
 require "thread"
 
-
 module App
   def self.new(adb,fsh=nil)
     if fsh
@@ -216,13 +215,12 @@ module App
         @fl={}
         id=par
       end
-      super(id)
+      super(id,Loc::Db.new(id).list)
     end
 
     def newsh(id)
       ldb=Loc::Db.new(id)
       sh=App.new(ldb[:app],@fl[id])
-      switch_id(sh,'dev',"Change Device",ldb.list)
     end
   end
 end

@@ -153,14 +153,15 @@ class Command < ExHash
     def update_items(labels)
       (@attr[:members]||labels.keys).each{|id|
         @cmdlist[id]=labels[id]
-        self[id]=Item.new(id)
+        self[id]=Item.new(id,@def_proc)
       }
       self
     end
 
     def reset_proc(&p)
+      @def_proc=ExeProc.new.set &p
       values.each{|v|
-        v.def_proc.set &p
+        v.reset_proc &p
       }
       self
     end

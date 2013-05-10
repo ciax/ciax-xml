@@ -9,8 +9,8 @@ module App
       super('adb')
     end
 
-    def set(id=nil)
-      super{|doc|
+    private
+    def doc_to_db(doc)
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
@@ -23,10 +23,8 @@ module App
           hash[:watch]=init_watch(doc.domain('watch'),cdb)
         end
         hash
-      }
     end
 
-    private
     # Command Db
     def init_command(adbc)
       hash=adbc.to_h

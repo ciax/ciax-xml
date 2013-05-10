@@ -15,10 +15,14 @@ class Db < ExHash
 
   def set(id)
     @list.error unless id
-    update(cache(id,@group){|doc| yield doc.set(id) })
+    update(cache(id,@group){|doc| doc_to_db doc.set(id) })
   end
 
   private
+  def doc_to_db(doc)
+    {}
+  end
+
   def cache(id,group)
     @base="#{@type}-#{id}"
     if newest?

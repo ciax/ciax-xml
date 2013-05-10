@@ -10,7 +10,7 @@ module Loc
     end
 
     def set(id=nil)
-      super{|doc| rec_db(doc.top)}
+      super
       appid=delete('app_id')
       insid=delete('ins_id')||self['id']
       cover(App::Db.new.set(appid),:app).ext_ins(insid)
@@ -33,6 +33,10 @@ module Loc
     end
 
     private
+    def doc_to_db(doc)
+      rec_db(doc.top)
+    end
+
     def rec_db(e0,hash={})
       (hash||={}).update(e0.to_h)
       e0.each{|e|

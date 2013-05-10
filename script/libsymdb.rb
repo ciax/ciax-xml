@@ -10,18 +10,7 @@ module Sym
     end
 
     def set(id=nil)
-      super{|doc|
-        hash={}
-        doc.top.each{|e1|
-          id=e1['id'].to_sym
-          label=e1['label']
-          e1.each{|e2| # case
-            (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
-          }
-          verbose{"Symbol Table:#{id} : #{label}"}
-        }
-        hash
-      }
+      super
     rescue InvalidID
       # No error even if no sdb associated with ins/app id
       raise $! if __FILE__ == $0
@@ -31,6 +20,20 @@ module Sym
       sdb=Sym::Db.new
       ary.each{|k| sdb.set(k) }
       sdb
+    end
+
+    private
+    def doc_to_db(doc)
+      hash={}
+      doc.top.each{|e1|
+        id=e1['id'].to_sym
+        label=e1['label']
+        e1.each{|e2| # case
+          (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
+        }
+        verbose{"Symbol Table:#{id} : #{label}"}
+      }
+      hash
     end
   end
 end

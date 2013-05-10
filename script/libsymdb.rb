@@ -28,8 +28,8 @@ module Sym
     end
 
     def self.pack(ary=[])
-      sdb=Sym::Db.new.set(ary.shift).dup
-      ary.each{|k| sdb.update(Sym::Db.new.set(k)) }
+      sdb=Sym::Db.new
+      ary.each{|k| sdb.set(k) }
       sdb
     end
   end

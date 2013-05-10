@@ -30,8 +30,6 @@ module Sh
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
-      grp=@shdom.add_dummy('sh',"Shell Command")
-      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
     end
 
     # Sync only (Wait for other thread)
@@ -198,7 +196,10 @@ module Sh
     def initialize(iid)
       $opt||=Msg::GetOpts.new
       super(){|h,id|
-        h[id]=newsh(id)
+        sh=h[id]=newsh(id)
+        grp=sh.shdom.add_dummy('sh',"Shell Command")
+        grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+        sh
       }
       @id=iid
     rescue UserError

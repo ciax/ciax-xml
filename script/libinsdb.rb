@@ -3,10 +3,14 @@ require "libappdb"
 
 module Ins
   class Db < Db
-    def initialize(id=nil)
+    def initialize
+      super('idb',ENV['PROJ'])
+    end
+
+    def set(id=nil)
       self['id']=id
-      super('idb',id,ENV['PROJ']){|doc|
-        hash={}
+      super{|doc|
+          hash={}
         hash.update(doc)
         doc.domain('cmdlist').each{|e0|
           p=(hash[:command]||={})
@@ -32,14 +36,14 @@ module Ins
 
     # overwrite App::Db
     def cover_app
-      cover(App::Db.new(self['app_id']))
+      cover(App::Db.new.set(self['app_id']))
     end
   end
 end
 
 class App::Db
   def ext_ins(id)
-    ins=Ins::Db.new(id)
+    ins=Ins::Db.new.set(id)
     deep_update(ins)
   end
 end
@@ -48,7 +52,7 @@ if __FILE__ == $0
   begin
     Msg::GetOpts.new("",{"f"=>"frm mode"})
     id=ARGV.shift
-    db=Ins::Db.new(id)
+    db=Ins::Db.new.set(id)
   rescue InvalidID
     $opt.usage("(opt) [id] (key) ..")
     Msg.exit

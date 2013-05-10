@@ -5,9 +5,12 @@ require "libdb"
 
 module Mcr
   class Db < Db
-    def initialize(id=nil)
-      init_ver('mdb')
-      super('mdb',id){|doc|
+    def initialize
+      super('mdb')
+    end
+
+    def set(id=nil)
+      super{|doc|
         hash={}
         hash.update(doc)
         mdb=(hash[:command]||={})
@@ -64,7 +67,7 @@ end
 
 if __FILE__ == $0
   begin
-    mdb=Mcr::Db.new(ARGV.shift)
+    mdb=Mcr::Db.new.set(ARGV.shift)
   rescue InvalidID
     Msg.usage "[id] (key) .."
     Msg.exit

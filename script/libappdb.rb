@@ -5,8 +5,12 @@ require "libdb"
 
 module App
   class Db < Db
-    def initialize(id=nil)
-      super('adb',id){|doc|
+    def initialize
+      super('adb')
+    end
+
+    def set(id=nil)
+      super{|doc|
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
@@ -139,7 +143,7 @@ end
 
 if __FILE__ == $0
   begin
-    db=App::Db.new(ARGV.shift)
+    db=App::Db.new.set(ARGV.shift)
   rescue InvalidID
     Msg.usage("[id] (key) ..")
   end

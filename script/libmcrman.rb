@@ -50,7 +50,7 @@ end
 if __FILE__ == $0
   begin
     il=Ins::List.new('mcr')
-    mdb=Mcr::Db.new('ciax')
+    mdb=Mcr::Db.new.set('ciax')
     man=Mcr::Man.new(mdb,il)
     il.shell('0')
   rescue InvalidCMD

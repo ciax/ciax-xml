@@ -215,11 +215,11 @@ module App
         @fl={}
         id=par
       end
-      super(id,Loc::Db.new(id).list)
+      super(id,Loc::Db.new.set(id).list)
     end
 
     def newsh(id)
-      ldb=Loc::Db.new(id)
+      ldb=Loc::Db.new.set(id)
       sh=App.new(ldb[:app],@fl[id])
     end
   end

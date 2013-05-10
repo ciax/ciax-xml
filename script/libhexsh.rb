@@ -65,11 +65,11 @@ module Hex
     attr_reader :al
     def initialize(id)
       @al=App::List.new(id)
-      super(id,Loc::Db.new(id).list)
+      super(id,Loc::Db.new.set(id).list)
     end
 
     def newsh(id)
-      ldb=Loc::Db.new(id)
+      ldb=Loc::Db.new.set(id)
       sh=Hex.new(@al[id])
       switch_id(sh,'dev',"Change Device",ldb.list)
     end

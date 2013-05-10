@@ -4,9 +4,12 @@ require "libdb"
 
 module Frm
   class Db < Db
-    def initialize(id=nil)
-      init_ver('fdb')
-      super('fdb',id){|doc|
+    def initialize
+      super('fdb')
+    end
+
+    def set(id=nil)
+      super{|doc|
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
@@ -132,7 +135,7 @@ end
 
 if __FILE__ == $0
   begin
-    fdb=Frm::Db.new(ARGV.shift)
+    fdb=Frm::Db.new.set(ARGV.shift)
   rescue InvalidID
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit

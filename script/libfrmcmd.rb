@@ -84,7 +84,7 @@ if __FILE__ == $0
   dev,*cmd=ARGV
   ARGV.clear
   begin
-    fdb=Frm::Db.new(dev)
+    fdb=Frm::Db.new.set(dev)
     field=Field::Var.new
     cobj=Command.new
     cobj.add_extdom(fdb).ext_frmcmd(field)

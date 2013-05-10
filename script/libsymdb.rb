@@ -5,9 +5,12 @@ require "libdb"
 # id = Table Group ID
 module Sym
   class Db < Db
-    def initialize(id=nil)
-      init_ver('SymDb')
-      super("sdb",id){|doc|
+    def initialize
+      super('sdb')
+    end
+
+    def set(id=nil)
+      super{|doc|
         hash={}
         doc.top.each{|e1|
           id=e1['id'].to_sym
@@ -25,8 +28,8 @@ module Sym
     end
 
     def self.pack(ary=[])
-      sdb=Sym::Db.new(ary.shift).dup
-      ary.each{|k| sdb.update(Sym::Db.new(k)) }
+      sdb=Sym::Db.new.set(ary.shift).dup
+      ary.each{|k| sdb.update(Sym::Db.new.set(k)) }
       sdb
     end
   end
@@ -34,7 +37,7 @@ end
 
 if __FILE__ == $0
   begin
-    sdb=Sym::Db.new(ARGV.shift)
+    sdb=Sym::Db.new.set(ARGV.shift)
   rescue InvalidID
     Msg.usage "[id] ..."
     Msg.exit

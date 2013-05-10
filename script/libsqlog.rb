@@ -134,7 +134,7 @@ if __FILE__ == $0
   id=ARGV.shift
   ARGV.clear
   begin
-    adb=Loc::Db.new(id)[:app]
+    adb=Loc::Db.new.set(id)[:app]
     stat=Status::Var.new.ext_file(adb['site_id']).load
     stat.ext_sqlog.upd
     puts stat.sql

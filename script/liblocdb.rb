@@ -5,17 +5,21 @@ require "libinsdb"
 
 module Loc
   class Db < Db
-    def initialize(id=nil)
-      super('ldb',id){|doc| rec_db(doc.top)}
+    def initialize
+      super('ldb')
+    end
+
+    def set(id=nil)
+      super{|doc| rec_db(doc.top)}
       appid=delete('app_id')
       insid=delete('ins_id')||self['id']
-      cover(App::Db.new(appid),:app).ext_ins(insid)
+      cover(App::Db.new.set(appid),:app).ext_ins(insid)
       app=self[:app].update({'id'=>appid,'ins_id'=>insid,'site_id'=>id})
       frm=self[:frm]||{}
       if ref=frm.delete('ref')
-        frm=cover(Db.new(ref)[:frm],:frm)
+        frm=cover(Db.new.set(ref)[:frm],:frm)
       else
-        frm=cover(Frm::Db.new(app.delete('frm_id')),:frm)
+        frm=cover(Frm::Db.new.set(app.delete('frm_id')),:frm)
         frm['site_id']||=id
       end
       frm['host']||=(app['host']||='localhost')
@@ -48,7 +52,7 @@ end
 if __FILE__ == $0
   begin
     id=ARGV.shift
-    db=Loc::Db.new(id)
+    db=Loc::Db.new.set(id)
   rescue
     Msg.usage("(opt) [id] (key) ..")
     Msg.exit

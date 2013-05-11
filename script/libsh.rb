@@ -217,10 +217,9 @@ module Sh
     end
 
     def shell(id)
-      while tmp=self[id].shell
-        id=tmp
-      end
-      id
+      true while id=self[id].shell
+    rescue TransLayer
+      raise(TransLayer,[$!.to_s,id])
     rescue InvalidID
       Msg.alert($!.to_s,1)
     end
@@ -245,9 +244,10 @@ module Sh
       switch_layer
       li=values.last
       begin
-        id=li.shell(id)
+        li.shell(id)
       rescue TransLayer
-        li=self[$!.to_s]
+        lyr,id=$!.to_s
+        li=self[lyr]
         retry
       end
     end

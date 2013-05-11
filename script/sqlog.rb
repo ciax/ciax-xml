@@ -10,7 +10,7 @@ require 'json'
 Msg::GetOpts.new("t",{"i"=>"init table","v"=>"verbose","a"=>"app output"})
 id = ARGV.shift
 begin
-  ldb=Loc::Db.new(id)
+  ldb=Loc::Db.new.set(id)
   field=Field::Var.new
 rescue UserError
   $opt.usage("(opt) [id] (frmlog|fldlog)")

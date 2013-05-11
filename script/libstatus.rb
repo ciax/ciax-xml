@@ -148,9 +148,9 @@ if __FILE__ == $0
     if ! STDIN.tty?
       stat.load
       id=stat['id']
-      adb=Loc::Db.new(id)[:app]
+      adb=Loc::Db.new.set(id)[:app]
     else
-      adb=Loc::Db.new(id)[:app]
+      adb=Loc::Db.new.set(id)[:app]
       stat.ext_file(adb['site_id'])
       if host=$opt['h']
         stat.ext_url(host).load

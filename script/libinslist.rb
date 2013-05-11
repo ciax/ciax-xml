@@ -1,33 +1,40 @@
 #!/usr/bin/ruby
 require "liblocdb"
-require "libfrmsv"
-require "libappsv"
+require "libfrmsh"
+require "libappsh"
 require "libhexsh"
 
 module Ins
-  class List < Sh::List
-    def newsh(skey)
-      Loc::Db.new unless skey
-      sid=ServerID.new.upd(skey)
-      ldb=Loc::Db.new(sid.id)
-      case sid.layer
-      when 'hex'
-        ash=self[ldb.sid('app').to_s]
-        sh=Hex.new(ldb[:app],ash)
-      when 'app'
-        fsh=self[ldb.sid('frm').to_s]
-        sh=App.new(ldb[:app],fsh)
-      when 'frm'
-        sh=Frm.new(ldb[:frm])
+  class List < Hash
+    def initialize(id)
+      @id=id
+      fl=self['frm']=Frm::List.new(id)
+      al=self['app']=App::List.new(fl)
+      shdom=fl.shdom=al.shdom
+      grp=shdom.add_group('lay',"Change Layer")
+      grp.update_items({'frm'=>"Frm mode",'app'=>"App mode"})
+      grp.reset_proc{|item|
+        raise(TransLayer,item.id)
+      }
+
+    end
+
+    def shell
+      lyr='app'
+      begin
+        li=self[lyr]
+        li.id=@id
+        li.shell
+      rescue TransLayer
+        lyr=$!.to_s
+        @id=li.id
+        retry
       end
-      switch_layer(sh,'lay',"Change Layer",{'frm'=>"Frm mode",'app'=>"App mode",'hex'=>"Hex mode"})
-      switch_id(sh,'dev',"Change Device",ldb.list)
-      sh
     end
   end
 end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  puts Ins::List.new('app').shell(ARGV.shift)
+  puts Ins::List.new(ARGV.shift).shell
 end

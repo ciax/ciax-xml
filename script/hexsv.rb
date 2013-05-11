@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libinslist"
+require "libhexsh"
 
 ENV['VER']||='init/'
 Msg::GetOpts.new('e')
-Ins::List.new('hex').server(ARGV)
+Hex::List.new.server(ARGV)

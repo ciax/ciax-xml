@@ -4,24 +4,25 @@ require "libdb"
 
 module Frm
   class Db < Db
-    def initialize(id=nil)
-      init_ver('fdb')
-      super('fdb',id){|doc|
-        hash={}
-        hash.update(doc)
-        hash['id']=hash.delete('id')
-        rfm=hash[:field]={}
-        dc=doc.domain('cmdframe')
-        dr=doc.domain('rspframe')
-        hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
-        hash[:rspframe]=init_main(dr){|e| init_rsp(e,rfm)}
-        hash[:command]=init_sel(dc,'command'){|e,r| init_cmd(e,r)}
-        hash[:response]=init_sel(dr,'response'){|e| init_rsp(e,rfm)}
-        hash
-      }
+    def initialize
+      super('fdb')
     end
 
     private
+    def doc_to_db(doc)
+      hash={}
+      hash.update(doc)
+      hash['id']=hash.delete('id')
+      rfm=hash[:field]={}
+      dc=doc.domain('cmdframe')
+      dr=doc.domain('rspframe')
+      hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
+      hash[:rspframe]=init_main(dr){|e| init_rsp(e,rfm)}
+      hash[:command]=init_sel(dc,'command'){|e,r| init_cmd(e,r)}
+      hash[:response]=init_sel(dr,'response'){|e| init_rsp(e,rfm)}
+      hash
+    end
+
     def init_main(domain)
       hash=domain.to_h
       begin
@@ -132,7 +133,7 @@ end
 
 if __FILE__ == $0
   begin
-    fdb=Frm::Db.new(ARGV.shift)
+    fdb=Frm::Db.new.set(ARGV.shift)
   rescue InvalidID
     warn "USAGE: #{$0} [id] (key) .."
     Msg.exit

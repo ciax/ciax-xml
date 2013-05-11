@@ -6,30 +6,38 @@ require "libxmldoc"
 class Db < ExHash
   XmlDir="#{ENV['HOME']}/ciax-xml"
   attr_reader :list
-  def initialize(type,id=nil,group=nil)
-    init_ver("Cache/%s",5,self)
+  def initialize(type,group=nil)
+    init_ver(type,5)
     @type=type
+    @group=group
     @list=cache(group||'list',group){|doc| doc.list }
+  end
+
+  def set(id)
     @list.error unless id
-    update(cache(id,group){|doc| yield doc.set(id) })
+    update(cache(id,@group){|doc| doc_to_db doc.set(id) }).deep_copy
   end
 
   private
+  def doc_to_db(doc)
+    {}
+  end
+
   def cache(id,group)
     @base="#{@type}-#{id}"
     if newest?
-      verbose{"Loading(#{@base})"}
+      verbose{"Cache:Loading(#{@base})"}
       begin
         res=Marshal.load(IO.read(fmar))
       rescue ArgumentError #if empty
         res={}
       end
     else
-      verbose{"Refresh Db"}
+      verbose{"Cache:Refresh Db"}
       res=Msg.type?(yield(Xml::Doc.new(@type,group)),Hash)
       open(fmar,'w') {|f|
         f << Marshal.dump(res)
-        verbose{"Saved(#{@base})"}
+        verbose{"Cache:Saved(#{@base})"}
       }
     end
     res

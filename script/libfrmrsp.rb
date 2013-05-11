@@ -169,7 +169,7 @@ if __FILE__ == $0
     res={'time'=>UnixTime.now}
     res['data']=gets(nil) || exit
   end
-  fdb=Loc::Db.new(id)[:frm]
+  fdb=Loc::Db.new.set(id)[:frm]
   cobj=Command.new
   cobj.add_extdom(fdb)
   cobj.setcmd(cmd.split(':'))

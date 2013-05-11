@@ -107,7 +107,7 @@ if __FILE__ == $0
   Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
     il=Ins::List.new('app')
-    mdb=Mcr::Db.new('ciax')
+    mdb=Mcr::Db.new.set('ciax')
     mobj=Command.new
     mobj.add_extdom(mdb)
     mobj.setcmd(ARGV)

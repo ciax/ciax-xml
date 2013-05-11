@@ -5,7 +5,11 @@ require 'librerange'
 # For External Command Domain
 class Command
   def add_extdom(db)
-    self['ext']=ExtDom.new(db,@def_proc)
+    ext=ExtDom.new(db,@def_proc)
+    me=Hash[self]
+    clear['ext']=ext
+    update(me)
+    ext
   end
 
   class ExtDom < Domain
@@ -117,7 +121,7 @@ if __FILE__ == $0
 
   begin
     Msg::GetOpts.new("af")
-    ldb=Loc::Db.new(ARGV.shift)
+    ldb=Loc::Db.new.set(ARGV.shift)
     cobj=Command.new
     if $opt["f"]
       cobj.add_extdom(ldb[:frm])

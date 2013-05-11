@@ -1,6 +1,9 @@
 #!/usr/bin/ruby
 require 'libsh'
 require 'libfield'
+require "libfrmrsp"
+require "libfrmcmd"
+require 'liblocdb'
 
 module Frm
   def self.new(fdb)
@@ -56,4 +59,54 @@ module Frm
       @upd_proc.add{@field.load}
     end
   end
+
+  class Sv < Exe
+    # @<< cobj,(output),(intgrp),(interrupt),(upd_proc*)
+    # @< extdom,field*
+    # @ io
+    def initialize(fdb,iocmd=[])
+      super(fdb)
+      @field.ext_save.load
+      @field.ext_rsp(@cobj,fdb)
+      if Msg.type?(iocmd,Array).empty?
+        @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
+        @io.ext_logging(fdb['site_id'],fdb['version'])
+        # @field.ext_sqlog
+      else
+        @io=Stream.new(iocmd,fdb['wait'],1)
+      end
+      @extdom.ext_frmcmd(@field).reset_proc{|item|
+        @io.snd(item.getframe,item[:cmd])
+        @field.upd{@io.rcv} && @field.save
+      }
+      @intgrp['set'].reset_proc{|item|
+        @field.set(item.par[0],item.par[1]).save
+      }
+      @intgrp['save'].reset_proc{|item|
+        @field.savekey(item.par[0].split(','),item.par[1])
+      }
+      @intgrp['load'].reset_proc{|item|
+        @field.load(item.par[0]||'').save
+      }
+      ext_server(fdb['port'].to_i)
+    rescue Errno::ENOENT
+      Msg.warn(" --- no json file")
+    end
+  end
+
+  class List < Sh::List
+    def initialize(id)
+      @ldb=Loc::Db.new
+      super(id,@ldb.list)
+    end
+
+    def newsh(id)
+      sh=Frm.new(@ldb.set(id)[:frm])
+    end
+  end
+end
+
+if __FILE__ == $0
+  Msg::GetOpts.new('et')
+  puts Frm::List.new(ARGV.shift).shell
 end

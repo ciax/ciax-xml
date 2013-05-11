@@ -21,17 +21,16 @@ module Sh
       init_ver(self,2)
       @cobj=Command.new
       @output=output
-      @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
+      @intdom=@cobj.add_domain('int',10)
+      @intgrp=@intdom.add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
       # For Shell
       @prompt=prompt
-      @shdom=@cobj.add_domain('sh',5)
+      @shdom=@cobj.add_domain('sh',9) # Shared Command
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
-      grp=@shdom.add_dummy('sh',"Shell Command")
-      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
     end
 
     # Sync only (Wait for other thread)
@@ -194,77 +193,48 @@ module Sh
   end
 
   class List < Hash
-    def initialize(layer=nil)
-      @sid=ServerID.new(layer)
+    attr_accessor :id,:shdom
+    def initialize(iid,list)
       $opt||=Msg::GetOpts.new
-      super(){|h,skey|
-        h[skey]=newsh(skey)
+      @shdom=Command::Domain.new(9)
+      @shdom.add_group('id','Switch ID').update_items(list).reset_proc{|item|
+        raise(SelectID,item.id)
       }
-    end
-
-    # @sid is rewrite when self[] succeeded
-    def getsh(id,lyr=nil)
-      @sid.id=id
-      @sid.layer=lyr if lyr
-      self[@sid.to_s]
+      @shdom.add_dummy('sh',"Shell Command").update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+      super(){|h,id|
+        sh=h[id]=newsh(id)
+        sh.shdom.replace @shdom
+        sh
+      }
+      @id=iid
+    rescue UserError
+      $opt.usage('(opt) [id] (layer)')
     end
 
     def exe(stm)
-      getsh(stm.shift).exe(stm)
+      self[stm.shift].exe(stm)
     rescue UserError
       $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
-    def shell(id)
-      sh=getsh(id)
-      while skey=sh.shell
-        begin
-          sh=self[skey]
-          @sid.upd(skey)
-        rescue InvalidID
-          Msg.alert($!.to_s,1)
-        end
-      end
-    rescue UserError
-      $opt.usage('(opt) [id] (layer)')
+    def shell
+      true while @id=self[@id].shell
+    rescue InvalidID
+      Msg.alert($!.to_s,1)
     end
 
     def server(ary)
       ary.each{|i|
         sleep 0.3
-        getsh(i)
+        self[i]
       }.empty? && self[nil]
       sleep
     rescue UserError
       $opt.usage('(opt) [id] ....')
     end
 
-    def switch_layer(sh,gid,title,list)
-      switch_menu(sh,gid,title,list){|lyr|
-        @sid.layer=lyr
-        @sid
-      }
-    end
-
-    def switch_id(sh,gid,title,list,lyr=nil)
-      switch_menu(sh,gid,title,list){|id|
-        @sid.id=id
-        @sid.layer=lyr if lyr
-        @sid
-      }
-    end
-
     private
-    def newsh(skey)
-    end
-
-    def switch_menu(sh,gid,title,list)
-      Msg.type?(sh,Sh::Exe)
-      grp=sh.shdom.add_group(gid,title)
-      grp.update_items(list).reset_proc{|item|
-        raise(SelectID,yield(item.id).to_s)
-      }
-      self
+    def newsh(id)
     end
   end
 end

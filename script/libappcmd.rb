@@ -52,9 +52,9 @@ if __FILE__ == $0
   require "libfrmdb"
   app,*cmd=ARGV
   begin
-    adb=App::Db.new(app)
+    adb=App::Db.new.set(app)
     fcobj=Command.new
-    fcobj.add_extdom(Frm::Db.new(adb['frm_id']))
+    fcobj.add_extdom(Frm::Db.new.set(adb['frm_id']))
     acobj=Command.new
     acobj.add_extdom(adb).ext_appcmd
     acobj.setcmd(cmd).getcmd.each{|fcmd|

@@ -2,17 +2,23 @@
 require "libsh"
 require "libstatus"
 require "libwatch"
+require 'libfrmsh'
+require "libappcmd"
+require "libapprsp"
+require "libsymupd"
+require "libbuffer"
+require "libsqlog"
+require "thread"
 
 module App
-  def self.new(adb,fsh)
-    Msg.type?(fsh,Frm::Exe)
-    if $opt['e'] or $opt['s'] or $opt['f']
+  def self.new(adb,fsh=nil)
+    if fsh
       ash=App::Sv.new(adb,fsh,$opt['e'])
-      ash=App::Cl.new(adb,fsh,'localhost') if $opt['c']
+      ash=App::Cl.new(adb,'localhost') if $opt['c']
     elsif host=$opt['h'] or $opt['c']
-      ash=App::Cl.new(adb,fsh,host)
+      ash=App::Cl.new(adb,host)
     else
-      ash=App::Test.new(adb,fsh)
+      ash=App::Test.new(adb)
     end
     ash
   end
@@ -20,20 +26,23 @@ module App
   class Exe < Sh::Exe
     # @< cobj,output,intgrp,interrupt,upd_proc*
     # @ adb,fsh,extdom,watch,stat*
-    attr_reader :stat
-    def initialize(adb,fsh)
+    attr_reader :adb,:stat
+    def initialize(adb)
       @adb=Msg.type?(adb,Db)
       self['layer']='app'
       self['id']=@adb['site_id']
-      @fsh=Msg.type?(fsh,Frm::Exe)
       @stat=Status::Var.new.ext_file(@adb['site_id'])
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
       super(@stat,prom)
       @extdom=@cobj.add_extdom(@adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
-      init_view
       self
+    end
+
+    def shell
+      init_view
+      super
     end
 
     private
@@ -45,7 +54,7 @@ module App
     def init_view
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@watch).ext_prt
-      grp=@shdom.add_group('view',"Change View Mode")
+      grp=@intdom.add_group('view',"Change View Mode")
       grp.add_item('pri',"Print mode").reset_proc{@output=@print}
       grp.add_item('wat',"Watch mode").reset_proc{@output=@wview} if @wview
       grp.add_item('raw',"Raw mode").reset_proc{@output=@stat}
@@ -55,7 +64,7 @@ module App
 
   class Test < Exe
     require "libsymupd"
-    def initialize(adb,fsh)
+    def initialize(adb)
       super
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
@@ -92,8 +101,8 @@ module App
   end
 
   class Cl < Exe
-    def initialize(adb,fsh,host=nil)
-      super(adb,fsh)
+    def initialize(adb,host=nil)
+      super(adb)
       host=Msg.type?(host||adb['host']||'localhost',String)
       @stat.ext_url(host).load
       @watch.ext_url(host).load
@@ -104,4 +113,123 @@ module App
       }
     end
   end
+
+  # @<< cobj,output,intgrp,interrupt,upd_proc*
+  # @< adb,extdom,watch,stat*
+  # @ fsh,buf,log_proc
+  class Sv < Exe
+    def initialize(adb,fsh,logging=nil)
+      super(adb)
+      init_ver("AppSv",9)
+      @fsh=Msg.type?(fsh,Frm::Exe)
+      update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
+      @stat.ext_save.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).upd
+      @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
+      @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
+        verbose{"#{self['id']}/Auto(#{p}):#{cmd}"}
+        @cobj.setcmd(cmd)
+        sendcmd(p)
+      }
+      Thread.abort_on_exception=true
+      @buf=init_buf
+      @extdom.ext_appcmd.reset_proc{|item|
+        @watch.block?(item.cmd)
+        sendcmd(1)
+        verbose{"#{self['id']}/Issued:#{item.cmd},"}
+        self['msg']="Issued"
+      }
+
+      @interrupt.reset_proc{
+        int=@watch.interrupt
+        verbose{"#{self['id']}/Interrupt:#{int}"}
+        self['msg']="Interrupt #{int}"
+      }
+      # Update for Frm level manipulation
+      @fsh.upd_proc.add{@stat.upd.save}
+      # Logging if version number exists
+      @log_proc=UpdProc.new
+      if logging and @adb['version']
+        ext_logging(@adb['site_id'],@adb['version'])
+      end
+      tid_auto=auto_update
+      @upd_proc.add{
+        self['auto'] = tid_auto && tid_auto.alive?
+        self['watch'] = @watch.active?
+        self['na'] = !@buf.alive?
+      }
+      ext_server(@adb['port'])
+    end
+
+    def ext_logging(id,ver=0)
+      logging=Logging.new('issue',id,ver){
+        {'cmd'=>@cobj.current[:cmd],'active'=>@watch['active']}
+      }
+      @log_proc.add{logging.append}
+      self
+    end
+
+    private
+    def sendcmd(p)
+      @buf.send(p)
+      @log_proc.upd
+      self
+    end
+
+    def init_buf
+      buf=Buffer.new(self)
+      buf.send_proc{@cobj.current.getcmd}
+      buf.recv_proc{|fcmd|@fsh.exe(fcmd)}
+      buf.flush_proc.add{
+        @stat.upd.save
+        @watch.upd.save
+        sleep(@watch['interval']||0.1)
+        # Auto issue by watch
+        @watch.issue
+      }
+      buf
+    end
+
+    def auto_update
+      Thread.new{
+        tc=Thread.current
+        tc[:name]="Auto"
+        tc[:color]=4
+        Thread.pass
+        int=(@watch['period']||300).to_i
+        loop{
+          begin
+            @cobj.setcmd(['upd'])
+            sendcmd(2)
+          rescue InvalidID
+            Msg.warn($!)
+          end
+          verbose{"Auto Update(#{@stat['time']})"}
+          sleep int
+        }
+      }
+    end
+  end
+
+  class List < Sh::List
+    def initialize(par)
+      if Frm::List === par
+        @fl=par
+        id=par.id
+      else
+        @fl={}
+        id=par
+      end
+      @ldb=Loc::Db.new
+      super(id,@ldb.list)
+    end
+
+    def newsh(id)
+      App.new(@ldb.set(id)[:app],@fl[id])
+    end
+  end
+end
+
+if __FILE__ == $0
+  Msg::GetOpts.new('ct')
+  puts App::List.new(ARGV.shift).shell
 end

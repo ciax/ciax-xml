@@ -244,7 +244,7 @@ if __FILE__ == $0
   Msg::GetOpts.new('rt:',list)
   id=ARGV.shift
   begin
-    adb=Loc::Db.new(id)[:app]
+    adb=Loc::Db.new.set(id)[:app]
   rescue InvalidID
     $opt.usage("(opt) [id]")
   end

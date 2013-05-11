@@ -197,10 +197,8 @@ module Sh
     def initialize(list)
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
-      @shdom.add_group('id','Switch ID').update_items(list).reset_proc{|item|
-        raise(SelectID,item.id)
-      }
-      @shdom.add_dummy('sh',"Shell Command").update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+      id_menu(list)
+      quit_menu
       super(){|h,id|
         sh=h[id]=newsh(id)
         sh.shdom.replace @shdom
@@ -237,11 +235,23 @@ module Sh
     private
     def newsh(id)
     end
+
+    def quit_menu
+      grp=@shdom.add_dummy('sh',"Shell Command")
+      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+    end
+
+    def id_menu(list)
+      grp=@shdom.add_group('id','Switch ID')
+      grp.update_items(list).reset_proc{|item|
+        raise(SelectID,item.id)
+      }
+    end
   end
 
   class Layer < Hash
     def shell(id)
-      switch_layer
+      layer_menu
       li=values.last
       begin
         li.shell(id)
@@ -253,7 +263,7 @@ module Sh
     end
 
     private
-    def switch_layer
+    def layer_menu
       list={}
       keys.each{|k|
         list[k]=k.capitalize+" mode"

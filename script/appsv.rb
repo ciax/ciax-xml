@@ -3,4 +3,4 @@ require "libinslayer"
 
 ENV['VER']||='init/'
 Msg::GetOpts.new("estcfh:")
-Ins::List.new('app').server(ARGV)
+Ins::Layer.new('app').server(ARGV)

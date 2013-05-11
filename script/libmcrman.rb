@@ -51,7 +51,7 @@ end
 
 if __FILE__ == $0
   begin
-    il=Ins::List.new('mcr')
+    il=Ins::Layer.new('mcr')
     mdb=Mcr::Db.new.set('ciax')
     man=Mcr::Man.new(mdb,il)
     il.shell('0')

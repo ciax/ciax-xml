@@ -237,4 +237,37 @@ module Sh
     def newsh(id)
     end
   end
+
+  class Layer < Hash
+    def initialize(id)
+      @id=id
+    end
+
+    def shell
+      switch_layer
+      li=values.last
+      begin
+        li.id=@id
+        li.shell
+      rescue TransLayer
+        lyr=$!.to_s
+        @id=li.id
+        li=self[lyr]
+        retry
+      end
+    end
+
+    private
+    def switch_layer
+      list={}
+      keys.each{|k|
+        list[k]=k.capitalize+" mode"
+      }
+      values.each{|v|
+        grp=v.shdom.add_group('lay',"Change Layer")
+        grp.update_items(list)
+        grp.reset_proc{|item| raise(TransLayer,item.id)}
+      }
+    end
+  end
 end

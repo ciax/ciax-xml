@@ -5,9 +5,8 @@ require "libappsh"
 require "libhexsh"
 
 module Ins
-  class List < Sh::Layer
+  class Layer < Sh::Layer
     def initialize(id)
-      super
       fl=self['frm']=Frm::List.new(id)
       self['app']=App::List.new(fl)
     end
@@ -16,5 +15,5 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  puts Ins::List.new(ARGV.shift).shell
+  puts Ins::Layer.new(ARGV.shift).shell
 end

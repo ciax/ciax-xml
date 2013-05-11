@@ -239,20 +239,17 @@ module Sh
   end
 
   class Layer < Hash
-    def initialize(id)
-      @id=id
-    end
-
     def shell
       switch_layer
       li=values.last
+      id=li.id
       begin
-        li.id=@id
         li.shell
       rescue TransLayer
         lyr=$!.to_s
-        @id=li.id
+        id=li.id
         li=self[lyr]
+        li.id=id
         retry
       end
     end

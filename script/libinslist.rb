@@ -5,17 +5,18 @@ require "libappsh"
 require "libhexsh"
 
 module Ins
-  module Layer
-    def newsh(id)
-      switch_layer(super,'lay',"Change Layer",{'frm'=>"Frm mode",'app'=>"App mode"})
-    end
-  end
-
   class List < Hash
     def initialize(id)
       @id=id
-      fl=self['frm']=Frm::List.new(id).extend(Layer)
-      self['app']=App::List.new(fl).extend(Layer)
+      fl=self['frm']=Frm::List.new(id)
+      al=self['app']=App::List.new(fl)
+      shdom=fl.shdom=al.shdom
+      grp=shdom.add_group('lay',"Change Layer")
+      grp.update_items({'frm'=>"Frm mode",'app'=>"App mode"})
+      grp.reset_proc{|item|
+        raise(TransLayer,item.id)
+      }
+
     end
 
     def shell

@@ -21,12 +21,13 @@ module Sh
       init_ver(self,2)
       @cobj=Command.new
       @output=output
-      @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
+      @intgrp=@cobj.add_domain('int',5).add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
       # For Shell
       @prompt=prompt
-      @shdom=@cobj.add_domain('sh',5)
+      @moddom=@cobj.add_domain('mod',2) # Mode Switch Command
+      @shdom=@cobj.add_domain('sh',9) # Shared Command
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
@@ -195,14 +196,14 @@ module Sh
     attr_accessor :id,:shdom
     def initialize(iid,list)
       $opt||=Msg::GetOpts.new
-      @shdom=Command::Domain.new(5)
+      @shdom=Command::Domain.new(9)
       @shdom.add_group('id','Switch ID').update_items(list).reset_proc{|item|
         raise(SelectID,item.id)
       }
       @shdom.add_dummy('sh',"Shell Command").update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
       super(){|h,id|
         sh=h[id]=newsh(id)
-        sh.shdom.update @shdom
+        sh.shdom.replace @shdom
         sh
       }
       @id=iid
@@ -230,24 +231,6 @@ module Sh
       sleep
     rescue UserError
       $opt.usage('(opt) [id] ....')
-    end
-
-    def switch_id(sh,gid,title,list)
-      Msg.type?(sh,Sh::Exe)
-      grp=sh.shdom.add_group(gid,title)
-      grp.update_items(list).reset_proc{|item|
-        raise(SelectID,item.id)
-      }
-      sh
-    end
-
-    def switch_layer(sh,gid,title,list)
-      Msg.type?(sh,Sh::Exe)
-      grp=sh.shdom.add_group(gid,title)
-      grp.update_items(list).reset_proc{|item|
-        raise(TransLayer,item.id)
-      }
-      sh
     end
 
     private

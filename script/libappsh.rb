@@ -50,7 +50,7 @@ module App
     def init_view
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@watch).ext_prt
-      grp=@shdom.add_group('view',"Change View Mode")
+      grp=@moddom.add_group('view',"Change View Mode")
       grp.add_item('pri',"Print mode").reset_proc{@output=@print}
       grp.add_item('wat',"Watch mode").reset_proc{@output=@wview} if @wview
       grp.add_item('raw',"Raw mode").reset_proc{@output=@stat}

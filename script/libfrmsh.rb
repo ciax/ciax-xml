@@ -96,13 +96,12 @@ module Frm
 
   class List < Sh::List
     def initialize(id)
-      super(id,Loc::Db.new.list)
+      @ldb=Loc::Db.new
+      super(id,@ldb.list)
     end
 
     def newsh(id)
-      Loc::Db.new unless id
-      ldb=Loc::Db.new.set(id)
-      sh=Frm.new(ldb[:frm])
+      sh=Frm.new(@ldb.set(id)[:frm])
     end
   end
 end

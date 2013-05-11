@@ -15,7 +15,7 @@ class Db < ExHash
 
   def set(id)
     @list.error unless id
-    update(cache(id,@group){|doc| doc_to_db doc.set(id) })
+    update(cache(id,@group){|doc| doc_to_db doc.set(id) }).deep_copy
   end
 
   private

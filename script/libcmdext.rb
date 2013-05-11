@@ -5,7 +5,7 @@ require 'librerange'
 # For External Command Domain
 class Command
   def add_extdom(db)
-    ext=ExtDom.new(db,@def_proc)
+    ext=ExtDom.new(db)
     me=Hash[self]
     clear['ext']=ext
     update(me)
@@ -13,8 +13,8 @@ class Command
   end
 
   class ExtDom < Domain
-    def initialize(db,def_proc=ExeProc.new)
-      super(6,def_proc)
+    def initialize(db)
+      super(6)
       @db=Msg.type?(db,Db)
       if @cdb=db[:command]
         items={}
@@ -33,6 +33,7 @@ class Command
         end
         @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
       end
+      add_group('int','Internal Command').add_item('interrupt')
     end
 
     private
@@ -40,6 +41,14 @@ class Command
     def def_group(gid,labels,gat)
       return {} if key?(gid)
       self[gid]=ExtGrp.new(gat,@def_proc).update_items(@cdb)
+    end
+
+    def ext_item
+      each{|k,grp|
+        grp.values.each{|item|
+          yield item
+        } unless k == 'int'
+      }
     end
   end
 

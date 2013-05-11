@@ -12,18 +12,15 @@ require "libupdate"
 # Add Shell Command (by Shell extention)
 
 module Sh
-  # @ cobj,output,intgrp,interrupt,upd_proc
+  # @ cobj,output,upd_proc
   # @ prompt,shdom
   class Exe < ExHash
-    attr_reader :upd_proc,:interrupt,:output,:shdom,:intgrp
+    attr_reader :upd_proc,:output,:shdom
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
       @cobj=Command.new
       @output=output
-      @intdom=@cobj.add_domain('int',10)
-      @intgrp=@intdom.add_group('int',"Internal Command")
-      @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
       # For Shell
       @prompt=prompt
@@ -193,20 +190,17 @@ module Sh
   end
 
   class List < Hash
-    attr_accessor :id,:shdom
-    def initialize(iid,list)
+    attr_accessor :shdom
+    def initialize(list)
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
-      @shdom.add_group('id','Switch ID').update_items(list).reset_proc{|item|
-        raise(SelectID,item.id)
-      }
-      @shdom.add_dummy('sh',"Shell Command").update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+      id_menu(list)
+      quit_menu
       super(){|h,id|
         sh=h[id]=newsh(id)
         sh.shdom.replace @shdom
         sh
       }
-      @id=iid
     rescue UserError
       $opt.usage('(opt) [id] (layer)')
     end
@@ -217,8 +211,10 @@ module Sh
       $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
-    def shell
-      true while @id=self[@id].shell
+    def shell(id)
+      true while id=self[id].shell
+    rescue TransLayer
+      raise(TransLayer,[$!.to_s,id])
     rescue InvalidID
       Msg.alert($!.to_s,1)
     end
@@ -236,26 +232,35 @@ module Sh
     private
     def newsh(id)
     end
+
+    def quit_menu
+      grp=@shdom.add_dummy('sh',"Shell Command")
+      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+    end
+
+    def id_menu(list)
+      grp=@shdom.add_group('id','Switch ID')
+      grp.update_items(list).reset_proc{|item|
+        raise(SelectID,item.id)
+      }
+    end
   end
 
   class Layer < Hash
-    def shell
-      switch_layer
+    def shell(id)
+      layer_menu
       li=values.last
-      id=li.id
       begin
-        li.shell
+        li.shell(id)
       rescue TransLayer
-        lyr=$!.to_s
-        id=li.id
+        lyr,id=$!.to_s
         li=self[lyr]
-        li.id=id
         retry
       end
     end
 
     private
-    def switch_layer
+    def layer_menu
       list={}
       keys.each{|k|
         list[k]=k.capitalize+" mode"

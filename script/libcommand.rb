@@ -27,25 +27,23 @@ require 'libupdate'
 #  Command#list -> String
 #  Command#add_domain(key,title) -> Command::Domain
 #  Command#current -> Command::Item
-#  Command#def_proc ->[{|item|},..]
 #  Command#setcmd(cmd=[id,*par]):{
 #    Command::Item#set_par(par)
 #    Command#current -> Command::Item
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:def_proc
+  attr_reader :current
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
   def initialize
     init_ver(self)
     @current=nil
-    @def_proc=ExeProc.new
   end
 
   def add_domain(id,color=2)
-    self[id]=Domain.new(color,@def_proc)
+    self[id]=Domain.new(color)
   end
 
   def setcmd(cmd)
@@ -77,10 +75,10 @@ class Command < ExHash
 
   class Domain < ExHash
     attr_reader :def_proc
-    def initialize(color=2,def_proc=ExeProc.new)
+    def initialize(color=2)
       init_ver(self)
       @color=color
-      @def_proc=Msg.type?(def_proc,ExeProc)
+      @def_proc=ExeProc.new
     end
 
     def add_group(gid,caption,column=2)

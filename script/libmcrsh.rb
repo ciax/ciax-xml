@@ -7,7 +7,7 @@ require "libinslayer"
 
 module Mcr
   class Sv < Sh::Exe
-    # @< cobj,output,(intgrp),interrupt,upd_proc*
+    # @< cobj,output,upd_proc*
     # @ al,appint,th,item,mobj*
     attr_accessor :mobj,:prompt
     def initialize(mobj,il)
@@ -20,6 +20,7 @@ module Mcr
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
+      @shdom.add_group('int',"Internal Command")
     end
 
     def start
@@ -42,13 +43,14 @@ module Mcr
     def start_bg
       @th=Thread.new{ start }
       # For shell
-      @intgrp.cmdlist.valid_keys.clear
-      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
-      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
-      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
-      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
-      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
-      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
+      intgrp=@shdom['int']
+      intgrp.cmdlist.valid_keys.clear
+      intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
+      intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
+      intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
+      intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
+      intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      intgrp.add_item('interrupt').reset_proc{|i| @th.raise(Interrupt)}
       @th
     end
 
@@ -106,7 +108,7 @@ end
 if __FILE__ == $0
   Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
-    il=Ins::Layer.new('crt')
+    il=Ins::Layer.new
     mdb=Mcr::Db.new.set('ciax')
     mobj=Command.new
     mobj.add_extdom(mdb)
@@ -116,7 +118,7 @@ if __FILE__ == $0
       msh.start
     else
       msh.start_bg
-      msh.shell
+       msh.shell
     end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

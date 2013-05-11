@@ -69,10 +69,8 @@ end
 
 class Command::ExtDom
   def ext_frmcmd(field)
-    values.each{|grp|
-      grp.values.each{|item|
-        item.extend(Frm::Cmd).ext_frmcmd(field,@db)
-      }
+    ext_item{|item|
+      item.extend(Frm::Cmd).ext_frmcmd(field,@db)
     }
     self
   end

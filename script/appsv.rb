@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libinslist"
+require "libinslayer"
 
 ENV['VER']||='init/'
 Msg::GetOpts.new("estcfh:")

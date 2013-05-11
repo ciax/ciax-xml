@@ -27,7 +27,6 @@ require 'libupdate'
 #  Command#list -> String
 #  Command#add_domain(key,title) -> Command::Domain
 #  Command#current -> Command::Item
-#  Command#def_proc ->[{|item|},..]
 #  Command#setcmd(cmd=[id,*par]):{
 #    Command::Item#set_par(par)
 #    Command#current -> Command::Item

@@ -193,7 +193,7 @@ module Mcr
     private
     def query(cmds)
       inc=cmds.map{|s| s[0].downcase}
-      @sh.intgrp.cmdlist.valid_keys.replace(inc)
+      @sh.shdom['int'].cmdlist.valid_keys.replace(inc)
       @sh['stat']='query'
       if Msg.fg?
         prompt=Msg.color('['+cmds.join('/')+']?',5)
@@ -206,7 +206,7 @@ module Mcr
         res=Thread.current[:query]
       end
       @sh['stat']='run'
-      @sh.intgrp.cmdlist.valid_keys.clear
+      @sh.shdom['int'].cmdlist.valid_keys.clear
       res
     end
   end

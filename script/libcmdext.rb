@@ -33,6 +33,7 @@ class Command
         end
         @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
       end
+      add_group('int','Internal Command').add_item('interrupt')
     end
 
     private
@@ -40,6 +41,14 @@ class Command
     def def_group(gid,labels,gat)
       return {} if key?(gid)
       self[gid]=ExtGrp.new(gat,@def_proc).update_items(@cdb)
+    end
+
+    def ext_item
+      each{|k,grp|
+        grp.values.each{|item|
+          yield item
+        } unless k == 'int'
+      }
     end
   end
 

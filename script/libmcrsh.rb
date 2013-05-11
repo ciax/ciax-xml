@@ -7,7 +7,7 @@ require "libinslayer"
 
 module Mcr
   class Sv < Sh::Exe
-    # @< cobj,output,(intgrp),interrupt,upd_proc*
+    # @< cobj,output,upd_proc*
     # @ al,appint,th,item,mobj*
     attr_accessor :mobj
     def initialize(mobj,il)
@@ -20,6 +20,8 @@ module Mcr
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
+
+
     end
 
     def start
@@ -42,13 +44,14 @@ module Mcr
     def start_bg
       @th=Thread.new{ start }
       # For shell
-      @intgrp.cmdlist.valid_keys.clear
-      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
-      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
-      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
-      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
-      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
-      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
+      intgrp=@shdom.add_group('int',"Internal Command")
+      intgrp.cmdlist.valid_keys.clear
+      intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
+      intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
+      intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
+      intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
+      intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      intgrp.add_item('interrupt').reset_proc{|i| @th.raise(Interrupt)}
       @th
     end
 

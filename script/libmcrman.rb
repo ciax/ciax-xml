@@ -3,7 +3,7 @@ require "libmcrsh"
 
 module Mcr
   class Man < Sh::Exe
-    # @< cobj,output,(intgrp),interrupt,upd_proc*
+    # @< cobj,output,upd_proc*
     def initialize(mdb,il)
       @mdb=Msg.type?(mdb,Db)
       self['layer']='mcr'

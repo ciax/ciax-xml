@@ -24,7 +24,7 @@ module App
   end
 
   class Exe < Sh::Exe
-    # @< cobj,output,intgrp,interrupt,upd_proc*
+    # @< cobj,output,upd_proc*
     # @ adb,fsh,extdom,watch,stat*
     attr_reader :adb,:stat
     def initialize(adb)
@@ -54,7 +54,7 @@ module App
     def init_view
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@watch).ext_prt
-      grp=@intdom.add_group('view',"Change View Mode")
+      grp=@shdom.add_group('view',"Change View Mode")
       grp.add_item('pri',"Print mode").reset_proc{@output=@print}
       grp.add_item('wat',"Watch mode").reset_proc{@output=@wview} if @wview
       grp.add_item('raw',"Raw mode").reset_proc{@output=@stat}
@@ -69,12 +69,13 @@ module App
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
-      @intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|
+      intgrp=@extdom['int']
+      intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|
         @stat.str_update(item.par[0]).upd
         @watch.upd
         self['msg']="Set #{item.par[0]}"
       }
-      @intgrp.add_item('del','[key,...]',[cri]).reset_proc{|item|
+      intgrp.add_item('del','[key,...]',[cri]).reset_proc{|item|
         item.par[0].split(',').each{|key|
           @stat['val'].delete(key)
         }
@@ -82,7 +83,7 @@ module App
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
-      @interrupt.reset_proc{
+      intgrp['interrupt'].reset_proc{
         int=@watch.interrupt
         self['msg']="Interrupt #{int}"
       }
@@ -114,7 +115,7 @@ module App
     end
   end
 
-  # @<< cobj,output,intgrp,interrupt,upd_proc*
+  # @<< cobj,output,,upd_proc*
   # @< adb,extdom,watch,stat*
   # @ fsh,buf,log_proc
   class Sv < Exe
@@ -138,8 +139,7 @@ module App
         verbose{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-
-      @interrupt.reset_proc{
+      @extdom['int']['interrupt'].reset_proc{
         int=@watch.interrupt
         verbose{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

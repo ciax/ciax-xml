@@ -193,8 +193,8 @@ module Sh
   end
 
   class List < Hash
-    attr_accessor :id,:shdom
-    def initialize(iid,list)
+    attr_accessor :shdom
+    def initialize(list)
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
       @shdom.add_group('id','Switch ID').update_items(list).reset_proc{|item|
@@ -206,7 +206,6 @@ module Sh
         sh.shdom.replace @shdom
         sh
       }
-      @id=iid
     rescue UserError
       $opt.usage('(opt) [id] (layer)')
     end
@@ -217,8 +216,11 @@ module Sh
       $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
-    def shell
-      true while @id=self[@id].shell
+    def shell(id)
+      while tmp=self[id].shell
+        id=tmp
+      end
+      id
     rescue InvalidID
       Msg.alert($!.to_s,1)
     end
@@ -239,17 +241,13 @@ module Sh
   end
 
   class Layer < Hash
-    def shell
+    def shell(id)
       switch_layer
       li=values.last
-      id=li.id
       begin
-        li.shell
+        id=li.shell(id)
       rescue TransLayer
-        lyr=$!.to_s
-        id=li.id
-        li=self[lyr]
-        li.id=id
+        li=self[$!.to_s]
         retry
       end
     end

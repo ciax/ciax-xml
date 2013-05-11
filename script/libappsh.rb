@@ -211,16 +211,10 @@ module App
   end
 
   class List < Sh::List
-    def initialize(par)
-      if Frm::List === par
-        @fl=par
-        id=par.id
-      else
-        @fl={}
-        id=par
-      end
+    def initialize(fl=nil)
+      @fl=fl||{}
       @ldb=Loc::Db.new
-      super(id,@ldb.list)
+      super(@ldb.list)
     end
 
     def newsh(id)
@@ -231,5 +225,5 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('ct')
-  puts App::List.new(ARGV.shift).shell
+  puts App::List.new.shell(ARGV.shift)
 end

@@ -95,9 +95,9 @@ module Frm
   end
 
   class List < Sh::List
-    def initialize(id)
+    def initialize
       @ldb=Loc::Db.new
-      super(id,@ldb.list)
+      super(@ldb.list)
     end
 
     def newsh(id)
@@ -108,5 +108,5 @@ end
 
 if __FILE__ == $0
   Msg::GetOpts.new('et')
-  puts Frm::List.new(ARGV.shift).shell
+  puts Frm::List.new.shell(ARGV.shift)
 end

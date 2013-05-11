@@ -37,8 +37,12 @@ module App
       super(@stat,prom)
       @extdom=@cobj.add_extdom(@adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
-      init_view
       self
+    end
+
+    def shell
+      init_view
+      super
     end
 
     private
@@ -50,7 +54,7 @@ module App
     def init_view
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@watch).ext_prt
-      grp=@moddom.add_group('view',"Change View Mode")
+      grp=@intdom.add_group('view',"Change View Mode")
       grp.add_item('pri',"Print mode").reset_proc{@output=@print}
       grp.add_item('wat',"Watch mode").reset_proc{@output=@wview} if @wview
       grp.add_item('raw',"Raw mode").reset_proc{@output=@stat}

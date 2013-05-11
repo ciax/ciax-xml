@@ -21,12 +21,12 @@ module Sh
       init_ver(self,2)
       @cobj=Command.new
       @output=output
-      @intgrp=@cobj.add_domain('int',5).add_group('int',"Internal Command")
+      @intdom=@cobj.add_domain('int',10)
+      @intgrp=@intdom.add_group('int',"Internal Command")
       @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
       # For Shell
       @prompt=prompt
-      @moddom=@cobj.add_domain('mod',2) # Mode Switch Command
       @shdom=@cobj.add_domain('sh',9) # Shared Command
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)

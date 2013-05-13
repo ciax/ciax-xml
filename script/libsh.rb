@@ -214,7 +214,7 @@ module Sh
     def shell(id)
       true while id=self[id].shell
     rescue TransLayer
-      raise(TransLayer,[$!.to_s,id])
+      raise(TransLayer,$!.to_s+':'+id)
     rescue InvalidID
       Msg.alert($!.to_s,1)
     end
@@ -253,7 +253,7 @@ module Sh
       begin
         li.shell(id)
       rescue TransLayer
-        lyr,id=$!.to_s
+        lyr,id=$!.to_s.split(':')
         li=self[lyr]
         retry
       end

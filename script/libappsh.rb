@@ -90,7 +90,7 @@ module App
       @watch.event_proc=proc{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
       }
-      @cobj.def_proc.set{|item|
+      @extdom.def_proc.set{|item|
         @watch.block?(item.cmd)
         @stat.upd
         @watch.upd

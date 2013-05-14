@@ -55,7 +55,7 @@ module Frm
       super(fdb)
       host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(host).load
-      @cobj.def_proc.set{to_s}
+      @extdom.def_proc.set{to_s}
       ext_client(host,fdb['port'])
       @upd_proc.add{@field.load}
     end

@@ -109,6 +109,7 @@ module Frm
 end
 
 if __FILE__ == $0
+  ENV['VER']||='init/'
   Msg::GetOpts.new('cet')
   puts Frm::List.new.shell(ARGV.shift)
 end

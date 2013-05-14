@@ -224,6 +224,7 @@ module App
 end
 
 if __FILE__ == $0
+  ENV['VER']||='init/'
   Msg::GetOpts.new('ct')
   puts App::List.new.shell(ARGV.shift)
 end

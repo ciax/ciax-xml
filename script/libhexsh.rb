@@ -62,9 +62,8 @@ module Hex
   end
 
   class List < Sh::List
-    attr_reader :al
-    def initialize
-      @al=App::List.new
+    def initialize(al=nil)
+      @al||=App::List.new
       super(Loc::Db.new.list)
     end
 
@@ -75,6 +74,7 @@ module Hex
 end
 
 if __FILE__ == $0
-  Msg::GetOpts.new('et')
+  ENV['VER']||='init/'
+  Msg::GetOpts.new('ct')
   puts Hex::List.new.shell(ARGV.shift)
 end

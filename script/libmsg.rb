@@ -96,16 +96,22 @@ module Msg
       self
     end
 
+    def warning(str)
+      @ver_indent=@@base
+      Kernel.warn mkmsg(str,3)
+      self
+    end
+
     # Private Method
     private
-    def mkmsg(text)
+    def mkmsg(text,color=7)
       return unless text
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
       ts << Msg.color("#{@ver_prefix}:",@ver_color)
-      ts << text.inspect
+      ts << Msg.color(text.inspect,color)
     end
 
     # VER= makes setenv "" to VER otherwise nil

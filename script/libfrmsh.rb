@@ -92,7 +92,7 @@ module Frm
       }
       ext_server(fdb['port'].to_i)
     rescue Errno::ENOENT
-      Msg.warn(" --- no json file")
+      warning(" --- no json file")
     end
   end
 

@@ -248,14 +248,17 @@ module Sh
   end
 
   class Layer < Hash
+    def initialize(lyr=nil)
+      @lyr=lyr
+    end
+
     def shell(id)
       layer_menu
-      li=values.last
+      @lyr||=keys.last
       begin
-        li.shell(id)
+        self[@lyr].shell(id)
       rescue TransLayer
-        lyr,id=$!.to_s.split(':')
-        li=self[lyr]
+        @lyr,id=$!.to_s.split(':')
         retry
       end
     end

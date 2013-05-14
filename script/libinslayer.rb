@@ -6,7 +6,7 @@ require "libhexsh"
 
 module Ins
   class Layer < Sh::Layer
-    def initialize
+    def initialize(lay=nil)
       fl=self['frm']=Frm::List.new
       al=self['app']=App::List.new(fl)
       self['hex']=Hex::List.new(al)

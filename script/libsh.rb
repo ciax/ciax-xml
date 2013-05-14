@@ -103,7 +103,7 @@ module Sh
 
     # JSON expression of server stat will be sent.
     def ext_server(port)
-      init_ver('Server/%s',2,self)
+      init_ver('UDPsv/%s',2,self)
       verbose{"Init/Server(#{self['id']}):#{port}"}
       Thread.new{
         tc=Thread.current
@@ -141,6 +141,7 @@ module Sh
     end
 
     def ext_client(host,port)
+      init_ver('UDPcl/%s',6,self)
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)

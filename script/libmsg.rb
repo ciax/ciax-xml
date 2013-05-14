@@ -179,7 +179,6 @@ module Msg
       Msg.type?(str,String) << 'd'
       optdb={}
       optdb['c']='client'
-      optdb['f']='client at frm'
       optdb['h']='client for [host]'
       #Comm to devices
       optdb['e']='execution mode'

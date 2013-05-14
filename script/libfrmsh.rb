@@ -11,7 +11,7 @@ module Frm
       par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
       fsh=Frm::Sv.new(fdb,par)
       fsh=Frm::Cl.new(fdb,'localhost') if $opt['c']
-    elsif host=$opt['h'] or $opt['c'] or $opt['f']
+    elsif host=$opt['h'] or $opt['c']
       fsh=Frm::Cl.new(fdb,host)
     else
       fsh=Frm::Exe.new(fdb)
@@ -109,6 +109,6 @@ module Frm
 end
 
 if __FILE__ == $0
-  Msg::GetOpts.new('et')
+  Msg::GetOpts.new('cet')
   puts Frm::List.new.shell(ARGV.shift)
 end

@@ -63,7 +63,7 @@ module Hex
 
   class List < Sh::List
     def initialize(al=nil)
-      @al||=App::List.new
+      @al=al||App::List.new
       super(Loc::Db.new.list)
     end
 

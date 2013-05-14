@@ -8,7 +8,8 @@ module Ins
   class Layer < Sh::Layer
     def initialize
       fl=self['frm']=Frm::List.new
-      self['app']=App::List.new(fl)
+      al=self['app']=App::List.new(fl)
+      self['hex']=Hex::List.new(al)
     end
   end
 end

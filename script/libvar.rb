@@ -83,6 +83,7 @@ class Var < ExHash # Including 'type'
       json_str=''
       open(name){|f|
         verbose{"Loading [#{@base}](#{f.size})"}
+        f.flock(Object::File::LOCK_SH)
         json_str=f.read
       }
       if json_str.empty?

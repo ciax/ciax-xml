@@ -7,7 +7,7 @@ require "libappsh"
 module Hex
   def self.new(ash)
     Msg.type?(ash,App::Exe)
-    if ['e','s','f','h','c'].any?{|i| $opt[i]}
+    if ['e','s','h','c'].any?{|i| $opt[i]}
       hsh=Hex::Sv.new(ash,$opt['e'])
     else
       hsh=Hex::Exe.new(ash.adb)

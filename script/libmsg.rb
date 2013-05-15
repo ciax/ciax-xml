@@ -102,6 +102,12 @@ module Msg
       self
     end
 
+    def fatal(str)
+      @ver_indent=@@base
+      Kernel.warn mkmsg(str,1)
+      Kernel.exit
+    end
+
     # Private Method
     private
     def mkmsg(text,color=7)

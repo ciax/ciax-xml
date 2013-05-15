@@ -190,7 +190,7 @@ module Sh
     end
   end
 
-  class List < Hash
+  class List < ExHash
     attr_accessor :shdom
     def initialize(list)
       $opt||=Msg::GetOpts.new
@@ -217,7 +217,7 @@ module Sh
     rescue TransLayer
       raise(TransLayer,$!.to_s+':'+id)
     rescue InvalidID
-      Msg.alert($!.to_s,1)
+      fatal($!.to_s)
     end
 
     def server(ary)

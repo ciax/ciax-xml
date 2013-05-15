@@ -69,7 +69,7 @@ if __FILE__ == $0
     stat=Status::Var.new.ext_file(adb['site_id']).load
     stat.ext_sym(adb).upd.ext_save.save
     print stat
-  rescue UserError
+  rescue InvalidID
     Msg.usage "[id]"
   end
 end

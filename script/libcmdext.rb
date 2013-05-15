@@ -138,7 +138,7 @@ if __FILE__ == $0
       cobj.add_extdom(ldb[:app])
     end
     puts cobj.setcmd(ARGV)
-  rescue UserError
+  rescue InvalidID
     $opt.usage("(opt) [id] [cmd] (par)")
   end
 end

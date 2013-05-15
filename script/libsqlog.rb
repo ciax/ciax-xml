@@ -138,7 +138,7 @@ if __FILE__ == $0
     stat=Status::Var.new.ext_file(adb['site_id']).load
     stat.ext_sqlog.upd
     puts stat.sql
-  rescue UserError
+  rescue InvalidID
     Msg.usage "[id]"
   end
   exit

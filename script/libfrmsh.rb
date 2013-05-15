@@ -111,5 +111,5 @@ end
 if __FILE__ == $0
   ENV['VER']||='init/'
   Msg::GetOpts.new('cet')
-  puts Frm::List.new(ARGV.shift).shell
+  puts Frm::List.new[ARGV.shift].shell
 end

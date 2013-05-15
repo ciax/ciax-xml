@@ -90,7 +90,7 @@ if __FILE__ == $0
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD
     Msg.usage("[dev] [cmd] (par) < field_file",[])
-  rescue UserError
+  rescue InvalidID
     Msg.usage "[dev] [cmd] (par) < field_file"
   end
 end

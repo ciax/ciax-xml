@@ -60,7 +60,7 @@ if __FILE__ == $0
       fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first
       p fcmd
     }
-  rescue UserError
+  rescue InvalidID
     Msg.usage("[app] [cmd] (par)")
   end
 end

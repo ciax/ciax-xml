@@ -12,7 +12,7 @@ id = ARGV.shift
 begin
   ldb=Loc::Db.new.set(id)
   field=Field::Var.new
-rescue UserError
+rescue InvalidID
   $opt.usage("(opt) [id] (frmlog|fldlog)")
   # input format 'sqlite3 -header'
 end

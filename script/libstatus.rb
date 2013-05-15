@@ -161,7 +161,7 @@ if __FILE__ == $0
     view=Status::View.new(adb,stat)
     view.extend(Status::Print) if $opt['v']
     puts view
-  rescue UserError
+  rescue InvalidID
     $opt.usage "(opt) [id] <(stat_file)"
   end
   exit

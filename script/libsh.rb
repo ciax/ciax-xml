@@ -65,7 +65,7 @@ module Sh
       rescue Interrupt
         puts exe(['interrupt'])['msg']
         retry
-      rescue UserError
+      rescue InvalidID
         puts $!.to_s
         retry
       end
@@ -88,7 +88,7 @@ module Sh
     def server_input(line)
       JSON.load(line)
     rescue JSON::ParserError
-      raise UserError,"NOT JSON"
+      raise "NOT JSON"
     end
 
     def server_output
@@ -203,13 +203,13 @@ module Sh
         sh.shdom.replace @shdom
         sh
       }
-    rescue UserError
+    rescue InvalidID
       $opt.usage('(opt) [id] (layer)')
     end
 
     def exe(stm)
       self[stm.shift].exe(stm)
-    rescue UserError
+    rescue InvalidID
       $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
@@ -229,7 +229,7 @@ module Sh
         self[i]
       }.empty? && self[nil]
       sleep
-    rescue UserError
+    rescue InvalidID
       $opt.usage('(opt) [id] ....')
     end
 

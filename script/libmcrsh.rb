@@ -3,7 +3,7 @@ require "libsh"
 require "libmcrdb"
 require "libmcrrec"
 require "libcommand"
-require "libinslayer"
+require "libinssh"
 
 module Mcr
   class Sv < Sh::Exe

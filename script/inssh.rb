@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libinslayer"
+require "libinssh"
 
 ENV['VER']||='init/'
 Msg::GetOpts.new("estch:")

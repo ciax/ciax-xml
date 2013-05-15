@@ -64,7 +64,7 @@ module Hex
   class List < Sh::List
     def initialize(al=nil)
       @al=al||App::List.new
-      super(Loc::Db.new.list)
+      super(Loc::Db.new.list,"#{@al.current}")
     end
 
     def newsh(id)
@@ -76,5 +76,5 @@ end
 if __FILE__ == $0
   ENV['VER']||='init/'
   Msg::GetOpts.new('ct')
-  puts Hex::List.new.shell(ARGV.shift)
+  puts Hex::List.new[ARGV.shift].shell
 end

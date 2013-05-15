@@ -212,9 +212,14 @@ module App
 
   class List < Sh::List
     def initialize(fl=nil)
-      @fl=fl||{}
       @ldb=Loc::Db.new
-      super(@ldb.list)
+      if fl
+        @fl=Msg.type?(fl,Frm::List)
+        super(@ldb.list,fl.current)
+      else
+        @fl={}
+        super(@ldb.list)
+      end
     end
 
     def newsh(id)
@@ -226,5 +231,5 @@ end
 if __FILE__ == $0
   ENV['VER']||='init/'
   Msg::GetOpts.new('ct')
-  puts App::List.new.shell(ARGV.shift)
+  puts App::List.new[ARGV.shift].shell
 end

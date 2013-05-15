@@ -191,14 +191,15 @@ module Sh
   end
 
   class List < ExHash
-    attr_accessor :shdom
-    def initialize(list)
+    attr_accessor :shdom,:current
+    def initialize(list,current=nil)
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
       id_menu(list)
       quit_menu
-      super(){|h,id|
-        sh=h[id]=newsh(id)
+      @current=current||""
+      super(){|h,key|
+        sh=h[key]=newsh(key)
         sh.shdom.replace @shdom
         sh
       }
@@ -212,10 +213,12 @@ module Sh
       $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
-    def shell(id)
-      true while id=self[id].shell
+    def shell
+      while current=self[@current].shell
+        @current.replace current
+      end
     rescue TransLayer
-      raise(TransLayer,$!.to_s+':'+id)
+      raise(TransLayer,$!.to_s)
     rescue InvalidID
       warn $!.to_s
     end
@@ -248,17 +251,17 @@ module Sh
   end
 
   class Layer < Hash
-    def initialize(lyr=nil)
-      @lyr=lyr
+    def initialize(current=nil)
+      @current=current
     end
 
-    def shell(id)
+    def shell
       layer_menu
-      @lyr||=keys.last
+      @current||=keys.last
       begin
-        self[@lyr].shell(id)
+        self[@current].shell
       rescue TransLayer
-        @lyr,id=$!.to_s.split(':')
+        @current=$!.to_s
         retry
       end
     end

@@ -217,7 +217,7 @@ module Sh
     rescue TransLayer
       raise(TransLayer,$!.to_s+':'+id)
     rescue InvalidID
-      fatal($!.to_s)
+      warn $!.to_s
     end
 
     def server(ary)

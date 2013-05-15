@@ -220,7 +220,7 @@ module Sh
     rescue TransLayer
       raise(TransLayer,$!.to_s)
     rescue InvalidID
-      warn $!.to_s
+      $opt.usage('(opt) [id]')
     end
 
     def server(ary)

@@ -11,7 +11,7 @@ module Hex
       @hint=Msg.type?(hint,Hash)
       @stat=Msg.type?(stat,Status::Var)
       id=stat['id'] || raise(InvalidID,"NO ID in Stat")
-      file=View.sdb(id) || raise(InvalidID,"Hex/Can't found SDB for #{id}")
+      file=View.sdb(id) || raise(InvalidID,"Hex/Can't found sdb_#{id}.txt")
       @res=["%",id,'_','0','0','_','']
       @list=[]
       open(file){|f|

@@ -213,12 +213,12 @@ module App
   class List < Sh::List
     def initialize(fl=nil)
       @ldb=Loc::Db.new
-      if fl
-        @fl=Msg.type?(fl,Frm::List)
-        super(@ldb.list,fl.current)
+      if $opt['e'] || $opt['s']
+        @fl=fl||Frm::List.new
+        super(@ldb.list,@fl.current)
       else
-        @fl={}
         super(@ldb.list)
+        @fl={}
       end
     end
 

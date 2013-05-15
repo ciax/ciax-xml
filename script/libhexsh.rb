@@ -76,5 +76,9 @@ end
 if __FILE__ == $0
   ENV['VER']||='init/'
   Msg::GetOpts.new('ct')
-  puts Hex::List.new[ARGV.shift].shell
+  begin
+    puts Hex::List.new[ARGV.shift].shell
+  rescue InvalidID
+    $opt.usage('(opt) [id]')
+  end
 end

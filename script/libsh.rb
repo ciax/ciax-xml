@@ -203,8 +203,6 @@ module Sh
         sh.shdom.replace @shdom
         sh
       }
-    rescue InvalidID
-      $opt.usage('(opt) [id] (layer)')
     end
 
     def exe(stm)

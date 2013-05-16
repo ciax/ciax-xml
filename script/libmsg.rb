@@ -196,7 +196,9 @@ module Msg
       #For debug
       optdb['d']='debug mode'
       optdb.update(db)
-      str << db.keys.join('')
+      db.keys.each{|k|
+        str << k unless str.include?(k)
+      }
       @list=str.split('').map{|c|
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact

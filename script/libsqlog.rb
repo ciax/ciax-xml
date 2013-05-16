@@ -136,7 +136,7 @@ if __FILE__ == $0
   begin
     adb=Loc::Db.new.set(id)[:app]
     stat=Status::Var.new.ext_file(adb['site_id']).load
-    stat.ext_sqlog.upd
+    stat.ext_sqlog.create.upd
     puts stat.sql
   rescue InvalidID
     Msg.usage "[id]"

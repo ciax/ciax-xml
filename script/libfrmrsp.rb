@@ -14,6 +14,7 @@ module Frm
       Msg.type?(obj,Field::Var,Var::File)
     end
 
+    # Command::Item is needed which includes response_id and cmd_parameters
     def ext_rsp(cobj,db)
       init_ver('FrmRsp',6)
       @cobj=Msg.type?(cobj,Command)

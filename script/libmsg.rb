@@ -215,6 +215,11 @@ module Msg
   ### Class method ###
   module_function
   # Messaging methods
+  def progress(f=true)
+    p=Msg.color(f ? '.' : 'x',1)
+    $stderr.print p
+  end
+
   def msg(msg='message',ind=0) # Display only
     Kernel.warn color(msg,2,ind)
   end

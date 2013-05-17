@@ -103,23 +103,23 @@ module Frm
       verbose(1){"Field:#{e0['label']}"}
       if e0[:index]
         # Array
-        key=e0['assign'] || Msg.cfg_err("No key for Array")
+        akey=e0['assign'] || Msg.cfg_err("No key for Array")
         # Insert range depends on command param
         idxs=e0[:index].map{|e1|
           @cobj.current.subst(e1['range'])
         }
         begin
-          verbose(1){"Array:[#{key}]:Range#{idxs}"}
-          self['val'][key]=mk_array(idxs,get(key)){yield}
+          verbose(1){"Array:[#{akey}]:Range#{idxs}"}
+          self['val'][akey]=mk_array(idxs,get(akey)){yield}
         ensure
-          verbose(-1){"Array:Assign[#{key}]"}
+          verbose(-1){"Array:Assign[#{akey}]"}
         end
       else
         #Field
         data=yield
-        if key=e0['assign']
-          self['val'][key]=data
-          verbose{"Assign:[#{key}] <- <#{data}>"}
+        if akey=e0['assign']
+          self['val'][akey]=data
+          verbose{"Assign:[#{akey}] <- <#{data}>"}
         end
       end
     ensure

@@ -196,7 +196,7 @@ module Sh
     def initialize(list,current=nil)
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
-      id_menu(list)
+      id_menu(Msg.type?(list,Msg::CmdList))
       quit_menu
       @current=current||""
       super(){|h,key|

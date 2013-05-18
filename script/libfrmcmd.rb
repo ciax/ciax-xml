@@ -67,7 +67,7 @@ module Frm
   end
 end
 
-class Command::SvDom
+module Command::SvDom
   def ext_frmcmd(field)
     ext_item{|item|
       item.extend(Frm::Cmd).ext_frmcmd(field,@db)

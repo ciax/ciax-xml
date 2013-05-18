@@ -4,17 +4,18 @@ require 'librerange'
 
 # For External Command Domain
 class Command
-  def add_svdom(db)
-    ext=SvDom.new(db)
-    me=Hash[self]
-    clear['ext']=ext
-    update(me)
-    ext
+  class Domain
+    def ext_svdom(db)
+      extend(SvDom).setdb(db)
+    end
   end
 
-  class SvDom < Domain
-    def initialize(db)
-      super(6)
+  module SvDom
+    def self.extended(obj)
+      Msg.type?(obj,Command::Domain)
+    end
+
+    def setdb(db)
       @db=Msg.type?(db,Db)
       if @cdb=db[:command]
         items={}
@@ -34,6 +35,7 @@ class Command
         @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
       end
       add_group('int','Internal Command').add_item('interrupt')
+      self
     end
 
     private

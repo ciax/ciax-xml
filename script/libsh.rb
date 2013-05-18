@@ -8,14 +8,14 @@ require "libupdate"
 # Provide Server,Client and Shell
 # Integrate Command,Var
 # Generate Internal Command
-# Add External Command to Combine Lower Layer (Stream,Frm,App)
+# Add Server Command to Combine Lower Layer (Stream,Frm,App)
 # Add Shell Command (by Shell extention)
 
 module Sh
   # @ cobj,output,upd_proc
   # @ prompt,shdom
   class Exe < ExHash
-    attr_reader :upd_proc,:output,:shdom
+    attr_reader :upd_proc,:output,:svdom,:shdom
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
@@ -24,6 +24,7 @@ module Sh
       @upd_proc=UpdProc.new # Proc for Server Status Update
       # For Shell
       @prompt=prompt
+      @svdom=@cobj.add_domain('sv',6) # Server Command
       @shdom=@cobj.add_domain('sh',9) # Shared Command
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)

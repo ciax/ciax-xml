@@ -36,7 +36,7 @@ module App
   end
 end
 
-class Command::SvDom
+module Command::SvDom
   def ext_appcmd
     ext_item{|item|
       item.extend(App::Cmd).init_ver('AppCmd',9)

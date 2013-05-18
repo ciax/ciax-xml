@@ -30,7 +30,7 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       prom=Sh::Prompt.new(self)
       super(@field,prom)
-      @svdom=@cobj.add_svdom(fdb)
+      @svdom.ext_svdom(fdb)
       @svdom.def_proc.set{|item|@field['time']=UnixTime.now}
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}

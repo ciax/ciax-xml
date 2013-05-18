@@ -4,15 +4,15 @@ require 'librerange'
 
 # For External Command Domain
 class Command
-  def add_extdom(db)
-    ext=ExtDom.new(db)
+  def add_svdom(db)
+    ext=SvDom.new(db)
     me=Hash[self]
     clear['ext']=ext
     update(me)
     ext
   end
 
-  class ExtDom < Domain
+  class SvDom < Domain
     def initialize(db)
       super(6)
       @db=Msg.type?(db,Db)
@@ -133,9 +133,9 @@ if __FILE__ == $0
     ldb=Loc::Db.new.set(ARGV.shift)
     cobj=Command.new
     if $opt["f"]
-      cobj.add_extdom(ldb[:frm])
+      cobj.add_svdom(ldb[:frm])
     else
-      cobj.add_extdom(ldb[:app])
+      cobj.add_svdom(ldb[:app])
     end
     puts cobj.setcmd(ARGV)
   rescue InvalidID

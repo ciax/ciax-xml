@@ -111,7 +111,7 @@ if __FILE__ == $0
     il=Ins::Layer.new
     mdb=Mcr::Db.new.set('ciax')
     mobj=Command.new
-    mobj.add_extdom(mdb)
+    mobj.add_svdom(mdb)
     mobj.setcmd(ARGV)
     msh=Mcr::Sv.new(mobj,il)
     if $opt['i']

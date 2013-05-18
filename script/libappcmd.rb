@@ -36,7 +36,7 @@ module App
   end
 end
 
-class Command::ExtDom
+class Command::SvDom
   def ext_appcmd
     ext_item{|item|
       item.extend(App::Cmd).init_ver('AppCmd',9)
@@ -52,9 +52,9 @@ if __FILE__ == $0
   begin
     adb=App::Db.new.set(app)
     fcobj=Command.new
-    fcobj.add_extdom(Frm::Db.new.set(adb['frm_id']))
+    fcobj.add_svdom(Frm::Db.new.set(adb['frm_id']))
     acobj=Command.new
-    acobj.add_extdom(adb).ext_appcmd
+    acobj.add_svdom(adb).ext_appcmd
     acobj.setcmd(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
       fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first

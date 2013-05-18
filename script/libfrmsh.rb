@@ -21,7 +21,7 @@ module Frm
 
   class Exe < Sh::Exe
     # @< cobj,output,(upd_proc*)
-    # @ extdom,field*
+    # @ svdom,field*
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
@@ -30,11 +30,11 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       prom=Sh::Prompt.new(self)
       super(@field,prom)
-      @extdom=@cobj.add_extdom(fdb)
-      @extdom.def_proc.set{|item|@field['time']=UnixTime.now}
+      @svdom=@cobj.add_svdom(fdb)
+      @svdom.def_proc.set{|item|@field['time']=UnixTime.now}
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
-      intgrp=@extdom['int']
+      intgrp=@svdom['int']
       intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
       intgrp.add_item('load',"Load Field (tag)",[any])
       intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|
@@ -55,7 +55,7 @@ module Frm
       super(fdb)
       host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(host).load
-      @extdom.def_proc.set{to_s}
+      @svdom.def_proc.set{to_s}
       ext_client(host,fdb['port'])
       @upd_proc.add{@field.load}
     end
@@ -63,7 +63,7 @@ module Frm
 
   class Sv < Exe
     # @<< cobj,(output),(upd_proc*)
-    # @< extdom,field*
+    # @< svdom,field*
     # @ io
     def initialize(fdb,iocmd=[])
       super(fdb)
@@ -76,11 +76,11 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @extdom.ext_frmcmd(@field).reset_proc{|item|
+      @svdom.ext_frmcmd(@field).reset_proc{|item|
         @io.snd(item.getframe,item[:cmd])
         @field.upd{@io.rcv} && @field.save
       }
-      intgrp=@extdom['int']
+      intgrp=@svdom['int']
       intgrp['set'].reset_proc{|item|
         @field.set(item.par[0],item.par[1]).save
       }

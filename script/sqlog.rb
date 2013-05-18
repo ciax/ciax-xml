@@ -12,7 +12,7 @@ def get_field(ldb,field)
   fdb=ldb[:frm]
   ver=fdb['version']
   cobj=Command.new
-  cobj.add_extdom(fdb)
+  cobj.add_svdom(fdb)
   field.ext_file(fdb['site_id'])
   field.ext_rsp(cobj,fdb)
   field

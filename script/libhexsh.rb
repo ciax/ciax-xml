@@ -24,7 +24,7 @@ module Hex
       stat=Status::Var.new.ext_file(@adb['site_id'])
       prom=Sh::Prompt.new(self)
       super(View.new(self,stat),prom)
-      @extdom=@cobj.add_extdom(@adb)
+      @svdom=@cobj.add_svdom(@adb)
       self
     end
   end
@@ -34,7 +34,7 @@ module Hex
       super(ash.adb)
       @output=View.new(ash,ash.stat)
       @log_proc=UpdProc.new
-      @extdom.reset_proc{|item|
+      @svdom.reset_proc{|item|
         ash.exe(item.cmd)
         @log_proc.upd
       }

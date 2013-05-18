@@ -25,7 +25,7 @@ module App
 
   class Exe < Sh::Exe
     # @< cobj,output,upd_proc*
-    # @ adb,fsh,extdom,watch,stat*
+    # @ adb,fsh,svdom,watch,stat*
     attr_reader :adb,:stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
@@ -35,7 +35,7 @@ module App
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
       super(@stat,prom)
-      @extdom=@cobj.add_extdom(@adb)
+      @svdom=@cobj.add_svdom(@adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       self
     end
@@ -69,7 +69,7 @@ module App
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
-      intgrp=@extdom['int']
+      intgrp=@svdom['int']
       intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|
         @stat.str_update(item.par[0]).upd
         @watch.upd
@@ -90,7 +90,7 @@ module App
       @watch.event_proc=proc{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
       }
-      @extdom.def_proc.set{|item|
+      @svdom.def_proc.set{|item|
         @watch.block?(item.cmd)
         @stat.upd
         @watch.upd
@@ -116,7 +116,7 @@ module App
   end
 
   # @<< cobj,output,,upd_proc*
-  # @< adb,extdom,watch,stat*
+  # @< adb,svdom,watch,stat*
   # @ fsh,buf,log_proc
   class Sv < Exe
     def initialize(adb,fsh,logging=nil)
@@ -133,13 +133,13 @@ module App
       }
       Thread.abort_on_exception=true
       @buf=init_buf
-      @extdom.ext_appcmd.reset_proc{|item|
+      @svdom.ext_appcmd.reset_proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
         verbose{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      @extdom['int']['interrupt'].reset_proc{
+      @svdom['int']['interrupt'].reset_proc{
         int=@watch.interrupt
         verbose{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

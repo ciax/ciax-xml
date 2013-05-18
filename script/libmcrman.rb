@@ -24,7 +24,7 @@ module Mcr
         raise(SelectID,m0)
       }
 
-      @extdom=@cobj.add_extdom(@mdb).reset_proc{|item|
+      @svdom=@cobj.add_svdom(@mdb).reset_proc{|item|
         num=self['total'].replace @mid.inc_id.id
         mkey=@mid.to_s
         msh=il[mkey]=Mcr::Sv.new(@cobj,il)

@@ -103,7 +103,7 @@ module Frm
     end
 
     def newsh(id)
-      sh=Frm.new(@ldb.set(id)[:frm])
+      Frm.new(@ldb.set(id)[:frm])
     end
   end
 end

@@ -211,13 +211,17 @@ module App
   end
 
   class List < Sh::List
-    def initialize(fl=nil)
+    def initialize(current=nil)
       @ldb=Loc::Db.new
       if $opt['e'] || $opt['s']
-        @fl=fl||Frm::List.new
+        if Frm::List === current
+          @fl=current
+        else
+          @fl=Frm::List.new(current)
+        end
         super(@ldb.list,@fl.current)
       else
-        super(@ldb.list)
+        super(@ldb.list,"#{current}")
         @fl={}
       end
     end
@@ -232,7 +236,7 @@ if __FILE__ == $0
   ENV['VER']||='init/'
   Msg::GetOpts.new('cet')
   begin
-    puts App::List.new[ARGV.shift].shell
+    puts App::List.new(ARGV.shift).shell
   rescue InvalidID
     $opt.usage('(opt) [id]')
   end

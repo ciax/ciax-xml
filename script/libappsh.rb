@@ -230,7 +230,7 @@ end
 
 if __FILE__ == $0
   ENV['VER']||='init/'
-  Msg::GetOpts.new('ct')
+  Msg::GetOpts.new('cet')
   begin
     puts App::List.new[ARGV.shift].shell
   rescue InvalidID

@@ -112,7 +112,7 @@ if __FILE__ == $0
   ENV['VER']||='init/'
   Msg::GetOpts.new('cet')
   begin
-    puts Frm::List.new[ARGV.shift].shell
+    puts Frm::List.new(ARGV.shift).shell
   rescue InvalidID
     $opt.usage('(opt) [id]')
   end

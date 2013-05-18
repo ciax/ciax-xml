@@ -108,10 +108,10 @@ end
 if __FILE__ == $0
   Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
-    il=Ins::Layer.new
+    il=Ins::Layer.new('app')
     mdb=Mcr::Db.new.set('ciax')
     mobj=Command.new
-    mobj.add_svdom(mdb)
+    mobj.add_domain('sv',6).ext_svdom(mdb)
     mobj.setcmd(ARGV)
     msh=Mcr::Sv.new(mobj,il)
     if $opt['i']

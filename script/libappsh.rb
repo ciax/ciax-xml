@@ -213,16 +213,15 @@ module App
   class List < Sh::List
     def initialize(current=nil)
       @ldb=Loc::Db.new
-      if $opt['e'] || $opt['s']
-        if Frm::List === current
-          @fl=current
-        else
-          @fl=Frm::List.new(current)
-        end
+      if Frm::List === current
+        @fl=current
+        super(@ldb.list,@fl.current)
+      elsif $opt['e'] || $opt['s']
+        @fl=Frm::List.new(current)
         super(@ldb.list,@fl.current)
       else
-        super(@ldb.list,"#{current}")
         @fl={}
+        super(@ldb.list,"#{current}")
       end
     end
 

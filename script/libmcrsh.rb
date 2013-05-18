@@ -20,7 +20,7 @@ module Mcr
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
-      @shdom.add_group('int',"Internal Command")
+      @svdom.add_group('int',"Internal Command")
     end
 
     def start
@@ -43,7 +43,7 @@ module Mcr
     def start_bg
       @th=Thread.new{ start }
       # For shell
-      intgrp=@shdom['int']
+      intgrp=@svdom['int']
       intgrp.cmdlist.valid_keys.clear
       intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
       intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}

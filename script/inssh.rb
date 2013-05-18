@@ -3,4 +3,4 @@ require "libinssh"
 
 ENV['VER']||='init/'
 Msg::GetOpts.new("estch:")
-Ins::Layer.new(ARGV.shift).shell
+Ins::Layer.new('app',ARGV.shift).shell

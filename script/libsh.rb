@@ -14,18 +14,18 @@ require "libupdate"
 module Sh
   # @ cobj,output,upd_proc
   # @ prompt,shdom
-  class Exe < ExHash
+  class Exe < ExHash # Having server status {id,msg,...}
     attr_reader :upd_proc,:output,:svdom,:shdom
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
       @cobj=Command.new
-      @output=output
       @upd_proc=UpdProc.new # Proc for Server Status Update
+      @svdom=@cobj.add_domain('sv',6) # Server Commands (send to server at Client)
       # For Shell
+      @output=output
       @prompt=prompt
-      @svdom=@cobj.add_domain('sv',6) # Server Command
-      @shdom=@cobj.add_domain('sh',9) # Shared Command
+      @shdom=@cobj.add_domain('sh',9) # Shared Commands (handle locally at Client)
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }

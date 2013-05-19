@@ -25,7 +25,7 @@ module Status
     end
 
     def update?
-      self['time'] != @updated
+      self['time'] > @updated
     end
 
     def refresh
@@ -148,9 +148,9 @@ if __FILE__ == $0
     if ! STDIN.tty?
       stat.load
       id=stat['id']
-      adb=Loc::Db.new(id)[:app]
+      adb=Loc::Db.new.set(id)[:app]
     else
-      adb=Loc::Db.new(id)[:app]
+      adb=Loc::Db.new.set(id)[:app]
       stat.ext_file(adb['site_id'])
       if host=$opt['h']
         stat.ext_url(host).load
@@ -161,7 +161,7 @@ if __FILE__ == $0
     view=Status::View.new(adb,stat)
     view.extend(Status::Print) if $opt['v']
     puts view
-  rescue UserError
+  rescue InvalidID
     $opt.usage "(opt) [id] <(stat_file)"
   end
   exit

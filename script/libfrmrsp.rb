@@ -14,6 +14,7 @@ module Frm
       Msg.type?(obj,Field::Var,Var::File)
     end
 
+    # Command::Item is needed which includes response_id and cmd_parameters
     def ext_rsp(cobj,db)
       init_ver('FrmRsp',6)
       @cobj=Msg.type?(cobj,Command)
@@ -23,7 +24,7 @@ module Frm
       @fds=db[:response][:select]
       @frame=Frame.new(db['endian'],db['ccmethod'])
       # Field Initialize
-      self['val']=db[:field][:select].deep_copy
+      self['val']||=db[:field][:select].deep_copy
       self
     end
 
@@ -102,23 +103,23 @@ module Frm
       verbose(1){"Field:#{e0['label']}"}
       if e0[:index]
         # Array
-        key=e0['assign'] || Msg.cfg_err("No key for Array")
+        akey=e0['assign'] || Msg.cfg_err("No key for Array")
         # Insert range depends on command param
         idxs=e0[:index].map{|e1|
           @cobj.current.subst(e1['range'])
         }
         begin
-          verbose(1){"Array:[#{key}]:Range#{idxs}"}
-          self['val'][key]=mk_array(idxs,get(key)){yield}
+          verbose(1){"Array:[#{akey}]:Range#{idxs}"}
+          self['val'][akey]=mk_array(idxs,get(akey)){yield}
         ensure
-          verbose(-1){"Array:Assign[#{key}]"}
+          verbose(-1){"Array:Assign[#{akey}]"}
         end
       else
         #Field
         data=yield
-        if key=e0['assign']
-          self['val'][key]=data
-          verbose{"Assign:[#{key}] <- <#{data}>"}
+        if akey=e0['assign']
+          self['val'][akey]=data
+          verbose{"Assign:[#{akey}] <- <#{data}>"}
         end
       end
     ensure
@@ -169,9 +170,9 @@ if __FILE__ == $0
     res={'time'=>UnixTime.now}
     res['data']=gets(nil) || exit
   end
-  fdb=Loc::Db.new(id)[:frm]
+  fdb=Loc::Db.new.set(id)[:frm]
   cobj=Command.new
-  cobj.add_extdom(fdb)
+  cobj.add_svdom(fdb)
   cobj.setcmd(cmd.split(':'))
   field=Field::Var.new.ext_file(fdb['site_id'])
   field.load if $opt['m']

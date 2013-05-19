@@ -1,6 +1,9 @@
 #!/usr/bin/ruby
 require 'libsh'
 require 'libfield'
+require "libfrmrsp"
+require "libfrmcmd"
+require 'liblocdb'
 
 module Frm
   def self.new(fdb)
@@ -8,7 +11,7 @@ module Frm
       par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
       fsh=Frm::Sv.new(fdb,par)
       fsh=Frm::Cl.new(fdb,'localhost') if $opt['c']
-    elsif host=$opt['h'] or $opt['c'] or $opt['f']
+    elsif host=$opt['h'] or $opt['c']
       fsh=Frm::Cl.new(fdb,host)
     else
       fsh=Frm::Exe.new(fdb)
@@ -17,8 +20,8 @@ module Frm
   end
 
   class Exe < Sh::Exe
-    # @< cobj,output,intgrp,(interrupt),(upd_proc*)
-    # @ extdom,field*
+    # @< cobj,output,(upd_proc*)
+    # @ svdom,field*
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
@@ -27,13 +30,14 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       prom=Sh::Prompt.new(self)
       super(@field,prom)
-      @cobj.def_proc.set{|item|@field['time']=UnixTime.now}
-      @extdom=@cobj.add_extdom(fdb)
+      @svdom.ext_svdom(fdb)
+      @svdom.def_proc.set{|item|@field['time']=UnixTime.now}
       idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
-      @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
-      @intgrp.add_item('load',"Load Field (tag)",[any])
-      @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|
+      intgrp=@svdom['int']
+      intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
+      intgrp.add_item('load',"Load Field (tag)",[any])
+      intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|
         @field.set(*item.par)
       }
       self
@@ -51,9 +55,65 @@ module Frm
       super(fdb)
       host=Msg.type?(host||fdb['host']||'localhost',String)
       @field.ext_url(host).load
-      @cobj.def_proc.set{to_s}
+      @svdom.def_proc.set{to_s}
       ext_client(host,fdb['port'])
       @upd_proc.add{@field.load}
     end
+  end
+
+  class Sv < Exe
+    # @<< cobj,(output),(upd_proc*)
+    # @< svdom,field*
+    # @ io
+    def initialize(fdb,iocmd=[])
+      super(fdb)
+      @field.ext_save.load
+      @field.ext_rsp(@cobj,fdb)
+      if Msg.type?(iocmd,Array).empty?
+        @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
+        @io.ext_logging(fdb['site_id'],fdb['version'])
+        # @field.ext_sqlog
+      else
+        @io=Stream.new(iocmd,fdb['wait'],1)
+      end
+      @svdom.ext_frmcmd(@field).reset_proc{|item|
+        @io.snd(item.getframe,item[:cmd])
+        @field.upd{@io.rcv} && @field.save
+      }
+      intgrp=@svdom['int']
+      intgrp['set'].reset_proc{|item|
+        @field.set(item.par[0],item.par[1]).save
+      }
+      intgrp['save'].reset_proc{|item|
+        @field.savekey(item.par[0].split(','),item.par[1])
+      }
+      intgrp['load'].reset_proc{|item|
+        @field.load(item.par[0]||'').save
+      }
+      ext_server(fdb['port'].to_i)
+    rescue Errno::ENOENT
+      warning(" --- no json file")
+    end
+  end
+
+  class List < Sh::List
+    def initialize(current=nil)
+      @ldb=Loc::Db.new
+      super(@ldb.list,"#{current}")
+    end
+
+    def newsh(id)
+      Frm.new(@ldb.set(id)[:frm])
+    end
+  end
+end
+
+if __FILE__ == $0
+  ENV['VER']||='init/'
+  Msg::GetOpts.new('cet')
+  begin
+    puts Frm::List.new(ARGV.shift).shell
+  rescue InvalidID
+    $opt.usage('(opt) [id]')
   end
 end

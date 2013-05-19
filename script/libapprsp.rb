@@ -113,7 +113,7 @@ if __FILE__ == $0
   require "libstatus"
   Msg.usage "< field_file" if STDIN.tty?
   field=Field::Var.new.load
-  adb=Loc::Db.new(field['id'])[:app]
+  adb=Loc::Db.new.set(field['id'])[:app]
   stat=Status::Var.new.ext_file(adb['site_id']).ext_save
   puts stat.ext_rsp(field,adb[:status]).upd
   stat.save

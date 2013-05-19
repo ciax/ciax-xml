@@ -3,35 +3,30 @@ require "libsh"
 require "libmcrdb"
 require "libmcrrec"
 require "libcommand"
-require "libinslist"
+require "libinssh"
 
 module Mcr
   class Sv < Sh::Exe
-    # @< cobj,output,(intgrp),interrupt,upd_proc*
-    # @ al,appint,mobj*
-    attr_accessor :mobj
+    # @< cobj,output,upd_proc*
+    # @ al,appint,th,item,mobj*
+    attr_accessor :mobj,:prompt
     def initialize(mobj,il)
-      @mobj=Msg.type?(mobj,Command)
-      @il=Msg.type?(il,Ins::List)
+      @mobj=Msg.type?(mobj.dup,Command)
+      @item=@mobj.current
+      @il=Msg.type?(il,Ins::Layer)
       self['layer']='mcr'
-      self['id']=@mobj.current.id
+      self['id']=@item.id
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
-      # For shell
-      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
-      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
-      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
-      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
-      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
-      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
+      @svdom.add_group('int',"Internal Command")
     end
 
     def start
       self['stat']='run'
       puts @output if Msg.fg?
-      macro(@mobj.current)
+      macro(@item)
       result('done')
       self
     rescue Interlock
@@ -45,15 +40,22 @@ module Mcr
       @output.fin
     end
 
-    def shell
-      @intgrp.cmdlist.valid_keys.replace(['e'])
-      self['stat']='ready'
-      @th=Thread.new{
-        sleep
-        @intgrp.cmdlist.valid_keys.clear
-        start
-      }
-      super()
+    def start_bg
+      @th=Thread.new{ start }
+      # For shell
+      intgrp=@svdom['int']
+      intgrp.cmdlist.valid_keys.clear
+      intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
+      intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
+      intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
+      intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
+      intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      intgrp.add_item('interrupt').reset_proc{|i| @th.raise(Interrupt)}
+      @th
+    end
+
+    def to_s
+      @mobj.current[:cmd]+'('+self['stat']+')'
     end
 
     private
@@ -61,7 +63,7 @@ module Mcr
       item.select.each{|e1|
         begin
           @crnt=@output.add_step(e1,depth){|site|
-            @il.getsh(site).stat
+            @il['app'][site].stat
           }
           case e1['type']
           when 'goal'
@@ -72,7 +74,7 @@ module Mcr
             @crnt.timeout? && raise(Interlock)
           when 'exec'
             @crnt.exec{|site,cmd,depth|
-              ash=@il.getsh(site)
+              ash=@il['app'][site]
               ash.exe(cmd)
               @appint=ash.interrupt
             }
@@ -106,16 +108,17 @@ end
 if __FILE__ == $0
   Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
   begin
-    il=Ins::List.new('app')
-    mdb=Mcr::Db.new('ciax')
+    il=Ins::Layer.new('app')
+    mdb=Mcr::Db.new.set('ciax')
     mobj=Command.new
-    mobj.add_extdom(mdb)
+    mobj.add_domain('sv',6).ext_svdom(mdb)
     mobj.setcmd(ARGV)
     msh=Mcr::Sv.new(mobj,il)
     if $opt['i']
       msh.start
     else
-      msh.shell
+      msh.start_bg
+       msh.shell
     end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

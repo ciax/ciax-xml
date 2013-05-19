@@ -14,7 +14,8 @@ class InvalidPAR < InvalidCMD; end
 
 # Mangaged Exception(Long Jump)
 class LongJump < RuntimeError; end
-class SelectID < LongJump; end
+class TransLayer < LongJump; end
+class SelectID < TransLayer; end
 # Macro
 class Interlock < LongJump; end
 class Retry < LongJump; end
@@ -36,17 +37,25 @@ class UnixTime < Time
   end
 end
 
-class ServerID < Hash #{layer,site}
-  def initialize(layer='app',site=nil)
-    update(:layer =>layer,:site =>site)
+class ServerID
+  attr_accessor :layer,:id
+  def initialize(layer='app',id='')
+    @layer=layer
+    @id=id
   end
 
-  def layer(layer)
-    dup.update(:layer => layer)
+  def inc_id
+    @id=@id.succ
+    self
   end
 
-  def site(site)
-    dup.update(:site => site)
+  def upd(str)
+    @layer,@id=str.split(':')
+    self
+  end
+
+  def to_s
+    "#@layer:#@id"
   end
 end
 
@@ -87,16 +96,28 @@ module Msg
       self
     end
 
+    def warning(str)
+      @ver_indent=@@base
+      Kernel.warn mkmsg(str,3)
+      self
+    end
+
+    def fatal(str)
+      @ver_indent=@@base
+      Kernel.warn mkmsg(str,1)
+      Kernel.exit
+    end
+
     # Private Method
     private
-    def mkmsg(text)
+    def mkmsg(text,color=7)
       return unless text
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
       ts << Msg.color("#{@ver_prefix}:",@ver_color)
-      ts << text.inspect
+      ts << Msg.color(text.inspect,color)
     end
 
     # VER= makes setenv "" to VER otherwise nil
@@ -164,7 +185,6 @@ module Msg
       Msg.type?(str,String) << 'd'
       optdb={}
       optdb['c']='client'
-      optdb['f']='client at frm'
       optdb['h']='client for [host]'
       #Comm to devices
       optdb['e']='execution mode'
@@ -176,7 +196,9 @@ module Msg
       #For debug
       optdb['d']='debug mode'
       optdb.update(db)
-      str << db.keys.join('')
+      db.keys.each{|k|
+        str << k unless str.include?(k)
+      }
       @list=str.split('').map{|c|
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact
@@ -193,6 +215,11 @@ module Msg
   ### Class method ###
   module_function
   # Messaging methods
+  def progress(f=true)
+    p=Msg.color(f ? '.' : 'x',1)
+    $stderr.print p
+  end
+
   def msg(msg='message',ind=0) # Display only
     Kernel.warn color(msg,2,ind)
   end
@@ -323,6 +350,8 @@ module Msg
       end
       str << color("%-6s" % title,5,ind)+" :\n"
       ind+=1
+    else
+      str << "===\n"
     end
     case data
     when Array

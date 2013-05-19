@@ -1,17 +1,16 @@
 #!/usr/bin/ruby
 # Ascii Pack
 require "libmsg"
-require "libinslist"
 require "libhexview"
+require "libappsh"
 
 module Hex
-  def self.new(adb,ash)
-    Msg.type?(adb,App::Db)
+  def self.new(ash)
     Msg.type?(ash,App::Exe)
-    if ['e','s','f','h','c'].any?{|i| $opt[i]}
-       hsh=Hex::Sv.new(adb,ash,$opt['e'])
+    if ['e','s','h','c'].any?{|i| $opt[i]}
+      hsh=Hex::Sv.new(ash,$opt['e'])
     else
-      hsh=Hex::Exe.new(adb)
+      hsh=Hex::Exe.new(ash.adb)
     end
     hsh
   end
@@ -25,17 +24,17 @@ module Hex
       stat=Status::Var.new.ext_file(@adb['site_id'])
       prom=Sh::Prompt.new(self)
       super(View.new(self,stat),prom)
-      @extdom=@cobj.add_extdom(@adb)
+      @svdom.ext_svdom(@adb)
       self
     end
   end
 
   class Sv < Exe
-    def initialize(adb,ash,logging=nil)
-      super(adb)
+    def initialize(ash,logging=nil)
+      super(ash.adb)
       @output=View.new(ash,ash.stat)
       @log_proc=UpdProc.new
-      @extdom.reset_proc{|item|
+      @svdom.reset_proc{|item|
         ash.exe(item.cmd)
         @log_proc.upd
       }
@@ -60,5 +59,26 @@ module Hex
     def server_output
       @output.to_s
     end
+  end
+
+  class List < Sh::List
+    def initialize(al=nil)
+      @al=al||App::List.new
+      super(Loc::Db.new.list,"#{@al.current}")
+    end
+
+    def newsh(id)
+      Hex.new(@al[id])
+    end
+  end
+end
+
+if __FILE__ == $0
+  ENV['VER']||='init/'
+  Msg::GetOpts.new('ct')
+  begin
+    puts Hex::List.new[ARGV.shift].shell
+  rescue InvalidID
+    $opt.usage('(opt) [id]')
   end
 end

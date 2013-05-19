@@ -94,8 +94,9 @@ module Mcr
 
     private
     def ok?(t=nil,f=nil)
-      res=(flt=scan).empty?
-      self['mismatch']=flt unless res
+      cond=scan
+      res=cond.all?{|h| h['upd'] && h['res']}
+      self['conditions']=cond
       self['result']=(res ? t : f) if t || f
       res
     end
@@ -106,22 +107,21 @@ module Mcr
         hash
       }
       @condition.map{|h|
-        flt={}
-        site=flt['site']=h['site']
-        var=flt['var']=h['var']
+        cond={}
+        site=cond['site']=h['site']
+        var=cond['var']=h['var']
         stat=stats[site]
-        if flt['upd']=stat.update?
-          inv=flt['inv']=h['inv']
-          cmp=flt['cmp']=h['val']
-          res=stat['msg'][var]||stat['val'][var]
-          verbose{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},res=#{res}"}
-          next unless res
-          flt['res']=res
-          match?(res,cmp,flt['inv']) && flt || nil
-        else
-          flt
+        if cond['upd']=stat.update?
+          inv=cond['inv']=h['inv']
+          cmp=cond['cmp']=h['val']
+          act=stat['msg'][var]||stat['val'][var]
+          verbose{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},act=#{act}"}
+          next unless act
+          cond['act']=act
+          cond['res']=match?(act,cmp,cond['inv'])
         end
-      }.compact
+        cond
+      }
     end
 
     def refresh
@@ -134,12 +134,12 @@ module Mcr
       @condition.map{|h| h['site']}.uniq
     end
 
-    def match?(res,cmp,inv)
+    def match?(act,cmp,inv)
       i=(/true|1/ === inv)
       if /[a-zA-Z]/ === cmp
-        (/#{cmp}/ === res) ^ i
+        (/#{cmp}/ === act) ^ i
       else
-        (cmp == res) ^ i
+        (cmp == act) ^ i
       end
     end
   end
@@ -193,7 +193,7 @@ module Mcr
     private
     def query(cmds)
       inc=cmds.map{|s| s[0].downcase}
-      @sh.intgrp.cmdlist.valid_keys.replace(inc)
+      @sh.svdom['int'].cmdlist.valid_keys.replace(inc)
       @sh['stat']='query'
       if Msg.fg?
         prompt=Msg.color('['+cmds.join('/')+']?',5)
@@ -206,7 +206,7 @@ module Mcr
         res=Thread.current[:query]
       end
       @sh['stat']='run'
-      @sh.intgrp.cmdlist.valid_keys.clear
+      @sh.svdom['int'].cmdlist.valid_keys.clear
       res
     end
   end

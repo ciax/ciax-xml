@@ -1,8 +1,6 @@
 #!/usr/bin/ruby
-require "libinslist"
+require "libinssh"
 
 ENV['VER']||='init/'
-Msg::GetOpts.new("estcfh:")
-id=ARGV.shift
-lyr=ARGV.shift||'app'
-Ins::List.new(lyr).shell(id)
+Msg::GetOpts.new("estch:")
+Ins::Layer.new('app',ARGV.shift).shell

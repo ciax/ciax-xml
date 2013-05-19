@@ -4,13 +4,18 @@ require 'librerange'
 
 # For External Command Domain
 class Command
-  def add_extdom(db)
-    self['ext']=ExtDom.new(db,@def_proc)
+  class Domain
+    def ext_svdom(db)
+      extend(SvDom).setdb(db)
+    end
   end
 
-  class ExtDom < Domain
-    def initialize(db,def_proc=ExeProc.new)
-      super(6,def_proc)
+  module SvDom
+    def self.extended(obj)
+      Msg.type?(obj,Command::Domain)
+    end
+
+    def setdb(db)
       @db=Msg.type?(db,Db)
       if @cdb=db[:command]
         items={}
@@ -29,6 +34,8 @@ class Command
         end
         @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
       end
+      add_group('int','Internal Command').add_item('interrupt')
+      self
     end
 
     private
@@ -36,6 +43,14 @@ class Command
     def def_group(gid,labels,gat)
       return {} if key?(gid)
       self[gid]=ExtGrp.new(gat,@def_proc).update_items(@cdb)
+    end
+
+    def ext_item
+      each{|k,grp|
+        grp.values.each{|item|
+          yield item
+        } unless k == 'int'
+      }
     end
   end
 
@@ -117,15 +132,15 @@ if __FILE__ == $0
 
   begin
     Msg::GetOpts.new("af")
-    ldb=Loc::Db.new(ARGV.shift)
+    ldb=Loc::Db.new.set(ARGV.shift)
     cobj=Command.new
     if $opt["f"]
-      cobj.add_extdom(ldb[:frm])
+      cobj.add_svdom(ldb[:frm])
     else
-      cobj.add_extdom(ldb[:app])
+      cobj.add_svdom(ldb[:app])
     end
     puts cobj.setcmd(ARGV)
-  rescue UserError
+  rescue InvalidID
     $opt.usage("(opt) [id] [cmd] (par)")
   end
 end

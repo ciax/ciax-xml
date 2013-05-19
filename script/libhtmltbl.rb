@@ -39,7 +39,7 @@ if __FILE__ == $0
   require "libinsdb"
   id=ARGV.shift
   begin
-    adb=Ins::Db.new(id).cover_app
+    adb=Ins::Db.new.set(id).cover_app
   rescue InvalidID
     Msg.usage "[id]"
   end

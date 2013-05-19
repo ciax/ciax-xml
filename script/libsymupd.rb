@@ -26,7 +26,7 @@ module Sym
       super # Status#upd
       @symbol.each{|key,sid|
         unless tbl=@sdb[sid.to_sym]
-          Msg.warn("Table[#{sid}] not exist")
+          warning("Table[#{sid}] not exist")
           next
         end
         verbose{"ID=#{key},table=#{sid}"}
@@ -62,13 +62,14 @@ end
 
 if __FILE__ == $0
   require "liblocdb"
+  Msg::GetOpts.new
   id=ARGV.shift
   begin
-    adb=Loc::Db.new(id)[:app]
+    adb=Loc::Db.new.set(id)[:app]
     stat=Status::Var.new.ext_file(adb['site_id']).load
     stat.ext_sym(adb).upd.ext_save.save
     print stat
-  rescue UserError
+  rescue InvalidID
     Msg.usage "[id]"
   end
 end

@@ -5,69 +5,51 @@ require "libfrmrsp"
 require "libapprsp"
 require 'libstatus'
 require "libsqlog"
-require 'json'
+require 'liblogging'
 
-Msg::GetOpts.new("t",{"i"=>"init table","v"=>"verbose","a"=>"app output"})
-id = ARGV.shift
-begin
-  ldb=Loc::Db.new(id)
-  field=Field::Var.new
-rescue UserError
-  $opt.usage("(opt) [id] (frmlog|fldlog)")
-  # input format 'sqlite3 -header'
-end
-if $opt['a']
-  adb=ldb[:app]
-  stat=Status::Var.new.ext_file(adb['site_id'])
-  stat.ext_rsp(field,adb[:status])
-  stat.ext_sqlog($opt['t']&&"test")
-  if $opt['i'] # Initial
-    stat.create
-  else
-    index=nil
-    readlines.each{|str|
-      ary=str.split('|')
-      if /^time/ =~ str
-        index=ary
-      else
-        hash={}
-        begin
-          index.each{|i|
-            hash[i]=ary.shift
-          }
-          field.update(hash)
-          stat.upd
-          $stderr.print "."
-        rescue
-          $stderr.print $! if $opt['v']
-          $stderr.print "x"
-        end
-      end
-    }
-  end
-  puts stat.sql
-else
+def get_field(ldb,field)
+  Msg.warn("Frame Initialize")
   fdb=ldb[:frm]
-  field.ext_file(fdb['site_id'])
   ver=fdb['version']
   cobj=Command.new
-  cobj.add_extdom(fdb)
+  cobj.add_svdom(fdb)
+  field.ext_file(fdb['site_id'])
   field.ext_rsp(cobj,fdb)
+  field
+end
+
+def get_stat(ldb,field,stat)
+  Msg.warn("Application Initialize")
+  adb=ldb[:app]
+  stat.ext_file(adb['site_id'])
+  stat.ext_rsp(field,adb[:status])
   stat.ext_sqlog($opt['t']&&"test")
-  if $opt['i'] # Initial
-    field.create
-  else
-    readlines.grep(/#{id}:#{ver}:rcv/).each{|str|
-      begin
-        field.upd_logline(str)
-        $stderr.print "."
-      rescue
-        $stderr.print $! if $opt['v']
-        $stderr.print "x"
-        next
-      end
-    }
-    $stderr.puts
-  end
-  puts field.sql
+  stat
+end
+
+Msg::GetOpts.new("t",{"v"=>"verbose"})
+begin
+  raise(InvalidID,'') if STDIN.tty? && ARGV.size < 1
+  ldb=Loc::Db.new
+  field=Field::Var.new
+  stat=Status::Var.new
+  readlines.grep(/rcv/).each{|str|
+    hash=JSON.load(str)
+    ldb.set(hash['id']) unless ldb.key?('id')
+    get_field(ldb,field) unless Frm::Rsp === field
+    get_stat(ldb,field,stat) unless App::Rsp === stat
+    begin
+      field.upd_logline(str)
+      stat.upd
+      Msg.progress
+    rescue
+      $stderr.print $! if $opt['v']
+      Msg.progress(false)
+    end
+  }
+  $stderr.puts
+  puts stat.sql
+rescue InvalidID
+  $opt.usage("(opt) [stream_log]")
+  # input format 'sqlite3 -header'
 end

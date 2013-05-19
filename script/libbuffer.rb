@@ -61,9 +61,9 @@ class Buffer
             yield out
           end
           flush
-        rescue UserError
+        rescue
           warn $!.to_s.chomp
-          Msg.alert(" in Buffer Thread")
+          fatal(" in Buffer Thread")
           clear
         end
       }

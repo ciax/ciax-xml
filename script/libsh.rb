@@ -8,30 +8,27 @@ require "libupdate"
 # Provide Server,Client and Shell
 # Integrate Command,Var
 # Generate Internal Command
-# Add External Command to Combine Lower Layer (Stream,Frm,App)
+# Add Server Command to Combine Lower Layer (Stream,Frm,App)
 # Add Shell Command (by Shell extention)
 
 module Sh
-  # @ cobj,output,intgrp,interrupt,upd_proc
+  # @ cobj,output,upd_proc
   # @ prompt,shdom
   class Exe < ExHash
-    attr_reader :upd_proc,:interrupt,:output,:shdom,:intgrp
+    attr_reader :upd_proc,:output,:svdom,:shdom
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
       @cobj=Command.new
       @output=output
-      @intgrp=@cobj.add_domain('int',2).add_group('int',"Internal Command")
-      @interrupt=@intgrp.add_item('interrupt')
       @upd_proc=UpdProc.new # Proc for Server Status Update
       # For Shell
       @prompt=prompt
-      @shdom=@cobj.add_domain('sh',5)
+      @svdom=@cobj.add_domain('sv',6) # Server Command
+      @shdom=@cobj.add_domain('sh',9) # Shared Command
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
-      grp=@shdom.add_dummy('sh',"Shell Command")
-      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
     end
 
     # Sync only (Wait for other thread)
@@ -69,7 +66,7 @@ module Sh
       rescue Interrupt
         puts exe(['interrupt'])['msg']
         retry
-      rescue UserError
+      rescue InvalidID
         puts $!.to_s
         retry
       end
@@ -92,7 +89,7 @@ module Sh
     def server_input(line)
       JSON.load(line)
     rescue JSON::ParserError
-      raise UserError,"NOT JSON"
+      raise "NOT JSON"
     end
 
     def server_output
@@ -107,7 +104,7 @@ module Sh
 
     # JSON expression of server stat will be sent.
     def ext_server(port)
-      init_ver('Server/%s',2,self)
+      init_ver('UDPsv/%s',2,self)
       verbose{"Init/Server(#{self['id']}):#{port}"}
       Thread.new{
         tc=Thread.current
@@ -145,6 +142,7 @@ module Sh
     end
 
     def ext_client(host,port)
+      init_ver('UDPcl/%s',6,self)
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
@@ -193,74 +191,91 @@ module Sh
     end
   end
 
-  class List < Hash
-    def initialize(layer=nil)
-      @sid=ServerID.new(layer)
+  class List < ExHash
+    attr_accessor :shdom,:current
+    def initialize(list,current=nil)
       $opt||=Msg::GetOpts.new
-      super(){|h,sid|
-        h[sid]=newsh(sid)
+      @shdom=Command::Domain.new(9)
+      id_menu(Msg.type?(list,Msg::CmdList))
+      quit_menu
+      @current=current||""
+      super(){|h,key|
+        sh=h[key]=newsh(key)
+        sh.shdom.replace @shdom
+        sh
       }
     end
 
-    # @sid is rewrite when self[] succeeded
-    def getsh(id)
-      sid=@sid.site(id)
-      sh=self[sid]
-      @sid=sid
-      sh
-    end
-
     def exe(stm)
-      getsh(stm.shift).exe(stm)
-    rescue UserError
+      self[stm.shift].exe(stm)
+    rescue InvalidID
       $opt.usage('(opt) [id] [cmd] [par....]')
     end
 
-    def shell(id)
-      sh=getsh(id)
-      while sid=sh.shell
-        begin
-          sh=self[sid]
-          @sid=sid
-        rescue InvalidID
-          Msg.alert($!.to_s,1)
-        end
+    def shell
+      while current=self[@current].shell
+        @current.replace current
       end
-    rescue UserError
-      $opt.usage('(opt) [id] (layer)')
+    rescue TransLayer
+      raise(TransLayer,$!.to_s)
+    rescue InvalidID
+      $opt.usage('(opt) [id]')
     end
 
     def server(ary)
       ary.each{|i|
         sleep 0.3
-        getsh(i)
+        self[i]
       }.empty? && self[nil]
       sleep
-    rescue UserError
+    rescue InvalidID
       $opt.usage('(opt) [id] ....')
     end
 
-    def switch_layer(sh,gid,title,list)
-      switch_menu(sh,gid,title,list){|id| @sid.layer(id)}
+    private
+    def newsh(id)
     end
 
-    def switch_site(sh,gid,title,list)
-      switch_menu(sh,gid,title,list){|id| @sid.site(id)}
+    def quit_menu
+      grp=@shdom.add_dummy('sh',"Shell Command")
+      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
+    end
+
+    def id_menu(list)
+      grp=@shdom.add_group('id','Switch ID')
+      grp.update_items(list).reset_proc{|item|
+        raise(SelectID,item.id)
+      }
+    end
+  end
+
+  class Layer < Hash
+    def initialize(current=nil)
+      @current=current
+    end
+
+    def shell
+      layer_menu
+      @current||=keys.last
+      begin
+        self[@current].shell
+      rescue TransLayer
+        @current=$!.to_s
+        retry
+      end
     end
 
     private
-    def newsh(sid)
-      Msg.type?(sid,ServerID)
-      Exe.new
-    end
-
-    def switch_menu(sh,gid,title,list)
-      Msg.type?(sh,Sh::Exe)
-      grp=sh.shdom.add_group(gid,title)
-      grp.update_items(list).reset_proc{|item|
-        raise(SelectID,yield(item.id))
+    def layer_menu
+      list={}
+      keys.each{|k|
+        list[k]=k.capitalize+" mode"
       }
-      self
+      values.each{|v|
+        grp=v.shdom.add_group('lay',"Change Layer")
+        grp.update_items(list)
+        grp.reset_proc{|item| raise(TransLayer,item.id)}
+      }
     end
   end
 end

@@ -2,49 +2,53 @@
 require "libmcrsh"
 
 module Mcr
+  class List < Sh::List
+    def initialize(mdb,il)
+      @il=Msg.type?(il,Ins::Layer)
+      cmdlist=Msg::CmdList.new('caption' => 'Macro List','color' => 2)
+      cmdlist['0']='Macro Manager'
+      super(cmdlist,'0')
+      self['0']=Man.new(mdb,self)
+    end
+
+    def newmcr(cobj)
+      num=keys.size.to_s
+      msh=self[num]=Mcr::Sv.new(cobj,@il)
+      msh['total']=num
+      msh.prompt['total']="[#{num}/%s]"
+      msh.shdom.replace @shdom
+      @shdom['id'].cmdlist.delete_if{|k,v| /^1-/ === k}
+      @shdom['id'].cmdlist["1-#{num}"]='Other Macro Process'
+      @shdom['id'].add_item(num).reset_proc{
+        raise(SelectID,num)
+      }
+      msh
+    end
+  end
+
   class Man < Sh::Exe
     # @< cobj,output,upd_proc*
-    def initialize(mdb,il)
+    def initialize(mdb,mlist)
       @mdb=Msg.type?(mdb,Db)
+      @mlist=Msg.type?(mlist,List)
       self['layer']='mcr'
       self['id']=@mdb['id']
       self['total']='0'
-      @mid=ServerID.new('mcr',self['total'])
 
       output=Msg::CmdList.new('caption' => 'Macro List','color' => 2)
+      output['[0]']='Macro Manager'
       prom=Sh::Prompt.new(self,{'total' => "[0/%s]"})
       super(output,prom)
-
-      @mg=@shdom.add_group('mcr','Switch Macro',2)
-
-      output['[0]']='Macro Manager'
-      m0=@mid.to_s
-      il[m0]=self
-      @mg.add_item(self['total'],'Macro Manager').reset_proc{
-        raise(SelectID,m0)
+      @shdom.replace @mlist.shdom
+      @shdom['id'].add_item('0','Macro Manager').reset_proc{
+        raise(SelectID,'0')
       }
-
-      @svdom=@cobj.add_svdom(@mdb).reset_proc{|item|
-        num=self['total'].replace @mid.inc_id.id
-        mkey=@mid.to_s
-        msh=il[mkey]=Mcr::Sv.new(@cobj,il)
-        msh['total']=self['total']
-        msh.prompt['total']="[#{num}/%s]"
-        msh.shdom['mcr']=@mg
-        upd_mg(num)
-        output["[#{num}]"]=msh
-        @mg.add_item(num).reset_proc{
-          raise(SelectID,mkey)
-        }
+      @svdom.ext_svdom(@mdb).reset_proc{|item|
+        msh=@mlist.newmcr(@cobj)
+        output["[#{self['total']}]"]=msh
         msh.start_bg
-        raise(SelectID,mkey)
+        raise(SelectID,self['total'])
       }
-    end
-
-    private
-    def upd_mg(num)
-      @mg.cmdlist.delete_if{|k,v| /^1-/ === k}
-      @mg.cmdlist["1-#{num}"]='Other Macro Process'
     end
   end
 end
@@ -53,8 +57,8 @@ if __FILE__ == $0
   begin
     il=Ins::Layer.new('mcr')
     mdb=Mcr::Db.new.set('ciax')
-    man=Mcr::Man.new(mdb,il)
-    il.shell('0')
+    man=Mcr::List.new(mdb,il)
+    man.shell
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")
   end

@@ -17,7 +17,7 @@ module Sh
   class Exe < ExHash # Having server status {id,msg,...}
     attr_reader :upd_proc,:output,:svdom,:shdom
     # block gives command line convert
-    def initialize(output={},prompt=self)
+    def initialize(output={},prompt=self,shdom=nil)
       init_ver(self,2)
       @cobj=Command.new
       @upd_proc=UpdProc.new # Proc for Server Status Update
@@ -25,7 +25,8 @@ module Sh
       # For Shell
       @output=output
       @prompt=prompt
-      @shdom=@cobj.add_domain('sh',9) # Shared Commands (handle locally at Client)
+      shdom||=@cobj.add_domain('sh',9) # Shared Commands (handle locally at Client)
+      @shdom=Msg.type?(shdom,Command::Domain)
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }

@@ -46,7 +46,7 @@ module App
     end
 
     private
-    def shell_conv(line)
+    def shell_input(line)
       line='set '+line if /^[^ ]+\=/ === line
       line
     end

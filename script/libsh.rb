@@ -57,7 +57,7 @@ module Sh
       begin
         while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
-          line=shell_conv(line)
+          line=shell_input(line)
           res=exe(line.split(' '))
           puts res['msg'].empty? ? @output : res['msg']
         end
@@ -82,7 +82,7 @@ module Sh
 
     # Overridable methods(do not set this kind of methods in modules)
     private
-    def shell_conv(line)
+    def shell_input(line)
       line
     end
 

@@ -44,7 +44,7 @@ module Frm
     end
 
     private
-    def shell_conv(line)
+    def shell_input(line)
       line='set '+line.tr('=',' ') if /^[^ ]+\=/ === line
       line
     end

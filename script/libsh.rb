@@ -58,8 +58,8 @@ module Sh
         while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
           line=shell_input(line)
-          res=exe(line.split(' '))
-          puts res['msg'].empty? ? @output : res['msg']
+          exe(line.split(' '))
+          puts shell_output
         end
       rescue SelectID
         $!.to_s
@@ -84,6 +84,10 @@ module Sh
     private
     def shell_input(line)
       line
+    end
+
+    def shell_output
+      self['msg'].empty? ? @output : self['msg']
     end
 
     def server_input(line)

@@ -45,8 +45,9 @@ module Frm
 
     private
     def shell_input(line)
-      line='set '+line.tr('=',' ') if /^[^ ]+\=/ === line
-      line
+      cmd=line.split(/[ =]/)
+      cmd.unshift 'set' if /^[^ ]+\=/ === line
+      cmd
     end
   end
 

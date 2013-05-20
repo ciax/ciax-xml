@@ -57,8 +57,7 @@ module Sh
       begin
         while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
-          line=shell_input(line)
-          exe(line.split(' '))
+          exe(shell_input(line))
           puts shell_output
         end
       rescue SelectID
@@ -83,7 +82,7 @@ module Sh
     # Overridable methods(do not set this kind of methods in modules)
     private
     def shell_input(line)
-      line
+      line.split(' ')
     end
 
     def shell_output

@@ -47,8 +47,9 @@ module App
 
     private
     def shell_input(line)
-      line='set '+line if /^[^ ]+\=/ === line
-      line
+      cmd=super
+      cmd.unshift 'set' if /^[^ ]+\=/ === line
+      cmd
     end
 
     def init_view

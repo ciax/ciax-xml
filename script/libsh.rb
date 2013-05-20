@@ -13,20 +13,20 @@ require "libupdate"
 
 module Sh
   # @ cobj,output,upd_proc
-  # @ prompt,shdom
+  # @ prompt,lodom
   class Exe < ExHash # Having server status {id,msg,...}
-    attr_reader :upd_proc,:output,:svdom,:shdom
+    attr_reader :upd_proc,:output,:svdom,:lodom
     # block gives command line convert
-    def initialize(output={},prompt=self,shdom=nil)
+    def initialize(output={},prompt=self,lodom=nil)
       init_ver(self,2)
       @cobj=Command.new
       @upd_proc=UpdProc.new # Proc for Server Status Update
-      @svdom=@cobj.add_domain('sv',6) # Server Commands (send to server at Client)
+      @svdom=@cobj.add_domain('sv',6) # Server Commands (service commands at Server)
       # For Shell
       @output=output
       @prompt=prompt
-      shdom||=@cobj.add_domain('sh',9) # Shared Commands (handle locally at Client)
-      @shdom=Msg.type?(shdom,Command::Domain)
+      lodom||=@cobj.add_domain('sh',9) # Local Commands (local handling commands at Client)
+      @lodom=Msg.type?(lodom,Command::Domain)
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
@@ -196,16 +196,16 @@ module Sh
   end
 
   class List < ExHash
-    attr_accessor :shdom,:current
+    attr_accessor :lodom,:current
     def initialize(list,current=nil)
       $opt||=Msg::GetOpts.new
-      @shdom=Command::Domain.new(9)
+      @lodom=Command::Domain.new(9)
       id_menu(Msg.type?(list,Msg::CmdList))
       quit_menu
       @current=current||""
       super(){|h,key|
         sh=h[key]=newsh(key)
-        sh.shdom.replace @shdom
+        sh.lodom.replace @lodom
         sh
       }
     end
@@ -241,12 +241,12 @@ module Sh
     end
 
     def quit_menu
-      grp=@shdom.add_dummy('sh',"Shell Command")
+      grp=@lodom.add_dummy('sh',"Shell Command")
       grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
     end
 
     def id_menu(list)
-      grp=@shdom.add_group('id','Switch ID')
+      grp=@lodom.add_group('id','Switch ID')
       grp.update_items(list).reset_proc{|item|
         raise(SelectID,item.id)
       }
@@ -276,7 +276,7 @@ module Sh
         list[k]=k.capitalize+" mode"
       }
       values.each{|v|
-        grp=v.shdom.add_group('lay',"Change Layer")
+        grp=v.lodom.add_group('lay',"Change Layer")
         grp.update_items(list)
         grp.reset_proc{|item| raise(TransLayer,item.id)}
       }

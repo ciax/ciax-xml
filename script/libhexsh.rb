@@ -24,7 +24,7 @@ module Hex
       stat=Status::Var.new.ext_file(@adb['site_id'])
       prom=Sh::Prompt.new(self)
       super(View.new(self,stat),prom)
-      @svdom.ext_svdom(@adb)
+      @extgrp=@svdom.add_extgrp(@adb)
       self
     end
   end

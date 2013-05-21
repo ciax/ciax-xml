@@ -37,7 +37,6 @@ module App
       super(@stat,prom)
       @extgrp=@svdom.add_extgrp(@adb)
       @intgrp=@svdom.add_intgrp
-      @intgrp.add_item('interrupt')
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       self
     end
@@ -85,7 +84,7 @@ module App
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
-      @intgrp['interrupt'].reset_proc{
+      @interrupt.reset_proc{
         int=@watch.interrupt
         self['msg']="Interrupt #{int}"
       }
@@ -141,7 +140,7 @@ module App
         verbose{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      @intgrp['interrupt'].reset_proc{
+      @interrupt.reset_proc{
         int=@watch.interrupt
         verbose{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

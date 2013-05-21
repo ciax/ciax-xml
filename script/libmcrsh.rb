@@ -22,7 +22,6 @@ module Mcr
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
       @intgrp=@svdom.add_group('int',"Internal Command")
-      @hidgrp=@svdom.add_group('hid',"Hidden Command")
     end
 
     def start
@@ -44,7 +43,7 @@ module Mcr
 
     def start_bg
       # For shell
-      @hidgrp.add_item('interrupt').reset_proc{|i| @th.raise(Interrupt)}
+      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
       @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
       @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
       @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}

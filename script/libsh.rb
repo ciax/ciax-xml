@@ -22,6 +22,7 @@ module Sh
       @cobj=Command.new
       @upd_proc=UpdProc.new # Proc for Server Status Update
       @svdom=@cobj.add_domain('sv',6) # Server Commands (service commands on Server)
+      @interrupt=@svdom.add_group('hid',"Hidden Group").add_item('interrupt')
       # For Shell
       @output=output
       @prompt=prompt
@@ -64,7 +65,8 @@ module Sh
       rescue SelectID
         $!.to_s
       rescue Interrupt
-        puts exe(['interrupt'])['msg']
+        exe(['interrupt'])
+        puts self['msg']
         retry
       rescue InvalidID
         puts $!.to_s

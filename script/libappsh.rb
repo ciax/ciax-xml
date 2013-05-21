@@ -35,8 +35,8 @@ module App
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
       super(@stat,prom)
-      @extgrp=@svdom.add_extgrp(@adb)
       @intgrp=@svdom.add_intgrp
+      @extgrp=@svdom.add_extgrp(@adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       self
     end

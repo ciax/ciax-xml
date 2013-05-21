@@ -30,9 +30,7 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       prom=Sh::Prompt.new(self)
       super(@field,prom)
-      @extgrp=@svdom.add_extgrp(fdb)
       @svdom.def_proc.set{|item|@field['time']=UnixTime.now}
-      idx={:type =>'str',:list => @field['val'].keys}
       any={:type =>'reg',:list => ["."]}
       @intgrp=@svdom.add_intgrp
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
@@ -40,6 +38,7 @@ module Frm
       @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|
         @field.set(*item.par)
       }
+      @extgrp=@svdom.add_extgrp(fdb)
       self
     end
 

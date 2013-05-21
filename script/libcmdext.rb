@@ -30,19 +30,19 @@ class Command
         if gdb=@cdb[:group]
           #For App Layer
           gdb.each{|gid,gat|
-            sublist=Msg::CmdList.new(gat,@valid_keys)
+            subgrp=Msg::CmdList.new(gat,@valid_keys)
             gat[:members].each{|id|
-              update_sublist(sublist,id)
+              update_subgrp(subgrp,id)
             }
-            @cmdlist << sublist
+            @cmdlist << subgrp
           }
         else
           #For Frm Layer
-          sublist=Msg::CmdList.new({'color' => '6','caption' => "External Commands"},@valid_keys)
+          subgrp=Msg::CmdList.new({'color' => '6','caption' => "External Commands"},@valid_keys)
           @cdb[:select].keys.each{|id|
-            update_sublist(sublist,id)
+            update_subgrp(subgrp,id)
           }
-          @cmdlist << sublist
+          @cmdlist << subgrp
         end
         @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
       end
@@ -53,8 +53,8 @@ class Command
     end
 
     private
-    def update_sublist(sublist,id)
-      sublist[id]=@cdb[:label][id]
+    def update_subgrp(subgrp,id)
+      subgrp[id]=@cdb[:label][id]
       self[id]=ExtItem.new(@cdb,id,@def_proc)
       self
     end

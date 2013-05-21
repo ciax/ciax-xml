@@ -139,6 +139,7 @@ module Msg
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
       @caption='==== '+Msg.color(caption,color)+' ====' if caption
+      @show_all=attr["show_all"]
       @select=Msg.type?(select,Array)
     end
 
@@ -164,15 +165,18 @@ module Msg
     end
 
     def to_s
-      page=[]
+      page=[@caption]
       (keys & @select).each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact
         page << l.join("\t") unless l.empty?
       }
-      page.unshift @caption unless page.empty?
-      page.compact.join("\n")
+      if @show_all || page.size > 1
+        page.compact.join("\n")
+      else
+        ''
+      end
     end
 
     def error

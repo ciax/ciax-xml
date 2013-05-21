@@ -5,61 +5,54 @@ require 'librerange'
 # For External Command Domain
 class Command
   class Domain
-    def ext_svdom(db)
-      extend(SvDom).setdb(db)
-    end
-  end
-
-  module SvDom
     def self.extended(obj)
-      Msg.type?(obj,Command::Domain)
+      Msg.type?(obj,Domain)
     end
 
-    def setdb(db)
-      @db=Msg.type?(db,Db)
-      if @cdb=db[:command]
-        items={}
-        labels=@cdb[:label]
-        if gdb=@cdb[:group]
-          #For App Layer
-          gdb.each{|gid,gat|
-            items.update def_group(gid,labels,gat)
-          }
-        else
-          #For Frm Layer
-          gat={'color' => @color,'caption' => "Command List"}
-          # If no group, use :select for grouplist
-          gat[:members]=@cdb[:select].keys
-          items.update def_group('main',labels,gat)
-        end
-        @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
-      end
-      add_group('int','Internal Command').add_item('interrupt')
-      self
+    def add_extgrp(db)
+      self['ext']=ExtGrp.new(db)
     end
 
-    private
-    # Make Default groups (generated from Db)
-    def def_group(gid,labels,gat)
-      return {} if key?(gid)
-      self[gid]=ExtGrp.new(gat,@def_proc).update_items(@cdb)
-    end
-
-    def ext_item
-      each{|k,grp|
-        grp.values.each{|item|
-          yield item
-        } unless k == 'int'
-      }
+    def add_intgrp
+      add_group('int','Internal Commands')
     end
   end
 
   class ExtGrp < Group
-    def update_items(cdb)
-      @attr[:members].each{|id|
-        @cmdlist[id]=cdb[:label][id]
-        self[id]=ExtItem.new(cdb,id,@def_proc)
-      }
+    def initialize(db)
+      @db=Msg.type?(db,Db)
+      @cmdlist=[]
+      @def_proc=ExeProc.new
+      if @cdb=db[:command]
+        if gdb=@cdb[:group]
+          #For App Layer
+          gdb.each{|gid,gat|
+            sublist=Msg::CmdList.new(gat)
+            gat[:members].each{|id|
+              update_sublist(sublist,id)
+            }
+            @cmdlist << sublist
+          }
+        else
+          #For Frm Layer
+          sublist=Msg::CmdList.new({'color' => '6','caption' => "External Commands"})
+          @cdb[:select].keys.each{|id|
+            update_sublist(sublist,id)
+          }
+          @cmdlist << sublist
+        end
+        @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
+      end
+    end
+
+    def list
+      @cmdlist.join("\n")
+    end
+
+    private
+    def update_sublist(sublist,id)
+      sublist[id]=@cdb[:label][id]
+      self[id]=ExtItem.new(@cdb,id,@def_proc)
       self
     end
   end
@@ -69,6 +62,7 @@ class Command
     attr_reader :select
     def initialize(cdb,id,def_proc)
       super(id,def_proc)
+      # because cdb is separated by title
       cdb.each{|k,v|
         if a=v[@id]
           self[k]=a
@@ -134,10 +128,11 @@ if __FILE__ == $0
     Msg::GetOpts.new("af")
     ldb=Loc::Db.new.set(ARGV.shift)
     cobj=Command.new
+    shdom=cobj.add_domain('sh')
     if $opt["f"]
-      cobj.add_svdom(ldb[:frm])
+      shdom.add_extgrp(ldb[:frm])
     else
-      cobj.add_svdom(ldb[:app])
+      shdom.add_extgrp(ldb[:app])
     end
     puts cobj.setcmd(ARGV)
   rescue InvalidID

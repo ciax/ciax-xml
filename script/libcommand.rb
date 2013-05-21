@@ -77,18 +77,23 @@ class Command < ExHash
     attr_reader :def_proc
     def initialize(color=2)
       init_ver(self)
+      @grplist=[]
       @color=color
       @def_proc=ExeProc.new
     end
 
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      self[gid]=Group.new(attr,@def_proc)
+      grp=self[gid]=Group.new(attr,@def_proc)
+      @grplist.unshift grp
+      grp
     end
 
     def add_dummy(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      self[gid]=Dummy.new(attr)
+      grp=self[gid]=Dummy.new(attr)
+      @grplist << grp
+      grp
     end
 
     def reset_proc(&p)
@@ -99,7 +104,7 @@ class Command < ExHash
     end
 
     def list
-      values.map{|grp| grp.list}.grep(/./).join("\n")
+      @grplist.map{|grp| grp.list}.grep(/./).join("\n")
     end
 
     def group_with_item(id)

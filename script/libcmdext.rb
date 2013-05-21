@@ -10,7 +10,9 @@ class Command
     end
 
     def add_extgrp(db)
-      self['ext']=ExtGrp.new(db)
+      grp=self['ext']=ExtGrp.new(db)
+      @grplist.unshift grp
+      grp
     end
 
     def add_intgrp

@@ -90,7 +90,7 @@ class Command < ExHash
     end
 
     def add_dummy(gid,caption,column=2)
-      attr={'caption' => caption,'column' => column,'color' => @color}
+      attr={'caption' => caption,'column' => column,'color' => 1}
       grp=self[gid]=Dummy.new(attr)
       @grplist << grp
       grp

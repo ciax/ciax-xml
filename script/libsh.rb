@@ -21,7 +21,7 @@ module Sh
       init_ver(self,2)
       @cobj=Command.new
       @upd_proc=UpdProc.new # Proc for Server Status Update
-      @svdom=@cobj.add_domain('sv',6) # Server Commands (service commands on Server)
+      @svdom=@cobj.add_domain('sv',2) # Server Commands (service commands on Server)
       @interrupt=@svdom.add_group('hid',"Hidden Group").add_item('interrupt')
       # For Shell
       @output=output

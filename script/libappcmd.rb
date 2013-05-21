@@ -36,9 +36,9 @@ module App
   end
 end
 
-module Command::SvDom
+class Command::ExtGrp
   def ext_appcmd
-    ext_item{|item|
+    values.each{|item|
       item.extend(App::Cmd).init_ver('AppCmd',9)
     }
     self
@@ -52,9 +52,11 @@ if __FILE__ == $0
   begin
     adb=App::Db.new.set(app)
     fcobj=Command.new
-    fcobj.add_svdom(Frm::Db.new.set(adb['frm_id']))
+    fsvdom=fcobj.add_domain('sv')
+    fsvdom.add_extgrp(Frm::Db.new.set(adb['frm_id']))
     acobj=Command.new
-    acobj.add_svdom(adb).ext_appcmd
+    asvdom=acobj.add_domain('sv')
+    asvdom.add_extgrp(adb).ext_appcmd
     acobj.setcmd(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
       fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first

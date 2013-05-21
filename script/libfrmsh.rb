@@ -77,7 +77,7 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @svdom.ext_frmcmd(@field).reset_proc{|item|
+      @extgrp.ext_frmcmd(@field).reset_proc{|item|
         @io.snd(item.getframe,item[:cmd])
         @field.upd{@io.rcv} && @field.save
       }

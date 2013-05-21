@@ -26,6 +26,7 @@ module Sh
       @output=output
       @prompt=prompt
       @lodom=@cobj.add_domain('lo',9) # Local Commands (local handling commands on Client)
+      @lodom.add_dummy('sh',"Shell Command").update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
@@ -201,7 +202,6 @@ module Sh
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
       id_menu(Msg.type?(list,Msg::CmdList))
-      quit_menu
       @current=current||""
       super(){|h,key|
         sh=h[key]=newsh(key)
@@ -238,11 +238,6 @@ module Sh
 
     private
     def newsh(id)
-    end
-
-    def quit_menu
-      grp=@shdom.add_dummy('sh',"Shell Command")
-      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
     end
 
     def id_menu(list)

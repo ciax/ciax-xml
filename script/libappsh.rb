@@ -38,12 +38,7 @@ module App
       @intgrp=@svdom.add_intgrp
       @extgrp=@svdom.add_extgrp(@adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
-      self
-    end
-
-    def shell
       init_view
-      super
     end
 
     private

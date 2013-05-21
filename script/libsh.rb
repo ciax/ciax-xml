@@ -25,7 +25,7 @@ module Sh
       # For Shell
       @output=output
       @prompt=prompt
-      @lodom=@cobj.add_domain('sh',9) # Local Commands (local handling commands on Client)
+      @lodom=@cobj.add_domain('lo',9) # Local Commands (local handling commands on Client)
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }

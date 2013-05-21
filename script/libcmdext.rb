@@ -129,11 +129,11 @@ if __FILE__ == $0
     Msg::GetOpts.new("af")
     ldb=Loc::Db.new.set(ARGV.shift)
     cobj=Command.new
-    shdom=cobj.add_domain('sh')
+    svdom=cobj.add_domain('sv')
     if $opt["f"]
-      shdom.add_extgrp(ldb[:frm])
+      svdom.add_extgrp(ldb[:frm])
     else
-      shdom.add_extgrp(ldb[:app])
+      svdom.add_extgrp(ldb[:app])
     end
     puts cobj.setcmd(ARGV)
   rescue InvalidID

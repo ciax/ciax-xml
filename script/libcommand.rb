@@ -50,7 +50,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     grp=group_with_item(id) || error
-    grp.cmdlist.valid_key?(id) || error
+    grp.valid_keys.include?(id) || error
     @current=grp[id]
     verbose{"SetCMD (#{id},#{par})"}
     @current.set_par(par)
@@ -128,13 +128,14 @@ class Command < ExHash
   end
 
   class Group < ExHash
-    attr_reader :cmdlist
+    attr_reader :cmdlist,:valid_keys
     attr_accessor :def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
-      @cmdlist=Msg::CmdList.new(attr)
+      @valid_keys=[]
+      @cmdlist=Msg::CmdList.new(attr,@valid_keys)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 

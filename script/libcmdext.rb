@@ -21,13 +21,14 @@ class Command
   class ExtGrp < Group
     def initialize(db)
       @db=Msg.type?(db,Db)
+      @valid_keys=[]
       @cmdlist=[]
       @def_proc=ExeProc.new
       if @cdb=db[:command]
         if gdb=@cdb[:group]
           #For App Layer
           gdb.each{|gid,gat|
-            sublist=Msg::CmdList.new(gat)
+            sublist=Msg::CmdList.new(gat,@valid_keys)
             gat[:members].each{|id|
               update_sublist(sublist,id)
             }
@@ -35,7 +36,7 @@ class Command
           }
         else
           #For Frm Layer
-          sublist=Msg::CmdList.new({'color' => '6','caption' => "External Commands"})
+          sublist=Msg::CmdList.new({'color' => '6','caption' => "External Commands"},@valid_keys)
           @cdb[:select].keys.each{|id|
             update_sublist(sublist,id)
           }

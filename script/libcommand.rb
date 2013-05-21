@@ -158,10 +158,9 @@ class Command < ExHash
       item
     end
 
-    #property = {:label => 'titile',:parameter => Array}
     def update_items(labels)
-      (@attr[:members]||labels.keys).each{|id|
-        @cmdlist[id]=labels[id]
+      labels.each{|id,title|
+        @cmdlist[id]=title
         self[id]=Item.new(id,@def_proc)
       }
       self

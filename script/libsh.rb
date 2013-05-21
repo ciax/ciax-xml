@@ -199,11 +199,11 @@ module Sh
 
   class List < ExHash
     # shdom: Domain for Shared Command Groups
-    attr_accessor :shdom,:current
+    attr_accessor :shdom,:idgrp,:current
     def initialize(list,current=nil)
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
-      id_menu(Msg.type?(list,Msg::CmdList))
+      @idgrp=id_menu(Msg.type?(list,Msg::CmdList))
       @current=current||""
       super(){|h,key|
         sh=h[key]=newsh(key)
@@ -247,6 +247,7 @@ module Sh
       grp.update_items(list).reset_proc{|item|
         raise(SelectID,item.id)
       }
+      grp
     end
   end
 

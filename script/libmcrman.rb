@@ -16,10 +16,9 @@ module Mcr
       msh=self[num]=Mcr::Sv.new(cobj,@il)
       msh['total']=num
       msh.prompt['total']="[#{num}/%s]"
-      msh.lodom.replace @lodom
-      @lodom['id'].cmdlist.delete_if{|k,v| /^1-/ === k}
-      @lodom['id'].cmdlist["1-#{num}"]='Other Macro Process'
-      @lodom['id'].add_item(num).reset_proc{
+      @idgrp.cmdlist.delete_if{|k,v| /^1-/ === k}
+      @idgrp.cmdlist["1-#{num}"]='Other Macro Process'
+      @idgrp.add_item(num).reset_proc{
         raise(SelectID,num)
       }
       msh
@@ -39,11 +38,11 @@ module Mcr
       output['[0]']='Macro Manager'
       prom=Sh::Prompt.new(self,{'total' => "[0/%s]"})
       super(output,prom)
-      @lodom.replace @mlist.lodom
-      @lodom['id'].add_item('0','Macro Manager').reset_proc{
+      @lodom.update @mlist.shdom
+      @mlist.idgrp.add_item('0','Macro Manager').reset_proc{
         raise(SelectID,'0')
       }
-      @svdom.ext_svdom(@mdb).reset_proc{|item|
+      @svdom.add_extgrp(@mdb).reset_proc{|item|
         msh=@mlist.newmcr(@cobj)
         output["[#{self['total']}]"]=msh
         msh.start_bg

@@ -120,6 +120,11 @@ class Command < ExHash
       @cmdlist=Msg::CmdList.new(attr)
     end
 
+    def add_item(id,title)
+      @cmdlist[id]=title
+      self
+    end
+
     def update_items(labels)
       labels.each{|k,v|
         @cmdlist[k]=v

@@ -95,7 +95,7 @@ module Frm
     end
   end
 
-  class List < Sh::List
+  class List < Sh::DevList
     def initialize(current=nil)
       @ldb=Loc::Db.new
       super(@ldb.list,"#{current}")

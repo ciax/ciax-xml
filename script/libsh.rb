@@ -201,21 +201,10 @@ module Sh
 
   class List < ExHash
     # shdom: Domain for Shared Command Groups
-    attr_accessor :shdom,:idgrp,:current
+    attr_accessor :shdom,:current
     def initialize(list,current=nil)
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
-      @idgrp=@shdom.add_group('id','Switch ID')
-      Msg.type?(list,Msg::CmdList)
-      @idgrp.update_items(list).reset_proc{|item|
-        raise(SelectID,item.id)
-      }
-      @current=current||""
-      super(){|h,key|
-        sh=h[key]=newsh(key)
-        sh.lodom.update @shdom
-        sh
-      }
     end
 
     def exe(stm)
@@ -232,6 +221,30 @@ module Sh
       raise(TransLayer,$!.to_s)
     rescue InvalidID
       $opt.usage('(opt) [id]')
+    end
+  end
+
+  class DevList < List
+    # shdom: Domain for Shared Command Groups
+    attr_accessor :idgrp
+    def initialize(list,current=nil)
+      super
+      @idgrp=@shdom.add_group('sit','Switch Sites')
+      Msg.type?(list,Msg::CmdList)
+      @idgrp.update_items(list).reset_proc{|item|
+        raise(SelectID,item.id)
+      }
+      @current=current||""
+    end
+
+    def [](key)
+      if key?(key)
+        super
+      else
+        sh=self[key]=newsh(key)
+        sh.lodom.update @shdom
+        sh
+      end
     end
 
     def server(ary)

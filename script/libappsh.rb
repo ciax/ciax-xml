@@ -206,7 +206,7 @@ module App
     end
   end
 
-  class List < Sh::List
+  class List < Sh::DevList
     def initialize(current=nil)
       @ldb=Loc::Db.new
       if Frm::List === current

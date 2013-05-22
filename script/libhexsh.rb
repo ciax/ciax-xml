@@ -61,7 +61,7 @@ module Hex
     end
   end
 
-  class List < Sh::List
+  class List < Sh::DevList
     def initialize(al=nil)
       @al=al||App::List.new
       super(Loc::Db.new.list,"#{@al.current}")

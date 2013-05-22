@@ -82,6 +82,11 @@ class Command < ExHash
       @def_proc=ExeProc.new
     end
 
+    def update(h)
+      h.values.each{|v| @grplist.unshift Msg.type?(v,Group)}
+      super
+    end
+
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
       grp=self[gid]=Group.new(attr,@def_proc)

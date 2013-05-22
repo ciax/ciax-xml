@@ -44,11 +44,11 @@ module Mcr
     def start_bg
       # For shell
       @interrupt.reset_proc{|i| @th.raise(Interrupt)}
-      @intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
-      @intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
-      @intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
-      @intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
-      @intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
+      @intgrp.add_item('e','Execute Command').reset_proc{ ans('e') }
+      @intgrp.add_item('s','Skip Execution').reset_proc{ ans('s') }
+      @intgrp.add_item('d','Done Macro').reset_proc{ ans('d') }
+      @intgrp.add_item('f','Force Proceed').reset_proc{ ans('f') }
+      @intgrp.add_item('r','Retry Checking').reset_proc{ ans('r') }
       @intgrp.valid_keys.clear
       @th=Thread.new{ start }
       @th

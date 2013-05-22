@@ -16,7 +16,7 @@ module Mcr
       @item=@mobj.current
       @il=Msg.type?(il,Ins::Layer)
       self['layer']='mcr'
-      self['id']=@item.id
+      self['id']=@item[:cmd]
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})

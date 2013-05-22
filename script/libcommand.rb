@@ -96,7 +96,7 @@ class Command < ExHash
 
     def add_dummy(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => 1}
-      grp=self[gid]=Dummy.new(attr)
+      grp=self[gid]=BasicGroup.new(attr)
       @grplist << grp
       grp
     end
@@ -119,9 +119,10 @@ class Command < ExHash
     end
   end
 
-  class Dummy < ExHash
+  class BasicGroup < ExHash
     attr_reader :cmdlist
     def initialize(attr)
+      init_ver(self)
       @cmdlist=Msg::CmdList.new(attr)
     end
 
@@ -142,8 +143,8 @@ class Command < ExHash
     end
   end
 
-  class Group < ExHash
-    attr_reader :cmdlist,:valid_keys
+  class Group < BasicGroup
+    attr_reader :valid_keys
     attr_accessor :def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=ExeProc.new)
@@ -155,7 +156,7 @@ class Command < ExHash
     end
 
     def add_item(id,title=nil,parameter=nil)
-      @cmdlist[id]=title
+      super(id,title)
       item=self[id]=Item.new(id,@def_proc)
       property={:label => title}
       property[:parameter] = parameter if parameter
@@ -177,10 +178,6 @@ class Command < ExHash
         v.reset_proc &p
       }
       self
-    end
-
-    def list
-      @cmdlist.to_s
     end
   end
 

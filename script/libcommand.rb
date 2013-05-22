@@ -209,10 +209,6 @@ class Command < ExHash
       self
     end
 
-    def to_s
-      Msg.item(@id,self[:label])
-    end
-
     private
     # Parameter structure {:type,:val}
     def validate(pary)

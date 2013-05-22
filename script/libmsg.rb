@@ -148,6 +148,11 @@ module Msg
       super
     end
 
+    def update(h)
+      @select+=h.keys
+      super
+    end
+
     # Reset @select
     def reset!
       @select.replace keys
@@ -156,17 +161,13 @@ module Msg
 
     # For ver 1.9 or more
     def sort!
-      hash={}
-      keys.sort.each{|k|
-        hash[k]=self[k]
-      }
-      reset!
-      replace(hash)
+      @select.sort!
+      self
     end
 
     def to_s
       page=[@caption]
-      (keys & @select).each_slice(@col){|a|
+      (@select & keys).each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact

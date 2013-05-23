@@ -87,18 +87,19 @@ class Command < ExHash
       super
     end
 
+    def []=(gid,grp)
+      @grplist.unshift grp
+      super
+    end
+
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      grp=self[gid]=Group.new(attr,@def_proc)
-      @grplist.unshift grp
-      grp
+      self[gid]=Group.new(attr,@def_proc)
     end
 
     def add_dummy(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => 1}
-      grp=self[gid]=BasicGroup.new(attr)
-      @grplist << grp
-      grp
+      self[gid]=BasicGroup.new(attr)
     end
 
     def reset_proc(&p)

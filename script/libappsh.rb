@@ -129,7 +129,7 @@ module App
       }
       Thread.abort_on_exception=true
       @buf=init_buf
-      @extgrp.ext_appcmd.reset_proc{|item|
+      @extgrp.reset_proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
         verbose{"#{self['id']}/Issued:#{item.cmd},"}

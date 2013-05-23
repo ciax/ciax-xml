@@ -231,7 +231,7 @@ module Sh
     def initialize(list,current=nil)
       Msg.type?(list,Msg::CmdList)
       super(current)
-      @idgrp=@shdom.add_group('sit','Switch Sites')
+      @idgrp=@shdom.add_group('sws','Switch Sites')
       @idgrp.update_items(list).reset_proc{|item|
         raise(SelectID,item.id)
       }

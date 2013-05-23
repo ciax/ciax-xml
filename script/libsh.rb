@@ -227,12 +227,12 @@ module Sh
 
   class DevList < List
     # shdom: Domain for Shared Command Groups
-    attr_accessor :idgrp
+    attr_accessor :swsgrp
     def initialize(list,current=nil)
       Msg.type?(list,Msg::CmdList)
       super(current)
-      @idgrp=@shdom.add_group('sws','Switch Sites')
-      @idgrp.update_items(list).reset_proc{|item|
+      @swsgrp=@shdom.add_group('sws','Switch Sites')
+      @swsgrp.update_items(list).reset_proc{|item|
         raise(SelectID,item.id)
       }
     end

@@ -266,8 +266,8 @@ module Sh
     def initialize(current=nil)
       @current=current
       @shdom=Command::Domain.new
-      @lgrp=@shdom.add_group('lay',"Change Layer")
-      @lgrp.reset_proc{|item| raise(TransLayer,item.id) }
+      @swlgrp=@shdom.add_group('swl',"Switch Layer")
+      @swlgrp.reset_proc{|item| raise(TransLayer,item.id) }
     end
 
     def shell
@@ -284,7 +284,7 @@ module Sh
     private
     def layer_menu
       each{|k,list|
-        @lgrp.add_item(k,k.capitalize+" mode")
+        @swlgrp.add_item(k,k.capitalize+" mode")
         list.shdom.update @shdom
       }
     end

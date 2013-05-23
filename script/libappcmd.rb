@@ -3,11 +3,28 @@ require "libmsg"
 require "libcmdext"
 
 module App
-  module Cmd
-    def self.extended(obj)
-      Msg.type?(obj,Command::ExtItem)
+  class ExtGrp < Command::ExtGrp
+    def initialize(db)
+      @db=Msg.type?(db,Db)
+      @valid_keys=[]
+      @cmdlist=[]
+      @def_proc=ExeProc.new
+      if @cdb=db[:command]
+        gdb=@cdb[:group]
+        gdb.each{|gid,gat|
+          subgrp=Msg::CmdList.new(gat,@valid_keys)
+          gat[:members].each{|id|
+            subgrp[id]=@cdb[:label][id]
+            self[id]=ExtItem.new(@cdb,id,@def_proc)
+          }
+          @cmdlist << subgrp
+        }
+        @cdb[:alias].each{|k,v| self[k].replace self[v]} if @cdb.key?(:alias)
+      end
     end
+  end
 
+  class ExtItem < Command::ExtItem
     #frmcmd is ary of ary
     def getcmd
       frmcmd=[]
@@ -36,15 +53,6 @@ module App
   end
 end
 
-class Command::ExtGrp
-  def ext_appcmd
-    values.each{|item|
-      item.extend(App::Cmd).init_ver('AppCmd',9)
-    }
-    self
-  end
-end
-
 if __FILE__ == $0
   require "libappdb"
   require "libfrmdb"
@@ -56,7 +64,7 @@ if __FILE__ == $0
     fsvdom.add_extgrp(Frm::Db.new.set(adb['frm_id']))
     acobj=Command.new
     asvdom=acobj.add_domain('sv')
-    asvdom.add_extgrp(adb).ext_appcmd
+    asvdom['ext']=App::ExtGrp.new(adb)
     acobj.setcmd(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
       fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first

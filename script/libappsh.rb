@@ -36,7 +36,7 @@ module App
       prom=Sh::Prompt.new(self,plist)
       super(@stat,prom)
       @intgrp=@svdom.add_intgrp
-      @extgrp=@svdom.add_extgrp(@adb)
+      @extgrp=@svdom['ext']=App::ExtGrp.new(@adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       init_view
     end

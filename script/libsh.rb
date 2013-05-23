@@ -202,9 +202,10 @@ module Sh
   class List < ExHash
     # shdom: Domain for Shared Command Groups
     attr_accessor :shdom,:current
-    def initialize(list,current=nil)
+    def initialize(current=nil)
       $opt||=Msg::GetOpts.new
       @shdom=Command::Domain.new(9)
+      @current=current||""
     end
 
     def exe(stm)
@@ -228,13 +229,12 @@ module Sh
     # shdom: Domain for Shared Command Groups
     attr_accessor :idgrp
     def initialize(list,current=nil)
-      super
-      @idgrp=@shdom.add_group('sit','Switch Sites')
       Msg.type?(list,Msg::CmdList)
+      super(current)
+      @idgrp=@shdom.add_group('sit','Switch Sites')
       @idgrp.update_items(list).reset_proc{|item|
         raise(SelectID,item.id)
       }
-      @current=current||""
     end
 
     def [](key)

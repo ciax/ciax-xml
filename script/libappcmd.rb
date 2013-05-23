@@ -56,12 +56,13 @@ end
 if __FILE__ == $0
   require "libappdb"
   require "libfrmdb"
+  require "libfrmcmd"
   app,*cmd=ARGV
   begin
     adb=App::Db.new.set(app)
     fcobj=Command.new
     fsvdom=fcobj.add_domain('sv')
-    fsvdom.add_extgrp(Frm::Db.new.set(adb['frm_id']))
+    fsvdom['ext']=Frm::ExtGrp.new(Frm::Db.new.set(adb['frm_id']))
     acobj=Command.new
     asvdom=acobj.add_domain('sv')
     asvdom['ext']=App::ExtGrp.new(adb)

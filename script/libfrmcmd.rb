@@ -1,24 +1,35 @@
 #!/usr/bin/ruby
+require "libfield"
 require "libframe"
 require "libcmdext"
 # Cmd Methods
 module Frm
-  module Cmd
-    def self.extended(obj)
-      Msg.type?(obj,Command::ExtItem)
+  class ExtGrp < Command::ExtGrp
+    def initialize(db,field=Field::Var.new)
+      super(db)
+      if cdb=db[:command]
+        subgrp=Msg::CmdList.new({'color' => '6','caption' => "External Commands"},@valid_keys)
+        cdb[:select].keys.each{|id|
+          subgrp[id]=cdb[:label][id]
+          self[id]=ExtItem.new(field,@db,id,@def_proc)
+        }
+        @cmdlist << subgrp
+      end
     end
+  end
 
-    def ext_frmcmd(field,db)
+  class ExtItem < Command::ExtItem
+    def initialize(field,db,id,def_proc)
       init_ver('FrmCmd',9)
-      verbose{"Extending Command by Frm::Cmd"}
       @field=Msg.type?(field,Field::Var)
+      cdb=db[:command]
+      super(cdb,id,def_proc)
       @cache={}
       @fstr={}
-      cdb=db[:cmdframe]
       if cdb.key?(:noaffix) && /true|1/ === cdb[:noaffix][@id]
         @sel={:main => ["select"]}
       else
-        @sel=Hash[cdb]
+        @sel=Hash[db[:cmdframe]]
       end
       @frame=Frame.new(db['endian'],db['ccmethod'])
       self
@@ -67,15 +78,6 @@ module Frm
   end
 end
 
-class Command::ExtGrp
-  def ext_frmcmd(field)
-    values.each{|item|
-      item.extend(Frm::Cmd).ext_frmcmd(field,@db)
-    }
-    self
-  end
-end
-
 if __FILE__ == $0
   require "libfield"
   require "libfrmdb"
@@ -86,7 +88,7 @@ if __FILE__ == $0
     field=Field::Var.new
     cobj=Command.new
     svdom=cobj.add_domain('sv')
-    svdom.add_extgrp(fdb).ext_frmcmd(field)
+    svdom['ext']=Frm::ExtGrp.new(fdb,field)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD

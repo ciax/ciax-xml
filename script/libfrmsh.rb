@@ -38,7 +38,7 @@ module Frm
       @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|
         @field.set(*item.par)
       }
-      @extgrp=@svdom.add_extgrp(fdb)
+      @extgrp=@svdom['ext']=ExtGrp.new(fdb,@field)
       self
     end
 
@@ -76,7 +76,7 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @extgrp.ext_frmcmd(@field).reset_proc{|item|
+      @extgrp.reset_proc{|item|
         @io.snd(item.getframe,item[:cmd])
         @field.upd{@io.rcv} && @field.save
       }

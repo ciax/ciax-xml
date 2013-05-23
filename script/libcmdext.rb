@@ -5,10 +5,6 @@ require 'librerange'
 # For External Command Domain
 class Command
   class Domain
-    def self.extended(obj)
-      Msg.type?(obj,Domain)
-    end
-
     def add_extgrp(db)
       self['ext']=ExtGrp.new(db)
     end
@@ -24,37 +20,10 @@ class Command
       @valid_keys=[]
       @cmdlist=[]
       @def_proc=ExeProc.new
-      if @cdb=db[:command]
-        if gdb=@cdb[:group]
-          #For App Layer
-          gdb.each{|gid,gat|
-            subgrp=Msg::CmdList.new(gat,@valid_keys)
-            gat[:members].each{|id|
-              update_subgrp(subgrp,id)
-            }
-            @cmdlist << subgrp
-          }
-        else
-          #For Frm Layer
-          subgrp=Msg::CmdList.new({'color' => '6','caption' => "External Commands"},@valid_keys)
-          @cdb[:select].keys.each{|id|
-            update_subgrp(subgrp,id)
-          }
-          @cmdlist << subgrp
-        end
-        @cdb[:alias].each{|k,v| self[k].replace self[v]} if @cdb.key?(:alias)
-      end
     end
 
     def list
       @cmdlist.join("\n")
-    end
-
-    private
-    def update_subgrp(subgrp,id)
-      subgrp[id]=@cdb[:label][id]
-      self[id]=ExtItem.new(@cdb,id,@def_proc)
-      self
     end
   end
 
@@ -124,6 +93,8 @@ end
 
 if __FILE__ == $0
   require 'liblocdb'
+  require 'libfrmcmd'
+  require 'libappcmd'
 
   begin
     Msg::GetOpts.new("af")
@@ -131,9 +102,9 @@ if __FILE__ == $0
     cobj=Command.new
     svdom=cobj.add_domain('sv')
     if $opt["f"]
-      svdom.add_extgrp(ldb[:frm])
+      svdom['ext']=Frm::ExtGrp.new(ldb[:frm])
     else
-      svdom.add_extgrp(ldb[:app])
+      svdom['ext']=App::ExtGrp.new(ldb[:app])
     end
     puts cobj.setcmd(ARGV)
   rescue InvalidID

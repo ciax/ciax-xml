@@ -14,17 +14,11 @@ module Mcr
         # Sv generated and added to list in yield part as mcr command is invoked
         total.succ!
         num="#{total}"
-        msh=newmcr(num)
+        msh=yield(@cobj,num)
         msh['total']=total
         stat["[#{num}]"]="#{item[:cmd]} (#{msh['stat']})"
         raise(SelectID,num)
       }
-    end
-
-    private
-    def newmcr(num)
-      puts 'OK'
-      {}
     end
   end
 end
@@ -32,7 +26,7 @@ end
 if __FILE__ == $0
   begin
     mdb=Mcr::Db.new.set('ciax')
-    man=Mcr::Man.new(mdb)
+    man=Mcr::Man.new(mdb){puts 'OK';{}}
     true while man.shell
   rescue InvalidCMD
     $opt.usage

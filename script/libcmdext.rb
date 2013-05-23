@@ -5,10 +5,6 @@ require 'librerange'
 # For External Command Domain
 class Command
   class Domain
-    def add_extgrp(db)
-      self['ext']=ExtGrp.new(db)
-    end
-
     def add_intgrp
       add_group('int','Internal Commands')
     end
@@ -17,13 +13,17 @@ class Command
   class ExtGrp < Group
     def initialize(db)
       @db=Msg.type?(db,Db)
-      @valid_keys=[]
-      @cmdlist=[]
-      @def_proc=ExeProc.new
+      super('color' => '6','caption' => "External Commands")
+      cdb=db[:command]
+      cdb[:select].keys.each{|id|
+        @cmdlist[id]=cdb[:label][id]
+        self[id]=extitem(id)
+      }
     end
 
-    def list
-      @cmdlist.join("\n")
+    private
+    def extitem(id)
+      ExtItem.new(@db,id,@def_proc)
     end
   end
 

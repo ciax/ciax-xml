@@ -6,15 +6,13 @@ require "libcmdext"
 module Frm
   class ExtGrp < Command::ExtGrp
     def initialize(db,field=Field::Var.new)
+      @field=Msg.type?(field,Field::Var)
       super(db)
-      if cdb=db[:command]
-        subgrp=Msg::CmdList.new({'color' => '6','caption' => "External Commands"},@valid_keys)
-        cdb[:select].keys.each{|id|
-          subgrp[id]=cdb[:label][id]
-          self[id]=ExtItem.new(field,@db,id,@def_proc)
-        }
-        @cmdlist << subgrp
-      end
+    end
+
+    private
+    def extitem(id)
+      ExtItem.new(@field,@db,id,@def_proc)
     end
   end
 

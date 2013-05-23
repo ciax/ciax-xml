@@ -3,7 +3,7 @@ require "libmcrsh"
 
 module Mcr
   class Man < Sh::Exe
-    def initialize(mdb,total='0',&post_proc)
+    def initialize(mdb,total='0')
       Msg.type?(mdb,Db)
       update({'layer'=>'mcr','id'=>mdb['id'],'total'=>total})
       stat=Msg::CmdList.new('caption'=>'Active Macros','color'=>2,'show_all'=>true)
@@ -13,15 +13,17 @@ module Mcr
         # item includes arbitrary mcr command
         # Sv generated and added to list in yield part as mcr command is invoked
         total.succ!
-        msh=newmcr
+        num="#{total}"
+        msh=newmcr(num)
         msh['total']=total
-        stat["[#{total}]"]="#{item[:cmd]} (#{msh['stat']})"
-        post_proc.call(total) if post_proc
+        stat["[#{num}]"]="#{item[:cmd]} (#{msh['stat']})"
+        raise(SelectID,num)
       }
     end
 
     private
-    def newmcr
+    def newmcr(num)
+      puts 'OK'
       {}
     end
   end
@@ -31,7 +33,7 @@ if __FILE__ == $0
   begin
     mdb=Mcr::Db.new.set('ciax')
     man=Mcr::Man.new(mdb)
-    man.shell
+    true while man.shell
   rescue InvalidCMD
     $opt.usage
   end

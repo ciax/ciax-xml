@@ -44,7 +44,7 @@ class Command
           }
           @cmdlist << subgrp
         end
-        @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
+        @cdb[:alias].each{|k,v| self[k].replace self[v]} if @cdb.key?(:alias)
       end
     end
 

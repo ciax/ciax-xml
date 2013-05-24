@@ -15,7 +15,7 @@ module Sh
   # @ cobj,output,upd_proc
   # @ prompt,lodom
   class Exe < ExHash # Having server status {id,msg,...}
-    attr_reader :upd_proc,:output,:svdom,:lodom
+    attr_reader :upd_proc,:output,:svdom,:lodom,:item
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
@@ -26,6 +26,7 @@ module Sh
       # For Shell
       @output=output
       @prompt=prompt
+      @item=nil
       @lodom=@cobj.add_domain('lo',9) # Local Commands (local handling commands on Client)
       shg=@lodom.add_dummy('sh',"Shell Command")
       shg.add_item('^D,q',"Quit")
@@ -42,7 +43,7 @@ module Sh
       else
         self['msg']='OK'
         verbose{"Command #{cmd} recieved"}
-        @cobj.setcmd(cmd).exe
+        @item=@cobj.setcmd(cmd).exe
       end
       self
     rescue

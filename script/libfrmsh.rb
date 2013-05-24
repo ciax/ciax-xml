@@ -32,7 +32,7 @@ module Frm
       super(@field,prom)
       @svdom.def_proc.set{|item|@field['time']=UnixTime.now}
       any={:type =>'reg',:list => ["."]}
-      @intgrp=@svdom.add_intgrp
+      @intgrp=@svdom.add_group('int','Internal Commands')
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
       @intgrp.add_item('load',"Load Field (tag)",[any])
       @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|

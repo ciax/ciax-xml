@@ -204,7 +204,7 @@ module Sh
     attr_accessor :shdom,:current
     def initialize(current=nil)
       $opt||=Msg::GetOpts.new
-      @shdom=Command::Domain.new(9)
+      @shdom=Command::Domain.new(5)
       @current=current||""
     end
 
@@ -265,7 +265,7 @@ module Sh
   class Layer < Hash
     def initialize(current=nil)
       @current=current
-      @shdom=Command::Domain.new
+      @shdom=Command::Domain.new(5)
       @swlgrp=@shdom.add_group('swl',"Switch Layer")
       @swlgrp.reset_proc{|item| raise(TransLayer,item.id) }
     end

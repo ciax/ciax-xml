@@ -153,7 +153,7 @@ end
 
 if __FILE__ == $0
   require "liblocdb"
-  require "libcmdext"
+  require "libfrmcmd"
   Msg::GetOpts.new("",{'m' => 'merge file','l' => 'get from logline'})
   if $opt['l']
     $opt.usage("-l < logline") if STDIN.tty?
@@ -172,7 +172,8 @@ if __FILE__ == $0
   end
   fdb=Loc::Db.new.set(id)[:frm]
   cobj=Command.new
-  cobj.add_svdom(fdb)
+  svdom=cobj.add_domain('sv')
+  svdom['ext']=Frm::ExtGrp.new(fdb)
   cobj.setcmd(cmd.split(':'))
   field=Field::Var.new.ext_file(fdb['site_id'])
   field.load if $opt['m']

@@ -9,7 +9,7 @@ module Mcr
       stat=Msg::CmdList.new('caption'=>'Active Macros','color'=>2,'show_all'=>true)
       prom=Sh::Prompt.new(self,{'total'=>"[0/%s]"})
       super(stat,prom)
-      @svdom.add_extgrp(mdb).reset_proc{|item|
+      @svdom['ext']=Command::ExtGrp.new(mdb).reset_proc{|item|
         # item includes arbitrary mcr command
         # Sv generated and added to list in yield part as mcr command is invoked
         total.succ!

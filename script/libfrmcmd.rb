@@ -20,8 +20,8 @@ module Frm
     def initialize(field,db,id,def_proc)
       init_ver('FrmCmd',9)
       @field=Msg.type?(field,Field::Var)
+      super(db,id,def_proc)
       cdb=db[:command]
-      super(cdb,id,def_proc)
       @cache={}
       @fstr={}
       if cdb.key?(:noaffix) && /true|1/ === cdb[:noaffix][@id]

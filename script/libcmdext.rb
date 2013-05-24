@@ -14,11 +14,21 @@ class Command
     def initialize(db)
       @db=Msg.type?(db,Db)
       super('color' => '6','caption' => "External Commands")
+      @cmdary=[]
       cdb=db[:command]
-      cdb[:select].keys.each{|id|
-        @cmdlist[id]=cdb[:label][id]
-        self[id]=extitem(id)
+      (cdb[:group]||{'main'=>@attr}).each{|gid,gat|
+        subgrp=Msg::CmdList.new(gat,@valid_keys)
+        (gat[:members]||cdb[:select].keys).each{|id|
+          subgrp[id]=cdb[:label][id]
+          self[id]=extitem(id)
+        }
+        @cmdary << subgrp
       }
+      cdb[:alias].each{|k,v| self[k].replace self[v]} if cdb.key?(:alias)
+    end
+
+    def list
+      @cmdary.join("\n")
     end
 
     private
@@ -30,10 +40,11 @@ class Command
   class ExtItem < Item
     include Math
     attr_reader :select
-    def initialize(cdb,id,def_proc)
+    def initialize(db,id,def_proc)
+      Msg.type?(db,Db)
       super(id,def_proc)
       # because cdb is separated by title
-      cdb.each{|k,v|
+      db[:command].each{|k,v|
         if a=v[@id]
           self[k]=a
         end

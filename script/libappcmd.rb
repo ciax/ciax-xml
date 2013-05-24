@@ -4,23 +4,9 @@ require "libcmdext"
 
 module App
   class ExtGrp < Command::ExtGrp
-    def initialize(db)
-      @db=Msg.type?(db,Db)
-      @valid_keys=[]
-      @cmdlist=[]
-      @def_proc=ExeProc.new
-      if @cdb=db[:command]
-        gdb=@cdb[:group]
-        gdb.each{|gid,gat|
-          subgrp=Msg::CmdList.new(gat,@valid_keys)
-          gat[:members].each{|id|
-            subgrp[id]=@cdb[:label][id]
-            self[id]=ExtItem.new(@cdb,id,@def_proc)
-          }
-          @cmdlist << subgrp
-        }
-        @cdb[:alias].each{|k,v| self[k].replace self[v]} if @cdb.key?(:alias)
-      end
+    private
+    def extitem(id)
+      ExtItem.new(@db,id,@def_proc)
     end
   end
 

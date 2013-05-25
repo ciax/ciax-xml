@@ -165,10 +165,8 @@ if __FILE__ == $0
     res['data']=gets(nil) || exit
   end
   fdb=Loc::Db.new.set(id)[:frm]
-  cobj=Command.new
-  svdom=cobj.add_domain('sv')
-  svdom['ext']=Frm::ExtGrp.new(fdb)
-  item=cobj.setcmd(cmd.split(':'))
+  fgrp=Frm::ExtGrp.new(fdb)
+  item=fgrp.setcmd(cmd.split(':'))
   field=Field::Var.new.ext_file(fdb['site_id'])
   field.load if $opt['m']
   field.ext_rsp(fdb)

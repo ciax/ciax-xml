@@ -50,11 +50,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     dom=domain_with_item(id) || error
-    grp=dom.group_with_item(id) || error
-    grp.valid_keys.include?(id) || error
-    @current=grp[id]
-    verbose{"SetCMD (#{id},#{par})"}
-    @current.set_par(par)
+    @current=dom.setcmd(cmd)
   end
 
   def list
@@ -106,6 +102,15 @@ class Command < ExHash
         grp.reset_proc &p
       }
       self
+    end
+
+    def setcmd(cmd)
+      Msg.type?(cmd,Array)
+      id,*par=cmd
+      grp=group_with_item(id) || error
+      grp.valid_keys.include?(id) || error
+      verbose{"SetCMD (#{id},#{par})"}
+      grp[id].set_par(par)
     end
 
     def list

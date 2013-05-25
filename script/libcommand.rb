@@ -108,9 +108,7 @@ class Command < ExHash
       Msg.type?(cmd,Array)
       id,*par=cmd
       grp=group_with_item(id) || error
-      grp.valid_keys.include?(id) || error
-      verbose{"SetCMD (#{id},#{par})"}
-      grp[id].set_par(par)
+      grp.setcmd(cmd)
     end
 
     def list
@@ -143,6 +141,15 @@ class Command < ExHash
         @cmdlist[k]=v
       }
       self
+    end
+
+    def setcmd(cmd)
+      Msg.type?(cmd,Array)
+      id,*par=cmd
+      key?(id) || error
+      @valid_keys.include?(id) || error
+      verbose{"SetCMD (#{id},#{par})"}
+      self[id].set_par(par)
     end
 
     def list

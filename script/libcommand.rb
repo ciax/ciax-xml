@@ -128,7 +128,9 @@ class Command < ExHash
     attr_reader :cmdlist
     def initialize(attr)
       init_ver(self)
-      @cmdlist=Msg::CmdList.new(attr)
+      @attr=Msg.type?(attr,Hash)
+      @valid_keys=[]
+      @cmdlist=Msg::CmdList.new(@attr,@valid_keys)
     end
 
     def add_item(id,title)
@@ -153,10 +155,7 @@ class Command < ExHash
     attr_accessor :def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=ExeProc.new)
-      init_ver(self)
-      @attr=Msg.type?(attr,Hash)
-      @valid_keys=[]
-      @cmdlist=Msg::CmdList.new(attr,@valid_keys)
+      super(attr)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 

@@ -95,24 +95,3 @@ class Command
     end
   end
 end
-
-if __FILE__ == $0
-  require 'liblocdb'
-  require 'libfrmcmd'
-  require 'libappcmd'
-
-  begin
-    Msg::GetOpts.new("af")
-    ldb=Loc::Db.new.set(ARGV.shift)
-    cobj=Command.new
-    svdom=cobj.add_domain('sv')
-    if $opt["f"]
-      svdom['ext']=Frm::ExtGrp.new(ldb[:frm])
-    else
-      svdom['ext']=App::ExtGrp.new(ldb[:app])
-    end
-    puts cobj.setcmd(ARGV)
-  rescue InvalidID
-    $opt.usage("(opt) [id] [cmd] (par)")
-  end
-end

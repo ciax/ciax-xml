@@ -7,17 +7,6 @@ require 'libstatus'
 require "libsqlog"
 require 'liblogging'
 
-def get_field(ldb,field)
-  Msg.warn("Frame Initialize")
-  fdb=ldb[:frm]
-  ver=fdb['version']
-  cobj=Command.new
-  svdom=cobj.add_domain('sv')
-  svdom['ext']=Frm::ExtGrp.new(fdb)
-  field.ext_file(fdb['site_id'])
-  field.ext_rsp(cobj,fdb)
-  field
-end
 
 def get_stat(ldb,field,stat)
   Msg.warn("Application Initialize")
@@ -34,13 +23,26 @@ begin
   ldb=Loc::Db.new
   field=Field::Var.new
   stat=Status::Var.new
+  cobj=Command.new
+  svdom=cobj.add_domain('sv')
+  site_id=nil
   readlines.grep(/rcv/).each{|str|
-    hash=JSON.load(str)
-    ldb.set(hash['id']) unless ldb.key?('id')
-    get_field(ldb,field) unless Frm::Rsp === field
-    get_stat(ldb,field,stat) unless App::Rsp === stat
+    hash=Logging.set_logline(str)
+    if !site_id
+      site_id=hash['id']
+      ldb.set(hash['id'])
+      Msg.warn("Frame Initialize")
+      fdb=ldb[:frm]
+      svdom['ext']=Frm::ExtGrp.new(fdb)
+      field.ext_file(fdb['site_id'])
+      field.ext_rsp(cobj,fdb)
+      get_stat(ldb,field,stat)
+    elsif site_id != hash['id']
+      next
+    end
     begin
-      field.upd_logline(str)
+      cobj.setcmd(hash['cmd'].split(':'))
+      field.upd{hash}
       stat.upd
       Msg.progress
     rescue

@@ -49,7 +49,8 @@ class Command < ExHash
   def setcmd(cmd)
     Msg.type?(cmd,Array)
     id,*par=cmd
-    grp=group_with_item(id) || error
+    dom=domain_with_item(id) || error
+    grp=dom.group_with_item(id) || error
     grp.valid_keys.include?(id) || error
     @current=grp[id]
     verbose{"SetCMD (#{id},#{par})"}
@@ -65,11 +66,9 @@ class Command < ExHash
     raise(InvalidCMD,str+list)
   end
 
-  def group_with_item(id)
+  def domain_with_item(id)
     values.any?{|dom|
-      if grp=dom.group_with_item(id)
-        return grp
-      end
+      return dom if dom.group_with_item(id)
     }
   end
 

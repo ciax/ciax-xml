@@ -68,7 +68,7 @@ module Frm
     def initialize(fdb,iocmd=[])
       super(fdb)
       @field.ext_save.load
-      @field.ext_rsp(@cobj,fdb)
+      @field.ext_rsp(fdb)
       if Msg.type?(iocmd,Array).empty?
         @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
         @io.ext_logging(fdb['site_id'],fdb['version'])
@@ -78,7 +78,7 @@ module Frm
       end
       @extgrp.reset_proc{|item|
         @io.snd(item.getframe,item[:cmd])
-        @field.upd{@io.rcv} && @field.save
+        @field.upd(item){@io.rcv} && @field.save
       }
       @intgrp['set'].reset_proc{|item|
         @field.set(item.par[0],item.par[1]).save

@@ -35,14 +35,14 @@ begin
       fdb=ldb[:frm]
       svdom['ext']=Frm::ExtGrp.new(fdb)
       field.ext_file(fdb['site_id'])
-      field.ext_rsp(cobj,fdb)
+      field.ext_rsp(fdb)
       get_stat(ldb,field,stat)
     elsif site_id != hash['id']
       next
     end
     begin
-      cobj.setcmd(hash['cmd'].split(':'))
-      field.upd{hash}
+      item=cobj.setcmd(hash['cmd'].split(':'))
+      field.upd(item){hash}
       stat.upd
       Msg.progress
     rescue

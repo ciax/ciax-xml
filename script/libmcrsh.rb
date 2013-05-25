@@ -13,14 +13,14 @@ module Mcr
     attr_reader :intgrp
     def initialize(mobj,il)
       @mobj=Msg.type?(mobj.dup,Command)
-      @item=@mobj.current
       @il=Msg.type?(il,Ins::Layer)
-      self['layer']='mcr'
-      self['id']=@item[:cmd]
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
+      @item=@mobj.current
+      self['layer']='mcr'
+      self['id']=@item[:cmd]
       @intgrp=@svdom.add_group('int',"Internal Command")
     end
 

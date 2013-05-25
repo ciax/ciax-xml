@@ -16,18 +16,18 @@ module Mcr
       @il=Msg.type?(il,Ins::Layer)
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
+      @mitem=@mobj.current
+      self['layer']='mcr'
+      self['id']=@mitem[:cmd]
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
-      @item=@mobj.current
-      self['layer']='mcr'
-      self['id']=@item[:cmd]
       @intgrp=@svdom.add_group('int',"Internal Command")
     end
 
     def start
       self['stat']='run'
       puts @output if Msg.fg?
-      macro(@item)
+      macro(@mitem)
       result('done')
       self
     rescue Interlock
@@ -113,7 +113,7 @@ if __FILE__ == $0
     mobj=Command.new
     svdom=mobj.add_domain('sv',6)
     svdom['ext']=Command::ExtGrp.new(mdb)
-    mobj.setcmd(ARGV)
+    mitem=mobj.setcmd(ARGV)
     msh=Mcr::Sv.new(mobj,il)
     if $opt['i']
       msh.start

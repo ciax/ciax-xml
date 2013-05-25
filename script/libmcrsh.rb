@@ -10,17 +10,18 @@ module Mcr
     # @< cobj,output,upd_proc*
     # @ al,appint,th,item,mobj*
     attr_accessor :mobj,:prompt
+    attr_reader :intgrp
     def initialize(mobj,il)
       @mobj=Msg.type?(mobj.dup,Command)
       @item=@mobj.current
       @il=Msg.type?(il,Ins::Layer)
       self['layer']='mcr'
-      self['id']=@item.id
+      self['id']=@item[:cmd]
       record=Record.new(self)
       record.extend(Prt) unless $opt['r']
       prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
       super(record,prom)
-      @svdom.add_group('int',"Internal Command")
+      @intgrp=@svdom.add_group('int',"Internal Command")
     end
 
     def start
@@ -41,16 +42,15 @@ module Mcr
     end
 
     def start_bg
-      @th=Thread.new{ start }
       # For shell
-      intgrp=@svdom['int']
-      intgrp.cmdlist.valid_keys.clear
-      intgrp.add_item('e','Execute Command').reset_proc{|i| ans('e')}
-      intgrp.add_item('s','Skip Execution').reset_proc{|i| ans('s')}
-      intgrp.add_item('d','Done Macro').reset_proc{|i| ans('d')}
-      intgrp.add_item('f','Force Proceed').reset_proc{|i| ans('f')}
-      intgrp.add_item('r','Retry Checking').reset_proc{|i| ans('r')}
-      intgrp.add_item('interrupt').reset_proc{|i| @th.raise(Interrupt)}
+      @interrupt.reset_proc{|i| @th.raise(Interrupt)}
+      @intgrp.add_item('e','Execute Command').reset_proc{ ans('e') }
+      @intgrp.add_item('s','Skip Execution').reset_proc{ ans('s') }
+      @intgrp.add_item('d','Done Macro').reset_proc{ ans('d') }
+      @intgrp.add_item('f','Force Proceed').reset_proc{ ans('f') }
+      @intgrp.add_item('r','Retry Checking').reset_proc{ ans('r') }
+      @intgrp.valid_keys.clear
+      @th=Thread.new{ start }
       @th
     end
 
@@ -111,14 +111,15 @@ if __FILE__ == $0
     il=Ins::Layer.new('app')
     mdb=Mcr::Db.new.set('ciax')
     mobj=Command.new
-    mobj.add_domain('sv',6).ext_svdom(mdb)
+    svdom=mobj.add_domain('sv',6)
+    svdom['ext']=Command::ExtGrp.new(mdb)
     mobj.setcmd(ARGV)
     msh=Mcr::Sv.new(mobj,il)
     if $opt['i']
       msh.start
     else
       msh.start_bg
-       msh.shell
+      msh.shell
     end
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

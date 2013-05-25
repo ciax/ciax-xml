@@ -24,7 +24,7 @@ module Hex
       stat=Status::Var.new.ext_file(@adb['site_id'])
       prom=Sh::Prompt.new(self)
       super(View.new(self,stat),prom)
-      @svdom.ext_svdom(@adb)
+      @extgrp=@svdom['ext']=App::ExtGrp.new(@adb)
       self
     end
   end
@@ -61,7 +61,7 @@ module Hex
     end
   end
 
-  class List < Sh::List
+  class List < Sh::DevList
     def initialize(al=nil)
       @al=al||App::List.new
       super(Loc::Db.new.list,"#{@al.current}")

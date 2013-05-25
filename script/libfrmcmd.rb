@@ -1,24 +1,33 @@
 #!/usr/bin/ruby
+require "libfield"
 require "libframe"
 require "libcmdext"
 # Cmd Methods
 module Frm
-  module Cmd
-    def self.extended(obj)
-      Msg.type?(obj,Command::ExtItem)
+  class ExtGrp < Command::ExtGrp
+    def initialize(db,field=Field::Var.new)
+      @field=Msg.type?(field,Field::Var)
+      super(db)
     end
 
-    def ext_frmcmd(field,db)
+    private
+    def extitem(id)
+      ExtItem.new(@field,@db,id,@def_proc)
+    end
+  end
+
+  class ExtItem < Command::ExtItem
+    def initialize(field,db,id,def_proc)
       init_ver('FrmCmd',9)
-      verbose{"Extending Command by Frm::Cmd"}
       @field=Msg.type?(field,Field::Var)
+      super(db,id,def_proc)
+      cdb=db[:command]
       @cache={}
       @fstr={}
-      cdb=db[:cmdframe]
       if cdb.key?(:noaffix) && /true|1/ === cdb[:noaffix][@id]
         @sel={:main => ["select"]}
       else
-        @sel=Hash[cdb]
+        @sel=Hash[db[:cmdframe]]
       end
       @frame=Frame.new(db['endian'],db['ccmethod'])
       self
@@ -67,15 +76,6 @@ module Frm
   end
 end
 
-module Command::SvDom
-  def ext_frmcmd(field)
-    ext_item{|item|
-      item.extend(Frm::Cmd).ext_frmcmd(field,@db)
-    }
-    self
-  end
-end
-
 if __FILE__ == $0
   require "libfield"
   require "libfrmdb"
@@ -85,7 +85,8 @@ if __FILE__ == $0
     fdb=Frm::Db.new.set(dev)
     field=Field::Var.new
     cobj=Command.new
-    cobj.add_svdom(fdb).ext_frmcmd(field)
+    svdom=cobj.add_domain('sv')
+    svdom['ext']=Frm::ExtGrp.new(fdb,field)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD

@@ -13,19 +13,23 @@ require "libupdate"
 
 module Sh
   # @ cobj,output,upd_proc
-  # @ prompt,shdom
-  class Exe < ExHash
-    attr_reader :upd_proc,:output,:svdom,:shdom
+  # @ prompt,lodom
+  class Exe < ExHash # Having server status {id,msg,...}
+    attr_reader :upd_proc,:output,:svdom,:lodom
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
       @cobj=Command.new
-      @output=output
       @upd_proc=UpdProc.new # Proc for Server Status Update
+      @svdom=@cobj.add_domain('sv',2) # Server Commands (service commands on Server)
+      @interrupt=@svdom.add_group('hid',"Hidden Group").add_item('interrupt')
       # For Shell
+      @output=output
       @prompt=prompt
-      @svdom=@cobj.add_domain('sv',6) # Server Command
-      @shdom=@cobj.add_domain('sh',9) # Shared Command
+      @lodom=@cobj.add_domain('lo',9) # Local Commands (local handling commands on Client)
+      shg=@lodom.add_dummy('sh',"Shell Command")
+      shg.add_item('^D,q',"Quit")
+      shg.add_item('^C',"Interrupt")
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
@@ -57,14 +61,14 @@ module Sh
       begin
         while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
-          line=shell_conv(line)
-          res=exe(line.split(' '))
-          puts res['msg'].empty? ? @output : res['msg']
+          exe(shell_input(line))
+          puts shell_output
         end
       rescue SelectID
         $!.to_s
       rescue Interrupt
-        puts exe(['interrupt'])['msg']
+        exe(['interrupt'])
+        puts self['msg']
         retry
       rescue InvalidID
         puts $!.to_s
@@ -82,8 +86,12 @@ module Sh
 
     # Overridable methods(do not set this kind of methods in modules)
     private
-    def shell_conv(line)
-      line
+    def shell_input(line)
+      line.split(' ')
+    end
+
+    def shell_output
+      self['msg'].empty? ? @output : self['msg']
     end
 
     def server_input(line)
@@ -192,18 +200,12 @@ module Sh
   end
 
   class List < ExHash
+    # shdom: Domain for Shared Command Groups
     attr_accessor :shdom,:current
-    def initialize(list,current=nil)
+    def initialize(current=nil)
       $opt||=Msg::GetOpts.new
-      @shdom=Command::Domain.new(9)
-      id_menu(Msg.type?(list,Msg::CmdList))
-      quit_menu
+      @shdom=Command::Domain.new(5)
       @current=current||""
-      super(){|h,key|
-        sh=h[key]=newsh(key)
-        sh.shdom.replace @shdom
-        sh
-      }
     end
 
     def exe(stm)
@@ -221,6 +223,29 @@ module Sh
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end
+  end
+
+  class DevList < List
+    # shdom: Domain for Shared Command Groups
+    attr_accessor :swsgrp
+    def initialize(list,current=nil)
+      Msg.type?(list,Msg::CmdList)
+      super(current)
+      @swsgrp=@shdom.add_group('sws','Switch Sites')
+      @swsgrp.update_items(list).reset_proc{|item|
+        raise(SelectID,item.id)
+      }
+    end
+
+    def [](key)
+      if key?(key)
+        super
+      else
+        sh=self[key]=newsh(key)
+        sh.lodom.update @shdom
+        sh
+      end
+    end
 
     def server(ary)
       ary.each{|i|
@@ -235,23 +260,14 @@ module Sh
     private
     def newsh(id)
     end
-
-    def quit_menu
-      grp=@shdom.add_dummy('sh',"Shell Command")
-      grp.update_items({'^D,q'=>"Quit",'^C'=>"Interrupt"})
-    end
-
-    def id_menu(list)
-      grp=@shdom.add_group('id','Switch ID')
-      grp.update_items(list).reset_proc{|item|
-        raise(SelectID,item.id)
-      }
-    end
   end
 
   class Layer < Hash
     def initialize(current=nil)
       @current=current
+      @shdom=Command::Domain.new(5)
+      @swlgrp=@shdom.add_group('swl',"Switch Layer")
+      @swlgrp.reset_proc{|item| raise(TransLayer,item.id) }
     end
 
     def shell
@@ -267,14 +283,9 @@ module Sh
 
     private
     def layer_menu
-      list={}
-      keys.each{|k|
-        list[k]=k.capitalize+" mode"
-      }
-      values.each{|v|
-        grp=v.shdom.add_group('lay',"Change Layer")
-        grp.update_items(list)
-        grp.reset_proc{|item| raise(TransLayer,item.id)}
+      each{|k,list|
+        @swlgrp.add_item(k,k.capitalize+" mode")
+        list.shdom.update @shdom
       }
     end
   end

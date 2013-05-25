@@ -50,7 +50,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     grp=group_with_item(id) || error
-    grp.cmdlist.valid_key?(id) || error
+    grp.valid_keys.include?(id) || error
     @current=grp[id]
     verbose{"SetCMD (#{id},#{par})"}
     @current.set_par(par)
@@ -77,8 +77,19 @@ class Command < ExHash
     attr_reader :def_proc
     def initialize(color=2)
       init_ver(self)
+      @grplist=[]
       @color=color
       @def_proc=ExeProc.new
+    end
+
+    def update(h)
+      h.values.each{|v| @grplist.unshift Msg.type?(v,Group)}
+      super
+    end
+
+    def []=(gid,grp)
+      @grplist.unshift grp
+      super
     end
 
     def add_group(gid,caption,column=2)
@@ -87,8 +98,8 @@ class Command < ExHash
     end
 
     def add_dummy(gid,caption,column=2)
-      attr={'caption' => caption,'column' => column,'color' => @color}
-      self[gid]=Dummy.new(attr)
+      attr={'caption' => caption,'column' => column,'color' => 1}
+      self[gid]=BasicGroup.new(attr)
     end
 
     def reset_proc(&p)
@@ -99,7 +110,7 @@ class Command < ExHash
     end
 
     def list
-      values.map{|grp| grp.list}.grep(/./).join("\n")
+      @grplist.map{|grp| grp.list}.grep(/./).join("\n")
     end
 
     def group_with_item(id)
@@ -109,10 +120,16 @@ class Command < ExHash
     end
   end
 
-  class Dummy < ExHash
+  class BasicGroup < ExHash
     attr_reader :cmdlist
     def initialize(attr)
+      init_ver(self)
       @cmdlist=Msg::CmdList.new(attr)
+    end
+
+    def add_item(id,title)
+      @cmdlist[id]=title
+      self
     end
 
     def update_items(labels)
@@ -127,19 +144,20 @@ class Command < ExHash
     end
   end
 
-  class Group < ExHash
-    attr_reader :cmdlist
+  class Group < BasicGroup
+    attr_reader :valid_keys
     attr_accessor :def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=ExeProc.new)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
-      @cmdlist=Msg::CmdList.new(attr)
+      @valid_keys=[]
+      @cmdlist=Msg::CmdList.new(attr,@valid_keys)
       @def_proc=Msg.type?(def_proc,ExeProc)
     end
 
     def add_item(id,title=nil,parameter=nil)
-      @cmdlist[id]=title
+      super(id,title)
       item=self[id]=Item.new(id,@def_proc)
       property={:label => title}
       property[:parameter] = parameter if parameter
@@ -147,10 +165,9 @@ class Command < ExHash
       item
     end
 
-    #property = {:label => 'titile',:parameter => Array}
     def update_items(labels)
-      (@attr[:members]||labels.keys).each{|id|
-        @cmdlist[id]=labels[id]
+      labels.each{|id,title|
+        @cmdlist[id]=title
         self[id]=Item.new(id,@def_proc)
       }
       self
@@ -162,10 +179,6 @@ class Command < ExHash
         v.reset_proc &p
       }
       self
-    end
-
-    def list
-      @cmdlist.to_s
     end
   end
 
@@ -195,10 +208,6 @@ class Command < ExHash
       self[:cmd]=@cmd.join(':') # Used by macro
       verbose{"SetPAR: #{par}"}
       self
-    end
-
-    def to_s
-      Msg.item(@id,self[:label])
     end
 
     private

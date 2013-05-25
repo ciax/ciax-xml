@@ -133,48 +133,55 @@ module Msg
 
   # Hash of title
   class CmdList < Hash
-    attr_reader :valid_keys
-    def initialize(attr)
+    def initialize(attr,select=[])
       Msg.type?(attr,Hash)
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
       @caption='==== '+Msg.color(caption,color)+' ====' if caption
-      @valid_keys=['*']
+      @show_all=attr["show_all"]
+      @select=Msg.type?(select,Array)
+    end
+
+    def []=(k,v)
+      @select << k
+      super
+    end
+
+    def update(h)
+      @select+=h.keys
+      super
+    end
+
+    # Reset @select
+    def reset!
+      @select.replace keys
+      self
     end
 
     # For ver 1.9 or more
     def sort!
-      hash={}
-      keys.sort.each{|k|
-        hash[k]=self[k]
-      }
-      replace(hash)
-    end
-
-    def valid_key?(id)
-      vkeys.include?(id)
+      @select.sort!
+      self
     end
 
     def to_s
-      page=[]
-      vkeys.each_slice(@col){|a|
+      page=[@caption]
+      (@select & keys).each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact
         page << l.join("\t") unless l.empty?
       }
-      page.unshift @caption unless page.empty?
-      page.compact.join("\n")
+      if @show_all || page.size > 1
+        page.compact.join("\n")
+      else
+        ''
+      end
     end
 
     def error
       raise InvalidCMD,to_s
-    end
-
-    private
-    def vkeys
-      @valid_keys.include?('*') ? keys : @valid_keys
     end
   end
 

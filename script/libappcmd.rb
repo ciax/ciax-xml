@@ -3,11 +3,14 @@ require "libmsg"
 require "libcmdext"
 
 module App
-  module Cmd
-    def self.extended(obj)
-      Msg.type?(obj,Command::ExtItem)
+  class ExtGrp < Command::ExtGrp
+    private
+    def extitem(id)
+      ExtItem.new(@db,id,@def_proc)
     end
+  end
 
+  class ExtItem < Command::ExtItem
     #frmcmd is ary of ary
     def getcmd
       frmcmd=[]
@@ -36,25 +39,19 @@ module App
   end
 end
 
-module Command::SvDom
-  def ext_appcmd
-    ext_item{|item|
-      item.extend(App::Cmd).init_ver('AppCmd',9)
-    }
-    self
-  end
-end
-
 if __FILE__ == $0
   require "libappdb"
   require "libfrmdb"
+  require "libfrmcmd"
   app,*cmd=ARGV
   begin
     adb=App::Db.new.set(app)
     fcobj=Command.new
-    fcobj.add_svdom(Frm::Db.new.set(adb['frm_id']))
+    fsvdom=fcobj.add_domain('sv')
+    fsvdom['ext']=Frm::ExtGrp.new(Frm::Db.new.set(adb['frm_id']))
     acobj=Command.new
-    acobj.add_svdom(adb).ext_appcmd
+    asvdom=acobj.add_domain('sv')
+    asvdom['ext']=App::ExtGrp.new(adb)
     acobj.setcmd(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
       fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first

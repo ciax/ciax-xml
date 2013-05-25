@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "liblocdb"
-require "libcmdext"
+require "libfrmcmd"
 require "libfrmrsp"
 require "libapprsp"
 require 'libstatus'
@@ -12,7 +12,8 @@ def get_field(ldb,field)
   fdb=ldb[:frm]
   ver=fdb['version']
   cobj=Command.new
-  cobj.add_svdom(fdb)
+  svdom=cobj.add_domain('sv')
+  svdom['ext']=Frm::ExtGrp.new(fdb)
   field.ext_file(fdb['site_id'])
   field.ext_rsp(cobj,fdb)
   field

@@ -4,72 +4,41 @@ require 'librerange'
 
 # For External Command Domain
 class Command
-  class Domain
-    def ext_svdom(db)
-      extend(SvDom).setdb(db)
-    end
-  end
-
-  module SvDom
-    def self.extended(obj)
-      Msg.type?(obj,Command::Domain)
-    end
-
-    def setdb(db)
+  class ExtGrp < Group
+    def initialize(db)
       @db=Msg.type?(db,Db)
-      if @cdb=db[:command]
-        items={}
-        labels=@cdb[:label]
-        if gdb=@cdb[:group]
-          #For App Layer
-          gdb.each{|gid,gat|
-            items.update def_group(gid,labels,gat)
-          }
-        else
-          #For Frm Layer
-          gat={'color' => @color,'caption' => "Command List"}
-          # If no group, use :select for grouplist
-          gat[:members]=@cdb[:select].keys
-          items.update def_group('main',labels,gat)
-        end
-        @cdb[:alias].each{|k,v| items[k].replace items[v]} if @cdb.key?(:alias)
-      end
-      add_group('int','Internal Command').add_item('interrupt')
-      self
+      super('color' => '6','caption' => "External Commands")
+      @cmdary=[]
+      cdb=db[:command]
+      (cdb[:group]||{'main'=>@attr}).each{|gid,gat|
+        subgrp=Msg::CmdList.new(gat,@valid_keys)
+        (gat[:members]||cdb[:select].keys).each{|id|
+          subgrp[id]=cdb[:label][id]
+          self[id]=extitem(id)
+        }
+        @cmdary << subgrp
+      }
+      cdb[:alias].each{|k,v| self[k].replace self[v]} if cdb.key?(:alias)
+    end
+
+    def list
+      @cmdary.join("\n")
     end
 
     private
-    # Make Default groups (generated from Db)
-    def def_group(gid,labels,gat)
-      return {} if key?(gid)
-      self[gid]=ExtGrp.new(gat,@def_proc).update_items(@cdb)
-    end
-
-    def ext_item
-      each{|k,grp|
-        grp.values.each{|item|
-          yield item
-        } unless k == 'int'
-      }
-    end
-  end
-
-  class ExtGrp < Group
-    def update_items(cdb)
-      @attr[:members].each{|id|
-        @cmdlist[id]=cdb[:label][id]
-        self[id]=ExtItem.new(cdb,id,@def_proc)
-      }
-      self
+    def extitem(id)
+      ExtItem.new(@db,id,@def_proc)
     end
   end
 
   class ExtItem < Item
     include Math
     attr_reader :select
-    def initialize(cdb,id,def_proc)
+    def initialize(db,id,def_proc)
+      Msg.type?(db,Db)
       super(id,def_proc)
-      cdb.each{|k,v|
+      # because cdb is separated by title
+      db[:command].each{|k,v|
         if a=v[@id]
           self[k]=a
         end
@@ -129,15 +98,18 @@ end
 
 if __FILE__ == $0
   require 'liblocdb'
+  require 'libfrmcmd'
+  require 'libappcmd'
 
   begin
     Msg::GetOpts.new("af")
     ldb=Loc::Db.new.set(ARGV.shift)
     cobj=Command.new
+    svdom=cobj.add_domain('sv')
     if $opt["f"]
-      cobj.add_svdom(ldb[:frm])
+      svdom['ext']=Frm::ExtGrp.new(ldb[:frm])
     else
-      cobj.add_svdom(ldb[:app])
+      svdom['ext']=App::ExtGrp.new(ldb[:app])
     end
     puts cobj.setcmd(ARGV)
   rescue InvalidID

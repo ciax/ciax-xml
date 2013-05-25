@@ -2,52 +2,43 @@
 require "libmcrsh"
 
 module Mcr
-  class List < Sh::List
-    def initialize(mdb,il)
-      @il=Msg.type?(il,Ins::Layer)
-      cmdlist=Msg::CmdList.new('caption' => 'Macro List','color' => 2)
-      cmdlist['0']='Macro Manager'
-      super(cmdlist,'0')
-      self['0']=Man.new(mdb,self)
+  class Stat < Hash
+    def initialize
+      @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
     end
 
-    def newmcr(cobj)
-      num=keys.size.to_s
-      msh=self[num]=Mcr::Sv.new(cobj,@il)
-      msh['total']=num
-      msh.prompt['total']="[#{num}/%s]"
-      msh.shdom.replace @shdom
-      @shdom['id'].cmdlist.delete_if{|k,v| /^1-/ === k}
-      @shdom['id'].cmdlist["1-#{num}"]='Other Macro Process'
-      @shdom['id'].add_item(num).reset_proc{
-        raise(SelectID,num)
+    def add(num,cmd,msh)
+      self[num]=[cmd,msh]
+      self
+    end
+
+    def to_s
+      page=[@caption]
+      each{|key,ary|
+        cmd=ary[0]
+        stat=ary[1]['stat']
+        page << Msg.item("[#{key}]","#{cmd} (#{stat})")
       }
-      msh
+      page.join("\n")
     end
   end
 
   class Man < Sh::Exe
-    # @< cobj,output,upd_proc*
-    def initialize(mdb,mlist)
-      @mdb=Msg.type?(mdb,Db)
-      @mlist=Msg.type?(mlist,List)
-      self['layer']='mcr'
-      self['id']=@mdb['id']
-      self['total']='0'
-
-      output=Msg::CmdList.new('caption' => 'Macro List','color' => 2)
-      output['[0]']='Macro Manager'
-      prom=Sh::Prompt.new(self,{'total' => "[0/%s]"})
-      super(output,prom)
-      @shdom.replace @mlist.shdom
-      @shdom['id'].add_item('0','Macro Manager').reset_proc{
-        raise(SelectID,'0')
-      }
-      @svdom.ext_svdom(@mdb).reset_proc{|item|
-        msh=@mlist.newmcr(@cobj)
-        output["[#{self['total']}]"]=msh
-        msh.start_bg
-        raise(SelectID,self['total'])
+    def initialize(mdb,total='0')
+      Msg.type?(mdb,Db)
+      update({'layer'=>'mcr','id'=>mdb['id'],'total'=>total})
+      stat=Stat.new
+      prom=Sh::Prompt.new(self,{'total'=>"[0/%s]"})
+      super(stat,prom)
+      @svdom['ext']=Command::ExtGrp.new(mdb).reset_proc{|item|
+        # item includes arbitrary mcr command
+        # Sv generated and added to list in yield part as mcr command is invoked
+        total.succ!
+        num="#{total}"
+        msh=yield(@cobj,num)
+        msh['total']=total
+        stat.add(num,item[:cmd],msh)
+        raise(SelectID,num)
       }
     end
   end
@@ -55,11 +46,10 @@ end
 
 if __FILE__ == $0
   begin
-    il=Ins::Layer.new('mcr')
     mdb=Mcr::Db.new.set('ciax')
-    man=Mcr::List.new(mdb,il)
-    man.shell
+    man=Mcr::Man.new(mdb){puts 'OK';{}}
+    true while man.shell
   rescue InvalidCMD
-    $opt.usage("[mcr] [cmd] (par)")
+    $opt.usage
   end
 end

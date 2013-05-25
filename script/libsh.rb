@@ -34,6 +34,7 @@ module Sh
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
+      Thread.abort_on_exception=true
     end
 
     # Sync only (Wait for other thread)

@@ -127,7 +127,6 @@ module App
         @cobj.setcmd(cmd)
         sendcmd(p)
       }
-      Thread.abort_on_exception=true
       @buf=init_buf
       @extgrp.reset_proc{|item|
         @watch.block?(item.cmd)

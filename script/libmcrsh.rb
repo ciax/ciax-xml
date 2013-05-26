@@ -80,6 +80,7 @@ module Mcr
             }
           when 'mcr'
             puts @crnt if Msg.fg?
+            Msg.warn('Async') if /true|1/ === e1['async']
             macro(@mobj.setcmd(e1['cmd']),depth+1)
           end
         rescue Retry

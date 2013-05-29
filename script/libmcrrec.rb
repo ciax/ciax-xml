@@ -44,8 +44,7 @@ module Mcr
     end
 
     def exec
-      puts title if Msg.fg?
-      if @query.exec?
+      if @query.exec?(title)
         yield(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       else
@@ -154,7 +153,8 @@ module Mcr
       @sh=Msg.type?(sh,Sv)
     end
 
-    def exec?
+    def exec?(title=nil)
+      puts title if Msg.fg?
       return true if $opt['n']
       loop{
         case query(['Exec','Skip'])

@@ -44,7 +44,8 @@ module Mcr
     end
 
     def exec
-      if @query.exec?(title)
+      puts title if Msg.fg?
+      if @query.exec?(@dryrun)
         yield(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       else
@@ -153,13 +154,12 @@ module Mcr
       @sh=Msg.type?(sh,Sv)
     end
 
-    def exec?(title=nil)
-      puts title if Msg.fg?
+    def exec?(dryrun=nil)
       return true if $opt['n']
       loop{
         case query(['Exec','Skip'])
         when /^E/i
-          if dryrun?
+          if dryrun
             @step['action']='dryrun'
             return false
           else
@@ -188,10 +188,6 @@ module Mcr
           raise(Retry)
         end
       }
-    end
-
-    def dryrun?
-      ! ['e','s','t'].any?{|i| $opt[i]}
     end
 
     private

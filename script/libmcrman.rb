@@ -38,7 +38,6 @@ module Mcr
         msh=yield(@cobj,num)
         msh['total']=total
         stat.add(num,item[:cmd],msh)
-        throw(:sw_site,num)
       }
     end
   end
@@ -47,7 +46,7 @@ end
 if __FILE__ == $0
   begin
     mdb=Mcr::Db.new.set('ciax')
-    man=Mcr::Man.new(mdb){puts 'OK';{}}
+    man=Mcr::Man.new(mdb){{}}
     true while man.shell
   rescue InvalidCMD
     $opt.usage

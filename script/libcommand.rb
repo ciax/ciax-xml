@@ -15,6 +15,7 @@ require 'libupdate'
 #  Command::Group#list -> Msg::CmdList.to_s
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
 #  Command::Group#update_items(list){|id|}
+#  Command::Group#valid_keys -> Array
 #  Command::Group#def_proc ->[{|item|},..]
 #
 # Command::Domain => {id => Command::Group}
@@ -49,17 +50,12 @@ class Command < ExHash
   def setcmd(cmd)
     Msg.type?(cmd,Array)
     id,*par=cmd
-    dom=domain_with_item(id) || error
+    dom=domain_with_item(id) || raise(InvalidCMD,list)
     @current=dom.setcmd(cmd)
   end
 
   def list
     values.map{|dom| dom.list}.grep(/./).join("\n")
-  end
-
-  def error(str=nil)
-    str= str ? str+"\n" : ''
-    raise(InvalidCMD,str+list)
   end
 
   def domain_with_item(id)
@@ -107,7 +103,7 @@ class Command < ExHash
     def setcmd(cmd)
       Msg.type?(cmd,Array)
       id,*par=cmd
-      grp=group_with_item(id) || error
+      grp=group_with_item(id) || raise(InvalidCMD,list)
       grp.setcmd(cmd)
     end
 
@@ -123,7 +119,7 @@ class Command < ExHash
   end
 
   class BasicGroup < ExHash
-    attr_reader :cmdlist
+    attr_reader :valid_keys,:cmdlist
     def initialize(attr)
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
@@ -147,7 +143,7 @@ class Command < ExHash
       Msg.type?(cmd,Array)
       id,*par=cmd
       key?(id) || error
-      @valid_keys.include?(id) || error
+      @valid_keys.include?(id) || raise(InvalidCMD,list)
       verbose{"SetCMD (#{id},#{par})"}
       self[id].set_par(par)
     end
@@ -158,7 +154,6 @@ class Command < ExHash
   end
 
   class Group < BasicGroup
-    attr_reader :valid_keys
     attr_accessor :def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=ExeProc.new)

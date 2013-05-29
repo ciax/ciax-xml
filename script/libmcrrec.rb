@@ -40,6 +40,7 @@ module Mcr
       update(Msg.type?(db,Hash))
       @condition=delete('stat')
       @query=Query.new(self,obj)
+      @dryrun=! ['e','s','t'].any?{|i| $opt[i]}
     end
 
     def exec
@@ -57,7 +58,10 @@ module Mcr
       #gives number or nil(if break)
       print title if Msg.fg?
       max=self['max']=self['retry']
-      max = 3 if @query.dryrun?
+      if @dryrun
+        max = 3
+        self['action']='dryrun'
+      end
       max.to_i.times{|n|
         self['retry']=n
         if ok?('pass','wait')
@@ -75,7 +79,7 @@ module Mcr
 
     def skip?
       return unless ok?('skip','pass')
-      return true unless @query.dryrun?
+      return true unless @dryrun
       self['action']='dryrun'
       false
     ensure

@@ -60,21 +60,21 @@ module Sh
     def shell
       init_ver('Shell/%s',2,self)
       verbose{"Init/Shell(#{self['id']})"}
-      begin
-        while line=Readline.readline(@prompt.to_s,true)
-          break if /^q/ === line
-          exe(shell_input(line))
-          puts shell_output
+      catch(:sw_site) do
+        begin
+          while line=Readline.readline(@prompt.to_s,true)
+            break if /^q/ === line
+            exe(shell_input(line))
+            puts shell_output
+          end
+        rescue Interrupt
+          exe(['interrupt'])
+          puts self['msg']
+          retry
+        rescue InvalidID
+          puts $!.to_s
+          retry
         end
-      rescue SelectID
-        $!.to_s
-      rescue Interrupt
-        exe(['interrupt'])
-        puts self['msg']
-        retry
-      rescue InvalidID
-        puts $!.to_s
-        retry
       end
     end
 
@@ -235,7 +235,7 @@ module Sh
       super(current)
       @swsgrp=@shdom.add_group('sws','Switch Sites')
       @swsgrp.update_items(list).reset_proc{|item|
-        raise(SelectID,item.id)
+        throw(:sw_site,item.id)
       }
     end
 

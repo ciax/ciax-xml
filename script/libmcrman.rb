@@ -38,7 +38,7 @@ module Mcr
         msh=yield(@cobj,num)
         msh['total']=total
         stat.add(num,item[:cmd],msh)
-        raise(SelectID,num)
+        throw(:sw_site,num)
       }
     end
   end

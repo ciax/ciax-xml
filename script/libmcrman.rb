@@ -7,8 +7,8 @@ module Mcr
       @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
     end
 
-    def add(num,cmd,msh)
-      self[num]=[cmd,msh]
+    def add(num,cmd,mexe)
+      self[num]=[cmd,mexe]
       self
     end
 
@@ -35,9 +35,9 @@ module Mcr
         # Sv generated and added to list in yield part as mcr command is invoked
         total.succ!
         num="#{total}"
-        msh=yield(@cobj,num)
-        msh['total']=total
-        stat.add(num,item[:cmd],msh)
+        mexe=yield(@cobj,num)
+        mexe['total']=total
+        stat.add(num,item[:cmd],mexe)
       }
     end
   end

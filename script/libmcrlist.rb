@@ -19,8 +19,7 @@ module Mcr
       msh.prompt['total']="[#{num}/%s]"
       msh.lodom['sw']=@swgrp
       @swgrp.add_item(num).reset_proc{throw(:sw_site,num)}
-      msh.start_bg
-      msh
+      msh.mexe
     end
   end
 end

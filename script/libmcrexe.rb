@@ -17,7 +17,7 @@ module Mcr
       self['id']=@mitem[:cmd]
     end
 
-    def start(valid_keys=[])
+    def start(valid_keys=[]) # separated for sub thread
       @valid_keys=Msg.type?(valid_keys,Array)
       self['stat']='run'
       puts @record if Msg.fg?

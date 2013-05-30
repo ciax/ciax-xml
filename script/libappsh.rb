@@ -25,7 +25,7 @@ module App
 
   class Exe < Sh::Exe
     # @< cobj,output,upd_proc*
-    # @ adb,fsh,svdom,extgrp,intgrp,watch,stat*
+    # @ adb,fsh,extgrp,intgrp,watch,stat*
     attr_reader :adb,:stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
@@ -35,8 +35,8 @@ module App
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
       super(@stat,prom)
-      @intgrp=@svdom.add_group('int','Internal Commands')
-      @extgrp=@svdom['ext']=App::ExtGrp.new(@adb)
+      @intgrp=@cobj['sv']['int']
+      @extgrp=@cobj['sv']['ext']=App::ExtGrp.new(@adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       init_view
     end
@@ -86,7 +86,7 @@ module App
       @watch.event_proc=proc{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
       }
-      @svdom.def_proc.set{|item|
+      @cobj['sv'].def_proc=proc{|item|
         @watch.block?(item.cmd)
         @stat.upd
         @watch.upd

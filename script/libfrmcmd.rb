@@ -85,8 +85,7 @@ if __FILE__ == $0
     fdb=Frm::Db.new.set(dev)
     field=Field::Var.new
     cobj=Command.new
-    svdom=cobj.add_domain('sv')
-    svdom['ext']=Frm::ExtGrp.new(fdb,field)
+    cobj['sv']['ext']=Frm::ExtGrp.new(fdb,field)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD

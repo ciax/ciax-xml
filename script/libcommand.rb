@@ -142,7 +142,7 @@ class Command < ExHash
     def setcmd(cmd)
       Msg.type?(cmd,Array)
       id,*par=cmd
-      key?(id) || error
+      key?(id) || raise(InvalidCMD,list)
       @valid_keys.include?(id) || raise(InvalidCMD,list)
       verbose{"SetCMD (#{id},#{par})"}
       self[id].set_par(par)

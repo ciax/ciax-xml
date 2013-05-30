@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libsh"
 require "libmcrdb"
 require "libmcrrec"
 require "libcommand"
@@ -7,7 +6,7 @@ require "libinssh"
 
 module Mcr
   class Exe < Hash
-    attr_accessor :mobj
+    attr_accessor :mobj,:record,:valid_keys
     def initialize(mitem,mobj,il)
       @mitem=Msg.type?(mitem,Command::Item)
       @mobj=Msg.type?(mobj.dup,Command)
@@ -18,7 +17,8 @@ module Mcr
       self['id']=@mitem[:cmd]
     end
 
-    def start
+    def start(valid_keys=[])
+      @valid_keys=Msg.type?(valid_keys,Array)
       self['stat']='run'
       puts @record if Msg.fg?
       macro(@mitem)
@@ -134,8 +134,8 @@ module Mcr
 
     private
     def query(cmds)
-      thc=Thread.current
-      thc[:valid_keys]=cmds.map{|s| s[0].downcase}
+      vk=@sh.valid_keys.clear
+      cmds.each{|s| vk << s[0].downcase}
       @sh['stat']='query'
       if Msg.fg?
         prompt=Msg.color('['+cmds.join('/')+']?',5)
@@ -145,17 +145,17 @@ module Mcr
         @step['option']=cmds
         sleep
         @step.delete('option')
-        res=thc[:query]
+        res=Thread.current[:query]
       end
       @sh['stat']='run'
-      thc[:valid_keys].clear
+      vk.clear
       res
     end
   end
 end
 
 if __FILE__ == $0
-  Msg::GetOpts.new('rest',{'n' => 'nonstop mode','i' => 'interactive mode'})
+  Msg::GetOpts.new('rest',{'n' => 'nonstop mode'})
   begin
     il=Ins::Layer.new('app')
     mdb=Mcr::Db.new.set('ciax')

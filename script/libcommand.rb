@@ -66,11 +66,11 @@ class Command < ExHash
 
   class Domain < ExHash
     attr_reader :def_proc
-    def initialize(color=2)
+    def initialize(color=2,def_proc=ExeProc.new)
       init_ver(self)
+      @def_proc=Msg.type?(def_proc,ExeProc)
       @grplist=[]
       @color=color
-      @def_proc=ExeProc.new
     end
 
     def update(h)
@@ -154,7 +154,7 @@ class Command < ExHash
   end
 
   class Group < BasicGroup
-    attr_accessor :def_proc
+    attr_reader :def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=ExeProc.new)
       super(attr)

@@ -15,26 +15,27 @@ module Sh
   # @ cobj,output,upd_proc
   # @ prompt,lodom
   class Exe < ExHash # Having server status {id,msg,...}
-    attr_reader :upd_proc,:output,:svdom,:lodom,:item
+    attr_reader :upd_proc,:item,:svdom,:lodom,:output
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
       @cobj=Command.new
       @upd_proc=UpdProc.new # Proc for Server Status Update
       @svdom=@cobj.add_domain('sv',2) # Server Commands (service commands on Server)
+      @item=nil
       @interrupt=@svdom.add_group('hid',"Hidden Group").add_item('interrupt')
+      Thread.abort_on_exception=true
       # For Shell
       @output=output
       @prompt=prompt
-      @item=nil
-      @lodom=@cobj.add_domain('lo',9) # Local Commands (local handling commands on Client)
+      # Local(Long Jump) Commands (local handling commands on Client)
+      @lodom=@cobj.add_domain('lo',9)
       shg=@lodom.add_dummy('sh',"Shell Command")
       shg.add_item('^D,q',"Quit")
       shg.add_item('^C',"Interrupt")
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
-      Thread.abort_on_exception=true
     end
 
     # Sync only (Wait for other thread)

@@ -9,19 +9,19 @@ require 'libupdate'
 #Command < Hash
 # Command::Item => {:label,:parameter,:select,:cmd}
 #  Command::Item#set_par(par)
-#  Command::Item#reset_proc{|item|}
+#  Command::Item#def_proc -> Proc
 #
 # Command::Group => {id => Command::Item}
 #  Command::Group#list -> Msg::CmdList.to_s
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
 #  Command::Group#update_items(list){|id|}
 #  Command::Group#valid_keys -> Array
-#  Command::Group#def_proc ->[{|item|},..]
+#  Command::Group#def_proc -> Proc
 #
 # Command::Domain => {id => Command::Group}
 #  Command::Domain#list -> String
 #  Command::Domain#add_group(key,title) -> Command::Group
-#  Command::Domain#def_proc ->[{|item|},..]
+#  Command::Domain#def_proc -> Proc
 #  Command::Domain#item(id) -> Command::Item
 #
 # Command#new(db) => {id => Command::Domain}
@@ -66,9 +66,9 @@ class Command < ExHash
 
   class Domain < ExHash
     attr_reader :def_proc
-    def initialize(color=2,def_proc=ExeProc.new)
+    def initialize(color=2)
       init_ver(self)
-      @def_proc=Msg.type?(def_proc,ExeProc)
+      @def_proc=Proc.new{}
       @grplist=[]
       @color=color
     end
@@ -93,11 +93,12 @@ class Command < ExHash
       self[gid]=BasicGroup.new(attr)
     end
 
-    def reset_proc(&p)
-      values.each{|grp|
-        grp.reset_proc &p
+    def def_proc=(dp)
+      @def_proc=Msg.type?(dp,Proc)
+      values.each{|v|
+        v.def_proc=dp
       }
-      self
+      dp
     end
 
     def setcmd(cmd)
@@ -119,12 +120,14 @@ class Command < ExHash
   end
 
   class BasicGroup < ExHash
-    attr_reader :valid_keys,:cmdlist
-    def initialize(attr)
+    attr_reader :valid_keys,:cmdlist,:def_proc
+    #attr = {caption,color,column,:members}
+    def initialize(attr,def_proc=Proc.new{})
       init_ver(self)
       @attr=Msg.type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=Msg::CmdList.new(@attr,@valid_keys)
+      @def_proc=Msg.type?(def_proc,Proc)
     end
 
     def add_item(id,title)
@@ -154,13 +157,6 @@ class Command < ExHash
   end
 
   class Group < BasicGroup
-    attr_reader :def_proc
-    #attr = {caption,color,column,:members}
-    def initialize(attr,def_proc=ExeProc.new)
-      super(attr)
-      @def_proc=Msg.type?(def_proc,ExeProc)
-    end
-
     def add_item(id,title=nil,parameter=nil)
       super(id,title)
       item=self[id]=Item.new(id,@def_proc)
@@ -178,32 +174,28 @@ class Command < ExHash
       self
     end
 
-    def reset_proc(&p)
-      @def_proc=ExeProc.new.set &p
+    def def_proc=(dp)
+      @def_proc=Msg.type?(dp,Proc)
       values.each{|v|
-        v.reset_proc &p
+        v.def_proc=dp
       }
-      self
+      dp
     end
   end
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:def_proc
-    def initialize(id,def_proc=ExeProc.new)
+    attr_reader :id,:par,:cmd
+    attr_accessor :def_proc
+    def initialize(id,def_proc=Proc.new{})
       @id=id
       @par=[]
       @cmd=[]
-      @def_proc=Msg.type?(def_proc,ExeProc)
-    end
-
-    def reset_proc(&p)
-      @def_proc=ExeProc.new.set &p
-      self
+      @def_proc=Msg.type?(def_proc,Proc)
     end
 
     def exe
-      @def_proc.exe(self)
+      @def_proc.call(self)
       self
     end
 

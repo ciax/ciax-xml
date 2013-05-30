@@ -34,7 +34,7 @@ module Hex
       super(ash.adb)
       @output=View.new(ash,ash.stat)
       @log_proc=UpdProc.new
-      @svdom.reset_proc{|item|
+      @svdom.def_proc=proc{|item|
         ash.exe(item.cmd)
         @log_proc.upd
       }

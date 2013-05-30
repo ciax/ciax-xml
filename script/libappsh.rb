@@ -52,9 +52,9 @@ module App
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@watch).ext_prt
       grp=@lodom.add_group('view',"Change View Mode")
-      grp.add_item('pri',"Print mode").reset_proc{@output=@print}
-      grp.add_item('wat',"Watch mode").reset_proc{@output=@wview} if @wview
-      grp.add_item('raw',"Raw mode").reset_proc{@output=@stat}
+      grp.add_item('pri',"Print mode").def_proc=proc{@output=@print}
+      grp.add_item('wat',"Watch mode").def_proc=proc{@output=@wview} if @wview
+      grp.add_item('raw',"Raw mode").def_proc=proc{@output=@stat}
       self
     end
   end
@@ -66,12 +66,12 @@ module App
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
-      @intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|
+      @intgrp.add_item('set','[key=val,...]',[cri]).def_proc=proc{|item|
         @stat.str_update(item.par[0]).upd
         @watch.upd
         self['msg']="Set #{item.par[0]}"
       }
-      @intgrp.add_item('del','[key,...]',[cri]).reset_proc{|item|
+      @intgrp.add_item('del','[key,...]',[cri]).def_proc=proc{|item|
         item.par[0].split(',').each{|key|
           @stat['val'].delete(key)
         }
@@ -79,7 +79,7 @@ module App
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
-      @interrupt.reset_proc{
+      @interrupt.def_proc=proc{
         int=@watch.interrupt
         self['msg']="Interrupt #{int}"
       }
@@ -128,13 +128,13 @@ module App
         sendcmd(p)
       }
       @buf=init_buf
-      @extgrp.reset_proc{|item|
+      @extgrp.def_proc=proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
         verbose{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      @interrupt.reset_proc{
+      @interrupt.def_proc=proc{
         int=@watch.interrupt
         verbose{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

@@ -230,7 +230,7 @@ module Sh
       Msg.type?(list,Msg::CmdList)
       super(current)
       @swsgrp=@shdom.add_group('sws','Switch Sites')
-      @swsgrp.update_items(list).reset_proc{|item|
+      @swsgrp.update_items(list).def_proc=proc{|item|
         throw(:sw_site,item.id)
       }
     end
@@ -265,7 +265,7 @@ module Sh
       @current=current
       @shdom=Command::Domain.new(5)
       @swlgrp=@shdom.add_group('swl',"Switch Layer")
-      @swlgrp.reset_proc{|item| throw(:sw_layer,item.id) }
+      @swlgrp.def_proc=proc{|item| throw(:sw_layer,item.id) }
     end
 
     def shell

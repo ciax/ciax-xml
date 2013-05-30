@@ -30,12 +30,12 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       prom=Sh::Prompt.new(self)
       super(@field,prom)
-      @svdom.def_proc.set{|item|@field['time']=UnixTime.now}
+      @svdom.def_proc=proc{|item|@field['time']=UnixTime.now}
       any={:type =>'reg',:list => ["."]}
       @intgrp=@svdom.add_group('int','Internal Commands')
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
       @intgrp.add_item('load',"Load Field (tag)",[any])
-      @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).reset_proc{|item|
+      @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).def_proc=proc{|item|
         @field.set(*item.par)
       }
       @extgrp=@svdom['ext']=ExtGrp.new(fdb,@field)
@@ -76,17 +76,17 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @extgrp.reset_proc{|item|
+      @extgrp.def_proc=proc{|item|
         @io.snd(item.getframe,item[:cmd])
         @field.upd(item){@io.rcv} && @field.save
       }
-      @intgrp['set'].reset_proc{|item|
+      @intgrp['set'].def_proc=proc{|item|
         @field.set(item.par[0],item.par[1]).save
       }
-      @intgrp['save'].reset_proc{|item|
+      @intgrp['save'].def_proc=proc{|item|
         @field.savekey(item.par[0].split(','),item.par[1])
       }
-      @intgrp['load'].reset_proc{|item|
+      @intgrp['load'].def_proc=proc{|item|
         @field.load(item.par[0]||'').save
       }
       ext_server(fdb['port'].to_i)

@@ -10,14 +10,14 @@ module App
     end
   end
 
-  class ExtGrp < Command::ExtGrp
+  class ExtGrp < CmdExt::ExtGrp
     private
     def extitem(id)
       ExtItem.new(@db,id,@def_proc)
     end
   end
 
-  class ExtItem < Command::ExtItem
+  class ExtItem < CmdExt::ExtItem
     #frmcmd is ary of ary
     def getcmd
       frmcmd=[]

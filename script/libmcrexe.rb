@@ -5,6 +5,7 @@ require "libcommand"
 require "libinssh"
 
 module Mcr
+  include CmdExt
   class Exe < Hash
     attr_accessor :mobj,:record,:valid_keys
     def initialize(mitem,mobj,il)
@@ -159,7 +160,7 @@ if __FILE__ == $0
   begin
     il=Ins::Layer.new('app')
     mdb=Mcr::Db.new.set('ciax')
-    mobj=Command.new.extgrp(mdb)
+    mobj=Mcr::Command.new(mdb)
     mitem=mobj.setcmd(ARGV)
     msh=Mcr::Exe.new(mitem,mobj,il)
     msh.start

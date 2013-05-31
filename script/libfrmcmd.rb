@@ -19,7 +19,7 @@ module Frm
     end
   end
 
-  class ExtGrp < Command::ExtGrp
+  class ExtGrp < CmdExt::ExtGrp
     def initialize(db,field=Field::Var.new)
       @field=Msg.type?(field,Field::Var)
       super(db)
@@ -31,7 +31,7 @@ module Frm
     end
   end
 
-  class ExtItem < Command::ExtItem
+  class ExtItem < CmdExt::ExtItem
     def initialize(field,db,id,def_proc)
       init_ver('FrmCmd',9)
       @field=Msg.type?(field,Field::Var)

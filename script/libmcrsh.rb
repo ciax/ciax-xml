@@ -36,8 +36,7 @@ if __FILE__ == $0
   begin
     il=Ins::Layer.new('app')
     mdb=Mcr::Db.new.set('ciax')
-    mobj=Command.new
-    mobj['sv']['ext']=Command::ExtGrp.new(mdb)
+    mobj=Mcr::Command.new(mdb)
     mitem=mobj.setcmd(ARGV)
     msh=Mcr::Sv.new(mobj,il)
     msh.shell

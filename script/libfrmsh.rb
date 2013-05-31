@@ -14,7 +14,7 @@ module Frm
     elsif host=$opt['h'] or $opt['c']
       fsh=Frm::Cl.new(fdb,host)
     else
-      fsh=Frm::Exe.new(fdb)
+      fsh=Frm::Test.new(fdb)
     end
     fsh
   end
@@ -30,7 +30,6 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       prom=Sh::Prompt.new(self)
       super(@field,prom)
-      @cobj['sv'].def_proc=proc{|item|@field['time']=UnixTime.now}
       any={:type =>'reg',:list => ["."]}
       @intgrp=@cobj['sv']['int']
       @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
@@ -47,6 +46,13 @@ module Frm
       cmd=line.split(/[ =]/)
       cmd.unshift 'set' if /^[^ ]+\=/ === line
       cmd
+    end
+  end
+
+  class Test < Exe
+    def initialize(fdb)
+      super
+      @cobj['sv'].def_proc=proc{|item|@field['time']=UnixTime.now}
     end
   end
 

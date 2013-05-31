@@ -29,9 +29,6 @@ module Sh
       @prompt=prompt
       # Local(Long Jump) Commands (local handling commands on Client)
       @lodom=@cobj['lo']
-      shg=@lodom.add_dummy('sh',"Shell Command")
-      shg.add_item('^D,q',"Quit")
-      shg.add_item('^C',"Interrupt")
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }

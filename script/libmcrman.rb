@@ -30,7 +30,7 @@ module Mcr
       stat=Stat.new
       prom=Sh::Prompt.new(self,{'total'=>"[0/%s]"})
       super(stat,prom)
-      ext=@svdom['ext']=Command::ExtGrp.new(mdb)
+      ext=@cobj['sv']['ext']=Command::ExtGrp.new(mdb)
       ext.def_proc=proc{|item|
         # item includes arbitrary mcr command
         # Sv generated and added to list in yield part as mcr command is invoked

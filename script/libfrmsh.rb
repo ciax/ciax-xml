@@ -21,7 +21,7 @@ module Frm
 
   class Exe < Sh::Exe
     # @< cobj,output,(upd_proc*)
-    # @ svdom,extgrp,intgrp,field*
+    # @ extgrp,intgrp,field*
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
@@ -63,7 +63,7 @@ module Frm
 
   class Sv < Exe
     # @<< cobj,(output),(upd_proc*)
-    # @< svdom,field*
+    # @< field*
     # @ io
     def initialize(fdb,iocmd=[])
       super(fdb)

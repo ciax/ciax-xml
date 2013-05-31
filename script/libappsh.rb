@@ -112,7 +112,7 @@ module App
   end
 
   # @<< cobj,output,,upd_proc*
-  # @< adb,svdom,watch,stat*
+  # @< adb,watch,stat*
   # @ fsh,buf,log_proc
   class Sv < Exe
     def initialize(adb,fsh,logging=nil)

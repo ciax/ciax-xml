@@ -72,6 +72,16 @@ class Command < ExHash
     }
   end
 
+  def valid_keys
+    res=[]
+    values.each{|dom|
+      dom.values.each{|grp|
+        res+=grp.valid_keys
+      }
+    }
+    res
+  end
+
   class Domain < ExHash
     attr_reader :def_proc
     def initialize(color=2)

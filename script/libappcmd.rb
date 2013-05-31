@@ -52,15 +52,10 @@ if __FILE__ == $0
   require "libfrmcmd"
   app,*cmd=ARGV
   begin
-p App::Command.ancestors
-p App::ExtGrp.ancestors
-p App::ExtItem.ancestors
     adb=App::Db.new.set(app)
     fdb=Frm::Db.new.set(adb['frm_id'])
     fcobj=Frm::Command.new(fdb)
     acobj=App::Command.new(adb)
-
-
     acobj.setcmd(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
       fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first

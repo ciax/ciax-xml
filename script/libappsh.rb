@@ -37,6 +37,11 @@ module App
       super(@stat,prom)
       @cobj=Command.new(adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
+      @cobj.int.def_proc=proc{
+        int=@watch.interrupt
+        verbose{"#{self['id']}/Interrupt:#{int}"}
+        self['msg']="Interrupt #{int}"
+      }
       init_view
     end
 
@@ -77,10 +82,6 @@ module App
         @stat.upd
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
-      }
-      @cobj.int.def_proc=proc{
-        int=@watch.interrupt
-        self['msg']="Interrupt #{int}"
       }
       @watch.event_proc=proc{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
@@ -132,11 +133,6 @@ module App
         sendcmd(1)
         verbose{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
-      }
-      @cobj.int.def_proc=proc{
-        int=@watch.interrupt
-        verbose{"#{self['id']}/Interrupt:#{int}"}
-        self['msg']="Interrupt #{int}"
       }
       # Update for Frm level manipulation
       @fsh.upd_proc.add{@stat.upd.save}

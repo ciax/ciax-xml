@@ -5,20 +5,20 @@ module Mcr
   class Sv < Sh::Exe
     # @< cobj,output,upd_proc*
     # @ al,appint,th,item,mobj*
-    attr_reader :mexe,:prompt,:intgrp,:th
+    attr_reader :mexe,:prompt,:th
     def initialize(mobj,il)
       @mobj=Msg.type?(mobj.dup,Command)
       @il=Msg.type?(il,Ins::Layer)
       @mitem=@mobj.current
       @mexe=Exe.new(@mitem,mobj,il)
       super(@mexe.record,Sh::Prompt.new(@mexe,{'stat' => "(%s)"}))
-      @intgrp=@cobj['sv']['int']
-      @intgrp.add_item('e','Execute Command').def_proc=proc{ ans('e') }
-      @intgrp.add_item('s','Skip Execution').def_proc=proc{ ans('s') }
-      @intgrp.add_item('d','Done Macro').def_proc=proc{ ans('d') }
-      @intgrp.add_item('f','Force Proceed').def_proc=proc{ ans('f') }
-      @intgrp.add_item('r','Retry Checking').def_proc=proc{ ans('r') }
-      @th=Thread.new(@intgrp.valid_keys.clear){|vk| @mexe.start(vk) }
+      ig=@cobj['sv']['int']
+      ig.add_item('e','Execute Command').def_proc=proc{ ans('e') }
+      ig.add_item('s','Skip Execution').def_proc=proc{ ans('s') }
+      ig.add_item('d','Done Macro').def_proc=proc{ ans('d') }
+      ig.add_item('f','Force Proceed').def_proc=proc{ ans('f') }
+      ig.add_item('r','Retry Checking').def_proc=proc{ ans('r') }
+      @th=Thread.new(ig.valid_keys.clear){|vk| @mexe.start(vk) }
       @interrupt.def_proc=proc{|i| @th.raise(Interrupt)}
       @th
     end

@@ -13,9 +13,8 @@ require "libupdate"
 
 module Sh
   # @ cobj,output,upd_proc
-  # @ prompt,lodom
   class Exe < ExHash # Having server status {id,msg,...}
-    attr_reader :upd_proc,:item,:lodom,:output
+    attr_reader :upd_proc,:cobj,:item,:output
     # block gives command line convert
     def initialize(output={},prompt=self)
       init_ver(self,2)
@@ -28,7 +27,6 @@ module Sh
       @output=output
       @prompt=prompt
       # Local(Long Jump) Commands (local handling commands on Client)
-      @lodom=@cobj['lo']
       Readline.completion_proc=proc{|word|
         @cobj.keys.grep(/^#{word}/)
       }
@@ -195,7 +193,6 @@ module Sh
       str << '>'
     end
   end
-
   class List < ExHash
     # shdom: Domain for Shared Command Groups
     attr_accessor :shdom,:current
@@ -237,7 +234,7 @@ module Sh
         super
       else
         sh=self[key]=newsh(key)
-        sh.lodom.update @shdom
+        sh.cobj['lo'].update @shdom
         sh
       end
     end

@@ -21,7 +21,7 @@ module Frm
 
   class Exe < Sh::Exe
     # @< cobj,output,(upd_proc*)
-    # @ extgrp,intgrp,field*
+    # @ field*
     attr_reader :field
     def initialize(fdb)
       Msg.type?(fdb,Frm::Db)
@@ -30,15 +30,7 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       prom=Sh::Prompt.new(self)
       super(@field,prom)
-      any={:type =>'reg',:list => ["."]}
-      @intgrp=@cobj['sv']['int']
-      @intgrp.add_item('save',"Save Field [key,key...] (tag)",[any,any])
-      @intgrp.add_item('load',"Load Field (tag)",[any])
-      @intgrp.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).def_proc=proc{|item|
-        @field.set(*item.par)
-      }
-      @extgrp=@cobj['sv']['ext']=ExtGrp.new(fdb,@field)
-      self
+      @cobj=Command.new(fdb,@field)
     end
 
     private
@@ -82,17 +74,17 @@ module Frm
       else
         @io=Stream.new(iocmd,fdb['wait'],1)
       end
-      @extgrp.def_proc=proc{|item|
+      @cobj['sv']['ext'].def_proc=proc{|item|
         @io.snd(item.getframe,item[:cmd])
         @field.upd(item){@io.rcv} && @field.save
       }
-      @intgrp['set'].def_proc=proc{|item|
+      @cobj['sv']['int']['set'].def_proc=proc{|item|
         @field.set(item.par[0],item.par[1]).save
       }
-      @intgrp['save'].def_proc=proc{|item|
+      @cobj['sv']['int']['save'].def_proc=proc{|item|
         @field.savekey(item.par[0].split(','),item.par[1])
       }
-      @intgrp['load'].def_proc=proc{|item|
+      @cobj['sv']['int']['load'].def_proc=proc{|item|
         @field.load(item.par[0]||'').save
       }
       ext_server(fdb['port'].to_i)

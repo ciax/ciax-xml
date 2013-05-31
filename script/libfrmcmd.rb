@@ -7,6 +7,14 @@ module Frm
   class Command < ::Command
     def initialize(fdb,field=Field::Var.new)
       super()
+      any={:type =>'reg',:list => ["."]}
+      ig=self['sv']['int']
+      ig.add_item('save',"Save Field [key,key...] (tag)",[any,any])
+      ig.add_item('load',"Load Field (tag)",[any])
+      set=ig.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
+      set.def_proc=proc{|item|
+        field.set(*item.par)
+      }
       self['sv']['ext']=ExtGrp.new(fdb,field)
     end
   end

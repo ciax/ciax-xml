@@ -25,7 +25,7 @@ module App
 
   class Exe < Sh::Exe
     # @< cobj,output,upd_proc*
-    # @ adb,fsh,extgrp,intgrp,watch,stat*
+    # @ adb,fsh,watch,stat*
     attr_reader :adb,:stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
@@ -35,8 +35,7 @@ module App
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
       super(@stat,prom)
-      @intgrp=@cobj['sv']['int']
-      @extgrp=@cobj['sv']['ext']=App::ExtGrp.new(@adb)
+      @cobj['sv']['ext']=App::ExtGrp.new(@adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       init_view
     end
@@ -51,7 +50,7 @@ module App
     def init_view
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@watch).ext_prt
-      grp=@lodom.add_group('view',"Change View Mode")
+      grp=@cobj['lo'].add_group('view',"Change View Mode")
       grp.add_item('pri',"Print mode").def_proc=proc{@output=@print}
       grp.add_item('wat',"Watch mode").def_proc=proc{@output=@wview} if @wview
       grp.add_item('raw',"Raw mode").def_proc=proc{@output=@stat}
@@ -66,12 +65,12 @@ module App
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
-      @intgrp.add_item('set','[key=val,...]',[cri]).def_proc=proc{|item|
+      @cobj['sv']['int'].add_item('set','[key=val,...]',[cri]).def_proc=proc{|item|
         @stat.str_update(item.par[0]).upd
         @watch.upd
         self['msg']="Set #{item.par[0]}"
       }
-      @intgrp.add_item('del','[key,...]',[cri]).def_proc=proc{|item|
+      @cobj['sv']['int'].add_item('del','[key,...]',[cri]).def_proc=proc{|item|
         item.par[0].split(',').each{|key|
           @stat['val'].delete(key)
         }
@@ -128,7 +127,7 @@ module App
         sendcmd(p)
       }
       @buf=init_buf
-      @extgrp.def_proc=proc{|item|
+      @cobj['sv']['ext'].def_proc=proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
         verbose{"#{self['id']}/Issued:#{item.cmd},"}

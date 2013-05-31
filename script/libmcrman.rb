@@ -51,7 +51,7 @@ module Mcr
       @total='0'
       man=self['0']=Man.new(mdb,@total){|mobj,num| newmcr(mobj,num)}
       @swgrp=man.lodom.add_group('sw',"Switching Macros")
-      @swgrp.add_item('0',"Macro Manager").reset_proc{throw(:sw_site,'0') }
+      @swgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
       @swgrp.cmdlist["1.."]='Other Macro Process'
     end
 
@@ -59,7 +59,7 @@ module Mcr
       msh=self[num]=Sv.new(mobj,@il)
       msh.prompt['total']="[#{num}/%s]"
       msh.lodom['sw']=@swgrp
-      @swgrp.add_item(num).reset_proc{throw(:sw_site,num)}
+      @swgrp.add_item(num).def_proc=proc{throw(:sw_site,num)}
       msh.mexe
     end
   end

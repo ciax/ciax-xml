@@ -4,6 +4,11 @@ require 'librerange'
 
 # For External Command Domain
 class Command
+  def extgrp(db)
+    self['sv']['ext']=ExtGrp.new(db)
+    self
+  end
+
   class ExtGrp < Group
     def initialize(db)
       @db=Msg.type?(db,Db)

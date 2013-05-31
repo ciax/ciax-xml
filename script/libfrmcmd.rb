@@ -4,7 +4,7 @@ require "libframe"
 require "libcmdext"
 # Cmd Methods
 module Frm
-  class Command < ::Command
+  class Command < Command
     def initialize(fdb,field=Field::Var.new)
       super()
       any={:type =>'reg',:list => ["."]}

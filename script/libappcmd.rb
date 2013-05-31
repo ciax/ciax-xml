@@ -3,7 +3,7 @@ require "libmsg"
 require "libcmdext"
 
 module App
-  class Command < ::Command
+  class Command < Command
     def initialize(adb)
       super()
       self['sv']['ext']=ExtGrp.new(adb)

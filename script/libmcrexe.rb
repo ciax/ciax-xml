@@ -159,8 +159,7 @@ if __FILE__ == $0
   begin
     il=Ins::Layer.new('app')
     mdb=Mcr::Db.new.set('ciax')
-    mobj=Command.new
-    mobj['sv']['ext']=Command::ExtGrp.new(mdb)
+    mobj=Command.new.extgrp(mdb)
     mitem=mobj.setcmd(ARGV)
     msh=Mcr::Exe.new(mitem,mobj,il)
     msh.start

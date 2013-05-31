@@ -26,7 +26,6 @@ require 'libupdate'
 #
 # Command#new(db) => {id => Command::Domain}
 #  Command#list -> String
-#  Command#add_domain(key,title) -> Command::Domain
 #  Command#current -> Command::Item
 #  Command#setcmd(cmd=[id,*par]):{
 #    Command::Item#set_par(par)
@@ -34,7 +33,7 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current
+  attr_reader :current,:int
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -42,17 +41,14 @@ class Command < ExHash
     init_ver(self)
     @current=nil
     # Server Commands (service commands on Server)
-    sv=add_domain('sv',2)
-    sv.add_group('hid',"Hidden Group").add_item('interrupt')
+    sv=self['sv']=Domain.new(2)
+    @int=sv.add_group('hid',"Hidden Group").add_item('interrupt')
     sv.add_group('int','Internal Commands')
     # Local(Long Jump) Commands (local handling commands on Client)
-    shg=add_domain('lo',9).add_dummy('sh',"Shell Command")
+    lo=self['lo']=Domain.new(9)
+    shg=lo.add_dummy('sh',"Shell Command")
     shg.add_item('^D,q',"Quit")
     shg.add_item('^C',"Interrupt")
-  end
-
-  def add_domain(id,color=2)
-    self[id]=Domain.new(color)
   end
 
   def setcmd(cmd)

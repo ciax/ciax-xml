@@ -4,6 +4,13 @@ require "libframe"
 require "libcmdext"
 # Cmd Methods
 module Frm
+  class Command < ::Command
+    def initialize(fdb,field=Field::Var.new)
+      super()
+      self['sv']['ext']=ExtGrp.new(fdb,field)
+    end
+  end
+
   class ExtGrp < Command::ExtGrp
     def initialize(db,field=Field::Var.new)
       @field=Msg.type?(field,Field::Var)
@@ -84,8 +91,7 @@ if __FILE__ == $0
   begin
     fdb=Frm::Db.new.set(dev)
     field=Field::Var.new
-    cobj=Command.new
-    cobj['sv']['ext']=Frm::ExtGrp.new(fdb,field)
+    cobj=Frm::Command.new(fdb,field)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD

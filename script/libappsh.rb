@@ -78,7 +78,7 @@ module App
         @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
-      @interrupt.def_proc=proc{
+      @cobj.int.def_proc=proc{
         int=@watch.interrupt
         self['msg']="Interrupt #{int}"
       }
@@ -133,7 +133,7 @@ module App
         verbose{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      @interrupt.def_proc=proc{
+      @cobj.int.def_proc=proc{
         int=@watch.interrupt
         verbose{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

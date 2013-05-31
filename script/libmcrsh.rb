@@ -19,7 +19,7 @@ module Mcr
       ig.add_item('f','Force Proceed').def_proc=proc{ ans('f') }
       ig.add_item('r','Retry Checking').def_proc=proc{ ans('r') }
       @th=Thread.new(ig.valid_keys.clear){|vk| @mexe.start(vk) }
-      @interrupt.def_proc=proc{|i| @th.raise(Interrupt)}
+      @cobj.int.def_proc=proc{|i| @th.raise(Interrupt)}
       @th
     end
 

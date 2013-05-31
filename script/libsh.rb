@@ -21,7 +21,6 @@ module Sh
       @cobj=Command.new
       @upd_proc=UpdProc.new # Proc for Server Status Update
       @item=nil
-      @interrupt=@cobj['sv']['hid']['interrupt']
       Thread.abort_on_exception=true
       # For Shell
       @output=output

@@ -68,7 +68,7 @@ module Mcr
             step.exec(qry.exec?){|site,cmd,depth|
               ash=@il['app'][site]
               ash.exe(cmd)
-              @appint=ash.interrupt
+              @appint=ash.cobj.int
             }
             puts step.action if Msg.fg?
           when 'mcr'

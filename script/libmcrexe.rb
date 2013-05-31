@@ -29,7 +29,7 @@ module Mcr
       result('error')
       self
     rescue Interrupt
-      @appint.exe if @appint
+      @appint.call if @appint
       result('interrupted')
       self
     ensure
@@ -68,7 +68,7 @@ module Mcr
             step.exec(qry.exec?){|site,cmd,depth|
               ash=@il['app'][site]
               ash.exe(cmd)
-              @appint=ash.cobj.int
+              @appint=ash.cobj['sv']['hid']['interrupt']
             }
             puts step.action if Msg.fg?
           when 'mcr'

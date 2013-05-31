@@ -192,6 +192,7 @@ module Sh
       str << '>'
     end
   end
+
   class List < ExHash
     # shdom: Domain for Shared Command Groups
     attr_accessor :shdom,:current

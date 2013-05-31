@@ -33,7 +33,7 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current,:int
+  attr_reader :current
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
@@ -60,6 +60,10 @@ class Command < ExHash
 
   def list
     values.map{|dom| dom.list}.grep(/./).join("\n")
+  end
+
+  def int_proc=(p)
+    self['sv']['hid']['interrupt'].def_proc=Msg.type?(p,Proc)
   end
 
   def domain_with_item(id)

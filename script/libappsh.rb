@@ -37,7 +37,7 @@ module App
       super(@stat,prom)
       @cobj=Command.new(adb)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
-      @cobj.int.def_proc=proc{
+      @cobj.int_proc=proc{
         int=@watch.interrupt
         verbose{"#{self['id']}/Interrupt:#{int}"}
         self['msg']="Interrupt #{int}"

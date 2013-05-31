@@ -4,9 +4,11 @@ require "libframe"
 require "libcmdext"
 # Cmd Methods
 module Frm
+  include CmdExt
   class Command < Command
     def initialize(fdb,field=Field::Var.new)
-      super()
+      @field=Msg.type?(field,Field::Var)
+      super(fdb)
       any={:type =>'reg',:list => ["."]}
       ig=self['sv']['int']
       ig.add_item('save',"Save Field [key,key...] (tag)",[any,any])
@@ -15,11 +17,15 @@ module Frm
       set.def_proc=proc{|item|
         field.set(*item.par)
       }
-      self['sv']['ext']=ExtGrp.new(fdb,field)
+    end
+
+    private
+    def extgrp(fdb)
+      self['sv']['ext']=ExtGrp.new(fdb,@field)
     end
   end
 
-  class ExtGrp < CmdExt::ExtGrp
+  class ExtGrp < ExtGrp
     def initialize(db,field=Field::Var.new)
       @field=Msg.type?(field,Field::Var)
       super(db)
@@ -31,7 +37,7 @@ module Frm
     end
   end
 
-  class ExtItem < CmdExt::ExtItem
+  class ExtItem < ExtItem
     def initialize(field,db,id,def_proc)
       init_ver('FrmCmd',9)
       @field=Msg.type?(field,Field::Var)

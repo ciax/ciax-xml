@@ -7,7 +7,12 @@ module CmdExt
   class Command < Command
     def initialize(db)
       super()
-      self['sv']['ext']=ExtGrp.new(db)
+      self['sv']['ext']=extgrp(db)
+    end
+
+    private
+    def extgrp(db)
+      ExtGrp.new(db)
     end
   end
 

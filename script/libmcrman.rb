@@ -27,10 +27,10 @@ module Mcr
     def initialize(mdb,total='0')
       Msg.type?(mdb,Db)
       update({'layer'=>'mcr','id'=>mdb['id'],'total'=>total})
+      cobj=Mcr::Command.new(mdb)
       stat=Stat.new
       prom=Sh::Prompt.new(self,{'total'=>"[0/%s]"})
-      super(stat,prom)
-      @cobj=Mcr::Command.new(mdb)
+      super(cobj,stat,prom)
       ext=@cobj['sv']['ext']
       ext.def_proc=proc{|item|
         # item includes arbitrary mcr command

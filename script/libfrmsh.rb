@@ -28,9 +28,9 @@ module Frm
       self['layer']='frm'
       self['id']=fdb['site_id']
       @field=Field::Var.new.ext_file(fdb['site_id']).load
+      cobj=Command.new(fdb,@field)
       prom=Sh::Prompt.new(self)
-      super(@field,prom)
-      @cobj=Command.new(fdb,@field)
+      super(cobj,@field,prom)
     end
 
     private

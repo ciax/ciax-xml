@@ -21,11 +21,10 @@ module Hex
       init_ver('Hex',2)
       self['layer']='hex'
       self['id']=@adb['site_id']
+      cobj=App::Command.new(adb)
       stat=Status::Var.new.ext_file(@adb['site_id'])
       prom=Sh::Prompt.new(self)
-      super(View.new(self,stat),prom)
-      @cobj=App::Command.new(adb)
-      self
+      super(cobj,View.new(self,stat),prom)
     end
   end
 

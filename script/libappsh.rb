@@ -31,11 +31,11 @@ module App
       @adb=Msg.type?(adb,Db)
       self['layer']='app'
       self['id']=@adb['site_id']
+      cobj=Command.new(adb)
       @stat=Status::Var.new.ext_file(@adb['site_id'])
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
-      super(@stat,prom)
-      @cobj=Command.new(adb)
+      super(cobj,@stat,prom)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       @cobj.int_proc=proc{
         int=@watch.interrupt

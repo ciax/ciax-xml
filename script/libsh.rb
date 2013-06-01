@@ -16,9 +16,9 @@ module Sh
   class Exe < ExHash # Having server status {id,msg,...}
     attr_reader :upd_proc,:cobj,:item,:output
     # block gives command line convert
-    def initialize(output={},prompt=self)
+    def initialize(cobj,output={},prompt=self)
       init_ver(self,2)
-      @cobj=Command.new
+      @cobj=Msg.type?(cobj,Command)
       @upd_proc=UpdProc.new # Proc for Server Status Update
       @item=nil
       Thread.abort_on_exception=true

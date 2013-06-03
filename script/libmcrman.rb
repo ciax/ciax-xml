@@ -37,7 +37,7 @@ module Mcr
         # Sv generated and added to list in yield part as mcr command is invoked
         total.succ!
         num="#{total}"
-        mexe=yield(@cobj,num)
+        mexe=yield(item,@cobj,num)
         mexe['total']=total
         stat.add(num,item[:cmd],mexe)
       }
@@ -50,14 +50,14 @@ module Mcr
       @il=Msg.type?(il,Ins::Layer)
       super('0')
       @total='0'
-      man=self['0']=Man.new(mdb,@total){|mobj,num| newmcr(mobj,num)}
+      man=self['0']=Man.new(mdb,@total){|mitem,mobj,num| newmcr(mitem,mobj,num)}
       @swgrp=man.cobj['lo'].add_group('sw',"Switching Macros")
       @swgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
       @swgrp.cmdlist["1.."]='Other Macro Process'
     end
 
-    def newmcr(mobj,num)
-      msh=self[num]=Sv.new(mobj,@il)
+    def newmcr(mitem,mobj,num)
+      msh=self[num]=Sv.new(mitem,mobj,@il)
       msh.prompt['total']="[#{num}/%s]"
       msh.cobj['lo']['sw']=@swgrp
       @swgrp.add_item(num).def_proc=proc{throw(:sw_site,num)}

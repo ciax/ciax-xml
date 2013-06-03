@@ -12,7 +12,7 @@ module Mcr
       @mitem=Msg.type?(mitem,Command::Item)
       @mobj=Msg.type?(mobj.dup,Command)
       @il=Msg.type?(il,Ins::Layer)
-      @record=Record.new(self)
+      @record=Record.new(@mitem.cmd,@mitem[:label])
       @record.extend(Prt) unless $opt['r']
       self['layer']='mcr'
       self['id']=@mitem[:cmd]

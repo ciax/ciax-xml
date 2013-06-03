@@ -8,33 +8,32 @@ module Mcr
   class Record < Var
     attr_accessor :stat_proc
     attr_reader :crnt
-    def initialize(obj)
+    def initialize(cmd,label)
       super('mcr')
-      @obj=Msg.type?(obj,Exe)
-      obj[:base]=Time.new.to_f
-      self['id']=@obj[:base].to_i
-      self['cmd']=obj.mobj.current.cmd
-      self['label']=obj.mobj.current[:label]
+      @base=Time.new.to_f
+      self['id']=@base.to_i
+      self['cmd']=cmd
+      self['label']=label
       self['steps']=[]
       self['total']=0
     end
 
     def add_step(db,depth,&p)
-      @crnt=Step.new(db,@obj,depth,p)
+      @crnt=Step.new(db,@base,depth,p)
       @crnt.extend(Prt) unless $opt['r']
       self['steps'] << @crnt
       @crnt
     end
 
     def fin
-      self['total']=Msg.elps_sec(@obj[:base])
+      self['total']=Msg.elps_sec(@base)
     end
   end
 
   class Step < ExHash
-    def initialize(db,obj,depth=0,p)
+    def initialize(db,base,depth=0,p)
       @stat_proc=Msg.type?(p,Proc)
-      self['time']=Msg.elps_sec(obj[:base])
+      self['time']=Msg.elps_sec(base)
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')

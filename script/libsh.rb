@@ -27,7 +27,7 @@ module Sh
       @prompt=prompt
       # Local(Long Jump) Commands (local handling commands on Client)
       Readline.completion_proc=proc{|word|
-        @cobj.keys.grep(/^#{word}/)
+        @cobj.valid_keys.grep(/^#{word}/)
       }
     end
 

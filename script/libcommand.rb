@@ -39,7 +39,6 @@ class Command < ExHash
   # optionalfrm (:nocache,:response)
   def initialize
     init_ver(self)
-    @current=nil
     # Server Commands (service commands on Server)
     sv=self['sv']=Domain.new(2)
     @int=sv.add_group('hid',"Hidden Group").add_item('interrupt')
@@ -55,7 +54,7 @@ class Command < ExHash
     Msg.type?(cmd,Array)
     id,*par=cmd
     dom=domain_with_item(id) || raise(InvalidCMD,list)
-    @current=dom.setcmd(cmd)
+    dom.setcmd(cmd)
   end
 
   def list

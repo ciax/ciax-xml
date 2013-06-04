@@ -124,7 +124,7 @@ module App
       @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
       @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
         verbose{"#{self['id']}/Auto(#{p}):#{cmd}"}
-        @cobj.setcmd(cmd)
+        @item=@cobj.setcmd(cmd)
         sendcmd(p)
       }
       @buf=init_buf
@@ -152,7 +152,7 @@ module App
 
     def ext_logging(id,ver=0)
       logging=Logging.new('issue',id,ver){
-        {'cmd'=>@cobj.current[:cmd],'active'=>@watch['active']}
+        {'cmd'=>@item[:cmd],'active'=>@watch['active']}
       }
       @log_proc.add{logging.append}
       self
@@ -167,7 +167,7 @@ module App
 
     def init_buf
       buf=Buffer.new(self)
-      buf.send_proc{@cobj.current.getcmd}
+      buf.send_proc{@item.getcmd}
       buf.recv_proc{|fcmd|@fsh.exe(fcmd)}
       buf.flush_proc.add{
         @stat.upd.save
@@ -188,7 +188,7 @@ module App
         int=(@watch['period']||300).to_i
         loop{
           begin
-            @cobj.setcmd(['upd'])
+            @item=@cobj.setcmd(['upd'])
             sendcmd(2)
           rescue InvalidID
             warning($!)

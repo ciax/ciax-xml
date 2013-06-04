@@ -30,17 +30,6 @@ module Mcr
       stat=Stat.new
       prom=Sh::Prompt.new(self,{'total'=>"[0/%s]"})
       super(cobj,stat,prom)
-      ext=@cobj['sv']['ext']
-      ext.def_proc=proc{|item|
-        # item includes arbitrary mcr command
-        # Sv generated and added to list in yield part as mcr command is invoked
-        total.succ!
-        num="#{total}"
-        mexe=yield(item,num)
-        mexe['total']=total
-        stat.add(num,item[:cmd],mexe)
-        exe([num])
-      }
     end
   end
 
@@ -51,24 +40,32 @@ module Mcr
       @mobj=Mcr::Command.new(mdb)
       super('0')
       @total='0'
-      man=self['0']=Man.new(@mobj,mdb['id'],@total){|mitem,num| newmcr(mitem,num)}
+      man=self['0']=Man.new(@mobj,mdb['id'],@total)
+      @extgrp=man.cobj['sv']['ext']
       @swgrp=man.cobj['lo'].add_group('sw',"Switching Macros")
       @swgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
       @swgrp.cmdlist["1.."]='Other Macro Process'
-    end
-
-    def newmcr(mitem,num)
-      msh=self[num]=Sv.new(mitem,@il){|cmd,asy|
-        if asy
-          self['0'].exe(cmd)
-        else
-          @mobj.setcmd(cmd) #submacro
-        end
+      @extgrp.def_proc=proc{|item|
+        # item includes arbitrary mcr command
+        # Sv generated and added to list in yield part as mcr command is invoked
+        @total.succ!
+        num="#{@total}"
+        msh=self[num]=Sv.new(item,@il){|cmd,asy|
+          if asy
+            man.exe(cmd)
+          else
+            @mobj.setcmd(cmd) #submacro
+          end
+        }
+        msh.prompt['total']="[#{num}/%s]"
+        @swgrp.add_item(num).def_proc=proc{throw(:sw_site,num)}
+        msh.cobj['lo']['sw']=@swgrp
+        msh.cobj['lo']['ext']=@extgrp
+        mexe=msh.mexe
+        mexe['total']=@total
+        man.output.add(num,item[:cmd],mexe)
+        man.exe([num])
       }
-      msh.prompt['total']="[#{num}/%s]"
-      msh.cobj['lo']['sw']=@swgrp
-      @swgrp.add_item(num).def_proc=proc{throw(:sw_site,num)}
-      msh.mexe
     end
   end
 end

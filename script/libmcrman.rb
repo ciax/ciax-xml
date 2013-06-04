@@ -27,9 +27,10 @@ module Mcr
     def initialize(cobj,id,total='0')
       cobj=Msg.type?(cobj,Mcr::Command)
       update({'layer'=>'mcr','id'=>id,'total'=>total})
+      super(cobj)
       stat=Stat.new
       prom=Sh::Prompt.new(self,{'total'=>"[0/%s]"})
-      super(cobj,stat,prom)
+      ext_shell(stat,prom)
     end
   end
 
@@ -42,29 +43,29 @@ module Mcr
       @total='0'
       man=self['0']=Man.new(@mobj,mdb['id'],@total)
       @extgrp=man.cobj['sv']['ext']
-      @swgrp=man.cobj['lo'].add_group('sw',"Switching Macros")
+      @swgrp=man.cobj['lo'].add_group('sw',"Switching Macro")
       @swgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
       @swgrp.cmdlist["1.."]='Other Macro Process'
       @extgrp.def_proc=proc{|item|
         # item includes arbitrary mcr command
         # Sv generated and added to list in yield part as mcr command is invoked
         @total.succ!
-        num="#{@total}"
-        msh=self[num]=Sv.new(item,@il){|cmd,asy|
+        page="#{@total}"
+        msh=self[page]=Sv.new(item,@il){|cmd,asy|
           if asy
             man.exe(cmd)
           else
             @mobj.setcmd(cmd) #submacro
           end
         }
-        msh.prompt['total']="[#{num}/%s]"
-        @swgrp.add_item(num).def_proc=proc{throw(:sw_site,num)}
+        msh.prompt['total']="[#{page}/%s]"
+        @swgrp.add_item(page).def_proc=proc{throw(:sw_site,page)}
         msh.cobj['lo']['sw']=@swgrp
         msh.cobj['lo']['ext']=@extgrp
         mexe=msh.mexe
         mexe['total']=@total
-        man.output.add(num,item[:cmd],mexe)
-        man.exe([num])
+        man.output.add(page,item[:cmd],mexe)
+#        man.exe([page])
       }
     end
   end

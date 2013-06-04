@@ -30,7 +30,8 @@ module Frm
       @field=Field::Var.new.ext_file(fdb['site_id']).load
       cobj=Command.new(fdb,@field)
       prom=Sh::Prompt.new(self)
-      super(cobj,@field,prom)
+      super(cobj)
+      ext_shell(@field,prom)
     end
 
     private
@@ -45,6 +46,9 @@ module Frm
     def initialize(fdb)
       super
       @cobj['sv'].def_proc=proc{|item|@field['time']=UnixTime.now}
+      @cobj['sv']['int']['set'].def_proc=proc{|item|
+        @field.set(item.par[0],item.par[1])
+      }
     end
   end
 

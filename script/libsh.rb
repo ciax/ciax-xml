@@ -16,19 +16,12 @@ module Sh
   class Exe < ExHash # Having server status {id,msg,...}
     attr_reader :upd_proc,:cobj,:item,:output
     # block gives command line convert
-    def initialize(cobj,output={},prompt=self)
+    def initialize(cobj)
       init_ver(self,2)
       @cobj=Msg.type?(cobj,Command)
       @upd_proc=UpdProc.new # Proc for Server Status Update
       @item=nil
       Thread.abort_on_exception=true
-      # For Shell
-      @output=output
-      @prompt=prompt
-      # Local(Long Jump) Commands (local handling commands on Client)
-      Readline.completion_proc=proc{|word|
-        @cobj.valid_keys.grep(/^#{word}/)
-      }
     end
 
     # Sync only (Wait for other thread)
@@ -46,6 +39,55 @@ module Sh
       raise $!
     ensure
       @upd_proc.upd
+    end
+
+    def ext_client(host,port)
+      extend(Client).ext_client(host,port)
+    end
+
+    def ext_server(port)
+      extend(Server).ext_server(port)
+    end
+
+    def ext_shell(output={},prompt=self)
+      extend(Shell).ext_shell(output,prompt)
+    end
+
+    # Overridable methods(do not set this kind of methods in modules)
+    private
+    def shell_input(line)
+      line.split(' ')
+    end
+
+    def shell_output
+      self['msg'].empty? ? @output : self['msg']
+    end
+
+    def server_input(line)
+      JSON.load(line)
+    rescue JSON::ParserError
+      raise "NOT JSON"
+    end
+
+    def server_output
+      to_j
+    end
+  end
+
+  module Shell
+    def self.extended(obj)
+      Msg.type?(obj,Exe)
+    end
+
+    def ext_shell(output={},prompt=self)
+      # For Shell
+      @output=output
+      @prompt=prompt
+      # Local(Long Jump) Commands (local handling commands on Client)
+      Readline.completion_proc=proc{|word|
+        @cobj.valid_keys.grep(/^#{word}/)
+      }
+      self
     end
 
     # invoked many times
@@ -68,34 +110,6 @@ module Sh
         puts $!.to_s
         retry
       end
-    end
-
-    def ext_client(host,port)
-      extend(Client).ext_client(host,port)
-    end
-
-    def ext_server(port)
-      extend(Server).ext_server(port)
-    end
-
-    # Overridable methods(do not set this kind of methods in modules)
-    private
-    def shell_input(line)
-      line.split(' ')
-    end
-
-    def shell_output
-      self['msg'].empty? ? @output : self['msg']
-    end
-
-    def server_input(line)
-      JSON.load(line)
-    rescue JSON::ParserError
-      raise "NOT JSON"
-    end
-
-    def server_output
-      to_j
     end
   end
 

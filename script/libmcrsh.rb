@@ -9,10 +9,11 @@ module Mcr
     def initialize(mitem,il,&mcr_proc)
       @il=Msg.type?(il,Ins::Layer)
       cobj=Command.new
-      @mitem=Msg.type?(mitem,Command::Item)
-      @mexe=Exe.new(@mitem,il,&mcr_proc)
+      super(cobj)
+      Msg.type?(mitem,Command::Item)
+      @mexe=Exe.new(mitem,il,&mcr_proc)
       prom=Sh::Prompt.new(@mexe,{'stat' => "(%s)"})
-      super(cobj,@mexe.record,prom)
+      ext_shell(@mexe.record,prom)
       ig=@cobj['sv']['int']
       ig.add_item('e','Execute Command').def_proc=proc{ ans('e') }
       ig.add_item('s','Skip Execution').def_proc=proc{ ans('s') }

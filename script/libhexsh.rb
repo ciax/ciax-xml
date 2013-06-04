@@ -22,9 +22,10 @@ module Hex
       self['layer']='hex'
       self['id']=@adb['site_id']
       cobj=App::Command.new(adb)
+      super(cobj)
       stat=Status::Var.new.ext_file(@adb['site_id'])
       prom=Sh::Prompt.new(self)
-      super(cobj,View.new(self,stat),prom)
+      ext_shell(View.new(self,stat),prom)
     end
   end
 

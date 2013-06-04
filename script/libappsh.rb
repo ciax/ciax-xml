@@ -35,7 +35,8 @@ module App
       @stat=Status::Var.new.ext_file(@adb['site_id'])
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
-      super(cobj,@stat,prom)
+      super(cobj)
+      ext_shell(@stat,prom)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       @cobj.int_proc=proc{
         int=@watch.interrupt

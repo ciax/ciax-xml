@@ -39,6 +39,7 @@ module Mcr
         mexe=yield(item,num)
         mexe['total']=total
         stat.add(num,item[:cmd],mexe)
+        exe([num])
       }
     end
   end

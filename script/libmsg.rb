@@ -14,8 +14,6 @@ class InvalidPAR < InvalidCMD; end
 
 # Mangaged Exception(Long Jump)
 class LongJump < RuntimeError; end
-class TransLayer < LongJump; end
-class SelectID < TransLayer; end
 # Macro
 class Interlock < LongJump; end
 class Retry < LongJump; end
@@ -34,28 +32,6 @@ class UnixTime < Time
   def self.parse(str)
     return str if UnixTime === str
     UnixTime.at(*str.split('.').map{|i| i.to_i})
-  end
-end
-
-class ServerID
-  attr_accessor :layer,:id
-  def initialize(layer='app',id='')
-    @layer=layer
-    @id=id
-  end
-
-  def inc_id
-    @id=@id.succ
-    self
-  end
-
-  def upd(str)
-    @layer,@id=str.split(':')
-    self
-  end
-
-  def to_s
-    "#@layer:#@id"
   end
 end
 

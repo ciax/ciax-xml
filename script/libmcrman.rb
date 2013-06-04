@@ -24,10 +24,9 @@ module Mcr
   end
 
   class Man < Sh::Exe
-    def initialize(mdb,total='0')
-      Msg.type?(mdb,Db)
-      update({'layer'=>'mcr','id'=>mdb['id'],'total'=>total})
-      cobj=Mcr::Command.new(mdb)
+    def initialize(cobj,id,total='0')
+      cobj=Msg.type?(cobj,Mcr::Command)
+      update({'layer'=>'mcr','id'=>id,'total'=>total})
       stat=Stat.new
       prom=Sh::Prompt.new(self,{'total'=>"[0/%s]"})
       super(cobj,stat,prom)
@@ -37,7 +36,7 @@ module Mcr
         # Sv generated and added to list in yield part as mcr command is invoked
         total.succ!
         num="#{total}"
-        mexe=yield(item,@cobj,num)
+        mexe=yield(item,num)
         mexe['total']=total
         stat.add(num,item[:cmd],mexe)
       }
@@ -48,16 +47,17 @@ module Mcr
     attr_reader :total
     def initialize(mdb,il)
       @il=Msg.type?(il,Ins::Layer)
+      @mobj=Mcr::Command.new(mdb)
       super('0')
       @total='0'
-      man=self['0']=Man.new(mdb,@total){|mitem,mobj,num| newmcr(mitem,mobj,num)}
+      man=self['0']=Man.new(@mobj,mdb['id'],@total){|mitem,num| newmcr(mitem,num)}
       @swgrp=man.cobj['lo'].add_group('sw',"Switching Macros")
       @swgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
       @swgrp.cmdlist["1.."]='Other Macro Process'
     end
 
-    def newmcr(mitem,mobj,num)
-      msh=self[num]=Sv.new(mitem,mobj,@il)
+    def newmcr(mitem,num)
+      msh=self[num]=Sv.new(mitem,@mobj,@il)
       msh.prompt['total']="[#{num}/%s]"
       msh.cobj['lo']['sw']=@swgrp
       @swgrp.add_item(num).def_proc=proc{throw(:sw_site,num)}

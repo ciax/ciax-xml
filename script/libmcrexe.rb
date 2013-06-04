@@ -7,15 +7,16 @@ require "libinssh"
 module Mcr
   include CmdExt
   class Exe < Hash
-    attr_accessor :mobj,:record,:valid_keys
-    def initialize(mitem,mobj,il)
+    attr_accessor :record,:valid_keys
+    def initialize(mitem,il,&mcr_proc)
       @mitem=Msg.type?(mitem,Command::Item)
-      @mobj=Msg.type?(mobj.dup,Command)
       @il=Msg.type?(il,Ins::Layer)
       @record=Record.new(@mitem.cmd,@mitem[:label])
       @record.extend(Prt) unless $opt['r']
       self['layer']='mcr'
       self['id']=@mitem[:cmd]
+      # @mcr_proc{|cmd,async?(t/f)|}
+      @mcr_proc=mcr_proc
     end
 
     def start(valid_keys=[]) # separated for sub thread
@@ -73,8 +74,8 @@ module Mcr
             puts step.action if Msg.fg?
           when 'mcr'
             puts step if Msg.fg?
-            Msg.warn('Async') if /true|1/ === e1['async']
-            macro(@mobj.setcmd(e1['cmd']),depth+1)
+            item=@mcr_proc.call(e1['cmd'],/true|1/ === e1['async'])
+            macro(item,depth+1) if item.is_a? Command::Item
           end
         rescue Retry
           retry
@@ -162,7 +163,9 @@ if __FILE__ == $0
     mdb=Mcr::Db.new.set('ciax')
     mobj=Mcr::Command.new(mdb)
     mitem=mobj.setcmd(ARGV)
-    msh=Mcr::Exe.new(mitem,mobj,il)
+    msh=Mcr::Exe.new(mitem,il){|cmd,asy|
+      mobj.setcmd(cmd) unless asy
+    }
     msh.start
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

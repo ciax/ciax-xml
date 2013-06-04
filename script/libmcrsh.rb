@@ -6,12 +6,11 @@ module Mcr
     # @< cobj,output,upd_proc*
     # @ al,appint,th,item,mobj*
     attr_reader :mexe,:prompt,:th
-    def initialize(mitem,mobj,il)
-      @mobj=Msg.type?(mobj.dup,Command)
+    def initialize(mitem,il,&mcr_proc)
       @il=Msg.type?(il,Ins::Layer)
       cobj=Command.new
       @mitem=Msg.type?(mitem,Command::Item)
-      @mexe=Exe.new(@mitem,mobj,il)
+      @mexe=Exe.new(@mitem,il,&mcr_proc)
       prom=Sh::Prompt.new(@mexe,{'stat' => "(%s)"})
       super(cobj,@mexe.record,prom)
       ig=@cobj['sv']['int']
@@ -40,7 +39,9 @@ if __FILE__ == $0
     mdb=Mcr::Db.new.set('ciax')
     mobj=Mcr::Command.new(mdb)
     mitem=mobj.setcmd(ARGV)
-    msh=Mcr::Sv.new(mitem,mobj,il)
+    msh=Mcr::Sv.new(mitem,il){|cmd,asy|
+      mobj.setcmd(cmd) unless asy
+    }
     msh.shell
   rescue InvalidCMD
     $opt.usage("[mcr] [cmd] (par)")

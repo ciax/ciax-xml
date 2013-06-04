@@ -57,7 +57,13 @@ module Mcr
     end
 
     def newmcr(mitem,num)
-      msh=self[num]=Sv.new(mitem,@mobj,@il)
+      msh=self[num]=Sv.new(mitem,@il){|cmd,asy|
+        if asy
+          self['0'].exe(cmd)
+        else
+          @mobj.setcmd(cmd) #submacro
+        end
+      }
       msh.prompt['total']="[#{num}/%s]"
       msh.cobj['lo']['sw']=@swgrp
       @swgrp.add_item(num).def_proc=proc{throw(:sw_site,num)}

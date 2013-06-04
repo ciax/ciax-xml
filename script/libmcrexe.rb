@@ -7,7 +7,7 @@ require "libinssh"
 module Mcr
   include CmdExt
   class Exe < Hash
-    attr_accessor :record,:valid_keys
+    attr_reader :record,:valid_keys
     def initialize(mitem,il,&mcr_proc)
       @mitem=Msg.type?(mitem,Command::Item)
       @il=Msg.type?(il,Ins::Layer)

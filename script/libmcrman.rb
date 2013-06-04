@@ -62,8 +62,8 @@ module Mcr
       msh.prompt['total']="[#{page}/%s]"
       msh.cobj['lo']['sw']=@swgrp
       msh.cobj['lo']['ext']=@extgrp
-      msh.mexe['total']=@total
-      @man.output.add(@total,item[:cmd],msh.mexe)
+      msh['total']=@total
+      @man.output.add(@total,item[:cmd],msh)
     end
   end
 end

@@ -2,25 +2,24 @@
 require "libmcrexe"
 
 module Mcr
-  class Sv < Sh::Exe
+  class Sv < Exe
     # @< cobj,output,upd_proc*
     # @ al,appint,th,item,mobj*
-    attr_reader :mexe,:prompt,:th
+    attr_reader :prompt,:th
     def initialize(mitem,il,&mcr_proc)
+      super(mitem,il,&mcr_proc)
       @il=Msg.type?(il,Ins::Layer)
-      cobj=Command.new
-      super(cobj)
-      Msg.type?(mitem,Command::Item)
-      @mexe=Exe.new(mitem,il,&mcr_proc)
-      prom=Sh::Prompt.new(@mexe,{'stat' => "(%s)"})
-      ext_shell(@mexe.record,prom)
+      @cobj=Command.new
+      @upd_proc=UpdProc.new
+      prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
+      ext_shell(@record,prom)
       ig=@cobj['sv']['int']
       ig.add_item('e','Execute Command').def_proc=proc{ ans('e') }
       ig.add_item('s','Skip Execution').def_proc=proc{ ans('s') }
       ig.add_item('d','Done Macro').def_proc=proc{ ans('d') }
       ig.add_item('f','Force Proceed').def_proc=proc{ ans('f') }
       ig.add_item('r','Retry Checking').def_proc=proc{ ans('r') }
-      @th=Thread.new(ig.valid_keys.clear){|vk| @mexe.start(vk) }
+      @th=Thread.new(ig.valid_keys.clear){|vk| start(vk) }
       @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
       @th
     end

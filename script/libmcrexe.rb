@@ -6,7 +6,7 @@ require "libinssh"
 
 module Mcr
   include CmdExt
-  class Exe < Hash
+  class Exe < Sh::Exe
     attr_reader :record,:valid_keys
     def initialize(mitem,il,&mcr_proc)
       @mitem=Msg.type?(mitem,Command::Item)
@@ -15,7 +15,7 @@ module Mcr
       @record.extend(Prt) unless $opt['r']
       self['layer']='mcr'
       self['id']=@mitem[:cmd]
-      # @mcr_proc{|cmd,async?(t/f)|}
+      # @mcr_proc{|cmd,async?(t/f)|} for submacro
       @mcr_proc=mcr_proc
     end
 

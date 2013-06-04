@@ -41,32 +41,29 @@ module Mcr
       @mobj=Mcr::Command.new(mdb)
       super('0')
       @total='0'
-      man=self['0']=Man.new(@mobj,mdb['id'],@total)
-      @extgrp=man.cobj['sv']['ext']
-      @swgrp=man.cobj['lo'].add_group('sw',"Switching Macro")
+      @man=self['0']=Man.new(@mobj,mdb['id'],@total)
+      @extgrp=@man.cobj['sv']['ext']
+      @swgrp=@man.cobj['lo'].add_group('sw',"Switching Macro")
       @swgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
       @swgrp.cmdlist["1.."]='Other Macro Process'
-      @extgrp.def_proc=proc{|item|
-        # item includes arbitrary mcr command
-        # Sv generated and added to list in yield part as mcr command is invoked
-        @total.succ!
-        page="#{@total}"
-        msh=self[page]=Sv.new(item,@il){|cmd,asy|
-          if asy
-            man.exe(cmd)
-          else
-            @mobj.setcmd(cmd) #submacro
-          end
-        }
-        msh.prompt['total']="[#{page}/%s]"
-        @swgrp.add_item(page).def_proc=proc{throw(:sw_site,page)}
-        msh.cobj['lo']['sw']=@swgrp
-        msh.cobj['lo']['ext']=@extgrp
-        mexe=msh.mexe
-        mexe['total']=@total
-        man.output.add(page,item[:cmd],mexe)
-#        man.exe([page])
+      @extgrp.def_proc=proc{|item| add_page(item)}
+    end
+
+    # item includes arbitrary mcr command
+    # Sv generated and added to list in yield part as mcr command is invoked
+    def add_page(item)
+      @total.succ!
+      page="#{@total}"
+      msh=self[page]=Sv.new(item,@il){|cmd,asy|
+        submcr=@mobj.setcmd(cmd) #submacro
+        asy ? add_page(submcr) : submcr
       }
+      @swgrp.add_item(page).def_proc=proc{throw(:sw_site,page)}
+      msh.prompt['total']="[#{page}/%s]"
+      msh.cobj['lo']['sw']=@swgrp
+      msh.cobj['lo']['ext']=@extgrp
+      msh.mexe['total']=@total
+      @man.output.add(@total,item[:cmd],msh.mexe)
     end
   end
 end

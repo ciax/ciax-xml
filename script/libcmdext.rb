@@ -68,23 +68,22 @@ module CmdExt
     # str could include Math functions
     def subst(str)
       return str unless /\$([\d]+)/ === str
-      verbose(1){"Substitute from [#{str}]"}
-      begin
+      verbose("ExtItem","Substitute from [#{str}]")
+      enclose{
         num=true
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
           num=false if self[:parameter][i-1][:type] != 'num'
-          verbose{"Parameter No.#{i} = [#{@par[i-1]}]"}
+          verbose("ExtItem","Parameter No.#{i} = [#{@par[i-1]}]")
           @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
         }
         if num && /\$/ !~ res
           res=eval(res).to_s
         end
         Msg.cfg_err("Nil string") if res == ''
-        res
-      ensure
-        verbose(-1){"Substitute to [#{res}]"}
-      end
+      }
+      verbose("ExtItem","Substitute to [#{res}]")
+      res
     end
 
     private

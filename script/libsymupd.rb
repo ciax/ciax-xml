@@ -28,7 +28,7 @@ module Sym
           warning("Table[#{sid}] not exist")
           next
         end
-        verbose{["Symbol","ID=#{key},table=#{sid}"]}
+        verbose("Symbol","ID=#{key},table=#{sid}")
         self['class'][key]='alarm'
         self['msg'][key]='N/A'
         val=self['val'][key]
@@ -36,18 +36,18 @@ module Sym
           case sym['type']
           when 'range'
             next unless ReRange.new(sym['val']) == val
-            verbose{["Symbol","VIEW:Range:[#{sym['val']}] and [#{val}]"]}
+            verbose("Symbol","VIEW:Range:[#{sym['val']}] and [#{val}]")
             self['msg'][key]=sym['msg']+"(#{val})"
           when 'pattern'
             next unless /#{sym['val']}/ === val || val == 'default'
-              verbose{["Symbol","VIEW:Regexp:[#{sym['val']}] and [#{val}]"]}
+              verbose("Symbol","VIEW:Regexp:[#{sym['val']}] and [#{val}]")
             self['msg'][key]=sym['msg']
           end
           self['class'][key]=sym['class']
           break
         }
       }
-      verbose{["Symbol","Update(#{self['time'].to_f})"]}
+      verbose("Symbol","Update(#{self['time'].to_f})")
     end
   end
 end

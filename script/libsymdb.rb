@@ -31,7 +31,7 @@ module Sym
         e1.each{|e2| # case
           (hash[id]||=[]) << e2.to_h.update({'type' => e2.name})
         }
-        verbose{"Symbol Table:#{id} : #{label}"}
+        verbose("SymDb","Symbol Table:#{id} : #{label}")
       }
       hash
     end

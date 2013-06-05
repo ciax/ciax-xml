@@ -21,40 +21,39 @@ module App
 
     def upd
       @ads.each{|id,select|
-        verbose(1){["AppRsp","GetStatus:[#{id}]"]}
-        flds=select[:fields]
-        data=case select['type']
-        when 'binary'
-          flds.inject(0){|sum,e|
-            (sum << 1)+binary(e)
-          }
-        when 'float'
-          flds.inject(0){|sum,e|
-            sum+float(e)
-          }
-        when 'integer'
-          flds.inject(0){|sum,e|
-            sum+int(e)
-          }
-        else
-          flds.inject(''){|sum,e|
-            sum+get_field(e)
-          }
-        end
-        begin
+        verbose("AppRsp","GetStatus:[#{id}]")
+        enclose{
+          flds=select[:fields]
+          data=case select['type']
+               when 'binary'
+                 flds.inject(0){|sum,e|
+              (sum << 1)+binary(e)
+            }
+               when 'float'
+                 flds.inject(0){|sum,e|
+              sum+float(e)
+            }
+               when 'integer'
+                 flds.inject(0){|sum,e|
+              sum+int(e)
+            }
+               else
+                 flds.inject(''){|sum,e|
+              sum+get_field(e)
+            }
+               end
           if @fml.key?(id)
             f=@fml[id].gsub(/\$#/,data.to_s)
             data=eval(f)
-            verbose{["AppRsp","Formula:#{f}(#{data})"]}
+            verbose("AppRsp","Formula:#{f}(#{data})")
           end
           data = @fmt[id] % data if @fmt.key?(id)
           self['val'][id]=data.to_s
-        ensure
-          verbose(-1){["AppRsp","STAT:GetStatus:#{id}=[#{self['val'][id]}]"]}
-        end
+        }
+        verbose("AppRsp","GetStatus:#{id}=[#{self['val'][id]}]")
       }
       self['time']=@field['time']
-      verbose{["AppRsp","Update(#{self['time']})"]}
+      verbose("AppRsp","Update(#{self['time']})")
       super
     end
 
@@ -69,7 +68,7 @@ module App
       loc=eval(e1['bit'])
       bit=(data.to_i >> loc & 1)
       bit = -(bit-1) if /true|1/ === e1['inv']
-      verbose{["AppRsp","GetBit[#{bit}]"]}
+      verbose("AppRsp","GetBit[#{bit}]")
       bit
     end
 

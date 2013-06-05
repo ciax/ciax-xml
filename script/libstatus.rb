@@ -21,7 +21,7 @@ module Status
 
     def change?(id)
       val=self['val']
-      verbose{["Status","Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]"]}
+      verbose("Status","Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]")
       self[id] != @last[id]
     end
 
@@ -30,7 +30,7 @@ module Status
     end
 
     def refresh
-      verbose{["Status","Status Updated"]}
+      verbose("Status","Status Updated")
       @last.update(self['val'])
       @updated=self['time']
       self
@@ -63,7 +63,7 @@ module Status
         @lastsave=time
         true
       else
-        verbose{["Status","Skip Save for #{time}"]}
+        verbose("Status","Skip Save for #{time}")
         false
       end
     end

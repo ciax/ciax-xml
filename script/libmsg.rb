@@ -42,32 +42,39 @@ module Msg
     Start_time=Time.now
     @@base=1
     # Public Method
-    def verbose(add=0)
+    def verbose(prefix,title,color=nil)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
-      return if ENV['VER'].to_s.empty?
       @ver_indent=@@base
-      @@base+=add
-      @ver_indent=@@base if add < 0
-      prefix,title,color=yield
       msg=mkmsg(prefix,title,color)
       Kernel.warn msg if msg && condition(msg)
       self
     end
 
-    def warning(str)
+    def ver?
+      !ENV['VER'].to_s.empty?
+    end
+
+    def warning(prefix,title)
       @ver_indent=@@base
-      Kernel.warn mkmsg(str,3)
+      Kernel.warn mkmsg(prefix,title,3)
       self
     end
 
-    def fatal(str)
+    def fatal(prefix,title)
       @ver_indent=@@base
-      Kernel.warn mkmsg(str,1)
+      Kernel.warn mkmsg(prefix,title,1)
       Kernel.exit
+    end
+
+    def enclose
+      @@base+=1
+      yield
+    ensure
+      @@base-=1
     end
 
     # Private Method
@@ -84,6 +91,8 @@ module Msg
 
     # VER= makes setenv "" to VER otherwise nil
     def condition(msg)
+      return unless msg
+      return unless ver?
       return true if /\*/ === ENV['VER']
       ENV['VER'].upcase.split(',').any?{|s|
         s.split(':').all?{|e|

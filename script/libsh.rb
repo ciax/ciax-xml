@@ -29,7 +29,7 @@ module Sh
         self['msg']=''
       else
         self['msg']='OK'
-        verbose{"Command #{cmd} recieved"}
+        verbose("Sh/Exe","Command #{cmd} recieved")
         @item=@cobj.setcmd(cmd).exe
       end
       self
@@ -93,7 +93,7 @@ module Sh
     # '^D' gives exit break
     # mode gives special break (loop returns mode)
     def shell
-      verbose{[self.class,"Init/Shell(#{self['id']})",2]}
+      verbose(self.class,"Init/Shell(#{self['id']})",2)
       begin
         while line=Readline.readline(@prompt.to_s,true)
           break if /^q/ === line
@@ -118,7 +118,7 @@ module Sh
 
     # JSON expression of server stat will be sent.
     def ext_server(port)
-      verbose{["UDPsv/#{self.class}","Init/Server(#{self['id']}):#{port}",2]}
+      verbose("UDPsv/#{self.class}","Init/Server(#{self['id']}):#{port}",2)
       Thread.new{
         tc=Thread.current
         tc[:name]="Server"
@@ -130,7 +130,7 @@ module Sh
             IO.select([udp])
             line,addr=udp.recvfrom(4096)
             line.chomp!
-            verbose{["UDPsv/#{self.class}","Recv:#{line} is #{line.class}",2]}
+            verbose("UDPsv/#{self.class}","Recv:#{line} is #{line.class}",2)
             begin
               exe(server_input(line))
             rescue InvalidCMD
@@ -139,7 +139,7 @@ module Sh
               warn($!.to_s)
               self['msg']=$!.to_s
             end
-            verbose{["UDPsv/#{self.class}","Send:#{self['msg']}",2]}
+            verbose("UDPsv/#{self.class}","Send:#{self['msg']}",2)
             udp.send(server_output,0,addr[2],addr[1])
           }
         }
@@ -159,7 +159,7 @@ module Sh
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      verbose{["UDPcl/#{self.class}","Init/Client(#{self['id']})#{host}:#{port}",6]}
+      verbose("UDPcl/#{self.class}","Init/Client(#{self['id']})#{host}:#{port}",6)
       self
     end
 
@@ -167,9 +167,9 @@ module Sh
     def exe(cmd)
       @cobj.setcmd(cmd).exe unless cmd.empty?
       @udp.send(JSON.dump(cmd),0,@addr)
-      verbose{["UDPcl/#{self.class}","Send [#{cmd}]",6]}
+      verbose("UDPcl/#{self.class}","Send [#{cmd}]",6)
       input=@udp.recv(1024)
-      verbose{["UDPcl/#{self.class}","Recv #{input}",6]}
+      verbose("UDPcl/#{self.class}","Recv #{input}",6)
       load(input) # ExHash#load -> Server Status
       self
     rescue

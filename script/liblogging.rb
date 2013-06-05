@@ -12,7 +12,7 @@ class Logging
     ver=ver.to_i
     @header={'time' => UnixTime.now,'id' => id,'ver' => ver}
     @loghead=VarDir+"/"+type+"_#{id}"
-    verbose{["Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})"]}
+    verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
     @proc=p
     self
   end
@@ -26,7 +26,7 @@ class Logging
       open(logfile,'a') {|f|
         f.puts str
       }
-      verbose{["Logging","#{@type}/Appended #{str.size} byte"]}
+      verbose("Logging","#{@type}/Appended #{str.size} byte")
     end
     time
   end

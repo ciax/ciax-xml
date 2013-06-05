@@ -93,7 +93,7 @@ class Var < ExHash # Including 'type'
       name=fname(tag)
       json_str=''
       open(name){|f|
-        verbose{["VarFile","Loading [#{@base}](#{f.size})",12]}
+        verbose("VarFile","Loading [#{@base}](#{f.size})",12)
         f.flock(::File::LOCK_SH) if File === f
         json_str=f.read
       }
@@ -157,14 +157,14 @@ class Var < ExHash # Including 'type'
       open(name,'w'){|f|
         f.flock(::File::LOCK_EX)
         f << (data ? JSON.dump(data) : to_j)
-        verbose{["Var/Save","[#{@base}](#{f.size}) is Saved",12]}
+        verbose("Var/Save","[#{@base}](#{f.size}) is Saved",12)
       }
       if tag
         # Making 'latest' tag link
         sname=fname('latest')
         ::File.unlink(sname) if ::File.symlink?(sname)
         ::File.symlink(name,sname)
-        verbose{["Var/save","Symboliclink to [#{sname}]"]}
+        verbose("Var/save","Symboliclink to [#{sname}]")
       end
       self
     end

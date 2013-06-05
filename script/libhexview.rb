@@ -49,7 +49,7 @@ module Hex
           else
             str=("%#{len}s" % val)
           end
-          verbose{"#{title}/#{type}(#{len}) = #{str}"}
+          verbose("HexView","#{title}/#{type}(#{len}) = #{str}")
         else
           str='*' * len
         end

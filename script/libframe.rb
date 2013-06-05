@@ -13,7 +13,7 @@ class Frame
 
   def set(frame='')
     if frame
-      verbose{["Frame","Frame set <#{frame}>"]}
+      verbose("Frame","Frame set <#{frame}>")
       @frame=frame
     end
     self
@@ -25,19 +25,19 @@ class Frame
       code=encode(e,frame)
       @frame << code
       @ccrange << code if @ccrange
-      verbose{["Frame","Frame add <#{frame}>"]}
+      verbose("Frame","Frame add <#{frame}>")
     end
     self
   end
 
   def copy
-    verbose{["Frame","Copy Frame <#{@frame}>"]}
+    verbose("Frame","Copy Frame <#{@frame}>")
     @frame
   end
 
   # Response
   def mark
-    verbose{["Frame","Mark CC range" ]}
+    verbose("Frame","Mark CC range" )
     @ccrange=''
     self
   end
@@ -48,24 +48,24 @@ class Frame
     return if str.empty?
     # Check Code
     @ccrange << str if @ccrange
-    verbose{["Frame","CutFrame: <#{str}> by size=[#{len}]"]}
+    verbose("Frame","CutFrame: <#{str}> by size=[#{len}]")
     # Pick Part
     if r=e0['slice']
       str=str.slice(*r.split(':').map{|i| i.to_i })
-      verbose{["Frame","PickFrame: <#{str}> by range=[#{r}]"]}
+      verbose("Frame","PickFrame: <#{str}> by range=[#{r}]")
     end
     str=decode(e0,str)
     # Verify
     if val=e0['val']
       val=eval(val).to_s if e0['decode']
-      verbose{["Frame","Verify:(#{e0['label']}) [#{val}] and <#{str}>"]}
+      verbose("Frame","Verify:(#{e0['label']}) [#{val}] and <#{str}>")
       val == str || Msg.com_err("Verify Mismatch(#{e0['label']}) <#{str}> != [#{val}]")
     end
     str
   end
 
   def checkcode
-    verbose{["Frame","CC Frame <#{@ccrange}>"]}
+    verbose("Frame","CC Frame <#{@ccrange}>")
     chk=0
     case @method
     when 'len'
@@ -78,7 +78,7 @@ class Frame
     else
       Msg.cfg_err("No such CC method #{@method}")
     end
-    verbose{["Frame","Calc:CC [#{@method.upcase}] -> (#{chk})"]}
+    verbose("Frame","Calc:CC [#{@method.upcase}] -> (#{chk})")
     @ccrange=nil
     return chk.to_s
   end
@@ -102,7 +102,7 @@ class Frame
         num = num < p/2 ? num : num - p
       end
     end
-    verbose{["Frame","Decode:(#{cdc}) [#{code}] -> [#{num}]"]}
+    verbose("Frame","Decode:(#{cdc}) [#{code}] -> [#{num}]")
     num.to_s
   end
 
@@ -116,7 +116,7 @@ class Frame
         num/=256
         code =(@endian == 'little') ? code+c : c+code
       }
-      verbose{["Frame","Encode:[#{str}](#{len}) -> [#{code}]"]}
+      verbose("Frame","Encode:[#{str}](#{len}) -> [#{code}]")
       str=code
     end
     str

@@ -29,14 +29,14 @@ class Repeat
     res=str.gsub(/\$([_a-z])/){ @counter[$1] }
     res=res.split(':').map{|i| /\$/ =~ i ? i : eval(i)}.join(':')
     Msg.cfg_err("Empty String") if res == ''
-    verbose{["Repeat","Substitute [#{str}] to [#{res}]"]}
+    verbose("Repeat","Substitute [#{str}] to [#{res}]")
     res
   end
 
   def format(str)
     return str unless /\$([_a-z])/ === str
     res=str.gsub(/\$([_a-z])/){ @format[$1] % @counter[$1] }
-    verbose{["Repeat","Format [#{str}] to [#{res}]"]}
+    verbose("Repeat","Format [#{str}] to [#{res}]")
     res
   end
 
@@ -46,21 +46,19 @@ class Repeat
     c=e0['counter'] || '_'
     Msg.abort("Repeat:Counter Duplicate") if @counter.key?(c)
     fmt=@format[c]=e0['format'] || '%d'
-    verbose(1){["Repeat","Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]"]}
-    begin
+    verbose("Repeat","Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]")
+    enclose{
       Range.new(e0['from'],e0['to']).each { |n|
-        verbose(1){["Repeat","Turn Number[#{n}]"]}
-        @counter[c]=n
-        begin
+        verbose("Repeat","Turn Number[#{n}] Start")
+        enclose{
+          @counter[c]=n
           @rep.push yield
-        ensure
-          verbose(-1){["Repeat","Turn End"]}
-        end
+        }
+        verbose("Repeat","Turn Number[#{n}] End")
       }
       @counter.delete(c)
-      self
-    ensure
-      verbose(-1){["Repeat","End"]}
-    end
+    }
+    verbose("Repeat","End")
+    self
   end
 end

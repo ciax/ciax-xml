@@ -40,7 +40,7 @@ module App
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       @cobj.int_proc=proc{
         int=@watch.interrupt
-        verbose{"#{self['id']}/Interrupt:#{int}"}
+        verbose("AppSh","#{self['id']}/Interrupt:#{int}")
         self['msg']="Interrupt #{int}"
       }
       init_view
@@ -120,7 +120,7 @@ module App
       @stat.ext_save.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).upd
       @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
       @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
-        verbose{["AppSv","#{self['id']}/Auto(#{p}):#{cmd}"]}
+        verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")
         @item=@cobj.setcmd(cmd)
         sendcmd(p)
       }
@@ -128,7 +128,7 @@ module App
       @cobj['sv']['ext'].def_proc=proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
-        verbose{["AppSv","#{self['id']}/Issued:#{item.cmd},"]}
+        verbose("AppSv","#{self['id']}/Issued:#{item.cmd},")
         self['msg']="Issued"
       }
       # Update for Frm level manipulation
@@ -190,7 +190,7 @@ module App
           rescue InvalidID
             warning($!)
           end
-          verbose{["AppSv","Auto Update(#{@stat['time']})"]}
+          verbose("AppSv","Auto Update(#{@stat['time']})")
           sleep int
         }
       }

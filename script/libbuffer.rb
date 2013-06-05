@@ -25,7 +25,7 @@ class Buffer
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
     @tid=nil
-    @flush_proc=UpdProc.new.add{verbose{"Flushing"}}
+    @flush_proc=UpdProc.new.add{verbose("Buffer","Flushing")}
     @send_proc=proc{}
     clear
   end
@@ -62,7 +62,7 @@ class Buffer
           flush
         rescue
           warn $!.to_s.chomp
-          fatal(" in Buffer Thread")
+          fatal("Buffer"," in Buffer Thread")
           clear
         end
       }
@@ -76,7 +76,7 @@ class Buffer
 
   private
   def flush
-    verbose{["Buffer","SUB:Waiting"]}
+    verbose("Buffer","SUB:Waiting")
     # @q can not be empty depending on @flush_proc
     @flush_proc.upd
     @svst['isu']=false if @q.empty?
@@ -84,11 +84,11 @@ class Buffer
 
   #inp is frmcmd array (ary of ary)
   def sort(p,inp)
-    verbose{["Buffer","SUB:Recieve [#{inp}] with priority[#{p}]"]}
+    verbose("Buffer","SUB:Recieve [#{inp}] with priority[#{p}]")
     (@outbuf[p]||=[]).concat(inp)
     i=-1
     @outbuf.map{|o|
-      verbose{["Buffer","SUB:Outbuf(#{i+=1}) is [#{o}]\n"]}
+      verbose("Buffer","SUB:Outbuf(#{i+=1}) is [#{o}]\n")
     }
   end
 

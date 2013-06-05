@@ -56,11 +56,10 @@ module Frm
 
     def getframe # return = response select
       return unless @sel[:select]=@select
-      #    verbose{"Attr of Command:#{self}"}
       cmd=self[:cmd]
-      verbose{["FrmItem","Select:#{self[:label]}(#{cmd})"]}
+      verbose("FrmItem","Select:#{self[:label]}(#{cmd})")
       if frame=@cache[cmd]
-        verbose{["FrmItem","Cmd cache found [#{cmd}]"]}
+        verbose("FrmItem","Cmd cache found [#{cmd}]")
       else
         nocache=mk_frame(:select)
         if @sel.key?(:ccrange)

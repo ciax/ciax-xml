@@ -38,22 +38,9 @@ end
 module Msg
   # Should be extended in module/class
   module Ver
+    attr_accessor :ver_color
     Start_time=Time.now
     @@base=1
-    def init_ver(fmt,col=2,obj=nil)
-      @ver_color=col
-      if fmt.instance_of?(String)
-        raise("Empty Prefix") if fmt.empty?
-        @ver_prefix=obj ? fmt % obj.class.name : fmt
-      elsif fmt
-        @ver_prefix=fmt.class.name
-      else
-        raise "No Prefix"
-      end
-      @ver_indent=1
-      verbose{"Initialize Messaging"}
-    end
-
     # Public Method
     def verbose(add=0)
       # block takes array (shown by each line)
@@ -65,10 +52,9 @@ module Msg
       @ver_indent=@@base
       @@base+=add
       @ver_indent=@@base if add < 0
-      [*yield].each{|str|
-        msg=mkmsg(str)
-        Kernel.warn msg if condition(msg)
-      }
+      prefix,title,color=yield
+      msg=mkmsg(prefix,title,color)
+      Kernel.warn msg if msg && condition(msg)
       self
     end
 
@@ -86,14 +72,14 @@ module Msg
 
     # Private Method
     private
-    def mkmsg(text,color=7)
-      return unless text
+    def mkmsg(prefix,title,color=nil)
+      return unless title
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
-      ts << Msg.color("#{@ver_prefix}:",@ver_color)
-      ts << Msg.color(text.inspect,color)
+      ts << Msg.color("#{prefix}:",color||@ver_color)
+      ts << title.inspect
     end
 
     # VER= makes setenv "" to VER otherwise nil

@@ -9,7 +9,7 @@ module Watch
     attr_accessor :event_proc
 
     def initialize
-      init_ver('Watch',6)
+      @ver_color=6
       super('watch')
       self['period']=300
       self['interval']=0.1
@@ -29,7 +29,7 @@ module Watch
 
     def block?(cmd)
       cmds=self['block']
-      verbose{"BLOCKING:#{cmd}"} unless cmds.empty?
+      verbose{["Watch","BLOCKING:#{cmd}"]} unless cmds.empty?
       cmds.include?(cmd[0]) && Msg.cmd_err("Blocking(#{cmd})")
     end
 
@@ -37,7 +37,7 @@ module Watch
       # block parm = cmd + priority(2)
       cmds=self['exec'].each{|cmd|
         @event_proc.call([cmd,2])
-        verbose{"ISSUED:#{cmd}"}
+        verbose{["Watch","ISSUED:#{cmd}"]}
       }.dup
       self['exec'].clear
       cmds
@@ -47,7 +47,7 @@ module Watch
       # block parm = cmd + priority(0)
       cmds=self['int'].each{|cmd|
         @event_proc.call([cmd,0])
-        verbose{"ISSUED:#{cmd}"}
+        verbose{["Watch","ISSUED:#{cmd}"]}
       }.dup
       self['int'].clear
       cmds
@@ -110,7 +110,7 @@ module Watch
       hash.each{|k,a|
         self[k].replace a.flatten(1).uniq
       }
-      verbose{"Watch/Updated(#{@stat['time']})"}
+      verbose{["Watch","Updated(#{@stat['time']})"]}
       super
     end
 
@@ -124,7 +124,7 @@ module Watch
 
     def check(i)
       return true unless @wdb[:stat][i]
-      verbose{"Check: <#{@wdb[:label][i]}>"}
+      verbose{["Watch","Check: <#{@wdb[:label][i]}>"]}
       n=@wdb[:stat][i]
       rary=[]
       n.each_index{|j|
@@ -134,16 +134,16 @@ module Watch
         when 'onchange'
           c=self['last'][k]
           res=(c != v)
-          verbose{"  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"}
+          verbose{["Watch","  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}"]}
         when 'pattern'
           c=n[j]['val']
           res=(Regexp.new(c) === v)
-          verbose{"  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"}
+          verbose{["Watch","  Pattrn(#{k}): [#{c}] vs <#{v}> =>#{res}"]}
         when 'range'
           c=n[j]['val']
           f=cond[j]['val']="%.3f" % v.to_f
           res=(ReRange.new(c) == f)
-          verbose{"  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"}
+          verbose{["Watch","  Range(#{k}): [#{c}] vs <#{f}>(#{v.class}) =>#{res}"]}
         end
         res=!res if /true|1/ === n[j]['inv']
         self['res']["#{i}:#{j}"]=res

@@ -5,7 +5,7 @@ require 'libvar'
 module Field
   class Var < Var
     def initialize
-      init_ver(self,6)
+      @ver_color=6
       super('field')
       ext_upd
     end
@@ -15,7 +15,7 @@ module Field
     # - output csv if array
     def subst(str)
       return str unless /\$\{/ === str
-        verbose(1){"Substitute from [#{str}]"}
+        verbose(1){["Field","Substitute from [#{str}]"]}
         begin
           str=str.gsub(/\$\{(.+)\}/) {
             ary=[*get($1)].map!{|i| eval(i)}
@@ -24,7 +24,7 @@ module Field
           }
           str
         ensure
-          verbose(-1){"Substitute to [#{str}]"}
+          verbose(-1){["Field","Substitute to [#{str}]"]}
         end
     end
 
@@ -48,8 +48,8 @@ module Field
           break
         end
         vname << i
-        verbose{"Type[#{h.class}] Name[#{i}]"}
-        verbose{"Content[#{h[i]}]"}
+        verbose{["Field","Type[#{h.class}] Name[#{i}]"]}
+        verbose{["Field","Content[#{h[i]}]"]}
         h[i] || warning("No such Value [#{vname.join(':')}] in 'val'")
       }
       warning("Short Index [#{vname.join(':')}]") unless Comparable === data

@@ -7,7 +7,7 @@ class Db < ExHash
   XmlDir="#{ENV['HOME']}/ciax-xml"
   attr_reader :list
   def initialize(type,group=nil)
-    init_ver(type,5)
+    @ver_color=5
     @type=type
     @group=group
     @list=cache(group||'list',group){|doc| doc.list }
@@ -26,18 +26,18 @@ class Db < ExHash
   def cache(id,group)
     @base="#{@type}-#{id}"
     if newest?
-      verbose{"Cache:Loading(#{@base})"}
+      verbose{["#@type/Cache","Loading(#{@base})"]}
       begin
         res=Marshal.load(IO.read(fmar))
       rescue ArgumentError #if empty
         res={}
       end
     else
-      verbose{"Cache:Refresh Db"}
+      verbose{["#@type/Cache","Refresh Db"]}
       res=Msg.type?(yield(Xml::Doc.new(@type,group)),Hash)
       open(fmar,'w') {|f|
         f << Marshal.dump(res)
-        verbose{"Cache:Saved(#{@base})"}
+        verbose{["#@type/Cache","Saved(#{@base})"]}
       }
     end
     res
@@ -55,14 +55,13 @@ class Db < ExHash
 
   def newest?
     if ENV['NOCACHE']
-      verbose{"ENV NOCACHE is set"}
+      verbose{["#@type/Cache","ENV NOCACHE is set"]}
     elsif !test(?e,fmar)
-      verbose{"MAR file(#{@base}) not exist"}
+      verbose{["#@type/Cache","MAR file(#{@base}) not exist"]}
     elsif newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))
-      verbose{["File(#{newer}) is newer than cache",
-              "cache=#{File::Stat.new(fmar).mtime}",
-              "file=#{File::Stat.new(newer).mtime}"]
-      }
+      verbose{["#@type/Cache","File(#{newer}) is newer than cache"]}
+      verbose{["#@type/Cache","cache=#{File::Stat.new(fmar).mtime}"]}
+      verbose{["#@type/Cache","file=#{File::Stat.new(newer).mtime}"]}
     else
       return true
     end

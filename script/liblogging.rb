@@ -6,13 +6,13 @@ require 'json'
 class Logging
   include Msg::Ver
   def initialize(type,id,ver=0,&p)
-    init_ver(self,6)
+    @ver_color=6
     @type=Msg.type?(type,String)
     Msg.type?(id,String)
     ver=ver.to_i
     @header={'time' => UnixTime.now,'id' => id,'ver' => ver}
     @loghead=VarDir+"/"+type+"_#{id}"
-    verbose{"Init/Logging '#{type}' (#{id}/Ver.#{ver})"}
+    verbose{["Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})"]}
     @proc=p
     self
   end
@@ -26,7 +26,7 @@ class Logging
       open(logfile,'a') {|f|
         f.puts str
       }
-      verbose{"#{@type}/Appended #{str.size} byte"}
+      verbose{["Logging","#{@type}/Appended #{str.size} byte"]}
     end
     time
   end

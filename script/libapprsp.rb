@@ -10,7 +10,6 @@ module App
     end
 
     def ext_rsp(field,sdb)
-      init_ver('AppRsp',2)
       @field=Msg.type?(field,Field::Var)
       @ads=sdb[:select]
       @fmt=sdb[:format]||{}
@@ -22,7 +21,7 @@ module App
 
     def upd
       @ads.each{|id,select|
-        verbose(1){"STAT:GetStatus:[#{id}]"}
+        verbose(1){["AppRsp","GetStatus:[#{id}]"]}
         flds=select[:fields]
         data=case select['type']
         when 'binary'
@@ -46,16 +45,16 @@ module App
           if @fml.key?(id)
             f=@fml[id].gsub(/\$#/,data.to_s)
             data=eval(f)
-            verbose{"Formula:#{f}(#{data})"}
+            verbose{["AppRsp","Formula:#{f}(#{data})"]}
           end
           data = @fmt[id] % data if @fmt.key?(id)
           self['val'][id]=data.to_s
         ensure
-          verbose(-1){"STAT:GetStatus:#{id}=[#{self['val'][id]}]"}
+          verbose(-1){["AppRsp","STAT:GetStatus:#{id}=[#{self['val'][id]}]"]}
         end
       }
       self['time']=@field['time']
-      verbose{"Rsp/Update(#{self['time']})"}
+      verbose{["AppRsp","Update(#{self['time']})"]}
       super
     end
 
@@ -70,7 +69,7 @@ module App
       loc=eval(e1['bit'])
       bit=(data.to_i >> loc & 1)
       bit = -(bit-1) if /true|1/ === e1['inv']
-      verbose{"GetBit[#{bit}]"}
+      verbose{["AppRsp","GetBit[#{bit}]"]}
       bit
     end
 

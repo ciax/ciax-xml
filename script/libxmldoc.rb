@@ -15,10 +15,10 @@ module Xml
     ALL='all-list'
     @@root={}
     def initialize(type,group=nil)
-      init_ver(self,4)
+      @ver_color=4
       /.+/ =~ type || Msg.cfg_err("No Db Type")
       @group=group||ALL
-      verbose{"xmlroot:#{@@root.keys}"}
+      verbose{["XmlDoc","xmlroot:#{@@root.keys}"]}
       @tree=(@@root[type]||=readxml("#{ENV['XMLPATH']}/#{type}-*.xml"))
       list={}
       Msg.abort("No XML group for '#{group}' in #{type}") unless @tree.key? @group
@@ -37,7 +37,7 @@ module Xml
       @top.each{|e1|
         @domain[e1.name]=e1 unless @top.ns == e1.ns
       }
-      verbose{"Domain registerd:#{@domain.keys}"}
+      verbose{["XmlDoc","Domain registerd:#{@domain.keys}"]}
       self
     end
 
@@ -59,7 +59,7 @@ module Xml
       reflist=[]
       Dir.glob(glob).each{|p|
         base=File.basename(p,'.xml')
-        verbose{"readxml:#{base}"}
+        verbose{["XmlDoc","readxml:#{base}"]}
         fid=base.gsub(/.+-/,'')
         Gnu.new(p).each{|e|
           if ref=e['ref']

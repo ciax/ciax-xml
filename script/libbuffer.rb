@@ -21,7 +21,6 @@ class Buffer
   attr_reader :flush_proc
   # svst: Server Status
   def initialize(svst=[])
-    init_ver(self)
     @svst=Msg.type?(svst,Hash)
     #element of @q is bunch of frmcmds corresponding an appcmd
     @q=Queue.new
@@ -77,7 +76,7 @@ class Buffer
 
   private
   def flush
-    verbose{"SUB:Waiting"}
+    verbose{["Buffer","SUB:Waiting"]}
     # @q can not be empty depending on @flush_proc
     @flush_proc.upd
     @svst['isu']=false if @q.empty?
@@ -85,12 +84,11 @@ class Buffer
 
   #inp is frmcmd array (ary of ary)
   def sort(p,inp)
-    verbose{"SUB:Recieve [#{inp}] with priority[#{p}]"}
+    verbose{["Buffer","SUB:Recieve [#{inp}] with priority[#{p}]"]}
     (@outbuf[p]||=[]).concat(inp)
-    verbose{i=-1;
-      @outbuf.map{|o|
-        "SUB:Outbuf(#{i+=1}) is [#{o}]\n"
-      }
+    i=-1
+    @outbuf.map{|o|
+      verbose{["Buffer","SUB:Outbuf(#{i+=1}) is [#{o}]\n"]}
     }
   end
 

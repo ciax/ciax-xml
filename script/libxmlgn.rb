@@ -6,7 +6,7 @@ module Xml
   class Gnu
     include Share
     def initialize(f=nil)
-      init_ver(self,4)
+      @ver_color=4
       case f
       when String
         test(?r,f) || raise(InvalidID)
@@ -43,19 +43,19 @@ module Xml
 
     # pick same ns nodes even if it is in another tree
     def find(xpath)
-      verbose{"FindXpath:#{xpath}"}
+      verbose{["XmlGnu","FindXpath:#{xpath}"]}
       @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-        verbose(1){"<#{e.name} #{e.attributes.to_h}>"}
+        verbose(1){["XmlGnu","<#{e.name} #{e.attributes.to_h}>"]}
         yield Gnu.new(e)
-        verbose(-1){"</#{e.name}>"}
+        verbose(-1){["XmlGnu","</#{e.name}>"]}
       }
     end
 
     def each
       @e.each_element{|e|
-        verbose(1){"<#{e.name} #{e.attributes.to_h}>"}
+        verbose(1){["XmlGnu","<#{e.name} #{e.attributes.to_h}>"]}
         yield Gnu.new(e)
-        verbose(-1){"</#{e.name}>"}
+        verbose(-1){["XmlGnu","</#{e.name}>"]}
       }
     end
   end

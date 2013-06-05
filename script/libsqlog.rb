@@ -11,7 +11,7 @@ module SqLog
     end
 
     def ext_sqlog(ver=nil)
-      init_ver(self,9)
+      @ver_color=9
       ver||=self['ver'].to_i
       @log=[]
       @tid="#{self['type']}_#{ver}"
@@ -20,7 +20,7 @@ module SqLog
 
     def create
       key=['time',*expand.keys].uniq.join("','")
-      verbose{"SqLog/create ('#{key}')"}
+      verbose{["SqLog","create ('#{key}')"]}
       @log.push "create table #{@tid} ('#{key}',primary key(time));"
       self
     end
@@ -35,7 +35,7 @@ module SqLog
       val=expand
       key=val.keys.map{|s| s.to_s}.join(',')
       val=val.values.map{|s| s.to_s}.join(',')
-      verbose{"SqLog/Update(#{self['time']}):[#{self['id']}/#{@tid}]"}
+      verbose{["SqLog","Update(#{self['time']}):[#{self['id']}/#{@tid}]"]}
       @log.push "insert or ignore into #{@tid} (#{key}) values (#{val});"
       self
     end
@@ -89,9 +89,9 @@ module SqLog
       unless check_table
         create
         save
-        verbose{"Init/Table SqLog '#{@tid}' is created in #{self['id']}"}
+        verbose{["SqLog","Init/Table '#{@tid}' is created in #{self['id']}"]}
       end
-      verbose{"Init/Start SqLog '#{self['id']}' (#{@tid})"}
+      verbose{["SqLog","Init/Start '#{self['id']}' (#{@tid})"]}
       self
     end
 
@@ -114,7 +114,7 @@ module SqLog
           f.puts sql
         }
         Msg.abort("Sqlite3 input error") unless $?.success?
-        verbose{"SqLog/Save complete (#{self['id']})"}
+        verbose{["SqLog","Save complete (#{self['id']})"]}
         @log.clear
       end
       self

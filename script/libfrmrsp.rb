@@ -16,7 +16,7 @@ module Frm
 
     # Command::Item is needed which includes response_id and cmd_parameters
     def ext_rsp(db)
-      init_ver('FrmRsp',6)
+      @ver_color=6
       @db=Msg.type?(db,Db)
       self['ver']=db['version'].to_i
       @sel=Hash[db[:rspframe]]
@@ -36,11 +36,11 @@ module Frm
         hash=yield
         self['time']=hash['time']
         setframe(hash['data'])
-        verbose{"Rsp/Updated(#{self['time']})"} #Field::get
+        verbose{["FrmRsp","Rsp/Updated(#{self['time']})"]} #Field::get
         super()
         true
       else
-        verbose{"Send Only"}
+        verbose{["FrmRsp","Send Only"]}
         @sel[:select]=nil
         false
       end
@@ -51,11 +51,11 @@ module Frm
       Msg.com_err("No Response") unless frame
       if tm=@sel['terminator']
         frame.chomp!(eval('"'+tm+'"'))
-        verbose{"Remove terminator:[#{frame}] by [#{tm}]" }
+        verbose{["FrmRsp","Remove terminator:[#{frame}] by [#{tm}]"]}
       end
       if dm=@sel['delimiter']
         @fary=frame.split(eval('"'+dm+'"'))
-        verbose{"Split:[#{frame}] by [#{dm}]" }
+        verbose{["FrmRsp","Split:[#{frame}] by [#{dm}]"]}
       else
         @fary=[frame]
       end
@@ -63,7 +63,7 @@ module Frm
       getfield_rec(@sel[:main])
       if cc=unset('cc') #Field::unset
         cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
-        verbose{"Verify:CC OK <#{cc}>"}
+        verbose{["FrmRsp","Verify:CC OK <#{cc}>"]}
       end
       self
     end
@@ -74,19 +74,19 @@ module Frm
         case e1
         when 'ccrange'
           begin
-            verbose(1){"Entering Ceck Code Node"}
+            verbose(1){["FrmRsp","Entering Ceck Code Node"]}
             @frame.mark
             getfield_rec(@sel[:ccrange])
             @cc = @frame.checkcode
           ensure
-            verbose(-1){"Exitting Ceck Code Node"}
+            verbose(-1){["FrmRsp","Exitting Ceck Code Node"]}
           end
         when 'select'
           begin
-            verbose(1){"Entering Selected Node"}
+            verbose(1){["FrmRsp","Entering Selected Node"]}
             getfield_rec(@sel[:select])
           ensure
-            verbose(-1){"Exitting Selected Node"}
+            verbose(-1){["FrmRsp","Exitting Selected Node"]}
           end
         when Hash
           frame_to_field(e1){ cut(e1) }
@@ -104,21 +104,21 @@ module Frm
           @item.subst(e1['range'])
         }
         begin
-          verbose(1){"Array:[#{akey}]:Range#{idxs}"}
+          verbose(1){["FrmRsp","Array:[#{akey}]:Range#{idxs}"]}
           self['val'][akey]=mk_array(idxs,get(akey)){yield}
         ensure
-          verbose(-1){"Array:Assign[#{akey}]"}
+          verbose(-1){["FrmRsp","Array:Assign[#{akey}]"]}
         end
       else
         #Field
         data=yield
         if akey=e0['assign']
           self['val'][akey]=data
-          verbose{"Assign:[#{akey}] <- <#{data}>"}
+          verbose{["FrmRsp","Assign:[#{akey}] <- <#{data}>"]}
         end
       end
     ensure
-      verbose(-1){"Field:End"}
+      verbose(-1){["FrmRsp","Field:End"]}
     end
 
     def mk_array(idx,field)
@@ -129,7 +129,7 @@ module Frm
       f,l=idx[0].split(':').map{|i| eval(i)}
       Range.new(f,l||f).each{|i|
         fld[i] = mk_array(idx[1..-1],fld[i]){yield}
-        verbose{"Array:Index[#{i}]=#{fld[i]}"}
+        verbose{["FrmRsp","Array:Index[#{i}]=#{fld[i]}"]}
       }
       fld
     end

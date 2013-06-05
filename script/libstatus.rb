@@ -7,7 +7,7 @@ module Status
     # @ last*
     attr_reader :last
     def initialize
-      init_ver('Status',6)
+      @ver_color=6
       super('stat')
       @last={}
       @updated=UnixTime.now
@@ -21,7 +21,7 @@ module Status
 
     def change?(id)
       val=self['val']
-      verbose{"Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]"}
+      verbose{["Status","Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]"]}
       self[id] != @last[id]
     end
 
@@ -30,7 +30,7 @@ module Status
     end
 
     def refresh
-      verbose{"Status Updated"}
+      verbose{["Status","Status Updated"]}
       @last.update(self['val'])
       @updated=self['time']
       self
@@ -52,7 +52,6 @@ module Status
     end
 
     def ext_save
-      init_ver(self,6)
       @lastsave=UnixTime.now
       self
     end
@@ -64,7 +63,7 @@ module Status
         @lastsave=time
         true
       else
-        verbose{"Skip Save for #{time}"}
+        verbose{["Status","Skip Save for #{time}"]}
         false
       end
     end

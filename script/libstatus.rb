@@ -3,7 +3,7 @@ require "libmsg"
 require "libvar"
 
 module Status
-  class Var < Var::Upd
+  class Var < Var
     # @ last*
     attr_reader :last
     def initialize
@@ -11,11 +11,12 @@ module Status
       super('stat')
       @last={}
       @updated=UnixTime.now
+      ext_upd
     end
 
     def set(hash) #For Watch test
       self['val'].update(hash)
-      self
+      upd
     end
 
     def change?(id)

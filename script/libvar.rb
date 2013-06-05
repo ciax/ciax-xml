@@ -9,6 +9,12 @@ class Var < ExHash # Including 'type'
     self['type']=type
   end
 
+  def ext_upd
+    extend Upd
+    ext_upd
+    self
+  end
+
   ## Read/Write JSON file
   def ext_file(id)
     extend File
@@ -27,14 +33,20 @@ class Var < ExHash # Including 'type'
     self
   end
 
-  class Upd < Var # Including 'time'
-    def initialize(type)
-      super
-      self['time']=UnixTime.now
-      self['val']=ExHash.new
+  module Upd # Including 'time'
+    attr_reader :upd_proc
+    def self.extended(obj)
+      Msg.type?(obj,Var)
     end
 
-    def upd
+    def ext_upd
+      self['time']=UnixTime.now
+      self['val']=ExHash.new
+      @upd_proc=[] # Proc Array
+    end
+
+    def upd # update after processing
+      @upd_proc.each{|p| p.call(self)}
       self
     end
 
@@ -45,7 +57,7 @@ class Var < ExHash # Including 'type'
     def load(json_str=nil)
       super
       self['time']=UnixTime.parse(self['time']) if key?('time')
-      self
+      upd
     end
 
     # Update with str (key=val,key=val,..)
@@ -56,7 +68,7 @@ class Var < ExHash # Including 'type'
         self['val'][k]=v
       }
       self['time']=UnixTime.now
-      self
+      upd
     end
 
     def unset(key)

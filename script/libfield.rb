@@ -3,10 +3,11 @@ require 'libupdate'
 require 'libvar'
 
 module Field
-  class Var < Var::Upd
+  class Var < Var
     def initialize
       init_ver(self,6)
       super('field')
+      ext_upd
     end
 
     # Substitute str by Field data
@@ -72,7 +73,7 @@ module Field
         Msg.par_err("Index is out of range")
       end
       self['time']=UnixTime.now
-      self
+      upd
     end
 
     def ext_save

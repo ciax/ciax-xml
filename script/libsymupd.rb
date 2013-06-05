@@ -1,17 +1,17 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libstatus"
+require "libsymdb"
 
 # Status to Sym::Upd (String with attributes)
 module Sym
   module Upd
-    require "libsymdb"
     def self.extended(obj)
       Msg.type?(obj,Status::Var)
     end
 
     def ext_upd(db)
-      init_ver('SymUpd')
+      init_ver('Symbol')
       Msg.type?(db,App::Db)
       ads=db[:status]
       self['ver']=db['version'].to_i
@@ -49,7 +49,6 @@ module Sym
         }
       }
       verbose{"Sym/Update(#{self['time'].to_f})"}
-      self
     end
   end
 end

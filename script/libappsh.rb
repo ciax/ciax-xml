@@ -73,7 +73,6 @@ module App
       cri={:type => 'reg', :list => ['.']}
       @cobj['sv']['int'].add_item('set','[key=val,...]',[cri]).def_proc=proc{|item|
         @stat.str_update(item.par[0]).upd
-        @watch.upd
         self['msg']="Set #{item.par[0]}"
       }
       @cobj['sv']['int'].add_item('del','[key,...]',[cri]).def_proc=proc{|item|
@@ -81,7 +80,6 @@ module App
           @stat['val'].delete(key)
         }
         @stat.upd
-        @watch.upd
         self['msg']="Delete #{item.par[0]}"
       }
       @watch.event_proc=proc{|cmd,p|
@@ -90,7 +88,6 @@ module App
       @cobj['sv'].def_proc=proc{|item|
         @watch.block?(item.cmd)
         @stat.upd
-        @watch.upd
       }
       @upd_proc.add{
         @watch.issue
@@ -136,7 +133,7 @@ module App
         self['msg']="Issued"
       }
       # Update for Frm level manipulation
-      @fsh.upd_proc.add{@stat.upd.save}
+#      @fsh.upd_proc.add{@stat.upd.save}
       # Logging if version number exists
       @log_proc=UpdProc.new
       if logging and @adb['version']
@@ -172,7 +169,7 @@ module App
       buf.recv_proc{|fcmd|@fsh.exe(fcmd)}
       buf.flush_proc.add{
         @stat.upd.save
-        @watch.upd.save
+        @watch.save
         sleep(@watch['interval']||0.1)
         # Auto issue by watch
         @watch.issue

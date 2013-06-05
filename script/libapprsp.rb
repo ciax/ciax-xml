@@ -16,6 +16,7 @@ module App
       @fmt=sdb[:format]||{}
       @fml=sdb[:formula]||{}
       @ads.keys.each{|k| self['val'][k]||='' }
+      @field.upd_proc << proc{upd}
       self
     end
 
@@ -55,7 +56,7 @@ module App
       }
       self['time']=@field['time']
       verbose{"Rsp/Update(#{self['time']})"}
-      self
+      super
     end
 
     private

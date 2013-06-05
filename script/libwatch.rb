@@ -59,6 +59,7 @@ module Watch
   end
 
   module Upd
+    include Var::Upd
     # @< (event_proc*)
     # @ wdb,val
     def self.extended(obj)
@@ -69,6 +70,7 @@ module Watch
       @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
       @stat=Msg.type?(stat,Status::Var)
       @val=@stat['val']
+      @upd_proc=[]
       self['period']=@wdb['period'].to_i if @wdb.key?('period')
       self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')
       # Pick usable val
@@ -82,6 +84,7 @@ module Watch
       #       => check(self['crnt'] <> self['last']?)
       ['crnt','last','res'].each{|k| self[k]={}}
       upd_last
+      @stat.upd_proc << proc{upd}
       self
     end
 
@@ -108,7 +111,7 @@ module Watch
         self[k].replace a.flatten(1).uniq
       }
       verbose{"Watch/Updated(#{@stat['time']})"}
-      self
+      super
     end
 
     private

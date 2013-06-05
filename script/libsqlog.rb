@@ -11,7 +11,7 @@ module SqLog
     end
 
     def ext_sqlog(ver=nil)
-      init_ver('SqLog',9)
+      init_ver(self,9)
       ver||=self['ver'].to_i
       @log=[]
       @tid="#{self['type']}_#{ver}"
@@ -20,7 +20,7 @@ module SqLog
 
     def create
       key=['time',*expand.keys].uniq.join("','")
-      verbose{"create ('#{key}')"}
+      verbose{"SqLog/create ('#{key}')"}
       @log.push "create table #{@tid} ('#{key}',primary key(time));"
       self
     end

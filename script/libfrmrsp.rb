@@ -36,6 +36,8 @@ module Frm
         hash=yield
         self['time']=hash['time']
         setframe(hash['data'])
+        verbose{"Rsp/Updated(#{self['time']})"} #Field::get
+        super()
         true
       else
         verbose{"Send Only"}
@@ -63,7 +65,6 @@ module Frm
         cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         verbose{"Verify:CC OK <#{cc}>"}
       end
-      verbose{"Rsp/Update(#{self['time']})"} #Field::get
       self
     end
 

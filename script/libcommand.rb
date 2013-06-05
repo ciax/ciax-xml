@@ -9,23 +9,23 @@ require 'libupdate'
 #Command < Hash
 # Command::Item => {:label,:parameter,:select,:cmd}
 #  Command::Item#set_par(par)
-#  Command::Item#reset_proc{|item|}
+#  Command::Item#def_proc -> Proc
 #
 # Command::Group => {id => Command::Item}
 #  Command::Group#list -> Msg::CmdList.to_s
 #  Command::Group#add_item(id,title){|id,par|} -> Command::Item
 #  Command::Group#update_items(list){|id|}
-#  Command::Group#def_proc ->[{|item|},..]
+#  Command::Group#valid_keys -> Array
+#  Command::Group#def_proc -> Proc
 #
 # Command::Domain => {id => Command::Group}
 #  Command::Domain#list -> String
 #  Command::Domain#add_group(key,title) -> Command::Group
-#  Command::Domain#def_proc ->[{|item|},..]
+#  Command::Domain#def_proc -> Proc
 #  Command::Domain#item(id) -> Command::Item
 #
 # Command#new(db) => {id => Command::Domain}
 #  Command#list -> String
-#  Command#add_domain(key,title) -> Command::Domain
 #  Command#current -> Command::Item
 #  Command#setcmd(cmd=[id,*par]):{
 #    Command::Item#set_par(par)
@@ -33,53 +33,60 @@ require 'libupdate'
 #  } -> Command::Item
 # Keep current command and parameters
 class Command < ExHash
-  attr_reader :current
   # CDB: mandatory (:select)
   # optional (:label,:parameter)
   # optionalfrm (:nocache,:response)
   def initialize
     init_ver(self)
-    @current=nil
-  end
-
-  def add_domain(id,color=2)
-    self[id]=Domain.new(color)
+    # Server Commands (service commands on Server)
+    sv=self['sv']=Domain.new(2)
+    @int=sv.add_group('hid',"Hidden Group").add_item('interrupt')
+    sv.add_group('int','Internal Commands')
+    # Local(Long Jump) Commands (local handling commands on Client)
+    lo=self['lo']=Domain.new(9)
+    shg=lo.add_dummy('sh',"Shell Command")
+    shg.add_item('^D,q',"Quit")
+    shg.add_item('^C',"Interrupt")
   end
 
   def setcmd(cmd)
     Msg.type?(cmd,Array)
     id,*par=cmd
-    grp=group_with_item(id) || error
-    grp.valid_keys.include?(id) || error
-    @current=grp[id]
-    verbose{"SetCMD (#{id},#{par})"}
-    @current.set_par(par)
+    dom=domain_with_item(id) || raise(InvalidCMD,list)
+    dom.setcmd(cmd)
   end
 
   def list
     values.map{|dom| dom.list}.grep(/./).join("\n")
   end
 
-  def error(str=nil)
-    str= str ? str+"\n" : ''
-    raise(InvalidCMD,str+list)
+  def int_proc=(p)
+    self['sv']['hid']['interrupt'].def_proc=Msg.type?(p,Proc)
   end
 
-  def group_with_item(id)
+  def domain_with_item(id)
     values.any?{|dom|
-      if grp=dom.group_with_item(id)
-        return grp
-      end
+      return dom if dom.group_with_item(id)
     }
+  end
+
+  def valid_keys
+    res=[]
+    values.each{|dom|
+      dom.values.each{|grp|
+        res+=grp.valid_keys
+      }
+    }
+    res
   end
 
   class Domain < ExHash
     attr_reader :def_proc
     def initialize(color=2)
       init_ver(self)
+      @def_proc=Proc.new{}
       @grplist=[]
       @color=color
-      @def_proc=ExeProc.new
     end
 
     def update(h)
@@ -102,11 +109,19 @@ class Command < ExHash
       self[gid]=BasicGroup.new(attr)
     end
 
-    def reset_proc(&p)
-      values.each{|grp|
-        grp.reset_proc &p
+    def def_proc=(dp)
+      @def_proc=Msg.type?(dp,Proc)
+      values.each{|v|
+        v.def_proc=dp
       }
-      self
+      dp
+    end
+
+    def setcmd(cmd)
+      Msg.type?(cmd,Array)
+      id,*par=cmd
+      grp=group_with_item(id) || raise(InvalidCMD,list)
+      grp.setcmd(cmd)
     end
 
     def list
@@ -121,10 +136,14 @@ class Command < ExHash
   end
 
   class BasicGroup < ExHash
-    attr_reader :cmdlist
-    def initialize(attr)
+    attr_reader :valid_keys,:cmdlist,:def_proc
+    #attr = {caption,color,column,:members}
+    def initialize(attr,def_proc=Proc.new{})
       init_ver(self)
-      @cmdlist=Msg::CmdList.new(attr)
+      @attr=Msg.type?(attr,Hash)
+      @valid_keys=[]
+      @cmdlist=Msg::CmdList.new(@attr,@valid_keys)
+      @def_proc=Msg.type?(def_proc,Proc)
     end
 
     def add_item(id,title)
@@ -139,23 +158,21 @@ class Command < ExHash
       self
     end
 
+    def setcmd(cmd)
+      Msg.type?(cmd,Array)
+      id,*par=cmd
+      key?(id) || raise(InvalidCMD,list)
+      @valid_keys.include?(id) || raise(InvalidCMD,list)
+      verbose{"SetCMD (#{id},#{par})"}
+      self[id].set_par(par)
+    end
+
     def list
       @cmdlist.to_s
     end
   end
 
   class Group < BasicGroup
-    attr_reader :valid_keys
-    attr_accessor :def_proc
-    #attr = {caption,color,column,:members}
-    def initialize(attr,def_proc=ExeProc.new)
-      init_ver(self)
-      @attr=Msg.type?(attr,Hash)
-      @valid_keys=[]
-      @cmdlist=Msg::CmdList.new(attr,@valid_keys)
-      @def_proc=Msg.type?(def_proc,ExeProc)
-    end
-
     def add_item(id,title=nil,parameter=nil)
       super(id,title)
       item=self[id]=Item.new(id,@def_proc)
@@ -173,32 +190,28 @@ class Command < ExHash
       self
     end
 
-    def reset_proc(&p)
-      @def_proc=ExeProc.new.set &p
+    def def_proc=(dp)
+      @def_proc=Msg.type?(dp,Proc)
       values.each{|v|
-        v.reset_proc &p
+        v.def_proc=dp
       }
-      self
+      dp
     end
   end
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:def_proc
-    def initialize(id,def_proc=ExeProc.new)
+    attr_reader :id,:par,:cmd
+    attr_accessor :def_proc
+    def initialize(id,def_proc=Proc.new{})
       @id=id
       @par=[]
       @cmd=[]
-      @def_proc=Msg.type?(def_proc,ExeProc)
-    end
-
-    def reset_proc(&p)
-      @def_proc=ExeProc.new.set &p
-      self
+      @def_proc=Msg.type?(def_proc,Proc)
     end
 
     def exe
-      @def_proc.exe(self)
+      @def_proc.call(self)
       self
     end
 

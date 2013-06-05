@@ -3,8 +3,20 @@ require 'libcommand'
 require 'librerange'
 
 # For External Command Domain
-class Command
-  class ExtGrp < Group
+module CmdExt
+  class Command < Command
+    def initialize(db)
+      super()
+      self['sv']['ext']=extgrp(db)
+    end
+
+    private
+    def extgrp(db)
+      ExtGrp.new(db)
+    end
+  end
+
+  class ExtGrp < Command::Group
     def initialize(db)
       @db=Msg.type?(db,Db)
       super('color' => '6','caption' => "External Commands")
@@ -31,7 +43,7 @@ class Command
     end
   end
 
-  class ExtItem < Item
+  class ExtItem < Command::Item
     include Math
     attr_reader :select
     def initialize(db,id,def_proc)
@@ -93,26 +105,5 @@ class Command
       end
       res
     end
-  end
-end
-
-if __FILE__ == $0
-  require 'liblocdb'
-  require 'libfrmcmd'
-  require 'libappcmd'
-
-  begin
-    Msg::GetOpts.new("af")
-    ldb=Loc::Db.new.set(ARGV.shift)
-    cobj=Command.new
-    svdom=cobj.add_domain('sv')
-    if $opt["f"]
-      svdom['ext']=Frm::ExtGrp.new(ldb[:frm])
-    else
-      svdom['ext']=App::ExtGrp.new(ldb[:app])
-    end
-    puts cobj.setcmd(ARGV)
-  rescue InvalidID
-    $opt.usage("(opt) [id] [cmd] (par)")
   end
 end

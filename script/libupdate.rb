@@ -18,21 +18,3 @@ class UpdProc < Array
     }
   end
 end
-
-class ExeProc < Array
-  include Msg::Ver
-  def initialize
-    init_ver(self,5)
-    push proc{}
-  end
-
-  def set(&p)
-    replace [p]
-  end
-
-  def exe(par)
-    verbose{"Exec procs"}
-    first.call(par)
-    self
-  end
-end

@@ -8,84 +8,66 @@ module Mcr
   class Record < Var
     attr_accessor :stat_proc
     attr_reader :crnt
-    def initialize(obj)
+    def initialize(cmd,label)
       super('mcr')
-      @obj=Msg.type?(obj,Sv)
-      obj[:base]=Time.new.to_f
-      self['id']=@obj[:base].to_i
-      self['cmd']=obj.mobj.current.cmd
-      self['label']=obj.mobj.current[:label]
+      @base=Time.new.to_f
+      self['id']=@base.to_i
+      self['cmd']=cmd
+      self['label']=label
       self['steps']=[]
       self['total']=0
     end
 
     def add_step(db,depth,&p)
-      @crnt=Step.new(db,@obj,depth,p)
+      @crnt=Step.new(db,@base,depth,p)
       @crnt.extend(Prt) unless $opt['r']
       self['steps'] << @crnt
       @crnt
     end
 
     def fin
-      self['total']=Msg.elps_sec(@obj[:base])
+      self['total']=Msg.elps_sec(@base)
     end
   end
 
   class Step < ExHash
-    def initialize(db,obj,depth=0,p)
-      obj=Msg.type?(obj,Sv)
+    def initialize(db,base,depth=0,p)
       @stat_proc=Msg.type?(p,Proc)
-      self['time']=Msg.elps_sec(obj[:base])
+      self['time']=Msg.elps_sec(base)
       self['depth']=depth
       update(Msg.type?(db,Hash))
       @condition=delete('stat')
-      @query=Query.new(self,obj)
     end
 
-    def exec
-      puts title if Msg.fg?
-      if @query.exec?
+    def exec(go=nil)
+      if go
         yield(self['site'],self['cmd'],self['depth'])
         self['result']='done'
       else
         self['result']='skip'
       end
-      puts action if Msg.fg?
     end
 
-    def timeout?
+    def timeout?(max=nil,&p) # Print Progress Proc
       #gives number or nil(if break)
-      print title if Msg.fg?
-      max=self['max']=self['retry']
-      max = 3 if @query.dryrun?
+      self['max']=self['retry']
+      max||=self['max']
       max.to_i.times{|n|
         self['retry']=n
-        if ok?('pass','wait')
-          puts result if Msg.fg?
-          return
-        end
+        return if ok?('pass','wait')
         refresh
         sleep 1
-        print '.' if Msg.fg?
+        p.call if p
       }
       self['result']='timeout'
-      puts result if Msg.fg?
-      @query.done?
     end
 
     def skip?
-      return unless ok?('skip','pass')
-      return true unless @query.dryrun?
-      self['action']='dryrun'
-      false
-    ensure
-      puts to_s if Msg.fg?
+      ok?('skip','pass')
     end
 
     def fail?
-      return if ok?('pass','failed')
-      puts to_s if Msg.fg?
-      @query.done?
+      ! ok?('pass','failed')
     end
 
     def title ; self['label']||self['cmd']; end
@@ -141,73 +123,6 @@ module Mcr
       else
         (cmp == act) ^ i
       end
-    end
-  end
-
-  class Query
-    def initialize(step,sh)
-      @step=Msg.type?(step,Step)
-      @sh=Msg.type?(sh,Sv)
-    end
-
-    def exec?
-      return true if $opt['n']
-      loop{
-        case query(['Exec','Skip'])
-        when /^E/i
-          if dryrun?
-            @step['action']='dryrun'
-            return false
-          else
-            @step['action']='exec'
-            return true
-          end
-        when /^S/i
-          @step['action']='skip'
-          return false
-        end
-      }
-    end
-
-    def done?
-      return true if $opt['n']
-      loop{
-        case query(['Done','Force','Retry'])
-        when /^D/i
-          @step['action']='done'
-          return true
-        when /^F/i
-          @step['action']='forced'
-          return false
-        when /^R/i
-          @step['action']='retry'
-          raise(Retry)
-        end
-      }
-    end
-
-    def dryrun?
-      ! ['e','s','t'].any?{|i| $opt[i]}
-    end
-
-    private
-    def query(cmds)
-      inc=cmds.map{|s| s[0].downcase}
-      @sh.intgrp.valid_keys.replace(inc)
-      @sh['stat']='query'
-      if Msg.fg?
-        prompt=Msg.color('['+cmds.join('/')+']?',5)
-        print Msg.indent(@step['depth'].to_i+1)
-        res=Readline.readline(prompt,true)
-      else
-        @step['option']=cmds
-        sleep
-        @step.delete('option')
-        res=Thread.current[:query]
-      end
-      @sh['stat']='run'
-      @sh.intgrp.valid_keys.clear
-      res
     end
   end
 end

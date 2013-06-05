@@ -3,14 +3,21 @@ require "libmsg"
 require "libcmdext"
 
 module App
-  class ExtGrp < Command::ExtGrp
+  include CmdExt
+  class Command < Command
+    def extgrp(db)
+      ExtGrp.new(db)
+    end
+  end
+
+  class ExtGrp < ExtGrp
     private
     def extitem(id)
       ExtItem.new(@db,id,@def_proc)
     end
   end
 
-  class ExtItem < Command::ExtItem
+  class ExtItem < ExtItem
     #frmcmd is ary of ary
     def getcmd
       frmcmd=[]
@@ -46,12 +53,9 @@ if __FILE__ == $0
   app,*cmd=ARGV
   begin
     adb=App::Db.new.set(app)
-    fcobj=Command.new
-    fsvdom=fcobj.add_domain('sv')
-    fsvdom['ext']=Frm::ExtGrp.new(Frm::Db.new.set(adb['frm_id']))
-    acobj=Command.new
-    asvdom=acobj.add_domain('sv')
-    asvdom['ext']=App::ExtGrp.new(adb)
+    fdb=Frm::Db.new.set(adb['frm_id'])
+    fcobj=Frm::Command.new(fdb)
+    acobj=App::Command.new(adb)
     acobj.setcmd(cmd).getcmd.each{|fcmd|
       #Validate frmcmds
       fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first

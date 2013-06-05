@@ -25,19 +25,24 @@ module App
 
   class Exe < Sh::Exe
     # @< cobj,output,upd_proc*
-    # @ adb,fsh,svdom,extgrp,intgrp,watch,stat*
+    # @ adb,fsh,watch,stat*
     attr_reader :adb,:stat
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
       self['layer']='app'
       self['id']=@adb['site_id']
+      cobj=Command.new(adb)
       @stat=Status::Var.new.ext_file(@adb['site_id'])
       plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
       prom=Sh::Prompt.new(self,plist)
-      super(@stat,prom)
-      @intgrp=@svdom.add_group('int','Internal Commands')
-      @extgrp=@svdom['ext']=App::ExtGrp.new(@adb)
+      super(cobj)
+      ext_shell(@stat,prom)
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
+      @cobj.int_proc=proc{
+        int=@watch.interrupt
+        verbose{"#{self['id']}/Interrupt:#{int}"}
+        self['msg']="Interrupt #{int}"
+      }
       init_view
     end
 
@@ -51,10 +56,10 @@ module App
     def init_view
       @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
       @wview=Watch::View.new(@adb,@watch).ext_prt
-      grp=@lodom.add_group('view',"Change View Mode")
-      grp.add_item('pri',"Print mode").reset_proc{@output=@print}
-      grp.add_item('wat',"Watch mode").reset_proc{@output=@wview} if @wview
-      grp.add_item('raw',"Raw mode").reset_proc{@output=@stat}
+      grp=@cobj['lo'].add_group('view',"Change View Mode")
+      grp.add_item('pri',"Print mode").def_proc=proc{@output=@print}
+      grp.add_item('wat',"Watch mode").def_proc=proc{@output=@wview} if @wview
+      grp.add_item('raw',"Raw mode").def_proc=proc{@output=@stat}
       self
     end
   end
@@ -66,30 +71,23 @@ module App
       @stat.ext_sym(adb).load
       @watch.ext_upd(adb,@stat).upd
       cri={:type => 'reg', :list => ['.']}
-      @intgrp.add_item('set','[key=val,...]',[cri]).reset_proc{|item|
+      @cobj['sv']['int'].add_item('set','[key=val,...]',[cri]).def_proc=proc{|item|
         @stat.str_update(item.par[0]).upd
-        @watch.upd
         self['msg']="Set #{item.par[0]}"
       }
-      @intgrp.add_item('del','[key,...]',[cri]).reset_proc{|item|
+      @cobj['sv']['int'].add_item('del','[key,...]',[cri]).def_proc=proc{|item|
         item.par[0].split(',').each{|key|
           @stat['val'].delete(key)
         }
         @stat.upd
-        @watch.upd
         self['msg']="Delete #{item.par[0]}"
-      }
-      @interrupt.reset_proc{
-        int=@watch.interrupt
-        self['msg']="Interrupt #{int}"
       }
       @watch.event_proc=proc{|cmd,p|
         Msg.msg("#{cmd} is issued by event")
       }
-      @svdom.def_proc.set{|item|
+      @cobj['sv'].def_proc=proc{|item|
         @watch.block?(item.cmd)
         @stat.upd
-        @watch.upd
       }
       @upd_proc.add{
         @watch.issue
@@ -112,7 +110,7 @@ module App
   end
 
   # @<< cobj,output,,upd_proc*
-  # @< adb,svdom,watch,stat*
+  # @< adb,watch,stat*
   # @ fsh,buf,log_proc
   class Sv < Exe
     def initialize(adb,fsh,logging=nil)
@@ -124,24 +122,18 @@ module App
       @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
       @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
         verbose{"#{self['id']}/Auto(#{p}):#{cmd}"}
-        @cobj.setcmd(cmd)
+        @item=@cobj.setcmd(cmd)
         sendcmd(p)
       }
-      Thread.abort_on_exception=true
       @buf=init_buf
-      @extgrp.reset_proc{|item|
+      @cobj['sv']['ext'].def_proc=proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
         verbose{"#{self['id']}/Issued:#{item.cmd},"}
         self['msg']="Issued"
       }
-      @interrupt.reset_proc{
-        int=@watch.interrupt
-        verbose{"#{self['id']}/Interrupt:#{int}"}
-        self['msg']="Interrupt #{int}"
-      }
       # Update for Frm level manipulation
-      @fsh.upd_proc.add{@stat.upd.save}
+#      @fsh.upd_proc.add{@stat.upd.save}
       # Logging if version number exists
       @log_proc=UpdProc.new
       if logging and @adb['version']
@@ -158,7 +150,7 @@ module App
 
     def ext_logging(id,ver=0)
       logging=Logging.new('issue',id,ver){
-        {'cmd'=>@cobj.current[:cmd],'active'=>@watch['active']}
+        {'cmd'=>@item[:cmd],'active'=>@watch['active']}
       }
       @log_proc.add{logging.append}
       self
@@ -173,11 +165,11 @@ module App
 
     def init_buf
       buf=Buffer.new(self)
-      buf.send_proc{@cobj.current.getcmd}
+      buf.send_proc{@item.getcmd}
       buf.recv_proc{|fcmd|@fsh.exe(fcmd)}
       buf.flush_proc.add{
         @stat.upd.save
-        @watch.upd.save
+        @watch.save
         sleep(@watch['interval']||0.1)
         # Auto issue by watch
         @watch.issue
@@ -194,7 +186,7 @@ module App
         int=(@watch['period']||300).to_i
         loop{
           begin
-            @cobj.setcmd(['upd'])
+            @item=@cobj.setcmd(['upd'])
             sendcmd(2)
           rescue InvalidID
             warning($!)

@@ -21,11 +21,11 @@ module Hex
       init_ver('Hex',2)
       self['layer']='hex'
       self['id']=@adb['site_id']
+      cobj=App::Command.new(adb)
+      super(cobj)
       stat=Status::Var.new.ext_file(@adb['site_id'])
       prom=Sh::Prompt.new(self)
-      super(View.new(self,stat),prom)
-      @extgrp=@svdom['ext']=App::ExtGrp.new(@adb)
-      self
+      ext_shell(View.new(self,stat),prom)
     end
   end
 
@@ -34,7 +34,7 @@ module Hex
       super(ash.adb)
       @output=View.new(ash,ash.stat)
       @log_proc=UpdProc.new
-      @svdom.reset_proc{|item|
+      @cobj['sv'].def_proc=proc{|item|
         ash.exe(item.cmd)
         @log_proc.upd
       }

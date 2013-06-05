@@ -4,7 +4,28 @@ require "libframe"
 require "libcmdext"
 # Cmd Methods
 module Frm
-  class ExtGrp < Command::ExtGrp
+  include CmdExt
+  class Command < Command
+    def initialize(fdb,field=Field::Var.new)
+      @field=Msg.type?(field,Field::Var)
+      super(fdb)
+      any={:type =>'reg',:list => ["."]}
+      ig=self['sv']['int']
+      ig.add_item('save',"Save Field [key,key...] (tag)",[any,any])
+      ig.add_item('load',"Load Field (tag)",[any])
+      set=ig.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
+      set.def_proc=proc{|item|
+        field.set(*item.par)
+      }
+    end
+
+    private
+    def extgrp(fdb)
+      self['sv']['ext']=ExtGrp.new(fdb,@field)
+    end
+  end
+
+  class ExtGrp < ExtGrp
     def initialize(db,field=Field::Var.new)
       @field=Msg.type?(field,Field::Var)
       super(db)
@@ -16,7 +37,7 @@ module Frm
     end
   end
 
-  class ExtItem < Command::ExtItem
+  class ExtItem < ExtItem
     def initialize(field,db,id,def_proc)
       init_ver('FrmCmd',9)
       @field=Msg.type?(field,Field::Var)
@@ -84,9 +105,7 @@ if __FILE__ == $0
   begin
     fdb=Frm::Db.new.set(dev)
     field=Field::Var.new
-    cobj=Command.new
-    svdom=cobj.add_domain('sv')
-    svdom['ext']=Frm::ExtGrp.new(fdb,field)
+    cobj=Frm::Command.new(fdb,field)
     field.load unless STDIN.tty?
     print cobj.setcmd(cmd).getframe
   rescue InvalidCMD

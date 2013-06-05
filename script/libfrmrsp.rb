@@ -15,9 +15,8 @@ module Frm
     end
 
     # Command::Item is needed which includes response_id and cmd_parameters
-    def ext_rsp(cobj,db)
+    def ext_rsp(db)
       init_ver('FrmRsp',6)
-      @cobj=Msg.type?(cobj,Command)
       @db=Msg.type?(db,Db)
       self['ver']=db['version'].to_i
       @sel=Hash[db[:rspframe]]
@@ -30,24 +29,21 @@ module Frm
 
     # Block accepts [frame,time]
     # Result : executed block or not
-    def upd
-      if rid=@cobj.current[:response]
+    def upd(item)
+      @item=Msg.type?(item,Command::Item)
+      if rid=item[:response]
         @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
         hash=yield
         self['time']=hash['time']
         setframe(hash['data'])
+        verbose{"Rsp/Updated(#{self['time']})"} #Field::get
+        super()
         true
       else
         verbose{"Send Only"}
         @sel[:select]=nil
         false
       end
-    end
-
-    def upd_logline(str)
-      res=Logging.set_logline(str)
-      @cobj.setcmd(res['cmd'].split(':'))
-      upd{res}
     end
 
     private
@@ -69,7 +65,6 @@ module Frm
         cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
         verbose{"Verify:CC OK <#{cc}>"}
       end
-      verbose{"Rsp/Update(#{self['time']})"} #Field::get
       self
     end
 
@@ -106,7 +101,7 @@ module Frm
         akey=e0['assign'] || Msg.cfg_err("No key for Array")
         # Insert range depends on command param
         idxs=e0[:index].map{|e1|
-          @cobj.current.subst(e1['range'])
+          @item.subst(e1['range'])
         }
         begin
           verbose(1){"Array:[#{akey}]:Range#{idxs}"}
@@ -146,8 +141,8 @@ module Frm
 end
 
 class Field::Var
-  def ext_rsp(cobj,db)
-    extend(Frm::Rsp).ext_rsp(cobj,db)
+  def ext_rsp(db)
+    extend(Frm::Rsp).ext_rsp(db)
   end
 end
 
@@ -171,14 +166,12 @@ if __FILE__ == $0
     res['data']=gets(nil) || exit
   end
   fdb=Loc::Db.new.set(id)[:frm]
-  cobj=Command.new
-  svdom=cobj.add_domain('sv')
-  svdom['ext']=Frm::ExtGrp.new(fdb)
-  cobj.setcmd(cmd.split(':'))
+  fgrp=Frm::ExtGrp.new(fdb)
+  item=fgrp.setcmd(cmd.split(':'))
   field=Field::Var.new.ext_file(fdb['site_id'])
   field.load if $opt['m']
-  field.ext_rsp(cobj,fdb)
-  field.upd{res}
+  field.ext_rsp(fdb)
+  field.upd(item){res}
   puts field
   exit
 end

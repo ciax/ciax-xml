@@ -13,26 +13,15 @@ require "libupdate"
 
 module Sh
   # @ cobj,output,upd_proc
-  # @ prompt,lodom
   class Exe < ExHash # Having server status {id,msg,...}
-    attr_reader :upd_proc,:output,:svdom,:lodom
+    attr_reader :upd_proc,:cobj,:item,:output
     # block gives command line convert
-    def initialize(output={},prompt=self)
+    def initialize(cobj)
       init_ver(self,2)
-      @cobj=Command.new
+      @cobj=Msg.type?(cobj,Command)
       @upd_proc=UpdProc.new # Proc for Server Status Update
-      @svdom=@cobj.add_domain('sv',2) # Server Commands (service commands on Server)
-      @interrupt=@svdom.add_group('hid',"Hidden Group").add_item('interrupt')
-      # For Shell
-      @output=output
-      @prompt=prompt
-      @lodom=@cobj.add_domain('lo',9) # Local Commands (local handling commands on Client)
-      shg=@lodom.add_dummy('sh',"Shell Command")
-      shg.add_item('^D,q',"Quit")
-      shg.add_item('^C',"Interrupt")
-      Readline.completion_proc=proc{|word|
-        @cobj.keys.grep(/^#{word}/)
-      }
+      @item=nil
+      Thread.abort_on_exception=true
     end
 
     # Sync only (Wait for other thread)
@@ -42,7 +31,7 @@ module Sh
       else
         self['msg']='OK'
         verbose{"Command #{cmd} recieved"}
-        @cobj.setcmd(cmd).exe
+        @item=@cobj.setcmd(cmd).exe
       end
       self
     rescue
@@ -52,36 +41,16 @@ module Sh
       @upd_proc.upd
     end
 
-    # invoked many times
-    # '^D' gives exit break
-    # mode gives special break (loop returns mode)
-    def shell
-      init_ver('Shell/%s',2,self)
-      verbose{"Init/Shell(#{self['id']})"}
-      begin
-        while line=Readline.readline(@prompt.to_s,true)
-          break if /^q/ === line
-          exe(shell_input(line))
-          puts shell_output
-        end
-      rescue SelectID
-        $!.to_s
-      rescue Interrupt
-        exe(['interrupt'])
-        puts self['msg']
-        retry
-      rescue InvalidID
-        puts $!.to_s
-        retry
-      end
-    end
-
     def ext_client(host,port)
       extend(Client).ext_client(host,port)
     end
 
     def ext_server(port)
       extend(Server).ext_server(port)
+    end
+
+    def ext_shell(output={},prompt=self)
+      extend(Shell).ext_shell(output,prompt)
     end
 
     # Overridable methods(do not set this kind of methods in modules)
@@ -102,6 +71,45 @@ module Sh
 
     def server_output
       to_j
+    end
+  end
+
+  module Shell
+    def self.extended(obj)
+      Msg.type?(obj,Exe)
+    end
+
+    def ext_shell(output={},prompt=self)
+      # For Shell
+      @output=output
+      @prompt=prompt
+      # Local(Long Jump) Commands (local handling commands on Client)
+      Readline.completion_proc=proc{|word|
+        @cobj.valid_keys.grep(/^#{word}/)
+      }
+      self
+    end
+
+    # invoked many times
+    # '^D' gives exit break
+    # mode gives special break (loop returns mode)
+    def shell
+      init_ver('Shell/%s',2,self)
+      verbose{"Init/Shell(#{self['id']})"}
+      begin
+        while line=Readline.readline(@prompt.to_s,true)
+          break if /^q/ === line
+          exe(shell_input(line))
+          puts shell_output
+        end
+      rescue Interrupt
+        exe(['interrupt'])
+        puts self['msg']
+        retry
+      rescue InvalidID
+        puts $!.to_s
+        retry
+      end
     end
   end
 
@@ -215,11 +223,9 @@ module Sh
     end
 
     def shell
-      while current=self[@current].shell
+      while current=catch(:sw_site){ self[@current].shell }
         @current.replace current
       end
-    rescue TransLayer
-      raise(TransLayer,$!.to_s)
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end
@@ -232,8 +238,8 @@ module Sh
       Msg.type?(list,Msg::CmdList)
       super(current)
       @swsgrp=@shdom.add_group('sws','Switch Sites')
-      @swsgrp.update_items(list).reset_proc{|item|
-        raise(SelectID,item.id)
+      @swsgrp.update_items(list).def_proc=proc{|item|
+        throw(:sw_site,item.id)
       }
     end
 
@@ -242,7 +248,7 @@ module Sh
         super
       else
         sh=self[key]=newsh(key)
-        sh.lodom.update @shdom
+        sh.cobj['lo'].update @shdom
         sh
       end
     end
@@ -267,17 +273,14 @@ module Sh
       @current=current
       @shdom=Command::Domain.new(5)
       @swlgrp=@shdom.add_group('swl',"Switch Layer")
-      @swlgrp.reset_proc{|item| raise(TransLayer,item.id) }
+      @swlgrp.def_proc=proc{|item| throw(:sw_layer,item.id) }
     end
 
     def shell
       layer_menu
       @current||=keys.last
-      begin
-        self[@current].shell
-      rescue TransLayer
-        @current=$!.to_s
-        retry
+      while current=catch(:sw_layer){self[@current].shell}
+        @current.replace current
       end
     end
 

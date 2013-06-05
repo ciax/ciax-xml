@@ -9,6 +9,12 @@ class Var < ExHash # Including 'type'
     self['type']=type
   end
 
+  def ext_upd
+    extend Upd
+    ext_upd
+    self
+  end
+
   ## Read/Write JSON file
   def ext_file(id)
     extend File
@@ -27,14 +33,20 @@ class Var < ExHash # Including 'type'
     self
   end
 
-  class Upd < Var # Including 'time'
-    def initialize(type)
-      super
-      self['time']=UnixTime.now
-      self['val']=ExHash.new
+  module Upd # Including 'time'
+    attr_reader :upd_proc
+    def self.extended(obj)
+      Msg.type?(obj,Var)
     end
 
-    def upd
+    def ext_upd
+      self['time']=UnixTime.now
+      self['val']=ExHash.new
+      @upd_proc=[] # Proc Array
+    end
+
+    def upd # update after processing
+      @upd_proc.each{|p| p.call(self)}
       self
     end
 
@@ -45,7 +57,7 @@ class Var < ExHash # Including 'type'
     def load(json_str=nil)
       super
       self['time']=UnixTime.parse(self['time']) if key?('time')
-      self
+      upd
     end
 
     # Update with str (key=val,key=val,..)
@@ -56,7 +68,7 @@ class Var < ExHash # Including 'type'
         self['val'][k]=v
       }
       self['time']=UnixTime.now
-      self
+      upd
     end
 
     def unset(key)
@@ -83,7 +95,7 @@ class Var < ExHash # Including 'type'
       json_str=''
       open(name){|f|
         verbose{"Loading [#{@base}](#{f.size})"}
-        f.flock(Object::File::LOCK_SH) if File === f
+        f.flock(::File::LOCK_SH) if File === f
         json_str=f.read
       }
       if json_str.empty?
@@ -144,15 +156,15 @@ class Var < ExHash # Including 'type'
     def save(data=nil,tag=nil)
       name=fname(tag)
       open(name,'w'){|f|
-        f.flock(Object::File::LOCK_EX)
+        f.flock(::File::LOCK_EX)
         f << (data ? JSON.dump(data) : to_j)
         verbose{"[#{@base}](#{f.size}) is Saved"}
       }
       if tag
         # Making 'latest' tag link
         sname=fname('latest')
-        Object::File.unlink(sname) if Object::File.symlink?(sname)
-        Object::File.symlink(name,sname)
+        ::File.unlink(sname) if ::File.symlink?(sname)
+        ::File.symlink(name,sname)
         verbose{"Symboliclink to [#{sname}]"}
       end
       self

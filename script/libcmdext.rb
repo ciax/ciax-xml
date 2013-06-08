@@ -69,7 +69,7 @@ module CmdExt
     def subst(str)
       return str unless /\$([\d]+)/ === str
       verbose("ExtItem","Substitute from [#{str}]")
-      enclose{
+      res=enclose{
         num=true
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
@@ -81,6 +81,7 @@ module CmdExt
           res=eval(res).to_s
         end
         Msg.cfg_err("Nil string") if res == ''
+        res
       }
       verbose("ExtItem","Substitute to [#{res}]")
       res

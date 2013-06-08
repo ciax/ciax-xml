@@ -93,7 +93,7 @@ module Status
             when 'time'
               h['msg']=@stat['time'].inspect
             else
-              h['msg']=@stat['msg'][id]||@stat.get(id)
+              h['msg']=@stat['msg'][id]||@stat['val'][id]
             end
             set(h,'class',id)
           }

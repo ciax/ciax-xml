@@ -32,8 +32,9 @@ module Field
     # - index should be numerical or formula
     # - ${key:idx1:idx2} => hash[key][idx1][idx2]
     def get(key)
+      verbose("Field","Getting[#{key}]")
       Msg.abort("No Key") unless key
-      return super if self['val'].key?(key)
+      return self['val'][key] if self['val'].key?(key)
       vname=[]
       data=key.split(':').inject(self['val']){|h,i|
         case h
@@ -52,6 +53,7 @@ module Field
         h[i] || warning("No such Value [#{vname.join(':')}] in 'val'")
       }
       warning("Short Index [#{vname.join(':')}]") unless Comparable === data
+      verbose("Field","Get[#{key}]=[#{data}]")
       data
     end
 

@@ -50,10 +50,6 @@ class Var < ExHash # Including 'type'
       self
     end
 
-    def get(key)
-      self['val'][key]
-    end
-
     def load(json_str=nil)
       super
       self['time']=UnixTime.parse(self['time']) if key?('time')

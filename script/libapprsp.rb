@@ -60,7 +60,9 @@ module App
     private
     def get_field(e)
       fld=e['ref'] || Msg.abort("No field Key")
-      @field.get(fld)||''
+      data=@field.get(fld)||''
+      verbose("AppRsp","GetFieldData[#{fld}]=[#{data}]")
+      data
     end
 
     def binary(e1)
@@ -87,6 +89,7 @@ module App
       data=data.to_f
       # Numerical Data
       data= -data if sign
+      verbose("AppRsp","GetFloat[#{data}]")
       data
     end
 
@@ -95,6 +98,7 @@ module App
       if /true|1/ === e1['signed']
         data= data > 0x7fff ? data - 0x10000 : data
       end
+      verbose("AppRsp","GetInteger[#{data}]")
       data
     end
   end

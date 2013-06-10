@@ -7,7 +7,6 @@ module Hex
     include Msg::Ver
     def initialize(hint,stat)
       # Server Status
-      init_ver('HexView',4)
       @hint=Msg.type?(hint,Hash)
       @stat=Msg.type?(stat,Status::Var)
       id=stat['id'] || raise(InvalidID,"NO ID in Stat")
@@ -44,12 +43,12 @@ module Hex
           pck=len
           bin=0
         elsif pck > 0
-          bin+=@stat.get(key).to_i
+          bin+=@stat[key].to_i
           bin << 1
           pck-=1
           @res[6] << '%x' % bin if pck == 0
         else
-          if val=@stat.get(key)
+          if val=@stat[key]
             str=get_elem(type,len,val)
             verbose("HexView","#{title}/#{type}(#{len}) = #{str}")
           else
@@ -57,7 +56,7 @@ module Hex
           end
           # str can exceed specified length
           str=str[0,len]
-          verbose("HexView",{"add '#{str}' as #{key}")
+          verbose("HexView","add '#{str}' as #{key}")
           @res[6] << str
         end
       }

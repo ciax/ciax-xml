@@ -18,7 +18,6 @@ module Hex
   class Exe < Sh::Exe
     def initialize(adb)
       @adb=Msg.type?(adb,Db)
-      init_ver('Hex',2)
       self['layer']='hex'
       self['id']=@adb['site_id']
       cobj=App::Command.new(adb)

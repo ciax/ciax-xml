@@ -40,7 +40,7 @@ module App
       @watch=Watch::Var.new.ext_file(@adb['site_id'])
       @cobj.int_proc=proc{
         int=@watch.interrupt
-        verbose{"#{self['id']}/Interrupt:#{int}"}
+        verbose("AppSh","#{self['id']}/Interrupt:#{int}")
         self['msg']="Interrupt #{int}"
       }
       init_view
@@ -115,13 +115,12 @@ module App
   class Sv < Exe
     def initialize(adb,fsh,logging=nil)
       super(adb)
-      init_ver("AppSv",9)
       @fsh=Msg.type?(fsh,Frm::Exe)
       update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
       @stat.ext_save.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).upd
       @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
       @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
-        verbose{"#{self['id']}/Auto(#{p}):#{cmd}"}
+        verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")
         @item=@cobj.setcmd(cmd)
         sendcmd(p)
       }
@@ -129,7 +128,7 @@ module App
       @cobj['sv']['ext'].def_proc=proc{|item|
         @watch.block?(item.cmd)
         sendcmd(1)
-        verbose{"#{self['id']}/Issued:#{item.cmd},"}
+        verbose("AppSv","#{self['id']}/Issued:#{item.cmd},")
         self['msg']="Issued"
       }
       # Update for Frm level manipulation
@@ -191,7 +190,7 @@ module App
           rescue InvalidID
             warning($!)
           end
-          verbose{"Auto Update(#{@stat['time']})"}
+          verbose("AppSv","Auto Update(#{@stat['time']})")
           sleep int
         }
       }

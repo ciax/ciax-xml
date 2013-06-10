@@ -5,7 +5,7 @@ require 'libvar'
 module Field
   class Var < Var
     def initialize
-      init_ver(self,6)
+      @ver_color=6
       super('field')
       ext_upd
     end
@@ -15,17 +15,16 @@ module Field
     # - output csv if array
     def subst(str)
       return str unless /\$\{/ === str
-        verbose(1){"Substitute from [#{str}]"}
-        begin
-          str=str.gsub(/\$\{(.+)\}/) {
-            ary=[*get($1)].map!{|i| eval(i)}
-            Msg.abort("No value for subst [#{$1}]") if ary.empty?
-            ary.join(',')
-          }
-          str
-        ensure
-          verbose(-1){"Substitute to [#{str}]"}
-        end
+      verbose("Field","Substitute from [#{str}]")
+      enclose{
+        str=str.gsub(/\$\{(.+)\}/) {
+          ary=[*get($1)].map!{|i| eval(i)}
+          Msg.abort("No value for subst [#{$1}]") if ary.empty?
+          ary.join(',')
+        }
+      }
+      verbose("Field","Substitute to [#{str}]")
+      str
     end
 
     # First key is taken as is (key:x:y) or ..
@@ -33,8 +32,9 @@ module Field
     # - index should be numerical or formula
     # - ${key:idx1:idx2} => hash[key][idx1][idx2]
     def get(key)
-      Msg.abort("No Key") unless key
-      return super if self['val'].key?(key)
+      verbose("Field","Getting[#{key}]")
+      Msg.abort("Nill Key") unless key
+      return self['val'][key] if self['val'].key?(key)
       vname=[]
       data=key.split(':').inject(self['val']){|h,i|
         case h
@@ -48,11 +48,12 @@ module Field
           break
         end
         vname << i
-        verbose{"Type[#{h.class}] Name[#{i}]"}
-        verbose{"Content[#{h[i]}]"}
+        verbose("Field","Type[#{h.class}] Name[#{i}]")
+        verbose("Field","Content[#{h[i]}]")
         h[i] || warning("No such Value [#{vname.join(':')}] in 'val'")
       }
       warning("Short Index [#{vname.join(':')}]") unless Comparable === data
+      verbose("Field","Get[#{key}]=[#{data}]")
       data
     end
 

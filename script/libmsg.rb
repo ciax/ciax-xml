@@ -38,66 +38,61 @@ end
 module Msg
   # Should be extended in module/class
   module Ver
+    attr_accessor :ver_color
     Start_time=Time.now
     @@base=1
-    def init_ver(fmt,col=2,obj=nil)
-      @ver_color=col
-      if fmt.instance_of?(String)
-        raise("Empty Prefix") if fmt.empty?
-        @ver_prefix=obj ? fmt % obj.class.name : fmt
-      elsif fmt
-        @ver_prefix=fmt.class.name
-      else
-        raise "No Prefix"
-      end
-      @ver_indent=1
-      verbose{"Initialize Messaging"}
-    end
-
     # Public Method
-    def verbose(add=0)
+    def verbose(prefix,title,color=nil)
       # block takes array (shown by each line)
       # Description of values
       #   [val] -> taken from  xml (criteria)
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
-      return if ENV['VER'].to_s.empty?
       @ver_indent=@@base
-      @@base+=add
-      @ver_indent=@@base if add < 0
-      [*yield].each{|str|
-        msg=mkmsg(str)
-        Kernel.warn msg if condition(msg)
-      }
+      msg=mkmsg(prefix,title,color)
+      Kernel.warn msg if msg && condition(msg)
       self
     end
 
-    def warning(str)
+    def ver?
+      !ENV['VER'].to_s.empty?
+    end
+
+    def warning(prefix,title)
       @ver_indent=@@base
-      Kernel.warn mkmsg(str,3)
+      Kernel.warn mkmsg(prefix,title,3)
       self
     end
 
-    def fatal(str)
+    def fatal(prefix,title)
       @ver_indent=@@base
-      Kernel.warn mkmsg(str,1)
+      Kernel.warn mkmsg(prefix,title,1)
       Kernel.exit
+    end
+
+    def enclose
+      @@base+=1
+      yield
+    ensure
+      @@base-=1
     end
 
     # Private Method
     private
-    def mkmsg(text,color=7)
-      return unless text
+    def mkmsg(prefix,title,color=nil)
+      return unless title
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
-      ts << Msg.color("#{@ver_prefix}:",@ver_color)
-      ts << Msg.color(text.inspect,color)
+      ts << Msg.color("#{prefix}:",color||@ver_color)
+      ts << title.inspect
     end
 
     # VER= makes setenv "" to VER otherwise nil
     def condition(msg)
+      return unless msg
+      return unless ver?
       return true if /\*/ === ENV['VER']
       ENV['VER'].upcase.split(',').any?{|s|
         s.split(':').all?{|e|

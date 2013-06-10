@@ -51,13 +51,13 @@ module Hex
         else
           if val=@stat.get(key)
             str=get_elem(type,len,val)
-            verbose{"#{title}/#{type}(#{len}) = #{str}"}
+            verbose("HexView","#{title}/#{type}(#{len}) = #{str}")
           else
             str='*' * len
           end
           # str can exceed specified length
           str=str[0,len]
-          verbose{"add '#{str}' as #{key}"}
+          verbose("HexView",{"add '#{str}' as #{key}")
           @res[6] << str
         end
       }

@@ -23,8 +23,8 @@ module App
       frmcmd=[]
       @select.each{|e1|
         cmd=[]
-        verbose(1){"GetCmd(FDB):#{e1.first}"}
-        begin
+        verbose("AppItem","GetCmd(FDB):#{e1.first}")
+        enclose{
           e1.each{|e2| # //argv
             case e2
             when String
@@ -32,14 +32,13 @@ module App
             when Hash
               str=e2['val']
               str = e2['format'] % str if e2['format']
-              verbose{"Calculated [#{str}]"}
+              verbose("AppItem","Calculated [#{str}]")
               cmd << str
             end
           }
           frmcmd.push cmd
-        ensure
-          verbose(-1){"Exec(FDB):#{cmd}"}
-        end
+        }
+        verbose("AppItem","Exec(FDB):#{cmd}")
       }
       frmcmd
     end

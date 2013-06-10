@@ -25,29 +25,27 @@ module Frm
 
     def init_main(domain)
       hash=domain.to_h
-      begin
-        verbose(1){"INIT:Main Frame <-"}
+      verbose("Fdb","INIT:Main Frame <-")
+      enclose{
         frame=[]
         domain.each{|e1|
           frame << yield(e1)
         }
-        verbose{"InitMainFrame:#{frame}"}
+        verbose("Fdb","InitMainFrame:#{frame}")
         hash[:main]=frame
-      ensure
-        verbose(-1){"-> INIT:Main Frame"}
-      end
+      }
+      verbose("Fdb","-> INIT:Main Frame")
       domain.find('ccrange'){|e0|
-        begin
-          verbose(1){"INIT:Ceck Code Frame <-"}
+        verbose("Fdb","INIT:Ceck Code Frame <-")
+        enclose{
           frame=[]
           Repeat.new.each(e0){|e1,r1|
             frame << yield(e1,r1)
           }
-          verbose{"InitCCFrame:#{frame}"}
+          verbose("Fdb","InitCCFrame:#{frame}")
           hash[:ccrange]=frame
-        ensure
-          verbose(-1){"-> INIT:Ceck Code Frame"}
-        end
+        }
+        verbose("Fdb","-> INIT:Ceck Code Frame")
       }
       hash
     end
@@ -55,20 +53,19 @@ module Frm
     def init_sel(domain,select)
       selh=domain.to_h
       domain.find(select){|e0|
-        begin
-          verbose(1){"INIT:Select Frame <-"}
+        verbose("Fdb","INIT:Select Frame <-")
+        enclose{
           id=e0.attr2db(selh)
           (selh[:select]||={})[id]||=[]
-          verbose{"InitSelHash(#{id})"}
+          verbose("Fdb","InitSelHash(#{id})")
           Repeat.new.each(e0){|e1,r1|
             set_par(e1,id,selh) && next
             e=yield(e1,r1) || next
             selh[:select][id] << e
           }
-          verbose{"InitSelFrame(#{id})"}
-        ensure
-          verbose(-1){"-> INIT:Select Frame"}
-        end
+          verbose("Fdb","InitSelFrame(#{id})")
+        }
+        verbose("Fdb","-> INIT:Select Frame")
       }
       selh
     end
@@ -78,7 +75,7 @@ module Frm
       when 'char','string'
         attr=e.to_h
         attr['val']=rep.subst(attr['val']) if rep
-        verbose{"Data:[#{attr}]"}
+        verbose("Fdb","Data:[#{attr}]")
         attr
       else
         e.name
@@ -94,7 +91,7 @@ module Frm
           val[:select][id]=nil
           add_label(val,attr,id)
         end
-        verbose{"InitElement: #{attr}"}
+        verbose("Fdb","InitElement: #{attr}")
         attr
       when 'array'
         attr=e.to_h
@@ -125,7 +122,7 @@ module Frm
     def add_label(val,attr,id)
       if lv=attr['label']
         (val[:label]||={})[id]=lv
-        verbose{"LABEL:[#{id}] : #{lv}"}
+        verbose("Fdb","LABEL:[#{id}] : #{lv}")
       end
     end
   end

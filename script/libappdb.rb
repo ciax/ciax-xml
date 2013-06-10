@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libcircular"
 require "librepeat"
 require "libdb"
 

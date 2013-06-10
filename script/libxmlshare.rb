@@ -40,7 +40,7 @@ module Xml
         sym=str.to_sym
         db[sym]={} unless db.key?(sym)
         db[sym][key]=v
-        verbose{"ATTRDB:"+str.upcase+":[#{key}] : #{v}"}
+        verbose("XmlShare","ATTRDB:"+str.upcase+":[#{key}] : #{v}")
       }
       key
     end

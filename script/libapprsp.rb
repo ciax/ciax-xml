@@ -10,7 +10,6 @@ module App
     end
 
     def ext_rsp(field,sdb)
-      init_ver('AppRsp',2)
       @field=Msg.type?(field,Field::Var)
       @ads=sdb[:select]
       @fmt=sdb[:format]||{}
@@ -22,47 +21,48 @@ module App
 
     def upd
       @ads.each{|id,select|
-        verbose(1){"STAT:GetStatus:[#{id}]"}
-        flds=select[:fields]
-        data=case select['type']
-        when 'binary'
-          flds.inject(0){|sum,e|
-            (sum << 1)+binary(e)
-          }
-        when 'float'
-          flds.inject(0){|sum,e|
-            sum+float(e)
-          }
-        when 'integer'
-          flds.inject(0){|sum,e|
-            sum+int(e)
-          }
-        else
-          flds.inject(''){|sum,e|
-            sum+get_field(e)
-          }
-        end
-        begin
+        verbose("AppRsp","GetStatus:[#{id}]")
+        enclose{
+          flds=select[:fields]
+          data=case select['type']
+               when 'binary'
+                 flds.inject(0){|sum,e|
+              (sum << 1)+binary(e)
+            }
+               when 'float'
+                 flds.inject(0){|sum,e|
+              sum+float(e)
+            }
+               when 'integer'
+                 flds.inject(0){|sum,e|
+              sum+int(e)
+            }
+               else
+                 flds.inject(''){|sum,e|
+              sum+get_field(e)
+            }
+               end
           if @fml.key?(id)
             f=@fml[id].gsub(/\$#/,data.to_s)
             data=eval(f)
-            verbose{"Formula:#{f}(#{data})"}
+            verbose("AppRsp","Formula:#{f}(#{data})")
           end
           data = @fmt[id] % data if @fmt.key?(id)
           self['val'][id]=data.to_s
-        ensure
-          verbose(-1){"STAT:GetStatus:#{id}=[#{self['val'][id]}]"}
-        end
+        }
+        verbose("AppRsp","GetStatus:#{id}=[#{self['val'][id]}]")
       }
       self['time']=@field['time']
-      verbose{"Rsp/Update(#{self['time']})"}
+      verbose("AppRsp","Update(#{self['time']})")
       super
     end
 
     private
     def get_field(e)
       fld=e['ref'] || Msg.abort("No field Key")
-      @field.get(fld)||''
+      data=@field.get(fld)||''
+      verbose("AppRsp","GetFieldData[#{fld}]=[#{data}]")
+      data
     end
 
     def binary(e1)
@@ -70,7 +70,7 @@ module App
       loc=eval(e1['bit'])
       bit=(data.to_i >> loc & 1)
       bit = -(bit-1) if /true|1/ === e1['inv']
-      verbose{"GetBit[#{bit}]"}
+      verbose("AppRsp","GetBit[#{bit}]")
       bit
     end
 
@@ -89,6 +89,7 @@ module App
       data=data.to_f
       # Numerical Data
       data= -data if sign
+      verbose("AppRsp","GetFloat[#{data}]")
       data
     end
 
@@ -97,6 +98,7 @@ module App
       if /true|1/ === e1['signed']
         data= data > 0x7fff ? data - 0x10000 : data
       end
+      verbose("AppRsp","GetInteger[#{data}]")
       data
     end
   end

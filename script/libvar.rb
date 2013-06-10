@@ -29,7 +29,7 @@ class Var < ExHash # Including 'type'
   end
 
   def ext_save
-    extend(Save).init_ver('VarSave',12)
+    extend(Save)
     self
   end
 
@@ -48,10 +48,6 @@ class Var < ExHash # Including 'type'
     def upd # update after processing
       @upd_proc.each{|p| p.call(self)}
       self
-    end
-
-    def get(key)
-      self['val'][key]
     end
 
     def load(json_str=nil)
@@ -83,7 +79,6 @@ class Var < ExHash # Including 'type'
     end
 
     def ext_file(id)
-      init_ver('VarFile',12)
       self['id']=id||Msg.cfg_err("ID")
       @base=self['type']+'_'+self['id']+'.json'
       @prefix=VarDir
@@ -94,7 +89,7 @@ class Var < ExHash # Including 'type'
       name=fname(tag)
       json_str=''
       open(name){|f|
-        verbose{"Loading [#{@base}](#{f.size})"}
+        verbose("VarFile","Loading [#{@base}](#{f.size})",12)
         f.flock(::File::LOCK_SH) if File === f
         json_str=f.read
       }
@@ -158,14 +153,14 @@ class Var < ExHash # Including 'type'
       open(name,'w'){|f|
         f.flock(::File::LOCK_EX)
         f << (data ? JSON.dump(data) : to_j)
-        verbose{"[#{@base}](#{f.size}) is Saved"}
+        verbose("Var/Save","[#{@base}](#{f.size}) is Saved",12)
       }
       if tag
         # Making 'latest' tag link
         sname=fname('latest')
         ::File.unlink(sname) if ::File.symlink?(sname)
         ::File.symlink(name,sname)
-        verbose{"Symboliclink to [#{sname}]"}
+        verbose("Var/save","Symboliclink to [#{sname}]")
       end
       self
     end

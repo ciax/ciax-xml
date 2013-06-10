@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libcircular"
 require "librepeat"
 require "libdb"
 
@@ -16,7 +15,7 @@ module Mcr
       mdb=(hash[:command]||={})
       doc.top.each{|e0|
         id=e0.attr2db(mdb)
-        verbose{"MACRO:[#{id}]"}
+        verbose("Mdb","MACRO:[#{id}]")
         select=((mdb[:select]||={})[id]||=[])
         final={}
         e0.each{|e1,rep|
@@ -33,7 +32,7 @@ module Mcr
             attr['cmd']=getcmd(e1)
               attr.delete('name')
             select << attr
-            verbose{"COMMAND:[#{e1['name']}]"}
+            verbose("Mdb","COMMAND:[#{e1['name']}]")
           when 'mcr'
             cmd=attr['cmd']=getcmd(e1)
             attr['label']=mdb[:label][cmd.first]

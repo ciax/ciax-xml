@@ -39,7 +39,7 @@ module Frm
 
   class ExtItem < ExtItem
     def initialize(field,db,id,def_proc)
-      init_ver('FrmCmd',9)
+      @ver_color=0
       @field=Msg.type?(field,Field::Var)
       super(db,id,def_proc)
       cdb=db[:command]
@@ -56,11 +56,10 @@ module Frm
 
     def getframe # return = response select
       return unless @sel[:select]=@select
-      #    verbose{"Attr of Command:#{self}"}
       cmd=self[:cmd]
-      verbose{"Select:#{self[:label]}(#{cmd})"}
+      verbose("FrmItem","Select:#{self[:label]}(#{cmd})")
       if frame=@cache[cmd]
-        verbose{"Cmd cache found [#{cmd}]"}
+        verbose("FrmItem","Cmd cache found [#{cmd}]")
       else
         nocache=mk_frame(:select)
         if @sel.key?(:ccrange)

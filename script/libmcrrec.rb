@@ -97,7 +97,7 @@ module Mcr
           inv=cond['inv']=h['inv']
           cmp=cond['cmp']=h['val']
           act=stat['msg'][var]||stat['val'][var]
-          verbose{"site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},act=#{act}"}
+          verbose("McrStep","site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},act=#{act}")
           next unless act
           cond['act']=act
           cond['res']=match?(act,cmp,cond['inv'])

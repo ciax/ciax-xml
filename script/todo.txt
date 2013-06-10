@@ -17,6 +17,7 @@ mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
 
 ***UPDATE
+xml: //command/select will be separated
 app: watch layer will be separated as "Event" including interlock and skip
 mcr: macro log
 mcr: attach/detach w/o location param (cmdstr subst by tag)

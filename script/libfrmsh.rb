@@ -93,7 +93,7 @@ module Frm
       }
       ext_server(fdb['port'].to_i)
     rescue Errno::ENOENT
-      warning(" --- no json file")
+      warning("FrmSv"," --- no json file")
     end
   end
 

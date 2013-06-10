@@ -188,7 +188,7 @@ module App
             @item=@cobj.setcmd(['upd'])
             sendcmd(2)
           rescue InvalidID
-            warning($!)
+            warning("AppSv",$!)
           end
           verbose("AppSv","Auto Update(#{@stat['time']})")
           sleep int

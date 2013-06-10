@@ -50,9 +50,9 @@ module Field
         vname << i
         verbose("Field","Type[#{h.class}] Name[#{i}]")
         verbose("Field","Content[#{h[i]}]")
-        h[i] || warning("No such Value [#{vname.join(':')}] in 'val'")
+        h[i] || warning("Field","No such Value [#{vname.join(':')}] in 'val'")
       }
-      warning("Short Index [#{vname.join(':')}]") unless Comparable === data
+      warning("Field","Short Index [#{vname.join(':')}]") unless Comparable === data
       verbose("Field","Get[#{key}]=[#{data}]")
       data
     end
@@ -93,7 +93,7 @@ module Field
         if self['val'].key?(k)
           hash[k]=get(k)
         else
-          warning("No such Key [#{k}]")
+          warning("Field/Save","No such Key [#{k}]")
         end
       }
       if hash.empty?

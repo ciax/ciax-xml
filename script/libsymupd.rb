@@ -25,7 +25,7 @@ module Sym
       super # Status#upd
       @symbol.each{|key,sid|
         unless tbl=@sdb[sid.to_sym]
-          warning("Table[#{sid}] not exist")
+          warning("Symbol","Table[#{sid}] not exist")
           next
         end
         verbose("Symbol","ID=#{key},table=#{sid}")

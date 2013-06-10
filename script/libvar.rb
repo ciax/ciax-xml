@@ -94,7 +94,7 @@ class Var < ExHash # Including 'type'
         json_str=f.read
       }
       if json_str.empty?
-        warning(" -- json file (#{@base}) is empty")
+        warning("VarFile"" -- json file (#{@base}) is empty")
       else
         super(json_str)
       end
@@ -103,7 +103,7 @@ class Var < ExHash # Including 'type'
       if tag
         Msg.par_err("No such Tag","Tag=#{taglist}")
       else
-        warning("  -- no json file (#{@base})")
+        warning("VarFile","  -- no json file (#{@base})")
       end
       self
     end
@@ -137,7 +137,7 @@ class Var < ExHash # Including 'type'
     def load(tag=nil)
       super
     rescue OpenURI::HTTPError
-      warning("  -- no url file (#{fname})")
+      warning("VarUrl","  -- no url file (#{fname})")
       self
     end
   end

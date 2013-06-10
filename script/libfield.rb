@@ -33,7 +33,7 @@ module Field
     # - ${key:idx1:idx2} => hash[key][idx1][idx2]
     def get(key)
       verbose("Field","Getting[#{key}]")
-      Msg.abort("No Key") unless key
+      Msg.abort("Nill Key") unless key
       return self['val'][key] if self['val'].key?(key)
       vname=[]
       data=key.split(':').inject(self['val']){|h,i|

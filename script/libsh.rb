@@ -86,6 +86,9 @@ module Sh
       Readline.completion_proc=proc{|word|
         @cobj.valid_keys.grep(/^#{word}/)
       }
+      shg=@cobj['lo'].add_dummy('sh',"Shell Command")
+      shg.add_item('^D,q',"Quit")
+      shg.add_item('^C',"Interrupt")
       self
     end
 

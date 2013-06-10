@@ -42,10 +42,7 @@ class Command < ExHash
     @int=sv.add_group('hid',"Hidden Group").add_item('interrupt')
     sv.add_group('int','Internal Commands')
     # Local(Long Jump) Commands (local handling commands on Client)
-    lo=self['lo']=Domain.new(9)
-    shg=lo.add_dummy('sh',"Shell Command")
-    shg.add_item('^D,q',"Quit")
-    shg.add_item('^C',"Interrupt")
+    self['lo']=Domain.new(9)
   end
 
   def setcmd(cmd)

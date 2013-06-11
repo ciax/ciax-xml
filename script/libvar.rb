@@ -94,7 +94,7 @@ class Var < ExHash # Including 'type'
         json_str=f.read
       }
       if json_str.empty?
-        warning("VarFile"" -- json file (#{@base}) is empty")
+        warning("VarFile"," -- json file (#{@base}) is empty")
       else
         super(json_str)
       end

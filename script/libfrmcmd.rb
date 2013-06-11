@@ -104,9 +104,9 @@ if __FILE__ == $0
   begin
     fdb=Frm::Db.new.set(dev)
     field=Field::Var.new
-    cobj=Frm::Command.new(fdb,field)
+    cgrp=Frm::Command.new(fdb,field)['sv']['ext']
     field.load unless STDIN.tty?
-    print cobj.setcmd(cmd).getframe
+    print cgrp.setcmd(cmd).getframe
   rescue InvalidCMD
     Msg.usage("[dev] [cmd] (par) < field_file",[])
   rescue InvalidID

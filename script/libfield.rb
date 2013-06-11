@@ -52,7 +52,10 @@ module Field
         verbose("Field","Content[#{h[i]}]")
         h[i] || warning("Field","No such Value [#{vname.join(':')}] in 'val'")
       }
-      warning("Field","Short Index [#{vname.join(':')}]") unless Comparable === data
+      unless Comparable === data
+        warning("Field","Short Index [#{vname.join(':')}]")
+        data=nil
+      end
       verbose("Field","Get[#{key}]=[#{data}]")
       data
     end

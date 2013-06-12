@@ -1,8 +1,22 @@
-========================== Issue =============================
+====================== Issue Test-environment ======================
 ***For CIAX-CSV
 det,cr?,cc?: configure hexsv
 
-***DEBUG
+***DEBUG(Test Environment)
+crt:get_tbl doesn't work 13/6/12
+client status doesn't update (inssh -ec) 13/6/12
+
+***UPDATE(Refactoring)
+fdb: rename command&status /select to /code
+adb: rename command&status /select to /source
+var: rename 'val' to 'data'
+var: module upd gets into Var
+var: rename Var to Data with new name space
+all: set entire name space (CIAX?)
+xml: (fdb,adb)//command/select will be separated
+
+======================= Issue On-site ========================
+***DEBUG(On-site)
 watch: no command issued by auto(reset at dsi command end) (12/9/27)
 crt:cart jack level error in oldmcr(12/1/31)
 dso:jack bolt stack after interrupt(12/8/15)
@@ -10,15 +24,7 @@ dts:joff,roff,rstop/ no responding(12/3/12)
 dts:need rotate drive on to resume ^D stop(12/3/12)
 crt: Lost current position after running(5/24/13)
 
-
-***REQUEST
-mcr-old:need interlock for dso/dsi manual or auto
-mcr-old:interlock error log
-mcr-old:remove door open interlock(11/2)
-
-***UPDATE
-xml: //command/select will be separated
-app: watch layer will be separated as "Event" including interlock and skip
+***NEW FUNCTION
 mcr: macro log
 mcr: attach/detach w/o location param (cmdstr subst by tag)
 mcr: update site status at startup or retry
@@ -36,7 +42,12 @@ tsc-table: need update tool
 lantronix control by PC at port1
 sql: easy log finder(date -> data)
 
-***CHECK AT SITE
+***Request
+mcr-old:need interlock for dso/dsi manual or auto
+mcr-old:interlock error log
+mcr-old:remove door open interlock(11/2)
+
+*** Need CHECK AT SITE
 verify on motion: adb-oss
 verify: oss jack num corresponding
 verify: stop with ^C
@@ -47,6 +58,7 @@ dts:jack stop test(12/4/26)
 field data initialize: give up/response needs param for array range (mel/get_tbl), need to get possible param from command domain
 aso:need reset function for executing flag
 sql: using sqlite for symboling, labeling as cache
+app: watch layer will be separated as "Event" including interlock and skip
 
 ***SOLVED
 debug:error "no such command 'exe'" in dsi

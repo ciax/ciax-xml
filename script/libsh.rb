@@ -158,7 +158,6 @@ module Sh
     end
 
     def ext_client(host,port)
-      init_ver(6,self)
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)

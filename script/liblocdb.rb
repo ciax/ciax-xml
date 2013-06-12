@@ -36,10 +36,10 @@ module Loc
       (hash||={}).update(e0.to_h)
       e0.each{|e|
         key=e.name.to_sym
-        if key == :field
-          (hash[:assign]||={})[e['assign']]=e.text
+        if e.text
+          hash[e['id']]=e.text
+          verbose("LocDb","Override [#{e['id']}]=[#{e.text}]")
         else
-          hash['val']=e.text if e.text
           rec_db(e,hash[key]||={})
         end
       }

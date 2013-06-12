@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://ciax.sum.naoj.org/ciax-xml/ldb" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema" xmlns:ldb="http://ciax.sum.naoj.org/ciax-xml/ldb" xmlns:ldbf="http://ciax.sum.naoj.org/ciax-xml/ldbf" xmlns:idbc="http://ciax.sum.naoj.org/ciax-xml/idbc" xmlns:idbs="http://ciax.sum.naoj.org/ciax-xml/idbs">
   <xsd:import schemaLocation="ldbf.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/ldbf" />
   <xsd:import schemaLocation="idbc.xsd" namespace="http://ciax.sum.naoj.org/ciax-xml/idbc" />
@@ -43,7 +43,7 @@
   <xsd:element name="frm">
     <xsd:complexType>
       <xsd:sequence minOccurs="0">
-        <xsd:element ref="ldbf:rspframe" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="ldbf:field" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>
       <xsd:attribute name="ref" type="xsd:NCName" />
       <xsd:attribute name="type" type="xsd:NCName" />

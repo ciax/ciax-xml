@@ -5,7 +5,7 @@ require 'json'
 # Should be extend (not include)
 class Logging
   include Msg::Ver
-  def initialize(type,id,ver=0,&p)
+  def initialize(type,id,ver=0)
     @ver_color=6
     @type=Msg.type?(type,String)
     Msg.type?(id,String)
@@ -13,16 +13,14 @@ class Logging
     @header={'time' => UnixTime.now,'id' => id,'ver' => ver}
     @loghead=VarDir+"/"+type+"_#{id}"
     verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
-    @proc=p
     self
   end
 
   # Return UnixTime
-  # append() uses @proc(Hash) generated data
-  def append
+  def append(data)
     time=@header['time']=UnixTime.now
     unless ENV.key?('NOLOG')
-      str=JSON.dump(@header.merge(@proc.call))
+      str=JSON.dump(@header.merge(data))
       open(logfile,'a') {|f|
         f.puts str
       }

@@ -148,10 +148,10 @@ module App
     end
 
     def ext_logging(id,ver=0)
-      logging=Logging.new('issue',id,ver){
-        {'cmd'=>@item[:cmd],'active'=>@watch['active']}
+      logging=Logging.new('issue',id,ver)
+      @log_proc.add{
+        logging.append({'cmd'=>@item[:cmd],'active'=>@watch['active']})
       }
-      @log_proc.add{logging.append}
       self
     end
 

@@ -41,10 +41,8 @@ module Hex
         ash.stat.load
       }
       if logging
-        logging=Logging.new('hex',self['id'],@adb['version']){
-          {'hex' => @output.to_s}
-        }
-        @log_proc.add{logging.append}
+        logging=Logging.new('hex',self['id'],@adb['version'])
+        @log_proc.add{logging.append({'hex' => @output.to_s})}
       end
       ext_server(@adb['port'].to_i+1000)
     end

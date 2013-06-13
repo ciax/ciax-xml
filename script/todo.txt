@@ -3,8 +3,6 @@
 det,cr?,cc?: configure hexsv
 
 ***DEBUG(Test Environment)
-crt:get_tbl doesn't work 13/6/12
-client status doesn't update (inssh -ec) 13/6/12
 
 ***UPDATE(Refactoring)
 want to remove @item in App::Sh -> Logging#append() needs param instead of setting proc 
@@ -147,3 +145,5 @@ crt:cart charging status is '4'(12/2/16) - hexpack bug
 dts:need more time to detect motion after moving command issue(12/3/12)
 mcr: batch mode w/showing progress
 list: applist,frmlit-> share db -> inslist
+crt:get_tbl doesn't work 13/6/12
+client status doesn't update (inssh -ec) 13/6/12

@@ -163,19 +163,19 @@ module Msg
       Msg.type?(str,String) << 'd'
       optdb={}
       #Layer
+      optdb['a']='app layer (default)'
       optdb['f']='frm layer'
-      optdb['a']='app layer'
       optdb['x']='hex layer'
       #Client option
       optdb['c']='client'
       optdb['h']='client for [host]'
       #Comm to devices
+      optdb['t']='test mode (default)'
       optdb['e']='execution mode'
       optdb['s']='simulation mode'
-      optdb['t']='test mode'
       #For appearance
+      optdb['v']='visual output (default)'
       optdb['r']='raw data output'
-      optdb['v']='visual output'
       #For debug
       optdb['d']='debug mode'
       optdb.update(db)

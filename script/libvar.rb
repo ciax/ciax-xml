@@ -85,16 +85,16 @@ class Var < ExHash # Including 'type'
       self
     end
 
-    def load(tag=nil)
+    def load(tag=nil,pfx="VarFile")
       name=fname(tag)
       json_str=''
       open(name){|f|
-        verbose("VarFile","Loading [#{@base}](#{f.size})",12)
+        verbose(pfx,"Loading [#{@base}](#{f.size})",12)
         f.flock(::File::LOCK_SH) if File === f
         json_str=f.read
       }
       if json_str.empty?
-        warning("VarFile"," -- json file (#{@base}) is empty")
+        warning(pfx," -- json file (#{@base}) is empty")
       else
         super(json_str)
       end
@@ -103,7 +103,7 @@ class Var < ExHash # Including 'type'
       if tag
         Msg.par_err("No such Tag","Tag=#{taglist}")
       else
-        warning("VarFile","  -- no json file (#{@base})")
+        warning(pfx,"  -- no json file (#{@base})")
       end
       self
     end
@@ -123,6 +123,7 @@ class Var < ExHash # Including 'type'
 
   module Url
     require "open-uri"
+    @@vpfx="VarUrl"
     # @< base,prefix
     def self.extended(obj)
       Msg.type?(obj,File)
@@ -131,11 +132,12 @@ class Var < ExHash # Including 'type'
     def ext_url(host)
       host||='localhost'
       @prefix="http://"+host
+      verbose(@@vpfx,"Initialize")
       self
     end
 
     def load(tag=nil)
-      super
+      super(tag,"VarUrl")
     rescue OpenURI::HTTPError
       warning("VarUrl","  -- no url file (#{fname})")
       self

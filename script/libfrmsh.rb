@@ -24,7 +24,7 @@ module Frm
     # @ field*
     attr_reader :field
     def initialize(fdb)
-      Msg.type?(fdb,Frm::Db)
+      Msg.type?(fdb,Db)
       self['layer']='frm'
       self['id']=fdb['site_id']
       @field=Field::Var.new.ext_file(fdb['site_id']).load

@@ -21,7 +21,7 @@ module Frm
 
     private
     def extgrp(fdb)
-      self['sv']['ext']=ExtGrp.new(fdb,@field)
+      ExtGrp.new(fdb,@field)
     end
   end
 
@@ -104,7 +104,8 @@ if __FILE__ == $0
   begin
     fdb=Frm::Db.new.set(dev)
     field=Field::Var.new
-    cgrp=Frm::Command.new(fdb,field)['sv']['ext']
+    cobj=Frm::Command.new(fdb,field)
+    cgrp=cobj['sv']['ext']
     field.load unless STDIN.tty?
     print cgrp.setcmd(cmd).getframe
   rescue InvalidCMD

@@ -9,6 +9,7 @@ client status doesn't update (inssh -ec) 13/6/12
 ***UPDATE(Refactoring)
 fdb: rename command&status /select to /code
 adb: rename command&status /select to /source
+var: integrate 'load' and 'upd'
 var: rename 'val' to 'data'
 var: module upd gets into Var
 var: rename Var to Data with new name space

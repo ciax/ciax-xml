@@ -20,6 +20,7 @@ module Sh
       @cobj=Msg.type?(cobj,Command)
       @upd_proc=UpdProc.new # Proc for Server Status Update
       @item=nil
+      @ver_color=6
       Thread.abort_on_exception=true
     end
 

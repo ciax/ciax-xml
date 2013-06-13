@@ -127,8 +127,8 @@ module App
       @buf=init_buf
       @cobj['sv']['ext'].def_proc=proc{|item|
         @watch.block?(item.cmd)
+        verbose("AppSv","#{self['id']}/Issue:#{item.cmd}")
         sendcmd(1)
-        verbose("AppSv","#{self['id']}/Issued:#{item.cmd},")
         self['msg']="Issued"
       }
       # Update for Frm level manipulation
@@ -157,6 +157,7 @@ module App
 
     private
     def sendcmd(p)
+      verbose("AppSv","#{self['id']}/Issue2:#{@item.cmd}")
       @buf.send(p)
       @log_proc.upd
       self
@@ -164,9 +165,17 @@ module App
 
     def init_buf
       buf=Buffer.new(self)
-      buf.send_proc{@item.getcmd}
-      buf.recv_proc{|fcmd|@fsh.exe(fcmd)}
+      buf.send_proc{
+        cmds=@item.getcmd
+        verbose("AppSv","Send FrmCmds #{cmds}")
+        cmds
+      }
+      buf.recv_proc{|fcmd|
+        verbose("AppSv","Processing #{fcmd}")
+        @fsh.exe(fcmd)
+      }
       buf.flush_proc.add{
+        verbose("AppSv","Flushed FrmCmds")
         @stat.upd.save
         @watch.save
         sleep(@watch['interval']||0.1)

@@ -82,6 +82,7 @@ class Command < ExHash
       @def_proc=Proc.new{}
       @grplist=[]
       @color=color
+      @ver_color=2
     end
 
     def update(h)
@@ -138,6 +139,7 @@ class Command < ExHash
       @valid_keys=[]
       @cmdlist=Msg::CmdList.new(@attr,@valid_keys)
       @def_proc=Msg.type?(def_proc,Proc)
+      @ver_color=3
     end
 
     def add_item(id,title)
@@ -202,9 +204,11 @@ class Command < ExHash
       @par=[]
       @cmd=[]
       @def_proc=Msg.type?(def_proc,Proc)
+      @ver_color=5
     end
 
     def exe
+      verbose(self.class,"Execute #{@cmd}")
       @def_proc.call(self)
       self
     end
@@ -213,7 +217,7 @@ class Command < ExHash
       @par=validate(Msg.type?(par,Array))
       @cmd=[@id,*par]
       self[:cmd]=@cmd.join(':') # Used by macro
-      verbose("CmdItem","SetPAR: #{par}")
+      verbose(self.class,"SetPAR(#{@id}): #{par}")
       self
     end
 

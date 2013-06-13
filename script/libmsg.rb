@@ -162,6 +162,11 @@ module Msg
       require 'optparse'
       Msg.type?(str,String) << 'd'
       optdb={}
+      #Layer
+      optdb['f']='frm layer'
+      optdb['a']='app layer'
+      optdb['x']='hex layer'
+      #Client option
       optdb['c']='client'
       optdb['h']='client for [host]'
       #Comm to devices

@@ -31,14 +31,15 @@ class Buffer
   end
 
   def send_proc
-    @send_proc=proc{yield}
+    @send_proc=proc{|item| yield item}
     self
   end
 
   # Send bunch of frmcmd array (ary of ary)
-  def send(n=1)
+  def send(n=1,item)
+    Msg.type?(item,Command::Item)
     clear if n == 0
-    inp=@send_proc.call
+    inp=@send_proc.call(item)
     #inp is frmcmd array (ary of ary)
     unless inp.empty?
       @svst['isu']=true

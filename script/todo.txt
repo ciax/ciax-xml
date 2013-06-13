@@ -17,6 +17,9 @@ var: upd includes saving if extended by Save
 all: set entire name space (CIAX?)
 xml: (fdb,adb)//command/select will be separated
 
+***Test
+watch:event driven test(issued or not)
+
 ======================= Issue On-site ========================
 ***DEBUG(On-site)
 watch: no command issued by auto(reset at dsi command end) (12/9/27)

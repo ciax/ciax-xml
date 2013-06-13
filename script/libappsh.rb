@@ -122,13 +122,13 @@ module App
       @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
         verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")
         @item=@cobj.setcmd(cmd)
-        sendcmd(p)
+        sendcmd(p,@item)
       }
       @buf=init_buf
       @cobj['sv']['ext'].def_proc=proc{|item|
         @watch.block?(item.cmd)
         verbose("AppSv","#{self['id']}/Issue:#{item.cmd}")
-        sendcmd(1)
+        sendcmd(1,item)
         self['msg']="Issued"
       }
       # Update for Frm level manipulation
@@ -156,17 +156,17 @@ module App
     end
 
     private
-    def sendcmd(p)
-      verbose("AppSv","#{self['id']}/Issue2:#{@item.cmd}")
-      @buf.send(p)
+    def sendcmd(p,item)
+      verbose("AppSv","#{self['id']}/Issue2:#{item.cmd}")
+      @buf.send(p,item)
       @log_proc.upd
       self
     end
 
     def init_buf
       buf=Buffer.new(self)
-      buf.send_proc{
-        cmds=@item.getcmd
+      buf.send_proc{|item|
+        cmds=item.getcmd
         verbose("AppSv","Send FrmCmds #{cmds}")
         cmds
       }
@@ -195,7 +195,7 @@ module App
         loop{
           begin
             @item=@cobj.setcmd(['upd'])
-            sendcmd(2)
+            sendcmd(2,@item)
           rescue InvalidID
             warning("AppSv",$!)
           end

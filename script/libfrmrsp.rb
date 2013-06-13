@@ -30,7 +30,7 @@ module Frm
     # Block accepts [frame,time]
     # Result : executed block or not
     def upd(item)
-      @item=Msg.type?(item,Command::Item)
+      @current_item=Msg.type?(item,Command::Item)
       if rid=item[:response]
         @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
         hash=yield
@@ -100,7 +100,7 @@ module Frm
           akey=e0['assign'] || Msg.cfg_err("No key for Array")
           # Insert range depends on command param
           idxs=e0[:index].map{|e1|
-            @item.subst(e1['range'])
+            @current_item.subst(e1['range'])
           }
           verbose("FrmRsp","Array:[#{akey}]:Range#{idxs}")
           enclose{

@@ -4,7 +4,7 @@ require 'libmsg'
 module CIAX
   module Xml
     module Share
-      include Msg::Ver
+      include Msg
       # Common with LIBXML,REXML
       def to_s
         @e.to_s
@@ -28,7 +28,7 @@ module CIAX
 
       def attr2db(db,id='id')
         # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
-        Msg.type?(db,Hash)
+        type?(db,Hash)
         attr={}
         to_h.each{|k,v|
           if defined?(yield)
@@ -49,7 +49,7 @@ module CIAX
 
       def add_item(db,id='id')
         # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
-        Msg.type?(db,Hash)
+        type?(db,Hash)
         attr={}
         to_h.each{|k,v|
           if defined?(yield)

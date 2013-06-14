@@ -68,8 +68,8 @@ module CIAX
       end
 
       def ext_upd(adb,stat)
-        @wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => {}}
-        @stat=Msg.type?(stat,Status::Var)
+        @wdb=type?(adb,App::Db)[:watch] || {:stat => {}}
+        @stat=type?(stat,Status::Var)
         @val=@stat['val']
         @upd_proc=[]
         self['period']=@wdb['period'].to_i if @wdb.key?('period')
@@ -157,8 +157,8 @@ module CIAX
     # For Client
     class View < ExHash
       def initialize(adb,watch)
-        wdb=Msg.type?(adb,App::Db)[:watch] || {:stat => []}
-        @watch=Msg.type?(watch,Var)
+        wdb=type?(adb,App::Db)[:watch] || {:stat => []}
+        @watch=type?(watch,Var)
         ['exec','block','int','astart','alast'].each{|i|
           self[i]=@watch[i]
         }
@@ -245,7 +245,7 @@ module CIAX
 
     list={}
     list['t']='test conditions[key=val,..]'
-    Msg::GetOpts.new('rt:',list)
+    GetOpts.new('rt:',list)
     id=ARGV.shift
     begin
       adb=Loc::Db.new.set(id)[:app]

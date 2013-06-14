@@ -3,7 +3,7 @@ require 'libmsg'
 
 module CIAX
   class Repeat
-    include Msg::Ver
+    include Msg
     def initialize
       @ver_color=5
       @counter={}

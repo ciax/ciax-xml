@@ -35,7 +35,7 @@ module CIAX
         end
       else
         verbose("#@type/Cache","Refresh Db")
-        res=Msg.type?(yield(Xml::Doc.new(@type,group)),Hash)
+        res=type?(yield(Xml::Doc.new(@type,group)),Hash)
         open(fmar,'w') {|f|
           f << Marshal.dump(res)
           verbose("#@type/Cache","Saved(#{@base})")
@@ -45,7 +45,7 @@ module CIAX
     end
 
     def cover(db,key=nil,depth=nil)
-      Msg.type?(db,Db)
+      type?(db,Db)
       if key
         self[key]=db.deep_copy.deep_update(self[key]||{},depth)
       else

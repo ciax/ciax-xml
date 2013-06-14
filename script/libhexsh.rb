@@ -7,7 +7,7 @@ require "libappsh"
 module CIAX
   module Hex
     def self.new(ash)
-      Msg.type?(ash,App::Exe)
+      type?(ash,App::Exe)
       if ['e','s','h','c'].any?{|i| $opt[i]}
         hsh=Hex::Sv.new(ash,$opt['e'])
       else
@@ -18,7 +18,7 @@ module CIAX
 
     class Exe < Sh::Exe
       def initialize(adb)
-        @adb=Msg.type?(adb,Db)
+        @adb=type?(adb,Db)
         self['layer']='hex'
         self['id']=@adb['site_id']
         cobj=App::Command.new(adb)
@@ -73,7 +73,7 @@ module CIAX
 
   if __FILE__ == $0
     ENV['VER']||='init/'
-    Msg::GetOpts.new('ct')
+    GetOpts.new('ct')
     begin
       puts Hex::List.new[ARGV.shift].shell
     rescue InvalidID

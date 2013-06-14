@@ -9,8 +9,8 @@ module CIAX
     class Exe < Sh::Exe
       attr_reader :record,:valid_keys
       def initialize(mitem,il,&mcr_proc)
-        @mitem=Msg.type?(mitem,Item)
-        @il=Msg.type?(il,Ins::Layer)
+        @mitem=type?(mitem,Item)
+        @il=type?(il,Ins::Layer)
         @record=Record.new(@mitem.cmd,@mitem[:label])
         @record.extend(Prt) unless $opt['r']
         self['layer']='mcr'
@@ -20,7 +20,7 @@ module CIAX
       end
 
       def start(valid_keys=[]) # separated for sub thread
-        @valid_keys=Msg.type?(valid_keys,Array)
+        @valid_keys=type?(valid_keys,Array)
         self['stat']='run'
         puts @record if Msg.fg?
         macro(@mitem)
@@ -95,8 +95,8 @@ module CIAX
 
     class Query
       def initialize(step,sh)
-        @step=Msg.type?(step,Step)
-        @sh=Msg.type?(sh,Exe)
+        @step=type?(step,Step)
+        @sh=type?(sh,Exe)
       end
 
       def exec?
@@ -157,7 +157,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    Msg::GetOpts.new('rest',{'n' => 'nonstop mode'})
+    GetOpts.new('rest',{'n' => 'nonstop mode'})
     begin
       il=Ins::Layer.new('app')
       mdb=Mcr::Db.new.set('ciax')

@@ -18,12 +18,12 @@ module CIAX
 
   class ExtGrp < Group
     def initialize(db)
-      @db=Msg.type?(db,Db)
+      @db=type?(db,Db)
       super('color' => '6','caption' => "External Commands")
       @cmdary=[]
       cdb=db[:command]
       (cdb[:group]||{'main'=>@attr}).each{|gid,gat|
-        subgrp=Msg::CmdList.new(gat,@valid_keys)
+        subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:select].keys).each{|id|
           subgrp[id]=cdb[:label][id]
           self[id]=extitem(id)
@@ -47,7 +47,7 @@ module CIAX
     include Math
     attr_reader :select
     def initialize(db,id,def_proc)
-      Msg.type?(db,Db)
+      type?(db,Db)
       super(id,def_proc)
       # because cdb is separated by title
       db[:command].each{|k,v|

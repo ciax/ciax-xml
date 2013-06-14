@@ -59,7 +59,7 @@ module CIAX
 
       # Update with str (key=val,key=val,..)
       def str_update(str)
-        Msg.type?(str,String)
+        type?(str,String)
         str.split(',').each{|i|
           k,v=i.split('=')
           self['val'][k]=v

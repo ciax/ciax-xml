@@ -3,7 +3,7 @@ require 'libmsg'
 
 module CIAX
   class Frame
-    include Msg::Ver
+    include Msg
     def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
       @ver_color=6
       @endian=endian

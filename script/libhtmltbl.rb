@@ -4,7 +4,7 @@ require 'libmsg'
 module CIAX
   class HtmlTbl < Array
     def initialize(adb)
-      sdb=Msg.type?(adb,App::Db)[:status]
+      sdb=type?(adb,App::Db)[:status]
       @label = sdb[:label]
       push "<div class=\"outline\">"
       push "<div class=\"title\">#{adb['label']}</div>"

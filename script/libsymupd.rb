@@ -12,7 +12,7 @@ module CIAX
       end
 
       def ext_upd(db)
-        Msg.type?(db,App::Db)
+        type?(db,App::Db)
         ads=db[:status]
         self['ver']=db['version'].to_i
         @symbol=ads[:symbol]||{}
@@ -61,7 +61,7 @@ module CIAX
 
   if __FILE__ == $0
     require "liblocdb"
-    Msg::GetOpts.new
+    GetOpts.new
     id=ARGV.shift
     begin
       adb=Loc::Db.new.set(id)[:app]

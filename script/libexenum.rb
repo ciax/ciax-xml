@@ -4,7 +4,7 @@ require 'json'
 #Extened Hash
 module CIAX
   module ExEnum
-    include Msg::Ver
+    include Msg
     def to_s
       Msg.view_struct(self)
     end

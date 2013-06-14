@@ -5,11 +5,11 @@ require 'json'
 # Should be extend (not include)
 module CIAX
   class Logging
-    include Msg::Ver
+    include Msg
     def initialize(type,id,ver=0)
       @ver_color=6
-      @type=Msg.type?(type,String)
-      Msg.type?(id,String)
+      @type=type?(type,String)
+      type?(id,String)
       ver=ver.to_i
       @header={'time' => UnixTime.now,'id' => id,'ver' => ver}
       @loghead=VarDir+"/"+type+"_#{id}"

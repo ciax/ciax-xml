@@ -5,11 +5,10 @@ require "libupdate"
 
 module CIAX
   class Stream < ExHash
-    include Msg::Ver
     def initialize(iocmd,wait=0,timeout=nil)
       @ver_color=1
       Msg.abort(" No IO command") if iocmd.to_a.empty?
-      @iocmd=Msg.type?(iocmd,Array)
+      @iocmd=type?(iocmd,Array)
       verbose("Stream","Init/Client:#{iocmd.join(' ')}")
       @f=IO.popen(@iocmd,'r+')
       @wait=wait.to_f

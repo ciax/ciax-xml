@@ -8,7 +8,7 @@ module CIAX
   module Frm
     class Command < ExtCmd
       def initialize(fdb,field=Field::Var.new)
-        @field=Msg.type?(field,Field::Var)
+        @field=type?(field,Field::Var)
         super(fdb)
         any={:type =>'reg',:list => ["."]}
         ig=self['sv']['int']
@@ -28,7 +28,7 @@ module CIAX
 
     class ExtGrp < ExtGrp
       def initialize(db,field=Field::Var.new)
-        @field=Msg.type?(field,Field::Var)
+        @field=type?(field,Field::Var)
         super(db)
       end
 
@@ -41,7 +41,7 @@ module CIAX
     class ExtItem < ExtItem
       def initialize(field,db,id,def_proc)
         @ver_color=0
-        @field=Msg.type?(field,Field::Var)
+        @field=type?(field,Field::Var)
         super(db,id,def_proc)
         cdb=db[:command]
         @cache={}

@@ -24,7 +24,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    Msg::GetOpts.new('faxet')
+    GetOpts.new('faxet')
     puts Ins::Layer.new(ARGV.shift).shell
   end
 end

@@ -72,8 +72,8 @@ module CIAX
 
     class View < ExHash
       def initialize(adb,stat)
-        @sdb=Msg.type?(adb,App::Db)[:status]
-        @stat=Msg.type?(stat,Var)
+        @sdb=type?(adb,App::Db)[:status]
+        @stat=type?(stat,Var)
         ['val','class','msg'].each{|key|
           stat[key]||={}
         }
@@ -141,7 +141,7 @@ module CIAX
 
   if __FILE__ == $0
     require "liblocdb"
-    Msg::GetOpts.new('vh:')
+    GetOpts.new('vh:')
     id=ARGV.shift
     host=ARGV.shift
     stat=Status::Var.new

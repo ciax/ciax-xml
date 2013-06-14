@@ -33,10 +33,10 @@ module CIAX
 
     class Step < ExHash
       def initialize(db,base,depth=0,p)
-        @stat_proc=Msg.type?(p,Proc)
+        @stat_proc=type?(p,Proc)
         self['time']=Msg.elps_sec(base)
         self['depth']=depth
-        update(Msg.type?(db,Hash))
+        update(type?(db,Hash))
         @condition=delete('stat')
       end
 

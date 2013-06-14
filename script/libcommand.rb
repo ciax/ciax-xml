@@ -12,7 +12,7 @@ require 'libupdate'
 #  Item#def_proc -> Proc
 #
 # Group => {id => Item}
-#  Group#list -> Msg::CmdList.to_s
+#  Group#list -> CmdList.to_s
 #  Group#add_item(id,title){|id,par|} -> Item
 #  Group#update_items(list){|id|}
 #  Group#valid_keys -> Array
@@ -49,7 +49,7 @@ module CIAX
     end
 
     def setcmd(cmd)
-      Msg.type?(cmd,Array)
+      type?(cmd,Array)
       id,*par=cmd
       dom=domain_with_item(id) || raise(InvalidCMD,list)
       dom.setcmd(cmd)
@@ -60,7 +60,7 @@ module CIAX
     end
 
     def int_proc=(p)
-      self['sv']['hid']['interrupt'].def_proc=Msg.type?(p,Proc)
+      self['sv']['hid']['interrupt'].def_proc=type?(p,Proc)
     end
 
     def domain_with_item(id)
@@ -90,7 +90,7 @@ module CIAX
     end
 
     def update(h)
-      h.values.each{|v| @grplist.unshift Msg.type?(v,Group)}
+      h.values.each{|v| @grplist.unshift type?(v,Group)}
       super
     end
 
@@ -110,7 +110,7 @@ module CIAX
     end
 
     def def_proc=(dp)
-      @def_proc=Msg.type?(dp,Proc)
+      @def_proc=type?(dp,Proc)
       values.each{|v|
         v.def_proc=dp
       }
@@ -118,7 +118,7 @@ module CIAX
     end
 
     def setcmd(cmd)
-      Msg.type?(cmd,Array)
+      type?(cmd,Array)
       id,*par=cmd
       grp=group_with_item(id) || raise(InvalidCMD,list)
       grp.setcmd(cmd)
@@ -139,10 +139,10 @@ module CIAX
     attr_reader :valid_keys,:cmdlist,:def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=Proc.new{})
-      @attr=Msg.type?(attr,Hash)
+      @attr=type?(attr,Hash)
       @valid_keys=[]
-      @cmdlist=Msg::CmdList.new(@attr,@valid_keys)
-      @def_proc=Msg.type?(def_proc,Proc)
+      @cmdlist=CmdList.new(@attr,@valid_keys)
+      @def_proc=type?(def_proc,Proc)
       @ver_color=3
     end
 
@@ -159,7 +159,7 @@ module CIAX
     end
 
     def setcmd(cmd)
-      Msg.type?(cmd,Array)
+      type?(cmd,Array)
       id,*par=cmd
       key?(id) || raise(InvalidCMD,list)
       @valid_keys.include?(id) || raise(InvalidCMD,list)
@@ -191,7 +191,7 @@ module CIAX
     end
 
     def def_proc=(dp)
-      @def_proc=Msg.type?(dp,Proc)
+      @def_proc=type?(dp,Proc)
       values.each{|v|
         v.def_proc=dp
       }
@@ -207,7 +207,7 @@ module CIAX
       @id=id
       @par=[]
       @cmd=[]
-      @def_proc=Msg.type?(def_proc,Proc)
+      @def_proc=type?(def_proc,Proc)
       @ver_color=5
     end
 
@@ -218,7 +218,7 @@ module CIAX
     end
 
     def set_par(par)
-      @par=validate(Msg.type?(par,Array))
+      @par=validate(type?(par,Array))
       @cmd=[@id,*par]
       self[:cmd]=@cmd.join(':') # Used by macro
       verbose(self.class,"SetPAR(#{@id}): #{par}")
@@ -228,7 +228,7 @@ module CIAX
     private
     # Parameter structure {:type,:val}
     def validate(pary)
-      pary=Msg.type?(pary.dup,Array)
+      pary=type?(pary.dup,Array)
       return pary unless self[:parameter]
       self[:parameter].map{|par|
         disp=par[:list].join(',')

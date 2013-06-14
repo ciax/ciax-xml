@@ -11,7 +11,7 @@ module CIAX
       end
 
       def ext_rsp(field,sdb)
-        @field=Msg.type?(field,Field::Var)
+        @field=type?(field,Field::Var)
         @ads=sdb[:select]
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}

@@ -25,7 +25,7 @@ module CIAX
       # @ field*
       attr_reader :field
       def initialize(fdb)
-        Msg.type?(fdb,Db)
+        type?(fdb,Db)
         self['layer']='frm'
         self['id']=fdb['site_id']
         @field=Field::Var.new.ext_file(fdb['site_id']).load
@@ -56,7 +56,7 @@ module CIAX
     class Cl < Exe
       def initialize(fdb,host=nil)
         super(fdb)
-        host=Msg.type?(host||fdb['host']||'localhost',String)
+        host=type?(host||fdb['host']||'localhost',String)
         @field.ext_url(host).load
         @cobj['sv'].def_proc=proc{to_s}
         ext_client(host,fdb['port'])
@@ -72,7 +72,7 @@ module CIAX
         super(fdb)
         @field.ext_save.load
         @field.ext_rsp(fdb)
-        if Msg.type?(iocmd,Array).empty?
+        if type?(iocmd,Array).empty?
           @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
           @io.ext_logging(fdb['site_id'],fdb['version'])
           # @field.ext_sqlog
@@ -112,7 +112,7 @@ module CIAX
 
   if __FILE__ == $0
     ENV['VER']||='init/'
-    Msg::GetOpts.new('cet')
+    GetOpts.new('cet')
     begin
       puts Frm::List.new(ARGV.shift).shell
     rescue InvalidID

@@ -18,7 +18,7 @@ module CIAX
       attr_reader :upd_proc,:cobj,:item,:output
       # block gives command line convert
       def initialize(cobj)
-        @cobj=Msg.type?(cobj,Command)
+        @cobj=type?(cobj,Command)
         @upd_proc=UpdProc.new # Proc for Server Status Update
         @item=nil
         @ver_color=6
@@ -184,10 +184,10 @@ module CIAX
       end
     end
 
-    class Prompt < Hash
+    class Prompt < ExHash
       def initialize(stat,db={})
-        @stat=Msg.type?(stat,Hash)
-        update Msg.type?(db,Hash)
+        @stat=type?(stat,Hash)
+        update type?(db,Hash)
         @prefix="#{stat['layer']}:#{stat['id']}"
       end
 
@@ -212,7 +212,7 @@ module CIAX
       # shdom: Domain for Shared Command Groups
       attr_accessor :shdom,:current
       def initialize(current=nil)
-        $opt||=Msg::GetOpts.new
+        $opt||=GetOpts.new
         @shdom=Domain.new(5)
         @current=current||""
       end
@@ -236,7 +236,7 @@ module CIAX
       # shdom: Domain for Shared Command Groups
       attr_accessor :swsgrp
       def initialize(list,current=nil)
-        Msg.type?(list,Msg::CmdList)
+        type?(list,CmdList)
         super(current)
         @swsgrp=@shdom.add_group('sws','Switch Sites')
         @swsgrp.update_items(list).def_proc=proc{|item|
@@ -269,7 +269,7 @@ module CIAX
       end
     end
 
-    class Layer < Hash
+    class Layer < ExHash
       def initialize(current=nil)
         @current=current
         @shdom=Domain.new(5)

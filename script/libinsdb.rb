@@ -54,7 +54,7 @@ module CIAX
 
   if __FILE__ == $0
     begin
-      Msg::GetOpts.new("",{"f"=>"frm mode"})
+      GetOpts.new("",{"f"=>"frm mode"})
       id=ARGV.shift
       db=Ins::Db.new.set(id)
     rescue InvalidID

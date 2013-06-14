@@ -37,171 +37,170 @@ module CIAX
     end
   end
 
-  module Msg
-    # Should be extended in module/class
-    module Ver
-      attr_accessor :ver_color
-      Start_time=Time.now
-      @@base=1
-      # Public Method
-      def verbose(prefix,title,color=nil)
-        # block takes array (shown by each line)
-        # Description of values
-        #   [val] -> taken from  xml (criteria)
-        #   <val> -> taken from status (incoming)
-        #   (val) -> calcurated from status
-        @ver_indent=@@base
-        msg=mkmsg(prefix,title,color)
-        Kernel.warn msg if msg && condition(msg)
-        self
-      end
-
-      def ver?
-        !ENV['VER'].to_s.empty?
-      end
-
-      def warning(prefix,title)
-        @ver_indent=@@base
-        Kernel.warn mkmsg(prefix,title,3)
-        self
-      end
-
-      def fatal(prefix,title)
-        @ver_indent=@@base
-        Kernel.warn mkmsg(prefix,title,1)
-        Kernel.exit
-      end
-
-      def enclose
-        @@base+=1
-        yield
-      ensure
-        @@base-=1
-      end
-
-      # Private Method
-      private
-      def mkmsg(prefix,title,color=nil)
-        return unless title
-        pass=sprintf("%5.4f",Time.now-Start_time)
-        ts= STDERR.tty? ? '' : "[#{pass}]"
-        tc=Thread.current
-        ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
-        ts << Msg.color("#{prefix}:",color||@ver_color)
-        ts << title.inspect
-      end
-
-      # VER= makes setenv "" to VER otherwise nil
-      def condition(msg)
-        return unless msg
-        return unless ver?
-        return true if /\*/ === ENV['VER']
-        ENV['VER'].upcase.split(',').any?{|s|
-          s.split(':').all?{|e|
-            msg.upcase.include?(e)
-          }
-        }
-      end
+  # Global option
+  class GetOpts < Hash
+#    include Msg
+    def initialize(str='',db={})
+      require 'optparse'
+      Msg.type?(str,String) << 'd'
+      optdb={}
+      #Layer
+      optdb['a']='app layer (default)'
+      optdb['f']='frm layer'
+      optdb['x']='hex layer'
+      #Client option
+      optdb['c']='client'
+      optdb['h']='client for [host]'
+      #Comm to devices
+      optdb['t']='test mode (default)'
+      optdb['e']='execution mode'
+      optdb['s']='simulation mode'
+      #For appearance
+      optdb['v']='visual output (default)'
+      optdb['r']='raw data output'
+      #For debug
+      optdb['d']='debug mode'
+      optdb.update(db)
+      db.keys.each{|k|
+        str << k unless str.include?(k)
+      }
+      @list=str.split('').map{|c|
+        optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
+      }.compact
+      update(ARGV.getopts(str))
+      require 'debug' if self['d']
+      $opt=self
     end
 
-    # Hash of title
-    class CmdList < Hash
-      def initialize(attr,select=[])
-        Msg.type?(attr,Hash)
-        caption=attr["caption"]
-        color=(attr["color"]||6).to_i
-        @col=(attr["column"]||1).to_i
-        @caption='==== '+Msg.color(caption,color)+' ====' if caption
-        @show_all=attr["show_all"]
-        @select=Msg.type?(select,Array)
-      end
+    def usage(str)
+      Msg.usage(str,@list)
+    end
+  end
 
-      def []=(k,v)
-        @select << k
-        super
-      end
-
-      def update(h)
-        @select+=h.keys
-        super
-      end
-
-      # Reset @select
-      def reset!
-        @select.replace keys
-        self
-      end
-
-      # For ver 1.9 or more
-      def sort!
-        @select.sort!
-        self
-      end
-
-      def to_s
-        page=[@caption]
-        (@select & keys).each_slice(@col){|a|
-          l=a.map{|key|
-            Msg.item(key,self[key]) if self[key]
-          }.compact
-          page << l.join("\t") unless l.empty?
-        }
-        if @show_all || page.size > 1
-          page.compact.join("\n")
-        else
-          ''
-        end
-      end
-
-      def error
-        raise InvalidCMD,to_s
-      end
+  # Hash of title
+  class CmdList < Hash
+    def initialize(attr,select=[])
+      Msg.type?(attr,Hash)
+      @select=Msg.type?(select,Array)
+      caption=attr["caption"]
+      color=(attr["color"]||6).to_i
+      @col=(attr["column"]||1).to_i
+      @caption='==== '+Msg.color(caption,color)+' ====' if caption
+      @show_all=attr["show_all"]
     end
 
-    # Global option
-    class GetOpts < Hash
-      def initialize(str='',db={})
-        require 'optparse'
-        Msg.type?(str,String) << 'd'
-        optdb={}
-        #Layer
-        optdb['a']='app layer (default)'
-        optdb['f']='frm layer'
-        optdb['x']='hex layer'
-        #Client option
-        optdb['c']='client'
-        optdb['h']='client for [host]'
-        #Comm to devices
-        optdb['t']='test mode (default)'
-        optdb['e']='execution mode'
-        optdb['s']='simulation mode'
-        #For appearance
-        optdb['v']='visual output (default)'
-        optdb['r']='raw data output'
-        #For debug
-        optdb['d']='debug mode'
-        optdb.update(db)
-        db.keys.each{|k|
-          str << k unless str.include?(k)
-        }
-        @list=str.split('').map{|c|
-          optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
+    def []=(k,v)
+      @select << k
+      super
+    end
+
+    def update(h)
+      @select+=h.keys
+      super
+    end
+
+    # Reset @select
+    def reset!
+      @select.replace keys
+      self
+    end
+
+    # For ver 1.9 or more
+    def sort!
+      @select.sort!
+      self
+    end
+
+    def to_s
+      page=[@caption]
+      (@select & keys).each_slice(@col){|a|
+        l=a.map{|key|
+          Msg.item(key,self[key]) if self[key]
         }.compact
-        update(ARGV.getopts(str))
-        require 'debug' if self['d']
-        $opt=self
-      end
-
-      def usage(str)
-        Msg.usage(str,@list)
+        page << l.join("\t") unless l.empty?
+      }
+      if @show_all || page.size > 1
+        page.compact.join("\n")
+      else
+        ''
       end
     end
 
+    def error
+      raise InvalidCMD,to_s
+    end
+  end
+
+  # Should be extended in module/class
+  module Msg
+    attr_accessor :ver_color
+    Start_time=Time.now
+    @@base=1
+    # Public Method
+    def verbose(prefix,title,color=nil)
+      # block takes array (shown by each line)
+      # Description of values
+      #   [val] -> taken from  xml (criteria)
+      #   <val> -> taken from status (incoming)
+      #   (val) -> calcurated from status
+      @ver_indent=@@base
+      msg=mkmsg(prefix,title,color)
+      Kernel.warn msg if msg && condition(msg)
+      self
+    end
+
+    def ver?
+      !ENV['VER'].to_s.empty?
+    end
+
+    def warning(prefix,title)
+      @ver_indent=@@base
+      Kernel.warn mkmsg(prefix,title,3)
+      self
+    end
+
+    def fatal(prefix,title)
+      @ver_indent=@@base
+      Kernel.warn mkmsg(prefix,title,1)
+      Kernel.exit
+    end
+
+    def enclose
+      @@base+=1
+      yield
+    ensure
+      @@base-=1
+    end
+
+    # Private Method
+    private
+    def mkmsg(prefix,title,c=nil)
+      return unless title
+      pass=sprintf("%5.4f",Time.now-Start_time)
+      ts= STDERR.tty? ? '' : "[#{pass}]"
+      tc=Thread.current
+      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
+      ts << Msg.color("#{prefix}:",c||@ver_color)
+      ts << title.inspect
+    end
+
+    # VER= makes setenv "" to VER otherwise nil
+    def condition(msg)
+      return unless msg
+      return unless ver?
+      return true if /\*/ === ENV['VER']
+      ENV['VER'].upcase.split(',').any?{|s|
+        s.split(':').all?{|e|
+          msg.upcase.include?(e)
+        }
+      }
+    end
     ### Class method ###
+
     module_function
     # Messaging methods
     def progress(f=true)
-      p=Msg.color(f ? '.' : 'x',1)
+      p=color(f ? '.' : 'x',1)
       $stderr.print p
     end
 

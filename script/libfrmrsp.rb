@@ -18,7 +18,7 @@ module CIAX
       # Item is needed which includes response_id and cmd_parameters
       def ext_rsp(db)
         @ver_color=6
-        @db=Msg.type?(db,Db)
+        @db=type?(db,Db)
         self['ver']=db['version'].to_i
         @sel=Hash[db[:rspframe]]
         @fds=db[:response][:select]
@@ -31,7 +31,7 @@ module CIAX
       # Block accepts [frame,time]
       # Result : executed block or not
       def upd(item)
-        @current_item=Msg.type?(item,Item)
+        @current_item=type?(item,Item)
         if rid=item[:response]
           @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
           hash=yield
@@ -148,7 +148,7 @@ module CIAX
   if __FILE__ == $0
     require "liblocdb"
     require "libfrmcmd"
-    Msg::GetOpts.new("",{'m' => 'merge file','l' => 'get from logline'})
+    GetOpts.new("",{'m' => 'merge file','l' => 'get from logline'})
     if $opt['l']
       $opt.usage("-l < logline") if STDIN.tty?
       str=gets(nil) || exit

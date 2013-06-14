@@ -3,7 +3,7 @@ require "libmcrsh"
 
 module CIAX
   module Mcr
-    class Stat < Hash
+    class Stat < ExHash
       def initialize
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
       end
@@ -26,7 +26,7 @@ module CIAX
 
     class Man < Sh::Exe
       def initialize(cobj,id,total='0')
-        cobj=Msg.type?(cobj,ExtCmd)
+        cobj=type?(cobj,ExtCmd)
         update({'layer'=>'mcr','id'=>id,'total'=>total})
         super(cobj)
         stat=Stat.new
@@ -38,7 +38,7 @@ module CIAX
     class List < Sh::List
       attr_reader :total
       def initialize(mdb,il)
-        @il=Msg.type?(il,Ins::Layer)
+        @il=type?(il,Ins::Layer)
         @mobj=ExtCmd.new(mdb)
         super('0')
         @total='0'
@@ -70,7 +70,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    Msg::GetOpts.new
+    GetOpts.new
     begin
       il=Ins::Layer.new
       mdb=Mcr::Db.new.set('ciax')

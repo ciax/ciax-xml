@@ -17,11 +17,11 @@ require "libupdate"
 #  (stack if Queue is empty)
 module CIAX
   class Buffer
-    include Msg::Ver
+    include Msg
     attr_reader :flush_proc
     # svst: Server Status
     def initialize(svst=[])
-      @svst=Msg.type?(svst,Hash)
+      @svst=type?(svst,Hash)
       #element of @q is bunch of frmcmds corresponding an appcmd
       @q=Queue.new
       @tid=nil
@@ -37,7 +37,7 @@ module CIAX
 
     # Send bunch of frmcmd array (ary of ary)
     def send(n=1,item)
-      Msg.type?(item,Item)
+      type?(item,Item)
       clear if n == 0
       inp=@send_proc.call(item)
       #inp is frmcmd array (ary of ary)

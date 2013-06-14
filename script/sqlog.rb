@@ -8,7 +8,7 @@ require "libsqlog"
 require 'liblogging'
 
 include CIAX
-Msg::GetOpts.new("t",{"v"=>"verbose"})
+GetOpts.new("t",{"v"=>"verbose"})
 begin
   raise(InvalidID,'') if STDIN.tty? && ARGV.size < 1
   ldb=Loc::Db.new

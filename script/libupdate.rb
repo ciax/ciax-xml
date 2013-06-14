@@ -3,7 +3,7 @@ require "libmsg"
 
 module CIAX
   class UpdProc < Array
-    include Msg::Ver
+    include Msg
 
     def add(&p)
       push(p)

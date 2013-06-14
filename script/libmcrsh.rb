@@ -9,7 +9,7 @@ module CIAX
       attr_reader :prompt,:th
       def initialize(mitem,il,&mcr_proc)
         super(mitem,il,&mcr_proc)
-        @il=Msg.type?(il,Ins::Layer)
+        @il=type?(il,Ins::Layer)
         @cobj=Command.new
         @upd_proc=UpdProc.new
         prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
@@ -34,7 +34,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    Msg::GetOpts.new('rest',{'n' => 'nonstop mode'})
+    GetOpts.new('rest',{'n' => 'nonstop mode'})
     begin
       il=Ins::Layer.new('app')
       mdb=Mcr::Db.new.set('ciax')

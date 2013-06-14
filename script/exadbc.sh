@@ -10,8 +10,8 @@ show(){
         list $id|while read cmd; do
             echo "$C3$cmd$C0"
             $appcmd $id $cmd 1 1
+            read -t 0 && return
         done
-        read -t 0 && break
     done
 }
 out=`mktemp`

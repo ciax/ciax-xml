@@ -29,7 +29,7 @@ module CIAX
       # @ adb,fsh,watch,stat*
       attr_reader :adb,:stat
       def initialize(adb)
-        @adb=Msg.type?(adb,Db)
+        @adb=type?(adb,Db)
         self['layer']='app'
         self['id']=@adb['site_id']
         cobj=Command.new(adb)
@@ -99,7 +99,7 @@ module CIAX
     class Cl < Exe
       def initialize(adb,host=nil)
         super(adb)
-        host=Msg.type?(host||adb['host']||'localhost',String)
+        host=type?(host||adb['host']||'localhost',String)
         @stat.ext_url(host).load
         @watch.ext_url(host).load
         ext_client(host,adb['port'])
@@ -116,7 +116,7 @@ module CIAX
     class Sv < Exe
       def initialize(adb,fsh,logging=nil)
         super(adb)
-        @fsh=Msg.type?(fsh,Frm::Exe)
+        @fsh=type?(fsh,Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_save.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).upd
         @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
@@ -230,7 +230,7 @@ module CIAX
 
   if __FILE__ == $0
     ENV['VER']||='init/'
-    Msg::GetOpts.new('cet')
+    GetOpts.new('cet')
     begin
       puts App::List.new(ARGV.shift).shell
     rescue InvalidID

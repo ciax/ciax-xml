@@ -1,16 +1,18 @@
 #!/usr/bin/ruby
 require "libmsg"
 
-class UpdProc < Array
-  include Msg::Ver
+module CIAX
+  class UpdProc < Array
+    include Msg::Ver
 
-  def add(&p)
-    push(p)
-  end
+    def add(&p)
+      push(p)
+    end
 
-  def upd
-    map{|p|
-      p.call
-    }
+    def upd
+      map{|p|
+        p.call
+      }
+    end
   end
 end

@@ -6,74 +6,78 @@ require 'liblogging'
 require 'libupdate'
 
 #Access method
-#Command < Hash
-# Command::Item => {:label,:parameter,:select,:cmd}
-#  Command::Item#set_par(par)
-#  Command::Item#def_proc -> Proc
 #
-# Command::Group => {id => Command::Item}
-#  Command::Group#list -> Msg::CmdList.to_s
-#  Command::Group#add_item(id,title){|id,par|} -> Command::Item
-#  Command::Group#update_items(list){|id|}
-#  Command::Group#valid_keys -> Array
-#  Command::Group#def_proc -> Proc
+# Item => {:label,:parameter,:select,:cmd}
+#  Item#set_par(par)
+#  Item#def_proc -> Proc
 #
-# Command::Domain => {id => Command::Group}
-#  Command::Domain#list -> String
-#  Command::Domain#add_group(key,title) -> Command::Group
-#  Command::Domain#def_proc -> Proc
-#  Command::Domain#item(id) -> Command::Item
+# Group => {id => Item}
+#  Group#list -> Msg::CmdList.to_s
+#  Group#add_item(id,title){|id,par|} -> Item
+#  Group#update_items(list){|id|}
+#  Group#valid_keys -> Array
+#  Group#def_proc -> Proc
 #
-# Command#new(db) => {id => Command::Domain}
+# Domain => {id => Group}
+#  Domain#list -> String
+#  Domain#add_group(key,title) -> Group
+#  Domain#def_proc -> Proc
+#  Domain#item(id) -> Item
+#
+#
+# Command => {id => Domain}
 #  Command#list -> String
-#  Command#current -> Command::Item
+#  Command#current -> Item
 #  Command#setcmd(cmd=[id,*par]):{
-#    Command::Item#set_par(par)
-#    Command#current -> Command::Item
-#  } -> Command::Item
+#    Item#set_par(par)
+#    Command#current -> Item
+#  } -> Item
 # Keep current command and parameters
-class Command < ExHash
-  # CDB: mandatory (:select)
-  # optional (:label,:parameter)
-  # optionalfrm (:nocache,:response)
-  def initialize
-    # Server Commands (service commands on Server)
-    sv=self['sv']=Domain.new(2)
-    @int=sv.add_group('hid',"Hidden Group").add_item('interrupt')
-    sv.add_group('int','Internal Commands')
-    # Local(Long Jump) Commands (local handling commands on Client)
-    self['lo']=Domain.new(9)
-  end
 
-  def setcmd(cmd)
-    Msg.type?(cmd,Array)
-    id,*par=cmd
-    dom=domain_with_item(id) || raise(InvalidCMD,list)
-    dom.setcmd(cmd)
-  end
+module CIAX
+  class Command < ExHash
+    # CDB: mandatory (:select)
+    # optional (:label,:parameter)
+    # optionalfrm (:nocache,:response)
+    def initialize
+      # Server Commands (service commands on Server)
+      sv=self['sv']=Domain.new(2)
+      @int=sv.add_group('hid',"Hidden Group").add_item('interrupt')
+      sv.add_group('int','Internal Commands')
+      # Local(Long Jump) Commands (local handling commands on Client)
+      self['lo']=Domain.new(9)
+    end
 
-  def list
-    values.map{|dom| dom.list}.grep(/./).join("\n")
-  end
+    def setcmd(cmd)
+      Msg.type?(cmd,Array)
+      id,*par=cmd
+      dom=domain_with_item(id) || raise(InvalidCMD,list)
+      dom.setcmd(cmd)
+    end
 
-  def int_proc=(p)
-    self['sv']['hid']['interrupt'].def_proc=Msg.type?(p,Proc)
-  end
+    def list
+      values.map{|dom| dom.list}.grep(/./).join("\n")
+    end
 
-  def domain_with_item(id)
-    values.any?{|dom|
-      return dom if dom.group_with_item(id)
-    }
-  end
+    def int_proc=(p)
+      self['sv']['hid']['interrupt'].def_proc=Msg.type?(p,Proc)
+    end
 
-  def valid_keys
-    res=[]
-    values.each{|dom|
-      dom.values.each{|grp|
-        res+=grp.valid_keys
+    def domain_with_item(id)
+      values.any?{|dom|
+        return dom if dom.group_with_item(id)
       }
-    }
-    res
+    end
+
+    def valid_keys
+      res=[]
+      values.each{|dom|
+        dom.values.each{|grp|
+          res+=grp.valid_keys
+        }
+      }
+      res
+    end
   end
 
   class Domain < ExHash

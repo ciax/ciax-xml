@@ -2,9 +2,9 @@
 require 'libcommand'
 require 'librerange'
 
-# For External Command Domain
-module CmdExt
-  class Command < Command
+module CIAX
+  # For External Command Domain
+  class ExtCmd < Command
     def initialize(db)
       super()
       self['sv']['ext']=extgrp(db)
@@ -16,7 +16,7 @@ module CmdExt
     end
   end
 
-  class ExtGrp < Command::Group
+  class ExtGrp < Group
     def initialize(db)
       @db=Msg.type?(db,Db)
       super('color' => '6','caption' => "External Commands")
@@ -43,7 +43,7 @@ module CmdExt
     end
   end
 
-  class ExtItem < Command::Item
+  class ExtItem < Item
     include Math
     attr_reader :select
     def initialize(db,id,def_proc)

@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libmsg"
 require "json"
 def get(h,idx)
   return h if idx.empty?

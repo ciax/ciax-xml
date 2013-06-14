@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 # For stream log version 6 or later
-require "libmsg"
 require "json"
 
 abort "Usage: jlogv json_log" if STDIN.tty? && ARGV.size < 1

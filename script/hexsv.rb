@@ -2,5 +2,5 @@
 require "libhexsh"
 
 ENV['VER']||='init/'
-Msg::GetOpts.new('e')
-Hex::List.new.server(ARGV)
+CIAX::Msg::GetOpts.new('e')
+CIAX::Hex::List.new.server(ARGV)

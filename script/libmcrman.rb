@@ -69,8 +69,9 @@ module Mcr
 end
 
 if __FILE__ == $0
+  Msg::GetOpts.new
   begin
-    il=Ins::Layer.new('mcr')
+    il=Ins::Layer.new
     mdb=Mcr::Db.new.set('ciax')
     man=Mcr::List.new(mdb,il)
     man.shell

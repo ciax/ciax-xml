@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libfield"
 require "libframe"
-require "libcmdext"
+require "libextcmd"
 
 # Cmd Methods
 module CIAX

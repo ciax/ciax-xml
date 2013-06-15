@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libcmdext"
+require "libextcmd"
 
 module CIAX
   module App

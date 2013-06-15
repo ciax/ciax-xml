@@ -2,7 +2,7 @@
 require "libmsg"
 require "socket"
 require "readline"
-require "libcmdext"
+require "libextcmd"
 require "libupdate"
 
 # Provide Server,Client and Shell

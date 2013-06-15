@@ -32,7 +32,7 @@ module CIAX
         @adb=type?(adb,Db)
         self['layer']='app'
         self['id']=@adb['site_id']
-        cobj=Command.new(adb)
+        cobj=ExtCmd.new(adb)
         @stat=Status::Var.new.ext_file(@adb['site_id'])
         plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
         prom=Sh::Prompt.new(self,plist)

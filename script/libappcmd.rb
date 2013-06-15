@@ -4,7 +4,7 @@ require "libcmdext"
 
 module CIAX
   module App
-    class Command < ExtCmd
+    class ExtCmd < ExtCmd
       def extgrp(db)
         ExtGrp.new(db)
       end
@@ -53,8 +53,8 @@ module CIAX
     begin
       adb=App::Db.new.set(app)
       fdb=Frm::Db.new.set(adb['frm_id'])
-      fcobj=Frm::Command.new(fdb)
-      acobj=App::Command.new(adb)
+      fcobj=Frm::ExtCmd.new(fdb)
+      acobj=App::ExtCmd.new(adb)
       acobj.setcmd(cmd).getcmd.each{|fcmd|
         #Validate frmcmds
         fcobj.setcmd(fcmd) if /set|unset|load|save/ !~ fcmd.first

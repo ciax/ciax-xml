@@ -6,7 +6,7 @@ require "libcmdext"
 # Cmd Methods
 module CIAX
   module Frm
-    class Command < ExtCmd
+    class ExtCmd < ExtCmd
       def initialize(fdb,field=Field::Var.new)
         @field=type?(field,Field::Var)
         super(fdb)
@@ -105,7 +105,7 @@ module CIAX
     begin
       fdb=Frm::Db.new.set(dev)
       field=Field::Var.new
-      cobj=Frm::Command.new(fdb,field)
+      cobj=Frm::ExtCmd.new(fdb,field)
       cgrp=cobj['sv']['ext']
       field.load unless STDIN.tty?
       print cgrp.setcmd(cmd).getframe

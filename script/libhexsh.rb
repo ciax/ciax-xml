@@ -21,7 +21,7 @@ module CIAX
         @adb=type?(adb,Db)
         self['layer']='hex'
         self['id']=@adb['site_id']
-        cobj=App::Command.new(adb)
+        cobj=App::ExtCmd.new(adb)
         super(cobj)
         stat=Status::Var.new.ext_file(@adb['site_id'])
         prom=Sh::Prompt.new(self)

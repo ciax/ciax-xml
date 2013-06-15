@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libvar"
+require "libdata"
 require "libstatus"
 require "libcommand"
 require "libmcrprt"

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libupdate'
-require 'libvar'
+require 'libdata'
 
 module CIAX
   module Field

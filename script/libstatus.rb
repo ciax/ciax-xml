@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libvar"
+require "libdata"
 
 module CIAX
   module Status

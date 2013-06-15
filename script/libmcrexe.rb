@@ -94,6 +94,7 @@ module CIAX
     end
 
     class Query
+      include Msg
       def initialize(step,sh)
         @step=type?(step,Step)
         @sh=type?(sh,Exe)

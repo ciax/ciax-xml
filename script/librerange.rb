@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 module CIAX
   class ReRange
+    include Msg
     include Comparable
     # Range format (limit) "X","X:",":X","X<","<X"
     # Range format (between) "X:Y","X<Y","X<:Y","X:<Y"

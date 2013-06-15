@@ -28,7 +28,7 @@ module CIAX
         type?(fdb,Db)
         self['layer']='frm'
         self['id']=fdb['site_id']
-        @field=Field::Var.new.ext_file(fdb['site_id']).load
+        @field=Field::Data.new.ext_file(fdb['site_id']).load
         cobj=ExtCmd.new(fdb,@field)
         prom=Sh::Prompt.new(self)
         super(cobj)

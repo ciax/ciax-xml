@@ -5,10 +5,10 @@ require "libmsg"
 # Generate SQL command string
 module CIAX
   module SqLog
-    module Var
+    module Data
       # @ log,tid
       def self.extended(obj)
-        Msg.type?(obj,Var)
+        Msg.type?(obj,Data)
       end
 
       def ext_sqlog(ver=nil)
@@ -82,7 +82,7 @@ module CIAX
       # @< log,tid
       # @ sqlcmd
       def self.extended(obj)
-        Msg.type?(obj,Var)
+        Msg.type?(obj,Data)
       end
 
       def ext_exec
@@ -124,9 +124,9 @@ module CIAX
   end
 
   require "libstatus"
-  class Var
+  class Data
     def ext_sqlog(ver=nil)
-      extend(SqLog::Var).ext_sqlog(ver)
+      extend(SqLog::Data).ext_sqlog(ver)
     end
   end
 
@@ -136,7 +136,7 @@ module CIAX
     ARGV.clear
     begin
       adb=Loc::Db.new.set(id)[:app]
-      stat=Status::Var.new.ext_file(adb['site_id']).load
+      stat=Status::Data.new.ext_file(adb['site_id']).load
       stat.ext_sqlog.create.upd
       puts stat.sql
     rescue InvalidID

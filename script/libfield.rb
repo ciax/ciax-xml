@@ -4,7 +4,7 @@ require 'libvar'
 
 module CIAX
   module Field
-    class Var < Var
+    class Data < Data
       def initialize
         @ver_color=6
         super('field')
@@ -113,7 +113,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    f=Field::Var.new
+    f=Field::Data.new
     puts f.update({"a"=>[["0"],"1"]})
     if s=ARGV.shift
       k,v=s.split('=')

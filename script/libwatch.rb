@@ -5,7 +5,7 @@ require 'librerange'
 
 module CIAX
   module Watch
-    class Var < Var
+    class Data < Data
       # @ event_proc*
       attr_accessor :event_proc
 
@@ -60,16 +60,16 @@ module CIAX
     end
 
     module Upd
-      include Var::Upd
+      include Data::Upd
       # @< (event_proc*)
       # @ wdb,val
       def self.extended(obj)
-        Msg.type?(obj,Var)
+        Msg.type?(obj,Data)
       end
 
       def ext_upd(adb,stat)
         @wdb=type?(adb,App::Db)[:watch] || {:stat => {}}
-        @stat=type?(stat,Status::Var)
+        @stat=type?(stat,Status::Data)
         @val=@stat['val']
         @upd_proc=[]
         self['period']=@wdb['period'].to_i if @wdb.key?('period')
@@ -158,7 +158,7 @@ module CIAX
     class View < ExHash
       def initialize(adb,watch)
         wdb=type?(adb,App::Db)[:watch] || {:stat => []}
-        @watch=type?(watch,Var)
+        @watch=type?(watch,Data)
         ['exec','block','int','astart','alast'].each{|i|
           self[i]=@watch[i]
         }
@@ -252,8 +252,8 @@ module CIAX
     rescue InvalidID
       $opt.usage("(opt) [id]")
     end
-    stat=Status::Var.new.ext_file(adb['site_id']).load
-    watch=Watch::Var.new.ext_file(adb['site_id']).ext_upd(adb,stat).upd
+    stat=Status::Data.new.ext_file(adb['site_id']).load
+    watch=Watch::Data.new.ext_file(adb['site_id']).ext_upd(adb,stat).upd
     wview=Watch::View.new(adb,watch)
     unless $opt['r']
       wview.ext_prt

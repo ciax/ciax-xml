@@ -7,11 +7,11 @@ module CIAX
     module Rsp
       # @< (base),(prefix)
       def self.extended(obj)
-        Msg.type?(obj,Status::Var,Var::File)
+        Msg.type?(obj,Status::Data,Data::File)
       end
 
       def ext_rsp(field,sdb)
-        @field=type?(field,Field::Var)
+        @field=type?(field,Field::Data)
         @ads=sdb[:select]
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}
@@ -105,7 +105,7 @@ module CIAX
     end
   end
 
-  class Status::Var
+  class Status::Data
     def ext_rsp(field,sdb)
       extend(App::Rsp).ext_rsp(field,sdb)
     end
@@ -116,9 +116,9 @@ module CIAX
     require "libfield"
     require "libstatus"
     Msg.usage "< field_file" if STDIN.tty?
-    field=Field::Var.new.load
+    field=Field::Data.new.load
     adb=Loc::Db.new.set(field['id'])[:app]
-    stat=Status::Var.new.ext_file(adb['site_id']).ext_save
+    stat=Status::Data.new.ext_file(adb['site_id']).ext_save
     puts stat.ext_rsp(field,adb[:status]).upd
     stat.save
     exit

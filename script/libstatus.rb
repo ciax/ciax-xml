@@ -4,7 +4,7 @@ require "libvar"
 
 module CIAX
   module Status
-    class Var < Var
+    class Data < Data
       # @ last*
       attr_reader :last
       def initialize
@@ -73,7 +73,7 @@ module CIAX
     class View < ExHash
       def initialize(adb,stat)
         @sdb=type?(adb,App::Db)[:status]
-        @stat=type?(stat,Var)
+        @stat=type?(stat,Data)
         ['val','class','msg'].each{|key|
           stat[key]||={}
         }
@@ -144,7 +144,7 @@ module CIAX
     GetOpts.new('vh:')
     id=ARGV.shift
     host=ARGV.shift
-    stat=Status::Var.new
+    stat=Status::Data.new
     begin
       if ! STDIN.tty?
         stat.load

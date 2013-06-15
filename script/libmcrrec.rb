@@ -6,7 +6,7 @@ require "libmcrprt"
 
 module CIAX
   module Mcr
-    class Record < Var
+    class Record < Data
       attr_accessor :stat_proc
       attr_reader :crnt
       def initialize(cmd,label)

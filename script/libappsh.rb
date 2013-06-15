@@ -33,12 +33,12 @@ module CIAX
         self['layer']='app'
         self['id']=@adb['site_id']
         cobj=ExtCmd.new(adb)
-        @stat=Status::Var.new.ext_file(@adb['site_id'])
+        @stat=Status::Data.new.ext_file(@adb['site_id'])
         plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
         prom=Sh::Prompt.new(self,plist)
         super(cobj)
         ext_shell(@stat,prom)
-        @watch=Watch::Var.new.ext_file(@adb['site_id'])
+        @watch=Watch::Data.new.ext_file(@adb['site_id'])
         @cobj.int_proc=proc{
           int=@watch.interrupt
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")

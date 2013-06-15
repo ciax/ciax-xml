@@ -4,7 +4,7 @@ require "libexenum"
 require "libupdate"
 
 module CIAX
-  class Var < ExHash # Including 'type'
+  class Data < ExHash # Including 'type'
     def initialize(type)
       super()
       self['type']=type
@@ -37,7 +37,7 @@ module CIAX
     module Upd # Including 'time'
       attr_reader :upd_proc
       def self.extended(obj)
-        Msg.type?(obj,Var)
+        Msg.type?(obj,Data)
       end
 
       def ext_upd
@@ -76,7 +76,7 @@ module CIAX
     module File
       # @ db,base,prefix
       def self.extended(obj)
-        Msg.type?(obj,Var)
+        Msg.type?(obj,Data)
       end
 
       def ext_file(id)
@@ -86,7 +86,7 @@ module CIAX
         self
       end
 
-      def load(tag=nil,pfx="VarFile")
+      def load(tag=nil,pfx="DataFile")
         name=fname(tag)
         json_str=''
         open(name){|f|
@@ -124,7 +124,7 @@ module CIAX
 
     module Url
       require "open-uri"
-      @@vpfx="VarUrl"
+      @@vpfx="DataUrl"
       # @< base,prefix
       def self.extended(obj)
         Msg.type?(obj,File)
@@ -138,9 +138,9 @@ module CIAX
       end
 
       def load(tag=nil)
-        super(tag,"VarUrl")
+        super(tag,"DataUrl")
       rescue OpenURI::HTTPError
-        warning("VarUrl","  -- no url file (#{fname})")
+        warning("DataUrl","  -- no url file (#{fname})")
         self
       end
     end
@@ -156,14 +156,14 @@ module CIAX
         open(name,'w'){|f|
           f.flock(::File::LOCK_EX)
           f << (data ? JSON.dump(data) : to_j)
-          verbose("Var/Save","[#{@base}](#{f.size}) is Saved",12)
+          verbose("Data/Save","[#{@base}](#{f.size}) is Saved",12)
         }
         if tag
           # Making 'latest' tag link
           sname=fname('latest')
           ::File.unlink(sname) if ::File.symlink?(sname)
           ::File.symlink(name,sname)
-          verbose("Var/save","Symboliclink to [#{sname}]")
+          verbose("Data/save","Symboliclink to [#{sname}]")
         end
         self
       end

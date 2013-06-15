@@ -12,8 +12,8 @@ GetOpts.new("t",{"v"=>"verbose"})
 begin
   raise(InvalidID,'') if STDIN.tty? && ARGV.size < 1
   ldb=Loc::Db.new
-  field=Field::Var.new
-  stat=Status::Var.new
+  field=Field::Data.new
+  stat=Status::Data.new
   fgrp=nil
   site_id=nil
   readlines.grep(/rcv/).each{|str|

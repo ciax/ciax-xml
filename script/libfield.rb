@@ -5,10 +5,30 @@ require 'libdata'
 module CIAX
   module Field
     class Data < Data
-      def initialize
+      def initialize(init_struct={})
         @ver_color=6
         super('field')
-        ext_upd
+        @data=ExHash[init_struct]
+      end
+
+      def to_h
+        hash=deep_copy
+        hash['val']=@data
+        hash
+      end
+
+      def to_j
+        JSON.dump(to_h)
+      end
+
+      def to_s
+        view_struct(to_h)
+      end
+
+      def load(json_str=nil)
+        super
+        @data=delete('val')||{}
+        self
       end
 
       # Substitute str by Field data
@@ -35,9 +55,9 @@ module CIAX
       def get(key)
         verbose("Field","Getting[#{key}]")
         Msg.abort("Nill Key") unless key
-        return self['val'][key] if self['val'].key?(key)
+        return @data[key] if @data.key?(key)
         vname=[]
-        data=key.split(':').inject(self['val']){|h,i|
+       dat=key.split(':').inject(@data){|h,i|
           case h
           when Array
             begin
@@ -53,17 +73,17 @@ module CIAX
           verbose("Field","Content[#{h[i]}]")
           h[i] || warning("Field","No such Value [#{vname.join(':')}] in 'val'")
         }
-        unless Comparable === data
+        unless Comparable === dat
           warning("Field","Short Index [#{vname.join(':')}]")
-          data=nil
+          dat=nil
         end
-        verbose("Field","Get[#{key}]=[#{data}]")
-        data
+        verbose("Field","Get[#{key}]=[#{dat}]")
+        dat
       end
 
       # Set value with mixed key
       def set(key,val)
-        unless self['val'].key?(key.split(':').first)
+        unless @data.key?(key.split(':').first)
           Msg.par_err("No such Key[#{key}] in 'val'")
         end
         if p=get(key)
@@ -94,7 +114,7 @@ module CIAX
         Msg.com_err("No File") unless @base
         hash={}
         keylist.each{|k|
-          if self['val'].key?(k)
+          if @data.key?(k)
             hash[k]=get(k)
           else
             warning("Field/Save","No such Key [#{k}]")
@@ -113,8 +133,8 @@ module CIAX
   end
 
   if __FILE__ == $0
-    f=Field::Data.new
-    puts f.update({"a"=>[["0"],"1"]})
+    f=Field::Data.new({"a"=>[["0"],"1"]})
+    puts f.to_j
     if s=ARGV.shift
       k,v=s.split('=')
       if v

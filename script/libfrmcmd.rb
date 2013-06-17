@@ -66,7 +66,7 @@ module CIAX
           if @sel.key?(:ccrange)
             @frame.mark
             mk_frame(:ccrange)
-            @field['val']['cc']=@frame.checkcode
+            @field.set('cc',@frame.checkcode)
           end
           mk_frame(:main)
           frame=@fstr[:main]

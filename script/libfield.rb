@@ -1,34 +1,13 @@
 #!/usr/bin/ruby
 require 'libupdate'
-require 'libdata'
+require 'libdatax'
 
 module CIAX
   module Field
-    class Data < Data
+    class Data < Datax
       def initialize(init_struct={})
         @ver_color=6
-        super('field')
-        @data=ExHash[init_struct]
-      end
-
-      def to_h
-        hash=deep_copy
-        hash['val']=@data
-        hash
-      end
-
-      def to_j
-        JSON.dump(to_h)
-      end
-
-      def to_s
-        view_struct(to_h)
-      end
-
-      def load(json_str=nil)
-        super
-        @data=delete('val')||{}
-        self
+        super('field',init_struct)
       end
 
       # Substitute str by Field data

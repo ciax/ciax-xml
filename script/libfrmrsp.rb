@@ -12,7 +12,7 @@ module CIAX
       # @< (base),(prefix)
       # @ cobj,sel,fds,frame,fary,cc
       def self.extended(obj)
-        Msg.type?(obj,Field::Data,Data::File)
+        Msg.type?(obj,Field::Data,Datax::File)
       end
 
       # Item is needed which includes response_id and cmd_parameters
@@ -122,7 +122,7 @@ module CIAX
 
       def mk_array(idx,field)
         # make multidimensional array
-        # i.e. idxary=[0,0:10,0] -> @field['val'][0][0][0] .. @field['val'][0][10][0]
+        # i.e. idxary=[0,0:10,0] -> @data[0][0][0] .. @data[0][10][0]
         return yield if idx.empty?
         fld=field||[]
         f,l=idx[0].split(':').map{|i| eval(i)}

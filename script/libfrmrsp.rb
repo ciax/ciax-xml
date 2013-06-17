@@ -24,7 +24,7 @@ module CIAX
         @fds=db[:response][:select]
         @frame=Frame.new(db['endian'],db['ccmethod'])
         # Field Initialize
-        self['val'].replace db[:field][:select].deep_copy if self['val'].empty?
+        @data.replace db[:field][:select].deep_copy if @data.empty?
         self
       end
 
@@ -105,14 +105,14 @@ module CIAX
             }
             verbose("FrmRsp","Array:[#{akey}]:Range#{idxs}")
             enclose{
-              self['val'][akey]=mk_array(idxs,get(akey)){yield}
+              @data[akey]=mk_array(idxs,get(akey)){yield}
             }
             verbose("FrmRsp","Array:Assign[#{akey}]")
           else
             #Field
             data=yield
             if akey=e0['assign']
-              self['val'][akey]=data
+              @data[akey]=data
               verbose("FrmRsp","Assign:[#{akey}] <- <#{data}>")
             end
           end

@@ -59,7 +59,7 @@ module CIAX
         group={ALL=>{}}
         reflist=[]
         Dir.glob(glob).each{|p|
-          base=File.basename(p,'.xml')
+          base=::File.basename(p,'.xml')
           verbose("XmlDoc","readxml:#{base}")
           fid=base.gsub(/.+-/,'')
           Gnu.new(p).each{|e|

@@ -2,7 +2,7 @@
 
 module CIAX
   VarDir="#{ENV['HOME']}/.var"
-  ScrDir=File.dirname(__FILE__)
+  ScrDir=::File.dirname(__FILE__)
   Indent='  '
 
   # User input Error

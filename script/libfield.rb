@@ -36,7 +36,7 @@ module CIAX
         Msg.abort("Nill Key") unless key
         return @data[key] if @data.key?(key)
         vname=[]
-       dat=key.split(':').inject(@data){|h,i|
+        dat=key.split(':').inject(@data){|h,i|
           case h
           when Array
             begin
@@ -62,10 +62,8 @@ module CIAX
 
       # Set value with mixed key
       def set(key,val)
-        unless @data.key?(key.split(':').first)
-          Msg.par_err("No such Key[#{key}] in 'val'")
-        end
-        if p=get(key)
+        akey=key.split(':')
+        if @data.key?(akey.shift) && p=get(key)
           conv=subst(val).to_s
           case p
           when Array
@@ -73,11 +71,12 @@ module CIAX
           when String
             p.replace(conv)
           end
+        elsif akey.empty?
+          @data[key]=val
         else
           Msg.par_err("Index is out of range")
         end
         self['time']=UnixTime.now
-        upd
       end
 
       def ext_save

@@ -90,7 +90,7 @@ module CIAX
           @field.savekey(item.par[0].split(','),item.par[1])
         }
         @cobj['sv']['int']['load'].def_proc=proc{|item|
-          @field.load(item.par[0]||'').save
+          @field.loadkey(item.par[0]||'').save
         }
         ext_server(fdb['port'].to_i)
       rescue Errno::ENOENT

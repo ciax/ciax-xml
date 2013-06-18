@@ -53,12 +53,19 @@ module CIAX
       self
     end
 
+    def loadkey(json_str=nil)
+      deep_update(readj(json_str))
+    end
+
     def load(json_str=nil)
-      data=json_str||gets(nil)||Msg.abort("No data in file(#{ARGV})")
-      deep_update(JSON.load(data))
+      replace readj(json_str)
     end
 
     private
+    def readj(json_str=nil)
+      JSON.load(json_str||gets(nil)||Msg.abort("No data in file(#{ARGV})"))
+    end
+
     # r(operand) will be merged to w (w is changed)
     def rec_merge(r,w,d)
       d-=1 if d

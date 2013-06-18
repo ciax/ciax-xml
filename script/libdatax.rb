@@ -28,9 +28,9 @@ module CIAX
     end
 
     def load(json_str=nil)
-      str=json_str||gets(nil)||Msg.abort("No data in file(#{ARGV})")
-      hash=seth(str)
-      self['time']=UnixTime.parse(hash['time']||UnixTime.now)
+      super
+      @data=ExHash[delete('val')||{}]
+      self['time']=UnixTime.parse(self['time']||UnixTime.now)
       self
     end
 
@@ -72,13 +72,6 @@ module CIAX
       hash=ExHash[self]
       hash['val']=@data
       hash
-    end
-
-
-    def seth(str)
-      hash=JSON.load(str)
-      @data=ExHash[hash.delete('val')||{}]
-      replace hash
     end
 
     module File

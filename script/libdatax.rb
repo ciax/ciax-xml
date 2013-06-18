@@ -14,18 +14,12 @@ module CIAX
       @upd_proc=[] # Proc Array
     end
 
-    def mkh
-      hash=ExHash[self]
-      hash['val']=@data
-      hash
-    end
-
     def to_j
-      mkh.to_j
+      geth.to_j
     end
 
     def to_s
-      mkh.to_s
+      geth.to_s
     end
 
     def upd # update after processing
@@ -35,9 +29,7 @@ module CIAX
 
     def load(json_str=nil)
       str=json_str||gets(nil)||Msg.abort("No data in file(#{ARGV})")
-      hash=JSON.load(str)
-      @data=ExHash[hash.delete('val')||{}]
-      replace hash
+      hash=seth(str)
       self['time']=UnixTime.parse(hash['time']||UnixTime.now)
       self
     end
@@ -73,6 +65,20 @@ module CIAX
     def ext_save
       extend(Save)
       self
+    end
+
+    private
+    def geth
+      hash=ExHash[self]
+      hash['val']=@data
+      hash
+    end
+
+
+    def seth(str)
+      hash=JSON.load(str)
+      @data=ExHash[hash.delete('val')||{}]
+      replace hash
     end
 
     module File

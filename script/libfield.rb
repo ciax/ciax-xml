@@ -78,35 +78,6 @@ module CIAX
         end
         self['time']=UnixTime.now
       end
-
-      def ext_save
-        super
-        extend Save
-        self
-      end
-    end
-
-    module Save
-      # Saving data of specified keys with tag
-      def savekey(keylist,tag=nil)
-        Msg.com_err("No File") unless @base
-        hash={}
-        keylist.each{|k|
-          if @data.key?(k)
-            hash[k]=get(k)
-          else
-            warning("Field/Save","No such Key [#{k}]")
-          end
-        }
-        if hash.empty?
-          Msg.par_err("No Keys")
-        else
-          tag||=(taglist.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
-          Msg.msg("Status Saving for [#{tag}]")
-          save({'val'=>hash},tag)
-        end
-        self
-      end
     end
   end
 

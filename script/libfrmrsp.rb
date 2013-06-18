@@ -9,10 +9,11 @@ require "libstream"
 module CIAX
   module Frm
     module Rsp
+      include File
       # @< (base),(prefix)
       # @ cobj,sel,fds,frame,fary,cc
       def self.extended(obj)
-        Msg.type?(obj,Field::Data,Datax::File)
+        Msg.type?(obj,Field::Data)
       end
 
       # Item is needed which includes response_id and cmd_parameters
@@ -25,6 +26,7 @@ module CIAX
         @frame=Frame.new(db['endian'],db['ccmethod'])
         # Field Initialize
         @data.replace db[:field][:select].deep_copy if @data.empty?
+        ext_fname(db['site_id'])
         self
       end
 
@@ -167,9 +169,8 @@ module CIAX
     fdb=Loc::Db.new.set(id)[:frm]
     fgrp=Frm::ExtGrp.new(fdb)
     item=fgrp.setcmd(cmd.split(':'))
-    field=Field::Data.new.ext_file(fdb['site_id'])
+    field=Field::Data.new.ext_rsp(fdb)
     field.load if $opt['m']
-    field.ext_rsp(fdb)
     field.upd(item){res}
     puts field
     exit

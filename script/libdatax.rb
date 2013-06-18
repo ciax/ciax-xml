@@ -5,13 +5,13 @@ require "libupdate"
 
 module CIAX
   class Datax < ExHash
-    include Msg
     attr_reader :upd_proc
     def initialize(type,init_struct={})
       self['type']=type
       self['time']=UnixTime.now
       @data=ExHash[init_struct]
       @upd_proc=[] # Proc Array
+      @ver_color=6
     end
 
     def to_j
@@ -27,11 +27,14 @@ module CIAX
       self
     end
 
+    def loadkey(json_str=nil)
+      super
+      seth
+    end
+
     def load(json_str=nil)
       super
-      @data=ExHash[delete('val')||{}]
-      self['time']=UnixTime.parse(self['time']||UnixTime.now)
-      self
+      seth
     end
 
     # Update with str (key=val,key=val,..)
@@ -49,21 +52,15 @@ module CIAX
       @data.delete(key)
     end
 
-    ## Read/Write JSON file
     def ext_file(id)
       extend File
-      ext_file(id)
+      ext_fname(id)
       self
     end
 
-    def ext_url(host=nil)
-      extend Url
-      ext_url(host)
-      self
-    end
-
-    def ext_save
-      extend(Save)
+    def ext_http(id,host=nil)
+      extend Http
+      ext_http(id,host)
       self
     end
 
@@ -74,100 +71,121 @@ module CIAX
       hash
     end
 
-    module File
-      # @ db,base,prefix
-      def self.extended(obj)
-        Msg.type?(obj,Datax)
-      end
+    def seth
+      @data=ExHash[delete('val')||{}]
+      self['time']=UnixTime.parse(self['time']||UnixTime.now)
+      self
+    end
+  end
 
-      def ext_file(id)
-        self['id']=id||Msg.cfg_err("ID")
-        @base=self['type']+'_'+self['id']+'.json'
-        @prefix=VarDir
-        self
-      end
+  module Fname
+    def ext_fname(id)
+      self['id']=id||Msg.cfg_err("ID")
+      @base=self['type']+'_'+self['id']+'.json'
+      @prefix=VarDir
+      self
+    end
 
-      def load(tag=nil,pfx="DataFile")
-        name=fname(tag)
-        json_str=''
-        open(name){|f|
-          verbose(pfx,"Loading [#{@base}](#{f.size})",12)
-          f.flock(::File::LOCK_SH) if File === f
+    private
+    def fname(tag=nil)
+      @base=[self['type'],self['id'],tag].compact.join('_')+'.json'
+      @prefix+"/json/"+@base
+    end
+
+    def taglist
+      Dir.glob(fname('*')).map{|f|
+        f.slice(/.+_(.+)\.json/,1)
+      }.sort
+    end
+  end
+
+  module Http
+    require "open-uri"
+    include Fname
+    def ext_http(id,host)
+      ext_fname(id)
+      host||='localhost'
+      @prefix="http://"+host
+      verbose("Http","Initialize")
+      self
+    end
+
+    private
+    def readj(tag=nil)
+      name=fname(tag)
+      json_str=''
+      open(name){|f|
+        verbose("Http","Loading [#{@base}](#{f.size})",12)
           json_str=f.read
         }
-        if json_str.empty?
-          warning(pfx," -- json file (#{@base}) is empty")
-        else
-          super(json_str)
-        end
-        self
-      rescue Errno::ENOENT
-        if tag
-          Msg.par_err("No such Tag","Tag=#{taglist}")
-        else
-          warning(pfx,"  -- no json file (#{@base})")
-        end
-        self
-      end
+      warning(pfx," -- json file (#{@base}) is empty") if json_str.empty?
+      super(json_str)
+    rescue OpenURI::HTTPError
+      warning("Http","  -- no url file (#{fname})")
+    end
+  end
 
-      private
-      def fname(tag=nil)
-        @base=[self['type'],self['id'],tag].compact.join('_')+'.json'
-        @prefix+"/json/"+@base
-      end
+  module File
+    include Fname
+    def save(tag=nil)
+      writej(geth,tag)
+    end
 
-      def taglist
-        Dir.glob(fname('*')).map{|f|
-          f.slice(/.+_(.+)\.json/,1)
-        }.sort
+    # Saving data of specified keys with tag
+    def savekey(keylist,tag=nil)
+      Msg.com_err("No File") unless @base
+      hash={}
+      keylist.each{|k|
+        if @data.key?(k)
+          hash[k]=get(k)
+        else
+          warning("File","No such Key [#{k}]")
+        end
+      }
+      if hash.empty?
+        Msg.par_err("No Keys")
+      else
+        tag||=(taglist.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
+        Msg.msg("Status Saving for [#{tag}]")
+        writej({'val'=>hash},tag)
+      end
+      self
+    end
+
+    private
+    def readj(tag=nil)
+      name=fname(tag)
+      json_str=''
+      open(name){|f|
+        verbose("File","Loading [#{@base}](#{f.size})",12)
+        f.flock(::File::LOCK_SH)
+        json_str=f.read
+      }
+      warning("File"," -- json file (#{@base}) is empty") if json_str.empty?
+      super(json_str)
+    rescue Errno::ENOENT
+      if tag
+        Msg.par_err("No such Tag","Tag=#{taglist}")
+      else
+        warning("File","  -- no json file (#{@base})")
       end
     end
 
-    module Url
-      require "open-uri"
-      @@vpfx="DataUrl"
-      # @< base,prefix
-      def self.extended(obj)
-        Msg.type?(obj,File)
+    def writej(data,tag=nil)
+      name=fname(tag)
+      open(name,'w'){|f|
+        f.flock(::File::LOCK_EX)
+        f << JSON.dump(data)
+        verbose("File","[#{@base}](#{f.size}) is Saved",12)
+      }
+      if tag
+        # Making 'latest' tag link
+        sname=fname('latest')
+        ::File.unlink(sname) if ::File.symlink?(sname)
+        ::File.symlink(name,sname)
+        verbose("File","Symboliclink to [#{sname}]")
       end
-
-      def ext_url(host)
-        host||='localhost'
-        @prefix="http://"+host
-        verbose(@@vpfx,"Initialize")
-        self
-      end
-
-      def load(tag=nil)
-        super(tag,"DataUrl")
-      rescue OpenURI::HTTPError
-        warning("DataUrl","  -- no url file (#{fname})")
-        self
-      end
-    end
-
-    module Save
-      # @< base,prefix
-      def self.extended(obj)
-        Msg.type?(obj,File)
-      end
-
-      def save(data=nil,tag=nil)
-        name=fname(tag)
-        open(name,'w'){|f|
-          f.flock(::File::LOCK_EX)
-          f << (data ? JSON.dump(data) : to_j)
-          verbose("Data/Save","[#{@base}](#{f.size}) is Saved",12)
-        }
-        if tag
-          # Making 'latest' tag link
-          sname=fname('latest')
-          ::File.unlink(sname) if ::File.symlink?(sname)
-          ::File.symlink(name,sname)
-          verbose("Data/save","Symboliclink to [#{sname}]")
-        end
-        self
-      end
+      self
     end
   end
 end

@@ -61,8 +61,8 @@ module CIAX
         verbose("#@type/Cache","MAR file(#{@base}) not exist")
       elsif newer=cmp($".grep(/#{ScrDir}/)+Dir.glob(XmlDir+"/#{@type}-*.xml"))
         verbose("#@type/Cache","File(#{newer}) is newer than cache")
-        verbose("#@type/Cache","cache=#{File::Stat.new(fmar).mtime}")
-        verbose("#@type/Cache","file=#{File::Stat.new(newer).mtime}")
+        verbose("#@type/Cache","cache=#{::File::Stat.new(fmar).mtime}")
+        verbose("#@type/Cache","file=#{::File::Stat.new(newer).mtime}")
       else
         return true
       end
@@ -71,7 +71,7 @@ module CIAX
 
     def cmp(ary)
       ary.each{|f|
-        return f if File.file?(f) && test(?>,f,fmar)
+        return f if ::File.file?(f) && test(?>,f,fmar)
       }
       false
     end

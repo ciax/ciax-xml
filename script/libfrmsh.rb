@@ -70,8 +70,7 @@ module CIAX
       # @ io
       def initialize(fdb,iocmd=[])
         super(fdb)
-        @field.ext_save.load
-        @field.ext_rsp(fdb)
+        @field.ext_rsp(fdb).load
         if type?(iocmd,Array).empty?
           @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
           @io.ext_logging(fdb['site_id'],fdb['version'])

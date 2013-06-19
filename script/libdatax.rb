@@ -5,12 +5,10 @@ require "libupdate"
 
 module CIAX
   class Datax < ExHash
-    attr_reader :upd_proc
     def initialize(type,init_struct={})
       self['type']=type
       self['time']=UnixTime.now
       @data=ExHash[init_struct]
-      @upd_proc=[] # Proc Array
       @ver_color=6
     end
 
@@ -20,11 +18,6 @@ module CIAX
 
     def to_s
       geth.to_s
-    end
-
-    def upd # update after processing
-      @upd_proc.each{|p| p.call(self)}
-      self
     end
 
     def loadkey(json_str=nil)
@@ -45,7 +38,7 @@ module CIAX
         @data[k]=v
       }
       self['time']=UnixTime.now
-      upd
+      self
     end
 
     def unset(key)
@@ -79,10 +72,17 @@ module CIAX
   end
 
   module Fname
+    attr_reader :upd_proc
     def ext_fname(id)
       self['id']=id||Msg.cfg_err("ID")
       @base=self['type']+'_'+self['id']+'.json'
       @prefix=VarDir
+      @upd_proc=[] # Proc Array
+      self
+    end
+
+    def upd # update after processing
+      @upd_proc.each{|p| p.call(self)}
       self
     end
 
@@ -108,6 +108,11 @@ module CIAX
       @prefix="http://"+host
       verbose("Http","Initialize")
       self
+    end
+
+    def upd
+      load
+      super
     end
 
     private

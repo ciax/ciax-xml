@@ -7,8 +7,8 @@ require "libextcmd"
 module CIAX
   module Frm
     class ExtCmd < ExtCmd
-      def initialize(fdb,field=Field::Data.new)
-        @field=type?(field,Field::Data)
+      def initialize(fdb,field=Field.new)
+        @field=type?(field,Field)
         super(fdb)
         any={:type =>'reg',:list => ["."]}
         ig=self['sv']['int']
@@ -27,8 +27,8 @@ module CIAX
     end
 
     class ExtGrp < ExtGrp
-      def initialize(db,field=Field::Data.new)
-        @field=type?(field,Field::Data)
+      def initialize(db,field=Field.new)
+        @field=type?(field,Field)
         super(db)
       end
 
@@ -41,7 +41,7 @@ module CIAX
     class ExtItem < ExtItem
       def initialize(field,db,id,def_proc)
         @ver_color=0
-        @field=type?(field,Field::Data)
+        @field=type?(field,Field)
         super(db,id,def_proc)
         cdb=db[:command]
         @cache={}
@@ -104,7 +104,7 @@ module CIAX
     ARGV.clear
     begin
       fdb=Frm::Db.new.set(dev)
-      field=Field::Data.new
+      field=Field.new
       cobj=Frm::ExtCmd.new(fdb,field)
       cgrp=cobj['sv']['ext']
       field.load unless STDIN.tty?

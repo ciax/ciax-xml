@@ -13,7 +13,7 @@ module CIAX
       # @< (base),(prefix)
       # @ cobj,sel,fds,frame,fary,cc
       def self.extended(obj)
-        Msg.type?(obj,Field::Data)
+        Msg.type?(obj,Field)
       end
 
       # Item is needed which includes response_id and cmd_parameters
@@ -141,7 +141,7 @@ module CIAX
     end
   end
 
-  class Field::Data
+  class Field
     def ext_rsp(db)
       extend(Frm::Rsp).ext_rsp(db)
     end
@@ -169,7 +169,7 @@ module CIAX
     fdb=Loc::Db.new.set(id)[:frm]
     fgrp=Frm::ExtGrp.new(fdb)
     item=fgrp.setcmd(cmd.split(':'))
-    field=Field::Data.new.ext_rsp(fdb)
+    field=Field.new.ext_rsp(fdb)
     field.load if $opt['m']
     field.upd(item){res}
     puts field

@@ -110,19 +110,14 @@ module CIAX
       self
     end
 
-    def upd
-      load
-      super
-    end
-
     private
     def readj(tag=nil)
       name=fname(tag)
       json_str=''
       open(name){|f|
         verbose("Http","Loading [#{@base}](#{f.size})",12)
-          json_str=f.read
-        }
+        json_str=f.read
+      }
       warning(pfx," -- json file (#{@base}) is empty") if json_str.empty?
       super(json_str)
     rescue OpenURI::HTTPError

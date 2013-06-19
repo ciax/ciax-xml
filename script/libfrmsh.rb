@@ -28,7 +28,7 @@ module CIAX
         type?(fdb,Db)
         self['layer']='frm'
         self['id']=fdb['site_id']
-        @field=Field::Data.new.ext_file(fdb['site_id']).load
+        @field=Field.new(fdb[:field][:select].deep_copy)
         cobj=ExtCmd.new(fdb,@field)
         prom=Sh::Prompt.new(self)
         super(cobj)
@@ -57,7 +57,7 @@ module CIAX
       def initialize(fdb,host=nil)
         super(fdb)
         host=type?(host||fdb['host']||'localhost',String)
-        @field.ext_url(host).load
+        @field.ext_http(self['id'],host).load
         @cobj['sv'].def_proc=proc{to_s}
         ext_client(host,fdb['port'])
         @upd_proc.add{@field.load}

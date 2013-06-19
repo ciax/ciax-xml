@@ -11,7 +11,7 @@ module CIAX
       end
 
       def ext_rsp(field,sdb)
-        @field=type?(field,Field::Data)
+        @field=type?(field,Field)
         @ads=sdb[:select]
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}
@@ -116,7 +116,7 @@ module CIAX
     require "libfield"
     require "libstatus"
     Msg.usage "< field_file" if STDIN.tty?
-    field=Field::Data.new.load
+    field=Field.new.load
     adb=Loc::Db.new.set(field['id'])[:app]
     stat=Status::Data.new.ext_file(adb['site_id']).ext_save
     puts stat.ext_rsp(field,adb[:status]).upd

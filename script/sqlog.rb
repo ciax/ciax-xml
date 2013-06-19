@@ -12,7 +12,7 @@ GetOpts.new("t",{"v"=>"verbose"})
 begin
   raise(InvalidID,'') if STDIN.tty? && ARGV.size < 1
   ldb=Loc::Db.new
-  field=Field::Data.new
+  field=Field.new
   stat=Status::Data.new
   fgrp=nil
   site_id=nil

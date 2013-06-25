@@ -1,10 +1,16 @@
-====================== Issue Test-environment ======================
-***For CIAX-CSV
-det,cr?,cc?: configure hexsv
+====================== Debug ======================
+*** Test Environment
 
-***DEBUG(Test Environment)
+*** On-site
+watch: no command issued by auto(reset at dsi command end) (12/9/27)
+crt:cart jack level error in oldmcr(12/1/31)
+dso:jack bolt stack after interrupt(12/8/15)
+dts:joff,roff,rstop/ no responding(12/3/12)
+dts:need rotate drive on to resume ^D stop(12/3/12)
+crt: Lost current position after running(5/24/13)
 
-***UPDATE(Refactoring)
+======================= UPDATE(Refactoring) ========================
+*** Test Environment
 want to remove @item in App::Sh -> Logging#append() needs param instead of setting proc 
 fdb: rename command&status /select to /code
 adb: rename command&status /select to /source
@@ -16,19 +22,19 @@ var: upd includes saving if extended by Save
 all: set entire name space (CIAX?)
 xml: (fdb,adb)//command/select will be separated
 
-***Test
+======================= Check Required ======================
+*** Test Environment
 watch:event driven test(issued or not)
 
-======================= Issue On-site ========================
-***DEBUG(On-site)
-watch: no command issued by auto(reset at dsi command end) (12/9/27)
-crt:cart jack level error in oldmcr(12/1/31)
-dso:jack bolt stack after interrupt(12/8/15)
-dts:joff,roff,rstop/ no responding(12/3/12)
-dts:need rotate drive on to resume ^D stop(12/3/12)
-crt: Lost current position after running(5/24/13)
+*** On-site
+verify on motion: adb-oss
+verify: oss jack num corresponding
+verify: stop with ^C
+dts:jack stop test(12/4/26)
 
-***NEW FUNCTION
+======================= New Function ======================
+*** Test Environment
+hex: det,cr?,cc?: configure hexsv
 mcr: macro log
 mcr: attach/detach w/o location param (cmdstr subst by tag)
 mcr: update site status at startup or retry
@@ -36,26 +42,21 @@ mcr: query should be done at only before action
 oss: add cart number setting command
 add hostname to log
 
-***Required Status
+*** Status Acquisition
 mcr:add interlock for CAS/ASYN at initialize
 memo to db: cs rot ang for each inst
 
-***Required Tools
+*** Tools
 crt: jack table edit interface (sql+web)
 tsc-table: need update tool
 lantronix control by PC at port1
 sql: easy log finder(date -> data)
 
-***Request
+====================== Request ===================
+*** On-site
 mcr-old:need interlock for dso/dsi manual or auto
 mcr-old:interlock error log
 mcr-old:remove door open interlock(11/2)
-
-*** Need CHECK AT SITE
-verify on motion: adb-oss
-verify: oss jack num corresponding
-verify: stop with ^C
-dts:jack stop test(12/4/26)
 
 ========================== Result =============================
 ***DISCARD

@@ -14,7 +14,7 @@ module CIAX
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
-        rfm=hash[:field]={}
+        rfm=hash[:structure]={}
         dc=doc.domain('cmdframe')
         dr=doc.domain('rspframe')
         hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}

@@ -25,7 +25,7 @@ module CIAX
         @fds=db[:response][:select]
         @frame=Frame.new(db['endian'],db['ccmethod'])
         # Field Initialize
-        @data.replace db[:field][:select].deep_copy if @data.empty?
+        @data.replace db[:structure][:select].deep_copy if @data.empty?
         ext_fname(db['site_id'])
         self
       end

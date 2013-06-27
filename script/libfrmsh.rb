@@ -28,7 +28,7 @@ module CIAX
         type?(fdb,Db)
         self['layer']='frm'
         self['id']=fdb['site_id']
-        @field=Field.new(fdb[:field][:select].deep_copy)
+        @field=Field.new(fdb[:structure][:select].deep_copy)
         cobj=ExtCmd.new(fdb,@field)
         prom=Sh::Prompt.new(self)
         super(cobj)

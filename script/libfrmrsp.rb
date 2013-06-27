@@ -139,7 +139,6 @@ module CIAX
         @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
       end
     end
-  end
 
   class Field
     def ext_rsp(db)
@@ -167,12 +166,13 @@ module CIAX
       res['data']=gets(nil) || exit
     end
     fdb=Loc::Db.new.set(id)[:frm]
-    fgrp=Frm::ExtGrp.new(fdb)
+    fgrp=ExtGrp.new(fdb)
     item=fgrp.setcmd(cmd.split(':'))
     field=Field.new.ext_rsp(fdb)
     field.load if $opt['m']
     field.upd(item){res}
     puts field
     exit
+  end
   end
 end

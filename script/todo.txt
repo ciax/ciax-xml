@@ -22,6 +22,10 @@ var: upd includes saving if extended by Save
 all: set entire name space (CIAX?)
 xml: (fdb,adb)//command/select will be separated
 
+*** On-site
+crt: add interlock status manual/auto at every acrion (13/6/27)
+dts: add interlock status InR drv at every cr action (13/6/27)
+
 ======================= Check Required ======================
 *** Test Environment
 watch:event driven test(issued or not)

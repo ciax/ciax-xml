@@ -72,6 +72,8 @@ module CIAX
         group['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
         hash[:label]={'time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
         hash[:select]=rec_stat(sdb,hash,'gtime',Repeat.new)
+        st=hash[:struct]={}
+        hash[:select].keys.each{|k| st[k]=nil }
         hash
       end
 

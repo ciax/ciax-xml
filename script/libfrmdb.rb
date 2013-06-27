@@ -14,7 +14,7 @@ module CIAX
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
-        rfm=hash[:structure]={}
+        rfm=hash[:field]={}
         dc=doc.domain('cmdframe')
         dr=doc.domain('rspframe')
         hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
@@ -84,12 +84,12 @@ module CIAX
       end
 
       def init_rsp(e,val)
-        val[:select]||=ExHash.new
+        stc=val[:struct]||=ExHash.new
         case e.name
         when 'field'
           attr=e.to_h
           if id=attr['assign']
-            val[:select][id]=nil
+            stc[id]=nil
             add_label(val,attr,id)
           end
           verbose("Fdb","InitElement: #{attr}")
@@ -101,7 +101,7 @@ module CIAX
             idx << e1.to_h
           }
           id=attr['assign']
-          val[:select][id]=init_array(idx.map{|h| h['size']})
+          stc[id]=init_array(idx.map{|h| h['size']})
           add_label(val,attr,id)
           attr
         when 'ccrange','select'

@@ -136,7 +136,7 @@ module CIAX
     ARGV.clear
     begin
       adb=Loc::Db.new.set(id)[:app]
-      stat=Status::Data.new.ext_file(adb['site_id']).load
+      stat=App::Status.new.ext_file(adb['site_id']).load
       stat.ext_sqlog.create.upd
       puts stat.sql
     rescue InvalidID

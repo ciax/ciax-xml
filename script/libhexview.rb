@@ -9,7 +9,7 @@ module CIAX
       def initialize(hint,stat)
         # Server Status
         @hint=type?(hint,Hash)
-        @stat=type?(stat,Status::Data)
+        @stat=type?(stat,App::Status)
         id=stat['id'] || raise(InvalidID,"NO ID in Stat")
         file=View.sdb(id) || raise(InvalidID,"Hex/Can't found sdb_#{id}.txt")
         @res=["%",id,'_','0','0','_','']
@@ -89,7 +89,7 @@ module CIAX
   if __FILE__ == $0
     require "libstatus"
     Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-    stat=Status::Data.new.load
+    stat=App::Status.new.load
     hint=Hex::View.new({},stat)
     puts hint
   end

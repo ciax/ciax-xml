@@ -7,11 +7,11 @@ module CIAX
     module Rsp
       # @< (base),(prefix)
       def self.extended(obj)
-        Msg.type?(obj,Status::Data,Data::File)
+        Msg.type?(obj,Status,Data::File)
       end
 
       def ext_rsp(field,sdb)
-        @field=type?(field,Frm::Field)
+        @field=type?(field,Frm::Rsp)
         @ads=sdb[:select]
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}
@@ -103,24 +103,27 @@ module CIAX
         data
       end
     end
-  end
 
-  class Status::Data
-    def ext_rsp(field,sdb)
-      extend(App::Rsp).ext_rsp(field,sdb)
+    class Status
+      def ext_rsp(field,sdb)
+        extend(App::Rsp).ext_rsp(field,sdb)
+      end
     end
-  end
 
-  if __FILE__ == $0
-    require "liblocdb"
-    require "libfield"
-    require "libstatus"
-    Msg.usage "< field_file" if STDIN.tty?
-    field=Frm::Field.new.load
-    adb=Loc::Db.new.set(field['id'])[:app]
-    stat=Status::Data.new.ext_file(adb['site_id']).ext_save
-    puts stat.ext_rsp(field,adb[:status]).upd
-    stat.save
-    exit
+    if __FILE__ == $0
+      require "liblocdb"
+      require "libfrmrsp"
+      require "libstatus"
+      Msg.usage "< field_file" if STDIN.tty?
+      field=Frm::Field.new.load
+      ldb=Loc::Db.new.set(field['id'])
+      fdb=ldb[:frm]
+      adb=ldb[:app]
+      field.ext_rsp(fdb)
+      stat=Status.new.ext_file(adb['site_id']).ext_save
+      puts stat.ext_rsp(field,adb[:status]).upd
+      stat.save
+      exit
+    end
   end
 end

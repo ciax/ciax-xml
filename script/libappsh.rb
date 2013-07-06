@@ -33,7 +33,7 @@ module CIAX
         self['layer']='app'
         self['id']=@adb['site_id']
         cobj=ExtCmd.new(adb)
-        @stat=Status::Data.new.ext_file(@adb['site_id'])
+        @stat=App::Status.new.ext_file(@adb['site_id'])
         plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
         prom=Sh::Prompt.new(self,plist)
         super(cobj)
@@ -55,7 +55,7 @@ module CIAX
       end
 
       def init_view
-        @output=@print=Status::View.new(@adb,@stat).extend(Status::Print)
+        @output=@print=View.new(@adb,@stat).extend(Print)
         @wview=Watch::View.new(@adb,@watch).ext_prt
         grp=@cobj['lo'].add_group('view',"Change View Mode")
         grp.add_item('pri',"Print mode").def_proc=proc{@output=@print}

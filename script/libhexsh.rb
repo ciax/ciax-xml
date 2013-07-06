@@ -23,7 +23,7 @@ module CIAX
         self['id']=@adb['site_id']
         cobj=App::ExtCmd.new(adb)
         super(cobj)
-        stat=Status::Data.new.ext_file(@adb['site_id'])
+        stat=App::Status.new.ext_file(@adb['site_id'])
         prom=Sh::Prompt.new(self)
         ext_shell(View.new(self,stat),prom)
       end

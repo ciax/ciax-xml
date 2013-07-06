@@ -13,7 +13,7 @@ begin
   raise(InvalidID,'') if STDIN.tty? && ARGV.size < 1
   ldb=Loc::Db.new
   field=Field.new
-  stat=Status::Data.new
+  stat=App::Status.new
   fgrp=nil
   site_id=nil
   readlines.grep(/rcv/).each{|str|

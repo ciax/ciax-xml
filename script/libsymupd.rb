@@ -8,7 +8,7 @@ module CIAX
   module Sym
     module Upd
       def self.extended(obj)
-        Msg.type?(obj,Status::Data)
+        Msg.type?(obj,App::Status)
       end
 
       def ext_upd(db)
@@ -53,7 +53,7 @@ module CIAX
     end
   end
 
-  class Status::Data
+  class App::Status
     def ext_sym(adb)
       extend(Sym::Upd).ext_upd(adb)
     end
@@ -65,7 +65,7 @@ module CIAX
     id=ARGV.shift
     begin
       adb=Loc::Db.new.set(id)[:app]
-      stat=Status::Data.new.ext_file(adb['site_id']).load
+      stat=App::Status.new.ext_file(adb['site_id']).load
       stat.ext_sym(adb).upd.ext_save.save
       print stat
     rescue InvalidID

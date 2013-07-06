@@ -3,8 +3,8 @@ require "libmsg"
 require "libdata"
 
 module CIAX
-  module Status
-    class Data < Data
+  module App
+    class Status < Data
       # @ last*
       attr_reader :last
       def initialize
@@ -137,34 +137,34 @@ module CIAX
         "\e[1;3#{c}m#{msg}\e[0m"
       end
     end
-  end
 
-  if __FILE__ == $0
-    require "liblocdb"
-    GetOpts.new('vh:')
-    id=ARGV.shift
-    host=ARGV.shift
-    stat=Status::Data.new
-    begin
-      if ! STDIN.tty?
-        stat.load
-        id=stat['id']
-        adb=Loc::Db.new.set(id)[:app]
-      else
-        adb=Loc::Db.new.set(id)[:app]
-        stat.ext_file(adb['site_id'])
-        if host=$opt['h']
-          stat.ext_url(host).load
-        else
+    if __FILE__ == $0
+      require "liblocdb"
+      GetOpts.new('vh:')
+      id=ARGV.shift
+      host=ARGV.shift
+      stat=Status.new
+      begin
+        if ! STDIN.tty?
           stat.load
+          id=stat['id']
+          adb=Loc::Db.new.set(id)[:app]
+        else
+          adb=Loc::Db.new.set(id)[:app]
+          stat.ext_file(adb['site_id'])
+          if host=$opt['h']
+            stat.ext_url(host).load
+          else
+            stat.load
+          end
         end
+        view=View.new(adb,stat)
+        view.extend(Print) if $opt['v']
+        puts view
+      rescue InvalidID
+        $opt.usage "(opt) [id] <(stat_file)"
       end
-      view=Status::View.new(adb,stat)
-      view.extend(Status::Print) if $opt['v']
-      puts view
-    rescue InvalidID
-      $opt.usage "(opt) [id] <(stat_file)"
+      exit
     end
-    exit
   end
 end

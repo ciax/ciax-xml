@@ -69,7 +69,7 @@ module CIAX
 
       def ext_upd(adb,stat)
         @wdb=type?(adb,App::Db)[:watch] || {:stat => {}}
-        @stat=type?(stat,Status::Data)
+        @stat=type?(stat,App::Status)
         @val=@stat['val']
         @upd_proc=[]
         self['period']=@wdb['period'].to_i if @wdb.key?('period')
@@ -252,7 +252,7 @@ module CIAX
     rescue InvalidID
       $opt.usage("(opt) [id]")
     end
-    stat=Status::Data.new.ext_file(adb['site_id']).load
+    stat=App::Status.new.ext_file(adb['site_id']).load
     watch=Watch::Data.new.ext_file(adb['site_id']).ext_upd(adb,stat).upd
     wview=Watch::View.new(adb,watch)
     unless $opt['r']

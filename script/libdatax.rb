@@ -40,6 +40,12 @@ module CIAX
       @data.delete(key)
     end
 
+    def ext_fname(id)
+      extend Fname
+      ext_fname(id)
+      self
+    end
+
     def ext_file(id)
       extend File
       ext_fname(id)

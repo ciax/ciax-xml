@@ -8,7 +8,7 @@ module CIAX
     module Data
       # @ log,tid
       def self.extended(obj)
-        Msg.type?(obj,Data)
+        Msg.type?(obj,Datax)
       end
 
       def ext_sqlog(ver=nil)
@@ -124,7 +124,7 @@ module CIAX
   end
 
   require "libstatus"
-  class Data
+  class Datax
     def ext_sqlog(ver=nil)
       extend(SqLog::Data).ext_sqlog(ver)
     end

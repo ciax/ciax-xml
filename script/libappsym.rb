@@ -65,7 +65,7 @@ module CIAX
       begin
         adb=Loc::Db.new.set(id)[:app]
         stat=Status.new.ext_file(adb['site_id']).load
-        stat.ext_sym(adb).upd.ext_save.save
+        stat.ext_sym(adb).upd.save
         print stat
       rescue InvalidID
         Msg.usage "[id]"

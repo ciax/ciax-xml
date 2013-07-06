@@ -8,6 +8,6 @@ for id in $ids; do
     echo "$C2#### $id ####$C0"
     file=$HOME/.var/json/field_$id.json
     ~/lib/libapprsp.rb < $file
-    ~/lib/libsymupd.rb $id > /dev/null
+    ~/lib/libappsym.rb $id > /dev/null
     read -t 0 && break
 done

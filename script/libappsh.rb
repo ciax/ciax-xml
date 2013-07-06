@@ -5,7 +5,7 @@ require "libwatch"
 require 'libfrmsh'
 require "libappcmd"
 require "libapprsp"
-require "libsymupd"
+require "libappsym"
 require "libbuffer"
 require "libsqlog"
 require "thread"
@@ -66,7 +66,7 @@ module CIAX
     end
 
     class Test < Exe
-      require "libsymupd"
+      require "libappsym"
       def initialize(adb)
         super
         @stat.ext_sym(adb).load

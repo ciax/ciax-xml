@@ -95,24 +95,24 @@ module CIAX
         convert
       end
     end
-  end
 
-  if __FILE__ == $0
-    require "libfield"
-    require "libfrmdb"
-    dev,*cmd=ARGV
-    ARGV.clear
-    begin
-      fdb=Frm::Db.new.set(dev)
-      field=Field.new
-      cobj=Frm::ExtCmd.new(fdb,field)
-      cgrp=cobj['sv']['ext']
-      field.load unless STDIN.tty?
-      print cgrp.setcmd(cmd).getframe
-    rescue InvalidCMD
-      Msg.usage("[dev] [cmd] (par) < field_file",[])
-    rescue InvalidID
-      Msg.usage "[dev] [cmd] (par) < field_file"
+    if __FILE__ == $0
+      require "libfield"
+      require "libfrmdb"
+      dev,*cmd=ARGV
+      ARGV.clear
+      begin
+        fdb=Db.new.set(dev)
+        field=Field.new
+        cobj=ExtCmd.new(fdb,field)
+        cgrp=cobj['sv']['ext']
+        field.load unless STDIN.tty?
+        print cgrp.setcmd(cmd).getframe
+      rescue InvalidCMD
+        Msg.usage("[dev] [cmd] (par) < field_file",[])
+      rescue InvalidID
+        Msg.usage "[dev] [cmd] (par) < field_file"
+      end
     end
   end
 end

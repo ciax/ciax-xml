@@ -25,7 +25,7 @@ module CIAX
         @fds=db[:response][:select]
         @frame=Frame.new(db['endian'],db['ccmethod'])
         # Field Initialize
-        @data.replace db[:filed][:struct].deep_copy if @data.empty?
+        @data.replace db[:field][:struct].deep_copy if @data.empty?
         ext_fname(db['site_id'])
         self
       end
@@ -140,39 +140,39 @@ module CIAX
       end
     end
 
-  class Field
-    def ext_rsp(db)
-      extend(Frm::Rsp).ext_rsp(db)
+    class Field
+      def ext_rsp(db)
+        extend(Frm::Rsp).ext_rsp(db)
+      end
     end
-  end
 
-  if __FILE__ == $0
-    require "liblocdb"
-    require "libfrmcmd"
-    GetOpts.new("",{'m' => 'merge file','l' => 'get from logline'})
-    if $opt['l']
-      $opt.usage("-l < logline") if STDIN.tty?
-      str=gets(nil) || exit
-      res=Logging.set_logline(str)
-      id=res['id']
-      cmd=res['cmd']
-      frame=res['data']
-    elsif STDIN.tty? || ARGV.size < 2
-      $opt.usage("(opt) [id] [cmd] < string")
-    else
-      id=ARGV.shift
-      cmd=ARGV.shift
-      res={'time'=>UnixTime.now}
-      res['data']=gets(nil) || exit
+    if __FILE__ == $0
+      require "liblocdb"
+      require "libfrmcmd"
+      GetOpts.new("",{'m' => 'merge file','l' => 'get from logline'})
+      if $opt['l']
+        $opt.usage("-l < logline") if STDIN.tty?
+        str=gets(nil) || exit
+        res=Logging.set_logline(str)
+        id=res['id']
+        cmd=res['cmd']
+        frame=res['data']
+      elsif STDIN.tty? || ARGV.size < 2
+        $opt.usage("(opt) [id] [cmd] < string")
+      else
+        id=ARGV.shift
+        cmd=ARGV.shift
+        res={'time'=>UnixTime.now}
+        res['data']=gets(nil) || exit
+      end
+      fdb=Loc::Db.new.set(id)[:frm]
+      fgrp=ExtGrp.new(fdb)
+      item=fgrp.setcmd(cmd.split(':'))
+      field=Field.new.ext_rsp(fdb)
+      field.load if $opt['m']
+      field.upd(item){res}
+      puts field
+      exit
     end
-    fdb=Loc::Db.new.set(id)[:frm]
-    fgrp=ExtGrp.new(fdb)
-    item=fgrp.setcmd(cmd.split(':'))
-    field=Field.new.ext_rsp(fdb)
-    field.load if $opt['m']
-    field.upd(item){res}
-    puts field
-    exit
-  end
   end
 end

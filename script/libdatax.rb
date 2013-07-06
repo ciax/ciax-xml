@@ -20,11 +20,6 @@ module CIAX
       geth.to_s
     end
 
-    def loadkey(json_str=nil)
-      super
-      seth
-    end
-
     def load(json_str=nil)
       super
       seth
@@ -77,7 +72,7 @@ module CIAX
       self['id']=id||Msg.cfg_err("ID")
       @base=self['type']+'_'+self['id']+'.json'
       @prefix=VarDir
-      @upd_proc=[] # Proc Array
+      @upd_proc=[] # Proc Array for Update Propagation to the upper Layers
       self
     end
 

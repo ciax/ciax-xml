@@ -53,12 +53,8 @@ module CIAX
       self
     end
 
-    def loadkey(json_str=nil)
-      deep_update(readj(json_str))
-    end
-
     def load(json_str=nil)
-      replace readj(json_str)
+      deep_update(readj(json_str))
     end
 
     private

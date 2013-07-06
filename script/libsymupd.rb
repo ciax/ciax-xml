@@ -3,12 +3,12 @@ require "libmsg"
 require "libstatus"
 require "libsymdb"
 
-# Status to Sym::Upd (String with attributes)
+# Status to App::Sym (String with attributes)
 module CIAX
-  module Sym
-    module Upd
+  module App
+    module Symbol
       def self.extended(obj)
-        Msg.type?(obj,App::Status)
+        Msg.type?(obj,Status)
       end
 
       def ext_upd(db)
@@ -51,25 +51,25 @@ module CIAX
         verbose("Symbol","Update(#{self['time'].to_f})")
       end
     end
-  end
 
-  class App::Status
-    def ext_sym(adb)
-      extend(Sym::Upd).ext_upd(adb)
+    class Status
+      def ext_sym(adb)
+        extend(Symbol).ext_upd(adb)
+      end
     end
-  end
 
-  if __FILE__ == $0
-    require "liblocdb"
-    GetOpts.new
-    id=ARGV.shift
-    begin
-      adb=Loc::Db.new.set(id)[:app]
-      stat=App::Status.new.ext_file(adb['site_id']).load
-      stat.ext_sym(adb).upd.ext_save.save
-      print stat
-    rescue InvalidID
-      Msg.usage "[id]"
+    if __FILE__ == $0
+      require "liblocdb"
+      GetOpts.new
+      id=ARGV.shift
+      begin
+        adb=Loc::Db.new.set(id)[:app]
+        stat=Status.new.ext_file(adb['site_id']).load
+        stat.ext_sym(adb).upd.ext_save.save
+        print stat
+      rescue InvalidID
+        Msg.usage "[id]"
+      end
     end
   end
 end

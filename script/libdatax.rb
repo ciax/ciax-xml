@@ -30,7 +30,7 @@ module CIAX
     def read(json_str=nil)
       super
       setdata
-      upd
+      self
     end
 
     # Update with str (key=val,key=val,..)
@@ -41,6 +41,7 @@ module CIAX
         @data[k]=v
       }
       self['time']=UnixTime.now
+      @upd_proc.each{|p| p.call(self)}
       self
     end
 
@@ -76,6 +77,7 @@ module CIAX
     def setdata
       @data=ExHash[delete('val')||{}]
       self['time']=UnixTime.parse(self['time']||UnixTime.now)
+      @upd_proc.each{|p| p.call(self)}
       self
     end
   end

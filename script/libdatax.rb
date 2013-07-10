@@ -5,11 +5,13 @@ require "libupdate"
 
 module CIAX
   class Datax < ExHash
+    attr_reader :upd_proc
     def initialize(type,init_struct={})
       self['type']=type
       self['time']=UnixTime.now
       @data=ExHash[init_struct]
       @ver_color=6
+      @upd_proc=[] # Proc Array for Update Propagation to the upper Layers
     end
 
     def to_j
@@ -20,9 +22,15 @@ module CIAX
       getdata.to_s
     end
 
+    def upd # update after processing
+      @upd_proc.each{|p| p.call(self)}
+      self
+    end
+
     def read(json_str=nil)
       super
       setdata
+      upd
     end
 
     # Update with str (key=val,key=val,..)
@@ -73,17 +81,10 @@ module CIAX
   end
 
   module Fname
-    attr_reader :upd_proc
     def ext_fname(id)
       self['id']=id||Msg.cfg_err("ID")
       @base=self['type']+'_'+self['id']+'.json'
       @prefix=VarDir
-      @upd_proc=[] # Proc Array for Update Propagation to the upper Layers
-      self
-    end
-
-    def upd # update after processing
-      @upd_proc.each{|p| p.call(self)}
       self
     end
 
@@ -119,7 +120,7 @@ module CIAX
         json_str=f.read
       }
       warning(pfx," -- json file (#{@base}) is empty") if json_str.empty?
-      j2h(json_str)
+      read(json_str)
     rescue OpenURI::HTTPError
       warning("Http","  -- no url file (#{fname})")
     end
@@ -161,7 +162,7 @@ module CIAX
         json_str=f.read
       }
       warning("File"," -- json file (#{@base}) is empty") if json_str.empty?
-      j2h(json_str)
+      read(json_str)
     rescue Errno::ENOENT
       if tag
         Msg.par_err("No such Tag","Tag=#{taglist}")

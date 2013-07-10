@@ -13,16 +13,16 @@ module CIAX
     end
 
     def to_j
-      geth.to_j
+      getdata.to_j
     end
 
     def to_s
-      geth.to_s
+      getdata.to_s
     end
 
     def read(json_str=nil)
       super
-      seth
+      setdata
     end
 
     # Update with str (key=val,key=val,..)
@@ -59,13 +59,13 @@ module CIAX
     end
 
     private
-    def geth
+    def getdata
       hash=ExHash[self]
       hash['val']=@data
       hash
     end
 
-    def seth
+    def setdata
       @data=ExHash[delete('val')||{}]
       self['time']=UnixTime.parse(self['time']||UnixTime.now)
       self
@@ -128,7 +128,7 @@ module CIAX
   module File
     include Fname
     def save(tag=nil)
-      writej(geth,tag)
+      writej(getdata,tag)
     end
 
     # Saving data of specified keys with tag

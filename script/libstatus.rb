@@ -15,14 +15,13 @@ module CIAX
       end
 
       def set(hash) #For Watch test
-        self['val'].update(hash)
+        @data.update(hash)
         upd
       end
 
       def change?(id)
-        val=self['val']
-        verbose("Status","Compare(#{id}) current=[#{val[id]}] vs last=[#{@last[id]}]")
-        self[id] != @last[id]
+        verbose("Status","Compare(#{id}) current=[#{@data[id]}] vs last=[#{@last[id]}]")
+        @data[id] != @last[id]
       end
 
       def update?
@@ -31,7 +30,7 @@ module CIAX
 
       def refresh
         verbose("Status","Status Updated")
-        @last.update(self['val'])
+        @last.update(@data)
         @updated=self['time']
         self
       end

@@ -16,7 +16,7 @@ module CIAX
         @ads=sdb[:select]
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}
-        @ads.keys.each{|k| self['val'][k]||='' }
+        @ads.keys.each{|k| @data[k]||='' }
         @field.upd_proc << proc{upd}
         self
       end
@@ -50,9 +50,9 @@ module CIAX
               verbose("AppRsp","Formula:#{f}(#{data})")
             end
             data = @fmt[id] % data if @fmt.key?(id)
-            self['val'][id]=data.to_s
+            @data[id]=data.to_s
           }
-          verbose("AppRsp","GetStatus:#{id}=[#{self['val'][id]}]")
+          verbose("AppRsp","GetStatus:#{id}=[#{@data[id]}]")
         }
         self['time']=@field['time']
         verbose("AppRsp","Update(#{self['time']})")

@@ -12,6 +12,7 @@ module CIAX
         super('stat',init_struct)
         @last={}
         @updated=UnixTime.now
+        @lastsave=UnixTime.now
       end
 
       def set(hash) #For Watch test
@@ -42,12 +43,6 @@ module CIAX
       # @ lastsave
       def self.extended(obj)
         Msg.type?(obj,Status)
-      end
-
-      def ext_fname(id)
-        super
-        @lastsave=UnixTime.now
-        self
       end
 
       def save(data=nil,tag=nil)

@@ -46,7 +46,9 @@ module CIAX
     end
 
     def unset(key)
-      @data.delete(key)
+      val=@data.delete(key)
+      @upd_proc.each{|p| p.call(self)}
+      val
     end
 
     def ext_fname(id)

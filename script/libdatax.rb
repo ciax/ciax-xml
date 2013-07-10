@@ -5,7 +5,7 @@ require "libupdate"
 
 module CIAX
   class Datax < ExHash
-    attr_reader :upd_proc
+    attr_reader :data,:upd_proc
     def initialize(type,init_struct={})
       self['type']=type
       self['time']=UnixTime.now

@@ -41,11 +41,12 @@ module CIAX
       # @< (db),(base),(prefix)
       # @< (last)
       # @ lastsave
+      include CIAX::File
       def self.extended(obj)
         Msg.type?(obj,Status)
       end
 
-      def save(data=nil,tag=nil)
+      def save(tag=nil)
         time=self['time']
         if time > @lastsave
           super
@@ -82,7 +83,7 @@ module CIAX
               when 'time'
                 h['msg']=@stat['time'].inspect
               else
-                h['msg']=@stat['msg'][id]||@stat['val'][id]
+                h['msg']=@stat['msg'][id]||@stat.data[id]
               end
               set(h,'class',id)
             }
@@ -134,7 +135,7 @@ module CIAX
       stat=Status.new
       begin
         if ! STDIN.tty?
-          stat.load
+          stat.read
           id=stat['id']
           adb=Loc::Db.new.set(id)[:app]
         else

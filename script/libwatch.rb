@@ -2,6 +2,7 @@
 require 'libmsg'
 require 'libstatus'
 require 'librerange'
+require "libdata"
 
 module CIAX
   module Watch
@@ -69,7 +70,7 @@ module CIAX
 
       def ext_upd(adb,stat)
         @wdb=type?(adb,App::Db)[:watch] || {:stat => {}}
-        @stat=type?(stat,App::Status)
+        @stat=type?(stat,App::Fname)
         @val=@stat['val']
         @upd_proc=[]
         self['period']=@wdb['period'].to_i if @wdb.key?('period')
@@ -259,7 +260,7 @@ module CIAX
       wview.ext_prt
     end
     if t=$opt['t']
-      stat.ext_save.str_update(t).upd.save
+      stat.str_update(t).upd.save
       watch.ext_save.upd.save
     end
     puts wview||watch

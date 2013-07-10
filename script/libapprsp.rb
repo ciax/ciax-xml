@@ -5,9 +5,10 @@ require "libstatus"
 module CIAX
   module App
     module Rsp
+      include File
       # @< (base),(prefix)
       def self.extended(obj)
-        Msg.type?(obj,Status,Data::File)
+        Msg.type?(obj,Status)
       end
 
       def ext_rsp(field,sdb)
@@ -120,7 +121,7 @@ module CIAX
       fdb=ldb[:frm]
       adb=ldb[:app]
       field.ext_rsp(fdb)
-      stat=Status.new.ext_file(adb['site_id']).ext_save
+      stat=Status.new.ext_file(adb['site_id'])
       puts stat.ext_rsp(field,adb[:status]).upd
       stat.save
       exit

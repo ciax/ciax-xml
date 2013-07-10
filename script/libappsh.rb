@@ -33,7 +33,7 @@ module CIAX
         self['layer']='app'
         self['id']=@adb['site_id']
         cobj=ExtCmd.new(adb)
-        @stat=App::Status.new.ext_file(@adb['site_id'])
+        @stat=App::Status.new(adb[:status][:struct].deep_copy)
         plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
         prom=Sh::Prompt.new(self,plist)
         super(cobj)
@@ -69,7 +69,7 @@ module CIAX
       require "libappsym"
       def initialize(adb)
         super
-        @stat.ext_sym(adb).load
+        @stat.ext_sym(adb)
         @watch.ext_upd(adb,@stat).upd
         cri={:type => 'reg', :list => ['.']}
         @cobj['sv']['int'].add_item('set','[key=val,...]',[cri]).def_proc=proc{|item|
@@ -118,7 +118,7 @@ module CIAX
         super(adb)
         @fsh=type?(fsh,Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-        @stat.ext_save.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).upd
+        @stat.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).upd
         @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
         @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")

@@ -1,18 +1,17 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libdata"
+require "libdatax"
 
 module CIAX
   module App
-    class Status < Data
+    class Status < Datax
       # @ last*
       attr_reader :last
-      def initialize
+      def initialize(init_struct={})
         @ver_color=6
-        super('stat')
+        super('stat',init_struct)
         @last={}
         @updated=UnixTime.now
-        ext_upd
       end
 
       def set(hash) #For Watch test
@@ -36,23 +35,18 @@ module CIAX
         @updated=self['time']
         self
       end
-
-      def ext_save
-        super
-        extend(Save).ext_save
-        self
-      end
     end
 
-    module Save
+    module File
       # @< (db),(base),(prefix)
       # @< (last)
       # @ lastsave
       def self.extended(obj)
-        Msg.type?(obj,Save)
+        Msg.type?(obj,Status)
       end
 
-      def ext_save
+      def ext_fname(id)
+        super
         @lastsave=UnixTime.now
         self
       end
@@ -72,8 +66,8 @@ module CIAX
 
     class View < ExHash
       def initialize(adb,stat)
-        @sdb=type?(adb,App::Db)[:status]
-        @stat=type?(stat,Data)
+        @sdb=type?(adb,Db)[:status]
+        @stat=type?(stat,Status)
         ['val','class','msg'].each{|key|
           stat[key]||={}
         }
@@ -151,11 +145,11 @@ module CIAX
           adb=Loc::Db.new.set(id)[:app]
         else
           adb=Loc::Db.new.set(id)[:app]
-          stat.ext_file(adb['site_id'])
+          id=adb['site_id']
           if host=$opt['h']
-            stat.ext_url(host).load
+            stat.ext_http(id,host).load
           else
-            stat.load
+            stat.ext_file(id).load
           end
         end
         view=View.new(adb,stat)

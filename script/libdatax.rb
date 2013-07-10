@@ -20,7 +20,7 @@ module CIAX
       geth.to_s
     end
 
-    def load(json_str=nil)
+    def read(json_str=nil)
       super
       seth
     end
@@ -105,8 +105,7 @@ module CIAX
       self
     end
 
-    private
-    def readj(tag=nil)
+    def load(tag=nil)
       name=fname(tag)
       json_str=''
       open(name){|f|
@@ -114,7 +113,7 @@ module CIAX
         json_str=f.read
       }
       warning(pfx," -- json file (#{@base}) is empty") if json_str.empty?
-      super(json_str)
+      j2h(json_str)
     rescue OpenURI::HTTPError
       warning("Http","  -- no url file (#{fname})")
     end
@@ -147,8 +146,7 @@ module CIAX
       self
     end
 
-    private
-    def readj(tag=nil)
+    def load(tag=nil)
       name=fname(tag)
       json_str=''
       open(name){|f|
@@ -157,7 +155,7 @@ module CIAX
         json_str=f.read
       }
       warning("File"," -- json file (#{@base}) is empty") if json_str.empty?
-      super(json_str)
+      j2h(json_str)
     rescue Errno::ENOENT
       if tag
         Msg.par_err("No such Tag","Tag=#{taglist}")
@@ -166,6 +164,7 @@ module CIAX
       end
     end
 
+    private
     def writej(data,tag=nil)
       name=fname(tag)
       open(name,'w'){|f|

@@ -13,7 +13,7 @@ require "thread"
 module CIAX
   module App
     def self.new(adb,fsh=nil)
-      if fsh
+      if Frm::Sv === fsh
         ash=App::Sv.new(adb,fsh,$opt['e'])
         ash=App::Cl.new(adb,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c']

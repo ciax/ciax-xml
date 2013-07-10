@@ -11,7 +11,7 @@ module CIAX
       end
 
       def ext_rsp(field,sdb)
-        @field=type?(field,Frm::Rsp)
+        @field=type?(field,Frm::Field,Fname)
         @ads=sdb[:select]
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}
@@ -115,7 +115,7 @@ module CIAX
       require "libfrmrsp"
       require "libstatus"
       Msg.usage "< field_file" if STDIN.tty?
-      field=Frm::Field.new.load
+      field=Frm::Field.new.read
       ldb=Loc::Db.new.set(field['id'])
       fdb=ldb[:frm]
       adb=ldb[:app]

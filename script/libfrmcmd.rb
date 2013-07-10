@@ -106,7 +106,7 @@ module CIAX
         field=Field.new
         cobj=ExtCmd.new(fdb,field)
         cgrp=cobj['sv']['ext']
-        field.load unless STDIN.tty?
+        field.read unless STDIN.tty?
         print cgrp.setcmd(cmd).getframe
       rescue InvalidCMD
         Msg.usage("[dev] [cmd] (par) < field_file",[])

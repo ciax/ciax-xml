@@ -52,7 +52,7 @@ module CIAX
       end
 
       def load(json_str=nil)
-        super
+        read(json_str)
         self['time']=UnixTime.parse(self['time']) if key?('time')
         upd
       end

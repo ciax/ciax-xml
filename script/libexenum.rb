@@ -53,12 +53,12 @@ module CIAX
       self
     end
 
-    def load(json_str=nil)
-      deep_update(readj(json_str))
+    def read(json_str=nil)
+      deep_update(j2h(json_str))
     end
 
     private
-    def readj(json_str=nil)
+    def j2h(json_str=nil)
       JSON.load(json_str||gets(nil)||Msg.abort("No data in file(#{ARGV})"))
     end
 

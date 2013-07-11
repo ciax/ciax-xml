@@ -43,6 +43,8 @@ begin
   }
   $stderr.puts
   puts stat.sql
+rescue Interrupt
+  puts stat.sql
 rescue InvalidID
   $opt.usage("(opt) [stream_log]")
   # input format 'sqlite3 -header'

@@ -52,7 +52,7 @@ module CIAX
       private
       def expand
         val={'time'=>self['time']}
-        self['val'].each{|k,v|
+        @data.each{|k,v|
           next if /type/ =~ k
           case v
           when Array

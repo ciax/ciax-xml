@@ -57,7 +57,7 @@ module CIAX
       def initialize(fdb,host=nil)
         super(fdb,fdb['self_id'])
         host=type?(host||fdb['host']||'localhost',String)
-        @field.ext_http(id,host).load
+        @field.ext_http(self['id'],host).load
         @cobj['sv'].def_proc=proc{to_s}
         ext_client(host,fdb['port'])
         @upd_proc.add{@field.load}

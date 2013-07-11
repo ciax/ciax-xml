@@ -3,6 +3,9 @@ abort "Usage: frmsim [id] (ver)" if ARGV.size < 1
 id=ARGV.shift
 ver=ARGV.shift
 ARGV.clear
+def pr(text)
+  STDERR.print "\033[0;34m#{text}\33[0m"
+end
 
 def find_snd(fd,input,fname)
   while line=fd.gets
@@ -10,10 +13,10 @@ def find_snd(fd,input,fname)
     rec=snd[2].chomp
     inp=[input.chomp].pack("m").split("\n").join('')
     if rec == inp
-      STDERR.print "#{fname}:#{snd[1]}(#{fd.lineno})"
+      pr "#{fname}:#{snd[1]}(#{fd.lineno})"
       rcv=fd.gets.split("\t")
       if /rcv/ === rcv[1]
-        STDERR.print " -> rcv(#{fd.lineno})"
+        pr " -> rcv(#{fd.lineno})"
         sleep rcv[0].to_i-snd[0].to_i
         STDOUT.syswrite(rcv[2].unpack("m").first)
       end

@@ -73,14 +73,13 @@ module CIAX
         @watch.ext_upd(adb,@stat).upd
         cri={:type => 'reg', :list => ['.']}
         @cobj['sv']['int'].add_item('set','[key=val,...]',[cri]).def_proc=proc{|item|
-          @stat.str_update(item.par[0]).upd
+          @stat.str_update(item.par[0])
           self['msg']="Set #{item.par[0]}"
         }
         @cobj['sv']['int'].add_item('del','[key,...]',[cri]).def_proc=proc{|item|
           item.par[0].split(',').each{|key|
-            @stat['val'].delete(key)
+            @stat.unset(key)
           }
-          @stat.upd
           self['msg']="Delete #{item.par[0]}"
         }
         @watch.event_proc=proc{|cmd,p|

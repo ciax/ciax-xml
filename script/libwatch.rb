@@ -70,8 +70,8 @@ module CIAX
 
       def ext_upd(adb,stat)
         @wdb=type?(adb,App::Db)[:watch] || {:stat => {}}
-        @stat=type?(stat,App::Fname)
-        @val=@stat['val']
+        @stat=type?(stat,App::Status)
+        @val=@stat.data
         @upd_proc=[]
         self['period']=@wdb['period'].to_i if @wdb.key?('period')
         self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')

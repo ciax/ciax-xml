@@ -9,7 +9,6 @@ require "libstream"
 module CIAX
   module Frm
     module Rsp
-      include File
       # @< (base),(prefix)
       # @ cobj,sel,fds,frame,fary,cc
       def self.extended(obj)
@@ -26,7 +25,6 @@ module CIAX
         @frame=Frame.new(db['endian'],db['ccmethod'])
         # Field Initialize
         @data.replace db[:field][:struct].deep_copy if @data.empty?
-        ext_file(db['site_id'])
         self
       end
 
@@ -169,7 +167,7 @@ module CIAX
       fgrp=ExtGrp.new(fdb)
       item=fgrp.setcmd(cmd.split(':'))
       field=Field.new.ext_rsp(fdb)
-      field.load if $opt['m']
+      field.ext_file(id).load if $opt['m']
       field.upd(item){res}
       puts field
       exit

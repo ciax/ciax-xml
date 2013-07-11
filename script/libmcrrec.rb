@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libdata"
 require "libstatus"
 require "libcommand"
 require "libmcrprt"

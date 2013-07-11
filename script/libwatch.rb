@@ -2,7 +2,6 @@
 require 'libmsg'
 require 'libstatus'
 require 'librerange'
-require "libdata"
 
 module CIAX
   module Watch

@@ -6,7 +6,7 @@ require "libmcrprt"
 
 module CIAX
   module Mcr
-    class Record < Data
+    class Record < Datax
       attr_accessor :stat_proc
       attr_reader :crnt
       def initialize(cmd,label)
@@ -86,7 +86,7 @@ module CIAX
 
       def scan
         stats=sites.inject({}){|hash,site|
-          hash[site]=@stat_proc.call(site).load
+          hash[site]=@stat_proc.call(site)
           hash
         }
         @condition.map{|h|

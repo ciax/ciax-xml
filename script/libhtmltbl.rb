@@ -3,6 +3,7 @@ require 'libmsg'
 
 module CIAX
   class HtmlTbl < Array
+    include Msg
     def initialize(adb)
       sdb=type?(adb,App::Db)[:status]
       @label = sdb[:label]

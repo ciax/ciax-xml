@@ -24,10 +24,10 @@ module CIAX
       # @< cobj,output,(upd_proc*)
       # @ field*
       attr_reader :field
-      def initialize(fdb)
+      def initialize(fdb,id=nil)
         type?(fdb,Db)
         self['layer']='frm'
-        self['id']=fdb['site_id']
+        self['id']=id||fdb['id']
         @field=Field.new(fdb[:field][:struct].deep_copy)
         cobj=ExtCmd.new(fdb,@field)
         prom=Sh::Prompt.new(self)
@@ -45,7 +45,7 @@ module CIAX
 
     class Test < Exe
       def initialize(fdb)
-        super
+        super(fdb)
         @cobj['sv'].def_proc=proc{|item|@field['time']=UnixTime.now}
         @cobj['sv']['int']['set'].def_proc=proc{|item|
           @field.set(item.par[0],item.par[1])
@@ -55,9 +55,9 @@ module CIAX
 
     class Cl < Exe
       def initialize(fdb,host=nil)
-        super(fdb)
+        super(fdb,fdb['self_id'])
         host=type?(host||fdb['host']||'localhost',String)
-        @field.ext_http(self['id'],host).load
+        @field.ext_http(id,host).load
         @cobj['sv'].def_proc=proc{to_s}
         ext_client(host,fdb['port'])
         @upd_proc.add{@field.load}
@@ -69,11 +69,11 @@ module CIAX
       # @< field*
       # @ io
       def initialize(fdb,iocmd=[])
-        super(fdb)
-        @field.ext_rsp(fdb).load
+        super(fdb,fdb['site_id'])
+        @field.ext_rsp(fdb).ext_file(self['id']).load
         if type?(iocmd,Array).empty?
           @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
-          @io.ext_logging(fdb['site_id'],fdb['version'])
+          @io.ext_logging(self['id'],fdb['version'])
           # @field.ext_sqlog
         else
           @io=Stream.new(iocmd,fdb['wait'],1)

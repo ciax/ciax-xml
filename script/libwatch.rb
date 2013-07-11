@@ -6,7 +6,7 @@ require "libdata"
 
 module CIAX
   module Watch
-    class Data < Data
+    class Data < Datax
       # @ event_proc*
       attr_accessor :event_proc
 
@@ -61,7 +61,6 @@ module CIAX
     end
 
     module Upd
-      include Data::Upd
       # @< (event_proc*)
       # @ wdb,val
       def self.extended(obj)
@@ -71,8 +70,6 @@ module CIAX
       def ext_upd(adb,stat)
         @wdb=type?(adb,App::Db)[:watch] || {:stat => {}}
         @stat=type?(stat,App::Status)
-        @val=@stat.data
-        @upd_proc=[]
         self['period']=@wdb['period'].to_i if @wdb.key?('period')
         self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')
         # Pick usable val
@@ -80,9 +77,9 @@ module CIAX
           h['var']
         }.uniq
         @list.unshift('time')
-        # @val(all) = self['crnt'](picked) > self['last']
+        # @stat.data(all) = self['crnt'](picked) > self['last']
         # upd() => self['last']<-self['crnt']
-        #       => self['crnt']<-@val
+        #       => self['crnt']<-@stat.data
         #       => check(self['crnt'] <> self['last']?)
         ['crnt','last','res'].each{|k| self[k]={}}
         upd_last
@@ -120,7 +117,7 @@ module CIAX
       def upd_last
         @list.each{|k|
           self['last'][k]=self['crnt'][k]
-          self['crnt'][k]=@val[k]
+          self['crnt'][k]=@stat.data[k]
         }
       end
 
@@ -254,14 +251,14 @@ module CIAX
       $opt.usage("(opt) [id]")
     end
     stat=App::Status.new.ext_file(adb['site_id']).load
-    watch=Watch::Data.new.ext_file(adb['site_id']).ext_upd(adb,stat).upd
+    watch=Watch::Data.new.ext_upd(adb,stat).upd
     wview=Watch::View.new(adb,watch)
     unless $opt['r']
       wview.ext_prt
     end
     if t=$opt['t']
       stat.str_update(t).upd.save
-      watch.ext_save.upd.save
+      watch.ext_file(adb['site_id']).upd.save
     end
     puts wview||watch
   end

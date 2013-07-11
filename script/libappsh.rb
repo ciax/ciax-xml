@@ -31,14 +31,14 @@ module CIAX
       def initialize(adb,id=nil)
         @adb=type?(adb,Db)
         self['layer']='app'
-        self['id']=id||@adb['id']
+        self['id']=id||adb['id']
         cobj=ExtCmd.new(adb)
         @stat=App::Status.new(adb[:status][:struct].deep_copy)
         plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
         prom=Sh::Prompt.new(self,plist)
         super(cobj)
         ext_shell(@stat,prom)
-        @watch=Watch::Data.new.ext_file(@adb['site_id'])
+        @watch=Watch::Data.new
         @cobj.int_proc=proc{
           int=@watch.interrupt
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")
@@ -100,7 +100,7 @@ module CIAX
         super(adb,adb['site_id'])
         host=type?(host||adb['host']||'localhost',String)
         @stat.ext_http(self['id'],host).load
-        @watch.ext_url(host).load
+        @watch.ext_http(self['id'],host).load
         ext_client(host,adb['port'])
         @upd_proc.add{
           @stat.load
@@ -119,7 +119,7 @@ module CIAX
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).ext_file(self['id']).upd
         @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
-        @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
+        @watch.ext_upd(adb,@stat).ext_file(self['id']).upd.event_proc=proc{|cmd,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")
           @item=@cobj.setcmd(cmd)
           sendcmd(p,@item)

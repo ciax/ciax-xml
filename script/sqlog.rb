@@ -12,7 +12,7 @@ GetOpts.new("t",{"v"=>"verbose"})
 begin
   raise(InvalidID,'') if STDIN.tty? && ARGV.size < 1
   ldb=Loc::Db.new
-  field=Field.new
+  field=Frm::Field.new
   stat=App::Status.new
   fgrp=nil
   site_id=nil
@@ -24,10 +24,8 @@ begin
       Msg.warn("Initialize")
       fdb=ldb[:frm]
       fgrp=Frm::ExtGrp.new(fdb)
-      field.ext_file(fdb['site_id']).load
-      field.ext_rsp(fdb)
+      field.ext_rsp(fdb).load
       adb=ldb[:app]
-      stat.ext_file(adb['site_id'])
       stat.ext_rsp(field,adb[:status])
       stat.ext_sqlog($opt['t']&&"test")
     elsif site_id != hash['id']

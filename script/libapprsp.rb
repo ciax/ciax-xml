@@ -121,8 +121,8 @@ module CIAX
       fdb=ldb[:frm]
       adb=ldb[:app]
       field.ext_rsp(fdb)
-      stat=Status.new.ext_file(adb['site_id'])
-      puts stat.ext_rsp(field,adb[:status]).upd
+      stat=Status.new.ext_rsp(field,adb[:status]).upd
+      puts stat
       stat.save
       exit
     end

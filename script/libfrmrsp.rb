@@ -26,7 +26,7 @@ module CIAX
         @frame=Frame.new(db['endian'],db['ccmethod'])
         # Field Initialize
         @data.replace db[:field][:struct].deep_copy if @data.empty?
-        ext_fname(db['site_id'])
+        ext_file(db['site_id'])
         self
       end
 

@@ -12,7 +12,7 @@ module CIAX
       end
 
       def ext_rsp(field,sdb)
-        @field=type?(field,Frm::Field,Fname)
+        @field=type?(field,Frm::Field)
         @ads=sdb[:select]
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}

@@ -15,11 +15,11 @@ module CIAX
     end
 
     def to_j
-      getdata.to_j
+      _getdata.to_j
     end
 
     def to_s
-      getdata.to_s
+      _getdata.to_s
     end
 
     def upd # update after processing
@@ -29,7 +29,7 @@ module CIAX
 
     def read(json_str=nil)
       super
-      setdata
+      _setdata
       self
     end
 
@@ -51,48 +51,40 @@ module CIAX
       val
     end
 
-    def ext_fname(id)
-      extend Fname
-      ext_fname(id)
-      self
-    end
-
     def ext_file(id)
       extend File
-      ext_fname(id)
+      _setid(id)
       self
     end
 
     def ext_http(id,host=nil)
       extend Http
-      ext_http(id,host)
+      _setid(id)
+      ext_http(host)
       self
     end
 
     private
-    def getdata
+    def _getdata
       hash=ExHash[self]
       hash['val']=@data
       hash
     end
 
-    def setdata
+    def _setdata
       @data=ExHash[delete('val')||{}]
       self['time']=UnixTime.parse(self['time']||UnixTime.now)
       @upd_proc.each{|p| p.call(self)}
       self
     end
-  end
 
-  module Fname
-    def ext_fname(id)
+    def _setid(id)
       self['id']=id||Msg.cfg_err("ID")
       @base=self['type']+'_'+self['id']+'.json'
       @prefix=VarDir
       self
     end
 
-    private
     def fname(tag=nil)
       @base=[self['type'],self['id'],tag].compact.join('_')+'.json'
       @prefix+"/json/"+@base
@@ -107,9 +99,7 @@ module CIAX
 
   module Http
     require "open-uri"
-    include Fname
-    def ext_http(id,host)
-      ext_fname(id)
+    def ext_http(host)
       host||='localhost'
       @prefix="http://"+host
       verbose("Http","Initialize")
@@ -131,9 +121,8 @@ module CIAX
   end
 
   module File
-    include Fname
     def save(tag=nil)
-      writej(getdata,tag)
+      writej(_getdata,tag)
     end
 
     # Saving data of specified keys with tag

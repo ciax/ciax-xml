@@ -11,7 +11,7 @@ module CIAX
         Msg.type?(obj,Status)
       end
 
-      def ext_upd(db)
+      def ext_sym(db)
         type?(db,App::Db)
         ads=db[:status]
         self['ver']=db['version'].to_i
@@ -32,7 +32,7 @@ module CIAX
           verbose("Symbol","ID=#{key},table=#{sid}")
           self['class'][key]='alarm'
           self['msg'][key]='N/A'
-          val=self['val'][key]
+          val=@data[key]
           tbl.each{|sym|
             case sym['type']
             when 'range'
@@ -54,7 +54,7 @@ module CIAX
 
     class Status
       def ext_sym(adb)
-        extend(Symbol).ext_upd(adb)
+        extend(Symbol).ext_sym(adb)
       end
     end
 

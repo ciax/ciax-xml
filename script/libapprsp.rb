@@ -5,7 +5,6 @@ require "libstatus"
 module CIAX
   module App
     module Rsp
-      include File
       # @< (base),(prefix)
       def self.extended(obj)
         Msg.type?(obj,Status)
@@ -123,7 +122,7 @@ module CIAX
       field.ext_rsp(fdb)
       stat=Status.new.ext_rsp(field,adb[:status]).upd
       puts stat
-      stat.save
+      stat.ext_file(ldb['id']).save
       exit
     end
   end

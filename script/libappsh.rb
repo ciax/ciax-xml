@@ -28,10 +28,10 @@ module CIAX
       # @< cobj,output,upd_proc*
       # @ adb,fsh,watch,stat*
       attr_reader :adb,:stat
-      def initialize(adb)
+      def initialize(adb,id=nil)
         @adb=type?(adb,Db)
         self['layer']='app'
-        self['id']=@adb['site_id']
+        self['id']=id||@adb['id']
         cobj=ExtCmd.new(adb)
         @stat=App::Status.new(adb[:status][:struct].deep_copy)
         plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
@@ -68,7 +68,7 @@ module CIAX
     class Test < Exe
       require "libappsym"
       def initialize(adb)
-        super
+        super(adb)
         @stat.ext_sym(adb)
         @watch.ext_upd(adb,@stat).upd
         cri={:type => 'reg', :list => ['.']}
@@ -97,9 +97,9 @@ module CIAX
 
     class Cl < Exe
       def initialize(adb,host=nil)
-        super(adb)
+        super(adb,adb['site_id'])
         host=type?(host||adb['host']||'localhost',String)
-        @stat.ext_url(host).load
+        @stat.ext_http(self['id'],host).load
         @watch.ext_url(host).load
         ext_client(host,adb['port'])
         @upd_proc.add{
@@ -114,10 +114,10 @@ module CIAX
     # @ fsh,buf,log_proc
     class Sv < Exe
       def initialize(adb,fsh,logging=nil)
-        super(adb)
+        super(adb,adb['site_id'])
         @fsh=type?(fsh,Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-        @stat.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).upd
+        @stat.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).ext_file(self['id']).upd
         @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
         @watch.ext_upd(adb,@stat).ext_save.upd.event_proc=proc{|cmd,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")

@@ -38,7 +38,7 @@ module CIAX
         self
       end
 
-      def sql
+      def to_s
         (["begin;"]+@log+["commit;"]).join("\n")
       end
 
@@ -83,6 +83,7 @@ module CIAX
       end
 
       def ext_exec
+        @stat.upd_proc << proc{save}
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+@stat['id']+".sq3"]
         unless check_table
           create
@@ -108,7 +109,7 @@ module CIAX
       def save(data=nil,tag=nil)
         unless data || tag
           IO.popen(@sqlcmd,'w'){|f|
-            f.puts sql
+            f.puts to_s
           }
           Msg.abort("Sqlite3 input error") unless $?.success?
           verbose("SqLog","Save complete (#{@stat['id']})")
@@ -128,7 +129,7 @@ module CIAX
       adb=Loc::Db.new.set(id)[:app]
       stat=App::Status.new.ext_file(adb['site_id']).load
       sqlog=SqLog::Upd.new(stat)
-      puts sqlog.create.upd.sql
+      puts sqlog.create.upd
     rescue InvalidID
       Msg.usage "[id]"
     end

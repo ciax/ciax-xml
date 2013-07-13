@@ -42,7 +42,7 @@ begin
     end
   }
   $stderr.puts
-  puts sqlog.sql
+  puts sqlog
 rescue Interrupt
   puts stat.sql
 rescue InvalidID

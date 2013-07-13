@@ -14,6 +14,7 @@ begin
   ldb=Loc::Db.new
   field=Frm::Field.new
   stat=App::Status.new
+  sqlog=SqLog::Upd.new(stat,$opt['t']&&"test")
   fgrp=nil
   site_id=nil
   readlines.grep(/rcv/).each{|str|
@@ -24,10 +25,9 @@ begin
       Msg.warn("Initialize")
       fdb=ldb[:frm]
       fgrp=Frm::ExtGrp.new(fdb)
-      field.ext_rsp(fdb).load
+      field.ext_rsp(fdb)
       adb=ldb[:app]
       stat.ext_rsp(field,adb[:status])
-      stat.ext_sqlog($opt['t']&&"test")
     elsif site_id != hash['id']
       next
     end
@@ -42,7 +42,7 @@ begin
     end
   }
   $stderr.puts
-  puts stat.sql
+  puts sqlog.sql
 rescue Interrupt
   puts stat.sql
 rescue InvalidID

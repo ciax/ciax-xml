@@ -5,17 +5,15 @@ require "libmsg"
 # Generate SQL command string
 module CIAX
   module SqLog
-    module Data
-      # @ log,tid
-      def self.extended(obj)
-        Msg.type?(obj,Datax)
-      end
-
-      def ext_sqlog(ver=nil)
+    class Upd
+      include Msg
+      def initialize(stat,ver=nil)
         @ver_color=9
-        ver||=self['ver'].to_i
+        @stat=type?(stat,Datax)
+        ver||=@stat['ver'].to_i
         @log=[]
-        @tid="#{self['type']}_#{ver}"
+        @tid="#{@stat['type']}_#{ver}"
+        @stat.upd_proc << proc{upd}
         self
       end
 
@@ -32,11 +30,10 @@ module CIAX
       end
 
       def upd
-        super
         val=expand
         key=val.keys.map{|s| s.to_s}.join(',')
         val=val.values.map{|s| s.to_s}.join(',')
-        verbose("SqLog","Update(#{self['time']}):[#{self['id']}/#{@tid}]")
+        verbose("SqLog","Update(#{@stat['time']}):[#{@stat['id']}/#{@tid}]")
         @log.push "insert or ignore into #{@tid} (#{key}) values (#{val});"
         self
       end
@@ -51,8 +48,8 @@ module CIAX
 
       private
       def expand
-        val={'time'=>self['time']}
-        @data.each{|k,v|
+        val={'time'=>@stat['time']}
+        @stat.data.each{|k,v|
           next if /type/ =~ k
           case v
           when Array
@@ -82,17 +79,17 @@ module CIAX
       # @< log,tid
       # @ sqlcmd
       def self.extended(obj)
-        Msg.type?(obj,Data)
+        Msg.type?(obj,Upd)
       end
 
       def ext_exec
-        @sqlcmd=["sqlite3",VarDir+"/sqlog_"+self['id']+".sq3"]
+        @sqlcmd=["sqlite3",VarDir+"/sqlog_"+@stat['id']+".sq3"]
         unless check_table
           create
           save
-          verbose("SqLog","Init/Table '#{@tid}' is created in #{self['id']}")
+          verbose("SqLog","Init/Table '#{@tid}' is created in #{@stat['id']}")
         end
-        verbose("SqLog","Init/Start '#{self['id']}' (#{@tid})")
+        verbose("SqLog","Init/Start '#{@stat['id']}' (#{@tid})")
         self
       end
 
@@ -109,13 +106,12 @@ module CIAX
 
       # Do a transaction
       def save(data=nil,tag=nil)
-        super
         unless data || tag
           IO.popen(@sqlcmd,'w'){|f|
             f.puts sql
           }
           Msg.abort("Sqlite3 input error") unless $?.success?
-          verbose("SqLog","Save complete (#{self['id']})")
+          verbose("SqLog","Save complete (#{@stat['id']})")
           @log.clear
         end
         self
@@ -123,22 +119,16 @@ module CIAX
     end
   end
 
-  require "libstatus"
-  class Datax
-    def ext_sqlog(ver=nil)
-      extend(SqLog::Data).ext_sqlog(ver)
-    end
-  end
-
   if __FILE__ == $0
     require "liblocdb"
+    require "libstatus"
     id=ARGV.shift
     ARGV.clear
     begin
       adb=Loc::Db.new.set(id)[:app]
       stat=App::Status.new.ext_file(adb['site_id']).load
-      stat.ext_sqlog.create.upd
-      puts stat.sql
+      sqlog=SqLog::Upd.new(stat)
+      puts sqlog.create.upd.sql
     rescue InvalidID
       Msg.usage "[id]"
     end

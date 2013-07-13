@@ -118,7 +118,7 @@ module CIAX
         @fsh=type?(fsh,Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).ext_file(self['id']).upd
-        @stat.ext_sqlog.ext_exec if logging and @fsh.field.key?('ver')
+        SqLog::Upd.new(@stat).ext_exec if logging and @fsh.field.key?('ver')
         @watch.ext_upd(adb,@stat).ext_file(self['id']).upd.event_proc=proc{|cmd,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")
           @item=@cobj.setcmd(cmd)

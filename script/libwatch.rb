@@ -112,6 +112,12 @@ module CIAX
         super
       end
 
+      def ext_file(id)
+        super
+        @stat.save_proc << proc{save}
+        self
+      end
+
       private
       def upd_last
         @list.each{|k|
@@ -256,8 +262,8 @@ module CIAX
       wview.ext_prt
     end
     if t=$opt['t']
+      watch.ext_file(adb['site_id'])
       stat.str_update(t).upd.save
-      watch.ext_file(adb['site_id']).upd.save
     end
     puts wview||watch
   end

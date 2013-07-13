@@ -54,6 +54,7 @@ module CIAX
     def ext_file(id)
       extend File
       _setid(id)
+      ext_file
       self
     end
 
@@ -121,6 +122,13 @@ module CIAX
   end
 
   module File
+    attr_reader :save_proc
+    def ext_file
+      @save_proc=[]
+      verbose("File","Initialize")
+      self
+    end
+
     def save(tag=nil)
       writej(_getdata,tag)
     end
@@ -179,6 +187,7 @@ module CIAX
         ::File.symlink(name,sname)
         verbose("File","Symboliclink to [#{sname}]")
       end
+      @save_proc.each{|p| p.call(self)}
       self
     end
   end

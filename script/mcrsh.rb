@@ -1,11 +1,7 @@
 #!/usr/bin/ruby
-require "libmcrman"
+require "libmcrsh"
+
 CIAX::GetOpts.new
-begin
-  il=CIAX::Ins::Layer.new
-  man=CIAX::Mcr::List.new(il)
-  man.shell
-rescue CIAX::InvalidCMD
-  $opt.usage
-end
+il=CIAX::Ins::Layer.new
+CIAX::Mcr::List.new(il).shell
 

@@ -7,7 +7,7 @@ require "libappsh"
 module CIAX
   module Hex
     def self.new(ash)
-      type?(ash,App::Exe)
+      Msg.type?(ash,App::Exe)
       if ['e','s','h','c'].any?{|i| $opt[i]}
         hsh=Hex::Sv.new(ash,$opt['e'])
       else
@@ -73,7 +73,7 @@ module CIAX
 
   if __FILE__ == $0
     ENV['VER']||='init/'
-    GetOpts.new('ct')
+    GetOpts.new('cet')
     begin
       puts Hex::List.new[ARGV.shift].shell
     rescue InvalidID

@@ -31,10 +31,10 @@ module CIAX
 
       def upd
         val=expand
-        key=val.keys.map{|s| s.to_s}.join(',')
-        val=val.values.map{|s| s.to_s}.join(',')
+        key=val.keys.map{|s| s.to_s}.join("','")
+        val=val.values.map{|s| s.to_s}.join("','")
         verbose("SqLog","Update(#{@stat['time']}):[#{@stat['id']}/#{@tid}]")
-        @log.push "insert or ignore into #{@tid} (#{key}) values (#{val});"
+        @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
         self
       end
 

@@ -38,7 +38,7 @@ module CIAX
         @res[6]=''
         pck=0
         bin=0
-        val=@stat['val']
+        val=@stat.data
         @list.each{|key,title,len,type|
           len=len.to_i
           if key === '%pck'

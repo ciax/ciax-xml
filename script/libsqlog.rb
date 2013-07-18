@@ -111,7 +111,7 @@ module CIAX
           IO.popen(@sqlcmd,'w'){|f|
             f.puts to_s
           }
-          Msg.abort("Sqlite3 input error") unless $?.success?
+          Msg.abort("Sqlite3 input error\n#{to_s}") unless $?.success?
           verbose("SqLog","Save complete (#{@stat['id']})")
           @log.clear
         end

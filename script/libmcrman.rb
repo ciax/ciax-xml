@@ -37,8 +37,9 @@ module CIAX
 
     class List < Sh::List
       attr_reader :total
-      def initialize(mdb,il)
+      def initialize(il,proj='ciax')
         @il=type?(il,Ins::Layer)
+        mdb=Mcr::Db.new.set(proj)
         @mobj=ExtCmd.new(mdb)
         super('0')
         @total='0'
@@ -73,8 +74,7 @@ module CIAX
     GetOpts.new
     begin
       il=Ins::Layer.new
-      mdb=Mcr::Db.new.set('ciax')
-      man=Mcr::List.new(mdb,il)
+      man=Mcr::List.new(il)
       man.shell
     rescue InvalidCMD
       $opt.usage

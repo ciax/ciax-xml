@@ -25,7 +25,6 @@ class LogRing
         if @logary.last.key?('rcv')
           @logary << h
         else
-          pr 'snd duplicated' if @logary.last.key?('snd')
           @logary.last.update h
         end
       when 'rcv'
@@ -45,10 +44,17 @@ class LogRing
     @sndary=dict.keys
   end
 
-  def pop
-    @index+=1
-    @index=0 if @index > @max
-    @logary[@index]
+  def find_next(str)
+    if @sndary.include?(str)
+      begin
+        @index+=1
+        @index=0 if @index > @max
+      end until @logary[@index]['snd'] == str
+      @logary[@index]
+    else
+      pr "Can't find logline for input of [#{str}]\n"
+      nil
+    end
   end
 
   def include?(str)
@@ -63,7 +69,7 @@ class LogRing
 end
 
 def pr(text)
-  STDERR.print "\033[1;34m#{text}\33[0m" if /sim/ === ENV['VER']
+  STDERR.print "\033[1;34m#{text}\33[0m"
 end
 
 def input
@@ -79,15 +85,10 @@ ARGV.clear
 logv=LogRing.new(id)
 begin
   while inp=input
-    if logv.include?(inp)
-      begin
-        crnt=logv.pop
-      end until crnt['snd'] == inp
-      pr "#{crnt['cmd']}(#{logv.index}/#{logv.max})\n"
+    if crnt=logv.find_next(inp)
+      pr "#{crnt['cmd']}(#{logv.index}/#{logv.max})\n" if /sim/ === ENV['VER']
       sleep crnt['dur'].to_i
       STDOUT.syswrite(crnt['rcv'].unpack("m").first)
-    else
-      pr "Can't find logline for input of [#{inp}]\n"
     end
   end
 rescue EOFError

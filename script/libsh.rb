@@ -232,6 +232,7 @@ module CIAX
     end
 
     class DevList < List
+      attr_reader :swlgrp
       # shdom: Domain for Shared Command Groups
       def initialize(list,current=nil,swlgrp=nil)
         type?(list,CmdList)

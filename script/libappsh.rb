@@ -210,13 +210,13 @@ module CIAX
         @ldb=Loc::Db.new
         if Frm::List === current
           @fl=current
-          super(@ldb.list,@fl.current,swlgrp)
+          super(@ldb.list,@fl.current,swlgrp||@fl.swlgrp)
         elsif $opt['e'] || $opt['s']
-          @fl=Frm::List.new(current)
+          @fl=Frm::List.new(current,swlgrp)
           super(@ldb.list,@fl.current,swlgrp)
         else
           @fl={}
-          super(@ldb.list,"#{current}",swlgrp)
+          super(@ldb.list,"#{current}")
         end
       end
 

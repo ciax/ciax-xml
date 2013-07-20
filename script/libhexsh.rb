@@ -61,8 +61,13 @@ module CIAX
 
     class List < Sh::DevList
       def initialize(al=nil,swlgrp=nil)
-        @al=al||App::List.new
-        super(Loc::Db.new.list,"#{@al.current}",swlgrp)
+        if App::List === al
+          @al=al
+          super(Loc::Db.new.list,"#{al.current}",swlgrp||al.swlgrp)
+        else
+          @al=App::List.new
+          super(Loc::Db.new.list,"#{@al.current}",swlgrp)
+        end
       end
 
       def newsh(id)

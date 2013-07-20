@@ -2,6 +2,6 @@
 require "libmcrsh"
 
 CIAX::GetOpts.new
-il=CIAX::Ins::Layer.new
-CIAX::Mcr::List.new(il).shell
+al=CIAX::App::List.new
+CIAX::Mcr::List.new(al).shell
 

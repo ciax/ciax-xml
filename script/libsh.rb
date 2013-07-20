@@ -276,19 +276,16 @@ module CIAX
         @swlgrp.def_proc=proc{|item| throw(:sw_layer,item.id) }
       end
 
+      def add(layer,crnt,cls)
+        @swlgrp.add_item(layer,layer.capitalize+" mode")
+        self[layer]=cls.new(crnt,@swlgrp)
+      end
+
       def shell
-        layer_menu
         @current||=keys.last
         while current=catch(:sw_layer){self[@current].shell}
           @current.replace current
         end
-      end
-
-      private
-      def layer_menu
-        each{|k,list|
-          @swlgrp.add_item(k,k.capitalize+" mode")
-        }
       end
     end
   end

@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
 require "libmcrsh"
 
-CIAX::GetOpts.new
-al=CIAX::App::List.new
-CIAX::Mcr::List.new(al).shell
-
+module CIAX
+  GetOpts.new
+  il=Ins::Layer.new
+  il.add('mcr',il['app'],Mcr::List)
+  il.shell
+end

@@ -65,14 +65,14 @@ module CIAX
 
     class List < Sh::List
       attr_reader :total
-      def initialize(alist=nil,proj='ciax')
+      def initialize(alist=nil,swlgrp=nil)
         if App::List === alist
           @alist=alist
         else
           @alist=App::List.new
-          @swlgrp=@alist.swlgrp
         end
-        mdb=Mcr::Db.new.set(proj)
+        @swlgrp=swlgrp||@alist.swlgrp
+        mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
         @mobj=ExtCmd.new(mdb)
         super('0')
         @total='0'

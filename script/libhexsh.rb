@@ -60,13 +60,13 @@ module CIAX
     end
 
     class List < Sh::DevList
-      def initialize(al=nil,swlgrp=nil)
+      def initialize(al=nil)
         if App::List === al
           @al=al
-          super(Loc::Db.new.list,"#{al.current}",swlgrp||al.swlgrp)
+          super(Loc::Db.new.list)
         else
           @al=App::List.new
-          super(Loc::Db.new.list,"#{@al.current}",swlgrp)
+          super(Loc::Db.new.list)
         end
       end
 
@@ -80,7 +80,7 @@ module CIAX
     ENV['VER']||='init/'
     GetOpts.new('cet')
     begin
-      puts Hex::List.new[ARGV.shift].shell
+      puts Hex::List.new.shell(ARGV.shift)
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end

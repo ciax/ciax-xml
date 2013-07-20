@@ -98,9 +98,9 @@ module CIAX
     end
 
     class List < Sh::DevList
-      def initialize(current=nil,swlgrp=nil)
+      def initialize
         @ldb=Loc::Db.new
-        super(@ldb.list,"#{current}",swlgrp)
+        super(@ldb.list)
       end
 
       def newsh(id)
@@ -113,7 +113,7 @@ module CIAX
     ENV['VER']||='init/'
     GetOpts.new('cet')
     begin
-      puts Frm::List.new(ARGV.shift).shell
+      puts Frm::List.new.shell(ARGV.shift)
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end

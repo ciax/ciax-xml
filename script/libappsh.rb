@@ -206,17 +206,17 @@ module CIAX
     end
 
     class List < Sh::DevList
-      def initialize(current=nil,swlgrp=nil)
+      def initialize(fl=nil)
         @ldb=Loc::Db.new
-        if Frm::List === current
-          @fl=current
-          super(@ldb.list,@fl.current,swlgrp||@fl.swlgrp)
+        if Frm::List === fl
+          @fl=fl
+          super(@ldb.list)
         elsif $opt['e'] || $opt['s']
-          @fl=Frm::List.new(current,swlgrp)
-          super(@ldb.list,@fl.current,swlgrp)
+          @fl=Frm::List.new
+          super(@ldb.list)
         else
           @fl={}
-          super(@ldb.list,"#{current}")
+          super(@ldb.list)
         end
       end
 
@@ -230,7 +230,7 @@ module CIAX
     ENV['VER']||='init/'
     GetOpts.new('cet')
     begin
-      puts App::List.new(ARGV.shift).shell
+      puts App::List.new.shell(ARGV.shift)
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end

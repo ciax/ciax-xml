@@ -3,4 +3,4 @@ require "libinssh"
 
 ENV['VER']||='init/'
 CIAX::GetOpts.new("afxtesch:")
-CIAX::Ins::Layer.new(ARGV.shift).shell
+CIAX::Ins::Layer.new.shell(ARGV.shift)

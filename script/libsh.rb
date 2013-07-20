@@ -209,11 +209,8 @@ module CIAX
     end
 
     class List < ExHash
-      # shdom: Domain for Shared Command Groups
-      attr_accessor :current
-      def initialize(current=nil)
+      def initialize
         $opt||=GetOpts.new
-        @current=current||""
       end
 
       def exe(stm)
@@ -222,22 +219,20 @@ module CIAX
         $opt.usage('(opt) [id] [cmd] [par....]')
       end
 
-      def shell
-        while current=catch(:sw_site){ self[@current].shell }
-          @current.replace current
-        end
+      def shell(current)
+        true while current=catch(:sw_site){ self[current].shell }
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end
     end
 
     class DevList < List
-      attr_reader :swlgrp
+      attr_writer :swlgrp
       # shdom: Domain for Shared Command Groups
-      def initialize(list,current=nil,swlgrp=nil)
+      def initialize(list)
         type?(list,CmdList)
-        super(current)
-        @swlgrp=swlgrp
+        super()
+        @swlgrp=nil
         @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
         @swsgrp.update_items(list).def_proc=proc{|item|
           throw(:sw_site,item.id)
@@ -271,22 +266,20 @@ module CIAX
     end
 
     class Layer < ExHash
-      def initialize(current=nil)
-        @current=current
+      def initialize
         @swlgrp=Group.new({'caption'=>"Switch Layer",'color'=>5,'column'=>5})
         @swlgrp.def_proc=proc{|item| throw(:sw_layer,item.id) }
       end
 
-      def add(layer,crnt,cls)
+      def add(layer,list)
         @swlgrp.add_item(layer,layer.capitalize+" mode")
-        self[layer]=cls.new(crnt,@swlgrp)
+        list.swlgrp=@swlgrp
+        self[layer]=list
       end
 
-      def shell
-        @current||=keys.last
-        while current=catch(:sw_layer){self[@current].shell}
-          @current.replace current
-        end
+      def shell(id)
+        current=keys.last
+        true while current=catch(:sw_layer){self[current].shell(id)}
       end
     end
   end

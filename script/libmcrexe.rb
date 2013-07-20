@@ -8,9 +8,9 @@ module CIAX
   module Mcr
     class Exe < Sh::Exe
       attr_reader :record,:valid_keys
-      def initialize(mitem,il,&mcr_proc)
+      def initialize(mitem,alist,&mcr_proc)
         @mitem=type?(mitem,Item)
-        @il=type?(il,Ins::Layer)
+        @alist=type?(alist,App::List)
         @record=Record.new(@mitem.cmd,@mitem[:label])
         @record.extend(Prt) unless $opt['r']
         self['layer']='mcr'
@@ -46,7 +46,7 @@ module CIAX
         item.select.each{|e1|
           begin
             step=@record.add_step(e1,depth){|site|
-              @il['app'][site].stat
+              @alist[site].stat
             }
             qry=Query.new(step,self)
             case e1['type']
@@ -67,7 +67,7 @@ module CIAX
             when 'exec'
               puts step.title if Msg.fg?
               step.exec(qry.exec?){|site,cmd,depth|
-                ash=@il['app'][site]
+                ash=@alist[site]
                 ash.exe(cmd)
                 @appint=ash.cobj['sv']['hid']['interrupt']
               }
@@ -160,11 +160,11 @@ module CIAX
   if __FILE__ == $0
     GetOpts.new('rest',{'n' => 'nonstop mode'})
     begin
-      il=Ins::Layer.new('app')
+      al=App::List.new
       mdb=Mcr::Db.new.set('ciax')
       mobj=ExtCmd.new(mdb)
       mitem=mobj.setcmd(ARGV)
-      msh=Mcr::Exe.new(mitem,il){|cmd,asy|
+      msh=Mcr::Exe.new(mitem,al){|cmd,asy|
         mobj.setcmd(cmd) unless asy
       }
       msh.start

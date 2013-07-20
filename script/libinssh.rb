@@ -16,9 +16,9 @@ module CIAX
           current='app'
         end
         super(current)
-        fl=self['frm']=Frm::List.new(id)
-        al=self['app']=App::List.new(fl)
-        self['hex']=Hex::List.new(al)
+        fl=self['frm']=Frm::List.new(id,@swlgrp)
+        al=self['app']=App::List.new(fl,@swlgrp)
+        self['hex']=Hex::List.new(al,@swlgrp)
       end
     end
   end

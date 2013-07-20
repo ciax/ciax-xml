@@ -98,9 +98,9 @@ module CIAX
     end
 
     class List < Sh::DevList
-      def initialize(current=nil)
+      def initialize(current=nil,swlgrp=nil)
         @ldb=Loc::Db.new
-        super(@ldb.list,"#{current}")
+        super(@ldb.list,"#{current}",swlgrp)
       end
 
       def newsh(id)

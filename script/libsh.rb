@@ -210,10 +210,9 @@ module CIAX
 
     class List < ExHash
       # shdom: Domain for Shared Command Groups
-      attr_accessor :shdom,:current
+      attr_accessor :current
       def initialize(current=nil)
         $opt||=GetOpts.new
-        @shdom=Domain.new(5)
         @current=current||""
       end
 
@@ -234,11 +233,11 @@ module CIAX
 
     class DevList < List
       # shdom: Domain for Shared Command Groups
-      attr_accessor :swsgrp
-      def initialize(list,current=nil)
+      def initialize(list,current=nil,swlgrp=nil)
         type?(list,CmdList)
         super(current)
-        @swsgrp=@shdom.add_group('sws','Switch Sites')
+        @swlgrp=swlgrp
+        @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
         @swsgrp.update_items(list).def_proc=proc{|item|
           throw(:sw_site,item.id)
         }
@@ -249,7 +248,8 @@ module CIAX
           super
         else
           sh=self[key]=newsh(key)
-          sh.cobj['lo'].update @shdom
+          sh.cobj['lo']['sws']=@swsgrp
+          sh.cobj['lo']['swl']=@swlgrp if @swlgrp
           sh
         end
       end
@@ -272,8 +272,7 @@ module CIAX
     class Layer < ExHash
       def initialize(current=nil)
         @current=current
-        @shdom=Domain.new(5)
-        @swlgrp=@shdom.add_group('swl',"Switch Layer")
+        @swlgrp=Group.new({'caption'=>"Switch Layer",'color'=>5,'column'=>5})
         @swlgrp.def_proc=proc{|item| throw(:sw_layer,item.id) }
       end
 
@@ -289,7 +288,6 @@ module CIAX
       def layer_menu
         each{|k,list|
           @swlgrp.add_item(k,k.capitalize+" mode")
-          list.shdom.update @shdom
         }
       end
     end

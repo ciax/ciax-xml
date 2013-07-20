@@ -57,7 +57,7 @@ module CIAX
       def init_view
         @output=@print=View.new(@adb,@stat).extend(Print)
         @wview=Watch::View.new(@adb,@watch).ext_prt
-        grp=@cobj['lo'].add_group('view',"Change View Mode")
+        grp=@cobj['lo'].add_group('view',"Change View Mode",3)
         grp.add_item('pri',"Print mode").def_proc=proc{@output=@print}
         grp.add_item('wat',"Watch mode").def_proc=proc{@output=@wview} if @wview
         grp.add_item('raw',"Raw mode").def_proc=proc{@output=@stat}
@@ -206,17 +206,17 @@ module CIAX
     end
 
     class List < Sh::DevList
-      def initialize(current=nil)
+      def initialize(current=nil,swlgrp=nil)
         @ldb=Loc::Db.new
         if Frm::List === current
           @fl=current
-          super(@ldb.list,@fl.current)
+          super(@ldb.list,@fl.current,swlgrp)
         elsif $opt['e'] || $opt['s']
           @fl=Frm::List.new(current)
-          super(@ldb.list,@fl.current)
+          super(@ldb.list,@fl.current,swlgrp)
         else
           @fl={}
-          super(@ldb.list,"#{current}")
+          super(@ldb.list,"#{current}",swlgrp)
         end
       end
 

@@ -50,7 +50,9 @@ class LogRing
         @index+=1
         @index=0 if @index > @max
       end until @logary[@index]['snd'] == str
-      @logary[@index]
+      crnt=@logary[@index]
+      pr "#{crnt['cmd']}(#{@index}/#{@max})\n" if /sim/ === ENV['VER']
+      crnt
     else
       pr "Can't find logline for input of [#{str}]\n"
       nil
@@ -66,11 +68,13 @@ class LogRing
       e.to_s
     }.join("\n")
   end
+
+  private
+  def pr(text)
+    STDERR.print "\033[1;34m#{text}\33[0m"
+  end
 end
 
-def pr(text)
-  STDERR.print "\033[1;34m#{text}\33[0m"
-end
 
 def input
   select([STDIN])
@@ -86,7 +90,6 @@ logv=LogRing.new(id)
 begin
   while inp=input
     if crnt=logv.find_next(inp)
-      pr "#{crnt['cmd']}(#{logv.index}/#{logv.max})\n" if /sim/ === ENV['VER']
       sleep crnt['dur'].to_i
       STDOUT.syswrite(crnt['rcv'].unpack("m").first)
     end

@@ -270,10 +270,11 @@ module CIAX
         @swlgrp.def_proc=proc{|item| throw(:sw_layer,item.id) }
       end
 
-      def add(layer,list)
+      def add(layer,shlist)
+        Msg.type?(shlist,Sh::List)
         @swlgrp.add_item(layer,layer.capitalize+" mode")
-        list.swlgrp=@swlgrp
-        self[layer]=list
+        shlist.swlgrp=@swlgrp
+        self[layer]=shlist
       end
 
       def shell(id)

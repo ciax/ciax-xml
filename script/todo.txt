@@ -11,6 +11,7 @@ crt: Lost current position after running(5/24/13)
 
 ======================= UPDATE(Refactoring) ========================
 *** Test Environment
+Command::Item:/ need to take default parameter (if no param)
 want to remove @item in App::Sh -> Logging#append() needs param instead of setting proc 
 fdb: rename command&status /select to /code
 adb: rename command&status /select to /source

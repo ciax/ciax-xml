@@ -3,38 +3,6 @@ require "libmcrexe"
 
 module CIAX
   module Mcr
-    class Stat < ExHash
-      def initialize
-        @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
-      end
-
-      def add(num,cmd,mexe)
-        self[num]=[cmd,mexe]
-        self
-      end
-
-      def to_s
-        page=[@caption]
-        each{|key,ary|
-          cmd=ary[0]
-          stat=ary[1]['stat']
-          page << Msg.item("[#{key}]","#{cmd} (#{stat})")
-        }
-        page.join("\n")
-      end
-    end
-
-    class Man < Sh::Exe
-      def initialize(cobj,id,total='0')
-        cobj=type?(cobj,ExtCmd)
-        update({'layer'=>'mcr','id'=>id,'total'=>total})
-        super(cobj)
-        stat=Stat.new
-        prom=Sh::Prompt.new(self,{'total'=>"[0/%s]"})
-        ext_shell(stat,prom)
-      end
-    end
-
     class Sv < Exe
       # @< cobj,output,upd_proc*
       # @ al,appint,th,item,mobj*
@@ -63,26 +31,63 @@ module CIAX
       end
     end
 
+    class Stat < ExHash
+      def initialize
+        @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
+      end
+
+      def add(num,cmd,mexe)
+        self[num]=[cmd,mexe]
+        self
+      end
+
+      def to_s
+        page=[@caption]
+        each{|key,ary|
+          cmd=ary[0]
+          stat=ary[1]['stat']
+          page << Msg.item("[#{key}]","#{cmd} (#{stat})")
+        }
+        page.join("\n")
+      end
+    end
+
+    class Man < Sh::Exe
+      attr_reader :prompt
+      def initialize(cobj,stat,id)
+        super(cobj)
+        self['layer']='mcr'
+        self['id']=id
+warn stat
+        ext_shell(stat,Sh::Prompt.new(self))
+      end
+    end
+
     class List < Sh::List
       attr_reader :total
-      def initialize(alist=nil,swlgrp=nil)
+      def initialize(alist=nil)
+        super()
         if App::List === alist
           @alist=alist
         else
           @alist=App::List.new
         end
-        @swlgrp=swlgrp||@alist.swlgrp
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
         @mobj=ExtCmd.new(mdb)
-        super('0')
-        @total='0'
-        @man=self['0']=Man.new(@mobj,mdb['id'],@total)
-        @extgrp=@man.cobj['sv']['ext']
-        @swmgrp=@man.cobj['lo'].add_group('sw',"Switching Macro")
-        @swmgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
+        @mstat=Stat.new
+        @swmgrp=@mobj['lo'].add_group('swm',"Switching Macro")
         @swmgrp.cmdlist["1.."]='Other Macro Process'
-        @extgrp.def_proc=proc{|item| add_page(item)}
-        @man.cobj['lo']['swl']=@swlgrp
+        first_page(mdb['id'])
+      end
+
+      def first_page(id)
+        @total='0'
+        msh=self['0']=Man.new(@mobj,@mstat,id)
+        @mobj['sv']['ext'].def_proc=proc{|item| add_page(item)}
+        @swmgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
+        @mobj['lo']['swl']=@swlgrp if @swlgrp
+        msh['total']=@total
+        msh.prompt['total']="[#{@total}/%s]"
       end
 
       # item includes arbitrary mcr command
@@ -95,12 +100,12 @@ module CIAX
           asy ? add_page(submcr) : submcr
         }
         @swmgrp.add_item(page).def_proc=proc{throw(:sw_site,page)}
-        msh.prompt['total']="[#{page}/%s]"
+        msh.cobj['lo']['ext']=@mobj['sv']['ext']
         msh.cobj['lo']['swm']=@swmgrp
-        msh.cobj['lo']['ext']=@extgrp
-        msh.cobj['lo']['swl']=@swlgrp
+        msh.cobj['lo']['swl']=@swlgrp if @swlgrp
         msh['total']=@total
-        @man.output.add(@total,item[:cmd],msh)
+        msh.prompt['total']="[#{page}/%s]"
+        @mstat.add(@total,item[:cmd],msh)
       end
     end
 

@@ -209,6 +209,7 @@ module CIAX
     end
 
     class List < ExHash
+      attr_writer :swlgrp
       def initialize
         $opt||=GetOpts.new
       end
@@ -227,12 +228,10 @@ module CIAX
     end
 
     class DevList < List
-      attr_writer :swlgrp
       # shdom: Domain for Shared Command Groups
       def initialize(list)
         type?(list,CmdList)
         super()
-        @swlgrp=nil
         @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
         @swsgrp.update_items(list).def_proc=proc{|item|
           throw(:sw_site,item.id)

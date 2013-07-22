@@ -48,19 +48,15 @@ module CIAX
       c=e0['counter'] || '_'
       Msg.abort("Repeat:Counter Duplicate") if @counter.key?(c)
       fmt=@format[c]=e0['format'] || '%d'
-      verbose("Repeat","Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]")
-      enclose{
+      enclose("Repeat","Counter[\$#{c}]/[#{e0['from']}-#{e0['to']}]/[#{fmt}]","End"){
         Range.new(e0['from'],e0['to']).each { |n|
-          verbose("Repeat","Turn Number[#{n}] Start")
-          enclose{
+          enclose("Repeat","Turn Number[#{n}] Start","Turn Number[#{n}] End"){
             @counter[c]=n
             @rep.push yield
           }
-          verbose("Repeat","Turn Number[#{n}] End")
         }
         @counter.delete(c)
       }
-      verbose("Repeat","End")
       self
     end
   end

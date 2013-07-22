@@ -68,8 +68,7 @@ module CIAX
     # str could include Math functions
     def subst(str)
       return str unless /\$([\d]+)/ === str
-      verbose("ExtItem","Substitute from [#{str}]")
-      res=enclose{
+      enclose("ExtItem","Substitute from [#{str}]","Substitute to [%s]"){
         num=true
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
@@ -83,8 +82,6 @@ module CIAX
         Msg.cfg_err("Nil string") if res == ''
         res
       }
-      verbose("ExtItem","Substitute to [#{res}]")
-      res
     end
 
     private

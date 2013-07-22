@@ -46,21 +46,17 @@ module CIAX
       def find(xpath)
         verbose("XmlGnu","FindXpath:#{xpath}")
         @e.doc.find("//ns:#{xpath}","ns:#{ns}").each{|e|
-          verbose("XmlGnu","<#{e.name} #{e.attributes.to_h}>")
-          enclose{
+          enclose("XmlGnu","<#{e.name} #{e.attributes.to_h}>","</#{e.name}>"){
             yield Gnu.new(e)
           }
-          verbose("XmlGnu","</#{e.name}>")
         }
       end
 
       def each
         @e.each_element{|e|
-          verbose("XmlGnu","<#{e.name} #{e.attributes.to_h}>")
-          enclose{
+          enclose("XmlGnu","<#{e.name} #{e.attributes.to_h}>","</#{e.name}>"){
             yield Gnu.new(e)
           }
-          verbose("XmlGnu","</#{e.name}>")
         }
       end
     end

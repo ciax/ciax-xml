@@ -22,8 +22,7 @@ module CIAX
 
       def upd
         @ads.each{|id,select|
-          verbose("AppRsp","GetStatus:[#{id}]")
-          enclose{
+          enclose("AppRsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=select[:fields]
             data=case select['type']
                  when 'binary'
@@ -51,7 +50,6 @@ module CIAX
             data = @fmt[id] % data if @fmt.key?(id)
             @data[id]=data.to_s
           }
-          verbose("AppRsp","GetStatus:#{id}=[#{@data[id]}]")
         }
         self['time']=@field['time']
         verbose("AppRsp","Update(#{self['time']})")

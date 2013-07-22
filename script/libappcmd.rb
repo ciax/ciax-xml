@@ -23,8 +23,7 @@ module CIAX
         frmcmd=[]
         @select.each{|e1|
           cmd=[]
-          verbose("AppItem","GetCmd(FDB):#{e1.first}")
-          enclose{
+          enclose("AppItem","GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
             e1.each{|e2| # //argv
               case e2
               when String
@@ -37,8 +36,8 @@ module CIAX
               end
             }
             frmcmd.push cmd
+            cmd
           }
-          verbose("AppItem","Exec(FDB):#{cmd}")
         }
         frmcmd
       end

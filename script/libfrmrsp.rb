@@ -74,19 +74,15 @@ module CIAX
         e0.each{|e1|
           case e1
           when 'ccrange'
-            verbose("FrmRsp","Entering Ceck Code Node")
-            enclose{
+            enclose("FrmRsp","Entering Ceck Code Node","Exitting Ceck Code Node"){
               @frame.mark
               getfield_rec(@sel[:ccrange])
               @cc = @frame.checkcode
             }
-            verbose("FrmRsp","Exitting Ceck Code Node")
           when 'select'
-            verbose("FrmRsp","Entering Selected Node")
-            enclose{
+            enclose("FrmRsp","Entering Selected Node","Exitting Selected Node"){
               getfield_rec(@sel[:select])
             }
-            verbose("FrmRsp","Exitting Selected Node")
           when Hash
             frame_to_field(e1){ cut(e1) }
           end
@@ -94,8 +90,7 @@ module CIAX
       end
 
       def frame_to_field(e0)
-        verbose("FrmRsp","#{e0['label']}")
-        enclose{
+        enclose("FrmRsp","#{e0['label']}","Field:End"){
           if e0[:index]
             # Array
             akey=e0['assign'] || Msg.cfg_err("No key for Array")
@@ -103,11 +98,9 @@ module CIAX
             idxs=e0[:index].map{|e1|
               @current_item.subst(e1['range'])
             }
-            verbose("FrmRsp","Array:[#{akey}]:Range#{idxs}")
-            enclose{
+            enclose("FrmRsp","Array:[#{akey}]:Range#{idxs}","Array:Assign[#{akey}]"){
               @data[akey]=mk_array(idxs,get(akey)){yield}
             }
-            verbose("FrmRsp","Array:Assign[#{akey}]")
           else
             #Field
             data=yield
@@ -117,7 +110,6 @@ module CIAX
             end
           end
         }
-        verbose("FrmRsp","Field:End")
       end
 
       def mk_array(idx,field)

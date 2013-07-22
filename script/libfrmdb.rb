@@ -26,8 +26,7 @@ module CIAX
 
       def init_main(domain)
         hash=domain.to_h
-        verbose("Fdb","INIT:Main Frame <-")
-        enclose{
+        enclose("Fdb","INIT:Main Frame <-","-> INIT:Main Frame"){
           frame=[]
           domain.each{|e1|
             frame << yield(e1)
@@ -35,10 +34,8 @@ module CIAX
           verbose("Fdb","InitMainFrame:#{frame}")
           hash[:main]=frame
         }
-        verbose("Fdb","-> INIT:Main Frame")
         domain.find('ccrange'){|e0|
-          verbose("Fdb","INIT:Ceck Code Frame <-")
-          enclose{
+          enclose("Fdb","INIT:Ceck Code Frame <-","-> INIT:Ceck Code Frame"){
             frame=[]
             Repeat.new.each(e0){|e1,r1|
               frame << yield(e1,r1)
@@ -46,7 +43,6 @@ module CIAX
             verbose("Fdb","InitCCFrame:#{frame}")
             hash[:ccrange]=frame
           }
-          verbose("Fdb","-> INIT:Ceck Code Frame")
         }
         hash
       end
@@ -54,8 +50,7 @@ module CIAX
       def init_sel(domain,select)
         selh=domain.to_h
         domain.find(select){|e0|
-          verbose("Fdb","INIT:Select Frame <-")
-          enclose{
+          enclose("Fdb","INIT:Select Frame <-","-> INIT:Select Frame"){
             id=e0.attr2db(selh)
             (selh[:select]||={})[id]||=[]
             verbose("Fdb","InitSelHash(#{id})")
@@ -66,7 +61,6 @@ module CIAX
             }
             verbose("Fdb","InitSelFrame(#{id})")
           }
-          verbose("Fdb","-> INIT:Select Frame")
         }
         selh
       end

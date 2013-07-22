@@ -15,16 +15,13 @@ module CIAX
       # - output csv if array
       def subst(str)
         return str unless /\$\{/ === str
-        verbose("Field","Substitute from [#{str}]")
-        enclose{
-          str=str.gsub(/\$\{(.+)\}/) {
+        enclose("Field","Substitute from [#{str}]","Substitute to [%s]"){
+          str.gsub(/\$\{(.+)\}/) {
             ary=[*get($1)].map!{|i| eval(i)}
             Msg.abort("No value for subst [#{$1}]") if ary.empty?
             ary.join(',')
           }
         }
-        verbose("Field","Substitute to [#{str}]")
-        str
       end
 
       # First key is taken as is (key:x:y) or ..

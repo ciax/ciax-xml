@@ -165,11 +165,13 @@ module CIAX
       Kernel.exit
     end
 
-    def enclose
+    def enclose(prefix,title1,title2,color=nil)
+      verbose(prefix,title1,color)
       @@base+=1
-      yield
+      res=yield
     ensure
       @@base-=1
+      verbose(prefix,sprintf(title2,res),color)
     end
 
     # Private Method

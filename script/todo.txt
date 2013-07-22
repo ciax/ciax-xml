@@ -19,8 +19,8 @@ var: integrate 'load' and 'upd'
 var: rename 'val' to 'data'
 var: module upd gets into Var
 var: rename Var to Data with new name space
-var: upd includes saving if extended by Save
 all: set entire name space (CIAX?)
+var: upd includes saving if extended by Save
 xml: (fdb,adb)//command/select will be separated
 
 *** On-site

@@ -2,7 +2,7 @@
 require 'libmsg'
 
 module CIAX
-  class Frame
+  class Frame # For Command/Response Frame
     include Msg
     def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
       @ver_color=6
@@ -121,6 +121,44 @@ module CIAX
         str=code
       end
       str
+    end
+  end
+
+  class FrmAry # For Response Frame
+    include Msg
+    def initialize(terminator=nil,delimiter=nil,endian=nil,ccmethod=nil)
+      @ver_color=6
+      @terminator=terminator
+      @delimiter=delimiter
+      @method=ccmethod
+      @frame=Frame.new(endian,ccmethod)
+    end
+
+    def set(str)
+      if tm=@terminator
+        str.chomp!(eval('"'+tm+'"'))
+        verbose("FrmAry","Remove terminator:[#{str}] by [#{tm}]")
+      end
+      if dm=@delimiter
+        @fary=str.split(eval('"'+dm+'"'))
+        verbose("FrmAry","Split:[#{str}] by [#{dm}]")
+      else
+        @fary=[str]
+      end
+      @frame.set(@fary.shift)
+    end
+
+    def cut(e)
+      @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
+    end
+
+    def mark
+      @frame.mark
+      self
+    end
+
+    def cc
+      @frame.checkcode
     end
   end
 end

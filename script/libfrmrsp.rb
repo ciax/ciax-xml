@@ -21,8 +21,9 @@ module CIAX
         @db=type?(db,Db)
         self['ver']=db['version'].to_i
         @sel=Hash[db[:rspframe]]
-        @fds=db[:response][:select]
-        @frame=Frame.new(db['endian'],db['ccmethod'])
+        dbr=db[:response]
+        @fds=dbr[:select]
+        @frame=FrmAry.new(dbr['terminator'],dbr['delimiter'],db['endian'],db['ccmethod'])
         # Field Initialize
         @data.replace db[:field][:struct].deep_copy if @data.empty?
         self
@@ -36,7 +37,12 @@ module CIAX
           @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
           hash=yield
           self['time']=hash['time']
-          setframe(hash['data'])
+          @frame.set(hash['data'])
+          getfield_rec(@sel[:main])
+          if cc=unset('cc') #Field::unset
+            cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
+            verbose("FrmRsp","Verify:CC OK <#{cc}>")
+          end
           verbose("FrmRsp","Rsp/Updated(#{self['time']})") #Field::get
           super()
           true
@@ -48,27 +54,6 @@ module CIAX
       end
 
       private
-      def setframe(frame)
-        Msg.com_err("No Response") unless frame
-        if tm=@sel['terminator']
-          frame.chomp!(eval('"'+tm+'"'))
-          verbose("FrmRsp","Remove terminator:[#{frame}] by [#{tm}]")
-        end
-        if dm=@sel['delimiter']
-          @fary=frame.split(eval('"'+dm+'"'))
-          verbose("FrmRsp","Split:[#{frame}] by [#{dm}]")
-        else
-          @fary=[frame]
-        end
-        @frame.set(@fary.shift)
-        getfield_rec(@sel[:main])
-        if cc=unset('cc') #Field::unset
-          cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
-          verbose("FrmRsp","Verify:CC OK <#{cc}>")
-        end
-        self
-      end
-
       # Process Frame to Field
       def getfield_rec(e0)
         e0.each{|e1|
@@ -77,14 +62,14 @@ module CIAX
             enclose("FrmRsp","Entering Ceck Code Node","Exitting Ceck Code Node"){
               @frame.mark
               getfield_rec(@sel[:ccrange])
-              @cc = @frame.checkcode
+              @cc = @frame.cc
             }
           when 'select'
             enclose("FrmRsp","Entering Selected Node","Exitting Selected Node"){
               getfield_rec(@sel[:select])
             }
           when Hash
-            frame_to_field(e1){ cut(e1) }
+            frame_to_field(e1){ @frame.cut(e1) }
           end
         }
       end
@@ -123,10 +108,6 @@ module CIAX
           verbose("FrmRsp","Array:Index[#{i}]=#{fld[i]}")
         }
         fld
-      end
-
-      def cut(e)
-        @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
       end
     end
 

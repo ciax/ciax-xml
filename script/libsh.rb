@@ -13,13 +13,13 @@ require "libupdate"
 
 module CIAX
   module Sh
-    # @ cobj,output,upd_proc
     class Exe < ExHash # Having server status {id,msg,...}
       attr_reader :upd_proc,:cobj,:item,:output
       # block gives command line convert
       def initialize(cobj)
         @cobj=type?(cobj,Command)
         @upd_proc=UpdProc.new # Proc for Server Status Update (by User query)
+        @exe_proc=UpdProc.new # Proc for Command Issue (by User exec)
         @save_proc=UpdProc.new # Proc for Device Data Update (by Device response)
         @item=nil
         @ver_color=6
@@ -34,6 +34,7 @@ module CIAX
           self['msg']='OK'
           verbose("Sh/Exe","Command #{cmd} recieved")
           @item=@cobj.setcmd(cmd).exe
+          @exe_proc.upd
         end
         self
       rescue

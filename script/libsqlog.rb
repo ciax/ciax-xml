@@ -83,7 +83,6 @@ module CIAX
       end
 
       def ext_exec
-        @stat.upd_proc << proc{save}
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+@stat['id']+".sq3"]
         unless check_table
           create
@@ -91,6 +90,17 @@ module CIAX
           verbose("SqLog","Init/Table '#{@tid}' is created in #{@stat['id']}")
         end
         verbose("SqLog","Init/Start '#{@stat['id']}' (#{@tid})")
+        @elapsed=0
+        @lastupd=Time.now
+        @stat.save_proc << proc{save if @elapsed > 1}
+        self
+      end
+
+      def upd
+        # For transaction timing
+        super
+        @elapsed=Time.now-@lastupd
+        @lastupd=Time.now
         self
       end
 

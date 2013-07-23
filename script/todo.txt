@@ -2,7 +2,6 @@
 *** Test Environment
 
 *** On-site
-watch: no command issued by auto(reset at dsi command end) (12/9/27)
 crt:cart jack level error in oldmcr(12/1/31)
 dso:jack bolt stack after interrupt(12/8/15)
 dts:joff,roff,rstop/ no responding(12/3/12)
@@ -17,9 +16,6 @@ fdb: rename command&status /select to /code
 adb: rename command&status /select to /source
 var: integrate 'load' and 'upd'
 var: rename 'val' to 'data'
-var: module upd gets into Var
-var: rename Var to Data with new name space
-all: set entire name space (CIAX?)
 var: upd includes saving if extended by Save
 xml: (fdb,adb)//command/select will be separated
 
@@ -153,3 +149,7 @@ mcr: batch mode w/showing progress
 list: applist,frmlit-> share db -> inslist
 crt:get_tbl doesn't work 13/6/12
 client status doesn't update (inssh -ec) 13/6/12
+var: module upd gets into Var
+var: rename Var to Data with new name space
+all: set entire name space (CIAX?)
+watch: no command issued by auto(reset at dsi command end) (12/9/27) [13/7/22]

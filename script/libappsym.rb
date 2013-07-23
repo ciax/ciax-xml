@@ -48,7 +48,7 @@ module CIAX
             break
           }
         }
-        verbose("Symbol","Update(#{self['time'].to_f})")
+        verbose("Symbol","Update(#{self['time']})")
       end
     end
 

@@ -43,7 +43,7 @@ module CIAX
             cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
             verbose("FrmRsp","Verify:CC OK <#{cc}>")
           end
-          verbose("FrmRsp","Rsp/Updated(#{self['time']})") #Field::get
+          verbose("FrmRsp","Updated(#{self['time']})") #Field::get
           super()
           true
         else

@@ -19,7 +19,8 @@ module CIAX
       # block gives command line convert
       def initialize(cobj)
         @cobj=type?(cobj,Command)
-        @upd_proc=UpdProc.new # Proc for Server Status Update
+        @upd_proc=UpdProc.new # Proc for Server Status Update (by User query)
+        @save_proc=UpdProc.new # Proc for Device Data Update (by Device response)
         @item=nil
         @ver_color=6
         Thread.abort_on_exception=true

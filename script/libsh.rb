@@ -24,6 +24,7 @@ module CIAX
         @item=nil
         @ver_color=6
         Thread.abort_on_exception=true
+        at_exit{@save_proc.upd}
       end
 
       # Sync only (Wait for other thread)

@@ -143,6 +143,7 @@ module CIAX
           self['watch'] = @watch.active?
           self['na'] = !@buf.alive?
         }
+        @save_proc.add{@stat.upd.save}
         ext_server(@adb['port'])
       end
 

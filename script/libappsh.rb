@@ -134,7 +134,6 @@ module CIAX
         # Update for Frm level manipulation
         #      @fsh.upd_proc.add{@stat.upd.save}
         # Logging if version number exists
-        @log_proc=UpdProc.new
         if logging and @adb['version']
           ext_logging(@adb['site_id'],@adb['version'])
         end
@@ -149,7 +148,7 @@ module CIAX
 
       def ext_logging(id,ver=0)
         logging=Logging.new('issue',id,ver)
-        @log_proc.add{
+        @exe_proc.add{
           logging.append({'cmd'=>@item[:cmd],'active'=>@watch['active']})
         }
         self
@@ -159,7 +158,7 @@ module CIAX
       def sendcmd(p,item)
         verbose("AppSv","#{self['id']}/Issue2:#{item.cmd}")
         @buf.send(p,item)
-        @log_proc.upd
+        @exe_proc.upd
         self
       end
 

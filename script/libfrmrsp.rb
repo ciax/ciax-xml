@@ -17,7 +17,7 @@ module CIAX
 
       # Item is needed which includes response_id and cmd_parameters
       def ext_rsp(db)
-        @ver_color=6
+        @ver_color=3
         @db=type?(db,Db)
         self['ver']=db['version'].to_i
         @sel=Hash[db[:rspframe]]

@@ -16,7 +16,6 @@ module CIAX
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}
         @ads.keys.each{|k| @data[k]||='' }
-        @field.upd_proc << proc{upd}
         self
       end
 

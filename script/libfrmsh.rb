@@ -55,7 +55,7 @@ module CIAX
 
     class Cl < Exe
       def initialize(fdb,host=nil)
-        super(fdb,fdb['self_id'])
+        super(fdb,fdb['site_id'])
         host=type?(host||fdb['host']||'localhost',String)
         @field.ext_http(self['id'],host).load
         @cobj['sv'].def_proc=proc{to_s}

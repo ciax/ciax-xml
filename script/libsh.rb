@@ -22,6 +22,7 @@ module CIAX
         @upd_proc=UpdProc.new # Proc for Server Status Update
         @item=nil
         @ver_color=6
+        self['msg']=''
         Thread.abort_on_exception=true
       end
 
@@ -174,7 +175,6 @@ module CIAX
         verbose("UDP:Client/#{self.class}","Send [#{cmd}]",6)
         input=@udp.recv(1024)
         verbose("UDP:Client/#{self.class}","Recv #{input}",6)
-        load(input) # ExHash#load -> Server Status
         self
       rescue
         self['msg']=$!.to_s

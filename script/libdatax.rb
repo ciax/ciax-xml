@@ -114,8 +114,11 @@ module CIAX
         verbose("Http","Loading [#{@base}](#{f.size})",12)
         json_str=f.read
       }
-      warning(pfx," -- json file (#{@base}) is empty") if json_str.empty?
-      read(json_str)
+      if json_str.empty?
+        warning(pfx," -- json file (#{@base}) is empty")
+      else
+        read(json_str)
+      end
     rescue OpenURI::HTTPError
       warning("Http","  -- no url file (#{fname})")
     end
@@ -162,8 +165,11 @@ module CIAX
         f.flock(::File::LOCK_SH)
         json_str=f.read
       }
-      warning("File"," -- json file (#{@base}) is empty") if json_str.empty?
-      read(json_str)
+      if json_str.empty?
+        warning("File"," -- json file (#{@base}) is empty")
+      else
+        read(json_str)
+      end
     rescue Errno::ENOENT
       if tag
         Msg.par_err("No such Tag","Tag=#{taglist}")

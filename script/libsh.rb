@@ -177,7 +177,6 @@ module CIAX
         verbose("UDP:Client/#{self.class}","Send [#{cmd}]",6)
         input=@udp.recv(1024)
         verbose("UDP:Client/#{self.class}","Recv #{input}",6)
-        load(input) # ExHash#load -> Server Status
         self
       rescue
         self['msg']=$!.to_s

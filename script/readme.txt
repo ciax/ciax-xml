@@ -8,6 +8,14 @@
  coreutils:
   grep,cut,tail
 
+## ENV Var ##
+ RUBYLIB
+ XMLPATH
+
+## Dir
+~/.var/cache
+~/.var/json
+
 ## Verbose mode ##
  set VER environment
  VER=string1,string2... for set sum

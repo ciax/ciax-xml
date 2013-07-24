@@ -6,10 +6,10 @@ require "libextcmd"
 # Cmd Methods
 module CIAX
   module Frm
-    class ExtCmd < ExtCmd
+    class ExtCmd < Command
       def initialize(fdb,field=Field.new)
-        @field=type?(field,Field)
-        super(fdb)
+        type?(field,Field)
+        super()
         any={:type =>'reg',:list => ["."]}
         ig=self['sv']['int']
         ig.add_item('save',"Save Field [key,key...] (tag)",[any,any])
@@ -18,23 +18,9 @@ module CIAX
         set.def_proc=proc{|item|
           field.set(*item.par)
         }
-      end
-
-      private
-      def extgrp(fdb)
-        ExtGrp.new(fdb,@field)
-      end
-    end
-
-    class ExtGrp < ExtGrp
-      def initialize(db,field=Field.new)
-        @field=type?(field,Field)
-        super(db)
-      end
-
-      private
-      def extitem(id)
-        ExtItem.new(@field,@db,id,@def_proc)
+        self['sv']['ext']=ExtGrp.new(fdb){|id,def_proc|
+          ExtItem.new(field,fdb,id,def_proc)
+        }
       end
     end
 

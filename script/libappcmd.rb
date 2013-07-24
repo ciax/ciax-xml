@@ -4,16 +4,12 @@ require "libextcmd"
 
 module CIAX
   module App
-    class ExtCmd < ExtCmd
-      def extgrp(db)
-        ExtGrp.new(db)
-      end
-    end
-
-    class ExtGrp < ExtGrp
-      private
-      def extitem(id)
-        ExtItem.new(@db,id,@def_proc)
+    class ExtCmd < Command
+      def initialize(adb)
+        super()
+        self['sv']['ext']=ExtGrp.new(adb){|id,def_proc|
+          ExtItem.new(adb,id,def_proc)
+        }
       end
     end
 

@@ -135,7 +135,7 @@ module CIAX
     end
   end
 
-  class BasicGroup < ExHash
+  class BasicGroup < ExHash # No parameter
     attr_reader :valid_keys,:cmdlist,:def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=Proc.new{})

@@ -72,7 +72,10 @@ module CIAX
           @alist=App::List.new
         end
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-        @mobj=ExtCmd.new(mdb)
+        @mobj=Command.new
+        @mobj['sv']['ext']=ExtGrp.new(mdb){|id,def_proc|
+          ExtItem.new(mdb,id,def_proc)
+        }
         @mstat=Stat.new
         @swmgrp=@mobj['lo'].add_group('swm',"Switching Macro")
         @swmgrp.cmdlist["1.."]='Other Macro Process'

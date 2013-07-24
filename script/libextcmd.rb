@@ -4,21 +4,9 @@ require 'librerange'
 
 module CIAX
   # For External Command Domain
-  class ExtCmd < Command
-    def initialize(db)
-      super()
-      self['sv']['ext']=extgrp(db)
-    end
-
-    private
-    def extgrp(db)
-      ExtGrp.new(db)
-    end
-  end
-
   class ExtGrp < Group
     def initialize(db)
-      @db=type?(db,Db)
+      type?(db,Db)
       super('color' => '6','caption' => "External Commands")
       @cmdary=[]
       cdb=db[:command]
@@ -26,7 +14,8 @@ module CIAX
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:select].keys).each{|id|
           subgrp[id]=cdb[:label][id]
-          self[id]=extitem(id)
+          self[id]=yield(id,@def_proc)
+
         }
         @cmdary << subgrp
       }
@@ -35,11 +24,6 @@ module CIAX
 
     def list
       @cmdary.join("\n")
-    end
-
-    private
-    def extitem(id)
-      ExtItem.new(@db,id,@def_proc)
     end
   end
 

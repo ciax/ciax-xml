@@ -58,7 +58,6 @@ module CIAX
         super(cobj)
         self['layer']='mcr'
         self['id']=id
-warn stat
         ext_shell(stat,Sh::Prompt.new(self))
       end
     end

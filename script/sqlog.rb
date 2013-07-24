@@ -24,7 +24,7 @@ begin
       ldb.set(hash['id'])
       Msg.warn("Initialize")
       fdb=ldb[:frm]
-      fgrp=Frm::ExtGrp.new(fdb)
+      fgrp=Frm::ExtCmd.new(fdb)
       field.ext_rsp(fdb)
       adb=ldb[:app]
       stat.ext_rsp(field,adb[:status])

@@ -137,8 +137,8 @@ module CIAX
         res['data']=gets(nil) || exit
       end
       fdb=Loc::Db.new.set(id)[:frm]
-      fgrp=ExtGrp.new(fdb)
-      item=fgrp.setcmd(cmd.split(':'))
+      fobj=ExtCmd.new(fdb)
+      item=fobj.setcmd(cmd.split(':'))
       field=Field.new.ext_rsp(fdb)
       field.ext_file(id).load if $opt['m']
       field.upd(item){res}

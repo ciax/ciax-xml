@@ -14,7 +14,7 @@ require "libupdate"
 module CIAX
   module Sh
     class Exe < ExHash # Having server status {id,msg,...}
-      attr_reader :upd_proc,:cobj,:item,:output
+      attr_reader :upd_proc,:exe_proc,:save_proc,:cobj,:item,:output
       # block gives command line convert
       def initialize(cobj)
         @cobj=type?(cobj,Command)

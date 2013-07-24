@@ -121,13 +121,13 @@ module CIAX
         SqLog::Upd.new(@stat).ext_exec if logging and @fsh.field.key?('ver')
         @watch.ext_upd(adb,@stat).ext_file(self['id']).upd.event_proc=proc{|cmd,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")
-          sendcmd(p,@cobj.setcmd(cmd))
+          @buf.send(p,@cobj.setcmd(cmd))
         }
         @buf=init_buf
         @cobj['sv']['ext'].def_proc=proc{|item|
           @watch.block?(item.cmd)
           verbose("AppSv","#{self['id']}/Issue:#{item.cmd}")
-          sendcmd(1,item)
+          @buf.send(1,item)
           self['msg']="Issued"
         }
         # Update for Frm level manipulation
@@ -155,12 +155,6 @@ module CIAX
       end
 
       private
-      def sendcmd(p,item)
-        verbose("AppSv","#{self['id']}/Issue2:#{item.cmd}")
-        @buf.send(p,item)
-        self
-      end
-
       def init_buf
         buf=Buffer.new(self)
         buf.send_proc{|item|
@@ -191,7 +185,7 @@ module CIAX
           int=(@watch['period']||300).to_i
           loop{
             begin
-              sendcmd(2,@cobj.setcmd(['upd']))
+              @buf.send(2,@cobj.setcmd(['upd']))
             rescue InvalidID
               warning("AppSv",$!)
             end

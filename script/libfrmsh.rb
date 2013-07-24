@@ -60,7 +60,7 @@ module CIAX
         @field.ext_http(self['id'],host).load
         @cobj['sv'].def_proc=proc{to_s}
         ext_client(host,fdb['port'])
-        @upd_proc.add{@field.load}
+        @upd_proc << proc{@field.load}
       end
     end
 

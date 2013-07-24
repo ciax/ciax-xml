@@ -10,7 +10,7 @@ module CIAX
       def initialize(mitem,alist,&mcr_proc)
         super(mitem,alist,&mcr_proc)
         @cobj=Command.new
-        @upd_proc=UpdProc.new
+        @upd_proc=[]
         prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
         ext_shell(@record,prom)
         ig=@cobj['sv']['int']

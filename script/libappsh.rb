@@ -89,9 +89,7 @@ module CIAX
           @watch.block?(item.cmd)
           @stat.upd
         }
-        @upd_proc.add{
-          @watch.issue
-        }
+        @upd_proc << proc{@watch.issue}
       end
     end
 
@@ -102,14 +100,14 @@ module CIAX
         @stat.ext_http(self['id'],host).load
         @watch.ext_http(self['id'],host).load
         ext_client(host,adb['port'])
-        @upd_proc.add{
+        @upd_proc << proc{
           @stat.load
           @watch.load
         }
       end
     end
 
-    # @<< cobj,output,,upd_proc*
+    # @<< cobj,output,upd_proc*
     # @< adb,watch,stat*
     # @ fsh,buf,log_proc
     class Sv < Exe
@@ -130,19 +128,17 @@ module CIAX
           @buf.send(1,item)
           self['msg']="Issued"
         }
-        # Update for Frm level manipulation
-        #      @fsh.upd_proc.add{@stat.upd.save}
         # Logging if version number exists
         if logging and @adb['version']
           ext_logging(@adb['site_id'],@adb['version'])
         end
         tid_auto=auto_update
-        @upd_proc.add{
+        @upd_proc << proc{
           self['auto'] = tid_auto && tid_auto.alive?
           self['watch'] = @watch.active?
           self['na'] = !@buf.alive?
         }
-        @save_proc.add{@stat.upd.save}
+        @save_proc << proc{@stat.upd.save}
         ext_server(@adb['port'])
       end
 

@@ -18,13 +18,13 @@ module CIAX
       # block gives command line convert
       def initialize(cobj)
         @cobj=type?(cobj,Command)
-        @upd_proc=UpdProc.new # Proc for Server Status Update (by User query)
+        @upd_proc=[] # Proc for Server Status Update (by User query)
         @exe_proc=[] # Proc for Command Issue (by User exec)
-        @save_proc=UpdProc.new # Proc for Device Data Update (by Device response)
+        @save_proc=[] # Proc for Device Data Update (by Device response)
         @ver_color=6
         self['msg']=''
         Thread.abort_on_exception=true
-        at_exit{@save_proc.upd}
+        at_exit{@save_proc.each{|p| p.call}}
       end
 
       # Sync only (Wait for other thread)
@@ -43,7 +43,7 @@ module CIAX
         self['msg']=$!.to_s
         raise $!
       ensure
-        @upd_proc.upd
+        @upd_proc.each{|p| p.call}
       end
 
       def ext_client(host,port)
@@ -184,7 +184,7 @@ module CIAX
         self['msg']=$!.to_s
         raise $!
       ensure
-        @upd_proc.upd
+        @upd_proc.each{|p| p.call}
       end
     end
 

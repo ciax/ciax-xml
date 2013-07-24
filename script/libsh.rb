@@ -176,8 +176,9 @@ module CIAX
         @cobj.setcmd(cmd).exe unless cmd.empty?
         @udp.send(JSON.dump(cmd),0,@addr)
         verbose("UDP:Client/#{self.class}","Send [#{cmd}]",6)
-        input=@udp.recv(1024)
-        verbose("UDP:Client/#{self.class}","Recv #{input}",6)
+        res=@udp.recv(1024)
+        verbose("UDP:Client/#{self.class}","Recv #{res}",6)
+        update(JSON.load(res)) unless res.empty?
         self
       rescue
         self['msg']=$!.to_s

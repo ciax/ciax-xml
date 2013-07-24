@@ -121,8 +121,7 @@ module CIAX
         SqLog::Upd.new(@stat).ext_exec if logging and @fsh.field.key?('ver')
         @watch.ext_upd(adb,@stat).ext_file(self['id']).upd.event_proc=proc{|cmd,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")
-          @item=@cobj.setcmd(cmd)
-          sendcmd(p,@item)
+          sendcmd(p,@cobj.setcmd(cmd))
         }
         @buf=init_buf
         @cobj['sv']['ext'].def_proc=proc{|item|
@@ -149,8 +148,8 @@ module CIAX
 
       def ext_logging(id,ver=0)
         logging=Logging.new('issue',id,ver)
-        @exe_proc.add{
-          logging.append({'cmd'=>@item[:cmd],'active'=>@watch['active']})
+        @exe_proc << proc{|cmd|
+          logging.append({'cmd'=>cmd,'active'=>@watch['active']})
         }
         self
       end
@@ -159,7 +158,6 @@ module CIAX
       def sendcmd(p,item)
         verbose("AppSv","#{self['id']}/Issue2:#{item.cmd}")
         @buf.send(p,item)
-        @exe_proc.upd
         self
       end
 
@@ -193,8 +191,7 @@ module CIAX
           int=(@watch['period']||300).to_i
           loop{
             begin
-              @item=@cobj.setcmd(['upd'])
-              sendcmd(2,@item)
+              sendcmd(2,@cobj.setcmd(['upd']))
             rescue InvalidID
               warning("AppSv",$!)
             end

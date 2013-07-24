@@ -23,6 +23,7 @@ module CIAX
         @save_proc=UpdProc.new # Proc for Device Data Update (by Device response)
         @item=nil
         @ver_color=6
+        self['msg']=''
         Thread.abort_on_exception=true
         at_exit{@save_proc.upd}
       end

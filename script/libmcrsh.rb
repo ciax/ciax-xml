@@ -6,10 +6,9 @@ module CIAX
     class Sv < Exe
       # @< cobj,output,upd_proc*
       # @ al,appint,th,item,mobj*
-      attr_reader :prompt,:th
+      attr_reader :prompt,:th,:valid_keys
       def initialize(mitem,alist,&mcr_proc)
         super(mitem,alist,&mcr_proc)
-        @cobj=Command.new
         @upd_proc=[]
         prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
         ext_shell(@record,prom)
@@ -19,7 +18,8 @@ module CIAX
         ig.add_item('d','Done Macro').def_proc=proc{ ans('d') }
         ig.add_item('f','Force Proceed').def_proc=proc{ ans('f') }
         ig.add_item('r','Retry Checking').def_proc=proc{ ans('r') }
-        @th=Thread.new(ig.valid_keys.clear){|vk| start(vk) }
+        @valid_keys=ig.valid_keys.clear
+        @th=Thread.new{ start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
         @th
       end

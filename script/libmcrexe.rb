@@ -7,11 +7,12 @@ require "libinssh"
 module CIAX
   module Mcr
     class Exe < Sh::Exe
-      attr_reader :record,:valid_keys
+      attr_reader :record
       def initialize(mitem,alist,&mcr_proc)
+        super(Command.new)
         @mitem=type?(mitem,Item)
         @alist=type?(alist,App::List)
-        @record=Record.new(@mitem.cmd,@mitem[:label])
+        @record=Record.new(@mitem.cmd,@mitem[:label],self)
         @record.extend(Prt) unless $opt['r']
         self['layer']='mcr'
         self['id']=@mitem[:cmd]
@@ -19,8 +20,7 @@ module CIAX
         @mcr_proc=mcr_proc
       end
 
-      def start(valid_keys=[]) # separated for sub thread
-        @valid_keys=type?(valid_keys,Array)
+      def start # separated for sub thread
         self['stat']='run'
         puts @record if Msg.fg?
         macro(@mitem)
@@ -48,25 +48,24 @@ module CIAX
             step=@record.add_step(e1,depth){|site|
               @alist[site].stat
             }
-            qry=Query.new(step,self)
             case e1['type']
             when 'goal'
-              res= step.skip? && !qry.dryrun?
+              res= step.skip? && !step.dryrun?
               puts step if Msg.fg?
               raise(Skip) if res
             when 'check'
               res=step.fail?
               puts step if Msg.fg?
-              raise(Interlock) if res && qry.done?
+              raise(Interlock) if res && step.done?
             when 'wait'
               print step.title if Msg.fg?
-              max=qry.dryrun? ? 3 : nil
+              max=step.dryrun? ? 3 : nil
               res=step.timeout?(max){ print '.' if Msg.fg?}
               puts step.result if Msg.fg?
-              raise(Interlock) if res && qry.done?
+              raise(Interlock) if res && step.done?
             when 'exec'
               puts step.title if Msg.fg?
-              step.exec(qry.exec?){|site,cmd,depth|
+              step.exec(step.exec?){|site,cmd,depth|
                 ash=@alist[site]
                 ash.exe(cmd)
                 @appint=ash.cobj['sv']['hid']['interrupt']
@@ -90,69 +89,6 @@ module CIAX
         self['stat']=str
         @record['result']=str
         puts str if Msg.fg?
-      end
-    end
-
-    class Query
-      include Msg
-      def initialize(step,sh)
-        @step=type?(step,Step)
-        @sh=type?(sh,Exe)
-      end
-
-      def exec?
-        return false if dryrun?
-        while ! $opt['n']
-          case query(['Exec','Skip'])
-          when /^E/i
-            break
-          when /^S/i
-            @step['action']='skip'
-            return false
-          end
-        end
-        @step['action']='exec'
-      end
-
-      def done?
-        return true if $opt['n']
-        loop{
-          case query(['Done','Force','Retry'])
-          when /^D/i
-            @step['action']='done'
-            return true
-          when /^F/i
-            @step['action']='forced'
-            return false
-          when /^R/i
-            @step['action']='retry'
-            raise(Retry)
-          end
-        }
-      end
-
-      def dryrun?
-        ! ['e','s','t'].any?{|i| $opt[i]} && @step['action']='dryrun'
-      end
-
-      private
-      def query(cmds)
-        vk=@sh.valid_keys.clear
-        cmds.each{|s| vk << s[0].downcase}
-        @sh['stat']='query'
-        if Msg.fg?
-          prompt=Msg.color('['+cmds.join('/')+']?',5)
-          print Msg.indent(@step['depth'].to_i+1)
-          res=Readline.readline(prompt,true)
-        else
-          @step['option']=cmds
-          sleep
-          @step.delete('option')
-          res=Thread.current[:query]
-        end
-        @sh['stat']='run'
-        vk.clear
-        res
       end
     end
   end

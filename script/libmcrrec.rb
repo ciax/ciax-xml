@@ -8,7 +8,7 @@ module CIAX
     class Record < Datax
       attr_accessor :stat_proc
       attr_reader :crnt
-      def initialize(cmd,label)
+      def initialize(cmd,label,sh)
         super('mcr')
         @base=Time.new.to_f
         self['id']=@base.to_i
@@ -16,10 +16,11 @@ module CIAX
         self['label']=label
         self['steps']=[]
         self['total']=0
+        @sh=type?(sh,Mcr::Exe)
       end
 
       def add_step(db,depth,&p)
-        @crnt=Step.new(db,@base,depth,p)
+        @crnt=Step.new(db,@base,@sh,depth,p)
         @crnt.extend(Prt) unless $opt['r']
         self['steps'] << @crnt
         @crnt
@@ -31,12 +32,13 @@ module CIAX
     end
 
     class Step < ExHash
-      def initialize(db,base,depth=0,p)
+      def initialize(db,base,sh,depth=0,p)
         @stat_proc=type?(p,Proc)
         self['time']=Msg.elps_sec(base)
         self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
+        @sh=type?(sh,Mcr::Exe)
       end
 
       def exec(go=nil)
@@ -70,6 +72,43 @@ module CIAX
         ! ok?('pass','failed')
       end
 
+      # Interactive section
+      def exec?
+        return false if dryrun?
+        while ! $opt['n']
+          case query(['Exec','Skip'])
+          when /^E/i
+            break
+          when /^S/i
+            self['action']='skip'
+            return false
+          end
+        end
+        self['action']='exec'
+      end
+
+      def done?
+        return true if $opt['n']
+        loop{
+          case query(['Done','Force','Retry'])
+          when /^D/i
+            self['action']='done'
+            return true
+          when /^F/i
+            self['action']='forced'
+            return false
+          when /^R/i
+            self['action']='retry'
+            raise(Retry)
+          end
+        }
+      end
+
+      def dryrun?
+        ! ['e','s','t'].any?{|i| $opt[i]} && self['action']='dryrun'
+      end
+
+      # Display section
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
       def action ; "\n"; end
@@ -124,6 +163,26 @@ module CIAX
           (cmp == act) ^ i
         end
       end
-    end
+
+      def query(cmds)
+        tc=Thread.current
+        vk=@sh.valid_keys.clear
+        cmds.each{|s| vk << s[0].downcase}
+        @sh['stat']='query'
+        if Msg.fg?
+          prompt=Msg.color('['+cmds.join('/')+']?',5)
+          print Msg.indent(self['depth'].to_i+1)
+          res=Readline.readline(prompt,true)
+        else
+          self['option']=cmds
+          sleep
+          delete('option')
+          res=tc[:query]
+        end
+        @sh['stat']='run'
+        vk.clear
+        res
+      end
+   end
   end
 end

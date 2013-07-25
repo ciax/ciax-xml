@@ -6,23 +6,59 @@ require "libinssh"
 
 module CIAX
   module Mcr
-    class ExtCmd < ExtCmd
+    class ExtCmd < Command
       attr_reader :record
       def initialize(mdb,alist,sh={:valid_keys =>[]},&mcr_proc)
-        super(mdb)
+        super()
         @sh=type?(sh,Hash)
         @alist=type?(alist,App::List)
-        self['sv']['ext'].def_proc=proc{|mitem| start(mitem)}
-        @mcr_proc=mcr_proc
+        @procs=Procs.new
+        @procs[:submcr]=mcr_proc
+        @procs[:setstat]=proc{|stat| @sh['stat']=stat}
+        @procs[:getstat]=proc{|site| @alist[site].stat}
+        @procs[:exec]=proc{|site,cmd|
+          ash=@alist[site]
+          ash.exe(cmd)
+          ash.cobj['sv']['hid']['interrupt']
+        }
+        @procs[:query]=proc{|step,cmds|
+          tc=Thread.current
+          vk=@sh[:valid_keys].clear
+          cmds.each{|s| vk << s[0].downcase}
+          @sh['stat']='query'
+          if Msg.fg?
+            prompt=Msg.color('['+cmds.join('/')+']?',5)
+            print Msg.indent(step['depth'].to_i+1)
+            res=Readline.readline(prompt,true)
+          else
+            step['option']=cmds
+            sleep
+            step.delete('option')
+            res=tc[:query]
+          end
+          @sh['stat']='run'
+          vk.clear
+          res
+        }
+        ext=self['sv']['ext']=ExtGrp.new(mdb){|id,def_proc|
+          ExtItem.new(@procs,mdb,id,def_proc)
+        }
+        ext.def_proc=proc{|item| item.start}
+      end
+    end
+
+    class ExtItem < ExtItem
+      def initialize(procs,mdb,id,def_proc)
+        super(mdb,id,def_proc)
+        @procs=type?(procs,Hash)
       end
 
-      def start(mitem) # separated for sub thread
-        @mitem=type?(mitem,Item)
-        @sh['stat']='run'
-        @record=Record.new(@mitem.cmd,@mitem[:label],@sh)
+      def start # separated for sub thread
+        @record=Record.new(@cmd,self[:label],@procs)
         @record.extend(Prt) unless $opt['r']
+        @procs[:setstat].call('run')
         puts @record if Msg.fg?
-        macro(@mitem)
+        macro(self)
         result('done')
         self
       rescue Interlock
@@ -40,9 +76,7 @@ module CIAX
       def macro(item,depth=1)
         item.select.each{|e1|
           begin
-            step=@record.add_step(e1,depth){|site|
-              @alist[site].stat
-            }
+            step=@record.add_step(e1,depth)
             case e1['type']
             when 'goal'
               res= step.skip? && !step.dryrun?
@@ -60,17 +94,13 @@ module CIAX
               raise(Interlock) if res && step.done?
             when 'exec'
               puts step.title if Msg.fg?
-              step.exec(step.exec?){|site,cmd,depth|
-                ash=@alist[site]
-                ash.exe(cmd)
-                @appint=ash.cobj['sv']['hid']['interrupt']
-              }
+              @appint=step.exec
               puts step.action if Msg.fg?
             when 'mcr'
               puts step if Msg.fg?
               item=setcmd(e1['cmd'])
               if /true|1/ === e1['async']
-                @mcr_proc.call(item)
+                @procs[:submcr].call(item)
               else
                 macro(item,depth+1)
               end
@@ -85,7 +115,7 @@ module CIAX
       end
 
       def result(str)
-        @sh['stat']=str
+        @procs[:setstat].call(str)
         @record['result']=str
         puts str if Msg.fg?
       end

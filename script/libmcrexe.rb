@@ -6,7 +6,7 @@ require "libinssh"
 
 module CIAX
   module Mcr
-    class Exe < ExHash
+    class Exe < Sh::Exe
       attr_reader :record,:valid_keys
       def initialize(mitem,alist,&mcr_proc)
         @mitem=type?(mitem,Item)

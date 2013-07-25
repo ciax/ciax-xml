@@ -4,6 +4,15 @@ require 'librerange'
 
 module CIAX
   # For External Command Domain
+  class ExtCmd < Command
+    def initialize(db)
+      super()
+      self['sv']['ext']=ExtGrp.new(db){|id,def_proc|
+        ExtItem.new(db,id,def_proc)
+      }
+    end
+  end
+
   class ExtGrp < Group
     def initialize(db)
       type?(db,Db)

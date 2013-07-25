@@ -7,7 +7,6 @@ require "libinssh"
 module CIAX
   module Mcr
     class ExtCmd < Command
-      attr_reader :record
       def initialize(mdb,alist,sh={:valid_keys =>[]},&mcr_proc)
         super()
         @sh=type?(sh,Hash)
@@ -21,19 +20,17 @@ module CIAX
           ash.exe(cmd)
           ash.cobj['sv']['hid']['interrupt']
         }
-        @procs[:query]=proc{|step,cmds|
+        @procs[:query]=proc{|cmds,depth|
           tc=Thread.current
           vk=@sh[:valid_keys].clear
           cmds.each{|s| vk << s[0].downcase}
           @sh['stat']='query'
           if Msg.fg?
             prompt=Msg.color('['+cmds.join('/')+']?',5)
-            print Msg.indent(step['depth'].to_i+1)
+            print Msg.indent(depth.to_i+1)
             res=Readline.readline(prompt,true)
           else
-            step['option']=cmds
             sleep
-            step.delete('option')
             res=tc[:query]
           end
           @sh['stat']='run'

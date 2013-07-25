@@ -164,7 +164,10 @@ module CIAX
       end
 
       def query(cmds)
-        @procs[:query].call(self,cmds)
+        self['option']=cmds
+        res=@procs[:query].(cmds,self['depth'])
+        delete('option')
+        res
       end
     end
 

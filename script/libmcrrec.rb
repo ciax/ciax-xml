@@ -16,7 +16,7 @@ module CIAX
         self['label']=label
         self['steps']=[]
         self['total']=0
-        @sh=type?(sh,Mcr::Exe)
+        @sh=type?(sh,Hash)
       end
 
       def add_step(db,depth,&p)
@@ -38,7 +38,7 @@ module CIAX
         self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
-        @sh=type?(sh,Mcr::Exe)
+        @sh=type?(sh,Hash)
       end
 
       def exec(go=nil)
@@ -166,7 +166,7 @@ module CIAX
 
       def query(cmds)
         tc=Thread.current
-        vk=@sh.valid_keys.clear
+        vk=@sh[:valid_keys].clear
         cmds.each{|s| vk << s[0].downcase}
         @sh['stat']='query'
         if Msg.fg?

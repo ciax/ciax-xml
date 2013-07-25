@@ -6,9 +6,8 @@ require "libmcrprt"
 module CIAX
   module Mcr
     class Record < Datax
-      attr_accessor :stat_proc
-      attr_reader :crnt
-      def initialize(cmd,label,sh)
+      attr_reader :crnt,:procs
+      def initialize(cmd,label,procs=Procs.new)
         super('mcr')
         @base=Time.new.to_f
         self['id']=@base.to_i
@@ -16,11 +15,12 @@ module CIAX
         self['label']=label
         self['steps']=[]
         self['total']=0
-        @sh=type?(sh,Hash)
+        @procs=type?(procs,Procs)
+        # shoud have [:setstat,:getstat,:exec,:submcr,:query]
       end
 
-      def add_step(db,depth,&p)
-        @crnt=Step.new(db,@base,@sh,depth,p)
+      def add_step(db,depth)
+        @crnt=Step.new(db,@base,depth,@procs)
         @crnt.extend(Prt) unless $opt['r']
         self['steps'] << @crnt
         @crnt
@@ -32,18 +32,17 @@ module CIAX
     end
 
     class Step < ExHash
-      def initialize(db,base,sh,depth=0,p)
-        @stat_proc=type?(p,Proc)
+      def initialize(db,base,depth=0,procs)
         self['time']=Msg.elps_sec(base)
         self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
-        @sh=type?(sh,Hash)
+        @procs=type?(procs,Procs)
       end
 
-      def exec(go=nil)
-        if go
-          yield(self['site'],self['cmd'],self['depth'])
+      def exec
+        if exec?
+          @procs[:exec].call(self['site'],self['cmd'])
           self['result']='done'
         else
           self['result']='skip'
@@ -124,7 +123,7 @@ module CIAX
 
       def scan
         stats=sites.inject({}){|hash,site|
-          hash[site]=@stat_proc.call(site)
+          hash[site]=@procs[:getstat].call(site)
           hash
         }
         @condition.map{|h|
@@ -147,7 +146,7 @@ module CIAX
 
       def refresh
         sites.each{|site|
-          @stat_proc.call(site).refresh
+          @procs[:getstat].call(site).refresh
         }
       end
 
@@ -165,24 +164,15 @@ module CIAX
       end
 
       def query(cmds)
-        tc=Thread.current
-        vk=@sh[:valid_keys].clear
-        cmds.each{|s| vk << s[0].downcase}
-        @sh['stat']='query'
-        if Msg.fg?
-          prompt=Msg.color('['+cmds.join('/')+']?',5)
-          print Msg.indent(self['depth'].to_i+1)
-          res=Readline.readline(prompt,true)
-        else
-          self['option']=cmds
-          sleep
-          delete('option')
-          res=tc[:query]
-        end
-        @sh['stat']='run'
-        vk.clear
-        res
+        @procs[:query].call(self,cmds)
       end
-   end
+    end
+
+    class Procs < Hash
+      def initialize
+        super
+        default=proc{}
+      end
+    end
   end
 end

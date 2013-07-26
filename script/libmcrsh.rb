@@ -1,26 +1,27 @@
 #!/usr/bin/ruby
-require "libmcrexe"
+require "libmcrcmd"
 
 module CIAX
   module Mcr
-    class Sv < Exe
+    class Sv < Sh::Exe
       # @< cobj,output,upd_proc*
       # @ al,appint,th,item,mobj*
       attr_reader :prompt,:th
-      def initialize(mitem,alist,&mcr_proc)
-        super(mitem,alist,&mcr_proc)
-        @upd_proc=[]
-        prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
-        ext_shell(@record,prom)
+      def initialize(mitem)
+        super(Command.new)
+        self['layer']='mcr'
+        self['id']=mitem[:cmd]
         ig=@cobj['sv']['int']
         ig.add_item('e','Execute Command').def_proc=proc{ ans('e') }
         ig.add_item('s','Skip Execution').def_proc=proc{ ans('s') }
         ig.add_item('d','Done Macro').def_proc=proc{ ans('d') }
         ig.add_item('f','Force Proceed').def_proc=proc{ ans('f') }
         ig.add_item('r','Retry Checking').def_proc=proc{ ans('r') }
-        self[:valid_keys]=ig.valid_keys.clear
-        @th=Thread.new{ start }
+        mitem.new_rec(self,ig.valid_keys.clear)
+        @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
+        prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
+        ext_shell(mitem.record,prom)
         @th
       end
 
@@ -28,6 +29,10 @@ module CIAX
         return if @th.status != 'sleep'
         @th[:query]=str
         @th.run
+      end
+
+      def to_s
+        self['id']+'('+self['stat']+')'
       end
     end
 
@@ -72,9 +77,8 @@ module CIAX
           @alist=App::List.new
         end
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-        @mobj=Command.new
-        @mobj['sv']['ext']=ExtGrp.new(mdb){|id,def_proc|
-          ExtItem.new(mdb,id,def_proc)
+        @mobj=ExtCmd.new(mdb,@alist){|item|
+          add_page(item)
         }
         @mstat=Stat.new
         @swmgrp=@mobj['lo'].add_group('swm',"Switching Macro")
@@ -97,10 +101,7 @@ module CIAX
       def add_page(item)
         @total.succ!
         page="#{@total}"
-        msh=self[page]=Sv.new(item,@alist){|cmd,asy|
-          submcr=@mobj.setcmd(cmd) #submacro
-          asy ? add_page(submcr) : submcr
-        }
+        msh=self[page]=Sv.new(item)
         @swmgrp.add_item(page).def_proc=proc{throw(:sw_site,page)}
         msh.cobj['lo']['ext']=@mobj['sv']['ext']
         msh.cobj['lo']['swm']=@swmgrp
@@ -116,11 +117,9 @@ module CIAX
       begin
         al=App::List.new
         mdb=Db.new.set('ciax')
-        mobj=ExtCmd.new(mdb)
+        mobj=ExtCmd.new(mdb,al)
         mitem=mobj.setcmd(ARGV)
-        msh=Sv.new(mitem,al){|cmd,asy|
-          mobj.setcmd(cmd) unless asy
-        }
+        msh=Sv.new(mitem)
         msh.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

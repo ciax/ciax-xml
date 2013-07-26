@@ -7,24 +7,37 @@ require "libinssh"
 module CIAX
   module Mcr
     class ExtCmd < Command
-      def initialize(mdb,alist,sh={:valid_keys =>[]},&mcr_proc)
+      def initialize(mdb,alist,&mcr_proc)
         super()
-        @sh=type?(sh,Hash)
         @alist=type?(alist,App::List)
         @procs=Procs.new
         @procs[:submcr]=mcr_proc
-        @procs[:setstat]=proc{|stat| @sh['stat']=stat}
         @procs[:getstat]=proc{|site| @alist[site].stat}
         @procs[:exec]=proc{|site,cmd|
           ash=@alist[site]
           ash.exe(cmd)
           ash.cobj['sv']['hid']['interrupt']
         }
+        ext=self['sv']['ext']=ExtGrp.new(mdb){|id,def_proc|
+          ExtItem.new(@procs,mdb,id,def_proc)
+        }
+        ext.def_proc=proc{|item| item.new_rec.start}
+      end
+    end
+
+    class ExtItem < ExtItem
+      attr_reader :record
+      def initialize(procs,mdb,id,def_proc)
+        super(mdb,id,def_proc)
+        @procs=type?(procs,Hash)
+      end
+
+      def new_rec(sh={},valid_keys=[])
+        @procs[:setstat]=proc{|stat| sh['stat']=stat}
         @procs[:query]=proc{|cmds,depth|
           tc=Thread.current
-          vk=@sh[:valid_keys].clear
-          cmds.each{|s| vk << s[0].downcase}
-          @sh['stat']='query'
+          cmds.each{|s| valid_keys << s[0].downcase}
+          sh['stat']='query'
           if Msg.fg?
             prompt=Msg.color('['+cmds.join('/')+']?',5)
             print Msg.indent(depth.to_i+1)
@@ -33,27 +46,18 @@ module CIAX
             sleep
             res=tc[:query]
           end
-          @sh['stat']='run'
-          vk.clear
+          sh['stat']='run'
+          valid_keys.clear
           res
         }
-        ext=self['sv']['ext']=ExtGrp.new(mdb){|id,def_proc|
-          ExtItem.new(@procs,mdb,id,def_proc)
-        }
-        ext.def_proc=proc{|item| item.start}
-      end
-    end
-
-    class ExtItem < ExtItem
-      def initialize(procs,mdb,id,def_proc)
-        super(mdb,id,def_proc)
-        @procs=type?(procs,Hash)
+        sh['stat']='run'
+        valid_keys.clear
+        @record=Record.new(@cmd,self[:label],@procs)
+        @record.extend(Prt) unless $opt['r']
+        self
       end
 
       def start # separated for sub thread
-        @record=Record.new(@cmd,self[:label],@procs)
-        @record.extend(Prt) unless $opt['r']
-        @procs[:setstat].call('run')
         puts @record if Msg.fg?
         macro(self)
         result('done')
@@ -116,6 +120,7 @@ module CIAX
         @record['result']=str
         puts str if Msg.fg?
       end
+
     end
 
     if __FILE__ == $0

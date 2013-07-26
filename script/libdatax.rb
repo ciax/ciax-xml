@@ -74,7 +74,7 @@ module CIAX
     end
 
     def _setdata
-      @data=ExHash[delete(@dataname)||{}]
+      @data=delete(@dataname).extend(ExEnum)
       self['time']=UnixTime.parse(self['time']||UnixTime.now)
       @upd_proc.each{|p| p.call(self)}
       self

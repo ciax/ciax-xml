@@ -50,6 +50,7 @@ module CIAX
           sh['stat']='run'
           res
         }
+        @procs[:show]=proc{|msg| print msg if Msg.fg?}
         self
       end
 
@@ -73,7 +74,7 @@ module CIAX
       def macro(select,depth=1)
         select.each{|e1|
           begin
-            sel=@record.add_step(e1,depth){|msg| print msg if Msg.fg?}
+            sel=@record.add_step(e1,depth)
             macro(sel,depth+1) if sel
           rescue Retry
             retry

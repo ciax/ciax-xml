@@ -13,7 +13,7 @@ module CIAX
         self['label']=label
         @valid_keys=valid_keys
         @procs=type?(procs,Procs)
-        # shoud have [:setstat,:getstat,:exec,:submcr,:query]
+        # shoud have [:setstat,:getstat,:exec,:submcr,:query,:show]
       end
 
       def add_step(db,depth)
@@ -22,24 +22,15 @@ module CIAX
         @data << step
         case db['type']
         when 'goal'
-          res= step.skip?
-          yield step
-          raise(Skip) if res
+          raise(Skip) if step.skip?
         when 'check'
-          res=step.fail?
-          yield step
-          raise(Interlock) if res && step.done?
+          raise(Interlock) if step.fail?
         when 'wait'
-          yield step.title
-          res=step.timeout?{ yield '.'}
-          yield step.result
-          raise(Interlock) if res && step.done?
+          raise(Interlock) if step.timeout?
         when 'exec'
-          yield step.title
-          @appint=step.exec
-          yield step.action
+          step.exec
         when 'mcr'
-          yield step
+          step.show
           asy=/true|1/ === db['async']
           return @procs[:submcr].call(db['cmd'],asy)
         end
@@ -62,36 +53,51 @@ module CIAX
       end
 
       def exec
+        show title
         if exec?
           @procs[:exec].call(self['site'],self['cmd'])
           self['result']='done'
         else
           self['result']='skip'
         end
+        show action
       end
 
       def timeout?(&p) # Print Progress Proc
+        show title
         #gives number or nil(if break)
         self['max']=self['retry']
-        max = dryrun? ? 3 : self['max']
-        max.to_i.times{|n|
+        max = dryrun? ? 1 : self['max']
+        res=max.to_i.times{|n|
           self['retry']=n
-          return if ok?('pass','wait')
+          break if ok?('pass','wait')
           refresh
           sleep 1
-          p.call if p
+          show '.'
         }
-        self['result']='timeout'
+        self['result']= res ? 'timeout' : 'pass'
+        show result
+        res && done?
       end
 
       def skip?
-        ok?('skip','pass') && !dryrun?
+        res=ok?('skip','pass') && !dryrun?
+        show
+        res
       end
 
       def fail?
-        ! ok?('pass','failed')
+        res=! ok?('pass','failed')
+        show
+        res && done?
       end
 
+      def show(msg=self)
+        @procs[:show].call(msg)
+        self
+      end
+
+      private
       # Interactive section
       def exec?
         return false if dryrun?
@@ -133,7 +139,7 @@ module CIAX
       def result ; "\n"+to_s; end
       def action ; "\n"; end
 
-      private
+      # Sub methods
       def ok?(t=nil,f=nil)
         cond=scan
         res=cond.all?{|h| h['upd'] && h['res']}
@@ -192,6 +198,7 @@ module CIAX
         delete('option')
         res
       end
+
     end
 
     class Procs < Hash

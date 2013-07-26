@@ -30,11 +30,8 @@ module CIAX
         when 'exec'
           step.exec
         when 'mcr'
-          step.show
-          asy=/true|1/ === db['async']
-          return @procs[:submcr].call(db['cmd'],asy)
+          step.submcr
         end
-        nil
       end
 
       def fin
@@ -52,6 +49,12 @@ module CIAX
         @procs=type?(procs,Procs)
       end
 
+      def submcr
+        show
+        asy=/true|1/ === self['async']
+        @procs[:submcr].call(self['cmd'],asy)
+      end
+
       def exec
         show title
         if exec?
@@ -61,14 +64,14 @@ module CIAX
           self['result']='skip'
         end
         show action
+        nil
       end
 
-      def timeout?(&p) # Print Progress Proc
+      def timeout?
         show title
-        #gives number or nil(if break)
         self['max']=self['retry']
         max = dryrun? ? 1 : self['max']
-        res=max.to_i.times{|n|
+        res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
           break if ok?('pass','wait')
           refresh
@@ -92,7 +95,7 @@ module CIAX
         res && done?
       end
 
-      def show(msg=self)
+      def show(msg=self) # Print Progress Proc
         @procs[:show].call(msg)
         self
       end

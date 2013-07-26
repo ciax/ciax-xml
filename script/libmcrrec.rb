@@ -12,17 +12,39 @@ module CIAX
         self['id']=@base.to_i
         self['cmd']=cmd
         self['label']=label
-        self['total']=0
         @valid_keys=valid_keys
         @procs=type?(procs,Procs)
         # shoud have [:setstat,:getstat,:exec,:submcr,:query]
       end
 
       def add_step(db,depth)
-        crnt=Step.new(db,@base,depth,@valid_keys,@procs)
-        crnt.extend(Prt) unless $opt['r']
-        @data << crnt
-        crnt
+        step=Step.new(db,@base,depth,@valid_keys,@procs)
+        step.extend(Prt) unless $opt['r']
+        @data << step
+        case db['type']
+        when 'goal'
+          res= step.skip?
+          yield step
+          raise(Skip) if res
+        when 'check'
+          res=step.fail?
+          yield step
+          raise(Interlock) if res && step.done?
+        when 'wait'
+          yield step.title
+          res=step.timeout?{ yield '.'}
+          yield step.result
+          raise(Interlock) if res && step.done?
+        when 'exec'
+          yield step.title
+          @appint=step.exec
+          yield step.action
+        when 'mcr'
+          yield step
+          asy=/true|1/ === db['async']
+          return @procs[:submcr].call(db['cmd'],asy)
+        end
+        nil
       end
 
       def fin

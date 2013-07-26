@@ -73,31 +73,8 @@ module CIAX
       def macro(select,depth=1)
         select.each{|e1|
           begin
-            step=@record.add_step(e1,depth)
-            case e1['type']
-            when 'goal'
-              res= step.skip?
-              puts step if Msg.fg?
-              raise(Skip) if res
-            when 'check'
-              res=step.fail?
-              puts step if Msg.fg?
-              raise(Interlock) if res && step.done?
-            when 'wait'
-              print step.title if Msg.fg?
-              res=step.timeout?{ print '.' if Msg.fg?}
-              puts step.result if Msg.fg?
-              raise(Interlock) if res && step.done?
-            when 'exec'
-              puts step.title if Msg.fg?
-              @appint=step.exec
-              puts step.action if Msg.fg?
-            when 'mcr'
-              puts step if Msg.fg?
-              asy=/true|1/ === e1['async']
-              sel=@procs[:submcr].call(e1['cmd'],asy)
-              macro(sel,depth+1) if sel
-            end
+            sel=@record.add_step(e1,depth){|msg| print msg if Msg.fg?}
+            macro(sel,depth+1) if sel
           rescue Retry
             retry
           rescue Skip

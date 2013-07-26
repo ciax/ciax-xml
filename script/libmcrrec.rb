@@ -12,7 +12,6 @@ module CIAX
         self['id']=@base.to_i
         self['cmd']=cmd
         self['label']=label
-        self['steps']=[]
         self['total']=0
         @valid_keys=valid_keys
         @procs=type?(procs,Procs)

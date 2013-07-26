@@ -10,7 +10,7 @@ module CIAX
 
       def to_s
         msg=title+result
-        if st=self['steps']
+        if st=@data
           st.each{|i|
             msg << title(i)+result(i)
           }

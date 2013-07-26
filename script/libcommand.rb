@@ -42,7 +42,7 @@ module CIAX
     def initialize
       # Server Commands (service commands on Server)
       sv=self['sv']=Domain.new(2)
-      @int=sv.add_group('hid',"Hidden Group").add_item('interrupt')
+      sv.add_group('hid',"Hidden Group").add_item('interrupt')
       sv.add_group('int','Internal Commands')
       # Local(Long Jump) Commands (local handling commands on Client)
       self['lo']=Domain.new(9)

@@ -30,7 +30,7 @@ module CIAX
 
       def block?(cmd)
         cmds=self['block']
-        verbose("Watch","BLOCKING:#{cmd}") unless cmds.empty?
+        verbose("Watch","Blocked?:#{cmd}") unless cmds.empty?
         cmds.include?(cmd[0]) && Msg.cmd_err("Blocking(#{cmd})")
       end
 
@@ -38,17 +38,18 @@ module CIAX
         # block parm = cmd + priority(2)
         cmds=self['exec'].each{|cmd|
           @event_proc.call([cmd,2])
-          verbose("Watch","ISSUED:#{cmd}")
+          verbose("Watch","ISSUED_AUTO:#{cmd}")
         }.dup
         self['exec'].clear
         cmds
       end
 
       def interrupt
+        verbose("Watch","Interrupt:#{self['int']}")
         # block parm = cmd + priority(0)
         cmds=self['int'].each{|cmd|
           @event_proc.call([cmd,0])
-          verbose("Watch","ISSUED:#{cmd}")
+          verbose("Watch","ISSUED_INT:#{cmd}")
         }.dup
         self['int'].clear
         cmds

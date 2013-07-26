@@ -16,7 +16,7 @@ module CIAX
         # shoud have [:setstat,:getstat,:exec,:submcr,:query,:show]
       end
 
-      def add_step(db,depth)
+      def add_step(db,depth) # returns nil or submacro db
         step=Step.new(db,self['time'],depth,@valid_keys,@procs)
         step.extend(Prt) unless $opt['r']
         @data << step

@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     class Record < Datax
       def initialize(cmd,label,valid_keys=[],procs=Procs.new)
-        super('mcr',[],'steps')
+        super('record',[],'steps')
         @base=Time.new.to_f
         self['id']=@base.to_i
         self['cmd']=cmd

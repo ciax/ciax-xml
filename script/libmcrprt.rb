@@ -27,7 +27,7 @@ module CIAX
           msg << Msg.color('Check',6)+":#{obj['label']}"
         when 'wait'
           msg << Msg.color('Waiting',6)+":#{obj['label']} "
-        when 'mcr'
+        when 'mcr','record'
           msg << Msg.color("MACRO",3)
           msg << ":#{obj['cmd'].join(' ')}(#{obj['label']})"
           msg << "(async)" if obj['async']

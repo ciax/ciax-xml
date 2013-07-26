@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     class Record < Datax
       attr_reader :crnt,:procs
-      def initialize(cmd,label,procs=Procs.new)
+      def initialize(cmd,label,valid_keys=[],procs=Procs.new)
         super('mcr')
         @base=Time.new.to_f
         self['id']=@base.to_i
@@ -15,12 +15,13 @@ module CIAX
         self['label']=label
         self['steps']=[]
         self['total']=0
+        @valid_keys=valid_keys
         @procs=type?(procs,Procs)
         # shoud have [:setstat,:getstat,:exec,:submcr,:query]
       end
 
       def add_step(db,depth)
-        @crnt=Step.new(db,@base,depth,@procs)
+        @crnt=Step.new(db,@base,depth,@valid_keys,@procs)
         @crnt.extend(Prt) unless $opt['r']
         self['steps'] << @crnt
         @crnt
@@ -32,11 +33,12 @@ module CIAX
     end
 
     class Step < ExHash
-      def initialize(db,base,depth=0,procs)
+      def initialize(db,base,depth=0,valid_keys,procs)
         self['time']=Msg.elps_sec(base)
         self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
+        @valid_keys=valid_keys
         @procs=type?(procs,Procs)
       end
 
@@ -165,7 +167,9 @@ module CIAX
 
       def query(cmds)
         self['option']=cmds
+        @valid_keys.replace(cmds.map{|s| s[0].downcase})
         res=@procs[:query].(cmds,self['depth'])
+        @valid_keys.clear
         delete('option')
         res
       end

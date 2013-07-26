@@ -33,10 +33,11 @@ module CIAX
       end
 
       def new_rec(sh={},valid_keys=[])
+        sh['stat']='run'
+        @record=Record.new(@cmd,self[:label],valid_keys.clear,@procs)
+        @record.extend(Prt) unless $opt['r']
         @procs[:setstat]=proc{|stat| sh['stat']=stat}
         @procs[:query]=proc{|cmds,depth|
-          tc=Thread.current
-          cmds.each{|s| valid_keys << s[0].downcase}
           sh['stat']='query'
           if Msg.fg?
             prompt=Msg.color('['+cmds.join('/')+']?',5)
@@ -44,16 +45,11 @@ module CIAX
             res=Readline.readline(prompt,true)
           else
             sleep
-            res=tc[:query]
+            res=Thread.current[:query]
           end
           sh['stat']='run'
-          valid_keys.clear
           res
         }
-        sh['stat']='run'
-        valid_keys.clear
-        @record=Record.new(@cmd,self[:label],@procs)
-        @record.extend(Prt) unless $opt['r']
         self
       end
 

@@ -49,10 +49,10 @@ module CIAX
         end
       end
 
-      def timeout?(max=nil,&p) # Print Progress Proc
+      def timeout?(&p) # Print Progress Proc
         #gives number or nil(if break)
         self['max']=self['retry']
-        max||=self['max']
+        max = dryrun? ? 3 : self['max']
         max.to_i.times{|n|
           self['retry']=n
           return if ok?('pass','wait')

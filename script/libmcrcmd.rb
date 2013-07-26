@@ -89,8 +89,7 @@ module CIAX
               raise(Interlock) if res && step.done?
             when 'wait'
               print step.title if Msg.fg?
-              max=step.dryrun? ? 3 : nil
-              res=step.timeout?(max){ print '.' if Msg.fg?}
+              res=step.timeout?{ print '.' if Msg.fg?}
               puts step.result if Msg.fg?
               raise(Interlock) if res && step.done?
             when 'exec'

@@ -64,7 +64,7 @@ module CIAX
       end
 
       def skip?
-        ok?('skip','pass')
+        ok?('skip','pass') && !dryrun?
       end
 
       def fail?

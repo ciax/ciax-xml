@@ -59,7 +59,7 @@ module CIAX
 
       def start # separated for sub thread
         puts @record if Msg.fg?
-        macro(self)
+        macro(@select)
         result('done')
         self
       rescue Interlock
@@ -74,13 +74,13 @@ module CIAX
       end
 
       private
-      def macro(item,depth=1)
-        item.select.each{|e1|
+      def macro(select,depth=1)
+        select.each{|e1|
           begin
             step=@record.add_step(e1,depth)
             case e1['type']
             when 'goal'
-              res= step.skip? && !step.dryrun?
+              res= step.skip?
               puts step if Msg.fg?
               raise(Skip) if res
             when 'check'
@@ -99,12 +99,9 @@ module CIAX
               puts step.action if Msg.fg?
             when 'mcr'
               puts step if Msg.fg?
-              item=setcmd(e1['cmd'])
-              if /true|1/ === e1['async']
-                @procs[:submcr].call(item)
-              else
-                macro(item,depth+1)
-              end
+              asy=/true|1/ === e1['async']
+              sel=@procs[:submcr].call(e1['cmd'],asy)
+              macro(sel,depth+1) if sel
             end
           rescue Retry
             retry
@@ -128,7 +125,9 @@ module CIAX
       begin
         al=App::List.new
         mdb=Db.new.set('ciax')
-        mobj=ExtCmd.new(mdb,al)
+        mobj=ExtCmd.new(mdb,al){|cmd,asy|
+          mobj.setcmd(cmd).select
+        }
         mobj.setcmd(ARGV).exe
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

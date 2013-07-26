@@ -6,10 +6,11 @@ require "libupdate"
 module CIAX
   class Datax < ExHash
     attr_reader :data,:upd_proc
-    def initialize(type,init_struct={})
+    def initialize(type,init_struct={},dataname='val')
       self['type']=type
       self['time']=UnixTime.now
       @data=ExHash[init_struct]
+      @dataname=dataname
       @ver_color=6
       @upd_proc=[] # Proc Array for Update Propagation to the upper Layers
     end
@@ -68,12 +69,12 @@ module CIAX
     private
     def _getdata
       hash=ExHash[self]
-      hash['val']=@data
+      hash[@dataname]=@data
       hash
     end
 
     def _setdata
-      @data=ExHash[delete('val')||{}]
+      @data=ExHash[delete(@dataname)||{}]
       self['time']=UnixTime.parse(self['time']||UnixTime.now)
       @upd_proc.each{|p| p.call(self)}
       self
@@ -152,7 +153,7 @@ module CIAX
       else
         tag||=(taglist.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
         Msg.msg("Status Saving for [#{tag}]")
-        writej({'val'=>hash},tag)
+        writej({@dataname => hash},tag)
       end
       self
     end

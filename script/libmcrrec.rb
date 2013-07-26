@@ -6,9 +6,8 @@ require "libmcrprt"
 module CIAX
   module Mcr
     class Record < Datax
-      attr_reader :crnt,:procs
       def initialize(cmd,label,valid_keys=[],procs=Procs.new)
-        super('mcr')
+        super('mcr',[],'steps')
         @base=Time.new.to_f
         self['id']=@base.to_i
         self['cmd']=cmd
@@ -21,10 +20,10 @@ module CIAX
       end
 
       def add_step(db,depth)
-        @crnt=Step.new(db,@base,depth,@valid_keys,@procs)
-        @crnt.extend(Prt) unless $opt['r']
-        self['steps'] << @crnt
-        @crnt
+        crnt=Step.new(db,@base,depth,@valid_keys,@procs)
+        crnt.extend(Prt) unless $opt['r']
+        @data << crnt
+        crnt
       end
 
       def fin

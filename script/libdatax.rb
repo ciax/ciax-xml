@@ -9,7 +9,7 @@ module CIAX
     def initialize(type,init_struct={},dataname='val')
       self['type']=type
       self['time']=UnixTime.now
-      @data=ExHash[init_struct]
+      @data=init_struct.dup.extend(ExEnum)
       @dataname=dataname
       @ver_color=6
       @upd_proc=[] # Proc Array for Update Propagation to the upper Layers

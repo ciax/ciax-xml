@@ -8,8 +8,7 @@ module CIAX
     class Record < Datax
       def initialize(cmd,label,valid_keys=[],procs=Procs.new)
         super('record',[],'steps')
-        @base=Time.new.to_f
-        self['id']=@base.to_i
+        self['id']=self['time'].to_i
         self['cmd']=cmd
         self['label']=label
         @valid_keys=valid_keys
@@ -18,7 +17,7 @@ module CIAX
       end
 
       def add_step(db,depth)
-        step=Step.new(db,@base,depth,@valid_keys,@procs)
+        step=Step.new(db,self['time'],depth,@valid_keys,@procs)
         step.extend(Prt) unless $opt['r']
         @data << step
         case db['type']
@@ -48,7 +47,7 @@ module CIAX
       end
 
       def fin
-        self['total']=Msg.elps_sec(@base)
+        self['total']=Msg.elps_sec(self['time'])
       end
     end
 

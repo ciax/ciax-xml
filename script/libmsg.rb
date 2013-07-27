@@ -325,6 +325,7 @@ module CIAX
     end
 
     def view_struct(data,title=nil,ind=0)
+      raise('Hash Loop') if ind > 5
       str=''
       col=4
       if title
@@ -339,46 +340,50 @@ module CIAX
       else
         str << "===\n"
       end
+      iv={}
       data.instance_variables.each{|n|
-        str << view_struct(data.instance_variable_get(n),n,ind)
+        iv[n]=data.instance_variable_get(n)
       }
+      _show(str,iv,ind,col,title)
+      _show(str,data,ind,col,title)
+    end
+
+    def _show(str,data,ind,col,title)
       case data
       when Array
-        vary=data
-        idx=data.size.times
-        if vary.any?{|v| v.kind_of?(Enumerable)}
-          idx.each{|i|
-            str << view_struct(data[i],i,ind)
-          }
-          return str
-        elsif  data.size > col
-          str << indent(ind)+"["
-          line=[]
-          vary.each_slice(col){|a|
-            line << a.map{|v| v.inspect}.join(",")
-          }
-          str << line.join(",\n "+indent(ind))+"]\n"
-          return str
-        end
+        return str if _mixed?(str,data,data,data.size.times,ind)
+        return _only_ary(str,data,ind,col) if data.size > col
       when Hash
-        vary=data.values
-        idx=data.keys
-        if vary.any?{|v| v.kind_of?(Enumerable)}
-          idx.each{|i|
-            str << view_struct(data[i],i,ind)
-          }
-          return str
-        elsif data.size > 2
-          idx.each_slice(title ? 2 : 1){|a|
-            line=a.map{|k|
-              color("%-8s" % k.inspect,3)+(": %-10s" % data[k].inspect)
-            }.join("\t")
-            str << indent(ind)+line+"\n"
-          }
-          return str
-        end
+        return str if _mixed?(str,data,data.values,data.keys,ind)
+        return _only_hash(str,data,ind,col,title) if data.size > 2
       end
       str.chomp + " #{data.inspect}\n"
+    end
+
+    def _mixed?(str,data,vary,idx,ind)
+      if vary.any?{|v| v.kind_of?(Enumerable)}
+        idx.each{|i|
+          str << view_struct(data[i],i,ind)
+        }
+      end
+    end
+
+    def _only_ary(str,data,ind,col)
+      str << indent(ind)+"["
+      line=[]
+      data.each_slice(col){|a|
+        line << a.map{|v| v.inspect}.join(",")
+      }
+      str << line.join(",\n "+indent(ind))+"]\n"
+    end
+
+    def _only_hash(str,data,ind,col,title)
+      data.keys.each_slice(title ? 2 : 1){|a|
+        str << indent(ind)+a.map{|k|
+          color("%-8s" % k.inspect,3)+(": %-10s" % data[k].inspect)
+        }.join("\t")+"\n"
+      }
+      str
     end
   end
 end

@@ -31,7 +31,7 @@ module CIAX
       def block?(cmd)
         cmds=self['block']
         verbose("Watch","Blocked?:#{cmd}") unless cmds.empty?
-        cmds.include?(cmd[0]) && Msg.cmd_err("Blocking(#{cmd})")
+        cmds.include?(cmd) && Msg.cmd_err("Blocking(#{cmd})")
       end
 
       def issue

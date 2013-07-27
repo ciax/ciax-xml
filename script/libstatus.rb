@@ -69,6 +69,12 @@ module CIAX
       end
 
       def to_s
+        upd
+        super
+      end
+
+      private
+      def upd
         @sdb[:group].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
@@ -90,10 +96,8 @@ module CIAX
             self[k]['lines'] << hash
           }
         }
-        super
       end
 
-      private
       def set(hash,key,id)
         hash[key]=@stat[key][id] if @stat[key].key?(id)
       end
@@ -105,7 +109,7 @@ module CIAX
       end
 
       def to_s
-        super
+        upd
         cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
         lines=[]
         each{|k,v|

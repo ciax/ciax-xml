@@ -339,6 +339,9 @@ module CIAX
       else
         str << "===\n"
       end
+      data.instance_variables.each{|n|
+        str << view_struct(data.instance_variable_get(n),n,ind)
+      }
       case data
       when Array
         vary=data

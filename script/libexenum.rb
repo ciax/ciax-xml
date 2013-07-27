@@ -21,7 +21,7 @@ module CIAX
     # Show branch (omit lower tree of Hash/Array with sym key)
     def path(ary=[])
       enum=ary.inject(self){|prev,a|
-        if prev.instance_variable_defined?(a)
+        if /@/ === a
           prev.instance_variable_get(a)
         else
           case prev

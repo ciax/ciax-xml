@@ -44,6 +44,7 @@ module CIAX
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")
           self['msg']="Interrupt #{int}"
         }
+        @pre_proc << proc{|cmd|@watch.block?(cmd)}
         init_view
       end
 
@@ -85,10 +86,6 @@ module CIAX
         @watch.event_proc=proc{|cmd,p|
           Msg.msg("#{cmd} is issued by event")
         }
-        @cobj['sv'].def_proc=proc{|item|
-          @watch.block?(item.cmd)
-          @stat.upd
-        }
         @upd_proc << proc{@watch.issue}
       end
     end
@@ -123,7 +120,6 @@ module CIAX
         }
         @buf=init_buf
         @cobj['sv']['ext'].def_proc=proc{|item|
-          @watch.block?(item.cmd)
           verbose("AppSv","#{self['id']}/Issue:#{item.cmd}")
           @buf.send(1,item)
           self['msg']="Issued"
@@ -144,7 +140,7 @@ module CIAX
 
       def ext_logging(id,ver=0)
         logging=Logging.new('issue',id,ver)
-        @exe_proc << proc{|cmd|
+        @post_proc << proc{|cmd|
           logging.append({'cmd'=>cmd,'active'=>@watch['active']})
         }
         self
@@ -217,7 +213,7 @@ module CIAX
     ENV['VER']||='init/'
     GetOpts.new('cet')
     begin
-      puts App::List.new.shell(ARGV.shift)
+      App::List.new.shell(ARGV.shift)
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end

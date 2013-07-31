@@ -22,11 +22,11 @@ module CIAX
         @data << step
         case db['type']
         when 'goal'
-          raise(Skip) if step.skip?
+          step.skip?
         when 'check'
-          raise(Interlock) if step.fail?
+          step.fail?
         when 'wait'
-          raise(Interlock) if step.timeout?
+          step.timeout?
         when 'exec'
           step.exec
         when 'mcr'
@@ -49,6 +49,7 @@ module CIAX
         @procs=type?(procs,Procs)
       end
 
+      # Execution section
       def submcr
         show
         asy=/true|1/ === self['async']
@@ -67,6 +68,7 @@ module CIAX
         nil
       end
 
+      # Conditional judgment section
       def timeout?
         show title
         self['max']=self['retry']
@@ -80,24 +82,19 @@ module CIAX
         }
         self['result']= res ? 'timeout' : 'pass'
         show result
-        res && done?
+        raise(Interlock) if res && done?
       end
 
       def skip?
         res=ok?('skip','pass') && !dryrun?
         show
-        res
+        raise(Skip) if res
       end
 
       def fail?
         res=! ok?('pass','failed')
         show
-        res && done?
-      end
-
-      def show(msg=self) # Print Progress Proc
-        @procs[:show].call(msg)
-        self
+        raise(Interlock) if res && done?
       end
 
       private
@@ -141,6 +138,10 @@ module CIAX
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
       def action ; "\n"; end
+      def show(msg=self) # Print Progress Proc
+        @procs[:show].call(msg)
+        self
+      end
 
       # Sub methods
       def ok?(t=nil,f=nil)

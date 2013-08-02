@@ -4,8 +4,6 @@ require "libmcrcmd"
 module CIAX
   module Mcr
     class Sv < Sh::Exe
-      # @< cobj,output,upd_proc*
-      # @ al,appint,th,item,mobj*
       attr_reader :prompt,:th
       def initialize(mitem)
         super(Command.new)
@@ -57,12 +55,13 @@ module CIAX
     end
 
     class Man < Sh::Exe
-      attr_reader :prompt
-      def initialize(cobj,stat,id)
+      attr_reader :prompt,:stat
+      def initialize(cobj,id)
         super(cobj)
         self['layer']='mcr'
         self['id']=id
-        ext_shell(stat,Sh::Prompt.new(self))
+        @stat=Stat.new
+        ext_shell(@stat,Sh::Prompt.new(self))
       end
     end
 
@@ -84,7 +83,6 @@ module CIAX
             item.select
           end
         }
-        @mstat=Stat.new
         @swmgrp=@mobj['lo'].add_group('swm',"Switching Macro")
         @swmgrp.cmdlist["1.."]='Other Macro Process'
         first_page(mdb['id'])
@@ -92,8 +90,8 @@ module CIAX
 
       def first_page(id)
         @total='0'
-        msh=self['0']=Man.new(@mobj,@mstat,id)
-        @mobj['sv']['ext'].def_proc=proc{|item| add_page(item)}
+        msh=self['0']=Man.new(@mobj,id)
+#        @mobj['sv']['ext'].def_proc=proc{|item| add_page(item)}
         @swmgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
         @mobj['lo']['swl']=@swlgrp if @swlgrp
         msh['total']=@total
@@ -112,7 +110,7 @@ module CIAX
         msh.cobj['lo']['swl']=@swlgrp if @swlgrp
         msh['total']=@total
         msh.prompt['total']="[#{page}/%s]"
-        @mstat.add(@total,item[:cmd],msh)
+        self['0'].stat.add(@total,item[:cmd],msh)
         nil
       end
     end

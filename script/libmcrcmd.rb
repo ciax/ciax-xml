@@ -9,26 +9,37 @@ module CIAX
     class ExtCmd < Command
       def initialize(mdb,alist,&mcr_proc)
         super()
-        @alist=type?(alist,App::List)
-        @procs=Procs.new
-        @procs[:submcr]=mcr_proc
-        @procs[:getstat]=proc{|site| @alist[site].stat}
-        @procs[:exec]=proc{|site,cmd|
-          ash=@alist[site]
+        alist=type?(alist,App::List)
+        procs=Procs.new
+        procs[:submcr]=mcr_proc
+        procs[:getstat]=proc{|site| alist[site].stat}
+        procs[:exec]=proc{|site,cmd|
+          ash=alist[site]
           ash.exe(cmd)
           ash.cobj['sv']['hid']['interrupt']
         }
-        ext=self['sv']['ext']=ExtGrp.new(mdb){|id,def_proc|
-          ExtItem.new(@procs,mdb,id,def_proc)
-        }
-        ext.def_proc=proc{|item| item.new_rec.start}
+        self['sv']['ext']=ExtGrp.new(mdb,procs)
+      end
+    end
+
+    class ExtGrp < ExtGrp
+      def initialize(mdb,procs)
+        super(mdb){}
+        @mdb=type?(mdb,Mcr::Db)
+        @procs=type?(procs,Procs)
+      end
+
+      def setcmd(cmd)
+        id,*par=type?(cmd,Array)
+        @valid_keys.include?(id) || raise(InvalidCMD,list)
+        ExtItem.new(@procs,@mdb,id).set_par(par)
       end
     end
 
     class ExtItem < ExtItem
       attr_reader :record
-      def initialize(procs,mdb,id,def_proc)
-        super(mdb,id,def_proc)
+      def initialize(procs,mdb,id)
+        super(mdb,id,proc{new_rec.start})
         @procs=type?(procs,Hash)
       end
 

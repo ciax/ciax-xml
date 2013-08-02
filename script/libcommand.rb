@@ -137,9 +137,7 @@ module CIAX
     end
 
     def setcmd(cmd)
-      type?(cmd,Array)
-      id,*par=cmd
-      key?(id) || raise(InvalidCMD,list)
+      id,*par=type?(cmd,Array)
       @valid_keys.include?(id) || raise(InvalidCMD,list)
       verbose("CmdGrp","SetCMD (#{id},#{par})")
       self[id].set_par(par)

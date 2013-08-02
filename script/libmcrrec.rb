@@ -12,12 +12,12 @@ module CIAX
         self['cmd']=cmd
         self['label']=label
         @valid_keys=valid_keys
-        @procs=type?(procs,Procs)
-        # shoud have [:setstat,:getstat,:exec,:submcr,:query,:show]
+        @procs=type?(procs,Procs) #[:setstat,:getstat,:exec,:submcr,:query,:show]
+        @executing=[] #array of site for interrupt
       end
 
       def add_step(db,depth) # returns nil or submacro db
-        step=Step.new(db,self['time'],depth,@valid_keys,@procs)
+        step=Step.new(db,self['time'],depth,@valid_keys,@executing,@procs)
         step.extend(Prt) unless $opt['r']
         @data << step
         case db['type']
@@ -36,17 +36,29 @@ module CIAX
 
       def fin
         self['total']=Msg.elps_sec(self['time'])
+        @valid_keys.clear
+        @executing.clear
+        self
+      end
+
+      def interrupt
+        warn("\nInterrupt Issued to #{@executing}")
+        @executing.each{|site|
+          @procs[:exec].call(site,['interrupt'])
+        }
+        fin
       end
     end
 
     class Step < ExHash
-      def initialize(db,base,depth=0,valid_keys,procs)
+      def initialize(db,base,depth=0,valid_keys,executing,procs)
         self['time']=Msg.elps_sec(base)
         self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
         @valid_keys=valid_keys
         @procs=type?(procs,Procs)
+        @executing=type?(executing,Array)
       end
 
       # Execution section
@@ -58,6 +70,7 @@ module CIAX
 
       def exec
         show title
+        @executing << self['site']
         if exec?
           @procs[:exec].call(self['site'],self['cmd'])
           self['result']='done'

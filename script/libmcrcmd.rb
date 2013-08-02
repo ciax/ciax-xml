@@ -13,11 +13,7 @@ module CIAX
         procs=Procs.new
         procs[:submcr]=mcr_proc
         procs[:getstat]=proc{|site| alist[site].stat}
-        procs[:exec]=proc{|site,cmd|
-          ash=alist[site]
-          ash.exe(cmd)
-          ash.cobj['sv']['hid']['interrupt']
-        }
+        procs[:exec]=proc{|site,cmd| alist[site].exe(cmd) }
         self['sv']['ext']=ExtGrp.new(mdb,procs)
       end
     end
@@ -74,7 +70,7 @@ module CIAX
         result('error')
         self
       rescue Interrupt
-        @appint.call if @appint
+        @record.interrupt
         result('interrupted')
         self
       ensure

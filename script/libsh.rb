@@ -157,7 +157,6 @@ module CIAX
         }
         self
       end
-
     end
 
     module Client

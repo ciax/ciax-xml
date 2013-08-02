@@ -22,7 +22,6 @@ module CIAX
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
         prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
         ext_shell(mitem.record,prom)
-        @th
       end
 
       def ans(str)

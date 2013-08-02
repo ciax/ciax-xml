@@ -221,7 +221,7 @@ module CIAX
     class Procs < Hash
       def initialize
         super
-        default=proc{}
+        self.default=proc{}
       end
     end
   end

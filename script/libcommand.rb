@@ -106,7 +106,7 @@ module CIAX
 
     def add_dummy(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => 1}
-      self[gid]=BasicGroup.new(attr)
+      self[gid]=Group.new(attr)
     end
 
     def def_proc=(dp)
@@ -135,7 +135,7 @@ module CIAX
     end
   end
 
-  class BasicGroup < ExHash # No parameter
+  class Group < ExHash
     attr_reader :valid_keys,:cmdlist,:def_proc
     #attr = {caption,color,column,:members}
     def initialize(attr,def_proc=Proc.new{})
@@ -144,18 +144,6 @@ module CIAX
       @cmdlist=CmdList.new(@attr,@valid_keys)
       @def_proc=type?(def_proc,Proc)
       @ver_color=3
-    end
-
-    def add_item(id,title)
-      @cmdlist[id]=title
-      self
-    end
-
-    def update_items(labels)
-      labels.each{|k,v|
-        @cmdlist[k]=v
-      }
-      self
     end
 
     def setcmd(cmd)
@@ -170,11 +158,9 @@ module CIAX
     def list
       @cmdlist.to_s
     end
-  end
 
-  class Group < BasicGroup
     def add_item(id,title=nil,parameter=nil)
-      super(id,title)
+      @cmdlist[id]=title
       item=self[id]=Item.new(id,@def_proc)
       property={:label => title}
       property[:parameter] = parameter if parameter

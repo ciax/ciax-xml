@@ -52,6 +52,7 @@ module CIAX
       type?(cmd,Array)
       id,*par=cmd
       dom=domain_with_item(id) || raise(InvalidCMD,list)
+      valid_keys.include?(id) || raise(InvalidCMD,list)
       dom.setcmd(cmd)
     end
 
@@ -72,9 +73,7 @@ module CIAX
     def valid_keys
       res=[]
       values.each{|dom|
-        dom.values.each{|grp|
-          res+=grp.valid_keys
-        }
+        res+=dom.valid_keys
       }
       res
     end
@@ -121,6 +120,7 @@ module CIAX
       type?(cmd,Array)
       id,*par=cmd
       grp=group_with_item(id) || raise(InvalidCMD,list)
+      valid_keys.include?(id) || raise(InvalidCMD,list)
       grp.setcmd(cmd)
     end
 
@@ -132,6 +132,14 @@ module CIAX
       values.any?{|grp|
         return grp if grp.key?(id)
       }
+    end
+
+    def valid_keys
+      res=[]
+      values.each{|grp|
+          res+=grp.valid_keys
+      }
+      res
     end
   end
 

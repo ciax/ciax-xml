@@ -7,11 +7,10 @@ require "libinssh"
 module CIAX
   module Mcr
     class ExtCmd < Command
-      def initialize(mdb,alist,&mcr_proc)
+      def initialize(mdb,alist,procs)
         super()
         alist=type?(alist,App::List)
-        procs=Procs.new
-        procs[:submcr]=mcr_proc
+        type?(procs,Procs)
         procs[:getstat]=proc{|site| alist[site].stat}
         procs[:exec]=proc{|site,cmd| alist[site].exe(cmd) }
         self['sv']['ext']=ExtGrp.new(mdb,procs)
@@ -23,19 +22,20 @@ module CIAX
         super(mdb){}
         @mdb=type?(mdb,Mcr::Db)
         @procs=type?(procs,Procs)
+        @def_proc=procs[:def_proc]
       end
 
       def setcmd(cmd)
         id,*par=type?(cmd,Array)
         @valid_keys.include?(id) || raise(InvalidCMD,list)
-        ExtItem.new(@procs,@mdb,id).set_par(par)
+        ExtItem.new(@procs,@mdb,id,@def_proc).set_par(par)
       end
     end
 
     class ExtItem < ExtItem
       attr_reader :record
-      def initialize(procs,mdb,id)
-        super(mdb,id,proc{new_rec.start})
+      def initialize(procs,mdb,id,def_proc)
+        super(mdb,id,def_proc)
         @procs=type?(procs,Hash)
       end
 
@@ -105,10 +105,12 @@ module CIAX
       begin
         al=App::List.new
         mdb=Db.new.set('ciax')
-        mobj=ExtCmd.new(mdb,al){|cmd,asy|
+        mproc=Procs.new
+        mproc[:submcr]=proc{|cmd,asy|
           mobj.setcmd(cmd).select
         }
-        mobj.setcmd(ARGV).exe
+        mobj=ExtCmd.new(mdb,al,mproc)
+        mobj.setcmd(ARGV).new_rec.start
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

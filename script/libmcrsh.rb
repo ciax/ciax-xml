@@ -91,7 +91,7 @@ module CIAX
       def first_page(id)
         @total='0'
         msh=self['0']=Man.new(@mobj,id)
-#        @mobj['sv']['ext'].def_proc=proc{|item| add_page(item)}
+        @mobj['sv']['ext'].def_proc=proc{|item| add_page(item)}
         @swmgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
         @mobj['lo']['swl']=@swlgrp if @swlgrp
         msh['total']=@total
@@ -120,9 +120,11 @@ module CIAX
       begin
         al=App::List.new
         mdb=Db.new.set('ciax')
-        mobj=ExtCmd.new(mdb,al){|cmd,asy|
+        mproc=Procs.new
+        mproc[:submcr]=proc{|cmd,asy|
           mobj.setcmd(cmd).select
         }
+        mobj=ExtCmd.new(mdb,al,mproc)
         mitem=mobj.setcmd(ARGV)
         msh=Sv.new(mitem)
         msh.shell

@@ -7,7 +7,7 @@ require "libinssh"
 module CIAX
   module Mcr
     class ExtCmd < Command
-      def initialize(mdb,al,&mcr_proc)
+      def initialize(mdb,al,&mcr_proc) # Block if for SubMacro
         super()
         sv=self['sv']
         sv['ext']=ExtGrp.new(mdb,sv.procs)
@@ -76,17 +76,19 @@ module CIAX
       end
 
       private
-      def macro(select,depth=1)
+      def macro(select)
+        @record.depth+=1
         select.each{|e1|
           begin
-            sel=@record.add_step(e1,depth)
-            macro(sel,depth+1) if sel
+            sel=@record.add_step(e1)
+            macro(sel) if sel
           rescue Retry
             retry
           rescue Skip
             return
           end
         }
+        @record.depth-=1
         self
       end
 

@@ -6,6 +6,7 @@ require "libmcrprt"
 module CIAX
   module Mcr
     class Record < Datax
+      attr_accessor :depth
       def initialize(cmd,label,valid_keys=[],procs=Procs.new)
         super('record',[],'steps')
         self['id']=self['time'].to_i
@@ -14,10 +15,11 @@ module CIAX
         @valid_keys=valid_keys
         @procs=type?(procs,Procs) #[:setstat,:getstat,:exec,:submcr,:query,:show]
         @executing=[] #array of site for interrupt
+        @depth=0
       end
 
-      def add_step(db,depth) # returns nil or submacro db
-        step=Step.new(db,self['time'],depth,@valid_keys,@executing,@procs)
+      def add_step(db) # returns nil or submacro db
+        step=Step.new(db,self['time'],@depth,@valid_keys,@executing,@procs)
         step.extend(Prt) unless $opt['r']
         @data << step
         case db['type']

@@ -15,20 +15,21 @@ module CIAX
         ig.add_item('save',"Save Field [key,key...] (tag)",[any,any])
         ig.add_item('load',"Load Field (tag)",[any])
         set=ig.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
-        set.def_proc=proc{|item|
+        set.procs[:def_proc]=proc{|item|
           field.set(*item.par)
         }
-        self['sv']['ext']=ExtGrp.new(fdb){|id,def_proc|
-          ExtItem.new(field,fdb,id,def_proc)
+        sv=self['sv']
+        sv['ext']=ExtGrp.new(fdb,sv.procs){|id,dprcs,gprcs|
+          ExtItem.new(field,fdb,id,dprcs,gprcs)
         }
       end
     end
 
     class ExtItem < ExtItem
-      def initialize(field,db,id,def_proc)
+      def initialize(field,db,id,dom_procs,grp_procs)
         @ver_color=0
         @field=type?(field,Field)
-        super(db,id,def_proc)
+        super(db,id,dom_procs,grp_procs)
         cdb=db[:command]
         @cache={}
         @fstr={}

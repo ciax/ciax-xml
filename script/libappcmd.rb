@@ -5,10 +5,11 @@ require "libextcmd"
 module CIAX
   module App
     class ExtCmd < Command
-      def initialize(adb)
+      def initialize(db)
         super()
-        self['sv']['ext']=ExtGrp.new(adb){|id,def_proc|
-          ExtItem.new(adb,id,def_proc)
+        sv=self['sv']
+        sv['ext']=ExtGrp.new(db,sv.procs){|id,dprcs,gprcs|
+          ExtItem.new(db,id,dprcs,gprcs)
         }
       end
     end

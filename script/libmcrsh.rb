@@ -10,11 +10,11 @@ module CIAX
         self['layer']='mcr'
         self['id']=mitem[:cmd]
         ig=@cobj['sv']['int']
-        ig.add_item('e','Execute Command').def_proc=proc{ ans('e') }
-        ig.add_item('s','Skip Execution').def_proc=proc{ ans('s') }
-        ig.add_item('d','Done Macro').def_proc=proc{ ans('d') }
-        ig.add_item('f','Force Proceed').def_proc=proc{ ans('f') }
-        ig.add_item('r','Retry Checking').def_proc=proc{ ans('r') }
+        ig.add_item('e','Execute Command').procs[:def_proc]=proc{ ans('e') }
+        ig.add_item('s','Skip Execution').procs[:def_proc]=proc{ ans('s') }
+        ig.add_item('d','Done Macro').procs[:def_proc]=proc{ ans('d') }
+        ig.add_item('f','Force Proceed').procs[:def_proc]=proc{ ans('f') }
+        ig.add_item('r','Retry Checking').procs[:def_proc]=proc{ ans('r') }
         mitem.new_rec(self,ig.valid_keys.clear)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
@@ -94,7 +94,7 @@ module CIAX
       def first_page(id)
         @total='0'
         msh=self['0']=Man.new(@mobj,id)
-        @swmgrp.add_item('0',"Macro Manager").def_proc=proc{throw(:sw_site,'0') }
+        @swmgrp.add_item('0',"Macro Manager").procs[:def_proc]=proc{throw(:sw_site,'0') }
         @mobj['lo']['swl']=@swlgrp if @swlgrp
         msh['total']=@total
         msh.prompt['total']="[#{@total}/%s]"
@@ -106,7 +106,7 @@ module CIAX
         @total.succ!
         page="#{@total}"
         msh=self[page]=Sv.new(item)
-        @swmgrp.add_item(page).def_proc=proc{throw(:sw_site,page)}
+        @swmgrp.add_item(page).procs[:def_proc]=proc{throw(:sw_site,page)}
         msh.cobj['lo']['ext']=@mobj['sv']['ext']
         msh.cobj['lo']['swm']=@swmgrp
         msh.cobj['lo']['swl']=@swlgrp if @swlgrp

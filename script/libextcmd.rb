@@ -7,23 +7,24 @@ module CIAX
   class ExtCmd < Command
     def initialize(db)
       super()
-      self['sv']['ext']=ExtGrp.new(db){|id,def_proc|
-        ExtItem.new(db,id,def_proc)
+      sv=self['sv']
+      sv['ext']=ExtGrp.new(db,sv.procs){|id,dprcs,gprcs|
+        ExtItem.new(db,id,dprcs,gprcs)
       }
     end
   end
 
   class ExtGrp < Group
-    def initialize(db)
+    def initialize(db,dom_procs)
       type?(db,Db)
-      super('color' => '6','caption' => "External Commands")
+      super({'color' => '6','caption' => "External Commands"},dom_procs)
       @cmdary=[]
       cdb=db[:command]
       (cdb[:group]||{'main'=>@attr}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:select].keys).each{|id|
           subgrp[id]=cdb[:label][id]
-          self[id]=yield(id,@def_proc)
+          self[id]=yield(id,@dom_procs,@procs)
 
         }
         @cmdary << subgrp
@@ -39,9 +40,9 @@ module CIAX
   class ExtItem < Item
     include Math
     attr_reader :select
-    def initialize(db,id,def_proc)
+    def initialize(db,id,dom_procs,grp_procs)
       type?(db,Db)
-      super(id,def_proc)
+      super(id,dom_procs,grp_procs)
       # because cdb is separated by title
       db[:command].each{|k,v|
         if a=v[@id]

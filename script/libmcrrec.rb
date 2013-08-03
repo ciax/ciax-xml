@@ -215,14 +215,6 @@ module CIAX
         delete('option')
         res
       end
-
-    end
-
-    class Procs < Hash
-      def initialize
-        super
-        self.default=proc{}
-      end
     end
   end
 end

@@ -9,19 +9,19 @@ require 'libupdate'
 #
 # Item => {:label,:parameter,:select,:cmd}
 #  Item#set_par(par)
-#  Item#def_proc -> Proc
+#  Item#procs -> Procs
 #
 # Group => {id => Item}
 #  Group#list -> CmdList.to_s
+#  Group#procs -> Procs
 #  Group#add_item(id,title){|id,par|} -> Item
 #  Group#update_items(list){|id|}
 #  Group#valid_keys -> Array
-#  Group#def_proc -> Proc
 #
 # Domain => {id => Group}
 #  Domain#list -> String
+#  Domain#procs -> Procs
 #  Domain#add_group(key,title) -> Group
-#  Domain#def_proc -> Proc
 #  Domain#item(id) -> Item
 #
 #
@@ -35,6 +35,13 @@ require 'libupdate'
 # Keep current command and parameters
 
 module CIAX
+  class Procs < Hash
+    def initialize
+      super
+      self.default=proc{}
+    end
+  end
+
   class Command < ExHash
     # CDB: mandatory (:select)
     # optional (:label,:parameter)
@@ -60,7 +67,7 @@ module CIAX
     end
 
     def int_proc=(p)
-      self['sv']['hid']['interrupt'].def_proc=type?(p,Proc)
+      self['sv']['hid']['interrupt'].procs[:def_proc]=type?(p,Proc)
     end
 
     def domain_with_item(id)
@@ -71,9 +78,9 @@ module CIAX
   end
 
   class Domain < ExHash
-    attr_reader :def_proc
+    attr_reader :procs
     def initialize(color=2)
-      @def_proc=Proc.new{}
+      @procs=Procs.new
       @grplist=[]
       @color=color
       @ver_color=2
@@ -91,20 +98,12 @@ module CIAX
 
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      self[gid]=Group.new(attr,@def_proc)
+      self[gid]=Group.new(attr,@procs)
     end
 
     def add_dummy(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => 1}
       self[gid]=Group.new(attr)
-    end
-
-    def def_proc=(dp)
-      @def_proc=type?(dp,Proc)
-      values.each{|v|
-        v.def_proc=dp
-      }
-      dp
     end
 
     def setcmd(cmd)
@@ -126,13 +125,14 @@ module CIAX
   end
 
   class Group < ExHash
-    attr_reader :valid_keys,:cmdlist,:def_proc
+    attr_reader :valid_keys,:cmdlist,:procs
     #attr = {caption,color,column,:members}
-    def initialize(attr,def_proc=Proc.new{})
+    def initialize(attr,dom_procs=Procs.new)
       @attr=type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=CmdList.new(@attr,@valid_keys)
-      @def_proc=type?(def_proc,Proc)
+      @dom_procs=type?(dom_procs,Procs)
+      @procs=Procs.new
       @ver_color=3
     end
 
@@ -149,7 +149,7 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(id,@def_proc)
+      item=self[id]=Item.new(id,@dom_procs,@procs)
       property={:label => title}
       property[:parameter] = parameter if parameter
       item.update(property)
@@ -159,35 +159,33 @@ module CIAX
     def update_items(labels)
       labels.each{|id,title|
         @cmdlist[id]=title
-        self[id]=Item.new(id,@def_proc)
+        self[id]=Item.new(id,@dom_procs,@procs)
       }
       self
-    end
-
-    def def_proc=(dp)
-      @def_proc=type?(dp,Proc)
-      values.each{|v|
-        v.def_proc=dp
-      }
-      dp
     end
   end
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd
-    attr_accessor :def_proc
-    def initialize(id,def_proc=Proc.new{})
+    attr_reader :id,:par,:cmd,:procs
+    #procs should have :def_proc
+    def initialize(id,dom_procs,grp_procs)
       @id=id
       @par=[]
       @cmd=[]
-      @def_proc=type?(def_proc,Proc)
+      @procs=Procs.new
+      @procary=[]
+      @procary << type?(dom_procs,Procs)
+      @procary << type?(grp_procs,Procs)
+      @procary << @procs
       @ver_color=5
     end
 
     def exe
       verbose(self.class,"Execute #{@cmd}")
-      @def_proc.call(self)
+      @procary.each{|procs|
+        procs[:def_proc].call(self)
+      }
       self
     end
 

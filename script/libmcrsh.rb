@@ -75,9 +75,7 @@ module CIAX
           @alist=App::List.new
         end
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-        @mproc=Procs.new
-        @mproc[:def_proc]=proc{|item| add_page(item)}
-        @mproc[:submcr]=proc{|cmd,asy|
+        @mobj=ExtCmd.new(mdb,@alist){|cmd,asy|
           item=@mobj.setcmd(cmd)
           if asy
             add_page(item)
@@ -85,7 +83,7 @@ module CIAX
             item.select
           end
         }
-        @mobj=ExtCmd.new(mdb,@alist,@mproc)
+        @mobj['sv']['ext'].procs[:def_proc]=proc{|item| add_page(item)}
         @swmgrp=@mobj['lo'].add_group('swm',"Switching Macro")
         @swmgrp.cmdlist["1.."]='Other Macro Process'
         first_page(mdb['id'])
@@ -122,11 +120,7 @@ module CIAX
       begin
         al=App::List.new
         mdb=Db.new.set('ciax')
-        mproc=Procs.new
-        mproc[:submcr]=proc{|cmd,asy|
-          mobj.setcmd(cmd).select
-        }
-        mobj=ExtCmd.new(mdb,al,mproc)
+        mobj=ExtCmd.new(mdb,al){|cmd,asy| mobj.setcmd(cmd).select}
         mitem=mobj.setcmd(ARGV)
         msh=Sv.new(mitem)
         msh.shell

@@ -4,6 +4,7 @@ require 'libmsg'
 require 'librerange'
 require 'liblogging'
 require 'libupdate'
+require 'libprocs'
 
 #Access method
 #
@@ -35,24 +36,18 @@ require 'libupdate'
 # Keep current command and parameters
 
 module CIAX
-  class Procs < Hash
-    def initialize
-      super
-      self.default=proc{}
-    end
-  end
-
   class Command < ExHash
     # CDB: mandatory (:select)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
     def initialize
       # Server Commands (service commands on Server)
-      sv=self['sv']=Domain.new(2)
+      procary=ProcAry.new
+      sv=self['sv']=Domain.new(procary,2)
       sv.add_group('hid',"Hidden Group").add_item('interrupt')
       sv.add_group('int','Internal Commands')
       # Local(Long Jump) Commands (local handling commands on Client)
-      self['lo']=Domain.new(9)
+      self['lo']=Domain.new(procary,9)
     end
 
     def setcmd(cmd)
@@ -78,9 +73,11 @@ module CIAX
   end
 
   class Domain < ExHash
-    attr_reader :procs
-    def initialize(color=2)
+    attr_reader :procs,:procary
+    def initialize(procary,color=2)
       @procs=Procs.new
+      @procary=ProcAry.new << @procs
+      @procary.concat type?(procary,ProcAry)
       @grplist=[]
       @color=color
       @ver_color=2
@@ -98,7 +95,7 @@ module CIAX
 
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      self[gid]=Group.new(attr,@procs)
+      self[gid]=Group.new(attr,@procary)
     end
 
     def add_dummy(gid,caption,column=2)
@@ -125,14 +122,15 @@ module CIAX
   end
 
   class Group < ExHash
-    attr_reader :valid_keys,:cmdlist,:procs
+    attr_reader :valid_keys,:cmdlist,:procs,:procary
     #attr = {caption,color,column,:members}
-    def initialize(attr,dom_procs=Procs.new)
+    def initialize(attr,procary=ProcAry.new)
       @attr=type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=CmdList.new(@attr,@valid_keys)
-      @dom_procs=type?(dom_procs,Procs)
       @procs=Procs.new
+      @procary=ProcAry.new << @procs
+      @procary.concat type?(procary,ProcAry)
       @ver_color=3
     end
 
@@ -149,7 +147,7 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(id,@dom_procs,@procs)
+      item=self[id]=Item.new(id,@procary)
       property={:label => title}
       property[:parameter] = parameter if parameter
       item.update(property)
@@ -159,7 +157,7 @@ module CIAX
     def update_items(labels)
       labels.each{|id,title|
         @cmdlist[id]=title
-        self[id]=Item.new(id,@dom_procs,@procs)
+        self[id]=Item.new(id,@procary)
       }
       self
     end
@@ -167,25 +165,21 @@ module CIAX
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:procs
+    attr_reader :id,:par,:cmd,:procs,:procary
     #procs should have :def_proc
-    def initialize(id,dom_procs,grp_procs)
+    def initialize(id,procary=ProcAry.new)
       @id=id
       @par=[]
       @cmd=[]
       @procs=Procs.new
-      @procary=[]
-      @procary << type?(dom_procs,Procs)
-      @procary << type?(grp_procs,Procs)
-      @procary << @procs
+      @procary=ProcAry.new << @procs
+      @procary.concat type?(procary,ProcAry)
       @ver_color=5
     end
 
     def exe
       verbose(self.class,"Execute #{@cmd}")
-      @procary.each{|procs|
-        procs[:def_proc].call(self)
-      }
+      @procary[:def_proc].call(self)
       self
     end
 

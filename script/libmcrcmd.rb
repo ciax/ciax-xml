@@ -10,7 +10,7 @@ module CIAX
       def initialize(mdb,al,&mcr_proc) # Block if for SubMacro
         super()
         sv=self['sv']
-        sv['ext']=ExtGrp.new(mdb,sv.procs)
+        sv['ext']=ExtGrp.new(mdb,sv.procary)
         sv.procs[:submcr]=mcr_proc
         sv.procs[:getstat]=proc{|site| al[site].stat}
         sv.procs[:exec]=proc{|site,cmd| al[site].exe(cmd) }
@@ -18,28 +18,23 @@ module CIAX
     end
 
     class ExtGrp < ExtGrp
-      def initialize(mdb,dom_procs)
-        super(mdb,dom_procs){}
+      def initialize(mdb,procary)
+        super(mdb,procary){}
         @mdb=type?(mdb,Mcr::Db)
       end
 
       def setcmd(cmd)
         id,*par=type?(cmd,Array)
         @valid_keys.include?(id) || raise(InvalidCMD,list)
-        ExtItem.new(@mdb,id,@dom_procs,@procs).set_par(par)
+        ExtItem.new(@mdb,id,@procary).set_par(par)
       end
     end
 
     class ExtItem < ExtItem
       attr_reader :record
-      def initialize(mdb,id,dom_procs,grp_procs)
-        super(mdb,id,dom_procs,grp_procs)
-        @procs.update(dom_procs)
-      end
-
       def new_rec(sh={},valid_keys=[])
         sh['stat']='run'
-        @record=Record.new(@cmd,self[:label],valid_keys.clear,@procs)
+        @record=Record.new(@cmd,self[:label],valid_keys.clear,@procary)
         @record.extend(Prt) unless $opt['r']
         @procs[:setstat]=proc{|stat| sh['stat']=stat}
         @procs[:query]=proc{|cmds,depth|

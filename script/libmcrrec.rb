@@ -7,19 +7,19 @@ module CIAX
   module Mcr
     class Record < Datax
       attr_accessor :depth
-      def initialize(cmd,label,valid_keys=[],procs=Procs.new)
+      def initialize(cmd,label,valid_keys=[],procary=ProcAry.new)
         super('record',[],'steps')
         self['id']=self['time'].to_i
         self['cmd']=cmd
         self['label']=label
         @valid_keys=valid_keys
-        @procs=type?(procs,Procs) #[:setstat,:getstat,:exec,:submcr,:query,:show]
+        @procary=type?(procary,ProcAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
         @executing=[] #array of site for interrupt
         @depth=0
       end
 
       def add_step(db) # returns nil or submacro db
-        step=Step.new(db,self['time'],@depth,@valid_keys,@executing,@procs)
+        step=Step.new(db,self['time'],@depth,@valid_keys,@executing,@procary)
         step.extend(Prt) unless $opt['r']
         @data << step
         case db['type']
@@ -48,15 +48,15 @@ module CIAX
       def interrupt
         warn("\nInterrupt Issued to #{@executing}")
         @executing.each{|site|
-          @procs[:exec].call(site,['interrupt'])
+          @procary[:exec].call(site,['interrupt'])
         }
         result('interrupted')
       end
 
       private
       def fin(str)
-        @procs[:setstat].call(str)
-        @procs[:show].call(str+"\n")
+        @procary[:setstat].call(str)
+        @procary[:show].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
         @valid_keys.clear
@@ -66,13 +66,13 @@ module CIAX
     end
 
     class Step < ExHash
-      def initialize(db,base,depth=0,valid_keys,executing,procs)
+      def initialize(db,base,depth=0,valid_keys,executing,procary)
         self['time']=Msg.elps_sec(base)
         self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
         @valid_keys=valid_keys
-        @procs=type?(procs,Procs)
+        @procary=type?(procary,ProcAry)
         @executing=type?(executing,Array)
       end
 
@@ -80,14 +80,14 @@ module CIAX
       def submcr
         show
         asy=/true|1/ === self['async']
-        @procs[:submcr].call(self['cmd'],asy)
+        @procary[:submcr].call(self['cmd'],asy)
       end
 
       def exec
         show title
         @executing << self['site']
         if exec?
-          @procs[:exec].call(self['site'],self['cmd'])
+          @procary[:exec].call(self['site'],self['cmd'])
           self['result']='done'
         else
           self['result']='skip'
@@ -167,7 +167,7 @@ module CIAX
       def result ; "\n"+to_s; end
       def action ; "\n"; end
       def show(msg=self) # Print Progress Proc
-        @procs[:show].call(msg)
+        @procary[:show].call(msg)
         self
       end
 
@@ -182,7 +182,7 @@ module CIAX
 
       def scan
         stats=sites.inject({}){|hash,site|
-          hash[site]=@procs[:getstat].call(site)
+          hash[site]=@procary[:getstat].call(site)
           hash
         }
         @condition.map{|h|
@@ -205,7 +205,7 @@ module CIAX
 
       def refresh
         sites.each{|site|
-          @procs[:getstat].call(site).refresh
+          @procary[:getstat].call(site).refresh
         }
       end
 
@@ -225,9 +225,9 @@ module CIAX
       def query(cmds)
         self['option']=cmds
         @valid_keys.replace(cmds.map{|s| s[0].downcase})
-        @procs[:setstat].call('query')
-        res=@procs[:query].(cmds,self['depth'])
-        @procs[:setstat].call('run')
+        @procary[:setstat].call('query')
+        res=@procary[:query].(cmds,self['depth'])
+        @procary[:setstat].call('run')
         @valid_keys.clear
         delete('option')
         res

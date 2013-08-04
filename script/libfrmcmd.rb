@@ -19,17 +19,17 @@ module CIAX
           field.set(*item.par)
         }
         sv=self['sv']
-        sv['ext']=ExtGrp.new(fdb,sv.procs){|id,dprcs,gprcs|
-          ExtItem.new(field,fdb,id,dprcs,gprcs)
+        sv['ext']=ExtGrp.new(fdb,sv.procary){|id,pa|
+          ExtItem.new(field,fdb,id,pa)
         }
       end
     end
 
     class ExtItem < ExtItem
-      def initialize(field,db,id,dom_procs,grp_procs)
+      def initialize(field,db,id,procary)
         @ver_color=0
         @field=type?(field,Field)
-        super(db,id,dom_procs,grp_procs)
+        super(db,id,procary)
         cdb=db[:command]
         @cache={}
         @fstr={}

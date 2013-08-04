@@ -17,6 +17,7 @@ module CIAX
         @executing=[] #array of site for interrupt
         @depth=0
         @procary[:setstat].call('run')
+        @procary[:show].call(self)
       end
 
       def add_step(db) # returns nil or submacro db
@@ -77,7 +78,7 @@ module CIAX
 
       # Execution section
       def submcr
-        show
+        show to_s+"\n"
         item=@procary[:submcr].call(self['cmd'])
         if /true|1/ === self['async']
           @procary[:asymcr].call(item)

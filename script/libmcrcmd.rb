@@ -51,7 +51,6 @@ module CIAX
       end
 
       def start # separated for sub thread
-        puts @record if Msg.fg?
         macro(@select)
         @record.done
         self

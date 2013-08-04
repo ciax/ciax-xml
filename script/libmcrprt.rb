@@ -42,7 +42,6 @@ module CIAX
           msg << Msg.color("MACRO",3)
           msg << ":#{self['cmd'].join(' ')}(#{self['label']})"
           msg << "(async)" if self['async']
-          msg << "\n"
         when 'exec'
           msg << Msg.color("EXEC",13)
           msg << ":#{self['cmd'].join(' ')}(#{self['site']})"

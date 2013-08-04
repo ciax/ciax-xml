@@ -38,16 +38,16 @@ module CIAX
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
       end
 
-      def add(num,cmd,mexe)
-        self[num]=[cmd,mexe]
+      def add(num,msh)
+        self[num]=msh
         self
       end
 
       def to_s
         page=[@caption]
-        each{|key,ary|
-          cmd=ary[0]
-          stat=ary[1]['stat']
+        each{|key,msh|
+          cmd=msh['id']
+          stat=msh['stat']
           page << Msg.item("[#{key}]","#{cmd} (#{stat})")
         }
         page.join("\n")
@@ -75,37 +75,27 @@ module CIAX
           @alist=App::List.new
         end
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-        @mobj=ExtCmd.new(mdb,@alist){|item|
-          add_page(item)
-        }
-        @mobj['sv']['ext'].procs[:def_proc]=proc{|item| add_page(item)}
+        @mobj=ExtCmd.new(mdb,@alist){|item| add_page(Sv.new(item)) }
+        @mobj['sv']['ext'].procs[:def_proc]=proc{|item| add_page(Sv.new(item))}
         @swmgrp=@mobj['lo'].add_group('swm',"Switching Macro")
         @swmgrp.cmdlist["1.."]='Other Macro Process'
-        first_page(mdb['id'])
-      end
-
-      def first_page(id)
-        @total='0'
-        msh=self['0']=Man.new(@mobj,id)
-        @swmgrp.add_item('0',"Macro Manager").procs[:def_proc]=proc{throw(:sw_site,'0') }
-        @mobj['lo']['swl']=@swlgrp if @swlgrp
-        msh['total']=@total
-        msh.prompt['total']="[#{@total}/%s]"
+        @total='/'
+        msh=Man.new(@mobj,mdb['id'])
+        add_page(msh,"Macro Manager")
       end
 
       # item includes arbitrary mcr command
       # Sv generated and added to list in yield part as mcr command is invoked
-      def add_page(item)
-        @total.succ!
-        page="#{@total}"
-        msh=self[page]=Sv.new(item)
-        @swmgrp.add_item(page).procs[:def_proc]=proc{throw(:sw_site,page)}
+      def add_page(msh,title=nil)
+        page="#{@total.succ!}"
+        self[page]=msh
+        @swmgrp.add_item(page,title).procs[:def_proc]=proc{throw(:sw_site,page)}
         msh.cobj['lo']['ext']=@mobj['sv']['ext']
         msh.cobj['lo']['swm']=@swmgrp
         msh.cobj['lo']['swl']=@swlgrp if @swlgrp
-        msh['total']=@total
         msh.prompt['total']="[#{page}/%s]"
-        self['0'].stat.add(@total,item[:cmd],msh)
+        msh['total']=@total
+        self['0'].stat.add(page,msh) if page > "0"
         nil
       end
     end

@@ -231,10 +231,11 @@ module CIAX
       end
 
       def query(cmds)
-        prom=Msg.color('<'+cmds.join('/')+'>?',5)
-        @valid_keys.replace(cmds.map{|s| s[0].downcase})
-        @procary[:setstat].call(prom)
-        res=@procary[:query].call(prom)
+        cmdopt=cmds.map{|s| s[0].downcase}
+        @valid_keys.replace(cmdopt)
+        msg=Msg.color('<'+cmdopt.join('/')+'>?',5)
+        @procary[:setstat].call(msg)
+        res=@procary[:query].call(Msg.indent(self['depth'].to_i+1)+msg)
         @procary[:setstat].call('run')
         @valid_keys.clear
         res

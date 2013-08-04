@@ -36,19 +36,32 @@ module CIAX
         end
       end
 
-      def fin
-        self['total']=Msg.elps_sec(self['time'])
-        @valid_keys.clear
-        @executing.clear
-        self
+      def done
+        fin('done')
       end
+
+      def error
+        fin('error')
+      end
+
 
       def interrupt
         warn("\nInterrupt Issued to #{@executing}")
         @executing.each{|site|
           @procs[:exec].call(site,['interrupt'])
         }
-        fin
+        result('interrupted')
+      end
+
+      private
+      def fin(str)
+        @procs[:setstat].call(str)
+        @procs[:show].call(str+"\n")
+        self['result']=str
+        self['total']=Msg.elps_sec(self['time'])
+        @valid_keys.clear
+        @executing.clear
+        self
       end
     end
 

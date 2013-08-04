@@ -60,17 +60,14 @@ module CIAX
       def start # separated for sub thread
         puts @record if Msg.fg?
         macro(@select)
-        result('done')
+        @record.done
         self
       rescue Interlock
-        result('error')
+        @record.error
         self
       rescue Interrupt
         @record.interrupt
-        result('interrupted')
         self
-      ensure
-        @record.fin
       end
 
       private
@@ -89,13 +86,6 @@ module CIAX
         @record.depth-=1
         self
       end
-
-      def result(str)
-        @procs[:setstat].call(str)
-        @record['result']=str
-        puts str if Msg.fg?
-      end
-
     end
 
     if __FILE__ == $0

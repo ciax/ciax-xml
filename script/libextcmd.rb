@@ -8,7 +8,7 @@ module CIAX
     def initialize(db)
       super()
       sv=self['sv']
-      sv['ext']=ExtGrp.new(db,sv.procary){|id,pa|
+      sv['ext']=ExtGrp.new(db,[sv.procs]){|id,pa|
         ExtItem.new(db,id,pa)
       }
     end

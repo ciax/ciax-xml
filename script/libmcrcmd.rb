@@ -10,7 +10,7 @@ module CIAX
       def initialize(mdb,al,&mcr_proc) # Block if for SubMacro
         super()
         sv=self['sv']
-        sv['ext']=ExtGrp.new(mdb,sv.procary)
+        sv['ext']=ExtGrp.new(mdb,[sv.procs])
         sv.procs[:submcr]=mcr_proc
         sv.procs[:getstat]=proc{|site| al[site].stat}
         sv.procs[:exec]=proc{|site,cmd| al[site].exe(cmd) }

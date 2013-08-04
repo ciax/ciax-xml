@@ -19,7 +19,7 @@ module CIAX
           field.set(*item.par)
         }
         sv=self['sv']
-        sv['ext']=ExtGrp.new(fdb,sv.procary){|id,pa|
+        sv['ext']=ExtGrp.new(fdb,[sv.procs]){|id,pa|
           ExtItem.new(field,fdb,id,pa)
         }
       end

@@ -42,12 +42,11 @@ module CIAX
     # optionalfrm (:nocache,:response)
     def initialize
       # Server Commands (service commands on Server)
-      procary=ProcAry.new
-      sv=self['sv']=Domain.new(procary,2)
+      sv=self['sv']=Domain.new(2)
       sv.add_group('hid',"Hidden Group").add_item('interrupt')
       sv.add_group('int','Internal Commands')
       # Local(Long Jump) Commands (local handling commands on Client)
-      self['lo']=Domain.new(procary,9)
+      self['lo']=Domain.new(9)
     end
 
     def setcmd(cmd)
@@ -73,11 +72,9 @@ module CIAX
   end
 
   class Domain < ExHash
-    attr_reader :procs,:procary
-    def initialize(procary,color=2)
+    attr_reader :procs
+    def initialize(color=2)
       @procs=Procs.new
-      @procary=ProcAry.new << @procs
-      @procary.concat type?(procary,ProcAry)
       @grplist=[]
       @color=color
       @ver_color=2
@@ -95,7 +92,7 @@ module CIAX
 
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      self[gid]=Group.new(attr,@procary)
+      self[gid]=Group.new(attr,[@procs])
     end
 
     def add_dummy(gid,caption,column=2)
@@ -122,15 +119,14 @@ module CIAX
   end
 
   class Group < ExHash
-    attr_reader :valid_keys,:cmdlist,:procs,:procary
+    attr_reader :valid_keys,:cmdlist,:procs
     #attr = {caption,color,column,:members}
-    def initialize(attr,procary=ProcAry.new)
+    def initialize(attr,procary=[])
       @attr=type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=CmdList.new(@attr,@valid_keys)
       @procs=Procs.new
-      @procary=ProcAry.new << @procs
-      @procary.concat type?(procary,ProcAry)
+      @procary=[@procs]+type?(procary,Array)
       @ver_color=3
     end
 
@@ -165,15 +161,14 @@ module CIAX
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:procs,:procary
+    attr_reader :id,:par,:cmd,:procs
     #procs should have :def_proc
-    def initialize(id,procary=ProcAry.new)
+    def initialize(id,procary=[])
       @id=id
       @par=[]
       @cmd=[]
       @procs=Procs.new
-      @procary=ProcAry.new << @procs
-      @procary.concat type?(procary,ProcAry)
+      @procary=ProcAry.new([@procs]+type?(procary,Array))
       @ver_color=5
     end
 

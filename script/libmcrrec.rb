@@ -212,7 +212,9 @@ module CIAX
       def query(cmds)
         self['option']=cmds
         @valid_keys.replace(cmds.map{|s| s[0].downcase})
+        @procs[:setstat].call('query')
         res=@procs[:query].(cmds,self['depth'])
+        @procs[:setstat].call('run')
         @valid_keys.clear
         delete('option')
         res

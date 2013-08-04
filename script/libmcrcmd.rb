@@ -43,7 +43,6 @@ module CIAX
         @record.extend(Prt) unless $opt['r']
         @procs[:setstat]=proc{|stat| sh['stat']=stat}
         @procs[:query]=proc{|cmds,depth|
-          sh['stat']='query'
           if Msg.fg?
             prompt=Msg.color('['+cmds.join('/')+']?',5)
             print Msg.indent(depth.to_i+1)
@@ -52,7 +51,6 @@ module CIAX
             sleep
             res=Thread.current[:query]
           end
-          sh['stat']='run'
           res
         }
         @procs[:show]=proc{|msg| print msg if Msg.fg?}

@@ -37,7 +37,7 @@ module CIAX
     end
   end
 
-  class ExtItem < Item
+  class ExtItem < Item # Self has config data
     include Math
     attr_reader :select
     def initialize(db,id,dom_procs,grp_procs)

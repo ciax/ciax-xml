@@ -79,8 +79,12 @@ module CIAX
       # Execution section
       def submcr
         show
-        asy=/true|1/ === self['async']
-        @procary[:submcr].call(self['cmd'],asy)
+        item=@procary[:submcr].call(self['cmd'])
+        if /true|1/ === self['async']
+          @procary[:asymcr].call(item)
+          return
+        end
+        item
       end
 
       def exec

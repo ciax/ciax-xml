@@ -11,7 +11,8 @@ module CIAX
         super()
         sv=self['sv']
         sv['ext']=ExtGrp.new(mdb,[sv.procs])
-        sv.procs[:submcr]=mcr_proc
+        sv.procs[:asymcr]=mcr_proc||proc{}
+        sv.procs[:submcr]=proc{|cmd| setcmd(cmd) }
         sv.procs[:getstat]=proc{|site| al[site].stat}
         sv.procs[:exec]=proc{|site,cmd| al[site].exe(cmd) }
         sv.procs[:show]=proc{|msg| print msg if Msg.fg?}
@@ -69,8 +70,9 @@ module CIAX
         @record.depth+=1
         select.each{|e1|
           begin
-            sel=@record.add_step(e1)
-            macro(sel) if sel
+            if item=@record.add_step(e1)
+              macro(item.select)
+            end
           rescue Retry
             retry
           rescue Skip
@@ -87,7 +89,7 @@ module CIAX
       begin
         al=App::List.new
         mdb=Db.new.set('ciax')
-        mobj=ExtCmd.new(mdb,al){|cmd,asy| mobj.setcmd(cmd).select}
+        mobj=ExtCmd.new(mdb,al)
         mobj.setcmd(ARGV).new_rec.start
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

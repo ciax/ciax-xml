@@ -38,19 +38,19 @@ module CIAX
       def new_rec(sh={},valid_keys=[])
         @procs[:setstat]=proc{|stat| sh['stat']=stat}
         @record=Record.new(@cmd,self[:label],valid_keys,@procary)
-        @procs[:query]=proc{|step|
+        @procs[:query]=proc{|prom|
           if Msg.fg?
-            res=Readline.readline(step.show_option,true)
+            Readline.readline(prom,true)
           else
             sleep
-            res=Thread.current[:query]
+            Thread.current[:query]
           end
-          res
         }
         self
       end
 
       def start # separated for sub thread
+        @record.start
         macro(@select)
         @record.done
         self

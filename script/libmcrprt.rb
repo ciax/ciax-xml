@@ -3,53 +3,58 @@
 
 module CIAX
   module Mcr
+    module Prt
+      def head(msg,col)
+        label=self['label']||self['site']
+        msg=Msg.indent(self['depth'].to_i)+Msg.color(msg,col)+':'
+        if key?('cmd')
+          msg << self['cmd'].join(' ')+'('+label+')'
+        else
+          msg << label
+        end
+        msg
+      end
+
+      def item(msg,col)
+        Msg.indent(self['depth'].to_i+1)+Msg.color(msg,col)
+      end
+    end
+
     class Record
+      include Prt
       def to_s
-        msg=Msg.indent(self['depth'].to_i)
-        msg << Msg.color("MACRO",3)
-        msg << ":#{self['cmd'].join(' ')}(#{self['label']})\n"
+        msg=head("MACRO",3)+"\n"
         @data.each{|i|
-          msg << i.show_all
+          msg << i.to_s
         }
-      msg
+        msg
       end
     end
 
     class Step
+      include Prt
       def to_s
-        if key?('result')
-          msg=show_result
-        else
-          msg=show_title
-        end
-        msg
+        title+result
       end
 
-      def show_all
-        show_title+show_result
-      end
-
-      def show_title
-        msg=Msg.indent(self['depth'].to_i)
+      def title
         case self['type']
         when 'goal'
-          msg << Msg.color('Done?',6)+":#{self['label']}"
+          msg=head('Done?',6)
         when 'check'
-          msg << Msg.color('Check',6)+":#{self['label']}"
+          msg=head('Check',6)
         when 'wait'
-          msg << Msg.color('Waiting',6)+":#{self['label']} "
+          msg=head('Waiting',6)
         when 'mcr'
-          msg << Msg.color("MACRO",3)
-          msg << ":#{self['cmd'].join(' ')}(#{self['label']})"
+          msg=head("MACRO",3)
           msg << "(async)" if self['async']
         when 'exec'
-          msg << Msg.color("EXEC",13)
-          msg << ":#{self['cmd'].join(' ')}(#{self['site']})"
+          msg=head("EXEC",13)
         end
         msg
       end
 
-      def show_result
+      def result
         mary=[]
         if res=self['result']
           title=res.capitalize
@@ -60,37 +65,33 @@ module CIAX
             c.each{|h|
               if h['upd']
                 if h['res']
-                  mary << ind("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
+                  mary << item("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
                 else
-                  mary << ind("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
+                  mary << item("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
                 end
               else
-                mary << ind("#{h['site']}",3)+" is not updated"
+                mary << item("#{h['site']}",3)+" is not updated"
               end
             }
           end
         end
-        mary << show_option
-        mary << show_action
+        mary << option
+        mary << action
         mary.compact.join("\n")+"\n"
       end
 
-      def show_option
+      def option
         if opt=self['option']
-          ind('['+opt.join('/')+']?',5)
+          item('['+opt.join('/')+']?',5)
         end
       end
 
-      def show_action
+      def action
         if act=self['action']
-          ind(act.capitalize,8)
+          item(act.capitalize,8)
         end
-      end
-
-      private
-      def ind(msg,col)
-        Msg.indent(self['depth'].to_i+1)+Msg.color(msg,col)
       end
     end
+
   end
 end

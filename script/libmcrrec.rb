@@ -2,7 +2,6 @@
 require "libstatus"
 require "libcommand"
 
-
 module CIAX
   module Mcr
     class Record < Datax
@@ -17,6 +16,9 @@ module CIAX
         @executing=[] #array of site for interrupt
         @depth=0
         @procary[:setstat].call('run')
+      end
+
+      def start
         @procary[:show].call(self)
       end
 
@@ -78,7 +80,7 @@ module CIAX
 
       # Execution section
       def submcr
-        show to_s+"\n"
+        show to_s
         item=@procary[:submcr].call(self['cmd'])
         if /true|1/ === self['async']
           @procary[:asymcr].call(item)
@@ -88,7 +90,7 @@ module CIAX
       end
 
       def exec
-        show
+        show title
         @executing << self['site']
         if exec?
           @procary[:exec].call(self['site'],self['cmd'])
@@ -96,13 +98,13 @@ module CIAX
         else
           self['result']='skip'
         end
-        show
+        show result
         nil
       end
 
       # Conditional judgment section
       def timeout?
-        show
+        show title
         self['max']=self['retry']
         max = dryrun? ? 1 : self['max']
         res=max.to_i.times{|n| #gives number or nil(if break)
@@ -113,21 +115,21 @@ module CIAX
           show '.'
         }
         self['result']= res ? 'timeout' : 'pass'
-        show
+        show result
         raise(Interlock) if res && done?
       end
 
       def skip?
-        show
+        show title
         res=ok?('skip','pass') && !dryrun?
-        show
+        show result
         raise(Skip) if res
       end
 
       def fail?
-        show
+        show title
         res=! ok?('pass','failed')
-        show
+        show result
         raise(Interlock) if res && done?
       end
 
@@ -169,9 +171,9 @@ module CIAX
       end
 
       # Display section
-      def show_title ; self['label']||self['cmd']; end
-      def show_result ; "\n"+to_s; end
-      def show_action ; "\n"; end
+      def title ; self['label']||self['cmd']; end
+      def result ; "\n"+to_s; end
+      def option ; self['option'].to_s; end
       def show(msg=self) # Print Progress Proc
         @procary[:show].call(msg)
         self
@@ -232,7 +234,7 @@ module CIAX
         self['option']=cmds
         @valid_keys.replace(cmds.map{|s| s[0].downcase})
         @procary[:setstat].call('query')
-        res=@procary[:query].call(self)
+        res=@procary[:query].call(option)
         @procary[:setstat].call('run')
         @valid_keys.clear
         delete('option')

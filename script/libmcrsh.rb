@@ -81,6 +81,7 @@ module CIAX
         @swmgrp.cmdlist["1.."]='Other Macro Process'
         @total='/'
         msh=Man.new(@mobj,mdb['id'])
+        @stat=msh.stat
         add_page(msh,"Macro Manager")
       end
 
@@ -95,7 +96,7 @@ module CIAX
         msh.cobj['lo']['swl']=@swlgrp if @swlgrp
         msh.prompt['total']="[#{page}/%s]"
         msh['total']=@total
-        self['0'].stat.add(page,msh) if page > "0"
+        @stat.add(page,msh) if page > "0"
         nil
       end
     end

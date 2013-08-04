@@ -40,7 +40,7 @@ module CIAX
       each{|prcs|
         return prcs[id] if prcs.key?(id)
       }
-      Proc.new
+      proc{}
     end
   end
 

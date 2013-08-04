@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require "libstatus"
 require "libcommand"
-require "libmcrprt"
+
 
 module CIAX
   module Mcr
@@ -21,7 +21,6 @@ module CIAX
 
       def add_step(db) # returns nil or submacro db
         step=Step.new(db,self['time'],@depth,@valid_keys,@executing,@procary)
-        step.extend(Prt) unless $opt['r']
         @data << step
         case db['type']
         when 'goal'
@@ -88,7 +87,7 @@ module CIAX
       end
 
       def exec
-        show title
+        show
         @executing << self['site']
         if exec?
           @procary[:exec].call(self['site'],self['cmd'])
@@ -96,13 +95,13 @@ module CIAX
         else
           self['result']='skip'
         end
-        show action
+        show
         nil
       end
 
       # Conditional judgment section
       def timeout?
-        show title
+        show
         self['max']=self['retry']
         max = dryrun? ? 1 : self['max']
         res=max.to_i.times{|n| #gives number or nil(if break)
@@ -113,17 +112,19 @@ module CIAX
           show '.'
         }
         self['result']= res ? 'timeout' : 'pass'
-        show result
+        show
         raise(Interlock) if res && done?
       end
 
       def skip?
+        show
         res=ok?('skip','pass') && !dryrun?
         show
         raise(Skip) if res
       end
 
       def fail?
+        show
         res=! ok?('pass','failed')
         show
         raise(Interlock) if res && done?
@@ -167,9 +168,9 @@ module CIAX
       end
 
       # Display section
-      def title ; self['label']||self['cmd']; end
-      def result ; "\n"+to_s; end
-      def action ; "\n"; end
+      def show_title ; self['label']||self['cmd']; end
+      def show_result ; "\n"+to_s; end
+      def show_action ; "\n"; end
       def show(msg=self) # Print Progress Proc
         @procary[:show].call(msg)
         self
@@ -230,7 +231,7 @@ module CIAX
         self['option']=cmds
         @valid_keys.replace(cmds.map{|s| s[0].downcase})
         @procary[:setstat].call('query')
-        res=@procary[:query].(cmds,self['depth'])
+        res=@procary[:query].call(self)
         @procary[:setstat].call('run')
         @valid_keys.clear
         delete('option')
@@ -239,3 +240,4 @@ module CIAX
     end
   end
 end
+

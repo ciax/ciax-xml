@@ -12,10 +12,11 @@ module CIAX
         self['id']=self['time'].to_i
         self['cmd']=cmd
         self['label']=label
-        @valid_keys=valid_keys
+        @valid_keys=valid_keys.clear
         @procary=type?(procary,ProcAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
         @executing=[] #array of site for interrupt
         @depth=0
+        @procary[:setstat].call('run')
       end
 
       def add_step(db) # returns nil or submacro db
@@ -43,7 +44,6 @@ module CIAX
       def error
         fin('error')
       end
-
 
       def interrupt
         warn("\nInterrupt Issued to #{@executing}")

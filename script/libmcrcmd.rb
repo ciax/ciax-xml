@@ -14,6 +14,7 @@ module CIAX
         sv.procs[:submcr]=mcr_proc
         sv.procs[:getstat]=proc{|site| al[site].stat}
         sv.procs[:exec]=proc{|site,cmd| al[site].exe(cmd) }
+        sv.procs[:show]=proc{|msg| print msg if Msg.fg?}
       end
     end
 
@@ -33,10 +34,9 @@ module CIAX
     class ExtItem < ExtItem
       attr_reader :record
       def new_rec(sh={},valid_keys=[])
-        sh['stat']='run'
-        @record=Record.new(@cmd,self[:label],valid_keys.clear,@procary)
-        @record.extend(Prt) unless $opt['r']
         @procs[:setstat]=proc{|stat| sh['stat']=stat}
+        @record=Record.new(@cmd,self[:label],valid_keys,@procary)
+        @record.extend(Prt) unless $opt['r']
         @procs[:query]=proc{|cmds,depth|
           if Msg.fg?
             prompt=Msg.color('['+cmds.join('/')+']?',5)
@@ -48,7 +48,6 @@ module CIAX
           end
           res
         }
-        @procs[:show]=proc{|msg| print msg if Msg.fg?}
         self
       end
 

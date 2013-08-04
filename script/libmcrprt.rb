@@ -75,23 +75,9 @@ module CIAX
             }
           end
         end
-        mary << option
-        mary << action
-        mary.compact.join("\n")+"\n"
-      end
-
-      def option
-        if opt=self['option']
-          item('['+opt.join('/')+']?',5)
-        end
-      end
-
-      def action
-        if act=self['action']
-          item(act.capitalize,8)
-        end
+        mary << item(self['action'].capitalize,8) if key?('action')
+        mary.join("\n")+"\n"
       end
     end
-
   end
 end

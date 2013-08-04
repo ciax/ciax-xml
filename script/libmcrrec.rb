@@ -231,13 +231,12 @@ module CIAX
       end
 
       def query(cmds)
-        self['option']=cmds
+        prom=Msg.color('<'+cmds.join('/')+'>?',5)
         @valid_keys.replace(cmds.map{|s| s[0].downcase})
-        @procary[:setstat].call('query')
-        res=@procary[:query].call(option)
+        @procary[:setstat].call(prom)
+        res=@procary[:query].call(prom)
         @procary[:setstat].call('run')
         @valid_keys.clear
-        delete('option')
         res
       end
     end

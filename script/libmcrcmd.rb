@@ -16,6 +16,14 @@ module CIAX
         sv.procs[:getstat]=proc{|site| al[site].stat}
         sv.procs[:exec]=proc{|site,cmd| al[site].exe(cmd) }
         sv.procs[:show]=proc{|msg| print msg if Msg.fg?}
+        sv.procs[:query]=proc{|msg|
+          if Msg.fg?
+            Readline.readline(msg,true)
+          else
+            sleep
+            Thread.current[:query]
+          end
+        }
         require "libmcrprt" unless $opt['r']
       end
     end
@@ -38,14 +46,6 @@ module CIAX
       def new_rec(sh={},valid_keys=[])
         @procs[:setstat]=proc{|stat| sh['stat']=stat}
         @record=Record.new(@cmd,self[:label],valid_keys,@procary)
-        @procs[:query]=proc{|prom|
-          if Msg.fg?
-            Readline.readline(prom,true)
-          else
-            sleep
-            Thread.current[:query]
-          end
-        }
         self
       end
 

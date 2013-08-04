@@ -4,24 +4,23 @@ require 'libmsg'
 require 'librerange'
 require 'liblogging'
 require 'libupdate'
-require 'libprocs'
 
 #Access method
 #
 # Item => {:label,:parameter,:select,:cmd}
 #  Item#set_par(par)
-#  Item#procs -> Procs
+#  Item#procs -> {:def_proc}
 #
 # Group => {id => Item}
 #  Group#list -> CmdList.to_s
-#  Group#procs -> Procs
+#  Group#procs -> {:def_proc}
 #  Group#add_item(id,title){|id,par|} -> Item
 #  Group#update_items(list){|id|}
 #  Group#valid_keys -> Array
 #
 # Domain => {id => Group}
 #  Domain#list -> String
-#  Domain#procs -> Procs
+#  Domain#procs -> {:def_proc}
 #  Domain#add_group(key,title) -> Group
 #  Domain#item(id) -> Item
 #
@@ -36,6 +35,15 @@ require 'libprocs'
 # Keep current command and parameters
 
 module CIAX
+  class ProcAry < Array
+    def [](id)
+      each{|prcs|
+        return prcs[id] if prcs.key?(id)
+      }
+      Proc.new
+    end
+  end
+
   class Command < ExHash
     # CDB: mandatory (:select)
     # optional (:label,:parameter)
@@ -74,7 +82,7 @@ module CIAX
   class Domain < ExHash
     attr_reader :procs
     def initialize(color=2)
-      @procs=Procs.new
+      @procs={}
       @grplist=[]
       @color=color
       @ver_color=2
@@ -125,7 +133,7 @@ module CIAX
       @attr=type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=CmdList.new(@attr,@valid_keys)
-      @procs=Procs.new
+      @procs={}
       @procary=[@procs]+type?(procary,Array)
       @ver_color=3
     end
@@ -167,7 +175,7 @@ module CIAX
       @id=id
       @par=[]
       @cmd=[]
-      @procs=Procs.new
+      @procs={}
       @procary=ProcAry.new([@procs]+type?(procary,Array))
       @ver_color=5
     end

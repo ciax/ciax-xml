@@ -17,11 +17,11 @@ module CIAX
       update({'time' => UnixTime.now,'dir' => '','cmd' => '','data' => ''})
     end
 
-    def snd(str,cmd)
-      update({'time' => UnixTime.now,'dir' => 'snd','cmd' => cmd,'data' => str})
+    def snd(str,cid)
+      update({'time' => UnixTime.now,'dir' => 'snd','cmd' => cid,'data' => str})
       return if str.to_s.empty?
       sleep @wait
-      verbose("Stream","Sending #{str.size} byte on #{cmd}")
+      verbose("Stream","Sending #{str.size} byte on #{cid}")
       reopen{
         @f.syswrite(str)
       }

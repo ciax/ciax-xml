@@ -12,9 +12,9 @@ module CIAX
         sv=self['sv']
         sv['ext']=ExtGrp.new(mdb,[sv.procs])
         sv.procs[:asymcr]=mcr_proc||proc{}
-        sv.procs[:submcr]=proc{|cmd| setcmd(cmd) }
+        sv.procs[:submcr]=proc{|args| setcmd(args) }
         sv.procs[:getstat]=proc{|site| al[site].stat}
-        sv.procs[:exec]=proc{|site,cmd| al[site].exe(cmd) }
+        sv.procs[:exec]=proc{|site,args| al[site].exe(args) }
         sv.procs[:show]=proc{|msg| print msg if Msg.fg?}
         require "libmcrprt" unless $opt['r']
       end
@@ -26,8 +26,8 @@ module CIAX
         @mdb=type?(mdb,Mcr::Db)
       end
 
-      def setcmd(cmd)
-        id,*par=type?(cmd,Array)
+      def setcmd(args)
+        id,*par=type?(args,Array)
         @valid_keys.include?(id) || raise(InvalidCMD,list)
         ExtItem.new(@mdb,id,@procary).set_par(par)
       end

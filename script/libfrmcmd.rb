@@ -44,10 +44,10 @@ module CIAX
 
       def getframe # return = response select
         return unless @sel[:select]=@select
-        cmd=self[:cmd]
-        verbose("FrmItem","Select:#{self[:label]}(#{cmd})")
-        if frame=@cache[cmd]
-          verbose("FrmItem","Cmd cache found [#{cmd}]")
+        cid=self[:cmd]
+        verbose("FrmItem","Select:#{self[:label]}(#{cid})")
+        if frame=@cache[cid]
+          verbose("FrmItem","Cmd cache found [#{cid}]")
         else
           nocache=mk_frame(:select)
           if @sel.key?(:ccrange)
@@ -57,7 +57,7 @@ module CIAX
           end
           mk_frame(:main)
           frame=@fstr[:main]
-          @cache[cmd]=frame unless nocache
+          @cache[cid]=frame unless nocache
         end
         frame
       end
@@ -86,7 +86,7 @@ module CIAX
     if __FILE__ == $0
       require "libfield"
       require "libfrmdb"
-      dev,*cmd=ARGV
+      dev,*args=ARGV
       ARGV.clear
       begin
         fdb=Db.new.set(dev)
@@ -94,7 +94,7 @@ module CIAX
         cobj=ExtCmd.new(fdb,field)
         cgrp=cobj['sv']['ext']
         field.read unless STDIN.tty?
-        print cgrp.setcmd(cmd).getframe
+        print cgrp.setcmd(args).getframe
       rescue InvalidCMD
         Msg.usage("[dev] [cmd] (par) < field_file",[])
       rescue InvalidID

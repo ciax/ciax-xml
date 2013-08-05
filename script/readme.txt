@@ -68,3 +68,11 @@ frmsh (intfrm -t)/ used when running site is different from intapp
   @< : parent's var (< is added as the number of ancestor generaton) 
        parenthetic var is not used in the class
        * is added for exported var
+
+## Naming rule
+ #local var
+   args: Command(Array) [cmd,par,par...]
+   cid: Command ID(String) "cmd:par:par"
+   cmdary: Array of Commands(Array of Array) [args,args,...]
+   f*: Associated with Frm (i.e. fargs, fstat ..)
+   a*: Associated with App (i.e. aargs, astat ..)

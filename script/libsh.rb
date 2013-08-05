@@ -29,16 +29,16 @@ module CIAX
       end
 
       # Sync only (Wait for other thread)
-      def exe(cmd)
-        type?(cmd,Array)
-        if cmd.empty?
+      def exe(args)
+        type?(args,Array)
+        if args.empty?
           self['msg']=''
         else
-          @pre_proc.each{|p| p.call(cmd)}
+          @pre_proc.each{|p| p.call(args)}
           self['msg']='OK'
-          verbose("Sh/Exe","Command #{cmd} recieved")
-          @cobj.setcmd(cmd).exe
-          @post_proc.each{|p| p.call(cmd)}
+          verbose("Sh/Exe","Command #{args} recieved")
+          @cobj.setcmd(args).exe
+          @post_proc.each{|p| p.call(args)}
         end
         self
       rescue
@@ -191,10 +191,10 @@ module CIAX
       end
 
       # For client
-      def exe(cmd)
-        @cobj.setcmd(cmd).exe unless cmd.empty?
-        @udp.send(JSON.dump(cmd),0,@addr)
-        verbose("UDP:Client/#{self.class}","Send [#{cmd}]",6)
+      def exe(args)
+        @cobj.setcmd(args).exe unless args.empty?
+        @udp.send(JSON.dump(args),0,@addr)
+        verbose("UDP:Client/#{self.class}","Send [#{args}]",6)
         res=@udp.recv(1024)
         verbose("UDP:Client/#{self.class}","Recv #{res}",6)
         update(JSON.load(res)) unless res.empty?
@@ -213,8 +213,8 @@ module CIAX
         $opt||=GetOpts.new
       end
 
-      def exe(stm)
-        self[stm.shift].exe(stm)
+      def exe(args)
+        self[args.shift].exe(args)
       rescue InvalidID
         $opt.usage('(opt) [id] [cmd] [par....]')
       end

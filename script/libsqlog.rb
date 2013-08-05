@@ -111,8 +111,8 @@ module CIAX
 
       # Issue internal command
       def internal(str)
-        cmd=@sqlcmd.join(' ')+" ."+str
-        `#{cmd}`
+        args=@sqlcmd.join(' ')+" ."+str
+        `#{args}`
       end
 
       # Do a transaction

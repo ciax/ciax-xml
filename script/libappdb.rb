@@ -110,7 +110,7 @@ module CIAX
       end
 
       # Watch Db
-      #structure of exec=[cond1,2,...]; cond=[cmd1,2,..]; cmd1=['str','arg1',..]
+      #structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
       def init_watch(wdb,cdb)
         return [] unless wdb
         hash=wdb.to_h
@@ -121,11 +121,11 @@ module CIAX
           e0.each{ |e1|
             case name=e1.name.to_sym
             when :block,:int,:exec
-              cmd=[e1['name']]
+              args=[e1['name']]
               e1.each{|e2|
-                cmd << r0.subst(e2.text)
+                args << r0.subst(e2.text)
               }
-              (hash[name][idx]||=[]) << cmd
+              (hash[name][idx]||=[]) << args
             when :block_grp
               (hash[:block][idx]||=[]).concat(cdb[:group][e1['ref']][:members])
             else

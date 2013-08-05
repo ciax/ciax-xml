@@ -126,19 +126,19 @@ module CIAX
         str=gets(nil) || exit
         res=Logging.set_logline(str)
         id=res['id']
-        cmd=res['cmd']
+        cid=res['cmd']
         frame=res['data']
       elsif STDIN.tty? || ARGV.size < 2
-        $opt.usage("(opt) [id] [cmd] < string")
+        $opt.usage("(opt) [id] [cmd] (par..) < string")
       else
         id=ARGV.shift
-        cmd=ARGV.shift
+        cid=ARGV.shift
         res={'time'=>UnixTime.now}
         res['data']=gets(nil) || exit
       end
       fdb=Loc::Db.new.set(id)[:frm]
       fobj=ExtCmd.new(fdb)
-      item=fobj.setcmd(cmd.split(':'))
+      item=fobj.setcmd(cid.split(':'))
       field=Field.new.ext_rsp(fdb)
       field.ext_file(id).load if $opt['m']
       field.upd(item){res}

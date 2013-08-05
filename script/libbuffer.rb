@@ -5,7 +5,7 @@ require "libupdate"
 
 # SubModule for App::Sv
 # *Command stream(Send)
-#  send() takes frame cmds in block
+#  send() takes frame cmdary(Array of Array) in block
 #  -> Inbuf[priority]
 #  -> Accept or Reject
 #  -> flush -> Queue
@@ -13,7 +13,7 @@ require "libupdate"
 # *Command stream(Recieve)
 #  recv()
 #  Queue -> Outbuf until Queue is empty
-#  -> provide single frmcmd as it is called
+#  -> provide single frame args(Array) as it is called
 #  (stack if Queue is empty)
 module CIAX
   class Buffer
@@ -22,7 +22,7 @@ module CIAX
     # svst: Server Status
     def initialize(svst=[])
       @svst=type?(svst,Hash)
-      #element of @q is bunch of frmcmds corresponding an appcmd
+      #element of @q is bunch of frm args corresponding an appcmd
       @q=Queue.new
       @tid=nil
       @flush_proc=UpdProc.new.add{verbose("Buffer","Flushing")}
@@ -35,12 +35,12 @@ module CIAX
       self
     end
 
-    # Send bunch of frmcmd array (ary of ary)
+    # Send bunch of frm args array (ary of ary)
     def send(n=1,item)
       type?(item,Item)
       clear if n == 0
       inp=@send_proc.call(item)
-      #inp is frmcmd array (ary of ary)
+      #inp is fcmdary (ary of ary)
       unless inp.empty?
         @svst['isu']=true
         @q.push([n,inp])
@@ -57,8 +57,8 @@ module CIAX
         loop{
           begin
             sort(*@q.shift)
-            while out=pick
-              yield out
+            while args=pick
+              yield args
             end
             flush
           rescue
@@ -82,27 +82,27 @@ module CIAX
       @svst['isu']=false if @q.empty?
     end
 
-    #inp is frmcmd array (ary of ary)
-    def sort(p,inp)
-      verbose("Buffer","SUB:Recieve [#{inp}] with priority[#{p}]")
-      (@outbuf[p]||=[]).concat(inp)
+    #cmdary is command array (ary of ary)
+    def sort(p,cmdary)
+      verbose("Buffer","SUB:Recieve [#{cmdary}] with priority[#{p}]")
+      (@outbuf[p]||=[]).concat(cmdary)
       i=-1
       @outbuf.map{|o|
         verbose("Buffer","SUB:Outbuf(#{i+=1}) is [#{o}]\n")
       }
     end
 
-    # Remove duplicated commands and pop one
+    # Remove duplicated args and pop one
     def pick
-      cmd=nil
+      args=nil
       @outbuf.size.times{|i|
-        if cmd
-          @outbuf[i].delete(cmd)
+        if args
+          @outbuf[i].delete(args)
         else
-          cmd=@outbuf[i].shift
+          args=@outbuf[i].shift
         end
       }
-      cmd
+      args
     end
 
     def clear

@@ -42,15 +42,15 @@ module CIAX
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")
           self['msg']="Interrupt #{int}"
         }
-        @pre_proc << proc{|cmd|@watch.block?(cmd)}
+        @pre_proc << proc{|args|@watch.block?(args)}
         init_view
       end
 
       private
       def shell_input(line)
-        cmd=super
-        cmd.unshift 'set' if /^[^ ]+\=/ === line
-        cmd
+        args=super
+        args.unshift 'set' if /^[^ ]+\=/ === line
+        args
       end
 
       def init_view
@@ -112,9 +112,9 @@ module CIAX
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).ext_file(self['id']).upd
         SqLog::Upd.new(@stat).ext_exec if logging and @fsh.field.key?('ver')
-        @watch.ext_upd(adb,@stat).ext_file(self['id']).upd.event_proc=proc{|cmd,p|
-          verbose("AppSv","#{self['id']}/Auto(#{p}):#{cmd}")
-          @buf.send(p,@cobj.setcmd(cmd))
+        @watch.ext_upd(adb,@stat).ext_file(self['id']).upd.event_proc=proc{|args,p|
+          verbose("AppSv","#{self['id']}/Auto(#{p}):#{args}")
+          @buf.send(p,@cobj.setcmd(args))
         }
         @buf=init_buf
         @cobj['sv']['ext'].procs[:def_proc]=proc{|item|
@@ -138,8 +138,8 @@ module CIAX
 
       def ext_logging(id,ver=0)
         logging=Logging.new('issue',id,ver)
-        @post_proc << proc{|cmd|
-          logging.append({'cmd'=>cmd,'active'=>@watch['active']})
+        @post_proc << proc{|args|
+          logging.append({'cmd'=>args,'active'=>@watch['active']})
         }
         self
       end
@@ -148,13 +148,13 @@ module CIAX
       def init_buf
         buf=Buffer.new(self)
         buf.send_proc{|item|
-          cmds=item.getcmd
-          verbose("AppSv","Send FrmCmds #{cmds}")
-          cmds
+          fcmdary=item.getcmd
+          verbose("AppSv","Send FrmCmds #{fcmdary}")
+          fcmdary
         }
-        buf.recv_proc{|fcmd|
-          verbose("AppSv","Processing #{fcmd}")
-          @fsh.exe(fcmd)
+        buf.recv_proc{|fargs|
+          verbose("AppSv","Processing #{fargs}")
+          @fsh.exe(fargs)
         }
         buf.flush_proc.add{
           verbose("AppSv","Flushed FrmCmds")

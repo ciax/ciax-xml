@@ -35,8 +35,8 @@ module CIAX
               select << attr
               verbose("Mdb","COMMAND:[#{e1['name']}]")
             when 'mcr'
-              cmd=attr['cmd']=getcmd(e1)
-              attr['label']=mdb[:label][cmd.first]
+              args=attr['cmd']=getcmd(e1)
+              attr['label']=mdb[:label][args.first]
               attr.delete('name')
               select << attr
             end
@@ -54,11 +54,11 @@ module CIAX
       end
 
       def getcmd(e1)
-        cmd=[e1['name']]
+        args=[e1['name']]
         e1.each{|e2|
-          cmd << e2.text
+          args << e2.text
         }
-        cmd
+        args
       end
     end
   end

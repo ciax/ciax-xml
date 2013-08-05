@@ -36,9 +36,9 @@ module CIAX
 
       private
       def shell_input(line)
-        cmd=line.split(/[ =]/)
-        cmd.unshift 'set' if /^[^ ]+\=/ === line
-        cmd
+        args=line.split(/[ =]/)
+        args.unshift 'set' if /^[^ ]+\=/ === line
+        args
       end
     end
 

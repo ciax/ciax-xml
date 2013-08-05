@@ -28,7 +28,7 @@ require 'libupdate'
 # Command => {id => Domain}
 #  Command#list -> String
 #  Command#current -> Item
-#  Command#setcmd(cmd=[id,*par]):{
+#  Command#setcmd(args=[id,*par]):{
 #    Item#set_par(par)
 #    Command#current -> Item
 #  } -> Item
@@ -57,11 +57,11 @@ module CIAX
       self['lo']=Domain.new(9)
     end
 
-    def setcmd(cmd)
-      type?(cmd,Array)
-      id,*par=cmd
+    def setcmd(args)
+      type?(args,Array)
+      id,*par=args
       dom=domain_with_item(id) || raise(InvalidCMD,list)
-      dom.setcmd(cmd)
+      dom.setcmd(args)
     end
 
     def list
@@ -108,11 +108,11 @@ module CIAX
       self[gid]=Group.new(attr)
     end
 
-    def setcmd(cmd)
-      type?(cmd,Array)
-      id,*par=cmd
+    def setcmd(args)
+      type?(args,Array)
+      id,*par=args
       grp=group_with_item(id) || raise(InvalidCMD,list)
-      grp.setcmd(cmd)
+      grp.setcmd(args)
     end
 
     def list
@@ -138,8 +138,8 @@ module CIAX
       @ver_color=3
     end
 
-    def setcmd(cmd)
-      id,*par=type?(cmd,Array)
+    def setcmd(args)
+      id,*par=type?(args,Array)
       @valid_keys.include?(id) || raise(InvalidCMD,list)
       verbose("CmdGrp","SetCMD (#{id},#{par})")
       self[id].set_par(par)

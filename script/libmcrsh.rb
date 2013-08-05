@@ -7,7 +7,6 @@ module CIAX
       attr_reader :prompt,:th
       def initialize(mitem)
         super(Command.new)
-        self['layer']='mcr'
         self['id']=mitem[:cmd]
         ig=@cobj['sv']['int']
         ig.add_item('e','Execute Command').procs[:def_proc]=proc{ ans('e') }
@@ -15,10 +14,11 @@ module CIAX
         ig.add_item('d','Done Macro').procs[:def_proc]=proc{ ans('d') }
         ig.add_item('f','Force Proceed').procs[:def_proc]=proc{ ans('f') }
         ig.add_item('r','Retry Checking').procs[:def_proc]=proc{ ans('r') }
-        mitem.new_rec(self,ig.valid_keys.clear)
+        mitem.new_rec(ig.valid_keys.clear)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
-        prom=Sh::Prompt.new(self,{'stat' => "(%s)"})
+        prom=Sh::Prompt.new(@th,{'stat' => "(%s)"})
+        prom.order.push 'opt'
         ext_shell(mitem.record,prom)
       end
 
@@ -47,7 +47,7 @@ module CIAX
         page=[@caption]
         each{|key,msh|
           cmd=msh['id']
-          stat=msh['stat']
+          stat=msh.th['stat']
           page << Msg.item("[#{key}]","#{cmd} (#{stat})")
         }
         page.join("\n")
@@ -58,7 +58,6 @@ module CIAX
       attr_reader :prompt,:stat
       def initialize(cobj,id)
         super(cobj)
-        self['layer']='mcr'
         self['id']=id
         @stat=Stat.new
         ext_shell(@stat,Sh::Prompt.new(self))
@@ -94,8 +93,9 @@ module CIAX
         msh.cobj['lo']['ext']=@mobj['sv']['ext']
         msh.cobj['lo']['swm']=@swmgrp
         msh.cobj['lo']['swl']=@swlgrp if @swlgrp
-        msh.prompt['total']="[#{page}/%s]"
-        msh['total']=@total
+        msh.prompt.order.unshift 'total'
+        msh.prompt['total']="[#{page}/%s] "
+        msh.prompt.stat['total']=@total
         @stat.add(page,msh) if page > "0"
         nil
       end

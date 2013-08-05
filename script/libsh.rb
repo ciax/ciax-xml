@@ -190,9 +190,9 @@ module CIAX
     end
 
     class Prompt < ExHash
-      attr_reader :order
+      attr_reader :order,:stat
       def initialize(stat,db={})
-        @stat=type?(stat,Hash)
+        @stat=stat # Hash or Thread
         self['layer']='%s:'
         update type?(db,Hash)
         @order=['layer','id']+db.keys

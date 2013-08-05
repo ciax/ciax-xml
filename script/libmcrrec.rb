@@ -19,6 +19,10 @@ module CIAX
       end
 
       def start
+        tc=Thread.current
+        tc['layer']='mcr'
+        tc['id']=self['cmd'].join(':')
+        tc['stat']='run'
         @procary[:show].call(self)
       end
 
@@ -57,7 +61,7 @@ module CIAX
 
       private
       def fin(str)
-        @procary[:setstat].call(str)
+        Thread.current['stat']=str
         @procary[:show].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
@@ -233,12 +237,15 @@ module CIAX
       def query(cmds)
         cmdopt=cmds.map{|s| s[0].downcase}
         @valid_keys.replace(cmdopt)
-        msg=Msg.color('<'+cmdopt.join('/')+'>?',5)
-        @procary[:setstat].call(msg)
+        msg=Msg.color('['+cmdopt.join('/')+']?',5)
+        tc=Thread.current
+        tc['stat']='query'
+        tc['opt']=msg
         res=@procary[:query].call(Msg.indent(self['depth'].to_i+1)+msg)
-        @procary[:setstat].call('run')
+        tc['opt']=nil
+        tc['stat']='run'
         @valid_keys.clear
-        res
+        tc[:query]
       end
     end
   end

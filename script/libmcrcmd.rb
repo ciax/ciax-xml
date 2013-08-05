@@ -18,10 +18,9 @@ module CIAX
         sv.procs[:show]=proc{|msg| print msg if Msg.fg?}
         sv.procs[:query]=proc{|msg|
           if Msg.fg?
-            Readline.readline(msg,true)
+            Thread.current[:query]=Readline.readline(msg,true)
           else
             sleep
-            Thread.current[:query]
           end
         }
         require "libmcrprt" unless $opt['r']
@@ -43,8 +42,7 @@ module CIAX
 
     class ExtItem < ExtItem
       attr_reader :record
-      def new_rec(sh={},valid_keys=[])
-        @procs[:setstat]=proc{|stat| sh['stat']=stat}
+      def new_rec(valid_keys=[])
         @record=Record.new(@cmd,self[:label],valid_keys,@procary)
         self
       end

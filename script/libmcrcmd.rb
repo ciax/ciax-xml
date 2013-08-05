@@ -42,8 +42,8 @@ module CIAX
 
     class ExtItem < ExtItem
       attr_reader :record
-      def new_rec(valid_keys=[])
-        @record=Record.new(@cmd,self[:label],valid_keys,@procary)
+      def new_rec(msh={},valid_keys=[])
+        @record=Record.new(@cmd,self[:label],msh,valid_keys,@procary)
         self
       end
 

@@ -4,7 +4,7 @@ require "libmcrcmd"
 module CIAX
   module Mcr
     class Sv < Sh::Exe
-      attr_reader :prompt,:th
+      attr_reader :th
       def initialize(mitem)
         super(Command.new)
         self['id']=mitem[:cmd]
@@ -14,12 +14,10 @@ module CIAX
         ig.add_item('d','Done Macro').procs[:def_proc]=proc{ ans('d') }
         ig.add_item('f','Force Proceed').procs[:def_proc]=proc{ ans('f') }
         ig.add_item('r','Retry Checking').procs[:def_proc]=proc{ ans('r') }
-        mitem.new_rec(ig.valid_keys)
+        mitem.new_rec(self,ig.valid_keys)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
-        prom=Sh::Prompt.new(@th,{'stat' => "(%s)"})
-        prom.order.push 'opt'
-        ext_shell(mitem.record,prom)
+        ext_shell(mitem.record,{'stat' => "(%s)",'total' => nil,'opt' => nil})
       end
 
       def ans(str)
@@ -60,7 +58,7 @@ module CIAX
         super(cobj)
         self['id']=id
         @stat=Stat.new
-        ext_shell(@stat,Sh::Prompt.new(self))
+        ext_shell(@stat)
       end
     end
 
@@ -93,9 +91,8 @@ module CIAX
         msh.cobj['lo']['ext']=@mobj['sv']['ext']
         msh.cobj['lo']['swm']=@swmgrp
         msh.cobj['lo']['swl']=@swlgrp if @swlgrp
-        msh.prompt.order.unshift 'total'
-        msh.prompt['total']="[#{page}/%s] "
-        msh.prompt.stat['total']=@total
+        msh.pdb['total']="[#{page}/%s] "
+        msh['total']=@total
         @stat.add(page,msh) if page > "0"
         nil
       end

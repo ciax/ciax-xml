@@ -5,28 +5,27 @@ require "libcommand"
 module CIAX
   module Mcr
     class Record < Datax
-      def initialize(cmd,label,valid_keys=[],procary=ProcAry.new)
+      def initialize(cmd,label,msh={},valid_keys=[],procary=ProcAry.new)
         super('record',[],'steps')
         self['id']=self['time'].to_i
         self['cmd']=cmd
         self['label']=label
+        @msh=msh
         @valid_keys=valid_keys.clear
         @procary=type?(procary,ProcAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
         @executing=[] #array of site for interrupt
         @depth=0
-        @procary[:setstat].call('run')
       end
 
       def start
-        tc=Thread.current
-        tc['layer']='mcr'
-        tc['id']=self['cmd'].join(':')
-        tc['stat']='run'
+        @msh['layer']='mcr'
+        @msh['id']=self['cmd'].join(':')
+        @msh['stat']='run'
         @procary[:show].call(self)
       end
 
       def add_step(db) # returns nil or submacro db
-        step=Step.new(db,self['time'],@depth,@valid_keys,@executing,@procary)
+        step=Step.new(db,self['time'],@depth,@msh,@valid_keys,@executing,@procary)
         @data << step
         case db['type']
         when 'goal'
@@ -79,11 +78,12 @@ module CIAX
     end
 
     class Step < ExHash
-      def initialize(db,base,depth=0,valid_keys,executing,procary)
+      def initialize(db,base,depth,msh,valid_keys,executing,procary)
         self['time']=Msg.elps_sec(base)
         self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
+        @msh=msh
         @valid_keys=valid_keys
         @procary=type?(procary,ProcAry)
         @executing=type?(executing,Array)
@@ -245,14 +245,13 @@ module CIAX
         cmdopt=cmds.map{|s| s[0].downcase}
         @valid_keys.replace(cmdopt)
         msg=Msg.color('['+cmdopt.join('/')+']?',5)
-        tc=Thread.current
-        tc['stat']='query'
-        tc['opt']=msg
+        @msh['stat']='query'
+        @msh['opt']=msg
         res=@procary[:query].call(Msg.indent(self['depth'].to_i+1)+msg)
-        tc['opt']=nil
-        tc['stat']='run'
+        @msh['opt']=nil
+        @msh['stat']='run'
         @valid_keys.clear
-        tc[:query]
+        Thread.current[:query]
       end
     end
   end

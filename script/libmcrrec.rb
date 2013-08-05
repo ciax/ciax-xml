@@ -5,7 +5,6 @@ require "libcommand"
 module CIAX
   module Mcr
     class Record < Datax
-      attr_accessor :depth
       def initialize(cmd,label,valid_keys=[],procary=ProcAry.new)
         super('record',[],'steps')
         self['id']=self['time'].to_i
@@ -41,6 +40,14 @@ module CIAX
         when 'mcr'
           step.submcr
         end
+      end
+
+      def push
+        @depth+=1
+      end
+
+      def pop
+        @depth-=1
       end
 
       def done

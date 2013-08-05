@@ -62,7 +62,7 @@ module CIAX
 
       private
       def macro(select)
-        @record.depth+=1
+        @record.push
         select.each{|e1|
           begin
             if item=@record.add_step(e1)
@@ -74,7 +74,7 @@ module CIAX
             return
           end
         }
-        @record.depth-=1
+        @record.pop
         self
       end
     end

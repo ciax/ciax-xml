@@ -65,7 +65,7 @@ module CIAX
 
       private
       def fin(str)
-        Thread.current['stat']=str
+        @msh['stat']=str
         @procary[:show].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])

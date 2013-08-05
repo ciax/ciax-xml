@@ -18,7 +18,7 @@ module CIAX
         mitem.new_rec(self,ig.valid_keys)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
-        ext_shell(mitem.record,{'stat' => "(%s)",'total' => nil,'opt' => nil})
+        ext_shell(mitem.record,{'total' => nil,'stat' => "(%s)",'opt' => nil})
       end
 
       def ans(str)
@@ -93,7 +93,7 @@ module CIAX
         msh.cobj['lo']['ext']=@mobj['sv']['ext']
         msh.cobj['lo']['swm']=@swmgrp
         msh.cobj['lo']['swl']=@swlgrp if @swlgrp
-        msh.pdb['total']="[#{page}/%s] "
+        msh.pdb['total']="[#{page}/%s]"
         msh['total']=@total
         @stat.add(page,msh) if page > "0"
         nil

@@ -190,26 +190,28 @@ module CIAX
     end
 
     class Prompt < ExHash
+      attr_reader :order
       def initialize(stat,db={})
         @stat=type?(stat,Hash)
+        self['layer']='%s:'
         update type?(db,Hash)
-        @prefix="#{stat['layer']}:#{stat['id']}"
+        @order=['layer','id']+db.keys
       end
 
       def to_s
-        str=@prefix.dup
-        each{|k,cmp|
+        str=''
+        @order.each{|k|
           next unless v=@stat[k]
-          case cmp
+          case self[k]
           when String
-            str << cmp % v
+            str << self[k] % v
           when Hash
-            str << cmp[v]
+            str << self[k][v]
           else
             str << v
           end
         }
-        str << '>'
+        str+'>'
       end
     end
 

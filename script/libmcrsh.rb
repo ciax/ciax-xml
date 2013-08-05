@@ -8,7 +8,7 @@ module CIAX
       def initialize(mitem)
         super(Command.new)
         self['layer']='mcr'
-        self['id']=mitem[:cmd]
+        self['id']=mitem[:cid]
         ig=@cobj['sv']['int']
         ig.add_item('e','Execute Command').procs[:def_proc]=proc{ ans('e') }
         ig.add_item('s','Skip Execution').procs[:def_proc]=proc{ ans('s') }

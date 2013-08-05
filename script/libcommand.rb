@@ -7,7 +7,7 @@ require 'libupdate'
 
 #Access method
 #
-# Item => {:label,:parameter,:select,:cmd}
+# Item => {:label,:parameter,:select,:args}
 #  Item#set_par(par)
 #  Item#procs -> {:def_proc}
 #
@@ -189,7 +189,7 @@ module CIAX
     def set_par(par)
       @par=validate(type?(par,Array))
       @args=[@id,*par]
-      self[:cmd]=@args.join(':') # Used by macro
+      self[:cid]=@args.join(':') # Used by macro
       verbose(self.class,"SetPAR(#{@id}): #{par}")
       self
     end

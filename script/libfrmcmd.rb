@@ -44,7 +44,7 @@ module CIAX
 
       def getframe # return = response select
         return unless @sel[:select]=@select
-        cid=self[:cmd]
+        cid=self[:cid]
         verbose("FrmItem","Select:#{self[:label]}(#{cid})")
         if frame=@cache[cid]
           verbose("FrmItem","Cmd cache found [#{cid}]")

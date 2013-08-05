@@ -78,7 +78,7 @@ module CIAX
           @io=Stream.new(iocmd,fdb['wait'],1)
         end
         @cobj['sv']['ext'].procs[:def_proc]=proc{|item|
-          @io.snd(item.getframe,item[:cmd])
+          @io.snd(item.getframe,item[:cid])
           @field.upd(item){@io.rcv} && @field.save
         }
         @cobj['sv']['int']['set'].procs[:def_proc]=proc{|item|

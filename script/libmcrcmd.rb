@@ -36,7 +36,7 @@ module CIAX
     class ExtItem < ExtItem
       attr_reader :record
       def new_rec(msh={},valid_keys=[])
-        @record=Record.new(@cmd,self[:label],msh,valid_keys,@procary)
+        @record=Record.new(@args,self[:label],msh,valid_keys,@procary)
         @procs[:query]=proc{|msg|
           if Msg.fg?
             msh[:query]=Readline.readline(msg,true)

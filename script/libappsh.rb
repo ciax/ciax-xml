@@ -81,8 +81,8 @@ module CIAX
           }
           self['msg']="Delete #{item.par[0]}"
         }
-        @watch.event_proc=proc{|cmd,p|
-          Msg.msg("#{cmd} is issued by event")
+        @watch.event_proc=proc{|args,p|
+          Msg.msg("#{args} is issued by event")
         }
         @upd_proc << proc{@watch.issue}
       end
@@ -118,7 +118,7 @@ module CIAX
         }
         @buf=init_buf
         @cobj['sv']['ext'].procs[:def_proc]=proc{|item|
-          verbose("AppSv","#{self['id']}/Issue:#{item.cmd}")
+          verbose("AppSv","#{self['id']}/Issue:#{item.args}")
           @buf.send(1,item)
           self['msg']="Issued"
         }

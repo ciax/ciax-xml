@@ -169,27 +169,27 @@ module CIAX
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:cmd,:procs
+    attr_reader :id,:par,:args,:procs
     #procs should have :def_proc
     def initialize(id,procary=[])
       @id=id
       @par=[]
-      @cmd=[]
+      @args=[]
       @procs={}
       @procary=ProcAry.new([@procs]+type?(procary,Array))
       @ver_color=5
     end
 
     def exe
-      verbose(self.class,"Execute #{@cmd}")
+      verbose(self.class,"Execute #{@args}")
       @procary[:def_proc].call(self)
       self
     end
 
     def set_par(par)
       @par=validate(type?(par,Array))
-      @cmd=[@id,*par]
-      self[:cmd]=@cmd.join(':') # Used by macro
+      @args=[@id,*par]
+      self[:cmd]=@args.join(':') # Used by macro
       verbose(self.class,"SetPAR(#{@id}): #{par}")
       self
     end

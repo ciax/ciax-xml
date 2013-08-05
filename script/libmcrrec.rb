@@ -248,7 +248,7 @@ module CIAX
         @msh['opt']=nil
         @msh['stat']='run'
         @valid_keys.clear
-        Thread.current[:query]
+        @msh[:query]
       end
     end
   end

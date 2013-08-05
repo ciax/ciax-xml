@@ -23,7 +23,7 @@ module CIAX
 
       def ans(str)
         return if @th.status != 'sleep'
-        @th[:query]=str
+        self[:query]=str
         @th.run
       end
 

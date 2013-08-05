@@ -207,32 +207,6 @@ module CIAX
       end
     end
 
-    class Prompt < ExHash
-      attr_reader :order,:stat
-      def initialize(stat,db={}) 
-        @stat=stat # Hash or Thread
-        self['layer']='%s:'
-        update type?(db,Hash)
-        @order=['layer','id']+db.keys
-      end
-
-      def to_s
-        str=''
-        @order.each{|k|
-          next unless v=@stat[k]
-          case self[k]
-          when String
-            str << self[k] % v
-          when Hash
-            str << self[k][v]
-          else
-            str << v
-          end
-        }
-        str+'>'
-      end
-    end
-
     class List < ExHash
       attr_writer :swlgrp
       def initialize

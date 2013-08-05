@@ -46,7 +46,7 @@ module CIAX
         page=[@caption]
         each{|key,msh|
           cmd=msh['id']
-          stat=msh.th['stat']
+          stat=msh['stat']
           page << Msg.item("[#{key}]","#{cmd} (#{stat})")
         }
         page.join("\n")

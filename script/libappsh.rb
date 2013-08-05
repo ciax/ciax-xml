@@ -148,13 +148,13 @@ module CIAX
       def init_buf
         buf=Buffer.new(self)
         buf.send_proc{|item|
-          fcmdary=item.getcmd
-          verbose("AppSv","Send FrmCmds #{fcmdary}")
-          fcmdary
+          cmdary=item.getcmd
+          verbose("AppSv","Send FrmCmds #{cmdary}")
+          cmdary
         }
-        buf.recv_proc{|fargs|
-          verbose("AppSv","Processing #{fargs}")
-          @fsh.exe(fargs)
+        buf.recv_proc{|args|
+          verbose("AppSv","Processing #{args}")
+          @fsh.exe(args)
         }
         buf.flush_proc.add{
           verbose("AppSv","Flushed FrmCmds")

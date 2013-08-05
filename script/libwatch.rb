@@ -28,31 +28,31 @@ module CIAX
         ! self['active'].empty?
       end
 
-      def block?(cmd)
-        cmds=self['block']
-        verbose("Watch","Blocked?:#{cmd}") unless cmds.empty?
-        cmds.include?(cmd) && Msg.cmd_err("Blocking(#{cmd})")
+      def block?(args)
+        cmdary=self['block']
+        verbose("Watch","Blocked?:#{args}") unless cmdary.empty?
+        cmdary.include?(args) && Msg.cmd_err("Blocking(#{args})")
       end
 
       def issue
-        # block parm = cmd + priority(2)
-        cmds=self['exec'].each{|cmd|
-          @event_proc.call([cmd,2])
-          verbose("Watch","ISSUED_AUTO:#{cmd}")
+        # block parm = [args + priority(2)]
+        cmdary=self['exec'].each{|args|
+          @event_proc.call([args,2])
+          verbose("Watch","ISSUED_AUTO:#{args}")
         }.dup
         self['exec'].clear
-        cmds
+        cmdary
       end
 
       def interrupt
         verbose("Watch","Interrupt:#{self['int']}")
-        # block parm = cmd + priority(0)
-        cmds=self['int'].each{|cmd|
-          @event_proc.call([cmd,0])
-          verbose("Watch","ISSUED_INT:#{cmd}")
+        # block parm = [args + priority(0)]
+        cmdary=self['int'].each{|args|
+          @event_proc.call([args,0])
+          verbose("Watch","ISSUED_INT:#{args}")
         }.dup
         self['int'].clear
-        cmds
+        cmdary
       end
 
       def ext_upd(adb,stat)

@@ -13,19 +13,17 @@ module CIAX
         @msh=msh
         @valid_keys=valid_keys.clear
         @procary=type?(procary,ProcAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
-        @executing=[] #array of site for interrupt
+        @running=[] #array of site for interrupt
         @depth=0
       end
 
       def start
-        @msh['layer']='mcr'
-        @msh['id']=self['cmd'].join(':')
         @msh['stat']='run'
         @procary[:show].call(self)
       end
 
       def add_step(db) # returns nil or submacro db
-        step=Step.new(db,self['time'],@depth,@msh,@valid_keys,@executing,@procary)
+        step=Step.new(db,self['time'],@depth,@msh,@valid_keys,@running,@procary)
         @data << step
         case db['type']
         when 'goal'
@@ -58,8 +56,8 @@ module CIAX
       end
 
       def interrupt
-        warn("\nInterrupt Issued to #{@executing}")
-        @executing.each{|site|
+        warn("\nInterrupt Issued to #{@running}")
+        @running.each{|site|
           @procary[:exec].call(site,['interrupt'])
         }
         result('interrupted')
@@ -72,13 +70,13 @@ module CIAX
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
         @valid_keys.clear
-        @executing.clear
+        @running.clear
         self
       end
     end
 
     class Step < ExHash
-      def initialize(db,base,depth,msh,valid_keys,executing,procary)
+      def initialize(db,base,depth,msh,valid_keys,running,procary)
         self['time']=Msg.elps_sec(base)
         self['depth']=depth
         update(type?(db,Hash))
@@ -86,7 +84,7 @@ module CIAX
         @msh=msh
         @valid_keys=valid_keys
         @procary=type?(procary,ProcAry)
-        @executing=type?(executing,Array)
+        @running=type?(running,Array)
       end
 
       # Execution section
@@ -102,7 +100,7 @@ module CIAX
 
       def exec
         show title
-        @executing << self['site']
+        @running << self['site']
         if exec?
           @procary[:exec].call(self['site'],self['cmd'])
           self['result']='done'
@@ -184,7 +182,6 @@ module CIAX
       # Display section
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
-      def option ; self['option'].to_s; end
       def show(msg=self) # Print Progress Proc
         @procary[:show].call(msg)
         self
@@ -244,10 +241,10 @@ module CIAX
       def query(cmds)
         cmdopt=cmds.map{|s| s[0].downcase}
         @valid_keys.replace(cmdopt)
-        msg=Msg.color('['+cmdopt.join('/')+']?',5)
+        msg='['+cmdopt.join('/')+']?'
         @msh['stat']='query'
         @msh['opt']=msg
-        res=@procary[:query].call(Msg.indent(self['depth'].to_i+1)+msg)
+        @procary[:query].call(item(msg,5))
         @msh['opt']=nil
         @msh['stat']='run'
         @valid_keys.clear

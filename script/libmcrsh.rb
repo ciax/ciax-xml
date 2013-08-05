@@ -7,6 +7,7 @@ module CIAX
       attr_reader :th
       def initialize(mitem)
         super(Command.new)
+        self['layer']='mcr'
         self['id']=mitem[:cmd]
         ig=@cobj['sv']['int']
         ig.add_item('e','Execute Command').procs[:def_proc]=proc{ ans('e') }
@@ -53,9 +54,10 @@ module CIAX
     end
 
     class Man < Sh::Exe
-      attr_reader :prompt,:stat
+      attr_reader :stat
       def initialize(cobj,id)
         super(cobj)
+        self['layer']='mcr'
         self['id']=id
         @stat=Stat.new
         ext_shell(@stat)

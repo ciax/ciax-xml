@@ -14,7 +14,7 @@ module CIAX
         ig.add_item('d','Done Macro').procs[:def_proc]=proc{ ans('d') }
         ig.add_item('f','Force Proceed').procs[:def_proc]=proc{ ans('f') }
         ig.add_item('r','Retry Checking').procs[:def_proc]=proc{ ans('r') }
-        mitem.new_rec(ig.valid_keys.clear)
+        mitem.new_rec(ig.valid_keys)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
         prom=Sh::Prompt.new(@th,{'stat' => "(%s)"})

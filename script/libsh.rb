@@ -56,8 +56,8 @@ module CIAX
         extend(Server).ext_server(port)
       end
 
-      def ext_shell(output={},prompt=self)
-        extend(Shell).ext_shell(output,prompt)
+      def ext_shell(output={},pdb={})
+        extend(Shell).ext_shell(output,pdb)
       end
 
       # Overridable methods(do not set this kind of methods in modules)
@@ -86,10 +86,12 @@ module CIAX
         Msg.type?(obj,Exe)
       end
 
-      def ext_shell(output={},prompt=self)
+      # Prompt Db : { key => format(str), key => conv_db(hash), key => nil(status) }
+      attr_reader :pdb
+      def ext_shell(output={},pdb={})
         # For Shell
         @output=output
-        @prompt=prompt
+        @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
         # Local(Long Jump) Commands (local handling commands on Client)
         Readline.completion_proc=proc{|word|
           @cobj.valid_keys.grep(/^#{word}/)
@@ -100,13 +102,29 @@ module CIAX
         self
       end
 
+      def to_s
+        str=''
+        @pdb.each{|k,fmt|
+          next unless v=self[k]
+          case fmt
+          when String
+            str << fmt % v
+          when Hash
+            str << fmt[v]
+          else
+            str << v
+          end
+        }
+        str+'>'
+      end
+
       # invoked many times
       # '^D' gives exit break
       # mode gives special break (loop returns mode)
       def shell
         verbose(self.class,"Init/Shell(#{self['id']})",2)
         begin
-          while line=Readline.readline(@prompt.to_s,true)
+          while line=Readline.readline(to_s,true)
             break if /^q/ === line
             exe(shell_input(line))
             puts shell_output
@@ -191,7 +209,7 @@ module CIAX
 
     class Prompt < ExHash
       attr_reader :order,:stat
-      def initialize(stat,db={})
+      def initialize(stat,db={}) 
         @stat=stat # Hash or Thread
         self['layer']='%s:'
         update type?(db,Hash)

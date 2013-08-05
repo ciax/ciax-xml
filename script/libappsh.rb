@@ -34,10 +34,8 @@ module CIAX
         self['id']=id||adb['id']
         cobj=ExtCmd.new(adb)
         @stat=App::Status.new(adb[:status][:struct].deep_copy)
-        plist={'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}
-        prom=Sh::Prompt.new(self,plist)
         super(cobj)
-        ext_shell(@stat,prom)
+        ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         @watch=Watch::Data.new
         @cobj.int_proc=proc{
           int=@watch.interrupt

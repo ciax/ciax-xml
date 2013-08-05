@@ -30,9 +30,8 @@ module CIAX
         self['id']=id||fdb['id']
         @field=Field.new(fdb[:field][:struct].deep_copy)
         cobj=ExtCmd.new(fdb,@field)
-        prom=Sh::Prompt.new(self)
         super(cobj)
-        ext_shell(@field,prom)
+        ext_shell(@field)
       end
 
       private

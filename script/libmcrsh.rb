@@ -10,21 +10,23 @@ module CIAX
         self['layer']='mcr'
         self['id']=mitem[:cid]
         ig=@cobj['sv']['int']
-        ig.add_item('e','Execute Command').procs[:def_proc]=proc{ ans('e') }
-        ig.add_item('s','Skip Execution').procs[:def_proc]=proc{ ans('s') }
-        ig.add_item('d','Done Macro').procs[:def_proc]=proc{ ans('d') }
-        ig.add_item('f','Force Proceed').procs[:def_proc]=proc{ ans('f') }
-        ig.add_item('r','Retry Checking').procs[:def_proc]=proc{ ans('r') }
+        ig.procs[:def_proc]=proc{|item|
+          if @th.status == 'sleep'
+            self[:query]=item.id
+            @th.run
+          end
+        }
+        ig.update_items({
+          'e' => 'Execute Command',
+          's'=>'Skip Execution',
+          'd'=>'Done Macro',
+          'f'=>'Force Proceed',
+          'r'=>'Retry Checking'
+        })
         mitem.new_rec(self,ig.valid_keys)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
         ext_shell(mitem.record,{'total' => nil,'stat' => "(%s)",'opt' => nil})
-      end
-
-      def ans(str)
-        return if @th.status != 'sleep'
-        self[:query]=str
-        @th.run
       end
 
       def to_s

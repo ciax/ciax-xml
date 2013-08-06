@@ -5,11 +5,11 @@ require "libcommand"
 module CIAX
   module Mcr
     class Record < Datax
-      def initialize(args,label,msh={},valid_keys=[],procary=ProcAry.new)
+      def initialize(item,msh={},valid_keys=[],procary=ProcAry.new)
         super('record',[],'steps')
         self['id']=self['time'].to_i
-        self['cmd']=args
-        self['label']=label
+        self['cid']=item[:cid]
+        self['label']=item[:label]
         @msh=msh
         @valid_keys=valid_keys.clear
         @procary=type?(procary,ProcAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]

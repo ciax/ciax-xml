@@ -6,10 +6,10 @@ module CIAX
   module Mcr
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
-      def initialize(item,shary=ShareAry.new)
+      def initialize(item)
         super('record',[],'steps')
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
-        @shary=type?(shary,ShareAry)
+        @shary=type?(item.shary,ShareAry)
         self['id']=self['time'].to_i
         self['cid']=item[:cid]
         self['label']=item[:label]

@@ -59,7 +59,7 @@ module CIAX
         }
         @share[:depth]=0
         @share[:running]=[]
-        @record=Record.new(self,@shary)
+        @record=Record.new(self)
         self
       end
 

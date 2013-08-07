@@ -15,12 +15,12 @@ module CIAX
         msg
       end
 
-      def item(msg,col)
+      def body(msg,col=5)
         Msg.indent(self['depth'].to_i+1)+Msg.color(msg,col)
       end
     end
 
-    class Record
+    module PrtRecord
       include Prt
       def to_s
         msg=head("MACRO",3)+"\n"
@@ -31,7 +31,7 @@ module CIAX
       end
     end
 
-    class Step
+    module PrtStep
       include Prt
       def to_s
         title+result
@@ -65,17 +65,17 @@ module CIAX
             c.each{|h|
               if h['upd']
                 if h['res']
-                  mary << item("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
+                  mary << body("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
                 else
-                  mary << item("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
+                  mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
                 end
               else
-                mary << item("#{h['site']}",3)+" is not updated"
+                mary << body("#{h['site']}",3)+" is not updated"
               end
             }
           end
         end
-        mary << item(self['action'].capitalize,8) if key?('action')
+        mary << body(self['action'].capitalize,8) if key?('action')
         mary.join("\n")+"\n"
       end
     end

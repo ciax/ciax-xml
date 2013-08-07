@@ -36,7 +36,6 @@ module CIAX
           (svs[:cmdproc]||={})[k]=v
         }
         self['sv']['ext']=ExtGrp.new(mdb,[svs])
-        require "libmcrprt" unless $opt['r']
       end
     end
 

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libstatus"
 require "libcommand"
+require "libmcrprt"
 
 module CIAX
   module Mcr
@@ -14,6 +15,7 @@ module CIAX
         self['cid']=item[:cid]
         self['label']=item[:label]
         @depth=0
+        extend PrtRecord unless $opt['r']
       end
 
       def start
@@ -81,6 +83,7 @@ module CIAX
         self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
+        extend PrtStep unless $opt['r']
       end
 
       # Execution section
@@ -159,6 +162,7 @@ module CIAX
       # Display section
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
+      def body(msg); msg; end
       def show(msg=self) # Print Progress Proc
         @shary[:show_proc].call(msg)
         self
@@ -223,7 +227,7 @@ module CIAX
         msh['stat']='query'
         msh['opt']=msg
         begin
-          res=@shary[:query_proc].call(item(msg,5))||msh[:query]
+          res=@shary[:query_proc].call(body(msg))||msh[:query]
         end until vk.include?(res)
         msh['opt']=nil
         msh['stat']='run'

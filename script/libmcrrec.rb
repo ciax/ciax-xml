@@ -12,14 +12,16 @@ module CIAX
         "Force Proceed"=>proc{false},
         "Retry Checking"=>proc{raise(Retry)}
       }
-      def initialize(item,msh={},valid_keys=[],levelshare=LevelShare.new)
+
+      # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
+      def initialize(item,msh={},valid_keys=[],shary=[])
         super('record',[],'steps')
         self['id']=self['time'].to_i
         self['cid']=item[:cid]
         self['label']=item[:label]
         @share={:msh => msh,:depth => 0,:running => [], :cmds => {}, :cmdlist =>{}, :cmdproc =>{}}
         @share[:valid_keys]=valid_keys.clear
-        @share[:levelshare]=type?(levelshare,LevelShare) #[:setstat,:getstat,:exec,:submcr,:query,:show]
+        @share[:levelshare]=type?(shary,ShareAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
         CmdOpt.each{|str,v|
           k=str[0].downcase
           @share[:cmds][k]=str.split(' ').first

@@ -15,16 +15,16 @@ module CIAX
   end
 
   class ExtGrp < Group
-    def initialize(db,levelshare)
+    def initialize(db,upper)
       type?(db,Db)
-      super({'color' => '6','caption' => "External Commands"},levelshare)
+      super({'color' => '6','caption' => "External Commands"},upper)
       @cmdary=[]
       cdb=db[:command]
       (cdb[:group]||{'main'=>@attr}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:select].keys).each{|id|
           subgrp[id]=cdb[:label][id]
-          self[id]=yield(id,@levelshare)
+          self[id]=yield(id,@shary)
 
         }
         @cmdary << subgrp
@@ -40,9 +40,9 @@ module CIAX
   class ExtItem < Item # Self has config data
     include Math
     attr_reader :select
-    def initialize(db,id,levelshare)
+    def initialize(db,id,upper)
       type?(db,Db)
-      super(id,levelshare)
+      super(id,upper)
       # because cdb is separated by title
       db[:command].each{|k,v|
         if a=v[@id]

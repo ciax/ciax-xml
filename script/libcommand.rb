@@ -35,10 +35,10 @@ require 'libupdate'
 # Keep current command and parameters
 
 module CIAX
-  class LevelShare < Array
+  class ShareAry < Array
     def [](id)
-      each{|level|
-        return level[id] if level.key?(id)
+      each{|lv|
+        return lv[id] if lv.key?(id)
       }
       nil
     end
@@ -129,12 +129,12 @@ module CIAX
   class Group < ExHash
     attr_reader :valid_keys,:cmdlist,:share
     #attr = {caption,color,column,:members}
-    def initialize(attr,levelshare=[])
+    def initialize(attr,upper=[])
       @attr=type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=CmdList.new(@attr,@valid_keys)
       @share={}
-      @levelshare=[@share]+type?(levelshare,Array)
+      @shary=ShareAry.new([@share]+type?(upper,Array))
       @ver_color=3
     end
 
@@ -151,7 +151,7 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(id,@levelshare)
+      item=self[id]=Item.new(id,@shary)
       property={:label => title}
       property[:parameter] = parameter if parameter
       item.update(property)
@@ -161,7 +161,7 @@ module CIAX
     def update_items(labels)
       labels.each{|id,title|
         @cmdlist[id]=title
-        self[id]=Item.new(id,@levelshare)
+        self[id]=Item.new(id,@shary)
       }
       self
     end
@@ -171,18 +171,18 @@ module CIAX
     include Math
     attr_reader :id,:par,:args,:share
     #share should have :def_proc
-    def initialize(id,levelshare=[])
+    def initialize(id,upper=[])
       @id=id
       @par=[]
       @args=[]
       @share={}
-      @levelshare=LevelShare.new([@share]+type?(levelshare,Array))
+      @shary=ShareAry.new([@share]+type?(upper,Array))
       @ver_color=5
     end
 
     def exe
       verbose(self.class,"Execute #{@args}")
-      @levelshare[:def_proc].call(self)
+      @shary[:def_proc].call(self)
       self
     end
 

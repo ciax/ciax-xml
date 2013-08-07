@@ -21,22 +21,22 @@ module CIAX
     end
 
     class ExtGrp < ExtGrp
-      def initialize(mdb,levelshare)
-        super(mdb,levelshare){}
+      def initialize(mdb,upper)
+        super(mdb,upper){}
         @mdb=type?(mdb,Mcr::Db)
       end
 
       def setcmd(args)
         id,*par=type?(args,Array)
         @valid_keys.include?(id) || raise(InvalidCMD,list)
-        ExtItem.new(@mdb,id,@levelshare).set_par(par)
+        ExtItem.new(@mdb,id,@shary).set_par(par)
       end
     end
 
     class ExtItem < ExtItem
       attr_reader :record
       def new_rec(msh={},valid_keys=[])
-        @record=Record.new(self,msh,valid_keys,@levelshare)
+        @record=Record.new(self,msh,valid_keys,@shary)
         @share[:query]=proc{|msg|
           if Msg.fg?
             msh[:query]=Readline.readline(msg,true)

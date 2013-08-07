@@ -41,8 +41,12 @@ module CIAX
       each{|lv|
         return lv[id] if lv.key?(id)
       }
+      Msg.warn("No such key in ShareAry [#{id}]")
       nil
     end
+
+    private
+    def []=(id,num);end
   end
 
   class Command < ExHash
@@ -153,9 +157,8 @@ module CIAX
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
       item=self[id]=Item.new(id,@shary)
-      property={:label => title}
-      property[:parameter] = parameter if parameter
-      item.update(property)
+      item[:label]= title
+      item[:parameter] = parameter if parameter
       item
     end
 
@@ -170,7 +173,7 @@ module CIAX
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:args,:share
+    attr_reader :id,:par,:args,:share,:shary
     #share should have :def_proc
     def initialize(id,upper=[])
       @id=id

@@ -15,6 +15,14 @@ module CIAX
         svs[:stat_proc]=proc{|site| al[site].stat}
         svs[:exec_proc]=proc{|site,args| al[site].exe(args) }
         svs[:show_proc]=proc{|msg| print msg if Msg.fg?}
+        svs[:query_proc]=proc{|msg|
+          if Msg.fg?
+            Readline.readline(msg,true)
+          else
+            sleep
+            nil
+          end
+        }
         {
           "Exec Command"=>proc{true},
           "Skip Execution"=>proc{false},
@@ -50,13 +58,6 @@ module CIAX
       def new_rec(msh={},valid_keys=[])
         @share[:msh]=msh
         @share[:valid_keys]=valid_keys.clear
-        @share[:query_proc]=proc{|msg|
-          if Msg.fg?
-            msh[:query]=Readline.readline(msg,true)
-          else
-            sleep
-          end
-        }
         @share[:depth]=0
         @share[:running]=[]
         @record=Record.new(self)

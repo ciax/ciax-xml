@@ -16,13 +16,7 @@ module CIAX
             @th.run
           end
         }
-        ig.update_items({
-          'e' => 'Execute Command',
-          's'=>'Skip Execution',
-          'd'=>'Done Macro',
-          'f'=>'Force Proceed',
-          'r'=>'Retry Checking'
-        })
+        ig.update_items(mitem.shary[:cmdlist])
         mitem.new_rec(self,ig.valid_keys)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}

@@ -10,7 +10,7 @@ module CIAX
         self['layer']='mcr'
         self['id']=mitem[:cid]
         ig=@cobj['sv']['int']
-        ig.procs[:def_proc]=proc{|item|
+        ig.share[:def_proc]=proc{|item|
           if @th.status == 'sleep'
             self[:query]=item.id
             @th.run
@@ -77,7 +77,7 @@ module CIAX
         end
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
         @mobj=ExtCmd.new(mdb,@alist){|item| add_page(Sv.new(item)) }
-        @mobj['sv']['ext'].procs[:def_proc]=proc{|item| add_page(Sv.new(item))}
+        @mobj['sv']['ext'].share[:def_proc]=proc{|item| add_page(Sv.new(item))}
         @swmgrp=@mobj['lo'].add_group('swm',"Switching Macro")
         @swmgrp.cmdlist["1.."]='Other Macro Process'
         @total='/'
@@ -91,7 +91,7 @@ module CIAX
       def add_page(msh,title=nil)
         page="#{@total.succ!}"
         self[page]=msh
-        @swmgrp.add_item(page,title).procs[:def_proc]=proc{throw(:sw_site,page)}
+        @swmgrp.add_item(page,title).share[:def_proc]=proc{throw(:sw_site,page)}
         msh.cobj['lo']['ext']=@mobj['sv']['ext']
         msh.cobj['lo']['swm']=@swmgrp
         msh.cobj['lo']['swl']=@swlgrp if @swlgrp

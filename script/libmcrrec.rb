@@ -12,14 +12,14 @@ module CIAX
         "Force Proceed"=>proc{false},
         "Retry Checking"=>proc{raise(Retry)}
       }
-      def initialize(item,msh={},valid_keys=[],procary=ProcAry.new)
+      def initialize(item,msh={},valid_keys=[],levelshare=LevelShare.new)
         super('record',[],'steps')
         self['id']=self['time'].to_i
         self['cid']=item[:cid]
         self['label']=item[:label]
         @share={:msh => msh,:depth => 0,:running => [], :cmds => {}, :cmdlist =>{}, :cmdproc =>{}}
         @share[:valid_keys]=valid_keys.clear
-        @share[:procary]=type?(procary,ProcAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
+        @share[:levelshare]=type?(levelshare,LevelShare) #[:setstat,:getstat,:exec,:submcr,:query,:show]
         CmdOpt.each{|str,v|
           k=str[0].downcase
           @share[:cmds][k]=str.split(' ').first
@@ -30,7 +30,7 @@ module CIAX
 
       def start
         @share[:msh]['stat']='run'
-        @share[:procary][:show].call(self)
+        @share[:levelshare][:show].call(self)
       end
 
       def add_step(db) # returns nil or submacro db
@@ -69,7 +69,7 @@ module CIAX
       def interrupt
         warn("\nInterrupt Issued to #{@share[:running]}]")
         @share[:running].each{|site|
-          @share[:procary][:exec].call(site,['interrupt'])
+          @share[:levelshare][:exec].call(site,['interrupt'])
         }
         fin('interrupted')
       end
@@ -77,7 +77,7 @@ module CIAX
       private
       def fin(str)
         @share[:msh]['stat']=str
-        @share[:procary][:show].call(str+"\n")
+        @share[:levelshare][:show].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
         @share[:valid_keys].clear
@@ -98,9 +98,9 @@ module CIAX
       # Execution section
       def submcr
         show to_s
-        item=@share[:procary][:submcr].call(self['cmd'])
+        item=@share[:levelshare][:submcr].call(self['cmd'])
         if /true|1/ === self['async']
-          @share[:procary][:asymcr].call(item)
+          @share[:levelshare][:asymcr].call(item)
           return
         end
         item
@@ -111,7 +111,7 @@ module CIAX
         #array of site for interrupt
         @share[:running] << self['site']
         if exec?
-          @share[:procary][:exec].call(self['site'],self['cmd'])
+          @share[:levelshare][:exec].call(self['site'],self['cmd'])
           self['result']='done'
         else
           self['result']='skip'
@@ -172,7 +172,7 @@ module CIAX
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
       def show(msg=self) # Print Progress Proc
-        @share[:procary][:show].call(msg)
+        @share[:levelshare][:show].call(msg)
         self
       end
 
@@ -187,7 +187,7 @@ module CIAX
 
       def scan
         stats=sites.inject({}){|hash,site|
-          hash[site]=@share[:procary][:getstat].call(site)
+          hash[site]=@share[:levelshare][:getstat].call(site)
           hash
         }
         @condition.map{|h|
@@ -210,7 +210,7 @@ module CIAX
 
       def refresh
         sites.each{|site|
-          @share[:procary][:getstat].call(site).refresh
+          @share[:levelshare][:getstat].call(site).refresh
         }
       end
 
@@ -235,7 +235,7 @@ module CIAX
         msh['stat']='query'
         msh['opt']=msg
         begin
-          @share[:procary][:query].call(item(msg,5))
+          @share[:levelshare][:query].call(item(msg,5))
           res=msh[:query]
         end until vk.include?(res)
         msh['opt']=nil

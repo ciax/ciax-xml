@@ -232,7 +232,7 @@ module CIAX
         type?(list,CmdList)
         super()
         @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
-        @swsgrp.update_items(list).procs[:def_proc]=proc{|item|
+        @swsgrp.update_items(list).share[:def_proc]=proc{|item|
           throw(:sw_site,item.id)
         }
       end
@@ -266,7 +266,7 @@ module CIAX
     class Layer < ExHash
       def initialize
         @swlgrp=Group.new({'caption'=>"Switch Layer",'color'=>5,'column'=>5})
-        @swlgrp.procs[:def_proc]=proc{|item| throw(:sw_layer,item.id) }
+        @swlgrp.share[:def_proc]=proc{|item| throw(:sw_layer,item.id) }
       end
 
       def add(layer,shlist)

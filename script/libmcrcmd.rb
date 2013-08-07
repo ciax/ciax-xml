@@ -10,34 +10,34 @@ module CIAX
       def initialize(mdb,al,&mcr_proc) # Block if for SubMacro
         super()
         sv=self['sv']
-        sv['ext']=ExtGrp.new(mdb,[sv.procs])
-        sv.procs[:asymcr]=mcr_proc||proc{}
-        sv.procs[:submcr]=proc{|args| setcmd(args) }
-        sv.procs[:getstat]=proc{|site| al[site].stat}
-        sv.procs[:exec]=proc{|site,args| al[site].exe(args) }
-        sv.procs[:show]=proc{|msg| print msg if Msg.fg?}
+        sv['ext']=ExtGrp.new(mdb,[sv.share])
+        sv.share[:asymcr]=mcr_proc||proc{}
+        sv.share[:submcr]=proc{|args| setcmd(args) }
+        sv.share[:getstat]=proc{|site| al[site].stat}
+        sv.share[:exec]=proc{|site,args| al[site].exe(args) }
+        sv.share[:show]=proc{|msg| print msg if Msg.fg?}
         require "libmcrprt" unless $opt['r']
       end
     end
 
     class ExtGrp < ExtGrp
-      def initialize(mdb,procary)
-        super(mdb,procary){}
+      def initialize(mdb,levelshare)
+        super(mdb,levelshare){}
         @mdb=type?(mdb,Mcr::Db)
       end
 
       def setcmd(args)
         id,*par=type?(args,Array)
         @valid_keys.include?(id) || raise(InvalidCMD,list)
-        ExtItem.new(@mdb,id,@procary).set_par(par)
+        ExtItem.new(@mdb,id,@levelshare).set_par(par)
       end
     end
 
     class ExtItem < ExtItem
       attr_reader :record
       def new_rec(msh={},valid_keys=[])
-        @record=Record.new(self,msh,valid_keys,@procary)
-        @procs[:query]=proc{|msg|
+        @record=Record.new(self,msh,valid_keys,@levelshare)
+        @share[:query]=proc{|msg|
           if Msg.fg?
             msh[:query]=Readline.readline(msg,true)
           else

@@ -9,18 +9,18 @@ require 'libupdate'
 #
 # Item => {:label,:parameter,:select,:args}
 #  Item#set_par(par)
-#  Item#procs -> {:def_proc}
+#  Item#share -> {:def_proc}
 #
 # Group => {id => Item}
 #  Group#list -> CmdList.to_s
-#  Group#procs -> {:def_proc}
+#  Group#share -> {:def_proc}
 #  Group#add_item(id,title){|id,par|} -> Item
 #  Group#update_items(list){|id|}
 #  Group#valid_keys -> Array
 #
 # Domain => {id => Group}
 #  Domain#list -> String
-#  Domain#procs -> {:def_proc}
+#  Domain#share -> {:def_proc}
 #  Domain#add_group(key,title) -> Group
 #  Domain#item(id) -> Item
 #
@@ -35,12 +35,12 @@ require 'libupdate'
 # Keep current command and parameters
 
 module CIAX
-  class ProcAry < Array
+  class LevelShare < Array
     def [](id)
-      each{|prcs|
-        return prcs[id] if prcs.key?(id)
+      each{|level|
+        return level[id] if level.key?(id)
       }
-      proc{}
+      nil
     end
   end
 
@@ -69,7 +69,7 @@ module CIAX
     end
 
     def int_proc=(p)
-      self['sv']['hid']['interrupt'].procs[:def_proc]=type?(p,Proc)
+      self['sv']['hid']['interrupt'].share[:def_proc]=type?(p,Proc)
     end
 
     def domain_with_item(id)
@@ -80,9 +80,9 @@ module CIAX
   end
 
   class Domain < ExHash
-    attr_reader :procs
+    attr_reader :share
     def initialize(color=2)
-      @procs={}
+      @share={}
       @grplist=[]
       @color=color
       @ver_color=2
@@ -100,7 +100,7 @@ module CIAX
 
     def add_group(gid,caption,column=2)
       attr={'caption' => caption,'column' => column,'color' => @color}
-      self[gid]=Group.new(attr,[@procs])
+      self[gid]=Group.new(attr,[@share])
     end
 
     def add_dummy(gid,caption,column=2)
@@ -127,14 +127,14 @@ module CIAX
   end
 
   class Group < ExHash
-    attr_reader :valid_keys,:cmdlist,:procs
+    attr_reader :valid_keys,:cmdlist,:share
     #attr = {caption,color,column,:members}
-    def initialize(attr,procary=[])
+    def initialize(attr,levelshare=[])
       @attr=type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=CmdList.new(@attr,@valid_keys)
-      @procs={}
-      @procary=[@procs]+type?(procary,Array)
+      @share={}
+      @levelshare=[@share]+type?(levelshare,Array)
       @ver_color=3
     end
 
@@ -151,7 +151,7 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(id,@procary)
+      item=self[id]=Item.new(id,@levelshare)
       property={:label => title}
       property[:parameter] = parameter if parameter
       item.update(property)
@@ -161,7 +161,7 @@ module CIAX
     def update_items(labels)
       labels.each{|id,title|
         @cmdlist[id]=title
-        self[id]=Item.new(id,@procary)
+        self[id]=Item.new(id,@levelshare)
       }
       self
     end
@@ -169,20 +169,20 @@ module CIAX
 
   class Item < ExHash
     include Math
-    attr_reader :id,:par,:args,:procs
-    #procs should have :def_proc
-    def initialize(id,procary=[])
+    attr_reader :id,:par,:args,:share
+    #share should have :def_proc
+    def initialize(id,levelshare=[])
       @id=id
       @par=[]
       @args=[]
-      @procs={}
-      @procary=ProcAry.new([@procs]+type?(procary,Array))
+      @share={}
+      @levelshare=LevelShare.new([@share]+type?(levelshare,Array))
       @ver_color=5
     end
 
     def exe
       verbose(self.class,"Execute #{@args}")
-      @procary[:def_proc].call(self)
+      @levelshare[:def_proc].call(self)
       self
     end
 

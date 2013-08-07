@@ -5,25 +5,36 @@ require "libcommand"
 module CIAX
   module Mcr
     class Record < Datax
+      CmdOpt={
+        "Exec Command"=>proc{true},
+        "Skip Execution"=>proc{false},
+        "Done Macro"=>proc{true},
+        "Force Proceed"=>proc{false},
+        "Retry Checking"=>proc{raise(Retry)}
+      }
       def initialize(item,msh={},valid_keys=[],procary=ProcAry.new)
         super('record',[],'steps')
         self['id']=self['time'].to_i
         self['cid']=item[:cid]
         self['label']=item[:label]
-        @msh=msh
-        @valid_keys=valid_keys.clear
-        @procary=type?(procary,ProcAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
-        @running=[] #array of site for interrupt
-        @depth=0
+        @share={:msh => msh,:depth => 0,:running => [], :cmds => {}, :cmdlist =>{}, :cmdproc =>{}}
+        @share[:valid_keys]=valid_keys.clear
+        @share[:procary]=type?(procary,ProcAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
+        CmdOpt.each{|str,v|
+          k=str[0].downcase
+          @share[:cmds][k]=str.split(' ').first
+          @share[:cmdlist][k]=str
+          @share[:cmdproc][k]=v
+        }
       end
 
       def start
-        @msh['stat']='run'
-        @procary[:show].call(self)
+        @share[:msh]['stat']='run'
+        @share[:procary][:show].call(self)
       end
 
       def add_step(db) # returns nil or submacro db
-        step=Step.new(db,self['time'],@depth,@msh,@valid_keys,@running,@procary)
+        step=Step.new(db,self['time'],@share)
         @data << step
         case db['type']
         when 'goal'
@@ -40,11 +51,11 @@ module CIAX
       end
 
       def push
-        @depth+=1
+        @share[:depth]+=1
       end
 
       def pop
-        @depth-=1
+        @share[:depth]-=1
       end
 
       def done
@@ -56,43 +67,40 @@ module CIAX
       end
 
       def interrupt
-        warn("\nInterrupt Issued to #{@running}")
-        @running.each{|site|
-          @procary[:exec].call(site,['interrupt'])
+        warn("\nInterrupt Issued to #{@share[:running]}]")
+        @share[:running].each{|site|
+          @share[:procary][:exec].call(site,['interrupt'])
         }
-        result('interrupted')
+        fin('interrupted')
       end
 
       private
       def fin(str)
-        @msh['stat']=str
-        @procary[:show].call(str+"\n")
+        @share[:msh]['stat']=str
+        @share[:procary][:show].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
-        @valid_keys.clear
-        @running.clear
+        @share[:valid_keys].clear
+        @share[:running].clear
         self
       end
     end
 
     class Step < ExHash
-      def initialize(db,base,depth,msh,valid_keys,running,procary)
+      def initialize(db,base,share)
+        @share=share
         self['time']=Msg.elps_sec(base)
-        self['depth']=depth
+        self['depth']=@share[:depth]
         update(type?(db,Hash))
         @condition=delete('stat')
-        @msh=msh
-        @valid_keys=valid_keys
-        @procary=type?(procary,ProcAry)
-        @running=type?(running,Array)
       end
 
       # Execution section
       def submcr
         show to_s
-        item=@procary[:submcr].call(self['cmd'])
+        item=@share[:procary][:submcr].call(self['cmd'])
         if /true|1/ === self['async']
-          @procary[:asymcr].call(item)
+          @share[:procary][:asymcr].call(item)
           return
         end
         item
@@ -100,9 +108,10 @@ module CIAX
 
       def exec
         show title
-        @running << self['site']
+        #array of site for interrupt
+        @share[:running] << self['site']
         if exec?
-          @procary[:exec].call(self['site'],self['cmd'])
+          @share[:procary][:exec].call(self['site'],self['cmd'])
           self['result']='done'
         else
           self['result']='skip'
@@ -146,33 +155,13 @@ module CIAX
       # Interactive section
       def exec?
         return false if dryrun?
-        while ! $opt['n']
-          case query(['Exec','Skip'])
-          when /^E/i
-            break
-          when /^S/i
-            self['action']='skip'
-            return false
-          end
-        end
-        self['action']='exec'
+        return true if $opt['n']
+        query(['e','s'])
       end
 
       def done?
         return true if $opt['n']
-        loop{
-          case query(['Done','Force','Retry'])
-          when /^D/i
-            self['action']='done'
-            return true
-          when /^F/i
-            self['action']='forced'
-            return false
-          when /^R/i
-            self['action']='retry'
-            raise(Retry)
-          end
-        }
+        query(['d','f','r'])
       end
 
       def dryrun?
@@ -183,7 +172,7 @@ module CIAX
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
       def show(msg=self) # Print Progress Proc
-        @procary[:show].call(msg)
+        @share[:procary][:show].call(msg)
         self
       end
 
@@ -198,7 +187,7 @@ module CIAX
 
       def scan
         stats=sites.inject({}){|hash,site|
-          hash[site]=@procary[:getstat].call(site)
+          hash[site]=@share[:procary][:getstat].call(site)
           hash
         }
         @condition.map{|h|
@@ -221,7 +210,7 @@ module CIAX
 
       def refresh
         sites.each{|site|
-          @procary[:getstat].call(site).refresh
+          @share[:procary][:getstat].call(site).refresh
         }
       end
 
@@ -239,16 +228,21 @@ module CIAX
       end
 
       def query(cmds)
-        cmdopt=cmds.map{|s| s[0].downcase}
-        @valid_keys.replace(cmdopt)
-        msg='['+cmdopt.join('/')+']?'
-        @msh['stat']='query'
-        @msh['opt']=msg
-        @procary[:query].call(item(msg,5))
-        @msh['opt']=nil
-        @msh['stat']='run'
-        @valid_keys.clear
-        @msh[:query]
+        vk=@share[:valid_keys].replace(cmds)
+        cdb=@share[:cmds]
+        msg='['+vk.map{|k| cdb[k]}.join('/')+']?'
+        msh=@share[:msh]
+        msh['stat']='query'
+        msh['opt']=msg
+        begin
+          @share[:procary][:query].call(item(msg,5))
+          res=msh[:query]
+        end until vk.include?(res)
+        msh['opt']=nil
+        msh['stat']='run'
+        vk.clear
+        self['action']=cdb[res].downcase
+        @share[:cmdproc][res].call
       end
     end
   end

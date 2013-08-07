@@ -324,7 +324,7 @@ module CIAX
       Indent*ind
     end
 
-    def view_struct(data,title=nil,ind=0)
+    def view_struct(data,title=nil,ind=0,show_iv=false)
       raise('Hash Loop') if ind > 5
       str=''
       col=4
@@ -343,27 +343,27 @@ module CIAX
       iv={}
       data.instance_variables.each{|n|
         iv[n]=data.instance_variable_get(n)
-      }
-      _show(str,iv,ind,col,title)
-      _show(str,data,ind,col,title)
+      } if show_iv
+      _show(str,iv,ind,col,title,show_iv)
+      _show(str,data,ind,col,title,show_iv)
     end
 
-    def _show(str,data,ind,col,title)
+    def _show(str,data,ind,col,title,show_iv)
       case data
       when Array
-        return str if _mixed?(str,data,data,data.size.times,ind)
+        return str if _mixed?(str,data,data,data.size.times,ind,show_iv)
         return _only_ary(str,data,ind,col) if data.size > col
       when Hash
-        return str if _mixed?(str,data,data.values,data.keys,ind)
+        return str if _mixed?(str,data,data.values,data.keys,ind,show_iv)
         return _only_hash(str,data,ind,col,title) if data.size > 2
       end
       str.chomp + " #{data.inspect}\n"
     end
 
-    def _mixed?(str,data,vary,idx,ind)
+    def _mixed?(str,data,vary,idx,ind,show_iv)
       if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
-          str << view_struct(data[i],i,ind)
+          str << view_struct(data[i],i,ind,show_iv)
         }
       end
     end

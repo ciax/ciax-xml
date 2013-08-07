@@ -5,38 +5,24 @@ require "libcommand"
 module CIAX
   module Mcr
     class Record < Datax
-      CmdOpt={
-        "Exec Command"=>proc{true},
-        "Skip Execution"=>proc{false},
-        "Done Macro"=>proc{true},
-        "Force Proceed"=>proc{false},
-        "Retry Checking"=>proc{raise(Retry)}
-      }
-
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
-      def initialize(item,msh={},valid_keys=[],shary=[])
+      def initialize(item,shary=ShareAry.new)
         super('record',[],'steps')
+        #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
+        @shary=type?(shary,ShareAry)
         self['id']=self['time'].to_i
         self['cid']=item[:cid]
         self['label']=item[:label]
-        @share={:msh => msh,:depth => 0,:running => [], :cmds => {}, :cmdlist =>{}, :cmdproc =>{}}
-        @share[:valid_keys]=valid_keys.clear
-        @share[:levelshare]=type?(shary,ShareAry) #[:setstat,:getstat,:exec,:submcr,:query,:show]
-        CmdOpt.each{|str,v|
-          k=str[0].downcase
-          @share[:cmds][k]=str.split(' ').first
-          @share[:cmdlist][k]=str
-          @share[:cmdproc][k]=v
-        }
+        @depth=0
       end
 
       def start
-        @share[:msh]['stat']='run'
-        @share[:levelshare][:show].call(self)
+        @shary[:msh]['stat']='run'
+        @shary[:show_proc].call(self)
       end
 
       def add_step(db) # returns nil or submacro db
-        step=Step.new(db,self['time'],@share)
+        step=Step.new(db,self['time'],@depth,@shary)
         @data << step
         case db['type']
         when 'goal'
@@ -53,11 +39,11 @@ module CIAX
       end
 
       def push
-        @share[:depth]+=1
+        @depth+=1
       end
 
       def pop
-        @share[:depth]-=1
+        @depth-=1
       end
 
       def done
@@ -69,30 +55,30 @@ module CIAX
       end
 
       def interrupt
-        warn("\nInterrupt Issued to #{@share[:running]}]")
-        @share[:running].each{|site|
-          @share[:levelshare][:exec].call(site,['interrupt'])
+        warn("\nInterrupt Issued to #{@shary[:running]}]")
+        @shary[:running].each{|site|
+          @shary[:exec_proc].call(site,['interrupt'])
         }
         fin('interrupted')
       end
 
       private
       def fin(str)
-        @share[:msh]['stat']=str
-        @share[:levelshare][:show].call(str+"\n")
+        @shary[:msh]['stat']=str
+        @shary[:show_proc].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
-        @share[:valid_keys].clear
-        @share[:running].clear
+        @shary[:valid_keys].clear
+        @shary[:running].clear
         self
       end
     end
 
     class Step < ExHash
-      def initialize(db,base,share)
-        @share=share
+      def initialize(db,base,depth,shary)
+        @shary=shary
         self['time']=Msg.elps_sec(base)
-        self['depth']=@share[:depth]
+        self['depth']=depth
         update(type?(db,Hash))
         @condition=delete('stat')
       end
@@ -100,9 +86,9 @@ module CIAX
       # Execution section
       def submcr
         show to_s
-        item=@share[:levelshare][:submcr].call(self['cmd'])
+        item=@shary[:submcr_proc].call(self['cmd'])
         if /true|1/ === self['async']
-          @share[:levelshare][:asymcr].call(item)
+          @shary[:asymcr_proc].call(item)
           return
         end
         item
@@ -111,9 +97,9 @@ module CIAX
       def exec
         show title
         #array of site for interrupt
-        @share[:running] << self['site']
+        @shary[:running] << self['site']
         if exec?
-          @share[:levelshare][:exec].call(self['site'],self['cmd'])
+          @shary[:exec_proc].call(self['site'],self['cmd'])
           self['result']='done'
         else
           self['result']='skip'
@@ -174,7 +160,7 @@ module CIAX
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
       def show(msg=self) # Print Progress Proc
-        @share[:levelshare][:show].call(msg)
+        @shary[:show_proc].call(msg)
         self
       end
 
@@ -189,7 +175,7 @@ module CIAX
 
       def scan
         stats=sites.inject({}){|hash,site|
-          hash[site]=@share[:levelshare][:getstat].call(site)
+          hash[site]=@shary[:stat_proc].call(site)
           hash
         }
         @condition.map{|h|
@@ -212,7 +198,7 @@ module CIAX
 
       def refresh
         sites.each{|site|
-          @share[:levelshare][:getstat].call(site).refresh
+          @shary[:stat_proc].call(site).refresh
         }
       end
 
@@ -230,21 +216,21 @@ module CIAX
       end
 
       def query(cmds)
-        vk=@share[:valid_keys].replace(cmds)
-        cdb=@share[:cmds]
+        vk=@shary[:valid_keys].replace(cmds)
+        cdb=@shary[:cmds]
         msg='['+vk.map{|k| cdb[k]}.join('/')+']?'
-        msh=@share[:msh]
+        msh=@shary[:msh]
         msh['stat']='query'
         msh['opt']=msg
         begin
-          @share[:levelshare][:query].call(item(msg,5))
+          @shary[:query_proc].call(item(msg,5))
           res=msh[:query]
         end until vk.include?(res)
         msh['opt']=nil
         msh['stat']='run'
         vk.clear
         self['action']=cdb[res].downcase
-        @share[:cmdproc][res].call
+        @shary[:cmdproc][res].call
       end
     end
   end

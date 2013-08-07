@@ -35,6 +35,7 @@ require 'libupdate'
 # Keep current command and parameters
 
 module CIAX
+  # Array of Hash: each Hash is associated with Domain,Group,Item;
   class ShareAry < Array
     def [](id)
       each{|lv|

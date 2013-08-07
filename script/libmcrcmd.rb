@@ -9,13 +9,25 @@ module CIAX
     class ExtCmd < Command
       def initialize(mdb,al,&mcr_proc) # Block if for SubMacro
         super()
-        sv=self['sv']
-        sv['ext']=ExtGrp.new(mdb,[sv.share])
-        sv.share[:asymcr]=mcr_proc||proc{}
-        sv.share[:submcr]=proc{|args| setcmd(args) }
-        sv.share[:getstat]=proc{|site| al[site].stat}
-        sv.share[:exec]=proc{|site,args| al[site].exe(args) }
-        sv.share[:show]=proc{|msg| print msg if Msg.fg?}
+        svs=self['sv'].share
+        svs[:asymcr_proc]=mcr_proc||proc{}
+        svs[:submcr_proc]=proc{|args| setcmd(args) }
+        svs[:stat_proc]=proc{|site| al[site].stat}
+        svs[:exec_proc]=proc{|site,args| al[site].exe(args) }
+        svs[:show_proc]=proc{|msg| print msg if Msg.fg?}
+        {
+          "Exec Command"=>proc{true},
+          "Skip Execution"=>proc{false},
+          "Done Macro"=>proc{true},
+          "Force Proceed"=>proc{false},
+          "Retry Checking"=>proc{raise(Retry)}
+        }.each{|str,v|
+          k=str[0].downcase
+          (svs[:cmds]||={})[k]=str.split(' ').first
+          (svs[:cmdlist]||={})[k]=str
+          (svs[:cmdproc]||={})[k]=v
+        }
+        self['sv']['ext']=ExtGrp.new(mdb,[svs])
         require "libmcrprt" unless $opt['r']
       end
     end
@@ -36,14 +48,18 @@ module CIAX
     class ExtItem < ExtItem
       attr_reader :record
       def new_rec(msh={},valid_keys=[])
-        @record=Record.new(self,msh,valid_keys,@shary)
-        @share[:query]=proc{|msg|
+        @share[:msh]=msh
+        @share[:valid_keys]=valid_keys.clear
+        @share[:query_proc]=proc{|msg|
           if Msg.fg?
             msh[:query]=Readline.readline(msg,true)
           else
             sleep
           end
         }
+        @share[:depth]=0
+        @share[:running]=[]
+        @record=Record.new(self,@shary)
         self
       end
 

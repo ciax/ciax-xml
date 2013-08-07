@@ -114,13 +114,13 @@ module CIAX
       def init_watch(wdb,cdb)
         return [] unless wdb
         hash=wdb.to_h
-        [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
+        [:label,:exec_proc,:stat,:int,:block].each{|k| hash[k]={}}
         Repeat.new.each(wdb){|e0,r0|
           idx=r0.format(e0['id'])
           hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
           e0.each{ |e1|
             case name=e1.name.to_sym
-            when :block,:int,:exec
+            when :block,:int,:exec_proc
               args=[e1['name']]
               e1.each{|e2|
                 args << r0.subst(e2.text)

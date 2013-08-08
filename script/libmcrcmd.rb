@@ -20,7 +20,7 @@ module CIAX
             Readline.readline(msg,true)
           else
             sleep
-            nil
+            Thread.current[:query]
           end
         }
         {

@@ -227,7 +227,7 @@ module CIAX
         msh['stat']='query'
         msh['opt']=msg
         begin
-          res=@shary[:query_proc].call(body(msg))||msh[:query]
+          res=@shary[:query_proc].call(body(msg))
         end until vk.include?(res)
         msh['opt']=nil
         msh['stat']='run'

@@ -10,13 +10,13 @@ module CIAX
         self['layer']='mcr'
         self['id']=mitem[:cid]
         ig=@cobj['sv']['int']
+        ig.update_items(mitem.shary[:cmdlist])
         ig.share[:def_proc]=proc{|item|
           if @th.status == 'sleep'
-            self[:query]=item.id
+            @th[:query]=item.id
             @th.run
           end
         }
-        ig.update_items(mitem.shary[:cmdlist])
         mitem.new_rec(self,ig.valid_keys)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}

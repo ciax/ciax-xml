@@ -50,13 +50,11 @@ module CIAX
     end
 
     class Man < Sh::Exe
-      attr_reader :stat
-      def initialize(cobj,id)
-        super(cobj)
+      def initialize(id,stat)
+        super(Command.new)
         self['layer']='mcr'
         self['id']=id
-        @stat=Stat.new
-        ext_shell(@stat)
+        ext_shell(type?(stat,Stat))
       end
     end
 
@@ -70,25 +68,24 @@ module CIAX
           @alist=App::List.new
         end
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-        @mobj=ExtCmd.new(mdb,@alist){|item| add_page(Sv.new(item)) }
-        @mobj['sv']['ext'].share[:def_proc]=proc{|item| add_page(Sv.new(item))}
-        @swmgrp=@mobj['lo'].add_group('swm',"Switching Macro")
-        @swmgrp.cmdlist["1.."]='Other Macro Process'
         @total='/'
-        msh=Man.new(@mobj,mdb['id'])
-        @stat=msh.stat
-        add_page(msh,"Macro Manager")
+        @mobj=ExtCmd.new(mdb,@alist)
+        @swg=@mobj['lo'].add_group('swm',"Switching Macro")
+        @mobj['sv']['ext'].share[:def_proc]=proc{|item| add_page(Sv.new(item))}
+        @stat=Stat.new
+        msh=Man.new(mdb['id'],@stat)
+        add_page(msh)
+        @swg.cmdlist["0"]='Macro Manager'
+        @swg.cmdlist["1.."]='Other Macro Process'
       end
 
       # item includes arbitrary mcr command
       # Sv generated and added to list in yield part as mcr command is invoked
-      def add_page(msh,title=nil)
+      def add_page(msh)
         page="#{@total.succ!}"
         self[page]=msh
-        @swmgrp.add_item(page,title).share[:def_proc]=proc{throw(:sw_site,page)}
-        msh.cobj['lo']['ext']=@mobj['sv']['ext']
-        msh.cobj['lo']['swm']=@swmgrp
-        msh.cobj['lo']['swl']=@swlgrp if @swlgrp
+        @mobj.each{|k,v| msh.cobj[k].update v}
+        msh.cobj['lo']['swm'].add_item(page).share[:def_proc]=proc{throw(:sw_site,page)}
         msh.pdb['total']="[#{page}/%s]"
         msh['total']=@total
         @stat.add(page,msh) if page > "0"

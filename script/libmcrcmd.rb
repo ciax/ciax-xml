@@ -7,10 +7,9 @@ require "libinssh"
 module CIAX
   module Mcr
     class ExtCmd < Command
-      def initialize(mdb,al,&mcr_proc) # Block if for SubMacro
+      def initialize(mdb,al) # Block if for SubMacro
         super()
         svs=self['sv'].share
-        svs[:asymcr_proc]=mcr_proc||proc{}
         svs[:submcr_proc]=proc{|args| setcmd(args) }
         svs[:stat_proc]=proc{|site| al[site].stat}
         svs[:exec_proc]=proc{|site,args| al[site].exe(args) }

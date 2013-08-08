@@ -91,7 +91,7 @@ module CIAX
         show to_s
         item=@shary[:submcr_proc].call(self['cmd'])
         if /true|1/ === self['async']
-          @shary[:asymcr_proc].call(item)
+          @shary[:def_proc].call(item)
           return
         end
         item

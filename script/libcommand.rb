@@ -192,20 +192,20 @@ module CIAX
 
     def set_par(par)
       @par=validate(type?(par,Array))
-      @args=[@id,*par]
+      @args=[@id,*@par]
       self[:cid]=@args.join(':') # Used by macro
-      verbose(self.class,"SetPAR(#{@id}): #{par}")
+      verbose(self.class,"SetPAR(#{@id}): #{@par}")
       self
     end
 
     private
-    # Parameter structure {:type,:val}
+    # Parameter structure [{:type,:list,:default}, ...]
     def validate(pary)
       pary=type?(pary.dup,Array)
       return pary unless self[:parameter]
       self[:parameter].map{|par|
         disp=par[:list].join(',')
-        unless str=pary.shift
+        unless str=pary.shift||par[:default]
         Msg.par_err(
                 "Parameter shortage (#{pary.size}/#{self[:parameter].size})",
                 Msg.item(@id,self[:label]),

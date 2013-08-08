@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libexenum'
+require 'libenumx'
 require 'libmsg'
 require 'librerange'
 require 'liblogging'

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libexenum"
+require "libenumx"
 require "libupdate"
 
 module CIAX

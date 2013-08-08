@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libexenum"
+require "libenumx"
 require "libxmldoc"
 
 module CIAX

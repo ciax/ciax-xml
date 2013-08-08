@@ -16,7 +16,7 @@ module CIAX
       hsh
     end
 
-    class Exe < Sh::Exe
+    class Exe < Exe
       def initialize(adb)
         @adb=type?(adb,Db)
         id=@adb['site_id']
@@ -50,7 +50,7 @@ module CIAX
       end
     end
 
-    class List < Sh::DevList
+    class List < DevList
       def initialize(al=nil)
         if App::List === al
           @al=al

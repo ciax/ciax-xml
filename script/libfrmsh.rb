@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libsh'
+require 'libexe'
 require 'libfield'
 require "libfrmrsp"
 require "libfrmcmd"
@@ -20,7 +20,7 @@ module CIAX
       fsh
     end
 
-    class Exe < Sh::Exe
+    class Exe < Exe
       # @< cobj,output,(upd_proc*)
       # @ field*
       attr_reader :field
@@ -93,7 +93,7 @@ module CIAX
       end
     end
 
-    class List < Sh::DevList
+    class List < DevList
       def initialize
         @ldb=Loc::Db.new
         super(@ldb.list)

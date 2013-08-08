@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libsh"
+require "libexe"
 require "libstatus"
 require "libwatch"
 require 'libfrmsh'
@@ -24,7 +24,7 @@ module CIAX
       ash
     end
 
-    class Exe < Sh::Exe
+    class Exe < Exe
       # @< cobj,output,upd_proc*
       # @ adb,fsh,watch,stat*
       attr_reader :adb,:stat
@@ -183,7 +183,7 @@ module CIAX
       end
     end
 
-    class List < Sh::DevList
+    class List < DevList
       def initialize(fl=nil)
         @ldb=Loc::Db.new
         if Frm::List === fl

@@ -3,7 +3,7 @@ require "libmcrcmd"
 
 module CIAX
   module Mcr
-    class Sv < Sh::Exe
+    class Sv < Exe
       attr_reader :th
       def initialize(mitem)
         super('mcr',mitem[:cid])
@@ -47,7 +47,7 @@ module CIAX
       end
     end
 
-    class List < Sh::List
+    class List < List
       attr_reader :total
       def initialize(alist=nil)
         super()
@@ -61,7 +61,7 @@ module CIAX
         @stat=Stat.new
         @mobj=ExtCmd.new(mdb,@alist){|item| add_page(Sv.new(item))}
         @swm=@mobj['lo'].add_group('swm',"Switching Macro")
-        add_page(Sh::Exe.new('mcr',mdb['id']).ext_shell(@stat),'Macro Manager')
+        add_page(Exe.new('mcr',mdb['id']).ext_shell(@stat),'Macro Manager')
         @swm.cmdlist["1.."]='Other Macro Process'
       end
 

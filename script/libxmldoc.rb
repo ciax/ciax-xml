@@ -11,7 +11,7 @@ module CIAX
     # to those described in the group named file.
     # The group named file can conatin referenced item whose entity is
     # in another file.
-    class Doc < ExHash
+    class Doc < Hashx
       attr_reader :top,:list
       ALL='all-list'
       @@root={}

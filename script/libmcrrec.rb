@@ -76,7 +76,7 @@ module CIAX
       end
     end
 
-    class Step < ExHash
+    class Step < Hashx
       def initialize(db,base,depth,shary)
         @shary=shary
         self['time']=Msg.elps_sec(base)

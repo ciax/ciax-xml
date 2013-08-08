@@ -13,7 +13,7 @@ require "libupdate"
 
 module CIAX
   module Sh
-    class Exe < ExHash # Having server status {id,msg,...}
+    class Exe < Hashx # Having server status {id,msg,...}
       attr_reader :upd_proc,:post_proc,:save_proc,:cobj,:output
       # block gives command line convert
       def initialize(layer,id,cobj=Command.new)
@@ -209,7 +209,7 @@ module CIAX
       end
     end
 
-    class List < ExHash
+    class List < Hashx
       attr_writer :swlgrp
       def initialize
         $opt||=GetOpts.new
@@ -265,7 +265,7 @@ module CIAX
       end
     end
 
-    class Layer < ExHash
+    class Layer < Hashx
       def initialize
         @swlgrp=Group.new({'caption'=>"Switch Layer",'color'=>5,'column'=>5})
         @swlgrp.share[:def_proc]=proc{|item| throw(:sw_layer,item.id) }

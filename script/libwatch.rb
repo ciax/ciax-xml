@@ -17,7 +17,7 @@ module CIAX
         self['astart']=nil
         self['alast']=0
         #For Array element
-        ['active','exec','block','int'].each{|i| self[i]||=ExArray.new}
+        ['active','exec','block','int'].each{|i| self[i]||=Arrayx.new}
         #For Hash element
         ['crnt','last','res'].each{|i| self[i]||={}}
         @event_proc=proc{}
@@ -159,7 +159,7 @@ module CIAX
     end
 
     # For Client
-    class View < ExHash
+    class View < Hashx
       def initialize(adb,watch)
         wdb=type?(adb,App::Db)[:watch] || {:stat => []}
         @watch=type?(watch,Data)

@@ -49,7 +49,7 @@ module CIAX
     def []=(id,num);end
   end
 
-  class Command < ExHash
+  class Command < Hashx
     # CDB: mandatory (:select)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
@@ -84,7 +84,7 @@ module CIAX
     end
   end
 
-  class Domain < ExHash
+  class Domain < Hashx
     attr_reader :share
     def initialize(color=2)
       @share={:def_proc => proc{}}
@@ -131,7 +131,7 @@ module CIAX
     end
   end
 
-  class Group < ExHash
+  class Group < Hashx
     attr_reader :valid_keys,:cmdlist,:share
     #attr = {caption,color,column,:members}
     def initialize(attr,upper=[])
@@ -171,7 +171,7 @@ module CIAX
     end
   end
 
-  class Item < ExHash
+  class Item < Hashx
     include Math
     attr_reader :id,:par,:args,:share,:shary
     #share should have :def_proc

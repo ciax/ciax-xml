@@ -4,12 +4,12 @@ require "libexenum"
 require "libupdate"
 
 module CIAX
-  class Datax < ExHash
+  class Datax < Hashx
     attr_reader :data,:upd_proc
     def initialize(type,init_struct={},dataname='val')
       self['type']=type
       self['time']=UnixTime.now
-      @data=init_struct.dup.extend(ExEnum)
+      @data=init_struct.dup.extend(Enumx)
       @dataname=dataname
       @ver_color=6
       @upd_proc=[] # Proc Array for Update Propagation to the upper Layers
@@ -68,13 +68,13 @@ module CIAX
 
     private
     def _getdata
-      hash=ExHash[self]
+      hash=Hashx[self]
       hash[@dataname]=@data
       hash
     end
 
     def _setdata
-      @data=delete(@dataname).extend(ExEnum)
+      @data=delete(@dataname).extend(Enumx)
       self['time']=UnixTime.parse(self['time']||UnixTime.now)
       @upd_proc.each{|p| p.call(self)}
       self

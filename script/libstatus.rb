@@ -59,7 +59,7 @@ module CIAX
       end
     end
 
-    class View < ExHash
+    class View < Hashx
       def initialize(adb,stat)
         @sdb=type?(adb,Db)[:status]
         @stat=type?(stat,Status)

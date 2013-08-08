@@ -8,20 +8,20 @@
     <ReRange parent="Object" include="Comparable"/>
   </general>
   <basic>
-    <ExEnum/>
-    <ExHash parent="Hash" include="ExEnum"/>
-    <Var parent="ExHash" extend="Msg.Ver">
+    <Enumx/>
+    <Hashx parent="Hash" include="Enumx"/>
+    <Var parent="Hashx" extend="Msg.Ver">
       <File/>
       <Save/>
     </Var>
-    <Db parent="ExHash" extend="Msg.Ver"/>
+    <Db parent="Hashx" extend="Msg.Ver"/>
   </basic>
   <shared>
     <Msg>
       <CmdList parent="Hash"/>
       <Ver parent="Object"/>
     </Msg>
-    <Command parent="ExHash" extend="Msg.Ver" include="Math">
+    <Command parent="Hashx" extend="Msg.Ver" include="Math">
       <Logging extend="Logging"/>
     </Command>
     <Stream parent="Object" extend="Msg.Ver">
@@ -33,7 +33,7 @@
       <Shell parent="Object"/>
       <Server extend_for="Shell" extend="Msg.Ver"/>
       <Client extend_for="Shell" extend="Msg.Ver"/>
-      <Prompt parent="ExHash"/>
+      <Prompt parent="Hashx"/>
     </Sh>
   </shared>
   <append>
@@ -84,7 +84,7 @@
     <Status>
       <Var parent="Var" extend="Msg.Ver"/>
       <Save extend="Msg.Ver"/>
-      <View parent="ExHash"/>
+      <View parent="Hashx"/>
       <Print extend_for="View"/>
     </Status>
     <Sym>
@@ -94,7 +94,7 @@
     <Watch>
       <Stat extend_for="Status.Var" extend="Msg.Ver"/>
       <Upd extend_for="Stat"/>
-      <View parent="ExHash"/>
+      <View parent="Hashx"/>
       <Print extend_for="Print"/>
     </Watch>
     <Xml>

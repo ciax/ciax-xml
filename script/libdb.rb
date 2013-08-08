@@ -4,7 +4,7 @@ require "libexenum"
 require "libxmldoc"
 
 module CIAX
-  class Db < ExHash
+  class Db < Hashx
     XmlDir="#{ENV['HOME']}/ciax-xml"
     attr_reader :list
     def initialize(type,group=nil)

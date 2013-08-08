@@ -9,7 +9,7 @@
     </UserError>
   </RuntimeError>
   <Hash>
-    <ExHash>
+    <Hashx>
       <Command/>
       <Db>
         <App.Db/>
@@ -25,7 +25,7 @@
       </Var>
       <Status.View/>
       <Watch.View/>
-    </ExHash>
+    </Hashx>
     <App.List/>
     <Frm.List/>
     <Msg.CmdList/>

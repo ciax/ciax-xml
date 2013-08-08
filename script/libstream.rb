@@ -4,7 +4,7 @@ require "libexenum"
 require "libupdate"
 
 module CIAX
-  class Stream < ExHash
+  class Stream < Hashx
     def initialize(iocmd,wait=0,timeout=nil)
       @ver_color=1
       Msg.abort(" No IO command") if iocmd.to_a.empty?

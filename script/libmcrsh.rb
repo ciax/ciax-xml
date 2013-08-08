@@ -26,7 +26,7 @@ module CIAX
       end
     end
 
-    class Stat < ExHash
+    class Stat < Hashx
       def initialize
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
       end

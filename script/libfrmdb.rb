@@ -78,7 +78,7 @@ module CIAX
       end
 
       def init_rsp(e,val)
-        stc=val[:struct]||=ExHash.new
+        stc=val[:struct]||=Hashx.new
         case e.name
         when 'field'
           attr=e.to_h

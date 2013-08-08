@@ -3,7 +3,7 @@ require 'libmsg'
 require 'json'
 #Extened Hash
 module CIAX
-  module ExEnum
+  module Enumx
     include Msg
     def to_s
       Msg.view_struct(self)
@@ -108,23 +108,23 @@ module CIAX
     end
   end
 
-  class ExHash < Hash
-    include ExEnum
+  class Hashx < Hash
+    include Enumx
   end
 
-  class ExArray < Array
-    include ExEnum
+  class Arrayx < Array
+    include Enumx
   end
 
 
   if __FILE__ == $0
-    w=ExHash.new
+    w=Hashx.new
     w[:a]=1
     w[:c] = []
     w[:e] = {:x => 1}
     print "w="
     p w
-    r=ExHash.new
+    r=Hashx.new
     r[:b]=2
     r[:d] = {}
     r[:f] = [1]
@@ -134,12 +134,12 @@ module CIAX
     puts "w <- r(over write)"
     p w
     puts
-    r=ExHash.new
+    r=Hashx.new
     r[:c] = {:m => 'm'}
     r[:d] = [1]
     print "r="
     p r
-    w=ExHash.new
+    w=Hashx.new
     w[:c]= {:i => 'i'}
     w[:d] = [2,3]
     print "w="
@@ -148,13 +148,13 @@ module CIAX
     puts "w <- r(over write)"
     p w
     puts
-    r=ExHash.new
+    r=Hashx.new
     r[:c] = {:m => 'm', :n => {:x => 'x'}}
     r[:d] = [1]
     r[:e] = 'e'
     print "r="
     p r
-    w=ExHash.new
+    w=Hashx.new
     w[:c]= {:i => 'i', :n => {:y => 'y'}}
     w[:d] = [2,3]
     w[:f] = 'f'

@@ -87,7 +87,7 @@ module CIAX
   class Domain < ExHash
     attr_reader :share
     def initialize(color=2)
-      @share={}
+      @share={:def_proc => proc{}}
       @grplist=[]
       @color=color
       @ver_color=2

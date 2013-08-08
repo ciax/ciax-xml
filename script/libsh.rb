@@ -16,7 +16,9 @@ module CIAX
     class Exe < ExHash # Having server status {id,msg,...}
       attr_reader :upd_proc,:post_proc,:save_proc,:cobj,:output
       # block gives command line convert
-      def initialize(cobj)
+      def initialize(layer,id,cobj=Command.new)
+        self['layer']=layer
+        self['id']=id
         @cobj=type?(cobj,Command)
         @pre_proc=[] # Proc for Command Check (by User exec)
         @post_proc=[] # Proc for Command Issue (by User exec)

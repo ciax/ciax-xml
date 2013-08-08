@@ -26,11 +26,8 @@ module CIAX
       attr_reader :field
       def initialize(fdb,id=nil)
         type?(fdb,Db)
-        self['layer']='frm'
-        self['id']=id||fdb['id']
         @field=Field.new(fdb[:field][:struct].deep_copy)
-        cobj=ExtCmd.new(fdb,@field)
-        super(cobj)
+        super('frm',id||fdb['id'],ExtCmd.new(fdb,@field))
         ext_shell(@field)
       end
 

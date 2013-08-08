@@ -30,11 +30,8 @@ module CIAX
       attr_reader :adb,:stat
       def initialize(adb,id=nil)
         @adb=type?(adb,Db)
-        self['layer']='app'
-        self['id']=id||adb['id']
-        cobj=ExtCmd.new(adb)
+        super('app',id||adb['id'],ExtCmd.new(adb))
         @stat=App::Status.new(adb[:status][:struct].deep_copy)
-        super(cobj)
         ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         @watch=Watch::Data.new
         @cobj.int_proc=proc{

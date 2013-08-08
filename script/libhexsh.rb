@@ -19,11 +19,9 @@ module CIAX
     class Exe < Sh::Exe
       def initialize(adb)
         @adb=type?(adb,Db)
-        self['layer']='hex'
-        self['id']=@adb['site_id']
-        cobj=App::ExtCmd.new(adb)
-        super(cobj)
-        stat=App::Status.new.ext_file(@adb['site_id'])
+        id=@adb['site_id']
+        super('hex',id,App::ExtCmd.new(adb))
+        stat=App::Status.new.ext_file(id)
         ext_shell(View.new(self,stat))
       end
     end

@@ -6,9 +6,7 @@ module CIAX
     class Sv < Sh::Exe
       attr_reader :th
       def initialize(mitem)
-        super(Command.new)
-        self['layer']='mcr'
-        self['id']=mitem[:cid]
+        super('mcr',mitem[:cid])
         ig=@cobj['sv']['int']
         ig.update_items(mitem.shary[:cmdlist])
         ig.share[:def_proc]=proc{|item|
@@ -49,15 +47,6 @@ module CIAX
       end
     end
 
-    class Man < Sh::Exe
-      def initialize(id,stat)
-        super(Command.new)
-        self['layer']='mcr'
-        self['id']=id
-        ext_shell(type?(stat,Stat))
-      end
-    end
-
     class List < Sh::List
       attr_reader :total
       def initialize(alist=nil)
@@ -69,23 +58,21 @@ module CIAX
         end
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
         @total='/'
-        @mobj=ExtCmd.new(mdb,@alist)
-        @swg=@mobj['lo'].add_group('swm',"Switching Macro")
-        @mobj['sv']['ext'].share[:def_proc]=proc{|item| add_page(Sv.new(item))}
         @stat=Stat.new
-        msh=Man.new(mdb['id'],@stat)
-        add_page(msh)
-        @swg.cmdlist["0"]='Macro Manager'
-        @swg.cmdlist["1.."]='Other Macro Process'
+        @mobj=ExtCmd.new(mdb,@alist){|item| add_page(Sv.new(item))}
+        @swm=@mobj['lo'].add_group('swm',"Switching Macro")
+        add_page(Sh::Exe.new('mcr',mdb['id']).ext_shell(@stat),'Macro Manager')
+        @swm.cmdlist["1.."]='Other Macro Process'
       end
 
       # item includes arbitrary mcr command
       # Sv generated and added to list in yield part as mcr command is invoked
-      def add_page(msh)
+      def add_page(msh,title=nil)
         page="#{@total.succ!}"
         self[page]=msh
-        @mobj.each{|k,v| msh.cobj[k].update v}
-        msh.cobj['lo']['swm'].add_item(page).share[:def_proc]=proc{throw(:sw_site,page)}
+        @swm.add_item(page,title).share[:def_proc]=proc{throw(:sw_site,page)}
+        msh.cobj['sv']['ext']=@mobj['sv']['ext']
+        msh.cobj['lo']['swm']=@swm
         msh.pdb['total']="[#{page}/%s]"
         msh['total']=@total
         @stat.add(page,msh) if page > "0"

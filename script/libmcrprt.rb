@@ -80,11 +80,5 @@ module CIAX
         mary.join("\n")+"\n"
       end
     end
-
-    if __FILE__ == $0
-      require "libdatax"
-      Msg.usage "< record_file" if STDIN.tty?
-      puts Datax.new('record',[],'steps').extend(PrtRecord).read
-    end
   end
 end

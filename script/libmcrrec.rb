@@ -37,23 +37,25 @@ module CIAX
         item=@shary[:submcr_proc].call(self['cmd'])
         if /true|1/ === self['async']
           @shary[:def_proc].call(item)
-          return
+          self['result']='forked'
+        else
+          yield item.select
+          self['result']='done'
         end
-        item
+        self
       end
 
       def exec
         show title
         #array of site for interrupt
-        @shary[:running] << self['site']
         if exec?
-          @shary[:exec_proc].call(self['site'],self['cmd'])
+          yield(self['site'],self['cmd'])
           self['result']='done'
         else
           self['result']='skip'
         end
         show result
-        nil
+        self['site']
       end
 
       # Conditional judgment section

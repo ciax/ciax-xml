@@ -25,6 +25,7 @@ module CIAX
       def to_s
         msg=head("MACRO",3)+"\n"
         @data.each{|i|
+          i.extend(PrtStep) unless i.is_a?(PrtStep)
           msg << i.to_s
         }
         msg
@@ -78,6 +79,12 @@ module CIAX
         mary << body(self['action'].capitalize,8) if key?('action')
         mary.join("\n")+"\n"
       end
+    end
+
+    if __FILE__ == $0
+      require "libdatax"
+      Msg.usage "< record_file" if STDIN.tty?
+      puts Datax.new('record',[],'steps').extend(PrtRecord).read
     end
   end
 end

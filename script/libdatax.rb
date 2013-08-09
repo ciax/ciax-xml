@@ -6,6 +6,7 @@ require "libupdate"
 module CIAX
   class Datax < Hashx
     attr_reader :data,:upd_proc
+    # @data is hidden from access by '[]'
     def initialize(type,init_struct={},dataname='val')
       self['type']=type
       self['time']=UnixTime.now

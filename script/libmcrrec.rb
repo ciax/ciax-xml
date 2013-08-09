@@ -5,6 +5,7 @@ require "libmcrprt"
 
 module CIAX
   module Mcr
+    Dryrun=1
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize(item)
@@ -49,8 +50,8 @@ module CIAX
         @depth-=1
       end
 
-      def done
-        fin('done')
+      def success
+        fin('success')
       end
 
       def error
@@ -69,17 +70,22 @@ module CIAX
         @shary[:msh]['stat']=str
         @shary[:msh]['opt']=opt
         self['stat']=str
+        if opt
+          self['option']=opt
+        else
+          delete('option')
+        end
+        save
       end
 
       private
       def fin(str)
-        sets(str)
         @shary[:show_proc].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
         @shary[:valid_keys].clear
         @shary[:running].clear
-        save
+        sets('done')
         self
       end
     end
@@ -124,10 +130,11 @@ module CIAX
       def timeout?
         show title
         self['max']=self['retry']
-        max = dryrun? ? 1 : self['max']
+        max = dryrun? ? Dryrun : self['max']
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
           break if ok?('pass','wait')
+          @record.save
           refresh
           sleep 1
           show '.'

@@ -60,7 +60,7 @@ module CIAX
         if res=self['result']
           title=res.capitalize
           title << "(#{self['retry']}/#{self['max']})" if self['retry']
-          color=(/pass|wait/ === res) ? 2 : 1
+          color=(/failed|timeout/ === res) ? 1 : 2
           mary << ' -> '+Msg.color(title,color)
           if c=self['conditions']
             c.each{|h|

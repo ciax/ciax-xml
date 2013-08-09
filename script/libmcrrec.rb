@@ -50,22 +50,6 @@ module CIAX
         @depth-=1
       end
 
-      def success
-        fin('success')
-      end
-
-      def error
-        fin('error')
-      end
-
-      def interrupt
-        warn("\nInterrupt Issued to #{@shary[:running]}]")
-        @shary[:running].each{|site|
-          @shary[:exec_proc].call(site,['interrupt'])
-        }
-        fin('interrupted')
-      end
-
       def sets(str,opt=nil)
         @shary[:msh]['stat']=str
         @shary[:msh]['opt']=opt
@@ -78,8 +62,7 @@ module CIAX
         save
       end
 
-      private
-      def fin(str)
+      def finish(str='complete')
         @shary[:show_proc].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
@@ -87,6 +70,18 @@ module CIAX
         @shary[:running].clear
         sets('done')
         self
+      end
+
+      def error
+        finish('error')
+      end
+
+      def interrupt
+        warn("\nInterrupt Issued to #{@shary[:running]}]")
+        @shary[:running].each{|site|
+          @shary[:exec_proc].call(site,['interrupt'])
+        }
+        finish('interrupted')
       end
     end
 

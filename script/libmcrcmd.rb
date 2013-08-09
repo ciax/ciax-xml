@@ -66,7 +66,7 @@ module CIAX
       def start # separated for sub thread
         @record.start
         macro(@select)
-        @record.success
+        @record.finish
         self
       rescue Interlock
         @record.error

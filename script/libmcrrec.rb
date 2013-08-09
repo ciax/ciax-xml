@@ -11,11 +11,12 @@ module CIAX
         super('record',[],'steps')
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @shary=type?(item.shary,ShareAry)
-        self['id']=self['time'].to_i
+        self['id']=self['time'].to_i.to_s
         self['cid']=item[:cid]
         self['label']=item[:label]
         @depth=0
         extend PrtRecord unless $opt['r']
+        ext_file(self['id'])
       end
 
       def start
@@ -72,6 +73,7 @@ module CIAX
         self['total']=Msg.elps_sec(self['time'])
         @shary[:valid_keys].clear
         @shary[:running].clear
+        save
         self
       end
     end

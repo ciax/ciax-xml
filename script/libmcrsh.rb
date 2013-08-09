@@ -26,17 +26,19 @@ module CIAX
       end
     end
 
-    class List < Hashx
-      def initialize
+    class Stat < Hashx
+      def initialize(&page_proc)
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
-        @total='0'
+        @total='/'
+        @page_proc=page_proc
       end
 
-      def add_page(item)
+      def add_page(ms)
         page="#{@total.succ!}"
-        ms=self[page]=Sv.new(item)
+        self[page]=ms
         ms.pdb['total']="[#{page}/%s]"
         ms['total']=@total
+        @page_proc.call(page,ms) if @page_proc
         ms
       end
 
@@ -61,16 +63,15 @@ module CIAX
         end
         super({'0'=>'Macro Manager',"1.."=>'Macro Process'})
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-        @stat=List.new
-        @mobj=ExtCmd.new(mdb,@alist){|item|
-          mex=@stat.add_page(item)
-          page=@stat.size.to_s
-          self[page]=mex
+        @stat=Stat.new{|page,ms|
+          self[page]=initexe(ms)
           @swsgrp.add_item(page)
-          initexe(mex)
         }
+        @mobj=ExtCmd.new(mdb,@alist){|item| @stat.add_page(Sv.new(item))}
+        # Init Macro Manager Page
         man=self['0']=Exe.new('mcr',mdb['id']).ext_shell(@stat)
-        initexe(man)
+        man['stat']='Macro Manager'
+        @stat.add_page(man)
       end
 
       def initexe(mex)

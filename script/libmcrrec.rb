@@ -8,90 +8,25 @@ module CIAX
     Dryrun=1
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
-      def initialize(item)
+      def initialize
         super('record',[],'steps')
-        #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
-        @shary=type?(item.shary,ShareAry)
         self['id']=self['time'].to_i.to_s
-        self['cid']=item[:cid]
-        self['label']=item[:label]
-        @depth=0
         extend PrtRecord unless $opt['r']
         ext_file(self['id'])
       end
 
-      def start
-        sets('run')
-        @shary[:show_proc].call(self)
-      end
-
-      def add_step(db) # returns nil or submacro db
-        step=Step.new(db,self,@depth,@shary)
-        @data << step
-        case db['type']
-        when 'goal'
-          step.skip?
-        when 'check'
-          step.fail?
-        when 'wait'
-          step.timeout?
-        when 'exec'
-          step.exec
-        when 'mcr'
-          step.submcr
-        end
-      end
-
-      def push
-        @depth+=1
-      end
-
-      def pop
-        @depth-=1
-      end
-
-      def sets(str,opt=nil)
-        @shary[:msh]['stat']=str
-        @shary[:msh]['opt']=opt
-        self['stat']=str
-        if opt
-          self['option']=opt
-        else
-          delete('option')
-        end
-        save
-      end
-
-      def finish(str='complete')
-        @shary[:show_proc].call(str+"\n")
+      def finish(str)
+        delete('option')
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
-        @shary[:valid_keys].clear
-        @shary[:running].clear
-        sets('done')
-        self
-      end
-
-      def error
-        finish('error')
-      end
-
-      def interrupt
-        warn("\nInterrupt Issued to #{@shary[:running]}]")
-        @shary[:running].each{|site|
-          @shary[:exec_proc].call(site,['interrupt'])
-        }
-        finish('interrupted')
       end
     end
 
     class Step < Hashx
-      def initialize(db,record,depth,shary)
+      def initialize(db,shary)
         update db
-        @record=record
+        #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @shary=shary
-        self['time']=Msg.elps_sec(record['time'])
-        self['depth']=depth
         @condition=delete('stat')
         extend PrtStep unless $opt['r']
       end
@@ -129,11 +64,12 @@ module CIAX
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
           break if ok?('pass','wait')
-          @record.save
+          @shary[:setstat].call('wait')
           refresh
           sleep 1
           show '.'
         }
+        @shary[:setstat].call('run')
         self['result']= res ? 'timeout' : 'pass'
         show result
         raise(Interlock) if res && done?
@@ -234,11 +170,11 @@ module CIAX
         vk=@shary[:valid_keys].replace(cmds)
         cdb=@shary[:cmds]
         msg='['+vk.map{|k| cdb[k]}.join('/')+']?'
-        @record.sets('query',msg)
+        @shary[:setstat].call('query',msg)
         begin
           res=@shary[:query_proc].call(body(msg))
         end until vk.include?(res)
-        @record.sets('run')
+        @shary[:setstat].call('run')
         vk.clear
         self['action']=cdb[res].downcase
         @shary[:cmdproc][res].call

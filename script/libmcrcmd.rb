@@ -57,31 +57,43 @@ module CIAX
       def new_rec(msh={},valid_keys=[])
         @share[:msh]=msh
         @share[:valid_keys]=valid_keys.clear
-        @share[:depth]=0
         @share[:running]=[]
-        @record=Record.new(self)
+        @record=Record.new
+        @record['cid']=self[:cid]
+        @record['label']=self[:label]
+        @share[:setstat]=proc{|str,opt|
+          @record['stat']=msh['stat']=str
+          @record['option']=msh['opt']=opt
+          @record.save
+        }
+        @depth=0
         self
       end
 
       def start # separated for sub thread
-        @record.start
+        @shary[:setstat].call('run')
+        @shary[:show_proc].call(@record)
         macro(@select)
-        @record.finish
+        finish
         self
       rescue Interlock
-        @record.error
+        finish('error')
         self
       rescue Interrupt
-        @record.interrupt
+        warn("\nInterrupt Issued to #{@shary[:running]}]")
+        @shary[:running].each{|site|
+          @shary[:exec_proc].call(site,['interrupt'])
+        }
+        finish('interrupted')
         self
       end
 
       private
       def macro(select)
-        @record.push
+        @depth+=1
         select.each{|e1|
           begin
-            if item=@record.add_step(e1)
+            if item=add_step(e1)
               macro(item.select)
             end
           rescue Retry
@@ -90,8 +102,35 @@ module CIAX
             return
           end
         }
-        @record.pop
+        @depth=-1
         self
+      end
+
+      def add_step(db) # returns nil or submacro db
+        step=Step.new(db,@shary)
+        step['time']=Msg.elps_sec(@record['time'])
+        step['depth']=@depth
+        @record.data << step
+        case db['type']
+        when 'goal'
+          step.skip?
+        when 'check'
+          step.fail?
+        when 'wait'
+          step.timeout?
+        when 'exec'
+          step.exec
+        when 'mcr'
+          step.submcr
+        end
+      end
+
+      def finish(str='complete')
+        @shary[:show_proc].call(str+"\n")
+        @record.finish(str)
+        @shary[:valid_keys].clear
+        @shary[:running].clear
+        @shary[:setstat].call('done')
       end
     end
 

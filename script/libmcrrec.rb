@@ -20,12 +20,12 @@ module CIAX
       end
 
       def start
-        @shary[:msh]['stat']='run'
+        sets('run')
         @shary[:show_proc].call(self)
       end
 
       def add_step(db) # returns nil or submacro db
-        step=Step.new(db,self['time'],@depth,@shary)
+        step=Step.new(db,self,@depth,@shary)
         @data << step
         case db['type']
         when 'goal'
@@ -65,9 +65,15 @@ module CIAX
         fin('interrupted')
       end
 
+      def sets(str,opt=nil)
+        @shary[:msh]['stat']=str
+        @shary[:msh]['opt']=opt
+        self['stat']=str
+      end
+
       private
       def fin(str)
-        @shary[:msh]['stat']=str
+        sets(str)
         @shary[:show_proc].call(str+"\n")
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
@@ -79,11 +85,12 @@ module CIAX
     end
 
     class Step < Hashx
-      def initialize(db,base,depth,shary)
+      def initialize(db,record,depth,shary)
+        update db
+        @record=record
         @shary=shary
-        self['time']=Msg.elps_sec(base)
+        self['time']=Msg.elps_sec(record['time'])
         self['depth']=depth
-        update(type?(db,Hash))
         @condition=delete('stat')
         extend PrtStep unless $opt['r']
       end
@@ -225,14 +232,11 @@ module CIAX
         vk=@shary[:valid_keys].replace(cmds)
         cdb=@shary[:cmds]
         msg='['+vk.map{|k| cdb[k]}.join('/')+']?'
-        msh=@shary[:msh]
-        msh['stat']='query'
-        msh['opt']=msg
+        @record.sets('query',msg)
         begin
           res=@shary[:query_proc].call(body(msg))
         end until vk.include?(res)
-        msh['opt']=nil
-        msh['stat']='run'
+        @record.sets('run')
         vk.clear
         self['action']=cdb[res].downcase
         @shary[:cmdproc][res].call

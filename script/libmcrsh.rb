@@ -26,57 +26,56 @@ module CIAX
       end
     end
 
-    class Stat < Hashx
+    class List < Hashx
       def initialize
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
+        @total='0'
       end
 
-      def add(num,msh)
-        self[num]=msh
-        self
+      def add_page(item)
+        page="#{@total.succ!}"
+        ms=self[page]=Sv.new(item)
+        ms.pdb['total']="[#{page}/%s]"
+        ms['total']=@total
+        ms
       end
 
       def to_s
         page=[@caption]
-        each{|key,msh|
-          cmd=msh['id']
-          stat=msh['stat']
+        each{|key,ms|
+          cmd=ms['id']
+          stat=ms['stat']
           page << Msg.item("[#{key}]","#{cmd} (#{stat})")
         }
         page.join("\n")
       end
     end
 
-    class List < List
+    class Man < ShList
       attr_reader :total
       def initialize(alist=nil)
-        super()
         if App::List === alist
           @alist=alist
         else
           @alist=App::List.new
         end
+        super({'0'=>'Macro Manager',"1.."=>'Macro Process'})
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-        @total='/'
-        @stat=Stat.new
-        @mobj=ExtCmd.new(mdb,@alist){|item| add_page(Sv.new(item))}
-        @swm=@mobj['lo'].add_group('swm',"Switching Macro")
-        add_page(Exe.new('mcr',mdb['id']).ext_shell(@stat),'Macro Manager')
-        @swm.cmdlist["1.."]='Other Macro Process'
+        @stat=List.new
+        @mobj=ExtCmd.new(mdb,@alist){|item|
+          mex=@stat.add_page(item)
+          page=@stat.size.to_s
+          self[page]=mex
+          @swsgrp.add_item(page)
+          initexe(mex)
+        }
+        man=self['0']=Exe.new('mcr',mdb['id']).ext_shell(@stat)
+        initexe(man)
       end
 
-      # item includes arbitrary mcr command
-      # Sv generated and added to list in yield part as mcr command is invoked
-      def add_page(msh,title=nil)
-        page="#{@total.succ!}"
-        self[page]=msh
-        @swm.add_item(page,title).share[:def_proc]=proc{throw(:sw_site,page)}
-        msh.cobj['sv']['ext']=@mobj['sv']['ext']
-        msh.cobj['lo']['swm']=@swm
-        msh.pdb['total']="[#{page}/%s]"
-        msh['total']=@total
-        @stat.add(page,msh) if page > "0"
-        nil
+      def initexe(mex)
+        mex.cobj['sv']['ext']=@mobj['sv']['ext']
+        super
       end
     end
 

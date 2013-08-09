@@ -6,7 +6,7 @@ require "libhexsh"
 
 module CIAX
   module Ins
-    class Layer < Layer
+    class Layer < ShLayer
       def initialize
         super
         fl=add('frm',Frm::List.new)

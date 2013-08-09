@@ -4,7 +4,6 @@ require "socket"
 require "readline"
 require "libextcmd"
 require "libupdate"
-require "libsh"
 
 # Provide Server,Client
 # Integrate Command,Status
@@ -149,44 +148,17 @@ module CIAX
     end
   end
 
-  class List < Hashx
-    attr_writer :swlgrp
+  class ExeList < Hashx
+    # shdom: Domain for Shared Command Groups
     def initialize
       $opt||=GetOpts.new
-    end
-
-    def exe(args)
-      self[args.shift].exe(args)
-    rescue InvalidID
-      $opt.usage('(opt) [id] [cmd] [par....]')
-    end
-
-    def shell(current)
-      true while current=catch(:sw_site){ self[current].shell }
-    rescue InvalidID
-      $opt.usage('(opt) [id]')
-    end
-  end
-
-  class DevList < List
-    # shdom: Domain for Shared Command Groups
-    def initialize(list)
-      type?(list,CmdList)
-      super()
-      @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
-      @swsgrp.update_items(list).share[:def_proc]=proc{|item|
-        throw(:sw_site,item.id)
-      }
     end
 
     def [](key)
       if key?(key)
         super
       else
-        sh=self[key]=newsh(key)
-        sh.cobj['lo']['sws']=@swsgrp
-        sh.cobj['lo']['swl']=@swlgrp if @swlgrp
-        sh
+        self[key]=initexe(newexe(key))
       end
     end
 
@@ -201,7 +173,11 @@ module CIAX
     end
 
     private
-    def newsh(id)
+    def newexe(id)
+    end
+
+    def initexe(exe)
+      exe
     end
   end
 end

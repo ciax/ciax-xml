@@ -50,7 +50,7 @@ module CIAX
       end
     end
 
-    class List < DevList
+    class List < ShList
       def initialize(al=nil)
         if App::List === al
           @al=al
@@ -61,7 +61,7 @@ module CIAX
         end
       end
 
-      def newsh(id)
+      def newexe(id)
         Hex.new(@al[id])
       end
     end

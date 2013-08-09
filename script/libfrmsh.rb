@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libexe'
+require 'libsh'
 require 'libfield'
 require "libfrmrsp"
 require "libfrmcmd"
@@ -93,13 +93,13 @@ module CIAX
       end
     end
 
-    class List < DevList
+    class List < ShList
       def initialize
         @ldb=Loc::Db.new
         super(@ldb.list)
       end
 
-      def newsh(id)
+      def newexe(id)
         Frm.new(@ldb.set(id)[:frm])
       end
     end

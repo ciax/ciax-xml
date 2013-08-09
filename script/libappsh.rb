@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libexe"
+require "libsh"
 require "libstatus"
 require "libwatch"
 require 'libfrmsh'
@@ -183,7 +183,7 @@ module CIAX
       end
     end
 
-    class List < DevList
+    class List < ShList
       def initialize(fl=nil)
         @ldb=Loc::Db.new
         if Frm::List === fl
@@ -198,7 +198,7 @@ module CIAX
         end
       end
 
-      def newsh(id)
+      def newexe(id)
         App.new(@ldb.set(id)[:app],@fl[id])
       end
     end

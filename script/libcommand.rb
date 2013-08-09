@@ -163,6 +163,7 @@ module CIAX
     end
 
     def update_items(labels)
+      type?(labels,Hash)
       labels.each{|id,title|
         @cmdlist[id]=title
         self[id]=Item.new(id,@shary)

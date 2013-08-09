@@ -4,6 +4,7 @@ require "socket"
 require "readline"
 require "libextcmd"
 require "libupdate"
+require "libexe"
 
 # Provide Shell related modules
 # Add Shell Command (by Shell extention)
@@ -68,14 +69,38 @@ module CIAX
     end
   end
 
-  class Layer < Hashx
+  class ShList < ExeList
+    attr_writer :swlgrp
+    def initialize(list)
+      type?(list,Hash)
+      super()
+      @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
+      @swsgrp.update_items(list)
+      @swsgrp.share[:def_proc]=proc{|item| throw(:sw_site,item.id)}
+    end
+
+    def shell(current)
+      true while current=catch(:sw_site){ self[current].shell }
+    rescue InvalidID
+      $opt.usage('(opt) [id]')
+    end
+
+    private
+    def initexe(exe)
+      exe.cobj['lo']['sws']=@swsgrp
+      exe.cobj['lo']['swl']=@swlgrp if @swlgrp
+      exe
+    end
+  end
+
+  class ShLayer < Hashx
     def initialize
       @swlgrp=Group.new({'caption'=>"Switch Layer",'color'=>5,'column'=>5})
       @swlgrp.share[:def_proc]=proc{|item| throw(:sw_layer,item.id) }
     end
 
     def add(layer,shlist)
-      Msg.type?(shlist,List)
+      Msg.type?(shlist,ShList)
       @swlgrp.add_item(layer,layer.capitalize+" mode")
       shlist.swlgrp=@swlgrp
       self[layer]=shlist

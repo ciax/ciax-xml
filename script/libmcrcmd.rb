@@ -9,7 +9,11 @@ module CIAX
     class ExtCmd < Command
       def initialize(mdb,al,&def_proc) # Block if for SubMacro
         super()
-        svs=self['sv'].share
+        svs=initshare(self['sv'].share,al,def_proc)
+        self['sv']['ext']=ExtGrp.new(mdb,[svs])
+      end
+
+      def initshare(svs,al,def_proc)
         svs[:def_proc]=def_proc if def_proc
         svs[:submcr_proc]=proc{|args| setcmd(args) }
         svs[:stat_proc]=proc{|site| al[site].stat}
@@ -35,7 +39,7 @@ module CIAX
           (svs[:cmdlist]||={})[k]=str
           (svs[:cmdproc]||={})[k]=v
         }
-        self['sv']['ext']=ExtGrp.new(mdb,[svs])
+        svs
       end
     end
 

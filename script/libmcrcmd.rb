@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmcrdb"
-require "libmcrrec"
+require "librecord"
 require "libcommand"
 require "libinssh"
 

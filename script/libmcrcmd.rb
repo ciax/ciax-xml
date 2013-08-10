@@ -62,11 +62,10 @@ module CIAX
         @share[:valid_keys]=valid_keys.clear
         @running=[]
         @record=Record.new
-        @record['cid']=self[:cid]
-        @record['label']=self[:label]
-        @share[:setstat]=proc{|str,opt|
+        [:cid,:label].each{|k| @record[k.to_s]=self[k]} # Fixed Value
+        @share[:setstat]=proc{|str,opt| # Variable Value
           @record['stat']=msh['stat']=str
-          @record['option']=msh['opt']=opt
+          @record['option']=msh['option']=opt
           @record.save
         }
         self

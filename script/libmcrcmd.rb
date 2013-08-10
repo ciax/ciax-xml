@@ -95,19 +95,36 @@ module CIAX
         select.each{|e1|
           begin
             step=@record.add_step(e1,@shary)
+            show step.title
             case e1['type']
             when 'goal'
-              step.skip?
+              res=step.skip?
+              show step.result
+              raise(Skip) if res
             when 'check'
-              step.fail?
+              res=step.fail?
+              show step.result
+              raise(Interlock) if res && step.done?
             when 'wait'
-              step.timeout?
-            when 'exec'
-              @running << step.exec{|site,cmd|
-                @shary[:exec_proc].call(site,cmd)
+              res=step.timeout?{
+                show '.'
+                @shary[:setstat].call('wait')
               }
+              @shary[:setstat].call('run')
+              show step.result
+              raise(Interlock) if res && step.done?
+            when 'exec'
+              @running << e1['site']
+              @shary[:exec_proc].call(e1['site'],e1['cmd']) if step.exec?
+              show step.result
             when 'mcr'
-              step.submcr{|sel| macro(sel)}
+              show step.result
+              item=@shary[:submcr_proc].call(e1['cmd'])
+              if step.async?
+                @shary[:def_proc].call(item)
+              else
+                macro(item.select)
+              end
             end
           rescue Retry
             retry
@@ -125,6 +142,11 @@ module CIAX
         @record.finish(str)
         @shary[:valid_keys].clear
         @shary[:setstat].call('done')
+      end
+
+      private
+      def show(msg)
+        print msg if Msg.fg?
       end
     end
 

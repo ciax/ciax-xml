@@ -42,71 +42,40 @@ module CIAX
       end
 
       # Execution section
-      def submcr
-        show to_s
-        item=@shary[:submcr_proc].call(self['cmd'])
-        if /true|1/ === self['async']
-          @shary[:def_proc].call(item)
-          self['result']='forked'
-        else
-          yield item.select
-          self['result']='done'
-        end
-        self
-      end
-
-      def exec
-        show title
-        #array of site for interrupt
-        if exec?
-          yield(self['site'],self['cmd'])
-          self['result']='done'
-        else
-          self['result']='skip'
-        end
-        show result
-        self['site']
+      def async?
+        res=(/true|1/ === self['async'])
+        self['result']= res ? 'forked' : 'done'
+        res
       end
 
       # Conditional judgment section
       def timeout?
-        show title
         self['max']=self['retry']
         max = dryrun? ? Dryrun : self['max']
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
           break if ok?('pass','wait')
-          @shary[:setstat].call('wait')
           refresh
           sleep 1
-          show '.'
+          yield
         }
-        @shary[:setstat].call('run')
         self['result']= res ? 'timeout' : 'pass'
-        show result
-        raise(Interlock) if res && done?
+        res
       end
 
       def skip?
-        show title
-        res=ok?('skip','pass') && !dryrun?
-        show result
-        raise(Skip) if res
+        ok?('skip','pass') && !dryrun?
       end
 
       def fail?
-        show title
-        res=! ok?('pass','failed')
-        show result
-        raise(Interlock) if res && done?
+        ! ok?('pass','failed')
       end
 
-      private
       # Interactive section
       def exec?
-        return false if dryrun?
-        return true if $opt['n']
-        query(['e','s'])
+        res= !dryrun? && ($opt['n'] || query(['e','s']))
+        self['result']= res ? 'exec' : 'skip'
+        res
       end
 
       def done?
@@ -114,17 +83,15 @@ module CIAX
         query(['d','f','r'])
       end
 
-      def dryrun?
-        ! ['e','s','t'].any?{|i| $opt[i]} && self['action']='dryrun'
-      end
-
       # Display section
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
+
+      private
       def body(msg); msg; end
-      def show(msg=self) # Print Progress Proc
-        @shary[:show_proc].call(msg)
-        self
+
+      def dryrun?
+        ! ['e','s','t'].any?{|i| $opt[i]} && self['action']='dryrun'
       end
 
       # Sub methods

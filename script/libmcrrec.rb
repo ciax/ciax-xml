@@ -7,12 +7,21 @@ module CIAX
   module Mcr
     Dryrun=1
     class Record < Datax
+      attr_accessor :depth
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize
         super('record',[],'steps')
         self['id']=self['time'].to_i.to_s
         extend PrtRecord unless $opt['r']
+        @depth=0
         ext_file(self['id'])
+      end
+
+      def add_step(e1,shary)
+        step=Step.new(e1,@depth,shary)
+        step['time']=Msg.elps_sec(self['time'])
+        @data << step
+        step
       end
 
       def finish(str)
@@ -23,8 +32,9 @@ module CIAX
     end
 
     class Step < Hashx
-      def initialize(db,shary)
+      def initialize(db,depth,shary)
         update db
+        self['depth']=depth
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @shary=shary
         @condition=delete('stat')

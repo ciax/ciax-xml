@@ -65,7 +65,6 @@ module CIAX
           @record['option']=msh['opt']=opt
           @record.save
         }
-        @depth=0
         self
       end
 
@@ -89,13 +88,10 @@ module CIAX
 
       private
       def macro(select)
-        @depth+=1
+        @record.depth+=1
         select.each{|e1|
           begin
-            step=Step.new(e1,@shary)
-            step['time']=Msg.elps_sec(@record['time'])
-            step['depth']=@depth
-            @record.data << step
+            step=@record.add_step(e1,@shary)
             case e1['type']
             when 'goal'
               step.skip?
@@ -116,7 +112,7 @@ module CIAX
             return
           end
         }
-        @depth-=1
+        @record.depth-=1
         self
       end
 

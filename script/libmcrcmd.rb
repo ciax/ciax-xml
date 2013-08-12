@@ -95,30 +95,30 @@ module CIAX
         select.each{|e1|
           begin
             step=@record.add_step(e1,@shary)
-            show step.title
+            print step.title if Msg.fg?
             case e1['type']
             when 'goal'
               res=step.skip?
-              show step.result
+              print step.result if Msg.fg?
               raise(Skip) if res
             when 'check'
               res=step.fail?
-              show step.result
+              print step.result if Msg.fg?
               raise(Interlock) if step.drop?(res)
             when 'wait'
               res=step.timeout?{
-                show '.'
+                print '.' if Msg.fg?
                 @shary[:setstat].call('wait')
               }
               @shary[:setstat].call('run')
-              show step.result
+              print step.result if Msg.fg?
               raise(Interlock) if step.drop?(res)
             when 'exec'
               @running << e1['site']
               @shary[:exec_proc].call(e1['site'],e1['cmd']) if step.exec?
-              show step.result
+              print step.result if Msg.fg?
             when 'mcr'
-              show step.result
+              print step.result if Msg.fg?
               item=@shary[:submcr_proc].call(e1['cmd'])
               if step.async?
                 @shary[:def_proc].call(item)
@@ -142,11 +142,6 @@ module CIAX
         @record.finish(str)
         @shary[:valid_keys].clear
         @shary[:setstat].call('done')
-      end
-
-      private
-      def show(msg)
-        print msg if Msg.fg?
       end
     end
 

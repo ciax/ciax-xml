@@ -30,7 +30,7 @@ module CIAX
         {
           "Exec Command"=>proc{true},
           "Skip Execution"=>proc{false},
-          "Done Macro"=>proc{true},
+          "Drop Macro"=>proc{true},
           "Force Proceed"=>proc{false},
           "Retry Checking"=>proc{raise(Retry)}
         }.each{|str,v|
@@ -104,7 +104,7 @@ module CIAX
             when 'check'
               res=step.fail?
               show step.result
-              raise(Interlock) if res && step.done?
+              raise(Interlock) if step.drop?(res)
             when 'wait'
               res=step.timeout?{
                 show '.'
@@ -112,7 +112,7 @@ module CIAX
               }
               @shary[:setstat].call('run')
               show step.result
-              raise(Interlock) if res && step.done?
+              raise(Interlock) if step.drop?(res)
             when 'exec'
               @running << e1['site']
               @shary[:exec_proc].call(e1['site'],e1['cmd']) if step.exec?

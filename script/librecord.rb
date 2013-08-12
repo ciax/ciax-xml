@@ -78,9 +78,9 @@ module CIAX
         res
       end
 
-      def done?
-        return true if $opt['n']
-        query(['d','f','r'])
+      def drop?(res)
+        return res if $opt['n']
+        res && query(['d','f','r'])
       end
 
       # Display section

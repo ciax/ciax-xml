@@ -69,12 +69,18 @@ module CIAX
       dom.setcmd(args)
     end
 
+    def int_proc=(p)
+      self['sv']['hid']['interrupt'].share[:def_proc]=type?(p,Proc)
+    end
+
     def list
       values.map{|dom| dom.list}.grep(/./).join("\n")
     end
 
-    def int_proc=(p)
-      self['sv']['hid']['interrupt'].share[:def_proc]=type?(p,Proc)
+    def valid_keys
+      values.map{|dom|
+        dom.valid_keys
+      }.flatten
     end
 
     def domain_with_item(id)
@@ -122,6 +128,12 @@ module CIAX
 
     def list
       @grplist.map{|grp| grp.list}.grep(/./).join("\n")
+    end
+
+    def valid_keys
+      values.map{|grp|
+        grp.valid_keys
+      }.flatten
     end
 
     def group_with_item(id)

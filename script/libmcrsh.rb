@@ -61,17 +61,18 @@ module CIAX
         else
           @alist=App::List.new
         end
-        super({'0'=>'Macro Manager',"1.."=>'Macro Process'})
+        super({})
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
         @stat=Stat.new{|page,ms|
           self[page]=initexe(ms)
-          @swsgrp.add_item(page)
+          @swsgrp.add_item(page,ms['stat'])
         }
         @mobj=ExtCmd.new(mdb,@alist){|item| @stat.add_page(Sv.new(item))}
         # Init Macro Manager Page
         man=self['0']=Exe.new('mcr',mdb['id']).ext_shell(@stat)
         man['stat']='Macro Manager'
         @stat.add_page(man)
+        @swsgrp.add_dummy("1..",'Macro Process')
       end
 
       def initexe(mex)

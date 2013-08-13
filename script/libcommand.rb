@@ -109,14 +109,9 @@ module CIAX
       super
     end
 
-    def add_group(gid,caption,column=2)
-      attr={'caption' => caption,'column' => column,'color' => @color}
+    def add_group(gid,caption,column=2,color=@color)
+      attr={'caption' => caption,'column' => column,'color' => color}
       self[gid]=Group.new(attr,[@share])
-    end
-
-    def add_dummy(gid,caption,column=2)
-      attr={'caption' => caption,'column' => column,'color' => 1}
-      self[gid]=Group.new(attr)
     end
 
     def setcmd(args)
@@ -180,6 +175,11 @@ module CIAX
         @cmdlist[id]=title
         self[id]=Item.new(id,@shary)
       }
+      self
+    end
+
+    def add_dummy(id,title)
+      @cmdlist.dummy(id,title) #never put into valid_key
       self
     end
   end

@@ -22,9 +22,9 @@ module CIAX
       @output=output
       @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
       # Local(Long Jump) Commands (local handling commands on Client)
-      shg=@cobj['lo'].add_dummy('sh',"Shell Command")
-      shg.add_item('^D,q',"Quit")
-      shg.add_item('^C',"Interrupt")
+      shg=@cobj['lo'].add_group('sh',"Shell Command",2,1)
+      shg.add_dummy('^D,q',"Quit")
+      shg.add_dummy('^C',"Interrupt")
       self
     end
 

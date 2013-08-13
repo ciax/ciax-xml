@@ -82,6 +82,7 @@ module CIAX
     def initialize(attr,select=[])
       Msg.type?(attr,Hash)
       @select=Msg.type?(select,Array)
+      @dummy=[]
       caption=attr["caption"]
       color=(attr["color"]||6).to_i
       @col=(attr["column"]||1).to_i
@@ -92,6 +93,11 @@ module CIAX
     def []=(k,v)
       @select << k
       super
+    end
+
+    def dummy(k,v)
+      @dummy << k
+      store(k,v)
     end
 
     def update(h)
@@ -113,7 +119,7 @@ module CIAX
 
     def to_s
       page=[@caption]
-      (@select & keys).each_slice(@col){|a|
+      ((@select+@dummy) & keys).each_slice(@col){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact

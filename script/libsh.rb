@@ -22,9 +22,6 @@ module CIAX
       @output=output
       @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
       # Local(Long Jump) Commands (local handling commands on Client)
-      Readline.completion_proc=proc{|word|
-        @cobj.valid_keys.grep(/^#{word}/)
-      }
       shg=@cobj['lo'].add_dummy('sh',"Shell Command")
       shg.add_item('^D,q',"Quit")
       shg.add_item('^C',"Interrupt")
@@ -52,6 +49,9 @@ module CIAX
     # mode gives special break (loop returns mode)
     def shell
       verbose(self.class,"Init/Shell(#{self['id']})",2)
+      Readline.completion_proc=proc{|word|
+        @cobj.valid_keys.grep(/^#{word}/)
+      }
       begin
         while line=Readline.readline(to_s,true)
           break if /^q/ === line

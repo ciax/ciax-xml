@@ -28,16 +28,14 @@ module CIAX
           end
         }
         {
-          "Exec Command"=>proc{true},
-          "Skip Execution"=>proc{false},
-          "Drop Macro"=>proc{true},
-          "Force Proceed"=>proc{false},
-          "Retry Checking"=>proc{raise(Retry)}
-        }.each{|str,v|
-          k=str[0].downcase
-          (svs[:cmds]||={})[k]=str.split(' ').first
-          (svs[:cmdlist]||={})[k]=str
-          (svs[:cmdproc]||={})[k]=v
+          "exec"=>["Command",proc{true}],
+          "skip"=>["Execution",proc{false}],
+          "drop"=>[" Macro",proc{true}],
+          "force"=>["Proceed",proc{false}],
+          "retry"=>["Checking",proc{raise(Retry)}]
+        }.each{|s,a|
+          (svs[:cmdlist]||={})[s]=s.capitalize+" "+a[0]
+          (svs[:cmdproc]||={})[s]=a[1]
         }
         svs
       end
@@ -142,25 +140,24 @@ module CIAX
 
       def drop?(res)
         return res if $opt['n']
-        res && query(['d','f','r'])
+        res && query(['drop','force','retry'])
       end
 
       def exec?(res)
         return res if $opt['n']
-        res && query(['e','s'])
+        res && query(['exec','skip'])
       end
 
       def query(cmds)
         vk=@shary[:valid_keys].replace(cmds)
-        cdb=@shary[:cmds]
-        msg='['+vk.map{|k| cdb[k]}.join('/')+']?'
+        msg='['+vk.map{|s| s.capitalize}.join('/')+']?'
         @shary[:setstat].call('query',msg)
         begin
           res=@shary[:query_proc].call(@step.body(msg))
         end until vk.include?(res)
         @shary[:setstat].call('run')
         vk.clear
-        @step['action']=cdb[res].downcase
+        @step['action']=res
         @shary[:cmdproc][res].call
       end
     end

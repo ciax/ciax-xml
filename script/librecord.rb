@@ -5,7 +5,7 @@ require "libmcrprt"
 
 module CIAX
   module Mcr
-    Dryrun=1
+    Dryrun=100
     class Record < Datax
       attr_accessor :depth
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
@@ -38,6 +38,7 @@ module CIAX
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @shary=shary
         @condition=delete('stat')
+        @break=nil
         extend PrtStep unless $opt['r']
       end
 
@@ -54,27 +55,33 @@ module CIAX
         max = dryrun? ? Dryrun : self['max']
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
-          break if ok?('pass','wait')
+          break if ok?
           refresh
           sleep 1
           yield
         }
         self['result']= res ? 'timeout' : 'pass'
+        print result if Msg.fg?
         res
       end
 
       def skip?
-        ok?('skip','pass') && !dryrun?
+        res=ok?('skip','pass') && !dryrun?
+        print result if Msg.fg?
+        res
       end
 
       def fail?
-        ! ok?('pass','failed')
+        res=! ok?('pass','failed')
+        print result if Msg.fg?
+        res
       end
 
       # Interactive section
       def exec?
         res= !dryrun? && ($opt['n'] || query(['e','s']))
         self['result']= res ? 'exec' : 'skip'
+        print result if Msg.fg?
         res
       end
 

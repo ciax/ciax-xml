@@ -81,7 +81,7 @@ module CIAX
         finish('error')
         self
       rescue Interrupt
-        warn("\nInterrupt Issued to #{@shary[:running]}]")
+        warn("\nInterrupt Issued to #{@running}]")
         @running.each{|site|
           @shary[:exec_proc].call(site,['interrupt'])
         }
@@ -99,24 +99,19 @@ module CIAX
             case e1['type']
             when 'goal'
               res=step.skip?
-              print step.result if Msg.fg?
               raise(Skip) if res
             when 'check'
               res=step.fail?
-              print step.result if Msg.fg?
               raise(Interlock) if step.drop?(res)
             when 'wait'
               res=step.timeout?{
                 print '.' if Msg.fg?
                 @shary[:setstat].call('wait')
               }
-              @shary[:setstat].call('run')
-              print step.result if Msg.fg?
               raise(Interlock) if step.drop?(res)
             when 'exec'
               @running << e1['site']
               @shary[:exec_proc].call(e1['site'],e1['cmd']) if step.exec?
-              print step.result if Msg.fg?
             when 'mcr'
               print step.result if Msg.fg?
               item=@shary[:submcr_proc].call(e1['cmd'])

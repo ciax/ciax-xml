@@ -5,7 +5,7 @@ require "libmcrprt"
 
 module CIAX
   module Mcr
-    Dryrun=100
+    Dryrun=1
     class Record < Datax
       attr_accessor :depth
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
@@ -42,15 +42,9 @@ module CIAX
         extend PrtStep unless $opt['r']
       end
 
-      # Execution section
-      def async?
-        res=(/true|1/ === self['async'])
-        self['result']= res ? 'forked' : 'done'
-        res
-      end
-
       # Conditional judgment section
       def timeout?
+        print title if Msg.fg?
         self['max']=self['retry']
         max = dryrun? ? Dryrun : self['max']
         res=max.to_i.times{|n| #gives number or nil(if break)
@@ -66,12 +60,14 @@ module CIAX
       end
 
       def skip?
+        print title if Msg.fg?
         res=ok?('skip','pass') && !dryrun?
         print result if Msg.fg?
         res
       end
 
       def fail?
+        print title if Msg.fg?
         res=! ok?('pass','failed')
         print result if Msg.fg?
         res
@@ -79,24 +75,26 @@ module CIAX
 
       # Interactive section
       def exec?
-        res= !dryrun? && ($opt['n'] || query(['e','s']))
+        print title if Msg.fg?
+        res= !dryrun?
         self['result']= res ? 'exec' : 'skip'
         print result if Msg.fg?
         res
       end
 
-      def drop?(res)
-        return res if $opt['n']
-        res && query(['d','f','r'])
+      # Execution section
+      def async?
+        res=(/true|1/ === self['async'])
+        self['result']= res ? 'forked' : 'done'
+        res
       end
 
       # Display section
       def title ; self['label']||self['cmd']; end
       def result ; "\n"+to_s; end
-
-      private
       def body(msg); msg; end
 
+      private
       def dryrun?
         ! ['e','s','t'].any?{|i| $opt[i]} && self['action']='dryrun'
       end
@@ -150,20 +148,6 @@ module CIAX
         else
           (cmp == act) ^ i
         end
-      end
-
-      def query(cmds)
-        vk=@shary[:valid_keys].replace(cmds)
-        cdb=@shary[:cmds]
-        msg='['+vk.map{|k| cdb[k]}.join('/')+']?'
-        @shary[:setstat].call('query',msg)
-        begin
-          res=@shary[:query_proc].call(body(msg))
-        end until vk.include?(res)
-        @shary[:setstat].call('run')
-        vk.clear
-        self['action']=cdb[res].downcase
-        @shary[:cmdproc][res].call
       end
     end
 

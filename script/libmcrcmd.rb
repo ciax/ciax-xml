@@ -94,28 +94,27 @@ module CIAX
         @record.depth+=1
         select.each{|e1|
           begin
-            step=@record.add_step(e1,@shary)
-            print step.title if Msg.fg?
+            @step=@record.add_step(e1,@shary)
             case e1['type']
             when 'goal'
-              res=step.skip?
-              raise(Skip) if res
+              raise(Skip) if @step.skip?
             when 'check'
-              res=step.fail?
-              raise(Interlock) if step.drop?(res)
+              res=@step.fail?
+              raise(Interlock) if drop?(res)
             when 'wait'
-              res=step.timeout?{
+              res=@step.timeout?{
                 print '.' if Msg.fg?
                 @shary[:setstat].call('wait')
               }
-              raise(Interlock) if step.drop?(res)
+              raise(Interlock) if drop?(res)
             when 'exec'
               @running << e1['site']
-              @shary[:exec_proc].call(e1['site'],e1['cmd']) if step.exec?
+              res=@step.exec?
+              @shary[:exec_proc].call(e1['site'],e1['cmd']) if exec?(res)
             when 'mcr'
-              print step.result if Msg.fg?
+              print @step.result if Msg.fg?
               item=@shary[:submcr_proc].call(e1['cmd'])
-              if step.async?
+              if @step.async?
                 @shary[:def_proc].call(item)
               else
                 macro(item.select)
@@ -137,6 +136,32 @@ module CIAX
         @record.finish(str)
         @shary[:valid_keys].clear
         @shary[:setstat].call('done')
+      end
+
+      # Interactive section
+
+      def drop?(res)
+        return res if $opt['n']
+        res && query(['d','f','r'])
+      end
+
+      def exec?(res)
+        return res if $opt['n']
+        res && query(['e','s'])
+      end
+
+      def query(cmds)
+        vk=@shary[:valid_keys].replace(cmds)
+        cdb=@shary[:cmds]
+        msg='['+vk.map{|k| cdb[k]}.join('/')+']?'
+        @shary[:setstat].call('query',msg)
+        begin
+          res=@shary[:query_proc].call(@step.body(msg))
+        end until vk.include?(res)
+        @shary[:setstat].call('run')
+        vk.clear
+        @step['action']=cdb[res].downcase
+        @shary[:cmdproc][res].call
       end
     end
 

@@ -77,7 +77,8 @@ module CIAX
     end
   end
 
-  # Hash of title
+  # Sortable Hash of title
+  # Used by Command and XmlDoc
   class CmdList < Hash
     def initialize(attr,select=[])
       Msg.type?(attr,Hash)

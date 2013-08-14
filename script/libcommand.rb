@@ -100,7 +100,7 @@ module CIAX
     def initialize(color=2)
       @share=Share.new
       @share[:def_proc]=proc{}
-      @grplist=[]
+      @grplist=[] # For ordering
       @color=color
       @ver_color=2
     end

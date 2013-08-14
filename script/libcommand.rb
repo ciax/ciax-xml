@@ -35,18 +35,23 @@ require 'libupdate'
 # Keep current command and parameters
 
 module CIAX
-  # Array of Hash: each Hash is associated with Domain,Group,Item;
+  # Array of Share(Hash): each Hash is associated with Domain,Group,Item;
+  # Usage:Setting/ provide @share(Share) and add to ShareAry at each Level, value setting should be done to the @share;
+  # Usage:Getting/ simply get form ShareAry, not from @share;
+  class Share < Hash
+    private :[]
+  end
+
   class ShareAry < Array
+    private :[]=
+
     def [](id)
       each{|lv|
-        return lv[id] if lv.key?(id)
+        return lv.fetch(id) if lv.key?(id)
       }
       Msg.warn("No such key in ShareAry [#{id}]")
       nil
     end
-
-    private
-    def []=(id,num);end
   end
 
   class Command < Hashx
@@ -93,7 +98,8 @@ module CIAX
   class Domain < Hashx
     attr_reader :share
     def initialize(color=2)
-      @share={:def_proc => proc{}}
+      @share=Share.new
+      @share[:def_proc]=proc{}
       @grplist=[]
       @color=color
       @ver_color=2
@@ -145,7 +151,7 @@ module CIAX
       @attr=type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=CmdList.new(@attr,@valid_keys)
-      @share={}
+      @share=Share.new
       @shary=ShareAry.new([@share]+type?(upper,Array))
       @ver_color=3
     end
@@ -192,7 +198,7 @@ module CIAX
       @id=id
       @par=[]
       @args=[]
-      @share={}
+      @share=Share.new
       @shary=ShareAry.new([@share]+type?(upper,Array))
       @ver_color=5
     end

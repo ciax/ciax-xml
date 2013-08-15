@@ -49,20 +49,16 @@ module CIAX
     class ExtItem < ExtItem
       attr_reader :record
       def new_rec(msh={},valid_keys=[])
+        @msh=msh
         @share[:valid_keys]=valid_keys.clear
         @running=[]
         @record=Record.new
         [:cid,:label].each{|k| @record[k.to_s]=self[k]} # Fixed Value
-        @share[:setstat]=proc{|str,opt| # Variable Value
-          @record['stat']=msh['stat']=str
-          @record['option']=msh['option']=opt
-          @record.save
-        }
         self
       end
 
       def start # separated for sub thread
-        @shary[:setstat].call('run')
+        setstat('run')
         show @record
         macro(@select)
         finish
@@ -94,7 +90,7 @@ module CIAX
             when 'wait'
               res=@step.timeout?{
                 print '.' if Msg.fg?
-                @shary[:setstat].call('wait')
+                setstat('wait')
               }
               raise(Interlock) if drop?(res)
             when 'exec'
@@ -125,7 +121,7 @@ module CIAX
         show str+"\n"
         @record.finish(str)
         @shary[:valid_keys].clear
-        @shary[:setstat].call('done')
+        setstat('done')
       end
 
       # Interactive section
@@ -142,7 +138,7 @@ module CIAX
       def query(cmds)
         vk=@shary[:valid_keys].replace(cmds)
         msg='['+vk.map{|s| s.capitalize}.join('/')+']?'
-        @shary[:setstat].call('query',msg)
+        setstat('query',msg)
         begin
           if Msg.fg?
             Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)}
@@ -152,10 +148,17 @@ module CIAX
             res=Thread.current[:query]
           end
         end until vk.include?(res)
-        @shary[:setstat].call('run')
+        setstat('run')
         vk.clear
         @step['action']=res
         @shary[:cmdproc][res].call
+      end
+
+      # Set stat section
+      def setstat(str,opt=nil) # Variable Value
+        @record['stat']=@msh['stat']=str
+        @record['option']=@msh['option']=opt
+        @record.save
       end
 
       # Print section

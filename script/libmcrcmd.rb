@@ -35,8 +35,8 @@ module CIAX
           "force"=>["Proceed",proc{false}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|s,a|
-          (cv[:cmdlist]||={})[s]=s.capitalize+" "+a[0]
-          (cv[:cmdproc]||={})[s]=a[1]
+          cv[:cmdlist][s]=s.capitalize+" "+a[0]
+          cv[:cmdproc][s]=a[1]
         }
         svs.update(cv)
       end

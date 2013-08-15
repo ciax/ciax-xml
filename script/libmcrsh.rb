@@ -61,7 +61,7 @@ module CIAX
         else
           @alist=App::List.new
         end
-        super({})
+        super()
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
         @stat=Stat.new{|page,ms|
           self[page]=initexe(ms)

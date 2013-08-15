@@ -185,16 +185,17 @@ module CIAX
 
     class List < ShList
       def initialize(fl=nil)
+        super()
         @ldb=Loc::Db.new
         if Frm::List === fl
           @fl=fl
-          super(@ldb.list)
+          update_items(@ldb.list)
         elsif $opt['e'] || $opt['s']
           @fl=Frm::List.new
-          super(@ldb.list)
+          update_items(@ldb.list)
         else
           @fl={}
-          super(@ldb.list)
+          update_items(@ldb.list)
         end
       end
 

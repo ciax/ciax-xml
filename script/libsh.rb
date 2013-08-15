@@ -71,12 +71,16 @@ module CIAX
 
   class ShList < ExeList
     attr_writer :swlgrp
-    def initialize(list)
-      type?(list,Hash)
+    def initialize
       super()
       @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
-      @swsgrp.update_items(list)
       @swsgrp.share[:def_proc]=proc{|item| throw(:sw_site,item.id)}
+    end
+
+    def update_items(list)
+      type?(list,Hash)
+      @swsgrp.update_items(list)
+      self
     end
 
     def shell(current)

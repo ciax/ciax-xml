@@ -52,12 +52,13 @@ module CIAX
 
     class List < ShList
       def initialize(al=nil)
+        super()
         if App::List === al
           @al=al
-          super(Loc::Db.new.list)
+          update_items(Loc::Db.new.list)
         else
           @al=App::List.new
-          super(Loc::Db.new.list)
+          update_items(Loc::Db.new.list)
         end
       end
 

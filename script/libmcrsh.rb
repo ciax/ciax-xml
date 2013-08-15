@@ -3,7 +3,7 @@ require "libmcrcmd"
 
 module CIAX
   module Mcr
-    class Sv < Exe
+    class Sh < Exe
       attr_reader :th
       def initialize(mitem)
         super('mcr',mitem[:cid])
@@ -53,7 +53,7 @@ module CIAX
       end
     end
 
-    class Man < ShList
+    class List < ShList
       attr_reader :total
       def initialize(alist=nil)
         if App::List === alist
@@ -63,21 +63,20 @@ module CIAX
         end
         super()
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
+        @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>2})
+        @swsgrp.share[:def_proc]=proc{|item| throw(:sw_site,item.id)}
         @stat=Stat.new{|page,ms|
-          self[page]=initexe(ms)
           @swsgrp.add_item(page,ms['stat'])
+          self[page]=ms
+          ms.cobj['sv']['ext']=@mobj['sv']['ext']
+          ms.cobj['lo']['sws']=@swsgrp
         }
-        @mobj=ExtCmd.new(mdb,@alist){|item| @stat.add_page(Sv.new(item))}
+        @mobj=ExtCmd.new(mdb,@alist){|item| @stat.add_page(Sh.new(item))}
         # Init Macro Manager Page
-        man=self['0']=Exe.new('mcr',mdb['id']).ext_shell(@stat)
+        man=Exe.new('mcr',mdb['id']).ext_shell(@stat)
         man['stat']='Macro Manager'
         @stat.add_page(man)
         @swsgrp.add_dummy("1..",'Macro Process')
-      end
-
-      def initexe(mex)
-        mex.cobj['sv']['ext']=@mobj['sv']['ext']
-        super
       end
     end
 

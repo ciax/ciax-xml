@@ -18,7 +18,6 @@ module CIAX
         svs[:submcr_proc]=proc{|args| setcmd(args) }
         svs[:stat_proc]=proc{|site| al[site].stat}
         svs[:exec_proc]=proc{|site,args| al[site].exe(args) }
-        svs[:show_proc]=proc{|msg| print msg if Msg.fg?}
         cv={:cmdlist => {},:cmdproc => {}}
         {
           "exec"=>["Command",proc{true}],
@@ -64,7 +63,7 @@ module CIAX
 
       def start # separated for sub thread
         @shary[:setstat].call('run')
-        @shary[:show_proc].call(@record)
+        show @record
         macro(@select)
         finish
         self
@@ -123,14 +122,13 @@ module CIAX
 
       def finish(str='complete')
         @running.clear
-        @shary[:show_proc].call(str+"\n")
+        show str+"\n"
         @record.finish(str)
         @shary[:valid_keys].clear
         @shary[:setstat].call('done')
       end
 
       # Interactive section
-
       def drop?(res)
         return res if $opt['n']
         res && query(['drop','force','retry'])
@@ -158,6 +156,11 @@ module CIAX
         vk.clear
         @step['action']=res
         @shary[:cmdproc][res].call
+      end
+
+      # Print section
+      def show(msg)
+        print msg if Msg.fg?
       end
     end
 

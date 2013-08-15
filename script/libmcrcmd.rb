@@ -19,14 +19,6 @@ module CIAX
         svs[:stat_proc]=proc{|site| al[site].stat}
         svs[:exec_proc]=proc{|site,args| al[site].exe(args) }
         svs[:show_proc]=proc{|msg| print msg if Msg.fg?}
-        svs[:query_proc]=proc{|msg|
-          if Msg.fg?
-            Readline.readline(msg,true)
-          else
-            sleep
-            Thread.current[:query]
-          end
-        }
         cv={:cmdlist => {},:cmdproc => {}}
         {
           "exec"=>["Command",proc{true}],
@@ -154,7 +146,13 @@ module CIAX
         msg='['+vk.map{|s| s.capitalize}.join('/')+']?'
         @shary[:setstat].call('query',msg)
         begin
-          res=@shary[:query_proc].call(@step.body(msg))
+          if Msg.fg?
+            Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)}
+            res=Readline.readline(@step.body(msg),true).rstrip
+          else
+            sleep
+            res=Thread.current[:query]
+          end
         end until vk.include?(res)
         @shary[:setstat].call('run')
         vk.clear

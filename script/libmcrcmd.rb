@@ -121,7 +121,7 @@ module CIAX
         show str+"\n"
         @record.finish(str)
         @shary[:valid_keys].clear
-        setstat('done')
+        setstat(str)
       end
 
       # Interactive section

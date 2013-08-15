@@ -185,7 +185,7 @@ module CIAX
 
     class List < ShList
       def initialize(fl=nil)
-        super()
+        super(){|id| App.new(@ldb.set(id)[:app],@fl[id])}
         @ldb=Loc::Db.new
         if Frm::List === fl
           @fl=fl
@@ -197,10 +197,6 @@ module CIAX
           @fl={}
           update_items(@ldb.list)
         end
-      end
-
-      def newexe(id)
-        App.new(@ldb.set(id)[:app],@fl[id])
       end
     end
   end

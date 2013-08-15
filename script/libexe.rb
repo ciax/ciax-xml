@@ -151,8 +151,9 @@ module CIAX
   class ExeList < Hashx
     attr_reader :init_proc
     # shdom: Domain for Shared Command Groups
-    def initialize
+    def initialize(&new_proc)
       $opt||=GetOpts.new
+      @new_proc=new_proc # For generate Exe (allows nil)
       @init_proc=[] # initialize exe at new key generated
     end
 
@@ -160,7 +161,7 @@ module CIAX
       if key?(key)
         super
       else
-        exe=self[key]=newexe(key)
+        exe=self[key]=@new_proc.call(key)
         @init_proc.each{|p| p.call(exe)}
         exe
       end
@@ -175,8 +176,5 @@ module CIAX
     rescue InvalidID
       $opt.usage('(opt) [id] ....')
     end
-
-    private
-    def newexe(id);end
   end
 end

@@ -52,7 +52,7 @@ module CIAX
 
     class List < ShList
       def initialize(al=nil)
-        super()
+        super(){|id| Hex.new(@al[id])}
         if App::List === al
           @al=al
           update_items(Loc::Db.new.list)
@@ -60,10 +60,6 @@ module CIAX
           @al=App::List.new
           update_items(Loc::Db.new.list)
         end
-      end
-
-      def newexe(id)
-        Hex.new(@al[id])
       end
     end
   end

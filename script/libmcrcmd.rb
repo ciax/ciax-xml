@@ -27,6 +27,7 @@ module CIAX
             Thread.current[:query]
           end
         }
+        cv={:cmdlist => {},:cmdproc => {}}
         {
           "exec"=>["Command",proc{true}],
           "skip"=>["Execution",proc{false}],
@@ -34,10 +35,10 @@ module CIAX
           "force"=>["Proceed",proc{false}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|s,a|
-          (svs[:cmdlist]||={})[s]=s.capitalize+" "+a[0]
-          (svs[:cmdproc]||={})[s]=a[1]
+          (cv[:cmdlist]||={})[s]=s.capitalize+" "+a[0]
+          (cv[:cmdproc]||={})[s]=a[1]
         }
-        svs
+        svs.update(cv)
       end
     end
 

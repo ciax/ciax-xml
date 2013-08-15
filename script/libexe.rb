@@ -149,16 +149,20 @@ module CIAX
   end
 
   class ExeList < Hashx
+    attr_reader :init_proc
     # shdom: Domain for Shared Command Groups
     def initialize
       $opt||=GetOpts.new
+      @init_proc=[] # initialize exe at new key generated
     end
 
     def [](key)
       if key?(key)
         super
       else
-        self[key]=initexe(newexe(key))
+        exe=self[key]=newexe(key)
+        @init_proc.each{|p| p.call(exe)}
+        exe
       end
     end
 
@@ -173,11 +177,6 @@ module CIAX
     end
 
     private
-    def newexe(id)
-    end
-
-    def initexe(exe)
-      exe
-    end
+    def newexe(id);end
   end
 end

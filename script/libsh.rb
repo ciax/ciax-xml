@@ -70,11 +70,13 @@ module CIAX
   end
 
   class ShList < ExeList
-    attr_writer :swlgrp
     def initialize
-      super()
+      super
       @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
       @swsgrp.share[:def_proc]=proc{|item| throw(:sw_site,item.id)}
+      @init_proc << proc{|exe|
+        exe.cobj['lo']['sws']=@swsgrp
+      }
     end
 
     def update_items(list)
@@ -88,13 +90,6 @@ module CIAX
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end
-
-    private
-    def initexe(exe)
-      exe.cobj['lo']['sws']=@swsgrp
-      exe.cobj['lo']['swl']=@swlgrp if @swlgrp
-      exe
-    end
   end
 
   class ShLayer < Hashx
@@ -106,7 +101,9 @@ module CIAX
     def add(layer,shlist)
       Msg.type?(shlist,ShList)
       @swlgrp.add_item(layer,layer.capitalize+" mode")
-      shlist.swlgrp=@swlgrp
+      shlist.init_proc << proc{|exe|
+        exe.cobj['lo']['swl']=@swlgrp
+      }
       self[layer]=shlist
     end
 

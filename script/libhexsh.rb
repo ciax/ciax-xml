@@ -52,7 +52,7 @@ module CIAX
 
     class List < ShList
       def initialize
-        super(){|id| Hex.new(@al[id])}
+        super{|id| Hex.new(@al[id])}
         @al=App::List.new
         update_items(Loc::Db.new.list)
         @layers.update @al.layers

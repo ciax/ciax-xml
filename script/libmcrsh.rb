@@ -55,13 +55,10 @@ module CIAX
 
     class List < ShList
       attr_reader :total
-      def initialize(alist=nil)
-        if App::List === alist
-          @alist=alist
-        else
-          @alist=App::List.new
-        end
-        super()
+      def initialize
+        super
+        @al=App::List.new
+        @layers.update @al.layers
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
         @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>2})
         @swsgrp.share[:def_proc]=proc{|item| throw(:sw_site,item.id)}
@@ -69,14 +66,15 @@ module CIAX
           @swsgrp.add_item(page,ms['stat'])
           self[page]=ms
           ms.cobj['sv']['ext']=@mobj['sv']['ext']
-          ms.cobj['lo']['sws']=@swsgrp
+          @init_proc.each{|p| p.call(ms)}
         }
-        @mobj=ExtCmd.new(mdb,@alist){|item| @stat.add_page(Sh.new(item))}
+        @mobj=ExtCmd.new(mdb,@al){|item| @stat.add_page(Sh.new(item))}
+        @swsgrp.add_dummy("1..",'Macro Process')
+        @layers['mcr']=self
         # Init Macro Manager Page
         man=Exe.new('mcr',mdb['id']).ext_shell(@stat)
         man['stat']='Macro Manager'
         @stat.add_page(man)
-        @swsgrp.add_dummy("1..",'Macro Process')
       end
     end
 

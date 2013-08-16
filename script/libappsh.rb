@@ -185,7 +185,7 @@ module CIAX
 
     class List < ShList
       def initialize
-        super(){|id| App.new(@ldb.set(id)[:app],@fl[id])}
+        super{|id| App.new(@ldb.set(id)[:app],@fl[id])}
         @ldb=Loc::Db.new
         if $opt['e'] || $opt['s']
           @fl=Frm::List.new

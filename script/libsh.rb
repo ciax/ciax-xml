@@ -100,22 +100,14 @@ module CIAX
       @swlgrp.share[:def_proc]=proc{|item| throw(:sw_layer,item.id) }
     end
 
-    def add(layer,shlist)
-      Msg.type?(shlist,ShList)
-      @swlgrp.add_item(layer,layer.capitalize+" mode")
-      shlist.init_proc << proc{|exe|
-        exe.cobj['lo']['swl']=@swlgrp
-      }
-      self[layer]=shlist
-    end
-
-    def update_layers
-      each{|layer,shlist|
+    def update_layers(layers={})
+      layers.each{|layer,shlist|
         @swlgrp.add_item(layer,layer.capitalize+" mode")
         shlist.init_proc << proc{|exe|
           exe.cobj['lo']['swl']=@swlgrp
         }
       }
+      update(layers)
     end
 
     def shell(id)

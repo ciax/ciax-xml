@@ -27,10 +27,9 @@ module CIAX
     end
 
     class Stat < Hashx
-      def initialize(&page_proc)
+      def initialize
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @total='/'
-        @page_proc=page_proc
       end
 
       def add_page(ms)
@@ -38,8 +37,7 @@ module CIAX
         self[page]=ms
         ms.pdb['total']="[#{page}/%s]"
         ms['total']=@total
-        @page_proc.call(page,ms) if @page_proc
-        ms
+        page
       end
 
       def to_s
@@ -56,25 +54,29 @@ module CIAX
     class List < ShList
       attr_reader :total
       def initialize
-        super
-        @al=App::List.new
-        @layers.update @al.layers
         mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
+        super
+        @stat=Stat.new
         @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>2})
         @swsgrp.share[:def_proc]=proc{|item| throw(:sw_site,item.id)}
-        @stat=Stat.new{|page,ms|
-          @swsgrp.add_item(page,ms['stat'])
-          self[page]=ms
-          ms.cobj['sv']['ext']=@mobj['sv']['ext']
-          @init_proc.each{|p| p.call(ms)}
-        }
-        @mobj=ExtCmd.new(mdb,@al){|item| @stat.add_page(Sh.new(item))}
         @swsgrp.add_dummy("1..",'Macro Process')
+        @al=App::List.new
+        @layers.update(@al.layers)
+        @mobj=ExtCmd.new(mdb,@al){|item| add_page(Sh.new(item))}
+        @init_proc << proc{|ms| ms.cobj['sv']['ext']=@mobj['sv']['ext']}
         @layers['mcr']=self
         # Init Macro Manager Page
         man=Exe.new('mcr',mdb['id']).ext_shell(@stat)
         man['stat']='Macro Manager'
-        @stat.add_page(man)
+        add_page(man)
+      end
+
+      def add_page(ms)
+        page=@stat.add_page(ms)
+        @swsgrp.add_item(page,ms['stat'])
+        self[page]=ms
+        @init_proc.each{|p| p.call(ms)}
+        self
       end
     end
 

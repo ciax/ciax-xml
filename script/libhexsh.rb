@@ -51,15 +51,12 @@ module CIAX
     end
 
     class List < ShList
-      def initialize(al=nil)
+      def initialize
         super(){|id| Hex.new(@al[id])}
-        if App::List === al
-          @al=al
-          update_items(Loc::Db.new.list)
-        else
-          @al=App::List.new
-          update_items(Loc::Db.new.list)
-        end
+        @al=App::List.new
+        update_items(Loc::Db.new.list)
+        @layers.update @al.layers
+        @layers['hex']=self
       end
     end
   end

@@ -98,6 +98,7 @@ module CIAX
         super{|id| Frm.new(@ldb.set(id)[:frm])}
         @ldb=Loc::Db.new
         update_items(@ldb.list)
+        @layers['frm']=self
       end
     end
   end

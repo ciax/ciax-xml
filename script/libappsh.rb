@@ -184,19 +184,18 @@ module CIAX
     end
 
     class List < ShList
-      def initialize(fl=nil)
+      def initialize
         super(){|id| App.new(@ldb.set(id)[:app],@fl[id])}
         @ldb=Loc::Db.new
-        if Frm::List === fl
-          @fl=fl
-          update_items(@ldb.list)
-        elsif $opt['e'] || $opt['s']
+        if $opt['e'] || $opt['s']
           @fl=Frm::List.new
+          @layers.update @fl.layers
           update_items(@ldb.list)
         else
           @fl={}
           update_items(@ldb.list)
         end
+        @layers['app']=self
       end
     end
   end

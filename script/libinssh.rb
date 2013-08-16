@@ -9,10 +9,14 @@ module CIAX
     class Layer < ShLayer
       def initialize
         super
-        fl=add('frm',Frm::List.new)
-        return if $opt['f']
-        al=add('app',App::List.new(fl))
-        add('hex',Hex::List.new(al)) if $opt['x']
+        if $opt['f']
+          update(Frm::List.new.layers)
+        elsif $opt['x']
+          update(Hex::List.new.layers)
+        else
+          update(App::List.new.layers)
+        end
+        update_layers
       end
     end
   end

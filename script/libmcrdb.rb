@@ -30,12 +30,12 @@ module CIAX
               select << mkcond(e1,attr)
               final.update(attr)['type'] = 'check'
             when 'exec'
-              attr['cmd']=getcmd(e1)
+              attr['args']=getcmd(e1)
               attr.delete('name')
               select << attr
               verbose("Mdb","COMMAND:[#{e1['name']}]")
             when 'mcr'
-              args=attr['cmd']=getcmd(e1)
+              args=attr['args']=getcmd(e1)
               attr['label']=mdb[:label][args.first]
               attr.delete('name')
               select << attr

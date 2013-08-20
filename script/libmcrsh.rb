@@ -58,7 +58,7 @@ module CIAX
         super
         @stat=Stat.new
         @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>2})
-        @swsgrp.share[:def_proc]=proc{|item| throw(:sw_site,item.id)}
+        @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
         @swsgrp.add_dummy("1..",'Macro Process')
         @al=App::List.new
         @layers.update(@al.layers)

@@ -96,10 +96,10 @@ module CIAX
             when 'exec'
               @running << e1['site']
               res=@step.exec?
-              @shary[:exec_proc].call(e1['site'],e1['cmd']) if exec?(res)
+              @shary[:exec_proc].call(e1['site'],e1['args']) if exec?(res)
             when 'mcr'
               print @step.result if Msg.fg?
-              item=@shary[:submcr_proc].call(e1['cmd'])
+              item=@shary[:submcr_proc].call(e1['args'])
               if @step.async?
                 @shary[:def_proc].call(item)
               else

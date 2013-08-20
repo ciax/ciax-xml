@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "json"
+# Device simulator by Log file
 
 class LogRing
   attr_reader :index,:max

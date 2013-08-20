@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# XML Attribute vs Text Exchanger
 require "optparse"
 require "xml"
 include XML

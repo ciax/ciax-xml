@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
+# Log viewer
 # For stream log version 6 or later
 require "json"
 
-abort "Usage: jlogv json_log" if STDIN.tty? && ARGV.size < 1
+abort "Usage: json_logview json_log" if STDIN.tty? && ARGV.size < 1
 readlines.each{|line|
   next if line.to_s.empty?
   ary=[]

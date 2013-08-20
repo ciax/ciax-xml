@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# XML Create New Child Element and move Attribute to Child
 require "optparse"
 require "rexml/document"
 include REXML

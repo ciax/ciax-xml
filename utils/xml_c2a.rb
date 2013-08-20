@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
+# XML Child Element with Text to Attribute Converter
 require "optparse"
 require "rexml/document"
 include REXML
 
-abort "Usage: a2c [xpath] [attr] < xml" if ARGV.size < 2
+abort "Usage: a2c [xpath] [child_elem(w/text)] < xml" if ARGV.size < 2
 
 xpath=ARGV.shift
 attr=ARGV.shift

@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# Set value to JSON file
 require 'json'
 
 field={}

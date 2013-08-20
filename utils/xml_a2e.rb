@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# XML Attribute vs Child Element exchanger
 require "optparse"
 require "rexml/document"
 include REXML
@@ -9,7 +10,6 @@ Usage: a2e (-r) [xpath] [attr] < xml
        //xpath@attr <-> //xpath/attr.text()
 EOF
 end
-
 
 xpath=ARGV.shift
 if /-r/ === xpath

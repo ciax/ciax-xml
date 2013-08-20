@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# Get Value from JSON file
 require "json"
 def get(h,idx)
   return h if idx.empty?

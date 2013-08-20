@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# JSON to String(Decorated)
 require "libmsg"
 require "json"
 

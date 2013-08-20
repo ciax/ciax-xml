@@ -29,7 +29,7 @@ for id in ${ids:-`_getid`}; do
     frm=`_id2frm $id` || continue
     echo "$C2#### $frm($id) ####$C0"
     output="$HOME/.var/json/field_${id}.json"
-    merging $output <<EOF
+    json_merge $output <<EOF
 {"id":"$id"}
 EOF
     _getstat ${cmds:-`_getcmd $frm`} || break

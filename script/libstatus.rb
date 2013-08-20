@@ -9,7 +9,7 @@ module CIAX
       attr_reader :last
       def initialize(init_struct={})
         @ver_color=6
-        super('stat',init_struct)
+        super('status',init_struct)
         @last={}
         @updated=UnixTime.now
         @lastsave=UnixTime.now

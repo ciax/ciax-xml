@@ -14,10 +14,10 @@ module CIAX
         super('watch')
         self['period']=300
         self['interval']=0.1
-        self['astart']=nil
-        self['alast']=0
+        @data['astart']=nil
+        @data['alast']=0
         #For Array element
-        ['active','exec','block','int'].each{|i| self[i]||=Arrayx.new}
+        ['active','exec','block','int'].each{|i| @data[i]||=Arrayx.new}
         #For Hash element
         ['crnt','last','res'].each{|i| self[i]||={}}
         @event_proc=proc{}
@@ -25,33 +25,33 @@ module CIAX
       end
 
       def active?
-        ! self['active'].empty?
+        ! @data['active'].empty?
       end
 
       def block?(args)
-        cmdary=self['block']
+        cmdary=@data['block']
         verbose("Watch","Blocked?:#{args}") unless cmdary.empty?
         cmdary.include?(args) && Msg.cmd_err("Blocking(#{args})")
       end
 
       def issue
         # block parm = [args + priority(2)]
-        cmdary=self['exec'].each{|args|
+        cmdary=@data['exec'].each{|args|
           @event_proc.call([args,2])
           verbose("Watch","ISSUED_AUTO:#{args}")
         }.dup
-        self['exec'].clear
+        @data['exec'].clear
         cmdary
       end
 
       def interrupt
-        verbose("Watch","Interrupt:#{self['int']}")
+        verbose("Watch","Interrupt:#{@data['int']}")
         # block parm = [args + priority(0)]
-        cmdary=self['int'].each{|args|
+        cmdary=@data['int'].each{|args|
           @event_proc.call([args,0])
           verbose("Watch","ISSUED_INT:#{args}")
         }.dup
-        self['int'].clear
+        @data['int'].clear
         cmdary
       end
 
@@ -89,25 +89,25 @@ module CIAX
 
       # Stat no changed -> clear exec, no eval
       def upd
-        self['exec'].clear
+        @data['exec'].clear
         return self if self['crnt']['time'] == @stat['time']
         upd_last
         hash={'int' =>[],'exec' =>[],'block' =>[]}
-        noact=self['active'].empty?
-        self['active'].clear
+        noact=@data['active'].empty?
+        @data['active'].clear
         @wdb[:stat].each{|i,v|
           next unless check(i)
-          self['active'] << i
+          @data['active'] << i
           hash.each{|k,a|
             n=@wdb[k.to_sym][i]
             a << n if n && !a.include?(n)
           }
         }
-        lstart=self['astart']
-        self['astart']=(noact & active?) ? UnixTime.now : nil
-        self['alast']=UnixTime.now-lstart if lstart && !self['astart']
+        lstart=@data['astart']
+        @data['astart']=(noact & active?) ? UnixTime.now : nil
+        @data['alast']=UnixTime.now-lstart if lstart && !@data['astart']
         hash.each{|k,a|
-          self[k].replace a.flatten(1).uniq
+          @data[k].replace a.flatten(1).uniq
         }
         verbose("Watch","Updated(#{@stat['time']})")
         super
@@ -164,7 +164,7 @@ module CIAX
         wdb=type?(adb,App::Db)[:watch] || {:stat => []}
         @watch=type?(watch,Data)
         ['exec','block','int','astart','alast'].each{|i|
-          self[i]=@watch[i]
+          self[i]=@watch.data[i]
         }
         self['stat']={}
         wdb[:stat].each{|k,v|
@@ -193,7 +193,7 @@ module CIAX
             h['res']=@watch['res']["#{k}:#{i}"]
             h['cmp']=@watch['last'][id] if h['type'] == 'onchange'
           }
-          v['active']=@watch['active'].include?(k)
+          v['active']=@watch.data['active'].include?(k)
         }
         super
       end

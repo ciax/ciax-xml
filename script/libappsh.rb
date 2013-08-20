@@ -136,7 +136,7 @@ module CIAX
       def ext_logging(id,ver=0)
         logging=Logging.new('issue',id,ver)
         @post_proc << proc{|args|
-          logging.append({'cmd'=>args,'active'=>@watch['active']})
+          logging.append({'cmd'=>args,'active'=>@watch.data['active']})
         }
         self
       end

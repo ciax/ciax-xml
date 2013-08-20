@@ -70,12 +70,12 @@ module CIAX
   end
 
   class ShList < ExeList
-    attr_reader :layers
+    attr_reader :layers,:site
     def initialize
       super
       @layers={}
       @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
-      @swsgrp.share[:def_proc]=proc{|item| throw(:sw_site,item.id)}
+      @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
       @init_proc << proc{|exe|
         exe.cobj['lo']['sws']=@swsgrp
       }
@@ -87,8 +87,14 @@ module CIAX
       self
     end
 
-    def shell(current)
-      true while current=catch(:sw_site){ self[current].shell }
+    def shell(site)
+      @site=site||@site
+      begin
+        self[@site].shell
+      rescue SwSite
+        @site=$!.to_s
+        retry
+      end
     rescue InvalidID
       $opt.usage('(opt) [id]')
     end
@@ -97,7 +103,7 @@ module CIAX
   class ShLayer < Hashx
     def initialize
       @swlgrp=Group.new({'caption'=>"Switch Layer",'color'=>5,'column'=>5})
-      @swlgrp.share[:def_proc]=proc{|item| throw(:sw_layer,item.id) }
+      @swlgrp.share[:def_proc]=proc{|item| raise(SwLayer,item[:cid]) }
     end
 
     def update_layers(layers={})
@@ -110,9 +116,15 @@ module CIAX
       update(layers)
     end
 
-    def shell(id)
-      current=keys.last
-      true while current=catch(:sw_layer){self[current].shell(id)}
+    def shell(site)
+      layer=keys.last
+      begin
+        self[layer].shell(site)
+      rescue SwLayer
+        layer,ns=$!.to_s.split(':')
+        site=ns if ns || self[layer].site
+        retry
+      end
     end
   end
 end

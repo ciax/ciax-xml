@@ -10,7 +10,7 @@ for id in $ids; do
     echo "$C2#### $id ####$C0"
     if [ "$opt" ]
     then
-        j2s <$stat
+        json_view <$stat
     else
         ~/lib/libstatus.rb -v < $stat
     fi

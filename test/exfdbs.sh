@@ -33,7 +33,7 @@ for id in ${ids:-`_getid`}; do
 {"id":"$id"}
 EOF
     _getstat ${cmds:-`_getcmd $frm`} || break
-    [ -e $output ] && j2s $output
+    [ -e $output ] && json_view $output
     read -t 0 && break
 done
 

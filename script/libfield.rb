@@ -47,7 +47,7 @@ module CIAX
           vname << i
           verbose("Field","Type[#{h.class}] Name[#{i}]")
           verbose("Field","Content[#{h[i]}]")
-          h[i] || warning("Field","No such Value [#{vname.join(':')}] in 'val'")
+          h[i] || warning("Field","No such Value [#{vname.join(':')}] in 'data'")
         }
         unless Comparable === dat
           warning("Field","Short Index [#{vname.join(':')}]")

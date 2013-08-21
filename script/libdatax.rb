@@ -7,9 +7,10 @@ module CIAX
   class Datax < Hashx
     attr_reader :data,:upd_proc
     # @data is hidden from access by '[]'
-    def initialize(type,init_struct={},dataname='val')
+    def initialize(type,init_struct={},dataname='data')
       self['type']=type
       self['time']=UnixTime.now
+      self['id']=nil
       @data=init_struct.dup.extend(Enumx)
       @dataname=dataname
       @ver_color=6

@@ -63,7 +63,7 @@ module CIAX
       def initialize(adb,stat)
         @sdb=type?(adb,Db)[:status]
         @stat=type?(stat,Status)
-        ['val','class','msg'].each{|key|
+        ['data','class','msg'].each{|key|
           stat[key]||={}
         }
       end

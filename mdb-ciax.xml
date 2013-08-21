@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro">
     <command id="runf" label="Run Forward to Tag">
@@ -14,7 +14,7 @@
       </wait>
     </command>
     <command id="run" label="Run to Tag [1-12]">
-      <par_num>1:12</par_num>
+      <par_num name="tag">1:12</par_num>
       <goal label="On Destination Tag?">
         <stat var="cps" site="crt">$1</stat>
       </goal>

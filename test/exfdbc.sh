@@ -18,7 +18,7 @@ out=`mktemp`
 inp=`mktemp`
 cat > $inp <<EOF
 {
-"val":{
+"data":{
 "ipr":"1","ipl":"1",
 "stat":"1",
 "output":"1",

@@ -1,27 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="k3n" label="OMRON K3NR" ccmethod="bcc" wait="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="Prefix">2</char>
       <ccrange>
-        <select>
-          <command id="getstat" label="Get Status" response="getstat" type="stat">
-            <string label="Node No.">00</string>
-            <string label="Sub Address">00</string>
-            <string label="SID">0</string>
-            <string label="MRC">01</string>
-            <string label="SRC">01</string>
-            <string label="Variable type">C0</string>
-            <string label="Start Address">0000</string>
-            <string label="Void">00</string>
-            <string label="Number of element">0001</string>
-          </command>
-        </select>
+        <select/>
         <char length="1" label="Suffix">3</char>
       </ccrange>
       <char length="1">${cc}</char>
     </cmdframe>
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <string label="Node No.">00</string>
+        <string label="Sub Address">00</string>
+        <string label="SID">0</string>
+        <string label="MRC">01</string>
+        <string label="SRC">01</string>
+        <string label="Variable type">C0</string>
+        <string label="Start Address">0000</string>
+        <string label="Void">00</string>
+        <string label="Number of element">0001</string>
+      </command>
+    </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="Prefix" length="1">2</field>
       <ccrange>

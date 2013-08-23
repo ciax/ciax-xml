@@ -1,28 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
     <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <select>
-        <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <string>krdg? c1;</string>
-          <string>krdg? c2;</string>
-          <string>krdg? c3;</string>
-          <string>krdg? c4;</string>
-          <string>krdg? d1;</string>
-          <string>krdg? d2;</string>
-          <string>krdg? d3;</string>
-          <string>krdg? d4;</string>
-        </command>
-        <command id="htrstat" label="Heater Power (%)" response="htrstat" type="stat">
-          <string>HTR?</string>
-        </command>
-        <command id="spstat" label="Set Point (K)" response="spstat" type="stat">
-          <string>SETP? 1</string>
-        </command>
-      </select>
+      <select/>
       <char length="2" label="Suffix">0x0d0a</char>
     </cmdframe>
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <string>krdg? c1;</string>
+        <string>krdg? c2;</string>
+        <string>krdg? c3;</string>
+        <string>krdg? c4;</string>
+        <string>krdg? d1;</string>
+        <string>krdg? d2;</string>
+        <string>krdg? d3;</string>
+        <string>krdg? d4;</string>
+      </command>
+      <command id="htrstat" label="Heater Power (%)" response="htrstat" type="stat">
+        <string>HTR?</string>
+      </command>
+      <command id="spstat" label="Set Point (K)" response="spstat" type="stat">
+        <string>SETP? 1</string>
+      </command>
+    </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
       <select>
         <response id="getstat">

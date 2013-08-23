@@ -3,26 +3,8 @@
   <!--Device database-->
   <xsd:include schemaLocation="repeat.xsd" />
   <xsd:include schemaLocation="command.xsd" />
-  <!--Command frame-->
-  <xsd:element name="cmdframe">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:group ref="fdbc:data" />
-        <xsd:element ref="fdbc:select" />
-        <xsd:element ref="fdbc:ccrange" />
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
-  <!--Command CC-->
-  <xsd:element name="ccrange">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbc:select" />
-        <xsd:group ref="fdbc:data" />
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="select">
+  <!--Command Select-->
+  <xsd:element name="commands">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:element ref="fdbc:command" minOccurs="1" maxOccurs="unbounded" />
@@ -63,6 +45,28 @@
       <xsd:attribute name="delimiter" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
+  <!--Command frame-->
+  <xsd:element name="cmdframe">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:group ref="fdbc:data" />
+        <xsd:element ref="fdbc:select" />
+        <xsd:element ref="fdbc:ccrange" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="select">
+    <xsd:complexType/>
+  </xsd:element>
+  <!--Command CC-->
+  <xsd:element name="ccrange">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="fdbc:select" />
+        <xsd:group ref="fdbc:data" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
   <!--Command Elements-->
   <xsd:group name="data">
     <xsd:choice>
@@ -90,5 +94,4 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <!--Command Select-->
 </xsd:schema>

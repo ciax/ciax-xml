@@ -19,7 +19,7 @@ module CIAX
         dr=doc.domain('rspframe')
         hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
         hash[:rspframe]=init_main(dr){|e| init_rsp(e,rfm)}
-        hash[:command]=init_sel(dc,'command'){|e,r| init_cmd(e,r)}
+        hash[:command]=init_sel(doc.domain('commands'),'command'){|e,r| init_cmd(e,r)}
         hash[:response]=init_sel(dr,'response'){|e| init_rsp(e,rfm)}
         hash
       end

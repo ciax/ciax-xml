@@ -1,41 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="psp" label="Power Supply Instek PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" wait="0.3">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <select>
-        <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <string>L</string>
-        </command>
-        <command id="setvl" label="Set Voltage Limit [DD]" type="config">
-          <par_num>0:20</par_num>
-          <string>SU </string>
-          <string format="%02d">$1</string>
-        </command>
-        <command id="setal" label="Set Current Limit [D.DD]" type="config">
-          <par_num>0:&lt;10</par_num>
-          <string>SI </string>
-          <string format="%04.2f">$1</string>
-        </command>
-        <command id="setpl" label="Set Power Limit [DDD]" type="config">
-          <par_num>0:&lt;200</par_num>
-          <string>SP </string>
-          <string format="%03d">$1</string>
-        </command>
-        <command id="setv" label="Set Voltage [DD.DD]" type="config">
-          <par_num>0:&lt;100</par_num>
-          <string>SV </string>
-          <string format="%05.2f">$1</string>
-        </command>
-        <command id="pon" label="OUTPUT ON" type="action">
-          <string>KOE</string>
-        </command>
-        <command id="poff" label="OUTPUT OFF" type="action">
-          <string>KOD</string>
-        </command>
-      </select>
+      <select/>
       <char length="1">0xd</char>
     </cmdframe>
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <string>L</string>
+      </command>
+      <command id="setvl" label="Set Voltage Limit [DD]" type="config">
+        <par_num>0:20</par_num>
+        <string>SU </string>
+        <string format="%02d">$1</string>
+      </command>
+      <command id="setal" label="Set Current Limit [D.DD]" type="config">
+        <par_num>0:&lt;10</par_num>
+        <string>SI </string>
+        <string format="%04.2f">$1</string>
+      </command>
+      <command id="setpl" label="Set Power Limit [DDD]" type="config">
+        <par_num>0:&lt;200</par_num>
+        <string>SP </string>
+        <string format="%03d">$1</string>
+      </command>
+      <command id="setv" label="Set Voltage [DD.DD]" type="config">
+        <par_num>0:&lt;100</par_num>
+        <string>SV </string>
+        <string format="%05.2f">$1</string>
+      </command>
+      <command id="pon" label="OUTPUT ON" type="action">
+        <string>KOE</string>
+      </command>
+      <command id="poff" label="OUTPUT OFF" type="action">
+        <string>KOD</string>
+      </command>
+    </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <select>
         <response id="getstat">

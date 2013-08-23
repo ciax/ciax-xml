@@ -1,17 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="tpg" label="Pfeiffer Vacuum Gauge TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" wait="0.3">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <select>
-        <command id="reqstat" label="Request status" response="reqstat" type="stat">
-          <string label="Measurment string gauges 1&amp;2">PRX</string>
-          <char length="1" label="Suffix">13</char>
-        </command>
-        <command id="getstat" label="Get status" response="getstat" type="stat">
-          <char length="1" label="ENQ">5</char>
-        </command>
-      </select>
+      <select/>
     </cmdframe>
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <command id="reqstat" label="Request status" response="reqstat" type="stat">
+        <string label="Measurment string gauges 1&amp;2">PRX</string>
+        <char length="1" label="Suffix">13</char>
+      </command>
+      <command id="getstat" label="Get status" response="getstat" type="stat">
+        <char length="1" label="ENQ">5</char>
+      </command>
+    </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="," terminator="\r\n">
       <select>
         <response id="reqstat">

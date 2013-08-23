@@ -19,6 +19,7 @@
         <xsd:element ref="fdb:serial" minOccurs="0" maxOccurs="1" />
         <!--Command frame-->
         <xsd:element ref="fdbc:cmdframe" minOccurs="0" maxOccurs="1" />
+        <xsd:element ref="fdbc:commands" minOccurs="0" maxOccurs="1" />
         <!--Response frame-->
         <xsd:element ref="fdbr:rspframe" minOccurs="0" maxOccurs="1" />
       </xsd:sequence>

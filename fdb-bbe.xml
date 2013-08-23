@@ -1,24 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="bbe" label="BB Electric 232SDD16" endian="big" wait="0.3">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">!0</string>
-      <select>
-        <command id="getstat" label="Get Status" response="getstat" type="stat">
-          <string>RD</string>
-        </command>
-        <command id="output" label="OUTPUT [DDDDD]" type="action">
-          <par_num>0:65535</par_num>
-          <string>SO</string>
-          <char length="2">$1</char>
-        </command>
-        <command id="outfld" label="OUTPUT from Field" nocache="true" type="action">
-          <string>SO</string>
-          <char length="2">${stat}</char>
-        </command>
-      </select>
+      <select/>
     </cmdframe>
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <command id="getstat" label="Get Status" response="getstat" type="stat">
+        <string>RD</string>
+      </command>
+      <command id="output" label="OUTPUT [DDDDD]" type="action">
+        <par_num>0:65535</par_num>
+        <string>SO</string>
+        <char length="2">$1</char>
+      </command>
+      <command id="outfld" label="OUTPUT from Field" nocache="true" type="action">
+        <string>SO</string>
+        <char length="2">${stat}</char>
+      </command>
+    </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <select>
         <response id="getstat">

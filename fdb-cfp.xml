@@ -1,37 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
   <frame id="cfp" label="Compact Field Point" ccmethod="sum" wait="0">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">&gt;</string>
       <ccrange>
-        <select>
-          <!--String Length must be <32-->
-          <command id="getstat" label="Get output status" response="getstat" type="stat">
-            <string>02!J</string>
-          </command>
-          <command id="getstat2" label="Get input status" response="getstat2" type="stat">
-            <string>03!J</string>
-          </command>
-          <!---->
-          <command id="putdata" label="Write Discrete [Mask(4)] [Data(4)]" response="default" type="config">
-            <par_num>0:65535</par_num>
-            <par_num>0:65535</par_num>
-            <string>02!L</string>
-            <string format="%04X">$1</string>
-            <string format="%04X">$2</string>
-          </command>
-          <command id="putfield" label="Write from Output Field" response="default" type="config">
-            <string>02!L</string>
-            <string>FFFF</string>
-            <string format="%04X">${output}</string>
-          </command>
-        </select>
+        <select/>
       </ccrange>
       <string format="%02X">${cc}</string>
       <char length="1">13</char>
       <char length="1">10</char>
     </cmdframe>
+    <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <!--String Length must be <32-->
+      <command id="getstat" label="Get output status" response="getstat" type="stat">
+        <string>02!J</string>
+      </command>
+      <command id="getstat2" label="Get input status" response="getstat2" type="stat">
+        <string>03!J</string>
+      </command>
+      <!---->
+      <command id="putdata" label="Write Discrete [Mask(4)] [Data(4)]" response="default" type="config">
+        <par_num>0:65535</par_num>
+        <par_num>0:65535</par_num>
+        <string>02!L</string>
+        <string format="%04X">$1</string>
+        <string format="%04X">$2</string>
+      </command>
+      <command id="putfield" label="Write from Output Field" response="default" type="config">
+        <string>02!L</string>
+        <string>FFFF</string>
+        <string format="%04X">${output}</string>
+      </command>
+    </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>
       <ccrange>

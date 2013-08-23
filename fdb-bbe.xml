@@ -21,11 +21,12 @@
       </command>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <select>
-        <response id="getstat">
-          <field assign="stat" decode="unsigned" label="Status" length="2" />
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field assign="stat" decode="unsigned" label="Status" length="2" />
+      </response>
+    </responses>
   </frame>
 </fdb>

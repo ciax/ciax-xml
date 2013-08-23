@@ -15,12 +15,10 @@ module CIAX
         hash.update(doc)
         hash['id']=hash.delete('id')
         rfm=hash[:field]={}
-        dc=doc.domain('cmdframe')
-        dr=doc.domain('rspframe')
-        hash[:cmdframe]=init_main(dc){|e,r| init_cmd(e,r)}
-        hash[:rspframe]=init_main(dr){|e| init_rsp(e,rfm)}
-        hash[:command]=init_sel(doc.domain('commands'),'command'){|e,r| init_cmd(e,r)}
-        hash[:response]=init_sel(dr,'response'){|e| init_rsp(e,rfm)}
+        hash[:cmdframe]=init_main(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
+        hash[:rspframe]=init_main(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
+        hash[:command]=init_sel(doc.domain('commands')){|e,r| init_cmd(e,r)}
+        hash[:response]=init_sel(doc.domain('responses')){|e| init_rsp(e,rfm)}
         hash
       end
 
@@ -47,9 +45,9 @@ module CIAX
         hash
       end
 
-      def init_sel(domain,select)
+      def init_sel(domain)
         selh=domain.to_h
-        domain.find(select){|e0|
+        domain.each{|e0|
           enclose("Fdb","INIT:Select Frame <-","-> INIT:Select Frame"){
             id=e0.attr2db(selh)
             (selh[:select]||={})[id]||=[]

@@ -14,17 +14,18 @@
       </command>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="," terminator="\r\n">
-      <select>
-        <response id="reqstat">
-          <field decode="unsigned">6</field>
-        </response>
-        <response id="getstat">
-          <field assign="st1" label="CH1 RetCode" />
-          <field assign="ch1" label="CH1 Value" />
-          <field assign="st2" label="CH2 RetCode" />
-          <field assign="ch2" label="CH2 Value" />
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="reqstat">
+        <field decode="unsigned">6</field>
+      </response>
+      <response id="getstat">
+        <field assign="st1" label="CH1 RetCode" />
+        <field assign="ch1" label="CH1 Value" />
+        <field assign="st2" label="CH2 RetCode" />
+        <field assign="ch2" label="CH2 Value" />
+      </response>
+    </responses>
   </frame>
 </fdb>

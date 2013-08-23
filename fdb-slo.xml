@@ -79,28 +79,29 @@
       </command>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
-      <select>
-        <response id="getstat">
-          <field assign="err" label="ErrorCode" />
-        </response>
-        <response id="bs">
-          <field assign="bs" label="Moving" />
-        </response>
-        <response id="p">
-          <field assign="p" label="Pulse" />
-        </response>
-        <response id="spd">
-          <field assign="spd" label="Speed" />
-        </response>
-        <response id="in">
-          <array assign="in" label="Input">
-            <index range="$1-1" size="5" />
-          </array>
-        </response>
-        <response id="default">
-          <field>&gt;</field>
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field assign="err" label="ErrorCode" />
+      </response>
+      <response id="bs">
+        <field assign="bs" label="Moving" />
+      </response>
+      <response id="p">
+        <field assign="p" label="Pulse" />
+      </response>
+      <response id="spd">
+        <field assign="spd" label="Speed" />
+      </response>
+      <response id="in">
+        <array assign="in" label="Input">
+          <index range="$1-1" size="5" />
+        </array>
+      </response>
+      <response id="default">
+        <field>&gt;</field>
+      </response>
+    </responses>
   </frame>
 </fdb>

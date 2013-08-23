@@ -18,18 +18,19 @@
       </command>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <select>
-        <response id="getstat">
-          <field label="Prefix" length="3">X01</field>
-          <field assign="pres" length="5" />
-        </response>
-        <response id="setd">
-          <field label="Command" length="3">W1F</field>
-        </response>
-        <response id="init">
-          <field label="Command" length="3">Z02</field>
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field label="Prefix" length="3">X01</field>
+        <field assign="pres" length="5" />
+      </response>
+      <response id="setd">
+        <field label="Command" length="3">W1F</field>
+      </response>
+      <response id="init">
+        <field label="Command" length="3">Z02</field>
+      </response>
+    </responses>
   </frame>
 </fdb>

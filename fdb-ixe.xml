@@ -138,47 +138,48 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="Prefix" length="1">2</field>
       <field decode="unsigned" label="ACK" length="1">6</field>
-      <select>
-        <response id="getstat">
-          <field assign="stat" label="StatusCode" />
-        </response>
-        <response id="chkrun">
-          <array assign="run" label="Moving">
-            <index range="$1-1" size="6" />
-          </array>
-        </response>
-        <response id="chkems">
-          <array assign="ems" label="Emergency">
-            <index range="$1-1" size="6" />
-          </array>
-        </response>
-        <response id="chkpse">
-          <array assign="pse" label="Power Stage Err">
-            <index range="$1-1" size="6" />
-          </array>
-        </response>
-        <response id="getp">
-          <array assign="p" label="Pulse">
-            <index range="$1-1" size="6" />
-          </array>
-        </response>
-        <response id="getspd">
-          <array assign="spd" label="Speed">
-            <index range="$1-1" size="6" />
-          </array>
-        </response>
-        <response id="getrmp">
-          <array assign="rmp" label="Ramp">
-            <index range="$1-1" size="6" />
-          </array>
-        </response>
-        <response id="getofs">
-          <array assign="ofs" label="Offset">
-            <index range="$1-1" size="6" />
-          </array>
-        </response>
-        <response id="default" />
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field assign="stat" label="StatusCode" />
+      </response>
+      <response id="chkrun">
+        <array assign="run" label="Moving">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
+      <response id="chkems">
+        <array assign="ems" label="Emergency">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
+      <response id="chkpse">
+        <array assign="pse" label="Power Stage Err">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
+      <response id="getp">
+        <array assign="p" label="Pulse">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
+      <response id="getspd">
+        <array assign="spd" label="Speed">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
+      <response id="getrmp">
+        <array assign="rmp" label="Ramp">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
+      <response id="getofs">
+        <array assign="ofs" label="Offset">
+          <index range="$1-1" size="6" />
+        </array>
+      </response>
+      <response id="default" />
+    </responses>
   </frame>
 </fdb>

@@ -24,12 +24,13 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="ACK" length="1">6</field>
-      <select>
-        <response id="getstat">
-          <field assign="stat" label="StatusCode" />
-        </response>
-        <response id="default" />
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field assign="stat" label="StatusCode" />
+      </response>
+      <response id="default" />
+    </responses>
   </frame>
 </fdb>

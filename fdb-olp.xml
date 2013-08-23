@@ -14,11 +14,12 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <field label="Prefix" length="1">*</field>
-      <select>
-        <response id="getstat">
-          <field assign="pres" length="6" />
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field assign="pres" length="6" />
+      </response>
+    </responses>
   </frame>
 </fdb>

@@ -14,12 +14,13 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <field label="Prefix" length="1">?</field>
-      <select>
-        <response id="getstat">
-          <field length="5">01CP=</field>
-          <field assign="stat" label="Status" length="6" />
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field length="5">01CP=</field>
+        <field assign="stat" label="Status" length="6" />
+      </response>
+    </responses>
   </frame>
 </fdb>

@@ -19,11 +19,12 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field length="1">*</field>
-      <select>
-        <response id="getstat">
-          <field assign="crnt" length="9" />
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field assign="crnt" length="9" />
+      </response>
+    </responses>
   </frame>
 </fdb>

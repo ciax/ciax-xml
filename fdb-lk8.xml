@@ -25,19 +25,20 @@
       </command>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
-      <select>
-        <response id="getstat">
-          <array assign="ch" label="Value">
-            <index range="0:7" size="8" />
-          </array>
-        </response>
-        <response id="htrstat">
-          <field assign="htr" label="Heater Power" />
-        </response>
-        <response id="spstat">
-          <field assign="sp" label="SetPoint" />
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <array assign="ch" label="Value">
+          <index range="0:7" size="8" />
+        </array>
+      </response>
+      <response id="htrstat">
+        <field assign="htr" label="Heater Power" />
+      </response>
+      <response id="spstat">
+        <field assign="sp" label="SetPoint" />
+      </response>
+    </responses>
   </frame>
 </fdb>

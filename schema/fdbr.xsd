@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/fdbr" xmlns:fdbr="http://ciax.sum.naoj.org/ciax-xml/fdbr">
   <!--Device database-->
   <xsd:include schemaLocation="codec.xsd" />
@@ -11,6 +11,9 @@
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="fdbr:rerange" />
   </xsd:attributeGroup>
+  <xsd:element name="select">
+    <xsd:complexType/>
+  </xsd:element>
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:simpleContent>
@@ -37,24 +40,6 @@
       <xsd:attribute name="range" type="xsd:token" use="required" />
     </xsd:complexType>
   </xsd:element>
-  <!--Response Select-->
-  <xsd:element name="select">
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="fdbr:response" minOccurs="1" maxOccurs="unbounded" />
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="response">
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbr:field" />
-        <xsd:element ref="fdbr:array" />
-      </xsd:choice>
-      <xsd:attribute name="id" type="xsd:NCName" use="required" />
-      <xsd:attribute name="label" type="xsd:token" />
-    </xsd:complexType>
-  </xsd:element>
   <!--Response CC-->
   <xsd:element name="ccrange">
     <xsd:complexType>
@@ -74,6 +59,24 @@
       </xsd:choice>
       <xsd:attribute name="terminator" type="xsd:token" />
       <xsd:attribute name="delimiter" type="xsd:token" />
+    </xsd:complexType>
+  </xsd:element>
+  <!--Response Select-->
+  <xsd:element name="responses">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="fdbr:response" minOccurs="1" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="response">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="fdbr:field" />
+        <xsd:element ref="fdbr:array" />
+      </xsd:choice>
+      <xsd:attribute name="id" type="xsd:NCName" use="required" />
+      <xsd:attribute name="label" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

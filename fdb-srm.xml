@@ -33,29 +33,30 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <ccrange>
         <field label="Prefix" length="1">@</field>
-        <select>
-          <response id="getmodel">
-            <field label="Command Code" length="4">00MM</field>
-            <field label="Response Code" length="2" assign="cod"></field>
-            <field assign="model" label="Model Number" length="2" />
-          </response>
-          <response id="getstat">
-            <field label="Command Code" length="4">00RR</field>
-            <field label="Response Code" length="2" assign="cod"></field>
-            <!--Big endian-->
-            <field assign="c1d3" label="CH1 bit12-15" length="1" />
-            <field assign="c1d2" label="CH1 bit8-11" length="1" />
-            <field assign="c1d1" label="CH1 bit4-7" length="1" />
-            <field assign="c1d0" label="CH1 bit0-3" length="1" />
-          </response>
-          <response id="fset">
-            <field label="Command Code" length="4">00FK</field>
-            <field label="Exit Code" length="2" assign="cod"></field>
-          </response>
-        </select>
+        <select/>
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
       <field label="Terminater" length="1">*</field>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getmodel">
+        <field label="Command Code" length="4">00MM</field>
+        <field label="Response Code" length="2" assign="cod"></field>
+        <field assign="model" label="Model Number" length="2" />
+      </response>
+      <response id="getstat">
+        <field label="Command Code" length="4">00RR</field>
+        <field label="Response Code" length="2" assign="cod"></field>
+        <!--Big endian-->
+        <field assign="c1d3" label="CH1 bit12-15" length="1" />
+        <field assign="c1d2" label="CH1 bit8-11" length="1" />
+        <field assign="c1d1" label="CH1 bit4-7" length="1" />
+        <field assign="c1d0" label="CH1 bit0-3" length="1" />
+      </response>
+      <response id="fset">
+        <field label="Command Code" length="4">00FK</field>
+        <field label="Exit Code" length="2" assign="cod"></field>
+      </response>
+    </responses>
   </frame>
 </fdb>

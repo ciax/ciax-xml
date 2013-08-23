@@ -38,29 +38,30 @@
       </command>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
-      <select>
-        <response id="getstat">
-          <field length="1">V</field>
-          <field assign="v" label="Output(V)" length="5" />
-          <field length="1">A</field>
-          <field assign="a" label="Output(A)" length="5" />
-          <field length="1">W</field>
-          <field assign="w" label="Output(W)" length="5" />
-          <field length="1">U</field>
-          <field assign="u" label="Limit(V)" length="2" />
-          <field length="1">I</field>
-          <field assign="i" label="Limit(A)" length="4" />
-          <field length="1">P</field>
-          <field assign="p" label="Limit(W)" length="3" />
-          <field length="1">F</field>
-          <field assign="f1" label="Output(ON/OFF)" length="1" />
-          <field assign="f2" label="OverHeat" length="1" />
-          <field assign="f3" label="ADJ Fine" length="1" />
-          <field assign="f4" label="ADJ Unlock" length="1" />
-          <field assign="f5" label="Remote" length="1" />
-          <field assign="f6" label="Local Lock" length="1" />
-        </response>
-      </select>
+      <select/>
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field length="1">V</field>
+        <field assign="v" label="Output(V)" length="5" />
+        <field length="1">A</field>
+        <field assign="a" label="Output(A)" length="5" />
+        <field length="1">W</field>
+        <field assign="w" label="Output(W)" length="5" />
+        <field length="1">U</field>
+        <field assign="u" label="Limit(V)" length="2" />
+        <field length="1">I</field>
+        <field assign="i" label="Limit(A)" length="4" />
+        <field length="1">P</field>
+        <field assign="p" label="Limit(W)" length="3" />
+        <field length="1">F</field>
+        <field assign="f1" label="Output(ON/OFF)" length="1" />
+        <field assign="f2" label="OverHeat" length="1" />
+        <field assign="f3" label="ADJ Fine" length="1" />
+        <field assign="f4" label="ADJ Unlock" length="1" />
+        <field assign="f5" label="Remote" length="1" />
+        <field assign="f6" label="Local Lock" length="1" />
+      </response>
+    </responses>
   </frame>
 </fdb>

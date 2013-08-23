@@ -36,17 +36,18 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>
       <ccrange>
-        <select>
-          <response id="getstat">
-            <field assign="output" decode="hexstr" label="Status" length="4"></field>
-          </response>
-          <response id="getstat2">
-            <field assign="input" decode="hexstr" label="Status" length="4"></field>
-          </response>
-          <response id="default"></response>
-        </select>
+        <select/>
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>
+    <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <response id="getstat">
+        <field assign="output" decode="hexstr" label="Status" length="4"></field>
+      </response>
+      <response id="getstat2">
+        <field assign="input" decode="hexstr" label="Status" length="4"></field>
+      </response>
+      <response id="default"></response>
+    </responses>
   </frame>
 </fdb>

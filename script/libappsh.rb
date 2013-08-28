@@ -166,7 +166,7 @@ module CIAX
       def auto_update
         Thread.new{
           tc=Thread.current
-          tc[:name]="Auto"
+          tc[:name]="Update Thread(#{self['eid']})"
           tc[:color]=4
           Thread.pass
           int=(@watch['period']||300).to_i

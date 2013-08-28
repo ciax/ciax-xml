@@ -15,8 +15,8 @@ module CIAX
     attr_reader :upd_proc,:post_proc,:save_proc,:cobj,:output
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
-      self['layer']=layer
       self['id']=id
+      self['eid']="#{layer}:#{id}"
       @cobj=type?(cobj,Command)
       @pre_proc=[] # Proc for Command Check (by User exec)
       @post_proc=[] # Proc for Command Issue (by User exec)
@@ -91,7 +91,7 @@ module CIAX
       verbose("UDP:Server/#{self.class}","Init/Server(#{self['id']}):#{port}",2)
       Thread.new{
         tc=Thread.current
-        tc[:name]="Server"
+        tc[:name]="Server Thread(#{self['eid']})"
         tc[:color]=9
         Thread.pass
         UDPSocket.open{ |udp|

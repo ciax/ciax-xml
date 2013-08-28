@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libsh"
 require "libmcrcmd"
 
 module CIAX
@@ -87,7 +88,7 @@ module CIAX
         mdb=Db.new.set('ciax')
         mobj=ExtCmd.new(mdb,al)
         mitem=mobj.setcmd(ARGV)
-        msh=Sv.new(mitem)
+        msh=Sh.new(mitem)
         msh.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

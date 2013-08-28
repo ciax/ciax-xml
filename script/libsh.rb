@@ -20,7 +20,7 @@ module CIAX
     def ext_shell(output={},pdb={})
       # For Shell
       @output=output
-      @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
+      @pdb={'eid' => nil}.update(pdb)
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj['lo'].add_group('sh',"Shell Command",2,1)
       shg.add_dummy('^D,q',"Quit")
@@ -57,6 +57,7 @@ module CIAX
           break if /^q/ === line
           exe(shell_input(line))
           puts shell_output
+#          Thread.list.each{|t| puts t[:name]}
         end
       rescue Interrupt
         exe(['interrupt'])

@@ -58,6 +58,7 @@ module CIAX
       end
 
       def start # separated for sub thread
+        Thread.current[:name]="Macro (#{self[:cid]})"
         setstat('run')
         show @record
         macro(@select)

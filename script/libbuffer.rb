@@ -20,10 +20,11 @@ module CIAX
     include Msg
     attr_reader :flush_proc
     # svst: Server Status
-    def initialize(svst=[])
+    def initialize(svst={})
       @svst=type?(svst,Hash)
       #element of @q is bunch of frm args corresponding an appcmd
       @q=Queue.new
+      @eid="#{svst['eid']}"
       @tid=nil
       @flush_proc=UpdProc.new.add{verbose("Buffer","Flushing")}
       @send_proc=proc{}
@@ -51,7 +52,7 @@ module CIAX
     def recv_proc
       @tid=Thread.new{
         tc=Thread.current
-        tc[:name]="Buffer"
+        tc[:name]="Buffer Thread(#@eid)"
         tc[:color]=10
         Thread.pass
         loop{

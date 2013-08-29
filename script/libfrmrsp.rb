@@ -35,9 +35,9 @@ module CIAX
         @current_item=type?(item,Item)
         if rid=item[:response]
           @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
-          hash=yield
-          self['time']=hash['time']
-          @frame.set(hash['data'])
+          stream=yield
+          self['time']=stream['time']
+          @frame.set(stream.data['data'])
           getfield_rec(@sel[:main])
           if cc=unset('cc') #Field::unset
             cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")

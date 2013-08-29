@@ -11,6 +11,7 @@ module CIAX
       self['type']=type
       self['time']=UnixTime.now
       self['id']=nil
+      self['ver']=nil
       @data=init_struct.dup.extend(Enumx)
       @dataname=dataname
       @ver_color=6

@@ -12,7 +12,7 @@ readlines.each{|line|
     when 'time'
       ary << Time.at(v.to_f).to_s
     when 'base64'
-      ary << v.unpack("m").first
+      ary << v.unpack("m").first.inspect
     else
       ary << "#{k}=#{v}"
     end

@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ciax.sum.naoj.org/ciax-xml/ldbf" xmlns:ldbf="http://ciax.sum.naoj.org/ciax-xml/ldbf">
   <!--Override Field Structure-->
   <xsd:element name="field">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="1">
-        <xsd:element ref="ldbf:select" />
+        <xsd:element ref="ldbf:struct" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="select">
+  <xsd:element name="struct">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="ldbf:assign" />

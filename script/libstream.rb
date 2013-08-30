@@ -5,15 +5,17 @@ require "libupdate"
 
 module CIAX
   class Stream < Datax
+    attr_reader :save_proc,:stream
     def initialize(iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array)
-      super('stream',{'dir' => '','cmd' => '','data' => ''})
+      super('stream',{'dir' => '','cmd' => '','base64' => ''})
       verbose("Stream","Init/Client:#{iocmd.join(' ')}")
       @f=IO.popen(@iocmd,'r+')
       @wait=wait.to_f
       @timeout=timeout
       @ver_color=1
+      @save_proc=@upd_proc
     end
 
     def snd(str,cid)
@@ -52,15 +54,18 @@ module CIAX
     def ext_logging(id,ver=0)
       logging=Logging.new('stream',id,ver)
       @upd_proc << proc{
-        logging.append({'dir'=>@data['dir'],'cmd'=>@data['cmd'],'base64'=>encode(@data['data'])})
+        logging.append(@data)
       }
+      update({'id'=>id,'ver'=>ver})
+      SqLog::Save.new(self)
       self
     end
 
     private
     def upd(dir,data,cid=nil)
       self['time']=UnixTime.now
-      @data.update({'dir'=>dir,'data'=>data})
+      @stream=data
+      @data.update({'dir'=>dir,'base64'=>encode(data)})
       @data['cmd']=cid if cid
       super()
     end

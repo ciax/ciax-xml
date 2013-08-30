@@ -37,7 +37,7 @@ module CIAX
           @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
           stream=yield
           self['time']=stream['time']
-          @frame.set(stream.data['data'])
+          @frame.set(stream.stream)
           getfield_rec(@sel[:main])
           if cc=unset('cc') #Field::unset
             cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")

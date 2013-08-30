@@ -70,7 +70,6 @@ module CIAX
         if type?(iocmd,Array).empty?
           @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
           @io.ext_logging(self['id'],fdb['version'])
-          # @field.ext_sqlog
         else
           @io=Stream.new(iocmd,fdb['wait'],1)
         end

@@ -9,6 +9,7 @@ require "libappsym"
 require "libbuffer"
 require "libsqlog"
 require "thread"
+require "monitor"
 
 module CIAX
   module App
@@ -103,6 +104,7 @@ module CIAX
     # @< adb,watch,stat*
     # @ fsh,buf,log_proc
     class Sv < Exe
+      include MonitorMixin
       def initialize(adb,fsh,logging=nil)
         super(adb,adb['site_id'])
         @fsh=type?(fsh,Frm::Exe)
@@ -136,7 +138,9 @@ module CIAX
       def ext_logging(id,ver=0)
         logging=Logging.new('issue',id,ver)
         @post_proc << proc{|args|
-          logging.append({'cmd'=>args,'active'=>@watch.data['active']})
+          synchronize{
+            logging.append({'cmd'=>args,'active'=>@watch.data['active']})
+          }
         }
         self
       end

@@ -1,10 +1,12 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'json'
+require "monitor"
 
 # Should be extend (not include)
 module CIAX
   class Logging
+    include MonitorMixin
     include Msg
     def initialize(type,id,ver=0)
       @ver_color=6
@@ -14,7 +16,7 @@ module CIAX
       @header={'time' => UnixTime.now,'id' => id,'ver' => ver}
       @loghead=VarDir+"/"+type+"_#{id}"
       verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
-      self
+      super()
     end
 
     # Return UnixTime
@@ -22,8 +24,10 @@ module CIAX
       time=@header['time']=UnixTime.now
       unless ENV.key?('NOLOG')
         str=JSON.dump(@header.merge(data))
-        open(logfile,'a') {|f|
-          f.puts str
+        synchronize{
+          open(logfile,'a') {|f|
+            f.puts str
+          }
         }
         verbose("Logging","#{@type}/Appended #{str.size} byte")
       end

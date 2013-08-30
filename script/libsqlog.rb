@@ -42,8 +42,8 @@ module CIAX
         (["begin;"]+@log+["commit;"]).join("\n")
       end
 
-      def ext_exec
-        extend(SqLog::Exec).ext_exec
+      def ext_exec(id=nil)
+        extend(SqLog::Exec).ext_exec(id)
       end
 
       private
@@ -82,7 +82,8 @@ module CIAX
         Msg.type?(obj,Upd)
       end
 
-      def ext_exec
+      def ext_exec(id)
+        @stat['id']=id  if id
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+@stat['id']+".sq3"]
         unless check_table
           create

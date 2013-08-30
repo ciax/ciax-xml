@@ -5,7 +5,7 @@ require "libupdate"
 
 module CIAX
   class Stream < Datax
-    attr_reader :save_proc,:stream
+    attr_reader :save_proc
     def initialize(iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array)
@@ -64,7 +64,7 @@ module CIAX
     private
     def upd(dir,data,cid=nil)
       self['time']=UnixTime.now
-      @stream=data
+      self[:data]=data
       @data.update({'dir'=>dir,'base64'=>encode(data)})
       @data['cmd']=cid if cid
       super()

@@ -5,8 +5,8 @@ dso,cj2,cj2,udp:cst-o:9600,cxws2,25103
 det,srm,srm,tcp:ltc-c:4001,ciax,25104
 dts,oss,oss,tcp:cxws2:9999,ciax,25105
 #AscPck Relay
-asi,,,udp:cxws2:25102,cxws2,26102
-aso,,,udp:cxws2:25103,cxws2,26103
+#asi,,,udp:cxws2:25102,cxws2,26102
+#aso,,,udp:cxws2:25103,cxws2,26103
 #Compressor
 cci,bbe,bbe,tcp:ltc-i:4002,ciax,25105
 cco,bbe,bbe,tcp:ltc-o:4002,ciax,25106

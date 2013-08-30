@@ -37,7 +37,7 @@ module CIAX
           @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
           stream=yield
           self['time']=stream['time']
-          @frame.set(stream.stream)
+          @frame.set(stream[:data])
           getfield_rec(@sel[:main])
           if cc=unset('cc') #Field::unset
             cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
@@ -127,14 +127,14 @@ module CIAX
         res=Logging.set_logline(str)
         id=res['id']
         cid=res['cmd']
-        frame=res['data']
+        frame=res[:data]
       elsif STDIN.tty? || ARGV.size < 2
         $opt.usage("(opt) [id] [cmd] (par..) < string")
       else
         id=ARGV.shift
         cid=ARGV.shift
         res={'time'=>UnixTime.now}
-        res['data']=gets(nil) || exit
+        res[:data]=gets(nil) || exit
       end
       fdb=Loc::Db.new.set(id)[:frm]
       fobj=ExtCmd.new(fdb)

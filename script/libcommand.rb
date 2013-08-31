@@ -3,7 +3,6 @@ require 'libenumx'
 require 'libmsg'
 require 'librerange'
 require 'liblogging'
-require 'libupdate'
 
 #Access method
 #

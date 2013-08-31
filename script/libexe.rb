@@ -3,7 +3,6 @@ require "libmsg"
 require "socket"
 require "readline"
 require "libextcmd"
-require "libupdate"
 
 # Provide Server,Client
 # Integrate Command,Status

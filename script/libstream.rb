@@ -1,7 +1,5 @@
 #!/usr/bin/ruby
-require "libmsg"
-require "libenumx"
-require "libupdate"
+require "libdatax"
 
 module CIAX
   class Stream < Datax

@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libupdate'
 require 'libdatax'
 
 module CIAX

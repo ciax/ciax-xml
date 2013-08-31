@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libenumx"
-require "libupdate"
 
 module CIAX
   class Datax < Hashx

@@ -1,10 +1,6 @@
 #!/usr/bin/ruby
-require "libmsg"
-require "socket"
-require "readline"
-require "libextcmd"
-require "libupdate"
 require "libexe"
+require "readline"
 
 # Provide Shell related modules
 # Add Shell Command (by Shell extention)

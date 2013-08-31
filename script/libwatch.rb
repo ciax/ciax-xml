@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'libmsg'
 require 'libstatus'
 require 'librerange'
 

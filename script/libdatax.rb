@@ -15,6 +15,7 @@ module CIAX
       @dataname=dataname
       @ver_color=6
       @upd_proc=[] # Proc Array for Update Propagation to the upper Layers
+      @save_proc=[]
     end
 
     def to_j
@@ -33,6 +34,11 @@ module CIAX
     def read(json_str=nil)
       super
       _setdata
+      self
+    end
+
+    def save
+      @save_proc.each{|p| p.call(self)}
       self
     end
 
@@ -130,7 +136,6 @@ module CIAX
   module File
     attr_reader :save_proc
     def ext_file
-      @save_proc=[]
       verbose("File","Initialize")
       self
     end

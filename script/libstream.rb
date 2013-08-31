@@ -13,7 +13,6 @@ module CIAX
       @wait=wait.to_f
       @timeout=timeout
       @ver_color=1
-      @save_proc=@upd_proc
     end
 
     def snd(str,cid)
@@ -23,7 +22,7 @@ module CIAX
       reopen{
         @f.syswrite(str)
       }
-      upd('snd',str,cid)
+      upd('snd',str,cid).save
     end
 
     def rcv
@@ -33,7 +32,7 @@ module CIAX
         @f.sysread(4096)
       }||Msg.com_err("Stream:No response")
       verbose("Stream","Recieved #{str.size} byte on #{self['cmd']}")
-      upd('rcv',str)
+      upd('rcv',str).save
     end
 
     def reopen
@@ -55,7 +54,7 @@ module CIAX
         logging.append(@data)
       }
       update({'id'=>id,'ver'=>ver})
-      SqLog::Save.new(self)
+      SqLog::Save.new(self).proc_sync
       self
     end
 

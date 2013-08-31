@@ -9,12 +9,10 @@ module CIAX
       include Msg
       def initialize(stat,ver=nil)
         @ver_color=9
-        @stat=type?(stat,Datax)
+        @stat=type?(stat,Hash)
         ver||=@stat['ver'].to_i
         @log=[]
         @tid="#{@stat['type']}_#{ver}"
-        @stat.upd_proc << proc{upd}
-        self
       end
 
       def create
@@ -40,6 +38,11 @@ module CIAX
 
       def to_s
         (["begin;"]+@log+["commit;"]).join("\n")
+      end
+
+      def proc_sync
+        @stat.upd_proc << proc{upd}
+        self
       end
 
       private
@@ -83,18 +86,6 @@ module CIAX
           verbose("SqLog","Init/Table '#{@tid}' is created in #{@stat['id']}")
         end
         verbose("SqLog","Init/Start '#{@stat['id']}' (#{@tid})")
-        @elapsed=0
-        @lastupd=Time.now
-        @stat.save_proc << proc{save if @elapsed > 1}
-        self
-      end
-
-      def upd
-        # For transaction timing
-        super
-        @elapsed=Time.now-@lastupd
-        @lastupd=Time.now
-        self
       end
 
       # Check table existence
@@ -118,6 +109,12 @@ module CIAX
           verbose("SqLog","Save complete (#{@stat['id']})")
           @log.clear
         end
+        self
+      end
+
+      def proc_sync
+        super
+        @stat.save_proc << proc{save}
         self
       end
     end

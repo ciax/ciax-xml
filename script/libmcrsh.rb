@@ -18,6 +18,7 @@ module CIAX
         }
         mitem.new_rec(self,ig.valid_keys)
         @th=Thread.new{ mitem.start }
+        self['tid']=mitem.record['id']
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
         ext_shell(mitem.record,{'total' => nil,'stat' => "(%s)",'option' => nil})
       end
@@ -46,7 +47,8 @@ module CIAX
         each{|key,ms|
           cmd=ms['id']
           stat=ms['stat']
-          page << Msg.item("[#{key}]","#{cmd} (#{stat})")
+          tid=ms['tid']
+          page << Msg.item("[#{key}]","#{cmd} (#{stat}),#{tid}")
         }
         page.join("\n")
       end

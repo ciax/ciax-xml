@@ -3,7 +3,7 @@ require 'libmsg'
 require 'json'
 require "monitor"
 
-# Should be extend (not include)
+# Capable of wider application than SqLog
 module CIAX
   class Logging
     include MonitorMixin

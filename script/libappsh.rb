@@ -184,28 +184,57 @@ module CIAX
 
     class List < ShList
       def initialize
-        super{|id| App.new(@ldb.set(id)[:app],@fl[id])}
+        super{|id| App.new(@ldb.set(id)[:app],@fl[id]) }
         @ldb=Loc::Db.new
         if $opt['e'] || $opt['s']
           @fl=Frm::List.new
-          @layers.update @fl.layers
-          update_items(@ldb.list)
         else
           @fl={}
-          update_items(@ldb.list)
         end
-        @layers['app']=self
+        update_items(@ldb.list)
       end
     end
-  end
 
-  if __FILE__ == $0
-    ENV['VER']||='init/'
-    GetOpts.new('cet')
-    begin
-      App::List.new.shell(ARGV.shift)
-    rescue InvalidID
-      $opt.usage('(opt) [id]')
+    class ShLayer < List
+      def initialize
+        super
+        @layer=self
+        prk=proc{|item| raise(SwLayer,item[:cid]) }
+        @init_proc << proc{|exe|
+          exe.cobj['lo'].add_group('swl',"Switch Layer",5,5).add_item('frm','Frame Layer').share[:def_proc]=prk
+        }
+        @fl.init_proc << proc{|exe|
+          exe.cobj['lo'].add_group('swl',"Switch Layer",5,5).add_item('app','App Layer').share[:def_proc]=prk
+        }
+      end
+
+      def shell(site)
+        @site=site||@site
+        begin
+          @layer[@site].shell
+        rescue SwSite
+          @site=$!.to_s
+          retry
+        rescue SwLayer
+          case $!.to_s
+          when 'frm'
+            @layer=@fl
+          when 'app'
+            @layer=self
+          end
+          retry
+        end
+      end
+    end
+
+    if __FILE__ == $0
+      ENV['VER']||='init/'
+      GetOpts.new('cet')
+      begin
+        ShLayer.new.shell(ARGV.shift)
+      rescue InvalidID
+        $opt.usage('(opt) [id]')
+      end
     end
   end
 end

@@ -89,9 +89,9 @@ module CIAX
               res=@step.fail?
               raise(Interlock) if drop?(res)
             when 'wait'
+              setstat('wait')
               res=@step.timeout?{
                 print '.' if Msg.fg?
-                setstat('wait')
               }
               raise(Interlock) if drop?(res)
             when 'exec'
@@ -99,7 +99,6 @@ module CIAX
               res=@step.exec?
               @shary[:exec_proc].call(e1['site'],e1['args']) if exec?(res)
             when 'mcr'
-              print @step.result if Msg.fg?
               item=@shary[:submcr_proc].call(e1['args'])
               if @step.async?
                 @shary[:def_proc].call(item)
@@ -157,9 +156,8 @@ module CIAX
 
       # Set stat section
       def setstat(str,opt=nil) # Variable Value
-        @record['stat']=@msh['stat']=str
-        @record['option']=@msh['option']=opt
-        @record.save
+        @msh['stat']=str
+        @msh['option']=opt
       end
 
       # Print section

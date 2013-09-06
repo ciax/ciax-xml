@@ -18,25 +18,26 @@ module CIAX
       end
 
       def add_step(e1,shary)
-        step=Step.new(e1,@depth,shary)
+        step=Step.new(e1,@depth,shary){save}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
         step
       end
 
       def finish(str)
-        delete('option')
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
+        save
       end
     end
 
     class Step < Hashx
-      def initialize(db,depth,shary)
+      def initialize(db,depth,shary,&save_proc)
         update db
         self['depth']=depth
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @shary=shary
+        @save=save_proc
         @condition=delete('stat')
         @break=nil
         extend PrtStep unless $opt['r']
@@ -53,23 +54,24 @@ module CIAX
           refresh
           sleep 1
           yield
+          @save.call
         }
         self['result']= res ? 'timeout' : 'pass'
-        print result if Msg.fg?
+        save
         res
       end
 
       def skip?
         print title if Msg.fg?
         res=ok?('skip','pass') && !dryrun?
-        print result if Msg.fg?
+        save
         res
       end
 
       def fail?
         print title if Msg.fg?
         res=! ok?('pass','failed')
-        print result if Msg.fg?
+        save
         res
       end
 
@@ -78,14 +80,16 @@ module CIAX
         print title if Msg.fg?
         res= !dryrun?
         self['result']= res ? 'exec' : 'skip'
-        print result if Msg.fg?
+        save
         res
       end
 
       # Execution section
       def async?
+        print title if Msg.fg?
         res=(/true|1/ === self['async'])
-        self['result']= res ? 'forked' : 'done'
+        self['result']= res ? 'forked' : 'entering'
+        save
         res
       end
 
@@ -95,6 +99,11 @@ module CIAX
       def body(msg); msg; end
 
       private
+      def save
+        @save.call
+        print result if Msg.fg?
+      end
+
       def dryrun?
         ! ['e','s','t'].any?{|i| $opt[i]} && self['action']='dryrun'
       end

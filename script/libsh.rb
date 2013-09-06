@@ -106,7 +106,6 @@ module CIAX
       @swlgrp.add_item(layer,layer.capitalize+" mode")
       lst.init_proc << proc{|exe| exe.cobj['lo']['swl']=@swlgrp }
       self[layer]=lst
-      self
     end
 
     def shell(site)

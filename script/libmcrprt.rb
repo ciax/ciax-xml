@@ -56,12 +56,12 @@ module CIAX
       end
 
       def result
-        mary=[]
+        mary=['']
+        mary[0] << "(#{self['retry']}/#{self['max']})" if self['max']
         if res=self['result']
           title=res.capitalize
-          title << "(#{self['retry']}/#{self['max']})" if self['retry']
           color=(/failed|timeout/ === res) ? 1 : 2
-          mary << ' -> '+Msg.color(title,color)
+          mary[0] << ' -> '+Msg.color(title,color)
           if c=self['conditions']
             c.each{|h|
               if h['upd']

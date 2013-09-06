@@ -158,6 +158,7 @@ module CIAX
       def setstat(str,opt=nil) # Variable Value
         @msh['stat']=str
         @msh['option']=opt
+        @msh.upd_proc.each{|p| p.call}
       end
 
       # Print section

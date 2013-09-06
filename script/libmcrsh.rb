@@ -40,6 +40,7 @@ module CIAX
         @data[page]=ms
         ms.pdb['total']="[#{page}/%s]"
         ms['total']=@total
+        ms.upd_proc << proc{save}
         page
       end
 

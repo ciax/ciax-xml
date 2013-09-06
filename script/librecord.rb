@@ -5,7 +5,7 @@ require "libmcrprt"
 
 module CIAX
   module Mcr
-    Dryrun=1
+    Dryrun=100
     class Record < Datax
       attr_accessor :depth
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
@@ -46,8 +46,8 @@ module CIAX
       # Conditional judgment section
       def timeout?
         print title if Msg.fg?
-        self['max']=self['retry']
-        max = dryrun? ? Dryrun : self['max']
+        max=self['max']=self['retry']
+        max=[Dryrun,max.to_i].min if dryrun?
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
           break if ok?

@@ -137,7 +137,7 @@ module CIAX
 
       def query(cmds)
         vk=@shary[:valid_keys].replace(cmds)
-        msg='['+vk.map{|s| s.capitalize}.join('/')+']?'
+        msg='['+vk.join('/')+']?'
         setstat('query',msg)
         begin
           if Msg.fg?

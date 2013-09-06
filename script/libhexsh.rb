@@ -34,7 +34,7 @@ module CIAX
         @upd_proc.concat(ash.upd_proc)
         if logging
           logging=Logging.new('hex',self['id'],@adb['version'])
-          ash.save_proc << proc{logging.append({'hex' => @output.to_s})}
+          ash.stat.save_proc << proc{logging.append({'hex' => @output.to_s})}
         end
         ext_server(@adb['port'].to_i+1000)
       end

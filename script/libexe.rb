@@ -11,7 +11,7 @@ require "libextcmd"
 
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :upd_proc,:post_proc,:save_proc,:cobj,:output
+    attr_reader :upd_proc,:post_proc,:cobj,:output
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       self['id']=id
@@ -20,11 +20,9 @@ module CIAX
       @pre_proc=[] # Proc for Command Check (by User exec)
       @post_proc=[] # Proc for Command Issue (by User exec)
       @upd_proc=[] # Proc for Server Status Update (by User query)
-      @save_proc=[] # Proc for Device Data Update (by Device response)
       @ver_color=6
       self['msg']=''
       Thread.abort_on_exception=true
-      at_exit{@save_proc.each{|p| p.call}}
     end
 
     # Sync only (Wait for other thread)

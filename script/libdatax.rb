@@ -15,7 +15,7 @@ module CIAX
       @dataname=dataname
       @ver_color=6
       @upd_proc=[] # Proc Array for Update Propagation to the upper Layers
-      @save_proc=[]
+      @save_proc=[] # Proc for Device Data Update (by Device response)
     end
 
     def to_j

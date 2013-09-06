@@ -28,15 +28,16 @@ module CIAX
       end
     end
 
-    class Stat < Hashx
+    class Stat < Datax
       def initialize
+        super('macro',{},'procs')
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @total='/'
       end
 
       def add_page(ms)
         page="#{@total.succ!}"
-        self[page]=ms
+        @data[page]=ms
         ms.pdb['total']="[#{page}/%s]"
         ms['total']=@total
         page
@@ -44,7 +45,7 @@ module CIAX
 
       def to_s
         page=[@caption]
-        each{|key,ms|
+        @data.each{|key,ms|
           cmd=ms['id']
           stat=ms['stat']
           tid=ms['tid']
@@ -57,9 +58,10 @@ module CIAX
     class List < ShList
       attr_reader :total
       def initialize
-        mdb=Mcr::Db.new.set(ENV['PROJ']||'ciax')
         super
-        @stat=Stat.new
+        proj=ENV['PROJ']||'ciax'
+        mdb=Mcr::Db.new.set(proj)
+        @stat=Stat.new.ext_file(proj)
         @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>2})
         @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
         @swsgrp.add_dummy("1..",'Macro Process')

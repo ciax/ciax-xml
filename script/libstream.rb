@@ -3,7 +3,6 @@ require "libdatax"
 
 module CIAX
   class Stream < Datax
-    attr_reader :save_proc
     def initialize(iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array)

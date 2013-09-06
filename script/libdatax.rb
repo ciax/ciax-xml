@@ -4,7 +4,7 @@ require "libenumx"
 
 module CIAX
   class Datax < Hashx
-    attr_reader :data,:upd_proc
+    attr_reader :data,:upd_proc,:save_proc
     # @data is hidden from access by '[]'
     def initialize(type,init_struct={},dataname='data')
       self['type']=type
@@ -134,7 +134,6 @@ module CIAX
   end
 
   module File
-    attr_reader :save_proc
     def ext_file
       verbose("File","Initialize")
       self

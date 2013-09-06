@@ -64,10 +64,8 @@ module CIAX
         @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
         @swsgrp.add_dummy("1..",'Macro Process')
         @al=App::List.new
-        @layers.update(@al.layers)
         @mobj=ExtCmd.new(mdb,@al){|item| add_page(Sh.new(item))}
         @init_proc << proc{|ms| ms.cobj['sv']['ext']=@mobj['sv']['ext']}
-        @layers['mcr']=self
         # Init Macro Manager Page
         man=Exe.new('mcr',mdb['id']).ext_shell(@stat)
         man['stat']='Macro Manager'

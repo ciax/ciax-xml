@@ -67,10 +67,9 @@ module CIAX
   end
 
   class ShList < ExeList
-    attr_reader :layers,:site
+    attr_reader :site
     def initialize
       super
-      @layers={}
       @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
       @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
       @init_proc << proc{|exe|
@@ -103,25 +102,26 @@ module CIAX
       @swlgrp.share[:def_proc]=proc{|item| raise(SwLayer,item[:cid]) }
     end
 
-    def update_layers(layers={})
-      layers.each{|layer,shlist|
-        @swlgrp.add_item(layer,layer.capitalize+" mode")
-        shlist.init_proc << proc{|exe|
-          exe.cobj['lo']['swl']=@swlgrp
-        }
-      }
-      update(layers)
+    def add_layer(layer,lst)
+      @swlgrp.add_item(layer,layer.capitalize+" mode")
+      lst.init_proc << proc{|exe| exe.cobj['lo']['swl']=@swlgrp }
+      self[layer]=lst
+      self
     end
 
     def shell(site)
-      layer=keys.last
+      layer=keys.first
       begin
-        self[layer].shell(site)
+        self[layer][site].shell
+      rescue SwSite
+        site=$!.to_s
+        retry
       rescue SwLayer
-        layer,ns=$!.to_s.split(':')
-        site=ns if ns || self[layer].site
+        layer=$!.to_s
         retry
       end
+    rescue InvalidID
+      $opt.usage('(opt) [id]')
     end
   end
 end

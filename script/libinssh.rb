@@ -10,11 +10,17 @@ module CIAX
       def initialize
         super
         if $opt['f']
-          update_layers(Frm::List.new.layers)
+          fl=Frm::List.new
+          add_layer('frm',fl)
         elsif $opt['x']
-          update_layers(Hex::List.new.layers)
+          hl=Hex::List.new
+          add_layer('hex',hl)
+          add_layer('app',hl.al)
+          add_layer('frm',hl.al.fl)
         else
-          update_layers(App::List.new.layers)
+          al=App::List.new
+          add_layer('app',al)
+          add_layer('frm',al.fl)
         end
       end
     end

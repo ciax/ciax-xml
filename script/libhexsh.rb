@@ -51,12 +51,11 @@ module CIAX
     end
 
     class List < ShList
+      attr_reader :al
       def initialize
-        super{|id| Hex.new(@al[id])}
         @al=App::List.new
+        super{|id| Hex.new(@al[id])}
         update_items(Loc::Db.new.list)
-        @layers.update @al.layers
-        @layers['hex']=self
       end
     end
   end

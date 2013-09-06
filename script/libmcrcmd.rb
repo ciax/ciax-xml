@@ -2,7 +2,7 @@
 require "libmcrdb"
 require "librecord"
 require "libcommand"
-require "libinssh"
+require "libappsh"
 
 module CIAX
   module Mcr

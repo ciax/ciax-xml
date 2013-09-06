@@ -90,9 +90,7 @@ module CIAX
               raise(Interlock) if drop?(res)
             when 'wait'
               setstat('wait')
-              res=@step.timeout?{
-                print '.' if Msg.fg?
-              }
+              res=@step.timeout?{show '.'}
               raise(Interlock) if drop?(res)
             when 'exec'
               @running << e1['site']
@@ -158,7 +156,7 @@ module CIAX
       def setstat(str,opt=nil) # Variable Value
         @msh['stat']=str
         @msh['option']=opt
-        @msh.upd_proc.each{|p| p.call}
+#        @msh.upd_proc.each{|p| p.call}
       end
 
       # Print section

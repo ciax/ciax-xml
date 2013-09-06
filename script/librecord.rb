@@ -5,7 +5,7 @@ require "libmcrprt"
 
 module CIAX
   module Mcr
-    Dryrun=100
+    Dryrun=5
     class Record < Datax
       attr_accessor :depth
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
@@ -37,7 +37,7 @@ module CIAX
         self['depth']=depth
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @shary=shary
-        @save=save_proc
+        @save_proc=save_proc
         @condition=delete('stat')
         @break=nil
         extend PrtStep unless $opt['r']
@@ -45,7 +45,7 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        print title if Msg.fg?
+        show title
         max=self['max']=self['retry']
         max=[Dryrun,max.to_i].min if dryrun?
         res=max.to_i.times{|n| #gives number or nil(if break)
@@ -54,7 +54,7 @@ module CIAX
           refresh
           sleep 1
           yield
-          @save.call
+          @save_proc.call
         }
         self['result']= res ? 'timeout' : 'pass'
         save
@@ -62,14 +62,14 @@ module CIAX
       end
 
       def skip?
-        print title if Msg.fg?
+        show title
         res=ok?('skip','pass') && !dryrun?
         save
         res
       end
 
       def fail?
-        print title if Msg.fg?
+        show title
         res=! ok?('pass','failed')
         save
         res
@@ -77,7 +77,7 @@ module CIAX
 
       # Interactive section
       def exec?
-        print title if Msg.fg?
+        show title
         res= !dryrun?
         self['result']= res ? 'exec' : 'skip'
         save
@@ -86,7 +86,7 @@ module CIAX
 
       # Execution section
       def async?
-        print title if Msg.fg?
+        show title
         res=(/true|1/ === self['async'])
         self['result']= res ? 'forked' : 'entering'
         save
@@ -100,8 +100,12 @@ module CIAX
 
       private
       def save
-        @save.call
+        @save_proc.call
         print result if Msg.fg?
+      end
+
+      def show(msg)
+        print msg if Msg.fg?
       end
 
       def dryrun?

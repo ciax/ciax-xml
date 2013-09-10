@@ -24,7 +24,7 @@ module CIAX
       self
     end
 
-    def to_s
+    def prompt
       str=''
       @pdb.each{|k,fmt|
         next unless v=self[k]
@@ -49,7 +49,7 @@ module CIAX
         @cobj.valid_keys.grep(/^#{word}/)
       }
       begin
-        while line=Readline.readline(to_s,true)
+        while line=Readline.readline(prompt,true)
           break if /^q/ === line
           exe(shell_input(line))
           puts shell_output

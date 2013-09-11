@@ -67,19 +67,16 @@ module CIAX
         @swsgrp.add_item('0','Macro Manager')
         @swsgrp.add_dummy('1..','Macro Process')
         @al=App::List.new
-        @mobj=ExtCmd.new(mdb,@al){|item| add_page(item)}
+        @mobj=ExtCmd.new(mdb,@al){|item| add_page(@stat.add_page(item))}
         @init_proc << proc{|ms| ms.cobj['sv']['ext']=@mobj['sv']['ext']}
         # Init Macro Manager Page
-        man=Exe.new('mcr',mdb['id']).ext_shell(@stat)
-        self['0']=man
-        @init_proc.each{|p| p.call(man)}
+        add_page(Exe.new('mcr',mdb['id']).ext_shell(@stat))
       end
 
-      def add_page(item)
-        ms=@stat.add_page(item)
-        page=@stat.data.size.to_s
-        @swsgrp.add_item(page,ms['stat'])
-        self[page]=ms
+      def add_page(ms)
+        page=@stat.data.size
+        self[page.to_s]=ms
+        @swsgrp.add_item(page.to_s,ms['stat'])
         @init_proc.each{|p| p.call(ms)}
         self
       end

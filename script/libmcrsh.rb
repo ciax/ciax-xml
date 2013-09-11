@@ -32,14 +32,20 @@ module CIAX
       def initialize
         super('macro',[],'procs')
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
+        @total=''
       end
 
-      def add_page(item)
-        ms=Sh.new(item)
+      def add_page(ms)
         @data << ms
-        ms.pdb['total']="[#{@data.size}/%s]"
-        ms['total']=@data.size
         ms.upd_proc << proc{save}
+        set_prom(ms)
+      end
+
+      def set_prom(ms)
+        page=@data.size.to_s
+        ms.pdb['total']="[#{page}/%s]"
+        @total.replace(page)
+        ms['total']=@total
         ms
       end
 
@@ -58,19 +64,18 @@ module CIAX
 
     class List < ShList
       def initialize
-        super
         proj=ENV['PROJ']||'ciax'
         mdb=Mcr::Db.new.set(proj)
         @stat=Stat.new.ext_file(proj)
+        super{@stat.set_prom(Exe.new('mcr',mdb['id']).ext_shell(@stat))}
         @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>2})
         @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
         @swsgrp.add_item('0','Macro Manager')
         @swsgrp.add_dummy('1..','Macro Process')
         @al=App::List.new
-        @mobj=ExtCmd.new(mdb,@al){|item| add_page(@stat.add_page(item))}
-        @init_proc << proc{|ms| ms.cobj['sv']['ext']=@mobj['sv']['ext']}
+        @mobj=ExtCmd.new(mdb,@al){|item| add_page(@stat.add_page(Sh.new(item)))}
         # Init Macro Manager Page
-        add_page(Exe.new('mcr',mdb['id']).ext_shell(@stat))
+        @init_proc << proc{|ms| ms.cobj['sv']['ext']=@mobj['sv']['ext']}
       end
 
       def add_page(ms)

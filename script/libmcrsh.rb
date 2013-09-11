@@ -35,12 +35,6 @@ module CIAX
         @total=''
       end
 
-      def add_page(ms)
-        @data << ms
-        ms.upd_proc << proc{save}
-        set_prom(ms)
-      end
-
       def set_prom(ms)
         page=@data.size.to_s
         ms.pdb['total']="[#{page}/%s]"
@@ -73,14 +67,16 @@ module CIAX
         @swsgrp.add_item('0','Macro Manager')
         @swsgrp.add_dummy('1..','Macro Process')
         @al=App::List.new
-        @mobj=ExtCmd.new(mdb,@al){|item| add_page(@stat.add_page(Sh.new(item)))}
+        @mobj=ExtCmd.new(mdb,@al){|item| add_page(item)}
         # Init Macro Manager Page
         @init_proc << proc{|ms| ms.cobj['sv']['ext']=@mobj['sv']['ext']}
       end
 
-      def add_page(ms)
+      def add_page(item)
+        ms=Sh.new(item)
+        @stat.data << ms
         page=@stat.data.size.to_s
-        self[page]=ms
+        self[page]=@stat.set_prom(ms)
         @swsgrp.add_item(page,ms['stat'])
         @init_proc.each{|p| p.call(ms)}
         self

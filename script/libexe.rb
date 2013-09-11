@@ -151,7 +151,7 @@ module CIAX
     def initialize(&new_proc)
       $opt||=GetOpts.new
       @new_proc=new_proc # For generate Exe (allows nil)
-      @init_proc=[] # initialize exe at new key generated
+      @init_proc=[] # initialize exe (mostly add new menu) at new key generated
     end
 
     def [](key)

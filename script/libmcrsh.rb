@@ -68,7 +68,7 @@ module CIAX
         mdb=Mcr::Db.new.set(proj)
         @stat=Stat.new.ext_file(proj)
         super{@stat.set_prom(Exe.new('mcr',mdb['id']).ext_shell(@stat))}
-        @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>2})
+        @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>5})
         @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
         @swsgrp.add_item('0','Macro Manager')
         @swsgrp.add_dummy('1..','Macro Process')
@@ -79,9 +79,9 @@ module CIAX
       end
 
       def add_page(ms)
-        page=@stat.data.size
-        self[page.to_s]=ms
-        @swsgrp.add_item(page.to_s,ms['stat'])
+        page=@stat.data.size.to_s
+        self[page]=ms
+        @swsgrp.add_item(page,ms['stat'])
         @init_proc.each{|p| p.call(ms)}
         self
       end

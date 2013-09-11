@@ -30,34 +30,33 @@ module CIAX
 
     class Stat < Datax
       def initialize
-        super('macro',{},'procs')
+        super('macro',[],'procs')
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
-        @total='/'
       end
 
-      def add_page(ms)
-        page="#{@total.succ!}"
-        @data[page]=ms
-        ms.pdb['total']="[#{page}/%s]"
-        ms['total']=@total
+      def add_page(item)
+        ms=Sh.new(item)
+        @data << ms
+        ms.pdb['total']="[#{@data.size}/%s]"
+        ms['total']=@data.size
         ms.upd_proc << proc{save}
-        page
+        ms
       end
 
       def to_s
         page=[@caption]
-        @data.each{|key,ms|
+        num=0
+        @data.each{|ms|
           cmd=ms['id']
           stat=ms['stat']
           tid=ms['tid']
-          page << Msg.item("[#{key}]","#{cmd} (#{stat}),#{tid}")
+          page << Msg.item("[#{num+=1}]","#{cmd} (#{stat}),#{tid}")
         }
         page.join("\n")
       end
     end
 
     class List < ShList
-      attr_reader :total
       def initialize
         super
         proj=ENV['PROJ']||'ciax'
@@ -65,18 +64,20 @@ module CIAX
         @stat=Stat.new.ext_file(proj)
         @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>2})
         @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
-        @swsgrp.add_dummy("1..",'Macro Process')
+        @swsgrp.add_item('0','Macro Manager')
+        @swsgrp.add_dummy('1..','Macro Process')
         @al=App::List.new
-        @mobj=ExtCmd.new(mdb,@al){|item| add_page(Sh.new(item))}
+        @mobj=ExtCmd.new(mdb,@al){|item| add_page(item)}
         @init_proc << proc{|ms| ms.cobj['sv']['ext']=@mobj['sv']['ext']}
         # Init Macro Manager Page
         man=Exe.new('mcr',mdb['id']).ext_shell(@stat)
-        man['stat']='Macro Manager'
-        add_page(man)
+        self['0']=man
+        @init_proc.each{|p| p.call(man)}
       end
 
-      def add_page(ms)
-        page=@stat.add_page(ms)
+      def add_page(item)
+        ms=@stat.add_page(item)
+        page=@stat.data.size.to_s
         @swsgrp.add_item(page,ms['stat'])
         self[page]=ms
         @init_proc.each{|p| p.call(ms)}

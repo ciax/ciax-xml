@@ -17,8 +17,8 @@ module CIAX
         ext_file(self['id'])
       end
 
-      def add_step(e1,shary)
-        step=Step.new(e1,@depth,shary){save}
+      def add_step(e1,get)
+        step=Step.new(e1,@depth,get){save}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
         step
@@ -32,11 +32,11 @@ module CIAX
     end
 
     class Step < Hashx
-      def initialize(db,depth,shary,&save_proc)
+      def initialize(db,depth,get,&save_proc)
         update db
         self['depth']=depth
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
-        @shary=shary
+        @get=get
         @save_proc=save_proc
         @condition=delete('stat')
         @break=nil
@@ -123,7 +123,7 @@ module CIAX
 
       def scan
         stats=sites.inject({}){|hash,site|
-          hash[site]=@shary[:stat_proc].call(site)
+          hash[site]=@get[:stat_proc].call(site)
           hash
         }
         @condition.map{|h|
@@ -146,7 +146,7 @@ module CIAX
 
       def refresh
         sites.each{|site|
-          @shary[:stat_proc].call(site).refresh
+          @get[:stat_proc].call(site).refresh
         }
       end
 

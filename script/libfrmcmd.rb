@@ -15,11 +15,11 @@ module CIAX
         ig.add_item('save',"Save Field [key,key...] (tag)",[any,any])
         ig.add_item('load',"Load Field (tag)",[any])
         set=ig.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
-        set.share[:def_proc]=proc{|item|
+        set.set[:def_proc]=proc{|item|
           field.set(*item.par)
         }
         sv=self['sv']
-        sv['ext']=ExtGrp.new(fdb,[sv.share]){|id,gsa|
+        sv['ext']=ExtGrp.new(fdb,[sv.set]){|id,gsa|
           ExtItem.new(field,fdb,id,gsa)
         }
       end

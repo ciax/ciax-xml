@@ -9,8 +9,8 @@ module CIAX
       def initialize(mitem)
         super('mcr',mitem[:cid])
         ig=@cobj['sv']['int']
-        ig.update_items(mitem.shary[:cmdlist])
-        ig.share[:def_proc]=proc{|item|
+        ig.update_items(mitem.get[:cmdlist])
+        ig.set[:def_proc]=proc{|item|
           if @th.status == 'sleep'
             @th[:query]=item.id
             @th.run
@@ -63,7 +63,7 @@ module CIAX
         @stat=Stat.new.ext_file(proj)
         super{@stat.set_prom(Exe.new('mcr',mdb['id']).ext_shell(@stat))}
         @swsgrp=Group.new({'caption'=>'Switch Macro','color'=>5,'column'=>5})
-        @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
+        @swsgrp.set[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
         @swsgrp.add_item('0','Macro Manager')
         @swsgrp.add_dummy('1..','Macro Process')
         @al=App::List.new

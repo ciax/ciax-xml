@@ -71,7 +71,7 @@ module CIAX
     def initialize
       super
       @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
-      @swsgrp.share[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
+      @swsgrp.set[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
       @init_proc << proc{|exe|
         exe.cobj['lo']['sws']=@swsgrp
       }
@@ -99,7 +99,7 @@ module CIAX
   class ShLayer < Hashx
     def initialize
       @swlgrp=Group.new({'caption'=>"Switch Layer",'color'=>5,'column'=>5})
-      @swlgrp.share[:def_proc]=proc{|item| raise(SwLayer,item[:cid]) }
+      @swlgrp.set[:def_proc]=proc{|item| raise(SwLayer,item[:cid]) }
     end
 
     def add_layer(layer,lst)

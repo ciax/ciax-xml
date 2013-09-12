@@ -34,21 +34,21 @@ require 'liblogging'
 # Keep current command and parameters
 
 module CIAX
-  # Array of Share(Hash): each Hash is associated with Domain,Group,Item;
-  # Usage:Setting/ provide @share(Share) and add to ShareAry at each Level, value setting should be done to the @share;
-  # Usage:Getting/ simply get form ShareAry, not from @share;
-  class Share < Hash
+  # Array of WriteShare(Hash): each Hash is associated with Domain,Group,Item;
+  # Usage:Setting/ provide @set(WriteShare) and add to ReadShare at each Level, value setting should be done to the @set;
+  # Usage:Getting/ simply get form ReadShare, not from @set;
+  class WriteShare < Hash
     private :[]
   end
 
-  class ShareAry < Array
+  class ReadShare < Array
     private :[]=
 
     def [](id)
       each{|lv|
         return lv.fetch(id) if lv.key?(id)
       }
-      Msg.warn("No such key in ShareAry [#{id}]")
+      Msg.warn("No such key in ReadShare [#{id}]")
       nil
     end
   end
@@ -74,7 +74,7 @@ module CIAX
     end
 
     def int_proc=(p)
-      self['sv']['hid']['interrupt'].share[:def_proc]=type?(p,Proc)
+      self['sv']['hid']['interrupt'].set[:def_proc]=type?(p,Proc)
     end
 
     def list
@@ -95,10 +95,10 @@ module CIAX
   end
 
   class Domain < Hashx
-    attr_reader :share
+    attr_reader :set
     def initialize(color=2)
-      @share=Share.new
-      @share[:def_proc]=proc{}
+      @set=WriteShare.new
+      @set[:def_proc]=proc{}
       @grplist=[] # For ordering
       @color=color
       @ver_color=2
@@ -116,7 +116,7 @@ module CIAX
 
     def add_group(gid,caption,column=2,color=@color)
       attr={'caption' => caption,'column' => column,'color' => color}
-      self[gid]=Group.new(attr,[@share])
+      self[gid]=Group.new(attr,[@set])
     end
 
     def setcmd(args)
@@ -144,14 +144,14 @@ module CIAX
   end
 
   class Group < Hashx
-    attr_reader :valid_keys,:cmdlist,:share
+    attr_reader :valid_keys,:cmdlist,:set
     #attr = {caption,color,column,:members}
     def initialize(attr,upper=[])
       @attr=type?(attr,Hash)
       @valid_keys=[]
       @cmdlist=CmdList.new(@attr,@valid_keys)
-      @share=Share.new
-      @shary=ShareAry.new([@share]+type?(upper,Array))
+      @set=WriteShare.new
+      @get=ReadShare.new([@set]+type?(upper,Array))
       @ver_color=3
     end
 
@@ -168,7 +168,7 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(id,@shary)
+      item=self[id]=Item.new(id,@get)
       item[:label]= title
       item[:parameter] = parameter if parameter
       item
@@ -178,7 +178,7 @@ module CIAX
       type?(labels,Hash)
       labels.each{|id,title|
         @cmdlist[id]=title
-        self[id]=Item.new(id,@shary)
+        self[id]=Item.new(id,@get)
       }
       self
     end
@@ -191,20 +191,20 @@ module CIAX
 
   class Item < Hashx
     include Math
-    attr_reader :id,:par,:args,:share,:shary
-    #share should have :def_proc
+    attr_reader :id,:par,:args,:set,:get
+    #set should have :def_proc
     def initialize(id,upper=[])
       @id=id
       @par=[]
       @args=[]
-      @share=Share.new
-      @shary=ShareAry.new([@share]+type?(upper,Array))
+      @set=WriteShare.new
+      @get=ReadShare.new([@set]+type?(upper,Array))
       @ver_color=5
     end
 
     def exe
       verbose(self.class,"Execute #{@args}")
-      @shary[:def_proc].call(self)
+      @get[:def_proc].call(self)
       self
     end
 

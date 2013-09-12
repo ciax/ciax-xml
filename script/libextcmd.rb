@@ -8,7 +8,7 @@ module CIAX
     def initialize(db)
       super()
       sv=self['sv']
-      sv['ext']=ExtGrp.new(db,[sv.share]){|id,pa|
+      sv['ext']=ExtGrp.new(db,[sv.set]){|id,pa|
         ExtItem.new(db,id,pa)
       }
     end
@@ -24,7 +24,7 @@ module CIAX
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:select].keys).each{|id|
           subgrp[id]=cdb[:label][id]
-          self[id]=yield(id,@shary)
+          self[id]=yield(id,@get)
 
         }
         @cmdary << subgrp

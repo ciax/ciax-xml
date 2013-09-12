@@ -9,7 +9,7 @@ module CIAX
     class ExtCmd < Command
       def initialize(mdb,al,&def_proc) # Block if for SubMacro
         super()
-        svs=initshare(self['sv'].share,al,def_proc)
+        svs=initshare(self['sv'].set,al,def_proc)
         self['sv']['ext']=ExtGrp.new(mdb,[svs])
       end
 
@@ -42,7 +42,7 @@ module CIAX
       def setcmd(args)
         id,*par=type?(args,Array)
         @valid_keys.include?(id) || raise(InvalidCMD,list)
-        ExtItem.new(@mdb,id,@shary).set_par(par)
+        ExtItem.new(@mdb,id,@get).set_par(par)
       end
     end
 
@@ -50,7 +50,7 @@ module CIAX
       attr_reader :record
       def new_rec(msh={},valid_keys=[])
         @msh=msh
-        @share[:valid_keys]=valid_keys.clear
+        @set[:valid_keys]=valid_keys.clear
         @running=[]
         @record=Record.new
         [:cid,:label].each{|k| @record[k.to_s]=self[k]} # Fixed Value
@@ -70,7 +70,7 @@ module CIAX
       rescue Interrupt
         warn("\nInterrupt Issued to #{@running}]")
         @running.each{|site|
-          @shary[:exec_proc].call(site,['interrupt'])
+          @get[:exec_proc].call(site,['interrupt'])
         }
         finish('interrupted')
         self
@@ -81,7 +81,7 @@ module CIAX
         @record.depth+=1
         select.each{|e1|
           begin
-            @step=@record.add_step(e1,@shary)
+            @step=@record.add_step(e1,@get)
             case e1['type']
             when 'goal'
               raise(Skip) if @step.skip?
@@ -95,11 +95,11 @@ module CIAX
             when 'exec'
               @running << e1['site']
               res=@step.exec?
-              @shary[:exec_proc].call(e1['site'],e1['args']) if exec?(res)
+              @get[:exec_proc].call(e1['site'],e1['args']) if exec?(res)
             when 'mcr'
-              item=@shary[:submcr_proc].call(e1['args'])
+              item=@get[:submcr_proc].call(e1['args'])
               if @step.async?
-                @shary[:def_proc].call(item)
+                @get[:def_proc].call(item)
               else
                 macro(item.select)
               end
@@ -118,7 +118,7 @@ module CIAX
         @running.clear
         show str+"\n"
         @record.finish(str)
-        @shary[:valid_keys].clear
+        @get[:valid_keys].clear
         setstat(str)
       end
 
@@ -134,7 +134,7 @@ module CIAX
       end
 
       def query(cmds)
-        vk=@shary[:valid_keys].replace(cmds)
+        vk=@get[:valid_keys].replace(cmds)
         msg='['+vk.join('/')+']?'
         setstat('query',msg)
         begin
@@ -149,7 +149,7 @@ module CIAX
         setstat('run')
         vk.clear
         @step['action']=res
-        @shary[:cmdproc][res].call
+        @get[:cmdproc][res].call
       end
 
       # Set stat section

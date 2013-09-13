@@ -60,7 +60,7 @@ module CIAX
         tc=Thread.current
         tc[:id]=@record['id']
         tc[:eid]=tc[:cid]=@record['cid']
-        setstat('run')
+        tc[:stat]='run'
         show @record
         macro(@select)
         finish
@@ -119,7 +119,7 @@ module CIAX
         show str+"\n"
         @record.finish(str)
         @get[:valid_keys].clear
-        setstat(str)
+        Thread.current[:stat]=str
       end
 
       # Interactive section
@@ -135,28 +135,24 @@ module CIAX
 
       def query(cmds)
         vk=@get[:valid_keys].replace(cmds)
-        msg='['+vk.join('/')+']?'
-        setstat('query',msg)
+        msg=vk.join('/')
+        tc=Thread.current
+        tc[:stat]='query'
+        tc[:option]=msg
         begin
           if Msg.fg?
             Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)}
-            res=Readline.readline(@step.body(msg),true).rstrip
+            res=Readline.readline(@step.body("[#{msg}]?"),true).rstrip
           else
             sleep
-            res=Thread.current[:query]
+            res=tc[:query]
           end
         end until vk.include?(res)
-        setstat('run')
+        tc[:stat]='run'
+        tc[:option]=nil
         vk.clear
         @step['action']=res
         @get[:cmdproc][res].call
-      end
-
-      # Set stat section
-      def setstat(str,opt=nil) # Variable Value
-        tc=Thread.current
-        tc[:stat]=str
-        tc[:option]=opt
       end
 
       # Print section

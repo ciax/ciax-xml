@@ -19,7 +19,7 @@ module CIAX
         mitem.new_rec(ig.valid_keys)
         @th=Thread.new{ mitem.start }
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}
-        ext_shell(mitem.record,{'total' => "%s",'stat' => "(%s)",'option' => "%s"},@th)
+        ext_shell(mitem.record,{'total' => "%s",'stat' => "(%s)",'option' => "[%s]?"},@th)
       end
     end
 

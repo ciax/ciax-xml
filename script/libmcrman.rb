@@ -17,7 +17,8 @@ module CIAX
         ig=@cobj['sv']['int']
         ig.update_items(@cobj['sv']['ext'].get[:cmdlist])
         ig.set[:def_proc]=proc{|item|
-          if th=thg.list[item.par[0].to_i]
+          n=item.par[0].to_i
+          if th=thg.list[n]
             if th.status == 'sleep'
               th[:query]=item.id
               th.run
@@ -39,11 +40,10 @@ module CIAX
       def to_s
         page=[@caption]
         @data.list.each_with_index{|th,i|
-          cmd=th[:cid]
-          stat=th[:stat]
-          tid=th[:id]
-          option=th[:option]
-          page << Msg.item("[#{i}] (#{tid})","#{cmd} (#{stat})#{option}")
+          title="[#{i}] (#{th[:id]})"
+          msg="#{th[:cid]} (#{th[:stat]})"
+          msg << "[#{th[:option]}]?" if th[:option]
+          page << Msg.item(title,msg)
         }
         page.join("\n")
       end

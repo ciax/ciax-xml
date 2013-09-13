@@ -11,7 +11,7 @@ module CIAX
         @stat=Stat.new.ext_file(proj)
         thg=@stat.data
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
-                item.new_rec(self)
+                item.new_rec
                 @stat.add_proc(Thread.new{item.start})
               })
         ig=@cobj['sv']['int']

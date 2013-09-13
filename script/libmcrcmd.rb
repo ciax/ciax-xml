@@ -48,8 +48,7 @@ module CIAX
 
     class ExtItem < ExtItem
       attr_reader :record
-      def new_rec(msh={},valid_keys=[])
-        @msh=msh
+      def new_rec(valid_keys=[])
         @set[:valid_keys]=valid_keys.clear
         @running=[]
         @record=Record.new

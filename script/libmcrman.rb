@@ -9,6 +9,7 @@ module CIAX
         proj=ENV['PROJ']||'ciax'
         mdb=Mcr::Db.new.set(proj)
         @stat=Stat.new.ext_file(proj)
+        thg=@stat.data
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
                 item.new_rec(self)
                 @stat.add_proc(Thread.new{item.start})
@@ -16,14 +17,14 @@ module CIAX
         ig=@cobj['sv']['int']
         ig.update_items(@cobj['sv']['ext'].get[:cmdlist])
         ig.set[:def_proc]=proc{|item|
-          th=Thread.current
-          if th.status == 'sleep'
-            th[:query]=item.id
-            th.run
+          if th=thg.list[item.par[0].to_i]
+            if th.status == 'sleep'
+              th[:query]=item.id
+              th.run
+            end
           end
-
         }
-        @cobj.int_proc=proc{|i| Threa.current.raise(Interrupt)}
+        @cobj.int_proc=proc{|i| thg.list.each{|th| th.raise(Interrupt)}}
         ext_shell(@stat,{'total' => nil,'stat' => "(%s)",'option' => nil})
       end
     end
@@ -45,12 +46,12 @@ module CIAX
 
       def to_s
         page=[@caption]
-        num=0
-        @data.list.each{|th|
+        @data.list.each_with_index{|th,i|
           cmd=th[:cid]
           stat=th[:stat]
           tid=th[:id]
-          page << Msg.item("[#{num+=1}]","#{cmd} (#{stat}),#{tid}")
+          option=th[:option]
+          page << Msg.item("[#{i}] (#{tid})","#{cmd} (#{stat})#{option}")
         }
         page.join("\n")
       end

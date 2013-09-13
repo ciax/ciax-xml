@@ -12,7 +12,7 @@ module CIAX
         thg=@stat.data
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
                 item.new_rec
-                @stat.add_proc(Thread.new{item.start})
+                @stat.data.add(Thread.new{item.start})
               })
         ig=@cobj['sv']['int']
         ig.update_items(@cobj['sv']['ext'].get[:cmdlist])
@@ -25,7 +25,7 @@ module CIAX
           end
         }
         @cobj.int_proc=proc{|i| thg.list.each{|th| th.raise(Interrupt)}}
-        ext_shell(@stat,{'total' => nil,'stat' => "(%s)",'option' => nil})
+        ext_shell(@stat)
       end
     end
 
@@ -34,14 +34,6 @@ module CIAX
         super('macro',ThreadGroup.new,'procs')
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @total=''
-      end
-
-      def add_proc(th)
-        @data.add(th)
-        page=@data.list.size.to_s
-        @total.replace(page)
-        th['total']=@total
-        th
       end
 
       def to_s

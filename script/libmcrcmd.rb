@@ -58,7 +58,9 @@ module CIAX
       end
 
       def start # separated for sub thread
-        Thread.current[:name]="Macro (#{self[:cid]})"
+        tc=Thread.current
+        tc[:id]=@record['id']
+        tc[:eid]=tc[:cid]=@record['cid']
         setstat('run')
         show @record
         macro(@select)
@@ -154,9 +156,9 @@ module CIAX
 
       # Set stat section
       def setstat(str,opt=nil) # Variable Value
-        @msh['stat']=str
-        @msh['option']=opt
-#        @msh.upd_proc.each{|p| p.call}
+        tc=Thread.current
+        tc[:stat]=str
+        tc[:option]=opt
       end
 
       # Print section

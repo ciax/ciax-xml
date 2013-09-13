@@ -12,7 +12,7 @@ module CIAX
         thg=@stat.data
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
                 item.new_rec
-                @stat.data.add(Thread.new{item.start})
+                @stat.data.add(Thread.new{item.start;sleep})
               })
         ig=@cobj['sv']['int']
         ig.update_items(@cobj['sv']['ext'].get[:cmdlist])

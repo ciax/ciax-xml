@@ -13,10 +13,11 @@ module CIAX
 
     # Prompt Db : { key => format(str), key => conv_db(hash), key => nil(status) }
     attr_reader :pdb
-    def ext_shell(output={},pdb={})
+    def ext_shell(output={},pdb={},pstat=nil)
       # For Shell
       @output=output
       @pdb={'eid' => nil}.update(pdb)
+      @pstat=pstat||self
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj['lo'].add_group('sh',"Shell Command",2,1)
       shg.add_dummy('^D,q',"Quit")
@@ -27,7 +28,7 @@ module CIAX
     def prompt
       str=''
       @pdb.each{|k,fmt|
-        next unless v=self[k]
+        next unless v=@pstat[k]
         case fmt
         when String
           str << fmt % v

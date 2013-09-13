@@ -91,7 +91,6 @@ module CIAX
               res=@step.fail?
               raise(Interlock) if drop?(res)
             when 'wait'
-              setstat('wait')
               res=@step.timeout?{show '.'}
               raise(Interlock) if drop?(res)
             when 'exec'

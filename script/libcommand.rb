@@ -144,7 +144,7 @@ module CIAX
   end
 
   class Group < Hashx
-    attr_reader :valid_keys,:cmdlist,:set
+    attr_reader :valid_keys,:cmdlist,:set,:get
     #attr = {caption,color,column,:members}
     def initialize(attr,upper=[])
       @attr=type?(attr,Hash)

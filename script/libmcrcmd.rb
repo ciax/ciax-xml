@@ -48,6 +48,17 @@ module CIAX
 
     class ExtItem < ExtItem
       attr_reader :record
+      def fork(valid_keys=[])
+        new_rec(valid_keys)
+        Thread.new{macro}
+      end
+
+      def start(valid_keys=[])
+        new_rec(valid_keys)
+        macro
+      end
+
+      private
       def new_rec(valid_keys=[])
         @set[:valid_keys]=valid_keys.clear
         @running=[]
@@ -56,20 +67,20 @@ module CIAX
         self
       end
 
-      def start # separated for sub thread
+      def macro # separated for sub thread
         tc=Thread.current
         tc[:id]=@record['id']
         tc[:eid]=tc[:cid]=@record['cid']
         tc[:stat]='run'
         show @record
-        macro(@select)
+        submacro(@select)
         finish
         self
       rescue Interlock
         finish('error')
         self
       rescue Interrupt
-        warn("\nInterrupt Issued to #{@running}]")
+        warn("\nInterrupt Issued to #{@running}")
         @running.each{|site|
           @get[:exec_proc].call(site,['interrupt'])
         }
@@ -77,8 +88,7 @@ module CIAX
         self
       end
 
-      private
-      def macro(select)
+      def submacro(select)
         @record.depth+=1
         select.each{|e1|
           begin
@@ -101,7 +111,7 @@ module CIAX
               if @step.async?
                 @get[:def_proc].call(item)
               else
-                macro(item.select)
+                submacro(item.select)
               end
             end
           rescue Retry
@@ -139,20 +149,25 @@ module CIAX
         tc=Thread.current
         tc[:stat]='query'
         tc[:option]=msg
-        begin
-          if Msg.fg?
-            Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)}
-            res=Readline.readline(@step.body("[#{msg}]?"),true).rstrip
-          else
-            sleep
-            res=tc[:query]
-          end
-        end until vk.include?(res)
+        if Msg.fg?
+          input
+        else
+          sleep
+        end
         tc[:stat]='run'
         tc[:option]=nil
         vk.clear
-        @step['action']=res
+        res=@step['action']=tc[:query]
         @get[:cmdproc][res].call
+      end
+
+      def input
+        tc=Thread.current
+        vk=tc[:option].split('/')
+        begin
+          Readline.completion_proc=proc{|word| vk.grep(/^#{word}/)}
+          tc[:query]=Readline.readline(@step.body("[#{tc[:option]}]?"),true).rstrip
+        end until vk.include?(tc[:query])
       end
 
       # Print section
@@ -167,7 +182,7 @@ module CIAX
         al=App::List.new
         mdb=Db.new.set('ciax')
         mobj=ExtCmd.new(mdb,al)
-        mobj.setcmd(ARGV).new_rec.start
+        mobj.setcmd(ARGV).start
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

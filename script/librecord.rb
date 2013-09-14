@@ -5,7 +5,7 @@ require "libmcrprt"
 
 module CIAX
   module Mcr
-    Dryrun=5
+    Dryrun=1
     class Record < Datax
       attr_accessor :depth
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
@@ -101,7 +101,7 @@ module CIAX
       private
       def save
         @save_proc.call
-        print result if Msg.fg?
+        show result
       end
 
       def show(msg)

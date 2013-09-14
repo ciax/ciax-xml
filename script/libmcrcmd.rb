@@ -23,6 +23,7 @@ module CIAX
           "exec"=>["Command",proc{true}],
           "skip"=>["Execution",proc{false}],
           "drop"=>[" Macro",proc{true}],
+          "suppress"=>["and Memorize",proc{false}],
           "force"=>["Proceed",proc{false}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|s,a|

@@ -18,10 +18,7 @@ module CIAX
         ig.set[:def_proc]=proc{|item|
           n=item.par[0].to_i
           if th=thg.list[n]
-            if th.status == 'sleep'
-              th[:query]=item.id
-              th.run
-            end
+            th[:queue] << item.id if th.status == 'sleep'
           end
         }
         @cobj.int_proc=proc{|i| thg.list.each{|th| th.raise(Interrupt)}}

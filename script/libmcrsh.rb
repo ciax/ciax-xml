@@ -11,10 +11,7 @@ module CIAX
         ig=@cobj['sv']['int']
         ig.update_items(mitem.get[:cmdlist])
         ig.set[:def_proc]=proc{|item|
-          if @th.status == 'sleep'
-            @th[:query]=item.id
-            @th.run
-          end
+          @th[:queue] << item.id if @th.status == 'sleep'
         }
         @th=mitem.fork(ig.valid_keys)
         @cobj.int_proc=proc{|i| @th.raise(Interrupt)}

@@ -73,6 +73,7 @@ module CIAX
         tc[:id]=@record['id']
         tc[:eid]=tc[:cid]=@record['cid']
         tc[:stat]='run'
+        tc[:queue]=Queue.new
         show @record
         submacro(@select)
         finish
@@ -150,25 +151,24 @@ module CIAX
         tc=Thread.current
         tc[:stat]='query'
         tc[:option]=msg
-        if Msg.fg?
-          input
-        else
-          sleep
-        end
+        input if Msg.fg?
+        res=tc[:queue].pop
         tc[:stat]='run'
         tc[:option]=nil
         vk.clear
-        res=@step['action']=tc[:query]
+        @step['action']=res
         @get[:cmdproc][res].call
       end
 
       def input
         tc=Thread.current
         vk=tc[:option].split('/')
+        res=''
         begin
           Readline.completion_proc=proc{|word| vk.grep(/^#{word}/)}
-          tc[:query]=Readline.readline(@step.body("[#{tc[:option]}]?"),true).rstrip
-        end until vk.include?(tc[:query])
+          res=Readline.readline(@step.body("[#{tc[:option]}]?"),true).rstrip
+        end until vk.include?(res)
+        tc[:queue] << res
       end
 
       # Print section

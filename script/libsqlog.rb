@@ -78,17 +78,17 @@ module CIAX
       def initialize(id)
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
         @queue=Queue.new
+        @ver_color=9
         Thread.new{
           IO.popen(@sqlcmd,'w'){|f|
             verbose("SqLog","Init/Start '#{id}'")
-            loop{
-              sql=@queue.pop
+            while sql=@queue.pop
               begin
                 f.puts sql
               rescue
                 Msg.abort("Sqlite3 input error\n#{sql}")
               end
-            }
+            end
           }
         }
       end

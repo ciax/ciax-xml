@@ -18,7 +18,9 @@ module CIAX
       @queue=Queue.new
       Thread.new{
         open(logfile,'a') {|f|
-          loop{f.puts @queue.pop}
+          while str=@queue.pop
+            f.puts str
+          end
         }
       }
     end

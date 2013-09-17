@@ -80,13 +80,13 @@ module CIAX
         @queue=Queue.new
         @ver_color=9
         Thread.new{
-          IO.popen(@sqlcmd,'w'){|f|
-            verbose("SqLog","Init/Start '#{id}'")
-            loop{
-              sqlary=[]
-              while sql=@queue.pop
-                sqlary << sql
-              end
+          verbose("SqLog","Init/Start '#{id}'")
+          loop{
+            sqlary=[]
+            while sql=@queue.pop
+              sqlary << sql
+            end
+            IO.popen(@sqlcmd,'w'){|f|
               salary.each{|sql|
                 begin
                   f.puts sql

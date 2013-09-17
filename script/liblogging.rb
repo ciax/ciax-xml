@@ -17,12 +17,12 @@ module CIAX
       verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
       @queue=Queue.new
       Thread.new{
-        open(logfile,'a') {|f|
-          logary=[]
-          loop{
-            while str=@queue.pop
-              logary << str
-            end
+        logary=[]
+        loop{
+          while str=@queue.pop
+            logary << str
+          end
+          open(logfile,'a') {|f|
             logary.each{|str|
               f.puts str
             }

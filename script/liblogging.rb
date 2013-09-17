@@ -17,14 +17,15 @@ module CIAX
       verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
       @queue=Queue.new
       Thread.new{
-        logary=[]
         loop{
-          while str=@queue.pop
-            logary << str
-          end
+          logary=[]
+          begin
+            logary << @queue.pop
+          end until @queue.empty?
           open(logfile,'a') {|f|
             logary.each{|str|
               f.puts str
+              verbose("Logging","#{@type}/Appended #{str.size} byte")
             }
           }
         }
@@ -37,7 +38,6 @@ module CIAX
       unless ENV.key?('NOLOG')
         str=JSON.dump(@header.merge(data))
         @queue.push str
-        verbose("Logging","#{@type}/Appended #{str.size} byte")
       end
       time
     end

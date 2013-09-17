@@ -83,13 +83,14 @@ module CIAX
           verbose("SqLog","Init/Start '#{id}'")
           loop{
             sqlary=[]
-            while sql=@queue.pop
-              sqlary << sql
-            end
+            begin
+              sqlary << @queue.pop
+            end until @queue.empty?
             IO.popen(@sqlcmd,'w'){|f|
-              salary.each{|sql|
+              sqlary.each{|sql|
                 begin
                   f.puts sql
+                  verbose("SqLog","Save Complete for '#{id}'")
                 rescue
                   Msg.abort("Sqlite3 input error\n#{sql}")
                 end
@@ -108,7 +109,6 @@ module CIAX
         end
         sqlog.stat.upd_proc << proc{
           @queue.push sqlog.upd.to_s
-          verbose("SqLog","Save complete")
         }
         self
       end

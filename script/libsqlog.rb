@@ -82,13 +82,19 @@ module CIAX
         Thread.new{
           IO.popen(@sqlcmd,'w'){|f|
             verbose("SqLog","Init/Start '#{id}'")
-            while sql=@queue.pop
-              begin
-                f.puts sql
-              rescue
-                Msg.abort("Sqlite3 input error\n#{sql}")
+            loop{
+              sqlary=[]
+              while sql=@queue.pop
+                sqlary << sql
               end
-            end
+              salary.each{|sql|
+                begin
+                  f.puts sql
+                rescue
+                  Msg.abort("Sqlite3 input error\n#{sql}")
+                end
+              }
+            }
           }
         }
       end

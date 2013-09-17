@@ -69,11 +69,11 @@ module CIAX
       end
 
       def macro # separated for sub thread
-        tc=Thread.current
-        tc[:id]=@record['id']
-        tc[:eid]=tc[:cid]=@record['cid']
-        tc[:stat]='run'
-        tc[:queue]=Queue.new
+        @tc=Thread.current
+        @tc[:id]=@record['id']
+        @tc[:eid]=@tc[:cid]=@record['cid']
+        @tc[:stat]='run'
+        @tc[:queue]=Queue.new
         show @record
         submacro(@select)
         finish
@@ -148,27 +148,25 @@ module CIAX
       def query(cmds)
         vk=@get[:valid_keys].replace(cmds)
         msg=vk.join('/')
-        tc=Thread.current
-        tc[:stat]='query'
-        tc[:option]=msg
+        @tc[:stat]='query'
+        @tc[:option]=msg
         input if Msg.fg?
-        res=tc[:queue].pop
-        tc[:stat]='run'
-        tc[:option]=nil
+        res=@tc[:queue].pop
+        @tc[:stat]='run'
+        @tc[:option]=nil
         vk.clear
         @step['action']=res
         @get[:cmdproc][res].call
       end
 
       def input
-        tc=Thread.current
-        vk=tc[:option].split('/')
+        vk=@tc[:option].split('/')
         res=''
         begin
           Readline.completion_proc=proc{|word| vk.grep(/^#{word}/)}
-          res=Readline.readline(@step.body("[#{tc[:option]}]?"),true).rstrip
+          res=Readline.readline(@step.body("[#{@tc[:option]}]?"),true).rstrip
         end until vk.include?(res)
-        tc[:queue] << res
+        @tc[:queue] << res
       end
 
       # Print section

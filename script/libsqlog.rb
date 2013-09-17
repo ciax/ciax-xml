@@ -1,11 +1,13 @@
 #!/usr/bin/ruby
 # For sqlite3
 require "libmsg"
+require "thread"
 
 # Generate SQL command string
 module CIAX
   module SqLog
     class Upd
+      attr_reader :tid,:stat
       include Msg
       def initialize(stat,ver=nil)
         @ver_color=9
@@ -40,11 +42,6 @@ module CIAX
         (["begin;"]+@log+["commit;"]).join("\n")
       end
 
-      def proc_sync
-        @stat.upd_proc << proc{upd}
-        self
-      end
-
       private
       def expand
         val={'time'=>@stat['time']}
@@ -74,48 +71,47 @@ module CIAX
     end
 
     # Execute Sql Command to sqlite3
-    class Save < Upd
+    class Save
       # @< log,tid
       # @ sqlcmd
-      def initialize(stat,ver=nil)
-        super
-        @sqlcmd=["sqlite3",VarDir+"/sqlog_"+@stat['id']+".sq3"]
-        unless check_table
-          create
-          save
-          verbose("SqLog","Init/Table '#{@tid}' is created in #{@stat['id']}")
-        end
-        verbose("SqLog","Init/Start '#{@stat['id']}' (#{@tid})")
+      include Msg
+      def initialize(id)
+        @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
+        @queue=Queue.new
+        Thread.new{
+          IO.popen(@sqlcmd,'w'){|f|
+            verbose("SqLog","Init/Start '#{id}'")
+            loop{
+              sql=@queue.pop
+              begin
+                f.puts sql
+              rescue
+                Msg.abort("Sqlite3 input error\n#{sql}")
+              end
+            }
+          }
+        }
       end
 
       # Check table existence
-      def check_table
-        internal("tables").split(' ').include?(@tid)
+      def init_table(sqlog)
+        Msg.type?(sqlog,SqLog::Upd)
+        unless internal("tables").split(' ').include?(sqlog.tid)
+          sqlog.create
+          verbose("SqLog","Init/Table '#{sqlog.tid}' is created")
+        end
+        sqlog.stat.upd_proc << proc{
+          sqlog.upd
+          @queue.push sqlog.to_s
+          verbose("SqLog","Save complete")
+        }
+        self
       end
 
       # Issue internal command
       def internal(str)
         args=@sqlcmd.join(' ')+" ."+str
         `#{args}`
-      end
-
-      # Do a transaction
-      def save(data=nil,tag=nil)
-        unless data || tag
-          IO.popen(@sqlcmd,'w'){|f|
-            f.puts to_s
-          }
-          Msg.abort("Sqlite3 input error\n#{to_s}") unless $?.success?
-          verbose("SqLog","Save complete (#{@stat['id']})")
-          @log.clear
-        end
-        self
-      end
-
-      def proc_sync
-        super
-        @stat.save_proc << proc{save}
-        self
       end
     end
   end

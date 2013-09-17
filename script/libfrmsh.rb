@@ -64,14 +64,15 @@ module CIAX
       # @<< cobj,(output),(upd_proc*)
       # @< field*
       # @ io
+      attr_reader :sqlsv
       def initialize(fdb,iocmd=[])
         super(fdb,fdb['site_id'])
         @field.ext_rsp(fdb).ext_file(self['id']).load
         if type?(iocmd,Array).empty?
           @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
-          @io.ext_logging(self['id'],fdb['version'])
+          @sqlsv=@io.ext_logging(self['id'],fdb['version'])
         else
-          @io=Stream.new(iocmd,fdb['wait'],1)
+          @sqlsv=@io=Stream.new(iocmd,fdb['wait'],1)
         end
         @cobj['sv']['ext'].set[:def_proc]=proc{|item|
           @io.snd(item.getframe,item[:cid])

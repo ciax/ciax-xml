@@ -53,8 +53,7 @@ module CIAX
         logging.append(@data)
       }
       update({'id'=>id,'ver'=>ver})
-      SqLog::Save.new(self).proc_sync
-      self
+      SqLog::Save.new(id).init_table(SqLog::Upd.new(self))
     end
 
     private

@@ -1,12 +1,11 @@
 #!/usr/bin/ruby
 require 'libmsg'
 require 'json'
-require "monitor"
+require "thread"
 
 # Capable of wider application than SqLog
 module CIAX
   class Logging
-    include MonitorMixin
     include Msg
     def initialize(type,id,ver=0)
       @ver_color=6
@@ -16,7 +15,12 @@ module CIAX
       @header={'time' => UnixTime.now,'id' => id,'ver' => ver}
       @loghead=VarDir+"/"+type+"_#{id}"
       verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
-      super()
+      @queue=Queue.new
+      Thread.new{
+        open(logfile,'a') {|f|
+          loop{f.puts @queue.pop}
+        }
+      }
     end
 
     # Return UnixTime
@@ -24,11 +28,7 @@ module CIAX
       time=@header['time']=UnixTime.now
       unless ENV.key?('NOLOG')
         str=JSON.dump(@header.merge(data))
-        synchronize{
-          open(logfile,'a') {|f|
-            f.puts str
-          }
-        }
+        @queue.push str
         verbose("Logging","#{@type}/Appended #{str.size} byte")
       end
       time

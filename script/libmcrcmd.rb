@@ -7,10 +7,12 @@ require "libappsh"
 module CIAX
   module Mcr
     class ExtCmd < Command
-      def initialize(mdb,al,&def_proc) # Block if for SubMacro
+      def initialize(mdb,al,stq=Queue.new,&def_proc) # Block if for SubMacro
         super()
         svs=initshare(self['sv'].set,al,def_proc)
+        svs[:stat_trig]=stq
         self['sv']['ext']=ExtGrp.new(mdb,[svs])
+        $dryrun=3
       end
 
       def initshare(svs,al,def_proc)
@@ -68,12 +70,13 @@ module CIAX
         self
       end
 
-      def macro # separated for sub thread
+      # separated for sub thread
+      def macro
         @tc=Thread.current
         @tc[:id]=@record['id']
         @tc[:eid]=@tc[:cid]=@record['cid']
-        @tc[:stat]='run'
         @tc[:queue]=Queue.new
+        setstat 'run'
         show @record
         submacro(@select)
         finish
@@ -131,7 +134,7 @@ module CIAX
         show str+"\n"
         @record.finish(str)
         @get[:valid_keys].clear
-        Thread.current[:stat]=str
+        setstat str
       end
 
       # Interactive section
@@ -145,15 +148,20 @@ module CIAX
         res && query(['exec','skip'])
       end
 
+      def setstat(str)
+        @tc[:stat]=str
+        @get[:stat_trig].push "#{@tc[:cid]}(#{str})"
+      end
+
       def query(cmds)
         vk=@get[:valid_keys].replace(cmds)
         msg=vk.join('/')
-        @tc[:stat]='query'
         @tc[:option]=msg
+        setstat 'query'
         input if Msg.fg?
         res=@tc[:queue].pop
-        @tc[:stat]='run'
         @tc[:option]=nil
+        setstat 'run'
         vk.clear
         @step['action']=res
         @get[:cmdproc][res].call
@@ -161,7 +169,6 @@ module CIAX
 
       def input
         vk=@tc[:option].split('/')
-        res=''
         begin
           Readline.completion_proc=proc{|word| vk.grep(/^#{word}/)}
           res=Readline.readline(@step.body("[#{@tc[:option]}]?"),true).rstrip

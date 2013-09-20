@@ -9,33 +9,35 @@ module CIAX
         proj=ENV['PROJ']||'ciax'
         mdb=Mcr::Db.new.set(proj)
         @stat=Stat.new.ext_file(proj)
-        thg=@stat.data
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
-                @stat.data.add(item.fork)
+                @stat.data.unshift item.fork
               })
+        eg=@cobj['sv']['ext']
         ig=@cobj['sv']['int']
-        ig.update_items(@cobj['sv']['ext'].get[:cmdlist])
+        ig.update_items(eg.get[:cmdlist])
         ig.set[:def_proc]=proc{|item|
           n=item.par[0].to_i
-          if th=thg.list[n]
+          if th=@stat.data[n]
             th[:queue] << item.id if th.status == 'sleep'
           end
         }
-        @cobj.int_proc=proc{|i| thg.list.each{|th| th.raise(Interrupt)}}
+        @cobj.int_proc=proc{|i| @stat.data.each{|th| th.raise(Interrupt)}}
+        trig=eg.get[:stat_trig]
+        Thread.new{@stat.save while trig.pop}
         ext_shell(@stat)
       end
     end
 
     class Stat < Datax
       def initialize
-        super('macro',ThreadGroup.new,'procs')
+        super('macro',[],'procs')
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @total=''
       end
 
       def to_s
         page=[@caption]
-        @data.list.each_with_index{|th,i|
+        @data.each_with_index{|th,i|
           title="[#{i}] (#{th[:id]})"
           msg="#{th[:cid]} (#{th[:stat]})"
           msg << "[#{th[:option]}]?" if th[:option]

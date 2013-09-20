@@ -19,6 +19,8 @@ module CIAX
           n=item.par[0]||@stat.data.keys.last
           if th=@stat.data[n]
             th[:queue] << item.id if th.status == 'sleep'
+          else
+            self['msg']='ABSENT'
           end
         }
         ig.add_item('clean','Clean macros').set[:def_proc]=proc{@stat.clean}

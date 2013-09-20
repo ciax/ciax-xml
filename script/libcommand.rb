@@ -222,7 +222,8 @@ module CIAX
       pary=type?(pary.dup,Array)
       return [] unless self[:parameter]
       self[:parameter].map{|par|
-        disp=par[:list].join(',')
+        list=par[:list]||[]
+        disp=list.join(',')
         unless str=pary.shift||par[:default]
         Msg.par_err(
                 "Parameter shortage (#{pary.size}/#{self[:parameter].size})",
@@ -237,19 +238,19 @@ module CIAX
             Msg.par_err("Parameter is not number")
           end
           verbose("CmdItem","Validate: [#{num}] Match? [#{disp}]")
-          unless par[:list].any?{|r| ReRange.new(r) == num }
+          unless list.empty? || list.any?{|r| ReRange.new(r) == num }
             Msg.par_err("Out of range (#{num}) for [#{disp}]")
           end
           num.to_s
         when 'str'
           verbose("CmdItem","Validate: [#{str}] Match? [#{disp}]")
-          unless par[:list].include?(str)
+          unless list.empty? || list.include?(str)
             Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
           end
           str
         when 'reg'
           verbose("CmdItem","Validate: [#{str}] Match? [#{disp}]")
-          unless par[:list].any?{|r| /#{r}/ === str}
+          unless list.empty? || list.any?{|r| /#{r}/ === str}
             Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
           end
           str

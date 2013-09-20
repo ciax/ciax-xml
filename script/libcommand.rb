@@ -224,11 +224,15 @@ module CIAX
       self[:parameter].map{|par|
         list=par[:list]||[]
         disp=list.join(',')
-        unless str=pary.shift||par[:default]
-        Msg.par_err(
-                "Parameter shortage (#{pary.size}/#{self[:parameter].size})",
-                Msg.item(@id,self[:label]),
-                " "*10+"key=(#{disp})")
+        unless str=pary.shift
+          if par.key?(:default)
+            next par[:default]
+          else
+            Msg.par_err(
+                        "Parameter shortage (#{pary.size}/#{self[:parameter].size})",
+                        Msg.item(@id,self[:label]),
+                        " "*10+"key=(#{disp})")
+          end
         end
         case par[:type]
         when 'num'

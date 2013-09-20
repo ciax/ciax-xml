@@ -220,7 +220,7 @@ module CIAX
     # Parameter structure [{:type,:list,:default}, ...]
     def validate(pary)
       pary=type?(pary.dup,Array)
-      return pary unless self[:parameter]
+      return [] unless self[:parameter]
       self[:parameter].map{|par|
         disp=par[:list].join(',')
         unless str=pary.shift||par[:default]

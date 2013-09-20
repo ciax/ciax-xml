@@ -53,7 +53,7 @@ module CIAX
       attr_reader :record
       def fork(valid_keys=[])
         new_rec(valid_keys)
-        Thread.new{macro}
+        {@record['id'] => Thread.new{macro}}
       end
 
       def start(valid_keys=[])

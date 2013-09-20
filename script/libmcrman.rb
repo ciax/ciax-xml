@@ -23,7 +23,7 @@ module CIAX
             self['msg']='ABSENT'
           end
         }
-        ig.each{|k,v| v[:parameter]=[{:type => 'num'}]}
+        ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
         ig.add_item('clean','Clean macros').set[:def_proc]=proc{@stat.clean}
         @cobj.int_proc=proc{|i| @stat.data.each{|th| th.raise(Interrupt)}}
         trig=eg.get[:stat_trig]

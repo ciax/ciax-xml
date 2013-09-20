@@ -3,10 +3,80 @@ require 'libmsg'
 require 'json'
 #Extened Hash
 module CIAX
+  module ViewStruct
+    def view_struct(data,title=nil,ind=0,show_iv=false)
+      raise('Hash Loop') if ind > 5
+      str=''
+      col=4
+      if title
+        case title
+        when Numeric
+          title="[#{title}]"
+        else
+          title=title.inspect
+        end
+        str << color("%-6s" % title,5,ind)+" :\n"
+        ind+=1
+      else
+        str << "===\n"
+      end
+      iv={}
+      data.instance_variables.each{|n|
+        iv[n]=data.instance_variable_get(n)
+      } if show_iv
+      _show(str,iv,ind,col,title,show_iv)
+      _show(str,data,ind,col,title,show_iv)
+    end
+
+    private
+    def _show(str,data,ind,col,title,show_iv)
+      case data
+      when Array
+        return str if _mixed?(str,data,data,data.size.times,ind,show_iv)
+        return _only_ary(str,data,ind,col) if data.size > col
+      when Hash
+        return str if _mixed?(str,data,data.values,data.keys,ind,show_iv)
+        return _only_hash(str,data,ind,col,title) if data.size > 2
+      end
+      str.chomp + " #{data.inspect}\n"
+    end
+
+    def _mixed?(str,data,vary,idx,ind,show_iv)
+      if vary.any?{|v| v.kind_of?(Enumerable)}
+        idx.each{|i|
+          str << view_struct(data[i],i,ind,show_iv)
+        }
+      end
+    end
+
+    def _only_ary(str,data,ind,col)
+      str << indent(ind)+"["
+      line=[]
+      data.each_slice(col){|a|
+        line << a.map{|v| v.inspect}.join(",")
+      }
+      str << line.join(",\n "+indent(ind))+"]\n"
+    end
+
+    def _only_hash(str,data,ind,col,title)
+      data.keys.each_slice(title ? 2 : 1){|a|
+        str << indent(ind)+a.map{|k|
+          color("%-8s" % k.inspect,3)+(": %-10s" % data[k].inspect)
+        }.join("\t")+"\n"
+      }
+      str
+    end
+  end
+
   module Enumx
     include Msg
+    include ViewStruct
+    def self.extended(obj)
+      raise("Not Enumerable") unless obj.is_a? Enumerable
+    end
+
     def to_s
-      Msg.view_struct(self)
+      view_struct(self)
     end
 
     def to_j
@@ -114,64 +184,5 @@ module CIAX
 
   class Arrayx < Array
     include Enumx
-  end
-
-
-  if __FILE__ == $0
-    w=Hashx.new
-    w[:a]=1
-    w[:c] = []
-    w[:e] = {:x => 1}
-    print "w="
-    p w
-    r=Hashx.new
-    r[:b]=2
-    r[:d] = {}
-    r[:f] = [1]
-    print "r="
-    p r
-    w.deep_update r
-    puts "w <- r(over write)"
-    p w
-    puts
-    r=Hashx.new
-    r[:c] = {:m => 'm'}
-    r[:d] = [1]
-    print "r="
-    p r
-    w=Hashx.new
-    w[:c]= {:i => 'i'}
-    w[:d] = [2,3]
-    print "w="
-    p w
-    w.deep_update r
-    puts "w <- r(over write)"
-    p w
-    puts
-    r=Hashx.new
-    r[:c] = {:m => 'm', :n => {:x => 'x'}}
-    r[:d] = [1]
-    r[:e] = 'e'
-    print "r="
-    p r
-    w=Hashx.new
-    w[:c]= {:i => 'i', :n => {:y => 'y'}}
-    w[:d] = [2,3]
-    w[:f] = 'f'
-    w1=w.deep_copy
-    w2=w.deep_copy
-    print "w="
-    p w
-    w.deep_update r
-    puts "w <- r(over write)"
-    p w
-    puts
-    w2.deep_update(r,2)
-    puts "w <- r(over write) Level 2"
-    p w2
-    puts
-    w1.deep_update(r,1)
-    puts "w <- r(over write) Level 1"
-    p w1
   end
 end

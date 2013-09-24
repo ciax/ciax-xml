@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
 # JSON to String(Decorated)
-require "libmsg"
-require "json"
+require "libenumx"
 
 abort "Usage: j2s json_file" if STDIN.tty? && ARGV.size < 1
 
 str=gets(nil) || exit
-puts CIAX::Msg.view_struct(JSON.load(str))
+puts JSON.load(str).extend(CIAX::Enumx)

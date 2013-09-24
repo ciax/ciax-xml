@@ -14,4 +14,5 @@ port=`~/lib/liblocdb.rb $id app|grep port` || { echo "(-fh) [id] [host]"; exit; 
 port=${port//\"/}
 port="$(( ${port#*:} $offset ))"
 echo "Connect to $host:$port" >&2
-socat READLINE udp:$host:$port
+#socat READLINE udp:$host:$port
+nc -u $host $port

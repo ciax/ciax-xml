@@ -154,26 +154,23 @@ module CIAX
       end
 
       def query(cmds)
-        vk=@get[:valid_keys].replace(cmds)
-        msg=vk.join('/')
-        @tc[:option]=msg
+        @get[:valid_keys].replace(cmds)
+        @tc[:option]=cmds.join('/')
         setstat 'query'
-        input if Msg.fg?
-        res=@tc[:queue].pop
+        Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)}
+        begin
+          input if Msg.fg?
+          res=@tc[:queue].pop
+        end until cmds.include?(res)
         @tc[:option]=nil
         setstat 'run'
-        vk.clear
+        @get[:valid_keys].clear
         @step['action']=res
         @get[:cmdproc][res].call
       end
 
       def input
-        vk=@tc[:option].split('/')
-        begin
-          Readline.completion_proc=proc{|word| vk.grep(/^#{word}/)}
-          res=Readline.readline(@step.body("[#{@tc[:option]}]?"),true).rstrip
-        end until vk.include?(res)
-        @tc[:queue] << res
+        @tc[:queue] << Readline.readline(@step.body("[#{@tc[:option]}]?"),true).rstrip
       end
 
       # Print section

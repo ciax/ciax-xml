@@ -19,7 +19,8 @@ module CIAX
           n=item.par[0]||@stat.data.keys.last
           if th=@stat.data[n]
             if th[:stat] == 'query'
-              th[:queue] << item.id
+              th[:cmd_que] << item.id
+              self['msg']=th[:res_que].pop
             else
               self['msg']='IGNORE'
             end
@@ -30,8 +31,7 @@ module CIAX
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
         ig.add_item('clean','Clean macros').set[:def_proc]=proc{@stat.clean}
         @cobj.int_proc=proc{|i| @stat.data.each{|th| th.raise(Interrupt)}}
-        trig=eg.get[:stat_trig]
-        Thread.new{@stat.save while trig.pop}
+        Thread.new{@stat.save while eg.get[:save_que].pop}
         ext_shell(@stat)
       end
     end

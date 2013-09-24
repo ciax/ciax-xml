@@ -10,7 +10,7 @@ module CIAX
       def initialize(mdb,al,stq=Queue.new,&def_proc) # Block if for SubMacro
         super()
         svs=initshare(self['sv'].set,al,def_proc)
-        svs[:stat_trig]=stq
+        svs[:save_que]=stq
         self['sv']['ext']=ExtGrp.new(mdb,[svs])
         $dryrun=3
       end
@@ -75,7 +75,8 @@ module CIAX
         @tc=Thread.current
         @tc[:id]=@record['id']
         @tc[:eid]=@tc[:cid]=@record['cid']
-        @tc[:queue]=Queue.new
+        @tc[:cmd_que]=Queue.new
+        @tc[:res_que]=Queue.new
         setstat 'run'
         show @record
         submacro(@select)
@@ -150,7 +151,7 @@ module CIAX
 
       def setstat(str)
         @tc[:stat]=str
-        @get[:stat_trig].push "#{@tc[:cid]}(#{str})"
+        @get[:save_que].push "#{@tc[:cid]}(#{str})"
       end
 
       def query(cmds)
@@ -158,10 +159,13 @@ module CIAX
         @tc[:option]=cmds.join('/')
         setstat 'query'
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
-        begin
+        res=loop{
           input if Msg.fg?
-          res=@tc[:queue].pop
-        end until cmds.include?(res)
+          res=@tc[:cmd_que].pop
+          break res if cmds.include?(res)
+          @tc[:res_que] << 'INVALID'
+        }
+        @tc[:res_que] << 'OK'
         @tc[:option]=nil
         setstat 'run'
         @get[:valid_keys].clear
@@ -170,7 +174,7 @@ module CIAX
       end
 
       def input
-        @tc[:queue] << Readline.readline(@step.body("[#{@tc[:option]}]?"),true).rstrip
+        @tc[:cmd_que] << Readline.readline(@step.body("[#{@tc[:option]}]?"),true).rstrip
       end
 
       # Print section

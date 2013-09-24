@@ -8,16 +8,16 @@ module CIAX
       def initialize
         proj=ENV['PROJ']||'ciax'
         mdb=Mcr::Db.new.set(proj)
-        @stat=Stat.new.ext_file(proj)
+        @list=List.new.ext_file(proj)
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
-                @stat.data.update item.fork
+                @list.data.update item.fork
               })
         eg=@cobj['sv']['ext']
         ig=@cobj['sv']['int']
         ig.update_items(eg.get[:cmdlist])
         ig.set[:def_proc]=proc{|item|
-          n=item.par[0]||@stat.data.keys.last
-          if th=@stat.data[n]
+          n=item.par[0]||@list.data.keys.last
+          if th=@list.data[n]
             if th[:stat] == 'query'
               th[:cmd_que] << item.id
               self['msg']=th[:res_que].pop
@@ -29,14 +29,14 @@ module CIAX
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
-        ig.add_item('clean','Clean macros').set[:def_proc]=proc{@stat.clean}
-        @cobj.int_proc=proc{|i| @stat.data.each{|th| th.raise(Interrupt)}}
-        Thread.new{@stat.save while eg.get[:save_que].pop}
-        ext_shell(@stat)
+        ig.add_item('clean','Clean macros').set[:def_proc]=proc{@list.clean}
+        @cobj.int_proc=proc{|i| @list.data.each{|th| th.raise(Interrupt)}}
+        Thread.new{@list.save while eg.get[:save_que].pop}
+        ext_shell(@list)
       end
     end
 
-    class Stat < Datax
+    class List < Datax
       def initialize
         super('macro',{},'procs')
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'

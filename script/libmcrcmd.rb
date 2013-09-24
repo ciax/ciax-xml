@@ -49,10 +49,11 @@ module CIAX
       end
     end
 
-    class Stat < Hashx
+    class Stat < Exe
       attr_reader :running,:cmd_que,:res_que
       attr_accessor :thread
-      def initialize
+      def initialize(mitem)
+        super('mcr',mitem[:cid])
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
@@ -75,7 +76,7 @@ module CIAX
       private
       def new_rec(valid_keys=[])
         @set[:valid_keys]=valid_keys.clear
-        @stat=Stat.new
+        @stat=Stat.new(self)
         @record=Record.new
         [:cid,:label].each{|k| @record[k.to_s]=self[k]} # Fixed Value
         self

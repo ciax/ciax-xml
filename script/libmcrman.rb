@@ -13,6 +13,7 @@ module CIAX
                 @list.data.update item.fork
               })
         eg=@cobj['sv']['ext']
+        Thread.new{@list.save while eg.get[:save_que].pop}
         ig=@cobj['sv']['int']
         ig.update_items(eg.get[:cmdlist])
         ig.set[:def_proc]=proc{|item|
@@ -31,7 +32,6 @@ module CIAX
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
         ig.add_item('clean','Clean macros').set[:def_proc]=proc{@list.clean}
         @cobj.int_proc=proc{|i| @list.data.each{|st| st.thread.raise(Interrupt)}}
-        Thread.new{@list.save while eg.get[:save_que].pop}
         ext_shell(@list)
       end
     end

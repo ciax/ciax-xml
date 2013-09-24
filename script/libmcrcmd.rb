@@ -157,7 +157,7 @@ module CIAX
         @get[:valid_keys].replace(cmds)
         @tc[:option]=cmds.join('/')
         setstat 'query'
-        Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)}
+        Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
         begin
           input if Msg.fg?
           res=@tc[:queue].pop

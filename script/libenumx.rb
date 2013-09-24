@@ -112,7 +112,7 @@ module CIAX
         v=branch.instance_variable_get(n)
         branch.instance_variable_set(n,v.class.to_s) if Enumerable === v
       }
-      Msg.view_struct(branch)
+      view_struct(branch)
     end
 
     def deep_copy

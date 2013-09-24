@@ -49,11 +49,22 @@ module CIAX
       end
     end
 
+    class Stat < Hashx
+      attr_reader :running,:cmd_que,:res_que
+      attr_accessor :thread
+      def initialize
+        @running=[]
+        @cmd_que=Queue.new
+        @res_que=Queue.new
+      end
+    end
+
     class ExtItem < ExtItem
       attr_reader :record
       def fork(valid_keys=[])
         new_rec(valid_keys)
-        {@record['id'] => Thread.new{macro}}
+        @stat.thread=Thread.new{macro}
+        {@record['id'] => @stat}
       end
 
       def start(valid_keys=[])
@@ -64,7 +75,7 @@ module CIAX
       private
       def new_rec(valid_keys=[])
         @set[:valid_keys]=valid_keys.clear
-        @running=[]
+        @stat=Stat.new
         @record=Record.new
         [:cid,:label].each{|k| @record[k.to_s]=self[k]} # Fixed Value
         self
@@ -72,11 +83,7 @@ module CIAX
 
       # separated for sub thread
       def macro
-        @tc=Thread.current
-        @tc[:id]=@record['id']
-        @tc[:eid]=@tc[:cid]=@record['cid']
-        @tc[:cmd_que]=Queue.new
-        @tc[:res_que]=Queue.new
+        @stat[:cid]=@record['cid']
         setstat 'run'
         show @record
         submacro(@select)
@@ -86,8 +93,8 @@ module CIAX
         finish('error')
         self
       rescue Interrupt
-        warn("\nInterrupt Issued to #{@running}")
-        @running.each{|site|
+        warn("\nInterrupt Issued to #{@stat.running}")
+        @stat.running.each{|site|
           @get[:exec_proc].call(site,['interrupt'])
         }
         finish('interrupted')
@@ -109,7 +116,7 @@ module CIAX
               res=@step.timeout?{show '.'}
               raise(Interlock) if drop?(res)
             when 'exec'
-              @running << e1['site']
+              @stat.running << e1['site']
               res=@step.exec?
               @get[:exec_proc].call(e1['site'],e1['args']) if exec?(res)
             when 'mcr'
@@ -131,7 +138,7 @@ module CIAX
       end
 
       def finish(str='complete')
-        @running.clear
+        @stat.running.clear
         show str+"\n"
         @record.finish(str)
         @get[:valid_keys].clear
@@ -150,23 +157,23 @@ module CIAX
       end
 
       def setstat(str)
-        @tc[:stat]=str
-        @get[:save_que].push "#{@tc[:cid]}(#{str})"
+        @stat[:stat]=str
+        @get[:save_que].push "#{@stat[:cid]}(#{str})"
       end
 
       def query(cmds)
         @get[:valid_keys].replace(cmds)
-        @tc[:option]=cmds.join('/')
+        @stat[:option]=cmds.join('/')
         setstat 'query'
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
         res=loop{
           input if Msg.fg?
-          res=@tc[:cmd_que].pop
+          res=@stat.cmd_que.pop
           break res if cmds.include?(res)
-          @tc[:res_que] << 'INVALID'
+          @stat.res_que << 'INVALID'
         }
-        @tc[:res_que] << 'OK'
-        @tc[:option]=nil
+        @stat.res_que << 'OK'
+        @stat[:option]=nil
         setstat 'run'
         @get[:valid_keys].clear
         @step['action']=res
@@ -174,7 +181,7 @@ module CIAX
       end
 
       def input
-        @tc[:cmd_que] << Readline.readline(@step.body("[#{@tc[:option]}]?"),true).rstrip
+        @stat.cmd_que << Readline.readline(@step.body("[#{@stat[:option]}]?"),true).rstrip
       end
 
       # Print section

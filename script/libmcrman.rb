@@ -17,10 +17,10 @@ module CIAX
         ig.update_items(eg.get[:cmdlist])
         ig.set[:def_proc]=proc{|item|
           n=item.par[0]||@list.data.keys.last
-          if th=@list.data[n]
-            if th[:stat] == 'query'
-              th[:cmd_que] << item.id
-              self['msg']=th[:res_que].pop
+          if st=@list.data[n]
+            if st[:stat] == 'query'
+              st.cmd_que << item.id
+              self['msg']=st.res_que.pop
             else
               self['msg']='IGNORE'
             end
@@ -30,7 +30,7 @@ module CIAX
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
         ig.add_item('clean','Clean macros').set[:def_proc]=proc{@list.clean}
-        @cobj.int_proc=proc{|i| @list.data.each{|th| th.raise(Interrupt)}}
+        @cobj.int_proc=proc{|i| @list.data.each{|st| st.thread.raise(Interrupt)}}
         Thread.new{@list.save while eg.get[:save_que].pop}
         ext_shell(@list)
       end
@@ -44,18 +44,18 @@ module CIAX
       end
 
       def clean
-        @data.each{|key,th|
-          @data.delete(key) unless th.alive?
+        @data.each{|key,st|
+          @data.delete(key) unless st.thread.alive?
         }
         self
       end
 
       def to_s
         page=[@caption]
-        @data.each{|key,th|
+        @data.each{|key,st|
           title="[#{key}]"
-          msg="#{th[:cid]} (#{th[:stat]})"
-          msg << "[#{th[:option]}]?" if th[:option]
+          msg="#{st[:cid]} (#{st[:stat]})"
+          msg << "[#{st[:option]}]?" if st[:option]
           page << Msg.item(title,msg)
         }
         page.join("\n")

@@ -18,7 +18,11 @@ module CIAX
         ig.set[:def_proc]=proc{|item|
           n=item.par[0]||@stat.data.keys.last
           if th=@stat.data[n]
-            th[:queue] << item.id if th.status == 'sleep'
+            if th[:stat] == 'query'
+              th[:queue] << item.id
+            else
+              self['msg']='IGNORE'
+            end
           else
             self['msg']='ABSENT'
           end

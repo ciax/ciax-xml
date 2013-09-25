@@ -10,7 +10,9 @@ module CIAX
         mdb=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
-                @list.data.update item.fork
+                hash=item.fork
+                self['sid']=hash.keys.first
+                @list.data.update hash
               })
         eg=@cobj['sv']['ext']
         Thread.new{@list.save while eg.get[:save_que].pop}
@@ -19,6 +21,7 @@ module CIAX
         ig.set[:def_proc]=proc{|item|
           n=item.par[0]||@list.data.keys.last
           if st=@list.data[n]
+            self['sid']=n
             if st[:stat] == 'query'
               st.cmd_que << item.id
               self['msg']=st.res_que.pop
@@ -26,6 +29,7 @@ module CIAX
               self['msg']='IGNORE'
             end
           else
+            self['sid']=''
             self['msg']='ABSENT'
           end
         }

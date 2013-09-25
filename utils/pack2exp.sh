@@ -23,8 +23,9 @@ mkcp script '*.rb'
 cp readme_exp.txt $pfx/script/readme.txt
 
 mkcp schema '*'
-mkcp utils chkxml.sh frmsim.rb mkhtml.sh sqlog.rb
 mkcp webapp '*'
+mkcp utils chkxml.sh frmsim.rb mkhtml.sh sqlog.rb inst.sh
+cp ~/se/bin/init-bin.sh $pfx/utils
 
 cmt=$(git log -1 --abbrev=4 --abbrev-commit|grep commit)
 

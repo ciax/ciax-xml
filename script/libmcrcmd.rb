@@ -52,7 +52,7 @@ module CIAX
     class Stat < Exe
       attr_reader :running,:cmd_que,:res_que
       attr_accessor :thread
-      def initialize(mitem)
+      def initialize(mitem,record)
         super('mcr',mitem[:cid])
         @running=[]
         @cmd_que=Queue.new
@@ -60,11 +60,12 @@ module CIAX
         delete('id')
         delete('msg')
         delete('layer')
+        ext_shell(record)
       end
     end
 
     class ExtItem < ExtItem
-      attr_reader :record
+      attr_reader :record,:stat
       def fork(valid_keys=[])
         new_rec(valid_keys)
         @stat.thread=Thread.new{macro}
@@ -79,8 +80,8 @@ module CIAX
       private
       def new_rec(valid_keys=[])
         @set[:valid_keys]=valid_keys.clear
-        @stat=Stat.new(self)
         @record=Record.new
+        @stat=Stat.new(self,@record)
         [:cid,:label].each{|k| @record[k.to_s]=self[k]} # Fixed Value
         self
       end

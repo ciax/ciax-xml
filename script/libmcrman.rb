@@ -35,7 +35,11 @@ module CIAX
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
         ig.add_item('clean','Clean macros').set[:def_proc]=proc{@list.clean}
-        @cobj.int_proc=proc{|i| @list.data.each{|st| st.thread.raise(Interrupt)}}
+        @cobj.int_proc=proc{|i|
+          @list.data.each{|st|
+            st.thread.raise(Interrupt)
+          }
+        }
         ext_shell(@list)
       end
     end

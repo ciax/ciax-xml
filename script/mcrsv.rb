@@ -3,8 +3,9 @@ require "libmcrman"
 
 module CIAX
   module Mcr
+    ENV['VER']||='init/'
     GetOpts.new('r')
-    Man.new.ext_server(55555)
+    Man.new.ext_server(ARGV.shift||55555)
     sleep
   end
 end

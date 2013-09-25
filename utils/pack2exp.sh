@@ -31,3 +31,4 @@ cmt=$(git log -1 --abbrev=4 --abbrev-commit|grep commit)
 cd ~/package
 pkg=ciax-xml-${cmt#* }.tgz
 tar cvzf $pkg ciax-xml
+cp $pkg /var/www/dav

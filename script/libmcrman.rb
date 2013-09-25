@@ -10,18 +10,19 @@ module CIAX
         mdb=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
-                hash=item.fork
-                self['sid']=hash.keys.first
-                @list.data.update hash
+                key,stat=item.fork
+                self['sid']=key
+                @list.data[key]=stat
               })
+        self['sid']=''
         eg=@cobj['sv']['ext']
         Thread.new{@list.save while eg.get[:save_que].pop}
         ig=@cobj['sv']['int']
         ig.update_items(eg.get[:cmdlist])
         ig.set[:def_proc]=proc{|item|
-          n=item.par[0]||@list.data.keys.last
+          n=item.par[0]||@list.data.keys.last||""
+          self['sid']=n
           if st=@list.data[n]
-            self['sid']=n
             if st[:stat] == 'query'
               st.cmd_que << item.id
               self['msg']=st.res_que.pop
@@ -29,12 +30,14 @@ module CIAX
               self['msg']='IGNORE'
             end
           else
-            self['sid']=''
-            self['msg']='ABSENT'
+            self['msg']='NONE'
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
-        ig.add_item('clean','Clean macros').set[:def_proc]=proc{@list.clean}
+        ig.add_item('clean','Clean macros').set[:def_proc]=proc{
+          self['msg']='NONE' unless @list.clean
+          @list.save
+        }
         @cobj.int_proc=proc{|i|
           @list.data.each{|st|
             st.thread.raise(Interrupt)
@@ -42,7 +45,17 @@ module CIAX
         }
         ext_shell(@list)
       end
-    end
+
+      def exe(args)
+        self['sid']=''
+        super
+      end
+
+      def shell_output
+        sid=self['sid'].empty? ? '' : '('+self['sid']+')'
+        self['msg'].empty? ? @output : self['msg']+sid
+      end
+   end
 
     class List < Datax
       def initialize
@@ -52,10 +65,14 @@ module CIAX
       end
 
       def clean
+        res=nil
         @data.each{|key,st|
-          @data.delete(key) unless st.thread.alive?
+          unless st.thread.alive?
+            @data.delete(key)
+            res=1
+          end
         }
-        self
+        res
       end
 
       def to_s

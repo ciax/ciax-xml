@@ -68,7 +68,7 @@ module CIAX
       def fork(valid_keys=[])
         new_rec(valid_keys)
         @stat.thread=Thread.new{macro}
-        {@record['id'] => @stat}
+        [@record['id'],@stat]
       end
 
       def start(valid_keys=[])

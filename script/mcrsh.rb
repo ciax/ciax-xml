@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
-require "libmcrsh"
+require "libmcrman"
 
 module CIAX
   module Mcr
     GetOpts.new('r')
-    List.new.shell('0')
+    Man.new.shell
   end
 end

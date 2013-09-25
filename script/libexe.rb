@@ -15,7 +15,7 @@ module CIAX
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       self['id']=id
-      self['eid']="#{layer}:#{id}"
+      self['layer']=layer
       @cobj=type?(cobj,Command)
       @pre_proc=[] # Proc for Command Check (by User exec)
       @post_proc=[] # Proc for Command Issue (by User exec)
@@ -88,7 +88,7 @@ module CIAX
       verbose("UDP:Server/#{self.class}","Init/Server(#{self['id']}):#{port}",2)
       Thread.new{
         tc=Thread.current
-        tc[:name]="Server Thread(#{self['eid']})"
+        tc[:name]="Server Thread(#{self['layer']}:#{self['id']})"
         tc[:color]=9
         Thread.pass
         UDPSocket.open{ |udp|

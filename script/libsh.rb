@@ -16,7 +16,7 @@ module CIAX
     def ext_shell(output={},pdb={},pstat=nil)
       # For Shell
       @output=output
-      @pdb={'eid' => nil}.update(pdb)
+      @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
       @pstat=pstat||self
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj['lo'].add_group('sh',"Shell Command",2,1)

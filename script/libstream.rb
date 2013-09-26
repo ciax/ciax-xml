@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libdatax"
+require "libsqlog"
 
 module CIAX
   class Stream < Datax

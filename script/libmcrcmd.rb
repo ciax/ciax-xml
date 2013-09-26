@@ -18,6 +18,7 @@ module CIAX
       end
 
       def initshare(svs,al,def_proc)
+        svs[:valid_keys]=[]
         svs[:def_proc]=def_proc if def_proc
         svs[:submcr_proc]=proc{|args| setcmd(args) }
         svs[:stat_proc]=proc{|site| al[site].stat}
@@ -38,29 +39,27 @@ module CIAX
       end
     end
 
+    class ExtItem < ExtItem
+      def set_par(par)
+        super
+        @set[:select]=@select
+        ent=Entity.new(@id,par,@get)
+        [:cid,:label].each{|k| ent.record[k.to_s]=self[k]} # Fixed Value
+        ent
+      end
+    end
+
     class Stat < Exe
       attr_reader :running,:cmd_que,:res_que
       attr_accessor :thread
-      def initialize(mitem,record)
-        super('mcr',mitem[:cid])
+      def initialize(id)
+        super('mcr',id)
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
         delete('id')
         delete('msg')
         delete('layer')
-        ext_shell(record)
-      end
-    end
-
-    class ExtItem < ExtItem
-      def set_par(par)
-        super
-        @set[:select]=@select
-        @set[:valid_keys]=[]
-        ent=Entity.new(@id,par,@get)
-        [:cid,:label].each{|k| ent.record[k.to_s]=self[k]} # Fixed Value
-        ent
       end
     end
 
@@ -69,7 +68,7 @@ module CIAX
       def initialize(id,par,upper)
         super
         @record=Record.new
-        @stat=Stat.new(self,@record)
+        @stat=Stat.new(self[:cid])
       end
 
       def fork

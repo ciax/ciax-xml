@@ -52,9 +52,9 @@ module CIAX
     end
 
     def set_par(par)
-      super
+      ent=super
       @select=deep_subst(self[:select])
-      self
+      ent
     end
 
     # Substitute string($+number) with parameters

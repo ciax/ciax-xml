@@ -16,7 +16,8 @@ module CIAX
 
     class ExtItem < ExtItem
       #fcmdary is ary of args(ary)
-      def getcmd
+      def set_par(par)
+        ent=super
         fcmdary=[]
         @select.each{|e1|
           args=[]
@@ -36,7 +37,8 @@ module CIAX
             args
           }
         }
-        fcmdary
+        ent.set[:cmdary]=fcmdary
+        ent
       end
     end
   end
@@ -51,7 +53,7 @@ module CIAX
       fdb=Frm::Db.new.set(adb['frm_id'])
       fcobj=Frm::ExtCmd.new(fdb)
       acobj=App::ExtCmd.new(adb)
-      acobj.setcmd(args).getcmd.each{|fargs|
+      acobj.setcmd(args).get[:cmdary].each{|fargs|
         #Validate fcmdarys
         fcobj.setcmd(fargs) if /set|unset|load|save/ !~ fargs.first
         p fargs

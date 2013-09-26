@@ -32,7 +32,7 @@ module CIAX
       # Block accepts [frame,time]
       # Result : executed block or not
       def upd(item)
-        @current_item=type?(item,Item)
+        @current_item=type?(item,Entity)
         if rid=item[:response]
           @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
           stream=yield

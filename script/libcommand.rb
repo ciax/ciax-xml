@@ -5,9 +5,11 @@ require 'librerange'
 require 'liblogging'
 
 #Access method
+# Entity => {:label,:args}
+#  Entity#exe
 #
 # Item => {:label,:parameter,:select,:args}
-#  Item#set_par(par)
+#  Item#set_par(par) -> Entity
 #  Item#share -> {:def_proc}
 #
 # Group => {id => Item}
@@ -213,7 +215,7 @@ module CIAX
       @args=[@id,*@par]
       self[:cid]=@args.join(':') # Used by macro
       verbose(self.class,"SetPAR(#{@id}): #{@par}")
-      self
+      Entity.new(@id,par,@get)
     end
 
     private
@@ -260,6 +262,26 @@ module CIAX
           str
         end
       }
+    end
+  end
+
+  class Entity < Hashx
+    attr_reader :id,:par,:args,:set,:get
+    #set should have :def_proc
+    def initialize(id,par,upper=[])
+      @id=id
+      @par=par
+      @args=[@id,*@par]
+      @set=WriteShare.new
+      @get=ReadShare.new([@set]+type?(upper,Array))
+      self[:cid]=@args.join(':') # Used by macro
+      @ver_color=5
+    end
+
+    def exe
+      verbose(self.class,"Execute #{@args}")
+      @get[:def_proc].call(self)
+      self
     end
   end
 end

@@ -37,7 +37,7 @@ module CIAX
 
     # Send bunch of frm args array (ary of ary)
     def send(n=1,item)
-      type?(item,Item)
+      type?(item,Entity)
       clear if n == 0
       inp=@send_proc.call(item)
       #inp is fcmdary (ary of ary)

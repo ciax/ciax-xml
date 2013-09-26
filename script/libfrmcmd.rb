@@ -42,7 +42,8 @@ module CIAX
         self
       end
 
-      def getframe # return = response select
+      def set_par(par) # return = response select
+        ent=super
         return unless @sel[:select]=@select
         cid=self[:cid]
         verbose("FrmItem","Select:#{self[:label]}(#{cid})")
@@ -59,7 +60,8 @@ module CIAX
           frame=@fstr[:main]
           @cache[cid]=frame unless nocache
         end
-        frame
+        ent.set[:frame]=frame
+        ent
       end
 
       private
@@ -94,7 +96,7 @@ module CIAX
         cobj=ExtCmd.new(fdb,field)
         cgrp=cobj['sv']['ext']
         field.read unless STDIN.tty?
-        print cgrp.setcmd(args).getframe
+        print cgrp.setcmd(args).get[:frame]
       rescue InvalidCMD
         Msg.usage("[dev] [cmd] (par) < field_file",[])
       rescue InvalidID

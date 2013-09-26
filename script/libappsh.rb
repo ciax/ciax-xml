@@ -146,7 +146,7 @@ module CIAX
       def init_buf
         buf=Buffer.new(self)
         buf.send_proc{|item|
-          cmdary=item.getcmd
+          cmdary=item.get[:cmdary]
           verbose("AppSv","Send FrmCmds #{cmdary}")
           cmdary
         }

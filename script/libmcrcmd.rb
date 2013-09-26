@@ -11,7 +11,9 @@ module CIAX
         super()
         svs=initshare(self['sv'].set,al,def_proc)
         svs[:save_que]=stq
-        self['sv']['ext']=ExtGrp.new(mdb,[svs])
+        self['sv']['ext']=ExtGrp.new(mdb,[svs]){|id,pa|
+          ExtItem.new(mdb,id,pa)
+        }
         $dryrun=3
       end
 
@@ -36,19 +38,6 @@ module CIAX
       end
     end
 
-    class ExtGrp < ExtGrp
-      def initialize(mdb,upper)
-        super(mdb,upper){}
-        @mdb=type?(mdb,Mcr::Db)
-      end
-
-      def setcmd(args)
-        id,*par=type?(args,Array)
-        @valid_keys.include?(id) || raise(InvalidCMD,list)
-        ExtItem.new(@mdb,id,@get).set_par(par)
-      end
-    end
-
     class Stat < Exe
       attr_reader :running,:cmd_que,:res_que
       attr_accessor :thread
@@ -65,25 +54,27 @@ module CIAX
     end
 
     class ExtItem < ExtItem
+      def set_par(par)
+        super
+        @set[:select]=@select
+        @set[:valid_keys]=[]
+        ent=Entity.new(@id,par,@get)
+        [:cid,:label].each{|k| ent.record[k.to_s]=self[k]} # Fixed Value
+        ent
+      end
+    end
+
+    class Entity < Entity
       attr_reader :record,:stat
-      def fork(valid_keys=[])
-        new_rec(valid_keys)
-        @stat.thread=Thread.new{macro}
-        [@record['id'],@stat]
-      end
-
-      def start(valid_keys=[])
-        new_rec(valid_keys)
-        macro
-      end
-
-      private
-      def new_rec(valid_keys=[])
-        @set[:valid_keys]=valid_keys.clear
+      def initialize(id,par,upper)
+        super
         @record=Record.new
         @stat=Stat.new(self,@record)
-        [:cid,:label].each{|k| @record[k.to_s]=self[k]} # Fixed Value
-        self
+      end
+
+      def fork
+        @stat.thread=Thread.new{macro}
+        [@record['id'],@stat]
       end
 
       # separated for sub thread
@@ -91,7 +82,7 @@ module CIAX
         @stat[:cid]=@record['cid']
         setstat 'run'
         show @record
-        submacro(@select)
+        submacro(@get[:select])
         finish
         self
       rescue Interlock
@@ -106,6 +97,7 @@ module CIAX
         self
       end
 
+      private
       def submacro(select)
         @record.depth+=1
         select.each{|e1|
@@ -129,7 +121,7 @@ module CIAX
               if @step.async?
                 @get[:def_proc].call(item)
               else
-                submacro(item.select)
+                submacro(item.get[:select])
               end
             end
           rescue Retry
@@ -201,7 +193,7 @@ module CIAX
         al=App::List.new
         mdb=Db.new.set('ciax')
         mobj=ExtCmd.new(mdb,al)
-        mobj.setcmd(ARGV).start
+        mobj.setcmd(ARGV).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

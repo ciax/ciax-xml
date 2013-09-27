@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 module CIAX
-  # Array of WriteShare(Hash): each Hash is associated with Domain,Group,Item;
-  # Usage:Setting/ provide @set(WriteShare) and add to ReadShare at each Level, value setting should be done to the @set;
-  # Usage:Getting/ simply get form ReadShare, not from @set;
+  # Hash array of @ary: each Hash is associated with Domain,Group,Item;
+  # Usage:[]=/ add to current Hash;
+  # Usage:[]/  get val from current Hash otherwise from upper level of Hash;
   class Config < Hash
     attr_reader :ary
     alias :_org_keys :keys

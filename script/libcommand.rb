@@ -36,9 +36,6 @@ require 'liblogging'
 # Keep current command and parameters
 
 module CIAX
-  # Array of WriteShare(Hash): each Hash is associated with Domain,Group,Item;
-  # Usage:Setting/ provide @set(WriteShare) and add to ReadShare at each Level, value setting should be done to the @set;
-  # Usage:Getting/ simply get form ReadShare, not from @set;
   class Command < Hashx
     # CDB: mandatory (:select)
     # optional (:label,:parameter)

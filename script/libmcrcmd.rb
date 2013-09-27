@@ -17,6 +17,7 @@ module CIAX
       end
 
       def initshare(svs,al,def_proc)
+        svs[:mobj]=self
         svs[:valid_keys]=[]
         @stq=svs[:save_que]=Queue.new
         svs[:def_proc]=def_proc if def_proc
@@ -64,8 +65,8 @@ module CIAX
     class Stat < Exe
       attr_reader :running,:cmd_que,:res_que
       attr_accessor :thread
-      def initialize(id)
-        super('mcr',id)
+      def initialize(id,mobj)
+        super('mcr',id,mobj)
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
@@ -80,7 +81,7 @@ module CIAX
       def initialize(id,par,upper)
         super
         @record=Record.new
-        @stat=Stat.new(self[:cid])
+        @stat=Stat.new(self[:cid],@cfg[:mobj])
       end
 
       def fork

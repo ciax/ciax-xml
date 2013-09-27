@@ -9,9 +9,9 @@ module CIAX
     class ExtCmd < Command
       def initialize(mdb,al,stq=Queue.new,&def_proc) # Block if for SubMacro
         super()
-        svs=initshare(self['sv'].set,al,def_proc)
+        svs=initshare(self['sv'].cfg,al,def_proc)
         svs[:save_que]=stq
-        self['sv']['ext']=ExtGrp.new(mdb,[svs]){|id,pa|
+        self['sv']['ext']=ExtGrp.new(mdb,svs){|id,pa|
           ExtItem.new(mdb,id,pa)
         }
         $dryrun=3
@@ -42,8 +42,8 @@ module CIAX
     class ExtItem < ExtItem
       def set_par(par)
         super
-        @set[:select]=@select
-        ent=Entity.new(@id,par,@get)
+        @cfg[:select]=@select
+        ent=Entity.new(@id,par,@cfg)
         [:cid,:label].each{|k| ent.record[k.to_s]=self[k]} # Fixed Value
         ent
       end
@@ -81,7 +81,7 @@ module CIAX
         @stat[:cid]=@record['cid']
         setstat 'run'
         show @record
-        submacro(@get[:select])
+        submacro(@cfg[:select])
         finish
         self
       rescue Interlock
@@ -90,7 +90,7 @@ module CIAX
       rescue Interrupt
         warn("\nInterrupt Issued to #{@stat.running}")
         @stat.running.each{|site|
-          @get[:exec_proc].call(site,['interrupt'])
+          @cfg[:exec_proc].call(site,['interrupt'])
         }
         finish('interrupted')
         self
@@ -101,7 +101,7 @@ module CIAX
         @record.depth+=1
         select.each{|e1|
           begin
-            @step=@record.add_step(e1,@get)
+            @step=@record.add_step(e1,@cfg)
             case e1['type']
             when 'goal'
               raise(Skip) if @step.skip?
@@ -114,13 +114,13 @@ module CIAX
             when 'exec'
               @stat.running << e1['site']
               res=@step.exec?
-              @get[:exec_proc].call(e1['site'],e1['args']) if exec?(res)
+              @cfg[:exec_proc].call(e1['site'],e1['args']) if exec?(res)
             when 'mcr'
-              item=@get[:submcr_proc].call(e1['args'])
+              item=@cfg[:submcr_proc].call(e1['args'])
               if @step.async?
-                @get[:def_proc].call(item)
+                @cfg[:def_proc].call(item)
               else
-                submacro(item.get[:select])
+                submacro(item.cfg[:select])
               end
             end
           rescue Retry
@@ -137,7 +137,7 @@ module CIAX
         @stat.running.clear
         show str+"\n"
         @record.finish(str)
-        @get[:valid_keys].clear
+        @cfg[:valid_keys].clear
         setstat str
       end
 
@@ -154,11 +154,11 @@ module CIAX
 
       def setstat(str)
         @stat[:stat]=str
-        @get[:save_que].push "#{@stat[:cid]}(#{str})"
+        @cfg[:save_que].push "#{@stat[:cid]}(#{str})"
       end
 
       def query(cmds)
-        @get[:valid_keys].replace(cmds)
+        @cfg[:valid_keys].replace(cmds)
         @stat[:option]=cmds.join('/')
         setstat 'query'
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
@@ -171,9 +171,9 @@ module CIAX
         @stat.res_que << 'OK'
         @stat[:option]=nil
         setstat 'run'
-        @get[:valid_keys].clear
+        @cfg[:valid_keys].clear
         @step['action']=res
-        @get[:cmdproc][res].call
+        @cfg[:cmdproc][res].call
       end
 
       def input

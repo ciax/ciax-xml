@@ -15,11 +15,11 @@ module CIAX
         ig.add_item('save',"Save Field [key,key...] (tag)",[any,any])
         ig.add_item('load',"Load Field (tag)",[any])
         set=ig.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
-        set.set[:def_proc]=proc{|item|
+        set.cfg[:def_proc]=proc{|item|
           field.set(*item.par)
         }
         sv=self['sv']
-        sv['ext']=ExtGrp.new(fdb,[sv.set]){|id,gsa|
+        sv['ext']=ExtGrp.new(fdb,sv.cfg){|id,gsa|
           ExtItem.new(field,fdb,id,gsa)
         }
       end
@@ -60,7 +60,7 @@ module CIAX
           frame=@fstr[:main]
           @cache[cid]=frame unless nocache
         end
-        ent.set[:frame]=frame
+        ent.cfg[:frame]=frame
         ent
       end
 
@@ -96,7 +96,7 @@ module CIAX
         cobj=ExtCmd.new(fdb,field)
         cgrp=cobj['sv']['ext']
         field.read unless STDIN.tty?
-        print cgrp.setcmd(args).get[:frame]
+        print cgrp.setcmd(args).cfg[:frame]
       rescue InvalidCMD
         Msg.usage("[dev] [cmd] (par) < field_file",[])
       rescue InvalidID

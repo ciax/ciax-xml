@@ -8,7 +8,7 @@ module CIAX
     def initialize(db)
       super()
       sv=self['sv']
-      sv['ext']=ExtGrp.new(db,[sv.set]){|id,pa|
+      sv['ext']=ExtGrp.new(db,sv.cfg){|id,pa|
         ExtItem.new(db,id,pa)
       }
     end
@@ -17,14 +17,16 @@ module CIAX
   class ExtGrp < Group
     def initialize(db,upper)
       type?(db,Db)
-      super({'color' => '6','caption' => "External Commands"},upper)
+      super(upper)
+      @cfg['color']='6'
+      @cfg['caption']="External Commands"
       @cmdary=[]
       cdb=db[:command]
-      (cdb[:group]||{'main'=>@attr}).each{|gid,gat|
+      (cdb[:group]||{'main'=>@cfg.to_hash}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:select].keys).each{|id|
           subgrp[id]=cdb[:label][id]
-          self[id]=yield(id,@get)
+          self[id]=yield(id,@cfg)
 
         }
         @cmdary << subgrp

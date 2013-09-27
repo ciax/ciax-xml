@@ -16,10 +16,10 @@ module CIAX
               })
         self['sid']=''
         eg=@cobj['sv']['ext']
-        Thread.new{@list.save while eg.get[:save_que].pop}
+        Thread.new{@list.save while eg.cfg[:save_que].pop}
         ig=@cobj['sv']['int']
-        ig.update_items(eg.get[:cmdlist])
-        ig.set[:def_proc]=proc{|item|
+        ig.update_items(eg.cfg[:cmdlist])
+        ig.cfg[:def_proc]=proc{|item|
           n=item.par[0]||@list.data.keys.last||""
           self['sid']=n
           if st=@list.data[n]
@@ -34,7 +34,7 @@ module CIAX
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
-        ig.add_item('clean','Clean macros').set[:def_proc]=proc{
+        ig.add_item('clean','Clean macros').cfg[:def_proc]=proc{
           self['msg']='NONE' unless @list.clean
           @list.save
         }

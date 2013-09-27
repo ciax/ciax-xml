@@ -71,8 +71,11 @@ module CIAX
     attr_reader :site
     def initialize
       super
-      @swsgrp=Group.new({'caption'=>'Switch Sites','color'=>5,'column'=>2})
-      @swsgrp.set[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
+      @swsgrp=Group.new
+      @swsgrp.cfg['caption']='Switch Sites'
+      @swsgrp.cfg['column']=2
+      @swsgrp.cfg['color']=5
+      @swsgrp.cfg[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
       @init_proc << proc{|exe|
         exe.cobj['lo']['sws']=@swsgrp
       }
@@ -99,8 +102,11 @@ module CIAX
 
   class ShLayer < Hashx
     def initialize
-      @swlgrp=Group.new({'caption'=>"Switch Layer",'color'=>5,'column'=>5})
-      @swlgrp.set[:def_proc]=proc{|item| raise(SwLayer,item[:cid]) }
+      @swlgrp=Group.new
+      @swlgrp.cfg['caption']='Switch Layer'
+      @swlgrp.cfg['color']=5
+      @swlgrp.cfg['column']=5
+      @swlgrp.cfg[:def_proc]=proc{|item| raise(SwLayer,item[:cid]) }
     end
 
     def add_layer(layer,lst)

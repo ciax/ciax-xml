@@ -42,8 +42,8 @@ module CIAX
     class Test < Exe
       def initialize(fdb)
         super(fdb)
-        @cobj['sv'].set[:def_proc]=proc{|item|@field['time']=UnixTime.now}
-        @cobj['sv']['int']['set'].set[:def_proc]=proc{|item|
+        @cobj['sv'].cfg[:def_proc]=proc{|item|@field['time']=UnixTime.now}
+        @cobj['sv']['int']['set'].cfg[:def_proc]=proc{|item|
           @field.set(item.par[0],item.par[1])
         }
       end
@@ -54,7 +54,7 @@ module CIAX
         super(fdb,fdb['site_id'])
         host=type?(host||fdb['host']||'localhost',String)
         @field.ext_http(self['id'],host).load
-        @cobj['sv'].set[:def_proc]=proc{to_s}
+        @cobj['sv'].cfg[:def_proc]=proc{to_s}
         ext_client(host,fdb['port'])
         @upd_proc << proc{@field.load}
       end
@@ -74,17 +74,17 @@ module CIAX
         else
           @sqlsv=@io=Stream.new(iocmd,fdb['wait'],1)
         end
-        @cobj['sv']['ext'].set[:def_proc]=proc{|item|
-          @io.snd(item.get[:frame],item[:cid])
+        @cobj['sv']['ext'].cfg[:def_proc]=proc{|item|
+          @io.snd(item.cfg[:frame],item[:cid])
           @field.upd(item){@io.rcv} && @field.save
         }
-        @cobj['sv']['int']['set'].set[:def_proc]=proc{|item|
+        @cobj['sv']['int']['set'].cfg[:def_proc]=proc{|item|
           @field.set(item.par[0],item.par[1]).save
         }
-        @cobj['sv']['int']['save'].set[:def_proc]=proc{|item|
+        @cobj['sv']['int']['save'].cfg[:def_proc]=proc{|item|
           @field.savekey(item.par[0].split(','),item.par[1])
         }
-        @cobj['sv']['int']['load'].set[:def_proc]=proc{|item|
+        @cobj['sv']['int']['load'].cfg[:def_proc]=proc{|item|
           @field.load(item.par[0]||'').save
         }
         ext_server(fdb['port'].to_i)

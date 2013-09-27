@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'libenumx'
-require 'libmsg'
+require 'libconf'
 require 'librerange'
 require 'liblogging'
 
@@ -39,22 +39,6 @@ module CIAX
   # Array of WriteShare(Hash): each Hash is associated with Domain,Group,Item;
   # Usage:Setting/ provide @set(WriteShare) and add to ReadShare at each Level, value setting should be done to the @set;
   # Usage:Getting/ simply get form ReadShare, not from @set;
-  class WriteShare < Hash
-    private :[]
-  end
-
-  class ReadShare < Array
-    private :[]=
-
-    def [](id)
-      each{|lv|
-        return lv.fetch(id) if lv.key?(id)
-      }
-      Msg.warn("No such key in ReadShare [#{id}]")
-      nil
-    end
-  end
-
   class Command < Hashx
     # CDB: mandatory (:select)
     # optional (:label,:parameter)
@@ -76,7 +60,7 @@ module CIAX
     end
 
     def int_proc=(p)
-      self['sv']['hid']['interrupt'].set[:def_proc]=type?(p,Proc)
+      self['sv']['hid']['interrupt'].cfg[:def_proc]=type?(p,Proc)
     end
 
     def list
@@ -97,12 +81,12 @@ module CIAX
   end
 
   class Domain < Hashx
-    attr_reader :set
+    attr_reader :cfg
     def initialize(color=2)
-      @set=WriteShare.new
-      @set[:def_proc]=proc{}
+      @cfg=Config.new
+      @cfg[:def_proc]=proc{}
+      @cfg[:color]=color
       @grplist=[] # For ordering
-      @color=color
       @ver_color=2
     end
 
@@ -116,9 +100,12 @@ module CIAX
       super
     end
 
-    def add_group(gid,caption,column=2,color=@color)
-      attr={'caption' => caption,'column' => column,'color' => color}
-      self[gid]=Group.new(attr,[@set])
+    def add_group(gid,caption,column=nil,color=nil)
+      grp=Group.new(@cfg)
+      grp.cfg['caption']=caption
+      grp.cfg['column']=column||2
+      grp.cfg['color']=color if color
+      self[gid]=grp
     end
 
     def setcmd(args)
@@ -146,14 +133,12 @@ module CIAX
   end
 
   class Group < Hashx
-    attr_reader :valid_keys,:cmdlist,:set,:get
-    #attr = {caption,color,column,:members}
-    def initialize(attr,upper=[])
-      @attr=type?(attr,Hash)
+    attr_reader :valid_keys,:cmdlist,:cfg
+    #upper = {caption,color,column}
+    def initialize(upper=Config.new)
       @valid_keys=[]
-      @cmdlist=CmdList.new(@attr,@valid_keys)
-      @set=WriteShare.new
-      @get=ReadShare.new([@set]+type?(upper,Array))
+      @cfg=Config.new(upper)
+      @cmdlist=CmdList.new(@cfg,@valid_keys)
       @ver_color=3
     end
 
@@ -170,7 +155,7 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(id,@get)
+      item=self[id]=Item.new(id,@cfg)
       item[:label]= title
       item[:parameter] = parameter if parameter
       item
@@ -180,7 +165,7 @@ module CIAX
       type?(labels,Hash)
       labels.each{|id,title|
         @cmdlist[id]=title
-        self[id]=Item.new(id,@get)
+        self[id]=Item.new(id,@cfg)
       }
       self
     end
@@ -193,20 +178,19 @@ module CIAX
 
   class Item < Hashx
     include Math
-    attr_reader :id,:par,:args,:set,:get
+    attr_reader :id,:par,:args,:cfg
     #set should have :def_proc
-    def initialize(id,upper=[])
+    def initialize(id,upper=Config.new)
       @id=id
       @par=[]
       @args=[]
-      @set=WriteShare.new
-      @get=ReadShare.new([@set]+type?(upper,Array))
+      @cfg=Config.new(upper)
       @ver_color=5
     end
 
     def exe
       verbose(self.class,"Execute #{@args}")
-      @get[:def_proc].call(self)
+      @cfg[:def_proc].call(self)
       self
     end
 
@@ -215,7 +199,7 @@ module CIAX
       @args=[@id,*@par]
       self[:cid]=@args.join(':') # Used by macro
       verbose(self.class,"SetPAR(#{@id}): #{@par}")
-      Entity.new(@id,par,@get)
+      Entity.new(@id,par,@cfg)
     end
 
     private
@@ -266,21 +250,20 @@ module CIAX
   end
 
   class Entity < Hashx
-    attr_reader :id,:par,:args,:set,:get
+    attr_reader :id,:par,:args,:cfg
     #set should have :def_proc
-    def initialize(id,par,upper=[])
+    def initialize(id,par,upper=Config.new)
       @id=id
       @par=par
       @args=[@id,*@par]
-      @set=WriteShare.new
-      @get=ReadShare.new([@set]+type?(upper,Array))
+      @cfg=Config.new(upper)
       self[:cid]=@args.join(':') # Used by macro
       @ver_color=5
     end
 
     def exe
       verbose(self.class,"Execute #{@args}")
-      @get[:def_proc].call(self)
+      @cfg[:def_proc].call(self)
       self
     end
   end

@@ -8,7 +8,7 @@ module CIAX
       def initialize(db)
         super()
         sv=self['sv']
-        sv['ext']=ExtGrp.new(db,[sv.set]){|id,pa|
+        sv['ext']=ExtGrp.new(db,sv.cfg){|id,pa|
           ExtItem.new(db,id,pa)
         }
       end
@@ -37,7 +37,7 @@ module CIAX
             args
           }
         }
-        ent.set[:cmdary]=fcmdary
+        ent.cfg[:cmdary]=fcmdary
         ent
       end
     end
@@ -53,7 +53,7 @@ module CIAX
       fdb=Frm::Db.new.set(adb['frm_id'])
       fcobj=Frm::ExtCmd.new(fdb)
       acobj=App::ExtCmd.new(adb)
-      acobj.setcmd(args).get[:cmdary].each{|fargs|
+      acobj.setcmd(args).cfg[:cmdary].each{|fargs|
         #Validate fcmdarys
         fcobj.setcmd(fargs) if /set|unset|load|save/ !~ fargs.first
         p fargs

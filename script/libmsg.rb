@@ -43,7 +43,6 @@ module CIAX
 
   # Global option
   class GetOpts < Hash
-#    include Msg
     def initialize(str='',db={})
       require 'optparse'
       Msg.type?(str,String) << 'd'
@@ -85,14 +84,9 @@ module CIAX
   # Used by Command and XmlDoc
   class CmdList < Hash
     def initialize(attr,select=[])
-      Msg.type?(attr,Hash)
+      @attr=Msg.type?(attr,Hash)
       @select=Msg.type?(select,Array)
       @dummy=[]
-      caption=attr["caption"]
-      color=(attr["color"]||6).to_i
-      @col=(attr["column"]||1).to_i
-      @caption='==== '+Msg.color(caption,color)+' ====' if caption
-      @show_all=attr["show_all"]
     end
 
     def []=(k,v)
@@ -123,14 +117,16 @@ module CIAX
     end
 
     def to_s
-      page=[@caption]
-      ((@select+@dummy) & keys).each_slice(@col){|a|
+      cap=@attr["caption"]
+      cap= '==== '+Msg.color(cap,(@attr["color"]||6).to_i)+' ====' if cap
+      page=[cap]
+      ((@select+@dummy) & keys).each_slice((@attr["column"]||1).to_i){|a|
         l=a.map{|key|
           Msg.item(key,self[key]) if self[key]
         }.compact
         page << l.join("\t") unless l.empty?
       }
-      if @show_all || page.size > 1
+      if @attr["show_all"] || page.size > 1
         page.compact.join("\n")
       else
         ''

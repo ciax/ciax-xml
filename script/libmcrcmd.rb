@@ -10,8 +10,8 @@ module CIAX
       def initialize(mdb,al,&def_proc) # Block if for SubMacro
         super()
         svs=initshare(self['sv'].cfg,al,def_proc)
-        self['sv']['ext']=ExtGrp.new(mdb,svs){|id,pa|
-          ExtItem.new(mdb,id,pa)
+        self['sv']['ext']=ExtGrp.new(mdb,svs){|cfg,crnt|
+          ExtItem.new(mdb,cfg,crnt)
         }
         $dryrun=3
       end
@@ -54,9 +54,9 @@ module CIAX
 
     class ExtItem < ExtItem
       def set_par(par)
-        super
-        @cfg[:select]=@select
-        ent=Entity.new(@id,par,@cfg)
+        @par=validate(type?(par,Array))
+        verbose(self.class,"SetPAR(#{@id}): #{par}")
+        ent=Entity.new(@cfg,{:par => par,:select => deep_subst(self[:select])})
         [:cid,:label].each{|k| ent.record[k.to_s]=self[k]} # Fixed Value
         ent
       end
@@ -78,7 +78,7 @@ module CIAX
 
     class Entity < Entity
       attr_reader :record,:stat
-      def initialize(id,par,upper)
+      def initialize(upper,crnt)
         super
         @record=Record.new
         @stat=Stat.new(self[:cid],@cfg[:mobj])

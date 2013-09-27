@@ -8,8 +8,8 @@ module CIAX
       def initialize(db)
         super()
         sv=self['sv']
-        sv['ext']=ExtGrp.new(db,sv.cfg){|id,pa|
-          ExtItem.new(db,id,pa)
+        sv['ext']=ExtGrp.new(db,sv.cfg){|cfg,crnt|
+          ExtItem.new(db,cfg,crnt)
         }
       end
     end

@@ -8,8 +8,8 @@ module CIAX
     def initialize(db)
       super()
       sv=self['sv']
-      sv['ext']=ExtGrp.new(db,sv.cfg){|id,pa|
-        ExtItem.new(db,id,pa)
+      sv['ext']=ExtGrp.new(db,sv.cfg){|cfg,crnt|
+        ExtItem.new(db,cfg,crnt)
       }
     end
   end
@@ -18,15 +18,16 @@ module CIAX
     def initialize(db,upper)
       type?(db,Db)
       super(upper)
-      @cfg['color']='6'
+      @cfg['color']=6
       @cfg['caption']="External Commands"
       @cmdary=[]
       cdb=db[:command]
       (cdb[:group]||{'main'=>@cfg.to_hash}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:select].keys).each{|id|
+          crnt={:id => id}
           subgrp[id]=cdb[:label][id]
-          self[id]=yield(id,@cfg)
+          self[id]=yield(@cfg,crnt)
 
         }
         @cmdary << subgrp
@@ -42,9 +43,9 @@ module CIAX
   class ExtItem < Item # Self has config data
     include Math
     attr_reader :select
-    def initialize(db,id,upper)
+    def initialize(db,upper,crnt)
       type?(db,Db)
-      super(id,upper)
+      super(upper,crnt)
       # because cdb is separated by title
       db[:command].each{|k,v|
         if a=v[@id]

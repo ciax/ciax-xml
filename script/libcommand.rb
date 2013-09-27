@@ -10,21 +10,20 @@ require 'liblogging'
 #
 # Item => {:label,:parameter,:select,:args}
 #  Item#set_par(par) -> Entity
-#  Item#share -> {:def_proc}
+#  Item#cfg -> {:def_proc}
 #
 # Group => {id => Item}
 #  Group#list -> CmdList.to_s
-#  Group#share -> {:def_proc}
+#  Group#cfg -> {:def_proc}
 #  Group#add_item(id,title){|id,par|} -> Item
 #  Group#update_items(list){|id|}
 #  Group#valid_keys -> Array
 #
 # Domain => {id => Group}
 #  Domain#list -> String
-#  Domain#share -> {:def_proc}
+#  Domain#cfg -> {:def_proc}
 #  Domain#add_group(key,title) -> Group
 #  Domain#item(id) -> Item
-#
 #
 # Command => {id => Domain}
 #  Command#list -> String
@@ -37,16 +36,18 @@ require 'liblogging'
 
 module CIAX
   class Command < Hashx
+    attr_reader :cfg
     # CDB: mandatory (:select)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
     def initialize
+      @cfg=Config.new({:command => self})
       # Server Commands (service commands on Server)
-      sv=self['sv']=Domain.new(2)
+      sv=self['sv']=Domain.new(@cfg,{'color' => 2})
       sv.add_group('hid',"Hidden Group").add_item('interrupt')
       sv.add_group('int','Internal Commands')
       # Local(Long Jump) Commands (local handling commands on Client)
-      self['lo']=Domain.new(9)
+      sl=self['lo']=Domain.new(@cfg,{'color' => 2})
     end
 
     def setcmd(args)
@@ -79,10 +80,10 @@ module CIAX
 
   class Domain < Hashx
     attr_reader :cfg
-    def initialize(color=2)
-      @cfg=Config.new
+    def initialize(upper=Config.new,crnt={})
+      @cfg=Config.new(upper).update(crnt)
+      @cfg[:domain]=self
       @cfg[:def_proc]=proc{}
-      @cfg['color']=color
       @grplist=[] # For ordering
       @ver_color=2
     end
@@ -132,9 +133,10 @@ module CIAX
   class Group < Hashx
     attr_reader :valid_keys,:cmdlist,:cfg
     #upper = {caption,color,column}
-    def initialize(upper=Config.new)
+    def initialize(upper=Config.new,crnt={})
       @valid_keys=[]
-      @cfg=Config.new(upper)
+      @cfg=Config.new(upper).update(crnt)
+      @cfg[:group]=self
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @ver_color=3
     end
@@ -152,7 +154,7 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(id,@cfg)
+      item=self[id]=Item.new(@cfg,{:id => id})
       item[:label]= title
       item[:parameter] = parameter if parameter
       item
@@ -162,7 +164,7 @@ module CIAX
       type?(labels,Hash)
       labels.each{|id,title|
         @cmdlist[id]=title
-        self[id]=Item.new(id,@cfg)
+        self[id]=Item.new(@cfg,{:id => id})
       }
       self
     end
@@ -175,28 +177,19 @@ module CIAX
 
   class Item < Hashx
     include Math
-    attr_reader :id,:par,:args,:cfg
+    attr_reader :cfg
     #set should have :def_proc
-    def initialize(id,upper=Config.new)
-      @id=id
-      @par=[]
-      @args=[]
-      @cfg=Config.new(upper)
+    def initialize(upper=Config.new,crnt={})
+      @cfg=Config.new(upper).update(crnt)
+      @cfg[:item]=self
+      @id=@cfg[:id]
       @ver_color=5
-    end
-
-    def exe
-      verbose(self.class,"Execute #{@args}")
-      @cfg[:def_proc].call(self)
-      self
     end
 
     def set_par(par)
       @par=validate(type?(par,Array))
-      @args=[@id,*@par]
-      self[:cid]=@args.join(':') # Used by macro
-      verbose(self.class,"SetPAR(#{@id}): #{@par}")
-      Entity.new(@id,par,@cfg)
+      verbose(self.class,"SetPAR(#{@id}): #{par}")
+      Entity.new(@cfg,{:par => par})
     end
 
     private
@@ -249,11 +242,11 @@ module CIAX
   class Entity < Hashx
     attr_reader :id,:par,:args,:cfg
     #set should have :def_proc
-    def initialize(id,par,upper=Config.new)
-      @id=id
-      @par=par
+    def initialize(upper=Config.new,crnt={})
+      @cfg=Config.new(upper).update(crnt)
+      @id=@cfg[:id]
+      @par=@cfg[:par]
       @args=[@id,*@par]
-      @cfg=Config.new(upper)
       self[:cid]=@args.join(':') # Used by macro
       @ver_color=5
     end

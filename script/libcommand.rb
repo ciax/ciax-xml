@@ -82,7 +82,7 @@ module CIAX
     def initialize(color=2)
       @cfg=Config.new
       @cfg[:def_proc]=proc{}
-      @cfg[:color]=color
+      @cfg['color']=color
       @grplist=[] # For ordering
       @ver_color=2
     end

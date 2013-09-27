@@ -7,10 +7,9 @@ require "libappsh"
 module CIAX
   module Mcr
     class ExtCmd < Command
-      def initialize(mdb,al,stq=Queue.new,&def_proc) # Block if for SubMacro
+      def initialize(mdb,al,&def_proc) # Block if for SubMacro
         super()
         svs=initshare(self['sv'].cfg,al,def_proc)
-        svs[:save_que]=stq
         self['sv']['ext']=ExtGrp.new(mdb,svs){|id,pa|
           ExtItem.new(mdb,id,pa)
         }
@@ -19,11 +18,13 @@ module CIAX
 
       def initshare(svs,al,def_proc)
         svs[:valid_keys]=[]
+        @stq=svs[:save_que]=Queue.new
         svs[:def_proc]=def_proc if def_proc
         svs[:submcr_proc]=proc{|args| setcmd(args) }
         svs[:stat_proc]=proc{|site| al[site].stat}
         svs[:exec_proc]=proc{|site,args| al[site].exe(args) }
-        cv={:cmdlist => {},:cmdproc => {}}
+        svs[:cmdproc]={}
+        @intcmd={}
         {
           "exec"=>["Command",proc{true}],
           "skip"=>["Execution",proc{false}],
@@ -32,10 +33,21 @@ module CIAX
           "force"=>["Proceed",proc{false}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|s,a|
-          cv[:cmdlist][s]=s.capitalize+" "+a[0]
-          cv[:cmdproc][s]=a[1]
+          @intcmd[s]=s.capitalize+" "+a[0]
+          svs[:cmdproc][s]=a[1]
         }
-        svs.update(cv)
+        svs
+      end
+
+      def save_proc
+        Thread.new{yield while @stq.pop}
+      end
+
+      def int_grp
+        ig=self['sv']['int']
+        ig.update_items(@intcmd)
+        ig.cfg[:def_proc]=proc{|item| yield item}
+        ig
       end
     end
 

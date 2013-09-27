@@ -15,11 +15,8 @@ module CIAX
                 @list.data[key]=stat
               })
         self['sid']=''
-        eg=@cobj['sv']['ext']
-        Thread.new{@list.save while eg.cfg[:save_que].pop}
-        ig=@cobj['sv']['int']
-        ig.update_items(eg.cfg[:cmdlist])
-        ig.cfg[:def_proc]=proc{|item|
+        @cobj.save_proc{@list.save}
+        ig=@cobj.int_grp{|item|
           n=item.par[0]||@list.data.keys.last||""
           self['sid']=n
           if st=@list.data[n]

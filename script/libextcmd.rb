@@ -51,17 +51,28 @@ module CIAX
       }
     end
 
+    def new_entity(crnt)
+      ExtEntity.new(@cfg,crnt)
+    end
+  end
+
+  class ExtEntity < Entity
     # Substitute string($+number) with parameters
     # par={ val,range,format } or String
     # str could include Math functions
+    def initialize(upper,crnt)
+      super
+      @cfg[:body]=deep_subst(@cfg[:body])
+    end
+
     def subst(str)
       return str unless /\$([\d]+)/ === str
-      enclose("ExtItem","Substitute from [#{str}]","Substitute to [%s]"){
+      enclose("ExtEntity","Substitute from [#{str}]","Substitute to [%s]"){
         num=true
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
           num=false if @cfg[:parameter][i-1][:type] != 'num'
-          verbose("ExtItem","Parameter No.#{i} = [#{@par[i-1]}]")
+          verbose("ExtEntity","Parameter No.#{i} = [#{@par[i-1]}]")
           @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
         }
         if num && /\$/ !~ res

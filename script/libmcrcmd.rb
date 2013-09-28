@@ -53,11 +53,8 @@ module CIAX
     end
 
     class ExtItem < ExtItem
-      def set_par(par)
-        @par=validate(type?(par,Array))
-        verbose(self.class,"SetPAR(#{@id}): #{par}")
-        ent=Entity.new(@cfg,{:par => par,:body => deep_subst(@cfg[:body])})
-        ent
+      def new_entity(crnt)
+        ExtEntity.new(@cfg,crnt)
       end
     end
 
@@ -75,7 +72,7 @@ module CIAX
       end
     end
 
-    class Entity < Entity
+    class ExtEntity < ExtEntity
       attr_reader :record,:stat
       def initialize(upper,crnt)
         super

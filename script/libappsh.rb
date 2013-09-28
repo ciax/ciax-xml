@@ -68,15 +68,15 @@ module CIAX
         @stat.ext_sym(adb)
         @watch.ext_upd(adb,@stat).upd
         cri={:type => 'reg', :list => ['.']}
-        @cobj['sv']['int'].add_item('set','[key=val,...]',[cri]).cfg[:def_proc]=proc{|item|
-          @stat.str_update(item.par[0])
-          self['msg']="Set #{item.par[0]}"
+        @cobj['sv']['int'].add_item('set','[key=val,...]',[cri]).cfg[:def_proc]=proc{|ent|
+          @stat.str_update(ent.par[0])
+          self['msg']="Set #{ent.par[0]}"
         }
-        @cobj['sv']['int'].add_item('del','[key,...]',[cri]).cfg[:def_proc]=proc{|item|
-          item.par[0].split(',').each{|key|
+        @cobj['sv']['int'].add_item('del','[key,...]',[cri]).cfg[:def_proc]=proc{|ent|
+          ent.par[0].split(',').each{|key|
             @stat.unset(key)
           }
-          self['msg']="Delete #{item.par[0]}"
+          self['msg']="Delete #{ent.par[0]}"
         }
         @watch.event_proc=proc{|args,p|
           Msg.msg("#{args} is issued by event")
@@ -116,9 +116,9 @@ module CIAX
           @buf.send(p,@cobj.setcmd(args))
         }
         @buf=init_buf
-        @cobj['sv']['ext'].cfg[:def_proc]=proc{|item|
-          verbose("AppSv","#{self['id']}/Issue:#{item.args}")
-          @buf.send(1,item)
+        @cobj['sv']['ext'].cfg[:def_proc]=proc{|ent|
+          verbose("AppSv","#{self['id']}/Issue:#{ent.args}")
+          @buf.send(1,ent)
           self['msg']="Issued"
         }
         # Logging if version number exists
@@ -145,8 +145,8 @@ module CIAX
       private
       def init_buf
         buf=Buffer.new(self)
-        buf.send_proc{|item|
-          cmdary=item.cfg[:cmdary]
+        buf.send_proc{|ent|
+          cmdary=ent.cfg[:cmdary]
           verbose("AppSv","Send FrmCmds #{cmdary}")
           cmdary
         }

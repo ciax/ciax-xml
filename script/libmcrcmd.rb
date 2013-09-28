@@ -78,7 +78,7 @@ module CIAX
         super
         @record=Record.new
         [:cid,:label].each{|k| @record[k.to_s]=@cfg[k]} # Fixed Value
-        @stat=Stat.new(self[:cid],@cfg[:mobj])
+        @stat=Stat.new(@cfg[:cid],@cfg[:mobj])
       end
 
       def fork

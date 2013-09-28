@@ -75,7 +75,7 @@ module CIAX
       @swsgrp.cfg['caption']='Switch Sites'
       @swsgrp.cfg['column']=2
       @swsgrp.cfg['color']=5
-      @swsgrp.cfg[:def_proc]=proc{|item| raise(SwSite,item[:cid])}
+      @swsgrp.cfg[:def_proc]=proc{|ent| raise(SwSite,ent.cfg[:cid])}
       @init_proc << proc{|exe|
         exe.cobj['lo']['sws']=@swsgrp
       }
@@ -106,7 +106,7 @@ module CIAX
       @swlgrp.cfg['caption']='Switch Layer'
       @swlgrp.cfg['color']=5
       @swlgrp.cfg['column']=5
-      @swlgrp.cfg[:def_proc]=proc{|item| raise(SwLayer,item[:cid]) }
+      @swlgrp.cfg[:def_proc]=proc{|ent| raise(SwLayer,ent.cfg[:cid]) }
     end
 
     def add_layer(layer,lst)

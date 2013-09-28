@@ -42,9 +42,9 @@ module CIAX
     class Test < Exe
       def initialize(fdb)
         super(fdb)
-        @cobj['sv'].cfg[:def_proc]=proc{|item|@field['time']=UnixTime.now}
-        @cobj['sv']['int']['set'].cfg[:def_proc]=proc{|item|
-          @field.set(item.par[0],item.par[1])
+        @cobj['sv'].cfg[:def_proc]=proc{|ent|@field['time']=UnixTime.now}
+        @cobj['sv']['int']['set'].cfg[:def_proc]=proc{|ent|
+          @field.set(ent.par[0],ent.par[1])
         }
       end
     end
@@ -74,18 +74,18 @@ module CIAX
         else
           @sqlsv=@io=Stream.new(iocmd,fdb['wait'],1)
         end
-        @cobj['sv']['ext'].cfg[:def_proc]=proc{|item|
-          @io.snd(item.cfg[:frame],item[:cid])
-          @field.upd(item){@io.rcv} && @field.save
+        @cobj['sv']['ext'].cfg[:def_proc]=proc{|ent|
+          @io.snd(ent.cfg[:frame],ent.cfg[:cid])
+          @field.upd(ent){@io.rcv} && @field.save
         }
-        @cobj['sv']['int']['set'].cfg[:def_proc]=proc{|item|
-          @field.set(item.par[0],item.par[1]).save
+        @cobj['sv']['int']['set'].cfg[:def_proc]=proc{|ent|
+          @field.set(ent.par[0],ent.par[1]).save
         }
-        @cobj['sv']['int']['save'].cfg[:def_proc]=proc{|item|
-          @field.savekey(item.par[0].split(','),item.par[1])
+        @cobj['sv']['int']['save'].cfg[:def_proc]=proc{|ent|
+          @field.savekey(ent.par[0].split(','),ent.par[1])
         }
-        @cobj['sv']['int']['load'].cfg[:def_proc]=proc{|item|
-          @field.load(item.par[0]||'').save
+        @cobj['sv']['int']['load'].cfg[:def_proc]=proc{|ent|
+          @field.load(ent.par[0]||'').save
         }
         ext_server(fdb['port'].to_i)
       rescue Errno::ENOENT

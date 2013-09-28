@@ -9,19 +9,19 @@ module CIAX
         proj=ENV['PROJ']||'ciax'
         mdb=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
-        super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|item|
-                key,stat=item.fork
+        super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|ent|
+                key,stat=ent.fork
                 self['sid']=key
                 @list.data[key]=stat
               })
         self['sid']=''
         @cobj.save_proc{@list.save}
-        ig=@cobj.int_grp{|item|
-          n=item.par[0]||@list.data.keys.last||""
+        ig=@cobj.int_grp{|ent|
+          n=ent.par[0]||@list.data.keys.last||""
           self['sid']=n
           if st=@list.data[n]
             if st[:stat] == 'query'
-              st.cmd_que << item.id
+              st.cmd_que << ent.id
               self['msg']=st.res_que.pop
             else
               self['msg']='IGNORE'

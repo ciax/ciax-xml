@@ -5,7 +5,7 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="Prefix">2</char>
       <ccrange>
-        <select/>
+        <body/>
         <char length="1" label="Suffix">3</char>
       </ccrange>
       <char length="1">${cc}</char>
@@ -28,7 +28,7 @@
       <ccrange>
         <field label="Node" length="4">0000</field>
         <field assign="ecode" label="Exit Code" length="2">00</field>
-        <select/>
+        <body/>
         <field decode="unsigned" label="Suffix" length="1">3</field>
       </ccrange>
       <field assign="cc" decode="unsigned" label="BCC" length="1" />

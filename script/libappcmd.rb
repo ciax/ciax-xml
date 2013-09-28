@@ -19,7 +19,7 @@ module CIAX
       def set_par(par)
         ent=super
         fcmdary=[]
-        deep_subst(self[:select]).each{|e1|
+        deep_subst(self[:body]).each{|e1|
           args=[]
           enclose("AppItem","GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
             e1.each{|e2| # //argv

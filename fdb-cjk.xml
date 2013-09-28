@@ -13,7 +13,7 @@
       <char length="1" label="Q Header: Send Data Length LSB">0</char>
       <ccrange>
         <char length="2" label="Q Header: CPU Watch Timer">1</char>
-        <select/>
+        <body/>
       </ccrange>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -60,7 +60,7 @@
       <field assign="cc" decode="unsigned" label="Response Data Length" length="2" />
       <ccrange>
         <field assign="ecode" decode="unsigned" label="Error Code" length="2">0</field>
-        <select/>
+        <body/>
       </ccrange>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

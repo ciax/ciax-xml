@@ -56,7 +56,7 @@ module CIAX
       def set_par(par)
         @par=validate(type?(par,Array))
         verbose(self.class,"SetPAR(#{@id}): #{par}")
-        ent=Entity.new(@cfg,{:par => par,:select => deep_subst(self[:select])})
+        ent=Entity.new(@cfg,{:par => par,:body => deep_subst(self[:body])})
         [:cid,:label].each{|k| ent.record[k.to_s]=self[k]} # Fixed Value
         ent
       end
@@ -94,7 +94,7 @@ module CIAX
         @stat[:cid]=@record['cid']
         setstat 'run'
         show @record
-        submacro(@cfg[:select])
+        submacro(@cfg[:body])
         finish
         self
       rescue Interlock
@@ -133,7 +133,7 @@ module CIAX
               if @step.async?
                 @cfg[:def_proc].call(item)
               else
-                submacro(item.cfg[:select])
+                submacro(item.cfg[:body])
               end
             end
           rescue Retry

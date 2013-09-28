@@ -24,7 +24,7 @@ module CIAX
       cdb=db[:command]
       (cdb[:group]||{'main'=>@cfg.to_hash}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
-        (gat[:members]||cdb[:select].keys).each{|id|
+        (gat[:members]||cdb[:body].keys).each{|id|
           crnt={:id => id}
           subgrp[id]=cdb[:label][id]
           self[id]=yield(@cfg,crnt)
@@ -55,7 +55,7 @@ module CIAX
 
     def set_par(par)
       ent=super
-      @select=deep_subst(self[:select])
+      @select=deep_subst(self[:body])
       ent
     end
 

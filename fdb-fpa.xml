@@ -4,7 +4,7 @@
     <serial databit="8" flowctl="NONE" parity="NONE" speed="115200" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">&gt;01</string>
-      <select/>
+      <body/>
       <string>??</string>
       <char length="1">13</char>
       <char length="1">10</char>
@@ -36,7 +36,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>
       <ccrange>
-        <select/>
+        <body/>
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>

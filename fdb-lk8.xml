@@ -3,7 +3,7 @@
   <frame id="lk8" label="Lakeshore MODEL 340 8CH" wait="0.3">
     <serial databit="7" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <select/>
+      <body/>
       <char length="2" label="Suffix">0x0d0a</char>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -25,7 +25,7 @@
       </command>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
-      <select/>
+      <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">

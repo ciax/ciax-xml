@@ -22,7 +22,7 @@ module CIAX
         self['ver']=db['version'].to_i
         @sel=Hash[db[:rspframe]]
         dbr=db[:response]
-        @fds=dbr[:select]
+        @fds=dbr[:body]
         @frame=FrmAry.new(dbr['terminator'],dbr['delimiter'],db['endian'],db['ccmethod'])
         # Field Initialize
         @data.replace db[:field][:struct].deep_copy if @data.empty?
@@ -34,7 +34,7 @@ module CIAX
       def upd(item)
         @current_item=type?(item,Entity)
         if rid=item[:response]
-          @sel[:select]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
+          @sel[:body]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
           stream=yield
           self['time']=stream['time']
           @frame.set(stream[:data])
@@ -48,7 +48,7 @@ module CIAX
           true
         else
           verbose("FrmRsp","Send Only")
-          @sel[:select]=nil
+          @sel[:body]=nil
           false
         end
       end
@@ -66,7 +66,7 @@ module CIAX
             }
           when 'select'
             enclose("FrmRsp","Entering Selected Node","Exitting Selected Node"){
-              getfield_rec(@sel[:select])
+              getfield_rec(@sel[:body])
             }
           when Hash
             frame_to_field(e1){ @frame.cut(e1) }

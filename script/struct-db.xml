@@ -28,7 +28,7 @@
     </command>
     <cmdframe type="Hash">
       <main type="Array">
-        <select/>
+        <body/>
         <List type="Hash">
           <label val="Label"/>
           <val type="String"/>

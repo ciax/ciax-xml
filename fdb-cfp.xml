@@ -5,7 +5,7 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">&gt;</string>
       <ccrange>
-        <select/>
+        <body/>
       </ccrange>
       <string format="%02X">${cc}</string>
       <char length="1">13</char>
@@ -36,7 +36,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>
       <ccrange>
-        <select/>
+        <body/>
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
     </rspframe>

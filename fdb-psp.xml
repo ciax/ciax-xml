@@ -3,7 +3,7 @@
   <frame id="psp" label="Power Supply Instek PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" wait="0.3">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <select/>
+      <body/>
       <char length="1">0xd</char>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -38,7 +38,7 @@
       </command>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
-      <select/>
+      <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">

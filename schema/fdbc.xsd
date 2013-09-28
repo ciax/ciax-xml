@@ -50,19 +50,19 @@
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:group ref="fdbc:data" />
-        <xsd:element ref="fdbc:select" />
+        <xsd:element ref="fdbc:body" />
         <xsd:element ref="fdbc:ccrange" />
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="select">
+  <xsd:element name="body">
     <xsd:complexType/>
   </xsd:element>
   <!--Command CC-->
   <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbc:select" />
+        <xsd:element ref="fdbc:body" />
         <xsd:group ref="fdbc:data" />
       </xsd:choice>
     </xsd:complexType>

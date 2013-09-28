@@ -44,13 +44,13 @@ module CIAX
 
       def set_par(par) # return = response select
         ent=super
-        return unless @sel[:select]=deep_subst(self[:select])
+        return unless @sel[:body]=deep_subst(self[:body])
         cid=self[:cid]
         verbose("FrmItem","Select:#{self[:label]}(#{cid})")
         if frame=@cache[cid]
           verbose("FrmItem","Cmd cache found [#{cid}]")
         else
-          nocache=mk_frame(:select)
+          nocache=mk_frame(:body)
           if @sel.key?(:ccrange)
             @frame.mark
             mk_frame(:ccrange)

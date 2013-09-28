@@ -46,21 +46,21 @@ module CIAX
       end
 
       def init_sel(domain)
-        selh=domain.to_h
+        bodyh=domain.to_h
         domain.each{|e0|
-          enclose("Fdb","INIT:Select Frame <-","-> INIT:Select Frame"){
-            id=e0.attr2db(selh)
-            (selh[:select]||={})[id]||=[]
-            verbose("Fdb","InitSelHash(#{id})")
+          enclose("Fdb","INIT:Body Frame <-","-> INIT:Body Frame"){
+            id=e0.attr2db(bodyh)
+            (bodyh[:body]||={})[id]||=[]
+            verbose("Fdb","Init Body Hash(#{id})")
             Repeat.new.each(e0){|e1,r1|
-              set_par(e1,id,selh) && next
+              set_par(e1,id,bodyh) && next
               e=yield(e1,r1) || next
-              selh[:select][id] << e
+              bodyh[:body][id] << e
             }
-            verbose("Fdb","InitSelFrame(#{id})")
+            verbose("Fdb","Init Body Frame(#{id})")
           }
         }
-        selh
+        bodyh
       end
 
       def init_cmd(e,rep=nil)

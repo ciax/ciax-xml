@@ -4,7 +4,7 @@
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="Prefix">2</char>
-      <select/>
+      <body/>
       <char length="1" label="Suffix">3</char>
       <char length="1">13</char>
       <char length="1">10</char>
@@ -138,7 +138,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="Prefix" length="1">2</field>
       <field decode="unsigned" label="ACK" length="1">6</field>
-      <select/>
+      <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">

@@ -4,7 +4,7 @@
     <serial databit="8" flowctl="NONE" parity="NONE" speed="300" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <string label="Prefix">$</string>
-      <select/>
+      <body/>
       <char length="1" label="Suffix">0xd</char>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
@@ -19,7 +19,7 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field length="1">*</field>
-      <select/>
+      <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">

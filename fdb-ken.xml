@@ -5,7 +5,7 @@
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="ENQ">5</char>
       <ccrange>
-        <select/>
+        <body/>
         <char length="1" label="ETX">3</char>
       </ccrange>
       <string format="%02X">${cc}</string>
@@ -24,7 +24,7 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="ACK" length="1">6</field>
-      <select/>
+      <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat">

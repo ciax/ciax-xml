@@ -8,7 +8,7 @@ require 'liblogging'
 # Entity => {:label,:args}
 #  Entity#exe
 #
-# Item => {:label,:parameter,:select,:args}
+# Item => {:label,:parameter,:body,:args}
 #  Item#set_par(par) -> Entity
 #  Item#cfg -> {:def_proc}
 #
@@ -37,7 +37,7 @@ require 'liblogging'
 module CIAX
   class Command < Hashx
     attr_reader :cfg
-    # CDB: mandatory (:select)
+    # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
     def initialize

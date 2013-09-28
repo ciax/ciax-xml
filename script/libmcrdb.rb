@@ -17,7 +17,7 @@ module CIAX
         doc.top.each{|e0|
           id=e0.attr2db(mdb)
           verbose("Mdb","MACRO:[#{id}]")
-          select=((mdb[:select]||={})[id]||=[])
+          select=((mdb[:body]||={})[id]||=[])
           final={}
           e0.each{|e1,rep|
             attr=e1.to_h

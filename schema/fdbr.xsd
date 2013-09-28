@@ -11,7 +11,7 @@
     <xsd:attribute name="length" type="xsd:int" />
     <xsd:attribute name="slice" type="fdbr:rerange" />
   </xsd:attributeGroup>
-  <xsd:element name="select">
+  <xsd:element name="body">
     <xsd:complexType/>
   </xsd:element>
   <xsd:element name="field">
@@ -44,7 +44,7 @@
   <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbr:select" />
+        <xsd:element ref="fdbr:body" />
         <xsd:element ref="fdbr:field" />
       </xsd:choice>
     </xsd:complexType>
@@ -53,7 +53,7 @@
   <xsd:element name="rspframe">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbr:select" />
+        <xsd:element ref="fdbr:body" />
         <xsd:element ref="fdbr:ccrange" />
         <xsd:element ref="fdbr:field" />
       </xsd:choice>

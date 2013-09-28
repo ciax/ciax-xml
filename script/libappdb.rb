@@ -28,7 +28,7 @@ module CIAX
       # Command Db
       def init_command(adbc)
         hash=adbc.to_h
-        [:group,:parameter,:select,:label].each{|k|
+        [:group,:parameter,:body,:label].each{|k|
           hash[k]={}
         }
         hash[:group]={}
@@ -58,7 +58,7 @@ module CIAX
                 end
                 command << argv
               }
-              (hash[:select][id]||=[]) << command
+              (hash[:body][id]||=[]) << command
             end
           }
         }
@@ -71,9 +71,9 @@ module CIAX
         group=hash[:group]={}
         group['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
         hash[:label]={'time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
-        hash[:select]=rec_stat(sdb,hash,'gtime',Repeat.new)
+        hash[:body]=rec_stat(sdb,hash,'gtime',Repeat.new)
         st=hash[:struct]=Hashx.new
-        hash[:select].keys.each{|k| st[k]=nil }
+        hash[:body].keys.each{|k| st[k]=nil }
         hash
       end
 

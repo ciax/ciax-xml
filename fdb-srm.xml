@@ -6,7 +6,7 @@
       <ccrange>
         <string label="Prefix">@</string>
         <string label="Device No.">00</string>
-        <select/>
+        <body/>
       </ccrange>
       <string format="%02X">${cc}</string>
       <string label="Suffix">*</string>
@@ -33,7 +33,7 @@
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <ccrange>
         <field label="Prefix" length="1">@</field>
-        <select/>
+        <body/>
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
       <field label="Terminater" length="1">*</field>

@@ -15,7 +15,7 @@ module CIAX
         Msg.type?(obj,Field)
       end
 
-      # Item is needed which includes response_id and cmd_parameters
+      # Ent is needed which includes response_id and cmd_parameters
       def ext_rsp(db)
         @ver_color=3
         @db=type?(db,Db)
@@ -31,9 +31,9 @@ module CIAX
 
       # Block accepts [frame,time]
       # Result : executed block or not
-      def upd(item)
-        @current_item=type?(item,Entity)
-        if rid=item[:response]
+      def upd(ent)
+        @current_ent=type?(ent,Entity)
+        if rid=ent.cfg[:response]
           @sel[:body]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
           stream=yield
           self['time']=stream['time']
@@ -81,7 +81,7 @@ module CIAX
             akey=e0['assign'] || Msg.cfg_err("No key for Array")
             # Insert range depends on command param
             idxs=e0[:index].map{|e1|
-              @current_item.subst(e1['range'])
+              @current_ent.subst(e1['range'])
             }
             enclose("FrmRsp","Array:[#{akey}]:Range#{idxs}","Array:Assign[#{akey}]"){
               @data[akey]=mk_array(idxs,get(akey)){yield}
@@ -138,10 +138,10 @@ module CIAX
       end
       fdb=Loc::Db.new.set(id)[:frm]
       fobj=ExtCmd.new(fdb)
-      item=fobj.setcmd(cid.split(':'))
+      ent=fobj.setcmd(cid.split(':'))
       field=Field.new.ext_rsp(fdb)
       field.ext_file(id).load if $opt['m']
-      field.upd(item){res}
+      field.upd(ent){res}
       puts field
       exit
     end

@@ -44,9 +44,9 @@ module CIAX
 
       def set_par(par)
         ent=super
-        return unless @sel[:body]=deep_subst(self[:body])
-        cid=self[:cid]
-        verbose("FrmItem","Body:#{self[:label]}(#{cid})")
+        return unless @sel[:body]=deep_subst(@cfg[:body])
+        cid=@cfg[:cid]
+        verbose("FrmItem","Body:#{@cfg[:label]}(#{cid})")
         if frame=@cache[cid]
           verbose("FrmItem","Cmd cache found [#{cid}]")
         else

@@ -22,13 +22,11 @@ module CIAX
       @cfg['caption']="External Commands"
       @cmdary=[]
       cdb=db[:command]
-      (cdb[:group]||{'main'=>@cfg.to_hash}).each{|gid,gat|
+      (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:body].keys).each{|id|
-          crnt={:id => id}
           subgrp[id]=cdb[:label][id]
-          self[id]=yield(@cfg,crnt)
-
+          self[id]=yield(@cfg,{:id => id})
         }
         @cmdary << subgrp
       }
@@ -48,7 +46,7 @@ module CIAX
       # because cdb is separated by title
       db[:command].each{|k,v|
         if a=v[@id]
-          self[k]=a
+          @cfg[k]=a
         end
       }
     end
@@ -62,7 +60,7 @@ module CIAX
         num=true
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
-          num=false if self[:parameter][i-1][:type] != 'num'
+          num=false if @cfg[:parameter][i-1][:type] != 'num'
           verbose("ExtItem","Parameter No.#{i} = [#{@par[i-1]}]")
           @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
         }

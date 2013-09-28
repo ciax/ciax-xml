@@ -56,8 +56,7 @@ module CIAX
       def set_par(par)
         @par=validate(type?(par,Array))
         verbose(self.class,"SetPAR(#{@id}): #{par}")
-        ent=Entity.new(@cfg,{:par => par,:body => deep_subst(self[:body])})
-        [:cid,:label].each{|k| ent.record[k.to_s]=self[k]} # Fixed Value
+        ent=Entity.new(@cfg,{:par => par,:body => deep_subst(@cfg[:body])})
         ent
       end
     end
@@ -81,6 +80,7 @@ module CIAX
       def initialize(upper,crnt)
         super
         @record=Record.new
+        [:cid,:label].each{|k| @record[k.to_s]=@cfg[k]} # Fixed Value
         @stat=Stat.new(self[:cid],@cfg[:mobj])
       end
 

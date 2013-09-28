@@ -64,8 +64,8 @@ module CIAX
               getfield_rec(@sel[:ccrange])
               @cc = @frame.cc
             }
-          when 'select'
-            enclose("FrmRsp","Entering Selected Node","Exitting Selected Node"){
+          when 'body'
+            enclose("FrmRsp","Entering Body Node","Exitting Body Node"){
               getfield_rec(@sel[:body])
             }
           when Hash

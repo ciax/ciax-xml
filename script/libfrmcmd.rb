@@ -34,7 +34,7 @@ module CIAX
         @cache={}
         @fstr={}
         if cdb.key?(:noaffix) && /true|1/ === cdb[:noaffix][@id]
-          @sel={:main => ["select"]}
+          @sel={:main => ["body"]}
         else
           @sel=Hash[db[:cmdframe]]
         end
@@ -42,11 +42,11 @@ module CIAX
         self
       end
 
-      def set_par(par) # return = response select
+      def set_par(par)
         ent=super
         return unless @sel[:body]=deep_subst(self[:body])
         cid=self[:cid]
-        verbose("FrmItem","Select:#{self[:label]}(#{cid})")
+        verbose("FrmItem","Body:#{self[:label]}(#{cid})")
         if frame=@cache[cid]
           verbose("FrmItem","Cmd cache found [#{cid}]")
         else
@@ -76,7 +76,7 @@ module CIAX
             frame.split(',').each{|s|
               @frame.add(s,a)
             }
-          else # ccrange,select,..
+          else # ccrange,body ...
             @frame.add(@fstr[a.to_sym])
           end
         }

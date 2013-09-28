@@ -110,9 +110,9 @@ module CIAX
       end
 
       private
-      def submacro(select)
+      def submacro(body)
         @record.depth+=1
-        select.each{|e1|
+        body.each{|e1|
           begin
             @step=@record.add_step(e1,@cfg)
             case e1['type']

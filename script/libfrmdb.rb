@@ -96,7 +96,7 @@ module CIAX
           stc[id]=init_array(idx.map{|h| h['size']})
           add_label(val,attr,id)
           attr
-        when 'ccrange','select'
+        when 'ccrange','body'
           e.name
         else
           nil

@@ -53,12 +53,6 @@ module CIAX
       }
     end
 
-    def set_par(par)
-      ent=super
-      @select=deep_subst(self[:body])
-      ent
-    end
-
     # Substitute string($+number) with parameters
     # par={ val,range,format } or String
     # str could include Math functions

@@ -20,10 +20,10 @@ module CIAX
       end
 
       def upd
-        @ads.each{|id,select|
+        @ads.each{|id,body|
           enclose("AppRsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
-            flds=select[:fields]
-            data=case select['type']
+            flds=body[:fields]
+            data=case body['type']
                  when 'binary'
                    flds.inject(0){|sum,e|
                 (sum << 1)+binary(e)

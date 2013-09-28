@@ -154,7 +154,7 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=Item.new(@cfg,{:id => id})
+      item=self[id]=new_item({:id => id})
       item[:label]= title
       item[:parameter] = parameter if parameter
       item
@@ -164,7 +164,7 @@ module CIAX
       type?(labels,Hash)
       labels.each{|id,title|
         @cmdlist[id]=title
-        self[id]=Item.new(@cfg,{:id => id})
+        self[id]=new_item({:id => id})
       }
       self
     end
@@ -172,6 +172,10 @@ module CIAX
     def add_dummy(id,title)
       @cmdlist.dummy(id,title) #never put into valid_key
       self
+    end
+
+    def new_item(crnt)
+      Item.new(@cfg,crnt)
     end
   end
 
@@ -189,15 +193,19 @@ module CIAX
     def set_par(par)
       @par=validate(type?(par,Array))
       verbose(self.class,"SetPAR(#{@id}): #{par}")
-      Entity.new(@cfg,{:par => par})
+      new_entity({:par => par})
+    end
+
+    def new_entity(crnt)
+      Entity.new(@cfg,crnt)
     end
 
     private
     # Parameter structure [{:type,:list,:default}, ...]
     def validate(pary)
       pary=type?(pary.dup,Array)
-      return [] unless self[:parameter]
-      self[:parameter].map{|par|
+      return [] unless @cfg[:parameter]
+      @cfg[:parameter].map{|par|
         list=par[:list]||[]
         disp=list.join(',')
         unless str=pary.shift
@@ -205,8 +213,8 @@ module CIAX
             next par[:default]
           else
             Msg.par_err(
-                        "Parameter shortage (#{pary.size}/#{self[:parameter].size})",
-                        Msg.item(@id,self[:label]),
+                        "Parameter shortage (#{pary.size}/#{@cfg[:parameter].size})",
+                        Msg.item(@id,@cfg[:label]),
                         " "*10+"key=(#{disp})")
           end
         end
@@ -247,7 +255,7 @@ module CIAX
       @id=@cfg[:id]
       @par=@cfg[:par]
       @args=[@id,*@par]
-      self[:cid]=@args.join(':') # Used by macro
+      @cfg[:cid]=@args.join(':') # Used by macro
       @ver_color=5
     end
 

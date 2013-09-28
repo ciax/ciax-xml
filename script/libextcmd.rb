@@ -42,7 +42,6 @@ module CIAX
 
   class ExtItem < Item # Self has config data
     include Math
-    attr_reader :select
     def initialize(db,upper,crnt)
       type?(db,Db)
       super(upper,crnt)

@@ -44,7 +44,7 @@ module CIAX
 
       def set_par(par) # return = response select
         ent=super
-        return unless @sel[:select]=@select
+        return unless @sel[:select]=deep_subst(self[:select])
         cid=self[:cid]
         verbose("FrmItem","Select:#{self[:label]}(#{cid})")
         if frame=@cache[cid]

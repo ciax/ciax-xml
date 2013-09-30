@@ -19,7 +19,7 @@ module CIAX
       @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
       @pstat=pstat||self
       # Local(Long Jump) Commands (local handling commands on Client)
-      shg=@cobj['lo'].add_group('sh',"Shell Command",2,1)
+      shg=@cobj['lo'].add_group('sh',{'caption'=>"Shell Command",'column'=>2,'color'=>1})
       shg.add_dummy('^D,q',"Quit")
       shg.add_dummy('^C',"Interrupt")
       self

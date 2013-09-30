@@ -65,9 +65,6 @@ module CIAX
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
-        delete('id')
-        delete('msg')
-        delete('layer')
       end
     end
 

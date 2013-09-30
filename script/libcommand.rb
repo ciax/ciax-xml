@@ -134,9 +134,9 @@ module CIAX
     attr_reader :valid_keys,:cmdlist,:cfg
     #upper = {caption,color,column}
     def initialize(upper=Config.new,crnt={})
-      @valid_keys=[]
       @cfg=Config.new(upper).update(crnt)
       @cfg[:group]=self
+      @cfg[:valid_keys]=@valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @ver_color=3
     end

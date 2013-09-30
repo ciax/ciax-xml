@@ -18,7 +18,6 @@ module CIAX
 
       def initshare(svs,al,def_proc)
         svs[:mobj]=self
-        svs[:valid_keys]=[]
         @stq=svs[:save_que]=Queue.new
         svs[:def_proc]=def_proc if def_proc
         svs[:submcr_proc]=proc{|args| setcmd(args) }

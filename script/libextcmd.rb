@@ -32,10 +32,6 @@ module CIAX
       }
       cdb[:alias].each{|k,v| self[k].replace self[v]} if cdb.key?(:alias)
     end
-
-    def list
-      @cmdary.join("\n")
-    end
   end
 
   class ExtItem < Item # Self has config data

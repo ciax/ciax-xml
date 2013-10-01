@@ -134,6 +134,7 @@ module CIAX
       @cfg[:group]=self
       @cfg[:valid_keys]=@valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
+      @cmdary=[@cmdlist]
       @ver_color=3
     end
 
@@ -145,7 +146,7 @@ module CIAX
     end
 
     def list
-      @cmdlist.to_s
+      @cmdary.join("\n")
     end
 
     def add_item(id,title=nil,parameter=nil)

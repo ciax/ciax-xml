@@ -150,10 +150,9 @@ module CIAX
 
     def add_item(id,title=nil,parameter=nil)
       @cmdlist[id]=title
-      item=self[id]=new_item({:id => id})
-      item[:label]= title
-      item[:parameter] = parameter if parameter
-      item
+      cfg={:id => id,:label => title}
+      cfg[:parameter] = parameter if parameter
+      self[id]=new_item(cfg)
     end
 
     def update_items(labels)

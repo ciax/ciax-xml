@@ -11,9 +11,9 @@ module CIAX
       self['sv'].cfg[:db]=db
     end
 
-    def add_svgrp(id,cls=ExtGrp)
+    def add_svgrp(id,cls=ExtGrp,&def_proc)
       sv=self['sv']
-      sv[id]=cls.new(sv.cfg)
+      sv[id]=cls.new(sv.cfg,&def_proc)
     end
   end
 

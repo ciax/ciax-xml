@@ -27,7 +27,7 @@ module CIAX
         svc[:submcr_proc]=proc{|args| setcmd(args) }
         svc[:stat_proc]=proc{|site| al[site].stat}
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
-        svc[:menu_proc]=IntGrp.new(@cfg).menu_proc
+        svc[:int_grp]=IntGrp.new(@cfg)
         add_svgrp('ext',ExtGrp)
         $dryrun=3
       end
@@ -38,10 +38,8 @@ module CIAX
     end
 
     class IntGrp < Group
-      attr_reader :menu_proc
       def initialize(upper)
         super
-        @menu_proc={}
         {
           "exec"=>["Command",proc{}],
           "skip"=>["Execution",proc{raise(Skip)}],
@@ -50,8 +48,7 @@ module CIAX
           "force"=>["Proceed",proc{}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
-          add_item(id,id.capitalize+" "+a[0])
-          menu_proc[id]=a[1]
+          add_item(id,id.capitalize+" "+a[0]).cfg[:def_proc]=a[1]
         }
       end
     end
@@ -175,7 +172,7 @@ module CIAX
         setstat 'run'
         @cfg[:valid_keys].clear
         @step['action']=res
-        @cfg[:menu_proc][res].call
+        @cfg[:int_grp].setcmd([res]).exe
       end
 
       def input

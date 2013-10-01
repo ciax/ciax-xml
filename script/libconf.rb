@@ -6,6 +6,7 @@ module CIAX
   class Config < Hash
     attr_reader :ary
     alias :_org_keys :keys
+    alias :_org_key? :key?
     def initialize(hash=nil)
       @ary=[self]
       case hash
@@ -14,6 +15,10 @@ module CIAX
       when Hash
         update hash
       end
+    end
+
+    def key?(id)
+      @ary.any{|h| h._org_key?(id)}
     end
 
     def keys
@@ -27,8 +32,8 @@ module CIAX
     end
 
     def [](id)
-      @ary.each{|lv|
-        return lv.fetch(id) if lv.key?(id)
+      @ary.each{|h|
+        return h.fetch(id) if h._org_key?(id)
       }
       nil
     end

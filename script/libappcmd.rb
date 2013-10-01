@@ -9,7 +9,7 @@ module CIAX
         super()
         sv=self['sv']
         sv['ext']=ExtGrp.new(db,sv.cfg){|cfg,crnt|
-          ExtItem.new(db,cfg,crnt)
+          ExtItem.new(cfg,crnt)
         }
       end
     end

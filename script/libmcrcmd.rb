@@ -11,7 +11,7 @@ module CIAX
         super()
         svs=initshare(self['sv'].cfg,al,def_proc)
         self['sv']['ext']=ExtGrp.new(mdb,svs){|cfg,crnt|
-          ExtItem.new(mdb,cfg,crnt)
+          ExtItem.new(cfg,crnt)
         }
         $dryrun=3
       end

@@ -6,10 +6,11 @@ module CIAX
   # For External Command Domain
   class ExtCmd < Command
     def initialize(db)
+      type?(db,Db)
       super()
       sv=self['sv']
       sv['ext']=ExtGrp.new(db,sv.cfg){|cfg,crnt|
-        ExtItem.new(db,cfg,crnt)
+        ExtItem.new(cfg,crnt)
       }
     end
   end
@@ -26,7 +27,14 @@ module CIAX
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:body].keys).each{|id|
           subgrp[id]=cdb[:label][id]
-          self[id]=yield(@cfg,{:id => id})
+          crnt={:id => id}
+          # because cdb is separated by title
+          db[:command].each{|k,v|
+            if a=v[id]
+              crnt[k]=a
+            end
+          }
+          self[id]=yield(@cfg,crnt)
         }
         @cmdary << subgrp
       }
@@ -36,16 +44,6 @@ module CIAX
 
   class ExtItem < Item # Self has config data
     include Math
-    def initialize(db,upper,crnt)
-      type?(db,Db)
-      super(upper,crnt)
-      # because cdb is separated by title
-      db[:command].each{|k,v|
-        if a=v[@id]
-          @cfg[k]=a
-        end
-      }
-    end
 
     def new_entity(crnt)
       ExtEntity.new(@cfg,crnt)

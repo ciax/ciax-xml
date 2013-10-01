@@ -29,7 +29,7 @@ module CIAX
       def initialize(field,db,upper,crnt)
         @ver_color=0
         @field=type?(field,Field)
-        super(db,upper,crnt)
+        super(upper,crnt)
         cdb=db[:command]
         @cache={}
         @fstr={}

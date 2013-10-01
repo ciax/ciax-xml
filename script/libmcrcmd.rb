@@ -136,7 +136,7 @@ module CIAX
         @stat.running.clear
         show str+"\n"
         @record.finish(str)
-        @cfg[:valid_keys].clear
+        @cfg[:int_grp].valid_keys.clear
         setstat str
       end
 
@@ -157,7 +157,7 @@ module CIAX
       end
 
       def query(cmds)
-        @cfg[:valid_keys].replace(cmds)
+        @cfg[:int_grp].valid_keys.replace(cmds)
         @stat[:option]=cmds.join('/')
         setstat 'query'
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
@@ -170,9 +170,10 @@ module CIAX
         @stat.res_que << 'OK'
         @stat[:option]=nil
         setstat 'run'
-        @cfg[:valid_keys].clear
         @step['action']=res
-        @cfg[:int_grp].setcmd([res]).exe
+        ent=@cfg[:int_grp].setcmd([res])
+        @cfg[:int_grp].valid_keys.clear
+        ent.exe
       end
 
       def input

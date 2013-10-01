@@ -132,7 +132,7 @@ module CIAX
     def initialize(upper=Config.new,crnt={})
       @cfg=Config.new(upper).update(crnt)
       @cfg[:group]=self
-      @cfg[:valid_keys]=@valid_keys=[]
+      @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @cmdary=[@cmdlist]
       @ver_color=3

@@ -18,7 +18,7 @@ module CIAX
     end
 
     def key?(id)
-      @ary.any{|h| h._org_key?(id)}
+      @ary.any?{|h| h._org_key?(id)}
     end
 
     def keys

@@ -43,11 +43,11 @@ module CIAX
         super
         @menu_proc={}
         {
-          "exec"=>["Command",proc{true}],
-          "skip"=>["Execution",proc{false}],
-          "drop"=>[" Macro",proc{true}],
-          "suppress"=>["and Memorize",proc{false}],
-          "force"=>["Proceed",proc{false}],
+          "exec"=>["Command",proc{}],
+          "skip"=>["Execution",proc{raise(Skip)}],
+          "drop"=>[" Macro",proc{raise(Interlock)}],
+          "suppress"=>["and Memorize",proc{}],
+          "force"=>["Proceed",proc{}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
           add_item(id,id.capitalize+" "+a[0])
@@ -110,17 +110,14 @@ module CIAX
             @step=@record.add_step(e1,@cfg)
             case e1['type']
             when 'goal'
-              raise(Skip) if @step.skip?
+              return if @step.skip?
             when 'check'
-              res=@step.fail?
-              raise(Interlock) if drop?(res)
+              drop?(@step.fail?)
             when 'wait'
-              res=@step.timeout?{show '.'}
-              raise(Interlock) if drop?(res)
+              drop?(@step.timeout?{show '.'})
             when 'exec'
               @stat.running << e1['site']
-              res=@step.exec?
-              @cfg[:exec_proc].call(e1['site'],e1['args']) if exec?(res)
+              @cfg[:exec_proc].call(e1['site'],e1['args']) if exec?(@step.exec?)
             when 'mcr'
               item=@cfg[:submcr_proc].call(e1['args'])
               if @step.async?
@@ -132,7 +129,6 @@ module CIAX
           rescue Retry
             retry
           rescue Skip
-            return
           end
         }
         @record.depth-=1

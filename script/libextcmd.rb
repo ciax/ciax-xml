@@ -27,7 +27,7 @@ module CIAX
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:body].keys).each{|id|
           subgrp[id]=cdb[:label][id]
-          crnt={:id => id}
+          crnt={:id => id,:db => db}
           # because cdb is separated by title
           db[:command].each{|k,v|
             if a=v[id]

@@ -20,20 +20,21 @@ module CIAX
         }
         sv=self['sv']
         sv['ext']=ExtGrp.new(fdb,sv.cfg){|cfg,crnt|
-          ExtItem.new(field,fdb,cfg,crnt)
+          cfg[:field]=field
+          ExtItem.new(cfg,crnt)
         }
       end
     end
 
     class ExtItem < ExtItem
-      def initialize(field,db,upper,crnt)
+      def initialize(upper,crnt)
         @ver_color=0
-        @field=type?(field,Field)
         super(upper,crnt)
-        cdb=db[:command]
+        @field=type?(@cfg[:field],Field)
+        db=@cfg[:db]
         @cache={}
         @fstr={}
-        if cdb.key?(:noaffix) && /true|1/ === cdb[:noaffix][@id]
+        if /true|1/ === @cfg[:noaffix]
           @sel={:main => ["body"]}
         else
           @sel=Hash[db[:cmdframe]]

@@ -6,23 +6,31 @@ require "libextcmd"
 # Cmd Methods
 module CIAX
   module Frm
-    class ExtCmd < Command
-      def initialize(fdb,field=Field.new)
-        type?(field,Field)
-        super()
+    class ExtCmd < ExtCmd
+      def initialize(db,field=Field.new)
+        super(db)
+        self['sv'].cfg[:field]=type?(field,Field)
+        add_svgrp('int',IntGrp)
+        add_svgrp('ext',ExtGrp)
+      end
+    end
+
+    class IntGrp < Group
+      def initialize(upper)
+        super
         any={:type =>'reg',:list => ["."]}
-        ig=self['sv']['int']
-        ig.add_item('save',"Save Field [key,key...] (tag)",[any,any])
-        ig.add_item('load',"Load Field (tag)",[any])
-        set=ig.add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
+        add_item('save',"Save Field [key,key...] (tag)",[any,any])
+        add_item('load',"Load Field (tag)",[any])
+        set=add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any])
         set.cfg[:def_proc]=proc{|item|
-          field.set(*item.par)
+          @cfg[:field].set(*item.par)
         }
-        sv=self['sv']
-        sv['ext']=ExtGrp.new(fdb,sv.cfg){|cfg,crnt|
-          cfg[:field]=field
-          ExtItem.new(cfg,crnt)
-        }
+      end
+    end
+
+    class ExtGrp < ExtGrp
+      def new_item(crnt)
+        ExtItem.new(@cfg,crnt)
       end
     end
 

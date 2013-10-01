@@ -8,20 +8,22 @@ module CIAX
     def initialize(db)
       type?(db,Db)
       super()
+      self['sv'].cfg[:db]=db
+    end
+
+    def add_svgrp(id,cls=ExtGrp)
       sv=self['sv']
-      sv['ext']=ExtGrp.new(db,sv.cfg){|cfg,crnt|
-        ExtItem.new(cfg,crnt)
-      }
+      sv[id]=cls.new(sv.cfg)
     end
   end
 
   class ExtGrp < Group
-    def initialize(db,upper)
-      type?(db,Db)
+    def initialize(upper)
       super(upper)
       @cfg['color']=6
       @cfg['caption']="External Commands"
       @cmdary=[]
+      db=@cfg[:db]
       cdb=db[:command]
       (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
@@ -34,7 +36,7 @@ module CIAX
               crnt[k]=a
             end
           }
-          self[id]=yield(@cfg,crnt)
+          self[id]=new_item(crnt)
         }
         @cmdary << subgrp
       }
@@ -43,8 +45,6 @@ module CIAX
   end
 
   class ExtItem < Item # Self has config data
-    include Math
-
     def new_entity(crnt)
       ExtEntity.new(@cfg,crnt)
     end

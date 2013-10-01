@@ -6,57 +6,6 @@ require "libappsh"
 
 module CIAX
   module Mcr
-    class ExtCmd < Command
-      def initialize(mdb,al,&def_proc) # Block if for SubMacro
-        super()
-        svs=initshare(self['sv'].cfg,al,def_proc)
-        self['sv']['ext']=ExtGrp.new(mdb,svs){|cfg,crnt|
-          ExtItem.new(cfg,crnt)
-        }
-        $dryrun=3
-      end
-
-      def initshare(svs,al,def_proc)
-        svs[:mobj]=self
-        @stq=svs[:save_que]=Queue.new
-        svs[:def_proc]=def_proc if def_proc
-        svs[:submcr_proc]=proc{|args| setcmd(args) }
-        svs[:stat_proc]=proc{|site| al[site].stat}
-        svs[:exec_proc]=proc{|site,args| al[site].exe(args) }
-        svs[:cmdproc]={}
-        @intcmd={}
-        {
-          "exec"=>["Command",proc{true}],
-          "skip"=>["Execution",proc{false}],
-          "drop"=>[" Macro",proc{true}],
-          "suppress"=>["and Memorize",proc{false}],
-          "force"=>["Proceed",proc{false}],
-          "retry"=>["Checking",proc{raise(Retry)}]
-        }.each{|s,a|
-          @intcmd[s]=s.capitalize+" "+a[0]
-          svs[:cmdproc][s]=a[1]
-        }
-        svs
-      end
-
-      def save_proc
-        Thread.new{yield while @stq.pop}
-      end
-
-      def int_grp
-        ig=self['sv']['int']
-        ig.update_items(@intcmd)
-        ig.cfg[:def_proc]=proc{|item| yield item}
-        ig
-      end
-    end
-
-    class ExtItem < ExtItem
-      def new_entity(crnt)
-        ExtEntity.new(@cfg,crnt)
-      end
-    end
-
     class Stat < Exe
       attr_reader :running,:cmd_que,:res_que
       attr_accessor :thread
@@ -65,6 +14,57 @@ module CIAX
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
+      end
+    end
+
+    class ExtCmd < ExtCmd
+      def initialize(db,al)
+        super(db)
+        svc=self['sv'].cfg
+        type?(al,App::List)
+        @stq=svc[:save_que]=Queue.new
+        svc[:mobj]=self
+        svc[:submcr_proc]=proc{|args| setcmd(args) }
+        svc[:stat_proc]=proc{|site| al[site].stat}
+        svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
+        svc[:menu_proc]=IntGrp.new(@cfg).menu_proc
+        add_svgrp('ext',ExtGrp)
+        $dryrun=3
+      end
+
+      def save_proc
+        Thread.new{yield while @stq.pop}
+      end
+    end
+
+    class IntGrp < Group
+      attr_reader :menu_proc
+      def initialize(upper)
+        super
+        @menu_proc={}
+        {
+          "exec"=>["Command",proc{true}],
+          "skip"=>["Execution",proc{false}],
+          "drop"=>[" Macro",proc{true}],
+          "suppress"=>["and Memorize",proc{false}],
+          "force"=>["Proceed",proc{false}],
+          "retry"=>["Checking",proc{raise(Retry)}]
+        }.each{|id,a|
+          add_item(id,id.capitalize+" "+a[0])
+          menu_proc[id]=a[1]
+        }
+      end
+    end
+
+    class ExtGrp < ExtGrp
+      def new_item(crnt)
+        ExtItem.new(@cfg,crnt)
+      end
+    end
+
+    class ExtItem < ExtItem
+      def new_entity(crnt)
+        ExtEntity.new(@cfg,crnt)
       end
     end
 
@@ -179,7 +179,7 @@ module CIAX
         setstat 'run'
         @cfg[:valid_keys].clear
         @step['action']=res
-        @cfg[:cmdproc][res].call
+        @cfg[:menu_proc][res].call
       end
 
       def input

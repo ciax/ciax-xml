@@ -9,14 +9,16 @@ module CIAX
         proj=ENV['PROJ']||'ciax'
         mdb=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
-        super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new){|ent|
-                key,stat=ent.fork
-                self['sid']=key
-                @list.data[key]=stat
-              })
+        super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new))
+        @cobj['sv']['ext'].cfg[:def_proc]=proc{|ent|
+          key,stat=ent.fork
+          self['sid']=key
+          @list.data[key]=stat
+        }
         self['sid']=''
         @cobj.save_proc{@list.save}
-        ig=@cobj.int_grp{|ent|
+        ig=@cobj.add_svgrp('int',IntGrp)
+        ig.cfg[:def_proc]=proc{|ent|
           n=ent.par[0]||@list.data.keys.last||""
           self['sid']=n
           if st=@list.data[n]

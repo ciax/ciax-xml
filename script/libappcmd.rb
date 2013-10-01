@@ -4,13 +4,16 @@ require "libextcmd"
 
 module CIAX
   module App
-    class ExtCmd < Command
+    class ExtCmd < ExtCmd
       def initialize(db)
-        super()
-        sv=self['sv']
-        sv['ext']=ExtGrp.new(db,sv.cfg){|cfg,crnt|
-          ExtItem.new(cfg,crnt)
-        }
+        super
+        add_svgrp('ext',ExtGrp)
+      end
+    end
+
+    class ExtGrp < ExtGrp
+      def new_item(crnt)
+        ExtItem.new(@cfg,crnt)
       end
     end
 

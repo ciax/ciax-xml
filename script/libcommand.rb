@@ -79,12 +79,17 @@ module CIAX
 
   class Domain < Hashx
     attr_reader :cfg
-    def initialize(upper=Config.new,crnt={})
+    def initialize(upper=Config.new,crnt={},&def_proc)
       @cfg=Config.new(upper).update(crnt)
       @cfg[:domain]=self
-      @cfg[:def_proc]=proc{}
+      set_proc(&def_proc)
       @grplist=[] # For ordering
       @ver_color=2
+    end
+
+    def set_proc(&def_proc)
+      @cfg[:def_proc]=def_proc if def_proc
+      self
     end
 
     def update(h)
@@ -128,13 +133,19 @@ module CIAX
   class Group < Hashx
     attr_reader :valid_keys,:cmdlist,:cfg
     #upper = {caption,color,column}
-    def initialize(upper=Config.new,crnt={})
+    def initialize(upper=Config.new,crnt={},&def_proc)
       @cfg=Config.new(upper).update(crnt)
       @cfg[:group]=self
+      set_proc(&def_proc)
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @cmdary=[@cmdlist]
       @ver_color=3
+    end
+
+    def set_proc(&def_proc)
+      @cfg[:def_proc]=def_proc if def_proc
+      self
     end
 
     def setcmd(args)
@@ -178,11 +189,17 @@ module CIAX
     include Math
     attr_reader :cfg
     #set should have :def_proc
-    def initialize(upper=Config.new,crnt={})
+    def initialize(upper=Config.new,crnt={},&def_proc)
       @cfg=Config.new(upper).update(crnt)
       @cfg[:item]=self
+      set_proc(&def_proc)
       @id=@cfg[:id]
       @ver_color=5
+    end
+
+    def set_proc(&def_proc)
+      @cfg[:def_proc]=def_proc if def_proc
+      self
     end
 
     def set_par(par)
@@ -245,13 +262,19 @@ module CIAX
   class Entity < Hashx
     attr_reader :id,:par,:args,:cfg
     #set should have :def_proc
-    def initialize(upper=Config.new,crnt={})
+    def initialize(upper=Config.new,crnt={},&def_proc)
       @cfg=Config.new(upper).update(crnt)
       @id=@cfg[:id]
       @par=@cfg[:par]
       @args=[@id,*@par]
       @cfg[:cid]=@args.join(':') # Used by macro
+      set_proc(&def_proc)
       @ver_color=5
+    end
+
+    def set_proc(&def_proc)
+      @cfg[:def_proc]=def_proc if def_proc
+      self
     end
 
     def exe

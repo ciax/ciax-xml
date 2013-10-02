@@ -37,15 +37,21 @@ require 'liblogging'
 module CIAX
   class Comshare < Hashx
     attr_reader :cfg
-    def initialize(upper,crnt={},&def_proc)
-      @cfg=Config.new(upper).update(crnt)
+    def initialize(upper,&def_proc)
+      @cfg=Config.new(upper)
       set_proc(&def_proc)
-      @list=[] # For ordering
     end
 
     def set_proc(&def_proc)
       @cfg[:def_proc]=def_proc if def_proc
       self
+    end
+
+    def add(id,chld,&def_proc)
+      type?(chld,Class)
+      ele=chld.new(@cfg,&def_proc)
+      ele.cfg[:id]=id
+      self[id]=ele
     end
 
     def valid_keys
@@ -58,7 +64,7 @@ module CIAX
       type?(args,Array)
       id,*par=args
       valid_keys.include?(id) || raise(InvalidCMD,list)
-      @cfg[:index][id].set_par(par)
+      @cfg.index[id].set_par(par)
     end
   end
 
@@ -66,13 +72,20 @@ module CIAX
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    def initialize(upper,crnt={},&int_proc)
+    def initialize(upper,&int_proc)
       super
       # Server Commands (service commands on Server)
-      sv=self['sv']=Domain.new(@cfg,{'color' => 2})
-      sv.add_group('hid',{'caption'=>"Hidden Group"}).add_item('interrupt',&int_proc)
+      @cfg['color']=2
+      sv=add('sv')
+      hi=sv.add('hid')
+      hi.cfg['caption']="Hidden Group"
+      hi.add('interrupt',Item,&int_proc)
       # Local(Long Jump) Commands (local handling commands on Client)
-      sl=self['lo']=Domain.new(@cfg,{'color' => 2})
+      add('lo')
+    end
+
+    def add(id,cls=Domain)
+      super
     end
 
     def list
@@ -81,11 +94,20 @@ module CIAX
   end
 
   class Domain < Comshare
-    def initialize(upper,crnt={},&def_proc)
+    def initialize(upper,&def_proc)
       super
-      @cfg[:domain]=self
       @grplist=[] # For ordering
       @ver_color=2
+    end
+
+    def add(id,cls=Group)
+      super
+    end
+
+    def add_group(id,par)
+      grp=add(id)
+      grp.cfg.update(par)
+      grp
     end
 
     def update(h)
@@ -98,10 +120,6 @@ module CIAX
       super
     end
 
-    def add_group(gid,par={},cls=Group,&def_proc)
-      self[gid]=cls.new(@cfg,par,&def_proc)
-    end
-
     def list
       @grplist.map{|grp| grp.list}.grep(/./).join("\n")
     end
@@ -110,32 +128,36 @@ module CIAX
   class Group < Comshare
     attr_reader :valid_keys,:cmdlist
     #upper = {caption,color,column}
-    def initialize(upper,crnt={},&def_proc)
+    def initialize(upper,&def_proc)
       super
-      @cfg[:group]=self
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @cmdary=[@cmdlist]
       @ver_color=3
     end
 
+    def add(id,cls=Item)
+      @cfg.index[id]=super
+    end
+
     def list
       @cmdary.join("\n")
     end
 
-    def add_item(id,title=nil,parameter=nil,&def_proc)
-      @cmdlist[id]=title
-      cfg={:id => id,:label => title}
-      cfg[:parameter] = parameter if parameter
-      self[id]=new_item(cfg,&def_proc)
+    def add_item(id,title,parameter=nil,&def_proc)
+      item=add(id,Item,&def_proc)
+      cfg=item.cfg
+      cfg[:label]=title
+      cfg[:parameter]=parameter if parameter
+      item
     end
 
-    def update_items(labels)
+    def update_items(labels,cls=Item)
       type?(labels,Hash)
       labels.each{|id,title|
-        @cmdlist[id]=title
-        self[id]=new_item({:id => id})
-      }
+            @cmdlist[id]=title
+            add(id,cls)
+          }
       self
     end
 
@@ -143,31 +165,20 @@ module CIAX
       @cmdlist.dummy(id,title) #never put into valid_key
       self
     end
-
-    def new_item(crnt,&def_proc)
-      Item.new(@cfg,crnt,&def_proc)
-    end
   end
 
   class Item < Comshare
     include Math
-    #set should have :def_proc
-    def initialize(upper,crnt={},&def_proc)
+    #cfg should have :label,:parameter,:def_proc
+    def initialize(upper,&def_proc)
       super
-      @cfg[:index][@cfg[:id]]=self
-      @cfg[:item]=self
-      @id=@cfg[:id]
       @ver_color=5
     end
 
-    def set_par(par)
-      @par=validate(type?(par,Array))
-      verbose(self.class,"SetPAR(#{@id}): #{par}")
-      new_entity({:par => par})
-    end
-
-    def new_entity(crnt)
-      Entity.new(@cfg,crnt)
+    def set_par(par,cls=Entity)
+      validate(type?(par,Array))
+      verbose(self.class,"SetPAR(#{@cfg[:id]}): #{par}")
+      cls.new(@cfg,{:par => par})
     end
 
     private
@@ -182,10 +193,11 @@ module CIAX
           if par.key?(:default)
             next par[:default]
           else
-            Msg.par_err(
-                        "Parameter shortage (#{pary.size}/#{@cfg[:parameter].size})",
-                        Msg.item(@id,@cfg[:label]),
-                        " "*10+"key=(#{disp})")
+            mary=[]
+            mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameter].size})"
+            mary << Msg.item(@cfg[:id],@cfg[:label])
+            mary << " "*10+"key=(#{disp})"
+            Msg.par_err(*mary)
           end
         end
         case par[:type]

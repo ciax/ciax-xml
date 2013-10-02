@@ -7,7 +7,8 @@ module CIAX
     class ExtCmd < ExtCmd
       def initialize(upper,db)
         super
-        add_svgrp('ext',ExtGrp)
+        self['sv'].add('ext',ExtGrp)
+        self['sv'].add('int',IntGrp)
       end
     end
 
@@ -22,8 +23,8 @@ module CIAX
     end
 
     class ExtGrp < ExtGrp
-      def new_item(crnt)
-        ExtItem.new(@cfg,crnt)
+      def add(id,cls=ExtItem)
+        super
       end
     end
 
@@ -62,9 +63,9 @@ module CIAX
     require "libfrmcmd"
     app,*args=ARGV
     begin
+      cfg=Config.new
       adb=App::Db.new.set(app)
       fdb=Frm::Db.new.set(adb['frm_id'])
-      cfg=Config.new
       fcobj=Frm::ExtCmd.new(cfg,fdb)
       acobj=App::ExtCmd.new(cfg,adb)
       acobj.setcmd(args).cfg[:cmdary].each{|fargs|

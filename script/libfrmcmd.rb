@@ -10,34 +10,34 @@ module CIAX
       def initialize(upper,db,field=Field.new)
         super(upper,db)
         self['sv'].cfg[:field]=type?(field,Field)
-        add_svgrp('int',IntGrp)
-        add_svgrp('ext',ExtGrp)
+        self['sv'].add('ext',ExtGrp)
+        self['sv'].add('int',IntGrp)
       end
     end
 
     class IntGrp < Group
-      def initialize(upper)
+      def initialize(upper,&def_proc)
         super
         @cfg['caption']='Internal Commands'
         any={:type =>'reg',:list => ["."]}
         add_item('save',"Save Field [key,key...] (tag)",[any,any])
         add_item('load',"Load Field (tag)",[any])
-        add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]){|item|
-          @cfg[:field].set(*item.par)
+        add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]){|ent|
+          @cfg[:field].set(*ent.par)
         }
       end
     end
 
     class ExtGrp < ExtGrp
-      def new_item(crnt)
-        ExtItem.new(@cfg,crnt)
+      def add(id,cls=ExtItem)
+        super
       end
     end
 
     class ExtItem < ExtItem
-      def initialize(upper,crnt)
+      def initialize(upper,&def_proc)
         @ver_color=0
-        super(upper,crnt)
+        super
         @field=type?(@cfg[:field],Field)
         db=@cfg[:db]
         @cache={}
@@ -100,12 +100,12 @@ module CIAX
       dev,*args=ARGV
       ARGV.clear
       begin
+        cfg=Config.new
         fdb=Db.new.set(dev)
         field=Field.new
-        cobj=ExtCmd.new(Config.new,fdb,field)
-        cgrp=cobj['sv']['ext']
+        cobj=ExtCmd.new(cfg,fdb,field)
         field.read unless STDIN.tty?
-        print cgrp.setcmd(args).cfg[:frame]
+        print cobj.setcmd(args).cfg[:frame]
       rescue InvalidCMD
         Msg.usage("[dev] [cmd] (par) < field_file",[])
       rescue InvalidID

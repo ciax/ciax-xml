@@ -20,6 +20,7 @@ module CIAX
     class ExtCmd < ExtCmd
       def initialize(upper,db,al)
         super(upper,db)
+        self['sv'].add('ext',ExtGrp)
         svc=self['sv'].cfg
         type?(al,App::List)
         @stq=svc[:save_que]=Queue.new
@@ -28,7 +29,6 @@ module CIAX
         svc[:stat_proc]=proc{|site| al[site].stat}
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
         svc[:int_grp]=IntGrp.new(@cfg)
-        add_svgrp('ext',ExtGrp)
         $dryrun=3
       end
 
@@ -55,14 +55,14 @@ module CIAX
     end
 
     class ExtGrp < ExtGrp
-      def new_item(crnt)
-        ExtItem.new(@cfg,crnt)
+      def add(id,cls=ExtItem)
+        super
       end
     end
 
     class ExtItem < ExtItem
-      def new_entity(crnt)
-        ExtEntity.new(@cfg,crnt)
+      def set_par(par,cls=ExtEntity)
+        super
       end
     end
 

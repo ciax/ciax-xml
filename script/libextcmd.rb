@@ -6,18 +6,12 @@ module CIAX
   # For External Command Domain
   class ExtCmd < Command
     def initialize(upper,db)
-      type?(db,Db)
       super(upper)
-      self['sv'].cfg[:db]=db
-    end
-
-    def add_svgrp(id,cls=ExtGrp,&def_proc)
-      sv=self['sv']
-      sv[id]=cls.new(sv.cfg,&def_proc)
+      self['sv'].cfg[:db]=type?(db,Db)
     end
   end
 
-  class ExtGrp < Group
+  class ExtGrp < Group # upper needs [:db]
     def initialize(upper)
       super(upper)
       @cfg['color']=6
@@ -29,24 +23,27 @@ module CIAX
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:body].keys).each{|id|
           subgrp[id]=cdb[:label][id]
-          crnt={:id => id,:db => db}
           # because cdb is separated by title
+          ccfg=add(id).cfg
           db[:command].each{|k,v|
             if a=v[id]
-              crnt[k]=a
+              ccfg[k]=a
             end
           }
-          self[id]=new_item(crnt)
         }
         @cmdary << subgrp
       }
       cdb[:alias].each{|k,v| self[k].replace self[v]} if cdb.key?(:alias)
     end
+
+    def add(id,cls=ExtItem)
+      super
+    end
   end
 
-  class ExtItem < Item # Self has config data
-    def new_entity(crnt)
-      ExtEntity.new(@cfg,crnt)
+  class ExtItem < Item
+    def set_par(par,cls=ExtEntity)
+      super
     end
   end
 

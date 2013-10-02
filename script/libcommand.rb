@@ -35,13 +35,26 @@ require 'liblogging'
 # Keep current command and parameters
 
 module CIAX
-  class Command < Hashx
+  class Comshare < Hashx
     attr_reader :cfg
+    def initialize(upper=Config.new,crnt={},&def_proc)
+      @cfg=Config.new(upper).update(crnt)
+      set_proc(&def_proc)
+      @list=[] # For ordering
+    end
+
+    def set_proc(&def_proc)
+      @cfg[:def_proc]=def_proc if def_proc
+      self
+    end
+  end
+
+  class Command < Comshare
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
     def initialize
-      @cfg=Config.new({:command => self})
+      super(Config.new,{:command => self}){}
       # Server Commands (service commands on Server)
       sv=self['sv']=Domain.new(@cfg,{'color' => 2})
       sv.add_group('hid',{'caption'=>"Hidden Group"}).add_item('interrupt')
@@ -77,19 +90,12 @@ module CIAX
     end
   end
 
-  class Domain < Hashx
-    attr_reader :cfg
+  class Domain < Comshare
     def initialize(upper=Config.new,crnt={},&def_proc)
-      @cfg=Config.new(upper).update(crnt)
+      super
       @cfg[:domain]=self
-      set_proc(&def_proc)
       @grplist=[] # For ordering
       @ver_color=2
-    end
-
-    def set_proc(&def_proc)
-      @cfg[:def_proc]=def_proc if def_proc
-      self
     end
 
     def update(h)
@@ -130,22 +136,16 @@ module CIAX
     end
   end
 
-  class Group < Hashx
-    attr_reader :valid_keys,:cmdlist,:cfg
+  class Group < Comshare
+    attr_reader :valid_keys,:cmdlist
     #upper = {caption,color,column}
     def initialize(upper=Config.new,crnt={},&def_proc)
-      @cfg=Config.new(upper).update(crnt)
+      super
       @cfg[:group]=self
-      set_proc(&def_proc)
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @cmdary=[@cmdlist]
       @ver_color=3
-    end
-
-    def set_proc(&def_proc)
-      @cfg[:def_proc]=def_proc if def_proc
-      self
     end
 
     def setcmd(args)
@@ -185,21 +185,14 @@ module CIAX
     end
   end
 
-  class Item < Hashx
+  class Item < Comshare
     include Math
-    attr_reader :cfg
     #set should have :def_proc
     def initialize(upper=Config.new,crnt={},&def_proc)
-      @cfg=Config.new(upper).update(crnt)
+      super
       @cfg[:item]=self
-      set_proc(&def_proc)
       @id=@cfg[:id]
       @ver_color=5
-    end
-
-    def set_proc(&def_proc)
-      @cfg[:def_proc]=def_proc if def_proc
-      self
     end
 
     def set_par(par)

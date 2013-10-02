@@ -17,8 +17,7 @@ module CIAX
         }
         self['sid']=''
         @cobj.save_proc{@list.save}
-        ig=@cobj.add_svgrp('int',IntGrp)
-        ig.cfg[:def_proc]=proc{|ent|
+        ig=@cobj.add_svgrp('int',IntGrp){|ent|
           n=ent.par[0]||@list.data.keys.last||""
           self['sid']=n
           if st=@list.data[n]

@@ -7,8 +7,8 @@ require "libextcmd"
 module CIAX
   module Frm
     class ExtCmd < ExtCmd
-      def initialize(db,field=Field.new)
-        super(db)
+      def initialize(upper,db,field=Field.new)
+        super(upper,db)
         self['sv'].cfg[:field]=type?(field,Field)
         add_svgrp('int',IntGrp)
         add_svgrp('ext',ExtGrp)
@@ -102,7 +102,7 @@ module CIAX
       begin
         fdb=Db.new.set(dev)
         field=Field.new
-        cobj=ExtCmd.new(fdb,field)
+        cobj=ExtCmd.new(Config.new,fdb,field)
         cgrp=cobj['sv']['ext']
         field.read unless STDIN.tty?
         print cgrp.setcmd(args).cfg[:frame]

@@ -37,7 +37,7 @@ require 'liblogging'
 module CIAX
   class Comshare < Hashx
     attr_reader :cfg
-    def initialize(upper=Config.new,crnt={},&def_proc)
+    def initialize(upper,crnt={},&def_proc)
       @cfg=Config.new(upper).update(crnt)
       set_proc(&def_proc)
       @list=[] # For ordering
@@ -53,14 +53,21 @@ module CIAX
         e.valid_keys
       }.flatten
     end
+
+    def setcmd(args)
+      type?(args,Array)
+      id,*par=args
+      valid_keys.include?(id) || raise(InvalidCMD,list)
+      @cfg[:index][id].set_par(par)
+    end
   end
 
   class Command < Comshare
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    def initialize(&int_proc)
-      super(Config.new,{:command => self}){}
+    def initialize(upper,crnt={},&int_proc)
+      super
       # Server Commands (service commands on Server)
       sv=self['sv']=Domain.new(@cfg,{'color' => 2})
       sv.add_group('hid',{'caption'=>"Hidden Group"}).add_item('interrupt',&int_proc)
@@ -68,26 +75,13 @@ module CIAX
       sl=self['lo']=Domain.new(@cfg,{'color' => 2})
     end
 
-    def setcmd(args)
-      type?(args,Array)
-      id,*par=args
-      dom=domain_with_item(id) || raise(InvalidCMD,list)
-      dom.setcmd(args)
-    end
-
     def list
       values.map{|dom| dom.list}.grep(/./).join("\n")
-    end
-
-    def domain_with_item(id)
-      values.any?{|dom|
-        return dom if dom.group_with_item(id)
-      }
     end
   end
 
   class Domain < Comshare
-    def initialize(upper=Config.new,crnt={},&def_proc)
+    def initialize(upper,crnt={},&def_proc)
       super
       @cfg[:domain]=self
       @grplist=[] # For ordering
@@ -108,41 +102,21 @@ module CIAX
       self[gid]=cls.new(@cfg,par,&def_proc)
     end
 
-    def setcmd(args)
-      type?(args,Array)
-      id,*par=args
-      grp=group_with_item(id) || raise(InvalidCMD,list)
-      grp.setcmd(args)
-    end
-
     def list
       @grplist.map{|grp| grp.list}.grep(/./).join("\n")
-    end
-
-    def group_with_item(id)
-      values.any?{|grp|
-        return grp if grp.valid_keys.include?(id)
-      }
     end
   end
 
   class Group < Comshare
     attr_reader :valid_keys,:cmdlist
     #upper = {caption,color,column}
-    def initialize(upper=Config.new,crnt={},&def_proc)
+    def initialize(upper,crnt={},&def_proc)
       super
       @cfg[:group]=self
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @cmdary=[@cmdlist]
       @ver_color=3
-    end
-
-    def setcmd(args)
-      id,*par=type?(args,Array)
-      @valid_keys.include?(id) || raise(InvalidCMD,list)
-      verbose("CmdGrp","SetCMD (#{id},#{par})")
-      self[id].set_par(par)
     end
 
     def list
@@ -178,8 +152,9 @@ module CIAX
   class Item < Comshare
     include Math
     #set should have :def_proc
-    def initialize(upper=Config.new,crnt={},&def_proc)
+    def initialize(upper,crnt={},&def_proc)
       super
+      @cfg[:index][@cfg[:id]]=self
       @cfg[:item]=self
       @id=@cfg[:id]
       @ver_color=5
@@ -245,7 +220,7 @@ module CIAX
   class Entity < Hashx
     attr_reader :id,:par,:args,:cfg
     #set should have :def_proc
-    def initialize(upper,crnt)
+    def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
       @id=@cfg[:id]
       @par=@cfg[:par]

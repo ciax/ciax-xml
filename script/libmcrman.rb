@@ -9,7 +9,7 @@ module CIAX
         proj=ENV['PROJ']||'ciax'
         mdb=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
-        cobj=ExtCmd.new(mdb,App::List.new){|i|
+        cobj=ExtCmd.new(Config.new,mdb,App::List.new){|i|
           @list.data.each{|st|
             st.thread.raise(Interrupt)
           }

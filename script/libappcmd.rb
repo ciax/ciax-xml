@@ -5,7 +5,7 @@ require "libextcmd"
 module CIAX
   module App
     class ExtCmd < ExtCmd
-      def initialize(db)
+      def initialize(upper,db)
         super
         add_svgrp('ext',ExtGrp)
       end
@@ -64,8 +64,9 @@ module CIAX
     begin
       adb=App::Db.new.set(app)
       fdb=Frm::Db.new.set(adb['frm_id'])
-      fcobj=Frm::ExtCmd.new(fdb)
-      acobj=App::ExtCmd.new(adb)
+      cfg=Config.new
+      fcobj=Frm::ExtCmd.new(cfg,fdb)
+      acobj=App::ExtCmd.new(cfg,adb)
       acobj.setcmd(args).cfg[:cmdary].each{|fargs|
         #Validate fcmdarys
         fcobj.setcmd(fargs) if /set|unset|load|save/ !~ fargs.first

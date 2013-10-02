@@ -5,9 +5,9 @@ require 'librerange'
 module CIAX
   # For External Command Domain
   class ExtCmd < Command
-    def initialize(db)
+    def initialize(upper,db)
       type?(db,Db)
-      super()
+      super(upper)
       self['sv'].cfg[:db]=db
     end
 

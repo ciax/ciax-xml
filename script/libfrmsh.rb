@@ -27,7 +27,7 @@ module CIAX
       def initialize(fdb,id=nil)
         type?(fdb,Db)
         @field=Field.new(fdb[:field][:struct].deep_copy)
-        super('frm',id||fdb['id'],ExtCmd.new(fdb,@field))
+        super('frm',id||fdb['id'],ExtCmd.new(Config.new,fdb,@field))
         ext_shell(@field)
       end
 

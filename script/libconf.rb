@@ -14,6 +14,8 @@ module CIAX
         @ary+=hash.ary
       when Hash
         update hash
+      else
+        self[:index]={}
       end
     end
 

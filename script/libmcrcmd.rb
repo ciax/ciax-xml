@@ -18,8 +18,8 @@ module CIAX
     end
 
     class ExtCmd < ExtCmd
-      def initialize(db,al)
-        super(db)
+      def initialize(upper,db,al)
+        super(upper,db)
         svc=self['sv'].cfg
         type?(al,App::List)
         @stq=svc[:save_que]=Queue.new
@@ -192,7 +192,7 @@ module CIAX
       begin
         al=App::List.new
         mdb=Db.new.set('ciax')
-        mobj=ExtCmd.new(mdb,al)
+        mobj=ExtCmd.new(Config.new,mdb,al)
         mobj.setcmd(ARGV).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

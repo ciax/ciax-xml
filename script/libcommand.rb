@@ -108,8 +108,8 @@ module CIAX
       super
     end
 
-    def add_group(gid,par={},cls=Group)
-      self[gid]=cls.new(@cfg,par)
+    def add_group(gid,par={},cls=Group,&def_proc)
+      self[gid]=cls.new(@cfg,par,&def_proc)
     end
 
     def setcmd(args)
@@ -153,11 +153,11 @@ module CIAX
       @cmdary.join("\n")
     end
 
-    def add_item(id,title=nil,parameter=nil)
+    def add_item(id,title=nil,parameter=nil,&def_proc)
       @cmdlist[id]=title
       cfg={:id => id,:label => title}
       cfg[:parameter] = parameter if parameter
-      self[id]=new_item(cfg)
+      self[id]=new_item(cfg,&def_proc)
     end
 
     def update_items(labels)
@@ -174,8 +174,8 @@ module CIAX
       self
     end
 
-    def new_item(crnt)
-      Item.new(@cfg,crnt)
+    def new_item(crnt,&def_proc)
+      Item.new(@cfg,crnt,&def_proc)
     end
   end
 
@@ -249,19 +249,13 @@ module CIAX
   class Entity < Hashx
     attr_reader :id,:par,:args,:cfg
     #set should have :def_proc
-    def initialize(upper=Config.new,crnt={},&def_proc)
+    def initialize(upper,crnt)
       @cfg=Config.new(upper).update(crnt)
       @id=@cfg[:id]
       @par=@cfg[:par]
       @args=[@id,*@par]
       @cfg[:cid]=@args.join(':') # Used by macro
-      set_proc(&def_proc)
       @ver_color=5
-    end
-
-    def set_proc(&def_proc)
-      @cfg[:def_proc]=def_proc if def_proc
-      self
     end
 
     def exe

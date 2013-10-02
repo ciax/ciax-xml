@@ -22,7 +22,7 @@ module CIAX
         any={:type =>'reg',:list => ["."]}
         add_item('save',"Save Field [key,key...] (tag)",[any,any])
         add_item('load',"Load Field (tag)",[any])
-        add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).set_proc{|item|
+        add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]){|item|
           @cfg[:field].set(*item.par)
         }
       end

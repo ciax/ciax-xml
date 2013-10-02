@@ -66,6 +66,10 @@ module CIAX
       valid_keys.include?(id) || raise(InvalidCMD,list)
       @cfg.index[id].set_par(par)
     end
+
+    def list
+      values.map{|e| e.list}.grep(/./).join("\n")
+    end
   end
 
   class Command < Comshare
@@ -80,23 +84,16 @@ module CIAX
       hi=sv.add('hid')
       hi.cfg['caption']="Hidden Group"
       hi.add('interrupt',Item,&int_proc)
-      # Local(Long Jump) Commands (local handling commands on Client)
-      add('lo')
     end
 
     def add(id,cls=Domain)
       super
-    end
-
-    def list
-      values.map{|dom| dom.list}.grep(/./).join("\n")
     end
   end
 
   class Domain < Comshare
     def initialize(upper,&def_proc)
       super
-      @grplist=[] # For ordering
       @ver_color=2
     end
 
@@ -108,20 +105,6 @@ module CIAX
       grp=add(id)
       grp.cfg.update(par)
       grp
-    end
-
-    def update(h)
-      h.values.each{|v| @grplist.unshift type?(v,Group)}
-      super
-    end
-
-    def []=(gid,grp)
-      @grplist.unshift grp
-      super
-    end
-
-    def list
-      @grplist.map{|grp| grp.list}.grep(/./).join("\n")
     end
   end
 
@@ -149,6 +132,7 @@ module CIAX
       cfg=item.cfg
       cfg[:label]=title
       cfg[:parameter]=parameter if parameter
+      @cmdlist[id]=title
       item
     end
 

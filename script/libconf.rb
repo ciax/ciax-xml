@@ -1,41 +1,41 @@
 #!/usr/bin/ruby
 module CIAX
-  # Hash array of @ary: each Hash is associated with Domain,Group,Item;
+  # Recursive hash array of @generation: each Hash is associated with Domain,Group,Item;
+  # Structure: Command[cfg]
+  #         -> Domain[cfg,command_cfg]
+  #         -> Group[cfg,domain_cfg,command_cfg]
+  #         -> Item[cfg,group_cfg,domain_cfg,command_cfg]...
   # Usage:[]=/ add to current Hash which will override(hide) upper level Hash;
-  # Usage:[]/  get val from current Hash otherwise from upper level of Hash;
+  # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hash
-    attr_reader :ary
-    alias :_org_keys :keys
-    alias :_org_key? :key?
+    attr_reader :generation
     def initialize(hash=nil)
-      @ary=[self]
+      @generation=[self]
       case hash
       when Config
-        @ary+=hash.ary
+        @generation+=hash.generation
       when Hash
         update hash
-      else
-        self[:index]={}
       end
     end
 
-    def key?(id)
-      @ary.any?{|h| h._org_key?(id)}
+    def total_key?(id)
+      @generation.any?{|h| h.key?(id)}
     end
 
-    def keys
-      @ary.map{|h| h._org_keys}.flatten.uniq
+    def total_keys
+      @generation.map{|h| h.keys}.flatten.uniq
     end
 
     def to_hash
       hash={}
-      @ary.reverse.each{|h| hash.update h}
+      @generation.reverse.each{|h| hash.update h}
       hash
     end
 
     def [](id)
-      @ary.each{|h|
-        return h.fetch(id) if h._org_key?(id)
+      @generation.each{|h|
+        return h.fetch(id) if h.key?(id)
       }
       nil
     end

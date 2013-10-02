@@ -45,7 +45,6 @@ module CIAX
       # Server Commands (service commands on Server)
       sv=self['sv']=Domain.new(@cfg,{'color' => 2})
       sv.add_group('hid',{'caption'=>"Hidden Group"}).add_item('interrupt')
-      sv.add_group('int',{'caption'=>'Internal Commands'})
       # Local(Long Jump) Commands (local handling commands on Client)
       sl=self['lo']=Domain.new(@cfg,{'color' => 2})
     end

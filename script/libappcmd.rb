@@ -11,6 +11,16 @@ module CIAX
       end
     end
 
+    class IntGrp < Group
+      def initialize(upper)
+        super
+        @cfg['caption']='Internal Commands'
+        cri={:type => 'reg', :list => ['.']}
+        add_item('set','[key=val,...]',[cri])
+        add_item('del','[key,...]',[cri])
+      end
+    end
+
     class ExtGrp < ExtGrp
       def new_item(crnt)
         ExtItem.new(@cfg,crnt)

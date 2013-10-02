@@ -67,12 +67,12 @@ module CIAX
         super(adb)
         @stat.ext_sym(adb)
         @watch.ext_upd(adb,@stat).upd
-        cri={:type => 'reg', :list => ['.']}
-        @cobj['sv']['int'].add_item('set','[key=val,...]',[cri]).cfg[:def_proc]=proc{|ent|
+        ig=@cobj.add_svgrp('int',IntGrp)
+        ig['set'].cfg[:def_proc]=proc{|ent|
           @stat.str_update(ent.par[0])
           self['msg']="Set #{ent.par[0]}"
         }
-        @cobj['sv']['int'].add_item('del','[key,...]',[cri]).cfg[:def_proc]=proc{|ent|
+        ig['del'].cfg[:def_proc]=proc{|ent|
           ent.par[0].split(',').each{|key|
             @stat.unset(key)
           }

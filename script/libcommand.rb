@@ -47,6 +47,12 @@ module CIAX
       @cfg[:def_proc]=def_proc if def_proc
       self
     end
+
+    def valid_keys
+      values.map{|e|
+        e.valid_keys
+      }.flatten
+    end
   end
 
   class Command < Comshare
@@ -75,12 +81,6 @@ module CIAX
 
     def list
       values.map{|dom| dom.list}.grep(/./).join("\n")
-    end
-
-    def valid_keys
-      values.map{|dom|
-        dom.valid_keys
-      }.flatten
     end
 
     def domain_with_item(id)
@@ -121,12 +121,6 @@ module CIAX
 
     def list
       @grplist.map{|grp| grp.list}.grep(/./).join("\n")
-    end
-
-    def valid_keys
-      values.map{|grp|
-        grp.valid_keys
-      }.flatten
     end
 
     def group_with_item(id)

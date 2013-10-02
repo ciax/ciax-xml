@@ -10,7 +10,7 @@ module CIAX
         mdb=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
         super('mcr',mdb['id'],ExtCmd.new(mdb,App::List.new))
-        @cobj['sv']['ext'].cfg[:def_proc]=proc{|ent|
+        @cobj['sv']['ext'].set_proc{|ent|
           key,stat=ent.fork
           self['sid']=key
           @list.data[key]=stat
@@ -32,7 +32,7 @@ module CIAX
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
-        ig.add_item('clean','Clean macros').cfg[:def_proc]=proc{
+        ig.add_item('clean','Clean macros').set_proc{
           self['msg']='NONE' unless @list.clean
           @list.save
         }

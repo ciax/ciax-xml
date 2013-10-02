@@ -54,9 +54,9 @@ module CIAX
         @output=@print=View.new(@adb,@stat).extend(Print)
         @wview=Watch::View.new(@adb,@watch).ext_prt
         grp=@cobj['lo'].add_group('view',{'caption' => "Change View Mode", 'column' => 3})
-        grp.add_item('pri',"Print mode").cfg[:def_proc]=proc{@output=@print}
-        grp.add_item('wat',"Watch mode").cfg[:def_proc]=proc{@output=@wview} if @wview
-        grp.add_item('raw',"Raw mode").cfg[:def_proc]=proc{@output=@stat}
+        grp.add_item('pri',"Print mode").set_proc{@output=@print}
+        grp.add_item('wat',"Watch mode").set_proc{@output=@wview} if @wview
+        grp.add_item('raw',"Raw mode").set_proc{@output=@stat}
         self
       end
     end
@@ -68,11 +68,11 @@ module CIAX
         @stat.ext_sym(adb)
         @watch.ext_upd(adb,@stat).upd
         ig=@cobj.add_svgrp('int',IntGrp)
-        ig['set'].cfg[:def_proc]=proc{|ent|
+        ig['set'].set_proc{|ent|
           @stat.str_update(ent.par[0])
           self['msg']="Set #{ent.par[0]}"
         }
-        ig['del'].cfg[:def_proc]=proc{|ent|
+        ig['del'].set_proc{|ent|
           ent.par[0].split(',').each{|key|
             @stat.unset(key)
           }
@@ -116,7 +116,7 @@ module CIAX
           @buf.send(p,@cobj.setcmd(args))
         }
         @buf=init_buf
-        @cobj['sv']['ext'].cfg[:def_proc]=proc{|ent|
+        @cobj['sv']['ext'].set_proc{|ent|
           verbose("AppSv","#{self['id']}/Issue:#{ent.args}")
           @buf.send(1,ent)
           self['msg']="Issued"

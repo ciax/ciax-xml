@@ -59,11 +59,11 @@ module CIAX
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    def initialize
+    def initialize(&int_proc)
       super(Config.new,{:command => self}){}
       # Server Commands (service commands on Server)
       sv=self['sv']=Domain.new(@cfg,{'color' => 2})
-      sv.add_group('hid',{'caption'=>"Hidden Group"}).add_item('interrupt')
+      sv.add_group('hid',{'caption'=>"Hidden Group"}).add_item('interrupt',&int_proc)
       # Local(Long Jump) Commands (local handling commands on Client)
       sl=self['lo']=Domain.new(@cfg,{'color' => 2})
     end
@@ -73,10 +73,6 @@ module CIAX
       id,*par=args
       dom=domain_with_item(id) || raise(InvalidCMD,list)
       dom.setcmd(args)
-    end
-
-    def int_proc=(p)
-      self['sv']['hid']['interrupt'].cfg[:def_proc]=type?(p,Proc)
     end
 
     def list

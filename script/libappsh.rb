@@ -30,15 +30,15 @@ module CIAX
       attr_reader :adb,:stat
       def initialize(adb,id=nil)
         @adb=type?(adb,Db)
-        super('app',id||adb['id'],ExtCmd.new(adb))
-        @stat=App::Status.new(adb[:status][:struct].deep_copy)
-        ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
-        @watch=Watch::Data.new
-        @cobj.int_proc=proc{
+        cobj=ExtCmd.new(adb){
           int=@watch.interrupt
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")
           self['msg']="Interrupt #{int}"
         }
+        super('app',id||adb['id'],cobj)
+        @stat=App::Status.new(adb[:status][:struct].deep_copy)
+        ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+        @watch=Watch::Data.new
         @pre_proc << proc{|args|@watch.block?(args)}
         init_view
       end

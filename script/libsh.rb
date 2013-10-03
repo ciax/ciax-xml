@@ -56,23 +56,24 @@ module CIAX
       Readline.completion_proc=proc{|word|
         @cobj.valid_keys.grep(/^#{word}/)
       }
-      begin
-        while line=Readline.readline(prompt,true)
-          break if /^q/ === line
+      while line=readline(prompt)
+        break if /^q/ === line
+        begin
           exe(shell_input(line))
           puts shell_output
-#          Thread.list.each{|t| puts t[:name]}
+        rescue InvalidID
+          puts $!.to_s
         end
-      rescue Interrupt
-        exe(['interrupt'])
-        puts self['msg']
-        retry
-      rescue InvalidID
-        puts $!.to_s
-        retry
       end
     end
+
+    def readline(prompt)
+      Readline.readline(prompt,true)
+    rescue Interrupt
+      'interrupt'
+    end
   end
+
 
   class ShList < ExeList
     attr_reader :site

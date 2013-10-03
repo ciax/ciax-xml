@@ -81,8 +81,7 @@ module CIAX
       # Server Commands (service commands on Server)
       @cfg['color']=2
       sv=add('sv')
-      hi=sv.add('hid')
-      hi.cfg['caption']="Hidden Group"
+      hi=sv.add_group('hid',"Hidden Group")
       hi.add('interrupt',Item,&int_proc)
     end
 
@@ -101,9 +100,11 @@ module CIAX
       super
     end
 
-    def add_group(id,par)
+    def add_group(id,caption,column=nil,color=nil)
       grp=add(id)
-      grp.cfg.update(par)
+      grp.cfg['caption']=caption
+      grp.cfg['column']=column if column
+      grp.cfg['color']=color if color
       grp
     end
   end
@@ -119,7 +120,7 @@ module CIAX
       @ver_color=3
     end
 
-    def add(id,cls=Item)
+    def add(id,cls=Item,&def_proc)
       @cfg.index[id]=super
     end
 

@@ -26,7 +26,7 @@ module CIAX
       @pstat=pstat||self
       # Local(Long Jump) Commands (local handling commands on Client)
       lod=@cobj.add('lo',LocDom)
-      shg=lod.add_group('sh',{'caption'=>"Shell Command",'column'=>2,'color'=>1})
+      shg=lod.add_group('sh',"Shell Command",2,1)
       shg.add_dummy('^D,q',"Quit")
       shg.add_dummy('^C',"Interrupt")
       self
@@ -76,21 +76,13 @@ module CIAX
 
   class ShList < ExeList
     attr_reader :site
-    def initialize(cfg=Config.new)
+    def initialize
       super()
-      @swsgrp=Group.new(cfg){|ent| raise(SwSite,ent.cfg[:cid])}
-      @swsgrp.cfg['caption']='Switch Sites'
-      @swsgrp.cfg['column']=2
-      @swsgrp.cfg['color']=5
       @init_proc << proc{|exe|
-        exe.cobj['lo']['sws']=@swsgrp
+        swg=exe.cobj['lo'].add_group('sws','Switch Sites',2,5)
+        swg.set_proc{|ent| raise(SwSite,ent.cfg[:cid])}
+        swg.update_items(swg.cfg[:ldb].list)
       }
-    end
-
-    def update_items(list)
-      type?(list,Hash)
-      @swsgrp.update_items(list)
-      self
     end
 
     def shell(site)

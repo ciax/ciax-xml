@@ -9,7 +9,8 @@ module CIAX
         proj=ENV['PROJ']||'ciax'
         mdb=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
-        cobj=ExtCmd.new(Config.new,mdb,App::List.new){|i|
+        cobj=ExtCmd.new(Config.new,mdb,App::List.new)
+        cobj.int_proc{
           @list.data.each{|st|
             st.thread.raise(Interrupt)
           }
@@ -22,7 +23,7 @@ module CIAX
         }
         self['sid']=''
         @cobj.save_proc{@list.save}
-        ig=@cobj.add_svgrp('int',IntGrp){|ent|
+        ig=@cobj['sv'].add('int',IntGrp){|ent|
           n=ent.par[0]||@list.data.keys.last||""
           self['sid']=n
           if st=@list.data[n]

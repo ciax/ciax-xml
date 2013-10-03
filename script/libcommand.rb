@@ -27,10 +27,8 @@ require 'liblogging'
 #
 # Command => {id => Domain}
 #  Command#list -> String
-#  Command#current -> Item
 #  Command#setcmd(args=[id,*par]):{
 #    Item#set_par(par)
-#    Command#current -> Item
 #  } -> Item
 # Keep current command and parameters
 
@@ -76,22 +74,24 @@ module CIAX
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    def initialize(upper,&int_proc)
+    def initialize(upper)
       super
       # Server Commands (service commands on Server)
       @cfg['color']=2
-      sv=add('sv')
-      hi=sv.add_group('hid',"Hidden Group")
-      hi.add('interrupt',Item,&int_proc)
+      add('sv')
     end
 
     def add(id,cls=Domain)
       super
     end
+
+    def int_proc(&int_proc)
+      self['sv'].add_group('hid',"Hidden Group").add_item('interrupt',nil,nil,&int_proc)
+    end
   end
 
   class Domain < Comshare
-    def initialize(upper,&def_proc)
+    def initialize(upper)
       super
       @ver_color=2
     end

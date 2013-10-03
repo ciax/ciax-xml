@@ -80,11 +80,12 @@ module CIAX
     def initialize(cfg=Config.new)
       super()
       @cfg=Config.new(cfg)
-      @init_proc << proc{|exe|
-        swg=exe.cobj['lo'].add_group('sws','Switch Sites',2,5)
-        swg.set_proc{|ent| raise(SwSite,ent.cfg[:cid])}
-        swg.update_items(swg.cfg[:ldb].list)
-      }
+      @swsgrp=Group.new(Config.new){|ent| raise(SwSite,ent.cfg[:cid])}
+      @swsgrp.cfg['caption']='Switch Sites'
+      @swsgrp.cfg['color']=2
+      @swsgrp.cfg['column']=5
+      @swsgrp.update_items(@cfg[:ldb].list)
+      @init_proc << proc{|exe| exe.cobj['lo'].join('sws',@swsgrp)}
     end
 
     def shell(site)
@@ -112,7 +113,7 @@ module CIAX
     def add_layer(layer)
       type?(layer,Module)
       lst=layer::List.new(@cfg)
-      str=layer.to_s
+      str=layer.to_s.split(':').last
       id=str.downcase
       @swlgrp.add_item(id,str+" mode")
       lst.init_proc << proc{|exe| exe.cobj['lo'].join('swl',@swlgrp) }
@@ -120,7 +121,7 @@ module CIAX
     end
 
     def shell(site)
-      layer=keys.first
+      layer=keys.last
       begin
         self[layer][site].shell
       rescue SwSite

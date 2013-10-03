@@ -104,7 +104,7 @@ module CIAX
     # @< adb,watch,stat*
     # @ fsh,buf,log_proc
     class Sv < Exe
-      def initialize(adb,fsh,logging=nil)
+      def initialize(cfg,adb,fsh,logging=nil)
         super(cfg,adb,adb['site_id'])
         @fsh=type?(fsh,Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})

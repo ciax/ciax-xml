@@ -97,9 +97,9 @@ module CIAX
       # upper should have [:ldb]
       def initialize(cfg=Config.new)
         cfg[:ldb]||=Loc::Db.new
-        super(){|id|
-          fdb=cfg[:ldb].set(id)[:frm]
-          Frm.new(cfg,fdb)
+        super(cfg){|id|
+          fdb=@cfg[:ldb].set(id)[:frm]
+          Frm.new(@cfg,fdb)
         }
       end
     end

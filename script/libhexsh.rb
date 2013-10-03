@@ -53,8 +53,10 @@ module CIAX
     class List < ShList
       def initialize(cfg=Config.new)
         cfg[:ldb]||=Loc::Db.new
-        cfg[:al]||=App::List.new
-        super(){|id| Hex.new(cfg,cfg[:al][id])}
+        cfg[:app]||=App::List.new
+        super(cfg){|id|
+          Hex.new(@cfg,@cfg[:app][id])
+        }
       end
     end
   end

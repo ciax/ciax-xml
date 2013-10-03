@@ -188,10 +188,10 @@ module CIAX
     class List < ShList
       def initialize(cfg=Config.new)
         cfg[:ldb]||=Loc::Db.new
-        cfg[:fl]||=Frm::List.new
-        super(){|id|
-          adb=cfg[:ldb].set(id)[:app]
-          App.new(cfg,adb,cfg[:fl][id])
+        cfg[:frm]||=Frm::List.new
+        super(cfg){|id|
+          adb=@cfg[:ldb].set(id)[:app]
+          App.new(@cfg,adb,@cfg[:frm][id])
         }
       end
     end

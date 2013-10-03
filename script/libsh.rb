@@ -77,8 +77,9 @@ module CIAX
 
   class ShList < ExeList
     attr_reader :site
-    def initialize
+    def initialize(cfg=Config.new)
       super()
+      @cfg=Config.new(cfg)
       @init_proc << proc{|exe|
         swg=exe.cobj['lo'].add_group('sws','Switch Sites',2,5)
         swg.set_proc{|ent| raise(SwSite,ent.cfg[:cid])}
@@ -100,17 +101,22 @@ module CIAX
   end
 
   class ShLayer < Hashx
-    def initialize
+    def initialize(cfg=Config.new)
+      @cfg=Config.new(cfg)
       @swlgrp=Group.new(Config.new){|ent| raise(SwLayer,ent.cfg[:cid]) }
       @swlgrp.cfg['caption']='Switch Layer'
       @swlgrp.cfg['color']=5
       @swlgrp.cfg['column']=5
     end
 
-    def add_layer(layer,lst)
-      @swlgrp.add_item(layer,layer.capitalize+" mode")
+    def add_layer(layer)
+      type?(layer,Module)
+      lst=layer::List.new(@cfg)
+      str=layer.to_s
+      id=str.downcase
+      @swlgrp.add_item(id,str+" mode")
       lst.init_proc << proc{|exe| exe.cobj['lo'].join('swl',@swlgrp) }
-      self[layer]=lst
+      self[id]=lst
     end
 
     def shell(site)

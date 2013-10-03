@@ -4,7 +4,15 @@ require "libhexsh"
 module CIAX
   ENV['VER']||='init/'
   GetOpts.new("afxtesch:")
-  lay=ShLayer.new
-  lay.add_layer('frm',$opt['f'] ? Frm::List.new : lay.add_layer('app',$opt['x'] ? lay.add_layer('hex',Hex::List.new).al : App::List.new).fl)
+  cfg=Config.new
+  cfg[:ldb]=Loc::Db.new
+  lay=ShLayer.new(cfg)
+  lay.add_layer(Frm)
+  if !$opt['f']
+    lay.add_layer(App)
+    if $opt['x']
+      lay.add_layer(Hex)
+    end
+  end
   lay.shell(ARGV.shift)
 end

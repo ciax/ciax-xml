@@ -33,7 +33,7 @@ require 'liblogging'
 # Keep current command and parameters
 
 module CIAX
-  class Comshare < Hashx
+  class Itemshare < Hashx
     attr_reader :cfg
     def initialize(upper,&def_proc)
       @cfg=Config.new(upper)
@@ -44,7 +44,9 @@ module CIAX
       @cfg[:def_proc]=def_proc if def_proc
       self
     end
+  end
 
+  class Grpshare < Itemshare
     def add(id,chld,&def_proc)
       type?(chld,Class)
       ele=chld.new(@cfg,&def_proc)
@@ -75,7 +77,7 @@ module CIAX
     end
   end
 
-  class Command < Comshare
+  class Command < Grpshare
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
@@ -95,7 +97,7 @@ module CIAX
     end
   end
 
-  class Domain < Comshare
+  class Domain < Grpshare
     def initialize(upper)
       super
       @ver_color=2
@@ -114,10 +116,10 @@ module CIAX
     end
   end
 
-  class Group < Comshare
+  class Group < Grpshare
     attr_reader :valid_keys,:cmdlist
     #upper = {caption,color,column}
-    def initialize(upper,&def_proc)
+    def initialize(upper=Config.new,&def_proc)
       super
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
@@ -157,7 +159,7 @@ module CIAX
     end
   end
 
-  class Item < Comshare
+  class Item < Itemshare
     include Math
     #cfg should have :label,:parameter,:def_proc
     def initialize(upper,&def_proc)

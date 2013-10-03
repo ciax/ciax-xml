@@ -100,8 +100,8 @@ module CIAX
   end
 
   class ShLayer < Hashx
-    def initialize(cfg=Config.new)
-      @swlgrp=Group.new(cfg){|ent| raise(SwLayer,ent.cfg[:cid]) }
+    def initialize
+      @swlgrp=Group.new(Config.new){|ent| raise(SwLayer,ent.cfg[:cid]) }
       @swlgrp.cfg['caption']='Switch Layer'
       @swlgrp.cfg['color']=5
       @swlgrp.cfg['column']=5
@@ -109,7 +109,7 @@ module CIAX
 
     def add_layer(layer,lst)
       @swlgrp.add_item(layer,layer.capitalize+" mode")
-      lst.init_proc << proc{|exe| exe.cobj['lo']['swl']=@swlgrp }
+      lst.init_proc << proc{|exe| exe.cobj['lo'].join('swl',@swlgrp) }
       self[layer]=lst
     end
 

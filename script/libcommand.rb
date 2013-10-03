@@ -52,6 +52,11 @@ module CIAX
       self[id]=ele
     end
 
+    def join(id,ele)
+      ele.cfg.override(@cfg)
+      self[id]=ele
+    end
+
     def valid_keys
       values.map{|e|
         e.valid_keys

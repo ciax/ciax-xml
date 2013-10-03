@@ -13,11 +13,18 @@ module CIAX
       @generation=[self]
       case hash
       when Config
-        @generation+=hash.generation
-        @index=hash.index
+        override(hash)
       else
         @index=hash
       end
+    end
+
+    def override(cfg)
+      @generation+=cfg.generation
+      idx=@index
+      @index=cfg.index
+      @index.update(idx) if idx
+      self
     end
 
     def total_key?(id)

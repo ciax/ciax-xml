@@ -12,14 +12,14 @@ require "thread"
 
 module CIAX
   module App
-    def self.new(adb,fsh=nil)
+    def self.new(cfg,adb,fsh=nil)
       if Frm::Sv === fsh
-        ash=App::Sv.new(adb,fsh,$opt['e'])
-        ash=App::Cl.new(adb,'localhost') if $opt['c']
+        ash=App::Sv.new(cfg,adb,fsh,$opt['e'])
+        ash=App::Cl.new(cfg,adb,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c']
-        ash=App::Cl.new(adb,host)
+        ash=App::Cl.new(cfg,adb,host)
       else
-        ash=App::Test.new(adb)
+        ash=App::Test.new(cfg,adb)
       end
       ash
     end
@@ -28,9 +28,9 @@ module CIAX
       # @< cobj,output,upd_proc*
       # @ adb,fsh,watch,stat*
       attr_reader :adb,:stat
-      def initialize(adb,id=nil)
+      def initialize(cfg,adb,id=nil)
         @adb=type?(adb,Db)
-        cobj=ExtCmd.new(Config.new,adb){
+        cobj=ExtCmd.new(cfg,adb){
           int=@watch.interrupt
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")
           self['msg']="Interrupt #{int}"
@@ -63,8 +63,8 @@ module CIAX
 
     class Test < Exe
       require "libappsym"
-      def initialize(adb)
-        super(adb)
+      def initialize(cfg,adb)
+        super(cfg,adb)
         @stat.ext_sym(adb)
         @watch.ext_upd(adb,@stat).upd
         ig=@cobj['sv']['int']
@@ -87,7 +87,7 @@ module CIAX
 
     class Cl < Exe
       def initialize(adb,host=nil)
-        super(adb,adb['site_id'])
+        super(cfg,adb,adb['site_id'])
         host=type?(host||adb['host']||'localhost',String)
         @stat.ext_http(self['id'],host).load
         @watch.ext_http(self['id'],host).load
@@ -104,7 +104,7 @@ module CIAX
     # @ fsh,buf,log_proc
     class Sv < Exe
       def initialize(adb,fsh,logging=nil)
-        super(adb,adb['site_id'])
+        super(cfg,adb,adb['site_id'])
         @fsh=type?(fsh,Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).ext_file(self['id']).upd
@@ -185,12 +185,13 @@ module CIAX
     end
 
     class List < ShList
-      attr_reader :fl
-      def initialize
-        @ldb=Loc::Db.new
-        @fl=Frm::List.new
-        super{|id| App.new(@ldb.set(id)[:app],@fl[id]) }
-        update_items(@ldb.list)
+      def initialize(cfg=Config.new)
+        cfg[:ldb]||=Loc::Db.new
+        cfg[:fl]||=Frm::List.new
+        super(){|id|
+          adb=cfg[:ldb].set(id)[:app]
+          App.new(cfg,adb,cfg[:fl][id])
+        }
       end
     end
 

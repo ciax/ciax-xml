@@ -103,15 +103,15 @@ module CIAX
         }
       end
     end
-  end
 
-  if __FILE__ == $0
-    ENV['VER']||='init/'
-    GetOpts.new('cet')
-    begin
-      puts Frm::List.new.shell(ARGV.shift)
-    rescue InvalidID
-      $opt.usage('(opt) [id]')
+    if __FILE__ == $0
+      ENV['VER']||='init/'
+      GetOpts.new('cet')
+      begin
+        puts List.new.shell(ARGV.shift)
+      rescue InvalidID
+        $opt.usage('(opt) [id]')
+      end
     end
   end
 end

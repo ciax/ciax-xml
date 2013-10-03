@@ -22,7 +22,7 @@ module CIAX
           @list.data[key]=stat
         }
         self['sid']=''
-        @cobj.save_proc{@list.save}
+        @cobj.save_procs{@list.save}
         ig=@cobj['sv'].add('int',IntGrp){|ent|
           n=ent.par[0]||@list.data.keys.last||""
           self['sid']=n

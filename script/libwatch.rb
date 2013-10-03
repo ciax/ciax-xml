@@ -82,7 +82,7 @@ module CIAX
         #       => check(self['crnt'] <> self['last']?)
         ['crnt','last','res'].each{|k| self[k]={}}
         upd_last
-        @stat.upd_proc << proc{upd}
+        @stat.upd_procs << proc{upd}
         self
       end
 
@@ -114,7 +114,7 @@ module CIAX
 
       def ext_file(id)
         super
-        @stat.save_proc << proc{save}
+        @stat.save_procs << proc{save}
         self
       end
 

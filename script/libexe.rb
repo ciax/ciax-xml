@@ -11,15 +11,15 @@ require "libextcmd"
 
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :upd_proc,:post_proc,:cobj,:output
+    attr_reader :upd_procs,:post_procs,:cobj,:output
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       self['id']=id
       self['layer']=layer
       @cobj=type?(cobj,Command)
-      @pre_proc=[] # Proc for Command Check (by User exec)
-      @post_proc=[] # Proc for Command Issue (by User exec)
-      @upd_proc=[] # Proc for Server Status Update (by User query)
+      @pre_procs=[] # Proc for Command Check (by User exec)
+      @post_procs=[] # Proc for Command Issue (by User exec)
+      @upd_procs=[] # Proc for Server Status Update (by User query)
       @ver_color=6
       self['msg']=''
       Thread.abort_on_exception=true
@@ -31,18 +31,18 @@ module CIAX
       if args.empty?
         self['msg']=''
       else
-        @pre_proc.each{|p| p.call(args)}
+        @pre_procs.each{|p| p.call(args)}
         self['msg']='OK'
         verbose("Sh/Exe","Command #{args} recieved")
         @cobj.setcmd(args).exe
-        @post_proc.each{|p| p.call(args)}
+        @post_procs.each{|p| p.call(args)}
       end
       self
     rescue
       self['msg']=$!.to_s
       raise $!
     ensure
-      @upd_proc.each{|p| p.call}
+      @upd_procs.each{|p| p.call}
     end
 
     def ext_client(host,port)
@@ -141,17 +141,17 @@ module CIAX
       self['msg']=$!.to_s
       raise $!
     ensure
-      @upd_proc.each{|p| p.call}
+      @upd_procs.each{|p| p.call}
     end
   end
 
   class ExeList < Hashx
-    attr_reader :init_proc
+    attr_reader :init_procs
     # shdom: Domain for Shared Command Groups
     def initialize(&new_proc)
       $opt||=GetOpts.new
       @new_proc=new_proc # For generate Exe (allows nil)
-      @init_proc=[] # initialize exe (mostly add new menu) at new key generated
+      @init_procs=[] # initialize exe (mostly add new menu) at new key generated
     end
 
     def [](key)
@@ -159,7 +159,7 @@ module CIAX
         super
       else
         exe=self[key]=@new_proc.call(key)
-        @init_proc.each{|p| p.call(exe)}
+        @init_procs.each{|p| p.call(exe)}
         exe
       end
     end

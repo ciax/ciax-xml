@@ -4,7 +4,7 @@ require "libenumx"
 
 module CIAX
   class Datax < Hashx
-    attr_reader :data,:upd_proc,:save_proc
+    attr_reader :data,:upd_procs,:save_procs
     # @data is hidden from access by '[]'
     def initialize(type,init_struct={},dataname='data')
       self['type']=type
@@ -14,8 +14,8 @@ module CIAX
       @data=init_struct.dup.extend(Enumx)
       @dataname=dataname
       @ver_color=6
-      @upd_proc=[] # Proc Array for Update Propagation to the upper Layers
-      @save_proc=[] # Proc for Device Data Update (by Device response)
+      @upd_procs=[] # Proc Array for Update Propagation to the upper Layers
+      @save_procs=[] # Proc for Device Data Update (by Device response)
     end
 
     def to_j
@@ -27,7 +27,7 @@ module CIAX
     end
 
     def upd # update after processing
-      @upd_proc.each{|p| p.call(self)}
+      @upd_procs.each{|p| p.call(self)}
       self
     end
 
@@ -38,7 +38,7 @@ module CIAX
     end
 
     def save
-      @save_proc.each{|p| p.call(self)}
+      @save_procs.each{|p| p.call(self)}
       self
     end
 
@@ -50,13 +50,13 @@ module CIAX
         @data[k]=v
       }
       self['time']=UnixTime.now
-      @upd_proc.each{|p| p.call(self)}
+      @upd_procs.each{|p| p.call(self)}
       self
     end
 
     def unset(key)
       val=@data.delete(key)
-      @upd_proc.each{|p| p.call(self)}
+      @upd_procs.each{|p| p.call(self)}
       val
     end
 
@@ -84,7 +84,7 @@ module CIAX
     def _setdata
       @data=delete(@dataname).extend(Enumx)
       self['time']=UnixTime.parse(self['time']||UnixTime.now)
-      @upd_proc.each{|p| p.call(self)}
+      @upd_procs.each{|p| p.call(self)}
       self
     end
 
@@ -200,7 +200,7 @@ module CIAX
         ::File.symlink(name,sname)
         verbose("File","Symboliclink to [#{sname}]")
       end
-      @save_proc.each{|p| p.call(self)}
+      @save_procs.each{|p| p.call(self)}
       self
     end
   end

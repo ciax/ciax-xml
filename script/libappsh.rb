@@ -25,7 +25,7 @@ module CIAX
     end
 
     class Exe < Exe
-      # @< cobj,output,upd_proc*
+      # @< cobj,output,upd_procs*
       # @ adb,fsh,watch,stat*
       attr_reader :adb,:stat
       def initialize(cfg,adb,id=nil)
@@ -40,7 +40,7 @@ module CIAX
         @stat=App::Status.new(adb[:status][:struct].deep_copy)
         ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         @watch=Watch::Data.new
-        @pre_proc << proc{|args|@watch.block?(args)}
+        @pre_procs << proc{|args|@watch.block?(args)}
         init_view
       end
 
@@ -82,7 +82,7 @@ module CIAX
         @watch.event_proc=proc{|args,p|
           Msg.msg("#{args} is issued by event")
         }
-        @upd_proc << proc{@watch.issue}
+        @upd_procs << proc{@watch.issue}
       end
     end
 
@@ -93,14 +93,14 @@ module CIAX
         @stat.ext_http(self['id'],host).load
         @watch.ext_http(self['id'],host).load
         ext_client(host,adb['port'])
-        @upd_proc << proc{
+        @upd_procs << proc{
           @stat.load
           @watch.load
         }
       end
     end
 
-    # @<< cobj,output,upd_proc*
+    # @<< cobj,output,upd_procs*
     # @< adb,watch,stat*
     # @ fsh,buf,log_proc
     class Sv < Exe
@@ -127,7 +127,7 @@ module CIAX
           ext_logging(@adb['site_id'],@adb['version'])
         end
         tid_auto=auto_update
-        @upd_proc << proc{
+        @upd_procs << proc{
           self['auto'] = tid_auto && tid_auto.alive?
           self['watch'] = @watch.active?
           self['na'] = !@buf.alive?
@@ -137,7 +137,7 @@ module CIAX
 
       def ext_logging(id,ver=0)
         logging=Logging.new('issue',id,ver)
-        @post_proc << proc{|args|
+        @post_procs << proc{|args|
           logging.append({'cmd'=>args,'active'=>@watch.data['active']})
         }
         self

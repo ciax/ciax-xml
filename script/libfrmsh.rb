@@ -21,7 +21,7 @@ module CIAX
     end
 
     class Exe < Exe
-      # @< cobj,output,(upd_proc*)
+      # @< cobj,output,(upd_procs*)
       # @ field*
       attr_reader :field
       def initialize(cfg,fdb,id=nil)
@@ -56,12 +56,12 @@ module CIAX
         @field.ext_http(self['id'],host).load
         @cobj['sv'].set_proc{to_s}
         ext_client(host,fdb['port'])
-        @upd_proc << proc{@field.load}
+        @upd_procs << proc{@field.load}
       end
     end
 
     class Sv < Exe
-      # @<< cobj,(output),(upd_proc*)
+      # @<< cobj,(output),(upd_procs*)
       # @< field*
       # @ io
       attr_reader :sqlsv

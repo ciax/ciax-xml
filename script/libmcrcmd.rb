@@ -32,7 +32,7 @@ module CIAX
         $dryrun=3
       end
 
-      def save_proc
+      def save_procs
         Thread.new{yield while @stq.pop}
       end
     end

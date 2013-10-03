@@ -31,10 +31,10 @@ module CIAX
         super(cfg,ash.adb)
         @output=View.new(ash,ash.stat)
         @cobj['sv'].set_proc{|ent| ash.exe(ent.args)}
-        @upd_proc.concat(ash.upd_proc)
+        @upd_procs.concat(ash.upd_procs)
         if logging
           logging=Logging.new('hex',self['id'],@adb['version'])
-          ash.stat.save_proc << proc{logging.append({'hex' => @output.to_s})}
+          ash.stat.save_procs << proc{logging.append({'hex' => @output.to_s})}
         end
         ext_server(@adb['port'].to_i+1000)
       end

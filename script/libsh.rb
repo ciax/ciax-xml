@@ -85,7 +85,7 @@ module CIAX
       @swsgrp.cfg['color']=2
       @swsgrp.cfg['column']=5
       @swsgrp.update_items(@cfg[:ldb].list)
-      @init_proc << proc{|exe| exe.cobj['lo'].join('sws',@swsgrp)}
+      @init_procs << proc{|exe| exe.cobj['lo'].join('sws',@swsgrp)}
     end
 
     def shell(site)
@@ -116,7 +116,7 @@ module CIAX
       str=layer.to_s.split(':').last
       id=str.downcase
       @swlgrp.add_item(id,str+" mode")
-      lst.init_proc << proc{|exe| exe.cobj['lo'].join('swl',@swlgrp) }
+      lst.init_procs << proc{|exe| exe.cobj['lo'].join('swl',@swlgrp) }
       self[id]=lst
     end
 

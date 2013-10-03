@@ -31,12 +31,12 @@ module CIAX
     end
 
     class Step < Hashx
-      def initialize(db,depth,cfg,&save_proc)
+      def initialize(db,depth,cfg,&save_procs)
         update db
         self['depth']=depth
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @cfg=cfg
-        @save_proc=save_proc
+        @save_procs=save_procs
         @condition=delete('stat')
         @break=nil
         extend PrtStep unless $opt['r']
@@ -53,7 +53,7 @@ module CIAX
           refresh
           sleep 1
           yield
-          @save_proc.call
+          @save_procs.call
         }
         self['result']= res ? 'timeout' : 'pass'
         save
@@ -99,7 +99,7 @@ module CIAX
 
       private
       def save
-        @save_proc.call
+        @save_procs.call
         show result
       end
 

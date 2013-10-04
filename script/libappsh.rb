@@ -189,10 +189,12 @@ module CIAX
       def initialize(cfg=Config.new)
         cfg[:ldb]||=Loc::Db.new
         cfg[:frm]||=Frm::List.new
-        super(cfg){|id|
-          adb=@cfg[:ldb].set(id)[:app]
-          App.new(@cfg,adb,@cfg[:frm][id])
-        }
+        super
+      end
+
+      def new_val(id)
+        adb=@cfg[:ldb].set(id)[:app]
+        App.new(@cfg,adb,@cfg[:frm][id])
       end
     end
 

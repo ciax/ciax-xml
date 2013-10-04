@@ -158,7 +158,7 @@ module CIAX
       if key?(key)
         super
       else
-        exe=self[key]=@new_proc.call(key)
+        exe=self[key]=new_val(key)
         @init_procs.each{|p| p.call(exe)}
         exe
       end
@@ -172,6 +172,10 @@ module CIAX
       sleep
     rescue InvalidID
       $opt.usage('(opt) [id] ....')
+    end
+
+    private
+    def new_val(key)
     end
   end
 end

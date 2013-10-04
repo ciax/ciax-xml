@@ -54,9 +54,11 @@ module CIAX
       def initialize(cfg=Config.new)
         cfg[:ldb]||=Loc::Db.new
         cfg[:app]||=App::List.new
-        super(cfg){|id|
-          Hex.new(@cfg,@cfg[:app][id])
-        }
+        super
+      end
+
+      def new_val(id)
+        Hex.new(@cfg,@cfg[:app][id])
       end
     end
   end

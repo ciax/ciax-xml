@@ -79,8 +79,8 @@ module CIAX
     attr_reader :site
     def initialize(cfg=Config.new)
       super()
-      @cfg=Config.new(cfg)
-      @swsgrp=Group.new(Config.new){|ent| raise(SwSite,ent.cfg[:cid])}
+      @cfg=type?(cfg,Config)
+      @swsgrp=Group.new{|ent| raise(SwSite,ent.cfg[:cid])}
       @swsgrp.cfg['caption']='Switch Sites'
       @swsgrp.cfg['color']=2
       @swsgrp.cfg['column']=5
@@ -103,8 +103,8 @@ module CIAX
 
   class ShLayer < Hashx
     def initialize(cfg=Config.new)
-      @cfg=Config.new(cfg)
-      @swlgrp=Group.new(Config.new){|ent| raise(SwLayer,ent.cfg[:cid]) }
+      @cfg=type?(cfg,Config)
+      @swlgrp=Group.new{|ent| raise(SwLayer,ent.cfg[:cid]) }
       @swlgrp.cfg['caption']='Switch Layer'
       @swlgrp.cfg['color']=5
       @swlgrp.cfg['column']=5
@@ -117,6 +117,7 @@ module CIAX
       id=str.downcase
       @swlgrp.add_item(id,str+" mode")
       lst.init_procs << proc{|exe| exe.cobj['lo'].join('swl',@swlgrp) }
+      @cfg[id]=lst
       self[id]=lst
     end
 

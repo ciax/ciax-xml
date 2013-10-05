@@ -94,11 +94,6 @@ module CIAX
     end
 
     class List < ShList
-      def initialize(cfg=Config.new)
-        cfg[:ldb]||=Loc::Db.new
-        super
-      end
-
       def new_val(id)
         fdb=@cfg[:ldb].set(id)[:frm]
         Frm.new(@cfg,fdb)

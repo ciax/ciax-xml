@@ -51,10 +51,9 @@ module CIAX
     end
 
     class List < ShList
-      def initialize(cfg=Config.new)
-        cfg[:ldb]||=Loc::Db.new
-        cfg[:app]||=App::List.new
-        super
+      def initialize(upper=Config.new,app=App::List.new)
+        super(upper)
+        @cfg[:app]=type?(app,App::List)
       end
 
       def new_val(id)

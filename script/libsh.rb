@@ -77,9 +77,10 @@ module CIAX
 
   class ShList < ExeList
     attr_reader :site
-    def initialize(cfg=Config.new)
+    def initialize(upper=Config.new,ldb==Loc::Db.new)
       super()
-      @cfg=type?(cfg,Config)
+      @cfg=type?(upper,Config)
+      @cfg[:ldb]=type?(ldb,Loc::Db)
       @swsgrp=Group.new{|ent| raise(SwSite,ent.cfg[:cid])}
       @swsgrp.cfg['caption']='Switch Sites'
       @swsgrp.cfg['color']=2
@@ -104,6 +105,7 @@ module CIAX
   class ShLayer < Hashx
     def initialize(cfg=Config.new)
       @cfg=type?(cfg,Config)
+      @cfg[:ldb]||=Loc::Db.new
       @swlgrp=Group.new{|ent| raise(SwLayer,ent.cfg[:cid]) }
       @swlgrp.cfg['caption']='Switch Layer'
       @swlgrp.cfg['color']=5

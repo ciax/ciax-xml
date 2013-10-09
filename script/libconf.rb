@@ -27,11 +27,11 @@ module CIAX
       self
     end
 
-    def total_key?(id)
+    def all_key?(id)
       @generation.any?{|h| h.key?(id)}
     end
 
-    def total_keys
+    def all_keys
       @generation.map{|h| h.keys}.flatten.uniq
     end
 

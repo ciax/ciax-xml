@@ -25,9 +25,9 @@ module CIAX
       # @ field*
       attr_reader :field
       def initialize(cfg)
-        fdb=type?(cfg[:db],Db)
-        @field=Field.new(fdb[:field][:struct].deep_copy)
-        super('frm',fdb['site_id']||fdb['id'],ExtCmd.new(cfg,@field))
+        @fdb=type?(cfg[:db],Db)
+        @field=Field.new(@fdb[:field][:struct].deep_copy)
+        super('frm',@fdb['site_id']||@fdb['id'],ExtCmd.new(cfg,@field))
         ext_shell(@field)
       end
 
@@ -52,10 +52,10 @@ module CIAX
     class Cl < Exe
       def initialize(cfg,host=nil)
         super(cfg)
-        host=type?(host||cfg[:db]['host']||'localhost',String)
+        host=type?(host||@fdb['host']||'localhost',String)
         @field.ext_http(self['id'],host).load
         @cobj['sv'].set_proc{to_s}
-        ext_client(host,cfg[:db]['port'])
+        ext_client(host,@fdb['port'])
         @upd_procs << proc{@field.load}
       end
     end
@@ -67,12 +67,12 @@ module CIAX
       attr_reader :sqlsv
       def initialize(cfg,iocmd=[])
         super(cfg)
-        @field.ext_rsp(cfg[:db]).ext_file(self['id']).load
+        @field.ext_rsp(@fdb).ext_file(self['id']).load
         if type?(iocmd,Array).empty?
-          @io=Stream.new(cfg[:db]['iocmd'].split(' '),cfg[:db]['wait'],1)
-          @sqlsv=@io.ext_logging(self['id'],cfg[:db]['version'])
+          @io=Stream.new(@fdb['iocmd'].split(' '),@fdb['wait'],1)
+          @sqlsv=@io.ext_logging(self['id'],@fdb['version'])
         else
-          @sqlsv=@io=Stream.new(iocmd,cfg[:db]['wait'],1)
+          @sqlsv=@io=Stream.new(iocmd,@fdb['wait'],1)
         end
         @cobj['sv']['ext'].set_proc{|ent|
           @io.snd(ent.cfg[:frame],ent.cfg[:cid])
@@ -87,7 +87,7 @@ module CIAX
         @cobj['sv']['int']['load'].set_proc{|ent|
           @field.load(ent.par[0]||'').save
         }
-        ext_server(cfg[:db]['port'].to_i)
+        ext_server(@fdb['port'].to_i)
       rescue Errno::ENOENT
         warning("FrmSv"," --- no json file")
       end

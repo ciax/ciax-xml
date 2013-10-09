@@ -186,14 +186,14 @@ module CIAX
     end
 
     class List < ShList
-      def initialize(upper=Config.new,frm=Frm::List.new)
-        super(upper)
-        @cfg[:frm]=type?(frm,Frm::List)
+      def initialize(upper=Config.new)
+        super
+        @cfg['frm']||=Frm::List.new
       end
 
       def new_val(id)
         adb=@cfg[:ldb].set(id)[:app]
-        App.new(@cfg,adb,@cfg[:frm][id])
+        App.new(@cfg,adb,@cfg['frm'][id])
       end
     end
 

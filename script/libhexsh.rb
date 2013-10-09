@@ -51,13 +51,13 @@ module CIAX
     end
 
     class List < ShList
-      def initialize(upper=Config.new,app=App::List.new)
+      def initialize(upper=Config.new)
         super(upper)
-        @cfg[:app]=type?(app,App::List)
+        @cfg['app']||=App::List.new
       end
 
       def new_val(id)
-        Hex.new(@cfg,@cfg[:app][id])
+        Hex.new(@cfg,@cfg['app'][id])
       end
     end
   end

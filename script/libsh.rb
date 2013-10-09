@@ -77,10 +77,10 @@ module CIAX
 
   class ShList < ExeList
     attr_reader :site
-    def initialize(upper=Config.new,ldb==Loc::Db.new)
+    def initialize(upper=Config.new)
       super()
       @cfg=type?(upper,Config)
-      @cfg[:ldb]=type?(ldb,Loc::Db)
+      @cfg[:ldb]||=Loc::Db.new
       @swsgrp=Group.new{|ent| raise(SwSite,ent.cfg[:cid])}
       @swsgrp.cfg['caption']='Switch Sites'
       @swsgrp.cfg['color']=2

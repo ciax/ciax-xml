@@ -18,9 +18,9 @@ module CIAX
 
     class Exe < Exe
       def initialize(cfg,adb)
-        @adb=type?(adb,Db)
+        @adb=type?(cfg[:db],Db)
         id=@adb['site_id']
-        super('hex',id,App::ExtCmd.new(cfg,adb))
+        super('hex',id,App::ExtCmd.new(cfg))
         stat=App::Status.new.ext_file(id)
         ext_shell(View.new(self,stat))
       end
@@ -57,6 +57,7 @@ module CIAX
       end
 
       def new_val(id)
+        @cfg[:db]=@cfg[:ldb].set(id)[:app]
         Hex.new(@cfg,@cfg['app'][id])
       end
     end

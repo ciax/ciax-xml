@@ -4,20 +4,14 @@ require 'librerange'
 
 module CIAX
   # For External Command Domain
-  class ExtCmd < Command
-    def initialize(upper,db)
-      super(upper)
-      self['sv'].cfg[:db]=type?(db,Db)
-    end
-  end
-
+  # @cfg must contain [:db]
   class ExtGrp < Group # upper needs [:db]
     def initialize(upper)
       super(upper)
       @cfg['color']=6
       @cfg['caption']="External Commands"
       @cmdary=[]
-      db=@cfg[:db]
+      db=type?(@cfg[:db],Db)
       cdb=db[:command]
       (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)

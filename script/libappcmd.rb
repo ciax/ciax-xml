@@ -4,8 +4,8 @@ require "libextcmd"
 
 module CIAX
   module App
-    class ExtCmd < ExtCmd
-      def initialize(upper,db)
+    class ExtCmd < Command
+      def initialize(upper)
         super
         self['sv'].add('ext',ExtGrp)
         self['sv'].add('int',IntGrp)
@@ -63,11 +63,12 @@ module CIAX
     require "libfrmcmd"
     app,*args=ARGV
     begin
-      cfg=Config.new
-      adb=App::Db.new.set(app)
-      fdb=Frm::Db.new.set(adb['frm_id'])
-      fcobj=Frm::ExtCmd.new(cfg,fdb)
-      acobj=App::ExtCmd.new(cfg,adb)
+      acf=Config.new
+      acf[:db]=App::Db.new.set(app)
+      fcf=Config.new
+      fcf[:db]=Frm::Db.new.set(acf[:db]['frm_id'])
+      fcobj=Frm::ExtCmd.new(fcf)
+      acobj=App::ExtCmd.new(acf)
       acobj.setcmd(args).cfg[:cmdary].each{|fargs|
         #Validate fcmdarys
         fcobj.setcmd(fargs) if /set|unset|load|save/ !~ fargs.first

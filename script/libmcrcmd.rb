@@ -17,9 +17,9 @@ module CIAX
       end
     end
 
-    class ExtCmd < ExtCmd
-      def initialize(upper,db,al)
-        super(upper,db)
+    class ExtCmd < Command
+      def initialize(upper,al)
+        super(upper)
         self['sv'].add('ext',ExtGrp)
         svc=self['sv'].cfg
         type?(al,App::List)
@@ -191,8 +191,9 @@ module CIAX
       GetOpts.new('rest',{'n' => 'nonstop mode'})
       begin
         al=App::List.new
-        mdb=Db.new.set('ciax')
-        mobj=ExtCmd.new(Config.new,mdb,al)
+        cfg=Config.new
+        cfg[:db]=Db.new.set('ciax')
+        mobj=ExtCmd.new(cfg,al)
         mobj.setcmd(ARGV).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

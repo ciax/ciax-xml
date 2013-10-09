@@ -12,14 +12,14 @@ require "thread"
 
 module CIAX
   module App
-    def self.new(cfg,adb,fsh=nil)
+    def self.new(cfg,fsh=nil)
       if Frm::Sv === fsh
-        ash=App::Sv.new(cfg,adb,fsh,$opt['e'])
-        ash=App::Cl.new(cfg,adb,'localhost') if $opt['c']
+        ash=App::Sv.new(cfg,fsh,$opt['e'])
+        ash=App::Cl.new(cfg,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c']
-        ash=App::Cl.new(cfg,adb,host)
+        ash=App::Cl.new(cfg,host)
       else
-        ash=App::Test.new(cfg,adb)
+        ash=App::Test.new(cfg)
       end
       ash
     end
@@ -28,16 +28,16 @@ module CIAX
       # @< cobj,output,upd_procs*
       # @ adb,fsh,watch,stat*
       attr_reader :adb,:stat
-      def initialize(cfg,adb,id=nil)
-        @adb=type?(adb,Db)
-        cobj=ExtCmd.new(cfg,adb)
+      def initialize(cfg)
+        @adb=type?(cfg[:db],Db)
+        cobj=ExtCmd.new(cfg)
         cobj.int_proc{
           int=@watch.interrupt
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")
           self['msg']="Interrupt #{int}"
         }
-        super('app',id||adb['id'],cobj)
-        @stat=App::Status.new(adb[:status][:struct].deep_copy)
+        super('app',@adb['site_id']||@adb['id'],cobj)
+        @stat=App::Status.new(@adb[:status][:struct].deep_copy)
         ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         @watch=Watch::Data.new
         @pre_procs << proc{|args|@watch.block?(args)}
@@ -64,10 +64,10 @@ module CIAX
 
     class Test < Exe
       require "libappsym"
-      def initialize(cfg,adb)
-        super(cfg,adb)
-        @stat.ext_sym(adb)
-        @watch.ext_upd(adb,@stat).upd
+      def initialize(cfg)
+        super
+        @stat.ext_sym(@adb)
+        @watch.ext_upd(@adb,@stat).upd
         ig=@cobj['sv']['int']
         ig['set'].set_proc{|ent|
           @stat.str_update(ent.par[0])
@@ -87,12 +87,12 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(adb,host=nil)
-        super(cfg,adb,adb['site_id'])
-        host=type?(host||adb['host']||'localhost',String)
+      def initialize(cfg,host=nil)
+        super(cfg)
+        host=type?(host||@adb['host']||'localhost',String)
         @stat.ext_http(self['id'],host).load
         @watch.ext_http(self['id'],host).load
-        ext_client(host,adb['port'])
+        ext_client(host,@adb['port'])
         @upd_procs << proc{
           @stat.load
           @watch.load
@@ -104,15 +104,15 @@ module CIAX
     # @< adb,watch,stat*
     # @ fsh,buf,log_proc
     class Sv < Exe
-      def initialize(cfg,adb,fsh,logging=nil)
-        super(cfg,adb,adb['site_id'])
+      def initialize(cfg,fsh,logging=nil)
+        super(cfg)
         @fsh=type?(fsh,Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-        @stat.ext_rsp(@fsh.field,adb[:status]).ext_sym(adb).ext_file(self['id']).upd
+        @stat.ext_rsp(@fsh.field,@adb[:status]).ext_sym(@adb).ext_file(self['id']).upd
         if logging and @fsh.field.key?('ver')
           @fsh.sqlsv.init_table(SqLog::Upd.new(@stat))
         end
-        @watch.ext_upd(adb,@stat).ext_file(self['id']).upd.event_proc=proc{|args,p|
+        @watch.ext_upd(@adb,@stat).ext_file(self['id']).upd.event_proc=proc{|args,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.setcmd(args))
         }
@@ -192,8 +192,8 @@ module CIAX
       end
 
       def new_val(id)
-        adb=@cfg[:ldb].set(id)[:app]
-        App.new(@cfg,adb,@cfg['frm'][id])
+        @cfg[:db]=@cfg[:ldb].set(id)[:app]
+        App.new(@cfg,@cfg['frm'][id])
       end
     end
 

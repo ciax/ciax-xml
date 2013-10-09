@@ -7,15 +7,16 @@ module CIAX
     class Man < Exe
       def initialize
         proj=ENV['PROJ']||'ciax'
-        mdb=Mcr::Db.new.set(proj)
+        cfg=Config.new
+        cfg[:db]=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
-        cobj=ExtCmd.new(Config.new,mdb,App::List.new)
+        cobj=ExtCmd.new(cfg,App::List.new)
         cobj.int_proc{
           @list.data.each{|st|
             st.thread.raise(Interrupt)
           }
         }
-        super('mcr',mdb['id'],cobj)
+        super('mcr',cfg[:db]['id'],cobj)
         @cobj['sv']['ext'].set_proc{|ent|
           key,stat=ent.fork
           self['sid']=key

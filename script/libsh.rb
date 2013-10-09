@@ -79,7 +79,7 @@ module CIAX
     attr_reader :site
     def initialize(upper=Config.new)
       super()
-      @cfg=type?(upper,Config)
+      @cfg=Config.new(upper)
       @cfg[:ldb]||=Loc::Db.new
       @swsgrp=Group.new{|ent| raise(SwSite,ent.cfg[:cid])}
       @swsgrp.cfg['caption']='Switch Sites'

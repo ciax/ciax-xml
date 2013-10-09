@@ -7,15 +7,15 @@ require 'liblocdb'
 
 module CIAX
   module Frm
-    def self.new(cfg,fdb)
+    def self.new(cfg)
       if $opt['s'] or $opt['e']
-        par=$opt['s'] ? ['frmsim',fdb['site_id']] : []
-        fsh=Frm::Sv.new(cfg,fdb,par)
-        fsh=Frm::Cl.new(cfg,fdb,'localhost') if $opt['c']
+        par=$opt['s'] ? ['frmsim',cfg[:db]['site_id']] : []
+        fsh=Frm::Sv.new(cfg,par)
+        fsh=Frm::Cl.new(cfg,'localhost') if $opt['c']
       elsif host=$opt['h'] or $opt['c']
-        fsh=Frm::Cl.new(cfg,fdb,host)
+        fsh=Frm::Cl.new(cfg,host)
       else
-        fsh=Frm::Test.new(cfg,fdb)
+        fsh=Frm::Test.new(cfg)
       end
       fsh
     end
@@ -24,10 +24,10 @@ module CIAX
       # @< cobj,output,(upd_procs*)
       # @ field*
       attr_reader :field
-      def initialize(cfg,fdb,id=nil)
-        type?(fdb,Db)
+      def initialize(cfg)
+        fdb=type?(cfg[:db],Db)
         @field=Field.new(fdb[:field][:struct].deep_copy)
-        super('frm',id||fdb['id'],ExtCmd.new(cfg,fdb,@field))
+        super('frm',fdb['site_id']||fdb['id'],ExtCmd.new(cfg,@field))
         ext_shell(@field)
       end
 
@@ -40,7 +40,7 @@ module CIAX
     end
 
     class Test < Exe
-      def initialize(cfg,fdb)
+      def initialize(cfg)
         super
         @cobj['sv'].set_proc{|ent|@field['time']=UnixTime.now}
         @cobj['sv']['int']['set'].set_proc{|ent|
@@ -50,12 +50,12 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(cfg,fdb,host=nil)
-        super(cfg,fdb,fdb['site_id'])
-        host=type?(host||fdb['host']||'localhost',String)
+      def initialize(cfg,host=nil)
+        super(cfg)
+        host=type?(host||cfg[:db]['host']||'localhost',String)
         @field.ext_http(self['id'],host).load
         @cobj['sv'].set_proc{to_s}
-        ext_client(host,fdb['port'])
+        ext_client(host,cfg[:db]['port'])
         @upd_procs << proc{@field.load}
       end
     end
@@ -65,14 +65,14 @@ module CIAX
       # @< field*
       # @ io
       attr_reader :sqlsv
-      def initialize(cfg,fdb,iocmd=[])
-        super(cfg,fdb,fdb['site_id'])
-        @field.ext_rsp(fdb).ext_file(self['id']).load
+      def initialize(cfg,iocmd=[])
+        super(cfg)
+        @field.ext_rsp(cfg[:db]).ext_file(self['id']).load
         if type?(iocmd,Array).empty?
-          @io=Stream.new(fdb['iocmd'].split(' '),fdb['wait'],1)
-          @sqlsv=@io.ext_logging(self['id'],fdb['version'])
+          @io=Stream.new(cfg[:db]['iocmd'].split(' '),cfg[:db]['wait'],1)
+          @sqlsv=@io.ext_logging(self['id'],cfg[:db]['version'])
         else
-          @sqlsv=@io=Stream.new(iocmd,fdb['wait'],1)
+          @sqlsv=@io=Stream.new(iocmd,cfg[:db]['wait'],1)
         end
         @cobj['sv']['ext'].set_proc{|ent|
           @io.snd(ent.cfg[:frame],ent.cfg[:cid])
@@ -87,7 +87,7 @@ module CIAX
         @cobj['sv']['int']['load'].set_proc{|ent|
           @field.load(ent.par[0]||'').save
         }
-        ext_server(fdb['port'].to_i)
+        ext_server(cfg[:db]['port'].to_i)
       rescue Errno::ENOENT
         warning("FrmSv"," --- no json file")
       end
@@ -95,8 +95,8 @@ module CIAX
 
     class List < ShList
       def new_val(id)
-        fdb=@cfg[:ldb].set(id)[:frm]
-        Frm.new(@cfg,fdb)
+        @cfg[:db]=@cfg[:ldb].set(id)[:frm]
+        Frm.new(@cfg)
       end
     end
 

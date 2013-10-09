@@ -41,7 +41,7 @@ module CIAX
     end
 
     def set_proc(&def_proc)
-      @cfg[:def_proc]=def_proc if def_proc
+      @cfg[:def_proc]= def_proc ? def_proc : proc{}
       self
     end
   end

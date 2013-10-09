@@ -7,9 +7,10 @@ require "libextcmd"
 module CIAX
   module Frm
     class ExtCmd < Command
-      def initialize(upper,field=Field.new)
+      attr_reader :field
+      def initialize(upper)
         super(upper)
-        self['sv'].cfg[:field]=type?(field,Field)
+        @field=@cfg[:field]=Field.new(@cfg[:db][:field][:struct].deep_copy)
         self['sv'].add('ext',ExtGrp)
         self['sv'].add('int',IntGrp)
       end
@@ -102,9 +103,8 @@ module CIAX
       begin
         cfg=Config.new
         cfg[:db]=Db.new.set(dev)
-        field=Field.new
-        cobj=ExtCmd.new(cfg,field)
-        field.read unless STDIN.tty?
+        cobj=ExtCmd.new(cfg)
+        cobj.field.read unless STDIN.tty?
         print cobj.setcmd(args).cfg[:frame]
       rescue InvalidCMD
         Msg.usage("[dev] [cmd] (par) < field_file",[])

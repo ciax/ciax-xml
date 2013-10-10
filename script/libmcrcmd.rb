@@ -49,7 +49,7 @@ module CIAX
           "force"=>["Proceed",proc{}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
-          add_item(id,id.capitalize+" "+a[0]).set_proc(&a[1])
+          add_item(id,{:label =>id.capitalize+" "+a[0]}).set_proc(&a[1])
         }
       end
     end

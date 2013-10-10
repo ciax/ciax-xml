@@ -54,10 +54,10 @@ module CIAX
       def init_view
         @output=@print=View.new(@adb,@stat).extend(Print)
         @wview=Watch::View.new(@adb,@watch).ext_prt
-        grp=@cobj['lo'].add_group('view',"Change View Mode",3)
-        grp.add_item('pri',"Print mode").set_proc{@output=@print}
-        grp.add_item('wat',"Watch mode").set_proc{@output=@wview} if @wview
-        grp.add_item('raw',"Raw mode").set_proc{@output=@stat}
+        grp=@cobj['lo'].add_group('view',{'caption'=>"Change View Mode",'color' => 3})
+        grp.add_item('pri',{:label =>"Print mode"}).set_proc{@output=@print}
+        grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview} if @wview
+        grp.add_item('raw',{:label =>"Raw mode"}).set_proc{@output=@stat}
         self
       end
     end

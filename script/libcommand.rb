@@ -35,8 +35,8 @@ require 'liblogging'
 module CIAX
   class Itemshare < Hashx
     attr_reader :cfg
-    def initialize(upper)
-      @cfg=Config.new(upper)
+    def initialize(upper,crnt={})
+      @cfg=Config.new(upper).update(crnt)
       @cfg[:def_proc]||=proc{}
     end
 
@@ -81,10 +81,10 @@ module CIAX
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    def initialize(upper)
+    def initialize(upper,crnt={})
       super
       # Server Commands (service commands on Server)
-      @cfg['color']=2
+      @cfg.update('color'=>2,'column'=>2)
       add('sv')
     end
 
@@ -93,12 +93,12 @@ module CIAX
     end
 
     def interrupt(&interrupt)
-      self['sv'].add_group('hid',"Hidden Group").add_item('interrupt')
+      self['sv'].add_group('hid',{'caption' => "Hidden Group"}).add_item('interrupt')
     end
   end
 
   class Domain < Grpshare
-    def initialize(upper)
+    def initialize(upper,crnt={})
       super
       @ver_color=2
     end
@@ -107,11 +107,9 @@ module CIAX
       super
     end
 
-    def add_group(id,caption,column=nil,color=nil)
+    def add_group(id,crnt={})
       grp=add(id)
-      grp.cfg['caption']=caption
-      grp.cfg['column']=column if column
-      grp.cfg['color']=color if color
+      grp.cfg.update(crnt)
       grp
     end
   end
@@ -119,7 +117,7 @@ module CIAX
   class Group < Grpshare
     attr_reader :valid_keys,:cmdlist
     #upper = {caption,color,column}
-    def initialize(upper=Config.new)
+    def initialize(upper=Config.new,crnt={})
       super
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
@@ -135,12 +133,10 @@ module CIAX
       @cmdary.join("\n")
     end
 
-    def add_item(id,title=nil,parameter=nil)
+    def add_item(id,crnt={})
       item=add(id,Item)
-      cfg=item.cfg
-      cfg[:label]=title
-      cfg[:parameter]=parameter if parameter
-      @cmdlist[id]=title
+      item.cfg.update(crnt)
+      @cmdlist[id]=crnt[:label]
       item
     end
 
@@ -162,7 +158,7 @@ module CIAX
   class Item < Itemshare
     include Math
     #cfg should have :label,:parameter,:def_proc
-    def initialize(upper)
+    def initialize(upper,crnt={})
       super
       @ver_color=5
     end

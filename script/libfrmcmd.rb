@@ -8,8 +8,8 @@ module CIAX
   module Frm
     class ExtCmd < Command
       attr_reader :field
-      def initialize(upper)
-        super(upper)
+      def initialize(upper,crnt={})
+        super
         @field=@cfg[:field]=Field.new(@cfg[:db][:field][:struct].deep_copy)
         self['sv'].add('ext',ExtGrp)
         self['sv'].add('int',IntGrp)
@@ -17,13 +17,13 @@ module CIAX
     end
 
     class IntGrp < Group
-      def initialize(upper)
+      def initialize(upper,crnt={})
         super
         @cfg['caption']='Internal Commands'
         any={:type =>'reg',:list => ["."]}
-        add_item('save',"Save Field [key,key...] (tag)",[any,any])
-        add_item('load',"Load Field (tag)",[any])
-        add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).set_proc{|ent|
+        add_item('save',{:label =>"Save Field [key,key...] (tag)",:parameter =>[any,any]})
+        add_item('load',{:label =>"Load Field (tag)",:parameter =>[any]})
+        add_item('set',{:label =>"Set Value [key(:idx)] [val(,val)]",:parameter =>[any,any]}).set_proc{|ent|
           @cfg[:field].set(*ent.par)
         }
       end
@@ -36,7 +36,7 @@ module CIAX
     end
 
     class ExtItem < ExtItem
-      def initialize(upper)
+      def initialize(upper,crnt={})
         @ver_color=0
         super
         @field=type?(@cfg[:field],Field)

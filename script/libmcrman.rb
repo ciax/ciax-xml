@@ -39,7 +39,7 @@ module CIAX
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
-        ig.add_item('clean','Clean macros').set_proc{
+        ig.add_item('clean',{:label =>'Clean macros'}).set_proc{
           self['msg']='NONE' unless @list.clean
           @list.save
         }

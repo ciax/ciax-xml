@@ -6,8 +6,8 @@ module CIAX
   # For External Command Domain
   # @cfg must contain [:db]
   class ExtGrp < Group # upper needs [:db]
-    def initialize(upper)
-      super(upper)
+    def initialize(upper,crnt={})
+      super
       @cfg['color']=6
       @cfg['caption']="External Commands"
       @cmdary=[]
@@ -45,7 +45,7 @@ module CIAX
     # Substitute string($+number) with parameters
     # par={ val,range,format } or String
     # str could include Math functions
-    def initialize(upper,crnt)
+    def initialize(upper,crnt={})
       super
       @cfg[:body]=deep_subst(@cfg[:body])
     end

@@ -17,8 +17,8 @@ module CIAX
         super
         @cfg['caption']='Internal Commands'
         cri={:type => 'reg', :list => ['.']}
-        add_item('set','[key=val,...]',[cri])
-        add_item('del','[key,...]',[cri])
+        add_item('set',{:label =>'[key=val,...]',:parameter =>[cri]})
+        add_item('del',{:label =>'[key,...]',:parameter =>[cri]})
       end
     end
 

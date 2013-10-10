@@ -26,7 +26,7 @@ module CIAX
       @pstat=pstat||self
       # Local(Long Jump) Commands (local handling commands on Client)
       lod=@cobj.add('lo',LocDom)
-      shg=lod.add_group('sh',"Shell Command",2,1)
+      shg=lod.add_group('sh',{'caption'=>"Shell Command",'color'=>1})
       shg.add_dummy('^D,q',"Quit")
       shg.add_dummy('^C',"Interrupt")
       self
@@ -117,7 +117,7 @@ module CIAX
       lst=layer::List.new(@cfg)
       str=layer.to_s.split(':').last
       id=str.downcase
-      @swlgrp.add_item(id,str+" mode")
+      @swlgrp.add_item(id,{:label =>str+" mode"})
       lst.init_procs << proc{|exe| exe.cobj['lo'].join('swl',@swlgrp) }
       @cfg[id]=lst
       self[id]=lst

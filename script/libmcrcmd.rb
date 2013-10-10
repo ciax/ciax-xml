@@ -40,6 +40,7 @@ module CIAX
     class IntGrp < Group
       def initialize(upper)
         super
+        @cfg['caption']='Internal Commands'
         {
           "exec"=>["Command",proc{}],
           "skip"=>["Execution",proc{raise(Skip)}],
@@ -48,8 +49,7 @@ module CIAX
           "force"=>["Proceed",proc{}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
-          ent=add_item(id,id.capitalize+" "+a[0])
-          ent.cfg[:def_proc] = a[1]
+          add_item(id,id.capitalize+" "+a[0]).set_proc(&a[1])
         }
       end
     end

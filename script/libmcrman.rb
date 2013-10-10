@@ -11,7 +11,7 @@ module CIAX
         cfg[:db]=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
         cobj=ExtCmd.new(cfg,App::List.new)
-        cobj.int_proc{
+        cobj.interrupt.set_proc{
           @list.data.each{|st|
             st.thread.raise(Interrupt)
           }
@@ -24,7 +24,7 @@ module CIAX
         }
         self['sid']=''
         @cobj.save_procs{@list.save}
-        ig=@cobj['sv'].add('int',IntGrp){|ent|
+        ig=@cobj['sv'].add('int',IntGrp).set_proc{|ent|
           n=ent.par[0]||@list.data.keys.last||""
           self['sid']=n
           if st=@list.data[n]
@@ -39,7 +39,7 @@ module CIAX
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
-        ig.add_item('clean','Clean macros'){
+        ig.add_item('clean','Clean macros').set_proc{
           self['msg']='NONE' unless @list.clean
           @list.save
         }

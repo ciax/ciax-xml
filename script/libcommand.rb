@@ -15,7 +15,7 @@ require 'liblogging'
 # Group => {id => Item}
 #  Group#list -> CmdList.to_s
 #  Group#cfg -> {:def_proc}
-#  Group#add_item(id,title){|id,par|} -> Item
+#  Group#add_item(id,title) -> Item
 #  Group#update_items(list){|id|}
 #  Group#valid_keys -> Array
 #
@@ -35,21 +35,21 @@ require 'liblogging'
 module CIAX
   class Itemshare < Hashx
     attr_reader :cfg
-    def initialize(upper,&def_proc)
+    def initialize(upper)
       @cfg=Config.new(upper)
-      set_proc(&def_proc)
+      @cfg[:def_proc]||=proc{}
     end
 
     def set_proc(&def_proc)
-      @cfg[:def_proc]= def_proc ? def_proc : proc{}
+      @cfg[:def_proc]=type?(def_proc,Proc)
       self
     end
   end
 
   class Grpshare < Itemshare
-    def add(id,chld,&def_proc)
+    def add(id,chld)
       type?(chld,Class)
-      ele=chld.new(@cfg,&def_proc)
+      ele=chld.new(@cfg)
       ele.cfg[:id]=id
       self[id]=ele
     end
@@ -92,8 +92,8 @@ module CIAX
       super
     end
 
-    def int_proc(&int_proc)
-      self['sv'].add_group('hid',"Hidden Group").add_item('interrupt',nil,nil,&int_proc)
+    def interrupt(&interrupt)
+      self['sv'].add_group('hid',"Hidden Group").add_item('interrupt')
     end
   end
 
@@ -119,7 +119,7 @@ module CIAX
   class Group < Grpshare
     attr_reader :valid_keys,:cmdlist
     #upper = {caption,color,column}
-    def initialize(upper=Config.new,&def_proc)
+    def initialize(upper=Config.new)
       super
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
@@ -127,7 +127,7 @@ module CIAX
       @ver_color=3
     end
 
-    def add(id,cls=Item,&def_proc)
+    def add(id,cls=Item)
       @cfg.index[id]=super
     end
 
@@ -135,8 +135,8 @@ module CIAX
       @cmdary.join("\n")
     end
 
-    def add_item(id,title,parameter=nil,&def_proc)
-      item=add(id,Item,&def_proc)
+    def add_item(id,title=nil,parameter=nil)
+      item=add(id,Item)
       cfg=item.cfg
       cfg[:label]=title
       cfg[:parameter]=parameter if parameter
@@ -162,7 +162,7 @@ module CIAX
   class Item < Itemshare
     include Math
     #cfg should have :label,:parameter,:def_proc
-    def initialize(upper,&def_proc)
+    def initialize(upper)
       super
       @ver_color=5
     end

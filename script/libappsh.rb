@@ -31,7 +31,7 @@ module CIAX
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
         cobj=ExtCmd.new(cfg)
-        cobj.int_proc{
+        cobj.interrupt.set_proc{
           int=@watch.interrupt
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")
           self['msg']="Interrupt #{int}"
@@ -55,9 +55,9 @@ module CIAX
         @output=@print=View.new(@adb,@stat).extend(Print)
         @wview=Watch::View.new(@adb,@watch).ext_prt
         grp=@cobj['lo'].add_group('view',"Change View Mode",3)
-        grp.add_item('pri',"Print mode"){@output=@print}
-        grp.add_item('wat',"Watch mode"){@output=@wview} if @wview
-        grp.add_item('raw',"Raw mode"){@output=@stat}
+        grp.add_item('pri',"Print mode").set_proc{@output=@print}
+        grp.add_item('wat',"Watch mode").set_proc{@output=@wview} if @wview
+        grp.add_item('raw',"Raw mode").set_proc{@output=@stat}
         self
       end
     end

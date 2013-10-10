@@ -17,13 +17,13 @@ module CIAX
     end
 
     class IntGrp < Group
-      def initialize(upper,&def_proc)
+      def initialize(upper)
         super
         @cfg['caption']='Internal Commands'
         any={:type =>'reg',:list => ["."]}
         add_item('save',"Save Field [key,key...] (tag)",[any,any])
         add_item('load',"Load Field (tag)",[any])
-        add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]){|ent|
+        add_item('set',"Set Value [key(:idx)] [val(,val)]",[any,any]).set_proc{|ent|
           @cfg[:field].set(*ent.par)
         }
       end
@@ -36,7 +36,7 @@ module CIAX
     end
 
     class ExtItem < ExtItem
-      def initialize(upper,&def_proc)
+      def initialize(upper)
         @ver_color=0
         super
         @field=type?(@cfg[:field],Field)

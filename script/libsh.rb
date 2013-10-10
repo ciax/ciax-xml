@@ -81,10 +81,10 @@ module CIAX
       super()
       @cfg=Config.new(upper)
       @cfg[:ldb]||=Loc::Db.new
-      @swsgrp=Group.new{|ent| raise(SwSite,ent.cfg[:cid])}
+      @swsgrp=Group.new.set_proc{|ent| raise(SwSite,ent.cfg[:cid])}
       @swsgrp.cfg['caption']='Switch Sites'
       @swsgrp.cfg['color']=2
-      @swsgrp.cfg['column']=5
+      @swsgrp.cfg['column']=2
       @swsgrp.update_items(@cfg[:ldb].list)
       @init_procs << proc{|exe| exe.cobj['lo'].join('sws',@swsgrp)}
     end
@@ -106,7 +106,7 @@ module CIAX
     def initialize(cfg=Config.new)
       @cfg=type?(cfg,Config)
       @cfg[:ldb]||=Loc::Db.new
-      @swlgrp=Group.new{|ent| raise(SwLayer,ent.cfg[:cid]) }
+      @swlgrp=Group.new.set_proc{|ent| raise(SwLayer,ent.cfg[:cid]) }
       @swlgrp.cfg['caption']='Switch Layer'
       @swlgrp.cfg['color']=5
       @swlgrp.cfg['column']=5

@@ -150,7 +150,6 @@ module CIAX
     # shdom: Domain for Shared Command Groups
     def initialize(&new_proc)
       $opt||=GetOpts.new
-      @new_proc=new_proc # For generate Exe (allows nil)
       @init_procs=[] # initialize exe (mostly add new menu) at new key generated
     end
 
@@ -175,6 +174,7 @@ module CIAX
     end
 
     private
+    # For generate Exe (allows nil)
     def new_val(key)
     end
   end

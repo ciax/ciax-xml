@@ -6,12 +6,6 @@ require "readline"
 # Add Shell Command (by Shell extention)
 
 module CIAX
-  class LocDom < Domain
-    def list
-      values.reverse.map{|e| e.list}.grep(/./).join("\n")
-    end
-  end
-
   module Shell
     def self.extended(obj)
       Msg.type?(obj,Exe)
@@ -25,8 +19,7 @@ module CIAX
       @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
       @pstat=pstat||self
       # Local(Long Jump) Commands (local handling commands on Client)
-      lod=@cobj.add('lo',LocDom)
-      shg=lod.add_group('sh',{'caption'=>"Shell Command",'color'=>1})
+      shg=@cobj['lo'].add_group('sh',{'caption'=>"Shell Command",'color'=>1})
       shg.add_dummy('^D,q',"Quit")
       shg.add_dummy('^C',"Interrupt")
       self

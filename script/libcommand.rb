@@ -4,36 +4,8 @@ require 'libconf'
 require 'librerange'
 require 'liblogging'
 
-#Access method
-# Entity => {:label,:args}
-#  Entity#exe
-#
-# Item => {:label,:parameter,:body,:args}
-#  Item#set_par(par) -> Entity
-#  Item#cfg -> {:def_proc}
-#
-# Group => {id => Item}
-#  Group#list -> CmdList.to_s
-#  Group#cfg -> {:def_proc}
-#  Group#add_item(id,title) -> Item
-#  Group#update_items(list){|id|}
-#  Group#valid_keys -> Array
-#
-# Domain => {id => Group}
-#  Domain#list -> String
-#  Domain#cfg -> {:def_proc}
-#  Domain#add_group(key,title) -> Group
-#  Domain#item(id) -> Item
-#
-# Command => {id => Domain}
-#  Command#list -> String
-#  Command#setcmd(args=[id,*par]):{
-#    Item#set_par(par)
-#  } -> Item
-# Keep current command and parameters
-
 module CIAX
-  class Itemshare < Hashx
+  class ItemShare < Hashx
     attr_reader :cfg
     def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
@@ -46,14 +18,7 @@ module CIAX
     end
   end
 
-  class Grpshare < Itemshare
-    def add(id,chld)
-      type?(chld,Class)
-      ele=chld.new(@cfg)
-      ele.cfg[:id]=id
-      self[id]=ele
-    end
-
+  class GrpShare < ItemShare
     def join(id,ele)
       ele.cfg.override(@cfg)
       self[id]=ele
@@ -77,56 +42,48 @@ module CIAX
     end
   end
 
-  class Command < Grpshare
+  class Command < GrpShare
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    def initialize(upper,crnt={})
+    def initialize(upper)
       super
-      # Server Commands (service commands on Server)
       @cfg.update('color'=>2,'column'=>2)
-      add('sv')
+      # Server Commands (service commands on Server)
+      self['sv']=Domain.new(@cfg)
+      self['lo']=Domain.new(@cfg)
     end
 
-    def add(id,cls=Domain)
-      super
-    end
-
-    def interrupt(&interrupt)
+    def interrupt
       self['sv'].add_group('hid',{'caption' => "Hidden Group"}).add_item('interrupt')
     end
   end
 
-  class Domain < Grpshare
+  class Domain < GrpShare
     def initialize(upper,crnt={})
       super
       @ver_color=2
     end
 
-    def add(id,cls=Group)
-      super
+    def add_group(id,crnt={})
+      Group.new(@cfg,crnt)
     end
 
-    def add_group(id,crnt={})
-      grp=add(id)
-      grp.cfg.update(crnt)
-      grp
+    def list
+      values.reverse.map{|e| e.list}.grep(/./).join("\n")
     end
   end
 
-  class Group < Grpshare
+  class Group < GrpShare
     attr_reader :valid_keys,:cmdlist
     #upper = {caption,color,column}
     def initialize(upper=Config.new,crnt={})
       super
+      @cfg[:item_class]||=Item
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @cmdary=[@cmdlist]
       @ver_color=3
-    end
-
-    def add(id,cls=Item)
-      @cfg.index[id]=super
     end
 
     def list
@@ -134,18 +91,15 @@ module CIAX
     end
 
     def add_item(id,crnt={})
-      item=add(id,Item)
-      item.cfg.update(crnt)
+      crnt[:id]=id
       @cmdlist[id]=crnt[:label]
-      item
+      self[id]=@cfg.index[id]=@cfg[:item_class].new(@cfg,crnt)
     end
 
-    def update_items(labels,cls=Item)
-      type?(labels,Hash)
-      labels.each{|id,title|
-            @cmdlist[id]=title
-            add(id,cls)
-          }
+    def update_items(labels)
+      type?(labels,Hash).each{|id,label|
+        add_item(id,{:label => label})
+      }
       self
     end
 
@@ -155,18 +109,19 @@ module CIAX
     end
   end
 
-  class Item < Itemshare
+  class Item < ItemShare
     include Math
-    #cfg should have :label,:parameter,:def_proc
+    #cfg should have :id,:label,:parameter,:def_proc
     def initialize(upper,crnt={})
       super
+      @cfg[:entity_class]||=Entity
       @ver_color=5
     end
 
-    def set_par(par,cls=Entity)
+    def set_par(par)
       validate(type?(par,Array))
       verbose(self.class,"SetPAR(#{@cfg[:id]}): #{par}")
-      cls.new(@cfg,{:par => par})
+      @cfg[:entity_class].new(@cfg,{:par => par})
     end
 
     private

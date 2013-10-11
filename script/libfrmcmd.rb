@@ -8,36 +8,30 @@ module CIAX
   module Frm
     class ExtCmd < Command
       attr_reader :field
-      def initialize(upper,crnt={})
+      def initialize(upper)
         super
         @field=@cfg[:field]=Field.new(@cfg[:db][:field][:struct].deep_copy)
-        self['sv'].add('ext',ExtGrp)
-        self['sv'].add('int',IntGrp)
+        self['sv']['ext']=ExtGrp.new(@cfg,{:item_class =>ExtItem})
+        self['sv']['int']=IntGrp.new(@cfg)
       end
     end
 
     class IntGrp < Group
-      def initialize(upper,crnt={})
+      def initialize(upper)
         super
         @cfg['caption']='Internal Commands'
         any={:type =>'reg',:list => ["."]}
         add_item('save',{:label =>"Save Field [key,key...] (tag)",:parameter =>[any,any]})
         add_item('load',{:label =>"Load Field (tag)",:parameter =>[any]})
-        add_item('set',{:label =>"Set Value [key(:idx)] [val(,val)]",:parameter =>[any,any]}).set_proc{|ent|
+        set=add_item('set',{:label =>"Set Value [key(:idx)] [val(,val)]",:parameter =>[any,any]})
+        set.set_proc{|ent|
           @cfg[:field].set(*ent.par)
         }
       end
     end
 
-    class ExtGrp < ExtGrp
-      def add(id,cls=ExtItem)
-        super
-      end
-    end
-
-    class ExtItem < ExtItem
+    class ExtItem < Item
       def initialize(upper,crnt={})
-        @ver_color=0
         super
         @field=type?(@cfg[:field],Field)
         db=@cfg[:db]
@@ -49,7 +43,7 @@ module CIAX
           @sel=Hash[db[:cmdframe]]
         end
         @frame=Frame.new(db['endian'],db['ccmethod'])
-        self
+        @ver_color=0
       end
 
       def set_par(par)

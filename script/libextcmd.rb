@@ -8,8 +8,9 @@ module CIAX
   class ExtGrp < Group # upper needs [:db]
     def initialize(upper,crnt={})
       super
-      @cfg['color']=6
-      @cfg['caption']="External Commands"
+      @cfg[:entity_class]||=ExtEntity
+      @cfg['caption']||="External Commands"
+      @cfg['color']||=6
       @cmdary=[]
       db=type?(@cfg[:db],Db)
       cdb=db[:command]
@@ -18,7 +19,7 @@ module CIAX
         (gat[:members]||cdb[:body].keys).each{|id|
           subgrp[id]=cdb[:label][id]
           # because cdb is separated by title
-          ccfg=add(id).cfg
+          ccfg=add_item(id).cfg
           db[:command].each{|k,v|
             if a=v[id]
               ccfg[k]=a
@@ -28,16 +29,6 @@ module CIAX
         @cmdary << subgrp
       }
       cdb[:alias].each{|k,v| self[k].replace self[v]} if cdb.key?(:alias)
-    end
-
-    def add(id,cls=ExtItem)
-      super
-    end
-  end
-
-  class ExtItem < Item
-    def set_par(par,cls=ExtEntity)
-      super
     end
   end
 

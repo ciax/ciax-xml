@@ -7,8 +7,8 @@ module CIAX
     class ExtCmd < Command
       def initialize(upper)
         super
-        self['sv'].add('ext',ExtGrp)
-        self['sv'].add('int',IntGrp)
+        self['sv']['ext']=ExtGrp.new(@cfg,{:item_class =>ExtItem})
+        self['sv']['int']=IntGrp.new(@cfg)
       end
     end
 
@@ -22,13 +22,7 @@ module CIAX
       end
     end
 
-    class ExtGrp < ExtGrp
-      def add(id,cls=ExtItem)
-        super
-      end
-    end
-
-    class ExtItem < ExtItem
+    class ExtItem < Item
       #fcmdary is ary of args(ary)
       def set_par(par)
         ent=super

@@ -20,8 +20,8 @@ module CIAX
     class ExtCmd < Command
       def initialize(upper,al)
         super(upper)
-        self['sv'].add('ext',ExtGrp)
-        svc=self['sv'].cfg
+        self['sv']['ext']=ExtGrp.new(@cfg,{:entity_class =>ExtEntity})
+        svc=self['sv']['ext'].cfg
         type?(al,App::List)
         @stq=svc[:save_que]=Queue.new
         svc[:mobj]=self
@@ -51,18 +51,6 @@ module CIAX
         }.each{|id,a|
           add_item(id,{:label =>id.capitalize+" "+a[0]}).set_proc(&a[1])
         }
-      end
-    end
-
-    class ExtGrp < ExtGrp
-      def add(id,cls=ExtItem)
-        super
-      end
-    end
-
-    class ExtItem < ExtItem
-      def set_par(par,cls=ExtEntity)
-        super
       end
     end
 

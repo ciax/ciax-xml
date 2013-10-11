@@ -104,7 +104,7 @@ module CIAX
       end
 
       def init_array(sary,field=nil)
-        return if sary.empty?
+        return '' if sary.empty?
         a=field||[]
         sary[0].to_i.times{|i|
           a[i]=init_array(sary[1..-1],a[i])

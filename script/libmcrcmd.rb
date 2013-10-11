@@ -20,10 +20,9 @@ module CIAX
     class ExtCmd < Command
       def initialize(upper,al)
         super(upper)
-        svc={:entity_class =>ExtEntity}
         type?(al,App::List)
+        svc={:entity_class =>ExtEntity,:mobj => self}
         @stq=svc[:save_que]=Queue.new
-        svc[:mobj]=self
         svc[:submcr_proc]=proc{|args| setcmd(args) }
         svc[:stat_proc]=proc{|site| al[site].stat}
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }

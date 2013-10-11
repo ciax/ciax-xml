@@ -76,7 +76,7 @@ module CIAX
       @cfg[:ldb]||=Loc::Db.new
       @swsgrp=Group.new.set_proc{|ent| raise(SwSite,ent.cfg[:cid])}
       @swsgrp.cfg['caption']='Switch Sites'
-      @swsgrp.cfg['color']=2
+      @swsgrp.cfg['color']=5
       @swsgrp.cfg['column']=2
       @swsgrp.update_items(@cfg[:ldb].list)
       @init_procs << proc{|exe| exe.cobj['lo'].join('sws',@swsgrp)}

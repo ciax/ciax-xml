@@ -11,8 +11,8 @@ module CIAX
       def initialize(upper)
         super
         @field=@cfg[:field]=Field.new(@cfg[:db][:field][:struct].deep_copy)
-        self['sv']['ext']=ExtGrp.new(@cfg,{:item_class =>ExtItem})
         self['sv']['int']=IntGrp.new(@cfg)
+        self['sv']['ext']=ExtGrp.new(@cfg,{:item_class =>ExtItem})
       end
     end
 

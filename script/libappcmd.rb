@@ -7,8 +7,8 @@ module CIAX
     class ExtCmd < Command
       def initialize(upper)
         super
-        self['sv']['ext']=ExtGrp.new(@cfg,{:item_class =>ExtItem})
         self['sv']['int']=IntGrp.new(@cfg)
+        self['sv']['ext']=ExtGrp.new(@cfg,{:item_class =>ExtItem})
       end
     end
 
@@ -16,9 +16,9 @@ module CIAX
       def initialize(upper)
         super
         @cfg['caption']='Internal Commands'
-        cri={:type => 'reg', :list => ['.']}
-        add_item('set',{:label =>'[key=val,...]',:parameter =>[cri]})
-        add_item('del',{:label =>'[key,...]',:parameter =>[cri]})
+        any={:type => 'reg', :list => ['.']}
+        add_item('set',{:label =>'[key=val,...]',:parameter =>[any]})
+        add_item('del',{:label =>'[key,...]',:parameter =>[any]})
       end
     end
 

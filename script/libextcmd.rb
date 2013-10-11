@@ -3,6 +3,13 @@ require 'libcommand'
 require 'librerange'
 
 module CIAX
+  class IntGrp < Group
+    def initialize(upper)
+      super
+      @cfg['caption']='Internal Commands'
+    end
+  end
+
   # For External Command Domain
   # @cfg must contain [:db]
   class ExtGrp < Group # upper needs [:db]

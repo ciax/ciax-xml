@@ -12,10 +12,9 @@ module CIAX
       end
     end
 
-    class IntGrp < Group
+    class IntGrp < IntGrp
       def initialize(upper)
         super
-        @cfg['caption']='Internal Commands'
         any={:type => 'reg', :list => ['.']}
         add_item('set',{:label =>'[key=val,...]',:parameter =>[any]})
         add_item('del',{:label =>'[key,...]',:parameter =>[any]})

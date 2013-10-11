@@ -40,10 +40,9 @@ module CIAX
       end
     end
 
-    class IntGrp < Group
+    class IntGrp < IntGrp
       def initialize(upper)
         super
-        @cfg['caption']='Internal Commands'
         @procs={}
         {
           "exec"=>["Command",proc{}],

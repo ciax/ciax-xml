@@ -16,10 +16,9 @@ module CIAX
       end
     end
 
-    class IntGrp < Group
+    class IntGrp < IntGrp
       def initialize(upper)
         super
-        @cfg['caption']='Internal Commands'
         any={:type =>'reg',:list => ["."]}
         add_item('save',{:label =>"Save Field [key,key...] (tag)",:parameter =>[any,any]})
         add_item('load',{:label =>"Load Field (tag)",:parameter =>[any]})

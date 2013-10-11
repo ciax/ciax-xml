@@ -20,7 +20,7 @@ module CIAX
       def initialize(cfg,adb)
         @adb=type?(cfg[:db],Db)
         id=@adb['site_id']
-        super('hex',id,App::ExtCmd.new(cfg))
+        super('hex',id,App::Command.new(cfg))
         stat=App::Status.new.ext_file(id)
         ext_shell(View.new(self,stat))
       end

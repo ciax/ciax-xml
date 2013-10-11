@@ -10,7 +10,7 @@ module CIAX
         cfg=Config.new
         cfg[:db]=Mcr::Db.new.set(proj)
         @list=List.new.ext_file(proj)
-        cobj=ExtCmd.new(cfg,App::List.new)
+        cobj=Command.new(cfg,App::List.new)
         cobj.interrupt.set_proc{
           @list.data.each{|st|
             st.thread.raise(Interrupt)

@@ -26,7 +26,7 @@ module CIAX
       attr_reader :field
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
-        super('frm',@fdb['site_id']||@fdb['id'],ExtCmd.new(cfg))
+        super('frm',@fdb['site_id']||@fdb['id'],Command.new(cfg))
         @field=@cobj.field
         ext_shell(@field)
       end

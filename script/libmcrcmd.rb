@@ -17,7 +17,7 @@ module CIAX
       end
     end
 
-    class ExtCmd < Command
+    class Command < Command
       def initialize(upper,al)
         super(upper)
         type?(al,App::List)
@@ -192,7 +192,7 @@ module CIAX
         al=App::List.new
         cfg=Config.new
         cfg[:db]=Db.new.set('ciax')
-        mobj=ExtCmd.new(cfg,al)
+        mobj=Command.new(cfg,al)
         mobj.setcmd(ARGV).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

@@ -30,7 +30,7 @@ module CIAX
       attr_reader :adb,:stat
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
-        cobj=ExtCmd.new(cfg)
+        cobj=Command.new(cfg)
         cobj.interrupt.set_proc{
           int=@watch.interrupt
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")

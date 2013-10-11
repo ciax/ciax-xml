@@ -6,7 +6,7 @@ require "libextcmd"
 # Cmd Methods
 module CIAX
   module Frm
-    class ExtCmd < Command
+    class Command < Command
       attr_reader :field
       def initialize(upper)
         super
@@ -96,7 +96,7 @@ module CIAX
       begin
         cfg=Config.new
         cfg[:db]=Db.new.set(dev)
-        cobj=ExtCmd.new(cfg)
+        cobj=Command.new(cfg)
         cobj.field.read unless STDIN.tty?
         print cobj.setcmd(args).cfg[:frame]
       rescue InvalidCMD

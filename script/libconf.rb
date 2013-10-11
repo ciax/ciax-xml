@@ -13,6 +13,7 @@ module CIAX
       @generation=[self]
       case hash
       when Config
+        @index={}
         override(hash)
       when Hash
         @index=hash

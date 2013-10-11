@@ -66,7 +66,7 @@ module CIAX
     end
 
     def add_group(id,crnt={})
-      Group.new(@cfg,crnt)
+      self[id]=Group.new(@cfg,crnt)
     end
 
     def list

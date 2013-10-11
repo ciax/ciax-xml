@@ -19,19 +19,22 @@ module CIAX
       @cfg['caption']||="External Commands"
       @cfg['color']||=6
       @cmdary=[]
-      db=type?(@cfg[:db],Db)
-      cdb=db[:command]
+      set_items(type?(@cfg[:db],Db)[:command])
+    end
+
+    def set_items(cdb)
       (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:body].keys).each{|id|
           subgrp[id]=cdb[:label][id]
           # because cdb is separated by title
-          ccfg=add_item(id).cfg
-          db[:command].each{|k,v|
+          cfg={}
+          cdb.each{|k,v|
             if a=v[id]
-              ccfg[k]=a
+              cfg[k]=a
             end
           }
+          add_item(id,cfg)
         }
         @cmdary << subgrp
       }

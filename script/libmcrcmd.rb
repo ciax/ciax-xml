@@ -26,9 +26,13 @@ module CIAX
         svc[:submcr_proc]=proc{|args| setcmd(args) }
         svc[:stat_proc]=proc{|site| al[site].stat}
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
-        svc[:int_grp]=IntGrp.new(@cfg)
+        svc[:int_grp]=IntGrp.new(@cfg).def_proc
         self['sv']['ext']=ExtGrp.new(@cfg,svc)
         $dryrun=3
+      end
+
+      def add_int
+        self['sv']['int']=IntGrp.new(@cfg)
       end
 
       def save_procs
@@ -40,6 +44,7 @@ module CIAX
       def initialize(upper)
         super
         @cfg['caption']='Internal Commands'
+        @procs={}
         {
           "exec"=>["Command",proc{}],
           "skip"=>["Execution",proc{raise(Skip)}],
@@ -48,8 +53,16 @@ module CIAX
           "force"=>["Proceed",proc{}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
-          add_item(id,{:label =>id.capitalize+" "+a[0]}).set_proc(&a[1])
+          add_item(id,{:label =>id.capitalize+" "+a[0]})
+          @procs[id]=a[1]
         }
+      end
+
+      def def_proc
+        @procs.each{|id,prc|
+          self[id].set_proc(&prc)
+        }
+        self
       end
     end
 

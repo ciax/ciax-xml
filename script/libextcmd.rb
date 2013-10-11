@@ -1,10 +1,30 @@
 #!/usr/bin/ruby
 require 'libcommand'
-require 'librerange'
 
 module CIAX
+  class SiteGrp < Group
+    def initialize(upper,crnt={})
+      super
+      @cfg['caption']='Switch Sites'
+      @cfg['color']=5
+      @cfg['column']=2
+      update_items(@cfg[:ldb].list)
+      set_proc{|ent| raise(SwSite,ent.cfg[:cid])}
+    end
+  end
+
+  class LayerGrp < Group
+    def initialize(upper=Config.new,crnt={})
+      super
+      @cfg['caption']='Switch Layer'
+      @cfg['color']=5
+      @cfg['column']=5
+      set_proc{|ent| raise(SwLayer,ent.cfg[:cid]) }
+    end
+  end
+
   class IntGrp < Group
-    def initialize(upper)
+    def initialize(upper,crnt={})
       super
       @cfg['caption']='Internal Commands'
     end

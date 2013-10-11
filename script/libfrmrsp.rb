@@ -127,7 +127,6 @@ module CIAX
         res=Logging.set_logline(str)
         id=res['id']
         cid=res['cmd']
-        frame=res[:data]
       elsif STDIN.tty? || ARGV.size < 2
         $opt.usage("(opt) [id] [cmd] (par..) < string")
       else

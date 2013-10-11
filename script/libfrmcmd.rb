@@ -20,9 +20,9 @@ module CIAX
       def initialize(upper)
         super
         any={:type =>'reg',:list => ["."]}
-        add_item('save',{:label =>"Save Field [key,key...] (tag)",:parameter =>[any,any]})
-        add_item('load',{:label =>"Load Field (tag)",:parameter =>[any]})
-        set=add_item('set',{:label =>"Set Value [key(:idx)] [val(,val)]",:parameter =>[any,any]})
+        add_item('save',{:label =>"[key,key...] [tag]",:parameter =>[any,any]})
+        add_item('load',{:label =>"[tag]",:parameter =>[any]})
+        set=add_item('set',{:label =>"[key(:idx)] [val(,val)]",:parameter =>[any,any]})
         set.set_proc{|ent|
           @cfg[:field].set(*ent.par)
         }

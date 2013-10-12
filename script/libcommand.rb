@@ -5,23 +5,44 @@ require 'librerange'
 require 'liblogging'
 
 module CIAX
-  class ItemShare < Hashx
-    attr_reader :cfg
-    def initialize(upper,crnt={})
-      @cfg=Config.new(upper).update(crnt)
-      @cfg[:def_proc]||=proc{}
-    end
-
+  module GrpShare
     def set_proc(&def_proc)
       @cfg[:def_proc]=type?(def_proc,Proc)
       self
     end
+
+    def item_proc(id,&def_proc)
+      get_item(id).set_proc(&def_proc)
+    end
+
+    def setcmd(args)
+      id,*par=type?(args,Array)
+      get_item(id).set_par(par)
+    end
+
+    private
+    def get_item(id)
+      valid_keys.include?(id) || raise(InvalidCMD,list)
+      @cfg.index[id]
+    end
   end
 
-  class GrpShare < ItemShare
-    def join(id,ele)
-      ele.cfg.override(@cfg)
-      self[id]=ele
+  class Command < Hashx
+    include GrpShare
+    # CDB: mandatory (:body)
+    # optional (:label,:parameter)
+    # optionalfrm (:nocache,:response)
+    def initialize(upper)
+      @cfg=Config.new(upper)
+      @cfg.update('color'=>2,'column'=>2)
+      @cfg[:def_proc]||=proc{}
+      # Server Commands (service commands on Server)
+      self['sv']=Domain.new(@cfg)
+      self['lo']=Domain.new(@cfg)
+    end
+
+    def interrupt
+      self['sv'].add_group('caption' => "Hidden Group").add_item('interrupt')
     end
 
     def valid_keys
@@ -30,64 +51,54 @@ module CIAX
       }.flatten
     end
 
-    def setcmd(args)
-      type?(args,Array)
-      id,*par=args
-      valid_keys.include?(id) || raise(InvalidCMD,list)
-      @cfg.index[id].set_par(par)
-    end
-
     def list
       values.map{|e| e.list}.grep(/./).join("\n")
     end
   end
 
-  class Command < GrpShare
-    # CDB: mandatory (:body)
-    # optional (:label,:parameter)
-    # optionalfrm (:nocache,:response)
-    def initialize(upper)
-      super
-      @cfg.update('color'=>2,'column'=>2)
-      # Server Commands (service commands on Server)
-      self['sv']=Domain.new(@cfg)
-      self['lo']=Domain.new(@cfg)
-    end
-
-    def interrupt
-      self['sv'].add_group('hid',{'caption' => "Hidden Group"}).add_item('interrupt')
-    end
-  end
-
-  class Domain < GrpShare
+  class Domain < Arrayx
+    include GrpShare
     def initialize(upper,crnt={})
-      super
+      @cfg=Config.new(upper).update(crnt)
       @ver_color=2
     end
 
-    def add_group(id,crnt={},cls=Group)
-      self[id]=cls.new(@cfg,crnt)
+    def set_proc(&def_proc)
+      @cfg[:def_proc]=type?(def_proc,Proc)
+      self
+    end
+
+    def join_group(group)
+      push type?(group,Group)
+      group.cfg.override(@cfg)
+      group
+    end
+
+    def add_group(crnt={})
+      push (crnt[:group_class]||Group).new(@cfg,crnt)
+      last
+    end
+
+    def valid_keys
+      map{|e| e.valid_keys}.flatten
     end
 
     def list
-      values.reverse.map{|e| e.list}.grep(/./).join("\n")
+      map{|e| e.list}.grep(/./).join("\n")
     end
   end
 
-  class Group < GrpShare
-    attr_reader :valid_keys,:cmdlist
+  class Group < Hashx
+    include GrpShare
+    attr_reader :valid_keys,:cmdlist,:cfg
     #upper = {caption,color,column}
     def initialize(upper=Config.new,crnt={})
-      super
+      @cfg=Config.new(upper).update(crnt)
       @cfg[:item_class]||=Item
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @cmdary=[@cmdlist]
       @ver_color=3
-    end
-
-    def list
-      @cmdary.join("\n")
     end
 
     def add_item(id,crnt={})
@@ -107,15 +118,24 @@ module CIAX
       @cmdlist.dummy(id,title) #never put into valid_key
       self
     end
+
+    def list
+      @cmdary.join("\n")
+    end
   end
 
-  class Item < ItemShare
+  class Item < Hashx
     include Math
     #cfg should have :id,:label,:parameter,:def_proc
     def initialize(upper,crnt={})
-      super
+      @cfg=Config.new(upper).update(crnt)
       @cfg[:entity_class]||=Entity
       @ver_color=5
+    end
+
+    def set_proc(&def_proc)
+      @cfg[:def_proc]=type?(def_proc,Proc)
+      self
     end
 
     def set_par(par)

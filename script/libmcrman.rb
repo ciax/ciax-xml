@@ -17,7 +17,7 @@ module CIAX
           }
         }
         super('mcr',cfg[:db]['id'],cobj)
-        @cobj['sv']['ext'].set_proc{|ent|
+        @cobj.ext_proc{|ent|
           key,stat=ent.fork
           self['sid']=key
           @list.data[key]=stat

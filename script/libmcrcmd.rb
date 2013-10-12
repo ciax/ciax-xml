@@ -21,18 +21,22 @@ module CIAX
       def initialize(upper,al)
         super(upper)
         type?(al,App::List)
-        svc={:entity_class =>ExtEntity,:mobj => self}
+        svc={:group_class =>ExtGrp,:entity_class =>ExtEntity,:mobj => self}
         @stq=svc[:save_que]=Queue.new
         svc[:submcr_proc]=proc{|args| setcmd(args) }
         svc[:stat_proc]=proc{|site| al[site].stat}
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
         svc[:int_grp]=IntGrp.new(@cfg).def_proc
-        self['sv']['ext']=ExtGrp.new(@cfg,svc)
+        @extgrp=self['sv'].add_group(svc)
         $dryrun=3
       end
 
+      def ext_proc(&def_proc)
+        @extgrp.set_proc(&def_proc)
+      end
+
       def add_int
-        self['sv']['int']=IntGrp.new(@cfg)
+        self['sv'].add_group(:group_class =>IntGrp)
       end
 
       def save_procs
@@ -41,7 +45,7 @@ module CIAX
     end
 
     class IntGrp < IntGrp
-      def initialize(upper)
+      def initialize(upper,crnt={})
         super
         @procs={}
         {

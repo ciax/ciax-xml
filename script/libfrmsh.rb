@@ -43,7 +43,7 @@ module CIAX
       def initialize(cfg)
         super
         @cobj['sv'].set_proc{|ent|@field['time']=UnixTime.now}
-        @cobj['sv']['int']['set'].set_proc{|ent|
+        @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1])
         }
       end
@@ -74,17 +74,17 @@ module CIAX
         else
           @sqlsv=@io=Stream.new(iocmd,@fdb['wait'],1)
         end
-        @cobj['sv']['ext'].set_proc{|ent|
+        @cobj.ext_proc{|ent|
           @io.snd(ent.cfg[:frame],ent.cfg[:cid])
           @field.upd(ent){@io.rcv} && @field.save
         }
-        @cobj['sv']['int']['set'].set_proc{|ent|
+        @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1]).save
         }
-        @cobj['sv']['int']['save'].set_proc{|ent|
+        @cobj.item_proc('save'){|ent|
           @field.savekey(ent.par[0].split(','),ent.par[1])
         }
-        @cobj['sv']['int']['load'].set_proc{|ent|
+        @cobj.item_proc('load'){|ent|
           @field.load(ent.par[0]||'').save
         }
         ext_server(@fdb['port'].to_i)

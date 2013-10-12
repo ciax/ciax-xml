@@ -7,13 +7,17 @@ module CIAX
     class Command < Command
       def initialize(upper)
         super
-        self['sv']['int']=IntGrp.new(@cfg)
-        self['sv']['ext']=ExtGrp.new(@cfg,{:item_class =>ExtItem})
+        self['sv'].add_group(:group_class =>IntGrp)
+        @extgrp=self['sv'].add_group(:group_class =>ExtGrp,:item_class =>ExtItem)
+      end
+
+      def ext_proc(&def_proc)
+        @extgrp.set_proc(&def_proc)
       end
     end
 
     class IntGrp < IntGrp
-      def initialize(upper)
+      def initialize(upper,crnt={})
         super
         any={:type => 'reg', :list => ['.']}
         add_item('set',{:label =>'[key=val,...]',:parameter =>[any]})

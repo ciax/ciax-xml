@@ -23,13 +23,6 @@ module CIAX
     end
   end
 
-  class IntGrp < Group
-    def initialize(upper,crnt={})
-      super
-      @cfg['caption']='Internal Commands'
-    end
-  end
-
   # For External Command Domain
   # @cfg must contain [:db]
   class ExtGrp < Group # upper needs [:db]

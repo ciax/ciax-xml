@@ -68,6 +68,7 @@ module CIAX
         super
         @stat.ext_sym(@adb)
         @watch.ext_upd(@adb,@stat).upd
+        @cobj.add_int
         @cobj.item_proc('set'){|ent|
           @stat.str_update(ent.par[0])
           self['msg']="Set #{ent.par[0]}"

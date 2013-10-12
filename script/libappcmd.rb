@@ -7,18 +7,22 @@ module CIAX
     class Command < Command
       def initialize(upper)
         super
-        self['sv'].add_group(:group_class =>IntGrp)
         @extgrp=self['sv'].add_group(:group_class =>ExtGrp,:item_class =>ExtItem)
       end
 
       def ext_proc(&def_proc)
         @extgrp.set_proc(&def_proc)
       end
+
+      def add_int
+        self['lo'].add_group(:group_class =>IntGrp)
+      end
     end
 
-    class IntGrp < IntGrp
+    class IntGrp < Group
       def initialize(upper,crnt={})
         super
+        @cfg['caption']='Test Commands'
         any={:type => 'reg', :list => ['.']}
         add_item('set',{:label =>'[key=val,...]',:parameter =>[any]})
         add_item('del',{:label =>'[key,...]',:parameter =>[any]})

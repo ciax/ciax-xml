@@ -63,19 +63,14 @@ module CIAX
       @ver_color=2
     end
 
-    def set_proc(&def_proc)
-      @cfg[:def_proc]=type?(def_proc,Proc)
-      self
-    end
-
     def join_group(group)
-      push type?(group,Group)
+      unshift type?(group,Group)
       group.cfg.override(@cfg)
       group
     end
 
     def add_group(crnt={})
-      push (crnt[:group_class]||Group).new(@cfg,crnt)
+      unshift (crnt[:group_class]||Group).new(@cfg,crnt)
       last
     end
 

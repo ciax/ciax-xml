@@ -10,7 +10,7 @@ module CIAX
       def initialize(upper)
         super
         @field=@cfg[:field]=Field.new(@cfg[:db][:field][:struct].deep_copy)
-        @extgrp=self['sv'].add_group(:group_class => ExtGrp,:item_class =>ExtItem)
+        @extgrp=@svdom.add_group(:group_class => ExtGrp,:item_class =>ExtItem)
       end
 
       def ext_proc(&def_proc)
@@ -18,7 +18,7 @@ module CIAX
       end
 
       def add_int
-        self['sv'].add_group(:group_class =>IntGrp)
+        @svdom.add_group(:group_class =>IntGrp)
       end
     end
 

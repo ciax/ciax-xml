@@ -19,7 +19,7 @@ module CIAX
       @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
       @pstat=pstat||self
       # Local(Long Jump) Commands (local handling commands on Client)
-      shg=@cobj['lo'].add_group('caption'=>"Shell Command",'color'=>1)
+      shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('^D,q',"Quit")
       shg.add_dummy('^C',"Interrupt")
       self
@@ -74,7 +74,7 @@ module CIAX
       super()
       @cfg=Config.new(upper)
       @cfg[:ldb]||=Loc::Db.new
-      @init_procs << proc{|exe| exe.cobj['lo'].add_group(:group_class =>SiteGrp)}
+      @init_procs << proc{|exe| exe.cobj.lodom.add_group(:group_class =>SiteGrp)}
     end
 
     def shell(site)
@@ -103,7 +103,7 @@ module CIAX
       str=layer.to_s.split(':').last
       id=str.downcase
       @swlgrp.add_item(id,{:label =>str+" mode"})
-      lst.init_procs << proc{|exe| exe.cobj['lo'].join_group(@swlgrp) }
+      lst.init_procs << proc{|exe| exe.cobj.lodom.join_group(@swlgrp) }
       @cfg[id]=lst
       self[id]=lst
     end

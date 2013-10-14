@@ -43,7 +43,7 @@ module CIAX
     class Test < Exe
       def initialize(cfg)
         super
-        @cobj['sv'].set_proc{|ent|@field['time']=UnixTime.now}
+        @cobj.svdom.set_proc{|ent|@field['time']=UnixTime.now}
         @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1])
         }
@@ -55,7 +55,7 @@ module CIAX
         super(cfg)
         host=type?(host||@fdb['host']||'localhost',String)
         @field.ext_http(self['id'],host).load
-        @cobj['sv'].set_proc{to_s}
+        @cobj.svdom.set_proc{to_s}
         ext_client(host,@fdb['port'])
         @upd_procs << proc{@field.load}
       end

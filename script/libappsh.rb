@@ -53,7 +53,7 @@ module CIAX
       def init_view
         @output=@print=View.new(@adb,@stat).extend(Print)
         @wview=Watch::View.new(@adb,@watch).ext_prt
-        grp=@cobj['lo'].add_group('caption'=>"Change View Mode")
+        grp=@cobj.lodom.add_group('caption'=>"Change View Mode")
         grp.add_item('pri',{:label =>"Print mode"}).set_proc{@output=@print}
         grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview} if @wview
         grp.add_item('raw',{:label =>"Raw mode"}).set_proc{@output=@stat}

@@ -6,7 +6,7 @@ module CIAX
     class Command < Command
       def initialize(upper)
         super
-        @extgrp=self['sv'].add_group(:group_class =>ExtGrp,:item_class =>ExtItem)
+        @extgrp=@svdom.add_group(:group_class =>ExtGrp,:item_class =>ExtItem)
       end
 
       def ext_proc(&def_proc)
@@ -14,7 +14,7 @@ module CIAX
       end
 
       def add_int
-        self['lo'].add_group(:group_class =>IntGrp)
+        @lodom.add_group(:group_class =>IntGrp)
       end
     end
 

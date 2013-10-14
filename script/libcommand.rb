@@ -20,6 +20,13 @@ module CIAX
       get_item(id).set_par(par)
     end
 
+    def valid_keys
+      map{|e| e.valid_keys}.flatten
+    end
+
+    def list
+      map{|e| e.list}.grep(/./).join("\n")
+    end
     private
     def get_item(id)
       valid_keys.include?(id) || raise(InvalidCMD,list)
@@ -27,30 +34,20 @@ module CIAX
     end
   end
 
-  class Command < Hashx
+  class Command < Arrayx
     include GrpShare
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    attr_reader :interrupt
+    attr_reader :svdom,:lodom,:interrupt
     def initialize(upper)
       @cfg=Config.new(upper)
       @cfg.update('color'=>2,'column'=>2)
       @cfg[:def_proc]||=proc{}
       # Server Commands (service commands on Server)
-      self['sv']=Domain.new(@cfg)
-      @interrupt=self['sv'].add_group('caption' => "Hidden Commands").add_item('interrupt')
-      self['lo']=Domain.new(@cfg)
-    end
-
-    def valid_keys
-      values.map{|e|
-        e.valid_keys
-      }.flatten
-    end
-
-    def list
-      values.map{|e| e.list}.grep(/./).join("\n")
+      push @svdom=Domain.new(@cfg)
+      push @lodom=Domain.new(@cfg)
+      @interrupt=@svdom.add_group('caption' => "Hidden Commands").add_item('interrupt')
     end
   end
 
@@ -72,13 +69,6 @@ module CIAX
       first
     end
 
-    def valid_keys
-      map{|e| e.valid_keys}.flatten
-    end
-
-    def list
-      map{|e| e.list}.grep(/./).join("\n")
-    end
   end
 
   class Group < Hashx

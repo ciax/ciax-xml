@@ -27,7 +27,7 @@ module CIAX
         svc[:stat_proc]=proc{|site| al[site].stat}
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
         svc[:int_grp]=IntGrp.new(@cfg).def_proc
-        @extgrp=self['sv'].add_group(svc)
+        @extgrp=@svdom.add_group(svc)
         $dryrun=3
       end
 
@@ -36,7 +36,7 @@ module CIAX
       end
 
       def add_int
-        self['sv'].add_group(:group_class =>IntGrp)
+        @svdom.add_group(:group_class =>IntGrp)
       end
 
       def save_procs

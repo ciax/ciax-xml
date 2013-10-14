@@ -18,7 +18,7 @@ module CIAX
       end
 
       def add_int
-        self['lo'].add_group(:group_class =>IntGrp)
+        self['sv'].add_group(:group_class =>IntGrp)
       end
     end
 

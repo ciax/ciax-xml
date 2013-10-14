@@ -76,3 +76,6 @@ frmsh (intfrm -t)/ used when running site is different from intapp
    batch: Array of Commands(Array of Array) [args,args,...]
    f*: Associated with Frm (i.e. fargs, fstat ..)
    a*: Associated with App (i.e. aargs, astat ..)
+ #block rerutn value
+   set return value to local var 'res' at the end of block
+   if it is expressly provided

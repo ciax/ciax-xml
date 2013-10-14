@@ -32,9 +32,8 @@ module CIAX
         self['msg']=''
       else
         @pre_procs.each{|p| p.call(args)}
-        self['msg']='OK'
         verbose("Sh/Exe","Command #{args} recieved")
-        @cobj.setcmd(args).exe
+        self['msg']=@cobj.setcmd(args).exe
         @post_procs.each{|p| p.call(args)}
       end
       self

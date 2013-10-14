@@ -4,6 +4,7 @@ require 'libconf'
 require 'librerange'
 require 'liblogging'
 
+# @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
   module GrpShare
     def set_proc(&def_proc)
@@ -190,7 +191,6 @@ module CIAX
     def exe
       verbose(self.class,"Execute #{@args}")
       @cfg[:def_proc].call(self)
-      self
     end
   end
 end

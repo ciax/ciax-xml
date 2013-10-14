@@ -21,6 +21,7 @@ module CIAX
           key,stat=ent.fork
           self['sid']=key
           @list.data[key]=stat
+          "OK(#{key})"
         }
         self['sid']=''
         @cobj.save_procs{@list.save}
@@ -31,18 +32,22 @@ module CIAX
           if st=@list.data[n]
             if st[:stat] == 'query'
               st.cmd_que << ent.id
-              self['msg']=st.res_que.pop
+              st.res_que.pop+"(#{n})"
             else
-              self['msg']='IGNORE'
+              "IGNORE(#{n})"
             end
           else
-            self['msg']='NONE'
+            "NONE(#{n}"
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
         ig.add_item('clean',{:label =>'Clean macros'}).set_proc{
-          self['msg']='NONE' unless @list.clean
-          @list.save
+          if @list.clean
+            @list.save
+            'OK'
+          else
+            'NONE'
+          end
         }
         ext_shell(@list)
       end
@@ -50,11 +55,6 @@ module CIAX
       def exe(args)
         self['sid']=''
         super
-      end
-
-      def shell_output
-        sid=self['sid'].empty? ? '' : '('+self['sid']+')'
-        self['msg'].empty? ? @output : self['msg']+sid
       end
    end
 

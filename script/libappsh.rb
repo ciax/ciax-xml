@@ -54,9 +54,9 @@ module CIAX
         @output=@print=View.new(@adb,@stat).extend(Print)
         @wview=Watch::View.new(@adb,@watch).ext_prt
         grp=@cobj.lodom.add_group('caption'=>"Change View Mode")
-        grp.add_item('pri',{:label =>"Print mode"}).set_proc{@output=@print}
-        grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview} if @wview
-        grp.add_item('raw',{:label =>"Raw mode"}).set_proc{@output=@stat}
+        grp.add_item('pri',{:label =>"Print mode"}).set_proc{@output=@print;''}
+        grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview;''} if @wview
+        grp.add_item('raw',{:label =>"Raw mode"}).set_proc{@output=@stat;''}
         self
       end
     end
@@ -70,13 +70,13 @@ module CIAX
         @cobj.add_int
         @cobj.item_proc('set'){|ent|
           @stat.str_update(ent.par[0])
-          self['msg']="Set #{ent.par[0]}"
+          "Set #{ent.par[0]}"
         }
         @cobj.item_proc('del'){|ent|
           ent.par[0].split(',').each{|key|
             @stat.unset(key)
           }
-          self['msg']="Delete #{ent.par[0]}"
+          "Delete #{ent.par[0]}"
         }
         @watch.event_proc=proc{|args,p|
           Msg.msg("#{args} is issued by event")

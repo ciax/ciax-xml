@@ -43,9 +43,10 @@ module CIAX
     class Test < Exe
       def initialize(cfg)
         super
-        @cobj.svdom.set_proc{|ent|@field['time']=UnixTime.now}
+        @cobj.svdom.set_proc{|ent|@field['time']=UnixTime.now;'OK'}
         @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1])
+          "Set #{ent.par[0]}"
         }
       end
     end
@@ -78,15 +79,19 @@ module CIAX
         @cobj.ext_proc{|ent|
           @io.snd(ent.cfg[:frame],ent.cfg[:cid])
           @field.upd(ent){@io.rcv} && @field.save
+          'OK'
         }
         @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1]).save
+          "Set [#{ent.par[0]}]"
         }
         @cobj.item_proc('save'){|ent|
           @field.savekey(ent.par[0].split(','),ent.par[1])
+          "Save [#{ent.par[0]}]"
         }
         @cobj.item_proc('load'){|ent|
           @field.load(ent.par[0]||'').save
+          "Load [#{ent.par[0]}]"
         }
         ext_server(@fdb['port'].to_i)
       rescue Errno::ENOENT

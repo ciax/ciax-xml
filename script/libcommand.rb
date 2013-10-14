@@ -42,7 +42,7 @@ module CIAX
     end
 
     def interrupt
-      self['sv'].add_group('caption' => "Hidden Group").add_item('interrupt')
+      self['sv'].add_group('caption' => "Hidden Commands").add_item('interrupt')
     end
 
     def valid_keys
@@ -71,7 +71,7 @@ module CIAX
 
     def add_group(crnt={})
       unshift (crnt[:group_class]||Group).new(@cfg,crnt)
-      last
+      first
     end
 
     def valid_keys

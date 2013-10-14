@@ -73,6 +73,6 @@ frmsh (intfrm -t)/ used when running site is different from intapp
  #local var
    args: Command(Array) [cmd,par,par...]
    cid: Command ID(String) "cmd:par:par"
-   cmdary: Array of Commands(Array of Array) [args,args,...]
+   batch: Array of Commands(Array of Array) [args,args,...]
    f*: Associated with Frm (i.e. fargs, fstat ..)
    a*: Associated with App (i.e. aargs, astat ..)

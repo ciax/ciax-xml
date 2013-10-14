@@ -35,15 +35,15 @@ module CIAX
       self
     end
 
-    # Send bunch of frm args array (ary of ary)
+    # Send frm command batch (ary of ary)
     def send(n=1,item)
       type?(item,Entity)
       clear if n == 0
-      inp=@send_proc.call(item)
-      #inp is fcmdary (ary of ary)
-      unless inp.empty?
+      batch=@send_proc.call(item)
+      #batch is frm batch (ary of ary)
+      unless batch.empty?
         @svst['isu']=true
-        @q.push([n,inp])
+        @q.push([n,batch])
       end
       self
     end
@@ -82,10 +82,10 @@ module CIAX
       @svst['isu']=false if @q.empty?
     end
 
-    #cmdary is command array (ary of ary)
-    def sort(p,cmdary)
-      verbose("Buffer","SUB:Recieve [#{cmdary}] with priority[#{p}]")
-      (@outbuf[p]||=[]).concat(cmdary)
+    #batch is command array (ary of ary)
+    def sort(p,batch)
+      verbose("Buffer","SUB:Recieve [#{batch}] with priority[#{p}]")
+      (@outbuf[p]||=[]).concat(batch)
       i=-1
       @outbuf.map{|o|
         verbose("Buffer","SUB:Outbuf(#{i+=1}) is [#{o}]\n")

@@ -30,10 +30,10 @@ module CIAX
     end
 
     class ExtItem < Item
-      #fcmdary is ary of args(ary)
+      #batch is ary of args(ary)
       def set_par(par)
         ent=super
-        fcmdary=[]
+        batch=[]
         ent.cfg[:body].each{|e1|
           args=[]
           enclose("AppItem","GetCmd(FDB):#{e1.first}","Exec(FDB):%s"){
@@ -48,11 +48,11 @@ module CIAX
                 args << str
               end
             }
-            fcmdary.push args
+            batch.push args
             args
           }
         }
-        ent.cfg[:cmdary]=fcmdary
+        ent.cfg[:batch]=batch
         ent
       end
     end
@@ -70,8 +70,8 @@ module CIAX
       fcf[:db]=Frm::Db.new.set(acf[:db]['frm_id'])
       fcobj=Frm::Command.new(fcf)
       acobj=App::Command.new(acf)
-      acobj.setcmd(args).cfg[:cmdary].each{|fargs|
-        #Validate fcmdarys
+      acobj.setcmd(args).cfg[:batch].each{|fargs|
+        #Validate batchs
         fcobj.setcmd(fargs) if /set|unset|load|save/ !~ fargs.first
         p fargs
       }

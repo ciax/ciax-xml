@@ -147,9 +147,9 @@ module CIAX
       def init_buf
         buf=Buffer.new(self)
         buf.send_proc{|ent|
-          cmdary=ent.cfg[:cmdary]
-          verbose("AppSv","Send FrmCmds #{cmdary}")
-          cmdary
+          batch=type?(ent.cfg[:batch],Array)
+          verbose("AppSv","Send FrmCmds #{batch}")
+          batch
         }
         buf.recv_proc{|args|
           verbose("AppSv","Processing #{args}")

@@ -27,6 +27,7 @@ module CIAX
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
         super('frm',@fdb['site_id']||@fdb['id'],Command.new(cfg))
+        @cobj.add_int
         @field=@cobj.field
         ext_shell(@field)
       end

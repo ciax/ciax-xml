@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require "libmsg"
 require "libextcmd"
 
 module CIAX

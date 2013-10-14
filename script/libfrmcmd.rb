@@ -1,9 +1,8 @@
 #!/usr/bin/ruby
+require "libextcmd"
 require "libfield"
 require "libframe"
-require "libextcmd"
 
-# Cmd Methods
 module CIAX
   module Frm
     class Command < Command
@@ -11,12 +10,15 @@ module CIAX
       def initialize(upper)
         super
         @field=@cfg[:field]=Field.new(@cfg[:db][:field][:struct].deep_copy)
-        self['sv'].add_group(:group_class => IntGrp)
         @extgrp=self['sv'].add_group(:group_class => ExtGrp,:item_class =>ExtItem)
       end
 
       def ext_proc(&def_proc)
         @extgrp.set_proc(&def_proc)
+      end
+
+      def add_int
+        self['lo'].add_group(:group_class =>IntGrp)
       end
     end
 

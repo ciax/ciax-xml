@@ -32,17 +32,15 @@ module CIAX
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
+    attr_reader :interrupt
     def initialize(upper)
       @cfg=Config.new(upper)
       @cfg.update('color'=>2,'column'=>2)
       @cfg[:def_proc]||=proc{}
       # Server Commands (service commands on Server)
       self['sv']=Domain.new(@cfg)
+      @interrupt=self['sv'].add_group('caption' => "Hidden Commands").add_item('interrupt')
       self['lo']=Domain.new(@cfg)
-    end
-
-    def interrupt
-      self['sv'].add_group('caption' => "Hidden Commands").add_item('interrupt')
     end
 
     def valid_keys

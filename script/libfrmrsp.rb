@@ -16,7 +16,8 @@ module CIAX
       end
 
       # Ent is needed which includes response_id and cmd_parameters
-      def ext_rsp(db)
+      def ext_rsp(id,db)
+        ext_file(id)
         @ver_color=3
         @db=type?(db,Db)
         self['ver']=db['version'].to_i
@@ -45,12 +46,12 @@ module CIAX
           end
           verbose("FrmRsp","Updated(#{self['time']})") #Field::get
           super()
-          true
+          save
         else
           verbose("FrmRsp","Send Only")
           @sel[:body]=nil
-          false
         end
+        self
       end
 
       private
@@ -112,8 +113,8 @@ module CIAX
     end
 
     class Field
-      def ext_rsp(db)
-        extend(Frm::Rsp).ext_rsp(db)
+      def ext_rsp(id,db)
+        extend(Frm::Rsp).ext_rsp(id,db)
       end
     end
 
@@ -138,8 +139,8 @@ module CIAX
       fdb=Loc::Db.new.set(id)[:frm]
       fobj=Command.new(fdb)
       ent=fobj.setcmd(cid.split(':'))
-      field=Field.new.ext_rsp(fdb)
-      field.ext_file(id).load if $opt['m']
+      field=Field.new.ext_rsp(id,fdb)
+      field.load if $opt['m']
       field.upd(ent){res}
       puts field
       exit

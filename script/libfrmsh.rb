@@ -69,7 +69,7 @@ module CIAX
       attr_reader :sqlsv
       def initialize(cfg,iocmd=[])
         super(cfg)
-        @field.ext_rsp(@fdb).ext_file(self['id']).load
+        @field.ext_rsp(self['id'],@fdb).load
         if type?(iocmd,Array).empty?
           @io=Stream.new(@fdb['iocmd'].split(' '),@fdb['wait'],1)
           @sqlsv=@io.ext_logging(self['id'],@fdb['version'])
@@ -78,7 +78,7 @@ module CIAX
         end
         @cobj.ext_proc{|ent|
           @io.snd(ent.cfg[:frame],ent.cfg[:cid])
-          @field.upd(ent){@io.rcv} && @field.save
+          @field.upd(ent){@io.rcv}
           'OK'
         }
         @cobj.item_proc('set'){|ent|

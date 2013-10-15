@@ -50,5 +50,13 @@ module CIAX
       }
       nil
     end
+
+    def level(id)
+      i=0
+      @generation.each{|h|
+        return i if h.key?(id)
+        i+=1
+      }
+    end
   end
 end

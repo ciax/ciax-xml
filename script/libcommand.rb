@@ -28,6 +28,14 @@ module CIAX
     def list
       map{|e| e.list}.grep(/./).join("\n")
     end
+
+    def show_proc(id)
+      item=@cfg.index[id]
+      cfg=item.cfg
+      cls=cfg.generation[cfg.level(:def_proc)][:level]
+      " #{id},level=#{cls},item=#{item.object_id},proc=#{cfg[:def_proc].object_id}"
+    end
+
     private
     def get_item(id)
       valid_keys.include?(id) || raise(InvalidCMD,list)
@@ -43,8 +51,8 @@ module CIAX
     attr_reader :svdom,:lodom,:interrupt
     def initialize(upper)
       @cfg=Config.new(upper)
-      @cfg.update('color'=>2,'column'=>2)
-      @cfg[:def_proc]||=proc{}
+      @cfg.update(:level =>'command','color'=>2,'column'=>2)
+      @cfg[:def_proc]||=proc{''}
       # Server Commands (service commands on Server)
       push @svdom=Domain.new(@cfg)
       push @lodom=Domain.new(@cfg)
@@ -56,6 +64,7 @@ module CIAX
     include GrpShare
     def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
+      @cfg[:level]='domain'
       @ver_color=2
     end
 
@@ -78,6 +87,7 @@ module CIAX
     #upper = {caption,color,column}
     def initialize(upper=Config.new,crnt={})
       @cfg=Config.new(upper).update(crnt)
+      @cfg[:level]='group'
       @cfg[:item_class]||=Item
       @valid_keys=[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
@@ -110,9 +120,11 @@ module CIAX
 
   class Item < Hashx
     include Math
+    attr_reader :cfg
     #cfg should have :id,:label,:parameter,:def_proc
     def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
+      @cfg[:level]='item'
       @cfg[:entity_class]||=Entity
       @ver_color=5
     end
@@ -181,6 +193,7 @@ module CIAX
     #set should have :def_proc
     def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
+      @cfg[:level]='entity'
       @id=@cfg[:id]
       @par=@cfg[:par]
       @args=[@id,*@par]

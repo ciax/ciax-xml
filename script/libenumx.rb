@@ -3,7 +3,9 @@ require 'libmsg'
 require 'json'
 #Extened Hash
 module CIAX
+  # show_iv = Show Instance Variable
   module ViewStruct
+    include Msg
     def view_struct(data,title=nil,ind=0,show_iv=false)
       raise('Hash Loop') if ind > 5
       str=''
@@ -11,14 +13,15 @@ module CIAX
       if title
         case title
         when Numeric
-          title="[#{title}]"
+          title="[#{title}](#{data.object_id})"
         else
           title=title.inspect
+          title+="(#{data.object_id})" if Enumerable === data
         end
         str << color("%-6s" % title,5,ind)+" :\n"
         ind+=1
       else
-        str << "===\n"
+        str << "#\n"
       end
       iv={}
       data.instance_variables.each{|n|
@@ -69,7 +72,6 @@ module CIAX
   end
 
   module Enumx
-    include Msg
     include ViewStruct
     def self.extended(obj)
       raise("Not Enumerable") unless obj.is_a? Enumerable

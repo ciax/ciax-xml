@@ -32,6 +32,7 @@ module CIAX
         set=add_item('set',{:label =>"[key(:idx)] [val(,val)]",:parameter =>[any,any]})
         set.set_proc{|ent|
           @cfg[:field].set(*ent.par)
+          'OK'
         }
       end
     end

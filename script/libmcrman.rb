@@ -21,7 +21,7 @@ module CIAX
           key,stat=ent.fork
           self['sid']=key
           @list.data[key]=stat
-          "OK(#{key})"
+          "OK"
         }
         self['sid']=''
         @cobj.save_procs{@list.save}
@@ -32,12 +32,12 @@ module CIAX
           if st=@list.data[n]
             if st[:stat] == 'query'
               st.cmd_que << ent.id
-              st.res_que.pop+"(#{n})"
+              st.res_que.pop
             else
-              "IGNORE(#{n})"
+              "IGNORE"
             end
           else
-            "NONE(#{n}"
+            "NONE"
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
@@ -56,7 +56,12 @@ module CIAX
         self['sid']=''
         super
       end
-   end
+
+      def shell_output
+        sid=self['sid'].empty? ? '' : '('+self['sid']+')'
+        self['msg'].empty? ? @output : self['msg']+sid
+      end
+    end
 
     class List < Datax
       def initialize

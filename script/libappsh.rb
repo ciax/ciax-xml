@@ -33,7 +33,7 @@ module CIAX
         cobj.interrupt.set_proc{
           int=@watch.interrupt
           verbose("AppSh","#{self['id']}/Interrupt:#{int}")
-          self['msg']="Interrupt #{int}"
+          "INTERRUPT"
         }
         super('app',@adb['site_id']||@adb['id'],cobj)
         @stat=App::Status.new(@adb[:status][:struct].deep_copy)
@@ -119,7 +119,7 @@ module CIAX
         @cobj.ext_proc{|ent|
           verbose("AppSv","#{self['id']}/Issue:#{ent.args}")
           @buf.send(1,ent)
-          self['msg']="Issued"
+          "ISSUED"
         }
         # Logging if version number exists
         if logging and @adb['version']

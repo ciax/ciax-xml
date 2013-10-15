@@ -31,7 +31,7 @@ module CIAX
     end
 
     def show_proc(id)
-      item=@cfg.index[id]
+      item=get_item(id)
       cfg=item.cfg
       cls=cfg.generation[cfg.level(:def_proc)][:level]
       " #{id},level=#{cls},item=#{item.object_id},proc=#{cfg[:def_proc].object_id}"
@@ -98,7 +98,7 @@ module CIAX
     def add_item(id,crnt={})
       crnt[:id]=id
       @cmdlist[id]=crnt[:label]
-      self[id]=@cfg.index[id]=@cfg[:item_class].new(@cfg,crnt)
+      self[id]=@cfg[:item_class].new(@cfg,crnt)
     end
 
     def update_items(labels)

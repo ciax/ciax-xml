@@ -8,15 +8,14 @@ module CIAX
   # Usage:[]=/ add to current Hash which will override(hide) upper level Hash;
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
-    attr_reader :generation,:index
+    attr_reader :generation
     def initialize(hash={})
       @generation=[self]
       case hash
       when Config
-        @index={}
         override(hash)
       when Hash
-        @index=hash
+        update(hash)
       else
         err("Bad Parameter")
       end
@@ -24,9 +23,6 @@ module CIAX
 
     def override(cfg)
       @generation+=cfg.generation
-      idx=@index
-      @index=cfg.index
-      @index.update(idx) if idx
       self
     end
 

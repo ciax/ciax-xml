@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libmcrdb"
 require "librecord"
-require "libcommand"
 require "libappsh"
 
 module CIAX
@@ -18,6 +17,7 @@ module CIAX
     end
 
     class Command < Command
+      attr_reader :extgrp,:intgrp
       def initialize(upper,al)
         super(upper)
         type?(al,App::List)
@@ -28,7 +28,7 @@ module CIAX
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
         svc[:int_grp]=IntGrp.new(@cfg).def_proc
         @extgrp=@svdom.add_group(svc)
-        $dryrun=3
+        $dryrun=1
       end
 
       def ext_proc(&def_proc)
@@ -36,7 +36,7 @@ module CIAX
       end
 
       def add_int
-        @svdom.add_group(:group_class =>IntGrp)
+        @intgrp=@svdom.add_group(:group_class =>IntGrp)
       end
 
       def save_procs
@@ -50,11 +50,11 @@ module CIAX
         @cfg['caption']='Internal Commands'
         @procs={}
         {
-          "exec"=>["Command",proc{}],
+          "exec"=>["Command",proc{'EXEC'}],
           "skip"=>["Execution",proc{raise(Skip)}],
           "drop"=>[" Macro",proc{raise(Interlock)}],
-          "suppress"=>["and Memorize",proc{}],
-          "force"=>["Proceed",proc{}],
+          "suppress"=>["and Memorize",proc{'SUP'}],
+          "force"=>["Proceed",proc{'FORCE'}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
           add_item(id,{:label =>id.capitalize+" "+a[0]})
@@ -168,8 +168,8 @@ module CIAX
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
         res=loop{
           input if Msg.fg?
-          res=@stat.cmd_que.pop
-          break res if cmds.include?(res)
+          cmd=@stat.cmd_que.pop
+          break cmd if cmds.include?(cmd)
           @stat.res_que << 'INVALID'
         }
         @stat.res_que << 'OK'

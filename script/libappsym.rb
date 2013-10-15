@@ -49,6 +49,7 @@ module CIAX
           }
         }
         verbose("Symbol","Update(#{self['time']})")
+        self
       end
     end
 

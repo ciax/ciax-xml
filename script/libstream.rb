@@ -23,6 +23,7 @@ module CIAX
         @f.syswrite(str)
       }
       upd('snd',str,cid).save
+      self
     end
 
     def rcv
@@ -33,6 +34,7 @@ module CIAX
       }||Msg.com_err("Stream:No response")
       verbose("Stream","Recieved #{str.size} byte on #{self['cmd']}")
       upd('rcv',str).save
+      self
     end
 
     def reopen

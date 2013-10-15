@@ -95,6 +95,7 @@ module CIAX
             self[k]['lines'] << hash
           }
         }
+        self
       end
 
       def set(hash,key,id)

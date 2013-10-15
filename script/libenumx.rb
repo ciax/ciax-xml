@@ -7,16 +7,16 @@ module CIAX
   module ViewStruct
     include Msg
     def view_struct(data,title=nil,ind=0,show_iv=false)
-      raise('Hash Loop') if ind > 5
       str=''
       col=4
+      id=data.object_id
       if title
         case title
         when Numeric
-          title="[#{title}](#{data.object_id})"
+          title="[#{title}](#{id})"
         else
           title=title.inspect
-          title+="(#{data.object_id})" if Enumerable === data
+          title+="(#{id})" if Enumerable === data
         end
         str << color("%-6s" % title,5,ind)+" :\n"
         ind+=1
@@ -25,7 +25,7 @@ module CIAX
       end
       iv={}
       data.instance_variables.each{|n|
-        iv[n]=data.instance_variable_get(n)
+        iv[n]=data.instance_variable_get(n) unless n == :object_ids
       } if show_iv
       _show(str,iv,ind,col,title,show_iv)
       _show(str,data,ind,col,title,show_iv)
@@ -33,6 +33,13 @@ module CIAX
 
     private
     def _show(str,data,ind,col,title,show_iv)
+      if Enumerable === data
+        if (@object_ids||=[]).include?(data.object_id)
+          return str.chomp + " #{data.class}(Loop)\n"
+        else
+          @object_ids << data.object_id
+        end
+      end
       case data
       when Array
         return str if _mixed?(str,data,data,data.size.times,ind,show_iv)
@@ -47,7 +54,7 @@ module CIAX
     def _mixed?(str,data,vary,idx,ind,show_iv)
       if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
-          str << view_struct(data[i],i,ind,show_iv)
+          str << view_struct(data.fetch(i),i,ind,show_iv)
         }
       end
     end
@@ -64,7 +71,7 @@ module CIAX
     def _only_hash(str,data,ind,col,title)
       data.keys.each_slice(title ? 2 : 1){|a|
         str << indent(ind)+a.map{|k|
-          color("%-8s" % k.inspect,3)+(": %-10s" % data[k].inspect)
+          color("%-8s" % k.inspect,3)+(": %-10s" % data.fetch(k).inspect)
         }.join("\t")+"\n"
       }
       str

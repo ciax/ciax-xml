@@ -50,11 +50,10 @@ module CIAX
         if time > @lastsave
           super
           @lastsave=time
-          true
         else
           verbose("Status","Skip Save for #{time}")
-          false
         end
+        self
       end
     end
 

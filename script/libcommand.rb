@@ -18,6 +18,7 @@ module CIAX
 
     def setcmd(args)
       id,*par=type?(args,Array)
+      valid_keys.include?(id) || raise(InvalidCMD,list)
       get_item(id).set_par(par)
     end
 
@@ -36,10 +37,10 @@ module CIAX
       " #{id},level=#{cls},item=#{item.object_id},proc=#{cfg[:def_proc].object_id}"
     end
 
-    private
     def get_item(id)
-      valid_keys.include?(id) || raise(InvalidCMD,list)
-      @cfg.index[id]
+      res=nil
+      find{|e| res=e.get_item(id)}
+      res
     end
   end
 
@@ -78,7 +79,6 @@ module CIAX
       unshift (crnt[:group_class]||Group).new(@cfg,crnt)
       first
     end
-
   end
 
   class Group < Hashx
@@ -115,6 +115,10 @@ module CIAX
 
     def list
       @cmdary.join("\n")
+    end
+
+    def get_item(id)
+      self[id]
     end
   end
 

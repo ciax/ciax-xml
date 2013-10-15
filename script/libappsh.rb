@@ -154,7 +154,7 @@ module CIAX
           verbose("AppSv","Processing #{args}")
           @fsh.exe(args)
         }
-        buf.flush_proc.add{
+        buf.flush_proc{
           verbose("AppSv","Flushed FrmCmds")
           @stat.upd.save
           sleep(@watch['interval']||0.1)

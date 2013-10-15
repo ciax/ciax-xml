@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "thread"
-require "libupdate"
 
 # SubModule for App::Sv
 # *Command stream(Send)
@@ -18,28 +17,27 @@ require "libupdate"
 module CIAX
   class Buffer
     include Msg
-    attr_reader :flush_proc
     # svst: Server Status
     def initialize(svst={})
       @svst=type?(svst,Hash)
       #element of @q is bunch of frm args corresponding an appcmd
       @q=Queue.new
       @tid=nil
-      @flush_proc=UpdProc.new.add{verbose("Buffer","Flushing")}
+      @flush_proc=proc{}
       @send_proc=proc{}
       clear
     end
 
     def send_proc
-      @send_proc=proc{|item| yield item}
+      @send_proc=proc{|ent| yield ent}
       self
     end
 
     # Send frm command batch (ary of ary)
-    def send(n=1,item)
-      type?(item,Entity)
+    def send(n=1,ent)
+      type?(ent,Entity)
       clear if n == 0
-      batch=@send_proc.call(item)
+      batch=@send_proc.call(ent)
       #batch is frm batch (ary of ary)
       unless batch.empty?
         @svst['isu']=true
@@ -70,6 +68,11 @@ module CIAX
       self
     end
 
+    def flush_proc
+      @flush_proc=proc{|ent| yield ent}
+      self
+    end
+
     def alive?
       @tid && @tid.alive?
     end
@@ -78,7 +81,7 @@ module CIAX
     def flush
       verbose("Buffer","SUB:Waiting")
       # @q can not be empty depending on @flush_proc
-      @flush_proc.upd
+      @flush_proc.call(self)
       @svst['isu']=false if @q.empty?
     end
 

@@ -9,15 +9,12 @@ module CIAX
   module Frm
     def self.new(cfg)
       if $opt['s'] or $opt['e']
-        par=$opt['s'] ? ['frmsim',cfg[:db]['site_id']] : []
-        fsh=Frm::Sv.new(cfg,par)
-        fsh=Frm::Cl.new(cfg,'localhost') if $opt['c']
-      elsif host=$opt['h'] or $opt['c']
-        fsh=Frm::Cl.new(cfg,host)
-      else
-        fsh=Frm::Test.new(cfg)
+        cfg['iocmd']=['frmsim',cfg[:db]['site_id']] if $opt['s']
+        fsh=Frm::Sv.new(cfg)
+        cfg['host']='localhost'
       end
-      fsh
+      fsh=Frm::Cl.new(cfg) if $opt['c'] || (cfg['host']=$opt['h'])
+      fsh||Frm::Test.new(cfg)
     end
 
     class Exe < Exe
@@ -52,9 +49,9 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(cfg,host=nil)
+      def initialize(cfg)
         super(cfg)
-        host=type?(host||@fdb['host']||'localhost',String)
+        host=type?(cfg['host']||@fdb['host']||'localhost',String)
         @field.ext_http(self['id'],host).load
         @cobj.svdom.set_proc{to_s}
         ext_client(host,@fdb['port'])
@@ -67,18 +64,16 @@ module CIAX
       # @< field*
       # @ io
       attr_reader :sqlsv
-      def initialize(cfg,iocmd=[])
+      def initialize(cfg)
         super(cfg)
         @field.ext_rsp(self['id'],@fdb).load
-        if type?(iocmd,Array).empty?
-          @io=Stream.new(@fdb['iocmd'].split(' '),@fdb['wait'],1)
-          @sqlsv=@io.ext_logging(self['id'],@fdb['version'])
-        else
-          @sqlsv=@io=Stream.new(iocmd,@fdb['wait'],1)
-        end
+        sim=cfg['iocmd']
+        iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
+        @sqlsv=Stream.new(iocmd,@fdb['wait'],1)
+        @sqlsv.ext_logging(self['id'],@fdb['version']) if sim
         @cobj.ext_proc{|ent|
-          @io.snd(ent.cfg[:frame],ent.cfg[:cid])
-          @field.upd(ent){@io.rcv}
+          @sqlsv.snd(ent.cfg[:frame],ent.cfg[:cid])
+          @field.upd(ent){@sqlsv.rcv}
           'OK'
         }
         @cobj.item_proc('set'){|ent|
@@ -108,7 +103,7 @@ module CIAX
 
     if __FILE__ == $0
       ENV['VER']||='init/'
-      GetOpts.new('cet')
+      GetOpts.new('chset')
       begin
         puts List.new.shell(ARGV.shift)
       rescue InvalidID

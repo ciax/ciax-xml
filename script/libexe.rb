@@ -123,7 +123,7 @@ module CIAX
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      verbose("UDP:Client/#{self.class}","Init/Client(#{self['id']})#{host}:#{port}",6)
+      verbose("UDP:Client/#{self.class}","Init/Client(#{self['id']}):#{host}:#{port}",6)
       self
     end
 

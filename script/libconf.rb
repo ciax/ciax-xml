@@ -9,20 +9,13 @@ module CIAX
   # Usage:[]/  get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
     attr_reader :generation
-    def initialize(hash={})
+    def initialize(cfg=nil)
       @generation=[self]
-      case hash
-      when Config
-        override(hash)
-      when Hash
-        update(hash)
-      else
-        err("Bad Parameter")
-      end
+      override(cfg) if cfg
     end
 
     def override(cfg)
-      @generation+=cfg.generation
+      @generation+=type?(cfg,Config).generation
       self
     end
 

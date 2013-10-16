@@ -16,7 +16,7 @@ module CIAX
         @data['astart']=nil
         @data['alast']=0
         #For Array element
-        ['active','exec','block','int'].each{|i| @data[i]||=Arrayx.new}
+        ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
         ['crnt','last','res'].each{|i| self[i]||={}}
         @event_proc=proc{}
@@ -231,9 +231,9 @@ module CIAX
         atime=Msg.elps_date(self['atime'])
         str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
         str << "  "+Msg.color("LastActive",2)+"\t: #{self['alast']}\n"
-        str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}"
-        str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}"
-        str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}"
+        str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
+        str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
+        str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
       end
 
       private

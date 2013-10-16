@@ -27,6 +27,7 @@ module CIAX
         super('frm',@fdb['site_id']||@fdb['id'],Command.new(cfg))
         @cobj.add_int
         @field=@cobj.field
+        @field['id']=self['id']
         ext_shell(@field)
       end
 
@@ -95,6 +96,11 @@ module CIAX
     end
 
     class List < ShList
+      def initialize(upper=Config.new)
+        upper['frm']=self
+        super
+      end
+
       def new_val(id)
         @cfg[:db]=@cfg[:ldb].set(id)[:frm]
         Frm.new(@cfg)

@@ -183,8 +183,9 @@ module CIAX
 
     class List < ShList
       def initialize(upper=Config.new)
+        upper['frm']||=Frm::List.new
+        upper['app']=self
         super
-        @cfg['frm']||=Frm::List.new
       end
 
       def new_val(id)

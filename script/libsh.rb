@@ -72,8 +72,8 @@ module CIAX
     attr_reader :site
     def initialize(upper=Config.new)
       super()
+      upper[:ldb]||=Loc::Db.new
       @cfg=Config.new(upper)
-      @cfg[:ldb]||=Loc::Db.new
       @init_procs << proc{|exe| exe.cobj.lodom.add_group(:group_class =>SiteGrp)}
     end
 
@@ -99,12 +99,11 @@ module CIAX
 
     def add_layer(layer)
       type?(layer,Module)
-      lst=layer::List.new(@cfg)
       str=layer.to_s.split(':').last
       id=str.downcase
+      lst=(@cfg[id]||=layer::List.new(@cfg))
       @swlgrp.add_item(id,{:label =>str+" mode"})
       lst.init_procs << proc{|exe| exe.cobj.lodom.join_group(@swlgrp) }
-      @cfg[id]=lst
       self[id]=lst
     end
 

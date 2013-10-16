@@ -38,8 +38,9 @@ module CIAX
 
     class List < ShList
       def initialize(upper=Config.new)
-        super(upper)
-        @cfg['app']||=App::List.new
+        upper['app']||=App::List.new
+        upper['hex']=self
+        super
       end
 
       def new_val(id)

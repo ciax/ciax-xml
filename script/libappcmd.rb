@@ -65,13 +65,8 @@ module CIAX
     begin
       acf=Config.new
       acf[:db]=App::Db.new.set(app)
-      fcf=Config.new
-      fcf[:db]=Frm::Db.new.set(acf[:db]['frm_id'])
-      fcobj=Frm::Command.new(fcf)
       acobj=App::Command.new(acf)
       acobj.setcmd(args).cfg[:batch].each{|fargs|
-        #Validate batchs
-        fcobj.setcmd(fargs) if /set|unset|load|save/ !~ fargs.first
         p fargs
       }
     rescue InvalidID

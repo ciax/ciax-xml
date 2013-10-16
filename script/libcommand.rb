@@ -39,7 +39,7 @@ module CIAX
 
     def get_item(id)
       res=nil
-      find{|e| res=e.get_item(id)}
+      any?{|e| res=e.get_item(id)}
       res
     end
   end

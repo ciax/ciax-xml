@@ -28,10 +28,10 @@ cat > $inp <<EOF
 }
 EOF
 trap "rm $out $inp" EXIT
-$frmcmd $* >$out 2>&1
+<$inp $frmcmd $* >$out 2>&1
 case "$?$2:$1" in
-    1:) show `list`;;
-    2:*) show $1;;
-    0*) visi $out;;
-    *) $frmcmd $*;;
+    1:) show `list`;; # For All Devices
+    2:*) show $1;;   # For All Command of One Device
+    0*) visi $out;; # For One Command of One Device
+    *) $frmcmd $*;; # For Error Output
 esac

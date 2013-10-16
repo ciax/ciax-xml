@@ -15,7 +15,7 @@ module CIAX
         appid=delete('app_id')
         insid=delete('ins_id')||self['id']
         cover(App::Db.new.set(appid),:app).ext_ins(insid)
-        app=self[:app].update({'id'=>appid,'ins_id'=>insid,'site_id'=>id})
+        app=self[:app].update({'ins_id'=>insid,'site_id'=>id})
         frm=self[:frm]||{}
         if ref=frm.delete('ref')
           frm=cover(Db.new.set(ref)[:frm],:frm)
@@ -25,6 +25,7 @@ module CIAX
         end
         frm['host']||=(app['host']||='localhost')
         frm['port']||=app['port'].to_i-1000
+        app['id']=app.delete('app_id')
         self
       end
 

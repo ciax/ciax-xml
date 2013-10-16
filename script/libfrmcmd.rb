@@ -99,11 +99,11 @@ module CIAX
     if __FILE__ == $0
       require "libfield"
       require "libfrmdb"
-      dev,*args=ARGV
+      id,*args=ARGV
       ARGV.clear
       begin
         cfg=Config.new
-        cfg[:db]=Db.new.set(dev)
+        cfg[:db]=Db.new.set(id)
         cobj=Command.new(cfg)
         cobj.field.read unless STDIN.tty?
         print cobj.setcmd(args).cfg[:frame]

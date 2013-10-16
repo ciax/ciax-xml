@@ -40,7 +40,12 @@ module CIAX
       end
 
       def save_procs
-        Thread.new{yield while @stq.pop}
+        Thread.new{
+          tc=Thread.current
+          tc[:name]="Save Command Thread"
+          tc[:color]=9
+          yield while @stq.pop
+        }
       end
     end
 
@@ -80,7 +85,12 @@ module CIAX
       end
 
       def fork
-        @stat.thread=Thread.new{macro}
+        @stat.thread=Thread.new{
+          tc=Thread.current
+          tc[:name]="Macro Thread(#{@cfg[:cid]})"
+          tc[:color]=10
+          macro
+        }
         [@record['id'],@stat]
       end
 

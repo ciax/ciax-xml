@@ -81,6 +81,9 @@ module CIAX
         @queue=Queue.new
         @ver_color=9
         Thread.new{
+          tc=Thread.current
+          tc[:name]="SqLog Thread(#{id})"
+          tc[:color]=10
           verbose("SqLog","Init/Server '#{id}'")
           loop{
             sqlary=[]

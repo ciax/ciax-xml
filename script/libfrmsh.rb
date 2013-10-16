@@ -21,7 +21,7 @@ module CIAX
     class Exe < Exe
       # @< cobj,output,(upd_procs*)
       # @ field*
-      attr_reader :field
+      attr_reader :field,:sqlsv
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
         super('frm',@fdb['site_id']||@fdb['id'],Command.new(cfg))
@@ -64,7 +64,6 @@ module CIAX
       # @<< cobj,(output),(upd_procs*)
       # @< field*
       # @ io
-      attr_reader :sqlsv
       def initialize(cfg)
         super(cfg)
         @field.ext_rsp(self['id'],@fdb).load

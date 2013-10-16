@@ -6,6 +6,7 @@ module CIAX
   module Hex
     class View
       include Msg
+      #hint should have server status (isu,watch,exe..) like App::Exe
       def initialize(hint,stat)
         # Server Status
         @hint=type?(hint,Hash)

@@ -35,6 +35,7 @@ module CIAX
         }
         super('app',@adb['site_id']||@adb['id'],cobj)
         @stat=App::Status.new(@adb[:status][:struct].deep_copy)
+        @stat['id']=self['id']
         ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         @watch=Watch::Data.new
         @pre_procs << proc{|args|@watch.block?(args)}

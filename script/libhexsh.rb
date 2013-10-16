@@ -6,37 +6,23 @@ require "libappsh"
 
 module CIAX
   module Hex
-    def self.new(cfg,ash)
-      Msg.type?(ash,App::Exe)
-      if ['e','s','h','c'].any?{|i| $opt[i]}
-        hsh=Hex::Sv.new(cfg,ash,$opt['e'])
-      else
-        hsh=Hex::Exe.new(cfg,ash.adb)
-      end
-      hsh
-    end
-
-    class Exe < Exe
-      def initialize(cfg,adb)
-        @adb=type?(cfg[:db],Db)
-        id=@adb['site_id']
-        super('hex',id,App::Command.new(cfg))
-        stat=App::Status.new.ext_file(id)
-        ext_shell(View.new(self,stat))
-      end
+    # cfg should have ['app'](App::List)
+    def self.new(cfg)
+      Hex::Sv.new(cfg)
     end
 
     class Sv < Exe
-      def initialize(cfg,ash,logging=nil)
-        super(cfg,ash.adb)
+      def initialize(ash)
+        type?(ash,App::Exe)
+        super('hex',ash['id'],ash.cobj)
         @output=View.new(ash,ash.stat)
-        @cobj.svdom.set_proc{|ent| ash.exe(ent.args)}
         @upd_procs.concat(ash.upd_procs)
-        if logging
-          logging=Logging.new('hex',self['id'],@adb['version'])
+        if $opt['e']
+          logging=Logging.new('hex',self['id'],ash.adb['version'])
           ash.stat.save_procs << proc{logging.append({'hex' => @output.to_s})}
         end
-        ext_server(@adb['port'].to_i+1000)
+        ext_server(ash.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}
+        ext_shell(@output)
       end
 
       private
@@ -57,15 +43,14 @@ module CIAX
       end
 
       def new_val(id)
-        @cfg[:db]=@cfg[:ldb].set(id)[:app]
-        Hex.new(@cfg,@cfg['app'][id])
+        Hex.new(@cfg['app'][id])
       end
     end
   end
 
   if __FILE__ == $0
     ENV['VER']||='init/'
-    GetOpts.new('cet')
+    GetOpts.new('chset')
     begin
       puts Hex::List.new.shell(ARGV.shift)
     rescue InvalidID

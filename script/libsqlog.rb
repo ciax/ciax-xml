@@ -15,6 +15,7 @@ module CIAX
         ver||=@stat['ver'].to_i
         @log=[]
         @tid="#{@stat['type']}_#{ver}"
+        verbose("SqLog","Init/Table '#{@tid}'")
       end
 
       def create
@@ -80,7 +81,7 @@ module CIAX
         @queue=Queue.new
         @ver_color=9
         Thread.new{
-          verbose("SqLog","Init/Start '#{id}'")
+          verbose("SqLog","Init/Server '#{id}'")
           loop{
             sqlary=[]
             begin
@@ -101,7 +102,7 @@ module CIAX
       end
 
       # Check table existence
-      def init_table(sqlog)
+      def add_table(sqlog)
         Msg.type?(sqlog,SqLog::Upd)
         unless internal("tables").split(' ').include?(sqlog.tid)
           sqlog.create

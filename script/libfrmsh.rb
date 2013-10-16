@@ -7,6 +7,7 @@ require 'liblocdb'
 
 module CIAX
   module Frm
+    # cfg should have :db(Frm::Db)
     def self.new(cfg)
       if $opt['s'] or $opt['e']
         cfg['iocmd']=['frmsim',cfg[:db]['site_id']] if $opt['s']
@@ -69,11 +70,11 @@ module CIAX
         @field.ext_rsp(self['id'],@fdb).load
         sim=cfg['iocmd']
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
-        @sqlsv=Stream.new(iocmd,@fdb['wait'],1)
-        @sqlsv.ext_logging(self['id'],@fdb['version']) if sim
+        @stream=Stream.new(iocmd,@fdb['wait'],1)
+        @sqlsv=@stream.ext_logging(self['id'],@fdb['version']) unless sim
         @cobj.ext_proc{|ent|
-          @sqlsv.snd(ent.cfg[:frame],ent.cfg[:cid])
-          @field.upd(ent){@sqlsv.rcv}
+          @stream.snd(ent.cfg[:frame],ent.cfg[:cid])
+          @field.upd(ent){@stream.rcv}
           'OK'
         }
         @cobj.item_proc('set'){|ent|

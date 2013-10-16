@@ -11,16 +11,14 @@ require "thread"
 
 module CIAX
   module App
-    def self.new(cfg,fsh=nil)
-      if Frm::Sv === fsh
-        ash=App::Sv.new(cfg,fsh,$opt['e'])
-        ash=App::Cl.new(cfg,'localhost') if $opt['c']
-      elsif host=$opt['h'] or $opt['c']
-        ash=App::Cl.new(cfg,host)
-      else
-        ash=App::Test.new(cfg)
+    # cfg should have ['frm'](Frm::List)
+    def self.new(cfg)
+      if $opt['s'] or $opt['e']
+        ash=App::Sv.new(cfg)
+        cfg['host']='localhost'
       end
-      ash
+      ash=App::Cl.new(cfg) if $opt['c'] || (cfg['host']=$opt['h'])
+      ash||App::Test.new(cfg)
     end
 
     class Exe < Exe
@@ -86,9 +84,9 @@ module CIAX
     end
 
     class Cl < Exe
-      def initialize(cfg,host=nil)
+      def initialize(cfg)
         super(cfg)
-        host=type?(host||@adb['host']||'localhost',String)
+        host=type?(cfg['host']||@adb['host']||'localhost',String)
         @stat.ext_http(self['id'],host).load
         @watch.ext_http(self['id'],host).load
         ext_client(host,@adb['port'])
@@ -103,14 +101,11 @@ module CIAX
     # @< adb,watch,stat*
     # @ fsh,buf,log_proc
     class Sv < Exe
-      def initialize(cfg,fsh,logging=nil)
+      def initialize(cfg)
         super(cfg)
-        @fsh=type?(fsh,Frm::Exe)
+        @fsh=type?(cfg['frm'][self['id']],Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_rsp(@fsh.field,@adb[:status]).ext_sym(@adb).ext_file(self['id']).upd
-        if logging and @fsh.field.key?('ver')
-          @fsh.sqlsv.init_table(SqLog::Upd.new(@stat))
-        end
         @watch.ext_upd(@adb,@stat).ext_file(self['id']).upd.event_proc=proc{|args,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.setcmd(args))
@@ -122,8 +117,9 @@ module CIAX
           "ISSUED"
         }
         # Logging if version number exists
-        if logging and @adb['version']
-          ext_logging(@adb['site_id'],@adb['version'])
+        if $opt['e']
+          @fsh.sqlsv.add_table(SqLog::Upd.new(@stat)) if @fsh.field.key?('ver')
+          ext_logging(@adb['site_id'],@adb['version'])if @adb['version']
         end
         tid_auto=auto_update
         @upd_procs << proc{
@@ -192,13 +188,13 @@ module CIAX
 
       def new_val(id)
         @cfg[:db]=@cfg[:ldb].set(id)[:app]
-        App.new(@cfg,@cfg['frm'][id])
+        App.new(@cfg)
       end
     end
 
     if __FILE__ == $0
       ENV['VER']||='init/'
-      GetOpts.new('cet')
+      GetOpts.new('chset')
       begin
         List.new.shell(ARGV.shift)
       rescue InvalidID

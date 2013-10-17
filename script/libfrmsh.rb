@@ -90,8 +90,6 @@ module CIAX
           "Load [#{ent.par[0]}]"
         }
         ext_server(@fdb['port'].to_i)
-      rescue Errno::ENOENT
-        warning("FrmSv"," --- no json file")
       end
     end
 

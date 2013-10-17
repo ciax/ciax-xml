@@ -13,6 +13,14 @@ module CIAX
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
+        @cobj.add_int.set_proc{|ent|
+          if self[:stat] == 'query'
+            @cmd_que.push ent.id
+            @res_que.pop
+          else
+            'IGNORE'
+          end
+        }
       end
     end
 
@@ -20,6 +28,7 @@ module CIAX
       attr_reader :extgrp,:intgrp
       def initialize(upper)
         super
+        @cfg[:valid_keys]=[]
         al=type?(@cfg[:app],App::List)
         svc={:group_class =>ExtGrp,:entity_class =>ExtEntity,:mobj => self}
         @stq=svc[:save_que]=Queue.new

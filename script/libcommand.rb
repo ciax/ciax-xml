@@ -89,7 +89,7 @@ module CIAX
       @cfg=Config.new(upper).update(crnt)
       @cfg[:level]='group'
       @cfg[:item_class]||=Item
-      @valid_keys=[]
+      @valid_keys=@cfg[:valid_keys]||[]
       @cmdlist=CmdList.new(@cfg,@valid_keys)
       @cmdary=[@cmdlist]
       @ver_color=3

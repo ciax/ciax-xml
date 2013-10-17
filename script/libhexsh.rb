@@ -14,11 +14,11 @@ module CIAX
     class Sv < Exe
       def initialize(ash)
         type?(ash,App::Exe)
-        super('hex',ash['id'],ash.cobj)
+        super('hex',ash.id,ash.cobj)
         @output=View.new(ash,ash.stat)
         @upd_procs.concat(ash.upd_procs)
         if $opt['e']
-          logging=Logging.new('hex',self['id'],ash.adb['version'])
+          logging=Logging.new('hex',@id,ash.adb['version'])
           ash.stat.save_procs << proc{logging.append({'hex' => @output.to_s})}
         end
         ext_server(ash.adb['port'].to_i+1000) if ['e','s'].any?{|i| $opt[i]}

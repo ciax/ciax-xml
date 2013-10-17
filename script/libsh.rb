@@ -16,7 +16,7 @@ module CIAX
     def ext_shell(output={},pdb={},pstat=nil)
       # For Shell
       @output=output
-      @pdb={'layer' => "%s:",'id' => nil}.update(pdb)
+      @pdb=pdb
       @pstat=pstat||self
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
@@ -26,7 +26,7 @@ module CIAX
     end
 
     def prompt
-      str=''
+      str="#@layer:#@id"
       @pdb.each{|k,fmt|
         next unless v=@pstat[k]
         case fmt
@@ -45,7 +45,7 @@ module CIAX
     # '^D' gives exit break
     # mode gives special break (loop returns mode)
     def shell
-      verbose(self.class,"Init/Shell(#{self['id']})",2)
+      verbose(self.class,"Init/Shell(#@id)",2)
       Readline.completion_proc=proc{|word|
         @cobj.valid_keys.grep(/^#{word}/)
       }

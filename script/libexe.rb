@@ -11,11 +11,11 @@ require "libextcmd"
 
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :upd_procs,:post_procs,:cobj,:output
+    attr_reader :layer,:id,:upd_procs,:post_procs,:cobj,:output
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
-      self['id']=id
-      self['layer']=layer
+      @id=id
+      @layer=layer
       @cobj=type?(cobj,Command)
       @pre_procs=[] # Proc for Command Check (by User exec)
       @post_procs=[] # Proc for Command Issue (by User exec)
@@ -84,10 +84,10 @@ module CIAX
 
     # JSON expression of server stat will be sent.
     def ext_server(port)
-      verbose("UDP:Server/#{self.class}","Init/Server(#{self['id']}):#{port}",2)
+      verbose("UDP:Server/#{self.class}","Init/Server(#@id):#{port}",2)
       Thread.new{
         tc=Thread.current
-        tc[:name]="Server Thread(#{self['layer']}:#{self['id']})"
+        tc[:name]="Server Thread(#@layer:#@id)"
         tc[:color]=9
         Thread.pass
         UDPSocket.open{ |udp|
@@ -123,7 +123,7 @@ module CIAX
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
-      verbose("UDP:Client/#{self.class}","Init/Client(#{self['id']}):#{host}:#{port}",6)
+      verbose("UDP:Client/#{self.class}","Init/Client(#@id):#{host}:#{port}",6)
       self
     end
 

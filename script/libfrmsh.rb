@@ -27,7 +27,7 @@ module CIAX
         super('frm',@fdb['site_id']||@fdb['id'],Command.new(cfg))
         @cobj.add_int
         @field=@cobj.field
-        @field['id']=self['id']
+        @field['id']=@id
         ext_shell(@field)
       end
 
@@ -54,7 +54,7 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         host=type?(cfg['host']||@fdb['host']||'localhost',String)
-        @field.ext_http(self['id'],host).load
+        @field.ext_http(@id,host).load
         @cobj.svdom.set_proc{to_s}
         ext_client(host,@fdb['port'])
         @upd_procs << proc{@field.load}
@@ -67,11 +67,11 @@ module CIAX
       # @ io
       def initialize(cfg)
         super(cfg)
-        @field.ext_rsp(self['id'],@fdb).load
+        @field.ext_rsp(@id,@fdb).load
         sim=cfg['iocmd']
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(iocmd,@fdb['wait'],1)
-        @sqlsv=@stream.ext_logging(self['id'],@fdb['version']) unless sim
+        @sqlsv=@stream.ext_logging(@id,@fdb['version']) unless sim
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.cfg[:cid])
           @field.upd(ent){@stream.rcv}

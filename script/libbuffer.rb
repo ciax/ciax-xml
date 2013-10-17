@@ -49,7 +49,7 @@ module CIAX
     def recv_proc
       @tid=Thread.new{
         tc=Thread.current
-        tc[:name]="Buffer Thread(#{@svst['layer']}:#{@svst['id']})"
+        tc[:name]="Buffer Thread(#{@svst.layer}:#{@svst.id})"
         tc[:color]=10
         Thread.pass
         loop{

@@ -30,12 +30,12 @@ module CIAX
         cobj=Command.new(cfg)
         cobj.interrupt.set_proc{
           int=@watch.interrupt
-          verbose("AppSh","#{self['id']}/Interrupt:#{int}")
+          verbose("AppSh","#@id/Interrupt:#{int}")
           "INTERRUPT"
         }
         super('app',@adb['site_id']||@adb['id'],cobj)
         @stat=Status.new(@adb[:status][:struct].deep_copy)
-        @stat['id']=self['id']
+        @stat['id']=@id
         ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         @watch=Watch::Data.new
         @pre_procs << proc{|args|@watch.block?(args)}
@@ -88,8 +88,8 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         host=type?(cfg['host']||@adb['host']||'localhost',String)
-        @stat.ext_http(self['id'],host).load
-        @watch.ext_http(self['id'],host).load
+        @stat.ext_http(@id,host).load
+        @watch.ext_http(@id,host).load
         ext_client(host,@adb['port'])
         @upd_procs << proc{
           @stat.load
@@ -104,16 +104,16 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super(cfg)
-        @fsh=type?(cfg['frm'][self['id']],Frm::Exe)
+        @fsh=type?(cfg['frm'][@id],Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-        @stat.ext_rsp(self['id'],@adb,@fsh.field).ext_sym(@adb).upd
-        @watch.ext_upd(@adb,@stat).ext_file(self['id']).upd.event_proc=proc{|args,p|
-          verbose("AppSv","#{self['id']}/Auto(#{p}):#{args}")
+        @stat.ext_rsp(@id,@adb,@fsh.field).ext_sym(@adb).upd
+        @watch.ext_upd(@adb,@stat).ext_file(@id).upd.event_proc=proc{|args,p|
+          verbose("AppSv","#@id/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.setcmd(args))
         }
         @buf=init_buf
         @cobj.ext_proc{|ent|
-          verbose("AppSv","#{self['id']}/Issue:#{ent.args}")
+          verbose("AppSv","#@id/Issue:#{ent.args}")
           @buf.send(1,ent)
           "ISSUED"
         }
@@ -164,7 +164,7 @@ module CIAX
       def auto_update
         Thread.new{
           tc=Thread.current
-          tc[:name]="Update Thread(#{self['layer']}:#{self['id']})"
+          tc[:name]="Update Thread(#@layer:#@id)"
           tc[:color]=4
           Thread.pass
           int=(@watch['period']||300).to_i

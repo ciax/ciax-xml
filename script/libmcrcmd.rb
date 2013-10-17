@@ -191,14 +191,7 @@ module CIAX
         @cfg[:int_grp].valid_keys.replace(cmds)
         @stat[:option]=cmds.join('/')
         setstat 'query'
-        Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
-        res=loop{
-          input if Msg.fg?
-          cmd=@stat.cmd_que.pop
-          break cmd if cmds.include?(cmd)
-          @stat.res_que << 'INVALID'
-        }
-        @stat.res_que << 'OK'
+        res=input(cmds)
         @stat[:option]=nil
         setstat 'run'
         @step['action']=res
@@ -207,8 +200,21 @@ module CIAX
         ent.exe
       end
 
-      def input
-        @stat.cmd_que << Readline.readline(@step.body("[#{@stat[:option]}]?"),true).rstrip
+      def input(cmds)
+        Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
+        loop{
+          if Msg.fg?
+            prom=@step.body("[#{@stat[:option]}]?")
+            @stat.cmd_que << Readline.readline(prom,true).rstrip
+          end
+          id=@stat.cmd_que.pop.split(/[ :]/).first
+          if cmds.include?(id)
+            @stat.res_que << 'OK'
+            break id
+          else
+            @stat.res_que << 'INVALID'
+          end
+        }
       end
 
       # Print section

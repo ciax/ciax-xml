@@ -26,7 +26,7 @@ module CIAX
         }
         self['sid']=''
         @cobj.save_procs{@list.save}
-        ig=@cobj.add_int
+        ig=@cobj.add_int(:valid_keys =>[])
         ig.set_proc{|ent|
           n=ent.par[0]||@list.data.keys.last||""
           self['sid']=n

@@ -10,7 +10,7 @@ module CIAX
         cfg[:db]=Db.new.set('ciax')
         cfg[:app]=App::List.new
         ent=Command.new(cfg).setcmd(ARGV)
-        ent.fork[1].ext_shell(ent.record).shell
+        ent.fork[1].ext_shell.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

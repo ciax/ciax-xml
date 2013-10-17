@@ -8,11 +8,16 @@ module CIAX
     class Stat < Exe
       attr_reader :running,:cmd_que,:res_que
       attr_accessor :thread
-      def initialize(id,mobj)
-        super('mcr',id,mobj)
+      def initialize(ent)
+        @entity=type?(ent,ExtEntity)
+        super('mcr',ent.cfg[:cid],ent.cfg[:mobj])
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
+      end
+
+      def ext_shell
+        super(@entity.record)
         @cobj.add_int.set_proc{|ent|
           if self[:stat] == 'query'
             @cmd_que.push ent.id
@@ -21,6 +26,7 @@ module CIAX
             'IGNORE'
           end
         }
+        self
       end
     end
 
@@ -44,8 +50,9 @@ module CIAX
         @extgrp.set_proc(&def_proc)
       end
 
-      def add_int
-        @intgrp=@svdom.add_group(:group_class =>IntGrp)
+      def add_int(crnt={})
+        crnt[:group_class]=IntGrp
+        @intgrp=@svdom.add_group(crnt)
       end
 
       def save_procs
@@ -90,7 +97,7 @@ module CIAX
         super
         @record=Record.new
         [:cid,:label].each{|k| @record[k.to_s]=@cfg[k]} # Fixed Value
-        @stat=Stat.new(@cfg[:cid],@cfg[:mobj])
+        @stat=Stat.new(self)
       end
 
       def fork

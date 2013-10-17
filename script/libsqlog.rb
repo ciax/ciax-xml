@@ -13,7 +13,6 @@ module CIAX
         @ver_color=9
         @stat=type?(stat,Hash)
         ver||=@stat['ver'].to_i
-        @log=[]
         @tid="#{@stat['type']}_#{ver}"
         verbose("SqLog","Init/Table '#{@tid}'")
       end
@@ -21,13 +20,11 @@ module CIAX
       def create
         key=['time',*expand.keys].uniq.join("','")
         verbose("SqLog","create ('#{key}')")
-        @log.push "create table #{@tid} ('#{key}',primary key(time));"
-        self
+        "create table #{@tid} ('#{key}',primary key(time));"
       end
 
-      def add(key)
-        @log.push "alter table #{@tid} add column #{key};"
-        self
+      def add_field(key)
+        "alter table #{@tid} add column #{key};"
       end
 
       def upd
@@ -35,12 +32,15 @@ module CIAX
         key=val.keys.map{|s| s.to_s}.join("','")
         val=val.values.map{|s| s.to_s}.join("','")
         verbose("SqLog","Update(#{@stat['time']}):[#{@stat['id']}/#{@tid}]")
-        @log.push "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
-        self
+        "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
       end
 
-      def to_s
-        (["begin;"]+@log+["commit;"]).join("\n")
+      def start
+        "begin;"
+      end
+
+      def commit
+        "commit;"
       end
 
       private
@@ -86,15 +86,16 @@ module CIAX
           tc[:color]=10
           verbose("SqLog","Init/Server '#{id}'")
           loop{
-            sqlary=[]
+            sqlary=['begin;']
             begin
               sqlary << @queue.pop
             end until @queue.empty?
+            sqlary << 'commit;'
             IO.popen(@sqlcmd,'w'){|f|
               sqlary.each{|sql|
                 begin
                   f.puts sql
-                  verbose("SqLog","Save Complete for '#{id}'")
+                  verbose("SqLog","Saved for '#{sql}'")
                 rescue
                   Msg.abort("Sqlite3 input error\n#{sql}")
                 end
@@ -105,14 +106,14 @@ module CIAX
       end
 
       # Check table existence
-      def add_table(sqlog)
-        Msg.type?(sqlog,SqLog::Upd)
+      def add_table(stat)
+        sqlog=Upd.new(stat)
         unless internal("tables").split(' ').include?(sqlog.tid)
-          sqlog.create
+          @queue.push sqlog.create
           verbose("SqLog","Init/Table '#{sqlog.tid}' is created")
         end
         sqlog.stat.upd_procs << proc{
-          @queue.push sqlog.upd.to_s
+          @queue.push sqlog.upd
         }
         self
       end

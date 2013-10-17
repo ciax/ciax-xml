@@ -17,6 +17,7 @@ module CIAX
     sqlog=SqLog::Upd.new(stat,$opt['t']&&"test")
     fgrp=nil
     site_id=nil
+    logline=['begin;']
     readlines.grep(/rcv/).each{|str|
       hash=Logging.set_logline(str)
       if !site_id
@@ -35,17 +36,16 @@ module CIAX
         item=fgrp.setcmd(hash['cmd'].split(':'))
         field.upd(item){hash}
         stat.upd
-        sqlog.upd
+        logline << sqlog.upd
         Msg.progress
       rescue
         $stderr.print $! if $opt['v']
         Msg.progress(false)
       end
     }
+    logline << 'commit;'
     $stderr.puts
-    puts sqlog
-  rescue Interrupt
-    puts stat.sql
+    puts logline.join("\n")
   rescue InvalidID
     $opt.usage("(opt) [stream_log]")
     # input format 'sqlite3 -header'

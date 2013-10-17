@@ -18,9 +18,9 @@ module CIAX
 
     class Command < Command
       attr_reader :extgrp,:intgrp
-      def initialize(upper,al)
-        super(upper)
-        type?(al,App::List)
+      def initialize(upper)
+        super
+        al=type?(@cfg[:app],App::List)
         svc={:group_class =>ExtGrp,:entity_class =>ExtEntity,:mobj => self}
         @stq=svc[:save_que]=Queue.new
         svc[:submcr_proc]=proc{|args| setcmd(args) }
@@ -204,10 +204,10 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new('rest',{'n' => 'nonstop mode'})
       begin
-        al=App::List.new
         cfg=Config.new
+        cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
-        mobj=Command.new(cfg,al)
+        mobj=Command.new(cfg)
         mobj.setcmd(ARGV).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

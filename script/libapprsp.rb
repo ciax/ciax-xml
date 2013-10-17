@@ -10,12 +10,14 @@ module CIAX
         Msg.type?(obj,Status)
       end
 
-      def ext_rsp(field,sdb)
-        @field=type?(field,Frm::Field)
+      def ext_rsp(id,adb,field)
+        ext_file(id)
+        sdb=type?(adb,Db)[:status]
         @ads=sdb[:body]
         @fmt=sdb[:format]||{}
         @fml=sdb[:formula]||{}
         @ads.keys.each{|k| @data[k]||='' }
+        @field=type?(field,Frm::Field)
         self
       end
 
@@ -102,8 +104,8 @@ module CIAX
     end
 
     class Status
-      def ext_rsp(field,sdb)
-        extend(App::Rsp).ext_rsp(field,sdb)
+      def ext_rsp(id,adb,field)
+        extend(App::Rsp).ext_rsp(id,adb,field)
       end
     end
 
@@ -117,9 +119,9 @@ module CIAX
       fdb=ldb[:frm]
       adb=ldb[:app]
       field.ext_rsp(field['id'],fdb)
-      stat=Status.new.ext_rsp(field,adb[:status]).upd
+      stat=Status.new.ext_rsp(ldb['id'],adb,field).upd
       puts stat
-      stat.ext_file(ldb['id']).save
+      stat.save
       exit
     end
   end

@@ -34,7 +34,7 @@ module CIAX
           "INTERRUPT"
         }
         super('app',@adb['site_id']||@adb['id'],cobj)
-        @stat=App::Status.new(@adb[:status][:struct].deep_copy)
+        @stat=Status.new(@adb[:status][:struct].deep_copy)
         @stat['id']=self['id']
         ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
         @watch=Watch::Data.new
@@ -106,7 +106,7 @@ module CIAX
         super(cfg)
         @fsh=type?(cfg['frm'][self['id']],Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
-        @stat.ext_rsp(@fsh.field,@adb[:status]).ext_sym(@adb).ext_file(self['id']).upd
+        @stat.ext_rsp(self['id'],@adb,@fsh.field).ext_sym(@adb).upd
         @watch.ext_upd(@adb,@stat).ext_file(self['id']).upd.event_proc=proc{|args,p|
           verbose("AppSv","#{self['id']}/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.setcmd(args))

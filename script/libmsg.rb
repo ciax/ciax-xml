@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-
+require "fileutils"
 module CIAX
   VarDir="#{ENV['HOME']}/.var"
   ScrDir=::File.dirname(__FILE__)

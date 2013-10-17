@@ -78,7 +78,9 @@ module CIAX
 
     # Generate File Name
     def fmar
-      VarDir+"/cache/#{@base}.mar"
+      dir=VarDir+"/cache/"
+      FileUtils.mkdir_p dir
+      dir+"#{@base}.mar"
     end
 
     def set_par(e,id,db)

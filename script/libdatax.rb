@@ -90,14 +90,12 @@ module CIAX
 
     def _setid(id)
       self['id']=id||Msg.cfg_err("ID")
-      @base=self['type']+'_'+self['id']+'.json'
-      @prefix=VarDir
       self
     end
 
     def fname(tag=nil)
       @base=[self['type'],self['id'],tag].compact.join('_')+'.json'
-      @prefix+"/json/"+@base
+      @prefix+@base
     end
 
     def taglist
@@ -111,7 +109,7 @@ module CIAX
     require "open-uri"
     def ext_http(host)
       host||='localhost'
-      @prefix="http://"+host
+      @prefix="http://"+host+"/json/"
       verbose("Http","Initialize")
       self
     end
@@ -136,6 +134,8 @@ module CIAX
   module File
     def ext_file
       verbose("File","Initialize")
+      @prefix=VarDir+"/json/"
+      FileUtils.mkdir_p @prefix
       self
     end
 

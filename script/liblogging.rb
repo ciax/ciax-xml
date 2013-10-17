@@ -13,6 +13,7 @@ module CIAX
       type?(id,String)
       ver=ver.to_i
       @header={'time' => UnixTime.now,'id' => id,'ver' => ver}
+      FileUtils.mkdir_p VarDir
       @loghead=VarDir+"/"+type+"_#{id}"
       verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
       @queue=Queue.new

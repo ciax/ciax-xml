@@ -24,7 +24,7 @@ module CIAX
           @list.data[key]=stat
           "OK"
         }
-        self['sid']=''
+        self['sid']='' # response id
         @cobj.save_procs{@list.save}
         ig=@cobj.add_int(:valid_keys =>[])
         ig.set_proc{|ent|

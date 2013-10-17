@@ -17,7 +17,7 @@ module CIAX
       end
 
       def ext_shell
-        super(@entity.record)
+        super(@entity.record,{:stat => "(%s)",:option =>"[%s]"})
         @cobj.add_int.set_proc{|ent|
           if self[:stat] == 'query'
             @cmd_que.push ent.id

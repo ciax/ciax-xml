@@ -162,11 +162,7 @@ module CIAX
       end
 
       def auto_update
-        Thread.new{
-          tc=Thread.current
-          tc[:name]="Update Thread(#@layer:#@id)"
-          tc[:color]=4
-          Thread.pass
+        Threadx.new("Update Thread(#@layer:#@id)",4){
           int=(@watch['period']||300).to_i
           loop{
             begin

@@ -85,11 +85,7 @@ module CIAX
     # JSON expression of server stat will be sent.
     def ext_server(port)
       verbose("UDP:Server/#{self.class}","Init/Server(#@id):#{port}",2)
-      Thread.new{
-        tc=Thread.current
-        tc[:name]="Server Thread(#@layer:#@id)"
-        tc[:color]=9
-        Thread.pass
+      Threadx.new("Server Thread(#@layer:#@id)",9){
         UDPSocket.open{ |udp|
           udp.bind("0.0.0.0",port.to_i)
           loop {

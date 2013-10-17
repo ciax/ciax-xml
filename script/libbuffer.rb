@@ -47,11 +47,7 @@ module CIAX
     end
 
     def recv_proc
-      @tid=Thread.new{
-        tc=Thread.current
-        tc[:name]="Buffer Thread(#{@svst.layer}:#{@svst.id})"
-        tc[:color]=10
-        Thread.pass
+      @tid=Threadx.new("Buffer Thread(#{@svst.layer}:#{@svst.id})",10){
         loop{
           begin
             sort(*@q.shift)

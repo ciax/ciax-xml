@@ -41,6 +41,17 @@ module CIAX
     end
   end
 
+  class Threadx < Thread
+    def initialize(name,color=4)
+      th=super{
+        Thread.pass
+        yield
+      }
+      th[:name]=name
+      th[:color]=color
+    end
+  end
+
   # Global option
   class GetOpts < Hash
     def initialize(str='',db={})

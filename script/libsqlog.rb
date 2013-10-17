@@ -80,10 +80,7 @@ module CIAX
         @sqlcmd=["sqlite3",VarDir+"/sqlog_"+id+".sq3"]
         @queue=Queue.new
         @ver_color=9
-        Thread.new{
-          tc=Thread.current
-          tc[:name]="SqLog Thread(#{id})"
-          tc[:color]=10
+        Threadx.new("SqLog Thread(#{id})",10){
           verbose("SqLog","Init/Server '#{id}'")
           loop{
             sqlary=['begin;']

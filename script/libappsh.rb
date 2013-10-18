@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 require 'libfrmsh'
 require "libstatus"
-require "libwatch"
+require "libwatview"
 require "libappcmd"
 require "libapprsp"
 require "libappsym"

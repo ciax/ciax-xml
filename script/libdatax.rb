@@ -52,13 +52,12 @@ module CIAX
         @data[k]=v
       }
       self['time']=UnixTime.now
-      @upd_procs.each{|p| p.call(self)}
-      self
+      upd
     end
 
     def unset(key)
       val=@data.delete(key)
-      @upd_procs.each{|p| p.call(self)}
+      upd
       val
     end
 
@@ -86,8 +85,7 @@ module CIAX
     def _setdata
       @data=delete(@dataname).extend(Enumx)
       self['time']=UnixTime.parse(self['time']||UnixTime.now)
-      @upd_procs.each{|p| p.call(self)}
-      self
+      upd
     end
 
     def _setid(id)

@@ -22,7 +22,7 @@ module CIAX
       reopen{
         @f.syswrite(str)
       }
-      conv('snd',str,cid).save
+      conv('snd',str,cid).upd.save
       self
     end
 
@@ -33,7 +33,7 @@ module CIAX
         @f.sysread(4096)
       }||Msg.com_err("Stream:No response")
       verbose("Stream","Recieved #{str.size} byte on #{self['cmd']}")
-      conv('rcv',str).save
+      conv('rcv',str).upd.save
       self
     end
 

@@ -74,7 +74,7 @@ module CIAX
         @sqlsv=@stream.ext_logging(@id,@fdb['version']) unless sim
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.cfg[:cid])
-          @field.rcv(ent){@stream.rcv}.upd
+          @field.rcv(ent){@stream.rcv}.upd.save
           'OK'
         }
         @cobj.item_proc('set'){|ent|

@@ -22,7 +22,7 @@ module CIAX
       reopen{
         @f.syswrite(str)
       }
-      upd('snd',str,cid).save
+      conv('snd',str,cid).save
       self
     end
 
@@ -33,7 +33,7 @@ module CIAX
         @f.sysread(4096)
       }||Msg.com_err("Stream:No response")
       verbose("Stream","Recieved #{str.size} byte on #{self['cmd']}")
-      upd('rcv',str).save
+      conv('rcv',str).save
       self
     end
 
@@ -60,12 +60,12 @@ module CIAX
     end
 
     private
-    def upd(dir,data,cid=nil)
+    def conv(dir,data,cid=nil)
       self['time']=UnixTime.now
       self[:data]=data
       @data.update({'dir'=>dir,'base64'=>encode(data)})
       @data['cmd']=cid if cid
-      super()
+      self
     end
 
     def encode(str)

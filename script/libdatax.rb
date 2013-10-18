@@ -26,7 +26,9 @@ module CIAX
       _getdata.to_s
     end
 
-    def upd # update after processing
+    # update after processing
+    # never inherit
+    def upd
       @upd_procs.each{|p| p.call(self)}
       self
     end

@@ -67,12 +67,12 @@ module CIAX
       end
 
       def to_s
-        upd
+        conv
         super
       end
 
       private
-      def upd
+      def conv
         @sdb[:group].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
@@ -108,7 +108,7 @@ module CIAX
       end
 
       def to_s
-        upd
+        conv
         cm=Hash.new(2).update({'active'=>5,'alarm' =>1,'warn' =>3,'hide' =>0})
         lines=[]
         each{|k,v|

@@ -27,12 +27,13 @@ module CIAX
         @frame=FrmAry.new(dbr['terminator'],dbr['delimiter'],db['endian'],db['ccmethod'])
         # Field Initialize
         @data.replace db[:field][:struct].deep_copy if @data.empty?
+        # Block accepts [frame,time]
+        # Result : executed block or not
+        @upd_procs << proc{save}
         self
       end
 
-      # Block accepts [frame,time]
-      # Result : executed block or not
-      def upd(ent)
+      def rcv(ent)
         @current_ent=type?(ent,Entity)
         if rid=ent.cfg[:response]
           @sel[:body]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
@@ -45,8 +46,6 @@ module CIAX
             verbose("FrmRsp","Verify:CC OK <#{cc}>")
           end
           verbose("FrmRsp","Updated(#{self['time']})") #Field::get
-          super()
-          save
         else
           verbose("FrmRsp","Send Only")
           @sel[:body]=nil
@@ -141,7 +140,7 @@ module CIAX
       ent=fobj.setcmd(cid.split(':'))
       field=Field.new.ext_rsp(id,fdb)
       field.load if $opt['m']
-      field.upd(ent){res}
+      field.rcv(ent){res}.upd
       puts field
       exit
     end

@@ -83,33 +83,31 @@ module CIAX
         ['crnt','last','res'].each{|k| self[k]={}}
         upd_last
         @stat.upd_procs << proc{upd}
-        self
-      end
-
-      # Stat no changed -> clear exec, no eval
-      def upd
-        @data['exec'].clear
-        return self if self['crnt']['time'] == @stat['time']
-        upd_last
-        hash={'int' =>[],'exec' =>[],'block' =>[]}
-        noact=@data['active'].empty?
-        @data['active'].clear
-        @wdb[:stat].each{|i,v|
-          next unless check(i)
-          @data['active'] << i
-          hash.each{|k,a|
-            n=@wdb[k.to_sym][i]
-            a << n if n && !a.include?(n)
+        # Stat no changed -> clear exec, no eval
+        @upd_procs << proc{
+          @data['exec'].clear
+          return self if self['crnt']['time'] == @stat['time']
+          upd_last
+          hash={'int' =>[],'exec' =>[],'block' =>[]}
+          noact=@data['active'].empty?
+          @data['active'].clear
+          @wdb[:stat].each{|i,v|
+            next unless check(i)
+            @data['active'] << i
+            hash.each{|k,a|
+              n=@wdb[k.to_sym][i]
+              a << n if n && !a.include?(n)
+            }
           }
+          lstart=@data['astart']
+          @data['astart']=(noact & active?) ? UnixTime.now : nil
+          @data['alast']=UnixTime.now-lstart if lstart && !@data['astart']
+          hash.each{|k,a|
+            @data[k].replace a.flatten(1).uniq
+          }
+          verbose("Watch","Updated(#{@stat['time']})")
         }
-        lstart=@data['astart']
-        @data['astart']=(noact & active?) ? UnixTime.now : nil
-        @data['alast']=UnixTime.now-lstart if lstart && !@data['astart']
-        hash.each{|k,a|
-          @data[k].replace a.flatten(1).uniq
-        }
-        verbose("Watch","Updated(#{@stat['time']})")
-        super
+        self
       end
 
       def ext_file(id)

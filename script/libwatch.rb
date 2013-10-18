@@ -5,8 +5,8 @@ require 'librerange'
 module CIAX
   module Watch
     class Data < Datax
-      # @ event_proc*
-      attr_accessor :event_proc
+      # @ event_procs*
+      attr_accessor :event_procs
 
       def initialize
         @ver_color=6
@@ -19,7 +19,7 @@ module CIAX
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
         ['crnt','last','res'].each{|i| self[i]||={}}
-        @event_proc=proc{}
+        @event_procs=[]
         self
       end
 
@@ -34,9 +34,9 @@ module CIAX
       end
 
       def issue
-        # block parm = [args + priority(2)]
+        # block parm = [priority(2),args]
         cmdary=@data['exec'].each{|args|
-          @event_proc.call([args,2])
+          @event_procs.each{|p| p.call([2,args])}
           verbose("Watch","ISSUED_AUTO:#{args}")
         }.dup
         @data['exec'].clear
@@ -45,9 +45,9 @@ module CIAX
 
       def interrupt
         verbose("Watch","Interrupt:#{@data['int']}")
-        # block parm = [args + priority(0)]
+        # block parm = [priority(0),args]
         cmdary=@data['int'].each{|args|
-          @event_proc.call([args,0])
+          @event_procs.each{|p| p.call([0,args])}
           verbose("Watch","ISSUED_INT:#{args}")
         }.dup
         @data['int'].clear
@@ -60,7 +60,7 @@ module CIAX
     end
 
     module Upd
-      # @< (event_proc*)
+      # @< (event_procs*)
       # @ wdb,val
       def self.extended(obj)
         Msg.type?(obj,Data)

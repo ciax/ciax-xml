@@ -77,7 +77,7 @@ module CIAX
           }
           "Delete #{ent.par[0]}"
         }
-        @watch.event_proc=proc{|args,p|
+        @watch.event_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }
         @upd_procs << proc{@watch.issue}
@@ -107,7 +107,8 @@ module CIAX
         @fsh=type?(cfg['frm'][@id],Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_rsp(@id,@adb,@fsh.field).ext_sym(@adb).upd
-        @watch.ext_upd(@adb,@stat).ext_file(@id).upd.event_proc=proc{|args,p|
+        @watch.ext_upd(@adb,@stat).ext_file(@id).upd
+        @watch.event_procs << proc{|p,args|
           verbose("AppSv","#@id/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.setcmd(args))
         }

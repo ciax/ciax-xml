@@ -12,7 +12,7 @@ for id in $ids; do
     then
         json_view <$stat
     else
-        ~/lib/libstatus.rb -v < $stat
+        ~/lib/libappview.rb < $stat
     fi
     read -t 0 && break
 done

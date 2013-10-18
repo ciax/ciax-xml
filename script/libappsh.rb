@@ -120,7 +120,10 @@ module CIAX
         }
         # Logging if version number exists
         if $opt['e']
-          @fsh.sqlsv.add_table(@stat) if @fsh.sqlsv
+          if sv=@fsh.sqlsv
+            sv.add_table(@stat)
+            sv.add_table(@buf)
+          end
           ext_logging(@adb['site_id'],@adb['version'])if @adb['version']
         end
         tid_auto=auto_update

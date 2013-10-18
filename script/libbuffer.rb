@@ -15,10 +15,11 @@ require "thread"
 #  -> provide single frame args(Array) as it is called
 #  (stack if Queue is empty)
 module CIAX
-  class Buffer
+  class Buffer < Datax
     include Msg
     # svst: Server Status
     def initialize(svst={})
+      super('issue',{'pri' => '','cid' => ''})
       @svst=type?(svst,Hash)
       #element of @q is bunch of frm args corresponding an appcmd
       @q=Queue.new
@@ -39,6 +40,8 @@ module CIAX
       clear if n == 0
       batch=@send_proc.call(ent)
       #batch is frm batch (ary of ary)
+      @data.update('time'=>UnixTime.now,'pri' => n,'cid' => ent.id)
+      upd
       unless batch.empty?
         @svst['isu']=true
         @q.push([n,batch])

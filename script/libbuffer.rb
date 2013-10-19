@@ -14,6 +14,13 @@ require "thread"
 #  Queue -> Outbuf until Queue is empty
 #  -> provide single frame args(Array) as it is called
 #  (stack if Queue is empty)
+#
+# *Command Priority
+#  0:Interrupt
+#  1:User Input
+#  2:Event Driven
+#  3:Periodic Update
+
 module CIAX
   class Buffer < Datax
     include Msg

@@ -107,7 +107,7 @@ module CIAX
         @fsh=type?(cfg['frm'][@id],Frm::Exe)
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_rsp(@id,@adb,@fsh.field).ext_sym(@adb).upd
-        @watch.ext_upd(@adb,@stat).ext_file(@id).upd
+        @watch.ext_upd(@adb,@stat).ext_file.upd
         @watch.event_procs << proc{|p,args|
           verbose("AppSv","#@id/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.setcmd(args))
@@ -124,7 +124,7 @@ module CIAX
             sv.add_table(@stat)
             sv.add_table(@buf)
           end
-          ext_logging(@adb['site_id'],@adb['version'])if @adb['version']
+          @watch.ext_logging if @stat['ver']
         end
         tid_auto=auto_update
         @upd_procs << proc{
@@ -133,14 +133,6 @@ module CIAX
           self['na'] = !@buf.alive?
         }
         ext_server(@adb['port'])
-      end
-
-      def ext_logging(id,ver=0)
-        logging=Logging.new('issue',id,ver)
-        @post_procs << proc{|args|
-          logging.append({'cmd'=>args,'active'=>@watch.data['active']})
-        }
-        self
       end
 
       private
@@ -170,7 +162,7 @@ module CIAX
           int=(@watch['period']||300).to_i
           loop{
             begin
-              @buf.send(2,@cobj.setcmd(['upd']))
+              @buf.send(3,@cobj.setcmd(['upd']))
             rescue InvalidID
               warning("AppSv",$!)
             end

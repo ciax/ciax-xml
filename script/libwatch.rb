@@ -7,7 +7,6 @@ module CIAX
     class Data < Datax
       # @ event_procs*
       attr_accessor :event_procs
-
       def initialize
         @ver_color=6
         super('watch')
@@ -110,12 +109,19 @@ module CIAX
         self
       end
 
-      def ext_file(id)
-        super
+      def ext_file
+        super(@stat['id'])
         @stat.save_procs << proc{save}
         self
       end
 
+      def ext_logging
+        logging=Logging.new('event',@stat['id'],@stat['ver'])
+        @event_procs << proc{|p,args|
+          logging.append({'cmd'=>args,'active'=>@data['active']})
+        }
+        self
+      end
       private
       def upd_last
         @list.each{|k|

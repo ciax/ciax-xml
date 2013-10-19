@@ -44,13 +44,9 @@ module CIAX
 
       def interrupt
         verbose("Watch","Interrupt:#{@data['int']}")
-        # block parm = [priority(0),args]
-        cmdary=@data['int'].each{|args|
-          @event_procs.each{|p| p.call([0,args])}
-          verbose("Watch","ISSUED_INT:#{args}")
-        }.dup
+        batch=@data['int'].dup
         @data['int'].clear
-        cmdary
+        batch
       end
 
       def ext_upd(adb,stat)

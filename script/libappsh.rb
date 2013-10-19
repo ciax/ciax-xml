@@ -28,11 +28,6 @@ module CIAX
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
         cobj=Command.new(cfg)
-        cobj.interrupt.set_proc{
-          int=@watch.interrupt
-          verbose("AppSh","#@id/Interrupt:#{int}")
-          "INTERRUPT"
-        }
         super('app',@adb['site_id']||@adb['id'],cobj)
         @stat=Status.new(@adb[:status][:struct].deep_copy)
         @stat['id']=@id
@@ -81,6 +76,11 @@ module CIAX
           Msg.msg("#{args} is issued by event")
         }
         @upd_procs << proc{@watch.issue}
+      end
+
+      def interrupt
+        batch=@watch.interrupt
+        Msg.msg("#@id/Interrupt:#{batch}")
       end
     end
 
@@ -133,6 +133,13 @@ module CIAX
           self['na'] = !@buf.alive?
         }
         ext_server(@adb['port'])
+      end
+
+      def interrupt
+        @watch.interrupt.each{|args|
+          verbose("AppSv","Interrupt:#{args}")
+          @buf.send(0,@cobj.setcmd(args))
+        }
       end
 
       private

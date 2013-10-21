@@ -115,7 +115,7 @@ module CIAX
         }
         @buf=init_buf
         @cobj.ext_proc{|ent|
-          verbose("AppSv","#@id/Issue:#{ent.args}")
+          verbose("AppSv","#@id/Issue:#{ent.id}")
           @buf.send(1,ent)
           "ISSUED"
         }

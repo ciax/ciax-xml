@@ -193,20 +193,18 @@ module CIAX
   end
 
   class Entity < Hashx
-    attr_reader :id,:par,:args,:cfg
+    attr_reader :id,:par,:cfg
     #set should have :def_proc
     def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
       @cfg[:level]='entity'
-      @id=@cfg[:id]
       @par=@cfg[:par]
-      @args=[@id,*@par]
-      @cfg[:cid]=@args.join(':') # Used by macro
+      @id=@cfg[:cid]=[@cfg[:id],*@par].join(':')
       @ver_color=5
     end
 
     def exe
-      verbose(self.class,"Execute #{@args}")
+      verbose(self.class,"Execute #{@id}")
       @cfg[:def_proc].call(self)
     end
   end

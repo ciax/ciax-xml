@@ -62,6 +62,7 @@ module CIAX
         @stat.ext_sym(@adb)
         @watch.ext_upd(@adb,@stat).upd
         @cobj.add_int
+        @cobj.ext_proc{|ent| ent.cfg[:batch].inspect}
         @cobj.item_proc('set'){|ent|
           @stat.str_update(ent.par[0])
           "Set #{ent.par[0]}"

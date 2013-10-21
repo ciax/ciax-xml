@@ -43,6 +43,7 @@ module CIAX
       def initialize(cfg)
         super
         @cobj.svdom.set_proc{|ent|@field['time']=UnixTime.now;'OK'}
+        @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect}"}
         @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1])
           "Set #{ent.par[0]}"

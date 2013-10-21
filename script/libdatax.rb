@@ -4,7 +4,7 @@ require "libenumx"
 
 module CIAX
   class Datax < Hashx
-    attr_reader :data,:upd_procs,:save_procs
+    attr_reader :data,:upd_procs,:save_procs,:load_procs
     # @data is hidden from access by '[]'
     def initialize(type,init_struct={},dataname='data')
       self['type']=type
@@ -16,6 +16,7 @@ module CIAX
       @ver_color=6
       @upd_procs=[] # Proc Array for Update Propagation to the upper Layers
       @save_procs=[] # Proc for Device Data Update (by Device response)
+      @load_procs=[] # Proc for Device Data Update (by Device response)
     end
 
     def to_j
@@ -26,6 +27,12 @@ module CIAX
       _getdata.to_s
     end
 
+    def read(json_str=nil)
+      super
+      _setdata
+      self
+    end
+
     # update after processing
     # never inherit
     def upd
@@ -33,14 +40,13 @@ module CIAX
       self
     end
 
-    def read(json_str=nil)
-      super
-      _setdata
+    def save
+      @save_procs.each{|p| p.call(self)}
       self
     end
 
-    def save
-      @save_procs.each{|p| p.call(self)}
+    def load
+      @load_procs.each{|p| p.call(self)}
       self
     end
 
@@ -110,7 +116,6 @@ module CIAX
     def ext_http(host)
       host||='localhost'
       @prefix="http://"+host+"/json/"
-      @load_procs=[]
       verbose("Http","Initialize")
       self
     end
@@ -123,7 +128,7 @@ module CIAX
         json_str=f.read
       }
       if json_str.empty?
-        warning(pfx," -- json file (#{@base}) is empty")
+        warning("Http"," -- json file (#{@base}) is empty")
       else
         read(json_str)
       end
@@ -139,7 +144,6 @@ module CIAX
       verbose("File","Initialize")
       @prefix=VarDir+"/json/"
       FileUtils.mkdir_p @prefix
-      @load_procs=[]
       self
     end
 

@@ -95,7 +95,7 @@ module CIAX
             }
           }
           lstart=@data['astart']
-          @data['astart']=(noact & active?) ? UnixTime.now : nil
+          @data['astart']=(noact && active?) ? UnixTime.now : nil
           @data['alast']=UnixTime.now-lstart if lstart && !@data['astart']
           hash.each{|k,a|
             @data[k].replace a.flatten(1).uniq
@@ -107,6 +107,7 @@ module CIAX
 
       def ext_file
         super(@stat['id'])
+        @stat.load_procs << proc{load}
         @stat.save_procs << proc{save}
         self
       end

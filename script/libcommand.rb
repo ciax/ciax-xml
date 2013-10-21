@@ -199,7 +199,7 @@ module CIAX
       @cfg=Config.new(upper).update(crnt)
       @cfg[:level]='entity'
       @par=@cfg[:par]
-      @id=@cfg[:cid]=[@cfg[:id],*@par].join(':')
+      @id=[@cfg[:id],*@par].join(':')
       @ver_color=5
     end
 

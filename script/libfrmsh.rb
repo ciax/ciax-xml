@@ -74,7 +74,7 @@ module CIAX
         @stream=Stream.new(iocmd,@fdb['wait'],1)
         @sqlsv=@stream.ext_logging(@id,@fdb['version']) unless sim
         @cobj.ext_proc{|ent|
-          @stream.snd(ent.cfg[:frame],ent.cfg[:cid])
+          @stream.snd(ent.cfg[:frame],ent.id)
           @field.rcv(ent){@stream.rcv}.upd.save
           'OK'
         }

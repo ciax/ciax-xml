@@ -56,7 +56,7 @@ module CIAX
       def set_par(par)
         ent=super
         return unless @sel[:body]=ent.cfg[:body]
-        cid=@cfg[:cid]
+        cid=ent.id
         verbose("FrmItem","Body:#{@cfg[:label]}(#{cid})")
         if frame=@cache[cid]
           verbose("FrmItem","Cmd cache found [#{cid}]")

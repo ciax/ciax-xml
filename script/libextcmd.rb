@@ -9,7 +9,7 @@ module CIAX
       @cfg['color']=5
       @cfg['column']=2
       update_items(@cfg[:ldb].list)
-      set_proc{|ent| raise(SwSite,ent.cfg[:cid])}
+      set_proc{|ent| raise(SwSite,ent.id)}
     end
   end
 
@@ -19,7 +19,7 @@ module CIAX
       @cfg['caption']='Switch Layer'
       @cfg['color']=5
       @cfg['column']=5
-      set_proc{|ent| raise(SwLayer,ent.cfg[:cid]) }
+      set_proc{|ent| raise(SwLayer,ent.id) }
     end
   end
 

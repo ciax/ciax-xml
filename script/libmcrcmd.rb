@@ -10,7 +10,7 @@ module CIAX
       attr_accessor :thread
       def initialize(ent)
         @entity=type?(ent,ExtEntity)
-        super('mcr',ent.cfg[:cid],ent.cfg[:mobj])
+        super('mcr',ent.id,ent.cfg[:mobj])
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
@@ -93,18 +93,20 @@ module CIAX
       def initialize(upper,crnt)
         super
         @record=Record.new
-        [:cid,:label].each{|k| @record[k.to_s]=@cfg[k]} # Fixed Value
+        # Fixed Value
+        @record['cid']=@id
+        @record['label']=@cfg[:label]
         @stat=Stat.new(self)
-      end
+        @stat[:cid]=@id
+     end
 
       def fork
-        @stat.thread=Threadx.new("Macro Thread(#{@cfg[:cid]})",10){macro}
+        @stat.thread=Threadx.new("Macro Thread(#{@id})",10){macro}
         [@record['id'],@stat]
       end
 
       # separated for sub thread
       def macro
-        @stat[:cid]=@record['cid']
         setstat 'run'
         show @record
         submacro(@cfg[:body])

@@ -110,6 +110,7 @@ module CIAX
     def ext_http(host)
       host||='localhost'
       @prefix="http://"+host+"/json/"
+      @load_procs=[]
       verbose("Http","Initialize")
       self
     end
@@ -126,6 +127,7 @@ module CIAX
       else
         read(json_str)
       end
+      @load_procs.each{|p| p.call(self)}
       self
     rescue OpenURI::HTTPError
       warning("Http","  -- no url file (#{fname})")
@@ -137,6 +139,7 @@ module CIAX
       verbose("File","Initialize")
       @prefix=VarDir+"/json/"
       FileUtils.mkdir_p @prefix
+      @load_procs=[]
       self
     end
 
@@ -178,6 +181,7 @@ module CIAX
       else
         read(json_str)
       end
+      @load_procs.each{|p| p.call(self)}
       self
     rescue Errno::ENOENT
       if tag

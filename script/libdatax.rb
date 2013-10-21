@@ -126,6 +126,7 @@ module CIAX
       else
         read(json_str)
       end
+      self
     rescue OpenURI::HTTPError
       warning("Http","  -- no url file (#{fname})")
     end
@@ -177,6 +178,7 @@ module CIAX
       else
         read(json_str)
       end
+      self
     rescue Errno::ENOENT
       if tag
         Msg.par_err("No such Tag","Tag=#{taglist}")

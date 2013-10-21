@@ -70,6 +70,7 @@ module CIAX
           mk_frame(:main)
           frame=@fstr[:main]
           @cache[cid]=frame unless nocache
+          verbose("FrmItem","Cmd Generated [#{cid}]")
         end
         ent.cfg[:frame]=frame
         ent

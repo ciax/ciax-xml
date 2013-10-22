@@ -32,14 +32,10 @@ module CIAX
     # Sync only (Wait for other thread)
     def exe(args)
       type?(args,Array)
-      if args.empty?
-        self['msg']=''
-      else
-        @pre_procs.each{|p| p.call(args)}
-        verbose("Sh/Exe","Command #{args} recieved")
-        self['msg']=@cobj.setcmd(args).exe
-        @post_procs.each{|p| p.call(args)}
-      end
+      @pre_procs.each{|p| p.call(args)}
+      verbose("Sh/Exe","Command #{args} recieved")
+      self['msg']=@cobj.setcmd(args).exe
+      @post_procs.each{|p| p.call(args)}
       self
     rescue
       self['msg']=$!.to_s
@@ -126,23 +122,16 @@ module CIAX
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)
       verbose("UDP:Client/#{self.class}","Init/Client(#@id):#{host}:#{port}",6)
+      @cobj.svdom.set_proc{|ent|
+        args=ent.id.split(':')
+        @udp.send(JSON.dump(args),0,@addr)
+        verbose("UDP:Client/#{self.class}","Send [#{args}]",6)
+        res=@udp.recv(1024)
+        verbose("UDP:Client/#{self.class}","Recv #{res}",6)
+        update(JSON.load(res)) unless res.empty?
+        self['msg']
+      }
       self
-    end
-
-    # For client
-    def exe(args)
-      @cobj.setcmd(args).exe unless args.empty?
-      @udp.send(JSON.dump(args),0,@addr)
-      verbose("UDP:Client/#{self.class}","Send [#{args}]",6)
-      res=@udp.recv(1024)
-      verbose("UDP:Client/#{self.class}","Recv #{res}",6)
-      update(JSON.load(res)) unless res.empty?
-      self
-    rescue
-      self['msg']=$!.to_s
-      raise $!
-    ensure
-      @upd_procs.each{|p| p.call}
     end
   end
 

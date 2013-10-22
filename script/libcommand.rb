@@ -57,7 +57,9 @@ module CIAX
       # Server Commands (service commands on Server)
       push @svdom=Domain.new(@cfg)
       push @lodom=Domain.new(@cfg)
-      @interrupt=@svdom.add_group('caption' => "Hidden Commands").add_item('interrupt')
+      hid=@svdom.add_group('caption' => "Hidden Commands")
+      hid.add_item(nil)
+      @interrupt=hid.add_item('interrupt')
     end
   end
 

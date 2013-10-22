@@ -78,6 +78,7 @@ module CIAX
         ['crnt','last','res'].each{|k| self[k]={}}
         upd_last
         @stat.upd_procs << proc{upd}
+        @stat.load_procs << proc{load}
         # Stat no changed -> clear exec, no eval
         @upd_procs << proc{
           @data['exec'].clear
@@ -107,7 +108,6 @@ module CIAX
 
       def ext_file
         super(@stat['id'])
-        @stat.load_procs << proc{load}
         @stat.save_procs << proc{save}
         self
       end

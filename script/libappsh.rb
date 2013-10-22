@@ -13,6 +13,7 @@ module CIAX
   module App
     # cfg should have ['frm'](Frm::List)
     def self.new(cfg)
+      Msg.type?(cfg,Hash)
       if $opt['s'] or $opt['e']
         ash=App::Sv.new(cfg)
         cfg['host']='localhost'
@@ -29,29 +30,41 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         cobj=Command.new(cfg)
         super('app',@adb['site_id']||@adb['id'],cobj)
-        @stat=Status.new(@adb[:status][:struct].deep_copy)
-        @stat['id']=@id
-        ext_shell(@stat,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
-        @watch=Watch::Data.new
-        @pre_procs << proc{|args|@watch.block?(args)}
-        init_view
+        @view_grp=@cobj.lodom.add_group('caption'=>"Change View Mode")
+        init_stat
+        init_watch if @adb[:watch]
+        ext_shell(@output,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
       end
 
       private
+      def init_stat
+        @stat=Status.new(@adb[:status][:struct].deep_copy)
+        @stat['id']=@id
+        @output=@print=View.new(@adb,@stat).extend(Print)
+        @view_grp.add_item('st',{:label =>"Stat mode"}).set_proc{@output=@print;''}
+        @view_grp.add_item('rst',{:label =>"Raw Stat mode"}).set_proc{@output=@stat;''}
+        @stat
+      end
+
+      def init_watch
+        @watch=Watch::Data.new
+        @pre_procs << proc{|args|@watch.block?(args)}
+        @wview=Watch::View.new(@adb,@watch).ext_prt
+        @view_grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview;''}
+        @view_grp.add_item('rwa',{:label =>"Raw Watch mode"}).set_proc{@output=@watch;''}
+        @watch
+      end
+
+      def interrupt
+        batch=@watch ? @watch.interrupt : [] 
+        Msg.msg("#@id/Interrupt:#{batch}")
+        batch
+      end
+
       def shell_input(line)
         args=super
         args.unshift 'set' if /^[^ ]+\=/ === line
         args
-      end
-
-      def init_view
-        @output=@print=View.new(@adb,@stat).extend(Print)
-        @wview=Watch::View.new(@adb,@watch).ext_prt
-        grp=@cobj.lodom.add_group('caption'=>"Change View Mode")
-        grp.add_item('pri',{:label =>"Print mode"}).set_proc{@output=@print;''}
-        grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview;''} if @wview
-        grp.add_item('raw',{:label =>"Raw mode"}).set_proc{@output=@stat;''}
-        self
       end
     end
 
@@ -59,8 +72,6 @@ module CIAX
       require "libappsym"
       def initialize(cfg)
         super
-        @stat.ext_sym(@adb)
-        @watch.ext_upd(@adb,@stat).upd
         @cobj.add_int
         @cobj.ext_proc{|ent| ent.cfg[:batch].inspect}
         @cobj.item_proc('set'){|ent|
@@ -68,20 +79,21 @@ module CIAX
           "Set #{ent.par[0]}"
         }
         @cobj.item_proc('del'){|ent|
-          ent.par[0].split(',').each{|key|
-            @stat.unset(key)
-          }
+          ent.par[0].split(',').each{|key| @stat.unset(key) }
           "Delete #{ent.par[0]}"
         }
+      end
+
+      def init_stat
+        super.ext_sym(@adb)
+      end
+
+      def init_watch
+        super.ext_upd(@adb,@stat).upd
         @watch.event_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }
-        @upd_procs << proc{@watch.issue}
-      end
-
-      def interrupt
-        batch=@watch.interrupt
-        Msg.msg("#@id/Interrupt:#{batch}")
+        @watch
       end
     end
 
@@ -89,14 +101,15 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         host=type?(cfg['host']||@adb['host']||'localhost',String)
+        if @watch
+          @watch.ext_http(@id,host)
+          @stat.load_procs << proc{@watch.load} # @watch isn,t relate to @stat
+        end
         @stat.ext_http(@id,host).load
-        @watch.ext_http(@id,host).load
+        @upd_procs << proc{@stat.load}
         ext_client(host,@adb['port'])
-        @upd_procs << proc{
-          @stat.load
-          @watch.load
-        }
       end
+
     end
 
     # @<< cobj,output,upd_procs*
@@ -106,13 +119,8 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         @fsh=type?(cfg['frm'][@id],Frm::Exe)
-        update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @stat.ext_rsp(@id,@adb,@fsh.field).ext_sym(@adb).upd
-        @watch.ext_upd(@adb,@stat).ext_file.upd
-        @watch.event_procs << proc{|p,args|
-          verbose("AppSv","#@id/Auto(#{p}):#{args}")
-          @buf.send(p,@cobj.setcmd(args))
-        }
+        update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @buf=init_buf
         @cobj.ext_proc{|ent|
           verbose("AppSv","#@id/Issue:#{ent.id}")
@@ -120,30 +128,41 @@ module CIAX
           "ISSUED"
         }
         # Logging if version number exists
-        if $opt['e']
-          if sv=@fsh.sqlsv
-            sv.add_table(@stat)
-            sv.add_table(@buf)
-          end
-          @watch.ext_logging if @stat['ver']
+        if $opt['e'] && sv=@fsh.sqlsv
+          sv.add_table(@stat)
+          sv.add_table(@buf)
         end
         tid_auto=auto_update
         @upd_procs << proc{
           self['auto'] = tid_auto && tid_auto.alive?
-          self['watch'] = @watch.active?
           self['na'] = !@buf.alive?
         }
         ext_server(@adb['port'])
       end
 
       def interrupt
-        @watch.interrupt.each{|args|
+        batch=super
+        batch.each{|args|
           verbose("AppSv","Interrupt:#{args}")
           @buf.send(0,@cobj.setcmd(args))
         }
+        batch
       end
 
       private
+      def init_watch
+        super
+        @watch.ext_upd(@adb,@stat).ext_file.upd
+        @watch.event_procs << proc{|p,args|
+          verbose("AppSv","#@id/Auto(#{p}):#{args}")
+          @buf.send(p,@cobj.setcmd(args))
+        }
+        @watch.ext_logging if $opt['e'] && @stat['ver']
+        @stat.upd_procs << proc{self['watch'] = @watch.active?}
+        @interval=@watch['interval']
+        @period=@watch['period']
+      end
+
       def init_buf
         buf=Buffer.new(self)
         buf.send_proc{|ent|
@@ -158,16 +177,16 @@ module CIAX
         buf.flush_proc{
           verbose("AppSv","Flushed FrmCmds")
           @stat.upd.save
-          sleep(@watch['interval']||0.1)
+          sleep(@interval||0.1)
           # Auto issue by watch
-          @watch.issue
+          @watch.issue if @watch
         }
         buf
       end
 
       def auto_update
         Threadx.new("Update Thread(#@layer:#@id)",4){
-          int=(@watch['period']||300).to_i
+          int=(@period||300).to_i
           loop{
             begin
               @buf.send(3,@cobj.setcmd(['upd']))

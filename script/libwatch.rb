@@ -64,42 +64,40 @@ module CIAX
       def ext_upd(adb,stat)
         @wdb=type?(adb,App::Db)[:watch] || {:stat => {}}
         @stat=type?(stat,App::Status)
+        reg_procs(@stat)
         self['period']=@wdb['period'].to_i if @wdb.key?('period')
         self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')
         # Pick usable val
-        @list=@wdb[:stat].values.flatten(1).map{|h|
-          h['var']
-        }.uniq
+        @list=@wdb[:stat].values.flatten(1).map{|h| h['var']}.uniq
         @list.unshift('time')
         # @stat.data(all) = self['crnt'](picked) > self['last']
         # upd() => self['last']<-self['crnt']
         #       => self['crnt']<-@stat.data
         #       => check(self['crnt'] <> self['last']?)
         ['crnt','last','res'].each{|k| self[k]={}}
-        upd_last
-        reg_procs(@stat)
         # Stat no changed -> clear exec, no eval
         @upd_procs << proc{
-          @data['exec'].clear
-          return self if self['crnt']['time'] == @stat['time']
-          upd_last
-          hash={'int' =>[],'exec' =>[],'block' =>[]}
-          noact=@data['active'].empty?
-          @data['active'].clear
-          @wdb[:stat].each{|i,v|
+          next self unless @stat.update?
+          sync
+          hash={'active'=> [],'int' =>[],'exec' =>[],'block' =>[]}
+           @wdb[:stat].each{|i,v|
             next unless check(i)
-            @data['active'] << i
+            hash['active'] << i
             hash.each{|k,a|
-              n=@wdb[k.to_sym][i]
-              a << n if n && !a.include?(n)
+              if db=@wdb[k.to_sym]
+                a.concat db[i]
+              else
+                a << i
+              end
             }
           }
           lstart=@data['astart']
-          @data['astart']=(noact && active?) ? UnixTime.now : nil
+          @data['astart']=(!active? && !hash['active'].empty?) ? UnixTime.now : nil
           @data['alast']=UnixTime.now-lstart if lstart && !@data['astart']
           hash.each{|k,a|
-            @data[k].replace a.flatten(1).uniq
+            @data[k].replace a.uniq
           }
+          @stat.refresh
           verbose("Watch","Updated(#{@stat['time']})")
         }
         self
@@ -118,11 +116,12 @@ module CIAX
         }
         self
       end
+
       private
-      def upd_last
-        @list.each{|k|
-          self['last'][k]=self['crnt'][k]
-          self['crnt'][k]=@stat.data[k]
+      def sync
+        @list.each{|i|
+          self['crnt'][i]=@stat.data[i]
+          self['last'][i]=@stat.last[i]
         }
       end
 
@@ -133,10 +132,10 @@ module CIAX
         rary=[]
         n.each_index{|j|
           k=n[j]['var']
-          v=self['crnt'][k]
+          v=@stat.data[k]
           case n[j]['type']
           when 'onchange'
-            c=self['last'][k]
+            c=@stat.last[k]
             res=(c != v)
             verbose("Watch","  onChange(#{k}): [#{c}] vs <#{v}> =>#{res}")
           when 'pattern'

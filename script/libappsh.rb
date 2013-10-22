@@ -41,7 +41,7 @@ module CIAX
         @stat=Status.new(@adb[:status][:struct].deep_copy)
         @stat['id']=@id
         @output=@print=View.new(@adb,@stat).extend(Print)
-        @view_grp.add_item('st',{:label =>"Stat mode"}).set_proc{@output=@print;''}
+        @view_grp.add_item('sta',{:label =>"Stat mode"}).set_proc{@output=@print;''}
         @view_grp.add_item('rst',{:label =>"Raw Stat mode"}).set_proc{@output=@stat;''}
         @stat
       end
@@ -56,7 +56,7 @@ module CIAX
       end
 
       def interrupt
-        batch=@watch ? @watch.interrupt : [] 
+        batch=@watch ? @watch.interrupt : []
         Msg.msg("#@id/Interrupt:#{batch}")
         batch
       end
@@ -103,7 +103,7 @@ module CIAX
         host=type?(cfg['host']||@adb['host']||'localhost',String)
         if @watch
           @watch.ext_http(@id,host)
-          @stat.load_procs << proc{@watch.load} # @watch isn,t relate to @stat
+          @watch.reg_procs(@stat) # @watch isn't relate to @stat
         end
         @stat.ext_http(@id,host).load
         @upd_procs << proc{@stat.load}

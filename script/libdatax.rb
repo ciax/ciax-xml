@@ -50,6 +50,14 @@ module CIAX
       self
     end
 
+    def reg_procs(src)
+      type?(src,Datax)
+      src.upd_procs << proc{upd}
+      src.load_procs << proc{load}
+      src.save_procs << proc{save}
+      self
+    end
+
     # Update with str (key=val,key=val,..)
     def str_update(str)
       type?(str,String)
@@ -132,7 +140,7 @@ module CIAX
       else
         read(json_str)
       end
-      @load_procs.each{|p| p.call(self)}
+      super()
       self
     rescue OpenURI::HTTPError
       warning("Http","  -- no url file (#{fname})")
@@ -185,7 +193,7 @@ module CIAX
       else
         read(json_str)
       end
-      @load_procs.each{|p| p.call(self)}
+      super()
       self
     rescue Errno::ENOENT
       if tag

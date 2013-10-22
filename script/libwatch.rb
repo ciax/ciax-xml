@@ -77,8 +77,7 @@ module CIAX
         #       => check(self['crnt'] <> self['last']?)
         ['crnt','last','res'].each{|k| self[k]={}}
         upd_last
-        @stat.upd_procs << proc{upd}
-        @stat.load_procs << proc{load}
+        reg_procs(@stat)
         # Stat no changed -> clear exec, no eval
         @upd_procs << proc{
           @data['exec'].clear

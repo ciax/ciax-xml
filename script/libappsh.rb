@@ -76,7 +76,7 @@ module CIAX
       def initialize(cfg)
         super
         @stat.ext_sym(@adb)
-        @stat.upd_procs << proc{|st|st['time']=UnixTime.now}
+        @stat.upd_procs << proc{|st|st['time']=nowsec}
         @cobj.add_int
         @cobj.ext_proc{|ent|
           @stat.upd

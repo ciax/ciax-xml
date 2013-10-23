@@ -30,17 +30,6 @@ module CIAX
   # Configuration Error
   class ConfigError < RuntimeError; end
 
-  class UnixTime < Time
-    def to_s
-      "%.3f" % to_f
-    end
-
-    def self.parse(str)
-      return str if UnixTime === str
-      UnixTime.at(*str.split('.').map{|i| i.to_i})
-    end
-  end
-
   class Threadx < Thread
     def initialize(name,color=4)
       th=super{
@@ -307,8 +296,8 @@ module CIAX
       indent(1)+color("%-6s" % key,3)+": #{val}"
     end
 
-    def now
-      "%.3f" % Time.now.to_f
+    def nowsec
+      Time.now.to_f
     end
 
     def elps_sec(time)

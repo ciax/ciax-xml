@@ -12,7 +12,7 @@ module CIAX
       @type=type?(type,String)
       type?(id,String)
       ver=ver.to_i
-      @header={'time' => UnixTime.now,'id' => id,'ver' => ver}
+      @header={'time' => nowsec,'id' => id,'ver' => ver}
       FileUtils.mkdir_p VarDir
       @loghead=VarDir+"/"+type+"_#{id}"
       verbose("Logging","Init/Logging '#{type}' (#{id}/Ver.#{ver})")
@@ -35,7 +35,7 @@ module CIAX
 
     # Return UnixTime
     def append(data)
-      time=@header['time']=UnixTime.now
+      time=@header['time']=nowsec
       unless ENV.key?('NOLOG')
         str=JSON.dump(@header.merge(data))
         @queue.push str
@@ -55,7 +55,7 @@ module CIAX
 
     private
     def logfile
-      @loghead+"_#{UnixTime.now.year}.log"
+      @loghead+"_#{Time.now.year}.log"
     end
 
     def encode(str)

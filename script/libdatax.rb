@@ -8,7 +8,7 @@ module CIAX
     # @data is hidden from access by '[]'
     def initialize(type,init_struct={},dataname='data')
       self['type']=type
-      self['time']=UnixTime.now
+      self['time']=nowsec
       self['id']=nil
       self['ver']=nil
       @data=init_struct.dup.extend(Enumx)
@@ -68,7 +68,7 @@ module CIAX
         k,v=i.split('=')
         @data[k]=v
       }
-      self['time']=UnixTime.now
+      self['time']=nowsec
       upd
     end
 
@@ -101,7 +101,7 @@ module CIAX
 
     def _setdata
       @data=delete(@dataname).extend(Enumx)
-      self['time']=UnixTime.parse(self['time']||UnixTime.now)
+      self['time']||=nowsec
       upd
     end
 

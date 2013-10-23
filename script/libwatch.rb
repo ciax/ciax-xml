@@ -91,8 +91,8 @@ module CIAX
             }
           }
           lstart=@data['astart']
-          @data['astart']=(!active? && !hash['active'].empty?) ? UnixTime.now : nil
-          @data['alast']=UnixTime.now-lstart if lstart && !@data['astart']
+          @data['astart']=(!active? && !hash['active'].empty?) ? nowsec : nil
+          @data['alast']=nowsec-lstart if lstart && !@data['astart']
           hash.each{|k,a|
             @data[k].replace a.uniq
           }

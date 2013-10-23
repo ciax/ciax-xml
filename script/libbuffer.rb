@@ -47,7 +47,7 @@ module CIAX
       clear if n == 0
       batch=@send_proc.call(ent)
       #batch is frm batch (ary of ary)
-      @data.update('time'=>UnixTime.now,'pri' => n,'cid' => ent.id)
+      @data.update('time'=>nowsec,'pri' => n,'cid' => ent.id)
       upd
       unless batch.empty?
         @svst['isu']=true

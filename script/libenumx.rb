@@ -16,7 +16,7 @@ module CIAX
           title="[#{title}](#{id})"
         else
           title=title.inspect
-          title+="(#{id})" if Enumerable === data
+          title << "(#{id})" if Enumerable === data
         end
         str << color("%-6s" % title,5,ind)+" :\n"
         ind+=1

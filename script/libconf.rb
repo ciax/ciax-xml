@@ -15,7 +15,7 @@ module CIAX
     end
 
     def override(cfg)
-      @generation+=type?(cfg,Config).generation
+      @generation.concat type?(cfg,Config).generation
       self
     end
 

@@ -60,7 +60,7 @@ module CIAX
         each{|k,v|
           cap=v['caption']
           lines << " ***"+color(2,cap)+"***" unless cap.empty?
-          lines+=v['lines'].map{|ele|
+          lines.concat v['lines'].map{|ele|
             "  "+ele.map{|id,val|
               c=cm[val['class']]
               '['+color(6,val['label'])+':'+color(c,val['msg'])+"]"

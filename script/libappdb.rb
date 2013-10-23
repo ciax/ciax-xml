@@ -99,7 +99,7 @@ module CIAX
                 end
               }
               if i=st.delete('index')
-                st['ref']+=":#{i}"
+                st['ref'] << ":#{i}"
               end
               struct[id][:fields] << st
             }

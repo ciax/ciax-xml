@@ -15,7 +15,7 @@ module CIAX
     field=Frm::Field.new
     stat=App::Status.new
     sqlog=SqLog::Upd.new(stat,$opt['t']&&"test")
-    fgrp=nil
+    fobj=nil
     site_id=nil
     logline=['begin;']
     readlines.grep(/rcv/).each{|str|
@@ -25,16 +25,16 @@ module CIAX
         ldb.set(hash['id'])
         Msg.warn("Initialize")
         fdb=ldb[:frm]
-        fgrp=Frm::Command.new(Config.new.update(:db =>fdb))
+        fobj=Frm::Command.new(Config.new.update(:db =>fdb))
         field.ext_rsp(site_id,fdb)
         adb=ldb[:app]
-        stat.ext_rsp(field,adb[:status])
+        stat.ext_rsp(site_id,adb,field)
       elsif site_id != hash['id']
         next
       end
       begin
-        item=fgrp.setcmd(hash['cmd'].split(':'))
-        field.upd(item){hash}
+        ent=fobj.setcmd(hash['cmd'].split(':'))
+        field.rcv(ent){hash}.upd
         stat.upd
         logline << sqlog.upd
         Msg.progress

@@ -28,11 +28,14 @@ module CIAX
       end
 
       def upd
-        val=expand
-        key=val.keys.map{|s| s.to_s}.join("','")
-        val=val.values.map{|s| s.to_s}.join("','")
+        kary=[]
+        vary=[]
+        expand.each{|k,v|
+          kary << k.inspect
+          vary << (k == 'time' ? v.to_f : v.inspect)
+        }
         verbose("SqLog","Update(#{@stat['time']}):[#{@stat['id']}/#{@tid}]")
-        "insert or ignore into #{@tid} ('#{key}') values ('#{val}');"
+        "insert or ignore into #{@tid} (#{kary.join(',')}) values (#{vary.join(',')});"
       end
 
       def start

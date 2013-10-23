@@ -4,6 +4,7 @@ require "libextcmd"
 module CIAX
   module App
     class Command < Command
+      attr_reader :extgrp
       def initialize(upper)
         super
         @extgrp=@svdom.add_group(:group_class =>ExtGrp,:item_class =>ExtItem)

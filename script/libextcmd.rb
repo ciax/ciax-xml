@@ -31,13 +31,13 @@ module CIAX
       @cfg[:entity_class]||=ExtEntity
       @cfg['caption']||="External Commands"
       @cfg['color']||=6
-      @cmdary=[]
       set_items(type?(@cfg[:db],Db)[:command])
     end
 
     def set_items(cdb)
       (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
+        @cmdary << subgrp
         (gat[:members]||cdb[:body].keys).each{|id|
           subgrp[id]=cdb[:label][id]
           # because cdb is separated by title
@@ -49,7 +49,6 @@ module CIAX
           }
           add_item(id,cfg)
         }
-        @cmdary << subgrp
       }
       cdb[:alias].each{|k,v| self[k].replace self[v]} if cdb.key?(:alias)
     end

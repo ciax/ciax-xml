@@ -85,21 +85,20 @@ module CIAX
 
   class Group < Hashx
     include GrpShare
-    attr_reader :valid_keys,:cmdlist,:cfg
+    attr_reader :valid_keys,:cfg
     #upper = {caption,color,column}
     def initialize(upper=Config.new,crnt={})
       @cfg=Config.new(upper).update(crnt)
       @cfg[:level]='group'
       @cfg[:item_class]||=Item
       @valid_keys=@cfg[:valid_keys]||[]
-      @cmdlist=CmdList.new(@cfg,@valid_keys)
-      @cmdary=[@cmdlist]
+      @cmdary=[CmdList.new(@cfg,@valid_keys)]
       @ver_color=3
     end
 
     def add_item(id,crnt={})
       crnt[:id]=id
-      @cmdlist[id]=crnt[:label]
+      @cmdary.last[id]=crnt[:label]
       self[id]=@cfg[:item_class].new(@cfg,crnt)
     end
 
@@ -111,7 +110,7 @@ module CIAX
     end
 
     def add_dummy(id,title)
-      @cmdlist.dummy(id,title) #never put into valid_key
+      @cmdary.last.dummy(id,title) #never put into valid_key
       self
     end
 
@@ -120,8 +119,13 @@ module CIAX
       self
     end
 
+    def valid_sub(ary)
+      @valid_keys.replace(keys-type?(ary,Array))
+      self
+    end
+
     def list
-      @cmdary.join("\n")
+      @cmdary.map{|l| l.to_s}.grep(/./).join("\n")
     end
 
     def get_item(id)

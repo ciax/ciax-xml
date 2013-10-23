@@ -75,6 +75,7 @@ module CIAX
       require "libappsym"
       def initialize(cfg)
         super
+        @stat.ext_sym(@adb)
         @stat.upd_procs << proc{|st|st['time']=UnixTime.now}
         @cobj.add_int
         @cobj.ext_proc{|ent|
@@ -89,18 +90,15 @@ module CIAX
           ent.par[0].split(',').each{|key| @stat.unset(key) }
           "DELETE:#{ent.par[0]}"
         }
+        ext_watch
       end
 
-      def init_stat
-        super.ext_sym(@adb)
-      end
-
-      def init_watch
-        super.ext_upd(@adb,@stat).upd.reg_procs(@stat)
+      def ext_watch
+        return unless @watch
+        @watch.ext_upd(@adb,@stat).upd.reg_procs(@stat)
         @watch.event_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }
-        @watch
       end
     end
 
@@ -144,6 +142,7 @@ module CIAX
           self['auto'] = tid_auto && tid_auto.alive?
           self['na'] = !@buf.alive?
         }
+        ext_watch
         ext_server(@adb['port'])
       end
 
@@ -157,8 +156,8 @@ module CIAX
       end
 
       private
-      def init_watch
-        super
+      def ext_watch
+        return unless @watch
         @watch.ext_upd(@adb,@stat).ext_file.upd
         @watch.event_procs << proc{|p,args|
           verbose("AppSv","#@id/Auto(#{p}):#{args}")

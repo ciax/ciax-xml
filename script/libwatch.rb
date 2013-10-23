@@ -82,7 +82,6 @@ module CIAX
           hash={'active'=> [],'int' =>[],'exec' =>[],'block' =>[]}
            @wdb[:stat].each{|i,v|
             next unless check(i)
-            hash['active'] << i
             hash.each{|k,a|
               if db=@wdb[k.to_sym]
                 a.concat db[i]

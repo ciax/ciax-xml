@@ -52,6 +52,9 @@ module CIAX
         @wview=Watch::View.new(@adb,@watch).ext_prt
         @view_grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview;''}
         @view_grp.add_item('rwa',{:label =>"Raw Watch mode"}).set_proc{@output=@watch;''}
+        @watch.upd_procs << proc{|wat|
+          @cobj.extgrp.valid_sub(wat.data['block'].flatten)
+        }
         @watch
       end
 
@@ -72,15 +75,19 @@ module CIAX
       require "libappsym"
       def initialize(cfg)
         super
+        @stat.upd_procs << proc{|st|st['time']=UnixTime.now}
         @cobj.add_int
-        @cobj.ext_proc{|ent| ent.cfg[:batch].inspect}
+        @cobj.ext_proc{|ent|
+          @stat.upd
+          'ISSUED:'+ent.cfg[:batch].inspect
+        }
         @cobj.item_proc('set'){|ent|
           @stat.str_update(ent.par[0])
-          "Set #{ent.par[0]}"
+          "SET:#{ent.par[0]}"
         }
         @cobj.item_proc('del'){|ent|
           ent.par[0].split(',').each{|key| @stat.unset(key) }
-          "Delete #{ent.par[0]}"
+          "DELETE:#{ent.par[0]}"
         }
       end
 
@@ -89,7 +96,7 @@ module CIAX
       end
 
       def init_watch
-        super.ext_upd(@adb,@stat).upd
+        super.ext_upd(@adb,@stat).upd.reg_procs(@stat)
         @watch.event_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }

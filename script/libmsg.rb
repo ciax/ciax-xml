@@ -111,13 +111,13 @@ module CIAX
     end
 
     def update(h)
-      @select+=h.keys
+      @select.concat h.keys
       super
     end
 
-    # Reset @select
+    # Reset @select(could be shared)
     def reset!
-      @select.replace keys
+      @select.concat(keys).uniq!
       self
     end
 

@@ -115,6 +115,11 @@ module CIAX
       self
     end
 
+    def valid_reset
+      @valid_keys.concat(keys).uniq!
+      self
+    end
+
     def list
       @cmdary.join("\n")
     end

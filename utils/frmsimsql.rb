@@ -48,7 +48,7 @@ class LogRing
 
   def input
     select([STDIN])
-    [STDIN.sysread(1024).chomp].pack("m").split("\n").join('')
+    [STDIN.sysread(1024)].pack("m").split("\n").join('')
   end
 
 end

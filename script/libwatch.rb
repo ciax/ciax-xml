@@ -84,7 +84,7 @@ module CIAX
             next unless check(i)
             hash.each{|k,a|
               if db=@wdb[k.to_sym]
-                a.concat db[i]
+                a.concat db[i] if db[i]
               else
                 a << i
               end

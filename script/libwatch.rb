@@ -12,7 +12,7 @@ module CIAX
         super('watch')
         self['period']=300
         self['interval']=0.1
-        @data['astart']=nil
+        @data['astart']=nowsec
         @data['alast']=0
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
@@ -90,9 +90,13 @@ module CIAX
               end
             }
           }
-          lstart=@data['astart']
-          @data['astart']=(!active? && !hash['active'].empty?) ? nowsec : nil
-          @data['alast']=nowsec-lstart if lstart && !@data['astart']
+          if hash['active'].empty?
+            @data['alast']=nowsec-@data['astart'] unless @data['active'].empty?
+            @data['astart']=0
+          else
+            @data['astart']=nowsec if @data['active'].empty?
+            @data['alast']=0
+          end
           hash.each{|k,a|
             @data[k].replace a.uniq
           }

@@ -3,7 +3,7 @@ require 'libwatch'
 
 module CIAX
   module Watch
-   # For Client
+    # Put caption,symbole,etc. from DB
     class View < Hashx
       def initialize(adb,watch)
         wdb=type?(adb,App::Db)[:watch] || {:stat => []}

@@ -34,13 +34,13 @@ class LogRing
     rescue
       raise("NO record for #{str}") if @index==0
       @index=0
-      verbose("FrmSim","REWINDED")
+      verbose("FrmSim","LINE:REWINDED")
       retry
     end
     @index=tim.to_f
-    sql="select min(time),count(*) from #@tbl where time > #{tim} and dir='rcv' and cmd='#{cmd}';"
+    sql="select min(time),count(*) from #@tbl where time > #{tim} and dir='rcv';"
     tim,crnt=query(sql).split('|')
-    verbose("FrmSim","CURRENT:[#{cmd}](#{@total-crnt.to_i}/#{@total})")
+    verbose("FrmSim","LINE:[#{cmd}](#{@total-crnt.to_i}/#{@total})")
     sleep tim.to_f-@index if tim.to_f > @index
     sql="select base64 from #@tbl where time=#{tim};"
     query(sql)

@@ -66,8 +66,8 @@ module CIAX
             end
             flush
           rescue
-            fatal("Buffer","#{$!.to_s.chomp} in Buffer Thread")
             clear
+            fatal("Buffer")
           end
         }
       }

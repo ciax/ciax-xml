@@ -166,8 +166,9 @@ module CIAX
       self
     end
 
-    def fatal(prefix,title)
+    def fatal(prefix)
       @ver_indent=@@base
+      title=[$!.to_s,*$@].join("\n")
       Kernel.warn mkmsg(prefix,title,1)
       Kernel.exit
     end
@@ -190,7 +191,7 @@ module CIAX
       tc=Thread.current
       ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
       ts << Msg.color("#{prefix}:",c||@ver_color)
-      ts << title.inspect
+      ts << title.to_s
     end
 
     # VER= makes setenv "" to VER otherwise nil

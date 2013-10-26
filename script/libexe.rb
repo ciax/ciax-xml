@@ -11,7 +11,7 @@ require "libextcmd"
 
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:upd_procs,:cobj,:output
+    attr_reader :layer,:id,:mode,:upd_procs,:cobj,:output
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       @id=id
@@ -114,6 +114,7 @@ module CIAX
     end
 
     def ext_client(host,port)
+      @mode='CL'
       host||='localhost'
       @udp=UDPSocket.open()
       @addr=Socket.pack_sockaddr_in(port.to_i,host)

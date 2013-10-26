@@ -29,6 +29,7 @@ module CIAX
 
     def prompt
       str="#@layer:#@id"
+      str+="(#@mode)" if @mode
       @pdb.each{|k,fmt|
         next unless v=@pstat[k]
         case fmt

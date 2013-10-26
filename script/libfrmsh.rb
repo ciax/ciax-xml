@@ -42,6 +42,7 @@ module CIAX
     class Test < Exe
       def initialize(cfg)
         super
+        @mode='TEST'
         @cobj.svdom.set_proc{|ent|@field['time']=nowsec;'OK'}
         @cobj.ext_proc{|ent| "#{ent.cfg[:frame].inspect}"}
         @cobj.item_proc('set'){|ent|
@@ -69,7 +70,7 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         @field.ext_rsp(@id,@fdb).load
-        sim=cfg['iocmd']
+        @mode='SIM' if sim=cfg['iocmd']
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(iocmd,@fdb['wait'],1)
         @sqlsv=@stream.ext_logging(@id,@fdb['version']) unless sim

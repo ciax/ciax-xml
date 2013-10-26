@@ -15,6 +15,7 @@ module CIAX
       def initialize(ash)
         type?(ash,App::Exe)
         super('hex',ash.id,ash.cobj)
+        @mode=ash.mode
         @output=View.new(ash,ash.stat)
         @upd_procs.concat(ash.upd_procs)
         if $opt['e']

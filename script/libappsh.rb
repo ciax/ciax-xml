@@ -74,6 +74,7 @@ module CIAX
       require "libappsym"
       def initialize(cfg)
         super
+        @mode='TEST'
         @stat.ext_sym(@adb)
         @stat.upd_procs << proc{|st|st['time']=nowsec}
         @cobj.add_int
@@ -123,6 +124,7 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         @fsh=type?(cfg['frm'][@id],Frm::Exe)
+        @mode=@fsh.mode
         @stat.ext_rsp(@id,@adb,@fsh.field).ext_sym(@adb).upd
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @buf=init_buf

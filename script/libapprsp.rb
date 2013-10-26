@@ -18,33 +18,35 @@ module CIAX
         @fml=sdb[:formula]||{}
         @ads.keys.each{|k| @data[k]||='' }
         @field=type?(field,Frm::Field)
-        @upd_procs << proc{
-          @ads.each{|id,body|
-            enclose("AppRsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
-              flds=body[:fields]
-              data=case body['type']
-                   when 'binary'
-                     flds.inject(0){|sum,e| (sum << 1)+binary(e)}
-                   when 'float'
-                     flds.inject(0){|sum,e| sum+float(e)}
-                   when 'integer'
-                     flds.inject(0){|sum,e| sum+int(e)}
-                   else
-                     flds.inject(''){|sum,e| sum+get_field(e)}
-                   end
-              if @fml.key?(id)
-                f=@fml[id].gsub(/\$#/,data.to_s)
-                data=eval(f)
-                verbose("AppRsp","Formula:#{f}(#{data})")
-              end
-              data = @fmt[id] % data if @fmt.key?(id)
-              @data[id]=data.to_s
-            }
-          }
-          self['time']=@field['time']
-          verbose("AppRsp","Update(#{self['time']})")
-        }
         self
+      end
+
+      def upd
+        @ads.each{|id,body|
+          enclose("AppRsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
+            flds=body[:fields]
+            data=case body['type']
+                 when 'binary'
+                   flds.inject(0){|sum,e| (sum << 1)+binary(e)}
+                 when 'float'
+                   flds.inject(0){|sum,e| sum+float(e)}
+                 when 'integer'
+                   flds.inject(0){|sum,e| sum+int(e)}
+                 else
+                   flds.inject(''){|sum,e| sum+get_field(e)}
+                 end
+            if @fml.key?(id)
+              f=@fml[id].gsub(/\$#/,data.to_s)
+              data=eval(f)
+              verbose("AppRsp","Formula:#{f}(#{data})")
+            end
+            data = @fmt[id] % data if @fmt.key?(id)
+            @data[id]=data.to_s
+          }
+        }
+        self['time']=@field['time']
+        verbose("AppRsp","Update(#{self['time']})")
+        super
       end
 
       private

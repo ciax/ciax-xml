@@ -33,20 +33,21 @@ module CIAX
       self
     end
 
-    # update after processing
-    # never inherit
+    # update after processing (super should be end of method if inherited)
     def upd
       verbose("Datax","UPD_PROC for [#{self['type']}:#{self['id']}]")
       @upd_procs.each{|p| p.call(self)}
       self
     end
 
+    # never inherit
     def save
       verbose("Datax","SAVE_PROC for [#{self['type']}:#{self['id']}]")
       @save_procs.each{|p| p.call(self)}
       self
     end
 
+    # never inherit
     def load
       verbose("Datax","LOAD_PROC for [#{self['type']}:#{self['id']}]")
       @load_procs.each{|p| p.call(self)}

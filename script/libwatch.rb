@@ -26,12 +26,6 @@ module CIAX
         ! @data['active'].empty?
       end
 
-      def block?(args)
-        cmdary=@data['block']
-        verbose("Watch","Blocked?:#{args}") unless cmdary.empty?
-        cmdary.include?(args) && Msg.cmd_err("Blocking(#{args})")
-      end
-
       def issue
         # block parm = [priority(2),args]
         cmdary=@data['exec'].each{|args|
@@ -94,10 +88,10 @@ module CIAX
           }
         }
         if !hash['active'].empty?
-          if @data['active'].empty?
-            @data['astart']=nowsec
-          else
+          if active?
             @data['aend']=nowsec
+          else
+            @data['astart']=nowsec
           end
         end
         hash.each{|k,a|

@@ -48,7 +48,6 @@ module CIAX
 
       def init_watch
         @watch=Watch::Data.new
-        @pre_procs << proc{|args|@watch.block?(args)}
         @wview=Watch::View.new(@adb,@watch).ext_prt
         @view_grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview;''}
         @view_grp.add_item('rwa',{:label =>"Raw Watch mode"}).set_proc{@output=@watch;''}

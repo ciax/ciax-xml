@@ -13,7 +13,7 @@ module CIAX
         self['period']=300
         self['interval']=0.1
         @data['astart']=nowsec
-        @data['alast']=0
+        @data['aend']=nowsec
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
@@ -90,12 +90,12 @@ module CIAX
               end
             }
           }
-          if hash['active'].empty?
-            @data['alast']=nowsec-@data['astart'] unless @data['active'].empty?
-            @data['astart']=0
-          else
-            @data['astart']=nowsec if @data['active'].empty?
-            @data['alast']=0
+          if !hash['active'].empty?
+            if @data['active'].empty?
+              @data['astart']=nowsec
+            else
+              @data['aend']=nowsec
+            end
           end
           hash.each{|k,a|
             @data[k].replace a.uniq

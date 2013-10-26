@@ -8,7 +8,7 @@ module CIAX
       def initialize(adb,watch)
         wdb=type?(adb,App::Db)[:watch] || {:stat => []}
         @watch=type?(watch,Data)
-        ['exec','block','int','astart','alast'].each{|i|
+        ['exec','block','int','astart','aend'].each{|i|
           self[i]=@watch.data[i]
         }
         self['stat']={}
@@ -74,9 +74,8 @@ module CIAX
             str << ")\n"
           }
         }
-        atime=Msg.elps_date(self['atime'])
+        atime="%.3f" % (@watch.data['aend']-@watch.data['astart'])
         str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
-        str << "  "+Msg.color("LastActive",2)+"\t: #{self['alast']}\n"
         str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
         str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
         str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"

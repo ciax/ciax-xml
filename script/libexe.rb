@@ -11,7 +11,7 @@ require "libextcmd"
 
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:mode,:upd_procs,:cobj,:output
+    attr_reader :layer,:id,:mode,:post_procs,:cobj,:output
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       @id=id
@@ -21,7 +21,7 @@ module CIAX
         interrupt
         "INTERRUPT"
       }
-      @upd_procs=[] # Proc for Server Status Update (by User query)
+      @post_procs=[] # Proc for Server Status Update (by User query)
       @ver_color=6
       self['msg']=''
       Thread.abort_on_exception=true
@@ -37,7 +37,7 @@ module CIAX
       self['msg']=$!.to_s
       raise $!
     ensure
-      @upd_procs.each{|p| p.call}
+      @post_procs.each{|p| p.call}
     end
 
     def interrupt ;end

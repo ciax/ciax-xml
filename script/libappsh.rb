@@ -111,7 +111,7 @@ module CIAX
           @watch.reg_procs(@stat) # @watch isn't relate to @stat
         end
         @stat.ext_http(@id,host).load
-        @upd_procs << proc{@stat.load}
+        @post_procs << proc{@stat.load}
         ext_client(host,@adb['port'])
       end
 
@@ -139,7 +139,7 @@ module CIAX
           sv.add_table(@buf)
         end
         tid_auto=auto_update
-        @upd_procs << proc{
+        @post_procs << proc{
           self['auto'] = tid_auto && tid_auto.alive?
           self['na'] = !@buf.alive?
         }

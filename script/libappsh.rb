@@ -23,8 +23,6 @@ module CIAX
     end
 
     class Exe < Exe
-      # @< cobj,output,upd_procs*
-      # @ adb,fsh,watch,stat*
       attr_reader :adb,:stat
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
@@ -117,9 +115,6 @@ module CIAX
 
     end
 
-    # @<< cobj,output,upd_procs*
-    # @< adb,watch,stat*
-    # @ fsh,buf,log_proc
     class Sv < Exe
       def initialize(cfg)
         super(cfg)

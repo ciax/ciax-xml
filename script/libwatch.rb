@@ -26,6 +26,13 @@ module CIAX
         ! @data['active'].empty?
       end
 
+      def block?(args)
+        cid=args.join(':')
+        blkcmd=@data['block'].map{|ary| ary.join(':')}
+        verbose("Watch","BLOCKING:#{blkcmd}") unless blkcmd.empty?
+        blkcmd.any?{|blk| /#{blk}/ === cid} && Msg.cmd_err("Blocking(#{args})")
+      end
+
       def issue
         # block parm = [priority(2),args]
         cmdary=@data['exec'].each{|args|

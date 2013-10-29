@@ -50,7 +50,11 @@ module CIAX
         @view_grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview;''}
         @view_grp.add_item('rwa',{:label =>"Raw Watch mode"}).set_proc{@output=@watch;''}
         @watch.upd_procs << proc{|wat|
-          @cobj.extgrp.valid_sub(wat.data['block'].flatten)
+          block=wat.data['block'].map{|id,par| par ? nil : id}.compact
+          @cobj.extgrp.valid_sub(block)
+        }
+        @pre_procs << proc{|args|
+          @watch.block?(args)
         }
         @watch
       end

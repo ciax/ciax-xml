@@ -67,7 +67,7 @@ module CIAX
         @field.ext_rsp(@id,@fdb).load
         @mode='SIM' if sim=cfg['iocmd']
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
-        @stream=Stream.new(iocmd,@fdb['wait'],1)
+        @stream=Stream.new(iocmd,@fdb['wait'],5)
         @sqlsv=@stream.ext_logging(@id,@fdb['version']) unless sim
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)

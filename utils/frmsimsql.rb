@@ -40,8 +40,9 @@ class LogRing
     @index=tim.to_f
     sql="select min(time),count(*) from #@tbl where time > #{tim} and dir='rcv';"
     tim,crnt=query(sql).split('|')
-    verbose("FrmSim","LINE:[#{cmd}](#{@total-crnt.to_i}/#{@total})")
-    sleep tim.to_f-@index if tim.to_f > @index
+    wait=tim.to_f > @index ? [tim.to_f-@index,1].min : 0
+    verbose("FrmSim",color("LINE:[#{cmd}](#{@total-crnt.to_i}/#{@total})<#{'%.3f' % wait}>",2))
+    sleep wait
     sql="select base64 from #@tbl where time=#{tim};"
     query(sql)
   end

@@ -56,7 +56,17 @@ module CIAX
       def to_s
         return '' if self['stat'].empty?
         super
-        str="  "+Msg.color("Conditions",2)+"\t:\n"
+        atime="%.3f" % (@watch.data['aend']-@watch.data['astart'])
+        str="  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
+        str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
+        str << "  "+Msg.color("Conditions",2)+"\t:\n"
+        conditions(str)
+        str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
+        str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
+      end
+
+      private
+      def conditions(str)
         self['stat'].each{|k,i|
           str << "    "+Msg.color(i['label'],6)+"\t: "
           str << show_res(i['active'])+"\n"
@@ -74,14 +84,8 @@ module CIAX
             str << ")\n"
           }
         }
-        atime="%.3f" % (@watch.data['aend']-@watch.data['astart'])
-        str << "  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
-        str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
-        str << "  "+Msg.color("Interrupt",2)+"\t: #{self['int']}\n"
-        str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
       end
 
-      private
       def show_res(res,t=nil,f=nil)
         res ? Msg.color(t||res,2) : Msg.color(f||res,1)
       end

@@ -22,9 +22,8 @@ module CIAX
         @db=type?(db,Db)
         self['ver']=db['version'].to_i
         @sel=Hash[db[:rspframe]]
-        dbr=db[:response]
-        @fds=dbr[:body]
-        @frame=FrmAry.new(dbr['terminator'],dbr['delimiter'],db['endian'],db['ccmethod'])
+        @fds=db[:response][:body]
+        @frame=FrmAry.new(@sel['terminator'],@sel['delimiter'],db['endian'],db['ccmethod'])
         # Field Initialize
         @data.replace db[:field][:struct].deep_copy if @data.empty?
         self

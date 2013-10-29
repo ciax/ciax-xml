@@ -132,6 +132,7 @@ module CIAX
       @delimiter=delimiter
       @method=ccmethod
       @frame=Frame.new(endian,ccmethod)
+      verbose("FrmAry","Initialize/ Delim=#{@delimiter.inspect}, Term=#{@terminator.inspect}")
     end
 
     def set(str)

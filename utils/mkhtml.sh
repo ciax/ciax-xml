@@ -19,7 +19,7 @@ for id; do
 <title>CIAX-XML</title>
 <link rel="stylesheet" type="text/css" href="ciax-xml.css" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script type="text/javascript">var File="stat_$id.json";</script>
+<script type="text/javascript">var File="status_$id.json";</script>
 <script type="text/javascript" src="ciax-xml.js"></script>
 <body>
 EOF

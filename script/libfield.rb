@@ -72,7 +72,7 @@ module CIAX
         else
           Msg.par_err("Index is out of range")
         end
-        self['time']=nowsec
+        self['time']=now_msec
       end
     end
 

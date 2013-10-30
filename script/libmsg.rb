@@ -297,18 +297,18 @@ module CIAX
       indent(1)+color("%-6s" % key,3)+": #{val}"
     end
 
-    def nowsec
-      Time.now.to_f
+    def now_msec
+      (Time.now.to_f*1000).to_i
     end
 
-    def elps_sec(time)
-      return 0 unless time
-      "%.3f" % (Time.now.to_f-time.to_f)
+    def elps_sec(msec,base=now_msec)
+      return 0 unless msec
+      "%.3f" % ((base-msec).to_f/1000)
     end
 
-    def elps_date(time)
-      return 0 unless time
-      sec=(Time.now.to_f-time.to_f)
+    def elps_date(msec,base=now_msec)
+      return 0 unless msec
+      sec=(base-msec).to_f/1000
       if sec > 86400
         "%.1f days" % (sec/86400)
       elsif sec > 3600
@@ -318,6 +318,10 @@ module CIAX
       else
         Time.at(sec).utc.strftime("%S\"%L")
       end
+    end
+
+    def date(msec)
+      Time.at(msec.to_f/1000).inspect
     end
 
     # Color 1=red,2=green,4=blue,8=bright

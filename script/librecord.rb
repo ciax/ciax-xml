@@ -10,7 +10,7 @@ module CIAX
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize
         super('record',[],'steps')
-        self['id']=self['time'].to_i.to_s
+        self['id']=self['time'].to_s
         extend PrtRecord unless $opt['r']
         @depth=0
         ext_file(self['id'])

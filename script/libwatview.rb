@@ -56,7 +56,7 @@ module CIAX
       def to_s
         return '' if self['stat'].empty?
         super
-        atime="%.3f" % (@watch.data['aend']-@watch.data['astart'])
+        atime=Msg.elps_sec(@watch.data['astart'],@watch.data['aend'])
         str="  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
         str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
         str << "  "+Msg.color("Conditions",2)+"\t:\n"

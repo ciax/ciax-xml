@@ -78,7 +78,7 @@ module CIAX
         super
         @mode='TEST'
         @stat.ext_sym(@adb)
-        @stat.upd_procs << proc{|st|st['time']=nowsec}
+        @stat.upd_procs << proc{|st|st['time']=now_msec}
         @cobj.add_int
         @cobj.ext_proc{|ent|
           @stat.upd

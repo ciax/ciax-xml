@@ -31,7 +31,7 @@ module CIAX
               when 'elapse'
                 h['msg']=Msg.elps_date(@stat['time'])
               when 'time'
-                h['msg']=Time.at(@stat['time']).inspect
+                h['msg']=Msg.date(@stat['time'])
               else
                 h['msg']=@stat['msg'][id]||@stat.data[id]
               end

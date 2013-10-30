@@ -130,7 +130,7 @@ module CIAX
       else
         id=ARGV.shift
         cid=ARGV.shift
-        res={'time'=>nowsec}
+        res={'time'=>now_msec}
         res[:data]=gets(nil) || exit
       end
       fdb=Loc::Db.new.set(id)[:frm]

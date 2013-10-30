@@ -12,8 +12,8 @@ module CIAX
         super('watch')
         self['period']=300
         self['interval']=0.1
-        @data['astart']=nowsec
-        @data['aend']=nowsec
+        @data['astart']=now_msec
+        @data['aend']=now_msec
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
@@ -96,9 +96,9 @@ module CIAX
         }
         if !hash['active'].empty?
           if active?
-            @data['aend']=nowsec
+            @data['aend']=now_msec
           else
-            @data['astart']=nowsec
+            @data['astart']=now_msec
           end
         end
         hash.each{|k,a|

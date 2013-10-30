@@ -25,7 +25,7 @@ function conv(stat){
         }
         $("#"+id).text(msg);
     }
-    last=val.time*1000;
+    last=val.time;
 }
 function update(){
     $.getJSON(File,conv);

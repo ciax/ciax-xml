@@ -61,7 +61,7 @@ module CIAX
 
     private
     def conv(dir,data,cid=nil)
-      self['time']=nowsec
+      self['time']=now_msec
       self[:data]=data
       @data.update({'dir'=>dir,'base64'=>encode(data)})
       @data['cmd']=cid if cid

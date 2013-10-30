@@ -10,8 +10,8 @@ module CIAX
         @ver_color=6
         super('status',init_struct)
         @last={}
-        @updated=nowsec
-        @lastsave=nowsec
+        @updated=now_msec
+        @lastsave=now_msec
       end
 
       def set(hash) #For Watch test

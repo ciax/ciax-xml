@@ -50,7 +50,7 @@ module CIAX
           add_item(id,cfg)
         }
       }
-      cdb[:alias].each{|k,v| self[k].replace self[v]} if cdb.key?(:alias)
+      cdb[:alias].each{|k,v| add_item(k,self[v].cfg)} if cdb.key?(:alias)
     end
   end
 

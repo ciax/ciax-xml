@@ -102,7 +102,7 @@ module CIAX
 
     def _setdata
       @data=delete(@dataname).extend(Enumx)
-      self['time']||=now_msec
+      self['time']=now_msec
       upd
     end
 
@@ -179,7 +179,9 @@ module CIAX
       else
         tag||=(taglist.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
         Msg.msg("Status Saving for [#{tag}]")
-        writej({@dataname => hash},tag)
+        output=Hash[self]
+        output[@dataname]=hash
+        writej(output,tag)
       end
       self
     end

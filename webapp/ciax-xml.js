@@ -2,6 +2,7 @@ var last;
 function elapse(){
     var now=new Date();
     var ms=now.getTime()-last;
+    if(ms < 0){ ms=0; }
     var t=new Date(ms);
     var str;
     if (ms > 86400000){

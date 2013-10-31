@@ -409,9 +409,6 @@
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="During Issued" id="isu">
         <pattern var="isu" inv="1">0</pattern>
-        <block_grp ref="grun" />
-        <block_grp ref="gjak" />
-        <block_grp ref="gchg" />
         <exec name="upd"></exec>
       </event>
       <event label="Command Receive" id="rec">

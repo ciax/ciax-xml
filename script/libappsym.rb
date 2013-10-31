@@ -19,36 +19,34 @@ module CIAX
         @sdb=Sym::Db.pack(['all',ads['table']])
         self['class']={}
         self['msg']={}
-        self
-      end
-
-      def upd
-        @symbol.each{|key,sid|
-          unless tbl=@sdb[sid.to_sym]
-            warning("Symbol","Table[#{sid}] not exist")
-            next
-          end
-          verbose("Symbol","ID=#{key},table=#{sid}")
-          self['class'][key]='alarm'
-          self['msg'][key]='N/A'
-          val=@data[key]
-          tbl.each{|sym|
-            case sym['type']
-            when 'range'
-              next unless ReRange.new(sym['val']) == val
-              verbose("Symbol","VIEW:Range:[#{sym['val']}] and [#{val}]")
-              self['msg'][key]=sym['msg']+"(#{val})"
-            when 'pattern'
-              next unless /#{sym['val']}/ === val || val == 'default'
-              verbose("Symbol","VIEW:Regexp:[#{sym['val']}] and [#{val}]")
-              self['msg'][key]=sym['msg']
+        @upd_procs << proc{ #post process
+          @symbol.each{|key,sid|
+            unless tbl=@sdb[sid.to_sym]
+              warning("Symbol","Table[#{sid}] not exist")
+              next
             end
-            self['class'][key]=sym['class']
-            break
+            verbose("Symbol","ID=#{key},table=#{sid}")
+            self['class'][key]='alarm'
+            self['msg'][key]='N/A'
+            val=@data[key]
+            tbl.each{|sym|
+              case sym['type']
+              when 'range'
+                next unless ReRange.new(sym['val']) == val
+                verbose("Symbol","VIEW:Range:[#{sym['val']}] and [#{val}]")
+                self['msg'][key]=sym['msg']+"(#{val})"
+              when 'pattern'
+                next unless /#{sym['val']}/ === val || val == 'default'
+                verbose("Symbol","VIEW:Regexp:[#{sym['val']}] and [#{val}]")
+                self['msg'][key]=sym['msg']
+              end
+              self['class'][key]=sym['class']
+              break
+            }
           }
+          verbose("Symbol","Update(#{self['time']})")
         }
-        verbose("Symbol","Update(#{self['time']})")
-        super
+        self
       end
     end
 

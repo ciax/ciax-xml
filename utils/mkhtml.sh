@@ -21,6 +21,7 @@ for id; do
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script type="text/javascript">var File="status_$id.json";</script>
 <script type="text/javascript" src="ciax-xml.js"></script>
+</head>
 <body>
 EOF
 >>$file ~/lib/libhtmltbl.rb $id $app

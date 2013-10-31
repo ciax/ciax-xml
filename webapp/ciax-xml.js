@@ -1,6 +1,6 @@
 var last;
 function elapse(){
-    var now=new Date()
+    var now=new Date();
     var ms=now.getTime()-last;
     var t=new Date(ms);
     var str;
@@ -14,9 +14,9 @@ function elapse(){
     $("#elapse").text(str);
 }
 function conv(stat){
-    var val=stat.val
-    for (var id in val){
-        var msg=val[id];
+    var data=stat.data
+    for (var id in data){
+        var msg=data[id];
         if("class" in stat && id in stat["class"]){
                 $("#"+id).addClass(stat["class"][id]);
         }
@@ -25,7 +25,9 @@ function conv(stat){
         }
         $("#"+id).text(msg);
     }
-    last=val.time;
+    last=stat.time;
+    var lstr=new Date(last);
+    $("#time").text(lstr.toLocaleString());
 }
 function update(){
     $.getJSON(File,conv);

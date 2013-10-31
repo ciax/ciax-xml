@@ -48,10 +48,6 @@ module CIAX
           verbose("Field","Content[#{h[i]}]")
           h[i] || warning("Field","No such Value [#{vname.join(':')}] in 'data'")
         }
-        unless Comparable === dat
-          warning("Field","Short Index [#{vname.join(':')}]")
-          dat=nil
-        end
         verbose("Field","Get[#{key}]=[#{dat}]")
         dat
       end

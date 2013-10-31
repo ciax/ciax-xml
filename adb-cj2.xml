@@ -402,16 +402,9 @@
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="On Motion" id="mot">
         <pattern var="exe" inv="true">0</pattern>
-        <block name="fhook"></block>
-        <block name="funhk"></block>
-        <block name="fjup"></block>
-        <block name="fjdw"></block>
-        <block name="mhook"></block>
-        <block name="munhk"></block>
-        <block name="mjup"></block>
-        <block name="mjdw"></block>
-        <block name="trin"></block>
-        <block name="trout"></block>
+        <block_grp ref="gfix"></block_grp>
+        <block_grp ref="gmov"></block_grp>
+        <block_grp ref="gtr"></block_grp>
         <block name="dopen"></block>
         <block name="dclose"></block>
         <int name="pause" />

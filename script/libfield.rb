@@ -61,17 +61,19 @@ module CIAX
         akey=key.split(':')
         if @data.key?(akey.shift) && p=get(key)
           conv=subst(val).to_s
+          verbose("Field","Set[#{key}]=[#{conv}]")
           case p
           when Array
             p.replace(conv.split(','))
           when String
-            p.replace(conv)
+            p.replace(eval(conv).to_s)
           end
         elsif akey.empty?
           @data[key]=val
         else
           Msg.par_err("Index is out of range")
         end
+        verbose("Field","Evaluated[#{key}]=[#{@data[key]}]")
         self['time']=now_msec
         self
       end

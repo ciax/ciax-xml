@@ -76,7 +76,7 @@ module CIAX
         }
         @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1]).save
-          "Set [#{ent.par[0]}]"
+          "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         @cobj.item_proc('save'){|ent|
           @field.savekey(ent.par[0].split(','),ent.par[1])

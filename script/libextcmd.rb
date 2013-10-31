@@ -63,7 +63,7 @@ module CIAX
       @cfg[:body]=deep_subst(@cfg[:body])
     end
 
-    def subst(str)
+    def subst(str) #subst by parameter ($1,$2...)
       return str unless /\$([\d]+)/ === str
       enclose("ExtEntity","Substitute from [#{str}]","Substitute to [%s]"){
         num=true

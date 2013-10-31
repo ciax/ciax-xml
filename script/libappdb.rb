@@ -127,7 +127,8 @@ module CIAX
               }
               (hash[name][idx]||=[]) << args
             when :block_grp
-              (hash[:block][idx]||=[]).concat(cdb[:group][e1['ref']][:members])
+              blk=(hash[:block][idx]||=[])
+              cdb[:group][e1['ref']][:members].each{|id| blk << [id]}
             else
               h=e1.to_h
               h.each_value{|v| v.replace(r0.format(v))}

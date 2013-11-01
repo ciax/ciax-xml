@@ -105,7 +105,7 @@ module CIAX
       str=layer.to_s.split(':').last
       id=str.downcase
       lst=(@cfg[id]||=layer::List.new(@cfg))
-      @swlgrp.add_item(id,{:label =>str+" mode"})
+      @swlgrp.add_item(id,str+" mode")
       lst.init_procs << proc{|exe| exe.cobj.lodom.join_group(@swlgrp) }
       self[id]=lst
     end

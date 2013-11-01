@@ -95,15 +95,15 @@ module CIAX
       @ver_color=3
     end
 
-    def add_item(id,crnt={})
+    def add_item(id,title=nil,crnt={})
       crnt[:id]=id
-      @cmdary.last[id]=crnt[:label]
+      @cmdary.last[id]=title
       self[id]=@cfg[:item_class].new(@cfg,crnt)
     end
 
     def update_items(labels)
-      type?(labels,Hash).each{|id,label|
-        add_item(id,{:label => label})
+      type?(labels,Hash).each{|id,title|
+        add_item(id,title)
       }
       self
     end

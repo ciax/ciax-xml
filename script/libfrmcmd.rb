@@ -27,9 +27,9 @@ module CIAX
         super
         @cfg['caption']='Internal Commands'
         any={:type =>'reg',:list => ["."]}
-        add_item('save',{:label =>"[key,key...] [tag]",:parameter =>[any,any]})
-        add_item('load',{:label =>"[tag]",:parameter =>[any]})
-        set=add_item('set',{:label =>"[key(:idx)] [val(,val)]",:parameter =>[any,any]})
+        add_item('save',"[key,key...] [tag]",{:parameter =>[any,any]})
+        add_item('load',"[tag]",{:parameter =>[any]})
+        set=add_item('set',"[key(:idx)] [val(,val)]",{:parameter =>[any,any]})
         set.set_proc{|ent|
           @cfg[:field].set(*ent.par)
           'OK'

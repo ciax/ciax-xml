@@ -39,12 +39,12 @@ module CIAX
         @cmdary << CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:body].keys).each{|id|
           # because cdb(group,parameter,body,label,alias) is separated by title
-          cfg={:label => cdb[:label][id]}
+          cfg={}
           [:body,:parameter].each{|db|
             org=(cdb[:alias]||{})[id]||id
             cfg[db]=cdb[db][org] if cdb[db].key?(org)
           }
-          add_item(id,cfg)
+          add_item(id,cdb[:label][id],cfg)
         }
       }
     end

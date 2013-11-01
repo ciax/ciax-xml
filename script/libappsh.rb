@@ -39,16 +39,16 @@ module CIAX
         @stat=Status.new(@adb[:status][:struct].deep_copy)
         @stat['id']=@id
         @output=@print=View.new(@adb,@stat).extend(Print)
-        @view_grp.add_item('sta',{:label =>"Stat mode"}).set_proc{@output=@print;''}
-        @view_grp.add_item('rst',{:label =>"Raw Stat mode"}).set_proc{@output=@stat;''}
+        @view_grp.add_item('sta',"Stat mode").set_proc{@output=@print;''}
+        @view_grp.add_item('rst',"Raw Stat mode").set_proc{@output=@stat;''}
         @stat
       end
 
       def init_watch
         @watch=Watch::Data.new
         @wview=Watch::View.new(@adb,@watch).ext_prt
-        @view_grp.add_item('wat',{:label =>"Watch mode"}).set_proc{@output=@wview;''}
-        @view_grp.add_item('rwa',{:label =>"Raw Watch mode"}).set_proc{@output=@watch;''}
+        @view_grp.add_item('wat',"Watch mode").set_proc{@output=@wview;''}
+        @view_grp.add_item('rwa',"Raw Watch mode").set_proc{@output=@watch;''}
         @watch.upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @cobj.extgrp.valid_sub(block)

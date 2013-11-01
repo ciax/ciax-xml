@@ -84,8 +84,8 @@
   <instance id="cro" label="OPT Helium Compressor" app_id="bbe">
     <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
       <group id="alias" caption="Alias" column="2">
-        <command id="on" label="X0 ON" alias="x0on" />
-        <command id="off" label="X0 OFF" alias="x0off" />
+        <command id="on" label="Alias for X0 ON" alias="x0on" />
+        <command id="off" label="Alias for X0 OFF" alias="x0off" />
       </group>
     </cmdlist>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

@@ -36,25 +36,17 @@ module CIAX
 
     def set_items(cdb)
       (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
-        subgrp=CmdList.new(gat,@valid_keys)
-        @cmdary << subgrp
+        @cmdary << CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:body].keys).each{|id|
-          subgrp[id]=cdb[:label][id]
-          # because cdb is separated by title
-          cfg={}
-          cdb.each{|k,v|
-            if a=v[id]
-              cfg[k]=a
-            end
+          # because cdb(group,parameter,body,label,alias) is separated by title
+          cfg={:label => cdb[:label][id]}
+          [:body,:parameter].each{|db|
+            org=(cdb[:alias]||{})[id]||id
+            cfg[db]=cdb[db][org] if cdb[db].key?(org)
           }
           add_item(id,cfg)
         }
       }
-      if cdb.key?(:alias)
-        cdb[:alias].each{|k,v|
-          self[k]=@cfg[:item_class].new(self[v].cfg,{:id => v})
-        }
-      end
     end
   end
 

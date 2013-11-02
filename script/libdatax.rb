@@ -102,7 +102,7 @@ module CIAX
 
     def _setdata
       @data=delete(@dataname).extend(Enumx)
-      self['time']=now_msec
+      self['time']||=now_msec
       upd
     end
 

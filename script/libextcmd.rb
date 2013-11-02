@@ -38,11 +38,13 @@ module CIAX
       (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
         @cmdary << CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb[:body].keys).each{|id|
-          # because cdb(group,parameter,body,label,alias) is separated by title
+          org=(cdb[:alias]||{})[id]||id
+          # because cdb is separated by title
+          # app cdb: label,parameter,body,group,alias
+          # frm cdb: label,parameter,body,type,response,nocache
           cfg={}
-          [:body,:parameter].each{|db|
-            org=(cdb[:alias]||{})[id]||id
-            cfg[db]=cdb[db][org] if cdb[db].key?(org)
+          [:body,:parameter,:type,:response,:nocache].each{|db|
+            cfg[db]=cdb[db][org] if (cdb[db]||{}).key?(org)
           }
           add_item(id,cdb[:label][id],cfg)
         }

@@ -5,7 +5,7 @@ module CIAX
   module App
     class View < Hashx
       def initialize(adb,stat)
-        @sdb=type?(adb,Db)[:status]
+        @adb=type?(adb,Db)
         @stat=type?(stat,Status)
         ['data','class','msg'].each{|key|
           stat[key]||={}
@@ -19,14 +19,15 @@ module CIAX
 
       private
       def conv
-        @sdb[:group].each{|k,gdb|
+        sdb=@adb[:status]
+        @adb[:statgrp].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
           col=gdb['column']||1
           gdb[:members].each_slice(col.to_i){|ids|
             hash={}
             ids.each{|id|
-              h=hash[id]={'label'=>@sdb[:label][id]||id.upcase}
+              h=hash[id]={'label'=>sdb[:label][id]||id.upcase}
               case id
               when 'elapse'
                 h['msg']=Msg.elps_date(@stat['time'])

@@ -24,7 +24,7 @@ module CIAX
         hash.update(doc)
         doc.domain('cmdlist').each{|e0|
           p=(hash[:command]||={})
-          g=(p[:group]||={})
+          g=(hash[:cmdgrp]||={})
           key=e0.add_item(g)
           item=(g[key][:members]||=[])
           e0.each{|e1|
@@ -35,7 +35,7 @@ module CIAX
         doc.domain('status').each{|e0|
           p=(hash[:status]||={})
           if e0.name == 'group'
-            e0.add_item(p[:group]||={},'ref')
+            e0.add_item(hash[:statgrp]||={},'ref')
           else
             e0.attr2db(p,'ref')
           end

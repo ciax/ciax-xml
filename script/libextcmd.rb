@@ -31,11 +31,12 @@ module CIAX
       @cfg[:entity_class]||=ExtEntity
       @cfg['caption']||="External Commands"
       @cfg['color']||=6
-      set_items(type?(@cfg[:db],Db)[:command])
+      set_items(@cfg[:db])
     end
 
-    def set_items(cdb)
-      (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
+    def set_items(db)
+      cdb=type?(db,Db)[:command]
+      (db[:cmdgrp]||{'main'=>@cfg}).each{|gid,gat|
         subgrp=CmdList.new(gat,@valid_keys)
         @cmdary << subgrp
         (gat[:members]||cdb[:body].keys).each{|id|

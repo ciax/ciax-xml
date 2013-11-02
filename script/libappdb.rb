@@ -15,12 +15,14 @@ module CIAX
         hash.update(doc)
         hash['id']=hash.delete('id')
         # Command DB
+        @cmdgrp=hash[:cmdgrp]={}
         cdb=hash[:command]=init_command(doc.domain('commands'))
         # Status DB
+        @stgrp=hash[:statgrp]={}
         hash[:status]=init_stat(doc.domain('status'))
         # Watch DB
         if doc.domain?('watch')
-          hash[:watch]=init_watch(doc.domain('watch'),cdb)
+          hash[:watch]=init_watch(doc.domain('watch'))
         end
         hash
       end
@@ -28,13 +30,12 @@ module CIAX
       # Command Db
       def init_command(adbc)
         hash=adbc.to_h
-        [:group,:parameter,:body,:label].each{|k|
+        [:parameter,:body,:label].each{|k|
           hash[k]={}
         }
-        hash[:group]={}
         adbc.each{|e|
           Msg.abort("No group in adbc") unless e.name == 'group'
-          gid=e.add_item(hash[:group])
+          gid=e.add_item(@cmdgrp)
           arc_command(e,hash,gid)
         }
         hash
@@ -43,7 +44,7 @@ module CIAX
       def arc_command(e,hash,gid)
         e.each{|e0|
           id=e0['id']
-          (hash[:group][gid][:members]||=[]) << id
+          (@cmdgrp[gid][:members]||=[]) << id
           hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
           Repeat.new.each(e0){|e1,rep|
             set_par(e1,id,hash) && next
@@ -68,8 +69,7 @@ module CIAX
       # Status Db
       def init_stat(sdb)
         hash=sdb.to_h
-        group=hash[:group]={}
-        group['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
+        @stgrp['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
         hash[:label]={'time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
         hash[:body]=rec_stat(sdb,hash,'gtime',Repeat.new)
         st=hash[:struct]=Hashx.new
@@ -82,7 +82,7 @@ module CIAX
         rep.each(e){|e0,r0|
           case e0.name
           when 'group'
-            gid=e0.add_item(hash[:group]){|k,v| r0.format(v)}
+            gid=e0.add_item(@stgrp){|k,v| r0.format(v)}
             struct.update(rec_stat(e0,hash,gid,r0))
           else
             id=e0.attr2db(hash){|k,v| r0.format(v)}
@@ -103,7 +103,7 @@ module CIAX
               end
               struct[id][:fields] << st
             }
-            (hash[:group][gid][:members]||=[]) << id
+            (@stgrp[gid][:members]||=[]) << id
           end
         }
         struct
@@ -111,7 +111,7 @@ module CIAX
 
       # Watch Db
       #structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
-      def init_watch(wdb,cdb)
+      def init_watch(wdb)
         return [] unless wdb
         hash=wdb.to_h
         [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
@@ -128,7 +128,7 @@ module CIAX
               (hash[name][idx]||=[]) << args
             when :block_grp
               blk=(hash[:block][idx]||=[])
-              cdb[:group][e1['ref']][:members].each{|id| blk << [id]}
+              @cmdgrp[e1['ref']][:members].each{|id| blk << [id]}
             else
               h=e1.to_h
               h.each_value{|v| v.replace(r0.format(v))}

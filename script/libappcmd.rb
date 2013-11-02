@@ -15,7 +15,7 @@ module CIAX
       end
 
       def add_int
-        @lodom.add_group(:group_class =>IntGrp)
+        @svdom.add_group(:group_class =>IntGrp)
       end
     end
 

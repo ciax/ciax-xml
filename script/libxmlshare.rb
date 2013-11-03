@@ -62,6 +62,21 @@ module CIAX
         db[key]=attr
         key
       end
+
+      def add_attr(db,id='id')
+        # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
+        type?(db,Hash)
+        attr={}
+        to_h.each{|k,v|
+          if defined?(yield)
+            attr[k] = yield k,v
+          else
+            attr[k] = v
+          end
+        }
+        key=attr.delete(id) || Msg.abort("No such key (#{id})")
+        db[key]=attr
+      end
     end
   end
 end

@@ -16,7 +16,7 @@ module CIAX
         ads=db[:status]
         self['ver']=db['version'].to_i
         @symbol=ads[:symbol]||{}
-        @sdb=Sym::Db.pack(['all',ads['table']])
+        @sdb=Sym::Db.pack(['all',ads['symtbl']])
         self['class']={}
         self['msg']={}
         @upd_procs << proc{ #post process
@@ -25,7 +25,7 @@ module CIAX
               warning("Symbol","Table[#{sid}] not exist")
               next
             end
-            verbose("Symbol","ID=#{key},table=#{sid}")
+            verbose("Symbol","ID=#{key},Table=#{sid}")
             self['class'][key]='alarm'
             self['msg'][key]='N/A'
             val=@data[key]

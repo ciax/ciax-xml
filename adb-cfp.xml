@@ -74,7 +74,7 @@
         </command>
       </group>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cfp">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cfp">
       <group caption="Output" id="g1" column="2">
         <binary id="ao" label="Arm Gripper(out)" symbol="oc">
           <normal bit="10" ref="output" />

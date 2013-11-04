@@ -28,7 +28,7 @@
           <xsd:element ref="adbs:repeat"></xsd:element>
         </xsd:choice>
       </xsd:choice>
-      <xsd:attribute name="table" type="xsd:NCName" use="optional" />
+      <xsd:attribute name="symtbl" type="xsd:NCName" use="optional" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="group">

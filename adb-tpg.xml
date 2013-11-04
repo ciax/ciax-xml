@@ -9,7 +9,7 @@
         </command>
       </group>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="tpg">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="tpg">
       <group id="g1" caption=""  column="2">
         <string id="st1" label="Turbo Pump Stat" symbol="stat">
           <field ref="st1" />

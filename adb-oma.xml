@@ -8,7 +8,7 @@
         </command>
       </group>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="oma">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="oma">
       <group id="g1" caption="">
         <float id="pres" label="Air Pressure (Psi)" symbol="pres" format="%4.2f">
           <field ref="stat" />

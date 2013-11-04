@@ -265,7 +265,7 @@
         </command>
       </group>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="cj2">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cj2">
       <group id="g1" caption="MAIN" column="3">
         <binary id="ctl" label="CONTROL" symbol="ctl">
           <normal ref="w" index="0" bit="6" />

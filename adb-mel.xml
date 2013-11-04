@@ -297,7 +297,7 @@
         </command>
       </group>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mel">
       <group id="gs" caption="Status" column="3">
         <binary id="rdy" label="READY" symbol="off-alarm">
           <normal ref="x" index="0" bit="0" />

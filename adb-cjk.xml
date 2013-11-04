@@ -35,7 +35,7 @@
         </command>
       </group>
     </commands>
-    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" table="mel">
+    <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mel">
       <repeat from="0" to="10" counter="i">
         <repeat from="0" to="5" counter="t">
           <group id="id$it$t" column="4">

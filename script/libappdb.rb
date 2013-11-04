@@ -47,7 +47,7 @@ module CIAX
           (@cmdgrp[gid][:members]||=[]) << id
           hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
           Repeat.new.each(e0){|e1,rep|
-            set_par(e1,id,hash) && next
+            set_db_par(e1,id,hash) && next
             case e1.name
             when 'frmcmd'
               command=[e1['name']]

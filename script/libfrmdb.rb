@@ -53,7 +53,7 @@ module CIAX
             (bodyh[:body]||={})[id]||=[]
             verbose("Fdb","Init Body Hash(#{id})")
             Repeat.new.each(e0){|e1,r1|
-              set_par(e1,id,bodyh) && next
+              set_db_par(e1,id,bodyh) && next
               e=yield(e1,r1) || next
               bodyh[:body][id] << e
             }

@@ -83,7 +83,7 @@ module CIAX
       dir+"#{@base}.mar"
     end
 
-    def set_par(e,id,db)
+    def set_db_par(e,id,db)
       case e.name
       when 'par_num'
         attr={:type => 'num',:list => e.text.split(',')}

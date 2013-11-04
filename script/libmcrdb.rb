@@ -21,7 +21,7 @@ module CIAX
           final={}
           e0.each{|e1,rep|
             attr=e1.to_h
-            set_par(e1,id,mdb) && next
+            set_db_par(e1,id,mdb) && next
             attr['type'] = e1.name
             case e1.name
             when 'check','wait'

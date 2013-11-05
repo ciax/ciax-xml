@@ -14,22 +14,20 @@ module CIAX
         hash={}
         hash.update(doc)
         hash['id']=hash.delete('id')
-        # Command DB
+        # Group DB
         @cmdgrp=hash[:cmdgrp]={}
-        domc=doc.domain('commands')
-        hash.update(domc.to_h)
-        cdb=hash[:command]=init_command(domc)
-        # Status DB
         @stgrp=hash[:statgrp]={}
-        doms=doc.domain('status')
-        hash.update(doms.to_h)
+        # Domains
+        dom=[]
+        dom << domc=doc.domain('commands')
+        hash[:command]=init_command(domc)
+        dom << doms=doc.domain('status')
         hash[:status]=init_stat(doms)
-        # Watch DB
         if doc.domain?('watch')
-          domw=doc.domain('watch')
-          hash.update(domw.to_h)
+          dom << domw=doc.domain('watch')
           hash[:watch]=init_watch(domw)
         end
+        dom.each{|d| hash.update(d.to_h)}
         hash
       end
 

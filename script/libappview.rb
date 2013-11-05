@@ -27,7 +27,7 @@ module CIAX
           gdb[:members].each_slice(col.to_i){|ids|
             hash={}
             ids.each{|id|
-              h=hash[id]={'label'=>sdb[:label][id]||id.upcase}
+              h=hash[id]={'label'=>sdb[id]['label']||id.upcase}
               case id
               when 'elapse'
                 h['msg']=Msg.elps_date(@stat['time'])

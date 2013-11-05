@@ -16,12 +16,13 @@ module CIAX
         ads=db[:status]
         self['ver']=db['version'].to_i
         @symbol=ads[:symbol]||{}
-        @sdb=Sym::Db.pack(['all',db['symtbl']])
+        @symdb=Sym::Db.pack(['all',db['symtbl']])
         self['class']={}
         self['msg']={}
         @upd_procs << proc{ #post process
-          @symbol.each{|key,sid|
-            unless tbl=@sdb[sid.to_sym]
+          ads.each{|key,hash|
+            sid=hash['symbol']||next
+            unless tbl=@symdb[sid.to_sym]
               warning("Symbol","Table[#{sid}] not exist")
               next
             end

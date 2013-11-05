@@ -12,20 +12,17 @@ module CIAX
 
       def ext_rsp(id,adb,field)
         ext_file(id)
-        sdb=type?(adb,Db)[:status]
-        @ads=sdb[:body]
-        @fmt=sdb[:format]||{}
-        @fml=sdb[:formula]||{}
-        @ads.keys.each{|k| @data[k]||='' }
+        @adbs=type?(adb,Db)[:status]
+        @adbs.keys.each{|k| @data[k]||='' }
         @field=type?(field,Frm::Field)
         self
       end
 
       def upd
-        @ads.each{|id,body|
+        @adbs.each{|id,hash|
           enclose("AppRsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
-            flds=body[:fields]
-            data=case body['type']
+            flds=hash[:fields]||next
+            data=case hash['type']
                  when 'binary'
                    flds.inject(0){|sum,e| (sum << 1)+binary(e)}
                  when 'float'
@@ -35,12 +32,12 @@ module CIAX
                  else
                    flds.inject(''){|sum,e| sum+get_field(e)}
                  end
-            if @fml.key?(id)
-              f=@fml[id].gsub(/\$#/,data.to_s)
+            if hash.key?('formula')
+              f=hash['formula'].gsub(/\$#/,data.to_s)
               data=eval(f)
               verbose("AppRsp","Formula:#{f}(#{data})")
             end
-            data = @fmt[id] % data if @fmt.key?(id)
+            data = hash['format'] % data if hash.key?('format')
             @data[id]=data.to_s
           }
         }

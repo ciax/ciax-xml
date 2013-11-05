@@ -66,8 +66,8 @@ module CIAX
         @wdb=type?(adb,App::Db)[:watch] || {:stat => {}}
         @stat=type?(stat,App::Status)
         reg_procs(@stat)
-        self['period']=@wdb['period'].to_i if @wdb.key?('period')
-        self['interval']=@wdb['interval'].to_f/10 if @wdb.key?('interval')
+        self['period']=adb['period'].to_i if adb.key?('period')
+        self['interval']=adb['interval'].to_f/10 if adb.key?('interval')
         # Pick usable val
         @list=@wdb[:stat].values.flatten(1).map{|h| h['var']}.uniq
         @list.unshift('time')

@@ -16,7 +16,7 @@ module CIAX
         ads=db[:status]
         self['ver']=db['version'].to_i
         @symbol=ads[:symbol]||{}
-        @sdb=Sym::Db.pack(['all',ads['symtbl']])
+        @sdb=Sym::Db.pack(['all',db['symtbl']])
         self['class']={}
         self['msg']={}
         @upd_procs << proc{ #post process

@@ -16,23 +16,26 @@ module CIAX
         hash['id']=hash.delete('id')
         # Command DB
         @cmdgrp=hash[:cmdgrp]={}
-        cdb=hash[:command]=init_command(doc.domain('commands'))
+        domc=doc.domain('commands')
+        hash.update(domc.to_h)
+        cdb=hash[:command]=init_command(domc)
         # Status DB
         @stgrp=hash[:statgrp]={}
-        hash[:status]=init_stat(doc.domain('status'))
+        doms=doc.domain('status')
+        hash.update(doms.to_h)
+        hash[:status]=init_stat(doms)
         # Watch DB
         if doc.domain?('watch')
-          hash[:watch]=init_watch(doc.domain('watch'))
+          domw=doc.domain('watch')
+          hash.update(domw.to_h)
+          hash[:watch]=init_watch(domw)
         end
         hash
       end
 
       # Command Db
       def init_command(adbc)
-        hash=adbc.to_h
-        [:parameter,:body,:label].each{|k|
-          hash[k]={}
-        }
+        hash={}
         adbc.each{|e|
           Msg.abort("No group in adbc") unless e.name == 'group'
           gid=e.add_item(@cmdgrp)
@@ -45,7 +48,7 @@ module CIAX
         e.each{|e0|
           id=e0['id']
           (@cmdgrp[gid][:members]||=[]) << id
-          hash[:label][id]=e0['label'] unless /true|1/ === e0['hidden']
+          (hash[:label]||={})[id]=e0['label'] unless /true|1/ === e0['hidden']
           Repeat.new.each(e0){|e1,rep|
             set_db_par(e1,id,hash) && next
             case e1.name
@@ -59,7 +62,7 @@ module CIAX
                 end
                 command << argv
               }
-              (hash[:body][id]||=[]) << command
+              ((hash[:body]||={})[id]||=[]) << command
             end
           }
         }
@@ -68,7 +71,7 @@ module CIAX
 
       # Status Db
       def init_stat(sdb)
-        hash=sdb.to_h
+        hash={}
         @stgrp['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
         hash[:label]={'time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
         hash[:body]=rec_stat(sdb,hash,'gtime',Repeat.new)
@@ -113,7 +116,7 @@ module CIAX
       #structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
       def init_watch(wdb)
         return [] unless wdb
-        hash=wdb.to_h
+        hash={}
         [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
         Repeat.new.each(wdb){|e0,r0|
           idx=r0.format(e0['id'])

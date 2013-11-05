@@ -11,9 +11,7 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        hash={}
-        hash.update(doc)
-        hash['id']=hash.delete('id')
+        hash=Hash[doc]
         # Group DB
         @cmdgrp=hash[:cmdgrp]={}
         @stgrp=hash[:statgrp]={}
@@ -44,11 +42,11 @@ module CIAX
 
       def arc_command(e,hash,gid)
         e.each{|e0|
-          id=e0['id']
-          (@cmdgrp[gid][:members]||=[]) << id
-          (hash[:label]||={})[id]=e0['label'] unless /true|1/ === e0['hidden']
+          item=e0.add_attr(hash)
+          (@cmdgrp[gid][:members]||=[]) << e0['id']
+          item['label']=e0['label'] unless /true|1/ === e0['hidden']
           Repeat.new.each(e0){|e1,rep|
-            set_db_par(e1,id,hash) && next
+            par2item(e1,item) && next
             case e1.name
             when 'frmcmd'
               command=[e1['name']]
@@ -60,7 +58,7 @@ module CIAX
                 end
                 command << argv
               }
-              ((hash[:body]||={})[id]||=[]) << command
+              (item[:body]||=[]) << command
             end
           }
         }

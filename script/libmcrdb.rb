@@ -11,17 +11,21 @@ module CIAX
 
       private
       def doc_to_db(doc)
+        hash=Hash[doc]
+        hash[:command]=init_command(doc.top)
+        hash
+      end
+
+      def init_command(mdbc)
         hash={}
-        hash.update(doc)
-        mdb=(hash[:command]||={})
-        doc.top.each{|e0|
-          id=e0.attr2db(mdb)
-          verbose("Mdb","MACRO:[#{id}]")
-          body=((mdb[:body]||={})[id]||=[])
+        mdbc.each{|e0|
+          verbose("Mdb","MACRO:[#{e0['id']}]")
+          item=e0.add_attr(hash)
+          body=(item[:body]||=[])
           final={}
           e0.each{|e1,rep|
             attr=e1.to_h
-            set_db_par(e1,id,mdb) && next
+            par2item(e1,item) && next
             attr['type'] = e1.name
             case e1.name
             when 'check','wait'
@@ -36,7 +40,7 @@ module CIAX
               verbose("Mdb","COMMAND:[#{e1['name']}]")
             when 'mcr'
               args=attr['args']=getcmd(e1)
-              attr['label']=mdb[:label][args.first]
+              attr['label']=hash[args.first][:label]
               attr.delete('name')
               body << attr
             end

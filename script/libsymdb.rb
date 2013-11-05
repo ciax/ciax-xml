@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "librerange"
 require "libdb"
+require "librerange"
 
 # id = Table Group ID
 module CIAX

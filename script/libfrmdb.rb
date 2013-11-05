@@ -11,9 +11,7 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        hash={}
-        hash.update(doc)
-        hash['id']=hash.delete('id')
+        hash=Hash[doc]
         rfm=hash[:field]={}
         hash[:cmdframe]=init_main(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
         hash[:rspframe]=init_main(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
@@ -46,21 +44,18 @@ module CIAX
       end
 
       def init_sel(domain)
-        bodyh=domain.to_h
+        hash={}
         domain.each{|e0|
           enclose("Fdb","INIT:Body Frame <-","-> INIT:Body Frame"){
-            id=e0.attr2db(bodyh)
-            (bodyh[:body]||={})[id]||=[]
-            verbose("Fdb","Init Body Hash(#{id})")
+            item=e0.add_attr(hash)
             Repeat.new.each(e0){|e1,r1|
-              set_db_par(e1,id,bodyh) && next
+              par2item(e1,item) && next
               e=yield(e1,r1) || next
-              bodyh[:body][id] << e
+              (item[:body]||=[]) << e
             }
-            verbose("Fdb","Init Body Frame(#{id})")
           }
         }
-        bodyh
+        hash
       end
 
       def init_cmd(e,rep=nil)
@@ -115,7 +110,7 @@ module CIAX
       def add_label(val,attr,id)
         if lv=attr['label']
           (val[:label]||={})[id]=lv
-          verbose("Fdb","LABEL:[#{id}] : #{lv}")
+          verbose("Fdb","ADD_LABEL:[#{id}] : #{lv}")
         end
       end
     end

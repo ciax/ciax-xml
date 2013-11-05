@@ -68,7 +68,7 @@ module CIAX
 
       # Status Db
       def init_stat(sdb)
-        hash={}
+        hash=Hashx.new
         @stgrp['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
         hash['time']={'label' => 'TIMESTAMP'}
         hash['elapse']={'label' => 'ELAPSED'}

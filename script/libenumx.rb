@@ -189,6 +189,14 @@ module CIAX
 
   class Hashx < Hash
     include Enumx
+
+    def skeleton
+      hash=Hashx.new
+      keys.each{|i|
+        hash[i]=nil
+      }
+      hash
+    end
   end
 
   class Arrayx < Array

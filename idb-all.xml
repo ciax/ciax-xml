@@ -21,26 +21,24 @@
     </status>
   </instance>
   <instance id="cci" label="IR Helium Compressor" app_id="bbe">
-    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Alias" column="2">
-        <command id="c2on" label="CAS2(S1) ON" alias="x0on" />
-        <command id="c2off" label="CAS2(S1) OFF" alias="x0off" />
-        <command id="c1on" label="CAS1(S2) ON" alias="x1on" />
-        <command id="c1off" label="CAS1(S2) OFF" alias="x1off" />
-        <command id="m2on" label="MOIRCS CR(S8) ON" alias="x2on" />
-        <command id="m2off" label="MOIRCS CR(S8) OFF" alias="x2off" />
-        <command id="m1on" label="MOIRCS MAIN(S9) ON" alias="x3on" />
-        <command id="m1off" label="MOIRCS MAIN(S9) OFF" alias="x3off" />
-        <command id="cmon" label="CAS MOIRCS/MAIN ON" alias="x0on" />
-        <command id="cmoff" label="CAS MOIRCS/MAIN OFF" alias="x0off" />
-        <command id="ccon" label="CAS MOIRCS/CR ON" alias="x1on" />
-        <command id="ccoff" label="CAS MOIRCS/CR OFF" alias="x1off" />
-        <command id="caon" label="CAS BOTH HC ON" alias="x01on" />
-        <command id="caoff" label="CAS BOTH HC OFF" alias="x01off" />
-        <command id="maon" label="MOIRCS BOTH ON" alias="x23on" />
-        <command id="maoff" label="MOIRCS BOTH OFF" alias="x23off" />
-      </group>
-    </cmdlist>
+    <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+      <command id="c2on" label="CAS2(S1) ON" ref="x0on" />
+      <command id="c2off" label="CAS2(S1) OFF" ref="x0off" />
+      <command id="c1on" label="CAS1(S2) ON" ref="x1on" />
+      <command id="c1off" label="CAS1(S2) OFF" ref="x1off" />
+      <command id="m2on" label="MOIRCS CR(S8) ON" ref="x2on" />
+      <command id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off" />
+      <command id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on" />
+      <command id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off" />
+      <command id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on" />
+      <command id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
+      <command id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
+      <command id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
+      <command id="caon" label="CAS BOTH HC ON" ref="x01on" />
+      <command id="caoff" label="CAS BOTH HC OFF" ref="x01off" />
+      <command id="maon" label="MOIRCS BOTH ON" ref="x23on" />
+      <command id="maoff" label="MOIRCS BOTH OFF" ref="x23off" />
+    </alias>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="CAS2(S1)(CIAO)" />
       <group ref="g1" caption="CAS1(S2)(MOIRCS/MAIN)" />
@@ -49,18 +47,16 @@
     </status>
   </instance>
   <instance id="cco" label="OPT Helium Compressor" app_id="bbe">
-    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Alias" column="2">
-        <command id="f2on" label="CIAO(S6) ON" alias="x0on" />
-        <command id="f2off" label="CIAO(S6) OFF" alias="x0off" />
-        <command id="m1on" label="COMICS IMG(S4) ON" alias="x2on" />
-        <command id="m1off" label="COMICS IMG(S4) OFF" alias="x2off" />
-        <command id="m2on" label="COMICS SPEC(S5) ON" alias="x3on" />
-        <command id="m2off" label="COMICS SPEC(S5) OFF" alias="x3off" />
-        <command id="maon" label="COMICS BOTH ON" alias="x23on" />
-        <command id="maoff" label="COMICS BOTH OFF" alias="x23off" />
-      </group>
-    </cmdlist>
+    <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+      <command id="f2on" label="CIAO(S6) ON" ref="x0on" />
+      <command id="f2off" label="CIAO(S6) OFF" ref="x0off" />
+      <command id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
+      <command id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
+      <command id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
+      <command id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
+      <command id="maon" label="COMICS BOTH ON" ref="x23on" />
+      <command id="maoff" label="COMICS BOTH OFF" ref="x23off" />
+    </alias>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="CIAO(S6) SWITCH" />
       <group ref="g2" caption="COMICS IMG(S4)" />
@@ -68,26 +64,22 @@
     </status>
   </instance>
   <instance id="cri" label="IR Helium Compressor" app_id="bbe">
-    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Alias" column="2">
-        <command id="f1on" label="FMOS/IRS1(S10)ON" alias="x0on" />
-        <command id="f1off" label="FMOS/IRS1(S10)OFF" alias="x0off" />
-        <command id="f2on" label="FMOS/IRS2(S11)ON" alias="x2on" />
-        <command id="f2off" label="FMOS/IRS2(S11)OFF" alias="x2off" />
-      </group>
-    </cmdlist>
+    <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+      <command id="f1on" label="FMOS/IRS1(S10)ON" ref="x0on" />
+      <command id="f1off" label="FMOS/IRS1(S10)OFF" ref="x0off" />
+      <command id="f2on" label="FMOS/IRS2(S11)ON" ref="x2on" />
+      <command id="f2off" label="FMOS/IRS2(S11)OFF" ref="x2off" />
+    </alias>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="FMOS/IRS1(S10)" />
       <group ref="g2" caption="FMOS/IRS2(S11)" />
     </status>
   </instance>
   <instance id="cro" label="OPT Helium Compressor" app_id="bbe">
-    <cmdlist xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <group id="alias" caption="Alias" column="2">
-        <command id="on" label="Alias for X0 ON" alias="x0on" />
-        <command id="off" label="Alias for X0 OFF" alias="x0off" />
-      </group>
-    </cmdlist>
+    <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
+      <command id="on" label="Alias for X0 ON" ref="x0on" />
+      <command id="off" label="Alias for X0 OFF" ref="x0off" />
+    </alias>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="X0-3" />
       <group ref="g1" caption="X4-7" />

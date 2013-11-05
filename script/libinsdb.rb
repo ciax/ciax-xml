@@ -20,17 +20,9 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        hash={}
-        hash.update(doc)
-        doc.domain('cmdlist').each{|e0|
-          p=(hash[:command]||={})
-          g=(hash[:cmdgrp]||={})
-          key=e0.add_item(g)
-          item=(g[key][:members]||=[])
-          e0.each{|e1|
-            item << e1['id']
-            e1.attr2db(p)
-          }
+        hash=Hash[doc]
+        doc.domain('alias').each{|e0|
+          e0.add_attr((hash[:alias]||={}))
         }
         doc.domain('status').each{|e0|
           p=(hash[:status]||={})

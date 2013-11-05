@@ -39,13 +39,16 @@ module CIAX
       (db[:cmdgrp]||{'main'=>@cfg}).each{|gid,gat|
         @cmdary << CmdList.new(gat,@valid_keys)
         (gat[:members]||cdb.keys).each{|id|
-          org=(cdb[:alias]||{})[id]||id
-          # because cdb is separated by title
-          # app cdb: label,parameter,body,group,alias
-          # frm cdb: label,parameter,body,type,response,nocache
           add_item(id,cdb[id]['label'],cdb[id])
         }
       }
+      if db.key?(:alias)
+        attr={'caption' => 'Alias','column' => 2}
+        @cmdary << CmdList.new(attr,@valid_keys)
+        db[:alias].each{|id,h|
+          add_item(id,h['label'],cdb[h['ref']])
+        }
+      end
     end
   end
 

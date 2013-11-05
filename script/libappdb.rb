@@ -43,9 +43,9 @@ module CIAX
       def arc_command(e,hash,gid)
         e.each{|e0|
           id=e0.add_item(hash)
-          (@cmdgrp[gid][:members]||=[]) << id
           item=hash[id]
-          item['label']=e0['label'] unless /true|1/ === e0['hidden']
+          item.delete('label') if /true|1/ === e0['hidden']
+          (@cmdgrp[gid][:members]||=[]) << id
           Repeat.new.each(e0){|e1,rep|
             par2item(e1,item) && next
             case e1.name

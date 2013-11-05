@@ -42,8 +42,9 @@ module CIAX
 
       def arc_command(e,hash,gid)
         e.each{|e0|
-          item=e0.add_attr(hash)
-          (@cmdgrp[gid][:members]||=[]) << e0['id']
+          id=e0.add_item(hash)
+          (@cmdgrp[gid][:members]||=[]) << id
+          item=hash[id]
           item['label']=e0['label'] unless /true|1/ === e0['hidden']
           Repeat.new.each(e0){|e1,rep|
             par2item(e1,item) && next
@@ -69,23 +70,24 @@ module CIAX
       def init_stat(sdb)
         hash={}
         @stgrp['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
-        hash[:label]={'time' => 'TIMESTAMP','elapse' => 'ELAPSED'}
-        hash[:body]=rec_stat(sdb,hash,'gtime',Repeat.new)
-        st=hash[:struct]=Hashx.new
-        hash[:body].keys.each{|k| st[k]=nil }
+        hash['time']={'label' => 'TIMESTAMP'}
+        hash['elapse']={'label' => 'ELAPSED'}
+        hash=rec_stat(sdb,hash,'gtime',Repeat.new)
         hash
       end
 
       def rec_stat(e,hash,gid,rep)
-        struct={}
         rep.each(e){|e0,r0|
           case e0.name
           when 'group'
             gid=e0.add_item(@stgrp){|k,v| r0.format(v)}
-            struct.update(rec_stat(e0,hash,gid,r0))
+            rec_stat(e0,hash,gid,r0)
           else
-            id=e0.attr2db(hash){|k,v| r0.format(v)}
-            struct[id]={'type' => e0.name, :fields => []}
+            id=e0.add_item(hash){|k,v| r0.format(v)}
+            item=hash[id]
+            (@stgrp[gid][:members]||=[]) << id
+            item['type'] = e0.name
+            item[:fields] = []
             r0.each(e0){|e1,r1|
               st={}
               st['inv']='true' if e1.name == 'invert'
@@ -100,12 +102,11 @@ module CIAX
               if i=st.delete('index')
                 st['ref'] << ":#{i}"
               end
-              struct[id][:fields] << st
+              item[:fields] << st
             }
-            (@stgrp[gid][:members]||=[]) << id
           end
         }
-        struct
+        hash
       end
 
       # Watch Db

@@ -26,7 +26,6 @@ module CIAX
         ary
       end
 
-
       def attr2db(db,id='id') # deprecated
         # <xml id='id' a='1' b='2'> => db[:a][id]='1', db[:b][id]='2'
         type?(db,Hash)
@@ -48,7 +47,7 @@ module CIAX
         key
       end
 
-      def add_item(db,id='id') # deprecated
+      def attr2item(db,id='id') # deprecated
         # <xml id='id' a='1' b='2'> => db[id][a]='1', db[id][b]='2'
         type?(db,Hash)
         attr={}

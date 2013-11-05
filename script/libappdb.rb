@@ -34,7 +34,7 @@ module CIAX
         hash={}
         adbc.each{|e|
           Msg.abort("No group in adbc") unless e.name == 'group'
-          gid=e.add_item(@cmdgrp)
+          gid=e.attr2item(@cmdgrp)
           arc_command(e,hash,gid)
         }
         hash
@@ -42,7 +42,7 @@ module CIAX
 
       def arc_command(e,hash,gid)
         e.each{|e0|
-          id=e0.add_item(hash)
+          id=e0.attr2item(hash)
           item=hash[id]
           item.delete('label') if /true|1/ === e0['hidden']
           (@cmdgrp[gid][:members]||=[]) << id
@@ -77,10 +77,10 @@ module CIAX
         rep.each(e){|e0,r0|
           case e0.name
           when 'group'
-            gid=e0.add_item(@stgrp){|k,v| r0.format(v)}
+            gid=e0.attr2item(@stgrp){|k,v| r0.format(v)}
             rec_stat(e0,hash,gid,r0)
           else
-            id=e0.add_item(hash){|k,v| r0.format(v)}
+            id=e0.attr2item(hash){|k,v| r0.format(v)}
             item=hash[id]
             (@stgrp[gid][:members]||={})[id]=item.delete('label')
             item['type'] = e0.name

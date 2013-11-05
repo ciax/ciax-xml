@@ -20,7 +20,8 @@ module CIAX
         hash={}
         mdbc.each{|e0|
           verbose("Mdb","MACRO:[#{e0['id']}]")
-          item=e0.add_attr(hash)
+          id=e0.attr2item(hash)
+          item=hash[id]
           body=(item[:body]||=[])
           final={}
           e0.each{|e1,rep|

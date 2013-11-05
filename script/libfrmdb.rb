@@ -47,7 +47,8 @@ module CIAX
         hash={}
         domain.each{|e0|
           enclose("Fdb","INIT:Body Frame <-","-> INIT:Body Frame"){
-            item=e0.add_attr(hash)
+            id=e0.attr2item(hash)
+            item=hash[id]
             Repeat.new.each(e0){|e1,r1|
               par2item(e1,item) && next
               e=yield(e1,r1) || next

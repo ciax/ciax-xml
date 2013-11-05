@@ -22,12 +22,12 @@ module CIAX
       def doc_to_db(doc)
         hash=Hash[doc]
         doc.domain('alias').each{|e0|
-          e0.add_attr((hash[:alias]||={}))
+          e0.attr2item((hash[:alias]||={}))
         }
         doc.domain('status').each{|e0|
           p=(hash[:status]||={})
           if e0.name == 'group'
-            e0.add_item(hash[:statgrp]||={},'ref')
+            e0.attr2item(hash[:statgrp]||={},'ref')
           else
             e0.attr2db(p,'ref')
           end

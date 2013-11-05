@@ -28,7 +28,7 @@ module CIAX
         @adb=type?(cfg[:db],Db)
         cobj=Command.new(cfg)
         super('app',@adb['site_id']||@adb['id'],cobj)
-        @stat=Status.new(@adb[:status][:struct].deep_copy)
+        @stat=Status.new(@adb[:status].skeleton)
         @stat['id']=@id
         @output=@print=View.new(@adb,@stat)
         init_watch if @adb[:watch]

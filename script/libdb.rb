@@ -83,7 +83,7 @@ module CIAX
       dir+"#{@base}.mar"
     end
 
-    def set_db_par(e,id,db)
+    def set_db_par(e,id,db) # deprecated
       case e.name
       when 'par_num'
         attr={:type => 'num',:list => e.text.split(',')}
@@ -91,6 +91,19 @@ module CIAX
       when 'par_reg'
         attr={:type => 'reg',:list => e.text.split(',')}
         ((db[:parameter]||={})[id]||=[]) << attr
+      else
+        nil
+      end
+    end
+
+    def par2item(e,item)
+      case e.name
+      when 'par_num'
+        attr={:type => 'num',:list => e.text.split(',')}
+        (item[:parameter]||=[]) << attr
+      when 'par_reg'
+        attr={:type => 'reg',:list => e.text.split(',')}
+        (item[:parameter]||=[]) << attr
       else
         nil
       end

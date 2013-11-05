@@ -19,15 +19,14 @@ module CIAX
 
       private
       def conv
-        sdb=@adb[:status]
         @adb[:statgrp].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
           col=gdb['column']||1
-          gdb[:members].each_slice(col.to_i){|ids|
+          gdb[:members].each_slice(col.to_i){|hline|
             hash={}
-            ids.each{|id|
-              h=hash[id]={'label'=>sdb[id]['label']||id.upcase}
+            hline.each{|id,label|
+              h=hash[id]={'label'=>label||id.upcase}
               case id
               when 'elapse'
                 h['msg']=Msg.elps_date(@stat['time'])

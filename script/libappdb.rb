@@ -68,12 +68,9 @@ module CIAX
 
       # Status Db
       def init_stat(sdb)
-        hash=Hashx.new
-        @stgrp['gtime']={'caption' =>'','column' => 2,:members =>['time','elapse']}
-        hash['time']={'label' => 'TIMESTAMP'}
-        hash['elapse']={'label' => 'ELAPSED'}
-        hash=rec_stat(sdb,hash,'gtime',Repeat.new)
-        hash
+        tmember={'time'=>'TIMESTAMP','elapse'=>'ELAPSED'}
+        @stgrp['gtime']={'caption' =>'','column' => 2,:members =>tmember}
+        rec_stat(sdb,Hashx.new,'gtime',Repeat.new)
       end
 
       def rec_stat(e,hash,gid,rep)
@@ -85,7 +82,7 @@ module CIAX
           else
             id=e0.add_item(hash){|k,v| r0.format(v)}
             item=hash[id]
-            (@stgrp[gid][:members]||=[]) << id
+            (@stgrp[gid][:members]||={})[id]=item.delete('label')
             item['type'] = e0.name
             item[:fields] = []
             r0.each(e0){|e1,r1|

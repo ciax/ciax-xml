@@ -34,7 +34,8 @@ module CIAX
       def rcv(ent)
         @current_ent=type?(ent,Entity)
         if rid=ent.cfg['response']
-          @sel[:body]=@fds[rid][:body]|| Msg.cfg_err("No such response id [#{rid}]")
+          @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
+          @sel[:body]=@fds[rid][:body]||[]
           stream=yield
           self['time']=stream['time']
           @frame.set(stream[:data])

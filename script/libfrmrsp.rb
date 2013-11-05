@@ -22,7 +22,7 @@ module CIAX
         @db=type?(db,Db)
         self['ver']=db['version'].to_i
         @sel=Hash[db[:rspframe]]
-        @fds=db[:response][:body]
+        @fds=db[:response]
         @frame=FrmAry.new(@sel['terminator'],@sel['delimiter'],db['endian'],db['ccmethod'])
         # Field Initialize
         @data.replace db[:field][:struct].deep_copy if @data.empty?
@@ -33,8 +33,8 @@ module CIAX
       # Result : executed block or not
       def rcv(ent)
         @current_ent=type?(ent,Entity)
-        if rid=ent.cfg[:response]
-          @sel[:body]=@fds[rid]|| Msg.cfg_err("No such response id [#{rid}]")
+        if rid=ent.cfg['response']
+          @sel[:body]=@fds[rid][:body]|| Msg.cfg_err("No such response id [#{rid}]")
           stream=yield
           self['time']=stream['time']
           @frame.set(stream[:data])

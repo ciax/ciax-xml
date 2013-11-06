@@ -44,8 +44,9 @@ module CIAX
         e.each{|e0|
           id=e0.attr2item(hash)
           item=hash[id]
-          item.delete('label') if /true|1/ === e0['hidden']
-          (@cmdgrp[gid][:members]||=[]) << id
+          label=item.delete('label')
+          label=nil if /true|1/ === e0['hidden']
+          (@cmdgrp[gid][:members]||={})[id]=label
           Repeat.new.each(e0){|e1,rep|
             par2item(e1,item) && next
             case e1.name

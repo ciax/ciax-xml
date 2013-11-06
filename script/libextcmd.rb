@@ -38,17 +38,16 @@ module CIAX
       cdb=type?(db,Db)[:command]
       (db[:cmdgrp]||{'main'=>@cfg}).each{|gid,gat|
         @cmdary << CmdList.new(gat,@valid_keys)
-        (gat[:members]||cdb.keys).each{|id|
-          add_item(id,cdb[id]['label'],cdb[id])
+        (gat[:members]||cdb).each{|id,mat|
+          label=(Hash === mat) ? mat['label'] : mat
+          if ref=(db[:alias]||{})[id]
+            item=cdb[ref]
+          else
+            item=cdb[id]
+          end
+          add_item(id,mat,item)
         }
       }
-      if db.key?(:alias)
-        attr={'caption' => 'Alias','column' => 2}
-        @cmdary << CmdList.new(attr,@valid_keys)
-        db[:alias].each{|id,h|
-          add_item(id,h['label'],cdb[h['ref']])
-        }
-      end
     end
   end
 

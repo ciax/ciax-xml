@@ -25,10 +25,19 @@
       <xsd:choice>
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="adbs:group"></xsd:element>
-          <xsd:element ref="adbs:repeat"></xsd:element>
+          <xsd:element ref="adbs:repeat_grp"></xsd:element>
         </xsd:choice>
       </xsd:choice>
       <xsd:attribute name="symtbl" type="xsd:NCName" use="optional" />
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="repeat_grp">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="adbs:group"></xsd:element>
+        <xsd:element ref="adbs:repeat_grp"></xsd:element>
+      </xsd:choice>
+      <xsd:attributeGroup ref="adbs:repeat" />
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="group">
@@ -46,7 +55,6 @@
   <xsd:element name="repeat">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbs:group"></xsd:element>
         <xsd:element ref="adbs:repeat"></xsd:element>
         <xsd:group ref="adbs:value" />
       </xsd:choice>

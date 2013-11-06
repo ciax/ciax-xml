@@ -117,7 +117,7 @@
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
-      <repeat from="0" to="3">
+      <repeat_grp from="0" to="3">
         <group id="g$_" column="4">
           <binary id="xsw$_" label="SWITCH" symbol="off-warn">
             <normal bit="$_*4" ref="stat" />
@@ -132,7 +132,7 @@
             <normal bit="$_*4+3" ref="stat" />
           </binary>
         </group>
-      </repeat>
+      </repeat_grp>
     </status>
   </app>
 </adb>

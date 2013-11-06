@@ -36,8 +36,8 @@
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mel">
-      <repeat from="0" to="10" counter="i">
-        <repeat from="0" to="5" counter="t">
+      <repeat_grp from="0" to="10" counter="i">
+        <repeat_grp from="0" to="5" counter="t">
           <group id="id$it$t" column="4">
             <repeat from="0" to="3" counter="l">
               <repeat from="0" to="3" counter="j">
@@ -47,8 +47,8 @@
               </repeat>
             </repeat>
           </group>
-        </repeat>
-      </repeat>
+        </repeat_grp>
+      </repeat_grp>
     </status>
   </app>
 </adb>

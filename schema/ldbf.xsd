@@ -3,13 +3,6 @@
   <!--Override Field Structure-->
   <xsd:element name="field">
     <xsd:complexType>
-      <xsd:choice minOccurs="1" maxOccurs="1">
-        <xsd:element ref="ldbf:struct" />
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="struct">
-    <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element ref="ldbf:assign" />
       </xsd:choice>
@@ -17,11 +10,8 @@
   </xsd:element>
   <xsd:element name="assign">
     <xsd:complexType>
-      <xsd:simpleContent>
-        <xsd:extension base="xsd:token">
-          <xsd:attribute name="id" type="xsd:NCName" />
-        </xsd:extension>
-      </xsd:simpleContent>
+      <xsd:attribute name="id" type="xsd:NCName" />
+      <xsd:attribute name="val" type="xsd:int" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

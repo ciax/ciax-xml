@@ -32,10 +32,8 @@
     <app port="25102" host="cxws2" />
     <frm port="24102" iocmd="socat - udp:cst-i:9600">
       <field xmlns="http://ciax.sum.naoj.org/ciax-xml/ldbf">
-        <struct>
-          <assign id="ipl">1</assign>
-          <assign id="ipr">33</assign>
-        </struct>
+        <assign id="ipl" val="1"/>
+        <assign id="ipr" val="33"/>
       </field>
     </frm>
   </site>
@@ -43,10 +41,8 @@
     <app port="25103" host="cxws2" />
     <frm iocmd="socat - udp:cst-o:9600">
       <field xmlns="http://ciax.sum.naoj.org/ciax-xml/ldbf">
-        <struct>
-          <assign id="ipl">1</assign>
-          <assign id="ipr">32</assign>
-        </struct>
+        <assign id="ipl" val="1"/>
+        <assign id="ipr" val="32"/>
       </field>
     </frm>
   </site>

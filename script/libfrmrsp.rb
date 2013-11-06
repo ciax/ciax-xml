@@ -27,7 +27,7 @@ module CIAX
         # Field Initialize
         if @data.empty?
           db[:field].each{|id,val|
-            @data[id]=Arrayx.new.skeleton(val[:struct])
+            @data[id]=val['val']||Arrayx.new.skeleton(val[:struct])
           }
         end
         self

@@ -37,12 +37,12 @@ module CIAX
       def rec_db(e0,hash={})
         (hash||={}).update(e0.to_h)
         e0.each{|e|
-          key=e.name.to_sym
-          if e.text
-            hash[e['id']]=e.text
-            verbose("LocDb","Override [#{e['id']}]=[#{e.text}]")
+          if e['id']
+            e.attr2item(hash)
           else
-            rec_db(e,hash[key]||={})
+            id=e.name.to_sym
+            verbose("LocDb","Override [#{id}]")
+            rec_db(e,hash[id]||={})
           end
         }
         hash

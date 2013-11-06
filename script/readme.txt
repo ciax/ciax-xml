@@ -70,6 +70,8 @@ frmsh (intfrm -t)/ used when running site is different from intapp
        * is added for exported var
 
 ## Naming rule
+ # general
+  method name is recommended to contain under bar to privent mix up with local val (verb_noun)
  #local var
    args: Command(Array) [cmd,par,par...]
    cid: Command ID(String) "cmd:par:par"

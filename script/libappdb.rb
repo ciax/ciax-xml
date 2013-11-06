@@ -13,13 +13,11 @@ module CIAX
       def doc_to_db(doc)
         hash=Hash[doc]
         # Group DB
-        hcmd=hash[:command]={}
-        @cmdgrp=hcmd[:group]={}
         @stgrp=hash[:statgrp]={}
         # Domains
         dom=[]
         dom << domc=doc.domain('commands')
-        hcmd[:index]=init_command(domc)
+        hash[:command]=init_command(domc)
         dom << doms=doc.domain('status')
         hash[:status]=init_stat(doms)
         if doc.domain?('watch')
@@ -32,22 +30,23 @@ module CIAX
 
       # Command Db
       def init_command(adbc)
-        hash={}
+        index={}
+        group=@cmdgrp={}
         adbc.each{|e|
           Msg.abort("No group in adbc") unless e.name == 'group'
-          gid=e.attr2item(@cmdgrp)
-          arc_command(e,hash,gid)
+          gid=e.attr2item(group)
+          arc_command(e,index,group[gid])
         }
-        hash
+        {:group => group,:index => index}
       end
 
-      def arc_command(e,hash,gid)
+      def arc_command(e,hash,group)
         e.each{|e0|
           id=e0.attr2item(hash)
           item=hash[id]
           label=item.delete('label')
           label=nil if /true|1/ === e0['hidden']
-          (@cmdgrp[gid][:members]||={})[id]=label
+          (group[:members]||={})[id]=label
           Repeat.new.each(e0){|e1,rep|
             par2item(e1,item) && next
             case e1.name

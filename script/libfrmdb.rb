@@ -12,11 +12,15 @@ module CIAX
       private
       def doc_to_db(doc)
         hash=Hash[doc]
-        rfm=hash[:field]={}
-        hcmd=hash[:command]={}
+        # Command section
+        members={}
+        hcmd=hash[:command]={:group => {'main' => {'caption' => 'Main',:members => members}}}
         hcmd[:frame]=init_main(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
+        icmd=hcmd[:index]=init_sel(doc.domain('commands')){|e,r| init_cmd(e,r)}
+        icmd.each{|id,hash| members[id]=hash.delete('label')}
+        # Status section
+        rfm=hash[:field]={}
         hash[:rspframe]=init_main(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
-        hcmd[:index]=init_sel(doc.domain('commands')){|e,r| init_cmd(e,r)}
         hash[:response]=init_sel(doc.domain('responses')){|e| init_rsp(e,rfm)}
         hash
       end

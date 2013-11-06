@@ -37,15 +37,9 @@ module CIAX
     def set_items(db)
       cdb=type?(db,Db)[:command]
       index=cdb[:index]
-      (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
+      (cdb[:group]).each{|gid,gat|
         @cmdary << CmdList.new(gat,@valid_keys)
-        (gat[:members]||index).each{|id,mat|
-          case mat
-          when Hash
-            label=mat['label']
-          when String
-            label=mat
-          end
+        (gat[:members]).each{|id,label|
           if ref=(cdb[:alias]||{})[id]
             item=index[ref]
           else

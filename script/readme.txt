@@ -72,6 +72,7 @@ frmsh (intfrm -t)/ used when running site is different from intapp
 ## Naming rule
  # general
   method name is recommended to contain under bar to privent mix up with local val (verb_noun)
+  local var name is recommended to use abbrev word (as short as possible) , (i.e. i,j,k,idx,key(k),hash(h),ary(a),val(v)...) 
  #local var
    args: Command(Array) [cmd,par,par...]
    cid: Command ID(String) "cmd:par:par"

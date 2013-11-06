@@ -21,12 +21,13 @@ module CIAX
       private
       def doc_to_db(doc)
         hash=Hash[doc]
+        hcmd=hash[:command]={}
         algrp={'caption' => 'Alias','column' => 2,:members =>{}}
         doc.domain('alias').each{|e0|
-          (hash[:alias]||={})[e0['id']]=e0['ref']
+          (hcmd[:alias]||={})[e0['id']]=e0['ref']
           algrp[:members][e0['id']]=e0['label']
         }
-        (hash[:cmdgrp]||={})['gal']=algrp
+        (hcmd[:group]||={})['gal']=algrp
         doc.domain('status').each{|e0|
           p=(hash[:status]||={})
           if e0.name == 'group'

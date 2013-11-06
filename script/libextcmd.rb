@@ -36,16 +36,22 @@ module CIAX
 
     def set_items(db)
       cdb=type?(db,Db)[:command]
-      (db[:cmdgrp]||{'main'=>@cfg}).each{|gid,gat|
+      index=cdb[:index]
+      (cdb[:group]||{'main'=>@cfg}).each{|gid,gat|
         @cmdary << CmdList.new(gat,@valid_keys)
-        (gat[:members]||cdb).each{|id,mat|
-          label=(Hash === mat) ? mat['label'] : mat
-          if ref=(db[:alias]||{})[id]
-            item=cdb[ref]
-          else
-            item=cdb[id]
+        (gat[:members]||index).each{|id,mat|
+          case mat
+          when Hash
+            label=mat['label']
+          when String
+            label=mat
           end
-          add_item(id,mat,item)
+          if ref=(cdb[:alias]||{})[id]
+            item=index[ref]
+          else
+            item=index[id]
+          end
+          add_item(id,label,item)
         }
       }
     end

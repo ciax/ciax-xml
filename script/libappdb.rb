@@ -13,12 +13,13 @@ module CIAX
       def doc_to_db(doc)
         hash=Hash[doc]
         # Group DB
-        @cmdgrp=hash[:cmdgrp]={}
+        hcmd=hash[:command]={}
+        @cmdgrp=hcmd[:group]={}
         @stgrp=hash[:statgrp]={}
         # Domains
         dom=[]
         dom << domc=doc.domain('commands')
-        hash[:command]=init_command(domc)
+        hcmd[:index]=init_command(domc)
         dom << doms=doc.domain('status')
         hash[:status]=init_stat(doms)
         if doc.domain?('watch')

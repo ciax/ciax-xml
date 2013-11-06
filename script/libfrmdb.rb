@@ -13,9 +13,10 @@ module CIAX
       def doc_to_db(doc)
         hash=Hash[doc]
         rfm=hash[:field]={}
+        hcmd=hash[:command]={}
         hash[:cmdframe]=init_main(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
         hash[:rspframe]=init_main(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
-        hash[:command]=init_sel(doc.domain('commands')){|e,r| init_cmd(e,r)}
+        hcmd[:index]=init_sel(doc.domain('commands')){|e,r| init_cmd(e,r)}
         hash[:response]=init_sel(doc.domain('responses')){|e| init_rsp(e,rfm)}
         hash
       end

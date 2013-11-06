@@ -19,12 +19,12 @@ module CIAX
     end
 
     private
-    def get_element(ary,col=6)
-      ary.each_slice(col){|da|
+    def get_element(hash,col=6)
+      hash.keys.each_slice(col){|da|
         push "<tr>"
         da.each{|id|
-          next unless @label.key?(id)
-          label=@label[id]||id.upcase
+          next unless hash.key?(id)
+          label=hash[id]||id.upcase
           push "<td class=\"item\">"
           push "<span class=\"label\">#{label}</span>"
           push "<span id=\"#{id}\" class=\"normal\">*******</span>"

@@ -12,17 +12,19 @@ module CIAX
       private
       def doc_to_db(doc)
         hash=Hash[doc]
-        hcmd=hash[:command]={}
-        hcmd[:index]=init_command(doc.top)
+        hash[:command]=init_command(doc.top)
         hash
       end
 
       def init_command(mdbc)
-        hash={}
+        index={}
+        group={'main' =>{'caption' => 'Main',:members => {}}}
+        member=group['main'][:members]
         mdbc.each{|e0|
           verbose("Mdb","MACRO:[#{e0['id']}]")
-          id=e0.attr2item(hash)
-          item=hash[id]
+          id=e0.attr2item(index)
+          item=index[id]
+          member[id]=item['label']
           body=(item[:body]||=[])
           final={}
           e0.each{|e1,rep|
@@ -42,14 +44,14 @@ module CIAX
               verbose("Mdb","COMMAND:[#{e1['name']}]")
             when 'mcr'
               args=attr['args']=getcmd(e1)
-              attr['label']=hash[args.first][:label]
+              attr['label']=index[args.first][:label]
               attr.delete('name')
               body << attr
             end
           }
           body << final unless final.empty?
         }
-        hash
+        {:group => group,:index => index}
       end
 
       def mkcond(e1,attr)

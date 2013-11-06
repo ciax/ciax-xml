@@ -95,7 +95,7 @@ module CIAX
         @record=Record.new
         # Fixed Value
         @record['cid']=@id
-        @record['label']=@cfg[:label]
+        @record['label']=@cfg['label']
         @stat=Stat.new(self)
         @stat[:cid]=@id
      end

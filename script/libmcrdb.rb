@@ -17,14 +17,14 @@ module CIAX
       end
 
       def init_command(mdbc)
-        index={}
-        group={'main' =>{'caption' => 'Main',:members => {}}}
-        member=group['main'][:members]
+        idx={}
+        mbs={}
+        grp={'main' =>{'caption' => 'Main',:members => mbs}}
         mdbc.each{|e0|
           verbose("Mdb","MACRO:[#{e0['id']}]")
-          id=e0.attr2item(index)
-          item=index[id]
-          member[id]=item['label']
+          id=e0.attr2item(idx)
+          item=idx[id]
+          mbs[id]=item['label']
           body=(item[:body]||=[])
           final={}
           e0.each{|e1,rep|
@@ -44,14 +44,14 @@ module CIAX
               verbose("Mdb","COMMAND:[#{e1['name']}]")
             when 'mcr'
               args=attr['args']=getcmd(e1)
-              attr['label']=index[args.first][:label]
+              attr['label']=idx[args.first][:label]
               attr.delete('name')
               body << attr
             end
           }
           body << final unless final.empty?
         }
-        {:group => group,:index => index}
+        {:group => grp,:index => idx}
       end
 
       def mkcond(e1,attr)

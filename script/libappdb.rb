@@ -30,23 +30,23 @@ module CIAX
 
       # Command Db
       def init_command(adbc)
-        index={}
-        group=@cmdgrp={}
+        idx={}
+        grp=@cmdgrp={}
         adbc.each{|e|
           Msg.abort("No group in adbc") unless e.name == 'group'
-          gid=e.attr2item(group)
-          arc_command(e,index,group[gid])
+          gid=e.attr2item(grp)
+          arc_command(e,idx,grp[gid])
         }
-        {:group => group,:index => index}
+        {:group => grp,:index => idx}
       end
 
-      def arc_command(e,hash,group)
+      def arc_command(e,hash,grp)
         e.each{|e0|
           id=e0.attr2item(hash)
           item=hash[id]
           label=item.delete('label')
           label=nil if /true|1/ === e0['hidden']
-          (group[:members]||={})[id]=label
+          (grp[:members]||={})[id]=label
           Repeat.new.each(e0){|e1,rep|
             par2item(e1,item) && next
             case e1.name

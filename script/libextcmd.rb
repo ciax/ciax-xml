@@ -36,14 +36,14 @@ module CIAX
 
     def set_items(db)
       cdb=type?(db,Db)[:command]
-      index=cdb[:index]
+      idx=cdb[:index]
       (cdb[:group]).each{|gid,gat|
         @cmdary << CmdList.new(gat,@valid_keys)
         (gat[:members]).each{|id,label|
           if ref=(cdb[:alias]||{})[id]
-            item=index[ref]
+            item=idx[ref]
           else
-            item=index[id]
+            item=idx[id]
           end
           add_item(id,label,item)
         }

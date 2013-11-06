@@ -48,7 +48,7 @@ module CIAX
         if /true|1/ === @cfg[:noaffix]
           @sel={:main => ["body"]}
         else
-          @sel=Hash[db[:cmdframe]]
+          @sel=Hash[db[:command][:frame]]
         end
         @frame=Frame.new(db['endian'],db['ccmethod'])
         @ver_color=0

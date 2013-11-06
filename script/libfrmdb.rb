@@ -14,7 +14,7 @@ module CIAX
         hash=Hash[doc]
         rfm=hash[:field]={}
         hcmd=hash[:command]={}
-        hash[:cmdframe]=init_main(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
+        hcmd[:frame]=init_main(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
         hash[:rspframe]=init_main(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
         hcmd[:index]=init_sel(doc.domain('commands')){|e,r| init_cmd(e,r)}
         hash[:response]=init_sel(doc.domain('responses')){|e| init_rsp(e,rfm)}

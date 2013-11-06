@@ -183,7 +183,7 @@
         </binary>
       </group>
       <group id="g3" caption="Turrets" column="5">
-        <repeat from="1" to="6">
+        <repeat_var from="1" to="6">
           <string id="r$_" label="Running $_">
             <field ref="run" index="$_-1" />
           </string>
@@ -199,7 +199,7 @@
           <integer id="ofs$_" label="Offset $_">
             <field ref="ofs" index="$_-1" />
           </integer>
-        </repeat>
+        </repeat_var>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1" period="3600">

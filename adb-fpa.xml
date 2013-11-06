@@ -16,11 +16,11 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" column="3" caption="Voltage">
-        <repeat from="1" to="6">
+        <repeat_var from="1" to="6">
           <float id="v$_" label="OUTPUT$_ (V)" format="%3.2f" formula="($#-2048)/4096">
             <field ref="stat" index="$_+1" />
           </float>
-        </repeat>
+        </repeat_var>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">

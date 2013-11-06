@@ -363,16 +363,16 @@
         </binary>
       </group>
       <group id="g5" caption="Z Sensor" column="4">
-        <repeat from="1" to="4">
+        <repeat_var from="1" to="4">
           <float id="fz$_" label="Fix $_" format="%.2f" formula="$#/100">
             <field ref="d" index="$_-1" />
           </float>
-        </repeat>
-        <repeat from="1" to="4">
+        </repeat_var>
+        <repeat_var from="1" to="4">
           <float id="mz$_" label="Mov $_" format="%.2f" formula="$#/100">
             <field ref="d" index="$_+3" />
           </float>
-        </repeat>
+        </repeat_var>
       </group>
       <group id="g6" caption="Instrument" column="2">
         <integer id="fid" label="Fix Instrument ID" symbol="iid_ac">

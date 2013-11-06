@@ -383,7 +383,7 @@
         </float>
       </group>
       <group id="gjm" caption="Jacking Motor Stat" column="5">
-        <repeat from="1" to="4">
+        <repeat_var from="1" to="4">
           <binary id="js$_" label="SV $_" symbol="action">
             <invert ref="x" index="0" bit="9+$_" />
           </binary>
@@ -403,7 +403,7 @@
             <normal ref="x" index="19+($_-1)/2" bit="11-($_%2)*8" />
             <normal ref="x" index="19+($_-1)/2" bit="12-($_%2)*8" />
           </binary>
-        </repeat>
+        </repeat_var>
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">

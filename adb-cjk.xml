@@ -39,13 +39,13 @@
       <repeat_grp from="0" to="10" counter="i">
         <repeat_grp from="0" to="5" counter="t">
           <group id="id$it$t" column="4">
-            <repeat from="0" to="3" counter="l">
-              <repeat from="0" to="3" counter="j">
+            <repeat_var from="0" to="3" counter="l">
+              <repeat_var from="0" to="3" counter="j">
                 <float id="i$it$tl$lj$j" label="Lev$l,Jak$j" format="%.2f" formula="$#/100">
                   <field ref="t" index="$t:$j:$i*4+$l" />
                 </float>
-              </repeat>
-            </repeat>
+              </repeat_var>
+            </repeat_var>
           </group>
         </repeat_grp>
       </repeat_grp>

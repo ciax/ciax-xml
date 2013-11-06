@@ -20,7 +20,7 @@ module CIAX
         self['class']={}
         self['msg']={}
         @upd_procs << proc{ #post process
-          ads.each{|key,hash|
+          ads[:index].each{|key,hash|
             sid=hash['symbol']||next
             unless tbl=@symdb[sid.to_sym]
               warning("Symbol","Table[#{sid}] not exist")

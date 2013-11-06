@@ -12,8 +12,6 @@ module CIAX
       private
       def doc_to_db(doc)
         hash=Hash[doc]
-        # Group DB
-        @stgrp=hash[:statgrp]={}
         # Domains
         dom=[]
         dom << domc=doc.domain('commands')
@@ -40,10 +38,10 @@ module CIAX
         {:group => grp,:index => idx}
       end
 
-      def arc_command(e,hash,grp)
+      def arc_command(e,idx,grp)
         e.each{|e0|
-          id=e0.attr2item(hash)
-          item=hash[id]
+          id=e0.attr2item(idx)
+          item=idx[id]
           label=item.delete('label')
           label=nil if /true|1/ === e0['hidden']
           (grp[:members]||={})[id]=label
@@ -64,47 +62,46 @@ module CIAX
             end
           }
         }
-        hash
+        idx
       end
 
       # Status Db
       def init_stat(sdb)
-        tmember={'time'=>'TIMESTAMP','elapse'=>'ELAPSED'}
-        @stgrp['gtime']={'caption' =>'','column' => 2,:members =>tmember}
-        rec_stat(sdb,Hashx.new,'gtime',Repeat.new)
+        mbr={'time'=>'TIMESTAMP','elapse'=>'ELAPSED'}
+        grp={'gtime'=>{'caption' =>'','column' => 2,:members =>mbr}}
+        idx=Hashx.new
+        Repeat.new.each(sdb){|e,r|
+          gid=e.attr2item(grp){|k,v| r.format(v)}
+          rec_stat(e,idx,grp[gid],r)
+        }
+        {:group => grp,:index => idx}
       end
 
-      def rec_stat(e,hash,gid,rep)
+      def rec_stat(e,idx,grp,rep)
         rep.each(e){|e0,r0|
-          case e0.name
-          when 'group'
-            gid=e0.attr2item(@stgrp){|k,v| r0.format(v)}
-            rec_stat(e0,hash,gid,r0)
-          else
-            id=e0.attr2item(hash){|k,v| r0.format(v)}
-            item=hash[id]
-            (@stgrp[gid][:members]||={})[id]=item.delete('label')
-            item['type'] = e0.name
-            item[:fields] = []
-            r0.each(e0){|e1,r1|
-              st={}
-              st['inv']='true' if e1.name == 'invert'
-              e1.to_h.each{|k,v|
-                case k
-                when 'bit','index'
-                  st[k] = r1.subst(v)
-                else
-                  st[k] = v
-                end
-              }
-              if i=st.delete('index')
-                st['ref'] << ":#{i}"
+          id=e0.attr2item(idx){|k,v| r0.format(v)}
+          item=idx[id]
+          (grp[:members]||={})[id]=item.delete('label')
+          item['type'] = e0.name
+          item[:fields] = []
+          r0.each(e0){|e1,r1|
+            st={}
+            st['inv']='true' if e1.name == 'invert'
+            e1.to_h.each{|k,v|
+              case k
+              when 'bit','index'
+                st[k] = r1.subst(v)
+              else
+                st[k] = v
               end
-              item[:fields] << st
             }
-          end
+            if i=st.delete('index')
+              st['ref'] << ":#{i}"
+            end
+            item[:fields] << st
+          }
         }
-        hash
+        idx
       end
 
       # Watch Db

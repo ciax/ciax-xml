@@ -5,7 +5,7 @@ module CIAX
   module App
     class View < Hashx
       def initialize(adb,stat)
-        @adb=type?(adb,Db)
+        @adbs=type?(adb,Db)[:status]
         @stat=type?(stat,Status)
         ['data','class','msg'].each{|key|
           stat[key]||={}
@@ -19,7 +19,7 @@ module CIAX
 
       private
       def conv
-        @adb[:statgrp].each{|k,gdb|
+        @adbs[:group].each{|k,gdb|
           cap=gdb['caption'] || next
           self[k]={'caption' => cap,'lines'=>[]}
           col=gdb['column']||1

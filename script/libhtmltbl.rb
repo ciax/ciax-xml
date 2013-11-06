@@ -5,10 +5,10 @@ module CIAX
   class HtmlTbl < Array
     include Msg
     def initialize(adb)
-      @label = type?(adb,App::Db)[:status][:label]
+      adbs=type?(adb,App::Db)[:status]
       push "<div class=\"outline\">"
       push "<div class=\"title\">#{adb['label']}</div>"
-      adb[:statgrp].each{|k,g|
+      adbs[:group].each{|k,g|
         cap=g["caption"] || next
         push "<table><tbody>"
         push  "<tr><th colspan=\"6\">#{cap}</th></tr>" unless cap.empty?

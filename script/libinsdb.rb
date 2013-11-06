@@ -31,7 +31,7 @@ module CIAX
         doc.domain('status').each{|e0|
           p=(hash[:status]||={})
           if e0.name == 'group'
-            e0.attr2item(hash[:statgrp]||={},'ref')
+            e0.attr2item(p[:group]||={},'ref')
           else
             e0.attr2db(p,'ref')
           end

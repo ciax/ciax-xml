@@ -12,7 +12,7 @@ module CIAX
 
       def ext_rsp(id,adb,field)
         ext_file(id)
-        @adbs=type?(adb,Db)[:status]
+        @adbs=type?(adb,Db)[:status][:index]
         @adbs.keys.each{|k| @data[k]||='' }
         @field=type?(field,Frm::Field)
         self

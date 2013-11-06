@@ -143,12 +143,12 @@
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat" label="get status">
-        <array assign="x" decode="signed" label="Status" length="2">
+        <array assign="x" decode="signed" label="Status Flags" length="2">
           <index range="0:51" size="52" />
         </array>
       </response>
       <response id="getcmd" label="get cmd status">
-        <array assign="c" decode="signed" label="Status" length="2">
+        <array assign="c" decode="signed" label="Command Flags" length="2">
           <index range="0:4" size="5" />
         </array>
       </response>

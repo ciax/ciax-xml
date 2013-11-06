@@ -25,7 +25,11 @@ module CIAX
         @fds=db[:response]
         @frame=FrmAry.new(@sel['terminator'],@sel['delimiter'],db['endian'],db['ccmethod'])
         # Field Initialize
-        @data.replace db[:field][:struct].deep_copy if @data.empty?
+        if @data.empty?
+          db[:field].each{|id,val|
+            @data[id]=Arrayx.new.skeleton(val[:struct])
+          }
+        end
         self
       end
 

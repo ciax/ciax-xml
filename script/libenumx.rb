@@ -189,7 +189,6 @@ module CIAX
 
   class Hashx < Hash
     include Enumx
-
     def skeleton
       hash=Hashx.new
       keys.each{|i|
@@ -201,5 +200,14 @@ module CIAX
 
   class Arrayx < Array
     include Enumx
+    #sary: array of the element numbers [a,b,c,..]
+    def skeleton(sary)
+      return '' if sary.empty?
+      dary=[]
+      sary[0].to_i.times{|i|
+        dary[i]=skeleton(sary[1..-1])
+      }
+      dary
+    end
   end
 end

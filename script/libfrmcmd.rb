@@ -9,7 +9,8 @@ module CIAX
       attr_reader :field
       def initialize(upper)
         super
-        @field=@cfg[:field]=Field.new(@cfg[:db][:field][:struct].deep_copy)
+        @field=@cfg[:field]=Field.new
+        @cfg[:db][:field].each{|id,hash| @field[id]=Arrayx.new.skeleton(hash[:struct])}
         @extgrp=@svdom.add_group(:group_class => ExtGrp,:item_class =>ExtItem)
       end
 

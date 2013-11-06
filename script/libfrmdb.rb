@@ -71,15 +71,14 @@ module CIAX
         end
       end
 
-      def init_rsp(e,val)
-        stc=val[:struct]||=Hashx.new
+      def init_rsp(e,field)
+        if id=e['assign']
+          item=field[id]={'label' => e['label']}
+        end
         case e.name
         when 'field'
           attr=e.to_h
-          if id=attr['assign']
-            stc[id]=nil
-            add_label(val,attr,id)
-          end
+          item[:struct]=[] if item
           verbose("Fdb","InitElement: #{attr}")
           attr
         when 'array'
@@ -88,30 +87,12 @@ module CIAX
           e.each{|e1|
             idx << e1.to_h
           }
-          id=attr['assign']
-          stc[id]=init_array(idx.map{|h| h['size']})
-          add_label(val,attr,id)
+          item[:struct]=idx.map{|h| h['size']} if item
           attr
         when 'ccrange','body'
           e.name
         else
           nil
-        end
-      end
-
-      def init_array(sary,field=nil)
-        return '' if sary.empty?
-        a=field||[]
-        sary[0].to_i.times{|i|
-          a[i]=init_array(sary[1..-1],a[i])
-        }
-        a
-      end
-
-      def add_label(val,attr,id)
-        if lv=attr['label']
-          (val[:label]||={})[id]=lv
-          verbose("Fdb","ADD_LABEL:[#{id}] : #{lv}")
         end
       end
     end

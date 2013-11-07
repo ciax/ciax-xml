@@ -19,9 +19,10 @@ module CIAX
         icmd=hcmd[:index]=init_sel(doc.domain('commands')){|e,r| init_cmd(e,r)}
         icmd.each{|id,hash| members[id]=hash.delete('label')}
         # Status section
+        hres=hash[:response]={}
         rfm=hash[:field]={}
-        hash[:rspframe]=init_main(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
-        hash[:response]=init_sel(doc.domain('responses')){|e| init_rsp(e,rfm)}
+        hres[:frame]=init_main(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
+        hres[:index]=init_sel(doc.domain('responses')){|e| init_rsp(e,rfm)}
         hash
       end
 

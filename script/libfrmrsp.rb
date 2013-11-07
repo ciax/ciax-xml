@@ -20,9 +20,10 @@ module CIAX
         ext_file(id)
         @ver_color=3
         @db=type?(db,Db)
+        fdbr=db[:response]
         self['ver']=db['version'].to_i
-        @sel=Hash[db[:rspframe]]
-        @fds=db[:response]
+        @sel=Hash[fdbr[:frame]]
+        @fds=fdbr[:index]
         @frame=FrmAry.new(@sel['terminator'],@sel['delimiter'],db['endian'],db['ccmethod'])
         # Field Initialize
         if @data.empty?

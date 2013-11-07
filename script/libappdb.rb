@@ -66,16 +66,15 @@ module CIAX
       end
 
       # Status Db
-      def init_stat(sdb)
-        hash=sdb.to_h
+      def init_stat(adbs)
         mbr={'time'=>'TIMESTAMP','elapse'=>'ELAPSED'}
         grp={'gtime'=>{'caption' =>'','column' => 2,:members =>mbr}}
         idx=Hashx.new
-        Repeat.new.each(sdb){|e,r|
+        Repeat.new.each(adbs){|e,r|
           gid=e.attr2item(grp){|k,v| r.format(v)}
           rec_stat(e,idx,grp[gid],r)
         }
-        hash.update({:group => grp,:index => idx})
+        adbs.to_h.update({:group => grp,:index => idx})
       end
 
       def rec_stat(e,idx,grp,rep)

@@ -67,6 +67,7 @@ module CIAX
 
       # Status Db
       def init_stat(sdb)
+        hash=sdb.to_h
         mbr={'time'=>'TIMESTAMP','elapse'=>'ELAPSED'}
         grp={'gtime'=>{'caption' =>'','column' => 2,:members =>mbr}}
         idx=Hashx.new
@@ -74,7 +75,7 @@ module CIAX
           gid=e.attr2item(grp){|k,v| r.format(v)}
           rec_stat(e,idx,grp[gid],r)
         }
-        {:group => grp,:index => idx}
+        hash.update({:group => grp,:index => idx})
       end
 
       def rec_stat(e,idx,grp,rep)

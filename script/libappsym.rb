@@ -11,16 +11,16 @@ module CIAX
         Msg.type?(obj,Status)
       end
 
-      def ext_sym(db)
-        type?(db,App::Db)
-        ads=db[:status]
-        self['ver']=db['version'].to_i
-        @symbol=ads[:symbol]||{}
-        @symdb=Sym::Db.pack(['all',db['symtbl']])
+      def ext_sym(adb)
+        type?(adb,App::Db)
+        adbs=adb[:status]
+        self['ver']=adb['version'].to_i
+        @symbol=adbs[:symbol]||{}
+        @symdb=Sym::Db.pack(['all',adbs['symtbl']])
         self['class']={}
         self['msg']={}
         @upd_procs << proc{ #post process
-          ads[:index].each{|key,hash|
+          adbs[:index].each{|key,hash|
             sid=hash['symbol']||next
             unless tbl=@symdb[sid.to_sym]
               warning("Symbol","Table[#{sid}] not exist")

@@ -71,13 +71,15 @@ frmsh (intfrm -t)/ used when running site is different from intapp
 
 ## Naming rule
  # general
-  - method name is recommended to contain under bar to privent mix up with local val (verb_noun)
-  - local var name is recommended to use abbrev word (as short as possible < 3 letter) 
+  - method name is recommended to be long word which contains under bar to privent mix up with local var (verb_noun)
+  - local var name is recommended to use abbrev word (as short as possible < 4 letter) 
     (i.e. i,j,k,idx,grp,key(k),hsh(h),ary(a),val(v)...) 
+  - DB key which contains Hash or Array will be Symbol. Other keys are String.
+  - Status key which could be written out to a file will be String.
  #local var
    args: Command(Array) [cmd,par,par...]
    cid: Command ID(String) "cmd:par:par"
-   batch: Array of Commands(Array of Array) [args,args,...]
+   btch: Batch Array of Commands(Array of Array) [args,args,...]
    f*: Associated with Frm (i.e. fargs, fstat ..)
    a*: Associated with App (i.e. aargs, astat ..)
  #block rerutn value

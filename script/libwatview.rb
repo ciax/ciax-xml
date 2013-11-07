@@ -3,26 +3,23 @@ require 'libwatch'
 
 module CIAX
   module Watch
-    # Put caption,symbole,etc. from DB
+    # Decorate the watch data (Put caption,symbole,etc.) from WDB
     class View < Hashx
       def initialize(adb,watch)
-        wdb=type?(adb,App::Db)[:watch] || {:stat => []}
+        wdb=type?(adb,App::Db)[:watch]||{}
         @watch=type?(watch,Data)
-        ['exec','block','int','astart','aend'].each{|i|
-          self[i]=@watch.data[i]
+        ['exec','block','int','astart','aend'].each{|id|
+          self[id]=@watch.data[id]
         }
         self['stat']={}
-        wdb[:stat].each{|k,v|
-          hash=(self['stat'][k]||={})
-          hash['label']=wdb[:label][k]
+        wdb[:index].each{|id,evnt|
+          hash=(self['stat'][id]||={})
+          hash['label']=evnt['label']
           m=(hash['cond']||=[])
-          v.size.times{|j|
-            m[j]||={}
-            m[j]['type']=v[j]['type']
-            m[j]['var']=v[j]['var']
-            m[j]['inv']=v[j]['inv']
-            if v[j]['type'] != 'onchange'
-              m[j]['cmp']=v[j]['val']
+          evnt[:cnd].each{|cnd|
+            m << Hash[cnd]
+            if cnd['type'] != 'onchange'
+              m.last['cmp']=cnd['val']
             end
           }
         }
@@ -30,15 +27,15 @@ module CIAX
       end
 
       def to_s
-        self['stat'].each{|k,v|
+        self['stat'].each{|id,v|
           v['cond'].each_index{|i|
             h=v['cond'][i]
             id=h['var']
             h['val']=@watch['crnt'][id]
-            h['res']=@watch['res']["#{k}:#{i}"]
+            h['res']=@watch['res']["#{id}:#{i}"]
             h['cmp']=@watch['last'][id] if h['type'] == 'onchange'
           }
-          v['active']=@watch.data['active'].include?(k)
+          v['active']=@watch.data['active'].include?(id)
         }
         super
       end
@@ -67,7 +64,7 @@ module CIAX
 
       private
       def conditions(str)
-        self['stat'].each{|k,i|
+        self['stat'].each{|id,i|
           str << "    "+Msg.color(i['label'],6)+"\t: "
           str << show_res(i['active'])+"\n"
           i['cond'].each{|j|
@@ -97,7 +94,7 @@ module CIAX
 
     list={}
     list['t']='test conditions[key=val,..]'
-    GetOpts.new('t:',list)
+    GetOpts.new('rt:',list)
     id=ARGV.shift
     begin
       adb=Loc::Db.new.set(id)[:app]
@@ -106,9 +103,10 @@ module CIAX
     end
     stat=App::Status.new.ext_file(adb['site_id']).load
     watch=Watch::Data.new.ext_upd(adb,stat).upd
-    wview=Watch::View.new(adb,watch).ext_prt
+    wview=Watch::View.new(adb,watch)
+    wview.ext_prt unless $opt['r']
     if t=$opt['t']
-      watch.ext_file(adb['site_id'])
+      watch.ext_file
       stat.str_update(t).upd.save
     end
     puts wview

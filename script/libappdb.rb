@@ -110,6 +110,8 @@ module CIAX
         Repeat.new.each(wdb){|e0,r0|
           id=e0.attr2item(idx){|k,v| r0.format(v)}
           item=idx[id]
+          cnd=item[:cnd]=[]
+          act=item[:act]={}
           e0.each{|e1|
             case name=e1.name.to_sym
             when :block,:int,:exec
@@ -117,15 +119,15 @@ module CIAX
               e1.each{|e2|
                 args << r0.subst(e2.text)
               }
-              (item[name]||=[]) << args
+              (act[name]||=[]) << args
             when :block_grp
-              blk=(item[:block]||=[])
+              blk=(act[:block]||=[])
               @cmdgrp[e1['ref']][:members].each{|k,v| blk << [k]}
             else
               h=e1.to_h
               h.each_value{|v| v.replace(r0.format(v))}
               h['type']=e1.name
-              (item[:stat]||=[]) << h
+              cnd << h
             end
           }
         }

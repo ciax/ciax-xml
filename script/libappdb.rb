@@ -13,16 +13,14 @@ module CIAX
       def doc_to_db(doc)
         hash=Hash[doc]
         # Domains
-        dom=[]
-        dom << domc=doc.domain('commands')
+        domc=doc.domain('commands')
         hash[:command]=init_command(domc)
-        dom << doms=doc.domain('status')
+        doms=doc.domain('status')
         hash[:status]=init_stat(doms)
         if doc.domain?('watch')
-          dom << domw=doc.domain('watch')
+          domw=doc.domain('watch')
           hash[:watch]=init_watch(domw)
         end
-        dom.each{|d| hash.update(d.to_h)}
         hash
       end
 
@@ -74,7 +72,7 @@ module CIAX
           gid=e.attr2item(grp){|k,v| r.format(v)}
           rec_stat(e,idx,grp[gid],r)
         }
-        adbs.to_h.update({:group => grp,:index => idx})
+        adbs.to_h.update(:group => grp,:index => idx)
       end
 
       def rec_stat(e,idx,grp,rep)
@@ -108,31 +106,30 @@ module CIAX
       #structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
       def init_watch(wdb)
         return [] unless wdb
-        hash={}
-        [:label,:exec,:stat,:int,:block].each{|k| hash[k]={}}
+        idx={}
         Repeat.new.each(wdb){|e0,r0|
-          idx=r0.format(e0['id'])
-          hash[:label][idx]=(e0['label'] ? r0.format(e0['label']) : nil)
-          e0.each{ |e1|
+          id=e0.attr2item(idx){|k,v| r0.format(v)}
+          item=idx[id]
+          e0.each{|e1|
             case name=e1.name.to_sym
             when :block,:int,:exec
               args=[e1['name']]
               e1.each{|e2|
                 args << r0.subst(e2.text)
               }
-              (hash[name][idx]||=[]) << args
+              (item[name]||=[]) << args
             when :block_grp
-              blk=(hash[:block][idx]||=[])
-              @cmdgrp[e1['ref']][:members].each{|id| blk << [id]}
+              blk=(item[:block]||=[])
+              @cmdgrp[e1['ref']][:members].each{|k,v| blk << [k]}
             else
               h=e1.to_h
               h.each_value{|v| v.replace(r0.format(v))}
               h['type']=e1.name
-              (hash[:stat][idx]||=[]) << h
+              (item[:stat]||=[]) << h
             end
           }
         }
-        hash
+        wdb.to_h.update(:index => idx)
       end
     end
   end

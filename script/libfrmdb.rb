@@ -15,18 +15,18 @@ module CIAX
         # Command section
         members={}
         hcmd=hash[:command]={:group => {'main' => {'caption' => 'Main',:members => members}}}
-        hcmd[:frame]=init_main(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
-        icmd=hcmd[:index]=init_sel(doc.domain('commands')){|e,r| init_cmd(e,r)}
+        hcmd[:frame]=init_frame(doc.domain('cmdframe')){|e,r| init_cmd(e,r)}
+        icmd=hcmd[:index]=init_index(doc.domain('commands')){|e,r| init_cmd(e,r)}
         icmd.each{|id,hash| members[id]=hash.delete('label')}
         # Status section
         hres=hash[:response]={}
         rfm=hash[:field]={}
-        hres[:frame]=init_main(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
-        hres[:index]=init_sel(doc.domain('responses')){|e| init_rsp(e,rfm)}
+        hres[:frame]=init_frame(doc.domain('rspframe')){|e| init_rsp(e,rfm)}
+        hres[:index]=init_index(doc.domain('responses')){|e| init_rsp(e,rfm)}
         hash
       end
 
-      def init_main(domain)
+      def init_frame(domain)
         hash=domain.to_h
         enclose("Fdb","INIT:Main Frame <-","-> INIT:Main Frame"){
           frame=[]
@@ -49,7 +49,7 @@ module CIAX
         hash
       end
 
-      def init_sel(domain)
+      def init_index(domain)
         hash={}
         domain.each{|e0|
           enclose("Fdb","INIT:Body Frame <-","-> INIT:Body Frame"){

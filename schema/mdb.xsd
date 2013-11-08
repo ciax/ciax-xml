@@ -11,22 +11,22 @@
   <xsd:element name="macro">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="mdb:command" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+        <xsd:element ref="mdb:item" minOccurs="1" maxOccurs="unbounded"></xsd:element>
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:token" use="required" />
       <xsd:attribute name="version" type="xsd:int" />
       <xsd:attribute name="label" type="xsd:token" use="optional" />
     </xsd:complexType>
     <xsd:key name="macro_id">
-      <xsd:selector xpath=".//mdb:command" />
+      <xsd:selector xpath=".//mdb:item" />
       <xsd:field xpath="@id" />
     </xsd:key>
     <xsd:keyref name="sub_macro" refer="mdb:macro_id">
-      <xsd:selector xpath=".//mdb:mcr" />
+      <xsd:selector xpath=".//mdb:macro" />
       <xsd:field xpath="@name" />
     </xsd:keyref>
   </xsd:element>
-  <xsd:element name="command">
+  <xsd:element name="item">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:group ref="mdb:validate" minOccurs="0" maxOccurs="unbounded" />

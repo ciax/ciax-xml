@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro">
-    <command id="runf" label="Run Forward to Tag">
+    <item id="runf" label="Run Forward to Tag">
       <goal label="On Tag?">
         <stat site="crt" var="cps" inv="true">0</stat>
       </goal>
@@ -12,8 +12,8 @@
       <wait retry="40" label="Run end?">
         <stat var="run" site="crt">OFF</stat>
       </wait>
-    </command>
-    <command id="run" label="Run to Tag [1-12]">
+    </item>
+    <item id="run" label="Run to Tag [1-12]">
       <par_num name="tag">1:12</par_num>
       <goal label="On Destination Tag?">
         <stat var="cps" site="crt">$1</stat>
@@ -27,8 +27,8 @@
       <wait retry="120" label="Run end?">
         <stat label="Running" var="run" site="crt">OFF</stat>
       </wait>
-    </command>
-    <command id="lift" label="Jack UP Level [1-4]">
+    </item>
+    <item id="lift" label="Jack UP Level [1-4]">
       <par_num>1:4</par_num>
       <goal label="On Destination Level?">
         <stat var="jlv" site="crt">$1</stat>
@@ -42,9 +42,9 @@
       <wait label="Jacking" retry="40">
         <stat var="jak" site="crt">OFF</stat>
       </wait>
-    </command>
+    </item>
     <!--Jack Command-->
-    <command id="fju0" label="InR0 Jkup at FIX">
+    <item id="fju0" label="InR0 Jkup at FIX">
       <par_reg>...</par_reg>
       <goal label="Jack DW?">
         <stat site="$1" var="fjb">DW</stat>
@@ -57,8 +57,8 @@
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
-    </command>
-    <command id="fjd0" label="InR0 Jkdw at FIX">
+    </item>
+    <item id="fjd0" label="InR0 Jkdw at FIX">
       <goal label="Instrument ON?">
         <stat site="$1" var="fis">ON</stat>
       </goal>
@@ -69,8 +69,8 @@
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
-    </command>
-    <command id="fju4" label="InR4 Jkup at FIX.IR">
+    </item>
+    <item id="fju4" label="InR4 Jkup at FIX.IR">
       <goal label="Jack Up?">
         <stat site="$1" var="fjb">UP</stat>
       </goal>
@@ -81,8 +81,8 @@
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
-    </command>
-    <command id="fjd4" label="InR4 Jkdw at FIX.IR">
+    </item>
+    <item id="fjd4" label="InR4 Jkdw at FIX.IR">
       <goal label="Jack Dw?">
         <stat site="$1" var="fjb">DW</stat>
       </goal>
@@ -93,9 +93,9 @@
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
-    </command>
+    </item>
     <!--Jack & Rotate-->
-    <command id="jupd" label="HookUp at FIX.IR">
+    <item id="jupd" label="HookUp at FIX.IR">
       <goal label="Instrument ON?">
         <stat site="dsi" var="fis">ON</stat>
       </goal>
@@ -110,9 +110,9 @@
       <mcr name="fju0">
         <argv>dsi</argv>
       </mcr>
-    </command>
+    </item>
     <!--Transer-->
-    <command id="trsi" label="MOV.IR Trans Backward w/SITET">
+    <item id="trsi" label="MOV.IR Trans Backward w/SITET">
       <goal label="Transer Stored?">
         <stat site="dsi" var="mtr">BK</stat>
       </goal>
@@ -128,9 +128,9 @@
       <wait label="Moving" retry="60">
         <stat site="dsi" var="exe">OFF</stat>
       </wait>
-    </command>
+    </item>
     <!--Run & Transer-->
-    <command id="r08to" label="Leave IR from Tag 8 to [2-7]">
+    <item id="r08to" label="Leave IR from Tag 8 to [2-7]">
       <par_num>2:7</par_num>
       <goal label="Leave Cart and Transer Stored?">
         <stat site="crt" var="cps" inv="true">8</stat>
@@ -147,6 +147,6 @@
       <wait retry="120" label="Run end?">
         <stat label="Running" site="crt" var="run">OFF</stat>
       </wait>
-    </command>
+    </item>
   </macro>
 </mdb>

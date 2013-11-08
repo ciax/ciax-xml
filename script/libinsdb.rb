@@ -4,6 +4,7 @@ require "libappdb"
 module CIAX
   module Ins
     class Db < Db
+      include Watch::Db
       def initialize
         super('idb',ENV['PROJ'])
       end
@@ -20,8 +21,8 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        hash=Hash[doc]
-        hcmd=hash[:command]={}
+        db=Hash[doc]
+        hcmd=db[:command]={}
         algrp={'caption' => 'Alias','column' => 2,:members =>{}}
         doc.domain('alias').each{|e0|
           (hcmd[:alias]||={})[e0['id']]=e0['ref']
@@ -29,14 +30,15 @@ module CIAX
         }
         (hcmd[:group]||={})['gal']=algrp
         doc.domain('status').each{|e0|
-          p=(hash[:status]||={})
+          p=(db[:status]||={})
           if e0.name == 'group'
             e0.attr2item(p[:group]||={},'ref')
           else
             e0.attr2db(p,'ref')
           end
         }
-        hash
+        init_watch(doc,db)
+        db
       end
     end
   end

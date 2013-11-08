@@ -86,6 +86,20 @@
       <group ref="g2" caption="X8-11" />
       <group ref="g3" caption="X12-15" />
     </status>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <event label="ON Executed" id="on">
+        <onchange var="xsw0"/>
+        <pattern var="xsw0">1</pattern>
+        <pattern var="xsw1">0</pattern>
+        <exec name="x1on"></exec>
+      </event>
+      <event label="OFF Executed" id="off">
+        <onchange var="xsw0"/>
+        <pattern var="xsw0">0</pattern>
+        <pattern var="xsw1">1</pattern>
+        <exec name="x1off"></exec>
+      </event>
+    </watch>
   </instance>
   <instance id="crt" label="CIAX CART 3" app_id="mel"/>
   <instance id="cjk" label="CART 3 Jack Setting" app_id="cjk">

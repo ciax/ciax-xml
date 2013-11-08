@@ -90,6 +90,7 @@ module CIAX
           item[:act].each{|key,ary|
             hash[key.to_s].concat ary
           }
+          hash['active'] << id
         }
         if !hash['active'].empty?
           if active?

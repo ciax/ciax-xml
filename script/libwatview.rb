@@ -27,21 +27,26 @@ module CIAX
       end
 
       def to_s
-        self['stat'].each{|id,v|
-          v['cond'].each_index{|i|
-            h=v['cond'][i]
-            id=h['var']
-            h['val']=@watch['crnt'][id]
-            h['res']=@watch['res']["#{id}:#{i}"]
-            h['cmp']=@watch['last'][id] if h['type'] == 'onchange'
-          }
-          v['active']=@watch.data['active'].include?(id)
-        }
+        conv
         super
       end
 
       def ext_prt
         extend Print
+      end
+
+      private
+      def conv
+        self['stat'].each{|id,v|
+          v['cond'].each_index{|i|
+            h=v['cond'][i]
+            var=h['var']
+            h['val']=@watch['crnt'][var]
+            h['res']=@watch['res'][id][i]
+            h['cmp']=@watch['last'][var] if h['type'] == 'onchange'
+          }
+          v['active']=@watch.data['active'].include?(id)
+        }
       end
     end
 
@@ -51,6 +56,11 @@ module CIAX
       end
 
       def to_s
+        conv
+      end
+
+      private
+      def conv
         return '' if self['stat'].empty?
         super
         atime=Msg.elps_sec(@watch.data['astart'],@watch.data['aend'])
@@ -62,7 +72,6 @@ module CIAX
         str << "  "+Msg.color("Blocked",2)+"\t: #{self['block']}\n"
       end
 
-      private
       def conditions(str)
         self['stat'].each{|id,i|
           str << "    "+Msg.color(i['label'],6)+"\t: "

@@ -12,8 +12,8 @@ module CIAX
         super('watch')
         self['period']=300
         self['interval']=0.1
-        @data['astart']=now_msec
-        @data['aend']=now_msec
+        self['astart']=now_msec
+        self['aend']=now_msec
         #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
         #For Hash element
@@ -70,39 +70,38 @@ module CIAX
         self['period']=wdb['period'].to_i if wdb.key?('period')
         self['interval']=wdb['interval'].to_f/10 if wdb.key?('interval')
         # Pick usable val
-        @list=['time']
-        @windex.values.each{|v| @list|=v[:cnd].map{|i| i["var"]}}
+        @list=[]
+        @windex.values.each{|v|
+          @list|=v[:cnd].map{|i| i["var"]}
+        }
         # @stat.data(all) = self['crnt'](picked) > self['last']
         # upd() => self['last']<-self['crnt']
         #       => self['crnt']<-@stat.data
         #       => check(self['crnt'] <> self['last']?)
-        ['crnt','last','res'].each{|k| self[k]={}}
         # Stat no changed -> clear exec, no eval
+        @ctime=0
         self
       end
 
       def upd
-        return self unless @stat.update?
+        return self unless @stat['time'] > @ctime
+        @ctime=@stat['time']
         sync
-        hash={'active'=> [],'int' =>[],'exec' =>[],'block' =>[]}
+       @data.values.each{|a| a.clear}
         @windex.each{|id,item|
-          next unless check(item)
+          next unless check(id,item)
           item[:act].each{|key,ary|
-            hash[key.to_s].concat ary
+            @data[key.to_s].concat ary
           }
-          hash['active'] << id
+          @data['active'] << id
         }
-        if !hash['active'].empty?
+        if !@data['active'].empty?
           if active?
-            @data['aend']=now_msec
+            self['aend']=now_msec
           else
-            @data['astart']=now_msec
+            self['astart']=now_msec
           end
         end
-        hash.each{|k,a|
-          @data[k].replace a.uniq
-        }
-        @stat.refresh
         verbose("Watch","Updated(#{@stat['time']})")
         super
       end
@@ -124,46 +123,37 @@ module CIAX
       private
       def sync
         @list.each{|i|
+          self['last'][i]=self['crnt'][i]
           self['crnt'][i]=@stat.data[i]
-          self['last'][i]=@stat.last[i]
         }
       end
 
-      def get_crnt(id)
-        unless @list.include?(id)
-          @list << id
-          self['crnt'][id]=@stat.data[id]
-        end
-        self['crnt'][id]
-      end
-
-      def check(item)
-        return true unless item[:cnd]
+      def check(id,item)
+        return true unless cklst=item[:cnd]
         verbose("Watch","Check: <#{item['label']}>")
-        cklst=item[:cnd]
         rary=[]
         cklst.each{|ckitm|
-          id=ckitm['var']
-          val=@stat.data[id]
+          vn=ckitm['var']
+          val=@stat.data[vn]
           case ckitm['type']
           when 'onchange'
-            cmp=self['last'][id]
+            cmp=self['last'][vn]
             res=(cmp != val)
-            verbose("Watch","  onChange(#{id}): [#{cmp}] vs <#{val}> =>#{res}")
+            verbose("Watch","  onChange(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
           when 'pattern'
             cmp=ckitm['val']
             res=(Regexp.new(cmp) === val)
-            verbose("Watch","  Pattrn(#{id}): [#{cmp}] vs <#{val}> =>#{res}")
+            verbose("Watch","  Pattrn(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
           when 'range'
             cmp=ckitm['val']
             f="%.3f" % val.to_f
             res=(ReRange.new(cmp) == f)
-            verbose("Watch","  Range(#{id}): [#{cmp}] vs <#{f}>(#{val.class}) =>#{res}")
+            verbose("Watch","  Range(#{vn}): [#{cmp}] vs <#{f}>(#{val.class}) =>#{res}")
           end
           res=!res if /true|1/ === ckitm['inv']
-          self['res']["#{id}:#{rary.size}"]=res
           rary << res
         }
+        self['res'][id]=rary
         rary.all?
       end
     end

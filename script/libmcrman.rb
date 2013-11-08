@@ -5,7 +5,7 @@ require "libmcrcmd"
 module CIAX
   module Mcr
     class Man < Exe
-      def initialize
+      def initialize(port=nil)
         proj=ENV['PROJ']||'ciax'
         cfg=Config.new
         cfg[:db]=Mcr::Db.new.set(proj)
@@ -50,6 +50,7 @@ module CIAX
             'NONE'
           end
         }
+        ext_server(port||cfg[:db]['port']||55555)
         ext_shell(@list)
       end
 

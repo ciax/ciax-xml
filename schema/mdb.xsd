@@ -16,6 +16,7 @@
       <xsd:attribute name="id" type="xsd:token" use="required" />
       <xsd:attribute name="version" type="xsd:int" />
       <xsd:attribute name="label" type="xsd:token" use="optional" />
+      <xsd:attribute name="port" type="xsd:int" />
     </xsd:complexType>
     <xsd:key name="macro_id">
       <xsd:selector xpath=".//mdb:item" />

@@ -5,7 +5,7 @@ module CIAX
   module Mcr
     ENV['VER']||='init/'
     GetOpts.new('r')
-    Man.new.ext_server(ARGV.shift||55555)
+    Man.new
     sleep
   end
 end

@@ -24,7 +24,7 @@ cp readme_exp.txt $pfx/script/readme.txt
 
 mkcp schema '*'
 mkcp webapp '*'
-mkcp utils chkxml.sh frmsim.rb mkhtml.sh sqlog.rb inst.sh
+mkcp utils chkxml.sh frmsimsql.rb mkhtml.sh sqlog.rb inst.sh
 
 cmt=$(git log -1 --abbrev=4 --abbrev-commit|grep commit)
 

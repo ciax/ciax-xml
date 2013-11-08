@@ -32,7 +32,7 @@ module CIAX
         vary=[]
         expand.each{|k,v|
           kary << k.inspect
-          vary << (k == 'time' ? v.to_f : v.inspect)
+          vary << (k == 'time' ? v.to_i : v.inspect)
         }
         verbose("SqLog","Update(#{@stat['time']}):[#{@stat['id']}/#{@tid}]")
         "insert or ignore into #{@tid} (#{kary.join(',')}) values (#{vary.join(',')});"

@@ -7,8 +7,10 @@ module CIAX
     module Db
       # Watch Db
       #structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
-      def init_watch(wdb,cmdgrp)
-        return [] unless wdb
+      def init_watch(doc,db)
+        return {} unless doc.domain?('watch')
+        wdb=doc.domain('watch')
+        cmdgrp=db[:command][:group]
         idx={}
         Repeat.new.each(wdb){|e0,r0|
           id=e0.attr2item(idx){|k,v| r0.format(v)}
@@ -34,7 +36,7 @@ module CIAX
             end
           }
         }
-        wdb.to_h.update(:index => idx)
+        db[:watch]=wdb.to_h.update(:index => idx)
       end
     end
   end

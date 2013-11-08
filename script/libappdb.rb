@@ -11,21 +11,17 @@ module CIAX
 
       private
       def doc_to_db(doc)
-        hash=Hash[doc]
+        db=Hash[doc]
         # Domains
-        domc=doc.domain('commands')
-        hash[:command]=init_command(domc)
-        doms=doc.domain('status')
-        hash[:status]=init_stat(doms)
-        if doc.domain?('watch')
-          domw=doc.domain('watch')
-          hash[:watch]=init_watch(domw,hash[:command][:group])
-        end
-        hash
+        init_command(doc,db)
+        init_stat(doc,db)
+        init_watch(doc,db)
+        db
       end
 
       # Command Db
-      def init_command(adbc)
+      def init_command(doc,db)
+        adbc=doc.domain('commands')
         idx={}
         grp={}
         adbc.each{|e|
@@ -33,7 +29,7 @@ module CIAX
           gid=e.attr2item(grp)
           arc_command(e,idx,grp[gid])
         }
-        {:group => grp,:index => idx}
+        db[:command]={:group => grp,:index => idx}
       end
 
       def arc_command(e,idx,grp)
@@ -64,7 +60,8 @@ module CIAX
       end
 
       # Status Db
-      def init_stat(adbs)
+      def init_stat(doc,db)
+        adbs=doc.domain('status')
         mbr={'time'=>'TIMESTAMP','elapse'=>'ELAPSED'}
         grp={'gtime'=>{'caption' =>'','column' => 2,:members =>mbr}}
         idx=Hashx.new
@@ -72,7 +69,7 @@ module CIAX
           gid=e.attr2item(grp){|k,v| r.format(v)}
           rec_stat(e,idx,grp[gid],r)
         }
-        adbs.to_h.update(:group => grp,:index => idx)
+        db[:status]=adbs.to_h.update(:group => grp,:index => idx)
       end
 
       def rec_stat(e,idx,grp,rep)

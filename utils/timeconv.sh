@@ -12,9 +12,8 @@ tempdir=~/.var/temp
 [ -d $tempdir ] || mkdir $tempdir
 n='[0-9]'
 int="$n$n$n$n$n$n$n$n$n$n"
-dec="$n$n$n"
 conv(){
-    sed -e "s/['\"]*\($int\)\.*\($dec\)\.*$n*['\"]*/\1\2/"
+    sed -e "s/['\"]*\($int\)\.*\($n\+\)\.*$n*['\"]*/\1\200/" | sed -e "s/\($int$n$n$n\)0*/\1/"
 }
 
 for file ;do

@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-require "librepeat"
-require "libdb"
+require "libwatdb"
 
 module CIAX
   module App
     class Db < Db
+      include Watch::Db
       def initialize
         super('adb')
       end
@@ -19,7 +19,7 @@ module CIAX
         hash[:status]=init_stat(doms)
         if doc.domain?('watch')
           domw=doc.domain('watch')
-          hash[:watch]=init_watch(domw)
+          hash[:watch]=init_watch(domw,hash[:command][:group])
         end
         hash
       end
@@ -27,7 +27,7 @@ module CIAX
       # Command Db
       def init_command(adbc)
         idx={}
-        grp=@cmdgrp={}
+        grp={}
         adbc.each{|e|
           Msg.abort("No group in adbc") unless e.name == 'group'
           gid=e.attr2item(grp)
@@ -101,48 +101,16 @@ module CIAX
         }
         idx
       end
+    end
 
-      # Watch Db
-      #structure of exec=[cond1,2,...]; cond=[args1,2,..]; args1=['cmd','par1',..]
-      def init_watch(wdb)
-        return [] unless wdb
-        idx={}
-        Repeat.new.each(wdb){|e0,r0|
-          id=e0.attr2item(idx){|k,v| r0.format(v)}
-          item=idx[id]
-          cnd=item[:cnd]=[]
-          act=item[:act]={}
-          e0.each{|e1|
-            case name=e1.name.to_sym
-            when :block,:int,:exec
-              args=[e1['name']]
-              e1.each{|e2|
-                args << r0.subst(e2.text)
-              }
-              (act[name]||=[]) << args
-            when :block_grp
-              blk=(act[:block]||=[])
-              @cmdgrp[e1['ref']][:members].each{|k,v| blk << [k]}
-            else
-              h=e1.to_h
-              h.each_value{|v| v.replace(r0.format(v))}
-              h['type']=e1.name
-              cnd << h
-            end
-          }
-        }
-        wdb.to_h.update(:index => idx)
+    if __FILE__ == $0
+      begin
+        db=Db.new.set(ARGV.shift)
+      rescue InvalidID
+        Msg.usage("[id] (key) ..")
       end
+      puts db.path(ARGV)
+      exit
     end
-  end
-
-  if __FILE__ == $0
-    begin
-      db=App::Db.new.set(ARGV.shift)
-    rescue InvalidID
-      Msg.usage("[id] (key) ..")
-    end
-    puts db.path(ARGV)
-    exit
   end
 end

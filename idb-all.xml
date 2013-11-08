@@ -22,22 +22,22 @@
   </instance>
   <instance id="cci" label="IR Helium Compressor" app_id="bbe">
     <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <command id="c2on" label="CAS2(S1) ON" ref="x0on" />
-      <command id="c2off" label="CAS2(S1) OFF" ref="x0off" />
-      <command id="c1on" label="CAS1(S2) ON" ref="x1on" />
-      <command id="c1off" label="CAS1(S2) OFF" ref="x1off" />
-      <command id="m2on" label="MOIRCS CR(S8) ON" ref="x2on" />
-      <command id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off" />
-      <command id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on" />
-      <command id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off" />
-      <command id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on" />
-      <command id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
-      <command id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
-      <command id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
-      <command id="caon" label="CAS BOTH HC ON" ref="x01on" />
-      <command id="caoff" label="CAS BOTH HC OFF" ref="x01off" />
-      <command id="maon" label="MOIRCS BOTH ON" ref="x23on" />
-      <command id="maoff" label="MOIRCS BOTH OFF" ref="x23off" />
+      <item id="c2on" label="CAS2(S1) ON" ref="x0on" />
+      <item id="c2off" label="CAS2(S1) OFF" ref="x0off" />
+      <item id="c1on" label="CAS1(S2) ON" ref="x1on" />
+      <item id="c1off" label="CAS1(S2) OFF" ref="x1off" />
+      <item id="m2on" label="MOIRCS CR(S8) ON" ref="x2on" />
+      <item id="m2off" label="MOIRCS CR(S8) OFF" ref="x2off" />
+      <item id="m1on" label="MOIRCS MAIN(S9) ON" ref="x3on" />
+      <item id="m1off" label="MOIRCS MAIN(S9) OFF" ref="x3off" />
+      <item id="cmon" label="CAS MOIRCS/MAIN ON" ref="x0on" />
+      <item id="cmoff" label="CAS MOIRCS/MAIN OFF" ref="x0off" />
+      <item id="ccon" label="CAS MOIRCS/CR ON" ref="x1on" />
+      <item id="ccoff" label="CAS MOIRCS/CR OFF" ref="x1off" />
+      <item id="caon" label="CAS BOTH HC ON" ref="x01on" />
+      <item id="caoff" label="CAS BOTH HC OFF" ref="x01off" />
+      <item id="maon" label="MOIRCS BOTH ON" ref="x23on" />
+      <item id="maoff" label="MOIRCS BOTH OFF" ref="x23off" />
     </alias>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="CAS2(S1)(CIAO)" />
@@ -48,14 +48,14 @@
   </instance>
   <instance id="cco" label="OPT Helium Compressor" app_id="bbe">
     <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <command id="f2on" label="CIAO(S6) ON" ref="x0on" />
-      <command id="f2off" label="CIAO(S6) OFF" ref="x0off" />
-      <command id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
-      <command id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
-      <command id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
-      <command id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
-      <command id="maon" label="COMICS BOTH ON" ref="x23on" />
-      <command id="maoff" label="COMICS BOTH OFF" ref="x23off" />
+      <item id="f2on" label="CIAO(S6) ON" ref="x0on" />
+      <item id="f2off" label="CIAO(S6) OFF" ref="x0off" />
+      <item id="m1on" label="COMICS IMG(S4) ON" ref="x2on" />
+      <item id="m1off" label="COMICS IMG(S4) OFF" ref="x2off" />
+      <item id="m2on" label="COMICS SPEC(S5) ON" ref="x3on" />
+      <item id="m2off" label="COMICS SPEC(S5) OFF" ref="x3off" />
+      <item id="maon" label="COMICS BOTH ON" ref="x23on" />
+      <item id="maoff" label="COMICS BOTH OFF" ref="x23off" />
     </alias>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="CIAO(S6) SWITCH" />
@@ -65,10 +65,10 @@
   </instance>
   <instance id="cri" label="IR Helium Compressor" app_id="bbe">
     <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <command id="f1on" label="FMOS/IRS1(S10)ON" ref="x0on" />
-      <command id="f1off" label="FMOS/IRS1(S10)OFF" ref="x0off" />
-      <command id="f2on" label="FMOS/IRS2(S11)ON" ref="x2on" />
-      <command id="f2off" label="FMOS/IRS2(S11)OFF" ref="x2off" />
+      <item id="f1on" label="FMOS/IRS1(S10)ON" ref="x0on" />
+      <item id="f1off" label="FMOS/IRS1(S10)OFF" ref="x0off" />
+      <item id="f2on" label="FMOS/IRS2(S11)ON" ref="x2on" />
+      <item id="f2off" label="FMOS/IRS2(S11)OFF" ref="x2off" />
     </alias>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="FMOS/IRS1(S10)" />
@@ -77,8 +77,8 @@
   </instance>
   <instance id="cro" label="OPT Helium Compressor" app_id="bbe">
     <alias xmlns="http://ciax.sum.naoj.org/ciax-xml/idbc">
-      <command id="on" label="Alias for X0 ON" ref="x0on" />
-      <command id="off" label="Alias for X0 OFF" ref="x0off" />
+      <item id="on" label="Alias for X0 ON" ref="x0on" />
+      <item id="off" label="Alias for X0 OFF" ref="x0off" />
     </alias>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
       <group ref="g0" caption="X0-3" />

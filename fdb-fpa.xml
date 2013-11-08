@@ -11,27 +11,27 @@
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!--String Length must be <32-->
-      <command id="getstat" label="Get status" response="getstat" type="stat">
+      <item id="getstat" label="Get status" response="getstat" type="stat">
         <string>!F00FF</string>
-      </command>
-      <command id="setr1" label="Set range +-1.2V" response="default" type="config">
+      </item>
+      <item id="setr1" label="Set range +-1.2V" response="default" type="config">
         <string>!D00FF</string>
         <repeat from="1" to="8">
           <string>0000107</string>
         </repeat>
-      </command>
-      <command id="setr6" label="Set range +-6V" response="default" type="config">
+      </item>
+      <item id="setr6" label="Set range +-6V" response="default" type="config">
         <string>!D00FF</string>
         <repeat from="1" to="8">
           <string>0000105</string>
         </repeat>
-      </command>
-      <command id="setr15" label="Set range +-15V" response="default" type="config">
+      </item>
+      <item id="setr15" label="Set range +-15V" response="default" type="config">
         <string>!D00FF</string>
         <repeat from="1" to="8">
           <string>0000112</string>
         </repeat>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>

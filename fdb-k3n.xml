@@ -11,7 +11,7 @@
       <char length="1">${cc}</char>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
+      <item id="getstat" label="Get Status" response="getstat" type="stat">
         <string label="Node No.">00</string>
         <string label="Sub Address">00</string>
         <string label="SID">0</string>
@@ -21,7 +21,7 @@
         <string label="Start Address">0000</string>
         <string label="Void">00</string>
         <string label="Number of element">0001</string>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="Prefix" length="1">2</field>

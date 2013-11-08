@@ -15,7 +15,7 @@
       <body />
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <command id="getstat" label="Get all status" response="getstat" type="stat">
+      <item id="getstat" label="Get all status" response="getstat" type="stat">
         <char length="1" label="FINS Command:MRC">0x01</char>
         <char length="1" label="FINS Command:SRC">0x01</char>
         <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
@@ -24,8 +24,8 @@
         <char length="1" label="FINS Param:Bit Number">0x00</char>
         <char length="1" label="FINS Param:Data Length (H)">0x00</char>
         <char length="1" label="FINS Param:Data Length (L)">0x13</char>
-      </command>
-      <command id="getcmd" label="Get command bit" response="getcmd" type="stat">
+      </item>
+      <item id="getcmd" label="Get item bit" response="getcmd" type="stat">
         <char length="1" label="FINS Command:MRC">0x01</char>
         <char length="1" label="FINS Command:SRC">0x01</char>
         <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
@@ -34,8 +34,8 @@
         <char length="1" label="FINS Param:Bit Number">0x00</char>
         <char length="1" label="FINS Param:Data Length (H)">0x00</char>
         <char length="1" label="FINS Param:Data Length (L)">0x04</char>
-      </command>
-      <command id="geterr" label="Get Error Code" response="geterr" type="stat">
+      </item>
+      <item id="geterr" label="Get Error Code" response="geterr" type="stat">
         <char length="1" label="FINS Command:MRC">0x01</char>
         <char length="1" label="FINS Command:SRC">0x01</char>
         <char length="1" label="FINS Param:Memory type(D)">0x82</char>
@@ -44,8 +44,8 @@
         <char length="1" label="FINS Param:Bit Number">0x00</char>
         <char length="1" label="FINS Param:Data Length (H)">0x00</char>
         <char length="1" label="FINS Param:Data Length (L)">0x01</char>
-      </command>
-      <command id="getzlen" label="Get Z Sensor Length" response="getzlen" type="stat">
+      </item>
+      <item id="getzlen" label="Get Z Sensor Length" response="getzlen" type="stat">
         <char length="1" label="FINS Command:MRC">0x01</char>
         <char length="1" label="FINS Command:SRC">0x01</char>
         <char length="1" label="FINS Param:Memory type(D)">0x82</char>
@@ -54,8 +54,8 @@
         <char length="1" label="FINS Param:Bit Number">0x00</char>
         <char length="1" label="FINS Param:Data Length (H)">0x00</char>
         <char length="1" label="FINS Param:Data Length (L)">0x0A</char>
-      </command>
-      <command id="setbit" label="Set Int/Cmd Bit" response="cmdrsp" type="stat">
+      </item>
+      <item id="setbit" label="Set Int/Cmd Bit" response="cmdrsp" type="stat">
         <par_num>0:3</par_num>
         <par_num>0:15</par_num>
         <char length="1" label="FINS Command:MRC">0x01</char>
@@ -67,8 +67,8 @@
         <char length="1" label="FINS Param:Bit Data Length (H)">0x00</char>
         <char length="1" label="FINS Param:Bit Data Length (L)">0x01</char>
         <char length="1" label="FINS Param:Bit Data">0x01</char>
-      </command>
-      <command id="clrbit" label="Clear Int/Cmd Bit" response="cmdrsp" type="stat">
+      </item>
+      <item id="clrbit" label="Clear Int/Cmd Bit" response="cmdrsp" type="stat">
         <char length="1" label="FINS Command:MRC">0x01</char>
         <char length="1" label="FINS Command:SRC">0x02</char>
         <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
@@ -81,8 +81,8 @@
         <char length="2" label="FINS Param:Bit Data">0x00</char>
         <char length="2" label="FINS Param:Bit Data">0x00</char>
         <char length="2" label="FINS Param:Bit Data">0x00</char>
-      </command>
-      <command id="clrint" label="Clear Interrupt Bit" response="cmdrsp" type="stat">
+      </item>
+      <item id="clrint" label="Clear Interrupt Bit" response="cmdrsp" type="stat">
         <char length="1" label="FINS Command:MRC">0x01</char>
         <char length="1" label="FINS Command:SRC">0x02</char>
         <char length="1" label="FINS Param:Memory type(W)">0xB1</char>
@@ -92,7 +92,7 @@
         <char length="1" label="FINS Param:Data Length (H)">0x00</char>
         <char length="1" label="FINS Param:Data Length (L)">0x01</char>
         <char length="2" label="FINS Param:Bit Data">0x00</char>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="FINS Header:ICF" length="1">0xc0</field>

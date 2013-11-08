@@ -11,16 +11,16 @@
       <string format="%02X">${cc}</string>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <command id="getstat" label="Get status" response="getstat" type="stat">
+      <item id="getstat" label="Get status" response="getstat" type="stat">
         <string>AST3</string>
-      </command>
-      <command id="aon" label="All Output ON" response="default" type="action">
+      </item>
+      <item id="aon" label="All Output ON" response="default" type="action">
         <string>#SW1</string>
-      </command>
-      <command id="ack" label="ACK" noaffix="true">
+      </item>
+      <item id="ack" label="ACK" noaffix="true">
         <char length="1" label="ACK">6</char>
         <string>@</string>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="ACK" length="1">6</field>

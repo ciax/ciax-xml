@@ -7,18 +7,18 @@
       <body/>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
+      <item id="getstat" label="Get Status" response="getstat" type="stat">
         <string>RD</string>
-      </command>
-      <command id="output" label="OUTPUT [DDDDD]" type="action">
+      </item>
+      <item id="output" label="OUTPUT [DDDDD]" type="action">
         <par_num>0:65535</par_num>
         <string>SO</string>
         <char length="2">$1</char>
-      </command>
-      <command id="outfld" label="OUTPUT from Field" nocache="true" type="action">
+      </item>
+      <item id="outfld" label="OUTPUT from Field" nocache="true" type="action">
         <string>SO</string>
         <char length="2">${stat}</char>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <body/>

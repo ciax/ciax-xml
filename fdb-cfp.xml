@@ -13,25 +13,25 @@
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!--String Length must be <32-->
-      <command id="getstat" label="Get output status" response="getstat" type="stat">
+      <item id="getstat" label="Get output status" response="getstat" type="stat">
         <string>02!J</string>
-      </command>
-      <command id="getstat2" label="Get input status" response="getstat2" type="stat">
+      </item>
+      <item id="getstat2" label="Get input status" response="getstat2" type="stat">
         <string>03!J</string>
-      </command>
+      </item>
       <!---->
-      <command id="putdata" label="Write Discrete [Mask(4)] [Data(4)]" response="default" type="config">
+      <item id="putdata" label="Write Discrete [Mask(4)] [Data(4)]" response="default" type="config">
         <par_num>0:65535</par_num>
         <par_num>0:65535</par_num>
         <string>02!L</string>
         <string format="%04X">$1</string>
         <string format="%04X">$2</string>
-      </command>
-      <command id="putfield" label="Write from Output Field" response="default" type="config">
+      </item>
+      <item id="putfield" label="Write from Output Field" response="default" type="config">
         <string>02!L</string>
         <string>FFFF</string>
         <string format="%04X">${output}</string>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field label="Prefix" length="1">A</field>

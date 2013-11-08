@@ -11,129 +11,129 @@
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <!--String Length must be <32-->
-      <command id="getstat" label="Get status" response="getstat" type="stat">
+      <item id="getstat" label="Get status" response="getstat" type="stat">
         <string>ST</string>
-      </command>
-      <command id="initrot" label="Parameter set for rotation" response="default" type="config">
+      </item>
+      <item id="initrot" label="Parameter set for rotation" response="default" type="config">
         <repeat from="1" to="6">
           <string>$_</string>
           <string>P01S0</string>
         </repeat>
-      </command>
-      <command id="initunit" label="Parameter unit set to pulse step" response="default" type="config">
+      </item>
+      <item id="initunit" label="Parameter unit set to pulse step" response="default" type="config">
         <repeat from="1" to="6">
           <string>$_</string>
           <string>P02S1</string>
         </repeat>
-      </command>
-      <command id="initfactor" label="Parameter unit factor set to 1" response="default" type="config">
+      </item>
+      <item id="initfactor" label="Parameter unit factor set to 1" response="default" type="config">
         <repeat from="1" to="6">
           <string>$_</string>
           <string>P03S1</string>
         </repeat>
-      </command>
-      <command id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
+      </item>
+      <item id="chkems" label="Check Emstop [1-6]" response="chkems" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>=N</string>
-      </command>
-      <command id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
+      </item>
+      <item id="chkpse" label="Check Power Stage Err [1-6]" response="chkpse" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>=E</string>
-      </command>
-      <command id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
+      </item>
+      <item id="chkrun" label="Check Run [1-6]" response="chkrun" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>=H</string>
-      </command>
-      <command id="getp" label="Get pulse [1-6]" response="getp" type="stat">
+      </item>
+      <item id="getp" label="Get pulse [1-6]" response="getp" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P21R</string>
-      </command>
-      <command id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
+      </item>
+      <item id="setp" label="Set pulse from buffer[1-6]" nocache="true" response="default" type="config">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P21S</string>
         <string>${p:$1-1}</string>
-      </command>
-      <command id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
+      </item>
+      <item id="getspd" label="Get speed [1-6]" response="getspd" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P14R</string>
-      </command>
-      <command id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
+      </item>
+      <item id="setspd" label="Set speed from buffer [1-6]" nocache="true" response="default" type="config">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P14S</string>
         <string>${spd:$1-1}</string>
-      </command>
-      <command id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
+      </item>
+      <item id="getrmp" label="Get ramp [1-6]" response="getrmp" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P15R</string>
-      </command>
-      <command id="setrmp" label="Set ramp from buffer [1-6]" nocache="true" response="default" type="config">
+      </item>
+      <item id="setrmp" label="Set ramp from buffer [1-6]" nocache="true" response="default" type="config">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P15S</string>
         <string>${rmp:$1-1}</string>
-      </command>
-      <command id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
+      </item>
+      <item id="getofs" label="Get Offset [1-6]" response="getofs" type="stat">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P12R</string>
-      </command>
-      <command id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
+      </item>
+      <item id="setofs" label="Set offset from buffer[1-6]" nocache="true" response="default" type="config">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>P12S</string>
         <string>${ofs:$1-1}</string>
-      </command>
-      <command id="act" label="Activate (Servo) All" response="default" type="action">
+      </item>
+      <item id="act" label="Activate (Servo) All" response="default" type="action">
         <repeat from="1" to="6">
           <string>$_</string>
           <string>MA</string>
         </repeat>
-      </command>
-      <command id="deact" label="Deactivate (Free) All" response="default" type="action">
+      </item>
+      <item id="deact" label="Deactivate (Free) All" response="default" type="action">
         <repeat from="1" to="6">
           <string>$_</string>
           <string>MD</string>
         </repeat>
-      </command>
-      <command id="stop" label="Stop Moving [1-6]" response="default" type="action">
+      </item>
+      <item id="stop" label="Stop Moving [1-6]" response="default" type="action">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>S</string>
-      </command>
-      <command id="init" label="Initialize [1-6]" response="default" type="action">
+      </item>
+      <item id="init" label="Initialize [1-6]" response="default" type="action">
         <par_num>1:6</par_num>
         <string>$1</string>
         <string>0</string>
-      </command>
-      <command id="fw" label="Move forward [T] [H}(8000/hole)" response="default" type="action">
+      </item>
+      <item id="fw" label="Move forward [T] [H}(8000/hole)" response="default" type="action">
         <par_num>1:6</par_num>
         <par_num>0:</par_num>
         <string>$1</string>
         <string>+</string>
         <string>$2</string>
-      </command>
-      <command id="bk" label="Move backward [T] [H](8000/hole)" response="default" type="action">
+      </item>
+      <item id="bk" label="Move backward [T] [H](8000/hole)" response="default" type="action">
         <par_num>1:6</par_num>
         <par_num>0:</par_num>
         <string>$1</string>
         <string>-</string>
         <string>$2</string>
-      </command>
-      <command id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
+      </item>
+      <item id="abs" label="Move absolute pos [0-192000] (8000/hole)" response="default" type="action">
         <par_num>1:6</par_num>
         <par_num>0:384000</par_num>
         <string>$1</string>
         <string>A</string>
         <string>$2</string>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <field decode="unsigned" label="Prefix" length="1">2</field>

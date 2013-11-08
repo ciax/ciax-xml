@@ -17,7 +17,7 @@
       </ccrange>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <command id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
+      <item id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
         <par_num>0:5</par_num>
         <char length="2" label="Read region command">0x401</char>
         <char length="2" label="Read region subcommand">0</char>
@@ -27,8 +27,8 @@
         <char label="Tag Num" length="1">$1 + 2</char>
         <char length="2" label="Device Code">0xB400</char>
         <char length="2" label="Data Length">0x100</char>
-      </command>
-      <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
+      </item>
+      <item id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
         <par_num>0:5</par_num>
         <par_num>0:3</par_num>
         <char length="2" label="Write region command">0x1401</char>
@@ -38,8 +38,8 @@
         <char length="2" label="Device Code">0xB400</char>
         <char length="2" label="Data Length">0x2c</char>
         <char length="2">${t:$1:$2}</char>
-      </command>
-      <command id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
+      </item>
+      <item id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
         <par_num>0:2</par_num>
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
@@ -47,7 +47,7 @@
         <char length="2" label="Device Code">0xB400</char>
         <char length="2" label="Data Length">1</char>
         <char length="2" label="Parameter">$1</char>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="SubHeader: Prefix" length="2">212</field>

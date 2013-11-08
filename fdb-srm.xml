@@ -13,22 +13,22 @@
       <char length="1" label="Delimiter">0xd</char>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <command id="getmodel" label="Get Model Code" response="getmodel" type="stat">
+      <item id="getmodel" label="Get Model Code" response="getmodel" type="stat">
         <string label="Header Code">MM</string>
-      </command>
-      <command id="getstat" label="Get Status" response="getstat" type="stat">
+      </item>
+      <item id="getstat" label="Get Status" response="getstat" type="stat">
         <string label="Header Code">RR</string>
         <string label="Start Channel">0000</string>
         <string label="length">0001</string>
-      </command>
-      <command id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
+      </item>
+      <item id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
         <par_num>0:500000</par_num>
         <string label="Header Code">FK</string>
         <string label="Operand">CIO </string>
         <string label="Channel">0000</string>
         <!--[000..04(5)]-->
         <string format="%016d">$1</string>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <ccrange>

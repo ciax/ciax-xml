@@ -17,21 +17,21 @@
       </ccrange>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <command id="getstat" label="Get all status" response="getstat" type="stat">
+      <item id="getstat" label="Get all status" response="getstat" type="stat">
         <char length="2" label="Read region command">0x401</char>
         <char length="2" label="Read region subcommand">0</char>
         <char length="3" label="Start Address">0</char>
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">52</char>
-      </command>
-      <command id="getcmd" label="Get cmd status" response="getcmd" type="stat">
+      </item>
+      <item id="getcmd" label="Get cmd status" response="getcmd" type="stat">
         <char length="2" label="Read region command">0x401</char>
         <char length="2" label="Read region subcommand">0</char>
         <char length="3" label="Start Address">0x100</char>
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">5</char>
-      </command>
-      <command id="set_tag" label="Set Tag to Run [1-12,98,99]" response="cmdrsp" type="config">
+      </item>
+      <item id="set_tag" label="Set Tag to Run [1-12,98,99]" response="cmdrsp" type="config">
         <par_num>1:12,98,99</par_num>
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
@@ -39,8 +39,8 @@
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">1</char>
         <char length="2">$1</char>
-      </command>
-      <command id="set_pos" label="Set Pos to Jack [0-4]" response="cmdrsp" type="config">
+      </item>
+      <item id="set_pos" label="Set Pos to Jack [0-4]" response="cmdrsp" type="config">
         <par_num>0:4</par_num>
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
@@ -48,8 +48,8 @@
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">1</char>
         <char length="2">1 &lt;&lt; $1</char>
-      </command>
-      <command id="set_ins" label="Set Instrument ID" response="cmdrsp" type="config">
+      </item>
+      <item id="set_ins" label="Set Instrument ID" response="cmdrsp" type="config">
         <par_num>0:10</par_num>
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
@@ -57,8 +57,8 @@
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">1</char>
         <char length="2">$1</char>
-      </command>
-      <command id="act" label="Action Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
+      </item>
+      <item id="act" label="Action Trigger [b0=run,b8=jak,b15=chg]" response="cmdrsp" type="action">
         <par_num>0,8,15</par_num>
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
@@ -66,8 +66,8 @@
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">1</char>
         <char length="2">1 &lt;&lt; $1</char>
-      </command>
-      <command id="int" label="Interrupt Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" response="cmdrsp" type="action">
+      </item>
+      <item id="int" label="Interrupt Trigger [b0=pause,emg,,chg,cancel,reset,mater,cycle]" response="cmdrsp" type="action">
         <par_num>0:7</par_num>
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
@@ -75,24 +75,24 @@
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">1</char>
         <char length="2">1 &lt;&lt; $1</char>
-      </command>
-      <command id="clr_act" label="Clear Action Flags" response="cmdrsp" type="config">
+      </item>
+      <item id="clr_act" label="Clear Action Flags" response="cmdrsp" type="config">
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
         <char length="3" label="Start Address">0x102</char>
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">1</char>
         <char length="2" label="Data">0</char>
-      </command>
-      <command id="clr_int" label="Clear Interrupt Flags" response="cmdrsp" type="config">
+      </item>
+      <item id="clr_int" label="Clear Interrupt Flags" response="cmdrsp" type="config">
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
         <char length="3" label="Start Address">0x100</char>
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">1</char>
         <char length="2" label="Data">0</char>
-      </command>
-      <command id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
+      </item>
+      <item id="get_tbl" label="Get Jack Table [Tag=0-5] [JK=0-3]" response="get_tbl" type="stat">
         <par_num>0:5</par_num>
         <par_num>0:3</par_num>
         <char length="2" label="Read region command">0x401</char>
@@ -104,8 +104,8 @@
         <char length="1" label="Address MSB">0</char>
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">0x2c</char>
-      </command>
-      <command id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
+      </item>
+      <item id="set_tbl" label="Set Jack Table from Field [Tag=0-5] [JK=0-3]" nocache="true" response="cmdrsp" type="config">
         <par_num>0:5</par_num>
         <par_num>0:3</par_num>
         <char length="2" label="Write region command">0x1401</char>
@@ -116,8 +116,8 @@
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">0x2c</char>
         <char length="2">${t:$1:$2}</char>
-      </command>
-      <command id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
+      </item>
+      <item id="rw_tbl" label="Read/Write Jack Table [0=Reset,1=Read,2=Write]" response="cmdrsp" type="config">
         <par_num>0:2</par_num>
         <char length="2" label="Write region command">0x1401</char>
         <char length="2" label="Write region subcommand">0</char>
@@ -125,7 +125,7 @@
         <char length="1" label="Device Code">0xB4</char>
         <char length="2" label="Data Length">1</char>
         <char length="2" label="Parameter">$1</char>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="SubHeader: Prefix" length="2">212</field>

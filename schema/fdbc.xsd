@@ -7,11 +7,11 @@
   <xsd:element name="commands">
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="fdbc:command" minOccurs="1" maxOccurs="unbounded" />
+        <xsd:element ref="fdbc:item" minOccurs="1" maxOccurs="unbounded" />
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="command">
+  <xsd:element name="item">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:group ref="fdbc:validate" minOccurs="0" maxOccurs="unbounded" />

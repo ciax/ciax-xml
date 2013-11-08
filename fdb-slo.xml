@@ -7,76 +7,76 @@
       <char length="1">0xd</char>
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <command id="getstat" label="Error Status" response="getstat" type="stat">
+      <item id="getstat" label="Error Status" response="getstat" type="stat">
         <string>err</string>
-      </command>
-      <command id="bs" label="Running Status" response="bs" type="stat">
+      </item>
+      <item id="bs" label="Running Status" response="bs" type="stat">
         <string>bs</string>
-      </command>
-      <command id="in" label="Input Status (1-5)" response="in" type="stat">
+      </item>
+      <item id="in" label="Input Status (1-5)" response="in" type="stat">
         <par_num>1:5</par_num>
         <string>in</string>
         <string format="(%d)">$1</string>
-      </command>
-      <command id="p" label="Pulse Number" response="p" type="stat">
+      </item>
+      <item id="p" label="Pulse Number" response="p" type="stat">
         <string>p</string>
-      </command>
-      <command id="spd" label="Spped Number" response="spd" type="stat">
+      </item>
+      <item id="spd" label="Spped Number" response="spd" type="stat">
         <string>spd</string>
-      </command>
-      <command id="reset" label="Reset" response="default" type="config">
+      </item>
+      <item id="reset" label="Reset" response="default" type="config">
         <string>reset</string>
-      </command>
-      <command id="hl" label="Hard Limit ON/OFF" response="default" type="config">
+      </item>
+      <item id="hl" label="Hard Limit ON/OFF" response="default" type="config">
         <par_num>0:1</par_num>
         <string>hl</string>
         <string>$1</string>
-      </command>
-      <command id="e1" label="Event1 Enable/Disable" response="default" type="config">
+      </item>
+      <item id="e1" label="Event1 Enable/Disable" response="default" type="config">
         <par_num>0:1</par_num>
         <string>e1=</string>
         <string>$1</string>
-      </command>
-      <command id="e2" label="Event2 Enable/Disable" response="default" type="config">
+      </item>
+      <item id="e2" label="Event2 Enable/Disable" response="default" type="config">
         <par_num>0:1</par_num>
         <string>e2=</string>
         <string>$1</string>
-      </command>
-      <command id="set0" label="Set 0 ABS Counter" response="default" type="config">
+      </item>
+      <item id="set0" label="Set 0 ABS Counter" response="default" type="config">
         <string>abspos=0</string>
-      </command>
-      <command id="setp" label="Set Pulse Number" response="default" type="config">
+      </item>
+      <item id="setp" label="Set Pulse Number" response="default" type="config">
         <par_num>0:999</par_num>
         <string>p=</string>
         <string format="%5.2f">$1</string>
-      </command>
-      <command id="setspd" label="Set Speed Number" response="default" type="config">
+      </item>
+      <item id="setspd" label="Set Speed Number" response="default" type="config">
         <par_num>0:999</par_num>
         <string>spd=</string>
         <string format="%5.2f">$1</string>
-      </command>
-      <command id="stop" label="Stop Running" response="default" type="action">
+      </item>
+      <item id="stop" label="Stop Running" response="default" type="action">
         <string>stop</string>
-      </command>
-      <command id="jp" label="JOG Positive" response="default" type="action">
+      </item>
+      <item id="jp" label="JOG Positive" response="default" type="action">
         <string>j=1</string>
-      </command>
-      <command id="jn" label="JOG Negative" response="default" type="action">
+      </item>
+      <item id="jn" label="JOG Negative" response="default" type="action">
         <string>j=-1</string>
-      </command>
-      <command id="ma" label="Move Absolute Position" response="default" type="action">
+      </item>
+      <item id="ma" label="Move Absolute Position" response="default" type="action">
         <par_num>0:999</par_num>
         <string>ma=</string>
         <string format="%3.1f">$1</string>
-      </command>
-      <command id="mi" label="Move Incremental" response="default" type="action">
+      </item>
+      <item id="mi" label="Move Incremental" response="default" type="action">
         <par_num>-999:999</par_num>
         <string>mi=</string>
         <string format="%3.1f">$1</string>
-      </command>
-      <command id="mhn" label="Move To e2 Sensor Negative" response="default" type="action">
+      </item>
+      <item id="mhn" label="Move To e2 Sensor Negative" response="default" type="action">
         <string>mh=-1</string>
-      </command>
+      </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r\n">
       <body/>

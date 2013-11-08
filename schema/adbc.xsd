@@ -17,18 +17,18 @@
   <xsd:element name="group">
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element ref="adbc:command" />
+        <xsd:element ref="adbc:item" />
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="caption" type="xsd:token" use="optional" />
       <xsd:attribute name="column" type="xsd:int" />
     </xsd:complexType>
     <xsd:key name="command_id">
-      <xsd:selector xpath="adbc:command" />
+      <xsd:selector xpath="adbc:item" />
       <xsd:field xpath="@id" />
     </xsd:key>
   </xsd:element>
-  <xsd:element name="command">
+  <xsd:element name="item">
     <xsd:complexType>
       <xsd:sequence>
         <xsd:group minOccurs="0" maxOccurs="unbounded" ref="adbc:validate"></xsd:group>

@@ -3,45 +3,45 @@
   <app frm_id="cj2" id="cj2" label="Stand-by Flange PLC" version="2">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrpt Commands" column="2">
-        <command id="upd" label="Status update">
+        <item id="upd" label="Status update">
           <frmcmd name="getstat" />
           <frmcmd name="getcmd" />
           <frmcmd name="geterr" />
           <frmcmd name="getzlen" />
-        </command>
-        <command id="ready" label="Drive Ready">
+        </item>
+        <item id="ready" label="Drive Ready">
           <frmcmd name="setbit">
             <argv>0</argv>
             <argv>3</argv>
           </frmcmd>
           <frmcmd name="clrint" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="pause" label="Pause Acton">
+        </item>
+        <item id="pause" label="Pause Acton">
           <frmcmd name="setbit">
             <argv>0</argv>
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="clrint" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="resume" label="Resume Pause">
+        </item>
+        <item id="resume" label="Resume Pause">
           <frmcmd name="setbit">
             <argv>0</argv>
             <argv>10</argv>
           </frmcmd>
           <frmcmd name="clrint" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="stop" label="Emergency Stop">
+        </item>
+        <item id="stop" label="Emergency Stop">
           <frmcmd name="setbit">
             <argv>0</argv>
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="clrint" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="reserr" label="Reset Error">
+        </item>
+        <item id="reserr" label="Reset Error">
           <frmcmd name="setbit">
             <argv>0</argv>
             <argv>11</argv>
@@ -49,220 +49,220 @@
           <frmcmd name="clrint" />
           <frmcmd name="getstat" />
           <frmcmd name="geterr" />
-        </command>
-        <command id="reset" label="ResetBit">
+        </item>
+        <item id="reset" label="ResetBit">
           <frmcmd name="clrbit" />
           <frmcmd name="getcmd" />
           <frmcmd name="getstat" />
-        </command>
+        </item>
       </group>
       <group id="gfix" caption="Fix Frange Control" column="2">
-        <command id="fhook" label="Fix Flange Hook">
+        <item id="fhook" label="Fix Flange Hook">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="fjup" label="Fix Flange Jack Up">
+        </item>
+        <item id="fjup" label="Fix Flange Jack Up">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>4</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="funhk" label="Fix Flange UnHook">
+        </item>
+        <item id="funhk" label="Fix Flange UnHook">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="fjdw" label="Fix Flange Jack Down">
+        </item>
+        <item id="fjdw" label="Fix Flange Jack Down">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>5</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
+        </item>
       </group>
       <group id="gmov" caption="Mov Frange Control" column="2">
-        <command id="mhook" label="Mov Flange Hook">
+        <item id="mhook" label="Mov Flange Hook">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="mjup" label="Mov Flange Jack Up">
+        </item>
+        <item id="mjup" label="Mov Flange Jack Up">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>4</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="munhk" label="Mov Flange UnHook">
+        </item>
+        <item id="munhk" label="Mov Flange UnHook">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="mjdw" label="Mov Flange Jack Down">
+        </item>
+        <item id="mjdw" label="Mov Flange Jack Down">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>5</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
+        </item>
       </group>
       <group id="gtr" caption="Transer Control" column="2">
-        <command id="rotout" label="Rotate Loading">
+        <item id="rotout" label="Rotate Loading">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>2</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="trout" label="Transer Out">
+        </item>
+        <item id="trout" label="Transer Out">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>6</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="rotin" label="Rotate Storing">
+        </item>
+        <item id="rotin" label="Rotate Storing">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>3</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="trin" label="Transer In">
+        </item>
+        <item id="trin" label="Transer In">
           <frmcmd name="setbit">
             <argv>2</argv>
             <argv>7</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
+        </item>
       </group>
       <group id="gipw" caption="Instrument Power Supply" column="2">
-        <command id="fpwon" label="Fix IPW On">
+        <item id="fpwon" label="Fix IPW On">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>2</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="mpwon" label="Mov IPW On">
+        </item>
+        <item id="mpwon" label="Mov IPW On">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>4</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="fpwoff" label="Fix IPW Off">
+        </item>
+        <item id="fpwoff" label="Fix IPW Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>3</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="mpwoff" label="Mov IPW Off">
+        </item>
+        <item id="mpwoff" label="Mov IPW Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>5</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
+        </item>
       </group>
       <group id="gccd" caption="Other Power Control" column="2">
-        <command id="fccdon" label="Fix CCD Power On">
+        <item id="fccdon" label="Fix CCD Power On">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="mccdon" label="Mov CCD Power On">
+        </item>
+        <item id="mccdon" label="Mov CCD Power On">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>12</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="fccdoff" label="Fix CCD Power Off">
+        </item>
+        <item id="fccdoff" label="Fix CCD Power Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>9</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="mccdoff" label="Mov CCD Power Off">
+        </item>
+        <item id="mccdoff" label="Mov CCD Power Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>13</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="fccdtoff" label="Fix CCD Timer Off">
+        </item>
+        <item id="fccdtoff" label="Fix CCD Timer Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>10</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="mccdtoff" label="Mov CCD Timer Off">
+        </item>
+        <item id="mccdtoff" label="Mov CCD Timer Off">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>14</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="pwoff" label="Outlet Power Off">
+        </item>
+        <item id="pwoff" label="Outlet Power Off">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
+        </item>
       </group>
       <group id="getc" caption="Other Controls" column="2">
-        <command id="chgfw" label="Chg Plug Forward">
+        <item id="chgfw" label="Chg Plug Forward">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>6</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="dopen" label="Door Open">
+        </item>
+        <item id="dopen" label="Door Open">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>0</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="chgbk" label="Chg Plug Backward">
+        </item>
+        <item id="chgbk" label="Chg Plug Backward">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>7</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="dclose" label="Door Close">
+        </item>
+        <item id="dclose" label="Door Close">
           <frmcmd name="setbit">
             <argv>3</argv>
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
-        <command id="chgon" label="Chg Power ON">
+        </item>
+        <item id="chgon" label="Chg Power ON">
           <frmcmd name="setbit">
             <argv>1</argv>
             <argv>8</argv>
           </frmcmd>
           <frmcmd name="getcmd" />
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cj2">

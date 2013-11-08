@@ -3,75 +3,75 @@
   <app frm_id="cfp" id="cfp" label="MOIRCS Field Point">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <command id="upd" label="Update Status">
+        <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
           <frmcmd name="getstat2" />
-        </command>
-        <command id="ro" label="Robohand All Open">
+        </item>
+        <item id="ro" label="Robohand All Open">
           <frmcmd name="putdata">
             <argv>0x3c</argv>
             <argv>0x28</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="rc" label="Robohand All Close">
+        </item>
+        <item id="rc" label="Robohand All Close">
           <frmcmd name="putdata">
             <argv>0x3c</argv>
             <argv>0x14</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="go" label="Gate Valve Open">
+        </item>
+        <item id="go" label="Gate Valve Open">
           <frmcmd name="putdata">
             <argv>0xc0</argv>
             <argv>0x80</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="gc" label="Gate Valve Close">
+        </item>
+        <item id="gc" label="Gate Valve Close">
           <frmcmd name="putdata">
             <argv>0xc0</argv>
             <argv>0x40</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="av" label="Arm Vertical">
+        </item>
+        <item id="av" label="Arm Vertical">
           <frmcmd name="putdata">
             <argv>0x3000</argv>
             <argv>0x2000</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="ah" label="Arm Horizontal">
+        </item>
+        <item id="ah" label="Arm Horizontal">
           <frmcmd name="putdata">
             <argv>0x3000</argv>
             <argv>0x1000</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="ao" label="Arm Open">
+        </item>
+        <item id="ao" label="Arm Open">
           <frmcmd name="putdata">
             <argv>0xc00</argv>
             <argv>0x800</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="ac" label="Arm Close">
+        </item>
+        <item id="ac" label="Arm Close">
           <frmcmd name="putdata">
             <argv>0xc00</argv>
             <argv>0x400</argv>
           </frmcmd>
           <frmcmd name="getstat" />
-        </command>
-        <command id="save" label="Save Output">
+        </item>
+        <item id="save" label="Save Output">
           <frmcmd name="save"></frmcmd>
-        </command>
-        <command id="load" label="Load Output(Caution! Move)">
+        </item>
+        <item id="load" label="Load Output(Caution! Move)">
           <frmcmd name="load">
             <argv>latest</argv>
           </frmcmd>
           <frmcmd name="putfield"></frmcmd>
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="cfp">

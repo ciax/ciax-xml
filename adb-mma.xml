@@ -3,7 +3,7 @@
   <app frm_id="slo" id="mma" label="MOIRCS Arm">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <command id="upd" label="Update Status">
+        <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
           <frmcmd name="bs" />
           <frmcmd name="p" />
@@ -12,11 +12,11 @@
               <argv>$_</argv>
           </frmcmd>
           </repeat>
-        </command>
-        <command id="reset" label="Reset">
+        </item>
+        <item id="reset" label="Reset">
           <frmcmd name="reset" />
-        </command>
-        <command id="defcon" label="Default Config">
+        </item>
+        <item id="defcon" label="Default Config">
           <frmcmd name="hl">
             <argv>1</argv>
           </frmcmd>
@@ -26,47 +26,47 @@
           <frmcmd name="e2">
             <argv>0</argv>
           </frmcmd>
-        </command>
-        <command id="set0" label="Set 0 Pulses">
+        </item>
+        <item id="set0" label="Set 0 Pulses">
           <frmcmd name="set0" />
-        </command>
-        <command id="gf" label="Goto Focal Position">
+        </item>
+        <item id="gf" label="Goto Focal Position">
           <frmcmd name="ma">
             <argv>12.8</argv>
           </frmcmd>
-        </command>
-        <command id="gr" label="Goto Rotate Position">
+        </item>
+        <item id="gr" label="Goto Rotate Position">
           <frmcmd name="ma">
             <argv>123</argv>
           </frmcmd>
-        </command>
-        <command id="gw" label="Goto Waiting Position">
+        </item>
+        <item id="gw" label="Goto Waiting Position">
           <frmcmd name="ma">
             <argv>185</argv>
           </frmcmd>
-        </command>
-        <command id="gs" label="Goto Stock Position">
+        </item>
+        <item id="gs" label="Goto Stock Position">
           <frmcmd name="ma">
             <argv>jp</argv>
           </frmcmd>
-        </command>
-        <command id="sets" label="Set Stock Pos Pulse">
+        </item>
+        <item id="sets" label="Set Stock Pos Pulse">
           <frmcmd name="setp">
             <argv>200.44</argv>
           </frmcmd>
-        </command>
-        <command id="rini" label="Init to RP at AV">
+        </item>
+        <item id="rini" label="Init to RP at AV">
           <frmcmd name="e2">
             <argv>1</argv>
           </frmcmd>
           <frmcmd name="mhn"></frmcmd>
-        </command>
-        <command id="setr" label="Set Rotate Pos Pulse">
+        </item>
+        <item id="setr" label="Set Rotate Pos Pulse">
           <frmcmd name="setp">
             <argv>123</argv>
           </frmcmd>
-        </command>
-        <command id="updp" label="Update Pulse" hidden="true">
+        </item>
+        <item id="updp" label="Update Pulse" hidden="true">
           <frmcmd name="p" />
           <frmcmd name="in">
             <argv>5</argv>
@@ -74,10 +74,10 @@
           <frmcmd name="in">
             <argv>3</argv>
           </frmcmd>
-        </command>
-        <command id="stop" label="Stop Run" hidden="true">
+        </item>
+        <item id="stop" label="Stop Run" hidden="true">
           <frmcmd name="stop" />
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mma">

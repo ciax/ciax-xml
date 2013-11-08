@@ -3,7 +3,7 @@
   <app frm_id="slo" id="mmc" label="MOIRCS Carrousel">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <command id="upd" label="Update Status">
+        <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
           <frmcmd name="bs" />
           <frmcmd name="p" />
@@ -13,11 +13,11 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-        </command>
-        <command id="reset" label="Reset">
+        </item>
+        <item id="reset" label="Reset">
           <frmcmd name="reset" />
-        </command>
-        <command id="defcon" label="Default Config">
+        </item>
+        <item id="defcon" label="Default Config">
           <frmcmd name="hl">
             <argv>0</argv>
           </frmcmd>
@@ -30,51 +30,51 @@
           <frmcmd name="setspd">
             <argv>0.2</argv>
           </frmcmd>
-        </command>
-        <command id="cwini" label="Goto CW Limit">
+        </item>
+        <item id="cwini" label="Goto CW Limit">
           <frmcmd name="jp" />
-        </command>
-        <command id="cwhome" label="Goto Home from CW Limit">
+        </item>
+        <item id="cwhome" label="Goto Home from CW Limit">
           <frmcmd name="mi">
             <argv>-0.41</argv>
           </frmcmd>
-        </command>
-        <command id="cwset0" label="Set 0 at S00">
+        </item>
+        <item id="cwset0" label="Set 0 at S00">
           <frmcmd name="set0" />
-        </command>
-        <command id="cw" label="Move CW [1-5]">
+        </item>
+        <item id="cw" label="Move CW [1-5]">
           <par_num>1:5</par_num>
           <frmcmd name="mi">
             <argv>$1</argv>
           </frmcmd>
-        </command>
-        <command id="ccw" label="Move CCW [1-5]">
+        </item>
+        <item id="ccw" label="Move CCW [1-5]">
           <par_num>1:5</par_num>
           <frmcmd name="mi">
             <argv>-$1</argv>
           </frmcmd>
-        </command>
-        <command id="slot" label="Move to Slot [0-23]">
+        </item>
+        <item id="slot" label="Move to Slot [0-23]">
           <par_num>0:23</par_num>
           <frmcmd name="ma">
             <argv>-$1</argv>
           </frmcmd>
-        </command>
-        <command id="access" label="Move to Access [0-23]">
+        </item>
+        <item id="access" label="Move to Access [0-23]">
           <par_num>0:23</par_num>
           <frmcmd name="ma">
             <argv format="%d">$1&gt;18?-$1+18:-$1-6</argv>
           </frmcmd>
-        </command>
-        <command id="updp" label="Update Pulse" hidden="true">
+        </item>
+        <item id="updp" label="Update Pulse" hidden="true">
           <frmcmd name="p" />
           <frmcmd name="in">
             <argv>1</argv>
           </frmcmd>
-        </command>
-        <command id="stop" label="Stop Run" hidden="true">
+        </item>
+        <item id="stop" label="Stop Run" hidden="true">
           <frmcmd name="stop" />
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mmc">

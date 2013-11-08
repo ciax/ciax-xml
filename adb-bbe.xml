@@ -3,10 +3,10 @@
   <app frm_id="bbe" id="bbe" label="Helium Compressor">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device" column="2">
-        <command id="upd" label="Update Status">
+        <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
-        </command>
-        <command id="x0on" label="X0 ON">
+        </item>
+        <item id="x0on" label="X0 ON">
           <frmcmd name="getstat"></frmcmd>
           <frmcmd name="set">
             <argv>stat</argv>
@@ -14,8 +14,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x0off" label="X0 OFF">
+        </item>
+        <item id="x0off" label="X0 OFF">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -23,8 +23,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x1on" label="X1 ON">
+        </item>
+        <item id="x1on" label="X1 ON">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -32,8 +32,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x1off" label="X1 OFF">
+        </item>
+        <item id="x1off" label="X1 OFF">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -41,8 +41,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x2on" label="X2 ON">
+        </item>
+        <item id="x2on" label="X2 ON">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -50,8 +50,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x2off" label="X2 OFF">
+        </item>
+        <item id="x2off" label="X2 OFF">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -59,8 +59,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x3on" label="X3 ON">
+        </item>
+        <item id="x3on" label="X3 ON">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -68,8 +68,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x3off" label="X3 OFF">
+        </item>
+        <item id="x3off" label="X3 OFF">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -77,8 +77,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x01on" label="X0 and X1 ON">
+        </item>
+        <item id="x01on" label="X0 and X1 ON">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -86,8 +86,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x01off" label="X0 and X1 OFF">
+        </item>
+        <item id="x01off" label="X0 and X1 OFF">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -95,8 +95,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x23on" label="X2 and X3 ON">
+        </item>
+        <item id="x23on" label="X2 and X3 ON">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -104,8 +104,8 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
-        <command id="x23off" label="X2 and X3 OFF">
+        </item>
+        <item id="x23off" label="X2 and X3 OFF">
           <frmcmd name="getstat" />
           <frmcmd name="set">
             <argv>stat</argv>
@@ -113,7 +113,7 @@
           </frmcmd>
           <frmcmd name="outfld" />
           <frmcmd name="getstat" />
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">

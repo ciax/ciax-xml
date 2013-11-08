@@ -3,11 +3,11 @@
   <app frm_id="mel" id="cjk" label="Cart Jack Table" version="0">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gmtn" caption="Maintenance Commands" column="2">
-        <command id="upd" label="Status update">
+        <item id="upd" label="Status update">
           <frmcmd name="getstat" />
           <frmcmd name="getcmd" />
-        </command>
-        <command id="get_tbl" label="Get Jack Table">
+        </item>
+        <item id="get_tbl" label="Get Jack Table">
           <frmcmd name="rw_tbl">
             <argv>1</argv>
           </frmcmd>
@@ -19,8 +19,8 @@
               </frmcmd>
             </repeat>
           </repeat>
-        </command>
-        <command id="set_tbl" label="Set Jack Table">
+        </item>
+        <item id="set_tbl" label="Set Jack Table">
           <repeat counter="t" from="0" to="5">
             <repeat counter="j" from="0" to="3">
               <frmcmd name="set_tbl">
@@ -32,7 +32,7 @@
           <frmcmd name="rw_tbl">
             <argv>0</argv>
           </frmcmd>
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="mel">

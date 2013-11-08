@@ -3,88 +3,88 @@
   <app frm_id="oss" id="oss" label="TSC Control" version="2">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <command id="upd" label="Update Status">
+        <item id="upd" label="Update Status">
           <frmcmd name="logstat" />
           <frmcmd name="getstat" />
           <frmcmd name="iststat" />
           <frmcmd name="jakstat" />
           <frmcmd name="inrstat" />
-        </command>
-        <command id="login" label="Login">
+        </item>
+        <item id="login" label="Login">
           <frmcmd name="login" />
           <frmcmd name="logstat" />
-        </command>
-        <command id="logout" label="Logout">
+        </item>
+        <item id="logout" label="Logout">
           <frmcmd name="logout" />
           <frmcmd name="logstat" />
-        </command>
-        <command id="init" label="Start TCP Status Request">
+        </item>
+        <item id="init" label="Start TCP Status Request">
           <frmcmd name="init" />
-        </command>
-        <command id="startup" label="Start Up CIAX operation">
+        </item>
+        <item id="startup" label="Start Up CIAX operation">
           <frmcmd name="login" />
           <frmcmd name="tsconly" label="TSC Only Mode(CIAX Mode)" />
           <frmcmd name="ron" />
           <frmcmd name="jon" />
-        </command>
-        <command id="shutdown" label="Shutdown CIAX operation">
+        </item>
+        <item id="shutdown" label="Shutdown CIAX operation">
           <frmcmd name="joff" />
           <frmcmd name="roff" />
           <frmcmd name="tscpri" label="TSC Primaly Mode" />
           <frmcmd name="logout" />
-        </command>
-        <command id="rhook" label="InR Hook">
+        </item>
+        <item id="rhook" label="InR Hook">
           <frmcmd name="rhook" />
           <frmcmd name="inrstat" />
-        </command>
-        <command id="runhk" label="InR UnHook">
+        </item>
+        <item id="runhk" label="InR UnHook">
           <frmcmd name="runhk" />
           <frmcmd name="inrstat" />
-        </command>
-        <command id="rstop" label="InR Stop">
+        </item>
+        <item id="rstop" label="InR Stop">
           <frmcmd name="rstop" />
           <frmcmd name="inrstat" />
-        </command>
-        <command id="jup" label="All EJB Up">
+        </item>
+        <item id="jup" label="All EJB Up">
           <frmcmd name="ajup" />
           <frmcmd name="jakstat" />
-        </command>
-        <command id="jdw" label="All EJB Down">
+        </item>
+        <item id="jdw" label="All EJB Down">
           <frmcmd name="ajdw" />
           <frmcmd name="jakstat" />
-        </command>
-        <command id="jstop" label="All EJB Stop">
+        </item>
+        <item id="jstop" label="All EJB Stop">
           <frmcmd name="ajstop" />
           <frmcmd name="jakstat" />
-        </command>
-        <command id="moircs" label="Set IID MOIRCS">
+        </item>
+        <item id="moircs" label="Set IID MOIRCS">
           <frmcmd name="setinst">
             <argv>12</argv>
           </frmcmd>
           <frmcmd name="iststat" />
-        </command>
-        <command id="focas" label="Set IID FOCAS">
+        </item>
+        <item id="focas" label="Set IID FOCAS">
           <frmcmd name="setinst">
             <argv>5</argv>
           </frmcmd>
           <frmcmd name="iststat" />
-        </command>
-        <command id="comics" label="Set IID COMICS">
+        </item>
+        <item id="comics" label="Set IID COMICS">
           <frmcmd name="setinst">
             <argv>7</argv>
           </frmcmd>
           <frmcmd name="iststat" />
-        </command>
-        <command id="updjak" label="Update Jak Status" hidden="true">
+        </item>
+        <item id="updjak" label="Update Jak Status" hidden="true">
           <frmcmd name="jakstat" />
           <frmcmd name="getexit" />
           <frmcmd name="getpid" />
-        </command>
-        <command id="updinr" label="Update Inr Status" hidden="true">
+        </item>
+        <item id="updinr" label="Update Inr Status" hidden="true">
           <frmcmd name="inrstat" />
           <frmcmd name="getexit" />
           <frmcmd name="getpid" />
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="oss">

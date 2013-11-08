@@ -3,7 +3,7 @@
   <app frm_id="ixe" id="ixe" label="MOIRCS Turret">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <command id="upd" label="Update Status">
+        <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
           <repeat from="1" to="6">
             <frmcmd name="chkrun">
@@ -22,8 +22,8 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-        </command>
-        <command id="chkmov" label="Update Moving Status [1-6]" hidden="true">
+        </item>
+        <item id="chkmov" label="Update Moving Status [1-6]" hidden="true">
           <par_num>1:6</par_num>
           <frmcmd name="chkrun">
             <argv>$1</argv>
@@ -31,13 +31,13 @@
           <frmcmd name="getp">
             <argv>$1</argv>
           </frmcmd>
-        </command>
-        <command id="sysinit" label="System Initialize">
+        </item>
+        <item id="sysinit" label="System Initialize">
           <frmcmd name="initrot" />
           <frmcmd name="initunit" />
           <frmcmd name="initfactor" />
-        </command>
-        <command id="posinit" label="Position Initialize">
+        </item>
+        <item id="posinit" label="Position Initialize">
           <repeat from="1" to="6">
             <frmcmd name="init">
               <argv>$_</argv>
@@ -46,8 +46,8 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-        </command>
-        <command id="speed" label="Set Speed [25-800]">
+        </item>
+        <item id="speed" label="Set Speed [25-800]">
           <par_num>25:800</par_num>
           <repeat from="1" to="6">
             <frmcmd name="set">
@@ -58,8 +58,8 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-        </command>
-        <command id="ramp" label="Set ramp [200-800]">
+        </item>
+        <item id="ramp" label="Set ramp [200-800]">
           <par_num>200:800</par_num>
           <repeat from="1" to="6">
             <frmcmd name="set">
@@ -70,8 +70,8 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-        </command>
-        <command id="resetp" label="Set 0 Pulses">
+        </item>
+        <item id="resetp" label="Set 0 Pulses">
           <repeat from="1" to="6">
             <frmcmd name="set">
               <argv format="p:%d">$_-1</argv>
@@ -81,14 +81,14 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-        </command>
-        <command id="backup" label="Backup Pulse,Speed,Offset">
+        </item>
+        <item id="backup" label="Backup Pulse,Speed,Offset">
           <frmcmd name="save">
             <argv>p,spd,ofs</argv>
           </frmcmd>
           <frmcmd name="deact" />
-        </command>
-        <command id="restore" label="Restore Pulse,Speed,Offset">
+        </item>
+        <item id="restore" label="Restore Pulse,Speed,Offset">
           <frmcmd name="act" />
           <frmcmd name="load" />
           <repeat from="1" to="6">
@@ -102,8 +102,8 @@
               <argv>$_</argv>
             </frmcmd>
           </repeat>
-        </command>
-        <command id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
+        </item>
+        <item id="fw" label="Move Forward [1-6(Turret)] [1-(hole)]">
           <par_num>1:6</par_num>
           <par_num>1:</par_num>
           <frmcmd name="fw">
@@ -113,8 +113,8 @@
           <frmcmd name="chkrun">
             <argv>$1</argv>
           </frmcmd>
-        </command>
-        <command id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
+        </item>
+        <item id="bk" label="Move Backward [1-6(Turret)] [1-(hole)]">
           <par_num>1:6</par_num>
           <par_num>1:</par_num>
           <frmcmd name="bk">
@@ -124,8 +124,8 @@
           <frmcmd name="chkrun">
             <argv>$1</argv>
           </frmcmd>
-        </command>
-        <command id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
+        </item>
+        <item id="abs" label="Move Absolute [1-6(Turret)] [0-48(hole)]">
           <par_num>1:6</par_num>
           <par_num>0:48</par_num>
           <frmcmd name="abs">
@@ -135,8 +135,8 @@
           <frmcmd name="chkrun">
             <argv>$1</argv>
           </frmcmd>
-        </command>
-        <command id="updp" label="Update Pulse" hidden="true">
+        </item>
+        <item id="updp" label="Update Pulse" hidden="true">
           <par_num>1:6</par_num>
           <frmcmd name="chkrun">
             <argv>$1</argv>
@@ -144,13 +144,13 @@
           <frmcmd name="getp">
             <argv>$1</argv>
           </frmcmd>
-        </command>
-        <command id="stop" label="Stop Run [1-6]" hidden="true">
+        </item>
+        <item id="stop" label="Stop Run [1-6]" hidden="true">
           <par_num>1:6</par_num>
           <frmcmd name="stop">
             <argv>$1</argv>
           </frmcmd>
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">

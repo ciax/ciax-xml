@@ -3,11 +3,11 @@
   <app frm_id="lk8" id="lk8" label="MOIRCS LakeShore">
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
-        <command id="upd" label="Update Status">
+        <item id="upd" label="Update Status">
           <frmcmd name="getstat" />
           <frmcmd name="htrstat" />
           <frmcmd name="spstat" />
-        </command>
+        </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">

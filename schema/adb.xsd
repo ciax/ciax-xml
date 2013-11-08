@@ -36,7 +36,7 @@
       <xsd:field xpath="@ref" />
     </xsd:keyref>
     <xsd:key name="command_id">
-      <xsd:selector xpath=".//adbc:command" />
+      <xsd:selector xpath=".//adbc:item" />
       <xsd:field xpath="@id" />
     </xsd:key>
     <xsd:keyref name="event_exec" refer="adb:command_id">

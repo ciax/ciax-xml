@@ -6,6 +6,7 @@ export LANG="C"
 export PATH="$PATH:$HOME/bin:$HOME/lib"
 export RUBYLIB="$HOME/lib"
 #Alias
+alias clu=clean_up
 alias chkxml=check_xml
 alias devsim=device_simulator
 alias jv=json_view

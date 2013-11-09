@@ -1,4 +1,3 @@
-## commit a485
 ## Install required (Debian squeeze) ##
  ruby1.9.1 (for using JSON)
  libxml-ruby1.9.1 (XML instead of REXML)
@@ -17,3 +16,5 @@
 
 ## Project mode
   set PROJ to limit Device ID (is in idb-{PROJ}.xml)
+
+## Version

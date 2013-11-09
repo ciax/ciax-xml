@@ -8,27 +8,23 @@ pfx=~/package/ciax-xml
 
 mkcp(){
     dst=$1;shift
-    dig_dir $pfx/$dst
+    clrdir $pfx/$dst
     cd ~/ciax-xml/$dst || { echo "NO ~/ciax-xml/$dst dir"; exit; }
     for i ;do
         cp $i $pfx/$dst
     done
 }
 
-
-dig_dir ~/package ciax-xml
-
 mkcp "" '*.xml'
-mkcp script '*.rb'
-cp readme_exp.txt $pfx/script/readme.txt
-
+cmt=$(git log -1 --abbrev=4 --abbrev-commit|grep commit)
 mkcp schema '*'
 mkcp webapp '*'
-mkcp utils chkxml.sh frmsimsql.rb mkhtml.sh sqlog.rb inst.sh
-
-cmt=$(git log -1 --abbrev=4 --abbrev-commit|grep commit)
+mkcp utils '*'
+mkcp script '*.rb'
+cp readme_exp.txt $pfx/script/readme.txt
+echo " $cmt" >> $pfx/script/readme.txt
 
 cd ~/package
-pkg=ciax-xml-${cmt#* }.tgz
+pkg=ciax-xml-$(date +%y%m%d).tgz
 tar cvzf $pkg ciax-xml
 cp $pkg /var/www/dav

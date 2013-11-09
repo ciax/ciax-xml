@@ -15,7 +15,7 @@ mkcp(){
     done
 }
 
-mkcp "" '*.xml'
+mkcp "" '*'
 cmt=$(git log -1 --abbrev=4 --abbrev-commit|grep commit)
 mkcp schema '*'
 mkcp webapp '*'

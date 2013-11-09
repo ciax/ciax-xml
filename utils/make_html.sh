@@ -1,18 +1,13 @@
 #!/bin/bash
-. ~/lib/libdb.sh entity
 JQUERY=1.7.2
-[[ $1 == '-i' ]] && { opt=$1; shift; }
-[ "$1" ] || _usage_key "(-i<install>)"
+[ "$1" ] || { libhtmltbl.rb; exit; }
 src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json
-if [ "$opt" ] ; then
-    install $src/* $dir/
-else
-    ln -sf  $src/* $dir/
-fi
+install $src/* $dir/
+tmpfile="$dir/temp"
 for id; do
-    setfld $id || _usage_key "(-i)"
     file=$dir/$id.html
+    libhtmltbl.rb $id > $tmpfile || break
     cat > $file <<EOF
 <html>
 <head>
@@ -24,10 +19,11 @@ for id; do
 </head>
 <body>
 EOF
->>$file ~/lib/libhtmltbl.rb $id $app
-cat >> $file <<EOF
+    cat $tmpfile >> $file
+    cat >> $file <<EOF
 </body>
 </html>
 EOF
 echo "$file created"
 done
+rm $tmpfile

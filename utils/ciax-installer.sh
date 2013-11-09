@@ -17,5 +17,4 @@ dig_dir cache
 cd ..
 dig_dir json
 
-
-
+echo "You need 'source ciax-bashrc.sh' for setup environment"

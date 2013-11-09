@@ -8,9 +8,8 @@ export RUBYLIB="$HOME/lib"
 #Alias
 alias chkxml=check_xml
 alias devsim=device_simulator
-alias jvw=json_view
+alias jv=json_view
 alias jl=json_logview
-alias ltcfg=lantronix-config
 alias mkhtm=make_html
 alias mvw=marshal_view
 alias reg=register_files

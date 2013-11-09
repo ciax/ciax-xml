@@ -15,7 +15,7 @@ mkcp(){
     done
 }
 
-mkcp "" '*'
+mkcp "" '*.xml'
 cmt=$(git log -1 --abbrev=4 --abbrev-commit|grep commit)
 mkcp schema '*'
 mkcp webapp '*'
@@ -27,4 +27,6 @@ echo " $cmt" >> $pfx/script/readme.txt
 cd ~/package
 pkg=ciax-xml-$(date +%y%m%d).tgz
 tar cvzf $pkg ciax-xml
-cp $pkg /var/www/dav
+cd /var/www/dav
+cp ~/package/$pkg .
+ln -sf $pkg ciax-xml.tgz 

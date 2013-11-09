@@ -17,16 +17,16 @@ mkcp(){
 
 mkcp "" '*.xml'
 cmt=$(git log -1 --abbrev=4 --abbrev-commit|grep commit)
+cp readme_exp.txt $pfx/readme.txt
+echo " $cmt" >> $pfx/readme.txt
 mkcp schema '*'
 mkcp webapp '*'
 mkcp utils '*'
 mkcp script '*.rb'
-cp readme_exp.txt $pfx/script/readme.txt
-echo " $cmt" >> $pfx/script/readme.txt
 
 cd ~/package
 pkg=ciax-xml-$(date +%y%m%d).tgz
 tar cvzf $pkg ciax-xml
 cd /var/www/dav
 cp ~/package/$pkg .
-ln -sf $pkg ciax-xml.tgz 
+ln -sf $pkg ciax-xml.tgz

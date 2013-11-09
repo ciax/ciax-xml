@@ -3,8 +3,8 @@
 umask 022
 shopt -s nullglob
 export LANG="C"
-export PATH="$PATH;$HOME/bin"
-export RUBYLIB="$RUBYLIB;$HOME/lib"
+export PATH="$PATH:$HOME/bin"
+export RUBYLIB="$HOME/lib"
 #Alias
 alias chkxml=check_xml
 alias devsim=device_simulator

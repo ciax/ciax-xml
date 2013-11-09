@@ -8,7 +8,7 @@ pfx=~/package/ciax-xml
 
 mkcp(){
     dst=$1;shift
-    clrdir $pfx/$dst
+    dig_dir $pfx/$dst
     cd ~/ciax-xml/$dst || { echo "NO ~/ciax-xml/$dst dir"; exit; }
     for i ;do
         cp $i $pfx/$dst
@@ -16,7 +16,7 @@ mkcp(){
 }
 
 
-clrdir ~/package
+dig_dir ~/package ciax-xml
 
 mkcp "" '*.xml'
 mkcp script '*.rb'

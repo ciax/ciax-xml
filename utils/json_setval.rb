@@ -2,14 +2,17 @@
 # Set value to JSON file
 require 'json'
 
+abort "Usage: json_setval [key(:idx)=n] .. < json_file" if STDIN.tty?
+exp=[].concat(ARGV)
+ARGV.clear
+
 field={}
 readlines.each{|str|
-  if /^$/ =~ str
-    puts JSON.dump(field)
-    field.clear
-  else
-    k,v=str.split("=").map{|i| i.strip}
+  next if /^$/ =~ str
+  field.update(JSON.load(str))
+  exp.each{|e|
+    k,v=e.split("=").map{|i| i.strip}
     field[k]=v
-  end
+  }
 }
 puts JSON.dump(field)

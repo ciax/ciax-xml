@@ -19,7 +19,7 @@ def merge(a,b)
   b
 end
 if STDIN.tty? || ! file=ARGV.shift
-  abort "Usage: merging [status_file] < [json_data]\n#{$!}"
+  abort "Usage: json_merge [status_file] < [json_data]\n#{$!}"
 end
 output={}
 begin

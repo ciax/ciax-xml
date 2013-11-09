@@ -16,12 +16,12 @@ class LogRing
   end
 
   def query(str)
-    verbose("FrmSimSql","->[#{str}]")
+    verbose("DevSim","->[#{str}]")
     IO.popen(@sqlcmd,'r+'){|f|
       f.puts str
       str=f.gets.chomp
     }
-    verbose("FrmSimSql","<-[#{str}]")
+    verbose("DevSim","<-[#{str}]")
     str
   end
 
@@ -34,14 +34,14 @@ class LogRing
     rescue
       raise("NO record for #{str}") if @index==0
       @index=0
-      verbose("FrmSimSql",color("LINE:REWINDED",3))
+      verbose("DevSim",color("LINE:REWINDED",3))
       retry
     end
     @index=tim.to_i
     sql="select min(time),count(*) from #@tbl where time > #{tim} and dir='rcv';"
     tim,crnt=query(sql).split('|')
     wait=tim.to_i > @index ? [tim.to_i-@index,1000].min.to_f/1000 : 0
-    verbose("FrmSimSql",color("LINE:[#{cmd}](#{@total-crnt.to_i}/#{@total})<#{'%.3f' % wait}>",2))
+    verbose("DevSim",color("LINE:[#{cmd}](#{@total-crnt.to_i}/#{@total})<#{'%.3f' % wait}>",2))
     sleep wait
     sql="select base64 from #@tbl where time=#{tim};"
     query(sql)

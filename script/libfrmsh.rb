@@ -10,7 +10,7 @@ module CIAX
     # cfg should have :db(Frm::Db)
     def self.new(cfg)
       if $opt['s'] or $opt['e']
-        cfg['iocmd']=['frmsimsql',cfg[:db]['site_id']] if $opt['s']
+        cfg['iocmd']=['device_simulator',cfg[:db]['site_id']] if $opt['s']
         fsh=Frm::Sv.new(cfg)
         cfg['host']='localhost'
       end

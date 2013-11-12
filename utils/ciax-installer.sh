@@ -1,20 +1,15 @@
 #!/bin/bash
-# bin dir separated for executable link in hg repos
-# "Usage: ${0##*/} [DIR..] | [SRC..]"
 dig_dir(){
     for i ; do
         [ -d "$i" ] || mkdir "$i"
         cd "$i"
     done
 }
-cd ~/ciax-xml
-for i in */ ; do
-    ./utils/register_files.sh $i
-done
 
-dig_dir ~/.var
-dig_dir cache
+dig_dir ~/.var cache
+/bin/rm cache/*.mar >/dev/null 2>&1
 cd ..
 dig_dir json
-
-register_bashrc
+/bin/rm *.json >/dev/null 2>&1
+cd ~/ciax-xml
+./utils/register_files.sh */

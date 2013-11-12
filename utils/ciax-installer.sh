@@ -17,9 +17,4 @@ dig_dir cache
 cd ..
 dig_dir json
 
-# Register bashrc
-cd
-src="source $HOME/bin/ciax-bashrc"
-grep "$src" .bashrc > /dev/null 2>&1 && exit
-echo $src >> .bashrc
-echo ".bashrc is modified"
+register_bashrc

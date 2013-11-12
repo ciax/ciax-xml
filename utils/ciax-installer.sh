@@ -12,4 +12,4 @@ cd ..
 dig_dir json
 /bin/rm *.json >/dev/null 2>&1
 cd ~/ciax-xml
-./utils/register_files.sh */
+./utils/register-files.sh */

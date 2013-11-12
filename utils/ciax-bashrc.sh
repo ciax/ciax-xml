@@ -19,11 +19,10 @@ addenv XMLPATH "$HOME/ciax-xml"
 addenv RUBYLIB "$HOME/lib"
 
 #Alias
-alias clu=clean_up
-alias chkxml=check_xml
-alias devsim=device_simulator
-alias jv=json_view
-alias jl=json_logview
-alias mkhtm=make_html
-alias mvw=marshal_view
-alias reg=register_files
+alias chkxml=check-xml
+alias devsim=device-simulator
+alias jv=json-view
+alias jl=json-logview
+alias mkhtm=make-html
+alias mvw=marshal-view
+alias reg=register-files

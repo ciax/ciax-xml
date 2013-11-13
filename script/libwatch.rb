@@ -14,9 +14,9 @@ module CIAX
         self['interval']=0.1
         self['astart']=now_msec
         self['aend']=now_msec
-        #For Array element
+        #For Array element (@data contains only Array)
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
-        #For Hash element
+        #For Hash element (another data will be stored to self)
         ['crnt','last','res'].each{|i| self[i]||={}}
         @event_procs=[]
         self

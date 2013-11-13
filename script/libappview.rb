@@ -1,12 +1,14 @@
 #!/usr/bin/ruby
 require "libstatus"
 
+# View is not used for computing, just for apperance for user. So the convert process can be included in to_s
 module CIAX
   module App
     class View < Hashx
       def initialize(adb,stat)
         @adbs=type?(adb,Db)[:status]
         @stat=type?(stat,Status)
+        # Just additional data should be provided
         ['data','class','msg'].each{|key|
           stat[key]||={}
         }

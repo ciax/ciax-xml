@@ -22,7 +22,7 @@ module CIAX
           key,stat=ent.fork
           self['sid']=key
           @list.data[key]=stat
-          "OK"
+          "ACCEPT"
         }
         self['sid']='' # response id
         @cobj.save_procs{@list.save}
@@ -38,16 +38,16 @@ module CIAX
               "IGNORE"
             end
           else
-            "NONE"
+            "NOSID"
           end
         }
         ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
         ig.add_item('clean','Clean macros').set_proc{
           if @list.clean
             @list.save
-            'OK'
+            'ACCEPT'
           else
-            'NONE'
+            'NOSID'
           end
         }
         ext_server(port||cfg[:db]['port']||55555)

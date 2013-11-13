@@ -203,7 +203,7 @@ module CIAX
           end
           id=@stat.cmd_que.pop.split(/[ :]/).first
           if cmds.include?(id)
-            @stat.res_que << 'OK'
+            @stat.res_que << 'ACCEPT'
             break id
           else
             @stat.res_que << 'INVALID'

@@ -49,7 +49,7 @@ module CIAX
       end
 
       def init_view
-        @print.extend(Print)
+        @print.ext_prt
         @view_grp=@cobj.lodom.add_group('caption'=>"Change View Mode",'color' => 9)
         @view_grp.add_item('sta',"Stat mode").set_proc{@output=@print;''}
         @view_grp.add_item('rst',"Raw Stat mode").set_proc{@output=@stat;''}

@@ -19,6 +19,10 @@ module CIAX
         super
       end
 
+      def ext_prt
+        extend Print
+      end
+
       private
       def conv
         @adbs[:group].each{|k,gdb|
@@ -98,7 +102,7 @@ module CIAX
             stat.ext_file(id).load
           end
         end
-        puts View.new(adb,stat).extend(Print)
+        puts View.new(adb,stat).ext_prt
       rescue InvalidID
         $opt.usage "(opt) [id] <(stat_file)"
       end

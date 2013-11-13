@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libwatch'
 
+# View is not used for computing, just for apperance for user. So the convert process can be included in to_s
 module CIAX
   module Watch
     # Decorate the watch data (Put caption,symbole,etc.) from WDB
@@ -8,9 +9,6 @@ module CIAX
       def initialize(adb,watch)
         wdb=type?(adb,App::Db)[:watch]||{}
         @watch=type?(watch,Data)
-        ['exec','block','int','astart','aend'].each{|id|
-          self[id]=@watch.data[id]
-        }
         self['stat']={}
         wdb[:index].each{|id,evnt|
           hash=(self['stat'][id]||={})
@@ -37,6 +35,12 @@ module CIAX
 
       private
       def conv
+        ['exec','block','int'].each{|id|
+          self[id]=@watch.data[id]
+        }
+        ['astart','aend'].each{|id|
+          self[id]=@watch[id]
+        }
         self['stat'].each{|id,v|
           v['cond'].each_index{|i|
             h=v['cond'][i]
@@ -63,7 +67,7 @@ module CIAX
       def conv
         return '' if self['stat'].empty?
         super
-        atime=Msg.elps_sec(@watch.data['astart'],@watch.data['aend'])
+        atime=Msg.elps_sec(self['astart'],self['aend'])
         str="  "+Msg.color("ActiveTime",2)+"\t: #{atime}\n"
         str << "  "+Msg.color("Issuing",2)+"\t: #{self['exec']}\n"
         str << "  "+Msg.color("Conditions",2)+"\t:\n"

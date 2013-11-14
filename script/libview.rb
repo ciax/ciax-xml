@@ -4,7 +4,7 @@ module CIAX
   # show_iv = Show Instance Variable
   module ViewStruct
     include Msg
-    def view_struct(data,title=nil,ind=0,show_iv=false)
+    def view_struct(data,title=nil,oary=[],ind=0,show_iv=false)
       str=''
       col=4
       id=data.object_id
@@ -25,34 +25,34 @@ module CIAX
       data.instance_variables.each{|n|
         iv[n]=data.instance_variable_get(n) unless n == :object_ids
       } if show_iv
-      _show(str,iv,ind,col,title,show_iv)
-      _show(str,data,ind,col,title,show_iv)
+      _show(str,iv,oary,ind,col,title,show_iv)
+      _show(str,data,oary,ind,col,title,show_iv)
     end
 
     private
-    def _show(str,data,ind,col,title,show_iv)
+    def _show(str,data,oary,ind,col,title,show_iv)
       if Enumerable === data
-        if (@object_ids||=[]).include?(data.object_id)
+        if oary.include?(data.object_id)
           return str.chomp + " #{data.class}(Loop)\n"
         else
-          @object_ids << data.object_id
+          oary=[data.object_id].concat(oary)
         end
       end
       case data
       when Array
-        return str if _mixed?(str,data,data,data.size.times,ind,show_iv)
+        return str if _mixed?(str,data,data,data.size.times,oary,ind,show_iv)
         return _only_ary(str,data,ind,col) if data.size > col
       when Hash
-        return str if _mixed?(str,data,data.values,data.keys,ind,show_iv)
+        return str if _mixed?(str,data,data.values,data.keys,oary,ind,show_iv)
         return _only_hash(str,data,ind,col,title) if data.size > 2
       end
       str.chomp + " #{data.inspect}\n"
     end
 
-    def _mixed?(str,data,vary,idx,ind,show_iv)
+    def _mixed?(str,data,vary,idx,oary,ind,show_iv)
       if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
-          str << view_struct(data.fetch(i),i,ind,show_iv)
+          str << view_struct(data.fetch(i),i,oary,ind,show_iv)
         }
       end
     end

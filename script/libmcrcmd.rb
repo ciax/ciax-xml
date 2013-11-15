@@ -3,6 +3,7 @@ require "libmcrdb"
 require "librecord"
 require "libappsh"
 
+$dryrun=10
 module CIAX
   module Mcr
     class Stat < Exe
@@ -14,6 +15,11 @@ module CIAX
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
+      end
+
+      def interrupt
+        @thread.raise(Interrupt)
+        self
       end
 
       def ext_shell
@@ -43,7 +49,6 @@ module CIAX
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
         svc[:int_grp]=IntGrp.new(@cfg).def_proc
         @extgrp=@svdom.add_group(svc)
-        $dryrun=1
       end
 
       def ext_proc(&def_proc)

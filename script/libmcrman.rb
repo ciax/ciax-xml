@@ -31,11 +31,6 @@ module CIAX
       class Sv < Exe
         def initialize(port=nil)
           super
-          @cobj.interrupt.set_proc{
-            @list.data.each{|st|
-              st.thread.raise(Interrupt)
-            }
-          }
           @cobj.ext_proc{|ent|
             key,stat=ent.fork
             self['sid']=key
@@ -69,6 +64,13 @@ module CIAX
             end
           }
           ext_server(port||@mdb['port']||55555)
+        end
+
+        def interrupt
+          @list.data.each{|st|
+            st.thread.raise(Interrupt)
+          }
+          self
         end
       end
     end

@@ -38,7 +38,7 @@ module CIAX
         al=type?(@cfg[:app],App::List)
         svc={:group_class =>ExtGrp,:entity_class =>ExtEntity,:mobj => self}
         @stq=svc[:save_que]=Queue.new
-        svc[:submcr_proc]=proc{|args| setcmd(args) }
+        svc[:submcr_proc]=proc{|args| set_cmd(args) }
         svc[:stat_proc]=proc{|site| al[site].stat}
         svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
         svc[:int_grp]=IntGrp.new(@cfg).def_proc
@@ -107,7 +107,7 @@ module CIAX
 
       # separated for sub thread
       def macro
-        setstat 'run'
+        set_stat 'run'
         show @record
         submacro(@cfg[:body])
         finish
@@ -162,7 +162,7 @@ module CIAX
         show str+"\n"
         @record.finish(str)
         @cfg[:int_grp].valid_keys.clear
-        setstat str
+        set_stat str
       end
 
       # Interactive section
@@ -176,7 +176,7 @@ module CIAX
         res && query(['exec','skip'])
       end
 
-      def setstat(str)
+      def set_stat(str)
         @stat[:stat]=str
         @cfg[:save_que].push "#{@stat[:cid]}(#{str})"
       end
@@ -184,12 +184,12 @@ module CIAX
       def query(cmds)
         @cfg[:int_grp].valid_keys.replace(cmds)
         @stat[:option]=cmds.join('/')
-        setstat 'query'
+        set_stat 'query'
         res=input(cmds)
         @stat[:option]=nil
-        setstat 'run'
+        set_stat 'run'
         @step['action']=res
-        ent=@cfg[:int_grp].setcmd([res])
+        ent=@cfg[:int_grp].set_cmd([res])
         @cfg[:int_grp].valid_keys.clear
         ent.exe
       end
@@ -224,7 +224,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         mobj=Command.new(cfg)
-        mobj.setcmd(ARGV).macro
+        mobj.set_cmd(ARGV).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

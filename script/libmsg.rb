@@ -151,7 +151,7 @@ module CIAX
       #   <val> -> taken from status (incoming)
       #   (val) -> calcurated from status
       @ver_indent=@@base
-      msg=mkmsg(prefix,title,color)
+      msg=make_msg(prefix,title,color)
       Kernel.warn msg if msg && condition(msg)
       self
     end
@@ -162,14 +162,14 @@ module CIAX
 
     def warning(prefix,title)
       @ver_indent=@@base
-      Kernel.warn mkmsg(prefix,title,3)
+      Kernel.warn make_msg(prefix,title,3)
       self
     end
 
     def fatal(prefix)
       @ver_indent=@@base
       title=[$!.to_s,*$@].join("\n")
-      Kernel.warn mkmsg(prefix,title,1)
+      Kernel.warn make_msg(prefix,title,1)
       Kernel.exit
     end
 
@@ -184,7 +184,7 @@ module CIAX
 
     # Private Method
     private
-    def mkmsg(prefix,title,c=nil)
+    def make_msg(prefix,title,c=nil)
       return unless title
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"

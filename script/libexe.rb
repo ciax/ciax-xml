@@ -33,7 +33,7 @@ module CIAX
       type?(args,Array)
       verbose("Sh/Exe","Command #{args} recieved")
       @pre_procs.each{|p| p.call(args)}
-      self['msg']=@cobj.setcmd(args).exe
+      self['msg']=@cobj.set_cmd(args).exe
       self
     rescue
       self['msg']=$!.to_s

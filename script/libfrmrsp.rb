@@ -141,7 +141,7 @@ module CIAX
       end
       fdb=Loc::Db.new.set(id)[:frm]
       fobj=Command.new(Config.new.update(:db => fdb))
-      ent=fobj.setcmd(cid.split(':'))
+      ent=fobj.set_cmd(cid.split(':'))
       field=Field.new.ext_rsp(id,fdb)
       field.load if $opt['m']
       field.rcv(ent){res}.upd

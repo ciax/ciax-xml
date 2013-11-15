@@ -150,7 +150,7 @@ module CIAX
         batch=super
         batch.each{|args|
           verbose("AppSv","Interrupt:#{args}")
-          @buf.send(0,@cobj.setcmd(args))
+          @buf.send(0,@cobj.set_cmd(args))
         }
         batch
       end
@@ -161,7 +161,7 @@ module CIAX
         @watch.ext_upd(@adb,@stat).ext_file.upd
         @watch.event_procs << proc{|p,args|
           verbose("AppSv","#@id/Auto(#{p}):#{args}")
-          @buf.send(p,@cobj.setcmd(args))
+          @buf.send(p,@cobj.set_cmd(args))
         }
         @watch.ext_logging if $opt['e'] && @stat['ver']
         @stat.upd_procs << proc{self['watch'] = @watch.active?}
@@ -195,7 +195,7 @@ module CIAX
           int=(@period||300).to_i
           loop{
             begin
-              @buf.send(3,@cobj.setcmd(['upd']))
+              @buf.send(3,@cobj.set_cmd(['upd']))
             rescue InvalidID
               warning("AppSv",$!)
             end

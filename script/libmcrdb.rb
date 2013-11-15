@@ -33,9 +33,9 @@ module CIAX
             attr['type'] = e1.name
             case e1.name
             when 'check','wait'
-              body << mkcond(e1,attr)
+              body << make_condition(e1,attr)
             when 'goal'
-              body << mkcond(e1,attr)
+              body << make_condition(e1,attr)
               final.update(attr)['type'] = 'check'
             when 'exec'
               attr['args']=getcmd(e1)
@@ -54,7 +54,7 @@ module CIAX
         {:group => grp,:index => idx}
       end
 
-      def mkcond(e1,attr)
+      def make_condition(e1,attr)
         e1.each{|e2|
           (attr['stat']||=[]) << e2.to_h
         }

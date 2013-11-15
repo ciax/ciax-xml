@@ -66,7 +66,7 @@ module CIAX
           if @sel.key?(:ccrange)
             @frame.mark
             mk_frame(:ccrange)
-            @field.set('cc',@frame.checkcode)
+            @field.set('cc',@frame.check_code)
           end
           mk_frame(:main)
           frame=@fstr[:main]
@@ -108,7 +108,7 @@ module CIAX
         cfg[:db]=Db.new.set(id)
         cobj=Command.new(cfg)
         cobj.field.read unless STDIN.tty?
-        print cobj.setcmd(args).cfg[:frame]
+        print cobj.set_cmd(args).cfg[:frame]
       rescue InvalidCMD
         Msg.usage("[dev] [cmd] (par) < field_file",[])
       rescue InvalidID

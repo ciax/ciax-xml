@@ -67,7 +67,7 @@ module CIAX
       acf=Config.new
       acf[:db]=App::Db.new.set(app)
       acobj=App::Command.new(acf)
-      acobj.setcmd(args).cfg[:batch].each{|fargs|
+      acobj.set_cmd(args).cfg[:batch].each{|fargs|
         p fargs
       }
     rescue InvalidID

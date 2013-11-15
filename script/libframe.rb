@@ -65,7 +65,7 @@ module CIAX
       str
     end
 
-    def checkcode
+    def check_code
       verbose("Frame","CC Frame <#{@ccrange}>")
       chk=0
       case @method
@@ -159,7 +159,7 @@ module CIAX
     end
 
     def cc
-      @frame.checkcode
+      @frame.check_code
     end
   end
 end

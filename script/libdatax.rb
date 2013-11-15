@@ -111,13 +111,13 @@ module CIAX
       self
     end
 
-    def fname(tag=nil)
+    def file_name(tag=nil)
       @base=[self['type'],self['id'],tag].compact.join('_')+'.json'
       @prefix+@base
     end
 
-    def taglist
-      Dir.glob(fname('*')).map{|f|
+    def tag_list
+      Dir.glob(file_name('*')).map{|f|
         f.slice(/.+_(.+)\.json/,1)
       }.sort
     end
@@ -133,7 +133,7 @@ module CIAX
     end
 
     def load(tag=nil)
-      name=fname(tag)
+      name=file_name(tag)
       json_str=''
       open(name){|f|
         verbose("Http","Loading [#{@base}](#{f.size})",12)
@@ -147,7 +147,7 @@ module CIAX
       super()
       self
     rescue OpenURI::HTTPError
-      warning("Http","  -- no url file (#{fname})")
+      warning("Http","  -- no url file (#{file_name})")
     end
   end
 
@@ -160,11 +160,11 @@ module CIAX
     end
 
     def save(tag=nil)
-      writej(_getdata,tag)
+      write_json(_getdata,tag)
     end
 
     # Saving data of specified keys with tag
-    def savekey(keylist,tag=nil)
+    def save_key(keylist,tag=nil)
       Msg.com_err("No File") unless @base
       hash={}
       keylist.each{|k|
@@ -177,17 +177,17 @@ module CIAX
       if hash.empty?
         Msg.par_err("No Keys")
       else
-        tag||=(taglist.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
+        tag||=(tag_list.max{|a,b| a.to_i <=> b.to_i}.to_i+1)
         Msg.msg("Status Saving for [#{tag}]")
         output=Hash[self]
         output[@dataname]=hash
-        writej(output,tag)
+        write_json(output,tag)
       end
       self
     end
 
     def load(tag=nil)
-      name=fname(tag)
+      name=file_name(tag)
       json_str=''
       open(name){|f|
         verbose("File","Loading [#{@base}](#{f.size})",12)
@@ -203,15 +203,15 @@ module CIAX
       self
     rescue Errno::ENOENT
       if tag
-        Msg.par_err("No such Tag","Tag=#{taglist}")
+        Msg.par_err("No such Tag","Tag=#{tag_list}")
       else
         warning("File","  -- no json file (#{@base})")
       end
     end
 
     private
-    def writej(data,tag=nil)
-      name=fname(tag)
+    def write_json(data,tag=nil)
+      name=file_name(tag)
       open(name,'w'){|f|
         f.flock(::File::LOCK_EX)
         f << JSON.dump(data)
@@ -219,7 +219,7 @@ module CIAX
       }
       if tag
         # Making 'latest' tag link
-        sname=fname('latest')
+        sname=file_name('latest')
         ::File.unlink(sname) if ::File.symlink?(sname)
         ::File.symlink(name,sname)
         verbose("File","Symboliclink to [#{sname}]")

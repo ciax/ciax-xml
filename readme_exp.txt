@@ -1,9 +1,9 @@
-## Install required (Debian squeeze) ##
+## Install required (Debian wheezy) ##
  ruby1.9.3 (for using JSON)
  libxml-ruby (XML instead of REXML)
  libxml2-utils (xmllint)
  socat
- libsqlite3-ruby1.9.1
+ libsqlite3-ruby1.9.3
  libxml-xpath-perl (xpath command)
  coreutils:
   grep,cut,tail

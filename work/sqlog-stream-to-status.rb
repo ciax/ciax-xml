@@ -33,7 +33,7 @@ module CIAX
         next
       end
       begin
-        ent=fobj.setcmd(hash['cmd'].split(':'))
+        ent=fobj.set_cmd(hash['cmd'].split(':'))
         field.rcv(ent){hash}.upd
         stat.upd
         logline << sqlog.upd

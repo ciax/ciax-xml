@@ -17,10 +17,6 @@ module CIAX
       @id=id
       @layer=layer
       @cobj=type?(cobj,Command)
-      @cobj.interrupt.set_proc{
-        interrupt
-        "INTERRUPT"
-      }
       @pre_procs=[] # Proc for Server Command (by User query)
       @post_procs=[] # Proc for Server Status Update (by User query)
       @ver_color=6
@@ -41,8 +37,6 @@ module CIAX
     ensure
       @post_procs.each{|p| p.call}
     end
-
-    def interrupt ;end
 
     def ext_client(host,port)
       extend(Client).ext_client(host,port)

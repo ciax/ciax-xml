@@ -49,7 +49,7 @@ module CIAX
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    attr_reader :svdom,:lodom,:interrupt,:hidgrp
+    attr_reader :svdom,:lodom,:hidgrp
     def initialize(upper)
       @cfg=Config.new(upper)
       @cfg.update(:level =>'command','color'=>2,'column'=>2)
@@ -58,7 +58,7 @@ module CIAX
       push @svdom=Domain.new(@cfg) # Remote Command Domain
       push @lodom=Domain.new(@cfg) # Local Command Domain
       @hidgrp=@svdom.add_group('caption' => "Hidden Commands")
-      @interrupt=@hidgrp.add_item('interrupt')
+      @hidgrp.add_item('interrupt')
     end
   end
 

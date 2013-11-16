@@ -1,6 +1,6 @@
 ====================== Debug ======================
 *** Test Environment
-macro: interrupt doesn't finish macro.(13/11/14)
+macro: interrupt doesn't finish macro.(13/11/14)-[13/11/15]
 macro: second macro issued -> INVALID(13/11/14)
 macro: nonstop mode -> bad (13/11/14)
 macro: exec error needed (13/11/14)

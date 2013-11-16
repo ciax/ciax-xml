@@ -59,10 +59,8 @@ module CIAX
         @view_grp.add_item('rwa',"Raw Watch mode").set_proc{@output=@watch;''}
       end
 
-      def interrupt
-        batch=@watch ? @watch.interrupt : []
-        Msg.msg("#@id/Interrupt:#{batch}")
-        batch
+      def batch_interrupt
+        @watch ? @watch.interrupt : []
       end
 
       def shell_input(line)
@@ -91,6 +89,9 @@ module CIAX
         @cobj.item_proc('del'){|ent|
           ent.par[0].split(',').each{|key| @stat.unset(key) }
           "DELETE:#{ent.par[0]}"
+        }
+        @cobj.item_proc('interrupt'){|ent|
+          "INTERRUPT(#{batch_interrupt})"
         }
         ext_watch
       end
@@ -132,6 +133,13 @@ module CIAX
           @buf.send(1,ent)
           "ISSUED"
         }
+        @cobj.item_proc('interrupt'){|ent|
+          batch_interrupt.each{|args|
+            verbose("AppSv","Interrupt:#{args}")
+            @buf.send(0,@cobj.set_cmd(args))
+          }
+          'INTERRUPT'
+        }
         # Logging if version number exists
         if $opt['e'] && sv=@fsh.sqlsv
           sv.add_table(@stat)
@@ -144,15 +152,6 @@ module CIAX
         }
         ext_watch
         ext_server(@adb['port'])
-      end
-
-      def interrupt
-        batch=super
-        batch.each{|args|
-          verbose("AppSv","Interrupt:#{args}")
-          @buf.send(0,@cobj.set_cmd(args))
-        }
-        batch
       end
 
       private

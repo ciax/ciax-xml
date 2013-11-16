@@ -38,6 +38,12 @@ module CIAX
             "ACCEPT"
           }
           @cobj.save_procs{@list.save}
+          @cobj.item_proc('interrupt'){|ent|
+            @list.data.each{|st|
+              st.thread.raise(Interrupt)
+            }
+            'INTERRUPT'
+          }
           # Internal Command Group
           ig=@cobj.add_int(:valid_keys =>[])
           ig.set_proc{|ent|
@@ -64,13 +70,6 @@ module CIAX
             end
           }
           ext_server(port||@mdb['port']||55555)
-        end
-
-        def interrupt
-          @list.data.each{|st|
-            st.thread.raise(Interrupt)
-          }
-          self
         end
       end
     end

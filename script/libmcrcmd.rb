@@ -15,11 +15,10 @@ module CIAX
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
-      end
-
-      def interrupt
-        @thread.raise(Interrupt)
-        self
+        @cobj.item_proc('interrupt'){|ent|
+          @thread.raise(Interrupt)
+          'INTERRUPT'
+        }
       end
 
       def ext_shell

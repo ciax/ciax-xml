@@ -60,7 +60,7 @@ module CIAX
       end
 
       def batch_interrupt
-        @watch ? @watch.interrupt : []
+        @watch ? @watch.batch_on_interrupt : []
       end
 
       def shell_input(line)
@@ -184,7 +184,7 @@ module CIAX
           @stat.upd.save
           sleep(@interval||0.1)
           # Auto issue by watch
-          @watch.issue if @watch
+          @watch.batch_on_event if @watch
         }
         buf
       end

@@ -33,7 +33,7 @@ module CIAX
         blkcmd.any?{|blk| /#{blk}/ === cid} && Msg.cmd_err("Blocking(#{args})")
       end
 
-      def issue
+      def batch_on_event
         # block parm = [priority(2),args]
         cmdary=@data['exec'].each{|args|
           @event_procs.each{|p| p.call([2,args])}
@@ -43,7 +43,7 @@ module CIAX
         cmdary
       end
 
-      def interrupt
+      def batch_on_interrupt
         verbose("Watch","Interrupt:#{@data['int']}")
         batch=@data['int'].dup
         @data['int'].clear

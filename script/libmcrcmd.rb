@@ -3,7 +3,7 @@ require "libmcrdb"
 require "librecord"
 require "libappsh"
 
-$dryrun=10
+$dryrun=1
 module CIAX
   module Mcr
     class Stat < Exe
@@ -39,7 +39,6 @@ module CIAX
       attr_reader :extgrp,:intgrp
       def initialize(upper)
         super
-        @cfg[:valid_keys]=[]
         al=type?(@cfg[:app],App::List)
         svc={:group_class =>ExtGrp,:entity_class =>ExtEntity,:mobj => self}
         @stq=svc[:save_que]=Queue.new

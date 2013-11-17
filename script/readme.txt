@@ -8,9 +8,17 @@
  coreutils:
   grep,cut,tail
 
+## Required Apps
+xmllint: XML validator
+socat: communication for UDP/TCP/..., that has more features than 'nc'
+salite3: light weight sql server for logging, not for access from multiple processes  
+
 ## ENV Var ##
  RUBYLIB
  XMLPATH
+ PROJ
+ NOCACHE
+ NOSQL
 
 ## Dir
 ~/.var/cache
@@ -22,14 +30,14 @@
  VER=string1:strint2..  for set intersection
  VER=* for All
 
-## udp communicaton ##
+## json udp communicaton ##
  no command:
-   "" : (cmdline) -> "stat":(udp comm) -> "" : (App::Intect)
+   "" : (cmdline) -> "[]":(udp comm) -> nil : (App::Intect)
  interrupt:
    ^D : (cmdline) -> nil : (readline) -> "interrupt" : (udp comm)
   
 ## Server interference ##
-Do not run "intfrm","intapp" and "inthex" simultaneously with option -s
+Do not run "intfrm","intapp" and "inthex" simultaneously with option -s.
 frmsh (intfrm -t)/ used when running site is different from intapp
 
 ## Combination of Server/Clients ##
@@ -71,7 +79,7 @@ frmsh (intfrm -t)/ used when running site is different from intapp
 
 ## Naming rule
  # general
-  - method name is recommended to be long word which contains under bar to privent mix up with local var (verb_noun)
+  - method name is recommended to be long word which contains under bar to privent mixing up with local var (verb_noun)
   - local var name is recommended to use abbrev word (as short as possible < 4 letter) 
     (i.e. i,j,k,idx,grp,key(k),hsh(h),ary(a),val(v)...) 
   - DB key which contains Hash or Array will be Symbol. Other keys are String.
@@ -79,9 +87,8 @@ frmsh (intfrm -t)/ used when running site is different from intapp
  #local var
    args: Command(Array) [cmd,par,par...]
    cid: Command ID(String) "cmd:par:par"
-   btch: Batch Array of Commands(Array of Array) [args,args,...]
+   bat: Batch Array of Commands(Array of Array) [args,args,...]
    f*: Associated with Frm (i.e. fargs, fstat ..)
    a*: Associated with App (i.e. aargs, astat ..)
  #block rerutn value
-   set return value to local var 'res' at the end of block
-   if it is expressly provided
+   set return value to local var 'res' at the end of block if it is expressly provided

@@ -56,11 +56,14 @@ module CIAX
       optdb['h']='client for [host]'
       #Comm to devices
       optdb['t']='test mode (default)'
-      optdb['e']='execution mode'
       optdb['s']='simulation mode'
+      optdb['e']='execution mode'
       #For appearance
       optdb['v']='visual output (default)'
       optdb['r']='raw data output'
+      #For macro
+      optdb['n']='non-stop mode'
+      optdb['m']='movable mode'
       #For debug
       optdb['d']='debug mode'
       optdb.update(db)

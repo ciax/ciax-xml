@@ -44,14 +44,14 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
+        itv=$opt['m'] ? 1 : 0
         show title
         max=self['max']=self['retry']
-        max=[$dryrun.to_i+1,max.to_i].min if dryrun?
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
           break if ok?
           refresh
-          sleep 1
+          sleep itv
           yield
           @save_procs.call
         }

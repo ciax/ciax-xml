@@ -64,14 +64,10 @@ module CIAX
           mary[0] << ' -> '+Msg.color(title,color)
           if c=self['conditions']
             c.each{|h|
-              if h['upd']
-                if h['res']
-                  mary << body("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
-                else
-                  mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
-                end
+              if h['res']
+                mary << body("#{h['site']}:#{h['var']}",3)+" is #{h['cmp']}"
               else
-                mary << body("#{h['site']}",3)+" is not updated"
+                mary << body("#{h['site']}:#{h['var']}",3)+" is not #{h['cmp']}"
               end
             }
           end

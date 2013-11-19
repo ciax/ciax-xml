@@ -2,8 +2,20 @@
 require "libmcrdb"
 require "librecord"
 require "libappsh"
+# Modes            | Actual Status? | Force Entering | Query? | Moving | Retry Interval
+# TEST(default):   | NO  | YES | YES | NO  | 0
+# CHECK(-e):       | YES | YES | YES | NO  | 0
+# DRYRUN(-ne):     | YES | YES | NO  | NO  | 0
+# INTERACTIVE(-em):| YES | NO  | YES | YES | 1
+# NONSTOP(-nem):   | YES | NO  | NO  | YES | 1
 
-$dryrun=1
+#MOTION:  TEST <-> REAL (m)
+#QUERY :  INTERACTIVE <-> NONSTOP(n)
+
+#TEST: query(exec,error,enter), interval=0
+#REAL: query(exec,error), interval=1
+
+
 module CIAX
   module Mcr
     class Stat < Exe
@@ -44,7 +56,7 @@ module CIAX
         @stq=svc[:save_que]=Queue.new
         svc[:submcr_proc]=proc{|args| set_cmd(args) }
         svc[:stat_proc]=proc{|site| al[site].stat}
-        svc[:exec_proc]=proc{|site,args| al[site].exe(args) }
+        svc[:exec_proc]=proc{|site,args| al[site].exe(args) if $opt['m'] }
         svc[:int_grp]=IntGrp.new(@cfg).def_proc
         @extgrp=@svdom.add_group(svc)
       end
@@ -221,7 +233,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('rest',{'n' => 'nonstop mode'})
+      GetOpts.new('renst')
       begin
         cfg=Config.new
         cfg[:app]=App::List.new

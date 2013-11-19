@@ -50,7 +50,6 @@ module CIAX
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
           break if ok?
-          refresh
           sleep itv
           yield
           @save_procs.call
@@ -62,7 +61,7 @@ module CIAX
 
       def skip?
         show title
-        res=ok?('skip','pass') && !(dryrun? && warn("Force Entering"))
+        res=ok?('skip','pass')
         save
         res
       end
@@ -119,18 +118,15 @@ module CIAX
           site=cond['site']=h['site']
           var=cond['var']=h['var']
           stat=stats[site]
-          if cond['upd']=stat.update?
             inv=cond['inv']=h['inv']
             cmp=cond['cmp']=h['val']
             actual=stat['msg'][var]||stat.data[var]
             verbose("McrStep","site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},actual=#{actual}")
-            next unless actual
             cond['act']=actual
             cond['res']=match?(actual,cmp,cond['inv'])
-          end
           cond
         }
-        res=conds.all?{|h| h['upd'] && h['res']}
+        res=conds.all?{|h| h['res']}
         self['conditions']=conds
         self['result']=(res ? t : f) if t || f
         res

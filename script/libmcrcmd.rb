@@ -233,7 +233,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('renst')
+      GetOpts.new('renmst')
       begin
         cfg=Config.new
         cfg[:app]=App::List.new

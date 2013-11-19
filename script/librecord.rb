@@ -44,7 +44,7 @@ module CIAX
 
       # Conditional judgment section
       def timeout?
-        itv=$opt['m'] ? 1 : 0
+        itv=($opt['m'] && $opt['e'])? 1 : 0
         show title
         max=self['max']=self['retry']
         res=max.to_i.times{|n| #gives number or nil(if break)
@@ -62,7 +62,7 @@ module CIAX
 
       def skip?
         show title
-        res=ok?('skip','pass') && !dryrun?
+        res=ok?('skip','pass') && !(dryrun? && warn("Force Entering"))
         save
         res
       end
@@ -108,24 +108,13 @@ module CIAX
       end
 
       def dryrun?
-        ! ['e','s','t'].any?{|i| $opt[i]} && self['action']='dryrun'
+        ! $opt['m'] && self['action']='dryrun'
       end
 
       # Sub methods
       def ok?(t=nil,f=nil)
-        cond=scan
-        res=cond.all?{|h| h['upd'] && h['res']}
-        self['conditions']=cond
-        self['result']=(res ? t : f) if t || f
-        res
-      end
-
-      def scan
-        stats=sites.inject({}){|hash,site|
-          hash[site]=@cfg[:stat_proc].call(site)
-          hash
-        }
-        @condition.map{|h|
+        stats=scan
+        conds=@condition.map{|h|
           cond={}
           site=cond['site']=h['site']
           var=cond['var']=h['var']
@@ -133,13 +122,24 @@ module CIAX
           if cond['upd']=stat.update?
             inv=cond['inv']=h['inv']
             cmp=cond['cmp']=h['val']
-            act=stat['msg'][var]||stat.data[var]
-            verbose("McrStep","site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},act=#{act}")
-            next unless act
-            cond['act']=act
-            cond['res']=match?(act,cmp,cond['inv'])
+            actual=stat['msg'][var]||stat.data[var]
+            verbose("McrStep","site=#{site},var=#{var},inv=#{inv},cmp=#{cmp},actual=#{actual}")
+            next unless actual
+            cond['act']=actual
+            cond['res']=match?(actual,cmp,cond['inv'])
           end
           cond
+        }
+        res=conds.all?{|h| h['upd'] && h['res']}
+        self['conditions']=conds
+        self['result']=(res ? t : f) if t || f
+        res
+      end
+
+      def scan
+        sites.inject({}){|hash,site|
+          hash[site]=@cfg[:stat_proc].call(site)
+          hash
         }
       end
 
@@ -153,12 +153,12 @@ module CIAX
         @condition.map{|h| h['site']}.uniq
       end
 
-      def match?(act,cmp,inv)
+      def match?(actual,cmp,inv)
         i=(/true|1/ === inv)
         if /[a-zA-Z]/ === cmp
-          (/#{cmp}/ === act) ^ i
+          (/#{cmp}/ === actual) ^ i
         else
-          (cmp == act) ^ i
+          (cmp == actual) ^ i
         end
       end
     end

@@ -42,13 +42,18 @@ module CIAX
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel[:body]=@fds[rid][:body]||[]
           stream=yield
-          self['time']=stream['time']
           @frame.set(stream[:data])
+          @cache=@data.deep_copy
           getfield_rec(@sel[:main])
-          if cc=unset('cc') #Field::unset
-            cc == @cc || Msg.com_err("Verify:CC Mismatch <#{cc}> != (#{@cc})")
+          if cc=@cache.delete('cc')
+            unless  cc == @cc
+              Msg.warn("FrmRsp:CC Mismatch <#{cc}> != (#{@cc})")
+              return self
+            end
             verbose("FrmRsp","Verify:CC OK <#{cc}>")
           end
+          @data=@cache
+          self['time']=stream['time']
           verbose("FrmRsp","Updated(#{self['time']})") #Field::get
         else
           verbose("FrmRsp","Send Only")
@@ -88,13 +93,13 @@ module CIAX
               @current_ent.subst(e1['range'])
             }
             enclose("FrmRsp","Array:[#{akey}]:Range#{idxs}","Array:Assign[#{akey}]"){
-              @data[akey]=mk_array(idxs,get(akey)){yield}
+              @cache[akey]=mk_array(idxs,get(akey)){yield}
             }
           else
             #Field
             data=yield
             if akey=e0['assign']
-              @data[akey]=data
+              @cache[akey]=data
               verbose("FrmRsp","Assign:[#{akey}] <- <#{data}>")
             end
           end

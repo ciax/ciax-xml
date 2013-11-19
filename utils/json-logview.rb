@@ -10,7 +10,7 @@ readlines.each{|line|
   JSON.load(line.chomp).each{|k,v|
     case k
     when 'time'
-      ary << Time.at(v.to_f).to_s
+      ary << Time.at(v.to_f/1000).to_s
     when 'base64'
       ary << v.unpack("m").first.inspect
     else

@@ -88,6 +88,7 @@ module CIAX
           "drop"=>[" Macro",proc{raise(Interlock)}],
           "suppress"=>["and Memorize",proc{'SUP'}],
           "force"=>["Proceed",proc{'FORCE'}],
+          "pass"=>["Step",proc{nil}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
           add_item(id,id.capitalize+" "+a[0])
@@ -147,7 +148,7 @@ module CIAX
             @step=@record.add_step(e1,@cfg)
             case e1['type']
             when 'goal'
-              return if @step.skip?
+              return if skip?(@step.skip?)
             when 'check'
               drop?(@step.fail?)
             when 'wait'
@@ -181,9 +182,16 @@ module CIAX
       end
 
       # Interactive section
-      def drop?(res)
+      def skip?(res)
         return res if $opt['n']
-        res && query(['drop','force','retry'])
+        res && !query(['pass','force'])
+      end
+
+      def drop?(res)
+        if res
+          raise(Interlock) if $opt['n']
+          query(['drop','force','retry'])
+        end
       end
 
       def exec?(res)

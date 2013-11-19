@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash --rcfile
 addenv(){
     name=$1;shift
     list=$(IFS=: eval echo \$$name)
@@ -22,7 +22,9 @@ export XMLPATH="$HOME/ciax-xml"
 alias chkxml=check-xml
 alias devsim=device-simulator
 alias jv=json-view
-alias jl=json-logview
+alias jlv=json-logview
+alias jlp=json-logpick
 alias mkhtm=make-html
-alias mvw=marshal-view
+alias msv=marshal-view
 alias reg=register-files
+

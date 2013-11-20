@@ -47,10 +47,10 @@ module CIAX
           getfield_rec(@sel[:main])
           if cc=@cache.delete('cc')
             unless  cc == @cc
-              Msg.warn("FrmRsp:CC Mismatch <#{cc}> != (#{@cc})")
+              Msg.warn("FrmRsp:CC Mismatch:[#{cc}] (should be [#{@cc}])")
               return self
             end
-            verbose("FrmRsp","Verify:CC OK <#{cc}>")
+            verbose("FrmRsp","Verify:CC OK [#{cc}]")
           end
           @data=@cache
           self['time']=stream['time']

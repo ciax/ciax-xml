@@ -60,7 +60,7 @@ module CIAX
       if val=e0['val']
         val=eval(val).to_s if e0['decode']
         verbose("Frame","Verify:(#{e0['label']}) [#{val}] and <#{str}>")
-        val == str || Msg.com_err("Verify Mismatch(#{e0['label']}) <#{str}> != [#{val}]")
+        val == str || Msg.com_err("Verify Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
       end
       str
     end

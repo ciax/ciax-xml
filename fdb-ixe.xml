@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" maxlength="31" wait="0.2">
+  <frame id="ixe" label="Phytron IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf" maxlength="31" wait="0.2" version="1">
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="Prefix">2</char>
@@ -136,8 +136,9 @@
       </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
+      <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
       <field decode="unsigned" label="Prefix" length="1">2</field>
-      <field decode="unsigned" label="ACK" length="1">6</field>
+      <field decode="unsigned" label="ResponseCode" length="1" assign="res">6</field>
       <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

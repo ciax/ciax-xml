@@ -57,5 +57,9 @@
       <pattern class="normal" msg="OFF">0</pattern>
       <pattern class="warn" msg="ON" />
     </table>
+    <table id="control-code">
+      <pattern class="normal" msg="ACK">6</pattern>
+      <pattern class="alarm" msg="NAK">21</pattern>
+    </table>
   </symbol>
 </sdb>

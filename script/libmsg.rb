@@ -27,6 +27,8 @@ module CIAX
 
   # Communication Error
   class CommError < UserError; end
+  # Verification Error
+  class VerifyError < UserError; end
   # Configuration Error
   class ConfigError < RuntimeError; end
 
@@ -244,12 +246,17 @@ module CIAX
       raise InvalidPAR,msg.join("\n  "),caller(1)
     end
 
-    def cfg_err(*msg) # Raise User error (Invalid User input)
+    def cfg_err(*msg) # Raise Device error (Bad Configulation)
       msg[0]=color(msg[0],1)
       raise ConfigError,msg.join("\n  "),caller(1)
     end
 
-    def com_err(*msg) # Raise User error (Invalid User input)
+    def vrf_err(*msg) # Raise Device error (Verification Failed)
+      msg[0]=color(msg[0],1)
+      raise VerifyError,msg.join("\n  "),caller(1)
+    end
+
+    def com_err(*msg) # Raise Device error (Communication Failed)
       msg[0]=color(msg[0],1)
       raise CommError,msg.join("\n  "),caller(1)
     end

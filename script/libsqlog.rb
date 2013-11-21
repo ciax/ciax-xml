@@ -153,15 +153,16 @@ module CIAX
           ans=query(sql)
           tim,cmd=ans.split('|')
           raise if tim.empty?
+          @index=tim.to_i
         rescue
           raise("NO record for #{str}") if @index==0
           @index=0
           verbose("DevSim",color("LINE:REWINDED",3))
           retry
         end
-        @index=tim.to_i
         sql="select min(time),count(*) from #@tbl where time > #{tim} and dir='rcv';"
         tim,crnt=query(sql).split('|')
+        raise("NO record for rcv of #{cmd}") if tim.empty?
         wait=tim.to_i > @index ? [tim.to_i-@index,1000].min.to_f/1000 : 0
         verbose("DevSim",color("LINE:[#{cmd}](#{@total-crnt.to_i}/#{@total})<#{'%.3f' % wait}>",2))
         sleep wait

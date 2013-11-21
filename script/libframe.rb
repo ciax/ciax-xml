@@ -21,7 +21,7 @@ module CIAX
       self
     end
 
-    # Command
+    #For Command
     def add(frame,e={})
       if frame
         code=encode(e,frame)
@@ -37,13 +37,7 @@ module CIAX
       @frame
     end
 
-    # Response
-    def cc_mark # Check Code Start
-      verbose("Frame","Mark CC range" )
-      @ccrange=''
-      self
-    end
-
+    #For Response
     def cut(e0)
       len=e0['length']||@frame.size
       str=@frame.slice!(0,len.to_i)
@@ -68,6 +62,13 @@ module CIAX
         vfy_err("Frame:Verify Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
       end
       @fragment=nil
+      self
+    end
+
+    # Check Code
+    def cc_mark # Check Code Start
+      verbose("Frame","Mark CC range" )
+      @ccrange=''
       self
     end
 
@@ -145,8 +146,8 @@ module CIAX
     attr_reader :cc
     def initialize(terminator=nil,delimiter=nil,endian=nil,ccmethod=nil)
       @ver_color=6
-      @terminator=terminator
-      @delimiter=delimiter
+      @terminator=terminator && eval('"'+terminator+'"')
+      @delimiter=delimiter && eval('"'+delimiter+'"')
       @method=ccmethod
       @frame=Frame.new(endian,ccmethod)
       verbose("FrmAry","Initialize/ Delim=#{@delimiter.inspect}, Term=#{@terminator.inspect}")
@@ -154,18 +155,20 @@ module CIAX
 
     def set(str)
       if tm=@terminator
-        str.chomp!(eval('"'+tm+'"'))
-        verbose("FrmAry","Remove terminator:[#{str}] by [#{tm}]")
+        str.chomp!(tm)
+        verbose("FrmAry","Remove terminator:[#{str.inspect}] by [#{tm.inspect}]")
       end
       if dm=@delimiter
-        @fary=str.split(eval('"'+dm+'"'))
-        verbose("FrmAry","Split:[#{str}] by [#{dm}]")
+        @fary=str.split(dm)
+        verbose("FrmAry","Split:[#{str.inspect}] by [#{dm.inspect}]")
       else
         @fary=[str]
       end
       @frame.set(@fary.shift)
     end
 
+
+    #no e[length] -> cut to terminator;
     def cut(e)
       @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
     end

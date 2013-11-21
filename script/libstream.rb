@@ -4,6 +4,17 @@ require "libsqlog"
 
 module CIAX
   class Stream < Datax
+    # Structure
+    # {
+    #  time:Int
+    #  :data:binary
+    #  @data:
+    #   {
+    #    dir:(snd,rcv)
+    #    cmd:String
+    #    base64: encoded data
+    #   }
+    # }
     def initialize(iocmd,wait=0,timeout=nil)
       Msg.abort(" No IO command") if iocmd.to_a.empty?
       @iocmd=type?(iocmd,Array)

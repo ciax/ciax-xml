@@ -64,9 +64,10 @@ module CIAX
         else
           nocache=mk_frame(:body)
           if @sel.key?(:ccrange)
-            @frame.mark
+            @frame.cc_mark
             mk_frame(:ccrange)
-            @field.set('cc',@frame.check_code)
+            @frame.cc_set
+            @field.set('cc',@frame.cc)
           end
           mk_frame(:main)
           frame=@fstr[:main]

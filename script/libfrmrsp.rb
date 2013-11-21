@@ -45,13 +45,7 @@ module CIAX
           @frame.set(stream[:data])
           @cache=@data.deep_copy
           getfield_rec(@sel[:main])
-          if cc=@cache.delete('cc')
-            unless  cc == @cc
-              Msg.warn("FrmRsp:CC Mismatch:[#{cc}] (should be [#{@cc}])")
-              return self
-            end
-            verbose("FrmRsp","Verify:CC OK [#{cc}]")
-          end
+          @frame.cc_check(@cache.delete('cc'))
           @data=@cache
           self['time']=stream['time']
           verbose("FrmRsp","Updated(#{self['time']})") #Field::get
@@ -69,9 +63,9 @@ module CIAX
           case e1
           when 'ccrange'
             enclose("FrmRsp","Entering Ceck Code Node","Exitting Ceck Code Node"){
-              @frame.mark
+              @frame.cc_mark
               getfield_rec(@sel[:ccrange])
-              @cc = @frame.cc
+              @frame.cc_set
             }
           when 'body'
             enclose("FrmRsp","Entering Body Node","Exitting Body Node"){

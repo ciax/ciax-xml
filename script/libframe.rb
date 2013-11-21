@@ -4,6 +4,7 @@ require 'libmsg'
 module CIAX
   class Frame # For Command/Response Frame
     include Msg
+    attr_reader :cc
     def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
       @ver_color=6
       @endian=endian
@@ -37,7 +38,7 @@ module CIAX
     end
 
     # Response
-    def mark
+    def cc_mark # Check Code Start
       verbose("Frame","Mark CC range" )
       @ccrange=''
       self
@@ -70,7 +71,7 @@ module CIAX
       self
     end
 
-    def check_code
+    def cc_set # Check Code End
       verbose("Frame","CC Frame <#{@ccrange}>")
       chk=0
       case @method
@@ -86,7 +87,7 @@ module CIAX
       end
       verbose("Frame","Calc:CC [#{@method.upcase}] -> (#{chk})")
       @ccrange=nil
-      return chk.to_s
+      @cc=chk.to_s
     end
 
     private
@@ -131,6 +132,7 @@ module CIAX
 
   class FrmAry # For Response Frame
     include Msg
+    attr_reader :cc
     def initialize(terminator=nil,delimiter=nil,endian=nil,ccmethod=nil)
       @ver_color=6
       @terminator=terminator
@@ -162,13 +164,23 @@ module CIAX
       @frame.verify(e)
     end
 
-    def mark
-      @frame.mark
+    def cc_mark
+      @frame.cc_mark
       self
     end
 
-    def cc
-      @frame.check_code
+    def cc_set
+      @cc=@frame.cc_set
+    end
+
+    def cc_check(cc)
+      return self unless cc
+      if  cc == @cc
+        verbose("FrmAry","Verify:CC OK [#{cc}]")
+      else
+        vfy_err("FrmAry:CC Mismatch:[#{cc}] (should be [#{@cc}])")
+      end
+      self
     end
   end
 end

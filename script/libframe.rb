@@ -90,6 +90,16 @@ module CIAX
       @cc=chk.to_s
     end
 
+    def cc_check(cc)
+      return self unless cc
+      if  cc == @cc
+        verbose("Frame","Verify:CC OK [#{cc}]")
+      else
+        vfy_err("Frame:CC Mismatch:[#{cc}] (should be [#{@cc}])")
+      end
+      self
+    end
+
     private
     def decode(e,code) # Chr -> Num
       return code.to_s unless cdc=e['decode']
@@ -174,12 +184,7 @@ module CIAX
     end
 
     def cc_check(cc)
-      return self unless cc
-      if  cc == @cc
-        verbose("FrmAry","Verify:CC OK [#{cc}]")
-      else
-        vfy_err("FrmAry:CC Mismatch:[#{cc}] (should be [#{@cc}])")
-      end
+      @frame.cc_check(cc)
       self
     end
   end

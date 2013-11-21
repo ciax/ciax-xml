@@ -64,7 +64,7 @@ module CIAX
       val=eval(val).to_s if e0['decode']
       verbose("Frame","Verify:(#{e0['label']}) [#{val}] and <#{str}>")
       if val != str
-        warn("Frame:Verify Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
+        vfy_err("Frame:Verify Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
       end
       @fragment=nil
       self

@@ -251,7 +251,7 @@ module CIAX
       raise ConfigError,msg.join("\n  "),caller(1)
     end
 
-    def vrf_err(*msg) # Raise Device error (Verification Failed)
+    def vfy_err(*msg) # Raise Device error (Verification Failed)
       msg[0]=color(msg[0],1)
       raise VerifyError,msg.join("\n  "),caller(1)
     end

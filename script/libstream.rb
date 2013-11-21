@@ -30,6 +30,7 @@ module CIAX
       return if str.to_s.empty?
       sleep @wait
       verbose("Stream","Sending #{str.size} byte on #{cid}")
+      verbose("Stream","Binary Sending #{str.inspect}")
       reopen{
         @f.syswrite(str)
       }
@@ -44,6 +45,7 @@ module CIAX
         @f.sysread(4096)
       }||Msg.com_err("Stream:No response")
       verbose("Stream","Recieved #{str.size} byte on #{self['cmd']}")
+      verbose("Stream","Binary Recieving #{str.inspect}")
       conv('rcv',str).upd.save
       self
     end

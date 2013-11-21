@@ -81,7 +81,7 @@ module CIAX
       private
       def mk_frame(domain)
         convert=nil
-        @frame.set
+        @frame.reset
         @sel[domain].each{|a|
           case a
           when Hash

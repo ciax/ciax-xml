@@ -24,7 +24,7 @@ module CIAX
         self['ver']=db['version'].to_i
         @sel=Hash[fdbr[:frame]]
         @fds=fdbr[:index]
-        @frame=FrmAry.new(@sel['terminator'],@sel['delimiter'],db['endian'],db['ccmethod'])
+        @frame=Frame.new(db['endian'],db['ccmethod'],@sel['terminator'],@sel['delimiter'])
         # Field Initialize
         if @data.empty?
           db[:field].each{|id,val|

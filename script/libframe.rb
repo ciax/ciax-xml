@@ -5,50 +5,66 @@ module CIAX
   class Frame # For Command/Response Frame
     include Msg
     attr_reader :cc
-    def initialize(endian=nil,ccmethod=nil) # delimiter,terminator
+    def initialize(endian=nil,ccmethod=nil,terminator=nil,delimiter=nil)
       @ver_color=6
       @endian=endian
       @ccrange=nil
       @method=ccmethod
-      @frame=''
-    end
-
-    def set(frame='')
-      if frame
-        verbose("Frame","Frame set <#{frame}>")
-        @frame=frame
-      end
-      self
+      @terminator=terminator && eval('"'+terminator+'"')
+      @delimiter=delimiter && eval('"'+delimiter+'"')
+      reset
     end
 
     #For Command
+    def reset
+      @frame=''
+      verbose("Frame","CMD:Reset")
+      self
+    end
+
     def add(frame,e={})
       if frame
         code=encode(e,frame)
         @frame << code
         @ccrange << code if @ccrange
-        verbose("Frame","Frame add <#{frame}>")
+        verbose("Frame","CMD:Add [#{frame.inspect}]")
       end
       self
     end
 
     def copy
-      verbose("Frame","Copy Frame <#{@frame}>")
+      verbose("Frame","CMD:Copy [#{@frame.inspect}]")
       @frame
     end
 
     #For Response
+    def set(frame='')
+      if frame && !frame.empty?
+        if tm=@terminator
+          frame.chomp!(tm)
+          verbose("Frame","RSP:Remove terminator:[#{tm.inspect}]")
+        end
+        verbose("Frame","RSP:Set [#{frame.inspect}]")
+        @frame=frame
+      end
+      self
+    end
+
     def cut(e0)
-      len=e0['length']||@frame.size
-      str=@frame.slice!(0,len.to_i)
-      return if str.empty?
+      if len=e0['length']
+        str=@frame.slice!(0,len.to_i)
+      elsif @delimiter
+        str=@frame.slice!(/^.*?#@delimiter/) || ''
+        len=(str.delete!(@delimiter)||'').size
+      end
+      return '' if str.empty?
       # Check Code
       @ccrange << str if @ccrange
-      verbose("Frame","CutFrame: <#{str}> by size=[#{len}]")
+      verbose("Frame","RSP:Cut: [#{str.inspect}] by size=[#{len}]")
       # Pick Part
       if r=e0['slice']
         str=str.slice(*r.split(':').map{|i| i.to_i })
-        verbose("Frame","PickFrame: <#{str}> by range=[#{r}]")
+        verbose("Frame","RSP:Pick: [#{str.inspect}] by range=[#{r}]")
       end
       @fragment=decode(e0,str)
     end
@@ -57,9 +73,9 @@ module CIAX
       return self unless val=e0['val']
       str=@fragment
       val=eval(val).to_s if e0['decode']
-      verbose("Frame","Verify:(#{e0['label']}) [#{val}] and <#{str}>")
+      verbose("Frame","RSP:Verify:(#{e0['label']}) [#{val}]")
       if val != str
-        vfy_err("Frame:Verify Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
+        vfy_err("Frame:RSP:Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
       end
       @fragment=nil
       self
@@ -73,7 +89,7 @@ module CIAX
     end
 
     def cc_set # Check Code End
-      verbose("Frame","CC Frame <#{@ccrange}>")
+      verbose("Frame","CC Frame [#{@ccrange.inspect}]")
       chk=0
       case @method
       when 'len'
@@ -120,7 +136,7 @@ module CIAX
           num = num < p/2 ? num : num - p
         end
       end
-      verbose("Frame","Decode:(#{cdc}) [#{code}] -> [#{num}]")
+      verbose("Frame","RSP:Decode:(#{cdc}) [#{code.inspect}] -> [#{num}]")
       num.to_s
     end
 
@@ -134,61 +150,10 @@ module CIAX
           num/=256
           code =(@endian == 'little') ? code+c : c+code
         }
-        verbose("Frame","Encode:[#{str}](#{len}) -> [#{code}]")
+        verbose("Frame","CMD:Encode:[#{str}](#{len}) -> [#{code.inspect}]")
         str=code
       end
       str
-    end
-  end
-
-  class FrmAry # For Response Frame
-    include Msg
-    attr_reader :cc
-    def initialize(terminator=nil,delimiter=nil,endian=nil,ccmethod=nil)
-      @ver_color=6
-      @terminator=terminator && eval('"'+terminator+'"')
-      @delimiter=delimiter && eval('"'+delimiter+'"')
-      @method=ccmethod
-      @frame=Frame.new(endian,ccmethod)
-      verbose("FrmAry","Initialize/ Delim=#{@delimiter.inspect}, Term=#{@terminator.inspect}")
-    end
-
-    def set(str)
-      if tm=@terminator
-        str.chomp!(tm)
-        verbose("FrmAry","Remove terminator:[#{str.inspect}] by [#{tm.inspect}]")
-      end
-      if dm=@delimiter
-        @fary=str.split(dm)
-        verbose("FrmAry","Split:[#{str.inspect}] by [#{dm.inspect}]")
-      else
-        @fary=[str]
-      end
-      @frame.set(@fary.shift)
-    end
-
-
-    #no e[length] -> cut to terminator;
-    def cut(e)
-      @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
-    end
-
-    def verify(e)
-      @frame.verify(e)
-    end
-
-    def cc_mark
-      @frame.cc_mark
-      self
-    end
-
-    def cc_set
-      @cc=@frame.cc_set
-    end
-
-    def cc_check(cc)
-      @frame.cc_check(cc)
-      self
     end
   end
 end

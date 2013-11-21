@@ -102,6 +102,7 @@ module CIAX
               @cache[akey]=data
               verbose("FrmRsp","Assign:[#{akey}] <- <#{data}>")
             end
+            @frame.verify(e0)
           end
         }
       end

@@ -55,14 +55,19 @@ module CIAX
         str=str.slice(*r.split(':').map{|i| i.to_i })
         verbose("Frame","PickFrame: <#{str}> by range=[#{r}]")
       end
-      str=decode(e0,str)
-      # Verify
-      if val=e0['val']
-        val=eval(val).to_s if e0['decode']
-        verbose("Frame","Verify:(#{e0['label']}) [#{val}] and <#{str}>")
-        val == str || Msg.vrf_err("Frame:Verify Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
+      @fragment=decode(e0,str)
+    end
+
+    def verify(e0)
+      return self unless val=e0['val']
+      str=@fragment
+      val=eval(val).to_s if e0['decode']
+      verbose("Frame","Verify:(#{e0['label']}) [#{val}] and <#{str}>")
+      if val != str
+        warn("Frame:Verify Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
       end
-      str
+      @fragment=nil
+      self
     end
 
     def check_code
@@ -151,6 +156,10 @@ module CIAX
 
     def cut(e)
       @frame.cut(e) || @frame.set(@fary.shift).cut(e) || ''
+    end
+
+    def verify(e)
+      @frame.verify(e)
     end
 
     def mark

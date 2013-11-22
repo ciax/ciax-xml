@@ -50,20 +50,18 @@ module CIAX
         batch
       end
 
-      def ext_upd(adb,stat)
-        extend(Upd).ext_upd(adb,stat)
+      def ext_upd(stat)
+        extend(Upd).ext_upd(stat)
       end
     end
 
     module Upd
-      # @< (event_procs*)
-      # @ wdb,val
       def self.extended(obj)
         Msg.type?(obj,Data)
       end
 
-      def ext_upd(adb,stat)
-        wdb=type?(adb,App::Db)[:watch]||{}
+      def ext_upd(stat)
+        wdb=@db[:watch]||{}
         @windex=wdb[:index]||{}
         @stat=type?(stat,App::Status)
         reg_procs(@stat)
@@ -171,8 +169,8 @@ module CIAX
     rescue InvalidID
       $opt.usage("(opt) [id]")
     end
-    stat=App::Status.new.ext_file(adb['site_id']).load
-    watch=Watch::Data.new.ext_upd(adb,stat).upd
+    stat=App::Status.new.set_db(adb).ext_file.load
+    watch=Watch::Data.new.set_db(adb).ext_upd(stat).upd
     if t=$opt['t']
       watch.ext_file
       stat.str_update(t).upd.save

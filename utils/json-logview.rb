@@ -12,9 +12,10 @@ readlines.each{|line|
     when 'time'
       ary << Time.at(v.to_f/1000).to_s
     when 'base64'
-      ary << v.unpack("m").first.inspect
+      data=v.unpack("m").first
+      ary << "data=#{data.inspect}(#{data.size})"
     else
-      ary << "#{k}=#{v}"
+      ary << "#{k}=#{v.inspect}"
     end
   }
   puts ary.join("\t")

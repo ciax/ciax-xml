@@ -38,6 +38,10 @@ module CIAX
         super(self['id'])
       end
 
+      def ext_http(port)
+        super(self['id'],port)
+      end
+
       # Block accepts [frame,time]
       # Result : executed block or not
       def rcv(ent)

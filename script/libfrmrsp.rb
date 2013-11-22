@@ -35,11 +35,15 @@ module CIAX
       end
 
       def ext_file
-        super(self['id'])
+        extend File
+        ext_file
+        self
       end
 
-      def ext_http(port)
-        super(self['id'],port)
+      def ext_http(host)
+        extend Http
+        ext_http(host)
+        self
       end
 
       # Block accepts [frame,time]

@@ -62,6 +62,7 @@ module CIAX
       # Check Code
       @ccrange << str if @ccrange
       verbose("Frame","RSP:Cut: [#{str.inspect}] by size=[#{len}]")
+      verbose("Frame","RSP:Rest(#{@frame.size}): [#{@frame.inspect}]")
       # Pick Part
       if r=e0['slice']
         str=str.slice(*r.split(':').map{|i| i.to_i })
@@ -74,10 +75,8 @@ module CIAX
       return self unless val=e0['val']
       str=@fragment
       val=eval(val).to_s if e0['decode']
-      verbose("Frame","RSP:Verify:(#{e0['label']}) [#{val}]")
-      if val != str
-        vfy_err("Frame:RSP:Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])")
-      end
+      vfy_err("Frame:RSP:Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])") if val != str
+      verbose("Frame","RSP:Verify:(#{e0['label']}) [#{val}] OK")
       @fragment=nil
       self
     end

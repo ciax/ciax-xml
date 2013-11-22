@@ -123,28 +123,27 @@ module CIAX
 
     if __FILE__ == $0
       require "liblocdb"
+      require "liblogging"
       require "libfrmcmd"
-      GetOpts.new("",{'m' => 'merge file','l' => 'get from logline'})
-      if $opt['l']
-        $opt.usage("-l < logline") if STDIN.tty?
+      GetOpts.new("",{'m' => 'merge file'})
+      if STDIN.tty?
+        $opt.usage("(opt) [id] < logline") if ARGV.size < 1
+        id=ARGV.shift
+      else
         str=gets(nil) || exit
         res=Logging.set_logline(str)
         id=res['id']
         cid=res['cmd']
-      elsif STDIN.tty? || ARGV.size < 2
-        $opt.usage("(opt) [id] [cmd] (par..) < string")
-      else
-        id=ARGV.shift
-        cid=ARGV.shift
-        res={'time'=>now_msec}
-        res[:data]=gets(nil) || exit
       end
       fdb=Loc::Db.new.set(id)[:frm]
-      fobj=Command.new(Config.new.update(:db => fdb))
-      ent=fobj.set_cmd(cid.split(':'))
       field=Field.new.ext_rsp(id,fdb)
       field.load if $opt['m']
-      field.rcv(ent){res}.upd
+      if cid
+        cfg=Config.new.update(:db => fdb,:field => field)
+        cobj=Frm::Command.new(cfg)
+        ent=cobj.set_cmd(cid.split(':'))
+        field.rcv(ent){res}.upd
+      end
       puts field
       exit
     end

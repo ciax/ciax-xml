@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
-require "libenumx"
+require "libdb"
 
 module CIAX
   class Datax < Hashx
@@ -79,16 +79,21 @@ module CIAX
       val
     end
 
-    def ext_file(id)
+    def set_db(db)
+      @db=type?(db,Db)
+      _setid(db['site_id']||db['id'])
+      self['ver']=db['version'].to_i
+      self
+    end
+
+    def ext_file
       extend File
-      _setid(id)
       ext_file
       self
     end
 
-    def ext_http(id,host=nil)
+    def ext_http(host=nil)
       extend Http
-      _setid(id)
       ext_http(host)
       self
     end

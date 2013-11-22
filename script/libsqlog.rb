@@ -134,6 +134,7 @@ module CIAX
         @sqlcmd=["sqlite3",ENV['HOME']+"/.var/sqlog_"+id+".sq3"]
         @tbl=query('.tables').split(/ /).grep(/^stream/).sort.last || raise("No Stream table")
         @total=query("select count(*) from #@tbl where dir='rcv';").to_i
+        raise("No Line") if @total < 1
         @ver_color=1
       end
 

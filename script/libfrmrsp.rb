@@ -16,8 +16,8 @@ module CIAX
       end
 
       # Ent is needed which includes response_id and cmd_parameters
-      def ext_rsp(id,db)
-        ext_file(id)
+      def ext_rsp(db)
+        ext_file(db['id'])
         @ver_color=3
         @db=type?(db,Db)
         fdbr=db[:response]
@@ -116,8 +116,8 @@ module CIAX
     end
 
     class Field
-      def ext_rsp(id,db)
-        extend(Frm::Rsp).ext_rsp(id,db)
+      def ext_rsp(db)
+        extend(Frm::Rsp).ext_rsp(db)
       end
     end
 
@@ -136,7 +136,7 @@ module CIAX
         cid=res['cmd']
       end
       fdb=Loc::Db.new.set(id)[:frm]
-      field=Field.new.ext_rsp(id,fdb)
+      field=Field.new.ext_rsp(fdb)
       field.load if $opt['m']
       if cid
         cfg=Config.new.update(:db => fdb,:field => field)

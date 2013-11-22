@@ -14,7 +14,7 @@ _getstat(){
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
         logline $id $cmd $par > $temp || { echo; continue; }
-        VER=$ver < $temp $frmrsp -ml || return 1
+        VER=$ver < $temp $frmrsp -m || return 1
     done
 }
 frmcmd="$HOME/lib/libfrmcmd.rb"
@@ -29,11 +29,11 @@ for id in ${ids:-`_getid`}; do
     frm=`_id2frm $id` || continue
     echo "$C2#### $frm($id) ####$C0"
     output="$HOME/.var/json/field_${id}.json"
-    json_merge $output <<EOF
+    json-merge $output <<EOF
 {"id":"$id","data":{}}
 EOF
     _getstat ${cmds:-`_getcmd $frm`} || break
-    [ -e $output ] && json_view $output
+    [ -e $output ] && json-view $output
     read -t 0 && break
 done
 

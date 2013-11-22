@@ -1,16 +1,14 @@
 #!/usr/bin/ruby
 require "libextcmd"
-require "libfield"
 require "libframe"
+require "libfield"
 
 module CIAX
   module Frm
     class Command < Command
-      attr_reader :field
+      # upper must include [:field]
       def initialize(upper)
         super
-        @field=@cfg[:field]=Field.new
-        @cfg[:db][:field].each{|id,hash| @field[id]=Arrayx.new.skeleton(hash[:struct])}
         @extgrp=@svdom.add_group(:group_class => ExtGrp,:item_class =>ExtItem)
       end
 
@@ -106,7 +104,8 @@ module CIAX
       ARGV.clear
       begin
         cfg=Config.new
-        cfg[:db]=Db.new.set(id)
+        db=cfg[:db]=Db.new.set(id)
+        cfg[:field]=Field.new.ext_rsp(id,db)
         cobj=Command.new(cfg)
         cobj.field.read unless STDIN.tty?
         print cobj.set_cmd(args).cfg[:frame]

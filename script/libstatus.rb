@@ -14,6 +14,13 @@ module CIAX
         @lastsave=now_msec
       end
 
+      def set_db(db)
+        super
+        @adbs=@db[:status][:index]
+        @data.update(@adbs.skeleton)
+        self
+      end
+
       def set(hash) #For Watch test
         @data.update(hash)
         upd
@@ -69,10 +76,11 @@ module CIAX
           id=stat['id']
         else
           adb=Loc::Db.new.set(id)[:app]
+          stat.set_db(adb)
           if host=$opt['h']
-            stat.ext_http(id,host).load
+            stat.ext_http(host).load
           else
-            stat.ext_file(id).load
+            stat.ext_file.load
           end
         end
         puts stat

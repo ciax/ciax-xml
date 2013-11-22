@@ -26,10 +26,8 @@ module CIAX
       attr_reader :adb,:stat
       def initialize(cfg)
         @adb=type?(cfg[:db],Db)
-        cobj=Command.new(cfg)
-        super('app',@adb['site_id']||@adb['id'],cobj)
-        @stat=Status.new(@adb[:status][:index].skeleton)
-        @stat['id']=@id
+        @stat=Status.new.set_db(@adb)
+        super('app',@stat['id'],Command.new(cfg))
         @output=@print=View.new(@adb,@stat)
         init_watch if @adb[:watch]
         ext_shell(@output,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
@@ -113,7 +111,7 @@ module CIAX
           @watch.ext_http(@id,host)
           @watch.reg_procs(@stat) # @watch isn't relate to @stat
         end
-        @stat.ext_http(@id,host).load
+        @stat.ext_http(host).load
         @post_procs << proc{@stat.load}
         ext_client(host,@adb['port'])
       end
@@ -125,7 +123,7 @@ module CIAX
         super(cfg)
         @fsh=type?(cfg['frm'][@id],Frm::Exe)
         @mode=@fsh.mode
-        @stat.ext_rsp(@id,@adb,@fsh.field).ext_sym(@adb).upd
+        @stat.ext_rsp(@fsh.field).ext_sym(@adb).ext_file.upd
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @buf=init_buf
         @cobj.ext_proc{|ent|

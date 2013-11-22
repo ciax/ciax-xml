@@ -10,10 +10,7 @@ module CIAX
         Msg.type?(obj,Status)
       end
 
-      def ext_rsp(id,adb,field)
-        ext_file(id)
-        @adbs=type?(adb,Db)[:status][:index]
-        @adbs.keys.each{|k| @data[k]||='' }
+      def ext_rsp(field)
         @field=type?(field,Frm::Field)
         self
       end
@@ -93,8 +90,8 @@ module CIAX
     end
 
     class Status
-      def ext_rsp(id,adb,field)
-        extend(App::Rsp).ext_rsp(id,adb,field)
+      def ext_rsp(field)
+        extend(App::Rsp).ext_rsp(field)
       end
     end
 
@@ -107,8 +104,8 @@ module CIAX
       ldb=Loc::Db.new.set(field['id'])
       fdb=ldb[:frm]
       adb=ldb[:app]
-      field.ext_rsp(fdb)
-      stat=Status.new.ext_rsp(ldb['id'],adb,field).upd
+      field.set_db(fdb).ext_rsp
+      stat=Status.new.set_db(adb).ext_rsp(field).upd
       puts stat
       stat.save
       exit

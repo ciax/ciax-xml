@@ -107,7 +107,7 @@ module CIAX
       ldb=Loc::Db.new.set(field['id'])
       fdb=ldb[:frm]
       adb=ldb[:app]
-      field.ext_rsp(field['id'],fdb)
+      field.ext_rsp(fdb)
       stat=Status.new.ext_rsp(ldb['id'],adb,field).upd
       puts stat
       stat.save

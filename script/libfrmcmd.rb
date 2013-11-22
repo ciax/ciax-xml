@@ -105,7 +105,7 @@ module CIAX
       begin
         cfg=Config.new
         db=cfg[:db]=Db.new.set(id)
-        fld=cfg[:field]=Field.new.ext_rsp(db)
+        fld=cfg[:field]=Field.new.set_db(db)
         cobj=Command.new(cfg)
         fld.read unless STDIN.tty?
         print cobj.set_cmd(args).cfg[:frame]

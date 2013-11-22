@@ -3,7 +3,7 @@
 id=$1;shift
 fname="$HOME/.var/sqlog_${id}.sq3"
 if [ ! -e $fname ] ; then
-    echo -n "Usage: sqlog-pick (-s) ("
+    echo -n "Usage: sqlog-json (-s) ("
     for i in ~/.var/sqlog_*.sq3; do
         j=${i#*_}
         echo -n $s0${j%.*}

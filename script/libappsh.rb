@@ -36,7 +36,7 @@ module CIAX
 
       private
       def init_watch
-        @watch=Watch::Data.new
+        @watch=Watch::Data.new.set_db(@adb)
         @watch.upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @cobj.extgrp.valid_sub(block)
@@ -96,7 +96,7 @@ module CIAX
 
       def ext_watch
         return unless @watch
-        @watch.ext_upd(@adb,@stat).upd.reg_procs(@stat)
+        @watch.ext_upd(@stat).upd.reg_procs(@stat)
         @watch.event_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }
@@ -108,7 +108,7 @@ module CIAX
         super(cfg)
         host=type?(cfg['host']||@adb['host']||'localhost',String)
         if @watch
-          @watch.ext_http(@id,host)
+          @watch.ext_http(host)
           @watch.reg_procs(@stat) # @watch isn't relate to @stat
         end
         @stat.ext_http(host).load
@@ -155,7 +155,7 @@ module CIAX
       private
       def ext_watch
         return unless @watch
-        @watch.ext_upd(@adb,@stat).ext_file.upd
+        @watch.ext_upd(@stat).ext_file.upd
         @watch.event_procs << proc{|p,args|
           verbose("AppSv","#@id/Auto(#{p}):#{args}")
           @buf.send(p,@cobj.set_cmd(args))

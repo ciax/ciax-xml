@@ -105,7 +105,7 @@ module CIAX
       end
 
       def ext_file
-        super(@stat['id'])
+        super
         @stat.save_procs << proc{save}
         self
       end

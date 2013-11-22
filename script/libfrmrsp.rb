@@ -16,19 +16,12 @@ module CIAX
       end
 
       # Ent is needed which includes response_id and cmd_parameters
-      def ext_rsp(db)
+      def ext_rsp
         @ver_color=3
-        set_db(db)
         fdbr=@db[:response]
         @sel=Hash[fdbr[:frame]]
         @fds=fdbr[:index]
         @frame=Frame.new(@db['endian'],@db['ccmethod'],@sel['terminator'],@sel['delimiter'])
-        # Field Initialize
-        if @data.empty?
-          @db[:field].each{|id,val|
-            @data[id]=val['val']||Arrayx.new.skeleton(val[:struct])
-          }
-        end
         self
       end
 
@@ -114,8 +107,8 @@ module CIAX
     end
 
     class Field
-      def ext_rsp(db)
-        extend(Frm::Rsp).ext_rsp(db)
+      def ext_rsp
+        extend(Frm::Rsp).ext_rsp
       end
     end
 
@@ -134,7 +127,7 @@ module CIAX
         cid=res['cmd']
       end
       fdb=Loc::Db.new.set(id)[:frm]
-      field=Field.new.ext_rsp(fdb)
+      field=Field.new.set_db(fdb).ext_rsp
       field.load if $opt['m']
       if cid
         cfg=Config.new.update(:db => fdb,:field => field)

@@ -9,6 +9,17 @@ module CIAX
         super('field',init_struct)
       end
 
+      def set_db(db)
+        super
+        # Field Initialize
+        if @data.empty?
+          @db[:field].each{|id,val|
+            @data[id]=val['val']||Arrayx.new.skeleton(val[:struct])
+          }
+        end
+        self
+      end
+
       # Substitute str by Field data
       # - str format: ${key}
       # - output csv if array

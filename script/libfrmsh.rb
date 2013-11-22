@@ -22,7 +22,7 @@ module CIAX
       attr_reader :field,:sqlsv
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
-        @field=cfg[:field]=Field.new.ext_rsp(@fdb)
+        @field=cfg[:field]=Field.new.set_db(@fdb)
         super('frm',@field['id'],Command.new(cfg))
         @cobj.add_int
         ext_shell(@field)
@@ -63,7 +63,7 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super(cfg)
-        @field.ext_file.load
+        @field.ext_rsp.ext_file.load
         @mode='SIM' if sim=cfg['iocmd']
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(iocmd,@fdb['wait'],5)

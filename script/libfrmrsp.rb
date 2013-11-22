@@ -18,31 +18,17 @@ module CIAX
       # Ent is needed which includes response_id and cmd_parameters
       def ext_rsp(db)
         @ver_color=3
-        @db=type?(db,Db)
-        fdbr=db[:response]
-        self['id']=db['site_id']||db['id']
-        self['ver']=db['version'].to_i
+        set_db(db)
+        fdbr=@db[:response]
         @sel=Hash[fdbr[:frame]]
         @fds=fdbr[:index]
-        @frame=Frame.new(db['endian'],db['ccmethod'],@sel['terminator'],@sel['delimiter'])
+        @frame=Frame.new(@db['endian'],@db['ccmethod'],@sel['terminator'],@sel['delimiter'])
         # Field Initialize
         if @data.empty?
-          db[:field].each{|id,val|
+          @db[:field].each{|id,val|
             @data[id]=val['val']||Arrayx.new.skeleton(val[:struct])
           }
         end
-        self
-      end
-
-      def ext_file
-        extend File
-        ext_file
-        self
-      end
-
-      def ext_http(host)
-        extend Http
-        ext_http(host)
         self
       end
 

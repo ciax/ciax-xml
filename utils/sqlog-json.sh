@@ -19,10 +19,9 @@ subdir='dir = "'${dir:-rcv}'"'
 table=$(echo ".table"|$sqlog|tr " " "\n"|grep stream)
 pick="select max(time) from $table where $subdir $subcmd"
 last="select * from $table where time = ($pick);"
-echo -n "{"
+echo -n '{"id":"'$id'"'
 echo "$last"|$sqlog|while read i ; do
     set - $i
-    echo -n $sep'"'$1'"':'"'$3'"'
-    sep=,
+    echo -n ,'"'$1'"':'"'$3'"'
 done
 echo "}"

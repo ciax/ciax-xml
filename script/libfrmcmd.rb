@@ -98,16 +98,16 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "libfield"
+      require "libfrmrsp"
       require "libfrmdb"
       id,*args=ARGV
       ARGV.clear
       begin
         cfg=Config.new
         db=cfg[:db]=Db.new.set(id)
-        cfg[:field]=Field.new.ext_rsp(id,db)
+        fld=cfg[:field]=Field.new.ext_rsp(db)
         cobj=Command.new(cfg)
-        cobj.field.read unless STDIN.tty?
+        fld.read unless STDIN.tty?
         print cobj.set_cmd(args).cfg[:frame]
       rescue InvalidCMD
         Msg.usage("[dev] [cmd] (par) < field_file",[])

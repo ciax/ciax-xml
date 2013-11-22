@@ -150,6 +150,7 @@ module CIAX
 
       def find_next(str)
         begin
+          verbose("DevSim","Search corresponding CMD")
           sql="select min(time),cmd from #@tbl where time > #@index and base64='#{str}';"
           ans=query(sql)
           tim,cmd=ans.split('|')
@@ -161,14 +162,20 @@ module CIAX
           verbose("DevSim",color("LINE:REWINDED",3))
           retry
         end
-        sql="select min(time),count(*) from #@tbl where time > #{tim} and dir='rcv';"
-        tim,crnt=query(sql).split('|')
-        raise("NO record for rcv of #{cmd}") if tim.empty?
-        wait=tim.to_i > @index ? [tim.to_i-@index,1000].min.to_f/1000 : 0
-        verbose("DevSim",color("LINE:[#{cmd}](#{@total-crnt.to_i}/#{@total})<#{'%.3f' % wait}>",2))
-        sleep wait
-        sql="select base64 from #@tbl where time=#{tim};"
+        verbose("DevSim","Search corresponding RES")
+        sql="select min(time),count(*),cmd,base64 from #@tbl where dir='rcv' and cmd='#{cmd}' and time > #{tim};"
+        ans=query(sql)
+        tim,count,base64=ans.split('|')
+        verbose("DevSim",color("LINE:[#{cmd}](#{@total-count.to_i}/#{@total})<#{wait(tim)}>",2))
+        sql="select base64 from #@tbl where time = #{tim};"
         query(sql)
+      end
+
+      def wait(tim)
+        dif=(tim.to_i > @index) ? [tim.to_i-@index,1000].min : 0
+        wt=dif.to_f/1000
+        sleep wt
+        '%.3f' % wt
       end
 
       def input

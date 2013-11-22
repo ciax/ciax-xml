@@ -1,7 +1,7 @@
 #!/bin/bash
 # Converting time field in Sqlog or Logfile (x 1000/Integer)
 [ "$1" ] || {
-    echo "Usage: timeconv (-t) [file(*.sq3,log) ...]"
+    echo "Usage: timeconv (-t:test) [file(*.sq3,log) ...]"
     exit;
 }
 if [ "$1" = '-t' ]; then

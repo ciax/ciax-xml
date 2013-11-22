@@ -52,12 +52,13 @@ module CIAX
 
     def cut(e0)
       if len=e0['length']
-        str=@frame.slice!(0,len.to_i)
+        return '' unless str=@frame.slice!(0,len.to_i)
       elsif @delimiter
-        str=@frame.slice!(/^.*?#@delimiter/) || ''
-        len=(str.delete!(@delimiter)||'').size
+        return '' unless str=@frame.slice!(/^.*?#@delimiter/)
+        return '' unless len=str.delete!(@delimiter)
+      else
+        return ''
       end
-      return '' if str.empty?
       # Check Code
       @ccrange << str if @ccrange
       verbose("Frame","RSP:Cut: [#{str.inspect}] by size=[#{len}]")

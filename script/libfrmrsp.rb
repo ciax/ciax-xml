@@ -17,10 +17,10 @@ module CIAX
 
       # Ent is needed which includes response_id and cmd_parameters
       def ext_rsp(db)
-        ext_file(db['id'])
         @ver_color=3
         @db=type?(db,Db)
         fdbr=db[:response]
+        self['id']=db['site_id']||db['id']
         self['ver']=db['version'].to_i
         @sel=Hash[fdbr[:frame]]
         @fds=fdbr[:index]
@@ -32,6 +32,10 @@ module CIAX
           }
         end
         self
+      end
+
+      def ext_file
+        super(self['id'])
       end
 
       # Block accepts [frame,time]

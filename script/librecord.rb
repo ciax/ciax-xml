@@ -13,7 +13,7 @@ module CIAX
         self['id']=self['time'].to_s
         extend PrtRecord unless $opt['r']
         @depth=0
-        ext_file(self['id'])
+        ext_file
       end
 
       def add_step(e1,cfg)

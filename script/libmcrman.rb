@@ -11,7 +11,7 @@ module CIAX
           cfg=Config.new
           @mdb=cfg[:db]=Mcr::Db.new.set(proj)
           cfg[:app]=App::List.new
-          @list=List.new.ext_file(proj)
+          @list=List.new(proj).ext_file
           self['sid']='' # response id
           super('mcr',@mdb['id'],Command.new(cfg))
           ext_shell(@list)
@@ -75,8 +75,9 @@ module CIAX
     end
 
     class List < Datax
-      def initialize
+      def initialize(proj)
         super('macro',{},'procs')
+        self['id']=proj
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @total=''
       end

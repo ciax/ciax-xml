@@ -95,11 +95,11 @@ module CIAX
           adb=Loc::Db.new.set(id)[:app]
         else
           adb=Loc::Db.new.set(id)[:app]
-          id=adb['site_id']
+          stat.set_db(adb)
           if host=$opt['h']
-            stat.ext_http(id,host).load
+            stat.ext_http(host).load
           else
-            stat.ext_file(id).load
+            stat.ext_file.load
           end
         end
         puts View.new(adb,stat).ext_prt

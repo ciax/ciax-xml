@@ -13,7 +13,7 @@ _getcmd(){
 _getstat(){
     for cmd; do
         echo -ne "${C3}process $cmd $par$C0\t"
-        logline $id $cmd $par > $temp || { echo; continue; }
+        sqlog-json $id $cmd $par > $temp || { echo; continue; }
         VER=$ver < $temp $frmrsp -m || return 1
     done
 }

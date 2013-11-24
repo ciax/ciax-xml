@@ -11,10 +11,8 @@ module CIAX
         Msg.type?(obj,Status)
       end
 
-      def ext_sym(adb)
-        type?(adb,App::Db)
-        adbs=adb[:status]
-        self['ver']=adb['version'].to_i
+      def ext_sym
+        adbs=@db[:status]
         @symbol=adbs[:symbol]||{}
         @symdb=Sym::Db.pack(['all',adbs['symtbl']])
         self['class']={}
@@ -52,8 +50,8 @@ module CIAX
     end
 
     class Status
-      def ext_sym(adb)
-        extend(Symbol).ext_sym(adb)
+      def ext_sym
+        extend(Symbol).ext_sym
       end
     end
 
@@ -64,7 +62,7 @@ module CIAX
       begin
         adb=Loc::Db.new.set(id)[:app]
         stat=Status.new.set_db(adb).ext_file.load
-        stat.ext_sym(adb).upd.save
+        stat.ext_sym.upd.save
         print stat
       rescue InvalidID
         Msg.usage "[id]"

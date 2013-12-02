@@ -73,7 +73,7 @@ module CIAX
       def initialize(cfg)
         super
         @mode='TEST'
-        @stat.ext_sym(@adb)
+        @stat.ext_sym
         @stat.upd_procs << proc{|st|st['time']=now_msec}
         @cobj.add_int
         @cobj.ext_proc{|ent|
@@ -123,7 +123,7 @@ module CIAX
         super(cfg)
         @fsh=type?(cfg['frm'][@id],Frm::Exe)
         @mode=@fsh.mode
-        @stat.ext_rsp(@fsh.field).ext_sym(@adb).ext_file.upd
+        @stat.ext_rsp(@fsh.field).ext_sym.ext_file.upd
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @buf=init_buf
         @cobj.ext_proc{|ent|

@@ -134,6 +134,7 @@ module CIAX
       host||='localhost'
       @prefix="http://"+host+"/json/"
       verbose("Http","Initialize")
+      self['id']||Msg.cfg_err("ID")
       self
     end
 
@@ -161,6 +162,7 @@ module CIAX
       verbose("File","Initialize")
       @prefix=VarDir+"/json/"
       FileUtils.mkdir_p @prefix
+      self['id']||Msg.cfg_err("ID")
       self
     end
 

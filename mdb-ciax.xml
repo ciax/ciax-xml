@@ -5,6 +5,7 @@
       <goal label="On Tag?">
         <stat site="crt" var="cps" inv="true">0</stat>
       </goal>
+      <mesg label="Clear the way?"/>
       <wait retry="5" label="Ready?">
         <stat var="rdy" site="crt">ON</stat>
       </wait>

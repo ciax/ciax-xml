@@ -49,7 +49,7 @@ module CIAX
         max=self['max']=self['retry']
         res=max.to_i.times{|n| #gives number or nil(if break)
           self['retry']=n
-          break if ok?
+          break if condition_ok?
           sleep itv
           yield
           @save_procs.call
@@ -59,16 +59,23 @@ module CIAX
         res
       end
 
+      def ok?
+        show title
+        res=self['result']='ok'
+        save
+        res
+      end
+
       def skip?
         show title
-        res=ok?('skip','pass')
+        res=condition_ok?('skip','pass')
         save
         res
       end
 
       def fail?
         show title
-        res=! ok?('pass','failed')
+        res=! condition_ok?('pass','failed')
         save
         res
       end
@@ -111,7 +118,7 @@ module CIAX
       end
 
       # Sub methods
-      def ok?(t=nil,f=nil)
+      def condition_ok?(t=nil,f=nil)
         stats=scan
         conds=@condition.map{|h|
           cond={}

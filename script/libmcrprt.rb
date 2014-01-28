@@ -40,6 +40,8 @@ module CIAX
 
       def title
         case self['type']
+        when 'mesg'
+          msg=head('Mesg',5)
         when 'goal'
           msg=head('Done?',6)
         when 'check'

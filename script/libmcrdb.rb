@@ -32,6 +32,8 @@ module CIAX
             par2item(e1,item) && next
             attr['type'] = e1.name
             case e1.name
+            when 'mesg'
+              body << attr
             when 'check','wait'
               body << make_condition(e1,attr)
             when 'goal'

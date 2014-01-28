@@ -89,6 +89,7 @@ module CIAX
           "suppress"=>["and Memorize",proc{'SUP'}],
           "force"=>["Proceed",proc{'FORCE'}],
           "pass"=>["Step",proc{nil}],
+          "ok"=>["for the message",proc{nil}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
           add_item(id,id.capitalize+" "+a[0])
@@ -147,6 +148,8 @@ module CIAX
           begin
             @step=@record.add_step(e1,@cfg)
             case e1['type']
+            when 'mesg'
+              ack?(@step.ok?)
             when 'goal'
               return if skip?(@step.skip?)
             when 'check'
@@ -182,6 +185,10 @@ module CIAX
       end
 
       # Interactive section
+      def ack?(res)
+        $opt['n'] || query(['ok'])
+      end
+
       def skip?(res)
         return res if $opt['n']
         res && !query(['pass','force'])

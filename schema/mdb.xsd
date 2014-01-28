@@ -35,6 +35,7 @@
         <xsd:choice minOccurs="1" maxOccurs="unbounded">
           <xsd:element ref="mdb:check" />
           <xsd:element ref="mdb:wait" />
+          <xsd:element ref="mdb:mesg" />
           <xsd:element ref="mdb:mcr" />
           <xsd:element ref="mdb:exec" />
         </xsd:choice>
@@ -108,6 +109,11 @@
           <xsd:attribute name="site" type="xsd:token" use="required" />
         </xsd:extension>
       </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="mesg">
+    <xsd:complexType>
+      <xsd:attribute name="label" type="xsd:token" use="required" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

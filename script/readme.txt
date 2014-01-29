@@ -19,6 +19,7 @@ salite3: light weight sql server for logging, not for access from multiple proce
  PROJ
  NOCACHE
  NOSQLOG
+ DEBUG
  VER
 
 ## Dir

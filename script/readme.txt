@@ -18,7 +18,8 @@ salite3: light weight sql server for logging, not for access from multiple proce
  XMLPATH
  PROJ
  NOCACHE
- NOSQL
+ NOSQLOG
+ VER
 
 ## Dir
 ~/.var/cache

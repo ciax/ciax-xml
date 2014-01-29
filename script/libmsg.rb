@@ -66,8 +66,6 @@ module CIAX
       #For macro
       optdb['n']='non-stop mode'
       optdb['m']='movable mode'
-      #For debug
-      optdb['d']='debug mode'
       optdb.update(db)
       db.keys.each{|k|
         str << k unless str.include?(k)
@@ -76,7 +74,7 @@ module CIAX
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact
       update(ARGV.getopts(str))
-      require 'debug' if self['d']
+      require 'debug' if ENV['DEBUG']
       $opt=self
     end
 

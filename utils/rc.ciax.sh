@@ -25,5 +25,4 @@ alias jv=json-view
 alias jlv=json-logview
 alias mkhtm=make-html
 alias msv=marshal-view
-alias reg=register-files
 alias logj=sqlog-json

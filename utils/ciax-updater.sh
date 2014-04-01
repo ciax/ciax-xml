@@ -8,4 +8,4 @@ else
     wget http://ciax.sum.naoj.org/dav/ciax-xml.tgz
     tar xvzf ciax-xml.tgz
 fi
-ciax-installer
+ciax-setup

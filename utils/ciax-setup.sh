@@ -1,4 +1,16 @@
 #!/bin/bash
+mklink(){
+    for i;do
+        [ -d "$i" ] && (dig_dir "$i";mklink *)
+        r="$(pwd -P)/${i##*/}"
+        case $i in
+            lib*) ln -s "$r" ~/lib/;;
+            *.rb|*.sh) ln -s "$r" ~/bin/;;
+            *);;
+        esac
+    done
+}
+
 dig_dir(){
     for i ; do
         [ -d "$i" ] || mkdir "$i"
@@ -8,8 +20,6 @@ dig_dir(){
 
 dig_dir ~/.var cache
 /bin/rm cache/*.mar >/dev/null 2>&1
-cd ..
-dig_dir json
+dig_dir ~/.var/json
 /bin/rm *.json >/dev/null 2>&1
-cd ~/ciax-xml
-./utils/register-files.sh */
+mklink ~/ciax-xml/*

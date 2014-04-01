@@ -4,8 +4,8 @@ mklink(){
         [ -d "$i" ] && (dig_dir "$i";mklink *)
         r="$(pwd -P)/${i##*/}"
         case $i in
-            lib*) ln -s "$r" ~/lib/;;
-            *.rb|*.sh) ln -s "$r" ~/bin/;;
+            lib*) ln -sf "$r" ~/lib/;;
+            *.rb|*.sh) ln -sf "$r" ~/bin/;;
             *);;
         esac
     done

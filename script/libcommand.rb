@@ -132,6 +132,7 @@ module CIAX
     end
   end
 
+  # Corresponds commands
   class Item < Hashx
     include Math
     attr_reader :cfg
@@ -202,6 +203,7 @@ module CIAX
     end
   end
 
+  # Command db with parameter derived from Item
   class Entity < Hashx
     attr_reader :id,:par,:cfg
     #set should have :def_proc

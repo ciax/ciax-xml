@@ -141,14 +141,14 @@ module CIAX
 
       def scan
         sites.inject({}){|hash,site|
-          hash[site]=@cfg[:stat_proc].call(site)
+          hash[site]=@cfg[:app][site].stat
           hash
         }
       end
 
       def refresh
         sites.each{|site|
-          @cfg[:stat_proc].call(site).refresh
+          @cfg[:app][site].stat.refresh
         }
       end
 

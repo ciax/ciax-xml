@@ -5,7 +5,7 @@ module CIAX
   module Mcr
     module Prt
       def head(msg,col)
-        label=self['label']||self['site']
+        label=self['label']||self['site']||'noname'
         msg=Msg.indent(self['depth'].to_i)+Msg.color(msg,col)+':'
         if key?('cmd')
           msg << self['cmd'].join(' ')+'('+label+')'

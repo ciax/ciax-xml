@@ -15,7 +15,7 @@ umask 022
 shopt -s nullglob
 export LANG="C"
 addenv PATH "$HOME/bin" "$HOME/lib"
-addenv RUBYLIB "$HOME/lib"
+addenv RUBYLIB "$HOME/ciax-xml/script"
 export XMLPATH="$HOME/ciax-xml"
 
 #Alias

@@ -2,9 +2,11 @@
 mklink(){
     for i;do
         [ -d "$i" ] && (dig_dir "$i";mklink *)
-        r="$(pwd -P)/${i##*/}"
+        base=${i##*/}
+        core=${base%.*}
+        dir="$(pwd -P)"
         case $i in
-            *.rb|*.sh) ln -sf "$r" ~/bin/;;
+            *.rb|*.sh) ln -sf "$dir/$base" ~/bin/$core;;
             *);;
         esac
     done

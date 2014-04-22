@@ -1,3 +1,5 @@
+# Required packages: ruby-libxml,libxml2-utils,socat,sqlite3
+
 ## Install required (Debian squeeze) ##
  ruby1.9.1 (for using JSON)
  libxml-ruby1.9.1 (XML instead of REXML)
@@ -12,7 +14,7 @@
 ## Required Apps
 xmllint: XML validator
 socat: communication for UDP/TCP/..., that has more features than 'nc'
-salite3: light weight sql server for logging, not for access from multiple processes  
+sqlite3: light weight sql server for logging, not for access from multiple processes  
 
 ## ENV Var ##
  RUBYLIB

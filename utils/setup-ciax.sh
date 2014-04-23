@@ -25,10 +25,10 @@ init_pkg(){
     read dist dmy < /etc/issue
     case "$dist" in
         Debian)
-            sudo apt-get install ruby socat
+            sudo apt-get install ruby-libxml socat sqlite3
             ;;
         Ubuntu)
-            sudo apt-get install socat
+            sudo apt-get install ruby-libxml socat sqlite3
             ;;
         CentOS)
             ;;

@@ -1,8 +1,4 @@
 #!/bin/bash
-init_bashrc(){
-    grep -q '#initrc' ~/.bashrc >/dev/null 2>&1 && return
-    echo 'shopt -s nullglob;for i in ~/bin/rc.*;do . $i;done #initrc' >> ~/.bashrc
-}
 mklink(){
     for i;do
         [ -d "$i" ] && (dig_dir "$i";mklink *)
@@ -21,6 +17,10 @@ dig_dir(){
         cd "$i"
     done
 }
+init_bashrc(){
+    grep -q '#initrc' ~/.bashrc >/dev/null 2>&1 && return
+    echo 'shopt -s nullglob;for i in ~/bin/rc.*;do . $i;done #initrc' >> ~/.bashrc
+}
 init_pkg(){
     read dist dmy < /etc/issue
     case "$dist" in
@@ -28,7 +28,7 @@ init_pkg(){
             sudo apt-get install ruby-libxml libxml2-utils socat sqlite3
             ;;
         Ubuntu)
-            sudo apt-get install socat
+            sudo apt-get install ruby-libxml socat sqlite3
             ;;
         CentOS)
             ;;

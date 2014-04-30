@@ -10,9 +10,10 @@ module CIAX
       attr_reader :extgrp,:intgrp
       def initialize(upper)
         super
-        svc={:group_class =>ExtGrp,:mobj => self}
+        svc={:group_class =>ExtGrp,:entity_class=>ExtEntity,:mobj => self}
         svc[:int_grp]=IntGrp.new(@cfg).def_proc
         @extgrp=@svdom.add_group(svc)
+        @cfg[:depth]=0
       end
 
       def ext_proc(&def_proc)
@@ -50,6 +51,21 @@ module CIAX
           self[id].set_proc(&prc)
         }
         self
+      end
+    end
+
+    class ExtEntity < ExtEntity
+      def initialize(upper,crnt={})
+        super
+        exp=[]
+        crnt[:depth]=upper[:depth]+1
+        @cfg[:body].each{|elem|
+          elem["depth"]=@cfg[:depth]
+          exp << elem
+          next if elem["type"] != "mcr" || /true|1/ === elem["async"]
+          exp+=@cfg[:mobj].set_cmd(elem["args"],{:depth => @cfg[:depth]+1}).cfg[:body]
+        }
+        @cfg[:body]=exp
       end
     end
 

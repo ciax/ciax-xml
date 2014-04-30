@@ -157,8 +157,10 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
-        ent=cobj.set_cmd(ARGV)
-        mobj=Macro.new(ent.cfg).macro
+        cobj.ext_proc{|ent|
+          Macro.new(ent.cfg).macro
+        }
+        cobj.set_cmd(ARGV).exe
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

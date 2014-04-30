@@ -1,8 +1,6 @@
 #!/usr/bin/ruby
 require "libmcrdb"
-require "librecord"
-require "libappsh"
-
+require "libextcmd"
 
 module CIAX
   module Mcr
@@ -58,7 +56,6 @@ module CIAX
       def initialize(upper,crnt={})
         super
         exp=[]
-        crnt[:depth]=upper[:depth]+1
         @cfg[:body].each{|elem|
           elem["depth"]=@cfg[:depth]
           exp << elem

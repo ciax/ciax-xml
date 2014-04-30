@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require "libmacrocmd"
+require "libappsh"
 require "librecord"
 
 module CIAX
@@ -42,8 +43,8 @@ module CIAX
 
       private
       def submacro(cfg)
-        @record.depth+=1
         cfg[:body].each{|e1|
+          @record.depth=e1['depth']+1
           begin
             @step=@record.add_step(e1,cfg)
             case e1['type']
@@ -61,8 +62,6 @@ module CIAX
             when 'mcr'
               if @step.async?
                 @exe_que << e1['args']
-              else
-                submacro(cfg[:mobj].set_cmd(e1['args']).cfg)
               end
             end
           rescue Retry
@@ -70,7 +69,6 @@ module CIAX
           rescue Skip
           end
         }
-        @record.depth-=1
         self
       end
 

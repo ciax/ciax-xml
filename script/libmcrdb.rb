@@ -21,8 +21,11 @@ module CIAX
         mbs={}
         grp={'main' =>{'caption' => 'Main',:members => mbs}}
         mdbc.each{|e0|
-          verbose("Mdb","MACRO:[#{e0['id']}]")
-          id=e0.attr2item(idx)
+          e0.attr2item(idx)
+        }
+        mdbc.each{|e0|
+          id=e0['id']
+          verbose("Mdb","MACRO:[#{id}]")
           item=idx[id]
           mbs[id]=item['label']
           body=(item[:body]||=[])
@@ -46,7 +49,7 @@ module CIAX
               verbose("Mdb","COMMAND:[#{e1['name']}]")
             when 'mcr'
               args=attr['args']=getcmd(e1)
-              attr['label']=idx[args.first][:label]
+              attr['label']=idx[args.first]['label']
               attr.delete('name')
               body << attr
             end

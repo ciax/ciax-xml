@@ -33,8 +33,8 @@ module CIAX
         finish('error')
         self
       rescue Interrupt
-        warn("\nInterrupt Issued to #{@stat.running}")
-        @stat.running.each{|site|
+        warn("\nInterrupt Issued to #{@running}")
+        @running.each{|site|
           @cfg[:app][site].exe(['interrupt'])
         } if $opt['m']
         finish('interrupted')

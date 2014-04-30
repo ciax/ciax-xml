@@ -52,7 +52,7 @@ module CIAX
         @ver_color=0
       end
 
-      def set_par(par)
+      def set_par(par,opt={})
         ent=super
         return unless @sel[:body]=ent.cfg[:body]
         cid=ent.id

@@ -31,7 +31,7 @@ module CIAX
 
     class ExtItem < Item
       #batch is ary of args(ary)
-      def set_par(par)
+      def set_par(par,opt={})
         ent=super
         batch=[]
         ent.cfg[:body].each{|e1|

@@ -16,10 +16,10 @@ module CIAX
       get_item(id).set_proc(&def_proc)
     end
 
-    def set_cmd(args)
+    def set_cmd(args,opt={})
       id,*par=type?(args,Array)
       valid_keys.include?(id) || raise(InvalidCMD,list)
-      get_item(id).set_par(par)
+      get_item(id).set_par(par,opt)
     end
 
     def valid_keys

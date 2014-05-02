@@ -79,7 +79,7 @@ module CIAX
     end
 
     def usage(str)
-      Msg.usage(str,@list)
+      Msg.usage([str,*@list].join("\n"))
     end
   end
 

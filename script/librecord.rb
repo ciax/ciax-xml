@@ -17,6 +17,7 @@ module CIAX
       end
 
       def add_step(e1,cfg)
+        Msg.type?(cfg[:app],App::List)
         step=Step.new(e1,@depth,cfg){save}
         step['time']=Msg.elps_sec(self['time'])
         @data << step

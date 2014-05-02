@@ -19,7 +19,6 @@ module CIAX
         @exe_que=Queue.new
         @running=[]
         @stat={}
-        @cfg[:stat_proc]=proc{|site| al[site].stat}
       end
 
       # separated for sub thread

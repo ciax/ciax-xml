@@ -15,7 +15,7 @@ module CIAX
     end
 
     def set(id)
-      @list.error unless id
+      raise(InvalidID,@list.to_s) unless id
       update(cache(id,@group){|doc| doc_to_db doc.set(id) }).deep_copy
     end
 

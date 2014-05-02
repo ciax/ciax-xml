@@ -135,10 +135,6 @@ module CIAX
         ''
       end
     end
-
-    def error
-      raise InvalidCMD,to_s
-    end
   end
 
   # Should be extended in module/class
@@ -268,10 +264,9 @@ module CIAX
       Kernel.abort([color(msg,1),$!.to_s].join("\n"))
     end
 
-    def usage(str,optlist=[])
+    def usage(str,code=1)
       Kernel.warn("Usage: #{$0.split('/').last} #{str}")
-      optlist.each{|s| Kernel.warn s}
-      exit
+      exit code
     end
 
     def exit(code=1)

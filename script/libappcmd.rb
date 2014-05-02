@@ -72,6 +72,8 @@ module CIAX
       }
     rescue InvalidID
       Msg.usage("[app] [cmd] (par)")
+    rescue InvalidCMD
+      Msg.usage("[cmd] (par)",2)
     end
   end
 end

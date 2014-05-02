@@ -70,10 +70,10 @@ module CIAX
       acobj.set_cmd(args).cfg[:batch].each{|fargs|
         p fargs
       }
-    rescue InvalidID
-      Msg.usage("[app] [cmd] (par)")
     rescue InvalidCMD
       Msg.usage("[cmd] (par)",2)
+    rescue InvalidID
+      Msg.usage("[app] [cmd] (par)")
     end
   end
 end

@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "fileutils"
 module CIAX
+  require 'debug' if ENV['DEBUG']
   VarDir="#{ENV['HOME']}/.var"
   ScrDir=::File.dirname(__FILE__)
   Indent='  '
@@ -47,7 +48,7 @@ module CIAX
   class GetOpts < Hash
     def initialize(str='',db={})
       require 'optparse'
-      Msg.type?(str,String) << 'd'
+      Msg.type?(str,String)
       optdb={}
       #Layer
       optdb['a']='app layer (default)'
@@ -74,7 +75,6 @@ module CIAX
         optdb.key?(c) && Msg.item("-"+c,optdb[c]) || nil
       }.compact
       update(ARGV.getopts(str))
-      require 'debug' if ENV['DEBUG']
       $opt=self
     end
 

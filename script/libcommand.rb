@@ -45,10 +45,10 @@ module CIAX
   end
 
   class Command < Arrayx
-    include GrpShare
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
+    include GrpShare
     attr_reader :svdom,:lodom,:hidgrp
     def initialize(upper)
       @cfg=Config.new(upper)
@@ -63,6 +63,7 @@ module CIAX
   end
 
   class Domain < Arrayx
+    #upper keys: def_proc,group_class,item_class,entity_class
     include GrpShare
     def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
@@ -85,7 +86,7 @@ module CIAX
   class Group < Hashx
     include GrpShare
     attr_reader :valid_keys,:cfg
-    #upper = {caption,color,column}
+    #upper keys: caption,color,column
     def initialize(upper=Config.new,crnt={})
       @cfg=Config.new(upper).update(crnt)
       @cfg[:level]='group'

@@ -19,9 +19,11 @@ dig_dir(){
 }
 init_bashrc(){
     grep -q '#initrc' ~/.bashrc >/dev/null 2>&1 && return
+    echo $C3"Update .bashrc"$C0
     echo 'shopt -s nullglob;for i in ~/bin/rc.*;do . $i;done #initrc' >> ~/.bashrc
 }
 init_pkg(){
+    echo $C3"Install required packages"$C0
     read dist dmy < /etc/issue
     case "$dist" in
         Debian)
@@ -35,11 +37,13 @@ init_pkg(){
         *);;
     esac
 }
+echo $C3"Prepare work dirs"$C0
 dig_dir ~/.var cache
 /bin/rm cache/*.mar >/dev/null 2>&1
 dig_dir ~/.var/json
 /bin/rm *.json >/dev/null 2>&1
 dig_dir ~/bin
+echo $C3"Make script symlinks"$C0
 mklink ~/ciax-xml/*
 init_bashrc
 init_pkg

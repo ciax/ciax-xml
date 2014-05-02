@@ -110,7 +110,7 @@ module CIAX
         fld.read unless STDIN.tty?
         print cobj.set_cmd(args).cfg[:frame]
       rescue InvalidCMD
-        Msg.usage("[dev] [cmd] (par) < field_file",2)
+        Msg.usage("#{id} [cmd] (par) < field_file",2)
       rescue InvalidID
         Msg.usage("[dev] [cmd] (par) < field_file")
       end

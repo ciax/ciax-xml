@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libmacrocmd"
-require "librecord"
+require "libmacrorec"
 require "libappsh"
 
 module CIAX
@@ -9,8 +9,7 @@ module CIAX
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:running,:cmd_que,:res_que,:exe_que
       def initialize(cobj)
-        @record=Record.new
-        super('mcr',@record['id'],cobj)
+        super('mcr','',cobj)
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
@@ -18,6 +17,7 @@ module CIAX
         @cobj.ext_proc{|ent|
           @cfg=Msg.type?(ent.cfg,Config)
           type?(@cfg[:app],App::List)
+          @cfg['id']=ent.id
           macro
         }
         @cobj.item_proc('interrupt'){|ent|
@@ -42,7 +42,7 @@ module CIAX
       private
       def macro
         set_stat 'run'
-        @record['label']=@cfg['label']
+        @record=Record.new(@cfg)
         show @record
         @cfg[:body].each{|e1|
           @record.depth=e1['depth']+1
@@ -169,7 +169,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
-        Exe.new(cobj).ext_shell.shell
+        Exe.new(cobj).exe(ARGV)
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

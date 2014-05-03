@@ -8,29 +8,68 @@ module CIAX
     class Exe < Exe
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:running,:cmd_que,:res_que,:exe_que
-      attr_accessor :thread
-      def initialize(ent,cobj)
-        @entity=type?(ent,ExtEntity)
-        super('mcr',ent.id,cobj)
+      def initialize(cobj)
+        @record=Record.new
+        super('mcr',@record['id'],cobj)
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
         @exe_que=Queue.new
-        @cfg=Msg.type?(ent.cfg,Config)
-        type?(@cfg[:app],App::List)
-        @record=Record.new
-        @record['label']=@cfg['label']
+        @cobj.ext_proc{|ent|
+          @cfg=Msg.type?(ent.cfg,Config)
+          type?(@cfg[:app],App::List)
+          macro
+        }
         @cobj.item_proc('interrupt'){|ent|
-          @thread.raise(Interrupt)
+          raise(Interrupt)
           'INTERRUPT'
         }
       end
 
-      # separated for sub thread
+      def ext_shell
+        super(@record,{:stat => "(%s)",:option =>"[%s]"})
+        @cobj.add_int.set_proc{|ent|
+          if self[:stat] == 'query'
+            @cmd_que.push ent.id
+            @res_que.pop
+          else
+            'IGNORE'
+          end
+        }
+        self
+      end
+
+      private
       def macro
         set_stat 'run'
+        @record['label']=@cfg['label']
         show @record
-        submacro(@cfg)
+        @cfg[:body].each{|e1|
+          @record.depth=e1['depth']+1
+          begin
+            @step=@record.add_step(e1,@cfg)
+            case e1['type']
+            when 'mesg'
+              ack?(@step.ok?)
+            when 'goal'
+              return if skip?(@step.skip?)
+            when 'check'
+              drop?(@step.fail?)
+            when 'wait'
+              drop?(@step.timeout?{show '.'})
+            when 'exec'
+              @running << e1['site']
+              @cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
+            when 'mcr'
+              if @step.async?
+                @exe_que << e1['args']
+              end
+            end
+          rescue Retry
+            retry
+          rescue Skip
+          end
+        }
         finish
         self
       rescue Interlock
@@ -45,41 +84,11 @@ module CIAX
         self
       end
 
-      private
-      def submacro(cfg)
-        cfg[:body].each{|e1|
-          @record.depth=e1['depth']+1
-          begin
-            @step=@record.add_step(e1,cfg)
-            case e1['type']
-            when 'mesg'
-              ack?(@step.ok?)
-            when 'goal'
-              return if skip?(@step.skip?)
-            when 'check'
-              drop?(@step.fail?)
-            when 'wait'
-              drop?(@step.timeout?{show '.'})
-            when 'exec'
-              @running << e1['site']
-              cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
-            when 'mcr'
-              if @step.async?
-                @exe_que << e1['args']
-              end
-            end
-          rescue Retry
-            retry
-          rescue Skip
-          end
-        }
-        self
-      end
-
       def finish(str='complete')
         @running.clear
         show str+"\n"
         @record.finish(str)
+        self[:option]=nil
         set_stat str
       end
 
@@ -151,20 +160,6 @@ module CIAX
       def show(msg)
         print msg if Msg.fg?
       end
-
-
-      def ext_shell
-        super(@entity.record,{:stat => "(%s)",:option =>"[%s]"})
-        @cobj.add_int.set_proc{|ent|
-          if self[:stat] == 'query'
-            @cmd_que.push ent.id
-            @res_que.pop
-          else
-            'IGNORE'
-          end
-        }
-        self
-      end
     end
 
     if __FILE__ == $0
@@ -174,10 +169,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
-        cobj.ext_proc{|ent|
-          Exe.new(ent,cobj).macro
-        }
-        cobj.set_cmd(ARGV).exe
+        Exe.new(cobj).ext_shell.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

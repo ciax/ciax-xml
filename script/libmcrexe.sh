@@ -1,24 +1,29 @@
 #!/usr/bin/ruby
 require "libmacrocmd"
-require "libappsh"
 require "librecord"
+require "libappsh"
 
 module CIAX
   module Mcr
-    class Macro
-      include Msg
-      attr_reader :record,:cmd_que,:res_que,:exe_que
-      def initialize(cfg)
-        @cfg=Msg.type?(cfg,Config)
-        al=type?(@cfg[:app],App::List)
-        @record=Record.new
-        @record['label']=@cfg['label']
-        # Fixed Value
+    class Exe < Exe
+      #reqired cfg keys: app,db,body,stat
+      attr_reader :record,:running,:cmd_que,:res_que,:exe_que
+      attr_accessor :thread
+      def initialize(ent,cobj)
+        @entity=type?(ent,ExtEntity)
+        super('mcr',ent.id,cobj)
+        @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
         @exe_que=Queue.new
-        @running=[]
-        @stat={}
+        @cfg=Msg.type?(ent.cfg,Config)
+        type?(@cfg[:app],App::List)
+        @record=Record.new
+        @record['label']=@cfg['label']
+        @cobj.item_proc('interrupt'){|ent|
+          @thread.raise(Interrupt)
+          'INTERRUPT'
+        }
       end
 
       # separated for sub thread
@@ -75,7 +80,6 @@ module CIAX
         @running.clear
         show str+"\n"
         @record.finish(str)
-        @cfg[:int_grp].valid_keys.clear
         set_stat str
       end
 
@@ -102,14 +106,14 @@ module CIAX
       end
 
       def set_stat(str)
-        @stat[:stat]=str
+        self[:stat]=str
       end
 
       def query(cmds)
-        @stat[:option]=cmds.join('/')
+        self[:option]=cmds.join('/')
         set_stat 'query'
         res=input(cmds)
-        @stat[:option]=nil
+        self[:option]=nil
         set_stat 'run'
         @step['action']=res
         case res
@@ -130,7 +134,7 @@ module CIAX
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
         loop{
           if Msg.fg?
-            prom=@step.body("[#{@stat[:option]}]?")
+            prom=@step.body("[#{self[:option]}]?")
             @cmd_que << Readline.readline(prom,true).rstrip
           end
           id=@cmd_que.pop.split(/[ :]/).first
@@ -147,6 +151,20 @@ module CIAX
       def show(msg)
         print msg if Msg.fg?
       end
+
+
+      def ext_shell
+        super(@entity.record,{:stat => "(%s)",:option =>"[%s]"})
+        @cobj.add_int.set_proc{|ent|
+          if self[:stat] == 'query'
+            @cmd_que.push ent.id
+            @res_que.pop
+          else
+            'IGNORE'
+          end
+        }
+        self
+      end
     end
 
     if __FILE__ == $0
@@ -157,7 +175,7 @@ module CIAX
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
         cobj.ext_proc{|ent|
-          Macro.new(ent.cfg).macro
+          Exe.new(ent,cobj).macro
         }
         cobj.set_cmd(ARGV).exe
       rescue InvalidCMD

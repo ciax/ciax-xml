@@ -10,7 +10,7 @@ module CIAX
     end
 
     def to_s
-      view_struct(self)
+      view_struct
     end
 
     def to_j
@@ -36,7 +36,7 @@ module CIAX
           end
         end
       }||Msg.abort("No such key")
-      branch=enum.dup
+      branch=enum.dup.extend(ViewStruct)
       if Hash === branch
         branch.each{|k,v|
           branch[k]=v.class.to_s if Enumerable === v
@@ -46,7 +46,7 @@ module CIAX
         v=branch.instance_variable_get(n)
         branch.instance_variable_set(n,v.class.to_s) if Enumerable === v
       }
-      view_struct(branch)
+      branch.view_struct
     end
 
     def deep_copy

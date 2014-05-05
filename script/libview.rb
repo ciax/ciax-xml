@@ -4,7 +4,12 @@ module CIAX
   # show_iv = Show Instance Variable
   module ViewStruct
     include Msg
-    def view_struct(data,title=nil,oary=[],ind=0,show_iv=false)
+    def view_struct(show_iv=false)
+      _recursive(self,nil,[],0,show_iv)
+    end
+
+    private
+    def _recursive(data,title,oary,ind,show_iv)
       str=''
       col=4
       id=data.object_id
@@ -29,7 +34,6 @@ module CIAX
       _show(str,data,oary,ind,col,title,show_iv)
     end
 
-    private
     def _show(str,data,oary,ind,col,title,show_iv)
       if Enumerable === data
         if oary.include?(data.object_id)
@@ -52,7 +56,7 @@ module CIAX
     def _mixed?(str,data,vary,idx,oary,ind,show_iv)
       if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
-          str << view_struct(data.fetch(i),i,oary,ind,show_iv)
+          str << _recursive(data.fetch(i),i,oary,ind,show_iv)
         }
       end
     end

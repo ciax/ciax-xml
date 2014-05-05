@@ -4,75 +4,79 @@ module CIAX
   # show_iv = Show Instance Variable
   module ViewStruct
     include Msg
-    def view_struct(show_iv=false)
+    def view_struct(show_iv=1)
       _recursive(self,nil,[],0,show_iv)
     end
 
     private
-    def _recursive(data,title,oary,ind,show_iv)
+    def _recursive(data,title,object_ary,indent,show_iv)
       str=''
-      col=4
+      column=4
       id=data.object_id
       if title
         case title
         when Numeric
-          title="[#{title}](#{id})"
+          title="[#{title}]"
+          str << color("%-6s" % title,6,indent)
+        when /@/
+          str << color("%-6s" % title.inspect,1,indent)
         else
-          title=title.inspect
-          title << "(#{id})" if Enumerable === data
+          str << color("%-6s" % title.inspect,2,indent)
         end
-        str << color("%-6s" % title,5,ind)+" :\n"
-        ind+=1
+        str << color("(#{id})",4) if Enumerable === data
+        str << " :\n"
+        indent+=1
       else
         str << "#\n"
       end
       iv={}
       data.instance_variables.each{|n|
         iv[n]=data.instance_variable_get(n) unless n == :object_ids
-      } if show_iv
-      _show(str,iv,oary,ind,col,title,show_iv)
-      _show(str,data,oary,ind,col,title,show_iv)
+        show_iv-=1 # Show only top level of the instance variable
+      } if show_iv > 0
+      _show(str,iv,object_ary,indent,column,title,show_iv)
+      _show(str,data,object_ary,indent,column,title,show_iv)
     end
 
-    def _show(str,data,oary,ind,col,title,show_iv)
+    def _show(str,data,object_ary,indent,column,title,show_iv)
       if Enumerable === data
-        if oary.include?(data.object_id)
+        if object_ary.include?(data.object_id)
           return str.chomp + " #{data.class}(Loop)\n"
         else
-          oary=[data.object_id].concat(oary)
+          object_ary << data.object_id
         end
       end
       case data
       when Array
-        return str if _mixed?(str,data,data,data.size.times,oary,ind,show_iv)
-        return _only_ary(str,data,ind,col) if data.size > col
+        return str if _mixed?(str,data,data,data.size.times,object_ary,indent,show_iv)
+        return _only_ary(str,data,indent,column) if data.size > column
       when Hash
-        return str if _mixed?(str,data,data.values,data.keys,oary,ind,show_iv)
-        return _only_hash(str,data,ind,col,title) if data.size > 2
+        return str if _mixed?(str,data,data.values,data.keys,object_ary,indent,show_iv)
+        return _only_hash(str,data,indent,title) if data.size > 2
       end
       str.chomp + " #{data.inspect}\n"
     end
 
-    def _mixed?(str,data,vary,idx,oary,ind,show_iv)
+    def _mixed?(str,data,vary,idx,object_ary,indent,show_iv)
       if vary.any?{|v| v.kind_of?(Enumerable)}
         idx.each{|i|
-          str << _recursive(data.fetch(i),i,oary,ind,show_iv)
+          str << _recursive(data.fetch(i),i,object_ary,indent,show_iv)
         }
       end
     end
 
-    def _only_ary(str,data,ind,col)
-      str << indent(ind)+"["
+    def _only_ary(str,data,indent,column)
+      str << indent(indent)+"["
       line=[]
-      data.each_slice(col){|a|
+      data.each_slice(column){|a|
         line << a.map{|v| v.inspect}.join(",")
       }
-      str << line.join(",\n "+indent(ind))+"]\n"
+      str << line.join(",\n "+indent(indent))+"]\n"
     end
 
-    def _only_hash(str,data,ind,col,title)
+    def _only_hash(str,data,indent,title)
       data.keys.each_slice(title ? 2 : 1){|a|
-        str << indent(ind)+a.map{|k|
+        str << indent(indent)+a.map{|k|
           color("%-8s" % k.inspect,3)+(": %-10s" % data.fetch(k).inspect)
         }.join("\t")+"\n"
       }

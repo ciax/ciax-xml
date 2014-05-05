@@ -9,7 +9,6 @@ module CIAX
       def initialize(upper)
         super
         svc={:group_class =>ExtGrp,:entity_class=>ExtEntity,:mobj => self}
-#        svc[:int_grp]=IntGrp.new(@cfg).def_proc
         @extgrp=@svdom.add_group(svc)
         @cfg[:depth]=0
       end

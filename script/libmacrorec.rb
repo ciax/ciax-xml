@@ -14,12 +14,13 @@ module CIAX
         self['sid']=self['time'].to_s
         self['cid']=@cfg['id']
         self['label']=@cfg['label']
+        self['id']=@cfg[:db]['id']
         ext_file
       end
 
       def add_step(e1,cfg)
         Msg.type?(cfg[:app],App::List)
-        step=Step.new(e1,cfg){save(self['id'])}
+        step=Step.new(e1,cfg){save(self['sid'])}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
         step
@@ -28,7 +29,7 @@ module CIAX
       def finish(str)
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
-        save(self['time'].to_s)
+        save(self['sid'])
       end
     end
 

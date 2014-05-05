@@ -71,7 +71,7 @@ module CIAX
         cfg=Config.new
         cfg[:db]=Db.new.set('ciax')
         mobj=Command.new(cfg)
-        puts mobj.set_cmd(ARGV).cfg[:body].extend(Enumx).to_s
+        puts mobj.set_cmd(ARGV).cfg.extend(Enumx).to_s
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

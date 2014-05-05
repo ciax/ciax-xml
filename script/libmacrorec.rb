@@ -6,21 +6,20 @@ require "libmcrprt"
 module CIAX
   module Mcr
     class Record < Datax
-      attr_accessor :depth
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       def initialize(cfg)
         @cfg=type?(cfg,Config)
         super('record',[],'steps')
         extend PrtRecord unless $opt['r']
-        self['id']=@cfg['id']
+        self['sid']=self['time'].to_s
+        self['cid']=@cfg['id']
         self['label']=@cfg['label']
-        @depth=0
         ext_file
       end
 
       def add_step(e1,cfg)
         Msg.type?(cfg[:app],App::List)
-        step=Step.new(e1,@depth,cfg){save(self['time'].to_s)}
+        step=Step.new(e1,cfg){save(self['id'])}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
         step
@@ -34,9 +33,9 @@ module CIAX
     end
 
     class Step < Hashx
-      def initialize(db,depth,cfg,&save_procs)
+      def initialize(db,cfg,&save_procs)
         update db
-        self['depth']=depth
+        self['depth']=db['depth']
         #[:stat_proc,:exec_proc,:submcr_proc,:query,:show_proc]
         @cfg=cfg
         @save_procs=save_procs

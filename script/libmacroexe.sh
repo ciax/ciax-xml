@@ -45,7 +45,6 @@ module CIAX
         @record=Record.new(@cfg)
         show @record
         @cfg[:body].each{|e1|
-          @record.depth=e1['depth']+1
           begin
             @step=@record.add_step(e1,@cfg)
             case e1['type']

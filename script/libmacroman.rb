@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require "libsh"
-require "libmcrseqexe"
+require "libmacroexe"
 
 module CIAX
   module Mcr

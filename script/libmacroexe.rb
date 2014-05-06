@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmcrseqcmd"
+require "libmacrocmd"
 require "libmacrorec"
 require "libappsh"
 

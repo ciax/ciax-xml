@@ -13,14 +13,15 @@ module CIAX
         extend PrtRecord unless $opt['r']
         self['id']=db['id'] # Project
         self['ver']=db['version'] # Version
+        self['sid']=self['time'].to_s # Session ID
       end
 
       def start(cfg)
         ext_file
         @cfg=type?(cfg,Config)
-        self['sid']=self['time'].to_s # Session ID
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID
+        self
       end
 
       def add_step(e1)
@@ -35,6 +36,7 @@ module CIAX
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
         save(self['sid'])
+        self
       end
     end
 

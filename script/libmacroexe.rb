@@ -22,8 +22,10 @@ module CIAX
       def initialize(ent)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
-        @record=Record.new(type?(@cfg[:db],Db))
         @ques=Ques.new
+        @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
+        self[:cid]=@cfg[:cid]
+        self[:sid]=@record['sid']
         @running=[]
       end
 
@@ -33,7 +35,6 @@ module CIAX
       end
 
       def exe
-        @record.start(@cfg)
         set_stat 'run'
         show @record
         @cfg[:body].each{|e1|

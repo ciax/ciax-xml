@@ -13,6 +13,7 @@ module CIAX
       self['ver']=nil
       @data=init_struct.dup.extend(Enumx)
       @dataname=dataname
+      @thread=Thread.current # For Thread safe
       @ver_color=6
       @upd_procs=[] # Proc Array for Update Propagation to the upper Layers
       @save_procs=[] # Proc for Device Data Update (by Device response)
@@ -218,6 +219,7 @@ module CIAX
 
     private
     def write_json(data,tag=nil)
+      verbose("File","Saving from Multiple Threads") unless @thread == Thread.current
       name=file_name(tag)
       open(name,'w'){|f|
         f.flock(::File::LOCK_EX)

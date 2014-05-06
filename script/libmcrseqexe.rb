@@ -10,15 +10,14 @@ module CIAX
       attr_reader :record,:running,:cmd_que,:res_que,:exe_que
       def initialize(cobj)
         super('mcr','',cobj)
+        type?(cobj.cfg[:app],App::List)
+        type?(cobj.cfg[:db],Db)
         @running=[]
         @cmd_que=Queue.new
         @res_que=Queue.new
         @exe_que=Queue.new
         @cobj.ext_proc{|ent|
-          @cfg=Msg.type?(ent.cfg,Config)
-          type?(@cfg[:app],App::List)
-          @cfg['id']=ent.id
-          macro
+          macro(ent)
         }
         @cobj.item_proc('interrupt'){|ent|
           raise(Interrupt)
@@ -40,13 +39,15 @@ module CIAX
       end
 
       private
-      def macro
+      def macro(ent)
+        cfg=Msg.type?(ent.cfg,Config)
+        cfg['id']=ent.id
         set_stat 'run'
-        @record=Record.new(@cfg)
+        @record=Record.new(cfg)
         show @record
-        @cfg[:body].each{|e1|
+        cfg[:body].each{|e1|
           begin
-            @step=@record.add_step(e1,@cfg)
+            @step=@record.add_step(e1,cfg)
             case e1['type']
             when 'mesg'
               ack?(@step.ok?)
@@ -58,7 +59,7 @@ module CIAX
               drop?(@step.timeout?{show '.'})
             when 'exec'
               @running << e1['site']
-              @cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
+              cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
               if @step.async?
                 @exe_que << e1['args']
@@ -77,7 +78,7 @@ module CIAX
       rescue Interrupt
         warn("\nInterrupt Issued to #{@running}")
         @running.each{|site|
-          @cfg[:app][site].exe(['interrupt'])
+          cfg[:app][site].exe(['interrupt'])
         } if $opt['m']
         finish('interrupted')
         self

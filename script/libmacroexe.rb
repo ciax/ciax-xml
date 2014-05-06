@@ -18,22 +18,25 @@ module CIAX
     class Macro < Hashx
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :running,:ques
+      attr_reader :running,:ques,:thread
       def initialize(ent)
-        cfg=type?(type?(ent,Entity).cfg)
-        type?(cfg[:app],App::List)
-        @record=Record.new(type?(cfg[:db],Db))
+        @cfg=type?(type?(ent,Entity).cfg)
+        type?(@cfg[:app],App::List)
+        @record=Record.new(type?(@cfg[:db],Db))
         @ques=Ques.new
         @running=[]
-        macro(cfg)
       end
 
-      private
-      def macro(cfg)
-        @record.start(cfg)
+      def fork
+        @thread=Threadx.new("Macro Thread(#{@id})",10){exe}
+        self
+      end
+
+      def exe
+        @record.start(@cfg)
         set_stat 'run'
         show @record
-        cfg[:body].each{|e1|
+        @cfg[:body].each{|e1|
           begin
             @step=@record.add_step(e1)
             case e1['type']
@@ -47,7 +50,7 @@ module CIAX
               drop?(@step.timeout?{show '.'})
             when 'exec'
               @running << e1['site']
-              cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
+              @cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
               if @step.async?
                 @ques.exe << e1['args']
@@ -66,12 +69,13 @@ module CIAX
       rescue Interrupt
         warn("\nInterrupt Issued to #{@running}")
         @running.each{|site|
-          cfg[:app][site].exe(['interrupt'])
+          @cfg[:app][site].exe(['interrupt'])
         } if $opt['m']
         finish('interrupted')
         self
       end
 
+      private
       def finish(str='complete')
         @running.clear
         show str+"\n"
@@ -157,7 +161,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         ent=Command.new(cfg).set_cmd(ARGV)
-        Macro.new(ent)
+        Macro.new(ent).exe
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

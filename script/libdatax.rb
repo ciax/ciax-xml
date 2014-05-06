@@ -41,14 +41,14 @@ module CIAX
       self
     end
 
-    # never inherit
+    # never inherit, just add proc to @save_procs
     def save
       verbose("Datax","SAVE_PROC for [#{self['type']}:#{self['id']}]")
       @save_procs.each{|p| p.call(self)}
       self
     end
 
-    # never inherit
+    # never inherit, just add proc to @load_procs
     def load
       verbose("Datax","LOAD_PROC for [#{self['type']}:#{self['id']}]")
       @load_procs.each{|p| p.call(self)}

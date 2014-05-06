@@ -17,10 +17,6 @@ module CIAX
         @res_que=Queue.new
         @exe_que=Queue.new
         @save_que=Queue.new
-        @cobj.ext_proc{|ent|
-          @record=Record.new(ent.cfg)
-          macro
-        }
         @cobj.item_proc('interrupt'){|ent|
           raise(Interrupt)
           'INTERRUPT'
@@ -36,6 +32,14 @@ module CIAX
           else
             'IGNORE'
           end
+        }
+        self
+      end
+
+      def interact
+        @cobj.ext_proc{|ent|
+          @record=Record.new(ent.cfg)
+          macro
         }
         self
       end
@@ -175,7 +179,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
-        Exe.new(cobj).exe(ARGV)
+        Exe.new(cobj).interact.exe(ARGV)
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

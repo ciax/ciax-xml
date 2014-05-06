@@ -8,7 +8,7 @@ module CIAX
     class Exe < Exe
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:running,:cmd_que,:res_que,:exe_que,:thread
-      def initialize(cobj)
+      def initialize(cobj,fork=false)
         super('mcr','',cobj)
         type?(cobj.cfg[:app],App::List)
         type?(cobj.cfg[:db],Db)
@@ -21,10 +21,18 @@ module CIAX
           raise(Interrupt)
           'INTERRUPT'
         }
+        @cobj.ext_proc{|ent|
+          @record=Record.new(ent.cfg)
+          macro
+        }
       end
 
       def ext_shell
         super(@record,{:stat => "(%s)",:option =>"[%s]"})
+        @cobj.ext_proc{|ent|
+          @record=Record.new(ent.cfg)
+          @thread=Threadx.new("Macro Thread(#{ent.id})",10){macro}
+        }
         @cobj.add_int.set_proc{|ent|
           if self[:stat] == 'query'
             @cmd_que.push ent.id
@@ -33,20 +41,6 @@ module CIAX
             'IGNORE'
           end
         }
-        self
-      end
-
-      def interact
-        @cobj.ext_proc{|ent|
-          @record=Record.new(ent.cfg)
-          macro
-        }
-        self
-      end
-
-      def fork(ent)
-        @record=Record.new(ent.cfg)
-        @thread=Threadx.new("Macro Thread(#{ent.id})",10){macro}
         self
       end
 
@@ -62,7 +56,7 @@ module CIAX
             when 'mesg'
               ack?(@step.ok?)
             when 'goal'
-              return if skip?(@step.skip?)
+              break if skip?(@step.skip?)
             when 'check'
               drop?(@step.fail?)
             when 'wait'
@@ -179,7 +173,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
-        Exe.new(cobj).interact.exe(ARGV)
+        Exe.new(cobj).exe(ARGV)
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

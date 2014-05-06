@@ -23,25 +23,12 @@ module CIAX
         }
         @cobj.ext_proc{|ent|
           @record=Record.new(ent.cfg)
-          macro
-        }
-      end
-
-      def ext_shell
-        super(@record,{:stat => "(%s)",:option =>"[%s]"})
-        @cobj.ext_proc{|ent|
-          @record=Record.new(ent.cfg)
-          @thread=Threadx.new("Macro Thread(#{ent.id})",10){macro}
-        }
-        @cobj.add_int.set_proc{|ent|
-          if self[:stat] == 'query'
-            @cmd_que.push ent.id
-            @res_que.pop
+          if fork
+            @thread=Threadx.new("Macro Thread(#{ent.id})",10){macro}
           else
-            'IGNORE'
+            macro
           end
         }
-        self
       end
 
       private

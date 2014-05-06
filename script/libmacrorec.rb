@@ -8,16 +8,19 @@ module CIAX
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
       attr_reader :cfg
-      def initialize(cfg)
-        @cfg=type?(cfg,Config)
+      def initialize(db={})
         super('record',[],'steps')
         extend PrtRecord unless $opt['r']
+        self['id']=db['id'] # Project
+        self['ver']=db['version'] # Version
+      end
+
+      def start(cfg)
+        ext_file
+        @cfg=type?(cfg,Config)
         self['sid']=self['time'].to_s # Session ID
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID
-        self['id']=@cfg[:db]['id'] # Project
-        self['ver']=@cfg[:db]['version'] # Version
-        ext_file
       end
 
       def add_step(e1)

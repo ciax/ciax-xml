@@ -8,11 +8,11 @@ module CIAX
       def initialize(port=nil)
         proj=ENV['PROJ']||'ciax'
         cfg=Config.new
-        @mdb=cfg[:db]=Mcr::Db.new.set(proj)
+        db=cfg[:db]=Mcr::Db.new.set(proj)
         cfg[:app]=App::List.new
         @list=List.new(proj).ext_file
         self['sid']='' # response id
-        super('mcr',@mdb['id'],Command.new(cfg))
+        super('mcr',db['id'],Command.new(cfg))
         ext_shell(@list)
       end
 
@@ -31,12 +31,12 @@ module CIAX
       def initialize(port=nil)
         super
         @cobj.ext_proc{|ent|
-          key,stat=ent.fork
-          self['sid']=key
-          @list.data[key]=stat
+          mobj=Exe.new(@cobj).fork(ent)
+          self['sid']=mobj.record['sid']
+          @list.data[self['sid']]=mobj
           "ACCEPT"
         }
-        @cobj.save_procs{@list.save}
+#        @cobj.save_procs{@list.save}
         @cobj.item_proc('interrupt'){|ent|
           @list.data.each{|st|
             st.thread.raise(Interrupt)
@@ -68,7 +68,7 @@ module CIAX
             'NOSID'
           end
         }
-        ext_server(port||@mdb['port']||55555)
+        ext_server(port||@cobj.cfg[:db]['port']||55555)
       end
     end
 

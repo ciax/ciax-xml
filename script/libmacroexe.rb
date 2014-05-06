@@ -7,7 +7,7 @@ module CIAX
   module Mcr
     class Exe < Exe
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:running,:cmd_que,:res_que,:exe_que
+      attr_reader :record,:running,:cmd_que,:res_que,:exe_que,:thread
       def initialize(cobj)
         super('mcr','',cobj)
         type?(cobj.cfg[:app],App::List)
@@ -16,8 +16,10 @@ module CIAX
         @cmd_que=Queue.new
         @res_que=Queue.new
         @exe_que=Queue.new
+        @save_que=Queue.new
         @cobj.ext_proc{|ent|
-          macro(ent)
+          @record=Record.new(ent.cfg)
+          macro
         }
         @cobj.item_proc('interrupt'){|ent|
           raise(Interrupt)
@@ -38,16 +40,20 @@ module CIAX
         self
       end
 
+      def fork(ent)
+        @record=Record.new(ent.cfg)
+        @thread=Threadx.new("Macro Thread(#{ent.id})",10){macro}
+        self
+      end
+
       private
-      def macro(ent)
-        cfg=Msg.type?(ent.cfg,Config)
-        cfg['id']=ent.id
+      def macro
         set_stat 'run'
-        @record=Record.new(cfg)
         show @record
+        cfg=@record.cfg
         cfg[:body].each{|e1|
           begin
-            @step=@record.add_step(e1,cfg)
+            @step=@record.add_step(e1)
             case e1['type']
             when 'mesg'
               ack?(@step.ok?)

@@ -29,6 +29,7 @@ module CIAX
         step=Step.new(e1,@cfg){save(self['sid'])}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
+        save(self['sid'])
         step
       end
 

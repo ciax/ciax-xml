@@ -214,6 +214,7 @@ module CIAX
       @cfg[:level]='entity'
       @par=@cfg[:par]
       @id=[@cfg[:id],*@par].join(':')
+      @cfg[:cid]=@id
       @ver_color=5
     end
 

@@ -11,10 +11,11 @@ module CIAX
         @cfg=type?(cfg,Config)
         super('record',[],'steps')
         extend PrtRecord unless $opt['r']
-        self['sid']=self['time'].to_s
-        self['cid']=@cfg['id']
-        self['label']=@cfg['label']
-        self['id']=@cfg[:db]['id']
+        self['sid']=self['time'].to_s # Session ID
+        self['cid']=@cfg['id'] # Command ID (cmd:par)
+        self['label']=@cfg['label'] # Label for CID
+        self['id']=@cfg[:db]['id'] # Project
+        self['ver']=@cfg[:db]['version'] # Version
         ext_file
       end
 

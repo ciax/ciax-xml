@@ -5,37 +5,34 @@ require "libappsh"
 
 module CIAX
   module Mcr
-    class Exe < Exe
+    class Ques
+      attr_reader :cmd,:res,:exe,:save
+      def initialize
+        @cmd=Queue.new
+        @res=Queue.new
+        @exe=Queue.new
+        @save=Queue.new
+      end
+    end
+
+    class Macro < Hashx
+      include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:running,:cmd_que,:res_que,:exe_que,:thread
-      def initialize(cobj,fork=false)
-        super('mcr','',cobj)
-        type?(cobj.cfg[:app],App::List)
-        type?(cobj.cfg[:db],Db)
+      attr_reader :running,:ques
+      def initialize(ent)
+        cfg=type?(type?(ent,Entity).cfg)
+        type?(cfg[:app],App::List)
+        @record=Record.new(type?(cfg[:db],Db))
+        @ques=Ques.new
         @running=[]
-        @cmd_que=Queue.new
-        @res_que=Queue.new
-        @exe_que=Queue.new
-        @save_que=Queue.new
-        @cobj.item_proc('interrupt'){|ent|
-          raise(Interrupt)
-          'INTERRUPT'
-        }
-        @cobj.ext_proc{|ent|
-          @record=Record.new(ent.cfg)
-          if fork
-            @thread=Threadx.new("Macro Thread(#{ent.id})",10){macro}
-          else
-            macro
-          end
-        }
+        macro(cfg)
       end
 
       private
-      def macro
+      def macro(cfg)
+        @record.start(cfg)
         set_stat 'run'
         show @record
-        cfg=@record.cfg
         cfg[:body].each{|e1|
           begin
             @step=@record.add_step(e1)
@@ -53,7 +50,7 @@ module CIAX
               cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
               if @step.async?
-                @exe_que << e1['args']
+                @ques.exe << e1['args']
               end
             end
           rescue Retry
@@ -135,14 +132,14 @@ module CIAX
         loop{
           if Msg.fg?
             prom=@step.body("[#{self[:option]}]?")
-            @cmd_que << Readline.readline(prom,true).rstrip
+            @ques.cmd << Readline.readline(prom,true).rstrip
           end
-          id=@cmd_que.pop.split(/[ :]/).first
+          id=@ques.cmd.pop.split(/[ :]/).first
           if cmds.include?(id)
-            @res_que << 'ACCEPT'
+            @ques.res << 'ACCEPT'
             break id
           else
-            @res_que << 'INVALID'
+            @ques.res << 'INVALID'
           end
         }
       end
@@ -159,8 +156,8 @@ module CIAX
         cfg=Config.new
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
-        cobj=Command.new(cfg)
-        Exe.new(cobj).exe(ARGV)
+        ent=Command.new(cfg).set_cmd(ARGV)
+        Macro.new(ent)
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

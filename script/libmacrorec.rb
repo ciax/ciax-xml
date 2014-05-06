@@ -7,21 +7,22 @@ module CIAX
   module Mcr
     class Record < Datax
       # Level [0] Step, [1] Record & Item, [2] Group, [3] Domain, [4] Command
+      attr_reader :cfg
       def initialize(cfg)
         @cfg=type?(cfg,Config)
         super('record',[],'steps')
         extend PrtRecord unless $opt['r']
         self['sid']=self['time'].to_s # Session ID
-        self['cid']=@cfg['id'] # Command ID (cmd:par)
+        self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID
         self['id']=@cfg[:db]['id'] # Project
         self['ver']=@cfg[:db]['version'] # Version
         ext_file
       end
 
-      def add_step(e1,cfg)
-        Msg.type?(cfg[:app],App::List)
-        step=Step.new(e1,cfg){save(self['sid'])}
+      def add_step(e1)
+        Msg.type?(@cfg[:app],App::List)
+        step=Step.new(e1,@cfg){save(self['sid'])}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
         step

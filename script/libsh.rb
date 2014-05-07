@@ -1,12 +1,10 @@
-
 #!/usr/bin/ruby
 require "libexe"
 require "readline"
 
-# Provide Shell related modules
-# Add Shell Command (by Shell extention)
-
 module CIAX
+  # Provide Shell related modules
+  # Add Shell Command (by Shell extention)
   module Shell
     def self.extended(obj)
       Msg.type?(obj,Exe)
@@ -45,9 +43,9 @@ module CIAX
       str+'>'
     end
 
-    # invoked many times
-    # '^D' gives exit break
-    # mode gives special break (loop returns mode)
+    # invoked many times.
+    # '^D' gives exit break.
+    # mode gives special break (loop returns mode).
     def shell
       verbose(self.class,"Init/Shell(#@id)",2)
       Readline.completion_proc=proc{|word|
@@ -70,7 +68,6 @@ module CIAX
       'interrupt'
     end
   end
-
 
   class ShList < ExeList
     attr_reader :site

@@ -26,8 +26,6 @@ module CIAX
     class Sv < Man
       def initialize(port=nil)
         super
-        exe_que=Queue.new
-        Thread.new{ loop{ exe(exe_que.pop) } }
         # Internal Command Group
         ig=@cobj.intgrp
         igpar=ig.parameter
@@ -57,7 +55,8 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          mobj=Macro.new(ent,exe_que).fork
+          mobj=Macro.new(ent){|args| exe(args)}
+          Thread.new{mobj.exe}
           @list.add(mobj)
           sid=mobj.record['sid']
           igpar[:default]=sid

@@ -9,10 +9,10 @@ module CIAX
       include Msg
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:que_cmd,:que_res,:thread,:total
-      def initialize(ent,que_exe=Queue.new)
+      def initialize(ent,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
-        @que_exe=type?(que_exe,Queue)
+        @exe_proc=exe_proc||proc{{}}
         @que_cmd=Queue.new
         @que_res=Queue.new
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
@@ -48,7 +48,7 @@ module CIAX
               @cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
               if @step.async?
-                @que_exe << e1['args']
+                @step['sid']=@exe_proc.call(e1['args'])['sid']
               end
             end
           rescue Retry

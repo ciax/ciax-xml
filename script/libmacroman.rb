@@ -13,6 +13,8 @@ module CIAX
         @list=List.new(proj,db['version']).ext_file
         self['sid']='' # For server response
         super('mcr',db['id'],Command.new(cfg))
+        igpar=@cobj.intgrp.parameter
+        ext_shell(@list,{:default => "[%s]"},igpar,igpar[:list])
       end
 
       def exe(args)
@@ -71,7 +73,17 @@ module CIAX
         }
         @post_procs << proc{@list.save}
         ext_server(port||@cobj.cfg[:db]['port']||55555)
-        ext_shell(@list,{:default => "[%s]"},igpar,igpar[:list])
+      end
+
+      def shell_input(line)
+        cmd,*par=super
+        if @cobj.intgrp.keys.include?(cmd)
+          par.size.times{|i|
+            par[i]=@list.data.keys[i]
+          }
+        end
+        warn res=[cmd]+par
+        res
       end
     end
 

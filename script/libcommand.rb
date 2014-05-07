@@ -151,9 +151,8 @@ module CIAX
     end
 
     def set_par(par,opt={})
-      validate(type?(par,Array))
+      opt[:par]=validate(type?(par,Array))
       verbose(self.class,"SetPAR(#{@cfg[:id]}): #{par}")
-      opt[:par]=par
       @cfg[:entity_class].new(@cfg,opt)
     end
 

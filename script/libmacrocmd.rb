@@ -26,19 +26,17 @@ module CIAX
         super
         @parameter={:type => 'num',:list => [],:default => nil}
         @cfg['caption']='Internal Commands'
-        @procs={}
         {
-          "exec"=>["Command",proc{'EXEC'}],
-          "skip"=>["Execution",proc{raise(Skip)}],
-          "drop"=>[" Macro",proc{raise(Interlock)}],
-          "suppress"=>["and Memorize",proc{'SUP'}],
-          "force"=>["Proceed",proc{'FORCE'}],
-          "pass"=>["Step",proc{nil}],
-          "ok"=>["for the message",proc{nil}],
-          "retry"=>["Checking",proc{raise(Retry)}]
-        }.each{|id,a|
-          add_item(id,id.capitalize+" "+a[0],{:parameter => [@parameter]})
-          @procs[id]=a[1]
+          "exec"=>"Command",
+          "skip"=>"Execution",
+          "drop"=>" Macro",
+          "suppress"=>"and Memorize",
+          "force"=>"Proceed",
+          "pass"=>"Step",
+          "ok"=>"for the message",
+          "retry"=>"Checking",
+        }.each{|id,cap|
+          add_item(id,id.capitalize+" "+cap,{:parameter => [@parameter]})
         }
       end
     end

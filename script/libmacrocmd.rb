@@ -24,8 +24,10 @@ module CIAX
     end
 
     class IntGrp < Group
+      attr_reader :parameter
       def initialize(upper,crnt={})
         super
+        @parameter={:type => 'num',:list => [],:default => nil}
         @cfg['caption']='Internal Commands'
         @procs={}
         {
@@ -38,7 +40,7 @@ module CIAX
           "ok"=>["for the message",proc{nil}],
           "retry"=>["Checking",proc{raise(Retry)}]
         }.each{|id,a|
-          add_item(id,id.capitalize+" "+a[0])
+          add_item(id,id.capitalize+" "+a[0],{:parameter => [@parameter]})
           @procs[id]=a[1]
         }
       end

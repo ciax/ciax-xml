@@ -32,25 +32,13 @@ module CIAX
         super
         exe_que=Queue.new
         Thread.new{ loop{ exe(exe_que.pop) } }
-        @cobj.ext_proc{|ent|
-          mobj=Macro.new(ent,exe_que).fork
-          self['sid']=mobj[:sid]
-          @list.data[self['sid']]=mobj
-          @cobj.intgrp.valid_keys << self['sid']
-          "ACCEPT"
-        }
-        @cobj.item_proc('interrupt'){|ent|
-          @list.data.each{|mobj|
-            mobj.thread.raise(Interrupt)
-          }
-          'INTERRUPT'
-        }
         # Internal Command Group
         ig=@cobj.add_int
         ig.set_proc{|ent|
-          n=ent.par[0]||@list.data.keys.last||""
-          self['sid']=n
+          n=ent.par[0]||""
           if mobj=@list.data[n]
+            self['sid']=n
+            ig.parameter[:default]=n
             if mobj[:stat] == 'query'
               mobj.que_cmd << ent.id
               mobj.que_res.pop
@@ -61,14 +49,30 @@ module CIAX
             "NOSID"
           end
         }
-        ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
         ig.add_item('clean','Clean macros').set_proc{
           if @list.clean
+            ig.parameter[:list].clean
             @list.save
             'ACCEPT'
           else
             'NOSID'
           end
+        }
+        # External Command Group
+        @cobj.ext_proc{|ent|
+          mobj=Macro.new(ent,exe_que).fork
+          sid=self['sid']=mobj[:sid]
+          @list.data[sid]=mobj
+          ig.parameter[:default]=sid
+          ig.parameter[:list] << sid
+          ig.valid_keys << sid
+          "ACCEPT"
+        }
+        @cobj.item_proc('interrupt'){|ent|
+          @list.data.each{|mobj|
+            mobj.thread.raise(Interrupt)
+          }
+          'INTERRUPT'
         }
         @post_procs << proc{@list.save}
         ext_server(port||@cobj.cfg[:db]['port']||55555)

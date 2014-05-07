@@ -71,7 +71,7 @@ module CIAX
         cfg=Config.new
         cfg[:db]=Db.new.set('ciax')
         mobj=Command.new(cfg)
-        puts mobj.set_cmd(ARGV).extend(ViewStruct).view_struct
+        puts mobj.set_cmd(ARGV).cfg
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

@@ -30,8 +30,10 @@ module CIAX
     class Sv < Man
       def initialize(port=nil)
         super
+        exe_que=Queue.new
+        Thread.new{ loop{ exe(exe_que.pop) } }
         @cobj.ext_proc{|ent|
-          mobj=Macro.new(ent).fork
+          mobj=Macro.new(ent,exe_que).fork
           self['sid']=mobj[:sid]
           @list.data[self['sid']]=mobj
           @cobj.intgrp.valid_keys << self['sid']
@@ -44,14 +46,14 @@ module CIAX
           'INTERRUPT'
         }
         # Internal Command Group
-        ig=@cobj.add_int(:valid_keys =>[])
+        ig=@cobj.add_int
         ig.set_proc{|ent|
           n=ent.par[0]||@list.data.keys.last||""
           self['sid']=n
           if mobj=@list.data[n]
             if mobj[:stat] == 'query'
-              mobj.ques.cmd << ent.id
-              mobj.ques.res.pop
+              mobj.que_cmd << ent.id
+              mobj.que_res.pop
             else
               "IGNORE"
             end

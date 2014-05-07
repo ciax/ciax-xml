@@ -55,8 +55,8 @@ module CIAX
         # External Command Group
         @cobj.ext_proc{|ent|
           mobj=Macro.new(ent,exe_que).fork
+          @list.add(mobj)
           sid=mobj.record['sid']
-          @list.data[sid]=mobj
           ig.parameter[:default]=sid
           ig.parameter[:list] << sid
           ig.valid_keys << sid
@@ -82,6 +82,12 @@ module CIAX
         self['ver']=ver
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @total=''
+      end
+
+      def add(mobj)
+        sid=type?(mobj,Macro).record['sid']
+        @data[sid]=mobj
+        self
       end
 
       def clean

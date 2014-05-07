@@ -55,9 +55,9 @@ module CIAX
       @cfg.update(:level =>'command','color'=>2,'column'=>2)
       @cfg[:def_proc]||=proc{''}
       # Server Commands (service commands on Server)
-      push @svdom=Domain.new(@cfg) # Remote Command Domain
-      push @lodom=Domain.new(@cfg) # Local Command Domain
-      @hidgrp=@svdom.add_group('caption' => "Hidden Commands")
+      push @svdom=Domain.new(@cfg,{:domain_id => 'remote'}) # Remote Command Domain
+      push @lodom=Domain.new(@cfg,{:domain_id => 'local'}) # Local Command Domain
+      @hidgrp=@svdom.add_group('caption' => "Hidden Commands",:group_id => 'hidden')
       @hidgrp.add_item('interrupt')
     end
   end

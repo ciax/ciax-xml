@@ -27,6 +27,7 @@ module CIAX
   # @cfg must contain [:db]
   class ExtGrp < Group # upper needs [:db]
     def initialize(upper,crnt={})
+      crnt[:group_id]=upper[:db]['id']
       super
       @cfg[:entity_class]||=ExtEntity
       @cfg['caption']||="External Commands"

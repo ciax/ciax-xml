@@ -26,6 +26,7 @@ module CIAX
     class IntGrp < Group
       attr_reader :parameter
       def initialize(upper,crnt={})
+        crnt[:group_id]='internal'
         super
         @parameter={:type => 'num',:list => [],:default => nil}
         @cfg['caption']='Internal Commands'

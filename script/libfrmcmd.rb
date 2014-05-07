@@ -23,6 +23,7 @@ module CIAX
 
     class IntGrp < Group
       def initialize(upper,crnt={})
+        crnt[:group_id]='internal'
         super
         @cfg['caption']='Internal Commands'
         any={:type =>'reg',:list => ["."]}

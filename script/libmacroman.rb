@@ -11,19 +11,8 @@ module CIAX
         db=cfg[:db]=Mcr::Db.new.set(proj)
         cfg[:app]=App::List.new
         @list=List.new(proj,db['version']).ext_file
-        self['sid']='' # current session id
         super('mcr',db['id'],Command.new(cfg))
         ext_shell(@list)
-      end
-
-      def exe(args)
-        self['sid']=''
-        super
-      end
-
-      def shell_output
-        sid=self['sid'].empty? ? '' : '('+self['sid']+')'
-        self['msg'].empty? ? @output : self['msg']+sid
       end
     end
 
@@ -37,7 +26,6 @@ module CIAX
         ig.set_proc{|ent|
           n=ent.par[0]||""
           if mobj=@list.data[n]
-            self['sid']=n
             ig.parameter[:default]=n
             if mobj[:stat] == 'query'
               mobj.que_cmd << ent.id
@@ -61,7 +49,7 @@ module CIAX
         # External Command Group
         @cobj.ext_proc{|ent|
           mobj=Macro.new(ent,exe_que).fork
-          sid=self['sid']=mobj[:sid]
+          sid=mobj.record['sid']
           @list.data[sid]=mobj
           ig.parameter[:default]=sid
           ig.parameter[:list] << sid
@@ -103,7 +91,7 @@ module CIAX
         page=[@caption]
         @data.each{|key,mobj|
           title="[#{key}]"
-          msg="#{mobj[:cid]} (#{mobj[:stat]})"
+          msg="#{mobj[:cid]} [#{mobj[:step]}/#{mobj.total}](#{mobj[:stat]})"
           msg << "[#{mobj[:option]}]?" if mobj[:option]
           page << Msg.item(title,msg)
         }

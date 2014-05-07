@@ -8,7 +8,7 @@ module CIAX
     class Macro < Hashx
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :que_cmd,:que_res,:thread
+      attr_reader :record,:que_cmd,:que_res,:thread,:total
       def initialize(ent,que_exe=Queue.new)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
@@ -17,7 +17,8 @@ module CIAX
         @que_res=Queue.new
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         self[:cid]=@cfg[:cid]
-        self[:sid]=@record['sid']
+        @total=@cfg[:body].size
+        self[:step]=0
         @running=[]
       end
 
@@ -32,6 +33,7 @@ module CIAX
         @cfg[:body].each{|e1|
           begin
             @step=@record.add_step(e1)
+            self[:step]=@record.data.size
             case e1['type']
             when 'mesg'
               ack?(@step.ok?)

@@ -5,24 +5,16 @@ require "libappsh"
 
 module CIAX
   module Mcr
-    class Ques
-      attr_reader :cmd,:res,:exe,:save
-      def initialize
-        @cmd=Queue.new
-        @res=Queue.new
-        @exe=Queue.new
-        @save=Queue.new
-      end
-    end
-
     class Macro < Hashx
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :running,:ques,:thread
-      def initialize(ent)
+      attr_reader :que_cmd,:que_res,:thread
+      def initialize(ent,que_exe=Queue.new)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
-        @ques=Ques.new
+        @que_exe=type?(que_exe,Queue)
+        @que_cmd=Queue.new
+        @que_res=Queue.new
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         self[:cid]=@cfg[:cid]
         self[:sid]=@record['sid']
@@ -54,7 +46,7 @@ module CIAX
               @cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
               if @step.async?
-                @ques.exe << e1['args']
+                @que_exe << e1['args']
               end
             end
           rescue Retry
@@ -137,14 +129,14 @@ module CIAX
         loop{
           if Msg.fg?
             prom=@step.body("[#{self[:option]}]?")
-            @ques.cmd << Readline.readline(prom,true).rstrip
+            @que_cmd << Readline.readline(prom,true).rstrip
           end
-          id=@ques.cmd.pop.split(/[ :]/).first
+          id=@que_cmd.pop.split(/[ :]/).first
           if cmds.include?(id)
-            @ques.res << 'ACCEPT'
+            @que_res << 'ACCEPT'
             break id
           else
-            @ques.res << 'INVALID'
+            @que_res << 'INVALID'
           end
         }
       end

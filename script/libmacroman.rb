@@ -29,10 +29,10 @@ module CIAX
         # Internal Command Group
         ig=@cobj.add_int
         ig.set_proc{|ent|
-          n=ent.par[0]||""
-          if mobj=@list.data[n]
-            ig.parameter[:default]=n
-            self['sid']=n
+          sid=ent.par[0]||""
+          if mobj=@list.data[sid]
+            ig.parameter[:default]=sid
+            self['sid']=sid
             if mobj[:stat] == 'query'
               mobj.que_cmd << ent.id
               mobj.que_res.pop
@@ -59,7 +59,6 @@ module CIAX
           sid=mobj.record['sid']
           ig.parameter[:default]=sid
           ig.parameter[:list] << sid
-          ig.valid_keys << sid
           self['sid']=sid
           "ACCEPT"
         }
@@ -71,7 +70,7 @@ module CIAX
         }
         @post_procs << proc{@list.save}
         ext_server(port||@cobj.cfg[:db]['port']||55555)
-        ext_shell(@list,{:default => "[%s]"},ig.parameter)
+        ext_shell(@list,{:default => "[%s]"},ig.parameter,ig.parameter[:list])
       end
     end
 
@@ -81,7 +80,6 @@ module CIAX
         self['id']=proj
         self['ver']=ver
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
-        @total=''
       end
 
       def add(mobj)

@@ -31,9 +31,9 @@ module CIAX
         set_stat 'run'
         show @record
         @cfg[:body].each{|e1|
+          self[:step]+=1
           begin
             @step=@record.add_step(e1)
-            self[:step]=@record.data.size
             case e1['type']
             when 'mesg'
               ack?(@step.ok?)

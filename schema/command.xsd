@@ -21,7 +21,7 @@
   <xsd:group name="validate">
     <xsd:choice>
       <xsd:element ref="par_num" />
-      <xsd:element ref="par_reg" />
+      <xsd:element ref="par_str" />
     </xsd:choice>
   </xsd:group>
   <xsd:element name="par_num">
@@ -33,7 +33,7 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="par_reg">
+  <xsd:element name="par_str">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">

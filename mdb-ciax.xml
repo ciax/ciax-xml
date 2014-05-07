@@ -46,7 +46,7 @@
     </item>
     <!--Jack Command-->
     <item id="fju0" label="InR0 Jkup at FIX [site]">
-      <par_reg>dso|dsi</par_reg>
+      <par_str>dso,dsi</par_str>
       <goal label="Jack DW?">
         <stat site="$1" var="fjb">DW</stat>
       </goal>
@@ -60,7 +60,7 @@
       </wait>
     </item>
     <item id="fjd0" label="InR0 Jkdw at FIX [site]">
-      <par_reg>dso|dsi</par_reg>
+      <par_str>dso,dsi</par_str>
       <goal label="Instrument ON?">
         <stat site="$1" var="fis">ON</stat>
       </goal>
@@ -73,7 +73,7 @@
       </wait>
     </item>
     <item id="fju4" label="InR4 Jkup at FIX.IR [site]">
-      <par_reg>dso|dsi</par_reg>
+      <par_str>dso,dsi</par_str>
       <goal label="Jack Up?">
         <stat site="$1" var="fjb">UP</stat>
       </goal>
@@ -86,7 +86,7 @@
       </wait>
     </item>
     <item id="fjd4" label="InR4 Jkdw at FIX.IR [site]">
-      <par_reg>dso|dsi</par_reg>
+      <par_str>dso,dsi</par_str>
       <goal label="Jack Dw?">
         <stat site="$1" var="fjb">DW</stat>
       </goal>
@@ -100,7 +100,7 @@
     </item>
     <!--Jack & Rotate-->
     <item id="jupd" label="HookUp at FIX.IR [site]">
-      <par_reg>dso|dsi</par_reg>
+      <par_str>dso,dsi</par_str>
       <goal label="Instrument ON?">
         <stat site="$1" var="fis">ON</stat>
       </goal>
@@ -118,7 +118,7 @@
     </item>
     <!--Transer-->
     <item id="trsi" label="MOV.IR Trans Backward w/SITET [site]">
-      <par_reg>dso|dsi</par_reg>
+      <par_str>dso,dsi</par_str>
       <goal label="Transer Stored?">
         <stat site="$1" var="mtr">BK</stat>
       </goal>

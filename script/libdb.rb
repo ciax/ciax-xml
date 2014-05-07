@@ -88,8 +88,8 @@ module CIAX
       when 'par_num'
         attr={:type => 'num',:list => e.text.split(',')}
         (item[:parameter]||=[]) << attr
-      when 'par_reg'
-        attr={:type => 'reg',:list => e.text.split(',')}
+      when 'par_str'
+        attr={:type => 'str',:list => e.text.split(',')}
         (item[:parameter]||=[]) << attr
       else
         nil

@@ -10,7 +10,7 @@ module CIAX
         cfg=Config.new
         db=cfg[:db]=Mcr::Db.new.set(proj)
         cfg[:app]=App::List.new
-        @list=List.new(proj).ext_file
+        @list=List.new(proj,db['version']).ext_file
         self['sid']='' # current session id
         super('mcr',db['id'],Command.new(cfg))
         ext_shell(@list)
@@ -34,6 +34,7 @@ module CIAX
           mobj=Macro.new(ent).fork
           self['sid']=mobj[:sid]
           @list.data[self['sid']]=mobj
+          @cobj.intgrp.valid_keys << self['sid']
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|
@@ -73,9 +74,10 @@ module CIAX
     end
 
     class List < Datax
-      def initialize(proj)
+      def initialize(proj,ver=0)
         super('macro',{},'procs')
         self['id']=proj
+        self['ver']=ver
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @total=''
       end

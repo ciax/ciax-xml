@@ -14,7 +14,7 @@ module CIAX
         self['sid']='' # For server response
         super('mcr',db['id'],Command.new(cfg))
         igpar=@cobj.intgrp.parameter
-        ext_shell(@list,{:default => "[%s]"},igpar,igpar[:list])
+        ext_shell(@list,{:default => "[%s]"},igpar)
       end
 
       def exe(args)

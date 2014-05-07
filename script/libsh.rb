@@ -12,12 +12,11 @@ module CIAX
 
     # Prompt Db : { key => format(str), key => conv_db(hash), key => nil(status) }
     attr_reader :pdb
-    def ext_shell(output={},pdb={},pstat=nil,parlist=[])
+    def ext_shell(output={},pdb={},pstat=nil)
       # For Shell
       @output=output
       @pdb=pdb
       @pstat=pstat||self
-      @parlist=parlist
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('^D,q',"Quit")
@@ -49,7 +48,7 @@ module CIAX
     def shell
       verbose(self.class,"Init/Shell(#@id)",2)
       Readline.completion_proc=proc{|word|
-        (@cobj.valid_keys+@parlist).grep(/^#{word}/)
+        (@cobj.valid_keys+@cobj.par_list).grep(/^#{word}/)
       }
       while line=readline(prompt)
         break if /^q/ === line

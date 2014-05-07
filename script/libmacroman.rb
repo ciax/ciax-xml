@@ -28,10 +28,11 @@ module CIAX
         Thread.new{ loop{ exe(exe_que.pop) } }
         # Internal Command Group
         ig=@cobj.add_int
+        igpar=ig.parameter
         ig.set_proc{|ent|
           sid=ent.par[0]||""
           if mobj=@list.data[sid]
-            ig.parameter[:default]=sid
+            igpar[:default]=sid
             self['sid']=sid
             if mobj[:stat] == 'query'
               mobj.que_cmd << ent.id
@@ -45,7 +46,7 @@ module CIAX
         }
         ig.add_item('clean','Clean macros').set_proc{
           if @list.clean
-            ig.parameter[:list].clean
+            igpar[:list].clean
             @list.save
             'ACCEPT'
           else
@@ -57,8 +58,8 @@ module CIAX
           mobj=Macro.new(ent,exe_que).fork
           @list.add(mobj)
           sid=mobj.record['sid']
-          ig.parameter[:default]=sid
-          ig.parameter[:list] << sid
+          igpar[:default]=sid
+          igpar[:list] << sid
           self['sid']=sid
           "ACCEPT"
         }
@@ -70,7 +71,7 @@ module CIAX
         }
         @post_procs << proc{@list.save}
         ext_server(port||@cobj.cfg[:db]['port']||55555)
-        ext_shell(@list,{:default => "[%s]"},ig.parameter,ig.parameter[:list])
+        ext_shell(@list,{:default => "[%s]"},igpar,igpar[:list])
       end
     end
 

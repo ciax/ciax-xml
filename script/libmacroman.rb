@@ -11,8 +11,14 @@ module CIAX
         db=cfg[:db]=Mcr::Db.new.set(proj)
         cfg[:app]=App::List.new
         @list=List.new(proj,db['version']).ext_file
+        self['sid']='' # For server response
         super('mcr',db['id'],Command.new(cfg))
         ext_shell(@list)
+      end
+
+      def exe(args)
+        self['sid']=''
+        super
       end
     end
 
@@ -27,6 +33,7 @@ module CIAX
           n=ent.par[0]||""
           if mobj=@list.data[n]
             ig.parameter[:default]=n
+            self['sid']=n
             if mobj[:stat] == 'query'
               mobj.que_cmd << ent.id
               mobj.que_res.pop
@@ -54,6 +61,7 @@ module CIAX
           ig.parameter[:default]=sid
           ig.parameter[:list] << sid
           ig.valid_keys << sid
+          self['sid']=sid
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|

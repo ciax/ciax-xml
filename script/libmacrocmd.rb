@@ -24,7 +24,7 @@ module CIAX
       attr_reader :parameter
       def initialize(upper,crnt={})
         super
-        @parameter={:type => 'num',:list => [],:default => nil}
+        @parameter={:type => 'str',:list => [],:default => nil}
         @cfg['caption']='Internal Commands'
         {
           "exec"=>"Command",

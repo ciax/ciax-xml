@@ -164,7 +164,7 @@ module CIAX
     end
 
     def par_list
-      (@cfg[:parameter]||[]).map{|e| e[:list]}.flatten
+      (@cfg[:parameter]||[]).map{|e| e[:list] if e[:type] == 'str'}.flatten
     end
 
     private

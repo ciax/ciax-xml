@@ -10,23 +10,19 @@ module CIAX
         super
         svc={:group_class =>ExtGrp,:entity_class=>ExtEntity,:mobj => self}
         @extgrp=@svdom.add_group(svc)
+        inc={:group_class =>IntGrp,:group_id =>'internal'}
+        @intgrp=@svdom.add_group(inc)
         @cfg[:depth]=0
       end
 
       def ext_proc(&def_proc)
         @extgrp.set_proc(&def_proc)
       end
-
-      def add_int(crnt={})
-        crnt[:group_class]=IntGrp
-        @intgrp=@svdom.add_group(crnt)
-      end
     end
 
     class IntGrp < Group
       attr_reader :parameter
       def initialize(upper,crnt={})
-        crnt[:group_id]='internal'
         super
         @parameter={:type => 'num',:list => [],:default => nil}
         @cfg['caption']='Internal Commands'
@@ -44,13 +40,6 @@ module CIAX
           add_item(id,id.capitalize+" "+a[0],{:parameter => [@parameter]})
           @procs[id]=a[1]
         }
-      end
-
-      def def_proc
-        @procs.each{|id,prc|
-          self[id].set_proc(&prc)
-        }
-        self
       end
     end
 

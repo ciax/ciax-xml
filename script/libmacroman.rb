@@ -27,7 +27,7 @@ module CIAX
         exe_que=Queue.new
         Thread.new{ loop{ exe(exe_que.pop) } }
         # Internal Command Group
-        ig=@cobj.add_int
+        ig=@cobj.intgrp
         igpar=ig.parameter
         ig.set_proc{|ent|
           sid=ent.par[0]||""

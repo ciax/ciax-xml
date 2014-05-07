@@ -82,8 +82,7 @@ module CIAX
             par[i]=@list.data.keys[i]
           }
         end
-        warn res=[cmd]+par
-        res
+        [cmd]+par
       end
     end
 

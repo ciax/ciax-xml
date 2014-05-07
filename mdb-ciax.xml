@@ -45,8 +45,8 @@
       </wait>
     </item>
     <!--Jack Command-->
-    <item id="fju0" label="InR0 Jkup at FIX">
-      <par_reg>...</par_reg>
+    <item id="fju0" label="InR0 Jkup at FIX [site]">
+      <par_reg>dso|dsi</par_reg>
       <goal label="Jack DW?">
         <stat site="$1" var="fjb">DW</stat>
       </goal>
@@ -59,7 +59,8 @@
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
-    <item id="fjd0" label="InR0 Jkdw at FIX">
+    <item id="fjd0" label="InR0 Jkdw at FIX [site]">
+      <par_reg>dso|dsi</par_reg>
       <goal label="Instrument ON?">
         <stat site="$1" var="fis">ON</stat>
       </goal>
@@ -71,7 +72,8 @@
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
-    <item id="fju4" label="InR4 Jkup at FIX.IR">
+    <item id="fju4" label="InR4 Jkup at FIX.IR [site]">
+      <par_reg>dso|dsi</par_reg>
       <goal label="Jack Up?">
         <stat site="$1" var="fjb">UP</stat>
       </goal>
@@ -83,7 +85,8 @@
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
-    <item id="fjd4" label="InR4 Jkdw at FIX.IR">
+    <item id="fjd4" label="InR4 Jkdw at FIX.IR [site]">
+      <par_reg>dso|dsi</par_reg>
       <goal label="Jack Dw?">
         <stat site="$1" var="fjb">DW</stat>
       </goal>
@@ -96,38 +99,40 @@
       </wait>
     </item>
     <!--Jack & Rotate-->
-    <item id="jupd" label="HookUp at FIX.IR">
+    <item id="jupd" label="HookUp at FIX.IR [site]">
+      <par_reg>dso|dsi</par_reg>
       <goal label="Instrument ON?">
-        <stat site="dsi" var="fis">ON</stat>
+        <stat site="$1" var="fis">ON</stat>
       </goal>
       <check label="CART ON TAG?">
         <stat site="crt" var="cps">12</stat>
         <stat site="crt" var="jlv">H</stat>
       </check>
-      <exec site="dsi" name="fhook"></exec>
+      <exec site="$1" name="fhook"></exec>
       <wait label="Jacking" retry="40">
-        <stat site="dsi" var="exe">OFF</stat>
+        <stat site="$1" var="exe">OFF</stat>
       </wait>
       <mcr name="fju0">
-        <argv>dsi</argv>
+        <argv>$1</argv>
       </mcr>
     </item>
     <!--Transer-->
-    <item id="trsi" label="MOV.IR Trans Backward w/SITET">
+    <item id="trsi" label="MOV.IR Trans Backward w/SITET [site]">
+      <par_reg>dso|dsi</par_reg>
       <goal label="Transer Stored?">
-        <stat site="dsi" var="mtr">BK</stat>
+        <stat site="$1" var="mtr">BK</stat>
       </goal>
       <check label="CART CLEAR?">
         <stat site="crt" var="cps" inv="true">12</stat>
         <stat site="crt" var="cps" inv="true">11</stat>
       </check>
-      <exec site="dsi" name="rotin"></exec>
+      <exec site="$1" name="rotin"></exec>
       <wait label="Rotating" retry="20">
-        <stat site="dsi" var="exe">OFF</stat>
+        <stat site="$1" var="exe">OFF</stat>
       </wait>
-      <exec site="dsi" name="trin"></exec>
+      <exec site="$1" name="trin"></exec>
       <wait label="Moving" retry="60">
-        <stat site="dsi" var="exe">OFF</stat>
+        <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
     <!--Run & Transer-->

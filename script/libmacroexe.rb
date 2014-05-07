@@ -9,6 +9,7 @@ module CIAX
       include Msg
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:que_cmd,:que_res,:thread,:total
+      #exe_proc for executing asynchronous submacro
       def initialize(ent,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)

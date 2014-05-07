@@ -6,14 +6,27 @@ require 'liblogging'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param, returns String as message.
 module CIAX
-  module GrpShare
+  module HshShare
     def set_proc(&def_proc)
       @cfg[:def_proc]=type?(def_proc,Proc)
       self
     end
+  end
+
+  module AryShare
+    include HshShare
+    def get_item(id)
+      res=nil
+      any?{|e| res=e.get_item(id)}
+      res
+    end
 
     def item_proc(id,&def_proc)
       get_item(id).set_proc(&def_proc)
+    end
+
+    def valid_keys
+      map{|e| e.valid_keys}.flatten
     end
 
     def set_cmd(args,opt={})
@@ -22,8 +35,8 @@ module CIAX
       get_item(id).set_par(par,opt)
     end
 
-    def valid_keys
-      map{|e| e.valid_keys}.flatten
+    def par_list
+      map{|e| e.par_list}.flatten
     end
 
     def list
@@ -36,19 +49,13 @@ module CIAX
       cls=cfg.generation[cfg.level(:def_proc)][:level]
       " #{id},level=#{cls},item=#{item.object_id},proc=#{cfg[:def_proc].object_id}"
     end
-
-    def get_item(id)
-      res=nil
-      any?{|e| res=e.get_item(id)}
-      res
-    end
   end
 
   class Command < Arrayx
     # CDB: mandatory (:body)
     # optional (:label,:parameter)
     # optionalfrm (:nocache,:response)
-    include GrpShare
+    include AryShare
     attr_reader :svdom,:lodom,:hidgrp
     def initialize(upper)
       @cfg=Config.new(upper)
@@ -63,8 +70,8 @@ module CIAX
   end
 
   class Domain < Arrayx
+    include AryShare
     #upper keys: def_proc,group_class,item_class,entity_class
-    include GrpShare
     def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
       @cfg[:level]='domain'
@@ -84,7 +91,7 @@ module CIAX
   end
 
   class Group < Hashx
-    include GrpShare
+    include HshShare
     attr_reader :valid_keys,:cfg
     #upper keys: caption,color,column
     def initialize(upper=Config.new,crnt={})
@@ -128,6 +135,10 @@ module CIAX
       @cmdary.map{|l| l.to_s}.grep(/./).join("\n")
     end
 
+    def par_list
+      values.map{|e| e.par_list}.flatten
+    end   
+
     def get_item(id)
       self[id]
     end
@@ -135,6 +146,7 @@ module CIAX
 
   # Corresponds commands
   class Item < Hashx
+    include HshShare
     include Math
     attr_reader :cfg
     #cfg should have :id,:label,:parameter,:def_proc
@@ -145,15 +157,14 @@ module CIAX
       @ver_color=5
     end
 
-    def set_proc(&def_proc)
-      @cfg[:def_proc]=type?(def_proc,Proc)
-      self
-    end
-
     def set_par(par,opt={})
       opt[:par]=validate(type?(par,Array))
       verbose(self.class,"SetPAR(#{@cfg[:id]}): #{par}")
       @cfg[:entity_class].new(@cfg,opt)
+    end
+
+    def par_list
+      (@cfg[:parameter]||[]).map{|e| e[:list]}.flatten
     end
 
     private

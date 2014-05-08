@@ -87,10 +87,10 @@ module CIAX
       case e.name
       when 'par_num'
         attr={:type => 'num',:list => e.text.split(',')}
-        (item[:parameter]||=[]) << attr
+        (item[:parameters]||=[]) << attr
       when 'par_str'
         attr={:type => 'str',:list => e.text.split(',')}
-        (item[:parameter]||=[]) << attr
+        (item[:parameters]||=[]) << attr
       else
         nil
       end

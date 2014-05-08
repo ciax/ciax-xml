@@ -61,13 +61,13 @@ module CIAX
       @cfg[:body]=deep_subst(@cfg[:body])
     end
 
-    def subst(str) #subst by parameter ($1,$2...)
+    def subst(str) #subst by parameters ($1,$2...)
       return str unless /\$([\d]+)/ === str
       enclose("ExtEntity","Substitute from [#{str}]","Substitute to [%s]"){
         num=true
         res=str.gsub(/\$([\d]+)/){
           i=$1.to_i
-          num=false if @cfg[:parameter][i-1][:type] != 'num'
+          num=false if @cfg[:parameters][i-1][:type] != 'num'
           verbose("ExtEntity","Parameter No.#{i} = [#{@par[i-1]}]")
           @par[i-1] || Msg.cfg_err(" No substitute data ($#{i})")
         }

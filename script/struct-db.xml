@@ -17,11 +17,11 @@
           <List copy="frame/main"/>
         </Item>
       </select>
-      <parameter type="Hash">
+      <parameters type="Hash">
         <Item key="Command Name" type="Array">
           <List val="Range"/>
         </Item>
-      </parameter>
+      </parameters>
       <nocache type="Hash">
         <Item key="Command Name" type="Boolean"/>
       </nocache>
@@ -79,11 +79,11 @@
           </list>
         </Item>
       </group>
-      <parameter type="Hash">
+      <parameters type="Hash">
         <Item key="Command Name" type="Array">
           <List val="Range"/>
         </Item>
-      </parameter>
+      </parameters>
       <select type="Hash">
         <Item key="Command Name" type="Array">
           <List type="Array" label="Frm Statement">

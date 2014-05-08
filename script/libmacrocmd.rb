@@ -36,7 +36,7 @@ module CIAX
           "ok"=>"for the message",
           "retry"=>"Checking",
         }.each{|id,cap|
-          add_item(id,id.capitalize+" "+cap,{:parameter => [@parameter]})
+          add_item(id,id.capitalize+" "+cap,{:parameters => [@parameter]})
         }
       end
     end

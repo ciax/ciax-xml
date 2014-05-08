@@ -53,7 +53,7 @@ module CIAX
 
   class Command < Arrayx
     # CDB: mandatory (:body)
-    # optional (:label,:parameter)
+    # optional (:label,:parameters)
     # optionalfrm (:nocache,:response)
     include AryShare
     attr_reader :svdom,:lodom,:hidgrp
@@ -149,7 +149,7 @@ module CIAX
     include HshShare
     include Math
     attr_reader :cfg
-    #cfg should have :id,:label,:parameter,:def_proc
+    #cfg should have :id,:label,:parameters,:def_proc
     def initialize(upper,crnt={})
       @cfg=Config.new(upper).update(crnt)
       @cfg[:level]='item'
@@ -164,15 +164,15 @@ module CIAX
     end
 
     def par_list
-      (@cfg[:parameter]||[]).map{|e| e[:list] if e[:type] == 'str'}.flatten
+      (@cfg[:parameters]||[]).map{|e| e[:list] if e[:type] == 'str'}.flatten
     end
 
     private
     # Parameter structure [{:type,:list,:default}, ...]
     def validate(pary)
       pary=type?(pary.dup,Array)
-      return [] unless @cfg[:parameter]
-      @cfg[:parameter].map{|par|
+      return [] unless @cfg[:parameters]
+      @cfg[:parameters].map{|par|
         list=par[:list]||[]
         disp=list.join(',')
         unless str=pary.shift
@@ -180,7 +180,7 @@ module CIAX
             next par[:default]
           else
             mary=[]
-            mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameter].size})"
+            mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
             mary << Msg.item(@cfg[:id],@cfg[:label])
             mary << " "*10+"key=(#{disp})"
             Msg.par_err(*mary)

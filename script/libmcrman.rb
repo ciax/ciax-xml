@@ -60,7 +60,7 @@ module CIAX
               "NOSID"
             end
           }
-          ig.each{|k,v| v[:parameter]=[{:type => 'num',:default => nil}]}
+          ig.each{|k,v| v[:parameters]=[{:type => 'num',:default => nil}]}
           ig.add_item('clean','Clean macros').set_proc{
             if @list.clean
               @list.save

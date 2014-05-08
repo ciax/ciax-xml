@@ -10,17 +10,11 @@ module CIAX
         cfg=Config.new
         db=cfg[:db]=Mcr::Db.new.set(proj)
         cfg[:app]=App::List.new
-        @list=List.new(proj,db['version']).ext_file
-        self['sid']='' # For server response
+        @list=List.new(proj,db['version'])
         super('mcr',db['id'],Command.new(cfg))
         ext_shell(@list){
-          "[%s]" % @cobj.intgrp.parameter[:default]
+          "[%s]" % @list.current
         }
-      end
-
-      def exe(args)
-        self['sid']=''
-        super
       end
 
       def shell_input(line)
@@ -37,6 +31,8 @@ module CIAX
     class Sv < Man
       def initialize(port=nil)
         super
+        self['sid']='' # For server response
+        @list.ext_file
         # Internal Command Group
         ig=@cobj.intgrp
         igpar=ig.parameter
@@ -71,15 +67,27 @@ module CIAX
         }
         ext_server(port||@cobj.cfg[:db]['port']||55555)
       end
+
+      def exe(args)
+        self['sid']=''
+        super
+      end
+
     end
 
     class List < Datax
+      attr_accessor :par
       def initialize(proj,ver=0)
         super('macro',{},'procs')
         self['id']=proj
         self['ver']=ver
+        self['current']=''
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @tgrp=ThreadGroup.new
+      end
+
+      def current #convert sid to order
+        @data.keys.index(self['current'])
       end
 
       def add(mobj)

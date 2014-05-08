@@ -45,20 +45,9 @@ module CIAX
             "NOSID"
           end
         }
-        ig.add_item('clean','Clean macros').set_proc{
-          if @list.clean
-            igpar[:list].clean
-            @list.save
-            'ACCEPT'
-          else
-            'NOSID'
-          end
-        }
         # External Command Group
         @cobj.ext_proc{|ent|
           mobj=Macro.new(ent){|args| exe(args)}
-          mobj.record.save_procs << proc{@list.save}
-          Thread.new{mobj.exe}
           @list.add(mobj)
           sid=mobj.record['sid']
           igpar[:default]=sid
@@ -67,9 +56,7 @@ module CIAX
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|
-          @list.data.each{|mobj|
-            mobj.thread.raise(Interrupt)
-          }
+          @list.interrupt
           'INTERRUPT'
         }
         ext_server(port||@cobj.cfg[:db]['port']||55555)
@@ -92,23 +79,24 @@ module CIAX
         self['id']=proj
         self['ver']=ver
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
+        @current=0
+        @tgrp=ThreadGroup.new
       end
 
       def add(mobj)
         sid=type?(mobj,Macro).record['sid']
         @data[sid]=mobj
+        mobj.record.save_procs << proc{save}
+        mobj.post_procs << proc{|m| @data.delete(m.sid)}
+        @tgrp.add(Thread.new{mobj.exe})
         self
       end
 
-      def clean
-        res=nil
-        @data.each{|key,mobj|
-          unless mobj.thread.alive?
-            @data.delete(key)
-            res=1
-          end
+      def interrupt
+        @tgrp.list.each{|t|
+          t.raise(Interrupt)
         }
-        res
+        self
       end
 
       def to_s
@@ -119,6 +107,7 @@ module CIAX
           msg << "[#{mobj[:option]}]?" if mobj[:option]
           page << Msg.item(title,msg)
         }
+        page << @tgrp.list.to_s
         page.join("\n")
       end
     end

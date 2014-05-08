@@ -57,6 +57,7 @@ module CIAX
         # External Command Group
         @cobj.ext_proc{|ent|
           mobj=Macro.new(ent){|args| exe(args)}
+          mobj.record.save_procs << proc{@list.save}
           Thread.new{mobj.exe}
           @list.add(mobj)
           sid=mobj.record['sid']
@@ -71,7 +72,6 @@ module CIAX
           }
           'INTERRUPT'
         }
-        @post_procs << proc{@list.save}
         ext_server(port||@cobj.cfg[:db]['port']||55555)
       end
 

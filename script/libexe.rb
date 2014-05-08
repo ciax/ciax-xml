@@ -24,7 +24,7 @@ module CIAX
       Thread.abort_on_exception=true
     end
 
-    # Sync only (Wait for other thread)
+    # Sync only (Wait for other thread), never inherit
     def exe(args)
       type?(args,Array)
       verbose("Sh/Exe","Command #{args} recieved")

@@ -10,8 +10,8 @@ module CIAX
         cfg=Config.new
         db=cfg[:db]=Mcr::Db.new.set(proj)
         cfg[:app]=App::List.new
-        @list=List.new(proj,db['version'])
         super('mcr',db['id'],Command.new(cfg))
+        @list=List.new(proj,db['version'],@cobj.intgrp.parameter)
         ext_shell(@list){
           "[%s]" % @list.current
         }
@@ -32,6 +32,7 @@ module CIAX
       def initialize(port=nil)
         super
         self['sid']='' # For server response
+        @pre_procs << proc{ self['sid']='' }
         @list.ext_file
         # Internal Command Group
         ig=@cobj.intgrp
@@ -39,8 +40,8 @@ module CIAX
         ig.set_proc{|ent|
           sid=ent.par[0]||""
           if mobj=@list.data[sid]
-            igpar[:default]=sid
             self['sid']=sid
+            @list.setdef(sid)
             if mobj[:stat] == 'query'
               mobj.que_cmd << ent.id
               mobj.que_res.pop
@@ -55,10 +56,7 @@ module CIAX
         @cobj.ext_proc{|ent|
           mobj=Macro.new(ent){|args| exe(args)}
           @list.add(mobj)
-          sid=mobj.record['sid']
-          igpar[:default]=sid
-          igpar[:list] << sid
-          self['sid']=sid
+          self['sid']=mobj.sid
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|
@@ -67,21 +65,15 @@ module CIAX
         }
         ext_server(port||@cobj.cfg[:db]['port']||55555)
       end
-
-      def exe(args)
-        self['sid']=''
-        super
-      end
-
     end
 
     class List < Datax
-      attr_accessor :par
-      def initialize(proj,ver=0)
+      def initialize(proj,ver=0,parameter={:list =>[],:default =>''})
         super('macro',{},'procs')
         self['id']=proj
         self['ver']=ver
-        self['current']=''
+        @parameter=parameter
+        self['current']=parameter[:default]
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @tgrp=ThreadGroup.new
       end
@@ -90,11 +82,22 @@ module CIAX
         @data.keys.index(self['current'])
       end
 
+      def setdef(sid)
+        self['current']=@parameter[:default]=sid
+      end
+
       def add(mobj)
-        sid=type?(mobj,Macro).record['sid']
+        sid=type?(mobj,Macro).sid
         @data[sid]=mobj
+        setdef(sid)
+        @parameter[:list] << sid
         mobj.record.save_procs << proc{save}
-        mobj.post_procs << proc{|m| @data.delete(m.sid)}
+        mobj.post_procs << proc{|m|
+          @data.delete(m.sid)
+          @parameter[:list]=@data.keys
+          setdef(@data.keys.last)
+          save
+        }
         @tgrp.add(Thread.new{mobj.exe})
         self
       end

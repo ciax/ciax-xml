@@ -4,6 +4,18 @@ require "libmacrorec"
 require "libappsh"
 
 module CIAX
+  # Modes            | Actual Status? | Force Entering | Query? | Moving | Retry Interval
+  # TEST(default):   | NO  | YES | YES | NO  | 0
+  # CHECK(-e):       | YES | YES | YES | NO  | 0
+  # DRYRUN(-ne):     | YES | YES | NO  | NO  | 0
+  # INTERACTIVE(-em):| YES | NO  | YES | YES | 1
+  # NONSTOP(-nem):   | YES | NO  | NO  | YES | 1
+
+  #MOTION:  TEST <-> REAL (m)
+  #QUERY :  INTERACTIVE <-> NONSTOP(n)
+
+  #TEST: query(exec,error,enter), interval=0
+  #REAL: query(exec,error), interval=1
   module Mcr
     class Macro < Hashx
       include Msg

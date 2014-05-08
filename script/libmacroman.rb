@@ -13,8 +13,7 @@ module CIAX
         @list=List.new(proj,db['version']).ext_file
         self['sid']='' # For server response
         super('mcr',db['id'],Command.new(cfg))
-        igpar=@cobj.intgrp.parameter
-        ext_shell(@list,{:default => "[%s]"},igpar)
+        ext_shell(@list,{:def => "[%s]"},@cobj.intgrp.parameter)
       end
 
       def exe(args)
@@ -77,8 +76,8 @@ module CIAX
       def shell_input(line)
         cmd,*par=super
         if @cobj.intgrp.keys.include?(cmd)
-          par.size.times{|i|
-            par[i]=@list.data.keys[i]
+          par.map!{|i|
+            @list.data.keys[i.to_i]||i
           }
         end
         [cmd]+par

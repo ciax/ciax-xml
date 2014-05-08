@@ -8,27 +8,25 @@ module CIAX
     class Macro < Hashx
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:que_cmd,:que_res,:thread,:total
+      attr_reader :record,:sid,:que_cmd,:que_res,:total,:post_procs
       #exe_proc for executing asynchronous submacro
       def initialize(ent,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
         @exe_proc=exe_proc||proc{{}}
+        @post_procs=[] # execute at the end of exe
         @que_cmd=Queue.new
         @que_res=Queue.new
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
+        @sid=@record['sid']
         self[:cid]=@cfg[:cid]
         @total=@cfg[:body].size
         self[:step]=0
         @running=[]
       end
 
-      def fork
-        @thread=Threadx.new("Macro Thread(#{@id})",10){exe}
-        self
-      end
-
       def exe
+        Thread.current[:sid]=@sid
         set_stat 'run'
         show @record
         @cfg[:body].each{|e1|
@@ -69,6 +67,8 @@ module CIAX
         } if $opt['m']
         finish('interrupted')
         self
+      ensure
+        @post_procs.each{|p| p.call(self)}
       end
 
       private

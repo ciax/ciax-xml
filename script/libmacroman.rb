@@ -19,7 +19,7 @@ module CIAX
 
       def shell_input(line)
         cmd,*par=super
-        if @cobj.intgrp.keys.include?(cmd)
+        if @cobj.intgrp.key?(cmd)
           par.map!{|i|
             @list.data.keys[i.to_i]||i
           }
@@ -115,11 +115,13 @@ module CIAX
 
       def to_s
         page=[@caption]
+        idx=0
         @data.each{|key,mobj|
-          title="[#{key}]"
+          title="[#{idx}](#{key})"
           msg="#{mobj[:cid]} [#{mobj[:step]}/#{mobj.total}](#{mobj[:stat]})"
           msg << "[#{mobj[:option]}]?" if mobj[:option]
           page << Msg.item(title,msg)
+          idx+=1
         }
         page.join("\n")
       end

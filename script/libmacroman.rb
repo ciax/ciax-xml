@@ -22,6 +22,16 @@ module CIAX
         self['sid']=''
         super
       end
+
+      def shell_input(line)
+        cmd,*par=super
+        if @cobj.intgrp.keys.include?(cmd)
+          par.map!{|i|
+            @list.data.keys[i.to_i]||i
+          }
+        end
+        [cmd]+par
+      end
     end
 
     class Sv < Man
@@ -61,16 +71,6 @@ module CIAX
         }
         ext_server(port||@cobj.cfg[:db]['port']||55555)
       end
-
-      def shell_input(line)
-        cmd,*par=super
-        if @cobj.intgrp.keys.include?(cmd)
-          par.map!{|i|
-            @list.data.keys[i.to_i]||i
-          }
-        end
-        [cmd]+par
-      end
     end
 
     class List < Datax
@@ -79,7 +79,6 @@ module CIAX
         self['id']=proj
         self['ver']=ver
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
-        @current=0
         @tgrp=ThreadGroup.new
       end
 
@@ -107,7 +106,6 @@ module CIAX
           msg << "[#{mobj[:option]}]?" if mobj[:option]
           page << Msg.item(title,msg)
         }
-        page << @tgrp.list.to_s
         page.join("\n")
       end
     end

@@ -11,6 +11,7 @@ module CIAX
         db=cfg[:db]=Mcr::Db.new.set(proj)
         cfg[:app]=App::List.new
         super('mcr',db['id'],Command.new(cfg))
+        @cobj.add_int
         @list=List.new(proj,db['version'],@cobj.intgrp.parameter)
         ext_shell(@list){
           "[%s]" % @list.current_idx

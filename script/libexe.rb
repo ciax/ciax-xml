@@ -46,8 +46,8 @@ module CIAX
       extend(Server).ext_server(port)
     end
 
-    def ext_shell(output={},pdb={},pstat=nil)
-      extend(Shell).ext_shell(output,pdb,pstat)
+    def ext_shell(output={},&prompt_proc)
+      extend(Shell).ext_shell(output,&prompt_proc)
     end
 
     # Overridable methods(do not set this kind of methods in modules)

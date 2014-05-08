@@ -13,7 +13,9 @@ module CIAX
         @list=List.new(proj,db['version']).ext_file
         self['sid']='' # For server response
         super('mcr',db['id'],Command.new(cfg))
-        ext_shell(@list,{:def => "[%s]"},@cobj.intgrp.parameter)
+        ext_shell(@list){
+          "[%s]" % @cobj.intgrp.parameter[:default]
+        }
       end
 
       def exe(args)

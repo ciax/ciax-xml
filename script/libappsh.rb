@@ -30,7 +30,11 @@ module CIAX
         super('app',@stat['id'],Command.new(cfg))
         @output=@print=View.new(@adb,@stat)
         init_watch if @adb[:watch]
-        ext_shell(@output,{'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'})
+        ext_shell(@output){
+          {'auto'=>'@','watch'=>'&','isu'=>'*','na'=>'X'}.map{|k,v|
+            v if self[k]
+          }.join('')
+        }
         init_view
       end
 

@@ -10,13 +10,10 @@ module CIAX
       Msg.type?(obj,Exe)
     end
 
-    # Prompt Db : { key => format(str), key => conv_db(hash), key => nil(status) }
-    attr_reader :pdb
-    def ext_shell(output={},pdb={},pstat=nil)
+    def ext_shell(output={},&prompt_proc)
       # For Shell
       @output=output
-      @pdb=pdb
-      @pstat=pstat||self
+      @prompt_proc=prompt_proc
       # Local(Long Jump) Commands (local handling commands on Client)
       shg=@cobj.lodom.add_group('caption'=>"Shell Command",'color'=>1)
       shg.add_dummy('^D,q',"Quit")
@@ -28,17 +25,7 @@ module CIAX
     def prompt
       str="#@layer:#@id"
       str+="(#@mode)" if @mode
-      @pdb.each{|k,fmt|
-        next unless v=@pstat[k]
-        case fmt
-        when String
-          str << fmt % v
-        when Hash
-          str << fmt[v]
-        else
-          str << v
-        end
-      }
+      str+=@prompt_proc.call if @prompt_proc
       str+'>'
     end
 

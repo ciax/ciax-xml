@@ -13,7 +13,7 @@ module CIAX
         super('mcr',db['id'],Command.new(cfg))
         @list=List.new(proj,db['version'],@cobj.intgrp.parameter)
         ext_shell(@list){
-          "[%s]" % @list.current
+          "[%s]" % @list.current_idx
         }
       end
 
@@ -39,9 +39,8 @@ module CIAX
         igpar=ig.parameter
         ig.set_proc{|ent|
           sid=ent.par[0]||""
-          if mobj=@list.data[sid]
+          if mobj=@list.get(sid)
             self['sid']=sid
-            @list.setdef(sid)
             if mobj[:stat] == 'query'
               mobj.que_cmd << ent.id
               mobj.que_res.pop
@@ -78,7 +77,12 @@ module CIAX
         @tgrp=ThreadGroup.new
       end
 
-      def current #convert sid to order
+      def get(sid)
+        setdef(sid) if mobj=@data[sid]
+        mobj
+      end
+
+      def current_idx #convert sid to the order number(Integer)
         @data.keys.index(self['current'])
       end
 

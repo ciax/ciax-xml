@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require "libmacrocmd"
-require "libmacrorec"
+require "libmcrcmd"
+require "librecord"
 require "libappsh"
 
 module CIAX

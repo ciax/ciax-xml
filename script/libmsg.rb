@@ -230,7 +230,7 @@ module CIAX
     end
 
     def _w(var,msg='') # watch var for debug
-      Kernel.warn color(msg,1)+':'+color("#{var}:",3)+color("(#{var.object_id})",5)+':'+caller(1).first.split('/').last
+      Kernel.warn color(msg,5)+":#{var}:"+color("(#{var.object_id})",3)+':'+caller(1).first.split('/').last
     end
 
     # Exception methods

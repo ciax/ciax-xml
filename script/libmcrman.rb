@@ -5,7 +5,7 @@ require "libmcrexe"
 module CIAX
   module Mcr
     class Man < Exe
-      def initialize(port=nil)
+      def initialize(port=nil,list_class=List)
         proj=ENV['PROJ']||'ciax'
         cfg=Config.new
         db=cfg[:db]=Mcr::Db.new.set(proj)
@@ -13,7 +13,7 @@ module CIAX
         super('mcr',db['id'],Command.new(cfg))
         @cobj.add_int
         @current=0
-        @list=List.new(proj,db['version'],@cobj.intgrp.valid_pars)
+        @list=list_class.new(proj,db['version'],@cobj.intgrp.valid_pars)
         ext_shell(@list){
           "[%d]" % @current
         }
@@ -35,9 +35,45 @@ module CIAX
       end
     end
 
+    class List < Datax
+      def initialize(proj,ver=0,valid_pars=[])
+        super('macro',{},'procs')
+        self['id']=proj
+        self['ver']=ver
+        @valid_pars=valid_pars
+        @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
+        @current
+      end
+
+      def get_obj(sid)
+        @data[sid]
+      end
+
+      def get_sid(num)
+        @data.keys[num]
+      end
+
+      def get_idx(sid) #convert sid to the order number(Integer)
+        @data.keys.index(sid)
+      end
+
+      def to_s
+        page=[@caption]
+        idx=0
+        @data.each{|key,mst|
+          title="[#{idx}](#{key})"
+          msg="#{mst[:cid]} [#{mst[:step]}/#{mst.total}](#{mst[:stat]})"
+          msg << "[#{mst[:option]}]?" if mst[:option]
+          page << Msg.item(title,msg)
+          idx+=1
+        }
+        page.join("\n")
+      end
+    end
+
     class Sv < Man
       def initialize(port=nil)
-        super
+        super(port,SvList)
         self['sid']='' # For server response
         @pre_procs << proc{ self['sid']='' }
         @list.ext_file
@@ -72,27 +108,10 @@ module CIAX
       end
     end
 
-    class List < Datax
+    class SvList < List
       def initialize(proj,ver=0,valid_pars=[])
-        super('macro',{},'procs')
-        self['id']=proj
-        self['ver']=ver
-        @valid_pars=valid_pars
-        @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
-        @current
+        super
         @tgrp=ThreadGroup.new
-      end
-
-      def get_obj(sid)
-        @data[sid]
-      end
-
-      def get_sid(num)
-        @data.keys[num]
-      end
-
-      def get_idx(sid) #convert sid to the order number(Integer)
-        @data.keys.index(sid)
       end
 
       def add(mobj)
@@ -114,19 +133,6 @@ module CIAX
           t.raise(Interrupt)
         }
         self
-      end
-
-      def to_s
-        page=[@caption]
-        idx=0
-        @data.each{|key,mobj|
-          title="[#{idx}](#{key})"
-          msg="#{mobj[:cid]} [#{mobj[:step]}/#{mobj.total}](#{mobj[:stat]})"
-          msg << "[#{mobj[:option]}]?" if mobj[:option]
-          page << Msg.item(title,msg)
-          idx+=1
-        }
-        page.join("\n")
       end
     end
 

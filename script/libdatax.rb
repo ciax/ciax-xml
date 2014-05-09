@@ -6,7 +6,7 @@ module CIAX
   # @data is hidden from access by '[]'.
   # @data is conveted to json file where @data will be appeared as self['data'].
   class Datax < Hashx
-    attr_reader :data,:upd_procs,:save_procs,:load_procs
+    attr_reader :data,:upd_procs,:save_procs,:load_procs,:pre_procs,:post_procs
     def initialize(type,init_struct={},dataname='data')
       self['type']=type
       self['time']=now_msec
@@ -16,6 +16,8 @@ module CIAX
       @dataname=dataname
       @thread=Thread.current # For Thread safe
       @ver_color=6
+      @pre_procs=[] # Proc Array for Pre-Process of upd
+      @post_procs=[] # Proc Array for Post-Process of upd
       @upd_procs=[] # Proc Array for Update Propagation to the upper Layers
       @save_procs=[] # Proc for Device Data Update (by Device response)
       @load_procs=[] # Proc for Device Data Update (by Device response)
@@ -130,6 +132,16 @@ module CIAX
         f.slice(/.+_(.+)\.json/,1)
       }.sort
     end
+
+    def pre_exec
+      @pre_procs.each{|p| p.call(self)}
+      self
+    end
+
+    def post_exec
+      @post_procs.each{|p| p.call(self)}
+      self
+    end
   end
 
   module Http
@@ -139,6 +151,7 @@ module CIAX
       @prefix="http://"+host+"/json/"
       verbose("Http","Initialize")
       self['id']||Msg.cfg_err("ID")
+      @pre_procs << proc{load}
       self
     end
 
@@ -167,6 +180,7 @@ module CIAX
       @prefix=VarDir+"/json/"
       FileUtils.mkdir_p @prefix
       self['id']||Msg.cfg_err("ID")
+      @post_procs << proc{save}
       self
     end
 

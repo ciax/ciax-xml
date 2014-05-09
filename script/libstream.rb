@@ -34,7 +34,7 @@ module CIAX
       reopen{
         @f.syswrite(str)
       }
-      conv('snd',str,cid).upd.save
+      conv('snd',str,cid)
       self
     end
 
@@ -46,7 +46,7 @@ module CIAX
       }||Msg.com_err("Stream:No response")
       verbose("Stream","Recieved #{str.size} byte on #{self['cmd']}")
       verbose("Stream","Binary Recieving #{str.inspect}")
-      conv('rcv',str).upd.save
+      conv('rcv',str)
       self
     end
 
@@ -65,7 +65,7 @@ module CIAX
 
     def ext_logging(id,ver=0)
       logging=Logging.new('stream',id,ver)
-      @upd_procs << proc{
+      @post_procs << proc{
         logging.append(@data)
       }
       update({'id'=>id,'ver'=>ver})
@@ -74,10 +74,12 @@ module CIAX
 
     private
     def conv(dir,data,cid=nil)
+      pre_exec
       self['time']=now_msec
       self[:data]=data
       @data.update({'dir'=>dir,'base64'=>encode(data)})
       @data['cmd']=cid if cid
+      post_exec
       self
     end
 

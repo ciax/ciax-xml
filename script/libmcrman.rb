@@ -12,50 +12,46 @@ module CIAX
         cfg[:app]=App::List.new
         super('mcr',db['id'],Command.new(cfg))
         @cobj.add_int
-        @current=0
         @list=list_class.new(proj,db['version'],@cobj.intgrp.valid_pars)
-        ext_shell(@list){
-          "[%d]" % @current
-        }
+        ext_shell(@list){ "[%d]" % @list.current }
         @post_procs << proc{@list.upd}
       end
 
       def shell_input(line)
         cmd,*par=super
         if @cobj.intgrp.key?(cmd)
-          if par.empty?
-            par=[@list.get_sid(@current)]
-          else
-            par.map!{|i|
-              @list.get_sid(i.to_i)||i
-            }
-            @current=@list.get_idx(par.first)||0
-          end
+          @list.set_current(par[0]) unless par.empty?
+          par=[@list.current_sid]
         end
         [cmd]+par
       end
     end
 
     class List < Datax
+      attr_reader :current
       def initialize(proj,ver=0,valid_pars=[])
         super('macro',{},'procs')
         self['id']=proj
         self['ver']=ver
         @valid_pars=valid_pars
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
-        @upd_procs << proc{ @valid_pars.replace(@data.keys) }
+        @current=0
+        @upd_procs << proc{
+          size=@valid_pars.replace(@data.keys).size
+          @current=size if size < @current
+        }
       end
 
       def get_obj(sid)
         @data[sid]
       end
 
-      def get_sid(num)
-        @data.keys[num]
+      def current_sid
+        @data.keys[@current]
       end
 
-      def get_idx(sid) #convert sid to the order number(Integer)
-        @data.keys.index(sid)
+      def set_current(num) #convert sid to the order number(Integer)
+        @current=num.to_i
       end
 
       def to_s

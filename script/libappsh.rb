@@ -119,7 +119,6 @@ module CIAX
         @post_procs << proc{@stat.load}
         ext_client(host,@adb['port'])
       end
-
     end
 
     class Sv < Exe

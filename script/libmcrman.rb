@@ -5,7 +5,7 @@ require "libmcrexe"
 module CIAX
   module Mcr
     class Man < Exe
-      def initialize(port=nil,list_class=List)
+      def initialize(list_class=List)
         proj=ENV['PROJ']||'ciax'
         cfg=Config.new
         db=cfg[:db]=Mcr::Db.new.set(proj)
@@ -14,7 +14,7 @@ module CIAX
         @cobj.add_int
         @list=list_class.new(proj,db['version'],@cobj.intgrp.valid_pars)
         ext_shell(@list){ "[%d]" % @list.current }
-        @post_procs << proc{@list.upd}
+        @post_procs << proc{@list.load}
       end
 
       def shell_input(line)
@@ -27,6 +27,15 @@ module CIAX
       end
     end
 
+    class Cl < Man
+      def initialize(host='localhost',port=55555)
+        super()
+        @list.ext_file
+#        @list.ext_http(host).load
+        ext_client(host,port||@cobj.cfg[:db]['port']||55555)
+      end
+    end
+
     class List < Datax
       attr_accessor :current
       def initialize(proj,ver=0,valid_pars=[])
@@ -35,7 +44,7 @@ module CIAX
         self['ver']=ver
         @valid_pars=valid_pars
         @current=0
-        @upd_procs << proc{
+        @load_procs << proc{
           size=@valid_pars.replace(@data.keys).size
           @current=size if size < @current || @current < 1
         }
@@ -65,7 +74,7 @@ module CIAX
 
     class Sv < Man
       def initialize(port=nil)
-        super(port,SvList)
+        super(SvList)
         self['sid']='' # For server response
         @pre_procs << proc{ self['sid']='' }
         @list.ext_file
@@ -128,7 +137,8 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new('rest',{'n' => 'nonstop mode'})
       begin
-        Sv.new.shell
+        Sv.new
+        Cl.new.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

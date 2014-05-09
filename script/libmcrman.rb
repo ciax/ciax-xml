@@ -14,7 +14,7 @@ module CIAX
         @cobj.add_int
         @list=list_class.new(proj,db['version'],@cobj.intgrp.valid_pars)
         ext_shell(@list){ "[%d]" % @list.current }
-        @post_procs << proc{@list.load}
+        @post_procs << proc{@list.upd}
       end
 
       def shell_input(line)
@@ -43,7 +43,7 @@ module CIAX
         self['ver']=ver
         @valid_pars=valid_pars
         @current=0
-        @load_procs << proc{
+        @upd_procs << proc{
           size=@valid_pars.replace(@data.keys).size
           @current=size if size < @current || @current < 1
         }

@@ -149,7 +149,9 @@
       <exec site="crt" name="run">
         <argv>$1</argv>
       </exec>
-      <mcr async="true" name="trsi" />
+      <mcr async="true" name="trsi">
+        <argv>dsi</argv>
+      </mcr>
       <wait retry="120" label="Run end?">
         <stat label="Running" site="crt" var="run">OFF</stat>
       </wait>

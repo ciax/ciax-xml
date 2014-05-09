@@ -17,6 +17,7 @@ module CIAX
         ext_shell(@list){
           "[%d]" % @current
         }
+        @post_procs << proc{@list.upd}
       end
 
       def shell_input(line)
@@ -42,7 +43,7 @@ module CIAX
         self['ver']=ver
         @valid_pars=valid_pars
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
-        @current
+        @upd_procs << proc{ @valid_pars.replace(@data.keys) }
       end
 
       def get_obj(sid)
@@ -121,7 +122,6 @@ module CIAX
         mobj.record.save_procs << proc{save}
         mobj.post_procs << proc{|m|
           @data.delete(m.sid)
-          @valid_pars.replace(@data.keys)
           save
         }
         @tgrp.add(Thread.new{mobj.exe})

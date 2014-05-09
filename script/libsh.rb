@@ -35,7 +35,7 @@ module CIAX
     def shell
       verbose(self.class,"Init/Shell(#@id)",2)
       Readline.completion_proc=proc{|word|
-        (@cobj.valid_keys+@cobj.par_list).grep(/^#{word}/)
+        (@cobj.valid_keys+@cobj.valid_pars).grep(/^#{word}/)
       }
       while line=readline(prompt)
         break if /^q/ === line

@@ -35,8 +35,8 @@ module CIAX
       get_item(id).set_par(par,opt)
     end
 
-    def par_list
-      map{|e| e.par_list}.flatten
+    def valid_pars
+      map{|e| e.valid_pars}.flatten
     end
 
     def list
@@ -135,8 +135,8 @@ module CIAX
       @cmdary.map{|l| l.to_s}.grep(/./).join("\n")
     end
 
-    def par_list
-      values.map{|e| e.par_list}.flatten
+    def valid_pars
+      values.map{|e| e.valid_pars}.flatten
     end   
 
     def get_item(id)
@@ -163,7 +163,7 @@ module CIAX
       @cfg[:entity_class].new(@cfg,opt)
     end
 
-    def par_list
+    def valid_pars
       (@cfg[:parameters]||[]).map{|e| e[:list] if e[:type] == 'str'}.flatten
     end
 

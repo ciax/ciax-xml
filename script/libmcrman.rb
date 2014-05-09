@@ -12,18 +12,24 @@ module CIAX
         cfg[:app]=App::List.new
         super('mcr',db['id'],Command.new(cfg))
         @cobj.add_int
-        @list=List.new(proj,db['version'],@cobj.intgrp.parameter)
+        @current=0
+        @list=List.new(proj,db['version'],@cobj.intgrp.valid_pars)
         ext_shell(@list){
-          "[%s]" % @list.current_idx
+          "[%d]" % @current
         }
       end
 
       def shell_input(line)
         cmd,*par=super
         if @cobj.intgrp.key?(cmd)
-          par.map!{|i|
-            @list.data.keys[i.to_i]||i
-          }
+          if par.empty?
+            par=[@list.get_sid(@current)]
+          else
+            par.map!{|i|
+              @list.get_sid(i.to_i)||i
+            }
+            @current=@list.get_idx(par.first)||0
+          end
         end
         [cmd]+par
       end
@@ -37,10 +43,9 @@ module CIAX
         @list.ext_file
         # Internal Command Group
         ig=@cobj.intgrp
-        igpar=ig.parameter
         ig.set_proc{|ent|
           sid=ent.par[0]||""
-          if mobj=@list.get(sid)
+          if mobj=@list.get_obj(sid)
             self['sid']=sid
             if mobj[:stat] == 'query'
               mobj.que_cmd << ent.id
@@ -68,39 +73,36 @@ module CIAX
     end
 
     class List < Datax
-      def initialize(proj,ver=0,parameter={:list =>[],:default =>''})
+      def initialize(proj,ver=0,valid_pars=[])
         super('macro',{},'procs')
         self['id']=proj
         self['ver']=ver
-        @parameter=parameter
-        self['current']=parameter[:default]
+        @valid_pars=valid_pars
         @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
+        @current
         @tgrp=ThreadGroup.new
       end
 
-      def get(sid)
-        setdef(sid) if mobj=@data[sid]
-        mobj
+      def get_obj(sid)
+        @data[sid]
       end
 
-      def current_idx #convert sid to the order number(Integer)
-        @data.keys.index(self['current'])
+      def get_sid(num)
+        @data.keys[num]
       end
 
-      def setdef(sid)
-        self['current']=@parameter[:default]=sid
+      def get_idx(sid) #convert sid to the order number(Integer)
+        @data.keys.index(sid)
       end
 
       def add(mobj)
         sid=type?(mobj,Macro).sid
         @data[sid]=mobj
-        setdef(sid)
-        @parameter[:list] << sid
+        @valid_pars << sid
         mobj.record.save_procs << proc{save}
         mobj.post_procs << proc{|m|
           @data.delete(m.sid)
-          @parameter[:list]=@data.keys
-          setdef(@data.keys.last)
+          @valid_pars.replace(@data.keys)
           save
         }
         @tgrp.add(Thread.new{mobj.exe})

@@ -24,10 +24,11 @@ module CIAX
     end
 
     class IntGrp < Group
-      attr_reader :parameter
+      attr_reader :valid_pars
       def initialize(upper,crnt={})
         super
-        @parameter={:type => 'str',:list => [],:default => nil}
+        @valid_pars=[]
+        parlist={:parameters => [{:type => 'str',:list => @valid_pars,:default => nil}]}
         @cfg['caption']='Internal Commands'
         {
           "exec"=>"Command",
@@ -39,7 +40,7 @@ module CIAX
           "ok"=>"for the message",
           "retry"=>"Checking",
         }.each{|id,cap|
-          add_item(id,id.capitalize+" "+cap,{:parameters => [@parameter]})
+          add_item(id,id.capitalize+" "+cap,parlist)
         }
       end
     end

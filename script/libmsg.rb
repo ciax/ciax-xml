@@ -229,6 +229,10 @@ module CIAX
       Kernel.warn color(msg,1,ind)
     end
 
+    def _w(var,msg='') # watch var for debug
+      Kernel.warn color(msg,1)+':'+color("#{var}:",3)+color("(#{var.object_id})",5)+':'+caller(1).first.split('/').last
+    end
+
     # Exception methods
     def cmd_err(*msg) # Raise User error (Invalid User input)
       msg[0]=color(msg[0],1)

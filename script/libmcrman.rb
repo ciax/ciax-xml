@@ -30,8 +30,7 @@ module CIAX
     class Cl < Man
       def initialize(host='localhost',port=55555)
         super()
-        @list.ext_file
-#        @list.ext_http(host).load
+        @list.ext_http(host).load
         ext_client(host,port||@cobj.cfg[:db]['port']||55555)
       end
     end
@@ -137,8 +136,7 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new('rest',{'n' => 'nonstop mode'})
       begin
-        Sv.new
-        Cl.new.shell
+        Sv.new.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

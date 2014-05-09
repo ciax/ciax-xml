@@ -109,6 +109,8 @@ module CIAX
       Msg.type?(obj,Exe)
     end
 
+    # If you get 'Address family not ..' error,
+    # remove ipv6 entry from /etc/hosts
     def ext_client(host,port)
       @mode='CL'
       host||='localhost'

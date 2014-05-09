@@ -20,7 +20,7 @@ module CIAX
       def shell_input(line)
         cmd,*par=super
         if @cobj.intgrp.key?(cmd)
-          @list.set_current(par[0]) unless par.empty?
+          @list.current=par[0].to_i unless par.empty?
           par=[@list.current_sid]
         end
         [cmd]+par
@@ -28,13 +28,12 @@ module CIAX
     end
 
     class List < Datax
-      attr_reader :current
+      attr_accessor :current
       def initialize(proj,ver=0,valid_pars=[])
         super('macro',{},'procs')
         self['id']=proj
         self['ver']=ver
         @valid_pars=valid_pars
-        @caption='<<< '+Msg.color('Active Macros',2)+' >>>'
         @current=0
         @upd_procs << proc{
           size=@valid_pars.replace(@data.keys).size
@@ -46,17 +45,13 @@ module CIAX
         @data[sid]
       end
 
-      def current_sid
+      def current_sid #convert the order number(Integer) to sid
         @data.keys[@current-1]
       end
 
-      def set_current(num) #convert sid to the order number(Integer)
-        @current=num.to_i
-      end
-
       def to_s
-        page=[@caption]
         idx=1
+        page=['<<< '+Msg.color('Active Macros',2)+' >>>']
         @data.each{|key,mst|
           title="[#{idx}](#{key})"
           msg="#{mst[:cid]} [#{mst[:step]}/#{mst.total}](#{mst[:stat]})"

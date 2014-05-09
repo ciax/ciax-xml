@@ -137,7 +137,7 @@ module CIAX
 
     def valid_pars
       values.map{|e| e.valid_pars}.flatten
-    end   
+    end
 
     def get_item(id)
       self[id]

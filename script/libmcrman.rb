@@ -75,9 +75,8 @@ module CIAX
         @pre_procs << proc{ self['sid']='' }
         @list.ext_file
         # Internal Command Group
-        ig=@cobj.intgrp
-        ig.set_proc{|ent|
-          sid=ent.par[0]||""
+        @cobj.intgrp.set_proc{|ent|
+          sid=ent.par[0]
           if mobj=@list.get_obj(sid)
             self['sid']=sid
             if mobj[:stat] == 'query'
@@ -114,7 +113,6 @@ module CIAX
       def add(mobj)
         sid=type?(mobj,Macro).sid
         @data[sid]=mobj
-        @valid_pars << sid
         mobj.record.save_procs << proc{save}
         mobj.post_procs << proc{|m|
           @data.delete(m.sid)

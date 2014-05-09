@@ -13,8 +13,8 @@ module CIAX
         super('mcr',db['id'],Command.new(cfg))
         @cobj.add_int
         @list=list_class.new(proj,db['version'],@cobj.intgrp.valid_pars)
-        ext_shell(@list){ "[%d]" % @list.current }
         @post_procs << proc{@list.upd}
+        ext_shell(@list){ "[%d]" % @list.current }
       end
 
       def shell_input(line)
@@ -31,6 +31,7 @@ module CIAX
       def initialize(host='localhost',port=55555)
         super()
         @list.ext_http(host).load
+        @pre_procs << proc{@list.load}
         ext_client(host,port||@cobj.cfg[:db]['port']||55555)
       end
     end

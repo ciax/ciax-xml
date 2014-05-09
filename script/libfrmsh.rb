@@ -53,10 +53,10 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         host=type?(cfg['host']||@fdb['host']||'localhost',String)
-        @field.ext_http(host).load
+        @field.ext_http(host)
         @cobj.svdom.set_proc{to_s}
         ext_client(host,@fdb['port'])
-        @post_procs << proc{@field.load}
+        @pre_procs << proc{@field.load}
       end
     end
 

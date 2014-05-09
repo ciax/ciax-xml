@@ -3,9 +3,10 @@ require "libmsg"
 require "libdb"
 
 module CIAX
+  # @data is hidden from access by '[]'.
+  # @data is conveted to json file where @data will be appeared as self['data'].
   class Datax < Hashx
     attr_reader :data,:upd_procs,:save_procs,:load_procs
-    # @data is hidden from access by '[]'
     def initialize(type,init_struct={},dataname='data')
       self['type']=type
       self['time']=now_msec
@@ -101,12 +102,14 @@ module CIAX
 
     private
     def _getdata
+      verbose("Datax","Convert @data to [:data]")
       hash=Hashx[self]
       hash[@dataname]=@data
       hash
     end
 
     def _setdata
+      verbose("Datax","Convert [:data] to @data")
       @data=delete(@dataname).extend(Enumx)
       self['time']||=now_msec
       upd

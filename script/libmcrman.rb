@@ -38,7 +38,7 @@ module CIAX
         @current=0
         @upd_procs << proc{
           size=@valid_pars.replace(@data.keys).size
-          @current=size if size < @current
+          @current=size if size < @current || @current < 1
         }
       end
 
@@ -47,7 +47,7 @@ module CIAX
       end
 
       def current_sid
-        @data.keys[@current]
+        @data.keys[@current-1]
       end
 
       def set_current(num) #convert sid to the order number(Integer)
@@ -56,7 +56,7 @@ module CIAX
 
       def to_s
         page=[@caption]
-        idx=0
+        idx=1
         @data.each{|key,mst|
           title="[#{idx}](#{key})"
           msg="#{mst[:cid]} [#{mst[:step]}/#{mst.total}](#{mst[:stat]})"

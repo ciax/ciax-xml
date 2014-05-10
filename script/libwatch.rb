@@ -174,7 +174,7 @@ module CIAX
     watch=Watch::Data.new.set_db(adb).ext_upd(stat).upd
     if t=$opt['t']
       watch.ext_file
-      stat.str_update(t).upd.save
+      stat.str_update(t)
     end
     puts watch
   end

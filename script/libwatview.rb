@@ -120,7 +120,7 @@ module CIAX
     wview.ext_prt unless $opt['r']
     if t=$opt['t']
       watch.ext_file
-      stat.str_update(t).upd.save
+      stat.str_update(t)
     end
     puts wview
   end

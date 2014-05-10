@@ -182,7 +182,7 @@ module CIAX
         }
         buf.flush_proc{
           verbose("AppSv","Flushed FrmCmds")
-          @stat.upd.save
+          @stat.upd
           sleep(@interval||0.1)
           # Auto issue by watch
           @watch.batch_on_event if @watch

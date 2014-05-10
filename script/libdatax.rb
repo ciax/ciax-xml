@@ -71,13 +71,14 @@ module CIAX
         @data[k]=v
       }
       self['time']=now_msec
-      upd
+    ensure
+      post_upd
     end
 
     def unset(key)
-      val=@data.delete(key)
-      upd
-      val
+      @data.delete(key)
+    ensure
+      post_upd
     end
 
     def set_db(db)

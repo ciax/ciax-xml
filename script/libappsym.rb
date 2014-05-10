@@ -17,7 +17,7 @@ module CIAX
         @symdb=Sym::Db.pack(['all',adbs['symtbl']])
         self['class']={}
         self['msg']={}
-        @upd_procs << proc{ #post process
+        @post_upd_procs << proc{ #post process
           adbs[:index].each{|key,hash|
             sid=hash['symbol']||next
             unless tbl=@symdb[sid.to_sym]

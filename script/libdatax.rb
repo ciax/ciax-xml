@@ -6,7 +6,7 @@ module CIAX
   # @data is hidden from access by '[]'.
   # @data is conveted to json file where @data will be appeared as self['data'].
   class Datax < Hashx
-    attr_reader :data,:upd_procs,:save_procs,:load_procs,:pre_upd_procs,:post_upd_procs
+    attr_reader :data,:save_procs,:load_procs,:pre_upd_procs,:post_upd_procs
     def initialize(type,init_struct={},dataname='data')
       self['type']=type
       self['time']=now_msec
@@ -16,9 +16,8 @@ module CIAX
       @dataname=dataname
       @thread=Thread.current # For Thread safe
       @ver_color=6
-      @pre_upd_procs=[] # Proc Array for Pre-Process of upd
-      @post_upd_procs=[] # Proc Array for Post-Process of upd
-      @upd_procs=[] # Proc Array for Update Propagation to the upper Layers
+      @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
+      @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
       @save_procs=[] # Proc for Device Data Update (by Device response)
       @load_procs=[] # Proc for Device Data Update (by Device response)
     end
@@ -40,8 +39,9 @@ module CIAX
     # update after processing (super should be end of method if inherited)
     def upd
       verbose("Datax","UPD_PROC for [#{self['type']}:#{self['id']}]")
-      @upd_procs.each{|p| p.call(self)}
       self
+    ensure
+      post_upd
     end
 
     # never inherit, just add proc to @save_procs
@@ -60,7 +60,7 @@ module CIAX
 
     def reg_procs(src)
       type?(src,Datax)
-      src.upd_procs << proc{upd}
+      src.post_upd_procs << proc{upd}
       src.load_procs << proc{load}
       src.save_procs << proc{save}
       self

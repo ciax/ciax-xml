@@ -44,7 +44,7 @@ module CIAX
         self['ver']=ver
         @valid_pars=valid_pars
         @current=0
-        @upd_procs << proc{
+        @post_upd_procs << proc{
           size=@valid_pars.replace(@data.keys).size
           @current=size if size < @current || @current < 1
         }

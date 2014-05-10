@@ -41,7 +41,7 @@ module CIAX
       private
       def init_watch
         @watch=Watch::Data.new.set_db(@adb)
-        @watch.upd_procs << proc{|wat|
+        @watch.post_upd_procs << proc{|wat|
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @cobj.extgrp.valid_sub(block)
         }
@@ -78,7 +78,7 @@ module CIAX
         super
         @mode='TEST'
         @stat.ext_sym
-        @stat.upd_procs << proc{|st|st['time']=now_msec}
+        @stat.post_upd_procs << proc{|st|st['time']=now_msec}
         @cobj.add_int
         @cobj.ext_proc{|ent|
           @stat.upd
@@ -164,7 +164,7 @@ module CIAX
           @buf.send(p,@cobj.set_cmd(args))
         }
         @watch.ext_logging if $opt['e'] && @stat['ver']
-        @stat.upd_procs << proc{self['watch'] = @watch.active?}
+        @stat.post_upd_procs << proc{self['watch'] = @watch.active?}
         @interval=@watch['interval']
         @period=@watch['period']
       end

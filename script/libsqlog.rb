@@ -112,7 +112,7 @@ module CIAX
           @queue.push sqlog.create
           verbose("SqLog","Init/Table '#{sqlog.tid}' is created")
         end
-        stat.upd_procs << proc{
+        stat.post_upd_procs << proc{
           @queue.push sqlog.upd
         }
         self

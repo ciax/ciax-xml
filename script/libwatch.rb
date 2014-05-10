@@ -105,12 +105,6 @@ module CIAX
         post_upd
       end
 
-      def ext_file
-        super
-        @stat.save_procs << proc{save}
-        self
-      end
-
       def ext_logging
         logging=Logging.new('event',@stat['id'],@stat['ver'])
         @event_procs << proc{|p,args|

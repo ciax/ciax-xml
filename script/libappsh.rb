@@ -100,7 +100,7 @@ module CIAX
 
       def ext_watch
         return unless @watch
-        @watch.ext_upd(@stat).upd.reg_procs(@stat)
+        @watch.ext_upd(@stat).upd
         @watch.event_procs << proc{|p,args|
           Msg.msg("#{args} is issued by event")
         }

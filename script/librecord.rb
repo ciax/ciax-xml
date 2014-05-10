@@ -17,7 +17,7 @@ module CIAX
       end
 
       def start(cfg)
-        ext_file
+        ext_file(self['sid'])
         @cfg=type?(cfg,Config)
         self['cid']=@cfg[:cid] # Command ID (cmd:par)
         self['label']=@cfg['label'] # Label for CID
@@ -26,11 +26,12 @@ module CIAX
 
       def add_step(e1)
         Msg.type?(@cfg[:app],App::List)
-        step=Step.new(e1,@cfg){save(self['sid'])}
+        step=Step.new(e1,@cfg){post_upd}
         step['time']=Msg.elps_sec(self['time'])
         @data << step
-        save(self['sid'])
         step
+      ensure
+        post_upd
       end
 
       def finish(str)

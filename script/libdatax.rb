@@ -88,9 +88,9 @@ module CIAX
       self
     end
 
-    def ext_file
+    def ext_file(tag=nil)
       extend File
-      ext_file
+      ext_file(tag)
       self
     end
 
@@ -165,7 +165,6 @@ module CIAX
       else
         read(json_str)
       end
-      super()
       self
     rescue OpenURI::HTTPError
       warning("Http","  -- no url file (#{file_name})")
@@ -173,12 +172,13 @@ module CIAX
   end
 
   module File
-    def ext_file
+    def ext_file(tag=nil)
       verbose("File","Initialize")
       @prefix=VarDir+"/json/"
+      @deftag=tag
       FileUtils.mkdir_p @prefix
       self['id']||Msg.cfg_err("ID")
-      @post_upd_procs << proc{save}
+      @post_upd_procs << proc{save(tag)}
       self
     end
 
@@ -222,7 +222,6 @@ module CIAX
       else
         read(json_str)
       end
-      super()
       self
     rescue Errno::ENOENT
       if tag

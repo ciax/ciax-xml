@@ -83,9 +83,9 @@ module CIAX
         verbose("Field","Evaluated[#{key}]=[#{@data[key]}]")
         self['time']=now_msec
         self
+      ensure
+        post_upd
       end
-    ensure
-      post_upd
     end
 
     if __FILE__ == $0

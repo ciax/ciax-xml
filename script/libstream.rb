@@ -65,7 +65,7 @@ module CIAX
 
     def ext_logging(id,ver=0)
       logging=Logging.new('stream',id,ver)
-      @post_procs << proc{
+      @post_upd_procs << proc{
         logging.append(@data)
       }
       update({'id'=>id,'ver'=>ver})
@@ -74,13 +74,13 @@ module CIAX
 
     private
     def conv(dir,data,cid=nil)
-      pre_exec
       self['time']=now_msec
       self[:data]=data
       @data.update({'dir'=>dir,'base64'=>encode(data)})
       @data['cmd']=cid if cid
-      post_exec
       self
+    ensure
+      post_upd
     end
 
     def encode(str)

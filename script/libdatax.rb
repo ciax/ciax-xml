@@ -6,7 +6,7 @@ module CIAX
   # @data is hidden from access by '[]'.
   # @data is conveted to json file where @data will be appeared as self['data'].
   class Datax < Hashx
-    attr_reader :data,:save_procs,:load_procs,:pre_upd_procs,:post_upd_procs
+    attr_reader :data,:save_procs,:pre_upd_procs,:post_upd_procs
     def initialize(type,init_struct={},dataname='data')
       self['type']=type
       self['time']=now_msec
@@ -19,7 +19,6 @@ module CIAX
       @pre_upd_procs=[] # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @post_upd_procs=[] # Proc Array for Post-Process of Update Propagation to the upper Layers
       @save_procs=[] # Proc for Device Data Update (by Device response)
-      @load_procs=[] # Proc for Device Data Update (by Device response)
     end
 
     def to_j
@@ -51,17 +50,15 @@ module CIAX
       self
     end
 
-    # never inherit, just add proc to @load_procs
+    # never inherit
     def load
       verbose("Datax","LOAD_PROC for [#{self['type']}:#{self['id']}]")
-      @load_procs.each{|p| p.call(self)}
       self
     end
 
     def reg_procs(src)
       type?(src,Datax)
       src.post_upd_procs << proc{upd}
-      src.load_procs << proc{load}
       src.save_procs << proc{save}
       self
     end

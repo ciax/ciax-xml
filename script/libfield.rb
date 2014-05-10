@@ -84,6 +84,8 @@ module CIAX
         self['time']=now_msec
         self
       end
+    ensure
+      post_upd
     end
 
     if __FILE__ == $0

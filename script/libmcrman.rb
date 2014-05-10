@@ -13,7 +13,7 @@ module CIAX
         super('mcr',db['id'],Command.new(cfg))
         @cobj.add_int
         @list=list_class.new(proj,db['version'],@cobj.intgrp.valid_pars)
-        @post_procs << proc{@list.upd}
+        @post_exe_procs << proc{@list.upd}
         ext_shell(@list){ "[%d]" % @list.current }
       end
 
@@ -31,7 +31,7 @@ module CIAX
       def initialize(host='localhost',port=55555)
         super()
         @list.ext_http(host).load
-        @pre_procs << proc{@list.load}
+        @pre_exe_procs << proc{@list.load}
         ext_client(host,port||@cobj.cfg[:db]['port']||55555)
       end
     end
@@ -76,7 +76,7 @@ module CIAX
       def initialize(port=nil)
         super(SvList)
         self['sid']='' # For server response
-        @pre_procs << proc{ self['sid']='' }
+        @pre_exe_procs << proc{ self['sid']='' }
         @list.ext_file
         # Internal Command Group
         @cobj.intgrp.set_proc{|ent|
@@ -118,7 +118,7 @@ module CIAX
         sid=type?(mobj,Macro).sid
         @data[sid]=mobj
         mobj.record.save_procs << proc{save}
-        mobj.post_procs << proc{|m|
+        mobj.post_exe_procs << proc{|m|
           @data.delete(m.sid)
           save
         }

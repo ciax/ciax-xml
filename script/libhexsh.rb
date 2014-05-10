@@ -17,7 +17,7 @@ module CIAX
         super('hex',ash.id,ash.cobj)
         @mode=ash.mode
         @output=View.new(ash,ash.stat)
-        @post_procs.concat(ash.post_procs)
+        @post_exe_procs.concat(ash.post_exe_procs)
         if $opt['e']
           logging=Logging.new('hex',@id,ash.adb['version'])
           ash.stat.save_procs << proc{logging.append({'hex' => @output.to_s})}

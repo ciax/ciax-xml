@@ -20,13 +20,13 @@ module CIAX
     class Macro < Hashx
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:sid,:que_cmd,:que_res,:total,:post_procs
+      attr_reader :record,:sid,:que_cmd,:que_res,:total,:post_exe_procs
       #exe_proc for executing asynchronous submacro
       def initialize(ent,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
         @exe_proc=exe_proc||proc{{}}
-        @post_procs=[] # execute at the end of exe
+        @post_exe_procs=[] # execute at the end of exe
         @que_cmd=Queue.new
         @que_res=Queue.new
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
@@ -80,7 +80,7 @@ module CIAX
         finish('interrupted')
         self
       ensure
-        @post_procs.each{|p| p.call(self)}
+        @post_exe_procs.each{|p| p.call(self)}
       end
 
       private

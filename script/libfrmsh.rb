@@ -56,7 +56,7 @@ module CIAX
         @field.ext_http(host)
         @cobj.svdom.set_proc{to_s}
         ext_client(host,@fdb['port'])
-        @pre_procs << proc{@field.load}
+        @pre_exe_procs << proc{@field.load}
       end
     end
 

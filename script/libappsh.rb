@@ -45,7 +45,7 @@ module CIAX
           block=wat.data['block'].map{|id,par| par ? nil : id}.compact
           @cobj.extgrp.valid_sub(block)
         }
-        @pre_procs << proc{|args|
+        @pre_exe_procs << proc{|args|
           @watch.block?(args)
         }
       end
@@ -116,7 +116,7 @@ module CIAX
           @watch.reg_procs(@stat) # @watch is independent from @stat
         end
         @stat.ext_http(host)
-        @pre_procs << proc{@stat.load}
+        @pre_exe_procs << proc{@stat.load}
         ext_client(host,@adb['port'])
       end
     end
@@ -147,7 +147,7 @@ module CIAX
           sv.add_table(@buf)
         end
         tid_auto=auto_update
-        @post_procs << proc{
+        @post_exe_procs << proc{
           self['auto'] = tid_auto && tid_auto.alive?
           self['na'] = !@buf.alive?
         }

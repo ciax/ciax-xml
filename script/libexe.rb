@@ -11,14 +11,14 @@ require "libextcmd"
 
 module CIAX
   class Exe < Hashx # Having server status {id,msg,...}
-    attr_reader :layer,:id,:mode,:pre_procs,:post_procs,:cobj,:output
+    attr_reader :layer,:id,:mode,:pre_exe_procs,:post_exe_procs,:cobj,:output
     # block gives command line convert
     def initialize(layer,id,cobj=Command.new)
       @id=id
       @layer=layer
       @cobj=type?(cobj,Command)
-      @pre_procs=[] # Proc for Server Command (by User query)
-      @post_procs=[] # Proc for Server Status Update (by User query)
+      @pre_exe_procs=[] # Proc for Server Command (by User query)
+      @post_exe_procs=[] # Proc for Server Status Update (by User query)
       @ver_color=6
       self['msg']=''
       Thread.abort_on_exception=true
@@ -28,14 +28,14 @@ module CIAX
     def exe(args)
       type?(args,Array)
       verbose("Sh/Exe","Command #{args} recieved")
-      @pre_procs.each{|p| p.call(args)}
+      @pre_exe_procs.each{|p| p.call(args)}
       self['msg']=@cobj.set_cmd(args).exe
       self
     rescue
       self['msg']=$!.to_s
       raise $!
     ensure
-      @post_procs.each{|p| p.call}
+      @post_exe_procs.each{|p| p.call}
     end
 
     def ext_client(host,port)

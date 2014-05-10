@@ -101,7 +101,8 @@ module CIAX
           end
         end
         verbose("Watch","Updated(#{@stat['time']})")
-        super
+      ensure
+        post_upd
       end
 
       def ext_file

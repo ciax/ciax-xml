@@ -48,12 +48,13 @@ module CIAX
       batch=@send_proc.call(ent)
       #batch is frm batch (ary of ary)
       @data.update('time'=>now_msec,'pri' => n,'cid' => ent.id)
-      upd
       unless batch.empty?
         @svst['isu']=true
         @q.push([n,batch])
       end
       self
+    ensure
+      post_upd
     end
 
     def recv_proc

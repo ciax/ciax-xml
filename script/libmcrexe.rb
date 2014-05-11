@@ -20,7 +20,7 @@ module CIAX
     class Macro < Hashx
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:sid,:que_cmd,:que_res,:total,:post_exe_procs
+      attr_reader :record,:sid,:que_cmd,:que_res,:post_exe_procs
       #exe_proc for executing asynchronous submacro
       def initialize(ent,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
@@ -31,18 +31,17 @@ module CIAX
         @que_res=Queue.new
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         @sid=@record['sid']
-        self[:cid]=@cfg[:cid]
-        @total=@cfg[:body].size
-        self[:step]=0
+        self['cid']=@cfg[:cid]
+        self['total_steps']=@cfg[:body].size
+        self['step']=0
         @running=[]
       end
 
       def exe
-        Thread.current[:sid]=@sid
         set_stat 'run'
         show @record
         @cfg[:body].each{|e1|
-          self[:step]+=1
+          self['step']+=1
           begin
             @step=@record.add_step(e1)
             case e1['type']
@@ -88,7 +87,7 @@ module CIAX
         @running.clear
         show str+"\n"
         @record.finish(str)
-        self[:option]=nil
+        self['option']=nil
         set_stat str
       end
 
@@ -115,14 +114,14 @@ module CIAX
       end
 
       def set_stat(str)
-        self[:stat]=str
+        self['stat']=str
       end
 
       def query(cmds)
-        self[:option]=cmds.join('/')
+        self['option']=cmds.join('/')
         set_stat 'query'
         res=input(cmds)
-        self[:option]=nil
+        self['option']=nil
         set_stat 'run'
         @step['action']=res
         case res
@@ -143,7 +142,7 @@ module CIAX
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
         loop{
           if Msg.fg?
-            prom=@step.body("[#{self[:option]}]?")
+            prom=@step.body("[#{self['option']}]? ")
             @que_cmd << Readline.readline(prom,true).rstrip
           end
           id=@que_cmd.pop.split(/[ :]/).first

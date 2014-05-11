@@ -78,8 +78,8 @@ module CIAX
         page=['<<< '+Msg.color('Active Macros',2)+' >>>']
         @data.each{|key,mst|
           title="[#{idx}](#{key})"
-          msg="#{mst[:cid]} [#{mst[:step]}/#{mst.total}](#{mst[:stat]})"
-          msg << "[#{mst[:option]}]?" if mst[:option]
+          msg="#{mst['cid']} [#{mst['step']}/#{mst['total_steps']}](#{mst['stat']})"
+          msg << "[#{mst['option']}]? " if mst['option']
           page << Msg.item(title,msg)
           idx+=1
         }
@@ -101,7 +101,7 @@ module CIAX
           sid=ent.par[0]
           if mobj=@list.get_obj(sid)
             self['sid']=sid
-            if mobj[:stat] == 'query'
+            if mobj['stat'] == 'query'
               mobj.que_cmd << ent.id
               mobj.que_res.pop
             else

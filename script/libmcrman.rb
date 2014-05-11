@@ -117,7 +117,7 @@ module CIAX
       def add(mobj)
         sid=type?(mobj,Macro).sid
         @data[sid]=mobj
-        mobj.record.save_procs << proc{save}
+        mobj.record.post_upd_procs << proc{save}
         mobj.post_exe_procs << proc{|m|
           @data.delete(m.sid)
           save

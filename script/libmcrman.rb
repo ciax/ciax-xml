@@ -4,15 +4,24 @@ require "libmcrexe"
 
 module CIAX
   module Mcr
+    def self.new(cfg=Config.new)
+      cfg[:db]||=Mcr::Db.new.set(ENV['PROJ']||'ciax')
+      cfg[:app]||=App::List.new
+      if $opt['s'] or $opt['e'] or $opt['m']
+        msh=ManSv.new(cfg)
+        cfg['host']='localhost'
+      end
+      msh=ManCl.new(cfg) if $opt['c'] || (cfg['host']=$opt['h'])
+      msh||Man.new(cfg)
+    end
+
     class Man < Exe
-      def initialize(list_class=List)
-        proj=ENV['PROJ']||'ciax'
-        cfg=Config.new
-        db=cfg[:db]=Mcr::Db.new.set(proj)
-        cfg[:app]=App::List.new
+      def initialize(cfg)
+        db=type?(cfg[:db],Db)
         super('mcr',db['id'],Command.new(cfg))
         @cobj.add_int
-        @list=list_class.new(proj,db['version'],@cobj.intgrp.valid_pars)
+        lc=cfg[:list_class]||List
+        @list=lc.new(db['id'],db['version'],@cobj.intgrp.valid_pars)
         @post_exe_procs << proc{@list.upd}
         ext_shell(@list){ "[%d]" % @list.current }
       end
@@ -27,12 +36,14 @@ module CIAX
       end
     end
 
-    class Cl < Man
-      def initialize(host='localhost',port=55555)
-        super()
+    class ManCl < Man
+      def initialize(cfg)
+        super
+        host=cfg['host']||@cobj.cfg[:db]['host']||'localhost'
+        port=cfg['port']||@cobj.cfg[:db]['port']||55555
         @list.ext_http(host)
         @pre_exe_procs << proc{@list.upd}
-        ext_client(host,port||@cobj.cfg[:db]['port']||55555)
+        ext_client(host,port)
       end
     end
 
@@ -72,9 +83,12 @@ module CIAX
       end
     end
 
-    class Sv < Man
-      def initialize(port=nil)
-        super(SvList)
+    class ManSv < Man
+      def initialize(cfg)
+        cfg[:list_class]=SvList
+        super
+        type?(cfg[:app],App::List)
+        port=cfg['port']||@cobj.cfg[:db]['port']||55555
         self['sid']='' # For server response
         @pre_exe_procs << proc{ self['sid']='' }
         @list.ext_file
@@ -104,7 +118,7 @@ module CIAX
           @list.interrupt
           'INTERRUPT'
         }
-        ext_server(port||@cobj.cfg[:db]['port']||55555)
+        ext_server(port)
       end
     end
 
@@ -135,9 +149,9 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('rest',{'n' => 'nonstop mode'})
+      GetOpts.new('cmnrt')
       begin
-        Sv.new.shell
+        Mcr.new.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

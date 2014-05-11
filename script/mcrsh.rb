@@ -2,9 +2,7 @@
 require "libmcrman"
 
 module CIAX
-  module Mcr
-    ENV['VER']||='init/'
-    GetOpts.new('rn')
-    Sv.new.shell
-  end
+  ENV['VER']||='init/'
+  GetOpts.new('cmrn')
+  Mcr.new.shell
 end

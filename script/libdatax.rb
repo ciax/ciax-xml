@@ -126,7 +126,7 @@ module CIAX
     def ext_http(host)
       host||='localhost'
       @prefix="http://"+host+"/json/"
-      verbose("Http","Initialize")
+      verbose("Http","Initialize(#{host})")
       self['id']||Msg.cfg_err("ID")
       @pre_upd_procs << proc{load}
       load

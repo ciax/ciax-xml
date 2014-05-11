@@ -126,7 +126,7 @@ module CIAX
         super(cfg)
         @fsh=type?(cfg['frm'][@id],Frm::Exe)
         @mode=@fsh.mode
-        @stat.ext_rsp(@fsh.field).ext_sym.ext_file.upd
+        @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @buf=init_buf
         @cobj.ext_proc{|ent|

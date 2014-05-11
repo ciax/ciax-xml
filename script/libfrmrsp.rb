@@ -22,6 +22,7 @@ module CIAX
         @sel=Hash[fdbr[:frame]]
         @fds=fdbr[:index]
         @frame=Frame.new(@db['endian'],@db['ccmethod'],@sel['terminator'],@sel['delimiter'])
+        upd
         self
       end
 

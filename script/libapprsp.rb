@@ -12,6 +12,7 @@ module CIAX
 
       def ext_rsp(field)
         @field=type?(field,Frm::Field)
+        upd
         self
       end
 
@@ -106,7 +107,7 @@ module CIAX
       fdb=ldb[:frm]
       adb=ldb[:app]
       field.skeleton(fdb).ext_rsp
-      stat=Status.new.skeleton(adb).ext_rsp(field).upd
+      stat=Status.new.skeleton(adb).ext_rsp(field)
       puts stat
       exit
     end

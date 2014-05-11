@@ -36,6 +36,7 @@ module CIAX
 
     # update after processing (super should be end of method if inherited)
     def upd
+      pre_upd
       verbose("Datax","UPD_PROC for [#{self['type']}:#{self['id']}]")
       self
     ensure

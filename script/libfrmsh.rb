@@ -70,7 +70,7 @@ module CIAX
         @sqlsv=@stream.ext_logging(@id,@fdb['version']) unless sim || ENV['NOSQLOG']
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)
-          @field.rcv(ent){@stream.rcv}
+          @field.upd(ent){@stream.rcv}
           'OK'
         }
         @cobj.item_proc('set'){|ent|

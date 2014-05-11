@@ -27,7 +27,7 @@ module CIAX
 
       # Block accepts [frame,time]
       # Result : executed block or not
-      def rcv(ent)
+      def upd(ent)
         @current_ent=type?(ent,Entity)
         if rid=ent.cfg['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
@@ -45,6 +45,8 @@ module CIAX
           @sel[:body]=nil
         end
         self
+      ensure
+        post_upd
       end
 
       private
@@ -133,7 +135,7 @@ module CIAX
         cfg=Config.new.update(:db => fdb,:field => field)
         cobj=Frm::Command.new(cfg)
         ent=cobj.set_cmd(cid.split(':'))
-        field.rcv(ent){res}.upd
+        field.upd(ent){res}
       end
       puts field
       exit

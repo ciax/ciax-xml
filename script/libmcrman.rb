@@ -27,7 +27,6 @@ module CIAX
         @cobj.add_int
         lc=cfg[:list_class]||List
         @list=lc.new(db['id'],db['version'],@cobj.intgrp.valid_pars)
-        @post_exe_procs << proc{@list.upd}
         ext_shell(@list){ "[%d]" % @list.current }
       end
 

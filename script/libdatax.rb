@@ -112,7 +112,7 @@ module CIAX
       verbose("Datax","Convert [:data] to @data")
       @data=delete(@dataname).extend(Enumx)
       self['time']||=now_msec
-      upd
+      self
     end
 
     def _setid(id)

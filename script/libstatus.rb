@@ -21,12 +21,12 @@ module CIAX
         self
       end
 
-#      def set(hash) #For Watch test
-#        @data.update(hash)
-#        self
-#      ensure
-#        post_upd
-#      end
+      def set(hash) #For Watch test
+        @data.update(hash)
+        self
+      ensure
+        post_upd
+      end
 
       def change?(id)
         verbose("Status","Compare(#{id}) current=[#{@data[id]}] vs last=[#{@last[id]}]")

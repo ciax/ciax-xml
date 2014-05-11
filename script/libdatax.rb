@@ -155,11 +155,10 @@ module CIAX
     def ext_file(tag=nil)
       verbose("File","Initialize")
       @prefix=VarDir+"/json/"
-      @deftag=tag
       FileUtils.mkdir_p @prefix
       self['id']||Msg.cfg_err("ID")
       @post_upd_procs << proc{save(tag)}
-      load
+      load unless tag
       self
     end
 

@@ -7,12 +7,17 @@ module CIAX
     def self.new(cfg=Config.new)
       cfg[:db]||=Mcr::Db.new.set(ENV['PROJ']||'ciax')
       cfg[:app]||=App::List.new
-      if $opt['s'] or $opt['e'] or $opt['m']
-        msh=ManSv.new(cfg)
-        cfg['host']='localhost'
+      if $opt['t']
+        Man.new(cfg)
+      else
+        if $opt['l']
+          cfg['host']='localhost'
+          ManSv.new(cfg)
+          ManCl.new(cfg)
+        else
+          ManSv.new(cfg)
+        end
       end
-      msh=ManCl.new(cfg) if $opt['c'] || (cfg['host']=$opt['h'])
-      msh||Man.new(cfg)
     end
 
     class Man < Exe
@@ -149,7 +154,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('cmnrt')
+      GetOpts.new('mnlrt')
       begin
         Mcr.new.shell
       rescue InvalidCMD

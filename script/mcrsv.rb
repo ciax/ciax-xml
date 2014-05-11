@@ -3,7 +3,7 @@ require "libmcrman"
 
 module CIAX
   ENV['VER']||='init/'
-  GetOpts.new('cmr')
+  GetOpts.new('csemr')
   Mcr.new
   sleep
 end

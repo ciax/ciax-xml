@@ -44,7 +44,7 @@ module CIAX
     end
   end
 
-  # Global option
+  # Global options
   class GetOpts < Hash
     def initialize(str='',db={})
       require 'optparse'
@@ -66,6 +66,7 @@ module CIAX
       optdb['r']='raw data output'
       #For macro
       optdb['n']='non-stop mode'
+      optdb['l']='local client'
       optdb['m']='movable mode'
       optdb.update(db)
       db.keys.each{|k|

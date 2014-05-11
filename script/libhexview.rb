@@ -90,7 +90,7 @@ module CIAX
   if __FILE__ == $0
     require "libstatus"
     Msg.usage("[stat_file]") if STDIN.tty? && ARGV.size < 1
-    stat=App::Status.new.load
+    stat=App::Status.new.ext_file
     hint=Hex::View.new({},stat)
     puts hint
   end

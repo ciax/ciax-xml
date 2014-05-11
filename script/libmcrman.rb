@@ -30,8 +30,8 @@ module CIAX
     class Cl < Man
       def initialize(host='localhost',port=55555)
         super()
-        @list.ext_http(host).load
-        @pre_exe_procs << proc{@list.load}
+        @list.ext_http(host)
+        @pre_exe_procs << proc{@list.upd}
         ext_client(host,port||@cobj.cfg[:db]['port']||55555)
       end
     end

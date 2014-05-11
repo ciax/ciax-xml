@@ -42,12 +42,6 @@ module CIAX
       post_upd
     end
 
-    # never inherit
-    def load
-      verbose("Datax","LOAD_PROC for [#{self['type']}:#{self['id']}]")
-      self
-    end
-
     # Update with str (key=val,key=val,..)
     def str_update(str)
       type?(str,String)
@@ -135,6 +129,7 @@ module CIAX
       verbose("Http","Initialize")
       self['id']||Msg.cfg_err("ID")
       @pre_upd_procs << proc{load}
+      load
       self
     end
 
@@ -164,6 +159,7 @@ module CIAX
       FileUtils.mkdir_p @prefix
       self['id']||Msg.cfg_err("ID")
       @post_upd_procs << proc{save(tag)}
+      load
       self
     end
 

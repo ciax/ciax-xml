@@ -130,7 +130,7 @@ module CIAX
       end
       fdb=Loc::Db.new.set(id)[:frm]
       field=Field.new.set_db(fdb).ext_rsp
-      field.load if $opt['m']
+      field.ext_file if $opt['m']
       if cid
         cfg=Config.new.update(:db => fdb,:field => field)
         cobj=Frm::Command.new(cfg)

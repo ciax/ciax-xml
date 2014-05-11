@@ -56,14 +56,14 @@ module CIAX
         @field.ext_http(host)
         @cobj.svdom.set_proc{to_s}
         ext_client(host,@fdb['port'])
-        @pre_exe_procs << proc{@field.load}
+        @pre_exe_procs << proc{@field.upd}
       end
     end
 
     class Sv < Exe
       def initialize(cfg)
         super(cfg)
-        @field.ext_rsp.ext_file.load
+        @field.ext_rsp.ext_file
         @mode='SIM' if sim=cfg['iocmd']
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(iocmd,@fdb['wait'],5)

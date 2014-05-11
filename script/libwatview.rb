@@ -115,7 +115,7 @@ module CIAX
       $opt.usage("(opt) [id]")
     end
     stat=App::Status.new.skeleton(adb).ext_file
-    watch=Watch::Data.new.skeleton(adb).ext_upd(stat).upd
+    watch=Watch::Data.new.skeleton(adb).ext_upd(stat)
     wview=Watch::View.new(adb,watch)
     wview.ext_prt unless $opt['r']
     if t=$opt['t']

@@ -78,6 +78,7 @@ module CIAX
         #       => check(self['crnt'] <> self['last']?)
         # Stat no changed -> clear exec, no eval
         @ctime=0
+        upd
         self
       end
 
@@ -165,7 +166,7 @@ module CIAX
       $opt.usage("(opt) [id]")
     end
     stat=App::Status.new.skeleton(adb).ext_file
-    watch=Watch::Data.new.skeleton(adb).ext_upd(stat).upd
+    watch=Watch::Data.new.skeleton(adb).ext_upd(stat)
     if t=$opt['t']
       watch.ext_file
       stat.str_update(t)

@@ -108,7 +108,6 @@ module CIAX
       field.set_db(fdb).ext_rsp
       stat=Status.new.set_db(adb).ext_rsp(field).upd
       puts stat
-      stat.save
       exit
     end
   end

@@ -37,8 +37,9 @@ module CIAX
       def finish(str)
         self['result']=str
         self['total']=Msg.elps_sec(self['time'])
-        save(self['sid'])
         self
+      ensure
+        post_upd
       end
     end
 

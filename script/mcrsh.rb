@@ -5,6 +5,6 @@ module CIAX
   module Mcr
     ENV['VER']||='init/'
     GetOpts.new('rn')
-    Man::Sv.new.shell
+    Sv.new.shell
   end
 end

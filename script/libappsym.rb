@@ -61,7 +61,7 @@ module CIAX
       id=ARGV.shift
       begin
         adb=Loc::Db.new.set(id)[:app]
-        stat=Status.new.set_db(adb).ext_file
+        stat=Status.new.skeleton(adb).ext_file
         stat.ext_sym.upd
         print stat
       rescue InvalidID

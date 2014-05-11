@@ -60,7 +60,7 @@ module CIAX
       post_upd
     end
 
-    def set_db(db)
+    def skeleton(db)
       @db=type?(db,Db)
       _setid(db['site_id']||db['id'])
       self['ver']=db['version'].to_i

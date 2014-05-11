@@ -105,8 +105,8 @@ module CIAX
       ldb=Loc::Db.new.set(field['id'])
       fdb=ldb[:frm]
       adb=ldb[:app]
-      field.set_db(fdb).ext_rsp
-      stat=Status.new.set_db(adb).ext_rsp(field).upd
+      field.skeleton(fdb).ext_rsp
+      stat=Status.new.skeleton(adb).ext_rsp(field).upd
       puts stat
       exit
     end

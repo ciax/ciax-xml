@@ -14,7 +14,7 @@ module CIAX
         @lastsave=now_msec
       end
 
-      def set_db(db)
+      def skeleton(db)
         super
         @adbs=@db[:status][:index]
         @data.update(@adbs.skeleton)
@@ -78,7 +78,7 @@ module CIAX
           id=stat['id']
         else
           adb=Loc::Db.new.set(id)[:app]
-          stat.set_db(adb)
+          stat.skeleton(adb)
           if host=$opt['h']
             stat.ext_http(host)
           else

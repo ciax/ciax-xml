@@ -193,7 +193,7 @@ module CIAX
     ARGV.clear
     begin
       adb=Loc::Db.new.set(id)[:app]
-      stat=App::Status.new.set_db(adb).ext_file
+      stat=App::Status.new.skeleton(adb).ext_file
       sqlog=SqLog::Upd.new(stat)
       puts sqlog.create
       puts sqlog.upd

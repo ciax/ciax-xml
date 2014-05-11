@@ -114,8 +114,8 @@ module CIAX
     rescue InvalidID
       $opt.usage("(opt) [id]")
     end
-    stat=App::Status.new.set_db(adb).ext_file
-    watch=Watch::Data.new.set_db(adb).ext_upd(stat).upd
+    stat=App::Status.new.skeleton(adb).ext_file
+    watch=Watch::Data.new.skeleton(adb).ext_upd(stat).upd
     wview=Watch::View.new(adb,watch)
     wview.ext_prt unless $opt['r']
     if t=$opt['t']

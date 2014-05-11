@@ -22,7 +22,7 @@ module CIAX
       attr_reader :field,:sqlsv
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
-        @field=cfg[:field]=Field.new.set_db(@fdb)
+        @field=cfg[:field]=Field.new.skeleton(@fdb)
         super('frm',@field['id'],Command.new(cfg))
         @cobj.add_int
         ext_shell(@field)

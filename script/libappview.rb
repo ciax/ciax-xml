@@ -97,7 +97,7 @@ module CIAX
           adb=Loc::Db.new.set(id)[:app]
         else
           adb=Loc::Db.new.set(id)[:app]
-          stat.set_db(adb)
+          stat.skeleton(adb)
           if host=$opt['h']
             stat.ext_http(host)
           else

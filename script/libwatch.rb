@@ -164,8 +164,8 @@ module CIAX
     rescue InvalidID
       $opt.usage("(opt) [id]")
     end
-    stat=App::Status.new.set_db(adb).ext_file
-    watch=Watch::Data.new.set_db(adb).ext_upd(stat).upd
+    stat=App::Status.new.skeleton(adb).ext_file
+    watch=Watch::Data.new.skeleton(adb).ext_upd(stat).upd
     if t=$opt['t']
       watch.ext_file
       stat.str_update(t)

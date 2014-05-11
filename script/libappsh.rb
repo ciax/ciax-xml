@@ -113,10 +113,10 @@ module CIAX
         host=type?(cfg['host']||@adb['host']||'localhost',String)
         if @watch
           @watch.ext_http(host)
-          @watch.reg_procs(@stat) # @watch is independent from @stat
+          @stat.post_upd_procs << proc{@watch.upd} # @watch is independent from @stat
         end
         @stat.ext_http(host)
-        @pre_exe_procs << proc{@stat.load}
+        @pre_exe_procs << proc{@stat.upd}
         ext_client(host,@adb['port'])
       end
     end

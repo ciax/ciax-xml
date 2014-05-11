@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
 require "libstatus"
 
-# View is not used for computing, just for apperance for user. So the convert process can be included in to_s
+# View is not used for computing, just for apperance for user.
+# So the convert process can be included in to_s
+# Updated at to_s.
 module CIAX
   module App
     class View < Hashx

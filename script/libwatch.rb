@@ -64,7 +64,7 @@ module CIAX
         wdb=@db[:watch]||{}
         @windex=wdb[:index]||{}
         @stat=type?(stat,App::Status)
-        reg_procs(@stat)
+        @stat.post_upd_procs << proc{upd}
         self['period']=wdb['period'].to_i if wdb.key?('period')
         self['interval']=wdb['interval'].to_f/10 if wdb.key?('interval')
         # Pick usable val
@@ -85,7 +85,7 @@ module CIAX
         return self unless @stat['time'] > @ctime
         @ctime=@stat['time']
         sync
-       @data.values.each{|a| a.clear}
+        @data.values.each{|a| a.clear}
         @windex.each{|id,item|
           next unless check(id,item)
           item[:act].each{|key,ary|

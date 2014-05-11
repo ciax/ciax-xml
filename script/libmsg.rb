@@ -189,7 +189,7 @@ module CIAX
       pass=sprintf("%5.4f",Time.now-Start_time)
       ts= STDERR.tty? ? '' : "[#{pass}]"
       tc=Thread.current
-      ts << Msg.color("#{tc[:name]||'Main'}:",tc[:color]||15,@ver_indent)
+      ts << Msg.color("#{tc[:name]||'Main Thread'}:",tc[:color]||15,@ver_indent)
       ts << Msg.color("#{prefix}:",c||@ver_color)
       ts << title.to_s
     end

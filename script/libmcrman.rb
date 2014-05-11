@@ -141,7 +141,7 @@ module CIAX
           @data.delete(m.sid)
           save
         }
-        @tgrp.add(Thread.new{mobj.exe})
+        @tgrp.add(Threadx.new("Macro Thread(#{sid})",12){mobj.exe})
         self
       end
 

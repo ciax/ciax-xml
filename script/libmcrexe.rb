@@ -17,21 +17,20 @@ module CIAX
   #TEST: query(exec,error,enter), interval=0
   #REAL: query(exec,error), interval=1
   module Mcr
-    class Macro < Hashx
+    class Macro < Exe
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:id,:post_exe_procs
+      attr_reader :record,:que_cmd,:que_res,:post_stat_procs
       #exe_proc for executing asynchronous submacro
-      def initialize(ent,&exe_proc)
+      def initialize(ent,cobj,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
+        @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
+        super('macro',@record['sid'],cobj)
         @exe_proc=exe_proc||proc{{}}
-        @post_exe_procs=[] # execute at the end of exe
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
         @que_res=Queue.new
-        @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
-        @id=@record['sid']
         self['cid']=@cfg[:cid]
         self['total_steps']=@cfg[:body].size
         self['step']=0
@@ -170,8 +169,8 @@ module CIAX
         cfg=Config.new
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
-        ent=Command.new(cfg).set_cmd(ARGV)
-        Macro.new(ent).macro
+        cobj=Command.new(cfg)
+        Macro.new(cobj.set_cmd(ARGV),cobj).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

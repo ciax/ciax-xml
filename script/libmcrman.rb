@@ -116,7 +116,7 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          mobj=Macro.new(ent){|args| exe(args)}
+          mobj=Macro.new(ent,@cobj){|args| exe(args)}
           @list.add(mobj)
           self['sid']=mobj.id
           "ACCEPT"

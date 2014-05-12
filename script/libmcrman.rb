@@ -143,7 +143,7 @@ module CIAX
           @data.delete(m.id)
           save
         }
-        @tgrp.add(Threadx.new("Macro Thread(#{sid})",12){mobj.macro})
+        @tgrp.add(mobj.fork)
         self
       end
 

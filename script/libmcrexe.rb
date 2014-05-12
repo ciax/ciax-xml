@@ -37,6 +37,10 @@ module CIAX
         @running=[]
       end
 
+      def fork
+        Threadx.new("Macro Thread(#{sid})",12){macro}
+      end
+
       def macro
         set_stat 'run'
         show @record

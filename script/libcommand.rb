@@ -105,6 +105,7 @@ module CIAX
 
     def add_item(id,title=nil,crnt={})
       crnt[:id]=id
+      crnt[:label]=title
       @cmdary.last[id]=title
       self[id]=@cfg[:item_class].new(@cfg,crnt)
     end

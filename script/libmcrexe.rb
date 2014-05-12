@@ -38,7 +38,7 @@ module CIAX
       end
 
       def fork
-        Threadx.new("Macro Thread(#{sid})",12){macro}
+        Threadx.new("Macro Thread(#@id)",12){macro}
       end
 
       def macro

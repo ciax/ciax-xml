@@ -118,7 +118,7 @@ module CIAX
         @cobj.ext_proc{|ent|
           mobj=Macro.new(ent){|args| exe(args)}
           @list.add(mobj)
-          self['sid']=mobj.sid
+          self['sid']=mobj.id
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|
@@ -136,14 +136,14 @@ module CIAX
       end
 
       def add(mobj)
-        sid=type?(mobj,Macro).sid
+        sid=type?(mobj,Macro).id
         @data[sid]=mobj
         mobj.post_stat_procs << proc{save}
         mobj.post_exe_procs << proc{|m|
-          @data.delete(m.sid)
+          @data.delete(m.id)
           save
         }
-        @tgrp.add(Threadx.new("Macro Thread(#{sid})",12){mobj.exe})
+        @tgrp.add(Threadx.new("Macro Thread(#{sid})",12){mobj.macro})
         self
       end
 

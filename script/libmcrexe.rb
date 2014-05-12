@@ -20,7 +20,7 @@ module CIAX
     class Macro < Hashx
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:sid,:que_cmd,:que_res,:post_exe_procs,:post_stat_procs
+      attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:id,:post_exe_procs
       #exe_proc for executing asynchronous submacro
       def initialize(ent,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
@@ -31,14 +31,14 @@ module CIAX
         @que_cmd=Queue.new
         @que_res=Queue.new
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
-        @sid=@record['sid']
+        @id=@record['sid']
         self['cid']=@cfg[:cid]
         self['total_steps']=@cfg[:body].size
         self['step']=0
         @running=[]
       end
 
-      def exe
+      def macro
         set_stat 'run'
         show @record
         @cfg[:body].each{|e1|
@@ -171,7 +171,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         ent=Command.new(cfg).set_cmd(ARGV)
-        Macro.new(ent).exe
+        Macro.new(ent).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

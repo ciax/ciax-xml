@@ -28,6 +28,7 @@ module CIAX
         lc=cfg[:list_class]||List
         @list=lc.new(db['id'],db['version'])
         @valid_pars=@cobj.intgrp.valid_pars
+        @mode='TEST'
         @current=0
         ext_shell(@list){
           size=@valid_pars.replace(@list.data.keys).size
@@ -49,6 +50,7 @@ module CIAX
     class ManCl < Man
       def initialize(cfg)
         super
+        @mode='CL'
         host=cfg['host']||@cobj.cfg[:db]['host']||'localhost'
         port=cfg['port']||@cobj.cfg[:db]['port']||55555
         @list.ext_http(host)
@@ -91,6 +93,7 @@ module CIAX
       def initialize(cfg)
         cfg[:list_class]=SvList
         super
+        @mode='SV'
         type?(cfg[:app],App::List)
         port=cfg['port']||@cobj.cfg[:db]['port']||55555
         self['sid']='' # For server response

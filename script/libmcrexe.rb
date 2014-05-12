@@ -20,13 +20,14 @@ module CIAX
     class Macro < Hashx
       include Msg
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:sid,:que_cmd,:que_res,:post_exe_procs
+      attr_reader :record,:sid,:que_cmd,:que_res,:post_exe_procs,:post_stat_procs
       #exe_proc for executing asynchronous submacro
       def initialize(ent,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
         @exe_proc=exe_proc||proc{{}}
         @post_exe_procs=[] # execute at the end of exe
+        @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
         @que_res=Queue.new
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
@@ -115,6 +116,8 @@ module CIAX
 
       def set_stat(str)
         self['stat']=str
+      ensure
+        @post_stat_procs.each{|p| p.call(self)}
       end
 
       def query(cmds)

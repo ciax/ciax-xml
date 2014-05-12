@@ -17,16 +17,16 @@ module CIAX
   #TEST: query(exec,error,enter), interval=0
   #REAL: query(exec,error), interval=1
   module Mcr
-    class Macro < Exe
-      include Msg
+    # Sequencer
+    class Seq < Exe
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs
       #exe_proc for executing asynchronous submacro
-      def initialize(ent,cobj,&exe_proc)
+      def initialize(ent,&exe_proc)
         @cfg=type?(type?(ent,Entity).cfg)
         type?(@cfg[:app],App::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
-        super('macro',@record['sid'],cobj)
+        super('macro',@record['sid'],Command.new(@cfg))
         @exe_proc=exe_proc||proc{{}}
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
@@ -170,7 +170,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
-        Macro.new(cobj.set_cmd(ARGV),cobj).macro
+        Seq.new(cobj.set_cmd(ARGV)).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

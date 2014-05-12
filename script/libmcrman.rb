@@ -116,7 +116,7 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          mobj=Macro.new(ent,@cobj){|args| exe(args)}
+          mobj=Seq.new(ent){|args| exe(args)}
           @list.add(mobj)
           self['sid']=mobj.id
           "ACCEPT"
@@ -136,7 +136,7 @@ module CIAX
       end
 
       def add(mobj)
-        sid=type?(mobj,Macro).id
+        sid=type?(mobj,Seq).id
         @data[sid]=mobj
         mobj.post_stat_procs << proc{save}
         mobj.post_exe_procs << proc{|m|

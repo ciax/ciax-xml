@@ -26,15 +26,21 @@ module CIAX
         super('mcr',db['id'],Command.new(cfg))
         @cobj.add_int
         lc=cfg[:list_class]||List
-        @list=lc.new(db['id'],db['version'],@cobj.intgrp.valid_pars)
-        ext_shell(@list){ "[%d]" % @list.current }
+        @list=lc.new(db['id'],db['version'])
+        @valid_pars=@cobj.intgrp.valid_pars
+        @current=0
+        ext_shell(@list){
+          size=@valid_pars.replace(@list.data.keys).size
+          @current=size if size < @current || @current < 1
+          "[%d]" % @current
+        }
       end
 
       def shell_input(line)
         cmd,*par=super
         if @cobj.intgrp.key?(cmd)
-          @list.current=par[0].to_i unless par.empty?
-          par=[@list.current_sid]
+          @current=par[0].to_i unless par.empty?
+          par=[@list.sid_to_num(@current)]
         end
         [cmd]+par
       end
@@ -53,24 +59,18 @@ module CIAX
 
     class List < Datax
       attr_accessor :current
-      def initialize(proj,ver=0,valid_pars=[])
+      def initialize(proj,ver=0)
         super('macro',{},'procs')
         self['id']=proj
         self['ver']=ver
-        @valid_pars=valid_pars
-        @current=0
-        @post_upd_procs << proc{
-          size=@valid_pars.replace(@data.keys).size
-          @current=size if size < @current || @current < 1
-        }
       end
 
       def get_obj(sid)
         @data[sid]
       end
 
-      def current_sid #convert the order number(Integer) to sid
-        @data.keys[@current-1]
+      def sid_to_num(num) #convert the order number(Integer) to sid
+        @data.keys[num-1]
       end
 
       def to_s
@@ -127,7 +127,7 @@ module CIAX
     end
 
     class SvList < List
-      def initialize(proj,ver=0,valid_pars=[])
+      def initialize(proj,ver=0)
         super
         @tgrp=ThreadGroup.new
       end

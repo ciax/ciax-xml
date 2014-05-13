@@ -27,6 +27,7 @@ module CIAX
         type?(@cfg[:app],App::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new(@cfg))
+        @cobj.add_int
         @exe_proc=exe_proc||proc{{}}
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
@@ -175,6 +176,7 @@ module CIAX
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
+        cobj.add_ext
         Seq.new(cobj.set_cmd(ARGV)).macro
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

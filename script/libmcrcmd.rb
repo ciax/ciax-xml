@@ -6,11 +6,10 @@ module CIAX
   module Mcr
     class Command < Command
       attr_reader :cfg,:extgrp,:intgrp
-      def initialize(upper)
-        super
+      def add_ext
         svc={:group_class =>ExtGrp,:entity_class=>ExtEntity,:mobj => self}
-        @extgrp=@svdom.add_group(svc)
         @cfg[:depth]=0
+        @extgrp=@svdom.add_group(svc)
       end
 
       def add_int
@@ -65,6 +64,7 @@ module CIAX
         cfg=Config.new
         cfg[:db]=Db.new.set('ciax')
         mobj=Command.new(cfg)
+        mobj.add_ext
         puts mobj.set_cmd(ARGV).cfg
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")

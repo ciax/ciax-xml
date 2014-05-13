@@ -24,6 +24,7 @@ module CIAX
       def initialize(cfg)
         db=type?(cfg[:db],Db)
         super('mcr',db['id'],Command.new(cfg))
+        @cobj.add_ext
         @cobj.add_int
         lc=cfg[:list_class]||List
         @list=lc.new(db['id'],db['version'])

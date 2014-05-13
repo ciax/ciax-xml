@@ -31,9 +31,7 @@ module CIAX
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
         @que_res=Queue.new
-        self['cid']=@cfg[:cid]
-        self['total_steps']=@cfg[:body].size
-        self['step']=0
+        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>nil})
         @running=[]
       end
 
@@ -61,7 +59,7 @@ module CIAX
 
       def macro
         Thread.current[:sid]=@id
-        set_stat 'run'
+        set_stat('run')
         show @record
         @cfg[:body].each{|e1|
           self['step']+=1

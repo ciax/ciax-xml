@@ -140,12 +140,22 @@ module CIAX
         @data[sid]=mobj
         mobj.post_stat_procs << proc{save}
         mobj.post_exe_procs << proc{|m|
-          @data.delete(m.id)
+          clean(m.id)
           save
         }
         @tgrp.add(mobj.fork)
         self
       end
+
+      def clean(sid)
+        @data.delete(sid)
+        @data.keys.each{|id|
+          @tgrp.list.any?{|t|
+            id == t[:sid]
+          }||@data.delete(id)
+        }
+      end
+
 
       def interrupt
         @tgrp.list.each{|t|

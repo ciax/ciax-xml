@@ -42,6 +42,7 @@ module CIAX
       end
 
       def macro
+        Thread.current[:sid]=@id
         set_stat 'run'
         show @record
         @cfg[:body].each{|e1|

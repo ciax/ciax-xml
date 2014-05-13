@@ -22,8 +22,8 @@ module CIAX
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs
       #exe_proc for executing asynchronous submacro
-      def initialize(ent,&exe_proc)
-        @cfg=type?(type?(ent,Entity).cfg)
+      def initialize(ment,&exe_proc)
+        @cfg=type?(type?(ment,Entity).cfg)
         type?(@cfg[:app],App::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new(@cfg))

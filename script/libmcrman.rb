@@ -102,11 +102,11 @@ module CIAX
         # Internal Command Group
         @cobj.intgrp.set_proc{|ent|
           sid=ent.par[0]
-          if mobj=@list.get_obj(sid)
+          if sobj=@list.get_obj(sid)
             self['sid']=sid
-            if mobj['stat'] == 'query'
-              mobj.que_cmd << ent.id
-              mobj.que_res.pop
+            if sobj['stat'] == 'query'
+              sobj.que_cmd << ent.id
+              sobj.que_res.pop
             else
               "IGNORE"
             end
@@ -116,9 +116,9 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          mobj=Seq.new(ent){|args| exe(args)}
-          @list.add(mobj)
-          self['sid']=mobj.id
+          sobj=Seq.new(ent){|args| exe(args)}
+          @list.add(sobj)
+          self['sid']=sobj.id
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|
@@ -135,15 +135,15 @@ module CIAX
         @tgrp=ThreadGroup.new
       end
 
-      def add(mobj)
-        sid=type?(mobj,Seq).id
-        @data[sid]=mobj
-        mobj.post_stat_procs << proc{save}
-        mobj.post_exe_procs << proc{|m|
-          clean(m.id)
+      def add(sobj)
+        sid=type?(sobj,Seq).id
+        @data[sid]=sobj
+        sobj.post_stat_procs << proc{save}
+        sobj.post_exe_procs << proc{|s|
+          clean(s.id)
           save
         }
-        @tgrp.add(mobj.fork)
+        @tgrp.add(sobj.fork)
         self
       end
 

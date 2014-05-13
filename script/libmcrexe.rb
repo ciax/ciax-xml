@@ -42,7 +42,7 @@ module CIAX
         @cobj.intgrp.set_proc{|ent| reply(ent.id)}
         super(@record){
           o=self['option']
-          o ? color("[#{o}]",5) : ''
+          "(#{self['stat']})"+(o ? color("[#{o}]",5) : '')
         }
       end
 

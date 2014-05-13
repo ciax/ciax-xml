@@ -35,7 +35,7 @@ module CIAX
       self['msg']=$!.to_s
       raise $!
     ensure
-      @post_exe_procs.each{|p| p.call}
+      @post_exe_procs.each{|p| p.call(self)}
     end
 
     def ext_client(host,port)

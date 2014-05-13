@@ -231,7 +231,12 @@ module CIAX
     end
 
     def _w(var,msg='') # watch var for debug
-      Kernel.warn color(msg,5)+":#{var}:"+color("(#{var.object_id})",3)+':'+caller(1).first.split('/').last
+      if var.kind_of?(Enumerable)
+        Kernel.warn color(msg,5)+color("(#{var.object_id})",3)+':'+caller(1).first.split('/').last
+        Kernel.warn var.dup.extend(Enumx).path
+      else
+        Kernel.warn color(var,5)+':'+caller(1).first.split('/').last
+      end
     end
 
     # Exception methods

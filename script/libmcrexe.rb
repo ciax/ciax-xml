@@ -27,7 +27,6 @@ module CIAX
         type?(@cfg[:app],App::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new(@cfg))
-        @cobj.add_int
         @exe_proc=exe_proc||proc{{}}
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
@@ -36,6 +35,15 @@ module CIAX
         self['total_steps']=@cfg[:body].size
         self['step']=0
         @running=[]
+      end
+
+      def ext_shell
+        @cobj.add_int
+        @cobj.intgrp.set_proc{|ent| reply(ent.id)}
+        super(@record){
+          o=self['option']
+          o ? color("[#{o}]",5) : ''
+        }
       end
 
       def reply(ans)
@@ -179,14 +187,20 @@ module CIAX
     end
 
     if __FILE__ == $0
-      GetOpts.new('renmst')
+      GetOpts.new('lt')
       begin
         cfg=Config.new
         cfg[:app]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
         cobj.add_ext
-        Seq.new(cobj.set_cmd(ARGV)).macro
+        seq=Seq.new(cobj.set_cmd(ARGV))
+        if $opt['l']
+          seq.fork
+          seq.ext_shell.shell
+        else
+          seq.macro
+        end
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

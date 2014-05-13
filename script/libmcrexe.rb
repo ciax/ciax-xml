@@ -38,6 +38,15 @@ module CIAX
         @running=[]
       end
 
+      def reply(ans)
+        if self['stat'] == 'query'
+          @que_cmd << ans
+          @que_res.pop
+        else
+          "IGNORE"
+        end
+      end
+
       def fork
         Threadx.new("Macro Thread(#@id)",12){macro}
       end

@@ -105,12 +105,7 @@ module CIAX
           sid=ent.par[0]
           if sobj=@list.get_obj(sid)
             self['sid']=sid
-            if sobj['stat'] == 'query'
-              sobj.que_cmd << ent.id
-              sobj.que_res.pop
-            else
-              "IGNORE"
-            end
+            sobj.reply(ent.id)
           else
             "NOSID"
           end

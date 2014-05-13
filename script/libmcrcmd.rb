@@ -10,15 +10,18 @@ module CIAX
         svc={:group_class =>ExtGrp,:entity_class=>ExtEntity,:mobj => self}
         @cfg[:depth]=0
         @extgrp=@svdom.add_group(svc)
+        self
       end
 
       def add_int
         inc={:group_class =>IntGrp,:group_id =>'internal'}
         @intgrp=@svdom.add_group(inc)
+        self
       end
 
       def ext_proc(&def_proc)
         @extgrp.set_proc(&def_proc)
+        self
       end
     end
 

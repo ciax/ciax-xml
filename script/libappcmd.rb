@@ -12,10 +12,12 @@ module CIAX
 
       def ext_proc(&def_proc)
         @extgrp.set_proc(&def_proc)
+        self
       end
 
       def add_int
         @svdom.add_group(:group_class =>IntGrp)
+        self
       end
     end
 

@@ -31,7 +31,10 @@ module CIAX
         @valid_pars=@cobj.intgrp.valid_pars
         @mode='TEST'
         @current=0
-        ext_shell(@list){
+      end
+
+      def ext_shell
+        super(@list){
           size=@valid_pars.replace(@list.data.keys).size
           @current=size if size < @current || @current < 1
           "[%d]" % @current
@@ -98,7 +101,7 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new('mnlrt')
       begin
-        Mcr.new.shell
+        Mcr.new.ext_shell.shell
       rescue InvalidCMD
         $opt.usage("[mcr] [cmd] (par)")
       end

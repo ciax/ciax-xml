@@ -19,6 +19,18 @@ module CIAX
         @data.keys[num-1]
       end
 
+      def shell(site)
+        @site=site||@site
+        begin
+          self[@site].shell
+        rescue SiteJump
+          @site=$!.to_s
+          retry
+        end
+      rescue InvalidID
+        $opt.usage('(opt) [id]')
+      end
+
       def to_s
         idx=1
         page=['<<< '+Msg.color('Active Macros',2)+' >>>']
@@ -66,6 +78,17 @@ module CIAX
           t.raise(Interrupt)
         }
         self
+      end
+    end
+
+    class JumpGrp < Group
+      def initialize(upper,crnt={})
+        super
+        @cfg['caption']='Switch Macros'
+        @cfg['color']=5
+        @cfg['column']=2
+        update_items(@cfg[:ldb].list)
+        set_proc{|ent| raise(SiteJump,ent.id)}
       end
     end
   end

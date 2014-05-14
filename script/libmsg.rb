@@ -18,8 +18,8 @@ module CIAX
   # Mangaged Exception(Long Jump)
   class LongJump < RuntimeError; end
   # Switching Shell
-  class SwSite < LongJump; end
-  class SwLayer < LongJump; end
+  class SiteJump < LongJump; end
+  class LayerJump < LongJump; end
 
   # Macro
   class Interlock < LongJump; end

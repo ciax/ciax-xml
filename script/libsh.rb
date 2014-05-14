@@ -68,7 +68,7 @@ module CIAX
       @site=site||@site
       begin
         self[@site].shell
-      rescue SwSite
+      rescue SiteJump
         @site=$!.to_s
         retry
       end
@@ -98,10 +98,10 @@ module CIAX
       layer=keys.last
       begin
         self[layer][site].shell
-      rescue SwSite
+      rescue SiteJump
         site=$!.to_s
         retry
-      rescue SwLayer
+      rescue LayerJump
         layer=$!.to_s
         retry
       end

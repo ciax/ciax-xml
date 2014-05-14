@@ -81,7 +81,7 @@ module CIAX
     def initialize(cfg=Config.new)
       @cfg=type?(cfg,Config)
       @cfg[:ldb]||=Loc::Db.new
-      @swlgrp=LayerGrp.new
+      @swlgrp=SwLayerGrp.new
     end
 
     def add_layer(layer)

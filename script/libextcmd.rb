@@ -13,7 +13,7 @@ module CIAX
     end
   end
 
-  class LayerGrp < Group
+  class SwLayerGrp < Group
     def initialize(upper=Config.new,crnt={})
       super
       @cfg['caption']='Switch Layer'

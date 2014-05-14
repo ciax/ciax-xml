@@ -31,16 +31,16 @@ module CIAX
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
         @que_res=Queue.new
-        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>nil})
+        update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>[]})
         @running=[]
       end
 
       def ext_shell
         @cobj.add_int
         @cobj.intgrp.set_proc{|ent| reply(ent.id)}
+        self['option']=@cobj.intgrp.valid_keys
         super(@record){
-          o=self['option']
-          "(#{self['stat']})"+(o ? color("[#{o}]",5) : '')
+          "(#{self['stat']})"+color("[#{self['option'].join('/')}]",5)
         }
       end
 
@@ -108,7 +108,7 @@ module CIAX
         @running.clear
         show str+"\n"
         @record.finish(str)
-        self['option']=nil
+        self['option'].clear
         set_stat str
       end
 
@@ -141,10 +141,10 @@ module CIAX
       end
 
       def query(cmds)
-        self['option']=cmds.join('/')
+        self['option'].replace(cmds)
         set_stat 'query'
         res=input(cmds)
-        self['option']=nil
+        self['option'].clear
         set_stat 'run'
         @step['action']=res
         case res
@@ -165,7 +165,7 @@ module CIAX
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
         loop{
           if Msg.fg?
-            prom=@step.body("[#{self['option']}]? ")
+            prom=@step.body("[#{self['option'].join('/')}]? ")
             @que_cmd << Readline.readline(prom,true).rstrip
           end
           id=@que_cmd.pop.split(/[ :]/).first

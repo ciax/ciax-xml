@@ -82,7 +82,7 @@ module CIAX
         @data.each{|key,mst|
           title="[#{idx}](#{key})"
           msg="#{mst['cid']} [#{mst['step']}/#{mst['total_steps']}](#{mst['stat']})"
-          msg << "[#{mst['option']}]? " if mst['option']
+          msg << "[#{mst['option'].join('/')}]? " unless mst['option'].empty?
           page << Msg.item(title,msg)
           idx+=1
         }

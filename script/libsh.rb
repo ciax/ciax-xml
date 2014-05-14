@@ -59,7 +59,7 @@ module CIAX
     attr_reader :site
     def initialize(upper=Config.new)
       super()
-      upper[:ldb]||=Loc::Db.new
+      upper[:ldb]||=Site::Db.new
       @cfg=Config.new(upper)
       @init_procs << proc{|exe| exe.cobj.lodom.add_group(:group_class =>SwSiteGrp)}
     end
@@ -80,7 +80,7 @@ module CIAX
   class ShLayer < Hashx
     def initialize(cfg=Config.new)
       @cfg=type?(cfg,Config)
-      @cfg[:ldb]||=Loc::Db.new
+      @cfg[:ldb]||=Site::Db.new
       @swlgrp=SwLayerGrp.new
     end
 

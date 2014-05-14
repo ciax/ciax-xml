@@ -4,7 +4,7 @@ require "libfrmdb"
 require "libinsdb"
 
 module CIAX
-  module Loc
+  module Site
     class Db < Db
       def initialize
         super('ldb')
@@ -41,7 +41,7 @@ module CIAX
             e.attr2item(hash)
           else
             id=e.name.to_sym
-            verbose("LocDb","Override [#{id}]")
+            verbose("SiteDb","Override [#{id}]")
             rec_db(e,hash[id]||={})
           end
         }
@@ -53,7 +53,7 @@ module CIAX
   if __FILE__ == $0
     begin
       id=ARGV.shift
-      db=Loc::Db.new.set(id)
+      db=Site::Db.new.set(id)
     rescue
       Msg.usage("(opt) [id] (key) ..")
       Msg.exit

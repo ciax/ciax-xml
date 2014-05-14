@@ -103,7 +103,7 @@ module CIAX
       require "libstatus"
       Msg.usage "< field_file" if STDIN.tty?
       field=Frm::Field.new.read
-      ldb=Loc::Db.new.set(field['id'])
+      ldb=Site::Db.new.set(field['id'])
       fdb=ldb[:frm]
       adb=ldb[:app]
       field.skeleton(fdb).ext_rsp

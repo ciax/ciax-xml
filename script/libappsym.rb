@@ -60,7 +60,7 @@ module CIAX
       GetOpts.new
       id=ARGV.shift
       begin
-        adb=Loc::Db.new.set(id)[:app]
+        adb=Site::Db.new.set(id)[:app]
         stat=Status.new.skeleton(adb).ext_file
         stat.ext_sym.upd
         print stat

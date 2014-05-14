@@ -128,7 +128,7 @@ module CIAX
         id=res['id']
         cid=res['cmd']
       end
-      fdb=Loc::Db.new.set(id)[:frm]
+      fdb=Site::Db.new.set(id)[:frm]
       field=Field.new.skeleton(fdb).ext_rsp
       field.ext_file if $opt['m']
       if cid

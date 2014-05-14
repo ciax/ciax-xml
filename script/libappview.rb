@@ -85,7 +85,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "liblocdb"
+      require "libsitedb"
       GetOpts.new('h:')
       id=ARGV.shift
       host=ARGV.shift

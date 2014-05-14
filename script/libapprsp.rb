@@ -98,7 +98,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "liblocdb"
+      require "libsitedb"
       require "libfrmrsp"
       require "libstatus"
       Msg.usage "< field_file" if STDIN.tty?

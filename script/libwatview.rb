@@ -103,7 +103,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    require "liblocdb"
+    require "libsitedb"
 
     list={}
     list['t']='test conditions[key=val,..]'

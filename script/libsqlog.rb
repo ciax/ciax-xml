@@ -187,7 +187,7 @@ module CIAX
   end
 
   if __FILE__ == $0
-    require "liblocdb"
+    require "libsitedb"
     require "libstatus"
     id=ARGV.shift
     ARGV.clear

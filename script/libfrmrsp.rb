@@ -115,7 +115,7 @@ module CIAX
     end
 
     if __FILE__ == $0
-      require "liblocdb"
+      require "libsitedb"
       require "liblogging"
       require "libfrmcmd"
       GetOpts.new("",{'m' => 'merge file'})

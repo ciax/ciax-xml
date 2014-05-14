@@ -3,7 +3,7 @@ require 'libsh'
 require 'libfield'
 require "libfrmrsp"
 require "libfrmcmd"
-require 'liblocdb'
+require 'libsitedb'
 
 module CIAX
   module Frm

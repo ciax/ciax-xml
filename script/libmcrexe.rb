@@ -191,7 +191,7 @@ module CIAX
 
 
     if __FILE__ == $0
-      GetOpts.new('lt')
+      GetOpts.new('lnt')
       begin
         cfg=Config.new
         cfg[:app]=App::List.new

@@ -206,7 +206,7 @@ module CIAX
       end
     end
 
-    class List < ShList
+    class List < Site::List
       def initialize(upper=Config.new)
         upper['frm']||=Frm::List.new
         upper['app']=self

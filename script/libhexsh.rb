@@ -37,7 +37,7 @@ module CIAX
       end
     end
 
-    class List < ShList
+    class List < Site::List
       def initialize(upper=Config.new)
         upper['app']||=App::List.new
         upper['hex']=self

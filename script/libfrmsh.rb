@@ -3,7 +3,7 @@ require 'libsh'
 require 'libfield'
 require "libfrmrsp"
 require "libfrmcmd"
-require 'libsitedb'
+require 'libsite'
 
 module CIAX
   module Frm
@@ -89,7 +89,7 @@ module CIAX
       end
     end
 
-    class List < ShList
+    class List < Site::List
       def initialize(upper=Config.new)
         upper['frm']=self
         super

@@ -61,7 +61,7 @@ module CIAX
       super()
       upper[:ldb]||=Loc::Db.new
       @cfg=Config.new(upper)
-      @init_procs << proc{|exe| exe.cobj.lodom.add_group(:group_class =>SiteGrp)}
+      @init_procs << proc{|exe| exe.cobj.lodom.add_group(:group_class =>SwSiteGrp)}
     end
 
     def shell(site)

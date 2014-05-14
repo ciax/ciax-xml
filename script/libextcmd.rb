@@ -2,7 +2,7 @@
 require 'libcommand'
 
 module CIAX
-  class SiteGrp < Group
+  class SwSiteGrp < Group
     def initialize(upper,crnt={})
       super
       @cfg['caption']='Switch Sites'

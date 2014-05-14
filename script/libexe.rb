@@ -129,38 +129,4 @@ module CIAX
       self
     end
   end
-
-  class ExeList < Hashx
-    attr_reader :init_procs
-    # shdom: Domain for Shared Command Groups
-    def initialize(&new_proc)
-      $opt||=GetOpts.new
-      @init_procs=[] # initialize exe (mostly add new menu) at new key generated
-    end
-
-    def [](key)
-      if key?(key)
-        super
-      else
-        exe=self[key]=new_val(key)
-        @init_procs.each{|p| p.call(exe)}
-        exe
-      end
-    end
-
-    def server(ary)
-      ary.each{|i|
-        sleep 0.3
-        self[i]
-      }.empty? && self[nil]
-      sleep
-    rescue InvalidID
-      $opt.usage('(opt) [id] ....')
-    end
-
-    private
-    # For generate Exe (allows nil)
-    def new_val(key)
-    end
-  end
 end

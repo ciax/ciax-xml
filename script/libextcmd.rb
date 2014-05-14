@@ -2,27 +2,6 @@
 require 'libcommand'
 
 module CIAX
-  class SwSiteGrp < Group
-    def initialize(upper,crnt={})
-      super
-      @cfg['caption']='Switch Sites'
-      @cfg['color']=5
-      @cfg['column']=2
-      update_items(@cfg[:ldb].list)
-      set_proc{|ent| raise(SiteJump,ent.id)}
-    end
-  end
-
-  class SwLayerGrp < Group
-    def initialize(upper=Config.new,crnt={})
-      super
-      @cfg['caption']='Switch Layer'
-      @cfg['color']=5
-      @cfg['column']=5
-      set_proc{|ent| raise(LayerJump,ent.id) }
-    end
-  end
-
   # For External Command Domain
   # @cfg must contain [:db]
   class ExtGrp < Group # upper needs [:db]

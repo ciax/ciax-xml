@@ -17,13 +17,14 @@ module CIAX
         $opt||=GetOpts.new
       end
 
-      def [](key)
-        if key?(key)
+      def [](site)
+        @site=site
+        if key?(site)
           super
         else
-          exe=self[key]=new_val(key)
-          @init_procs.each{|p| p.call(exe)}
-          exe
+          val=self[site]=new_val(site)
+          @init_procs.each{|p| p.call(val)}
+          val
         end
       end
 
@@ -37,8 +38,8 @@ module CIAX
         $opt.usage('(opt) [id] ....')
       end
 
-      def shell(site)
-        @site=site||@site
+      def shell(site=nil)
+        @site=site if site
         begin
           self[@site].shell
         rescue SiteJump

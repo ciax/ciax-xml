@@ -52,7 +52,7 @@ module CIAX
 
       private
       # For generate Exe (allows nil)
-      def new_val(key)
+      def new_val(site)
       end
     end
 

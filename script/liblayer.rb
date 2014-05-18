@@ -6,9 +6,9 @@ module CIAX
   module Layer
     # Layer List
     class List < Hashx
-      def initialize(cfg=Config.new)
-        @cfg=type?(cfg,Config)
-        @ljgrp=JumpGrp.new
+      def initialize(upper=Config.new)
+        @cfg=Config.new(upper)
+        @ljgrp=JumpGrp.new(@cfg)
       end
 
       def add_layer(layer)
@@ -25,12 +25,9 @@ module CIAX
       def shell(site)
         layer=keys.last
         begin
-          self[layer][site].shell
-        rescue SiteJump
-          site=$!.to_s
-          retry
+          self[layer].shell(site)
         rescue LayerJump
-          layer=$!.to_s
+          layer,site=$!.to_s.split(':')
           retry
         end
       rescue InvalidID
@@ -44,7 +41,10 @@ module CIAX
         @cfg['caption']='Switch Layer'
         @cfg['color']=5
         @cfg['column']=5
-        set_proc{|ent| raise(LayerJump,ent.id) }
+        set_proc{|ent|
+          site=ent.cfg[:ldb]['id']
+          raise(LayerJump,"#{ent.id}:#{site}")
+        }
       end
     end
   end

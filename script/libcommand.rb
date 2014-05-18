@@ -227,7 +227,7 @@ module CIAX
       @id=[@cfg[:id],*@par].join(':')
       @cfg[:cid]=@id
       @ver_color=5
-      verbose(self.class,"Config #{@cfg.to_hash.path}")
+      verbose(self.class,"Config #{@cfg}")
     end
 
     def exe

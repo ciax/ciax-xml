@@ -47,5 +47,9 @@ module CIAX
         i+=1
       }
     end
+
+    def to_s
+      to_hash.path
+    end
   end
 end

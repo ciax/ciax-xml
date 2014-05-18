@@ -91,7 +91,7 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=Config.new)
-        upper['frm']=self
+        upper[:frm_list]=self
         super
       end
 

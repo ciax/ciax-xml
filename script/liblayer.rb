@@ -14,7 +14,7 @@ module CIAX
       def add_layer(layer)
         type?(layer,Module)
         str=layer.to_s.split(':').last
-        id=str.downcase
+        id=(str.downcase+'_list').to_sym
         lst=(@cfg[id]||=layer::List.new(@cfg))
         @ljgrp.add_item(id,str+" mode")
         lst.init_procs << proc{|exe| exe.cobj.lodom.join_group(@ljgrp) }

@@ -28,7 +28,7 @@ module CIAX
     end
 
     def to_hash
-      hash={}
+      hash=Hashx.new
       @generation.reverse.each{|h| hash.update h}
       hash
     end

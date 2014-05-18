@@ -11,7 +11,7 @@ require "thread"
 
 module CIAX
   module App
-    # cfg should have ['frm'](Frm::List)
+    # cfg should have [:frm_list](Frm::List)
     def self.new(cfg)
       Msg.type?(cfg,Hash)
       if $opt['s'] or $opt['e']
@@ -124,7 +124,7 @@ module CIAX
     class Sv < Exe
       def initialize(cfg)
         super(cfg)
-        @fsh=type?(cfg['frm'][@id],Frm::Exe)
+        @fsh=type?(cfg[:frm_list][@id],Frm::Exe)
         @mode=@fsh.mode
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
@@ -208,8 +208,8 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=Config.new)
-        upper['frm']||=Frm::List.new
-        upper['app']=self
+        upper[:frm_list]||=Frm::List.new
+        upper[:app_list]=self
         super
       end
 

@@ -6,7 +6,7 @@ require "libappsh"
 
 module CIAX
   module Hex
-    # cfg should have ['app'](App::List)
+    # cfg should have [:app_list](App::List)
     def self.new(cfg)
       Hex::Sv.new(cfg)
     end
@@ -39,13 +39,13 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=Config.new)
-        upper['app']||=App::List.new
-        upper['hex']=self
+        upper[:app_list]||=App::List.new
+        upper[:hex_list]=self
         super
       end
 
       def new_val(id)
-        Hex.new(@cfg['app'][id])
+        Hex.new(@cfg[:app_list][id])
       end
     end
   end

@@ -6,7 +6,7 @@ module CIAX
   module Mcr
     def self.new(cfg=Config.new)
       cfg[:db]||=Mcr::Db.new.set(ENV['PROJ']||'ciax')
-      cfg[:app]||=App::List.new
+      cfg[:app_list]||=App::List.new
       if $opt['t']
         Man.new(cfg)
       else
@@ -68,7 +68,7 @@ module CIAX
         cfg[:list_class]=SvList
         super
         @mode='SV'
-        type?(cfg[:app],App::List)
+        type?(cfg[:app_list],App::List)
         port=cfg['port']||@cobj.cfg[:db]['port']||55555
         self['sid']='' # For server response
         @pre_exe_procs << proc{ self['sid']='' }

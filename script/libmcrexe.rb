@@ -24,7 +24,7 @@ module CIAX
       #exe_proc for executing asynchronous submacro
       def initialize(ment,&exe_proc)
         @cfg=type?(type?(ment,Entity).cfg)
-        type?(@cfg[:app],App::List)
+        type?(@cfg[:app_list],App::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new(@cfg))
         @exe_proc=exe_proc||proc{{}}
@@ -81,7 +81,7 @@ module CIAX
               drop?(@step.timeout?{show '.'})
             when 'exec'
               @running << e1['site']
-              @cfg[:app][e1['site']].exe(e1['args']) if exec?(@step.exec?)
+              @cfg[:app_list][e1['site']].exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
               if @step.async?
                 @step['sid']=@exe_proc.call(e1['args'])['sid']
@@ -100,7 +100,7 @@ module CIAX
       rescue Interrupt
         warn("\nInterrupt Issued to #{@running}")
         @running.each{|site|
-          @cfg[:app][site].exe(['interrupt'])
+          @cfg[:app_list][site].exe(['interrupt'])
         } if $opt['m']
         finish('interrupted')
         self
@@ -194,7 +194,7 @@ module CIAX
       GetOpts.new('lnt')
       begin
         cfg=Config.new
-        cfg[:app]=App::List.new
+        cfg[:app_list]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)
         cobj.add_ext

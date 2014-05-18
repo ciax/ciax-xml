@@ -96,7 +96,7 @@ module CIAX
       end
 
       def new_val(id)
-        @cfg[:db]=@cfg[:ldb].set(id)[:frm]
+        @cfg[:db]=@cfg[:ldb].set(id)[:fdb]
         Frm.new(@cfg)
       end
     end

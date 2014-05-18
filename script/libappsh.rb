@@ -214,7 +214,7 @@ module CIAX
       end
 
       def new_val(id)
-        @cfg[:db]=@cfg[:ldb].set(id)[:app]
+        @cfg[:db]=@cfg[:ldb].set(id)[:adb]
         App.new(@cfg)
       end
     end

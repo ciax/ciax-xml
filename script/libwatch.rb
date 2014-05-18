@@ -161,7 +161,7 @@ module CIAX
     GetOpts.new('t:',list)
     id=ARGV.shift
     begin
-      adb=Site::Db.new.set(id)[:app]
+      adb=Site::Db.new.set(id)[:adb]
     rescue InvalidID
       $opt.usage("(opt) [id]")
     end

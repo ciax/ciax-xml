@@ -14,8 +14,8 @@ module CIAX
         super
         appid=delete('app_id')
         insid=delete('ins_id')||self['id']
-        cover(App::Db.new.set(appid),:app).ext_ins(insid)
-        app=self[:app].update({'ins_id'=>insid,'site_id'=>id})
+        cover(App::Db.new.set(appid),:adb).ext_ins(insid)
+        app=self[:adb].update({'ins_id'=>insid,'site_id'=>id})
         frm=self[:frm]||{}
         if ref=frm.delete('ref')
           frm=cover(Db.new.set(ref)[:frm],:frm)

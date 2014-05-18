@@ -105,7 +105,7 @@ module CIAX
       field=Frm::Field.new.read
       ldb=Site::Db.new.set(field['id'])
       fdb=ldb[:frm]
-      adb=ldb[:app]
+      adb=ldb[:adb]
       field.skeleton(fdb).ext_rsp
       stat=Status.new.skeleton(adb).ext_rsp(field)
       puts stat

@@ -94,9 +94,9 @@ module CIAX
         if ! STDIN.tty?
           stat.read
           id=stat['id']
-          adb=Site::Db.new.set(id)[:app]
+          adb=Site::Db.new.set(id)[:adb]
         else
-          adb=Site::Db.new.set(id)[:app]
+          adb=Site::Db.new.set(id)[:adb]
           stat.skeleton(adb)
           if host=$opt['h']
             stat.ext_http(host)

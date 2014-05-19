@@ -51,14 +51,12 @@ module CIAX
         @tgrp=ThreadGroup.new
       end
 
-      def add(sobj)
-        @sid=type?(sobj,Seq).id
+      def add(ent)
+        sobj=Seq.new(type?(ent,Entity)).ext_shell
+        @sid=sobj.id
         @data[@sid]=sobj
         sobj.post_stat_procs << proc{upd}
-        sobj.post_exe_procs << proc{|s|
-          clean(s.id)
-          upd
-        }
+        sobj.post_exe_procs << proc{|s| clean(s.id)}
         sobj.fork(@tgrp)
         self
       end
@@ -70,6 +68,7 @@ module CIAX
             id == t[:sid]
           }||@data.delete(id)
         }
+        upd
       end
 
 
@@ -100,8 +99,7 @@ module CIAX
         cfg[:app_list]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         ent=Command.new(cfg).add_ext.set_cmd(ARGV)
-        seq=Seq.new(ent).ext_shell.fork
-        SvList.new('ciax').add(seq).shell
+        SvList.new('ciax').add(ent).shell
       rescue InvalidCMD
         $opt.usage('[cmd] (par)')
       end

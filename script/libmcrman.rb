@@ -86,9 +86,7 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          sobj=Seq.new(ent)
-          @list.add(sobj)
-          self['sid']=sobj.id
+          self['sid']=@list.add(ent).sid
           "ACCEPT"
         }
         @cobj.item_proc('interrupt'){|ent|

@@ -66,6 +66,7 @@ module CIAX
     class ManSv < Man
       def initialize(cfg)
         cfg[:list_class]=SvList
+        cfg[:submcr_proc]=proc{|args| exe(args)}
         super
         @mode='SV'
         type?(cfg[:app_list],App::List)
@@ -85,7 +86,7 @@ module CIAX
         }
         # External Command Group
         @cobj.ext_proc{|ent|
-          sobj=Seq.new(ent){|args| exe(args)}
+          sobj=Seq.new(ent)
           @list.add(sobj)
           self['sid']=sobj.id
           "ACCEPT"

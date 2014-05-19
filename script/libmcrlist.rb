@@ -4,7 +4,7 @@ require "libmcrexe"
 module CIAX
   module Mcr
     class List < Datax
-      attr_accessor :current
+      attr_accessor :sid
       def initialize(proj,ver=0)
         super('macro',{},'procs')
         self['id']=proj

@@ -21,13 +21,12 @@ module CIAX
     class Seq < Exe
       #reqired cfg keys: app,db,body,stat
       attr_reader :record,:que_cmd,:que_res,:post_stat_procs
-      #exe_proc for executing asynchronous submacro
-      def initialize(ment,&exe_proc)
+      #cfg[:submcr_proc] for executing asynchronous submacro
+      def initialize(ment)
         @cfg=type?(type?(ment,Entity).cfg)
         type?(@cfg[:app_list],App::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new(@cfg))
-        @exe_proc=exe_proc||proc{{}}
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
         @que_res=Queue.new
@@ -86,8 +85,8 @@ module CIAX
               @running << e1['site']
               @cfg[:app_list][e1['site']].exe(e1['args']) if exec?(@step.exec?)
             when 'mcr'
-              if @step.async?
-                @step['sid']=@exe_proc.call(e1['args'])['sid']
+              if @step.async? && @cfg[:submcr_proc].is_a?(Proc)
+                @step['sid']=@cfg[:submcr_proc].call(e1['args'])['sid']
               end
             end
           rescue Retry

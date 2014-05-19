@@ -58,6 +58,7 @@ module CIAX
         end
       end
 
+      #Takes ThreadGroup to be added
       def fork(tg=nil)
         th=Threadx.new("Macro Thread(#@id)",12){macro}
         tg.add(th) if tg.is_a?(ThreadGroup)

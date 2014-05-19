@@ -19,12 +19,12 @@ module CIAX
         @data.keys[num-1]
       end
 
-      def shell(site)
-        @site=site||@site
+      def shell(sid)
+        @sid=sid||@sid
         begin
-          self[@site].shell
+          @data[@sid].shell
         rescue SiteJump
-          @site=$!.to_s
+          @sid=$!.to_s
           retry
         end
       rescue InvalidID
@@ -54,10 +54,10 @@ module CIAX
       def add(sobj)
         sid=type?(sobj,Seq).id
         @data[sid]=sobj
-        sobj.post_stat_procs << proc{save}
+        sobj.post_stat_procs << proc{upd}
         sobj.post_exe_procs << proc{|s|
           clean(s.id)
-          save
+          upd
         }
         @tgrp.add(sobj.fork)
         self
@@ -89,6 +89,22 @@ module CIAX
         @cfg['column']=2
         update_items(@cfg[:ldb].list)
         set_proc{|ent| raise(SiteJump,ent.id)}
+      end
+    end
+
+    if __FILE__ == $0
+      ENV['VER']||='init/'
+      GetOpts.new('t')
+      begin
+        cfg=Config.new
+        cfg[:app_list]=App::List.new
+        cfg[:db]=Db.new.set('ciax')
+        ent=Command.new(cfg).add_ext.set_cmd(ARGV)
+        seq=Seq.new(ent).ext_shell
+        seq.fork
+        SvList.new('ciax').add(seq).shell(seq.id)
+      rescue InvalidCMD
+        $opt.usage('[cmd] (par)')
       end
     end
   end

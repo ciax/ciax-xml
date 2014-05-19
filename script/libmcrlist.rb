@@ -20,13 +20,14 @@ module CIAX
       end
 
       def shell(sid=nil)
-        @sid=sid||@sid
+        @sid=sid||@sid||return
         begin
           @data[@sid].shell
         rescue SiteJump
           @sid=$!.to_s
           retry
         end
+        self
       rescue InvalidID
         $opt.usage('(opt) [id]')
       end
@@ -71,7 +72,6 @@ module CIAX
         upd
       end
 
-
       def interrupt
         @tgrp.list.each{|t|
           t.raise(Interrupt)
@@ -98,10 +98,15 @@ module CIAX
         cfg=Config.new
         cfg[:app_list]=App::List.new
         cfg[:db]=Db.new.set('ciax')
-        ent=Command.new(cfg).add_ext.set_cmd(ARGV)
-        SvList.new('ciax').add(ent).shell
+        cobj=Command.new(cfg).add_ext
+        list=SvList.new('ciax')
+        ARGV.each{|cid|
+          ent=cobj.set_cmd(cid.split(':'))
+          list.add(ent)
+        }
+        list.shell||cobj.set_cmd([])
       rescue InvalidCMD
-        $opt.usage('[cmd] (par)')
+        $opt.usage('[cmd(:par)] ...')
       end
     end
   end

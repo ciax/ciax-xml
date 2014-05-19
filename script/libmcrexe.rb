@@ -58,8 +58,10 @@ module CIAX
         end
       end
 
-      def fork
-        Threadx.new("Macro Thread(#@id)",12){macro}
+      def fork(tg=nil)
+        th=Threadx.new("Macro Thread(#@id)",12){macro}
+        tg.add(th) if tg.is_a?(ThreadGroup)
+        self
       end
 
       def macro
@@ -200,8 +202,7 @@ module CIAX
         cobj.add_ext
         seq=Seq.new(cobj.set_cmd(ARGV))
         if $opt['l']
-          seq.fork
-          seq.ext_shell.shell
+          seq.fork.ext_shell.shell
         else
           seq.macro
         end

@@ -59,7 +59,7 @@ module CIAX
           clean(s.id)
           upd
         }
-        @tgrp.add(sobj.fork)
+        sobj.fork(@tgrp)
         self
       end
 
@@ -100,8 +100,7 @@ module CIAX
         cfg[:app_list]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         ent=Command.new(cfg).add_ext.set_cmd(ARGV)
-        seq=Seq.new(ent).ext_shell
-        seq.fork
+        seq=Seq.new(ent).ext_shell.fork
         SvList.new('ciax').add(seq).shell(seq.id)
       rescue InvalidCMD
         $opt.usage('[cmd] (par)')

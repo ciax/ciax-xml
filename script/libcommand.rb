@@ -169,7 +169,8 @@ module CIAX
     end
 
     private
-    # Parameter structure [{:type,:list,:default}, ...]
+    # Parameter for validate(cfg[:paremeters]) structure:  [{:type,:list,:default}, ...]
+    # Returns converted parameter array
     def validate(pary)
       pary=type?(pary.dup,Array)
       return [] unless @cfg[:parameters]

@@ -19,7 +19,7 @@ module CIAX
         @data.keys[num-1]
       end
 
-      def shell(sid)
+      def shell(sid=nil)
         @sid=sid||@sid
         begin
           @data[@sid].shell
@@ -52,8 +52,8 @@ module CIAX
       end
 
       def add(sobj)
-        sid=type?(sobj,Seq).id
-        @data[sid]=sobj
+        @sid=type?(sobj,Seq).id
+        @data[@sid]=sobj
         sobj.post_stat_procs << proc{upd}
         sobj.post_exe_procs << proc{|s|
           clean(s.id)
@@ -101,7 +101,7 @@ module CIAX
         cfg[:db]=Db.new.set('ciax')
         ent=Command.new(cfg).add_ext.set_cmd(ARGV)
         seq=Seq.new(ent).ext_shell.fork
-        SvList.new('ciax').add(seq).shell(seq.id)
+        SvList.new('ciax').add(seq).shell
       rescue InvalidCMD
         $opt.usage('[cmd] (par)')
       end

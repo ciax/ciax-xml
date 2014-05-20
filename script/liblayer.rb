@@ -7,11 +7,10 @@ module CIAX
   module Layer
     # Layer List
     class List < Hashx
-      def initialize(upper=Config.new)
-        @cfg=Config.new(upper)
+      def initialize(upper=nil)
+        @cfg=Config.new('layer',upper)
         @ljgrp=JumpGrp.new(@cfg)
-        @cfg[:level]='layer'
-        @cfg[:ldb]=Site::Db.new
+        @cfg[:ldb]||=Site::Db.new
       end
 
       def add_layer(layer)
@@ -39,7 +38,7 @@ module CIAX
     end
 
     class JumpGrp < Group
-      def initialize(upper=Config.new,crnt={})
+      def initialize(upper=nil,crnt={})
         super
         @cfg['caption']='Switch Layer'
         @cfg['color']=5

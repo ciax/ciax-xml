@@ -64,7 +64,7 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new
       begin
-        cfg=Config.new
+        cfg=Config.new('mcr_cmd')
         cfg[:db]=Db.new.set('ciax')
         mobj=Command.new(cfg)
         mobj.add_ext

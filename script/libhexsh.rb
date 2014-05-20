@@ -38,7 +38,7 @@ module CIAX
     end
 
     class List < Site::List
-      def initialize(upper=Config.new)
+      def initialize(upper=nil)
         super
         @cfg[:level]='hex'
         @cfg[:app_list]||=App::List.new

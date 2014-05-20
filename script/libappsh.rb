@@ -207,8 +207,9 @@ module CIAX
     end
 
     class List < Site::List
-      def initialize(upper=Config.new)
+      def initialize(upper=nil)
         super
+        @cfg[:ldb]||=Site::Db.new
         @cfg[:frm_list]||=Frm::List.new
         @cfg[:app_list]=self
       end

@@ -26,7 +26,7 @@ module CIAX
         @cfg=type?(type?(ment,Entity).cfg)
         type?(@cfg[:app_list],App::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
-        super('macro',@record['sid'],Command.new(Config.new))
+        super('macro',@record['sid'],Command.new)
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
         @que_res=Queue.new
@@ -196,7 +196,7 @@ module CIAX
     if __FILE__ == $0
       GetOpts.new('lnt')
       begin
-        cfg=Config.new
+        cfg=Config.new('mcr_exe')
         cfg[:app_list]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg)

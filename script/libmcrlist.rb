@@ -96,7 +96,7 @@ module CIAX
       ENV['VER']||='init/'
       GetOpts.new('t')
       begin
-        cfg=Config.new
+        cfg=Config.new('mcr_list')
         cfg[:app_list]=App::List.new
         cfg[:db]=Db.new.set('ciax')
         cobj=Command.new(cfg).add_ext

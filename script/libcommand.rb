@@ -57,9 +57,9 @@ module CIAX
     # optionalfrm (:nocache,:response)
     include AryShare
     attr_reader :svdom,:lodom,:hidgrp
-    def initialize(upper)
-      @cfg=Config.new(upper)
-      @cfg.update(:level =>'command','color'=>2,'column'=>2)
+    def initialize(upper=nil)
+      @cfg=Config.new('command',upper)
+      @cfg.update('color'=>2,'column'=>2)
       @cfg[:def_proc]||=proc{''}
       # Server Commands (service commands on Server)
       push @svdom=Domain.new(@cfg,{:domain_id => 'remote'}) # Remote Command Domain
@@ -72,9 +72,8 @@ module CIAX
   class Domain < Arrayx
     include AryShare
     #upper keys: def_proc,group_class,item_class,entity_class
-    def initialize(upper,crnt={})
-      @cfg=Config.new(upper).update(crnt)
-      @cfg[:level]='domain'
+    def initialize(upper,attr={})
+      @cfg=Config.new('domain',upper).update(attr)
       @ver_color=2
     end
 
@@ -84,8 +83,8 @@ module CIAX
       group
     end
 
-    def add_group(crnt={})
-      unshift (crnt[:group_class]||Group).new(@cfg,crnt)
+    def add_group(attr={})
+      unshift (attr[:group_class]||Group).new(@cfg,attr)
       first
     end
   end
@@ -94,9 +93,8 @@ module CIAX
     include HshShare
     attr_reader :valid_keys,:cfg
     #upper keys: caption,color,column
-    def initialize(upper=Config.new,crnt={})
-      @cfg=Config.new(upper).update(crnt)
-      @cfg[:level]='group'
+    def initialize(upper,attr)
+      @cfg=Config.new('group',upper).update(attr)
       @cfg[:item_class]||=Item
       @valid_keys=@cfg[:valid_keys]||[]
       @cmdary=[CmdList.new(@cfg,@valid_keys)]
@@ -151,9 +149,8 @@ module CIAX
     include Math
     attr_reader :cfg
     #cfg should have :id,:label,:parameters,:def_proc
-    def initialize(upper,crnt={})
-      @cfg=Config.new(upper).update(crnt)
-      @cfg[:level]='item'
+    def initialize(upper,attr={})
+      @cfg=Config.new('item',upper).update(attr)
       @cfg[:entity_class]||=Entity
       @ver_color=5
     end
@@ -221,9 +218,8 @@ module CIAX
   class Entity < Hashx
     attr_reader :id,:par,:cfg
     #set should have :def_proc
-    def initialize(upper,crnt={})
-      @cfg=Config.new(upper).update(crnt)
-      @cfg[:level]='entity'
+    def initialize(upper,attr={})
+      @cfg=Config.new('entity',upper).update(attr)
       @par=@cfg[:par]
       @id=[@cfg[:id],*@par].join(':')
       @cfg[:cid]=@id

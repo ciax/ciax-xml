@@ -25,8 +25,8 @@ module CIAX
 
     class IntGrp < Group
       def initialize(upper,crnt={})
-        crnt[:group_id]='internal'
         super
+        @cfg[:group_id]='internal'
         @cfg['caption']='Internal Commands'
         any={:type =>'reg',:list => ["."]}
         add_item('save',"[key,key...] [tag]",{:parameters =>[any,any]})
@@ -106,7 +106,7 @@ module CIAX
       id,*args=ARGV
       ARGV.clear
       begin
-        cfg=Config.new
+        cfg=Config.new('frm_top')
         db=cfg[:db]=Db.new.set(id)
         fld=cfg[:field]=Field.new.skeleton(db)
         cobj=Command.new(cfg)

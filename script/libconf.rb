@@ -48,8 +48,18 @@ module CIAX
       }
     end
 
-    def to_s
-      to_hash.path
+    def inspect
+      @generation.map{|h|
+        '{'+h.map{|k,v|
+          case v
+          when String,Numeric
+            val=v.inspect
+          else
+            val=v.class
+          end
+          k.inspect.to_s+'=>'+val.to_s
+        }.join(', ')+'}'
+      }.join("\n")
     end
   end
 end

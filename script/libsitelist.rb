@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libcommand"
-require "libsitedb"
 
 module CIAX
   module Site
@@ -10,7 +9,6 @@ module CIAX
       attr_reader :init_procs
       # shdom: Domain for Shared Command Groups
       def initialize(upper=Config.new)
-        upper[:ldb]||=Db.new
         @cfg=Config.new(upper)
         # initialize exe (mostly add new menu) at new key generated
         @init_procs=[proc{|exe| exe.cobj.lodom.add_group(:group_class =>JumpGrp)}]

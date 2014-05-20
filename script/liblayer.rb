@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require "libmsg"
 require "libcommand"
+require "libsitedb"
 
 module CIAX
   module Layer
@@ -9,6 +10,7 @@ module CIAX
       def initialize(upper=Config.new)
         @cfg=Config.new(upper)
         @ljgrp=JumpGrp.new(@cfg)
+        @cfg[:ldb]=Site::Db.new
       end
 
       def add_layer(layer)

@@ -39,9 +39,10 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=Config.new)
-        upper[:app_list]||=App::List.new
-        upper[:hex_list]=self
         super
+        @cfg[:level]='hex'
+        @cfg[:app_list]||=App::List.new
+        @cfg[:hex_list]=self
       end
 
       def new_val(id)

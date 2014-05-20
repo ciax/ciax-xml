@@ -91,8 +91,8 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=Config.new)
-        upper[:frm_list]=self
         super
+        @cfg[:frm_list]=self
       end
 
       def new_val(id)

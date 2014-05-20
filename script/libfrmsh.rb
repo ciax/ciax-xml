@@ -93,7 +93,6 @@ module CIAX
       def initialize(upper=nil)
         super
         @cfg[:ldb]||=Site::Db.new
-        @cfg[:frm_list]=self
       end
 
       def new_val(id)

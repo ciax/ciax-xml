@@ -211,7 +211,6 @@ module CIAX
         super
         @cfg[:ldb]||=Site::Db.new
         @cfg[:frm_list]||=Frm::List.new
-        @cfg[:app_list]=self
       end
 
       def new_val(id)

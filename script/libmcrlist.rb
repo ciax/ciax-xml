@@ -15,7 +15,8 @@ module CIAX
         @data[sid]
       end
 
-      def sid_to_num(num) #convert the order number(Integer) to sid
+      #convert the order number(Integer) to sid
+      def sid_to_num(num)
         @data.keys[num-1]
       end
 
@@ -53,7 +54,7 @@ module CIAX
       end
 
       def add(ent)
-        sobj=Seq.new(type?(ent,Entity)).ext_shell
+        sobj=Seq.new(type?(ent,Entity))
         @sid=sobj.id
         @data[@sid]=sobj
         sobj.post_stat_procs << proc{upd}
@@ -104,6 +105,7 @@ module CIAX
           ent=cobj.set_cmd(cid.split(':'))
           list.add(ent)
         }
+        list.data.values.each{|mobj| mobj.shell}
         list.shell||cobj.set_cmd([])
       rescue InvalidCMD
         $opt.usage('[cmd(:par)] ...')

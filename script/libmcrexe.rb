@@ -61,6 +61,7 @@ module CIAX
       def fork(tg=nil)
         th=Threadx.new("Macro Thread(#@id)",12){macro}
         tg.add(th) if tg.is_a?(ThreadGroup)
+        ext_shell
         self
       end
 

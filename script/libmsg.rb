@@ -240,6 +240,11 @@ module CIAX
     end
 
     # Exception methods
+    def id_err(*msg) # Raise User error (Invalid User input)
+      msg[0]=color(msg[0],1)
+      raise InvalidID,msg.join("\n  "),caller(1)
+    end
+
     def cmd_err(*msg) # Raise User error (Invalid User input)
       msg[0]=color(msg[0],1)
       raise InvalidCMD,msg.join("\n  "),caller(1)

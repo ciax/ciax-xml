@@ -32,7 +32,7 @@ module CIAX
       end
 
       def set(id)
-        raise(InvalidID,@list.to_s) unless @tree[@group].key?(id)
+        raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless @tree[@group].key?(id)
         @top=@tree[@group][id]
         update(@top.to_h)
         @top.each{|e1|

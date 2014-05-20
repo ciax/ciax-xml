@@ -11,8 +11,8 @@ module CIAX
         # Server Status
         @hint=type?(hint,Hash)
         @stat=type?(stat,App::Status)
-        id=stat['id'] || raise(InvalidID,"NO ID in Stat")
-        file=View.sdb(id) || raise(InvalidID,"Hex/Can't found sdb_#{id}.txt")
+        id=stat['id'] || id_err("NO ID(#{id}) in Stat")
+        file=View.sdb(id) || id_err("Hex/Can't found sdb_#{id}.txt")
         @res=["%",id,'_','0','0','_','']
         @list=[]
         open(file){|f|

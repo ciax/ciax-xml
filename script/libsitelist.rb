@@ -10,6 +10,7 @@ module CIAX
       # shdom: Domain for Shared Command Groups
       def initialize(upper=Config.new)
         @cfg=Config.new(upper)
+        @cfg[:level]='site'
         # initialize exe (mostly add new menu) at new key generated
         @init_procs=[proc{|exe| exe.cobj.lodom.add_group(:group_class =>JumpGrp)}]
         $opt||=GetOpts.new

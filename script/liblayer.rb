@@ -10,6 +10,7 @@ module CIAX
       def initialize(upper=Config.new)
         @cfg=Config.new(upper)
         @ljgrp=JumpGrp.new(@cfg)
+        @cfg[:level]='layer'
         @cfg[:ldb]=Site::Db.new
       end
 

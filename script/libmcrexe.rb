@@ -26,7 +26,7 @@ module CIAX
         @cfg=type?(type?(ment,Entity).cfg)
         type?(@cfg[:app_list],App::List)
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
-        super('macro',@record['sid'],Command.new(@cfg))
+        super('macro',@record['sid'],Command.new(Config.new))
         @post_stat_procs=[] # execute on stat changes
         @que_cmd=Queue.new
         @que_res=Queue.new

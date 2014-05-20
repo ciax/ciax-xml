@@ -228,7 +228,7 @@ module CIAX
       @id=[@cfg[:id],*@par].join(':')
       @cfg[:cid]=@id
       @ver_color=5
-      verbose(self.class,"Config #{@cfg}")
+      verbose(self.class,"Config #{@cfg.inspect}")
     end
 
     def exe

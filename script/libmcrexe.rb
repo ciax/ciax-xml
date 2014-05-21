@@ -20,7 +20,7 @@ module CIAX
     # Sequencer
     class Seq < Exe
       #reqired cfg keys: app,db,body,stat
-      attr_reader :record,:que_cmd,:que_res,:post_stat_procs
+      attr_reader :record,:que_cmd,:que_res,:post_stat_procs,:post_mcr_procs
       #cfg[:submcr_proc] for executing asynchronous submacro
       def initialize(ment)
         @cfg=type?(type?(ment,Entity).cfg)
@@ -28,6 +28,7 @@ module CIAX
         @record=Record.new(type?(@cfg[:db],Db)).start(@cfg)
         super('macro',@record['sid'],Command.new)
         @post_stat_procs=[] # execute on stat changes
+        @post_mcr_procs=[]
         @que_cmd=Queue.new
         @que_res=Queue.new
         update({'cid'=>@cfg[:cid],'step'=>0,'total_steps'=>@cfg[:body].size,'stat'=>'run','option'=>[]})
@@ -107,8 +108,6 @@ module CIAX
         } if $opt['m']
         finish('interrupted')
         self
-      ensure
-        @post_exe_procs.each{|p| p.call(self)}
       end
 
       private
@@ -118,6 +117,8 @@ module CIAX
         @record.finish(str)
         self['option'].clear
         set_stat str
+        @post_mcr_procs.each{|p| p.call(self)}
+        self
       end
 
       # Interactive section

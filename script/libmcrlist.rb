@@ -64,7 +64,7 @@ module CIAX
         @mjgrp.add_item(@sid,ent.id)
         ssh.cobj.lodom.join_group(@mjgrp)
         ssh.post_stat_procs << proc{upd}
-        ssh.post_exe_procs << proc{|s| clean(s.id)}
+        ssh.post_mcr_procs << proc{|s| clean(s.id)}
         ssh.fork(@tgrp)
         self
       end

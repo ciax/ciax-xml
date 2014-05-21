@@ -11,22 +11,22 @@ module CIAX
       end
 
       def set(id=nil)
-        super
-        appid=delete('app_id')
-        insid=delete('ins_id')||self['id']
-        cover(App::Db.new.set(appid),:adb).ext_ins(insid)
-        app=self[:adb].update({'ins_id'=>insid,'site_id'=>id})
-        frm=self[:fdb]||{}
+        ldb=super
+        appid=ldb.delete('app_id')
+        insid=ldb.delete('ins_id')||ldb['id']
+        ldb.cover(App::Db.new.set(appid),:adb).ext_ins(insid)
+        app=ldb[:adb].update({'ins_id'=>insid,'site_id'=>id})
+        frm=ldb[:fdb]||{}
         if ref=frm.delete('ref')
-          frm=cover(Db.new.set(ref)[:fdb],:fdb)
+          frm=ldb.cover(Db.new.set(ref)[:fdb],:fdb)
         else
-          frm=cover(Frm::Db.new.set(app.delete('frm_id')),:fdb)
+          frm=ldb.cover(Frm::Db.new.set(app.delete('frm_id')),:fdb)
           frm['site_id']||=id
         end
         frm['host']||=(app['host']||='localhost')
         frm['port']||=app['port'].to_i-1000
         app['id']=app.delete('app_id')
-        self
+        ldb
       end
 
       private

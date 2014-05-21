@@ -9,11 +9,6 @@ module CIAX
         super('idb',ENV['PROJ'])
       end
 
-      def set(id=nil)
-        self['id']=id
-        super
-      end
-
       # overwrite App::Db
       def cover_app
         cover(App::Db.new.set(self['app_id']))

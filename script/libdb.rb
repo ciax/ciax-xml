@@ -16,7 +16,16 @@ module CIAX
 
     def set(id)
       raise(InvalidID,"No such ID(#{id})\n"+@list.to_s) unless id
-      update(cache(id,@group){|doc| doc_to_db doc.set(id) }).deep_copy
+      deep_copy.update(cache(id,@group){|doc| doc_to_db doc.set(id) })
+    end
+
+    def cover(db,key=nil,depth=nil)
+      type?(db,Db)
+      if key
+        self[key]=db.deep_copy.deep_update(self[key]||{},depth)
+      else
+        db.deep_copy.deep_update(self,depth)
+      end
     end
 
     private
@@ -43,16 +52,6 @@ module CIAX
       end
       res
     end
-
-    def cover(db,key=nil,depth=nil)
-      type?(db,Db)
-      if key
-        self[key]=db.deep_copy.deep_update(self[key]||{},depth)
-      else
-        db.deep_copy.deep_update(self,depth)
-      end
-    end
-
 
     def newest?
       if ENV['NOCACHE']

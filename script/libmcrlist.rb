@@ -51,15 +51,21 @@ module CIAX
       def initialize(proj,ver=0)
         super
         @tgrp=ThreadGroup.new
+        @cfg=Config.new('mcr_list')
+        @cfg[:valid_keys]=@valid_keys=[]
+        @mjgrp=JumpGrp.new(@cfg)
+        @post_upd_procs << proc{ @valid_keys.replace(@data.keys)}
       end
 
       def add(ent)
-        sobj=Seq.new(type?(ent,Entity))
-        @sid=sobj.id
-        @data[@sid]=sobj
-        sobj.post_stat_procs << proc{upd}
-        sobj.post_exe_procs << proc{|s| clean(s.id)}
-        sobj.fork(@tgrp)
+        ssh=Seq.new(type?(ent,Entity))
+        @sid=ssh.id
+        @data[@sid]=ssh
+        @mjgrp.add_item(@sid,ent.id)
+        ssh.cobj.lodom.join_group(@mjgrp)
+        ssh.post_stat_procs << proc{upd}
+        ssh.post_exe_procs << proc{|s| clean(s.id)}
+        ssh.fork(@tgrp)
         self
       end
 
@@ -87,7 +93,6 @@ module CIAX
         @cfg['caption']='Switch Macros'
         @cfg['color']=5
         @cfg['column']=2
-        update_items(@cfg[:ldb].list)
         set_proc{|ent| raise(SiteJump,ent.id)}
       end
     end

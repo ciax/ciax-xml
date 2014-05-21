@@ -45,7 +45,7 @@ module CIAX
         cmd,*par=super
         if @cobj.intgrp.key?(cmd)
           @current=par[0].to_i unless par.empty?
-          par=[@list.sid_to_num(@current)]
+          par=[@list.num_to_sid(@current)]
         end
         [cmd]+par
       end

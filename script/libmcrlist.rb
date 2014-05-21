@@ -16,7 +16,7 @@ module CIAX
       end
 
       #convert the order number(Integer) to sid
-      def sid_to_num(num)
+      def num_to_sid(num)
         @data.keys[num-1]
       end
 

@@ -11,18 +11,20 @@ module CIAX
       # shdom: Domain for Shared Command Groups
       def initialize(upper=nil)
         @cfg=Config.new('site',upper)
+        @cfg[:site]||=''
         # initialize exe (mostly add new menu) at new key generated
         @init_procs=[proc{|exe| exe.cobj.lodom.add_group(:group_class =>JumpGrp)}]
         $opt||=GetOpts.new
       end
 
       def [](site)
-        @site=site
         if key?(site)
+          @cfg[:site].replace(site)
           super
         else
           val=self[site]=new_val(site)
           @init_procs.each{|p| p.call(val)}
+          @cfg[:site].replace(site)
           val
         end
       end
@@ -38,11 +40,10 @@ module CIAX
       end
 
       def shell(site=nil)
-        @site=site if site
         begin
-          self[@site].shell
+          self[site].shell
         rescue SiteJump
-          @site=$!.to_s
+          site=$!.to_s
           retry
         end
       rescue InvalidID

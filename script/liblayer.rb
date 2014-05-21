@@ -9,8 +9,10 @@ module CIAX
     class List < Hashx
       def initialize(upper=nil)
         @cfg=Config.new('layer',upper)
-        @ljgrp=JumpGrp.new(@cfg)
+        @cfg[:site]||=''
         @cfg[:ldb]||=Site::Db.new
+        @ljgrp=JumpGrp.new(@cfg)
+        @ver_color=4
       end
 
       def add_layer(layer)
@@ -44,7 +46,8 @@ module CIAX
         @cfg['color']=5
         @cfg['column']=5
         set_proc{|ent|
-          site=ent.cfg[:ldb]['id']
+          site=ent.cfg[:site]
+          verbose('Layer',"Jump to #{ent.id}:#{site}")
           raise(LayerJump,"#{ent.id}:#{site}")
         }
       end

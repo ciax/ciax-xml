@@ -155,10 +155,10 @@
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="Stat" column="3">
-        <binary id="rdy" label="Comm Ready" symbol="off-warn">
+        <binary id="rdy" label="Comm Ready" symbol="off_warn">
           <normal bit="0" ref="stat" />
         </binary>
-        <binary id="srq" label="SRQ" symbol="off-warn">
+        <binary id="srq" label="SRQ" symbol="off_warn">
           <normal bit="1" ref="stat" />
         </binary>
         <binary id="pme" label="Program Error" symbol="alarm">
@@ -175,10 +175,10 @@
         </binary>
       </group>
       <group caption="Mode" id="g2" column="2">
-        <binary id="trm" label="Terminal Mode" symbol="off-warn">
+        <binary id="trm" label="Terminal Mode" symbol="off_warn">
           <normal bit="2" ref="stat" />
         </binary>
-        <binary id="cmd" label="Computer Mode" symbol="off-warn">
+        <binary id="cmd" label="Computer Mode" symbol="off_warn">
           <normal bit="7" ref="stat" />
         </binary>
       </group>

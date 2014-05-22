@@ -127,7 +127,7 @@
         </binary>
       </group>
       <group id="g3" caption="Position" column="4">
-        <binary id="stw" label="EL STOW" symbol="off-warn">
+        <binary id="stw" label="EL STOW" symbol="off_warn">
           <normal bit="2" ref="stow_1" />
         </binary>
         <float id="elv" label="EL" format="%.3f">

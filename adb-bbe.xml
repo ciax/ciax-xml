@@ -119,10 +119,10 @@
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <repeat_grp from="0" to="3">
         <group id="g$_" column="4">
-          <binary id="xsw$_" label="SWITCH" symbol="off-warn">
+          <binary id="xsw$_" label="SWITCH" symbol="off_warn">
             <normal bit="$_*4" ref="stat" />
           </binary>
-          <binary id="xdr$_" label="DRIVE" symbol="off-warn">
+          <binary id="xdr$_" label="DRIVE" symbol="off_warn">
             <normal bit="$_*4+1" ref="stat" />
           </binary>
           <binary id="xtm$_" label="TEMP ALM" symbol="alarm">

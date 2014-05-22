@@ -274,7 +274,7 @@
         <binary id="pse" label="PAUSE" symbol="warn">
           <normal ref="w" index="0" bit="1" />
         </binary>
-        <binary id="rdy" label="READY" symbol="off-warn">
+        <binary id="rdy" label="READY" symbol="off_warn">
           <normal ref="w" index="0" bit="3" />
         </binary>
         <integer id="err" label="ERROR CODE" symbol="err">
@@ -339,7 +339,7 @@
         </binary>
       </group>
       <group id="gp" caption="Power Status" column="3">
-        <binary id="fpw" label="Fix Inst Power" symbol="off-warn">
+        <binary id="fpw" label="Fix Inst Power" symbol="off_warn">
           <normal ref="w" index="9" bit="8" />
         </binary>
         <binary id="fph" label="PW Phase" symbol="rst">
@@ -350,7 +350,7 @@
         <binary id="fcc" label="CCD Power" symbol="action">
           <normal ref="w" index="9" bit="10" />
         </binary>
-        <binary id="mpw" label="Mov Inst Power" symbol="off-warn">
+        <binary id="mpw" label="Mov Inst Power" symbol="off_warn">
           <normal ref="w" index="9" bit="9" />
         </binary>
         <binary id="mph" label="PW Phase" symbol="rst">

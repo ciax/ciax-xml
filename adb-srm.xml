@@ -76,7 +76,7 @@
         <string id="iid" label="CAS INST ID" symbol="iid_ac">
           <field ref="c1d2" />
         </string>
-        <binary id="ipw" label="CAS IPW" symbol="off-warn">
+        <binary id="ipw" label="CAS IPW" symbol="off_warn">
           <normal bit="0" ref="c1d1" />
         </binary>
         <binary id="stp" label="STOW PIN" symbol="warn">

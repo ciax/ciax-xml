@@ -20,6 +20,10 @@ module CIAX
         @data.keys[num-1]
       end
 
+      def sid_to_num(sid)
+        @data.keys.index(sid)
+      end
+
       def shell(sid=nil)
         @sid=sid||@sid||return
         begin

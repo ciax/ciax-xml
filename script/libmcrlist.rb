@@ -114,7 +114,6 @@ module CIAX
           ent=cobj.set_cmd(cid.split(':'))
           list.add(ent)
         }
-#        list.data.values.each{|mobj| mobj.shell}
         list.shell||cobj.set_cmd([])
       rescue InvalidCMD
         $opt.usage('[cmd(:par)] ...')

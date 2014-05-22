@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+require "libcmdlist"
 require "libenumx"
 require "libxmlgn"
 

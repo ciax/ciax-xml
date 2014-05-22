@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'libenumx'
 require 'libconf'
+require 'libcmdlist'
 require 'librerange'
 require 'liblogging'
 

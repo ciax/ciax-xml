@@ -5,6 +5,7 @@ require "libdb"
 module CIAX
   # @data is hidden from access by '[]'.
   # @data is conveted to json file where @data will be appeared as self['data'].
+  # @data never contains object which can't save with JSON
   class Datax < Hashx
     attr_reader :data,:pre_upd_procs,:post_upd_procs
     def initialize(type,init_struct={},dataname='data')

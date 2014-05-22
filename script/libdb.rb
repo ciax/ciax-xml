@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libmsg"
+require "libgetopts"
 require "libenumx"
 require "libxmldoc"
 

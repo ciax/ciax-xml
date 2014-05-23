@@ -176,41 +176,41 @@ module CIAX
         list=par[:list]||[]
         disp=list.join(',')
         unless str=pary.shift
-          if par.key?(:default)
-            next par[:default]
+          next par[:default] if par.key?(:default)
+          mary=[]
+          mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
+          mary << Msg.item(@cfg[:id],@cfg[:label])
+          mary << " "*10+"key=(#{disp})"
+          Msg.par_err(*mary)
+        end
+        if list.empty?
+          next par[:default] if par.key?(:default)
+        else
+          case par[:type]
+          when 'num'
+            begin
+              num=eval(str)
+            rescue Exception
+              Msg.par_err("Parameter is not number")
+            end
+            verbose("CmdItem","Validate: [#{num}] Match? [#{disp}]")
+            unless list.any?{|r| ReRange.new(r) == num }
+              Msg.par_err("Out of range (#{num}) for [#{disp}]")
+            end
+            next num.to_s
+          when 'reg'
+            verbose("CmdItem","Validate: [#{str}] Match? [#{disp}]")
+            unless list.any?{|r| /#{r}/ === str}
+              Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
+            end
           else
-            mary=[]
-            mary << "Parameter shortage (#{pary.size}/#{@cfg[:parameters].size})"
-            mary << Msg.item(@cfg[:id],@cfg[:label])
-            mary << " "*10+"key=(#{disp})"
-            Msg.par_err(*mary)
+            verbose("CmdItem","Validate: [#{str}] Match? [#{disp}]")
+            unless list.include?(str)
+              Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
+            end
           end
         end
-        case par[:type]
-        when 'num'
-          begin
-            num=eval(str)
-          rescue Exception
-            Msg.par_err("Parameter is not number")
-          end
-          verbose("CmdItem","Validate: [#{num}] Match? [#{disp}]")
-          unless list.empty? || list.any?{|r| ReRange.new(r) == num }
-            Msg.par_err("Out of range (#{num}) for [#{disp}]")
-          end
-          num.to_s
-        when 'str'
-          verbose("CmdItem","Validate: [#{str}] Match? [#{disp}]")
-          unless list.empty? || list.include?(str)
-            Msg.par_err("Parameter Invalid Str (#{str}) for [#{disp}]")
-          end
-          str
-        when 'reg'
-          verbose("CmdItem","Validate: [#{str}] Match? [#{disp}]")
-          unless list.empty? || list.any?{|r| /#{r}/ === str}
-            Msg.par_err("Parameter Invalid Reg (#{str}) for [#{disp}]")
-          end
-          str
-        end
+        str
       }
     end
   end

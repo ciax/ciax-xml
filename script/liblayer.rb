@@ -1,18 +1,19 @@
 #!/usr/bin/ruby
-require "libmsg"
+require "liblist"
 require "libcommand"
 require "libsitedb"
 
 module CIAX
   module Layer
+    include JumpList
     # Layer List
-    class List < Hashx
+    class List < List
       def initialize(upper=nil)
-        @cfg=Config.new('layer',upper)
+        super(Layer,upper)
         @cfg[:site]||=''
         @cfg[:ldb]||=Site::Db.new
-        @ljgrp=JumpGrp.new(@cfg)
         @ver_color=4
+        @pars={:parameters => [{:default => @cfg[:site]}]}
       end
 
       def add_layer(layer)
@@ -21,36 +22,11 @@ module CIAX
         id=str.downcase
         key="#{id}_list".to_sym
         lst=(@cfg[key]||=layer::List.new(@cfg))
-        @ljgrp.add_item(id,str+" mode")
-        lst.init_procs << proc{|exe| exe.cobj.lodom.join_group(@ljgrp) }
+        @jumpgrp.add_item(id,str+" mode",@pars)
         self[id]=lst
       end
-
-      def shell(site)
-        layer=keys.last
-        begin
-          self[layer].shell(site)
-        rescue LayerJump
-          layer,site=$!.to_s.split(':')
-          retry
-        end
-      rescue InvalidID
-        $opt.usage('(opt) [id]')
-      end
     end
 
-    class JumpGrp < Group
-      def initialize(upper=nil,crnt={})
-        super
-        @cfg['caption']='Switch Layer'
-        @cfg['color']=5
-        @cfg['column']=5
-        set_proc{|ent|
-          site=ent.cfg[:site]
-          verbose('Layer',"Jump to #{ent.id}:#{site}")
-          raise(LayerJump,"#{ent.id}:#{site}")
-        }
-      end
-    end
+    class Jump < LongJump; end
   end
 end

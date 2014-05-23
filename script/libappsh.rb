@@ -208,14 +208,13 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=nil)
-        super
-        @cfg[:ldb]||=Site::Db.new
-        @cfg[:frm_list]||=Frm::List.new
+        super(App,upper)
+        @cfg[:frm_list]||=Frm::List.new(@cfg)
       end
 
-      def new_val(id)
+      def add(id)
         @cfg[:db]=@cfg[:ldb].set(id)[:adb]
-        App.new(@cfg)
+        jumpgrp(App.new(@cfg))
       end
     end
 

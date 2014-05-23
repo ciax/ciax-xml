@@ -15,5 +15,5 @@ module CIAX
       lay.add_layer(Hex)
     end
   end
-  lay.shell(ARGV.shift)
+  lay.shell(lay.keys.last,ARGV.shift)
 end

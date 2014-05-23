@@ -32,7 +32,7 @@ module CIAX
     # invoked many times.
     # '^D' gives exit break.
     # mode gives special break (loop returns mode).
-    def shell
+    def shell(dmy=nil)
       verbose(self.class,"Init/Shell(#@id)",2)
       Readline.completion_proc=proc{|word|
         (@cobj.valid_keys+@cobj.valid_pars).grep(/^#{word}/)

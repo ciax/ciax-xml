@@ -1,20 +1,19 @@
 #!/usr/bin/ruby
-require "libmsg"
+require "liblist"
 require "libcommand"
 require "libsitedb"
 
 module CIAX
   module Site
+    include JumpList
     # Site List
-    class List < Hashx
-      attr_reader :init_procs
+    class List < List
       # shdom: Domain for Shared Command Groups
-      def initialize(upper=nil)
-        @cfg=Config.new('site',upper)
+      def initialize(layer,upper=nil)
+        super(Site,upper)
+        @cfg[:ldb]||=Db.new
+        @jumpgrp.update_items(@cfg[:ldb].list)
         @cfg[:site]||=''
-        # initialize exe (mostly add new menu) at new key generated
-        @init_procs=[proc{|exe| exe.cobj.lodom.add_group(:group_class =>JumpGrp)}]
-        $opt||=GetOpts.new
       end
 
       def [](site)
@@ -22,10 +21,9 @@ module CIAX
           @cfg[:site].replace(site)
           super
         else
-          val=self[site]=new_val(site)
-          @init_procs.each{|p| p.call(val)}
+          exe=self[site]=add(site)
           @cfg[:site].replace(site)
-          val
+          exe
         end
       end
 
@@ -38,33 +36,8 @@ module CIAX
       rescue InvalidID
         $opt.usage('(opt) [id] ....')
       end
-
-      def shell(site=nil)
-        begin
-          self[site].shell
-        rescue SiteJump
-          site=$!.to_s
-          retry
-        end
-      rescue InvalidID
-        $opt.usage('(opt) [id]')
-      end
-
-      private
-      # For generate Exe (allows nil)
-      def new_val(site)
-      end
     end
 
-    class JumpGrp < Group
-      def initialize(upper,crnt={})
-        super
-        @cfg['caption']='Switch Sites'
-        @cfg['color']=5
-        @cfg['column']=2
-        update_items(@cfg[:ldb].list)
-        set_proc{|ent| raise(SiteJump,ent.id)}
-      end
-    end
+    class Jump < LongJump; end
   end
 end

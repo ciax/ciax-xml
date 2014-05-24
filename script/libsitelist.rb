@@ -9,7 +9,7 @@ module CIAX
     # Site List
     class List < List
       # shdom: Domain for Shared Command Groups
-      def initialize(layer,upper=nil)
+      def initialize(upper=nil)
         super(Site,upper)
         @cfg[:ldb]||=Db.new
         @jumpgrp.update_items(@cfg[:ldb].list)

@@ -91,7 +91,7 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=nil)
-        super(Frm,upper)
+        super(upper)
       end
 
       def add(id)

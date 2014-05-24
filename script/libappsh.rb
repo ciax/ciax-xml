@@ -208,7 +208,7 @@ module CIAX
 
     class List < Site::List
       def initialize(upper=nil)
-        super(App,upper)
+        super(upper)
         @cfg[:frm_list]||=Frm::List.new(@cfg)
       end
 

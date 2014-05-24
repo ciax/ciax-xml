@@ -17,9 +17,9 @@ module CIAX
         $opt||=GetOpts.new
       end
 
-      def shell(key,par=nil)
+      def shell(key=nil,par=nil)
         begin
-          self[key].shell(par)
+          (self[key]||self[keys.last]).shell(par)
         rescue @level::Jump
           key,par=$!.to_s.split(':')
           retry

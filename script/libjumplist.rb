@@ -7,7 +7,7 @@ module CIAX
       def initialize(level,upper=nil)
         @level=type?(level,Module)
         name=level.to_s.split(':').last
-        @cfg=Config.new(level.to_s,upper)
+        @cfg=Config.new("#{name.downcase}_list",upper)
         attr={'caption'=>"Switch #{name}s",'color'=>5,'column'=>2}
         @jumpgrp=Group.new(@cfg,attr).set_proc{|ent|
           raise(@level::Jump,ent.id)

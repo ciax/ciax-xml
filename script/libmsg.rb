@@ -120,6 +120,10 @@ module CIAX
       $stderr.print p
     end
 
+    def optlist(list)
+      list.empty? ? '' :  color("[#{list.join('/')}]?",5)
+    end
+
     def msg(msg='message',ind=0) # Display only
       Kernel.warn color(msg,2,ind)
     end

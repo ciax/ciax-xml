@@ -35,17 +35,12 @@ module CIAX
         @running=[]
       end
 
-      def optlist
-        o=self['option']
-        o.empty? ? '' :  color("[#{o.join('/')}]",5)
-      end
-
       def ext_shell
         @cobj.add_int
         @cobj.intgrp.set_proc{|ent| reply(ent.id)}
         self['option']=@cobj.intgrp.valid_keys.clear
         super(@record){
-          "(#{self['stat']})"+optlist
+          "(#{self['stat']})"+optlist(self['option'])
         }
       end
 
@@ -174,7 +169,7 @@ module CIAX
         Readline.completion_proc=proc{|word| cmds.grep(/^#{word}/)} if Msg.fg?
         loop{
           if Msg.fg?
-            prom=@step.body(optlist+'?')
+            prom=@step.body(optlist(self['option']))
             @que_cmd << Readline.readline(prom,true).rstrip
           end
           id=@que_cmd.pop.split(/[ :]/).first

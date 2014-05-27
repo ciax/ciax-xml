@@ -68,13 +68,15 @@ module CIAX
         @mjgrp.add_item(@sid,ent.id)
         ssh.cobj.lodom.join_group(@mjgrp)
         ssh.post_stat_procs << proc{upd}
-        ssh.post_mcr_procs << proc{|s| clean(s.id)}
+        ssh.post_mcr_procs << proc{|s|
+          @data.delete(s.id)
+          clean
+        }
         ssh.fork(@tgrp)
         self
       end
 
-      def clean(sid)
-        @data.delete(sid)
+      def clean
         @data.keys.each{|id|
           @tgrp.list.any?{|t|
             id == t[:sid]

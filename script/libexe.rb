@@ -119,7 +119,7 @@ module CIAX
       verbose("UDP:Client/#{self.class}","Init/Client(#@id):#{host}:#{port}",6)
       @cobj.svdom.set_proc{|ent|
         args=ent.id.split(':')
-        @udp.send(JSON.dump(args),0,@addr)
+        @udp.send(JSON.dump(args),0,@addr) # Address family not supported by protocol -> see above
         verbose("UDP:Client/#{self.class}","Send [#{args}]",6)
         res=@udp.recv(1024)
         verbose("UDP:Client/#{self.class}","Recv #{res}",6)

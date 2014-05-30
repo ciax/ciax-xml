@@ -190,7 +190,7 @@ module CIAX
 
 
     if __FILE__ == $0
-      GetOpts.new('lnt')
+      GetOpts.new('emlnt')
       begin
         cfg=Config.new('mcr_exe')
         cfg[:app_list]=App::List.new

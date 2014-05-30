@@ -44,7 +44,7 @@
         <stat var="jak" site="crt">OFF</stat>
       </wait>
     </item>
-    <!--Jack Command-->
+    <!--FIX Flange Jack Command-->
     <item id="fju0" label="InR0 Jkup at FIX [site]">
       <par_str>dso,dsi</par_str>
       <goal label="Jack DW?">
@@ -98,7 +98,61 @@
         <stat site="$1" var="exe">OFF</stat>
       </wait>
     </item>
-    <!--Jack & Rotate-->
+    <!--MOV Flange Jack Command-->
+    <item id="mju0" label="InR0 Jkup at MOV [site]">
+      <par_str>dso,dsi</par_str>
+      <goal label="Jack DW?">
+        <stat site="$1" var="mjb">DW</stat>
+      </goal>
+      <check label="HOOK?">
+        <stat site="$1" var="mis">ON</stat>
+        <stat site="$1" var="mhk">HOOK</stat>
+      </check>
+      <exec site="$1" name="mjdw"></exec>
+      <wait label="Jacking" retry="40">
+        <stat site="$1" var="exe">OFF</stat>
+      </wait>
+    </item>
+    <item id="mjd0" label="InR0 Jkdw at MOV [site]">
+      <par_str>dso,dsi</par_str>
+      <goal label="Instrument ON?">
+        <stat site="$1" var="mis">ON</stat>
+      </goal>
+      <check label="HOOK?">
+        <stat site="$1" var="mhk">HOOK</stat>
+      </check>
+      <exec site="$1" name="mjup"></exec>
+      <wait label="Jacking" retry="40">
+        <stat site="$1" var="exe">OFF</stat>
+      </wait>
+    </item>
+    <item id="mju4" label="InR4 Jkup at MOV.IR [site]">
+      <par_str>dso,dsi</par_str>
+      <goal label="Jack Up?">
+        <stat site="$1" var="mjb">UP</stat>
+      </goal>
+      <check label="UNHOOK?">
+        <stat site="$1" var="mhk">UNHK</stat>
+      </check>
+      <exec site="$1" name="mjup"></exec>
+      <wait label="Jacking" retry="40">
+        <stat site="$1" var="exe">OFF</stat>
+      </wait>
+    </item>
+    <item id="mjd4" label="InR4 Jkdw at MOV.IR [site]">
+      <par_str>dso,dsi</par_str>
+      <goal label="Jack Dw?">
+        <stat site="$1" var="mjb">DW</stat>
+      </goal>
+      <check label="UNHOOK?">
+        <stat site="$1" var="mhk">UNHK</stat>
+      </check>
+      <exec site="$1" name="mjdw"></exec>
+      <wait label="Jacking" retry="40">
+        <stat site="$1" var="exe">OFF</stat>
+      </wait>
+    </item>
+    <!--FIX Jack & Rotate-->
     <item id="jupd" label="HookUp at FIX.IR [site]">
       <par_str>dso,dsi</par_str>
       <goal label="Instrument ON?">

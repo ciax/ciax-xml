@@ -10,6 +10,9 @@
         <stat var="rdy" site="crt">ON</stat>
       </wait>
       <exec site="crt" name="runf"></exec>
+      <wait retry="5" label="Run start?">
+        <stat var="run" site="crt">ON</stat>
+      </wait>
       <wait retry="40" label="Run end?">
         <stat var="run" site="crt">OFF</stat>
       </wait>
@@ -25,6 +28,9 @@
       <exec site="crt" name="run">
         <argv>$1</argv>
       </exec>
+      <wait retry="5" label="Run start?">
+        <stat var="run" site="crt">ON</stat>
+      </wait>
       <wait retry="120" label="Run end?">
         <stat label="Running" var="run" site="crt">OFF</stat>
       </wait>
@@ -40,6 +46,9 @@
       <exec site="crt" name="lift">
         <argv>$1</argv>
       </exec>
+      <wait label="Jack start?" retry="5">
+        <stat var="jak" site="crt">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat var="jak" site="crt">OFF</stat>
       </wait>
@@ -55,6 +64,9 @@
         <stat site="$1" var="fhk">HOOK</stat>
       </check>
       <exec site="$1" name="fjdw"></exec>
+      <wait label="Jack start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -68,6 +80,9 @@
         <stat site="$1" var="fhk">HOOK</stat>
       </check>
       <exec site="$1" name="fjup"></exec>
+      <wait label="Jack start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -81,6 +96,9 @@
         <stat site="$1" var="fhk">UNHK</stat>
       </check>
       <exec site="$1" name="fjup"></exec>
+      <wait label="Jack start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -94,6 +112,9 @@
         <stat site="$1" var="fhk">UNHK</stat>
       </check>
       <exec site="$1" name="fjdw"></exec>
+      <wait label="Jack start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -109,6 +130,9 @@
         <stat site="$1" var="mhk">HOOK</stat>
       </check>
       <exec site="$1" name="mjdw"></exec>
+      <wait label="Jack start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -122,6 +146,9 @@
         <stat site="$1" var="mhk">HOOK</stat>
       </check>
       <exec site="$1" name="mjup"></exec>
+      <wait label="Jack start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -135,6 +162,9 @@
         <stat site="$1" var="mhk">UNHK</stat>
       </check>
       <exec site="$1" name="mjup"></exec>
+      <wait label="Jack start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -148,6 +178,9 @@
         <stat site="$1" var="mhk">UNHK</stat>
       </check>
       <exec site="$1" name="mjdw"></exec>
+      <wait label="Jack start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Jacking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -163,7 +196,10 @@
         <stat site="crt" var="jlv">H</stat>
       </check>
       <exec site="$1" name="fhook"></exec>
-      <wait label="Jacking" retry="40">
+      <wait label="Hook start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
+      <wait label="Hooking" retry="40">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
       <mcr name="fju0">
@@ -181,10 +217,16 @@
         <stat site="crt" var="cps" inv="true">11</stat>
       </check>
       <exec site="$1" name="rotin"></exec>
+      <wait label="Rotate start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Rotating" retry="20">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
       <exec site="$1" name="trin"></exec>
+      <wait label="Transer start?" retry="5">
+        <stat site="$1" var="exe">ON</stat>
+      </wait>
       <wait label="Moving" retry="60">
         <stat site="$1" var="exe">OFF</stat>
       </wait>
@@ -203,6 +245,9 @@
       <exec site="crt" name="run">
         <argv>$1</argv>
       </exec>
+      <wait retry="5" label="Run start?">
+        <stat var="run" site="crt">ON</stat>
+      </wait>
       <mcr async="true" name="trsi">
         <argv>dsi</argv>
       </mcr>

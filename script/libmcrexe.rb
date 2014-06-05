@@ -199,7 +199,7 @@ module CIAX
         cobj.add_ext
         seq=Seq.new(cobj.set_cmd(ARGV))
         if $opt['l']
-          seq.fork.ext_shell.shell
+          seq.fork.shell
         else
           seq.macro
         end

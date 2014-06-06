@@ -20,7 +20,7 @@ export XMLPATH="$HOME/ciax-xml"
 
 #Alias
 alias chkxml=check-xml
-alias devsim=device-simulator
+alias devsim=devsim-sql
 alias jv=json-view
 alias jlv=json-logview
 alias mkhtm=make-html

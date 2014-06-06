@@ -154,6 +154,7 @@ module CIAX
           sql="select min(time),cmd from #@tbl where time > #@index and base64='#{str}';"
           ans=query(sql)
           tim,cmd=ans.split('|')
+          verbose("DevSim","Matched time is #{tim}")
           raise if tim.empty?
           @index=tim.to_i
         rescue

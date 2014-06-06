@@ -64,9 +64,13 @@ module CIAX
       def initialize(cfg)
         super(cfg)
         @field.ext_rsp.ext_file
-        @mode='SIM' if sim=cfg['iocmd']
+        timeout=5
+        if sim=cfg['iocmd']
+          @mode='SIM'
+          timeout=20
+        end
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
-        @stream=Stream.new(iocmd,@fdb['wait'],5)
+        @stream=Stream.new(iocmd,@fdb['wait'],timeout)
         @sqlsv=@stream.ext_logging(@id,@fdb['version']) unless sim || ENV['NOSQLOG']
         @cobj.ext_proc{|ent|
           @stream.snd(ent.cfg[:frame],ent.id)

@@ -6,6 +6,8 @@ macro: nonstop mode -> bad (13/11/14)
 macro: exec error needed (13/11/14)
 
 *** On-site
+any:interrupt doesn't work during execution(14/6/6)
+crt:cart pos/jack level inconsistency after error(14/6/6)
 crt:cart jack level error in oldmcr(12/1/31)
 dso:jack bolt stack after interrupt(12/8/15)
 dts:joff,roff,rstop/ no responding(12/3/12)

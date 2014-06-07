@@ -10,7 +10,7 @@ done
 shift $(( $OPTIND -1 ))
 id="$1"
 host="${2:-localhost}"
-port=`~/lib/liblocdb.rb $id app|grep port` || { echo "(-fh) [id] [host]"; exit; }
+port=`~/lib/libsitedb.rb $id app|grep port` || { echo "(-fh) [id] [host]"; exit; }
 port=${port//\"/}
 port="$(( ${port#*:} $offset ))"
 echo "Connect to $host:$port" >&2

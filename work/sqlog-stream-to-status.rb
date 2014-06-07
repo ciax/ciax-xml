@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "liblocdb"
+require "libsitedb"
 require "libfrmcmd"
 require "libfrmrsp"
 require "libapprsp"

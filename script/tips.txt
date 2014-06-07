@@ -1,0 +1,5 @@
+CS EJB Interlock:
+ JUP at 0: need pin sensor
+ JDW at 0: need pin sensor
+ JUP at 4: no need
+ JDW at 4: need pin sensor

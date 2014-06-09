@@ -1,17 +1,18 @@
 #!/bin/bash
 getcmd(){
     read input
-    echo "$input"|base64
+    cmd=$(echo "$input"|base64)
+    echo "$cmd" >/dev/stderr
 }
 [ "$1" ] ||{  echo "Usage:devsim-file [site]";exit 1; }
 site=$1;shift
-cmd="$(getcmd)"
-while read line ;do
+getcmd
+while read -u 3 line ;do
     if [ "$cmd" ]; then
         [[ "$line" =~ "$cmd" ]] && unset cmd
     else
         echo "$line"
-        cmd="$(getcmd)"
+        getcmd
     fi
-done <  ~/.var/stream_${site}_*.log
+done 3< <(grep . ~/.var/stream_${site}_*.log)
 echo "No find $cmd" > /dev/stderr

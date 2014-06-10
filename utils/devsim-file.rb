@@ -1,6 +1,6 @@
 #!/bin/bash
 getcmd(){
-    cmd=$(head -1|base64|tr -d '=')
+    cmd=$(head -1|base64|head -c-3)
 }
 [ "$1" ] ||{  echo "Usage:devsim-file [site]";exit 1; }
 site=$1;shift

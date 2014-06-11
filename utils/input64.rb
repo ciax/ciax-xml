@@ -5,5 +5,6 @@ begin
   select([STDIN])
   puts [STDIN.sysread(1024)].pack("m").split("\n").join('')
 rescue EOFError
+  exit 1
 end
 

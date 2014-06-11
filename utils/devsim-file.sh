@@ -19,7 +19,7 @@ while [ $search -lt 2 ]  ;do
             [[ "$base64" =~ "$input" ]] && unset input
         elif [[ "$dir" =~ rcv ]]; then
             echo -n "$base64"|base64 -d
-            input=$(input64)
+            input=$(input64) || exit 1
             search=0
         fi
     done 3< <(grep -h . ~/.var/stream_${site}_*.log)

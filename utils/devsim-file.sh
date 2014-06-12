@@ -12,6 +12,7 @@ jset(){
 site=$1;shift
 input=$(input64)
 search=0
+trap 'echo "trapped" >/dev/stderr' 2
 while [ $search -lt 2 ]  ;do
     while read -u 3 line ;do
         jset $line

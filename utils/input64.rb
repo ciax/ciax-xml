@@ -4,6 +4,7 @@
 begin
   select([STDIN])
 rescue Interrupt
+  warn "INTERRUPTED in input64"
   retry
 end
 begin

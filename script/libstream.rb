@@ -24,6 +24,10 @@ module CIAX
       @wait=wait.to_f
       @timeout=timeout
       @ver_color=1
+      Signal.trap(:CHLD){
+        warn "#@iocmd is terminated and reopen"
+        @f=IO.popen(@iocmd,'r+')
+      }
     end
 
     def snd(str,cid)
@@ -51,13 +55,13 @@ module CIAX
     end
 
     def reopen
-      int=1
+      int=0
       begin
         str=yield
       rescue
         Msg.com_err("IO error") if int > 8
-        @f=IO.popen(@iocmd,'r+')
         sleep int*=2
+        @f=IO.popen(@iocmd,'r+')
         retry
       end
       str

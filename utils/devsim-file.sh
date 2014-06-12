@@ -8,11 +8,15 @@ jset(){
     done
     IFS=
 }
+warn(){
+    echo $C1"DEVSIM"$C0":$*" > /dev/stderr
+}
 [ "$1" ] ||{  echo "Usage:${0##*/} [site]";exit 1; }
 site=$1;shift
 input=$(input64)
 search=0
-trap 'echo "trapped" >/dev/stderr' 2
+warn "Init"
+trap 'warn "SIGINT"' 2
 while [ $search -lt 2 ]  ;do
     while read -u 3 line ;do
         jset $line
@@ -26,5 +30,4 @@ while [ $search -lt 2 ]  ;do
     done 3< <(grep -h . ~/.var/stream_${site}_*.log)
     search=$(( $search + 1 ))
 done
-echo "No find $cmd" > /dev/stderr
-
+warn "No find $cmd"

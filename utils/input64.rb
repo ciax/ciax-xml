@@ -4,7 +4,7 @@
 begin
   select([STDIN])
 rescue Interrupt
-  warn "INTERRUPTED in input64"
+  warn "Input64:SIGINT"
   retry
 end
 begin

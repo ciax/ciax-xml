@@ -67,7 +67,7 @@ module CIAX
         timeout=5
         if sim=cfg['iocmd']
           @mode='SIM'
-          timeout=20
+          timeout=5
         end
         iocmd= sim ? type?(sim,Array) : @fdb['iocmd'].split(' ')
         @stream=Stream.new(iocmd,@fdb['wait'],timeout)

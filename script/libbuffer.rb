@@ -68,7 +68,7 @@ module CIAX
             flush
           rescue
             clear
-            fatal("Buffer")
+            warn("Error in Buffer")
           end
         }
       }
@@ -116,7 +116,7 @@ module CIAX
     end
 
     def clear
-      @issue=false
+      @svst['isu']=false
       @outbuf=[[],[],[]]
       @q.clear
       @tid && @tid.run

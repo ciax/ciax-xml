@@ -62,6 +62,7 @@ module CIAX
         verbose("Stream","Try to reopen")
         sleep int
         int=(int+1)*2
+        # SIGINT gets around the child process
         Signal.trap(:INT,nil)
         @f=IO.popen(@iocmd,'r+')
         Signal.trap(:INT,"DEFAULT")

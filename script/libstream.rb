@@ -20,13 +20,11 @@ module CIAX
       @iocmd=type?(iocmd,Array)
       super('stream',{'dir' => '','cmd' => '','base64' => ''})
       verbose("Stream","Init/Client:#{iocmd.join(' ')}")
-      @f=IO.popen(@iocmd,'r+')
       @wait=wait.to_f
       @timeout=timeout
       @ver_color=1
       Signal.trap(:CHLD){
-        warn "#@iocmd is terminated and reopen"
-        @f=IO.popen(@iocmd,'r+')
+        warn "#@iocmd is terminated"
       }
     end
 
@@ -57,11 +55,16 @@ module CIAX
     def reopen
       int=0
       begin
+        raise unless @f
         str=yield
       rescue
         Msg.com_err("IO error") if int > 8
-        sleep int*=2
+        verbose("Stream","Try to reopen")
+        sleep int
+        int=(int+1)*2
+        Signal.trap(:INT,nil)
         @f=IO.popen(@iocmd,'r+')
+        Signal.trap(:INT,"DEFAULT")
         retry
       end
       str

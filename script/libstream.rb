@@ -24,7 +24,7 @@ module CIAX
       @timeout=timeout
       @ver_color=1
       Signal.trap(:CHLD){
-        warn "#@iocmd is terminated"
+        verbose("Stream","#@iocmd is terminated")
       }
     end
 

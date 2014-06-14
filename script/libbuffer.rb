@@ -84,14 +84,15 @@ module CIAX
       @tid && @tid.alive?
     end
 
-    private
     def flush
       verbose("Buffer","SUB:Waiting")
       # @q can not be empty depending on @flush_proc
       @flush_proc.call(self)
       @svst['isu']=false if @q.empty?
+      self
     end
 
+    private
     #batch is command array (ary of ary)
     def sort(p,batch)
       verbose("Buffer","SUB:Recieve [#{batch}] with priority[#{p}]")

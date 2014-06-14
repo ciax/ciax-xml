@@ -129,6 +129,7 @@ module CIAX
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @buf=init_buf
+        @fsh.flush_procs << proc{ @buf.flush }
         @cobj.ext_proc{|ent|
           verbose("AppSv","#@id/Issue:#{ent.id}")
           @buf.send(1,ent)

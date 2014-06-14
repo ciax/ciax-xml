@@ -19,12 +19,13 @@ module CIAX
     end
 
     class Exe < Exe
-      attr_reader :field,:sqlsv
+      attr_reader :field,:sqlsv,:flush_procs
       def initialize(cfg)
         @fdb=type?(cfg[:db],Db)
         @field=cfg[:field]=Field.new.skeleton(@fdb)
         super('frm',@field['id'],Command.new(cfg))
         @cobj.add_int
+        @flush_procs=[]
         ext_shell(@field)
       end
 
@@ -79,6 +80,7 @@ module CIAX
         }
         @cobj.item_proc('set'){|ent|
           @field.set(ent.par[0],ent.par[1])
+          @flush_procs.each{|p| p.call(self)}
           "Set [#{ent.par[0]}] = #{ent.par[1]}"
         }
         @cobj.item_proc('save'){|ent|
@@ -87,6 +89,7 @@ module CIAX
         }
         @cobj.item_proc('load'){|ent|
           @field.load(ent.par[0]||'').save
+          @flush_procs.each{|p| p.call(self)}
           "Load [#{ent.par[0]}]"
         }
         ext_server(@fdb['port'].to_i)

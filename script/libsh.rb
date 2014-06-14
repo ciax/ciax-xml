@@ -42,7 +42,7 @@ module CIAX
         begin
           exe(shell_input(line))
           puts shell_output
-        rescue
+        rescue InvalidID
           puts $!.to_s
         end
       end

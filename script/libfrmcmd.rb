@@ -68,7 +68,6 @@ module CIAX
             @frame.cc_mark
             mk_frame(:ccrange)
             @frame.cc_set
-            @field.set('cc',@frame.cc)
           end
           mk_frame(:main)
           frame=@fstr[:main]
@@ -86,7 +85,8 @@ module CIAX
         @sel[domain].each{|a|
           case a
           when Hash
-            frame=@field.subst(a['val'])
+            frame=a['val'].gsub(/\$\{cc\}/){@frame.cc}
+            frame=@field.subst(frame)
             convert=true if frame != a['val']
             frame.split(',').each{|s|
               @frame.add(s,a)

@@ -46,7 +46,7 @@ module CIAX
         db=@cfg[:db]
         @cache={}
         @fstr={}
-        if /true|1/ === @cfg[:noaffix]
+        if /true|1/ === @cfg["noaffix"]
           @sel={:main => ["body"]}
         else
           @sel=Hash[db[:command][:frame]]
@@ -57,7 +57,7 @@ module CIAX
 
       def set_par(par,opt={})
         ent=super
-        return unless @sel[:body]=ent.cfg[:body]
+        return ent unless @sel[:body]=ent.cfg[:body]
         cid=ent.id
         verbose("FrmItem","Body:#{@cfg[:label]}(#{cid})")
         if frame=@cache[cid]

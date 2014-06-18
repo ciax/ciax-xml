@@ -9,6 +9,7 @@ require "libstream"
 module CIAX
   module Frm
     module Rsp
+      attr_accessor :echo
       # @< (base),(prefix)
       # @ cobj,sel,fds,frame,fary,cc
       def self.extended(obj)
@@ -71,6 +72,9 @@ module CIAX
             enclose("FrmRsp","Entering Body Node","Exitting Body Node"){
               getfield_rec(@sel[:body]||[])
             }
+          when 'echo'
+            @frame.cut('length' => @echo.size)
+            @frame.verify('val' => @echo)
           when Hash
             frame_to_field(e1){ @frame.cut(e1) }
           end

@@ -95,7 +95,7 @@ module CIAX
           }
           item[:struct]=idx.map{|h| h['size']} if item
           attr
-        when 'ccrange','body'
+        when 'ccrange','body','echo'
           e.name
         else
           nil

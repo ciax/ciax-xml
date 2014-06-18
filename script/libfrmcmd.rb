@@ -75,6 +75,7 @@ module CIAX
           verbose("FrmItem","Cmd Generated [#{cid}]")
         end
         ent.cfg[:frame]=frame
+        @field.echo=frame
         ent
       end
 

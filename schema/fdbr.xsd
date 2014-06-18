@@ -77,6 +77,7 @@
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="label" type="xsd:token" />
+      <xsd:attribute name="noaffix" type="xsd:boolean" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

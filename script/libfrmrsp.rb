@@ -20,6 +20,7 @@ module CIAX
         @ver_color=3
         fdbr=@db[:response]
         @sel=Hash[fdbr[:frame]]
+        # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
         @fds=fdbr[:index]
         @frame=Frame.new(@db['endian'],@db['ccmethod'],@sel['terminator'],@sel['delimiter'])
         self
@@ -31,12 +32,18 @@ module CIAX
         @current_ent=type?(ent,Entity)
         if rid=ent.cfg['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
-          @sel[:body]=@fds[rid][:body]||[]
+          @sel.update(@fds[rid])
+          verbose("FrmRsp","Selected DB for #{rid} #{@sel}")
+          # Frame structure: main(total){ ccrange{ body(selected str) } }
           stream=yield
           @frame.set(stream[:data])
           @cache=@data.deep_copy
-          getfield_rec(@sel[:main])
-          @frame.cc_check(@cache.delete('cc'))
+          if @fds[rid].key?('noaffix')
+            getfield_rec(['body'])
+          else
+            getfield_rec(@sel[:main])
+            @frame.cc_check(@cache.delete('cc'))
+          end
           @data=@cache
           self['time']=stream['time']
           verbose("FrmRsp","Updated(#{self['time']})") #Field::get
@@ -62,7 +69,7 @@ module CIAX
             }
           when 'body'
             enclose("FrmRsp","Entering Body Node","Exitting Body Node"){
-              getfield_rec(@sel[:body])
+              getfield_rec(@sel[:body]||[])
             }
           when Hash
             frame_to_field(e1){ @frame.cut(e1) }

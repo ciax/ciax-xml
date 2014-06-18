@@ -72,9 +72,9 @@ module CIAX
       self
     end
 
-    def alert(prefix)
+    def alert
       @ver_indent=@@base
-      Kernel.warn make_msg(prefix,$!,1)
+      Kernel.warn make_msg($!.class,$!,1)
     end
 
     def enclose(prefix,title1,title2,color=nil)
@@ -160,6 +160,11 @@ module CIAX
     def com_err(*msg) # Raise Device error (Communication Failed)
       msg[0]=color(msg[0],1)
       raise CommError,msg.join("\n  "),caller(1)
+    end
+
+    def relay(msg)
+      msg=color(msg,3)+':'+$!.to_s
+      raise $!.class,msg,caller(1)
     end
 
     def err(*msg) # Raise User error (Invalid Configuration)

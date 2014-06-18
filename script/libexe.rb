@@ -92,7 +92,7 @@ module CIAX
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError
-              warn($!.to_s)
+              alert("UDP:Server/#{self.class}")
               self['msg']=$!.to_s
             end
             verbose("UDP:Server/#{self.class}","Send:#{self['msg']}",2)

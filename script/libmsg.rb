@@ -72,11 +72,9 @@ module CIAX
       self
     end
 
-    def fatal(prefix)
+    def alert(prefix)
       @ver_indent=@@base
-      title=[$!.to_s,*$@].join("\n")
-      Kernel.warn make_msg(prefix,title,1)
-      Kernel.exit
+      Kernel.warn make_msg(prefix,$!,1)
     end
 
     def enclose(prefix,title1,title2,color=nil)
@@ -120,24 +118,8 @@ module CIAX
       $stderr.print p
     end
 
-    def optlist(list)
-      list.empty? ? '' :  color("[#{list.join('/')}]?",5)
-    end
-
-    def msg(msg='message',ind=0) # Display only
-      Kernel.warn color(msg,2,ind)
-    end
-
-    def hidden(msg='hidden',ind=0) # Display only
-      Kernel.warn color(msg,8,ind)
-    end
-
-    def warn(msg='warning',ind=0) # Display only
-      Kernel.warn color(msg,3,ind)
-    end
-
-    def alert(msg='alert',ind=0) # Display only
-      Kernel.warn color(msg,1,ind)
+    def msg(msg='message',color=2,ind=0) # Display only
+      Kernel.warn color(msg,color,ind)
     end
 
     def _w(var,msg='') # watch var for debug
@@ -262,6 +244,11 @@ module CIAX
 
     def indent(ind=0)
       Indent*ind
+    end
+
+    # Query options
+    def optlist(list)
+      list.empty? ? '' :  color("[#{list.join('/')}]?",5)
     end
   end
 end

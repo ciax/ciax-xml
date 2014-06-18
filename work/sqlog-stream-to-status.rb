@@ -23,7 +23,7 @@ module CIAX
       if !site_id
         site_id=hash['id']
         ldb.set(hash['id'])
-        Msg.warn("Initialize")
+        Msg.msg("Initialize",3)
         fdb=ldb[:frm]
         fobj=Frm::Command.new(Config.new.update(:db =>fdb))
         field.ext_rsp(site_id,fdb)

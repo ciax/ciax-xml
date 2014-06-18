@@ -51,16 +51,18 @@ module CIAX
     end
 
     def cut(e0)
-      str=@frame
       if len=e0['length']
         verbose("Frame","RSP:Cut by Size [#{len}]")
-        return '' unless str=@frame.slice!(0,len.to_i)
+        return '' unless str=@flame.slice!(0,len.to_i)
       elsif @delimiter
         verbose("Frame","RSP:Cut by Delimiter [#{@delimiter.inspect}] for [#@frame]")
-        if @frame === /#@delimiter/
+        if /#@delimiter/ === @frame
           return '' unless str=@frame.slice!(/^.*?#@delimiter/)
+        else
+          verbose("Frame","RSP:No Delimiter [#{@delimiter.inspect}] in [#@frame]")
+          str=@frame.dup
         end
-        return '' unless len=str.delete!(@delimiter)
+        len=str.size
       else
         verbose("Frame","RSP:Cut but No Lenght or Delimiter")
         return ''

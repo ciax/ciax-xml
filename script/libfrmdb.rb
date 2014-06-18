@@ -108,9 +108,9 @@ module CIAX
     begin
       fdb=Frm::Db.new.set(ARGV.shift)
     rescue InvalidID
-      warn "USAGE: #{$0} [id] (key) .."
-      Msg.exit
+      Msg.usage("[id] (key) ..")
     end
     puts fdb.path(ARGV)
+    exit
   end
 end

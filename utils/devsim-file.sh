@@ -16,6 +16,7 @@ site=$1;shift
 input=$(input64)
 search=0
 num=0
+nk=0
 warn "Init"
 trap 'warn "SIGINT"' 2
 while [ $search -lt 2 ]  ;do
@@ -24,10 +25,15 @@ while [ $search -lt 2 ]  ;do
         if [ "$input" ]; then
             if [[ "$dir" =~ snd ]] ; then
                 num=$(( $num + 1 ))
-                if [ $num -gt 10000 ] ; then
-                    warn "Timeout for $input"
-                    unset input
+                if [ $num -gt 1000 ] ; then
                     num=0
+                    nk=$(( $nk + 1 ))
+                    if [ $nk -gt 10 ] ; then
+                        warn "Timeout for $input"
+                        unset input
+                        nk=0
+                    fi
+                    echo -n '.' > /dev/stderr
                 fi
                 [[ "$base64" =~ "$input" ]] && unset input
             fi
@@ -36,6 +42,7 @@ while [ $search -lt 2 ]  ;do
             input=$(input64) || exit 1
             search=0
             num=0
+            nk=0
         fi
     done 3< <(grep -h . ~/.var/stream_${site}_*.log)
     warn "Pass <$search>"

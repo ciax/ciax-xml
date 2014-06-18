@@ -9,5 +9,6 @@ Ver   Format
 3     NNNNNNNNNN.NNN \t id:dir:cmd(:par) \t dump
 4     NNNNNNNNNN.NNN \t id:ver:dir:cmd(:par) \t base64
 5     NNNNNNNNNN.NNN \t JSON{id,ver,dir,cmd:par,base64}
-6     JSON{id,ver,cmd,par,dir,base64}
+6     JSON{id:"NNNNNNNNNN.NNN",ver,cmd,par,dir,base64}
+7     JSON{id:"NNNNNNNNNNNNN",ver,cmd,par,dir,base64}
 

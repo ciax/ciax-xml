@@ -25,7 +25,9 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
       <echo/>
-      <field length="1" label="ENQ">5</field>
+      <field length="1" decode="unsigned" label="ACK">6</field>
+      <field length="1" label="CH"/>
+      <field length="1" decode="unsigned" label="ENQ">5</field>
       <ccrange>
         <body/>
       </ccrange>

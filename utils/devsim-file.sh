@@ -11,15 +11,20 @@ jset(){
 warn(){
     echo $C1"DEVSIM"$C0":$*" > /dev/stderr
 }
+timeout(){
+    warn "Timeout for $input"
+    unset input
+    error=1
+}
 [ "$1" ] ||{  echo "Usage:${0##*/} [site]";exit 1; }
 site=$1;shift
 input=$(input64)
-search=0
+pass=0
 num=0
 nk=0
 warn "Init"
-trap 'warn "SIGINT"' 2
-while [ $search -lt 2 ]  ;do
+trap 'timeout' 1
+while [ $pass -lt 2 ]  ;do
     while read -u 3 line ;do
         jset $line
         if [ "$input" ]; then
@@ -29,8 +34,7 @@ while [ $search -lt 2 ]  ;do
                     num=0
                     nk=$(( $nk + 1 ))
                     if [ $nk -gt 10 ] ; then
-                        warn "Timeout for $input"
-                        unset input
+                        timeout
                         nk=0
                     fi
                     echo -n '.' > /dev/stderr
@@ -38,14 +42,20 @@ while [ $search -lt 2 ]  ;do
                 [[ "$base64" =~ "$input" ]] && unset input
             fi
         elif [[ "$dir" =~ rcv ]]; then
-            echo -n "$base64"|base64 -d
+            if [ "$error" ] ; then
+                echo -n ''
+            else
+                echo -n "$base64"|base64 -d
+            fi
             input=$(input64) || exit 1
-            search=0
+            unset error
+            pass=0
             num=0
             nk=0
+
         fi
     done 3< <(grep -h . ~/.var/stream_${site}_*.log)
-    warn "Pass <$search>"
-    search=$(( $search + 1 ))
+    warn "Pass <$pass>"
+    pass=$(( $pass + 1 ))
 done
 warn "No find $cmd"

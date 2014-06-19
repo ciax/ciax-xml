@@ -140,6 +140,7 @@ module CIAX
             verbose("AppSv","Interrupt:#{args}")
             @buf.send(0,@cobj.set_cmd(args))
           }
+          warning("AppSv","Interrupt(#{batch_interrupt})")
           'INTERRUPT'
         }
         # Logging if version number exists

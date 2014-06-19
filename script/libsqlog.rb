@@ -106,8 +106,8 @@ module CIAX
       end
 
       # Check table existence
-      def add_table(stat)
-        sqlog=Upd.new(stat)
+      def add_table(stat,ver=nil)
+        sqlog=Upd.new(stat,ver)
         unless internal("tables").split(' ').include?(sqlog.tid)
           @queue.push sqlog.create
           verbose("SqLog","Init/Table '#{sqlog.tid}' is created")

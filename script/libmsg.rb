@@ -74,7 +74,7 @@ module CIAX
 
     def alert
       @ver_indent=@@base
-      Kernel.warn make_msg($!.class,$!,1)
+      Kernel.warn make_msg($!.class,$!,5)
     end
 
     def enclose(prefix,title1,title2,color=nil)

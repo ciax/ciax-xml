@@ -33,7 +33,7 @@ while [ $pass -lt 2 ]  ;do
                 if [ $num -gt 1000 ] ; then
                     num=0
                     nk=$(( $nk + 1 ))
-                    if [ $nk -gt 10 ] ; then
+                    if [ $nk -gt 100 ] ; then
                         timeout
                         nk=0
                     fi
@@ -47,8 +47,8 @@ while [ $pass -lt 2 ]  ;do
             else
                 echo -n "$base64"|base64 -d
             fi
-            input=$(input64) || exit 1
             unset error
+            input=$(input64) || exit 1
             pass=0
             num=0
             nk=0

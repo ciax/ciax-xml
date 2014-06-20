@@ -74,7 +74,7 @@ module CIAX
             }
           when 'echo'
             @frame.cut('length' => @echo.size)
-            @frame.verify('val' => @echo)
+            @frame.verify('label' => 'Echo','val' => @echo)
           when Hash
             frame_to_field(e1){ @frame.cut(e1) }
           end

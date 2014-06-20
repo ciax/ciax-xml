@@ -33,6 +33,9 @@ module CIAX
       self
     rescue LongJump
       raise $!
+    rescue InvalidID
+      self['msg']=$!.to_s
+      raise $!
     rescue
       self['msg']=$!.to_s
       Msg.relay(args.first)

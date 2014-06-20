@@ -23,6 +23,7 @@ alias chkxml=check-xml
 alias devsim=devsim-sql
 alias jv=json-view
 alias jlv=json-logview
+alias jlp=json-logpick
 alias mkhtm=make-html
 alias msv=marshal-view
 alias logj=sqlog-json

@@ -30,7 +30,6 @@ module CIAX
 
     def snd(str,cid)
       return if str.to_s.empty?
-      sleep @wait
       verbose("Stream","Sending #{str.size} byte on #{cid}")
       verbose("Stream","Binary Sending #{str.inspect}")
       reopen{
@@ -41,6 +40,7 @@ module CIAX
     end
 
     def rcv
+      verbose("Stream","Wait to Recieve #{@wait} sec")
       sleep @wait
       unless str=reopen{
           @f.readpartial(4096)

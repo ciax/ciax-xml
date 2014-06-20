@@ -72,11 +72,9 @@ module CIAX
       self
     end
 
-    def fatal(prefix)
+    def alert
       @ver_indent=@@base
-      title=[$!.to_s,*$@].join("\n")
-      Kernel.warn make_msg(prefix,title,1)
-      Kernel.exit
+      Kernel.warn make_msg($!.class,$!,5)
     end
 
     def enclose(prefix,title1,title2,color=nil)
@@ -120,24 +118,8 @@ module CIAX
       $stderr.print p
     end
 
-    def optlist(list)
-      list.empty? ? '' :  color("[#{list.join('/')}]?",5)
-    end
-
-    def msg(msg='message',ind=0) # Display only
-      Kernel.warn color(msg,2,ind)
-    end
-
-    def hidden(msg='hidden',ind=0) # Display only
-      Kernel.warn color(msg,8,ind)
-    end
-
-    def warn(msg='warning',ind=0) # Display only
-      Kernel.warn color(msg,3,ind)
-    end
-
-    def alert(msg='alert',ind=0) # Display only
-      Kernel.warn color(msg,1,ind)
+    def msg(msg='message',color=2,ind=0) # Display only
+      Kernel.warn color(msg,color,ind)
     end
 
     def _w(var,msg='') # watch var for debug
@@ -178,6 +160,11 @@ module CIAX
     def com_err(*msg) # Raise Device error (Communication Failed)
       msg[0]=color(msg[0],1)
       raise CommError,msg.join("\n  "),caller(1)
+    end
+
+    def relay(msg)
+      msg=color(msg,3)+':'+$!.to_s
+      raise $!.class,msg,caller(1)
     end
 
     def err(*msg) # Raise User error (Invalid Configuration)
@@ -262,6 +249,11 @@ module CIAX
 
     def indent(ind=0)
       Indent*ind
+    end
+
+    # Query options
+    def optlist(list)
+      list.empty? ? '' :  color("[#{list.join('/')}]?",5)
     end
   end
 end

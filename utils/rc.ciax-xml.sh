@@ -26,3 +26,4 @@ alias jlv=json-logview
 alias mkhtm=make-html
 alias msv=marshal-view
 alias logj=sqlog-json
+alias vc=view-ctrl

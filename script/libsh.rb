@@ -44,6 +44,8 @@ module CIAX
           puts shell_output
         rescue InvalidID
           puts $!.to_s
+        rescue UserError
+          alert
         end
       end
     end

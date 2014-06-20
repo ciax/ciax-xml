@@ -31,9 +31,14 @@ module CIAX
       @pre_exe_procs.each{|p| p.call(args)}
       self['msg']=@cobj.set_cmd(args).exe
       self
-    rescue
+    rescue LongJump
+      raise $!
+    rescue InvalidID
       self['msg']=$!.to_s
       raise $!
+    rescue
+      self['msg']=$!.to_s
+      Msg.relay(args.first)
     ensure
       @post_exe_procs.each{|p| p.call(self)}
     end
@@ -92,8 +97,8 @@ module CIAX
             rescue InvalidCMD
               self['msg']="INVALID"
             rescue RuntimeError
-              warn($!.to_s)
               self['msg']=$!.to_s
+              alert
             end
             verbose("UDP:Server/#{self.class}","Send:#{self['msg']}",2)
             udp.send(server_output,0,addr[2],addr[1])

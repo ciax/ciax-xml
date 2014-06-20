@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255">
+  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="1">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="ENQ">5</char>
@@ -12,7 +12,9 @@
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get status" type="stat" response="getstat">
-        <string>AST3</string>
+        <par_str>A,B,C</par_str>
+        <string>$1</string>
+        <string>ST3</string>
       </item>
       <item id="aon" label="All Output ON" response="default" type="action">
         <string>#SW1</string>
@@ -23,13 +25,16 @@
       </item>
       <item id="rcv" label="Rcv Status" response="getstat" />
     </commands>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\003\r\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <echo/>
-      <field length="1" label="ENQ">5</field>
+      <field length="1" decode="unsigned" label="ACK">6</field>
+      <field length="1" label="CH"/>
+      <field length="1" decode="unsigned" label="ENQ">5</field>
       <ccrange>
         <body/>
+        <field length="1" decode="unsigned" label="ETX">3</field>
       </ccrange>
-      <field assign="cc" decode="unsigned" length="2" label="CC"/>
+      <field assign="cc" decode="hexstr" length="2" label="CC"/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="ack" noaffix="true">
@@ -37,7 +42,7 @@
         <field label="Master CH" length="1">@</field>
       </response>
       <response id="getstat">
-        <field assign="stat" label="StatusCode" />
+        <field assign="stat" label="StatusCode" length="9"/>
       </response>
       <response id="default"  noaffix="true"/>
     </responses>

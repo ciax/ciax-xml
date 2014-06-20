@@ -140,12 +140,13 @@ module CIAX
             verbose("AppSv","Interrupt:#{args}")
             @buf.send(0,@cobj.set_cmd(args))
           }
+          warning("AppSv","Interrupt(#{batch_interrupt})")
           'INTERRUPT'
         }
         # Logging if version number exists
         if $opt['e'] && sv=@fsh.sqlsv
           sv.add_table(@stat)
-          sv.add_table(@buf)
+          sv.add_table(@buf,@stat['ver'])
         end
         tid_auto=auto_update
         @post_exe_procs << proc{

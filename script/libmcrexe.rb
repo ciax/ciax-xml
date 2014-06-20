@@ -97,7 +97,7 @@ module CIAX
         finish('error')
         self
       rescue Interrupt
-        warn("\nInterrupt Issued to #{@running}")
+        msg("\nInterrupt Issued to running devices #{@running}")
         @running.each{|site|
           @cfg[:app_list][site].exe(['interrupt'])
         } if $opt['m']

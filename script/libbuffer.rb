@@ -68,7 +68,7 @@ module CIAX
             flush
           rescue
             clear
-            warn("Error in Buffer")
+            alert
           end
         }
       }

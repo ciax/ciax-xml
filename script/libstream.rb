@@ -34,7 +34,7 @@ module CIAX
       verbose("Stream","Sending #{str.size} byte on #{cid}")
       verbose("Stream","Binary Sending #{str.inspect}")
       reopen{
-        @f.syswrite(str)
+        @f.write(str)
       }
       conv('snd',str,cid)
       self
@@ -43,8 +43,7 @@ module CIAX
     def rcv
       sleep @wait
       unless str=reopen{
-          IO.select([@f],nil,nil,@timeout) || next
-          @f.sysread(4096)
+          @f.readpartial(4096)
         }
         Process.kill(1,@f.pid)
         Msg.com_err("Stream:No response")

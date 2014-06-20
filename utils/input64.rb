@@ -8,7 +8,7 @@ rescue Interrupt
   retry
 end
 begin
-  puts [STDIN.sysread(1024)].pack("m").split("\n").join('')
+  puts [STDIN.readpartial(1024)].pack("m").split("\n").join('')
 rescue EOFError
   exit 1
 end

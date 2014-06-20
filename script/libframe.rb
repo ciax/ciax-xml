@@ -55,11 +55,11 @@ module CIAX
         verbose("Frame","RSP:Cut by Size [#{len}]")
         return '' unless str=@frame.slice!(0,len.to_i)
       elsif @delimiter
-        verbose("Frame","RSP:Cut by Delimiter [#{@delimiter.inspect}] for [#@frame]")
+        verbose("Frame","RSP:Cut by Delimiter [#{@delimiter.inspect}] for [#{@frame.inspect}]")
         if /#@delimiter/ === @frame
           return '' unless str=@frame.slice!(/^.*?#@delimiter/)
         else
-          verbose("Frame","RSP:No Delimiter [#{@delimiter.inspect}] in [#@frame]")
+          verbose("Frame","RSP:No Delimiter [#{@delimiter.inspect}] in [#{@frame.inspect}]")
           str=@frame.dup
         end
         len=str.size
@@ -70,12 +70,12 @@ module CIAX
       # Check Code
       @ccrange << str if @ccrange
       verbose("Frame","RSP:Cut: [#{str.inspect}] by size=[#{len}]")
-      verbose("Frame","RSP:Rest(#{@frame.size}): [#{@frame.inspect}]")
       # Pick Part
       if r=e0['slice']
         str=str.slice(*r.split(':').map{|i| i.to_i })
         verbose("Frame","RSP:Pick: [#{str.inspect}] by range=[#{r}]")
       end
+      verbose("Frame","RSP:Rest(#{@frame.size}): [#{@frame.inspect}]")
       @fragment=decode(e0,str)
     end
 
@@ -83,8 +83,8 @@ module CIAX
       return self unless val=e0['val']
       str=@fragment
       val=eval(val).to_s if e0['decode']
-      vfy_err("Frame:RSP:Mismatch(#{e0['label']}):[#{str}] (should be [#{val}])") if val != str
-      verbose("Frame","RSP:Verify:(#{e0['label']}) [#{val}] OK")
+      vfy_err("Frame:RSP:Mismatch(#{e0['label']}):[#{str.inspect}] (should be [#{val.inspect}])") if val != str
+      verbose("Frame","RSP:Verify:(#{e0['label']}) [#{val.inspect}] OK")
       @fragment=nil
       self
     end

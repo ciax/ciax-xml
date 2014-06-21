@@ -118,7 +118,7 @@
         <string format="%02d">$1</string>
       </item>
     </commands>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter="\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\n">
       <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

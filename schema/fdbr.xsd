@@ -62,7 +62,6 @@
         <xsd:element ref="fdbr:field" />
       </xsd:choice>
       <xsd:attribute name="terminator" type="xsd:token" />
-      <xsd:attribute name="delimiter" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
   <!--Response Select-->
@@ -82,6 +81,7 @@
       <xsd:attribute name="id" type="xsd:NCName" use="required" />
       <xsd:attribute name="label" type="xsd:token" />
       <xsd:attribute name="noaffix" type="xsd:boolean" />
+      <xsd:attribute name="delimiter" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

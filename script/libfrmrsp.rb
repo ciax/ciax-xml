@@ -20,10 +20,11 @@ module CIAX
       def ext_rsp
         @ver_color=3
         fdbr=@db[:response]
-        @sel=Hash[fdbr[:frame]]
-        # @sel structure: { delimiter, terminator, :main{}, :body{} <- changes on every upd }
+        @skel=fdbr[:frame]
+        # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
         @fds=fdbr[:index]
-        @frame=Frame.new(@db['endian'],@db['ccmethod'],@sel['terminator'],@sel['delimiter'])
+        @frame=Frame.new(@db['endian'],@db['ccmethod'],@skel['terminator'])
+        # terminator: frame pointer will jump to terminator if no length or delimiter is specified
         self
       end
 
@@ -31,6 +32,7 @@ module CIAX
       # Result : executed block or not
       def upd(ent)
         @current_ent=type?(ent,Entity)
+        @sel=Hash[@skel]
         if rid=ent.cfg['response']
           @fds.key?(rid) || Msg.cfg_err("No such response id [#{rid}]")
           @sel.update(@fds[rid])
@@ -50,7 +52,6 @@ module CIAX
           verbose("FrmRsp","Updated(#{self['time']})") #Field::get
         else
           verbose("FrmRsp","Send Only")
-          @sel[:body]=nil
         end
         self
       ensure
@@ -76,7 +77,7 @@ module CIAX
             @frame.cut('length' => @echo.size)
             @frame.verify('label' => 'Echo','val' => @echo)
           when Hash
-            frame_to_field(e1){ @frame.cut(e1) }
+            frame_to_field(e1){ @frame.cut(e1,@sel['delimiter']) }
           end
         }
       end

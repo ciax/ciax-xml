@@ -24,11 +24,11 @@
         <string>SETP? 1</string>
       </item>
     </commands>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=";" terminator="\r\n">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <response id="getstat">
+      <response id="getstat" delimiter=";">
         <array assign="ch" label="Value">
           <index range="0:7" size="8" />
         </array>

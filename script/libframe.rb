@@ -5,13 +5,13 @@ module CIAX
   class Frame # For Command/Response Frame
     include Msg
     attr_reader :cc
-    def initialize(endian=nil,ccmethod=nil,terminator=nil,delimiter=nil)
+    def initialize(endian=nil,ccmethod=nil,terminator=nil)
+      # terminator: frame pointer will jump to terminator if no length or delimiter is specified
       @ver_color=6
       @endian=endian
       @ccrange=nil
       @method=ccmethod
       @terminator=terminator && eval('"'+terminator+'"')
-      @delimiter=delimiter && eval('"'+delimiter+'"')
       reset
     end
 
@@ -40,33 +40,40 @@ module CIAX
     #For Response
     def set(frame='')
       if frame && !frame.empty?
-        if tm=@terminator
-          frame.chomp!(tm)
-          verbose("Frame","RSP:Remove terminator:[#{tm.inspect}]")
-        end
         verbose("Frame","RSP:Set [#{frame.inspect}]")
         @frame=frame
       end
       self
     end
 
-    def cut(e0)
+    def cut(e0,delimiter=nil)
+      # If cut str incldes terminetor, str will be trimmed
+      body,sep,rest=@terminator ? @frame.partition(@terminator) : [@frame]
       if len=e0['length']
         verbose("Frame","RSP:Cut by Size [#{len}]")
-        return '' unless str=@frame.slice!(0,len.to_i)
-      elsif @delimiter
-        verbose("Frame","RSP:Cut by Delimiter [#{@delimiter.inspect}] for [#{@frame.inspect}]")
-        ary=@frame.split(@delimiter)
-        return '' unless str=ary.shift
-        @frame=ary.join(@delimiter)
-        len=str.size
+        if len.to_i > body.size
+          warning("Frame","RSP:Cut reached terminator [#{body.size}/#{len}] ")
+          str=body
+          @frame=rest.to_s
+        else
+          str=body.slice!(0,len.to_i)
+          @frame=body+sep.to_s+rest.to_s
+        end
+      elsif delimiter
+        verbose("Frame","RSP:Cut by Delimiter [#{delimiter.inspect}] from [#{@frame.inspect}]")
+        delimiter=eval('"'+delimiter+'"')
+        str,dlm,body=body.partition(delimiter)
+        @frame=body.to_s+sep.to_s+rest.to_s
       else
-        verbose("Frame","RSP:Cut but No Length or Delimiter")
-        return ''
+        verbose("Frame","RSP:Cut all the rest")
+        str=body
+        @frame=sep.to_s+rest.to_s
       end
+      return '' if str.empty?
+      len=str.size
       # Check Code
       @ccrange << str if @ccrange
-      verbose("Frame","RSP:Cut: [#{str.inspect}] by size=[#{len}]")
+      verbose("Frame","RSP:Cut: [#{str.inspect}]")
       # Pick Part
       if r=e0['slice']
         str=str.slice(*r.split(':').map{|i| i.to_i })

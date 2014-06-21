@@ -21,7 +21,7 @@ module CIAX
         @ver_color=3
         fdbr=@db[:response]
         @sel=Hash[fdbr[:frame]]
-        # @sel structure: { terminator, :main{}, :body{} <- changes on every upd }
+        # @sel structure: { delimiter, terminator, :main{}, :body{} <- changes on every upd }
         @fds=fdbr[:index]
         @frame=Frame.new(@db['endian'],@db['ccmethod'],@sel['terminator'],@sel['delimiter'])
         self

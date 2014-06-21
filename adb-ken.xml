@@ -4,7 +4,27 @@
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
-          <frmcmd name="getstat">
+          <frmcmd name="getst0">
+            <argv>A</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <frmcmd name="getst1">
+            <argv>A</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <frmcmd name="getst2">
+            <argv>A</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <frmcmd name="getst3">
+            <argv>A</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <frmcmd name="getst4">
+            <argv>A</argv>
+          </frmcmd>
+          <frmcmd name="ack"/>
+          <frmcmd name="getst5">
             <argv>A</argv>
           </frmcmd>
           <frmcmd name="ack"/>

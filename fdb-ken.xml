@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="1" wait="0.2">
+  <frame id="ken" label="Kenwood PW-A Series (IF-41RS)" reference="http://ciax.sum.naoj.org/man/kenwood/PWA_m_j.pdf" ccmethod="sum" maxlength="255" version="2" wait="0.3">
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1" />
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <char length="1" label="ENQ">5</char>
@@ -12,9 +12,37 @@
     </cmdframe>
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <item id="getstat" label="Get status" type="stat" response="getstat">
+        <string>PWID</string>
+      </item>
+      <item id="getst0" label="Get status" type="stat" response="getst0">
+        <par_str>A,B,C</par_str>
+        <string>$1</string>
+        <string>ST0</string>
+      </item>
+      <item id="getst1" label="Get status" type="stat" response="getst1">
+        <par_str>A,B,C</par_str>
+        <string>$1</string>
+        <string>ST1</string>
+      </item>
+      <item id="getst2" label="Get status" type="stat" response="getst2">
+        <par_str>A,B,C</par_str>
+        <string>$1</string>
+        <string>ST2</string>
+      </item>
+      <item id="getst3" label="Get status" type="stat" response="getst3">
         <par_str>A,B,C</par_str>
         <string>$1</string>
         <string>ST3</string>
+      </item>
+      <item id="getst4" label="Get status" type="stat" response="getst4">
+        <par_str>A,B,C</par_str>
+        <string>$1</string>
+        <string>ST4</string>
+      </item>
+      <item id="getst5" label="Get status" type="stat" response="getst5">
+        <par_str>A,B,C</par_str>
+        <string>$1</string>
+        <string>ST5</string>
       </item>
       <item id="aon" label="All Output ON" response="default" type="action">
         <string>#SW1</string>
@@ -23,14 +51,19 @@
         <char length="1" label="ACK">6</char>
         <string>@</string>
       </item>
+      <item id="clr" label="ACK" noaffix="true" response="default">
+        <char length="1" label="ACK">6</char>
+        <string>@</string>
+      </item>
       <item id="rcv" label="Rcv Status" response="getstat" />
     </commands>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" delimiter=",">
       <echo/>
       <field length="1" decode="unsigned" label="ACK">6</field>
-      <field length="1" label="CH"/>
+      <field length="1" label="DST CH"/>
       <field length="1" decode="unsigned" label="ENQ">5</field>
       <ccrange>
+        <field length="1" label="SRC CH">@</field>
         <body/>
         <field length="1" decode="unsigned" label="ETX">3</field>
       </ccrange>
@@ -42,7 +75,31 @@
         <field label="Master CH" length="1">@</field>
       </response>
       <response id="getstat">
-        <field assign="stat" label="StatusCode" length="9"/>
+        <field assign="pwid" label="StatusCode" length="35"/>
+      </response>
+      <response id="getst0">
+        <field label="StatusCode" length="4">MS0,</field>
+        <field assign="ms0" label="StatusCode" length="27"/>
+      </response>
+      <response id="getst1">
+        <field label="StatusCode" length="4">MS1,</field>
+        <field assign="ms1" label="StatusCode" length="82"/>
+      </response>
+      <response id="getst2">
+        <field label="StatusCode" length="4">MS2,</field>
+        <field assign="ms2" label="StatusCode" length="52"/>
+      </response>
+      <response id="getst3">
+        <field label="StatusCode" length="4">MS3,</field>
+        <field assign="ms3" label="StatusCode" length="4"/>
+      </response>
+      <response id="getst4">
+        <field label="StatusCode" length="4">MS4,</field>
+        <field assign="ms4" label="StatusCode" length="31"/>
+      </response>
+      <response id="getst5">
+        <field label="StatusCode" length="4">MS5,</field>
+        <field assign="ms5" label="StatusCode" length="74"/>
       </response>
       <response id="default"  noaffix="true"/>
     </responses>

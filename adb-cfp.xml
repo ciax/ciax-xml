@@ -64,13 +64,13 @@
           <frmcmd name="getstat" />
         </item>
         <item id="save" label="Save Output">
-          <frmcmd name="save"></frmcmd>
+          <frmcmd name="save"/>
         </item>
         <item id="load" label="Load Output(Caution! Move)">
           <frmcmd name="load">
             <argv>latest</argv>
           </frmcmd>
-          <frmcmd name="putfield"></frmcmd>
+          <frmcmd name="putfield"/>
         </item>
       </group>
     </commands>

@@ -107,7 +107,7 @@
         <pattern var="bs">1</pattern>
         <block name="cw" />
         <int name="stop" />
-        <exec name="updp"></exec>
+        <exec name="updp"/>
       </event>
     </watch>
   </app>

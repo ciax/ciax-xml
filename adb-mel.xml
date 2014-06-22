@@ -258,7 +258,7 @@
           <frmcmd name="act">
             <argv>15</argv>
           </frmcmd>
-          <frmcmd name="getcmd"></frmcmd>
+          <frmcmd name="getcmd"/>
         </item>
         <item id="chgoff" label="Stop Charging">
           <frmcmd name="int">
@@ -409,13 +409,13 @@
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="During Issued" id="isu">
         <pattern var="isu" inv="1">0</pattern>
-        <exec name="upd"></exec>
+        <exec name="upd"/>
       </event>
       <event label="Command Receive" id="rec">
         <pattern var="isu" inv="true">0</pattern>
         <pattern var="acp">0</pattern>
-        <exec name="reset"></exec>
-        <exec name="upd"></exec>
+        <exec name="reset"/>
+        <exec name="upd"/>
       </event>
       <event label="While Running" id="run">
         <pattern var="run">1</pattern>
@@ -423,7 +423,7 @@
         <block_grp ref="gjak" />
         <block_grp ref="gchg" />
         <int name="pause" />
-        <exec name="upd"></exec>
+        <exec name="upd"/>
       </event>
       <event label="While Jacking" id="jak">
         <pattern var="jak">1</pattern>

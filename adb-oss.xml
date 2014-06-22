@@ -178,7 +178,7 @@
             <normal ref="clm" index="1-($_-1)/8" bit="($_-1)%8" />
           </binary>
           <binary id="ba$_" label="$_" symbol="ba">
-            <normal ref="bl" index="$_-($_+1)%2*2" bit="0"></normal>
+            <normal ref="bl" index="$_-($_+1)%2*2" bit="0"/>
             <normal ref="bl" index="$_-($_+1)%2*2" bit="4" />
           </binary>
         </repeat_var>
@@ -193,18 +193,18 @@
     </status>
     <watch interval="1" xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Moving Jack" id="jak">
-        <onchange var="jkm"></onchange>
-        <block name="jup"></block>
-        <block name="jdw"></block>
+        <onchange var="jkm"/>
+        <block name="jup"/>
+        <block name="jdw"/>
         <int name="jstop" />
-        <exec name="updjak"></exec>
+        <exec name="updjak"/>
       </event>
       <event label="Moving InR" id="inr">
-        <onchange var="iang"></onchange>
-        <block name="rhook"></block>
-        <block name="runhk"></block>
+        <onchange var="iang"/>
+        <block name="rhook"/>
+        <block name="runhk"/>
         <int name="rstop" />
-        <exec name="updinr"></exec>
+        <exec name="updinr"/>
       </event>
     </watch>
   </app>

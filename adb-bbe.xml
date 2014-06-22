@@ -7,7 +7,7 @@
           <frmcmd name="getstat" />
         </item>
         <item id="x0on" label="X0 ON">
-          <frmcmd name="getstat"></frmcmd>
+          <frmcmd name="getstat"/>
           <frmcmd name="set">
             <argv>stat</argv>
             <argv>${stat}|0x01</argv>

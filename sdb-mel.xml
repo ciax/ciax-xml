@@ -53,7 +53,7 @@
       <pattern class="normal" msg="M">4</pattern>
       <pattern class="warn" msg="L">8</pattern>
       <pattern class="alarm" msg="LL">16</pattern>
-      <pattern class="alarm" msg="N/A"></pattern>
+      <pattern class="alarm" msg="N/A"/>
     </table>
   </symbol>
 </sdb>

@@ -15,6 +15,6 @@
         </float>
       </group>
     </status>
-    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="2" period="60"></watch>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="2" period="60"/>
   </app>
 </adb>

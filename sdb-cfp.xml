@@ -4,12 +4,12 @@
     <table id="rot">
       <pattern class="normal" msg="Horizontal">2</pattern>
       <pattern class="warn" msg="Vertical">1</pattern>
-      <pattern class="alarm" msg="N/A"></pattern>
+      <pattern class="alarm" msg="N/A"/>
     </table>
     <table id="oc">
       <pattern class="warn" msg="OPEN">1</pattern>
       <pattern class="normal" msg="CLOSE">2</pattern>
-      <pattern class="alarm" msg="N/A"></pattern>
+      <pattern class="alarm" msg="N/A"/>
     </table>
   </symbol>
 </sdb>

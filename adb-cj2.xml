@@ -402,23 +402,23 @@
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="On Motion" id="mot">
         <pattern var="exe" inv="true">0</pattern>
-        <block_grp ref="gfix"></block_grp>
-        <block_grp ref="gmov"></block_grp>
-        <block_grp ref="gtr"></block_grp>
-        <block name="dopen"></block>
-        <block name="dclose"></block>
+        <block_grp ref="gfix"/>
+        <block_grp ref="gmov"/>
+        <block_grp ref="gtr"/>
+        <block name="dopen"/>
+        <block name="dclose"/>
         <int name="pause" />
-        <exec name="upd"></exec>
+        <exec name="upd"/>
       </event>
       <event label="On Completion" id="cmp">
-        <onchange var="cmp"></onchange>
+        <onchange var="cmp"/>
         <pattern var="cmp">1</pattern>
-        <exec name="reset"></exec>
+        <exec name="reset"/>
       </event>
       <event label="On Error" id="err">
-        <onchange var="err"></onchange>
+        <onchange var="err"/>
         <pattern var="err" inv="true">0</pattern>
-        <exec name="reset"></exec>
+        <exec name="reset"/>
       </event>
     </watch>
   </app>

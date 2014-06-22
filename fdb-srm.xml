@@ -41,12 +41,12 @@
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getmodel">
         <field label="Command Code" length="4">00MM</field>
-        <field label="Response Code" length="2" assign="cod"></field>
+        <field label="Response Code" length="2" assign="cod"/>
         <field assign="model" label="Model Number" length="2" />
       </response>
       <response id="getstat">
         <field label="Command Code" length="4">00RR</field>
-        <field label="Response Code" length="2" assign="cod"></field>
+        <field label="Response Code" length="2" assign="cod"/>
         <!--Big endian-->
         <field assign="c1d3" label="CH1 bit12-15" length="1" />
         <field assign="c1d2" label="CH1 bit8-11" length="1" />
@@ -55,7 +55,7 @@
       </response>
       <response id="fset">
         <field label="Command Code" length="4">00FK</field>
-        <field label="Exit Code" length="2" assign="cod"></field>
+        <field label="Exit Code" length="2" assign="cod"/>
       </response>
     </responses>
   </frame>

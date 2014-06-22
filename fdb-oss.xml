@@ -139,18 +139,18 @@
       </response>
       <response id="jakstat">
         <!--POWER_V1-->
-        <field assign="bsa" label="BOLT SUM ALM(B0)" length="2" decode="hexstr"></field>
-        <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" decode="hexstr"></field>
+        <field assign="bsa" label="BOLT SUM ALM(B0)" length="2" decode="hexstr"/>
+        <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" decode="hexstr"/>
         <!--Order:2,1,4,3..-->
         <array assign="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1" decode="hexstr">
-          <index range="0:15" size="16"></index>
+          <index range="0:15" size="16"/>
         </array>
         <array assign="bl" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1" decode="hexstr">
           <!--Order:2,1,4,3..-->
-          <index range="0:15" size="16"></index>
+          <index range="0:15" size="16"/>
         </array>
-        <field assign="mba" label="MLP3-BOLT COMM ALM(18:B0)" length="2" decode="hexstr"></field>
-        <field assign="loc" label="CS BOLT LOCAL(19:B0)" length="2" decode="hexstr"></field>
+        <field assign="mba" label="MLP3-BOLT COMM ALM(18:B0)" length="2" decode="hexstr"/>
+        <field assign="loc" label="CS BOLT LOCAL(19:B0)" length="2" decode="hexstr"/>
         <array assign="clm" label="CS BOLT Cullent Limit(20-21)" length="2" decode="hexstr">
           <index range="0:1" size="2" />
         </array>

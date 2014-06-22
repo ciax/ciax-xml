@@ -91,13 +91,13 @@
         <onchange var="xsw0"/>
         <pattern var="xsw0">1</pattern>
         <pattern var="xsw1">0</pattern>
-        <exec name="x1on"></exec>
+        <exec name="x1on"/>
       </event>
       <event label="OFF Executed" id="off">
         <onchange var="xsw0"/>
         <pattern var="xsw0">0</pattern>
         <pattern var="xsw1">1</pattern>
-        <exec name="x1off"></exec>
+        <exec name="x1off"/>
       </event>
     </watch>
   </instance>

@@ -30,7 +30,7 @@
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getstat" delimiter=";">
         <array assign="ch" label="Value">
-          <index range="0:7" size="8" />
+          <index size="8" />
         </array>
       </response>
       <response id="htrstat">

@@ -80,35 +80,37 @@
       <response id="getst0" delimiter=",">
         <field label="StatusCode">MS0,</field>
         <array assign="ms0" label="Value">
-          <index range="0:5" size="6" />
+          <index size="6" />
         </array>
       </response>
       <response id="getst1" delimiter=",">
         <field label="StatusCode">MS1,</field>
         <array assign="ms1" label="Value">
-          <index range="0:16" size="17" />
+          <index size="17" />
         </array>
       </response>
       <response id="getst2" delimiter=",">
         <field label="StatusCode">MS2,</field>
         <array assign="ms2" label="Value">
-          <index range="0:14" size="15" />
+          <index size="15" />
         </array>
       </response>
-      <response id="getst3">
+      <response id="getst3" delimiter=",">
         <field label="StatusCode">MS3,</field>
-        <field assign="ms3" label="StatusCode" length="4"/>
+        <array assign="ms3" label="Value">
+          <index size="2" />
+        </array>
       </response>
       <response id="getst4" delimiter=",">
         <field label="StatusCode">MS4,</field>
         <array assign="ms4" label="Value">
-          <index range="0:5" size="6" />
+          <index size="6" />
         </array>
       </response>
       <response id="getst5" delimiter=",">
         <field label="StatusCode">MS5,</field>
         <array assign="ms5" label="Value">
-          <index range="0:16" size="17" />
+          <index size="17" />
         </array>
       </response>
       <response id="default"  noaffix="true"/>

@@ -89,7 +89,7 @@ module CIAX
             akey=e0['assign'] || Msg.cfg_err("No key for Array")
             # Insert range depends on command param
             idxs=e0[:index].map{|e1|
-              @current_ent.subst(e1['range'])
+              e1['range'] ? @current_ent.subst(e1['range']) : "0:#{e1['size'].to_i-1}"
             }
             enclose("FrmRsp","Array:[#{akey}]:Range#{idxs}","Array:Assign[#{akey}]"){
               @cache[akey]=mk_array(idxs,get(akey)){yield}

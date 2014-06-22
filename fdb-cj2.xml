@@ -114,7 +114,7 @@
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
         <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
         <array assign="w" decode="unsigned" label="Status" length="2">
-          <index range="0:12" size="13" />
+          <index size="13" />
         </array>
       </response>
       <response id="getcmd">
@@ -123,7 +123,7 @@
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
         <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
         <array assign="c" decode="unsigned" label="Status" length="2">
-          <index range="0:3" size="4" />
+          <index size="4" />
         </array>
       </response>
       <response id="geterr">
@@ -139,7 +139,7 @@
         <field decode="unsigned" label="FINS Command:MRES" length="1">0x00</field>
         <field decode="unsigned" label="FINS Command:SRES" length="1">0x00</field>
         <array assign="d" decode="signed" label="Status" length="2">
-          <index range="0:9" size="10" />
+          <index size="10" />
         </array>
       </response>
       <response id="cmdrsp" label="command resp">

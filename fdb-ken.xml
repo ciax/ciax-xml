@@ -57,7 +57,7 @@
       </item>
       <item id="rcv" label="Rcv Status" response="getstat" />
     </commands>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr"  terminator="\x03">
       <echo/>
       <field length="1" decode="unsigned" label="ACK">6</field>
       <field length="1" label="DST CH"/>
@@ -77,9 +77,11 @@
       <response id="getstat">
         <field assign="pwid" label="StatusCode" length="35"/>
       </response>
-      <response id="getst0">
-        <field label="StatusCode" length="4">MS0,</field>
-        <field assign="ms0" label="StatusCode" length="27"/>
+      <response id="getst0" delimiter=",">
+        <field label="StatusCode">MS0,</field>
+        <array assign="ms0" label="Value">
+          <index range="0:5" size="6" />
+        </array>
       </response>
       <response id="getst1">
         <field label="StatusCode" length="4">MS1,</field>

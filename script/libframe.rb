@@ -47,6 +47,21 @@ module CIAX
     end
 
     def cut(e0,delimiter=nil)
+      # Verify mode
+      if ref=e0['val'] # Verify value
+        verbose("Frame","RSP:Verify(#{e0['label']}):[#{ref.inspect}])")
+        len=e0['length']||ref.size
+        str=@frame.slice!(0,len.to_i)
+        val= e0['decode'] ? decode(e0,str) : str
+        if ref == val
+          verbose("Frame","RSP:Verify:(#{e0['label']}) [#{ref.inspect}] OK")
+        else
+          warning("Frame","RSP:Mismatch(#{e0['label']}):[#{str.inspect}] (should be [#{ref.inspect}])")
+        end
+        cc_add(str)
+        return str
+      end
+      # Assign or Ignore mode
       # If cut str incldes terminetor, str will be trimmed
       body,sep,rest=@terminator ? @frame.partition(@terminator) : [@frame]
       if len=e0['length']
@@ -57,23 +72,24 @@ module CIAX
           @frame=rest.to_s
         else
           str=body.slice!(0,len.to_i)
-          @frame=body+sep.to_s+rest.to_s
+          @frame=[body,sep,rest].join
         end
+        cc_add(str)
       elsif delimiter
         verbose("Frame","RSP:Cut by Delimiter [#{delimiter.inspect}] from [#{@frame.inspect}]")
         delimiter=eval('"'+delimiter+'"')
         str,dlm,body=body.partition(delimiter)
-        @frame=body.to_s+sep.to_s+rest.to_s
+        @frame=[body,sep,rest].join
+        cc_add([str,dlm].join)
       else
         verbose("Frame","RSP:Cut all the rest")
         str=body
-        @frame=sep.to_s+rest.to_s
+        @frame=[sep,rest].join
+        cc_add(str)
       end
       return '' if str.empty?
       len=str.size
-      # Check Code
-      @ccrange << str if @ccrange
-      verbose("Frame","RSP:Cut: [#{str.inspect}]")
+      verbose("Frame","RSP:Cut to Assign: [#{str.inspect}]")
       # Pick Part
       if r=e0['slice']
         str=str.slice(*r.split(':').map{|i| i.to_i })
@@ -83,25 +99,21 @@ module CIAX
       @fragment=decode(e0,str)
     end
 
-    def verify(e0)
-      return self unless val=e0['val']
-      str=@fragment
-      val=eval(val).to_s if e0['decode']
-      vfy_err("Frame:RSP:Mismatch(#{e0['label']}):[#{str.inspect}] (should be [#{val.inspect}])") if val != str
-      verbose("Frame","RSP:Verify:(#{e0['label']}) [#{val.inspect}] OK")
-      @fragment=nil
+    # Check Code
+    def cc_add(str) # Add to check code
+      @ccrange << str if @ccrange
+      verbose("Frame","CC: Add to Range Frame [#{str.inspect}]")
       self
     end
 
-    # Check Code
     def cc_mark # Check Code Start
-      verbose("Frame","Mark CC range" )
+      verbose("Frame","CC: Mark Range Start" )
       @ccrange=''
       self
     end
 
     def cc_set # Check Code End
-      verbose("Frame","CC Frame [#{@ccrange.inspect}]")
+      verbose("Frame","CC: Frame [#{@ccrange.inspect}]")
       chk=0
       case @method
       when 'len'
@@ -114,7 +126,7 @@ module CIAX
       else
         Msg.cfg_err("No such CC method #{@method}")
       end
-      verbose("Frame","Calc:CC [#{@method.upcase}] -> (#{chk})")
+      verbose("Frame","CC: Calc [#{@method.upcase}] -> (#{chk})")
       @ccrange=nil
       @cc=chk.to_s
     end
@@ -122,7 +134,7 @@ module CIAX
     def cc_check(cc)
       return self unless cc
       if  cc == @cc
-        verbose("Frame","Verify:CC OK [#{cc}]")
+        verbose("Frame","CC: Verify OK [#{cc}]")
       else
         vfy_err("Frame:CC Mismatch:[#{cc}] (should be [#{@cc}])")
       end

@@ -74,8 +74,8 @@ module CIAX
               getfield_rec(@sel[:body]||[])
             }
           when 'echo'
-            @frame.cut('length' => @echo.size)
-            @frame.verify('label' => 'Echo','val' => @echo)
+            verbose("FrmRsp","Set Command Echo [#{@echo.inspect}]")
+            @frame.cut('label' => 'Command Echo','val' => @echo)
           when Hash
             frame_to_field(e1){ @frame.cut(e1,@sel['delimiter']) }
           end
@@ -101,7 +101,6 @@ module CIAX
               @cache[akey]=data
               verbose("FrmRsp","Assign:[#{akey}] <- <#{data}>")
             end
-            @frame.verify(e0)
           end
         }
       end

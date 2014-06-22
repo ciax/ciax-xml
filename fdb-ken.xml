@@ -63,7 +63,7 @@
       <field length="1" label="DST CH"/>
       <field length="1" decode="unsigned" label="ENQ">5</field>
       <ccrange>
-        <field length="1" label="SRC CH">@</field>
+        <field label="SRC CH">@</field>
         <body/>
         <field length="1" decode="unsigned" label="ETX">3</field>
       </ccrange>
@@ -72,7 +72,7 @@
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="ack" noaffix="true">
         <field label="ACK" decode="unsigned" length="1">6</field>
-        <field label="Master CH" length="1">@</field>
+        <field label="Master CH">@</field>
       </response>
       <response id="getstat">
         <field assign="pwid" label="StatusCode" length="35"/>

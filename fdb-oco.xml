@@ -18,7 +18,7 @@
       </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field length="1">*</field>
+      <field label="Prefix">*</field>
       <body/>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">

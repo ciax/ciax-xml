@@ -51,7 +51,7 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <field decode="unsigned" label="SubHeader: Prefix" length="2">212</field>
-      <field label="SubHeader: Serial Number" length="2">XX</field>
+      <field label="SubHeader: Serial Number">XX</field>
       <field decode="unsigned" label="SubHeader: Fixed Number" length="2">0</field>
       <field decode="unsigned" label="Q Header: Network Number" length="1">0</field>
       <field decode="unsigned" label="Q Header: PC Number" length="1">255</field>

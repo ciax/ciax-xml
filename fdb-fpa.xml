@@ -34,7 +34,7 @@
       </item>
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field label="Prefix" length="1">A</field>
+      <field label="Prefix">A</field>
       <ccrange>
         <body/>
       </ccrange>

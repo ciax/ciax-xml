@@ -32,20 +32,20 @@
     </commands>
     <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr" terminator="\r">
       <ccrange>
-        <field label="Prefix" length="1">@</field>
+        <field label="Prefix">@</field>
         <body/>
       </ccrange>
       <field assign="cc" decode="hexstr" label="BCC" length="2" />
-      <field label="Terminater" length="1">*</field>
+      <field label="Terminater">*</field>
     </rspframe>
     <responses xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <response id="getmodel">
-        <field label="Command Code" length="4">00MM</field>
+        <field label="Command Code">00MM</field>
         <field label="Response Code" length="2" assign="cod"/>
         <field assign="model" label="Model Number" length="2" />
       </response>
       <response id="getstat">
-        <field label="Command Code" length="4">00RR</field>
+        <field label="Command Code">00RR</field>
         <field label="Response Code" length="2" assign="cod"/>
         <!--Big endian-->
         <field assign="c1d3" label="CH1 bit12-15" length="1" />
@@ -54,7 +54,7 @@
         <field assign="c1d0" label="CH1 bit0-3" length="1" />
       </response>
       <response id="fset">
-        <field label="Command Code" length="4">00FK</field>
+        <field label="Command Code">00FK</field>
         <field label="Exit Code" length="2" assign="cod"/>
       </response>
     </responses>

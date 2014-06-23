@@ -47,22 +47,15 @@ module CIAX
     end
 
     def cut(e0,delimiter=nil)
-      # Verify mode
-      if ref=e0['val'] # Verify value
-        verbose("Frame","RSP:Verify(#{e0['label']}):[#{ref.inspect}])")
-        len=e0['length']||ref.size
-        str=@frame.slice!(0,len.to_i)
-        val= e0['decode'] ? decode(e0,str) : str
-        if ref == val
-          verbose("Frame","RSP:Verify:(#{e0['label']}) [#{ref.inspect}] OK")
-        else
-          warning("Frame","RSP:Mismatch(#{e0['label']}):[#{str.inspect}] (should be [#{ref.inspect}])")
-        end
-        cc_add(str)
-        return str
-      end
-      # Assign or Ignore mode
-      # If cut str incldes terminetor, str will be trimmed
+
+    end
+
+
+
+    # Assign or Ignore mode
+    # If cut str incldes terminetor, str will be trimmed
+    def cut(e0,delimiter=nil)
+      return verify(e0) if e0['val'] # Verify value
       body,sep,rest=@terminator ? @frame.partition(@terminator) : [@frame]
       if len=e0['length']
         verbose("Frame","RSP:Cut by Size [#{len}]")
@@ -142,6 +135,26 @@ module CIAX
     end
 
     private
+    def verify(e0)
+      ref=e0['val']
+      verbose("Frame","RSP:Verify(#{e0['label']}):[#{ref.inspect}])")
+      len=e0['length']||ref.size
+      str=@frame.slice!(0,len.to_i)
+      if e0['decode']
+        val=decode(e0,str)
+        ref=eval(ref).to_s
+      else
+        val=str
+      end
+      if ref == val
+        verbose("Frame","RSP:Verify:(#{e0['label']}) [#{ref.inspect}] OK")
+      else
+        warning("Frame","RSP:Mismatch(#{e0['label']}):[#{val.inspect}] (should be [#{ref.inspect}])")
+      end
+      cc_add(str)
+      str
+    end
+
     def decode(e,code) # Chr -> Num
       return code.to_s unless cdc=e['decode']
       case cdc

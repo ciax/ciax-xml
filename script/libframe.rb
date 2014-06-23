@@ -46,17 +46,11 @@ module CIAX
       self
     end
 
-    def cut(e0,delimiter=nil)
-
-    end
-
-
-
     # Assign or Ignore mode
     # If cut str incldes terminetor, str will be trimmed
     def cut(e0,delimiter=nil)
       return verify(e0) if e0['val'] # Verify value
-      body,sep,rest=@terminator ? @frame.partition(@terminator) : [@frame]
+      body,tm,rest=@terminator ? @frame.partition(@terminator) : [@frame]
       if len=e0['length']
         verbose("Frame","RSP:Cut by Size [#{len}]")
         if len.to_i > body.size
@@ -65,24 +59,25 @@ module CIAX
           @frame=rest.to_s
         else
           str=body.slice!(0,len.to_i)
-          @frame=[body,sep,rest].join
+          @frame=[body,tm,rest].join
         end
         cc_add(str)
       elsif delimiter
-        verbose("Frame","RSP:Cut by Delimiter [#{delimiter.inspect}] from [#{@frame.inspect}]")
         delimiter=eval('"'+delimiter+'"')
+        verbose("Frame","RSP:Cut by Delimiter [#{delimiter.inspect}] from [#{@frame.inspect}]")
         str,dlm,body=body.partition(delimiter)
-        @frame=[body,sep,rest].join
+        verbose("Frame","RSP:Cut by Terminator [#{@terminator.inspect}] from [#{@frame.inspect}]") if tm and dlm
+        @frame=[body,tm,rest].join
         cc_add([str,dlm].join)
       else
         verbose("Frame","RSP:Cut all the rest")
         str=body
-        @frame=[sep,rest].join
-        cc_add(str)
+        @frame=rest.to_s
+        cc_add([str,tm].join)
       end
       return '' if str.empty?
       len=str.size
-      verbose("Frame","RSP:Cut to Assign: [#{str.inspect}]")
+      verbose("Frame","RSP:Cut String: [#{str.inspect}]")
       # Pick Part
       if r=e0['slice']
         str=str.slice(*r.split(':').map{|i| i.to_i })

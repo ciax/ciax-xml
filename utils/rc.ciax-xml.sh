@@ -2,12 +2,16 @@
 addenv(){
     name=$1;shift
     list=$(IFS=: eval echo \$$name)
-    for j ; do
-        for i in $list;do
-            [ "$j" = "$i" ] && break 2
+    if [ "$list" ] ; then
+        for j; do
+            for i in $list;do
+                [ "$j" = "$i" ] && break 2
+            done
+            eval "export $name=$j:\$$name"
         done
-        eval "export $name=$j:\$$name"
-    done
+    else
+        eval "export $name=${*// /:}"
+    fi
 }
 
 # Local functions

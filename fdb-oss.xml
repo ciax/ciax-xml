@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="oss" label="OSS Command line">
+  <frame id="oss" label="OSS Command line" version="1">
     <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <body/>
       <char length="1" label="Suffix">0xa</char>
@@ -24,7 +24,13 @@
       <item id="jakstat" label="Jack Bolt Status" response="jakstat" type="stat">
         <string label="Status Command">ossprt</string>
         <string label="Bolt Each Status"> CXWS.TSCV.POWER_V1</string>
+      </item>
+      <item id="jaklen" label="Jack Bolt Status" response="jaklen" type="stat">
+        <string label="Status Command">ossprt</string>
         <string label="Bolt Each Position"> CXWS.TSCV.POWER_V2</string>
+      </item>
+      <item id="zlen" label="Jack Bolt Status" response="zlen" type="stat">
+        <string label="Status Command">ossprt</string>
         <string label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</string>
       </item>
       <item id="inrstat" label="Cas InR Status" response="inrstat" type="stat">
@@ -139,8 +145,8 @@
       </response>
       <response id="jakstat">
         <!--POWER_V1-->
-        <field assign="bsa" label="BOLT SUM ALM(B0)" length="2" decode="hexstr"/>
-        <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" decode="hexstr"/>
+        <field assign="bsa" label="BOLT SUM ALM(B0)" length="1" decode="hexstr"/>
+        <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="1" decode="hexstr"/>
         <!--Order:2,1,4,3..-->
         <array assign="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1" decode="hexstr">
           <index size="16"/>
@@ -154,12 +160,16 @@
         <array assign="clm" label="CS BOLT Cullent Limit(20-21)" length="2" decode="hexstr">
           <index size="2" />
         </array>
+      </response>
+      <response id="jaklen">
         <!--POWER_V2-->
         <array assign="jk" label="Bolt Position" length="12" slice="0:6" decode="decstr">
           <index size="16" />
         </array>
+      </response>
+      <response id="zlen">
         <!--Z_SENSOR-->
-        <array assign="zp" label="Zsensor Position" length="12" slice="0:6" decode="decstr">
+        <array assign="zp" label="Zsensor Position" length="12" slice="0:6">
           <index size="4" />
         </array>
       </response>

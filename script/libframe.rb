@@ -49,6 +49,7 @@ module CIAX
     # Assign or Ignore mode
     # If cut str incldes terminetor, str will be trimmed
     def cut(e0,delimiter=nil)
+      verbose("Frame","RSP:Cut Start for [#{@frame.inspect}](#{@frame.size})")
       return verify(e0) if e0['val'] # Verify value
       body,tm,rest=@terminator ? @frame.partition(@terminator) : [@frame]
       if len=e0['length']
@@ -57,11 +58,17 @@ module CIAX
           warning("Frame","RSP:Cut reached terminator [#{body.size}/#{len}] ")
           str=body
           @frame=rest.to_s
+          cc_add(str)
+        elsif len.to_i == body.size
+          str=body
+          @frame=rest.to_s
+          verbose("Frame","RSP:Cut terminator was removed") if tm
+          cc_add([str,tm].join)
         else
           str=body.slice!(0,len.to_i)
           @frame=[body,tm,rest].join
+          cc_add(str)
         end
-        cc_add(str)
       elsif delimiter
         delimiter=eval('"'+delimiter+'"')
         verbose("Frame","RSP:Cut by Delimiter [#{delimiter.inspect}] from [#{@frame.inspect}]")
@@ -83,7 +90,6 @@ module CIAX
         str=str.slice(*r.split(':').map{|i| i.to_i })
         verbose("Frame","RSP:Pick: [#{str.inspect}] by range=[#{r}]")
       end
-      verbose("Frame","RSP:Rest(#{@frame.size}): [#{@frame.inspect}]")
       @fragment=decode(e0,str)
     end
 

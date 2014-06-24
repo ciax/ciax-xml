@@ -16,8 +16,9 @@ timeout(){
     unset input
     error=1
 }
-[ "$1" ] ||{  echo "Usage:${0##*/} [site]";exit 1; }
+[ "$1" ] ||{  echo "Usage:${0##*/} [site] (ver)";exit 1; }
 site=$1;shift
+version=$1;shift
 input=$(input64)
 pass=0
 num=0
@@ -27,6 +28,7 @@ trap 'timeout' 1
 while [ $pass -lt 2 ]  ;do
     while read -u 3 line ;do
         jset $line
+        [ "$version" -a "$version" != "$ver" ] && continue
         if [ "$input" ]; then
             if [[ "$dir" =~ snd ]] ; then
                 num=$(( $num + 1 ))

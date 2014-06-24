@@ -10,7 +10,7 @@ module CIAX
     # cfg should have :db(Frm::Db)
     def self.new(cfg)
       if $opt['s'] or $opt['e']
-        cfg['iocmd']=['devsim-file',cfg[:db]['site_id']] if $opt['s']
+        cfg['iocmd']=['devsim-file',cfg[:db]['site_id'],cfg[:db]['version']] if $opt['s']
         fsh=Frm::Sv.new(cfg)
         cfg['host']='localhost'
       end

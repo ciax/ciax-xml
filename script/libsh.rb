@@ -39,14 +39,16 @@ module CIAX
       }
       while line=readline(prompt)
         break if /^q/ === line
-        begin
-          exe(shell_input(line))
-          puts shell_output
-        rescue InvalidID
-          puts $!.to_s
-        rescue UserError
-          alert
-        end
+        line.split(';').each{|token|
+          begin
+            exe(shell_input(token))
+            puts shell_output
+          rescue InvalidID
+            puts $!.to_s
+          rescue UserError
+            alert
+          end
+        }
       end
     end
 

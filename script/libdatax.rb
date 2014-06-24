@@ -202,7 +202,7 @@ module CIAX
       if json_str.empty?
         warning("File"," -- json file (#{@base}) is empty")
       else
-        read(json_str)
+        @data.deep_update(j2h(json_str)[@dataname])
       end
       self
     rescue Errno::ENOENT

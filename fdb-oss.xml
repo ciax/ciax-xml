@@ -161,7 +161,7 @@
           <index size="2" />
         </array>
       </response>
-      <response id="jaklen">
+      <response id="jaklen" length="192">
         <!--POWER_V2-->
         <array assign="jk" label="Bolt Position" length="12" slice="0:6" decode="decstr">
           <index size="16" />

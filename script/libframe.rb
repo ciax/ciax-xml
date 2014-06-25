@@ -38,10 +38,22 @@ module CIAX
     end
 
     #For Response
-    def set(frame='')
+    def set(frame='',length=nil)
       if frame && !frame.empty?
         verbose("Frame","RSP:Set [#{frame.inspect}]")
-        @frame=frame
+        if length
+          @frame=frame.split(@terminator).map{|str|
+            diff=length.to_i-str.size
+            if diff > 0
+              verbose("Frame","RSP:Frame length short and add '0'")
+              '0'*diff+str
+            else
+              str
+            end
+          }.join(@terminator)
+        else
+          @frame=frame
+        end
       end
       self
     end

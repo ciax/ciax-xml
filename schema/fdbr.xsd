@@ -83,6 +83,7 @@
       <xsd:attribute name="noaffix" type="xsd:boolean" />
       <xsd:attribute name="delimiter" type="xsd:token" />
       <xsd:attribute name="length" type="xsd:int" />
+      <xsd:attribute name="padding" type="xsd:token" />
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

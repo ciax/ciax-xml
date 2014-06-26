@@ -39,16 +39,21 @@ module CIAX
       }
       while line=readline(prompt)
         break if /^q/ === line
-        line.split(';').each{|token|
-          begin
-            exe(shell_input(token))
-            puts shell_output
-          rescue InvalidID
-            puts $!.to_s
-          rescue UserError
-            alert
-          end
-        }
+        cmds=line.split(';')
+        cmds=[""] if cmds.empty?
+        cmds.each{|token| shexe(token)}
+        puts shell_output
+      end
+    end
+
+    private
+    def shexe(token)
+      begin
+        exe(shell_input(token))
+      rescue InvalidID
+        puts $!.to_s
+      rescue UserError
+        alert
       end
     end
 

@@ -1,13 +1,13 @@
 #!/bin/bash
 JQUERY=1.7.2
-[ "$1" ] || { libhtmltbl.rb; exit; }
+[ "$1" ] || { libhtmltbl; exit; }
 src=$HOME/ciax-xml/webapp
 dir=$HOME/.var/json
 install $src/* $dir/
 tmpfile="$dir/temp"
 for id; do
     file=$dir/$id.html
-    libhtmltbl.rb $id > $tmpfile || break
+    libhtmltbl $id > $tmpfile || break
     cat > $file <<EOF
 <html>
 <head>

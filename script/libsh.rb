@@ -41,21 +41,15 @@ module CIAX
         break if /^q/ === line
         cmds=line.split(';')
         cmds=[""] if cmds.empty?
-        cmds.each{|token| shexe(token)}
+        begin
+          cmds.each{|token| exe(shell_input(token))}
+        rescue UserError
+        end
         puts shell_output
       end
     end
 
     private
-    def shexe(token)
-      begin
-        exe(shell_input(token))
-      rescue InvalidID
-        puts $!.to_s
-      rescue UserError
-        alert
-      end
-    end
 
     def readline(prompt)
       Readline.readline(prompt,true)

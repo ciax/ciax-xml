@@ -4,6 +4,7 @@ require 'libdatax'
 module CIAX
   module Frm
     class Field < Datax
+      attr_accessor :echo
       def initialize(init_struct={})
         @ver_color=6
         super('field',init_struct)

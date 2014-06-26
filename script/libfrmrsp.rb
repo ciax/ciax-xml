@@ -9,7 +9,6 @@ require "libstream"
 module CIAX
   module Frm
     module Rsp
-      attr_accessor :echo
       # @< (base),(prefix)
       # @ cobj,sel,fds,frame,fary,cc
       def self.extended(obj)

@@ -196,13 +196,13 @@ module CIAX
         Threadx.new("Update Thread(#@layer:#@id)",4){
           int=(@period||300).to_i
           loop{
+            sleep int
             begin
               @buf.send(3,@cobj.set_cmd(['upd']))
             rescue InvalidID
               warning("AppSv",$!)
             end
             verbose("AppSv","Auto Update(#{@stat['time']})")
-            sleep int
           }
         }
       end

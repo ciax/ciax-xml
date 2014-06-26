@@ -43,13 +43,9 @@ module CIAX
         verbose("Frame","RSP:Set [#{frame.inspect}]")
         if length
           @frame=frame.split(@terminator).map{|str|
-            diff=length.to_i-str.size
-            if diff > 0
-              verbose("Frame","RSP:Frame length short and add '0'")
-              '0'*diff+str
-            else
-              str
-            end
+            res=str.rjust(length.to_i,'0')
+            verbose("Frame","RSP:Frame length short and add '0'") if res.to_i > str.size
+            res
           }.join(@terminator)
         else
           @frame=frame

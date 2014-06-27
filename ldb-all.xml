@@ -110,12 +110,12 @@
     <adb port="25612" />
     <fdb iocmd="socat - tcp:celaeno:4012" />
   </site>
-  <site id="mp2" label="MOIRCS Power Supply 2" app_id="ken">
+  <site id="mp1" label="MOIRCS Power Supply 1" app_id="ken">
     <adb port="25613" />
     <fdb iocmd="socat - tcp:celaeno:4013" />
   </site>
-  <site id="mp1" label="MOIRCS Power Supply 1" app_id="ken">
-    <adb port="25613" />
+  <site id="mp2" label="MOIRCS Power Supply 2" app_id="ken">
+    <adb port="25614" />
     <fdb iocmd="socat - tcp:celaeno:4014" />
   </site>
   <site id="mh1" label="MOIRCS Main/Carrousel Heater" app_id="psp">

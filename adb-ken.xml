@@ -4,86 +4,34 @@
     <commands xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="g0" caption="Device">
         <item id="upd" label="Update Status">
-          <frmcmd name="getst0">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst4">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst0">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst4">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst0">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst4">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
+          <repeat from="0" to="2">
+            <frmcmd name="getst0">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="ack"/>
+          </repeat>
         </item>
         <item id="getconf" label="Get Config Data">
-          <frmcmd name="getst1">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst2">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst3">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst5">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst1">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst2">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst3">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst5">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst1">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst2">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst3">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
-          <frmcmd name="getst5">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="ack"/>
+          <repeat from="0" to="2">
+            <frmcmd name="getst1">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="ack"/>
+            <frmcmd name="getst2">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="ack"/>
+            <frmcmd name="getst3">
+              <argv>$_</argv>
+            </frmcmd>
+            <frmcmd name="ack"/>
+          </repeat>
         </item>
       </group>
     </commands>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs" symtbl="ken">
         <repeat_grp from="0" to="2" counter="b">
-          <group id="b$b" column="4">
+          <group id="b$b" column="2">
             <repeat_var from="0" to="3" counter="c">
               <float id="v$b$c" label="Voltage(V) CH$c" format="%5.2f" formula="$#/100">
                 <field ref="ms0" index="$b:$c*2+1" />

@@ -129,6 +129,7 @@ module CIAX
         @stat.ext_rsp(@fsh.field).ext_sym.ext_file
         update({'auto'=>nil,'watch'=>nil,'isu'=>nil,'na'=>nil})
         @buf=init_buf
+        ver=@buf['ver']=@stat['ver']
         @fsh.flush_procs << proc{ @buf.flush }
         @cobj.ext_proc{|ent|
           verbose("AppSv","#@id/Issue:#{ent.id}")
@@ -144,9 +145,9 @@ module CIAX
           'INTERRUPT'
         }
         # Logging if version number exists
-        if $opt['e'] && sv=@fsh.sqlsv
+        if $opt['e'] && ver.to_i > 0 && sv=@fsh.sqlsv
           sv.add_table(@stat)
-          sv.add_table(@buf,@stat['ver'])
+          sv.add_table(@buf)
         end
         tid_auto=auto_update
         @post_exe_procs << proc{

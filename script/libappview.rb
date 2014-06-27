@@ -101,7 +101,7 @@ module CIAX
           if host=$opt['h']
             stat.ext_http(host)
           else
-            stat.ext_fil
+            stat.ext_file
           end
         end
         puts View.new(adb,stat).ext_prt

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require "libstatus"
+require "libappsym"
 
 # View is not used for computing, just for apperance for user.
 # So the convert process can be included in to_s
@@ -10,15 +10,11 @@ module CIAX
       def initialize(adb,stat)
         @adbs=type?(adb,Db)[:status]
         @stat=type?(stat,Status)
+        @stat.post_upd_procs << proc{conv}
         # Just additional data should be provided
         ['data','class','msg'].each{|key|
           stat[key]||={}
         }
-      end
-
-      def to_s
-        conv
-        super
       end
 
       def ext_prt
@@ -87,26 +83,23 @@ module CIAX
     if __FILE__ == $0
       require "libsitedb"
       GetOpts.new('h:')
-      id=ARGV.shift
-      host=ARGV.shift
       stat=Status.new
       begin
-        if ! STDIN.tty?
-          stat.read
-          id=stat['id']
-          adb=Site::Db.new.set(id)[:adb]
-        else
-          adb=Site::Db.new.set(id)[:adb]
-          stat.skeleton(adb)
+        id=STDIN.tty? ? ARGV.shift : stat.read['id']
+        adb=Site::Db.new.set(id)[:adb]
+        stat.skeleton(adb)
+        view=View.new(adb,stat)
+        if STDIN.tty?
           if host=$opt['h']
             stat.ext_http(host)
           else
             stat.ext_file
           end
         end
-        puts View.new(adb,stat).ext_prt
+        stat.ext_sym.upd
+        puts STDOUT.tty? ? view : view.to_j
       rescue InvalidID
-        $opt.usage "(opt) [id] <(stat_file)"
+        $opt.usage "(opt) [site] | < status_file"
       end
       exit
     end

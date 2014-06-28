@@ -12,12 +12,12 @@ module CIAX
         super('watch')
         self['period']=300
         self['interval']=0.1
-        self['astart']=now_msec
-        self['aend']=now_msec
-        #For Array element (@data contains only Array)
+        @data['astart']=now_msec
+        @data['aend']=now_msec
+        #For Array element
         ['active','exec','block','int'].each{|i| @data[i]||=Array.new}
-        #For Hash element (another data will be stored to self)
-        ['crnt','last','res'].each{|i| self[i]||={}}
+        #For Hash element
+        ['crnt','last','res'].each{|i| @data[i]||={}}
         @event_procs=[]
         self
       end

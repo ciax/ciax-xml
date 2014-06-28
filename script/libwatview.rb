@@ -45,9 +45,9 @@ module CIAX
           v['cond'].each_index{|i|
             h=v['cond'][i]
             var=h['var']
-            h['val']=@watch['crnt'][var]
-            h['res']=@watch['res'][id][i]
-            h['cmp']=@watch['last'][var] if h['type'] == 'onchange'
+            h['val']=@watch.data['crnt'][var]
+            h['res']=@watch.data['res'][id][i]
+            h['cmp']=@watch.data['last'][var] if h['type'] == 'onchange'
           }
           v['active']=@watch.data['active'].include?(id)
         }

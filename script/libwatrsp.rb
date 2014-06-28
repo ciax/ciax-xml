@@ -21,10 +21,10 @@ module CIAX
         @windex.values.each{|v|
           @list|=v[:cnd].map{|i| i["var"]}
         }
-        # @stat.data(all) = self['crnt'](picked) > self['last']
-        # upd() => self['last']<-self['crnt']
-        #       => self['crnt']<-@stat.data
-        #       => check(self['crnt'] <> self['last']?)
+        # @stat.data(all) = @data['crnt'](picked) > @data['last']
+        # upd() => @data['last']<-@data['crnt']
+        #       => @data['crnt']<-@stat.data
+        #       => check(@data['crnt'] <> @data['last']?)
         # Stat no changed -> clear exec, no eval
         @ctime=0
         upd
@@ -35,7 +35,7 @@ module CIAX
         return self unless @stat['time'] > @ctime
         @ctime=@stat['time']
         sync
-        @data.values.each{|a| a.clear}
+        @data.values.each{|a| a.clear if Array === a}
         @windex.each{|id,item|
           next unless check(id,item)
           item[:act].each{|key,ary|
@@ -45,9 +45,9 @@ module CIAX
         }
         if !@data['active'].empty?
           if active?
-            self['aend']=now_msec
+            @data['aend']=now_msec
           else
-            self['astart']=now_msec
+            @data['astart']=now_msec
           end
         end
         verbose("Watch","Updated(#{@stat['time']})")
@@ -66,8 +66,8 @@ module CIAX
       private
       def sync
         @list.each{|i|
-          self['last'][i]=self['crnt'][i]
-          self['crnt'][i]=@stat.data[i]
+          @data['last'][i]=@data['crnt'][i]
+          @data['crnt'][i]=@stat.data[i]
         }
       end
 
@@ -80,7 +80,7 @@ module CIAX
           val=@stat.data[vn]
           case ckitm['type']
           when 'onchange'
-            cmp=self['last'][vn]
+            cmp=@data['last'][vn]
             res=(cmp != val)
             verbose("Watch","  onChange(#{vn}): [#{cmp}] vs <#{val}> =>#{res}")
           when 'pattern'
@@ -96,7 +96,7 @@ module CIAX
           res=!res if /true|1/ === ckitm['inv']
           rary << res
         }
-        self['res'][id]=rary
+        @data['res'][id]=rary
         rary.all?
       end
     end

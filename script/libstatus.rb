@@ -70,12 +70,10 @@ module CIAX
 
     if __FILE__ == $0
       require 'libsitedb'
-      GetOpts.new('vh:')
-      id=ARGV.shift
-      host=ARGV.shift
+      GetOpts.new('h:')
       stat=Status.new
       begin
-        adb=Site::Db.new.set(id)[:adb]
+        adb=Site::Db.new.set(ARGV.shift)[:adb]
         stat.skeleton(adb)
         if host=$opt['h']
           stat.ext_http(host)

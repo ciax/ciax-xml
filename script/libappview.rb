@@ -82,20 +82,14 @@ module CIAX
 
     if __FILE__ == $0
       require "libsitedb"
-      GetOpts.new('h:v')
+      GetOpts.new('v')
       stat=Status.new
       begin
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
         adb=Site::Db.new.set(id)[:adb]
         stat.skeleton(adb)
         view=View.new(adb,stat)
-        if STDIN.tty?
-          if host=$opt['h']
-            stat.ext_http(host)
-          else
-            stat.ext_file
-          end
-        end
+        stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
         view.ext_prt if $opt['v']
         puts STDOUT.tty? ? view : view.to_j

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'libwatch'
+require 'libwatrsp'
 
 # View is not used for computing, just for apperance for user. So the convert process can be included in to_s
 module CIAX

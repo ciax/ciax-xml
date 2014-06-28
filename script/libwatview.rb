@@ -100,28 +100,22 @@ module CIAX
         res ? Msg.color(t||res,2) : Msg.color(f||res,1)
       end
     end
-  end
 
-  if __FILE__ == $0
-    require "libsitedb"
-
-    list={}
-    list['t']='test conditions[key=val,..]'
-    GetOpts.new('rt:',list)
-    id=ARGV.shift
-    begin
-      adb=Site::Db.new.set(id)[:adb]
-    rescue InvalidID
-      $opt.usage("(opt) [id]")
+    if __FILE__ == $0
+      require "libsitedb"
+      GetOpts.new('r')
+      watch=Data.new
+      begin
+        id=STDIN.tty? ? ARGV.shift : watch.read['id']
+        adb=Site::Db.new.set(id)[:adb]
+        watch.skeleton(adb)
+        wview=View.new(adb,watch)
+        watch.ext_file if STDIN.tty?
+        wview.ext_prt unless $opt['r']
+        puts STDOUT.tty? ? wview : wview.to_j
+      rescue InvalidID
+        $opt.usage("(opt) [site] | < watch_file")
+      end
     end
-    stat=App::Status.new.skeleton(adb).ext_file
-    watch=Watch::Data.new.skeleton(adb).ext_upd(stat)
-    wview=Watch::View.new(adb,watch)
-    wview.ext_prt unless $opt['r']
-    if t=$opt['t']
-      watch.ext_file
-      stat.str_update(t)
-    end
-    puts wview
   end
 end

@@ -120,7 +120,7 @@ module CIAX
       end
       puts STDOUT.tty? ? watch : watch.to_j
     rescue InvalidID
-      $opt.usage("(opt) [id]")
+      $opt.usage("(opt) [site] | < status_file")
     end
   end
 end

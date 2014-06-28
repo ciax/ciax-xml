@@ -82,7 +82,7 @@ module CIAX
 
     if __FILE__ == $0
       require "libsitedb"
-      GetOpts.new('h:')
+      GetOpts.new('h:v')
       stat=Status.new
       begin
         id=STDIN.tty? ? ARGV.shift : stat.read['id']
@@ -97,6 +97,7 @@ module CIAX
           end
         end
         stat.ext_sym.upd
+        view.ext_prt if $opt['v']
         puts STDOUT.tty? ? view : view.to_j
       rescue InvalidID
         $opt.usage "(opt) [site] | < status_file"

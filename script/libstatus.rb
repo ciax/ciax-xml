@@ -75,21 +75,16 @@ module CIAX
       host=ARGV.shift
       stat=Status.new
       begin
-        if ! STDIN.tty?
-          stat.read
-          id=stat['id']
+        adb=Site::Db.new.set(id)[:adb]
+        stat.skeleton(adb)
+        if host=$opt['h']
+          stat.ext_http(host)
         else
-          adb=Site::Db.new.set(id)[:adb]
-          stat.skeleton(adb)
-          if host=$opt['h']
-            stat.ext_http(host)
-          else
-            stat.ext_file
-          end
+          stat.ext_file
         end
-        puts stat
+        puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
-        $opt.usage "(opt) [id] <(stat_file)"
+        $opt.usage "(opt) [id]"
       end
       exit
     end

@@ -116,7 +116,7 @@ module CIAX
       adb=ldb[:adb]
       field.skeleton(fdb).ext_rsp
       stat=Status.new.skeleton(adb).ext_rsp(field)
-      puts stat
+      puts stat.to_j
       exit
     end
   end

@@ -147,7 +147,7 @@ module CIAX
         ent=cobj.set_cmd(cid.split(':'))
         field.upd(ent){res}
       end
-      puts field
+      puts field.to_j
       exit
     end
   end

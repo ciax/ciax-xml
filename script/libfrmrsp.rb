@@ -130,8 +130,7 @@ module CIAX
       require "libfrmcmd"
       GetOpts.new("",{'m' => 'merge file'})
       if STDIN.tty?
-        $opt.usage("(opt) [id] < logline") if ARGV.size < 1
-        id=ARGV.shift
+        $opt.usage("(opt) < logline")
       else
         str=gets(nil) || exit
         res=Logging.set_logline(str)
@@ -147,7 +146,7 @@ module CIAX
         ent=cobj.set_cmd(cid.split(':'))
         field.upd(ent){res}
       end
-      puts field.to_j
+      puts STDOUT.tty? ? field : field.to_j
       exit
     end
   end

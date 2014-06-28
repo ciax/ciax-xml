@@ -109,15 +109,17 @@ module CIAX
       require "libsitedb"
       require "libfrmrsp"
       require "libstatus"
-      Msg.usage "< field_file" if STDIN.tty?
-      field=Frm::Field.new.read
-      ldb=Site::Db.new.set(field['id'])
-      fdb=ldb[:fdb]
-      adb=ldb[:adb]
-      field.skeleton(fdb).ext_rsp
-      stat=Status.new.skeleton(adb).ext_rsp(field)
-      puts stat.to_j
-      exit
+      begin
+        field=Frm::Field.new
+        id=STDIN.tty? ? ARGV.shift : field.read['id']
+        ldb=Site::Db.new.set(id)
+        field.skeleton(ldb[:fdb]).ext_rsp
+        field.ext_file if STDIN.tty?
+        stat=Status.new.skeleton(ldb[:adb]).ext_rsp(field)
+        puts STDOUT.tty? ? stat : stat.to_j
+      rescue InvalidID
+        Msg.usage "[site] | < field_file"
+      end
     end
   end
 end

@@ -58,14 +58,16 @@ module CIAX
     if __FILE__ == $0
       require "libsitedb"
       GetOpts.new
-      id=ARGV.shift
       begin
+        stat=Status.new
+        id=STDIN.tty? ? ARGV.shift : stat.read['id']
         adb=Site::Db.new.set(id)[:adb]
-        stat=Status.new.skeleton(adb).ext_file
+        stat.skeleton(adb)
+        stat.ext_file if STDIN.tty?
         stat.ext_sym.upd
-        print stat
+        puts STDOUT.tty? ? stat : stat.to_j
       rescue InvalidID
-        Msg.usage "[id]"
+        Msg.usage "[site] | < status_file"
       end
     end
   end

@@ -156,21 +156,22 @@ module CIAX
   if __FILE__ == $0
     require "libsitedb"
 
-    list={}
-    list['t']='test conditions[key=val,..]'
+    list={'t'=>'test conditions[key=val,..]'}
     GetOpts.new('t:',list)
-    id=ARGV.shift
     begin
+      stat=App::Status.new
+      id=STDIN.tty? ? ARGV.shift : stat.read['id']
       adb=Site::Db.new.set(id)[:adb]
+      stat.skeleton(adb)
+      stat.ext_file if STDIN.tty?
+      watch=Watch::Data.new.skeleton(adb).ext_upd(stat)
+      if t=$opt['t']
+        watch.ext_file
+        stat.str_update(t)
+      end
+      puts STDOUT.tty? ? watch : watch.to_j
     rescue InvalidID
       $opt.usage("(opt) [id]")
     end
-    stat=App::Status.new.skeleton(adb).ext_file
-    watch=Watch::Data.new.skeleton(adb).ext_upd(stat)
-    if t=$opt['t']
-      watch.ext_file
-      stat.str_update(t)
-    end
-    puts watch
   end
 end

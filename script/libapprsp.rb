@@ -20,22 +20,26 @@ module CIAX
         @adbs.each{|id,hash|
           enclose("AppRsp","GetStatus:[#{id}]","GetStatus:#{id}=[%s]"){
             flds=hash[:fields]||next
-            data=case hash['type']
-                 when 'binary'
-                   flds.inject(0){|sum,e| (sum << 1)+binary(e)}
-                 when 'float'
-                   flds.inject(0){|sum,e| sum+float(e)}
-                 when 'integer'
-                   flds.inject(0){|sum,e| sum+int(e)}
-                 else
-                   flds.inject(''){|sum,e| sum+get_field(e)}
-                 end
-            if hash.key?('formula')
-              f=hash['formula'].gsub(/\$#/,data.to_s)
-              data=eval(f)
-              verbose("AppRsp","Formula:#{f}(#{data})")
+            begin
+              data=case hash['type']
+                   when 'binary'
+                     flds.inject(0){|sum,e| (sum << 1)+binary(e)}
+                   when 'float'
+                     flds.inject(0){|sum,e| sum+float(e)}
+                   when 'integer'
+                     flds.inject(0){|sum,e| sum+int(e)}
+                   else
+                     flds.inject(''){|sum,e| sum+get_field(e)}
+                   end
+              if hash.key?('formula')
+                f=hash['formula'].gsub(/\$#/,data.to_s)
+                data=eval(f)
+                verbose("AppRsp","Formula:#{f}(#{data})")
+              end
+              data = hash['format'] % data if hash.key?('format')
+            rescue NoData
+              data=''
             end
-            data = hash['format'] % data if hash.key?('format')
             @data[id]=data.to_s
           }
         }
@@ -48,8 +52,12 @@ module CIAX
       private
       def get_field(e)
         fld=e['ref'] || Msg.abort("No field Key")
-        data=@field.get(fld)||''
-        verbose("AppRsp","GetFieldData[#{fld}]=[#{data}]")
+        data=@field.get(fld)
+        if data.empty?
+          verbose("AppRsp","NoFieldData in [#{fld}]")
+          raise(NoData)
+        end
+        verbose("AppRsp","GetFieldData[#{fld}]=[#{data.inspect}]")
         data
       end
 

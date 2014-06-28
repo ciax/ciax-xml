@@ -26,12 +26,16 @@ module CIAX
   class Retry < LongJump; end
   class Skip < LongJump; end
 
+  # No Data in Field for Status
+  class NoData < UserError; end
+
   # Communication Error
   class CommError < UserError; end
   # Verification Error
   class VerifyError < UserError; end
   # Configuration Error
   class ConfigError < RuntimeError; end
+
 
   class Threadx < Thread
     def initialize(name,color=4)

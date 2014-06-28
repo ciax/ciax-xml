@@ -16,8 +16,10 @@ module CIAX
 
       def skeleton(db)
         super
-        @adbs=@db[:status][:index]
-        @data.update(@adbs.skeleton)
+        if @data.empty?
+          @adbs=@db[:status][:index]
+          @data.update(@adbs.skeleton)
+        end
         self
       end
 

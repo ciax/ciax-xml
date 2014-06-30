@@ -16,32 +16,32 @@
         <char length="1">$1+0x41</char>
         <string>PWID</string>
       </item>
-      <item id="getst0" label="Get Status in INT" type="stat" response="getst0">
+      <item id="getst0" label="Get Status in INT [UNIT]" type="stat" response="getst0">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>ST0</string>
       </item>
-      <item id="getst1" label="Get Presets in INT" type="stat" response="getst1">
+      <item id="getst1" label="Get Presets in INT [UNIT]" type="stat" response="getst1">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>ST1</string>
       </item>
-      <item id="getst2" label="Get status" type="stat" response="getst2">
+      <item id="getst2" label="Get status [UNIT]" type="stat" response="getst2">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>ST2</string>
       </item>
-      <item id="getst3" label="Get status" type="stat" response="getst3">
+      <item id="getst3" label="Get status [UNIT]" type="stat" response="getst3">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>ST3</string>
       </item>
-      <item id="getst4" label="Get Status in Float" type="stat" response="getst4">
+      <item id="getst4" label="Get Status in Float [UNIT]" type="stat" response="getst4">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>ST4</string>
       </item>
-      <item id="getst5" label="Get Presets in Float" type="stat" response="getst5">
+      <item id="getst5" label="Get Presets in Float [UNIT]" type="stat" response="getst5">
         <par_num>0:2</par_num>
         <char length="1">$1+0x41</char>
         <string>ST5</string>
